@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f174.google.com ([209.85.215.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5xeR-000236-9S
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 12:10:55 +0000
-Date: Thu, 14 Feb 2013 13:10:53 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130214121053.GQ1906@pengutronix.de>
-References: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360623899-10059-1-git-send-email-vicencb@gmail.com>
+ id 1U5yXX-0002B1-5z
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:07:52 +0000
+Received: by mail-ea0-f174.google.com with SMTP id 1so938954eaa.19
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 05:07:49 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Thu, 14 Feb 2013 14:08:30 +0100
+Message-Id: <1360847311-16931-3-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
+References: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +18,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] Summary of last patches submitted
-To: Vicente Bergas <vicencb@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/4] nandtest: use new pread and pwrite functions
+To: barebox@lists.infradead.org
 
-On Tue, Feb 12, 2013 at 12:04:57AM +0100, Vicente Bergas wrote:
-> Here are the last two patches I've submitted.
-> The first is a straightforward solution to a regression.
-> The second was first intended to provide devicetree support for booting an
-> omap4 based tablet. I've achieved booting it successfully, but after several
-> tries at bringing the mmc controller working I've realised that the Linux
-> kernel still has no support for devicetree on omap4 (it's almost there, but it
-> lacks dma configuration).
-> For more information see:
-> http://omappedia.org/wiki/Device_Tree#Drivers_.2F_Features_migration_status
-> So the second patch has been stripped and only provides generic support,
-> nothing related to the tablet.
-> 
-> The patches also include the changes reflecting the received feedback, thanks!
-> 
-> Vicente Bergas (2):
->   ArchosG9: solve regression in second stage lowlevel init
->   DeviceTree: add support for initrd in the DT
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ commands/nandtest.c | 36 ++++++------------------------------
+ 1 file changed, 6 insertions(+), 30 deletions(-)
 
-Applied, thanks
-
-Sascha
-
-> 
->  arch/arm/boards/archosg9/lowlevel.c |  7 ++--
->  arch/arm/lib/armlinux.c             |  2 ++
->  common/oftree.c                     | 66 +++++++++++++++++++++++++++++++++++++
->  include/of.h                        |  8 +++++
->  4 files changed, 81 insertions(+), 2 deletions(-)
-> 
-> -- 
-> 1.8.1.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/commands/nandtest.c b/commands/nandtest.c
+index f08f8eb..4e6024b 100644
+--- a/commands/nandtest.c
++++ b/commands/nandtest.c
+@@ -43,41 +43,17 @@ static unsigned int ecc_stats_over;
+ static unsigned int ecc_failed_cnt;
+ 
+ /*
+- * Implementation of pread with lseek and read.
+- */
+-static ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
+-{
+-	int ret;
+-
+-	/* Seek to offset */
+-	ret = lseek(fd, offset, SEEK_SET);
+-	if (ret < 0)
+-		perror("lseek");
+-
+-	/* Read from flash and put it into buf  */
+-	ret = read(fd, buf, count);
+-	if (ret < 0)
+-		perror("read");
+-
+-	return 0;
+-}
+-
+-/*
+  * Implementation of pwrite with lseek and write.
+  */
+-static ssize_t pwrite(int fd, const void *buf,
++static ssize_t __pwrite(int fd, const void *buf,
+ 		size_t count, loff_t offset, loff_t length)
+ {
+-	int ret;
+-
+-	ret = lseek(fd, offset, SEEK_SET);
+-	if (ret < 0)
+-		perror("lseek");
++	ssize_t ret;
+ 
+ 	/* Write buf to flash */
+-	ret = write(fd, buf, count);
++	ret = pwrite(fd, buf, count, offset);
+ 	if (ret < 0) {
+-		perror("write");
++		perror("pwrite");
+ 		if (markbad) {
+ 			printf("\nMark block bad at 0x%08llx\n",
+ 					offset + memregion.offset);
+@@ -88,7 +64,7 @@ static ssize_t pwrite(int fd, const void *buf,
+ 	}
+ 
+ 	flush(fd);
+-	return 0;
++	return ret;
+ }
+ 
+ /*
+@@ -119,7 +95,7 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
+ 	for (i = 0; i < meminfo.erasesize;
+ 			i += meminfo.writesize) {
+ 		/* Write data to given offset */
+-		pwrite(fd, data + i, meminfo.writesize,
++		__pwrite(fd, data + i, meminfo.writesize,
+ 				ofs + i, length);
+ 
+ 		/* Read data from offset */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.3
+
 
 _______________________________________________
 barebox mailing list
