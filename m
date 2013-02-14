@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
+Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U617x-0006EM-Kc
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:53:38 +0000
+ id 1U617y-0006EL-2n
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:53:41 +0000
 Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id B179D101806E
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 993B91018175
  for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 17:04:10 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 14 Feb 2013 16:52:24 +0100
-Message-Id: <1360857147-489-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 14 Feb 2013 16:52:23 +0100
+Message-Id: <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130214154759.GT19322@game.jcrosoft.org>
 References: <20130214154759.GT19322@game.jcrosoft.org>
- <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,53 +25,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] filetype: add GPT support
+Subject: [PATCH 1/5] linux/types: import __aligned_x64 from the kernel
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-GPT need to be check before MBR
+need it by upcoming EFI GPT support
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/filetype.c  |    4 ++++
- include/filetype.h |    1 +
- 2 files changed, 5 insertions(+)
+ include/linux/types.h |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 22fc621..6563ecc 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_bmp] = { "BMP image", "bmp" },
- 	[filetype_png] = { "PNG image", "png" },
- 	[filetype_ext] = { "ext filesystem", "ext" },
-+	[filetype_gpt] = { "GUID Partition Table", "gpt" },
- };
+diff --git a/include/linux/types.h b/include/linux/types.h
+index 76c6b67..14f8315 100644
+--- a/include/linux/types.h
++++ b/include/linux/types.h
+@@ -142,6 +142,19 @@ typedef __u64 __bitwise __be64;
+ typedef __u16 __bitwise __sum16;
+ typedef __u32 __bitwise __wsum;
  
- const char *file_type_to_string(enum filetype f)
-@@ -159,6 +160,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (bufsize < 512)
- 		return filetype_unknown;
- 
-+	if (bufsize >= 520 && strncmp(&buf8[512], "EFI PART", 8) == 0)
-+		return filetype_gpt;
++/*
++ * aligned_u64 should be used in defining kernel<->userspace ABIs to avoid
++ * common 32/64-bit compat problems.
++ * 64-bit values align to 4-byte boundaries on x86_32 (and possibly other
++ * architectures) and to 8-byte boundaries on 64-bit architectures.  The new
++ * aligned_64 type enforces 8-byte alignment so that structs containing
++ * aligned_64 values have the same alignment on 32-bit and 64-bit architectures.
++ * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
++ */
++#define __aligned_u64 __u64 __attribute__((aligned(8)))
++#define __aligned_be64 __be64 __attribute__((aligned(8)))
++#define __aligned_le64 __le64 __attribute__((aligned(8)))
 +
- 	type = is_fat_or_mbr(buf8, NULL);
- 	if (type != filetype_unknown)
- 		return type;
-diff --git a/include/filetype.h b/include/filetype.h
-index 4d43757..78ca5d2 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -23,6 +23,7 @@ enum filetype {
- 	filetype_bmp,
- 	filetype_png,
- 	filetype_ext,
-+	filetype_gpt,
- 	filetype_max,
- };
- 
+ #ifdef CONFIG_PHYS_ADDR_T_64BIT
+ typedef u64 phys_addr_t;
+ typedef u64 phys_size_t;
 -- 
 1.7.10.4
 
