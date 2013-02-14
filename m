@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5x5l-00059w-Tg
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 11:35:13 +0000
-Date: Thu, 14 Feb 2013 12:35:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130214113503.GN1906@pengutronix.de>
-References: <1360774211-10983-1-git-send-email-maxime.ripard@free-electrons.com>
- <1360775819-5411-1-git-send-email-s.hauer@pengutronix.de>
- <511CB116.8050705@free-electrons.com>
+Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5xQz-0006Mg-CV
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 11:57:02 +0000
+Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 9A1D3FFA225
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 13:12:24 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu, 14 Feb 2013 12:56:49 +0100
+Message-Id: <1360843011-7807-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <20130214121716.1f3ef4f7@e6520eb>
+References: <20130214121716.1f3ef4f7@e6520eb>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <511CB116.8050705@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +21,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add warning above get_ram_size
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] env: add register_persistent_environment
+To: barebox@lists.infradead.org
+Cc: Juergen Beisert <jbe@pengutronix.de>
 
-On Thu, Feb 14, 2013 at 10:40:38AM +0100, Maxime Ripard wrote:
-> Hi Sascha,
-> =
-
-> Le 13/02/2013 18:16, Sascha Hauer a =E9crit :
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  common/memsize.c |    3 +++
-> >  1 file changed, 3 insertions(+)
-> > =
-
-> > diff --git a/common/memsize.c b/common/memsize.c
-> > index d149e41..ef6381b 100644
-> > --- a/common/memsize.c
-> > +++ b/common/memsize.c
-> > @@ -33,6 +33,9 @@
-> >   * Check memory range for valid RAM. A simple memory test determines
-> >   * the actually available RAM size between addresses `base' and
-> >   * `base + maxsize'.
-> > + *
-> > + * This function modifies the RAM. Do not use it if you're running from
-> > + * the RAM you are going to detect!
-> >   */
-> =
-
-> Actually, I don't see how it modifies the RAM, at least permanently. The
-> values it erase are backed up, and there's no concurrency at barebox
-> level, so we are sure that the value saved will still be the one that
-> would need to be backed up at the end of the function, right?
-
-Yes, it restores the values, but how do you make sure the function does
-not modify the instructions you are currently executing? You need bad
-luck to hit this, but sooner or later this will happen.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+LSBoZWF2aWx5IGNvcGllZCBmcm9tIHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJvbm1lbnQgd2hp
+Y2ggd2FzClNpZ25lZC1vZmYtYnk6IEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRl
+PgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogY29t
+bW9uL2Vudmlyb25tZW50LmMgIHwgNDAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKwogaW5jbHVkZS9lbnZpcm9ubWVudC5oIHwgIDEgKwogMiBmaWxlcyBjaGFuZ2VkLCA0
+MSBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2Vudmlyb25tZW50LmMgYi9jb21t
+b24vZW52aXJvbm1lbnQuYwppbmRleCBlOGQ2MjNmLi41NWJlZmQ5IDEwMDY0NAotLS0gYS9jb21t
+b24vZW52aXJvbm1lbnQuYworKysgYi9jb21tb24vZW52aXJvbm1lbnQuYwpAQCAtMzYzLDMgKzM2
+Myw0MyBAQCBvdXQ6CiAJCWZyZWUoYnVmX2ZyZWUpOwogCXJldHVybiByZXQ7CiB9CisKKyNpZmRl
+ZiBfX0JBUkVCT1hfXworLyoqCisgKiBUcnkgdG8gcmVnaXN0ZXIgYW4gZW52aXJvbm1lbnQgc3Rv
+cmFnZSBvbiBhIGRldmljZSdzIHBhcnRpdGlvbgorICogQHJldHVybiAwIG9uIHN1Y2Nlc3MKKyAq
+CisgKiBXZSByZWx5IG9uIHRoZSBleGlzdGVuY2Ugb2YgYSB1c2FibGUgc3RvcmFnZSBkZXZpY2Us
+IGFscmVhZHkgYXR0YWNoZWQgdG8KKyAqIG91ciBzeXN0ZW0sIHRvIGdldCBzb21ldGhpbmcgbGlr
+ZSBhIHBlcnNpc3RlbnQgbWVtb3J5IGZvciBvdXIgZW52aXJvbm1lbnQuCisgKiBXZSBuZWVkIHRv
+IHNwZWNpZnkgdGhlIHBhcnRpdGlvbiBudW1iZXIgdG8gdXNlIG9uIHRoaXMgZGV2aWNlLgorICog
+QHBhcmFtW2luXSBkZXZuYW1lIE5hbWUgb2YgdGhlIGRldmljZQorICogQHBhcmFtW2luXSBwYXJ0
+bnIgUGFydGl0aW9uIG51bWJlcgorICogQHJldHVybiAwIG9uIHN1Y2Nlc3MsIGFueXRoaW5nIGVs
+c2UgaW4gY2FzZSBvZiBmYWlsdXJlCisgKi8KKworaW50IHJlZ2lzdGVyX3BlcnNpc3RlbnRfZW52
+aXJvbm1lbnQoY29uc3QgY2hhciAqZGV2bmFtZSwgdW5zaWduZWQgaW50IHBhcnRucikKK3sKKwlz
+dHJ1Y3QgY2RldiAqY2RldjsKKwljaGFyICpwYXJ0bmFtZTsKKworCWlmICghZGV2bmFtZSkKKwkJ
+cmV0dXJuIC1FSU5WQUw7CisKKwljZGV2ID0gY2Rldl9ieV9uYW1lKGRldm5hbWUpOworCWlmIChj
+ZGV2ID09IE5VTEwpIHsKKwkJcHJfZXJyKCJObyAlcyBwcmVzZW50XG4iLCBkZXZuYW1lKTsKKwkJ
+cmV0dXJuIC1FTk9ERVY7CisJfQorCXBhcnRuYW1lID0gYXNwcmludGYoIiVzLiVkIiwgZGV2bmFt
+ZSwgcGFydG5yKTsKKwljZGV2ID0gY2Rldl9ieV9uYW1lKHBhcnRuYW1lKTsKKwlpZiAoY2RldiA9
+PSBOVUxMKSB7CisJCXByX2VycigiTm8gJXMgcGFydGl0aW9uIGF2YWlsYWJsZVxuIiwgcGFydG5h
+bWUpOworCQlwcl9pbmZvKCJQbGVhc2UgY3JlYXRlIHRoZSBwYXJ0aXRpb24gJXMgdG8gc3RvcmUg
+dGhlIGVudlxuIiwgcGFydG5hbWUpOworCQlyZXR1cm4gLUVOT0RFVjsKKwl9CisKKwlyZXR1cm4g
+ZGV2ZnNfYWRkX3BhcnRpdGlvbihwYXJ0bmFtZSwgMCwgY2Rldi0+c2l6ZSwKKwkJCQkJCURFVkZT
+X1BBUlRJVElPTl9GSVhFRCwgImVudjAiKTsKK30KK0VYUE9SVF9TWU1CT0wocmVnaXN0ZXJfcGVy
+c2lzdGVudF9lbnZpcm9ubWVudCk7CisjZW5kaWYKZGlmZiAtLWdpdCBhL2luY2x1ZGUvZW52aXJv
+bm1lbnQuaCBiL2luY2x1ZGUvZW52aXJvbm1lbnQuaAppbmRleCA3YmRkMjEzLi5kMTcyZjhmIDEw
+MDY0NAotLS0gYS9pbmNsdWRlL2Vudmlyb25tZW50LmgKKysrIGIvaW5jbHVkZS9lbnZpcm9ubWVu
+dC5oCkBAIC03MSw2ICs3MSw3IEBAIGludCBlbnZfcG9wX2NvbnRleHQodm9pZCk7CiBpbnQgZW52
+X3B1c2hfY29udGV4dCh2b2lkKTsKIAogaW50IGV4cG9ydChjb25zdCBjaGFyICopOworaW50IHJl
+Z2lzdGVyX3BlcnNpc3RlbnRfZW52aXJvbm1lbnQoY29uc3QgY2hhciAqZGV2bmFtZSwgdW5zaWdu
+ZWQgaW50IHBhcnRucik7CiAKICNlbmRpZgkvKiBfRU5WSVJPTk1FTlRfSF8gKi8KIAotLSAKMS43
+LjExLjcKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
