@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5uax-0003Hy-QY
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 08:55:08 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1U5uaw-0007Dp-9U
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:55:06 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1U5uaw-0000AE-8N
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:55:06 +0100
+ id 1U5umx-00052u-2z
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:07:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Feb 2013 09:55:06 +0100
-Message-Id: <1360832106-32612-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 14 Feb 2013 10:07:25 +0100
+Message-Id: <1360832847-22414-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1360832847-22414-1-git-send-email-s.hauer@pengutronix.de>
+References: <1360832847-22414-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,271 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: fix memset-related crashes caused by recent GCC (4.7.2)
- optimizations
+Subject: [PATCH 3/5] USB ehci: Add platform specific init calls
 To: barebox@lists.infradead.org
 
-From: Ivan Djelic <ivan.djelic@parrot.com>
+Some USB cores need a platform specific init hook, add it to
+the ehci driver.
 
-Recent GCC versions (e.g. GCC-4.7.2) perform optimizations based on
-assumptions about the implementation of memset and similar functions.
-The current ARM optimized memset code does not return the value of
-its first argument, as is usually expected from standard implementations.
-
-For instance in the following function:
-
-void debug_mutex_lock_common(struct mutex *lock, struct mutex_waiter *waiter)
-{
-	memset(waiter, MUTEX_DEBUG_INIT, sizeof(*waiter));
-	waiter->magic = waiter;
-	INIT_LIST_HEAD(&waiter->list);
-}
-
-compiled as:
-
-800554d0 <debug_mutex_lock_common>:
-800554d0:       e92d4008        push    {r3, lr}
-800554d4:       e1a00001        mov     r0, r1
-800554d8:       e3a02010        mov     r2, #16 ; 0x10
-800554dc:       e3a01011        mov     r1, #17 ; 0x11
-800554e0:       eb04426e        bl      80165ea0 <memset>
-800554e4:       e1a03000        mov     r3, r0
-800554e8:       e583000c        str     r0, [r3, #12]
-800554ec:       e5830000        str     r0, [r3]
-800554f0:       e5830004        str     r0, [r3, #4]
-800554f4:       e8bd8008        pop     {r3, pc}
-
-GCC assumes memset returns the value of pointer 'waiter' in register r0; causing
-register/memory corruptions.
-
-This patch fixes the return value of the assembly version of memset.
-Could you please review, or suggest better alternatives ?
-
-Thanks,
-
---
-Ivan
-
-(this is a shorter and (hopefully) clearer repost of
-http://lists.infradead.org/pipermail/linux-arm-kernel/2013-January/144916.html)
-
-The patch adds a 'mov' instruction and merges an additional load+store into
-existing load/store instructions.
-For ease of review, here is a breakdown of the patch into 4 simple steps:
-
-Step 1
-======
-Perform the following substitutions:
-ip -> r8, then
-r0 -> ip,
-and insert 'mov ip, r0' as the first statement of the function.
-At this point, we have a memset() implementation returning the proper result,
-but corrupting r8 on some paths (the ones that were using ip).
-
-Step 2
-======
-Make sure r8 is saved and restored when (! CALGN(1)+0) == 1:
-
-save r8:
--       str     lr, [sp, #-4]!
-+       stmfd   sp!, {r8, lr}
-
-and restore r8 on both exit paths:
--       ldmeqfd sp!, {pc}               @ Now <64 bytes to go.
-+       ldmeqfd sp!, {r8, pc}           @ Now <64 bytes to go.
-(...)
-        tst     r2, #16
-        stmneia ip!, {r1, r3, r8, lr}
--       ldr     lr, [sp], #4
-+       ldmfd   sp!, {r8, lr}
-
-Step 3
-======
-Make sure r8 is saved and restored when (! CALGN(1)+0) == 0:
-
-save r8:
--       stmfd   sp!, {r4-r7, lr}
-+       stmfd   sp!, {r4-r8, lr}
-
-and restore r8 on both exit paths:
-        bgt     3b
--       ldmeqfd sp!, {r4-r7, pc}
-+       ldmeqfd sp!, {r4-r8, pc}
-(...)
-        tst     r2, #16
-        stmneia ip!, {r4-r7}
--       ldmfd   sp!, {r4-r7, lr}
-+       ldmfd   sp!, {r4-r8, lr}
-
-Step 4
-======
-Rewrite register list "r4-r7, r8" as "r4-r8".
-
-Signed-off-by: Ivan Djelic <ivan.djelic@parrot.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ drivers/usb/host/ehci-hcd.c |   14 ++++++++++++++
+ include/usb/ehci.h          |    5 +++++
+ 2 files changed, 19 insertions(+)
 
-I haven't seen the memset corruption as described above in barebox yet,
-but I think we should fix this aswell.
-
- arch/arm/lib/memset.S |   85 +++++++++++++++++++++++++------------------------
- 1 file changed, 44 insertions(+), 41 deletions(-)
-
-diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
-index b4e5ddd..5e35d7f 100644
---- a/arch/arm/lib/memset.S
-+++ b/arch/arm/lib/memset.S
-@@ -19,9 +19,9 @@
- 1:	subs	r2, r2, #4		@ 1 do we have enough
- 	blt	5f			@ 1 bytes to align with?
- 	cmp	r3, #2			@ 1
--	strltb	r1, [r0], #1		@ 1
--	strleb	r1, [r0], #1		@ 1
--	strb	r1, [r0], #1		@ 1
-+	strltb	r1, [ip], #1		@ 1
-+	strleb	r1, [ip], #1		@ 1
-+	strb	r1, [ip], #1		@ 1
- 	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
- /*
-  * The pointer is now aligned and the length is adjusted.  Try doing the
-@@ -29,10 +29,14 @@
-  */
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index d0d6ae4..d6dc1de 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -42,6 +42,10 @@ struct ehci_priv {
+ 	struct qTD *td;
+ 	int portreset;
+ 	unsigned long flags;
++
++	int (*init)(void *drvdata);
++	int (*post_init)(void *drvdata);
++	void *drvdata;
+ };
  
- ENTRY(memset)
--	ands	r3, r0, #3		@ 1 unaligned?
-+/*
-+ * Preserve the contents of r0 for the return value.
-+ */
-+	mov	ip, r0
-+	ands	r3, ip, #3		@ 1 unaligned?
- 	bne	1b			@ 1
- /*
-- * we know that the pointer in r0 is aligned to a word boundary.
-+ * we know that the pointer in ip is aligned to a word boundary.
-  */
- 	orr	r1, r1, r1, lsl #8
- 	orr	r1, r1, r1, lsl #16
-@@ -43,29 +47,28 @@ ENTRY(memset)
- #if ! CALGN(1)+0
+ #define to_ehci(ptr) container_of(ptr, struct ehci_priv, host)
+@@ -748,6 +752,9 @@ static int ehci_init(struct usb_host *host)
+ 	if (ehci_reset(ehci) != 0)
+ 		return -1;
  
- /*
-- * We need an extra register for this loop - save the return address and
-- * use the LR
-+ * We need an 2 extra registers for this loop - use r8 and the LR
-  */
--	str	lr, [sp, #-4]!
--	mov	ip, r1
-+	stmfd	sp!, {r8, lr}
-+	mov	r8, r1
- 	mov	lr, r1
++	if (ehci->init)
++		ehci->init(ehci->drvdata);
++
+ 	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
+ 	ehci->qh_list->qh_endpt1 = cpu_to_hc32((1 << 15) | (USB_SPEED_HIGH << 12));
+ 	ehci->qh_list->qh_curtd = cpu_to_hc32(QT_NEXT_TERMINATE);
+@@ -788,6 +795,9 @@ static int ehci_init(struct usb_host *host)
  
- 2:	subs	r2, r2, #64
--	stmgeia	r0!, {r1, r3, ip, lr}	@ 64 bytes at a time.
--	stmgeia	r0!, {r1, r3, ip, lr}
--	stmgeia	r0!, {r1, r3, ip, lr}
--	stmgeia	r0!, {r1, r3, ip, lr}
-+	stmgeia	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
-+	stmgeia	ip!, {r1, r3, r8, lr}
-+	stmgeia	ip!, {r1, r3, r8, lr}
-+	stmgeia	ip!, {r1, r3, r8, lr}
- 	bgt	2b
--	ldmeqfd	sp!, {pc}		@ Now <64 bytes to go.
-+	ldmeqfd	sp!, {r8, pc}		@ Now <64 bytes to go.
- /*
-  * No need to correct the count; we're only testing bits from now on
-  */
- 	tst	r2, #32
--	stmneia	r0!, {r1, r3, ip, lr}
--	stmneia	r0!, {r1, r3, ip, lr}
-+	stmneia	ip!, {r1, r3, r8, lr}
-+	stmneia	ip!, {r1, r3, r8, lr}
- 	tst	r2, #16
--	stmneia	r0!, {r1, r3, ip, lr}
--	ldr	lr, [sp], #4
-+	stmneia	ip!, {r1, r3, r8, lr}
-+	ldmfd	sp!, {r8, lr}
+ 	ehci->rootdev = 0;
  
- #else
++	if (ehci->post_init)
++		ehci->post_init(ehci->drvdata);
++
+ 	return 0;
+ }
  
-@@ -74,55 +77,55 @@ ENTRY(memset)
-  * whole cache lines at once.
-  */
+@@ -856,6 +866,10 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
+ 		ehci->hcor = (void __iomem *)ehci->hccr +
+ 			HC_LENGTH(ehci_readl(&ehci->hccr->cr_capbase));
  
--	stmfd	sp!, {r4-r7, lr}
-+	stmfd	sp!, {r4-r8, lr}
- 	mov	r4, r1
- 	mov	r5, r1
- 	mov	r6, r1
- 	mov	r7, r1
--	mov	ip, r1
-+	mov	r8, r1
- 	mov	lr, r1
++	ehci->drvdata = data->drvdata;
++	ehci->init = data->init;
++	ehci->post_init = data->post_init;
++
+ 	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD);
+ 	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD);
  
- 	cmp	r2, #96
--	tstgt	r0, #31
-+	tstgt	ip, #31
- 	ble	3f
+diff --git a/include/usb/ehci.h b/include/usb/ehci.h
+index 4377116..93f980d 100644
+--- a/include/usb/ehci.h
++++ b/include/usb/ehci.h
+@@ -11,6 +11,11 @@ struct ehci_data {
+ 	void __iomem *hccr;
+ 	void __iomem *hcor;
+ 	unsigned long flags;
++
++	/* platform specific init functions */
++	int (*init)(void *drvdata);
++	int (*post_init)(void *drvdata);
++	void *drvdata;
+ };
  
--	and	ip, r0, #31
--	rsb	ip, ip, #32
--	sub	r2, r2, ip
--	movs	ip, ip, lsl #(32 - 4)
--	stmcsia	r0!, {r4, r5, r6, r7}
--	stmmiia	r0!, {r4, r5}
--	tst	ip, #(1 << 30)
--	mov	ip, r1
--	strne	r1, [r0], #4
-+	and	r8, ip, #31
-+	rsb	r8, r8, #32
-+	sub	r2, r2, r8
-+	movs	r8, r8, lsl #(32 - 4)
-+	stmcsia	ip!, {r4, r5, r6, r7}
-+	stmmiia	ip!, {r4, r5}
-+	tst	r8, #(1 << 30)
-+	mov	r8, r1
-+	strne	r1, [ip], #4
- 
- 3:	subs	r2, r2, #64
--	stmgeia	r0!, {r1, r3-r7, ip, lr}
--	stmgeia	r0!, {r1, r3-r7, ip, lr}
-+	stmgeia	ip!, {r1, r3-r8, lr}
-+	stmgeia	ip!, {r1, r3-r8, lr}
- 	bgt	3b
--	ldmeqfd	sp!, {r4-r7, pc}
-+	ldmeqfd	sp!, {r4-r8, pc}
- 
- 	tst	r2, #32
--	stmneia	r0!, {r1, r3-r7, ip, lr}
-+	stmneia	ip!, {r1, r3-r8, lr}
- 	tst	r2, #16
--	stmneia	r0!, {r4-r7}
--	ldmfd	sp!, {r4-r7, lr}
-+	stmneia	ip!, {r4-r7}
-+	ldmfd	sp!, {r4-r8, lr}
- 
- #endif
- 
- 4:	tst	r2, #8
--	stmneia	r0!, {r1, r3}
-+	stmneia	ip!, {r1, r3}
- 	tst	r2, #4
--	strne	r1, [r0], #4
-+	strne	r1, [ip], #4
- /*
-  * When we get here, we've got less than 4 bytes to zero.  We
-  * may have an unaligned pointer as well.
-  */
- 5:	tst	r2, #2
--	strneb	r1, [r0], #1
--	strneb	r1, [r0], #1
-+	strneb	r1, [ip], #1
-+	strneb	r1, [ip], #1
- 	tst	r2, #1
--	strneb	r1, [r0], #1
-+	strneb	r1, [ip], #1
- 	mov	pc, lr
- ENDPROC(memset)
- 
+ #ifdef CONFIG_USB_EHCI
 -- 
 1.7.10.4
 
