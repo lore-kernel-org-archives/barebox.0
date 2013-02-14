@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5u11-0006aK-An
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 08:18:00 +0000
+ id 1U5u4t-0008VZ-QE
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 08:22:00 +0000
+Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1U5u4s-0005qg-34
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 09:21:58 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Thu, 14 Feb 2013 09:16:36 +0100
-References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
- <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
-In-Reply-To: <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
+Date: Thu, 14 Feb 2013 09:20:39 +0100
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201302140916.36347.jbe@pengutronix.de>
+Message-Id: <201302140920.39814.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store the
- environment
+Subject: [PATCH] arm/i.M23/chumbyfalconwing: just fix a typo
 To: barebox@lists.infradead.org
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>, Brian Lilly <brian@crystalfontz.com>
 
-Maxime Ripard wrote:
-> Since the only storage medium on the cfa-10036 is the MMC card, we need
-> to have a registered environment partition on it if we want to be able
-> to modify at runtime.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> ---
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44
-> +++++++++++++++++++++- 1 file changed, 43 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> index b59dbab..1821b10 100644 
-> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> @@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
->  }
->  mem_initcall(cfa10036_mem_init);
->
-> +/**
-> + * Try to register an environment storage on the attached MCI card
-> + * @return 0 on success
-> + *
-> + * We rely on the existence of a usable SD card, already attached to
-> + * our system, to get something like a persistent memory for our environment.
-> + * If this SD card is also the boot media, we can use the second partition
-> + * for our environment purpose (if present!). 
-> + */
-> +static int register_persistant_environment(void)
-
-register_persist*e*nt_environment
-
-Seems a copy from my typo in the falconwing. I really should fix it :))
-
-> [...]
-
-jbe
+diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
+index 0818666..a8fe00c 100644
+--- a/arch/arm/boards/chumby_falconwing/falconwing.c
++++ b/arch/arm/boards/chumby_falconwing/falconwing.c
+@@ -274,7 +274,7 @@ mem_initcall(falconwing_mem_init);
+  * If this SD card is also the boot media, we can use the second partition
+  * for our environment purpose (if present!).
+  */
+-static int register_persistant_environment(void)
++static int register_persistent_environment(void)
+ {
+ 	struct cdev *cdev;
+ 
+@@ -338,7 +338,7 @@ static int falconwing_devices_init(void)
+ 	armlinux_set_bootparams((void *)IMX_MEMORY_BASE + 0x100);
+ 	armlinux_set_architecture(MACH_TYPE_CHUMBY);
+ 
+-	rc = register_persistant_environment();
++	rc = register_persistent_environment();
+ 	if (rc != 0)
+ 		printf("Cannot create the 'env0' persistant environment storage (%d)\n", rc);
+ 
 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+Linux Solutions for Science and Industry      | Phone: +49-5121-206917-5128 |
+Peiner Str. 6-8, 31137 Hildesheim, Germany    | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686              | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
