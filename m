@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
+Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U67We-0006Rt-Dd
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 22:43:33 +0000
+ id 1U67Yl-0006jD-6V
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 22:45:46 +0000
 Received: from mail612.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 25CCDFF8F3B
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 23:58:19 +0100 (CET)
-Date: Thu, 14 Feb 2013 23:42:22 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id C120EFF8F56
+ for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 00:00:29 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130214224222.GX19322@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu, 14 Feb 2013 23:44:32 +0100
+Message-Id: <1360881873-1599-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360881873-1599-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130214224222.GX19322@game.jcrosoft.org>
+ <1360881873-1599-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,68 +21,139 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] add EFI GUID Partition Table support
+Subject: [PATCH 4/5] disk: introduce partition name
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-HI,
+so we can register partion with name as present in EFI GPT
 
-	v2:
-	 fix memory leak
-	 filetype: full check
-	 part name: comment
-	 efi: make gpt primary and alternate check optional
+Cc: Rob Herring <rob.herring@calxeda.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/partitions.c        |   54 ++++++++++++++++++++++++++++++++++----------
+ common/partitions/parser.h |    2 ++
+ 2 files changed, 44 insertions(+), 12 deletions(-)
 
-	this add the support of the EFI GPT and named partition
+diff --git a/common/partitions.c b/common/partitions.c
+index 9ab06d3..86b0f66 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -44,15 +44,43 @@ LIST_HEAD(partition_parser_list);
+ static int register_one_partition(struct block_device *blk,
+ 					struct partition *part, int no)
+ {
+-	char partition_name[19];
++	char *partition_name;
++	int ret;
++	uint64_t start = part->first_sec * SECTOR_SIZE;
++	uint64_t size = part->size * SECTOR_SIZE;
++
++	partition_name = asprintf("%s.%d", blk->cdev.name, no);
++	if (!partition_name)
++		return -ENOMEM;
++	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
++				partition_name, blk->cdev.name);
++	ret = devfs_add_partition(blk->cdev.name,
++				start, size, 0, partition_name);
++	if (ret)
++		goto out;
++
++	free(partition_name);
++
++	if (!part->name[0])
++		return 0;
++
++	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
++	if (!partition_name)
++		return -ENOMEM;
+ 
+-	sprintf(partition_name, "%s.%d", blk->cdev.name, no);
+ 	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+ 				partition_name, blk->cdev.name);
+-	return devfs_add_partition(blk->cdev.name,
+-				part->first_sec * SECTOR_SIZE,
+-				part->size * SECTOR_SIZE,
+-				0, partition_name);
++	ret = devfs_add_partition(blk->cdev.name,
++				start, size, 0, partition_name);
++
++	if (ret)
++		dev_warn(blk->dev, "Registering partition %s on drive %s failled\n",
++				partition_name, blk->cdev.name);
++
++	ret = 0;
++out:
++	free(partition_name);
++	return 0;
+ }
+ 
+ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+@@ -79,12 +107,13 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+  */
+ int parse_partition_table(struct block_device *blk)
+ {
+-	struct partition_desc pdesc = { .used_entries = 0, };
++	struct partition_desc *pdesc;
+ 	int i;
+ 	int rc = 0;
+ 	struct partition_parser *parser;
+ 	uint8_t *buf;
+ 
++	pdesc = xzalloc(sizeof(*pdesc));
+ 	buf = dma_alloc(SECTOR_SIZE * 2);
+ 
+ 	rc = blk->ops->read(blk, buf, 0, 2);
+@@ -97,14 +126,14 @@ int parse_partition_table(struct block_device *blk)
+ 	if (!parser)
+ 		goto on_error;
+ 
+-	parser->parse(buf, blk, &pdesc);
++	parser->parse(buf, blk, pdesc);
+ 
+-	if (!pdesc.used_entries)
+-		return 0;
++	if (!pdesc->used_entries)
++		goto on_error;
+ 
+ 	/* at least one partition description found */
+-	for (i = 0; i < pdesc.used_entries; i++) {
+-		rc = register_one_partition(blk, &pdesc.parts[i], i);
++	for (i = 0; i < pdesc->used_entries; i++) {
++		rc = register_one_partition(blk, &pdesc->parts[i], i);
+ 		if (rc != 0)
+ 			dev_err(blk->dev,
+ 				"Failed to register partition %d on %s (%d)\n",
+@@ -115,6 +144,7 @@ int parse_partition_table(struct block_device *blk)
+ 
+ on_error:
+ 	dma_free(buf);
++	free(pdesc);
+ 	return rc;
+ }
+ 
+diff --git a/common/partitions/parser.h b/common/partitions/parser.h
+index 13506c0..f5bdbd1 100644
+--- a/common/partitions/parser.h
++++ b/common/partitions/parser.h
+@@ -12,8 +12,10 @@
+ #include <linux/list.h>
+ 
+ #define MAX_PARTITION		8
++#define MAX_PARTITION_NAME	38
+ 
+ struct partition {
++	char name[MAX_PARTITION_NAME];
+ 	uint64_t first_sec;
+ 	uint64_t size;
+ };
+-- 
+1.7.10.4
 
-The following changes since commit a40e76cebcbe8b025bafdefdc6e27b7553209ed7:
-
-  Add warning above get_ram_size (2013-02-13 18:14:38 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/efi_gpt
-
-for you to fetch changes up to 7825a076660b34dd08e4041f820fcbeb6a301e67:
-
-  disk: partitions: add EFI GUID Partition Table (2013-02-14 05:59:31 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (5):
-      linux/types: import __aligned_x64 from the kernel
-      filetype: add GPT support
-      partitons: add framework
-      disk: introduce partition name
-      disk: partitions: add EFI GUID Partition Table
-
- common/Kconfig             |   14 +------
- common/Makefile            |    2 +-
- common/filetype.c          |   47 +++++++++++++++++++++
- common/partitions.c        |  179 +++++++++++++++++++++++++++++++++++++------------------------------------------
- common/partitions/Kconfig  |   32 +++++++++++++++
- common/partitions/Makefile |    2 +
- common/partitions/dos.c    |   88 +++++++++++++++++++++++++++++++++++++++
- common/partitions/efi.c    |  477 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- common/partitions/efi.h    |  123 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- common/partitions/parser.h |   37 +++++++++++++++++
- include/filetype.h         |    1 +
- include/linux/efi.h        |  547 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/types.h      |   13 ++++++
- 13 files changed, 1452 insertions(+), 110 deletions(-)
- create mode 100644 common/partitions/Kconfig
- create mode 100644 common/partitions/Makefile
- create mode 100644 common/partitions/dos.c
- create mode 100644 common/partitions/efi.c
- create mode 100644 common/partitions/efi.h
- create mode 100644 common/partitions/parser.h
- create mode 100644 include/linux/efi.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
