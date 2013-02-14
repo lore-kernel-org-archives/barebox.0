@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U5vmm-0002is-AM
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 10:11:25 +0000
-Message-ID: <511CB82E.9030105@free-electrons.com>
-Date: Thu, 14 Feb 2013 11:10:54 +0100
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-MIME-Version: 1.0
+ id 1U5wok-0002cb-Hk
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 11:17:32 +0000
+Date: Thu, 14 Feb 2013 12:17:16 +0100
+From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
+Message-ID: <20130214121716.1f3ef4f7@e6520eb>
+In-Reply-To: <511CB82E.9030105@free-electrons.com>
 References: <1360773918-10663-1-git-send-email-maxime.ripard@free-electrons.com>
  <1360773918-10663-2-git-send-email-maxime.ripard@free-electrons.com>
  <201302140916.36347.jbe@pengutronix.de>
-In-Reply-To: <201302140916.36347.jbe@pengutronix.de>
+ <511CB82E.9030105@free-electrons.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,72 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] cfa-10036: Use the second MMC partition to store
  the environment
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org, Brian Lilly <brian@crystalfontz.com>
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>, Brian Lilly <brian@crystalfontz.com>
 
-Hi Juergen,
-
-Le 14/02/2013 09:16, Juergen Beisert a =E9crit :
-> Maxime Ripard wrote:
->> Since the only storage medium on the cfa-10036 is the MMC card, we need
->> to have a registered environment partition on it if we want to be able
->> to modify at runtime.
->>
->> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
->> ---
->>  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   44
->> +++++++++++++++++++++- 1 file changed, 43 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm=
-/boards/crystalfontz-cfa10036/cfa10036.c
->> index b59dbab..1821b10 100644 =
-
->> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->> @@ -97,9 +97,46 @@ static int cfa10036_mem_init(void)
->>  }
->>  mem_initcall(cfa10036_mem_init);
->>
->> +/**
->> + * Try to register an environment storage on the attached MCI card
->> + * @return 0 on success
->> + *
->> + * We rely on the existence of a usable SD card, already attached to
->> + * our system, to get something like a persistent memory for our enviro=
-nment.
->> + * If this SD card is also the boot media, we can use the second partit=
-ion
->> + * for our environment purpose (if present!). =
-
->> + */
->> +static int register_persistant_environment(void)
-> =
-
-> register_persist*e*nt_environment
-> =
-
-> Seems a copy from my typo in the falconwing. I really should fix it :))
-
-Oops :)
-I will fix it, it will probably end up in a common function anyway.
-
-Thanks,
-Maxime
-
--- =
-
-Maxime Ripard, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TGUgVGh1LCAxNCBGZWIgMjAxMyAxMToxMDo1NCArMDEwMCwKTWF4aW1lIFJpcGFyZCA8bWF4aW1l
+LnJpcGFyZEBmcmVlLWVsZWN0cm9ucy5jb20+IGEgw6ljcml0IDoKCj4gSGkgSnVlcmdlbiwKPiAK
+PiBMZSAxNC8wMi8yMDEzIDA5OjE2LCBKdWVyZ2VuIEJlaXNlcnQgYSDDqWNyaXQgOgo+ID4gTWF4
+aW1lIFJpcGFyZCB3cm90ZToKPiA+PiBTaW5jZSB0aGUgb25seSBzdG9yYWdlIG1lZGl1bSBvbiB0
+aGUgY2ZhLTEwMDM2IGlzIHRoZSBNTUMgY2FyZCwgd2UgbmVlZAo+ID4+IHRvIGhhdmUgYSByZWdp
+c3RlcmVkIGVudmlyb25tZW50IHBhcnRpdGlvbiBvbiBpdCBpZiB3ZSB3YW50IHRvIGJlIGFibGUK
+PiA+PiB0byBtb2RpZnkgYXQgcnVudGltZS4KPiA+Pgo+ID4+IFNpZ25lZC1vZmYtYnk6IE1heGlt
+ZSBSaXBhcmQgPG1heGltZS5yaXBhcmRAZnJlZS1lbGVjdHJvbnMuY29tPgo+ID4+IC0tLQo+ID4+
+ICBhcmNoL2FybS9ib2FyZHMvY3J5c3RhbGZvbnR6LWNmYTEwMDM2L2NmYTEwMDM2LmMgfCAgIDQ0
+Cj4gPj4gKysrKysrKysrKysrKysrKysrKysrLSAxIGZpbGUgY2hhbmdlZCwgNDMgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbigtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJk
+cy9jcnlzdGFsZm9udHotY2ZhMTAwMzYvY2ZhMTAwMzYuYyBiL2FyY2gvYXJtL2JvYXJkcy9jcnlz
+dGFsZm9udHotY2ZhMTAwMzYvY2ZhMTAwMzYuYwo+ID4+IGluZGV4IGI1OWRiYWIuLjE4MjFiMTAg
+MTAwNjQ0IAo+ID4+IC0tLSBhL2FyY2gvYXJtL2JvYXJkcy9jcnlzdGFsZm9udHotY2ZhMTAwMzYv
+Y2ZhMTAwMzYuYwo+ID4+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9jcnlzdGFsZm9udHotY2ZhMTAw
+MzYvY2ZhMTAwMzYuYwo+ID4+IEBAIC05Nyw5ICs5Nyw0NiBAQCBzdGF0aWMgaW50IGNmYTEwMDM2
+X21lbV9pbml0KHZvaWQpCj4gPj4gIH0KPiA+PiAgbWVtX2luaXRjYWxsKGNmYTEwMDM2X21lbV9p
+bml0KTsKPiA+Pgo+ID4+ICsvKioKPiA+PiArICogVHJ5IHRvIHJlZ2lzdGVyIGFuIGVudmlyb25t
+ZW50IHN0b3JhZ2Ugb24gdGhlIGF0dGFjaGVkIE1DSSBjYXJkCj4gPj4gKyAqIEByZXR1cm4gMCBv
+biBzdWNjZXNzCj4gPj4gKyAqCj4gPj4gKyAqIFdlIHJlbHkgb24gdGhlIGV4aXN0ZW5jZSBvZiBh
+IHVzYWJsZSBTRCBjYXJkLCBhbHJlYWR5IGF0dGFjaGVkIHRvCj4gPj4gKyAqIG91ciBzeXN0ZW0s
+IHRvIGdldCBzb21ldGhpbmcgbGlrZSBhIHBlcnNpc3RlbnQgbWVtb3J5IGZvciBvdXIgZW52aXJv
+bm1lbnQuCj4gPj4gKyAqIElmIHRoaXMgU0QgY2FyZCBpcyBhbHNvIHRoZSBib290IG1lZGlhLCB3
+ZSBjYW4gdXNlIHRoZSBzZWNvbmQgcGFydGl0aW9uCj4gPj4gKyAqIGZvciBvdXIgZW52aXJvbm1l
+bnQgcHVycG9zZSAoaWYgcHJlc2VudCEpLiAKPiA+PiArICovCj4gPj4gK3N0YXRpYyBpbnQgcmVn
+aXN0ZXJfcGVyc2lzdGFudF9lbnZpcm9ubWVudCh2b2lkKQo+ID4gCj4gPiByZWdpc3Rlcl9wZXJz
+aXN0KmUqbnRfZW52aXJvbm1lbnQKPiA+IAo+ID4gU2VlbXMgYSBjb3B5IGZyb20gbXkgdHlwbyBp
+biB0aGUgZmFsY29ud2luZy4gSSByZWFsbHkgc2hvdWxkIGZpeCBpdCA6KSkKPiAKPiBPb3BzIDop
+Cj4gSSB3aWxsIGZpeCBpdCwgaXQgd2lsbCBwcm9iYWJseSBlbmQgdXAgaW4gYSBjb21tb24gZnVu
+Y3Rpb24gYW55d2F5Lgo+IApGV0lXIDogSSBoYXZlIGNvb2tlZCBhIHBhdGNoIGZvciB0aGlzIGNv
+bW1vbiBmdW5jdGlvbiwgSSB3aWxsIGJlCmFibGUgdG8gc2VuZCBpdCB0b25pZ2h0LgoKRXJpYwoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
