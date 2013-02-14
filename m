@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f42.google.com ([74.125.83.42])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U5yXV-0002Ab-2Z
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:07:50 +0000
-Received: by mail-ee0-f42.google.com with SMTP id b47so1214580eek.29
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 05:07:47 -0800 (PST)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu, 14 Feb 2013 14:08:28 +0100
-Message-Id: <1360847311-16931-1-git-send-email-alex.aring@gmail.com>
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U5yjk-0003F5-Al
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 13:20:29 +0000
+Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C62E1FFB161
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 14:35:50 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu, 14 Feb 2013 14:20:17 +0100
+Message-Id: <1360848017-8084-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <201302141309.10776.jbe@pengutronix.de>
+References: <201302141309.10776.jbe@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,54 +21,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] fs: fix return type of read
+Subject: [PATCH v2] falconwing: switch to generic peristent env
 To: barebox@lists.infradead.org
 
-Use ssize_t instead of int. Similar write function
-which uses ssize_t as return type, too.
-
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- fs/fs.c      | 2 +-
- include/fs.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/fs/fs.c b/fs/fs.c
-index f840516..48d1c89 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -754,7 +754,7 @@ int ioctl(int fd, int request, void *buf)
- 	return ret;
- }
- 
--int read(int fd, void *buf, size_t count)
-+ssize_t read(int fd, void *buf, size_t count)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
-diff --git a/include/fs.h b/include/fs.h
-index 919daab..d6b22f7 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -113,7 +113,7 @@ int close(int fd);
- int flush(int fd);
- int lstat(const char *filename, struct stat *s);
- int stat(const char *filename, struct stat *s);
--int read(int fd, void *buf, size_t count);
-+ssize_t read(int fd, void *buf, size_t count);
- int ioctl(int fd, int request, void *buf);
- ssize_t write(int fd, const void *buf, size_t count);
- 
--- 
-1.8.1.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2MjogZml4
+IHR5cG8gb24gcGVyc2lzdGVudAoKIGFyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9m
+YWxjb253aW5nLmMgfCAzOCArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5n
+ZWQsIDEgaW5zZXJ0aW9uKCspLCAzNyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jIGIvYXJjaC9hcm0vYm9hcmRz
+L2NodW1ieV9mYWxjb253aW5nL2ZhbGNvbndpbmcuYwppbmRleCAwODE4NjY2Li4zZTgyNTk2IDEw
+MDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5j
+CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMKQEAg
+LTI2NSw0MiArMjY1LDYgQEAgc3RhdGljIGludCBmYWxjb253aW5nX21lbV9pbml0KHZvaWQpCiB9
+CiBtZW1faW5pdGNhbGwoZmFsY29ud2luZ19tZW1faW5pdCk7CiAKLS8qKgotICogVHJ5IHRvIHJl
+Z2lzdGVyIGFuIGVudmlyb25tZW50IHN0b3JhZ2Ugb24gdGhlIGF0dGFjaGVkIE1DSSBjYXJkCi0g
+KiBAcmV0dXJuIDAgb24gc3VjY2VzcwotICoKLSAqIFdlIHJlbHkgb24gdGhlIGV4aXN0ZW5jZSBv
+ZiBhIHVzYWJsZSBTRCBjYXJkLCBhbHJlYWR5IGF0dGFjaGVkIHRvCi0gKiBvdXIgc3lzdGVtLCB0
+byBnZXQgc29tZXRoaW5nIGxpa2UgYSBwZXJzaXN0ZW50IG1lbW9yeSBmb3Igb3VyIGVudmlyb25t
+ZW50LgotICogSWYgdGhpcyBTRCBjYXJkIGlzIGFsc28gdGhlIGJvb3QgbWVkaWEsIHdlIGNhbiB1
+c2UgdGhlIHNlY29uZCBwYXJ0aXRpb24KLSAqIGZvciBvdXIgZW52aXJvbm1lbnQgcHVycG9zZSAo
+aWYgcHJlc2VudCEpLgotICovCi1zdGF0aWMgaW50IHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJv
+bm1lbnQodm9pZCkKLXsKLQlzdHJ1Y3QgY2RldiAqY2RldjsKLQotCS8qCi0JICogVGhlIGNodW1i
+eSBvbmUgb25seSBoYXMgb25lIE1DSSBjYXJkIHNvY2tldC4KLQkgKiBTbywgd2UgZXhwZWN0IGl0
+cyBuYW1lIGFzICJkaXNrMCIuCi0JICovCi0JY2RldiA9IGNkZXZfYnlfbmFtZSgiZGlzazAiKTsK
+LQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gTUNJIGNhcmQgcHJlc2V0XG4iKTsK
+LQkJcmV0dXJuIC1FTk9ERVY7Ci0JfQotCi0JLyogTUNJIGNhcmQgaXMgcHJlc2VudCwgYWxzbyBh
+IHVzZWFibGUgcGFydGl0aW9uIG9uIGl0PyAqLwotCWNkZXYgPSBjZGV2X2J5X25hbWUoImRpc2sw
+LjEiKTsKLQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gc2Vjb25kIHBhcnRpdGlv
+biBhdmFpbGFibGVcbiIpOwotCQlwcl9pbmZvKCJQbGVhc2UgY3JlYXRlIGF0IGxlYXN0IGEgc2Vj
+b25kIHBhcnRpdGlvbiB3aXRoIgotCQkJIiAyNTYga2lCLi4uNTEyIGtpQiBpbiBzaXplICh5b3Vy
+IGNob2ljZSlcbiIpOwotCQlyZXR1cm4gLUVOT0RFVjsKLQl9Ci0KLQkvKiB1c2UgdGhlIGZ1bGwg
+cGFydGl0aW9uIGFzIG91ciBwZXJzaXN0ZW50IGVudmlyb25tZW50IHN0b3JhZ2UgKi8KLQlyZXR1
+cm4gZGV2ZnNfYWRkX3BhcnRpdGlvbigiZGlzazAuMSIsIDAsIGNkZXYtPnNpemUsIERFVkZTX1BB
+UlRJVElPTl9GSVhFRCwgImVudjAiKTsKLX0KLQogI2RlZmluZSBHUElPX1VTQl9IVUJfUkVTRVQJ
+MjkKICNkZWZpbmUgR1BJT19VU0JfSFVCX1BPV0VSCTI2CiAKQEAgLTMzOCw3ICszMDIsNyBAQCBz
+dGF0aWMgaW50IGZhbGNvbndpbmdfZGV2aWNlc19pbml0KHZvaWQpCiAJYXJtbGludXhfc2V0X2Jv
+b3RwYXJhbXMoKHZvaWQgKilJTVhfTUVNT1JZX0JBU0UgKyAweDEwMCk7CiAJYXJtbGludXhfc2V0
+X2FyY2hpdGVjdHVyZShNQUNIX1RZUEVfQ0hVTUJZKTsKIAotCXJjID0gcmVnaXN0ZXJfcGVyc2lz
+dGFudF9lbnZpcm9ubWVudCgpOworCXJjID0gcmVnaXN0ZXJfcGVyc2lzdGVudF9lbnZpcm9ubWVu
+dCgiZGlzazAiLCAxKTsKIAlpZiAocmMgIT0gMCkKIAkJcHJpbnRmKCJDYW5ub3QgY3JlYXRlIHRo
+ZSAnZW52MCcgcGVyc2lzdGFudCBlbnZpcm9ubWVudCBzdG9yYWdlICglZClcbiIsIHJjKTsKIAot
+LSAKMS43LjExLjcKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
