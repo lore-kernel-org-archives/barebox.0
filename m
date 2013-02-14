@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U613h-00063T-0X
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:49:14 +0000
+ id 1U617x-0006EM-Kc
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 15:53:38 +0000
 Received: from mail624.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 0C9B6101421A
- for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 16:59:41 +0100 (CET)
-Date: Thu, 14 Feb 2013 16:47:59 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id B179D101806E
+ for <barebox@lists.infradead.org>; Thu, 14 Feb 2013 17:04:10 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130214154759.GT19322@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu, 14 Feb 2013 16:52:24 +0100
+Message-Id: <1360857147-489-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130214154759.GT19322@game.jcrosoft.org>
+ <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,59 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] add EFI GUID Partition Table support
+Subject: [PATCH 2/5] filetype: add GPT support
 To: barebox@lists.infradead.org
+Cc: Rob Herring <rob.herring@calxeda.com>
 
-HI,
+GPT need to be check before MBR
 
-	this add the support of the EFI GPT and named partition
+Cc: Rob Herring <rob.herring@calxeda.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/filetype.c  |    4 ++++
+ include/filetype.h |    1 +
+ 2 files changed, 5 insertions(+)
 
-The following changes since commit a40e76cebcbe8b025bafdefdc6e27b7553209ed7:
+diff --git a/common/filetype.c b/common/filetype.c
+index 22fc621..6563ecc 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_bmp] = { "BMP image", "bmp" },
+ 	[filetype_png] = { "PNG image", "png" },
+ 	[filetype_ext] = { "ext filesystem", "ext" },
++	[filetype_gpt] = { "GUID Partition Table", "gpt" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -159,6 +160,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (bufsize < 512)
+ 		return filetype_unknown;
+ 
++	if (bufsize >= 520 && strncmp(&buf8[512], "EFI PART", 8) == 0)
++		return filetype_gpt;
++
+ 	type = is_fat_or_mbr(buf8, NULL);
+ 	if (type != filetype_unknown)
+ 		return type;
+diff --git a/include/filetype.h b/include/filetype.h
+index 4d43757..78ca5d2 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -23,6 +23,7 @@ enum filetype {
+ 	filetype_bmp,
+ 	filetype_png,
+ 	filetype_ext,
++	filetype_gpt,
+ 	filetype_max,
+ };
+ 
+-- 
+1.7.10.4
 
-  Add warning above get_ram_size (2013-02-13 18:14:38 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/efi_gpt
-
-for you to fetch changes up to af822258f8dd08f8d8aab9e5e70e84033028b26d:
-
-  disk: partitions: add EFI GUID Partition Table (2013-02-13 22:49:30 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (5):
-      linux/types: import __aligned_x64 from the kernel
-      filetype: add GPT support
-      partitons: add framework
-      disk: introduce partition name
-      disk: partitions: add EFI GUID Partition Table
-
- common/Kconfig             |   14 +------
- common/Makefile            |    2 +-
- common/filetype.c          |    4 ++
- common/partitions.c        |  181 ++++++++++++++++++++++++++++++++++++++------------------------------------------
- common/partitions/Makefile |    2 +
- common/partitions/dos.c    |   87 +++++++++++++++++++++++++++++++++++++++
- common/partitions/efi.c    |  508 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- common/partitions/efi.h    |  123 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- common/partitions/parser.h |   37 +++++++++++++++++
- include/filetype.h         |    1 +
- include/linux/efi.h        |  547 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/types.h      |   13 ++++++
- 12 files changed, 1409 insertions(+), 110 deletions(-)
- create mode 100644 common/partitions/Makefile
- create mode 100644 common/partitions/dos.c
- create mode 100644 common/partitions/efi.c
- create mode 100644 common/partitions/efi.h
- create mode 100644 common/partitions/parser.h
- create mode 100644 include/linux/efi.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
