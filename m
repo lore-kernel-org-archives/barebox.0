@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U65KZ-0007XM-Qn
- for barebox@lists.infradead.org; Thu, 14 Feb 2013 20:22:56 +0000
-Date: Thu, 14 Feb 2013 21:22:53 +0100
+ id 1U65YI-0007xU-AG
+ for barebox@lists.infradead.org; Thu, 14 Feb 2013 20:37:06 +0000
+Date: Thu, 14 Feb 2013 21:37:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130214202253.GC1906@pengutronix.de>
-References: <1360835962-14789-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130214203703.GD1906@pengutronix.de>
+References: <20130214154759.GT19322@game.jcrosoft.org>
+ <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
+ <1360857147-489-3-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360835962-14789-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1360857147-489-3-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +24,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add missing SZ_xx defines
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] partitons: add framework
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-On Thu, Feb 14, 2013 at 01:59:22PM +0400, Alexander Shiyan wrote:
+On Thu, Feb 14, 2013 at 04:52:25PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we can support multiple format
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> use filetpye to detect the parser to use
+> 
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/Kconfig             |   14 +----
+>  common/Makefile            |    2 +-
+>  common/partitions.c        |  132 +++++++++++++++-----------------------------
+>  common/partitions/Makefile |    1 +
+>  common/partitions/dos.c    |   87 +++++++++++++++++++++++++++++
+>  common/partitions/parser.h |   35 ++++++++++++
 
-Applied, thanks
+common/partitions/Kconfig is missing in this patch.
+
+> +int partition_parser_register(struct partition_parser *p)
+> +{
+> +	if (!p || !p->parse)
+> +		return -EINVAL;
+
+Please drop these stupid checks. Everyone calling this with a NULL
+pointer really deserves a stack dump.
+
+> +
+> +#ifndef __PARTITIONS_PARSER_H__
+> +#define __PARTITIONS_PARSER_H__
+> +
+> +#include <block.h>
+> +#include <filetype.h>
+> +#include <linux/list.h>
+> +
+> +#define MAX_PARTITION		8
+> +
+> +struct partition {
+> +	uint64_t first_sec;
+> +	uint64_t size;
+> +};
+> +
+> +struct partition_desc {
+> +	int used_entries;
+> +	struct partition parts[MAX_PARTITION];
+> +};
+> +
+> +struct partition_parser {
+> +	void (*parse)(uint8_t *buf, struct block_device *blk, struct partition_desc *pd);
+
+use void * for passing buffers please.
 
 Sascha
-
-> ---
->  include/sizes.h |   12 ++++++++++++
->  1 files changed, 12 insertions(+), 0 deletions(-)
-> 
-> diff --git a/include/sizes.h b/include/sizes.h
-> index c47f906..321d40c 100644
-> --- a/include/sizes.h
-> +++ b/include/sizes.h
-> @@ -17,7 +17,19 @@
->  #define __sizes_h			1
->  
->  /* handy sizes */
-> +#define SZ_1				0x00000001
-> +#define SZ_2				0x00000002
-> +#define SZ_4				0x00000004
-> +#define SZ_8				0x00000008
-> +#define SZ_16				0x00000010
-> +#define SZ_32				0x00008020
-> +#define SZ_64				0x00000040
-> +#define SZ_128				0x00000080
-> +#define SZ_256				0x00000100
-> +#define SZ_512				0x00000200
-> +
->  #define SZ_1K				0x00000400
-> +#define SZ_2K				0x00000800
->  #define SZ_4K				0x00001000
->  #define SZ_8K				0x00002000
->  #define SZ_16K				0x00004000
-> -- 
-> 1.7.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
