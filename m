@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6H17-00051M-3Z
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 08:51:37 +0000
-Date: Fri, 15 Feb 2013 09:51:34 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130215085134.GA5062@pengutronix.de>
-References: <1360835962-14789-1-git-send-email-shc_work@mail.ru>
- <20130215084108.GD25672@pengutronix.de>
+ id 1U6HA3-0006bu-0S
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 09:00:51 +0000
+Date: Fri, 15 Feb 2013 10:00:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130215090047.GM1906@pengutronix.de>
+References: <20130214224222.GX19322@game.jcrosoft.org>
+ <1360881873-1599-1-git-send-email-plagnioj@jcrosoft.com>
+ <1360881873-1599-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130215084108.GD25672@pengutronix.de>
+In-Reply-To: <1360881873-1599-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +24,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add missing SZ_xx defines
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] filetype: add GPT support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-On Fri, Feb 15, 2013 at 09:41:08AM +0100, Sascha Hauer wrote:
-> On Thu, Feb 14, 2013 at 01:59:22PM +0400, Alexander Shiyan wrote:
-> > 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  include/sizes.h |   12 ++++++++++++
-> >  1 files changed, 12 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/include/sizes.h b/include/sizes.h
-> > index c47f906..321d40c 100644
-> > --- a/include/sizes.h
-> > +++ b/include/sizes.h
-> > @@ -17,7 +17,19 @@
-> >  #define __sizes_h			1
-> >  
-> >  /* handy sizes */
-> > +#define SZ_1				0x00000001
-> > +#define SZ_2				0x00000002
-> > +#define SZ_4				0x00000004
-> > +#define SZ_8				0x00000008
-> > +#define SZ_16				0x00000010
-> > +#define SZ_32				0x00008020
+On Thu, Feb 14, 2013 at 11:44:30PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> GPT need to be check before MBR
 > 
-> There is a tiny bug in the line above, can you find it? ;)
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/filetype.c  |   47 +++++++++++++++++++++++++++++++++++++++++++++++
+>  include/filetype.h |    1 +
+>  2 files changed, 48 insertions(+)
 > 
-> Fixed this. Reported-by: Steffen Trumtrar, who seems to have good eyes.
-> 
+> diff --git a/common/filetype.c b/common/filetype.c
+> index 22fc621..a685ea5 100644
+> --- a/common/filetype.c
+> +++ b/common/filetype.c
+> @@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
+>  	[filetype_bmp] = { "BMP image", "bmp" },
+>  	[filetype_png] = { "PNG image", "png" },
+>  	[filetype_ext] = { "ext filesystem", "ext" },
+> +	[filetype_gpt] = { "GUID Partition Table", "gpt" },
+>  };
+>  
+>  const char *file_type_to_string(enum filetype f)
+> @@ -69,9 +70,52 @@ const char *file_type_to_short_string(enum filetype f)
+>  #define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
+>  #define BS_55AA			510	/* Boot sector signature (2) */
+>  #define MBR_Table		446	/* MBR: Partition table offset (2) */
+> +#define MBR_partition_size	16	/* MBR: Partition table offset (2) */
+>  #define BS_FilSysType32		82	/* File system type (1) */
+>  #define BS_FilSysType		54	/* File system type (1) */
+>  
+> +#define MBR_PART_sys_ind	4
+> +#define MBR_PART_start_sect	8
+> +#define MBR_OSTYPE_EFI_GPT	0xee
+> +
+> +static inline int pmbr_part_valid(const uint8_t *buf)
+> +{
+> +	if (buf[MBR_PART_sys_ind] == MBR_OSTYPE_EFI_GPT &&
+> +		get_unaligned_le32(&buf[MBR_PART_start_sect]) == 1UL) {
+> +		return 1;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * is_pmbr_valid(): test Protective MBR for validity
+> + * @mbr: pointer to a legacy mbr structure
+> + *
+> + * Description: Returns 1 if PMBR is valid, 0 otherwise.
+> + * Validity depends on two things:
+> + *  1) MSDOS signature is in the last two bytes of the MBR
+> + *  2) One partition of type 0xEE is found
+> + */
+> +static int is_gpt_valid(const uint8_t *buf)
 
-Using Inconsolata as font helps ;-)
+The function name doesn't match the description.
 
-str
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
