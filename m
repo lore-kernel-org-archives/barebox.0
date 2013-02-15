@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6IoL-00017H-11
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:46:33 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 7A49FDC1C3C
- for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 11:57:00 +0100 (CET)
-Date: Fri, 15 Feb 2013 11:45:26 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130215104526.GZ19322@game.jcrosoft.org>
-References: <20130214224222.GX19322@game.jcrosoft.org>
- <1360881873-1599-1-git-send-email-plagnioj@jcrosoft.com>
- <1360881873-1599-2-git-send-email-plagnioj@jcrosoft.com>
- <20130215090047.GM1906@pengutronix.de>
+Received: from mail-oa0-f54.google.com ([209.85.219.54])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6Ips-0001CQ-2L
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:48:08 +0000
+Received: by mail-oa0-f54.google.com with SMTP id n12so3590963oag.13
+ for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 02:48:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130215090047.GM1906@pengutronix.de>
+In-Reply-To: <1360924870-13979-2-git-send-email-fabio.porcedda@gmail.com>
+References: <1360924870-13979-1-git-send-email-fabio.porcedda@gmail.com>
+ <1360924870-13979-2-git-send-email-fabio.porcedda@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 15 Feb 2013 11:47:47 +0100
+Message-ID: <CAHkwnC_QypHu_YcmSn1KaRvnuuBuRobDBC5v=fDmXjhn1j6SDg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,71 +24,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] filetype: add GPT support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: Re: [PATCH 1/2] at91sam9260/9g20ek: use IS_ENABLED instead of
+ #if/#ifdef
+To: barebox@lists.infradead.org
 
-On 10:00 Fri 15 Feb     , Sascha Hauer wrote:
-> On Thu, Feb 14, 2013 at 11:44:30PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > GPT need to be check before MBR
-> > 
-> > Cc: Rob Herring <rob.herring@calxeda.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  common/filetype.c  |   47 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/filetype.h |    1 +
-> >  2 files changed, 48 insertions(+)
-> > 
-> > diff --git a/common/filetype.c b/common/filetype.c
-> > index 22fc621..a685ea5 100644
-> > --- a/common/filetype.c
-> > +++ b/common/filetype.c
-> > @@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
-> >  	[filetype_bmp] = { "BMP image", "bmp" },
-> >  	[filetype_png] = { "PNG image", "png" },
-> >  	[filetype_ext] = { "ext filesystem", "ext" },
-> > +	[filetype_gpt] = { "GUID Partition Table", "gpt" },
-> >  };
-> >  
-> >  const char *file_type_to_string(enum filetype f)
-> > @@ -69,9 +70,52 @@ const char *file_type_to_short_string(enum filetype f)
-> >  #define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
-> >  #define BS_55AA			510	/* Boot sector signature (2) */
-> >  #define MBR_Table		446	/* MBR: Partition table offset (2) */
-> > +#define MBR_partition_size	16	/* MBR: Partition table offset (2) */
-> >  #define BS_FilSysType32		82	/* File system type (1) */
-> >  #define BS_FilSysType		54	/* File system type (1) */
-> >  
-> > +#define MBR_PART_sys_ind	4
-> > +#define MBR_PART_start_sect	8
-> > +#define MBR_OSTYPE_EFI_GPT	0xee
-> > +
-> > +static inline int pmbr_part_valid(const uint8_t *buf)
-> > +{
-> > +	if (buf[MBR_PART_sys_ind] == MBR_OSTYPE_EFI_GPT &&
-> > +		get_unaligned_le32(&buf[MBR_PART_start_sect]) == 1UL) {
-> > +		return 1;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * is_pmbr_valid(): test Protective MBR for validity
-> > + * @mbr: pointer to a legacy mbr structure
-> > + *
-> > + * Description: Returns 1 if PMBR is valid, 0 otherwise.
-> > + * Validity depends on two things:
-> > + *  1) MSDOS signature is in the last two bytes of the MBR
-> > + *  2) One partition of type 0xEE is found
-> > + */
-> > +static int is_gpt_valid(const uint8_t *buf)
-> 
-> The function name doesn't match the description.
-can you fix while applying?
+On Fri, Feb 15, 2013 at 11:41 AM, Fabio Porcedda
+<fabio.porcedda@gmail.com> wrote:
+> Using IS_ENABLED instead of #if/#ifdef the compiler can check
+> all the code.
+> Using IS_ENABLED for configuring smc->mode is an optimization,
+> reduce init.o text from 905 to 877.
+>
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/boards/at91sam9260ek/init.c | 19 ++++++++++---------
+>  1 file changed, 10 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
+> index 06a53f2..bb0025d 100644
+> --- a/arch/arm/boards/at91sam9260ek/init.c
+> +++ b/arch/arm/boards/at91sam9260ek/init.c
+> @@ -37,9 +37,8 @@ static void ek_set_board_type(void)
+>  {
+>         if (machine_is_at91sam9g20ek()) {
+>                 armlinux_set_architecture(MACH_TYPE_AT91SAM9G20EK);
+> -#ifdef CONFIG_AT91_HAVE_2MMC
+> -               armlinux_set_revision(HAVE_2MMC);
+> -#endif
+> +               if (IS_ENABLED(CONFIG_AT91_HAVE_2MMC))
+> +                       armlinux_set_revision(HAVE_2MMC);
+>         } else {
+>                 armlinux_set_architecture(MACH_TYPE_AT91SAM9260EK);
+>         }
+> @@ -107,10 +106,12 @@ static void ek_add_device_nand(void)
+>                 smc = &ek_9260_nand_smc_config;
+>
+>         /* setup bus-width (8 or 16) */
+> -       if (nand_pdata.bus_width_16)
+> +       if (IS_ENABLED(CONFIG_MTD_NAND_ATMEL_BUSWIDTH_16)) {
+> +               nand_pdata.bus_width_16 = 1;
+>                 smc->mode |= AT91_SMC_DBW_16;
+> -       else
+> +       } else {
+>                 smc->mode |= AT91_SMC_DBW_8;
+> +       }
 
-Best Regards,
-J.
+I will push a v2 because the nand_pdata.bus_width_16 must be removed
+in the struct definition.
+
+>
+>         /* configure chip-select 3 (NAND) */
+>         sam9_smc_configure(0, 3, smc);
+> @@ -209,10 +210,10 @@ static void __init ek_add_led(void)
+>  {
+>         int i;
+>
+> -#ifdef CONFIG_AT91_HAVE_2MMC
+> -       leds[0].gpio = AT91_PIN_PB8;
+> -       leds[1].gpio = AT91_PIN_PB9;
+> -#endif
+> +       if (IS_ENABLED(CONFIG_AT91_HAVE_2MMC)) {
+> +               leds[0].gpio = AT91_PIN_PB8;
+> +               leds[1].gpio = AT91_PIN_PB9;
+> +       }
+>
+>         for (i = 0; i < ARRAY_SIZE(leds); i++) {
+>                 at91_set_gpio_output(leds[i].gpio, leds[i].active_low);
+> --
+> 1.8.1.1
+>
+
+
+
+--
+Fabio Porcedda
 
 _______________________________________________
 barebox mailing list
