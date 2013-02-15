@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6NRZ-0002RL-Gg
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 15:43:22 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Feb 2013 16:43:18 +0100
-Message-Id: <1360942999-7282-1-git-send-email-s.hauer@pengutronix.de>
+Received: from toroondcbmts07-srv.bellnexxia.net ([207.236.237.41])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6Ncb-0003Iz-FV
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 15:54:45 +0000
+Date: Fri, 15 Feb 2013 10:54:43 -0500
+From: Xavier Douville <barebox@douville.org>
+MIME-Version: 1.0
+References: <1360859001.3892.34.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1360859001.3892.34.camel@coredoba.hi.pengutronix.de>
+Message-Id: <20130215155443.JPQP15122.toroondcbmts07-srv.bellnexxia.net@toip52-bus.srvr.bell.ca>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +17,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM i.MX35: Fix device names for gpio
-To: barebox@lists.infradead.org
+Subject: Re: Re: [PATCH 1/1] commands/ubi.c: Add support for VID header offset
+ in ubiattach
+To: barebox@lists.infradead.org, jlu@pengutronix.de
 
-The i.MX35 has a imx31 gpio type. Change the name accordingly, otherwise
-the gpio driver does not probe successfully.
+On 02/14/2013 11:23, Jan L=FCbbe wrote:
+>
+> Which kernel & barebox are you using?
+>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx35.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+I am using kernel 3.2.0 and barebox 2012.11.0.
+Both with patches from Phytec (phyCORE-AM335x-PD12.1.1).
 
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index 21c7e90..7b68783 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -73,9 +73,9 @@ static int imx35_init(void)
- 	add_generic_device("imx-iomuxv3", 0, NULL, MX35_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx35-ccm", 0, NULL, MX35_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpt", 0, NULL, MX35_GPT1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 0, NULL, MX35_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 1, NULL, MX35_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx-gpio", 2, NULL, MX35_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 0, NULL, MX35_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 1, NULL, MX35_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-+	add_generic_device("imx31-gpio", 2, NULL, MX35_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX35_WDOG_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx35-esdctl", 0, NULL, MX35_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
--- 
-1.7.10.4
 
+Xavier
 
 _______________________________________________
 barebox mailing list
