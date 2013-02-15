@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6Nnd-00054m-2q
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 16:06:09 +0000
-Message-ID: <1360944406.3865.29.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 15 Feb 2013 17:06:46 +0100
-In-Reply-To: <20130215155443.JPQP15122.toroondcbmts07-srv.bellnexxia.net@toip52-bus.srvr.bell.ca>
+Received: from toroondcbmts08.bellnexxia.net ([207.236.237.42]
+ helo=toroondcbmts08-srv.bellnexxia.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6Oc6-00064n-U3
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 16:58:21 +0000
+Date: Fri, 15 Feb 2013 11:58:23 -0500
+From: Xavier Douville <barebox@douville.org>
+MIME-Version: 1.0
 References: <1360859001.3892.34.camel@coredoba.hi.pengutronix.de>
  <20130215155443.JPQP15122.toroondcbmts07-srv.bellnexxia.net@toip52-bus.srvr.bell.ca>
-Mime-Version: 1.0
+ <1360944406.3865.29.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1360944406.3865.29.camel@coredoba.hi.pengutronix.de>
+Message-Id: <20130215165816.LZNI9022.toroondcbmts08-srv.bellnexxia.net@toip57-bus.srvr.bell.ca>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +24,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH 1/1] commands/ubi.c: Add support for VID header
- offset in ubiattach
-To: Xavier Douville <barebox@douville.org>
+Subject: Re: [PATCH 1/1] commands/ubi.c: Add support for VID header offset
+ in ubiattach
+To: =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 
-T24gRnJpLCAyMDEzLTAyLTE1IGF0IDEwOjU0IC0wNTAwLCBYYXZpZXIgRG91dmlsbGUgd3JvdGU6
-Cj4gT24gMDIvMTQvMjAxMyAxMToyMywgSmFuIEzDvGJiZSB3cm90ZToKPiA+Cj4gPiBXaGljaCBr
-ZXJuZWwgJiBiYXJlYm94IGFyZSB5b3UgdXNpbmc/Cj4gPgo+IAo+IEkgYW0gdXNpbmcga2VybmVs
-IDMuMi4wIGFuZCBiYXJlYm94IDIwMTIuMTEuMC4KPiBCb3RoIHdpdGggcGF0Y2hlcyBmcm9tIFBo
-eXRlYyAocGh5Q09SRS1BTTMzNXgtUEQxMi4xLjEpLgoKSSdtIG5vdCBzdXJlIGlmIHRoYXQgYmFy
-ZWJveCBpcyBkaWZmZXJlbnQgdG8gdGhlIGxhdGVzdCBvbmUgcmVnYXJkaW5nCnRoZSBHUE1DIE5B
-TkQgc3VwcG9ydC4uLgoKRG9lcyBpdCBhY3R1YWxseSBmYWlsIG9uIHlvdXIgYm9hcmQgd2l0aG91
-dCB0aGlzIHBhdGNoPwoKSSBoYXZlIGhlcmU6CgouLi4KTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJl
-ciBJRDogMHgyYywgQ2hpcCBJRDogMHhkYSAoTWljcm9uIE5BTkQgMjU2TWlCIDMsM1YgOC1iaXQp
-LCBwYWdlIHNpemU6IDIwNDgsIE9PQiBzaXplOiA2NAouLi4KYmFyZWJveDovIGRldmluZm8gbmFu
-ZDAKcmVzb3VyY2VzOgpkcml2ZXI6IG5vbmUKYnVzOiBub25lCgpQYXJhbWV0ZXJzOgogICAgICAg
-ICAgICBzaXplID0gMjY4NDM1NDU2CiAgICAgICBlcmFzZXNpemUgPSAxMzEwNzIKICAgICAgIHdy
-aXRlc2l6ZSA9IDIwNDgKICAgICAgICAgb29ic2l6ZSA9IDY0IApiYXJlYm94Oi8gdWJpYXR0YWNo
-IC9kZXYvbmFuZDAucm9vdApVQkk6IGF0dGFjaGluZyBtdGQwIHRvIHViaTAKVUJJOiBwaHlzaWNh
-bCBlcmFzZWJsb2NrIHNpemU6ICAgMTMxMDcyIGJ5dGVzICgxMjggS2lCKQpVQkk6IGxvZ2ljYWwg
-ZXJhc2VibG9jayBzaXplOiAgICAxMjY5NzYgYnl0ZXMKVUJJOiBzbWFsbGVzdCBmbGFzaCBJL08g
-dW5pdDogICAgMjA0OApVQkk6IFZJRCBoZWFkZXIgb2Zmc2V0OiAgICAgICAgICAyMDQ4IChhbGln
-bmVkIDIwNDgpClVCSTogZGF0YSBvZmZzZXQ6ICAgICAgICAgICAgICAgIDQwOTYKcmVnaXN0ZXJp
-bmcgL2Rldi91YmkwCnJlZ2lzdGVyaW5nIHJvb3QgYXMgL2Rldi91YmkwLnJvb3QKVUJJOiBhdHRh
-Y2hlZCBtdGQwIHRvIHViaTAKVUJJOiBNVEQgZGV2aWNlIG5hbWU6ICAgICAgICAgICAgIm5hbmQw
-LnJvb3QiClVCSTogTVREIGRldmljZSBzaXplOiAgICAgICAgICAgIDk2IE1pQgpVQkk6IG51bWJl
-ciBvZiBnb29kIFBFQnM6ICAgICAgICA3NjgKVUJJOiBudW1iZXIgb2YgYmFkIFBFQnM6ICAgICAg
-ICAgMApVQkk6IG1heC4gYWxsb3dlZCB2b2x1bWVzOiAgICAgICAxMjgKVUJJOiB3ZWFyLWxldmVs
-aW5nIHRocmVzaG9sZDogICAgNDA5NgpVQkk6IG51bWJlciBvZiBpbnRlcm5hbCB2b2x1bWVzOiAx
-ClVCSTogbnVtYmVyIG9mIHVzZXIgdm9sdW1lczogICAgIDEKVUJJOiBhdmFpbGFibGUgUEVCczog
-ICAgICAgICAgICAgMzMKVUJJOiB0b3RhbCBudW1iZXIgb2YgcmVzZXJ2ZWQgUEVCczogNzM1ClVC
-STogbnVtYmVyIG9mIFBFQnMgcmVzZXJ2ZWQgZm9yIGJhZCBQRUIgaGFuZGxpbmc6IDcKVUJJOiBt
-YXgvbWVhbiBlcmFzZSBjb3VudGVyOiAxNS84CmJhcmVib3g6LyAKClNvIGl0IGZpZ3VyZXMgb3V0
-IHRoZSBWSUQgb2Zmc2V0IGNvcnJlY3RseSBmcm9tIHRoZSB3cml0ZXNpemUgb2YgMjA0OC4KClJl
-Z2FyZHMsCkphbgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlv
-bnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVy
-IFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIw
-NjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwg
-RmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+T24gMjAxMy0wMi0xNSAxMTowNiwgSmFuIEzDvGJiZSB3cm90ZToKPiAKPiBJJ20gbm90IHN1cmUg
+aWYgdGhhdCBiYXJlYm94IGlzIGRpZmZlcmVudCB0byB0aGUgbGF0ZXN0IG9uZSByZWdhcmRpbmcK
+PiB0aGUgR1BNQyBOQU5EIHN1cHBvcnQuLi4KPiAKPiBEb2VzIGl0IGFjdHVhbGx5IGZhaWwgb24g
+eW91ciBib2FyZCB3aXRob3V0IHRoaXMgcGF0Y2g/CgpJIHRyaWVkIGJhcmVib3ggMjAxMy4wMi4w
+IGJ1dCBpdCBkb2Vzbid0IGRldGVjdCBteSBOQU5ELCBzbyBJIGd1ZXNzIHRoZQpwYXRjaCBpcyBz
+dGlsbCByZXF1aXJlZC4KCj4gCj4gU28gaXQgZmlndXJlcyBvdXQgdGhlIFZJRCBvZmZzZXQgY29y
+cmVjdGx5IGZyb20gdGhlIHdyaXRlc2l6ZSBvZiAyMDQ4Lgo+IAo+IFJlZ2FyZHMsCj4gSmFuCj4g
+CgpXaGF0IGJvYXJkIGFuZCBiYXJlYm94IHZlcnNpb24gZGlkIHlvdSBydW4gdGhpcyBvbj8KSSBn
+dWVzcyB0aGF0IG1lYW5zIEkgc2hvdWxkIHRyeSB0byBmaXggdGhlIHByb2JsZW0gaW4gbXkgTkFO
+RCBkcml2ZXI/Cgp0aGFua3MgZm9yIHlvdXIgaGVscAoKWGF2aWVyCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
