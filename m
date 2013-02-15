@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp35.i.mail.ru ([94.100.177.95])
+Received: from mail-ee0-f45.google.com ([74.125.83.45])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6IEe-0005p2-9O
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:09:41 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 15 Feb 2013 14:09:35 +0400
-Message-Id: <1360922975-15256-1-git-send-email-shc_work@mail.ru>
+ id 1U6IjE-0000ot-2r
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:41:16 +0000
+Received: by mail-ee0-f45.google.com with SMTP id b57so1660164eek.4
+ for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 02:41:13 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 15 Feb 2013 11:41:08 +0100
+Message-Id: <1360924870-13979-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk-fixed-factor: Using parent flags
+Subject: [PATCH 0/2] at91sam9260/9g20ek: cleanup and optimization
 To: barebox@lists.infradead.org
 
-This patch allow using parent flags for newly created clocks, so if
-parent clock, for example, have flag CLK_ALWAYS_ENABLED, we will use it.
+Some cleanup and optimization removing #if/#ifdef and using IS_ENABLED.
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/clk/clk-fixed-factor.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+Best regards
 
-diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-index 52e7c16..56aa63e 100644
---- a/drivers/clk/clk-fixed-factor.c
-+++ b/drivers/clk/clk-fixed-factor.c
-@@ -43,6 +43,7 @@ struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div)
- {
- 	struct clk_fixed_factor *f = xzalloc(sizeof(*f));
-+	struct clk *parent_clk;
- 	int ret;
- 
- 	f->mult = mult;
-@@ -53,6 +54,10 @@ struct clk *clk_fixed_factor(const char *name,
- 	f->clk.parent_names = &f->parent;
- 	f->clk.num_parents = 1;
- 
-+	parent_clk = clk_lookup(parent);
-+	if (!IS_ERR(parent_clk))
-+		f->clk.flags = parent_clk->flags;
-+
- 	ret = clk_register(&f->clk);
- 	if (ret) {
- 		free(f);
+Fabio Porcedda (2):
+  at91sam9260/9g20ek: use IS_ENABLED instead of #if/#ifdef
+  at91sam9260/9g20ek: remove #ifdef for ek_usb_add_device_mci()
+
+ arch/arm/boards/at91sam9260ek/init.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
+
 -- 
-1.7.3.4
+1.8.1.1
 
 
 _______________________________________________
