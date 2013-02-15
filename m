@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6PEb-0001GA-QK
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 17:38:07 +0000
-Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 539D9DC185B
- for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 18:48:32 +0100 (CET)
-Date: Fri, 15 Feb 2013 18:36:55 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130215173655.GC19322@game.jcrosoft.org>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6PKJ-0001QZ-CG
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 17:44:00 +0000
+Date: Fri, 15 Feb 2013 18:43:57 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130215174357.GZ1906@pengutronix.de>
 References: <20130215125941.GB19322@game.jcrosoft.org>
  <1360935317-7386-1-git-send-email-plagnioj@jcrosoft.com>
- <1360935317-7386-2-git-send-email-plagnioj@jcrosoft.com>
- <20130215173218.GX1906@pengutronix.de>
+ <1360935317-7386-4-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130215173218.GX1906@pengutronix.de>
+In-Reply-To: <1360935317-7386-4-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,77 +24,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] filetype: add GPT support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 4/5] disk: introduce partition name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-On 18:32 Fri 15 Feb     , Sascha Hauer wrote:
-> On Fri, Feb 15, 2013 at 02:35:14PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > GPT need to be check before MBR
-> > 
-> > Cc: Rob Herring <rob.herring@calxeda.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  common/filetype.c  |   47 +++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/filetype.h |    1 +
-> >  2 files changed, 48 insertions(+)
-> > 
-> > diff --git a/common/filetype.c b/common/filetype.c
-> > index 22fc621..06fa803 100644
-> > --- a/common/filetype.c
-> > +++ b/common/filetype.c
-> > @@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
-> >  	[filetype_bmp] = { "BMP image", "bmp" },
-> >  	[filetype_png] = { "PNG image", "png" },
-> >  	[filetype_ext] = { "ext filesystem", "ext" },
-> > +	[filetype_gpt] = { "GUID Partition Table", "gpt" },
-> >  };
-> >  
-> >  const char *file_type_to_string(enum filetype f)
-> > @@ -69,9 +70,52 @@ const char *file_type_to_short_string(enum filetype f)
-> >  #define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
-> >  #define BS_55AA			510	/* Boot sector signature (2) */
-> >  #define MBR_Table		446	/* MBR: Partition table offset (2) */
-> > +#define MBR_partition_size	16	/* MBR: Partition table offset (2) */
-> >  #define BS_FilSysType32		82	/* File system type (1) */
-> >  #define BS_FilSysType		54	/* File system type (1) */
-> >  
-> > +#define MBR_PART_sys_ind	4
-> > +#define MBR_PART_start_sect	8
-> > +#define MBR_OSTYPE_EFI_GPT	0xee
-> > +
-> > +static inline int pmbr_part_valid(const uint8_t *buf)
-> > +{
-> > +	if (buf[MBR_PART_sys_ind] == MBR_OSTYPE_EFI_GPT &&
-> > +		get_unaligned_le32(&buf[MBR_PART_start_sect]) == 1UL) {
-> > +		return 1;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * is_gpt_valid(): test Protective MBR for validity and EFI PART
-> > + * @mbr: pointer to a legacy mbr structure
-> > + *
-> > + * Description: Returns 1 if PMBR is valid, 0 otherwise.
-> > + * Validity depends on two things:
-> > + *  1) MSDOS signature is in the last two bytes of the MBR
-> > + *  2) One partition of type 0xEE is found
+On Fri, Feb 15, 2013 at 02:35:16PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so we can register partion with name as present in EFI GPT
 > 
-> Still wrong. This describes is_pmbr_valid, but the function is named and
-> implements is_gpt_valid. I suggest implemting a real is_pmbr_valid
-> function and call it from is_gpt_valid which additionally checks for the
-> gpt header.
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  common/partitions.c        |   54 ++++++++++++++++++++++++++++++++++----------
+>  common/partitions/parser.h |    2 ++
+>  2 files changed, 44 insertions(+), 12 deletions(-)
+> 
+> diff --git a/common/partitions.c b/common/partitions.c
+> index c1578c9..b0f48be 100644
+> --- a/common/partitions.c
+> +++ b/common/partitions.c
+> @@ -44,15 +44,43 @@ LIST_HEAD(partition_parser_list);
+>  static int register_one_partition(struct block_device *blk,
+>  					struct partition *part, int no)
+>  {
+> -	char partition_name[19];
+> +	char *partition_name;
+> +	int ret;
+> +	uint64_t start = part->first_sec * SECTOR_SIZE;
+> +	uint64_t size = part->size * SECTOR_SIZE;
+> +
+> +	partition_name = asprintf("%s.%d", blk->cdev.name, no);
+> +	if (!partition_name)
+> +		return -ENOMEM;
+> +	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+> +				partition_name, blk->cdev.name);
+> +	ret = devfs_add_partition(blk->cdev.name,
+> +				start, size, 0, partition_name);
+> +	if (ret)
+> +		goto out;
+> +
+> +	free(partition_name);
+> +
+> +	if (!part->name[0])
+> +		return 0;
 
-we test both pmr and EFI PART fo this is right
+So when a name is not given then you also don't register the partition
+with a number?
 
-test Protective MBR for validity and EFI PART
+> +
+> +	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
+> +	if (!partition_name)
+> +		return -ENOMEM;
+>  
+> -	sprintf(partition_name, "%s.%d", blk->cdev.name, no);
+>  	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+>  				partition_name, blk->cdev.name);
+> -	return devfs_add_partition(blk->cdev.name,
+> -				part->first_sec * SECTOR_SIZE,
+> -				part->size * SECTOR_SIZE,
+> -				0, partition_name);
+> +	ret = devfs_add_partition(blk->cdev.name,
+> +				start, size, 0, partition_name);
+> +
+> +	if (ret)
+> +		dev_warn(blk->dev, "Registering partition %s on drive %s failled\n",
+> +				partition_name, blk->cdev.name);
 
-so the comment is correct
+s/failled/failed/
 
-Best Regards,
-J.
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
