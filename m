@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6HA3-0006bu-0S
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 09:00:51 +0000
-Date: Fri, 15 Feb 2013 10:00:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130215090047.GM1906@pengutronix.de>
-References: <20130214224222.GX19322@game.jcrosoft.org>
- <1360881873-1599-1-git-send-email-plagnioj@jcrosoft.com>
- <1360881873-1599-2-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1360881873-1599-2-git-send-email-plagnioj@jcrosoft.com>
+ id 1U6IEe-0005p2-9O
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:09:41 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 15 Feb 2013 14:09:35 +0400
+Message-Id: <1360922975-15256-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,78 +14,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] filetype: add GPT support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: [PATCH] clk-fixed-factor: Using parent flags
+To: barebox@lists.infradead.org
 
-On Thu, Feb 14, 2013 at 11:44:30PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> GPT need to be check before MBR
-> 
-> Cc: Rob Herring <rob.herring@calxeda.com>
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  common/filetype.c  |   47 +++++++++++++++++++++++++++++++++++++++++++++++
->  include/filetype.h |    1 +
->  2 files changed, 48 insertions(+)
-> 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 22fc621..a685ea5 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
->  	[filetype_bmp] = { "BMP image", "bmp" },
->  	[filetype_png] = { "PNG image", "png" },
->  	[filetype_ext] = { "ext filesystem", "ext" },
-> +	[filetype_gpt] = { "GUID Partition Table", "gpt" },
->  };
->  
->  const char *file_type_to_string(enum filetype f)
-> @@ -69,9 +70,52 @@ const char *file_type_to_short_string(enum filetype f)
->  #define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
->  #define BS_55AA			510	/* Boot sector signature (2) */
->  #define MBR_Table		446	/* MBR: Partition table offset (2) */
-> +#define MBR_partition_size	16	/* MBR: Partition table offset (2) */
->  #define BS_FilSysType32		82	/* File system type (1) */
->  #define BS_FilSysType		54	/* File system type (1) */
->  
-> +#define MBR_PART_sys_ind	4
-> +#define MBR_PART_start_sect	8
-> +#define MBR_OSTYPE_EFI_GPT	0xee
-> +
-> +static inline int pmbr_part_valid(const uint8_t *buf)
-> +{
-> +	if (buf[MBR_PART_sys_ind] == MBR_OSTYPE_EFI_GPT &&
-> +		get_unaligned_le32(&buf[MBR_PART_start_sect]) == 1UL) {
-> +		return 1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * is_pmbr_valid(): test Protective MBR for validity
-> + * @mbr: pointer to a legacy mbr structure
-> + *
-> + * Description: Returns 1 if PMBR is valid, 0 otherwise.
-> + * Validity depends on two things:
-> + *  1) MSDOS signature is in the last two bytes of the MBR
-> + *  2) One partition of type 0xEE is found
-> + */
-> +static int is_gpt_valid(const uint8_t *buf)
+This patch allow using parent flags for newly created clocks, so if
+parent clock, for example, have flag CLK_ALWAYS_ENABLED, we will use it.
 
-The function name doesn't match the description.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/clk/clk-fixed-factor.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-Sascha
-
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index 52e7c16..56aa63e 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -43,6 +43,7 @@ struct clk *clk_fixed_factor(const char *name,
+ 		const char *parent, unsigned int mult, unsigned int div)
+ {
+ 	struct clk_fixed_factor *f = xzalloc(sizeof(*f));
++	struct clk *parent_clk;
+ 	int ret;
+ 
+ 	f->mult = mult;
+@@ -53,6 +54,10 @@ struct clk *clk_fixed_factor(const char *name,
+ 	f->clk.parent_names = &f->parent;
+ 	f->clk.num_parents = 1;
+ 
++	parent_clk = clk_lookup(parent);
++	if (!IS_ERR(parent_clk))
++		f->clk.flags = parent_clk->flags;
++
+ 	ret = clk_register(&f->clk);
+ 	if (ret) {
+ 		free(f);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
