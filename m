@@ -1,27 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6IqP-0001En-Ev
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:48:42 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 453A5DC1BDF
- for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 11:59:08 +0100 (CET)
-Date: Fri, 15 Feb 2013 11:47:32 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130215104732.GA19322@game.jcrosoft.org>
-References: <20130214154759.GT19322@game.jcrosoft.org>
- <1360857147-489-1-git-send-email-plagnioj@jcrosoft.com>
- <1360857147-489-2-git-send-email-plagnioj@jcrosoft.com>
- <20130214163618.GV1906@pengutronix.de>
- <20130214165323.GU19322@game.jcrosoft.org>
- <20130214170507.GA8097@sig21.net>
- <20130214191702.GZ1906@pengutronix.de>
- <20130214220855.GW19322@game.jcrosoft.org>
- <20130215074332.GA18670@sig21.net>
+Received: from mail-ob0-f180.google.com ([209.85.214.180])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6Iup-0001NF-TV
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 10:53:16 +0000
+Received: by mail-ob0-f180.google.com with SMTP id ef5so3478640obb.11
+ for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 02:53:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130215074332.GA18670@sig21.net>
+In-Reply-To: <20130215104408.GY19322@game.jcrosoft.org>
+References: <1360924870-13979-1-git-send-email-fabio.porcedda@gmail.com>
+ <1360924870-13979-3-git-send-email-fabio.porcedda@gmail.com>
+ <20130215104408.GY19322@game.jcrosoft.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 15 Feb 2013 11:52:52 +0100
+Message-ID: <CAHkwnC_-nyVTh_R_7P0dBPFA-c9rjG8j2UtsCT8+OJEk+0NM7A@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -34,54 +25,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] filetype: add GPT support
-To: Johannes Stezenbach <js@sig21.net>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: Re: [PATCH 2/2] at91sam9260/9g20ek: remove #ifdef for
+ ek_usb_add_device_mci()
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 08:43 Fri 15 Feb     , Johannes Stezenbach wrote:
-> On Thu, Feb 14, 2013 at 11:08:55PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 20:17 Thu 14 Feb     , Sascha Hauer wrote:
-> > > On Thu, Feb 14, 2013 at 06:05:07PM +0100, Johannes Stezenbach wrote:
-> > > > On Thu, Feb 14, 2013 at 05:53:23PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > On 17:36 Thu 14 Feb     , Sascha Hauer wrote:
-> > > > > > On Thu, Feb 14, 2013 at 04:52:24PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > > > GPT need to be check before MBR
-> ...
-> > > > > > > +	if (bufsize >= 520 && strncmp(&buf8[512], "EFI PART", 8) == 0)
-> > > > > > > +		return filetype_gpt;
-> > > > > > > +
-> > > > > > 
-> > > > > > The list is sorted by size, so please move this below:
-> > > > > on purpose
-> > > > > 
-> > > > > EFI need to be detect before mbr
-> > > > 
-> > > > IMHO the check is too simple, it will give false positive if
-> > > > GPT is replaced by DOS MBR and not zeroed out.  Need to check
-> > > > for protective MBR.
-> > > 
-> > > So is_fat_or_mbr() should test if the MBR is a protective MBR and return
-> > > false in this case?
-> > 
-> > no as the efi is more I do the check in efi.c protective bit and right type
-> > 
-> > I move the code to filetype
-> > 
-> > but efi need to be before MBR as you could have both for retro compatibility
-> 
-> Yes, Wikipedia says Apple Bootcamp creates hybrid MBR.
-> But if you run fdisk to create DOS MBR it will only
-> replace the first sector and leave the GPT alone.
-> Thus I think for usability it is important to check MBR
-> (for 0xAA55 marker and one of the part types must be 0xee).
-Do not take Wikipedia for the bible
+On Fri, Feb 15, 2013 at 11:44 AM, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 11:41 Fri 15 Feb     , Fabio Porcedda wrote:
+>> Remove #ifdef for ek_usb_add_device_mci() because there is already
+>> the #ifdef inside at91_add_device_mci(), this way the compiler can check
+>> always the code without any penality.
+>  it's not the struct will be keep
 
-We implemenb the EFI spec
+The struct isn't keep
+without this patch:
+  text       data        bss        dec        hex    filename
+    877        192          0       1069        42d
+arch/arm/boards/at91sam9260ek/init.o
+with this patch:
+ text       data        bss        dec        hex    filename
+    877        192          0       1069        42d
+arch/arm/boards/at91sam9260ek/init.o
 
-Best Regards,
-J.
-> 
-> Johannes
+>  keep the ifdef
+> Best Regards,
+> J.
+
+Best regards
+--
+Fabio Porcedda
 
 _______________________________________________
 barebox mailing list
