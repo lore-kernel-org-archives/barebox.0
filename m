@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6KPA-0002Pl-D7
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 12:28:41 +0000
-Date: Fri, 15 Feb 2013 13:28:37 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130215122837.GP1906@pengutronix.de>
-References: <1360922975-15256-1-git-send-email-shc_work@mail.ru>
+Received: from 5.mo3.mail-out.ovh.net ([87.98.178.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6L35-0001tI-67
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 13:09:56 +0000
+Received: from mail91.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id EB8C9FF91A5
+ for <barebox@lists.infradead.org>; Fri, 15 Feb 2013 14:15:39 +0100 (CET)
+Date: Fri, 15 Feb 2013 13:59:41 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130215125941.GB19322@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1360922975-15256-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk-fixed-factor: Using parent flags
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5 v3] add EFI GUID Partition Table support
+To: barebox@lists.infradead.org
+Cc: Rob Herring <rob.herring@calxeda.com>
 
-On Fri, Feb 15, 2013 at 02:09:35PM +0400, Alexander Shiyan wrote:
-> This patch allow using parent flags for newly created clocks, so if
-> parent clock, for example, have flag CLK_ALWAYS_ENABLED, we will use it.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  drivers/clk/clk-fixed-factor.c |    5 +++++
->  1 files changed, 5 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
-> index 52e7c16..56aa63e 100644
-> --- a/drivers/clk/clk-fixed-factor.c
-> +++ b/drivers/clk/clk-fixed-factor.c
-> @@ -43,6 +43,7 @@ struct clk *clk_fixed_factor(const char *name,
->  		const char *parent, unsigned int mult, unsigned int div)
->  {
->  	struct clk_fixed_factor *f = xzalloc(sizeof(*f));
-> +	struct clk *parent_clk;
->  	int ret;
->  
->  	f->mult = mult;
-> @@ -53,6 +54,10 @@ struct clk *clk_fixed_factor(const char *name,
->  	f->clk.parent_names = &f->parent;
->  	f->clk.num_parents = 1;
->  
-> +	parent_clk = clk_lookup(parent);
-> +	if (!IS_ERR(parent_clk))
-> +		f->clk.flags = parent_clk->flags;
-> +
+HI,
 
-So we unconditionally overwrite the fixed factor clock flags. As long as
-CLK_ALWAYS_ENABLED is the only flag we have this might be ok, but this
-will lead to strange behaviour when we get other flags.
+	v3:
+	 fix function name
 
-There should rather be some mechanism which detects that a clock must be
-enabled because all parents have no disable callback or have the
-CLK_ALWAYS_ENABLED flag set.
+	v2:
+	 fix memory leak
+	 filetype: full check
+	 part name: comment
+	 efi: make gpt primary and alternate check optional
 
-I have no idea currently though how to implement this.
+	this add the support of the EFI GPT and named partition
 
-Sascha
+The following changes since commit a40e76cebcbe8b025bafdefdc6e27b7553209ed7:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+  Add warning above get_ram_size (2013-02-13 18:14:38 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/efi_gpt
+
+for you to fetch changes up to c572474854bf97ea8c91ea3602950bd352d9a3b4:
+
+  disk: partitions: add EFI GUID Partition Table (2013-02-14 18:50:16 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (5):
+      linux/types: import __aligned_x64 from the kernel
+      filetype: add GPT support
+      partitons: add framework
+      disk: introduce partition name
+      disk: partitions: add EFI GUID Partition Table
+
+ common/Kconfig             |   14 +------
+ common/Makefile            |    2 +-
+ common/filetype.c          |   47 +++++++++++++++++++++
+ common/partitions.c        |  187 +++++++++++++++++++++++++++++++++++++++++------------------------------------------
+ common/partitions/Kconfig  |   32 +++++++++++++++
+ common/partitions/Makefile |    2 +
+ common/partitions/dos.c    |   88 +++++++++++++++++++++++++++++++++++++++
+ common/partitions/efi.c    |  477 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ common/partitions/efi.h    |  123 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ common/partitions/parser.h |   37 +++++++++++++++++
+ include/filetype.h         |    1 +
+ include/linux/efi.h        |  547 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/types.h      |   13 ++++++
+ 13 files changed, 1462 insertions(+), 108 deletions(-)
+ create mode 100644 common/partitions/Kconfig
+ create mode 100644 common/partitions/Makefile
+ create mode 100644 common/partitions/dos.c
+ create mode 100644 common/partitions/efi.c
+ create mode 100644 common/partitions/efi.h
+ create mode 100644 common/partitions/parser.h
+ create mode 100644 include/linux/efi.h
+
+Best Regards,
+J.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
