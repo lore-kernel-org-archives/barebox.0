@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp44.i.mail.ru ([94.100.177.104])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6QLk-00083C-Qy
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 18:49:34 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 15 Feb 2013 22:49:27 +0400
-Message-Id: <1360954167-18993-1-git-send-email-shc_work@mail.ru>
+ id 1U6QTF-0000Jt-JC
+ for barebox@lists.infradead.org; Fri, 15 Feb 2013 18:57:18 +0000
+Date: Fri, 15 Feb 2013 19:57:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130215185715.GD1906@pengutronix.de>
+References: <511D2CFB.9010602@cmotion.eu>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <511D2CFB.9010602@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,612 +18,161 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] Add Generic GPIO driver
-To: barebox@lists.infradead.org
+Subject: Re: Environment changes lead to weird boot behaviour
+To: Christian Kapeller <christian.kapeller@cmotion.eu>
+Cc: barebox@lists.infradead.org
 
-This patch adds generic memory-mapped GPIO controller support.
-Code taken from Linux Kernel and adopted for barebox.
+On Thu, Feb 14, 2013 at 07:29:15PM +0100, Christian Kapeller wrote:
+> Hi,
+> 
+> I try to investigate a situation where barebox (v2013.02.0 + board patches)
+> fails to boot the linux kernel on my karo-tx53 based board. The problem may
+> well be introduced by myself, but after a few days of investigation is still
+> fail to grasp the problem's root.
+> 
+> Depending on whether files are present in the boot environment the kernel may
+> start in some cases, in some it won't.
+> 
+> The file contents seems not to be relevant, since I've managed to get a
+> broken boot situation, by simply adding a ash script doing one 'echo blah'.
+> 
+> In all cases barebox shuts down in orderly fashion, and jumps to the kernel
+> image. The kernel in question is a zImage (3.4) + Initramfs + concatenated
+> devicetree. Also another zImage + concatenated devicetree is affected.
+> 
+> 
+> Background: I am implementing a 'foolproof' field update scheme. The
+> control flow looks like:
+> 
+> (Good Case)  boot0 -(A)-> bootA/bootB -(B)-> kernel
+> (Bad Case 1) boot0 -(A)-> bootA/bootB -(C)-> rescue-kernel
+> (Bad Case 2) boot0 -(D)-> rescue-kernel
+> 
+> boot0   .. 1st stage barebox in 256k NAND partition
+> bootA/B .. 2nd stage barebox in 256k NAND partition
+> kernel  .. production kernel + ubiroot in NAND
+> rescue-kernel  .. selfcontained rescue kernel + initramfs in NAND
+> bootenv   .. stores just state variables. (256k NAND partition)
+> scriptenv .. stores just scripts and static config (bundled with 2ndstage)
+> 
+> 
+> (A) boot0 checks one of 2 partitions with 2nd stage barebox in a uimage,
+>     and boots the newer one.
+> (B) 2nd stage bb starts production system
+> (C) 2nd stage bb starts rescue kernel bc button/bootenv says so.
+> (D) 1st stage bb starts rescue system bc no 2nd stage is valid
+> 
+> I want to be able to exchange 2nd stage without hassle. To do this,
+> I've introduced a split of the bootenvironment: boot scripts stay with
+> the barebox image, non-volatile data is saved in a barebox environment.
+> 
+> The following patch accomplishes this:
+> 
+> diff --git a/common/startup.c b/common/startup.c
+> index 14409a2..59e76ac 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -108,15 +108,17 @@ void start_barebox (void)
+>         debug("initcalls done\n");
+>  
+>  #ifdef CONFIG_ENV_HANDLING
+> -       if (envfs_load(default_environment_path, "/env", 0)) {
+> +       envfs_load("/dev/defaultenv", "/env", 0);
+>  #ifdef CONFIG_DEFAULT_ENVIRONMENT
+> +       mkdir("/var", 0);
+> +       if (envfs_load(default_environment_path, "/var", 0)) {
+>                 printf("no valid environment found on %s. "
+>                         "Using default environment\n",
+>                         default_environment_path);
+> -               envfs_load("/dev/defaultenv", "/env", 0);
+> -#endif
+> +               envfs_save("/dev/env0", "/var");
+>         }
+>  #endif
+> +#endif
+>  #ifdef CONFIG_COMMAND_SUPPORT
+>         printf("running /env/bin/init...\n");
+>  
+> 
+> Everything looks peachy, until I add a file in the boot environment
+> using the bareboxenv tool. Say, I add a 'update-in-progress' flag. If
+> the 2nd stage loader sees this, it knows, that something went wrong, 
+> and can act accordingly.
+> 
+> The problem is, although I can read the state variable out of the 
+> environment, the kernel boot fails with no messages from the kernel.
+> No earlyprintk output, nothing.
+> 
+> 
+> There the search started:
+> 
+> removing the new file, by just using 'rm /var/update-in-progress'
+> made the kernel boot again. ... most of the time.
+> 
+> The removing some scripts (not relevant to this bootpath) from
+> the image bundled scriptenv helped,.. sometimes.
+> 
+> I removed the 'common/bareboxenv' file before every recompile.
+> 
+> I've investigated size issues: I use defaultenv-2 + custom scripts
+> together ~ 225k worth of ash scripts giving a 15k
+> common/barebox_default_env. I found no correlation between size
+> and failure.
+> 
+> I've tried to boil down the scripting stuff, to get a clean
+> failure case, but no success here, hence I don't post the code
+> in this mail.
+> 
+> I can compile bb images that render the kernel unbootable.
+> So I ruled out issues when writing the environment from linux.
+> 
+> The rescue kernel is bootable without any additional kernel
+> parameters. So I should get at least something from there.
+> just 'bootm /dev/rescue' works right away.
+> 
+> I've ruled out partition overlaps. The partitions (8 of them)
+> are registered with mtdparts-add by means of a quite bulky
+> environment variable.
+> 
+> I've tried to add a big binary blob to the scriptenv, 
+> making the bb image nearly 256k big. No reproducible
+> failure,
+> 
+> I've tried to add 30 shell scripts echoing some line.
+> I source those from /env/bin/init, to see whether ash
+> couqhs up on them, also no reproducible failure.
+> 
+> 
+> So my questions are:
+> 
+> Do you know of any side effects the above patch may introduce?
+> 
+> Do you know of a way to cause a kernel to fail to boot, by just
+> adding a irrelevant shell script to the boot environment?
+> 
+> What else can I look for?
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/gpio/Kconfig            |  10 +
- drivers/gpio/Makefile           |   5 +-
- drivers/gpio/gpio-generic.c     | 427 ++++++++++++++++++++++++++++++++++++++++
- drivers/gpio/gpio.c             |   5 +
- include/gpio.h                  |   2 +
- include/linux/basic_mmio_gpio.h |  68 +++++++
- 6 files changed, 515 insertions(+), 2 deletions(-)
- create mode 100644 drivers/gpio/gpio-generic.c
- create mode 100644 include/linux/basic_mmio_gpio.h
+I have no real idea. Some suggestions/questions:
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 89be684..565f5bd 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -6,10 +6,20 @@ if GPIOLIB
- 
- menu "GPIO"
- 
-+config GPIO_GENERIC
-+	def_bool y
-+
- config GPIO_BCM2835
- 	bool "GPIO support for BCM2835"
- 	depends on ARCH_BCM2835
- 
-+config GPIO_GENERIC_PLATFORM
-+	bool "Generic memory-mapped GPIO controller support"
-+	select GPIO_GENERIC
-+	help
-+	  Say yes here to support basic platform memory-mapped
-+	  GPIO controllers
-+
- config GPIO_PL061
- 	bool "PrimeCell PL061 GPIO support"
- 	depends on ARM_AMBA
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 993ab89..1ef345c 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -1,4 +1,5 @@
--obj-$(CONFIG_GPIOLIB) += gpio.o
-+obj-$(CONFIG_GPIOLIB)		+= gpio.o
- obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
-+obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
--obj-$(CONFIG_GPIO_STMPE) += gpio-stmpe.o
-+obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-new file mode 100644
-index 0000000..83f85f7
---- /dev/null
-+++ b/drivers/gpio/gpio-generic.c
-@@ -0,0 +1,427 @@
-+/*
-+ * Generic driver for memory-mapped GPIO controllers.
-+ *
-+ * Based on linux driver by:
-+ *  Copyright 2008 MontaVista Software, Inc.
-+ *  Copyright 2008,2010 Anton Vorontsov <cbouatmailru@gmail.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <init.h>
-+#include <malloc.h>
-+#include <linux/log2.h>
-+#include <linux/basic_mmio_gpio.h>
-+
-+static void bgpio_write8(void __iomem *reg, unsigned int data)
-+{
-+	writeb(data, reg);
-+}
-+
-+static unsigned int bgpio_read8(void __iomem *reg)
-+{
-+	return readb(reg);
-+}
-+
-+static void bgpio_write16(void __iomem *reg, unsigned int data)
-+{
-+	writew(data, reg);
-+}
-+
-+static unsigned int bgpio_read16(void __iomem *reg)
-+{
-+	return readw(reg);
-+}
-+
-+static void bgpio_write32(void __iomem *reg, unsigned int data)
-+{
-+	writel(data, reg);
-+}
-+
-+static unsigned int bgpio_read32(void __iomem *reg)
-+{
-+	return readl(reg);
-+}
-+
-+static unsigned int bgpio_pin2mask(struct bgpio_chip *bgc, unsigned int pin)
-+{
-+	return 1 << pin;
-+}
-+
-+static unsigned int bgpio_pin2mask_be(struct bgpio_chip *bgc, unsigned int pin)
-+{
-+	return 1 << (bgc->bits - 1 - pin);
-+}
-+
-+static int bgpio_get(struct gpio_chip *gc, unsigned int gpio)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+
-+	return bgc->read_reg(bgc->reg_dat) & bgc->pin2mask(bgc, gpio);
-+}
-+
-+static void bgpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+	unsigned int mask = bgc->pin2mask(bgc, gpio);
-+
-+	if (val)
-+		bgc->data |= mask;
-+	else
-+		bgc->data &= ~mask;
-+
-+	bgc->write_reg(bgc->reg_dat, bgc->data);
-+}
-+
-+static void bgpio_set_with_clear(struct gpio_chip *gc, unsigned int gpio,
-+				 int val)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+	unsigned int mask = bgc->pin2mask(bgc, gpio);
-+
-+	if (val)
-+		bgc->write_reg(bgc->reg_set, mask);
-+	else
-+		bgc->write_reg(bgc->reg_clr, mask);
-+}
-+
-+static void bgpio_set_set(struct gpio_chip *gc, unsigned int gpio, int val)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+	unsigned int mask = bgc->pin2mask(bgc, gpio);
-+
-+	if (val)
-+		bgc->data |= mask;
-+	else
-+		bgc->data &= ~mask;
-+
-+	bgc->write_reg(bgc->reg_set, bgc->data);
-+}
-+
-+static int bgpio_simple_dir_in(struct gpio_chip *gc, unsigned int gpio)
-+{
-+	return 0;
-+}
-+
-+static int bgpio_simple_dir_out(struct gpio_chip *gc, unsigned int gpio,
-+				int val)
-+{
-+	gc->ops->set(gc, gpio, val);
-+
-+	return 0;
-+}
-+
-+static int bgpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+
-+	bgc->dir &= ~bgc->pin2mask(bgc, gpio);
-+	bgc->write_reg(bgc->reg_dir, bgc->dir);
-+
-+	return 0;
-+}
-+
-+static int bgpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+
-+	gc->ops->set(gc, gpio, val);
-+
-+	bgc->dir |= bgc->pin2mask(bgc, gpio);
-+	bgc->write_reg(bgc->reg_dir, bgc->dir);
-+
-+	return 0;
-+}
-+
-+static int bgpio_dir_in_inv(struct gpio_chip *gc, unsigned int gpio)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+
-+	bgc->dir |= bgc->pin2mask(bgc, gpio);
-+	bgc->write_reg(bgc->reg_dir, bgc->dir);
-+
-+	return 0;
-+}
-+
-+static int bgpio_dir_out_inv(struct gpio_chip *gc, unsigned int gpio, int val)
-+{
-+	struct bgpio_chip *bgc = to_bgpio_chip(gc);
-+
-+	gc->ops->set(gc, gpio, val);
-+
-+	bgc->dir &= ~bgc->pin2mask(bgc, gpio);
-+	bgc->write_reg(bgc->reg_dir, bgc->dir);
-+
-+	return 0;
-+}
-+
-+static int bgpio_setup_accessors(struct device_d *dev, struct bgpio_chip *bgc,
-+				 bool be)
-+{
-+	switch (bgc->bits) {
-+	case 8:
-+		bgc->read_reg	= bgpio_read8;
-+		bgc->write_reg	= bgpio_write8;
-+		break;
-+	case 16:
-+		bgc->read_reg	= bgpio_read16;
-+		bgc->write_reg	= bgpio_write16;
-+		break;
-+	case 32:
-+		bgc->read_reg	= bgpio_read32;
-+		bgc->write_reg	= bgpio_write32;
-+		break;
-+	default:
-+		dev_err(dev, "Unsupported data width %u bits\n", bgc->bits);
-+		return -EINVAL;
-+	}
-+
-+	bgc->pin2mask = be ? bgpio_pin2mask_be : bgpio_pin2mask;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Create the device and allocate the resources.  For setting GPIO's there are
-+ * three supported configurations:
-+ *
-+ *	- single input/output register resource (named "dat").
-+ *	- set/clear pair (named "set" and "clr").
-+ *	- single output register resource and single input resource ("set" and
-+ *	  dat").
-+ *
-+ * For the single output register, this drives a 1 by setting a bit and a zero
-+ * by clearing a bit.  For the set clr pair, this drives a 1 by setting a bit
-+ * in the set register and clears it by setting a bit in the clear register.
-+ * The configuration is detected by which resources are present.
-+ *
-+ * For setting the GPIO direction, there are three supported configurations:
-+ *
-+ *	- simple bidirection GPIO that requires no configuration.
-+ *	- an output direction register (named "dirout") where a 1 bit
-+ *	indicates the GPIO is an output.
-+ *	- an input direction register (named "dirin") where a 1 bit indicates
-+ *	the GPIO is an input.
-+ */
-+static int bgpio_setup_io(struct bgpio_chip *bgc,
-+			  void __iomem *dat,
-+			  void __iomem *set,
-+			  void __iomem *clr)
-+{
-+	if (!dat)
-+		return -EINVAL;
-+
-+	bgc->reg_dat = dat;
-+
-+	if (set && clr) {
-+		bgc->reg_set = set;
-+		bgc->reg_clr = clr;
-+		bgc->gc.ops->set = bgpio_set_with_clear;
-+	} else if (set && !clr) {
-+		bgc->reg_set = set;
-+		bgc->gc.ops->set = bgpio_set_set;
-+	} else
-+		bgc->gc.ops->set = bgpio_set;
-+
-+	bgc->gc.ops->get = bgpio_get;
-+
-+	return 0;
-+}
-+
-+static int bgpio_setup_direction(struct bgpio_chip *bgc,
-+				 void __iomem *dirout,
-+				 void __iomem *dirin)
-+{
-+	if (dirout && dirin)
-+		return -EINVAL;
-+
-+	if (dirout) {
-+		bgc->reg_dir = dirout;
-+		bgc->gc.ops->direction_output = bgpio_dir_out;
-+		bgc->gc.ops->direction_input = bgpio_dir_in;
-+	} else if (dirin) {
-+		bgc->reg_dir = dirin;
-+		bgc->gc.ops->direction_output = bgpio_dir_out_inv;
-+		bgc->gc.ops->direction_input = bgpio_dir_in_inv;
-+	} else {
-+		bgc->gc.ops->direction_output = bgpio_simple_dir_out;
-+		bgc->gc.ops->direction_input = bgpio_simple_dir_in;
-+	}
-+
-+	return 0;
-+}
-+
-+int bgpio_init(struct bgpio_chip *bgc, struct device_d *dev,
-+	       unsigned int sz, void __iomem *dat, void __iomem *set,
-+	       void __iomem *clr, void __iomem *dirout, void __iomem *dirin,
-+	       unsigned long flags)
-+{
-+	int ret;
-+
-+	if ((sz > 4) || !is_power_of_2(sz))
-+		return -EINVAL;
-+
-+	bgc->bits = sz * 8;
-+	bgc->gc.ngpio = bgc->bits;
-+	bgc->gc.dev = dev;
-+	bgc->gc.base = -1;
-+
-+	ret = bgpio_setup_io(bgc, dat, set, clr);
-+	if (ret)
-+		return ret;
-+
-+	ret = bgpio_setup_accessors(dev, bgc, flags & BGPIOF_BIG_ENDIAN);
-+	if (ret)
-+		return ret;
-+
-+	ret = bgpio_setup_direction(bgc, dirout, dirin);
-+	if (ret)
-+		return ret;
-+
-+	bgc->data = bgc->read_reg(bgc->reg_dat);
-+
-+	if (bgc->gc.ops->set == bgpio_set_set && !(flags &
-+	    BGPIOF_UNREADABLE_REG_SET))
-+		bgc->data = bgc->read_reg(bgc->reg_set);
-+
-+	if (bgc->reg_dir && !(flags & BGPIOF_UNREADABLE_REG_DIR))
-+		bgc->dir = bgc->read_reg(bgc->reg_dir);
-+
-+	return ret;
-+}
-+
-+void bgpio_remove(struct bgpio_chip *bgc)
-+{
-+	gpiochip_remove(&bgc->gc);
-+	free(bgc);
-+}
-+
-+#ifdef CONFIG_GPIO_GENERIC_PLATFORM
-+
-+static void __iomem *bgpio_map(struct device_d *dev, const char *name,
-+			       resource_size_t sane_sz, int *err)
-+{
-+	struct resource *r;
-+	void __iomem *ret;
-+
-+	*err = 0;
-+
-+	r = dev_get_resource_by_name(dev, name);
-+	if (!r)
-+		return NULL;
-+
-+	if (resource_size(r) != sane_sz) {
-+		*err = -EINVAL;
-+		return NULL;
-+	}
-+
-+	ret = request_iomem_region(dev_name(dev), r->start, r->end);
-+	if (!ret) {
-+		*err = -ENOMEM;
-+		return NULL;
-+	}
-+
-+	return ret;
-+}
-+
-+static int bgpio_dev_probe(struct device_d *dev)
-+{
-+	struct resource *r;
-+	void __iomem *dat;
-+	void __iomem *set;
-+	void __iomem *clr;
-+	void __iomem *dirout;
-+	void __iomem *dirin;
-+	unsigned int sz;
-+	unsigned long flags = 0;
-+	int err;
-+	struct bgpio_chip *bgc;
-+	struct bgpio_pdata *pdata = dev->platform_data;
-+
-+	r = dev_get_resource_by_name(dev, "dat");
-+	if (!r)
-+		return -EINVAL;
-+
-+	sz = resource_size(r);
-+
-+	dat = bgpio_map(dev, "dat", sz, &err);
-+	if (!dat)
-+		return err ? err : -EINVAL;
-+
-+	set = bgpio_map(dev, "set", sz, &err);
-+	if (err)
-+		return err;
-+
-+	clr = bgpio_map(dev, "clr", sz, &err);
-+	if (err)
-+		return err;
-+
-+	dirout = bgpio_map(dev, "dirout", sz, &err);
-+	if (err)
-+		return err;
-+
-+	dirin = bgpio_map(dev, "dirin", sz, &err);
-+	if (err)
-+		return err;
-+
-+	dev_get_drvdata(dev, &flags);
-+
-+	bgc = xzalloc(sizeof(struct bgpio_chip));
-+	if (!bgc)
-+		return -ENOMEM;
-+
-+	err = bgpio_init(bgc, dev, sz, dat, set, clr, dirout, dirin, flags);
-+	if (err)
-+		return err;
-+
-+	if (pdata) {
-+		bgc->gc.base = pdata->base;
-+		if (pdata->ngpio > 0)
-+			bgc->gc.ngpio = pdata->ngpio;
-+	}
-+
-+	dev->priv = bgc;
-+
-+	return gpiochip_add(&bgc->gc);
-+}
-+
-+static void bgpio_dev_remove(struct device_d *dev)
-+{
-+	struct bgpio_chip *bgc = dev->priv;
-+
-+	bgpio_remove(bgc);
-+}
-+
-+static struct platform_device_id bgpio_id_table[] = {
-+	{
-+		.name		= "basic-mmio-gpio",
-+		.driver_data	= 0,
-+	},
-+	{
-+		.name		= "basic-mmio-gpio-be",
-+		.driver_data	= BGPIOF_BIG_ENDIAN,
-+	},
-+	{ }
-+};
-+
-+static struct driver_d bgpio_driver = {
-+	.name		= "basic-mmio-gpio",
-+	.id_table	= bgpio_id_table,
-+	.probe		= bgpio_dev_probe,
-+	.remove		= bgpio_dev_remove,
-+};
-+
-+static int bgpio_register(void)
-+{
-+	return platform_driver_register(&bgpio_driver);
-+}
-+coredevice_initcall(bgpio_register);
-+
-+#endif
-+
-+MODULE_DESCRIPTION("Driver for basic memory-mapped GPIO controllers");
-+MODULE_AUTHOR("Anton Vorontsov <cbouatmailru@gmail.com>");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index d37f5a0..6d29224 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -189,6 +189,11 @@ int gpiochip_add(struct gpio_chip *chip)
- 	return 0;
- }
- 
-+void gpiochip_remove(struct gpio_chip *chip)
-+{
-+	list_del(&chip->list);
-+}
-+
- int gpio_get_num(struct device_d *dev, int gpio)
- {
- 	struct gpio_chip *chip;
-diff --git a/include/gpio.h b/include/gpio.h
-index eedb980..6d8336b 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -2,6 +2,7 @@
- #define __GPIO_H
- 
- #include <asm/gpio.h>
-+#include <linux/list.h>
- 
- #ifndef CONFIG_GPIOLIB
- static inline int gpio_request(unsigned gpio, const char *label)
-@@ -40,6 +41,7 @@ struct gpio_chip {
- };
- 
- int gpiochip_add(struct gpio_chip *chip);
-+void gpiochip_remove(struct gpio_chip *chip);
- 
- int gpio_get_num(struct device_d *dev, int gpio);
- 
-diff --git a/include/linux/basic_mmio_gpio.h b/include/linux/basic_mmio_gpio.h
-new file mode 100644
-index 0000000..d66927d
---- /dev/null
-+++ b/include/linux/basic_mmio_gpio.h
-@@ -0,0 +1,68 @@
-+/*
-+ * Basic memory-mapped GPIO controllers.
-+ *
-+ * Based on linux driver by:
-+ *  Copyright 2008 MontaVista Software, Inc.
-+ *  Copyright 2008,2010 Anton Vorontsov <cbouatmailru@gmail.com>
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#ifndef __BASIC_MMIO_GPIO_H
-+#define __BASIC_MMIO_GPIO_H
-+
-+#include <common.h>
-+#include <gpio.h>
-+#include <io.h>
-+
-+struct bgpio_pdata {
-+	int base;
-+	int ngpio;
-+};
-+
-+struct bgpio_chip {
-+	struct gpio_chip gc;
-+
-+	unsigned int (*read_reg)(void __iomem *reg);
-+	void (*write_reg)(void __iomem *reg, unsigned int data);
-+
-+	void __iomem *reg_dat;
-+	void __iomem *reg_set;
-+	void __iomem *reg_clr;
-+	void __iomem *reg_dir;
-+
-+	/* Number of bits (GPIOs): <register width> * 8. */
-+	int bits;
-+
-+	/*
-+	 * Some GPIO controllers work with the big-endian bits notation,
-+	 * e.g. in a 8-bits register, GPIO7 is the least significant bit.
-+	 */
-+	unsigned int (*pin2mask)(struct bgpio_chip *bgc, unsigned int pin);
-+
-+	/* Shadowed data register to clear/set bits safely. */
-+	unsigned int data;
-+
-+	/* Shadowed direction registers to clear/set direction safely. */
-+	unsigned int dir;
-+};
-+
-+static inline struct bgpio_chip *to_bgpio_chip(struct gpio_chip *gc)
-+{
-+	return container_of(gc, struct bgpio_chip, gc);
-+}
-+
-+int bgpio_init(struct bgpio_chip *bgc, struct device_d *dev,
-+	       unsigned int sz, void __iomem *dat, void __iomem *set,
-+	       void __iomem *clr, void __iomem *dirout, void __iomem *dirin,
-+	       unsigned long flags);
-+void bgpio_remove(struct bgpio_chip *bgc);
-+
-+#define BGPIOF_BIG_ENDIAN		BIT(0)
-+#define BGPIOF_UNREADABLE_REG_SET	BIT(1) /* reg_set is unreadable */
-+#define BGPIOF_UNREADABLE_REG_DIR	BIT(2) /* reg_dir is unreadable */
-+
-+#endif /* __BASIC_MMIO_GPIO_H */
+- Could it be that your kernel image overlaps the malloc space? Normally
+  this shouldn't happen as barebox has protection against this, but who
+  knows...
+- Do you boot your kernel with devicetree?
+- You could calculate and dump a crc right before shutdown_barebox in
+  arch/arm/lib/armlinux.c to see if your kernel image is corrupted
+  sometimes
+
+Sascha
+
 -- 
-1.7.12.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
