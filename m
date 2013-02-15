@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6QKg-0007kL-NU
+ id 1U6QKg-0007kO-NW
  for barebox@lists.infradead.org; Fri, 15 Feb 2013 18:48:27 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1U6QKe-0003X0-Ik
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 19:48:24 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1U6QKe-0003oe-HI
- for barebox@lists.infradead.org; Fri, 15 Feb 2013 19:48:24 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 15 Feb 2013 19:48:18 +0100
-Message-Id: <1360954101-13194-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 15 Feb 2013 19:48:20 +0100
+Message-Id: <1360954101-13194-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1360954101-13194-1-git-send-email-s.hauer@pengutronix.de>
+References: <1360954101-13194-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix compiler warnings
+Subject: [PATCH 2/3] ARM at91sam9n12ek_defconfig: Fix reassigning of
+ BAREBOX_MAX_IMAGE_SIZE
 To: barebox@lists.infradead.org
 
-Fixes for some compiler warnings on master.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (3):
-      ARM OMAP phycard-a-l1: Add missing include
-      ARM at91sam9n12ek_defconfig: Fix reassigning of BAREBOX_MAX_IMAGE_SIZE
-      ARM i.MX28: Add missing return value in non-void function
-
- arch/arm/boards/phycard-a-l1/lowlevel.c  |    1 +
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
  arch/arm/configs/at91sam9n12ek_defconfig |    1 -
- arch/arm/mach-mxs/soc-imx28.c            |    2 ++
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/arm/configs/at91sam9n12ek_defconfig b/arch/arm/configs/at91sam9n12ek_defconfig
+index 3e3bd51..55cf5bc 100644
+--- a/arch/arm/configs/at91sam9n12ek_defconfig
++++ b/arch/arm/configs/at91sam9n12ek_defconfig
+@@ -1,5 +1,4 @@
+ CONFIG_ARCH_AT91SAM9N12=y
+-CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x40000
+ CONFIG_AEABI=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
