@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f242.mail.ru ([217.69.128.170])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6dOL-0001O9-Pl
- for barebox@lists.infradead.org; Sat, 16 Feb 2013 08:45:07 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sat, 16 Feb 2013 12:45:02 +0400
-Message-ID: <1361004302.346818455@f242.mail.ru>
-In-Reply-To: <20130214191321.GY1906@pengutronix.de>
-References: <1360774211-10983-1-git-send-email-maxime.ripard@free-electrons.com>
- <511CEDD4.3020108@free-electrons.com> <20130214191321.GY1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U6fyJ-0001Ub-By
+ for barebox@lists.infradead.org; Sat, 16 Feb 2013 11:30:24 +0000
+Received: from mail642.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 0669DFF84B1
+ for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 12:45:13 +0100 (CET)
+Date: Sat, 16 Feb 2013 12:29:16 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130216112916.GF19322@game.jcrosoft.org>
+References: <20130215125941.GB19322@game.jcrosoft.org>
+ <1360935317-7386-1-git-send-email-plagnioj@jcrosoft.com>
+ <1360935317-7386-4-git-send-email-plagnioj@jcrosoft.com>
+ <20130215174357.GZ1906@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130215174357.GZ1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +29,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gQWRkIHdhcm5pbmcgYWJvdmUgZ2V0X3JhbV9zaXpl?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?B?TWF4aW1lIFJpcGFyZA==?= <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH 4/5] disk: introduce partition name
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
 
-...
-> > >>> --- a/common/memsize.c
-> > >>> +++ b/common/memsize.c
-> > >>> @@ -33,6 +33,9 @@
-> > >>>   * Check memory range for valid RAM. A simple memory test determines
-> > >>>   * the actually available RAM size between addresses `base' and
-> > >>>   * `base + maxsize'.
-> > >>> + *
-> > >>> + * This function modifies the RAM. Do not use it if you're running from
-> > >>> + * the RAM you are going to detect!
-> > >>>   */
-> > >>
-> > >> Actually, I don't see how it modifies the RAM, at least permanently. The
-> > >> values it erase are backed up, and there's no concurrency at barebox
-> > >> level, so we are sure that the value saved will still be the one that
-> > >> would need to be backed up at the end of the function, right?
-> > > 
-> > > Yes, it restores the values, but how do you make sure the function does
-> > > not modify the instructions you are currently executing? You need bad
-> > > luck to hit this, but sooner or later this will happen.
+On 18:43 Fri 15 Feb     , Sascha Hauer wrote:
+> On Fri, Feb 15, 2013 at 02:35:16PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > so we can register partion with name as present in EFI GPT
 > > 
-> > Ah, yes, this would be nasty indeed. Is there a way to know the end
-> > address of barebox into RAM ? or the address it has been loaded to and
-> > the size of its binary, so that we can just check the part that doesn't
-> > hold barebox?
+> > Cc: Rob Herring <rob.herring@calxeda.com>
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  common/partitions.c        |   54 ++++++++++++++++++++++++++++++++++----------
+> >  common/partitions/parser.h |    2 ++
+> >  2 files changed, 44 insertions(+), 12 deletions(-)
+> > 
+> > diff --git a/common/partitions.c b/common/partitions.c
+> > index c1578c9..b0f48be 100644
+> > --- a/common/partitions.c
+> > +++ b/common/partitions.c
+> > @@ -44,15 +44,43 @@ LIST_HEAD(partition_parser_list);
+> >  static int register_one_partition(struct block_device *blk,
+> >  					struct partition *part, int no)
+> >  {
+> > -	char partition_name[19];
+> > +	char *partition_name;
+> > +	int ret;
+> > +	uint64_t start = part->first_sec * SECTOR_SIZE;
+> > +	uint64_t size = part->size * SECTOR_SIZE;
+> > +
+> > +	partition_name = asprintf("%s.%d", blk->cdev.name, no);
+> > +	if (!partition_name)
+> > +		return -ENOMEM;
+> > +	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+> > +				partition_name, blk->cdev.name);
+> > +	ret = devfs_add_partition(blk->cdev.name,
+> > +				start, size, 0, partition_name);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	free(partition_name);
+> > +
+> > +	if (!part->name[0])
+> > +		return 0;
 > 
-> See include/asm-generic/sections.h. You have to avoid modifying
-> everything between _text and __bss_stop. I haven't looked how exactly
-> get_dram_size works. Normally this function would have to test every
-> location at a power of 2, that would be:
-> 
-> 1 2 4 ... 64MiB 128MiB
-> 
-> It seems you have to make sure that your binary does not cross a power
-> of 2 boundary, then you should be safe.
+> So when a name is not given then you also don't register the partition
+> with a number?
 
-Let's put "get_ram_size" function in a separate section inside .text. Then we
-can at least make runtime warning about placing this section inside our
-tested region.
+we register with number first and only register with name if present
 
----
+Best Regards,
+J.
+> 
+> > +
+> > +	partition_name = asprintf("%s.%s", blk->cdev.name, part->name);
+> > +	if (!partition_name)
+> > +		return -ENOMEM;
+> >  
+> > -	sprintf(partition_name, "%s.%d", blk->cdev.name, no);
+> >  	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+> >  				partition_name, blk->cdev.name);
+> > -	return devfs_add_partition(blk->cdev.name,
+> > -				part->first_sec * SECTOR_SIZE,
+> > -				part->size * SECTOR_SIZE,
+> > -				0, partition_name);
+> > +	ret = devfs_add_partition(blk->cdev.name,
+> > +				start, size, 0, partition_name);
+> > +
+> > +	if (ret)
+> > +		dev_warn(blk->dev, "Registering partition %s on drive %s failled\n",
+> > +				partition_name, blk->cdev.name);
+> 
+> s/failled/failed/
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
