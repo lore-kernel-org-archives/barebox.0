@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
+Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6i7p-0002OT-V4
- for barebox@lists.infradead.org; Sat, 16 Feb 2013 13:48:23 +0000
+ id 1U6k5u-0000i8-Bi
+ for barebox@lists.infradead.org; Sat, 16 Feb 2013 15:54:31 +0000
 Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 8D098FFAB51
- for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 15:03:49 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C9D15FFA9EB
+ for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 17:09:53 +0100 (CET)
+Date: Sat, 16 Feb 2013 16:53:15 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 16 Feb 2013 14:47:06 +0100
-Message-Id: <1361022429-3688-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1361022429-3688-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130216113811.GG19322@game.jcrosoft.org>
- <1361022429-3688-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130216155315.GH19322@game.jcrosoft.org>
+References: <1360774211-10983-1-git-send-email-maxime.ripard@free-electrons.com>
+ <511CEDD4.3020108@free-electrons.com>
+ <20130214191321.GY1906@pengutronix.de>
+ <1361004302.346818455@f242.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1361004302.346818455@f242.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,119 +25,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] filetype: add GPT support
-To: barebox@lists.infradead.org
-Cc: Rob Herring <rob.herring@calxeda.com>
+Subject: Re: [PATCH] Add warning above get_ram_size
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org, Maxime Ripard <maxime.ripard@free-electrons.com>
 
-GPT need to be check before MBR
+On 12:45 Sat 16 Feb     , Alexander Shiyan wrote:
+> ...
+> > > >>> --- a/common/memsize.c
+> > > >>> +++ b/common/memsize.c
+> > > >>> @@ -33,6 +33,9 @@
+> > > >>>   * Check memory range for valid RAM. A simple memory test determines
+> > > >>>   * the actually available RAM size between addresses `base' and
+> > > >>>   * `base + maxsize'.
+> > > >>> + *
+> > > >>> + * This function modifies the RAM. Do not use it if you're running from
+> > > >>> + * the RAM you are going to detect!
+> > > >>>   */
+> > > >>
+> > > >> Actually, I don't see how it modifies the RAM, at least permanently. The
+> > > >> values it erase are backed up, and there's no concurrency at barebox
+> > > >> level, so we are sure that the value saved will still be the one that
+> > > >> would need to be backed up at the end of the function, right?
+> > > > 
+> > > > Yes, it restores the values, but how do you make sure the function does
+> > > > not modify the instructions you are currently executing? You need bad
+> > > > luck to hit this, but sooner or later this will happen.
+> > > 
+> > > Ah, yes, this would be nasty indeed. Is there a way to know the end
+> > > address of barebox into RAM ? or the address it has been loaded to and
+> > > the size of its binary, so that we can just check the part that doesn't
+> > > hold barebox?
+> > 
+> > See include/asm-generic/sections.h. You have to avoid modifying
+> > everything between _text and __bss_stop. I haven't looked how exactly
+> > get_dram_size works. Normally this function would have to test every
+> > location at a power of 2, that would be:
+> > 
+> > 1 2 4 ... 64MiB 128MiB
+> > 
+> > It seems you have to make sure that your binary does not cross a power
+> > of 2 boundary, then you should be safe.
+> 
+> Let's put "get_ram_size" function in a separate section inside .text. Then we
+> can at least make runtime warning about placing this section inside our
+> tested region.
 
-Cc: Rob Herring <rob.herring@calxeda.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/filetype.c  |   52 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/filetype.h |    1 +
- 2 files changed, 53 insertions(+)
+we have 2 case
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 22fc621..8652f1d 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -48,6 +48,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_bmp] = { "BMP image", "bmp" },
- 	[filetype_png] = { "PNG image", "png" },
- 	[filetype_ext] = { "ext filesystem", "ext" },
-+	[filetype_gpt] = { "GUID Partition Table", "gpt" },
- };
- 
- const char *file_type_to_string(enum filetype f)
-@@ -69,9 +70,53 @@ const char *file_type_to_short_string(enum filetype f)
- #define MBR_StartSector		8	/* MBR: Offset of Starting Sector in Partition Table Entry */
- #define BS_55AA			510	/* Boot sector signature (2) */
- #define MBR_Table		446	/* MBR: Partition table offset (2) */
-+#define MBR_partition_size	16	/* MBR: Partition table offset (2) */
- #define BS_FilSysType32		82	/* File system type (1) */
- #define BS_FilSysType		54	/* File system type (1) */
- 
-+#define MBR_PART_sys_ind	4
-+#define MBR_PART_start_sect	8
-+#define MBR_OSTYPE_EFI_GPT	0xee
-+
-+static inline int pmbr_part_valid(const uint8_t *buf)
-+{
-+	if (buf[MBR_PART_sys_ind] == MBR_OSTYPE_EFI_GPT &&
-+		get_unaligned_le32(&buf[MBR_PART_start_sect]) == 1UL) {
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * is_gpt_valid(): test Protective MBR for validity and EFI PART
-+ * @mbr: pointer to a legacy mbr structure
-+ *
-+ * Description: Returns 1 if PMBR is valid and EFI PART, 0 otherwise.
-+ * Validity depends on three things:
-+ *  1) MSDOS signature is in the last two bytes of the MBR
-+ *  2) One partition of type 0xEE is found
-+ *  3) EFI GPT signature is at offset 512
-+ */
-+static int is_gpt_valid(const uint8_t *buf)
-+{
-+	int i;
-+
-+	if (get_unaligned_le16(&buf[BS_55AA]) != 0xAA55)
-+		return 0;
-+
-+	if (strncmp(&buf[512], "EFI PART", 8))
-+		return 0;
-+
-+	buf += MBR_Table;
-+
-+	for (i = 0; i < 4; i++, buf += MBR_partition_size) {
-+		if (pmbr_part_valid(buf))
-+			return 1;
-+	}
-+	return 0;
-+}
-+
- enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
- {
- 	/*
-@@ -159,6 +204,13 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (bufsize < 512)
- 		return filetype_unknown;
- 
-+	/*
-+	 * EFI GPT need to be detected before MBR otherwise
-+	 * we will detect a MBR
-+	 */
-+	if (bufsize >= 520 && is_gpt_valid(buf8))
-+		return filetype_gpt;
-+
- 	type = is_fat_or_mbr(buf8, NULL);
- 	if (type != filetype_unknown)
- 		return type;
-diff --git a/include/filetype.h b/include/filetype.h
-index 4d43757..78ca5d2 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -23,6 +23,7 @@ enum filetype {
- 	filetype_bmp,
- 	filetype_png,
- 	filetype_ext,
-+	filetype_gpt,
- 	filetype_max,
- };
- 
--- 
-1.7.10.4
+1: we run from the relocated position
+2: we run before relocation
 
+in any case you need to exclude where running from or just need to be carefull
+when use it
+
+Best Regards,
+J.
+> 
+> ---
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
