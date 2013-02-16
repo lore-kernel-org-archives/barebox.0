@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6mRT-0006fM-Ue
+ id 1U6mRT-0006fN-Ud
  for barebox@lists.infradead.org; Sat, 16 Feb 2013 18:24:56 +0000
 Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 7A502FFA62C
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6D76BFFA627
  for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 19:40:25 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 16 Feb 2013 19:23:46 +0100
-Message-Id: <1361039026-26015-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1361039026-26015-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sat, 16 Feb 2013 19:23:45 +0100
+Message-Id: <1361039026-26015-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130216182202.GI19322@game.jcrosoft.org>
 References: <20130216182202.GI19322@game.jcrosoft.org>
- <1361039026-26015-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,122 +25,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] highbank: add of fixup
+Subject: [PATCH 1/2] highbank: move register value to include/mach
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
 
-depending on the power domain register we need to disable sata or mmc
-and update the cpu informations
-
-take from Calxeda U-Boot git
-
-Register the original dtb to /dev/firmware-dtb and the fixed dtb to /dev/dtb
+so the board can use it
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/highbank/init.c               |   48 ++++++++++++++++++++++++-
- arch/arm/mach-highbank/include/mach/sysregs.h |    5 +++
- 2 files changed, 52 insertions(+), 1 deletion(-)
+ arch/arm/mach-highbank/core.c                       |    7 +++----
+ arch/arm/mach-highbank/include/mach/hardware.h      |   14 ++++++++++++++
+ arch/arm/mach-highbank/{ => include/mach}/sysregs.h |    0
+ arch/arm/mach-highbank/reset.c                      |    3 +--
+ 4 files changed, 18 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/mach-highbank/include/mach/hardware.h
+ rename arch/arm/mach-highbank/{ => include/mach}/sysregs.h (100%)
 
-diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-index bcd2783..e36674f 100644
---- a/arch/arm/boards/highbank/init.c
-+++ b/arch/arm/boards/highbank/init.c
-@@ -10,15 +10,57 @@
- #include <asm/system_info.h>
- #include <generated/mach-types.h>
+diff --git a/arch/arm/mach-highbank/core.c b/arch/arm/mach-highbank/core.c
+index 3423c55..967d13f 100644
+--- a/arch/arm/mach-highbank/core.c
++++ b/arch/arm/mach-highbank/core.c
+@@ -15,11 +15,10 @@
+ #include <asm/hardware/arm_timer.h>
+ 
  #include <mach/devices.h>
 +#include <mach/hardware.h>
 +#include <mach/sysregs.h>
- #include <environment.h>
- #include <partition.h>
- #include <sizes.h>
+ 
+-#include "sysregs.h"
+-
+-void __iomem *sregs_base = IOMEM(0xfff3c00);
+-
++void __iomem *sregs_base = IOMEM(HB_SREG_A9_BASE);
+ 
+ static void highbank_clk_init(void)
+ {
+diff --git a/arch/arm/mach-highbank/include/mach/hardware.h b/arch/arm/mach-highbank/include/mach/hardware.h
+new file mode 100644
+index 0000000..db7fff2
+--- /dev/null
++++ b/arch/arm/mach-highbank/include/mach/hardware.h
+@@ -0,0 +1,14 @@
++/*
++ * Copyright (C) 2010-2011 Calxeda, Inc
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#ifndef __MACH_HARDWARE_H__
++#define __MACH_HARDWARE_H__
++
++#define HB_SREG_A9_BASE			0xfff3c000
++#define HB_SYSRAM_OPP_TABLE_BASE	0xfff8f000
++
++#endif /* __MACH_HARDWARE_H__ */
+diff --git a/arch/arm/mach-highbank/sysregs.h b/arch/arm/mach-highbank/include/mach/sysregs.h
+similarity index 100%
+rename from arch/arm/mach-highbank/sysregs.h
+rename to arch/arm/mach-highbank/include/mach/sysregs.h
+diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
+index eb1d115..41418b2 100644
+--- a/arch/arm/mach-highbank/reset.c
++++ b/arch/arm/mach-highbank/reset.c
+@@ -8,8 +8,7 @@
  #include <io.h>
-+#include <libfdt.h>
  
- #define FIRMWARE_DTB_BASE	0x1000
+ #include <mach/devices.h>
+-
+-#include "sysregs.h"
++#include <mach/sysregs.h>
  
-+#define HB_OPP_VERSION		0
-+
- struct fdt_header *fdt = NULL;
- 
-+static int hb_fixup(struct fdt_header *fdt)
-+{
-+	u32 reg = readl(sregs_base + HB_SREG_A9_PWRDOM_DATA);
-+	u32 *opp_table = (u32 *)HB_SYSRAM_OPP_TABLE_BASE;
-+	u32 dtb_table[2*10];
-+	u32 i;
-+	u32 num_opps;
-+	__be32 latency;
-+
-+	if (!(reg & HB_PWRDOM_STAT_SATA))
-+		do_fixup_by_compatible_string(fdt, "calxeda,hb-ahci", "status",
-+					           "disabled", 1);
-+
-+	if (!(reg & HB_PWRDOM_STAT_EMMC))
-+		do_fixup_by_compatible_string(fdt, "calxeda,hb-sdhci", "status",
-+					           "disabled", 1);
-+
-+	if ((opp_table[0] >> 16) != HB_OPP_VERSION)
-+		return 0;
-+
-+	num_opps = opp_table[0] & 0xff;
-+
-+	for (i = 0; i < num_opps; i++) {
-+		dtb_table[2 * i] = cpu_to_be32(opp_table[3 + 3 * i]);
-+		dtb_table[2 * i + 1] = cpu_to_be32(opp_table[2 + 3 * i]);
-+	}
-+
-+	latency = cpu_to_be32(opp_table[1]);
-+
-+	fdt_find_and_setprop(fdt, "/cpus/cpu@0", "transition-latency",
-+				  &latency, 4, 1);
-+	fdt_find_and_setprop(fdt, "/cpus/cpu@0", "operating-points",
-+				  dtb_table, 8 * num_opps, 1);
-+
-+	return 0;
-+}
-+
- static int highbank_mem_init(void)
+ void __noreturn reset_cpu(ulong addr)
  {
- 	struct device_node *np;
-@@ -57,6 +99,7 @@ mem_initcall(highbank_mem_init);
- 
- static int highbank_devices_init(void)
- {
-+	of_register_fixup(hb_fixup);
- 	if (!fdt) {
- 		highbank_register_gpio(0);
- 		highbank_register_gpio(1);
-@@ -66,7 +109,10 @@ static int highbank_devices_init(void)
- 		highbank_register_xgmac(0);
- 		highbank_register_xgmac(1);
- 	} else {
--		devfs_add_partition("ram0", FIRMWARE_DTB_BASE, SZ_64K, DEVFS_PARTITION_FIXED, "dtb");
-+		fdt = of_get_fixed_tree(fdt);
-+		add_mem_device("dtb", (unsigned long)fdt, fdt_totalsize(fdt),
-+		       IORESOURCE_MEM_WRITEABLE);
-+		devfs_add_partition("ram0", FIRMWARE_DTB_BASE, SZ_64K, DEVFS_PARTITION_FIXED, "firmware-dtb");
- 	}
- 
- 	armlinux_set_bootparams((void *)(0x00000100));
-diff --git a/arch/arm/mach-highbank/include/mach/sysregs.h b/arch/arm/mach-highbank/include/mach/sysregs.h
-index c879422..2f058f2 100644
---- a/arch/arm/mach-highbank/include/mach/sysregs.h
-+++ b/arch/arm/mach-highbank/include/mach/sysregs.h
-@@ -23,6 +23,11 @@ extern void __iomem *sregs_base;
- #define HB_SREG_A9_PWR_REQ		0xf00
- #define HB_SREG_A9_BOOT_STAT		0xf04
- #define HB_SREG_A9_BOOT_DATA		0xf08
-+#define HB_SREG_A9_PWRDOM_DATA		0xf20
-+
-+#define HB_PWRDOM_STAT_SATA	0x80000000
-+#define HB_PWRDOM_STAT_PCI	0x40000000
-+#define HB_PWRDOM_STAT_EMMC	0x20000000
- 
- #define HB_PWR_SUSPEND			0
- #define HB_PWR_SOFT_RESET		1
 -- 
 1.7.10.4
 
