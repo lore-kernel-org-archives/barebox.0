@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
+Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6mMU-0006Nk-8L
- for barebox@lists.infradead.org; Sat, 16 Feb 2013 18:19:47 +0000
+ id 1U6mPl-0006a9-AR
+ for barebox@lists.infradead.org; Sat, 16 Feb 2013 18:23:09 +0000
 Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 1CB5CFFA7C8
- for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 19:35:16 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id CCAB6FFA5E1
+ for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 19:38:39 +0100 (CET)
+Date: Sat, 16 Feb 2013 19:22:02 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 16 Feb 2013 19:18:39 +0100
-Message-Id: <1361038719-25530-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130216182202.GI19322@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +20,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] of: add do_fixup_by_compatible with u32 and string version
+Subject: [PATCH 0/2] highbank: add of fixup
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/oftree.c |   27 +++++++++++++++++++++++++++
- include/of.h    |    6 ++++++
- 2 files changed, 33 insertions(+)
+Hi,
 
-diff --git a/common/oftree.c b/common/oftree.c
-index 6b20cdb..82e5ddd 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -229,6 +229,33 @@ void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path,
- 	do_fixup_by_path(fdt, path, prop, &val, sizeof(val), create);
- }
- 
-+void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
-+			const char *prop, const void *val, int len, int create)
-+{
-+	int off = -1;
-+
-+	off = fdt_node_offset_by_compatible(fdt, -1, compatible);
-+	while (off != -FDT_ERR_NOTFOUND) {
-+		if (create || (fdt_get_property(fdt, off, prop, 0) != NULL))
-+			fdt_setprop(fdt, off, prop, val, len);
-+		off = fdt_node_offset_by_compatible(fdt, off, compatible);
-+	}
-+}
-+
-+void do_fixup_by_compatible_u32(struct fdt_header *fdt, const char *compatible,
-+				const char *prop, u32 val, int create)
-+{
-+	val = cpu_to_fdt32(val);
-+	do_fixup_by_compatible(fdt, compatible, prop, &val, 4, create);
-+}
-+
-+void do_fixup_by_compatible_string(struct fdt_header *fdt, const char *compatible,
-+				const char *prop, const char *val, int create)
-+{
-+	do_fixup_by_compatible(fdt, compatible, prop, val, strlen(val) + 1,
-+				create);
-+}
-+
- int fdt_get_path_or_create(struct fdt_header *fdt, const char *path)
- {
- 	int nodeoffset;
-diff --git a/include/of.h b/include/of.h
-index 4dc5b6c..95d9702 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -17,6 +17,12 @@ void do_fixup_by_path(struct fdt_header *fdt, const char *path, const char *prop
- 		      const void *val, int len, int create);
- void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path, const char *prop,
- 			  u32 val, int create);
-+void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
-+			const char *prop, const void *val, int len, int create);
-+void do_fixup_by_compatible_u32(struct fdt_header *fdt, const char *compatible,
-+				const char *prop, u32 val, int create);
-+void do_fixup_by_compatible_string(struct fdt_header *fdt, const char *compatible,
-+				const char *prop, const char *val, int create);
- int fdt_get_path_or_create(struct fdt_header *fdt, const char *path);
- #ifdef CONFIG_FDT
- int fdt_initrd(void *fdt, ulong initrd_start, ulong initrd_end, int force);
--- 
-1.7.10.4
+	On highbank we need to disabled the sata or the mmc based on teh power
+	domain and update the cpu informations
 
+The following changes since commit 03df05df8265f287c142319553a7225b973714fb:
+
+  of: add do_fixup_by_compatible with u32 and string version (2013-02-15 22:27:24 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/highbank
+
+for you to fetch changes up to a289534ee9cd1e75ac67317a2e8693ea53c679de:
+
+  highbank: add of fixup (2013-02-15 22:27:29 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      highbank: move register value to include/mach
+      highbank: add of fixup
+
+ arch/arm/boards/highbank/init.c                     |   48 +++++++++++++++++++++++++++++++++++++++++++++++-
+ arch/arm/mach-highbank/core.c                       |    7 +++----
+ arch/arm/mach-highbank/include/mach/hardware.h      |   14 ++++++++++++++
+ arch/arm/mach-highbank/{ => include/mach}/sysregs.h |    5 +++++
+ arch/arm/mach-highbank/reset.c                      |    3 +--
+ 5 files changed, 70 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm/mach-highbank/include/mach/hardware.h
+ rename arch/arm/mach-highbank/{ => include/mach}/sysregs.h (90%)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
