@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp42.i.mail.ru ([94.100.177.102])
+Received: from smtp21.mail.ru ([94.100.176.174])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U6cJv-0006Za-9x
- for barebox@lists.infradead.org; Sat, 16 Feb 2013 07:36:28 +0000
+ id 1U6d4m-0000RI-Tt
+ for barebox@lists.infradead.org; Sat, 16 Feb 2013 08:24:54 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 16 Feb 2013 11:36:22 +0400
-Message-Id: <1361000182-26607-1-git-send-email-shc_work@mail.ru>
+Date: Sat, 16 Feb 2013 12:24:45 +0400
+Message-Id: <1361003085-1372-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +19,182 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make "dev_get_resource" publicly available
+Subject: [RFC] Add system controller register driver (SYSCON)
 To: barebox@lists.infradead.org
 
+This patch adds support for system controller register driver (SYSCON).
+Code taken from Linux Kernel and adapted for using in barebox.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/base/driver.c | 2 +-
- include/driver.h      | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/mfd/Kconfig  |  5 +++
+ drivers/mfd/Makefile |  1 +
+ drivers/mfd/syscon.c | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/mfd/syscon.h | 31 ++++++++++++++++++
+ 4 files changed, 126 insertions(+)
+ create mode 100644 drivers/mfd/syscon.c
+ create mode 100644 include/mfd/syscon.h
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index d4066fc..fa30c68 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -230,7 +230,7 @@ int register_driver(struct driver_d *drv)
- }
- EXPORT_SYMBOL(register_driver);
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index c506d67..afb87db 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -24,6 +24,11 @@ config MFD_STMPE
+ 	depends on I2C
+ 	bool "STMPE-i2c driver"
  
--static struct resource *dev_get_resource(struct device_d *dev, int num)
-+struct resource *dev_get_resource(struct device_d *dev, int num)
- {
- 	int i, n = 0;
++config MFD_SYSCON
++	bool "System Controller Register"
++	help
++	  Select this option to enable accessing system control registers
++
+ config MFD_TWLCORE
+ 	bool
  
-diff --git a/include/driver.h b/include/driver.h
-index 31f5d69..092a46b 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -193,6 +193,10 @@ static inline const char *dev_name(const struct device_d *dev)
- }
- 
- /*
-+ * get resource 'num' for a device
-+ */
-+struct resource *dev_get_resource(struct device_d *dev, int num);
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index 542fb0f..1afd52b 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
+ obj-$(CONFIG_MFD_MC34708)	+= mc34708.o
+ obj-$(CONFIG_MFD_MC9SDZ60)	+= mc9sdz60.o
+ obj-$(CONFIG_MFD_STMPE)		+= stmpe-i2c.o
++obj-$(CONFIG_MFD_SYSCON)	+= syscon.o
+ obj-$(CONFIG_MFD_TWLCORE)	+= twl-core.o
+ obj-$(CONFIG_MFD_TWL4030)	+= twl4030.o
+ obj-$(CONFIG_MFD_TWL6030)	+= twl6030.o
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+new file mode 100644
+index 0000000..2cc6a12
+--- /dev/null
++++ b/drivers/mfd/syscon.c
+@@ -0,0 +1,89 @@
 +/*
-  * get resource base 'name' for a device
-  */
- struct resource *dev_get_resource_by_name(struct device_d *dev,
++ * System Control Driver
++ *
++ * Based on linux driver by:
++ *  Copyright (C) 2012 Freescale Semiconductor, Inc.
++ *  Copyright (C) 2012 Linaro Ltd.
++ *  Author: Dong Aisheng <dong.aisheng@linaro.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#include <io.h>
++#include <init.h>
++#include <common.h>
++#include <driver.h>
++#include <xfuncs.h>
++
++#include <mfd/syscon.h>
++
++struct syscon {
++	void __iomem *base;
++};
++
++void __iomem *syscon_base_lookup_by_compatible(const char *s)
++{
++	struct syscon *syscon;
++	struct syscon_pdata *pdata;
++	struct device_d *dev;
++
++	for_each_device(dev) {
++		if (strncmp(dev_name(dev), "syscon", 6))
++			continue;
++
++		pdata = dev->platform_data;
++		if (!pdata)
++			continue;
++
++		if (!strcmp(pdata->compatible, s)) {
++			syscon = dev->priv;
++			return syscon->base;
++		}
++	}
++
++	return NULL;
++}
++
++static int syscon_probe(struct device_d *dev)
++{
++	struct syscon *syscon;
++	struct resource *res;
++
++	syscon = xzalloc(sizeof(struct syscon));
++	if (!syscon)
++		return -ENOMEM;
++
++	res = dev_get_resource(dev, 0);
++	if (!res)
++		return -ENOENT;
++
++	res = request_iomem_region(dev_name(dev), res->start, res->end);
++	if (!res)
++		return -EIO;
++
++	syscon->base = (void __iomem *)res->start;
++	dev->priv = syscon;
++
++	dev_info(dev, "syscon start 0x%x end 0x%x registered\n",
++		 res->start, res->end);
++
++	return 0;
++}
++
++static struct driver_d syscon_driver = {
++	.name	= "syscon",
++	.probe	= syscon_probe,
++};
++
++static int __init syscon_init(void)
++{
++	return platform_driver_register(&syscon_driver);
++}
++postcore_initcall(syscon_init);
++
++MODULE_AUTHOR("Dong Aisheng <dong.aisheng@linaro.org>");
++MODULE_DESCRIPTION("System Control driver");
++MODULE_LICENSE("GPL v2");
+diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
+new file mode 100644
+index 0000000..40a298b
+--- /dev/null
++++ b/include/mfd/syscon.h
+@@ -0,0 +1,31 @@
++/*
++ * System Control Driver
++ *
++ * Based on linux driver by:
++ *  Copyright (C) 2012 Freescale Semiconductor, Inc.
++ *  Copyright (C) 2012 Linaro Ltd.
++ *  Author: Dong Aisheng <dong.aisheng@linaro.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef __MFD_SYSCON_H__
++#define __MFD_SYSCON_H__
++
++struct syscon_pdata {
++	const char	*compatible;
++};
++
++#ifdef CONFIG_MFD_SYSCON
++void __iomem *syscon_base_lookup_by_compatible(const char *);
++#else
++static inline void __iomem *syscon_base_lookup_by_compatible(const char *)
++{
++	return NULL;
++}
++#endif
++
++#endif /* __MFD_SYSCON_H__ */
 -- 
 1.7.12.4
 
