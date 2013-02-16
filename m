@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
+Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U6mRT-0006fN-Ud
- for barebox@lists.infradead.org; Sat, 16 Feb 2013 18:24:56 +0000
-Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 6D76BFFA627
- for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 19:40:25 +0100 (CET)
+ id 1U6p0S-0003Ly-Gl
+ for barebox@lists.infradead.org; Sat, 16 Feb 2013 21:09:13 +0000
+Received: from mail31.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 090F2FFA8AD
+ for <barebox@lists.infradead.org>; Sat, 16 Feb 2013 22:24:43 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 16 Feb 2013 19:23:45 +0100
-Message-Id: <1361039026-26015-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130216182202.GI19322@game.jcrosoft.org>
-References: <20130216182202.GI19322@game.jcrosoft.org>
+Date: Sat, 16 Feb 2013 22:07:59 +0100
+Message-Id: <1361048879-7331-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,80 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] highbank: move register value to include/mach
+Subject: [PATCH 1/1] highbank: add power off support
 To: barebox@lists.infradead.org
 Cc: Rob Herring <rob.herring@calxeda.com>
-
-so the board can use it
 
 Cc: Rob Herring <rob.herring@calxeda.com>
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-highbank/core.c                       |    7 +++----
- arch/arm/mach-highbank/include/mach/hardware.h      |   14 ++++++++++++++
- arch/arm/mach-highbank/{ => include/mach}/sysregs.h |    0
- arch/arm/mach-highbank/reset.c                      |    3 +--
- 4 files changed, 18 insertions(+), 6 deletions(-)
- create mode 100644 arch/arm/mach-highbank/include/mach/hardware.h
- rename arch/arm/mach-highbank/{ => include/mach}/sysregs.h (100%)
+ arch/arm/Kconfig                    |    1 +
+ arch/arm/configs/highbank_defconfig |    1 +
+ arch/arm/mach-highbank/reset.c      |    8 ++++++++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/arch/arm/mach-highbank/core.c b/arch/arm/mach-highbank/core.c
-index 3423c55..967d13f 100644
---- a/arch/arm/mach-highbank/core.c
-+++ b/arch/arm/mach-highbank/core.c
-@@ -15,11 +15,10 @@
- #include <asm/hardware/arm_timer.h>
- 
- #include <mach/devices.h>
-+#include <mach/hardware.h>
-+#include <mach/sysregs.h>
- 
--#include "sysregs.h"
--
--void __iomem *sregs_base = IOMEM(0xfff3c00);
--
-+void __iomem *sregs_base = IOMEM(HB_SREG_A9_BASE);
- 
- static void highbank_clk_init(void)
- {
-diff --git a/arch/arm/mach-highbank/include/mach/hardware.h b/arch/arm/mach-highbank/include/mach/hardware.h
-new file mode 100644
-index 0000000..db7fff2
---- /dev/null
-+++ b/arch/arm/mach-highbank/include/mach/hardware.h
-@@ -0,0 +1,14 @@
-+/*
-+ * Copyright (C) 2010-2011 Calxeda, Inc
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * GPLv2 only
-+ */
-+
-+#ifndef __MACH_HARDWARE_H__
-+#define __MACH_HARDWARE_H__
-+
-+#define HB_SREG_A9_BASE			0xfff3c000
-+#define HB_SYSRAM_OPP_TABLE_BASE	0xfff8f000
-+
-+#endif /* __MACH_HARDWARE_H__ */
-diff --git a/arch/arm/mach-highbank/sysregs.h b/arch/arm/mach-highbank/include/mach/sysregs.h
-similarity index 100%
-rename from arch/arm/mach-highbank/sysregs.h
-rename to arch/arm/mach-highbank/include/mach/sysregs.h
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index f002910..7ac134e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -49,6 +49,7 @@ config ARCH_EP93XX
+ config ARCH_HIGHBANK
+ 	bool "Calxeda Highbank"
+ 	select HAS_DEBUG_LL
++	select HAS_POWEROFF
+ 	select ARCH_HAS_L2X0
+ 	select CPU_V7
+ 	select ARM_AMBA
+diff --git a/arch/arm/configs/highbank_defconfig b/arch/arm/configs/highbank_defconfig
+index 31ac954..b034ed1 100644
+--- a/arch/arm/configs/highbank_defconfig
++++ b/arch/arm/configs/highbank_defconfig
+@@ -35,6 +35,7 @@ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CMD_UIMAGE=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_OFTREE_PROBE=y
 diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
-index eb1d115..41418b2 100644
+index 41418b2..630672a 100644
 --- a/arch/arm/mach-highbank/reset.c
 +++ b/arch/arm/mach-highbank/reset.c
-@@ -8,8 +8,7 @@
- #include <io.h>
+@@ -17,3 +17,11 @@ void __noreturn reset_cpu(ulong addr)
  
- #include <mach/devices.h>
--
--#include "sysregs.h"
-+#include <mach/sysregs.h>
- 
- void __noreturn reset_cpu(ulong addr)
- {
+ 	while(1);
+ }
++
++void __noreturn poweroff()
++{
++	shutdown_barebox();
++
++	hingbank_set_pwr_shutdown();
++	while(1);
++}
 -- 
 1.7.10.4
 
