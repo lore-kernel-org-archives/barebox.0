@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f41.google.com ([209.85.214.41])
+Received: from mail-bk0-f48.google.com ([209.85.214.48])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7BPG-0006Dj-Kx
- for barebox@lists.infradead.org; Sun, 17 Feb 2013 21:04:21 +0000
-Received: by mail-bk0-f41.google.com with SMTP id q16so2251477bkw.14
- for <barebox@lists.infradead.org>; Sun, 17 Feb 2013 13:04:17 -0800 (PST)
+ id 1U7BPF-0006Dh-Ax
+ for barebox@lists.infradead.org; Sun, 17 Feb 2013 21:04:18 +0000
+Received: by mail-bk0-f48.google.com with SMTP id jf20so2253548bkc.21
+ for <barebox@lists.infradead.org>; Sun, 17 Feb 2013 13:04:15 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Sun, 17 Feb 2013 22:05:01 +0100
-Message-Id: <1361135101-994-3-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
-References: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
+Date: Sun, 17 Feb 2013 22:04:59 +0100
+Message-Id: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,173 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] fs: add pread and pwrite functions
+Subject: [RFC PATCH v2 0/2] fs: add pread and pwrite functions
 To: barebox@lists.infradead.org
 
-Add pread and pwrite functions.
+These Patches fixes the return type of read function and add two new functions,
+pread and pwrite in fs layer of barebox.
 
-Split read and write functions to save some space.
-The functions pread and pwrite saves and sets the file
-position to a given offset and restore them afterwards.
+In my opinion this implementation of pread and pwrite could be better if fs
+interface has as read callback:
+int (*read)(struct device_d *dev, loff_t pos, ... flags, etc...);
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
+not a "FILE *" as parameter.
+
+instead of:
+int (*read)(struct device_d *dev, FILE *f, void *buf, size_t size);
+
+I don't want to screw up the interface, it's only a notice. This would be funny
+if we change that. :-/
+
+The current implementation of pread and pwrite saves the current file pos and
+restore them after do some file manipulation. Could be optimize if a filesystem
+driver doesn't read the pos from FILE pointer and I can give the offset over a
+parameter. In case of read it would be "f->pos" and pread it would be "offset".
+
+Another thing is:
+
+We could optimize it (pwrite and pread) and (read and write) looks very similar.
+The only different between these functions is a "const void *buf" and "void *buf"
+
+I thinking a about a function with a functionpointer as parameter like
+
+static ssize_t __do_read_or_write(int fd, void *buf, size_t count,
+			ssize_t func(int fd, void *buf, size_t count))
+
+Which func is for read = __read and for write = __write, but I got trouble because
+the function prototype "void *" and "const void*". I can do more parameters and
+decide it as runtime, but I don't like to do that, looks very ugly.
+
+Regards
+Alex
+
+v2:
+	rewritten pread and pwrite functions
+
+Alexander Aring (2):
+  fs: fix return type of read
+  fs: add pread and pwrite functions
+
  fs/fs.c      | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++----------
- include/fs.h |  2 ++
- 2 files changed, 77 insertions(+), 14 deletions(-)
+ include/fs.h |  4 ++-
+ 2 files changed, 78 insertions(+), 15 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 48d1c89..497a2ea 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -754,17 +754,12 @@ int ioctl(int fd, int request, void *buf)
- 	return ret;
- }
- 
--ssize_t read(int fd, void *buf, size_t count)
-+static ssize_t __read(FILE *f, void *buf, size_t count)
- {
- 	struct device_d *dev;
- 	struct fs_driver_d *fsdrv;
--	FILE *f;
- 	int ret;
- 
--	if (check_fd(fd))
--		return -errno;
--
--	f = &files[fd];
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -777,18 +772,34 @@ ssize_t read(int fd, void *buf, size_t count)
- 
- 	ret = fsdrv->read(dev, f, buf, count);
- 
--	if (ret > 0)
--		f->pos += ret;
- 	if (ret < 0)
- 		errno = -ret;
- 	return ret;
- }
--EXPORT_SYMBOL(read);
-+EXPORT_SYMBOL(pread);
- 
--ssize_t write(int fd, const void *buf, size_t count)
-+ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
-+{
-+	loff_t pos;
-+	FILE *f;
-+	int ret;
-+
-+	if (check_fd(fd))
-+		return -errno;
-+
-+	f = &files[fd];
-+
-+	pos = f->pos;
-+	f->pos = offset;
-+	ret = __read(f, buf, count);
-+	f->pos = pos;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(pread);
-+
-+ssize_t read(int fd, void *buf, size_t count)
- {
--	struct device_d *dev;
--	struct fs_driver_d *fsdrv;
- 	FILE *f;
- 	int ret;
- 
-@@ -796,6 +807,21 @@ ssize_t write(int fd, const void *buf, size_t count)
- 		return -errno;
- 
- 	f = &files[fd];
-+
-+	ret = __read(f, buf, count);
-+
-+	if (ret > 0)
-+		f->pos += ret;
-+	return ret;
-+}
-+EXPORT_SYMBOL(read);
-+
-+static ssize_t __write(FILE *f, const void *buf, size_t count)
-+{
-+	struct device_d *dev;
-+	struct fs_driver_d *fsdrv;
-+	int ret;
-+
- 	dev = f->dev;
- 
- 	fsdrv = dev_to_fs_driver(dev);
-@@ -812,13 +838,48 @@ ssize_t write(int fd, const void *buf, size_t count)
- 		}
- 	}
- 	ret = fsdrv->write(dev, f, buf, count);
--	if (ret > 0)
--		f->pos += ret;
- out:
- 	if (ret < 0)
- 		errno = -ret;
- 	return ret;
- }
-+
-+ssize_t pwrite(int fd, const void *buf, size_t count, loff_t offset)
-+{
-+	loff_t pos;
-+	FILE *f;
-+	int ret;
-+
-+	if (check_fd(fd))
-+		return -errno;
-+
-+	f = &files[fd];
-+
-+	pos = f->pos;
-+	f->pos = offset;
-+	ret = __write(f, buf, count);
-+	f->pos = pos;
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(pwrite);
-+
-+ssize_t write(int fd, const void *buf, size_t count)
-+{
-+	FILE *f;
-+	int ret;
-+
-+	if (check_fd(fd))
-+		return -errno;
-+
-+	f = &files[fd];
-+
-+	ret = __write(f, buf, count);
-+
-+	if (ret > 0)
-+		f->pos += ret;
-+	return ret;
-+}
- EXPORT_SYMBOL(write);
- 
- int flush(int fd)
-diff --git a/include/fs.h b/include/fs.h
-index d6b22f7..7c4e461 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -114,8 +114,10 @@ int flush(int fd);
- int lstat(const char *filename, struct stat *s);
- int stat(const char *filename, struct stat *s);
- ssize_t read(int fd, void *buf, size_t count);
-+ssize_t pread(int fd, void *buf, size_t count, loff_t offset);
- int ioctl(int fd, int request, void *buf);
- ssize_t write(int fd, const void *buf, size_t count);
-+ssize_t pwrite(int fd, const void *buf, size_t count, loff_t offset);
- 
- #define SEEK_SET	1
- #define SEEK_CUR	2
 -- 
 1.8.1.3
 
