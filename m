@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp30.i.mail.ru ([94.100.177.90])
+Received: from mail-bk0-f42.google.com ([209.85.214.42])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U78We-000320-Ev
- for barebox@lists.infradead.org; Sun, 17 Feb 2013 17:59:46 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 17 Feb 2013 21:59:37 +0400
-Message-Id: <1361123977-18443-1-git-send-email-shc_work@mail.ru>
+ id 1U7BPF-0006Di-Pr
+ for barebox@lists.infradead.org; Sun, 17 Feb 2013 21:04:18 +0000
+Received: by mail-bk0-f42.google.com with SMTP id jk7so2248731bkc.15
+ for <barebox@lists.infradead.org>; Sun, 17 Feb 2013 13:04:16 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Sun, 17 Feb 2013 22:05:00 +0100
+Message-Id: <1361135101-994-2-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
+References: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: automount: Added help string about "-d" option
+Subject: [PATCH 1/2] fs: fix return type of read
 To: barebox@lists.infradead.org
 
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/automount.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/fs.c      | 2 +-
+ include/fs.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/commands/automount.c b/commands/automount.c
-index 4713932..511d18b 100644
---- a/commands/automount.c
-+++ b/commands/automount.c
-@@ -60,6 +60,7 @@ BAREBOX_CMD_HELP_START(automount)
- BAREBOX_CMD_HELP_USAGE("automount [OPTIONS] <PATH> <cmd>\n")
- BAREBOX_CMD_HELP_SHORT("execute <cmd> when <PATH> is first accessed\n")
- BAREBOX_CMD_HELP_OPT("-l", "List currently registered automountpoints\n")
-+BAREBOX_CMD_HELP_OPT("-d", "Create the mount path\n")
- BAREBOX_CMD_HELP_OPT("-r <PATH>", "remove an automountpoint\n")
- BAREBOX_CMD_HELP_END
+diff --git a/fs/fs.c b/fs/fs.c
+index f840516..48d1c89 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -754,7 +754,7 @@ int ioctl(int fd, int request, void *buf)
+ 	return ret;
+ }
+ 
+-int read(int fd, void *buf, size_t count)
++ssize_t read(int fd, void *buf, size_t count)
+ {
+ 	struct device_d *dev;
+ 	struct fs_driver_d *fsdrv;
+diff --git a/include/fs.h b/include/fs.h
+index 919daab..d6b22f7 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -113,7 +113,7 @@ int close(int fd);
+ int flush(int fd);
+ int lstat(const char *filename, struct stat *s);
+ int stat(const char *filename, struct stat *s);
+-int read(int fd, void *buf, size_t count);
++ssize_t read(int fd, void *buf, size_t count);
+ int ioctl(int fd, int request, void *buf);
+ ssize_t write(int fd, const void *buf, size_t count);
  
 -- 
-1.7.12.4
+1.8.1.3
 
 
 _______________________________________________
