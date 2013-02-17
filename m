@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U76oE-0007km-3k
- for barebox@lists.infradead.org; Sun, 17 Feb 2013 16:09:47 +0000
-Received: from mail428.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id EF594104EAA3
- for <barebox@lists.infradead.org>; Sun, 17 Feb 2013 17:20:15 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 17 Feb 2013 17:08:36 +0100
-Message-Id: <1361117316-11469-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from smtp30.i.mail.ru ([94.100.177.90])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U78We-000320-Ev
+ for barebox@lists.infradead.org; Sun, 17 Feb 2013 17:59:46 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 17 Feb 2013 21:59:37 +0400
+Message-Id: <1361123977-18443-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,177 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] login: disable input console if password wrong
+Subject: [PATCH] commands: automount: Added help string about "-d" option
 To: barebox@lists.infradead.org
 
-so we garantie that barebox is secured again user interaction
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- commands/Kconfig        |    1 +
- commands/login.c        |    5 ++++-
- common/Kconfig          |    3 +++
- common/console.c        |    6 ++++++
- common/console_common.c |   15 +++++++++++++++
- common/console_simple.c |    7 +++++++
- include/console.h       |   12 ++++++++++++
- 7 files changed, 48 insertions(+), 1 deletion(-)
+ commands/automount.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c1454c7..d78c925 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -87,6 +87,7 @@ config CMD_MENU_MANAGEMENT
- config CMD_LOGIN
- 	tristate
- 	select PASSWORD
-+	select CONSOLE_INPUT_RESTRICTION
- 	prompt "login"
+diff --git a/commands/automount.c b/commands/automount.c
+index 4713932..511d18b 100644
+--- a/commands/automount.c
++++ b/commands/automount.c
+@@ -60,6 +60,7 @@ BAREBOX_CMD_HELP_START(automount)
+ BAREBOX_CMD_HELP_USAGE("automount [OPTIONS] <PATH> <cmd>\n")
+ BAREBOX_CMD_HELP_SHORT("execute <cmd> when <PATH> is first accessed\n")
+ BAREBOX_CMD_HELP_OPT("-l", "List currently registered automountpoints\n")
++BAREBOX_CMD_HELP_OPT("-d", "Create the mount path\n")
+ BAREBOX_CMD_HELP_OPT("-r <PATH>", "remove an automountpoint\n")
+ BAREBOX_CMD_HELP_END
  
- config CMD_PASSWD
-diff --git a/commands/login.c b/commands/login.c
-index fb6bb35..0a6f157 100644
---- a/commands/login.c
-+++ b/commands/login.c
-@@ -20,6 +20,7 @@
- #include <complete.h>
- #include <password.h>
- #include <getopt.h>
-+#include <console.h>
- 
- #define PASSWD_MAX_LENGTH	(128 + 1)
- 
-@@ -58,8 +59,10 @@ static int do_login(int argc, char *argv[])
- 		puts("Password: ");
- 		passwd_len = password(passwd, PASSWD_MAX_LENGTH, LOGIN_MODE, timeout);
- 
--		if (passwd_len < 0)
-+		if (passwd_len < 0) {
-+			console_allow_input(false);
- 			run_command(timeout_cmd, 0);
-+		}
- 
- 		if (check_passwd(passwd, passwd_len))
- 			return 0;
-diff --git a/common/Kconfig b/common/Kconfig
-index 3f6c11e..770aedd 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -417,6 +417,9 @@ config TIMESTAMP
- 	  commands like bootm or iminfo. This option is
- 	  automatically enabled when you select CFG_CMD_DATE .
- 
-+config CONSOLE_INPUT_RESTRICTION
-+	bool
-+
- choice
- 	prompt "console support"
- 	default CONSOLE_FULL
-diff --git a/common/console.c b/common/console.c
-index beb37bd..dcd4d92 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -234,6 +234,9 @@ int getc(void)
- 	unsigned char ch;
- 	uint64_t start;
- 
-+	if (!console_is_input_allow())
-+		return -EPERM;
-+
- 	/*
- 	 * For 100us we read the characters from the serial driver
- 	 * into a kfifo. This helps us not to lose characters
-@@ -268,6 +271,9 @@ EXPORT_SYMBOL(fgetc);
- 
- int tstc(void)
- {
-+	if (!console_is_input_allow())
-+		return 0;
-+
- 	return kfifo_len(console_input_fifo) || tstc_raw();
- }
- EXPORT_SYMBOL(tstc);
-diff --git a/common/console_common.c b/common/console_common.c
-index d139d1a..870ffca 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -21,6 +21,21 @@
- #include <common.h>
- #include <fs.h>
- #include <errno.h>
-+#include <console.h>
-+
-+#ifdef CONFIG_CONSOLE_INPUT_RESTRICTION
-+static bool console_input_allow = true;
-+
-+bool console_is_input_allow(void)
-+{
-+	return console_input_allow;
-+}
-+
-+void console_allow_input(bool val)
-+{
-+	console_input_allow = val;
-+}
-+#endif
- 
- #ifndef CONFIG_CONSOLE_NONE
- 
-diff --git a/common/console_simple.c b/common/console_simple.c
-index 1fe569e..cb8894c 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -3,6 +3,7 @@
- #include <fs.h>
- #include <errno.h>
- #include <debug_ll.h>
-+#include <console.h>
- 
- LIST_HEAD(console_list);
- EXPORT_SYMBOL(console_list);
-@@ -40,6 +41,9 @@ EXPORT_SYMBOL(console_putc);
- 
- int tstc(void)
- {
-+	if (!console_is_input_allow())
-+		return 0;
-+
- 	if (!console)
- 		return 0;
- 
-@@ -49,6 +53,9 @@ EXPORT_SYMBOL(tstc);
- 
- int getc(void)
- {
-+	if (!console_is_input_allow())
-+		return -EPERM;
-+
- 	if (!console)
- 		return -EINVAL;
- 	return console->getc(console);
-diff --git a/include/console.h b/include/console.h
-index c45feb4..9506653 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -52,4 +52,16 @@ extern struct list_head console_list;
- 
- #define CFG_PBSIZE (CONFIG_CBSIZE+sizeof(CONFIG_PROMPT)+16)
- 
-+#ifdef CONFIG_CONSOLE_INPUT_RESTRICTION
-+bool console_is_input_allow(void);
-+void console_allow_input(bool val);
-+#else
-+static inline bool console_is_input_allow(void)
-+{
-+	return true;
-+}
-+
-+void console_allow_input(bool val) {}
-+#endif
-+
- #endif
 -- 
-1.7.10.4
+1.7.12.4
 
 
 _______________________________________________
