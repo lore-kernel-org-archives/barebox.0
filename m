@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f178.google.com ([209.85.215.178])
+Received: from smtp205.iad.emailsrvr.com ([207.97.245.205])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7Onc-00051O-DG
- for barebox@lists.infradead.org; Mon, 18 Feb 2013 11:22:21 +0000
-Received: by mail-ea0-f178.google.com with SMTP id a14so2324964eaa.9
- for <barebox@lists.infradead.org>; Mon, 18 Feb 2013 03:22:18 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Mon, 18 Feb 2013 12:22:15 +0100
-Message-Id: <1361186535-14811-1-git-send-email-fabio.porcedda@gmail.com>
+ id 1U7QyQ-0004gK-KX
+ for barebox@lists.infradead.org; Mon, 18 Feb 2013 13:41:39 +0000
+Message-ID: <51222F8E.5050403@calxeda.com>
+Date: Mon, 18 Feb 2013 07:41:34 -0600
+From: Rob Herring <rob.herring@calxeda.com>
+MIME-Version: 1.0
+References: <1361048879-7331-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1361048879-7331-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,102 +17,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] at91sam9260/9g20ek: refactor init_board script
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] highbank: add power off support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Refactor to remove duplicated code without changing functionality.
-Put "then" on the same line of "if", because:
- - is the most used style in barebox
- - is like c code style
- - is more compact
+On 02/16/2013 03:07 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Cc: Rob Herring <rob.herring@calxeda.com>
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/Kconfig                    |    1 +
+>  arch/arm/configs/highbank_defconfig |    1 +
+>  arch/arm/mach-highbank/reset.c      |    8 ++++++++
+>  3 files changed, 10 insertions(+)
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index f002910..7ac134e 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -49,6 +49,7 @@ config ARCH_EP93XX
+>  config ARCH_HIGHBANK
+>  	bool "Calxeda Highbank"
+>  	select HAS_DEBUG_LL
+> +	select HAS_POWEROFF
+>  	select ARCH_HAS_L2X0
+>  	select CPU_V7
+>  	select ARM_AMBA
+> diff --git a/arch/arm/configs/highbank_defconfig b/arch/arm/configs/highbank_defconfig
+> index 31ac954..b034ed1 100644
+> --- a/arch/arm/configs/highbank_defconfig
+> +++ b/arch/arm/configs/highbank_defconfig
+> @@ -35,6 +35,7 @@ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+>  CONFIG_CMD_UIMAGE=y
+>  # CONFIG_CMD_BOOTU is not set
+>  CONFIG_CMD_RESET=y
+> +CONFIG_CMD_POWEROFF=y
+>  CONFIG_CMD_GO=y
+>  CONFIG_CMD_OFTREE=y
+>  CONFIG_CMD_OFTREE_PROBE=y
+> diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
+> index 41418b2..630672a 100644
+> --- a/arch/arm/mach-highbank/reset.c
+> +++ b/arch/arm/mach-highbank/reset.c
+> @@ -17,3 +17,11 @@ void __noreturn reset_cpu(ulong addr)
+>  
+>  	while(1);
+>  }
+> +
+> +void __noreturn poweroff()
+> +{
+> +	shutdown_barebox();
+> +
+> +	hingbank_set_pwr_shutdown();
+> +	while(1);
 
-Reduce the number of lines from 50 to 40.
+This needs a wfi to trigger poweroff.
 
-Tested on at91sam9260ek.
+Rob
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/at91sam9260ek/env/bin/init_board | 54 ++++++++++--------------
- 1 file changed, 22 insertions(+), 32 deletions(-)
-
-diff --git a/arch/arm/boards/at91sam9260ek/env/bin/init_board b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-index 977430d..27d767d 100644
---- a/arch/arm/boards/at91sam9260ek/env/bin/init_board
-+++ b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-@@ -8,43 +8,33 @@ vendor_id=0x4321
- 
- dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
- 
--if [ $at91_udc0.vbus != 1 ]
--then
-+if [ $at91_udc0.vbus != 1 ]; then
- 	echo "No USB Device cable plugged, normal boot"
- 	exit
- fi
- 
- gpio_get_value ${dfu_button}
--if [ $? != 0 ]
--then
--	autoboot_timeout=16
--	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
--	usbserial
--	exit
--fi
--
--echo "${button_name} pressed detected wait ${button_wait}s"
--timeout -s -a ${button_wait}
--
--if [ $at91_udc0.vbus != 1 ]
--then
--	echo "No USB Device cable plugged, normal boot"
--	exit
--fi
--
--gpio_get_value ${dfu_button}
--if [ $? != 0 ]
--then
-+if [ $? = 0 ]; then
-+	echo "${button_name} pressed detected wait ${button_wait}s"
-+	timeout -s -a ${button_wait}
-+
-+	if [ $at91_udc0.vbus != 1 ]; then
-+		echo "No USB Device cable plugged, normal boot"
-+		exit
-+	fi
-+
-+	gpio_get_value ${dfu_button}
-+	if [ $? = 0 ]; then
-+		echo ""
-+		echo "Start DFU Mode"
-+		echo ""
-+		led ds5 1
-+		dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
-+		exit
-+	fi
- 	echo "${button_name} released, normal boot"
--	autoboot_timeout=16
--	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
--	usbserial
--	exit
- fi
- 
--echo ""
--echo "Start DFU Mode"
--echo ""
--
--led ds5 1
--dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
-+autoboot_timeout=16
-+echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-+usbserial
--- 
-1.8.1.1
+> +}
+> 
 
 
 _______________________________________________
