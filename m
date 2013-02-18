@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f48.google.com ([209.85.214.48])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7SO8-00039V-ON
- for barebox@lists.infradead.org; Mon, 18 Feb 2013 15:12:18 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf20so2582134bkc.21
- for <barebox@lists.infradead.org>; Mon, 18 Feb 2013 07:12:12 -0800 (PST)
-Date: Mon, 18 Feb 2013 16:13:00 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130218151219.GA1077@x61s.8.8.8.8>
-References: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
- <1361135101-994-3-git-send-email-alex.aring@gmail.com>
- <20130218101733.GP1906@pengutronix.de>
+Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U7Umf-0007z1-Or
+ for barebox@lists.infradead.org; Mon, 18 Feb 2013 17:45:47 +0000
+Received: from mail99.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 52AF7FFA901
+ for <barebox@lists.infradead.org>; Mon, 18 Feb 2013 19:01:19 +0100 (CET)
+Date: Mon, 18 Feb 2013 18:44:33 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130218174433.GJ19322@game.jcrosoft.org>
+References: <1361038719-25530-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130218085947.GK1906@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130218101733.GP1906@pengutronix.de>
+In-Reply-To: <20130218085947.GK1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,90 +27,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] fs: add pread and pwrite functions
+Subject: Re: [PATCH 1/1] of: add do_fixup_by_compatible with u32 and string
+ version
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-On Mon, Feb 18, 2013 at 11:17:33AM +0100, Sascha Hauer wrote:
-> On Sun, Feb 17, 2013 at 10:05:01PM +0100, Alexander Aring wrote:
-> > Add pread and pwrite functions.
-> > 
-> > Split read and write functions to save some space.
-> > The functions pread and pwrite saves and sets the file
-> > position to a given offset and restore them afterwards.
-> > 
-> > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+On 09:59 Mon 18 Feb     , Sascha Hauer wrote:
+> On Sat, Feb 16, 2013 at 07:18:39PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  fs/fs.c      | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++----------
-> >  include/fs.h |  2 ++
-> >  2 files changed, 77 insertions(+), 14 deletions(-)
+> >  common/oftree.c |   27 +++++++++++++++++++++++++++
+> >  include/of.h    |    6 ++++++
+> >  2 files changed, 33 insertions(+)
 > > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index 48d1c89..497a2ea 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -754,17 +754,12 @@ int ioctl(int fd, int request, void *buf)
-> >  	return ret;
+> > diff --git a/common/oftree.c b/common/oftree.c
+> > index 6b20cdb..82e5ddd 100644
+> > --- a/common/oftree.c
+> > +++ b/common/oftree.c
+> > @@ -229,6 +229,33 @@ void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path,
+> >  	do_fixup_by_path(fdt, path, prop, &val, sizeof(val), create);
 > >  }
 > >  
-> > -ssize_t read(int fd, void *buf, size_t count)
-> > +static ssize_t __read(FILE *f, void *buf, size_t count)
-> >  {
-> >  	struct device_d *dev;
-> >  	struct fs_driver_d *fsdrv;
-> > -	FILE *f;
-> >  	int ret;
-> >  
-> > -	if (check_fd(fd))
-> > -		return -errno;
-> > -
-> > -	f = &files[fd];
-> >  	dev = f->dev;
-> >  
-> >  	fsdrv = dev_to_fs_driver(dev);
-> > @@ -777,18 +772,34 @@ ssize_t read(int fd, void *buf, size_t count)
-> >  
-> >  	ret = fsdrv->read(dev, f, buf, count);
-> >  
-> > -	if (ret > 0)
-> > -		f->pos += ret;
-> >  	if (ret < 0)
-> >  		errno = -ret;
-> >  	return ret;
-> >  }
-> > -EXPORT_SYMBOL(read);
-> > +EXPORT_SYMBOL(pread);
-> >  
-> > -ssize_t write(int fd, const void *buf, size_t count)
-> > +ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
+> > +void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
+> > +			const char *prop, const void *val, int len, int create)
 > > +{
-> > +	loff_t pos;
-> > +	FILE *f;
-> > +	int ret;
+> > +	int off = -1;
 > > +
-> > +	if (check_fd(fd))
-> > +		return -errno;
-> > +
-> > +	f = &files[fd];
-> > +
-> > +	pos = f->pos;
-> > +	f->pos = offset;
-> > +	ret = __read(f, buf, count);
-> > +	f->pos = pos;
-> > +
-> > +	return ret;
+> > +	off = fdt_node_offset_by_compatible(fdt, -1, compatible);
+> > +	while (off != -FDT_ERR_NOTFOUND) {
+> > +		if (create || (fdt_get_property(fdt, off, prop, 0) != NULL))
+> > +			fdt_setprop(fdt, off, prop, val, len);
+> > +		off = fdt_node_offset_by_compatible(fdt, off, compatible);
+> > +	}
 > > +}
-> > +EXPORT_SYMBOL(pread);
 > 
-> pread is exported twice with this patch. I fixed this while applying.
->
+> IMO we shouldn't increase the dependency on libfdt. The fdt format is a
+> nice storage format, but it sucks for modifying the tree.
+> I created some patches to get rid of libfdt entirely yesterday. They are
+> not complete yet, but removing libfdt has some nice effects:
+> 
+> - Smaller binaries
+> - No more parallel universes of fdt and internal trees. This currently makes the
+>   devicetree code messy
+> - I trimmed down the overhead of unflattening/flattening significantly.
+>   It still adds some overhead to do it, but manipulating the tree is a
+>   factor of 50 faster which means once you have multiple manipulations
+>   of the tree it reduces the overhead to a net win.
+ok will this be availlable for next release ok ohterwise can we have this
+patch first so we can have the fixuo support for highbank
 
-Ooops, sry. Thanks for applying.
-
-Regards
-Alex
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
