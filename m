@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp205.iad.emailsrvr.com ([207.97.245.205])
+Received: from mail-bk0-f48.google.com ([209.85.214.48])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7QyQ-0004gK-KX
- for barebox@lists.infradead.org; Mon, 18 Feb 2013 13:41:39 +0000
-Message-ID: <51222F8E.5050403@calxeda.com>
-Date: Mon, 18 Feb 2013 07:41:34 -0600
-From: Rob Herring <rob.herring@calxeda.com>
+ id 1U7SO8-00039V-ON
+ for barebox@lists.infradead.org; Mon, 18 Feb 2013 15:12:18 +0000
+Received: by mail-bk0-f48.google.com with SMTP id jf20so2582134bkc.21
+ for <barebox@lists.infradead.org>; Mon, 18 Feb 2013 07:12:12 -0800 (PST)
+Date: Mon, 18 Feb 2013 16:13:00 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130218151219.GA1077@x61s.8.8.8.8>
+References: <1361135101-994-1-git-send-email-alex.aring@gmail.com>
+ <1361135101-994-3-git-send-email-alex.aring@gmail.com>
+ <20130218101733.GP1906@pengutronix.de>
 MIME-Version: 1.0
-References: <1361048879-7331-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1361048879-7331-1-git-send-email-plagnioj@jcrosoft.com>
+Content-Disposition: inline
+In-Reply-To: <20130218101733.GP1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,66 +26,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] highbank: add power off support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/2] fs: add pread and pwrite functions
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 02/16/2013 03:07 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Cc: Rob Herring <rob.herring@calxeda.com>
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/Kconfig                    |    1 +
->  arch/arm/configs/highbank_defconfig |    1 +
->  arch/arm/mach-highbank/reset.c      |    8 ++++++++
->  3 files changed, 10 insertions(+)
+Hi Sascha,
+
+On Mon, Feb 18, 2013 at 11:17:33AM +0100, Sascha Hauer wrote:
+> On Sun, Feb 17, 2013 at 10:05:01PM +0100, Alexander Aring wrote:
+> > Add pread and pwrite functions.
+> > 
+> > Split read and write functions to save some space.
+> > The functions pread and pwrite saves and sets the file
+> > position to a given offset and restore them afterwards.
+> > 
+> > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> > ---
+> >  fs/fs.c      | 89 ++++++++++++++++++++++++++++++++++++++++++++++++++----------
+> >  include/fs.h |  2 ++
+> >  2 files changed, 77 insertions(+), 14 deletions(-)
+> > 
+> > diff --git a/fs/fs.c b/fs/fs.c
+> > index 48d1c89..497a2ea 100644
+> > --- a/fs/fs.c
+> > +++ b/fs/fs.c
+> > @@ -754,17 +754,12 @@ int ioctl(int fd, int request, void *buf)
+> >  	return ret;
+> >  }
+> >  
+> > -ssize_t read(int fd, void *buf, size_t count)
+> > +static ssize_t __read(FILE *f, void *buf, size_t count)
+> >  {
+> >  	struct device_d *dev;
+> >  	struct fs_driver_d *fsdrv;
+> > -	FILE *f;
+> >  	int ret;
+> >  
+> > -	if (check_fd(fd))
+> > -		return -errno;
+> > -
+> > -	f = &files[fd];
+> >  	dev = f->dev;
+> >  
+> >  	fsdrv = dev_to_fs_driver(dev);
+> > @@ -777,18 +772,34 @@ ssize_t read(int fd, void *buf, size_t count)
+> >  
+> >  	ret = fsdrv->read(dev, f, buf, count);
+> >  
+> > -	if (ret > 0)
+> > -		f->pos += ret;
+> >  	if (ret < 0)
+> >  		errno = -ret;
+> >  	return ret;
+> >  }
+> > -EXPORT_SYMBOL(read);
+> > +EXPORT_SYMBOL(pread);
+> >  
+> > -ssize_t write(int fd, const void *buf, size_t count)
+> > +ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
+> > +{
+> > +	loff_t pos;
+> > +	FILE *f;
+> > +	int ret;
+> > +
+> > +	if (check_fd(fd))
+> > +		return -errno;
+> > +
+> > +	f = &files[fd];
+> > +
+> > +	pos = f->pos;
+> > +	f->pos = offset;
+> > +	ret = __read(f, buf, count);
+> > +	f->pos = pos;
+> > +
+> > +	return ret;
+> > +}
+> > +EXPORT_SYMBOL(pread);
 > 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index f002910..7ac134e 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -49,6 +49,7 @@ config ARCH_EP93XX
->  config ARCH_HIGHBANK
->  	bool "Calxeda Highbank"
->  	select HAS_DEBUG_LL
-> +	select HAS_POWEROFF
->  	select ARCH_HAS_L2X0
->  	select CPU_V7
->  	select ARM_AMBA
-> diff --git a/arch/arm/configs/highbank_defconfig b/arch/arm/configs/highbank_defconfig
-> index 31ac954..b034ed1 100644
-> --- a/arch/arm/configs/highbank_defconfig
-> +++ b/arch/arm/configs/highbank_defconfig
-> @@ -35,6 +35,7 @@ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
->  CONFIG_CMD_UIMAGE=y
->  # CONFIG_CMD_BOOTU is not set
->  CONFIG_CMD_RESET=y
-> +CONFIG_CMD_POWEROFF=y
->  CONFIG_CMD_GO=y
->  CONFIG_CMD_OFTREE=y
->  CONFIG_CMD_OFTREE_PROBE=y
-> diff --git a/arch/arm/mach-highbank/reset.c b/arch/arm/mach-highbank/reset.c
-> index 41418b2..630672a 100644
-> --- a/arch/arm/mach-highbank/reset.c
-> +++ b/arch/arm/mach-highbank/reset.c
-> @@ -17,3 +17,11 @@ void __noreturn reset_cpu(ulong addr)
->  
->  	while(1);
->  }
-> +
-> +void __noreturn poweroff()
-> +{
-> +	shutdown_barebox();
-> +
-> +	hingbank_set_pwr_shutdown();
-> +	while(1);
+> pread is exported twice with this patch. I fixed this while applying.
+>
 
-This needs a wfi to trigger poweroff.
+Ooops, sry. Thanks for applying.
 
-Rob
-
-> +}
-> 
-
+Regards
+Alex
 
 _______________________________________________
 barebox mailing list
