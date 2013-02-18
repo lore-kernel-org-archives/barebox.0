@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7Nof-0004rX-3y
- for barebox@lists.infradead.org; Mon, 18 Feb 2013 10:19:22 +0000
-Date: Mon, 18 Feb 2013 11:19:19 +0100
+ id 1U7Nth-0005e5-SB
+ for barebox@lists.infradead.org; Mon, 18 Feb 2013 10:24:36 +0000
+Date: Mon, 18 Feb 2013 11:24:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130218101919.GQ1906@pengutronix.de>
-References: <1360954167-18993-1-git-send-email-shc_work@mail.ru>
- <20130218100642.GO1906@pengutronix.de>
- <1361182402.423724727@f309.mail.ru>
+Message-ID: <20130218102432.GR1906@pengutronix.de>
+References: <1360915499-1659-1-git-send-email-s.hauer@pengutronix.de>
+ <1360915901-3420-1-git-send-email-s.hauer@pengutronix.de>
+ <20130215081251.GJ1906@pengutronix.de>
+ <20130217105856.GA949@x61s.8.8.8.8>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361182402.423724727@f309.mail.ru>
+In-Reply-To: <20130217105856.GA949@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,91 +25,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] Add Generic GPIO driver
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] nor flash: integrate into mtd
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 18, 2013 at 02:13:22PM +0400, Alexander Shiyan wrote:
-> > On Fri, Feb 15, 2013 at 10:49:27PM +0400, Alexander Shiyan wrote:
-> > > This patch adds generic memory-mapped GPIO controller support.
-> > > Code taken from Linux Kernel and adopted for barebox.
-> > 
-> > I'm fine with this if you add a user for it. I wonder though if it's
-> > worth it to have this driver for barebox. If I have a driver in the
-> > kernel that already uses it, then this makes it simple to copy it, but
-> > should I have to write a new gpio driver, I'm unsure if it's simpler
-> > to write a new gpio driver or to register with the generic gpio
-> > driver.
+On Sun, Feb 17, 2013 at 11:59:14AM +0100, Alexander Aring wrote:
+> Hi, 
 > 
-> Here's an example that I'm checking:
+> > > diff --git a/drivers/nor/Kconfig b/drivers/mtd/nor/Kconfig
+> > > similarity index 96%
+> > > rename from drivers/nor/Kconfig
+> > > rename to drivers/mtd/nor/Kconfig
+> > > index c8ce24f..591d1ac 100644
+> > > --- a/drivers/nor/Kconfig
+> > > +++ b/drivers/mtd/nor/Kconfig
+> > > @@ -1,7 +1,5 @@
+> > > -menu "flash drivers"
+> > > -
+> > >  menuconfig DRIVER_CFI
+> > > -	bool "CFI"
+> > > +	bool "CFI NOR flash support"
+> > >  	help
+> > >  	  If you have NOR Flash devices connected to your system and wish
+> > >  	  to use them say yes here.
+> > > @@ -55,5 +53,3 @@ config CFI_BUFFER_WRITE
+> > >  	depends on DRIVER_CFI || DRIVER_CFI
+> 
+> "DRIVER_CFI || DRIVER_CFI" looks weird. :-)
+> 
+> Why we not set this to depends on MTD instead of adding support for mtd
+> in each config file?
 
-Ok, this indeed looks nice and short. You convinced me ;)
+Hm, this indeed looks weird. Since the Kconfig file is just moved and
+not touched, I don't want to squash a fixup into it. Instead how about
+the following?
 
-As said, I'm fine with the generic gpio driver if you add the below as
-first user.
+8<------------------------------------------------
 
-Sascha
+From ef06284cd947c4e90a54a62d2c106789c6eaebe8 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 18 Feb 2013 11:21:47 +0100
+Subject: [PATCH] mtd nor: remove unnecessary 'depend' in Kconfig
 
-> 
-> /*
->  * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
->  *
->  * This program is free software; you can redistribute it and/or
->  * modify it under the terms of the GNU General Public License as
->  * published by the Free Software Foundation; either version 2 of
->  * the License, or (at your option) any later version.
->  */
-> 
-> #include <init.h>
-> #include <common.h>
-> #include <malloc.h>
-> 
-> #include <linux/basic_mmio_gpio.h>
-> 
-> static int clps711x_gpio_probe(struct device_d *dev)
-> {
-> 	int err;
-> 	void __iomem *dat, *dir, *dir_inv;
-> 	struct bgpio_chip *bgc;
-> 	struct bgpio_pdata *pdata = dev->platform_data;
-> 
-> 	if (!pdata)
-> 		return -ENODATA;
-> 
-> 	dat = dev_request_mem_region_by_name(dev, "dat");
-> 	dir = dev_request_mem_region_by_name(dev, "dir");
-> 	dir_inv = dev_request_mem_region_by_name(dev, "dir_inv");
-> 	if (!dat || (!dir && !dir_inv))
-> 		return -EINVAL;
-> 
-> 	bgc = xzalloc(sizeof(struct bgpio_chip));
-> 	if (!bgc)
-> 		return -ENOMEM;
-> 
-> 	err = bgpio_init(bgc, dev, 1, dat, NULL, NULL, dir, dir_inv, 0);
-> 	if (err) {
-> 		free(bgc);
-> 		return err;
-> 	}
-> 
-> 	bgc->gc.base = pdata->base;
-> 	bgc->gc.ngpio = pdata->ngpio;
-> 
-> 	return gpiochip_add(&bgc->gc);
-> }
-> 
-> static struct driver_d clps711x_gpio_driver = {
-> 	.name	= "clps711x-gpio",
-> 	.probe	= clps711x_gpio_probe,
-> };
-> 
-> static __init int clps711x_gpio_register(void)
-> {
-> 	return platform_driver_register(&clps711x_gpio_driver);
-> }
-> coredevice_initcall(clps711x_gpio_register);
-> 
-> ---
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nor/Kconfig |    8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/drivers/mtd/nor/Kconfig b/drivers/mtd/nor/Kconfig
+index 591d1ac..44a4184 100644
+--- a/drivers/mtd/nor/Kconfig
++++ b/drivers/mtd/nor/Kconfig
+@@ -8,17 +8,14 @@ if DRIVER_CFI
+ 
+ config DRIVER_CFI_INTEL
+ 	default y
+-	depends on DRIVER_CFI
+ 	bool "Support Intel flash chips"
+ 
+ config DRIVER_CFI_AMD
+ 	default y
+-	depends on DRIVER_CFI
+ 	bool "support AMD flash chips"
+ 
+ config DRIVER_CFI_BANK_WIDTH_1
+ 	bool "Support 8-bit buswidth"
+-	depends on DRIVER_CFI
+ 	default y
+ 	help
+ 	  If you wish to support CFI devices on a physical bus which is
+@@ -26,7 +23,6 @@ config DRIVER_CFI_BANK_WIDTH_1
+ 
+ config DRIVER_CFI_BANK_WIDTH_2
+ 	bool "Support 16-bit buswidth"
+-	depends on DRIVER_CFI
+ 	default y
+ 	help
+ 	  If you wish to support CFI devices on a physical bus which is
+@@ -34,7 +30,6 @@ config DRIVER_CFI_BANK_WIDTH_2
+ 
+ config DRIVER_CFI_BANK_WIDTH_4
+ 	bool "Support 32-bit buswidth"
+-	depends on DRIVER_CFI
+ 	default y
+ 	help
+ 	  If you wish to support CFI devices on a physical bus which is
+@@ -42,14 +37,11 @@ config DRIVER_CFI_BANK_WIDTH_4
+ 
+ config DRIVER_CFI_BANK_WIDTH_8
+ 	bool "Support 64-bit buswidth"
+-	depends on DRIVER_CFI
+-	default n
+ 	help
+ 	  If you wish to support CFI devices on a physical bus which is
+ 	  64 bits wide, say 'Y'.
+ 
+ config CFI_BUFFER_WRITE
+ 	bool "use cfi driver with buffer write"
+-	depends on DRIVER_CFI || DRIVER_CFI
+ 
+ endif
+-- 
+1.7.10.4
+
 
 -- 
 Pengutronix e.K.                           |                             |
