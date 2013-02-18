@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f178.google.com ([209.85.215.178])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7Nth-0005e5-SB
- for barebox@lists.infradead.org; Mon, 18 Feb 2013 10:24:36 +0000
-Date: Mon, 18 Feb 2013 11:24:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130218102432.GR1906@pengutronix.de>
-References: <1360915499-1659-1-git-send-email-s.hauer@pengutronix.de>
- <1360915901-3420-1-git-send-email-s.hauer@pengutronix.de>
- <20130215081251.GJ1906@pengutronix.de>
- <20130217105856.GA949@x61s.8.8.8.8>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130217105856.GA949@x61s.8.8.8.8>
+ id 1U7Onc-00051O-DG
+ for barebox@lists.infradead.org; Mon, 18 Feb 2013 11:22:21 +0000
+Received: by mail-ea0-f178.google.com with SMTP id a14so2324964eaa.9
+ for <barebox@lists.infradead.org>; Mon, 18 Feb 2013 03:22:18 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Mon, 18 Feb 2013 12:22:15 +0100
+Message-Id: <1361186535-14811-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,119 +16,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nor flash: integrate into mtd
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] at91sam9260/9g20ek: refactor init_board script
+To: barebox@lists.infradead.org
 
-On Sun, Feb 17, 2013 at 11:59:14AM +0100, Alexander Aring wrote:
-> Hi, 
-> 
-> > > diff --git a/drivers/nor/Kconfig b/drivers/mtd/nor/Kconfig
-> > > similarity index 96%
-> > > rename from drivers/nor/Kconfig
-> > > rename to drivers/mtd/nor/Kconfig
-> > > index c8ce24f..591d1ac 100644
-> > > --- a/drivers/nor/Kconfig
-> > > +++ b/drivers/mtd/nor/Kconfig
-> > > @@ -1,7 +1,5 @@
-> > > -menu "flash drivers"
-> > > -
-> > >  menuconfig DRIVER_CFI
-> > > -	bool "CFI"
-> > > +	bool "CFI NOR flash support"
-> > >  	help
-> > >  	  If you have NOR Flash devices connected to your system and wish
-> > >  	  to use them say yes here.
-> > > @@ -55,5 +53,3 @@ config CFI_BUFFER_WRITE
-> > >  	depends on DRIVER_CFI || DRIVER_CFI
-> 
-> "DRIVER_CFI || DRIVER_CFI" looks weird. :-)
-> 
-> Why we not set this to depends on MTD instead of adding support for mtd
-> in each config file?
+Refactor to remove duplicated code without changing functionality.
+Put "then" on the same line of "if", because:
+ - is the most used style in barebox
+ - is like c code style
+ - is more compact
 
-Hm, this indeed looks weird. Since the Kconfig file is just moved and
-not touched, I don't want to squash a fixup into it. Instead how about
-the following?
+Reduce the number of lines from 50 to 40.
 
-8<------------------------------------------------
+Tested on at91sam9260ek.
 
-From ef06284cd947c4e90a54a62d2c106789c6eaebe8 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 18 Feb 2013 11:21:47 +0100
-Subject: [PATCH] mtd nor: remove unnecessary 'depend' in Kconfig
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/mtd/nor/Kconfig |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/arm/boards/at91sam9260ek/env/bin/init_board | 54 ++++++++++--------------
+ 1 file changed, 22 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/mtd/nor/Kconfig b/drivers/mtd/nor/Kconfig
-index 591d1ac..44a4184 100644
---- a/drivers/mtd/nor/Kconfig
-+++ b/drivers/mtd/nor/Kconfig
-@@ -8,17 +8,14 @@ if DRIVER_CFI
+diff --git a/arch/arm/boards/at91sam9260ek/env/bin/init_board b/arch/arm/boards/at91sam9260ek/env/bin/init_board
+index 977430d..27d767d 100644
+--- a/arch/arm/boards/at91sam9260ek/env/bin/init_board
++++ b/arch/arm/boards/at91sam9260ek/env/bin/init_board
+@@ -8,43 +8,33 @@ vendor_id=0x4321
  
- config DRIVER_CFI_INTEL
- 	default y
--	depends on DRIVER_CFI
- 	bool "Support Intel flash chips"
+ dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
  
- config DRIVER_CFI_AMD
- 	default y
--	depends on DRIVER_CFI
- 	bool "support AMD flash chips"
+-if [ $at91_udc0.vbus != 1 ]
+-then
++if [ $at91_udc0.vbus != 1 ]; then
+ 	echo "No USB Device cable plugged, normal boot"
+ 	exit
+ fi
  
- config DRIVER_CFI_BANK_WIDTH_1
- 	bool "Support 8-bit buswidth"
--	depends on DRIVER_CFI
- 	default y
- 	help
- 	  If you wish to support CFI devices on a physical bus which is
-@@ -26,7 +23,6 @@ config DRIVER_CFI_BANK_WIDTH_1
+ gpio_get_value ${dfu_button}
+-if [ $? != 0 ]
+-then
+-	autoboot_timeout=16
+-	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
+-	usbserial
+-	exit
+-fi
+-
+-echo "${button_name} pressed detected wait ${button_wait}s"
+-timeout -s -a ${button_wait}
+-
+-if [ $at91_udc0.vbus != 1 ]
+-then
+-	echo "No USB Device cable plugged, normal boot"
+-	exit
+-fi
+-
+-gpio_get_value ${dfu_button}
+-if [ $? != 0 ]
+-then
++if [ $? = 0 ]; then
++	echo "${button_name} pressed detected wait ${button_wait}s"
++	timeout -s -a ${button_wait}
++
++	if [ $at91_udc0.vbus != 1 ]; then
++		echo "No USB Device cable plugged, normal boot"
++		exit
++	fi
++
++	gpio_get_value ${dfu_button}
++	if [ $? = 0 ]; then
++		echo ""
++		echo "Start DFU Mode"
++		echo ""
++		led ds5 1
++		dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
++		exit
++	fi
+ 	echo "${button_name} released, normal boot"
+-	autoboot_timeout=16
+-	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
+-	usbserial
+-	exit
+ fi
  
- config DRIVER_CFI_BANK_WIDTH_2
- 	bool "Support 16-bit buswidth"
--	depends on DRIVER_CFI
- 	default y
- 	help
- 	  If you wish to support CFI devices on a physical bus which is
-@@ -34,7 +30,6 @@ config DRIVER_CFI_BANK_WIDTH_2
- 
- config DRIVER_CFI_BANK_WIDTH_4
- 	bool "Support 32-bit buswidth"
--	depends on DRIVER_CFI
- 	default y
- 	help
- 	  If you wish to support CFI devices on a physical bus which is
-@@ -42,14 +37,11 @@ config DRIVER_CFI_BANK_WIDTH_4
- 
- config DRIVER_CFI_BANK_WIDTH_8
- 	bool "Support 64-bit buswidth"
--	depends on DRIVER_CFI
--	default n
- 	help
- 	  If you wish to support CFI devices on a physical bus which is
- 	  64 bits wide, say 'Y'.
- 
- config CFI_BUFFER_WRITE
- 	bool "use cfi driver with buffer write"
--	depends on DRIVER_CFI || DRIVER_CFI
- 
- endif
+-echo ""
+-echo "Start DFU Mode"
+-echo ""
+-
+-led ds5 1
+-dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
++autoboot_timeout=16
++echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
++usbserial
 -- 
-1.7.10.4
+1.8.1.1
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
