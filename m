@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
- helo=mo4.mail-out.ovh.net)
+Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U7jMb-0001Fm-GR
- for barebox@lists.infradead.org; Tue, 19 Feb 2013 09:19:50 +0000
-Received: from mail433.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id D72DC104FB8F
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 10:28:03 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 19 Feb 2013 10:17:23 +0100
-Message-Id: <1361265445-11731-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <20130214193135.GA1906@pengutronix.de>
-References: <20130214193135.GA1906@pengutronix.de>
-MIME-Version: 1.0
+ id 1U7jRx-0002Ij-Ew
+ for barebox@lists.infradead.org; Tue, 19 Feb 2013 09:25:22 +0000
+Received: from mail635.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 6FBAFFFAA54
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 10:40:59 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 19 Feb 2013 10:24:14 +0100
+Message-Id: <1361265854-14224-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 1/3] env: add register_persistent_environment
+Subject: [For master PATCH 1/1] grapric_utils: set_pixel only write 16bit in
+ 16bit mode
 To: barebox@lists.infradead.org
-Cc: Juergen Beisert <jbe@pengutronix.de>
 
-LSBoZWF2aWx5IGNvcGllZCBmcm9tIHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52aXJvbm1lbnQgd2hp
-Y2ggd2FzClNpZ25lZC1vZmYtYnk6IEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRl
-PgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2NDog
-cmVuYW1lIGZ1bmN0aW9uIGFuZCBtb3ZlIHRvIGVudmZzLmgKdjM6IGFsc28gZml4IHRoZSB0eXBv
-IGluIHRoZSBwcmludGYKdjI6IGZpeCB0eXBvIGluIHBlcnNpc3RlbnQKIGNvbW1vbi9lbnZpcm9u
-bWVudC5jIHwgNDAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogaW5j
-bHVkZS9lbnZmcy5oICAgICAgfCAgMiArKwogMiBmaWxlcyBjaGFuZ2VkLCA0MiBpbnNlcnRpb25z
-KCspCgpkaWZmIC0tZ2l0IGEvY29tbW9uL2Vudmlyb25tZW50LmMgYi9jb21tb24vZW52aXJvbm1l
-bnQuYwppbmRleCBlOGQ2MjNmLi43OGNkNDVjIDEwMDY0NAotLS0gYS9jb21tb24vZW52aXJvbm1l
-bnQuYworKysgYi9jb21tb24vZW52aXJvbm1lbnQuYwpAQCAtMzYzLDMgKzM2Myw0MyBAQCBvdXQ6
-CiAJCWZyZWUoYnVmX2ZyZWUpOwogCXJldHVybiByZXQ7CiB9CisKKyNpZmRlZiBfX0JBUkVCT1hf
-XworLyoqCisgKiBUcnkgdG8gcmVnaXN0ZXIgYW4gZW52aXJvbm1lbnQgc3RvcmFnZSBvbiBhIGRl
-dmljZSdzIHBhcnRpdGlvbgorICogQHJldHVybiAwIG9uIHN1Y2Nlc3MKKyAqCisgKiBXZSByZWx5
-IG9uIHRoZSBleGlzdGVuY2Ugb2YgYSB1c2FibGUgc3RvcmFnZSBkZXZpY2UsIGFscmVhZHkgYXR0
-YWNoZWQgdG8KKyAqIG91ciBzeXN0ZW0sIHRvIGdldCBzb21ldGhpbmcgbGlrZSBhIHBlcnNpc3Rl
-bnQgbWVtb3J5IGZvciBvdXIgZW52aXJvbm1lbnQuCisgKiBXZSBuZWVkIHRvIHNwZWNpZnkgdGhl
-IHBhcnRpdGlvbiBudW1iZXIgdG8gdXNlIG9uIHRoaXMgZGV2aWNlLgorICogQHBhcmFtW2luXSBk
-ZXZuYW1lIE5hbWUgb2YgdGhlIGRldmljZQorICogQHBhcmFtW2luXSBwYXJ0bnIgUGFydGl0aW9u
-IG51bWJlcgorICogQHJldHVybiAwIG9uIHN1Y2Nlc3MsIGFueXRoaW5nIGVsc2UgaW4gY2FzZSBv
-ZiBmYWlsdXJlCisgKi8KKworaW50IGVudmZzX3JlZ2lzdGVyX3BhcnRpdGlvbihjb25zdCBjaGFy
-ICpkZXZuYW1lLCB1bnNpZ25lZCBpbnQgcGFydG5yKQoreworCXN0cnVjdCBjZGV2ICpjZGV2Owor
-CWNoYXIgKnBhcnRuYW1lOworCisJaWYgKCFkZXZuYW1lKQorCQlyZXR1cm4gLUVJTlZBTDsKKwor
-CWNkZXYgPSBjZGV2X2J5X25hbWUoZGV2bmFtZSk7CisJaWYgKGNkZXYgPT0gTlVMTCkgeworCQlw
-cl9lcnIoIk5vICVzIHByZXNlbnRcbiIsIGRldm5hbWUpOworCQlyZXR1cm4gLUVOT0RFVjsKKwl9
-CisJcGFydG5hbWUgPSBhc3ByaW50ZigiJXMuJWQiLCBkZXZuYW1lLCBwYXJ0bnIpOworCWNkZXYg
-PSBjZGV2X2J5X25hbWUocGFydG5hbWUpOworCWlmIChjZGV2ID09IE5VTEwpIHsKKwkJcHJfZXJy
-KCJObyAlcyBwYXJ0aXRpb24gYXZhaWxhYmxlXG4iLCBwYXJ0bmFtZSk7CisJCXByX2luZm8oIlBs
-ZWFzZSBjcmVhdGUgdGhlIHBhcnRpdGlvbiAlcyB0byBzdG9yZSB0aGUgZW52XG4iLCBwYXJ0bmFt
-ZSk7CisJCXJldHVybiAtRU5PREVWOworCX0KKworCXJldHVybiBkZXZmc19hZGRfcGFydGl0aW9u
-KHBhcnRuYW1lLCAwLCBjZGV2LT5zaXplLAorCQkJCQkJREVWRlNfUEFSVElUSU9OX0ZJWEVELCAi
-ZW52MCIpOworfQorRVhQT1JUX1NZTUJPTChlbnZmc19yZWdpc3Rlcl9wYXJ0aXRpb24pOworI2Vu
-ZGlmCmRpZmYgLS1naXQgYS9pbmNsdWRlL2VudmZzLmggYi9pbmNsdWRlL2VudmZzLmgKaW5kZXgg
-MmRiNTVlZC4uZTkzNzJiMyAxMDA2NDQKLS0tIGEvaW5jbHVkZS9lbnZmcy5oCisrKyBiL2luY2x1
-ZGUvZW52ZnMuaApAQCAtOTYsNCArOTYsNiBAQCBpbnQgZW52ZnNfc2F2ZShjaGFyICpmaWxlbmFt
-ZSwgY2hhciAqZGlybmFtZSk7CiAvKiBkZWZhdWx0cyB0byAvZGV2L2VudjAgKi8KIGV4dGVybiBj
-aGFyICpkZWZhdWx0X2Vudmlyb25tZW50X3BhdGg7CiAKK2ludCBlbnZmc19yZWdpc3Rlcl9wYXJ0
-aXRpb24oY29uc3QgY2hhciAqZGV2bmFtZSwgdW5zaWduZWQgaW50IHBhcnRucik7CisKICNlbmRp
-ZiAvKiBfRU5WRlNfSCAqLwotLSAKMS43LjExLjcKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ lib/gui/graphic_utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index 95687df..a1be5d0 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -104,7 +104,7 @@ void set_pixel(struct fb_info *info, void *adr, u32 px)
+ 	case 8:
+ 		break;
+ 	case 16:
+-		*(u16 *)adr = px;
++		*(u16 *)adr = px & 0xffff;
+ 		break;
+ 	case 32:
+ 		*(u32 *)adr = px;
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
