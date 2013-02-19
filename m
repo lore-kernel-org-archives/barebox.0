@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7i45-0003yF-Mk
- for barebox@lists.infradead.org; Tue, 19 Feb 2013 07:56:38 +0000
-Date: Tue, 19 Feb 2013 08:56:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130219075635.GW1906@pengutronix.de>
-References: <1361186535-14811-1-git-send-email-fabio.porcedda@gmail.com>
+Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U7jKV-0001Fn-95
+ for barebox@lists.infradead.org; Tue, 19 Feb 2013 09:17:40 +0000
+Received: from mail433.ha.ovh.net (b7.ovh.net [213.186.33.57])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 0216E104FBC5
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 10:28:04 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 19 Feb 2013 10:17:25 +0100
+Message-Id: <1361265445-11731-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1361265445-11731-1-git-send-email-eric@eukrea.com>
+References: <20130214193135.GA1906@pengutronix.de>
+ <1361265445-11731-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1361186535-14811-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,123 +22,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91sam9260/9g20ek: refactor init_board script
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4 3/3] falconwing: switch to generic peristent env
+To: barebox@lists.infradead.org
 
-On Mon, Feb 18, 2013 at 12:22:15PM +0100, Fabio Porcedda wrote:
-> Refactor to remove duplicated code without changing functionality.
-> Put "then" on the same line of "if", because:
->  - is the most used style in barebox
->  - is like c code style
->  - is more compact
-> 
-> Reduce the number of lines from 50 to 40.
-
-Applied, thanks
-
-Sascha
-
-> 
-> Tested on at91sam9260ek.
-> 
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/at91sam9260ek/env/bin/init_board | 54 ++++++++++--------------
->  1 file changed, 22 insertions(+), 32 deletions(-)
-> 
-> diff --git a/arch/arm/boards/at91sam9260ek/env/bin/init_board b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-> index 977430d..27d767d 100644
-> --- a/arch/arm/boards/at91sam9260ek/env/bin/init_board
-> +++ b/arch/arm/boards/at91sam9260ek/env/bin/init_board
-> @@ -8,43 +8,33 @@ vendor_id=0x4321
->  
->  dfu_config="/dev/nand0.barebox.bb(barebox)sr,/dev/nand0.kernel.bb(kernel)r,/dev/nand0.rootfs.bb(rootfs)r"
->  
-> -if [ $at91_udc0.vbus != 1 ]
-> -then
-> +if [ $at91_udc0.vbus != 1 ]; then
->  	echo "No USB Device cable plugged, normal boot"
->  	exit
->  fi
->  
->  gpio_get_value ${dfu_button}
-> -if [ $? != 0 ]
-> -then
-> -	autoboot_timeout=16
-> -	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-> -	usbserial
-> -	exit
-> -fi
-> -
-> -echo "${button_name} pressed detected wait ${button_wait}s"
-> -timeout -s -a ${button_wait}
-> -
-> -if [ $at91_udc0.vbus != 1 ]
-> -then
-> -	echo "No USB Device cable plugged, normal boot"
-> -	exit
-> -fi
-> -
-> -gpio_get_value ${dfu_button}
-> -if [ $? != 0 ]
-> -then
-> +if [ $? = 0 ]; then
-> +	echo "${button_name} pressed detected wait ${button_wait}s"
-> +	timeout -s -a ${button_wait}
-> +
-> +	if [ $at91_udc0.vbus != 1 ]; then
-> +		echo "No USB Device cable plugged, normal boot"
-> +		exit
-> +	fi
-> +
-> +	gpio_get_value ${dfu_button}
-> +	if [ $? = 0 ]; then
-> +		echo ""
-> +		echo "Start DFU Mode"
-> +		echo ""
-> +		led ds5 1
-> +		dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
-> +		exit
-> +	fi
->  	echo "${button_name} released, normal boot"
-> -	autoboot_timeout=16
-> -	echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-> -	usbserial
-> -	exit
->  fi
->  
-> -echo ""
-> -echo "Start DFU Mode"
-> -echo ""
-> -
-> -led ds5 1
-> -dfu ${dfu_config} -P ${product_id} -V ${vendor_id}
-> +autoboot_timeout=16
-> +echo "enable tty over USB Device, increase the boot delay to ${autoboot_timeout}s"
-> +usbserial
-> -- 
-> 1.8.1.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQp2NDogcmVu
+YW1lIGZ1bmN0aW9uIGFuZCBtb3ZlIHRvIGVudmZzLmgKCiBhcmNoL2FybS9ib2FyZHMvY2h1bWJ5
+X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jIHwgNDEgKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+IDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDM4IGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2luZy9mYWxjb253aW5nLmMgYi9h
+cmNoL2FybS9ib2FyZHMvY2h1bWJ5X2ZhbGNvbndpbmcvZmFsY29ud2luZy5jCmluZGV4IDA4MTg2
+NjYuLmZkNWJjNGMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9jaHVtYnlfZmFsY29ud2lu
+Zy9mYWxjb253aW5nLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL2NodW1ieV9mYWxjb253aW5nL2Zh
+bGNvbndpbmcuYwpAQCAtMTYsNiArMTYsNyBAQAogI2luY2x1ZGUgPGluaXQuaD4KICNpbmNsdWRl
+IDxncGlvLmg+CiAjaW5jbHVkZSA8ZW52aXJvbm1lbnQuaD4KKyNpbmNsdWRlIDxlbnZmcy5oPgog
+I2luY2x1ZGUgPGVycm5vLmg+CiAjaW5jbHVkZSA8bWNpLmg+CiAjaW5jbHVkZSA8c2l6ZXMuaD4K
+QEAgLTI2NSw0MiArMjY2LDYgQEAgc3RhdGljIGludCBmYWxjb253aW5nX21lbV9pbml0KHZvaWQp
+CiB9CiBtZW1faW5pdGNhbGwoZmFsY29ud2luZ19tZW1faW5pdCk7CiAKLS8qKgotICogVHJ5IHRv
+IHJlZ2lzdGVyIGFuIGVudmlyb25tZW50IHN0b3JhZ2Ugb24gdGhlIGF0dGFjaGVkIE1DSSBjYXJk
+Ci0gKiBAcmV0dXJuIDAgb24gc3VjY2VzcwotICoKLSAqIFdlIHJlbHkgb24gdGhlIGV4aXN0ZW5j
+ZSBvZiBhIHVzYWJsZSBTRCBjYXJkLCBhbHJlYWR5IGF0dGFjaGVkIHRvCi0gKiBvdXIgc3lzdGVt
+LCB0byBnZXQgc29tZXRoaW5nIGxpa2UgYSBwZXJzaXN0ZW50IG1lbW9yeSBmb3Igb3VyIGVudmly
+b25tZW50LgotICogSWYgdGhpcyBTRCBjYXJkIGlzIGFsc28gdGhlIGJvb3QgbWVkaWEsIHdlIGNh
+biB1c2UgdGhlIHNlY29uZCBwYXJ0aXRpb24KLSAqIGZvciBvdXIgZW52aXJvbm1lbnQgcHVycG9z
+ZSAoaWYgcHJlc2VudCEpLgotICovCi1zdGF0aWMgaW50IHJlZ2lzdGVyX3BlcnNpc3RhbnRfZW52
+aXJvbm1lbnQodm9pZCkKLXsKLQlzdHJ1Y3QgY2RldiAqY2RldjsKLQotCS8qCi0JICogVGhlIGNo
+dW1ieSBvbmUgb25seSBoYXMgb25lIE1DSSBjYXJkIHNvY2tldC4KLQkgKiBTbywgd2UgZXhwZWN0
+IGl0cyBuYW1lIGFzICJkaXNrMCIuCi0JICovCi0JY2RldiA9IGNkZXZfYnlfbmFtZSgiZGlzazAi
+KTsKLQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gTUNJIGNhcmQgcHJlc2V0XG4i
+KTsKLQkJcmV0dXJuIC1FTk9ERVY7Ci0JfQotCi0JLyogTUNJIGNhcmQgaXMgcHJlc2VudCwgYWxz
+byBhIHVzZWFibGUgcGFydGl0aW9uIG9uIGl0PyAqLwotCWNkZXYgPSBjZGV2X2J5X25hbWUoImRp
+c2swLjEiKTsKLQlpZiAoY2RldiA9PSBOVUxMKSB7Ci0JCXByX2VycigiTm8gc2Vjb25kIHBhcnRp
+dGlvbiBhdmFpbGFibGVcbiIpOwotCQlwcl9pbmZvKCJQbGVhc2UgY3JlYXRlIGF0IGxlYXN0IGEg
+c2Vjb25kIHBhcnRpdGlvbiB3aXRoIgotCQkJIiAyNTYga2lCLi4uNTEyIGtpQiBpbiBzaXplICh5
+b3VyIGNob2ljZSlcbiIpOwotCQlyZXR1cm4gLUVOT0RFVjsKLQl9Ci0KLQkvKiB1c2UgdGhlIGZ1
+bGwgcGFydGl0aW9uIGFzIG91ciBwZXJzaXN0ZW50IGVudmlyb25tZW50IHN0b3JhZ2UgKi8KLQly
+ZXR1cm4gZGV2ZnNfYWRkX3BhcnRpdGlvbigiZGlzazAuMSIsIDAsIGNkZXYtPnNpemUsIERFVkZT
+X1BBUlRJVElPTl9GSVhFRCwgImVudjAiKTsKLX0KLQogI2RlZmluZSBHUElPX1VTQl9IVUJfUkVT
+RVQJMjkKICNkZWZpbmUgR1BJT19VU0JfSFVCX1BPV0VSCTI2CiAKQEAgLTMzOCw5ICszMDMsOSBA
+QCBzdGF0aWMgaW50IGZhbGNvbndpbmdfZGV2aWNlc19pbml0KHZvaWQpCiAJYXJtbGludXhfc2V0
+X2Jvb3RwYXJhbXMoKHZvaWQgKilJTVhfTUVNT1JZX0JBU0UgKyAweDEwMCk7CiAJYXJtbGludXhf
+c2V0X2FyY2hpdGVjdHVyZShNQUNIX1RZUEVfQ0hVTUJZKTsKIAotCXJjID0gcmVnaXN0ZXJfcGVy
+c2lzdGFudF9lbnZpcm9ubWVudCgpOworCXJjID0gZW52ZnNfcmVnaXN0ZXJfcGFydGl0aW9uKCJk
+aXNrMCIsIDEpOwogCWlmIChyYyAhPSAwKQotCQlwcmludGYoIkNhbm5vdCBjcmVhdGUgdGhlICdl
+bnYwJyBwZXJzaXN0YW50IGVudmlyb25tZW50IHN0b3JhZ2UgKCVkKVxuIiwgcmMpOworCQlwcmlu
+dGYoIkNhbm5vdCBjcmVhdGUgdGhlICdlbnYwJyBwZXJzaXN0ZW50IGVudmlyb25tZW50IHN0b3Jh
+Z2UgKCVkKVxuIiwgcmMpOwogCiAJcmV0dXJuIDA7CiB9Ci0tIAoxLjcuMTEuNwoKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
+aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
