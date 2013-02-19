@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
- helo=mo4.mail-out.ovh.net)
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U7pFW-0007hz-BV
- for barebox@lists.infradead.org; Tue, 19 Feb 2013 15:36:55 +0000
-Received: from mail643.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 974701050151
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 16:47:28 +0100 (CET)
-Date: Tue, 19 Feb 2013 16:35:48 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130219153548.GM19322@game.jcrosoft.org>
+ id 1U7pS6-00017Q-0s
+ for barebox@lists.infradead.org; Tue, 19 Feb 2013 15:49:54 +0000
+Date: Tue, 19 Feb 2013 16:49:41 +0100
+From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
+Message-ID: <20130219164941.7a630578@e6520eb>
+In-Reply-To: <20130219153548.GM19322@game.jcrosoft.org>
 References: <20130214193135.GA1906@pengutronix.de>
  <1361265445-11731-1-git-send-email-eric@eukrea.com>
  <20130219115843.GL19322@game.jcrosoft.org>
  <20130219144156.7754d3de@e6520eb>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130219144156.7754d3de@e6520eb>
+ <20130219153548.GM19322@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,32 +21,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v4 1/3] env: add register_persistent_environment
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-On 14:41 Tue 19 Feb     , Eric B=E9nard wrote:
-> Le Tue, 19 Feb 2013 12:58:43 +0100,
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> =
-
-> > On 10:17 Tue 19 Feb     , Eric B=E9nard wrote:
-> > > +int envfs_register_partition(const char *devname, unsigned int partn=
-r)
-> > a part can be a number or a name
-> > =
-
-> do you have an example please ?
-EFI GPT
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TGUgVHVlLCAxOSBGZWIgMjAxMyAxNjozNTo0OCArMDEwMCwKSmVhbi1DaHJpc3RvcGhlIFBMQUdO
+SU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gYSDDqWNyaXQgOgoKPiBPbiAxNDo0
+MSBUdWUgMTkgRmViICAgICAsIEVyaWMgQsOpbmFyZCB3cm90ZToKPiA+IExlIFR1ZSwgMTkgRmVi
+IDIwMTMgMTI6NTg6NDMgKzAxMDAsCj4gPiBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFS
+RCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPiBhIMOpY3JpdCA6Cj4gPiAKPiA+ID4gT24gMTA6MTcg
+VHVlIDE5IEZlYiAgICAgLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiA+ID4gK2ludCBlbnZmc19y
+ZWdpc3Rlcl9wYXJ0aXRpb24oY29uc3QgY2hhciAqZGV2bmFtZSwgdW5zaWduZWQgaW50IHBhcnRu
+cikKPiA+ID4gYSBwYXJ0IGNhbiBiZSBhIG51bWJlciBvciBhIG5hbWUKPiA+ID4gCj4gPiBkbyB5
+b3UgaGF2ZSBhbiBleGFtcGxlIHBsZWFzZSA/Cj4gRUZJIEdQVAo+IAppcyB0aGF0IHByZXNlbnQg
+aW4gbWFpbGluZSA/CgpFcmljCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
+cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
