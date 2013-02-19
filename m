@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f170.google.com ([209.85.215.170])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7kTv-000604-VV
- for barebox@lists.infradead.org; Tue, 19 Feb 2013 10:31:29 +0000
-Received: by mail-ea0-f170.google.com with SMTP id a11so2804052eaa.29
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 02:31:25 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Tue, 19 Feb 2013 11:31:21 +0100
-Message-Id: <1361269881-23479-1-git-send-email-fabio.porcedda@gmail.com>
+Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U7lrQ-00075J-Q1
+ for barebox@lists.infradead.org; Tue, 19 Feb 2013 11:59:49 +0000
+Received: from mail183.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id A661AFFB719
+ for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 13:10:30 +0100 (CET)
+Date: Tue, 19 Feb 2013 12:58:43 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130219115843.GL19322@game.jcrosoft.org>
+References: <20130214193135.GA1906@pengutronix.de>
+ <1361265445-11731-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1361265445-11731-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,123 +23,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For master PATCH v2] ARM: at91: use -EINVAL for invalid gpio on
- atmel_mci
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v4 1/3] env: add register_persistent_environment
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
-v2:
- - fix all the other boards using atmel_mci
+On 10:17 Tue 19 Feb     , Eric B=E9nard wrote:
+> - heavily copied from register_persistant_environment which was
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> =
 
- arch/arm/boards/at91sam9260ek/init.c    | 2 ++
- arch/arm/boards/at91sam9m10g45ek/init.c | 1 +
- arch/arm/boards/at91sam9m10ihd/init.c   | 1 +
- arch/arm/boards/dss11/init.c            | 2 ++
- arch/arm/boards/pm9g45/init.c           | 2 +-
- arch/arm/boards/qil-a9260/init.c        | 2 ++
- arch/arm/boards/usb-a926x/init.c        | 2 ++
- 7 files changed, 11 insertions(+), 1 deletion(-)
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+> v4: rename function and move to envfs.h
+> v3: also fix the typo in the printf
+> v2: fix typo in persistent
+>  common/environment.c | 40 ++++++++++++++++++++++++++++++++++++++++
+>  include/envfs.h      |  2 ++
+>  2 files changed, 42 insertions(+)
+> =
 
-diff --git a/arch/arm/boards/at91sam9260ek/init.c b/arch/arm/boards/at91sam9260ek/init.c
-index 2d52f5a..144f979 100644
---- a/arch/arm/boards/at91sam9260ek/init.c
-+++ b/arch/arm/boards/at91sam9260ek/init.c
-@@ -168,6 +168,8 @@ static void at91sam9260ek_phy_reset(void)
- static struct atmel_mci_platform_data __initdata ek_mci_data = {
- 	.bus_width	= 4,
- 	.slot_b		= 1,
-+	.detect_pin	= -EINVAL,
-+	.wp_pin		= -EINVAL,
- };
- 
- static void ek_usb_add_device_mci(void)
-diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
-index 5b5e31b..0ae7171 100644
---- a/arch/arm/boards/at91sam9m10g45ek/init.c
-+++ b/arch/arm/boards/at91sam9m10g45ek/init.c
-@@ -114,6 +114,7 @@ static struct at91_ether_platform_data macb_pdata = {
- static struct atmel_mci_platform_data ek_mci_data = {
- 	.bus_width	= 4,
- 	.detect_pin	= AT91_PIN_PD10,
-+	.wp_pin		= -EINVAL,
- };
- 
- static void ek_add_device_mci(void)
-diff --git a/arch/arm/boards/at91sam9m10ihd/init.c b/arch/arm/boards/at91sam9m10ihd/init.c
-index f258caf..df63a91 100644
---- a/arch/arm/boards/at91sam9m10ihd/init.c
-+++ b/arch/arm/boards/at91sam9m10ihd/init.c
-@@ -96,6 +96,7 @@ static void ek_add_device_eth(void)
- static struct atmel_mci_platform_data ek_mci0_data = {
- 	.bus_width	= 4,
- 	.detect_pin	= AT91_PIN_PC25,
-+	.wp_pin         = -EINVAL,
- };
- 
- static void ek_add_device_mci(void)
-diff --git a/arch/arm/boards/dss11/init.c b/arch/arm/boards/dss11/init.c
-index 2920d5e..77ae46f 100644
---- a/arch/arm/boards/dss11/init.c
-+++ b/arch/arm/boards/dss11/init.c
-@@ -113,6 +113,8 @@ static void dss11_phy_reset(void)
- static struct atmel_mci_platform_data dss11_mci_data = {
- 	.slot_b		= 1,
- 	.bus_width	= 4,
-+	.detect_pin     = -EINVAL,
-+	.wp_pin		= -EINVAL,
- };
- 
- static struct at91_usbh_data dss11_usbh_data = {
-diff --git a/arch/arm/boards/pm9g45/init.c b/arch/arm/boards/pm9g45/init.c
-index 720099b..69c66d5 100644
---- a/arch/arm/boards/pm9g45/init.c
-+++ b/arch/arm/boards/pm9g45/init.c
-@@ -83,8 +83,8 @@ static void pm_add_device_nand(void)
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data __initdata mci_data = {
- 	.bus_width	= 4,
--	.wp_pin		= 0,
- 	.detect_pin	= AT91_PIN_PD6,
-+	.wp_pin		= -EINVAL,
- };
- 
- static void pm9g45_add_device_mci(void)
-diff --git a/arch/arm/boards/qil-a9260/init.c b/arch/arm/boards/qil-a9260/init.c
-index 2e131fe..e96204a 100644
---- a/arch/arm/boards/qil-a9260/init.c
-+++ b/arch/arm/boards/qil-a9260/init.c
-@@ -66,6 +66,8 @@ static void qil_a9260_add_device_nand(void)
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data __initdata qil_a9260_mci_data = {
- 	.bus_width	= 4,
-+	.detect_pin     = -EINVAL,
-+	.wp_pin         = -EINVAL,
- };
- 
- static void qil_a9260_add_device_mci(void)
-diff --git a/arch/arm/boards/usb-a926x/init.c b/arch/arm/boards/usb-a926x/init.c
-index 2e3bbfa..7ae9020 100644
---- a/arch/arm/boards/usb-a926x/init.c
-+++ b/arch/arm/boards/usb-a926x/init.c
-@@ -213,6 +213,8 @@ static void usb_a9260_add_spi(void) {}
- #if defined(CONFIG_MCI_ATMEL)
- static struct atmel_mci_platform_data __initdata usb_a9260_mci_data = {
- 	.bus_width	= 4,
-+	.detect_pin     = -EINVAL,
-+	.wp_pin		= -EINVAL,
- };
- 
- static void usb_a9260_add_device_mci(void)
--- 
-1.8.1.1
+> diff --git a/common/environment.c b/common/environment.c
+> index e8d623f..78cd45c 100644
+> --- a/common/environment.c
+> +++ b/common/environment.c
+> @@ -363,3 +363,43 @@ out:
+>  		free(buf_free);
+>  	return ret;
+>  }
+> +
+> +#ifdef __BAREBOX__
+> +/**
+> + * Try to register an environment storage on a device's partition
+> + * @return 0 on success
+> + *
+> + * We rely on the existence of a usable storage device, already attached=
+ to
+> + * our system, to get something like a persistent memory for our environ=
+ment.
+> + * We need to specify the partition number to use on this device.
+> + * @param[in] devname Name of the device
+> + * @param[in] partnr Partition number
+> + * @return 0 on success, anything else in case of failure
+> + */
+> +
+> +int envfs_register_partition(const char *devname, unsigned int partnr)
+a part can be a number or a name
 
+Best Regards,
+J.
+> +{
+> +	struct cdev *cdev;
+> +	char *partname;
+> +
+> +	if (!devname)
+> +		return -EINVAL;
+> +
+> +	cdev =3D cdev_by_name(devname);
+> +	if (cdev =3D=3D NULL) {
+> +		pr_err("No %s present\n", devname);
+> +		return -ENODEV;
+> +	}
+> +	partname =3D asprintf("%s.%d", devname, partnr);
+> +	cdev =3D cdev_by_name(partname);
+> +	if (cdev =3D=3D NULL) {
+> +		pr_err("No %s partition available\n", partname);
+> +		pr_info("Please create the partition %s to store the env\n", partname);
+> +		return -ENODEV;
+> +	}
+> +
+> +	return devfs_add_partition(partname, 0, cdev->size,
+> +						DEVFS_PARTITION_FIXED, "env0");
+> +}
+> +EXPORT_SYMBOL(envfs_register_partition);
+> +#endif
+> diff --git a/include/envfs.h b/include/envfs.h
+> index 2db55ed..e9372b3 100644
+> --- a/include/envfs.h
+> +++ b/include/envfs.h
+> @@ -96,4 +96,6 @@ int envfs_save(char *filename, char *dirname);
+>  /* defaults to /dev/env0 */
+>  extern char *default_environment_path;
+>  =
+
+> +int envfs_register_partition(const char *devname, unsigned int partnr);
+> +
+>  #endif /* _ENVFS_H */
+> -- =
+
+> 1.7.11.7
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
