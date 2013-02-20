@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f43.google.com ([74.125.83.43])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8642-0002ck-2X
- for barebox@lists.infradead.org; Wed, 20 Feb 2013 09:34:11 +0000
-Received: by mail-ee0-f43.google.com with SMTP id c50so4122957eek.16
- for <barebox@lists.infradead.org>; Wed, 20 Feb 2013 01:34:08 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Wed, 20 Feb 2013 10:34:06 +0100
-Message-Id: <1361352846-25412-1-git-send-email-fabio.porcedda@gmail.com>
-MIME-Version: 1.0
+ id 1U87DN-0005s2-JC
+ for barebox@lists.infradead.org; Wed, 20 Feb 2013 10:47:54 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 20 Feb 2013 11:47:50 +0100
+Message-Id: <1361357270-8700-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1361357270-8700-1-git-send-email-s.hauer@pengutronix.de>
+References: <1361357270-8700-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,38 +16,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [For master RFC] fix compiler warnings: use puts() instead of printf()
+Subject: [PATCH 2/2] libubi: Use global mtd_all_ff function
 To: barebox@lists.infradead.org
 
-VXNlIHB1dHMoKSBiZWNhdXNlIHByaW50ZigpIGlzbid0IG5lZWRlZCwKdG8gZml4IHRoZSBmb2xs
-b3dpbmcgY29tcGlsZXIgd2FybmluZ3M6CgovYmFyZWJveC9jb21tb24vbWVudS5jOiBJbiBmdW5j
-dGlvbiDigJhtZW51X3Nob3figJk6Ci9iYXJlYm94L2NvbW1vbi9tZW51LmM6Mjc3OjQ6IHdhcm5p
-bmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50cyBb
-LVdmb3JtYXQtc2VjdXJpdHldCgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYzogSW4g
-ZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJv
-b3QuYzoxMDE6Mzogd2FybmluZzogZm9ybWF0IG5vdCBhIHN0cmluZyBsaXRlcmFsIGFuZCBubyBm
-b3JtYXQgYXJndW1lbnRzIFstV2Zvcm1hdC1zZWN1cml0eV0KClNpZ25lZC1vZmYtYnk6IEZhYmlv
-IFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBnbWFpbC5jb20+Ci0tLQogY29tbW9uL21lbnUuYyAg
-ICAgICAgICAgfCAyICstCiBzY3JpcHRzL29tYXA0X3VzYmJvb3QuYyB8IDIgKy0KIDIgZmlsZXMg
-Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Nv
-bW1vbi9tZW51LmMgYi9jb21tb24vbWVudS5jCmluZGV4IGNlOTM4MzguLjMwZGNlZDcgMTAwNjQ0
-Ci0tLSBhL2NvbW1vbi9tZW51LmMKKysrIGIvY29tbW9uL21lbnUuYwpAQCAtMjc0LDcgKzI3NCw3
-IEBAIGludCBtZW51X3Nob3coc3RydWN0IG1lbnUgKm0pCiAJCQlwcmludGYoIkF1dG8gU2VsZWN0
-IGluIik7CiAJCX0gZWxzZSB7CiAJCQlhdXRvX2Rpc3BsYXlfbGVuID0gc3RybGVuKG0tPmF1dG9f
-ZGlzcGxheSk7Ci0JCQlwcmludGYobS0+YXV0b19kaXNwbGF5KTsKKwkJCXB1dHMobS0+YXV0b19k
-aXNwbGF5KTsKIAkJfQogCQlwcmludGYoIiAlMmQiLCBjb3VudGRvd24tLSk7CiAJfQpkaWZmIC0t
-Z2l0IGEvc2NyaXB0cy9vbWFwNF91c2Jib290LmMgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwpp
-bmRleCA4YzU3NzVkLi4zNGU1M2MwIDEwMDY0NAotLS0gYS9zY3JpcHRzL29tYXA0X3VzYmJvb3Qu
-YworKysgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwpAQCAtOTgsNyArOTgsNyBAQCBpbnQgcmVh
-ZF9hc2ljX2lkKHN0cnVjdCB1c2JfaGFuZGxlICp1c2IpCiAJCQlzcHJpbnRmKGxpbmUrNCtqKjMs
-ICIlMDJYICIsIGlkW2kral0pOwogCQlsaW5lWzQraiozKzBdID0gJ1xuJzsKIAkJbGluZVs0K2oq
-MysxXSA9IDA7Ci0JCXByaW50ZihsaW5lKTsKKwkJcHV0cyhsaW5lKTsKIAl9CiAJcmV0ID0gMDsK
-IAlmb3IgKGkgPSAxLCBqID0gMDsgaSA8IHNpemVvZihpZCkgJiYgaiA8IGlkWzBdOyBpICs9IDIr
-aWRbaSsxXSwgaisrKSB7Ci0tIAoxLjguMS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+We introduced a global function for this, so use it.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ lib/libscan.c |   13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/lib/libscan.c b/lib/libscan.c
+index af55269..202266b 100644
+--- a/lib/libscan.c
++++ b/lib/libscan.c
+@@ -33,17 +33,6 @@
+ #include <mtd/ubi-media.h>
+ #include <asm-generic/div64.h>
+ 
+-static int all_ff(const void *buf, int len)
+-{
+-	int i;
+-	const uint8_t *p = buf;
+-
+-	for (i = 0; i < len; i++)
+-		if (p[i] != 0xFF)
+-			return 0;
+-	return 1;
+-}
+-
+ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **info,
+ 	     int verbose)
+ {
+@@ -95,7 +84,7 @@ int libscan_ubi_scan(struct mtd_dev_info *mtd, int fd, struct ubi_scan_info **in
+ 			goto out_ec;
+ 
+ 		if (be32_to_cpu(ech.magic) != UBI_EC_HDR_MAGIC) {
+-			if (all_ff(&ech, sizeof(struct ubi_ec_hdr))) {
++			if (mtd_all_ff(&ech, sizeof(struct ubi_ec_hdr))) {
+ 				si->empty_cnt += 1;
+ 				si->ec[eb] = EB_EMPTY;
+ 				if (v)
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
