@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U87q2-0002KR-GA
- for barebox@lists.infradead.org; Wed, 20 Feb 2013 11:27:50 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 20 Feb 2013 12:27:48 +0100
-Message-Id: <1361359668-3331-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U89Ef-0008C3-K6
+ for barebox@lists.infradead.org; Wed, 20 Feb 2013 12:57:21 +0000
+Received: from mail611.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id D761EDC1A9B
+ for <barebox@lists.infradead.org>; Wed, 20 Feb 2013 14:07:57 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 20 Feb 2013 13:56:15 +0100
+Message-Id: <1361364976-8949-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +22,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ubiformat: open flash image readonly
+Subject: [PATCH 1/2] Makefile.lib: introduce lwl-y for lowlevel code
 To: barebox@lists.infradead.org
 
-ubiformat only needs readonly access to the image to flash, so
-open it readonly. Opening r/w may fail for example on tftp servers.
+The lowlevel code is expected to be present only ONCE
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+in PBL is enabled otherwise in barebox
+
+This fix the module support with PBL and allow to reduce the size of barebox
+by drop the lowlevell init in barebox as the compiler does not discard it
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/ubiformat.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Makefile.lib |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-index 3bb2c9a..efe1fde 100644
---- a/commands/ubiformat.c
-+++ b/commands/ubiformat.c
-@@ -233,7 +233,7 @@ static int open_file(off_t *sz)
- 		return sys_errmsg("cannot open \"%s\"", args.image);
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index f7d6721..871c44b 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -21,6 +21,14 @@ lib-y := $(filter-out $(obj-y), $(sort $(lib-y) $(lib-m)))
+ # o if we encounter foo/ in $(obj-m), remove it from $(obj-m)
+ #   and add the directory to the list of dirs to descend into: $(subdir-m)
  
- 	*sz = st.st_size;
--	fd  = open(args.image, O_RDWR);
-+	fd  = open(args.image, O_RDONLY);
- 	if (fd < 0)
- 		return sys_errmsg("cannot open \"%s\"", args.image);
- 
++# lowlevel is present in the PBL if enabled
++# otherwise in barebox
++ifeq ($(CONFIG_PBL_IMAGE), y)
++pbl-y		+= $(lwl-y)
++else
++obj-y		+= $(lwl-y)
++endif
++
+ # for non dirs add pbl- prefix to the target
+ # so we recompile the source with custom flags and custom quiet
+ __pbl-y		:= $(notdir $(pbl-y))
 -- 
 1.7.10.4
 
