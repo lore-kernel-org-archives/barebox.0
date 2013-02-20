@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f44.google.com ([209.85.214.44])
+Received: from mail-ee0-f43.google.com ([74.125.83.43])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U7uE4-0006PQ-I7
- for barebox@lists.infradead.org; Tue, 19 Feb 2013 20:55:45 +0000
-Received: by mail-bk0-f44.google.com with SMTP id j4so3248129bkw.3
- for <barebox@lists.infradead.org>; Tue, 19 Feb 2013 12:55:42 -0800 (PST)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Tue, 19 Feb 2013 21:56:33 +0100
-Message-Id: <1361307394-24649-1-git-send-email-alex.aring@gmail.com>
+ id 1U8642-0002ck-2X
+ for barebox@lists.infradead.org; Wed, 20 Feb 2013 09:34:11 +0000
+Received: by mail-ee0-f43.google.com with SMTP id c50so4122957eek.16
+ for <barebox@lists.infradead.org>; Wed, 20 Feb 2013 01:34:08 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Wed, 20 Feb 2013 10:34:06 +0100
+Message-Id: <1361352846-25412-1-git-send-email-fabio.porcedda@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,92 +17,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] nandtest: use new pread and pwrite functions
+Subject: [For master RFC] fix compiler warnings: use puts() instead of printf()
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- commands/nandtest.c | 36 ++++++------------------------------
- 1 file changed, 6 insertions(+), 30 deletions(-)
-
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-index f08f8eb..4e6024b 100644
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -43,41 +43,17 @@ static unsigned int ecc_stats_over;
- static unsigned int ecc_failed_cnt;
- 
- /*
-- * Implementation of pread with lseek and read.
-- */
--static ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
--{
--	int ret;
--
--	/* Seek to offset */
--	ret = lseek(fd, offset, SEEK_SET);
--	if (ret < 0)
--		perror("lseek");
--
--	/* Read from flash and put it into buf  */
--	ret = read(fd, buf, count);
--	if (ret < 0)
--		perror("read");
--
--	return 0;
--}
--
--/*
-  * Implementation of pwrite with lseek and write.
-  */
--static ssize_t pwrite(int fd, const void *buf,
-+static ssize_t __pwrite(int fd, const void *buf,
- 		size_t count, loff_t offset, loff_t length)
- {
--	int ret;
--
--	ret = lseek(fd, offset, SEEK_SET);
--	if (ret < 0)
--		perror("lseek");
-+	ssize_t ret;
- 
- 	/* Write buf to flash */
--	ret = write(fd, buf, count);
-+	ret = pwrite(fd, buf, count, offset);
- 	if (ret < 0) {
--		perror("write");
-+		perror("pwrite");
- 		if (markbad) {
- 			printf("\nMark block bad at 0x%08llx\n",
- 					offset + memregion.offset);
-@@ -88,7 +64,7 @@ static ssize_t pwrite(int fd, const void *buf,
- 	}
- 
- 	flush(fd);
--	return 0;
-+	return ret;
- }
- 
- /*
-@@ -119,7 +95,7 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- 	for (i = 0; i < meminfo.erasesize;
- 			i += meminfo.writesize) {
- 		/* Write data to given offset */
--		pwrite(fd, data + i, meminfo.writesize,
-+		__pwrite(fd, data + i, meminfo.writesize,
- 				ofs + i, length);
- 
- 		/* Read data from offset */
--- 
-1.8.1.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNlIHB1dHMoKSBiZWNhdXNlIHByaW50ZigpIGlzbid0IG5lZWRlZCwKdG8gZml4IHRoZSBmb2xs
+b3dpbmcgY29tcGlsZXIgd2FybmluZ3M6CgovYmFyZWJveC9jb21tb24vbWVudS5jOiBJbiBmdW5j
+dGlvbiDigJhtZW51X3Nob3figJk6Ci9iYXJlYm94L2NvbW1vbi9tZW51LmM6Mjc3OjQ6IHdhcm5p
+bmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50cyBb
+LVdmb3JtYXQtc2VjdXJpdHldCgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYzogSW4g
+ZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJv
+b3QuYzoxMDE6Mzogd2FybmluZzogZm9ybWF0IG5vdCBhIHN0cmluZyBsaXRlcmFsIGFuZCBubyBm
+b3JtYXQgYXJndW1lbnRzIFstV2Zvcm1hdC1zZWN1cml0eV0KClNpZ25lZC1vZmYtYnk6IEZhYmlv
+IFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBnbWFpbC5jb20+Ci0tLQogY29tbW9uL21lbnUuYyAg
+ICAgICAgICAgfCAyICstCiBzY3JpcHRzL29tYXA0X3VzYmJvb3QuYyB8IDIgKy0KIDIgZmlsZXMg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Nv
+bW1vbi9tZW51LmMgYi9jb21tb24vbWVudS5jCmluZGV4IGNlOTM4MzguLjMwZGNlZDcgMTAwNjQ0
+Ci0tLSBhL2NvbW1vbi9tZW51LmMKKysrIGIvY29tbW9uL21lbnUuYwpAQCAtMjc0LDcgKzI3NCw3
+IEBAIGludCBtZW51X3Nob3coc3RydWN0IG1lbnUgKm0pCiAJCQlwcmludGYoIkF1dG8gU2VsZWN0
+IGluIik7CiAJCX0gZWxzZSB7CiAJCQlhdXRvX2Rpc3BsYXlfbGVuID0gc3RybGVuKG0tPmF1dG9f
+ZGlzcGxheSk7Ci0JCQlwcmludGYobS0+YXV0b19kaXNwbGF5KTsKKwkJCXB1dHMobS0+YXV0b19k
+aXNwbGF5KTsKIAkJfQogCQlwcmludGYoIiAlMmQiLCBjb3VudGRvd24tLSk7CiAJfQpkaWZmIC0t
+Z2l0IGEvc2NyaXB0cy9vbWFwNF91c2Jib290LmMgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwpp
+bmRleCA4YzU3NzVkLi4zNGU1M2MwIDEwMDY0NAotLS0gYS9zY3JpcHRzL29tYXA0X3VzYmJvb3Qu
+YworKysgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwpAQCAtOTgsNyArOTgsNyBAQCBpbnQgcmVh
+ZF9hc2ljX2lkKHN0cnVjdCB1c2JfaGFuZGxlICp1c2IpCiAJCQlzcHJpbnRmKGxpbmUrNCtqKjMs
+ICIlMDJYICIsIGlkW2kral0pOwogCQlsaW5lWzQraiozKzBdID0gJ1xuJzsKIAkJbGluZVs0K2oq
+MysxXSA9IDA7Ci0JCXByaW50ZihsaW5lKTsKKwkJcHV0cyhsaW5lKTsKIAl9CiAJcmV0ID0gMDsK
+IAlmb3IgKGkgPSAxLCBqID0gMDsgaSA8IHNpemVvZihpZCkgJiYgaiA8IGlkWzBdOyBpICs9IDIr
+aWRbaSsxXSwgaisrKSB7Ci0tIAoxLjguMS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
