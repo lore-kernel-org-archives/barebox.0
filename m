@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f53.google.com ([74.125.83.53])
+Received: from mail-ee0-f51.google.com ([74.125.83.51])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8RZT-0006ij-TB
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 08:32:05 +0000
-Received: by mail-ee0-f53.google.com with SMTP id e53so4465671eek.12
- for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 00:32:01 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Thu, 21 Feb 2013 09:31:54 +0100
-Message-Id: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
-MIME-Version: 1.0
+ id 1U8SKg-0001HH-Mp
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 09:20:51 +0000
+Received: by mail-ee0-f51.google.com with SMTP id d17so4355885eek.38
+ for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 01:20:48 -0800 (PST)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Thu, 21 Feb 2013 10:20:38 +0100
+Message-Id: <1361438438-27960-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix compiler warnings: use puts() instead of printf()
+Subject: [PATCH] imx_spi: fix bus-num setup
 To: barebox@lists.infradead.org
-Cc: Vicente <vicencb@gmail.com>
 
-VXNlIHB1dHMoKSBiZWNhdXNlIHByaW50ZigpIGlzbid0IG5lY2Vzc2FyeSwKdG8gZml4IHRoZSBm
-b2xsb3dpbmcgY29tcGlsZXIgd2FybmluZ3M6CgovYmFyZWJveC9jb21tb24vbWVudS5jOiBJbiBm
-dW5jdGlvbiDigJhtZW51X3Nob3figJk6Ci9iYXJlYm94L2NvbW1vbi9tZW51LmM6Mjc3OjQ6IHdh
-cm5pbmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50
-cyBbLVdmb3JtYXQtc2VjdXJpdHldCgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYzog
-SW4gZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3Vz
-YmJvb3QuYzoxMDE6Mzogd2FybmluZzogZm9ybWF0IG5vdCBhIHN0cmluZyBsaXRlcmFsIGFuZCBu
-byBmb3JtYXQgYXJndW1lbnRzIFstV2Zvcm1hdC1zZWN1cml0eV0KClNpZ25lZC1vZmYtYnk6IEZh
-YmlvIFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBnbWFpbC5jb20+CkNjOiBKZWFuLUNocmlzdG9w
-aGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgpDYzogVmljZW50ZSA8
-dmljZW5jYkBnbWFpbC5jb20+Ci0tLQogY29tbW9uL21lbnUuYyAgICAgICAgICAgfCAyICstCiBz
-Y3JpcHRzL29tYXA0X3VzYmJvb3QuYyB8IDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRp
-b25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9tZW51LmMgYi9jb21t
-b24vbWVudS5jCmluZGV4IGNlOTM4MzguLjMwZGNlZDcgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9tZW51
-LmMKKysrIGIvY29tbW9uL21lbnUuYwpAQCAtMjc0LDcgKzI3NCw3IEBAIGludCBtZW51X3Nob3co
-c3RydWN0IG1lbnUgKm0pCiAJCQlwcmludGYoIkF1dG8gU2VsZWN0IGluIik7CiAJCX0gZWxzZSB7
-CiAJCQlhdXRvX2Rpc3BsYXlfbGVuID0gc3RybGVuKG0tPmF1dG9fZGlzcGxheSk7Ci0JCQlwcmlu
-dGYobS0+YXV0b19kaXNwbGF5KTsKKwkJCXB1dHMobS0+YXV0b19kaXNwbGF5KTsKIAkJfQogCQlw
-cmludGYoIiAlMmQiLCBjb3VudGRvd24tLSk7CiAJfQpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9vbWFw
-NF91c2Jib290LmMgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwppbmRleCA4YzU3NzVkLi4zNGU1
-M2MwIDEwMDY0NAotLS0gYS9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYworKysgYi9zY3JpcHRzL29t
-YXA0X3VzYmJvb3QuYwpAQCAtOTgsNyArOTgsNyBAQCBpbnQgcmVhZF9hc2ljX2lkKHN0cnVjdCB1
-c2JfaGFuZGxlICp1c2IpCiAJCQlzcHJpbnRmKGxpbmUrNCtqKjMsICIlMDJYICIsIGlkW2kral0p
-OwogCQlsaW5lWzQraiozKzBdID0gJ1xuJzsKIAkJbGluZVs0K2oqMysxXSA9IDA7Ci0JCXByaW50
-ZihsaW5lKTsKKwkJcHV0cyhsaW5lKTsKIAl9CiAJcmV0ID0gMDsKIAlmb3IgKGkgPSAxLCBqID0g
-MDsgaSA8IHNpemVvZihpZCkgJiYgaiA8IGlkWzBdOyBpICs9IDIraWRbaSsxXSwgaisrKSB7Ci0t
-IAoxLjguMS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ drivers/spi/imx_spi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 71fac3d..950180f 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -533,6 +533,7 @@ static int imx_spi_probe(struct device_d *dev)
+ 
+ 	master = &imx->master;
+ 	master->dev = dev;
++	master->bus_num = dev->id;
+ 
+ 	master->setup = imx_spi_setup;
+ 	master->transfer = imx_spi_transfer;
+-- 
+1.8.1.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
