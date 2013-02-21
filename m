@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8WEp-0007ap-Um
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:31:04 +0000
-Date: Thu, 21 Feb 2013 14:31:02 +0100
+ id 1U8WSR-0000Fj-AQ
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:45:07 +0000
+Date: Thu, 21 Feb 2013 14:45:05 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130221133102.GQ1906@pengutronix.de>
-References: <1361307394-24649-1-git-send-email-alex.aring@gmail.com>
+Message-ID: <20130221134505.GR1906@pengutronix.de>
+References: <1361370315-15701-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361307394-24649-1-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1361370315-15701-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,94 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] nandtest: use new pread and pwrite functions
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH 1/1] Makefile: drop duplicate cmd_as_o_S support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 19, 2013 at 09:56:33PM +0100, Alexander Aring wrote:
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> ---
->  commands/nandtest.c | 36 ++++++------------------------------
->  1 file changed, 6 insertions(+), 30 deletions(-)
+On Wed, Feb 20, 2013 at 03:25:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as we have it to in scripts/Makefile.lib
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
 
-I squashed this into the commit adding pread/pwrite to make this commit
-compilable.
-
 Sascha
 
+> ---
+>  Makefile |    8 --------
+>  1 file changed, 8 deletions(-)
 > 
-> diff --git a/commands/nandtest.c b/commands/nandtest.c
-> index f08f8eb..4e6024b 100644
-> --- a/commands/nandtest.c
-> +++ b/commands/nandtest.c
-> @@ -43,41 +43,17 @@ static unsigned int ecc_stats_over;
->  static unsigned int ecc_failed_cnt;
+> diff --git a/Makefile b/Makefile
+> index a27c07a..7f97e8f 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -1210,14 +1210,6 @@ quiet_cmd_rmdirs = $(if $(wildcard $(rm-dirs)),CLEAN   $(wildcard $(rm-dirs)))
+>  quiet_cmd_rmfiles = $(if $(wildcard $(rm-files)),CLEAN   $(wildcard $(rm-files)))
+>        cmd_rmfiles = rm -f $(rm-files)
 >  
->  /*
-> - * Implementation of pread with lseek and read.
-> - */
-> -static ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
-> -{
-> -	int ret;
 > -
-> -	/* Seek to offset */
-> -	ret = lseek(fd, offset, SEEK_SET);
-> -	if (ret < 0)
-> -		perror("lseek");
+> -a_flags = -Wp,-MD,$(depfile) $(AFLAGS) $(AFLAGS_KERNEL) \
+> -	  $(NOSTDINC_FLAGS) $(CPPFLAGS) \
+> -	  $(modkern_aflags) $(EXTRA_AFLAGS) $(AFLAGS_$(basetarget).o)
 > -
-> -	/* Read from flash and put it into buf  */
-> -	ret = read(fd, buf, count);
-> -	if (ret < 0)
-> -		perror("read");
+> -quiet_cmd_as_o_S = AS      $@
+> -cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
 > -
-> -	return 0;
-> -}
-> -
-> -/*
->   * Implementation of pwrite with lseek and write.
->   */
-> -static ssize_t pwrite(int fd, const void *buf,
-> +static ssize_t __pwrite(int fd, const void *buf,
->  		size_t count, loff_t offset, loff_t length)
->  {
-> -	int ret;
-> -
-> -	ret = lseek(fd, offset, SEEK_SET);
-> -	if (ret < 0)
-> -		perror("lseek");
-> +	ssize_t ret;
+>  # read all saved command lines
 >  
->  	/* Write buf to flash */
-> -	ret = write(fd, buf, count);
-> +	ret = pwrite(fd, buf, count, offset);
->  	if (ret < 0) {
-> -		perror("write");
-> +		perror("pwrite");
->  		if (markbad) {
->  			printf("\nMark block bad at 0x%08llx\n",
->  					offset + memregion.offset);
-> @@ -88,7 +64,7 @@ static ssize_t pwrite(int fd, const void *buf,
->  	}
->  
->  	flush(fd);
-> -	return 0;
-> +	return ret;
->  }
->  
->  /*
-> @@ -119,7 +95,7 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
->  	for (i = 0; i < meminfo.erasesize;
->  			i += meminfo.writesize) {
->  		/* Write data to given offset */
-> -		pwrite(fd, data + i, meminfo.writesize,
-> +		__pwrite(fd, data + i, meminfo.writesize,
->  				ofs + i, length);
->  
->  		/* Read data from offset */
+>  targets := $(wildcard $(sort $(targets)))
 > -- 
-> 1.8.1.3
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
