@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8WAz-0007Dg-3E
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:27:05 +0000
-Date: Thu, 21 Feb 2013 14:27:03 +0100
+ id 1U8WCA-0007Ik-6B
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:28:18 +0000
+Date: Thu, 21 Feb 2013 14:28:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130221132703.GO1906@pengutronix.de>
+Message-ID: <20130221132815.GP1906@pengutronix.de>
 References: <1361438474-28008-1-git-send-email-h.feurstein@gmail.com>
+ <1361438474-28008-2-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361438474-28008-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <1361438474-28008-2-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: fec_imx: ensure constant timeout in fec_halt
+Subject: Re: [PATCH 2/2] net: imx_fec: fix RMII support for i.MX6
 To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 21, 2013 at 10:21:13AM +0100, Hubert Feurstein wrote:
+On Thu, Feb 21, 2013 at 10:21:14AM +0100, Hubert Feurstein wrote:
 > Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  drivers/net/fec_imx.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 2378a19..6dfb093 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -425,15 +425,20 @@ static int fec_open(struct eth_device *edev)
->  static void fec_halt(struct eth_device *dev)
->  {
->  	struct fec_priv *fec = (struct fec_priv *)dev->priv;
-> -	int counter = 0xffff;
-> +	uint64_t tmo;
->  
->  	/* issue graceful stop command to the FEC transmitter if necessary */
->  	writel(readl(fec->regs + FEC_X_CNTRL) | FEC_ECNTRL_RESET,
->  			fec->regs + FEC_X_CNTRL);
->  
->  	/* wait for graceful stop to register */
-> -	while ((counter--) && (!(readl(fec->regs + FEC_IEVENT) & FEC_IEVENT_GRA)))
-> -		;	/* FIXME ensure time */
-> +	tmo = get_time_ns();
-> +	while (!(readl(fec->regs + FEC_IEVENT) & FEC_IEVENT_GRA)) {
-> +		if (is_timeout(tmo, 1 * SECOND)) {
-> +			printf("graceful stop timeout\n");
 
-dev_err please.
+Applied (only this one)
 
 Sascha
+
+> ---
+>  drivers/net/fec_imx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+> index 6dfb093..80fb2ce 100644
+> --- a/drivers/net/fec_imx.c
+> +++ b/drivers/net/fec_imx.c
+> @@ -309,7 +309,7 @@ static int fec_init(struct eth_device *dev)
+>  	}
+>  
+>  	if (fec->xcv_type == RMII) {
+> -		if (fec_is_imx28(fec)) {
+> +		if (fec_is_imx28(fec) || fec_is_imx6(fec)) {
+>  			rcntl |= FEC_R_CNTRL_RMII_MODE | FEC_R_CNTRL_FCE |
+>  				FEC_R_CNTRL_NO_LGTH_CHECK;
+>  		} else {
+> -- 
+> 1.8.1.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
