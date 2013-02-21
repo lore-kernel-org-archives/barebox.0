@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8W7I-0006pC-Hi
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:23:23 +0000
-Date: Thu, 21 Feb 2013 14:23:13 +0100
+ id 1U8WA9-00077q-13
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 13:26:13 +0000
+Date: Thu, 21 Feb 2013 14:26:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130221132313.GM1906@pengutronix.de>
-References: <1361364936-8698-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130221132611.GN1906@pengutronix.de>
+References: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361364936-8698-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +18,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] highbank: add wfi for poweroff
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: Re: [PATCH] fix compiler warnings: use puts() instead of printf()
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: barebox@lists.infradead.org, Vicente <vicencb@gmail.com>
 
-On Wed, Feb 20, 2013 at 01:55:36PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> needed by the real hardware
-> 
-> Cc: Rob Herring <rob.herring@calxeda.com>
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-Applied, thanks.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBGZWIgMjEsIDIwMTMgYXQgMDk6MzE6NTRBTSArMDEwMCwgRmFiaW8gUG9yY2VkZGEg
+d3JvdGU6Cj4gVXNlIHB1dHMoKSBiZWNhdXNlIHByaW50ZigpIGlzbid0IG5lY2Vzc2FyeSwKPiB0
+byBmaXggdGhlIGZvbGxvd2luZyBjb21waWxlciB3YXJuaW5nczoKPiAKPiAvYmFyZWJveC9jb21t
+b24vbWVudS5jOiBJbiBmdW5jdGlvbiDigJhtZW51X3Nob3figJk6Cj4gL2JhcmVib3gvY29tbW9u
+L21lbnUuYzoyNzc6NDogd2FybmluZzogZm9ybWF0IG5vdCBhIHN0cmluZyBsaXRlcmFsIGFuZCBu
+byBmb3JtYXQgYXJndW1lbnRzIFstV2Zvcm1hdC1zZWN1cml0eV0KPiAKPiAvYmFyZWJveC9zY3Jp
+cHRzL29tYXA0X3VzYmJvb3QuYzogSW4gZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgo+IC9i
+YXJlYm94L3NjcmlwdHMvb21hcDRfdXNiYm9vdC5jOjEwMTozOiB3YXJuaW5nOiBmb3JtYXQgbm90
+IGEgc3RyaW5nIGxpdGVyYWwgYW5kIG5vIGZvcm1hdCBhcmd1bWVudHMgWy1XZm9ybWF0LXNlY3Vy
+aXR5XQo+IAo+IFNpZ25lZC1vZmYtYnk6IEZhYmlvIFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBn
+bWFpbC5jb20+Cj4gQ2M6IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlv
+akBqY3Jvc29mdC5jb20+Cj4gQ2M6IFZpY2VudGUgPHZpY2VuY2JAZ21haWwuY29tPgoKQXBwbGll
+ZCwgdGhhbmtzCgpTYXNjaGEKCj4gLS0tCj4gIGNvbW1vbi9tZW51LmMgICAgICAgICAgIHwgMiAr
+LQo+ICBzY3JpcHRzL29tYXA0X3VzYmJvb3QuYyB8IDIgKy0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAy
+IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2NvbW1vbi9t
+ZW51LmMgYi9jb21tb24vbWVudS5jCj4gaW5kZXggY2U5MzgzOC4uMzBkY2VkNyAxMDA2NDQKPiAt
+LS0gYS9jb21tb24vbWVudS5jCj4gKysrIGIvY29tbW9uL21lbnUuYwo+IEBAIC0yNzQsNyArMjc0
+LDcgQEAgaW50IG1lbnVfc2hvdyhzdHJ1Y3QgbWVudSAqbSkKPiAgCQkJcHJpbnRmKCJBdXRvIFNl
+bGVjdCBpbiIpOwo+ICAJCX0gZWxzZSB7Cj4gIAkJCWF1dG9fZGlzcGxheV9sZW4gPSBzdHJsZW4o
+bS0+YXV0b19kaXNwbGF5KTsKPiAtCQkJcHJpbnRmKG0tPmF1dG9fZGlzcGxheSk7Cj4gKwkJCXB1
+dHMobS0+YXV0b19kaXNwbGF5KTsKPiAgCQl9Cj4gIAkJcHJpbnRmKCIgJTJkIiwgY291bnRkb3du
+LS0pOwo+ICAJfQo+IGRpZmYgLS1naXQgYS9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYyBiL3Njcmlw
+dHMvb21hcDRfdXNiYm9vdC5jCj4gaW5kZXggOGM1Nzc1ZC4uMzRlNTNjMCAxMDA2NDQKPiAtLS0g
+YS9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwo+ICsrKyBiL3NjcmlwdHMvb21hcDRfdXNiYm9vdC5j
+Cj4gQEAgLTk4LDcgKzk4LDcgQEAgaW50IHJlYWRfYXNpY19pZChzdHJ1Y3QgdXNiX2hhbmRsZSAq
+dXNiKQo+ICAJCQlzcHJpbnRmKGxpbmUrNCtqKjMsICIlMDJYICIsIGlkW2kral0pOwo+ICAJCWxp
+bmVbNCtqKjMrMF0gPSAnXG4nOwo+ICAJCWxpbmVbNCtqKjMrMV0gPSAwOwo+IC0JCXByaW50Zihs
+aW5lKTsKPiArCQlwdXRzKGxpbmUpOwo+ICAJfQo+ICAJcmV0ID0gMDsKPiAgCWZvciAoaSA9IDEs
+IGogPSAwOyBpIDwgc2l6ZW9mKGlkKSAmJiBqIDwgaWRbMF07IGkgKz0gMitpZFtpKzFdLCBqKysp
+IHsKPiAtLSAKPiAxLjguMS4xCj4gCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+IGJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
+Zm8vYmFyZWJveAoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRp
+b25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5l
+ciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0y
+MDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
+IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
