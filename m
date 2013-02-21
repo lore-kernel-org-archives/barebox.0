@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f43.google.com ([74.125.83.43])
+Received: from mail-ea0-f172.google.com ([209.85.215.172])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8SLX-0001Kd-SJ
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 09:21:44 +0000
-Received: by mail-ee0-f43.google.com with SMTP id c50so4720848eek.16
- for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 01:21:42 -0800 (PST)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Thu, 21 Feb 2013 10:21:14 +0100
-Message-Id: <1361438474-28008-2-git-send-email-h.feurstein@gmail.com>
-In-Reply-To: <1361438474-28008-1-git-send-email-h.feurstein@gmail.com>
-References: <1361438474-28008-1-git-send-email-h.feurstein@gmail.com>
+ id 1U8SWb-0001e8-7Q
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 09:33:09 +0000
+Received: by mail-ea0-f172.google.com with SMTP id f13so3854602eaa.31
+ for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 01:33:07 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu, 21 Feb 2013 10:33:04 +0100
+Message-Id: <1361439184-14657-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] net: imx_fec: fix RMII support for i.MX6
+Subject: [PATCH] defaultenv-2: fix base/init/ps1: don't reload /env/config
 To: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- drivers/net/fec_imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Remove the load of /env/config because is already done by /bin/init,
+so it doesn't overwrite any changes done by previous /init/* scripts that
+are loaded by /bin/init.
 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 6dfb093..80fb2ce 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -309,7 +309,7 @@ static int fec_init(struct eth_device *dev)
- 	}
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ defaultenv-2/base/init/ps1 | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/defaultenv-2/base/init/ps1 b/defaultenv-2/base/init/ps1
+index fcbf4b6..02d7b4b 100644
+--- a/defaultenv-2/base/init/ps1
++++ b/defaultenv-2/base/init/ps1
+@@ -1,7 +1,5 @@
+ #!/bin/sh
  
- 	if (fec->xcv_type == RMII) {
--		if (fec_is_imx28(fec)) {
-+		if (fec_is_imx28(fec) || fec_is_imx6(fec)) {
- 			rcntl |= FEC_R_CNTRL_RMII_MODE | FEC_R_CNTRL_FCE |
- 				FEC_R_CNTRL_NO_LGTH_CHECK;
- 		} else {
+-/env/config
+-
+ if [ ${global.allow_color} = "true" ]; then
+         export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
+ else
 -- 
-1.8.1.3
+1.8.1.1
 
 
 _______________________________________________
