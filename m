@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U8Q3u-0007yH-Pq
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 06:55:24 +0000
-Date: Thu, 21 Feb 2013 07:55:12 +0100
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130221075512.1e795e77@e6520eb>
-In-Reply-To: <20130219192112.GN19322@game.jcrosoft.org>
-References: <20130214193135.GA1906@pengutronix.de>
- <1361265445-11731-1-git-send-email-eric@eukrea.com>
- <20130219115843.GL19322@game.jcrosoft.org>
- <20130219144156.7754d3de@e6520eb>
- <20130219153548.GM19322@game.jcrosoft.org>
- <20130219164941.7a630578@e6520eb> <20130219165740.38f4fc06@e6520eb>
- <20130219192112.GN19322@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from mail-ee0-f53.google.com ([74.125.83.53])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U8RZT-0006ij-TB
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 08:32:05 +0000
+Received: by mail-ee0-f53.google.com with SMTP id e53so4465671eek.12
+ for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 00:32:01 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Thu, 21 Feb 2013 09:31:54 +0100
+Message-Id: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,30 +21,36 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 1/3] env: add register_persistent_environment
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] fix compiler warnings: use puts() instead of printf()
+To: barebox@lists.infradead.org
+Cc: Vicente <vicencb@gmail.com>
 
-TGUgVHVlLCAxOSBGZWIgMjAxMyAyMDoyMToxMiArMDEwMCwKSmVhbi1DaHJpc3RvcGhlIFBMQUdO
-SU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4gYSDDqWNyaXQgOgoKPiBPbiAxNjo1
-NyBUdWUgMTkgRmViICAgICAsIEVyaWMgQsOpbmFyZCB3cm90ZToKPiA+IExlIFR1ZSwgMTkgRmVi
-IDIwMTMgMTY6NDk6NDEgKzAxMDAsCj4gPiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4g
-YSDDqWNyaXQgOgo+ID4gCj4gPiA+IExlIFR1ZSwgMTkgRmViIDIwMTMgMTY6MzU6NDggKzAxMDAs
-Cj4gPiA+IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29m
-dC5jb20+IGEgw6ljcml0IDoKPiA+ID4gCj4gPiA+ID4gT24gMTQ6NDEgVHVlIDE5IEZlYiAgICAg
-LCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiA+ID4gPiBMZSBUdWUsIDE5IEZlYiAyMDEzIDEyOjU4
-OjQzICswMTAwLAo+ID4gPiA+ID4gSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBs
-YWduaW9qQGpjcm9zb2Z0LmNvbT4gYSDDqWNyaXQgOgo+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IE9u
-IDEwOjE3IFR1ZSAxOSBGZWIgICAgICwgRXJpYyBCw6luYXJkIHdyb3RlOgo+ID4gPiA+ID4gPiA+
-ICtpbnQgZW52ZnNfcmVnaXN0ZXJfcGFydGl0aW9uKGNvbnN0IGNoYXIgKmRldm5hbWUsIHVuc2ln
-bmVkIGludCBwYXJ0bnIpCj4gPiA+ID4gPiA+IGEgcGFydCBjYW4gYmUgYSBudW1iZXIgb3IgYSBu
-YW1lCj4gPiA+ID4gPiA+IAo+ID4gPiA+ID4gZG8geW91IGhhdmUgYW4gZXhhbXBsZSBwbGVhc2Ug
-Pwo+ID4gPiA+IEVGSSBHUFQKPiA+ID4gPiAKPiA+ID4gaXMgdGhhdCBwcmVzZW50IGluIG1haWxp
-bmUgPwo+ID4gPiAKPiA+IE9LIGZvdW5kIGl0IGluIG5leHQuCj4gPiAKPiA+IEhhbmRsaW5nIHRo
-YXQgd2lsbCBsZWFkIHRvIHN0cmFuZ2UgYmVoYXZpb3VyIHdoZW4gc29tZW9uZSB3aWxsIG5hbWUg
-IjEiCj4gPiB0aGUgYXRhMC4wJ3MgcGFydGl0aW9uIDstKQo+IHNvIHRoaXMgd2lsbCBmYWlsbAo+
-IAo+IGRvbid0IHBlb3BsZSBlbm91Z2ggc3R1cGlkIHRvIG5hbWUgdGhlaXIgcGFydGl0aW9uIDEg
-ZGVzZXJ2ZSB0byBoYXZlIGlzc3Vlcwo+IAplbmQgdXNlcnMncyBjcmVhdGl2aXR5IGhhcyBubyBs
-aW1pdHMgOy0pCgpFcmljCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+VXNlIHB1dHMoKSBiZWNhdXNlIHByaW50ZigpIGlzbid0IG5lY2Vzc2FyeSwKdG8gZml4IHRoZSBm
+b2xsb3dpbmcgY29tcGlsZXIgd2FybmluZ3M6CgovYmFyZWJveC9jb21tb24vbWVudS5jOiBJbiBm
+dW5jdGlvbiDigJhtZW51X3Nob3figJk6Ci9iYXJlYm94L2NvbW1vbi9tZW51LmM6Mjc3OjQ6IHdh
+cm5pbmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50
+cyBbLVdmb3JtYXQtc2VjdXJpdHldCgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYzog
+SW4gZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgovYmFyZWJveC9zY3JpcHRzL29tYXA0X3Vz
+YmJvb3QuYzoxMDE6Mzogd2FybmluZzogZm9ybWF0IG5vdCBhIHN0cmluZyBsaXRlcmFsIGFuZCBu
+byBmb3JtYXQgYXJndW1lbnRzIFstV2Zvcm1hdC1zZWN1cml0eV0KClNpZ25lZC1vZmYtYnk6IEZh
+YmlvIFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBnbWFpbC5jb20+CkNjOiBKZWFuLUNocmlzdG9w
+aGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPgpDYzogVmljZW50ZSA8
+dmljZW5jYkBnbWFpbC5jb20+Ci0tLQogY29tbW9uL21lbnUuYyAgICAgICAgICAgfCAyICstCiBz
+Y3JpcHRzL29tYXA0X3VzYmJvb3QuYyB8IDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRp
+b25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9tZW51LmMgYi9jb21t
+b24vbWVudS5jCmluZGV4IGNlOTM4MzguLjMwZGNlZDcgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9tZW51
+LmMKKysrIGIvY29tbW9uL21lbnUuYwpAQCAtMjc0LDcgKzI3NCw3IEBAIGludCBtZW51X3Nob3co
+c3RydWN0IG1lbnUgKm0pCiAJCQlwcmludGYoIkF1dG8gU2VsZWN0IGluIik7CiAJCX0gZWxzZSB7
+CiAJCQlhdXRvX2Rpc3BsYXlfbGVuID0gc3RybGVuKG0tPmF1dG9fZGlzcGxheSk7Ci0JCQlwcmlu
+dGYobS0+YXV0b19kaXNwbGF5KTsKKwkJCXB1dHMobS0+YXV0b19kaXNwbGF5KTsKIAkJfQogCQlw
+cmludGYoIiAlMmQiLCBjb3VudGRvd24tLSk7CiAJfQpkaWZmIC0tZ2l0IGEvc2NyaXB0cy9vbWFw
+NF91c2Jib290LmMgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwppbmRleCA4YzU3NzVkLi4zNGU1
+M2MwIDEwMDY0NAotLS0gYS9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYworKysgYi9zY3JpcHRzL29t
+YXA0X3VzYmJvb3QuYwpAQCAtOTgsNyArOTgsNyBAQCBpbnQgcmVhZF9hc2ljX2lkKHN0cnVjdCB1
+c2JfaGFuZGxlICp1c2IpCiAJCQlzcHJpbnRmKGxpbmUrNCtqKjMsICIlMDJYICIsIGlkW2kral0p
+OwogCQlsaW5lWzQraiozKzBdID0gJ1xuJzsKIAkJbGluZVs0K2oqMysxXSA9IDA7Ci0JCXByaW50
+ZihsaW5lKTsKKwkJcHV0cyhsaW5lKTsKIAl9CiAJcmV0ID0gMDsKIAlmb3IgKGkgPSAxLCBqID0g
+MDsgaSA8IHNpemVvZihpZCkgJiYgaiA8IGlkWzBdOyBpICs9IDIraWRbaSsxXSwgaisrKSB7Ci0t
+IAoxLjguMS4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
