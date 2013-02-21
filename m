@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8Wk7-00028I-6j
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 14:03:24 +0000
-Date: Thu, 21 Feb 2013 15:03:21 +0100
+ id 1U8Wp1-0002K3-T9
+ for barebox@lists.infradead.org; Thu, 21 Feb 2013 14:08:28 +0000
+Date: Thu, 21 Feb 2013 15:08:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130221140321.GU1906@pengutronix.de>
-References: <1361439184-14657-1-git-send-email-fabio.porcedda@gmail.com>
+Message-ID: <20130221140826.GV1906@pengutronix.de>
+References: <1361438438-27960-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361439184-14657-1-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <1361438438-27960-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] defaultenv-2: fix base/init/ps1: don't reload /env/config
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Subject: Re: [PATCH] imx_spi: fix bus-num setup
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 21, 2013 at 10:33:04AM +0100, Fabio Porcedda wrote:
-> Remove the load of /env/config because is already done by /bin/init,
-> so it doesn't overwrite any changes done by previous /init/* scripts that
-> are loaded by /bin/init.
-> 
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Thu, Feb 21, 2013 at 10:20:38AM +0100, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  defaultenv-2/base/init/ps1 | 2 --
->  1 file changed, 2 deletions(-)
+>  drivers/spi/imx_spi.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/defaultenv-2/base/init/ps1 b/defaultenv-2/base/init/ps1
-> index fcbf4b6..02d7b4b 100644
-> --- a/defaultenv-2/base/init/ps1
-> +++ b/defaultenv-2/base/init/ps1
-> @@ -1,7 +1,5 @@
->  #!/bin/sh
+> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+> index 71fac3d..950180f 100644
+> --- a/drivers/spi/imx_spi.c
+> +++ b/drivers/spi/imx_spi.c
+> @@ -533,6 +533,7 @@ static int imx_spi_probe(struct device_d *dev)
 >  
-> -/env/config
-> -
->  if [ ${global.allow_color} = "true" ]; then
->          export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m "
->  else
+>  	master = &imx->master;
+>  	master->dev = dev;
+> +	master->bus_num = dev->id;
+>  
+>  	master->setup = imx_spi_setup;
+>  	master->transfer = imx_spi_transfer;
 > -- 
-> 1.8.1.1
+> 1.8.1.3
 > 
 > 
 > _______________________________________________
