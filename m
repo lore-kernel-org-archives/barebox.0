@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8c8y-0005yZ-4x
- for barebox@lists.infradead.org; Thu, 21 Feb 2013 19:49:24 +0000
-Received: by mail-bk0-f49.google.com with SMTP id w11so4333333bku.8
- for <barebox@lists.infradead.org>; Thu, 21 Feb 2013 11:49:20 -0800 (PST)
-Date: Thu, 21 Feb 2013 20:50:19 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130221195019.GD946@x61s.8.8.8.8>
-References: <1361307394-24649-1-git-send-email-alex.aring@gmail.com>
- <20130221133102.GQ1906@pengutronix.de>
+ id 1U8nlX-0005A6-L8
+ for barebox@lists.infradead.org; Fri, 22 Feb 2013 08:14:00 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1U8nlW-0007YK-Bu
+ for barebox@lists.infradead.org; Fri, 22 Feb 2013 09:13:58 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1U8nlW-0004Ix-Ai
+ for barebox@lists.infradead.org; Fri, 22 Feb 2013 09:13:58 +0100
+Date: Fri, 22 Feb 2013 09:13:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130222081358.GE1906@pengutronix.de>
+References: <1361456235-30969-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130221133102.GQ1906@pengutronix.de>
+In-Reply-To: <1361456235-30969-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +29,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] nandtest: use new pread and pwrite functions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] hush: expand variables before globbing in for loops
+To: barebox@lists.infradead.org
 
-Hi,
-
-On Thu, Feb 21, 2013 at 02:31:02PM +0100, Sascha Hauer wrote:
-> On Tue, Feb 19, 2013 at 09:56:33PM +0100, Alexander Aring wrote:
-> > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> > ---
-> >  commands/nandtest.c | 36 ++++++------------------------------
-> >  1 file changed, 6 insertions(+), 30 deletions(-)
+On Thu, Feb 21, 2013 at 03:17:13PM +0100, Sascha Hauer wrote:
+> The following does work:
 > 
-> Applied, thanks
+> for i in *; do echo $i; done
 > 
-> I squashed this into the commit adding pread/pwrite to make this commit
-> compilable.
+> but the following does not:
 > 
+> a="*"; for i in $a; do echo $i; done
+> 
+> This is because globbing in for loops takes place before the variable
+> is expanded. Fix this by explicitly expanding the variables before globbing.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Thanks. :-)
+I'll drop this one. While it makes the situation better in some cases,
+it does not entirely fix this issue. I think hush is just too buggy to
+fix this properly.
 
-Regards
-Alex
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
