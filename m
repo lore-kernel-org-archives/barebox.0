@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f52.google.com ([74.125.83.52])
+Received: from mail-oa0-f53.google.com ([209.85.219.53])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8pad-00054Q-1Z
- for barebox@lists.infradead.org; Fri, 22 Feb 2013 10:10:51 +0000
-Received: by mail-ee0-f52.google.com with SMTP id b15so203255eek.25
- for <barebox@lists.infradead.org>; Fri, 22 Feb 2013 02:10:49 -0800 (PST)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Fri, 22 Feb 2013 11:10:42 +0100
-Message-Id: <1361527842-25815-3-git-send-email-fabio.porcedda@gmail.com>
-In-Reply-To: <1361527842-25815-1-git-send-email-fabio.porcedda@gmail.com>
+ id 1U8qGn-0000Nz-6C
+ for barebox@lists.infradead.org; Fri, 22 Feb 2013 10:54:25 +0000
+Received: by mail-oa0-f53.google.com with SMTP id m1so455094oag.40
+ for <barebox@lists.infradead.org>; Fri, 22 Feb 2013 02:54:24 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1361527842-25815-2-git-send-email-fabio.porcedda@gmail.com>
 References: <1361527842-25815-1-git-send-email-fabio.porcedda@gmail.com>
+ <1361527842-25815-2-git-send-email-fabio.porcedda@gmail.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 22 Feb 2013 11:54:04 +0100
+Message-ID: <CAHkwnC_a0-C0oAwP33u8xjKpORB=JC4zDhqUDw+OMmdRd8S4Mw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +20,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 next 2/2] ARM at91 telit-evk-pro3: move config-board out of
- /env/init
+Subject: Re: [PATCH v2 next 1/2] defenv2: comment setting default values in
+ /env/config
 To: barebox@lists.infradead.org
 
-This is to complete the work of two recent commits:
-- defenv2: move config-board out of /env/init
-- defenv2: comment setting default values in /env/config
+On Fri, Feb 22, 2013 at 11:10 AM, Fabio Porcedda
+<fabio.porcedda@gmail.com> wrote:
+> There is no need to set againg deafult values in /env/config
+> because they are already setted in /env/bin/init,
+> that allow /env/config-board to change those default values
+> without being overwritten by /env/config.
+>
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+> ---
+>  defaultenv-2/base/config | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/defaultenv-2/base/config b/defaultenv-2/base/config
+> index 189e5a6..dec0595 100644
+> --- a/defaultenv-2/base/config
+> +++ b/defaultenv-2/base/config
+> @@ -6,16 +6,16 @@
+>  #global.hostname=
+>
+>  # set to false if you do not want to have colors
+> -global.allow_color=true
+> +#global.allow_color=true
+>
+>  # user (used for network filenames)
+> -global.user=none
+> +#global.user=none
+>
+>  # timeout in seconds before the default boot entry is started
+> -global.autoboot_timeout=3
+> +#global.autoboot_timeout=3
+>
+>  # default boot entry (one of /env/boot/*)
+> -global.boot.default=net
+> +#global.boot.default=net
+>
+>  # base bootargs
+>  #global.linux.bootargs.base="console=ttyS0,115200"
+> --
+> 1.8.1.1
+>
 
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
----
- arch/arm/boards/telit-evk-pro3/env/config-board      | 8 ++++++++
- arch/arm/boards/telit-evk-pro3/env/init/config-board | 8 --------
- 2 files changed, 8 insertions(+), 8 deletions(-)
- create mode 100644 arch/arm/boards/telit-evk-pro3/env/config-board
- delete mode 100644 arch/arm/boards/telit-evk-pro3/env/init/config-board
+This patch works fine on master too.
 
-diff --git a/arch/arm/boards/telit-evk-pro3/env/config-board b/arch/arm/boards/telit-evk-pro3/env/config-board
-new file mode 100644
-index 0000000..741b902
---- /dev/null
-+++ b/arch/arm/boards/telit-evk-pro3/env/config-board
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+# board defaults, do not change in running system. Change /env/config
-+# instead
-+
-+global.hostname=evk-pro3
-+global.linux.bootargs.base="console=ttyS0,115200"
-+global.boot.default=nand-ubi
-diff --git a/arch/arm/boards/telit-evk-pro3/env/init/config-board b/arch/arm/boards/telit-evk-pro3/env/init/config-board
-deleted file mode 100644
-index 741b902..0000000
---- a/arch/arm/boards/telit-evk-pro3/env/init/config-board
-+++ /dev/null
-@@ -1,8 +0,0 @@
--#!/bin/sh
--
--# board defaults, do not change in running system. Change /env/config
--# instead
--
--global.hostname=evk-pro3
--global.linux.bootargs.base="console=ttyS0,115200"
--global.boot.default=nand-ubi
+Best regards
 -- 
-1.8.1.1
-
+Fabio Porcedda
 
 _______________________________________________
 barebox mailing list
