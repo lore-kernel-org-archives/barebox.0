@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-f178.google.com ([209.85.215.178])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U8nvJ-00064T-K8
- for barebox@lists.infradead.org; Fri, 22 Feb 2013 08:24:08 +0000
-Date: Fri, 22 Feb 2013 09:24:03 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130222082403.GG1906@pengutronix.de>
-References: <1361463220-30166-1-git-send-email-h.feurstein@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1361463220-30166-1-git-send-email-h.feurstein@gmail.com>
+ id 1U8ofp-00024q-5b
+ for barebox@lists.infradead.org; Fri, 22 Feb 2013 09:12:09 +0000
+Received: by mail-ea0-f178.google.com with SMTP id a14so173062eaa.23
+ for <barebox@lists.infradead.org>; Fri, 22 Feb 2013 01:12:05 -0800 (PST)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Fri, 22 Feb 2013 10:12:01 +0100
+Message-Id: <1361524321-21617-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +16,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: fec_imx: use dev_err and dev_warn instead of
- printf
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] defenv2: comment setting default values in /env/config
+To: barebox@lists.infradead.org
 
-On Thu, Feb 21, 2013 at 05:13:39PM +0100, Hubert Feurstein wrote:
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+There is no need to set againg deafult values in /env/config
+because they are already setted in /env/bin/init,
+that allow /env/config-board to change those default values
+without being overwritten by /env/config.
 
-Applied, thanks
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+---
+ defaultenv-2/base/config | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Sascha
-
-
+diff --git a/defaultenv-2/base/config b/defaultenv-2/base/config
+index 189e5a6..dec0595 100644
+--- a/defaultenv-2/base/config
++++ b/defaultenv-2/base/config
+@@ -6,16 +6,16 @@
+ #global.hostname=
+ 
+ # set to false if you do not want to have colors
+-global.allow_color=true
++#global.allow_color=true
+ 
+ # user (used for network filenames)
+-global.user=none
++#global.user=none
+ 
+ # timeout in seconds before the default boot entry is started
+-global.autoboot_timeout=3
++#global.autoboot_timeout=3
+ 
+ # default boot entry (one of /env/boot/*)
+-global.boot.default=net
++#global.boot.default=net
+ 
+ # base bootargs
+ #global.linux.bootargs.base="console=ttyS0,115200"
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.1
+
 
 _______________________________________________
 barebox mailing list
