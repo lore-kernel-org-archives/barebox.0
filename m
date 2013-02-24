@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from smtp14.mail.ru ([94.100.176.91])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U9IEi-0001IE-K7
- for barebox@lists.infradead.org; Sat, 23 Feb 2013 16:46:09 +0000
-Received: by mail-bk0-f49.google.com with SMTP id w11so716080bku.22
- for <barebox@lists.infradead.org>; Sat, 23 Feb 2013 08:46:07 -0800 (PST)
-Date: Sat, 23 Feb 2013 17:47:08 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130223164708.GB922@x61s.8.8.8.8>
-References: <1361527842-25815-1-git-send-email-fabio.porcedda@gmail.com>
- <1361527842-25815-2-git-send-email-fabio.porcedda@gmail.com>
- <20130223132520.GA922@x61s.8.8.8.8>
- <20130223143756.GI1906@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130223143756.GI1906@pengutronix.de>
+ id 1U9XoW-0003a5-5O
+ for barebox@lists.infradead.org; Sun, 24 Feb 2013 09:24:10 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun, 24 Feb 2013 13:23:53 +0400
+Message-Id: <1361697839-14310-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +14,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 next 1/2] defenv2: comment setting default values in
- /env/config
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/7] ARM: pcm038: Select IIM by default
+To: barebox@lists.infradead.org
 
-Hi,
+PCM038 uses IIM in board code, so select IMX_IIM symbol by default.
 
-On Sat, Feb 23, 2013 at 03:37:56PM +0100, Sascha Hauer wrote:
-> On Sat, Feb 23, 2013 at 02:26:29PM +0100, Alexander Aring wrote:
-> > Hi,
-> > 
-> > too late for this correction :(
-> 
-> We can still fixup things in -next and I just did that.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Ok, that's cool. It's not only deafult to default. There is another typo with
-againg and again.
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4115d35..c7c6a94 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -289,6 +289,7 @@ config MACH_PCA100
+ 
+ config MACH_PCM038
+ 	bool "phyCORE-i.MX27"
++	select IMX_IIM
+ 	select SPI
+ 	select DRIVER_SPI_IMX
+ 	select MFD_MC13XXX
+-- 
+1.7.12.4
 
-Thanks
 
 _______________________________________________
 barebox mailing list
