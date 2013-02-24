@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U9XzJ-0004ER-8I
- for barebox@lists.infradead.org; Sun, 24 Feb 2013 09:35:18 +0000
-Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id BBDC3DC135E
- for <barebox@lists.infradead.org>; Sun, 24 Feb 2013 10:45:58 +0100 (CET)
+ id 1U9alW-0000A0-JQ
+ for barebox@lists.infradead.org; Sun, 24 Feb 2013 12:33:15 +0000
+Received: from mail605.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 161081018712
+ for <barebox@lists.infradead.org>; Sun, 24 Feb 2013 13:49:07 +0100 (CET)
+Date: Sun, 24 Feb 2013 13:32:12 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 24 Feb 2013 10:34:12 +0100
-Message-Id: <1361698452-3167-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130224123212.GA10258@game.jcrosoft.org>
+References: <1361697839-14310-1-git-send-email-shc_work@mail.ru>
+ <1361697839-14310-7-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1361697839-14310-7-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +23,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] phy: fix force mode
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/7] ARM: pcm038: Update defconfig
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-do not try to read the status in force mode
-the link is up
+On 13:23 Sun 24 Feb     , Alexander Shiyan wrote:
+more info here
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/net/phy/mdio_bus.c |    4 ++++
- drivers/net/phy/phy.c      |    4 ++++
- include/linux/phy.h        |    1 +
- 3 files changed, 9 insertions(+)
-
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index d1d802b..e1bb7b1 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -167,10 +167,14 @@ static int mdio_bus_probe(struct device_d *_dev)
- 			dev->speed = SPEED_10;
- 			dev->duplex = DUPLEX_FULL;
- 			dev->autoneg = !AUTONEG_ENABLE;
-+			dev->force = 1;
-+			dev->link = 1;
- 		} else if (dev->dev_flags & PHYLIB_FORCE_100) {
- 			dev->speed = SPEED_100;
- 			dev->duplex = DUPLEX_FULL;
- 			dev->autoneg = !AUTONEG_ENABLE;
-+			dev->force = 1;
-+			dev->link = 1;
- 		}
- 	}
- 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 1cf2cb9..12739ff 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -549,6 +549,10 @@ int genphy_read_status(struct phy_device *phydev)
- 	int lpa;
- 	int lpagb = 0;
- 
-+	/* if force the status and link are set */
-+	if (phydev->force)
-+		return 0;
-+
- 	/* Update the link, but return if there
- 	 * was an error */
- 	err = genphy_update_link(phydev);
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 6c9cac9..99c9639 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -158,6 +158,7 @@ struct phy_device {
- 	u32 advertising;
- 
- 	int autoneg;
-+	int force;
- 
- 
- 	/* private data pointer */
--- 
-1.7.10.4
-
+what you enable or disable at least
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/configs/pcm038_defconfig | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/configs/pcm038_defconfig b/arch/arm/configs/pcm038_defconfig
+> index e2f5388..aaaaf15 100644
+> --- a/arch/arm/configs/pcm038_defconfig
+> +++ b/arch/arm/configs/pcm038_defconfig
+> @@ -5,6 +5,7 @@ CONFIG_MACH_PCM038=y
+>  CONFIG_AEABI=y
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_ARM_UNWIND=y
+> +CONFIG_PBL_IMAGE=y
+>  CONFIG_MMU=y
+>  CONFIG_TEXT_BASE=0xa7f00000
+>  CONFIG_MALLOC_SIZE=0x1000000
+> @@ -48,6 +49,9 @@ CONFIG_CMD_MAGICVAR=y
+>  CONFIG_CMD_MAGICVAR_HELP=y
+>  CONFIG_CMD_GPIO=y
+>  CONFIG_CMD_UNCOMPRESS=y
+> +CONFIG_CMD_SPI=y
+> +CONFIG_CMD_MIITOOL=y
+> +CONFIG_CMD_CLK=y
+>  CONFIG_NET=y
+>  CONFIG_NET_DHCP=y
+>  CONFIG_NET_PING=y
+> @@ -56,6 +60,8 @@ CONFIG_NET_RESOLV=y
+>  CONFIG_DRIVER_NET_FEC_IMX=y
+>  CONFIG_NET_USB=y
+>  CONFIG_NET_USB_ASIX=y
+> +CONFIG_I2C=y
+> +CONFIG_I2C_IMX=y
+>  CONFIG_DRIVER_CFI=y
+>  CONFIG_CFI_BUFFER_WRITE=y
+>  CONFIG_MTD=y
+> @@ -73,5 +79,4 @@ CONFIG_DRIVER_VIDEO_IMX=y
+>  CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY=y
+>  CONFIG_FS_TFTP=y
+>  CONFIG_FS_NFS=y
+> -CONFIG_ZLIB=y
+>  CONFIG_LZO_DECOMPRESS=y
+> -- 
+> 1.7.12.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
