@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U9suX-0007kJ-0B
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 07:55:45 +0000
-Date: Mon, 25 Feb 2013 08:55:43 +0100
+ id 1U9sxK-0008PJ-UY
+ for barebox@lists.infradead.org; Mon, 25 Feb 2013 07:58:39 +0000
+Date: Mon, 25 Feb 2013 08:58:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130225075543.GK1906@pengutronix.de>
-References: <1361716974-17999-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130225075837.GL1906@pengutronix.de>
+References: <1361697839-14310-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361716974-17999-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1361697839-14310-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,35 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: pcm038: Remove duplicate imx27_barebox_entry() call
+Subject: Re: [PATCH 1/7] ARM: pcm038: Select IIM by default
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 24, 2013 at 06:42:54PM +0400, Alexander Shiyan wrote:
+On Sun, Feb 24, 2013 at 01:23:53PM +0400, Alexander Shiyan wrote:
+> PCM038 uses IIM in board code, so select IMX_IIM symbol by default.
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied, thanks
+Applied 1-6,
 
 Sascha
 
 > ---
->  arch/arm/boards/pcm038/lowlevel.c | 2 --
->  1 file changed, 2 deletions(-)
+>  arch/arm/mach-imx/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-> index 85b9391..77b7bf5 100644
-> --- a/arch/arm/boards/pcm038/lowlevel.c
-> +++ b/arch/arm/boards/pcm038/lowlevel.c
-> @@ -98,8 +98,6 @@ void __bare_init __naked barebox_arm_reset_vector(void)
->  	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 4115d35..c7c6a94 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -289,6 +289,7 @@ config MACH_PCA100
 >  
->  	imx27_barebox_boot_nand_external();
-> -#else
-> -	imx27_barebox_entry(0);
->  #endif
->  out:
->  	imx27_barebox_entry(0);
+>  config MACH_PCM038
+>  	bool "phyCORE-i.MX27"
+> +	select IMX_IIM
+>  	select SPI
+>  	select DRIVER_SPI_IMX
+>  	select MFD_MC13XXX
 > -- 
 > 1.7.12.4
 > 
