@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U9su3-0007iX-KT
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 07:55:16 +0000
-Date: Mon, 25 Feb 2013 08:55:10 +0100
+ id 1U9suX-0007kJ-0B
+ for barebox@lists.infradead.org; Mon, 25 Feb 2013 07:55:45 +0000
+Date: Mon, 25 Feb 2013 08:55:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130225075510.GJ1906@pengutronix.de>
-References: <1361698452-3167-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130225075543.GK1906@pengutronix.de>
+References: <1361716974-17999-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361698452-3167-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1361716974-17999-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,74 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] phy: fix force mode
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] ARM: pcm038: Remove duplicate imx27_barebox_entry() call
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 24, 2013 at 10:34:12AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> do not try to read the status in force mode
-> the link is up
+On Sun, Feb 24, 2013 at 06:42:54PM +0400, Alexander Shiyan wrote:
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  drivers/net/phy/mdio_bus.c |    4 ++++
->  drivers/net/phy/phy.c      |    4 ++++
->  include/linux/phy.h        |    1 +
->  3 files changed, 9 insertions(+)
+>  arch/arm/boards/pcm038/lowlevel.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-> index d1d802b..e1bb7b1 100644
-> --- a/drivers/net/phy/mdio_bus.c
-> +++ b/drivers/net/phy/mdio_bus.c
-> @@ -167,10 +167,14 @@ static int mdio_bus_probe(struct device_d *_dev)
->  			dev->speed = SPEED_10;
->  			dev->duplex = DUPLEX_FULL;
->  			dev->autoneg = !AUTONEG_ENABLE;
-> +			dev->force = 1;
-> +			dev->link = 1;
->  		} else if (dev->dev_flags & PHYLIB_FORCE_100) {
->  			dev->speed = SPEED_100;
->  			dev->duplex = DUPLEX_FULL;
->  			dev->autoneg = !AUTONEG_ENABLE;
-> +			dev->force = 1;
-> +			dev->link = 1;
->  		}
->  	}
+> diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+> index 85b9391..77b7bf5 100644
+> --- a/arch/arm/boards/pcm038/lowlevel.c
+> +++ b/arch/arm/boards/pcm038/lowlevel.c
+> @@ -98,8 +98,6 @@ void __bare_init __naked barebox_arm_reset_vector(void)
+>  	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 8);
 >  
-> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-> index 1cf2cb9..12739ff 100644
-> --- a/drivers/net/phy/phy.c
-> +++ b/drivers/net/phy/phy.c
-> @@ -549,6 +549,10 @@ int genphy_read_status(struct phy_device *phydev)
->  	int lpa;
->  	int lpagb = 0;
->  
-> +	/* if force the status and link are set */
-> +	if (phydev->force)
-> +		return 0;
-> +
->  	/* Update the link, but return if there
->  	 * was an error */
->  	err = genphy_update_link(phydev);
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 6c9cac9..99c9639 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -158,6 +158,7 @@ struct phy_device {
->  	u32 advertising;
->  
->  	int autoneg;
-> +	int force;
->  
->  
->  	/* private data pointer */
+>  	imx27_barebox_boot_nand_external();
+> -#else
+> -	imx27_barebox_entry(0);
+>  #endif
+>  out:
+>  	imx27_barebox_entry(0);
 > -- 
-> 1.7.10.4
+> 1.7.12.4
 > 
 > 
 > _______________________________________________
