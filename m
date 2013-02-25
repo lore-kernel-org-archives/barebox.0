@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f41.google.com ([209.85.219.41])
- by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U9w9H-0006BE-Nv
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 11:23:12 +0000
-Received: by mail-oa0-f41.google.com with SMTP id i10so2795864oag.14
- for <barebox@lists.infradead.org>; Mon, 25 Feb 2013 03:23:10 -0800 (PST)
+Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
+ id 1U9wmS-0007n8-Hu
+ for barebox@lists.infradead.org; Mon, 25 Feb 2013 12:03:41 +0000
+Received: from mail604.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id C41BEFFB0B9
+ for <barebox@lists.infradead.org>; Mon, 25 Feb 2013 13:14:31 +0100 (CET)
+Date: Mon, 25 Feb 2013 13:02:36 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130225120236.GB10258@game.jcrosoft.org>
+References: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20130223143756.GI1906@pengutronix.de>
-References: <1361527842-25815-1-git-send-email-fabio.porcedda@gmail.com>
- <1361527842-25815-2-git-send-email-fabio.porcedda@gmail.com>
- <20130223132520.GA922@x61s.8.8.8.8> <20130223143756.GI1906@pengutronix.de>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Mon, 25 Feb 2013 12:22:50 +0100
-Message-ID: <CAHkwnC-m7bn9wprJYTsT+oF9pNEa_iaW73JpQGZWa+7V-dw0dQ@mail.gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,94 +22,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 next 1/2] defenv2: comment setting default values in
- /env/config
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] fix compiler warnings: use puts() instead of printf()
+To: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: barebox@lists.infradead.org, Vicente <vicencb@gmail.com>
 
-On Sat, Feb 23, 2013 at 3:37 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Sat, Feb 23, 2013 at 02:26:29PM +0100, Alexander Aring wrote:
->> Hi,
->>
->> too late for this correction :(
->
-> We can still fixup things in -next and I just did that.
-
-Thanks for fixing it.
-
-> Sascha
->
->>
->> On Fri, Feb 22, 2013 at 11:10:41AM +0100, Fabio Porcedda wrote:
->> > There is no need to set againg deafult values in /env/config
->>
->> s/deafult/default/
->>
->> > because they are already setted in /env/bin/init,
->> > that allow /env/config-board to change those default values
->> > without being overwritten by /env/config.
->> >
->> > Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
->> > ---
->> >  defaultenv-2/base/config | 8 ++++----
->> >  1 file changed, 4 insertions(+), 4 deletions(-)
->> >
->> > diff --git a/defaultenv-2/base/config b/defaultenv-2/base/config
->> > index 189e5a6..dec0595 100644
->> > --- a/defaultenv-2/base/config
->> > +++ b/defaultenv-2/base/config
->> > @@ -6,16 +6,16 @@
->> >  #global.hostname=
->> >
->> >  # set to false if you do not want to have colors
->> > -global.allow_color=true
->> > +#global.allow_color=true
->> >
->> >  # user (used for network filenames)
->> > -global.user=none
->> > +#global.user=none
->> >
->> >  # timeout in seconds before the default boot entry is started
->> > -global.autoboot_timeout=3
->> > +#global.autoboot_timeout=3
->> >
->> >  # default boot entry (one of /env/boot/*)
->> > -global.boot.default=net
->> > +#global.boot.default=net
->> >
->> >  # base bootargs
->> >  #global.linux.bootargs.base="console=ttyS0,115200"
->> > --
->> > 1.8.1.1
->> >
->> >
->> > _______________________________________________
->> > barebox mailing list
->> > barebox@lists.infradead.org
->> > http://lists.infradead.org/mailman/listinfo/barebox
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
-
--- 
-Fabio Porcedda
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDk6MzEgVGh1IDIxIEZlYiAgICAgLCBGYWJpbyBQb3JjZWRkYSB3cm90ZToKPiBVc2UgcHV0
+cygpIGJlY2F1c2UgcHJpbnRmKCkgaXNuJ3QgbmVjZXNzYXJ5LAo+IHRvIGZpeCB0aGUgZm9sbG93
+aW5nIGNvbXBpbGVyIHdhcm5pbmdzOgo+IAo+IC9iYXJlYm94L2NvbW1vbi9tZW51LmM6IEluIGZ1
+bmN0aW9uIOKAmG1lbnVfc2hvd+KAmToKPiAvYmFyZWJveC9jb21tb24vbWVudS5jOjI3Nzo0OiB3
+YXJuaW5nOiBmb3JtYXQgbm90IGEgc3RyaW5nIGxpdGVyYWwgYW5kIG5vIGZvcm1hdCBhcmd1bWVu
+dHMgWy1XZm9ybWF0LXNlY3VyaXR5XQo+IAo+IC9iYXJlYm94L3NjcmlwdHMvb21hcDRfdXNiYm9v
+dC5jOiBJbiBmdW5jdGlvbiDigJhyZWFkX2FzaWNfaWTigJk6Cj4gL2JhcmVib3gvc2NyaXB0cy9v
+bWFwNF91c2Jib290LmM6MTAxOjM6IHdhcm5pbmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJh
+bCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50cyBbLVdmb3JtYXQtc2VjdXJpdHldCgpTYXNjaGEgcmV2
+ZXJ0IHRoaXMgcGxlYXNlIHRoaXMgYWRkIGEgIlxuIiB0aGF0IHdlIGRvIG5vdCB3YW50CnNwZWNp
+YWxseSBvbiB0aGUgbWVudQoKQmVzdCBSZWdhcmRzLApKLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEZh
+YmlvIFBvcmNlZGRhIDxmYWJpby5wb3JjZWRkYUBnbWFpbC5jb20+Cj4gQ2M6IEplYW4tQ2hyaXN0
+b3BoZSBQTEFHTklPTC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Cj4gQ2M6IFZpY2Vu
+dGUgPHZpY2VuY2JAZ21haWwuY29tPgo+IC0tLQo+ICBjb21tb24vbWVudS5jICAgICAgICAgICB8
+IDIgKy0KPiAgc2NyaXB0cy9vbWFwNF91c2Jib290LmMgfCAyICstCj4gIDIgZmlsZXMgY2hhbmdl
+ZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9jb21t
+b24vbWVudS5jIGIvY29tbW9uL21lbnUuYwo+IGluZGV4IGNlOTM4MzguLjMwZGNlZDcgMTAwNjQ0
+Cj4gLS0tIGEvY29tbW9uL21lbnUuYwo+ICsrKyBiL2NvbW1vbi9tZW51LmMKPiBAQCAtMjc0LDcg
+KzI3NCw3IEBAIGludCBtZW51X3Nob3coc3RydWN0IG1lbnUgKm0pCj4gIAkJCXByaW50ZigiQXV0
+byBTZWxlY3QgaW4iKTsKPiAgCQl9IGVsc2Ugewo+ICAJCQlhdXRvX2Rpc3BsYXlfbGVuID0gc3Ry
+bGVuKG0tPmF1dG9fZGlzcGxheSk7Cj4gLQkJCXByaW50ZihtLT5hdXRvX2Rpc3BsYXkpOwo+ICsJ
+CQlwdXRzKG0tPmF1dG9fZGlzcGxheSk7Cj4gIAkJfQo+ICAJCXByaW50ZigiICUyZCIsIGNvdW50
+ZG93bi0tKTsKPiAgCX0KPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9vbWFwNF91c2Jib290LmMgYi9z
+Y3JpcHRzL29tYXA0X3VzYmJvb3QuYwo+IGluZGV4IDhjNTc3NWQuLjM0ZTUzYzAgMTAwNjQ0Cj4g
+LS0tIGEvc2NyaXB0cy9vbWFwNF91c2Jib290LmMKPiArKysgYi9zY3JpcHRzL29tYXA0X3VzYmJv
+b3QuYwo+IEBAIC05OCw3ICs5OCw3IEBAIGludCByZWFkX2FzaWNfaWQoc3RydWN0IHVzYl9oYW5k
+bGUgKnVzYikKPiAgCQkJc3ByaW50ZihsaW5lKzQraiozLCAiJTAyWCAiLCBpZFtpK2pdKTsKPiAg
+CQlsaW5lWzQraiozKzBdID0gJ1xuJzsKPiAgCQlsaW5lWzQraiozKzFdID0gMDsKPiAtCQlwcmlu
+dGYobGluZSk7Cj4gKwkJcHV0cyhsaW5lKTsKPiAgCX0KPiAgCXJldCA9IDA7Cj4gIAlmb3IgKGkg
+PSAxLCBqID0gMDsgaSA8IHNpemVvZihpZCkgJiYgaiA8IGlkWzBdOyBpICs9IDIraWRbaSsxXSwg
+aisrKSB7Cj4gLS0gCj4gMS44LjEuMQo+IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
