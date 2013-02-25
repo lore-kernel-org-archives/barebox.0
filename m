@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1U9sy6-0008ST-Ds
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 07:59:30 +0000
-Date: Mon, 25 Feb 2013 08:59:24 +0100
+ id 1U9tGu-0001Wb-Cg
+ for barebox@lists.infradead.org; Mon, 25 Feb 2013 08:18:52 +0000
+Date: Mon, 25 Feb 2013 09:18:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130225075924.GM1906@pengutronix.de>
-References: <1361698333-2727-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130225081851.GP1906@pengutronix.de>
+References: <1361729714-8772-1-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361698333-2727-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1361729714-8772-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,79 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] smc911111: fix send and recv return value
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] OMAP4 USB BOOT: remove double line endings
+To: Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 24, 2013 at 10:32:13AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> on error send error code and 0 on success
+On Sun, Feb 24, 2013 at 07:15:14PM +0100, Vicente Bergas wrote:
+> From previous patch that replaced printf with puts:
+>  puts adds it's own line ending, so do not append it manually
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  drivers/net/smc91111.c |   12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+>  scripts/omap4_usbboot.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-> index 695fa7d..48183dd 100644
-> --- a/drivers/net/smc91111.c
-> +++ b/drivers/net/smc91111.c
-> @@ -935,7 +935,7 @@ static int smc91c111_eth_send(struct eth_device *edev, void *packet,
+> diff --git a/scripts/omap4_usbboot.c b/scripts/omap4_usbboot.c
+> index 34e53c0..e521086 100644
+> --- a/scripts/omap4_usbboot.c
+> +++ b/scripts/omap4_usbboot.c
+> @@ -78,7 +78,7 @@ int read_asic_id(struct usb_handle *usb)
+>  	const uint32_t msg_getid = 0xF0030003;
+>  	int i, j, k, ret;
+>  	uint8_t id[81];
+> -	char line[LINEWIDTH*3+8];
+> +	char line[LINEWIDTH*3+5];
 >  
->  	if (numPages > 7) {
->  		printf ("%s: Far too big packet error. \n", SMC_DEV_NAME);
-> -		return 0;
-> +		return -EOVERFLOW;
+>  	printf("reading ASIC ID\n");
+>  	memset(id , 0xee, sizeof(id));
+> @@ -96,8 +96,7 @@ int read_asic_id(struct usb_handle *usb)
+>  		sprintf(line, "%02X: ", i);
+>  		for (j = 0; j < LINEWIDTH && j < sizeof(id)-i; j++)
+>  			sprintf(line+4+j*3, "%02X ", id[i+j]);
+> -		line[4+j*3+0] = '\n';
+> -		line[4+j*3+1] = 0;
+> +		line[4+j*3] = 0;
+>  		puts(line);
 >  	}
->  
->  	/* now, try to allocate the memory */
-> @@ -965,7 +965,7 @@ again:
->  		if (try < SMC_ALLOC_MAX_TRY)
->  			goto again;
->  		else
-> -			return 0;
-> +			return -ETIMEDOUT;
->  	}
->  
->  	PRINTK2 ("%s: memory allocation, try %d succeeded ...\n",
-> @@ -980,7 +980,7 @@ again:
->  	if (packet_no & AR_FAILED) {
->  		/* or isn't there?  BAD CHIP! */
->  		printf ("%s: Memory allocation failed. \n", SMC_DEV_NAME);
-> -		return 0;
-> +		return -ENOMEM;
->  	}
->  
->  	/* we have a packet address, so tell the card to use it */
-> @@ -1046,7 +1046,7 @@ again:
->  	SMC_outb(priv, saved_pnr, PN_REG );
->  	SMC_outw(priv, saved_ptr, PTR_REG );
->  
-> -	return length;
-> +	return 0;
->  }
->  
->  static void smc91c111_eth_halt(struct eth_device *edev)
-> @@ -1152,10 +1152,10 @@ static int smc91c111_eth_rx(struct eth_device *edev)
->  	if (!is_error) {
->  		/* Pass the packet up to the protocol layers. */
->  		net_receive(NetRxPackets[0], packet_length);
-> -		return packet_length;
-> +		return 0;
->  	}
->  
-> -	return 0;
-> +	return -EINVAL;
->  }
->  
->  static int smc91c111_get_ethaddr(struct eth_device *edev, unsigned char *m)
+>  	ret = 0;
 > -- 
-> 1.7.10.4
+> 1.8.1.4
 > 
 > 
 > _______________________________________________
