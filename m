@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.76 #1 (Red Hat Linux))
- id 1U9xvW-0004gX-Uv
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 13:17:07 +0000
-Received: from mail604.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id C299DFFAF7E
- for <barebox@lists.infradead.org>; Mon, 25 Feb 2013 14:28:00 +0100 (CET)
-Date: Mon, 25 Feb 2013 14:16:04 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130225131604.GC10258@game.jcrosoft.org>
+Received: from mail-ob0-f178.google.com ([209.85.214.178])
+ by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
+ id 1U9zyQ-0008I6-DW
+ for barebox@lists.infradead.org; Mon, 25 Feb 2013 15:28:14 +0000
+Received: by mail-ob0-f178.google.com with SMTP id wd20so2999840obb.9
+ for <barebox@lists.infradead.org>; Mon, 25 Feb 2013 07:28:13 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20130225131604.GC10258@game.jcrosoft.org>
 References: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
  <20130225120236.GB10258@game.jcrosoft.org>
  <CAHkwnC_MRqyzG+YPMaxdWCxpOied0ig0ETAPZMvm=5=Zu4kGDw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAHkwnC_MRqyzG+YPMaxdWCxpOied0ig0ETAPZMvm=5=Zu4kGDw@mail.gmail.com>
+ <20130225131604.GC10258@game.jcrosoft.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+Date: Mon, 25 Feb 2013 16:27:53 +0100
+Message-ID: <CAHkwnC8hwk3u0CnZBVUz2tz4CKhQ2Yd4nOn5uuJacM781S_m3g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,58 +22,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] fix compiler warnings: use puts() instead of printf()
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org, Vicente <vicencb@gmail.com>
 
-T24gMTM6MjMgTW9uIDI1IEZlYiAgICAgLCBGYWJpbyBQb3JjZWRkYSB3cm90ZToKPiBPbiBNb24s
-IEZlYiAyNSwgMjAxMyBhdCAxOjAyIFBNLCBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFS
-RAo+IDxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgo+ID4gT24gMDk6MzEgVGh1IDIxIEZl
-YiAgICAgLCBGYWJpbyBQb3JjZWRkYSB3cm90ZToKPiA+PiBVc2UgcHV0cygpIGJlY2F1c2UgcHJp
-bnRmKCkgaXNuJ3QgbmVjZXNzYXJ5LAo+ID4+IHRvIGZpeCB0aGUgZm9sbG93aW5nIGNvbXBpbGVy
-IHdhcm5pbmdzOgo+ID4+Cj4gPj4gL2JhcmVib3gvY29tbW9uL21lbnUuYzogSW4gZnVuY3Rpb24g
-4oCYbWVudV9zaG934oCZOgo+ID4+IC9iYXJlYm94L2NvbW1vbi9tZW51LmM6Mjc3OjQ6IHdhcm5p
-bmc6IGZvcm1hdCBub3QgYSBzdHJpbmcgbGl0ZXJhbCBhbmQgbm8gZm9ybWF0IGFyZ3VtZW50cyBb
-LVdmb3JtYXQtc2VjdXJpdHldCj4gPj4KPiA+PiAvYmFyZWJveC9zY3JpcHRzL29tYXA0X3VzYmJv
-b3QuYzogSW4gZnVuY3Rpb24g4oCYcmVhZF9hc2ljX2lk4oCZOgo+ID4+IC9iYXJlYm94L3Njcmlw
-dHMvb21hcDRfdXNiYm9vdC5jOjEwMTozOiB3YXJuaW5nOiBmb3JtYXQgbm90IGEgc3RyaW5nIGxp
-dGVyYWwgYW5kIG5vIGZvcm1hdCBhcmd1bWVudHMgWy1XZm9ybWF0LXNlY3VyaXR5XQo+ID4KPiA+
-IFNhc2NoYSByZXZlcnQgdGhpcyBwbGVhc2UgdGhpcyBhZGQgYSAiXG4iIHRoYXQgd2UgZG8gbm90
-IHdhbnQKPiA+IHNwZWNpYWxseSBvbiB0aGUgbWVudQo+IAo+IEkndmUgYWxyZWFkeSBzZW50IGEg
-cGF0Y2ggdG8gZml4IHRoZSBuZXdsaW5lIHByb2JsZW0gYW5kIHRoZSB3YXJuaW5nIHRvby4KPiBS
-ZXZlcnRpbmcgdGhlIHBhdGNoIGRvZXNuJ3QgZml4IHRoZSB3YXJuaW5nLgp0aGUgcGF0Y2ggaXMg
-d3Jvbmcgd2UgcmV2ZXJ0IHlvdSBzZW5kIHRoZSB3cml0ZSBvbmUKCkJlc3QgUmVnYXJkcywKSi4K
-PiAKPiBCZXN0IHJlZ2FyZHMKPiBGYWJpbyBQb3JjZWRkYQo+IAo+ID4gQmVzdCBSZWdhcmRzLAo+
-ID4gSi4KPiA+Pgo+ID4+IFNpZ25lZC1vZmYtYnk6IEZhYmlvIFBvcmNlZGRhIDxmYWJpby5wb3Jj
-ZWRkYUBnbWFpbC5jb20+Cj4gPj4gQ2M6IEplYW4tQ2hyaXN0b3BoZSBQTEFHTklPTC1WSUxMQVJE
-IDxwbGFnbmlvakBqY3Jvc29mdC5jb20+Cj4gPj4gQ2M6IFZpY2VudGUgPHZpY2VuY2JAZ21haWwu
-Y29tPgo+ID4+IC0tLQo+ID4+ICBjb21tb24vbWVudS5jICAgICAgICAgICB8IDIgKy0KPiA+PiAg
-c2NyaXB0cy9vbWFwNF91c2Jib290LmMgfCAyICstCj4gPj4gIDIgZmlsZXMgY2hhbmdlZCwgMiBp
-bnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL2NvbW1v
-bi9tZW51LmMgYi9jb21tb24vbWVudS5jCj4gPj4gaW5kZXggY2U5MzgzOC4uMzBkY2VkNyAxMDA2
-NDQKPiA+PiAtLS0gYS9jb21tb24vbWVudS5jCj4gPj4gKysrIGIvY29tbW9uL21lbnUuYwo+ID4+
-IEBAIC0yNzQsNyArMjc0LDcgQEAgaW50IG1lbnVfc2hvdyhzdHJ1Y3QgbWVudSAqbSkKPiA+PiAg
-ICAgICAgICAgICAgICAgICAgICAgcHJpbnRmKCJBdXRvIFNlbGVjdCBpbiIpOwo+ID4+ICAgICAg
-ICAgICAgICAgfSBlbHNlIHsKPiA+PiAgICAgICAgICAgICAgICAgICAgICAgYXV0b19kaXNwbGF5
-X2xlbiA9IHN0cmxlbihtLT5hdXRvX2Rpc3BsYXkpOwo+ID4+IC0gICAgICAgICAgICAgICAgICAg
-ICBwcmludGYobS0+YXV0b19kaXNwbGF5KTsKPiA+PiArICAgICAgICAgICAgICAgICAgICAgcHV0
-cyhtLT5hdXRvX2Rpc3BsYXkpOwo+ID4+ICAgICAgICAgICAgICAgfQo+ID4+ICAgICAgICAgICAg
-ICAgcHJpbnRmKCIgJTJkIiwgY291bnRkb3duLS0pOwo+ID4+ICAgICAgIH0KPiA+PiBkaWZmIC0t
-Z2l0IGEvc2NyaXB0cy9vbWFwNF91c2Jib290LmMgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwo+
-ID4+IGluZGV4IDhjNTc3NWQuLjM0ZTUzYzAgMTAwNjQ0Cj4gPj4gLS0tIGEvc2NyaXB0cy9vbWFw
-NF91c2Jib290LmMKPiA+PiArKysgYi9zY3JpcHRzL29tYXA0X3VzYmJvb3QuYwo+ID4+IEBAIC05
-OCw3ICs5OCw3IEBAIGludCByZWFkX2FzaWNfaWQoc3RydWN0IHVzYl9oYW5kbGUgKnVzYikKPiA+
-PiAgICAgICAgICAgICAgICAgICAgICAgc3ByaW50ZihsaW5lKzQraiozLCAiJTAyWCAiLCBpZFtp
-K2pdKTsKPiA+PiAgICAgICAgICAgICAgIGxpbmVbNCtqKjMrMF0gPSAnXG4nOwo+ID4+ICAgICAg
-ICAgICAgICAgbGluZVs0K2oqMysxXSA9IDA7Cj4gPj4gLSAgICAgICAgICAgICBwcmludGYobGlu
-ZSk7Cj4gPj4gKyAgICAgICAgICAgICBwdXRzKGxpbmUpOwo+ID4+ICAgICAgIH0KPiA+PiAgICAg
-ICByZXQgPSAwOwo+ID4+ICAgICAgIGZvciAoaSA9IDEsIGogPSAwOyBpIDwgc2l6ZW9mKGlkKSAm
-JiBqIDwgaWRbMF07IGkgKz0gMitpZFtpKzFdLCBqKyspIHsKPiA+PiAtLQo+ID4+IDEuOC4xLjEK
-PiA+Pgo+IAo+IAo+IAo+IC0tIAo+IEZhYmlvIFBvcmNlZGRhCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+On Mon, Feb 25, 2013 at 2:16 PM, Jean-Christophe PLAGNIOL-VILLARD
+<plagnioj@jcrosoft.com> wrote:
+> On 13:23 Mon 25 Feb     , Fabio Porcedda wrote:
+>> On Mon, Feb 25, 2013 at 1:02 PM, Jean-Christophe PLAGNIOL-VILLARD
+>> <plagnioj@jcrosoft.com> wrote:
+>> > On 09:31 Thu 21 Feb     , Fabio Porcedda wrote:
+>> >> Use puts() because printf() isn't necessary,
+>> >> to fix the following compiler warnings:
+>> >>
+>> >> /barebox/common/menu.c: In function =91menu_show=92:
+>> >> /barebox/common/menu.c:277:4: warning: format not a string literal an=
+d no format arguments [-Wformat-security]
+>> >>
+>> >> /barebox/scripts/omap4_usbboot.c: In function =91read_asic_id=92:
+>> >> /barebox/scripts/omap4_usbboot.c:101:3: warning: format not a string =
+literal and no format arguments [-Wformat-security]
+>> >
+>> > Sascha revert this please this add a "\n" that we do not want
+>> > specially on the menu
+>>
+>> I've already sent a patch to fix the newline problem and the warning too.
+>> Reverting the patch doesn't fix the warning.
+> the patch is wrong we revert you send the write one
+
+I understand that the patch is wrong but the patch cannot be simply
+reverted because in master there is already a partial fix for it:
+"OMAP4 USB BOOT: remove double line endings".
+
+Only half of the patch can be reverted but instead of reverting it we
+can fix it.
+I've already sent the patch to fix the remaining part:
+" menu: fix remove superfluous newline: change puts() -> printf("%s, )"
+
+What do you think about that patch?
+
+Best regards
+Fabio Porcedda
+
+> Best Regards,
+> J.
+>>
+>> Best regards
+>> Fabio Porcedda
+>>
+>> > Best Regards,
+>> > J.
+>> >>
+>> >> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+>> >> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+>> >> Cc: Vicente <vicencb@gmail.com>
+>> >> ---
+>> >>  common/menu.c           | 2 +-
+>> >>  scripts/omap4_usbboot.c | 2 +-
+>> >>  2 files changed, 2 insertions(+), 2 deletions(-)
+>> >>
+>> >> diff --git a/common/menu.c b/common/menu.c
+>> >> index ce93838..30dced7 100644
+>> >> --- a/common/menu.c
+>> >> +++ b/common/menu.c
+>> >> @@ -274,7 +274,7 @@ int menu_show(struct menu *m)
+>> >>                       printf("Auto Select in");
+>> >>               } else {
+>> >>                       auto_display_len =3D strlen(m->auto_display);
+>> >> -                     printf(m->auto_display);
+>> >> +                     puts(m->auto_display);
+>> >>               }
+>> >>               printf(" %2d", countdown--);
+>> >>       }
+>> >> diff --git a/scripts/omap4_usbboot.c b/scripts/omap4_usbboot.c
+>> >> index 8c5775d..34e53c0 100644
+>> >> --- a/scripts/omap4_usbboot.c
+>> >> +++ b/scripts/omap4_usbboot.c
+>> >> @@ -98,7 +98,7 @@ int read_asic_id(struct usb_handle *usb)
+>> >>                       sprintf(line+4+j*3, "%02X ", id[i+j]);
+>> >>               line[4+j*3+0] =3D '\n';
+>> >>               line[4+j*3+1] =3D 0;
+>> >> -             printf(line);
+>> >> +             puts(line);
+>> >>       }
+>> >>       ret =3D 0;
+>> >>       for (i =3D 1, j =3D 0; i < sizeof(id) && j < id[0]; i +=3D 2+id=
+[i+1], j++) {
+>> >> --
+>> >> 1.8.1.1
+>> >>
+>>
+>>
+>>
+>> --
+>> Fabio Porcedda
+
+
+
+--
+Fabio Porcedda
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
