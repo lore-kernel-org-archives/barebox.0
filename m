@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UALCP-0006VF-MV
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 14:08:06 +0000
-Date: Tue, 26 Feb 2013 15:08:02 +0100
+ id 1UALD8-0006dR-Ox
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 14:08:51 +0000
+Date: Tue, 26 Feb 2013 15:08:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130226140802.GY1906@pengutronix.de>
-References: <COL123-DS2221B5CCC26409C3AFFACEA2FC0@phx.gbl>
+Message-ID: <20130226140848.GZ1906@pengutronix.de>
+References: <1361860428-4193-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <COL123-DS2221B5CCC26409C3AFFACEA2FC0@phx.gbl>
+In-Reply-To: <1361860428-4193-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: setupmbr: Bad/No Signature
-To: Nathan <naroyce@hotmail.com>
+Subject: Re: [PATCH] ARM: i.MX: Replace numbers with predefined constants in
+ several places
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCBGZWIgMjYsIDIwMTMgYXQgMDI6NDA6MTJBTSAtMDYwMCwgTmF0aGFuIHdyb3RlOgo+
-IEkgd2FzIGZvbGxvd2luZyBodHRwOi8vYmFyZWJveC5vcmcvZG9jdW1lbnRhdGlvbi9iYXJlYm94
-LTIwMTEuMDUuMC94ODZfYm9vdGxvYWRlci5odG1sCj4gSSBhbSBnZXR0aW5nIHRoZSBlcnJvcjoK
-PiDigJxObyBNQlIgc2lnbmF0dXJlIGZvdW5kCj4gYmFyZWJveCBpbWFnZSBzZWVtcyBub3QgdmFs
-aWQ6IEJhZCBNQlIgc2lnbmF0dXJl4oCdCj4gCj4gQXQgZmlyc3QgSSB3YXMgdHJ5aW5nIGl0IHdp
-dGggT3BlblN1c2UgYW5kIHRob3VnaHQgdGhlIHByb2JsZW0gY291bGQKPiBoYXZlIGJlZW4gcmVs
-YXRlZCB0byBpdCBiZWluZyA2NC1iaXQsIGhvd2V2ZXIgSSBhbSBhbHNvIGdldHRpbmcgdGhlCj4g
-ZXJyb3Igb24gYSAzMi1iaXQgYnVpbGQgb2YgRGViaWFuLgo+IAo+IEEgaGV4ZHVtcCBvZiBzZGIg
-ZG9lcyBzaG93IOKAnGFhNTXigJ0gYXQgdGhlIGVuZCBvZiB0aGUgMXN0IHNlY3Rvci4KCkNvdWxk
-IHlvdSBwb3N0IHRoZSBjb21tYW5kbGluZSB5b3UgdXNlZCB0byBjYWxsIHNldHVwbWJyPwoKU2Fz
-Y2hhCgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
-ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIu
-IDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTct
-MCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDog
-ICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+On Tue, Feb 26, 2013 at 10:33:48AM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+
+Applied, thanks
+
+Sascha
+
+> ---
+>  arch/arm/mach-imx/esdctl.c |    2 +-
+>  arch/arm/mach-imx/imx53.c  |    2 +-
+>  arch/arm/mach-imx/imx6.c   |    2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> index 3585e27..cc2bdc1 100644
+> --- a/arch/arm/mach-imx/esdctl.c
+> +++ b/arch/arm/mach-imx/esdctl.c
+> @@ -355,7 +355,7 @@ void __naked __noreturn imx1_barebox_entry(uint32_t boarddata)
+>  	unsigned long base;
+>  	unsigned long size;
+>  
+> -	base = 0x08000000;
+> +	base = MX1_CSD0_BASE_ADDR;
+>  
+>  	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
+>  	if (size == SZ_64M)
+> diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+> index 52fb8f7..3135ada 100644
+> --- a/arch/arm/mach-imx/imx53.c
+> +++ b/arch/arm/mach-imx/imx53.c
+> @@ -60,7 +60,7 @@ static int imx53_init(void)
+>  
+>  	add_generic_device("imx-iomuxv3", 0, NULL, MX53_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx53-ccm", 0, NULL, MX53_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+> -	add_generic_device("imx31-gpt", 0, NULL, 0X53fa0000, 0x1000, IORESOURCE_MEM, NULL);
+> +	add_generic_device("imx31-gpt", 0, NULL, MX53_GPT1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 0, NULL, MX53_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 1, NULL, MX53_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 2, NULL, MX53_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+> index b62f412..7a7ce15 100644
+> --- a/arch/arm/mach-imx/imx6.c
+> +++ b/arch/arm/mach-imx/imx6.c
+> @@ -59,7 +59,7 @@ static int imx6_init(void)
+>  
+>  	add_generic_device("imx-iomuxv3", 0, NULL, MX6_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx6-ccm", 0, NULL, MX6_CCM_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+> -	add_generic_device("imx31-gpt", 0, NULL, 0x02098000, 0x1000, IORESOURCE_MEM, NULL);
+> +	add_generic_device("imx31-gpt", 0, NULL, MX6_GPT_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 0, NULL, MX6_GPIO1_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 1, NULL, MX6_GPIO2_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+>  	add_generic_device("imx31-gpio", 2, NULL, MX6_GPIO3_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+> -- 
+> 1.7.3.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
