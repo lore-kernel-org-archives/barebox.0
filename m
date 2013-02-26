@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzO-0000cO-23
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:14 +0000
+ id 1UAQzO-0000cQ-2R
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:43 +0100
-Message-Id: <1361909936-2665-17-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:45 +0100
+Message-Id: <1361909936-2665-19-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/29] of: move OFTREE Kconfig option to drivers/of/
+Subject: [PATCH 18/29] oftree command: retire CMD_OFTREE_PROBE Kconfig option
 To: barebox@lists.infradead.org
+
+Whether or not the user wishes devicetree probe support can
+now be decided indepentently of the oftree command, so retire
+the CMD_OFTREE_PROBE option and use OFDEVICE in the code instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/Kconfig |    4 ++++
- lib/Kconfig        |    4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ commands/Kconfig  |    7 -------
+ commands/oftree.c |    2 +-
+ 2 files changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 95f10d0..5e53d25 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -1,2 +1,6 @@
-+config OFTREE
-+	select FDT
-+	bool
-+
- config OFDEVICE
- 	bool
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 4578353..d58109b 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -25,10 +25,6 @@ source lib/lzo/Kconfig
- config FDT
- 	bool
+diff --git a/commands/Kconfig b/commands/Kconfig
+index c8f06d8..0062758 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -486,13 +486,6 @@ config CMD_OFTREE
+ 	  The oftree command has support for dumping devicetrees and, if
+ 	  enabled, to probe devices from the devicetree
  
--config OFTREE
--	select FDT
+-config CMD_OFTREE_PROBE
 -	bool
+-	depends on CMD_OFTREE
+-	prompt "oftree probe support"
+-	help
+-	  This enables the -p option to probe devices from the devicetree
 -
- config BCH
- 	bool
- 
+ config CMD_OF_PROPERTY
+ 	tristate
+ 	select OFTREE
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 612d01a..e4f52b8 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -64,7 +64,7 @@ static int do_oftree(int argc, char *argv[])
+ 			dump = 1;
+ 			break;
+ 		case 'p':
+-			if (IS_ENABLED(CONFIG_CMD_OFTREE_PROBE)) {
++			if (IS_ENABLED(CONFIG_OFDEVICE)) {
+ 				probe = 1;
+ 			} else {
+ 				printf("oftree device probe support disabled\n");
 -- 
 1.7.10.4
 
