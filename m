@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzO-0000cQ-2R
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:15 +0000
+ id 1UAQzO-0000cN-1s
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:45 +0100
-Message-Id: <1361909936-2665-19-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:41 +0100
+Message-Id: <1361909936-2665-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/29] oftree command: retire CMD_OFTREE_PROBE Kconfig option
+Subject: [PATCH 14/29] of/fdt: use optimized endianess conversion
 To: barebox@lists.infradead.org
-
-Whether or not the user wishes devicetree probe support can
-now be decided indepentently of the oftree command, so retire
-the CMD_OFTREE_PROBE option and use OFDEVICE in the code instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |    7 -------
- commands/oftree.c |    2 +-
- 2 files changed, 1 insertion(+), 8 deletions(-)
+ include/libfdt_env.h |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c8f06d8..0062758 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -486,13 +486,6 @@ config CMD_OFTREE
- 	  The oftree command has support for dumping devicetrees and, if
- 	  enabled, to probe devices from the devicetree
+diff --git a/include/libfdt_env.h b/include/libfdt_env.h
+index e83aa96..6486187 100644
+--- a/include/libfdt_env.h
++++ b/include/libfdt_env.h
+@@ -3,13 +3,12 @@
  
--config CMD_OFTREE_PROBE
--	bool
--	depends on CMD_OFTREE
--	prompt "oftree probe support"
--	help
--	  This enables the -p option to probe devices from the devicetree
--
- config CMD_OF_PROPERTY
- 	tristate
- 	select OFTREE
-diff --git a/commands/oftree.c b/commands/oftree.c
-index 612d01a..e4f52b8 100644
---- a/commands/oftree.c
-+++ b/commands/oftree.c
-@@ -64,7 +64,7 @@ static int do_oftree(int argc, char *argv[])
- 			dump = 1;
- 			break;
- 		case 'p':
--			if (IS_ENABLED(CONFIG_CMD_OFTREE_PROBE)) {
-+			if (IS_ENABLED(CONFIG_OFDEVICE)) {
- 				probe = 1;
- 			} else {
- 				printf("oftree device probe support disabled\n");
+ #include <linux/types.h>
+ #include <string.h>
++#include <asm/byteorder.h>
+ 
+ #define _B(n)	((unsigned long long)((uint8_t *)&x)[n])
+-static inline uint32_t fdt32_to_cpu(uint32_t x)
+-{
+-	return (_B(0) << 24) | (_B(1) << 16) | (_B(2) << 8) | _B(3);
+-}
+-#define cpu_to_fdt32(x) fdt32_to_cpu(x)
++
++#define fdt32_to_cpu(x)	be32_to_cpu(x)
++#define cpu_to_fdt32(x) cpu_to_be32(x)
+ 
+ static inline uint64_t fdt64_to_cpu(uint64_t x)
+ {
 -- 
 1.7.10.4
 
