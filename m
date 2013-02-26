@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from moutng.kundenserver.de ([212.227.126.186])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAHTc-0001Qq-Ua
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 10:09:37 +0000
-Date: Tue, 26 Feb 2013 11:09:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130226100935.GI25672@pengutronix.de>
-References: <1361370315-15701-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1361370315-15701-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1UAIam-0007Xj-FT
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 11:21:05 +0000
+From: Christian Kapeller <christian.kapeller@cmotion.eu>
+Date: Tue, 26 Feb 2013 12:20:29 +0100
+Message-Id: <1361877629-10890-1-git-send-email-christian.kapeller@cmotion.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Makefile: drop duplicate cmd_as_o_S support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] bareboxenv: Return proper exit code on failure.
+To: barebox@lists.infradead.org
 
-On Wed, Feb 20, 2013 at 03:25:15PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> as we have it to in scripts/Makefile.lib
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  Makefile |    8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index a27c07a..7f97e8f 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1210,14 +1210,6 @@ quiet_cmd_rmdirs = $(if $(wildcard $(rm-dirs)),CLEAN   $(wildcard $(rm-dirs)))
->  quiet_cmd_rmfiles = $(if $(wildcard $(rm-files)),CLEAN   $(wildcard $(rm-files)))
->        cmd_rmfiles = rm -f $(rm-files)
->  
-> -
-> -a_flags = -Wp,-MD,$(depfile) $(AFLAGS) $(AFLAGS_KERNEL) \
-> -	  $(NOSTDINC_FLAGS) $(CPPFLAGS) \
-> -	  $(modkern_aflags) $(EXTRA_AFLAGS) $(AFLAGS_$(basetarget).o)
-> -
-> -quiet_cmd_as_o_S = AS      $@
-> -cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
-> -
->  # read all saved command lines
+In case environment loading/saving failed, the calling program
+should be informed about that by returning a non zero exit code.
 
-I dropped this one as it breaks compilation in a number of defconfigs:
+Signed-off-by: Christian Kapeller <christian.kapeller@cmotion.eu>
+---
+ scripts/bareboxenv.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-cupid_defconfig:
-/bin/sh: 1: Syntax error: ";" unexpected
-make: *** [.tmp_kallsyms1.o] Error 2
-
-I haven't investigated the reasons.
-
-Sascha
-
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index 707d63d..3fd1429 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -138,7 +138,7 @@ void usage(char *prgname)
+ int main(int argc, char *argv[])
+ {
+ 	int opt;
+-	int save = 0, load = 0, pad = 0, fd;
++	int save = 0, load = 0, pad = 0, err = 0, fd;
+ 	char *filename = NULL, *dirname = NULL;
+ 	int verbose = 0;
+ 
+@@ -191,12 +191,20 @@ int main(int argc, char *argv[])
+ 	if (load) {
+ 		if (verbose)
+ 			printf("loading env from file %s to %s\n", filename, dirname);
+-		envfs_load(filename, dirname, 0);
++
++		err = envfs_load(filename, dirname, 0);
++
++		if(verbose && err)
++			printf("loading env failed: %d\n", err);
+ 	}
+ 	if (save) {
+ 		if (verbose)
+ 			printf("saving contents of %s to file %s\n", dirname, filename);
+-		envfs_save(filename, dirname);
++
++		err = envfs_save(filename, dirname);
++
++		if(verbose && err)
++			printf("saving env failed: %d\n", err);
+ 	}
+-	exit(0);
++	exit((err)?1:0);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 
 _______________________________________________
 barebox mailing list
