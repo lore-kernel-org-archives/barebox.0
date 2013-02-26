@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzN-0000cD-5f
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:03 +0000
+ id 1UAQzN-0000cG-H4
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:30 +0100
-Message-Id: <1361909936-2665-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:33 +0100
+Message-Id: <1361909936-2665-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/29] of: removed unused variables
+Subject: [PATCH 06/29] ARM bootm: Use of_get_fixed_tree
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm/lib/bootm.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index f016f90..704ba8e 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -876,10 +876,8 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 	int  nextoffset;	/* next node offset from libfdt */
- 	uint32_t tag;		/* tag */
- 	int  len;		/* length of the property */
--	int  level = 0;		/* keep track of nesting level */
- 	const struct fdt_property *fdt_prop;
- 	const char *pathp;
--	int depth = 10000;
- 	struct device_node *node = NULL, *n, *root = NULL;
- 	struct property *p;
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index dc29004..cf192cf 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -181,13 +181,7 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
+ 	}
  
-@@ -942,8 +940,7 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 			of_alias_scan();
- 			return 0;
- 		default:
--			if (level <= depth)
--				printf("Unknown tag 0x%08X\n", tag);
-+			printf("Unknown tag 0x%08X\n", tag);
- 			return -EINVAL;
- 		}
- 		nodeoffset = nextoffset;
+ 	if (IS_BUILTIN(CONFIG_OFTREE)) {
+-		fdt_open_into(oftree, oftree, end + 0x8000);
+-
+-		ret = of_fix_tree(oftree);
+-		if (ret)
+-			return ret;
+-
+-		data->oftree = oftree;
++		data->oftree = of_get_fixed_tree(oftree);
+ 	}
+ 
+ 	pr_info("zImage: concatenated oftree detected\n");
 -- 
 1.7.10.4
 
