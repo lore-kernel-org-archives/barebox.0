@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzO-0000cN-1s
+ id 1UAQzO-0000cP-24
  for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:41 +0100
-Message-Id: <1361909936-2665-15-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:42 +0100
+Message-Id: <1361909936-2665-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 14/29] of/fdt: use optimized endianess conversion
+Subject: [PATCH 15/29] oftree command: Use of_print_nodes
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/libfdt_env.h |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ commands/oftree.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-index e83aa96..6486187 100644
---- a/include/libfdt_env.h
-+++ b/include/libfdt_env.h
-@@ -3,13 +3,12 @@
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 83ffe12..612d01a 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -156,7 +156,14 @@ static int do_oftree(int argc, char *argv[])
  
- #include <linux/types.h>
- #include <string.h>
-+#include <asm/byteorder.h>
+ 	if (dump) {
+ 		if (fdt) {
+-			ret = fdt_print(fdt, node);
++			root = of_unflatten_dtb(NULL, fdt);
++			if (IS_ERR(root)) {
++				printf("parse oftree: %s\n", strerror(-PTR_ERR(root)));
++				ret = 1;
++				goto out;
++			}
++			of_print_nodes(root, 0);
++			of_free(root);
+ 		} else {
+ 			struct device_node *root, *n;
  
- #define _B(n)	((unsigned long long)((uint8_t *)&x)[n])
--static inline uint32_t fdt32_to_cpu(uint32_t x)
--{
--	return (_B(0) << 24) | (_B(1) << 16) | (_B(2) << 8) | _B(3);
--}
--#define cpu_to_fdt32(x) fdt32_to_cpu(x)
+@@ -174,10 +181,10 @@ static int do_oftree(int argc, char *argv[])
+ 			}
+ 
+ 			of_print_nodes(n, 0);
+-
+-			ret = 0;
+ 		}
+ 
++		ret = 0;
 +
-+#define fdt32_to_cpu(x)	be32_to_cpu(x)
-+#define cpu_to_fdt32(x) cpu_to_be32(x)
+ 		goto out;
+ 	}
  
- static inline uint64_t fdt64_to_cpu(uint64_t x)
- {
 -- 
 1.7.10.4
 
