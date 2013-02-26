@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzN-0000cC-2K
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:02 +0000
+ id 1UAQzN-0000cD-5f
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:28 +0100
-Message-Id: <1361909936-2665-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:30 +0100
+Message-Id: <1361909936-2665-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,60 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/29] of: unflatten: allocate root node explicitly
+Subject: [PATCH 03/29] of: removed unused variables
 To: barebox@lists.infradead.org
-
-By doing so of_new_node does not depend on the global root_node
-anymore.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/of/base.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index eaaeaf4..e853add 100644
+index f016f90..704ba8e 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -890,7 +890,7 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+@@ -876,10 +876,8 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 	int  nextoffset;	/* next node offset from libfdt */
+ 	uint32_t tag;		/* tag */
+ 	int  len;		/* length of the property */
+-	int  level = 0;		/* keep track of nesting level */
  	const struct fdt_property *fdt_prop;
  	const char *pathp;
- 	int depth = 10000;
--	struct device_node *node = NULL, *n;
-+	struct device_node *node = NULL, *n, *root = NULL;
+-	int depth = 10000;
+ 	struct device_node *node = NULL, *n, *root = NULL;
  	struct property *p;
  
- 	nodeoffset = fdt_path_offset(fdt, "/");
-@@ -903,6 +903,10 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 		return -EINVAL;
- 	}
- 
-+	root = of_new_node(NULL, NULL);
-+	if (!root)
-+		return -ENOMEM;
-+
- 	while (1) {
- 		tag = fdt_next_tag(fdt, nodeoffset, &nextoffset);
- 		switch (tag) {
-@@ -912,11 +916,14 @@ int of_unflatten_dtb(struct fdt_header *fdt)
- 			if (pathp == NULL)
- 				pathp = "/* NULL pointer error */";
- 
--			n = of_find_child(node, pathp);
--			if (n) {
--				node = n;
-+			if (!node) {
-+				node = root;
- 			} else {
--				node = of_new_node(node, pathp);
-+				if ((n = of_find_child(node, pathp))) {
-+					node = n;
-+				} else {
-+					node = of_new_node(node, pathp);
-+				}
- 			}
- 			break;
- 		case FDT_END_NODE:
+@@ -942,8 +940,7 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 			of_alias_scan();
+ 			return 0;
+ 		default:
+-			if (level <= depth)
+-				printf("Unknown tag 0x%08X\n", tag);
++			printf("Unknown tag 0x%08X\n", tag);
+ 			return -EINVAL;
+ 		}
+ 		nodeoffset = nextoffset;
 -- 
 1.7.10.4
 
