@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAL9A-00066V-2d
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 14:04:44 +0000
-Date: Tue, 26 Feb 2013 15:04:42 +0100
+ id 1UALA3-0006GP-F9
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 14:05:40 +0000
+Date: Tue, 26 Feb 2013 15:05:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130226140442.GW1906@pengutronix.de>
-References: <1361810808-6288-1-git-send-email-fabio.porcedda@gmail.com>
+Message-ID: <20130226140537.GX1906@pengutronix.de>
+References: <1361871667-28214-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361810808-6288-1-git-send-email-fabio.porcedda@gmail.com>
+In-Reply-To: <1361871667-28214-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] menu: fix remove superfluous newline: change puts()
- -> printf("%s", )
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: barebox@lists.infradead.org, Vicente Bergas <vicencb@gmail.com>
+Subject: Re: [PATCH 1/1] serial/Makefile: drop out of date comments
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On Mon, Feb 25, 2013 at 05:46:48PM +0100, Fabio Porcedda wrote:
-> Fix previous commit:
-> 638f91b "fix compiler warnings: use puts() instead of printf()".
-> 
-> Because puts() function add a newline, use instead printf("%s", ).
-> 
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Cc: Vicente Bergas <vicencb@gmail.com>
+On Tue, Feb 26, 2013 at 10:41:07AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
+>  drivers/serial/Makefile |    6 ------
+>  1 file changed, 6 deletions(-)
 > 
-> Notes:
->     v2:
->      - corrected two typos in the description
-> 
->  common/menu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/common/menu.c b/common/menu.c
-> index 30dced7..a672e59 100644
-> --- a/common/menu.c
-> +++ b/common/menu.c
-> @@ -274,7 +274,7 @@ int menu_show(struct menu *m)
->  			printf("Auto Select in");
->  		} else {
->  			auto_display_len = strlen(m->auto_display);
-> -			puts(m->auto_display);
-> +			printf("%s", m->auto_display);
->  		}
->  		printf(" %2d", countdown--);
->  	}
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 893e282..16a54c2 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -1,9 +1,3 @@
+> -# atmel_usart.o
+> -# ns9750_serial.o
+> -# s3c4510b_uart.o
+> -# serial_max3100.o
+> -# serial_pl010.o
+> -# serial_xuartlite.o
+>  obj-$(CONFIG_DRIVER_SERIAL_ARM_DCC)		+= arm_dcc.o
+>  obj-$(CONFIG_SERIAL_AMBA_PL011)			+= amba-pl011.o
+>  obj-$(CONFIG_DRIVER_SERIAL_IMX)			+= serial_imx.o
 > -- 
-> 1.8.1.1
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
