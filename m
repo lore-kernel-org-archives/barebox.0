@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzN-0000cF-H5
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:12 +0000
+ id 1UAQzN-0000cI-Lz
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:32 +0100
-Message-Id: <1361909936-2665-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:35 +0100
+Message-Id: <1361909936-2665-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,90 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/29] of: remove allnodes list
+Subject: [PATCH 08/29] of_node command: use of_create_node
 To: barebox@lists.infradead.org
-
-The allnodes list makes it hard to handle multiple devicetrees. Having
-a list to iterate over all nodes of a tree is still good to have though.
-This patch uses the list_head of the root node as the head of the list.
-This way the root node is no longer part of the list, but when iterating
-over a tree the root node is not interesting anyway.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c |   12 +++++-------
- include/of.h      |    8 ++++++++
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ commands/of_node.c |   27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 1c33be1..d6c346d 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -50,8 +50,6 @@ static LIST_HEAD(aliases_lookup);
+diff --git a/commands/of_node.c b/commands/of_node.c
+index a370e26..bf9799c 100644
+--- a/commands/of_node.c
++++ b/commands/of_node.c
+@@ -39,6 +39,7 @@ static int do_of_node(int argc, char *argv[])
+ 	int create = 0;
+ 	char *path = NULL;
+ 	struct device_node *node = NULL;
++	struct device_node *root;
  
- static LIST_HEAD(phandle_list);
- 
--static LIST_HEAD(allnodes);
--
- struct device_node *root_node;
- 
- struct device_node *of_aliases;
-@@ -628,13 +626,13 @@ struct device_node *of_new_node(struct device_node *parent, const char *name)
- 	if (parent) {
- 		node->name = xstrdup(name);
- 		node->full_name = asprintf("%s/%s", node->parent->full_name, name);
-+		list_add(&node->list, &parent->list);
- 	} else {
- 		node->name = xstrdup("");
- 		node->full_name = xstrdup("");
-+		INIT_LIST_HEAD(&node->list);
+ 	while ((opt = getopt(argc, argv, "cd")) > 0) {
+ 		switch (opt) {
+@@ -57,27 +58,19 @@ static int do_of_node(int argc, char *argv[])
+ 		path = argv[optind];
  	}
  
--	list_add_tail(&node->list, &allnodes);
--
- 	return node;
- }
- 
-@@ -812,8 +810,6 @@ void of_free(struct device_node *node)
- 	if (!node)
- 		return;
- 
--	list_del(&node->list);
--
- 	list_for_each_entry_safe(p, pt, &node->properties, list) {
- 		list_del(&p->list);
- 		free(p->name);
-@@ -825,8 +821,10 @@ void of_free(struct device_node *node)
- 		of_free(n);
- 	}
- 
--	if (node->parent)
-+	if (node->parent) {
- 		list_del(&node->parent_list);
-+		list_del(&node->list);
+-	if (create) {
+-		char *name;
++	root = of_get_root_node();
++	if (!root) {
++		printf("root node not set\n");
++		return -ENOENT;
 +	}
  
- 	if (node->device)
- 		node->device->device_node = NULL;
-diff --git a/include/of.h b/include/of.h
-index 59bdc6e..933e855 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -65,6 +65,14 @@ struct fdt_header *fdt_get_tree(void);
- #define device_node_for_nach_child(node, child) \
- 	list_for_each_entry(child, &node->children, parent_list)
++	if (create) {
+ 		if (!path)
+ 			return COMMAND_ERROR_USAGE;
  
-+/*
-+ * Iterate over all nodes of a tree. As a devicetree does not
-+ * have a dedicated list head, the start node (usually the root
-+ * node) will not be iterated over.
-+ */
-+#define of_tree_for_each_node(node, root) \
-+	list_for_each_entry(node, &root->list, list)
-+
- /* Helper to read a big number; size is in cells (not bytes) */
- static inline u64 of_read_number(const __be32 *cell, int size)
- {
+-		name = xstrdup(basename(path));
+-		path = dirname(path);
+-
+-		node = of_find_node_by_path(path);
+-		if (!node) {
+-			printf("Cannot find nodepath %s\n", path);
+-			free(name);
+-			return -ENOENT;
+-		}
+-
+-		debug("create node \"%s\" \"%s\"\n", path, name);
+-
+-		of_new_node(node, name);
+-
+-		free(name);
++		node = of_create_node(root, path);
++		if (!node)
++			return -EINVAL;
+ 
+ 		return 0;
+ 	}
 -- 
 1.7.10.4
 
