@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-oa0-f49.google.com ([209.85.219.49])
+Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UA20u-0005Nw-QA
- for barebox@lists.infradead.org; Mon, 25 Feb 2013 17:38:57 +0000
-Received: by mail-oa0-f49.google.com with SMTP id j6so3220319oag.22
- for <barebox@lists.infradead.org>; Mon, 25 Feb 2013 09:38:55 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20130225172143.GD10258@game.jcrosoft.org>
-References: <1361435514-4474-1-git-send-email-fabio.porcedda@gmail.com>
- <20130225120236.GB10258@game.jcrosoft.org>
- <CAHkwnC_MRqyzG+YPMaxdWCxpOied0ig0ETAPZMvm=5=Zu4kGDw@mail.gmail.com>
- <20130225131604.GC10258@game.jcrosoft.org>
- <CAHkwnC8hwk3u0CnZBVUz2tz4CKhQ2Yd4nOn5uuJacM781S_m3g@mail.gmail.com>
- <20130225172143.GD10258@game.jcrosoft.org>
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-Date: Mon, 25 Feb 2013 18:38:35 +0100
-Message-ID: <CAHkwnC-B5vjssuw9OT7G231R3Z7CnV5Z8BcWrarwbup1RLuXNw@mail.gmail.com>
+ id 1UAE6s-00067W-JY
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 06:33:56 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Tue, 26 Feb 2013 10:33:48 +0400
+Message-Id: <1361860428-4193-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,134 +14,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] fix compiler warnings: use puts() instead of printf()
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Vicente <vicencb@gmail.com>
-
-On Mon, Feb 25, 2013 at 6:21 PM, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> On 16:27 Mon 25 Feb     , Fabio Porcedda wrote:
->> On Mon, Feb 25, 2013 at 2:16 PM, Jean-Christophe PLAGNIOL-VILLARD
->> <plagnioj@jcrosoft.com> wrote:
->> > On 13:23 Mon 25 Feb     , Fabio Porcedda wrote:
->> >> On Mon, Feb 25, 2013 at 1:02 PM, Jean-Christophe PLAGNIOL-VILLARD
->> >> <plagnioj@jcrosoft.com> wrote:
->> >> > On 09:31 Thu 21 Feb     , Fabio Porcedda wrote:
->> >> >> Use puts() because printf() isn't necessary,
->> >> >> to fix the following compiler warnings:
->> >> >>
->> >> >> /barebox/common/menu.c: In function =91menu_show=92:
->> >> >> /barebox/common/menu.c:277:4: warning: format not a string literal=
- and no format arguments [-Wformat-security]
->> >> >>
->> >> >> /barebox/scripts/omap4_usbboot.c: In function =91read_asic_id=92:
->> >> >> /barebox/scripts/omap4_usbboot.c:101:3: warning: format not a stri=
-ng literal and no format arguments [-Wformat-security]
->> >> >
->> >> > Sascha revert this please this add a "\n" that we do not want
->> >> > specially on the menu
->> >>
->> >> I've already sent a patch to fix the newline problem and the warning =
-too.
->> >> Reverting the patch doesn't fix the warning.
->> > the patch is wrong we revert you send the write one
->>
->> I understand that the patch is wrong but the patch cannot be simply
->> reverted because in master there is already a partial fix for it:
->> "OMAP4 USB BOOT: remove double line endings".
->>
->> Only half of the patch can be reverted but instead of reverting it we
->> can fix it.
->> I've already sent the patch to fix the remaining part:
->> " menu: fix remove superfluous newline: change puts() -> printf("%s, )"
->>
->> What do you think about that patch?
->
-> I'm sorry NACK this break git bisect not acceptable
->
-> for just warnings
-
-You are right but the patch is already in branch master:
-http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dcommit;h=3D638f91bd166fe4aa8=
-ee7c046c6102dab6d44ee0b
-
-Only a git rebase -i can change that, but a rebase is not good for master.
-
-Best regards
-Fabio Porcedda
-
-> Best Regards,
-> J.
->>
->> Best regards
->> Fabio Porcedda
->>
->> > Best Regards,
->> > J.
->> >>
->> >> Best regards
->> >> Fabio Porcedda
->> >>
->> >> > Best Regards,
->> >> > J.
->> >> >>
->> >> >> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
->> >> >> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
->> >> >> Cc: Vicente <vicencb@gmail.com>
->> >> >> ---
->> >> >>  common/menu.c           | 2 +-
->> >> >>  scripts/omap4_usbboot.c | 2 +-
->> >> >>  2 files changed, 2 insertions(+), 2 deletions(-)
->> >> >>
->> >> >> diff --git a/common/menu.c b/common/menu.c
->> >> >> index ce93838..30dced7 100644
->> >> >> --- a/common/menu.c
->> >> >> +++ b/common/menu.c
->> >> >> @@ -274,7 +274,7 @@ int menu_show(struct menu *m)
->> >> >>                       printf("Auto Select in");
->> >> >>               } else {
->> >> >>                       auto_display_len =3D strlen(m->auto_display);
->> >> >> -                     printf(m->auto_display);
->> >> >> +                     puts(m->auto_display);
->> >> >>               }
->> >> >>               printf(" %2d", countdown--);
->> >> >>       }
->> >> >> diff --git a/scripts/omap4_usbboot.c b/scripts/omap4_usbboot.c
->> >> >> index 8c5775d..34e53c0 100644
->> >> >> --- a/scripts/omap4_usbboot.c
->> >> >> +++ b/scripts/omap4_usbboot.c
->> >> >> @@ -98,7 +98,7 @@ int read_asic_id(struct usb_handle *usb)
->> >> >>                       sprintf(line+4+j*3, "%02X ", id[i+j]);
->> >> >>               line[4+j*3+0] =3D '\n';
->> >> >>               line[4+j*3+1] =3D 0;
->> >> >> -             printf(line);
->> >> >> +             puts(line);
->> >> >>       }
->> >> >>       ret =3D 0;
->> >> >>       for (i =3D 1, j =3D 0; i < sizeof(id) && j < id[0]; i +=3D 2=
-+id[i+1], j++) {
->> >> >> --
->> >> >> 1.8.1.1
->> >> >>
->> >>
->> >>
->> >>
->> >> --
->> >> Fabio Porcedda
->>
->>
->>
->> --
->> Fabio Porcedda
+Subject: [PATCH] ARM: i.MX: Replace numbers with predefined constants in
+ several places
+To: barebox@lists.infradead.org
 
 
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/mach-imx/esdctl.c |    2 +-
+ arch/arm/mach-imx/imx53.c  |    2 +-
+ arch/arm/mach-imx/imx6.c   |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---
-Fabio Porcedda
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index 3585e27..cc2bdc1 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -355,7 +355,7 @@ void __naked __noreturn imx1_barebox_entry(uint32_t boarddata)
+ 	unsigned long base;
+ 	unsigned long size;
+ 
+-	base = 0x08000000;
++	base = MX1_CSD0_BASE_ADDR;
+ 
+ 	size = imx_v1_sdram_size((void *)MX1_SDRAMC_BASE_ADDR, 0);
+ 	if (size == SZ_64M)
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index 52fb8f7..3135ada 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -60,7 +60,7 @@ static int imx53_init(void)
+ 
+ 	add_generic_device("imx-iomuxv3", 0, NULL, MX53_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx53-ccm", 0, NULL, MX53_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+-	add_generic_device("imx31-gpt", 0, NULL, 0X53fa0000, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-gpt", 0, NULL, MX53_GPT1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 0, NULL, MX53_GPIO1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 1, NULL, MX53_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 2, NULL, MX53_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index b62f412..7a7ce15 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -59,7 +59,7 @@ static int imx6_init(void)
+ 
+ 	add_generic_device("imx-iomuxv3", 0, NULL, MX6_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx6-ccm", 0, NULL, MX6_CCM_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+-	add_generic_device("imx31-gpt", 0, NULL, 0x02098000, 0x1000, IORESOURCE_MEM, NULL);
++	add_generic_device("imx31-gpt", 0, NULL, MX6_GPT_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 0, NULL, MX6_GPIO1_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 1, NULL, MX6_GPIO2_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+ 	add_generic_device("imx31-gpio", 2, NULL, MX6_GPIO3_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
+-- 
+1.7.3.4
+
 
 _______________________________________________
 barebox mailing list
