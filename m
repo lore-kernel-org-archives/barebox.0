@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.76 #1 (Red Hat Linux))
- id 1UAQzV-0005Y9-BW
- for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:09 +0000
+ id 1UAQzS-0005X0-R3
+ for barebox@lists.infradead.org; Tue, 26 Feb 2013 20:19:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Feb 2013 21:18:46 +0100
-Message-Id: <1361909936-2665-20-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Feb 2013 21:18:56 +0100
+Message-Id: <1361909936-2665-30-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 References: <1361909936-2665-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: barebox-bounces@lists.infradead.org
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/29] of: move oftree Kconfig to the top of the drivers menu
+Subject: [PATCH 29/29] of_property command: Fix crash with empty property value
 To: barebox@lists.infradead.org
 
-Using OFDEVICE is a basic decision, so move it to the top
-of the driver menu.
+the of_property command crashes when an empty property value
+was given. This is because xrealloc is called with a length
+argument of 0. Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/of_property.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 988ec9e..70321ea 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -1,5 +1,6 @@
- menu "Drivers"
+diff --git a/commands/of_property.c b/commands/of_property.c
+index 5d35bb4..6311b70 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -254,9 +254,15 @@ static int do_of_property(int argc, char *argv[])
  
-+source "drivers/of/Kconfig"
- source "drivers/serial/Kconfig"
- source "drivers/net/Kconfig"
- source "drivers/spi/Kconfig"
-@@ -21,7 +22,6 @@ source "drivers/watchdog/Kconfig"
- source "drivers/pwm/Kconfig"
- source "drivers/dma/Kconfig"
- source "drivers/gpio/Kconfig"
--source "drivers/of/Kconfig"
- source "drivers/w1/Kconfig"
- 
- endmenu
+ 		if (pp) {
+ 			free(pp->value);
++
+ 			/* limit property data to the actual size */
+-			data = xrealloc(data, len);
+-			pp->value = data;
++			if (len) {
++				pp->value = xrealloc(data, len);
++			} else {
++				pp->value = NULL;
++				free(data);
++			}
++
+ 			pp->length = len;
+ 		} else {
+ 			pp = of_new_property(node, propname, data, len);
 -- 
 1.7.10.4
 
