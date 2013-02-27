@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UAbuX-0003vK-41
- for barebox@lists.infradead.org; Wed, 27 Feb 2013 07:58:45 +0000
-Date: Wed, 27 Feb 2013 08:58:43 +0100
+ id 1UAbvY-00043g-Nh
+ for barebox@lists.infradead.org; Wed, 27 Feb 2013 07:59:49 +0000
+Date: Wed, 27 Feb 2013 08:59:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130227075843.GE1906@pengutronix.de>
-References: <1361897421-3228-1-git-send-email-maxime.ripard@free-electrons.com>
+Message-ID: <20130227075947.GF1906@pengutronix.de>
+References: <1361897473-3325-1-git-send-email-maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361897421-3228-1-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <1361897473-3325-1-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 0/2] ARM: cfa10036: Store the barebox environment on
- the MMC
+Subject: Re: [PATCH] log2: Fix declaration of __roundup_pow_of_two
 To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Feb 26, 2013 at 05:50:19PM +0100, Maxime Ripard wrote:
-> Hi,
+On Tue, Feb 26, 2013 at 05:51:13PM +0100, Maxime Ripard wrote:
+> The roundup_pow_of_two function is making use of __roundup_pow_of_two
+> when the call to __builtin_constant_p fails, which is not implemented in
+> barebox.
 > 
-> The cfa-10036 comes only with a SD slot, so there was previously no way to
-> store in a persistent way the environment we could have modified other than
-> by modifying the code source itself.
+> Copied the code from Linux log2.h header.
 > 
-> These two patches register a new partition on the SD card to store that
-> environment, and update the default environment to reflect these changes.
-> 
-> Thanks,
-> Maxime
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 
 Applied, thanks
 
 Sascha
 
+> ---
+>  include/linux/log2.h |    9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> Changes from v1:
->   - Make use of the new common envfs_register_partition function
-> 
-> Maxime Ripard (2):
->   cfa-10036: Use the second MMC partition to store the environment
->   cfa10036: Update the environment
-> 
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c         |    8 +++++++-
->  arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3  |    6 +++---
->  arch/arm/boards/crystalfontz-cfa10036/env/init/automount |    4 ++--
->  3 files changed, 12 insertions(+), 6 deletions(-)
-> 
+> diff --git a/include/linux/log2.h b/include/linux/log2.h
+> index 389043a..d9913f0 100644
+> --- a/include/linux/log2.h
+> +++ b/include/linux/log2.h
+> @@ -54,6 +54,15 @@ bool is_power_of_2(unsigned long n)
+>  	return (n != 0 && ((n & (n - 1)) == 0));
+>  }
+>  
+> +/*
+> + * round up to nearest power of two
+> + */
+> +static inline __attribute__((const))
+> +unsigned long __roundup_pow_of_two(unsigned long n)
+> +{
+> +	return 1UL << fls(n - 1);
+> +}
+> +
+>  /**
+>   * ilog2 - log of base 2 of 32-bit or a 64-bit unsigned value
+>   * @n - parameter
 > -- 
 > 1.7.10.4
 > 
