@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UBPrF-0006JE-KA
- for barebox@lists.infradead.org; Fri, 01 Mar 2013 13:18:43 +0000
+ id 1UBPuP-0006XA-FT
+ for barebox@lists.infradead.org; Fri, 01 Mar 2013 13:21:58 +0000
 Received: from mail426.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id BD8E1DC3406
- for <barebox@lists.infradead.org>; Fri,  1 Mar 2013 14:29:34 +0100 (CET)
-Date: Fri, 1 Mar 2013 14:17:42 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id CA3A0DC1184
+ for <barebox@lists.infradead.org>; Fri,  1 Mar 2013 14:26:03 +0100 (CET)
+Date: Fri, 1 Mar 2013 14:14:10 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130301131742.GF23022@game.jcrosoft.org>
+Message-ID: <20130301131410.GB23022@game.jcrosoft.org>
 References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362129773-4579-2-git-send-email-dev@lynxeye.de>
+ <1362129773-4579-7-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362129773-4579-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1362129773-4579-7-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,100 +27,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] tegra: move address map to tegra20-silicon.h
+Subject: Re: [PATCH 6/7] tegra: add proper timer driver
 To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
 On 10:22 Fri 01 Mar     , Lucas Stach wrote:
-> The address map is specific to the Tegra20 SoC. Move it to a
-> file with an appropriate name. While at it clarify and fix
-> the definitions.
-
-folloow the kernel
+> Replace the ad-hoc clocksource implementation with a proper driver for
+> the Tegra 20 timer. This driver is able to do the required hardware
+> initialisation itself.
 > 
 > Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
->  arch/arm/boards/toshiba-ac100/board.c              |   2 +-
->  arch/arm/boards/toshiba-ac100/serial.c             |   2 +-
->  arch/arm/mach-tegra/clock.c                        |   2 +-
->  arch/arm/mach-tegra/include/mach/debug_ll.h        |   2 +-
->  arch/arm/mach-tegra/include/mach/iomap.h           | 292 ---------------------
->  arch/arm/mach-tegra/include/mach/tegra20-silicon.h | 229 ++++++++++++++++
->  arch/arm/mach-tegra/reset.c                        |   2 +-
->  7 files changed, 234 insertions(+), 297 deletions(-)
->  delete mode 100644 arch/arm/mach-tegra/include/mach/iomap.h
->  create mode 100644 arch/arm/mach-tegra/include/mach/tegra20-silicon.h
+>  arch/arm/mach-tegra/Makefile        |   2 +-
+>  arch/arm/mach-tegra/clock.c         |  56 -----------------
+>  arch/arm/mach-tegra/tegra20-car.c   |   6 ++
+>  arch/arm/mach-tegra/tegra20-timer.c | 117 ++++++++++++++++++++++++++++++++++++
+>  arch/arm/mach-tegra/tegra20.c       |   4 ++
+>  5 files changed, 128 insertions(+), 57 deletions(-)
+>  delete mode 100644 arch/arm/mach-tegra/clock.c
+>  create mode 100644 arch/arm/mach-tegra/tegra20-timer.c
 > 
-> diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
-> index 0eb85c5..af397cc 100644
-> --- a/arch/arm/boards/toshiba-ac100/board.c
-> +++ b/arch/arm/boards/toshiba-ac100/board.c
-> @@ -21,7 +21,7 @@
->  #include <asm/armlinux.h>
->  #include <sizes.h>
->  #include <usb/ehci.h>
-> -#include <mach/iomap.h>
-> +#include <mach/tegra20-silicon.h>
->  
->  static int ac100_mem_init(void)
->  {
-> diff --git a/arch/arm/boards/toshiba-ac100/serial.c b/arch/arm/boards/toshiba-ac100/serial.c
-> index 880270d..cdd47ab 100644
-> --- a/arch/arm/boards/toshiba-ac100/serial.c
-> +++ b/arch/arm/boards/toshiba-ac100/serial.c
-> @@ -21,7 +21,7 @@
->  #include <ns16550.h>
->  #include <asm/io.h>
->  #include <asm/common.h>
-> -#include <mach/iomap.h>
-> +#include <mach/tegra20-silicon.h>
->  
->  static struct NS16550_plat serial_plat = {
->  	.clock = 0x75 * 115200 * 16 /* MODE_X_DIV */,
+> diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+> index 3391528..6aa219c 100644
+> --- a/arch/arm/mach-tegra/Makefile
+> +++ b/arch/arm/mach-tegra/Makefile
+> @@ -1,4 +1,4 @@
+> -obj-y += clock.o
+>  obj-y += reset.o
+>  obj-y += tegra20.o
+>  obj-y += tegra20-car.o
+> +obj-y += tegra20-timer.o
 > diff --git a/arch/arm/mach-tegra/clock.c b/arch/arm/mach-tegra/clock.c
-> index 82065ee..8a7525d 100644
-> --- a/arch/arm/mach-tegra/clock.c
-> +++ b/arch/arm/mach-tegra/clock.c
-> @@ -26,7 +26,7 @@
->  #include <linux/clk.h>
->  #include <init.h>
->  #include <asm/io.h>
-> -#include <mach/iomap.h>
-> +#include <mach/tegra20-silicon.h>
->  
->  static void __iomem *timer_reg_base = (void __iomem *) (TEGRA_TMR1_BASE);
->  
-> diff --git a/arch/arm/mach-tegra/include/mach/debug_ll.h b/arch/arm/mach-tegra/include/mach/debug_ll.h
-> index 290ad58..4a54e44 100644
-> --- a/arch/arm/mach-tegra/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-tegra/include/mach/debug_ll.h
-> @@ -22,7 +22,7 @@
->  #define __INCLUDE_ARCH_DEBUG_LL_H__
->  
->  #include <asm/io.h>
-> -#include <mach/iomap.h>
-> +#include <mach/tegra20-silicon.h>
->  
->  #define DEBUG_LL_UART_ADDR	TEGRA_UARTA_BASE
->  #define DEBUG_LL_UART_RSHFT	2
-> diff --git a/arch/arm/mach-tegra/include/mach/iomap.h b/arch/arm/mach-tegra/include/mach/iomap.h
 > deleted file mode 100644
-> index ba478e7..0000000
-> --- a/arch/arm/mach-tegra/include/mach/iomap.h
+> index 8a7525d..0000000
+> --- a/arch/arm/mach-tegra/clock.c
 > +++ /dev/null
-> @@ -1,292 +0,0 @@
+> @@ -1,56 +0,0 @@
 > -/*
-> - * arch/arm/mach-tegra/include/mach/iomap.h
+> - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 > - *
-> - * Copyright (C) 2010 Google, Inc.
+> - * This file is part of barebox.
+> - * See file CREDITS for list of people who contributed to this project.
 > - *
-> - * Author:
-> - *	Colin Cross <ccross@google.com>
-> - *	Erik Gilling <konkers@google.com>
-> - *
-> - * This software is licensed under the terms of the GNU General Public
-> - * License version 2, as published by the Free Software Foundation, and
-> - * may be copied, distributed, and modified under those terms.
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
 > - *
 > - * This program is distributed in the hope that it will be useful,
 > - * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -129,525 +80,214 @@ folloow the kernel
 > - *
 > - */
 > -
-> -#ifndef __MACH_TEGRA_IOMAP_H
-> -#define __MACH_TEGRA_IOMAP_H
-> -
-> -#include <sizes.h>
-> -
-> -#define TEGRA_IRAM_BASE			0x40000000
-> -#define TEGRA_IRAM_SIZE			SZ_256K
-> -
-> -#define TEGRA_HOST1X_BASE		0x50000000
-> -#define TEGRA_HOST1X_SIZE		0x24000
-> -
-> -#define TEGRA_ARM_PERIF_BASE		0x50040000
-> -#define TEGRA_ARM_PERIF_SIZE		SZ_8K
-> -
-> -#define TEGRA_ARM_PL310_BASE		0x50043000
-> -#define TEGRA_ARM_PL310_SIZE		SZ_4K
-> -
-> -#define TEGRA_ARM_INT_DIST_BASE		0x50041000
-> -#define TEGRA_ARM_INT_DIST_SIZE		SZ_4K
-> -
-> -#define TEGRA_MPE_BASE			0x54040000
-> -#define TEGRA_MPE_SIZE			SZ_256K
-> -
-> -#define TEGRA_VI_BASE			0x54080000
-> -#define TEGRA_VI_SIZE			SZ_256K
-> -
-> -#define TEGRA_ISP_BASE			0x54100000
-> -#define TEGRA_ISP_SIZE			SZ_256K
-> -
-> -#define TEGRA_DISPLAY_BASE		0x54200000
-> -#define TEGRA_DISPLAY_SIZE		SZ_256K
-> -
-> -#define TEGRA_DISPLAY2_BASE		0x54240000
-> -#define TEGRA_DISPLAY2_SIZE		SZ_256K
-> -
-> -#define TEGRA_HDMI_BASE			0x54280000
-> -#define TEGRA_HDMI_SIZE			SZ_256K
-> -
-> -#define TEGRA_GART_BASE			0x58000000
-> -#define TEGRA_GART_SIZE			SZ_32M
-> -
-> -#define TEGRA_RES_SEMA_BASE		0x60001000
-> -#define TEGRA_RES_SEMA_SIZE		SZ_4K
-> -
-> -#define TEGRA_HDMI_BASE			0x54280000
-> -#define TEGRA_HDMI_SIZE			SZ_256K
-> -
-> -#define TEGRA_GART_BASE			0x58000000
-> -#define TEGRA_GART_SIZE			SZ_32M
-> -
-> -#define TEGRA_RES_SEMA_BASE		0x60001000
-> -#define TEGRA_RES_SEMA_SIZE		SZ_4K
-> -
-> -#define TEGRA_ARB_SEMA_BASE		0x60002000
-> -#define TEGRA_ARB_SEMA_SIZE		SZ_4K
-> -
-> -#define TEGRA_PRIMARY_ICTLR_BASE	0x60004000
-> -#define TEGRA_PRIMARY_ICTLR_SIZE	64
-> -
-> -#define TEGRA_ARBGNT_ICTLR_BASE		0x60004040
-> -#define TEGRA_ARBGNT_ICTLR_SIZE		192
-> -
-> -#define TEGRA_SECONDARY_ICTLR_BASE	0x60004100
-> -#define TEGRA_SECONDARY_ICTLR_SIZE	64
-> -
-> -#define TEGRA_TERTIARY_ICTLR_BASE	0x60004200
-> -#define TEGRA_TERTIARY_ICTLR_SIZE	64
-> -
-> -#define TEGRA_QUATERNARY_ICTLR_BASE	0x60004300
-> -#define TEGRA_QUATERNARY_ICTLR_SIZE	64
-> -
-> -#define TEGRA_TMR1_BASE			0x60005000
-> -#define TEGRA_TMR1_SIZE			8
-> -
-> -#define TEGRA_TMR2_BASE			0x60005008
-> -#define TEGRA_TMR2_SIZE			8
-> -
-> -#define TEGRA_TMRUS_BASE		0x60005010
-> -#define TEGRA_TMRUS_SIZE		64
-> -
-> -#define TEGRA_TMR3_BASE			0x60005050
-> -#define TEGRA_TMR3_SIZE			8
-> -
-> -#define TEGRA_TMR4_BASE			0x60005058
-> -#define TEGRA_TMR4_SIZE			8
-> -
-> -#define TEGRA_CLK_RESET_BASE		0x60006000
-> -#define TEGRA_CLK_RESET_SIZE		SZ_4K
-> -
-> -#define TEGRA_FLOW_CTRL_BASE		0x60007000
-> -#define TEGRA_FLOW_CTRL_SIZE		20
-> -
-> -#define TEGRA_AHB_DMA_BASE		0x60008000
-> -#define TEGRA_AHB_DMA_SIZE		SZ_4K
-> -
-> -#define TEGRA_AHB_DMA_CH0_BASE		0x60009000
-> -#define TEGRA_AHB_DMA_CH0_SIZE		32
-> -
-> -#define TEGRA_APB_DMA_BASE		0x6000A000
-> -#define TEGRA_APB_DMA_SIZE		SZ_4K
-> -
-> -#define TEGRA_APB_DMA_CH0_BASE		0x6000B000
-> -#define TEGRA_APB_DMA_CH0_SIZE		32
-> -
-> -#define TEGRA_AHB_GIZMO_BASE		0x6000C004
-> -#define TEGRA_AHB_GIZMO_SIZE		0x10C
-> -
-> -#define TEGRA_STATMON_BASE		0x6000C400
-> -#define TEGRA_STATMON_SIZE		SZ_1K
-> -
-> -#define TEGRA_GPIO_BASE			0x6000D000
-> -#define TEGRA_GPIO_SIZE			SZ_4K
-> -
-> -#define TEGRA_EXCEPTION_VECTORS_BASE    0x6000F000
-> -#define TEGRA_EXCEPTION_VECTORS_SIZE    SZ_4K
-> -
-> -#define TEGRA_VDE_BASE		0x6001A000
-> -#define TEGRA_VDE_SIZE		(SZ_8K + SZ_4K - SZ_256)
-> -
-> -#define TEGRA_APB_MISC_BASE		0x70000000
-> -#define TEGRA_APB_MISC_SIZE		SZ_4K
-> -
-> -#define TEGRA_APB_MISC_DAS_BASE		0x70000c00
-> -#define TEGRA_APB_MISC_DAS_SIZE		SZ_128
-> -
-> -#define TEGRA_AC97_BASE			0x70002000
-> -#define TEGRA_AC97_SIZE			SZ_512
-> -
-> -#define TEGRA_SPDIF_BASE		0x70002400
-> -#define TEGRA_SPDIF_SIZE		SZ_512
-> -
-> -#define TEGRA_I2S1_BASE			0x70002800
-> -#define TEGRA_I2S1_SIZE			SZ_256
-> -
-> -#define TEGRA_I2S2_BASE			0x70002A00
-> -#define TEGRA_I2S2_SIZE			SZ_256
-> -
-> -#define TEGRA_UARTA_BASE		0x70006000
-> -#define TEGRA_UARTA_SIZE		64
-> -
-> -#define TEGRA_UARTB_BASE		0x70006040
-> -#define TEGRA_UARTB_SIZE		64
-> -
-> -#define TEGRA_UARTC_BASE		0x70006200
-> -#define TEGRA_UARTC_SIZE		SZ_256
-> -
-> -#define TEGRA_UARTD_BASE		0x70006300
-> -#define TEGRA_UARTD_SIZE		SZ_256
-> -
-> -#define TEGRA_UARTE_BASE		0x70006400
-> -#define TEGRA_UARTE_SIZE		SZ_256
-> -
-> -#define TEGRA_NAND_BASE			0x70008000
-> -#define TEGRA_NAND_SIZE			SZ_256
-> -
-> -#define TEGRA_HSMMC_BASE		0x70008500
-> -#define TEGRA_HSMMC_SIZE		SZ_256
-> -
-> -#define TEGRA_SNOR_BASE			0x70009000
-> -#define TEGRA_SNOR_SIZE			SZ_4K
-> -
-> -#define TEGRA_PWFM_BASE			0x7000A000
-> -#define TEGRA_PWFM_SIZE			SZ_256
-> -
-> -#define TEGRA_PWFM0_BASE		0x7000A000
-> -#define TEGRA_PWFM0_SIZE		4
-> -
-> -#define TEGRA_PWFM1_BASE		0x7000A010
-> -#define TEGRA_PWFM1_SIZE		4
-> -
-> -#define TEGRA_PWFM2_BASE		0x7000A020
-> -#define TEGRA_PWFM2_SIZE		4
-> -
-> -#define TEGRA_PWFM3_BASE		0x7000A030
-> -#define TEGRA_PWFM3_SIZE		4
-> -
-> -#define TEGRA_MIPI_BASE			0x7000B000
-> -#define TEGRA_MIPI_SIZE			SZ_256
-> -
-> -#define TEGRA_I2C_BASE			0x7000C000
-> -#define TEGRA_I2C_SIZE			SZ_256
-> -
-> -#define TEGRA_TWC_BASE			0x7000C100
-> -#define TEGRA_TWC_SIZE			SZ_256
-> -
-> -#define TEGRA_SPI_BASE			0x7000C380
-> -#define TEGRA_SPI_SIZE			48
-> -
-> -#define TEGRA_I2C2_BASE			0x7000C400
-> -#define TEGRA_I2C2_SIZE			SZ_256
-> -
-> -#define TEGRA_I2C3_BASE			0x7000C500
-> -#define TEGRA_I2C3_SIZE			SZ_256
-> -
-> -#define TEGRA_OWR_BASE			0x7000C600
-> -#define TEGRA_OWR_SIZE			80
-> -
-> -#define TEGRA_DVC_BASE			0x7000D000
-> -#define TEGRA_DVC_SIZE			SZ_512
-> -
-> -#define TEGRA_SPI1_BASE			0x7000D400
-> -#define TEGRA_SPI1_SIZE			SZ_512
-> -
-> -#define TEGRA_SPI2_BASE			0x7000D600
-> -#define TEGRA_SPI2_SIZE			SZ_512
-> -
-> -#define TEGRA_SPI3_BASE			0x7000D800
-> -#define TEGRA_SPI3_SIZE			SZ_512
-> -
-> -#define TEGRA_SPI4_BASE			0x7000DA00
-> -#define TEGRA_SPI4_SIZE			SZ_512
-> -
-> -#define TEGRA_RTC_BASE			0x7000E000
-> -#define TEGRA_RTC_SIZE			SZ_256
-> -
-> -#define TEGRA_KBC_BASE			0x7000E200
-> -#define TEGRA_KBC_SIZE			SZ_256
-> -
-> -#define TEGRA_PMC_BASE			0x7000E400
-> -#define TEGRA_PMC_SIZE			SZ_256
-> -
-> -#define TEGRA_MC_BASE			0x7000F000
-> -#define TEGRA_MC_SIZE			SZ_1K
-> -
-> -#define TEGRA_EMC_BASE			0x7000F400
-> -#define TEGRA_EMC_SIZE			SZ_1K
-> -
-> -#define TEGRA_FUSE_BASE			0x7000F800
-> -#define TEGRA_FUSE_SIZE			SZ_1K
-> -
-> -#define TEGRA_KFUSE_BASE		0x7000FC00
-> -#define TEGRA_KFUSE_SIZE		SZ_1K
-> -
-> -#define TEGRA_CSITE_BASE		0x70040000
-> -#define TEGRA_CSITE_SIZE		SZ_256K
-> -
-> -#define TEGRA_USB_BASE			0xC5000000
-> -#define TEGRA_USB_SIZE			SZ_16K
-> -
-> -#define TEGRA_USB2_BASE			0xC5004000
-> -#define TEGRA_USB2_SIZE			SZ_16K
-> -
-> -#define TEGRA_USB3_BASE			0xC5008000
-> -#define TEGRA_USB3_SIZE			SZ_16K
-> -
-> -#define TEGRA_SDMMC1_BASE		0xC8000000
-> -#define TEGRA_SDMMC1_SIZE		SZ_512
-> -
-> -#define TEGRA_SDMMC2_BASE		0xC8000200
-> -#define TEGRA_SDMMC2_SIZE		SZ_512
-> -
-> -#define TEGRA_SDMMC3_BASE		0xC8000400
-> -#define TEGRA_SDMMC3_SIZE		SZ_512
-> -
-> -#define TEGRA_SDMMC4_BASE		0xC8000600
-> -#define TEGRA_SDMMC4_SIZE		SZ_512
-> -
-> -#if defined(CONFIG_TEGRA_DEBUG_UART_NONE)
-> -# define TEGRA_DEBUG_UART_BASE 0
-> -#elif defined(CONFIG_TEGRA_DEBUG_UARTA)
-> -# define TEGRA_DEBUG_UART_BASE TEGRA_UARTA_BASE
-> -#elif defined(CONFIG_TEGRA_DEBUG_UARTB)
-> -# define TEGRA_DEBUG_UART_BASE TEGRA_UARTB_BASE
-> -#elif defined(CONFIG_TEGRA_DEBUG_UARTC)
-> -# define TEGRA_DEBUG_UART_BASE TEGRA_UARTC_BASE
-> -#elif defined(CONFIG_TEGRA_DEBUG_UARTD)
-> -# define TEGRA_DEBUG_UART_BASE TEGRA_UARTD_BASE
-> -#elif defined(CONFIG_TEGRA_DEBUG_UARTE)
-> -# define TEGRA_DEBUG_UART_BASE TEGRA_UARTE_BASE
-> -#endif
-> -
-> -#endif
-> diff --git a/arch/arm/mach-tegra/include/mach/tegra20-silicon.h b/arch/arm/mach-tegra/include/mach/tegra20-silicon.h
-> new file mode 100644
-> index 0000000..d7140fb
-> --- /dev/null
-> +++ b/arch/arm/mach-tegra/include/mach/tegra20-silicon.h
-> @@ -0,0 +1,229 @@
-> +/*
-> + * Copyright (C) 2010 Google, Inc.
-> + * Copyright (C) 2012 Lucas Stach <l.stach@pengutronix.de>
-> + *
-> + * Author:
-> + *	Colin Cross <ccross@google.com>
-> + *	Erik Gilling <konkers@google.com>
-> + *
-> + * This software is licensed under the terms of the GNU General Public
-> + * License version 2, as published by the Free Software Foundation, and
-> + * may be copied, distributed, and modified under those terms.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +
-> +#ifndef __MACH_TEGRA_IOMAP_H
-> +#define __MACH_TEGRA_IOMAP_H
-> +
-> +#include <sizes.h>
-> +
-> +#define TEGRA_EMEM_BASE			0x0
-> +#define TEGRA_EMEM_SIZE			SZ_1G
-> +
-> +#define TEGRA_IRAM_BASE			0x40000000
-> +#define TEGRA_IRAM_SIZE			SZ_256K
-> +
-> +#define TEGRA_ARM_PERIPHBASE		0x50040000
-> +#define TEGRA_ARM_PERIPHSIZE		SZ_8K
-> +
-> +#define TEGRA_ARM_INT_DIST_BASE		TEGRA_ARM_PERIPHBASE + 0x1000
-> +#define TEGRA_ARM_INT_DIST_SIZE		SZ_4K
-> +
-> +#define TEGRA_ARM_PL310_BASE		TEGRA_ARM_PERIPHBASE + 0x3000
-> +#define TEGRA_ARM_PL310_SIZE		SZ_4K
-> +
-> +#define TEGRA_HOST1X_BASE		0x50000000
-> +#define TEGRA_HOST1X_SIZE		SZ_64M
-> +
-> +#define TEGRA_MPE_BASE			TEGRA_HOST1X_BASE + 0x40000
-> +#define TEGRA_MPE_SIZE			SZ_256K
-> +
-> +#define TEGRA_VI_BASE			TEGRA_HOST1X_BASE + 0x80000
-> +#define TEGRA_VI_SIZE			SZ_256K
-> +
-> +#define TEGRA_ISP_BASE			TEGRA_HOST1X_BASE + 0x100000
-> +#define TEGRA_ISP_SIZE			SZ_256K
-> +
-> +#define TEGRA_DISPLAY_BASE		TEGRA_HOST1X_BASE + 0x200000
-> +#define TEGRA_DISPLAY_SIZE		SZ_256K
-> +
-> +#define TEGRA_DISPLAY2_BASE		TEGRA_HOST1X_BASE + 0x240000
-> +#define TEGRA_DISPLAY2_SIZE		SZ_256K
-> +
-> +#define TEGRA_HDMI_BASE			TEGRA_HOST1X_BASE + 0x280000
-> +#define TEGRA_HDMI_SIZE			SZ_256K
-> +
-> +#define TEGRA_TVO_BASE			TEGRA_HOST1X_BASE + 0x2C0000
-> +#define TGERA_TVO_SIZE			SZ_256K
-> +
-> +#define TEGRA_DSI_BASE			TEGRA_HOST1X_BASE + 0x300000
-> +#define TEGRA_DSI_SIZE			SZ_256K
-> +
-> +#define TEGRA_GART_BASE			0x58000000
-> +#define TEGRA_GART_SIZE			SZ_32M
-> +
-> +#define TEGRA_PPSB_BASE			0x60000000
-> +#define TEGRA_PPSB_SIZE			SZ_256M
-> +
-> +#define TEGRA_RES_SEMA_BASE		TEGRA_PPSB_BASE + 0x1000
-> +#define TEGRA_RES_SEMA_SIZE		SZ_4K
-> +
-> +#define TEGRA_ARB_SEMA_BASE		TEGRA_PPSB_BASE + 0x2000
-> +#define TEGRA_ARB_SEMA_SIZE		SZ_4K
-> +
-> +#define TEGRA_PRIMARY_ICTLR_BASE	TEGRA_PPSB_BASE + 0x4000
-> +#define TEGRA_PRIMARY_ICTLR_SIZE	64
-> +
-> +#define TEGRA_ARBGNT_ICTLR_BASE		TEGRA_PPSB_BASE + 0x4040
-> +#define TEGRA_ARBGNT_ICTLR_SIZE		192
-> +
-> +#define TEGRA_SECONDARY_ICTLR_BASE	TEGRA_PPSB_BASE + 0x4100
-> +#define TEGRA_SECONDARY_ICTLR_SIZE	64
-> +
-> +#define TEGRA_TERTIARY_ICTLR_BASE	TEGRA_PPSB_BASE + 0x4200
-> +#define TEGRA_TERTIARY_ICTLR_SIZE	64
-> +
-> +#define TEGRA_QUATERNARY_ICTLR_BASE	TEGRA_PPSB_BASE + 0x4300
-> +#define TEGRA_QUATERNARY_ICTLR_SIZE	64
-> +
-> +#define TEGRA_TMR1_BASE			TEGRA_PPSB_BASE + 0x5000
-> +#define TEGRA_TMR1_SIZE			8
-> +
-> +#define TEGRA_TMR2_BASE			TEGRA_PPSB_BASE + 0x5008
-> +#define TEGRA_TMR2_SIZE			8
-> +
-> +#define TEGRA_TMRUS_BASE		TEGRA_PPSB_BASE + 0x5010
-> +#define TEGRA_TMRUS_SIZE		64
-> +
-> +#define TEGRA_TMR3_BASE			TEGRA_PPSB_BASE + 0x5050
-> +#define TEGRA_TMR3_SIZE			8
-> +
-> +#define TEGRA_TMR4_BASE			TEGRA_PPSB_BASE + 0x5058
-> +#define TEGRA_TMR4_SIZE			8
-> +
-> +#define TEGRA_CLK_RESET_BASE		TEGRA_PPSB_BASE + 0x6000
-> +#define TEGRA_CLK_RESET_SIZE		SZ_4K
-> +
-> +#define TEGRA_FLOW_CTRL_BASE		TEGRA_PPSB_BASE + 0x7000
-> +#define TEGRA_FLOW_CTRL_SIZE		20
-> +
-> +#define TEGRA_AHB_DMA_BASE		TEGRA_PPSB_BASE + 0x8000
-> +#define TEGRA_AHB_DMA_SIZE		SZ_4K
-> +
-> +#define TEGRA_GPIO_BASE			TEGRA_PPSB_BASE + 0xD000
-> +#define TEGRA_GPIO_SIZE			SZ_4K
-> +
-> +#define TEGRA_EXCEPTION_VECTORS_BASE	TEGRA_PPSB_BASE + 0xF000
-> +#define TEGRA_EXCEPTION_VECTORS_SIZE	SZ_4K
-> +
-> +#define TEGRA_APB_BASE			0x70000000
-> +#define TEGRA_APB_SIZE			SZ_256M
-> +
-> +#define TEGRA_UARTA_BASE		TEGRA_APB_BASE + 0x6000
-> +#define TEGRA_UARTA_SIZE		64
-> +
-> +#define TEGRA_UARTB_BASE		TEGRA_APB_BASE + 0x6040
-> +#define TEGRA_UARTB_SIZE		64
-> +
-> +#define TEGRA_UARTC_BASE		TEGRA_APB_BASE + 0x6200
-> +#define TEGRA_UARTC_SIZE		256
-> +
-> +#define TEGRA_UARTD_BASE		TEGRA_APB_BASE + 0x6300
-> +#define TEGRA_UARTD_SIZE		256
-> +
-> +#define TEGRA_UARTE_BASE		TEGRA_APB_BASE + 0x6400
-> +#define TEGRA_UARTE_SIZE		256
-> +
-> +#define TEGRA_NAND_BASE			TEGRA_APB_BASE + 0x8000
-> +#define TEGRA_NAND_SIZE			256
-> +
-> +#define TEGRA_SNOR_BASE			TEGRA_APB_BASE + 0x9000
-> +#define TEGRA_SNOR_SIZE			SZ_4K
-> +
-> +#define TEGRA_I2C_BASE			TEGRA_APB_BASE + 0xC000
-> +#define TEGRA_I2C_SIZE			256
-> +
-> +#define TEGRA_TWC_BASE			TEGRA_APB_BASE + 0xC100
-> +#define TEGRA_TWC_SIZE			256
-> +
-> +#define TEGRA_SPI_BASE			TEGRA_APB_BASE + 0xC380
-> +#define TEGRA_SPI_SIZE			48
-> +
-> +#define TEGRA_I2C2_BASE			TEGRA_APB_BASE + 0xC400
-> +#define TEGRA_I2C2_SIZE			256
-> +
-> +#define TEGRA_I2C3_BASE			TEGRA_APB_BASE + 0xC500
-> +#define TEGRA_I2C3_SIZE			256
-> +
-> +#define TEGRA_OWR_BASE			TEGRA_APB_BASE + 0xC600
-> +#define TEGRA_OWR_SIZE			80
-> +
-> +#define TEGRA_DVC_BASE			TEGRA_APB_BASE + 0xD000
-> +#define TEGRA_DVC_SIZE			512
-> +
-> +#define TEGRA_SPI1_BASE			TEGRA_APB_BASE + 0xD400
-> +#define TEGRA_SPI1_SIZE			512
-> +
-> +#define TEGRA_SPI2_BASE			TEGRA_APB_BASE + 0xD600
-> +#define TEGRA_SPI2_SIZE			512
-> +
-> +#define TEGRA_SPI3_BASE			TEGRA_APB_BASE + 0xD800
-> +#define TEGRA_SPI3_SIZE			512
-> +
-> +#define TEGRA_SPI4_BASE			TEGRA_APB_BASE + 0xDA00
-> +#define TEGRA_SPI4_SIZE			512
-> +
-> +#define TEGRA_RTC_BASE			TEGRA_APB_BASE + 0xE000
-> +#define TEGRA_RTC_SIZE			256
-> +
-> +#define TEGRA_KBC_BASE			TEGRA_APB_BASE + 0xE200
-> +#define TEGRA_KBC_SIZE			256
-> +
-> +#define TEGRA_PMC_BASE			TEGRA_APB_BASE + 0xE400
-> +#define TEGRA_PMC_SIZE			256
-> +
-> +#define TEGRA_MC_BASE			TEGRA_APB_BASE + 0xF000
-> +#define TEGRA_MC_SIZE			SZ_1K
-> +
-> +#define TEGRA_EMC_BASE			TEGRA_APB_BASE + 0xF400
-> +#define TEGRA_EMC_SIZE			SZ_1K
-> +
-> +#define TEGRA_FUSE_BASE			TEGRA_APB_BASE + 0xF800
-> +#define TEGRA_FUSE_SIZE			SZ_1K
-> +
-> +#define TEGRA_KFUSE_BASE		TEGRA_APB_BASE + 0xFC00
-> +#define TEGRA_KFUSE_SIZE		SZ_1K
-> +
-> +#define TEGRA_CSITE_BASE		TEGRA_APB_BASE + 0x40000
-> +#define TEGRA_CSITE_SIZE		SZ_256K
-> +
-> +#define TEGRA_AHB_BASE			0xC0000000
-> +#define TEGRA_AHB_SIZE			SZ_256M
-> +
-> +#define TEGRA_USB_BASE			TEGRA_AHB_BASE + 0x5000000
-> +#define TEGRA_USB_SIZE			SZ_16K
-> +
-> +#define TEGRA_USB2_BASE			TEGRA_AHB_BASE + 0x5004000
-> +#define TEGRA_USB2_SIZE			SZ_16K
-> +
-> +#define TEGRA_USB3_BASE			TEGRA_AHB_BASE + 0x5008000
-> +#define TEGRA_USB3_SIZE			SZ_16K
-> +
-> +#define TEGRA_SDMMC1_BASE		TEGRA_AHB_BASE + 0x8000000
-> +#define TEGRA_SDMMC1_SIZE		512
-> +
-> +#define TEGRA_SDMMC2_BASE		TEGRA_AHB_BASE + 0x8000200
-> +#define TEGRA_SDMMC2_SIZE		512
-> +
-> +#define TEGRA_SDMMC3_BASE		TEGRA_AHB_BASE + 0x8000400
-> +#define TEGRA_SDMMC3_SIZE		512
-> +
-> +#define TEGRA_SDMMC4_BASE		TEGRA_AHB_BASE + 0x8000600
-> +#define TEGRA_SDMMC4_SIZE		512
-> +
-> +#endif
-> diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
-> index 91f9b3b..73d7ca2 100644
-> --- a/arch/arm/mach-tegra/reset.c
-> +++ b/arch/arm/mach-tegra/reset.c
-> @@ -22,7 +22,7 @@
->  
->  #include <common.h>
->  #include <asm/io.h>
-> -#include <mach/iomap.h>
+> -/**
+> - * @file
+> - * @brief Clocksource based on Tegra internal timer
+> - */
+> -
+> -#include <common.h>
+> -#include <clock.h>
+> -#include <linux/list.h>
+> -#include <linux/clk.h>
+> -#include <init.h>
+> -#include <asm/io.h>
+> -#include <mach/tegra20-silicon.h>
+> -
+> -static void __iomem *timer_reg_base = (void __iomem *) (TEGRA_TMR1_BASE);
+> -
+> -#define timer_writel(value, reg) \
+> -	__raw_writel(value, (u32)timer_reg_base + (reg))
+> -#define timer_readl(reg) \
+> -	__raw_readl((u32)timer_reg_base + (reg))
+> -
+> -static uint64_t tegra_clocksource_read(void)
+> -{
+> -	return timer_readl(0x10);
+> -}
+> -
+> -static struct clocksource cs = {
+> -	.read	= tegra_clocksource_read,
+> -	.mask	= 0xffffffff,
+> -};
+> -
+> -/* FIXME: here we have no initialization. All initialization made by U-Boot */
+> -static int clocksource_init(void)
+> -{
+> -	cs.mult = clocksource_hz2mult(1000000, cs.shift);
+> -	init_clock(&cs);
+> -
+> -	return 0;
+> -}
+> -core_initcall(clocksource_init);
+> diff --git a/arch/arm/mach-tegra/tegra20-car.c b/arch/arm/mach-tegra/tegra20-car.c
+> index 95b3051..89fa424 100644
+> --- a/arch/arm/mach-tegra/tegra20-car.c
+> +++ b/arch/arm/mach-tegra/tegra20-car.c
+> @@ -24,7 +24,9 @@
+>  #include <init.h>
+>  #include <io.h>
+>  #include <linux/clk.h>
+> +#include <linux/clkdev.h>
+>  #include <linux/err.h>
 > +#include <mach/tegra20-silicon.h>
 >  
->  #define PRM_RSTCTRL		TEGRA_PMC_BASE
+>  /* Register definitions */
+>  #define OSC_CTRL 0x50
+> @@ -93,6 +95,10 @@ static int tegra20_car_probe(struct device_d *dev)
+>  	/* timer is a gate, but as it's enabled by BOOTROM we needn't worry */
+>  	clks[timer] = clk_fixed_factor("timer", "clk_m", 1, 1);
+>  
+> +
+> +	/* device to clock links */
+> +	clkdev_add_physbase(clks[timer], TEGRA_TMR1_BASE, NULL);
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
+> new file mode 100644
+> index 0000000..62af5d2
+> --- /dev/null
+> +++ b/arch/arm/mach-tegra/tegra20-timer.c
+> @@ -0,0 +1,117 @@
+> +/*
+> + * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +/**
+> + * @file
+> + * @brief Device driver for the Tegra 20 timer, which exposes a clocksource.
+> + */
+> +
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <linux/clk.h>
+> +
+> +/* register definitions */
+> +#define TIMERUS_CNTR_1US	0x10
+> +#define TIMERUS_USEC_CFG	0x14
+> +
+> +static void __iomem *timer_base;
+> +
+> +static uint64_t tegra20_timer_cs_read(void)
+> +{
+> +	return readl(timer_base + TIMERUS_CNTR_1US);
+> +}
+> +
+> +static struct clocksource cs = {
+> +	.read	= tegra20_timer_cs_read,
+> +	.mask	= CLOCKSOURCE_MASK(32),
+> +	.mult	= 1000,
+no calculate it
+
+> +};
+> +
+> +static int tegra20_timer_probe(struct device_d *dev)
+> +{
+> +	struct clk *timer_clk;
+> +	unsigned long rate;
+> +
+> +	/* use only one timer */
+> +	if (timer_base)
+> +		return -EBUSY;
+> +
+> +	timer_base = dev_request_mem_region(dev, 0);
+> +	if (!timer_base) {
+> +		dev_err(dev, "could not get memory region\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	timer_clk = clk_get(dev, NULL);
+> +	if (!timer_clk) {
+> +		dev_err(dev, "could not get clock\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	clk_enable(timer_clk);
+> +
+> +	/*
+> +	 * calibrate timer to run at 1MHz
+> +	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
+> +	 * representing the divisor and bits [8:15] representing the dividend
+> +	 * each in n+1 form.
+> +	 */
+> +	rate = clk_get_rate(timer_clk);
+> +	switch (rate) {
+> +	case 12000000:
+> +		writel(0x000b, timer_base + TIMERUS_USEC_CFG);
+> +		break;
+> +	case 13000000:
+> +		writel(0x000c, timer_base + TIMERUS_USEC_CFG);
+> +		break;
+> +	case 19200000:
+> +		writel(0x045f, timer_base + TIMERUS_USEC_CFG);
+> +		break;
+> +	case 26000000:
+> +		writel(0x0019, timer_base + TIMERUS_USEC_CFG);
+		you put 4 write NO
+
+		just 1
+> +		break;
+> +	default:
+> +		dev_warn(dev, "unknown timer clock rate\n");
+> +		break;
+> +	}
+
+here
+> +
+> +	init_clock(&cs);
+> +
+> +	return 0;
+> +}
+> +
+> +static __maybe_unused struct of_device_id tegra20_timer_dt_ids[] = {
+> +	{
+> +		.compatible = "nvidia,tegra20-timer",
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
+> +
+> +static struct driver_d tegra20_timer_driver = {
+> +	.probe	= tegra20_timer_probe,
+> +	.name	= "tegra20-timer",
+> +	.of_compatible = DRV_OF_COMPAT(tegra20_timer_dt_ids),
+> +};
+> +
+> +static int tegra20_timer_init(void)
+> +{
+> +	return platform_driver_register(&tegra20_timer_driver);
+> +}
+> +
+> +coredevice_initcall(tegra20_timer_init);
+> diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
+> index 08c6758..eccc7b8 100644
+> --- a/arch/arm/mach-tegra/tegra20.c
+> +++ b/arch/arm/mach-tegra/tegra20.c
+> @@ -24,6 +24,10 @@ static int tegra20_init(void)
+>  			   TEGRA_CLK_RESET_BASE, TEGRA_CLK_RESET_SIZE,
+>  			   IORESOURCE_MEM, NULL);
+>  
+> +	add_generic_device("tegra20-timer", DEVICE_ID_SINGLE, NULL,
+> +			   TEGRA_TMR1_BASE, TEGRA_TMR1_SIZE,
+> +			   IORESOURCE_MEM, NULL);
+> +
+>  	return 0;
+>  }
 >  
 > -- 
 > 1.8.1.2
