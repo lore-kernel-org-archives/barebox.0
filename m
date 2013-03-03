@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UBxdj-0006yY-Ar
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:23:01 +0000
-Message-Id: <d088ba9d26fbcd8f9b4cd3ba129ec5c556d88307.1362273612.git.joshc@eso.teric.us>
+ id 1UBxdh-0006zE-Mw
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:22:59 +0000
+Message-Id: <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
 In-Reply-To: <cover.1362273612.git.joshc@eso.teric.us>
 References: <cover.1362273612.git.joshc@eso.teric.us>
 From: Josh Cartwright <joshc@eso.teric.us>
-Date: Sat, 2 Mar 2013 18:48:57 -0600
+Date: Sat, 2 Mar 2013 18:48:32 -0600
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,193 +21,197 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM: zynq: add support for zc702 development board
+Subject: [PATCH 3/5] ARM: zynq: add driver for Zynq uarts
 To: barebox@lists.infradead.org
 Cc: Michal Simek <monstr@monstr.eu>
 
+Simple UART driver for Zynq SoCs, based loosely on the u-boot driver.
+
 Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
 ---
- arch/arm/Makefile                     |  2 +
- arch/arm/boards/zynq-zc702/Makefile   |  1 +
- arch/arm/boards/zynq-zc702/config.h   |  0
- arch/arm/boards/zynq-zc702/devices.c  | 70 +++++++++++++++++++++++++++++++++++
- arch/arm/boards/zynq-zc702/lowlevel.c | 28 ++++++++++++++
- arch/arm/mach-zynq/Kconfig            | 19 ++++++++++
- 6 files changed, 120 insertions(+)
- create mode 100644 arch/arm/boards/zynq-zc702/Makefile
- create mode 100644 arch/arm/boards/zynq-zc702/config.h
- create mode 100644 arch/arm/boards/zynq-zc702/devices.c
- create mode 100644 arch/arm/boards/zynq-zc702/lowlevel.c
+ drivers/serial/Kconfig       |   6 ++
+ drivers/serial/Makefile      |   1 +
+ drivers/serial/serial_zynq.c | 144 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 151 insertions(+)
+ create mode 100644 drivers/serial/serial_zynq.c
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index fcb2969..9073a55 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -64,6 +64,7 @@ machine-$(CONFIG_ARCH_PXA)		:= pxa
- machine-$(CONFIG_ARCH_SAMSUNG)		:= samsung
- machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
- machine-$(CONFIG_ARCH_TEGRA)		:= tegra
-+machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index f61d670..608b616 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -113,4 +113,10 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+ 	help
+ 	  Enable this to get console support over the usb bus used to boot an OMAP4
  
- # Board directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
-@@ -157,6 +158,7 @@ board-$(CONFIG_MACH_SABRELITE)			:= freescale-mx6-sabrelite
- board-$(CONFIG_MACH_TX53)			:= karo-tx53
- board-$(CONFIG_MACH_GUF_VINCELL)		:= guf-vincell
- board-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		:= efika-mx-smartbook
-+board-$(CONFIG_MACH_ZYNQ_ZC702)			:= zynq-zc702
- 
- machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
- 
-diff --git a/arch/arm/boards/zynq-zc702/Makefile b/arch/arm/boards/zynq-zc702/Makefile
++config DRIVER_SERIAL_ZYNQ
++	bool "driver for Zynq uarts"
++	default n
++	help
++	  Say Y here to get console out support with the Zynq uarts
++
+ endmenu
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 893e282..883394f 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
++obj-$(CONFIG_DRIVER_SERIAL_ZYNQ)		+= serial_zynq.o
+diff --git a/drivers/serial/serial_zynq.c b/drivers/serial/serial_zynq.c
 new file mode 100644
-index 0000000..385bd9f
+index 0000000..ec93b58
 --- /dev/null
-+++ b/arch/arm/boards/zynq-zc702/Makefile
-@@ -0,0 +1 @@
-+obj-y += lowlevel.o devices.o
-diff --git a/arch/arm/boards/zynq-zc702/config.h b/arch/arm/boards/zynq-zc702/config.h
-new file mode 100644
-index 0000000..e69de29
-diff --git a/arch/arm/boards/zynq-zc702/devices.c b/arch/arm/boards/zynq-zc702/devices.c
-new file mode 100644
-index 0000000..b9ec9f3
---- /dev/null
-+++ b/arch/arm/boards/zynq-zc702/devices.c
-@@ -0,0 +1,70 @@
++++ b/drivers/serial/serial_zynq.c
+@@ -0,0 +1,144 @@
 +/*
-+ * Copyright (c) 2013 Josh Cartwright <joshc@eso.teric.us>
++ * (C) Copyright 2013 Josh Cartwright
 + *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
++ * Based very loosely on u-boot drivers/serial/serial_zynq.c.
 + *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
++ * Copyright (C) 2012 Michal Simek <monstr@monstr.eu>
++ * Copyright (C) 2011-2012 Xilinx, Inc. All rights reserved.
 + *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
 + */
 +#include <common.h>
++#include <io.h>
++#include <init.h>
 +#include <driver.h>
-+#include <init.h>
-+#include <sizes.h>
++#include <xfuncs.h>
++#include <console.h>
++#include <malloc.h>
 +
-+#include <asm/memory.h>
++#include <linux/clk.h>
 +
-+static struct resource smp_twd_resource = {
-+	.name	= "smp_twd_base",
-+	.start	= 0xF8F00600,
-+	.end	= 0xF8F00610,
-+	.flags	= IORESOURCE_MEM,
++#define UART_CR		0x00000000
++#define UART_CR_TXEN	(1<<4)
++#define UART_CR_RXEN	(1<<2)
++#define UART_CR_TXRST	(1<<1)
++#define UART_CR_RXRST	(1<<0)
++
++#define UART_SR		0x0000002C
++#define UART_SR_TXFULL	(1<<4)
++#define UART_SR_TXEMPTY	(1<<3)
++#define UART_SR_RXFULL	(1<<2)
++#define UART_SR_RXEMPTY	(1<<1)
++
++#define UART_FIFO	0x00000030
++
++struct zynq_serial_device {
++	struct console_device cdev;
++	struct clk *clk;
++	void __iomem *regs;
 +};
 +
-+static struct device_d zynq_smp_twd = {
-+	.id		= DEVICE_ID_DYNAMIC,
-+	.name		= "smp_twd",
-+	.num_resources	= 1,
-+	.resource	= &smp_twd_resource,
++#define to_zynq_device(p) container_of(p, struct zynq_serial_device, cdev)
++
++static void zynq_serial_init_device(struct zynq_serial_device *dev)
++{
++	writel(UART_CR_TXEN | UART_CR_RXEN | UART_CR_TXEN | UART_CR_RXEN,
++	       dev->regs + UART_CR);
++}
++
++static int zynq_serial_tstc(struct console_device *cdev)
++{
++	struct zynq_serial_device *zynq = to_zynq_device(cdev);
++
++	return !(readl(zynq->regs + UART_SR) & UART_SR_RXEMPTY);
++}
++
++static void zynq_serial_putc(struct console_device *cdev, char c)
++{
++	struct zynq_serial_device *zynq = to_zynq_device(cdev);
++
++	while (readl(zynq->regs + UART_SR) & UART_SR_TXFULL);
++
++	writel(c, zynq->regs + UART_FIFO);
++}
++
++static int zynq_serial_getc(struct console_device *cdev)
++{
++	struct zynq_serial_device *zynq = to_zynq_device(cdev);
++
++	return readl(zynq->regs + UART_FIFO);
++}
++
++static void zynq_serial_flush(struct console_device *cdev)
++{
++	struct zynq_serial_device *zynq = to_zynq_device(cdev);
++
++	while (!(readl(zynq->regs + UART_SR) & UART_SR_TXEMPTY));
++}
++
++static int zynq_serial_probe(struct device_d *dev)
++{
++	struct zynq_serial_device *priv;
++	struct console_device *cdev;
++	int err;
++
++	priv = xzalloc(sizeof(*priv));
++	cdev = &priv->cdev;
++
++	priv->regs	= dev_request_mem_region(dev, 0);
++	cdev->dev	= dev;
++	cdev->f_caps	= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	cdev->tstc	= zynq_serial_tstc;
++	cdev->putc	= zynq_serial_putc;
++	cdev->getc	= zynq_serial_getc;
++	cdev->flush	= zynq_serial_flush;
++
++	priv->clk = clk_get(dev, NULL);
++
++	err = clk_enable(priv->clk);
++	if (err) {
++		free(priv);
++		return err;
++	}
++
++	zynq_serial_init_device(priv);
++
++	dev->priv = priv;
++
++	return console_register(cdev);
++}
++
++static void zynq_serial_remove(struct device_d *dev)
++{
++	struct zynq_serial_device *zynq = dev->priv;
++	clk_disable(zynq->clk);
++	free(zynq);
++}
++
++static struct driver_d zynq_serial_driver = {
++	.name	= "zynq_serial",
++	.probe	= zynq_serial_probe,
++	.remove = zynq_serial_remove,
 +};
 +
-+static struct resource zynq_serial_resource = {
-+	.name	= "zynq_serial_base",
-+	.start	= 0xE0001000,
-+	.end	= 0xE0001048,
-+	.flags	= IORESOURCE_MEM,
-+};
-+
-+static struct device_d zynq_serial = {
-+	.id		= DEVICE_ID_DYNAMIC,
-+	.name		= "zynq_serial",
-+	.num_resources	= 1,
-+	.resource	= &zynq_serial_resource,
-+};
-+
-+static int zc702_console_init(void)
++static int zynq_serial_init(void)
 +{
-+	platform_device_register(&zynq_serial);
-+	return 0;
++	return platform_driver_register(&zynq_serial_driver);
 +}
-+console_initcall(zc702_console_init);
-+
-+static int zc702_mem_init(void)
-+{
-+	arm_add_mem_device("ram0", 0, SZ_128M);
-+	return 0;
-+}
-+mem_initcall(zc702_mem_init);
-+
-+static int zc702_twd_init(void)
-+{
-+	platform_device_register(&zynq_smp_twd);
-+	return 0;
-+}
-+coredevice_initcall(zc702_twd_init);
-diff --git a/arch/arm/boards/zynq-zc702/lowlevel.c b/arch/arm/boards/zynq-zc702/lowlevel.c
-new file mode 100644
-index 0000000..662d969
---- /dev/null
-+++ b/arch/arm/boards/zynq-zc702/lowlevel.c
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (c) 2013 Josh Cartwright <joshc@eso.teric.us>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include <common.h>
-+#include <init.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+
-+#include <mach/slcr.h>
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
-+{
-+	slcr_unlock();
-+	arm_cpu_lowlevel_init();
-+	barebox_arm_entry(0x8000, SZ_128M, 0);
-+}
-diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
-index 90b17f3..992a485 100644
---- a/arch/arm/mach-zynq/Kconfig
-+++ b/arch/arm/mach-zynq/Kconfig
-@@ -1,3 +1,22 @@
- if ARCH_ZYNQ
- 
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x04000000 if MACH_ZYNQ_ZC702
-+
-+config ZYNQ_PS_CLK_FREQ
-+	int
-+	default 33333330 if MACH_ZYNQ_ZC702
-+
-+config BOARDINFO
-+	default "Xilinx Zynq zc702 dev board" if MACH_ZYNQ_ZC702
-+
-+choice
-+	prompt "Xilinx Zynq zc702 dev board"
-+
-+config MACH_ZYNQ_ZC702
-+	bool "zc702 development board"
-+
-+endchoice
-+
- endif
++console_initcall(zynq_serial_init);
 -- 
 1.8.1.2
+
 
 
 _______________________________________________
