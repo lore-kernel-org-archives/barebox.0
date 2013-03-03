@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UC8ia-0005iQ-CL
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 13:12:54 +0000
-Date: Sun, 3 Mar 2013 14:10:11 +0100
+ id 1UC8mI-0005q5-LF
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 13:16:42 +0000
+Date: Sun, 3 Mar 2013 14:16:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130303131011.GW1906@pengutronix.de>
-References: <1361959387-6909-1-git-send-email-maxime.ripard@free-electrons.com>
+Message-ID: <20130303131632.GX1906@pengutronix.de>
+References: <COL123-DS8D9B04B0AA3EF6F54B64BA2FD0@phx.gbl>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1361959387-6909-1-git-send-email-maxime.ripard@free-electrons.com>
+In-Reply-To: <COL123-DS8D9B04B0AA3EF6F54B64BA2FD0@phx.gbl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: cfa10036: Remove the boot partition and boot from ext
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: UBOOT2 JMP
+To: Nathan <naroyce@hotmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Feb 27, 2013 at 11:03:07AM +0100, Maxime Ripard wrote:
-> Support for ext filesystems has been introduced recently. We can now
-> boot directly from our rootfs, loading the kernel and device tree
-> images from /boot.
-> 
-> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |    6 +++---
->  arch/arm/configs/cfa10036_defconfig                     |    1 +
->  2 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-> index 439d174..4d830ed 100644
-> --- a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
-> @@ -5,6 +5,6 @@ if [ "$1" = menu ]; then
->  	exit
->  fi
->  
-> -global.bootm.image="/mnt/disk0.2/zImage-${global.hostname}"
-> -global.bootm.oftree="/mnt/disk0.2/oftree-${global.board.variant}"
-> -global.linux.bootargs.dyn.root="root=/dev/mmcblk0p4 rootfstype=ext3 rootwait"
-> +global.bootm.image="/mnt/disk0.2/boot/zImage-${global.hostname}"
-> +global.bootm.oftree="/mnt/disk0.2/boot/oftree-${global.board.variant}"
-> +global.linux.bootargs.dyn.root="root=/dev/mmcblk0p3 rootfstype=ext3 rootwait"
-> diff --git a/arch/arm/configs/cfa10036_defconfig b/arch/arm/configs/cfa10036_defconfig
-> index c55d50d..277a3ec 100644
-> --- a/arch/arm/configs/cfa10036_defconfig
-> +++ b/arch/arm/configs/cfa10036_defconfig
-> @@ -39,5 +39,6 @@ CONFIG_I2C=y
->  CONFIG_MCI=y
->  CONFIG_MCI_STARTUP=y
->  CONFIG_MCI_MXS=y
-> +CONFIG_FS_EXT4=y
->  CONFIG_FS_FAT=y
->  CONFIG_FS_FAT_LFN=y
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBGZWIgMjYsIDIwMTMgYXQgMDk6MTE6NTNQTSAtMDYwMCwgTmF0aGFuIHdyb3RlOgo+
+IOKAnFVCT09UMiBKTVAg4oCdIGlzIHdoYXQgZGlzcGxheXMgZHVyaW5nIGJvb3R1cCB1c2luZyBW
+aXJ0dWFsQm94LgoKVGhlcmUgbWF5IGJlIHNvbWV0aGluZyBicm9rZW4gb24geDg2IHN1cHBvcnQu
+Cgo+IFRoaXMgaXMgYWZ0ZXIgY29tcGlsaW5nIHdpdGg6Cj4gZXhwb3J0IEFSQ0g9eDg2Cj4gbWFr
+ZSBnZW5lcmljX2RlZmNvbmZpZwo+IG1ha2UKPiBmZGlzayAvZGV2L3NkYi4uLnBhcnRpdGlvbi4u
+Lm1rZnMuZXh0MiAvZGV2L3NkYjEKPiAuL3NjcmlwdHMvc2V0dXBtYnIvc2V0dXBtYnIg4oCTcyAz
+MiDigJNtIC4vYmFyZWJveC5iaW4g4oCTZCAvZGV2L3NkYgo+IAo+IEkgdGhpbmsgdGhlcmUgbWF5
+IGJlIHNvbWV0aGluZyBJ4oCZbSBtaXNzaW5nIGFmdGVyIOKAnHNldHVwbWJy4oCdIG9yIEkgbmVl
+ZAo+IHRvIGNoYW5nZSBhIGNvbmZpZyB2YWx1ZSBhZnRlciBzZXR0aW5nIOKAnGdlbmVyaWNfZGVm
+Y29uZmln4oCdLiAgTXkgZW5kCj4gZ29hbCBpcyB0byB1c2UgYmFyZWJveCBvbiBteSBPRHJvaWQu
+IEkgd2FzIOKAnHNvbWV3aGF04oCdIGZhbWlsaWFyIHdpdGgKPiBzeXNsaW51eCBidXQgbGVhcm5l
+ZCBpdCBkb2VzbuKAmXQgc3VwcG9ydCBBUk0uIEkgbGVhcm5lZCB0aGF0IFNhbXN1bmcKPiBFeHlu
+b3MgaW4gdGhlIE9Ecm9pZCB1c2VzIFVCb290IGFuZCB0aGF0IGJhcmVib3ggaXMgdGhlIG5leHQg
+ZXZvbHV0aW9uCj4gb2YgdWJvb3QuIEnigJltIGhvcGluZyBpdCB3aWxsIGJlIGZvcndhcmQgY29t
+cGF0aWJsZSAodWJvb3QgaW4gU29DIGNhbGxzCj4gYmFyZWJveCBpbiBNQlIgb2YgU0Qgd2hpY2gg
+Y2FsbHMgbXkgbGludXgga2VybmVsIGluIFNEIHBhcnRpdGlvbikuCgpXaGVuIHlvdSB3YW50IHRv
+IHVzZSBiYXJlYm94IG9uIHRoZSBPRHJvaWQsIHdoeSBkbyB5b3UgYnVpbGQgaXQgZm9yIHg4Ngp0
+aGVuPyBZb3UgaGF2ZSB0byBidWlsZCBmb3IgQVJNLiBVbmZvcnR1bmF0ZWx5IHRoZSBFeHlub3Mg
+aXMgbm90CnlldCBzdXBwb3J0ZWQsIHNvIHlvdSB3b3VsZCBoYXZlIHRvIGRvIHRoZSBwb3J0aW5n
+IGVmZm9ydCB5b3Vyc2VsZi4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJp
+YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
+aXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
+b25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
+Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
