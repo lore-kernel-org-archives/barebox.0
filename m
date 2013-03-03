@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eso.teric.us ([69.164.192.171])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UBxdh-0006zE-Mw
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:22:59 +0000
-Message-Id: <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
-In-Reply-To: <cover.1362273612.git.joshc@eso.teric.us>
-References: <cover.1362273612.git.joshc@eso.teric.us>
-From: Josh Cartwright <joshc@eso.teric.us>
-Date: Sat, 2 Mar 2013 18:48:32 -0600
+Received: from mail-pb0-f46.google.com ([209.85.160.46])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UC31A-0005zj-F6
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 07:07:33 +0000
+Received: by mail-pb0-f46.google.com with SMTP id uo15so2499400pbc.33
+ for <barebox@lists.infradead.org>; Sat, 02 Mar 2013 23:07:28 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1362266024.2127.3.camel@antimon>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362129773-4579-7-git-send-email-dev@lynxeye.de>
+ <20130301172353.GT1906@pengutronix.de>
+ <1362266024.2127.3.camel@antimon>
+Date: Sun, 3 Mar 2013 11:07:27 +0400
+Message-ID: <CAA4bVAGCm2Bh+VBxk3bP83RnSgk3PBHKXdbJa+ShgQxm=_Nr=g@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,203 +22,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: zynq: add driver for Zynq uarts
-To: barebox@lists.infradead.org
-Cc: Michal Simek <monstr@monstr.eu>
+Subject: Re: [PATCH 6/7] tegra: add proper timer driver
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-Simple UART driver for Zynq SoCs, based loosely on the u-boot driver.
+On 3 March 2013 03:13, Lucas Stach <dev@lynxeye.de> wrote:
+> Am Freitag, den 01.03.2013, 18:23 +0100 schrieb Sascha Hauer:
+>> On Fri, Mar 01, 2013 at 10:22:52AM +0100, Lucas Stach wrote:
+>> > Replace the ad-hoc clocksource implementation with a proper driver for
+>> > the Tegra 20 timer. This driver is able to do the required hardware
+>> > initialisation itself.
+>> >
+>> > +
+>> > +static int tegra20_timer_probe(struct device_d *dev)
+>> > +{
+>> > +   struct clk *timer_clk;
+>> > +   unsigned long rate;
+>> > +
+>> > +   /* use only one timer */
+>> > +   if (timer_base)
+>> > +           return -EBUSY;
+>> > +
+>> > +   timer_base = dev_request_mem_region(dev, 0);
+>> > +   if (!timer_base) {
+>> > +           dev_err(dev, "could not get memory region\n");
+>> > +           return -ENODEV;
+>> > +   }
+>> > +
+>> > +   timer_clk = clk_get(dev, NULL);
+>> > +   if (!timer_clk) {
+>> > +           dev_err(dev, "could not get clock\n");
+>> > +           return -ENODEV;
+>> > +   }
+>> > +
+>> > +   clk_enable(timer_clk);
+>> > +
+>> > +   /*
+>> > +    * calibrate timer to run at 1MHz
+>>
+>> We don't need the timer to be running at a certain frequency, you can
+>> just use clocks_calc_mult_shift to calculate the correct values from
+>> whatever frequency.
+>
+> Other hardware blocks like the flow controller might assume the timer to
+> be running at 1MHz. The timer and time register is named US (like usec)
+> for a reason. It's the officially correct way to initialize this timer
+> (as documented in the Tegra TRM).
 
-Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
----
- drivers/serial/Kconfig       |   6 ++
- drivers/serial/Makefile      |   1 +
- drivers/serial/serial_zynq.c | 144 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 151 insertions(+)
- create mode 100644 drivers/serial/serial_zynq.c
+IMHO, then Jean-Christophe speaking about 'just use
+clocks_calc_mult_shift'  he mean this part of your
+arch/arm/mach-tegra/tegra20-timer.c:
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index f61d670..608b616 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -113,4 +113,10 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
- 	help
- 	  Enable this to get console support over the usb bus used to boot an OMAP4
- 
-+config DRIVER_SERIAL_ZYNQ
-+	bool "driver for Zynq uarts"
-+	default n
-+	help
-+	  Say Y here to get console out support with the Zynq uarts
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 893e282..883394f 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
- obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
- obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
-+obj-$(CONFIG_DRIVER_SERIAL_ZYNQ)		+= serial_zynq.o
-diff --git a/drivers/serial/serial_zynq.c b/drivers/serial/serial_zynq.c
-new file mode 100644
-index 0000000..ec93b58
---- /dev/null
-+++ b/drivers/serial/serial_zynq.c
-@@ -0,0 +1,144 @@
-+/*
-+ * (C) Copyright 2013 Josh Cartwright
-+ *
-+ * Based very loosely on u-boot drivers/serial/serial_zynq.c.
-+ *
-+ * Copyright (C) 2012 Michal Simek <monstr@monstr.eu>
-+ * Copyright (C) 2011-2012 Xilinx, Inc. All rights reserved.
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-+ * MA 02111-1307 USA
-+ */
-+#include <common.h>
-+#include <io.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <console.h>
-+#include <malloc.h>
-+
-+#include <linux/clk.h>
-+
-+#define UART_CR		0x00000000
-+#define UART_CR_TXEN	(1<<4)
-+#define UART_CR_RXEN	(1<<2)
-+#define UART_CR_TXRST	(1<<1)
-+#define UART_CR_RXRST	(1<<0)
-+
-+#define UART_SR		0x0000002C
-+#define UART_SR_TXFULL	(1<<4)
-+#define UART_SR_TXEMPTY	(1<<3)
-+#define UART_SR_RXFULL	(1<<2)
-+#define UART_SR_RXEMPTY	(1<<1)
-+
-+#define UART_FIFO	0x00000030
-+
-+struct zynq_serial_device {
-+	struct console_device cdev;
-+	struct clk *clk;
-+	void __iomem *regs;
++static struct clocksource cs = {
++       .read   = tegra20_timer_cs_read,
++       .mask   = CLOCKSOURCE_MASK(32),
++       .mult   = 1000,
 +};
-+
-+#define to_zynq_device(p) container_of(p, struct zynq_serial_device, cdev)
-+
-+static void zynq_serial_init_device(struct zynq_serial_device *dev)
-+{
-+	writel(UART_CR_TXEN | UART_CR_RXEN | UART_CR_TXEN | UART_CR_RXEN,
-+	       dev->regs + UART_CR);
-+}
-+
-+static int zynq_serial_tstc(struct console_device *cdev)
-+{
-+	struct zynq_serial_device *zynq = to_zynq_device(cdev);
-+
-+	return !(readl(zynq->regs + UART_SR) & UART_SR_RXEMPTY);
-+}
-+
-+static void zynq_serial_putc(struct console_device *cdev, char c)
-+{
-+	struct zynq_serial_device *zynq = to_zynq_device(cdev);
-+
-+	while (readl(zynq->regs + UART_SR) & UART_SR_TXFULL);
-+
-+	writel(c, zynq->regs + UART_FIFO);
-+}
-+
-+static int zynq_serial_getc(struct console_device *cdev)
-+{
-+	struct zynq_serial_device *zynq = to_zynq_device(cdev);
-+
-+	return readl(zynq->regs + UART_FIFO);
-+}
-+
-+static void zynq_serial_flush(struct console_device *cdev)
-+{
-+	struct zynq_serial_device *zynq = to_zynq_device(cdev);
-+
-+	while (!(readl(zynq->regs + UART_SR) & UART_SR_TXEMPTY));
-+}
-+
-+static int zynq_serial_probe(struct device_d *dev)
-+{
-+	struct zynq_serial_device *priv;
-+	struct console_device *cdev;
-+	int err;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	cdev = &priv->cdev;
-+
-+	priv->regs	= dev_request_mem_region(dev, 0);
-+	cdev->dev	= dev;
-+	cdev->f_caps	= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	cdev->tstc	= zynq_serial_tstc;
-+	cdev->putc	= zynq_serial_putc;
-+	cdev->getc	= zynq_serial_getc;
-+	cdev->flush	= zynq_serial_flush;
-+
-+	priv->clk = clk_get(dev, NULL);
-+
-+	err = clk_enable(priv->clk);
-+	if (err) {
-+		free(priv);
-+		return err;
-+	}
-+
-+	zynq_serial_init_device(priv);
-+
-+	dev->priv = priv;
-+
-+	return console_register(cdev);
-+}
-+
-+static void zynq_serial_remove(struct device_d *dev)
-+{
-+	struct zynq_serial_device *zynq = dev->priv;
-+	clk_disable(zynq->clk);
-+	free(zynq);
-+}
-+
-+static struct driver_d zynq_serial_driver = {
-+	.name	= "zynq_serial",
-+	.probe	= zynq_serial_probe,
-+	.remove = zynq_serial_remove,
-+};
-+
-+static int zynq_serial_init(void)
-+{
-+	return platform_driver_register(&zynq_serial_driver);
-+}
-+console_initcall(zynq_serial_init);
+
+He want to say "please don't use fixed 'mult' value, use
+clocks_calc_mult_shift to calculate it".
+
+Please try to examine existing clocksources.
+
+The command
+   grep -R -A 5 "static struct clocksource.*=" arch/arm/
+will show you some results like this
+
+arch/arm/mach-imx/clocksource.c:static struct clocksource cs = {
+arch/arm/mach-imx/clocksource.c-        .read   = imx_clocksource_read,
+arch/arm/mach-imx/clocksource.c-        .mask   = CLOCKSOURCE_MASK(32),
+arch/arm/mach-imx/clocksource.c-        .shift  = 10,
+arch/arm/mach-imx/clocksource.c-};
+
+or even like that
+arch/arm/mach-clps711x/clock.c:static struct clocksource cs = {
+arch/arm/mach-clps711x/clock.c- .read   = clocksource_read,
+arch/arm/mach-clps711x/clock.c- .mask   = CLOCKSOURCE_MASK(16),
+arch/arm/mach-clps711x/clock.c-};
+
+But I can't find any example of 'struct clocksource' definition with
+fixed 'mult' value.
+
 -- 
-1.8.1.2
-
-
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
