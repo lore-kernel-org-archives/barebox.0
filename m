@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
- helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UC6JD-0005ED-Ld
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 10:38:31 +0000
+ id 1UC6Jl-0005iN-Gi
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 10:38:59 +0000
 Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 78A7D104DE15
- for <barebox@lists.infradead.org>; Sun,  3 Mar 2013 11:49:18 +0100 (CET)
-Date: Sun, 3 Mar 2013 11:37:23 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id F0E64104DE15
+ for <barebox@lists.infradead.org>; Sun,  3 Mar 2013 11:49:52 +0100 (CET)
+Date: Sun, 3 Mar 2013 11:37:58 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130303103723.GG23022@game.jcrosoft.org>
+Message-ID: <20130303103758.GH23022@game.jcrosoft.org>
 References: <cover.1362273612.git.joshc@eso.teric.us>
  <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
 MIME-Version: 1.0
@@ -185,7 +184,6 @@ On 18:48 Sat 02 Mar     , Josh Cartwright wrote:
 > +	cdev->flush	= zynq_serial_flush;
 > +
 > +	priv->clk = clk_get(dev, NULL);
-you need to check here too
 > +
 > +	err = clk_enable(priv->clk);
 > +	if (err) {
@@ -205,6 +203,8 @@ you need to check here too
 > +	struct zynq_serial_device *zynq = dev->priv;
 > +	clk_disable(zynq->clk);
 > +	free(zynq);
+do;nt do so otherwise the kernel will have no uart for decompress and
+earlyprintk
 > +}
 > +
 > +static struct driver_d zynq_serial_driver = {
