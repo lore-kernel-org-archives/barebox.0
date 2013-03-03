@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UC8mI-0005q5-LF
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 13:16:42 +0000
-Date: Sun, 3 Mar 2013 14:16:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130303131632.GX1906@pengutronix.de>
-References: <COL123-DS8D9B04B0AA3EF6F54B64BA2FD0@phx.gbl>
+Received: from eso.teric.us ([69.164.192.171])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UCAEn-0000Cq-Gu
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 14:50:07 +0000
+Date: Sun, 3 Mar 2013 08:55:38 -0600
+From: Josh Cartwright <joshc@eso.teric.us>
+Message-ID: <20130303145538.GB16050@kryptos>
+References: <cover.1362273612.git.joshc@eso.teric.us>
+ <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
+ <CAA4bVAEdm_DWULVRjcZB1i-22+X=+GRzP0q_gE1NKXdYs6UgUg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <COL123-DS8D9B04B0AA3EF6F54B64BA2FD0@phx.gbl>
+In-Reply-To: <CAA4bVAEdm_DWULVRjcZB1i-22+X=+GRzP0q_gE1NKXdYs6UgUg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +20,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: UBOOT2 JMP
-To: Nathan <naroyce@hotmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] ARM: zynq: add driver for Zynq uarts
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-T24gVHVlLCBGZWIgMjYsIDIwMTMgYXQgMDk6MTE6NTNQTSAtMDYwMCwgTmF0aGFuIHdyb3RlOgo+
-IOKAnFVCT09UMiBKTVAg4oCdIGlzIHdoYXQgZGlzcGxheXMgZHVyaW5nIGJvb3R1cCB1c2luZyBW
-aXJ0dWFsQm94LgoKVGhlcmUgbWF5IGJlIHNvbWV0aGluZyBicm9rZW4gb24geDg2IHN1cHBvcnQu
-Cgo+IFRoaXMgaXMgYWZ0ZXIgY29tcGlsaW5nIHdpdGg6Cj4gZXhwb3J0IEFSQ0g9eDg2Cj4gbWFr
-ZSBnZW5lcmljX2RlZmNvbmZpZwo+IG1ha2UKPiBmZGlzayAvZGV2L3NkYi4uLnBhcnRpdGlvbi4u
-Lm1rZnMuZXh0MiAvZGV2L3NkYjEKPiAuL3NjcmlwdHMvc2V0dXBtYnIvc2V0dXBtYnIg4oCTcyAz
-MiDigJNtIC4vYmFyZWJveC5iaW4g4oCTZCAvZGV2L3NkYgo+IAo+IEkgdGhpbmsgdGhlcmUgbWF5
-IGJlIHNvbWV0aGluZyBJ4oCZbSBtaXNzaW5nIGFmdGVyIOKAnHNldHVwbWJy4oCdIG9yIEkgbmVl
-ZAo+IHRvIGNoYW5nZSBhIGNvbmZpZyB2YWx1ZSBhZnRlciBzZXR0aW5nIOKAnGdlbmVyaWNfZGVm
-Y29uZmln4oCdLiAgTXkgZW5kCj4gZ29hbCBpcyB0byB1c2UgYmFyZWJveCBvbiBteSBPRHJvaWQu
-IEkgd2FzIOKAnHNvbWV3aGF04oCdIGZhbWlsaWFyIHdpdGgKPiBzeXNsaW51eCBidXQgbGVhcm5l
-ZCBpdCBkb2VzbuKAmXQgc3VwcG9ydCBBUk0uIEkgbGVhcm5lZCB0aGF0IFNhbXN1bmcKPiBFeHlu
-b3MgaW4gdGhlIE9Ecm9pZCB1c2VzIFVCb290IGFuZCB0aGF0IGJhcmVib3ggaXMgdGhlIG5leHQg
-ZXZvbHV0aW9uCj4gb2YgdWJvb3QuIEnigJltIGhvcGluZyBpdCB3aWxsIGJlIGZvcndhcmQgY29t
-cGF0aWJsZSAodWJvb3QgaW4gU29DIGNhbGxzCj4gYmFyZWJveCBpbiBNQlIgb2YgU0Qgd2hpY2gg
-Y2FsbHMgbXkgbGludXgga2VybmVsIGluIFNEIHBhcnRpdGlvbikuCgpXaGVuIHlvdSB3YW50IHRv
-IHVzZSBiYXJlYm94IG9uIHRoZSBPRHJvaWQsIHdoeSBkbyB5b3UgYnVpbGQgaXQgZm9yIHg4Ngp0
-aGVuPyBZb3UgaGF2ZSB0byBidWlsZCBmb3IgQVJNLiBVbmZvcnR1bmF0ZWx5IHRoZSBFeHlub3Mg
-aXMgbm90CnlldCBzdXBwb3J0ZWQsIHNvIHlvdSB3b3VsZCBoYXZlIHRvIGRvIHRoZSBwb3J0aW5n
-IGVmZm9ydCB5b3Vyc2VsZi4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJp
-YWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9u
-aXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBo
-b25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAy
-Njg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Sun, Mar 03, 2013 at 11:16:49AM +0400, Antony Pavlov wrote:
+> On 3 March 2013 04:48, Josh Cartwright <joshc@eso.teric.us> wrote:
+> > Simple UART driver for Zynq SoCs, based loosely on the u-boot driver.
+> >
+> > Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
+> > ---
+> >  drivers/serial/Kconfig       |   6 ++
+> >  drivers/serial/Makefile      |   1 +
+> >  drivers/serial/serial_zynq.c | 144 +++++++++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 151 insertions(+)
+> >  create mode 100644 drivers/serial/serial_zynq.c
+> >
+> > diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> > index f61d670..608b616 100644
+> > --- a/drivers/serial/Kconfig
+> > +++ b/drivers/serial/Kconfig
+> > @@ -113,4 +113,10 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+> >         help
+> >           Enable this to get console support over the usb bus used to boot an OMAP4
+> >
+> > +config DRIVER_SERIAL_ZYNQ
+> > +       bool "driver for Zynq uarts"
+> > +       default n
+> > +       help
+> > +         Say Y here to get console out support with the Zynq uarts
+> > +
+> >  endmenu
+> > diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> > index 893e282..883394f 100644
+> > --- a/drivers/serial/Makefile
+> > +++ b/drivers/serial/Makefile
+> > @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)            += serial_altera.o
+> >  obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)                += serial_altera_jtag.o
+> >  obj-$(CONFIG_DRIVER_SERIAL_PXA)                        += serial_pxa.o
+> >  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)      += serial_omap4_usbboot.o
+> > +obj-$(CONFIG_DRIVER_SERIAL_ZYNQ)               += serial_zynq.o
+> > diff --git a/drivers/serial/serial_zynq.c b/drivers/serial/serial_zynq.c
+> > new file mode 100644
+> > index 0000000..ec93b58
+> > --- /dev/null
+> > +++ b/drivers/serial/serial_zynq.c
+> > @@ -0,0 +1,144 @@
+> > +/*
+> > + * (C) Copyright 2013 Josh Cartwright
+> > + *
+> > + * Based very loosely on u-boot drivers/serial/serial_zynq.c.
+> > + *
+> > + * Copyright (C) 2012 Michal Simek <monstr@monstr.eu>
+> > + * Copyright (C) 2011-2012 Xilinx, Inc. All rights reserved.
+> > + *
+> > + * See file CREDITS for list of people who contributed to this
+> > + * project.
+> > + *
+> > + * This program is free software; you can redistribute it and/or
+> > + * modify it under the terms of the GNU General Public License as
+> > + * published by the Free Software Foundation; either version 2 of
+> > + * the License, or (at your option) any later version.
+> > + *
+> > + * This program is distributed in the hope that it will be useful,
+> > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> > + * GNU General Public License for more details.
+> > + *
+> > + * You should have received a copy of the GNU General Public License
+> > + * along with this program; if not, write to the Free Software
+> > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+> > + * MA 02111-1307 USA
+> > + */
+> > +#include <common.h>
+> > +#include <io.h>
+> > +#include <init.h>
+> > +#include <driver.h>
+> > +#include <xfuncs.h>
+> > +#include <console.h>
+> > +#include <malloc.h>
+> > +
+> > +#include <linux/clk.h>
+> > +
+> > +#define UART_CR                0x00000000
+> > +#define UART_CR_TXEN   (1<<4)
+> > +#define UART_CR_RXEN   (1<<2)
+> > +#define UART_CR_TXRST  (1<<1)
+> > +#define UART_CR_RXRST  (1<<0)
+> > +
+> > +#define UART_SR                0x0000002C
+> > +#define UART_SR_TXFULL (1<<4)
+> > +#define UART_SR_TXEMPTY        (1<<3)
+> > +#define UART_SR_RXFULL (1<<2)
+> > +#define UART_SR_RXEMPTY        (1<<1)
+> > +
+> > +#define UART_FIFO      0x00000030
+> > +
+> > +struct zynq_serial_device {
+> > +       struct console_device cdev;
+> > +       struct clk *clk;
+> > +       void __iomem *regs;
+> > +};
+> > +
+> > +#define to_zynq_device(p) container_of(p, struct zynq_serial_device, cdev)
+> > +
+> > +static void zynq_serial_init_device(struct zynq_serial_device *dev)
+> > +{
+> > +       writel(UART_CR_TXEN | UART_CR_RXEN | UART_CR_TXEN | UART_CR_RXEN,
+> 
+> 
+> IMHO there are too many 'UART_CR_TXEN' and 'UART_CR_RXEN' here.
+
+Yes indeed, thanks.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
