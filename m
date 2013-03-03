@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UBxde-0006yZ-9n
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:22:55 +0000
-Message-Id: <bd191ce9722d99b8cc53eade80a9db75c29b0364.1362273612.git.joshc@eso.teric.us>
+ id 1UBxdj-0006yX-Bw
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:23:00 +0000
+Message-Id: <28f540ae79d36bfa1bad21e4a29523fdf8261f5c.1362273612.git.joshc@eso.teric.us>
 In-Reply-To: <cover.1362273612.git.joshc@eso.teric.us>
 References: <cover.1362273612.git.joshc@eso.teric.us>
 From: Josh Cartwright <joshc@eso.teric.us>
-Date: Sat, 2 Mar 2013 18:48:17 -0600
+Date: Sat, 2 Mar 2013 18:48:26 -0600
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] trivial: doc: fix typos in mach-arm.dox
+Subject: [PATCH 2/5] defaultenv: fixed mismatched braces in bin/boot
 To: barebox@lists.infradead.org
 Cc: Michal Simek <monstr@monstr.eu>
 
+Commit 91b563613e5c831998210a2c500ec4d2492a650b ("dhcp: switch to global var
+support") introduced global dhcp variables, but there was a typo in the
+boot script, with a forgotten open brace.  Fix it.
+
 Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
 ---
- arch/arm/mach-arm.dox | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ defaultenv/bin/boot | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-arm.dox b/arch/arm/mach-arm.dox
-index 758df3f..03e39ea 100644
---- a/arch/arm/mach-arm.dox
-+++ b/arch/arm/mach-arm.dox
-@@ -12,7 +12,7 @@ FIXME
-       to: "runtime address != link address". You should only use branches and
-       do not refer to fixed data. This implies the use of assembler code only.
- 
--The ARM CPU starts at lable \<reset\> in one of the corresponding start-*.S
-+The ARM CPU starts at label \<reset\> in one of the corresponding start-*.S
- files. After some basic hardware setup it can call a function
- \<arch_init_lowlevel\> if not disabled. This call is intended to give all
- developers a chance to use a standard reset vector file, but also do some
-@@ -47,7 +47,7 @@ Lets call the new MACH new_cpu.
-  - add /arch/arm/mach-new_cpu/Makfile
-  - add other CPU specific code into /arch/arm/mach-new_cpu/
-  - modify /arch/arm/Kconfig
-- - modify /arch/arm/Makfile
-+ - modify /arch/arm/Makefile
- 
- @section mach_arm_architecures Architectures using ARM processors
- For details on specific architectures:
+diff --git a/defaultenv/bin/boot b/defaultenv/bin/boot
+index c17ccdb..746d30c 100644
+--- a/defaultenv/bin/boot
++++ b/defaultenv/bin/boot
+@@ -50,7 +50,7 @@ if [ x$ip = xdhcp -o x$ip = "xdhcp-barebox" ]; then
+ 		if [ x${global.dhcp.bootfile} != x ]; then
+ 			kernelimage=${global.dhcp.bootfile}
+ 		fi
+-		if [ x$global.dhcp.oftree_file} != x ]; then
++		if [ x${global.dhcp.oftree_file} != x ]; then
+ 			oftreeimage=${global.dhcp.oftree_file}
+ 		fi
+ 	fi
 -- 
 1.8.1.2
 
