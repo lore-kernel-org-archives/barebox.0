@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f42.google.com ([209.85.160.42])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UC3I0-0006Cy-HU
- for barebox@lists.infradead.org; Sun, 03 Mar 2013 07:24:58 +0000
-Received: by mail-pb0-f42.google.com with SMTP id xb4so2510166pbc.29
- for <barebox@lists.infradead.org>; Sat, 02 Mar 2013 23:24:53 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <13f79e3d64f81140c9637abbf78cf3a70be1099c.1362273612.git.joshc@eso.teric.us>
+Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UC6JD-0005ED-Ld
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 10:38:31 +0000
+Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 78A7D104DE15
+ for <barebox@lists.infradead.org>; Sun,  3 Mar 2013 11:49:18 +0100 (CET)
+Date: Sun, 3 Mar 2013 11:37:23 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130303103723.GG23022@game.jcrosoft.org>
 References: <cover.1362273612.git.joshc@eso.teric.us>
- <13f79e3d64f81140c9637abbf78cf3a70be1099c.1362273612.git.joshc@eso.teric.us>
-Date: Sun, 3 Mar 2013 11:24:53 +0400
-Message-ID: <CAA4bVAGNk98jtGkGNh=L27ZtRUkFEw=0gQLRYG3OcuHpBtHCRw@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <ebc763e2373f6712899a6729bd80966454e43e3f.1362273612.git.joshc@eso.teric.us>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,500 +27,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ARM: zynq: add support for Zynq 7000 SoC
+Subject: Re: [PATCH 3/5] ARM: zynq: add driver for Zynq uarts
 To: Josh Cartwright <joshc@eso.teric.us>
 Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-On 3 March 2013 04:48, Josh Cartwright <joshc@eso.teric.us> wrote:
+On 18:48 Sat 02 Mar     , Josh Cartwright wrote:
+> 
+> Simple UART driver for Zynq SoCs, based loosely on the u-boot driver.
+> 
 > Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
 > ---
->  arch/arm/Kconfig                           |   9 +
->  arch/arm/mach-zynq/Kconfig                 |   3 +
->  arch/arm/mach-zynq/Makefile                |   1 +
->  arch/arm/mach-zynq/clocks.c                | 341 +++++++++++++++++++++++++++++
->  arch/arm/mach-zynq/include/mach/clkdev.h   |   7 +
->  arch/arm/mach-zynq/include/mach/debug_ll.h |  21 ++
->  arch/arm/mach-zynq/include/mach/slcr.h     |  26 +++
->  arch/arm/mach-zynq/reset.c                 |  28 +++
->  8 files changed, 436 insertions(+)
->  create mode 100644 arch/arm/mach-zynq/Kconfig
->  create mode 100644 arch/arm/mach-zynq/Makefile
->  create mode 100644 arch/arm/mach-zynq/clocks.c
->  create mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
->  create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
->  create mode 100644 arch/arm/mach-zynq/include/mach/slcr.h
->  create mode 100644 arch/arm/mach-zynq/reset.c
->
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 28332ec..37b7de0 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -110,6 +110,14 @@ config ARCH_TEGRA
->         select CPU_ARM926T
->         select HAS_DEBUG_LL
->
-> +config ARCH_ZYNQ
-> +       bool "Xilinx Zynq-based boards"
-> +       select CPU_V7
-> +       select HAS_DEBUG_LL
-> +       select CLKDEV_LOOKUP
-> +       select COMMON_CLK
-> +       select ARM_SMP_TWD
+>  drivers/serial/Kconfig       |   6 ++
+>  drivers/serial/Makefile      |   1 +
+>  drivers/serial/serial_zynq.c | 144 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 151 insertions(+)
+>  create mode 100644 drivers/serial/serial_zynq.c
+> 
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index f61d670..608b616 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -113,4 +113,10 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+>  	help
+>  	  Enable this to get console support over the usb bus used to boot an OMAP4
+>  
+> +config DRIVER_SERIAL_ZYNQ
+> +	bool "driver for Zynq uarts"
+> +	default n
+> +	help
+> +	  Say Y here to get console out support with the Zynq uarts
 > +
->  endchoice
->
->  source arch/arm/cpu/Kconfig
-> @@ -126,6 +134,7 @@ source arch/arm/mach-pxa/Kconfig
->  source arch/arm/mach-samsung/Kconfig
->  source arch/arm/mach-versatile/Kconfig
->  source arch/arm/mach-tegra/Kconfig
-> +source arch/arm/mach-zynq/Kconfig
->
->  config ARM_ASM_UNIFIED
->         bool
-> diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+>  endmenu
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 893e282..883394f 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+>  obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+>  obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+>  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+> +obj-$(CONFIG_DRIVER_SERIAL_ZYNQ)		+= serial_zynq.o
+> diff --git a/drivers/serial/serial_zynq.c b/drivers/serial/serial_zynq.c
 > new file mode 100644
-> index 0000000..90b17f3
+> index 0000000..ec93b58
 > --- /dev/null
-> +++ b/arch/arm/mach-zynq/Kconfig
-> @@ -0,0 +1,3 @@
-> +if ARCH_ZYNQ
-> +
-> +endif
-> diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
-> new file mode 100644
-> index 0000000..58c62a9
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/Makefile
-> @@ -0,0 +1 @@
-> +obj-y  += reset.o clocks.o
-> diff --git a/arch/arm/mach-zynq/clocks.c b/arch/arm/mach-zynq/clocks.c
-> new file mode 100644
-> index 0000000..1e8ca5a
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/clocks.c
-> @@ -0,0 +1,341 @@
+> +++ b/drivers/serial/serial_zynq.c
+> @@ -0,0 +1,144 @@
 > +/*
-> + * Copyright (c) 2013 Josh Cartwright <joshc@eso.teric.us>
+> + * (C) Copyright 2013 Josh Cartwright
 > + *
-> + * Based on drivers/clk-zynq.c from Linux.
+> + * Based very loosely on u-boot drivers/serial/serial_zynq.c.
 > + *
-> + * Copyright (c) 2012 National Instruments
+> + * Copyright (C) 2012 Michal Simek <monstr@monstr.eu>
+> + * Copyright (C) 2011-2012 Xilinx, Inc. All rights reserved.
 > + *
-> + * Josh Cartwright <josh.cartwright@ni.com>
-> + *
-> + * This program is free software; you can redistribute it and/or modify it
-> + * under the terms and conditions of the GNU General Public License,
-> + * version 2, as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope it will be useful, but WITHOUT
-> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-> + * more details.
-> + *
-> + * You should have received a copy of the GNU General Public License along with
-> + * this program.  If not, see <http://www.gnu.org/licenses/>.
-> + */
-> +#include <common.h>
-> +#include <init.h>
-> +#include <malloc.h>
-> +#include <linux/clk.h>
-> +#include <linux/clkdev.h>
-> +#include <linux/err.h>
-> +
-> +#include <io.h>
-> +
-> +#define ZYNQ_SLCR_BASE 0xF8000000
-> +
-> +enum zynq_clks {
-> +       dummy, ps_clk, arm_pll, ddr_pll, io_pll, uart_clk, uart0, uart1,
-> +       cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x, clks_max
-> +};
-> +
-> +static struct clk *clks[clks_max];
-> +
-> +struct zynq_pll_clk {
-> +       struct clk      clk;
-> +       void __iomem    *pll_ctrl;
-> +};
-> +
-> +#define to_zynq_pll_clk(c)     container_of(c, struct zynq_pll_clk, clk)
-> +
-> +#define PLL_CTRL_FDIV(x)       (((x) >> 12) & 0x7F)
-> +
-> +static unsigned long zynq_pll_recalc_rate(struct clk *clk,
-> +                                         unsigned long parent_rate)
-> +{
-> +       struct zynq_pll_clk *pll = to_zynq_pll_clk(clk);
-> +       return parent_rate * PLL_CTRL_FDIV(readl(pll->pll_ctrl));
-> +}
-> +
-> +static struct clk_ops zynq_pll_clk_ops = {
-> +       .recalc_rate    = zynq_pll_recalc_rate,
-> +};
-> +
-> +static inline struct clk *zynq_pll_clk(const char *name, void __iomem *pll_ctrl)
-> +{
-> +       static const char *pll_parent = "ps_clk";
-> +       struct zynq_pll_clk *pll;
-> +       int ret;
-> +
-> +       pll = xzalloc(sizeof(*pll));
-> +
-> +       pll->pll_ctrl           = pll_ctrl;
-> +       pll->clk.ops            = &zynq_pll_clk_ops;
-> +       pll->clk.name           = name;
-> +       pll->clk.parent_names   = &pll_parent;
-> +       pll->clk.num_parents    = 1;
-> +
-> +       ret = clk_register(&pll->clk);
-> +       if (ret) {
-> +               free(pll);
-> +               return ERR_PTR(ret);
-> +       }
-> +
-> +       return &pll->clk;
-> +}
-> +
-> +struct zynq_periph_clk {
-> +       struct clk      clk;
-> +       void __iomem    *clk_ctrl;
-> +};
-> +
-> +#define to_zynq_periph_clk(c)  container_of(c, struct zynq_periph_clk, c)
-> +
-> +static const u8 periph_clk_parent_map[] = {
-> +       0, 0, 1, 2
-> +};
-> +#define PERIPH_CLK_CTRL_SRC(x) (periph_clk_parent_map[((x) & 0x30) >> 4])
-> +#define PERIPH_CLK_CTRL_DIV(x) (((x) & 0x3F00) >> 8)
-> +
-> +static unsigned long zynq_periph_recalc_rate(struct clk *clk,
-> +                                            unsigned long parent_rate)
-> +{
-> +       struct zynq_periph_clk *periph = to_zynq_periph_clk(clk);
-> +       return parent_rate / PERIPH_CLK_CTRL_DIV(readl(periph->clk_ctrl));
-> +}
-> +
-> +static int zynq_periph_get_parent(struct clk *clk)
-> +{
-> +       struct zynq_periph_clk *periph = to_zynq_periph_clk(clk);
-> +       return PERIPH_CLK_CTRL_SRC(readl(periph->clk_ctrl));
-> +}
-> +
-> +static const struct clk_ops zynq_periph_clk_ops = {
-> +       .recalc_rate    = zynq_periph_recalc_rate,
-> +       .get_parent     = zynq_periph_get_parent,
-> +};
-> +
-> +static struct clk *zynq_periph_clk(const char *name, void __iomem *clk_ctrl)
-> +{
-> +       static const char *peripheral_parents[] = {
-> +               "io_pll",
-> +               "arm_pll",
-> +               "ddr_pll",
-> +       };
-> +       struct zynq_periph_clk *periph;
-> +       int ret;
-> +
-> +       periph = xzalloc(sizeof(*periph));
-> +
-> +       periph->clk_ctrl        = clk_ctrl;
-> +       periph->clk.name        = name;
-> +       periph->clk.ops         = &zynq_periph_clk_ops;
-> +
-> +       periph->clk.parent_names = peripheral_parents;
-> +       periph->clk.num_parents  = ARRAY_SIZE(peripheral_parents);
-> +
-> +       ret = clk_register(&periph->clk);
-> +       if (ret) {
-> +               free(periph);
-> +               return ERR_PTR(ret);
-> +       }
-> +
-> +       return &periph->clk;
-> +}
-> +
-> +/* CPU Clock domain is modelled as a mux with 4 children subclks, whose
-> + * derivative rates depend on CLK_621_TRUE
-> + */
-> +
-> +struct zynq_cpu_clk {
-> +       struct clk              clk;
-> +       void __iomem            *clk_ctrl;
-> +};
-> +
-> +#define to_zynq_cpu_clk(c)     container_of(c, struct zynq_cpu_clk, c)
-> +
-> +static const u8 zynq_cpu_clk_parent_map[] = {
-> +       1, 1, 2, 0
-> +};
-> +#define CPU_CLK_SRCSEL(x)      (zynq_cpu_clk_parent_map[(((x) & 0x30) >> 4)])
-> +#define CPU_CLK_CTRL_DIV(x)    (((x) & 0x3F00) >> 8)
-> +
-> +static unsigned long zynq_cpu_clk_recalc_rate(struct clk *clk,
-> +                                             unsigned long parent_rate)
-> +{
-> +       struct zynq_cpu_clk *cpuclk = to_zynq_cpu_clk(clk);
-> +       return parent_rate / CPU_CLK_CTRL_DIV(readl(cpuclk->clk_ctrl));
-> +}
-> +
-> +static int zynq_cpu_clk_get_parent(struct clk *clk)
-> +{
-> +       struct zynq_cpu_clk *cpuclk = to_zynq_cpu_clk(clk);
-> +       return CPU_CLK_SRCSEL(readl(cpuclk->clk_ctrl));
-> +}
-> +
-> +static const struct clk_ops zynq_cpu_clk_ops = {
-> +       .get_parent     = zynq_cpu_clk_get_parent,
-> +       .recalc_rate    = zynq_cpu_clk_recalc_rate,
-> +};
-> +
-> +static struct clk *zynq_cpu_clk(const char *name, void __iomem *clk_ctrl)
-> +{
-> +       static const char *cpu_parents[] = {
-> +               "io_pll",
-> +               "arm_pll",
-> +               "ddr_pll",
-> +       };
-> +       struct zynq_cpu_clk *cpu;
-> +       int ret;
-> +
-> +       cpu = xzalloc(sizeof(*cpu));
-> +
-> +       cpu->clk_ctrl           = clk_ctrl;
-> +       cpu->clk.ops            = &zynq_cpu_clk_ops;
-> +       cpu->clk.name           = name;
-> +       cpu->clk.parent_names   = cpu_parents;
-> +       cpu->clk.num_parents    = ARRAY_SIZE(cpu_parents);
-> +
-> +       ret = clk_register(&cpu->clk);
-> +       if (ret) {
-> +               free(cpu);
-> +               return ERR_PTR(ret);
-> +       }
-> +
-> +       return &cpu->clk;
-> +}
-> +
-> +enum zynq_cpu_subclk_which {
-> +       CPU_SUBCLK_6X4X,
-> +       CPU_SUBCLK_3X2X,
-> +       CPU_SUBCLK_2X,
-> +       CPU_SUBCLK_1X,
-> +};
-> +
-> +struct zynq_cpu_subclk {
-> +       struct clk      clk;
-> +       void __iomem    *clk_ctrl;
-> +       void __iomem    *clk_621;
-> +       enum zynq_cpu_subclk_which which;
-> +};
-> +
-> +#define CLK_621_TRUE(x)        ((x) & 1)
-> +
-> +#define to_zynq_cpu_subclk(c)  container_of(c, struct zynq_cpu_subclk, c);
-> +
-> +static unsigned long zynq_cpu_subclk_recalc_rate(struct clk *clk,
-> +                                                unsigned long parent_rate)
-> +{
-> +       unsigned long uninitialized_var(rate);
-> +       struct zynq_cpu_subclk *subclk;
-> +       bool is_621;
-> +
-> +       subclk = to_zynq_cpu_subclk(clk)
-> +       is_621 = CLK_621_TRUE(readl(subclk->clk_621));
-> +
-> +       switch (subclk->which) {
-> +       case CPU_SUBCLK_6X4X:
-> +               rate = parent_rate;
-> +               break;
-> +       case CPU_SUBCLK_3X2X:
-> +               rate = parent_rate / 2;
-> +               break;
-> +       case CPU_SUBCLK_2X:
-> +               rate = parent_rate / (is_621 ? 3 : 2);
-> +               break;
-> +       case CPU_SUBCLK_1X:
-> +               rate = parent_rate / (is_621 ? 6 : 4);
-> +               break;
-> +       };
-> +
-> +       return rate;
-> +}
-> +
-> +static int zynq_cpu_subclk_enable(struct clk *clk)
-> +{
-> +       struct zynq_cpu_subclk *subclk;
-> +       u32 tmp;
-> +
-> +       subclk = to_zynq_cpu_subclk(clk);
-> +
-> +       tmp = readl(subclk->clk_ctrl);
-> +       tmp |= 1 << (24 + subclk->which);
-> +       writel(tmp, subclk->clk_ctrl);
-> +
-> +       return 0;
-> +}
-> +
-> +static void zynq_cpu_subclk_disable(struct clk *clk)
-> +{
-> +       struct zynq_cpu_subclk *subclk;
-> +       u32 tmp;
-> +
-> +       subclk = to_zynq_cpu_subclk(clk);
-> +
-> +       tmp = readl(subclk->clk_ctrl);
-> +       tmp &= ~(1 << (24 + subclk->which));
-> +       writel(tmp, subclk->clk_ctrl);
-> +}
-> +
-> +static const struct clk_ops zynq_cpu_subclk_ops = {
-> +       .enable         = zynq_cpu_subclk_enable,
-> +       .disable        = zynq_cpu_subclk_disable,
-> +       .recalc_rate    = zynq_cpu_subclk_recalc_rate,
-> +};
-> +
-> +static struct clk *zynq_cpu_subclk(const char *name,
-> +                                  enum zynq_cpu_subclk_which which,
-> +                                  void __iomem *clk_ctrl,
-> +                                  void __iomem *clk_621)
-> +{
-> +       static const char *subclk_parent = "cpu_clk";
-> +       struct zynq_cpu_subclk *subclk;
-> +       int ret;
-> +
-> +       subclk = xzalloc(sizeof(*subclk));
-> +
-> +       subclk->clk_ctrl        = clk_ctrl;
-> +       subclk->clk_621         = clk_621;
-> +       subclk->which           = which;
-> +       subclk->clk.name        = name;
-> +       subclk->clk.ops         = &zynq_cpu_subclk_ops;
-> +
-> +       subclk->clk.parent_names        = &subclk_parent;
-> +       subclk->clk.num_parents         = 1;
-> +
-> +       ret = clk_register(&subclk->clk);
-> +       if (ret) {
-> +               free(subclk);
-> +               return ERR_PTR(ret);
-> +       }
-> +
-> +       return &subclk->clk;
-> +}
-> +
-> +static int zynq_init_clks(void)
-> +{
-> +       void __iomem *slcr_base = (void __iomem *) ZYNQ_SLCR_BASE;
-> +
-> +       request_iomem_region("zynq_slcr", ZYNQ_SLCR_BASE,
-> +                            ZYNQ_SLCR_BASE + 0x1000);
-> +
-> +       clks[ps_clk]  = clk_fixed("ps_clk", CONFIG_ZYNQ_PS_CLK_FREQ);
-> +
-> +       clks[arm_pll] = zynq_pll_clk("arm_pll", slcr_base + 0x100);
-> +       clks[ddr_pll] = zynq_pll_clk("ddr_pll", slcr_base + 0x104);
-> +       clks[ io_pll] = zynq_pll_clk( "io_pll", slcr_base + 0x108);
-> +
-> +       clks[uart_clk] = zynq_periph_clk("uart_clk", slcr_base + 0x154);
-> +
-> +       clks[uart0] = clk_gate("uart0", "uart_clk", slcr_base + 0x154, 0);
-> +       clks[uart1] = clk_gate("uart1", "uart_clk", slcr_base + 0x154, 1);
-> +
-> +       clks[cpu_clk] = zynq_cpu_clk("cpu_clk", slcr_base + 0x120);
-> +
-> +       clks[cpu_6x4x] = zynq_cpu_subclk("cpu_6x4x", CPU_SUBCLK_6X4X, slcr_base + 0x120, slcr_base + 0x1C4);
-> +       clks[cpu_3x2x] = zynq_cpu_subclk("cpu_3x2x", CPU_SUBCLK_3X2X, slcr_base + 0x120, slcr_base + 0x1C4);
-> +       clks[  cpu_2x] = zynq_cpu_subclk(  "cpu_2x",   CPU_SUBCLK_2X, slcr_base + 0x120, slcr_base + 0x1C4);
-> +       clks[  cpu_1x] = zynq_cpu_subclk(  "cpu_1x",   CPU_SUBCLK_1X, slcr_base + 0x120, slcr_base + 0x1C4);
-> +
-> +       clk_register_clkdev(clks[cpu_3x2x], NULL, "smp_twd0");
-> +       clk_register_clkdev(clks[uart0], NULL, "zynq_serial0");
-> +       clk_register_clkdev(clks[uart1], NULL, "zynq_serial1");
-> +       return 0;
-> +}
-> +core_initcall(zynq_init_clks);
-> diff --git a/arch/arm/mach-zynq/include/mach/clkdev.h b/arch/arm/mach-zynq/include/mach/clkdev.h
-> new file mode 100644
-> index 0000000..04b37a8
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/clkdev.h
-> @@ -0,0 +1,7 @@
-> +#ifndef __ASM_MACH_CLKDEV_H
-> +#define __ASM_MACH_CLKDEV_H
-> +
-> +#define __clk_get(clk) ({ 1; })
-> +#define __clk_put(clk) do { } while (0)
-> +
-> +#endif
-> diff --git a/arch/arm/mach-zynq/include/mach/debug_ll.h b/arch/arm/mach-zynq/include/mach/debug_ll.h
-> new file mode 100644
-> index 0000000..bb180a6
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/debug_ll.h
-> @@ -0,0 +1,21 @@
-> +#ifndef __MACH_DEBUG_LL_H__
-> +#define __MACH_DEBUG_LL_H__
-> +
-> +#include <io.h>
-> +
-> +#define UART_BASE      0xE0001000
-> +#define UART_SR                0x0000002C
-> +#define UART_FIFO      0x00000030
-> +
-> +#define UART_SR_TXEMPTY        (1<<3)
-> +
-> +static inline void PUTC_LL(char c)
-> +{
-> +       void __iomem *base = (void __iomem *) UART_BASE;
-> +
-> +       writel(c, base + UART_FIFO);
-> +
-> +       while (!(readl(base + UART_SR) & UART_SR_TXEMPTY));
-> +}
-> +
-> +#endif
-> diff --git a/arch/arm/mach-zynq/include/mach/slcr.h b/arch/arm/mach-zynq/include/mach/slcr.h
-> new file mode 100644
-> index 0000000..eada153
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/slcr.h
-> @@ -0,0 +1,26 @@
-> +#ifndef __MACH_SLCR_H__
-> +#define __MACH_SLCR_H__
-> +
-> +#include <io.h>
-> +
-> +#define SLCR_BASE              0xF8000000
-> +#define SLCR_LOCK              0x00000004
-> +#define SLCR_UNLOCK            0x00000008
-> +#define SLCR_PSS_RST_CTRL      0x00000200
-> +
-> +static inline void slcr_write(unsigned long val, unsigned long reg)
-> +{
-> +       writel(val, SLCR_BASE + reg);
-> +}
-> +
-> +static inline void slcr_unlock(void)
-> +{
-> +       slcr_write(0xDF0D, SLCR_UNLOCK);
-> +}
-> +
-> +static inline void slcr_lock(void)
-> +{
-> +       slcr_write(0x767B, SLCR_LOCK);
-> +}
-> +
-> +#endif
-> diff --git a/arch/arm/mach-zynq/reset.c b/arch/arm/mach-zynq/reset.c
-> new file mode 100644
-> index 0000000..8554eca
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/reset.c
-> @@ -0,0 +1,28 @@
-> +/*
-> + * Copyright (C) 2013 Josh Cartwright <joshc@eso.teric.us>
+> + * See file CREDITS for list of people who contributed to this
+> + * project.
 > + *
 > + * This program is free software; you can redistribute it and/or
 > + * modify it under the terms of the GNU General Public License as
@@ -533,47 +98,135 @@ On 3 March 2013 04:48, Josh Cartwright <joshc@eso.teric.us> wrote:
 > + * along with this program; if not, write to the Free Software
 > + * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 > + * MA 02111-1307 USA
-
-Please drop the address of the FSF.
-
-See this
-
-commit 77322aa896895f4f68501a071086e432e575dcc2
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Tue Jul 31 09:51:20 2012 +0200
-
-    Treewide: remove address of the Free Software Foundation
-
-    The FSF address has changed in the past. Instead of updating it
-    each time the address changes, just drop it completely treewide.
-
-
 > + */
 > +#include <common.h>
-> +#include <mach/slcr.h>
+> +#include <io.h>
+> +#include <init.h>
+> +#include <driver.h>
+> +#include <xfuncs.h>
+> +#include <console.h>
+> +#include <malloc.h>
 > +
-> +void __noreturn reset_cpu(unsigned long addr)
+> +#include <linux/clk.h>
+> +
+> +#define UART_CR		0x00000000
+> +#define UART_CR_TXEN	(1<<4)
+> +#define UART_CR_RXEN	(1<<2)
+> +#define UART_CR_TXRST	(1<<1)
+> +#define UART_CR_RXRST	(1<<0)
+> +
+> +#define UART_SR		0x0000002C
+> +#define UART_SR_TXFULL	(1<<4)
+> +#define UART_SR_TXEMPTY	(1<<3)
+> +#define UART_SR_RXFULL	(1<<2)
+> +#define UART_SR_RXEMPTY	(1<<1)
+> +
+> +#define UART_FIFO	0x00000030
+> +
+> +struct zynq_serial_device {
+> +	struct console_device cdev;
+> +	struct clk *clk;
+> +	void __iomem *regs;
+> +};
+> +
+> +#define to_zynq_device(p) container_of(p, struct zynq_serial_device, cdev)
+> +
+> +static void zynq_serial_init_device(struct zynq_serial_device *dev)
 > +{
-> +       slcr_unlock();
-> +       slcr_write(1, SLCR_PSS_RST_CTRL);
-> +
-> +       while (1);
+> +	writel(UART_CR_TXEN | UART_CR_RXEN | UART_CR_TXEN | UART_CR_RXEN,
+> +	       dev->regs + UART_CR);
 > +}
-> --
+> +
+> +static int zynq_serial_tstc(struct console_device *cdev)
+> +{
+> +	struct zynq_serial_device *zynq = to_zynq_device(cdev);
+> +
+> +	return !(readl(zynq->regs + UART_SR) & UART_SR_RXEMPTY);
+> +}
+> +
+> +static void zynq_serial_putc(struct console_device *cdev, char c)
+> +{
+> +	struct zynq_serial_device *zynq = to_zynq_device(cdev);
+> +
+> +	while (readl(zynq->regs + UART_SR) & UART_SR_TXFULL);
+> +
+> +	writel(c, zynq->regs + UART_FIFO);
+> +}
+> +
+> +static int zynq_serial_getc(struct console_device *cdev)
+> +{
+> +	struct zynq_serial_device *zynq = to_zynq_device(cdev);
+> +
+> +	return readl(zynq->regs + UART_FIFO);
+> +}
+> +
+> +static void zynq_serial_flush(struct console_device *cdev)
+> +{
+> +	struct zynq_serial_device *zynq = to_zynq_device(cdev);
+> +
+> +	while (!(readl(zynq->regs + UART_SR) & UART_SR_TXEMPTY));
+> +}
+> +
+> +static int zynq_serial_probe(struct device_d *dev)
+> +{
+> +	struct zynq_serial_device *priv;
+> +	struct console_device *cdev;
+> +	int err;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +	cdev = &priv->cdev;
+> +
+> +	priv->regs	= dev_request_mem_region(dev, 0);
+> +	cdev->dev	= dev;
+> +	cdev->f_caps	= CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+> +	cdev->tstc	= zynq_serial_tstc;
+> +	cdev->putc	= zynq_serial_putc;
+> +	cdev->getc	= zynq_serial_getc;
+> +	cdev->flush	= zynq_serial_flush;
+> +
+> +	priv->clk = clk_get(dev, NULL);
+you need to check here too
+> +
+> +	err = clk_enable(priv->clk);
+> +	if (err) {
+> +		free(priv);
+> +		return err;
+> +	}
+> +
+> +	zynq_serial_init_device(priv);
+> +
+> +	dev->priv = priv;
+> +
+> +	return console_register(cdev);
+> +}
+> +
+> +static void zynq_serial_remove(struct device_d *dev)
+> +{
+> +	struct zynq_serial_device *zynq = dev->priv;
+> +	clk_disable(zynq->clk);
+> +	free(zynq);
+> +}
+> +
+> +static struct driver_d zynq_serial_driver = {
+> +	.name	= "zynq_serial",
+> +	.probe	= zynq_serial_probe,
+> +	.remove = zynq_serial_remove,
+> +};
+> +
+> +static int zynq_serial_init(void)
+> +{
+> +	return platform_driver_register(&zynq_serial_driver);
+> +}
+> +console_initcall(zynq_serial_init);
+> -- 
 > 1.8.1.2
->
->
->
+> 
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-
-
-
--- 
-Best regards,
-  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
