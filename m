@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
- helo=km20343-01.keymachine.de)
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UBvof-00049P-Vd
- for barebox@lists.infradead.org; Sat, 02 Mar 2013 23:26:10 +0000
-Message-ID: <1362266753.2127.14.camel@antimon>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 03 Mar 2013 00:25:53 +0100
-In-Reply-To: <20130301131742.GF23022@game.jcrosoft.org>
-References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362129773-4579-2-git-send-email-dev@lynxeye.de>
- <20130301131742.GF23022@game.jcrosoft.org>
-Mime-Version: 1.0
+Received: from eso.teric.us ([69.164.192.171])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UBxdh-0006yz-GM
+ for barebox@lists.infradead.org; Sun, 03 Mar 2013 01:22:57 +0000
+Message-Id: <cover.1362273612.git.joshc@eso.teric.us>
+From: Josh Cartwright <joshc@eso.teric.us>
+Date: Sat, 2 Mar 2013 19:20:12 -0600
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +14,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] tegra: move address map to tegra20-silicon.h
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] Zynq support for barebox
+To: barebox@lists.infradead.org
+Cc: Michal Simek <monstr@monstr.eu>
 
-Am Freitag, den 01.03.2013, 14:17 +0100 schrieb Jean-Christophe
-PLAGNIOL-VILLARD:
-> On 10:22 Fri 01 Mar     , Lucas Stach wrote:
-> > The address map is specific to the Tegra20 SoC. Move it to a
-> > file with an appropriate name. While at it clarify and fix
-> > the definitions.
-> 
-> folloow the kernel
+In San Francisco a couple weeks ago (ELC2013), Thomas Petazzoni
+informally mentioned barebox in passing, so I decided to toy with it a
+bit...
 
-The Tegra kernel is fully device tree enabled and doesn't need any of
-those defines, as the hardware mapping is encoded in the DT. While I'm
-certainly aiming for the same thing in barebox, it's just not the right
-thing to do at this state of development.
+This patchset adds basic support for the Zynq SoC to barebox.  So far,
+it's only been tested as a 'secondary' bootloader (after u-boot).  Also
+added is support for the zc702 development board.
 
-> > 
-> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> > ---
-> >  [...]
+The first two patches are simple typos I found getting acclimated to the
+barebox source.
+
+Josh Cartwright (5):
+  trivial: doc: fix typos in mach-arm.dox
+  defaultenv: fixed mismatched braces in bin/boot
+  ARM: zynq: add driver for Zynq uarts
+  ARM: zynq: add support for Zynq 7000 SoC
+  ARM: zynq: add support for zc702 development board
+
+ arch/arm/Kconfig                           |   9 +
+ arch/arm/Makefile                          |   2 +
+ arch/arm/boards/zynq-zc702/Makefile        |   1 +
+ arch/arm/boards/zynq-zc702/config.h        |   0
+ arch/arm/boards/zynq-zc702/devices.c       |  70 ++++++
+ arch/arm/boards/zynq-zc702/lowlevel.c      |  28 +++
+ arch/arm/mach-arm.dox                      |   4 +-
+ arch/arm/mach-zynq/Kconfig                 |  22 ++
+ arch/arm/mach-zynq/Makefile                |   1 +
+ arch/arm/mach-zynq/clocks.c                | 341 +++++++++++++++++++++++++++++
+ arch/arm/mach-zynq/include/mach/clkdev.h   |   7 +
+ arch/arm/mach-zynq/include/mach/debug_ll.h |  21 ++
+ arch/arm/mach-zynq/include/mach/slcr.h     |  26 +++
+ arch/arm/mach-zynq/reset.c                 |  28 +++
+ defaultenv/bin/boot                        |   2 +-
+ drivers/serial/Kconfig                     |   6 +
+ drivers/serial/Makefile                    |   1 +
+ drivers/serial/serial_zynq.c               | 144 ++++++++++++
+ 18 files changed, 710 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/zynq-zc702/Makefile
+ create mode 100644 arch/arm/boards/zynq-zc702/config.h
+ create mode 100644 arch/arm/boards/zynq-zc702/devices.c
+ create mode 100644 arch/arm/boards/zynq-zc702/lowlevel.c
+ create mode 100644 arch/arm/mach-zynq/Kconfig
+ create mode 100644 arch/arm/mach-zynq/Makefile
+ create mode 100644 arch/arm/mach-zynq/clocks.c
+ create mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/slcr.h
+ create mode 100644 arch/arm/mach-zynq/reset.c
+ create mode 100644 drivers/serial/serial_zynq.c
+
+-- 
+1.8.1.2
 
 
 _______________________________________________
