@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCS5d-0005qA-PC
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:54 +0000
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UCS5Z-0006WY-R2
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:39 +0100
-Message-Id: <1362390820-10333-37-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 10:53:13 +0100
+Message-Id: <1362390820-10333-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,539 +21,259 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 36/37] of: remove unused libfdt
+Subject: [PATCH 10/37] of: let of_unflatten_dtb return the unflattened tree
 To: barebox@lists.infradead.org
 
-Now that we are completely independent of libfdt remove the unused
-code.
+In order to be able to handle multiple devicetrees, do not assume
+the tree to be unflattened is the barebox internal one. Instead,
+just return a pointer to it and assign the barebox internal root_node
+external to the unflatten function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/at91sam9m10ihd/hw_version.c |    1 -
- arch/arm/boards/at91sam9x5ek/hw_version.c   |    1 -
- arch/arm/boards/highbank/init.c             |    3 +-
- arch/arm/boards/sama5d3xek/hw_version.c     |    1 -
- arch/arm/lib/bootm.c                        |    1 -
- commands/bootm.c                            |    1 -
- commands/of_node.c                          |    1 -
- commands/of_property.c                      |    1 -
- commands/oftree.c                           |    3 +-
- common/memory.c                             |    1 -
- common/oftree.c                             |  175 ----
- drivers/of/Kconfig                          |    1 -
- drivers/of/base.c                           |    1 -
- drivers/of/dtb.c                            |    1 -
- include/fdt.h                               |   13 +
- include/libfdt.h                            | 1235 ---------------------------
- include/libfdt_env.h                        |   21 -
- include/of.h                                |   24 -
- lib/Kconfig                                 |    3 -
- lib/Makefile                                |    1 -
- lib/fdt/Makefile                            |    2 -
- lib/fdt/TODO                                |    3 -
- lib/fdt/fdt.c                               |  222 -----
- lib/fdt/fdt_ro.c                            |  574 -------------
- lib/fdt/fdt_rw.c                            |  465 ----------
- lib/fdt/fdt_strerror.c                      |   96 ---
- lib/fdt/fdt_sw.c                            |  256 ------
- lib/fdt/fdt_wip.c                           |  118 ---
- lib/fdt/libfdt_internal.h                   |   95 ---
- 29 files changed, 15 insertions(+), 3305 deletions(-)
- delete mode 100644 include/libfdt.h
- delete mode 100644 include/libfdt_env.h
- delete mode 100644 lib/fdt/Makefile
- delete mode 100644 lib/fdt/TODO
- delete mode 100644 lib/fdt/fdt.c
- delete mode 100644 lib/fdt/fdt_ro.c
- delete mode 100644 lib/fdt/fdt_rw.c
- delete mode 100644 lib/fdt/fdt_strerror.c
- delete mode 100644 lib/fdt/fdt_sw.c
- delete mode 100644 lib/fdt/fdt_wip.c
- delete mode 100644 lib/fdt/libfdt_internal.h
+ arch/arm/boards/highbank/init.c |   11 +++++---
+ commands/oftree.c               |   14 +++++++++-
+ drivers/of/base.c               |   57 ++++++++++++++++++++++++---------------
+ include/of.h                    |    3 ++-
+ 4 files changed, 58 insertions(+), 27 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9m10ihd/hw_version.c b/arch/arm/boards/at91sam9m10ihd/hw_version.c
-index cd522f7..be910df 100644
---- a/arch/arm/boards/at91sam9m10ihd/hw_version.c
-+++ b/arch/arm/boards/at91sam9m10ihd/hw_version.c
-@@ -20,7 +20,6 @@
- #include <libbb.h>
- #include <asm/armlinux.h>
- #include <of.h>
--#include <libfdt.h>
- 
- #include "hw_version.h"
- 
-diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
-index 2695faa..76d4e1b 100644
---- a/arch/arm/boards/at91sam9x5ek/hw_version.c
-+++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
-@@ -20,7 +20,6 @@
- #include <libbb.h>
- #include <asm/armlinux.h>
- #include <of.h>
--#include <libfdt.h>
- 
- #include "hw_version.h"
- 
 diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-index bd32c1d..d4a5c5a 100644
+index e36674f..0f64fc8 100644
 --- a/arch/arm/boards/highbank/init.c
 +++ b/arch/arm/boards/highbank/init.c
-@@ -16,7 +16,6 @@
- #include <partition.h>
+@@ -17,6 +17,7 @@
  #include <sizes.h>
  #include <io.h>
--#include <libfdt.h>
- #include <of.h>
+ #include <libfdt.h>
++#include <of.h>
  
  #define FIRMWARE_DTB_BASE	0x1000
-@@ -124,7 +123,7 @@ static int highbank_devices_init(void)
+ 
+@@ -63,19 +64,21 @@ static int hb_fixup(struct fdt_header *fdt)
+ 
+ static int highbank_mem_init(void)
+ {
+-	struct device_node *np;
++	struct device_node *root, *np;
+ 	int ret;
+ 
+ 	/* load by the firmware at 0x1000 */
+ 	fdt = IOMEM(FIRMWARE_DTB_BASE);
+ 
+-	ret = of_unflatten_dtb(fdt);
+-	if (ret) {
++	root = of_unflatten_dtb(NULL, fdt);
++	if (!root) {
+ 		pr_warn("no dtb found at 0x1000 use default configuration\n");
+ 		fdt = NULL;
+ 		goto not_found;
+ 	}
+ 
++	of_set_root_node(root);
++
+ 	np = of_find_node_by_path("/memory");
+ 	if (!np) {
+ 		pr_warn("no memory node use default configuration\n");
+@@ -109,7 +112,7 @@ static int highbank_devices_init(void)
+ 		highbank_register_xgmac(0);
  		highbank_register_xgmac(1);
  	} else {
- 		fdt = of_get_fixed_tree(NULL);
--		add_mem_device("dtb", (unsigned long)fdt, fdt_totalsize(fdt),
-+		add_mem_device("dtb", (unsigned long)fdt, be32_to_cpu(fdt->totalsize),
+-		fdt = of_get_fixed_tree(fdt);
++		fdt = of_get_fixed_tree(NULL);
+ 		add_mem_device("dtb", (unsigned long)fdt, fdt_totalsize(fdt),
  		       IORESOURCE_MEM_WRITEABLE);
  		devfs_add_partition("ram0", FIRMWARE_DTB_BASE, SZ_64K, DEVFS_PARTITION_FIXED, "firmware-dtb");
- 	}
-diff --git a/arch/arm/boards/sama5d3xek/hw_version.c b/arch/arm/boards/sama5d3xek/hw_version.c
-index a9fcf7d..79fd63a 100644
---- a/arch/arm/boards/sama5d3xek/hw_version.c
-+++ b/arch/arm/boards/sama5d3xek/hw_version.c
-@@ -20,7 +20,6 @@
- #include <libbb.h>
- #include <asm/armlinux.h>
- #include <of.h>
--#include <libfdt.h>
- 
- #include "hw_version.h"
- 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 4decee4..e7a0625 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -14,7 +14,6 @@
- #include <sizes.h>
- #include <libbb.h>
- #include <magicvar.h>
--#include <libfdt.h>
- #include <binfmt.h>
- 
- #include <asm/byteorder.h>
-diff --git a/commands/bootm.c b/commands/bootm.c
-index ea5a35b..e5dfc6a 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -34,7 +34,6 @@
- #include <errno.h>
- #include <boot.h>
- #include <of.h>
--#include <libfdt.h>
- #include <rtc.h>
- #include <init.h>
- #include <of.h>
-diff --git a/commands/of_node.c b/commands/of_node.c
-index 171ea2c..0249d97 100644
---- a/commands/of_node.c
-+++ b/commands/of_node.c
-@@ -24,7 +24,6 @@
- #include <command.h>
- #include <fs.h>
- #include <malloc.h>
--#include <libfdt.h>
- #include <linux/ctype.h>
- #include <asm/byteorder.h>
- #include <errno.h>
-diff --git a/commands/of_property.c b/commands/of_property.c
-index 1567a0f..6311b70 100644
---- a/commands/of_property.c
-+++ b/commands/of_property.c
-@@ -24,7 +24,6 @@
- #include <command.h>
- #include <fs.h>
- #include <malloc.h>
--#include <libfdt.h>
- #include <linux/ctype.h>
- #include <asm/byteorder.h>
- #include <errno.h>
 diff --git a/commands/oftree.c b/commands/oftree.c
-index e4f52b8..468235a 100644
+index ddbff3e..68e3fb4 100644
 --- a/commands/oftree.c
 +++ b/commands/oftree.c
-@@ -30,7 +30,6 @@
- #include <command.h>
- #include <fs.h>
+@@ -32,6 +32,7 @@
  #include <malloc.h>
--#include <libfdt.h>
+ #include <libfdt.h>
  #include <linux/ctype.h>
- #include <linux/err.h>
++#include <linux/err.h>
  #include <asm/byteorder.h>
-@@ -114,7 +113,7 @@ static int do_oftree(int argc, char *argv[])
+ #include <errno.h>
+ #include <getopt.h>
+@@ -52,6 +53,7 @@ static int do_oftree(int argc, char *argv[])
+ 	int save = 0;
+ 	int free_of = 0;
+ 	int ret;
++	struct device_node *n, *root;
+ 
+ 	while ((opt = getopt(argc, argv, "dpfn:ls")) > 0) {
+ 		switch (opt) {
+@@ -135,7 +137,17 @@ static int do_oftree(int argc, char *argv[])
  			goto out;
  		}
  
--		ret = write_file(file, fdt, fdt_totalsize(fdt));
-+		ret = write_file(file, fdt, fdt32_to_cpu(fdt->totalsize));
- 
- 		goto out;
- 	}
-diff --git a/common/memory.c b/common/memory.c
-index 61cca0d..7ec211b 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -21,7 +21,6 @@
- #include <memory.h>
- #include <of.h>
- #include <init.h>
--#include <libfdt.h>
- #include <linux/ioport.h>
- #include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
-diff --git a/common/oftree.c b/common/oftree.c
-index e6c82d6..776d301 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -5,7 +5,6 @@
- #include <command.h>
- #include <fs.h>
- #include <malloc.h>
--#include <libfdt.h>
- #include <linux/ctype.h>
- #include <asm/byteorder.h>
- #include <errno.h>
-@@ -99,180 +98,6 @@ void of_print_property(const void *data, int len)
- 	}
- }
- 
--static void printf_indent(int level, const char *fmt, ...)
--{
--	va_list args;
--
--	printf("%*s", level * 8, "");
--
--	va_start (args, fmt);
--	vprintf(fmt, args);
--	va_end (args);
--}
--
--int fdt_print(struct fdt_header *working_fdt, const char *pathp)
--{
--	const void *nodep;	/* property node pointer */
--	int  nodeoffset;	/* node offset from libfdt */
--	int  nextoffset;	/* next node offset from libfdt */
--	uint32_t tag;		/* tag */
--	int  len;		/* length of the property */
--	int  level = 0;		/* keep track of nesting level */
--	const struct fdt_property *fdt_prop;
--
--	nodeoffset = fdt_path_offset(working_fdt, pathp);
--	if (nodeoffset < 0) {
--		/*
--		 * Not found or something else bad happened.
--		 */
--		printf("libfdt fdt_path_offset() returned %s\n",
--			fdt_strerror(nodeoffset));
--		return 1;
--	}
--
--	while (level >= 0) {
--		tag = fdt_next_tag(working_fdt, nodeoffset, &nextoffset);
--		switch (tag) {
--		case FDT_BEGIN_NODE:
--			pathp = fdt_get_name(working_fdt, nodeoffset, NULL);
--			if (pathp == NULL)
--				pathp = "/* NULL pointer error */";
--			if (*pathp == '\0')
--				pathp = "/";	/* root is nameless */
--			printf_indent(level, "%s {\n",pathp);
--			level++;
--			if (level >= MAX_LEVEL) {
--				printf("Nested too deep, aborting.\n");
--				return 1;
--			}
--			break;
--		case FDT_END_NODE:
--			level--;
--			printf_indent(level, "};\n");
--			if (level == 0) {
--				level = -1;		/* exit the loop */
--			}
--			break;
--		case FDT_PROP:
--			fdt_prop = fdt_offset_ptr(working_fdt, nodeoffset,
--					sizeof(*fdt_prop));
--			pathp    = fdt_string(working_fdt,
--					fdt32_to_cpu(fdt_prop->nameoff));
--			len      = fdt32_to_cpu(fdt_prop->len);
--			nodep    = fdt_prop->data;
--			if (len < 0) {
--				printf("libfdt fdt_getprop(): %s\n",
--					fdt_strerror(len));
--				return 1;
--			} else if (len == 0) {
--				/* the property has no value */
--				printf_indent(level, "%s;\n", pathp);
--			} else {
--				printf_indent(level, "%s = ", pathp);
--				of_print_property(nodep, len);
--				printf(";\n");
--			}
--			break;
--		case FDT_NOP:
--			printf_indent(level, "/* NOP */\n");
--			break;
--		case FDT_END:
--			return 1;
--		default:
--			printf("Unknown tag 0x%08X\n", tag);
--			return 1;
--		}
--		nodeoffset = nextoffset;
--	}
--	return 0;
--}
--
--/**
-- * fdt_find_and_setprop: Find a node and set it's property
-- *
-- * @fdt: ptr to device tree
-- * @node: path of node
-- * @prop: property name
-- * @val: ptr to new value
-- * @len: length of new property value
-- * @create: flag to create the property if it doesn't exist
-- *
-- * Convenience function to directly set a property given the path to the node.
-- */
--int fdt_find_and_setprop(struct fdt_header *fdt, const char *node,
--		const char *prop, const void *val, int len, int create)
--{
--	int nodeoff = fdt_path_offset(fdt, node);
--
--	if (nodeoff < 0)
--		return nodeoff;
--
--	if ((!create) && (fdt_get_property(fdt, nodeoff, prop, NULL) == NULL))
--		return 0; /* create flag not set; so exit quietly */
--
--	return fdt_setprop(fdt, nodeoff, prop, val, len);
--}
--
--void do_fixup_by_path(struct fdt_header *fdt, const char *path,
--		const char *prop, const void *val, int len, int create)
--{
--	int rc = fdt_find_and_setprop(fdt, path, prop, val, len, create);
--	if (rc)
--		printf("Unable to update property %s:%s, err=%s\n",
--			path, prop, fdt_strerror(rc));
--}
--
--void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path,
--		const char *prop, u32 val, int create)
--{
--	val = cpu_to_fdt32(val);
--	do_fixup_by_path(fdt, path, prop, &val, sizeof(val), create);
--}
--
--void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
--			const char *prop, const void *val, int len, int create)
--{
--	int off = -1;
--
--	off = fdt_node_offset_by_compatible(fdt, -1, compatible);
--	while (off != -FDT_ERR_NOTFOUND) {
--		if (create || (fdt_get_property(fdt, off, prop, 0) != NULL))
--			fdt_setprop(fdt, off, prop, val, len);
--		off = fdt_node_offset_by_compatible(fdt, off, compatible);
--	}
--}
--
--void do_fixup_by_compatible_u32(struct fdt_header *fdt, const char *compatible,
--				const char *prop, u32 val, int create)
--{
--	val = cpu_to_fdt32(val);
--	do_fixup_by_compatible(fdt, compatible, prop, &val, 4, create);
--}
--
--void do_fixup_by_compatible_string(struct fdt_header *fdt, const char *compatible,
--				const char *prop, const char *val, int create)
--{
--	do_fixup_by_compatible(fdt, compatible, prop, val, strlen(val) + 1,
--				create);
--}
--
--int fdt_get_path_or_create(struct fdt_header *fdt, const char *path)
--{
--	int nodeoffset;
--
--	nodeoffset = fdt_path_offset (fdt, path);
--	if (nodeoffset < 0) {
--		nodeoffset = fdt_add_subnode(fdt, 0, path + 1);
--		if (nodeoffset < 0) {
--			printf("WARNING: could not create %s %s.\n",
--					path, fdt_strerror(nodeoffset));
--                        return -EINVAL;
--                }
--        }
--
--	return nodeoffset;
--}
--
- static int of_fixup_bootargs(struct device_node *root)
- {
- 	struct device_node *node;
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index c30b1c1..031bec1 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -1,5 +1,4 @@
- config OFTREE
--	select FDT
- 	bool
- 
- config OFDEVICE
+-		ret = of_unflatten_dtb(fdt);
++		n = of_get_root_node();
++
++		root = of_unflatten_dtb(n, fdt);
++		if (IS_ERR(root))
++			ret = PTR_ERR(root);
++		else
++			ret = 0;
++
++		if (!n)
++			ret = of_set_root_node(root);
++
+ 		if (ret) {
+ 			printf("parse oftree: %s\n", strerror(-ret));
+ 			goto out;
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 5891138..ada3fc1 100644
+index 11d17c6..ae15524 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -20,7 +20,6 @@
- #include <common.h>
- #include <of.h>
- #include <errno.h>
--#include <libfdt.h>
- #include <malloc.h>
- #include <init.h>
- #include <memory.h>
-diff --git a/drivers/of/dtb.c b/drivers/of/dtb.c
-index 856b591..6d6b76d 100644
---- a/drivers/of/dtb.c
-+++ b/drivers/of/dtb.c
-@@ -20,7 +20,6 @@
- #include <common.h>
- #include <of.h>
- #include <errno.h>
--#include <libfdt.h>
- #include <malloc.h>
- #include <init.h>
- #include <memory.h>
-diff --git a/include/fdt.h b/include/fdt.h
-index 48ccfd9..35278e3 100644
---- a/include/fdt.h
-+++ b/include/fdt.h
-@@ -3,6 +3,19 @@
+@@ -27,6 +27,7 @@
+ #include <sizes.h>
+ #include <linux/ctype.h>
+ #include <linux/amba/bus.h>
++#include <linux/err.h>
  
- #ifndef __ASSEMBLY__
+ /**
+  * struct alias_prop - Alias property in 'aliases' node
+@@ -561,6 +562,18 @@ struct device_node *of_get_root_node(void)
+ 	return root_node;
+ }
  
-+#define _B(n)	((unsigned long long)((uint8_t *)&x)[n])
-+
-+#define fdt32_to_cpu(x)	be32_to_cpu(x)
-+#define cpu_to_fdt32(x) cpu_to_be32(x)
-+
-+static inline uint64_t fdt64_to_cpu(uint64_t x)
++int of_set_root_node(struct device_node *node)
 +{
-+	return (_B(0) << 56) | (_B(1) << 48) | (_B(2) << 40) | (_B(3) << 32)
-+		| (_B(4) << 24) | (_B(5) << 16) | (_B(6) << 8) | _B(7);
-+}
-+#define cpu_to_fdt64(x) fdt64_to_cpu(x)
-+#undef _B
++	if (node && root_node)
++		return -EBUSY;
 +
- struct fdt_header {
- 	uint32_t magic;			 /* magic word FDT_MAGIC */
- 	uint32_t totalsize;		 /* total size of DT block */
-diff --git a/include/libfdt.h b/include/libfdt.h
-deleted file mode 100644
-index 55f3eb3..0000000
-diff --git a/include/libfdt_env.h b/include/libfdt_env.h
-deleted file mode 100644
-index 6486187..0000000
++	root_node = node;
++
++	of_alias_scan();
++
++	return 0;
++}
++
+ static int of_node_disabled(struct device_node *node)
+ {
+ 	struct property *p;
+@@ -611,15 +624,10 @@ struct device_node *of_new_node(struct device_node *parent, const char *name)
+ {
+ 	struct device_node *node;
+ 
+-	if (!parent && root_node)
+-		return NULL;
+-
+ 	node = xzalloc(sizeof(*node));
+ 	node->parent = parent;
+ 	if (parent)
+ 		list_add_tail(&node->parent_list, &parent->children);
+-	else
+-		root_node = node;
+ 
+ 	INIT_LIST_HEAD(&node->children);
+ 	INIT_LIST_HEAD(&node->properties);
+@@ -927,9 +935,7 @@ void of_free(struct device_node *node)
+ 	free(node);
+ 
+ 	if (node == root_node)
+-		root_node = NULL;
+-
+-	of_alias_scan();
++		of_set_root_node(NULL);
+ }
+ 
+ static void __of_probe(struct device_node *node)
+@@ -1021,11 +1027,15 @@ out:
+ 	return dn;
+ }
+ 
+-/*
+- * Parse a flat device tree binary blob and store it in the barebox
+- * internal tree format,
++/**
++ * of_unflatten_dtb - unflatten a fdt blob
++ * @root - node in which the fdt blob should be merged into or NULL
++ * @fdt - the fdt blob to unflatten
++ *
++ * Parse a flat device tree binary blob and return a pointer to the
++ * unflattened tree.
+  */
+-int of_unflatten_dtb(struct fdt_header *fdt)
++struct device_node *of_unflatten_dtb(struct device_node *root, struct fdt_header *fdt)
+ {
+ 	const void *nodep;	/* property node pointer */
+ 	int  nodeoffset;	/* node offset from libfdt */
+@@ -1034,8 +1044,9 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 	int  len;		/* length of the property */
+ 	const struct fdt_property *fdt_prop;
+ 	const char *pathp;
+-	struct device_node *node = NULL, *n, *root = NULL;
++	struct device_node *node = NULL, *n;
+ 	struct property *p;
++	int ret;
+ 
+ 	nodeoffset = fdt_path_offset(fdt, "/");
+ 	if (nodeoffset < 0) {
+@@ -1044,12 +1055,14 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 		 */
+ 		printf ("libfdt fdt_path_offset() returned %s\n",
+ 			fdt_strerror(nodeoffset));
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	root = of_new_node(NULL, NULL);
+-	if (!root)
+-		return -ENOMEM;
++	if (!root) {
++		root = of_new_node(NULL, NULL);
++		if (!root)
++			return ERR_PTR(-ENOMEM);
++	}
+ 
+ 	while (1) {
+ 		tag = fdt_next_tag(fdt, nodeoffset, &nextoffset);
+@@ -1093,16 +1106,18 @@ int of_unflatten_dtb(struct fdt_header *fdt)
+ 		case FDT_NOP:
+ 			break;
+ 		case FDT_END:
+-			of_alias_scan();
+-			return 0;
++			return root;
+ 		default:
+ 			printf("Unknown tag 0x%08X\n", tag);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto err;
+ 		}
+ 		nodeoffset = nextoffset;
+ 	}
++err:
++	of_free(root);
+ 
+-	return 0;
++	return ERR_PTR(ret);
+ }
+ 
+ static int __of_flatten_dtb(void *fdt, struct device_node *node)
 diff --git a/include/of.h b/include/of.h
-index 1535694..c10afa7 100644
+index d780dcf..333a7eb 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -5,30 +5,6 @@
- #include <errno.h>
- #include <asm/byteorder.h>
+@@ -133,7 +133,7 @@ void of_print_nodes(struct device_node *node, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
+ void of_free(struct device_node *node);
+-int of_unflatten_dtb(struct fdt_header *fdt);
++struct device_node *of_unflatten_dtb(struct device_node *root, struct fdt_header *fdt);
+ struct device_node *of_new_node(struct device_node *parent, const char *name);
+ struct property *of_new_property(struct device_node *node, const char *name,
+ 		const void *data, int len);
+@@ -150,6 +150,7 @@ int of_parse_partitions(const char *cdevname,
+ 			    struct device_node *node);
  
--int fdt_print(struct fdt_header *working_fdt, const char *pathp);
--
--int fdt_find_and_setprop(struct fdt_header *fdt, const char *node, const char *prop,
--			 const void *val, int len, int create);
--void do_fixup_by_path(struct fdt_header *fdt, const char *path, const char *prop,
--		      const void *val, int len, int create);
--void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path, const char *prop,
--			  u32 val, int create);
--void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
--			const char *prop, const void *val, int len, int create);
--void do_fixup_by_compatible_u32(struct fdt_header *fdt, const char *compatible,
--				const char *prop, u32 val, int create);
--void do_fixup_by_compatible_string(struct fdt_header *fdt, const char *compatible,
--				const char *prop, const char *val, int create);
--int fdt_get_path_or_create(struct fdt_header *fdt, const char *path);
--#ifdef CONFIG_FDT
--int fdt_initrd(void *fdt, ulong initrd_start, ulong initrd_end, int force);
--#else
--static inline int fdt_initrd(void *fdt, ulong start, ulong end, int force)
--{
--	return 0;
--}
--#endif
--
- #define OF_BAD_ADDR      ((u64)-1)
- 
- typedef u32 phandle;
-diff --git a/lib/Kconfig b/lib/Kconfig
-index d58109b..646fdb7 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -22,9 +22,6 @@ config PROCESS_ESCAPE_SEQUENCE
- 
- source lib/lzo/Kconfig
- 
--config FDT
--	bool
--
- config BCH
- 	bool
- 
-diff --git a/lib/Makefile b/lib/Makefile
-index 3c94542..7c42537 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -31,7 +31,6 @@ obj-y			+= lzo/
- obj-y			+= show_progress.o
- obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
- obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
--obj-$(CONFIG_FDT)	+= fdt/
- obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
- obj-$(CONFIG_BCH)	+= bch.o
- obj-$(CONFIG_BITREV)	+= bitrev.o
-diff --git a/lib/fdt/Makefile b/lib/fdt/Makefile
-deleted file mode 100644
-index 853bee9..0000000
-diff --git a/lib/fdt/TODO b/lib/fdt/TODO
-deleted file mode 100644
-index 288437e..0000000
-diff --git a/lib/fdt/fdt.c b/lib/fdt/fdt.c
-deleted file mode 100644
-index e56833a..0000000
-diff --git a/lib/fdt/fdt_ro.c b/lib/fdt/fdt_ro.c
-deleted file mode 100644
-index 02b6d68..0000000
-diff --git a/lib/fdt/fdt_rw.c b/lib/fdt/fdt_rw.c
-deleted file mode 100644
-index 994037b..0000000
-diff --git a/lib/fdt/fdt_strerror.c b/lib/fdt/fdt_strerror.c
-deleted file mode 100644
-index e6c3cee..0000000
-diff --git a/lib/fdt/fdt_sw.c b/lib/fdt/fdt_sw.c
-deleted file mode 100644
-index 55ebebf..0000000
-diff --git a/lib/fdt/fdt_wip.c b/lib/fdt/fdt_wip.c
-deleted file mode 100644
-index 6025fa1..0000000
-diff --git a/lib/fdt/libfdt_internal.h b/lib/fdt/libfdt_internal.h
-deleted file mode 100644
-index 381133b..0000000
+ struct device_node *of_get_root_node(void);
++int of_set_root_node(struct device_node *);
+ int of_alias_get_id(struct device_node *np, const char *stem);
+ int of_device_is_stdout_path(struct device_d *dev);
+ const char *of_get_model(void);
 -- 
 1.7.10.4
 
