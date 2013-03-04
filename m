@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCS5d-0005q9-PG
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UCS5Z-0006WO-QK
  for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:33 +0100
-Message-Id: <1362390820-10333-31-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 10:53:12 +0100
+Message-Id: <1362390820-10333-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 30/37] of_property command: Fix crash with empty property value
+Subject: [PATCH 09/37] of: Add missing prototype for of_device_is_compatible
 To: barebox@lists.infradead.org
-
-the of_property command crashes when an empty property value
-was given. This is because xrealloc is called with a length
-argument of 0. Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/of_property.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/of.h |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/commands/of_property.c b/commands/of_property.c
-index bd9ff72..1567a0f 100644
---- a/commands/of_property.c
-+++ b/commands/of_property.c
-@@ -255,9 +255,15 @@ static int do_of_property(int argc, char *argv[])
+diff --git a/include/of.h b/include/of.h
+index 3305f03..d780dcf 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -121,6 +121,9 @@ int of_get_named_gpio(struct device_node *np,
+ struct device_node *of_find_node_by_phandle(phandle phandle);
+ void of_print_property(const void *data, int len);
  
- 		if (pp) {
- 			free(pp->value);
++int of_device_is_compatible(const struct device_node *device,
++		const char *compat);
 +
- 			/* limit property data to the actual size */
--			data = xrealloc(data, len);
--			pp->value = data;
-+			if (len) {
-+				pp->value = xrealloc(data, len);
-+			} else {
-+				pp->value = NULL;
-+				free(data);
-+			}
-+
- 			pp->length = len;
- 		} else {
- 			pp = of_new_property(node, propname, data, len);
+ int of_machine_is_compatible(const char *compat);
+ 
+ #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
 -- 
 1.7.10.4
 
