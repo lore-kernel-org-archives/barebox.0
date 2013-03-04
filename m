@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1UCS5f-0004ZX-JV
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:53 +0000
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UCSP8-0002ZS-6D
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 10:14:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:27 +0100
-Message-Id: <1362390820-10333-25-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
-References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 11:13:54 +0100
+Message-Id: <1362392034-1908-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
+References: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,421 +21,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 24/37] of: move flat devicetree functions to separate file
+Subject: [PATCH 10/10] mtd: nand: Add command to generate a flash BBT
 To: barebox@lists.infradead.org
+
+With 2k NAND flashes the data layout in memory is not what is
+written on the flash device. This leads to the result that the
+factory provided bad block markers are not recognized correctly.
+
+To preserve the factory bad block information the i.MX NAND driver
+will not scan for the bad blocks itself when there is no flash based
+bbt available, because the mtd layer would do so based on wrong
+information. Instead, a new command is introduced which allows to
+manually create a flash bbt based on the correct information.
+
+As this command is tightly coupled to mtd and the i.MX NAND driver
+the command is placed under drivers/mtd/nand/ instead of commands/
+where a command normally belongs to.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/Makefile |    2 +-
- drivers/of/base.c   |  372 -----------------------------------------------
- drivers/of/dtb.c    |  401 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 402 insertions(+), 373 deletions(-)
- create mode 100644 drivers/of/dtb.c
+ drivers/mtd/nand/Kconfig        |    5 +
+ drivers/mtd/nand/Makefile       |    1 +
+ drivers/mtd/nand/nand_imx.c     |   19 +++-
+ drivers/mtd/nand/nand_imx_bbm.c |  220 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 243 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/mtd/nand/nand_imx_bbm.c
 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 5a5960d..fc71962 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,3 +1,3 @@
--obj-y += base.o
-+obj-y += base.o dtb.o
- obj-$(CONFIG_GPIOLIB) += gpio.o
- obj-y += partition.o
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 0f842e6..b9db261 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1025,378 +1025,6 @@ out:
- 	return dn;
- }
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 1a9b929..de8fb5e 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -62,6 +62,11 @@ config NAND_IMX
+ 	prompt "i.MX NAND driver"
+ 	depends on ARCH_IMX
  
--static inline uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
--{
--	dt += size;
--	dt = ALIGN(dt, 4);
--
--	if (dt > f->off_dt_struct + f->size_dt_struct)
--		return 0;
--
--	return dt;
--}
--
--static inline char *dt_string(struct fdt_header *f, char *strstart, uint32_t ofs)
--{
--	if (ofs > f->size_dt_strings)
--		return NULL;
--	else
--		return strstart + ofs;
--}
--
--/**
-- * of_unflatten_dtb - unflatten a dtb binary blob
-- * @root - node in which the fdt blob should be merged into or NULL
-- * @infdt - the fdt blob to unflatten
-- *
-- * Parse a flat device tree binary blob and return a pointer to the
-- * unflattened tree.
-- */
--struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
--{
--	const void *nodep;	/* property node pointer */
--	uint32_t tag;		/* tag */
--	int  len;		/* length of the property */
--	const struct fdt_property *fdt_prop;
--	const char *pathp, *name;
--	struct device_node *node = NULL, *n;
--	struct property *p;
--	uint32_t dt_struct;
--	struct fdt_node_header *fnh;
--	void *dt_strings;
--	struct fdt_header f;
--	int ret, merge = 0;
--	unsigned int maxlen;
--	struct fdt_header *fdt = infdt;
--
--	if (fdt->magic != cpu_to_fdt32(FDT_MAGIC)) {
--		pr_err("bad magic: 0x%08x\n", fdt32_to_cpu(fdt->magic));
--		return ERR_PTR(-EINVAL);
--	}
--
--	if (fdt->version != cpu_to_fdt32(17)) {
--		pr_err("bad dt version: 0x%08x\n", fdt32_to_cpu(fdt->version));
--		return ERR_PTR(-EINVAL);
--	}
--
--	f.totalsize = fdt32_to_cpu(fdt->totalsize);
--	f.off_dt_struct = fdt32_to_cpu(fdt->off_dt_struct);
--	f.size_dt_struct = fdt32_to_cpu(fdt->size_dt_struct);
--	f.off_dt_strings = fdt32_to_cpu(fdt->off_dt_strings);
--	f.size_dt_strings = fdt32_to_cpu(fdt->size_dt_strings);
--
--	if (f.off_dt_struct + f.size_dt_struct > f.totalsize) {
--		pr_err("unflatten: dt size exceeds total size\n");
--		return ERR_PTR(-ESPIPE);
--	}
--
--	if (f.off_dt_strings + f.size_dt_strings > f.totalsize) {
--		pr_err("unflatten: string size exceeds total size\n");
--		return ERR_PTR(-ESPIPE);
--	}
--
--	dt_struct = f.off_dt_struct;
--	dt_strings = (void *)fdt + f.off_dt_strings;
--
--	if (root) {
--		pr_debug("unflatten: merging into existing tree\n");
--		merge = 1;
--	} else {
--		root = of_new_node(NULL, NULL);
--		if (!root)
--			return ERR_PTR(-ENOMEM);
--	}
--
--	while (1) {
--		tag = be32_to_cpu(*(uint32_t *)(infdt + dt_struct));
--
--		switch (tag) {
--		case FDT_BEGIN_NODE:
--			fnh = infdt + dt_struct;
--			pathp = name = fnh->name;
--			maxlen = (unsigned long)fdt + f.off_dt_struct +
--				f.size_dt_struct - (unsigned long)name;
--
--			len = strnlen(name, maxlen + 1);
--			if (len > maxlen) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			dt_struct = dt_struct_advance(&f, dt_struct,
--					sizeof(struct fdt_node_header) + len + 1);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			if (!node) {
--				node = root;
--			} else {
--				if (merge && (n = of_find_child_by_name(node, pathp)))
--					node = n;
--				else
--					node = of_new_node(node, pathp);
--			}
--
--			break;
--
--		case FDT_END_NODE:
--			if (!node) {
--				pr_err("unflatten: too many end nodes\n");
--				ret = -EINVAL;
--				goto err;
--			}
--
--			node = node->parent;
--
--			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			break;
--
--		case FDT_PROP:
--			fdt_prop = infdt + dt_struct;
--			len = fdt32_to_cpu(fdt_prop->len);
--			nodep = fdt_prop->data;
--
--			name = dt_string(&f, dt_strings, fdt32_to_cpu(fdt_prop->nameoff));
--			if (!name) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			dt_struct = dt_struct_advance(&f, dt_struct,
--					sizeof(struct fdt_property) + len);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			if (merge && (p = of_find_property(node, name))) {
--				free(p->value);
--				p->value = xzalloc(len);
--				memcpy(p->value, nodep, len);
--			} else {
--				of_new_property(node, name, nodep, len);
--			}
--
--			break;
--
--		case FDT_NOP:
--			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
--			if (!dt_struct) {
--				ret = -ESPIPE;
--				goto err;
--			}
--
--			break;
--
--		case FDT_END:
--			return root;
--
--		default:
--			pr_err("unflatten: Unknown tag 0x%08X\n", tag);
--			ret = -EINVAL;
--			goto err;
--		}
--	}
--err:
--	of_free(root);
--
--	return ERR_PTR(ret);
--}
--
--struct fdt {
--	void *dt;
--	uint32_t dt_nextofs;
--	uint32_t dt_size;
--	char *strings;
--	uint32_t str_nextofs;
--	uint32_t str_size;
--};
--
--static inline uint32_t dt_next_ofs(uint32_t curofs, uint32_t len)
--{
--	return ALIGN(curofs + len, 4);
--}
--
--static int lstrcpy(char *dest, const char *src)
--{
--	int len = 0;
--	int maxlen = 1023;
--
--	while (*src) {
--		*dest++ = *src++;
--		len++;
--		if (!maxlen)
--			return -ENOSPC;
--		maxlen--;
--	}
--
--	return len;
--}
--
--static int fdt_ensure_space(struct fdt *fdt, int dtsize)
--{
--	/*
--	 * We assume strings and names have a maximum length of 1024
--	 * whereas properties can be longer. We allocate new memory
--	 * if we have less than 1024 bytes (+ the property size left.
--	 */
--	if (fdt->str_size - fdt->str_nextofs < 1024) {
--		fdt->strings = realloc(fdt->strings, fdt->str_size * 2);
--		if (!fdt->strings)
--			return -ENOMEM;
--		fdt->str_size *= 2;
--	}
--
--	if (fdt->dt_size - fdt->dt_nextofs < 1024 + dtsize) {
--		fdt->dt = realloc(fdt->dt, fdt->dt_size * 2);
--		if (!fdt->dt)
--			return -ENOMEM;
--		fdt->dt_size *= 2;
--	}
--
--	return 0;
--}
--
--static inline int dt_add_string(struct fdt *fdt, const char *str)
--{
--	uint32_t ret;
--	int len;
--
--	if (fdt_ensure_space(fdt, 0) < 0)
--		return -ENOMEM;
--
--	len = lstrcpy(fdt->strings + fdt->str_nextofs, str);
--	if (len < 0)
--		return -ENOSPC;
--
--	ret = fdt->str_nextofs;
--
--	fdt->str_nextofs += len + 1;
--
--	return ret;
--}
--
--static int __of_flatten_dtb(struct fdt *fdt, struct device_node *node)
--{
--	struct property *p;
--	struct device_node *n;
--	int ret;
--	unsigned int len;
--	struct fdt_node_header *nh = fdt->dt + fdt->dt_nextofs;
--
--	if (fdt_ensure_space(fdt, 0) < 0)
--		return -ENOMEM;
--
--	nh->tag = cpu_to_fdt32(FDT_BEGIN_NODE);
--	len = lstrcpy(nh->name, node->name);
--	fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs, 4 + len + 1);
--
--	list_for_each_entry(p, &node->properties, list) {
--		struct fdt_property *fp;
--
--		if (fdt_ensure_space(fdt, p->length) < 0)
--			return -ENOMEM;
--
--		fp = fdt->dt + fdt->dt_nextofs;
--
--		fp->tag = cpu_to_fdt32(FDT_PROP);
--		fp->len = cpu_to_fdt32(p->length);
--		fp->nameoff = cpu_to_fdt32(dt_add_string(fdt, p->name));
--		memcpy(fp->data, p->value, p->length);
--		fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs,
--				sizeof(struct fdt_property) + p->length);
--	}
--
--	list_for_each_entry(n, &node->children, parent_list) {
--		ret = __of_flatten_dtb(fdt, n);
--		if (ret)
--			return ret;
--	}
--
--	nh = fdt->dt + fdt->dt_nextofs;
--	nh->tag = cpu_to_fdt32(FDT_END_NODE);
--	fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs,
--			sizeof(struct fdt_node_header));
--
--	if (fdt_ensure_space(fdt, 0) < 0)
--		return -ENOMEM;
--
--	return 0;
--}
--
--/**
-- * of_flatten_dtb - flatten a barebox internal devicetree to a dtb
-- * @node - the root node of the tree to be unflattened
-- */
--void *of_flatten_dtb(struct device_node *node)
--{
--	int ret;
--	struct fdt_header header = {};
--	struct fdt fdt = {};
--	uint32_t ofs;
--	struct fdt_node_header *nh;
--
--	header.magic = cpu_to_fdt32(FDT_MAGIC);
--	header.version = cpu_to_fdt32(0x11);
--	header.last_comp_version = cpu_to_fdt32(0x10);
--
--	fdt.dt = xzalloc(SZ_64K);
--	fdt.dt_size = SZ_64K;
--
--	fdt.strings = xzalloc(SZ_64K);
--	fdt.str_size = SZ_64K;
--
--	ofs = sizeof(struct fdt_header);
--
--	header.off_mem_rsvmap = cpu_to_fdt32(ofs);
--	ofs += sizeof(struct fdt_reserve_entry) * OF_MAX_RESERVE_MAP;
--
--	fdt.dt_nextofs = ofs;
--
--	ret = __of_flatten_dtb(&fdt, node);
--	if (ret)
--		goto out_free;
--	nh = fdt.dt + fdt.dt_nextofs;
--	nh->tag = cpu_to_fdt32(FDT_END);
--	fdt.dt_nextofs = dt_next_ofs(fdt.dt_nextofs, sizeof(struct fdt_node_header));
--
--	header.size_dt_strings = cpu_to_fdt32(fdt.str_nextofs);
--	header.size_dt_struct = cpu_to_fdt32(fdt.dt_nextofs);
--
--	header.off_dt_struct = cpu_to_fdt32(ofs);
--
--	header.off_dt_strings = cpu_to_fdt32(fdt.dt_nextofs);
--
--	if (fdt.dt_size - fdt.dt_nextofs < fdt.str_nextofs) {
--		fdt.dt = realloc(fdt.dt, fdt.dt_nextofs + fdt.str_nextofs);
--		if (!fdt.dt)
--			goto out_free;
--	}
--
--	memcpy(fdt.dt + fdt.dt_nextofs, fdt.strings, fdt.str_nextofs);
--
--	header.totalsize = cpu_to_fdt32(fdt.dt_nextofs + fdt.str_nextofs);
--
--	memcpy(fdt.dt, &header, sizeof(header));
--
--	free(fdt.strings);
--
--	return fdt.dt;
--
--out_free:
--	free(fdt.strings);
--	free(fdt.dt);
--
--	return NULL;
--}
--
- int of_device_is_stdout_path(struct device_d *dev)
- {
- 	struct device_node *dn;
-diff --git a/drivers/of/dtb.c b/drivers/of/dtb.c
++config NAND_IMX_BBM
++	bool
++	prompt "i.MX NAND flash bbt creation command"
++	depends on NAND_IMX
++
+ config NAND_MXS
+ 	bool
+ 	select NAND_BBT
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index d52c272..0c7c8e2 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -11,6 +11,7 @@ obj-$(CONFIG_NAND_BBT)			+= nand_bbt.o
+ 
+ obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
+ obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
++obj-$(CONFIG_NAND_IMX_BBM)		+= nand_imx_bbm.o
+ obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
+ obj-$(CONFIG_NAND_ATMEL)		+= atmel_nand.o
+ obj-$(CONFIG_NAND_S3C24XX)		+= nand_s3c24xx.o
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 22bdb74..75aefd6 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1068,7 +1068,7 @@ static uint8_t bbt_pattern[] = { 'B', 'b', 't', '0' };
+ static uint8_t mirror_pattern[] = { '1', 't', 'b', 'B' };
+ 
+ static struct nand_bbt_descr bbt_main_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++	.options = NAND_BBT_LASTBLOCK
+ 		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+ 	.offs = 0,
+ 	.len = 4,
+@@ -1078,7 +1078,7 @@ static struct nand_bbt_descr bbt_main_descr = {
+ };
+ 
+ static struct nand_bbt_descr bbt_mirror_descr = {
+-	.options = NAND_BBT_LASTBLOCK | NAND_BBT_CREATE | NAND_BBT_WRITE
++	.options = NAND_BBT_LASTBLOCK
+ 		| NAND_BBT_2BIT | NAND_BBT_VERSION | NAND_BBT_PERCHIP,
+ 	.offs = 0,
+ 	.len = 4,
+@@ -1179,6 +1179,7 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	mtd = &host->mtd;
+ 	mtd->priv = this;
+ 	mtd->parent = dev;
++	mtd->name = "imx_nand";
+ 
+ 	/* 50 us command delay time */
+ 	this->chip_delay = 5;
+@@ -1235,6 +1236,10 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	imx_nand_set_layout(mtd->writesize, pdata->width == 2 ? 16 : 8);
+ 
+ 	if (mtd->writesize >= 2048) {
++		if (!pdata->flash_bbt)
++			dev_warn(dev, "2k or 4k flash detected without flash_bbt. "
++					"You will loose factory bad block markers!\n");
++
+ 		if (mtd->writesize == 2048)
+ 			this->ecc.layout = oob_largepage;
+ 		else
+@@ -1243,6 +1248,9 @@ static int __init imxnd_probe(struct device_d *dev)
+ 		if (nfc_is_v21())
+ 			writew(NFC_V2_SPAS_SPARESIZE(64), host->regs + NFC_V2_SPAS);
+ 	} else {
++		bbt_main_descr.options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++		bbt_mirror_descr.options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++
+ 		if (nfc_is_v21())
+ 			writew(NFC_V2_SPAS_SPARESIZE(16), host->regs + NFC_V2_SPAS);
+ 	}
+@@ -1253,6 +1261,13 @@ static int __init imxnd_probe(struct device_d *dev)
+ 		goto escan;
+ 	}
+ 
++	if (pdata->flash_bbt && this->bbt_td->pages[0] == -1 && this->bbt_md->pages[0] == -1) {
++		dev_warn(dev, "no BBT found. create one using the imx_nand_bbm command\n");
++	} else {
++		bbt_main_descr.options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++		bbt_mirror_descr.options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++	}
++
+ 	add_mtd_nand_device(mtd, "nand");
+ 
+ 	dev->priv = host;
+diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_bbm.c
 new file mode 100644
-index 0000000..3867128
+index 0000000..03961a0
 --- /dev/null
-+++ b/drivers/of/dtb.c
-@@ -0,0 +1,401 @@
++++ b/drivers/mtd/nand/nand_imx_bbm.c
+@@ -0,0 +1,220 @@
 +/*
-+ * dtb.c - flat devicetree functions
++ * imx_nand_bbm.c - create a flash bad block table for i.MX NAND
 + *
 + * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * based on Linux devicetree support
 + *
 + * See file CREDITS for list of people who contributed to this
 + * project.
@@ -449,388 +163,209 @@ index 0000000..3867128
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + */
++
 +#include <common.h>
-+#include <of.h>
++#include <command.h>
++#include <fs.h>
 +#include <errno.h>
-+#include <libfdt.h>
++#include <getopt.h>
++#include <fcntl.h>
 +#include <malloc.h>
-+#include <init.h>
-+#include <memory.h>
-+#include <sizes.h>
-+#include <linux/ctype.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/nand.h>
 +#include <linux/err.h>
 +
-+static inline uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
-+{
-+	dt += size;
-+	dt = ALIGN(dt, 4);
-+
-+	if (dt > f->off_dt_struct + f->size_dt_struct)
-+		return 0;
-+
-+	return dt;
-+}
-+
-+static inline char *dt_string(struct fdt_header *f, char *strstart, uint32_t ofs)
-+{
-+	if (ofs > f->size_dt_strings)
-+		return NULL;
-+	else
-+		return strstart + ofs;
-+}
-+
-+/**
-+ * of_unflatten_dtb - unflatten a dtb binary blob
-+ * @root - node in which the fdt blob should be merged into or NULL
-+ * @infdt - the fdt blob to unflatten
++/*
++ * The i.MX NAND controller has the problem that it handles the
++ * data in chunks of 512 bytes. It doesn't treat 2k NAND chips as
++ * 2048 byte data + 64 OOB, but instead:
 + *
-+ * Parse a flat device tree binary blob and return a pointer to the
-+ * unflattened tree.
++ * 512b data + 16b OOB +
++ * 512b data + 16b OOB +
++ * 512b data + 16b OOB +
++ * 512b data + 16b OOB
++ *
++ * This means that the factory provided bad block marker ends up
++ * in the page data at offset 2000 instead of in the OOB data.
++ *
++ * To preserve the factory bad block information we take the following
++ * strategy:
++ *
++ * - If the NAND driver detects that no flasg BBT is present on 2k NAND
++ *   chips it will not create one because it would do so based on the wrong
++ *   BBM position
++ * - This command is used to create a flash BBT then.
++ *
++ * From this point on we can forget about the BBMs and rely completely
++ * on the flash BBT.
++ *
 + */
-+struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
++static int checkbad(struct mtd_info *mtd, loff_t ofs, void *__buf)
 +{
-+	const void *nodep;	/* property node pointer */
-+	uint32_t tag;		/* tag */
-+	int  len;		/* length of the property */
-+	const struct fdt_property *fdt_prop;
-+	const char *pathp, *name;
-+	struct device_node *node = NULL, *n;
-+	struct property *p;
-+	uint32_t dt_struct;
-+	struct fdt_node_header *fnh;
-+	void *dt_strings;
-+	struct fdt_header f;
-+	int ret, merge = 0;
-+	unsigned int maxlen;
-+	struct fdt_header *fdt = infdt;
++	int ret, retlen;
++	uint8_t *buf = __buf;
 +
-+	if (fdt->magic != cpu_to_fdt32(FDT_MAGIC)) {
-+		pr_err("bad magic: 0x%08x\n", fdt32_to_cpu(fdt->magic));
-+		return ERR_PTR(-EINVAL);
++	ret = mtd->read(mtd, ofs, mtd->writesize, &retlen, buf);
++	if (ret < 0)
++		return ret;
++
++	if (buf[2000] != 0xff)
++		return 1;
++
++	return 0;
++}
++
++static void *create_bbt(struct mtd_info *mtd)
++{
++	struct nand_chip *chip = mtd->priv;
++	int len, i, numblocks, ret;
++	loff_t from = 0;
++	void *buf;
++	uint8_t *bbt;
++
++	if ((chip->bbt_td && chip->bbt_td->pages[0] != -1) ||
++			(chip->bbt_md && chip->bbt_md->pages[0] != -1)) {
++		printf("Flash bbt already present\n");
++		return ERR_PTR(-EEXIST);
 +	}
 +
-+	if (fdt->version != cpu_to_fdt32(17)) {
-+		pr_err("bad dt version: 0x%08x\n", fdt32_to_cpu(fdt->version));
-+		return ERR_PTR(-EINVAL);
++	len = mtd->size >> (chip->bbt_erase_shift + 2);
++
++	/* Allocate memory (2bit per block) and clear the memory bad block table */
++	bbt = kzalloc(len, GFP_KERNEL);
++	if (!bbt)
++		return ERR_PTR(-ENOMEM);
++
++	buf = malloc(mtd->writesize);
++	if (!buf) {
++		ret = -ENOMEM;
++		goto out;
 +	}
 +
-+	f.totalsize = fdt32_to_cpu(fdt->totalsize);
-+	f.off_dt_struct = fdt32_to_cpu(fdt->off_dt_struct);
-+	f.size_dt_struct = fdt32_to_cpu(fdt->size_dt_struct);
-+	f.off_dt_strings = fdt32_to_cpu(fdt->off_dt_strings);
-+	f.size_dt_strings = fdt32_to_cpu(fdt->size_dt_strings);
++	numblocks = mtd->size >> (chip->bbt_erase_shift - 1);
 +
-+	if (f.off_dt_struct + f.size_dt_struct > f.totalsize) {
-+		pr_err("unflatten: dt size exceeds total size\n");
-+		return ERR_PTR(-ESPIPE);
-+	}
++	for (i = 0; i < numblocks;) {
++		ret = checkbad(mtd, from, buf);
++		if (ret < 0)
++			goto out;
 +
-+	if (f.off_dt_strings + f.size_dt_strings > f.totalsize) {
-+		pr_err("unflatten: string size exceeds total size\n");
-+		return ERR_PTR(-ESPIPE);
-+	}
-+
-+	dt_struct = f.off_dt_struct;
-+	dt_strings = (void *)fdt + f.off_dt_strings;
-+
-+	if (root) {
-+		pr_debug("unflatten: merging into existing tree\n");
-+		merge = 1;
-+	} else {
-+		root = of_new_node(NULL, NULL);
-+		if (!root)
-+			return ERR_PTR(-ENOMEM);
-+	}
-+
-+	while (1) {
-+		tag = be32_to_cpu(*(uint32_t *)(infdt + dt_struct));
-+
-+		switch (tag) {
-+		case FDT_BEGIN_NODE:
-+			fnh = infdt + dt_struct;
-+			pathp = name = fnh->name;
-+			maxlen = (unsigned long)fdt + f.off_dt_struct +
-+				f.size_dt_struct - (unsigned long)name;
-+
-+			len = strnlen(name, maxlen + 1);
-+			if (len > maxlen) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			dt_struct = dt_struct_advance(&f, dt_struct,
-+					sizeof(struct fdt_node_header) + len + 1);
-+			if (!dt_struct) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			if (!node) {
-+				node = root;
-+			} else {
-+				if (merge && (n = of_find_child_by_name(node, pathp)))
-+					node = n;
-+				else
-+					node = of_new_node(node, pathp);
-+			}
-+
-+			break;
-+
-+		case FDT_END_NODE:
-+			if (!node) {
-+				pr_err("unflatten: too many end nodes\n");
-+				ret = -EINVAL;
-+				goto err;
-+			}
-+
-+			node = node->parent;
-+
-+			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
-+			if (!dt_struct) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			break;
-+
-+		case FDT_PROP:
-+			fdt_prop = infdt + dt_struct;
-+			len = fdt32_to_cpu(fdt_prop->len);
-+			nodep = fdt_prop->data;
-+
-+			name = dt_string(&f, dt_strings, fdt32_to_cpu(fdt_prop->nameoff));
-+			if (!name) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			dt_struct = dt_struct_advance(&f, dt_struct,
-+					sizeof(struct fdt_property) + len);
-+			if (!dt_struct) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			if (merge && (p = of_find_property(node, name))) {
-+				free(p->value);
-+				p->value = xzalloc(len);
-+				memcpy(p->value, nodep, len);
-+			} else {
-+				of_new_property(node, name, nodep, len);
-+			}
-+
-+			break;
-+
-+		case FDT_NOP:
-+			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE);
-+			if (!dt_struct) {
-+				ret = -ESPIPE;
-+				goto err;
-+			}
-+
-+			break;
-+
-+		case FDT_END:
-+			return root;
-+
-+		default:
-+			pr_err("unflatten: Unknown tag 0x%08X\n", tag);
-+			ret = -EINVAL;
-+			goto err;
++		if (ret) {
++			bbt[i >> 3] |= 0x03 << (i & 0x6);
++			printf("Bad eraseblock %d at 0x%08x\n", i >> 1,
++					(unsigned int)from);
 +		}
++
++		i += 2;
++		from += (1 << chip->bbt_erase_shift);
 +	}
-+err:
-+	of_free(root);
++
++	return bbt;
++out:
++	free(buf);
 +
 +	return ERR_PTR(ret);
 +}
 +
-+struct fdt {
-+	void *dt;
-+	uint32_t dt_nextofs;
-+	uint32_t dt_size;
-+	char *strings;
-+	uint32_t str_nextofs;
-+	uint32_t str_size;
-+};
-+
-+static inline uint32_t dt_next_ofs(uint32_t curofs, uint32_t len)
++static int attach_bbt(struct mtd_info *mtd, void *bbt)
 +{
-+	return ALIGN(curofs + len, 4);
++	struct nand_chip *chip = mtd->priv;
++
++	chip->bbt_td->options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++	chip->bbt_md->options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
++	free(chip->bbt);
++	chip->bbt = bbt;
++
++	return nand_update_bbt(mtd, 0);
 +}
 +
-+static int lstrcpy(char *dest, const char *src)
++static int do_imx_nand_bbm(int argc, char *argv[])
 +{
-+	int len = 0;
-+	int maxlen = 1023;
++	int opt, ret;
++	struct cdev *cdev;
++	struct mtd_info *mtd;
++	int yes = 0;
++	void *bbt;
 +
-+	while (*src) {
-+		*dest++ = *src++;
-+		len++;
-+		if (!maxlen)
-+			return -ENOSPC;
-+		maxlen--;
++	while ((opt = getopt(argc, argv, "y")) > 0) {
++		switch (opt) {
++		case 'y':
++			yes = 1;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
 +	}
 +
-+	return len;
-+}
++	cdev = cdev_open("nand0", O_RDWR);
++	if (!cdev)
++		return -ENOENT;
 +
-+static int fdt_ensure_space(struct fdt *fdt, int dtsize)
-+{
-+	/*
-+	 * We assume strings and names have a maximum length of 1024
-+	 * whereas properties can be longer. We allocate new memory
-+	 * if we have less than 1024 bytes (+ the property size left.
-+	 */
-+	if (fdt->str_size - fdt->str_nextofs < 1024) {
-+		fdt->strings = realloc(fdt->strings, fdt->str_size * 2);
-+		if (!fdt->strings)
-+			return -ENOMEM;
-+		fdt->str_size *= 2;
++	mtd = cdev->mtd;
++	if (!mtd)
++		return -EINVAL;
++
++	if (strcmp(mtd->name, "imx_nand")) {
++		printf("This is not an i.MX nand but a %s\n", mtd->name);
++		ret = -EINVAL;
++		goto out;
 +	}
 +
-+	if (fdt->dt_size - fdt->dt_nextofs < 1024 + dtsize) {
-+		fdt->dt = realloc(fdt->dt, fdt->dt_size * 2);
-+		if (!fdt->dt)
-+			return -ENOMEM;
-+		fdt->dt_size *= 2;
++	switch (mtd->writesize) {
++	case 512:
++		printf("writesize is 512. This command is not needed\n");
++		ret = 1;
++		goto out;
++	case 2048:
++		break;
++	default:
++		printf("not implemented for writesize %d\n", mtd->writesize);
++		ret = 1;
++		goto out;
 +	}
 +
-+	return 0;
-+}
++	bbt = create_bbt(mtd);
++	if (IS_ERR(bbt)) {
++		ret = 1;
++		goto out;
++	}
 +
-+static inline int dt_add_string(struct fdt *fdt, const char *str)
-+{
-+	uint32_t ret;
-+	int len;
++	if (!yes) {
++		int c;
 +
-+	if (fdt_ensure_space(fdt, 0) < 0)
-+		return -ENOMEM;
++		printf("create flash bbt (y/n)?");
++		c = getc();
++		if (c == 'y')
++			yes = 1;
++		printf("\n");
++	}
 +
-+	len = lstrcpy(fdt->strings + fdt->str_nextofs, str);
-+	if (len < 0)
-+		return -ENOSPC;
++	if (!yes) {
++		free(bbt);
++		ret = 1;
 +
-+	ret = fdt->str_nextofs;
++		goto out;
++	}
 +
-+	fdt->str_nextofs += len + 1;
++	ret = attach_bbt(mtd, bbt);
++	if (!ret)
++		printf("bbt successfully added\n");
++	else
++		free(bbt);
++
++out:
++	cdev_close(cdev);
 +
 +	return ret;
 +}
 +
-+static int __of_flatten_dtb(struct fdt *fdt, struct device_node *node)
-+{
-+	struct property *p;
-+	struct device_node *n;
-+	int ret;
-+	unsigned int len;
-+	struct fdt_node_header *nh = fdt->dt + fdt->dt_nextofs;
++static const __maybe_unused char cmd_imx_nand_bbm_help[] =
++"Usage: imx_nand_bbm\n";
 +
-+	if (fdt_ensure_space(fdt, 0) < 0)
-+		return -ENOMEM;
-+
-+	nh->tag = cpu_to_fdt32(FDT_BEGIN_NODE);
-+	len = lstrcpy(nh->name, node->name);
-+	fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs, 4 + len + 1);
-+
-+	list_for_each_entry(p, &node->properties, list) {
-+		struct fdt_property *fp;
-+
-+		if (fdt_ensure_space(fdt, p->length) < 0)
-+			return -ENOMEM;
-+
-+		fp = fdt->dt + fdt->dt_nextofs;
-+
-+		fp->tag = cpu_to_fdt32(FDT_PROP);
-+		fp->len = cpu_to_fdt32(p->length);
-+		fp->nameoff = cpu_to_fdt32(dt_add_string(fdt, p->name));
-+		memcpy(fp->data, p->value, p->length);
-+		fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs,
-+				sizeof(struct fdt_property) + p->length);
-+	}
-+
-+	list_for_each_entry(n, &node->children, parent_list) {
-+		ret = __of_flatten_dtb(fdt, n);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	nh = fdt->dt + fdt->dt_nextofs;
-+	nh->tag = cpu_to_fdt32(FDT_END_NODE);
-+	fdt->dt_nextofs = dt_next_ofs(fdt->dt_nextofs,
-+			sizeof(struct fdt_node_header));
-+
-+	if (fdt_ensure_space(fdt, 0) < 0)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+/**
-+ * of_flatten_dtb - flatten a barebox internal devicetree to a dtb
-+ * @node - the root node of the tree to be unflattened
-+ */
-+void *of_flatten_dtb(struct device_node *node)
-+{
-+	int ret;
-+	struct fdt_header header = {};
-+	struct fdt fdt = {};
-+	uint32_t ofs;
-+	struct fdt_node_header *nh;
-+
-+	header.magic = cpu_to_fdt32(FDT_MAGIC);
-+	header.version = cpu_to_fdt32(0x11);
-+	header.last_comp_version = cpu_to_fdt32(0x10);
-+
-+	fdt.dt = xzalloc(SZ_64K);
-+	fdt.dt_size = SZ_64K;
-+
-+	fdt.strings = xzalloc(SZ_64K);
-+	fdt.str_size = SZ_64K;
-+
-+	ofs = sizeof(struct fdt_header);
-+
-+	header.off_mem_rsvmap = cpu_to_fdt32(ofs);
-+	ofs += sizeof(struct fdt_reserve_entry) * OF_MAX_RESERVE_MAP;
-+
-+	fdt.dt_nextofs = ofs;
-+
-+	ret = __of_flatten_dtb(&fdt, node);
-+	if (ret)
-+		goto out_free;
-+	nh = fdt.dt + fdt.dt_nextofs;
-+	nh->tag = cpu_to_fdt32(FDT_END);
-+	fdt.dt_nextofs = dt_next_ofs(fdt.dt_nextofs, sizeof(struct fdt_node_header));
-+
-+	header.size_dt_strings = cpu_to_fdt32(fdt.str_nextofs);
-+	header.size_dt_struct = cpu_to_fdt32(fdt.dt_nextofs);
-+
-+	header.off_dt_struct = cpu_to_fdt32(ofs);
-+
-+	header.off_dt_strings = cpu_to_fdt32(fdt.dt_nextofs);
-+
-+	if (fdt.dt_size - fdt.dt_nextofs < fdt.str_nextofs) {
-+		fdt.dt = realloc(fdt.dt, fdt.dt_nextofs + fdt.str_nextofs);
-+		if (!fdt.dt)
-+			goto out_free;
-+	}
-+
-+	memcpy(fdt.dt + fdt.dt_nextofs, fdt.strings, fdt.str_nextofs);
-+
-+	header.totalsize = cpu_to_fdt32(fdt.dt_nextofs + fdt.str_nextofs);
-+
-+	memcpy(fdt.dt, &header, sizeof(header));
-+
-+	free(fdt.strings);
-+
-+	return fdt.dt;
-+
-+out_free:
-+	free(fdt.strings);
-+	free(fdt.dt);
-+
-+	return NULL;
-+}
++BAREBOX_CMD_START(imx_nand_bbm)
++	.cmd		= do_imx_nand_bbm,
++	.usage		= "create bbt for i.MX NAND",
++	BAREBOX_CMD_HELP(cmd_imx_nand_bbm_help)
++BAREBOX_CMD_END
 -- 
 1.7.10.4
 
