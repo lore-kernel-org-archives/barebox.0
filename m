@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCbr9-0006we-SA
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:19:32 +0000
-Date: Mon, 4 Mar 2013 21:19:29 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130304201929.GI1906@pengutronix.de>
-References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
- <1362427389-2144-7-git-send-email-s.hauer@pengutronix.de>
- <1362427802.171419274@f40.mail.ru>
+ id 1UCcFP-0002Az-Hi
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:44:36 +0000
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Mon, 4 Mar 2013 21:42:55 +0100
+References: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
+ <1362392034-1908-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1362392034-1908-10-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362427802.171419274@f40.mail.ru>
+Message-Id: <201303042142.55844.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,45 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] ARM: Add relocatable binary support
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 09/10] mtd: nand: Add bbt parameter
+To: barebox@lists.infradead.org
 
-On Tue, Mar 05, 2013 at 12:10:02AM +0400, Alexander Shiyan wrote:
-> > For making the same binary executable on different SoCs which have
-> > different DRAM addresses we have to be independent of the compile
-> > time link address.
-> > 
-> > This patch adds relocatable binary support for the ARM architecture.
-> > With this two new functions are available. relocate_to_current_adr
-> > will fixup the binary to continue executing from the current position.
-> > relocate_to_adr will copy the binary to a given address, fixup the
-> > binary and continue executing from there.
-> > 
-> > For the PBL and the real image relocatable support can be enabled
-> > independently. This is done to (hopefully) better cope with setups
-> > where the PBL runs from SRAM or ROM and the real binary does not.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ...
-> 
-> Hello.
-> 
-> I just suggest put this new stuff under EXPERIMENTAL condition.
-> Thanks.
+Sascha Hauer wrote:
+> [...]
+> --- a/drivers/mtd/nand/nand_base.c
+> +++ b/drivers/mtd/nand/nand_base.c
+> @@ -1688,6 +1688,23 @@ static int mtd_set_erasebad(struct device_d *dev,
+> struct param_d *param, return 0;
+>  }
+>
+> +static const char *mtd_get_bbt_type(struct device_d *dev, struct param_d 
+*p) +{
+> +	struct mtd_info *mtd = container_of(dev, struct mtd_info, class_dev);
+> +	struct nand_chip *chip = mtd->priv;
+> +	char *str;
 
-I'm unsure this makes sense. In the kernel currently 388 options depend
-on EXPERIMENTAL and 433 out of 438 defconfigs have EXPERIMENTAL enabled.
-This recently led to the discussion whether this option should be
-removed from the Kernel.
+Should also be "const char *str"
 
-Sascha
+> +
+> +	if (!chip->bbt)
+> +		str = "none";
+> +	else if ((chip->bbt_td && chip->bbt_td->pages[0] != -1) ||
+> +				(chip->bbt_md && chip->bbt_md->pages[0] != -1))
+> +		str = "flashbased";
+> +	else
+> +		str = "memorybased";
+> +
+> +	return str;
+> +}
+> +
+
+jbe
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
