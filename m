@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-da0-f47.google.com ([209.85.210.47])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCb7b-0002r4-V7
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 19:32:32 +0000
-Received: by mail-da0-f47.google.com with SMTP id s35so2712767dak.6
- for <barebox@lists.infradead.org>; Mon, 04 Mar 2013 11:32:25 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <1362266753.2127.14.camel@antimon>
-References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362129773-4579-2-git-send-email-dev@lynxeye.de>
- <20130301131742.GF23022@game.jcrosoft.org>
- <1362266753.2127.14.camel@antimon>
-Date: Mon, 4 Mar 2013 23:26:20 +0400
-Message-ID: <CAA4bVAG9rkedNQmhT2EWMSSNG4Zc1s-6q+OYBe-AmpcuOoHfnA@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+ id 1UCbCo-0003Kz-6M
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 19:37:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UCbCm-0003PU-96
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:37:48 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UCbCm-0000X7-82
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:37:48 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 20:37:44 +0100
+Message-Id: <1362425866-1356-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] tegra: move address map to tegra20-silicon.h
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] OMAP3 updates
+To: barebox@lists.infradead.org
 
-On 3 March 2013 03:25, Lucas Stach <dev@lynxeye.de> wrote:
-> Am Freitag, den 01.03.2013, 14:17 +0100 schrieb Jean-Christophe
-> PLAGNIOL-VILLARD:
->> On 10:22 Fri 01 Mar     , Lucas Stach wrote:
->> > The address map is specific to the Tegra20 SoC. Move it to a
->> > file with an appropriate name. While at it clarify and fix
->> > the definitions.
->>
->> folloow the kernel
->
-> The Tegra kernel is fully device tree enabled and doesn't need any of
-> those defines, as the hardware mapping is encoded in the DT. While I'm
-> certainly aiming for the same thing in barebox, it's just not the right
-> thing to do at this state of development.
+Two patches for OMAP3. One calls the internal ROM to invalidate
+the L2 cache and removes the previously used omap3_invalidate_dcache
+function. I don't know exactly what'S going on here, but it makes
+the beagle board much more stable. In earlier days this was not
+needed, maybe because we didn't enable the MMU.
 
-Is there any benefit in the renaming of the iomap.h file to tegra20-silicon.h?
+The other one adds the iomux setup for MMC cards on the beagle board.
+My hope was that with this the MMC slot would work even when not
+booting from it. Unfortunately this was not the case. I also tried
+and enabled VMMC in the twl4030, but this didn't help either.
+So if anyone has an idea what needs to be done to make the MMC
+slot work I'd be glad to hear.
 
-I think no. The name iomap.h is used in the linux kernel so it is
-natural that just the same file will have the same name it barebox.
-It is more comfortable for kernel developer see the kernel header
-files in bootloader with the same kernel name.
+Sascha
 
-Anyway the number of kernel Tegra developers is much more than number
-of barebox Tegra developers :)))
+----------------------------------------------------------------
+Sascha Hauer (2):
+      ARM: OMAP3: invalidate L2 cache using ROM API
+      ARM: OMAP: beagle: Add missing MMC iomux setup
 
->> >
->> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
->> > ---
->> >  [...]
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
-
--- 
-Best regards,
-  Antony Pavlov
+ arch/arm/boards/beagle/lowlevel.c               | 13 +++-
+ arch/arm/boards/omap343xdsp/lowlevel.c          |  2 -
+ arch/arm/mach-omap/Makefile                     |  4 +-
+ arch/arm/mach-omap/auxcr.S                      | 12 ++++
+ arch/arm/mach-omap/include/mach/omap3-silicon.h |  8 ++-
+ arch/arm/mach-omap/omap3_core.S                 | 87 -------------------------
+ arch/arm/mach-omap/omap3_generic.c              |  4 +-
+ 7 files changed, 35 insertions(+), 95 deletions(-)
+ delete mode 100644 arch/arm/mach-omap/omap3_core.S
 
 _______________________________________________
 barebox mailing list
