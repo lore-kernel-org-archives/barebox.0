@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCS5a-0006XC-MX
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:57 +0000
+ id 1UCS5a-0006XB-RP
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:22 +0100
-Message-Id: <1362390820-10333-20-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 10:53:25 +0100
+Message-Id: <1362390820-10333-23-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,106 +21,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/37] of: make OFDEVICE a user selectable option
+Subject: [PATCH 22/37] of: Pass barebox internal format devicetree to
+ of_get_fixed_tree
 To: barebox@lists.infradead.org
 
-OFDEVICE decides whether or not we compile in support for probing
-devices from the devicetree. Let the user decide this explicitly.
-This makes the oftree, of_node and of_property commands independent
-of devicetree device support since being able to manipulate
-devicetrees has nothing to do with probing devices from the devicetree.
+With this every devicetree is first converted to the barebox internal
+format before it's converted back to dtb again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig   |    3 ---
- drivers/Makefile   |    2 +-
- drivers/of/Kconfig |    3 ++-
- include/of.h       |   12 ++++--------
- 4 files changed, 7 insertions(+), 13 deletions(-)
+ arch/arm/lib/bootm.c |   10 +++++++++-
+ commands/bootm.c     |    9 ++++++++-
+ common/oftree.c      |   19 +++++++++----------
+ include/of.h         |    3 ++-
+ 4 files changed, 28 insertions(+), 13 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c1454c7..c8f06d8 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -481,7 +481,6 @@ config CMD_GO
- config CMD_OFTREE
- 	tristate
- 	select OFTREE
--	select OFDEVICE
- 	prompt "oftree"
- 	help
- 	  The oftree command has support for dumping devicetrees and, if
-@@ -497,7 +496,6 @@ config CMD_OFTREE_PROBE
- config CMD_OF_PROPERTY
- 	tristate
- 	select OFTREE
--	select OFDEVICE
- 	prompt "of_property"
- 	help
- 	  The of_property command allows setting and deleting of properties in
-@@ -506,7 +504,6 @@ config CMD_OF_PROPERTY
- config CMD_OF_NODE
- 	tristate
- 	select OFTREE
--	select OFDEVICE
- 	prompt "of_node"
- 	help
- 	  The of_property command allows adding and removing devicetree nodes.
-diff --git a/drivers/Makefile b/drivers/Makefile
-index f81bf99..03a10fb 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -20,5 +20,5 @@ obj-y	+= misc/
- obj-y	+= dma/
- obj-y  += watchdog/
- obj-y	+= gpio/
--obj-$(CONFIG_OFDEVICE) += of/
-+obj-$(CONFIG_OFTREE) += of/
- obj-$(CONFIG_W1) += w1/
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 5e53d25..c30b1c1 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -3,4 +3,5 @@ config OFTREE
- 	bool
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index cf192cf..234f3e0 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -181,7 +181,15 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
+ 	}
  
- config OFDEVICE
--	bool
-+	select OFTREE
-+	bool "Enable probing of devices from the devicetree"
+ 	if (IS_BUILTIN(CONFIG_OFTREE)) {
+-		data->oftree = of_get_fixed_tree(oftree);
++		struct device_node *node;
++
++		node = of_unflatten_dtb(NULL, oftree);
++		if (!node) {
++			pr_err("unable to unflatten devicetree\n");
++			return -EINVAL;
++		}
++
++		data->oftree = of_get_fixed_tree(node);
+ 	}
+ 
+ 	pr_info("zImage: concatenated oftree detected\n");
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 4d3f022..38233e7 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -140,6 +140,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
+ 	enum filetype ft;
+ 	struct fdt_header *fdt, *fixfdt;
+ 	size_t size;
++	struct device_node *node;
+ 
+ 	printf("Loading devicetree from '%s'\n", oftree);
+ 
+@@ -187,7 +188,13 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
+ 				file_type_to_string(ft));
+ 	}
+ 
+-	fixfdt = of_get_fixed_tree(fdt);
++	node = of_unflatten_dtb(NULL, fdt);
++	if (!node) {
++		pr_err("unable to unflatten devicetree\n");
++		return -EINVAL;
++	}
++
++	fixfdt = of_get_fixed_tree(node);
+ 	if (!fixfdt)
+ 		return -EINVAL;
+ 
+diff --git a/common/oftree.c b/common/oftree.c
+index 555aa0b..be9eb28 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -415,24 +415,23 @@ int of_fix_tree(struct fdt_header *fdt)
+  * It increases the size of the tree and applies the registered
+  * fixups.
+  */
+-struct fdt_header *of_get_fixed_tree(struct fdt_header *fdt)
++struct fdt_header *of_get_fixed_tree(struct device_node *node)
+ {
+ 	int ret;
+ 	void *fixfdt, *internalfdt = NULL;
+ 	int size, align;
++	struct fdt_header *fdt;
+ 
+-	if (!fdt) {
+-		struct device_node *root_node;
+-
+-		root_node = of_get_root_node();
+-		if (!root_node)
+-			return NULL;
+-
+-		fdt = internalfdt = of_flatten_dtb(root_node);
+-		if (!fdt)
++	if (!node) {
++		node = of_get_root_node();
++		if (!node)
+ 			return NULL;
+ 	}
+ 
++	fdt = internalfdt = of_flatten_dtb(node);
++	if (!fdt)
++		return NULL;
++
+ 	size = fdt_totalsize(fdt);
+ 
+ 	/*
 diff --git a/include/of.h b/include/of.h
-index 2cd55c0..2234dae 100644
+index 2234dae..fe9f65d 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -161,12 +161,13 @@ int of_set_property(struct device_node *node, const char *p, const void *val, in
- 		int create);
- struct device_node *of_create_node(struct device_node *root, const char *path);
+@@ -7,7 +7,6 @@
  
--#ifdef CONFIG_OFDEVICE
-+struct device_node *of_get_root_node(void);
-+int of_set_root_node(struct device_node *);
+ int fdt_print(struct fdt_header *working_fdt, const char *pathp);
+ 
+-struct fdt_header *of_get_fixed_tree(struct fdt_header *fdt);
+ int of_fix_tree(struct fdt_header *fdt);
+ int of_register_fixup(int (*fixup)(struct fdt_header *));
+ 
+@@ -81,6 +80,8 @@ struct device_node *of_find_child_by_name(struct device_node *node, const char *
+ 
+ struct fdt_header *fdt_get_tree(void);
+ 
++struct fdt_header *of_get_fixed_tree(struct device_node *node);
 +
-+#ifdef CONFIG_OFTREE
- int of_parse_partitions(const char *cdevname,
- 			    struct device_node *node);
+ #define device_node_for_nach_child(node, child) \
+ 	list_for_each_entry(child, &node->children, parent_list)
  
--struct device_node *of_get_root_node(void);
--int of_set_root_node(struct device_node *);
- int of_alias_get_id(struct device_node *np, const char *stem);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
-@@ -179,11 +180,6 @@ static inline int of_parse_partitions(const char *cdevname,
- 	return -EINVAL;
- }
- 
--static inline struct device_node *of_get_root_node(void)
--{
--	return NULL;
--}
--
- static inline int of_alias_get_id(struct device_node *np, const char *stem)
- {
- 	return -ENOENT;
 -- 
 1.7.10.4
 
