@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCQGZ-0006Nl-2J
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 07:57:00 +0000
-Date: Mon, 4 Mar 2013 08:56:49 +0100
+ id 1UCQM6-00079e-0I
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 08:02:43 +0000
+Date: Mon, 4 Mar 2013 09:02:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130304075649.GL25672@pengutronix.de>
-References: <1361038719-25530-1-git-send-email-plagnioj@jcrosoft.com>
- <20130218085947.GK1906@pengutronix.de>
- <20130218174433.GJ19322@game.jcrosoft.org>
+Message-ID: <20130304080232.GM25672@pengutronix.de>
+References: <1361897742-3454-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1361897742-3454-2-git-send-email-maxime.ripard@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130218174433.GJ19322@game.jcrosoft.org>
+In-Reply-To: <1361897742-3454-2-git-send-email-maxime.ripard@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,59 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] of: add do_fixup_by_compatible with u32 and string
- version
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/2] memsize: Make get_ram_size RAM proof
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 18, 2013 at 06:44:33PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:59 Mon 18 Feb     , Sascha Hauer wrote:
-> > On Sat, Feb 16, 2013 at 07:18:39PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  common/oftree.c |   27 +++++++++++++++++++++++++++
-> > >  include/of.h    |    6 ++++++
-> > >  2 files changed, 33 insertions(+)
-> > > 
-> > > diff --git a/common/oftree.c b/common/oftree.c
-> > > index 6b20cdb..82e5ddd 100644
-> > > --- a/common/oftree.c
-> > > +++ b/common/oftree.c
-> > > @@ -229,6 +229,33 @@ void do_fixup_by_path_u32(struct fdt_header *fdt, const char *path,
-> > >  	do_fixup_by_path(fdt, path, prop, &val, sizeof(val), create);
-> > >  }
-> > >  
-> > > +void do_fixup_by_compatible(struct fdt_header *fdt, const char *compatible,
-> > > +			const char *prop, const void *val, int len, int create)
-> > > +{
-> > > +	int off = -1;
-> > > +
-> > > +	off = fdt_node_offset_by_compatible(fdt, -1, compatible);
-> > > +	while (off != -FDT_ERR_NOTFOUND) {
-> > > +		if (create || (fdt_get_property(fdt, off, prop, 0) != NULL))
-> > > +			fdt_setprop(fdt, off, prop, val, len);
-> > > +		off = fdt_node_offset_by_compatible(fdt, off, compatible);
-> > > +	}
-> > > +}
-> > 
-> > IMO we shouldn't increase the dependency on libfdt. The fdt format is a
-> > nice storage format, but it sucks for modifying the tree.
-> > I created some patches to get rid of libfdt entirely yesterday. They are
-> > not complete yet, but removing libfdt has some nice effects:
-> > 
-> > - Smaller binaries
-> > - No more parallel universes of fdt and internal trees. This currently makes the
-> >   devicetree code messy
-> > - I trimmed down the overhead of unflattening/flattening significantly.
-> >   It still adds some overhead to do it, but manipulating the tree is a
-> >   factor of 50 faster which means once you have multiple manipulations
-> >   of the tree it reduces the overhead to a net win.
-> ok will this be availlable for next release ok ohterwise can we have this
-> patch first so we can have the fixuo support for highbank
+On Tue, Feb 26, 2013 at 05:55:41PM +0100, Maxime Ripard wrote:
+> get_ram_size cannot be used when running from RAM at the moment, even
+> though it backs up the memory cells it modifies, since it can also
+> modify the get_ram_size function itself.
+> 
+> Avoid testing the memory area where barebox is loaded at to prevent this
+> problem. If the memory supposed to host barebox is not working, we'll
+> have plenty of other problems anyway.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+> ---
+>  common/memsize.c |   21 +++++++++++++++++++++
+>  1 file changed, 21 insertions(+)
+> 
+> diff --git a/common/memsize.c b/common/memsize.c
+> index d149e41..1d00984 100644
+> --- a/common/memsize.c
+> +++ b/common/memsize.c
+> @@ -19,6 +19,9 @@
+>  
+>  #include <common.h>
+>  #include <config.h>
+> +
+> +#include <asm-generic/sections.h>
+> +
+>  #if defined (__PPC__) && !defined (__SANDBOX__)
+>  /*
+>   * At least on G2 PowerPC cores, sequential accesses to non-existent
+> @@ -45,6 +48,15 @@ long get_ram_size(volatile long *base, long maxsize)
+>  
+>  	for (cnt = (maxsize / sizeof (long)) >> 1; cnt > 0; cnt >>= 1) {
+>  		addr = base + cnt;	/* pointer arith! */
+> +
+> +		/*
+> +		 * If we run get_ram_size from RAM, avoid poking into
+> +		 * the Barebox code, and if the RAM at these address
+> +		 * doesn't work, we will have trouble anyway...
+> +		 */
+> +		if (addr > (long*)_text && addr < (long*)__bss_stop)
+> +			continue;
 
-I applied this one and the highbank patches using it. I have to rework
-My devicetree series anyway, so it will be too late to merge this to
--next before the march release.
+Unfortunately I had to drop this one. It breaks compilation on some
+architectures which do not have _text and __bss_stop (namely blackfin
+and another one I forgot about).
+
+Anyway, I realized that we now can start the MMU during early startup,
+so when you call this function from your board code your SDRAM might
+already be cached. I assume get_ram_size won't work reliably in this
+case anymore.
+
+Since you only use it to detect whether you have 128MiB or 256Mib, could
+you code a stripped down version of this function especially for your
+board? Could you even adjust the SDRAM controller registers to the size
+you really have? I have no idea if the SDRAM controller can cope with
+that, but it might be worth giving it a try. I have a patch in the
+queue moving the i.MX28 over to dynamically detecting the SDRAM size
+via controller readback, so this then would simply detect the correct
+size.
 
 Sascha
 
