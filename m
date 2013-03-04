@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCbbQ-0005Yj-8M
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:18 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UCbbK-0004NT-TZ
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 21:03:10 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UCbbK-0003Hz-SQ
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 21:03:10 +0100
+ id 1UCbbU-0005a8-On
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 21:03:03 +0100
-Message-Id: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 21:03:07 +0100
+Message-Id: <1362427389-2144-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
+References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,61 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Add relocatable binary support
+Subject: [PATCH 4/6] ARM boards: Use accessor functions to access linker
+ variables
 To: barebox@lists.infradead.org
 
-The following adds relocatable binary support for ARM. This can
-be useful when a suitable memory location for the barebox binary
-is not known at compile time, for example when compiling for multiple
-SoCs.
-
-In most cases enabling this feature will only result in the visible
-effect that the binary gets bigger, so this feature is fully optional.
-The relocatable support can be enabled for the PBL and the real binary
-independently for greater flexibility and better debugability.
-
-This series has been tested on various boards and I hope I have
-covered all combinations of PBL enabled/disabled, PBL relocation
-enabled/disabled, relocation enabled/disabled and MMU enabled/disabled.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (6):
-      ARM: make cpu architecture detection available as static inline function
-      ARM: add early mmu cache flush function and use it in setup_c
-      ARM: provide accessor functions for linker variables
-      ARM boards: Use accessor functions to access linker variables
-      ARN: fixup vector addresses for relocatable binaries
-      ARM: Add relocatable binary support
-
- arch/arm/Kconfig                               |  9 ++++
- arch/arm/Makefile                              |  4 ++
- arch/arm/boards/friendlyarm-tiny210/lowlevel.c |  3 +-
- arch/arm/cpu/Makefile                          |  3 ++
- arch/arm/cpu/cache.c                           | 33 +++++++++++++
- arch/arm/cpu/common.c                          | 68 ++++++++++++++++++++++++++
- arch/arm/cpu/cpu.c                             | 34 +------------
- arch/arm/cpu/exceptions.S                      | 55 ++++++++++++++++++---
- arch/arm/cpu/mmu.c                             |  2 +
- arch/arm/cpu/setupc.S                          | 62 +++++++++++++++++++++++
- arch/arm/cpu/start-pbl.c                       | 18 +++++--
- arch/arm/cpu/start.c                           |  5 ++
- arch/arm/include/asm/barebox-arm.h             | 34 +++++++++++++
- arch/arm/include/asm/cache.h                   |  8 +++
- arch/arm/include/asm/mmu.h                     |  1 -
- arch/arm/include/asm/sections.h                | 33 +++++++++++++
- arch/arm/include/asm/system_info.h             | 43 ++++++++++++++++
- arch/arm/lib/barebox.lds.S                     | 17 +++++++
- arch/arm/lib/runtime-offset.S                  | 32 ++++++++++++
- arch/arm/mach-imx/external-nand-boot.c         | 27 +++++-----
- arch/arm/pbl/Makefile                          |  3 ++
- arch/arm/pbl/zbarebox.lds.S                    | 16 ++++++
- common/Kconfig                                 |  2 +-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/friendlyarm-tiny210/lowlevel.c |  3 ++-
+ arch/arm/mach-imx/external-nand-boot.c         | 27 +++++++++++++++-----------
  drivers/mtd/nand/nand_s3c24xx.c                |  2 +-
- pbl/Kconfig                                    | 10 ++++
- 25 files changed, 466 insertions(+), 58 deletions(-)
- create mode 100644 arch/arm/cpu/common.c
+ 3 files changed, 19 insertions(+), 13 deletions(-)
+
+diff --git a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+index 1da7ba8..3bd1379 100644
+--- a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
++++ b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+@@ -67,7 +67,8 @@ void __bare_init barebox_arm_reset_vector(void)
+ 
+ 	s5p_init_dram_bank_ddr2(S5P_DMC0_BASE, 0x20E00323, 0, 0);
+ 
+-	if (! s5p_irom_load_mmc((void*)TEXT_BASE - 16, 1, (barebox_image_size + 16 + 511) / 512))
++	if (! s5p_irom_load_mmc((void*)TEXT_BASE - 16, 1,
++				(ld_var(_barebox_image_size) + 16 + 511) / 512))
+ 		while (1) { } /* hang */
+ 
+ 	/* Jump to SDRAM */
+diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
+index 73c4ccd..3ac1132 100644
+--- a/arch/arm/mach-imx/external-nand-boot.c
++++ b/arch/arm/mach-imx/external-nand-boot.c
+@@ -292,7 +292,7 @@ int __bare_init imx_barebox_boot_nand_external(unsigned long nfc_base)
+ 		return 0;
+ 
+ 	src = (unsigned int *)nfc_base;
+-	trg = (unsigned int *)_text;
++	trg = (unsigned int *)ld_var(_text);
+ 
+ 	/* Move ourselves out of NFC SRAM */
+ 	for (i = 0; i < 0x800 / sizeof(int); i++)
+@@ -313,8 +313,9 @@ void __bare_init __noreturn imx21_barebox_boot_nand_external(void)
+ 	unsigned long nfc_base = MX21_NFC_BASE_ADDR;
+ 
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+-		jump_sdram(nfc_base - (unsigned long)_text);
+-		imx_nand_load_image((void *)_text, barebox_image_size);
++		jump_sdram(nfc_base - ld_var(_text));
++		imx_nand_load_image((void *)ld_var(_text),
++				ld_var(barebox_image_size));
+ 	}
+ 
+ 	imx21_barebox_entry(0);
+@@ -327,8 +328,9 @@ void __bare_init __noreturn imx25_barebox_boot_nand_external(void)
+ 	unsigned long nfc_base = MX25_NFC_BASE_ADDR;
+ 
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+-		jump_sdram(nfc_base - (unsigned long)_text);
+-		imx_nand_load_image((void *)_text, barebox_image_size);
++		jump_sdram(nfc_base - ld_var(_text));
++		imx_nand_load_image((void *)ld_var(_text),
++				ld_var(_barebox_image_size));
+ 	}
+ 
+ 	imx25_barebox_entry(0);
+@@ -341,8 +343,9 @@ void __bare_init __noreturn imx27_barebox_boot_nand_external(void)
+ 	unsigned long nfc_base = MX27_NFC_BASE_ADDR;
+ 
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+-		jump_sdram(nfc_base - (unsigned long)_text);
+-		imx_nand_load_image((void *)_text, barebox_image_size);
++		jump_sdram(nfc_base - ld_var(_text));
++		imx_nand_load_image((void *)ld_var(_text),
++				ld_var(_barebox_image_size));
+ 	}
+ 
+ 	imx27_barebox_entry(0);
+@@ -355,8 +358,9 @@ void __bare_init __noreturn imx31_barebox_boot_nand_external(void)
+ 	unsigned long nfc_base = MX31_NFC_BASE_ADDR;
+ 
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+-		jump_sdram(nfc_base - (unsigned long)_text);
+-		imx_nand_load_image((void *)_text, barebox_image_size);
++		jump_sdram(nfc_base - ld_var(_text));
++		imx_nand_load_image((void *)ld_var(_text),
++				ld_var(_barebox_image_size));
+ 	}
+ 
+ 	imx31_barebox_entry(0);
+@@ -369,8 +373,9 @@ void __bare_init __noreturn imx35_barebox_boot_nand_external(void)
+ 	unsigned long nfc_base = MX35_NFC_BASE_ADDR;
+ 
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+-		jump_sdram(nfc_base - (unsigned long)_text);
+-		imx_nand_load_image((void *)_text, barebox_image_size);
++		jump_sdram(nfc_base - ld_var(_text));
++		imx_nand_load_image((void *)ld_var(_text),
++				ld_var(_barebox_image_size));
+ 	}
+ 
+ 	imx35_barebox_entry(0);
+diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
+index fef9432..c2e41a9 100644
+--- a/drivers/mtd/nand/nand_s3c24xx.c
++++ b/drivers/mtd/nand/nand_s3c24xx.c
+@@ -607,7 +607,7 @@ void __nand_boot_init s3c24x0_nand_load_image(void *dest, int size, int page)
+ void __nand_boot_init nand_boot(void)
+ {
+ 	void *dest = _text;
+-	int size = barebox_image_size;
++	int size = ld_var(_barebox_image_size);
+ 	int page = 0;
+ 
+ 	s3c24x0_nand_load_image(dest, size, page);
+-- 
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
