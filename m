@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCS5d-0005q7-PK
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:52 +0000
+ id 1UCS5d-0005q9-PG
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:26 +0100
-Message-Id: <1362390820-10333-24-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 10:53:33 +0100
+Message-Id: <1362390820-10333-31-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 23/37] bootm: Use of_print_nodes instead of fdt_print
+Subject: [PATCH 30/37] of_property command: Fix crash with empty property value
 To: barebox@lists.infradead.org
 
-Now that we use the unflattened tree in bootm we can use of_print_nodes
-instead of printing the flattened tree.
+the of_property command crashes when an empty property value
+was given. This is because xrealloc is called with a length
+argument of 0. Fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ commands/of_property.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 38233e7..65a75e2 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -194,15 +194,15 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 		return -EINVAL;
- 	}
+diff --git a/commands/of_property.c b/commands/of_property.c
+index bd9ff72..1567a0f 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -255,9 +255,15 @@ static int do_of_property(int argc, char *argv[])
  
-+	if (bootm_verbose(data) > 1)
-+		of_print_nodes(node, 0);
+ 		if (pp) {
+ 			free(pp->value);
 +
- 	fixfdt = of_get_fixed_tree(node);
- 	if (!fixfdt)
- 		return -EINVAL;
- 
- 	free(fdt);
- 
--	if (bootm_verbose(data) > 1)
--		fdt_print(fixfdt, "/");
--
- 	data->oftree = fixfdt;
- 
- 	return 0;
+ 			/* limit property data to the actual size */
+-			data = xrealloc(data, len);
+-			pp->value = data;
++			if (len) {
++				pp->value = xrealloc(data, len);
++			} else {
++				pp->value = NULL;
++				free(data);
++			}
++
+ 			pp->length = len;
+ 		} else {
+ 			pp = of_new_property(node, propname, data, len);
 -- 
 1.7.10.4
 
