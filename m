@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x231.google.com ([2a00:1450:4013:c01::231])
+Received: from mail-da0-f47.google.com ([209.85.210.47])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCb6L-0002Yv-FS
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 19:31:11 +0000
-Received: by mail-ea0-f177.google.com with SMTP id n13so912235eaa.22
- for <barebox@lists.infradead.org>; Mon, 04 Mar 2013 11:31:07 -0800 (PST)
-Date: Mon, 4 Mar 2013 20:32:20 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130304193220.GC911@x61s.8.8.8.8>
-References: <1362412809-23253-1-git-send-email-s.hauer@pengutronix.de>
- <20130304190529.GJ23022@game.jcrosoft.org>
- <20130304191617.GG1906@pengutronix.de>
- <20130304192548.GB911@x61s.8.8.8.8>
- <20130304192835.GH1906@pengutronix.de>
+ id 1UCb7b-0002r4-V7
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 19:32:32 +0000
+Received: by mail-da0-f47.google.com with SMTP id s35so2712767dak.6
+ for <barebox@lists.infradead.org>; Mon, 04 Mar 2013 11:32:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130304192835.GH1906@pengutronix.de>
+In-Reply-To: <1362266753.2127.14.camel@antimon>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362129773-4579-2-git-send-email-dev@lynxeye.de>
+ <20130301131742.GF23022@game.jcrosoft.org>
+ <1362266753.2127.14.camel@antimon>
+Date: Mon, 4 Mar 2013 23:26:20 +0400
+Message-ID: <CAA4bVAG9rkedNQmhT2EWMSSNG4Zc1s-6q+OYBe-AmpcuOoHfnA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,47 +26,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: ehci: initialize ehci_data
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/7] tegra: move address map to tegra20-silicon.h
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 04, 2013 at 08:28:35PM +0100, Sascha Hauer wrote:
-> On Mon, Mar 04, 2013 at 08:25:49PM +0100, Alexander Aring wrote:
-> > On Mon, Mar 04, 2013 at 08:16:17PM +0100, Sascha Hauer wrote:
-> > > On Mon, Mar 04, 2013 at 08:05:29PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 17:00 Mon 04 Mar     , Sascha Hauer wrote:
-> > > > > Without it fields of ehci_data may be unitialized and the driver
-> > > > > crashes.
-> > > > > 
-> > > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > > ---
-> > > > >  drivers/usb/host/ehci-hcd.c |    2 +-
-> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> > > > > index 0c789e4..7c389aa 100644
-> > > > > --- a/drivers/usb/host/ehci-hcd.c
-> > > > > +++ b/drivers/usb/host/ehci-hcd.c
-> > > > > @@ -892,7 +892,7 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
-> > > > >  
-> > > > >  static int ehci_probe(struct device_d *dev)
-> > > > >  {
-> > > > > -	struct ehci_data data;
-> > > > > +	struct ehci_data data = {};
-> > > > 
-> > > > I'll prefer a memset
-> > > 
-> > > Then you'll happy to hear that this is what the compiler makes from it
-> > > anyway.
-> > >
-> > I think memset use a unnecessary function call. Is that right?
-> 
-> No, the result will be the same. As said, gcc will call memset anyway,
-> even when you implicitly initialize a struct with '= {}'.
+On 3 March 2013 03:25, Lucas Stach <dev@lynxeye.de> wrote:
+> Am Freitag, den 01.03.2013, 14:17 +0100 schrieb Jean-Christophe
+> PLAGNIOL-VILLARD:
+>> On 10:22 Fri 01 Mar     , Lucas Stach wrote:
+>> > The address map is specific to the Tegra20 SoC. Move it to a
+>> > file with an appropriate name. While at it clarify and fix
+>> > the definitions.
+>>
+>> folloow the kernel
 >
-Ok, thanks for this information.
+> The Tegra kernel is fully device tree enabled and doesn't need any of
+> those defines, as the hardware mapping is encoded in the DT. While I'm
+> certainly aiming for the same thing in barebox, it's just not the right
+> thing to do at this state of development.
 
-Alex
+Is there any benefit in the renaming of the iomap.h file to tegra20-silicon.h?
+
+I think no. The name iomap.h is used in the linux kernel so it is
+natural that just the same file will have the same name it barebox.
+It is more comfortable for kernel developer see the kernel header
+files in bootloader with the same kernel name.
+
+Anyway the number of kernel Tegra developers is much more than number
+of barebox Tegra developers :)))
+
+>> >
+>> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+>> > ---
+>> >  [...]
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
