@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCbbU-0005a6-LE
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:22 +0000
+ id 1UCbbU-0005a7-Ly
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:23 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 21:03:05 +0100
-Message-Id: <1362427389-2144-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 21:03:06 +0100
+Message-Id: <1362427389-2144-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,93 +21,111 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] ARM: add early mmu cache flush function and use it in
- setup_c
+Subject: [PATCH 3/6] ARM: provide accessor functions for linker variables
 To: barebox@lists.infradead.org
 
-Since recently with MMU_EARLY support it may happen that setup_c
-runs with data caches enabled, so we have to make sure the caches
-are flushed before we jump to the new binary.
+With relocatable binaries the linker is not able to supply absolute
+addresses. These only get available when the relocation function is
+being run. Since for early initialization we need some variables
+before relocation, we supply them relatively to some known address
+in the binary. This means that the variables have to be converted
+to absolute addresses during runtime.
+
+This patch adds a C macro and an assembly macro to calculate the
+variables during runtime.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache.c         | 33 +++++++++++++++++++++++++++++++++
- arch/arm/cpu/setupc.S        |  3 +++
- arch/arm/include/asm/cache.h |  8 ++++++++
- 3 files changed, 44 insertions(+)
+ arch/arm/include/asm/sections.h | 33 +++++++++++++++++++++++++++++++++
+ arch/arm/lib/runtime-offset.S   | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
-index 1254609..95c8338 100644
---- a/arch/arm/cpu/cache.c
-+++ b/arch/arm/cpu/cache.c
-@@ -101,3 +101,36 @@ int arm_set_cache_functions(void)
- 
- 	return 0;
- }
+diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
+index 2b8c516..8c7bc8c 100644
+--- a/arch/arm/include/asm/sections.h
++++ b/arch/arm/include/asm/sections.h
+@@ -1 +1,34 @@
++#ifndef __ASM_SECTIONS_H
++#define __ASM_SECTIONS_H
++
++#ifndef __ASSEMBLY__
+ #include <asm-generic/sections.h>
 +
 +/*
-+ * Early function to flush the caches. This is for use when the
-+ * C environment is not yet fully initialized.
++ * Access a linker supplied variable. Use this if your code might not be running
++ * at the address it is linked at.
 + */
-+void arm_early_mmu_cache_flush(void)
-+{
-+	switch (arm_early_get_cpu_architecture()) {
-+#ifdef CONFIG_CPU_32v4T
-+	case CPU_ARCH_ARMv4T:
-+		v4_mmu_cache_flush();
-+		return;
-+#endif
-+#ifdef CONFIG_CPU_32v5
-+	case CPU_ARCH_ARMv5:
-+	case CPU_ARCH_ARMv5T:
-+	case CPU_ARCH_ARMv5TE:
-+	case CPU_ARCH_ARMv5TEJ:
-+		v5_mmu_cache_flush();
-+		return;
-+#endif
-+#ifdef CONFIG_CPU_32v6
-+	case CPU_ARCH_ARMv6:
-+		v6_mmu_cache_flush();
-+		return;
-+#endif
-+#ifdef CONFIG_CPU_32v7
-+	case CPU_ARCH_ARMv7:
-+		v7_mmu_cache_flush();
-+		return;
-+#endif
-+	}
-+}
-diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc.S
-index 9a8d54c..d0de87d 100644
---- a/arch/arm/cpu/setupc.S
-+++ b/arch/arm/cpu/setupc.S
-@@ -26,6 +26,9 @@ ENTRY(setup_c)
- 	ldr	r2, =__bss_stop
- 	sub	r2, r2, r0
- 	bl	memset			/* clear bss */
-+#ifdef CONFIG_MMU
-+	bl	arm_early_mmu_cache_flush
-+#endif
- 	mov	r0, #0
- 	mcr	p15, 0, r0, c7, c5, 0	/* flush icache */
- 	add	lr, r5, r4		/* adjust return address to new location */
-diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-index d5877ff..e5621eb 100644
---- a/arch/arm/include/asm/cache.h
-+++ b/arch/arm/include/asm/cache.h
-@@ -8,4 +8,12 @@ static inline void flush_icache(void)
- 
- int arm_set_cache_functions(void);
- 
-+#ifdef CONFIG_MMU
-+void arm_early_mmu_cache_flush(void);
++#define ld_var(name) ({ \
++	unsigned long __ld_var_##name(void); \
++	__ld_var_##name(); \
++})
++
 +#else
-+static inline void arm_early_mmu_cache_flush(void)
-+{
-+}
++
++/*
++ * Access a linker supplied variable, assembler macro version
++ */
++.macro ld_var name, reg, scratch
++	1000:
++		ldr \reg, 1001f
++		ldr \scratch, =1000b
++		add \reg, \reg, \scratch
++		b 1002f
++	1001:
++		.word \name - 1000b
++	1002:
++.endm
++
 +#endif
 +
- #endif
++#endif /* __ASM_SECTIONS_H */
+diff --git a/arch/arm/lib/runtime-offset.S b/arch/arm/lib/runtime-offset.S
+index ffa668c..15bf414 100644
+--- a/arch/arm/lib/runtime-offset.S
++++ b/arch/arm/lib/runtime-offset.S
+@@ -1,6 +1,8 @@
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ 
++.section ".text_bare_init","ax"
++
+ /*
+  * Get the offset between the link address and the address
+  * we are currently running at.
+@@ -15,3 +17,33 @@ THUMB(	subs r0, r0, #1)
+ linkadr:
+ .word get_runtime_offset
+ ENDPROC(get_runtime_offset)
++
++.globl __ld_var_base
++__ld_var_base:
++
++/*
++ * Functions to calculate selected linker supplied variables during runtime.
++ * This is needed for relocatable binaries when the linker variables are
++ * needed before finxing up the relocations.
++ */
++.macro ld_var_entry name
++	ENTRY(__ld_var_\name)
++		ldr r0, __\name
++		b 1f
++	__\name: .word \name - __ld_var_base
++	ENDPROC(__ld_var_\name)
++.endm
++
++ld_var_entry _text
++ld_var_entry __rel_dyn_start
++ld_var_entry __rel_dyn_end
++ld_var_entry __dynsym_start
++ld_var_entry __dynsym_end
++ld_var_entry _barebox_image_size
++ld_var_entry __bss_start
++ld_var_entry __bss_stop
++
++1:
++	ldr r1, =__ld_var_base
++	adds r0, r0, r1
++	mov pc, lr
 -- 
 1.8.2.rc2
 
