@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x242.google.com ([2a00:1450:4013:c01::242])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCcGW-0002QT-Uj
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:45:45 +0000
-Received: by mail-ea0-f194.google.com with SMTP id c12so284056eaa.1
- for <barebox@lists.infradead.org>; Mon, 04 Mar 2013 12:45:42 -0800 (PST)
-Date: Mon, 4 Mar 2013 21:46:56 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130304204656.GD911@x61s.8.8.8.8>
-References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
- <1362427389-2144-2-git-send-email-s.hauer@pengutronix.de>
+Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UCcGm-0002U8-9z
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:46:02 +0000
+Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id C7654104DFAE
+ for <barebox@lists.infradead.org>; Mon,  4 Mar 2013 21:56:58 +0100 (CET)
+Date: Mon, 4 Mar 2013 21:45:01 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130304204501.GK23022@game.jcrosoft.org>
+References: <1361014553-24489-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362427389-2144-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1361014553-24489-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,144 +26,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] ARM: make cpu architecture detection available as
- static inline function
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] devfs: add symlink support
+To: barebox@lists.infradead.org
 
-Hi,
-
-On Mon, Mar 04, 2013 at 09:03:04PM +0100, Sascha Hauer wrote:
-> When we have multi cpu support compiled in we need the cpu architecture
-> early so that we can pick the correct cacheflush function. Make it available
-> as static inline function and add a comment above it that this function
-> normally should not be used.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+ping
+On 12:35 Sat 16 Feb     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  arch/arm/cpu/cpu.c                 | 34 +-----------------------------
->  arch/arm/include/asm/system_info.h | 43 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 44 insertions(+), 33 deletions(-)
+>  fs/devfs.c       |   70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/driver.h |    1 +
+>  2 files changed, 71 insertions(+)
 > 
-> diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-> index 5f697d7..f2e698d 100644
-> --- a/arch/arm/cpu/cpu.c
-> +++ b/arch/arm/cpu/cpu.c
-> @@ -148,45 +148,13 @@ postcore_initcall(execute_init);
->  #endif
+> diff --git a/fs/devfs.c b/fs/devfs.c
+> index f089c6f..c0047e3 100644
+> --- a/fs/devfs.c
+> +++ b/fs/devfs.c
+> @@ -216,6 +216,12 @@ static int devfs_stat(struct device_d *_dev, const char *filename, struct stat *
+>  	if (!cdev)
+>  		return -ENOENT;
 >  
->  #ifdef ARM_MULTIARCH
-> -static int __get_cpu_architecture(void)
-> -{
-> -	int cpu_arch;
-> -
-> -	if ((read_cpuid_id() & 0x0008f000) == 0) {
-> -		cpu_arch = CPU_ARCH_UNKNOWN;
-> -	} else if ((read_cpuid_id() & 0x0008f000) == 0x00007000) {
-> -		cpu_arch = (read_cpuid_id() & (1 << 23)) ? CPU_ARCH_ARMv4T : CPU_ARCH_ARMv3;
-> -	} else if ((read_cpuid_id() & 0x00080000) == 0x00000000) {
-> -		cpu_arch = (read_cpuid_id() >> 16) & 7;
-> -		if (cpu_arch)
-> -			cpu_arch += CPU_ARCH_ARMv3;
-> -	} else if ((read_cpuid_id() & 0x000f0000) == 0x000f0000) {
-> -		unsigned int mmfr0;
-> -
-> -		/* Revised CPUID format. Read the Memory Model Feature
-> -		 * Register 0 and check for VMSAv7 or PMSAv7 */
-> -		asm("mrc	p15, 0, %0, c0, c1, 4"
-> -		    : "=r" (mmfr0));
-> -		if ((mmfr0 & 0x0000000f) >= 0x00000003 ||
-> -		    (mmfr0 & 0x000000f0) >= 0x00000030)
-> -			cpu_arch = CPU_ARCH_ARMv7;
-> -		else if ((mmfr0 & 0x0000000f) == 0x00000002 ||
-> -			 (mmfr0 & 0x000000f0) == 0x00000020)
-> -			cpu_arch = CPU_ARCH_ARMv6;
-> -		else
-> -			cpu_arch = CPU_ARCH_UNKNOWN;
-> -	} else
-> -		cpu_arch = CPU_ARCH_UNKNOWN;
-> -
-> -	return cpu_arch;
-> -}
->  
->  int __cpu_architecture;
->  
->  int __pure cpu_architecture(void)
+> +	if (cdev->symlink) {
+> +		s->st_mode = S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO;
+> +		s->st_size = strlen(cdev->symlink);
+> +		return 0;
+> +	}
+> +
+>  	s->st_mode = S_IFCHR;
+>  	s->st_size = cdev->size;
+>  	if (cdev->ops->write)
+> @@ -235,7 +241,69 @@ static void devfs_delete(struct device_d *dev)
 >  {
->  	if(__cpu_architecture == CPU_ARCH_UNKNOWN)
-> -		__cpu_architecture = __get_cpu_architecture();
-> +		__cpu_architecture = arm_early_get_cpu_architecture();
->  
->  	return __cpu_architecture;
 >  }
-> diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-> index 56ebb11..50769ec 100644
-> --- a/arch/arm/include/asm/system_info.h
-> +++ b/arch/arm/include/asm/system_info.h
-> @@ -110,8 +110,51 @@
->  #ifndef __ASSEMBLY__
 >  
->  #ifdef ARM_MULTIARCH
-> +/*
-> + * Early version to get the ARM cpu architecture. Only needed during
-> + * early startup when the C environment is not yet fully initialized.
-> + * Normally you should use cpu_architecture() instead.
-> + */
-> +static inline int arm_early_get_cpu_architecture(void)
+> +static int devfs_symlink(struct device_d *dev, const char *pathname,
+> +		       const char *newpath)
 > +{
-> +	int cpu_arch;
+> +	struct cdev *cdev;
+> +	int ret = -ENOMEM;
 > +
-> +	if ((read_cpuid_id() & 0x0008f000) == 0) {
-> +		cpu_arch = CPU_ARCH_UNKNOWN;
-> +	} else if ((read_cpuid_id() & 0x0008f000) == 0x00007000) {
-> +		cpu_arch = (read_cpuid_id() & (1 << 23)) ? CPU_ARCH_ARMv4T : CPU_ARCH_ARMv3;
-> +	} else if ((read_cpuid_id() & 0x00080000) == 0x00000000) {
-> +		cpu_arch = (read_cpuid_id() >> 16) & 7;
-> +		if (cpu_arch)
-> +			cpu_arch += CPU_ARCH_ARMv3;
-
-I know... it's only a movement, but is cpu += CPU_ARCH_ARMv3 correct
-here? All other has only a assignment.
-
-> +	} else if ((read_cpuid_id() & 0x000f0000) == 0x000f0000) {
-> +		unsigned int mmfr0;
+> +	cdev = kzalloc(sizeof(*cdev), GFP_KERNEL);
+> +	if (!cdev)
+> +		return -ENOMEM;
 > +
-> +		/* Revised CPUID format. Read the Memory Model Feature
-> +		 * Register 0 and check for VMSAv7 or PMSAv7 */
-> +		asm("mrc	p15, 0, %0, c0, c1, 4"
-> +		    : "=r" (mmfr0));
-> +		if ((mmfr0 & 0x0000000f) >= 0x00000003 ||
-> +		    (mmfr0 & 0x000000f0) >= 0x00000030)
-> +			cpu_arch = CPU_ARCH_ARMv7;
-> +		else if ((mmfr0 & 0x0000000f) == 0x00000002 ||
-> +			 (mmfr0 & 0x000000f0) == 0x00000020)
-> +			cpu_arch = CPU_ARCH_ARMv6;
-> +		else
-> +			cpu_arch = CPU_ARCH_UNKNOWN;
-> +	} else
-> +		cpu_arch = CPU_ARCH_UNKNOWN;
+> +	cdev->symlink = strdup(pathname);
+> +	if (!cdev->symlink)
+> +		goto err;
 > +
-> +	return cpu_arch;
+> +	cdev->name = strdup(newpath + 1);
+> +	if (!cdev->name)
+> +		goto err_cdev;
+> +
+> +	ret = devfs_create(cdev);
+> +	if (ret)
+> +		goto err_create;
+> +
+> +	return 0;
+> +
+> +err_create:
+> +	kfree(cdev->name);
+> +err_cdev:
+> +	kfree(cdev->symlink);
+> +err:
+> +	kfree(cdev);
+> +	return ret;
 > +}
 > +
->  extern int __pure cpu_architecture(void);
->  #else
-> +static inline int __pure arm_early_get_cpu_architecture(void)
+> +static int devfs_readlink(struct device_d *dev, const char *pathname,
+> +			char *buf, size_t bufsiz)
 > +{
-> +	return ARM_ARCH;
+> +	struct cdev *cdev;
+> +	int len;
+> +
+> +	cdev = cdev_by_name(pathname + 1);
+> +	if (!cdev || !cdev->symlink)
+> +		return -ENOENT;
+> +
+> +	len = min(bufsiz, strlen(cdev->symlink));
+> +
+> +	memcpy(buf, cdev->symlink, len);
+> +
+> +	return 0;
 > +}
 > +
->  static inline int __pure cpu_architecture(void)
->  {
->  	return ARM_ARCH;
+> +static int devfs_unlink(struct device_d *dev, const char *pathname)
+> +{
+> +	struct cdev *cdev;
+> +
+> +	cdev = cdev_by_name(pathname + 1);
+> +	if (!cdev || !cdev->symlink)
+> +		return -EPERM;
+> +
+> +	return devfs_remove(cdev);
+> +}
+> +
+>  static struct fs_driver_d devfs_driver = {
+> +	.unlink    = devfs_unlink,
+>  	.read      = devfs_read,
+>  	.write     = devfs_write,
+>  	.lseek     = devfs_lseek,
+> @@ -248,6 +316,8 @@ static struct fs_driver_d devfs_driver = {
+>  	.truncate  = devfs_truncate,
+>  	.closedir  = devfs_closedir,
+>  	.stat      = devfs_stat,
+> +	.symlink   = devfs_symlink,
+> +	.readlink  = devfs_readlink,
+>  	.erase     = devfs_erase,
+>  	.protect   = devfs_protect,
+>  	.memmap    = devfs_memmap,
+> diff --git a/include/driver.h b/include/driver.h
+> index 151829e..1b0e619 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -432,6 +432,7 @@ struct cdev {
+>  	loff_t size;
+>  	unsigned int flags;
+>  	int open;
+> +	char *symlink;
+>  	struct mtd_info *mtd;
+>  };
+>  
 > -- 
-> 1.8.2.rc2
+> 1.7.10.4
 > 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
