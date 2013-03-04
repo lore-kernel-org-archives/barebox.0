@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCSP7-0002ZN-W6
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 10:13:59 +0000
+ id 1UCSP8-0002ZQ-2S
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 10:14:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 11:13:48 +0100
-Message-Id: <1362392034-1908-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 11:13:52 +0100
+Message-Id: <1362392034-1908-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] nand command: use loff_t for block offset
+Subject: [PATCH 08/10] mtd nand i.MX: remove unused code
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/nand.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/nand_imx.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/commands/nand.c b/commands/nand.c
-index f000142..d00845f 100644
---- a/commands/nand.c
-+++ b/commands/nand.c
-@@ -36,7 +36,8 @@
- static int do_nand(int argc, char *argv[])
- {
- 	int opt;
--	int command = 0, badblock = 0;
-+	int command = 0;
-+	loff_t badblock = 0;
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index d056c7c..22bdb74 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1192,13 +1192,6 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	this->write_buf = imx_nand_write_buf;
+ 	this->read_buf = imx_nand_read_buf;
+ 	this->verify_buf = imx_nand_verify_buf;
+-#if 0
+-	host->clk = clk_get(&pdev->dev, "nfc_clk");
+-	if (IS_ERR(host->clk))
+-		goto eclk;
+-
+-	clk_enable(host->clk);
+-#endif
  
- 	while((opt = getopt(argc, argv, "adb:")) > 0) {
- 		if (command) {
-@@ -53,7 +54,7 @@ static int do_nand(int argc, char *argv[])
- 			break;
- 		case 'b':
- 			command = NAND_MARKBAD;
--			badblock = simple_strtoul(optarg, NULL, 0);
-+			badblock = strtoull_suffix(optarg, NULL, 0);
- 		}
- 	}
- 
-@@ -76,9 +77,9 @@ static int do_nand(int argc, char *argv[])
- 	if (command & NAND_MARKBAD) {
- 		if (optind < argc) {
- 			int ret = 0, fd;
--			loff_t __badblock = badblock;
- 
--			printf("marking block at 0x%08x on %s as bad\n", badblock, argv[optind]);
-+			printf("marking block at 0x%08llx on %s as bad\n",
-+					badblock, argv[optind]);
- 
- 			fd = open(argv[optind], O_RDWR);
- 			if (fd < 0) {
-@@ -86,7 +87,7 @@ static int do_nand(int argc, char *argv[])
- 				return 1;
- 			}
- 
--			ret = ioctl(fd, MEMSETBADBLOCK, &__badblock);
-+			ret = ioctl(fd, MEMSETBADBLOCK, &badblock);
- 			if (ret)
- 				perror("ioctl");
- 
+ 	if (pdata->hw_ecc) {
+ 		this->ecc.calculate = imx_nand_calculate_ecc;
 -- 
 1.7.10.4
 
