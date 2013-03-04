@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCbbU-0005a7-Ly
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:23 +0000
+ id 1UCbbQ-0005Yj-8M
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 20:03:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UCbbK-0004NT-TZ
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 21:03:10 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UCbbK-0003Hz-SQ
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 21:03:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 21:03:06 +0100
-Message-Id: <1362427389-2144-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
-References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 21:03:03 +0100
+Message-Id: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,114 +26,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] ARM: provide accessor functions for linker variables
+Subject: [PATCH] ARM: Add relocatable binary support
 To: barebox@lists.infradead.org
 
-With relocatable binaries the linker is not able to supply absolute
-addresses. These only get available when the relocation function is
-being run. Since for early initialization we need some variables
-before relocation, we supply them relatively to some known address
-in the binary. This means that the variables have to be converted
-to absolute addresses during runtime.
+The following adds relocatable binary support for ARM. This can
+be useful when a suitable memory location for the barebox binary
+is not known at compile time, for example when compiling for multiple
+SoCs.
 
-This patch adds a C macro and an assembly macro to calculate the
-variables during runtime.
+In most cases enabling this feature will only result in the visible
+effect that the binary gets bigger, so this feature is fully optional.
+The relocatable support can be enabled for the PBL and the real binary
+independently for greater flexibility and better debugability.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/include/asm/sections.h | 33 +++++++++++++++++++++++++++++++++
- arch/arm/lib/runtime-offset.S   | 32 ++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+This series has been tested on various boards and I hope I have
+covered all combinations of PBL enabled/disabled, PBL relocation
+enabled/disabled, relocation enabled/disabled and MMU enabled/disabled.
 
-diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
-index 2b8c516..8c7bc8c 100644
---- a/arch/arm/include/asm/sections.h
-+++ b/arch/arm/include/asm/sections.h
-@@ -1 +1,34 @@
-+#ifndef __ASM_SECTIONS_H
-+#define __ASM_SECTIONS_H
-+
-+#ifndef __ASSEMBLY__
- #include <asm-generic/sections.h>
-+
-+/*
-+ * Access a linker supplied variable. Use this if your code might not be running
-+ * at the address it is linked at.
-+ */
-+#define ld_var(name) ({ \
-+	unsigned long __ld_var_##name(void); \
-+	__ld_var_##name(); \
-+})
-+
-+#else
-+
-+/*
-+ * Access a linker supplied variable, assembler macro version
-+ */
-+.macro ld_var name, reg, scratch
-+	1000:
-+		ldr \reg, 1001f
-+		ldr \scratch, =1000b
-+		add \reg, \reg, \scratch
-+		b 1002f
-+	1001:
-+		.word \name - 1000b
-+	1002:
-+.endm
-+
-+#endif
-+
-+#endif /* __ASM_SECTIONS_H */
-diff --git a/arch/arm/lib/runtime-offset.S b/arch/arm/lib/runtime-offset.S
-index ffa668c..15bf414 100644
---- a/arch/arm/lib/runtime-offset.S
-+++ b/arch/arm/lib/runtime-offset.S
-@@ -1,6 +1,8 @@
- #include <linux/linkage.h>
- #include <asm/assembler.h>
- 
-+.section ".text_bare_init","ax"
-+
- /*
-  * Get the offset between the link address and the address
-  * we are currently running at.
-@@ -15,3 +17,33 @@ THUMB(	subs r0, r0, #1)
- linkadr:
- .word get_runtime_offset
- ENDPROC(get_runtime_offset)
-+
-+.globl __ld_var_base
-+__ld_var_base:
-+
-+/*
-+ * Functions to calculate selected linker supplied variables during runtime.
-+ * This is needed for relocatable binaries when the linker variables are
-+ * needed before finxing up the relocations.
-+ */
-+.macro ld_var_entry name
-+	ENTRY(__ld_var_\name)
-+		ldr r0, __\name
-+		b 1f
-+	__\name: .word \name - __ld_var_base
-+	ENDPROC(__ld_var_\name)
-+.endm
-+
-+ld_var_entry _text
-+ld_var_entry __rel_dyn_start
-+ld_var_entry __rel_dyn_end
-+ld_var_entry __dynsym_start
-+ld_var_entry __dynsym_end
-+ld_var_entry _barebox_image_size
-+ld_var_entry __bss_start
-+ld_var_entry __bss_stop
-+
-+1:
-+	ldr r1, =__ld_var_base
-+	adds r0, r0, r1
-+	mov pc, lr
--- 
-1.8.2.rc2
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (6):
+      ARM: make cpu architecture detection available as static inline function
+      ARM: add early mmu cache flush function and use it in setup_c
+      ARM: provide accessor functions for linker variables
+      ARM boards: Use accessor functions to access linker variables
+      ARN: fixup vector addresses for relocatable binaries
+      ARM: Add relocatable binary support
+
+ arch/arm/Kconfig                               |  9 ++++
+ arch/arm/Makefile                              |  4 ++
+ arch/arm/boards/friendlyarm-tiny210/lowlevel.c |  3 +-
+ arch/arm/cpu/Makefile                          |  3 ++
+ arch/arm/cpu/cache.c                           | 33 +++++++++++++
+ arch/arm/cpu/common.c                          | 68 ++++++++++++++++++++++++++
+ arch/arm/cpu/cpu.c                             | 34 +------------
+ arch/arm/cpu/exceptions.S                      | 55 ++++++++++++++++++---
+ arch/arm/cpu/mmu.c                             |  2 +
+ arch/arm/cpu/setupc.S                          | 62 +++++++++++++++++++++++
+ arch/arm/cpu/start-pbl.c                       | 18 +++++--
+ arch/arm/cpu/start.c                           |  5 ++
+ arch/arm/include/asm/barebox-arm.h             | 34 +++++++++++++
+ arch/arm/include/asm/cache.h                   |  8 +++
+ arch/arm/include/asm/mmu.h                     |  1 -
+ arch/arm/include/asm/sections.h                | 33 +++++++++++++
+ arch/arm/include/asm/system_info.h             | 43 ++++++++++++++++
+ arch/arm/lib/barebox.lds.S                     | 17 +++++++
+ arch/arm/lib/runtime-offset.S                  | 32 ++++++++++++
+ arch/arm/mach-imx/external-nand-boot.c         | 27 +++++-----
+ arch/arm/pbl/Makefile                          |  3 ++
+ arch/arm/pbl/zbarebox.lds.S                    | 16 ++++++
+ common/Kconfig                                 |  2 +-
+ drivers/mtd/nand/nand_s3c24xx.c                |  2 +-
+ pbl/Kconfig                                    | 10 ++++
+ 25 files changed, 466 insertions(+), 58 deletions(-)
+ create mode 100644 arch/arm/cpu/common.c
 
 _______________________________________________
 barebox mailing list
