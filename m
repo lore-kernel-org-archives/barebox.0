@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCS5h-0005rW-Ve
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:55 +0000
+ id 1UCS5h-0005rV-NP
+ for barebox@lists.infradead.org; Mon, 04 Mar 2013 09:53:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Mar 2013 10:53:37 +0100
-Message-Id: <1362390820-10333-35-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Mar 2013 10:53:31 +0100
+Message-Id: <1362390820-10333-29-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362390820-10333-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,147 +21,402 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 34/37] bootm: Pass unflattened devicetree to handlers
+Subject: [PATCH 28/37] of: fixup unflattened devicetree
 To: barebox@lists.infradead.org
-
-This makes it possible to modify the tree in the handlers.
-This is necessary because the initrd addresses are only
-known inside the handlers, but not to the generic bootm
-code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c    |    8 ++------
- arch/ppc/Kconfig        |    1 +
- arch/ppc/lib/ppclinux.c |    8 ++++++++
- commands/bootm.c        |   24 +++++++++---------------
- include/boot.h          |    1 +
- 5 files changed, 21 insertions(+), 21 deletions(-)
+ arch/arm/boards/at91sam9x5ek/hw_version.c |   31 +++++++------
+ arch/arm/boards/highbank/init.c           |   33 +++++++++-----
+ arch/ppc/mach-mpc5xxx/cpu.c               |   26 +++++++----
+ common/memory.c                           |   48 ++++++--------------
+ common/oftree.c                           |   70 +++++++++--------------------
+ include/of.h                              |    6 +--
+ 6 files changed, 94 insertions(+), 120 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 2a7d0f5..00c4908 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -169,16 +169,12 @@ static int do_bootz_linux_fdt(int fd, struct image_data *data)
- 	}
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 47c640a..2695faa 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -232,26 +232,25 @@ static void at91sam9x5ek_devices_detect_one(const char *name)
  
- 	if (IS_BUILTIN(CONFIG_OFTREE)) {
--		struct device_node *node;
--
--		node = of_unflatten_dtb(NULL, oftree);
--		if (!node) {
-+		data->of_root_node = of_unflatten_dtb(NULL, oftree);
-+		if (!data->of_root_node) {
- 			pr_err("unable to unflatten devicetree\n");
- 			ret = -EINVAL;
- 			goto err_free;
- 		}
--
--		data->oftree = of_get_fixed_tree(node);
- 	} else {
- 		data->oftree = oftree;
- 	}
-diff --git a/arch/ppc/Kconfig b/arch/ppc/Kconfig
-index d124065..db269dd 100644
---- a/arch/ppc/Kconfig
-+++ b/arch/ppc/Kconfig
-@@ -4,6 +4,7 @@ config PPC
- 	select HAS_KALLSYMS
- 	select HAS_MODULES
- 	select HAVE_CONFIGURABLE_MEMORY_LAYOUT
-+	select OFTREE
- 	default y
+ #define NODE_NAME_LEN  128
  
- choice
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index 95dc83b..ef69ead 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -18,6 +18,14 @@ static int do_bootm_linux(struct image_data *data)
- 	if (!data->os_res)
- 		return -EINVAL;
- 
-+	data->oftree = of_get_fixed_tree(data->of_root_node);
-+	if (!data->oftree) {
-+		pr_err("bootm: No devicetree given.\n");
-+		return -EINVAL;
-+	}
-+
-+	fdt_add_reserve_map(data->oftree);
-+
- 	kernel = (void *)(data->os_address + data->os_entry);
- 
- 	/*
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 65a75e2..ea5a35b 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -138,9 +138,8 @@ static int bootm_open_initrd_uimage(struct image_data *data)
- static int bootm_open_oftree(struct image_data *data, const char *oftree, int num)
+-static int cm_cogent_fixup(struct fdt_header *fdt)
++static int cm_cogent_fixup(struct device_node *root)
  {
- 	enum filetype ft;
--	struct fdt_header *fdt, *fixfdt;
-+	struct fdt_header *fdt;
- 	size_t size;
--	struct device_node *node;
+-	int off, ret;
+-	char node_name[NODE_NAME_LEN];
++	int ret;
++	struct device_node *node;
  
- 	printf("Loading devicetree from '%s'\n", oftree);
+-	off = fdt_node_offset_by_compatible(fdt, -1, "atmel,hsmci");
++	of_tree_for_each_node(node, root) {
++		struct device_node *slotnode;
  
-@@ -188,23 +187,14 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 				file_type_to_string(ft));
+-	while (off != -FDT_ERR_NOTFOUND) {
+-		off = fdt_subnode_offset(fdt, off, "slot");
+-		fdt_get_path(fdt, off, node_name, NODE_NAME_LEN);
+-		ret = fdt_setprop(fdt, off, "broken-cd", NULL, 0);
+-		if (ret < 0) {
+-			pr_err("error %d while adding broken-cd property to node %s\n",
+-				ret, node_name);
+-			return ret;
+-		} else {
+-			pr_debug("add broken-cd property to node %s\n", node_name);
+-		}
++		if (!of_device_is_compatible(node, "atmel,hsmci"))
++			continue;
+ 
+-		off = fdt_node_offset_by_compatible(fdt, off, "atmel,hsmci");
++		slotnode = of_find_child_by_name(node, "slot");
++		if (!slotnode)
++			continue;
++
++		ret = of_set_property(slotnode, "broken-cd", NULL, 0, 1);
++		if (ret)
++			pr_err("error %d while adding broken-cd property to node %s\n",
++				ret, slotnode->name);
  	}
  
--	node = of_unflatten_dtb(NULL, fdt);
--	if (!node) {
-+	data->of_root_node = of_unflatten_dtb(NULL, fdt);
-+	if (!data->of_root_node) {
- 		pr_err("unable to unflatten devicetree\n");
- 		return -EINVAL;
- 	}
+ 	return 0;
+diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
+index a689b6a..bd32c1d 100644
+--- a/arch/arm/boards/highbank/init.c
++++ b/arch/arm/boards/highbank/init.c
+@@ -25,8 +25,9 @@
  
--	if (bootm_verbose(data) > 1)
--		of_print_nodes(node, 0);
--
--	fixfdt = of_get_fixed_tree(node);
--	if (!fixfdt)
--		return -EINVAL;
--
- 	free(fdt);
+ struct fdt_header *fdt = NULL;
  
--	data->oftree = fixfdt;
--
+-static int hb_fixup(struct fdt_header *fdt)
++static int hb_fixup(struct device_node *root)
+ {
++	struct device_node *node;
+ 	u32 reg = readl(sregs_base + HB_SREG_A9_PWRDOM_DATA);
+ 	u32 *opp_table = (u32 *)HB_SYSRAM_OPP_TABLE_BASE;
+ 	u32 dtb_table[2*10];
+@@ -34,17 +35,29 @@ static int hb_fixup(struct fdt_header *fdt)
+ 	u32 num_opps;
+ 	__be32 latency;
+ 
+-	if (!(reg & HB_PWRDOM_STAT_SATA))
+-		do_fixup_by_compatible_string(fdt, "calxeda,hb-ahci", "status",
+-					           "disabled", 1);
++	if (!(reg & HB_PWRDOM_STAT_SATA)) {
++		of_tree_for_each_node(node, root) {
++			if (of_device_is_compatible(node, "calxeda,hb-ahci"))
++				of_set_property(node, "status", "disabled",
++						sizeof("disabled"), 1);
++		}
++	}
+ 
+-	if (!(reg & HB_PWRDOM_STAT_EMMC))
+-		do_fixup_by_compatible_string(fdt, "calxeda,hb-sdhci", "status",
+-					           "disabled", 1);
++	if (!(reg & HB_PWRDOM_STAT_EMMC)) {
++		of_tree_for_each_node(node, root) {
++			if (of_device_is_compatible(node, "calxeda,hb-sdhci"))
++				of_set_property(node, "status", "disabled",
++						sizeof("disabled"), 1);
++		}
++	}
+ 
+ 	if ((opp_table[0] >> 16) != HB_OPP_VERSION)
+ 		return 0;
+ 
++	node = of_find_node_by_path(root, "/cpus/cpu@0");
++	if (!node)
++		return 0;
++
+ 	num_opps = opp_table[0] & 0xff;
+ 
+ 	for (i = 0; i < num_opps; i++) {
+@@ -54,10 +67,8 @@ static int hb_fixup(struct fdt_header *fdt)
+ 
+ 	latency = cpu_to_be32(opp_table[1]);
+ 
+-	fdt_find_and_setprop(fdt, "/cpus/cpu@0", "transition-latency",
+-				  &latency, 4, 1);
+-	fdt_find_and_setprop(fdt, "/cpus/cpu@0", "operating-points",
+-				  dtb_table, 8 * num_opps, 1);
++	of_set_property(node, "transition-latency", &latency, 4, 1);
++	of_set_property(node, "operating-points", dtb_table, 8 * num_opps, 1);
+ 
  	return 0;
  }
- #endif
-@@ -408,10 +398,14 @@ static int do_bootm(int argc, char *argv[])
- 		if (ret)
- 			goto err_out;
- 	} else {
--		data.oftree = of_get_fixed_tree(NULL);
--		if (bootm_verbose(&data) && data.oftree)
-+		data.of_root_node = of_get_root_node();
-+		if (bootm_verbose(&data) && data.of_root_node)
- 			printf("using internal devicetree\n");
+diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
+index 5bbd49a..99f16eb 100644
+--- a/arch/ppc/mach-mpc5xxx/cpu.c
++++ b/arch/ppc/mach-mpc5xxx/cpu.c
+@@ -77,17 +77,27 @@ void __noreturn reset_cpu (unsigned long addr)
+ /* ------------------------------------------------------------------------- */
+ 
+ #ifdef CONFIG_OFTREE
+-static int of_mpc5200_fixup(struct fdt_header *fdt)
++static int of_mpc5200_fixup(struct device_node *root)
+ {
+-	char *cpu_path = "/cpus/PowerPC,5200@0";
++	struct device_node *node;
++
+ 	int div = in_8((void*)CFG_MBAR + 0x204) & 0x0020 ? 8 : 4;
+ 
+-	do_fixup_by_path_u32(fdt, cpu_path, "timebase-frequency", get_timebase_clock(), 1);
+-	do_fixup_by_path_u32(fdt, cpu_path, "bus-frequency", get_bus_clock(), 1);
+-	do_fixup_by_path_u32(fdt, cpu_path, "clock-frequency", get_cpu_clock(), 1);
+-	do_fixup_by_path_u32(fdt, "/soc5200@f0000000", "bus-frequency", get_ipb_clock(), 1);
+-	do_fixup_by_path_u32(fdt, "/soc5200@f0000000", "system-frequency",
+-				get_bus_clock() * div, 1);
++	node = of_find_node_by_path(root, "/cpus/PowerPC,5200@0");
++	if (!node)
++		return -EINVAL;
++
++	of_property_write_u32(node, "timebase-frequency", get_timebase_clock());
++	of_property_write_u32(node, "bus-frequency", get_bus_clock());
++	of_property_write_u32(node, "clock-frequency", get_cpu_clock());
++
++	node = of_find_node_by_path(root, "/soc5200@f0000000");
++	if (!node)
++		return -EINVAL;
++
++	of_property_write_u32(node, "bus-frequency", get_ipb_clock());
++	of_property_write_u32(node, "system-frequency", get_bus_clock() * div);
++
+ 	return 0;
+ }
+ 
+diff --git a/common/memory.c b/common/memory.c
+index 81641f0..1d2e3a3 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -165,22 +165,6 @@ int release_sdram_region(struct resource *res)
+ #ifdef CONFIG_OFTREE
+ 
+ /*
+- * Get cells len in bytes
+- *     if #NNNN-cells property is 2 then len is 8
+- *     otherwise len is 4
+- */
+-static int get_cells_len(struct fdt_header *fdt, char *nr_cells_name)
+-{
+-	const u32 *cell;
+-
+-	cell = fdt_getprop(fdt, 0, nr_cells_name, NULL);
+-	if (cell && *cell == 2)
+-		return 8;
+-
+-	return 4;
+-}
+-
+-/*
+  * Write a 4 or 8 byte big endian cell
+  */
+ static void write_cell(u8 *addr, u64 val, int size)
+@@ -193,28 +177,24 @@ static void write_cell(u8 *addr, u64 val, int size)
+ 	}
+ }
+ 
+-static int of_memory_fixup(struct fdt_header *fdt)
++static int of_memory_fixup(struct device_node *node)
+ {
+ 	struct memory_bank *bank;
+-	int err, nodeoffset;
++	int err;
+ 	int addr_cell_len, size_cell_len, len = 0;
++	struct device_node *memnode;
+ 	u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
+ 
+-	/* update, or add and update /memory node */
+-	nodeoffset = fdt_get_path_or_create(fdt, "/memory");
+-	if (nodeoffset < 0)
+-		return nodeoffset;
++	memnode = of_create_node(node, "/memory");
++	if (!memnode)
++		return -ENOMEM;
+ 
+-	err = fdt_setprop(fdt, nodeoffset, "device_type", "memory",
+-			sizeof("memory"));
+-	if (err < 0) {
+-		printf("WARNING: could not set %s %s.\n", "device_type",
+-				fdt_strerror(err));
++	err = of_set_property(memnode, "device_type", "memory", sizeof("memory"), 1);
++	if (err)
+ 		return err;
+-	}
+ 
+-	addr_cell_len = get_cells_len(fdt, "#address-cells");
+-	size_cell_len = get_cells_len(fdt, "#size-cells");
++	addr_cell_len = of_n_addr_cells(memnode) * 4;
++	size_cell_len = of_n_size_cells(memnode) * 4;
+ 
+ 	for_each_memory_bank(bank) {
+ 		write_cell(tmp + len, bank->start, addr_cell_len);
+@@ -223,12 +203,12 @@ static int of_memory_fixup(struct fdt_header *fdt)
+ 		len += size_cell_len;
+ 	}
+ 
+-	err = fdt_setprop(fdt, nodeoffset, "reg", tmp, len);
+-	if (err < 0) {
+-		printf("WARNING: could not set %s %s.\n",
+-				"reg", fdt_strerror(err));
++	err = of_set_property(memnode, "reg", tmp, len, 1);
++	if (err) {
++		pr_err("could not set reg %s.\n", strerror(-err));
+ 		return err;
  	}
 +
+ 	return 0;
+ }
+ 
+diff --git a/common/oftree.c b/common/oftree.c
+index be9eb28..44ffade 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -339,26 +339,24 @@ int fdt_initrd(void *fdt, ulong initrd_start, ulong initrd_end, int force)
+ 	return 0;
+ }
+ 
+-static int of_fixup_bootargs(struct fdt_header *fdt)
++static int of_fixup_bootargs(struct device_node *root)
+ {
+-	int nodeoffset;
++	struct device_node *node;
+ 	const char *str;
+ 	int err;
+ 
+-	nodeoffset = fdt_get_path_or_create(fdt, "/chosen");
+-	if (nodeoffset < 0)
+-		return nodeoffset;
+-
+ 	str = linux_bootargs_get();
+-	if (str) {
+-		err = fdt_setprop(fdt, nodeoffset,
+-				"bootargs", str, strlen(str)+1);
+-		if (err < 0)
+-			printf("WARNING: could not set bootargs %s.\n",
+-					fdt_strerror(err));
+-        }
++	if (!str)
++		return 0;
+ 
+-	return 0;
++	node = of_create_node(root, "/chosen");
++	if (!node)
++		return -ENOMEM;
 +
-+	if (bootm_verbose(&data) > 1 && data.of_root_node)
-+		of_print_nodes(data.of_root_node, 0);
- #endif
- 	if (data.os_address == UIMAGE_SOME_ADDRESS)
- 		data.os_address = UIMAGE_INVALID_ADDRESS;
-diff --git a/include/boot.h b/include/boot.h
-index 3ce0de1..971a403 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -41,6 +41,7 @@ struct image_data {
++
++	err = of_set_property(node, "bootargs", str, strlen(str) + 1, 1);
++
++	return err;
+ }
  
- 	unsigned long initrd_address;
+ static int of_register_bootargs_fixup(void)
+@@ -368,13 +366,13 @@ static int of_register_bootargs_fixup(void)
+ late_initcall(of_register_bootargs_fixup);
  
-+	struct device_node *of_root_node;
- 	struct fdt_header *oftree;
+ struct of_fixup {
+-	int (*fixup)(struct fdt_header *);
++	int (*fixup)(struct device_node *);
+ 	struct list_head list;
+ };
  
- 	int verify;
+ static LIST_HEAD(of_fixup_list);
+ 
+-int of_register_fixup(int (*fixup)(struct fdt_header *))
++int of_register_fixup(int (*fixup)(struct device_node *))
+ {
+ 	struct of_fixup *of_fixup = xzalloc(sizeof(*of_fixup));
+ 
+@@ -389,13 +387,13 @@ int of_register_fixup(int (*fixup)(struct fdt_header *))
+  * Apply registered fixups for the given fdt. The fdt must have
+  * enough free space to apply the fixups.
+  */
+-int of_fix_tree(struct fdt_header *fdt)
++int of_fix_tree(struct device_node *node)
+ {
+ 	struct of_fixup *of_fixup;
+ 	int ret;
+ 
+ 	list_for_each_entry(of_fixup, &of_fixup_list, list) {
+-		ret = of_fixup->fixup(fdt);
++		ret = of_fixup->fixup(node);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -418,8 +416,6 @@ int of_fix_tree(struct fdt_header *fdt)
+ struct fdt_header *of_get_fixed_tree(struct device_node *node)
+ {
+ 	int ret;
+-	void *fixfdt, *internalfdt = NULL;
+-	int size, align;
+ 	struct fdt_header *fdt;
+ 
+ 	if (!node) {
+@@ -428,35 +424,13 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node)
+ 			return NULL;
+ 	}
+ 
+-	fdt = internalfdt = of_flatten_dtb(node);
+-	if (!fdt)
+-		return NULL;
+-
+-	size = fdt_totalsize(fdt);
+-
+-	/*
+-	 * ARM Linux uses a single 1MiB section (with 1MiB alignment)
+-	 * for mapping the devicetree, so we are not allowed to cross
+-	 * 1MiB boundaries.
+-	 */
+-	align = 1 << fls(size + OFTREE_SIZE_INCREASE - 1);
+-
+-	fixfdt = xmemalign(align, size + OFTREE_SIZE_INCREASE);
+-	ret = fdt_open_into(fdt, fixfdt, size + OFTREE_SIZE_INCREASE);
+-
+-	free(internalfdt);
+-
++	ret = of_fix_tree(node);
+ 	if (ret)
+-		goto out_free;
+-
+-	ret = of_fix_tree(fixfdt);
+-	if (ret)
+-		goto out_free;
+-
+-	return fixfdt;
++		return NULL;
+ 
+-out_free:
+-	free(fixfdt);
++	fdt = of_flatten_dtb(node);
++	if (!fdt)
++		return NULL;
+ 
+-	return NULL;
++	return fdt;
+ }
+diff --git a/include/of.h b/include/of.h
+index 85adc80..ef6a4ce 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -7,9 +7,6 @@
+ 
+ int fdt_print(struct fdt_header *working_fdt, const char *pathp);
+ 
+-int of_fix_tree(struct fdt_header *fdt);
+-int of_register_fixup(int (*fixup)(struct fdt_header *));
+-
+ int fdt_find_and_setprop(struct fdt_header *fdt, const char *node, const char *prop,
+ 			 const void *val, int len, int create);
+ void do_fixup_by_path(struct fdt_header *fdt, const char *path, const char *prop,
+@@ -67,6 +64,9 @@ struct of_device_id {
+ 
+ struct driver_d;
+ 
++int of_fix_tree(struct device_node *);
++int of_register_fixup(int (*fixup)(struct device_node *));
++
+ int of_match(struct device_d *dev, struct driver_d *drv);
+ 
+ int of_add_initrd(struct device_node *root, resource_size_t start,
 -- 
 1.7.10.4
 
