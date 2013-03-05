@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCuo8-0000UE-0e
- for barebox@lists.infradead.org; Tue, 05 Mar 2013 16:33:41 +0000
-Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 953EDDC174C
- for <barebox@lists.infradead.org>; Tue,  5 Mar 2013 17:44:39 +0100 (CET)
-Date: Tue, 5 Mar 2013 17:32:41 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130305163241.GN23022@game.jcrosoft.org>
-References: <1362498748.832582078@f53.mail.ru>
+ id 1UCvGl-0005Ra-P6
+ for barebox@lists.infradead.org; Tue, 05 Mar 2013 17:03:16 +0000
+Date: Tue, 5 Mar 2013 11:09:29 -0600
+From: Josh Cartwright <joshc@eso.teric.us>
+Message-ID: <20130305170929.GD16050@kryptos>
+References: <cover.1362273612.git.joshc@eso.teric.us>
+ <20130303145810.GB10708@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362498748.832582078@f53.mail.ru>
+In-Reply-To: <20130303145810.GB10708@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,33 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: debug in PBL
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/5] Zynq support for barebox
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-On 19:52 Tue 05 Mar     , Alexander Shiyan wrote:
-> Hello All.
+On Sun, Mar 03, 2013 at 03:58:10PM +0100, Steffen Trumtrar wrote:
+> Hi!
 > 
-> I tried to compile latest bb.
-> pcm038 + pbl + debug level 7
+> On Sat, Mar 02, 2013 at 07:20:12PM -0600, Josh Cartwright wrote:
+> > In San Francisco a couple weeks ago (ELC2013), Thomas Petazzoni
+> > informally mentioned barebox in passing, so I decided to toy with it a
+> > bit...
+> > 
+> > This patchset adds basic support for the Zynq SoC to barebox.  So far,
+> > it's only been tested as a 'secondary' bootloader (after u-boot).  Also
+> > added is support for the zc702 development board.
+> > 
 > 
-> Compilation failed with following error:
->   LD      arch/arm/pbl/zbarebox
-> arch/arm/mach-imx/built-in-pbl.o: In function `imx_nand_load_image':
-> /home/git/bb-mar05/arch/arm/mach-imx/external-nand-boot.c:232: undefined reference to `printf'
-> 
-> How we should handle debug messages in PBL in this case?
-you can not use the printf in the pbl you need to yse debug_ll
+> I have some patches laying around, that have support for booting first stage
+> from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
+> completely satisfied with them in one or two places. (The clocksource seems to
+> be inverse to what barebox expects, which would be a quick fix, and barebox boots
+> uuultra slow, if I do everything according to the TRM)
+> At the moment, I do not have access to the board though. But I hope I can get a
+> hand on it in the next days.
 
-Best Regards,
-J.
-> Thanks.
-> 
-> ---
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+If you have a chance to send out what you have, I'd be curious to see
+it.  Fortunately I have several Zynq boards to play with.
+
+   Josh
 
 _______________________________________________
 barebox mailing list
