@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCpPf-00067W-Gv
- for barebox@lists.infradead.org; Tue, 05 Mar 2013 10:48:04 +0000
-Date: Tue, 5 Mar 2013 11:48:01 +0100
+ id 1UCpQe-0006GI-7D
+ for barebox@lists.infradead.org; Tue, 05 Mar 2013 10:49:04 +0000
+Date: Tue, 5 Mar 2013 11:49:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130305104801.GS1906@pengutronix.de>
+Message-ID: <20130305104902.GT1906@pengutronix.de>
 References: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
- <1362392034-1908-10-git-send-email-s.hauer@pengutronix.de>
- <201303042142.55844.jbe@pengutronix.de>
+ <1362392034-1908-11-git-send-email-s.hauer@pengutronix.de>
+ <201303042143.11982.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201303042142.55844.jbe@pengutronix.de>
+In-Reply-To: <201303042143.11982.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/10] mtd: nand: Add bbt parameter
+Subject: Re: [PATCH 10/10] mtd: nand: Add command to generate a flash BBT
 To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 04, 2013 at 09:42:55PM +0100, Juergen Beisert wrote:
+On Mon, Mar 04, 2013 at 09:43:11PM +0100, Juergen Beisert wrote:
 > Sascha Hauer wrote:
 > > [...]
-> > --- a/drivers/mtd/nand/nand_base.c
-> > +++ b/drivers/mtd/nand/nand_base.c
-> > @@ -1688,6 +1688,23 @@ static int mtd_set_erasebad(struct device_d *dev,
-> > struct param_d *param, return 0;
-> >  }
-> >
-> > +static const char *mtd_get_bbt_type(struct device_d *dev, struct param_d 
-> *p) +{
-> > +	struct mtd_info *mtd = container_of(dev, struct mtd_info, class_dev);
-> > +	struct nand_chip *chip = mtd->priv;
-> > +	char *str;
+> > +static int do_imx_nand_bbm(int argc, char *argv[])
+> > +{
+> > +	int opt, ret;
+> > +	struct cdev *cdev;
+> > +	struct mtd_info *mtd;
+> > +	int yes = 0;
+> > +	void *bbt;
+> > +
+> > +	while ((opt = getopt(argc, argv, "y")) > 0) {
+> > +		switch (opt) {
+> > +		case 'y':
+> > +			yes = 1;
+> > +			break;
+> > +		default:
+> > +			return COMMAND_ERROR_USAGE;
+> > +		}
+> > +	}
+> > +
+> > +	cdev = cdev_open("nand0", O_RDWR);
 > 
-> Should also be "const char *str"
+> Is a fixed name a good idea?
 
-ok.
+Since there is only one NAND device on i.MX I think it's ok.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
