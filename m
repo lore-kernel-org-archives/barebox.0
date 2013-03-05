@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f51.google.com ([74.125.83.51])
+Received: from f64.mail.ru ([217.69.129.105])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCcs1-00049z-O9
- for barebox@lists.infradead.org; Mon, 04 Mar 2013 21:24:30 +0000
-Received: by mail-ee0-f51.google.com with SMTP id d17so4152548eek.38
- for <barebox@lists.infradead.org>; Mon, 04 Mar 2013 13:24:24 -0800 (PST)
-Date: Mon, 4 Mar 2013 22:25:36 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130304212535.GF911@x61s.8.8.8.8>
-References: <1362392034-1908-1-git-send-email-s.hauer@pengutronix.de>
- <1362392034-1908-6-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1362392034-1908-6-git-send-email-s.hauer@pengutronix.de>
+ id 1UCjXz-00051K-PE
+ for barebox@lists.infradead.org; Tue, 05 Mar 2013 04:32:17 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 05 Mar 2013 08:32:11 +0400
+Message-ID: <1362457931.500418774@f64.mail.ru>
+In-Reply-To: <20130304201929.GI1906@pengutronix.de>
+References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
+ <1362427802.171419274@f40.mail.ru> <20130304201929.GI1906@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,79 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/10] nand command: use enumeration for command instead
- of bitmask
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCA2LzZdIEFSTTogQWRkIHJlbG9jYXRhYmxlIGJpbmFy?=
+ =?UTF-8?B?eSBzdXBwb3J0?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-
-On Mon, Mar 04, 2013 at 11:13:49AM +0100, Sascha Hauer wrote:
-> A command can only be one of NAND_*, so use an enumeration instead
-> of a bitmask.
+> On Tue, Mar 05, 2013 at 12:10:02AM +0400, Alexander Shiyan wrote:
+> > > For making the same binary executable on different SoCs which have
+> > > different DRAM addresses we have to be independent of the compile
+> > > time link address.
+> > > 
+> > > This patch adds relocatable binary support for the ARM architecture.
+> > > With this two new functions are available. relocate_to_current_adr
+> > > will fixup the binary to continue executing from the current position.
+> > > relocate_to_adr will copy the binary to a given address, fixup the
+> > > binary and continue executing from there.
+> > > 
+> > > For the PBL and the real image relocatable support can be enabled
+> > > independently. This is done to (hopefully) better cope with setups
+> > > where the PBL runs from SRAM or ROM and the real binary does not.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ...
+> > 
+> > Hello.
+> > 
+> > I just suggest put this new stuff under EXPERIMENTAL condition.
+> > Thanks.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/nand.c |   12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/commands/nand.c b/commands/nand.c
-> index d00845f..79f6735 100644
-> --- a/commands/nand.c
-> +++ b/commands/nand.c
-> @@ -29,9 +29,9 @@
->  #include <fcntl.h>
->  #include <libgen.h>
->  
-> -#define NAND_ADD (1 << 0)
-> -#define NAND_DEL (1 << 1)
-> -#define NAND_MARKBAD (1 << 2)
-> +#define NAND_ADD	1
-> +#define NAND_DEL	2
-> +#define NAND_MARKBAD	3
->  
->  static int do_nand(int argc, char *argv[])
->  {
-> @@ -58,7 +58,7 @@ static int do_nand(int argc, char *argv[])
->  		}
->  	}
->  
-> -	if (command & NAND_ADD) {
-> +	if (command == NAND_ADD) {
+> I'm unsure this makes sense. In the kernel currently 388 options depend
+> on EXPERIMENTAL and 433 out of 438 defconfigs have EXPERIMENTAL enabled.
+> This recently led to the discussion whether this option should be
+> removed from the Kernel.
 
-some nitpick. Can we use switch case instead of if? With a default
-branch when command == 0 to return COMMAND_ERROR_USAGE?
+OK.
 
->  		while (optind < argc) {
->  			if (dev_add_bb_dev(basename(argv[optind]), NULL))
->  				return 1;
-> @@ -67,14 +67,14 @@ static int do_nand(int argc, char *argv[])
->  		}
->  	}
->  
-> -	if (command & NAND_DEL) {
-> +	if (command == NAND_DEL) {
->  		while (optind < argc) {
->  			dev_remove_bb_dev(basename(argv[optind]));
->  			optind++;
->  		}
->  	}
->  
-> -	if (command & NAND_MARKBAD) {
-> +	if (command == NAND_MARKBAD) {
->  		if (optind < argc) {
->  			int ret = 0, fd;
->  
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+One more thing. You are introduce "RELOCATABLE" symbol in arm/Kconfig,
+but symbol with same name is already exist in common/Kconfig. On
+my opinion this is no so good.
+Thanks.
 
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
