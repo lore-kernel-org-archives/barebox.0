@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCmFD-0008W0-L9
- for barebox@lists.infradead.org; Tue, 05 Mar 2013 07:25:04 +0000
-Date: Tue, 5 Mar 2013 08:25:00 +0100
+ id 1UCpCs-0004wf-NX
+ for barebox@lists.infradead.org; Tue, 05 Mar 2013 10:34:52 +0000
+Date: Tue, 5 Mar 2013 11:34:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130305072500.GM1906@pengutronix.de>
+Message-ID: <20130305103447.GQ1906@pengutronix.de>
 References: <1362427389-2144-1-git-send-email-s.hauer@pengutronix.de>
- <1362427802.171419274@f40.mail.ru>
- <20130304201929.GI1906@pengutronix.de>
- <1362457931.500418774@f64.mail.ru>
+ <1362427389-2144-2-git-send-email-s.hauer@pengutronix.de>
+ <20130304204656.GD911@x61s.8.8.8.8>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362457931.500418774@f64.mail.ru>
+In-Reply-To: <20130304204656.GD911@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,46 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/6] ARM: Add relocatable binary support
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 1/6] ARM: make cpu architecture detection available as
+ static inline function
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 05, 2013 at 08:32:11AM +0400, Alexander Shiyan wrote:
-> > On Tue, Mar 05, 2013 at 12:10:02AM +0400, Alexander Shiyan wrote:
-> > > > For making the same binary executable on different SoCs which have
-> > > > different DRAM addresses we have to be independent of the compile
-> > > > time link address.
-> > > > 
-> > > > This patch adds relocatable binary support for the ARM architecture.
-> > > > With this two new functions are available. relocate_to_current_adr
-> > > > will fixup the binary to continue executing from the current position.
-> > > > relocate_to_adr will copy the binary to a given address, fixup the
-> > > > binary and continue executing from there.
-> > > > 
-> > > > For the PBL and the real image relocatable support can be enabled
-> > > > independently. This is done to (hopefully) better cope with setups
-> > > > where the PBL runs from SRAM or ROM and the real binary does not.
-> > > > 
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ...
-> > > 
-> > > Hello.
-> > > 
-> > > I just suggest put this new stuff under EXPERIMENTAL condition.
-> > > Thanks.
-> > 
-> > I'm unsure this makes sense. In the kernel currently 388 options depend
-> > on EXPERIMENTAL and 433 out of 438 defconfigs have EXPERIMENTAL enabled.
-> > This recently led to the discussion whether this option should be
-> > removed from the Kernel.
+On Mon, Mar 04, 2013 at 09:46:56PM +0100, Alexander Aring wrote:
+> Hi,
 > 
-> OK.
+> > +/*
+> > + * Early version to get the ARM cpu architecture. Only needed during
+> > + * early startup when the C environment is not yet fully initialized.
+> > + * Normally you should use cpu_architecture() instead.
+> > + */
+> > +static inline int arm_early_get_cpu_architecture(void)
+> > +{
+> > +	int cpu_arch;
+> > +
+> > +	if ((read_cpuid_id() & 0x0008f000) == 0) {
+> > +		cpu_arch = CPU_ARCH_UNKNOWN;
+> > +	} else if ((read_cpuid_id() & 0x0008f000) == 0x00007000) {
+> > +		cpu_arch = (read_cpuid_id() & (1 << 23)) ? CPU_ARCH_ARMv4T : CPU_ARCH_ARMv3;
+> > +	} else if ((read_cpuid_id() & 0x00080000) == 0x00000000) {
+> > +		cpu_arch = (read_cpuid_id() >> 16) & 7;
+> > +		if (cpu_arch)
+> > +			cpu_arch += CPU_ARCH_ARMv3;
 > 
-> One more thing. You are introduce "RELOCATABLE" symbol in arm/Kconfig,
-> but symbol with same name is already exist in common/Kconfig. On
-> my opinion this is no so good.
+> I know... it's only a movement, but is cpu += CPU_ARCH_ARMv3 correct
+> here? All other has only a assignment.
 
-Indeed. This was not intentional. I removed it from arch/arm/Kconfig
+This particular line is present in the Kernel since the pre-git days, so
+I assume it's correct ;)
 
 Sascha
 
