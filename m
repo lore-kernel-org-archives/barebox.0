@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo1.mail-out.ovh.net ([178.32.97.206]
- helo=mo1.mail-out.ovh.net)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UCr2Y-0007SE-Rt
- for barebox@lists.infradead.org; Tue, 05 Mar 2013 12:32:20 +0000
-Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C5CCDFFA243
- for <barebox@lists.infradead.org>; Tue,  5 Mar 2013 13:48:35 +0100 (CET)
-Date: Tue, 5 Mar 2013 13:31:20 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130305123120.GM23022@game.jcrosoft.org>
-References: <1362431430-24286-1-git-send-email-plagnioj@jcrosoft.com>
- <20130305110025.GV1906@pengutronix.de>
+ id 1UCrwr-0001Sf-4D
+ for barebox@lists.infradead.org; Tue, 05 Mar 2013 13:30:30 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 16020BF0FD
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 21:42:52 +0100 (CET)
+Message-ID: <5135F36E.2090401@phytec.de>
+Date: Tue, 05 Mar 2013 14:30:22 +0100
+From: =?ISO-8859-1?Q?J=FCrgen?= <J.Kilb@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130305110025.GV1906@pengutronix.de>
+References: <1360336929.3798.11.camel@lws-weitzel>
+ <20130211100432.GZ1906@pengutronix.de>
+ <OFC6CD83ED.4FD2D09A-ONC1257B25.0047F4F9-C1257B25.00480A80@phytec.de>
+In-Reply-To: <OFC6CD83ED.4FD2D09A-ONC1257B25.0047F4F9-C1257B25.00480A80@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,122 +22,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] highbank: switch to defaultenv-2
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Rob Herring <rob.herring@calxeda.com>
+Subject: Re: Antwort: Re: v2013.02.0 phyCORE-OMAP4 MLO to big
+To: barebox@lists.infradead.org
 
-On 12:00 Tue 05 Mar     , Sascha Hauer wrote:
-> On Mon, Mar 04, 2013 at 10:10:30PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Cc: Rob Herring <rob.herring@calxeda.com>
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> > 
-> > diff --git a/arch/arm/boards/highbank/env/boot/ahci b/arch/arm/boards/highbank/env/boot/ahci
-> > new file mode 100644
-> > index 0000000..9a41366
-> > --- /dev/null
-> > +++ b/arch/arm/boards/highbank/env/boot/ahci
-> > @@ -0,0 +1,21 @@
-> > +#!/bin/sh
-> > +
-> > +if [ "$1" = menu ]; then
-> > +	boot-menu-add-entry "$0" "AHCI (part 0 or boot if UEFI)"
-> > +	exit
-> > +fi
-> > +
-> > +path="/mnt/ahci"
-> > +
-> > +global.bootm.image="${path}/vmlinuz"
-> > +
-> > +. /env/data/oftree
-> > +
-> > +oftree=${path}/oftree
-> > +if [ -f $oftree ]; then
-> > +	global.bootm.oftree="$oftree"
-> > +fi
-> > +
-> > +# The rootdevice may actually be mmcblk1p2 if a card
-> > +# is inserted to the back MMC slot
-> 
-> This seems to copy copy pasted from the Efika Smartbook and I doubt this
-> is correct for highbank.
-> 
-> > +global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2"
-> 
-> The entry is named ahci and it sets the root device to mmcblk?
-yeah
-> 
-> > diff --git a/arch/arm/boards/highbank/env/boot/mmc b/arch/arm/boards/highbank/env/boot/mmc
-> > new file mode 100644
-> > index 0000000..43a04b5
-> > --- /dev/null
-> > +++ b/arch/arm/boards/highbank/env/boot/mmc
-> > @@ -0,0 +1,21 @@
-> > +#!/bin/sh
-> > +
-> > +if [ "$1" = menu ]; then
-> > +	boot-menu-add-entry "$0" "MMC slot"
-> > +	exit
-> > +fi
-> > +
-> > +path="/mnt/mmc"
-> > +
-> > +global.bootm.image="${path}/zimage"
-> > +
-> > +. /env/data/oftree
-> > +
-> > +oftree=${path}/oftree
-> > +if [ -f $oftree ]; then
-> > +	global.bootm.oftree="$oftree"
-> > +fi
-> > +
-> > +# The rootdevice may actually be mmcblk1p2 if a card
-> > +# is inserted to the back MMC slot
-> > diff --git a/arch/arm/boards/highbank/env/data/oftree b/arch/arm/boards/highbank/env/data/oftree
-> > new file mode 100644
-> > index 0000000..9a94b31
-> > --- /dev/null
-> > +++ b/arch/arm/boards/highbank/env/data/oftree
-> > @@ -0,0 +1,4 @@
-> > +#!/bin/sh
-> > +
-> > +#device tree provided by the firmware
-> > +global.bootm.oftree="/dev/dtb"
-> > diff --git a/arch/arm/boards/highbank/env/bin/init_board b/arch/arm/boards/highbank/env/init/001-dtb-probe
-> > similarity index 100%
-> > rename from arch/arm/boards/highbank/env/bin/init_board
-> > rename to arch/arm/boards/highbank/env/init/001-dtb-probe
-> > diff --git a/arch/arm/boards/highbank/env/init/bootseq b/arch/arm/boards/highbank/env/init/bootseq
-> > new file mode 100644
-> > index 0000000..7a76759
-> > --- /dev/null
-> > +++ b/arch/arm/boards/highbank/env/init/bootseq
-> > @@ -0,0 +1,6 @@
-> > +#!/bin/sh
-> > +
-> > +mkdir /env/boot.d
-> > +ln /env/boot/ahci /env/boot.d/010
-> > +ln /env/boot/mmc /env/boot.d/011
-> > +ln /env/boot/net /env/boot.d/012
-> 
-> Doesn't this give ugly errors when the files exist already on a persistent environment?
-> 
-> Also, isn't a bootsequence supposed to be changeable?
-no this is the default one fixed
+On 11.02.2013 Sascha Hauer wrote:
+> On Fri, Feb 08, 2013 at 04:22:09PM +0100, Jan Weitzel wrote:
+>> Hi,
+>> with the release v2013.02.0 the MLO gets so bit, that it eats the boot
+>> information in the SRAM.
+>>
+>> nm --size-sort
+>>
+>> ...
+>> 00000630 D nand_flash_ids
+>> 000008c0 t mci_probe
+>> 00000c00 b gpio_desc
+>> 00001400 b files
+>>
+>> If I remove  GPIOLIB from MLO it work again. Maybe setting MAX_FILES
+>> down or find a dynamic way for the big arrays is a better solution.
+>> Any Ideas?
+> Could you link the MLO to SDRAM instead?
+Hi Sascha, we have tried as you suggested and it doesn't work without =
 
-via IMPI you will be able to select deferent boot sequence
-on highbank you will control boot sequence via IMPI
+changes...
+
+We found two things:
+
+1.) There is early code which is not relocatable.
+
+We solved this by adding -fPIC to the CPPFLAGS.
+But I think, this is also solved with your patch =
+
+http://lists.infradead.org/pipermail/barebox/2013-March/013366.html
+
+2.) The TEXTBASE is passed to the signGP tool, which is wrong if
+       TEXT_BASE is different from the executing address before relocating.
+       In our case TEXT_BASE would be 0x86000000 but the MLO is executed =
 
 
-but we can add them in the env as the envfs support the symlink instead of
-create them on the fly
+in internal SRAM at 0x40300000.
 
-Best Regards,
-J.
+So I would suggest to create a config option like OMAP_IFT_BASE which =
+
+can be passed to the signGP tool and is set to 0x40300000 per default..
+
+What do you think?
+
+J=FCrgen
+
 
 _______________________________________________
 barebox mailing list
