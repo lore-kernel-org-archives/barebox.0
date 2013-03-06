@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDAjm-0000Wp-70
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 09:34:30 +0000
+ id 1UDAjo-0000Yf-BV
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 09:34:33 +0000
 Received: from mail413.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 46DC8104E3B9
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 10:45:17 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 45FF3104E782
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 10:45:19 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 10:29:38 +0100
-Message-Id: <1362562189-17783-9-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  6 Mar 2013 10:29:43 +0100
+Message-Id: <1362562189-17783-14-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362562189-17783-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130306092643.GF4401@game.jcrosoft.org>
  <1362562189-17783-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,570 +26,240 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/20] arm: add application support
+Subject: [PATCH 14/20] app: add test curses
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/Kconfig                       |    1 +
- arch/arm/Makefile                      |    6 +-
- arch/arm/apps/Kconfig                  |   11 ++++
- arch/arm/apps/Makefile                 |    6 ++
- arch/arm/apps/apps.lds.S               |   64 ++++++++++++++++++
- arch/arm/apps/binfmt.c                 |  111 ++++++++++++++++++++++++++++++++
- arch/arm/apps/head.S                   |   59 +++++++++++++++++
- arch/arm/apps/include/arch/asm/macro.h |   46 +++++++++++++
- arch/arm/apps/include/arch/setjmp.h    |   26 ++++++++
- arch/arm/apps/raise.c                  |   27 ++++++++
- arch/arm/apps/setjmp.S                 |   60 +++++++++++++++++
- arch/arm/apps/start.c                  |   35 ++++++++++
- 12 files changed, 451 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/apps/Kconfig
- create mode 100644 arch/arm/apps/Makefile
- create mode 100644 arch/arm/apps/apps.lds.S
- create mode 100644 arch/arm/apps/binfmt.c
- create mode 100644 arch/arm/apps/head.S
- create mode 100644 arch/arm/apps/include/arch/asm/macro.h
- create mode 100644 arch/arm/apps/include/arch/setjmp.h
- create mode 100644 arch/arm/apps/raise.c
- create mode 100644 arch/arm/apps/setjmp.S
- create mode 100644 arch/arm/apps/start.c
+ apps/Kconfig              |    4 ++
+ apps/Makefile             |    3 +-
+ apps/test_curses/Makefile |   11 +++
+ apps/test_curses/main.c   |  172 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 188 insertions(+), 2 deletions(-)
+ create mode 100644 apps/test_curses/Makefile
+ create mode 100644 apps/test_curses/main.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index f25dcf7..f30859b 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -2,6 +2,7 @@ config ARM
- 	bool
- 	select HAS_KALLSYMS
- 	select HAS_MODULES
-+	select HAS_APPLICATIONS
- 	select HAVE_CONFIGURABLE_TEXT_BASE
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 100a3c4..731d92a 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -275,9 +275,13 @@ else
- MACH :=
+diff --git a/apps/Kconfig b/apps/Kconfig
+index a025955..7c0b79e 100644
+--- a/apps/Kconfig
++++ b/apps/Kconfig
+@@ -41,4 +41,8 @@ endmenu
+ config APP_EXAMPLE
+ 	bool "example"
+ 
++config APP_TEST_CURSES
++	bool "test curses"
++	select APP_LIB_CURSES
++
  endif
+diff --git a/apps/Makefile b/apps/Makefile
+index cce547e..3a222d3 100644
+--- a/apps/Makefile
++++ b/apps/Makefile
+@@ -6,8 +6,7 @@ APP_CPPFLAGS += $(APP_CPPFLAGS-y)
+ export APP_CPPFLAGS
  
-+APP_LDFLAGS += -L $(shell dirname `$(CC) $(CPPFLAGS) -print-libgcc-file-name`) -lgcc
-+
- common-y += $(BOARD) $(MACH)
- common-y += arch/arm/lib/ arch/arm/cpu/
-+common-$(CONFIG_APPLICATIONS) += arch/arm/apps/
+ apps-$(CONFIG_APP_EXAMPLE) += example
+-
+-apps-$(CONFIG_APP_EXAMPLE) += example
++apps-$(CONFIG_APP_TEST_CURSES) += test_curses
  
- lds-y	:= arch/arm/lib/barebox.lds
-+apps-lds-y	:= arch/arm/apps/apps.lds
+ $(obj)/application: $(apps-lds) $(apps-y)
  
--CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds barebox-flash-image
-+CLEAN_FILES += include/generated/mach-types.h arch/arm/lib/barebox.lds arch/arm/apps/apps.lds barebox-flash-image
-diff --git a/arch/arm/apps/Kconfig b/arch/arm/apps/Kconfig
+diff --git a/apps/test_curses/Makefile b/apps/test_curses/Makefile
 new file mode 100644
-index 0000000..8fcb79d
+index 0000000..94207a1
 --- /dev/null
-+++ b/arch/arm/apps/Kconfig
++++ b/apps/test_curses/Makefile
 @@ -0,0 +1,11 @@
++targets := test_curses.map
 +
-+config APP_TEXT_BASE_OFFSET
-+	hex
-+	default 0x800000
-+	prompt "application text base offset"
-+	help
-+	  APP_TEXT_BASE = TEXT_BASE - APP_TEXT_BASE_OFFSET
-+	  all the application will be link at this address
-+	  the syscall table region of 0x2000 will be add
-+	  APP_TEXT_BASE - 0x2000 and then the malloc region at
-+	  APP_TEXT_BASE - 0x2000 - APP_MALLOC_SIZE
-diff --git a/arch/arm/apps/Makefile b/arch/arm/apps/Makefile
++# Make sure files are removed during clean
++extra-y       += test_curses.map
++
++app-y += main.o
++app-final-y = test_curses
++
++OBJCOPYFLAGS_test_curses.app = -O binary
++LDFLAGS_apps	:= -Map $(obj)/test_curses.map
++LDFLAGS_apps	+= -static --gc-sections
+diff --git a/apps/test_curses/main.c b/apps/test_curses/main.c
 new file mode 100644
-index 0000000..c7e9a80
+index 0000000..54f08f2
 --- /dev/null
-+++ b/arch/arm/apps/Makefile
-@@ -0,0 +1,6 @@
-+obj-y += binfmt.o
-+app-y += head.o
-+app-y += start.o
-+app-y += raise.o
-+app-y += setjmp.o
-+extry-y += apps.lds
-diff --git a/arch/arm/apps/apps.lds.S b/arch/arm/apps/apps.lds.S
-new file mode 100644
-index 0000000..b6e4ab9
---- /dev/null
-+++ b/arch/arm/apps/apps.lds.S
-@@ -0,0 +1,64 @@
++++ b/apps/test_curses/main.c
+@@ -0,0 +1,172 @@
 +/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
++ * This file is part of the bayou project.
 + *
-+ * Under GPLv2 only
++ * Copyright (C) 2008 Advanced Micro Devices, Inc.
 + *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
 + */
 +
-+#include <sizes.h>
-+#include <asm-generic/barebox.lds.h>
-+#include <asm-generic/memory_layout.h>
++#include <string.h>
++#include <stdlib.h>
++#include <curses.h>
 +
-+#define HEAD_BASE (TEXT_BASE - CONFIG_APP_TEXT_BASE_OFFSET)
++#define SCREEN_Y LINES
++#define SCREEN_X COLS
 +
-+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
-+OUTPUT_ARCH(arm)
-+ENTRY(_start)
-+SECTIONS
++#define ARRAY_SIZE(arr)                (sizeof(arr) / sizeof((arr)[0]))
++
++static int menu_width = 0;
++static int m_entries = 4;
++static unsigned int selected = 0;
++static WINDOW *menuwin, *status;
++char *i_name[] = {"test0", "test1", "test2", "test3" };
++
++char *get_name(int i)
 +{
-+	. = HEAD_BASE;
++	return i_name[i];
++}
 +
-+	. = ALIGN(4);
-+	.text      :
-+	{
-+		_stext = .;
-+		_text = .;
-+		*(.text_head_entry*)
-+		. = 0x80;
-+		KEEP(*(.appinfo.start))
-+		__appinfo_start = .;
-+		KEEP(*(.appinfo))
-+		__appinfo_end = .;
-+		KEEP(*(.appinfo.end))
-+		*(.text*)
++void create_menu(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(i_name); i++) {
++		char *name = get_name(i);
++
++		if (strlen(name) > menu_width)
++			menu_width = strlen(name);
 +	}
 +
-+	/* Discard unwind if enable in barebox */
-+	/DISCARD/ : { *(.ARM.ex*) }
++	menu_width += 4;
 +
-+	. = ALIGN(4);
-+	.rodata : { *(.rodata*) }
++	if (menu_width < 30)
++		menu_width = 30;
 +
-+	_etext = .;			/* End of text and rodata section */
++	menuwin = newwin(m_entries + 3, menu_width,
++			 (SCREEN_Y - (m_entries + 3)) / 2,
++			 (SCREEN_X - menu_width) / 2);
 +
-+	. = ALIGN(4);
-+	.data : { *(.data*) }
-+
-+	. = ALIGN(4);
-+	__bss_start = .;
-+	.bss : { *(.bss*) }
-+	__bss_stop = .;
-+	_end = .;
-+
-+	_barebox_app_image_size = __bss_start - HEAD_BASE;
-+	_barebox_app_info_size = __appinfo_end - __appinfo_start;
 +}
-diff --git a/arch/arm/apps/binfmt.c b/arch/arm/apps/binfmt.c
-new file mode 100644
-index 0000000..f6bc450
---- /dev/null
-+++ b/arch/arm/apps/binfmt.c
-@@ -0,0 +1,111 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ */
 +
-+#include <common.h>
-+#include <binfmt.h>
-+#include <init.h>
-+#include <fs.h>
-+#include <sizes.h>
-+#include <memory.h>
-+#include <malloc.h>
-+#include <apps/syscall_init.h>
-+
-+static int arm_application(char *file, int argc, char **argv, bool is_gpl)
++void draw_menu(void)
 +{
-+	struct syscall_trace st;
-+	u32 *buf32;
-+	u32 load_addr, size;
-+	int (*jump)(int argc, char** argv);
-+	void *barebox_app;
-+	int ret = 0;
-+	struct resource *app_res, *syscall_res, *malloc_res;
++	int i;
 +
-+	barebox_app = read_file(file, NULL);
-+	if (!barebox_app)
-+		return -EINVAL;
++	wattrset(menuwin, COLOR_PAIR(3));
++	wbkgd(menuwin, COLOR_PAIR(3));
++	wclear(menuwin);
++	wborder(menuwin, ACS_VLINE, ACS_VLINE, ACS_HLINE, ACS_HLINE,
++		ACS_ULCORNER, ACS_URCORNER, ACS_LLCORNER, ACS_LRCORNER);
 +
-+	buf32 = barebox_app + 0x30;
-+	load_addr = buf32[0];
-+	size = buf32[1];
++	wattrset(menuwin, COLOR_PAIR(4) | A_BOLD);
++	mvwprintw(menuwin, 0, (menu_width - 17) / 2, " Chooser ");
 +
-+	app_res = request_sdram_region("application", load_addr, size);
-+	if (!app_res) {
-+		perror("application: request_sdram_region");
-+		ret = -ENOMEM;
-+		goto err;
++	wattrset(menuwin, COLOR_PAIR(3));
++
++	for (i = 0; i < m_entries; i++) {
++		char *name = get_name(i);
++		int col = (menu_width - (2 + strlen(name))) / 2;
++
++		if (i == selected)
++			wattrset(menuwin, COLOR_PAIR(5) | A_BOLD);
++		else
++			wattrset(menuwin, COLOR_PAIR(3));
++
++		mvwprintw(menuwin, 2 + i, col, name);
 +	}
 +
-+	load_addr -= 0x2000;
 +
-+	syscall_res = request_sdram_region("bsyscall", load_addr, 0x2000);
-+	if (!syscall_res) {
-+		perror("application: bsyscall request_sdram_region");
-+		ret = -ENOMEM;
-+		goto err_app_res;
-+	}
++	wclear(status);
 +
-+	load_addr -= CONFIG_APP_MALLOC_SIZE;
++	mvwprintw(status, 0, (SCREEN_X - 10) / 2, "test");
 +
-+	malloc_res = request_sdram_region("application_malloc", load_addr, CONFIG_APP_MALLOC_SIZE);
-+	if (!malloc_res) {
-+		perror("application: bsyscall request_sdram_region");
-+		ret = -ENOMEM;
-+		goto err_malloc_res;
-+	}
-+
-+	memset((void*)malloc_res->start, 0, resource_size(malloc_res));
-+	memcpy((void*)app_res->start, barebox_app, size);
-+
-+	st.dest = (void*)syscall_res->start;
-+	st.malloc_base = malloc_res->start;
-+	st.malloc_size = resource_size(malloc_res);
-+	syscalls_init(&st);
-+
-+	jump = (void*)app_res->start;
-+	ret = jump(argc, argv);
-+
-+	syscalls_exit(&st);
-+
-+	release_sdram_region(malloc_res);
-+err_malloc_res:
-+	release_sdram_region(syscall_res);
-+err_app_res:
-+	release_sdram_region(app_res);
-+err:
-+	free(barebox_app);
-+	return ret;
++	wrefresh(menuwin);
++	wrefresh(status);
 +}
 +
-+static int arm_gpl_application(struct binfmt_hook *b, char *file, int argc, char **argv)
-+{
-+	return arm_application(file, argc, argv, true);
-+}
-+
-+static struct binfmt_hook binfmt_barebox_gpl_app_hook = {
-+	.type = filetype_arm_gpl_application,
-+	.hook = arm_gpl_application,
-+};
-+
-+static int arm_non_gpl_application(struct binfmt_hook *b, char *file, int argc, char **argv)
-+{
-+	/* You are NOT allow to remove this warning */
-+	pr_warn("non gpl compatible application\n");
-+	return arm_application(file, argc, argv, false);
-+}
-+
-+static struct binfmt_hook binfmt_barebox_app_hook = {
-+	.type = filetype_arm_application,
-+	.hook = arm_non_gpl_application,
-+};
-+
-+static int arm_app_register_image_handler(void)
-+{
-+	binfmt_register(&binfmt_barebox_app_hook);
-+	binfmt_register(&binfmt_barebox_gpl_app_hook);
-+
-+	return 0;
-+}
-+late_initcall(arm_app_register_image_handler);
-diff --git a/arch/arm/apps/head.S b/arch/arm/apps/head.S
-new file mode 100644
-index 0000000..9cc714c
---- /dev/null
-+++ b/arch/arm/apps/head.S
-@@ -0,0 +1,59 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+	.section ".text_head_entry.start"
-+	.globl _start
-+_start:
-+	/* save register */
-+	stmfd	sp!, {r2, r3, r4, r5, r6, r7, r8, r9, sl, lr}
-+	/* save barebox stack */
-+	mov	r2, sp
-+	/* setup new stack */
-+	ldr	sp, =_text
-+	sub	sp, #CONFIG_STACK_SIZE
-+	b _next
-+	.org 0x20
-+	.asciz "barebox_arm_app"
-+	.word _text				/* text base. If copied there,
-+						* barebox can skip relocation
-+						*/
-+	.word _barebox_app_image_size		/* image size to copy */
-+
-+_next:
-+	stmfd	sp!, {r0-r2}
-+1:	ldr	r0, =__bss_start
-+	mov	r1, #0
-+	ldr	r2, =__bss_stop
-+	sub	r2, r2, r0
-+	bl	memset			/* clear bss */
-+	ldmfd	sp!, {r0-r2}
-+
-+	b arm_app_start
-+
-+	.section ".appinfo.start"
-+	.asciz "#appinf"
-+	.word _barebox_app_info_size
-+
-+	.section ".appinfo.end"
-+	.asciz "appinf#"
-+
-+	.text
-+	.globl barebox_return
-+barebox_return:
-+	/* restore barebox the stack */
-+	mov	sp, r1
-+	/* restore register */
-+	ldmfd	sp!, {r2, r3, r4, r5, r6, r7, r8, r9, sl, pc}
-diff --git a/arch/arm/apps/include/arch/asm/macro.h b/arch/arm/apps/include/arch/asm/macro.h
-new file mode 100644
-index 0000000..e451024
---- /dev/null
-+++ b/arch/arm/apps/include/arch/asm/macro.h
-@@ -0,0 +1,46 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __ARCH_ASM_MACRO_H__
-+#define __ARCH_ASM_MACRO_H__
-+
-+#if (!defined(__ARM_ARCH_2__) && !defined(__ARM_ARCH_3__) \
-+	&& !defined(__ARM_ARCH_3M__) && !defined(__ARM_ARCH_4__))
-+#define BX(x)	bx	x
++#if 0
++#define debug(fmt, arg...) debug(fmt, ##arg)
 +#else
-+#define BX(x)	mov	pc, x
++#define debug(fmt, arg...)
 +#endif
 +
-+#define __FUNC(x)		\
-+	.balign 4;		\
-+	.globl x;		\
-+
-+#ifdef __thumb__
-+#define FUNC(x)	\
-+	__FUNC(x)	\
-+	.thumb_func;	\
-+x:
-+#else
-+#define FUNC(x)		\
-+	__FUNC(x)	\
-+x:
-+#endif
-+
-+#define ENDFUNC(x)		\
-+	.type x, #function;	\
-+	.size x, .-x
-+
-+#endif /* __ARCH_ASM_MACRO_H__ */
-diff --git a/arch/arm/apps/include/arch/setjmp.h b/arch/arm/apps/include/arch/setjmp.h
-new file mode 100644
-index 0000000..82058a9
---- /dev/null
-+++ b/arch/arm/apps/include/arch/setjmp.h
-@@ -0,0 +1,26 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __ARCH_SETJMP_H__
-+#define __ARCH_SETJMP_H__
-+
-+struct __jmp_buf {
-+		unsigned int regs[10];
-+};
-+
-+typedef struct __jmp_buf jmp_buf[1];
-+
-+#endif /* __ARCH_SETJMP_H__ */
-diff --git a/arch/arm/apps/raise.c b/arch/arm/apps/raise.c
-new file mode 100644
-index 0000000..18cc0d8
---- /dev/null
-+++ b/arch/arm/apps/raise.c
-@@ -0,0 +1,27 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#include <stdio.h>
-+
-+int raise(int signum)
++void loop(void)
 +{
-+	/* use puts as printf may not be availlable */
-+	puts("raise: ");
-+	puts(itoa(signum));
-+	puts(" caught\n");
++	int key;
 +
-+	return 0;
-+}
-diff --git a/arch/arm/apps/setjmp.S b/arch/arm/apps/setjmp.S
-new file mode 100644
-index 0000000..1607ce3
---- /dev/null
-+++ b/arch/arm/apps/setjmp.S
-@@ -0,0 +1,60 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
++	while (1) {
++		key = getch();
 +
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
++		debug("loop key = 0x%x\n", key);
 +
-+#include <arch/asm/macro.h>
++		if (key == ERR)
++			continue;
 +
-+	.text
-+FUNC(setjmp)
-+#ifndef	__thumb__
-+	stmia	r0, {r4, r5, r6, r7, r8, r9, r10, fp, sp, lr}
-+#else
-+	/* we need to do it in 2 steps in thumb */
-+	mov	r3, lr
-+	stmia	r0!, {r3, r4, r5, r6, r7}
-+	mov	r3, r8
-+	mov	r4, r9
-+	mov	r5, r10
-+	mov	r6, fp
-+	mov	r7, sp
-+	stmia	r0!, {r3, r4, r5, r6, r7}
-+#endif /* __thumb__ */
-+	mov	r0, #0
-+	BX(lr)
-+ENDFUNC(setjmp)
++		debug("loop key = 0x%x\n", key);
 +
-+	.text
-+FUNC(longjmp)
-+#ifndef	__thumb__
-+	ldmia	r0, {r4, r5, r6, r7, r8, r9, r10, fp, sp, lr}
-+	mov	r0, r1
-+	BX(lr)
-+#else
-+	/* we need to do it in 2 steps in thumb */
-+	mov	r2, r0
-+	add	r0, #20
-+	ldmia	r0!, {r3, r4, r5, r6, r7}
-+	mov	r8, r3
-+	mov	r9, r4
-+	mov	r10, r5
-+	mov	fp, r6
-+	mov	sp, r7
-+	ldmia	r2!, {r3, r4, r5, r6, r7}
-+	mov	r0, r1
-+	bne	1f
-+	mov	r0, #1
-+1:	BX(r3)
-+#endif /* __thumb__ */
-+ENDFUNC(longjmp)
-diff --git a/arch/arm/apps/start.c b/arch/arm/apps/start.c
-new file mode 100644
-index 0000000..af072a1
---- /dev/null
-+++ b/arch/arm/apps/start.c
-@@ -0,0 +1,35 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
++		if (key == 'q') {
++			clear();
++			refresh();
++			endwin();
++			exit(0);
++		}
++		else if (key == KEY_DOWN)
++			selected = (selected + 1) % m_entries;
++		else if (key == KEY_UP)
++			selected = (selected - 1) % m_entries;
++		else if (key == KEY_ENTER) {
++			clear();
++			refresh();
++			endwin();
++			exit(0);
++		} else
++			continue;
 +
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#include <sys/types.h>
-+
-+static void *barebox_sp;
-+void barebox_return(int, void*);
-+int app_start(int argc, char **argv);
-+
-+void exit(int c)
-+{
-+	barebox_return(c, barebox_sp);
++		draw_menu();
++	}
 +}
 +
-+void arm_app_start(int argc, char** argv, void *sp)
++int main(int argc, char **argv)
 +{
-+	int ret;
-+	barebox_sp = sp;
++	initscr();
 +
-+	ret = app_start(argc, argv);
-+	exit(ret);
++	start_color();			/* Start color 			*/
++	clear();
++	keypad(stdscr, TRUE);
++	curs_set(0);
++
++	init_pair(1, COLOR_WHITE, COLOR_RED);
++	init_pair(2, COLOR_BLACK, COLOR_WHITE);
++	init_pair(3, COLOR_BLACK, COLOR_WHITE);
++	init_pair(4, COLOR_CYAN, COLOR_WHITE);
++	init_pair(5, COLOR_WHITE, COLOR_RED);
++
++	wattrset(stdscr, COLOR_PAIR(1));
++	wbkgd(stdscr, COLOR_PAIR(1));
++	wclear(stdscr);
++
++	status = newwin(1, SCREEN_X, SCREEN_Y - 1, 0);
++	wattrset(status, COLOR_PAIR(2));
++	wbkgd(status, COLOR_PAIR(2));
++	wclear(status);
++
++	refresh();
++
++	create_menu();
++	draw_menu();
++
++	loop();
++
++	return EXIT_SUCCESS;
 +}
 -- 
 1.7.10.4
