@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
+Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD9xQ-0007Nh-GE
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:44:20 +0000
+ id 1UD9xQ-0007Nf-1E
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:44:16 +0000
 Received: from mail413.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id AC4F9104E4CF
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 29F48104E522
  for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 09:55:19 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 09:39:49 +0100
-Message-Id: <1362559192-11992-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  6 Mar 2013 09:39:47 +0100
+Message-Id: <1362559192-11992-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362559192-11992-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130306083849.GC4401@game.jcrosoft.org>
  <1362559192-11992-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,31 +26,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/9] meminfo: switch to pr_xxx
+Subject: [PATCH 4/9] startup: switch to pr_xxx
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/meminfo.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ common/startup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/meminfo.c b/common/meminfo.c
-index 5e3ff71..45733da 100644
---- a/common/meminfo.c
-+++ b/common/meminfo.c
-@@ -10,9 +10,9 @@ static int display_meminfo(void)
- 	ulong mend   = mem_malloc_end();
- 	ulong msize  = mend - mstart + 1;
+diff --git a/common/startup.c b/common/startup.c
+index 52a8996..e49cc4c 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -105,14 +105,14 @@ void __noreturn start_barebox(void)
  
--	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext - 1);
--	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
--	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
-+	pr_debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext - 1);
-+	pr_debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
-+	pr_info("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
- 		mstart, mend, size_human_readable(msize));
- 	return 0;
- }
+ 	for (initcall = __barebox_initcalls_start;
+ 			initcall < __barebox_initcalls_end; initcall++) {
+-		debug("initcall-> %pS\n", *initcall);
++		pr_debug("initcall-> %pS\n", *initcall);
+ 		result = (*initcall)();
+ 		if (result)
+ 			pr_err("initcall %pS failed: %s\n", *initcall,
+ 					strerror(-result));
+ 	}
+ 
+-	debug("initcalls done\n");
++	pr_debug("initcalls done\n");
+ 
+ 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+ 		int ret;
 -- 
 1.7.10.4
 
