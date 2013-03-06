@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp27.mail.ru ([94.100.176.180])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDJ6S-0008TD-Jl
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 18:30:14 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed,  6 Mar 2013 22:30:05 +0400
-Message-Id: <1362594605-1083-1-git-send-email-shc_work@mail.ru>
+ id 1UDLXx-0007CS-T7
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 21:06:52 +0000
+Date: Wed, 6 Mar 2013 22:06:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130306210640.GM1906@pengutronix.de>
+References: <20130306083849.GC4401@game.jcrosoft.org>
+ <1362559192-11992-1-git-send-email-plagnioj@jcrosoft.com>
+ <1362559192-11992-7-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1362559192-11992-7-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] Makefile: Create empty <config.h> if this header file is not
- needed by board
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/9] net/console: switch to pr_xxx
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Patch creates empty <config.h> if this header is not needed by board.
-This will allow to remove many empty config.h files from boards.
+On Wed, Mar 06, 2013 at 09:39:50AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  net/netconsole.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/netconsole.c b/net/netconsole.c
+> index 7d0f3f4..8db8356 100644
+> --- a/net/netconsole.c
+> +++ b/net/netconsole.c
+> @@ -185,7 +185,7 @@ static int netconsole_init(void)
+>  
+>  	ret = console_register(cdev);
+>  	if (ret) {
+> -		printf("netconsole: registering failed with %s\n", strerror(-ret));
+> +		pr_err("netconsole: registering failed with %s\n", strerror(-ret));
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- Makefile | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+When you rework the printfs please add a:
 
-diff --git a/Makefile b/Makefile
-index b5819fc..e8d9984 100644
---- a/Makefile
-+++ b/Makefile
-@@ -898,13 +898,18 @@ include/asm:
- 	$(Q)$(check-symlink)
- 	$(Q)$(create-symlink)
- 
-+define symlink-config-h
-+	if [ -f $(srctree)/$(BOARD)/config.h ]; then		\
-+		$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h';	\
-+		ln -fsn $(srctree)/$(BOARD)/config.h $@;	\
-+	else							\
-+		$(kecho) '  CREATE  $@';			\
-+		echo -n > $@;					\
-+	fi
-+endef
-+
- include/config.h: include/config/auto.conf
--	$(Q)$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h'
--ifneq ($(KBUILD_SRC),)
--	$(Q)ln -fsn $(srctree)/$(BOARD)/config.h $@
--else
--	$(Q)ln -fsn ../$(BOARD)/config.h $@
--endif
-+	$(Q)$(symlink-config-h)
- 
- # Generate some files
- # ---------------------------------------------------------------------------
+#define pr_fmt(fmt) "netconsole: " fmt
+
+to get a consistent layout of the pr_* messages.
+
+Sascha
+
 -- 
-1.7.12.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
