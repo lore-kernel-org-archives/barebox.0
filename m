@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo4.mail-out.ovh.net ([178.32.228.4])
+Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD9zM-0008Qd-K9
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:46:19 +0000
+ id 1UDA1d-0000sh-6P
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:48:37 +0000
 Received: from mail413.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 1AB3E104E395
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 09:57:17 +0100 (CET)
-Date: Wed, 6 Mar 2013 09:41:53 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id B9A6C104E541
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 09:59:39 +0100 (CET)
+Date: Wed, 6 Mar 2013 09:44:15 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130306084153.GD4401@game.jcrosoft.org>
-References: <1361014553-24489-1-git-send-email-plagnioj@jcrosoft.com>
- <20130306074327.GD1906@pengutronix.de>
- <20130306080118.GA4401@game.jcrosoft.org>
- <20130306081122.GF1906@pengutronix.de>
+Message-ID: <20130306084415.GE4401@game.jcrosoft.org>
+References: <1362557869-15030-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130306081122.GF1906@pengutronix.de>
+In-Reply-To: <1362557869-15030-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,46 +26,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] devfs: add symlink support
+Subject: Re: [PATCH] dummy malloc: Add licence header
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:11 Wed 06 Mar     , Sascha Hauer wrote:
-> On Wed, Mar 06, 2013 at 09:01:18AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 08:43 Wed 06 Mar     , Sascha Hauer wrote:
-> > > On Sat, Feb 16, 2013 at 12:35:53PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > >  fs/devfs.c       |   70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> > > >  include/driver.h |    1 +
-> > > >  2 files changed, 71 insertions(+)
-> > > 
-> > > What's your usecase with this patch? Telling me could increase my
-> > > motivation applying it.
-> > I use it to handle boot device and tty today
-> > 
-> > so the application part does not care about the real hardware they always have
-> > the same device (file) to search
+On 09:17 Wed 06 Mar     , Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/dummy_malloc.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 > 
-> This is in the same league as I wanted to do with persistent device
-> names. We should think about this in a more general way.
-> 
-> > > 
-> > > One thing I see with this patch that the next thing would be to add
-> > > directory support to debugfs in which case we might be better off
-> > > adding real device nodes and remove the devfs like we have it now
-> > > completely.
-> > yeah I've the idea to rewrite the devfs completly and the ramfs too
-> > 
-> > as the ramfs should be at vfs level so the devfs will nearly implement nothing
-> 
-> vfs level? You would have to implement one first, we do not have a vfs
-> level at all ;)
-yeah because today we duplicate too much code so with this we wil reduce the
-size of barebox
+> diff --git a/common/dummy_malloc.c b/common/dummy_malloc.c
+> index ccee521..dd36a5b 100644
+> --- a/common/dummy_malloc.c
+> +++ b/common/dummy_malloc.c
+> @@ -1,3 +1,26 @@
+> +/*
+> + * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
+you earn the copyright since you create the file ;)
+
+tks anyway
+
+I'm sending the application support
+
+with a partitial libc and curses with menu/panel/form support
+
+but still missing network
 
 Best Regards,
 J.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + *
+> + * As a special exception, if other files instantiate templates or use macros
+> + * or inline functions from this file, or you compile this file and link it
+> + * with other works to produce a work based on this file, this file does not
+> + * by itself cause the resulting work to be covered by the GNU General Public
+> + * License. However the source code for this file must still be made available
+> + * in accordance with section (3) of the GNU General Public License.
+> +
+> + * This exception does not invalidate any other reasons why a work based on
+> + * this file might be covered by the GNU General Public License.
+> + */
+>  #include <common.h>
+>  #include <malloc.h>
+>  
+> -- 
+> 1.8.2.rc2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
