@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
- helo=mo4.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD9xQ-0007Nd-MQ
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:44:22 +0000
+ id 1UD9zM-0008Qd-K9
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 08:46:19 +0000
 Received: from mail413.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 069B5104E51E
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 09:55:19 +0100 (CET)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 1AB3E104E395
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 09:57:17 +0100 (CET)
+Date: Wed, 6 Mar 2013 09:41:53 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 09:39:46 +0100
-Message-Id: <1362559192-11992-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1362559192-11992-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130306083849.GC4401@game.jcrosoft.org>
- <1362559192-11992-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130306084153.GD4401@game.jcrosoft.org>
+References: <1361014553-24489-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130306074327.GD1906@pengutronix.de>
+ <20130306080118.GA4401@game.jcrosoft.org>
+ <20130306081122.GF1906@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130306081122.GF1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,358 +24,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] intoduce dmesg to print the barebox printk to dmesg ring
- buffer
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] devfs: add symlink support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-the size can be configured vai DMESG_KFIFO_OSIZE
+On 09:11 Wed 06 Mar     , Sascha Hauer wrote:
+> On Wed, Mar 06, 2013 at 09:01:18AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 08:43 Wed 06 Mar     , Sascha Hauer wrote:
+> > > On Sat, Feb 16, 2013 at 12:35:53PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > ---
+> > > >  fs/devfs.c       |   70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> > > >  include/driver.h |    1 +
+> > > >  2 files changed, 71 insertions(+)
+> > > 
+> > > What's your usecase with this patch? Telling me could increase my
+> > > motivation applying it.
+> > I use it to handle boot device and tty today
+> > 
+> > so the application part does not care about the real hardware they always have
+> > the same device (file) to search
+> 
+> This is in the same league as I wanted to do with persistent device
+> names. We should think about this in a more general way.
+> 
+> > > 
+> > > One thing I see with this patch that the next thing would be to add
+> > > directory support to debugfs in which case we might be better off
+> > > adding real device nodes and remove the devfs like we have it now
+> > > completely.
+> > yeah I've the idea to rewrite the devfs completly and the ramfs too
+> > 
+> > as the ramfs should be at vfs level so the devfs will nearly implement nothing
+> 
+> vfs level? You would have to implement one first, we do not have a vfs
+> level at all ;)
+yeah because today we duplicate too much code so with this we wil reduce the
+size of barebox
 
-1024 by default
-4096 if DEBUG_INFO
-
-the verbosity of the printk can now be change at runtime and default via
-PRINTK_LEVEL
-
-rename dev_printf to dev_printk and update to printk
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/Kconfig                |   19 +++++++
- common/console.c                |  116 +++++++++++++++++++++++++++++++++++++++
- drivers/base/driver.c           |   18 ++++--
- include/linux/barebox-wrapper.h |   11 ----
- include/printk.h                |   68 ++++++++++++++++-------
- 5 files changed, 195 insertions(+), 37 deletions(-)
-
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c1454c7..a6d3846 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -122,6 +122,25 @@ config CMD_TIME
- 	  checking for ctrl-c, so the time command can be used with commands
- 	  which are interruptible with ctrl-c.
- 
-+config CMD_DMESG
-+	bool "dmesg"
-+	depends on CONSOLE_FULL
-+	  help
-+	  print the barebox output ring buffer
-+
-+if CMD_DMESG
-+config PRINTK_LEVEL
-+	int "printk level"
-+	range 0 7
-+	default 7
-+
-+config DMESG_KFIFO_SIZE
-+	prompt "kfifo dmesg size"
-+	int
-+	default 4086 if DEBUG_INFO
-+	default 1024
-+endif
-+
- config CMD_LINUX_EXEC
- 	bool "linux exec"
- 	depends on LINUX
-diff --git a/common/console.c b/common/console.c
-index 243d402..a7c8719 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -1,3 +1,4 @@
-+
- /*
-  * (C) Copyright 2000
-  * Paolo Scaffardi, AIRVENT SAM s.p.a - RIMINI(ITALY), arsenio@tin.it
-@@ -349,3 +350,118 @@ int ctrlc (void)
- }
- EXPORT_SYMBOL(ctrlc);
- #endif /* ARCH_HAS_CTRC */
-+
-+#ifdef CONFIG_CMD_DMESG
-+#include <command.h>
-+#include <complete.h>
-+#include <init.h>
-+#include <globalvar.h>
-+
-+static char dmesg_output_buffer[CONFIG_DMESG_KFIFO_SIZE];
-+static struct kfifo __dmesg_output_fifo;
-+static struct kfifo *dmesg_output_fifo = &__dmesg_output_fifo;
-+static int printk_level = CONFIG_PRINTK_LEVEL;
-+static char printk_level_str[2] = __stringify(CONFIG_PRINTK_LEVEL);
-+
-+static int printk_level_set(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	int level = simple_strtoul(val, NULL, 10);
-+
-+	if (level < 0 || level > 7)
-+		return -EINVAL;
-+
-+	printk_level = level;
-+	printk_level_str[0] = level + '0';
-+
-+	return 0;
-+}
-+
-+const char *printk_level_get(struct device_d *d, struct param_d *p)
-+{
-+	return printk_level_str;
-+}
-+
-+static int printk_init(void)
-+{
-+	return globalvar_add("printk_level", printk_level_set, printk_level_get, 0);
-+}
-+coredevice_initcall(printk_init);
-+
-+static int printk_fifo_init(void)
-+{
-+	kfifo_init(dmesg_output_fifo, dmesg_output_buffer,
-+			CONFIG_DMESG_KFIFO_SIZE);
-+
-+	return 0;
-+}
-+pure_initcall(printk_fifo_init);
-+
-+static int do_dmesg(int argc, char *argv[])
-+{
-+	kfifo_dump_str(dmesg_output_fifo, console_output_dump);
-+
-+	return 0;
-+}
-+
-+static const __maybe_unused char cmd_dmesg_help[] =
-+"print the barebox output ring buffer\n";
-+
-+BAREBOX_CMD_START(dmesg)
-+	.cmd		= do_dmesg,
-+	.usage		= "dmesg",
-+	BAREBOX_CMD_HELP(cmd_dmesg_help)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
-+BAREBOX_CMD_END
-+
-+int vprintk (const char *fmt, va_list args)
-+{
-+	uint i;
-+	char printbuffer[CFG_PBSIZE];
-+	char *s = printbuffer;
-+	int level;
-+
-+	/* For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	i = vsprintf(printbuffer, fmt, args);
-+
-+	level = printk_get_level(printbuffer);
-+	if (level) {
-+		s += 2;
-+		kfifo_putc(dmesg_output_fifo, '<');
-+		kfifo_putc(dmesg_output_fifo, level);
-+		kfifo_putc(dmesg_output_fifo, '>');
-+	}
-+
-+	/* Print the string */
-+	if (level <= printk_level + '0')
-+		puts(s);
-+
-+	while (*s) {
-+		if (*s == '\n')
-+			kfifo_putc(dmesg_output_fifo, '\r');
-+		kfifo_putc(dmesg_output_fifo, *s);
-+		s++;
-+	}
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(vprintk);
-+
-+int printk (const char *fmt, ...)
-+{
-+	va_list args;
-+	uint i;
-+
-+	va_start (args, fmt);
-+
-+	i = vprintk(fmt, args);
-+	/* For this to work, printbuffer must be larger than
-+	 * anything we ever want to print.
-+	 */
-+	va_end (args);
-+
-+	return i;
-+}
-+EXPORT_SYMBOL(printk);
-+#endif
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index fa30c68..17a11c8 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -364,23 +364,29 @@ const char *dev_id(const struct device_d *dev)
- 	return buf;
- }
- 
--int dev_printf(const struct device_d *dev, const char *format, ...)
-+#define PREFIX	
-+
-+int dev_printk(const struct device_d *dev, int level, const char *format, ...)
- {
- 	va_list args;
--	int ret = 0;
-+	char printbuffer[CFG_PBSIZE];
-+	char *s = printbuffer;
- 
- 	if (dev->driver && dev->driver->name)
--		ret += printf("%s ", dev->driver->name);
-+		s += sprintf(s, "%s ", dev->driver->name);
- 
--	ret += printf("%s: ", dev_name(dev));
-+	s += sprintf(s, "%s: ", dev_name(dev));
- 
- 	va_start(args, format);
- 
--	ret += vprintf(format, args);
-+	vsprintf(s, format, args);
- 
- 	va_end(args);
- 
--	return ret;
-+	if (IS_ENABLED(CONFIG_CMD_DMESG))
-+		return printk(KERN_SOH "%d%s", level, printbuffer);
-+	else
-+		return printk("%s", printbuffer);
- }
- 
- void devices_shutdown(void)
-diff --git a/include/linux/barebox-wrapper.h b/include/linux/barebox-wrapper.h
-index 1d1f846..ce68060 100644
---- a/include/linux/barebox-wrapper.h
-+++ b/include/linux/barebox-wrapper.h
-@@ -9,17 +9,6 @@
- #define kfree(ptr)		free(ptr)
- #define vfree(ptr)		free(ptr)
- 
--#define KERN_EMERG      ""   /* system is unusable                   */
--#define KERN_ALERT      ""   /* action must be taken immediately     */
--#define KERN_CRIT       ""   /* critical conditions                  */
--#define KERN_ERR        ""   /* error conditions                     */
--#define KERN_WARNING    ""   /* warning conditions                   */
--#define KERN_NOTICE     ""   /* normal but significant condition     */
--#define KERN_INFO       ""   /* informational                        */
--#define KERN_DEBUG      ""   /* debug-level messages                 */
--
--#define printk			printf
--
- #define pr_warn			pr_warning
- 
- #define __init
-diff --git a/include/printk.h b/include/printk.h
-index 3de8905..bdb3eda 100644
---- a/include/printk.h
-+++ b/include/printk.h
-@@ -1,6 +1,8 @@
- #ifndef __PRINTK_H
- #define __PRINTK_H
- 
-+#include <linux/kern_levels.h>
-+
- #define MSG_EMERG      0    /* system is unusable */
- #define MSG_ALERT      1    /* action must be taken immediately */
- #define MSG_CRIT       2    /* critical conditions */
-@@ -16,41 +18,67 @@
- #define LOGLEVEL	CONFIG_COMPILE_LOGLEVEL
- #endif
- 
-+#ifdef CONFIG_CMD_DMESG
-+int	printk(const char *fmt, ...) __attribute__ ((format(__printf__, 1, 2)));
-+int	vprintk(const char *fmt, va_list args);
-+#define __pr_printk(level, format, args...) \
-+	({	\
-+		int ret = 0;	\
-+		if (level <= LOGLEVEL) \
-+			ret = printk(KERN_SOH "%d" format, level, ##args);	\
-+		ret;					\
-+	 })
-+#else
-+#define printk			printf
-+#define vprintk			vprintf
-+#define __pr_printk(level, format, args...) \
-+	({	\
-+		int ret = 0;	\
-+		if (level <= LOGLEVEL) \
-+			ret = printk(format, ##args);	\
-+		ret;					\
-+	 })
-+#endif
-+
-+static inline int printk_get_level(const char *buffer)
-+{
-+	if (buffer[0] == KERN_SOH_ASCII && buffer[1]) {
-+		switch (buffer[1]) {
-+		case '0' ... '7':
-+		case 'd':	/* KERN_DEFAULT */
-+			return buffer[1];
-+		}
-+	}
-+	return 0;
-+}
-+
- /* debugging and troubleshooting/diagnostic helpers. */
- 
--int dev_printf(const struct device_d *dev, const char *format, ...)
--	__attribute__ ((format(__printf__, 2, 3)));
-+int dev_printk(const struct device_d *dev, int level, const char *format, ...)
-+	__attribute__ ((format(__printf__, 3, 4)));
- 
--#define __dev_printf(level, dev, format, args...) \
-+#define __dev_printk(level, dev, format, args...) \
- 	({	\
--		(level) <= LOGLEVEL ? dev_printf((dev), (format), ##args) : 0; \
-+		(level) <= LOGLEVEL ? dev_printk((dev), level, format, ##args) : 0; \
- 	 })
- 
- 
- #define dev_emerg(dev, format, arg...)		\
--	__dev_printf(0, (dev) , format , ## arg)
-+	__dev_printk(0, (dev) , format , ## arg)
- #define dev_alert(dev, format, arg...)		\
--	__dev_printf(1, (dev) , format , ## arg)
-+	__dev_printk(1, (dev) , format , ## arg)
- #define dev_crit(dev, format, arg...)		\
--	__dev_printf(2, (dev) , format , ## arg)
-+	__dev_printk(2, (dev) , format , ## arg)
- #define dev_err(dev, format, arg...)		\
--	__dev_printf(3, (dev) , format , ## arg)
-+	__dev_printk(3, (dev) , format , ## arg)
- #define dev_warn(dev, format, arg...)		\
--	__dev_printf(4, (dev) , format , ## arg)
-+	__dev_printk(4, (dev) , format , ## arg)
- #define dev_notice(dev, format, arg...)		\
--	__dev_printf(5, (dev) , format , ## arg)
-+	__dev_printk(5, (dev) , format , ## arg)
- #define dev_info(dev, format, arg...)		\
--	__dev_printf(6, (dev) , format , ## arg)
-+	__dev_printk(6, (dev) , format , ## arg)
- #define dev_dbg(dev, format, arg...)		\
--	__dev_printf(7, (dev) , format , ## arg)
--
--#define __pr_printk(level, format, args...) \
--	({	\
--		int ret = 0;	\
--		if (level <= LOGLEVEL) \
--			ret = printk(format, ##args);	\
--		ret;					\
--	 })
-+	__dev_printk(7, (dev) , format , ## arg)
- 
- #ifndef pr_fmt
- #define pr_fmt(fmt) fmt
--- 
-1.7.10.4
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
