@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD28z-0003zm-Su
+ id 1UD291-000417-CO
  for barebox@lists.infradead.org; Wed, 06 Mar 2013 00:23:44 +0000
 Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 985F9DC1538
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:34:43 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 71665DC1DF5
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:34:44 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 01:22:39 +0100
-Message-Id: <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130306002138.GQ23022@game.jcrosoft.org>
+Date: Wed,  6 Mar 2013 01:22:44 +0100
+Message-Id: <1362529364-20651-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130306002138.GQ23022@game.jcrosoft.org>
+ <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,58 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] kfifo: introduce kfifo_dump_str to dump the fifo
+Subject: [PATCH 6/6] meminfo: switch to pr_xxx
 To: barebox@lists.infradead.org
-
-This will allow to implement a dmesg mecanism in barebox
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- include/kfifo.h |    2 ++
- lib/kfifo.c     |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ common/meminfo.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/kfifo.h b/include/kfifo.h
-index 25880f4..9dbbe0d 100644
---- a/include/kfifo.h
-+++ b/include/kfifo.h
-@@ -74,5 +74,7 @@ static inline unsigned int kfifo_len(struct kfifo *fifo)
- void kfifo_putc(struct kfifo *fifo, unsigned char c);
- unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c);
+diff --git a/common/meminfo.c b/common/meminfo.c
+index 5e3ff71..45733da 100644
+--- a/common/meminfo.c
++++ b/common/meminfo.c
+@@ -10,9 +10,9 @@ static int display_meminfo(void)
+ 	ulong mend   = mem_malloc_end();
+ 	ulong msize  = mend - mstart + 1;
  
-+void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c));
-+
- #endif
- 
-diff --git a/lib/kfifo.c b/lib/kfifo.c
-index afd3894..7892aed 100644
---- a/lib/kfifo.c
-+++ b/lib/kfifo.c
-@@ -154,3 +154,24 @@ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c)
+-	debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext - 1);
+-	debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
+-	printf("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
++	pr_debug("barebox code: 0x%p -> 0x%p\n", _stext, _etext - 1);
++	pr_debug("bss segment:  0x%p -> 0x%p\n", __bss_start, __bss_stop - 1);
++	pr_info("malloc space: 0x%08lx -> 0x%08lx (size %s)\n",
+ 		mstart, mend, size_human_readable(msize));
  	return 0;
  }
- 
-+void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c))
-+{
-+	int i;
-+	unsigned char *c;
-+	unsigned int l;
-+	unsigned int len;
-+
-+	len = fifo->in - fifo->out;
-+
-+	/* first get the data from fifo->out until the end of the buffer */
-+	l = min(len, fifo->size - (fifo->out & (fifo->size - 1)));
-+	c = fifo->buffer + (fifo->out & (fifo->size - 1));
-+	for (i = 0; i < l; i++)
-+		dump(c[i]);
-+
-+	/* then get the rest (if any) from the beginning of the buffer */
-+	c = fifo->buffer;
-+	l = len - l;
-+	for (i = 0; i < l; i++)
-+		dump(c[i]);
-+}
 -- 
 1.7.10.4
 
