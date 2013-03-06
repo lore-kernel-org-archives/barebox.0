@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD28z-0003zn-Sr
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 00:23:44 +0000
+ id 1UD28z-0003zq-Sw
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 00:23:42 +0000
 Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id BE932DC1DE1
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:34:43 +0100 (CET)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 424E9DC1DF4
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:34:44 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 01:22:40 +0100
-Message-Id: <1362529364-20651-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  6 Mar 2013 01:22:43 +0100
+Message-Id: <1362529364-20651-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130306002138.GQ23022@game.jcrosoft.org>
  <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,46 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] console: switch to kfifo_dump_str
+Subject: [PATCH 5/6] at91: clock switch to pr_info
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/console.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/mach-at91/clock.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/console.c b/common/console.c
-index beb37bd..243d402 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -55,6 +55,11 @@ static struct kfifo __console_output_fifo;
- static struct kfifo *console_input_fifo = &__console_input_fifo;
- static struct kfifo *console_output_fifo = &__console_output_fifo;
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 2dde632..296f5d5 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -756,7 +756,7 @@ static int at91_clock_display(void)
+ 	if (pll_overclock)
+ 		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
  
-+static void console_output_dump(unsigned char ch)
-+{
-+	console_putc(CONSOLE_STDOUT, ch);
-+}
-+
- static int console_std_set(struct device_d *dev, struct param_d *param,
- 		const char *val)
- {
-@@ -86,14 +91,12 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	dev_param_set_generic(dev, param, active);
- 
- 	if (initialized < CONSOLE_INIT_FULL) {
--		char ch;
- 		initialized = CONSOLE_INIT_FULL;
- 		PUTS_LL("Switch to console [");
- 		PUTS_LL(dev_name(dev));
- 		PUTS_LL("]\n");
- 		barebox_banner();
--		while (kfifo_getc(console_output_fifo, &ch) == 0)
--			console_putc(CONSOLE_STDOUT, ch);
-+		kfifo_dump_str(console_output_fifo, console_output_dump);
- 	}
- 
- 	return 0;
+-	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
++	pr_info("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
+ 		cpu_freq / 1000000, (unsigned) mck.rate_hz / 1000000,
+ 		(unsigned) main_clk.rate_hz / 1000000,
+ 		((unsigned) main_clk.rate_hz % 1000000) / 1000);
 -- 
 1.7.10.4
 
