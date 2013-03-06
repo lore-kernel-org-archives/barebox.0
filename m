@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo4.mail-out.ovh.net ([46.105.72.36]
+Received: from 7.mo4.mail-out.ovh.net ([178.33.253.54]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDAjk-0000WL-Pi
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 09:34:14 +0000
+ id 1UDAjl-0000WG-JZ
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 09:34:21 +0000
 Received: from mail413.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id DBFB3104E775
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 227D5104E764
  for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 10:45:15 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  6 Mar 2013 10:29:35 +0100
-Message-Id: <1362562189-17783-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed,  6 Mar 2013 10:29:32 +0100
+Message-Id: <1362562189-17783-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362562189-17783-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130306092643.GF4401@game.jcrosoft.org>
  <1362562189-17783-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,424 +26,254 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/20] app: add some utils
+Subject: [PATCH 03/20] kbuild: add application (app) target
 To: barebox@lists.infradead.org
 
- - getchar_timeout
- - term (try to detect terminal size, position, ansi helper)
- - list
+This will allow to link compiled object (app-y) to the built-in-app.o across the source
+tree that will be finally link to the applications (app-final-y).
+
+Now we compile the source %.c in app-%.o and provide -D__APP__
+so we can known in the source when it's compile for barebox or pbl or app.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- apps/Makefile                |    1 +
- apps/include/utils/ansi.h    |   37 ++++++++++++++
- apps/include/utils/getchar.h |   22 ++++++++
- apps/include/utils/list.h    |  114 ++++++++++++++++++++++++++++++++++++++++++
- apps/include/utils/termcap.h |   23 +++++++++
- apps/utils/Makefile          |    2 +
- apps/utils/getchar.c         |   43 ++++++++++++++++
- apps/utils/termcap.c         |   97 +++++++++++++++++++++++++++++++++++
- 8 files changed, 339 insertions(+)
- create mode 100644 apps/include/utils/ansi.h
- create mode 100644 apps/include/utils/getchar.h
- create mode 100644 apps/include/utils/list.h
- create mode 100644 apps/include/utils/termcap.h
- create mode 100644 apps/utils/Makefile
- create mode 100644 apps/utils/getchar.c
- create mode 100644 apps/utils/termcap.c
+ Makefile               |    5 +++-
+ scripts/Makefile.build |   78 +++++++++++++++++++++++++++++++++++++++++++++---
+ scripts/Makefile.lib   |   23 ++++++++++++--
+ 3 files changed, 99 insertions(+), 7 deletions(-)
 
-diff --git a/apps/Makefile b/apps/Makefile
-index c5c5c48..28efb0d 100644
---- a/apps/Makefile
-+++ b/apps/Makefile
-@@ -16,6 +16,7 @@ $(obj)/include/barebox/syscalls.h: $(srctree)/include/apps/syscalls.h
- 	$(call cmd,shipped)
+diff --git a/Makefile b/Makefile
+index 4df6464..110f7aa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -493,6 +493,7 @@ barebox-alldirs	:= $(sort $(barebox-dirs) $(patsubst %/,%,$(filter %/, \
+ 		     $(core-n) $(core-) $(drivers-n) $(drivers-) \
+ 		     $(net-n)  $(net-)  $(libs-n)    $(libs-))))
  
- obj-y += libc/
-+obj-y += utils/
++app-common-y	:= $(patsubst %/, %/built-in-app.o, $(common-y))
+ pbl-common-y	:= $(patsubst %/, %/built-in-pbl.o, $(common-y))
+ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
  
- barebox-app-header += $(obj)/include/types.h
- barebox-app-header += $(obj)/include/barebox/syscalls.h
-diff --git a/apps/include/utils/ansi.h b/apps/include/utils/ansi.h
-new file mode 100644
-index 0000000..64f81a8
---- /dev/null
-+++ b/apps/include/utils/ansi.h
-@@ -0,0 +1,37 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __UTILS_ANSI_H__
-+#define __UTILS_ANSI_H__
-+
-+#define ansi_escape_m(d)		printf("\e[%dm", d);
-+#define ansi_save_cusror()		printf("\e[s")
-+#define ansi_restore_cusror()		printf("\e[u")
-+#define ansi_set_cursor(row, col)	printf("\e[%d;%dH", row, col)
-+#define ansi_reverse(on)		ansi_escape_m((on) ? 7 : 27)
-+#define ansi_start_reverse()		ansi_escape_m(7)
-+#define ansi_end_reverse()		ansi_escape_m(27)
-+#define ansi_cursor_enable(on)		printf( "\e[?25%c", ( on ) ? 'h' : 'l' );
-+#define ansi_clear()			printf("\e[2J\e[;H");
-+#define ansi_bold(on)			ansi_escape_m((on) ? 1 : 22)
-+#define ansi_blink(on)			ansi_escape_m((on) ? 5 : 25)
-+#define ansi_start_bold()		ansi_escape_m(1)
-+#define ansi_end_bold()			ansi_escape_m(22)
-+#define ansi_start_altcharset()		ansi_escape_m(14)
-+#define ansi_end_altcharset()		ansi_escape_m(10)
-+#define ansi_set_color(fg,bg)		printf("\e[%d;%dm", fg, bg)
-+
-+#endif /* __UTILS_ANSI_H__ */
-diff --git a/apps/include/utils/getchar.h b/apps/include/utils/getchar.h
-new file mode 100644
-index 0000000..074d6b2
---- /dev/null
-+++ b/apps/include/utils/getchar.h
-@@ -0,0 +1,22 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __UTILS_GETCHAR_H__
-+#define __UTILS_GETCHAR_H__
-+
-+int getchar_timeout(int ms);
-+
-+#endif /* __UTILS_GETCHAR_H__ */
-diff --git a/apps/include/utils/list.h b/apps/include/utils/list.h
-new file mode 100644
-index 0000000..8a18dae
---- /dev/null
-+++ b/apps/include/utils/list.h
-@@ -0,0 +1,114 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __UTILS_LIST_H__
-+#define __UTILS_LIST_H__
-+
-+struct list_entry {
-+	struct list_entry *prev;
-+	struct list_entry *next;
-+};
-+
-+struct list {
-+	struct list_entry head;
-+};
-+
-+#define LIST_HEAD_INIT(name) \
-+	{ \
-+		.head = { \
-+			.prev = &(name).head, \
-+			.next = &(name).head \
-+		} \
-+	}
-+
-+#define LIST_HEAD(name) \
-+	struct list name = LIST_HEAD_INIT(name)
-+
-+#define container_of(ptr, type, member) \
-+	((type *) (((void *)(ptr)) - ((void *) &(((type *)0)->member))))
-+
-+#define list_entry(ptr, type, member) \
-+	container_of(ptr, type, member)
-+
-+#define list_first_entry(ptr, type, member) \
-+	list_entry((ptr)->head.next, type, member)
-+
-+#define list_last_entry(head, type, member) \
-+	list_entry((head)->head.prev, type, member)
-+
-+#define list_for_each(pos, list) \
-+	for (pos = (list).head.next; pos != &(list).head; pos = pos->next)
-+
-+#define list_foreach_safe(pos, n, list) \
-+	for (pos = (list).head.next, *n = pos->next; \
-+		pos != &(list).head; pos = n, n = pos->next)
-+
-+#define list_for_each_entry(pos, list, member)				\
-+	for (pos = list_entry((list)->head.next, typeof(*pos), member);	\
-+	      &pos->member != (&(list)->head);				\
-+	     pos = list_entry(pos->member.next, typeof(*pos), member))
-+
-+
-+#define list_for_each_entry_safe(pos, n, list, member)			\
-+	for (pos = list_entry((list)->head.next, typeof(*pos), member),	\
-+		n = list_entry(pos->member.next, typeof(*pos), member);	\
-+	     &pos->member != (&(list)->head);				\
-+	     pos = n, n = list_entry(n->member.next, typeof(*n), member))
-+
-+
-+static inline bool list_empty(struct list *list)
-+{
-+	struct list_entry *head = &list->head;
-+
-+	return head->next == head;
-+}
-+
-+static inline void __list_add(struct list_entry *new,
-+			      struct list_entry *prev,
-+			      struct list_entry *next)
-+{
-+	next->prev = new;
-+	new->next = next;
-+	new->prev = prev;
-+	prev->next = new;
-+}
-+
-+static inline void list_add(struct list_entry *new, struct list *list)
-+{
-+	struct list_entry *head = &list->head;
-+
-+	__list_add(new, head, head->next);
-+}
-+
-+static inline void list_add_tail(struct list_entry *new, struct list *list)
-+{
-+	struct list_entry *head = &list->head;
-+
-+	__list_add(new, head->prev, head);
-+}
-+
-+static inline void list_del(struct list_entry *entry)
-+{
-+	struct list_entry *prev = entry->prev;
-+	struct list_entry *next = entry->next;
-+
-+	next->prev = prev;
-+	prev->next = next;
-+	entry->next = NULL;
-+	entry->prev = NULL;
-+}
-+	
-+#endif /* __UTILS_LIST_H__ */
-diff --git a/apps/include/utils/termcap.h b/apps/include/utils/termcap.h
-new file mode 100644
-index 0000000..b4305a2
---- /dev/null
-+++ b/apps/include/utils/termcap.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#ifndef __TERMCAP_H__
-+#define __TERMCAP_H__
-+
-+int term_get_size(int *row, int *col);
-+int term_get_cursor_pos(int *row, int *col);
-+
-+#endif /* __TERMCAP_H__ */
-diff --git a/apps/utils/Makefile b/apps/utils/Makefile
-new file mode 100644
-index 0000000..f5b7476
---- /dev/null
-+++ b/apps/utils/Makefile
-@@ -0,0 +1,2 @@
-+app-y += termcap.o
-+app-y += getchar.o
-diff --git a/apps/utils/getchar.c b/apps/utils/getchar.c
-new file mode 100644
-index 0000000..e511613
---- /dev/null
-+++ b/apps/utils/getchar.c
-@@ -0,0 +1,43 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#include <types.h>
-+#include <stdio.h>
-+#include <time.h>
-+#include <ctype.h>
-+#include <errno.h>
-+#include <utils/getchar.h>
-+
-+int getchar_timeout(int ms)
-+{
-+	struct timespec req, rem;
-+	int ret;
-+
-+	req.tv_nsec = 10;
-+	req.tv_sec = 0;
-+	ms *= 100;
-+
-+	while (!tstc()) {
-+		ret = nanosleep(&req, &rem);
-+		if (ret)
-+			return ret;
-+
-+		if (!ms--)
-+			return -ETIMEDOUT;
-+	}
-+
-+	return getchar();
-+}
-diff --git a/apps/utils/termcap.c b/apps/utils/termcap.c
-new file mode 100644
-index 0000000..dd24f66
---- /dev/null
-+++ b/apps/utils/termcap.c
-@@ -0,0 +1,97 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ *
-+ * As a special exception, if other files instantiate templates or use macros
-+ * or inline functions from this file, or you compile this file and link it
-+ * with other works to produce a work based on this file, this file does not
-+ * by itself cause the resulting work to be covered by the GNU General Public
-+ * License. However the source code for this file must still be made available
-+ * in accordance with section (3) of the GNU General Public License.
-+
-+ * This exception does not invalidate any other reasons why a work based on
-+ * this file might be covered by the GNU General Public License.
-+ */
-+
-+#include <types.h>
-+#include <stdio.h>
-+#include <ctype.h>
-+#include <errno.h>
-+#include <utils/getchar.h>
-+#include <utils/termcap.h>
-+#include <utils/ansi.h>
-+
-+#define TIMEOUT_GETC	10
-+#define MAX_COL_ROW	9999
-+
-+static int getnum(char end)
-+{
-+	int i = 0;
-+	int c;
-+
-+	while ((c = getchar_timeout(TIMEOUT_GETC)) > -1) {
-+		if (c == end)
-+			return i;
-+
-+		if (c < 0)
-+			return c;
-+
-+		if (!isdigit(c))
-+			return -1;
-+
-+		i *= 10;
-+		i += c - '0';
-+	}
-+
-+	return -1;
-+}
-+
-+int term_get_cursor_pos(int *row, int *col)
-+{
-+	int c;
-+	int __row;
-+
-+	/* request cursos position */
-+	printf("\e[6n");
-+
-+	/* reply \e[%d;%dR */
-+	c = getchar_timeout(TIMEOUT_GETC);
-+	if (c != '\e')
-+		return -1;
-+
-+	c = getchar_timeout(TIMEOUT_GETC);
-+	if (c != '[')
-+		return -1;
-+
-+	__row = getnum(';');
-+	if (__row < 0)
-+		return __row;
-+
-+	c = getnum('R');
-+	if (c < 0)
-+		return c;
-+
-+	*row = __row;
-+	*col = c;
-+
-+	return 0;
-+}
-+
-+int term_get_size(int *row, int *col)
-+{
-+	ansi_save_cusror();
-+
-+	/* reset scroll */
-+	printf("\e[r");
-+
-+	/* move the cursos to the bottom-right */
-+	ansi_set_cursor(MAX_COL_ROW, MAX_COL_ROW);
-+
-+	term_get_cursor_pos(row, col);
-+
-+	/* restore cursor */
-+	ansi_restore_cusror();
-+
-+	return 0;
-+}
+@@ -523,6 +524,8 @@ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
+ # System.map is generated to document addresses of all kernel symbols
+ 
+ barebox-common := $(common-y)
++barebox-app-common := $(app-common-y)
++export barebox-app-common
+ barebox-pbl-common := $(pbl-common-y)
+ export barebox-pbl-common
+ barebox-all    := $(barebox-common)
+@@ -733,7 +736,7 @@ barebox.srec: barebox
+ 
+ # The actual objects are generated when descending,
+ # make sure no implicit rule kicks in
+-$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common): $(barebox-dirs) ;
++$(sort $(barebox-head) $(barebox-common) ) $(barebox-lds) $(barebox-pbl-common) $(barebox-app-common): $(barebox-dirs) ;
+ 
+ # Handle descending into subdirectories listed in $(barebox-dirs)
+ # Preset locale variables to speed up the build process. Limit locale
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index a95bbe4..600d1f7 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -15,6 +15,8 @@ obj-m :=
+ lib-y :=
+ lib-m :=
+ pbl-y :=
++app-y :=
++app-final-y :=
+ always :=
+ targets :=
+ subdir-y :=
+@@ -98,7 +100,7 @@ ifneq ($(strip $(lib-y) $(lib-m) $(lib-n) $(lib-)),)
+ lib-target := $(obj)/lib.a
+ endif
+ 
+-ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target) $(pbl-y)),)
++ifneq ($(strip $(obj-y) $(obj-m) $(obj-n) $(obj-) $(lib-target) $(pbl-y) $(app-y)),)
+ builtin-target := $(obj)/built-in.o
+ endif
+ 
+@@ -108,11 +110,23 @@ pbl-target := $(obj)/built-in-pbl.o
+ endif
+ endif
+ 
++ifeq ($(CONFIG_APPLICATIONS), y)
++ifneq ($(strip $(app-y) $(builtin-target)),)
++app-target := $(obj)/built-in-app.o
++endif
++
++ifneq ($(strip $(app-final-y)),)
++app-final-target := $(addprefix $(obj)/,$(app-final-y))
++app-final-bin-target := $(addsuffix .app,$(app-final-bin-target))
++endif
++
++endif
++
+ # We keep a list of all modules in $(MODVERDIR)
+ 
+-__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(extra-y)) \
++__build: $(if $(KBUILD_BUILTIN),$(builtin-target) $(lib-target) $(pbl-target) $(app-target) $(extra-y)) \
+ 	 $(if $(KBUILD_MODULES),$(obj-m)) \
+-	 $(subdir-ym) $(always)
++	 $(subdir-ym) $(always) $(app-final-target) $(app-final-bin-target)
+ 	@:
+ 
+ # Linus' kernel sanity checking tool
+@@ -185,10 +199,12 @@ cmd_cc_symtypes_c	   = \
+ 
+ quiet_cmd_cc_o_c = CC $(quiet_modtag)  $@
+ quiet_cmd_pbl_cc_o_c = PBLCC   $@
++quiet_cmd_app_cc_o_c = APPCC   $@
+ 
+ ifndef CONFIG_MODVERSIONS
+ cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+ cmd_pbl_cc_o_c = $(CC) -D__PBL__ $(c_flags) $(PBL_CPPFLAGS) -c -o $@ $<
++cmd_app_cc_o_c = $(CC) -D__APP__ $(APP_CPPFLAGS) $(app_c_flags) -c -o $@ $<
+ 
+ else
+ # When module versioning is enabled the following steps are executed:
+@@ -239,8 +255,23 @@ define rule_pbl_cc_o_c
+ 	mv -f $(dot-target).tmp $(dot-target).cmd
+ endef
+ 
++define rule_app_cc_o_c
++	$(call echo-cmd,checksrc) $(cmd_checksrc)			  \
++	$(call echo-cmd,app_cc_o_c) $(cmd_app_cc_o_c);			  \
++	$(cmd_modversions)						  \
++	scripts/basic/fixdep $(depfile) $@ '$(call make-cmd,app_cc__o_c)' >    \
++	                                              $(dot-target).tmp;  \
++	rm -f $(depfile);						  \
++	mv -f $(dot-target).tmp $(dot-target).cmd
++
++endef
++
+ # Built-in and composite module parts
+ 
++app-%.o: %.c FORCE
++	$(call cmd,force_checksrc)
++	$(call if_changed_rule,app_cc_o_c)
++
+ pbl-%.o: %.c FORCE
+ 	$(call cmd,force_checksrc)
+ 	$(call if_changed_rule,pbl_cc_o_c)
+@@ -284,13 +315,19 @@ cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+ quiet_cmd_pbl_as_o_S = PBLAS   $@
+ cmd_pbl_as_o_S       = $(CC) -D__PBL__ $(a_flags) $(PBL_CPPFLAGS) -c -o $@ $<
+ 
++quiet_cmd_app_as_o_S = APPAS   $@
++cmd_app_as_o_S       = $(CC) -D__APP__ $(app_a_flags) $(APP_CPPFLAGS) -c -o $@ $<
++
++app-%.o: %.S FORCE
++	$(call if_changed_dep,app_as_o_S)
++
+ pbl-%.o: %.S FORCE
+ 	$(call if_changed_dep,pbl_as_o_S)
+ 
+ %.o: %.S FORCE
+ 	$(call if_changed_dep,as_o_S)
+ 
+-targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y)
++targets += $(real-objs-y) $(real-objs-m) $(lib-y) $(pbl-y) $(app-y)
+ targets += $(extra-y) $(MAKECMDGOALS) $(always)
+ 
+ # Linker scripts preprocessor (.lds.S -> .lds)
+@@ -336,6 +373,39 @@ $(pbl-target): $(pbl-y) FORCE
+ targets += $(pbl-target)
+ endif # pbl-target
+ 
++ifdef app-target
++quiet_cmd_app_link_o_target = APPLD   $@
++# If the list of objects to link is empty, just create an empty built-in-app.o
++cmd_app_link_o_target = $(if $(strip $(app-y)),\
++		      $(LD) $(app_ld_flags) -r -o $@ $(filter $(app-y), $^),\
++		      rm -f $@; $(AR) rcs $@)
++
++$(app-target): $(app-y) FORCE
++	$(call if_changed,app_link_o_target)
++targets += $(app-target)
++endif # app-target
++
++ifdef app-final-target
++quiet_cmd_app_final_ld = APPLD   $@
++cmd_app_final_ld = $(LD) $(LDFLAGS) $(LDFLAGS_apps) -o $@ \
++	-T $(apps-lds) \
++	--start-group $(filter-out $(apps-lds) $(barebox-app-common) FORCE ,$^) \
++	$(barebox-app-common) --end-group $(APP_LDFLAGS) \
++	$(filter-out $(apps-lds) $^ $(barebox-app-common) FORCE ,$^)
++
++$(app-final-target): $(obj)/built-in-app.o FORCE
++	$(call if_changed,app_final_ld)
++
++%.app: % FORCE
++	$(call if_changed,objcopy)
++	$(Q)$(kecho) '  Barebox Apps: $@ is ready'
++
++$(app-final-bin-target):	$(app-final-target) FORCE
++
++targets += $(app-final-target)
++targets += $(app-final-bin-target)
++endif # app-target
++
+ #
+ # Rule to compile a set of .o files into one .a file
+ #
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 7bb769b..90bf72b 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -40,6 +40,17 @@ pbl-y		+= $(__pbl-y)
+ 
+ pbl-y		:= $(sort $(patsubst %/, %/built-in-pbl.o, $(pbl-y)))
+ 
++# for non dirs add app- prefix to the target
++# so we recompile the source with custom flags and custom quiet
++__app-y		:= $(notdir $(app-y))
++app-y		:= $(patsubst %.o,app-%.o,$(__app-y))
++# add subdir from $(obj-y) and $(pbl-y)too so we do not need to have the dir define in
++# both $(obj-y) and $(pbl-y) and $(app-y)
++__app-y		:= $(filter-out $(app-y), $(filter %/, $(sort $(obj-y) $(pbl-y))))
++app-y		+= $(__app-y)
++
++app-y		:= $(sort $(patsubst %/, %/built-in-app.o, $(app-y)))
++
+ __subdir-y	:= $(patsubst %/,%,$(filter %/, $(obj-y)))
+ subdir-y	+= $(__subdir-y)
+ __subdir-m	:= $(patsubst %/,%,$(filter %/, $(obj-m)))
+@@ -65,9 +76,11 @@ multi-objs   := $(multi-objs-y) $(multi-objs-m)
+ 
+ # $(subdir-obj-y) is the list of objects in $(obj-y) which uses dir/ to
+ # tell kbuild to descend
+-__subdir-obj-y := $(filter %/built-in-pbl.o, $(pbl-y))
++__subdir-pbl-y := $(filter %/built-in-pbl.o, $(pbl-y))
++__subdir-app-y := $(filter %/built-in-app.o, $(app-y))
+ subdir-obj-y := $(filter %/built-in.o, $(obj-y))
+-subdir-obj-y += $(__subdir-obj-y)
++subdir-obj-y += $(__subdir-pbl-y)
++subdir-obj-y += $(__subdir-app-y)
+ 
+ # $(obj-dirs) is a list of directories that contain object files
+ obj-dirs := $(dir $(multi-objs) $(subdir-obj-y))
+@@ -85,6 +98,7 @@ obj-y		:= $(addprefix $(obj)/,$(obj-y))
+ obj-m		:= $(addprefix $(obj)/,$(obj-m))
+ lib-y		:= $(addprefix $(obj)/,$(lib-y))
+ pbl-y		:= $(addprefix $(obj)/,$(pbl-y))
++app-y		:= $(addprefix $(obj)/,$(app-y))
+ subdir-obj-y	:= $(addprefix $(obj)/,$(subdir-obj-y))
+ real-objs-y	:= $(addprefix $(obj)/,$(real-objs-y))
+ real-objs-m	:= $(addprefix $(obj)/,$(real-objs-m))
+@@ -141,6 +155,11 @@ ___cpp_flags      = -Wp,-MD,$(depfile) $(NOSTDINC_FLAGS) $(__cpp_flags)
+ 
+ ___ld_flags       = $(LDFLAGS) $(EXTRA_LDFLAGS)
+ 
++app_c_flags     = $(APPINCLUDE) $(___c_flags)
++app_a_flags     = $(APPINCLUDE) -D__ASSEMBLY__ $(___a_flags)
++app_cpp_flags   = $(APPINCLUDE) $(___cpp_flags)
++app_ld_flags    = $(___ld_flags)
++
+ c_flags        = $(LINUXINCLUDE) $(___c_flags)
+ a_flags        = $(LINUXINCLUDE) $(AFLAGS_LINUXINCLUDE) $(___a_flags)
+ cpp_flags      = $(LINUXINCLUDE) $(___cpp_flags)
 -- 
 1.7.10.4
 
