@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UD27y-0003uq-45
- for barebox@lists.infradead.org; Wed, 06 Mar 2013 00:22:39 +0000
+ id 1UD28z-0003zp-Su
+ for barebox@lists.infradead.org; Wed, 06 Mar 2013 00:23:42 +0000
 Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 20FAADC150D
- for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:33:37 +0100 (CET)
-Date: Wed, 6 Mar 2013 01:21:38 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 1F87DDC1DEE
+ for <barebox@lists.infradead.org>; Wed,  6 Mar 2013 01:34:44 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130306002138.GQ23022@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed,  6 Mar 2013 01:22:42 +0100
+Message-Id: <1362529364-20651-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130306002138.GQ23022@game.jcrosoft.org>
+ <1362529364-20651-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,75 +21,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6 v2] introduction of dmesg support
+Subject: [PATCH 4/6] startup: switch to pr_xxx
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/startup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-	we currently have 2 fifo at comsole level one for input one for output
-	we fill the output fifo before any console is registered and then
-	empty it
+diff --git a/common/startup.c b/common/startup.c
+index 52a8996..e49cc4c 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -105,14 +105,14 @@ void __noreturn start_barebox(void)
+ 
+ 	for (initcall = __barebox_initcalls_start;
+ 			initcall < __barebox_initcalls_end; initcall++) {
+-		debug("initcall-> %pS\n", *initcall);
++		pr_debug("initcall-> %pS\n", *initcall);
+ 		result = (*initcall)();
+ 		if (result)
+ 			pr_err("initcall %pS failed: %s\n", *initcall,
+ 					strerror(-result));
+ 	}
+ 
+-	debug("initcalls done\n");
++	pr_debug("initcalls done\n");
+ 
+ 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+ 		int ret;
+-- 
+1.7.10.4
 
-	Now we introduce a new mecanism as in the kernel dmesg
-
-	we will always fill the dmesg kfifo with drivers output
-
-	as in barebox we have 2 world
-
-	device/drivers and applicaiotn (commands)
-
-	the verbositty of the printk can be selected at runtime and
-	compilation
-
-	so for now on drivers will have to use pr_xxx and dev_xxx and
-	application will use printf
-
-	dmesg will print the kfifo at any time
-
-	we will extend this later with more control of what the drivers output
-	on the console or just in the fifo
-
-	This new feature is optionnal if dmes is disable we continue as before
-
-The following changes since commit 94e71b843f6456abacc2fe76a5c375a461fabdf7:
-
-  libubi: Use global mtd_all_ff function (2013-03-04 10:54:46 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/dmesg
-
-for you to fetch changes up to f0850bc66930ef3ef03c530632258794cd24bb7b:
-
-  meminfo: switch to pr_xxx (2013-03-04 11:11:00 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (6):
-      kfifo: introduce kfifo_dump_str to dump the fifo
-      console: switch to kfifo_dump_str
-      intoduce dmesg to print the barebox printk to dmesg ring buffer
-      startup: switch to pr_xxx
-      at91: clock switch to pr_info
-      meminfo: switch to pr_xxx
-
- arch/arm/mach-at91/clock.c      |    2 +-
- commands/Kconfig                |   19 +++++++++++++++++++
- common/console.c                |  124 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
- common/meminfo.c                |    6 +++---
- common/startup.c                |    4 ++--
- drivers/base/driver.c           |   11 +++++++----
- include/kfifo.h                 |    2 ++
- include/linux/barebox-wrapper.h |   11 -----------
- include/printk.h                |   68 ++++++++++++++++++++++++++++++++++++++++++++++++--------------------
- lib/kfifo.c                     |   21 +++++++++++++++++++++
- 10 files changed, 224 insertions(+), 44 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
