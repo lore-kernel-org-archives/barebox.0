@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDY8k-00033l-1C
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 10:33:37 +0000
+ id 1UDY8h-00033j-M5
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 10:33:35 +0000
 Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
  [212.202.120.50])
- by km20343-01.keymachine.de (Postfix) with ESMTPA id 4FEC37D4419
- for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 11:33:29 +0100 (CET)
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id 85BC87D42E3
+ for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 11:33:28 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Mar 2013 11:33:19 +0100
-Message-Id: <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+Date: Thu,  7 Mar 2013 11:33:18 +0100
+Message-Id: <1362652402-2985-2-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1362652402-2985-1-git-send-email-dev@lynxeye.de>
 References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
  <1362652402-2985-1-git-send-email-dev@lynxeye.de>
@@ -27,29 +27,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
+Subject: [PATCH v2 1/5] tegra: pull in iomap.h from the Linux kernel
 To: barebox@lists.infradead.org
 
-Main barebox is running on the A9 cluster. Use the correct ISA.
+This updates iomap.h to the latest Linux code.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-tegra/include/mach/iomap.h | 64 ++++++++++----------------------
+ 1 file changed, 19 insertions(+), 45 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7ac134e..5dbf74d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -125,7 +125,7 @@ config ARCH_VEXPRESS
+diff --git a/arch/arm/mach-tegra/include/mach/iomap.h b/arch/arm/mach-tegra/include/mach/iomap.h
+index ba478e7..6ca6504 100644
+--- a/arch/arm/mach-tegra/include/mach/iomap.h
++++ b/arch/arm/mach-tegra/include/mach/iomap.h
+@@ -62,47 +62,35 @@
+ #define TEGRA_RES_SEMA_BASE		0x60001000
+ #define TEGRA_RES_SEMA_SIZE		SZ_4K
  
- config ARCH_TEGRA
- 	bool "Nvidia Tegra-based boards"
--	select CPU_ARM926T
-+	select CPU_V7
- 	select HAS_DEBUG_LL
+-#define TEGRA_HDMI_BASE			0x54280000
+-#define TEGRA_HDMI_SIZE			SZ_256K
+-
+-#define TEGRA_GART_BASE			0x58000000
+-#define TEGRA_GART_SIZE			SZ_32M
+-
+-#define TEGRA_RES_SEMA_BASE		0x60001000
+-#define TEGRA_RES_SEMA_SIZE		SZ_4K
+-
+-#define TEGRA_ARB_SEMA_BASE		0x60002000
+-#define TEGRA_ARB_SEMA_SIZE		SZ_4K
+-
+ #define TEGRA_PRIMARY_ICTLR_BASE	0x60004000
+-#define TEGRA_PRIMARY_ICTLR_SIZE	64
+-
+-#define TEGRA_ARBGNT_ICTLR_BASE		0x60004040
+-#define TEGRA_ARBGNT_ICTLR_SIZE		192
++#define TEGRA_PRIMARY_ICTLR_SIZE	SZ_64
  
- endchoice
+ #define TEGRA_SECONDARY_ICTLR_BASE	0x60004100
+-#define TEGRA_SECONDARY_ICTLR_SIZE	64
++#define TEGRA_SECONDARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_TERTIARY_ICTLR_BASE	0x60004200
+-#define TEGRA_TERTIARY_ICTLR_SIZE	64
++#define TEGRA_TERTIARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_QUATERNARY_ICTLR_BASE	0x60004300
+-#define TEGRA_QUATERNARY_ICTLR_SIZE	64
++#define TEGRA_QUATERNARY_ICTLR_SIZE	SZ_64
++
++#define TEGRA_QUINARY_ICTLR_BASE	0x60004400
++#define TEGRA_QUINARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_TMR1_BASE			0x60005000
+-#define TEGRA_TMR1_SIZE			8
++#define TEGRA_TMR1_SIZE			SZ_8
+ 
+ #define TEGRA_TMR2_BASE			0x60005008
+-#define TEGRA_TMR2_SIZE			8
++#define TEGRA_TMR2_SIZE			SZ_8
+ 
+ #define TEGRA_TMRUS_BASE		0x60005010
+-#define TEGRA_TMRUS_SIZE		64
++#define TEGRA_TMRUS_SIZE		SZ_64
+ 
+ #define TEGRA_TMR3_BASE			0x60005050
+-#define TEGRA_TMR3_SIZE			8
++#define TEGRA_TMR3_SIZE			SZ_8
+ 
+ #define TEGRA_TMR4_BASE			0x60005058
+-#define TEGRA_TMR4_SIZE			8
++#define TEGRA_TMR4_SIZE			SZ_8
+ 
+ #define TEGRA_CLK_RESET_BASE		0x60006000
+ #define TEGRA_CLK_RESET_SIZE		SZ_4K
+@@ -125,17 +113,17 @@
+ #define TEGRA_AHB_GIZMO_BASE		0x6000C004
+ #define TEGRA_AHB_GIZMO_SIZE		0x10C
+ 
++#define TEGRA_SB_BASE			0x6000C200
++#define TEGRA_SB_SIZE			256
++
+ #define TEGRA_STATMON_BASE		0x6000C400
+ #define TEGRA_STATMON_SIZE		SZ_1K
+ 
+ #define TEGRA_GPIO_BASE			0x6000D000
+ #define TEGRA_GPIO_SIZE			SZ_4K
+ 
+-#define TEGRA_EXCEPTION_VECTORS_BASE    0x6000F000
+-#define TEGRA_EXCEPTION_VECTORS_SIZE    SZ_4K
+-
+-#define TEGRA_VDE_BASE		0x6001A000
+-#define TEGRA_VDE_SIZE		(SZ_8K + SZ_4K - SZ_256)
++#define TEGRA_EXCEPTION_VECTORS_BASE	0x6000F000
++#define TEGRA_EXCEPTION_VECTORS_SIZE	SZ_4K
+ 
+ #define TEGRA_APB_MISC_BASE		0x70000000
+ #define TEGRA_APB_MISC_SIZE		SZ_4K
+@@ -156,10 +144,10 @@
+ #define TEGRA_I2S2_SIZE			SZ_256
+ 
+ #define TEGRA_UARTA_BASE		0x70006000
+-#define TEGRA_UARTA_SIZE		64
++#define TEGRA_UARTA_SIZE		SZ_64
+ 
+ #define TEGRA_UARTB_BASE		0x70006040
+-#define TEGRA_UARTB_SIZE		64
++#define TEGRA_UARTB_SIZE		SZ_64
+ 
+ #define TEGRA_UARTC_BASE		0x70006200
+ #define TEGRA_UARTC_SIZE		SZ_256
+@@ -275,18 +263,4 @@
+ #define TEGRA_SDMMC4_BASE		0xC8000600
+ #define TEGRA_SDMMC4_SIZE		SZ_512
+ 
+-#if defined(CONFIG_TEGRA_DEBUG_UART_NONE)
+-# define TEGRA_DEBUG_UART_BASE 0
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTA)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTA_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTB)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTB_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTC)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTC_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTD)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTD_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTE)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTE_BASE
+-#endif
+-
+ #endif
 -- 
 1.8.1.2
 
