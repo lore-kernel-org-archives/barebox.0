@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
+Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDiNn-0003G4-0p
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 21:29:48 +0000
+ id 1UDipU-0002uC-Md
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 21:58:26 +0000
 Received: from mail412.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 38BF5FF8D5A
- for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 22:45:27 +0100 (CET)
-Date: Thu, 7 Mar 2013 22:25:23 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id F0C1FFF8C6A
+ for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 23:14:04 +0100 (CET)
+Date: Thu, 7 Mar 2013 22:54:02 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130307212523.GK4401@game.jcrosoft.org>
+Message-ID: <20130307215402.GA32347@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
@@ -24,10 +24,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9 v5] introduction of dmesg support
+Subject: [PATCH 00/11 v6] introduction of dmesg support
 To: barebox@lists.infradead.org
 
 HI,
+
+	v6: more switch
+	    use kfifo_put instead of kfifo_putc
+	    as we already now the size to copy
 
 	v5: rebase on master
 	   add missing kern_levels.h
@@ -69,12 +73,12 @@ are available in the git repository at:
 
   git://git.jcrosoft.org/barebox.git delivery/dmesg
 
-for you to fetch changes up to 2ed2d3d1c481302eea186d5639022aedc1bd6e28:
+for you to fetch changes up to 1ca2fe80fdcb5c73ffbb95246666060f45c0bfe8:
 
-  barebox_banner: switch to pr_info (2013-03-08 05:21:39 +0800)
+  ext4: switch debug and printf to dev_xxx (2013-03-08 05:48:48 +0800)
 
 ----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (9):
+Jean-Christophe PLAGNIOL-VILLARD (11):
       kfifo: introduce kfifo_dump_str to dump the fifo
       console: switch to kfifo_dump_str
       intoduce dmesg to print the barebox printk to dmesg ring buffer
@@ -84,21 +88,25 @@ Jean-Christophe PLAGNIOL-VILLARD (9):
       net/console: switch to pr_xxx
       startup: switch to pr_xxx
       barebox_banner: switch to pr_info
+      net/phy: convert to pr_info
+      ext4: switch debug and printf to dev_xxx
 
  arch/arm/mach-at91/clock.c      |    2 +-
  commands/Kconfig                |   19 +++++++++++++++++++
- common/console.c                |  125 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ common/console.c                |  116 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
  common/meminfo.c                |    6 +++---
  common/startup.c                |   12 ++++++------
  common/version.c                |    4 ++--
- drivers/base/driver.c           |   18 ++++++++++++------
+ drivers/base/driver.c           |   16 ++++++++++------
+ drivers/net/phy/phy.c           |    2 +-
+ fs/ext4/ext4_common.c           |   12 ++++++------
  include/kfifo.h                 |    2 ++
  include/linux/barebox-wrapper.h |   11 -----------
  include/linux/kern_levels.h     |   25 +++++++++++++++++++++++++
  include/printk.h                |   59 ++++++++++++++++++++++++++++++++++++++++++-----------------
  lib/kfifo.c                     |   21 +++++++++++++++++++++
  net/netconsole.c                |    4 ++--
- 13 files changed, 257 insertions(+), 51 deletions(-)
+ 15 files changed, 253 insertions(+), 58 deletions(-)
  create mode 100644 include/linux/kern_levels.h
 
 Best Regards,
