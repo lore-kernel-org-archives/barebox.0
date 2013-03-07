@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDY8t-000378-3l
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 10:33:46 +0000
+ id 1UDY8k-00034R-TI
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 10:33:43 +0000
 Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
  [212.202.120.50])
- by km20343-01.keymachine.de (Postfix) with ESMTPA id 986E27D44B4
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id 208527D4422
  for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 11:33:30 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Mar 2013 11:33:22 +0100
-Message-Id: <1362652402-2985-6-git-send-email-dev@lynxeye.de>
+Date: Thu,  7 Mar 2013 11:33:21 +0100
+Message-Id: <1362652402-2985-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1362652402-2985-1-git-send-email-dev@lynxeye.de>
 References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
  <1362652402-2985-1-git-send-email-dev@lynxeye.de>
@@ -27,37 +27,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/5] tegra: add power management controller driver
+Subject: [PATCH v2 4/5] tegra: add proper timer driver
 To: barebox@lists.infradead.org
 
-Currently only implements system wide reset functionality.
+Replace the ad-hoc clocksource implementation with a proper driver for
+the Tegra 20 timer. This driver is able to do the required hardware
+initialisation itself.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/Makefile      |  2 +-
- arch/arm/mach-tegra/reset.c       | 39 -----------------
- arch/arm/mach-tegra/tegra20-pmc.c | 89 +++++++++++++++++++++++++++++++++++++++
- arch/arm/mach-tegra/tegra20.c     |  4 ++
- 4 files changed, 94 insertions(+), 40 deletions(-)
- delete mode 100644 arch/arm/mach-tegra/reset.c
- create mode 100644 arch/arm/mach-tegra/tegra20-pmc.c
+ arch/arm/mach-tegra/Makefile        |   2 +-
+ arch/arm/mach-tegra/clock.c         |  56 -----------------
+ arch/arm/mach-tegra/tegra20-car.c   |   5 ++
+ arch/arm/mach-tegra/tegra20-timer.c | 120 ++++++++++++++++++++++++++++++++++++
+ arch/arm/mach-tegra/tegra20.c       |   4 ++
+ 5 files changed, 130 insertions(+), 57 deletions(-)
+ delete mode 100644 arch/arm/mach-tegra/clock.c
+ create mode 100644 arch/arm/mach-tegra/tegra20-timer.c
 
 diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
-index 6aa219c..bcc0cd4 100644
+index 3391528..6aa219c 100644
 --- a/arch/arm/mach-tegra/Makefile
 +++ b/arch/arm/mach-tegra/Makefile
 @@ -1,4 +1,4 @@
--obj-y += reset.o
+-obj-y += clock.o
+ obj-y += reset.o
  obj-y += tegra20.o
  obj-y += tegra20-car.o
-+obj-y += tegra20-pmc.o
- obj-y += tegra20-timer.o
-diff --git a/arch/arm/mach-tegra/reset.c b/arch/arm/mach-tegra/reset.c
++obj-y += tegra20-timer.o
+diff --git a/arch/arm/mach-tegra/clock.c b/arch/arm/mach-tegra/clock.c
 deleted file mode 100644
-index 91f9b3b..0000000
---- a/arch/arm/mach-tegra/reset.c
+index 82065ee..0000000
+--- a/arch/arm/mach-tegra/clock.c
 +++ /dev/null
-@@ -1,39 +0,0 @@
+@@ -1,56 +0,0 @@
 -/*
 - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
 - *
@@ -77,32 +80,72 @@ index 91f9b3b..0000000
 -
 -/**
 - * @file
-- * @brief Resetting an malta board
+- * @brief Clocksource based on Tegra internal timer
 - */
 -
 -#include <common.h>
+-#include <clock.h>
+-#include <linux/list.h>
+-#include <linux/clk.h>
+-#include <init.h>
 -#include <asm/io.h>
 -#include <mach/iomap.h>
 -
--#define PRM_RSTCTRL		TEGRA_PMC_BASE
+-static void __iomem *timer_reg_base = (void __iomem *) (TEGRA_TMR1_BASE);
 -
--void __noreturn reset_cpu(ulong addr)
+-#define timer_writel(value, reg) \
+-	__raw_writel(value, (u32)timer_reg_base + (reg))
+-#define timer_readl(reg) \
+-	__raw_readl((u32)timer_reg_base + (reg))
+-
+-static uint64_t tegra_clocksource_read(void)
 -{
--	int rstctrl;
--
--	rstctrl = __raw_readl((char *)PRM_RSTCTRL);
--	rstctrl |= 0x10;
--	__raw_writel(rstctrl, (char *)PRM_RSTCTRL);
--
--	unreachable();
+-	return timer_readl(0x10);
 -}
--EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-tegra/tegra20-pmc.c b/arch/arm/mach-tegra/tegra20-pmc.c
+-
+-static struct clocksource cs = {
+-	.read	= tegra_clocksource_read,
+-	.mask	= 0xffffffff,
+-};
+-
+-/* FIXME: here we have no initialization. All initialization made by U-Boot */
+-static int clocksource_init(void)
+-{
+-	cs.mult = clocksource_hz2mult(1000000, cs.shift);
+-	init_clock(&cs);
+-
+-	return 0;
+-}
+-core_initcall(clocksource_init);
+diff --git a/arch/arm/mach-tegra/tegra20-car.c b/arch/arm/mach-tegra/tegra20-car.c
+index eec3cc3..3ac389f 100644
+--- a/arch/arm/mach-tegra/tegra20-car.c
++++ b/arch/arm/mach-tegra/tegra20-car.c
+@@ -23,6 +23,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <linux/clk.h>
++#include <linux/clkdev.h>
+ #include <linux/err.h>
+ #include <mach/iomap.h>
+ 
+@@ -97,6 +98,10 @@ static int tegra20_car_probe(struct device_d *dev)
+ 	/* timer is a gate, but as it's enabled by BOOTROM we needn't worry */
+ 	clks[timer] = clk_fixed_factor("timer", "clk_m", 1, 1);
+ 
++
++	/* device to clock links */
++	clkdev_add_physbase(clks[timer], TEGRA_TMR1_BASE, NULL);
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
 new file mode 100644
-index 0000000..ed765f5
+index 0000000..6c1d302
 --- /dev/null
-+++ b/arch/arm/mach-tegra/tegra20-pmc.c
-@@ -0,0 +1,89 @@
++++ b/arch/arm/mach-tegra/tegra20-timer.c
+@@ -0,0 +1,120 @@
 +/*
 + * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
 + *
@@ -121,87 +164,118 @@ index 0000000..ed765f5
 +
 +/**
 + * @file
-+ * @brief Device driver for the Tegra 20 power management controller.
++ * @brief Device driver for the Tegra 20 timer, which exposes a clocksource.
 + */
 +
 +#include <common.h>
++#include <clock.h>
 +#include <init.h>
 +#include <io.h>
++#include <linux/clk.h>
 +
 +/* register definitions */
-+#define PMC_CNTRL			0x00
-+#define PMC_CNTRL_FUSE_OVERRIDE		(1 << 18)
-+#define PMC_CNTRL_INTR_POLARITY		(1 << 17)
-+#define PMC_CNTRL_CPUPWRREQ_OE		(1 << 16)
-+#define PMC_CNTRL_CPUPWRREQ_POLARITY	(1 << 15)
-+#define PMC_CNTRL_SIDE_EFFECT_LP0	(1 << 14)
-+#define PMC_CNTRL_AOINIT		(1 << 13)
-+#define PMC_CNTRL_PWRGATE_DIS		(1 << 12)
-+#define PMC_CNTRL_SYSCLK_OE		(1 << 11)
-+#define PMC_CNTRL_SYSCLK_POLARITY	(1 << 10)
-+#define PMC_CNTRL_PWRREQ_OE		(1 << 9)
-+#define PMC_CNTRL_PWRREQ_POLARITY	(1 << 8)
-+#define PMC_CNTRL_BLINK_EN		(1 << 7)
-+#define PMC_CNTRL_GLITCHDET_DIS		(1 << 6)
-+#define PMC_CNTRL_LATCHWAKE_EN		(1 << 5)
-+#define PMC_CNTRL_MAIN_RST		(1 << 4)
-+#define PMC_CNTRL_KBC_RST		(1 << 3)
-+#define PMC_CNTRL_RTC_RST		(1 << 2)
-+#define PMC_CNTRL_RTC_CLK_DIS		(1 << 1)
-+#define PMC_CNTRL_KBC_CLK_DIS		(1 << 0)
++#define TIMERUS_CNTR_1US	0x10
++#define TIMERUS_USEC_CFG	0x14
 +
-+static void __iomem *pmc_base;
++static void __iomem *timer_base;
 +
-+/* main SoC reset trigger */
-+void __noreturn reset_cpu(ulong addr)
++static uint64_t tegra20_timer_cs_read(void)
 +{
-+	writel(PMC_CNTRL_MAIN_RST, pmc_base + PMC_CNTRL);
-+
-+	unreachable();
++	return readl(timer_base + TIMERUS_CNTR_1US);
 +}
-+EXPORT_SYMBOL(reset_cpu);
 +
-+static int tegra20_pmc_probe(struct device_d *dev)
++static struct clocksource cs = {
++	.read	= tegra20_timer_cs_read,
++	.mask	= CLOCKSOURCE_MASK(32),
++};
++
++static int tegra20_timer_probe(struct device_d *dev)
 +{
-+	pmc_base = dev_request_mem_region(dev, 0);
-+	if (!pmc_base) {
++	struct clk *timer_clk;
++	unsigned long rate;
++	u32 reg;
++
++	/* use only one timer */
++	if (timer_base)
++		return -EBUSY;
++
++	timer_base = dev_request_mem_region(dev, 0);
++	if (!timer_base) {
 +		dev_err(dev, "could not get memory region\n");
 +		return -ENODEV;
 +	}
 +
++	timer_clk = clk_get(dev, NULL);
++	if (!timer_clk) {
++		dev_err(dev, "could not get clock\n");
++		return -ENODEV;
++	}
++
++	clk_enable(timer_clk);
++
++	/*
++	 * calibrate timer to run at 1MHz
++	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
++	 * representing the divisor and bits [8:15] representing the dividend
++	 * each in n+1 form.
++	 */
++	rate = clk_get_rate(timer_clk);
++	switch (rate) {
++	case 12000000:
++		reg = 0x000b;
++		break;
++	case 13000000:
++		reg = 0x000c;
++		break;
++	case 19200000:
++		reg = 0x045f;
++		break;
++	case 26000000:
++		reg = 0x0019;
++		break;
++	default:
++		reg = 0;
++		dev_warn(dev, "unknown timer clock rate\n");
++		break;
++	}
++	writel(reg, timer_base + TIMERUS_USEC_CFG);
++
++	cs.mult = clocksource_hz2mult(1000000, cs.shift);
++	init_clock(&cs);
++
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id tegra20_pmc_dt_ids[] = {
++static __maybe_unused struct of_device_id tegra20_timer_dt_ids[] = {
 +	{
-+		.compatible = "nvidia,tegra20-pmc",
++		.compatible = "nvidia,tegra20-timer",
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
-+static struct driver_d tegra20_pmc_driver = {
-+	.probe	= tegra20_pmc_probe,
-+	.name	= "tegra20-pmc",
-+	.of_compatible = DRV_OF_COMPAT(tegra20_pmc_dt_ids),
++static struct driver_d tegra20_timer_driver = {
++	.probe	= tegra20_timer_probe,
++	.name	= "tegra20-timer",
++	.of_compatible = DRV_OF_COMPAT(tegra20_timer_dt_ids),
 +};
 +
-+static int tegra20_pmc_init(void)
++static int tegra20_timer_init(void)
 +{
-+	return platform_driver_register(&tegra20_pmc_driver);
++	return platform_driver_register(&tegra20_timer_driver);
 +}
 +
-+coredevice_initcall(tegra20_pmc_init);
++coredevice_initcall(tegra20_timer_init);
 diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index c1b3f78..884671a 100644
+index 3831f1b..c1b3f78 100644
 --- a/arch/arm/mach-tegra/tegra20.c
 +++ b/arch/arm/mach-tegra/tegra20.c
-@@ -28,6 +28,10 @@ static int tegra20_init(void)
- 			   TEGRA_TMR1_BASE, TEGRA_TMR1_SIZE,
+@@ -24,6 +24,10 @@ static int tegra20_init(void)
+ 			   TEGRA_CLK_RESET_BASE, TEGRA_CLK_RESET_SIZE,
  			   IORESOURCE_MEM, NULL);
  
-+	add_generic_device("tegra20-pmc", DEVICE_ID_SINGLE, NULL,
-+			   TEGRA_PMC_BASE, TEGRA_PMC_SIZE,
++	add_generic_device("tegra20-timer", DEVICE_ID_SINGLE, NULL,
++			   TEGRA_TMR1_BASE, TEGRA_TMR1_SIZE,
 +			   IORESOURCE_MEM, NULL);
 +
  	return 0;
