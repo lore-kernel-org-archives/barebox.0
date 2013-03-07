@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo3.mail-out.ovh.net ([87.98.172.162]
- helo=mo3.mail-out.ovh.net)
+Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDipU-0002uC-Md
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 21:58:26 +0000
-Received: from mail412.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id F0C1FFF8C6A
- for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 23:14:04 +0100 (CET)
-Date: Thu, 7 Mar 2013 22:54:02 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130307215402.GA32347@game.jcrosoft.org>
+ id 1UDjTo-0005R2-17
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 22:40:04 +0000
+Date: Thu, 7 Mar 2013 16:46:25 -0600
+From: Josh Cartwright <joshc@eso.teric.us>
+Message-ID: <20130307224625.GH16050@kryptos>
+References: <cover.1362273612.git.joshc@eso.teric.us>
+ <20130303145810.GB10708@pengutronix.de>
+ <20130305170929.GD16050@kryptos>
+ <20130306172850.GA30452@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <20130306172850.GA30452@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,93 +25,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/11 v6] introduction of dmesg support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/5] Zynq support for barebox
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-HI,
+On Wed, Mar 06, 2013 at 06:28:50PM +0100, Steffen Trumtrar wrote:
+> On Tue, Mar 05, 2013 at 11:09:29AM -0600, Josh Cartwright wrote:
+[..]
+> > > I have some patches laying around, that have support for booting first stage
+> > > from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
+> > > completely satisfied with them in one or two places. (The clocksource seems to
+> > > be inverse to what barebox expects, which would be a quick fix, and barebox boots
+> > > uuultra slow, if I do everything according to the TRM)
+> > > At the moment, I do not have access to the board though. But I hope I can get a
+> > > hand on it in the next days.
+> > 
+> > If you have a chance to send out what you have, I'd be curious to see
+> > it.  Fortunately I have several Zynq boards to play with.
+> > 
+> 
+> Hi!
+> 
+> Have a look at
+> http://git.pengutronix.de/?p=str/barebox.git;a=summary
+> 
+> I "stole" your clk driver and added it to my patch stack :-)
+> Current state for ZedBoard:
+> 	- boot first stage from SD-Card
+> 		- barebox.bin needs to be processed with
+> 		./scripts/zynq_checksum barebox.bin BOOT.bin
+> 		to have the checksum in the BootROM header
+> 	- clocksource is arm_smp_tmd at seems accurate
+> 	- the BootROM needs about 4-5 seconds to copy barebox from
+> 	  SD to the OCM. I guess, I need to mess with the SD setup
+> 	  in the BootROM somehow
+> 	- just enough clkdev to use the timer
+> 	- all pinctrl, clk setup etc happens in the lowlevel init
 
-	v6: more switch
-	    use kfifo_put instead of kfifo_putc
-	    as we already now the size to copy
+Hey Steffen-
 
-	v5: rebase on master
-	   add missing kern_levels.h
+Thanks for sharing this! I'll be looking to get board support for the
+zc702 on top of your work this weekend (I have several Zynq boards, but
+none of them are ZedBoards).  I'm also in the process of porting the
+uboot zynq_gem driver.
 
-	v4: remove a debug info
+Do you have plans for submitting this to the list?
 
-	v3: add more swtich
+Thanks again,
 
-	we currently have 2 fifo at comsole level one for input one for output
-	we fill the output fifo before any console is registered and then
-	empty it
-
-	Now we introduce a new mecanism as in the kernel dmesg
-
-	we will always fill the dmesg kfifo with drivers output
-
-	as in barebox we have 2 world
-
-	device/drivers and applicaiotn (commands)
-
-	the verbositty of the printk can be selected at runtime and
-	compilation
-
-	so for now on drivers will have to use pr_xxx and dev_xxx and
-	application will use printf
-
-	dmesg will print the kfifo at any time
-
-	we will extend this later with more control of what the drivers output
-	on the console or just in the fifo
-
-	This new feature is optionnal if dmes is disable we continue as before
-
-The following changes since commit 092bfd5eb55d1b2d7ed098aa9723a2fa63b86192:
-
-  fix another brown paper bag bug introduced with compile time loglevel (2013-03-06 23:53:04 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/dmesg
-
-for you to fetch changes up to 1ca2fe80fdcb5c73ffbb95246666060f45c0bfe8:
-
-  ext4: switch debug and printf to dev_xxx (2013-03-08 05:48:48 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (11):
-      kfifo: introduce kfifo_dump_str to dump the fifo
-      console: switch to kfifo_dump_str
-      intoduce dmesg to print the barebox printk to dmesg ring buffer
-      startup: switch to pr_xxx
-      at91: clock switch to pr_info
-      meminfo: switch to pr_xxx
-      net/console: switch to pr_xxx
-      startup: switch to pr_xxx
-      barebox_banner: switch to pr_info
-      net/phy: convert to pr_info
-      ext4: switch debug and printf to dev_xxx
-
- arch/arm/mach-at91/clock.c      |    2 +-
- commands/Kconfig                |   19 +++++++++++++++++++
- common/console.c                |  116 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
- common/meminfo.c                |    6 +++---
- common/startup.c                |   12 ++++++------
- common/version.c                |    4 ++--
- drivers/base/driver.c           |   16 ++++++++++------
- drivers/net/phy/phy.c           |    2 +-
- fs/ext4/ext4_common.c           |   12 ++++++------
- include/kfifo.h                 |    2 ++
- include/linux/barebox-wrapper.h |   11 -----------
- include/linux/kern_levels.h     |   25 +++++++++++++++++++++++++
- include/printk.h                |   59 ++++++++++++++++++++++++++++++++++++++++++-----------------
- lib/kfifo.c                     |   21 +++++++++++++++++++++
- net/netconsole.c                |    4 ++--
- 15 files changed, 253 insertions(+), 58 deletions(-)
- create mode 100644 include/linux/kern_levels.h
-
-Best Regards,
-J.
+   Josh
 
 _______________________________________________
 barebox mailing list
