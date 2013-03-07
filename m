@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
- helo=km20343-01.keymachine.de)
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDY8k-00034R-TI
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 10:33:43 +0000
-Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
- [212.202.120.50])
- by km20343-01.keymachine.de (Postfix) with ESMTPA id 208527D4422
- for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 11:33:30 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Thu,  7 Mar 2013 11:33:21 +0100
-Message-Id: <1362652402-2985-5-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1362652402-2985-1-git-send-email-dev@lynxeye.de>
-References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UDYvF-0005b5-Gp
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 11:23:43 +0000
+Received: from mail190.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 7391DDC1072
+ for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 12:34:43 +0100 (CET)
+Date: Thu, 7 Mar 2013 12:19:16 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130307111916.GJ4401@game.jcrosoft.org>
+References: <1360336929.3798.11.camel@lws-weitzel>
+ <20130211100432.GZ1906@pengutronix.de>
+ <OFC6CD83ED.4FD2D09A-ONC1257B25.0047F4F9-C1257B25.00480A80@phytec.de>
+ <5135F36E.2090401@phytec.de> <20130307081859.GT1906@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130307081859.GT1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,268 +25,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/5] tegra: add proper timer driver
-To: barebox@lists.infradead.org
+Subject: Re: Antwort: Re: v2013.02.0 phyCORE-OMAP4 MLO to big
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Replace the ad-hoc clocksource implementation with a proper driver for
-the Tegra 20 timer. This driver is able to do the required hardware
-initialisation itself.
+On 09:18 Thu 07 Mar     , Sascha Hauer wrote:
+> Hi J=FCrgen,
+> =
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- arch/arm/mach-tegra/Makefile        |   2 +-
- arch/arm/mach-tegra/clock.c         |  56 -----------------
- arch/arm/mach-tegra/tegra20-car.c   |   5 ++
- arch/arm/mach-tegra/tegra20-timer.c | 120 ++++++++++++++++++++++++++++++++++++
- arch/arm/mach-tegra/tegra20.c       |   4 ++
- 5 files changed, 130 insertions(+), 57 deletions(-)
- delete mode 100644 arch/arm/mach-tegra/clock.c
- create mode 100644 arch/arm/mach-tegra/tegra20-timer.c
+> On Tue, Mar 05, 2013 at 02:30:22PM +0100, J=FCrgen wrote:
+> > On 11.02.2013 Sascha Hauer wrote:
+> > >On Fri, Feb 08, 2013 at 04:22:09PM +0100, Jan Weitzel wrote:
+> > >>Hi,
+> > >>with the release v2013.02.0 the MLO gets so bit, that it eats the boot
+> > >>information in the SRAM.
+> > >>
+> > >>nm --size-sort
+> > >>
+> > >>...
+> > >>00000630 D nand_flash_ids
+> > >>000008c0 t mci_probe
+> > >>00000c00 b gpio_desc
+> > >>00001400 b files
+> > >>
+> > >>If I remove  GPIOLIB from MLO it work again. Maybe setting MAX_FILES
+> > >>down or find a dynamic way for the big arrays is a better solution.
+> > >>Any Ideas?
+> > >Could you link the MLO to SDRAM instead?
+> > Hi Sascha, we have tried as you suggested and it doesn't work
+> > without changes...
+> > =
 
-diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
-index 3391528..6aa219c 100644
---- a/arch/arm/mach-tegra/Makefile
-+++ b/arch/arm/mach-tegra/Makefile
-@@ -1,4 +1,4 @@
--obj-y += clock.o
- obj-y += reset.o
- obj-y += tegra20.o
- obj-y += tegra20-car.o
-+obj-y += tegra20-timer.o
-diff --git a/arch/arm/mach-tegra/clock.c b/arch/arm/mach-tegra/clock.c
-deleted file mode 100644
-index 82065ee..0000000
---- a/arch/arm/mach-tegra/clock.c
-+++ /dev/null
-@@ -1,56 +0,0 @@
--/*
-- * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-- *
-- * This file is part of barebox.
-- * See file CREDITS for list of people who contributed to this project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--/**
-- * @file
-- * @brief Clocksource based on Tegra internal timer
-- */
--
--#include <common.h>
--#include <clock.h>
--#include <linux/list.h>
--#include <linux/clk.h>
--#include <init.h>
--#include <asm/io.h>
--#include <mach/iomap.h>
--
--static void __iomem *timer_reg_base = (void __iomem *) (TEGRA_TMR1_BASE);
--
--#define timer_writel(value, reg) \
--	__raw_writel(value, (u32)timer_reg_base + (reg))
--#define timer_readl(reg) \
--	__raw_readl((u32)timer_reg_base + (reg))
--
--static uint64_t tegra_clocksource_read(void)
--{
--	return timer_readl(0x10);
--}
--
--static struct clocksource cs = {
--	.read	= tegra_clocksource_read,
--	.mask	= 0xffffffff,
--};
--
--/* FIXME: here we have no initialization. All initialization made by U-Boot */
--static int clocksource_init(void)
--{
--	cs.mult = clocksource_hz2mult(1000000, cs.shift);
--	init_clock(&cs);
--
--	return 0;
--}
--core_initcall(clocksource_init);
-diff --git a/arch/arm/mach-tegra/tegra20-car.c b/arch/arm/mach-tegra/tegra20-car.c
-index eec3cc3..3ac389f 100644
---- a/arch/arm/mach-tegra/tegra20-car.c
-+++ b/arch/arm/mach-tegra/tegra20-car.c
-@@ -23,6 +23,7 @@
- #include <init.h>
- #include <io.h>
- #include <linux/clk.h>
-+#include <linux/clkdev.h>
- #include <linux/err.h>
- #include <mach/iomap.h>
- 
-@@ -97,6 +98,10 @@ static int tegra20_car_probe(struct device_d *dev)
- 	/* timer is a gate, but as it's enabled by BOOTROM we needn't worry */
- 	clks[timer] = clk_fixed_factor("timer", "clk_m", 1, 1);
- 
-+
-+	/* device to clock links */
-+	clkdev_add_physbase(clks[timer], TEGRA_TMR1_BASE, NULL);
-+
- 	return 0;
- }
- 
-diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
-new file mode 100644
-index 0000000..6c1d302
---- /dev/null
-+++ b/arch/arm/mach-tegra/tegra20-timer.c
-@@ -0,0 +1,120 @@
-+/*
-+ * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+/**
-+ * @file
-+ * @brief Device driver for the Tegra 20 timer, which exposes a clocksource.
-+ */
-+
-+#include <common.h>
-+#include <clock.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+
-+/* register definitions */
-+#define TIMERUS_CNTR_1US	0x10
-+#define TIMERUS_USEC_CFG	0x14
-+
-+static void __iomem *timer_base;
-+
-+static uint64_t tegra20_timer_cs_read(void)
-+{
-+	return readl(timer_base + TIMERUS_CNTR_1US);
-+}
-+
-+static struct clocksource cs = {
-+	.read	= tegra20_timer_cs_read,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+};
-+
-+static int tegra20_timer_probe(struct device_d *dev)
-+{
-+	struct clk *timer_clk;
-+	unsigned long rate;
-+	u32 reg;
-+
-+	/* use only one timer */
-+	if (timer_base)
-+		return -EBUSY;
-+
-+	timer_base = dev_request_mem_region(dev, 0);
-+	if (!timer_base) {
-+		dev_err(dev, "could not get memory region\n");
-+		return -ENODEV;
-+	}
-+
-+	timer_clk = clk_get(dev, NULL);
-+	if (!timer_clk) {
-+		dev_err(dev, "could not get clock\n");
-+		return -ENODEV;
-+	}
-+
-+	clk_enable(timer_clk);
-+
-+	/*
-+	 * calibrate timer to run at 1MHz
-+	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
-+	 * representing the divisor and bits [8:15] representing the dividend
-+	 * each in n+1 form.
-+	 */
-+	rate = clk_get_rate(timer_clk);
-+	switch (rate) {
-+	case 12000000:
-+		reg = 0x000b;
-+		break;
-+	case 13000000:
-+		reg = 0x000c;
-+		break;
-+	case 19200000:
-+		reg = 0x045f;
-+		break;
-+	case 26000000:
-+		reg = 0x0019;
-+		break;
-+	default:
-+		reg = 0;
-+		dev_warn(dev, "unknown timer clock rate\n");
-+		break;
-+	}
-+	writel(reg, timer_base + TIMERUS_USEC_CFG);
-+
-+	cs.mult = clocksource_hz2mult(1000000, cs.shift);
-+	init_clock(&cs);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id tegra20_timer_dt_ids[] = {
-+	{
-+		.compatible = "nvidia,tegra20-timer",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d tegra20_timer_driver = {
-+	.probe	= tegra20_timer_probe,
-+	.name	= "tegra20-timer",
-+	.of_compatible = DRV_OF_COMPAT(tegra20_timer_dt_ids),
-+};
-+
-+static int tegra20_timer_init(void)
-+{
-+	return platform_driver_register(&tegra20_timer_driver);
-+}
-+
-+coredevice_initcall(tegra20_timer_init);
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index 3831f1b..c1b3f78 100644
---- a/arch/arm/mach-tegra/tegra20.c
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -24,6 +24,10 @@ static int tegra20_init(void)
- 			   TEGRA_CLK_RESET_BASE, TEGRA_CLK_RESET_SIZE,
- 			   IORESOURCE_MEM, NULL);
- 
-+	add_generic_device("tegra20-timer", DEVICE_ID_SINGLE, NULL,
-+			   TEGRA_TMR1_BASE, TEGRA_TMR1_SIZE,
-+			   IORESOURCE_MEM, NULL);
-+
- 	return 0;
- }
- 
--- 
-1.8.1.2
+> > We found two things:
+> > =
 
+> > 1.) There is early code which is not relocatable.
+> > =
+
+> > We solved this by adding -fPIC to the CPPFLAGS.
+> > But I think, this is also solved with your patch
+> > http://lists.infradead.org/pipermail/barebox/2013-March/013366.html
+> =
+
+> This won't help you directly. What you could do with this is:
+> - generate a compressed image using PBL support
+> - The PBL is loaded to SRAM by the ROM, relocated to the current
+>   address in SRAM
+> - extracts the binary to SDRAM
+> - continues executing in SDRAM.
+this is what we do for the bootstrap on at91
+
+so the pbl setup the sdram and decompress it in sdram and jump in it
+
+also try the patch I send to switch the xloader to the generic bootstrap
+this decrease the size of the binary
+> =
+
+> Thinking about it it should work.
+> =
+
+> The other thing you could do is making the bss segment smaller.
+> =
+
+> For ARM we initialize the malloc space before the initcalls are
+> starting which means that malloc can be used in every initcall.
+> This in turn means that we can allocate the files array and the
+> gpio_desc array dynamically.
+> You would have to move the malloc initialization from initcalls
+> to early init for the other architectures though to make this
+> work.
+> =
+
+> Sascha
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
