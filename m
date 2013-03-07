@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from 10.mo3.mail-out.ovh.net ([87.98.165.232]
+ helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDbma-0005Jy-I9
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 14:26:57 +0000
-Message-ID: <5138A3AD.30403@free-electrons.com>
-Date: Thu, 07 Mar 2013 15:26:53 +0100
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
+ id 1UDiNn-0003G4-0p
+ for barebox@lists.infradead.org; Thu, 07 Mar 2013 21:29:48 +0000
+Received: from mail412.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 38BF5FF8D5A
+ for <barebox@lists.infradead.org>; Thu,  7 Mar 2013 22:45:27 +0100 (CET)
+Date: Thu, 7 Mar 2013 22:25:23 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130307212523.GK4401@game.jcrosoft.org>
 MIME-Version: 1.0
-References: <1361897742-3454-1-git-send-email-maxime.ripard@free-electrons.com>
- <20130304080232.GM25672@pengutronix.de> <51389BAF.9040802@free-electrons.com>
- <201303071510.39114.jbe@pengutronix.de>
-In-Reply-To: <201303071510.39114.jbe@pengutronix.de>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,61 +20,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] memsize: Make get_ram_size RAM proof
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/9 v5] introduction of dmesg support
+To: barebox@lists.infradead.org
 
-Hi Juergen,
+HI,
 
-Le 07/03/2013 15:10, Juergen Beisert a =E9crit :
-> Maxime Ripard wrote:
->>> [....]
->>>
->>> Unfortunately I had to drop this one. It breaks compilation on some
->>> architectures which do not have _text and __bss_stop (namely blackfin
->>> and another one I forgot about).
->>>
->>> Anyway, I realized that we now can start the MMU during early startup,
->>> so when you call this function from your board code your SDRAM might
->>> already be cached. I assume get_ram_size won't work reliably in this
->>> case anymore.
->>>
->>> Since you only use it to detect whether you have 128MiB or 256Mib, could
->>> you code a stripped down version of this function especially for your
->>> board? Could you even adjust the SDRAM controller registers to the size
->>> you really have? I have no idea if the SDRAM controller can cope with
->>> that, but it might be worth giving it a try. I have a patch in the
->>> queue moving the i.MX28 over to dynamically detecting the SDRAM size
->>> via controller readback, so this then would simply detect the correct
->>> size.
->>
->> I agree that this patch you're mentionning would be the best solution.
->>
->> However, the imx28 SDRAM controller doesn't seem to be able to be
->> reconfigured, so once it has been configured once, you're screwed.
-> =
+	v5: rebase on master
+	   add missing kern_levels.h
 
-> You have to do this test in the bootlets instead. As they run from the =
+	v4: remove a debug info
 
-> internal SRAM, you can do whatever you want with the SDRAM controller.
+	v3: add more swtich
 
-Yes, I know, but I haven't found a way to reconfigure the SDRAM
-controller to use a smaller memory size once it has been started (any
-attempts to do so failed miserably), and it doesn't seem to have any way
-to reset it either, but maybe I'm missing something.
+	we currently have 2 fifo at comsole level one for input one for output
+	we fill the output fifo before any console is registered and then
+	empty it
 
-Maxime
+	Now we introduce a new mecanism as in the kernel dmesg
 
--- =
+	we will always fill the dmesg kfifo with drivers output
 
-Maxime Ripard, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+	as in barebox we have 2 world
+
+	device/drivers and applicaiotn (commands)
+
+	the verbositty of the printk can be selected at runtime and
+	compilation
+
+	so for now on drivers will have to use pr_xxx and dev_xxx and
+	application will use printf
+
+	dmesg will print the kfifo at any time
+
+	we will extend this later with more control of what the drivers output
+	on the console or just in the fifo
+
+	This new feature is optionnal if dmes is disable we continue as before
+
+The following changes since commit 092bfd5eb55d1b2d7ed098aa9723a2fa63b86192:
+
+  fix another brown paper bag bug introduced with compile time loglevel (2013-03-06 23:53:04 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/dmesg
+
+for you to fetch changes up to 2ed2d3d1c481302eea186d5639022aedc1bd6e28:
+
+  barebox_banner: switch to pr_info (2013-03-08 05:21:39 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (9):
+      kfifo: introduce kfifo_dump_str to dump the fifo
+      console: switch to kfifo_dump_str
+      intoduce dmesg to print the barebox printk to dmesg ring buffer
+      startup: switch to pr_xxx
+      at91: clock switch to pr_info
+      meminfo: switch to pr_xxx
+      net/console: switch to pr_xxx
+      startup: switch to pr_xxx
+      barebox_banner: switch to pr_info
+
+ arch/arm/mach-at91/clock.c      |    2 +-
+ commands/Kconfig                |   19 +++++++++++++++++++
+ common/console.c                |  125 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ common/meminfo.c                |    6 +++---
+ common/startup.c                |   12 ++++++------
+ common/version.c                |    4 ++--
+ drivers/base/driver.c           |   18 ++++++++++++------
+ include/kfifo.h                 |    2 ++
+ include/linux/barebox-wrapper.h |   11 -----------
+ include/linux/kern_levels.h     |   25 +++++++++++++++++++++++++
+ include/printk.h                |   59 ++++++++++++++++++++++++++++++++++++++++++-----------------
+ lib/kfifo.c                     |   21 +++++++++++++++++++++
+ net/netconsole.c                |    4 ++--
+ 13 files changed, 257 insertions(+), 51 deletions(-)
+ create mode 100644 include/linux/kern_levels.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
