@@ -1,21 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x234.google.com ([2a00:1450:400c:c05::234])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDwI8-0002Eq-7e
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:20:57 +0000
-Received: by mail-wi0-f180.google.com with SMTP id hi8so839115wib.13
- for <barebox@lists.infradead.org>; Fri, 08 Mar 2013 04:20:49 -0800 (PST)
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UDwNA-0002T5-H6
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:26:06 +0000
+Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 0DBABFFA73E
+ for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 13:42:32 +0100 (CET)
+Date: Fri, 8 Mar 2013 13:21:43 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130308122143.GB32347@game.jcrosoft.org>
+References: <1362425866-1356-3-git-send-email-s.hauer@pengutronix.de>
+ <1362613518-15456-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130308074108.GX1906@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20130308063918.GB18166@pengutronix.de>
-References: <cover.1362273612.git.joshc@eso.teric.us>
- <20130303145810.GB10708@pengutronix.de>
- <20130305170929.GD16050@kryptos>
- <20130306172850.GA30452@pengutronix.de>
- <20130307224625.GH16050@kryptos>
- <20130308063918.GB18166@pengutronix.de>
-Date: Fri, 8 Mar 2013 13:20:47 +0100
-Message-ID: <CAHTX3dKmscVQUOssCrQnoUSBtD5EtJ7oSttd-1qTyLYU+1+=CQ@mail.gmail.com>
-From: Michal Simek <monstr@monstr.eu>
+Content-Disposition: inline
+In-Reply-To: <20130308074108.GX1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,116 +28,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Zynq support for barebox
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 1/1] beagle: add missing mmc twl and control init
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On 08:41 Fri 08 Mar     , Sascha Hauer wrote:
+> On Thu, Mar 07, 2013 at 12:45:18AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > take from xloader
+> > 
+> > with this the mmc work even when booting from nand
+> 
+> Which beagle board revision do you have? With this patch the MMC
+> doesn't work at all anymore, even when booting from it.
+c3
 
-2013/3/8 Steffen Trumtrar <s.trumtrar@pengutronix.de>:
-> On Thu, Mar 07, 2013 at 04:46:25PM -0600, Josh Cartwright wrote:
->> On Wed, Mar 06, 2013 at 06:28:50PM +0100, Steffen Trumtrar wrote:
->> > On Tue, Mar 05, 2013 at 11:09:29AM -0600, Josh Cartwright wrote:
->> [..]
->> > > > I have some patches laying around, that have support for booting first stage
->> > > > from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
->> > > > completely satisfied with them in one or two places. (The clocksource seems to
->> > > > be inverse to what barebox expects, which would be a quick fix, and barebox boots
->> > > > uuultra slow, if I do everything according to the TRM)
->> > > > At the moment, I do not have access to the board though. But I hope I can get a
->> > > > hand on it in the next days.
->> > >
->> > > If you have a chance to send out what you have, I'd be curious to see
->> > > it.  Fortunately I have several Zynq boards to play with.
->> > >
->> >
->> > Hi!
->> >
->> > Have a look at
->> > http://git.pengutronix.de/?p=str/barebox.git;a=summary
->> >
->> > I "stole" your clk driver and added it to my patch stack :-)
->> > Current state for ZedBoard:
->> >     - boot first stage from SD-Card
->> >             - barebox.bin needs to be processed with
->> >             ./scripts/zynq_checksum barebox.bin BOOT.bin
->> >             to have the checksum in the BootROM header
->> >     - clocksource is arm_smp_tmd at seems accurate
->> >     - the BootROM needs about 4-5 seconds to copy barebox from
->> >       SD to the OCM. I guess, I need to mess with the SD setup
->> >       in the BootROM somehow
->> >     - just enough clkdev to use the timer
->> >     - all pinctrl, clk setup etc happens in the lowlevel init
-
-Nice. What's the difference between this barebox and u-boot?
-I remember that discussion on u-boot mailing list.
-Is it just that Kconfig stuff and driver initialization?
-
-What about DT support? Initialized u-boot from device tree?
-Is it there?
-
-
->> Thanks for sharing this! I'll be looking to get board support for the
->> zc702 on top of your work this weekend (I have several Zynq boards, but
->> none of them are ZedBoards).  I'm also in the process of porting the
->> uboot zynq_gem driver.
->
-> First, \o/. I don't know how the two differ. But I would guess, that
-> you can pretty much copy the lowlevel stuff et al.
-> Only the DDR timing stuff may make problems.
-
-Difference is only in connection out of chip. How barebox handle this?
-Serial IP selections, ddr size, mmc, etc.
-
-
-> Second: No! Don't! I'm trying to get drivers/net/macb.c running on Zynq.
-> As far as I can tell at the moment, this is a driver for a
-> Cadence IP gem. And the zynq uses exactly that IP core.
-> Alas, I have problems with the dma_alloc_coherent call in its
-> probe function.
-
-Nice. I will look forward on input from this. We need to use this IP
-in linux kernel too.
-
->
-> The same goes for the UART driver and other cores. We should not start
-> developing Xilinx drivers for everything, if in reality we have IP cores
-> from other providers.
-
-definitely.
-
-> The same goes for Linux. I haven't managed to boot mainline linux yet,
-> but I saw that there are multiple bindings and drivers for Xilinx.
-> And the TRM clearly states, that WDT, GEM, SPI, UART and TTC are all
-> Cadence IP cores.
-
-yep, pl330, cadence gem, spi not sure, wdt also not sure, xilinx uart
-is in the mainline
-and none reports that there is cadence serial driver too.
-TTC is also news for me.
-If you can point me to them, that will be great.
-
-
->> Do you have plans for submitting this to the list?
->
-> Yes, definitely! I need to cleanup the patches a little and want to
-> be sure that I didn't do anything stupidly wrong. The problem with
-> dma_alloc is at least a hint, that I maybe did.
-
-Nice discussion. Would like to look at it with you but
-
-Hopefully next next week I will have more time to look at your patches
-and try it.
-
-Thanks,
-Michal
-
--- 
-Michal Simek, Ing. (M.Eng)
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
-Maintainer of Linux kernel - Xilinx Zynq ARM architecture
-Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/boards/beagle/board.c |   29 ++++++++++++++++++++++++++++-
+> >  1 file changed, 28 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
+> > index bed4651..6e69e87 100644
+> > --- a/arch/arm/boards/beagle/board.c
+> > +++ b/arch/arm/boards/beagle/board.c
+> > @@ -63,6 +63,7 @@
+> >  #include <linux/err.h>
+> >  #include <usb/ehci.h>
+> >  #include <mach/xload.h>
+> > +#include <mfd/twl4030.h>
+> >  
+> >  #ifdef CONFIG_DRIVER_SERIAL_NS16550
+> >  
+> > @@ -109,6 +110,32 @@ static struct gpmc_nand_platform_data nand_plat = {
+> >  	.nand_cfg = &omap3_nand_cfg,
+> >  };
+> >  
+> > +/* T2 Register definitions */
+> > +#define CONTROL_DEV_CONF0	0x48002274
+> > +#define CONTROL_PBIAS_LITE	0x48002520
+> > +
+> > +static void beagle_add_mmc(void)
+> > +{
+> > +	unsigned int value = 0;
+> > +	struct twl4030 *t = twl4030_get();
+> > +
+> > +	if (!t) {
+> > +		pr_warn("twl4030 not ready to setup mmc\n");
+> > +	} else {
+> > +		twl4030_reg_write(t, TWL4030_USB_OTHER_FUNC_CTRL_CLR, 0x20);
+> > +		twl4030_reg_write(t, TWL4030_USB_OTHER_IFC_CTRL_CLR, 0x2);
+> > +	}
+> > +
+> > +	value = readl(CONTROL_PBIAS_LITE);
+> > +	value |= (1 << 2) | (1 << 1) | (1 << 9);
+> > +	writel(value, CONTROL_PBIAS_LITE);
+> > +
+> > +	value = readl(CONTROL_DEV_CONF0);
+> > +	writel(value | (1 << 24), CONTROL_PBIAS_LITE);
+> > +
+> > +	omap3_add_mmc1(NULL);
+> > +}
+> > +
+> >  static int beagle_mem_init(void)
+> >  {
+> >  	omap_add_ram0(SZ_128M);
+> > @@ -132,7 +159,7 @@ static int beagle_devices_init(void)
+> >  #endif
+> >  	omap_add_gpmc_nand_device(&nand_plat);
+> >  
+> > -	omap3_add_mmc1(NULL);
+> > +	beagle_add_mmc();
+> >  
+> >  	armlinux_set_bootparams((void *)0x80000100);
+> >  	armlinux_set_architecture(MACH_TYPE_OMAP3_BEAGLE);
+> > -- 
+> > 1.7.10.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
