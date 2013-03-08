@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f54.google.com ([209.85.160.54])
+Received: from mail-da0-x232.google.com ([2607:f8b0:400e:c00::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDqIy-0007qr-FB
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 05:57:21 +0000
-Received: by mail-pb0-f54.google.com with SMTP id rr4so941165pbb.27
- for <barebox@lists.infradead.org>; Thu, 07 Mar 2013 21:57:12 -0800 (PST)
+ id 1UDqOn-0007yS-Q4
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 06:03:22 +0000
+Received: by mail-da0-f50.google.com with SMTP id h15so156142dan.37
+ for <barebox@lists.infradead.org>; Thu, 07 Mar 2013 22:03:19 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <1362412809-23253-1-git-send-email-s.hauer@pengutronix.de>
-References: <1362412809-23253-1-git-send-email-s.hauer@pengutronix.de>
-Date: Fri, 8 Mar 2013 09:57:10 +0400
-Message-ID: <CAA4bVAFTT=34QtjaJdvs5Fg6bBKmMN-W4XYYiTbtT1vbCj+HJw@mail.gmail.com>
+In-Reply-To: <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+Date: Fri, 8 Mar 2013 10:03:19 +0400
+Message-ID: <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
 From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,40 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] usb: ehci: initialize ehci_data
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On 4 March 2013 20:00, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Without it fields of ehci_data may be unitialized and the driver
-> crashes.
+Hi!
 
-Sascha!
+This commit breaks usb ethernet card on my board.
 
-Please apply a patch like this! Without it the 'usb' command on my
-Tegra board hangs.
+toshiba ac100> / usb
+USB: scanning bus for devices...
+Bus 001 Device 003: ID 0bdb:190a F3307
+Bus 001 Device 004: ID 0bda:58f2 USB Camera
+Bus 001 Device 005: ID 2001:3c05 DUB-E100
+mdio_bus: miibus0: probed
+eth0: got preset MAC address: 1C:7E:E5:0F:E1:14
+Bus 001 Device 002: ID 0424:2513
+Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+5 USB Device(s) found
+toshiba ac100> / dhcp
+100Mbps full duplex link detected
+dhcp failed: error 1
+dhcp: error 1
+toshiba ac100>
 
+The next branch with Sascha's 'usb: ehci: initialize ehci_data' patch
+works fine.
 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On 7 March 2013 14:33, Lucas Stach <dev@lynxeye.de> wrote:
+> Main barebox is running on the A9 cluster. Use the correct ISA.
+>
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
->  drivers/usb/host/ehci-hcd.c |    2 +-
+>  arch/arm/Kconfig | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index 0c789e4..7c389aa 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -892,7 +892,7 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 7ac134e..5dbf74d 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -125,7 +125,7 @@ config ARCH_VEXPRESS
 >
->  static int ehci_probe(struct device_d *dev)
->  {
-> -       struct ehci_data data;
-> +       struct ehci_data data = {};
->         struct ehci_platform_data *pdata = dev->platform_data;
+>  config ARCH_TEGRA
+>         bool "Nvidia Tegra-based boards"
+> -       select CPU_ARM926T
+> +       select CPU_V7
+>         select HAS_DEBUG_LL
 >
->         /* default to EHCI_HAS_TT to not change behaviour of boards
+>  endchoice
 > --
-> 1.7.10.4
+> 1.8.1.2
 >
 >
 > _______________________________________________
