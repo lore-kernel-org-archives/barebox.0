@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDxqY-00083K-KZ
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 14:00:37 +0000
-Date: Fri, 8 Mar 2013 15:00:25 +0100
+ id 1UDyL7-00030C-Ni
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 14:32:10 +0000
+Date: Fri, 8 Mar 2013 15:32:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130308140025.GE1906@pengutronix.de>
-References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
- <1362744484-17844-2-git-send-email-s.hauer@pengutronix.de>
- <1362745042.129909210@f107.mail.ru>
+Message-ID: <20130308143203.GF1906@pengutronix.de>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+ <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362745042.129909210@f107.mail.ru>
+In-Reply-To: <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,60 +25,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM i.MX6: Add mmdc calibration support
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 08, 2013 at 04:17:22PM +0400, Alexander Shiyan wrote:
-> Hello.
-> 
-> Only few questions inlined.
-> 
-> > This adds support for the various DDR calibration functions in the
-> > i.MX6 MMDC.
-> ...
-> > +static inline u32 reg32_read(u32 reg)
-> > +{
-> > +	return readl(reg);
-> > +}
-> > +
-> > +static inline void reg32_write(u32 reg, u32 val)
-> > +{
-> > +	writel(val, reg);
-> > +}
-> > +
-> 
-> What a reason to separate functions instead of readl/writel?
+Hi Antony,
 
-The reason is that the original code had this and I was too lazy to swap
-the argument order, but I can fix this.
-
+On Fri, Mar 08, 2013 at 10:03:19AM +0400, Antony Pavlov wrote:
+> Hi!
 > 
-> > +static inline void reg32setbit(u32 reg, int bit)
-> > +{
-> > +	u32 val;
-> > +
-> > +	val = readl(reg);
-> > +	val |= 1 << bit;
-> > +	writel(val, reg);
-> > +}
-> > +
-> > +static inline void reg32clrbit(u32 reg, int bit)
-> > +{
-> > +	u32 val;
-> > +
-> > +	val = readl(reg);
-> > +	val &= ~(1 << bit);
-> > +	writel(val, reg);
-> > +}
+> This commit breaks usb ethernet card on my board.
 > 
-> Maybe move this into asm-generic/io.h? Seems it can be reused by other
-> users.
+> toshiba ac100> / usb
+> USB: scanning bus for devices...
+> Bus 001 Device 003: ID 0bdb:190a F3307
+> Bus 001 Device 004: ID 0bda:58f2 USB Camera
+> Bus 001 Device 005: ID 2001:3c05 DUB-E100
+> mdio_bus: miibus0: probed
+> eth0: got preset MAC address: 1C:7E:E5:0F:E1:14
+> Bus 001 Device 002: ID 0424:2513
+> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> 5 USB Device(s) found
+> toshiba ac100> / dhcp
+> 100Mbps full duplex link detected
+> dhcp failed: error 1
+> dhcp: error 1
+> toshiba ac100>
 
-Dropped these. I'm not so convinced of helpers for these, at least not
-enough to write them myself.
+Could you try the following?
 
 Sascha
+
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+index 9d9b854..c631815 100644
+--- a/arch/arm/include/asm/barebox-arm-head.h
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -22,7 +22,7 @@ static inline void arm_cpu_lowlevel_init(void)
+ 
+ #if __LINUX_ARM_ARCH__ >= 6
+ 	r |= CR_U;
+-	r &= CR_A;
++	r &= ~CR_A;
+ #else
+ 	r |= CR_A;
+ #endif
+
 
 -- 
 Pengutronix e.K.                           |                             |
