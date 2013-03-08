@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UE13T-0000RV-22
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 17:26:09 +0000
-Date: Fri, 8 Mar 2013 18:25:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130308172559.GH1906@pengutronix.de>
+Received: from mo5.mail-out.ovh.net ([178.32.228.5])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UE1Os-00020F-OD
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 17:48:12 +0000
+Received: from mail639.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id E432AFF9F08
+ for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 18:59:25 +0100 (CET)
+Date: Fri, 8 Mar 2013 18:43:49 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130308174349.GJ32347@game.jcrosoft.org>
 References: <20130307215402.GA32347@game.jcrosoft.org>
  <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
  <1362743983-11462-7-git-send-email-plagnioj@jcrosoft.com>
+ <20130308172559.GH1906@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362743983-11462-7-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130308172559.GH1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,35 +29,42 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 07/11] net/console: switch to pr_xxx
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 08, 2013 at 12:59:39PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  net/netconsole.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On 18:25 Fri 08 Mar     , Sascha Hauer wrote:
+> On Fri, Mar 08, 2013 at 12:59:39PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  net/netconsole.c |    4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/net/netconsole.c b/net/netconsole.c
+> > index 7d0f3f4..8db8356 100644
+> > --- a/net/netconsole.c
+> > +++ b/net/netconsole.c
+> > @@ -185,7 +185,7 @@ static int netconsole_init(void)
+> >  
+> >  	ret = console_register(cdev);
+> >  	if (ret) {
+> > -		printf("netconsole: registering failed with %s\n", strerror(-ret));
+> > +		pr_err("netconsole: registering failed with %s\n", strerror(-ret));
 > 
-> diff --git a/net/netconsole.c b/net/netconsole.c
-> index 7d0f3f4..8db8356 100644
-> --- a/net/netconsole.c
-> +++ b/net/netconsole.c
-> @@ -185,7 +185,7 @@ static int netconsole_init(void)
->  
->  	ret = console_register(cdev);
->  	if (ret) {
-> -		printf("netconsole: registering failed with %s\n", strerror(-ret));
-> +		pr_err("netconsole: registering failed with %s\n", strerror(-ret));
+> Same comment as I already made: Please use pr_fmt
+can you apply the other one
 
-Same comment as I already made: Please use pr_fmt
+I'll resend just this one
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
