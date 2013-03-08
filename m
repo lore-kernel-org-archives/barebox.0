@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDw20-00007j-Uk
+ id 1UDw20-00007f-Ur
  for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:17 +0000
 Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 29A6AFFA641
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 293FBFFA621
  for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 13:20:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Mar 2013 12:59:42 +0100
-Message-Id: <1362743983-11462-10-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  8 Mar 2013 12:59:37 +0100
+Message-Id: <1362743983-11462-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130307215402.GA32347@game.jcrosoft.org>
  <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,27 +26,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] net/phy: convert to pr_info
+Subject: [PATCH 05/11] at91: clock switch to pr_info
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/net/phy/phy.c |    2 +-
+ arch/arm/mach-at91/clock.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 12739ff..112ff13 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -49,7 +49,7 @@ int phy_update_status(struct phy_device *dev)
- 		dev->adjust_link(edev);
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index 2dde632..296f5d5 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -756,7 +756,7 @@ static int at91_clock_display(void)
+ 	if (pll_overclock)
+ 		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
  
- 	if (dev->link)
--		printf("%dMbps %s duplex link detected\n", dev->speed,
-+		pr_info("%dMbps %s duplex link detected\n", dev->speed,
- 			dev->duplex ? "full" : "half");
- 
- 	return 0;
+-	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
++	pr_info("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
+ 		cpu_freq / 1000000, (unsigned) mck.rate_hz / 1000000,
+ 		(unsigned) main_clk.rate_hz / 1000000,
+ 		((unsigned) main_clk.rate_hz % 1000000) / 1000);
 -- 
 1.7.10.4
 
