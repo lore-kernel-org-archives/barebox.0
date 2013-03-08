@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDw20-00007g-Up
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:21 +0000
+ id 1UDw28-00009x-CI
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:24 +0000
 Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 29F61FFA64D
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 3E26CFFA6A3
  for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 13:20:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Mar 2013 12:59:34 +0100
-Message-Id: <1362743983-11462-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  8 Mar 2013 12:59:40 +0100
+Message-Id: <1362743983-11462-8-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130307215402.GA32347@game.jcrosoft.org>
  <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,46 +26,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] console: switch to kfifo_dump_str
+Subject: [PATCH 08/11] startup: switch to pr_xxx
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/console.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ common/startup.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index beb37bd..243d402 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -55,6 +55,11 @@ static struct kfifo __console_output_fifo;
- static struct kfifo *console_input_fifo = &__console_input_fifo;
- static struct kfifo *console_output_fifo = &__console_output_fifo;
+diff --git a/common/startup.c b/common/startup.c
+index e49cc4c..ff00ca7 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -120,7 +120,7 @@ void __noreturn start_barebox(void)
+ 		ret = envfs_load(default_environment_path, "/env", 0);
  
-+static void console_output_dump(unsigned char ch)
-+{
-+	console_putc(CONSOLE_STDOUT, ch);
-+}
-+
- static int console_std_set(struct device_d *dev, struct param_d *param,
- 		const char *val)
- {
-@@ -86,14 +91,12 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	dev_param_set_generic(dev, param, active);
- 
- 	if (initialized < CONSOLE_INIT_FULL) {
--		char ch;
- 		initialized = CONSOLE_INIT_FULL;
- 		PUTS_LL("Switch to console [");
- 		PUTS_LL(dev_name(dev));
- 		PUTS_LL("]\n");
- 		barebox_banner();
--		while (kfifo_getc(console_output_fifo, &ch) == 0)
--			console_putc(CONSOLE_STDOUT, ch);
-+		kfifo_dump_str(console_output_fifo, console_output_dump);
+ 		if (ret && IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT)) {
+-			printf("no valid environment found on %s. "
++			pr_err("no valid environment found on %s. "
+ 				"Using default environment\n",
+ 				default_environment_path);
+ 			envfs_load("/dev/defaultenv", "/env", 0);
+@@ -128,17 +128,17 @@ void __noreturn start_barebox(void)
  	}
  
- 	return 0;
+ 	if (IS_ENABLED(CONFIG_COMMAND_SUPPORT)) {
+-		printf("running /env/bin/init...\n");
++		pr_info("running /env/bin/init...\n");
+ 
+ 		if (!stat("/env/bin/init", &s)) {
+ 			run_command("source /env/bin/init", 0);
+ 		} else {
+-			printf("not found\n");
++			pr_err("/env/bin/init not found\n");
+ 		}
+ 	}
+ 
+ 	if (!barebox_main) {
+-		printf("No main function! aborting.\n");
++		pr_err("No main function! aborting.\n");
+ 		hang();
+ 	}
+ 
 -- 
 1.7.10.4
 
