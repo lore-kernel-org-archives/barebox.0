@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
+ helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDx1F-0000y0-2F
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 13:07:31 +0000
-Date: Fri, 8 Mar 2013 14:07:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130308130727.GD1906@pengutronix.de>
-References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
- <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
- <20130308125138.GE32347@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130308125138.GE32347@game.jcrosoft.org>
+ id 1UDxAY-00018N-RV
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 13:17:07 +0000
+Message-ID: <1362748622.1900.4.camel@antimon>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 08 Mar 2013 14:17:02 +0100
+In-Reply-To: <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+ <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,142 +25,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 08, 2013 at 01:51:38PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > +
-> > +static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
-> > +{
-> > +	phy_write(dev, 0x0d, device);
-> > +	phy_write(dev, 0x0e, reg);
-> > +	phy_write(dev, 0x0d, (1 << 14) | device);
-> > +	phy_write(dev, 0x0e, val);
-> > +}
-> > +
-> > +static void mx6_rgmii_rework(struct phy_device *dev)
-> > +{
-> > +	/*
-> > +	 * min rx data delay, max rx/tx clock delay,
-> > +	 * min rx/tx control delay
-> > +	 */
-> > +	mmd_write_reg(dev, 2, 4, 0);
-> > +	mmd_write_reg(dev, 2, 5, 0);
-> > +	mmd_write_reg(dev, 2, 8, 0x003ff);
-> > +}
-> > +
-> > +static struct fec_platform_data fec_info = {
-> > +	.xcv_type = RGMII,
-> > +	.phy_init = mx6_rgmii_rework,
-> > +	.phy_addr = -1,
-> use phy_fix_up as done on sama5d3xek
+Am Freitag, den 08.03.2013, 10:03 +0400 schrieb Antony Pavlov:
+> Hi!
 > 
-> the phy_init need do be dropped now
-> > +};
-> > +
-> > +static void realq7_enet_init(void)
-> > +{
-> > +	mxc_iomux_v3_setup_multiple_pads(realq7_pads_gpio, ARRAY_SIZE(realq7_pads_gpio));
-> > +	gpio_direction_output(RQ7_GPIO_ENET_PHYADD2, 0);
-> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE0, 1);
-> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE1, 1);
-> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE2, 1);
-> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE3, 1);
-> > +	gpio_direction_output(RQ7_GPIO_ENET_EN_CLK125, 1);
-> > +
-> > +	gpio_direction_output(25, 0);
-> > +	mdelay(50);
-> > +
-> > +	gpio_direction_output(25, 1);
-> > +	mdelay(50);
-> > +
-> > +	mxc_iomux_v3_setup_multiple_pads(realq7_pads_enet, ARRAY_SIZE(realq7_pads_enet));
-> > +
-> > +	imx6_add_fec(&fec_info);
-> > +}
-> > +
-> > +static int realq7_mem_init(void)
-> > +{
-> > +	arm_add_mem_device("ram0", 0x10000000, SZ_2G);
-> > +
-> > +	return 0;
-> > +}
-> > +mem_initcall(realq7_mem_init);
-> > +
-> > +static int realq7_spi_cs[] = { IMX_GPIO_NR(1, 12), };
-> > +
-> > +static struct spi_imx_master realq7_spi_0_data = {
-> > +	.chipselect = realq7_spi_cs,
-> > +	.num_chipselect = ARRAY_SIZE(realq7_spi_cs),
-> > +};
-> > +
-> > +static const struct spi_board_info realq7_spi_board_info[] = {
-> > +	{
-> > +		.name = "m25p80",
-> > +		.max_speed_hz = 40000000,
-> > +		.bus_num = 4,
-> > +		.chip_select = 0,
-> > +	}
-> > +};
-> > +
-> > +static struct esdhc_platform_data realq7_emmc_data = {
-> > +	.cd_type = ESDHC_CD_PERMANENT,
-> > +	.caps = MMC_MODE_8BIT,
-> > +	.devname = "emmc",
-> > +};
-> we was discussion of symlink on devfs my idea was to use it here instead of
-> the devname
+> This commit breaks usb ethernet card on my board.
+> 
+If you are using a GCC >= 4.7 this is most likely the problem that GCC
+now produces hardware unaligned access instructions on ARMv7 by default.
+Unfortunately the EHCI spec has placed one of the registers at an
+unaligned offset. Barebox traps the processor when hitting an unaligned
+access in hardware.
 
-The sysfs symlink support alone does not fix this. Who should create the
-link?
+Thanks for the heads up, I'll make sure we resolve this problem before
+this patchset goes in.
 
-> > +
-> > +	armlinux_set_bootparams((void *)0x10000100);
-> > +	armlinux_set_architecture(3769);
-> why a magic instead of a macro?
+Regards,
+Lucas
 
-Can be dropped. It's devicetree only, so we don't need an architecture
-id. I doubt there is one even registered.
-
-Sascha
-
-> > +++ b/arch/arm/boards/dmo-mx6-realq7/env/init/hostname
-> > @@ -0,0 +1,8 @@
-> > +#!/bin/sh
-> > +
-> > +if [ "$1" = menu ]; then
-> > +	init-menu-add-entry "$0" "hostname"
-> > +	exit
-> > +fi
-> > +
-> > +global.hostname=realq7
-> in config-board?
-
-ok.
-
-> > +
-> > +	.boot_data.start	= APP_DEST,
-> > +	.boot_data.size		= 192 * 1024,
-> barebox_image_size
-
-ok. This btw will not work with CONFIG_RELOCATABLE as is since the
-linker cannot generate this value then.
-
-> > +	reg32_write(0x021e80a4, 0x0000047f);
-> > +	reg32_write(0x021e80a8, 0x0000c34f);
-> > +	reg32_write(0x021e8080, 0x00000001);
-> can we have not all of those magic?
-
-No, I won't do the decoding now. This time can be invested better.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
