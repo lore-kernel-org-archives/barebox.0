@@ -1,25 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UE09b-0004av-Bh
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 16:28:20 +0000
-Received: from mail639.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 1E95EFFA722
- for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 17:39:30 +0100 (CET)
-Date: Fri, 8 Mar 2013 17:23:54 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130308162354.GI32347@game.jcrosoft.org>
-References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
- <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
- <20130308125138.GE32347@game.jcrosoft.org>
- <20130308130727.GD1906@pengutronix.de>
- <20130308144843.GF32347@game.jcrosoft.org>
- <20130308150609.GG1906@pengutronix.de>
- <20130308154611.GG32347@game.jcrosoft.org>
+Received: from mail-pb0-f50.google.com ([209.85.160.50])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UE0b0-0004Ti-Qx
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 16:56:43 +0000
+Received: by mail-pb0-f50.google.com with SMTP id up1so1327168pbc.23
+ for <barebox@lists.infradead.org>; Fri, 08 Mar 2013 08:56:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130308154611.GG32347@game.jcrosoft.org>
+In-Reply-To: <1362748622.1900.4.camel@antimon>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-3-git-send-email-dev@lynxeye.de>
+ <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
+ <1362748622.1900.4.camel@antimon>
+Date: Fri, 8 Mar 2013 20:56:37 +0400
+Message-ID: <CAA4bVAFsi67Ym-CYZYy36trr6xH4mV-wsJseOYxB2OjhSNx=eg@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -32,33 +27,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On 16:46 Fri 08 Mar     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:06 Fri 08 Mar     , Sascha Hauer wrote:
-> > On Fri, Mar 08, 2013 at 03:48:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > > +	.boot_data.size		= 192 * 1024,
-> > > > > barebox_image_size
-> > > > 
-> > > > ok. This btw will not work with CONFIG_RELOCATABLE as is since the
-> > > > linker cannot generate this value then.
-> > > why?
-> > 
-> > Absolute values will be zero when you link with -pie. They get fixed
-> > during relocation.
-> > 
-> > The image size is a relative value, when doing a
-> > 
-> > 	.word __barebox_image_end - start
-> > 
-> > in assembly it works correctly, but doing the same in C does not work.
-so put a value in asm and this will be resolve by the linker at compilation
-time not runtime
+On 8 March 2013 17:17, Lucas Stach <dev@lynxeye.de> wrote:
+> Am Freitag, den 08.03.2013, 10:03 +0400 schrieb Antony Pavlov:
+>> Hi!
+>>
+>> This commit breaks usb ethernet card on my board.
+>>
+> If you are using a GCC >= 4.7 this is most likely the problem that GCC
+> now produces hardware unaligned access instructions on ARMv7 by default.
 
-Best Regards,
-J.
+I'm using GCC 4.4.6.
+
+> Unfortunately the EHCI spec has placed one of the registers at an
+> unaligned offset. Barebox traps the processor when hitting an unaligned
+> access in hardware.
+>
+> Thanks for the heads up, I'll make sure we resolve this problem before
+> this patchset goes in.
+>
+> Regards,
+> Lucas
+>
+
+
+
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
