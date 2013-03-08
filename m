@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from cpsmtpb-ews03.kpnxchange.com ([213.75.39.6])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDw9u-0001pf-KE
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:12:23 +0000
-Message-ID: <5139D5BE.7080404@erwinrol.com>
-Date: Fri, 08 Mar 2013 13:12:46 +0100
-From: Erwin Rol <mailinglists@erwinrol.com>
-MIME-Version: 1.0
+Received: from f107.mail.ru ([94.100.178.76])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UDwEr-00028L-Ca
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:17:30 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 08 Mar 2013 16:17:22 +0400
+Message-ID: <1362745042.129909210@f107.mail.ru>
+In-Reply-To: <1362744484-17844-2-git-send-email-s.hauer@pengutronix.de>
+References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
+ <1362744484-17844-2-git-send-email-s.hauer@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,21 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Status Tegra 2/3 Support
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxLzNdIEFSTSBpLk1YNjogQWRkIG1tZGMgY2FsaWJyYXRp?=
+ =?UTF-8?B?b24gc3VwcG9ydA==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hey all,
+Hello.
 
-what ist the status of the Tegra 2 and Tegra 3 support in Barebox ?
+Only few questions inlined.
 
-One very important question is;
-Can it be updated from within barebox or linux (running on the Tegra) or
-does it need nvflash like tools?
+> This adds support for the various DDR calibration functions in the
+> i.MX6 MMDC.
+...
+> +static inline u32 reg32_read(u32 reg)
+> +{
+> +	return readl(reg);
+> +}
+> +
+> +static inline void reg32_write(u32 reg, u32 val)
+> +{
+> +	writel(val, reg);
+> +}
+> +
 
+What a reason to separate functions instead of readl/writel?
 
-TIA,
-Erwin
+> +static inline void reg32setbit(u32 reg, int bit)
+> +{
+> +	u32 val;
+> +
+> +	val = readl(reg);
+> +	val |= 1 << bit;
+> +	writel(val, reg);
+> +}
+> +
+> +static inline void reg32clrbit(u32 reg, int bit)
+> +{
+> +	u32 val;
+> +
+> +	val = readl(reg);
+> +	val &= ~(1 << bit);
+> +	writel(val, reg);
+> +}
 
+Maybe move this into asm-generic/io.h? Seems it can be reused by other
+users.
+
+Thanks.
+
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
