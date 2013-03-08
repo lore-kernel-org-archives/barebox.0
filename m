@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDwuH-0008Fq-1a
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 13:00:19 +0000
-Date: Fri, 8 Mar 2013 14:00:11 +0100
+ id 1UDx1F-0000y0-2F
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 13:07:31 +0000
+Date: Fri, 8 Mar 2013 14:07:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130308130011.GC1906@pengutronix.de>
-References: <1362425866-1356-3-git-send-email-s.hauer@pengutronix.de>
- <1362613518-15456-1-git-send-email-plagnioj@jcrosoft.com>
- <20130308074108.GX1906@pengutronix.de>
- <20130308122143.GB32347@game.jcrosoft.org>
- <20130308124525.GB1906@pengutronix.de>
- <20130308124245.GC32347@game.jcrosoft.org>
+Message-ID: <20130308130727.GD1906@pengutronix.de>
+References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
+ <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
+ <20130308125138.GE32347@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130308124245.GC32347@game.jcrosoft.org>
+In-Reply-To: <20130308125138.GE32347@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,41 +24,134 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] beagle: add missing mmc twl and control init
+Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 08, 2013 at 01:42:45PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 13:45 Fri 08 Mar     , Sascha Hauer wrote:
-> > On Fri, Mar 08, 2013 at 01:21:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 08:41 Fri 08 Mar     , Sascha Hauer wrote:
-> > > > On Thu, Mar 07, 2013 at 12:45:18AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > take from xloader
-> > > > > 
-> > > > > with this the mmc work even when booting from nand
-> > > > 
-> > > > Which beagle board revision do you have? With this patch the MMC
-> > > > doesn't work at all anymore, even when booting from it.
-> > > c3
-> > 
-> > Me too. Have you tested the patch?
-> I use my current flashed barebox and re-run barebox
+On Fri, Mar 08, 2013 at 01:51:38PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > +
+> > +static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
+> > +{
+> > +	phy_write(dev, 0x0d, device);
+> > +	phy_write(dev, 0x0e, reg);
+> > +	phy_write(dev, 0x0d, (1 << 14) | device);
+> > +	phy_write(dev, 0x0e, val);
+> > +}
+> > +
+> > +static void mx6_rgmii_rework(struct phy_device *dev)
+> > +{
+> > +	/*
+> > +	 * min rx data delay, max rx/tx clock delay,
+> > +	 * min rx/tx control delay
+> > +	 */
+> > +	mmd_write_reg(dev, 2, 4, 0);
+> > +	mmd_write_reg(dev, 2, 5, 0);
+> > +	mmd_write_reg(dev, 2, 8, 0x003ff);
+> > +}
+> > +
+> > +static struct fec_platform_data fec_info = {
+> > +	.xcv_type = RGMII,
+> > +	.phy_init = mx6_rgmii_rework,
+> > +	.phy_addr = -1,
+> use phy_fix_up as done on sama5d3xek
 > 
-> and it works
-> 
-> I boot from NAND
+> the phy_init need do be dropped now
+> > +};
+> > +
+> > +static void realq7_enet_init(void)
+> > +{
+> > +	mxc_iomux_v3_setup_multiple_pads(realq7_pads_gpio, ARRAY_SIZE(realq7_pads_gpio));
+> > +	gpio_direction_output(RQ7_GPIO_ENET_PHYADD2, 0);
+> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE0, 1);
+> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE1, 1);
+> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE2, 1);
+> > +	gpio_direction_output(RQ7_GPIO_ENET_MODE3, 1);
+> > +	gpio_direction_output(RQ7_GPIO_ENET_EN_CLK125, 1);
+> > +
+> > +	gpio_direction_output(25, 0);
+> > +	mdelay(50);
+> > +
+> > +	gpio_direction_output(25, 1);
+> > +	mdelay(50);
+> > +
+> > +	mxc_iomux_v3_setup_multiple_pads(realq7_pads_enet, ARRAY_SIZE(realq7_pads_enet));
+> > +
+> > +	imx6_add_fec(&fec_info);
+> > +}
+> > +
+> > +static int realq7_mem_init(void)
+> > +{
+> > +	arm_add_mem_device("ram0", 0x10000000, SZ_2G);
+> > +
+> > +	return 0;
+> > +}
+> > +mem_initcall(realq7_mem_init);
+> > +
+> > +static int realq7_spi_cs[] = { IMX_GPIO_NR(1, 12), };
+> > +
+> > +static struct spi_imx_master realq7_spi_0_data = {
+> > +	.chipselect = realq7_spi_cs,
+> > +	.num_chipselect = ARRAY_SIZE(realq7_spi_cs),
+> > +};
+> > +
+> > +static const struct spi_board_info realq7_spi_board_info[] = {
+> > +	{
+> > +		.name = "m25p80",
+> > +		.max_speed_hz = 40000000,
+> > +		.bus_num = 4,
+> > +		.chip_select = 0,
+> > +	}
+> > +};
+> > +
+> > +static struct esdhc_platform_data realq7_emmc_data = {
+> > +	.cd_type = ESDHC_CD_PERMANENT,
+> > +	.caps = MMC_MODE_8BIT,
+> > +	.devname = "emmc",
+> > +};
+> we was discussion of symlink on devfs my idea was to use it here instead of
+> the devname
 
-Just tried again with current master + this patch flashed as xloader +
-2nd stage flashed to Nand. It breaks compiling the xloader support btw:
+The sysfs symlink support alone does not fix this. Who should create the
+link?
 
-arch/arm/boards/beagle/built-in.o: In function `beagle_devices_init':
-lowlevel.c:(.text.beagle_devices_init+0x18): undefined reference to `twl4030_get'
-lowlevel.c:(.text.beagle_devices_init+0x2c): undefined reference to `twlcore_reg_write'
-lowlevel.c:(.text.beagle_devices_init+0x36): undefined reference to `twlcore_reg_write'
+> > +
+> > +	armlinux_set_bootparams((void *)0x10000100);
+> > +	armlinux_set_architecture(3769);
+> why a magic instead of a macro?
 
-To fix this I enabled the twl support for now.
+Can be dropped. It's devicetree only, so we don't need an architecture
+id. I doubt there is one even registered.
 
-But still it doesn't work
+Sascha
+
+> > +++ b/arch/arm/boards/dmo-mx6-realq7/env/init/hostname
+> > @@ -0,0 +1,8 @@
+> > +#!/bin/sh
+> > +
+> > +if [ "$1" = menu ]; then
+> > +	init-menu-add-entry "$0" "hostname"
+> > +	exit
+> > +fi
+> > +
+> > +global.hostname=realq7
+> in config-board?
+
+ok.
+
+> > +
+> > +	.boot_data.start	= APP_DEST,
+> > +	.boot_data.size		= 192 * 1024,
+> barebox_image_size
+
+ok. This btw will not work with CONFIG_RELOCATABLE as is since the
+linker cannot generate this value then.
+
+> > +	reg32_write(0x021e80a4, 0x0000047f);
+> > +	reg32_write(0x021e80a8, 0x0000c34f);
+> > +	reg32_write(0x021e8080, 0x00000001);
+> can we have not all of those magic?
+
+No, I won't do the decoding now. This time can be invested better.
 
 Sascha
 
