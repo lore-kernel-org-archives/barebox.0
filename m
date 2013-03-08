@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eso.teric.us ([69.164.192.171])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDjTo-0005R2-17
- for barebox@lists.infradead.org; Thu, 07 Mar 2013 22:40:04 +0000
-Date: Thu, 7 Mar 2013 16:46:25 -0600
-From: Josh Cartwright <joshc@eso.teric.us>
-Message-ID: <20130307224625.GH16050@kryptos>
-References: <cover.1362273612.git.joshc@eso.teric.us>
- <20130303145810.GB10708@pengutronix.de>
- <20130305170929.GD16050@kryptos>
- <20130306172850.GA30452@pengutronix.de>
+Received: from mail-pb0-f54.google.com ([209.85.160.54])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UDqIy-0007qr-FB
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 05:57:21 +0000
+Received: by mail-pb0-f54.google.com with SMTP id rr4so941165pbb.27
+ for <barebox@lists.infradead.org>; Thu, 07 Mar 2013 21:57:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130306172850.GA30452@pengutronix.de>
+In-Reply-To: <1362412809-23253-1-git-send-email-s.hauer@pengutronix.de>
+References: <1362412809-23253-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 8 Mar 2013 09:57:10 +0400
+Message-ID: <CAA4bVAFTT=34QtjaJdvs5Fg6bBKmMN-W4XYYiTbtT1vbCj+HJw@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,55 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] Zynq support for barebox
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
+Subject: Re: [PATCH] usb: ehci: initialize ehci_data
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Mar 06, 2013 at 06:28:50PM +0100, Steffen Trumtrar wrote:
-> On Tue, Mar 05, 2013 at 11:09:29AM -0600, Josh Cartwright wrote:
-[..]
-> > > I have some patches laying around, that have support for booting first stage
-> > > from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
-> > > completely satisfied with them in one or two places. (The clocksource seems to
-> > > be inverse to what barebox expects, which would be a quick fix, and barebox boots
-> > > uuultra slow, if I do everything according to the TRM)
-> > > At the moment, I do not have access to the board though. But I hope I can get a
-> > > hand on it in the next days.
-> > 
-> > If you have a chance to send out what you have, I'd be curious to see
-> > it.  Fortunately I have several Zynq boards to play with.
-> > 
-> 
-> Hi!
-> 
-> Have a look at
-> http://git.pengutronix.de/?p=str/barebox.git;a=summary
-> 
-> I "stole" your clk driver and added it to my patch stack :-)
-> Current state for ZedBoard:
-> 	- boot first stage from SD-Card
-> 		- barebox.bin needs to be processed with
-> 		./scripts/zynq_checksum barebox.bin BOOT.bin
-> 		to have the checksum in the BootROM header
-> 	- clocksource is arm_smp_tmd at seems accurate
-> 	- the BootROM needs about 4-5 seconds to copy barebox from
-> 	  SD to the OCM. I guess, I need to mess with the SD setup
-> 	  in the BootROM somehow
-> 	- just enough clkdev to use the timer
-> 	- all pinctrl, clk setup etc happens in the lowlevel init
+On 4 March 2013 20:00, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> Without it fields of ehci_data may be unitialized and the driver
+> crashes.
 
-Hey Steffen-
+Sascha!
 
-Thanks for sharing this! I'll be looking to get board support for the
-zc702 on top of your work this weekend (I have several Zynq boards, but
-none of them are ZedBoards).  I'm also in the process of porting the
-uboot zynq_gem driver.
+Please apply a patch like this! Without it the 'usb' command on my
+Tegra board hangs.
 
-Do you have plans for submitting this to the list?
 
-Thanks again,
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/usb/host/ehci-hcd.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+> index 0c789e4..7c389aa 100644
+> --- a/drivers/usb/host/ehci-hcd.c
+> +++ b/drivers/usb/host/ehci-hcd.c
+> @@ -892,7 +892,7 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
+>
+>  static int ehci_probe(struct device_d *dev)
+>  {
+> -       struct ehci_data data;
+> +       struct ehci_data data = {};
+>         struct ehci_platform_data *pdata = dev->platform_data;
+>
+>         /* default to EHCI_HAS_TT to not change behaviour of boards
+> --
+> 1.7.10.4
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-   Josh
+
+
+-- 
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
