@@ -1,24 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
- helo=mo5.mail-out.ovh.net)
+Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDzZG-0004rn-8F
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 15:50:47 +0000
-Received: from mail639.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 89672FFA752
- for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 17:01:47 +0100 (CET)
-Date: Fri, 8 Mar 2013 16:46:11 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130308154611.GG32347@game.jcrosoft.org>
-References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
- <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
- <20130308125138.GE32347@game.jcrosoft.org>
- <20130308130727.GD1906@pengutronix.de>
- <20130308144843.GF32347@game.jcrosoft.org>
- <20130308150609.GG1906@pengutronix.de>
+ id 1UDzlq-0000Cm-M0
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 16:03:47 +0000
+Date: Fri, 8 Mar 2013 10:10:11 -0600
+From: Josh Cartwright <joshc@eso.teric.us>
+Message-ID: <20130308161011.GJ16050@kryptos>
+References: <cover.1362273612.git.joshc@eso.teric.us>
+ <20130303145810.GB10708@pengutronix.de>
+ <20130305170929.GD16050@kryptos>
+ <20130306172850.GA30452@pengutronix.de>
+ <20130307224625.GH16050@kryptos>
+ <20130308063918.GB18166@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130308150609.GG1906@pengutronix.de>
+In-Reply-To: <20130308063918.GB18166@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,48 +27,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/5] Zynq support for barebox
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-On 16:06 Fri 08 Mar     , Sascha Hauer wrote:
-> On Fri, Mar 08, 2013 at 03:48:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > +	.boot_data.size		= 192 * 1024,
-> > > > barebox_image_size
+On Fri, Mar 08, 2013 at 07:39:18AM +0100, Steffen Trumtrar wrote:
+> On Thu, Mar 07, 2013 at 04:46:25PM -0600, Josh Cartwright wrote:
+> > On Wed, Mar 06, 2013 at 06:28:50PM +0100, Steffen Trumtrar wrote:
+> > > On Tue, Mar 05, 2013 at 11:09:29AM -0600, Josh Cartwright wrote:
+> > [..]
+> > > > > I have some patches laying around, that have support for booting first stage
+> > > > > from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
+> > > > > completely satisfied with them in one or two places. (The clocksource seems to
+> > > > > be inverse to what barebox expects, which would be a quick fix, and barebox boots
+> > > > > uuultra slow, if I do everything according to the TRM)
+> > > > > At the moment, I do not have access to the board though. But I hope I can get a
+> > > > > hand on it in the next days.
+> > > > 
+> > > > If you have a chance to send out what you have, I'd be curious to see
+> > > > it.  Fortunately I have several Zynq boards to play with.
+> > > > 
 > > > 
-> > > ok. This btw will not work with CONFIG_RELOCATABLE as is since the
-> > > linker cannot generate this value then.
-> > why?
+> > > Hi!
+> > > 
+> > > Have a look at
+> > > http://git.pengutronix.de/?p=str/barebox.git;a=summary
+> > > 
+> > > I "stole" your clk driver and added it to my patch stack :-)
+> > > Current state for ZedBoard:
+> > > 	- boot first stage from SD-Card
+> > > 		- barebox.bin needs to be processed with
+> > > 		./scripts/zynq_checksum barebox.bin BOOT.bin
+> > > 		to have the checksum in the BootROM header
+> > > 	- clocksource is arm_smp_tmd at seems accurate
+> > > 	- the BootROM needs about 4-5 seconds to copy barebox from
+> > > 	  SD to the OCM. I guess, I need to mess with the SD setup
+> > > 	  in the BootROM somehow
+> > > 	- just enough clkdev to use the timer
+> > > 	- all pinctrl, clk setup etc happens in the lowlevel init
 > 
-> Absolute values will be zero when you link with -pie. They get fixed
-> during relocation.
+> Hi Josh!
 > 
-> The image size is a relative value, when doing a
-> 
-> 	.word __barebox_image_end - start
-> 
-> in assembly it works correctly, but doing the same in C does not work.
-> 
+> > Hey Steffen-
 > > 
-> > otherwise we need to update it via ld as done in the kernel as example
+> > Thanks for sharing this! I'll be looking to get board support for the
+> > zc702 on top of your work this weekend (I have several Zynq boards, but
+> > none of them are ZedBoards).  I'm also in the process of porting the
+> > uboot zynq_gem driver.
 > 
-> Can you give me a pointer what the kernel does?
-
-we create the symbol at compilation
-via --defsym
-
-arch/arm/boot/compressed/Makefile
-
-Best Regards,
-J.
+> First, \o/. I don't know how the two differ. But I would guess, that
+> you can pretty much copy the lowlevel stuff et al.
+> Only the DDR timing stuff may make problems.
 > 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Second: No! Don't! I'm trying to get drivers/net/macb.c running on Zynq.
+> As far as I can tell at the moment, this is a driver for a
+> Cadence IP gem. And the zynq uses exactly that IP core.
+> Alas, I have problems with the dma_alloc_coherent call in its
+> probe function.
+
+Doh!  I certainly did not want to duplicate a driver unnecessarily.
+I'll keep this in mind going forward.
+
+> The same goes for the UART driver and other cores. We should not start
+> developing Xilinx drivers for everything, if in reality we have IP cores
+> from other providers.
+
+Absolutely.
+
+Thanks,
+
+   Josh
 
 _______________________________________________
 barebox mailing list
