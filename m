@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDw28-00009x-CI
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:24 +0000
+ id 1UDw28-00007j-5o
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:23 +0000
 Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 3E26CFFA6A3
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 3E15FFFA692
  for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 13:20:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Mar 2013 12:59:40 +0100
-Message-Id: <1362743983-11462-8-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  8 Mar 2013 12:59:36 +0100
+Message-Id: <1362743983-11462-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130307215402.GA32347@game.jcrosoft.org>
  <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,48 +26,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/11] startup: switch to pr_xxx
+Subject: [PATCH 04/11] startup: switch to pr_xxx
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/startup.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ common/startup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/common/startup.c b/common/startup.c
-index e49cc4c..ff00ca7 100644
+index 52a8996..e49cc4c 100644
 --- a/common/startup.c
 +++ b/common/startup.c
-@@ -120,7 +120,7 @@ void __noreturn start_barebox(void)
- 		ret = envfs_load(default_environment_path, "/env", 0);
+@@ -105,14 +105,14 @@ void __noreturn start_barebox(void)
  
- 		if (ret && IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT)) {
--			printf("no valid environment found on %s. "
-+			pr_err("no valid environment found on %s. "
- 				"Using default environment\n",
- 				default_environment_path);
- 			envfs_load("/dev/defaultenv", "/env", 0);
-@@ -128,17 +128,17 @@ void __noreturn start_barebox(void)
+ 	for (initcall = __barebox_initcalls_start;
+ 			initcall < __barebox_initcalls_end; initcall++) {
+-		debug("initcall-> %pS\n", *initcall);
++		pr_debug("initcall-> %pS\n", *initcall);
+ 		result = (*initcall)();
+ 		if (result)
+ 			pr_err("initcall %pS failed: %s\n", *initcall,
+ 					strerror(-result));
  	}
  
- 	if (IS_ENABLED(CONFIG_COMMAND_SUPPORT)) {
--		printf("running /env/bin/init...\n");
-+		pr_info("running /env/bin/init...\n");
+-	debug("initcalls done\n");
++	pr_debug("initcalls done\n");
  
- 		if (!stat("/env/bin/init", &s)) {
- 			run_command("source /env/bin/init", 0);
- 		} else {
--			printf("not found\n");
-+			pr_err("/env/bin/init not found\n");
- 		}
- 	}
- 
- 	if (!barebox_main) {
--		printf("No main function! aborting.\n");
-+		pr_err("No main function! aborting.\n");
- 		hang();
- 	}
- 
+ 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+ 		int ret;
 -- 
 1.7.10.4
 
