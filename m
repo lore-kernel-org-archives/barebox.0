@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDw20-00007f-Ur
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:17 +0000
+ id 1UDw20-00007k-Uo
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 12:04:21 +0000
 Received: from mail405.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 293FBFFA621
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 2A1D2FFA66D
  for <barebox@lists.infradead.org>; Fri,  8 Mar 2013 13:20:37 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri,  8 Mar 2013 12:59:37 +0100
-Message-Id: <1362743983-11462-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri,  8 Mar 2013 12:59:33 +0100
+Message-Id: <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130307215402.GA32347@game.jcrosoft.org>
 References: <20130307215402.GA32347@game.jcrosoft.org>
- <1362743983-11462-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,27 +25,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] at91: clock switch to pr_info
+Subject: [PATCH 01/11] kfifo: introduce kfifo_dump_str to dump the fifo
 To: barebox@lists.infradead.org
+
+This will allow to implement a dmesg mecanism in barebox
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/mach-at91/clock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/kfifo.h |    2 ++
+ lib/kfifo.c     |   21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
-index 2dde632..296f5d5 100644
---- a/arch/arm/mach-at91/clock.c
-+++ b/arch/arm/mach-at91/clock.c
-@@ -756,7 +756,7 @@ static int at91_clock_display(void)
- 	if (pll_overclock)
- 		pr_info("Clocks: PLLA overclocked, %ld MHz\n", plla.rate_hz / 1000000);
+diff --git a/include/kfifo.h b/include/kfifo.h
+index 25880f4..9dbbe0d 100644
+--- a/include/kfifo.h
++++ b/include/kfifo.h
+@@ -74,5 +74,7 @@ static inline unsigned int kfifo_len(struct kfifo *fifo)
+ void kfifo_putc(struct kfifo *fifo, unsigned char c);
+ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c);
  
--	printf("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
-+	pr_info("Clocks: CPU %u MHz, master %u MHz, main %u.%03u MHz\n",
- 		cpu_freq / 1000000, (unsigned) mck.rate_hz / 1000000,
- 		(unsigned) main_clk.rate_hz / 1000000,
- 		((unsigned) main_clk.rate_hz % 1000000) / 1000);
++void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c));
++
+ #endif
+ 
+diff --git a/lib/kfifo.c b/lib/kfifo.c
+index afd3894..7892aed 100644
+--- a/lib/kfifo.c
++++ b/lib/kfifo.c
+@@ -154,3 +154,24 @@ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c)
+ 	return 0;
+ }
+ 
++void kfifo_dump_str(struct kfifo *fifo, void (*dump)(unsigned char c))
++{
++	int i;
++	unsigned char *c;
++	unsigned int l;
++	unsigned int len;
++
++	len = fifo->in - fifo->out;
++
++	/* first get the data from fifo->out until the end of the buffer */
++	l = min(len, fifo->size - (fifo->out & (fifo->size - 1)));
++	c = fifo->buffer + (fifo->out & (fifo->size - 1));
++	for (i = 0; i < l; i++)
++		dump(c[i]);
++
++	/* then get the rest (if any) from the beginning of the buffer */
++	c = fifo->buffer;
++	l = len - l;
++	for (i = 0; i < l; i++)
++		dump(c[i]);
++}
 -- 
 1.7.10.4
 
