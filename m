@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDueZ-0003Pi-QB
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 10:36:02 +0000
+ id 1UDueZ-0003Pg-QC
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 10:36:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  8 Mar 2013 11:35:50 +0100
-Message-Id: <1362738951-25614-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri,  8 Mar 2013 11:35:48 +0100
+Message-Id: <1362738951-25614-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362738951-25614-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362738951-25614-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,147 +21,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ata: ahci: implement init callback
+Subject: [PATCH 2/5] ata: add ata logical device to defer probe
 To: barebox@lists.infradead.org
 
-Now that we have framework support for delayed probing of
-ata devices implement it in the ahci driver to actually make use
-of it.
+ata device usually take a long time to spin up, so it makes sense
+to only spend this time when the device is actually used.
+
+This adds a logical ata device and attaches a 'probe' parameter
+to it, similar to what MMC does.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/ata/ahci.c | 68 ++++++++++++++++++++++++------------------------------
- drivers/ata/ahci.h |  1 -
- 2 files changed, 30 insertions(+), 39 deletions(-)
+ drivers/ata/disk_ata_drive.c | 57 +++++++++++++++++++++++++++++++++++++-------
+ include/ata_drive.h          |  2 ++
+ 2 files changed, 51 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 1712006..46abbc2 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -275,12 +275,6 @@ static int ahci_write(struct ata_port *ata, const void *buf, unsigned int block,
- 	return ahci_rw(ata, NULL, buf, block, num_blocks);
- }
+diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+index 923be9a..a6deb74 100644
+--- a/drivers/ata/disk_ata_drive.c
++++ b/drivers/ata/disk_ata_drive.c
+@@ -255,17 +255,11 @@ static struct block_device_ops ata_ops = {
+ #endif
+ };
  
--static struct ata_port_operations ahci_ops = {
--	.read_id = ahci_read_id,
--	.read = ahci_read,
--	.write = ahci_write,
--};
--
- static int ahci_init_port(struct ahci_port *ahci_port)
+-/**
+- * Register an ATA drive behind an IDE like interface
+- * @param dev The interface device
+- * @param io ATA register file description
+- * @return 0 on success
+- */
+-int ata_port_register(struct ata_port *port)
++static int ata_port_init(struct ata_port *port)
  {
- 	void __iomem *port_mmio;
-@@ -421,8 +415,6 @@ static int ahci_init_port(struct ahci_port *ahci_port)
+ 	int rc;
+ 	struct ata_port_operations *ops = port->ops;
+-	struct device_d *dev = port->dev;
++	struct device_d *dev = &port->class_dev;
  
- 	ahci_port_debug(ahci_port, "status: 0x%08x\n", val);
+ 	port->id = dma_alloc(SECTOR_SIZE);
  
--	ahci_port->ata.ops = &ahci_ops;
--
- 	if ((val & 0xf) == 0x03)
- 		return 0;
- 
-@@ -438,6 +430,33 @@ err_alloc:
- 	return ret;
+@@ -325,6 +319,53 @@ on_error:
+ 	return rc;
  }
  
-+static int ahci_port_start(struct ata_port *ata_port)
++static int ata_set_probe(struct device_d *class_dev, struct param_d *param,
++				const char *val)
 +{
-+	struct ahci_port *ahci_port = container_of(ata_port, struct ahci_port, ata);
-+	int ret;
++	struct ata_port *port = container_of(class_dev, struct ata_port, class_dev);
++	int ret, probe;
 +
-+	ret = ahci_init_port(ahci_port);
++	if (port->initialized) {
++		dev_info(class_dev, "already initialized\n");
++		return 0;
++	}
++
++	probe = !!simple_strtoul(val, NULL, 0);
++	if (!probe)
++		return 0;
++
++	ret = ata_port_init(port);
 +	if (ret)
 +		return ret;
 +
-+	if (!ahci_link_ok(ahci_port, 1))
-+		return -EIO;
++	port->initialized = 1;
 +
-+	ahci_port_write_f(ahci_port, PORT_CMD,
-+			PORT_CMD_ICC_ACTIVE | PORT_CMD_FIS_RX |
-+			PORT_CMD_POWER_ON | PORT_CMD_SPIN_UP |
-+			PORT_CMD_START);
-+
-+	return 0;
++	return dev_param_set_generic(class_dev, param, "1");
 +}
 +
-+static struct ata_port_operations ahci_ops = {
-+	.init = ahci_port_start,
-+	.read_id = ahci_read_id,
-+	.read = ahci_read,
-+	.write = ahci_write,
-+};
++/**
++ * Register an ATA drive behind an IDE like interface
++ * @param dev The interface device
++ * @param io ATA register file description
++ * @return 0 on success
++ */
++int ata_port_register(struct ata_port *port)
++{
++	int ret;
 +
- static int ahci_host_init(struct ahci_device *ahci)
- {
- 	u8 *mmio = (u8 *)ahci->mmio_base;
-@@ -483,9 +502,8 @@ static int ahci_host_init(struct ahci_device *ahci)
- 		ahci_port->ahci = ahci;
- 		ahci_port->ata.dev = ahci->dev;
- 		ahci_port->port_mmio = ahci_port_base(mmio, i);
--		ret = ahci_init_port(ahci_port);
--		if (!ret)
--			ahci->link_port_map |= 1 << i;
-+		ahci_port->ata.ops = &ahci_ops;
-+		ata_port_register(&ahci_port->ata);
- 	}
++	port->class_dev.id = DEVICE_ID_DYNAMIC;
++	strcpy(port->class_dev.name, "ata");
++	port->class_dev.parent = port->dev;
++
++	ret = register_device(&port->class_dev);
++	if (ret)
++		return ret;
++
++	dev_add_param(&port->class_dev, "probe", ata_set_probe, NULL, 0);
++
++	return ret;
++}
++
+ /**
+  * @file
+  * @brief Generic ATA disk drive support
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 1996321..876aa74 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -89,9 +89,11 @@ struct ata_port_operations {
+ struct ata_port {
+ 	struct ata_port_operations *ops;
+ 	struct device_d *dev;
++	struct device_d class_dev;
+ 	void *drvdata;
+ 	struct block_device blk;
+ 	uint16_t *id;
++	int initialized;
+ };
  
- 	tmp = ahci_ioread(ahci, HOST_CTL);
-@@ -495,25 +513,9 @@ static int ahci_host_init(struct ahci_device *ahci)
- 	return 0;
- }
- 
--static int ahci_port_start(struct ahci_port *ahci_port, u8 port)
--{
--	if (!ahci_link_ok(ahci_port, 1))
--		return -EIO;
--
--	ahci_port_write_f(ahci_port, PORT_CMD,
--			PORT_CMD_ICC_ACTIVE | PORT_CMD_FIS_RX |
--			PORT_CMD_POWER_ON | PORT_CMD_SPIN_UP |
--			PORT_CMD_START);
--
--	ata_port_register(&ahci_port->ata);
--
--	return 0;
--}
--
- static int __ahci_host_init(struct ahci_device *ahci)
- {
--	int i, rc = 0;
--	u32 linkmap;
-+	int rc = 0;
- 
- 	ahci->host_flags = ATA_FLAG_SATA
- 				| ATA_FLAG_NO_LEGACY
-@@ -528,16 +530,6 @@ static int __ahci_host_init(struct ahci_device *ahci)
- 	if (rc)
- 		goto err_out;
- 
--	linkmap = ahci->link_port_map;
--
--	for (i = 0; i < 32; i++) {
--		if (((linkmap >> i) & 0x01)) {
--			if (ahci_port_start(&ahci->ports[i], i)) {
--				printf("Can not start port %d\n", i);
--				continue;
--			}
--		}
--	}
- err_out:
- 	return rc;
- }
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 72e5c1a..6324bf5 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -169,7 +169,6 @@ struct ahci_device {
- 	void __iomem		*mmio_base;
- 	u32			cap;		/* cache of HOST_CAP register */
- 	u32			port_map;	/* cache of HOST_PORTS_IMPL reg */
--	u32			link_port_map;	/* linkup port map */
- 	u32			pio_mask;
- 	u32			udma_mask;
- 	u32			host_flags;
+ int ide_port_register(struct device_d *, struct ata_ioports *);
 -- 
 1.8.2.rc2
 
