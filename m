@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-da0-x232.google.com ([2607:f8b0:400e:c00::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UDqOn-0007yS-Q4
- for barebox@lists.infradead.org; Fri, 08 Mar 2013 06:03:22 +0000
-Received: by mail-da0-f50.google.com with SMTP id h15so156142dan.37
- for <barebox@lists.infradead.org>; Thu, 07 Mar 2013 22:03:19 -0800 (PST)
+ id 1UDqxf-0001Rm-9d
+ for barebox@lists.infradead.org; Fri, 08 Mar 2013 06:39:24 +0000
+Date: Fri, 8 Mar 2013 07:39:18 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20130308063918.GB18166@pengutronix.de>
+References: <cover.1362273612.git.joshc@eso.teric.us>
+ <20130303145810.GB10708@pengutronix.de>
+ <20130305170929.GD16050@kryptos>
+ <20130306172850.GA30452@pengutronix.de>
+ <20130307224625.GH16050@kryptos>
 MIME-Version: 1.0
-In-Reply-To: <1362652402-2985-3-git-send-email-dev@lynxeye.de>
-References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362652402-2985-1-git-send-email-dev@lynxeye.de>
- <1362652402-2985-3-git-send-email-dev@lynxeye.de>
-Date: Fri, 8 Mar 2013 10:03:19 +0400
-Message-ID: <CAA4bVAEbWYWVstete_AYB_3oKRu5Rv6eAc_+91j8xwNtGNfkrQ@mail.gmail.com>
-From: Antony Pavlov <antonynpavlov@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20130307224625.GH16050@kryptos>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,68 +26,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 2/5] tegra: switch to ARMv7 cpu type
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/5] Zynq support for barebox
+To: Josh Cartwright <joshc@eso.teric.us>
+Cc: barebox@lists.infradead.org, Michal Simek <monstr@monstr.eu>
 
-Hi!
+On Thu, Mar 07, 2013 at 04:46:25PM -0600, Josh Cartwright wrote:
+> On Wed, Mar 06, 2013 at 06:28:50PM +0100, Steffen Trumtrar wrote:
+> > On Tue, Mar 05, 2013 at 11:09:29AM -0600, Josh Cartwright wrote:
+> [..]
+> > > > I have some patches laying around, that have support for booting first stage
+> > > > from a SD-Card on a ZedBoard. I didn't send them as of yet, because I'm not
+> > > > completely satisfied with them in one or two places. (The clocksource seems to
+> > > > be inverse to what barebox expects, which would be a quick fix, and barebox boots
+> > > > uuultra slow, if I do everything according to the TRM)
+> > > > At the moment, I do not have access to the board though. But I hope I can get a
+> > > > hand on it in the next days.
+> > > 
+> > > If you have a chance to send out what you have, I'd be curious to see
+> > > it.  Fortunately I have several Zynq boards to play with.
+> > > 
+> > 
+> > Hi!
+> > 
+> > Have a look at
+> > http://git.pengutronix.de/?p=str/barebox.git;a=summary
+> > 
+> > I "stole" your clk driver and added it to my patch stack :-)
+> > Current state for ZedBoard:
+> > 	- boot first stage from SD-Card
+> > 		- barebox.bin needs to be processed with
+> > 		./scripts/zynq_checksum barebox.bin BOOT.bin
+> > 		to have the checksum in the BootROM header
+> > 	- clocksource is arm_smp_tmd at seems accurate
+> > 	- the BootROM needs about 4-5 seconds to copy barebox from
+> > 	  SD to the OCM. I guess, I need to mess with the SD setup
+> > 	  in the BootROM somehow
+> > 	- just enough clkdev to use the timer
+> > 	- all pinctrl, clk setup etc happens in the lowlevel init
 
-This commit breaks usb ethernet card on my board.
+Hi Josh!
 
-toshiba ac100> / usb
-USB: scanning bus for devices...
-Bus 001 Device 003: ID 0bdb:190a F3307
-Bus 001 Device 004: ID 0bda:58f2 USB Camera
-Bus 001 Device 005: ID 2001:3c05 DUB-E100
-mdio_bus: miibus0: probed
-eth0: got preset MAC address: 1C:7E:E5:0F:E1:14
-Bus 001 Device 002: ID 0424:2513
-Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
-5 USB Device(s) found
-toshiba ac100> / dhcp
-100Mbps full duplex link detected
-dhcp failed: error 1
-dhcp: error 1
-toshiba ac100>
+> 
+> Hey Steffen-
+> 
+> Thanks for sharing this! I'll be looking to get board support for the
+> zc702 on top of your work this weekend (I have several Zynq boards, but
+> none of them are ZedBoards).  I'm also in the process of porting the
+> uboot zynq_gem driver.
 
-The next branch with Sascha's 'usb: ehci: initialize ehci_data' patch
-works fine.
+First, \o/. I don't know how the two differ. But I would guess, that
+you can pretty much copy the lowlevel stuff et al.
+Only the DDR timing stuff may make problems.
 
-On 7 March 2013 14:33, Lucas Stach <dev@lynxeye.de> wrote:
-> Main barebox is running on the A9 cluster. Use the correct ISA.
->
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  arch/arm/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 7ac134e..5dbf74d 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -125,7 +125,7 @@ config ARCH_VEXPRESS
->
->  config ARCH_TEGRA
->         bool "Nvidia Tegra-based boards"
-> -       select CPU_ARM926T
-> +       select CPU_V7
->         select HAS_DEBUG_LL
->
->  endchoice
-> --
-> 1.8.1.2
->
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Second: No! Don't! I'm trying to get drivers/net/macb.c running on Zynq.
+As far as I can tell at the moment, this is a driver for a
+Cadence IP gem. And the zynq uses exactly that IP core.
+Alas, I have problems with the dma_alloc_coherent call in its
+probe function.
 
+The same goes for the UART driver and other cores. We should not start
+developing Xilinx drivers for everything, if in reality we have IP cores
+from other providers.
 
+The same goes for Linux. I haven't managed to boot mainline linux yet,
+but I saw that there are multiple bindings and drivers for Xilinx.
+And the TRM clearly states, that WDT, GEM, SPI, UART and TTC are all
+Cadence IP cores.
+
+> Do you have plans for submitting this to the list?
+
+Yes, definitely! I need to cleanup the patches a little and want to
+be sure that I didn't do anything stupidly wrong. The problem with
+dma_alloc is at least a hint, that I maybe did.
+
+Regards,
+Steffen
 
 -- 
-Best regards,
-  Antony Pavlov
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
