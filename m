@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEP3m-0007Q8-FL
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 19:03:59 +0000
-Date: Sat, 9 Mar 2013 20:03:55 +0100
+ id 1UEP9h-0007hR-Uv
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 19:10:10 +0000
+Date: Sat, 9 Mar 2013 20:10:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130309190355.GA19970@pengutronix.de>
-References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
- <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
- <20130308125138.GE32347@game.jcrosoft.org>
- <20130308130727.GD1906@pengutronix.de>
- <20130308144843.GF32347@game.jcrosoft.org>
- <20130308150609.GG1906@pengutronix.de>
- <20130308154611.GG32347@game.jcrosoft.org>
+Message-ID: <20130309191003.GL1906@pengutronix.de>
+References: <1362827007-28522-1-git-send-email-s.hauer@pengutronix.de>
+ <1362827007-28522-2-git-send-email-s.hauer@pengutronix.de>
+ <20130309165625.GA3158@x61s>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130308154611.GG32347@game.jcrosoft.org>
+In-Reply-To: <20130309165625.GA3158@x61s>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,39 +24,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/2] net: fec: drop sevenwire support
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 08, 2013 at 04:46:11PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:06 Fri 08 Mar     , Sascha Hauer wrote:
-> > On Fri, Mar 08, 2013 at 03:48:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > > +	.boot_data.size		= 192 * 1024,
-> > > > > barebox_image_size
-> > > > 
-> > > > ok. This btw will not work with CONFIG_RELOCATABLE as is since the
-> > > > linker cannot generate this value then.
-> > > why?
-> > 
-> > Absolute values will be zero when you link with -pie. They get fixed
-> > during relocation.
-> > 
-> > The image size is a relative value, when doing a
-> > 
-> > 	.word __barebox_image_end - start
-> > 
-> > in assembly it works correctly, but doing the same in C does not work.
-> > 
-> > > 
-> > > otherwise we need to update it via ld as done in the kernel as example
-> > 
-> > Can you give me a pointer what the kernel does?
+On Sat, Mar 09, 2013 at 05:56:26PM +0100, Alexander Aring wrote:
+> Hi Sascha,
 > 
-> we create the symbol at compilation
-> via --defsym
+> some nitpick...
+> > +	return phy_device_connect(edev, &fec->miibus, CONFIG_PHY_ADDR,
+> > +			 NULL, fec->phy_flags, fec->interface);
+> >  
+> >  	return 0;
+> 
+> This return will never use in this function.
+> 
 
-It just turned out --defsym also does not work together with -pie. The
-value in the image is still 0x0.
+Fixed, thanks
 
 Sascha
 
