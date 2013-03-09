@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEHOv-0000iK-IS
+ id 1UEHOv-0000iM-IS
  for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  9 Mar 2013 11:53:11 +0100
-Message-Id: <1362826391-16215-11-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  9 Mar 2013 11:53:10 +0100
+Message-Id: <1362826391-16215-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] gpio: allocate gpio_desc table dynamically
+Subject: [PATCH 09/10] fs: allocate FILE table dynamically
 To: barebox@lists.infradead.org
 
 Some systems are runnignfrom a very limited SRAM, but have a huge
 malloc space in SDRAM. The bss normally is in SRAM, so we should
-avoid having big structures there. The gpio_desc table is 3072 bytes
+avoid having big structures there. The FILE table is 5120 bytes
 big, so allocate it dynamically instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/fs.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
-index d37f5a0..9d081c2 100644
---- a/drivers/gpio/gpio.c
-+++ b/drivers/gpio/gpio.c
-@@ -1,3 +1,4 @@
-+#include <init.h>
- #include <common.h>
- #include <command.h>
- #include <complete.h>
-@@ -13,7 +14,15 @@ struct gpio_info {
- 	char *label;
- };
+diff --git a/fs/fs.c b/fs/fs.c
+index 6346112..7e2fb78 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -119,14 +119,19 @@ EXPORT_SYMBOL(mkmodestr);
  
--static struct gpio_info gpio_desc[ARCH_NR_GPIOS];
-+static struct gpio_info *gpio_desc;
-+
-+static int gpio_desc_alloc(void)
-+{
-+	gpio_desc = xzalloc(sizeof(struct gpio_info) * ARCH_NR_GPIOS);
-+
-+	return 0;
-+}
-+pure_initcall(gpio_desc_alloc);
+ static char *cwd;
  
- static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
+-static int init_cwd(void)
++static FILE *files;
++
++static int init_fs(void)
  {
+ 	cwd = xzalloc(PATH_MAX);
+ 	*cwd = '/';
++
++	files = xzalloc(sizeof(FILE) * MAX_FILES);
++
+ 	return 0;
+ }
+ 
+-postcore_initcall(init_cwd);
++postcore_initcall(init_fs);
+ 
+ char *normalise_link(const char *pathname, const char *symlink)
+ {
+@@ -268,8 +273,6 @@ char *get_mounted_path(const char *path)
+ 	return fdev->path;
+ }
+ 
+-static FILE files[MAX_FILES];
+-
+ static FILE *get_file(void)
+ {
+ 	int i;
 -- 
 1.8.2.rc2
 
