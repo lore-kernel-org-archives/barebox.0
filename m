@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f383.i.mail.ru ([185.5.136.54])
+Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UER2U-0007Sy-0P
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 21:10:47 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sun, 10 Mar 2013 01:10:38 +0400
-Message-ID: <1362863438.650892034@f383.i.mail.ru>
-In-Reply-To: <20130309204634.GN15375@pengutronix.de>
-References: <1362733514-18373-1-git-send-email-shc_work@mail.ru>
- <1362842371.794592639@f291.mail.ru> <20130309204634.GN15375@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UET4D-0005S7-3g
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 23:20:42 +0000
+Received: by mail-wi0-f181.google.com with SMTP id hm6so328309wib.2
+ for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 15:20:39 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Sun, 10 Mar 2013 00:19:35 +0100
+Message-Id: <1362871182-25726-3-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
+References: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,85 +18,176 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gRXh0ZW5kIGRldmljZV9wbGF0Zm9ybV9kcml2ZXIg?=
- =?UTF-8?B?bWFjcm8=?=
-To: =?UTF-8?B?VXdlIEtsZWluZS1L77+9bmln?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/9] omap4_romusb: rename omap4_usbboot_pdata to
+ omap4_usbboot_data
+To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-> Hi,
-> 
-> On Sat, Mar 09, 2013 at 07:19:31PM +0400, Alexander Shiyan wrote:
-> > > On Fri, Mar 08, 2013 at 01:05:14PM +0400, Alexander Shiyan wrote:
-> > > > This patch extends device_platform_driver macro, so now we allow
-> > > > use it with various init levels and subsystems.
-> > > > 
-> > > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > > > ---
-> > > >  include/driver.h | 17 ++++++++++-------
-> > > >  1 file changed, 10 insertions(+), 7 deletions(-)
-> > > > 
-> > > > diff --git a/include/driver.h b/include/driver.h
-> > > > index 46c56c0..b891f80 100644
-> > > > --- a/include/driver.h
-> > > > +++ b/include/driver.h
-> > > > @@ -395,16 +395,19 @@ extern struct bus_type platform_bus;
-> > > >  
-> > > >  int platform_driver_register(struct driver_d *drv);
-> > > >  
-> > > > -/* device_platform_driver() - Helper macro for drivers that don't do
-> > > > +/* register_driver_macro() - Helper macro for drivers that don't do
-> > > >   * anything special in module registration. This eliminates a lot of
-> > > >   * boilerplate. Each module may only use this macro once.
-> > > >   */
-> > > > -#define device_platform_driver(drv)			\
-> > > > -	static int __init drv ## _register(void)	\
-> > > > -	{						\
-> > > > -		return platform_driver_register(&drv);	\
-> > > > -	}						\
-> > > > -	device_initcall(drv ## _register)
-> > > > +#define register_driver_macro(level,subsystem,drv)		\
-> > > > +	static int __init drv##_register(void)			\
-> > > > +	{							\
-> > > > +		return subsystem##_driver_register(&drv);	\
-> > > > +	}							\
-> > > > +	level##_initcall(drv##_register)
-> > > 
-> > > So the usage would look like:
-> > > 
-> > > register_driver_macro(device, i2c, &mc_driver)
-> > > 
-> > > ?
-> > > 
-> > > I'm not sure if I like this. I'm a bit concerned about being able
-> > > to grep for for example i2c_register_driver. This would become
-> > > 
-> > > wcgrep register_driver_macro | grep i2c
-> > > 
-> > > or similar.
-> > 
-> > You are skip 2 important lines:
-> > #define device_platform_driver(drv) \
-> >  register_driver_macro(device,platform,drv)
-> > 
-> > For i2c we can define new macro like this:
-> > #define device_i2c_driver(drv) \
-> >  register_driver_macro(device,i2c,drv)
-> > 
-> > then use device_i2c_driver(&foo) in the driver.
-> I like the idea. Alexander, what is your motivation? Maybe offer a patch
-> series that first contains this patch and then in a later patch
-> introduces a nice usage.
+ omap4_usbboot_pdata is not a pointer, so remove the "p"
 
-The first use of this idea was already here:
-http://git.pengutronix.de/?p=barebox.git;a=commit;h=6a256321b839534cb3da4b8ffc06c126871a78e3
-
-But you're right, I'll prepare another patch to show the use of the extended version.
-
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
+ arch/arm/mach-omap/omap4_rom_usb.c | 72 +++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 36 deletions(-)
+
+diff --git a/arch/arm/mach-omap/omap4_rom_usb.c b/arch/arm/mach-omap/omap4_rom_usb.c
+index 48d6433..38f886b 100644
+--- a/arch/arm/mach-omap/omap4_rom_usb.c
++++ b/arch/arm/mach-omap/omap4_rom_usb.c
+@@ -36,7 +36,7 @@
+ #include <mach/xload.h>
+ #include <init.h>
+ 
+-static struct omap4_usbboot omap4_usbboot_pdata;
++static struct omap4_usbboot omap4_usbboot_data;
+ 
+ static int omap4_usbboot_open(void)
+ {
+@@ -62,20 +62,20 @@ static int omap4_usbboot_open(void)
+ 	    (boot->device_type != DEVICE_USBEXT))
+ 		return -1;
+ 
+-	memset(&omap4_usbboot_pdata, 0, sizeof(omap4_usbboot_pdata));
+-	n = rom_get_per_driver(&omap4_usbboot_pdata.io, boot->device_type);
++	memset(&omap4_usbboot_data, 0, sizeof(omap4_usbboot_data));
++	n = rom_get_per_driver(&omap4_usbboot_data.io, boot->device_type);
+ 	if (n)
+ 		return n;
+ 
+-	omap4_usbboot_pdata.dread.status = -1;
+-	omap4_usbboot_pdata.dread.xfer_mode = boot->xfer_mode;
+-	omap4_usbboot_pdata.dread.options = boot->options;
+-	omap4_usbboot_pdata.dread.device_type = boot->device_type;
++	omap4_usbboot_data.dread.status = -1;
++	omap4_usbboot_data.dread.xfer_mode = boot->xfer_mode;
++	omap4_usbboot_data.dread.options = boot->options;
++	omap4_usbboot_data.dread.device_type = boot->device_type;
+ 
+-	omap4_usbboot_pdata.dwrite.status = -1;
+-	omap4_usbboot_pdata.dwrite.xfer_mode = boot->xfer_mode;
+-	omap4_usbboot_pdata.dwrite.options = boot->options;
+-	omap4_usbboot_pdata.dwrite.device_type = boot->device_type;
++	omap4_usbboot_data.dwrite.status = -1;
++	omap4_usbboot_data.dwrite.xfer_mode = boot->xfer_mode;
++	omap4_usbboot_data.dwrite.options = boot->options;
++	omap4_usbboot_data.dwrite.device_type = boot->device_type;
+ 	__asm__ __volatile__ ("cpsie i\n");
+ 	return 0;
+ }
+@@ -83,71 +83,71 @@ static int omap4_usbboot_open(void)
+ 
+ static void rom_read_callback(struct per_handle *rh)
+ {
+-	omap4_usbboot_pdata.dread.status = rh->status;
++	omap4_usbboot_data.dread.status = rh->status;
+ 	return;
+ }
+ 
+ void omap4_usbboot_queue_read(void *data, unsigned len)
+ {
+ 	int n;
+-	omap4_usbboot_pdata.dread.data = data;
+-	omap4_usbboot_pdata.dread.length = len;
+-	omap4_usbboot_pdata.dread.status = STATUS_WAITING;
+-	omap4_usbboot_pdata.dread.xfer_mode = 1;
+-	omap4_usbboot_pdata.dread.callback = rom_read_callback;
+-	n = omap4_usbboot_pdata.io->read(&omap4_usbboot_pdata.dread);
++	omap4_usbboot_data.dread.data = data;
++	omap4_usbboot_data.dread.length = len;
++	omap4_usbboot_data.dread.status = STATUS_WAITING;
++	omap4_usbboot_data.dread.xfer_mode = 1;
++	omap4_usbboot_data.dread.callback = rom_read_callback;
++	n = omap4_usbboot_data.io->read(&omap4_usbboot_data.dread);
+ 	if (n)
+-		omap4_usbboot_pdata.dread.status = n;
++		omap4_usbboot_data.dread.status = n;
+ }
+ 
+ int omap4_usbboot_wait_read(void)
+ {
+ 	int ret;
+-	while (omap4_usbboot_pdata.dread.status == STATUS_WAITING)
++	while (omap4_usbboot_data.dread.status == STATUS_WAITING)
+ 		/* cpu_relax(); */
+ 		barrier();
+-	ret = omap4_usbboot_pdata.dread.status;
+-	omap4_usbboot_pdata.dread.status = -1;
++	ret = omap4_usbboot_data.dread.status;
++	omap4_usbboot_data.dread.status = -1;
+ 	return ret;
+ }
+ int omap4_usbboot_is_read_waiting(void)
+ {
+ 	barrier();
+-	return omap4_usbboot_pdata.dread.status == STATUS_WAITING;
++	return omap4_usbboot_data.dread.status == STATUS_WAITING;
+ }
+ int omap4_usbboot_is_read_ok(void)
+ {
+ 	barrier();
+-	return omap4_usbboot_pdata.dread.status == STATUS_OKAY;
++	return omap4_usbboot_data.dread.status == STATUS_OKAY;
+ }
+ 
+ static void rom_write_callback(struct per_handle *rh)
+ {
+-	omap4_usbboot_pdata.dwrite.status = rh->status;
++	omap4_usbboot_data.dwrite.status = rh->status;
+ 	return;
+ }
+ 
+ void omap4_usbboot_queue_write(void *data, unsigned len)
+ {
+ 	int n;
+-	omap4_usbboot_pdata.dwrite.data = data;
+-	omap4_usbboot_pdata.dwrite.length = len;
+-	omap4_usbboot_pdata.dwrite.status = STATUS_WAITING;
+-	omap4_usbboot_pdata.dwrite.xfer_mode = 1;
+-	omap4_usbboot_pdata.dwrite.callback = rom_write_callback;
+-	n = omap4_usbboot_pdata.io->write(&omap4_usbboot_pdata.dwrite);
++	omap4_usbboot_data.dwrite.data = data;
++	omap4_usbboot_data.dwrite.length = len;
++	omap4_usbboot_data.dwrite.status = STATUS_WAITING;
++	omap4_usbboot_data.dwrite.xfer_mode = 1;
++	omap4_usbboot_data.dwrite.callback = rom_write_callback;
++	n = omap4_usbboot_data.io->write(&omap4_usbboot_data.dwrite);
+ 	if (n)
+-		omap4_usbboot_pdata.dwrite.status = n;
++		omap4_usbboot_data.dwrite.status = n;
+ }
+ 
+ int omap4_usbboot_wait_write(void)
+ {
+ 	int ret;
+-	while (omap4_usbboot_pdata.dwrite.status == STATUS_WAITING)
++	while (omap4_usbboot_data.dwrite.status == STATUS_WAITING)
+ 		/* cpu_relax(); */
+ 		barrier();
+-	ret = omap4_usbboot_pdata.dwrite.status;
+-	omap4_usbboot_pdata.dwrite.status = -1;
++	ret = omap4_usbboot_data.dwrite.status;
++	omap4_usbboot_data.dwrite.status = -1;
+ 	return ret;
+ }
+ 
+@@ -177,7 +177,7 @@ int omap4_usbboot_write(void *data, unsigned len)
+ 
+ void omap4_usbboot_close(void)
+ {
+-	omap4_usbboot_pdata.io->close(&omap4_usbboot_pdata.dread);
++	omap4_usbboot_data.io->close(&omap4_usbboot_data.dread);
+ }
+ 
+ void omap4_usbboot_puts(const char *s)
+-- 
+1.8.1.5
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
