@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEHOv-0000iF-D4
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:20 +0000
+ id 1UEHOu-0000iA-W3
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  9 Mar 2013 11:53:07 +0100
-Message-Id: <1362826391-16215-7-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  9 Mar 2013 11:53:02 +0100
+Message-Id: <1362826391-16215-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] bus: Make struct device a pointer
+Subject: [PATCH 01/10] mips: initialize malloc pool before start_barebox()
 To: barebox@lists.infradead.org
-
-struct bus_type contains an embedded struct device_d which is quite
-a big structure. Dynamically allocate this instead to save the space
-in the binary.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/bus.c    | 7 ++++---
- drivers/base/driver.c | 2 +-
- include/driver.h      | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ arch/mips/boot/main_entry.c |  5 +++++
+ arch/mips/lib/Makefile      |  1 -
+ arch/mips/lib/memory.c      | 29 -----------------------------
+ 3 files changed, 5 insertions(+), 30 deletions(-)
+ delete mode 100644 arch/mips/lib/memory.c
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index e2204da..5251be6 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -30,10 +30,11 @@ int bus_register(struct bus_type *bus)
- 	if (get_bus_by_name(bus->name))
- 		return -EEXIST;
+diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
+index 0a33c45..015150b 100644
+--- a/arch/mips/boot/main_entry.c
++++ b/arch/mips/boot/main_entry.c
+@@ -18,6 +18,8 @@
  
--	strcpy(bus->dev.name, bus->name);
--	bus->dev.id = DEVICE_ID_SINGLE;
-+	bus->dev = xzalloc(sizeof(*bus->dev));
-+	strcpy(bus->dev->name, bus->name);
-+	bus->dev->id = DEVICE_ID_SINGLE;
+ #include <common.h>
+ #include <string.h>
++#include <memory.h>
++#include <asm-generic/memory_layout.h>
+ #include <asm/sections.h>
+ #include <asm/cpu-features.h>
+ #include <asm/mipsregs.h>
+@@ -90,5 +92,8 @@ void main_entry(void)
  
--	ret = register_device(&bus->dev);
-+	ret = register_device(bus->dev);
- 	if (ret)
- 		return ret;
+ 	trap_init();
  
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index fa30c68..487f478 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -135,7 +135,7 @@ int register_device(struct device_d *new_device)
- 
- 	if (new_device->bus) {
- 		if (!new_device->parent)
--			new_device->parent = &new_device->bus->dev;
-+			new_device->parent = new_device->bus->dev;
- 
- 		list_add_tail(&new_device->bus_list, &new_device->bus->device_list);
- 
-diff --git a/include/driver.h b/include/driver.h
-index 46c56c0..2d107e1 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -368,7 +368,7 @@ struct bus_type {
- 	int (*probe)(struct device_d *dev);
- 	void (*remove)(struct device_d *dev);
- 
--	struct device_d dev;
-+	struct device_d *dev;
- 
- 	struct list_head list;
- 	struct list_head device_list;
++	mem_malloc_init((void *)MALLOC_BASE,
++			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
++
+ 	start_barebox();
+ }
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index a31046b..71c4f6b 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -3,7 +3,6 @@ obj-$(CONFIG_CSRC_R4K_LIB) += csrc-r4k.o
+ obj-y += lshrdi3.o
+ obj-y += ashldi3.o
+ obj-y += ashrdi3.o
+-obj-y += memory.o
+ obj-y += cpu-probe.o
+ obj-y += traps.o
+ obj-y += genex.o
+diff --git a/arch/mips/lib/memory.c b/arch/mips/lib/memory.c
+deleted file mode 100644
+index 003fc00..0000000
+--- a/arch/mips/lib/memory.c
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * This file is part of barebox.
+- * See file CREDITS for list of people who contributed to this project.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <memory.h>
+-#include <asm-generic/memory_layout.h>
+-
+-static int mips_mem_malloc_init(void)
+-{
+-	mem_malloc_init((void *)MALLOC_BASE,
+-			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+-	return 0;
+-}
+-core_initcall(mips_mem_malloc_init);
 -- 
 1.8.2.rc2
 
