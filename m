@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEOes-0004mY-Qy
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 18:38:15 +0000
-Received: from mail634.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 85F63FF8D2E
- for <barebox@lists.infradead.org>; Sat,  9 Mar 2013 19:49:32 +0100 (CET)
-Mime-Version: 1.0 (Mac OS X Mail 6.2 \(1499\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
-Date: Sun, 10 Mar 2013 02:38:06 +0800
-Message-Id: <E4906CA1-E082-429B-8A7D-BB21E85A65E7@jcrosoft.com>
-References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UEP3m-0007Q8-FL
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 19:03:59 +0000
+Date: Sat, 9 Mar 2013 20:03:55 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130309190355.GA19970@pengutronix.de>
+References: <1362744484-17844-1-git-send-email-s.hauer@pengutronix.de>
+ <1362744484-17844-3-git-send-email-s.hauer@pengutronix.de>
+ <20130308125138.GE32347@game.jcrosoft.org>
+ <20130308130727.GD1906@pengutronix.de>
+ <20130308144843.GF32347@game.jcrosoft.org>
+ <20130308150609.GG1906@pengutronix.de>
+ <20130308154611.GG32347@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130308154611.GG32347@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,84 +28,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] image and bss size decrease
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/3] Add DMO RealQ7 board support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-
-On Mar 9, 2013, at 6:53 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> This series decreases the image size and bss size a bit. First
-> we make malloc available in all initcalls by moving the malloc
-> pool initialization before start_barebox().
+On Fri, Mar 08, 2013 at 04:46:11PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 16:06 Fri 08 Mar     , Sascha Hauer wrote:
+> > On Fri, Mar 08, 2013 at 03:48:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > > +	.boot_data.size		= 192 * 1024,
+> > > > > barebox_image_size
+> > > > 
+> > > > ok. This btw will not work with CONFIG_RELOCATABLE as is since the
+> > > > linker cannot generate this value then.
+> > > why?
+> > 
+> > Absolute values will be zero when you link with -pie. They get fixed
+> > during relocation.
+> > 
+> > The image size is a relative value, when doing a
+> > 
+> > 	.word __barebox_image_end - start
+> > 
+> > in assembly it works correctly, but doing the same in C does not work.
+> > 
+> > > 
+> > > otherwise we need to update it via ld as done in the kernel as example
+> > 
+> > Can you give me a pointer what the kernel does?
 > 
-> We then decrease the image size by making some statically initialized
-> structs smaller. struct command has a struct list_head member
-> which can be removed by wrapping the static struct command into
-> a dynamically initialized one which contains the list_head. Also
-> the embedded struct device_d in struct bus_type is removed in
-> favour for a dynamically allocated one.
-> 
-> Also we make the bss smaller by allocating the FILE table and
-> the gpio_desc table dynamically. The bss size is may become
-> a problem on boards which run from SRAM. Here the malloc pool
-> is in the big SDRAM area, but the bss is in SRAM, so it makes
-> sense to move the big tables from bss to SDRAM by using malloc.
-> 
+> we create the symbol at compilation
+> via --defsym
 
-How much less
+It just turned out --defsym also does not work together with -pie. The
+value in the image is still 0x0.
 
-IIRC I try this too but with PBL it's bigger
+Sascha
 
-Best Regards,
-J.
-> Sascha
-> 
-> ----------------------------------------------------------------
-> Sascha Hauer (10):
->      mips: initialize malloc pool before start_barebox()
->      nios: initialize malloc pool before start_barebox()
->      openrisc: initialize malloc pool before start_barebox()
->      blackfin: initialize malloc pool before start_barebox()
->      x86: initialize malloc pool before start_barebox()
->      bus: Make struct device a pointer
->      command: remove list_head from struct command
->      command: remove statically initialized aliases
->      fs: allocate FILE table dynamically
->      gpio: allocate gpio_desc table dynamically
-> 
-> arch/blackfin/cpu-bf561/start.S |  4 +--
-> arch/blackfin/lib/board.c       |  6 ++--
-> arch/mips/boot/main_entry.c     |  5 ++++
-> arch/mips/lib/Makefile          |  1 -
-> arch/mips/lib/memory.c          | 29 --------------------
-> arch/nios2/cpu/start.S          |  4 +--
-> arch/nios2/lib/board.c          |  8 ++----
-> arch/openrisc/cpu/start.S       |  2 +-
-> arch/openrisc/lib/board.c       |  7 ++---
-> arch/x86/boot/main_entry.c      |  4 +--
-> arch/x86/lib/memory.c           |  7 ++---
-> commands/edit.c                 |  8 ++++--
-> commands/help.c                 | 16 +++++++----
-> commands/test.c                 |  8 ++++--
-> common/command.c                | 61 +++++++++++++++++++++--------------------
-> common/complete.c               | 12 ++++----
-> common/hush.c                   |  7 +++--
-> common/module.c                 |  2 +-
-> drivers/base/bus.c              |  7 +++--
-> drivers/base/driver.c           |  2 +-
-> drivers/gpio/gpio.c             | 11 +++++++-
-> fs/fs.c                         | 11 +++++---
-> include/command.h               | 25 +++++++++++------
-> include/driver.h                |  2 +-
-> 24 files changed, 126 insertions(+), 123 deletions(-)
-> delete mode 100644 arch/mips/lib/memory.c
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
