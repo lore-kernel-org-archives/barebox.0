@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEHOu-0000iA-W3
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:18 +0000
+ id 1UEHOv-0000iC-9F
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  9 Mar 2013 11:53:02 +0100
-Message-Id: <1362826391-16215-2-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  9 Mar 2013 11:53:04 +0100
+Message-Id: <1362826391-16215-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] mips: initialize malloc pool before start_barebox()
+Subject: [PATCH 03/10] openrisc: initialize malloc pool before start_barebox()
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/mips/boot/main_entry.c |  5 +++++
- arch/mips/lib/Makefile      |  1 -
- arch/mips/lib/memory.c      | 29 -----------------------------
- 3 files changed, 5 insertions(+), 30 deletions(-)
- delete mode 100644 arch/mips/lib/memory.c
+ arch/openrisc/cpu/start.S | 2 +-
+ arch/openrisc/lib/board.c | 7 ++-----
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
-index 0a33c45..015150b 100644
---- a/arch/mips/boot/main_entry.c
-+++ b/arch/mips/boot/main_entry.c
-@@ -18,6 +18,8 @@
+diff --git a/arch/openrisc/cpu/start.S b/arch/openrisc/cpu/start.S
+index 9109cce..269abc0 100644
+--- a/arch/openrisc/cpu/start.S
++++ b/arch/openrisc/cpu/start.S
+@@ -245,7 +245,7 @@ _start:
+ 	l.andi	r30, r0, 0
+ 	l.andi	r31, r0, 0
  
- #include <common.h>
- #include <string.h>
-+#include <memory.h>
-+#include <asm-generic/memory_layout.h>
- #include <asm/sections.h>
- #include <asm/cpu-features.h>
- #include <asm/mipsregs.h>
-@@ -90,5 +92,8 @@ void main_entry(void)
+-	l.j	start_barebox
++	l.j	openrisc_start_barebox
+ 	 l.nop
  
- 	trap_init();
+ 	.size	_start, .-_start
+diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
+index f62fbaf..98033b4 100644
+--- a/arch/openrisc/lib/board.c
++++ b/arch/openrisc/lib/board.c
+@@ -22,17 +22,14 @@
+ #include <memory.h>
+ #include <asm-generic/memory_layout.h>
  
-+	mem_malloc_init((void *)MALLOC_BASE,
-+			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
-+
- 	start_barebox();
- }
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index a31046b..71c4f6b 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -3,7 +3,6 @@ obj-$(CONFIG_CSRC_R4K_LIB) += csrc-r4k.o
- obj-y += lshrdi3.o
- obj-y += ashldi3.o
- obj-y += ashrdi3.o
--obj-y += memory.o
- obj-y += cpu-probe.o
- obj-y += traps.o
- obj-y += genex.o
-diff --git a/arch/mips/lib/memory.c b/arch/mips/lib/memory.c
-deleted file mode 100644
-index 003fc00..0000000
---- a/arch/mips/lib/memory.c
-+++ /dev/null
-@@ -1,29 +0,0 @@
--/*
-- * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-- *
-- * This file is part of barebox.
-- * See file CREDITS for list of people who contributed to this project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
+-int openrisc_mem_malloc_init(void)
++void __noreturn openrisc_start_barebox(void)
+ {
 -
--#include <common.h>
--#include <init.h>
--#include <memory.h>
--#include <asm-generic/memory_layout.h>
--
--static int mips_mem_malloc_init(void)
--{
--	mem_malloc_init((void *)MALLOC_BASE,
--			(void *)(MALLOC_BASE + MALLOC_SIZE - 1));
+ 	mem_malloc_init((void *)(OPENRISC_SOPC_TEXT_BASE - MALLOC_SIZE),
+ 			(void *)(OPENRISC_SOPC_TEXT_BASE - 1));
+ 
 -	return 0;
--}
--core_initcall(mips_mem_malloc_init);
++	start_barebox();
+ }
+ 
+-core_initcall(openrisc_mem_malloc_init);
+-
+ void arch_shutdown(void)
+ {
+ }
 -- 
 1.8.2.rc2
 
