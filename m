@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEHOv-0000iC-9F
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:19 +0000
+ id 1UEHOv-0000iK-IS
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 10:53:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat,  9 Mar 2013 11:53:04 +0100
-Message-Id: <1362826391-16215-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sat,  9 Mar 2013 11:53:11 +0100
+Message-Id: <1362826391-16215-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] openrisc: initialize malloc pool before start_barebox()
+Subject: [PATCH 10/10] gpio: allocate gpio_desc table dynamically
 To: barebox@lists.infradead.org
+
+Some systems are runnignfrom a very limited SRAM, but have a huge
+malloc space in SDRAM. The bss normally is in SRAM, so we should
+avoid having big structures there. The gpio_desc table is 3072 bytes
+big, so allocate it dynamically instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/openrisc/cpu/start.S | 2 +-
- arch/openrisc/lib/board.c | 7 ++-----
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/openrisc/cpu/start.S b/arch/openrisc/cpu/start.S
-index 9109cce..269abc0 100644
---- a/arch/openrisc/cpu/start.S
-+++ b/arch/openrisc/cpu/start.S
-@@ -245,7 +245,7 @@ _start:
- 	l.andi	r30, r0, 0
- 	l.andi	r31, r0, 0
+diff --git a/drivers/gpio/gpio.c b/drivers/gpio/gpio.c
+index d37f5a0..9d081c2 100644
+--- a/drivers/gpio/gpio.c
++++ b/drivers/gpio/gpio.c
+@@ -1,3 +1,4 @@
++#include <init.h>
+ #include <common.h>
+ #include <command.h>
+ #include <complete.h>
+@@ -13,7 +14,15 @@ struct gpio_info {
+ 	char *label;
+ };
  
--	l.j	start_barebox
-+	l.j	openrisc_start_barebox
- 	 l.nop
+-static struct gpio_info gpio_desc[ARCH_NR_GPIOS];
++static struct gpio_info *gpio_desc;
++
++static int gpio_desc_alloc(void)
++{
++	gpio_desc = xzalloc(sizeof(struct gpio_info) * ARCH_NR_GPIOS);
++
++	return 0;
++}
++pure_initcall(gpio_desc_alloc);
  
- 	.size	_start, .-_start
-diff --git a/arch/openrisc/lib/board.c b/arch/openrisc/lib/board.c
-index f62fbaf..98033b4 100644
---- a/arch/openrisc/lib/board.c
-+++ b/arch/openrisc/lib/board.c
-@@ -22,17 +22,14 @@
- #include <memory.h>
- #include <asm-generic/memory_layout.h>
- 
--int openrisc_mem_malloc_init(void)
-+void __noreturn openrisc_start_barebox(void)
+ static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
  {
--
- 	mem_malloc_init((void *)(OPENRISC_SOPC_TEXT_BASE - MALLOC_SIZE),
- 			(void *)(OPENRISC_SOPC_TEXT_BASE - 1));
- 
--	return 0;
-+	start_barebox();
- }
- 
--core_initcall(openrisc_mem_malloc_init);
--
- void arch_shutdown(void)
- {
- }
 -- 
 1.8.2.rc2
 
