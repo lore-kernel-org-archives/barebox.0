@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f51.google.com ([74.125.82.51])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UET4P-0005V3-05
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 23:20:56 +0000
-Received: by mail-wg0-f51.google.com with SMTP id 8so3697746wgl.6
- for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 15:20:51 -0800 (PST)
+ id 1UET4L-0005U0-NW
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 23:20:53 +0000
+Received: by mail-wi0-f174.google.com with SMTP id hi8so325188wib.7
+ for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 15:20:47 -0800 (PST)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sun, 10 Mar 2013 00:19:42 +0100
-Message-Id: <1362871182-25726-10-git-send-email-vicencb@gmail.com>
+Date: Sun, 10 Mar 2013 00:19:40 +0100
+Message-Id: <1362871182-25726-8-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
 References: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,360 +23,400 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] archosg9: enable booting from sd-card
+Subject: [PATCH 7/9] menu: avoid errors when building submenus
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
+boot-menu-add-entry should not add menu entries to non-existent menus
+to solve the issue a new parameter is passed indicating the current menu
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/boards/archosg9/board.c                  |  1 -
- arch/arm/boards/archosg9/env/boot/sd-card-android | 11 ++++
- arch/arm/boards/archosg9/env/boot/sd-card-linux   | 17 ++++++
- arch/arm/boards/archosg9/env/boot/usb-android     | 11 ++++
- arch/arm/boards/archosg9/env/boot/usb-linux       | 17 ++++++
- arch/arm/boards/archosg9/env/config               |  3 -
- arch/arm/boards/archosg9/env/init/automount       | 28 ++++++++++
- arch/arm/boards/archosg9/env/init/bootsource      | 11 ++++
- arch/arm/boards/archosg9/env/init/usbboot         |  6 --
- arch/arm/configs/archosg9_defconfig               | 67 ++++++++++++++++-------
- arch/arm/configs/archosg9_xload_defconfig         | 20 +++++--
- 11 files changed, 155 insertions(+), 37 deletions(-)
- create mode 100644 arch/arm/boards/archosg9/env/boot/sd-card-android
- create mode 100644 arch/arm/boards/archosg9/env/boot/sd-card-linux
- create mode 100644 arch/arm/boards/archosg9/env/boot/usb-android
- create mode 100644 arch/arm/boards/archosg9/env/boot/usb-linux
- delete mode 100644 arch/arm/boards/archosg9/env/config
- create mode 100644 arch/arm/boards/archosg9/env/init/automount
- create mode 100644 arch/arm/boards/archosg9/env/init/bootsource
- delete mode 100644 arch/arm/boards/archosg9/env/init/usbboot
+ arch/arm/boards/at91sam9m10ihd/env/boot/android         | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/mmc             | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net             | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net-usb         | 2 +-
+ arch/arm/boards/beagle/env/boot/mmc                     | 2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi-dt             | 2 +-
+ arch/arm/boards/beaglebone/env/boot/sd                  | 2 +-
+ arch/arm/boards/clep7212/env/boot/nor                   | 2 +-
+ arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 | 2 +-
+ arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal | 2 +-
+ arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left    | 2 +-
+ arch/arm/boards/guf-vincell/env/boot/nand-ubi           | 2 +-
+ arch/arm/boards/karo-tx25/env/boot/nand-ubi             | 2 +-
+ arch/arm/boards/panda/env/boot/mmc                      | 2 +-
+ arch/arm/boards/pcm037/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm038/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm043/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm051/env/boot/sd                      | 2 +-
+ arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi        | 2 +-
+ defaultenv-2/base/boot/net                              | 2 +-
+ defaultenv-2/base/data/boot-template                    | 2 +-
+ defaultenv-2/menu/menu/boot-entries-collect             | 4 ++--
+ defaultenv-2/menu/menu/boot-entries-edit                | 2 +-
+ defaultenv-2/menu/menu/boot-entries-remove              | 2 +-
+ defaultenv-2/menu/menu/boot-menu-add-entry              | 6 +++---
+ defaultenv-2/menu/menu/mainmenu                         | 2 +-
+ 27 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
-index 8366cca..bf247de 100644
---- a/arch/arm/boards/archosg9/board.c
-+++ b/arch/arm/boards/archosg9/board.c
-@@ -49,7 +49,6 @@ static int archosg9_devices_init(void){
- 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
- 	omap44xx_add_i2c1(NULL);
- 	omap44xx_add_mmc1(NULL);
--	omap44xx_add_mmc2(NULL);
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/android b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+index e440f18..e7387c5 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/android
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+@@ -1,7 +1,7 @@
+ #!/bin/sh
  
- 	armlinux_set_bootparams((void *)0x80000100);
- 	/*
-diff --git a/arch/arm/boards/archosg9/env/boot/sd-card-android b/arch/arm/boards/archosg9/env/boot/sd-card-android
-new file mode 100644
-index 0000000..dc6f15e
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/boot/sd-card-android
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "Android from SD card" "$2"
-+	exit
-+fi
-+
-+path=/mnt/sd
-+global.bootm.image=${path}/android
-+global.bootm.initrd=${path}/initramfs.cpio.lzo
-+global.linux.bootargs.base="mem=512M init=/linuxrc debug omapdss.debug=0 omapfb.debug=0 mem=512M@0xa0000000"
-diff --git a/arch/arm/boards/archosg9/env/boot/sd-card-linux b/arch/arm/boards/archosg9/env/boot/sd-card-linux
-new file mode 100644
-index 0000000..1ae7340
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/boot/sd-card-linux
-@@ -0,0 +1,17 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "Linux from SD card" "$2"
-+	exit
-+fi
-+
-+path=/mnt/sd
-+global.bootm.image=${path}/zImage
-+initrd=${path}/initrd
-+
-+if [ -f ${initrd} ]; then
-+	global.bootm.initrd=${initrd}
-+	global.linux.bootargs.base="console=ttyO0,115200n8 root=/dev/ram0"
-+else
-+	global.linux.bootargs.base="console=ttyO0,115200n8 rootwait root=/dev/mmcblk0p2"
-+fi
-diff --git a/arch/arm/boards/archosg9/env/boot/usb-android b/arch/arm/boards/archosg9/env/boot/usb-android
-new file mode 100644
-index 0000000..f764681
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/boot/usb-android
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "Android from usb" "$2"
-+	exit
-+fi
-+
-+path=/mnt/usb
-+global.bootm.image=${path}/android
-+global.bootm.initrd=${path}/initramfs.cpio.lzo
-+global.linux.bootargs.base="mem=512M init=/linuxrc debug omapdss.debug=0 omapfb.debug=0 mem=512M@0xa0000000"
-diff --git a/arch/arm/boards/archosg9/env/boot/usb-linux b/arch/arm/boards/archosg9/env/boot/usb-linux
-new file mode 100644
-index 0000000..1d8e919
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/boot/usb-linux
-@@ -0,0 +1,17 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "Linux from usb" "$2"
-+	exit
-+fi
-+
-+path=/mnt/usb
-+global.bootm.image=${path}/zImage
-+initrd=${path}/initrd
-+
-+if [ -f ${initrd} ]; then
-+	global.bootm.initrd=${initrd}
-+	global.linux.bootargs.base="console=ttyO0,115200n8 root=/dev/ram0"
-+else
-+	global.linux.bootargs.base="console=ttyO0,115200n8"
-+fi
-diff --git a/arch/arm/boards/archosg9/env/config b/arch/arm/boards/archosg9/env/config
-deleted file mode 100644
-index 8f3edb0..0000000
---- a/arch/arm/boards/archosg9/env/config
-+++ /dev/null
-@@ -1,3 +0,0 @@
--global.bootm.image="${TARGET_ROOT}/boot/zImage"
--global.bootm.initrd="${TARGET_ROOT}/boot/initrd"
--global.linux.bootargs.base="console=ttyO0,115200n8 root=/dev/ram0"
-diff --git a/arch/arm/boards/archosg9/env/init/automount b/arch/arm/boards/archosg9/env/init/automount
-new file mode 100644
-index 0000000..700b5e4
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/init/automount
-@@ -0,0 +1,28 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "Automountpoints"
-+	exit
-+fi
-+
-+# automount tftp server based on $eth0.serverip
-+
-+mkdir -p /mnt/tftp
-+automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
-+
-+# automount nfs server example
-+
-+#nfshost=somehost
-+#mkdir -p /mnt/${nfshost}
-+#automount /mnt/$nfshost "ifup eth0 && mount -t nfs ${nfshost}:/tftpboot /mnt/${nfshost}"
-+
-+# FAT on usb disk example
-+
-+#mkdir -p /mnt/fat
-+#automount -d /mnt/fat 'usb && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
-+
-+mkdir -p /mnt/sd
-+automount -d /mnt/sd 'mount /dev/disk0.0 /mnt/sd'
-+
-+mkdir -p /mnt/usb
-+automount -d /mnt/usb 'mount -t omap4_usbbootfs omap4_usbboot /mnt/usb'
-diff --git a/arch/arm/boards/archosg9/env/init/bootsource b/arch/arm/boards/archosg9/env/init/bootsource
-new file mode 100644
-index 0000000..b3df447
---- /dev/null
-+++ b/arch/arm/boards/archosg9/env/init/bootsource
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ -f /mnt/sd/zImage ]; then
-+	global.boot.default=sd-card-linux
-+elif [ -f /mnt/sd/android ]; then
-+	global.boot.default=sd-card-android
-+elif [ -f /mnt/usb/zImage ]; then
-+	global.boot.default=usb-linux
-+elif [ -f /mnt/usb/android ]; then
-+	global.boot.default=usb-android
-+fi
-diff --git a/arch/arm/boards/archosg9/env/init/usbboot b/arch/arm/boards/archosg9/env/init/usbboot
-deleted file mode 100644
-index 83dd19a..0000000
---- a/arch/arm/boards/archosg9/env/init/usbboot
-+++ /dev/null
-@@ -1,6 +0,0 @@
--TARGET_ROOT="/mnt/usb"
--mkdir ${TARGET_ROOT}
--mount -t omap4_usbbootfs omap4_usbboot ${TARGET_ROOT}
--. /env/config
--. ${TARGET_ROOT}/boot/config
--bootm
-diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
-index 452d2ec..cb0f6b2 100644
---- a/arch/arm/configs/archosg9_defconfig
-+++ b/arch/arm/configs/archosg9_defconfig
-@@ -1,48 +1,56 @@
--CONFIG_MACH_ARCHOSG9=y
- CONFIG_ARCH_OMAP=y
- CONFIG_ARCH_OMAP4=y
--CONFIG_AEABI=y
-+CONFIG_OMAP4_USBBOOT=y
-+CONFIG_MACH_ARCHOSG9=y
-+CONFIG_THUMB2_BAREBOX=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- # CONFIG_MMU is not set
--CONFIG_OMAP4_USBBOOT=y
--CONFIG_TEXT_BASE=0xa0000000
--CONFIG_MALLOC_BASE=0x90000000
--CONFIG_MALLOC_SIZE=0x10000000
-+CONFIG_TEXT_BASE=0x8f000000
-+CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_PROMPT="barebox> "
- CONFIG_LONGHELP=y
--CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
--# CONFIG_CONSOLE_ACTIVATE_FIRST is not set
--CONFIG_CONSOLE_ACTIVATE_ALL=y
-+CONFIG_MENU=y
- # CONFIG_TIMESTAMP is not set
-+CONFIG_CONSOLE_ACTIVATE_ALL=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv-2 arch/arm/boards/archosg9/env"
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/archosg9/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
- CONFIG_CMD_SAVEENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
- CONFIG_CMD_TIME=y
-+CONFIG_CMD_DIRNAME=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_READLINK=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_LOADB=y
-+CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_IOMEM=y
--CONFIG_CMD_FLASH=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
- CONFIG_CMD_MD5SUM=y
--CONFIG_CMD_SHA1SUM=y
--CONFIG_CMD_SHA224SUM=y
--CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_BOOTM_VERBOSE=y
- CONFIG_CMD_BOOTM_INITRD=y
- CONFIG_CMD_BOOTM_OFTREE=y
- CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
- CONFIG_CMD_BOOTM_AIMAGE=y
-+CONFIG_CMD_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_TIMEOUT=y
-@@ -52,19 +60,36 @@ CONFIG_CMD_MAGICVAR_HELP=y
- CONFIG_CMD_GPIO=y
- CONFIG_CMD_UNCOMPRESS=y
- CONFIG_CMD_I2C=y
--CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
--CONFIG_BAUDRATE=115200
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_SMSC95XX=y
-+CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
- # CONFIG_SPI is not set
- CONFIG_I2C=y
- CONFIG_I2C_OMAP=y
--CONFIG_MFD_TWLCORE=y
--CONFIG_MFD_TWL6030=y
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_MFD_TWL6030=y
-+CONFIG_FS_OMAP4_USBBOOT=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_FS_OMAP4_USBBOOT=y
-+CONFIG_ZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/configs/archosg9_xload_defconfig b/arch/arm/configs/archosg9_xload_defconfig
-index 83743fa..24369b2 100644
---- a/arch/arm/configs/archosg9_xload_defconfig
-+++ b/arch/arm/configs/archosg9_xload_defconfig
-@@ -1,24 +1,32 @@
--CONFIG_MACH_ARCHOSG9=y
- CONFIG_ARCH_OMAP=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
- CONFIG_ARCH_OMAP4=y
- # CONFIG_OMAP_GPMC is not set
- CONFIG_OMAP_BUILD_IFT=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0xC000
--CONFIG_AEABI=y
- CONFIG_OMAP4_USBBOOT=y
-+CONFIG_MACH_ARCHOSG9=y
-+CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
-+# CONFIG_MMU is not set
-+# CONFIG_BANNER is not set
-+# CONFIG_MEMINFO is not set
- CONFIG_TEXT_BASE=0x40300000
--CONFIG_MEMORY_LAYOUT_FIXED=y
--CONFIG_STACK_BASE=0x8f000000
--CONFIG_MALLOC_BASE=0x84000000
- CONFIG_MALLOC_SIZE=0x2000000
- CONFIG_SHELL_NONE=y
- # CONFIG_ERRNO_MESSAGES is not set
- # CONFIG_TIMESTAMP is not set
- CONFIG_CONSOLE_SIMPLE=y
- # CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
- # CONFIG_SPI is not set
-+# CONFIG_DISK_WRITE is not set
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+# CONFIG_MCI_WRITE is not set
-+CONFIG_MCI_OMAP_HSMMC=y
- # CONFIG_FS_RAMFS is not set
- # CONFIG_FS_DEVFS is not set
- CONFIG_FS_OMAP4_USBBOOT=y
-+CONFIG_FS_FAT=y
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "android (nand)"
++	boot-menu-add-entry "$0" "android (nand)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/mmc b/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
+index 89c66ee..1ed98e3 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC slot"
++	boot-menu-add-entry "$0" "MMC slot" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/net b/arch/arm/boards/at91sam9m10ihd/env/boot/net
+index cdb2520..35f0a54 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/net
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/net
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs) (macb)"
++	boot-menu-add-entry "$0" "network (tftp, nfs) (macb)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb b/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
+index 6e341a0..c4c01c3 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs) (usb ethernet)"
++	boot-menu-add-entry "$0" "network (tftp, nfs) (usb ethernet)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/mmc b/arch/arm/boards/beagle/env/boot/mmc
+index 58bd557..d1a5486 100644
+--- a/arch/arm/boards/beagle/env/boot/mmc
++++ b/arch/arm/boards/beagle/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext3)"
++	boot-menu-add-entry "$0" "MMC (ext3)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi b/arch/arm/boards/beagle/env/boot/nand-ubi
+index 3037fd4..f0e932b 100644
+--- a/arch/arm/boards/beagle/env/boot/nand-ubi
++++ b/arch/arm/boards/beagle/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi-dt b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
+index b7a1f19..e7539b8 100644
+--- a/arch/arm/boards/beagle/env/boot/nand-ubi-dt
++++ b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beaglebone/env/boot/sd b/arch/arm/boards/beaglebone/env/boot/sd
+index dce0605..6315e08 100644
+--- a/arch/arm/boards/beaglebone/env/boot/sd
++++ b/arch/arm/boards/beaglebone/env/boot/sd
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
++	boot-menu-add-entry "$0" "kernel & rootfs on SD card" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/clep7212/env/boot/nor b/arch/arm/boards/clep7212/env/boot/nor
+index df8c983..cca2bfa 100644
+--- a/arch/arm/boards/clep7212/env/boot/nor
++++ b/arch/arm/boards/clep7212/env/boot/nor
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "NOR Flash"
++	boot-menu-add-entry "$0" "NOR Flash" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
+index 4d830ed..b600a56 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
++++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext)"
++	boot-menu-add-entry "$0" "MMC (ext)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal b/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
+index ccd0f69..564f10e 100644
+--- a/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
++++ b/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "internal harddisk"
++	boot-menu-add-entry "$0" "internal harddisk" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left b/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
+index 21935c6..6bba754 100644
+--- a/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
++++ b/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "left MMC slot"
++	boot-menu-add-entry "$0" "left MMC slot" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/guf-vincell/env/boot/nand-ubi b/arch/arm/boards/guf-vincell/env/boot/nand-ubi
+index a3f748e..1745e58 100644
+--- a/arch/arm/boards/guf-vincell/env/boot/nand-ubi
++++ b/arch/arm/boards/guf-vincell/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/karo-tx25/env/boot/nand-ubi b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/karo-tx25/env/boot/nand-ubi
++++ b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/panda/env/boot/mmc b/arch/arm/boards/panda/env/boot/mmc
+index 58bd557..d1a5486 100644
+--- a/arch/arm/boards/panda/env/boot/mmc
++++ b/arch/arm/boards/panda/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext3)"
++	boot-menu-add-entry "$0" "MMC (ext3)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm037/env/boot/nand-ubi b/arch/arm/boards/pcm037/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm037/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm037/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm038/env/boot/nand-ubi b/arch/arm/boards/pcm038/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm038/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm038/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm043/env/boot/nand-ubi b/arch/arm/boards/pcm043/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm043/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm043/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm051/env/boot/sd b/arch/arm/boards/pcm051/env/boot/sd
+index f303c10..9debd73 100644
+--- a/arch/arm/boards/pcm051/env/boot/sd
++++ b/arch/arm/boards/pcm051/env/boot/sd
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
++	boot-menu-add-entry "$0" "kernel & rootfs on SD card" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi b/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
+index 1987492..ffc64f1 100644
+--- a/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
++++ b/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
+index 90c25aa..25d2d12 100644
+--- a/defaultenv-2/base/boot/net
++++ b/defaultenv-2/base/boot/net
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs)"
++	boot-menu-add-entry "$0" "network (tftp, nfs)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/base/data/boot-template b/defaultenv-2/base/data/boot-template
+index 9297499..2b3e018 100644
+--- a/defaultenv-2/base/data/boot-template
++++ b/defaultenv-2/base/data/boot-template
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "<menu text here>"
++	boot-menu-add-entry "$0" "<menu text here>" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/menu/menu/boot-entries-collect b/defaultenv-2/menu/menu/boot-entries-collect
+index c066c93..ba82bf1 100644
+--- a/defaultenv-2/menu/menu/boot-entries-collect
++++ b/defaultenv-2/menu/menu/boot-entries-collect
+@@ -2,11 +2,11 @@
+ 
+ cd /env/boot
+ 
+-./$global.boot.default menu
++./$global.boot.default menu $1
+ 
+ for i in *; do
+ 	if [ "$i" != "$global.boot.default" ]; then
+-		./$i menu
++		./$i menu $1
+ 	fi
+ done
+ 
+diff --git a/defaultenv-2/menu/menu/boot-entries-edit b/defaultenv-2/menu/menu/boot-entries-edit
+index c4e1c3d..16586be 100644
+--- a/defaultenv-2/menu/menu/boot-entries-edit
++++ b/defaultenv-2/menu/menu/boot-entries-edit
+@@ -5,7 +5,7 @@ export menu_exit=false
+ while true; do
+ 	menu -a -m boot_entries_edit -d "\e[1;36mEdit boot entries\e[0m"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot_entries_edit
+ 
+ 	menu -e -a -m boot_entries_edit -c "boot-menu-new-boot-entry" -d "Add a new entry"
+ 	menu -e -a -m boot_entries_edit -c "boot-entries-remove" -d "Remove an entry"
+diff --git a/defaultenv-2/menu/menu/boot-entries-remove b/defaultenv-2/menu/menu/boot-entries-remove
+index 566be9d..2fe8265 100644
+--- a/defaultenv-2/menu/menu/boot-entries-remove
++++ b/defaultenv-2/menu/menu/boot-entries-remove
+@@ -5,7 +5,7 @@ export menu_exit=false
+ while true; do
+ 	menu -a -m boot_entries_remove -d "\e[1;36mRemove Boot entry\e[0m"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot_entries_remove
+ 
+ 	menu -e -a -m boot_entries_remove -c "menu_exit=true" -d "back"
+ 
+diff --git a/defaultenv-2/menu/menu/boot-menu-add-entry b/defaultenv-2/menu/menu/boot-menu-add-entry
+index f06c524..f634b5c 100644
+--- a/defaultenv-2/menu/menu/boot-menu-add-entry
++++ b/defaultenv-2/menu/menu/boot-menu-add-entry
+@@ -1,5 +1,5 @@
+ #!/bin/sh
+ 
+-menu -e -a -m boot -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
+-menu -e -a -m boot_entries_edit -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
+-menu -e -a -m boot_entries_remove -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
++[ "$3" = boot                ] && menu -e -a -m "$3" -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
++[ "$3" = boot_entries_edit   ] && menu -e -a -m "$3" -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
++[ "$3" = boot_entries_remove ] && menu -e -a -m "$3" -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
+diff --git a/defaultenv-2/menu/menu/mainmenu b/defaultenv-2/menu/menu/mainmenu
+index c74cc9c..aa7626b 100644
+--- a/defaultenv-2/menu/menu/mainmenu
++++ b/defaultenv-2/menu/menu/mainmenu
+@@ -12,7 +12,7 @@ while true; do
+ 
+ 	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot
+ 
+ 	menu -e -a -R -m boot -c "$global.editcmd /env/network/eth0" -d "Network settings"
+ 	menu -e -a -R -m boot -c "$global.editcmd /env/config" -d "Config settings"
 -- 
 1.8.1.5
 
