@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
+Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEOdj-0004jc-Ef
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 18:37:04 +0000
+ id 1UEOes-0004mY-Qy
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 18:38:15 +0000
 Received: from mail634.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 3AFE3FF8C1E
- for <barebox@lists.infradead.org>; Sat,  9 Mar 2013 19:48:16 +0100 (CET)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 85F63FF8D2E
+ for <barebox@lists.infradead.org>; Sat,  9 Mar 2013 19:49:32 +0100 (CET)
 Mime-Version: 1.0 (Mac OS X Mail 6.2 \(1499\))
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20130309151230.GK1906@pengutronix.de>
-Date: Sun, 10 Mar 2013 02:36:48 +0800
-Message-Id: <D3D7E3D0-4B8E-4C48-94DC-85CEA0AF21A3@jcrosoft.com>
-References: <1362733514-18373-1-git-send-email-shc_work@mail.ru>
- <20130309151230.GK1906@pengutronix.de>
+In-Reply-To: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 10 Mar 2013 02:38:06 +0800
+Message-Id: <E4906CA1-E082-429B-8A7D-BB21E85A65E7@jcrosoft.com>
+References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,76 +25,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Extend device_platform_driver macro
+Subject: Re: [PATCH] image and bss size decrease
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 
-On Mar 9, 2013, at 11:12 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Mar 9, 2013, at 6:53 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> Hi Alexander,
+> This series decreases the image size and bss size a bit. First
+> we make malloc available in all initcalls by moving the malloc
+> pool initialization before start_barebox().
 > 
-> On Fri, Mar 08, 2013 at 01:05:14PM +0400, Alexander Shiyan wrote:
->> This patch extends device_platform_driver macro, so now we allow
->> use it with various init levels and subsystems.
->> 
->> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
->> ---
->> include/driver.h | 17 ++++++++++-------
->> 1 file changed, 10 insertions(+), 7 deletions(-)
->> 
->> diff --git a/include/driver.h b/include/driver.h
->> index 46c56c0..b891f80 100644
->> --- a/include/driver.h
->> +++ b/include/driver.h
->> @@ -395,16 +395,19 @@ extern struct bus_type platform_bus;
->> 
->> int platform_driver_register(struct driver_d *drv);
->> 
->> -/* device_platform_driver() - Helper macro for drivers that don't do
->> +/* register_driver_macro() - Helper macro for drivers that don't do
->>  * anything special in module registration. This eliminates a lot of
->>  * boilerplate. Each module may only use this macro once.
->>  */
->> -#define device_platform_driver(drv)			\
->> -	static int __init drv ## _register(void)	\
->> -	{						\
->> -		return platform_driver_register(&drv);	\
->> -	}						\
->> -	device_initcall(drv ## _register)
->> +#define register_driver_macro(level,subsystem,drv)		\
->> +	static int __init drv##_register(void)			\
->> +	{							\
->> +		return subsystem##_driver_register(&drv);	\
->> +	}							\
->> +	level##_initcall(drv##_register)
+> We then decrease the image size by making some statically initialized
+> structs smaller. struct command has a struct list_head member
+> which can be removed by wrapping the static struct command into
+> a dynamically initialized one which contains the list_head. Also
+> the embedded struct device_d in struct bus_type is removed in
+> favour for a dynamically allocated one.
 > 
-> So the usage would look like:
+> Also we make the bss smaller by allocating the FILE table and
+> the gpio_desc table dynamically. The bss size is may become
+> a problem on boards which run from SRAM. Here the malloc pool
+> is in the big SDRAM area, but the bss is in SRAM, so it makes
+> sense to move the big tables from bss to SDRAM by using malloc.
 > 
-> register_driver_macro(device, i2c, &mc_driver)
-> 
-> ?
-> 
-> I'm not sure if I like this. I'm a bit concerned about being able
-> to grep for for example i2c_register_driver. This would become
-> 
-> wcgrep register_driver_macro | grep i2c
-> 
-> or similar.
-> 
-> What do others think about it?
-same I don't like it
+
+How much less
+
+IIRC I try this too but with PBL it's bigger
 
 Best Regards,
 J.
-> 
 > Sascha
 > 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> ----------------------------------------------------------------
+> Sascha Hauer (10):
+>      mips: initialize malloc pool before start_barebox()
+>      nios: initialize malloc pool before start_barebox()
+>      openrisc: initialize malloc pool before start_barebox()
+>      blackfin: initialize malloc pool before start_barebox()
+>      x86: initialize malloc pool before start_barebox()
+>      bus: Make struct device a pointer
+>      command: remove list_head from struct command
+>      command: remove statically initialized aliases
+>      fs: allocate FILE table dynamically
+>      gpio: allocate gpio_desc table dynamically
+> 
+> arch/blackfin/cpu-bf561/start.S |  4 +--
+> arch/blackfin/lib/board.c       |  6 ++--
+> arch/mips/boot/main_entry.c     |  5 ++++
+> arch/mips/lib/Makefile          |  1 -
+> arch/mips/lib/memory.c          | 29 --------------------
+> arch/nios2/cpu/start.S          |  4 +--
+> arch/nios2/lib/board.c          |  8 ++----
+> arch/openrisc/cpu/start.S       |  2 +-
+> arch/openrisc/lib/board.c       |  7 ++---
+> arch/x86/boot/main_entry.c      |  4 +--
+> arch/x86/lib/memory.c           |  7 ++---
+> commands/edit.c                 |  8 ++++--
+> commands/help.c                 | 16 +++++++----
+> commands/test.c                 |  8 ++++--
+> common/command.c                | 61 +++++++++++++++++++++--------------------
+> common/complete.c               | 12 ++++----
+> common/hush.c                   |  7 +++--
+> common/module.c                 |  2 +-
+> drivers/base/bus.c              |  7 +++--
+> drivers/base/driver.c           |  2 +-
+> drivers/gpio/gpio.c             | 11 +++++++-
+> fs/fs.c                         | 11 +++++---
+> include/command.h               | 25 +++++++++++------
+> include/driver.h                |  2 +-
+> 24 files changed, 126 insertions(+), 123 deletions(-)
+> delete mode 100644 arch/mips/lib/memory.c
 > 
 > _______________________________________________
 > barebox mailing list
