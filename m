@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22e.google.com ([2a00:1450:400c:c03::22e])
+Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UET4I-0005Sy-CE
- for barebox@lists.infradead.org; Sat, 09 Mar 2013 23:20:47 +0000
-Received: by mail-we0-f174.google.com with SMTP id r6so2305476wey.33
- for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 15:20:44 -0800 (PST)
+ id 1UET4I-0005SP-Cv
+ for barebox@lists.infradead.org; Sat, 09 Mar 2013 23:20:48 +0000
+Received: by mail-we0-f172.google.com with SMTP id d46so2308858wer.31
+ for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 15:20:41 -0800 (PST)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sun, 10 Mar 2013 00:19:38 +0100
-Message-Id: <1362871182-25726-6-git-send-email-vicencb@gmail.com>
+Date: Sun, 10 Mar 2013 00:19:36 +0100
+Message-Id: <1362871182-25726-4-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
 References: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/9] panda: remove unused configuration items
+Subject: [PATCH 3/9] omap_uart: rename OMAP3EVM_UARTx to OMAP_UARTx
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
+ use a more generic UART selection on OMAP so it can be extended to
+other OMAPs
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/configs/panda_xload_defconfig | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/arm/boards/omap3evm/board.c           |  4 ++--
+ arch/arm/boards/omap3evm/lowlevel.c        |  4 ++--
+ arch/arm/mach-omap/Kconfig                 | 11 ++++++-----
+ arch/arm/mach-omap/include/mach/debug_ll.h |  6 +++++-
+ 4 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/configs/panda_xload_defconfig b/arch/arm/configs/panda_xload_defconfig
-index 1ed20a1..5cedcff 100644
---- a/arch/arm/configs/panda_xload_defconfig
-+++ b/arch/arm/configs/panda_xload_defconfig
-@@ -6,9 +6,6 @@ CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- CONFIG_MMU=y
- CONFIG_TEXT_BASE=0x40300000
--CONFIG_MEMORY_LAYOUT_FIXED=y
--CONFIG_STACK_BASE=0x8f000000
--CONFIG_MALLOC_BASE=0x84000000
- CONFIG_MALLOC_SIZE=0x2000000
- CONFIG_PROMPT="barebox> "
- CONFIG_SHELL_NONE=y
+diff --git a/arch/arm/boards/omap3evm/board.c b/arch/arm/boards/omap3evm/board.c
+index 7585541..7284f5f 100644
+--- a/arch/arm/boards/omap3evm/board.c
++++ b/arch/arm/boards/omap3evm/board.c
+@@ -62,9 +62,9 @@
+  */
+ static int omap3evm_init_console(void)
+ {
+-	if (IS_ENABLED(CONFIG_OMAP3EVM_UART1))
++	if (IS_ENABLED(CONFIG_OMAP_UART1))
+ 		omap3_add_uart1();
+-	if (IS_ENABLED(CONFIG_OMAP3EVM_UART3))
++	if (IS_ENABLED(CONFIG_OMAP_UART3))
+ 		omap3_add_uart3();
+ 
+ 	return 0;
+diff --git a/arch/arm/boards/omap3evm/lowlevel.c b/arch/arm/boards/omap3evm/lowlevel.c
+index 74e1315..2d9e130 100644
+--- a/arch/arm/boards/omap3evm/lowlevel.c
++++ b/arch/arm/boards/omap3evm/lowlevel.c
+@@ -122,12 +122,12 @@ static void mux_config(void)
+ 	/*
+ 	 * Serial Interface
+ 	 */
+-#if defined(CONFIG_OMAP3EVM_UART1)
++#if defined(CONFIG_OMAP_UART1)
+ 	MUX_VAL(CP(UART1_TX),		(IDIS | PTD | DIS | M0));
+ 	MUX_VAL(CP(UART1_RTS),		(IDIS | PTD | DIS | M0));
+ 	MUX_VAL(CP(UART1_CTS),		(IEN  | PTU | DIS | M0));
+ 	MUX_VAL(CP(UART1_RX),		(IEN  | PTD | DIS | M0));
+-#elif defined(CONFIG_OMAP3EVM_UART3)
++#elif defined(CONFIG_OMAP_UART3)
+ 	MUX_VAL(CP(UART3_CTS_RCTX),	(IEN  | PTD | EN  | M0));
+ 	MUX_VAL(CP(UART3_RTS_SD),	(IDIS | PTD | DIS | M0));
+ 	MUX_VAL(CP(UART3_RX_IRRX),	(IEN  | PTD | DIS | M0));
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index a87fc4b..42e5f4a 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -187,20 +187,21 @@ config MACH_PCM051
+ 
+ endchoice
+ 
+-if MACH_OMAP3EVM
++if ARCH_OMAP
+ 
+ choice
+ 	prompt "Select UART"
++	default OMAP_UART3
+ 
+-	config OMAP3EVM_UART1
++	config OMAP_UART1
+ 		bool "Use UART1"
+-		depends on MACH_OMAP3EVM
++		depends on ARCH_OMAP
+ 		help
+ 		  Say Y here if you would like to use UART1 as console.
+ 
+-	config OMAP3EVM_UART3
++	config OMAP_UART3
+ 		bool "Use UART3"
+-		depends on MACH_OMAP3EVM
++		depends on ARCH_OMAP
+ 		help
+ 		  Say Y here if you would like to use UART3 as console.
+ 
+diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+index ed1777b..eea6eb3 100644
+--- a/arch/arm/mach-omap/include/mach/debug_ll.h
++++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+@@ -22,7 +22,7 @@
+ #ifdef CONFIG_ARCH_OMAP3
+ #include <mach/omap3-silicon.h>
+ 
+-#ifdef CONFIG_OMAP3EVM_UART1
++#ifdef CONFIG_OMAP_UART1
+ #define UART_BASE	OMAP3_UART1_BASE
+ #else
+ #define UART_BASE	OMAP3_UART3_BASE
+@@ -32,8 +32,12 @@
+ 
+ #ifdef CONFIG_ARCH_OMAP4
+ #include <mach/omap4-silicon.h>
++#ifdef CONFIG_OMAP_UART1
++#define UART_BASE	OMAP44XX_UART1_BASE
++#else
+ #define UART_BASE	OMAP44XX_UART3_BASE
+ #endif
++#endif
+ 
+ #ifdef CONFIG_ARCH_AM33XX
+ #include <mach/am33xx-silicon.h>
 -- 
 1.8.1.5
 
