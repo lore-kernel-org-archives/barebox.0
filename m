@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2.mail.ru ([94.100.176.130])
+Received: from mail-pb0-f49.google.com ([209.85.160.49])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEZx1-0005tf-K2
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 06:41:47 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 10 Mar 2013 10:41:35 +0400
-Message-Id: <1362897695-3936-6-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1362897695-3936-1-git-send-email-shc_work@mail.ru>
-References: <1362897695-3936-1-git-send-email-shc_work@mail.ru>
+ id 1UEaQe-0008Mc-Rh
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 07:12:23 +0000
+Received: by mail-pb0-f49.google.com with SMTP id xa12so2666055pbc.36
+ for <barebox@lists.infradead.org>; Sat, 09 Mar 2013 23:12:19 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <1362652402-2985-5-git-send-email-dev@lynxeye.de>
+References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-1-git-send-email-dev@lynxeye.de>
+ <1362652402-2985-5-git-send-email-dev@lynxeye.de>
+Date: Sun, 10 Mar 2013 11:12:19 +0400
+Message-ID: <CAA4bVAFkGyYjnTSvhXqpyqv8NdfC4urW5dOVwR9hxUun-SarkA@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,166 +21,288 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/6] Introduce device_spi_driver() macro and use it for SPI
- drivers
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 4/5] tegra: add proper timer driver
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
+
+On 7 March 2013 14:33, Lucas Stach <dev@lynxeye.de> wrote:
+> Replace the ad-hoc clocksource implementation with a proper driver for
+> the Tegra 20 timer. This driver is able to do the required hardware
+> initialisation itself.
+>
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/mach-tegra/Makefile        |   2 +-
+>  arch/arm/mach-tegra/clock.c         |  56 -----------------
+>  arch/arm/mach-tegra/tegra20-car.c   |   5 ++
+>  arch/arm/mach-tegra/tegra20-timer.c | 120 ++++++++++++++++++++++++++++++++++++
+>  arch/arm/mach-tegra/tegra20.c       |   4 ++
+>  5 files changed, 130 insertions(+), 57 deletions(-)
+>  delete mode 100644 arch/arm/mach-tegra/clock.c
+>  create mode 100644 arch/arm/mach-tegra/tegra20-timer.c
+>
+> diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+> index 3391528..6aa219c 100644
+> --- a/arch/arm/mach-tegra/Makefile
+> +++ b/arch/arm/mach-tegra/Makefile
+> @@ -1,4 +1,4 @@
+> -obj-y += clock.o
+>  obj-y += reset.o
+>  obj-y += tegra20.o
+>  obj-y += tegra20-car.o
+> +obj-y += tegra20-timer.o
+> diff --git a/arch/arm/mach-tegra/clock.c b/arch/arm/mach-tegra/clock.c
+> deleted file mode 100644
+> index 82065ee..0000000
+> --- a/arch/arm/mach-tegra/clock.c
+> +++ /dev/null
+> @@ -1,56 +0,0 @@
+> -/*
+> - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+> - *
+> - * This file is part of barebox.
+> - * See file CREDITS for list of people who contributed to this project.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - *
+> - */
+> -
+> -/**
+> - * @file
+> - * @brief Clocksource based on Tegra internal timer
+> - */
+> -
+> -#include <common.h>
+> -#include <clock.h>
+> -#include <linux/list.h>
+> -#include <linux/clk.h>
+> -#include <init.h>
+> -#include <asm/io.h>
+> -#include <mach/iomap.h>
+> -
+> -static void __iomem *timer_reg_base = (void __iomem *) (TEGRA_TMR1_BASE);
+> -
+> -#define timer_writel(value, reg) \
+> -       __raw_writel(value, (u32)timer_reg_base + (reg))
+> -#define timer_readl(reg) \
+> -       __raw_readl((u32)timer_reg_base + (reg))
+> -
+> -static uint64_t tegra_clocksource_read(void)
+> -{
+> -       return timer_readl(0x10);
+> -}
+> -
+> -static struct clocksource cs = {
+> -       .read   = tegra_clocksource_read,
+> -       .mask   = 0xffffffff,
+> -};
+> -
+> -/* FIXME: here we have no initialization. All initialization made by U-Boot */
+> -static int clocksource_init(void)
+> -{
+> -       cs.mult = clocksource_hz2mult(1000000, cs.shift);
+> -       init_clock(&cs);
+> -
+> -       return 0;
+> -}
+> -core_initcall(clocksource_init);
+> diff --git a/arch/arm/mach-tegra/tegra20-car.c b/arch/arm/mach-tegra/tegra20-car.c
+> index eec3cc3..3ac389f 100644
+> --- a/arch/arm/mach-tegra/tegra20-car.c
+> +++ b/arch/arm/mach-tegra/tegra20-car.c
+> @@ -23,6 +23,7 @@
+>  #include <init.h>
+>  #include <io.h>
+>  #include <linux/clk.h>
+> +#include <linux/clkdev.h>
+>  #include <linux/err.h>
+>  #include <mach/iomap.h>
+>
+> @@ -97,6 +98,10 @@ static int tegra20_car_probe(struct device_d *dev)
+>         /* timer is a gate, but as it's enabled by BOOTROM we needn't worry */
+>         clks[timer] = clk_fixed_factor("timer", "clk_m", 1, 1);
+>
+> +
+
+Please no extra empty line here.
+
+> +       /* device to clock links */
+> +       clkdev_add_physbase(clks[timer], TEGRA_TMR1_BASE, NULL);
+> +
+>         return 0;
+>  }
+>
+> diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
+> new file mode 100644
+> index 0000000..6c1d302
+> --- /dev/null
+> +++ b/arch/arm/mach-tegra/tegra20-timer.c
+> @@ -0,0 +1,120 @@
+> +/*
+> + * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms and conditions of the GNU General Public License,
+> + * version 2, as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope it will be useful, but WITHOUT
+> + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> + * more details.
+> + *
+> + * You should have received a copy of the GNU General Public License
+> + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +/**
+> + * @file
+> + * @brief Device driver for the Tegra 20 timer, which exposes a clocksource.
+> + */
+> +
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <init.h>
+> +#include <io.h>
+> +#include <linux/clk.h>
+> +
+> +/* register definitions */
+> +#define TIMERUS_CNTR_1US       0x10
+> +#define TIMERUS_USEC_CFG       0x14
+> +
+> +static void __iomem *timer_base;
+> +
+> +static uint64_t tegra20_timer_cs_read(void)
+> +{
+> +       return readl(timer_base + TIMERUS_CNTR_1US);
+> +}
+> +
+> +static struct clocksource cs = {
+> +       .read   = tegra20_timer_cs_read,
+> +       .mask   = CLOCKSOURCE_MASK(32),
+> +};
+> +
+> +static int tegra20_timer_probe(struct device_d *dev)
+> +{
+> +       struct clk *timer_clk;
+> +       unsigned long rate;
+> +       u32 reg;
+> +
+> +       /* use only one timer */
+> +       if (timer_base)
+> +               return -EBUSY;
+> +
+> +       timer_base = dev_request_mem_region(dev, 0);
+> +       if (!timer_base) {
+> +               dev_err(dev, "could not get memory region\n");
+> +               return -ENODEV;
+> +       }
+> +
+> +       timer_clk = clk_get(dev, NULL);
+> +       if (!timer_clk) {
+> +               dev_err(dev, "could not get clock\n");
+> +               return -ENODEV;
+> +       }
+> +
+> +       clk_enable(timer_clk);
+> +
+> +       /*
+> +        * calibrate timer to run at 1MHz
+> +        * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
+> +        * representing the divisor and bits [8:15] representing the dividend
+> +        * each in n+1 form.
+> +        */
+> +       rate = clk_get_rate(timer_clk);
+> +       switch (rate) {
+> +       case 12000000:
+> +               reg = 0x000b;
+> +               break;
+> +       case 13000000:
+> +               reg = 0x000c;
+> +               break;
+> +       case 19200000:
+> +               reg = 0x045f;
+> +               break;
+> +       case 26000000:
+> +               reg = 0x0019;
+> +               break;
+> +       default:
+> +               reg = 0;
+> +               dev_warn(dev, "unknown timer clock rate\n");
+> +               break;
+> +       }
+> +       writel(reg, timer_base + TIMERUS_USEC_CFG);
+> +
+> +       cs.mult = clocksource_hz2mult(1000000, cs.shift);
+> +       init_clock(&cs);
+> +
+> +       return 0;
+> +}
+> +
+> +static __maybe_unused struct of_device_id tegra20_timer_dt_ids[] = {
+> +       {
+> +               .compatible = "nvidia,tegra20-timer",
+> +       }, {
+> +               /* sentinel */
+> +       }
+> +};
+> +
+> +static struct driver_d tegra20_timer_driver = {
+> +       .probe  = tegra20_timer_probe,
+> +       .name   = "tegra20-timer",
+> +       .of_compatible = DRV_OF_COMPAT(tegra20_timer_dt_ids),
+> +};
+> +
+> +static int tegra20_timer_init(void)
+> +{
+> +       return platform_driver_register(&tegra20_timer_driver);
+> +}
+> +
+
+In barebox there is a tradition to skip emty line before *_initcall.
+Try
+grep -B1 -RHn "coredevice_initcall" arch/
+
+> +coredevice_initcall(tegra20_timer_init);
+> diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
+> index 3831f1b..c1b3f78 100644
+> --- a/arch/arm/mach-tegra/tegra20.c
+> +++ b/arch/arm/mach-tegra/tegra20.c
+> @@ -24,6 +24,10 @@ static int tegra20_init(void)
+>                            TEGRA_CLK_RESET_BASE, TEGRA_CLK_RESET_SIZE,
+>                            IORESOURCE_MEM, NULL);
+>
+> +       add_generic_device("tegra20-timer", DEVICE_ID_SINGLE, NULL,
+> +                          TEGRA_TMR1_BASE, TEGRA_TMR1_SIZE,
+> +                          IORESOURCE_MEM, NULL);
+> +
+>         return 0;
+>  }
+>
+> --
+> 1.8.1.2
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/eeprom/at25.c               | 9 +--------
- drivers/mci/mci_spi.c               | 9 +--------
- drivers/mfd/mc13xxx.c               | 8 +-------
- drivers/mfd/mc34708.c               | 8 +-------
- drivers/mtd/devices/m25p80.c        | 7 +------
- drivers/mtd/devices/mtd_dataflash.c | 8 +-------
- drivers/net/ksz8864rmn.c            | 8 +-------
- include/spi/spi.h                   | 3 +++
- 8 files changed, 10 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/eeprom/at25.c b/drivers/eeprom/at25.c
-index e2e6ef4..68b4710 100644
---- a/drivers/eeprom/at25.c
-+++ b/drivers/eeprom/at25.c
-@@ -304,11 +304,4 @@ static struct driver_d at25_driver = {
- 	.name  = DRIVERNAME,
- 	.probe = at25_probe,
- };
--
--static int at25_init(void)
--{
--	spi_driver_register(&at25_driver);
--	return 0;
--}
--
--device_initcall(at25_init);
-+device_spi_driver(at25_driver);
-diff --git a/drivers/mci/mci_spi.c b/drivers/mci/mci_spi.c
-index 022e260..011947c 100644
---- a/drivers/mci/mci_spi.c
-+++ b/drivers/mci/mci_spi.c
-@@ -443,11 +443,4 @@ static struct driver_d spi_mci_driver = {
- 	.name	= "spi_mci",
- 	.probe	= spi_mci_probe,
- };
--
--static int spi_mci_init_driver(void)
--{
--	spi_driver_register(&spi_mci_driver);
--	return 0;
--}
--
--device_initcall(spi_mci_init_driver);
-+device_spi_driver(spi_mci_driver);
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 91c874f..466a11c 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -372,11 +372,5 @@ static struct driver_d mc_spi_driver = {
- 	.probe = mc_spi_probe,
- 	.of_compatible = DRV_OF_COMPAT(mc13892_dt_ids),
- };
--
--static int mc_spi_init(void)
--{
--	return spi_driver_register(&mc_spi_driver);
--}
--
--device_initcall(mc_spi_init);
-+device_spi_driver(mc_spi_driver);
- #endif
-diff --git a/drivers/mfd/mc34708.c b/drivers/mfd/mc34708.c
-index 63db1e1..6fea2e2 100644
---- a/drivers/mfd/mc34708.c
-+++ b/drivers/mfd/mc34708.c
-@@ -291,11 +291,5 @@ static struct driver_d mc_spi_driver = {
- 	.name  = "mc34708-spi",
- 	.probe = mc_spi_probe,
- };
--
--static int mc_spi_init(void)
--{
--	return spi_driver_register(&mc_spi_driver);
--}
--
--device_initcall(mc_spi_init);
-+device_spi_driver(mc_spi_driver);
- #endif
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 3293491..048d178 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -951,12 +951,7 @@ static struct driver_d m25p80_driver = {
- 	.name	= "m25p80",
- 	.probe	= m25p_probe,
- };
--
--static int m25p80_init(void)
--{
--	return spi_driver_register(&m25p80_driver);
--}
--device_initcall(m25p80_init);
-+device_spi_driver(m25p80_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Mike Lavender");
-diff --git a/drivers/mtd/devices/mtd_dataflash.c b/drivers/mtd/devices/mtd_dataflash.c
-index cfad8b1..ddab6bb 100644
---- a/drivers/mtd/devices/mtd_dataflash.c
-+++ b/drivers/mtd/devices/mtd_dataflash.c
-@@ -875,13 +875,7 @@ static struct driver_d dataflash_driver = {
- 	.name  = "mtd_dataflash",
- 	.probe = dataflash_probe,
- };
--
--static int dataflash_init(void)
--{
--	spi_driver_register(&dataflash_driver);
--	return 0;
--}
--device_initcall(dataflash_init);
-+device_spi_driver(dataflash_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Andrew Victor, David Brownell");
-diff --git a/drivers/net/ksz8864rmn.c b/drivers/net/ksz8864rmn.c
-index 99274ec..af3c124 100644
---- a/drivers/net/ksz8864rmn.c
-+++ b/drivers/net/ksz8864rmn.c
-@@ -182,10 +182,4 @@ static struct driver_d micrel_switch_driver = {
- 	.name  = "ksz8864rmn",
- 	.probe = micrel_switch_probe,
- };
--
--static int micrel_switch_init(void)
--{
--	spi_driver_register(&micrel_switch_driver);
--	return 0;
--}
--device_initcall(micrel_switch_init);
-+device_spi_driver(micrel_switch_driver);
-diff --git a/include/spi/spi.h b/include/spi/spi.h
-index 9bec566..3da13e8 100644
---- a/include/spi/spi.h
-+++ b/include/spi/spi.h
-@@ -442,6 +442,9 @@ static inline int spi_driver_register(struct driver_d *drv)
- 	return register_driver(drv);
- }
- 
-+#define device_spi_driver(drv)	\
-+	register_driver_macro(device,spi,drv)
-+
- void spi_of_register_slaves(struct spi_master *master, struct device_node *node);
- 
- #endif /* __INCLUDE_SPI_H */
 -- 
-1.7.12.4
-
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
