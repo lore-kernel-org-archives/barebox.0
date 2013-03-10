@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEhbd-0003LX-Gl
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 14:52:10 +0000
-Date: Sun, 10 Mar 2013 15:52:06 +0100
+ id 1UEhfv-000447-TB
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 14:56:36 +0000
+Date: Sun, 10 Mar 2013 15:56:34 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130310145206.GO1906@pengutronix.de>
-References: <1362924823.394544173@f371.mail.ru>
+Message-ID: <20130310145634.GP1906@pengutronix.de>
+References: <1362594605-1083-1-git-send-email-shc_work@mail.ru>
+ <1362913680.690644667@f363.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362924823.394544173@f371.mail.ru>
+In-Reply-To: <1362913680.690644667@f363.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New dt-only arm/mach
+Subject: Re: [RFC] Makefile: Create empty <config.h> if this header file is
+ not needed by board
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
+On Sun, Mar 10, 2013 at 03:08:00PM +0400, Alexander Shiyan wrote:
+> > Patch creates empty <config.h> if this header is not needed by board.
+> > This will allow to remove many empty config.h files from boards.
+> > 
+> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> > ---
+> >  Makefile | 17 +++++++++++------
+> >  1 file changed, 11 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/Makefile b/Makefile
+> > index b5819fc..e8d9984 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -898,13 +898,18 @@ include/asm:
+> >  	$(Q)$(check-symlink)
+> >  	$(Q)$(create-symlink)
+> >  
+> > +define symlink-config-h
+> > +	if [ -f $(srctree)/$(BOARD)/config.h ]; then		\
+> > +		$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h';	\
+> > +		ln -fsn $(srctree)/$(BOARD)/config.h $@;	\
+> > +	else							\
+> > +		$(kecho) '  CREATE  $@';			\
+> > +		echo -n > $@;					\
+> > +	fi
 
-On Sun, Mar 10, 2013 at 06:13:43PM +0400, Alexander Shiyan wrote:
->  Hello All.
-> 
-> I want to add new arch into barebox. n the kernel this arch is dt-only.
-> I talking about mach-sunxi. So, how we should handle such platform
-> in the barebox? We need always provide dtb to the kernel, then where
-> it should be in barebox?
-
-You asked me privatly whether we should put dtc and friends into
-barebox, by that time I answered it needs some more time. Maybe this
-time has come now. I currently have a branch in the making to add dtc
-support and also integration into barebox.
-
-With this we are able to compile a dts(p) and link the binary into
-barebox, so...
-
-> I think about dtb-file in /env, but not sure...
-
-...you could provide a dtb in the binary *)
-
-Furthermore you could probe barebox itself from the devicetree.
-
-I'm still not sure whether we should add fullblown devicetrees into
-barebox or stripped down versions with only the devices barebox needs.
-I think time will tell.
-
-Give me some hours time, I think then I can post a first version of the
-patches.
+How does git incorporate with this? I think git just ignores empty files
+like these, right?
 
 Sascha
 
-
-*) This of course shouldn't mean it can't be overwritten with another
-dtb during runtime.
 
 -- 
 Pengutronix e.K.                           |                             |
