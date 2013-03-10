@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f52.google.com ([74.125.82.52])
+Received: from mail-wg0-x22a.google.com ([2a00:1450:400c:c00::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEpnd-0006q1-6v
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 23:37:06 +0000
-Received: by mail-wg0-f52.google.com with SMTP id 12so4455675wgh.7
- for <barebox@lists.infradead.org>; Sun, 10 Mar 2013 16:37:03 -0700 (PDT)
+ id 1UEpnf-0006qS-2t
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 23:37:11 +0000
+Received: by mail-wg0-f42.google.com with SMTP id 12so1512098wgh.3
+ for <barebox@lists.infradead.org>; Sun, 10 Mar 2013 16:37:05 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Mon, 11 Mar 2013 00:36:06 +0100
-Message-Id: <1362958567-6110-4-git-send-email-vicencb@gmail.com>
+Date: Mon, 11 Mar 2013 00:36:07 +0100
+Message-Id: <1362958567-6110-5-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1362958567-6110-1-git-send-email-vicencb@gmail.com>
 References: <1362958567-6110-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,210 +23,217 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] OMAP4: add command to select next boot device priority
+Subject: [PATCH 4/4] ArchosG9: add keyboard input and new reset menu entries
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-On OMAP4 SoC there is a SAR memory region (Save & Rescue) where the ROM
-code reads the device to boot from.
-This patch adds a way to set this.
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/mach-omap/include/mach/omap4-silicon.h | 20 ++++++
- arch/arm/mach-omap/omap4_generic.c              | 20 ++++++
- commands/Kconfig                                |  5 ++
- commands/Makefile                               |  1 +
- commands/boot_order.c                           | 83 +++++++++++++++++++++++++
- 5 files changed, 129 insertions(+)
- create mode 100644 commands/boot_order.c
+ arch/arm/boards/archosg9/board.c              | 25 +++++++++++++++++++++++
+ arch/arm/boards/archosg9/env/bin/init         | 28 ++++++++++++++++++++++++++
+ arch/arm/boards/archosg9/env/boot/usb-android |  2 +-
+ arch/arm/boards/archosg9/env/boot/usb-linux   |  2 +-
+ arch/arm/boards/archosg9/env/menu/mainmenu    | 29 +++++++++++++++++++++++++++
+ arch/arm/configs/archosg9_defconfig           | 11 ++++++----
+ 6 files changed, 91 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/boards/archosg9/env/bin/init
+ create mode 100644 arch/arm/boards/archosg9/env/menu/mainmenu
 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index 9e82435..7e67abc 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -161,6 +161,25 @@
- #define OMAP44XX_PRM_RSTCTRL_RESET	0x01
+diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
+index bf247de..edeb871 100644
+--- a/arch/arm/boards/archosg9/board.c
++++ b/arch/arm/boards/archosg9/board.c
+@@ -20,6 +20,9 @@
+ #include <sizes.h>
+ #include <i2c/i2c.h>
+ #include <gpio.h>
++#include <gpio_keys.h>
++#include <twl6030_pwrbtn.h>
++#include <readkey.h>
+ #include "archos_features.h"
  
- /*
-+ * SAR (Save & Rescue) memory region
-+ */
-+#define OMAP44XX_SAR_RAM_BASE      0x4a326000
-+#define OMAP44XX_SAR_CH_ADDRESS	   (OMAP44XX_SAR_RAM_BASE + 0xA00)
-+#define OMAP44XX_SAR_CH_START	   (OMAP44XX_SAR_RAM_BASE + 0xA0C)
-+#define OMAP44XX_SAR_BOOT_VOID     0x00
-+#define OMAP44XX_SAR_BOOT_XIP      0x01
-+#define OMAP44XX_SAR_BOOT_XIPWAIT  0x02
-+#define OMAP44XX_SAR_BOOT_NAND     0x03
-+#define OMAP44XX_SAR_BOOT_ONENAND  0x04
-+#define OMAP44XX_SAR_BOOT_MMC1     0x05
-+#define OMAP44XX_SAR_BOOT_MMC2_1   0x06
-+#define OMAP44XX_SAR_BOOT_MMC2_2   0x07
-+#define OMAP44XX_SAR_BOOT_UART     0x43
-+#define OMAP44XX_SAR_BOOT_USB_1    0x45
-+#define OMAP44XX_SAR_BOOT_USB_ULPI 0x46
-+#define OMAP44XX_SAR_BOOT_USB_2    0x47
-+
-+/*
-  * Non-secure SRAM Addresses
-  * Non-secure RAM starts at 0x40300000 for GP devices. But we keep SRAM_BASE
-  * at 0x40304000(EMU base) so that our code works for both EMU and GP
-@@ -212,6 +231,7 @@ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
- void omap4_power_i2c_send(u32);
- unsigned int omap4_revision(void);
- noinline int omap4_scale_vcores(unsigned vsel0_pin);
-+void omap4_set_warmboot_order(u32 *device_list);
+ static int archosg9_console_init(void){
+@@ -44,11 +47,33 @@ mem_initcall(archosg9_mem_init);
+ static struct i2c_board_info i2c_devices[] = {
+ 	{ I2C_BOARD_INFO("twl6030", 0x48), },
+ };
++#ifdef CONFIG_KEYBOARD_TWL6030
++static struct twl6030_pwrbtn_platform_data pwrbtn_data = {
++	.code = KEY_ENTER
++};
++#endif
++#ifdef CONFIG_KEYBOARD_GPIO
++static struct gpio_keys_button keys[] = {
++	{ .code = KEY_UP  , .gpio = 43, .active_low = 1 },
++	{ .code = KEY_DOWN, .gpio = 44, .active_low = 1 },
++};
++static struct gpio_keys_platform_data gk_data = {
++	.buttons = keys,
++	.nbuttons = ARRAY_SIZE(keys),
++};
++#endif
  
- #endif
+ static int archosg9_devices_init(void){
+ 	i2c_register_board_info(0, i2c_devices, ARRAY_SIZE(i2c_devices));
+ 	omap44xx_add_i2c1(NULL);
+ 	omap44xx_add_mmc1(NULL);
++#ifdef CONFIG_KEYBOARD_TWL6030
++	add_generic_device_res("twl6030_pwrbtn", DEVICE_ID_DYNAMIC, 0, 0,
++		&pwrbtn_data);
++#endif
++#ifdef CONFIG_KEYBOARD_GPIO
++	add_gpio_keys_device(DEVICE_ID_DYNAMIC, &gk_data);
++#endif
  
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 2a09eb6..7f881f8 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -41,6 +41,26 @@ void __noreturn reset_cpu(unsigned long addr)
- 	while (1);
- }
- 
-+void omap4_set_warmboot_order(u32 *device_list)
-+{
-+	const u32 CH[] = {
-+		0xCF00AA01,
-+		0x0000000C,
-+		(device_list[0] << 16) | 0x0000,
-+		(device_list[2] << 16) | device_list[1],
-+		0x0000 | device_list[3],
-+		0x00000000,
-+		0x00000000,
-+		0x00000000,
-+		0x00000000
-+	};
-+	int i;
-+
-+	for (i = 0; i < sizeof(CH)/sizeof(CH[0]); i++)
-+		writel(CH[i], OMAP44XX_SAR_CH_START + i*sizeof(CH[0]));
-+	writel(OMAP44XX_SAR_CH_START, OMAP44XX_SAR_CH_ADDRESS);
-+}
-+
- #define WATCHDOG_WSPR	0x48
- #define WATCHDOG_WWPS	0x34
- 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c1454c7..b4feb27 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -474,6 +474,11 @@ config CMD_POWEROFF
- 	depends on HAS_POWEROFF
- 	prompt "poweroff"
- 
-+config CMD_BOOT_ORDER
-+	tristate
-+	depends on ARCH_OMAP4
-+	prompt "boot_order"
-+
- config CMD_GO
- 	tristate
- 	prompt "go"
-diff --git a/commands/Makefile b/commands/Makefile
-index 0ae6b95..428da57 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
- obj-$(CONFIG_CMD_MSLEEP)	+= msleep.o
- obj-$(CONFIG_CMD_RESET)		+= reset.o
- obj-$(CONFIG_CMD_POWEROFF)	+= poweroff.o
-+obj-$(CONFIG_CMD_BOOT_ORDER)	+= boot_order.o
- obj-$(CONFIG_CMD_GO)		+= go.o
- obj-$(CONFIG_NET)		+= net.o
- obj-$(CONFIG_CMD_PARTITION)	+= partition.o
-diff --git a/commands/boot_order.c b/commands/boot_order.c
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	/*
+diff --git a/arch/arm/boards/archosg9/env/bin/init b/arch/arm/boards/archosg9/env/bin/init
 new file mode 100644
-index 0000000..eb8f7b3
+index 0000000..0b36299
 --- /dev/null
-+++ b/commands/boot_order.c
-@@ -0,0 +1,83 @@
-+/*
-+ * boot_order.c - configure omap warm boot
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/arch/arm/boards/archosg9/env/bin/init
+@@ -0,0 +1,28 @@
++#!/bin/sh
 +
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <getopt.h>
-+#include <mach/omap4-silicon.h>
++export PATH=/env/bin
 +
-+static int cmd_boot_order(int argc, char *argv[])
-+{
-+	u32 device_list[] = {
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+	};
-+	int i, j = 1, do_reset = 0;
++global hostname=generic
++global user=none
++global boot.default=net
++global allow_color=true
++global linux.bootargs.base
++#linux.bootargs.dyn.* will be cleared at the beginning of boot
++global linux.bootargs.dyn.ip
++global linux.bootargs.dyn.root
++global editcmd=sedit
 +
-+	if (argc > 1 && strcmp(argv[1], "-r") == 0) {
-+		do_reset = 1;
-+		j = 2;
-+	}
-+	for (i = 0; i < 4 && j < argc; i++, j++) {
-+		if      (strcmp(argv[j], "xip") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_XIP;
-+		else if (strcmp(argv[j], "xipwait") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_XIPWAIT;
-+		else if (strcmp(argv[j], "nand") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_NAND;
-+		else if (strcmp(argv[j], "onenand") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_ONENAND;
-+		else if (strcmp(argv[j], "mmc1") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_MMC1;
-+		else if (strcmp(argv[j], "mmc2_1") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_MMC2_1;
-+		else if (strcmp(argv[j], "mmc2_2") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_MMC2_2;
-+		else if (strcmp(argv[j], "uart") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_UART;
-+		else if (strcmp(argv[j], "usb_1") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_USB_1;
-+		else if (strcmp(argv[j], "usb_ulpi") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_USB_ULPI;
-+		else if (strcmp(argv[j], "usb_2") == 0)
-+			device_list[i] = OMAP44XX_SAR_BOOT_USB_2;
-+	}
-+	if (device_list[0] == OMAP44XX_SAR_BOOT_VOID) {
-+		printf("First boot device can't be void\n");
-+		return COMMAND_ERROR_USAGE;
-+	}
-+	omap4_set_warmboot_order(device_list);
-+	if (do_reset) {
-+		shutdown_barebox();
-+		reset_cpu(0);
-+	}
-+	return 0;
-+}
++/env/config
 +
-+static const __maybe_unused char cmd_boot_order_help[] =
-+"Usage: boot_order [-r] <device 1> [<device n>]\n"
-+"Set warm boot order up to four devices\n"
-+"and reset cpu if -r is specified.\n"
-+"Each device can be one of:\n"
-+"void xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2\n";
++timeout -s -a 0
++autoboot="$?"
 +
-+BAREBOX_CMD_START(boot_order)
-+	.cmd		= cmd_boot_order,
-+	.usage		= "boot_order <device 1> [<device n>]",
-+	BAREBOX_CMD_HELP(cmd_boot_order_help)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
-+BAREBOX_CMD_END
++for i in /env/init/*; do
++	. $i
++done
++
++if [ "$autoboot" = 0 ]; then
++	boot
++fi
++
++/env/menu/mainmenu
+diff --git a/arch/arm/boards/archosg9/env/boot/usb-android b/arch/arm/boards/archosg9/env/boot/usb-android
+index f764681..7c6fb1f 100644
+--- a/arch/arm/boards/archosg9/env/boot/usb-android
++++ b/arch/arm/boards/archosg9/env/boot/usb-android
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Android from usb" "$2"
++	boot-menu-add-entry "$0" "Android over usb" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/archosg9/env/boot/usb-linux b/arch/arm/boards/archosg9/env/boot/usb-linux
+index 1d8e919..fe979fb 100644
+--- a/arch/arm/boards/archosg9/env/boot/usb-linux
++++ b/arch/arm/boards/archosg9/env/boot/usb-linux
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Linux from usb" "$2"
++	boot-menu-add-entry "$0" "Linux over usb" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/archosg9/env/menu/mainmenu b/arch/arm/boards/archosg9/env/menu/mainmenu
+new file mode 100644
+index 0000000..1880692
+--- /dev/null
++++ b/arch/arm/boards/archosg9/env/menu/mainmenu
+@@ -0,0 +1,29 @@
++#!/bin/sh
++
++savepath=$PATH
++export menupath=$PATH:/env/menu
++
++. /env/data/ansi-colors
++
++while true; do
++	export PATH=${menupath}
++
++	echo $PATH
++
++	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
++
++	boot-entries-collect boot
++
++	menu -e -a -R -m boot -c "$global.editcmd /env/network/eth0" -d "Network settings"
++	menu -e -a -R -m boot -c "$global.editcmd /env/config" -d "Config settings"
++	menu -e -a -m boot -c "boot-entries-edit" -d "Edit boot entries"
++	menu -e -a -m boot -c "init-entries-edit" -d "Edit init entries"
++	menu -e -a -R -m boot -c "saveenv || echo \"failed to save environment\" && sleep 2" -d "Save settings"
++	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
++	menu -e -a -m boot -c 'boot_order -r mmc2_1' -d "${RED}Reboot into internal flash${NC}"
++	menu -e -a -m boot -c 'boot_order -r mmc1' -d "${RED}Reboot into SD card${NC}"
++	menu -e -a -m boot -c 'boot_order -r usb_1' -d "${RED}Reboot over usb${NC}"
++
++	menu -s -m boot
++	menu -r -m boot
++done
+diff --git a/arch/arm/configs/archosg9_defconfig b/arch/arm/configs/archosg9_defconfig
+index cb0f6b2..40e4433 100644
+--- a/arch/arm/configs/archosg9_defconfig
++++ b/arch/arm/configs/archosg9_defconfig
+@@ -3,8 +3,8 @@ CONFIG_ARCH_OMAP4=y
+ CONFIG_OMAP4_USBBOOT=y
+ CONFIG_MACH_ARCHOSG9=y
+ CONFIG_THUMB2_BAREBOX=y
+-CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
++CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ # CONFIG_MMU is not set
+@@ -52,6 +52,7 @@ CONFIG_CMD_BOOTM_AIMAGE=y
+ CONFIG_CMD_UIMAGE=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_BOOT_ORDER=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+@@ -70,9 +71,9 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_SMSC95XX=y
+-CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT=y
+ # CONFIG_SPI is not set
+ CONFIG_I2C=y
+ CONFIG_I2C_OMAP=y
+@@ -81,13 +82,15 @@ CONFIG_USB_EHCI=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_MFD_TWL6030=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_TRIGGERS=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_KEYBOARD_TWL6030=y
+ CONFIG_FS_TFTP=y
+-CONFIG_FS_NFS=y
+-CONFIG_MFD_TWL6030=y
+ CONFIG_FS_OMAP4_USBBOOT=y
++CONFIG_FS_NFS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
 -- 
 1.8.1.5
 
