@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2.mail.ru ([94.100.176.130])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEZx0-0005t6-7L
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 06:41:45 +0000
+ id 1UEZwy-0005sz-Sk
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 06:41:46 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 10 Mar 2013 10:41:34 +0400
-Message-Id: <1362897695-3936-5-git-send-email-shc_work@mail.ru>
+Date: Sun, 10 Mar 2013 10:41:32 +0400
+Message-Id: <1362897695-3936-3-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1362897695-3936-1-git-send-email-shc_work@mail.ru>
 References: <1362897695-3936-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,169 +21,342 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/6] I2C: Rename i2c_register_driver() for using with
- register_driver_macro()
+Subject: [PATCH v2 3/6] Introduce console_platform_driver() macro and use it
+ for serial drivers
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/eeprom/at24.c   | 2 +-
- drivers/input/qt1070.c  | 2 +-
- drivers/mfd/lp3972.c    | 2 +-
- drivers/mfd/mc13xxx.c   | 2 +-
- drivers/mfd/mc34704.c   | 2 +-
- drivers/mfd/mc34708.c   | 2 +-
- drivers/mfd/mc9sdz60.c  | 2 +-
- drivers/mfd/stmpe-i2c.c | 2 +-
- drivers/mfd/twl4030.c   | 2 +-
- drivers/mfd/twl6030.c   | 2 +-
- include/i2c/i2c.h       | 2 +-
- 11 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/serial/arm_dcc.c              |  6 ++----
+ drivers/serial/atmel.c                |  9 +--------
+ drivers/serial/linux_console.c        |  9 +--------
+ drivers/serial/serial_altera.c        |  9 +--------
+ drivers/serial/serial_altera_jtag.c   |  8 +-------
+ drivers/serial/serial_auart.c         |  9 +--------
+ drivers/serial/serial_blackfin.c      | 10 +---------
+ drivers/serial/serial_clps711x.c      |  7 +------
+ drivers/serial/serial_imx.c           |  9 +--------
+ drivers/serial/serial_mpc5xxx.c       |  9 +--------
+ drivers/serial/serial_netx.c          | 10 +---------
+ drivers/serial/serial_ns16550.c       | 13 +------------
+ drivers/serial/serial_omap4_usbboot.c |  7 +------
+ drivers/serial/serial_pl010.c         | 10 +---------
+ drivers/serial/serial_pxa.c           |  8 +-------
+ drivers/serial/serial_s3c.c           |  9 +--------
+ drivers/serial/stm-serial.c           |  9 +--------
+ include/driver.h                      |  2 ++
+ 18 files changed, 20 insertions(+), 133 deletions(-)
 
-diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-index 6f0133a..4b2afc4 100644
---- a/drivers/eeprom/at24.c
-+++ b/drivers/eeprom/at24.c
-@@ -454,7 +454,7 @@ static struct driver_d at24_driver = {
+diff --git a/drivers/serial/arm_dcc.c b/drivers/serial/arm_dcc.c
+index e82218a..bab7299 100644
+--- a/drivers/serial/arm_dcc.c
++++ b/drivers/serial/arm_dcc.c
+@@ -149,6 +149,7 @@ static struct driver_d arm_dcc_driver = {
+ 	.name	= "arm_dcc",
+ 	.probe	= arm_dcc_probe,
+ };
++console_platform_driver(arm_dcc_driver);
  
- static int at24_init(void)
+ static struct device_d arm_dcc_device = {
+ 	.id	= DEVICE_ID_DYNAMIC,
+@@ -157,9 +158,6 @@ static struct device_d arm_dcc_device = {
+ 
+ static int arm_dcc_init(void)
  {
--	i2c_register_driver(&at24_driver);
-+	i2c_driver_register(&at24_driver);
- 	return 0;
+-	platform_device_register(&arm_dcc_device);
+-	platform_driver_register(&arm_dcc_driver);
+-	return 0;
++	return platform_device_register(&arm_dcc_device);
  }
- device_initcall(at24_init);
-diff --git a/drivers/input/qt1070.c b/drivers/input/qt1070.c
-index ebe2b81..43ea882 100644
---- a/drivers/input/qt1070.c
-+++ b/drivers/input/qt1070.c
-@@ -291,7 +291,7 @@ static struct driver_d qt1070_driver = {
+-
+ console_initcall(arm_dcc_init);
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 6beae25..89c141e 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -418,11 +418,4 @@ static struct driver_d atmel_serial_driver = {
+         .name  = "atmel_usart",
+         .probe = atmel_serial_probe,
+ };
+-
+-static int atmel_serial_init(void)
+-{
+-	platform_driver_register(&atmel_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(atmel_serial_init);
++console_platform_driver(atmel_serial_driver);
+diff --git a/drivers/serial/linux_console.c b/drivers/serial/linux_console.c
+index 4a99e96..7ded091 100644
+--- a/drivers/serial/linux_console.c
++++ b/drivers/serial/linux_console.c
+@@ -78,11 +78,4 @@ static struct driver_d linux_console_driver = {
+         .name  = "console",
+         .probe = linux_console_probe,
+ };
+-
+-static int console_init(void)
+-{
+-	return platform_driver_register(&linux_console_driver);
+-}
+-
+-console_initcall(console_init);
+-
++console_platform_driver(linux_console_driver);
+diff --git a/drivers/serial/serial_altera.c b/drivers/serial/serial_altera.c
+index 013b32c..7ff38d7 100644
+--- a/drivers/serial/serial_altera.c
++++ b/drivers/serial/serial_altera.c
+@@ -101,11 +101,4 @@ static struct driver_d altera_serial_driver = {
+ 	.name = "altera_serial",
+ 	.probe = altera_serial_probe,
+ };
+-
+-static int altera_serial_init(void)
+-{
+-	return platform_driver_register(&altera_serial_driver);
+-}
+-
+-console_initcall(altera_serial_init);
+-
++console_platform_driver(altera_serial_driver);
+diff --git a/drivers/serial/serial_altera_jtag.c b/drivers/serial/serial_altera_jtag.c
+index b83fcbd..edc3c76 100644
+--- a/drivers/serial/serial_altera_jtag.c
++++ b/drivers/serial/serial_altera_jtag.c
+@@ -106,10 +106,4 @@ static struct driver_d altera_serial_jtag_driver = {
+ 	.name = "altera_serial_jtag",
+ 	.probe = altera_serial_jtag_probe,
+ };
+-
+-static int altera_serial_jtag_init(void)
+-{
+-	return platform_driver_register(&altera_serial_jtag_driver);
+-}
+-
+-console_initcall(altera_serial_jtag_init);
++console_platform_driver(altera_serial_jtag_driver);
+diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
+index fa2e04f..7c179fa 100644
+--- a/drivers/serial/serial_auart.c
++++ b/drivers/serial/serial_auart.c
+@@ -228,11 +228,4 @@ static struct driver_d auart_serial_driver = {
+ 	.probe = auart_serial_probe,
+ 	.remove = auart_serial_remove,
+ };
+-
+-static int auart_serial_init(void)
+-{
+-	platform_driver_register(&auart_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(auart_serial_init);
++console_platform_driver(auart_serial_driver);
+diff --git a/drivers/serial/serial_blackfin.c b/drivers/serial/serial_blackfin.c
+index 2117b11..7373a03 100644
+--- a/drivers/serial/serial_blackfin.c
++++ b/drivers/serial/serial_blackfin.c
+@@ -130,12 +130,4 @@ static struct driver_d blackfin_serial_driver = {
+         .name  = "blackfin_serial",
+         .probe = blackfin_serial_probe,
+ };
+-
+-static int blackfin_serial_init(void)
+-{
+-	platform_driver_register(&blackfin_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(blackfin_serial_init);
+-
++console_platform_driver(blackfin_serial_driver);
+diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+index 21d0b55..c359741 100644
+--- a/drivers/serial/serial_clps711x.c
++++ b/drivers/serial/serial_clps711x.c
+@@ -149,9 +149,4 @@ static struct driver_d clps711x_driver = {
+ 	.probe	= clps711x_probe,
+ 	.remove	= clps711x_remove,
+ };
+-
+-static int clps711x_init(void)
+-{
+-	return platform_driver_register(&clps711x_driver);
+-}
+-console_initcall(clps711x_init);
++console_platform_driver(clps711x_driver);
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 3f219ae..8553c2e 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -397,11 +397,4 @@ static struct driver_d imx_serial_driver = {
+ 	.of_compatible = DRV_OF_COMPAT(imx_serial_dt_ids),
+ 	.id_table = imx_serial_ids,
+ };
+-
+-static int imx_serial_init(void)
+-{
+-	platform_driver_register(&imx_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(imx_serial_init);
++console_platform_driver(imx_serial_driver);
+diff --git a/drivers/serial/serial_mpc5xxx.c b/drivers/serial/serial_mpc5xxx.c
+index 81eaf07..532eea3 100644
+--- a/drivers/serial/serial_mpc5xxx.c
++++ b/drivers/serial/serial_mpc5xxx.c
+@@ -166,11 +166,4 @@ static struct driver_d mpc5xxx_serial_driver = {
+         .name  = "mpc5xxx_serial",
+         .probe = mpc5xxx_serial_probe,
+ };
+-
+-static int mpc5xxx_serial_register(void)
+-{
+-	platform_driver_register(&mpc5xxx_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(mpc5xxx_serial_register);
++console_platform_driver(mpc5xxx_serial_driver);
+diff --git a/drivers/serial/serial_netx.c b/drivers/serial/serial_netx.c
+index 2ad9cfa..037b998 100644
+--- a/drivers/serial/serial_netx.c
++++ b/drivers/serial/serial_netx.c
+@@ -155,12 +155,4 @@ static struct driver_d netx_serial_driver = {
+         .name  = "netx_serial",
+         .probe = netx_serial_probe,
+ };
+-
+-static int netx_serial_init(void)
+-{
+-	platform_driver_register(&netx_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(netx_serial_init);
+-
++console_platform_driver(netx_serial_driver);
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 0ea940d..b7913aa 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -262,15 +262,4 @@ static struct driver_d ns16550_serial_driver = {
+ 	.name = "ns16550_serial",
+ 	.probe = ns16550_probe,
+ };
+-
+-/**
+- * @brief driver initialization function
+- *
+- * @return result of platform_driver_register
+- */
+-static int ns16550_serial_init(void)
+-{
+-	return platform_driver_register(&ns16550_serial_driver);
+-}
+-
+-console_initcall(ns16550_serial_init);
++console_platform_driver(ns16550_serial_driver);
+diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
+index f0a2fd1..51b2d13 100644
+--- a/drivers/serial/serial_omap4_usbboot.c
++++ b/drivers/serial/serial_omap4_usbboot.c
+@@ -75,9 +75,4 @@ static struct driver_d serial_omap4_usbboot_driver = {
+ 	.name = "serial_omap4_usbboot",
+ 	.probe = serial_omap4_usbboot_probe,
+ };
+-
+-static int serial_omap4_usbboot_init(void)
+-{
+-	return platform_driver_register(&serial_omap4_usbboot_driver);
+-}
+-console_initcall(serial_omap4_usbboot_init);
++console_platform_driver(serial_omap4_usbboot_driver);
+diff --git a/drivers/serial/serial_pl010.c b/drivers/serial/serial_pl010.c
+index 0526b00..9158774 100644
+--- a/drivers/serial/serial_pl010.c
++++ b/drivers/serial/serial_pl010.c
+@@ -157,12 +157,4 @@ static struct driver_d pl010_driver = {
+ 	.name  = "pl010_serial",
+ 	.probe = pl010_probe,
+ };
+-
+-static int pl010_init(void)
+-{
+-	platform_driver_register(&pl010_driver);
+-
+-	return 0;
+-}
+-
+-console_initcall(pl010_init);
++console_platform_driver(pl010_driver);
+diff --git a/drivers/serial/serial_pxa.c b/drivers/serial/serial_pxa.c
+index 08f3d7f..42355ce 100644
+--- a/drivers/serial/serial_pxa.c
++++ b/drivers/serial/serial_pxa.c
+@@ -195,10 +195,4 @@ static struct driver_d pxa_serial_driver = {
+ 	.probe = pxa_serial_probe,
+ 	.remove = pxa_serial_remove,
+ };
+-
+-static int pxa_serial_init(void)
+-{
+-	return platform_driver_register(&pxa_serial_driver);
+-}
+-
+-console_initcall(pxa_serial_init);
++console_platform_driver(pxa_serial_driver);
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index ed401ab..cc7b33e 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -213,11 +213,4 @@ static struct driver_d s3c_serial_driver = {
+ 	.probe  = s3c_serial_probe,
+ 	.remove = s3c_serial_remove,
+ };
+-
+-static int s3c_serial_init(void)
+-{
+-	platform_driver_register(&s3c_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(s3c_serial_init);
++console_platform_driver(s3c_serial_driver);
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+index 3968892..49ffb2c 100644
+--- a/drivers/serial/stm-serial.c
++++ b/drivers/serial/stm-serial.c
+@@ -187,11 +187,4 @@ static struct driver_d stm_serial_driver = {
+         .probe  = stm_serial_probe,
+ 	.remove = stm_serial_remove,
+ };
+-
+-static int stm_serial_init(void)
+-{
+-	platform_driver_register(&stm_serial_driver);
+-	return 0;
+-}
+-
+-console_initcall(stm_serial_init);
++console_platform_driver(stm_serial_driver);
+diff --git a/include/driver.h b/include/driver.h
+index 138eab4..8598a39 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -408,6 +408,8 @@ int platform_driver_register(struct driver_d *drv);
  
- static int qt1070_init(void)
- {
--	i2c_register_driver(&qt1070_driver);
-+	i2c_driver_register(&qt1070_driver);
- 	return 0;
- }
- device_initcall(qt1070_init);
-diff --git a/drivers/mfd/lp3972.c b/drivers/mfd/lp3972.c
-index 082ecaa..ee794df 100644
---- a/drivers/mfd/lp3972.c
-+++ b/drivers/mfd/lp3972.c
-@@ -99,7 +99,7 @@ static struct driver_d lp_driver = {
+ #define device_platform_driver(drv)	\
+ 	register_driver_macro(device,platform,drv)
++#define console_platform_driver(drv)	\
++	register_driver_macro(console,platform,drv)
  
- static int lp_init(void)
- {
--	i2c_register_driver(&lp_driver);
-+	i2c_driver_register(&lp_driver);
- 	return 0;
- }
+ int platform_device_register(struct device_d *new_device);
  
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 359b118..91c874f 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -356,7 +356,7 @@ static struct driver_d mc_i2c_driver = {
- 
- static int mc_i2c_init(void)
- {
--	return i2c_register_driver(&mc_i2c_driver);
-+	return i2c_driver_register(&mc_i2c_driver);
- }
- device_initcall(mc_i2c_init);
- #endif
-diff --git a/drivers/mfd/mc34704.c b/drivers/mfd/mc34704.c
-index 276b723..9afab07 100644
---- a/drivers/mfd/mc34704.c
-+++ b/drivers/mfd/mc34704.c
-@@ -130,7 +130,7 @@ static struct driver_d mc34704_driver = {
- 
- static int mc34704_init(void)
- {
--	i2c_register_driver(&mc34704_driver);
-+	i2c_driver_register(&mc34704_driver);
- 	return 0;
- }
- device_initcall(mc34704_init);
-diff --git a/drivers/mfd/mc34708.c b/drivers/mfd/mc34708.c
-index fbd6891..63db1e1 100644
---- a/drivers/mfd/mc34708.c
-+++ b/drivers/mfd/mc34708.c
-@@ -275,7 +275,7 @@ static struct driver_d mc_i2c_driver = {
- 
- static int mc_i2c_init(void)
- {
--	return i2c_register_driver(&mc_i2c_driver);
-+	return i2c_driver_register(&mc_i2c_driver);
- }
- 
- device_initcall(mc_i2c_init);
-diff --git a/drivers/mfd/mc9sdz60.c b/drivers/mfd/mc9sdz60.c
-index 76c62e3..0d2c56b 100644
---- a/drivers/mfd/mc9sdz60.c
-+++ b/drivers/mfd/mc9sdz60.c
-@@ -142,7 +142,7 @@ static struct driver_d mc_driver = {
- 
- static int mc_init(void)
- {
--        i2c_register_driver(&mc_driver);
-+        i2c_driver_register(&mc_driver);
-         return 0;
- }
- 
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
-index 9e4bbcc..d87620e 100644
---- a/drivers/mfd/stmpe-i2c.c
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -147,7 +147,7 @@ static struct driver_d stmpe_driver = {
- 
- static int stmpe_init(void)
- {
--        i2c_register_driver(&stmpe_driver);
-+        i2c_driver_register(&stmpe_driver);
-         return 0;
- }
- 
-diff --git a/drivers/mfd/twl4030.c b/drivers/mfd/twl4030.c
-index 9309765..3b4c661 100644
---- a/drivers/mfd/twl4030.c
-+++ b/drivers/mfd/twl4030.c
-@@ -53,7 +53,7 @@ static struct driver_d twl_driver = {
- 
- static int twl_init(void)
- {
--	i2c_register_driver(&twl_driver);
-+	i2c_driver_register(&twl_driver);
- 	return 0;
- }
- 
-diff --git a/drivers/mfd/twl6030.c b/drivers/mfd/twl6030.c
-index 6b872ab..0645d3c 100644
---- a/drivers/mfd/twl6030.c
-+++ b/drivers/mfd/twl6030.c
-@@ -70,7 +70,7 @@ static struct driver_d twl_driver = {
- 
- static int twl_init(void)
- {
--	i2c_register_driver(&twl_driver);
-+	i2c_driver_register(&twl_driver);
- 	return 0;
- }
- 
-diff --git a/include/i2c/i2c.h b/include/i2c/i2c.h
-index dc5e5fc..7b59a51 100644
---- a/include/i2c/i2c.h
-+++ b/include/i2c/i2c.h
-@@ -151,7 +151,7 @@ extern int i2c_write_reg(struct i2c_client *client, u32 addr, const u8 *buf, u16
- 
- extern struct bus_type i2c_bus;
- 
--static inline int i2c_register_driver(struct driver_d *drv)
-+static inline int i2c_driver_register(struct driver_d *drv)
- {
- 	drv->bus = &i2c_bus;
- 	return register_driver(drv);
 -- 
 1.7.12.4
 
