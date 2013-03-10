@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f371.mail.ru ([217.69.141.13])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEh0X-0001lA-JX
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 14:13:50 +0000
-Received: from mail by f371.mail.ru with local (envelope-from
- <shc_work@mail.ru>) id 1UEh0R-0000Ox-Pr
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 18:13:43 +0400
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sun, 10 Mar 2013 18:13:43 +0400
-Message-ID: <1362924823.394544173@f371.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UEhbd-0003LX-Gl
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 14:52:10 +0000
+Date: Sun, 10 Mar 2013 15:52:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130310145206.GO1906@pengutronix.de>
+References: <1362924823.394544173@f371.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1362924823.394544173@f371.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============9020674436775060250=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?TmV3IGR0LW9ubHkgYXJtL21hY2g=?=
-To: barebox@lists.infradead.org
+Subject: Re: New dt-only arm/mach
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
+
+Hi Alexander,
+
+On Sun, Mar 10, 2013 at 06:13:43PM +0400, Alexander Shiyan wrote:
+>  Hello All.
+> 
+> I want to add new arch into barebox. n the kernel this arch is dt-only.
+> I talking about mach-sunxi. So, how we should handle such platform
+> in the barebox? We need always provide dtb to the kernel, then where
+> it should be in barebox?
+
+You asked me privatly whether we should put dtc and friends into
+barebox, by that time I answered it needs some more time. Maybe this
+time has come now. I currently have a branch in the making to add dtc
+support and also integration into barebox.
+
+With this we are able to compile a dts(p) and link the binary into
+barebox, so...
+
+> I think about dtb-file in /env, but not sure...
+
+...you could provide a dtb in the binary *)
+
+Furthermore you could probe barebox itself from the devicetree.
+
+I'm still not sure whether we should add fullblown devicetrees into
+barebox or stripped down versions with only the devices barebox needs.
+I think time will tell.
+
+Give me some hours time, I think then I can post a first version of the
+patches.
+
+Sascha
 
 
---===============9020674436775060250==
-Content-Type: multipart/alternative;
-	boundary="--ALT--gwsdBJOH1362924823"
+*) This of course shouldn't mean it can't be overwritten with another
+dtb during runtime.
 
-
-----ALT--gwsdBJOH1362924823
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-
-IEhlbGxvIEFsbC4KCkkgd2FudCB0byBhZGQgbmV3IGFyY2ggaW50byBiYXJlYm94LiBuIHRoZSBr
-ZXJuZWwgdGhpcyBhcmNoIGlzIGR0LW9ubHkuCkkgdGFsa2luZyBhYm91dCBtYWNoLXN1bnhpLiBT
-bywgaG93IHdlIHNob3VsZCBoYW5kbGUgc3VjaCBwbGF0Zm9ybQppbiB0aGUgYmFyZWJveD8gV2Ug
-bmVlZCBhbHdheXMgcHJvdmlkZSBkdGIgdG8gdGhlIGtlcm5lbCwgdGhlbiB3aGVyZQppdCBzaG91
-bGQgYmUgaW4gYmFyZWJveD8KSSB0aGluayBhYm91dCBkdGItZmlsZSBpbiAvZW52LCBidXQgbm90
-IHN1cmUuLi4KVGhhbmtzLgoKLS0tCg==
-
-----ALT--gwsdBJOH1362924823
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
-
-CjxIVE1MPjxCT0RZPkhlbGxvIEFsbC48YnI+PGJyPkkgd2FudCB0byBhZGQgbmV3IGFyY2ggaW50
-byBiYXJlYm94LiBuIHRoZSBrZXJuZWwgdGhpcyBhcmNoIGlzIGR0LW9ubHkuPGJyPkkgdGFsa2lu
-ZyBhYm91dCBtYWNoLXN1bnhpLiBTbywgaG93IHdlIHNob3VsZCBoYW5kbGUgc3VjaCBwbGF0Zm9y
-bTxicj5pbiB0aGUgYmFyZWJveD8gV2UgbmVlZCBhbHdheXMgcHJvdmlkZSBkdGIgdG8gdGhlIGtl
-cm5lbCwgdGhlbiB3aGVyZTxicj5pdCBzaG91bGQgYmUgaW4gYmFyZWJveD88YnI+SSB0aGluayBh
-Ym91dCBkdGItZmlsZSBpbiAvZW52LCBidXQgbm90IHN1cmUuLi48YnI+VGhhbmtzLjxicj48YnI+
-LS0tPGJyPjwvQk9EWT48L0hUTUw+Cg==
-
-----ALT--gwsdBJOH1362924823--
-
-
---===============9020674436775060250==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============9020674436775060250==--
