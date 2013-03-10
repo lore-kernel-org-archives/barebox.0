@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEpbg-0006eI-60
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 23:24:44 +0000
-Date: Mon, 11 Mar 2013 00:24:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130310232442.GX1906@pengutronix.de>
-References: <1362594605-1083-1-git-send-email-shc_work@mail.ru>
- <1362913680.690644667@f363.mail.ru>
- <20130310145634.GP1906@pengutronix.de>
- <1362927660.933817593@f386.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1362927660.933817593@f386.i.mail.ru>
+ id 1UEpnb-0006pl-1k
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 23:37:03 +0000
+Received: by mail-wi0-f178.google.com with SMTP id hq4so608315wib.5
+ for <barebox@lists.infradead.org>; Sun, 10 Mar 2013 16:36:59 -0700 (PDT)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Mon, 11 Mar 2013 00:36:04 +0100
+Message-Id: <1362958567-6110-2-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1362958567-6110-1-git-send-email-vicencb@gmail.com>
+References: <1362958567-6110-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] Makefile: Create empty <config.h> if this header file is
- not needed by board
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] gpio_keys: detect keys pressed before booting.
+To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-On Sun, Mar 10, 2013 at 07:01:00PM +0400, Alexander Shiyan wrote:
-> > > > Patch creates empty <config.h> if this header is not needed by board.
-> > > > This will allow to remove many empty config.h files from boards.
-> > 
-> > How does git incorporate with this? I think git just ignores empty files
-> > like these, right?
-> 
-> When I say "empty" here, I mean about not zeroed files, but about
-> files without any content. Now we have 50 config.h files like this.
+If a key is pressed but not released before booting and the key is
+connected to an active low gpio it's not detected. This patch solves
+that.
 
-My question aimed in the direction whether we end up with empty files
-in git because people accidently add these now generated files.
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+---
+ drivers/input/gpio_keys.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I think the goal should be to get rid of the config.h files entirely.
-This patch (or better: the removal of the empty files) could be a good
-start to see what's left.
-
-Sascha
-
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+index b02e0ed..b439111 100644
+--- a/drivers/input/gpio_keys.c
++++ b/drivers/input/gpio_keys.c
+@@ -86,6 +86,8 @@ static int __init gpio_keys_probe(struct device_d *dev)
+ 			return ret;
+ 		}
+ 		gpio_direction_input(gpio);
++		pdata->buttons[i].previous_state =
++			pdata->buttons[i].active_low;
+ 	}
+ 
+ 	pdata->poller.func = gpio_key_poller;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.5
+
 
 _______________________________________________
 barebox mailing list
