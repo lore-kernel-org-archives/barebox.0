@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEcwS-0001DN-73
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 09:53:21 +0000
-Date: Sun, 10 Mar 2013 10:53:14 +0100
+ id 1UEd55-0002Wk-Oj
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 10:02:16 +0000
+Date: Sun, 10 Mar 2013 11:02:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130310095314.GM1906@pengutronix.de>
-References: <1362129773-4579-1-git-send-email-dev@lynxeye.de>
- <1362652402-2985-1-git-send-email-dev@lynxeye.de>
- <1362652402-2985-4-git-send-email-dev@lynxeye.de>
- <CAA4bVAGDkgRrBNf_MqetnS3kMhhh1H2aPu78FNWbeJ-acX=f5g@mail.gmail.com>
+Message-ID: <20130310100213.GN1906@pengutronix.de>
+References: <1362826391-16215-1-git-send-email-s.hauer@pengutronix.de>
+ <E4906CA1-E082-429B-8A7D-BB21E85A65E7@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAA4bVAGDkgRrBNf_MqetnS3kMhhh1H2aPu78FNWbeJ-acX=f5g@mail.gmail.com>
+In-Reply-To: <E4906CA1-E082-429B-8A7D-BB21E85A65E7@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,35 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/5] tegra: add driver for the clock and reset module
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] image and bss size decrease
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 10, 2013 at 11:41:44AM +0400, Antony Pavlov wrote:
-> > +static void __iomem *car_base;
-> > +
-> > +enum tegra20_clks {
-> > +       cpu, ac97 = 3, rtc, timer, uarta, gpio = 8, sdmmc2, i2s1 = 11, i2c1,
-> > +       ndflash, sdmmc1, sdmmc4, twc, pwm, i2s2, epp, gr2d = 21, usbd, isp,
-> > +       gr3d, ide, disp2, disp1, host1x, vcp, cache2 = 31, mem, ahbdma, apbdma,
-> > +       kbc = 36, stat_mon, pmc, fuse, kfuse, sbc1, nor, spi, sbc2, xio, sbc3,
-> > +       dvc, dsi, mipi = 50, hdmi, csi, tvdac, i2c2, uartc, emc = 57, usb2,
-> > +       usb3, mpe, vde, bsea, bsev, speedo, uartd, uarte, i2c3, sbc4, sdmmc3,
-> > +       pex, owr, afi, csite, pcie_xclk, avpucq = 75, la, irama = 84, iramb,
-> > +       iramc, iramd, cram2, audio_2x, clk_d, csus = 92, cdev1, cdev2,
-> > +       uartb = 96, vfir, spdif_in, spdif_out, vi, vi_sensor, tvo, cve,
-> > +       osc, clk_32k, clk_m, sclk, cclk, hclk, pclk, blink, pll_a, pll_a_out0,
-> > +       pll_c, pll_c_out1, pll_d, pll_d_out0, pll_e, pll_m, pll_m_out1,
-> > +       pll_p, pll_p_out1, pll_p_out2, pll_p_out3, pll_p_out4, pll_u,
-> > +       pll_x, audio, pll_ref, twd, clk_max,
-> > +};
-> > +
-> Please remove unused constants or register appropriate clocks.
+On Sun, Mar 10, 2013 at 02:38:06AM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> 
+> On Mar 9, 2013, at 6:53 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > This series decreases the image size and bss size a bit. First
+> > we make malloc available in all initcalls by moving the malloc
+> > pool initialization before start_barebox().
+> > 
+> > We then decrease the image size by making some statically initialized
+> > structs smaller. struct command has a struct list_head member
+> > which can be removed by wrapping the static struct command into
+> > a dynamically initialized one which contains the list_head. Also
+> > the embedded struct device_d in struct bus_type is removed in
+> > favour for a dynamically allocated one.
+> > 
+> > Also we make the bss smaller by allocating the FILE table and
+> > the gpio_desc table dynamically. The bss size is may become
+> > a problem on boards which run from SRAM. Here the malloc pool
+> > is in the big SDRAM area, but the bss is in SRAM, so it makes
+> > sense to move the big tables from bss to SDRAM by using malloc.
+> > 
+> 
+> How much less
+> 
+> IIRC I try this too but with PBL it's bigger
 
-Maybe it makes sense to keep them. When they are in sync with the
-devicetree it means we could derive clocks from the devicetree should
-we ever want to. However, we could also do this later when we really
-need it, so I have no objection in either direction.
+With PBL it's still smaller, but on a pcm038 defconfig it's only 18
+bytes, so this is not really worth the effort. Decreasing the bss
+size still makes sense though.
 
 Sascha
 
