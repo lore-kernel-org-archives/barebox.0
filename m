@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEdLj-0004PL-PL
- for barebox@lists.infradead.org; Sun, 10 Mar 2013 10:19:29 +0000
+ id 1UEdLs-0004RW-9J
+ for barebox@lists.infradead.org; Sun, 10 Mar 2013 10:19:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 10 Mar 2013 11:19:20 +0100
-Message-Id: <1362910761-1732-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 10 Mar 2013 11:19:19 +0100
+Message-Id: <1362910761-1732-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362910761-1732-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362910761-1732-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ARM i.MX: Add double include protection for generic.h
+Subject: [PATCH 2/4] MMC i.MX: remove unnecessary mach include
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/generic.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mci/imx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index 5e600a3..1f0fce2 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -1,3 +1,5 @@
-+#ifndef __MACH_GENERIC_H
-+#define __MACH_GENERIC_H
+diff --git a/drivers/mci/imx.c b/drivers/mci/imx.c
+index 1210a1d..3d9bd0d 100644
+--- a/drivers/mci/imx.c
++++ b/drivers/mci/imx.c
+@@ -27,7 +27,6 @@
+ #include <driver.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+-#include <mach/clock.h>
+ #include <io.h>
  
- u64 imx_uid(void);
- 
-@@ -82,3 +84,5 @@ int imx6_boot_save_loc(void __iomem *src_base);
- 
- #define cpu_is_mx23()	(0)
- #define cpu_is_mx28()	(0)
-+
-+#endif /* __MACH_GENERIC_H */
+ #define DRIVER_NAME "imx-mmc"
 -- 
 1.8.2.rc2
 
