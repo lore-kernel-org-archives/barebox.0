@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo4.mail-out.ovh.net ([46.105.34.195]
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF0Xc-00043q-A6
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:05:18 +0000
+ id 1UF0Yd-0004KM-6t
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:06:20 +0000
 Received: from mail247.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id E84BC104EB1E
- for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 12:16:25 +0100 (CET)
-Date: Mon, 11 Mar 2013 12:00:51 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id EFE42104E465
+ for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 12:17:30 +0100 (CET)
+Date: Mon, 11 Mar 2013 12:01:58 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130311110051.GD11170@game.jcrosoft.org>
+Message-ID: <20130311110158.GE11170@game.jcrosoft.org>
 References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
- <1362994003-22653-5-git-send-email-shc_work@mail.ru>
+ <1362994003-22653-4-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362994003-22653-5-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1362994003-22653-4-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,227 +27,244 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/13] ARM: clps711x: Using COMMON_CLK
+Subject: Re: [PATCH 04/13] ARM: clps711x: Add clocksource driver
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
 On 13:26 Mon 11 Mar     , Alexander Shiyan wrote:
-> This patch adds support for COMMON_CLK API for CLPS711X targets.
+> This patch adds clocksource driver for CLPS711X targets and adds
+> support to platform to use this new driver.
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  arch/arm/Kconfig                 |    1 +
->  arch/arm/mach-clps711x/clock.c   |  109 ++++++++++++++++++++++----------------
->  arch/arm/mach-clps711x/devices.c |    4 ++
->  3 files changed, 68 insertions(+), 46 deletions(-)
+>  arch/arm/Kconfig               |    1 +
+>  arch/arm/mach-clps711x/clock.c |   51 ++++++++++++++++-----------------
+>  drivers/clocksource/Kconfig    |    4 ++
+>  drivers/clocksource/Makefile   |    1 +
+>  drivers/clocksource/clps711x.c |   61 ++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 92 insertions(+), 26 deletions(-)
+>  create mode 100644 drivers/clocksource/clps711x.c
 > 
 > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index c608454..6463746 100644
+> index 7ac134e..c608454 100644
 > --- a/arch/arm/Kconfig
 > +++ b/arch/arm/Kconfig
-> @@ -40,6 +40,7 @@ config ARCH_CLPS711X
+> @@ -39,6 +39,7 @@ config ARCH_BCM2835
+>  config ARCH_CLPS711X
 >  	bool "Cirrus Logic EP711x/EP721x/EP731x"
 >  	select CLKDEV_LOOKUP
->  	select CLOCKSOURCE_CLPS711X
-> +	select COMMON_CLK
+> +	select CLOCKSOURCE_CLPS711X
 >  	select CPU_32v4T
 >  
 >  config ARCH_EP93XX
 > diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
-> index e957662..7658c9a 100644
+> index 09cbaf9..e957662 100644
 > --- a/arch/arm/mach-clps711x/clock.c
 > +++ b/arch/arm/mach-clps711x/clock.c
-> @@ -11,6 +11,7 @@
+> @@ -9,25 +9,18 @@
+>  
+>  #include <common.h>
 >  #include <init.h>
->  #include <sizes.h>
+> -#include <clock.h>
+> +#include <sizes.h>
 >  #include <asm/io.h>
-> +#include <linux/clk.h>
 >  #include <linux/clkdev.h>
 >  
 >  #include <mach/clps711x.h>
-> @@ -18,32 +19,37 @@
->  #define CLPS711X_OSC_FREQ	3686400
->  #define CLPS711X_EXT_FREQ	13000000
 >  
-> -static struct clk {
-> -	unsigned long	rate;
-> -} uart_clk, bus_clk, timer_clk;
-> +enum clps711x_clks {
-> +	dummy, cpu, bus, uart, timer_hf, timer_lf, tc1, tc2, clk_max
-> +};
->  
-> -unsigned long clk_get_rate(struct clk *clk)
+> +#define CLPS711X_OSC_FREQ	3686400
+> +#define CLPS711X_EXT_FREQ	13000000
+> +
+>  static struct clk {
+>  	unsigned long	rate;
+> -} uart_clk, bus_clk;
+> -
+> -static uint64_t clocksource_read(void)
 > -{
-> -	return clk->rate;
+> -	return ~readw(TC2D);
 > -}
-> -EXPORT_SYMBOL(clk_get_rate);
-> +static struct {
-> +	const char	*name;
-> +	struct clk	*clk;
-> +} clks[clk_max] = {
-> +	{ "dummy", },
-> +	{ "cpu", },
-> +	{ "bus", },
-> +	{ "uart", },
-> +	{ "timer_hf", },
-> +	{ "timer_lf", },
-> +	{ "tc1", },
-> +	{ "tc2", },
-> +};
+> -
+> -static struct clocksource cs = {
+> -	.read	= clocksource_read,
+> -	.mask	= CLOCKSOURCE_MASK(16),
+> -};
+> +} uart_clk, bus_clk, timer_clk;
 >  
-> -int clk_enable(struct clk *clk)
-> -{
-> -	/* Do nothing */
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL(clk_enable);
-> +static const char *tc_sel_clks[] = {
-> +	"timer_lf",
-> +	"timer_hf",
-> +};
->  
-> -void clk_disable(struct clk *clk)
-> +static __init void clps711x_clk_register(enum clps711x_clks id)
+>  unsigned long clk_get_rate(struct clk *clk)
 >  {
-> -	/* Do nothing */
-> +	clk_register_clkdev(clks[id].clk, clks[id].name, NULL);
->  }
-> -EXPORT_SYMBOL(clk_disable);
+> @@ -50,22 +43,19 @@ EXPORT_SYMBOL(clk_disable);
 >  
-> -static int clocks_init(void)
-> +static __init int clps711x_clk_init(void)
+>  static int clocks_init(void)
 >  {
-> -	int pll, cpu;
-> +	unsigned int f_cpu, f_bus, f_uart, f_timer_hf, f_timer_lf, pll;
+> -	int osc, ext, pll, cpu, timer;
+> +	int pll, cpu;
 >  	u32 tmp;
 >  
+> -	osc = 3686400;
+> -	ext = 13000000;
+> -
 >  	tmp = readl(PLLR) >> 24;
-> @@ -54,57 +60,68 @@ static int clocks_init(void)
+>  	if (tmp)
+> -		pll = (osc * tmp) / 2;
+> +		pll = (CLPS711X_OSC_FREQ * tmp) / 2;
+>  	else
+>  		pll = 73728000; /* Default value for old CPUs */
 >  
 >  	tmp = readl(SYSFLG2);
 >  	if (tmp & SYSFLG2_CKMODE) {
-> -		cpu = CLPS711X_EXT_FREQ;
-> -		bus_clk.rate = CLPS711X_EXT_FREQ;
-> +		f_cpu = CLPS711X_EXT_FREQ;
-> +		f_bus = CLPS711X_EXT_FREQ;
+> -		cpu = ext;
+> -		bus_clk.rate = cpu;
+> +		cpu = CLPS711X_EXT_FREQ;
+> +		bus_clk.rate = CLPS711X_EXT_FREQ;
 >  	} else {
-> -		cpu = pll;
-> -		if (cpu >= 36864000)
-> -			bus_clk.rate = cpu / 2;
-> +		f_cpu = pll;
-> +		if (f_cpu >= 36864000)
-> +			f_bus = f_cpu / 2;
->  		else
-> -			bus_clk.rate = 36864000 / 2;
-> +			f_bus = 36864000 / 2;
+>  		cpu = pll;
+>  		if (cpu >= 36864000)
+> @@ -74,25 +64,23 @@ static int clocks_init(void)
+>  			bus_clk.rate = 36864000 / 2;
 >  	}
 >  
-> -	uart_clk.rate = DIV_ROUND_CLOSEST(bus_clk.rate, 10);
-> +	f_uart = f_bus / 10;
+> -	uart_clk.rate = bus_clk.rate / 10;
+> +	uart_clk.rate = DIV_ROUND_CLOSEST(bus_clk.rate, 10);
 >  
 >  	if (tmp & SYSFLG2_CKMODE) {
 >  		tmp = readw(SYSCON2);
 >  		if (tmp & SYSCON2_OSTB)
-> -			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
-> +			f_timer_hf = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
+> -			timer = ext / 26;
+> +			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
 >  		else
-> -			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
-> +			f_timer_hf = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
+> -			timer = 541440;
+> +			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
 >  	} else
-> -		timer_clk.rate = DIV_ROUND_CLOSEST(cpu, 144);
-> +		f_timer_hf = DIV_ROUND_CLOSEST(f_cpu, 144);
+> -		timer = cpu / 144;
+> +		timer_clk.rate = DIV_ROUND_CLOSEST(cpu, 144);
 >  
-> +	f_timer_lf = DIV_ROUND_CLOSEST(f_timer_hf, 256);
-> +
-> +	/* Turn timers in free running mode */
 >  	tmp = readl(SYSCON1);
-> -	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
-> -	tmp |= SYSCON1_TC2S;	/* High frequency source */
-> +	tmp &= ~(SYSCON1_TC1M | SYSCON1_TC2M);
+>  	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
+>  	tmp |= SYSCON1_TC2S;	/* High frequency source */
 >  	writel(tmp, SYSCON1);
-this is timer configuration not clocks
-
-Best Regards,
-J.
 >  
-> -	return 0;
-> -}
-> -core_initcall(clocks_init);
+> -	clocks_calc_mult_shift(&cs.mult, &cs.shift, timer, NSEC_PER_SEC, 10);
 > -
-> -static struct clk_lookup clocks_lookups[] = {
-> -	CLKDEV_CON_ID("bus", &bus_clk),
-> -	CLKDEV_DEV_ID("clps711x_serial0", &uart_clk),
-> -	CLKDEV_DEV_ID("clps711x_serial1", &uart_clk),
-> -	CLKDEV_DEV_ID("clps711x-cs", &timer_clk),
-> -};
-> -
-> -static int clkdev_init(void)
-> -{
-> -	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
-> +	clks[dummy].clk = clk_fixed(clks[dummy].name, 0);
-> +	clks[cpu].clk = clk_fixed(clks[cpu].name, f_cpu);
-> +	clks[bus].clk = clk_fixed(clks[bus].name, f_bus);
-> +	clks[uart].clk = clk_fixed(clks[uart].name, f_uart);
-> +	clks[timer_hf].clk = clk_fixed(clks[timer_hf].name, f_timer_hf);
-> +	clks[timer_lf].clk = clk_fixed(clks[timer_lf].name, f_timer_lf);
-> +	clks[tc1].clk = clk_mux(clks[tc1].name, IOMEM(SYSCON1), 5, 1,
-> +				tc_sel_clks, ARRAY_SIZE(tc_sel_clks));
-> +	clks[tc2].clk = clk_mux(clks[tc2].name, IOMEM(SYSCON1), 7, 1,
-> +				tc_sel_clks, ARRAY_SIZE(tc_sel_clks));
-> +
-> +	clps711x_clk_register(dummy);
-> +	clps711x_clk_register(cpu);
-> +	clps711x_clk_register(bus);
-> +	clps711x_clk_register(uart);
-> +	clps711x_clk_register(timer_hf);
-> +	clps711x_clk_register(timer_lf);
-> +	clps711x_clk_register(tc1);
-> +	clps711x_clk_register(tc2);
+> -	return init_clock(&cs);
+> +	return 0;
+>  }
+>  core_initcall(clocks_init);
 >  
+> @@ -100,6 +88,7 @@ static struct clk_lookup clocks_lookups[] = {
+>  	CLKDEV_CON_ID("bus", &bus_clk),
+>  	CLKDEV_DEV_ID("clps711x_serial0", &uart_clk),
+>  	CLKDEV_DEV_ID("clps711x_serial1", &uart_clk),
+> +	CLKDEV_DEV_ID("clps711x-cs", &timer_clk),
+>  };
+>  
+>  static int clkdev_init(void)
+> @@ -109,3 +98,13 @@ static int clkdev_init(void)
 >  	return 0;
 >  }
-> -postcore_initcall(clkdev_init);
-> +postcore_initcall(clps711x_clk_init);
->  
->  static const char *clps711x_clocksrc_name = "clps711x-cs";
->  
->  static __init int clps711x_core_init(void)
->  {
-> +	/* Using TC2 in low frequency mode as clocksource */
-> +	clk_set_parent(clks[tc2].clk, clks[timer_lf].clk);
-> +	clk_add_alias(NULL, clps711x_clocksrc_name, "tc2", NULL);
->  	add_generic_device(clps711x_clocksrc_name, DEVICE_ID_SINGLE, NULL,
->  			   TC2D, SZ_2, IORESOURCE_MEM, NULL);
+>  postcore_initcall(clkdev_init);
 > +
->  	return 0;
->  }
->  coredevice_initcall(clps711x_core_init);
-> diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-> index 6c760db..6221da3 100644
-> --- a/arch/arm/mach-clps711x/devices.c
-> +++ b/arch/arm/mach-clps711x/devices.c
-> @@ -14,6 +14,8 @@
->  #include <asm/io.h>
->  #include <asm/memory.h>
+> +static const char *clps711x_clocksrc_name = "clps711x-cs";
+> +
+> +static __init int clps711x_core_init(void)
+> +{
+> +	add_generic_device(clps711x_clocksrc_name, DEVICE_ID_SINGLE, NULL,
+> +			   TC2D, SZ_2, IORESOURCE_MEM, NULL);
+> +	return 0;
+> +}
+> +coredevice_initcall(clps711x_core_init);
+> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> index 3f27cf2..9f3558b 100644
+> --- a/drivers/clocksource/Kconfig
+> +++ b/drivers/clocksource/Kconfig
+> @@ -10,6 +10,10 @@ config CLOCKSOURCE_BCM2835
+>  	bool
+>  	depends on ARCH_BCM2835
 >  
+> +config CLOCKSOURCE_CLPS711X
+> +	bool
+> +	depends on ARCH_CLPS711X
+> +
+>  config CLOCKSOURCE_NOMADIK
+>  	bool
+>  	depends on ARM
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index b0bc8bd..d919881 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -1,4 +1,5 @@
+>  obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
+>  obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
+>  obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
+> +obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
+>  obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+> diff --git a/drivers/clocksource/clps711x.c b/drivers/clocksource/clps711x.c
+> new file mode 100644
+> index 0000000..8c379d3
+> --- /dev/null
+> +++ b/drivers/clocksource/clps711x.c
+> @@ -0,0 +1,61 @@
+> +/*
+> + * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + */
+> +
+> +#include <common.h>
+> +#include <clock.h>
+> +#include <io.h>
+> +#include <init.h>
+> +
 > +#include <linux/clk.h>
+> +#include <linux/err.h>
 > +
->  #include <mach/clps711x.h>
->  
->  static int clps711x_mem_init(void)
-> @@ -98,10 +100,12 @@ void clps711x_add_uart(unsigned int id)
->  {
->  	switch (id) {
->  	case 0:
-> +		clk_add_alias(NULL, "clps711x_serial0", "uart", NULL);
->  		add_generic_device_res("clps711x_serial", 0, uart0_resources,
->  				       ARRAY_SIZE(uart0_resources), NULL);
->  		break;
->  	case 1:
-> +		clk_add_alias(NULL, "clps711x_serial1", "uart", NULL);
->  		add_generic_device_res("clps711x_serial", 1, uart1_resources,
->  				       ARRAY_SIZE(uart1_resources), NULL);
->  		break;
+> +static __iomem void *clps711x_timer_base;
+> +
+> +static uint64_t clps711x_cs_read(void)
+> +{
+> +	return ~readw(clps711x_timer_base);
+> +}
+> +
+> +static struct clocksource clps711x_cs = {
+> +	.read = clps711x_cs_read,
+> +	.mask = CLOCKSOURCE_MASK(16),
+> +};
+> +
+> +static int clps711x_cs_probe(struct device_d *dev)
+> +{
+> +	u32 rate;
+> +	struct clk *timer_clk;
+> +
+> +	timer_clk = clk_get(dev, NULL);
+> +	if (IS_ERR(timer_clk))
+> +		return PTR_ERR(timer_clk);
+> +
+> +	rate = clk_get_rate(timer_clk);
+> +	clps711x_timer_base = dev_request_mem_region(dev, 0);
+> +	if (!clps711x_timer_base) {
+> +		clk_put(timer_clk);
+> +		return -ENOENT;
+> +	}
+this deserve a nice crash
+> +
+> +	clocks_calc_mult_shift(&clps711x_cs.mult, &clps711x_cs.shift, rate,
+> +			       NSEC_PER_SEC, 10);
+> +
+> +	return init_clock(&clps711x_cs);
+> +}
+> +
+> +static struct driver_d clps711x_cs_driver = {
+> +	.name = "clps711x-cs",
+> +	.probe = clps711x_cs_probe,
+> +};
+> +
+> +static __init int clps711x_cs_init(void)
+> +{
+> +	return platform_driver_register(&clps711x_cs_driver);
+> +}
+> +coredevice_initcall(clps711x_cs_init);
 > -- 
 > 1.7.3.4
 > 
