@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEzTG-0002hF-N2
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:56:44 +0000
-Date: Mon, 11 Mar 2013 10:56:40 +0100
+ id 1UEzas-0004Hm-FD
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 10:04:37 +0000
+Date: Mon, 11 Mar 2013 11:04:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130311095640.GE1906@pengutronix.de>
+Message-ID: <20130311100432.GF1906@pengutronix.de>
 References: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
- <1362993306-19262-2-git-send-email-s.trumtrar@pengutronix.de>
+ <1362993306-19262-3-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362993306-19262-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1362993306-19262-3-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +23,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/9] serial: Add driver for Cadence UART
+Subject: Re: [PATCH 2/9] ARM: Zynq: Add new architecture zynq
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 11, 2013 at 10:14:58AM +0100, Steffen Trumtrar wrote:
-> Support for Cadence UART core.
+On Mon, Mar 11, 2013 at 10:14:59AM +0100, Steffen Trumtrar wrote:
+> Add basic support for the Xilinx Zynq-7000 EPP architecture.
+> The Zynq-7000 is an embedded processing platform that combines a Cortex A9
+> dualcore MPSoC with an Artix-7 FPGA.
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  drivers/serial/Kconfig          |   4 +
->  drivers/serial/Makefile         |   1 +
->  drivers/serial/serial_cadence.c | 299 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 304 insertions(+)
->  create mode 100644 drivers/serial/serial_cadence.c
-> 
-> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> index f61d670..a51510e 100644
-> --- a/drivers/serial/Kconfig
-> +++ b/drivers/serial/Kconfig
-> @@ -113,4 +113,8 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
->  	help
->  	  Enable this to get console support over the usb bus used to boot an OMAP4
->  
-> +config DRIVER_SERIAL_CADENCE
-> +	default n
-> +	bool "Cadence UART driver"
 > +
->  endmenu
-> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-> index 893e282..963a7df 100644
-> --- a/drivers/serial/Makefile
-> +++ b/drivers/serial/Makefile
-> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
->  obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
->  obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
->  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
-> +obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
-> diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+> +static void __iomem *timer_base = (void *) CORTEXA9_SCU_TIMER_BASE_ADDR;
+> +
+> +static uint64_t zynq_clocksource_read(void)
+> +{
+> +	return readl(timer_base + PRIVATE_TIMER_COUNTER);
+> +}
+> +
+> +static struct clocksource cs = {
+> +	.read	= zynq_clocksource_read,
+> +	.mask	= CLOCKSOURCE_MASK(16),
+> +	.shift	= TIMER_PRESCALER_SHIFT,
+> +};
+> +
+> +static int zynq_timer_init(void)
+> +{
+> +	cs.mult = clocksource_hz2mult(33333330, cs.shift);
+
+You should add clock support. Adding a first-shot clock support is
+really simple:
+
+	struct clk = clk_fixed("timer", 33333330);
+	clkdev_add_physbase(clk, CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
+
+
+> +
+> +	/* set timer load register */
+> +	writel(0xFFFFFFFF, timer_base);
+> +
+> +	writel(TIMER_CTRL_TIMER_EN | TIMER_CTRL_AUTO_RELOAD |
+> +		(TIMER_PRESCALER << cs.shift),
+> +		timer_base + PRIVATE_TIMER_CONTROL);
+> +
+> +	init_clock(&cs);
+> +
+> +	return 0;
+> +}
+> +coredevice_initcall(zynq_timer_init);
+
+Please make this a real driver.
+
+> diff --git a/arch/arm/mach-zynq/devices.c b/arch/arm/mach-zynq/devices.c
 > new file mode 100644
-> index 0000000..0ccb1b3
+> index 0000000..2bb3c92
 > --- /dev/null
-> +++ b/drivers/serial/serial_cadence.c
-> @@ -0,0 +1,299 @@
+> +++ b/arch/arm/mach-zynq/devices.c
+> @@ -0,0 +1,14 @@
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <mach/devices.h>
+> +
+> +static inline struct device_d *zynq_add_device(char *name, int id, void *base, int size, void *pdata)
+> +{
+> +	return add_generic_device(name, id, NULL, (resource_size_t)base, size,
+> +				  IORESOURCE_MEM, pdata);
+> +}
+> +
+> +struct device_d *zynq_add_uart(void *base, int id)
+> +{
+> +	return zynq_add_device("cadence-uart", id, base, 0x1000, NULL);
+> +}
+> diff --git a/arch/arm/mach-zynq/include/mach/barebox.lds.h b/arch/arm/mach-zynq/include/mach/barebox.lds.h
+> new file mode 100644
+> index 0000000..674a4ac
+> --- /dev/null
+> +++ b/arch/arm/mach-zynq/include/mach/barebox.lds.h
+> @@ -0,0 +1,9 @@
+> +#define PRE_IMAGE \
+> +	.pre_image : {					\
+> +		KEEP(*(.flash_header_start*))		\
+> +		. = 0x20;				\
+> +		KEEP(*(.flash_header_0x0*))		\
+> +		. = 0xa0;				\
+> +		KEEP(*(.ps7reg_entry_0x0A0))		\
+> +		. = 0x8c0;				\
+> +	}
+> diff --git a/arch/arm/mach-zynq/include/mach/debug_ll.h b/arch/arm/mach-zynq/include/mach/debug_ll.h
+> new file mode 100644
+> index 0000000..4fbb387
+> --- /dev/null
+> +++ b/arch/arm/mach-zynq/include/mach/debug_ll.h
+> @@ -0,0 +1,34 @@
+> +/*
+> + * based on mach-imx/include/mach/debug_ll.h
+> + */
+> +
+> +#ifndef __MACH_DEBUG_LL_H__
+> +#define __MACH_DEBUG_LL_H__
+> +
+> +#include <io.h>
+> +#include <mach/zynq7000-regs.h>
+> +
+> +#ifndef ZYNQ_DEBUG_LL_UART_BASE
+> +#warning define ZYNQ_DEBUG_LL_UART_BASE properly for debug_ll
+> +#define ZYNQ_DEBUG_LL_UART_BASE ZYNQ_UART1_BASE_ADDR
+> +#endif
+> +
+> +#define ZYNQ_UART_RXTXFIFO	0x30
+> +#define ZYNQ_UART_CHANNEL_STS	0x2C
+> +
+> +#define ZYNQ_UART_STS_TFUL	(1 << 4)
+> +
+> +static inline void PUTC_LL(int c)
+> +{
+> +	void __iomem *base = (void *)ZYNQ_DEBUG_LL_UART_BASE;
+> +
+> +	if (!base)
+> +		return;
+
+This will never happen, right?
+
+What makes sense though is to add a check whether this UART is enabled.
+We do not have initialization code here, so if the UART is not enabled,
+you will likely loop forever below. It can be annoying that the only
+reason barebox doesn't work is the code you added for debugging.
+
+> +
+> +	while ((readl(base + ZYNQ_UART_CHANNEL_STS) & ZYNQ_UART_STS_TFUL) != 0)
+> +		;
+> +
+> +	writel(c, base + ZYNQ_UART_RXTXFIFO);
+> +}
+> +
+> +#endif
+> diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+> new file mode 100644
+> index 0000000..58fc712
+> --- /dev/null
+> +++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+> @@ -0,0 +1,132 @@
 > +/*
 > + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > + *
@@ -80,264 +176,166 @@ On Mon, Mar 11, 2013 at 10:14:58AM +0100, Steffen Trumtrar wrote:
 > + * GNU General Public License for more details.
 > + *
 > + */
-> +#include <common.h>
-> +#include <driver.h>
-> +#include <init.h>
-> +#include <malloc.h>
-> +#include <notifier.h>
-> +#include <io.h>
-> +#include <linux/err.h>
-> +#include <linux/clk.h>
 > +
-> +#define CADENCE_UART_CONTROL	0x00
-> +#define CADENCE_UART_MODE		0x04
-> +#define CADENCE_UART_BAUD_GEN	0x18
-> +#define CADENCE_UART_CHANNEL_STS	0x2C
-> +#define CADENCE_UART_RXTXFIFO	0x30
-> +#define CADENCE_UART_BAUD_DIV	0x34
+> +#define ZYNQ_UART0_BASE_ADDR		0xE0000000
+> +#define ZYNQ_UART1_BASE_ADDR		0xE0001000
+> +#define ZYNQ_I2C0_BASE_ADDR		0xE0004000
+> +#define ZYNQ_I2C1_BASE_ADDR		0xE0005000
+> +#define ZYNQ_SPI0_BASE_ADDR		0xE0006000
+> +#define ZYNQ_SPI1_BASE_ADDR		0xE0007000
+> +#define ZYNQ_CAN0_BASE_ADDR		0xE0008000
+> +#define ZYNQ_CAN1_BASE_ADDR		0xE0009000
+> +#define ZYNQ_GPIO_BASE_ADDR		0xE000A000
 > +
-> +#define CADENCE_CTRL_RXRES		(1 << 0)
-> +#define CADENCE_CTRL_TXRES		(1 << 1)
-> +#define CADENCE_CTRL_RXEN		(1 << 2)
-> +#define CADENCE_CTRL_RXDIS		(1 << 3)
-> +#define CADENCE_CTRL_TXEN		(1 << 4)
-> +#define CADENCE_CTRL_TXDIS		(1 << 5)
-> +#define CADENCE_CTRL_RSTTO		(1 << 6)
-> +#define CADENCE_CTRL_STTBRK	(1 << 7)
-> +#define CADENCE_CTRL_STPBRK	(1 << 8)
+> +#define ZYNQ_SLCR_BASE			0xF8000000
+> +#define ZYNQ_SLCR_SCL			(ZYNQ_SLCR_BASE + 0x000)
+> +#define ZYNQ_SLCR_LOCK			(ZYNQ_SLCR_BASE + 0x004)
+> +#define ZYNQ_SLCR_UNLOCK		(ZYNQ_SLCR_BASE + 0x008)
+> +#define ZYNQ_SLCR_LOCKSTA		(ZYNQ_SLCR_BASE + 0x00C)
+> +#define ZYNQ_CLOCK_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x100)
+> +#define ZYNQ_ARM_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x000)
+> +#define ZYNQ_DDR_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x004)
+> +#define ZYNQ_IO_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x008)
+> +#define ZYNQ_PLL_STATUS			(ZYNQ_CLOCK_CTRL_BASE + 0x00C)
+> +#define ZYNQ_ARM_PLL_CFG		(ZYNQ_CLOCK_CTRL_BASE + 0x010)
+> +#define ZYNQ_DDR_PLL_CFG		(ZYNQ_CLOCK_CTRL_BASE + 0x014)
+> +#define ZYNQ_IO_PLL_CFG			(ZYNQ_CLOCK_CTRL_BASE + 0x018)
+> +#define ZYNQ_ARM_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x020)
+> +#define ZYNQ_DDR_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x024)
+> +#define ZYNQ_DCI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x028)
+> +#define ZYNQ_APER_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x02C)
+> +#define ZYNQ_USB0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x030)
+> +#define ZYNQ_USB1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x034)
+> +#define ZYNQ_GEM0_RCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x038)
+> +#define ZYNQ_GEM1_RCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x03C)
+> +#define ZYNQ_GEM0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x040)
+> +#define ZYNQ_GEM1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x044)
+> +#define ZYNQ_SMC_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x048)
+> +#define ZYNQ_LQSPI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x04C)
+> +#define ZYNQ_SDIO_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x050)
+> +#define ZYNQ_UART_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x054)
+> +#define ZYNQ_SPI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x058)
+> +#define ZYNQ_CAN_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x05C)
+> +#define ZYNQ_CAN_MIOCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x060)
+> +#define ZYNQ_DBG_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x064)
+> +#define ZYNQ_PCAP_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x068)
+> +#define ZYNQ_TOPSW_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x06C)
+> +#define ZYNQ_FPGA0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x070)
+> +#define ZYNQ_FPGA1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x080)
+> +#define ZYNQ_FPGA2_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x090)
+> +#define ZYNQ_FPGA3_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x0A0)
+> +#define ZYNQ_CLK_621_TRUE		(ZYNQ_CLOCK_CTRL_BASE + 0x0C4)
+
+Do you need these here? You should define these as offsets to
+ZYNQ_CLOCK_CTRL_BASE.
+
+> +#define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
+> +#define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
+> +#define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
+> +#define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
+> +#define ZYNQ_DMAC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x00C)
+> +#define ZYNQ_USB_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x010)
+> +#define ZYNQ_GEM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x014)
+> +#define ZYNQ_SDIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x018)
+> +#define ZYNQ_SPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x01C)
+> +#define ZYNQ_CAN_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x020)
+> +#define ZYNQ_I2C_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x024)
+> +#define ZYNQ_UART_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x028)
+> +#define ZYNQ_GPIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x02C)
+> +#define ZYNQ_LQSPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x030)
+> +#define ZYNQ_SMC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x034)
+> +#define ZYNQ_OCM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x038)
+> +#define ZYNQ_DEVCI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x03C)
+> +#define ZYNQ_FPGA_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x040)
+> +#define ZYNQ_A9_CPU_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x044)
+> +#define ZYNQ_RS_AWDT_CTRL		(ZYNQ_RST_CTRL_BASE + 0x04C)
+> +#define ZYNQ_REBOOT_STATUS		(ZYNQ_SLCR_BASE + 0x258)
+> +#define ZYNQ_BOOT_MODE			(ZYNQ_SLCR_BASE + 0x25C)
+> +#define ZYNQ_APU_CTRL			(ZYNQ_SLCR_BASE + 0x300)
+> +#define ZYNQ_WDT_CLK_SEL		(ZYNQ_SLCR_BASE + 0x304)
+> +#define ZYNQ_PSS_IDCODE			(ZYNQ_SLCR_BASE + 0x530)
+> +#define ZYNQ_DDR_URGENT			(ZYNQ_SLCR_BASE + 0x600)
+> +#define ZYNQ_DDR_CAL_START		(ZYNQ_SLCR_BASE + 0x60C)
+> +#define ZYNQ_DDR_REF_START		(ZYNQ_SLCR_BASE + 0x614)
+> +#define ZYNQ_DDR_CMD_STA		(ZYNQ_SLCR_BASE + 0x618)
+> +#define ZYNQ_DDR_URGENT_SEL		(ZYNQ_SLCR_BASE + 0x61C)
+> +#define ZYNQ_DDR_DFI_STATUS		(ZYNQ_SLCR_BASE + 0x620)
+> +#define ZYNQ_MIO_BASE			(ZYNQ_SLCR_BASE + 0x700)
+> +#define ZYNQ_MIO_LOOPBACK		(ZYNQ_MIO_BASE + 0x104)
+> +#define ZYNQ_MIO_MST_TRI0		(ZYNQ_MIO_BASE + 0x10C)
+> +#define ZYNQ_MIO_MST_TRI1		(ZYNQ_MIO_BASE + 0x110)
+> +#define ZYNQ_SD0_WP_SEL			(ZYNQ_SLCR_BASE + 0x830)
+> +#define ZYNQ_SD1_WP_SEL			(ZYNQ_SLCR_BASE + 0x834)
+> +#define ZYNQ_LVL_SHIFTR_EN		(ZYNQ_SLCR_BASE + 0x900)
+> +#define ZYNQ_OCM_CFG			(ZYNQ_SLCR_BASE + 0x910)
+> +#define ZYNQ_GPIOB_BASE			(ZYNQ_SLCR_BASE + 0xB00)
+> +#define ZYNQ_GPIOB_CTRL			(ZYNQ_GPIOB_BASE + 0x000)
+> +#define ZYNQ_GPIOB_CFG_CMOS18		(ZYNQ_GPIOB_BASE + 0x004)
+> +#define ZYNQ_GPIOB_CFG_CMOS25		(ZYNQ_GPIOB_BASE + 0x008)
+> +#define ZYNQ_GPIOB_CFG_CMOS33		(ZYNQ_GPIOB_BASE + 0x00C)
+> +#define ZYNQ_GPIOB_CFG_LVTTL		(ZYNQ_GPIOB_BASE + 0x010)
+> +#define ZYNQ_GPIOB_CFG_HSTL		(ZYNQ_GPIOB_BASE + 0x014)
+> +#define ZYNQ_GPIOB_DRV_BIAS_CTRL	(ZYNQ_GPIOB_BASE + 0x018)
+> +#define ZYNQ_DDRIOB_BASE		(ZYNQ_SLCR_BASE + 0xB40)
+> +#define ZYNQ_DDRIOB_ADDR0		(ZYNQ_DDRIOB_BASE + 0x000)
+> +#define ZYNQ_DDRIOB_ADDR1		(ZYNQ_DDRIOB_BASE + 0x004)
+> +#define ZYNQ_DDRIOB_DATA0		(ZYNQ_DDRIOB_BASE + 0x008)
+> +#define ZYNQ_DDRIOB_DATA1		(ZYNQ_DDRIOB_BASE + 0x00C)
+> +#define ZYNQ_DDRIOB_DIFF0		(ZYNQ_DDRIOB_BASE + 0x010)
+> +#define ZYNQ_DDRIOB_DIFF1		(ZYNQ_DDRIOB_BASE + 0x014)
+> +#define ZYNQ_DDRIOB_CLOCK		(ZYNQ_DDRIOB_BASE + 0x018)
+> +#define ZYNQ_DDRIOB_DRIVE_SLEW_ADDR	(ZYNQ_DDRIOB_BASE + 0x01C)
+> +#define ZYNQ_DDRIOB_DRIVE_SLEW_DATA	(ZYNQ_DDRIOB_BASE + 0x020)
+> +#define ZYNQ_DDRIOB_DRIVE_SLEW_DIFF	(ZYNQ_DDRIOB_BASE + 0x024)
+> +#define ZYNQ_DDRIOB_DRIVE_SLEW_CLOCK	(ZYNQ_DDRIOB_BASE + 0x028)
+> +#define ZYNQ_DDRIOB_DDR_CTRL		(ZYNQ_DDRIOB_BASE + 0x02C)
+> +#define ZYNQ_DDRIOB_DCI_CTRL		(ZYNQ_DDRIOB_BASE + 0x030)
+> +#define ZYNQ_DDRIOB_DCI_STATUS		(ZYNQ_DDRIOB_BASE + 0x034)
 > +
-> +#define CADENCE_MODE_CLK_REF	(0 << 0)
-> +#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
-> +#define CADENCE_MODE_CHRL_6	(3 << 1)
-> +#define CADENCE_MODE_CHRL_7	(2 << 1)
-> +#define CADENCE_MODE_CHRL_8	(0 << 1)
-> +#define CADENCE_MODE_PAR_EVEN	(0 << 3)
-> +#define CADENCE_MODE_PAR_ODD	(1 << 3)
-> +#define CADENCE_MODE_PAR_SPACE	(2 << 3)
-> +#define CADENCE_MODE_PAR_MARK	(3 << 3)
-> +#define CADENCE_MODE_PAR_NONE	(4 << 3)
+> +#define ZYNQ_TTC0_BASE_ADDR		0xF8001000
+> +#define ZYNQ_TTC1_BASE_ADDR		0xF8002000
 > +
-> +#define CADENCE_STS_REMPTY		(1 << 1)
-> +#define CADENCE_STS_RFUL		(1 << 2)
-> +#define CADENCE_STS_TEMPTY		(1 << 3)
-> +#define CADENCE_STS_TFUL		(1 << 4)
+> +#define ZYNQ_DDRC_BASE			0xF8006000
 > +
+> +#define CORTEXA9_SCU_TIMER_BASE_ADDR	0xF8F00600
+> diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
+> new file mode 100644
+> index 0000000..e11086b
+> --- /dev/null
+> +++ b/arch/arm/mach-zynq/zynq.c
+> @@ -0,0 +1,41 @@
 > +/*
-> + * create default values for different platforms
+> + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License as
+> + * published by the Free Software Foundation; either version 2 of
+> + * the License, or (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
 > + */
-> +struct cadence_serial_devtype_data {
-> +	u32 ctrl;
-> +	u32 mode;
-> +};
 > +
-> +static struct cadence_serial_devtype_data cadence7000_data = {
-> +	.ctrl = CADENCE_CTRL_RXEN | CADENCE_CTRL_TXEN,
-> +	.mode = CADENCE_MODE_CLK_REF | CADENCE_MODE_CHRL_8 | CADENCE_MODE_PAR_NONE,
-> +};
+> +#include <asm-generic/io.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <mach/zynq7000-regs.h>
 > +
-> +struct cadence_serial_priv {
-> +	struct console_device cdev;
-> +	int baudrate;
-> +	struct notifier_block notify;
-> +	void __iomem *regs;
-> +	/*struct clk *clk;*/
-> +	unsigned long clk;
-> +	struct cadence_serial_devtype_data *devtype;
-> +};
-> +
-> +static int cadence_serial_reset(struct console_device *cdev)
+> +void zynq_init_lowlevel(void)
 > +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	/* Soft-Reset Tx/Rx paths */
-> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
-> +		CADENCE_UART_CONTROL);
-> +
-> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
-> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
-> +		;
-> +
-> +	return 0;
+> +	return;
 > +}
 > +
-> +static int cadence_serial_setbaudrate(struct console_device *cdev, int baudrate)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +	unsigned int gen, div;
-> +	int calc_rate;
-> +	unsigned long clk;
-> +	int error;
-> +	int val;
-> +
-> +	clk = priv->clk;
-> +	priv->baudrate = baudrate;
-> +
-> +	/* disable transmitter and receiver */
-> +	val = readl(priv->regs + CADENCE_UART_CONTROL);
-> +	val &= ~CADENCE_CTRL_TXEN & ~CADENCE_CTRL_RXEN;
-> +	writel(val, priv->regs + CADENCE_UART_CONTROL);
-> +
-> +	/*
-> +	 *	      clk
-> +	 * rate = -----------
-> +	 *	  gen*(div+1)
-> +	 */
-> +
-> +	for (div = 4; div < 256; div++) {
-> +		gen = clk / (baudrate * (div + 1));
-> +
-> +		if (gen < 1 || gen > 65535)
-> +			continue;
-> +
-> +		calc_rate = clk / (gen * (div + 1));
-> +		error = baudrate - calc_rate;
-> +		if (error < 0)
-> +			error *= -1;
-> +		if (((error * 100) / baudrate) < 3)
-> +			break;
-> +	}
-> +
-> +	writel(gen, priv->regs + CADENCE_UART_BAUD_GEN);
-> +	writel(div, priv->regs + CADENCE_UART_BAUD_DIV);
-> +
-> +	/* Soft-Reset Tx/Rx paths */
-> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
-> +		CADENCE_UART_CONTROL);
-> +
-> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
-> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
-> +		;
-> +
-> +	/* Enable UART */
-> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
-> +
-> +	return 0;
-> +}
-> +
-> +static int cadence_serial_init_port(struct console_device *cdev)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	cadence_serial_reset(cdev);
-> +
-> +	cadence_serial_setbaudrate(cdev, 115200);
-
-This shouldn't be necessary.
-
-> +
-> +	/* Enable UART */
-> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
-> +	writel(priv->devtype->mode, priv->regs + CADENCE_UART_MODE);
-> +
-> +	return 0;
-> +}
-> +
-> +static void cadence_serial_putc(struct console_device *cdev, char c)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
-> +		CADENCE_STS_TFUL) != 0)
-> +		;
-> +
-> +	if (c == '\n') {
-> +		writel('\r', priv->regs + CADENCE_UART_RXTXFIFO);
-> +		while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
-> +			CADENCE_STS_TFUL) != 0)
-> +			;
-> +	}
-
-The caller already added a '\r', don't do it again.
-
-> +
-> +	writel(c, priv->regs + CADENCE_UART_RXTXFIFO);
-> +}
-> +
-> +static int cadence_serial_tstc(struct console_device *cdev)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	return ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
-> +		 CADENCE_STS_REMPTY) == 0);
-> +}
-> +
-> +static int cadence_serial_getc(struct console_device *cdev)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	while (!cadence_serial_tstc(cdev))
-> +		;
-> +
-> +	return readl(priv->regs + CADENCE_UART_RXTXFIFO);
-> +}
-> +
-> +static void cadence_serial_flush(struct console_device *cdev)
-> +{
-> +	struct cadence_serial_priv *priv = container_of(cdev,
-> +					struct cadence_serial_priv, cdev);
-> +
-> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
-> +		CADENCE_STS_TEMPTY) != 0)
-> +		;
-> +}
-> +
-> +static int cadence_clocksource_clock_change(struct notifier_block *nb,
-> +			unsigned long event, void *data)
+> +static int zynq_init(void)
 > +{
 > +	return 0;
 > +}
+> +postcore_initcall(zynq_init);
 
-If you don't support this operation then please do not register a
-callback for it.
-
-> +
-> +static int cadence_serial_probe(struct device_d *dev)
-> +{
-> +	struct console_device *cdev;
-> +	struct cadence_serial_priv *priv;
-> +	struct cadence_serial_devtype_data *devtype;
-> +	int ret;
-> +
-> +	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
-> +	if (ret)
-> +		return ret;
-> +
-> +	priv = xzalloc(sizeof(*priv));
-> +	priv->devtype = devtype;
-> +	cdev = &priv->cdev;
-> +	dev->priv = priv;
-> +
-> +	priv->clk = 50000000;
-
-This should be fixed of course.
-
-> +	if (devtype->mode & CADENCE_MODE_CLK_REF_DIV)
-> +		priv->clk /= 8;
-> +
-> +	priv->regs = dev_request_mem_region(dev, 0);
-
-Please bail out here. I know, currently noone does, but we really need
-to fix this as all drivers which miss the check silently derefence NULL
-pointers.
-
-> +	.probe  = cadence_serial_probe,
-> +	.remove = cadence_serial_remove,
-> +	.of_compatible = DRV_OF_COMPAT(cadence_serial_dt_ids),
-> +	.id_table = cadence_serial_ids,
-> +};
-> +
-> +static int cadence_serial_init(void)
-> +{
-> +	platform_driver_register(&cadence_serial_driver);
-> +	return 0;
-
-return platform_driver_register...
+Wow, quite a simple hardware ;)
 
 Sascha
 
