@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF9rE-0003Sx-RY
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 21:02:13 +0000
+ id 1UF9rE-0003Sz-RO
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 21:02:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2013 22:01:55 +0100
-Message-Id: <1363035716-13386-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2013 22:01:56 +0100
+Message-Id: <1363035716-13386-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1363035716-13386-1-git-send-email-s.hauer@pengutronix.de>
 References: <1363035716-13386-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,410 +21,549 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: Add initial i.MX27 dts files
+Subject: [PATCH 5/5] drivers: Bail out if dev_request_mem_region fails
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/Makefile                 |   1 +
- arch/arm/dts/imx27-phytec-phycore.dts | 106 ++++++++++++++
- arch/arm/dts/imx27.dtsi               | 250 ++++++++++++++++++++++++++++++++++
- arch/arm/mach-imx/imx27.c             |   3 +
- 4 files changed, 360 insertions(+)
- create mode 100644 arch/arm/dts/imx27-phytec-phycore.dts
- create mode 100644 arch/arm/dts/imx27.dtsi
+ arch/arm/mach-imx/clk-imx1.c        |  2 ++
+ arch/arm/mach-imx/clk-imx21.c       |  2 ++
+ arch/arm/mach-imx/clk-imx25.c       |  2 ++
+ arch/arm/mach-imx/clk-imx27.c       |  2 ++
+ arch/arm/mach-imx/clk-imx31.c       |  2 ++
+ arch/arm/mach-imx/clk-imx35.c       |  2 ++
+ arch/arm/mach-imx/clk-imx5.c        |  4 ++++
+ arch/arm/mach-imx/clk-imx6.c        |  2 ++
+ arch/arm/mach-imx/clocksource.c     |  2 ++
+ arch/arm/mach-imx/esdctl.c          |  2 +-
+ arch/arm/mach-imx/gpio.c            | 10 ++++++++++
+ arch/arm/mach-imx/iim.c             |  2 ++
+ arch/arm/mach-imx/iomux-v2.c        |  2 ++
+ arch/arm/mach-imx/iomux-v3.c        |  2 ++
+ drivers/mci/mxs.c                   | 10 ++++++++++
+ drivers/mci/omap_hsmmc.c            | 10 ++++++++++
+ drivers/mci/s3c.c                   | 10 ++++++++++
+ drivers/mtd/nor/cfi_flash.c         | 12 ++++++++++++
+ drivers/net/fec_imx.c               |  4 ++++
+ drivers/serial/serial_altera_jtag.c | 11 +++++++++++
+ drivers/serial/serial_imx.c         |  5 +++++
+ drivers/serial/serial_s3c.c         | 10 ++++++++++
+ drivers/serial/stm-serial.c         | 10 ++++++++++
+ drivers/spi/imx_spi.c               |  4 ++++
+ drivers/watchdog/imxwd.c            |  5 +++++
+ 25 files changed, 128 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 2b25fdf..9e816c4 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -1,3 +1,4 @@
-+dtb-$(CONFIG_ARCH_IMX27) += imx27-phytec-phycore.dtb
+diff --git a/arch/arm/mach-imx/clk-imx1.c b/arch/arm/mach-imx/clk-imx1.c
+index 0d04a92..2192082 100644
+--- a/arch/arm/mach-imx/clk-imx1.c
++++ b/arch/arm/mach-imx/clk-imx1.c
+@@ -90,6 +90,8 @@ static int imx1_ccm_probe(struct device_d *dev)
+ 	void __iomem *regs;
  
- BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB)).dtb.o
- ifneq ($(CONFIG_BUILTIN_DTB),"")
-diff --git a/arch/arm/dts/imx27-phytec-phycore.dts b/arch/arm/dts/imx27-phytec-phycore.dts
-new file mode 100644
-index 0000000..0a7222f
---- /dev/null
-+++ b/arch/arm/dts/imx27-phytec-phycore.dts
-@@ -0,0 +1,106 @@
-+/*
-+ * Copyright 2012 Sascha Hauer, Pengutronix
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+/dts-v1/;
-+/include/ "imx27.dtsi"
-+
-+/ {
-+	model = "Phytec pcm038";
-+	compatible = "phytec,imx27-pcm038", "fsl,imx27";
-+
-+	aliases {
-+		bareboxenv = &bareboxenv;
-+	};
-+
-+	memory {
-+		reg = <0xa0000000 0x08000000>;
-+	};
-+
-+	chosen {
-+		linux,stdout-path = &uart1;
-+	};
-+
-+	soc {
-+		aipi@10000000 { /* aipi */
-+
-+			serial@1000a000 {
-+				fsl,uart-has-rtscts;
-+				status = "okay";
-+			};
-+
-+			serial@1000b000 {
-+				fsl,uart-has-rtscts;
-+				status = "okay";
-+			};
-+
-+			serial@1000c000 {
-+				fsl,uart-has-rtscts;
-+				status = "okay";
-+			};
-+
-+			cspi@1000e000 {
-+				status = "okay";
-+				fsl,spi-num-chipselects = <1>;
-+				cs-gpios = <&gpio4 28 0>;
-+				pmic:mc13783@0 {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					compatible = "fsl,mc13783";
-+					spi-max-frequency = <6000000>;
-+					reg = <0>;
-+				};
-+			};
-+
-+			i2c@1001d000 {
-+				clock-frequency = <400000>;
-+				status = "okay";
-+				at24@4c {
-+					compatible = "at,24c32";
-+					pagesize = <32>;
-+					reg = <0x52>;
-+				};
-+				pcf8563@51 {
-+					compatible = "nxp,pcf8563";
-+					reg = <0x51>;
-+				};
-+				lm75@4a {
-+					compatible = "national,lm75";
-+					reg = <0x4a>;
-+				};
-+			};
-+		};
-+	};
-+
-+	nand@d8000000 {
-+		status = "okay";
-+	};
-+
-+	nor_flash@c0000000 {
-+		compatible = "cfi-flash";
-+		bank-width = <2>;
-+		reg = <0xc0000000 0x02000000>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "bootloader";
-+			reg = <0x0 0x80000>;
-+		};
-+		bareboxenv: partition@80000 {
-+			label = "bootloader-environment";
-+			reg = <0x80000 0x80000>;
-+		};
-+	};
-+};
-+
-+&fec {
-+	status = "okay";
-+};
-diff --git a/arch/arm/dts/imx27.dtsi b/arch/arm/dts/imx27.dtsi
-new file mode 100644
-index 0000000..0b7d7a2
---- /dev/null
-+++ b/arch/arm/dts/imx27.dtsi
-@@ -0,0 +1,250 @@
-+/*
-+ * Copyright 2012 Sascha Hauer, Pengutronix
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+/include/ "skeleton.dtsi"
-+
-+/ {
-+	aliases {
-+		serial0 = &uart1;
-+		serial1 = &uart2;
-+		serial2 = &uart3;
-+		serial3 = &uart4;
-+		serial4 = &uart5;
-+		serial5 = &uart6;
-+		gpio0 = &gpio1;
-+		gpio1 = &gpio2;
-+		gpio2 = &gpio3;
-+		gpio3 = &gpio4;
-+		gpio4 = &gpio5;
-+		gpio5 = &gpio6;
-+	};
-+
-+	avic: avic-interrupt-controller@e0000000 {
-+		compatible = "fsl,imx27-avic", "fsl,avic";
-+		interrupt-controller;
-+		#interrupt-cells = <1>;
-+		reg = <0x10040000 0x1000>;
-+	};
-+
-+	clocks {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		osc26m {
-+			compatible = "fsl,imx-osc26m", "fixed-clock";
-+			clock-frequency = <26000000>;
-+		};
-+	};
-+
-+	soc {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "simple-bus";
-+		interrupt-parent = <&avic>;
-+		ranges;
-+
-+		aipi@10000000 { /* AIPI1 */
-+			compatible = "fsl,aipi-bus", "simple-bus";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <0x10000000 0x20000>;
-+			ranges;
-+
-+			wdog: wdog@10002000 {
-+				compatible = "fsl,imx27-wdt", "fsl,imx21-wdt";
-+				reg = <0x10002000 0x1000>;
-+				interrupts = <27>;
-+			};
-+
-+			timer@10003000 {
-+				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
-+				reg = <0x10003000 0x1000>;
-+			};
-+
-+			uart1: serial@1000a000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1000a000 0x1000>;
-+				interrupts = <20>;
-+				status = "disabled";
-+			};
-+
-+			uart2: serial@1000b000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1000b000 0x1000>;
-+				interrupts = <19>;
-+				status = "disabled";
-+			};
-+
-+			uart3: serial@1000c000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1000c000 0x1000>;
-+				interrupts = <18>;
-+				status = "disabled";
-+			};
-+
-+			uart4: serial@1000d000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1000d000 0x1000>;
-+				interrupts = <17>;
-+				status = "disabled";
-+			};
-+
-+			cspi1: cspi@1000e000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx27-cspi";
-+				reg = <0x1000e000 0x1000>;
-+				interrupts = <16>;
-+				status = "disabled";
-+			};
-+
-+			cspi2: cspi@1000f000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx27-cspi";
-+				reg = <0x1000f000 0x1000>;
-+				interrupts = <15>;
-+				status = "disabled";
-+			};
-+
-+			i2c1: i2c@10012000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx27-i2c", "fsl,imx21-i2c";
-+				reg = <0x10012000 0x1000>;
-+				interrupts = <12>;
-+				status = "disabled";
-+			};
-+
-+			gpio1: gpio@10015000 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015000 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			gpio2: gpio@10015100 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015100 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			gpio3: gpio@10015200 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015200 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			gpio4: gpio@10015300 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015300 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			gpio5: gpio@10015400 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015400 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			gpio6: gpio@10015500 {
-+				compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
-+				reg = <0x10015500 0x100>;
-+				interrupts = <8>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+			};
-+
-+			cspi3: cspi@10017000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx27-cspi";
-+				reg = <0x10017000 0x1000>;
-+				interrupts = <6>;
-+				status = "disabled";
-+			};
-+
-+			uart5: serial@1001b000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1001b000 0x1000>;
-+				interrupts = <49>;
-+				status = "disabled";
-+			};
-+
-+			uart6: serial@1001c000 {
-+				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
-+				reg = <0x1001c000 0x1000>;
-+				interrupts = <48>;
-+				status = "disabled";
-+			};
-+
-+			i2c2: i2c@1001d000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "fsl,imx27-i2c", "fsl,imx21-i2c";
-+				reg = <0x1001d000 0x1000>;
-+				interrupts = <1>;
-+				status = "disabled";
-+			};
-+
-+			ccm@10027000 {
-+				compatible = "fsl,imx27-ccm";
-+				reg = <0x10027000 0x1000>;
-+			};
-+		};
-+
-+		aipi@10020000 { /* AIPI2 */
-+			compatible = "fsl,aipi-bus", "simple-bus";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <0x10020000 0x20000>;
-+			ranges;
-+
-+			fec: ethernet@1002b000 {
-+				compatible = "fsl,imx27-fec";
-+				reg = <0x1002b000 0x4000>;
-+				interrupts = <50>;
-+				status = "disabled";
-+			};
-+		};
-+
-+		nfc: nand@d8000000 {
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+
-+			compatible = "fsl,imx27-nand";
-+			reg = <0xd8000000 0x1000>;
-+			interrupts = <29>;
-+			status = "disabled";
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index e9d6197..ef8b20c 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -108,6 +108,9 @@ static int imx27_init(void)
+ 	regs = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
  
- 	imx27_init_max();
+ 	mx1_clocks_init(regs, 32000);
  
-+	if (of_get_root_node())
-+		return 0;
+diff --git a/arch/arm/mach-imx/clk-imx21.c b/arch/arm/mach-imx/clk-imx21.c
+index 6e91424..d76ba9a 100644
+--- a/arch/arm/mach-imx/clk-imx21.c
++++ b/arch/arm/mach-imx/clk-imx21.c
+@@ -112,6 +112,8 @@ static int imx21_ccm_probe(struct device_d *dev)
+ 	unsigned long href = 26000000;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	writel(PCCR0_UART1_EN | PCCR0_UART2_EN | PCCR0_UART3_EN | PCCR0_UART4_EN |
+ 			PCCR0_CSPI1_EN | PCCR0_CSPI2_EN | PCCR0_SDHC1_EN |
+diff --git a/arch/arm/mach-imx/clk-imx25.c b/arch/arm/mach-imx/clk-imx25.c
+index 95b105d..81db426 100644
+--- a/arch/arm/mach-imx/clk-imx25.c
++++ b/arch/arm/mach-imx/clk-imx25.c
+@@ -75,6 +75,8 @@ static int imx25_ccm_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	writel((1 << 3) | (1 << 4) | (1 << 5) | (1 << 6) | (1 << 8) | (1 << 9) |
+ 			(1 << 10) | (1 << 15) |	(1 << 19) | (1 << 21) | (1 << 22) |
+diff --git a/arch/arm/mach-imx/clk-imx27.c b/arch/arm/mach-imx/clk-imx27.c
+index e221928..4c84744 100644
+--- a/arch/arm/mach-imx/clk-imx27.c
++++ b/arch/arm/mach-imx/clk-imx27.c
+@@ -134,6 +134,8 @@ static int imx27_ccm_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	writel(PCCR0_SDHC3_EN | PCCR0_SDHC2_EN | PCCR0_SDHC1_EN |
+ 			PCCR0_PWM_EN | PCCR0_KPP_EN | PCCR0_IIM_EN |
+diff --git a/arch/arm/mach-imx/clk-imx31.c b/arch/arm/mach-imx/clk-imx31.c
+index aa1b652..435aed7 100644
+--- a/arch/arm/mach-imx/clk-imx31.c
++++ b/arch/arm/mach-imx/clk-imx31.c
+@@ -83,6 +83,8 @@ static int imx31_ccm_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	writel(0xffffffff, base + CCM_CGR0);
+ 	writel(0xffffffff, base + CCM_CGR1);
+diff --git a/arch/arm/mach-imx/clk-imx35.c b/arch/arm/mach-imx/clk-imx35.c
+index f50c07d..e1ee979 100644
+--- a/arch/arm/mach-imx/clk-imx35.c
++++ b/arch/arm/mach-imx/clk-imx35.c
+@@ -96,6 +96,8 @@ static int imx35_ccm_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	writel(0xffffffff, base + CCM_CGR0);
+ 	writel(0xffffffff, base + CCM_CGR1);
+diff --git a/arch/arm/mach-imx/clk-imx5.c b/arch/arm/mach-imx/clk-imx5.c
+index 8b5bffd..350cce9 100644
+--- a/arch/arm/mach-imx/clk-imx5.c
++++ b/arch/arm/mach-imx/clk-imx5.c
+@@ -229,6 +229,8 @@ static int imx51_ccm_probe(struct device_d *dev)
+ 	void __iomem *regs;
+ 
+ 	regs = dev_request_mem_region(dev, 0);
++	if (!regs)
++		return -EBUSY;
+ 
+ 	mx51_clocks_init(regs, 32768, 24000000, 22579200, 0); /* FIXME */
+ 
+@@ -292,6 +294,8 @@ static int imx53_ccm_probe(struct device_d *dev)
+ 	void __iomem *regs;
+ 
+ 	regs = dev_request_mem_region(dev, 0);
++	if (!regs)
++		return -EBUSY;
+ 
+ 	mx53_clocks_init(regs, 32768, 24000000, 22579200, 0); /* FIXME */
+ 
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index f1b167a..1cd1bf9 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -187,6 +187,8 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 
+ 	anatop_base = (void *)MX6_ANATOP_BASE_ADDR;
+ 	ccm_base = dev_request_mem_region(dev, 0);
++	if (!ccm_base)
++		return -EBUSY;
+ 
+ 	base = anatop_base;
+ 
+diff --git a/arch/arm/mach-imx/clocksource.c b/arch/arm/mach-imx/clocksource.c
+index e18685e..1022503 100644
+--- a/arch/arm/mach-imx/clocksource.c
++++ b/arch/arm/mach-imx/clocksource.c
+@@ -103,6 +103,8 @@ static int imx_gpt_probe(struct device_d *dev)
+ 		return ret;
+ 
+ 	timer_base = dev_request_mem_region(dev, 0);
++	if (!timer_base)
++		return -EBUSY;
+ 
+ 	/* setup GP Timer 1 */
+ 	writel(TCTL_SWR, timer_base + GPT_TCTL);
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index cc2bdc1..14d52b3 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -230,7 +230,7 @@ static int imx_esdctl_probe(struct device_d *dev)
+ 
+ 	base = dev_request_mem_region(dev, 0);
+ 	if (!base)
+-		return -ENOMEM;
++		return -EBUSY;
+ 
+ 	data->add_mem(base, data);
+ 
+diff --git a/arch/arm/mach-imx/gpio.c b/arch/arm/mach-imx/gpio.c
+index 1bf4100..15919ef 100644
+--- a/arch/arm/mach-imx/gpio.c
++++ b/arch/arm/mach-imx/gpio.c
+@@ -22,6 +22,7 @@
+ 
+ #include <common.h>
+ #include <errno.h>
++#include <malloc.h>
+ #include <io.h>
+ #include <gpio.h>
+ #include <init.h>
+@@ -131,6 +132,11 @@ static int imx_gpio_probe(struct device_d *dev)
+ 
+ 	imxgpio = xzalloc(sizeof(*imxgpio));
+ 	imxgpio->base = dev_request_mem_region(dev, 0);
++	if (!imxgpio->base) {
++		ret = -EBUSY;
++		goto err_free;
++	}
 +
- 	add_generic_device("imx27-ccm", DEVICE_ID_SINGLE, NULL,
- 			   MX27_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpt", 0, NULL, MX27_GPT1_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
+ 	imxgpio->chip.ops = &imx_gpio_ops;
+ 	if (dev->id < 0) {
+ 		imxgpio->chip.base = of_alias_get_id(dev->device_node, "gpio");
+@@ -148,6 +154,10 @@ static int imx_gpio_probe(struct device_d *dev)
+ 	dev_dbg(dev, "probed gpiochip%d with base %d\n", dev->id, imxgpio->chip.base);
+ 
+ 	return 0;
++err_free:
++	free(imxgpio);
++
++	return ret;
+ }
+ 
+ static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
+diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
+index 69ddc4d..5d24848 100644
+--- a/arch/arm/mach-imx/iim.c
++++ b/arch/arm/mach-imx/iim.c
+@@ -259,6 +259,8 @@ static int imx_iim_probe(struct device_d *dev)
+ 	void __iomem *base;
+ 
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	if (pdata)
+ 		mac_addr_base = pdata->mac_addr_base;
+diff --git a/arch/arm/mach-imx/iomux-v2.c b/arch/arm/mach-imx/iomux-v2.c
+index cef0340..a0c1d69 100644
+--- a/arch/arm/mach-imx/iomux-v2.c
++++ b/arch/arm/mach-imx/iomux-v2.c
+@@ -118,6 +118,8 @@ int imx_iomux_setup_multiple_pins(const unsigned int *pin_list, unsigned count)
+ static int imx_iomux_probe(struct device_d *dev)
+ {
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-imx/iomux-v3.c b/arch/arm/mach-imx/iomux-v3.c
+index 8a6064d..7c0d088 100644
+--- a/arch/arm/mach-imx/iomux-v3.c
++++ b/arch/arm/mach-imx/iomux-v3.c
+@@ -73,6 +73,8 @@ EXPORT_SYMBOL(mxc_iomux_v3_setup_multiple_pads);
+ static int imx_iomux_probe(struct device_d *dev)
+ {
+ 	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
+index 3657b3e..f2ceb10 100644
+--- a/drivers/mci/mxs.c
++++ b/drivers/mci/mxs.c
+@@ -569,6 +569,7 @@ static int mxs_mci_probe(struct device_d *hw_dev)
+ 	struct mxs_mci_platform_data *pd = hw_dev->platform_data;
+ 	struct mxs_mci_host *mxs_mci;
+ 	struct mci_host *host;
++	int ret;
+ 
+ 	if (hw_dev->platform_data == NULL) {
+ 		pr_err("Missing platform data\n");
+@@ -584,6 +585,10 @@ static int mxs_mci_probe(struct device_d *hw_dev)
+ 	host->set_ios = mxs_mci_set_ios;
+ 	host->init = mxs_mci_initialize;
+ 	mxs_mci->regs = dev_request_mem_region(hw_dev, 0);
++	if (!mxs_mci->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
+ 
+ 	/* feed forward the platform specific values */
+ 	host->voltages = pd->voltages;
+@@ -635,6 +640,11 @@ static int mxs_mci_probe(struct device_d *hw_dev)
+ #endif
+ 
+ 	return mci_register(host);
++
++err_free:
++	free(mxs_mci);
++
++	return ret;
+ }
+ 
+ static struct driver_d mxs_mci_driver = {
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index b379c31..52bd751 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -596,6 +596,11 @@ static int omap_mmc_probe(struct device_d *dev)
+ 	hsmmc->mci.hw_dev = dev;
+ 
+ 	hsmmc->iobase = dev_request_mem_region(dev, 0);
++	if (!hsmmc->iobase) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
+ 	hsmmc->base = hsmmc->iobase + reg_ofs;
+ 
+ 	hsmmc->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
+@@ -611,6 +616,11 @@ static int omap_mmc_probe(struct device_d *dev)
+ 	mci_register(&hsmmc->mci);
+ 
+ 	return 0;
++
++err_free:
++	free(hsmmc);
++
++	return ret;
+ }
+ 
+ static struct platform_device_id omap_mmc_ids[] = {
+diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
+index 4e7345c..2b96603 100644
+--- a/drivers/mci/s3c.c
++++ b/drivers/mci/s3c.c
+@@ -726,6 +726,7 @@ static int s3c_mci_probe(struct device_d *hw_dev)
+ {
+ 	struct s3c_mci_host *s3c_host;
+ 	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
++	int ret;
+ 
+ 	s3c_host = xzalloc(sizeof(*s3c_host));
+ 	s3c_host->host.send_cmd = mci_request;
+@@ -743,6 +744,11 @@ static int s3c_mci_probe(struct device_d *hw_dev)
+ 
+ 	hw_dev->priv = s3c_host;
+ 	s3c_host->base = dev_request_mem_region(hw_dev, 0);
++	if (!s3c_host->base) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
+ 	s3c_host->host.hw_dev = hw_dev;
+ 
+ 	/* feed forward the platform specific values */
+@@ -758,6 +764,10 @@ static int s3c_mci_probe(struct device_d *hw_dev)
+ 	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, s3c_host->base + SDICON);
+ 
+ 	return mci_register(&s3c_host->host);
++
++err_free:
++	free(s3c_host);
++	return err;
+ }
+ 
+ static struct driver_d s3c_mci_driver = {
+diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
+index 0cfac2d..0396676 100644
+--- a/drivers/mtd/nor/cfi_flash.c
++++ b/drivers/mtd/nor/cfi_flash.c
+@@ -954,6 +954,7 @@ static void cfi_init_mtd(struct flash_info *info)
+ static int cfi_probe (struct device_d *dev)
+ {
+ 	struct flash_info *info = xzalloc(sizeof(*info));
++	int ret;
+ 
+ 	dev->priv = (void *)info;
+ 
+@@ -961,6 +962,11 @@ static int cfi_probe (struct device_d *dev)
+ 	info->flash_id = FLASH_UNKNOWN;
+ 	info->cmd_reset = FLASH_CMD_RESET;
+ 	info->base = dev_request_mem_region(dev, 0);
++	if (!info->base) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
+ 	info->size = flash_get_size(info);
+ 
+ 	if (info->flash_id == FLASH_UNKNOWN) {
+@@ -975,6 +981,12 @@ static int cfi_probe (struct device_d *dev)
+ 	cfi_init_mtd(info);
+ 
+ 	return 0;
++
++err_free:
++
++	free(info);
++
++	return ret;
+ }
+ 
+ static __maybe_unused struct of_device_id cfi_dt_ids[] = {
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 578000a..f6cdc84 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -666,6 +666,10 @@ static int fec_probe(struct device_d *dev)
+ 	}
+ 
+ 	fec->regs = dev_request_mem_region(dev, 0);
++	if (!fec->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
+ 
+ 	/* Reset chip. */
+ 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
+diff --git a/drivers/serial/serial_altera_jtag.c b/drivers/serial/serial_altera_jtag.c
+index b83fcbd..76a9bfd 100644
+--- a/drivers/serial/serial_altera_jtag.c
++++ b/drivers/serial/serial_altera_jtag.c
+@@ -85,11 +85,17 @@ static int altera_serial_jtag_probe(struct device_d *dev) {
+ 
+ 	struct console_device *cdev;
+ 	struct altera_serial_jtag_priv *priv;
++	int ret;
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 	cdev = &priv->cdev;
+ 
+ 	priv->regs = dev_request_mem_region(dev, 0);
++	if (!priv->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
+ 	cdev->dev = dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+ 	cdev->tstc = altera_serial_jtag_tstc;
+@@ -100,6 +106,11 @@ static int altera_serial_jtag_probe(struct device_d *dev) {
+ 	console_register(cdev);
+ 
+ 	return 0;
++
++err_free:
++	free(priv);
++
++	return ret;
+ }
+ 
+ static struct driver_d altera_serial_jtag_driver = {
+diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
+index 3f219ae..5a3316d 100644
+--- a/drivers/serial/serial_imx.c
++++ b/drivers/serial/serial_imx.c
+@@ -329,6 +329,11 @@ static int imx_serial_probe(struct device_d *dev)
+ 	}
+ 
+ 	priv->regs = dev_request_mem_region(dev, 0);
++	if (!priv->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
+ 	cdev->dev = dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+ 	cdev->tstc = imx_serial_tstc;
+diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+index ed401ab..71382ef 100644
+--- a/drivers/serial/serial_s3c.c
++++ b/drivers/serial/serial_s3c.c
+@@ -178,10 +178,15 @@ static int s3c_serial_probe(struct device_d *dev)
+ {
+ 	struct s3c_uart *priv;
+ 	struct console_device *cdev;
++	int ret;
+ 
+ 	priv = xzalloc(sizeof(struct s3c_uart));
+ 	cdev = &priv->cdev;
+ 	priv->regs = dev_request_mem_region(dev, 0);
++	if (!priv->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
+ 	dev->priv = priv;
+ 	cdev->dev = dev;
+ 	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+@@ -197,6 +202,11 @@ static int s3c_serial_probe(struct device_d *dev)
+ 	console_register(cdev);
+ 
+ 	return 0;
++
++err_free:
++	free(priv);
++
++	return ret;
+ }
+ 
+ static void s3c_serial_remove(struct device_d *dev)
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+index 3968892..3f15bb5 100644
+--- a/drivers/serial/stm-serial.c
++++ b/drivers/serial/stm-serial.c
+@@ -144,6 +144,7 @@ static int stm_serial_probe(struct device_d *dev)
+ {
+ 	struct stm_priv *priv;
+ 	struct console_device *cdev;
++	int ret;
+ 
+ 	priv = xzalloc(sizeof *priv);
+ 
+@@ -159,6 +160,10 @@ static int stm_serial_probe(struct device_d *dev)
+ 
+ 	dev->priv = priv;
+ 	priv->base = dev_request_mem_region(dev, 0);
++	if (!priv->base) {
++		ret = -EBUSY;
++		goto err_free;
++	}
+ 
+ 	stm_serial_init_port(priv);
+ 	stm_serial_setbaudrate(cdev, CONFIG_BAUDRATE);
+@@ -171,6 +176,11 @@ static int stm_serial_probe(struct device_d *dev)
+ 	clock_register_client(&priv->notify);
+ 
+ 	return 0;
++
++err_free:
++	free(priv);
++
++	return ret;
+ }
+ 
+ static void stm_serial_remove(struct device_d *dev)
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index b749337..9f88955 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -568,6 +568,10 @@ static int imx_spi_probe(struct device_d *dev)
+ 	imx->xchg_single = spi_imx_devtype_data[version].xchg_single;
+ 	imx->init = spi_imx_devtype_data[version].init;
+ 	imx->regs = dev_request_mem_region(dev, 0);
++	if (!imx->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
+ 
+ 	imx->init(imx);
+ 
+diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
+index 78f0f38..3165e25 100644
+--- a/drivers/watchdog/imxwd.c
++++ b/drivers/watchdog/imxwd.c
+@@ -158,6 +158,11 @@ static int imx_wd_probe(struct device_d *dev)
+ 
+ 	priv = xzalloc(sizeof(struct imx_wd));
+ 	priv->base = dev_request_mem_region(dev, 0);
++	if (!priv->base) {
++		ret = -EBUSY;
++		goto on_error;
++	}
++
+ 	priv->set_timeout = fn;
+ 	priv->wd.set_timeout = imx_watchdog_set_timeout;
+ 	priv->dev = dev;
 -- 
 1.8.2.rc2
 
