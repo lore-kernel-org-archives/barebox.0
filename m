@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp16.mail.ru ([94.100.176.153])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEz0Q-0005kF-Sd
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:56 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 11 Mar 2013 13:26:35 +0400
-Message-Id: <1362994003-22653-5-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
-References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
+ id 1UEzTG-0002hF-N2
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:56:44 +0000
+Date: Mon, 11 Mar 2013 10:56:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130311095640.GE1906@pengutronix.de>
+References: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1362993306-19262-2-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1362993306-19262-2-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,229 +19,333 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/13] ARM: clps711x: Using COMMON_CLK
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/9] serial: Add driver for Cadence UART
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This patch adds support for COMMON_CLK API for CLPS711X targets.
+On Mon, Mar 11, 2013 at 10:14:58AM +0100, Steffen Trumtrar wrote:
+> Support for Cadence UART core.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/serial/Kconfig          |   4 +
+>  drivers/serial/Makefile         |   1 +
+>  drivers/serial/serial_cadence.c | 299 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 304 insertions(+)
+>  create mode 100644 drivers/serial/serial_cadence.c
+> 
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index f61d670..a51510e 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -113,4 +113,8 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+>  	help
+>  	  Enable this to get console support over the usb bus used to boot an OMAP4
+>  
+> +config DRIVER_SERIAL_CADENCE
+> +	default n
+> +	bool "Cadence UART driver"
+> +
+>  endmenu
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 893e282..963a7df 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+>  obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+>  obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+>  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+> +obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+> diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+> new file mode 100644
+> index 0000000..0ccb1b3
+> --- /dev/null
+> +++ b/drivers/serial/serial_cadence.c
+> @@ -0,0 +1,299 @@
+> +/*
+> + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + *
+> + */
+> +#include <common.h>
+> +#include <driver.h>
+> +#include <init.h>
+> +#include <malloc.h>
+> +#include <notifier.h>
+> +#include <io.h>
+> +#include <linux/err.h>
+> +#include <linux/clk.h>
+> +
+> +#define CADENCE_UART_CONTROL	0x00
+> +#define CADENCE_UART_MODE		0x04
+> +#define CADENCE_UART_BAUD_GEN	0x18
+> +#define CADENCE_UART_CHANNEL_STS	0x2C
+> +#define CADENCE_UART_RXTXFIFO	0x30
+> +#define CADENCE_UART_BAUD_DIV	0x34
+> +
+> +#define CADENCE_CTRL_RXRES		(1 << 0)
+> +#define CADENCE_CTRL_TXRES		(1 << 1)
+> +#define CADENCE_CTRL_RXEN		(1 << 2)
+> +#define CADENCE_CTRL_RXDIS		(1 << 3)
+> +#define CADENCE_CTRL_TXEN		(1 << 4)
+> +#define CADENCE_CTRL_TXDIS		(1 << 5)
+> +#define CADENCE_CTRL_RSTTO		(1 << 6)
+> +#define CADENCE_CTRL_STTBRK	(1 << 7)
+> +#define CADENCE_CTRL_STPBRK	(1 << 8)
+> +
+> +#define CADENCE_MODE_CLK_REF	(0 << 0)
+> +#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
+> +#define CADENCE_MODE_CHRL_6	(3 << 1)
+> +#define CADENCE_MODE_CHRL_7	(2 << 1)
+> +#define CADENCE_MODE_CHRL_8	(0 << 1)
+> +#define CADENCE_MODE_PAR_EVEN	(0 << 3)
+> +#define CADENCE_MODE_PAR_ODD	(1 << 3)
+> +#define CADENCE_MODE_PAR_SPACE	(2 << 3)
+> +#define CADENCE_MODE_PAR_MARK	(3 << 3)
+> +#define CADENCE_MODE_PAR_NONE	(4 << 3)
+> +
+> +#define CADENCE_STS_REMPTY		(1 << 1)
+> +#define CADENCE_STS_RFUL		(1 << 2)
+> +#define CADENCE_STS_TEMPTY		(1 << 3)
+> +#define CADENCE_STS_TFUL		(1 << 4)
+> +
+> +/*
+> + * create default values for different platforms
+> + */
+> +struct cadence_serial_devtype_data {
+> +	u32 ctrl;
+> +	u32 mode;
+> +};
+> +
+> +static struct cadence_serial_devtype_data cadence7000_data = {
+> +	.ctrl = CADENCE_CTRL_RXEN | CADENCE_CTRL_TXEN,
+> +	.mode = CADENCE_MODE_CLK_REF | CADENCE_MODE_CHRL_8 | CADENCE_MODE_PAR_NONE,
+> +};
+> +
+> +struct cadence_serial_priv {
+> +	struct console_device cdev;
+> +	int baudrate;
+> +	struct notifier_block notify;
+> +	void __iomem *regs;
+> +	/*struct clk *clk;*/
+> +	unsigned long clk;
+> +	struct cadence_serial_devtype_data *devtype;
+> +};
+> +
+> +static int cadence_serial_reset(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	/* Soft-Reset Tx/Rx paths */
+> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
+> +		CADENCE_UART_CONTROL);
+> +
+> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
+> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
+> +		;
+> +
+> +	return 0;
+> +}
+> +
+> +static int cadence_serial_setbaudrate(struct console_device *cdev, int baudrate)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +	unsigned int gen, div;
+> +	int calc_rate;
+> +	unsigned long clk;
+> +	int error;
+> +	int val;
+> +
+> +	clk = priv->clk;
+> +	priv->baudrate = baudrate;
+> +
+> +	/* disable transmitter and receiver */
+> +	val = readl(priv->regs + CADENCE_UART_CONTROL);
+> +	val &= ~CADENCE_CTRL_TXEN & ~CADENCE_CTRL_RXEN;
+> +	writel(val, priv->regs + CADENCE_UART_CONTROL);
+> +
+> +	/*
+> +	 *	      clk
+> +	 * rate = -----------
+> +	 *	  gen*(div+1)
+> +	 */
+> +
+> +	for (div = 4; div < 256; div++) {
+> +		gen = clk / (baudrate * (div + 1));
+> +
+> +		if (gen < 1 || gen > 65535)
+> +			continue;
+> +
+> +		calc_rate = clk / (gen * (div + 1));
+> +		error = baudrate - calc_rate;
+> +		if (error < 0)
+> +			error *= -1;
+> +		if (((error * 100) / baudrate) < 3)
+> +			break;
+> +	}
+> +
+> +	writel(gen, priv->regs + CADENCE_UART_BAUD_GEN);
+> +	writel(div, priv->regs + CADENCE_UART_BAUD_DIV);
+> +
+> +	/* Soft-Reset Tx/Rx paths */
+> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
+> +		CADENCE_UART_CONTROL);
+> +
+> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
+> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
+> +		;
+> +
+> +	/* Enable UART */
+> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
+> +
+> +	return 0;
+> +}
+> +
+> +static int cadence_serial_init_port(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	cadence_serial_reset(cdev);
+> +
+> +	cadence_serial_setbaudrate(cdev, 115200);
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/Kconfig                 |    1 +
- arch/arm/mach-clps711x/clock.c   |  109 ++++++++++++++++++++++----------------
- arch/arm/mach-clps711x/devices.c |    4 ++
- 3 files changed, 68 insertions(+), 46 deletions(-)
+This shouldn't be necessary.
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c608454..6463746 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -40,6 +40,7 @@ config ARCH_CLPS711X
- 	bool "Cirrus Logic EP711x/EP721x/EP731x"
- 	select CLKDEV_LOOKUP
- 	select CLOCKSOURCE_CLPS711X
-+	select COMMON_CLK
- 	select CPU_32v4T
- 
- config ARCH_EP93XX
-diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
-index e957662..7658c9a 100644
---- a/arch/arm/mach-clps711x/clock.c
-+++ b/arch/arm/mach-clps711x/clock.c
-@@ -11,6 +11,7 @@
- #include <init.h>
- #include <sizes.h>
- #include <asm/io.h>
-+#include <linux/clk.h>
- #include <linux/clkdev.h>
- 
- #include <mach/clps711x.h>
-@@ -18,32 +19,37 @@
- #define CLPS711X_OSC_FREQ	3686400
- #define CLPS711X_EXT_FREQ	13000000
- 
--static struct clk {
--	unsigned long	rate;
--} uart_clk, bus_clk, timer_clk;
-+enum clps711x_clks {
-+	dummy, cpu, bus, uart, timer_hf, timer_lf, tc1, tc2, clk_max
-+};
- 
--unsigned long clk_get_rate(struct clk *clk)
--{
--	return clk->rate;
--}
--EXPORT_SYMBOL(clk_get_rate);
-+static struct {
-+	const char	*name;
-+	struct clk	*clk;
-+} clks[clk_max] = {
-+	{ "dummy", },
-+	{ "cpu", },
-+	{ "bus", },
-+	{ "uart", },
-+	{ "timer_hf", },
-+	{ "timer_lf", },
-+	{ "tc1", },
-+	{ "tc2", },
-+};
- 
--int clk_enable(struct clk *clk)
--{
--	/* Do nothing */
--	return 0;
--}
--EXPORT_SYMBOL(clk_enable);
-+static const char *tc_sel_clks[] = {
-+	"timer_lf",
-+	"timer_hf",
-+};
- 
--void clk_disable(struct clk *clk)
-+static __init void clps711x_clk_register(enum clps711x_clks id)
- {
--	/* Do nothing */
-+	clk_register_clkdev(clks[id].clk, clks[id].name, NULL);
- }
--EXPORT_SYMBOL(clk_disable);
- 
--static int clocks_init(void)
-+static __init int clps711x_clk_init(void)
- {
--	int pll, cpu;
-+	unsigned int f_cpu, f_bus, f_uart, f_timer_hf, f_timer_lf, pll;
- 	u32 tmp;
- 
- 	tmp = readl(PLLR) >> 24;
-@@ -54,57 +60,68 @@ static int clocks_init(void)
- 
- 	tmp = readl(SYSFLG2);
- 	if (tmp & SYSFLG2_CKMODE) {
--		cpu = CLPS711X_EXT_FREQ;
--		bus_clk.rate = CLPS711X_EXT_FREQ;
-+		f_cpu = CLPS711X_EXT_FREQ;
-+		f_bus = CLPS711X_EXT_FREQ;
- 	} else {
--		cpu = pll;
--		if (cpu >= 36864000)
--			bus_clk.rate = cpu / 2;
-+		f_cpu = pll;
-+		if (f_cpu >= 36864000)
-+			f_bus = f_cpu / 2;
- 		else
--			bus_clk.rate = 36864000 / 2;
-+			f_bus = 36864000 / 2;
- 	}
- 
--	uart_clk.rate = DIV_ROUND_CLOSEST(bus_clk.rate, 10);
-+	f_uart = f_bus / 10;
- 
- 	if (tmp & SYSFLG2_CKMODE) {
- 		tmp = readw(SYSCON2);
- 		if (tmp & SYSCON2_OSTB)
--			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
-+			f_timer_hf = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
- 		else
--			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
-+			f_timer_hf = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
- 	} else
--		timer_clk.rate = DIV_ROUND_CLOSEST(cpu, 144);
-+		f_timer_hf = DIV_ROUND_CLOSEST(f_cpu, 144);
- 
-+	f_timer_lf = DIV_ROUND_CLOSEST(f_timer_hf, 256);
-+
-+	/* Turn timers in free running mode */
- 	tmp = readl(SYSCON1);
--	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
--	tmp |= SYSCON1_TC2S;	/* High frequency source */
-+	tmp &= ~(SYSCON1_TC1M | SYSCON1_TC2M);
- 	writel(tmp, SYSCON1);
- 
--	return 0;
--}
--core_initcall(clocks_init);
--
--static struct clk_lookup clocks_lookups[] = {
--	CLKDEV_CON_ID("bus", &bus_clk),
--	CLKDEV_DEV_ID("clps711x_serial0", &uart_clk),
--	CLKDEV_DEV_ID("clps711x_serial1", &uart_clk),
--	CLKDEV_DEV_ID("clps711x-cs", &timer_clk),
--};
--
--static int clkdev_init(void)
--{
--	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
-+	clks[dummy].clk = clk_fixed(clks[dummy].name, 0);
-+	clks[cpu].clk = clk_fixed(clks[cpu].name, f_cpu);
-+	clks[bus].clk = clk_fixed(clks[bus].name, f_bus);
-+	clks[uart].clk = clk_fixed(clks[uart].name, f_uart);
-+	clks[timer_hf].clk = clk_fixed(clks[timer_hf].name, f_timer_hf);
-+	clks[timer_lf].clk = clk_fixed(clks[timer_lf].name, f_timer_lf);
-+	clks[tc1].clk = clk_mux(clks[tc1].name, IOMEM(SYSCON1), 5, 1,
-+				tc_sel_clks, ARRAY_SIZE(tc_sel_clks));
-+	clks[tc2].clk = clk_mux(clks[tc2].name, IOMEM(SYSCON1), 7, 1,
-+				tc_sel_clks, ARRAY_SIZE(tc_sel_clks));
-+
-+	clps711x_clk_register(dummy);
-+	clps711x_clk_register(cpu);
-+	clps711x_clk_register(bus);
-+	clps711x_clk_register(uart);
-+	clps711x_clk_register(timer_hf);
-+	clps711x_clk_register(timer_lf);
-+	clps711x_clk_register(tc1);
-+	clps711x_clk_register(tc2);
- 
- 	return 0;
- }
--postcore_initcall(clkdev_init);
-+postcore_initcall(clps711x_clk_init);
- 
- static const char *clps711x_clocksrc_name = "clps711x-cs";
- 
- static __init int clps711x_core_init(void)
- {
-+	/* Using TC2 in low frequency mode as clocksource */
-+	clk_set_parent(clks[tc2].clk, clks[timer_lf].clk);
-+	clk_add_alias(NULL, clps711x_clocksrc_name, "tc2", NULL);
- 	add_generic_device(clps711x_clocksrc_name, DEVICE_ID_SINGLE, NULL,
- 			   TC2D, SZ_2, IORESOURCE_MEM, NULL);
-+
- 	return 0;
- }
- coredevice_initcall(clps711x_core_init);
-diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-index 6c760db..6221da3 100644
---- a/arch/arm/mach-clps711x/devices.c
-+++ b/arch/arm/mach-clps711x/devices.c
-@@ -14,6 +14,8 @@
- #include <asm/io.h>
- #include <asm/memory.h>
- 
-+#include <linux/clk.h>
-+
- #include <mach/clps711x.h>
- 
- static int clps711x_mem_init(void)
-@@ -98,10 +100,12 @@ void clps711x_add_uart(unsigned int id)
- {
- 	switch (id) {
- 	case 0:
-+		clk_add_alias(NULL, "clps711x_serial0", "uart", NULL);
- 		add_generic_device_res("clps711x_serial", 0, uart0_resources,
- 				       ARRAY_SIZE(uart0_resources), NULL);
- 		break;
- 	case 1:
-+		clk_add_alias(NULL, "clps711x_serial1", "uart", NULL);
- 		add_generic_device_res("clps711x_serial", 1, uart1_resources,
- 				       ARRAY_SIZE(uart1_resources), NULL);
- 		break;
+> +
+> +	/* Enable UART */
+> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
+> +	writel(priv->devtype->mode, priv->regs + CADENCE_UART_MODE);
+> +
+> +	return 0;
+> +}
+> +
+> +static void cadence_serial_putc(struct console_device *cdev, char c)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		CADENCE_STS_TFUL) != 0)
+> +		;
+> +
+> +	if (c == '\n') {
+> +		writel('\r', priv->regs + CADENCE_UART_RXTXFIFO);
+> +		while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +			CADENCE_STS_TFUL) != 0)
+> +			;
+> +	}
+
+The caller already added a '\r', don't do it again.
+
+> +
+> +	writel(c, priv->regs + CADENCE_UART_RXTXFIFO);
+> +}
+> +
+> +static int cadence_serial_tstc(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	return ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		 CADENCE_STS_REMPTY) == 0);
+> +}
+> +
+> +static int cadence_serial_getc(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while (!cadence_serial_tstc(cdev))
+> +		;
+> +
+> +	return readl(priv->regs + CADENCE_UART_RXTXFIFO);
+> +}
+> +
+> +static void cadence_serial_flush(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		CADENCE_STS_TEMPTY) != 0)
+> +		;
+> +}
+> +
+> +static int cadence_clocksource_clock_change(struct notifier_block *nb,
+> +			unsigned long event, void *data)
+> +{
+> +	return 0;
+> +}
+
+If you don't support this operation then please do not register a
+callback for it.
+
+> +
+> +static int cadence_serial_probe(struct device_d *dev)
+> +{
+> +	struct console_device *cdev;
+> +	struct cadence_serial_priv *priv;
+> +	struct cadence_serial_devtype_data *devtype;
+> +	int ret;
+> +
+> +	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +	priv->devtype = devtype;
+> +	cdev = &priv->cdev;
+> +	dev->priv = priv;
+> +
+> +	priv->clk = 50000000;
+
+This should be fixed of course.
+
+> +	if (devtype->mode & CADENCE_MODE_CLK_REF_DIV)
+> +		priv->clk /= 8;
+> +
+> +	priv->regs = dev_request_mem_region(dev, 0);
+
+Please bail out here. I know, currently noone does, but we really need
+to fix this as all drivers which miss the check silently derefence NULL
+pointers.
+
+> +	.probe  = cadence_serial_probe,
+> +	.remove = cadence_serial_remove,
+> +	.of_compatible = DRV_OF_COMPAT(cadence_serial_dt_ids),
+> +	.id_table = cadence_serial_ids,
+> +};
+> +
+> +static int cadence_serial_init(void)
+> +{
+> +	platform_driver_register(&cadence_serial_driver);
+> +	return 0;
+
+return platform_driver_register...
+
+Sascha
+
 -- 
-1.7.3.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
