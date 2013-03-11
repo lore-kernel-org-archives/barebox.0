@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEy1Q-0005jG-GG
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 08:23:56 +0000
+ id 1UEy1Y-0005li-EV
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 08:24:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 Mar 2013 09:23:47 +0100
-Message-Id: <1362990229-1425-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 11 Mar 2013 09:23:48 +0100
+Message-Id: <1362990229-1425-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1362990229-1425-1-git-send-email-s.hauer@pengutronix.de>
 References: <1362990229-1425-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,594 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM i.MX6: Add mmdc calibration support
+Subject: [PATCH 3/4] Add DMO RealQ7 board support
 To: barebox@lists.infradead.org
-
-This adds support for the various DDR calibration functions in the
-i.MX6 MMDC.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile                 |   1 +
- arch/arm/mach-imx/imx6-mmdc.c              | 868 +++++++++++++++++++++++++++++
- arch/arm/mach-imx/include/mach/imx6-mmdc.h |   7 +
- 3 files changed, 876 insertions(+)
- create mode 100644 arch/arm/mach-imx/imx6-mmdc.c
- create mode 100644 arch/arm/mach-imx/include/mach/imx6-mmdc.h
+ arch/arm/Makefile                                 |   1 +
+ arch/arm/boards/delphi-poc20/env/boot/mmc         |  10 +
+ arch/arm/boards/dmo-mx6-realq7/Makefile           |   2 +
+ arch/arm/boards/dmo-mx6-realq7/board.c            | 406 ++++++++++++++++++++++
+ arch/arm/boards/dmo-mx6-realq7/config.h           |   4 +
+ arch/arm/boards/dmo-mx6-realq7/env/boot/mmc       |  10 +
+ arch/arm/boards/dmo-mx6-realq7/env/config-board   |   7 +
+ arch/arm/boards/dmo-mx6-realq7/env/init/automount |  14 +
+ arch/arm/boards/dmo-mx6-realq7/flash_header.c     |  40 +++
+ arch/arm/boards/dmo-mx6-realq7/lowlevel.c         | 155 +++++++++
+ arch/arm/mach-imx/Kconfig                         |   6 +
+ arch/arm/mach-imx/include/mach/devices-imx6.h     |  20 ++
+ 12 files changed, 675 insertions(+)
+ create mode 100644 arch/arm/boards/delphi-poc20/env/boot/mmc
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/Makefile
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/board.c
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/config.h
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/env/boot/mmc
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/env/config-board
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/env/init/automount
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/flash_header.c
+ create mode 100644 arch/arm/boards/dmo-mx6-realq7/lowlevel.c
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 4adf522..b6319bb 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_ARCH_IMX51) += imx51.o iomux-v3.o imx5.o clk-imx5.o
- obj-$(CONFIG_ARCH_IMX53) += imx53.o iomux-v3.o imx5.o clk-imx5.o esdctl-v4.o
- pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
- obj-$(CONFIG_ARCH_IMX6) += imx6.o iomux-v3.o usb-imx6.o clk-imx6.o
-+lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
-diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index b98d6b8..aaf07ac 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -162,6 +162,7 @@ board-$(CONFIG_MACH_TX53)			:= karo-tx53
+ board-$(CONFIG_MACH_GUF_VINCELL)		:= guf-vincell
+ board-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		:= efika-mx-smartbook
+ board-$(CONFIG_MACH_SABRESD)			:= freescale-mx6-sabresd
++board-$(CONFIG_MACH_REALQ7)			:= dmo-mx6-realq7
+ 
+ machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
+ 
+diff --git a/arch/arm/boards/delphi-poc20/env/boot/mmc b/arch/arm/boards/delphi-poc20/env/boot/mmc
 new file mode 100644
-index 0000000..d1de593
+index 0000000..e311763
 --- /dev/null
-+++ b/arch/arm/mach-imx/imx6-mmdc.c
-@@ -0,0 +1,868 @@
++++ b/arch/arm/boards/delphi-poc20/env/boot/mmc
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "MMC"
++	exit
++fi
++
++global.bootm.image="/mnt/mmc/zImage"
++global.bootm.oftree="/mnt/mmc/oftree"
++global.linux.bootargs.dyn.root="root=mmcblk0p2 rootfstype=ext3 rootwait"
+diff --git a/arch/arm/boards/dmo-mx6-realq7/Makefile b/arch/arm/boards/dmo-mx6-realq7/Makefile
+new file mode 100644
+index 0000000..e143009
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o flash_header.o lowlevel.o
++pbl-y += flash_header.o lowlevel.o
+diff --git a/arch/arm/boards/dmo-mx6-realq7/board.c b/arch/arm/boards/dmo-mx6-realq7/board.c
+new file mode 100644
+index 0000000..4680981
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/board.c
+@@ -0,0 +1,406 @@
 +/*
-+ * i.MX6 DDR controller calibration functions
-+ * Based on Freescale code
++ * Copyright (C) 2012 Steffen Trumtrar, Pengutronix
 + *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <environment.h>
++#include <mach/imx6-regs.h>
++#include <asm/armlinux.h>
++#include <fec.h>
++#include <generated/mach-types.h>
++#include <partition.h>
++#include <spi/spi.h>
++#include <sizes.h>
++#include <gpio.h>
++#include <mci.h>
++#include <mfd/stmpe-i2c.h>
++#include <linux/micrel_phy.h>
++
++#include <asm/io.h>
++#include <asm/mmu.h>
++
++#include <mach/devices-imx6.h>
++#include <mach/iomux-mx6.h>
++#include <mach/imx6-mmdc.h>
++#include <mach/imx6-regs.h>
++#include <mach/generic.h>
++#include <mach/imx6.h>
++#include <mach/bbu.h>
++#include <mach/spi.h>
++
++static iomux_v3_cfg_t realq7_pads[] = {
++	MX6Q_PAD_SD2_CMD__AUDMUX_AUD4_RXC,
++	MX6Q_PAD_SD2_DAT0__AUDMUX_AUD4_RXD,
++	MX6Q_PAD_SD2_CLK__AUDMUX_AUD4_RXFS,
++	MX6Q_PAD_SD2_DAT2__AUDMUX_AUD4_TXD,
++	MX6Q_PAD_SD2_DAT1__AUDMUX_AUD4_TXFS,
++	MX6Q_PAD_KEY_ROW2__CAN1_RXCAN,
++	MX6Q_PAD_GPIO_7__CAN1_TXCAN,
++	MX6Q_PAD_CSI0_VSYNC__CHEETAH_TRACE_0,
++	MX6Q_PAD_CSI0_DAT4__CHEETAH_TRACE_1,
++	MX6Q_PAD_CSI0_DAT13__CHEETAH_TRACE_10,
++	MX6Q_PAD_CSI0_DAT14__CHEETAH_TRACE_11,
++	MX6Q_PAD_CSI0_DAT15__CHEETAH_TRACE_12,
++	MX6Q_PAD_CSI0_DAT16__CHEETAH_TRACE_13,
++	MX6Q_PAD_CSI0_DAT17__CHEETAH_TRACE_14,
++	MX6Q_PAD_CSI0_DAT18__CHEETAH_TRACE_15,
++	MX6Q_PAD_CSI0_DAT5__CHEETAH_TRACE_2,
++	MX6Q_PAD_CSI0_DAT6__CHEETAH_TRACE_3,
++	MX6Q_PAD_CSI0_DAT7__CHEETAH_TRACE_4,
++	MX6Q_PAD_CSI0_DAT8__CHEETAH_TRACE_5,
++	MX6Q_PAD_CSI0_DAT9__CHEETAH_TRACE_6,
++	MX6Q_PAD_CSI0_DAT10__CHEETAH_TRACE_7,
++	MX6Q_PAD_CSI0_DAT11__CHEETAH_TRACE_8,
++	MX6Q_PAD_CSI0_DAT12__CHEETAH_TRACE_9,
++	MX6Q_PAD_CSI0_DATA_EN__CHEETAH_TRCLK,
++	MX6Q_PAD_CSI0_MCLK__CHEETAH_TRCTL,
++	MX6Q_PAD_EIM_OE__ECSPI2_MISO,
++	MX6Q_PAD_EIM_CS1__ECSPI2_MOSI,
++	MX6Q_PAD_EIM_CS0__ECSPI2_SCLK,
++	MX6Q_PAD_EIM_D24__ECSPI2_SS2,
++	MX6Q_PAD_EIM_D25__ECSPI2_SS3,
++	MX6Q_PAD_SD1_DAT0__ECSPI5_MISO,
++	MX6Q_PAD_SD1_CMD__ECSPI5_MOSI,
++	MX6Q_PAD_SD1_CLK__ECSPI5_SCLK,
++	MX6Q_PAD_SD2_DAT3__GPIO_1_12,
++	MX6Q_PAD_ENET_MDC__ENET_MDC,
++	MX6Q_PAD_ENET_MDIO__ENET_MDIO,
++	/* IOMUXC_SW_PAD_CTL_GRP_DDR_TYPE_RGMII = 0x80000, done in flash_header.c */
++	MX6Q_PAD_RGMII_TD0__ENET_RGMII_TD0,
++	MX6Q_PAD_RGMII_TD1__ENET_RGMII_TD1,
++	MX6Q_PAD_RGMII_TD2__ENET_RGMII_TD2,
++	MX6Q_PAD_RGMII_TD3__ENET_RGMII_TD3,
++	MX6Q_PAD_RGMII_TX_CTL__ENET_RGMII_TX_CTL,
++	MX6Q_PAD_RGMII_TXC__ENET_RGMII_TXC,
++	MX6Q_PAD_ENET_REF_CLK__ENET_TX_CLK,
++	MX6Q_PAD_GPIO_0__GPIO_1_0,
++	MX6Q_PAD_GPIO_2__GPIO_1_2,
++	MX6Q_PAD_ENET_CRS_DV__GPIO_1_25,
++	MX6Q_PAD_ENET_RXD0__GPIO_1_27,
++	MX6Q_PAD_ENET_TX_EN__GPIO_1_28,
++	MX6Q_PAD_GPIO_3__GPIO_1_3,
++	MX6Q_PAD_GPIO_4__GPIO_1_4,
++	MX6Q_PAD_GPIO_5__GPIO_1_5,
++	MX6Q_PAD_GPIO_8__GPIO_1_8,
++	MX6Q_PAD_GPIO_9__GPIO_1_9,
++	MX6Q_PAD_NANDF_D0__GPIO_2_0,
++	MX6Q_PAD_NANDF_D1__GPIO_2_1,
++	MX6Q_PAD_NANDF_D2__GPIO_2_2,
++	MX6Q_PAD_EIM_A17__GPIO_2_21,
++	MX6Q_PAD_EIM_A16__GPIO_2_22,
++	MX6Q_PAD_EIM_LBA__GPIO_2_27,
++	MX6Q_PAD_NANDF_D3__GPIO_2_3,
++	MX6Q_PAD_NANDF_D4__GPIO_2_4,
++	MX6Q_PAD_NANDF_D5__GPIO_2_5,
++	MX6Q_PAD_NANDF_D6__GPIO_2_6,
++	MX6Q_PAD_NANDF_D7__GPIO_2_7,
++	MX6Q_PAD_EIM_DA10__GPIO_3_10,
++	MX6Q_PAD_EIM_DA11__GPIO_3_11,
++	MX6Q_PAD_EIM_DA12__GPIO_3_12,
++	MX6Q_PAD_EIM_DA13__GPIO_3_13,
++	MX6Q_PAD_EIM_DA14__GPIO_3_14,
++	MX6Q_PAD_EIM_DA15__GPIO_3_15,
++	MX6Q_PAD_EIM_D16__GPIO_3_16,
++	MX6Q_PAD_EIM_D18__GPIO_3_18,
++	MX6Q_PAD_EIM_D19__GPIO_3_19,
++	MX6Q_PAD_EIM_D20__GPIO_3_20,
++	MX6Q_PAD_EIM_D23__GPIO_3_23,
++	MX6Q_PAD_EIM_D29__GPIO_3_29,
++	MX6Q_PAD_EIM_D30__GPIO_3_30,
++	MX6Q_PAD_EIM_DA8__GPIO_3_8,
++	MX6Q_PAD_EIM_DA9__GPIO_3_9,
++	MX6Q_PAD_KEY_COL2__GPIO_4_10,
++	MX6Q_PAD_KEY_COL4__GPIO_4_14,
++	MX6Q_PAD_KEY_ROW4__GPIO_4_15,
++	MX6Q_PAD_GPIO_19__GPIO_4_5,
++	MX6Q_PAD_KEY_COL0__GPIO_4_6,
++	MX6Q_PAD_KEY_ROW0__GPIO_4_7,
++	MX6Q_PAD_KEY_COL1__GPIO_4_8,
++	MX6Q_PAD_KEY_ROW1__GPIO_4_9,
++	MX6Q_PAD_EIM_WAIT__GPIO_5_0,
++	MX6Q_PAD_EIM_A25__GPIO_5_2,
++	MX6Q_PAD_EIM_A24__GPIO_5_4,
++	MX6Q_PAD_EIM_BCLK__GPIO_6_31,
++	MX6Q_PAD_SD3_DAT5__GPIO_7_0,
++	MX6Q_PAD_SD3_DAT4__GPIO_7_1,
++	MX6Q_PAD_GPIO_17__GPIO_7_12,
++	MX6Q_PAD_GPIO_18__GPIO_7_13,
++	MX6Q_PAD_SD3_RST__GPIO_7_8,
++	MX6Q_PAD_EIM_D21__I2C1_SCL,
++	MX6Q_PAD_EIM_D28__I2C1_SDA,
++	MX6Q_PAD_EIM_EB2__I2C2_SCL,
++	MX6Q_PAD_KEY_ROW3__I2C2_SDA,
++	MX6Q_PAD_EIM_D17__I2C3_SCL,
++	MX6Q_PAD_GPIO_6__I2C3_SDA,
++	MX6Q_PAD_DI0_DISP_CLK__IPU1_DI0_DISP_CLK,
++	MX6Q_PAD_DI0_PIN15__IPU1_DI0_PIN15,
++	MX6Q_PAD_DI0_PIN2__IPU1_DI0_PIN2,
++	MX6Q_PAD_DI0_PIN3__IPU1_DI0_PIN3,
++	MX6Q_PAD_DI0_PIN4__IPU1_DI0_PIN4,
++	MX6Q_PAD_DISP0_DAT0__IPU1_DISP0_DAT_0,
++	MX6Q_PAD_DISP0_DAT1__IPU1_DISP0_DAT_1,
++	MX6Q_PAD_DISP0_DAT10__IPU1_DISP0_DAT_10,
++	MX6Q_PAD_DISP0_DAT11__IPU1_DISP0_DAT_11,
++	MX6Q_PAD_DISP0_DAT12__IPU1_DISP0_DAT_12,
++	MX6Q_PAD_DISP0_DAT13__IPU1_DISP0_DAT_13,
++	MX6Q_PAD_DISP0_DAT14__IPU1_DISP0_DAT_14,
++	MX6Q_PAD_DISP0_DAT15__IPU1_DISP0_DAT_15,
++	MX6Q_PAD_DISP0_DAT16__IPU1_DISP0_DAT_16,
++	MX6Q_PAD_DISP0_DAT17__IPU1_DISP0_DAT_17,
++	MX6Q_PAD_DISP0_DAT18__IPU1_DISP0_DAT_18,
++	MX6Q_PAD_DISP0_DAT19__IPU1_DISP0_DAT_19,
++	MX6Q_PAD_DISP0_DAT2__IPU1_DISP0_DAT_2,
++	MX6Q_PAD_DISP0_DAT20__IPU1_DISP0_DAT_20,
++	MX6Q_PAD_DISP0_DAT21__IPU1_DISP0_DAT_21,
++	MX6Q_PAD_DISP0_DAT22__IPU1_DISP0_DAT_22,
++	MX6Q_PAD_DISP0_DAT23__IPU1_DISP0_DAT_23,
++	MX6Q_PAD_DISP0_DAT3__IPU1_DISP0_DAT_3,
++	MX6Q_PAD_DISP0_DAT4__IPU1_DISP0_DAT_4,
++	MX6Q_PAD_DISP0_DAT5__IPU1_DISP0_DAT_5,
++	MX6Q_PAD_DISP0_DAT6__IPU1_DISP0_DAT_6,
++	MX6Q_PAD_DISP0_DAT7__IPU1_DISP0_DAT_7,
++	MX6Q_PAD_DISP0_DAT8__IPU1_DISP0_DAT_8,
++	MX6Q_PAD_DISP0_DAT9__IPU1_DISP0_DAT_9,
++	MX6Q_PAD_SD1_DAT2__PWM2_PWMO,
++	MX6Q_PAD_SD1_DAT1__PWM3_PWMO,
++	MX6Q_PAD_GPIO_16__SJC_DE_B,
++	MX6Q_PAD_KEY_COL3__SPDIF_IN1,
++	MX6Q_PAD_EIM_D22__SPDIF_OUT1,
++	MX6Q_PAD_SD3_DAT6__UART1_RXD,
++	MX6Q_PAD_SD3_DAT7__UART1_TXD,
++	MX6Q_PAD_EIM_D27__UART2_RXD,
++	MX6Q_PAD_EIM_D26__UART2_TXD,
++	MX6Q_PAD_EIM_D31__GPIO_3_31,
++	MX6Q_PAD_SD3_CLK__USDHC3_CLK,
++	MX6Q_PAD_SD3_CMD__USDHC3_CMD,
++	MX6Q_PAD_SD3_DAT0__USDHC3_DAT0,
++	MX6Q_PAD_SD3_DAT1__USDHC3_DAT1,
++	MX6Q_PAD_SD3_DAT2__USDHC3_DAT2,
++	MX6Q_PAD_SD3_DAT3__USDHC3_DAT3,
++	MX6Q_PAD_SD4_CLK__USDHC4_CLK,
++	MX6Q_PAD_SD4_CMD__USDHC4_CMD,
++	MX6Q_PAD_SD4_DAT0__USDHC4_DAT0,
++	MX6Q_PAD_SD4_DAT1__USDHC4_DAT1,
++	MX6Q_PAD_SD4_DAT2__USDHC4_DAT2,
++	MX6Q_PAD_SD4_DAT3__USDHC4_DAT3,
++	MX6Q_PAD_SD4_DAT4__USDHC4_DAT4,
++	MX6Q_PAD_SD4_DAT5__USDHC4_DAT5,
++	MX6Q_PAD_SD4_DAT6__USDHC4_DAT6,
++	MX6Q_PAD_SD4_DAT7__USDHC4_DAT7,
++	MX6Q_PAD_NANDF_ALE__USDHC4_RST,
++	MX6Q_PAD_NANDF_CS1__GPIO_6_14,
++	MX6Q_PAD_NANDF_CS2__GPIO_6_15,
++};
++
++static iomux_v3_cfg_t realq7_pads_enet[] = {
++	MX6Q_PAD_RGMII_RXC__ENET_RGMII_RXC,
++	MX6Q_PAD_RGMII_RD0__ENET_RGMII_RD0,
++	MX6Q_PAD_RGMII_RD1__ENET_RGMII_RD1,
++	MX6Q_PAD_RGMII_RD2__ENET_RGMII_RD2,
++	MX6Q_PAD_RGMII_RD3__ENET_RGMII_RD3,
++	MX6Q_PAD_RGMII_RX_CTL__ENET_RGMII_RX_CTL,
++};
++
++#define RQ7_GPIO_ENET_PHYADD2	IMX_GPIO_NR(6, 30)
++#define RQ7_GPIO_ENET_MODE0	IMX_GPIO_NR(6, 25)
++#define RQ7_GPIO_ENET_MODE1	IMX_GPIO_NR(6, 27)
++#define RQ7_GPIO_ENET_MODE2	IMX_GPIO_NR(6, 28)
++#define RQ7_GPIO_ENET_MODE3	IMX_GPIO_NR(6, 29)
++#define RQ7_GPIO_ENET_EN_CLK125	IMX_GPIO_NR(6, 24)
++#define RQ7_GPIO_SD3_CD		IMX_GPIO_NR(6, 14)
++#define RQ7_GPIO_SD3_WP		IMX_GPIO_NR(6, 15)
++
++static iomux_v3_cfg_t realq7_pads_gpio[] = {
++	MX6Q_PAD_RGMII_RXC__GPIO_6_30,
++	MX6Q_PAD_RGMII_RD0__GPIO_6_25,
++	MX6Q_PAD_RGMII_RD1__GPIO_6_27,
++	MX6Q_PAD_RGMII_RD2__GPIO_6_28,
++	MX6Q_PAD_RGMII_RD3__GPIO_6_29,
++	MX6Q_PAD_RGMII_RX_CTL__GPIO_6_24,
++};
++
++static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
++{
++	phy_write(dev, 0x0d, device);
++	phy_write(dev, 0x0e, reg);
++	phy_write(dev, 0x0d, (1 << 14) | device);
++	phy_write(dev, 0x0e, val);
++}
++
++static int ksz9031rn_phy_fixup(struct phy_device *dev)
++{
++	/*
++	 * min rx data delay, max rx/tx clock delay,
++	 * min rx/tx control delay
++	 */
++	mmd_write_reg(dev, 2, 4, 0);
++	mmd_write_reg(dev, 2, 5, 0);
++	mmd_write_reg(dev, 2, 8, 0x003ff);
++
++	return 0;
++}
++
++static struct fec_platform_data fec_info = {
++	.xcv_type = RGMII,
++	.phy_addr = -1,
++};
++
++static void realq7_enet_init(void)
++{
++	mxc_iomux_v3_setup_multiple_pads(realq7_pads_gpio, ARRAY_SIZE(realq7_pads_gpio));
++	gpio_direction_output(RQ7_GPIO_ENET_PHYADD2, 0);
++	gpio_direction_output(RQ7_GPIO_ENET_MODE0, 1);
++	gpio_direction_output(RQ7_GPIO_ENET_MODE1, 1);
++	gpio_direction_output(RQ7_GPIO_ENET_MODE2, 1);
++	gpio_direction_output(RQ7_GPIO_ENET_MODE3, 1);
++	gpio_direction_output(RQ7_GPIO_ENET_EN_CLK125, 1);
++
++	gpio_direction_output(25, 0);
++	mdelay(50);
++
++	gpio_direction_output(25, 1);
++	mdelay(50);
++
++	mxc_iomux_v3_setup_multiple_pads(realq7_pads_enet, ARRAY_SIZE(realq7_pads_enet));
++
++	phy_register_fixup_for_uid(PHY_ID_KSZ9031, MICREL_PHY_ID_MASK,
++					   ksz9031rn_phy_fixup);
++
++	imx6_add_fec(&fec_info);
++}
++
++static int realq7_mem_init(void)
++{
++	arm_add_mem_device("ram0", 0x10000000, SZ_2G);
++
++	return 0;
++}
++mem_initcall(realq7_mem_init);
++
++static int realq7_spi_cs[] = { IMX_GPIO_NR(1, 12), };
++
++static struct spi_imx_master realq7_spi_0_data = {
++	.chipselect = realq7_spi_cs,
++	.num_chipselect = ARRAY_SIZE(realq7_spi_cs),
++};
++
++static const struct spi_board_info realq7_spi_board_info[] = {
++	{
++		.name = "m25p80",
++		.max_speed_hz = 40000000,
++		.bus_num = 4,
++		.chip_select = 0,
++	}
++};
++
++static struct esdhc_platform_data realq7_emmc_data = {
++	.cd_type = ESDHC_CD_PERMANENT,
++	.caps = MMC_MODE_8BIT,
++	.devname = "emmc",
++};
++
++static struct stmpe_platform_data stmpe1_pdata = {
++	.gpio_base = 224,
++	.blocks = STMPE_BLOCK_GPIO,
++};
++
++static struct stmpe_platform_data stmpe2_pdata = {
++	.gpio_base = 240,
++	.blocks = STMPE_BLOCK_GPIO,
++};
++
++static struct i2c_board_info realq7_i2c2_devices[] = {
++	{
++		I2C_BOARD_INFO("stmpe-i2c", 0x40),
++		.platform_data = &stmpe1_pdata,
++	}, {
++		I2C_BOARD_INFO("stmpe-i2c", 0x44),
++		.platform_data = &stmpe2_pdata,
++	},
++};
++
++static int realq7_devices_init(void)
++{
++	imx6_add_mmc2(NULL);
++	imx6_add_mmc3(&realq7_emmc_data);
++
++	realq7_enet_init();
++
++	i2c_register_board_info(1, realq7_i2c2_devices,
++			ARRAY_SIZE(realq7_i2c2_devices));
++
++	imx6_add_i2c0(NULL);
++	imx6_add_i2c1(NULL);
++	imx6_add_i2c2(NULL);
++
++	spi_register_board_info(realq7_spi_board_info,
++			ARRAY_SIZE(realq7_spi_board_info));
++	imx6_add_spi4(&realq7_spi_0_data);
++
++	imx6_add_sata();
++
++	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0",
++		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x00907000);
++	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/disk0",
++		0, NULL, 0, 0x00907000);
++
++	return 0;
++}
++device_initcall(realq7_devices_init);
++
++static int realq7_env_init(void)
++{
++	char *source_str = NULL;
++
++	switch (imx_bootsource()) {
++	case bootsource_mmc:
++		if (!IS_ENABLED(CONFIG_MCI_STARTUP))
++			setenv("mci0.probe", "1");
++		devfs_add_partition("disk0", 0, SZ_1M, DEVFS_PARTITION_FIXED, "self0");
++		devfs_add_partition("disk0", SZ_1M, SZ_1M, DEVFS_PARTITION_FIXED, "env0");
++		source_str = "SD/MMC";
++		break;
++	case bootsource_spi:
++		devfs_add_partition("m25p0", 0, SZ_256K, DEVFS_PARTITION_FIXED, "self0");
++		devfs_add_partition("m25p0", SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "env0");
++		source_str = "SPI flash";
++		break;
++	default:
++		printf("unknown Bootsource, no persistent environment\n");
++		break;
++	}
++
++	if (source_str)
++		printf("Using environment from %s\n", source_str);
++
++	return 0;
++}
++late_initcall(realq7_env_init);
++
++static int realq7_console_init(void)
++{
++	mxc_iomux_v3_setup_multiple_pads(realq7_pads, ARRAY_SIZE(realq7_pads));
++
++	imx6_init_lowlevel();
++
++	imx6_add_uart1();
++
++	return 0;
++}
++console_initcall(realq7_console_init);
+diff --git a/arch/arm/boards/dmo-mx6-realq7/config.h b/arch/arm/boards/dmo-mx6-realq7/config.h
+new file mode 100644
+index 0000000..ca15136
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/dmo-mx6-realq7/env/boot/mmc b/arch/arm/boards/dmo-mx6-realq7/env/boot/mmc
+new file mode 100644
+index 0000000..e311763
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/env/boot/mmc
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "MMC"
++	exit
++fi
++
++global.bootm.image="/mnt/mmc/zImage"
++global.bootm.oftree="/mnt/mmc/oftree"
++global.linux.bootargs.dyn.root="root=mmcblk0p2 rootfstype=ext3 rootwait"
+diff --git a/arch/arm/boards/dmo-mx6-realq7/env/config-board b/arch/arm/boards/dmo-mx6-realq7/env/config-board
+new file mode 100644
+index 0000000..3f05f9d
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/env/config-board
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++# board defaults, do not change in running system. Change /env/config
++# instead
++
++global.hostname=realq7
++global.linux.bootargs.base="console=ttymxc1,115200"
+diff --git a/arch/arm/boards/dmo-mx6-realq7/env/init/automount b/arch/arm/boards/dmo-mx6-realq7/env/init/automount
+new file mode 100644
+index 0000000..2ce37c7
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/env/init/automount
+@@ -0,0 +1,14 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++        init-menu-add-entry "$0" "Automountpoints"
++        exit
++fi
++
++# automount tftp server based on $eth0.serverip
++
++mkdir -p /mnt/tftp
++automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
++
++mkdir -p /mnt/mmc
++automount -d /mnt/mmc 'mci0.probe=1 && [ -e /dev/disk0.0 ] && mount /dev/disk0.0 /mnt/fat'
+diff --git a/arch/arm/boards/dmo-mx6-realq7/flash_header.c b/arch/arm/boards/dmo-mx6-realq7/flash_header.c
+new file mode 100644
+index 0000000..88227a7
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/flash_header.c
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <asm/byteorder.h>
++#include <mach/imx-flash-header.h>
++#include <mach/imx6-regs.h>
++#include <asm/barebox-arm-head.h>
++
++void __naked __flash_header_start go(void)
++{
++	barebox_arm_head();
++}
++
++#define APP_DEST	0x00907000
++
++struct imx_flash_header_v2 __flash_header_section flash_header = {
++	.header.tag		= IVT_HEADER_TAG,
++	.header.length		= cpu_to_be16(32),
++	.header.version		= IVT_VERSION,
++	.entry			= APP_DEST + 0x2000,
++	.dcd_ptr		= 0,
++	.boot_data_ptr		= APP_DEST + FLASH_HEADER_OFFSET + offsetof(struct imx_flash_header_v2, boot_data),
++	.self			= APP_DEST + FLASH_HEADER_OFFSET,
++
++	.boot_data.start	= APP_DEST,
++	.boot_data.size		= barebox_image_size,
++};
+diff --git a/arch/arm/boards/dmo-mx6-realq7/lowlevel.c b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+new file mode 100644
+index 0000000..ebcf76f
+--- /dev/null
++++ b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+@@ -0,0 +1,155 @@
++/*
 + * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>
 + *
 + * This program is free software; you can redistribute it and/or
@@ -72,869 +623,208 @@ index 0000000..d1de593
 + *
 + */
 +#include <common.h>
++#include <sizes.h>
 +#include <io.h>
-+#include <mach/imx6-regs.h>
++#include <asm/sections.h>
++#include <asm/mmu.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
 +#include <mach/imx6-mmdc.h>
 +
-+#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
-+#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
-+
-+#define MDCTL		0x000
-+#define MDPDC		0x004
-+#define MDSCR		0x01c
-+#define MDMISC		0x018
-+#define MDREF		0x020
-+#define MAPSR		0x404
-+#define MPZQHWCTRL	0x800
-+#define MPWLGCR		0x808
-+#define MPWLDECTRL0	0x80c
-+#define MPWLDECTRL1	0x810
-+#define MPPDCMPR1	0x88c
-+#define MPSWDAR		0x894
-+#define MPRDDLCTL	0x848
-+#define MPMUR		0x8b8
-+#define MPDGCTRL0	0x83c
-+#define MPDGCTRL1	0x840
-+#define MPRDDLCTL	0x848
-+#define MPWRDLCTL	0x850
-+#define MPRDDLHWCTL	0x860
-+#define MPWRDLHWCTL	0x864
-+#define MPDGHWST0	0x87c
-+#define MPDGHWST1	0x880
-+#define MPDGHWST2	0x884
-+#define MPDGHWST3	0x888
-+
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
-+#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
-+
-+int mmdc_do_write_level_calibration(void)
++static void sdram_init(void)
 +{
-+	u32 esdmisc_val, zq_val;
-+	int errorcount = 0;
-+	u32 val;
-+	u32 ddr_mr1 = 0x4;
++	writel(0x0, 0x021b0000);
++	writel(0xffffffff, 0x020c4068);
++	writel(0xffffffff, 0x020c406c);
++	writel(0xffffffff, 0x020c4070);
++	writel(0xffffffff, 0x020c4074);
++	writel(0xffffffff, 0x020c4078);
++	writel(0xffffffff, 0x020c407c);
++	writel(0xffffffff, 0x020c4080);
++	writel(0xffffffff, 0x020c4084);
++	writel(0x000C0000, 0x020e0798);
++	writel(0x00000000, 0x020e0758);
++	writel(0x00000030, 0x020e0588);
++	writel(0x00000030, 0x020e0594);
++	writel(0x00000030, 0x020e056c);
++	writel(0x00000030, 0x020e0578);
++	writel(0x00000030, 0x020e074c);
++	writel(0x00000030, 0x020e057c);
++	writel(0x00000000, 0x020e058c);
++	writel(0x00000030, 0x020e059c);
++	writel(0x00000030, 0x020e05a0);
++	writel(0x00000030, 0x020e078c);
++	writel(0x00020000, 0x020e0750);
++	writel(0x00000038, 0x020e05a8);
++	writel(0x00000038, 0x020e05b0);
++	writel(0x00000038, 0x020e0524);
++	writel(0x00000038, 0x020e051c);
++	writel(0x00000038, 0x020e0518);
++	writel(0x00000038, 0x020e050c);
++	writel(0x00000038, 0x020e05b8);
++	writel(0x00000038, 0x020e05c0);
++	writel(0x00020000, 0x020e0774);
++	writel(0x00000030, 0x020e0784);
++	writel(0x00000030, 0x020e0788);
++	writel(0x00000030, 0x020e0794);
++	writel(0x00000030, 0x020e079c);
++	writel(0x00000030, 0x020e07a0);
++	writel(0x00000030, 0x020e07a4);
++	writel(0x00000030, 0x020e07a8);
++	writel(0x00000030, 0x020e0748);
++	writel(0x00000030, 0x020e05ac);
++	writel(0x00000030, 0x020e05b4);
++	writel(0x00000030, 0x020e0528);
++	writel(0x00000030, 0x020e0520);
++	writel(0x00000030, 0x020e0514);
++	writel(0x00000030, 0x020e0510);
++	writel(0x00000030, 0x020e05bc);
++	writel(0x00000030, 0x020e05c4);
++	writel(0xa1390003, 0x021b0800);
++	writel(0x0059005C, 0x021b080c);
++	writel(0x00590056, 0x021b0810);
++	writel(0x002E0049, 0x021b480c);
++	writel(0x001B0033, 0x021b4810);
++	writel(0x434F035B, 0x021b083c);
++	writel(0x033F033F, 0x021b0840);
++	writel(0x4337033D, 0x021b483c);
++	writel(0x03210275, 0x021b4840);
++	writel(0x4C454344, 0x021b0848);
++	writel(0x463F3E4A, 0x021b4848);
++	writel(0x46314742, 0x021b0850);
++	writel(0x4D2A4B39, 0x021b4850);
++	writel(0x33333333, 0x021b081c);
++	writel(0x33333333, 0x021b0820);
++	writel(0x33333333, 0x021b0824);
++	writel(0x33333333, 0x021b0828);
++	writel(0x33333333, 0x021b481c);
++	writel(0x33333333, 0x021b4820);
++	writel(0x33333333, 0x021b4824);
++	writel(0x33333333, 0x021b4828);
++	writel(0x00000800, 0x021b08b8);
++	writel(0x00000800, 0x021b48b8);
++	writel(0x00020036, 0x021b0004);
++	writel(0x09555050, 0x021b0008);
++	writel(0x8A8F7934, 0x021b000c);
++	writel(0xDB568E65, 0x021b0010);
++	writel(0x01FF00DB, 0x021b0014);
++	writel(0x00000740, 0x021b0018);
++	writel(0x00008000, 0x021b001c);
++	writel(0x000026d2, 0x021b002c);
++	writel(0x008F0E21, 0x021b0030);
++	writel(0x00000047, 0x021b0040);
++	writel(0x11420000, 0x021b0400);
++	writel(0x11420000, 0x021b4400);
++	writel(0x841A0000, 0x021b0000);
++	writel(0x04108032, 0x021b001c);
++	writel(0x00008033, 0x021b001c);
++	writel(0x00048031, 0x021b001c);
++	writel(0x09308030, 0x021b001c);
++	writel(0x04008040, 0x021b001c);
++	writel(0x0410803A, 0x021b001c);
++	writel(0x0000803B, 0x021b001c);
++	writel(0x00048039, 0x021b001c);
++	writel(0x09308038, 0x021b001c);
++	writel(0x04008048, 0x021b001c);
++	writel(0x00005800, 0x021b0020);
++	writel(0x00011117, 0x021b0818);
++	writel(0x00011117, 0x021b4818);
++	writel(0x00025576, 0x021b0004);
++	writel(0x00011006, 0x021b0404);
++	writel(0x00000000, 0x021b001c);
 +
-+	/* disable DDR logic power down timer */
-+	val = readl((P0_IPS + MDPDC));
-+	val &= 0xffff00ff;
-+	writel(val, (P0_IPS + MDPDC)),
-+
-+	/* disable Adopt power down timer */
-+	val = readl((P0_IPS + MAPSR));
-+	val |= 0x1;
-+	writel(val, (P0_IPS + MAPSR));
-+
-+	pr_debug("Start write leveling calibration \n");
-+
-+	/*
-+	 * disable auto refresh and ZQ calibration
-+	 * before proceeding with Write Leveling calibration
-+	 */
-+	esdmisc_val = readl(P0_IPS + MDREF);
-+	writel(0x0000C000, (P0_IPS + MDREF));
-+	zq_val = readl(P0_IPS + MPZQHWCTRL);
-+	writel(zq_val & ~(0x3), (P0_IPS + MPZQHWCTRL));
-+
-+	/*
-+	 * Configure the external DDR device to enter write leveling mode
-+	 * through Load Mode Register command
-+	 * Register setting:
-+	 * Bits[31:16] MR1 value (0x0080 write leveling enable)
-+	 * Bit[9] set WL_EN to enable MMDC DQS output
-+	 * Bits[6:4] set CMD bits for Load Mode Register programming
-+	 * Bits[2:0] set CMD_BA to 0x1 for DDR MR1 programming
-+	 */
-+	writel(0x00808231, P0_IPS + MDSCR);
-+
-+	/* Activate automatic calibration by setting MPWLGCR[HW_WL_EN] */
-+	writel(0x00000001, P0_IPS + MPWLGCR);
-+
-+	/* Upon completion of this process the MMDC de-asserts the MPWLGCR[HW_WL_EN] */
-+	while (readl(P0_IPS + MPWLGCR) & 0x00000001);
-+
-+	/* check for any errors: check both PHYs for x64 configuration, if x32, check only PHY0 */
-+	if ((readl(P0_IPS + MPWLGCR) & 0x00000F00) ||
-+			(readl(P1_IPS + MPWLGCR) & 0x00000F00)) {
-+		errorcount++;
-+	}
-+
-+	pr_debug("Write leveling calibration completed\n");
-+
-+	/*
-+	 * User should issue MRS command to exit write leveling mode
-+	 * through Load Mode Register command
-+	 * Register setting:
-+	 * Bits[31:16] MR1 value "ddr_mr1" value from initialization
-+	 * Bit[9] clear WL_EN to disable MMDC DQS output
-+	 * Bits[6:4] set CMD bits for Load Mode Register programming
-+	 * Bits[2:0] set CMD_BA to 0x1 for DDR MR1 programming
-+	 */
-+	writel(((ddr_mr1 << 16)+0x8031), P0_IPS + MDSCR);
-+
-+	/* re-enable to auto refresh and zq cal */
-+	writel(esdmisc_val, (P0_IPS + MDREF));
-+	writel(zq_val, (P0_IPS + MPZQHWCTRL));
-+
-+	pr_debug("MMDC_MPWLDECTRL0 after write level cal: 0x%08X\n",
-+			readl(P0_IPS + MPWLDECTRL0));
-+	pr_debug("MMDC_MPWLDECTRL1 after write level cal: 0x%08X\n",
-+			readl(P0_IPS + MPWLDECTRL1));
-+	pr_debug("MMDC_MPWLDECTRL0 after write level cal: 0x%08X\n",
-+			readl(P1_IPS + MPWLDECTRL0));
-+	pr_debug("MMDC_MPWLDECTRL1 after write level cal: 0x%08X\n",
-+			readl(P1_IPS + MPWLDECTRL1));
-+
-+	/* enable DDR logic power down timer */
-+	val = readl((P0_IPS + MDPDC));
-+	val |= 0x00005500;
-+	writel(val, (P0_IPS + MDPDC));
-+
-+	/* enable Adopt power down timer: */
-+	val = readl(P0_IPS + MAPSR);
-+	val &= 0xfffffff7;
-+	writel(val, (P0_IPS + MAPSR));
-+
-+	/* clear CON_REQ */
-+	writel(0, (P0_IPS + MDSCR));
-+
-+	return 0;
++	/* Enable UART for lowlevel debugging purposes. Can be removed later */
++	writel(0x4, 0x020e00bc);
++	writel(0x4, 0x020e00c0);
++	writel(0x1, 0x020e0928);
++	writel(0x00000000, 0x021e8080);
++	writel(0x00004027, 0x021e8084);
++	writel(0x00000704, 0x021e8088);
++	writel(0x00000a81, 0x021e8090);
++	writel(0x0000002b, 0x021e809c);
++	writel(0x00013880, 0x021e80b0);
++	writel(0x0000047f, 0x021e80a4);
++	writel(0x0000c34f, 0x021e80a8);
++	writel(0x00000001, 0x021e8080);
 +}
 +
-+static void modify_dg_result(void __iomem *reg_st0, void __iomem *reg_st1,
-+		void __iomem *reg_ctrl)
++void __naked barebox_arm_reset_vector(void)
 +{
-+	u32 dg_tmp_val, dg_dl_abs_offset, dg_hc_del, val_ctrl;
++	arm_cpu_lowlevel_init();
 +
-+	/*
-+	 * DQS gating absolute offset should be modified from reflecting (HW_DG_LOWx + HW_DG_UPx)/2
-+	 * to reflecting (HW_DG_UPx - 0x80)
-+	 */
++	arm_setup_stack(0x00940000 - 8);
 +
-+	val_ctrl = readl(reg_ctrl);
-+	val_ctrl &= 0xf0000000;
++	if (get_pc() < 0x10000000) {
++		sdram_init();
 +
-+	dg_tmp_val = ((readl(reg_st0) & 0x07ff0000) >> 16) - 0xc0;
-+	dg_dl_abs_offset = dg_tmp_val & 0x7f;
-+	dg_hc_del = (dg_tmp_val & 0x780) << 1;
++		mmdc_do_write_level_calibration();
++		mmdc_do_dqs_calibration();
++	}
 +
-+	val_ctrl |= dg_dl_abs_offset + dg_hc_del;
++	barebox_arm_entry(0x10000000, SZ_2G, 0);
++}
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 1308f3c..d908d5c 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -31,6 +31,7 @@ config ARCH_TEXT_BASE
+ 	default 0x7fc00000 if MACH_GUF_VINCELL
+ 	default 0x97f00000 if MACH_EFIKA_MX_SMARTBOOK
+ 	default 0x17800000 if MACH_SABRESD
++	default 0x4fc00000 if MACH_REALQ7
+ 
+ config BOARDINFO
+ 	default "Eukrea CPUIMX25" if MACH_EUKREA_CPUIMX25
+@@ -61,6 +62,7 @@ config BOARDINFO
+ 	default "Ka-Ro tx53" if MACH_TX53
+ 	default "Garz+Fricke Vincell" if MACH_GUF_VINCELL
+ 	default "SabreSD" if MACH_SABRESD
++	default "DataModul i.MX6Q Real Qseven" if MACH_REALQ7
+ 
+ choice
+ 	prompt "Select boot mode"
+@@ -496,6 +498,10 @@ config MACH_SABRELITE
+ config MACH_SABRESD
+ 	bool "Freescale i.MX6 SabreSD"
+ 
++config MACH_REALQ7
++	bool "DataModul i.MX6Q Real Qseven Board"
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
 +
-+	dg_tmp_val = ((readl(reg_st1) & 0x07ff0000) >> 16) - 0xc0;
-+	dg_dl_abs_offset = dg_tmp_val & 0x7f;
-+	dg_hc_del = (dg_tmp_val & 0x780) << 1;
-+
-+	val_ctrl |= (dg_dl_abs_offset + dg_hc_del) << 16;
-+
-+	writel(val_ctrl, reg_ctrl);
+ endchoice
+ 
+ endif
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx6.h b/arch/arm/mach-imx/include/mach/devices-imx6.h
+index a9c7e8d..b6b538a 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx6.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx6.h
+@@ -50,6 +50,26 @@ static inline struct device_d *imx6_add_spi0(struct spi_imx_master *pdata)
+ 	return imx_add_spi((void *)MX6_ECSPI1_BASE_ADDR, 0, pdata);
+ }
+ 
++static inline struct device_d *imx6_add_spi1(struct spi_imx_master *pdata)
++{
++	return imx_add_spi((void *)MX6_ECSPI2_BASE_ADDR, 1, pdata);
 +}
 +
-+static void mmdc_precharge_all(int cs0_enable, int cs1_enable)
++static inline struct device_d *imx6_add_spi2(struct spi_imx_master *pdata)
 +{
-+	/*
-+	 * Issue the Precharge-All command to the DDR device for both chip selects
-+	 * Note, CON_REQ bit should also remain set
-+	 * If only using one chip select, then precharge only the desired chip select
-+	 */
-+	if (cs0_enable)
-+		writel(0x04008050, P0_IPS + MDSCR);
-+	if (cs1_enable)
-+		writel(0x04008058, P0_IPS + MDSCR);
++	return imx_add_spi((void *)MX6_ECSPI3_BASE_ADDR, 2, pdata);
 +}
 +
-+static void mmdc_force_delay_measurement(int data_bus_size)
++static inline struct device_d *imx6_add_spi3(struct spi_imx_master *pdata)
 +{
-+	writel(0x800, P0_IPS + MPMUR);
-+
-+	if (data_bus_size == 0x2)
-+		writel(0x800, P1_IPS + MPMUR);
++	return imx_add_spi((void *)MX6_ECSPI4_BASE_ADDR, 3, pdata);
 +}
 +
-+static void mmdc_reset_read_data_fifos(void)
++static inline struct device_d *imx6_add_spi4(struct spi_imx_master *pdata)
 +{
-+	uint32_t v;
-+
-+	/*
-+	 * Reset the read data FIFOs (two resets); only need to issue reset to PHY0 since in x64
-+	 * mode, the reset will also go to PHY1
-+	 * read data FIFOs reset1
-+	 */
-+	v = readl(P0_IPS + MPDGCTRL0);
-+	v |= 0x80000000;
-+	writel(v, P0_IPS + MPDGCTRL0);
-+
-+	while (readl((P0_IPS + MPDGCTRL0)) & 0x80000000);
-+
-+	/* read data FIFOs reset2 */
-+	v = readl(P0_IPS + MPDGCTRL0);
-+	v |= 0x80000000;
-+	writel(v, P0_IPS + MPDGCTRL0);
-+
-+	while (readl((P0_IPS + MPDGCTRL0)) & 0x80000000);
++	return imx_add_spi((void *)MX6_ECSPI5_BASE_ADDR, 4, pdata);
 +}
 +
-+int mmdc_do_dqs_calibration(void)
-+{
-+	u32 esdmisc_val, v;
-+	int g_error_write_cal;
-+	int temp_ref;
-+	int cs0_enable_initial;
-+	int cs1_enable_initial;
-+	int PDDWord = 0x00ffff00;
-+	int errorcount = 0;
-+	int cs0_enable;
-+	int cs1_enable;
-+	int data_bus_size;
-+
-+	/* check to see which chip selects are enabled */
-+	cs0_enable_initial = (readl(P0_IPS + MDCTL) & 0x80000000) >> 31;
-+	cs1_enable_initial = (readl(P0_IPS + MDCTL) & 0x40000000) >> 30;
-+
-+	/* disable DDR logic power down timer */
-+	v = readl(P0_IPS + MDPDC);
-+	v &= ~0xff00;
-+	writel(v, P0_IPS + MDPDC);
-+
-+	/* disable Adopt power down timer */
-+	v = readl(P0_IPS + MAPSR);
-+	v |= 0x1;
-+	writel(v, P0_IPS + MAPSR);
-+
-+	/* set DQS pull ups */
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7) | 0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7);
-+
-+	esdmisc_val = readl(P0_IPS + MDMISC);
-+
-+	/* set RALAT and WALAT to max */
-+	v = readl(P0_IPS + MDMISC);
-+	v |= (1 << 6) | (1 << 7) | (1 << 8) | (1 << 16) | (1 << 17);
-+	writel(v, P0_IPS + MDMISC);
-+
-+	/*
-+	 * disable auto refresh
-+	 * before proceeding with calibration
-+	 */
-+	temp_ref = readl(P0_IPS + MDREF);
-+	writel(0x0000C000, P0_IPS + MDREF);
-+
-+	/*
-+	 * per the ref manual, issue one refresh cycle MDSCR[CMD]= 0x2,
-+	 * this also sets the CON_REQ bit.
-+	 */
-+	if (cs0_enable_initial)
-+		writel(0x00008020, P0_IPS + MDSCR);
-+	if (cs1_enable_initial)
-+		writel(0x00008028, P0_IPS + MDSCR);
-+
-+	/* poll to make sure the con_ack bit was asserted */
-+	while (!(readl(P0_IPS + MDSCR) & 0x00004000)) ;
-+
-+	/*
-+	 * check MDMISC register CALIB_PER_CS to see which CS calibration is
-+	 * targeted to (under normal cases, it should be cleared as this is the
-+	 * default value, indicating calibration is directed to CS0). Disable
-+	 * the other chip select not being target for calibration to avoid any
-+	 * potential issues This will get re-enabled at end of calibration.
-+	 */
-+	v = readl(P0_IPS + MDCTL);
-+	if ((readl(P0_IPS + MDMISC) & 0x00100000) == 0)
-+		v &= ~(1 << 30); /* clear SDE_1 */
-+	else
-+		v &= ~(1 << 31); /* clear SDE_0 */
-+	writel(v, P0_IPS + MDCTL);
-+
-+	/*
-+	 * check to see which chip selects are now enabled for the remainder
-+	 * of the calibration.
-+	 */
-+	cs0_enable = (readl(P0_IPS + MDCTL) & 0x80000000) >> 31;
-+	cs1_enable = (readl(P0_IPS + MDCTL) & 0x40000000) >> 30;
-+
-+	/* check to see what is the data bus size */
-+	data_bus_size = (readl(P0_IPS + MDCTL) & 0x30000) >> 16;
-+
-+	mmdc_precharge_all(cs0_enable, cs1_enable);
-+
-+	/* Write the pre-defined value into MPPDCMPR1 */
-+	writel(PDDWord, P0_IPS + MPPDCMPR1);
-+
-+	/*
-+	 * Issue a write access to the external DDR device by setting the bit SW_DUMMY_WR (bit 0)
-+	 * in the MPSWDAR0 and then poll this bit until it clears to indicate completion of the
-+	 * write access.
-+	 */
-+	v = readl(P0_IPS + MPSWDAR);
-+	v |= (1 << 0);
-+	writel(v, P0_IPS + MPSWDAR);
-+
-+	while (readl(P0_IPS + MPSWDAR) & 0x00000001);
-+
-+	/*
-+	 * Set the RD_DL_ABS# bits to their default values (will be calibrated later in
-+	 * the read delay-line calibration)
-+	 * Both PHYs for x64 configuration, if x32, do only PHY0
-+	 */
-+	writel(0x40404040, P0_IPS + MPRDDLCTL);
-+	if (data_bus_size == 0x2)
-+		writel(0x40404040, P1_IPS + MPRDDLCTL);
-+
-+	/* Force a measurement, for previous delay setup to take effect */
-+	mmdc_force_delay_measurement(data_bus_size);
-+
-+	/*
-+	 * Read DQS Gating calibration
-+	 */
-+
-+	pr_debug("Starting DQS gating calibration...\n");
-+
-+	mmdc_reset_read_data_fifos();
-+
-+	/*
-+	 * Start the automatic read DQS gating calibration process by asserting
-+	 * MPDGCTRL0[HW_DG_EN] and MPDGCTRL0[DG_CMP_CYC] and then poll
-+	 * MPDGCTRL0[HW_DG_EN]] until this bit clears to indicate completion.
-+	 * Also, ensure that MPDGCTRL0[HW_DG_ERR] is clear to indicate no errors
-+	 * were seen during calibration. Set bit 30: chooses option to wait 32
-+	 * cycles instead of 16 before comparing read data
-+	 */
-+	v = readl(P0_IPS + MPDGCTRL0);
-+	v |= (1 << 30);
-+	writel(v, P0_IPS + MPDGCTRL0);
-+
-+	/* Set bit 28 to start automatic read DQS gating calibration */
-+	v |= (1 << 28);
-+	writel(v, P0_IPS + MPDGCTRL0);
-+
-+	/*
-+	 * Poll for completion
-+	 * MPDGCTRL0[HW_DG_EN] should be 0
-+	 */
-+	while (readl(P0_IPS + MPDGCTRL0) & 0x10000000);
-+
-+	/*
-+	 * Check to see if any errors were encountered during calibration
-+	 * (check MPDGCTRL0[HW_DG_ERR])
-+	 * check both PHYs for x64 configuration, if x32, check only PHY0
-+	 */
-+	if (data_bus_size == 0x2) {
-+		if ((readl(P0_IPS + MPDGCTRL0) & 0x00001000) ||
-+				(readl(P1_IPS + MPDGCTRL0) & 0x00001000))
-+			errorcount++;
-+	} else {
-+		if (readl(P0_IPS + MPDGCTRL0) & 0x00001000)
-+			errorcount++;
-+	}
-+
-+	/*
-+	 * DQS gating absolute offset should be modified from reflecting
-+	 * (HW_DG_LOWx + HW_DG_UPx)/2 to reflecting (HW_DG_UPx - 0x80)
-+	 */
-+	modify_dg_result(P0_IPS + MPDGHWST0,
-+			P0_IPS + MPDGHWST1,
-+			P0_IPS + MPDGCTRL0);
-+
-+	modify_dg_result(P0_IPS + MPDGHWST2,
-+			P0_IPS + MPDGHWST3,
-+			P0_IPS + MPDGCTRL1);
-+
-+	if (data_bus_size == 0x2) {
-+		modify_dg_result(P1_IPS + MPDGHWST0,
-+				P1_IPS + MPDGHWST1,
-+				P1_IPS + MPDGCTRL0);
-+		modify_dg_result(P1_IPS + MPDGHWST2,
-+				P1_IPS + MPDGHWST3,
-+				P1_IPS + MPDGCTRL1);
-+	}
-+
-+	pr_debug("DQS gating calibration completed.\n");
-+
-+	/*
-+	 * Read delay Calibration
-+	 */
-+
-+	pr_debug("Starting read calibration...\n");
-+
-+	mmdc_reset_read_data_fifos();
-+
-+	mmdc_precharge_all(cs0_enable, cs1_enable);
-+
-+	/*
-+	 * Read delay-line calibration
-+	 * Start the automatic read calibration process by asserting MPRDDLHWCTL[ HW_RD_DL_EN]
-+	 */
-+	writel(0x00000030, P0_IPS + MPRDDLHWCTL);
-+
-+	/*
-+	 * poll for completion
-+	 * MMDC indicates that the write data calibration had finished by setting
-+	 * MPRDDLHWCTL[HW_RD_DL_EN] = 0
-+	 * Also, ensure that no error bits were set
-+	 */
-+	while (readl(P0_IPS + MPRDDLHWCTL) & 0x00000010) ;
-+
-+	/* check both PHYs for x64 configuration, if x32, check only PHY0 */
-+	if (data_bus_size == 0x2) {
-+		if ((readl(P0_IPS + MPRDDLHWCTL) & 0x0000000f) ||
-+				(readl(P1_IPS + MPRDDLHWCTL) & 0x0000000f)) {
-+			errorcount++;
-+		}
-+	} else {
-+		if (readl(P0_IPS + MPRDDLHWCTL) & 0x0000000f) {
-+			errorcount++;
-+		}
-+	}
-+
-+	pr_debug("Read calibration completed\n");
-+
-+	/*
-+	 * Write delay Calibration
-+	 */
-+
-+	pr_debug("Starting write calibration...\n");
-+
-+	mmdc_reset_read_data_fifos();
-+
-+	mmdc_precharge_all(cs0_enable, cs1_enable);
-+
-+	/*
-+	 * Set the WR_DL_ABS# bits to their default values
-+	 * Both PHYs for x64 configuration, if x32, do only PHY0
-+	 */
-+	writel(0x40404040, P0_IPS + MPWRDLCTL);
-+	if (data_bus_size == 0x2)
-+		writel(0x40404040, P1_IPS + MPWRDLCTL);
-+
-+	mmdc_force_delay_measurement(data_bus_size);
-+
-+	/* Start the automatic write calibration process by asserting MPWRDLHWCTL0[HW_WR_DL_EN] */
-+	writel(0x00000030, P0_IPS + MPWRDLHWCTL);
-+
-+	/*
-+	 * poll for completion
-+	 * MMDC indicates that the write data calibration had finished by setting
-+	 * MPWRDLHWCTL[HW_WR_DL_EN] = 0
-+	 * Also, ensure that no error bits were set
-+	 */
-+	while (readl(P0_IPS + MPWRDLHWCTL) & 0x00000010) ;
-+
-+	/* check both PHYs for x64 configuration, if x32, check only PHY0 */
-+	if (data_bus_size == 0x2) {
-+		if ((readl(P0_IPS + MPWRDLHWCTL) & 0x0000000f) ||
-+				(readl(P1_IPS + MPWRDLHWCTL) & 0x0000000f)) {
-+			errorcount++;
-+			g_error_write_cal = 1; // set the g_error_write_cal
-+		}
-+	} else {
-+		if (readl(P0_IPS + MPWRDLHWCTL) & 0x0000000f) {
-+			errorcount++;
-+			g_error_write_cal = 1; // set the g_error_write_cal
-+		}
-+	}
-+
-+	pr_debug("Write calibration completed\n");
-+
-+	mmdc_reset_read_data_fifos();
-+
-+	pr_debug("\n");
-+
-+	/* enable DDR logic power down timer */
-+	v = readl(P0_IPS + MDPDC) | 0x00005500;
-+	writel(v, P0_IPS + MDPDC);
-+
-+	/* enable Adopt power down timer */
-+	v = readl(P0_IPS + MAPSR) & 0xfffffff7;
-+	writel(v, P0_IPS + MAPSR);
-+
-+	/* restore MDMISC value (RALAT, WALAT) */
-+	writel(esdmisc_val, P1_IPS + MDMISC);
-+
-+	/* clear DQS pull ups */
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6);
-+	v = readl(IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7) & ~0x7000;
-+	writel(v, IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7);
-+
-+	v = readl(P0_IPS + MDCTL);
-+
-+	/* re-enable SDE (chip selects) if they were set initially */
-+	if (cs1_enable_initial == 1)
-+		v |= (1 << 30); /* set SDE_1 */
-+
-+	if (cs0_enable_initial == 1)
-+		v |= (1 << 31); /* set SDE_0 */
-+
-+	writel(v, P0_IPS + MDCTL);
-+
-+	/* re-enable to auto refresh */
-+	writel(temp_ref, P0_IPS + MDREF);
-+
-+	/* clear the MDSCR (including the con_req bit) */
-+	writel(0x0, P0_IPS + MDSCR); /* CS0 */
-+
-+	/* poll to make sure the con_ack bit is clear */
-+	while (readl(P0_IPS + MDSCR) & 0x00004000) ;
-+
-+	pr_debug("MMDC registers updated from calibration \n");
-+	pr_debug("\nRead DQS Gating calibration\n");
-+	pr_debug("MPDGCTRL0 PHY0 (0x021b083c) = 0x%08X\n", readl(P0_IPS + MPDGCTRL0));
-+	pr_debug("MPDGCTRL1 PHY0 (0x021b0840) = 0x%08X\n", readl(P0_IPS + MPDGCTRL1));
-+	pr_debug("MPDGCTRL0 PHY1 (0x021b483c) = 0x%08X\n", readl(P1_IPS + MPDGCTRL0));
-+	pr_debug("MPDGCTRL1 PHY1 (0x021b4840) = 0x%08X\n", readl(P1_IPS + MPDGCTRL1));
-+	pr_debug("\nRead calibration\n");
-+	pr_debug("MPRDDLCTL PHY0 (0x021b0848) = 0x%08X\n", readl(P0_IPS + MPRDDLCTL));
-+	pr_debug("MPRDDLCTL PHY1 (0x021b4848) = 0x%08X\n", readl(P1_IPS + MPRDDLCTL));
-+	pr_debug("\nWrite calibration\n");
-+	pr_debug("MPWRDLCTL PHY0 (0x021b0850) = 0x%08X\n", readl(P0_IPS + MPWRDLCTL));
-+	pr_debug("MPWRDLCTL PHY1 (0x021b4850) = 0x%08X\n", readl(P1_IPS + MPWRDLCTL));
-+	pr_debug("\n");
-+	/*
-+	 * registers below are for debugging purposes
-+	 * these print out the upper and lower boundaries captured during read DQS gating calibration
-+	 */
-+	pr_debug("Status registers, upper and lower bounds, for read DQS gating. \n");
-+	pr_debug("MPDGHWST0 PHY0 (0x021b087c) = 0x%08X\n", readl(P0_IPS + MPDGHWST0));
-+	pr_debug("MPDGHWST1 PHY0 (0x021b0880) = 0x%08X\n", readl(P0_IPS + MPDGHWST1));
-+	pr_debug("MPDGHWST2 PHY0 (0x021b0884) = 0x%08X\n", readl(P0_IPS + MPDGHWST2));
-+	pr_debug("MPDGHWST3 PHY0 (0x021b0888) = 0x%08X\n", readl(P0_IPS + MPDGHWST3));
-+	pr_debug("MPDGHWST0 PHY1 (0x021b487c) = 0x%08X\n", readl(P1_IPS + MPDGHWST0));
-+	pr_debug("MPDGHWST1 PHY1 (0x021b4880) = 0x%08X\n", readl(P1_IPS + MPDGHWST1));
-+	pr_debug("MPDGHWST2 PHY1 (0x021b4884) = 0x%08X\n", readl(P1_IPS + MPDGHWST2));
-+	pr_debug("MPDGHWST3 PHY1 (0x021b4888) = 0x%08X\n", readl(P1_IPS + MPDGHWST3));
-+
-+	return errorcount;
-+}
-+
-+#ifdef MMDC_SOFTWARE_CALIBRATION
-+
-+static void mmdc_set_dqs(u32 value)
-+{
-+	value |= value << 8 | value << 16 | value << 24;
-+
-+	writel(value, P0_IPS + MPRDDLCTL);
-+
-+	if (data_bus_size == 0x2)
-+		writel(value, P1_IPS + MPRDDLCTL);
-+}
-+
-+static void mmdc_set_wr_delay(u32 value)
-+{
-+	value |= value << 8 | value << 16 | value << 24;
-+
-+	writel(value, P0_IPS + MPWRDLCTL);
-+
-+	if (data_bus_size == 0x2)
-+		writel(value, P1_IPS + MPWRDLCTL);
-+}
-+
-+static void mmdc_issue_write_access(void __iomem *base)
-+{
-+	u32 v;
-+
-+	/*
-+	 * Issue a write access to the external DDR device by setting the bit SW_DUMMY_WR (bit 0)
-+	 * in the MPSWDAR0 and then poll this bit until it clears to indicate completion of the
-+	 * write access.
-+	 */
-+
-+	v = readl(P0_IPS + MPSWDAR);
-+	v |= (1 << 0);
-+	writel(v, P0_IPS + MPSWDAR);
-+
-+	while (readl(P0_IPS + MPSWDAR) & 0x00000001);
-+}
-+
-+static void mmdc_issue_read_access(void __iomem *base)
-+{
-+	/*
-+	 * Issue a write access to the external DDR device by setting the bit SW_DUMMY_WR (bit 0)
-+	 * in the MPSWDAR0 and then poll this bit until it clears to indicate completion of the
-+	 * write access.
-+	 */
-+
-+	v = readl(P0_IPS + MPSWDAR);
-+	v |= (1 << 1);
-+	writel(v, P0_IPS + MPSWDAR);
-+
-+	while (readl(P0_IPS + MPSWDAR) & 0x00000002);
-+}
-+
-+static int total_lower[2] = { 0x0, 0x0 };
-+static int total_upper[2] = { 0xff, 0xff };
-+
-+static int mmdc_is_valid(void __iomem *base, int delay, int rd)
-+{
-+	u32 val;
-+
-+	if (rd)
-+		mmdc_set_dqs(delay);
-+	else
-+		mmdc_set_wr_delay(delay);
-+
-+	mmdc_force_delay_measurement();
-+
-+	mdelay(1);
-+
-+	if (!rd)
-+		mmdc_issue_write_access(base);
-+
-+	mmdc_issue_read_access(base);
-+
-+	val = readl(base + MPSWDAR);
-+
-+	if ((val & 0x3c) == 0x3c)
-+		return 1;
-+	else
-+		return 0;
-+#ifdef MMDC_SOFWARE_CALIB_COMPARE_RESULTS
-+	if ((val & 0x3c) == 0x3c) {
-+		if (lower < 0)
-+			lower = i;
-+	}
-+
-+	if ((val & 0x3c) != 0x3c) {
-+		if (lower > 0 && upper < 0)
-+			upper = i;
-+	}
-+
-+	pr_debug("0x%02x: compare: 0x%08x ", i, readl(P0_IPS + MPSWDAR));
-+	for (j = 0; j < 8; j++) {
-+		pr_debug("0x%08x ", readl(P0_IPS + 0x898 + j * 4));
-+	}
-+	pr_debug("\n");
-+#endif
-+}
-+
-+static void mmdc_sw_read_calib(int ch, u32 wr_value)
-+{
-+	int rd = 1;
-+	void __iomem *base;
-+	int i;
-+	int lower = 0x0, upper = 0x7f;
-+
-+	if (ch)
-+		base = (void *)P1_IPS;
-+	else
-+		base = (void *)P0_IPS;
-+
-+	/* 1. Precharge */
-+	mmdc_precharge_all(cs0_enable, cs1_enable);
-+
-+	/* 2. Configure pre-defined value */
-+	writel(wr_value, P0_IPS + MPPDCMPR1);
-+
-+	/* 3. Issue write access */
-+	mmdc_issue_write_access(base);
-+
-+	for (i = 0; i < 100; i++) {
-+		if (mmdc_is_valid(base, 0x40, rd)) {
-+			goto middle_passed;
-+		}
-+	}
-+
-+	pr_debug("ch: %d value: 0x%08x middle test failed\n", ch, wr_value);
-+	return;
-+
-+middle_passed:
-+	for (i = 0x40; i < 0x7f; i++) {
-+		if (!mmdc_is_valid(base, i, rd)) {
-+			upper = i;
-+			break;
-+		}
-+	}
-+
-+	for (i = 0; i < 100; i++) {
-+		if (mmdc_is_valid(base, 0x40, rd)) {
-+			goto go_on;
-+		}
-+	}
-+
-+	pr_debug("ch: %d value: 0x%08x middle test 1 failed\n", ch, wr_value);
-+	return;
-+
-+go_on:
-+	for (i = 0x40; i >= 0; i--) {
-+		if (!mmdc_is_valid(base, i, rd)) {
-+			lower = i;
-+			break;
-+		}
-+	}
-+
-+	if (lower > total_lower[ch])
-+		total_lower[ch] = lower;
-+
-+	if (upper < total_upper[ch])
-+		total_upper[ch] = upper;
-+
-+	pr_debug("ch: %d value: 0x%08x lower: %-3d upper: %-3d\n", ch, wr_value, lower, upper);
-+}
-+
-+static void mmdc_sw_write_calib(int ch, u32 wr_value)
-+{
-+	int rd = 0;
-+	void __iomem *base;
-+	int i;
-+	int lower = 0x0, upper = 0x7f;
-+
-+	if (ch)
-+		base = (void *)P1_IPS;
-+	else
-+		base = (void *)P0_IPS;
-+
-+	/* 1. Precharge */
-+	mmdc_precharge_all(cs0_enable, cs1_enable);
-+
-+	/* 2. Configure pre-defined value */
-+	writel(wr_value, P0_IPS + MPPDCMPR1);
-+
-+	/* 3. Issue write access */
-+	mmdc_issue_write_access(base);
-+
-+	for (i = 0; i < 100; i++) {
-+		if (mmdc_is_valid(base, 0x40, rd)) {
-+			goto middle_passed;
-+		}
-+	}
-+
-+	pr_debug("ch: %d value: 0x%08x middle test failed\n", ch, wr_value);
-+	return;
-+
-+middle_passed:
-+	for (i = 0x40; i < 0x7f; i++) {
-+		if (!mmdc_is_valid(base, i, rd)) {
-+			upper = i;
-+			break;
-+		}
-+	}
-+
-+	for (i = 0; i < 100; i++) {
-+		if (mmdc_is_valid(base, 0x40, rd)) {
-+			goto go_on;
-+		}
-+	}
-+
-+	pr_debug("ch: %d value: 0x%08x middle test 1 failed\n", ch, wr_value);
-+	return;
-+
-+go_on:
-+	for (i = 0x40; i >= 0; i--) {
-+		if (!mmdc_is_valid(base, i, rd)) {
-+			lower = i;
-+			break;
-+		}
-+	}
-+
-+	if (lower > total_lower[ch])
-+		total_lower[ch] = lower;
-+
-+	if (upper < total_upper[ch])
-+		total_upper[ch] = upper;
-+
-+	pr_debug("ch: %d value: 0x%08x lower: %-3d upper: %-3d\n", ch, wr_value, lower, upper);
-+}
-+
-+int mmdc_do_software_calibration(void)
-+{
-+	u32 s;
-+	int ch;
-+
-+	for (ch = 0; ch < 2; ch++) {
-+		mmdc_sw_read_calib(ch, 0x00000055);
-+		mmdc_sw_read_calib(ch, 0x00005500);
-+		mmdc_sw_read_calib(ch, 0x00550000);
-+		mmdc_sw_read_calib(ch, 0x55000000);
-+		mmdc_sw_read_calib(ch, 0x00ffff00);
-+		mmdc_sw_read_calib(ch, 0xff0000ff);
-+		mmdc_sw_read_calib(ch, 0x55aaaa55);
-+		mmdc_sw_read_calib(ch, 0xaa5555aa);
-+
-+		for (s = 1; s; s <<= 1)
-+			mmdc_sw_read_calib(ch, s);
-+	}
-+
-+	printk("ch0 total lower: %d upper: %d avg: 0x%02x\n",
-+			total_lower[0], total_upper[0],
-+			(total_lower[0] + total_upper[0]) / 2);
-+	printk("ch1 total lower: %d upper: %d avg: 0x%02x\n",
-+			total_lower[1], total_upper[1],
-+			(total_lower[1] + total_upper[1]) / 2);
-+
-+	mmdc_set_dqs(0x40);
-+
-+	total_lower[0] = 0;
-+	total_lower[1] = 0;
-+	total_upper[0] = 0xff;
-+	total_upper[1] = 0xff;
-+
-+	for (ch = 0; ch < 2; ch++) {
-+		mmdc_sw_write_calib(ch, 0x00000055);
-+		mmdc_sw_write_calib(ch, 0x00005500);
-+		mmdc_sw_write_calib(ch, 0x00550000);
-+		mmdc_sw_write_calib(ch, 0x55000000);
-+		mmdc_sw_write_calib(ch, 0x00ffff00);
-+		mmdc_sw_write_calib(ch, 0xff0000ff);
-+		mmdc_sw_write_calib(ch, 0x55aaaa55);
-+		mmdc_sw_write_calib(ch, 0xaa5555aa);
-+
-+		for (s = 1; s; s <<= 1)
-+			mmdc_sw_write_calib(ch, s);
-+	}
-+
-+	printk("ch0 total lower: %d upper: %d avg: 0x%02x\n",
-+			total_lower[0], total_upper[0],
-+			(total_lower[0] + total_upper[0]) / 2);
-+	printk("ch1 total lower: %d upper: %d avg: 0x%02x\n",
-+			total_lower[1], total_upper[1],
-+			(total_lower[1] + total_upper[1]) / 2);
-+
-+	return 0;
-+}
-+
-+#endif /* MMDC_SOFTWARE_CALIBRATION */
-diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-new file mode 100644
-index 0000000..4ad939e
---- /dev/null
-+++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-@@ -0,0 +1,7 @@
-+#ifndef __MACH_MMDC_H
-+#define __MACH_MMDC_H
-+
-+int mmdc_do_write_level_calibration(void);
-+int mmdc_do_dqs_calibration(void);
-+
-+#endif /* __MACH_MMDC_H */
+ static inline struct device_d *imx6_add_i2c0(struct i2c_platform_data *pdata)
+ {
+ 	return imx_add_i2c((void *)MX6_I2C1_BASE_ADDR, 0, pdata);
 -- 
 1.8.2.rc2
 
