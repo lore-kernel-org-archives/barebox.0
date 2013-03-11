@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp16.mail.ru ([94.100.176.153])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEz0d-0005oV-95
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:27:08 +0000
+ id 1UEz0j-0005r9-3M
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:27:18 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 11 Mar 2013 13:26:41 +0400
-Message-Id: <1362994003-22653-11-git-send-email-shc_work@mail.ru>
+Date: Mon, 11 Mar 2013 13:26:43 +0400
+Message-Id: <1362994003-22653-13-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,180 +21,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/13] Add system controller register driver (SYSCON)
+Subject: [PATCH 13/13] serial: clps711x: Migrate to using SYSCON driver
 To: barebox@lists.infradead.org
 
-This patch adds support for system controller register driver (SYSCON).
-Code taken from Linux Kernel and adapted for using in barebox.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mfd/Kconfig  |    5 +++
- drivers/mfd/Makefile |    1 +
- drivers/mfd/syscon.c |   92 ++++++++++++++++++++++++++++++++++++++++++++++++++
- include/mfd/syscon.h |   26 ++++++++++++++
- 4 files changed, 124 insertions(+), 0 deletions(-)
- create mode 100644 drivers/mfd/syscon.c
- create mode 100644 include/mfd/syscon.h
+ arch/arm/mach-clps711x/devices.c |    4 ----
+ drivers/serial/serial_clps711x.c |   31 +++++++++++++++++++------------
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index c506d67..afb87db 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -24,6 +24,11 @@ config MFD_STMPE
- 	depends on I2C
- 	bool "STMPE-i2c driver"
+diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
+index b36013f..9eeff5c 100644
+--- a/arch/arm/mach-clps711x/devices.c
++++ b/arch/arm/mach-clps711x/devices.c
+@@ -52,15 +52,11 @@ void clps711x_setup_memcfg(int bank, u32 val)
  
-+config MFD_SYSCON
-+	bool "System Controller Register"
-+	help
-+	  Select this option to enable accessing system control registers
-+
- config MFD_TWLCORE
- 	bool
+ static struct resource uart0_resources[] = {
+ 	DEFINE_RES_MEM(UBRLCR1, SZ_4),
+-	DEFINE_RES_MEM(SYSCON1, SZ_4),
+-	DEFINE_RES_MEM(SYSFLG1, SZ_4),
+ 	DEFINE_RES_MEM(UARTDR1, SZ_4),
+ };
  
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 542fb0f..1afd52b 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
- obj-$(CONFIG_MFD_MC34708)	+= mc34708.o
- obj-$(CONFIG_MFD_MC9SDZ60)	+= mc9sdz60.o
- obj-$(CONFIG_MFD_STMPE)		+= stmpe-i2c.o
-+obj-$(CONFIG_MFD_SYSCON)	+= syscon.o
- obj-$(CONFIG_MFD_TWLCORE)	+= twl-core.o
- obj-$(CONFIG_MFD_TWL4030)	+= twl4030.o
- obj-$(CONFIG_MFD_TWL6030)	+= twl6030.o
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-new file mode 100644
-index 0000000..87d2f7c
---- /dev/null
-+++ b/drivers/mfd/syscon.c
-@@ -0,0 +1,92 @@
-+/* System Control Driver
-+ *
-+ * Based on linux driver by:
-+ *  Copyright (C) 2012 Freescale Semiconductor, Inc.
-+ *  Copyright (C) 2012 Linaro Ltd.
-+ *  Author: Dong Aisheng <dong.aisheng@linaro.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#include <io.h>
-+#include <init.h>
-+#include <common.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <xfuncs.h>
-+
-+#include <linux/err.h>
-+
+ static struct resource uart1_resources[] = {
+ 	DEFINE_RES_MEM(UBRLCR2, SZ_4),
+-	DEFINE_RES_MEM(SYSCON2, SZ_4),
+-	DEFINE_RES_MEM(SYSFLG2, SZ_4),
+ 	DEFINE_RES_MEM(UARTDR2, SZ_4),
+ };
+ 
+diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
+index 21d0b55..cb250be 100644
+--- a/drivers/serial/serial_clps711x.c
++++ b/drivers/serial/serial_clps711x.c
+@@ -15,18 +15,21 @@
+ #include <io.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
 +#include <mfd/syscon.h>
+ 
+ #include <mach/clps711x.h>
+ 
+ struct clps711x_uart {
+ 	void __iomem		*UBRLCR;
+-	void __iomem		*SYSCON;
+-	void __iomem		*SYSFLG;
+ 	void __iomem		*UARTDR;
++	void __iomem		*syscon;
+ 	struct clk		*uart_clk;
+ 	struct console_device	cdev;
+ };
+ 
++#define SYSCON(x)	((x)->syscon + 0x00)
++#define SYSFLG(x)	((x)->syscon + 0x40)
 +
-+struct syscon {
-+	void __iomem *base;
-+};
+ static int clps711x_setbaudrate(struct console_device *cdev, int baudrate)
+ {
+ 	struct clps711x_uart *s = cdev->dev->priv;
+@@ -48,7 +51,7 @@ static void clps711x_init_port(struct console_device *cdev)
+ 	u32 tmp;
+ 
+ 	/* Disable the UART */
+-	writel(readl(s->SYSCON) & ~SYSCON_UARTEN, s->SYSCON);
++	writel(readl(SYSCON(s)) & ~SYSCON_UARTEN, SYSCON(s));
+ 
+ 	/* Setup Line Control Register */
+ 	tmp = readl(s->UBRLCR) & UBRLCR_BAUD_MASK;
+@@ -59,7 +62,7 @@ static void clps711x_init_port(struct console_device *cdev)
+ 	clps711x_setbaudrate(cdev, CONFIG_BAUDRATE);
+ 
+ 	/* Enable the UART */
+-	writel(readl(s->SYSCON) | SYSCON_UARTEN, s->SYSCON);
++	writel(readl(SYSCON(s)) | SYSCON_UARTEN, SYSCON(s));
+ }
+ 
+ static void clps711x_putc(struct console_device *cdev, char c)
+@@ -67,7 +70,7 @@ static void clps711x_putc(struct console_device *cdev, char c)
+ 	struct clps711x_uart *s = cdev->dev->priv;
+ 
+ 	/* Wait until there is space in the FIFO */
+-	while (readl(s->SYSFLG) & SYSFLG_UTXFF)
++	while (readl(SYSFLG(s)) & SYSFLG_UTXFF)
+ 		barrier();
+ 
+ 	/* Send the character */
+@@ -80,7 +83,7 @@ static int clps711x_getc(struct console_device *cdev)
+ 	u16 data;
+ 
+ 	/* Wait until there is data in the FIFO */
+-	while (readl(s->SYSFLG) & SYSFLG_URXFE)
++	while (readl(SYSFLG(s)) & SYSFLG_URXFE)
+ 		barrier();
+ 
+ 	data = readw(s->UARTDR);
+@@ -96,31 +99,35 @@ static int clps711x_tstc(struct console_device *cdev)
+ {
+ 	struct clps711x_uart *s = cdev->dev->priv;
+ 
+-	return !(readl(s->SYSFLG) & SYSFLG_URXFE);
++	return !(readl(SYSFLG(s)) & SYSFLG_URXFE);
+ }
+ 
+ static void clps711x_flush(struct console_device *cdev)
+ {
+ 	struct clps711x_uart *s = cdev->dev->priv;
+ 
+-	while (readl(s->SYSFLG) & SYSFLG_UBUSY)
++	while (readl(SYSFLG(s)) & SYSFLG_UBUSY)
+ 		barrier();
+ }
+ 
+ static int clps711x_probe(struct device_d *dev)
+ {
+ 	struct clps711x_uart *s;
++	char syscon_dev[18];
+ 
+-	BUG_ON(dev->num_resources != 4);
++	BUG_ON(dev->num_resources != 2);
++	BUG_ON((dev->id != 0) && (dev->id != 1));
+ 
+ 	s = xzalloc(sizeof(struct clps711x_uart));
+ 	s->uart_clk = clk_get(dev, NULL);
+ 	BUG_ON(IS_ERR(s->uart_clk));
+ 
+ 	s->UBRLCR = dev_get_mem_region(dev, 0);
+-	s->SYSCON = dev_get_mem_region(dev, 1);
+-	s->SYSFLG = dev_get_mem_region(dev, 2);
+-	s->UARTDR = dev_get_mem_region(dev, 3);
++	s->UARTDR = dev_get_mem_region(dev, 1);
 +
-+void __iomem *syscon_base_lookup_by_pdevname(const char *s)
-+{
-+	struct syscon *syscon;
-+	struct device_d *dev;
-+
-+	for_each_device(dev) {
-+		if (!strcmp(dev_name(dev), s)) {
-+			syscon = dev->priv;
-+			return syscon->base;
-+		}
-+	}
-+
-+	return ERR_PTR(-ENODEV);
-+}
-+
-+static int syscon_probe(struct device_d *dev)
-+{
-+	struct syscon *syscon;
-+	struct resource *res;
-+
-+	syscon = xzalloc(sizeof(struct syscon));
-+	if (!syscon)
-+		return -ENOMEM;
-+
-+	res = dev_get_resource(dev, 0);
-+	if (!res) {
-+		free(syscon);
-+		return -ENOENT;
-+	}
-+
-+	res = request_iomem_region(dev_name(dev), res->start, res->end);
-+	if (!res) {
-+		free(syscon);
-+		return -EBUSY;
-+	}
-+
-+	syscon->base = (void __iomem *)res->start;
-+	dev->priv = syscon;
-+
-+	dev_info(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
-+
-+	return 0;
-+}
-+
-+static struct platform_device_id syscon_ids[] = {
-+	{ "syscon", },
-+	{ }
-+};
-+
-+static struct driver_d syscon_driver = {
-+	.name		= "syscon",
-+	.probe		= syscon_probe,
-+	.id_table	= syscon_ids,
-+};
-+
-+static int __init syscon_init(void)
-+{
-+	return platform_driver_register(&syscon_driver);
-+}
-+core_initcall(syscon_init);
-+
-+MODULE_AUTHOR("Dong Aisheng <dong.aisheng@linaro.org>");
-+MODULE_DESCRIPTION("System Control driver");
-+MODULE_LICENSE("GPL v2");
-diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
-new file mode 100644
-index 0000000..68432b7
---- /dev/null
-+++ b/include/mfd/syscon.h
-@@ -0,0 +1,26 @@
-+/* System Control Driver
-+ *
-+ * Based on linux driver by:
-+ *  Copyright (C) 2012 Freescale Semiconductor, Inc.
-+ *  Copyright (C) 2012 Linaro Ltd.
-+ *  Author: Dong Aisheng <dong.aisheng@linaro.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#ifndef __MFD_SYSCON_H__
-+#define __MFD_SYSCON_H__
-+
-+#ifdef CONFIG_MFD_SYSCON
-+void __iomem *syscon_base_lookup_by_pdevname(const char *);
-+#else
-+static inline void __iomem *syscon_base_lookup_by_pdevname(const char *)
-+{
-+	return NULL;
-+}
-+#endif
-+
-+#endif
++	sprintf(syscon_dev, "clps711x-syscon%i", dev->id + 1);
++	s->syscon = syscon_base_lookup_by_pdevname(syscon_dev);
++	BUG_ON(IS_ERR(s->syscon));
+ 
+ 	dev->priv	= s;
+ 	s->cdev.dev	= dev;
 -- 
 1.7.3.4
 
