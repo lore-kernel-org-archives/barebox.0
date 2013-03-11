@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp16.mail.ru ([94.100.176.153])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEz0P-0005jf-L1
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:55 +0000
+ id 1UEz0U-0005lZ-GU
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:27:01 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 11 Mar 2013 13:26:34 +0400
-Message-Id: <1362994003-22653-4-git-send-email-shc_work@mail.ru>
+Date: Mon, 11 Mar 2013 13:26:37 +0400
+Message-Id: <1362994003-22653-7-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,180 +21,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/13] ARM: clps711x: Add clocksource driver
+Subject: [PATCH 07/13] ARM: clps711x: Add GPIO driver
 To: barebox@lists.infradead.org
 
-This patch adds clocksource driver for CLPS711X targets and adds
-support to platform to use this new driver.
+This patch adds support for CLPS711X GPIOs. Driver based on
+generic GPIO driver.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/Kconfig               |    1 +
- arch/arm/mach-clps711x/clock.c |   51 ++++++++++++++++-----------------
- drivers/clocksource/Kconfig    |    4 ++
- drivers/clocksource/Makefile   |    1 +
- drivers/clocksource/clps711x.c |   61 ++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 92 insertions(+), 26 deletions(-)
- create mode 100644 drivers/clocksource/clps711x.c
+ arch/arm/Kconfig                           |    1 +
+ arch/arm/mach-clps711x/devices.c           |   82 ++++++++++++++++++++++++++++
+ arch/arm/mach-clps711x/include/mach/gpio.h |    3 +
+ drivers/gpio/Kconfig                       |    7 +++
+ drivers/gpio/Makefile                      |    1 +
+ drivers/gpio/gpio-clps711x.c               |   70 ++++++++++++++++++++++++
+ 6 files changed, 164 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/mach-clps711x/include/mach/gpio.h
+ create mode 100644 drivers/gpio/gpio-clps711x.c
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 7ac134e..c608454 100644
+index 6463746..ed0b453 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -39,6 +39,7 @@ config ARCH_BCM2835
- config ARCH_CLPS711X
- 	bool "Cirrus Logic EP711x/EP721x/EP731x"
- 	select CLKDEV_LOOKUP
-+	select CLOCKSOURCE_CLPS711X
+@@ -42,6 +42,7 @@ config ARCH_CLPS711X
+ 	select CLOCKSOURCE_CLPS711X
+ 	select COMMON_CLK
  	select CPU_32v4T
++	select GPIOLIB
  
  config ARCH_EP93XX
-diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
-index 09cbaf9..e957662 100644
---- a/arch/arm/mach-clps711x/clock.c
-+++ b/arch/arm/mach-clps711x/clock.c
-@@ -9,25 +9,18 @@
- 
- #include <common.h>
- #include <init.h>
--#include <clock.h>
-+#include <sizes.h>
- #include <asm/io.h>
- #include <linux/clkdev.h>
- 
- #include <mach/clps711x.h>
- 
-+#define CLPS711X_OSC_FREQ	3686400
-+#define CLPS711X_EXT_FREQ	13000000
-+
- static struct clk {
- 	unsigned long	rate;
--} uart_clk, bus_clk;
--
--static uint64_t clocksource_read(void)
--{
--	return ~readw(TC2D);
--}
--
--static struct clocksource cs = {
--	.read	= clocksource_read,
--	.mask	= CLOCKSOURCE_MASK(16),
--};
-+} uart_clk, bus_clk, timer_clk;
- 
- unsigned long clk_get_rate(struct clk *clk)
- {
-@@ -50,22 +43,19 @@ EXPORT_SYMBOL(clk_disable);
- 
- static int clocks_init(void)
- {
--	int osc, ext, pll, cpu, timer;
-+	int pll, cpu;
- 	u32 tmp;
- 
--	osc = 3686400;
--	ext = 13000000;
--
- 	tmp = readl(PLLR) >> 24;
- 	if (tmp)
--		pll = (osc * tmp) / 2;
-+		pll = (CLPS711X_OSC_FREQ * tmp) / 2;
- 	else
- 		pll = 73728000; /* Default value for old CPUs */
- 
- 	tmp = readl(SYSFLG2);
- 	if (tmp & SYSFLG2_CKMODE) {
--		cpu = ext;
--		bus_clk.rate = cpu;
-+		cpu = CLPS711X_EXT_FREQ;
-+		bus_clk.rate = CLPS711X_EXT_FREQ;
- 	} else {
- 		cpu = pll;
- 		if (cpu >= 36864000)
-@@ -74,25 +64,23 @@ static int clocks_init(void)
- 			bus_clk.rate = 36864000 / 2;
+ 	bool "Cirrus Logic EP93xx"
+diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
+index 6221da3..f94b584 100644
+--- a/arch/arm/mach-clps711x/devices.c
++++ b/arch/arm/mach-clps711x/devices.c
+@@ -111,3 +111,85 @@ void clps711x_add_uart(unsigned int id)
+ 		break;
  	}
- 
--	uart_clk.rate = bus_clk.rate / 10;
-+	uart_clk.rate = DIV_ROUND_CLOSEST(bus_clk.rate, 10);
- 
- 	if (tmp & SYSFLG2_CKMODE) {
- 		tmp = readw(SYSCON2);
- 		if (tmp & SYSCON2_OSTB)
--			timer = ext / 26;
-+			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
- 		else
--			timer = 541440;
-+			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
- 	} else
--		timer = cpu / 144;
-+		timer_clk.rate = DIV_ROUND_CLOSEST(cpu, 144);
- 
- 	tmp = readl(SYSCON1);
- 	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
- 	tmp |= SYSCON1_TC2S;	/* High frequency source */
- 	writel(tmp, SYSCON1);
- 
--	clocks_calc_mult_shift(&cs.mult, &cs.shift, timer, NSEC_PER_SEC, 10);
--
--	return init_clock(&cs);
-+	return 0;
  }
- core_initcall(clocks_init);
- 
-@@ -100,6 +88,7 @@ static struct clk_lookup clocks_lookups[] = {
- 	CLKDEV_CON_ID("bus", &bus_clk),
- 	CLKDEV_DEV_ID("clps711x_serial0", &uart_clk),
- 	CLKDEV_DEV_ID("clps711x_serial1", &uart_clk),
-+	CLKDEV_DEV_ID("clps711x-cs", &timer_clk),
- };
- 
- static int clkdev_init(void)
-@@ -109,3 +98,13 @@ static int clkdev_init(void)
- 	return 0;
- }
- postcore_initcall(clkdev_init);
 +
-+static const char *clps711x_clocksrc_name = "clps711x-cs";
++static struct resource gpio0_resources[] = {
++	{
++		.start	= PADR,
++		.end	= PADR,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= PADDR,
++		.end	= PADDR,
++		.flags	= IORESOURCE_MEM,
++	},
++};
 +
-+static __init int clps711x_core_init(void)
++static struct resource gpio1_resources[] = {
++	{
++		.start	= PBDR,
++		.end	= PBDR,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= PBDDR,
++		.end	= PBDDR,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct resource gpio2_resources[] = {
++	{
++		.start	= PCDR,
++		.end	= PCDR,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= PCDDR,
++		.end	= PCDDR,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct resource gpio3_resources[] = {
++	{
++		.start	= PDDR,
++		.end	= PDDR,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= PDDDR,
++		.end	= PDDDR,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static struct resource gpio4_resources[] = {
++	{
++		.start	= PEDR,
++		.end	= PEDR,
++		.flags	= IORESOURCE_MEM,
++	},
++	{
++		.start	= PEDDR,
++		.end	= PEDDR,
++		.flags	= IORESOURCE_MEM,
++	},
++};
++
++static __init int clps711x_gpio_init(void)
 +{
-+	add_generic_device(clps711x_clocksrc_name, DEVICE_ID_SINGLE, NULL,
-+			   TC2D, SZ_2, IORESOURCE_MEM, NULL);
++	add_generic_device_res("clps711x-gpio", 0, gpio0_resources,
++			       ARRAY_SIZE(gpio0_resources), NULL);
++	add_generic_device_res("clps711x-gpio", 1, gpio1_resources,
++			       ARRAY_SIZE(gpio1_resources), NULL);
++	add_generic_device_res("clps711x-gpio", 2, gpio2_resources,
++			       ARRAY_SIZE(gpio2_resources), NULL);
++	add_generic_device_res("clps711x-gpio", 3, gpio3_resources,
++			       ARRAY_SIZE(gpio3_resources), NULL);
++	add_generic_device_res("clps711x-gpio", 4, gpio4_resources,
++			       ARRAY_SIZE(gpio4_resources), NULL);
++
 +	return 0;
 +}
-+coredevice_initcall(clps711x_core_init);
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 3f27cf2..9f3558b 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -10,6 +10,10 @@ config CLOCKSOURCE_BCM2835
- 	bool
++coredevice_initcall(clps711x_gpio_init);
+diff --git a/arch/arm/mach-clps711x/include/mach/gpio.h b/arch/arm/mach-clps711x/include/mach/gpio.h
+new file mode 100644
+index 0000000..3428fe5
+--- /dev/null
++++ b/arch/arm/mach-clps711x/include/mach/gpio.h
+@@ -0,0 +1,3 @@
++#include <asm-generic/gpio.h>
++
++#define CLPS711X_GPIO(prt,bit)	((prt) * 8 + (bit))
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index 895eb68..ea07028 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -13,6 +13,13 @@ config GPIO_BCM2835
+ 	bool "GPIO support for BCM2835"
  	depends on ARCH_BCM2835
  
-+config CLOCKSOURCE_CLPS711X
-+	bool
++config GPIO_CLPS711X
++	bool "GPIO support for CLPS711X"
 +	depends on ARCH_CLPS711X
++	select GPIO_GENERIC
++	help
++	  Say yes here to enable the GPIO driver for the CLPS711X CPUs
 +
- config CLOCKSOURCE_NOMADIK
- 	bool
- 	depends on ARM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index b0bc8bd..d919881 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
- obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
-+obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/clps711x.c b/drivers/clocksource/clps711x.c
+ config GPIO_GENERIC_PLATFORM
+ 	bool "Generic memory-mapped GPIO controller support"
+ 	select GPIO_GENERIC
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 1ef345c..00acb68 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -1,5 +1,6 @@
+ obj-$(CONFIG_GPIOLIB)		+= gpio.o
+ obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
++obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
+ obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
+ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
+diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
 new file mode 100644
-index 0000000..8c379d3
+index 0000000..feead51
 --- /dev/null
-+++ b/drivers/clocksource/clps711x.c
-@@ -0,0 +1,61 @@
++++ b/drivers/gpio/gpio-clps711x.c
+@@ -0,0 +1,70 @@
 +/*
 + * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
 + *
@@ -204,58 +194,67 @@ index 0000000..8c379d3
 + * the License, or (at your option) any later version.
 + */
 +
-+#include <common.h>
-+#include <clock.h>
-+#include <io.h>
 +#include <init.h>
++#include <common.h>
++#include <malloc.h>
 +
-+#include <linux/clk.h>
-+#include <linux/err.h>
++#include <linux/basic_mmio_gpio.h>
 +
-+static __iomem void *clps711x_timer_base;
-+
-+static uint64_t clps711x_cs_read(void)
++static int clps711x_gpio_probe(struct device_d *dev)
 +{
-+	return ~readw(clps711x_timer_base);
-+}
++	int err;
++	void __iomem *dat, *dir = NULL, *dir_inv = NULL;
++	struct bgpio_chip *bgc;
 +
-+static struct clocksource clps711x_cs = {
-+	.read = clps711x_cs_read,
-+	.mask = CLOCKSOURCE_MASK(16),
-+};
++	if ((dev->id < 0) || (dev->id > 4))
++		return -ENODEV;
 +
-+static int clps711x_cs_probe(struct device_d *dev)
-+{
-+	u32 rate;
-+	struct clk *timer_clk;
-+
-+	timer_clk = clk_get(dev, NULL);
-+	if (IS_ERR(timer_clk))
-+		return PTR_ERR(timer_clk);
-+
-+	rate = clk_get_rate(timer_clk);
-+	clps711x_timer_base = dev_request_mem_region(dev, 0);
-+	if (!clps711x_timer_base) {
-+		clk_put(timer_clk);
-+		return -ENOENT;
++	dat = dev_request_mem_region(dev, 0);
++	switch (dev->id) {
++	case 3:
++		dir_inv = dev_request_mem_region(dev, 1);
++		break;
++	default:
++		dir = dev_request_mem_region(dev, 1);
++		break;
 +	}
 +
-+	clocks_calc_mult_shift(&clps711x_cs.mult, &clps711x_cs.shift, rate,
-+			       NSEC_PER_SEC, 10);
++	if (!dat || (!dir && !dir_inv))
++		return -EINVAL;
 +
-+	return init_clock(&clps711x_cs);
++	bgc = xzalloc(sizeof(struct bgpio_chip));
++	if (!bgc)
++		return -ENOMEM;
++
++	err = bgpio_init(bgc, dev, 1, dat, NULL, NULL, dir, dir_inv, 0);
++	if (err) {
++		free(bgc);
++		return err;
++	}
++
++	bgc->gc.base = dev->id * 8;
++	switch (dev->id) {
++	case 4:
++		bgc->gc.ngpio = 3;
++		break;
++	default:
++		bgc->gc.ngpio = 8;
++		break;
++	}
++
++	return gpiochip_add(&bgc->gc);
 +}
 +
-+static struct driver_d clps711x_cs_driver = {
-+	.name = "clps711x-cs",
-+	.probe = clps711x_cs_probe,
++static struct driver_d clps711x_gpio_driver = {
++	.name	= "clps711x-gpio",
++	.probe	= clps711x_gpio_probe,
 +};
 +
-+static __init int clps711x_cs_init(void)
++static __init int clps711x_gpio_register(void)
 +{
-+	return platform_driver_register(&clps711x_cs_driver);
++	return platform_driver_register(&clps711x_gpio_driver);
 +}
-+coredevice_initcall(clps711x_cs_init);
++coredevice_initcall(clps711x_gpio_register);
 -- 
 1.7.3.4
 
