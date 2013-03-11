@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp16.mail.ru ([94.100.176.153])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEz0N-0005ii-Fz
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:52 +0000
+ id 1UEz0M-0005iP-DI
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:51 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 11 Mar 2013 13:26:32 +0400
-Message-Id: <1362994003-22653-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
-References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
+Date: Mon, 11 Mar 2013 13:26:31 +0400
+Message-Id: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,55 +19,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] ARM: clps711x: Fix setup bus wait state scaling factor
- for 13Mhz mode
+Subject: [PATCH 01/13] ARM: clep7212: Migrate to config-board
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-clps711x/lowlevel.c |   16 ++++++++++------
- 1 files changed, 10 insertions(+), 6 deletions(-)
+ arch/arm/boards/clep7212/env/config       |   20 --------------------
+ arch/arm/boards/clep7212/env/config-board |   14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 20 deletions(-)
+ delete mode 100644 arch/arm/boards/clep7212/env/config
+ create mode 100644 arch/arm/boards/clep7212/env/config-board
 
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index 193f61a..58306f2 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -21,12 +21,12 @@ void __naked __bare_init clps711x_barebox_entry(u32 pllmult)
- {
- 	u32 cpu, bus;
- 
--	/* Setup base clocking, Enable SDQM pins  */
--	writel(SYSCON3_CLKCTL0 | SYSCON3_CLKCTL1, SYSCON3);
--	asm("nop");
+diff --git a/arch/arm/boards/clep7212/env/config b/arch/arm/boards/clep7212/env/config
+deleted file mode 100644
+index e8f2c3a..0000000
+--- a/arch/arm/boards/clep7212/env/config
++++ /dev/null
+@@ -1,20 +0,0 @@
+-#!/bin/sh
 -
- 	/* Check if we running from external 13 MHz clock */
- 	if (!(readl(SYSFLG2) & SYSFLG2_CKMODE)) {
-+		/* Setup bus wait state scaling factor to 2  */
-+		writel(SYSCON3_CLKCTL0 | SYSCON3_CLKCTL1, SYSCON3);
-+		asm("nop");
+-global.hostname=clps711x
+-
+-# set to false if you do not want to have colors
+-global.allow_color=true
+-
+-# user (used for network filenames)
+-global.user=anonymous
+-
+-# timeout in seconds before the default boot entry is started
+-global.autoboot_timeout=2
+-
+-# default boot entry (one of /env/boot/*)
+-if [ -e /dev/nor0 ]; then
+-	global.boot.default=nor
+-fi
+-
+-# default bootargs
+-global.linux.bootargs.base="earlyprintk console=ttyCL0,57600n8"
+diff --git a/arch/arm/boards/clep7212/env/config-board b/arch/arm/boards/clep7212/env/config-board
+new file mode 100644
+index 0000000..3cf699a
+--- /dev/null
++++ b/arch/arm/boards/clep7212/env/config-board
+@@ -0,0 +1,14 @@
++#!/bin/sh
 +
- 		/* Check valid multiplier, default to 74 MHz */
- 		if ((pllmult < 20) || (pllmult > 50))
- 			pllmult = 40;
-@@ -42,11 +42,15 @@ void __naked __bare_init clps711x_barebox_entry(u32 pllmult)
- 			cpu = pllmult * 3686400;
- 
- 		if (cpu >= 36864000)
--			bus = cpu /2;
-+			bus = cpu / 2;
- 		else
- 			bus = 36864000 / 2;
--	} else
-+	} else {
- 		bus = 13000000;
-+		/* Setup bus wait state scaling factor to 1  */
-+		writel(0, SYSCON3);
-+		asm("nop");
-+	}
- 
- 	/* CLKEN select, SDRAM width=32 */
- 	writel(SYSCON2_CLKENSL, SYSCON2);
++global.hostname=clps711x
++
++# Timeout in seconds before the default boot entry is started
++global.autoboot_timeout=2
++
++# Default boot entry (one of /env/boot/*)
++if [ -e /dev/nor0 ]; then
++	global.boot.default=nor
++fi
++
++# Board bootargs
++global.linux.bootargs.base="earlyprintk console=ttyCL0,57600n8"
 -- 
 1.7.3.4
 
