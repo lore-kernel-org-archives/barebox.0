@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f308.mail.ru ([128.140.169.172])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF0cu-00052s-LX
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:10:46 +0000
-Date: Mon, 11 Mar 2013 12:10:39 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130311111039.GI1906@pengutronix.de>
+ id 1UF0si-0007rQ-IF
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:27:06 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Mon, 11 Mar 2013 15:26:59 +0400
+Message-ID: <1363001219.768144569@f308.mail.ru>
+In-Reply-To: <20130311110051.GD11170@game.jcrosoft.org>
 References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
- <1362994003-22653-4-git-send-email-shc_work@mail.ru>
- <20130311110158.GE11170@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130311110158.GE11170@game.jcrosoft.org>
+ <1362994003-22653-5-git-send-email-shc_work@mail.ru>
+ <20130311110051.GD11170@game.jcrosoft.org>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +24,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/13] ARM: clps711x: Add clocksource driver
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAwNS8xM10gQVJNOiBjbHBzNzExeDogVXNpbmcgQ09N?=
+ =?UTF-8?B?TU9OX0NMSw==?=
+To: =?UTF-8?B?SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQ=?= <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 11, 2013 at 12:01:58PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > +static int clps711x_cs_probe(struct device_d *dev)
-> > +{
-> > +	u32 rate;
-> > +	struct clk *timer_clk;
-> > +
-> > +	timer_clk = clk_get(dev, NULL);
-> > +	if (IS_ERR(timer_clk))
-> > +		return PTR_ERR(timer_clk);
-> > +
-> > +	rate = clk_get_rate(timer_clk);
-> > +	clps711x_timer_base = dev_request_mem_region(dev, 0);
-> > +	if (!clps711x_timer_base) {
-> > +		clk_put(timer_clk);
-> > +		return -ENOENT;
-> > +	}
-> this deserve a nice crash
+Hello.
 
-No, it doesn't. First of all we are very early here, so we might not even
-see the crash. Then, with devicetree probing we may often end up with
-the same devices registered from the devicetree and from the
-platform/soc. While this should find a way to avoid duplicate device
-registration, it is not nice having barebox crash in this case.
+> On 13:26 Mon 11 Mar     , Alexander Shiyan wrote:
+> > This patch adds support for COMMON_CLK API for CLPS711X targets.
+> > 
+> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+...
+> > +	/* Turn timers in free running mode */
+> >  	tmp = readl(SYSCON1);
+> > -	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
+> > -	tmp |= SYSCON1_TC2S;	/* High frequency source */
+> > +	tmp &= ~(SYSCON1_TC1M | SYSCON1_TC2M);
+> >  	writel(tmp, SYSCON1);
+> this is timer configuration not clocks
 
-Sascha
+We need to read counter value for clocksource, so we need to ensure
+that we have full range of values (0x0 - 0xffff). It mean that timer/counters
+should not be in prescaler mode. All correct.
+Thanks.
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
