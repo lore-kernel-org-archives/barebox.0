@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo4.mail-out.ovh.net ([188.165.36.253]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF1Qy-0005eb-Oe
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 12:02:29 +0000
-Received: from mail247.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id B0FDC104E561
- for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 13:13:38 +0100 (CET)
-Date: Mon, 11 Mar 2013 12:58:07 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130311115807.GG11170@game.jcrosoft.org>
-References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
- <1362994003-22653-5-git-send-email-shc_work@mail.ru>
- <20130311110051.GD11170@game.jcrosoft.org>
- <1363001219.768144569@f308.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1363001219.768144569@f308.mail.ru>
+Received: from f314.mail.ru ([128.140.169.178])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UF5Iy-00005i-Gi
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 16:10:29 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Mon, 11 Mar 2013 20:10:22 +0400
+Message-ID: <1363018222.201808769@f314.mail.ru>
+In-Reply-To: <20130310232442.GX1906@pengutronix.de>
+References: <1362594605-1083-1-git-send-email-shc_work@mail.ru>
+ <1362927660.933817593@f386.i.mail.ru> <20130310232442.GX1906@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,34 +23,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/13] ARM: clps711x: Using COMMON_CLK
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmVbMl06IFtSRkNdIE1ha2VmaWxlOiBDcmVhdGUgZW1wdHkgPGNvbmZpZy5o?=
+ =?UTF-8?B?PiBpZiB0aGlzIGhlYWRlciBmaWxlIGlzIG5vdCBuZWVkZWQgYnkgYm9hcmQ=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 15:26 Mon 11 Mar     , Alexander Shiyan wrote:
-> Hello.
-> 
-> > On 13:26 Mon 11 Mar     , Alexander Shiyan wrote:
-> > > This patch adds support for COMMON_CLK API for CLPS711X targets.
+> On Sun, Mar 10, 2013 at 07:01:00PM +0400, Alexander Shiyan wrote:
+> > > > > Patch creates empty <config.h> if this header is not needed by board.
+> > > > > This will allow to remove many empty config.h files from boards.
 > > > 
-> > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ...
-> > > +	/* Turn timers in free running mode */
-> > >  	tmp = readl(SYSCON1);
-> > > -	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
-> > > -	tmp |= SYSCON1_TC2S;	/* High frequency source */
-> > > +	tmp &= ~(SYSCON1_TC1M | SYSCON1_TC2M);
-> > >  	writel(tmp, SYSCON1);
-> > this is timer configuration not clocks
+> > > How does git incorporate with this? I think git just ignores empty files
+> > > like these, right?
+> > 
+> > When I say "empty" here, I mean about not zeroed files, but about
+> > files without any content. Now we have 50 config.h files like this.
 > 
-> We need to read counter value for clocksource, so we need to ensure
-> that we have full range of values (0x0 - 0xffff). It mean that timer/counters
-> should not be in prescaler mode. All correct.
-as on ARM this timer config no clocks
-> Thanks.
+> My question aimed in the direction whether we end up with empty files
+> in git because people accidently add these now generated files.
 > 
-> ---
+> I think the goal should be to get rid of the config.h files entirely.
+> This patch (or better: the removal of the empty files) could be a good
+> start to see what's left.
 
+OK, let's see. I will send the patch again. Second part is a cleanup.
+
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
