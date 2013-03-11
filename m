@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF0bA-0004lt-Rp
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:08:57 +0000
-Received: from mail247.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id C9DDE104E82D
- for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 12:20:08 +0100 (CET)
-Date: Mon, 11 Mar 2013 12:04:37 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130311110437.GF11170@game.jcrosoft.org>
-References: <1362924823.394544173@f371.mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UF0cu-00052s-LX
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 11:10:46 +0000
+Date: Mon, 11 Mar 2013 12:10:39 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130311111039.GI1906@pengutronix.de>
+References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
+ <1362994003-22653-4-git-send-email-shc_work@mail.ru>
+ <20130311110158.GE11170@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362924823.394544173@f371.mail.ru>
+In-Reply-To: <20130311110158.GE11170@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,34 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New dt-only arm/mach
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 04/13] ARM: clps711x: Add clocksource driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 18:13 Sun 10 Mar     , Alexander Shiyan wrote:
->    Hello All.
-> 
->    I want to add new arch into barebox. n the kernel this arch is dt-only.
->    I talking about mach-sunxi. So, how we should handle such platform
->    in the barebox? We need always provide dtb to the kernel, then where
->    it should be in barebox?
->    I think about dtb-file in /env, but not sure...
+On Mon, Mar 11, 2013 at 12:01:58PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > +static int clps711x_cs_probe(struct device_d *dev)
+> > +{
+> > +	u32 rate;
+> > +	struct clk *timer_clk;
+> > +
+> > +	timer_clk = clk_get(dev, NULL);
+> > +	if (IS_ERR(timer_clk))
+> > +		return PTR_ERR(timer_clk);
+> > +
+> > +	rate = clk_get_rate(timer_clk);
+> > +	clps711x_timer_base = dev_request_mem_region(dev, 0);
+> > +	if (!clps711x_timer_base) {
+> > +		clk_put(timer_clk);
+> > +		return -ENOENT;
+> > +	}
+> this deserve a nice crash
 
-sama5, sama9x5, sam9n12 are pure DTB kernel
+No, it doesn't. First of all we are very early here, so we might not even
+see the crash. Then, with devicetree probing we may often end up with
+the same devices registered from the devicetree and from the
+platform/soc. While this should find a way to avoid duplicate device
+registration, it is not nice having barebox crash in this case.
 
-Calxeda Highbank is pure DT with barebox dt probe
+Sascha
 
-Best Regards,
-J.
->    Thanks.
-> 
->    ---
 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
