@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFANV-000708-Vn
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 21:35:30 +0000
-Date: Mon, 11 Mar 2013 22:35:27 +0100
+ id 1UFAUb-0007Db-9l
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 21:42:50 +0000
+Date: Mon, 11 Mar 2013 22:42:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130311213527.GN1906@pengutronix.de>
+Message-ID: <20130311214247.GO1906@pengutronix.de>
 References: <1362958567-6110-1-git-send-email-vicencb@gmail.com>
- <1362958567-6110-3-git-send-email-vicencb@gmail.com>
+ <1362958567-6110-4-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362958567-6110-3-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1362958567-6110-4-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,87 +23,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] twl6030: add power button as an input key
+Subject: Re: [PATCH 3/4] OMAP4: add command to select next boot device priority
 To: Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 11, 2013 at 12:36:05AM +0100, Vicente Bergas wrote:
+On Mon, Mar 11, 2013 at 12:36:06AM +0100, Vicente Bergas wrote:
+> On OMAP4 SoC there is a SAR memory region (Save & Rescue) where the ROM
+> code reads the device to boot from.
+> This patch adds a way to set this.
 > 
-> +
-> +static int __init twl6030_pwrbtn_probe(struct device_d *dev)
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+> ---
+>  arch/arm/mach-omap/include/mach/omap4-silicon.h | 20 ++++++
+>  arch/arm/mach-omap/omap4_generic.c              | 20 ++++++
+>  commands/Kconfig                                |  5 ++
+>  commands/Makefile                               |  1 +
+>  commands/boot_order.c                           | 83 +++++++++++++++++++++++++
+>  5 files changed, 129 insertions(+)
+>  create mode 100644 commands/boot_order.c
+> 
+> +static int cmd_boot_order(int argc, char *argv[])
 > +{
-> +	struct twl6030_pwrbtn_platform_data *pdata;
-> +	struct console_device *cdev;
+> +	u32 device_list[] = {
+> +		OMAP44XX_SAR_BOOT_VOID,
+> +		OMAP44XX_SAR_BOOT_VOID,
+> +		OMAP44XX_SAR_BOOT_VOID,
+> +		OMAP44XX_SAR_BOOT_VOID,
+> +	};
+> +	int i, j = 1, do_reset = 0;
 > +
-> +	pdata = dev->platform_data;
-> +
-> +	if (!pdata) {
-> +		pr_err("missing platform_data\n");
-
-use dev_err and friends for driver messages.
-
-> +		return -ENODEV;
+> +	if (argc > 1 && strcmp(argv[1], "-r") == 0) {
+> +		do_reset = 1;
+> +		j = 2;
 > +	}
-> +
-> +	pdata->twl6030 = twl6030_get();
-> +	if (!pdata->fifo_size)
-> +		pdata->fifo_size = 4;
-> +
-> +	pdata->recv_fifo = kfifo_alloc(pdata->fifo_size);
-> +
-> +	pdata->poller.func = ic2_key_poller;
-> +
-> +	cdev = &pdata->cdev;
-> +	dev->type_data = cdev;
-> +	cdev->dev = dev;
-> +	cdev->f_caps = CONSOLE_STDIN;
-> +	cdev->tstc = twl6030_pwrbtn_tstc;
-> +	cdev->getc = twl6030_pwrbtn_getc;
-> +
-> +	console_register(&pdata->cdev);
-> +
-> +	return poller_register(&pdata->poller);
-> +}
-> +
-> +static struct driver_d twl6030_pwrbtn_driver = {
-> +	.name	= "twl6030_pwrbtn",
-> +	.probe	= twl6030_pwrbtn_probe,
-> +};
-> +device_platform_driver(twl6030_pwrbtn_driver);
-> diff --git a/include/twl6030_pwrbtn.h b/include/twl6030_pwrbtn.h
-> new file mode 100644
-> index 0000000..e7e8383
-> --- /dev/null
-> +++ b/include/twl6030_pwrbtn.h
-> @@ -0,0 +1,23 @@
-> +#ifndef _TWL6030_PWRBTN_H
-> +#define _TWL6030_PWRBTN_H
-> +
-> +#include <poller.h>
-> +#include <kfifo.h>
-> +#include <mfd/twl6030.h>
-> +
-> +struct twl6030_pwrbtn_platform_data {
-> +	/* Configuration parameters */
-> +	int code;
-> +	/* optional */
-> +	int fifo_size;
 
-Since this driver handles a single key only, must the fifo size
-be configurable?
+You should use getopt() to parse options.
 
-> +
-> +	/* internal */
-> +	u8 previous_state;
-> +
-> +	struct twl6030 *twl6030;
-> +	struct kfifo *recv_fifo;
-> +	struct poller_struct poller;
-> +	struct console_device cdev;
-> +};
+> +	for (i = 0; i < 4 && j < argc; i++, j++) {
+> +		if      (strcmp(argv[j], "xip") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_XIP;
+> +		else if (strcmp(argv[j], "xipwait") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_XIPWAIT;
+> +		else if (strcmp(argv[j], "nand") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_NAND;
+> +		else if (strcmp(argv[j], "onenand") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_ONENAND;
+> +		else if (strcmp(argv[j], "mmc1") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_MMC1;
+> +		else if (strcmp(argv[j], "mmc2_1") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_MMC2_1;
+> +		else if (strcmp(argv[j], "mmc2_2") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_MMC2_2;
+> +		else if (strcmp(argv[j], "uart") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_UART;
+> +		else if (strcmp(argv[j], "usb_1") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_USB_1;
+> +		else if (strcmp(argv[j], "usb_ulpi") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_USB_ULPI;
+> +		else if (strcmp(argv[j], "usb_2") == 0)
+> +			device_list[i] = OMAP44XX_SAR_BOOT_USB_2;
 
-Please do not abuse platform_data for private driver data use. Allocate
-a separate struct for it.
+You could add a table for this, something like
+
+struct bootsrc {
+	const char *name;
+	uint32_t sar;
+};
+
+> +	}
+> +	if (device_list[0] == OMAP44XX_SAR_BOOT_VOID) {
+> +		printf("First boot device can't be void\n");
+> +		return COMMAND_ERROR_USAGE;
+> +	}
+> +	omap4_set_warmboot_order(device_list);
+> +	if (do_reset) {
+> +		shutdown_barebox();
+> +		reset_cpu(0);
+> +	}
+
+Why is this done here? I mean you could execute the reset command after
+this one.
 
 Sascha
 
