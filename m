@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEzas-0004Hm-FD
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 10:04:37 +0000
-Date: Mon, 11 Mar 2013 11:04:32 +0100
+ id 1UEzbv-0004Xg-QW
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 10:05:41 +0000
+Date: Mon, 11 Mar 2013 11:05:38 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130311100432.GF1906@pengutronix.de>
+Message-ID: <20130311100538.GG1906@pengutronix.de>
 References: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
- <1362993306-19262-3-git-send-email-s.trumtrar@pengutronix.de>
+ <1362993306-19262-4-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1362993306-19262-3-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1362993306-19262-4-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,321 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] ARM: Zynq: Add new architecture zynq
+Subject: Re: [PATCH 3/9] ARM: zynq: add zynq fsbl checksum script
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 11, 2013 at 10:14:59AM +0100, Steffen Trumtrar wrote:
-> Add basic support for the Xilinx Zynq-7000 EPP architecture.
-> The Zynq-7000 is an embedded processing platform that combines a Cortex A9
-> dualcore MPSoC with an Artix-7 FPGA.
+On Mon, Mar 11, 2013 at 10:15:00AM +0100, Steffen Trumtrar wrote:
+> The bootrom only reads an image if the correct checksum is present in the
+> header. The calculation is pretty simple:
+> sum over all words from 0x20 to 0x44
+> Two of this words are the image length. That is why the checksum can not be
+> calculated until barebox_image_size is known.
+> The easiest solution is a program that has to be run after make.
+> Maybe this can be replaced with some linker-fu.
 > 
-> +
-> +static void __iomem *timer_base = (void *) CORTEXA9_SCU_TIMER_BASE_ADDR;
-> +
-> +static uint64_t zynq_clocksource_read(void)
-> +{
-> +	return readl(timer_base + PRIVATE_TIMER_COUNTER);
-> +}
-> +
-> +static struct clocksource cs = {
-> +	.read	= zynq_clocksource_read,
-> +	.mask	= CLOCKSOURCE_MASK(16),
-> +	.shift	= TIMER_PRESCALER_SHIFT,
-> +};
-> +
-> +static int zynq_timer_init(void)
-> +{
-> +	cs.mult = clocksource_hz2mult(33333330, cs.shift);
-
-You should add clock support. Adding a first-shot clock support is
-really simple:
-
-	struct clk = clk_fixed("timer", 33333330);
-	clkdev_add_physbase(clk, CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
-
-
-> +
-> +	/* set timer load register */
-> +	writel(0xFFFFFFFF, timer_base);
-> +
-> +	writel(TIMER_CTRL_TIMER_EN | TIMER_CTRL_AUTO_RELOAD |
-> +		(TIMER_PRESCALER << cs.shift),
-> +		timer_base + PRIVATE_TIMER_CONTROL);
-> +
-> +	init_clock(&cs);
-> +
-> +	return 0;
-> +}
-> +coredevice_initcall(zynq_timer_init);
-
-Please make this a real driver.
-
-> diff --git a/arch/arm/mach-zynq/devices.c b/arch/arm/mach-zynq/devices.c
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  scripts/Makefile        |  1 +
+>  scripts/zynq_checksum.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 56 insertions(+)
+>  create mode 100644 scripts/zynq_checksum.c
+> 
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index 08b325c..41c892e 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -12,6 +12,7 @@ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+>  hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+>  hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+>  hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
+> +hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_checksum
+>  
+>  HOSTLOADLIBES_omap4_usbboot = -lpthread
+>  omap4_usbboot-objs               := usb_linux.o omap4_usbboot.o
+> diff --git a/scripts/zynq_checksum.c b/scripts/zynq_checksum.c
 > new file mode 100644
-> index 0000000..2bb3c92
+> index 0000000..e814f86
 > --- /dev/null
-> +++ b/arch/arm/mach-zynq/devices.c
-> @@ -0,0 +1,14 @@
-> +#include <common.h>
-> +#include <driver.h>
-> +#include <mach/devices.h>
+> +++ b/scripts/zynq_checksum.c
+> @@ -0,0 +1,55 @@
+> +#include <malloc.h>
+> +#include <stdio.h>
+> +#include <sys/stat.h>
 > +
-> +static inline struct device_d *zynq_add_device(char *name, int id, void *base, int size, void *pdata)
+> +int main(int argc, char *argv[])
 > +{
-> +	return add_generic_device(name, id, NULL, (resource_size_t)base, size,
-> +				  IORESOURCE_MEM, pdata);
-> +}
+> +	FILE *ifile, *ofile;
+> +	unsigned int *buf;
+> +	const char *infile;
+> +	const char *outfile;
+> +	struct stat st;
+> +	unsigned int i;
+> +	unsigned long sum = 0;
 > +
-> +struct device_d *zynq_add_uart(void *base, int id)
-> +{
-> +	return zynq_add_device("cadence-uart", id, base, 0x1000, NULL);
-> +}
-> diff --git a/arch/arm/mach-zynq/include/mach/barebox.lds.h b/arch/arm/mach-zynq/include/mach/barebox.lds.h
-> new file mode 100644
-> index 0000000..674a4ac
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/barebox.lds.h
-> @@ -0,0 +1,9 @@
-> +#define PRE_IMAGE \
-> +	.pre_image : {					\
-> +		KEEP(*(.flash_header_start*))		\
-> +		. = 0x20;				\
-> +		KEEP(*(.flash_header_0x0*))		\
-> +		. = 0xa0;				\
-> +		KEEP(*(.ps7reg_entry_0x0A0))		\
-> +		. = 0x8c0;				\
+> +	infile = argv[1];
+> +	outfile = argv[2];
+> +
+> +	stat(infile, &st);
+> +
+> +	buf = malloc(sizeof(*buf) * st.st_size);
+> +	if (!buf) {
+> +		fprintf(stderr, "Unable to allocate buffer\n");
+> +		return -1;
 > +	}
-> diff --git a/arch/arm/mach-zynq/include/mach/debug_ll.h b/arch/arm/mach-zynq/include/mach/debug_ll.h
-> new file mode 100644
-> index 0000000..4fbb387
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/debug_ll.h
-> @@ -0,0 +1,34 @@
-> +/*
-> + * based on mach-imx/include/mach/debug_ll.h
-> + */
+> +	ifile = fopen(infile, "rb");
+> +	if (!ifile) {
+> +		fprintf(stderr, "Cannot open %s for reading\n",
+> +			infile);
+> +		free(buf);
+> +		return -1;
+> +	}
+> +	ofile = fopen(outfile, "wb");
+> +	if (!ofile) {
+> +		fprintf(stderr, "Cannot open %s for writing\n",
+> +			outfile);
+> +		fclose(ifile);
+> +		free(buf);
+> +		return -1;
+> +	}
 > +
-> +#ifndef __MACH_DEBUG_LL_H__
-> +#define __MACH_DEBUG_LL_H__
+> +	fread(buf, 4, st.st_size, ifile);
 > +
-> +#include <io.h>
-> +#include <mach/zynq7000-regs.h>
-> +
-> +#ifndef ZYNQ_DEBUG_LL_UART_BASE
-> +#warning define ZYNQ_DEBUG_LL_UART_BASE properly for debug_ll
-> +#define ZYNQ_DEBUG_LL_UART_BASE ZYNQ_UART1_BASE_ADDR
-> +#endif
-> +
-> +#define ZYNQ_UART_RXTXFIFO	0x30
-> +#define ZYNQ_UART_CHANNEL_STS	0x2C
-> +
-> +#define ZYNQ_UART_STS_TFUL	(1 << 4)
-> +
-> +static inline void PUTC_LL(int c)
-> +{
-> +	void __iomem *base = (void *)ZYNQ_DEBUG_LL_UART_BASE;
-> +
-> +	if (!base)
-> +		return;
+> +	for (i = 0x8; i < 0x12; i++)
+> +		sum += buf[i];
 
-This will never happen, right?
-
-What makes sense though is to add a check whether this UART is enabled.
-We do not have initialization code here, so if the UART is not enabled,
-you will likely loop forever below. It can be annoying that the only
-reason barebox doesn't work is the code you added for debugging.
-
-> +
-> +	while ((readl(base + ZYNQ_UART_CHANNEL_STS) & ZYNQ_UART_STS_TFUL) != 0)
-> +		;
-> +
-> +	writel(c, base + ZYNQ_UART_RXTXFIFO);
-> +}
-> +
-> +#endif
-> diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-> new file mode 100644
-> index 0000000..58fc712
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-> @@ -0,0 +1,132 @@
-> +/*
-> + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +
-> +#define ZYNQ_UART0_BASE_ADDR		0xE0000000
-> +#define ZYNQ_UART1_BASE_ADDR		0xE0001000
-> +#define ZYNQ_I2C0_BASE_ADDR		0xE0004000
-> +#define ZYNQ_I2C1_BASE_ADDR		0xE0005000
-> +#define ZYNQ_SPI0_BASE_ADDR		0xE0006000
-> +#define ZYNQ_SPI1_BASE_ADDR		0xE0007000
-> +#define ZYNQ_CAN0_BASE_ADDR		0xE0008000
-> +#define ZYNQ_CAN1_BASE_ADDR		0xE0009000
-> +#define ZYNQ_GPIO_BASE_ADDR		0xE000A000
-> +
-> +#define ZYNQ_SLCR_BASE			0xF8000000
-> +#define ZYNQ_SLCR_SCL			(ZYNQ_SLCR_BASE + 0x000)
-> +#define ZYNQ_SLCR_LOCK			(ZYNQ_SLCR_BASE + 0x004)
-> +#define ZYNQ_SLCR_UNLOCK		(ZYNQ_SLCR_BASE + 0x008)
-> +#define ZYNQ_SLCR_LOCKSTA		(ZYNQ_SLCR_BASE + 0x00C)
-> +#define ZYNQ_CLOCK_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x100)
-> +#define ZYNQ_ARM_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x000)
-> +#define ZYNQ_DDR_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x004)
-> +#define ZYNQ_IO_PLL_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x008)
-> +#define ZYNQ_PLL_STATUS			(ZYNQ_CLOCK_CTRL_BASE + 0x00C)
-> +#define ZYNQ_ARM_PLL_CFG		(ZYNQ_CLOCK_CTRL_BASE + 0x010)
-> +#define ZYNQ_DDR_PLL_CFG		(ZYNQ_CLOCK_CTRL_BASE + 0x014)
-> +#define ZYNQ_IO_PLL_CFG			(ZYNQ_CLOCK_CTRL_BASE + 0x018)
-> +#define ZYNQ_ARM_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x020)
-> +#define ZYNQ_DDR_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x024)
-> +#define ZYNQ_DCI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x028)
-> +#define ZYNQ_APER_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x02C)
-> +#define ZYNQ_USB0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x030)
-> +#define ZYNQ_USB1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x034)
-> +#define ZYNQ_GEM0_RCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x038)
-> +#define ZYNQ_GEM1_RCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x03C)
-> +#define ZYNQ_GEM0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x040)
-> +#define ZYNQ_GEM1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x044)
-> +#define ZYNQ_SMC_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x048)
-> +#define ZYNQ_LQSPI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x04C)
-> +#define ZYNQ_SDIO_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x050)
-> +#define ZYNQ_UART_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x054)
-> +#define ZYNQ_SPI_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x058)
-> +#define ZYNQ_CAN_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x05C)
-> +#define ZYNQ_CAN_MIOCLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x060)
-> +#define ZYNQ_DBG_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x064)
-> +#define ZYNQ_PCAP_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x068)
-> +#define ZYNQ_TOPSW_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x06C)
-> +#define ZYNQ_FPGA0_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x070)
-> +#define ZYNQ_FPGA1_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x080)
-> +#define ZYNQ_FPGA2_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x090)
-> +#define ZYNQ_FPGA3_CLK_CTRL		(ZYNQ_CLOCK_CTRL_BASE + 0x0A0)
-> +#define ZYNQ_CLK_621_TRUE		(ZYNQ_CLOCK_CTRL_BASE + 0x0C4)
-
-Do you need these here? You should define these as offsets to
-ZYNQ_CLOCK_CTRL_BASE.
-
-> +#define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
-> +#define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
-> +#define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
-> +#define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
-> +#define ZYNQ_DMAC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x00C)
-> +#define ZYNQ_USB_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x010)
-> +#define ZYNQ_GEM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x014)
-> +#define ZYNQ_SDIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x018)
-> +#define ZYNQ_SPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x01C)
-> +#define ZYNQ_CAN_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x020)
-> +#define ZYNQ_I2C_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x024)
-> +#define ZYNQ_UART_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x028)
-> +#define ZYNQ_GPIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x02C)
-> +#define ZYNQ_LQSPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x030)
-> +#define ZYNQ_SMC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x034)
-> +#define ZYNQ_OCM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x038)
-> +#define ZYNQ_DEVCI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x03C)
-> +#define ZYNQ_FPGA_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x040)
-> +#define ZYNQ_A9_CPU_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x044)
-> +#define ZYNQ_RS_AWDT_CTRL		(ZYNQ_RST_CTRL_BASE + 0x04C)
-> +#define ZYNQ_REBOOT_STATUS		(ZYNQ_SLCR_BASE + 0x258)
-> +#define ZYNQ_BOOT_MODE			(ZYNQ_SLCR_BASE + 0x25C)
-> +#define ZYNQ_APU_CTRL			(ZYNQ_SLCR_BASE + 0x300)
-> +#define ZYNQ_WDT_CLK_SEL		(ZYNQ_SLCR_BASE + 0x304)
-> +#define ZYNQ_PSS_IDCODE			(ZYNQ_SLCR_BASE + 0x530)
-> +#define ZYNQ_DDR_URGENT			(ZYNQ_SLCR_BASE + 0x600)
-> +#define ZYNQ_DDR_CAL_START		(ZYNQ_SLCR_BASE + 0x60C)
-> +#define ZYNQ_DDR_REF_START		(ZYNQ_SLCR_BASE + 0x614)
-> +#define ZYNQ_DDR_CMD_STA		(ZYNQ_SLCR_BASE + 0x618)
-> +#define ZYNQ_DDR_URGENT_SEL		(ZYNQ_SLCR_BASE + 0x61C)
-> +#define ZYNQ_DDR_DFI_STATUS		(ZYNQ_SLCR_BASE + 0x620)
-> +#define ZYNQ_MIO_BASE			(ZYNQ_SLCR_BASE + 0x700)
-> +#define ZYNQ_MIO_LOOPBACK		(ZYNQ_MIO_BASE + 0x104)
-> +#define ZYNQ_MIO_MST_TRI0		(ZYNQ_MIO_BASE + 0x10C)
-> +#define ZYNQ_MIO_MST_TRI1		(ZYNQ_MIO_BASE + 0x110)
-> +#define ZYNQ_SD0_WP_SEL			(ZYNQ_SLCR_BASE + 0x830)
-> +#define ZYNQ_SD1_WP_SEL			(ZYNQ_SLCR_BASE + 0x834)
-> +#define ZYNQ_LVL_SHIFTR_EN		(ZYNQ_SLCR_BASE + 0x900)
-> +#define ZYNQ_OCM_CFG			(ZYNQ_SLCR_BASE + 0x910)
-> +#define ZYNQ_GPIOB_BASE			(ZYNQ_SLCR_BASE + 0xB00)
-> +#define ZYNQ_GPIOB_CTRL			(ZYNQ_GPIOB_BASE + 0x000)
-> +#define ZYNQ_GPIOB_CFG_CMOS18		(ZYNQ_GPIOB_BASE + 0x004)
-> +#define ZYNQ_GPIOB_CFG_CMOS25		(ZYNQ_GPIOB_BASE + 0x008)
-> +#define ZYNQ_GPIOB_CFG_CMOS33		(ZYNQ_GPIOB_BASE + 0x00C)
-> +#define ZYNQ_GPIOB_CFG_LVTTL		(ZYNQ_GPIOB_BASE + 0x010)
-> +#define ZYNQ_GPIOB_CFG_HSTL		(ZYNQ_GPIOB_BASE + 0x014)
-> +#define ZYNQ_GPIOB_DRV_BIAS_CTRL	(ZYNQ_GPIOB_BASE + 0x018)
-> +#define ZYNQ_DDRIOB_BASE		(ZYNQ_SLCR_BASE + 0xB40)
-> +#define ZYNQ_DDRIOB_ADDR0		(ZYNQ_DDRIOB_BASE + 0x000)
-> +#define ZYNQ_DDRIOB_ADDR1		(ZYNQ_DDRIOB_BASE + 0x004)
-> +#define ZYNQ_DDRIOB_DATA0		(ZYNQ_DDRIOB_BASE + 0x008)
-> +#define ZYNQ_DDRIOB_DATA1		(ZYNQ_DDRIOB_BASE + 0x00C)
-> +#define ZYNQ_DDRIOB_DIFF0		(ZYNQ_DDRIOB_BASE + 0x010)
-> +#define ZYNQ_DDRIOB_DIFF1		(ZYNQ_DDRIOB_BASE + 0x014)
-> +#define ZYNQ_DDRIOB_CLOCK		(ZYNQ_DDRIOB_BASE + 0x018)
-> +#define ZYNQ_DDRIOB_DRIVE_SLEW_ADDR	(ZYNQ_DDRIOB_BASE + 0x01C)
-> +#define ZYNQ_DDRIOB_DRIVE_SLEW_DATA	(ZYNQ_DDRIOB_BASE + 0x020)
-> +#define ZYNQ_DDRIOB_DRIVE_SLEW_DIFF	(ZYNQ_DDRIOB_BASE + 0x024)
-> +#define ZYNQ_DDRIOB_DRIVE_SLEW_CLOCK	(ZYNQ_DDRIOB_BASE + 0x028)
-> +#define ZYNQ_DDRIOB_DDR_CTRL		(ZYNQ_DDRIOB_BASE + 0x02C)
-> +#define ZYNQ_DDRIOB_DCI_CTRL		(ZYNQ_DDRIOB_BASE + 0x030)
-> +#define ZYNQ_DDRIOB_DCI_STATUS		(ZYNQ_DDRIOB_BASE + 0x034)
-> +
-> +#define ZYNQ_TTC0_BASE_ADDR		0xF8001000
-> +#define ZYNQ_TTC1_BASE_ADDR		0xF8002000
-> +
-> +#define ZYNQ_DDRC_BASE			0xF8006000
-> +
-> +#define CORTEXA9_SCU_TIMER_BASE_ADDR	0xF8F00600
-> diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-> new file mode 100644
-> index 0000000..e11086b
-> --- /dev/null
-> +++ b/arch/arm/mach-zynq/zynq.c
-> @@ -0,0 +1,41 @@
-> +/*
-> + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +
-> +#include <asm-generic/io.h>
-> +#include <common.h>
-> +#include <init.h>
-> +#include <mach/zynq7000-regs.h>
-> +
-> +void zynq_init_lowlevel(void)
-> +{
-> +	return;
-> +}
-> +
-> +static int zynq_init(void)
-> +{
-> +	return 0;
-> +}
-> +postcore_initcall(zynq_init);
-
-Wow, quite a simple hardware ;)
+endianess?
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
