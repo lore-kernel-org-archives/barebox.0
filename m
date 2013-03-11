@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEypP-0003i4-Cx
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:15:36 +0000
+ id 1UEypP-0003hx-BK
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:15:38 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 11 Mar 2013 10:15:06 +0100
-Message-Id: <1362993306-19262-10-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon, 11 Mar 2013 10:14:58 +0100
+Message-Id: <1362993306-19262-2-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,162 +21,347 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM: zynq: remove clocksource
+Subject: [PATCH 1/9] serial: Add driver for Cadence UART
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-With clkdev in place the generic arm_smp_twd can be used.
+Support for Cadence UART core.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/configs/zedboard_defconfig |  4 +++
- arch/arm/mach-zynq/Kconfig          |  1 +
- arch/arm/mach-zynq/Makefile         |  2 +-
- arch/arm/mach-zynq/clk-zynq7000.c   |  3 +-
- arch/arm/mach-zynq/clocksource.c    | 58 -------------------------------------
- arch/arm/mach-zynq/zynq.c           |  2 ++
- 6 files changed, 10 insertions(+), 60 deletions(-)
- delete mode 100644 arch/arm/mach-zynq/clocksource.c
+ drivers/serial/Kconfig          |   4 +
+ drivers/serial/Makefile         |   1 +
+ drivers/serial/serial_cadence.c | 299 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 304 insertions(+)
+ create mode 100644 drivers/serial/serial_cadence.c
 
-diff --git a/arch/arm/configs/zedboard_defconfig b/arch/arm/configs/zedboard_defconfig
-index a9d52dd..0d546ff 100644
---- a/arch/arm/configs/zedboard_defconfig
-+++ b/arch/arm/configs/zedboard_defconfig
-@@ -250,6 +250,7 @@ CONFIG_CMD_VERSION=y
- # CONFIG_CMD_MAGICVAR is not set
- CONFIG_CMD_DEVINFO=y
- # CONFIG_CMD_UNCOMPRESS is not set
-+CONFIG_CMD_CLK=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- # CONFIG_NET_NFS is not set
-@@ -295,6 +296,9 @@ CONFIG_DRIVER_SERIAL_CADENCE=y
- # CONFIG_USB is not set
- # CONFIG_VIDEO is not set
- # CONFIG_MCI is not set
-+CONFIG_CLKDEV_LOOKUP=y
-+CONFIG_COMMON_CLK=y
-+CONFIG_ARM_SMP_TWD=y
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index f61d670..a51510e 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -113,4 +113,8 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+ 	help
+ 	  Enable this to get console support over the usb bus used to boot an OMAP4
  
- #
- # MFD
-diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
-index a4ce949..72c96b5 100644
---- a/arch/arm/mach-zynq/Kconfig
-+++ b/arch/arm/mach-zynq/Kconfig
-@@ -16,6 +16,7 @@ config ARCH_ZYNQ7000
- 	select DRIVER_SERIAL_CADENCE
- 	select CLKDEV_LOOKUP
- 	select COMMON_CLK
-+	select ARM_SMP_TWD
- 
- endchoice
- 
-diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
-index 5d632b8..459c957 100644
---- a/arch/arm/mach-zynq/Makefile
-+++ b/arch/arm/mach-zynq/Makefile
-@@ -1 +1 @@
--obj-y += zynq.o devices.o clocksource.o
-+obj-y += zynq.o devices.o clk-zynq7000.o
-diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/arch/arm/mach-zynq/clk-zynq7000.c
-index 74f08ad..83ae230 100644
---- a/arch/arm/mach-zynq/clk-zynq7000.c
-+++ b/arch/arm/mach-zynq/clk-zynq7000.c
-@@ -30,7 +30,7 @@
- 
- enum zynq_clks {
- 	dummy, ps_clk, arm_pll, ddr_pll, io_pll, uart_clk, uart0, uart1,
--	cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x, clks_max
-+	cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x, clks_max, arm_smp_twd
- };
- 
- enum zynq_pll_type {
-@@ -366,6 +366,7 @@ static int zynq_clock_probe(struct device_d *dev)
- 					slcr_base + 0x120, slcr_base + 0x1C4);
- 
- 	clk_register_clkdev(clks[cpu_3x2x], NULL, "arm_smp_twd");
-+	clkdev_add_physbase(clks[cpu_3x2x], CORTEXA9_SCU_TIMER_BASE_ADDR, NULL);
- 	clk_register_clkdev(clks[uart0], NULL, "zynq_serial0");
- 	clk_register_clkdev(clks[uart1], NULL, "zynq_serial1");
- 	return 0;
-diff --git a/arch/arm/mach-zynq/clocksource.c b/arch/arm/mach-zynq/clocksource.c
-deleted file mode 100644
-index 300a73e..0000000
---- a/arch/arm/mach-zynq/clocksource.c
-+++ /dev/null
-@@ -1,58 +0,0 @@
--/*
-- * (C) Copyright 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <clock.h>
--#include <common.h>
--#include <init.h>
--#include <io.h>
--#include <mach/zynq7000-regs.h>
--
--#define PRIVATE_TIMER_COUNTER	0x04
--#define PRIVATE_TIMER_CONTROL	0x08
--
--#define TIMER_CTRL_TIMER_EN	0x1
--#define TIMER_CTRL_AUTO_RELOAD	0x2
--#define TIMER_PRESCALER_SHIFT	0x8
--#define TIMER_PRESCALER		0xFF
--
--static void __iomem *timer_base = (void *) CORTEXA9_SCU_TIMER_BASE_ADDR;
--
--static uint64_t zynq_clocksource_read(void)
--{
--	return readl(timer_base + PRIVATE_TIMER_COUNTER);
--}
--
--static struct clocksource cs = {
--	.read	= zynq_clocksource_read,
--	.mask	= CLOCKSOURCE_MASK(16),
--	.shift	= TIMER_PRESCALER_SHIFT,
--};
--
--static int zynq_timer_init(void)
--{
--	cs.mult = clocksource_hz2mult(33333330, cs.shift);
--
--	/* set timer load register */
--	writel(0xFFFFFFFF, timer_base);
--
--	writel(TIMER_CTRL_TIMER_EN | TIMER_CTRL_AUTO_RELOAD |
--		(TIMER_PRESCALER << cs.shift),
--		timer_base + PRIVATE_TIMER_CONTROL);
--
--	init_clock(&cs);
--
--	return 0;
--}
--coredevice_initcall(zynq_timer_init);
-diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-index 33fc1ab..d430d5f 100644
---- a/arch/arm/mach-zynq/zynq.c
-+++ b/arch/arm/mach-zynq/zynq.c
-@@ -21,6 +21,8 @@
- static int zynq_init(void)
- {
- 	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("smp_twd", 0, NULL, CORTEXA9_SCU_TIMER_BASE_ADDR,
-+				0x4000, IORESOURCE_MEM, NULL);
- 	return 0;
- }
- postcore_initcall(zynq_init);
++config DRIVER_SERIAL_CADENCE
++	default n
++	bool "Cadence UART driver"
++
+ endmenu
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 893e282..963a7df 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
++obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
+new file mode 100644
+index 0000000..0ccb1b3
+--- /dev/null
++++ b/drivers/serial/serial_cadence.c
+@@ -0,0 +1,299 @@
++/*
++ * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <malloc.h>
++#include <notifier.h>
++#include <io.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++
++#define CADENCE_UART_CONTROL	0x00
++#define CADENCE_UART_MODE		0x04
++#define CADENCE_UART_BAUD_GEN	0x18
++#define CADENCE_UART_CHANNEL_STS	0x2C
++#define CADENCE_UART_RXTXFIFO	0x30
++#define CADENCE_UART_BAUD_DIV	0x34
++
++#define CADENCE_CTRL_RXRES		(1 << 0)
++#define CADENCE_CTRL_TXRES		(1 << 1)
++#define CADENCE_CTRL_RXEN		(1 << 2)
++#define CADENCE_CTRL_RXDIS		(1 << 3)
++#define CADENCE_CTRL_TXEN		(1 << 4)
++#define CADENCE_CTRL_TXDIS		(1 << 5)
++#define CADENCE_CTRL_RSTTO		(1 << 6)
++#define CADENCE_CTRL_STTBRK	(1 << 7)
++#define CADENCE_CTRL_STPBRK	(1 << 8)
++
++#define CADENCE_MODE_CLK_REF	(0 << 0)
++#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
++#define CADENCE_MODE_CHRL_6	(3 << 1)
++#define CADENCE_MODE_CHRL_7	(2 << 1)
++#define CADENCE_MODE_CHRL_8	(0 << 1)
++#define CADENCE_MODE_PAR_EVEN	(0 << 3)
++#define CADENCE_MODE_PAR_ODD	(1 << 3)
++#define CADENCE_MODE_PAR_SPACE	(2 << 3)
++#define CADENCE_MODE_PAR_MARK	(3 << 3)
++#define CADENCE_MODE_PAR_NONE	(4 << 3)
++
++#define CADENCE_STS_REMPTY		(1 << 1)
++#define CADENCE_STS_RFUL		(1 << 2)
++#define CADENCE_STS_TEMPTY		(1 << 3)
++#define CADENCE_STS_TFUL		(1 << 4)
++
++/*
++ * create default values for different platforms
++ */
++struct cadence_serial_devtype_data {
++	u32 ctrl;
++	u32 mode;
++};
++
++static struct cadence_serial_devtype_data cadence7000_data = {
++	.ctrl = CADENCE_CTRL_RXEN | CADENCE_CTRL_TXEN,
++	.mode = CADENCE_MODE_CLK_REF | CADENCE_MODE_CHRL_8 | CADENCE_MODE_PAR_NONE,
++};
++
++struct cadence_serial_priv {
++	struct console_device cdev;
++	int baudrate;
++	struct notifier_block notify;
++	void __iomem *regs;
++	/*struct clk *clk;*/
++	unsigned long clk;
++	struct cadence_serial_devtype_data *devtype;
++};
++
++static int cadence_serial_reset(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	/* Soft-Reset Tx/Rx paths */
++	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
++		CADENCE_UART_CONTROL);
++
++	while (readl(priv->regs + CADENCE_UART_CONTROL) &
++		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
++		;
++
++	return 0;
++}
++
++static int cadence_serial_setbaudrate(struct console_device *cdev, int baudrate)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++	unsigned int gen, div;
++	int calc_rate;
++	unsigned long clk;
++	int error;
++	int val;
++
++	clk = priv->clk;
++	priv->baudrate = baudrate;
++
++	/* disable transmitter and receiver */
++	val = readl(priv->regs + CADENCE_UART_CONTROL);
++	val &= ~CADENCE_CTRL_TXEN & ~CADENCE_CTRL_RXEN;
++	writel(val, priv->regs + CADENCE_UART_CONTROL);
++
++	/*
++	 *	      clk
++	 * rate = -----------
++	 *	  gen*(div+1)
++	 */
++
++	for (div = 4; div < 256; div++) {
++		gen = clk / (baudrate * (div + 1));
++
++		if (gen < 1 || gen > 65535)
++			continue;
++
++		calc_rate = clk / (gen * (div + 1));
++		error = baudrate - calc_rate;
++		if (error < 0)
++			error *= -1;
++		if (((error * 100) / baudrate) < 3)
++			break;
++	}
++
++	writel(gen, priv->regs + CADENCE_UART_BAUD_GEN);
++	writel(div, priv->regs + CADENCE_UART_BAUD_DIV);
++
++	/* Soft-Reset Tx/Rx paths */
++	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
++		CADENCE_UART_CONTROL);
++
++	while (readl(priv->regs + CADENCE_UART_CONTROL) &
++		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
++		;
++
++	/* Enable UART */
++	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
++
++	return 0;
++}
++
++static int cadence_serial_init_port(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	cadence_serial_reset(cdev);
++
++	cadence_serial_setbaudrate(cdev, 115200);
++
++	/* Enable UART */
++	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
++	writel(priv->devtype->mode, priv->regs + CADENCE_UART_MODE);
++
++	return 0;
++}
++
++static void cadence_serial_putc(struct console_device *cdev, char c)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		CADENCE_STS_TFUL) != 0)
++		;
++
++	if (c == '\n') {
++		writel('\r', priv->regs + CADENCE_UART_RXTXFIFO);
++		while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++			CADENCE_STS_TFUL) != 0)
++			;
++	}
++
++	writel(c, priv->regs + CADENCE_UART_RXTXFIFO);
++}
++
++static int cadence_serial_tstc(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	return ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		 CADENCE_STS_REMPTY) == 0);
++}
++
++static int cadence_serial_getc(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while (!cadence_serial_tstc(cdev))
++		;
++
++	return readl(priv->regs + CADENCE_UART_RXTXFIFO);
++}
++
++static void cadence_serial_flush(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		CADENCE_STS_TEMPTY) != 0)
++		;
++}
++
++static int cadence_clocksource_clock_change(struct notifier_block *nb,
++			unsigned long event, void *data)
++{
++	return 0;
++}
++
++static int cadence_serial_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++	struct cadence_serial_priv *priv;
++	struct cadence_serial_devtype_data *devtype;
++	int ret;
++
++	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
++	if (ret)
++		return ret;
++
++	priv = xzalloc(sizeof(*priv));
++	priv->devtype = devtype;
++	cdev = &priv->cdev;
++	dev->priv = priv;
++
++	priv->clk = 50000000;
++	if (devtype->mode & CADENCE_MODE_CLK_REF_DIV)
++		priv->clk /= 8;
++
++	priv->regs = dev_request_mem_region(dev, 0);
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	cdev->tstc = cadence_serial_tstc;
++	cdev->putc = cadence_serial_putc;
++	cdev->getc = cadence_serial_getc;
++	cdev->flush = cadence_serial_flush;
++	cdev->setbrg = cadence_serial_setbaudrate;
++
++	cadence_serial_init_port(cdev);
++
++	console_register(cdev);
++	priv->notify.notifier_call = cadence_clocksource_clock_change;
++	clock_register_client(&priv->notify);
++
++	return 0;
++}
++
++static void cadence_serial_remove(struct device_d *dev)
++{
++	struct cadence_serial_priv *priv = dev->priv;
++
++	console_unregister(&priv->cdev);
++	free(priv);
++}
++
++static __maybe_unused struct of_device_id cadence_serial_dt_ids[] = {
++	{
++		.compatible = "xlnx,xuartps",
++		.data = (unsigned long)&cadence7000_data,
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct platform_device_id cadence_serial_ids[] = {
++	{
++		.name = "cadence-uart",
++		.driver_data = (unsigned long)&cadence7000_data,
++	}, {
++		/* sentinel */
++	},
++};
++
++static struct driver_d cadence_serial_driver = {
++	.name   = "cadence_serial",
++	.probe  = cadence_serial_probe,
++	.remove = cadence_serial_remove,
++	.of_compatible = DRV_OF_COMPAT(cadence_serial_dt_ids),
++	.id_table = cadence_serial_ids,
++};
++
++static int cadence_serial_init(void)
++{
++	platform_driver_register(&cadence_serial_driver);
++	return 0;
++}
++console_initcall(cadence_serial_init);
 -- 
 1.8.2.rc2
 
