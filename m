@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UF7ww-0001gv-0p
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 18:59:54 +0000
-Date: Mon, 11 Mar 2013 19:59:52 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130311185952.GB22366@pengutronix.de>
-References: <1362993306-19262-1-git-send-email-s.trumtrar@pengutronix.de>
- <1362993306-19262-8-git-send-email-s.trumtrar@pengutronix.de>
- <20130311182809.GN16050@kryptos>
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UF9PQ-0004o8-NN
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 20:33:26 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id A2566A62F6
+ for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 21:33:17 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon, 11 Mar 2013 21:33:15 +0100
+Message-Id: <1363033995-2895-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130311182809.GN16050@kryptos>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,122 +18,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/9] ARM: zynq: clk: add pll type
-To: Josh Cartwright <joshc@eso.teric.us>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] usb/gadget/Kconfig: fix menu
+To: barebox@lists.infradead.org
 
-On Mon, Mar 11, 2013 at 01:28:09PM -0500, Josh Cartwright wrote:
-> On Mon, Mar 11, 2013 at 10:15:04AM +0100, Steffen Trumtrar wrote:
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  arch/arm/mach-zynq/clk-zynq7000.c | 33 ++++++++++++++++++++++++++++++++-
-> >  1 file changed, 32 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/arch/arm/mach-zynq/clk-zynq7000.c
-> > index 5a8a12a..0d3c3a8 100644
-> > --- a/arch/arm/mach-zynq/clk-zynq7000.c
-> > +++ b/arch/arm/mach-zynq/clk-zynq7000.c
-> > @@ -33,10 +33,21 @@ enum zynq_clks {
-> >  	cpu_clk, cpu_6x4x, cpu_3x2x, cpu_2x, cpu_1x, clks_max
-> >  };
-> >  
-> > +enum zynq_pll_type {
-> > +	ZYNQ_PLL_ARM,
-> > +	ZYNQ_PLL_DDR,
-> > +	ZYNQ_PLL_IO,
-> > +};
-> > +
-> > +#define PLL_ARM_LOCK	(1 << 0)
-> > +#define PLL_DDR_LOCK	(1 << 1)
-> > +#define PLL_IO_LOCK	(1 << 2)
-> 
-> Having both an enum and the #define's seem like an unnecessary
-> indirection.  I'd suggest just:
-> 
-> enum zynq_pll_lockbit {
-> 	PLL_ARM_LOCK	= (1 << 0),
-> 	PLL_DDR_LOCK	= (1 << 1),
-> 	PLL_IO_LOCK	= (1 << 2),
-> };
-> 
-> struct zynq_pll_clk {
-> 	/* ... */
-> 	enum zynq_pll_lockbit lockbit;
-> };
-> 
-> static inline struct clk *zynq_pll_clk(enum zynq_pll_lockbit lockbit,
-> 				       const char *name,
-> 				       void __iomem *pll_ctrl)
-> {
-> 	/* ... */
-> 	pll->lockbit = lockbit;	
-> 	/* ... */
-> }
-> 
-> > +
-> >  static struct clk *clks[clks_max];
-> >  
-> >  struct zynq_pll_clk {
-> >  	struct clk	clk;
-> > +	u32		pll_lock;
-> >  	void __iomem	*pll_ctrl;
-> >  };
-> >  
-> > @@ -51,11 +62,19 @@ static unsigned long zynq_pll_recalc_rate(struct clk *clk,
-> >  	return parent_rate * PLL_CTRL_FDIV(readl(pll->pll_ctrl));
-> >  }
-> >  
-> > +static int zynq_pll_enable(struct clk *clk)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> >  static struct clk_ops zynq_pll_clk_ops = {
-> >  	.recalc_rate = zynq_pll_recalc_rate,
-> > +	.enable = zynq_pll_enable,
-> >  };
-> >  
-> > -static inline struct clk *zynq_pll_clk(const char *name, void __iomem *pll_ctrl)
-> > +static inline struct clk *zynq_pll_clk(enum zynq_pll_type type,
-> > +				       const char *name,
-> > +				       void __iomem *pll_ctrl)
-> >  {
-> >  	static const char *pll_parent = "ps_clk";
-> >  	struct zynq_pll_clk *pll;
-> > @@ -68,6 +87,18 @@ static inline struct clk *zynq_pll_clk(const char *name, void __iomem *pll_ctrl)
-> >  	pll->clk.parent_names	= &pll_parent;
-> >  	pll->clk.num_parents	= 1;
-> >  
-> > +	switch(type) {
-> > +	case ZYNQ_PLL_ARM:
-> > +		pll->pll_lock = PLL_ARM_LOCK;
-> > +		break;
-> > +	case ZYNQ_PLL_DDR:
-> > +		pll->pll_lock = PLL_DDR_LOCK;
-> > +		break;
-> > +	case ZYNQ_PLL_IO:
-> > +		pll->pll_lock = PLL_IO_LOCK;
-> 
-> Actually, maybe I've gotten a little ahead of myself...you add bits for
-> the lock, but you never use it!  So, what's the point!  (If it's to be
-> used in the future, it'd be nice to see that in the commit description).
-
-I will remove this from this series. This only makes sense, when
-the enable function is filled.
-
-str
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+YnkgcmVvcmRlcmluZyB0aGUgZW50cnksIFVTQiBnYWRnZXQgc3VwcG9ydCBpcyBub3cgYSBtZW51
+IGFuZCB0aGUKVVNCIGdhZGdldCBjaG9pY2VzIGFyZSB1bmRlciB0aGlzIG1lbnUgYW5kIG5vdCBk
+aXJlY3RseSBpbiB0aGUKZHJpdmVyIG1lbnUuCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQg
+PGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBkcml2ZXJzL3VzYi9nYWRnZXQvS2NvbmZpZyB8IDggKysr
+Ky0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvZ2FkZ2V0L0tjb25maWcgYi9kcml2ZXJzL3VzYi9nYWRn
+ZXQvS2NvbmZpZwppbmRleCA1ZjY1Y2VhLi45N2E3ZDIxIDEwMDY0NAotLS0gYS9kcml2ZXJzL3Vz
+Yi9nYWRnZXQvS2NvbmZpZworKysgYi9kcml2ZXJzL3VzYi9nYWRnZXQvS2NvbmZpZwpAQCAtMSwx
+MSArMSwxMSBAQAotbWVudWNvbmZpZyBVU0JfR0FER0VUCi0JZGVwZW5kcyBvbiBVU0JfSEFWRV9H
+QURHRVRfRFJJVkVSCi0JYm9vbCAiVVNCIGdhZGdldCBzdXBwb3J0IgotCiBjb25maWcgVVNCX0hB
+VkVfR0FER0VUX0RSSVZFUgogCWJvb2wKIAlkZWZhdWx0IHkgaWYgQVJDSF9JTVggfHwgQVJDSF9N
+WFMgfHwgQVJDSF9BVDkxIHx8IEFSQ0hfUFhBCiAKK21lbnVjb25maWcgVVNCX0dBREdFVAorCWRl
+cGVuZHMgb24gVVNCX0hBVkVfR0FER0VUX0RSSVZFUgorCWJvb2wgIlVTQiBnYWRnZXQgc3VwcG9y
+dCIKKwogaWYgVVNCX0dBREdFVAogCiBjb25maWcgVVNCX0dBREdFVF9EVUFMU1BFRUQKLS0gCjEu
+Ny4xMS43CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
+aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
