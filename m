@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp16.mail.ru ([94.100.176.153])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UEz0O-0005j7-EK
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:53 +0000
+ id 1UEz0P-0005jf-L1
+ for barebox@lists.infradead.org; Mon, 11 Mar 2013 09:26:55 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 11 Mar 2013 13:26:33 +0400
-Message-Id: <1362994003-22653-3-git-send-email-shc_work@mail.ru>
+Date: Mon, 11 Mar 2013 13:26:34 +0400
+Message-Id: <1362994003-22653-4-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 References: <1362994003-22653-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,241 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] ARM: clps711x: Replace numeric PLL option with boolean
- for raise CPU frequency
+Subject: [PATCH 04/13] ARM: clps711x: Add clocksource driver
 To: barebox@lists.infradead.org
 
+This patch adds clocksource driver for CLPS711X targets and adds
+support to platform to use this new driver.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/clep7212/lowlevel.c |    8 +++++---
- arch/arm/mach-clps711x/Kconfig      |   13 ++++++-------
- 2 files changed, 11 insertions(+), 10 deletions(-)
+ arch/arm/Kconfig               |    1 +
+ arch/arm/mach-clps711x/clock.c |   51 ++++++++++++++++-----------------
+ drivers/clocksource/Kconfig    |    4 ++
+ drivers/clocksource/Makefile   |    1 +
+ drivers/clocksource/clps711x.c |   61 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 92 insertions(+), 26 deletions(-)
+ create mode 100644 drivers/clocksource/clps711x.c
 
-diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-index fcf8285..92fbb9b 100644
---- a/arch/arm/boards/clep7212/lowlevel.c
-+++ b/arch/arm/boards/clep7212/lowlevel.c
-@@ -14,13 +14,15 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7ac134e..c608454 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -39,6 +39,7 @@ config ARCH_BCM2835
+ config ARCH_CLPS711X
+ 	bool "Cirrus Logic EP711x/EP721x/EP731x"
+ 	select CLKDEV_LOOKUP
++	select CLOCKSOURCE_CLPS711X
+ 	select CPU_32v4T
+ 
+ config ARCH_EP93XX
+diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
+index 09cbaf9..e957662 100644
+--- a/arch/arm/mach-clps711x/clock.c
++++ b/arch/arm/mach-clps711x/clock.c
+@@ -9,25 +9,18 @@
+ 
+ #include <common.h>
+ #include <init.h>
+-#include <clock.h>
++#include <sizes.h>
+ #include <asm/io.h>
+ #include <linux/clkdev.h>
  
  #include <mach/clps711x.h>
  
--#if (CONFIG_CLPS711X_CPU_PLL_MULT < 20) || (CONFIG_CLPS711X_CPU_PLL_MULT > 50)
--# error "CPU PLL multiplier out of range"
-+#ifdef CONFIG_CLPS711X_RAISE_CPUFREQ
-+# define CLPS711X_CPU_PLL_MULT	50
-+#else
-+# define CLPS711X_CPU_PLL_MULT	40
- #endif
++#define CLPS711X_OSC_FREQ	3686400
++#define CLPS711X_EXT_FREQ	13000000
++
+ static struct clk {
+ 	unsigned long	rate;
+-} uart_clk, bus_clk;
+-
+-static uint64_t clocksource_read(void)
+-{
+-	return ~readw(TC2D);
+-}
+-
+-static struct clocksource cs = {
+-	.read	= clocksource_read,
+-	.mask	= CLOCKSOURCE_MASK(16),
+-};
++} uart_clk, bus_clk, timer_clk;
  
- void __naked __bare_init barebox_arm_reset_vector(void)
+ unsigned long clk_get_rate(struct clk *clk)
  {
- 	arm_cpu_lowlevel_init();
+@@ -50,22 +43,19 @@ EXPORT_SYMBOL(clk_disable);
  
--	clps711x_barebox_entry(CONFIG_CLPS711X_CPU_PLL_MULT);
-+	clps711x_barebox_entry(CLPS711X_CPU_PLL_MULT);
+ static int clocks_init(void)
+ {
+-	int osc, ext, pll, cpu, timer;
++	int pll, cpu;
+ 	u32 tmp;
+ 
+-	osc = 3686400;
+-	ext = 13000000;
+-
+ 	tmp = readl(PLLR) >> 24;
+ 	if (tmp)
+-		pll = (osc * tmp) / 2;
++		pll = (CLPS711X_OSC_FREQ * tmp) / 2;
+ 	else
+ 		pll = 73728000; /* Default value for old CPUs */
+ 
+ 	tmp = readl(SYSFLG2);
+ 	if (tmp & SYSFLG2_CKMODE) {
+-		cpu = ext;
+-		bus_clk.rate = cpu;
++		cpu = CLPS711X_EXT_FREQ;
++		bus_clk.rate = CLPS711X_EXT_FREQ;
+ 	} else {
+ 		cpu = pll;
+ 		if (cpu >= 36864000)
+@@ -74,25 +64,23 @@ static int clocks_init(void)
+ 			bus_clk.rate = 36864000 / 2;
+ 	}
+ 
+-	uart_clk.rate = bus_clk.rate / 10;
++	uart_clk.rate = DIV_ROUND_CLOSEST(bus_clk.rate, 10);
+ 
+ 	if (tmp & SYSFLG2_CKMODE) {
+ 		tmp = readw(SYSCON2);
+ 		if (tmp & SYSCON2_OSTB)
+-			timer = ext / 26;
++			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 26);
+ 		else
+-			timer = 541440;
++			timer_clk.rate = DIV_ROUND_CLOSEST(CLPS711X_EXT_FREQ, 24);
+ 	} else
+-		timer = cpu / 144;
++		timer_clk.rate = DIV_ROUND_CLOSEST(cpu, 144);
+ 
+ 	tmp = readl(SYSCON1);
+ 	tmp &= ~SYSCON1_TC2M;	/* Free running mode */
+ 	tmp |= SYSCON1_TC2S;	/* High frequency source */
+ 	writel(tmp, SYSCON1);
+ 
+-	clocks_calc_mult_shift(&cs.mult, &cs.shift, timer, NSEC_PER_SEC, 10);
+-
+-	return init_clock(&cs);
++	return 0;
  }
-diff --git a/arch/arm/mach-clps711x/Kconfig b/arch/arm/mach-clps711x/Kconfig
-index d2873b4..b774c54 100644
---- a/arch/arm/mach-clps711x/Kconfig
-+++ b/arch/arm/mach-clps711x/Kconfig
-@@ -12,14 +12,13 @@ endchoice
+ core_initcall(clocks_init);
  
- menu "CLPS711X specific settings"
+@@ -100,6 +88,7 @@ static struct clk_lookup clocks_lookups[] = {
+ 	CLKDEV_CON_ID("bus", &bus_clk),
+ 	CLKDEV_DEV_ID("clps711x_serial0", &uart_clk),
+ 	CLKDEV_DEV_ID("clps711x_serial1", &uart_clk),
++	CLKDEV_DEV_ID("clps711x-cs", &timer_clk),
+ };
  
--config CLPS711X_CPU_PLL_MULT
--	int "CPU PLL multiplier (20-50)"
--	range 20 50
--	default "40"
-+config CLPS711X_RAISE_CPUFREQ
-+	bool "Raise CPU frequency to 90 MHz"
-+	depends on MACH_CLEP7212
- 	help
--	  Define CPU PLL multiplier. PLL is calculated by formula:
--	    PLL Frequency = (PLL Multiplier / 2) * 3686400 Hz
--	  Default value is 40, for achieve 73 MHz.
-+	  Raise CPU frequency to 90 MHz. This operation can be performed
-+	  only for devices which allow to operate at 90 MHz.
-+	  If option is not selected, CPU frequency will set to default 73 MHz.
+ static int clkdev_init(void)
+@@ -109,3 +98,13 @@ static int clkdev_init(void)
+ 	return 0;
+ }
+ postcore_initcall(clkdev_init);
++
++static const char *clps711x_clocksrc_name = "clps711x-cs";
++
++static __init int clps711x_core_init(void)
++{
++	add_generic_device(clps711x_clocksrc_name, DEVICE_ID_SINGLE, NULL,
++			   TC2D, SZ_2, IORESOURCE_MEM, NULL);
++	return 0;
++}
++coredevice_initcall(clps711x_core_init);
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 3f27cf2..9f3558b 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -10,6 +10,10 @@ config CLOCKSOURCE_BCM2835
+ 	bool
+ 	depends on ARCH_BCM2835
  
- endmenu
- 
++config CLOCKSOURCE_CLPS711X
++	bool
++	depends on ARCH_CLPS711X
++
+ config CLOCKSOURCE_NOMADIK
+ 	bool
+ 	depends on ARM
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index b0bc8bd..d919881 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
+ obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
+ obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
++obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
+ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+diff --git a/drivers/clocksource/clps711x.c b/drivers/clocksource/clps711x.c
+new file mode 100644
+index 0000000..8c379d3
+--- /dev/null
++++ b/drivers/clocksource/clps711x.c
+@@ -0,0 +1,61 @@
++/*
++ * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ */
++
++#include <common.h>
++#include <clock.h>
++#include <io.h>
++#include <init.h>
++
++#include <linux/clk.h>
++#include <linux/err.h>
++
++static __iomem void *clps711x_timer_base;
++
++static uint64_t clps711x_cs_read(void)
++{
++	return ~readw(clps711x_timer_base);
++}
++
++static struct clocksource clps711x_cs = {
++	.read = clps711x_cs_read,
++	.mask = CLOCKSOURCE_MASK(16),
++};
++
++static int clps711x_cs_probe(struct device_d *dev)
++{
++	u32 rate;
++	struct clk *timer_clk;
++
++	timer_clk = clk_get(dev, NULL);
++	if (IS_ERR(timer_clk))
++		return PTR_ERR(timer_clk);
++
++	rate = clk_get_rate(timer_clk);
++	clps711x_timer_base = dev_request_mem_region(dev, 0);
++	if (!clps711x_timer_base) {
++		clk_put(timer_clk);
++		return -ENOENT;
++	}
++
++	clocks_calc_mult_shift(&clps711x_cs.mult, &clps711x_cs.shift, rate,
++			       NSEC_PER_SEC, 10);
++
++	return init_clock(&clps711x_cs);
++}
++
++static struct driver_d clps711x_cs_driver = {
++	.name = "clps711x-cs",
++	.probe = clps711x_cs_probe,
++};
++
++static __init int clps711x_cs_init(void)
++{
++	return platform_driver_register(&clps711x_cs_driver);
++}
++coredevice_initcall(clps711x_cs_init);
 -- 
 1.7.3.4
 
