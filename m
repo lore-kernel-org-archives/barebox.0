@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-wg0-x229.google.com ([2a00:1450:400c:c00::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFBAV-00046Z-15
- for barebox@lists.infradead.org; Mon, 11 Mar 2013 22:26:08 +0000
-Received: by mail-wg0-f41.google.com with SMTP id ds1so2642861wgb.0
- for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 15:26:04 -0700 (PDT)
+ id 1UFCfa-0007VK-Pe
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 00:02:20 +0000
+Received: by mail-wg0-f41.google.com with SMTP id ds1so2701859wgb.0
+ for <barebox@lists.infradead.org>; Mon, 11 Mar 2013 17:02:16 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Mon, 11 Mar 2013 23:24:47 +0100
-Message-Id: <1363040687-1221-1-git-send-email-vicencb@gmail.com>
+Date: Tue, 12 Mar 2013 01:01:23 +0100
+Message-Id: <1363046484-24946-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,175 +21,181 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] archos: add atag appender for all features
-To: barebox@lists.infradead.org, s.hauer@pengutronix.de
+Subject: [PATCH 2/4] twl6030: add power button as an input key
+To: s.hauer@pengutronix.de, barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-> I don't see a point in obfuscating this so much. Please call only call
-> the features you want to have setup in the first place. For your own
-> debugging purposes it makes no difference whether you edit the C file
-> above or this header file. For different tablets with different features
-> you need to find another solution anyway.
-> 
-> Sascha
-
-I agree with you. My first intention was to put a place-holder for each feature
-so it would be easy to customize for each tablet. But anyways the file has to
-be edited for customization.
-This second version of the patch leaves the same features, which are required,
-but still has the changes for zeroing each feature before setting it.
+Done as suggested.
+Thanks for the suggestion.
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/boards/archosg9/archos_features.c | 58 +++++++++---------------------
- 1 file changed, 16 insertions(+), 42 deletions(-)
+ drivers/input/Kconfig          |   7 +++
+ drivers/input/Makefile         |   1 +
+ drivers/input/twl6030_pwrbtn.c | 112 +++++++++++++++++++++++++++++++++++++++++
+ include/twl6030_pwrbtn.h       |   9 ++++
+ 4 files changed, 129 insertions(+)
+ create mode 100644 drivers/input/twl6030_pwrbtn.c
+ create mode 100644 include/twl6030_pwrbtn.h
 
-diff --git a/arch/arm/boards/archosg9/archos_features.c b/arch/arm/boards/archosg9/archos_features.c
-index 5d93403..b396734 100644
---- a/arch/arm/boards/archosg9/archos_features.c
-+++ b/arch/arm/boards/archosg9/archos_features.c
-@@ -27,9 +27,9 @@ static void setup_feature_core(void)
- 	features->hdr.tag = FTAG_CORE;
- 	features->hdr.size = feature_tag_size(feature_tag_core);
+diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
+index a6f1f47..3d9016b 100644
+--- a/drivers/input/Kconfig
++++ b/drivers/input/Kconfig
+@@ -38,4 +38,11 @@ config KEYBOARD_QT1070
+ 	  Say Y here if you want to use Atmel AT42QT1070 QTouch
+ 	  Sensor chip as input device.
  
-+	memset(&features->u.core, 0, sizeof(features->u.core));
- 	features->u.core.magic = FEATURE_LIST_MAGIC;
- 	features->u.core.list_revision = FEATURE_LIST_REV;
--	features->u.core.flags = 0;
- 
- 	features = feature_tag_next(features);
- }
-@@ -38,8 +38,7 @@ static void setup_feature_product_name(void)
- 	features->hdr.tag = FTAG_PRODUCT_NAME;
- 	features->hdr.size = feature_tag_size(feature_tag_product_name);
- 
--	memset(features->u.product_name.name, 0,
--		sizeof(features->u.product_name.name));
-+	memset(&features->u.product_name, 0, sizeof(features->u.product_name));
- 	sprintf(features->u.product_name.name, "A80S");
- 	features->u.product_name.id = 0x13A8;
- 
-@@ -50,10 +49,8 @@ static void setup_feature_product_serial_number(void)
- 	features->hdr.tag = FTAG_PRODUCT_SERIAL_NUMBER;
- 	features->hdr.size = feature_tag_size(feature_tag_product_serial);
- 
--	features->u.product_serial.serial[0] = 0;
--	features->u.product_serial.serial[1] = 0;
--	features->u.product_serial.serial[2] = 0;
--	features->u.product_serial.serial[3] = 0;
-+	memset(&features->u.product_serial, 0,
-+		sizeof(features->u.product_serial));
- 
- 	features = feature_tag_next(features);
- }
-@@ -62,14 +59,7 @@ static void setup_feature_product_mac_address(void)
- 	features->hdr.tag = FTAG_PRODUCT_MAC_ADDRESS;
- 	features->hdr.size = feature_tag_size(feature_tag_product_mac_address);
- 
--	features->u.mac_address.addr[0] = 0;
--	features->u.mac_address.addr[1] = 0;
--	features->u.mac_address.addr[2] = 0;
--	features->u.mac_address.addr[3] = 0;
--	features->u.mac_address.addr[4] = 0;
--	features->u.mac_address.addr[5] = 0;
--	features->u.mac_address.reserved1 = 0;
--	features->u.mac_address.reserved2 = 0;
-+	memset(&features->u.mac_address, 0, sizeof(features->u.mac_address));
- 
- 	features = feature_tag_next(features);
- }
-@@ -78,6 +68,8 @@ static void setup_feature_board_pcb_revision(void)
- 	features->hdr.tag = FTAG_BOARD_PCB_REVISION;
- 	features->hdr.size = feature_tag_size(feature_tag_board_revision);
- 
-+	memset(&features->u.board_revision, 0,
-+		sizeof(features->u.board_revision));
- 	features->u.board_revision.revision = 5;
- 
- 	features = feature_tag_next(features);
-@@ -87,23 +79,10 @@ static void setup_feature_sdram(void)
- 	features->hdr.tag = FTAG_SDRAM;
- 	features->hdr.size = feature_tag_size(feature_tag_sdram);
- 
--	memset(features->u.sdram.vendor, 0, sizeof(features->u.sdram.vendor));
--	memset(features->u.sdram.product, 0,
--		sizeof(features->u.sdram.product));
-+	memset(&features->u.sdram, 0, sizeof(features->u.sdram));
- 	sprintf(features->u.sdram.vendor , "elpida");
--	sprintf(features->u.sdram.product, "EDB8064B1PB"/*"EDB4064B2PB"*/);
--	features->u.sdram.type     = 0;
--	features->u.sdram.revision = 0;
--	features->u.sdram.flags    = 0;
--	features->u.sdram.clock    = 400;
--	features->u.sdram.param_0  = 0;
--	features->u.sdram.param_1  = 0;
--	features->u.sdram.param_2  = 0;
--	features->u.sdram.param_3  = 0;
--	features->u.sdram.param_4  = 0;
--	features->u.sdram.param_5  = 0;
--	features->u.sdram.param_6  = 0;
--	features->u.sdram.param_7  = 0;
-+	sprintf(features->u.sdram.product, "EDB8064B1PB");
-+	features->u.sdram.clock = 400;
- 
- 	features = feature_tag_next(features);
- }
-@@ -112,6 +91,7 @@ static void setup_feature_pmic(void)
- 	features->hdr.tag = FTAG_PMIC;
- 	features->hdr.size = feature_tag_size(feature_tag_pmic);
- 
-+	memset(&features->u.pmic, 0, sizeof(features->u.pmic));
- 	features->u.pmic.flags = FTAG_PMIC_TPS62361;
- 
- 	features = feature_tag_next(features);
-@@ -121,6 +101,7 @@ static void setup_feature_serial_port(void)
- 	features->hdr.tag = FTAG_SERIAL_PORT;
- 	features->hdr.size = feature_tag_size(feature_tag_serial_port);
- 
-+	memset(&features->u.serial_port, 0, sizeof(features->u.serial_port));
- 	features->u.serial_port.uart_id = 1;
- 	features->u.serial_port.speed = 115200;
- 
-@@ -131,9 +112,10 @@ static void setup_feature_has_gpio_volume_keys(void)
- 	features->hdr.tag = FTAG_HAS_GPIO_VOLUME_KEYS;
- 	features->hdr.size = feature_tag_size(feature_tag_gpio_volume_keys);
- 
-+	memset(&features->u.gpio_volume_keys, 0,
-+		sizeof(features->u.gpio_volume_keys));
- 	features->u.gpio_volume_keys.gpio_vol_up   = 0x2B;
- 	features->u.gpio_volume_keys.gpio_vol_down = 0x2C;
--	features->u.gpio_volume_keys.flags = 0;
- 
- 	features = feature_tag_next(features);
- }
-@@ -142,18 +124,9 @@ static void setup_feature_screen(void)
- 	features->hdr.tag = FTAG_SCREEN;
- 	features->hdr.size = feature_tag_size(feature_tag_screen);
- 
--	memset(features->u.screen.vendor, 0,
--		sizeof(features->u.screen.vendor));
-+	memset(&features->u.screen, 0, sizeof(features->u.screen));
- 	sprintf(features->u.screen.vendor, "CMI");
--	features->u.screen.type = 0;
--	features->u.screen.revision = 0;
--	features->u.screen.vcom = 0;
- 	features->u.screen.backlight = 0xC8;
--	features->u.screen.reserved[0] = 0;
--	features->u.screen.reserved[1] = 0;
--	features->u.screen.reserved[2] = 0;
--	features->u.screen.reserved[3] = 0;
--	features->u.screen.reserved[4] = 0;
- 
- 	features = feature_tag_next(features);
- }
-@@ -162,6 +135,7 @@ static void setup_feature_turbo(void)
- 	features->hdr.tag = FTAG_TURBO;
- 	features->hdr.size = feature_tag_size(feature_tag_turbo);
- 
-+	memset(&features->u.turbo, 0, sizeof(features->u.turbo));
- 	features->u.turbo.flag = 1;
- 
- 	features = feature_tag_next(features);
++config KEYBOARD_TWL6030
++	tristate "TWL6030 power button"
++	depends on MFD_TWL6030
++	select POLLER
++	help
++	  Say Y here if you want to use TWL6030 power button as a key.
++
+ endmenu
+diff --git a/drivers/input/Makefile b/drivers/input/Makefile
+index d042980..b9bcc82 100644
+--- a/drivers/input/Makefile
++++ b/drivers/input/Makefile
+@@ -1,3 +1,4 @@
+ obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
++obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
+ obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
+ obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
+diff --git a/drivers/input/twl6030_pwrbtn.c b/drivers/input/twl6030_pwrbtn.c
+new file mode 100644
+index 0000000..ec6cf7f
+--- /dev/null
++++ b/drivers/input/twl6030_pwrbtn.c
+@@ -0,0 +1,112 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <poller.h>
++#include <kfifo.h>
++#include <mfd/twl6030.h>
++#include <twl6030_pwrbtn.h>
++
++struct twl6030_pwrbtn_internal_data {
++	int code;
++	u8 previous_state;
++	struct twl6030 *twl6030;
++	struct kfifo *recv_fifo;
++	struct console_device cdev;
++	struct poller_struct poller;
++};
++
++#define PWR_PWRON_IRQ (1 << 0)
++
++static void ic2_key_poller(struct poller_struct *poller)
++{
++	struct twl6030_pwrbtn_internal_data *idata = container_of(
++		poller, struct twl6030_pwrbtn_internal_data, poller);
++	u8 val;
++
++	if (twl6030_reg_read(idata->twl6030, TWL6030_PMCM_HW, &val)) {
++		dev_err(idata->cdev.dev, "reading i2c\n");
++		return;
++	}
++	val = !(val & PWR_PWRON_IRQ);
++	if (val != idata->previous_state && val) {
++		kfifo_put(idata->recv_fifo, (u_char *)&idata->code,
++			sizeof(int));
++		dev_dbg(idata->cdev.dev, "pressed power button as %d\n",
++			idata->code);
++	}
++	idata->previous_state = val;
++}
++
++static int twl6030_pwrbtn_tstc(struct console_device *cdev)
++{
++	struct twl6030_pwrbtn_internal_data *idata = container_of(
++		cdev, struct twl6030_pwrbtn_internal_data, cdev);
++
++	return kfifo_len(idata->recv_fifo) ? 1 : 0;
++}
++
++static int twl6030_pwrbtn_getc(struct console_device *cdev)
++{
++	int code = 0;
++	struct twl6030_pwrbtn_internal_data *idata = container_of(
++		cdev, struct twl6030_pwrbtn_internal_data, cdev);
++
++	kfifo_get(idata->recv_fifo, (u_char *)&code, sizeof(int));
++	return code;
++}
++
++static int __init twl6030_pwrbtn_probe(struct device_d *dev)
++{
++	struct twl6030_pwrbtn_internal_data *idata;
++	struct twl6030_pwrbtn_platform_data *pdata;
++
++	pdata = dev->platform_data;
++	if (!pdata) {
++		dev_err(dev, "missing platform_data\n");
++		return -ENODEV;
++	}
++
++	idata = xzalloc(sizeof(struct twl6030_pwrbtn_internal_data));
++	if (!idata) {
++		dev_err(dev, "out of memory allocating idata\n");
++		return -ENOMEM;
++	}
++
++	idata->recv_fifo = kfifo_alloc(sizeof(int));
++	if (!idata->recv_fifo) {
++		dev_err(dev, "out of memory allocating kfifo\n");
++		free(idata);
++		return -ENOMEM;
++	}
++
++	idata->code = pdata->code;
++	idata->twl6030 = twl6030_get();
++	idata->poller.func = ic2_key_poller;
++
++	dev->type_data = &idata->cdev;
++	idata->cdev.dev = dev;
++	idata->cdev.f_caps = CONSOLE_STDIN;
++	idata->cdev.tstc = twl6030_pwrbtn_tstc;
++	idata->cdev.getc = twl6030_pwrbtn_getc;
++	console_register(&idata->cdev);
++
++	return poller_register(&idata->poller);
++}
++
++static struct driver_d twl6030_pwrbtn_driver = {
++	.name	= "twl6030_pwrbtn",
++	.probe	= twl6030_pwrbtn_probe,
++};
++device_platform_driver(twl6030_pwrbtn_driver);
+diff --git a/include/twl6030_pwrbtn.h b/include/twl6030_pwrbtn.h
+new file mode 100644
+index 0000000..c4e13d1
+--- /dev/null
++++ b/include/twl6030_pwrbtn.h
+@@ -0,0 +1,9 @@
++#ifndef _TWL6030_PWRBTN_H
++#define _TWL6030_PWRBTN_H
++
++struct twl6030_pwrbtn_platform_data {
++	/* key code */
++	int code;
++};
++
++#endif
 -- 
 1.8.1.5
 
