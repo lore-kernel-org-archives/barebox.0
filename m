@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFRgY-0005Iu-AB
- for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:04:19 +0000
-Received: by mail-la0-f46.google.com with SMTP id fq12so5425118lab.33
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 09:03:55 -0700 (PDT)
+ id 1UFRiQ-0005na-7d
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:06:14 +0000
+Received: by mail-la0-f54.google.com with SMTP id gw10so1469lab.13
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 09:05:52 -0700 (PDT)
 MIME-Version: 1.0
 From: "Renaud C." <r.cerrato@til-technologies.fr>
-Date: Tue, 12 Mar 2013 17:03:15 +0100
-Message-ID: <CA+7xNQ=XbCFAFrr1z+4rpDBirNHv7w_r+RZwGk-0x=G7Y=TBMA@mail.gmail.com>
-Content-Type: multipart/mixed; boundary=f46d04083f2dc546c804d7bc6f3e
+Date: Tue, 12 Mar 2013 17:05:11 +0100
+Message-ID: <CA+7xNQmARo+pXakUUW=8YqBKF2mq9j-00ybSzQ4r9wCe4rPSyA@mail.gmail.com>
+Content-Type: multipart/mixed; boundary=f46d04083877b2af4804d7bc76c1
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,74 +20,56 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] AT91 UDC, fix recursive poll()
+Subject: [PATCH 5/7] gadget: possible null pointer dereference fix
 To: barebox <barebox@lists.infradead.org>
 
---f46d04083f2dc546c804d7bc6f3e
-Content-Type: multipart/alternative; boundary=f46d04083f2dc546c404d7bc6f3c
+--f46d04083877b2af4804d7bc76c1
+Content-Type: multipart/alternative; boundary=f46d04083877b2af4504d7bc76bf
 
---f46d04083f2dc546c404d7bc6f3c
+--f46d04083877b2af4504d7bc76bf
 Content-Type: text/plain; charset=ISO-8859-1
 
-I noticed some weird behavior using DFU gadget on AT91SAM9260 which worked
-1 of 10 times. The bug was due to the usb_gadget_poll() being called while
-the previous call was still in progress : some USB calls may takes a lot of
-time (ex : DFU erase-then-write), resulting in the poller to be triggered
-again while still in the poll() function.
+This patch fix a possible null pointer dereference exception because of a
+missing null check on cdev->config
 
-This patch adds a poll lock to the AT91 UDC driver.
-
---f46d04083f2dc546c404d7bc6f3c
+--f46d04083877b2af4504d7bc76bf
 Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">I noticed some weird behavior using DFU gadget on AT91SAM9=
-260 which worked 1 of 10 times. The bug was due to the usb_gadget_poll() be=
-ing called while the previous call was still in progress : some USB calls m=
-ay takes a lot of time (ex : DFU erase-then-write), resulting in the poller=
- to be triggered again while still in the poll() function.<div>
+<div dir="ltr">This patch fix a possible null pointer dereference exception because of a missing null check on cdev-&gt;config<div><br></div><div><br></div></div>
 
-<br></div><div>This patch adds a poll lock to the AT91 UDC driver.</div></d=
-iv>
+--f46d04083877b2af4504d7bc76bf--
 
---f46d04083f2dc546c404d7bc6f3c--
-
---f46d04083f2dc546c804d7bc6f3e
+--f46d04083877b2af4804d7bc76c1
 Content-Type: application/octet-stream; 
-	name="at91udc-added-missing-lock-for-poll.patch"
+	name="gadget-null-pointer-dereference-fix.patch"
 Content-Disposition: attachment; 
-	filename="at91udc-added-missing-lock-for-poll.patch"
+	filename="gadget-null-pointer-dereference-fix.patch"
 Content-Transfer-Encoding: base64
-X-Attachment-Id: f_he78sgxs0
+X-Attachment-Id: f_he794erk0
 
-RnJvbSBjOWU3M2NiYjcwNGY4ZTRlM2MxM2E3MTI1ODdmMGI0ZmJiZGZjYWM3IE1vbiBTZXAgMTcg
+RnJvbSAzN2I3ZGM3ZjIyMzJiNTRmOGZjOGE1NTkwMjQ1YWYzN2ZlN2Q4Mjk5IE1vbiBTZXAgMTcg
 MDA6MDA6MDAgMjAwMQpGcm9tOiBDZXJyYXRvIFJlbmF1ZCA8ci5jZXJyYXRvQHRpbC10ZWNobm9s
-b2dpZXMuZnI+CkRhdGU6IE1vbiwgMTEgTWFyIDIwMTMgMTE6MDY6MDYgKzAxMDAKU3ViamVjdDog
-W1BBVENIXSBhZGRlZCBtaXNzaW5nIGxvY2sgZm9yIHBvbGwKCi0tLQogZHJpdmVycy91c2IvZ2Fk
-Z2V0L2F0OTFfdWRjLmMgfCAgIDE0ICsrKysrKysrLS0tLS0tCiBkcml2ZXJzL3VzYi9nYWRnZXQv
-YXQ5MV91ZGMuaCB8ICAgIDEgKwogMiBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDYg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy91c2IvZ2FkZ2V0L2F0OTFfdWRjLmMg
-Yi9kcml2ZXJzL3VzYi9nYWRnZXQvYXQ5MV91ZGMuYwppbmRleCAwNjU0MDM4Li44YWU5MTE5IDEw
-MDY0NAotLS0gYS9kcml2ZXJzL3VzYi9nYWRnZXQvYXQ5MV91ZGMuYworKysgYi9kcml2ZXJzL3Vz
-Yi9nYWRnZXQvYXQ5MV91ZGMuYwpAQCAtMTM0MCwyMiArMTM0MCwyNCBAQCBpbnQgdXNiX2dhZGdl
-dF9wb2xsKHZvaWQpCiAJc3RydWN0IGF0OTFfdWRjCSp1ZGMgPSAmY29udHJvbGxlcjsKIAl1MzIg
-dmFsdWU7CiAKLQlpZiAoIXVkYy0+dWRwX2Jhc2VhZGRyKQorCWlmICghdWRjLT51ZHBfYmFzZWFk
-ZHIgfHwgdWRjLT5wb2xsX2xvY2spCiAJCXJldHVybiAwOwogCisJdWRjLT5wb2xsX2xvY2sgPSAx
-OworCiAJdmFsdWUgPSBncGlvX2dldF92YWx1ZSh1ZGMtPmJvYXJkLnZidXNfcGluKTsKIAl2YWx1
-ZSBePSB1ZGMtPmJvYXJkLnZidXNfYWN0aXZlX2xvdzsKLQotCWlmICghdmFsdWUpIHsKLQkJYXQ5
-MV91cGRhdGVfdmJ1cyh1ZGMsIHZhbHVlKTsKLQkJcmV0dXJuIDA7Ci0JfQogCWF0OTFfdXBkYXRl
-X3ZidXModWRjLCB2YWx1ZSk7CiAKKwlpZiAoIXZhbHVlKQorCQlnb3RvIGV4aXQ7CisKIAl2YWx1
-ZSA9IGF0OTFfdWRwX3JlYWQodWRjLCBBVDkxX1VEUF9JU1IpICYgKH4oQVQ5MV9VRFBfU09GSU5U
-KSk7CiAJaWYgKHZhbHVlKQogCQlhdDkxX3VkY19pcnEodWRjKTsKIAorZXhpdDoKKwl1ZGMtPnBv
-bGxfbG9jayA9IDA7CiAJcmV0dXJuIHZhbHVlOwogfQogCmRpZmYgLS1naXQgYS9kcml2ZXJzL3Vz
-Yi9nYWRnZXQvYXQ5MV91ZGMuaCBiL2RyaXZlcnMvdXNiL2dhZGdldC9hdDkxX3VkYy5oCmluZGV4
-IGU1OTJjYzUuLjUxMTQ1YTkgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvdXNiL2dhZGdldC9hdDkxX3Vk
-Yy5oCisrKyBiL2RyaXZlcnMvdXNiL2dhZGdldC9hdDkxX3VkYy5oCkBAIC0xMjcsNiArMTI3LDcg
-QEAgc3RydWN0IGF0OTFfdWRjIHsKIAl1bnNpZ25lZAkJCXdhaXRfZm9yX2NvbmZpZ19hY2s6MTsK
-IAl1bnNpZ25lZAkJCXNlbGZwb3dlcmVkOjE7CiAJdW5zaWduZWQJCQlhY3RpdmVfc3VzcGVuZDox
-OworCXVuc2lnbmVkCQkJcG9sbF9sb2NrOjE7CiAJdTgJCQkJYWRkcjsKIAl1MzIJCQkJZ3Bpb192
-YnVzX3ZhbDsKIAlzdHJ1Y3QgYXQ5MV91ZGNfZGF0YQkJYm9hcmQ7Ci0tIAoxLjcuMi41Cgo=
---f46d04083f2dc546c804d7bc6f3e
+b2dpZXMuZnI+CkRhdGU6IFRodSwgMjggRmViIDIwMTMgMTU6MDQ6NTMgKzAxMDAKU3ViamVjdDog
+W1BBVENIIDMvM10gbnVsbCBwb2ludGVyIGRlcmVmZXJlbmNlIGZpeAoKLS0tCiBkcml2ZXJzL3Vz
+Yi9nYWRnZXQvY29tcG9zaXRlLmMgfCAgIDIzICsrKysrKysrKysrKystLS0tLS0tLS0tCiAxIGZp
+bGVzIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvdXNiL2dhZGdldC9jb21wb3NpdGUuYyBiL2RyaXZlcnMvdXNiL2dhZGdldC9j
+b21wb3NpdGUuYwppbmRleCA5YWYxMTVlLi4xZjZjNWIyIDEwMDY0NAotLS0gYS9kcml2ZXJzL3Vz
+Yi9nYWRnZXQvY29tcG9zaXRlLmMKKysrIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2NvbXBvc2l0ZS5j
+CkBAIC03NzcsMTggKzc3NywyMSBAQCB1bmtub3duOgogCQkgKiByZWNpcGllbnRzIChlbmRwb2lu
+dCwgb3RoZXIsIFdVU0IsIC4uLikgdG8gdGhlIGN1cnJlbnQKIAkJICogY29uZmlndXJhdGlvbiBj
+b2RlLgogCQkgKi8KLQkJZiA9IGNkZXYtPmNvbmZpZy0+aW50ZXJmYWNlW2ludGZdOwotCQlpZiAo
+ZiAmJiBmLT5zZXR1cCkKLQkJCXZhbHVlID0gZi0+c2V0dXAoZiwgY3RybCk7Ci0JCWVsc2UKLQkJ
+CWYgPSBOVUxMOworCQlpZihjZGV2LT5jb25maWcpIHsKIAotCQlpZiAodmFsdWUgPCAwICYmICFm
+KSB7Ci0JCQlzdHJ1Y3QgdXNiX2NvbmZpZ3VyYXRpb24JKmM7CisJCQlmID0gY2Rldi0+Y29uZmln
+LT5pbnRlcmZhY2VbaW50Zl07CisJCQlpZiAoZiAmJiBmLT5zZXR1cCkKKwkJCQl2YWx1ZSA9IGYt
+PnNldHVwKGYsIGN0cmwpOworCQkJZWxzZQorCQkJCWYgPSBOVUxMOwogCi0JCQljID0gY2Rldi0+
+Y29uZmlnOwotCQkJaWYgKGMgJiYgYy0+c2V0dXApCi0JCQkJdmFsdWUgPSBjLT5zZXR1cChjLCBj
+dHJsKTsKKwkJCWlmICh2YWx1ZSA8IDAgJiYgIWYpIHsKKwkJCQlzdHJ1Y3QgdXNiX2NvbmZpZ3Vy
+YXRpb24JKmM7CisKKwkJCQljID0gY2Rldi0+Y29uZmlnOworCQkJCWlmIChjICYmIGMtPnNldHVw
+KQorCQkJCQl2YWx1ZSA9IGMtPnNldHVwKGMsIGN0cmwpOworCQkJfQogCQl9CiAKIAkJZ290byBk
+b25lOwotLSAKMS43LjIuNQoK
+--f46d04083877b2af4804d7bc76c1
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -98,4 +80,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---f46d04083f2dc546c804d7bc6f3e--
+--f46d04083877b2af4804d7bc76c1--
