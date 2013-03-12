@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f165.mail.ru ([94.100.178.84])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFTJt-0000pg-0h
- for barebox@lists.infradead.org; Tue, 12 Mar 2013 17:49:02 +0000
-Date: Tue, 12 Mar 2013 18:48:58 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130312174858.GS1906@pengutronix.de>
-References: <1363046484-24946-1-git-send-email-vicencb@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1363046484-24946-1-git-send-email-vicencb@gmail.com>
+ id 1UFTLN-0001YV-6Y
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 17:50:34 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 12 Mar 2013 21:50:26 +0400
+Message-ID: <1363110626.497378554@f165.mail.ru>
+In-Reply-To: <513CF27B.6080802@free-electrons.com>
+References: <1362924823.394544173@f371.mail.ru>
+ <513CF27B.6080802@free-electrons.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,158 +19,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] twl6030: add power button as an input key
-To: Vicente Bergas <vicencb@gmail.com>
+Subject: =?UTF-8?B?UmVbMl06IE5ldyBkdC1vbmx5IGFybS9tYWNo?=
+To: =?UTF-8?B?TWF4aW1lIFJpcGFyZA==?= <maxime.ripard@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 12, 2013 at 01:01:23AM +0100, Vicente Bergas wrote:
-> Done as suggested.
-> Thanks for the suggestion.
-> 
-> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
-> ---
->  drivers/input/Kconfig          |   7 +++
->  drivers/input/Makefile         |   1 +
->  drivers/input/twl6030_pwrbtn.c | 112 +++++++++++++++++++++++++++++++++++++++++
->  include/twl6030_pwrbtn.h       |   9 ++++
->  4 files changed, 129 insertions(+)
->  create mode 100644 drivers/input/twl6030_pwrbtn.c
->  create mode 100644 include/twl6030_pwrbtn.h
-> 
-> diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
-> index a6f1f47..3d9016b 100644
-> --- a/drivers/input/Kconfig
-> +++ b/drivers/input/Kconfig
-> @@ -38,4 +38,11 @@ config KEYBOARD_QT1070
->  	  Say Y here if you want to use Atmel AT42QT1070 QTouch
->  	  Sensor chip as input device.
->  
-> +config KEYBOARD_TWL6030
-> +	tristate "TWL6030 power button"
-> +	depends on MFD_TWL6030
-> +	select POLLER
-> +	help
-> +	  Say Y here if you want to use TWL6030 power button as a key.
-> +
->  endmenu
-> diff --git a/drivers/input/Makefile b/drivers/input/Makefile
-> index d042980..b9bcc82 100644
-> --- a/drivers/input/Makefile
-> +++ b/drivers/input/Makefile
-> @@ -1,3 +1,4 @@
->  obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
-> +obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
->  obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
->  obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
-> diff --git a/drivers/input/twl6030_pwrbtn.c b/drivers/input/twl6030_pwrbtn.c
-> new file mode 100644
-> index 0000000..ec6cf7f
-> --- /dev/null
-> +++ b/drivers/input/twl6030_pwrbtn.c
-> @@ -0,0 +1,112 @@
-> +/*
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <malloc.h>
-> +#include <poller.h>
-> +#include <kfifo.h>
-> +#include <mfd/twl6030.h>
-> +#include <twl6030_pwrbtn.h>
-> +
-> +struct twl6030_pwrbtn_internal_data {
-> +	int code;
-> +	u8 previous_state;
-> +	struct twl6030 *twl6030;
-> +	struct kfifo *recv_fifo;
-> +	struct console_device cdev;
-> +	struct poller_struct poller;
-> +};
-> +
-> +#define PWR_PWRON_IRQ (1 << 0)
-> +
-> +static void ic2_key_poller(struct poller_struct *poller)
-> +{
-> +	struct twl6030_pwrbtn_internal_data *idata = container_of(
-> +		poller, struct twl6030_pwrbtn_internal_data, poller);
-> +	u8 val;
-> +
-> +	if (twl6030_reg_read(idata->twl6030, TWL6030_PMCM_HW, &val)) {
-> +		dev_err(idata->cdev.dev, "reading i2c\n");
-> +		return;
-> +	}
-> +	val = !(val & PWR_PWRON_IRQ);
-> +	if (val != idata->previous_state && val) {
-> +		kfifo_put(idata->recv_fifo, (u_char *)&idata->code,
-> +			sizeof(int));
-> +		dev_dbg(idata->cdev.dev, "pressed power button as %d\n",
-> +			idata->code);
-> +	}
-> +	idata->previous_state = val;
-> +}
-> +
-> +static int twl6030_pwrbtn_tstc(struct console_device *cdev)
-> +{
-> +	struct twl6030_pwrbtn_internal_data *idata = container_of(
-> +		cdev, struct twl6030_pwrbtn_internal_data, cdev);
-> +
-> +	return kfifo_len(idata->recv_fifo) ? 1 : 0;
-> +}
-> +
-> +static int twl6030_pwrbtn_getc(struct console_device *cdev)
-> +{
-> +	int code = 0;
-> +	struct twl6030_pwrbtn_internal_data *idata = container_of(
-> +		cdev, struct twl6030_pwrbtn_internal_data, cdev);
-> +
-> +	kfifo_get(idata->recv_fifo, (u_char *)&code, sizeof(int));
-> +	return code;
-> +}
-> +
-> +static int __init twl6030_pwrbtn_probe(struct device_d *dev)
-> +{
-> +	struct twl6030_pwrbtn_internal_data *idata;
-> +	struct twl6030_pwrbtn_platform_data *pdata;
-> +
-> +	pdata = dev->platform_data;
-> +	if (!pdata) {
-> +		dev_err(dev, "missing platform_data\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	idata = xzalloc(sizeof(struct twl6030_pwrbtn_internal_data));
-> +	if (!idata) {
-> +		dev_err(dev, "out of memory allocating idata\n");
-> +		return -ENOMEM;
-> +	}
-
-xzalloc always returns memory. You don't need to check the result.
-
-Fixed while applying.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PiBMZSAxMC8wMy8yMDEzIDE1OjEzLCBBbGV4YW5kZXIgU2hpeWFuIGEgw6ljcml0IDoKPiA+IEhl
+bGxvIEFsbC4KPiA+IAo+ID4gSSB3YW50IHRvIGFkZCBuZXcgYXJjaCBpbnRvIGJhcmVib3guIG4g
+dGhlIGtlcm5lbCB0aGlzIGFyY2ggaXMKPiA+IGR0LW9ubHkuIEkgdGFsa2luZyBhYm91dCBtYWNo
+LXN1bnhpLgo+IAo+IFdvdywgdGhhdCB3b3VsZCBiZSBncmVhdCA6KQo+IAo+IEkndmUgYmVlbiB0
+aGlua2luZyBhYm91dCBkb2luZyB0aGlzIGZvciBxdWl0ZSBzb21lIHRpbWUgbm93LCBidXQgSSBk
+b24ndAo+IGhhdmUgc28gbXVjaCB0aW1lIHRvIGRvIGJvdGggdGhlIGtlcm5lbCBhbmQgYmFyZWJv
+eCBwb3J0cywgc28gaXQgZGlkbid0Cj4gZ28gZnVydGhlciB0aGFuICJpdCB3b3VsZCBiZSBjb29s
+Ii4KPiAKPiA+IFNvLCBob3cgd2Ugc2hvdWxkIGhhbmRsZSBzdWNoIHBsYXRmb3JtIGluIHRoZSBi
+YXJlYm94PyBXZSBuZWVkIGFsd2F5cwo+ID4gcHJvdmlkZSBkdGIgdG8gdGhlIGtlcm5lbCwgdGhl
+biB3aGVyZSBpdCBzaG91bGQgYmUgaW4gYmFyZWJveD8KPiAKPiBUaGVyZSdzIG5vIHN0cm9uZyBy
+ZXF1aXJlbWVudHMgaGVyZS4gSXQgY2FuIGJlIGFueXdoZXJlIGFzIGxvbmcgYXMKPiBiYXJlYm94
+IGtub3dzIGhvdyBhbmQgd2hlcmUgdG8gZmluZCBpdCwgYmFzaWNhbGx5IGxpa2UgdGhlIGtlcm5l
+bCBpbWFnZSwKPiBzbyBpdCBjYW4gYmUgZnJvbSBhIE1NQywgVEZUUCwgZXRjLgo+IAo+IEJ1dCBy
+ZWFsbHksIHRoZSBmYWN0IHRoYXQgc3VueGkgaXMgb25seSBib290YWJsZSB0aHJvdWdoIGRldmlj
+ZSB0cmVlCj4gZG9lc24ndCBjaGFuZ2UgYSB0aGluZyBjb21wYXJlZCB0byBvdGhlciBwbGF0Zm9y
+bXMgd2l0aCBkZXZpY2UgdHJlZQo+IHN1cHBvcnQ6IHRoZSBib290bG9hZGVyIGhhcyB0byBsb2Fk
+IHRoZSBrZXJuZWwgaW1hZ2UsIHRoZSBkdGIgYW5kIHRoYXQncyBpdC4KPiAKPiA+IEkgdGhpbmsg
+YWJvdXQgZHRiLWZpbGUgaW4gL2VudiwgYnV0IG5vdCBzdXJlLi4uIFRoYW5rcy4KPiAKPiBJdCBj
+YW4gYmUgZG9uZSBhcyB3ZWxsIEkgZ3Vlc3MsIGJ1dCB0aGF0IGRvZXNuJ3Qgc291bmQgdGhhdCBm
+YW1pbGlhcgo+IGZyb20gd2hhdCBJJ3ZlIHNlZW4gaW4gdGhlIG90aGVyIGJhcmVib3ggYm9hcmRz
+LgoKS2VybmVsIG5vIGNvbnRhaW4gYW55IGJvYXJkIGZvciBtYWNoLXN1bnhpLgpUaGlzIG1lYW4g
+dGhhbiBhbGwgc3R1ZmYgaXMgZGVzY3JpYmVkIHZpYSBEVC4KSW4gdGhlIGJhcmVib3ggd2Ugc2hv
+dWxkIGhhdmUgIm1hY2giICYgImJvYXJkIiwgc28gSSB0aGluayB3ZQpzaG91bGQgY3JlYXRlIGVt
+cHR5IChmYWtlKSBib2FyZCBmb3IgYXJjaGl0ZWN0dXJlcyBsaWtlIHRoaXMuCkFueSBvdGhlciBv
+cGluaW9ucz8KCi0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
