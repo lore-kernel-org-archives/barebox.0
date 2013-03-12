@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
+Received: from mail-lb0-f178.google.com ([209.85.217.178])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFRiQ-0005na-7d
- for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:06:14 +0000
-Received: by mail-la0-f54.google.com with SMTP id gw10so1469lab.13
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 09:05:52 -0700 (PDT)
+ id 1UFSE5-00035g-Pq
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:38:58 +0000
+Received: by mail-lb0-f178.google.com with SMTP id n1so148173lba.9
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 09:38:55 -0700 (PDT)
 MIME-Version: 1.0
 From: "Renaud C." <r.cerrato@til-technologies.fr>
-Date: Tue, 12 Mar 2013 17:05:11 +0100
-Message-ID: <CA+7xNQmARo+pXakUUW=8YqBKF2mq9j-00ybSzQ4r9wCe4rPSyA@mail.gmail.com>
-Content-Type: multipart/mixed; boundary=f46d04083877b2af4804d7bc76c1
+Date: Tue, 12 Mar 2013 17:38:14 +0100
+Message-ID: <CA+7xNQm-c=Niy8RWxqc+ZY7MjYh41=Qa=ufwq=L-QvVWOjAHwQ@mail.gmail.com>
+Content-Type: multipart/mixed; boundary=e0cb4efe3398e5fed204d7bcecab
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,56 +20,101 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] gadget: possible null pointer dereference fix
+Subject: [PATCH 6/7] DFU : disable state fix
 To: barebox <barebox@lists.infradead.org>
 
---f46d04083877b2af4804d7bc76c1
-Content-Type: multipart/alternative; boundary=f46d04083877b2af4504d7bc76bf
+--e0cb4efe3398e5fed204d7bcecab
+Content-Type: multipart/alternative; boundary=e0cb4efe3398e5fecb04d7bceca9
 
---f46d04083877b2af4504d7bc76bf
+--e0cb4efe3398e5fecb04d7bceca9
 Content-Type: text/plain; charset=ISO-8859-1
 
-This patch fix a possible null pointer dereference exception because of a
-missing null check on cdev->config
+When an USB_REQ_DFU_DETACH request is received, the device state switch
+to DFU_STATE_appDETACH, and then wait for an usb reset to switch
+to DFU_STATE_dfuIDLE (through dfu_disable() being called).
 
---f46d04083877b2af4504d7bc76bf
+I noticed that using dfu-util v0.7 on my AT91SAM9260 board, the programming
+failed because of the device not entering the DFU_STATE_dfuIDLE after an
+usb reset (staying in the DFU_STATE_appDETACH state).
+
+According to the current implementation, once the USB_REQ_DFU_DETACH is
+sent and right after the usb reset, if the DFU client set more than one
+configuration (by iterating over them for example), the device state will
+reset to the DFU_STATE_appDETACH state on the 2nd iteration because of the
+following line in set_config (composite.c, line 362) :
+
+...
+if(cdev->config)
+    reset_config();   // will call dfu_disable() again!
+...
+
+The attached patch is a *try* to fix the issue by leaving the device in
+the DFU_STATE_dfuIDLE state after an usb reset if already in that
+state. dfu-util will complain about the device already in
+the DFU_STATE_dfuIDLE on the next start, but everything is still working.
+
+This may need a REVISIT, but since the dfu_disable() gets called on both
+configuration change and usb reset, we can't do this easily for now..
+
+--e0cb4efe3398e5fecb04d7bceca9
 Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-<div dir="ltr">This patch fix a possible null pointer dereference exception because of a missing null check on cdev-&gt;config<div><br></div><div><br></div></div>
+<div dir=3D"ltr">When an USB_REQ_DFU_DETACH request is received, the device=
+ state switch to=A0DFU_STATE_appDETACH, and then wait for an usb reset to s=
+witch to=A0DFU_STATE_dfuIDLE (through dfu_disable() being called).=A0<div><=
+br></div>
 
---f46d04083877b2af4504d7bc76bf--
+<div>I noticed that using dfu-util v0.7 on my AT91SAM9260 board, the progra=
+mming failed because of the device not entering the DFU_STATE_dfuIDLE after=
+ an usb reset (staying in the DFU_STATE_appDETACH state).</div><div><br>
 
---f46d04083877b2af4804d7bc76c1
-Content-Type: application/octet-stream; 
-	name="gadget-null-pointer-dereference-fix.patch"
-Content-Disposition: attachment; 
-	filename="gadget-null-pointer-dereference-fix.patch"
+<div>According to the current implementation, once the=A0USB_REQ_DFU_DETACH=
+ is sent and right after the usb reset,=A0if the DFU client set more than o=
+ne configuration (by iterating over them for example), the device state wil=
+l reset to the=A0DFU_STATE_appDETACH state on the 2nd iteration because of =
+the following line in set_config (composite.c, line 362) :</div>
+
+<div><br></div><div>...</div><div>if(cdev-&gt;config)=A0</div><div>=A0=A0 =
+=A0reset_config(); =A0 // will call dfu_disable() again!</div><div>...</div=
+><div><br></div><div>The attached patch is a *try* to fix the issue by leav=
+ing the device in the=A0DFU_STATE_dfuIDLE state after an usb reset if alrea=
+dy in that state.=A0dfu-util will complain about the device already in the=
+=A0DFU_STATE_dfuIDLE on the next start, but everything is still working.</d=
+iv>
+
+<div><br></div><div>This may need a REVISIT, but since the dfu_disable() ge=
+ts called on both configuration change and usb reset, we can&#39;t do this =
+easily for now..</div><div><br></div><div><br></div><div><br></div><div>
+
+<br></div><div><br></div><div><br></div><div><br></div><div><br></div></div=
+></div>
+
+--e0cb4efe3398e5fecb04d7bceca9--
+
+--e0cb4efe3398e5fed204d7bcecab
+Content-Type: application/octet-stream; name="dfu-disable-state-fix.patch"
+Content-Disposition: attachment; filename="dfu-disable-state-fix.patch"
 Content-Transfer-Encoding: base64
-X-Attachment-Id: f_he794erk0
+X-Attachment-Id: f_he7967j40
 
-RnJvbSAzN2I3ZGM3ZjIyMzJiNTRmOGZjOGE1NTkwMjQ1YWYzN2ZlN2Q4Mjk5IE1vbiBTZXAgMTcg
+RnJvbSBiMGExMGNhNTk4YzA5MzZmNjhlYzkwYzg4MTY2ZDQ3NGZlZDFiZGQ4IE1vbiBTZXAgMTcg
 MDA6MDA6MDAgMjAwMQpGcm9tOiBDZXJyYXRvIFJlbmF1ZCA8ci5jZXJyYXRvQHRpbC10ZWNobm9s
-b2dpZXMuZnI+CkRhdGU6IFRodSwgMjggRmViIDIwMTMgMTU6MDQ6NTMgKzAxMDAKU3ViamVjdDog
-W1BBVENIIDMvM10gbnVsbCBwb2ludGVyIGRlcmVmZXJlbmNlIGZpeAoKLS0tCiBkcml2ZXJzL3Vz
-Yi9nYWRnZXQvY29tcG9zaXRlLmMgfCAgIDIzICsrKysrKysrKysrKystLS0tLS0tLS0tCiAxIGZp
-bGVzIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
-dCBhL2RyaXZlcnMvdXNiL2dhZGdldC9jb21wb3NpdGUuYyBiL2RyaXZlcnMvdXNiL2dhZGdldC9j
-b21wb3NpdGUuYwppbmRleCA5YWYxMTVlLi4xZjZjNWIyIDEwMDY0NAotLS0gYS9kcml2ZXJzL3Vz
-Yi9nYWRnZXQvY29tcG9zaXRlLmMKKysrIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2NvbXBvc2l0ZS5j
-CkBAIC03NzcsMTggKzc3NywyMSBAQCB1bmtub3duOgogCQkgKiByZWNpcGllbnRzIChlbmRwb2lu
-dCwgb3RoZXIsIFdVU0IsIC4uLikgdG8gdGhlIGN1cnJlbnQKIAkJICogY29uZmlndXJhdGlvbiBj
-b2RlLgogCQkgKi8KLQkJZiA9IGNkZXYtPmNvbmZpZy0+aW50ZXJmYWNlW2ludGZdOwotCQlpZiAo
-ZiAmJiBmLT5zZXR1cCkKLQkJCXZhbHVlID0gZi0+c2V0dXAoZiwgY3RybCk7Ci0JCWVsc2UKLQkJ
-CWYgPSBOVUxMOworCQlpZihjZGV2LT5jb25maWcpIHsKIAotCQlpZiAodmFsdWUgPCAwICYmICFm
-KSB7Ci0JCQlzdHJ1Y3QgdXNiX2NvbmZpZ3VyYXRpb24JKmM7CisJCQlmID0gY2Rldi0+Y29uZmln
-LT5pbnRlcmZhY2VbaW50Zl07CisJCQlpZiAoZiAmJiBmLT5zZXR1cCkKKwkJCQl2YWx1ZSA9IGYt
-PnNldHVwKGYsIGN0cmwpOworCQkJZWxzZQorCQkJCWYgPSBOVUxMOwogCi0JCQljID0gY2Rldi0+
-Y29uZmlnOwotCQkJaWYgKGMgJiYgYy0+c2V0dXApCi0JCQkJdmFsdWUgPSBjLT5zZXR1cChjLCBj
-dHJsKTsKKwkJCWlmICh2YWx1ZSA8IDAgJiYgIWYpIHsKKwkJCQlzdHJ1Y3QgdXNiX2NvbmZpZ3Vy
-YXRpb24JKmM7CisKKwkJCQljID0gY2Rldi0+Y29uZmlnOworCQkJCWlmIChjICYmIGMtPnNldHVw
-KQorCQkJCQl2YWx1ZSA9IGMtPnNldHVwKGMsIGN0cmwpOworCQkJfQogCQl9CiAKIAkJZ290byBk
-b25lOwotLSAKMS43LjIuNQoK
---f46d04083877b2af4804d7bc76c1
+b2dpZXMuZnI+CkRhdGU6IE1vbiwgMTEgTWFyIDIwMTMgMTU6MzQ6MzAgKzAxMDAKU3ViamVjdDog
+W1BBVENIXSBkZnUgZGlzYWJsZSBzdGF0ZSBmaXgKCi0tLQogZHJpdmVycy91c2IvZ2FkZ2V0L2Rm
+dS5jIHwgICAgNiArKy0tLS0KIDEgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRl
+bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2dhZGdldC9kZnUuYyBiL2RyaXZl
+cnMvdXNiL2dhZGdldC9kZnUuYwppbmRleCBlMDUxODc5Li5lNGFmNTY3IDEwMDY0NAotLS0gYS9k
+cml2ZXJzL3VzYi9nYWRnZXQvZGZ1LmMKKysrIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2RmdS5jCkBA
+IC01MTQsMTQgKzUxNCwxMiBAQCBzdGF0aWMgdm9pZCBkZnVfZGlzYWJsZShzdHJ1Y3QgdXNiX2Z1
+bmN0aW9uICpmKQogCXN0cnVjdCBmX2RmdQkJKmRmdSA9IGZ1bmNfdG9fZGZ1KGYpOwogCiAJc3dp
+dGNoIChkZnUtPmRmdV9zdGF0ZSkgeworCWNhc2UgREZVX1NUQVRFX2RmdUlETEU6CiAJY2FzZSBE
+RlVfU1RBVEVfYXBwREVUQUNIOgogCQlkZnUtPmRmdV9zdGF0ZSA9IERGVV9TVEFURV9kZnVJRExF
+OwogCQlicmVhazsKLQljYXNlIERGVV9TVEFURV9kZnVNQU5JRkVTVF9XQUlUX1JTVDoKLQkJZGZ1
+LT5kZnVfc3RhdGUgPSBERlVfU1RBVEVfYXBwSURMRTsKLQkJYnJlYWs7CiAJZGVmYXVsdDoKLQkJ
+ZGZ1LT5kZnVfc3RhdGUgPSBERlVfU1RBVEVfYXBwREVUQUNIOworCQlkZnUtPmRmdV9zdGF0ZSA9
+IERGVV9TVEFURV9hcHBJRExFOwogCQlicmVhazsKIAl9CiAKLS0gCjEuNy4yLjUKCg==
+--e0cb4efe3398e5fed204d7bcecab
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +125,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---f46d04083877b2af4804d7bc76c1--
+--e0cb4efe3398e5fed204d7bcecab--
