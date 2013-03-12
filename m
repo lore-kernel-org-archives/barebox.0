@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFU4v-0007UR-QO
- for barebox@lists.infradead.org; Tue, 12 Mar 2013 18:37:38 +0000
-Message-ID: <513F75EE.9030209@free-electrons.com>
-Date: Tue, 12 Mar 2013 19:37:34 +0100
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-MIME-Version: 1.0
-References: <1362924823.394544173@f371.mail.ru>
- <513CF27B.6080802@free-electrons.com> <1363110626.497378554@f165.mail.ru>
-In-Reply-To: <1363110626.497378554@f165.mail.ru>
+ id 1UFVQ4-0000r0-Fw
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 20:03:33 +0000
+Received: from mail428.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id AEA4F104E286
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 21:14:46 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 12 Mar 2013 20:59:09 +0100
+Message-Id: <1363118349-19267-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New dt-only arm/mach
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] splash: fix background color support
+To: barebox@lists.infradead.org
 
-SGksCgpMZSAxMi8wMy8yMDEzIDE4OjUwLCBBbGV4YW5kZXIgU2hpeWFuIGEgw6ljcml0IDoKPj4g
-TGUgMTAvMDMvMjAxMyAxNToxMywgQWxleGFuZGVyIFNoaXlhbiBhIMOpY3JpdCA6Cj4+IEl0IGNh
-biBiZSBkb25lIGFzIHdlbGwgSSBndWVzcywgYnV0IHRoYXQgZG9lc24ndCBzb3VuZCB0aGF0IGZh
-bWlsaWFyCj4+IGZyb20gd2hhdCBJJ3ZlIHNlZW4gaW4gdGhlIG90aGVyIGJhcmVib3ggYm9hcmRz
-Lgo+IAo+IEtlcm5lbCBubyBjb250YWluIGFueSBib2FyZCBmb3IgbWFjaC1zdW54aS4KPiBUaGlz
-IG1lYW4gdGhhbiBhbGwgc3R1ZmYgaXMgZGVzY3JpYmVkIHZpYSBEVC4KPiBJbiB0aGUgYmFyZWJv
-eCB3ZSBzaG91bGQgaGF2ZSAibWFjaCIgJiAiYm9hcmQiLCBzbyBJIHRoaW5rIHdlCj4gc2hvdWxk
-IGNyZWF0ZSBlbXB0eSAoZmFrZSkgYm9hcmQgZm9yIGFyY2hpdGVjdHVyZXMgbGlrZSB0aGlzLgoK
-WWVzLCB0aGFua3MsIEknbSBwcmV0dHkgZmFtaWxpYXIgd2l0aCB0aGUga2VybmVsIGNvZGUgZm9y
-IG1hY2gtc3VueGkuLi4KCkJhcmVib3ggaXMgbm90IHRoZSBrZXJuZWwuIEFuZCB0aGVyZSdzIGFs
-cmVhZHkgYSBudW1iZXIgb2Ygb3RoZXIKYXJjaGl0ZWN0dXJlcyB0aGF0IGFyZSBzdXBwb3J0ZWQg
-aW4gYmFyZWJveCB0aGF0IGJvb3QgYSBrZXJuZWwgdGhhdApzdXBwb3J0cyBvbmx5IHRoZSBkZXZp
-Y2UgdHJlZSwgbGlrZSBKZWFuLUNocmlzdG9waGUgc2FpZCwgc3VjaCBhcyBpbXgsCm14cywgaGln
-aGJhbmssIGF0OTEsIGV0Yy4uLgoKU28sIHJlYWxseSwgdGhlcmUncyBub3RoaW5nIGZhbmN5IGFi
-b3V0IHN1cHBvcnRpbmcgYW4gYXJjaGl0ZWN0dXJlIHdoaWNoCiprZXJuZWwqIHJlcXVpcmVzIGRl
-dmljZSB0cmVlLgoKTWF4aW1lCgotLSAKTWF4aW1lIFJpcGFyZCwgRnJlZSBFbGVjdHJvbnMKS2Vy
-bmVsLCBkcml2ZXJzLCByZWFsLXRpbWUgYW5kIGVtYmVkZGVkIExpbnV4CmRldmVsb3BtZW50LCBj
-b25zdWx0aW5nLCB0cmFpbmluZyBhbmQgc3VwcG9ydC4KaHR0cDovL2ZyZWUtZWxlY3Ryb25zLmNv
-bQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJv
-eCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5p
-bmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+the fb info is stored in struct screen by fb_open
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/splash.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/commands/splash.c b/commands/splash.c
+index 4cc463e..0955c01 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -13,7 +13,6 @@ static int do_splash(int argc, char *argv[])
+ 	struct screen sc;
+ 	int ret, opt, fd;
+ 	char *fbdev = "/dev/fb0";
+-	struct fb_info info;
+ 	char *image_file;
+ 	int offscreen = 0;
+ 	u32 bg_color = 0x00000000;
+@@ -21,7 +20,6 @@ static int do_splash(int argc, char *argv[])
+ 
+ 	memset(&s, 0, sizeof(s));
+ 	memset(&sc, 0, sizeof(sc));
+-	memset(&info, 0, sizeof(info));
+ 
+ 	s.x = -1;
+ 	s.y = -1;
+@@ -61,12 +59,12 @@ static int do_splash(int argc, char *argv[])
+ 
+ 	if (sc.offscreenbuf) {
+ 		if (do_bg)
+-			memset_pixel(&info, sc.offscreenbuf, bg_color,
++			memset_pixel(&sc.info, sc.offscreenbuf, bg_color,
+ 					sc.s.width * sc.s.height);
+ 		else
+ 			memcpy(sc.offscreenbuf, sc.fb, sc.fbsize);
+ 	} else if (do_bg) {
+-		memset_pixel(&info, sc.fb, bg_color, sc.s.width * sc.s.height);
++		memset_pixel(&sc.info, sc.fb, bg_color, sc.s.width * sc.s.height);
+ 	}
+ 
+ 	if (image_renderer_file(&sc, &s, image_file) < 0)
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
