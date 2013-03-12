@@ -2,18 +2,18 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFSTn-00085W-KD
- for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:55:13 +0000
+ id 1UFSVa-0000gR-Hl
+ for barebox@lists.infradead.org; Tue, 12 Mar 2013 16:57:04 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 1B176DC225E
- for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 18:06:23 +0100 (CET)
-Date: Tue, 12 Mar 2013 17:50:51 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 5324BDC0307
+ for <barebox@lists.infradead.org>; Tue, 12 Mar 2013 18:08:16 +0100 (CET)
+Date: Tue, 12 Mar 2013 17:52:43 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130312165051.GA1568@game.jcrosoft.org>
-References: <CA+7xNQm=AznWKRLFr3uwPekYLW4rYu7D1zVW_mW6VermU4LhfQ@mail.gmail.com>
+Message-ID: <20130312165243.GB1568@game.jcrosoft.org>
+References: <CA+7xNQkAzpgjG8k9+XR1PQj74Fiag-0nwCi2C=vjP+bYaCAVnw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CA+7xNQm=AznWKRLFr3uwPekYLW4rYu7D1zVW_mW6VermU4LhfQ@mail.gmail.com>
+In-Reply-To: <CA+7xNQkAzpgjG8k9+XR1PQj74Fiag-0nwCi2C=vjP+bYaCAVnw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +26,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] Watchdog driver for AT91SAM9 SOC
+Subject: Re: [PATCH 1/7] AT91 debug unit typo fix
 To: "Renaud C." <r.cerrato@til-technologies.fr>
-Cc: barebox <barebox@lists.infradead.org>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On 16:39 Tue 12 Mar     , Renaud C. wrote:
+>    This patch fix the debug unit output by correcting a typo into an #ifdef
+>    statement.
 
-	I already send it to the ML and the current framework wd is not how I
-	want it
+please resend the whole patch with inline patch
 
-	no attachement path nightmare to read under mutt
+no review otherwise
 
 Best Regards,
 J.
-On 16:46 Tue 12 Mar     , Renaud C. wrote:
->    This patch add watchdog driver for AT91SAM9 SOC. Beware that the watchdog
->    unit is write once. I only added the at91_add_device_watchdog(void) API
->    for AT91SAM9260 devices, but the driver should work on all AT91SAM9.
 
 
 > _______________________________________________
