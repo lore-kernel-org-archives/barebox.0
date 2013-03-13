@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f24.mail.ru ([217.69.129.90])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFdTN-0001Aq-S9
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 04:39:31 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 13 Mar 2013 08:39:25 +0400
-Message-ID: <1363149565.796232847@f24.mail.ru>
-In-Reply-To: <20130312210408.GV1906@pengutronix.de>
-References: <1362924823.394544173@f371.mail.ru>
- <1363110626.497378554@f165.mail.ru> <20130312210408.GV1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UFhMH-0004mC-5M
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 08:48:26 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 13 Mar 2013 09:48:14 +0100
+Message-Id: <1363164494-3614-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +16,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IE5ldyBkdC1vbmx5IGFybS9tYWNo?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?B?TWF4aW1lIFJpcGFyZA==?= <maxime.ripard@free-electrons.com>
+Subject: [PATCH 2/2] net: macb: turn off endian_swp_pkt_en
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-> On Tue, Mar 12, 2013 at 09:50:26PM +0400, Alexander Shiyan wrote:
-> > > > I think about dtb-file in /env, but not sure... Thanks.
-> > > 
-> > > It can be done as well I guess, but that doesn't sound that familiar
-> > > from what I've seen in the other barebox boards.
-> > 
-> > Kernel no contain any board for mach-sunxi.
-> > This mean than all stuff is described via DT.
-> > In the barebox we should have "mach" & "board", so I think we
-> > should create empty (fake) board for architectures like this.
-> > Any other opinions?
-> 
-> Where would you put the SDRAM setup then?
+The core has a bit for swapping packet data endianism.
+Reset default from Cadence is off. Xilinx however, that uses this core on the
+Zynq SoCs, opted for on. Turn it off for all devices.
 
-I do not know yet :) Development at planning stage. There are many
-questions that I am trying to solve. It seems that in order to start, I make
-a fixed load initially, and then I will try to use the options from DT.
-
-> I think it shouldn't be a problem to change barebox to compile
-> without a board directory if you really don't need one, but I assume
-> some board specific code will be left.
-
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
+ drivers/net/macb.c | 1 +
+ drivers/net/macb.h | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index a12eea7..005234e 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -277,6 +277,7 @@ static void macb_configure_dma(struct macb_device *bp)
+ 		dmacfg |= GEM_BF(FBLDO, 16);
+ 		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
+ 		dmacfg |= GEM_BIT(DDRP);
++		dmacfg &= ~GEM_BIT(ENDIA);
+ 		gem_writel(bp, DMACFG, dmacfg);
+ 	}
+ }
+diff --git a/drivers/net/macb.h b/drivers/net/macb.h
+index cadd561..1be9ff9 100644
+--- a/drivers/net/macb.h
++++ b/drivers/net/macb.h
+@@ -168,6 +168,8 @@
+ /* Bitfields in DMACFG. */
+ #define GEM_FBLDO_OFFSET			0
+ #define GEM_FBLDO_SIZE				5
++#define GEM_ENDIA_OFFSET			7
++#define GEM_ENDIA_SIZE				1
+ #define GEM_RXBMS_OFFSET			8
+ #define GEM_RXBMS_SIZE				2
+ #define GEM_TXPBMS_OFFSET			10
+-- 
+1.8.2.rc2
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
