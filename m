@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
+Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFhfG-0007hd-M0
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 09:08:05 +0000
+ id 1UFhgF-00086O-MJ
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 09:09:04 +0000
 Received: from mail183.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 939A4FF95C6
- for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 10:19:18 +0100 (CET)
-Date: Wed, 13 Mar 2013 10:03:36 +0100
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 43087FF955E
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 10:20:28 +0100 (CET)
+Date: Wed, 13 Mar 2013 10:04:45 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130313090336.GD1568@game.jcrosoft.org>
+Message-ID: <20130313090445.GE1568@game.jcrosoft.org>
 References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1363164494-3614-2-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1363164494-3614-2-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,25 +27,18 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
+Subject: Re: [PATCH 2/2] net: macb: turn off endian_swp_pkt_en
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 
 On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
-> The function gem_recv implements a buffer "ring" that stops at filling level 10.
-> That means, when the driver is used as gem, it stops receiving after exactly
-> 10 packets. Instead of implementing macb_recv twice, use it also for the gem
-> part. If there needs to be an extra recv function for the gigabit case, it can
-> be added than.
-> Also, first set the type of device (macb or gem) and then use functions that
-> use this info.
-> 
-> Tested on a Zynq7000.
-NACK
+> The core has a bit for swapping packet data endianism.
+> Reset default from Cadence is off. Xilinx however, that uses this core on the
+> Zynq SoCs, opted for on. Turn it off for all devices.
 
-on gem we can receive the packet in one buffer the gem_recv implement this
-the macb can only receive splited buffer and then you have to reconstruct the
-packet
+is this xilinx specifc?
+
+on at91 and other we do not need it
 
 Best Regards,
 J.
@@ -53,83 +47,35 @@ J.
 > Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  drivers/net/macb.c | 47 +++++++----------------------------------------
->  1 file changed, 7 insertions(+), 40 deletions(-)
+>  drivers/net/macb.c | 1 +
+>  drivers/net/macb.h | 2 ++
+>  2 files changed, 3 insertions(+)
 > 
 > diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> index 8602437..a12eea7 100644
+> index a12eea7..005234e 100644
 > --- a/drivers/net/macb.c
 > +++ b/drivers/net/macb.c
-> @@ -169,37 +169,6 @@ static void reclaim_rx_buffers(struct macb_device *macb,
->  	macb->rx_tail = new_tail;
+> @@ -277,6 +277,7 @@ static void macb_configure_dma(struct macb_device *bp)
+>  		dmacfg |= GEM_BF(FBLDO, 16);
+>  		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
+>  		dmacfg |= GEM_BIT(DDRP);
+> +		dmacfg &= ~GEM_BIT(ENDIA);
+>  		gem_writel(bp, DMACFG, dmacfg);
+>  	}
 >  }
->  
-> -static int gem_recv(struct eth_device *edev)
-> -{
-> -	struct macb_device *macb = edev->priv;
-> -	unsigned int rx_tail = macb->rx_tail;
-> -	void *buffer;
-> -	int length;
-> -	u32 status;
-> -
-> -	dev_dbg(macb->dev, "%s\n", __func__);
-> -
-> -	for (;;) {
-> -		barrier();
-> -		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
-> -			return -1;
-> -
-> -		barrier();
-> -		status = macb->rx_ring[rx_tail].ctrl;
-> -		length = MACB_BFEXT(RX_FRMLEN, status);
-> -		if (status & MACB_BIT(RX_SOF)) {
-> -			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
-> -			net_receive(buffer, length);
-> -			macb->rx_ring[rx_tail].ctrl &= ~MACB_BIT(RX_USED);
-> -			barrier();
-> -		}
-> -		rx_tail++;
-> -		macb->rx_tail++;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  static int macb_recv(struct eth_device *edev)
->  {
->  	struct macb_device *macb = edev->priv;
-> @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
->  
->  	macb->phy_flags = pdata->phy_flags;
->  
-> -	macb_init_rx_buffer_size(macb, PKTSIZE);
-> -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> -
->  	macb->regs = dev_request_mem_region(dev, 0);
->  
->  	/*
-> @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
->  
->  	clk_enable(macb->pclk);
->  
-> -	if (macb_is_gem(macb))
-> -		edev->recv = gem_recv;
-> -	else
-> -		edev->recv = macb_recv;
->  	macb->is_gem = read_is_gem(macb);
->  
-> +	macb_init_rx_buffer_size(macb, PKTSIZE);
-> +	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> +	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> +	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> +
-> +	edev->recv = macb_recv;
-> +
->  	macb_reset_hw(macb);
->  	ncfgr = macb_mdc_clk_div(macb);
->  	ncfgr |= MACB_BIT(PAE);		/* PAuse Enable */
+> diff --git a/drivers/net/macb.h b/drivers/net/macb.h
+> index cadd561..1be9ff9 100644
+> --- a/drivers/net/macb.h
+> +++ b/drivers/net/macb.h
+> @@ -168,6 +168,8 @@
+>  /* Bitfields in DMACFG. */
+>  #define GEM_FBLDO_OFFSET			0
+>  #define GEM_FBLDO_SIZE				5
+> +#define GEM_ENDIA_OFFSET			7
+> +#define GEM_ENDIA_SIZE				1
+>  #define GEM_RXBMS_OFFSET			8
+>  #define GEM_RXBMS_SIZE				2
+>  #define GEM_TXPBMS_OFFSET			10
 > -- 
 > 1.8.2.rc2
 > 
