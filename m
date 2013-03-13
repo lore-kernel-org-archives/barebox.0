@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo1.mail-out.ovh.net ([178.32.108.172]
+Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFq7S-0008Hq-Bh
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:45 +0000
+ id 1UFq7Q-0008GE-7X
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:44 +0000
 Received: from mail645.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 1C444FF9D20
- for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:25 +0100 (CET)
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 7DE50FF97AE
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Mar 2013 19:05:22 +0100
-Message-Id: <1363197922-19851-7-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Mar 2013 19:05:20 +0100
+Message-Id: <1363197922-19851-5-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130313180100.GJ1568@game.jcrosoft.org>
  <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,58 +26,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] bootargs: switch globalvar to it's own device
+Subject: [PATCH 5/7] dhcp: switch globalvar to it's own device
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/bootargs.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/dhcp.c |   40 ++++++++--------------------------------
+ 1 file changed, 8 insertions(+), 32 deletions(-)
 
-diff --git a/common/bootargs.c b/common/bootargs.c
-index 6624f72..e9248ab 100644
---- a/common/bootargs.c
-+++ b/common/bootargs.c
-@@ -22,9 +22,11 @@
- #include <magicvar.h>
- #include <globalvar.h>
- #include <environment.h>
-+#include <init.h>
+diff --git a/net/dhcp.c b/net/dhcp.c
+index 8233ec3..7fde0d8 100644
+--- a/net/dhcp.c
++++ b/net/dhcp.c
+@@ -81,31 +81,16 @@ static uint32_t dhcp_leasetime;
+ static IPaddr_t net_dhcp_server_ip;
+ static uint64_t dhcp_start;
+ static char dhcp_tftpname[256];
++static struct device_d *dhcp_dev;
  
- static char *linux_bootargs;
- static int linux_bootargs_overwritten;
-+static struct device_d *global_linux_dev;
- 
- /*
-  * This returns the Linux bootargs
-@@ -45,11 +47,11 @@ const char *linux_bootargs_get(void)
- 
- 	free(linux_bootargs);
- 
--	bootargs = globalvar_get_match("linux.bootargs.", " ");
-+	bootargs = global_get_match(global_linux_dev, "bootargs.", " ");
- 	if (!strlen(bootargs))
- 		return getenv("bootargs");
- 
--	mtdparts = globalvar_get_match("linux.mtdparts.", ";");
-+	mtdparts = global_get_match(global_linux_dev, "mtdparts.", ";");
- 
- 	if (strlen(mtdparts)) {
- 		linux_bootargs = asprintf("%s mtdparts=%s", bootargs, mtdparts);
-@@ -76,5 +78,13 @@ int linux_bootargs_overwrite(const char *bootargs)
- 	return 0;
+ static const char* dhcp_get_barebox_global(const char * var)
+ {
+-	char * var_global = asprintf("global.dhcp.%s", var);
+-	const char *val;
+-
+-	if (!var_global)
+-		return NULL;
+-
+-	val = getenv(var_global);
+-	free(var_global);
+-	return val;
++	return dev_get_param(dhcp_dev, var);
  }
  
-+static int bootargs_init(void)
-+{
-+	global_linux_dev = global_add_device("linux");
+ static int dhcp_set_barebox_global(const char * var, char *val)
+ {
+-	char * var_global = asprintf("global.dhcp.%s", var);
+-	int ret;
+-
+-	if (!var_global)
+-		return -ENOMEM;
+-
+-	ret = setenv(var_global, val);
+-	free(var_global);
+-	return ret;
++	return dev_set_param(dhcp_dev, var, val);
+ }
+ 
+ struct dhcp_opt {
+@@ -663,30 +648,21 @@ static void dhcp_reset_env(void)
+ 	}
+ }
+ 
+-static void dhcp_global_add(const char *var)
+-{
+-	char * var_global = asprintf("dhcp.%s", var);
+-
+-	if (!var_global)
+-		return;
+-
+-	globalvar_add_simple(var_global);
+-	free(var_global);
+-}
+-
+ static int dhcp_global_init(void)
+ {
+ 	struct dhcp_opt *opt;
+ 	struct dhcp_param *param;
+ 	int i;
+ 
++	dhcp_dev = global_add_device("dhcp");
 +
-+	return 0;
-+}
-+late_initcall(bootargs_init);
-+
- BAREBOX_MAGICVAR_NAMED(global_linux_bootargs_, global.linux.bootargs.*, "Linux bootargs variables");
- BAREBOX_MAGICVAR_NAMED(global_linux_mtdparts_, global.linux.mtdparts.*, "Linux mtdparts variables");
+ 	for (i = 0; i < ARRAY_SIZE(dhcp_options); i++) {
+ 		opt = &dhcp_options[i];
+ 
+ 		if (!opt->barebox_dhcp_global)
+ 			continue;
+ 
+-		dhcp_global_add(opt->barebox_dhcp_global);
++		global_add_simple(dhcp_dev, opt->barebox_dhcp_global);
+ 	}
+ 
+ 	for (i = 0; i < ARRAY_SIZE(dhcp_params); i++) {
+@@ -695,7 +671,7 @@ static int dhcp_global_init(void)
+ 		if (!param->barebox_dhcp_global)
+ 			continue;
+ 
+-		dhcp_global_add(param->barebox_dhcp_global);
++		global_add_simple(dhcp_dev, param->barebox_dhcp_global);
+ 	}
+ 
+ 	return 0;
+@@ -719,7 +695,7 @@ static int do_dhcp(int argc, char *argv[])
+ 
+ 	dhcp_reset_env();
+ 
+-	dhcp_getenv_int("global.dhcp.retries", &retries);
++	dhcp_getenv_int("dhcp.retries", &retries);
+ 
+ 	while((opt = getopt(argc, argv, "H:v:c:u:U:r:")) > 0) {
+ 		switch(opt) {
 -- 
 1.7.10.4
 
