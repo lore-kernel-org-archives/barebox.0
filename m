@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFq7Q-0008Fz-7Z
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:41 +0000
+ id 1UFq7Q-0008Ft-HQ
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:45 +0000
 Received: from mail645.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 5B919FF9CF8
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 3356FFF9C4C
  for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Mar 2013 19:05:19 +0100
-Message-Id: <1363197922-19851-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Mar 2013 19:05:17 +0100
+Message-Id: <1363197922-19851-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130313180100.GJ1568@game.jcrosoft.org>
  <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,54 +26,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] net: switch to global device
+Subject: [PATCH 2/7] globalvar: add it's own bus
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/net.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ common/globalvar.c |   31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/net/net.c b/net/net.c
-index 639bc2d..4888d60 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -35,6 +35,7 @@
+diff --git a/common/globalvar.c b/common/globalvar.c
+index a8aaa72..f275a38 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -3,17 +3,14 @@
+ #include <globalvar.h>
  #include <init.h>
- #include <linux/ctype.h>
- #include <linux/err.h>
-+#include <globalvar.h>
  
- static IPaddr_t	net_netmask;		/* Our subnet mask (0=unknown)	*/
- static IPaddr_t	net_gateway;		/* Our gateways IP address	*/
-@@ -664,21 +665,19 @@ out:
- 	return ret;
- }
- 
--static struct device_d net_device = {
--	.name = "net",
+-static struct device_d global_device = {
+-	.name = "global",
 -	.id = DEVICE_ID_SINGLE,
 -};
--
- static int net_init(void)
++static struct device_d *global_device;
+ 
+ int globalvar_add(const char *name,
+ 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
+ 		const char *(*get)(struct device_d *, struct param_d *p),
+ 		unsigned long flags)
  {
-+	struct device_d *dev;
- 	int i;
+-	return dev_add_param(&global_device, name, set, get, flags);
++	return dev_add_param(global_device, name, set, get, flags);
+ }
  
- 	for (i = 0; i < PKTBUFSRX; i++)
- 		NetRxPackets[i] = net_alloc_packet();
+ /*
+@@ -27,9 +24,9 @@ char *globalvar_get_match(const char *match, const char *seperator)
+ 	char *val = NULL;
+ 	struct param_d *param;
  
--	register_device(&net_device);
--	dev_add_param(&net_device, "nameserver", NULL, NULL, 0);
--	dev_add_param(&net_device, "domainname", NULL, NULL, 0);
-+	dev = global_add_device("net");
-+	if (dev) {
-+		global_add_simple(dev, "nameserver");
-+		global_add_simple(dev, "domainname");
-+	}
+-	list_for_each_entry(param, &global_device.parameters, list) {
++	list_for_each_entry(param, global_device.parameters, list) {
+ 		if (!strncmp(match, param->name, strlen(match))) {
+-			const char *p = dev_get_param(&global_device, param->name);
++			const char *p = dev_get_param(global_device, param->name);
+ 			if (val) {
+ 				char *new = asprintf("%s%s%s", val, seperator, p);
+ 				free(val);
+@@ -50,9 +47,9 @@ void globalvar_set_match(const char *match, const char *val)
+ {
+ 	struct param_d *param;
+ 
+-	list_for_each_entry(param, &global_device.parameters, list) {
++	list_for_each_entry(param, global_device.parameters, list) {
+ 		if (!strncmp(match, param->name, strlen(match)))
+-			dev_set_param(&global_device, param->name, val);
++			dev_set_param(global_device, param->name, val);
+ 	}
+ }
+ 
+@@ -66,10 +63,22 @@ int globalvar_add_simple(const char *name)
+ 	return globalvar_add(name, NULL, NULL, 0);
+ }
+ 
++static int global_match(struct device_d *dev, struct driver_d *drv)
++{
++	return 1;
++}
++
++static struct bus_type global_bus = {
++	.name = "global",
++	.match = global_match,
++	.probe = dummy_probe,
++};
++
+ static int globalvar_init(void)
+ {
+-	register_device(&global_device);
++	bus_register(&global_bus);
++	global_device = &global_bus->dev;
  
  	return 0;
  }
+-postconsole_initcall(globalvar_init);
++pure_initcall(globalvar_init);
 -- 
 1.7.10.4
 
