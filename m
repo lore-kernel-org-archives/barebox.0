@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ia0-x236.google.com ([2607:f8b0:4001:c02::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFr7C-00084V-7I
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 19:13:31 +0000
-Date: Wed, 13 Mar 2013 20:13:27 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130313191327.GC3475@pengutronix.de>
-References: <1363189180-6650-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1UFv62-0007Wj-PF
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 23:28:35 +0000
+Received: by mail-ia0-f182.google.com with SMTP id b35so1502005iac.27
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 16:28:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1363189180-6650-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Mar 2013 16:28:33 -0700
+Message-ID: <CAM7q1LnK0K5btk7frN7ZC0=VtfX-jsvVjgEuftnDPQKi3ffbcA@mail.gmail.com>
+From: Jeff Horn <jeff@everlook.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,114 +17,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============7211988486429723145=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] macb: fix gem_recv circular buffer handling
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Loading kernel from SPI NOR
+To: barebox@lists.infradead.org
 
-On Wed, Mar 13, 2013 at 04:39:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> as we use a full buffer no need to check the SOF
-> and reset the rx_tail
-> 
-> fix at the same time the gem detection so we can have the rx_buffer
-> allocated correctly according to the IP
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  drivers/net/macb.c |   32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> index 0cfad05..2d4e373 100644
-> --- a/drivers/net/macb.c
-> +++ b/drivers/net/macb.c
-> @@ -172,7 +172,6 @@ static void reclaim_rx_buffers(struct macb_device *macb,
->  static int gem_recv(struct eth_device *edev)
->  {
->  	struct macb_device *macb = edev->priv;
-> -	unsigned int rx_tail = macb->rx_tail;
->  	void *buffer;
->  	int length;
->  	u32 status;
-> @@ -181,20 +180,20 @@ static int gem_recv(struct eth_device *edev)
->  
->  	for (;;) {
->  		barrier();
-> -		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
-> +		if (!(macb->rx_ring[macb->rx_tail].addr & MACB_BIT(RX_USED)))
->  			return -1;
->  
->  		barrier();
-> -		status = macb->rx_ring[rx_tail].ctrl;
-> +		status = macb->rx_ring[macb->rx_tail].ctrl;
->  		length = MACB_BFEXT(RX_FRMLEN, status);
-> -		if (status & MACB_BIT(RX_SOF)) {
-> -			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
-> -			net_receive(buffer, length);
-> -			macb->rx_ring[rx_tail].ctrl &= ~MACB_BIT(RX_USED);
-> -			barrier();
-> -		}
-> -		rx_tail++;
-> +		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
-> +		net_receive(buffer, length);
-> +		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
-> +		barrier();
-> +
->  		macb->rx_tail++;
-> +		if (macb->rx_tail >= macb->rx_ring_size)
-> +			macb->rx_tail = 0;
->  	}
->  
->  	return 0;
-> @@ -619,11 +618,6 @@ static int macb_probe(struct device_d *dev)
->  
->  	macb->phy_flags = pdata->phy_flags;
->  
-> -	macb_init_rx_buffer_size(macb, PKTSIZE);
-> -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> -
->  	macb->regs = dev_request_mem_region(dev, 0);
->  
->  	/*
-> @@ -638,11 +632,17 @@ static int macb_probe(struct device_d *dev)
->  
->  	clk_enable(macb->pclk);
->  
-> +	macb->is_gem = read_is_gem(macb);
-> +
->  	if (macb_is_gem(macb))
->  		edev->recv = gem_recv;
->  	else
->  		edev->recv = macb_recv;
-> -	macb->is_gem = read_is_gem(macb);
-> +
-> +	macb_init_rx_buffer_size(macb, PKTSIZE);
-> +	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> +	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> +	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
->  
->  	macb_reset_hw(macb);
->  	ncfgr = macb_mdc_clk_div(macb);
+--===============7211988486429723145==
+Content-Type: multipart/alternative; boundary=e89a8f2343ebbbf75404d7d6c3fd
 
-I know that the last part is not a very sophisticated patch, but you could at least
-mention that I found the error and/or made part of this patch. Don't just
-pretend that you came up with this all alone.
+--e89a8f2343ebbbf75404d7d6c3fd
+Content-Type: text/plain; charset=ISO-8859-1
 
-Regards,
-Steffen
+Hi,
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I have a custom board based on the i.MX53.  We are using barebox 2012.05.0
+and booting the Freescale 2.6.35.3 kernel.  Our board has SPI NOR (m25p32)
+and I saw there is a driver in a more recent barebox.  I pulled 2013.01.0
+and added our board files but I can't seem to get the kernel to load.  I
+used the uimage tool and the -i option reported back that it can read the
+kernel and the -v option reported ok.  When I try and boot I see
+arch_number and then nothing.
+
+I'm continuing to dig in to see what I can find.  Any pointers to where I
+can look is much appreciated.
+
+Thanks,
+Jeff
+
+--e89a8f2343ebbbf75404d7d6c3fd
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><span style=3D"font-family:arial,sans-serif;font-size:12.8=
+00000190734863px">Hi,</span><div style=3D"font-family:arial,sans-serif;font=
+-size:12.800000190734863px"><br></div><div style=3D"font-family:arial,sans-=
+serif;font-size:12.800000190734863px">
+I have a custom board based on the i.MX53. =A0We are using barebox 2012.05.=
+0 and booting the Freescale 2.6.35.3 kernel. =A0Our board has SPI NOR (m25p=
+32) and I saw there is a driver in a more recent barebox. =A0I pulled 2013.=
+01.0 and added our board files but I can&#39;t seem to get the kernel to lo=
+ad. =A0I used the uimage tool and the -i option reported back that it can r=
+ead the kernel and the -v option reported ok. =A0When I try and boot I see =
+arch_number and then nothing. =A0</div>
+<div style=3D"font-family:arial,sans-serif;font-size:12.800000190734863px">=
+<br></div><div style=3D"font-family:arial,sans-serif;font-size:12.800000190=
+734863px">I&#39;m continuing to dig in to see what I can find. =A0Any point=
+ers to where I can look is much appreciated.</div>
+<div style=3D"font-family:arial,sans-serif;font-size:12.800000190734863px">=
+<br></div><div style=3D"font-family:arial,sans-serif;font-size:12.800000190=
+734863px">Thanks,</div><div style=3D"font-family:arial,sans-serif;font-size=
+:12.800000190734863px">
+Jeff</div></div>
+
+--e89a8f2343ebbbf75404d7d6c3fd--
+
+
+--===============7211988486429723145==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7211988486429723145==--
