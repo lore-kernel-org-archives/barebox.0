@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFq3G-0007D9-O8
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:05:23 +0000
+ id 1UFq7Q-0008GD-7a
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:41 +0000
 Received: from mail645.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id A7C30FF977B
- for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:22:01 +0100 (CET)
-Date: Wed, 13 Mar 2013 19:01:00 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 82669FF9D05
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130313180100.GJ1568@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 13 Mar 2013 19:05:21 +0100
+Message-Id: <1363197922-19851-6-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130313180100.GJ1568@game.jcrosoft.org>
+ <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +21,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7 v2] globalvar: add multiple device support
+Subject: [PATCH 6/7] bootm: switch globalvar to it's own device
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/bootm.c |   20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-	v2:
-	fix bootargs
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 4d3f022..b70cd05 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -48,6 +48,12 @@
+ #include <asm-generic/memory_layout.h>
+ 
+ static LIST_HEAD(handler_list);
++static struct device_d *bootm_dev;
++
++static const char* bootm_get_global(const char * var)
++{
++	return dev_get_param(bootm_dev, var);
++}
+ 
+ /*
+  * Additional oftree size for the fixed tree
+@@ -265,10 +271,10 @@ static int do_bootm(int argc, char *argv[])
+ 	data.verify = 0;
+ 	data.verbose = 0;
+ 
+-	oftree = getenv("global.bootm.oftree");
+-	os_file = getenv("global.bootm.image");
++	oftree = bootm_get_global("oftree");
++	os_file = bootm_get_global("image");
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+-		initrd_file = getenv("global.bootm.initrd");
++		initrd_file = bootm_get_global("initrd");
+ 
+ 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
+ 		switch(opt) {
+@@ -443,11 +449,11 @@ err_out:
+ 
+ static int bootm_init(void)
+ {
+-
+-	globalvar_add_simple("bootm.image");
+-	globalvar_add_simple("bootm.oftree");
++	bootm_dev = global_add_device("bootm");
++	global_add_simple(bootm_dev, "image");
++	global_add_simple(bootm_dev, "oftree");
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+-		globalvar_add_simple("bootm.initrd");
++		global_add_simple(bootm_dev, "initrd");
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
 
-	this will allow to reduce the scope of device and params to search
-	during boot time
-
-	we keep the retro compatibility
-
-The following changes since commit 092bfd5eb55d1b2d7ed098aa9723a2fa63b86192:
-
-  fix another brown paper bag bug introduced with compile time loglevel (2013-03-06 23:53:04 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/globalvar
-
-for you to fetch changes up to 2a749c4b65f823da50537798a2feeaf4a01d2212:
-
-  bootargs: switch globalvar to it's own device (2013-03-13 14:35:29 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (7):
-      params: allow to access first sub-device and params via env
-      globalvar: add it's own bus
-      globalvar: allow to register multiple device
-      net: switch to global device
-      dhcp: switch globalvar to it's own device
-      bootm: switch globalvar to it's own device
-      bootargs: switch globalvar to it's own device
-
- commands/bootm.c    |   20 +++++++++++++-------
- commands/global.c   |   41 +++++++++++++++++++++++++++++++++--------
- common/bootargs.c   |   14 ++++++++++++--
- common/complete.c   |   45 ++++++++++++++++++++++++++++++++++++++++-----
- common/globalvar.c  |  150 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
- include/globalvar.h |   26 ++++++++++++++++++++++++++
- lib/parameter.c     |   41 ++++++++++++++++++++++++++++++++++++++++-
- net/dhcp.c          |   40 ++++++++--------------------------------
- net/net.c           |   15 +++++++--------
- 9 files changed, 311 insertions(+), 81 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
