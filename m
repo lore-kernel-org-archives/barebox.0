@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFkhE-0000dZ-KY
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 12:22:22 +0000
-Received: from mail635.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 51D2FFFA14A
- for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 13:38:58 +0100 (CET)
-Date: Wed, 13 Mar 2013 13:17:59 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130313121759.GG1568@game.jcrosoft.org>
-References: <CA+7xNQm-c=Niy8RWxqc+ZY7MjYh41=Qa=ufwq=L-QvVWOjAHwQ@mail.gmail.com>
- <51405639.60706@til-technologies.fr>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UFlQB-0006FP-GI
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 13:08:44 +0000
+Date: Wed, 13 Mar 2013 14:08:40 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20130313130840.GB3475@pengutronix.de>
+References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
+ <20130313090336.GD1568@game.jcrosoft.org>
+ <20130313101514.GY1906@pengutronix.de>
+ <20130313121703.GF1568@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <51405639.60706@til-technologies.fr>
+In-Reply-To: <20130313121703.GF1568@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,91 +25,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] DFU : disable state fix
-To: Cerrato Renaud <r.cerrato@til-technologies.fr>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-Hi,
+On Wed, Mar 13, 2013 at 01:17:03PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:15 Wed 13 Mar     , Sascha Hauer wrote:
+> > On Wed, Mar 13, 2013 at 10:03:36AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
+> > > > The function gem_recv implements a buffer "ring" that stops at filling level 10.
+> > > > That means, when the driver is used as gem, it stops receiving after exactly
+> > > > 10 packets. Instead of implementing macb_recv twice, use it also for the gem
+> > > > part. If there needs to be an extra recv function for the gigabit case, it can
+> > > > be added than.
+> > > > Also, first set the type of device (macb or gem) and then use functions that
+> > > > use this info.
+> > > > 
+> > > > Tested on a Zynq7000.
+> > > NACK
+> > > 
+> > > on gem we can receive the packet in one buffer the gem_recv implement this
+> > > the macb can only receive splited buffer and then you have to reconstruct the
+> > > packet
+> > 
+> > The gem received function was never used...
+> > 
+> > > >  static int macb_recv(struct eth_device *edev)
+> > > >  {
+> > > >  	struct macb_device *macb = edev->priv;
+> > > > @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
+> > > >  
+> > > >  	macb->phy_flags = pdata->phy_flags;
+> > > >  
+> > > > -	macb_init_rx_buffer_size(macb, PKTSIZE);
+> > > > -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> > > > -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> > > > -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> > > > -
+> > > >  	macb->regs = dev_request_mem_region(dev, 0);
+> > > >  
+> > > >  	/*
+> > > > @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
+> > > >  
+> > > >  	clk_enable(macb->pclk);
+> > > >  
+> > > > -	if (macb_is_gem(macb))
+> > 
+> > ... because macb_is_gem() is used here ...
+> > 
+> > > > -		edev->recv = gem_recv;
+> > > > -	else
+> > > > -		edev->recv = macb_recv;
+> > > >  	macb->is_gem = read_is_gem(macb);
+> > 
+> > ... but the variable is initialized here. Up to this point macb_is_gem()
+> > will return 0.
+> so this is a bug when the driver was merge to the mailine but here I does use
+> the gem_recv.
+> 
 
-	please start a new thread
+What about the gem_recv function itself? It only increases rx_tail, but never
+resets it. Therefore the buffer is full after 10 packets. Do you already have a
+patch for that?
 
-	with patch [0/x] ....
-	and the patch series as reply
+Regards,
+Steffen
 
-	use git-send-email for this
-
-Best Resgards,
-J.
-On 11:34 Wed 13 Mar     , Cerrato Renaud wrote:
-> Inlined patch below.
-> 
-> 
-> Signed-off-by: Cerrato Renaud <r.cerrato@til-technologies.fr>
-> ---
->  drivers/usb/gadget/dfu.c |    6 ++----
->  1 files changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> index e051879..e4af567 100644
-> --- a/drivers/usb/gadget/dfu.c
-> +++ b/drivers/usb/gadget/dfu.c
-> @@ -514,14 +514,12 @@ static void dfu_disable(struct usb_function *f)
->      struct f_dfu        *dfu = func_to_dfu(f);
->  
->      switch (dfu->dfu_state) {
-> +    case DFU_STATE_dfuIDLE:
->      case DFU_STATE_appDETACH:
->          dfu->dfu_state = DFU_STATE_dfuIDLE;
->          break;
-> -    case DFU_STATE_dfuMANIFEST_WAIT_RST:
-> -        dfu->dfu_state = DFU_STATE_appIDLE;
-> -        break;
->      default:
-> -        dfu->dfu_state = DFU_STATE_appDETACH;
-> +        dfu->dfu_state = DFU_STATE_appIDLE;
->          break;
->      }
->  
-> -- 
-> 1.7.2.5
-> 
-> 
-> On 12/03/2013 17:38, Renaud C. wrote:
-> > When an USB_REQ_DFU_DETACH request is received, the device state switch to DFU_STATE_appDETACH, and then wait for an usb reset to switch to DFU_STATE_dfuIDLE (through dfu_disable() being called). 
-> >
-> > I noticed that using dfu-util v0.7 on my AT91SAM9260 board, the programming failed because of the device not entering the DFU_STATE_dfuIDLE after an usb reset (staying in the DFU_STATE_appDETACH state).
-> >
-> > According to the current implementation, once the USB_REQ_DFU_DETACH is sent and right after the usb reset, if the DFU client set more than one configuration (by iterating over them for example), the device state will reset to the DFU_STATE_appDETACH state on the 2nd iteration because of the following line in set_config (composite.c, line 362) :
-> >
-> > ...
-> > if(cdev->config) 
-> >     reset_config();   // will call dfu_disable() again!
-> > ...
-> >
-> > The attached patch is a *try* to fix the issue by leaving the device in the DFU_STATE_dfuIDLE state after an usb reset if already in that state. dfu-util will complain about the device already in the DFU_STATE_dfuIDLE on the next start, but everything is still working.
-> >
-> > This may need a REVISIT, but since the dfu_disable() gets called on both configuration change and usb reset, we can't do this easily for now..
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
