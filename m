@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFq7Q-0008GE-7X
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:44 +0000
+ id 1UFq7Q-0008Fx-7a
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:47 +0000
 Received: from mail645.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 7DE50FF97AE
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 49259FF9CB1
  for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Mar 2013 19:05:20 +0100
-Message-Id: <1363197922-19851-5-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Mar 2013 19:05:18 +0100
+Message-Id: <1363197922-19851-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130313180100.GJ1568@game.jcrosoft.org>
  <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,105 +26,385 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] dhcp: switch globalvar to it's own device
+Subject: [PATCH 3/7] globalvar: allow to register multiple device
 To: barebox@lists.infradead.org
 
+This will allow to reduce the time spend to search for globalvar
+(boot time)
+
+the access to the globalvar is retro-compatible
+
+we can now create device via the global command
+
+ barebox@Somfy Animeo IP:/
+ # devinfo
+ devices:
+ `---- global
+      `---- net
+      `---- bootm
+      `---- dhcp
+      ...
+ barebox@Somfy Animeo IP:/
+ resources:
+ driver: none
+ bus: global
+ bus: none
+
+ Parameters:
+         hostname =
+ barebox@Somfy Animeo IP:/
+ # devinfo net
+ resources:
+ driver: none
+ bus: global
+
+ Parameters:
+       nameserver =
+       domainname =
+ barebox@Somfy Animeo IP:/
+ # devinfo dhcp
+ resources:
+ driver: none
+ bus: global
+
+ Parameters:
+         rootpath =
+ tftp_server_name =
+         bootfile =
+      oftree_file =
+        vendor_id = barebox-animeo-ip
+        client_id =
+       user_class =
+      client_uuid =
+ barebox@Somfy Animeo IP:/
+ # devinfo bootm
+ resources:
+ driver: none
+ bus: global
+
+ Parameters:
+            image =
+           oftree =
+           initrd =
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/dhcp.c |   40 ++++++++--------------------------------
- 1 file changed, 8 insertions(+), 32 deletions(-)
+ commands/global.c   |   41 ++++++++++++----
+ common/globalvar.c  |  133 +++++++++++++++++++++++++++++++++++++++++++++------
+ include/globalvar.h |   26 ++++++++++
+ 3 files changed, 178 insertions(+), 22 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index 8233ec3..7fde0d8 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -81,31 +81,16 @@ static uint32_t dhcp_leasetime;
- static IPaddr_t net_dhcp_server_ip;
- static uint64_t dhcp_start;
- static char dhcp_tftpname[256];
-+static struct device_d *dhcp_dev;
+diff --git a/commands/global.c b/commands/global.c
+index 427a231..539fa21 100644
+--- a/commands/global.c
++++ b/commands/global.c
+@@ -23,14 +23,23 @@
+ #include <environment.h>
+ #include <getopt.h>
  
- static const char* dhcp_get_barebox_global(const char * var)
+-static int globalvar_set(char* name, char* value)
++static int globalvar_set(char *devname, char* name, char* value)
  {
--	char * var_global = asprintf("global.dhcp.%s", var);
--	const char *val;
--
--	if (!var_global)
--		return NULL;
--
--	val = getenv(var_global);
--	free(var_global);
--	return val;
-+	return dev_get_param(dhcp_dev, var);
- }
+ 	int ret;
  
- static int dhcp_set_barebox_global(const char * var, char *val)
- {
--	char * var_global = asprintf("global.dhcp.%s", var);
--	int ret;
--
--	if (!var_global)
--		return -ENOMEM;
--
--	ret = setenv(var_global, val);
--	free(var_global);
--	return ret;
-+	return dev_set_param(dhcp_dev, var, val);
- }
- 
- struct dhcp_opt {
-@@ -663,30 +648,21 @@ static void dhcp_reset_env(void)
- 	}
- }
- 
--static void dhcp_global_add(const char *var)
--{
--	char * var_global = asprintf("dhcp.%s", var);
--
--	if (!var_global)
--		return;
--
--	globalvar_add_simple(var_global);
--	free(var_global);
--}
--
- static int dhcp_global_init(void)
- {
- 	struct dhcp_opt *opt;
- 	struct dhcp_param *param;
- 	int i;
- 
-+	dhcp_dev = global_add_device("dhcp");
+-	ret = globalvar_add_simple(name);
++	if (devname) {
++		struct device_d *dev;
 +
- 	for (i = 0; i < ARRAY_SIZE(dhcp_options); i++) {
- 		opt = &dhcp_options[i];
++		dev = get_device_by_name(devname);
++		if (!dev)
++			dev = global_add_device(devname);
++		ret = global_add_simple(dev, name);
++	} else {
++		ret = globalvar_add_simple(name);
++	}
  
- 		if (!opt->barebox_dhcp_global)
- 			continue;
+ 	if (value) {
+-		char *tmp = asprintf("global.%s", name);
++		char *tmp = asprintf("%s.%s", devname ? devname : "global", name);
+ 		ret = setenv(tmp, value);
+ 		free(tmp);
+ 	}
+@@ -43,12 +52,16 @@ static int do_global(int argc, char *argv[])
+ 	int opt;
+ 	int do_set_match = 0;
+ 	char *value;
++	char *devname = NULL;
  
--		dhcp_global_add(opt->barebox_dhcp_global);
-+		global_add_simple(dhcp_dev, opt->barebox_dhcp_global);
+-	while ((opt = getopt(argc, argv, "r")) > 0) {
++	while ((opt = getopt(argc, argv, "rd:")) > 0) {
+ 		switch (opt) {
+ 		case 'r':
+ 			do_set_match = 1;
+ 			break;
++		case 'd':
++			devname = optarg;
++			break;
+ 		}
  	}
  
- 	for (i = 0; i < ARRAY_SIZE(dhcp_params); i++) {
-@@ -695,7 +671,7 @@ static int dhcp_global_init(void)
- 		if (!param->barebox_dhcp_global)
- 			continue;
+@@ -68,17 +81,29 @@ static int do_global(int argc, char *argv[])
+ 		if (!value)
+ 			value = "";
  
--		dhcp_global_add(param->barebox_dhcp_global);
-+		global_add_simple(dhcp_dev, param->barebox_dhcp_global);
+-		globalvar_set_match(argv[0], value);
++		if (devname) {
++			struct device_d *dev;
++
++			dev = get_device_by_name(devname);
++
++			if (!dev)
++				return -EINVAL;
++
++			global_set_match(dev, argv[0], value);
++		} else {
++			globalvar_set_match(argv[0], value);
++		}
+ 		return 0;
  	}
+ 
+-	return globalvar_set(argv[0], value);
++	return globalvar_set(devname, argv[0], value);
+ }
+ 
+ BAREBOX_CMD_HELP_START(global)
+-BAREBOX_CMD_HELP_USAGE("global [-r] <var>[=<value]\n")
++BAREBOX_CMD_HELP_USAGE("global [-d device] [-r] <var>[=<value]\n")
+ BAREBOX_CMD_HELP_SHORT("add a new global variable named <var>, optionally set to <value>\n")
+-BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'")
++BAREBOX_CMD_HELP_SHORT("-r to set a value to of all globalvars beginning with 'match'\n")
++BAREBOX_CMD_HELP_SHORT("-d use a specific global device if do not exist create (if -r not set), it if not set use 'global'")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(global)
+diff --git a/common/globalvar.c b/common/globalvar.c
+index f275a38..5bfab70 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -14,19 +14,19 @@ int globalvar_add(const char *name,
+ }
+ 
+ /*
+- * globalvar_get_match
++ * global_get_match
+  *
+- * get a concatenated string of all globalvars beginning with 'match'.
+- * This adds whitespaces between the different globalvars
++ * get a concatenated string of all global vars beginning with 'match'.
++ * This adds whitespaces between the different global vars
+  */
+-char *globalvar_get_match(const char *match, const char *seperator)
++char *global_get_match(struct device_d *dev, const char *match, const char *seperator)
+ {
+ 	char *val = NULL;
+ 	struct param_d *param;
+ 
+-	list_for_each_entry(param, global_device.parameters, list) {
++	list_for_each_entry(param, &dev->parameters, list) {
+ 		if (!strncmp(match, param->name, strlen(match))) {
+-			const char *p = dev_get_param(global_device, param->name);
++			const char *p = dev_get_param(dev, param->name);
+ 			if (val) {
+ 				char *new = asprintf("%s%s%s", val, seperator, p);
+ 				free(val);
+@@ -43,14 +43,75 @@ char *globalvar_get_match(const char *match, const char *seperator)
+ 	return val;
+ }
+ 
+-void globalvar_set_match(const char *match, const char *val)
++/*
++ * globalvar_get_match
++ *
++ * get a concatenated string of all globalvars beginning with 'match'.
++ * This adds whitespaces between the different globalvars
++ */
++char *globalvar_get_match(const char *match, const char *seperator)
++{
++	return global_get_match(global_device, match, seperator);
++}
++
++void global_set_match(struct device_d *dev, const char *match, const char *val)
+ {
+ 	struct param_d *param;
+ 
+-	list_for_each_entry(param, global_device.parameters, list) {
++	list_for_each_entry(param, &dev->parameters, list) {
+ 		if (!strncmp(match, param->name, strlen(match)))
+-			dev_set_param(global_device, param->name, val);
++			dev_set_param(dev, param->name, val);
++	}
++}
++
++void globalvar_set_match(const char *match, const char *val)
++{
++	struct device_d *child;
++	char *tmp = NULL;
++	char *submatch = "";
++
++	if (strchr(match, '.')) {
++		tmp = strdup(match);
++		submatch = strchr(tmp, '.');
++		*submatch = 0;
++		submatch++;
++	}
++
++	global_set_match(global_device, match, val);
++
++	device_for_each_child(global_device, child) {
++		const char *devname = dev_name(child);
++
++		if (tmp && !strcmp(devname, tmp))
++			global_set_match(child, submatch, val);
++
++		if (!strncmp(devname, match, strlen(match)))
++			global_set_match(child, "", val);
++	}
++
++	free(tmp);
++}
++
++/*
++ * global_add_simple
++ *
++ * add a new global named 'name'
++ */
++int global_add_simple(struct device_d *dev, const char *name)
++{
++	return dev_add_param(dev, name, NULL, NULL, 0);
++}
++
++static struct device_d *global_get_child_by_name(const char *name)
++{
++	struct device_d *child;
++
++	device_for_each_child(global_device, child) {
++		if (!strcmp(dev_name(child), name))
++			return child;
+ 	}
++
++	return NULL;
+ }
+ 
+ /*
+@@ -60,7 +121,31 @@ void globalvar_set_match(const char *match, const char *val)
+  */
+ int globalvar_add_simple(const char *name)
+ {
+-	return globalvar_add(name, NULL, NULL, 0);
++	struct device_d *dev = global_device;
++	const char *subname = name;
++	char *tmp = NULL;
++	int ret;
++
++	if (strchr(name, '.')) {
++		char *data;
++
++		tmp = strdup(name);
++		data = strchr(tmp, '.');
++		*data = 0;
++		subname = ++data;
++
++		dev = global_get_child_by_name(tmp);
++		if (!dev) {
++			dev = global_device;
++			subname = name;
++		}
++	}
++
++	ret = global_add_simple(dev, subname);
++
++	free(tmp);
++
++	return ret;
+ }
+ 
+ static int global_match(struct device_d *dev, struct driver_d *drv)
+@@ -74,11 +159,31 @@ static struct bus_type global_bus = {
+ 	.probe = dummy_probe,
+ };
+ 
+-static int globalvar_init(void)
++struct device_d *global_add_device(const char *name)
++{
++	struct device_d *dev;
++
++	dev = xzalloc(sizeof(struct device_d));
++
++	strcpy(dev->name, name);
++	dev->id = DEVICE_ID_SINGLE;
++	dev->bus = &global_bus;
++
++	register_device(dev);
++
++	return dev;
++}
++
++static int global_bus_init(void)
+ {
+-	bus_register(&global_bus);
+-	global_device = &global_bus->dev;
++	int ret;
++
++	ret = bus_register(&global_bus);
++	if (ret)
++		return ret;
++
++	global_device = &global_bus.dev;
  
  	return 0;
-@@ -719,7 +695,7 @@ static int do_dhcp(int argc, char *argv[])
+ }
+-pure_initcall(globalvar_init);
++pure_initcall(global_bus_init);
+diff --git a/include/globalvar.h b/include/globalvar.h
+index ddf885f..322a1cb 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -2,6 +2,7 @@
+ #define __GLOBALVAR_H
  
- 	dhcp_reset_env();
+ #ifdef CONFIG_GLOBALVAR
++struct device_d *global_add_device(const char *name);
+ int globalvar_add_simple(const char *name);
  
--	dhcp_getenv_int("global.dhcp.retries", &retries);
-+	dhcp_getenv_int("dhcp.retries", &retries);
+ int globalvar_add(const char *name,
+@@ -10,6 +11,13 @@ int globalvar_add(const char *name,
+ 		unsigned long flags);
+ char *globalvar_get_match(const char *match, const char *seperator);
+ void globalvar_set_match(const char *match, const char *val);
++
++struct device_d *global_add_device(const char *name);
++int global_add_simple(struct device_d *dev, const char *name);
++void global_set_match(struct device_d *dev, const char *match,
++			const char *val);
++char *global_get_match(struct device_d *dev, const char *match,
++			const char *seperator);
+ #else
+ static inline int globalvar_add_simple(const char *name)
+ {
+@@ -30,6 +38,24 @@ static inline char *globalvar_get_match(const char *match, const char *seperator
+ }
  
- 	while((opt = getopt(argc, argv, "H:v:c:u:U:r:")) > 0) {
- 		switch(opt) {
+ static inline void globalvar_set_match(const char *match, const char *val) {}
++
++static inline struct device_d *global_add_device(const char *name)
++{
++	return NULL;
++}
++
++static inline int global_add_simple(struct device_d *dev, const char *name)
++{
++	return 0;
++}
++
++static inline void global_set_match(struct device_d *dev, const char *match,
++			const char *val) {}
++static inline char *global_get_match(struct device_d *dev, const char *match,
++			const char *seperator)
++{
++	return NULL;
++}
+ #endif
+ 
+ #endif /* __GLOBALVAR_H */
 -- 
 1.7.10.4
 
