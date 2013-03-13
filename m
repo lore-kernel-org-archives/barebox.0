@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 8.mo1.mail-out.ovh.net ([178.33.110.239]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFq7Q-0008GD-7a
+ id 1UFq7Q-0008Fz-7Z
  for barebox@lists.infradead.org; Wed, 13 Mar 2013 18:09:41 +0000
 Received: from mail645.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 82669FF9D05
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 5B919FF9CF8
  for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 19:26:23 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 13 Mar 2013 19:05:21 +0100
-Message-Id: <1363197922-19851-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 13 Mar 2013 19:05:19 +0100
+Message-Id: <1363197922-19851-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130313180100.GJ1568@game.jcrosoft.org>
  <1363197922-19851-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,58 +26,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] bootm: switch globalvar to it's own device
+Subject: [PATCH 4/7] net: switch to global device
 To: barebox@lists.infradead.org
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/bootm.c |   20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ net/net.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 4d3f022..b70cd05 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -48,6 +48,12 @@
- #include <asm-generic/memory_layout.h>
+diff --git a/net/net.c b/net/net.c
+index 639bc2d..4888d60 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -35,6 +35,7 @@
+ #include <init.h>
+ #include <linux/ctype.h>
+ #include <linux/err.h>
++#include <globalvar.h>
  
- static LIST_HEAD(handler_list);
-+static struct device_d *bootm_dev;
-+
-+static const char* bootm_get_global(const char * var)
-+{
-+	return dev_get_param(bootm_dev, var);
-+}
+ static IPaddr_t	net_netmask;		/* Our subnet mask (0=unknown)	*/
+ static IPaddr_t	net_gateway;		/* Our gateways IP address	*/
+@@ -664,21 +665,19 @@ out:
+ 	return ret;
+ }
  
- /*
-  * Additional oftree size for the fixed tree
-@@ -265,10 +271,10 @@ static int do_bootm(int argc, char *argv[])
- 	data.verify = 0;
- 	data.verbose = 0;
- 
--	oftree = getenv("global.bootm.oftree");
--	os_file = getenv("global.bootm.image");
-+	oftree = bootm_get_global("oftree");
-+	os_file = bootm_get_global("image");
- 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
--		initrd_file = getenv("global.bootm.initrd");
-+		initrd_file = bootm_get_global("initrd");
- 
- 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
- 		switch(opt) {
-@@ -443,11 +449,11 @@ err_out:
- 
- static int bootm_init(void)
- {
+-static struct device_d net_device = {
+-	.name = "net",
+-	.id = DEVICE_ID_SINGLE,
+-};
 -
--	globalvar_add_simple("bootm.image");
--	globalvar_add_simple("bootm.oftree");
-+	bootm_dev = global_add_device("bootm");
-+	global_add_simple(bootm_dev, "image");
-+	global_add_simple(bootm_dev, "oftree");
- 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
--		globalvar_add_simple("bootm.initrd");
-+		global_add_simple(bootm_dev, "initrd");
+ static int net_init(void)
+ {
++	struct device_d *dev;
+ 	int i;
+ 
+ 	for (i = 0; i < PKTBUFSRX; i++)
+ 		NetRxPackets[i] = net_alloc_packet();
+ 
+-	register_device(&net_device);
+-	dev_add_param(&net_device, "nameserver", NULL, NULL, 0);
+-	dev_add_param(&net_device, "domainname", NULL, NULL, 0);
++	dev = global_add_device("net");
++	if (dev) {
++		global_add_simple(dev, "nameserver");
++		global_add_simple(dev, "domainname");
++	}
  
  	return 0;
  }
