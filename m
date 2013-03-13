@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mx1.til-technologies.net ([92.103.228.36]
+ helo=mx.til-technologies.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFiiN-0002bG-D2
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 10:15:20 +0000
-Date: Wed, 13 Mar 2013 11:15:14 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130313101514.GY1906@pengutronix.de>
-References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
- <20130313090336.GD1568@game.jcrosoft.org>
+ id 1UFivK-00066r-Ri
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 10:28:43 +0000
+Message-ID: <51405522.1080600@til-technologies.fr>
+Date: Wed, 13 Mar 2013 11:29:54 +0100
+From: Cerrato Renaud <r.cerrato@til-technologies.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130313090336.GD1568@game.jcrosoft.org>
+References: <CA+7xNQmZDdJohjR=JLwiBnXFAE4U+JMptX9LXwuUzSTr1B+JAQ@mail.gmail.com>
+In-Reply-To: <CA+7xNQmZDdJohjR=JLwiBnXFAE4U+JMptX9LXwuUzSTr1B+JAQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,68 +22,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH 3/7] AT91 UDC startup fix
+To: barebox@lists.infradead.org
 
-On Wed, Mar 13, 2013 at 10:03:36AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
-> > The function gem_recv implements a buffer "ring" that stops at filling level 10.
-> > That means, when the driver is used as gem, it stops receiving after exactly
-> > 10 packets. Instead of implementing macb_recv twice, use it also for the gem
-> > part. If there needs to be an extra recv function for the gigabit case, it can
-> > be added than.
-> > Also, first set the type of device (macb or gem) and then use functions that
-> > use this info.
-> > 
-> > Tested on a Zynq7000.
-> NACK
-> 
-> on gem we can receive the packet in one buffer the gem_recv implement this
-> the macb can only receive splited buffer and then you have to reconstruct the
-> packet
+Inlined patch below.
 
-The gem received function was never used...
+Signed-off-by: Cerrato Renaud <r.cerrato@til-technologies.fr>
+---
+ drivers/usb/gadget/at91_udc.c |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
 
-> >  static int macb_recv(struct eth_device *edev)
-> >  {
-> >  	struct macb_device *macb = edev->priv;
-> > @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
-> >  
-> >  	macb->phy_flags = pdata->phy_flags;
-> >  
-> > -	macb_init_rx_buffer_size(macb, PKTSIZE);
-> > -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> > -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> > -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> > -
-> >  	macb->regs = dev_request_mem_region(dev, 0);
-> >  
-> >  	/*
-> > @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
-> >  
-> >  	clk_enable(macb->pclk);
-> >  
-> > -	if (macb_is_gem(macb))
-
-... because macb_is_gem() is used here ...
-
-> > -		edev->recv = gem_recv;
-> > -	else
-> > -		edev->recv = macb_recv;
-> >  	macb->is_gem = read_is_gem(macb);
-
-... but the variable is initialized here. Up to this point macb_is_gem()
-will return 0.
-
-Sascha
-
-
+diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
+index 3899db2..0654038 100644
+--- a/drivers/usb/gadget/at91_udc.c
++++ b/drivers/usb/gadget/at91_udc.c
+@@ -1327,6 +1327,12 @@ static void at91_update_vbus(struct at91_udc *udc, u32 value)
+         dev_set_param(udc->dev, "vbus", "0");
+ 
+     udc->gpio_vbus_val = value;
++    udc->vbus = value != 0;
++
++    if(udc->driver)
++        pullup(udc, udc->vbus);
++    else
++        pullup(udc, 0);
+ }
+ 
+ int usb_gadget_poll(void)
+@@ -1508,7 +1514,7 @@ static int __init at91udc_probe(struct device_d *dev)
+          * Get the initial state of VBUS - we cannot expect
+          * a pending interrupt.
+          */
+-        udc->vbus = gpio_get_value(udc->board.vbus_pin);
++        udc->vbus = gpio_get_value(udc->board.vbus_pin) ^ udc->board.vbus_active_low;
+         DBG(udc, "VBUS detection: host:%s \n",
+             udc->vbus ? "present":"absent");
+     } else {
+@@ -1517,7 +1523,7 @@ static int __init at91udc_probe(struct device_d *dev)
+     }
+ 
+     dev_add_param(dev, "vbus", NULL, NULL, 0);
+-    dev_set_param(dev, "vbus", "0");
++    dev_set_param(dev, "vbus", udc->vbus ? "1" : "0");
+ 
+     poller_register(&poller);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.5
+
+On 12/03/2013 16:54, Renaud C. wrote:
+> I noticed that depending on boot timings, the USB gadget weren't detected at all by hosts. After few hours of debugging and using the at91clk output, I found that the UDP clock wasn't enabled from time to time.
+>
+> This patch fix the startup of UDC by adding a check into the at91_update_vbus().
+>
+>
+>
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
 
 _______________________________________________
 barebox mailing list
