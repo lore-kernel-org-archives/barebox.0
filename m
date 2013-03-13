@@ -1,18 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mx.til-technologies.net ([92.103.228.36])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFlQB-0006FP-GI
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 13:08:44 +0000
-Date: Wed, 13 Mar 2013 14:08:40 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130313130840.GB3475@pengutronix.de>
-References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
- <20130313090336.GD1568@game.jcrosoft.org>
- <20130313101514.GY1906@pengutronix.de>
- <20130313121703.GF1568@game.jcrosoft.org>
+ id 1UFlsr-0007C3-UM
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 13:38:22 +0000
+Message-ID: <51408197.6090407@til-technologies.fr>
+Date: Wed, 13 Mar 2013 14:39:35 +0100
+From: Cerrato Renaud <r.cerrato@til-technologies.fr>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130313121703.GF1568@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,77 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Subject: [PATCH 1/5] at91: debug unit typo fix
+To: barebox@lists.infradead.org
 
-On Wed, Mar 13, 2013 at 01:17:03PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:15 Wed 13 Mar     , Sascha Hauer wrote:
-> > On Wed, Mar 13, 2013 at 10:03:36AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
-> > > > The function gem_recv implements a buffer "ring" that stops at filling level 10.
-> > > > That means, when the driver is used as gem, it stops receiving after exactly
-> > > > 10 packets. Instead of implementing macb_recv twice, use it also for the gem
-> > > > part. If there needs to be an extra recv function for the gigabit case, it can
-> > > > be added than.
-> > > > Also, first set the type of device (macb or gem) and then use functions that
-> > > > use this info.
-> > > > 
-> > > > Tested on a Zynq7000.
-> > > NACK
-> > > 
-> > > on gem we can receive the packet in one buffer the gem_recv implement this
-> > > the macb can only receive splited buffer and then you have to reconstruct the
-> > > packet
-> > 
-> > The gem received function was never used...
-> > 
-> > > >  static int macb_recv(struct eth_device *edev)
-> > > >  {
-> > > >  	struct macb_device *macb = edev->priv;
-> > > > @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
-> > > >  
-> > > >  	macb->phy_flags = pdata->phy_flags;
-> > > >  
-> > > > -	macb_init_rx_buffer_size(macb, PKTSIZE);
-> > > > -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> > > > -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> > > > -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> > > > -
-> > > >  	macb->regs = dev_request_mem_region(dev, 0);
-> > > >  
-> > > >  	/*
-> > > > @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
-> > > >  
-> > > >  	clk_enable(macb->pclk);
-> > > >  
-> > > > -	if (macb_is_gem(macb))
-> > 
-> > ... because macb_is_gem() is used here ...
-> > 
-> > > > -		edev->recv = gem_recv;
-> > > > -	else
-> > > > -		edev->recv = macb_recv;
-> > > >  	macb->is_gem = read_is_gem(macb);
-> > 
-> > ... but the variable is initialized here. Up to this point macb_is_gem()
-> > will return 0.
-> so this is a bug when the driver was merge to the mailine but here I does use
-> the gem_recv.
-> 
+This patch fix the debug unit output by correcting a typo into an #ifdef statement.
 
-What about the gem_recv function itself? It only increases rx_tail, but never
-resets it. Therefore the buffer is full after 10 packets. Do you already have a
-patch for that?
+Signed-off-by: Cerrato Renaud <r.cerrato@til-technologies.fr>
+---
+ arch/arm/mach-at91/include/mach/debug_ll.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-Regards,
-Steffen
-
+diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
+index 1a85ae4..42728a4 100644
+--- a/arch/arm/mach-at91/include/mach/debug_ll.h
++++ b/arch/arm/mach-at91/include/mach/debug_ll.h
+@@ -11,7 +11,7 @@
+ #include <asm/io.h>
+ #include <mach/hardware.h>
+ 
+-#ifdef COFNIG_HAVE_AT91_DBGU0
++#ifdef CONFIG_HAVE_AT91_DBGU0
+ #define UART_BASE    AT91_BASE_DBGU0
+ #else
+ #define UART_BASE    AT91_BASE_DBGU1
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.5
+
 
 _______________________________________________
 barebox mailing list
