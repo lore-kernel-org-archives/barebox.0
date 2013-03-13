@@ -1,23 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFnnG-0004U0-IR
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 15:40:45 +0000
+ id 1UFnpt-0005Hz-11
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 15:43:25 +0000
 Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 3D0CEDC1E85
- for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 16:51:57 +0100 (CET)
-Date: Wed, 13 Mar 2013 16:36:21 +0100
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id E9851DC235F
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 16:54:40 +0100 (CET)
+Date: Wed, 13 Mar 2013 16:39:06 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130313153621.GH1568@game.jcrosoft.org>
-References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
- <20130313090336.GD1568@game.jcrosoft.org>
- <20130313101514.GY1906@pengutronix.de>
- <20130313121703.GF1568@game.jcrosoft.org>
- <20130313130840.GB3475@pengutronix.de>
+Message-ID: <20130313153906.GI1568@game.jcrosoft.org>
+References: <1363172328-12904-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130313130840.GB3475@pengutronix.de>
+In-Reply-To: <1363172328-12904-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,86 +26,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
+Subject: Re: [PATCH] net: macb: initialize is_gem before usage
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
+Cc: barebox@lists.infradead.org
 
-On 14:08 Wed 13 Mar     , Steffen Trumtrar wrote:
-> On Wed, Mar 13, 2013 at 01:17:03PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 11:15 Wed 13 Mar     , Sascha Hauer wrote:
-> > > On Wed, Mar 13, 2013 at 10:03:36AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
-> > > > > The function gem_recv implements a buffer "ring" that stops at filling level 10.
-> > > > > That means, when the driver is used as gem, it stops receiving after exactly
-> > > > > 10 packets. Instead of implementing macb_recv twice, use it also for the gem
-> > > > > part. If there needs to be an extra recv function for the gigabit case, it can
-> > > > > be added than.
-> > > > > Also, first set the type of device (macb or gem) and then use functions that
-> > > > > use this info.
-> > > > > 
-> > > > > Tested on a Zynq7000.
-> > > > NACK
-> > > > 
-> > > > on gem we can receive the packet in one buffer the gem_recv implement this
-> > > > the macb can only receive splited buffer and then you have to reconstruct the
-> > > > packet
-> > > 
-> > > The gem received function was never used...
-> > > 
-> > > > >  static int macb_recv(struct eth_device *edev)
-> > > > >  {
-> > > > >  	struct macb_device *macb = edev->priv;
-> > > > > @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
-> > > > >  
-> > > > >  	macb->phy_flags = pdata->phy_flags;
-> > > > >  
-> > > > > -	macb_init_rx_buffer_size(macb, PKTSIZE);
-> > > > > -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
-> > > > > -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
-> > > > > -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
-> > > > > -
-> > > > >  	macb->regs = dev_request_mem_region(dev, 0);
-> > > > >  
-> > > > >  	/*
-> > > > > @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
-> > > > >  
-> > > > >  	clk_enable(macb->pclk);
-> > > > >  
-> > > > > -	if (macb_is_gem(macb))
-> > > 
-> > > ... because macb_is_gem() is used here ...
-> > > 
-> > > > > -		edev->recv = gem_recv;
-> > > > > -	else
-> > > > > -		edev->recv = macb_recv;
-> > > > >  	macb->is_gem = read_is_gem(macb);
-> > > 
-> > > ... but the variable is initialized here. Up to this point macb_is_gem()
-> > > will return 0.
-> > so this is a bug when the driver was merge to the mailine but here I does use
-> > the gem_recv.
-> > 
+On 11:58 Wed 13 Mar     , Steffen Trumtrar wrote:
+> The variable macb->is_gem is evaluated before it is initialized.
+> That leads to a wrong rx_buffer setup in the gem case. Also, the
+> function gem_recv will never be used.
 > 
-> What about the gem_recv function itself? It only increases rx_tail, but never
-> resets it. Therefore the buffer is full after 10 packets. Do you already have a
-> patch for that?
+> Set the variable first and then use it.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/net/macb.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 0cfad05..30e8476 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -619,11 +619,6 @@ static int macb_probe(struct device_d *dev)
+>  
+>  	macb->phy_flags = pdata->phy_flags;
+>  
+> -	macb_init_rx_buffer_size(macb, PKTSIZE);
+> -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> -
+>  	macb->regs = dev_request_mem_region(dev, 0);
+>  
+>  	/*
+> @@ -638,11 +633,17 @@ static int macb_probe(struct device_d *dev)
+>  
+>  	clk_enable(macb->pclk);
+>  
+> +	macb->is_gem = read_is_gem(macb);
+> +
+> +	macb_init_rx_buffer_size(macb, PKTSIZE);
+> +	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> +	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> +	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> +
 
-yes I check I've the diff with my local tree
-
-I send it on the top of your patch
+I check you need to update the gem_recv at the same time otherwise this brake
+the sama5 support
 
 Best Regards,
 J.
-
-> 
-> Regards,
-> Steffen
-> 
+>  	if (macb_is_gem(macb))
+>  		edev->recv = gem_recv;
+>  	else
+>  		edev->recv = macb_recv;
+> -	macb->is_gem = read_is_gem(macb);
+>  
+>  	macb_reset_hw(macb);
+>  	ncfgr = macb_mdc_clk_div(macb);
 > -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.8.2.rc2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
