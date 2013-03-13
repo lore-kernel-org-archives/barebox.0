@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from 20.mo5.mail-out.ovh.net ([91.121.55.239]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UFhXj-0005e3-Dc
- for barebox@lists.infradead.org; Wed, 13 Mar 2013 09:00:16 +0000
-From: Gwenhael Goavec-Merou <gwenhael.goavec-merou@armadeus.com>
-Date: Wed, 13 Mar 2013 09:58:58 +0100
-Message-Id: <1363165138-3085-1-git-send-email-gwenhael.goavec-merou@armadeus.com>
+ id 1UFhfG-0007hd-M0
+ for barebox@lists.infradead.org; Wed, 13 Mar 2013 09:08:05 +0000
+Received: from mail183.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 939A4FF95C6
+ for <barebox@lists.infradead.org>; Wed, 13 Mar 2013 10:19:18 +0100 (CET)
+Date: Wed, 13 Mar 2013 10:03:36 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130313090336.GD1568@game.jcrosoft.org>
+References: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1363164494-3614-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,54 +22,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [ARM] imx1: add #define to configure frequency for the clk32
-To: barebox <barebox@lists.infradead.org>
-Cc: gwenhael <gwenhael.goavec-merou@armadeus.com>
+Subject: Re: [PATCH 1/2] net: macb: remove gem_recv and reorder probe
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Nicolas Ferre <nicolas.ferre@atmel.com>
 
-From: gwenhael <gwenhael.goavec-merou@armadeus.com>
+On 09:48 Wed 13 Mar     , Steffen Trumtrar wrote:
+> The function gem_recv implements a buffer "ring" that stops at filling level 10.
+> That means, when the driver is used as gem, it stops receiving after exactly
+> 10 packets. Instead of implementing macb_recv twice, use it also for the gem
+> part. If there needs to be an extra recv function for the gigabit case, it can
+> be added than.
+> Also, first set the type of device (macb or gem) and then use functions that
+> use this info.
+> 
+> Tested on a Zynq7000.
+NACK
 
-i.MX1 allows to use a 32kHz or a 32.768kHz quartz for the 32kHz clock source
-(MC9328MXLRM p.177).
-This patch adds the ability for the developer to change the default value for
-the 32kHz clock source.
+on gem we can receive the packet in one buffer the gem_recv implement this
+the macb can only receive splited buffer and then you have to reconstruct the
+packet
 
-Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@armadeus.com>
----
- arch/arm/mach-imx/clk-imx1.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-imx/clk-imx1.c b/arch/arm/mach-imx/clk-imx1.c
-index 0d04a92..b779ab2 100644
---- a/arch/arm/mach-imx/clk-imx1.c
-+++ b/arch/arm/mach-imx/clk-imx1.c
-@@ -26,6 +26,10 @@
- 
- #include "clk.h"
- 
-+#ifndef MX1_CLK32_FREQ
-+#define MX1_CLK32_FREQ 32000
-+#endif
-+
- #define CCM_CSCR	0x0
- #define CCM_MPCTL0	0x4
- #define CCM_SPCTL0	0xc
-@@ -91,7 +95,7 @@ static int imx1_ccm_probe(struct device_d *dev)
- 
- 	regs = dev_request_mem_region(dev, 0);
- 
--	mx1_clocks_init(regs, 32000);
-+	mx1_clocks_init(regs, MX1_CLK32_FREQ);
- 
- 	return 0;
- }
--- 
-1.7.10.4
-
+Best Regards,
+J.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+> Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/net/macb.c | 47 +++++++----------------------------------------
+>  1 file changed, 7 insertions(+), 40 deletions(-)
+> 
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 8602437..a12eea7 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -169,37 +169,6 @@ static void reclaim_rx_buffers(struct macb_device *macb,
+>  	macb->rx_tail = new_tail;
+>  }
+>  
+> -static int gem_recv(struct eth_device *edev)
+> -{
+> -	struct macb_device *macb = edev->priv;
+> -	unsigned int rx_tail = macb->rx_tail;
+> -	void *buffer;
+> -	int length;
+> -	u32 status;
+> -
+> -	dev_dbg(macb->dev, "%s\n", __func__);
+> -
+> -	for (;;) {
+> -		barrier();
+> -		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
+> -			return -1;
+> -
+> -		barrier();
+> -		status = macb->rx_ring[rx_tail].ctrl;
+> -		length = MACB_BFEXT(RX_FRMLEN, status);
+> -		if (status & MACB_BIT(RX_SOF)) {
+> -			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+> -			net_receive(buffer, length);
+> -			macb->rx_ring[rx_tail].ctrl &= ~MACB_BIT(RX_USED);
+> -			barrier();
+> -		}
+> -		rx_tail++;
+> -		macb->rx_tail++;
+> -	}
+> -
+> -	return 0;
+> -}
+> -
+>  static int macb_recv(struct eth_device *edev)
+>  {
+>  	struct macb_device *macb = edev->priv;
+> @@ -619,11 +588,6 @@ static int macb_probe(struct device_d *dev)
+>  
+>  	macb->phy_flags = pdata->phy_flags;
+>  
+> -	macb_init_rx_buffer_size(macb, PKTSIZE);
+> -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> -
+>  	macb->regs = dev_request_mem_region(dev, 0);
+>  
+>  	/*
+> @@ -638,12 +602,15 @@ static int macb_probe(struct device_d *dev)
+>  
+>  	clk_enable(macb->pclk);
+>  
+> -	if (macb_is_gem(macb))
+> -		edev->recv = gem_recv;
+> -	else
+> -		edev->recv = macb_recv;
+>  	macb->is_gem = read_is_gem(macb);
+>  
+> +	macb_init_rx_buffer_size(macb, PKTSIZE);
+> +	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> +	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> +	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> +
+> +	edev->recv = macb_recv;
+> +
+>  	macb_reset_hw(macb);
+>  	ncfgr = macb_mdc_clk_div(macb);
+>  	ncfgr |= MACB_BIT(PAE);		/* PAuse Enable */
+> -- 
+> 1.8.2.rc2
+> 
 
 _______________________________________________
 barebox mailing list
