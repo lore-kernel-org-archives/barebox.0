@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp44.i.mail.ru ([94.100.177.104])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG5Zz-0003Me-Vx
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 10:40:14 +0000
+ id 1UG5a0-0003N7-9r
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 10:40:13 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 14 Mar 2013 14:40:05 +0400
-Message-Id: <1363257606-23877-1-git-send-email-shc_work@mail.ru>
+Date: Thu, 14 Mar 2013 14:40:06 +0400
+Message-Id: <1363257606-23877-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1363257606-23877-1-git-send-email-shc_work@mail.ru>
+References: <1363257606-23877-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,152 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: ccmx51: Migrate to defaultenv-2
+Subject: [PATCH 2/2] arm: ccmx51: Using imx51_add_usbotg() function for
+ register USB
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/ccxmx51/env/boot/nand          |    9 ++++++
- arch/arm/boards/ccxmx51/env/config             |   37 ------------------------
- arch/arm/boards/ccxmx51/env/config-board       |   12 ++++++++
- arch/arm/boards/ccxmx51/env/init/mtdparts-nand |   11 +++++++
- arch/arm/configs/ccmx51_defconfig              |    9 ++++--
- 5 files changed, 38 insertions(+), 40 deletions(-)
- create mode 100644 arch/arm/boards/ccxmx51/env/boot/nand
- delete mode 100644 arch/arm/boards/ccxmx51/env/config
- create mode 100644 arch/arm/boards/ccxmx51/env/config-board
- create mode 100644 arch/arm/boards/ccxmx51/env/init/mtdparts-nand
+ arch/arm/boards/ccxmx51/ccxmx51.c |   51 +++---------------------------------
+ 1 files changed, 5 insertions(+), 46 deletions(-)
 
-diff --git a/arch/arm/boards/ccxmx51/env/boot/nand b/arch/arm/boards/ccxmx51/env/boot/nand
-new file mode 100644
-index 0000000..bb11465
---- /dev/null
-+++ b/arch/arm/boards/ccxmx51/env/boot/nand
-@@ -0,0 +1,9 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	boot-menu-add-entry "$0" "NAND Flash"
-+	exit
-+fi
-+
-+global.bootm.image="/dev/kernel"
-+global.linux.bootargs.dyn.root="root=/dev/mtdblock3 ro"
-diff --git a/arch/arm/boards/ccxmx51/env/config b/arch/arm/boards/ccxmx51/env/config
-deleted file mode 100644
-index bbd43e7..0000000
---- a/arch/arm/boards/ccxmx51/env/config
-+++ /dev/null
-@@ -1,37 +0,0 @@
--#!/bin/sh
+diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+index b1c579b..8230f55 100644
+--- a/arch/arm/boards/ccxmx51/ccxmx51.c
++++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+@@ -195,51 +195,10 @@ static const struct spi_board_info ccxmx51_spi_board_info[] = {
+ 	},
+ };
+ 
+-static void ccxmx51_otghost_init(void)
+-{
+-#define MX51_USBOTHER_REGS_OFFSET		0x800
+-#define MX51_USBCTRL_OFFSET			0x0
+-#define MX51_USB_PHY_CTR_FUNC_OFFSET		0x8
+-#define MX51_USB_PHY_CTR_FUNC2_OFFSET		0xc
+-#define MX51_USB_UTMI_PHYCTRL1_PLLDIV_MASK	0x3
+-#define MX51_USB_PLL_DIV_19_2_MHZ		0x00
+-#define MX51_USB_PLL_DIV_24_MHZ			0x01
+-#define MX51_USB_PLL_DIV_26_MHZ			0x02
+-#define MX51_USB_PLL_DIV_27_MHZ			0x03
+-#define MX51_OTG_PHYCTRL_OC_DIS_BIT		(1 << 8)
+-#define MX51_OTG_UCTRL_OWIE_BIT			(1 << 27)
+-#define MX51_OTG_UCTRL_OPM_BIT			(1 << 24)
 -
--machine=ccmx51
+-#define USBOTHER_BASE				(MX51_OTG_BASE_ADDR + MX51_USBOTHER_REGS_OFFSET)
 -
--# use 'dhcp' to do dhcp in barebox and in kernel
--# use 'none' if you want to skip kernel ip autoconfiguration
--ip=none
+-	u32 reg;
 -
--# or set your networking parameters here
--#eth0.ipaddr=a.b.c.d
--#eth0.netmask=a.b.c.d
--#eth0.gateway=a.b.c.d
--#eth0.serverip=a.b.c.d
+-	/* Set sysclock to 24 MHz */
+-	reg = readl(USBOTHER_BASE + MX51_USB_PHY_CTR_FUNC2_OFFSET);
+-	reg &= ~MX51_USB_UTMI_PHYCTRL1_PLLDIV_MASK;
+-	reg |= MX51_USB_PLL_DIV_24_MHZ;
+-	writel(reg, USBOTHER_BASE + MX51_USB_PHY_CTR_FUNC2_OFFSET);
 -
--# can be either 'nfs', 'tftp' or 'nand'
--kernel_loc=nand
--# can be either 'net', 'nand' or 'initrd'
--rootfs_loc=nand
+-	/* OC is not used */
+-	reg = readl(USBOTHER_BASE + MX51_USB_PHY_CTR_FUNC_OFFSET);
+-	reg |= MX51_OTG_PHYCTRL_OC_DIS_BIT;
+-	writel(reg, USBOTHER_BASE + MX51_USB_PHY_CTR_FUNC_OFFSET);
 -
--# rootfs
--rootfs_type=cramfs
+-	/* Power pins enable */
+-	reg = readl(USBOTHER_BASE + MX51_USBCTRL_OFFSET);
+-	reg |= MX51_OTG_UCTRL_OWIE_BIT | MX51_OTG_UCTRL_OPM_BIT;
+-	writel(reg, USBOTHER_BASE + MX51_USBCTRL_OFFSET);
 -
--# kernel
--kernelimage_type=zimage
--kernel_img=/dev/nand0.kernel
+-	/* Setup PORTSC */
+-	reg = readl(MX51_OTG_BASE_ADDR + 0x184);
+-	reg &= ~(3 << 30);
+-	reg |= 1 << 28;
+-	writel(reg, MX51_OTG_BASE_ADDR + 0x184);
 -
--autoboot_timeout=3
+-	mdelay(10);
 -
--bootargs="console=ttymxc0,115200"
--
--device_type="nand"
--nand_device="mxc_nand"
--nand_parts="512k(barebox)ro,256k(bareboxenv),3328k(kernel),-(root)"
--rootfs_mtdblock_nand=3
--
--# set a fancy prompt (if support is compiled in)
--PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-diff --git a/arch/arm/boards/ccxmx51/env/config-board b/arch/arm/boards/ccxmx51/env/config-board
-new file mode 100644
-index 0000000..26acb4b
---- /dev/null
-+++ b/arch/arm/boards/ccxmx51/env/config-board
-@@ -0,0 +1,12 @@
-+#!/bin/sh
-+
-+global.hostname=ccmx51
-+
-+# Timeout in seconds before the default boot entry is started
-+global.autoboot_timeout=2
-+
-+# Default boot entry (one of /env/boot/*)
-+global.boot.default=nand
-+
-+# Board bootargs
-+global.linux.bootargs.base="earlyprintk console=ttymxc0,115200n8"
-diff --git a/arch/arm/boards/ccxmx51/env/init/mtdparts-nand b/arch/arm/boards/ccxmx51/env/init/mtdparts-nand
-new file mode 100644
-index 0000000..a4315cd
---- /dev/null
-+++ b/arch/arm/boards/ccxmx51/env/init/mtdparts-nand
-@@ -0,0 +1,11 @@
-+#!/bin/sh
-+
-+if [ "$1" = menu ]; then
-+	init-menu-add-entry "$0" "NAND partitions"
-+	exit
-+fi
-+
-+mtdparts="512k(barebox)ro,256k(bareboxenv),3328k(kernel),-(root)"
-+kernelname="mxc_nand"
-+
-+mtdparts-add -b -d nand0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/configs/ccmx51_defconfig b/arch/arm/configs/ccmx51_defconfig
-index 67d1dd2..b406686 100644
---- a/arch/arm/configs/ccmx51_defconfig
-+++ b/arch/arm/configs/ccmx51_defconfig
-@@ -7,13 +7,12 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x2000000
- CONFIG_LONGHELP=y
--CONFIG_GLOB=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="defaultenv arch/arm/boards/ccxmx51/env"
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/ccxmx51/env"
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-@@ -22,11 +21,15 @@ CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
- CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
- CONFIG_CMD_FLASH=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_BOOTZ=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OFTREE_PROBE=y
- CONFIG_CMD_NANDTEST=y
- CONFIG_CMD_MTEST=y
- CONFIG_CMD_TIMEOUT=y
+-	add_generic_usb_ehci_device(0, MX51_OTG_BASE_ADDR, NULL);
+-}
++static struct imxusb_platformdata ccxmx51_otg_pdata = {
++	.flags	= MXC_EHCI_MODE_UTMI_16_BIT | MXC_EHCI_POWER_PINS_ENABLED,
++	.mode	= IMX_USB_MODE_HOST,
++};
+ 
+ static int ccxmx51_power_init(void)
+ {
+@@ -453,7 +412,7 @@ static int ccxmx51_devices_init(void)
+ 		add_generic_device("smc911x", 1, NULL, MX51_CS5_BASE_ADDR, SZ_4K, IORESOURCE_MEM, NULL);
+ 	}
+ 
+-	ccxmx51_otghost_init();
++	imx51_add_usbotg(&ccxmx51_otg_pdata);
+ 
+ 	armlinux_set_bootparams((void *)(MX51_CSD0_BASE_ADDR + 0x100));
+ 
 -- 
 1.7.3.4
 
