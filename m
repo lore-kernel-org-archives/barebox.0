@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGC0T-0002hz-ST
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:31:58 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=hardanger.fritz.box)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mkl@pengutronix.de>) id 1UGC0Q-0007AF-W2
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 18:31:55 +0100
+ id 1UGC0U-0002iR-Db
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:32:03 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 14 Mar 2013 18:31:51 +0100
-Message-Id: <1363282313-18176-1-git-send-email-mkl@pengutronix.de>
+Date: Thu, 14 Mar 2013 18:31:53 +0100
+Message-Id: <1363282313-18176-3-git-send-email-mkl@pengutronix.de>
+In-Reply-To: <1363282313-18176-1-git-send-email-mkl@pengutronix.de>
+References: <1363282313-18176-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,15 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] serial: fix flush in auart and stm driver
+Subject: [PATCH 2/2] driver/serial: stm-serial: fix flush
 To: barebox@lists.infradead.org
 
-Hello,
+Wait until fifo is empty, not until fifo is not full.
 
-this series fixes problems in the auart and stm serial driver.
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/serial/stm-serial.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-regards,
-Marc
+diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
+index 3968892..e1276bd 100644
+--- a/drivers/serial/stm-serial.c
++++ b/drivers/serial/stm-serial.c
+@@ -34,6 +34,7 @@
+ 
+ #define UARTDBGDR 0x00
+ #define UARTDBGFR 0x18
++# define TXFE (1 << 7)
+ # define TXFF (1 << 5)
+ # define RXFE (1 << 4)
+ #define UARTDBGIBRD 0x24
+@@ -92,7 +93,7 @@ static void stm_serial_flush(struct console_device *cdev)
+ 	struct stm_priv *priv = container_of(cdev, struct stm_priv, cdev);
+ 
+ 	/* Wait for TX FIFO empty */
+-	while (readl(priv->base + UARTDBGFR) & TXFF)
++	while (!(readl(priv->base + UARTDBGFR) & TXFE))
+ 		;
+ }
+ 
+-- 
+1.8.2.rc2
 
 
 _______________________________________________
