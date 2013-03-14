@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f2.mail.ru ([217.69.129.64])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG7vz-0008H4-Vg
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 13:11:10 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 14 Mar 2013 17:11:01 +0400
-Message-ID: <1363266661.151779822@f2.mail.ru>
-In-Reply-To: <1363266160.903406067@f2.mail.ru>
+ id 1UG88Z-0005tE-IZ
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 13:24:08 +0000
+Received: by mail-bk0-f46.google.com with SMTP id j5so1023759bkw.19
+ for <barebox@lists.infradead.org>; Thu, 14 Mar 2013 06:24:00 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+In-Reply-To: <1363266661.151779822@f2.mail.ru>
 References: <1363263561.4022.37.camel@mars> <1363265461.4022.39.camel@mars>
- <1363266160.903406067@f2.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ <1363266160.903406067@f2.mail.ru>  <1363266661.151779822@f2.mail.ru>
+Date: Thu, 14 Mar 2013 14:23:56 +0100
+Message-ID: <1363267436.4022.44.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +20,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbM106IE9tYXA0IERTUyBjbG9ja3M=?=
-To: =?UTF-8?B?Q2hyaXN0b3BoIEZyaXR6?= <chf.fritz@googlemail.com>, barebox@lists.infradead.org
+Subject: Re: Re[3]: Omap4 DSS clocks
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-> > On Thu, 2013-03-14 at 16:48 +0400, Alexander Shiyan wrote:
-> > > >  Barebox crashes while reading a DSS register:
-> > > > 
-> > > >   $ md 0x48040000
-> > > >   unable to handle paging request at address 0x48040000
-> > > > 
-> > > > I suppose this is due to a turned off clock.
-> > > > 
-> > > > Any hints?
-> > > 
-> > > Probably this is a bug. I reproduced it.
-> > > 
-> > > Try to specify start & end address, like:
-> > > md -l 0x48040000-0x48040010
-> > 
-> > I get the same effect: it crashes.
-> 
-> OK. It seems rw_buf not initialized.
-> 
-> So change line:
-> static char *rw_buf; 
-> to
-> static char *rw_buf[RW_BUF_SIZE]; 
-Without asterisk, like:
- static char rw_buf[RW_BUF_SIZE]; 
-Sorry.
-
-> in commands/mem.c
-
----
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCAyMDEzLTAzLTE0IGF0IDE3OjExICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3Rl
+Ogo+ID4gPiBPbiBUaHUsIDIwMTMtMDMtMTQgYXQgMTY6NDggKzA0MDAsIEFsZXhhbmRlciBTaGl5
+YW4gd3JvdGU6Cj4gPiA+ID4gPiAgQmFyZWJveCBjcmFzaGVzIHdoaWxlIHJlYWRpbmcgYSBEU1Mg
+cmVnaXN0ZXI6Cj4gPiA+ID4gPiAKPiA+ID4gPiA+ICAgJCBtZCAweDQ4MDQwMDAwCj4gPiA+ID4g
+PiAgIHVuYWJsZSB0byBoYW5kbGUgcGFnaW5nIHJlcXVlc3QgYXQgYWRkcmVzcyAweDQ4MDQwMDAw
+Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IEkgc3VwcG9zZSB0aGlzIGlzIGR1ZSB0byBhIHR1cm5lZCBv
+ZmYgY2xvY2suCj4gPiA+ID4gPiAKPiA+ID4gPiA+IEFueSBoaW50cz8KPiA+ID4gPiAKPiA+ID4g
+PiBQcm9iYWJseSB0aGlzIGlzIGEgYnVnLiBJIHJlcHJvZHVjZWQgaXQuCj4gPiA+ID4gCj4gPiA+
+ID4gVHJ5IHRvIHNwZWNpZnkgc3RhcnQgJiBlbmQgYWRkcmVzcywgbGlrZToKPiA+ID4gPiBtZCAt
+bCAweDQ4MDQwMDAwLTB4NDgwNDAwMTAKPiA+ID4gCj4gPiA+IEkgZ2V0IHRoZSBzYW1lIGVmZmVj
+dDogaXQgY3Jhc2hlcy4KPiA+IAo+ID4gT0suIEl0IHNlZW1zIHJ3X2J1ZiBub3QgaW5pdGlhbGl6
+ZWQuCj4gPiAKPiA+IFNvIGNoYW5nZSBsaW5lOgo+ID4gc3RhdGljIGNoYXIgKnJ3X2J1ZjsgCj4g
+PiB0bwo+ID4gc3RhdGljIGNoYXIgKnJ3X2J1ZltSV19CVUZfU0laRV07IAo+IFdpdGhvdXQgYXN0
+ZXJpc2ssIGxpa2U6Cj4gIHN0YXRpYyBjaGFyIHJ3X2J1ZltSV19CVUZfU0laRV07IAoKbWFsbG9j
+IGV4cGVjdHMgYSBwb2ludGVyOgpjb21tYW5kcy9tZW0uYzo2MzQ6IGVycm9yOiBpbmNvbXBhdGli
+bGUgdHlwZXMgd2hlbiBhc3NpZ25pbmcgdG8gdHlwZQrigJhjaGFyWzQwOTZd4oCZIGZyb20gdHlw
+ZSDigJh2b2lkICrigJkKCkFzIHlvdSBjYW4gc2VlIGJlbG93LCBmb3IgYSBxdWljayB0ZXN0IEkg
+Y29tbWVudGVkIHRoZSBsaW5lcywgYnV0CmJhcmVib3ggc3RpbGwgY3Jhc2hlcy4KCldoeSBkb24n
+dCB5b3Ugc3VwcG9zZSB0aGF0IHRoaXMgaXMgZHVlIHRvIHRoZSBub24gZnVuY3Rpb25hbCBEU1M/
+CgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvbWVtLmMgYi9jb21tYW5kcy9tZW0uYwppbmRleCA1MWFh
+MDRkLi5hZjVjYzQ2IDEwMDY0NAotLS0gYS9jb21tYW5kcy9tZW0uYworKysgYi9jb21tYW5kcy9t
+ZW0uYwpAQCAtNDAsNyArNDAsNyBAQAogI2VuZGlmCiAKICNkZWZpbmUgUldfQlVGX1NJWkUJNDA5
+Ngotc3RhdGljIGNoYXIgKnJ3X2J1ZjsKK3N0YXRpYyBjaGFyIHJ3X2J1ZltSV19CVUZfU0laRV07
+CiAKIHN0YXRpYyBjaGFyICpERVZNRU0gPSAiL2Rldi9tZW0iOwogCkBAIC02MzEsMTEgKzYzMSwx
+MSBAQCBzdGF0aWMgc3RydWN0IGRyaXZlcl9kIG1lbV9kcnYgPSB7CiAKIHN0YXRpYyBpbnQgbWVt
+X2luaXQodm9pZCkKIHsKLQlyd19idWYgPSBtYWxsb2MoUldfQlVGX1NJWkUpOwotCWlmKCFyd19i
+dWYpIHsKLQkJcHJpbnRmKCIlczogT3V0IG9mIG1lbW9yeVxuIiwgX19GVU5DVElPTl9fKTsKLQkJ
+cmV0dXJuIC0xOwotCX0KKy8vCXJ3X2J1ZiA9IG1hbGxvYyhSV19CVUZfU0laRSk7CisvLwlpZigh
+cndfYnVmKSB7CisvLwkJcHJpbnRmKCIlczogT3V0IG9mIG1lbW9yeVxuIiwgX19GVU5DVElPTl9f
+KTsKKy8vCQlyZXR1cm4gLTE7CisvLwl9CiAKIAlhZGRfbWVtX2RldmljZSgibWVtIiwgMCwgfjAs
+IElPUkVTT1VSQ0VfTUVNX1dSSVRFQUJMRSk7CiAJcGxhdGZvcm1fZHJpdmVyX3JlZ2lzdGVyKCZt
+ZW1fZHJ2KTsKCgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRw
+Oi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
