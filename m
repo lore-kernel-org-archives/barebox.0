@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGC7F-0003hF-0C
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:39:07 +0000
+ id 1UGC7C-0003fV-5e
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:39:00 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 14 Mar 2013 18:38:49 +0100
-Message-Id: <1363282729-18545-11-git-send-email-mkl@pengutronix.de>
+Date: Thu, 14 Mar 2013 18:38:43 +0100
+Message-Id: <1363282729-18545-5-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
 References: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,168 +21,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/10] ARM: mxs: add bootsource detection
+Subject: [PATCH 04/10] ARM i.MX bootsource: rename imx_27_boot_save_loc ->
+ imx27_boot_save_loc
 To: barebox@lists.infradead.org
 
-For now only the v1.2 i.MX28 silicon is supported. The actual information is
-read from a magic address within the internal SRAM.
+This patch renames imx_27_boot_save_loc() to imx27_boot_save_loc(), so that all
+imx*_boot_save_loc() functions follow the same nameing sheme.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/mach-mxs/imx.c                   | 99 +++++++++++++++++++++++++++++++
- arch/arm/mach-mxs/include/mach/revision.h | 24 ++++++++
- 2 files changed, 123 insertions(+)
- create mode 100644 arch/arm/mach-mxs/include/mach/revision.h
+ arch/arm/mach-imx/boot.c                 | 2 +-
+ arch/arm/mach-imx/imx27.c                | 2 +-
+ arch/arm/mach-imx/include/mach/generic.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/imx.c b/arch/arm/mach-mxs/imx.c
-index ab32f10..2ddec23 100644
---- a/arch/arm/mach-mxs/imx.c
-+++ b/arch/arm/mach-mxs/imx.c
-@@ -14,11 +14,15 @@
-  */
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 37f1180..473b9d1 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -114,7 +114,7 @@ void imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type)
+ #define IMX27_GPCR_BOOT_32BIT_CS0		6
+ #define IMX27_GPCR_BOOT_8BIT_NAND_512		7
  
- #include <common.h>
-+#include <bootsource.h>
- #include <command.h>
- #include <complete.h>
- #include <init.h>
- #include <io.h>
-+
-+#include <mach/generic.h>
- #include <mach/imx-regs.h>
-+#include <mach/revision.h>
+-void imx_27_boot_save_loc(void __iomem *sysctrl_base)
++void imx27_boot_save_loc(void __iomem *sysctrl_base)
+ {
+ 	enum imx_bootsource src;
+ 	uint32_t val;
+diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
+index 6d30276..7615b98 100644
+--- a/arch/arm/mach-imx/imx27.c
++++ b/arch/arm/mach-imx/imx27.c
+@@ -99,7 +99,7 @@ static void imx27_init_max(void)
+ static int imx27_init(void)
+ {
+ 	imx27_silicon_revision();
+-	imx_27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
++	imx27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
  
- #define HW_RTC_PERSISTENT1     0x070
+ 	imx_iomuxv1_init((void *)MX27_GPIO1_BASE_ADDR);
  
-@@ -55,3 +59,98 @@ BAREBOX_CMD_START(dump_clocks)
- 	.usage		= "show clock frequencies",
- 	BAREBOX_CMD_COMPLETE(empty_complete)
- BAREBOX_CMD_END
-+
-+
-+static int __silicon_revision = SILICON_REVISION_UNKNOWN;
-+
-+int silicon_revision_get(void)
-+{
-+	return __silicon_revision;
-+}
-+
-+void silicon_revision_set(const char *soc, int revision)
-+{
-+	__silicon_revision = revision;
-+
-+	printf("detected %s revision %d.%d\n", soc,
-+	       (revision >> 4) & 0xf, revision & 0xf);
-+}
-+
-+#define HW_DIGCTL_CHIPID	(0x8001c310)
-+#define HW_DIGCTL_CHIPID_MASK	(0xffff << 16)
-+#define HW_DIGCTL_CHIPID_MX23	(0x3780 << 16)
-+#define HW_DIGCTL_CHIPID_MX28	(0x2800 << 16)
-+
-+static void mxs_silicon_revision(void)
-+{
-+	enum silicon_revision revision = SILICON_REVISION_UNKNOWN;
-+	const char *product = "unknown";
-+	uint32_t reg;
-+	uint8_t rev;
-+
-+	reg = readl((void __iomem *)HW_DIGCTL_CHIPID);
-+	rev = reg & 0xff;
-+
-+	switch (reg & HW_DIGCTL_CHIPID_MASK) {
-+	case HW_DIGCTL_CHIPID_MX23:
-+		product = "i.MX23";
-+		switch (rev) {
-+		case 0x0: revision = SILICON_REVISION_1_0; break;
-+		case 0x1: revision = SILICON_REVISION_1_1; break;
-+		case 0x2: revision = SILICON_REVISION_1_2; break;
-+		case 0x3: revision = SILICON_REVISION_1_3; break;
-+		case 0x4: revision = SILICON_REVISION_1_4; break;
-+		}
-+	case HW_DIGCTL_CHIPID_MX28:
-+		product = "i.MX28";
-+		switch (rev) {
-+		case 0x1: revision = SILICON_REVISION_1_2; break;
-+		}
-+	}
-+
-+	silicon_revision_set(product, revision);
-+}
-+
-+#define MX28_REV_1_0_MODE	(0x0001a7f0)
-+#define MX28_REV_1_2_MODE	(0x00019bf0)
-+
-+static void mxs_boot_save_loc(void)
-+{
-+	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+	int instance = 0;
-+	uint32_t mode = 0xff;
-+
-+	if (cpu_is_mx23()) {
-+		/* not implemented yet */
-+	} else if (cpu_is_mx28()) {
-+		enum silicon_revision rev = silicon_revision_get();
-+
-+		if (rev == SILICON_REVISION_1_2)
-+			mode = *(uint32_t *)MX28_REV_1_2_MODE;
-+		else
-+			mode = *(uint32_t *)MX28_REV_1_0_MODE;
-+	}
-+
-+	switch (mode & 0xf) {
-+	case 0x0: src = BOOTSOURCE_USB; break;		/* "USB" */
-+	case 0x1: src = BOOTSOURCE_I2C; break;		/* "I2C, master" */
-+	case 0x3: instance = 1;	/* fallthrough */	/* "SSP SPI #2, master, NOR" */
-+	case 0x2: src = BOOTSOURCE_NOR; break;		/* "SSP SPI #1, master, NOR" */
-+	case 0x4: src = BOOTSOURCE_NAND; break;		/* "NAND" */
-+	case 0x8: src = BOOTSOURCE_EEPROM; break;	/* "SSP SPI #3, master, EEPROM" */
-+	case 0xa: instance = 1;	/* fallthrough */	/* "SSP SD/MMC #1" */
-+	case 0x9: src = BOOTSOURCE_MMC; break;		/* "SSP SD/MMC #0" */
-+	}
-+
-+	bootsource_set(src);
-+	bootsource_set_instance(instance);
-+}
-+
-+static int mxs_init(void)
-+{
-+	mxs_silicon_revision();
-+	mxs_boot_save_loc();
-+
-+	return 0;
-+}
-+postcore_initcall(mxs_init);
-diff --git a/arch/arm/mach-mxs/include/mach/revision.h b/arch/arm/mach-mxs/include/mach/revision.h
-new file mode 100644
-index 0000000..91f174d
---- /dev/null
-+++ b/arch/arm/mach-mxs/include/mach/revision.h
-@@ -0,0 +1,24 @@
-+#ifndef __MACH_REVISION_H__
-+#define __MACH_REVISION_H__
-+
-+/* silicon revisions  */
-+enum silicon_revision {
-+	SILICON_REVISION_1_0 = 0x10,
-+	SILICON_REVISION_1_1 = 0x11,
-+	SILICON_REVISION_1_2 = 0x12,
-+	SILICON_REVISION_1_3 = 0x13,
-+	SILICON_REVISION_1_4 = 0x14,
-+	SILICON_REVISION_2_0 = 0x20,
-+	SILICON_REVISION_2_1 = 0x21,
-+	SILICON_REVISION_2_2 = 0x22,
-+	SILICON_REVISION_2_3 = 0x23,
-+	SILICON_REVISION_3_0 = 0x30,
-+	SILICON_REVISION_3_1 = 0x31,
-+	SILICON_REVISION_3_2 = 0x32,
-+	SILICON_REVISION_UNKNOWN =0xff
-+};
-+
-+int silicon_revision_get(void);
-+void silicon_revision_set(const char *soc, int revision);
-+
-+#endif /* __MACH_REVISION_H__ */
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index e6edb94..d39369b 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -17,7 +17,7 @@ enum imx_bootsource imx_bootsource(void);
+ void imx_set_bootsource(enum imx_bootsource src);
+ 
+ void imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type);
+-void imx_27_boot_save_loc(void __iomem *sysctrl_base);
++void imx27_boot_save_loc(void __iomem *sysctrl_base);
+ void imx51_boot_save_loc(void __iomem *src_base);
+ void imx53_boot_save_loc(void __iomem *src_base);
+ void imx6_boot_save_loc(void __iomem *src_base);
 -- 
 1.8.2.rc2
 
