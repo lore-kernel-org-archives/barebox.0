@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG9jq-0004wV-RA
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 15:06:42 +0000
-Received: by mail-bk0-f41.google.com with SMTP id q16so1060042bkw.14
- for <barebox@lists.infradead.org>; Thu, 14 Mar 2013 08:06:36 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <1363268762.5588.1.camel@lovely>
-References: <1363263561.4022.37.camel@mars> <1363265461.4022.39.camel@mars>
- <1363266160.903406067@f2.mail.ru> <1363266661.151779822@f2.mail.ru>
- <1363267436.4022.44.camel@mars>  <20130314133341.GK1906@pengutronix.de>
- <1363268762.5588.1.camel@lovely>
-Date: Thu, 14 Mar 2013 16:06:33 +0100
-Message-ID: <1363273593.4022.59.camel@mars>
-Mime-Version: 1.0
+Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UGARv-000168-MY
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 15:52:16 +0000
+Received: from mail608.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id ECA33104F1DC
+ for <barebox@lists.infradead.org>; Thu, 14 Mar 2013 17:03:27 +0100 (CET)
+Date: Thu, 14 Mar 2013 16:47:51 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130314154751.GK1568@game.jcrosoft.org>
+References: <1363189180-6650-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130313191327.GC3475@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130313191327.GC3475@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,38 +27,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re[3]: Omap4 DSS clocks
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/1] macb: fix gem_recv circular buffer handling
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, 2013-03-14 at 14:46 +0100, Christoph Fritz wrote:
-> On Thu, 2013-03-14 at 14:33 +0100, Sascha Hauer wrote:
-
-> > I wouldn't expect a bug in the code. This would have been discovered
-> > already.
+On 20:13 Wed 13 Mar     , Steffen Trumtrar wrote:
+> On Wed, Mar 13, 2013 at 04:39:40PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > as we use a full buffer no need to check the SOF
+> > and reset the rx_tail
+> > 
+> > fix at the same time the gem detection so we can have the rx_buffer
+> > allocated correctly according to the IP
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Sascah
+> > ---
+> >  drivers/net/macb.c |   32 ++++++++++++++++----------------
+> >  1 file changed, 16 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> > index 0cfad05..2d4e373 100644
+> > --- a/drivers/net/macb.c
+> > +++ b/drivers/net/macb.c
+> > @@ -172,7 +172,6 @@ static void reclaim_rx_buffers(struct macb_device *macb,
+> >  static int gem_recv(struct eth_device *edev)
+> >  {
+> >  	struct macb_device *macb = edev->priv;
+> > -	unsigned int rx_tail = macb->rx_tail;
+> >  	void *buffer;
+> >  	int length;
+> >  	u32 status;
+> > @@ -181,20 +180,20 @@ static int gem_recv(struct eth_device *edev)
+> >  
+> >  	for (;;) {
+> >  		barrier();
+> > -		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
+> > +		if (!(macb->rx_ring[macb->rx_tail].addr & MACB_BIT(RX_USED)))
+> >  			return -1;
+> >  
+> >  		barrier();
+> > -		status = macb->rx_ring[rx_tail].ctrl;
+> > +		status = macb->rx_ring[macb->rx_tail].ctrl;
+> >  		length = MACB_BFEXT(RX_FRMLEN, status);
+> > -		if (status & MACB_BIT(RX_SOF)) {
+> > -			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+> > -			net_receive(buffer, length);
+> > -			macb->rx_ring[rx_tail].ctrl &= ~MACB_BIT(RX_USED);
+> > -			barrier();
+> > -		}
+> > -		rx_tail++;
+> > +		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+> > +		net_receive(buffer, length);
+> > +		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
+> > +		barrier();
+> > +
+> >  		macb->rx_tail++;
+> > +		if (macb->rx_tail >= macb->rx_ring_size)
+> > +			macb->rx_tail = 0;
+> >  	}
+> >  
+> >  	return 0;
+> > @@ -619,11 +618,6 @@ static int macb_probe(struct device_d *dev)
+> >  
+> >  	macb->phy_flags = pdata->phy_flags;
+> >  
+> > -	macb_init_rx_buffer_size(macb, PKTSIZE);
+> > -	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> > -	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> > -	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> > -
+> >  	macb->regs = dev_request_mem_region(dev, 0);
+> >  
+> >  	/*
+> > @@ -638,11 +632,17 @@ static int macb_probe(struct device_d *dev)
+> >  
+> >  	clk_enable(macb->pclk);
+> >  
+> > +	macb->is_gem = read_is_gem(macb);
+> > +
+> >  	if (macb_is_gem(macb))
+> >  		edev->recv = gem_recv;
+> >  	else
+> >  		edev->recv = macb_recv;
+> > -	macb->is_gem = read_is_gem(macb);
+> > +
+> > +	macb_init_rx_buffer_size(macb, PKTSIZE);
+> > +	macb->rx_buffer = dma_alloc_coherent(macb->rx_buffer_size * macb->rx_ring_size);
+> > +	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb));
+> > +	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES);
+> >  
+> >  	macb_reset_hw(macb);
+> >  	ncfgr = macb_mdc_clk_div(macb);
 > 
-> Register CM_DSS_DSS_CLKCTRL (0x4a009120) reads 0x00070F02 and so the
-> field [17:16] IDLEST reads 0x3 which means "Module is disabled and
-> cannot be accessed". On linux, its 0x2 which means "functional".
+> I know that the last part is not a very sophisticated patch, but you could at least
+> mention that I found the error and/or made part of this patch. Don't just
+> pretend that you came up with this all alone.
+sorry just did the diff between both tree and forget to add the Report-by
+Sasha can you add it while applying?
 
-I already asked about this on the TI E2E Community forum
-http://e2e.ti.com/support/omap/f/849/t/251717.aspx but without gaining
-success.
-
-Overall, isn't it weird that DSS is offline (as indicated by IDLEST)?
-
-I suppose in ./arch/arm/mach-omap/omap4_clock.c this check:
-
-/* Check for DSS Clocks */
-while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
-	;
-
-should get extended to also check for correct IDLEST ...which would
-currently end in an endless loop :)
-
-Thanks
- -- Christoph
-
+Best Regards,
+J.
+> 
+> Regards,
+> Steffen
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
