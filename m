@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGC0U-0002iR-Db
+ id 1UGC0U-0002iQ-DZ
  for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:32:03 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 14 Mar 2013 18:31:53 +0100
-Message-Id: <1363282313-18176-3-git-send-email-mkl@pengutronix.de>
+Date: Thu, 14 Mar 2013 18:31:52 +0100
+Message-Id: <1363282313-18176-2-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1363282313-18176-1-git-send-email-mkl@pengutronix.de>
 References: <1363282313-18176-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] driver/serial: stm-serial: fix flush
+Subject: [PATCH 1/2] driver/serial: auart: fix flush
 To: barebox@lists.infradead.org
 
-Wait until fifo is empty, not until fifo is not full.
+Actually wait until fifo is empty.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/serial/stm-serial.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/serial/serial_auart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/serial/stm-serial.c b/drivers/serial/stm-serial.c
-index 3968892..e1276bd 100644
---- a/drivers/serial/stm-serial.c
-+++ b/drivers/serial/stm-serial.c
-@@ -34,6 +34,7 @@
- 
- #define UARTDBGDR 0x00
- #define UARTDBGFR 0x18
-+# define TXFE (1 << 7)
- # define TXFF (1 << 5)
- # define RXFE (1 << 4)
- #define UARTDBGIBRD 0x24
-@@ -92,7 +93,7 @@ static void stm_serial_flush(struct console_device *cdev)
- 	struct stm_priv *priv = container_of(cdev, struct stm_priv, cdev);
+diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
+index fa2e04f..1aebb07 100644
+--- a/drivers/serial/serial_auart.c
++++ b/drivers/serial/serial_auart.c
+@@ -129,7 +129,7 @@ static void auart_serial_flush(struct console_device *cdev)
+ 	struct auart_priv *priv = container_of(cdev, struct auart_priv, cdev);
  
  	/* Wait for TX FIFO empty */
--	while (readl(priv->base + UARTDBGFR) & TXFF)
-+	while (!(readl(priv->base + UARTDBGFR) & TXFE))
+-	while (readl(priv->base + HW_UARTAPP_STAT) & BM_UARTAPP_STAT_TXFE)
++	while (!(readl(priv->base + HW_UARTAPP_STAT) & BM_UARTAPP_STAT_TXFE))
  		;
  }
  
