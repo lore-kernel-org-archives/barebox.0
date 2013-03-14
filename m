@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp11.mail.ru ([94.100.176.85])
+Received: from mail-bk0-x22c.google.com ([2a00:1450:4008:c01::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG6hZ-0000GN-NM
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 11:52:07 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 14 Mar 2013 15:51:59 +0400
-Message-Id: <1363261919-30335-1-git-send-email-shc_work@mail.ru>
+ id 1UG784-0007cJ-W3
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 12:19:33 +0000
+Received: by mail-bk0-f44.google.com with SMTP id j4so969440bkw.3
+ for <barebox@lists.infradead.org>; Thu, 14 Mar 2013 05:19:26 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Thu, 14 Mar 2013 13:19:21 +0100
+Message-ID: <1363263561.4022.37.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,50 +17,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Add CPU detection macros for ARM720
+Subject: Omap4 DSS clocks
 To: barebox@lists.infradead.org
 
+Hi,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/include/asm/system_info.h |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+ Barebox crashes while reading a DSS register:
 
-diff --git a/arch/arm/include/asm/system_info.h b/arch/arm/include/asm/system_info.h
-index 56ebb11..13171cc 100644
---- a/arch/arm/include/asm/system_info.h
-+++ b/arch/arm/include/asm/system_info.h
-@@ -14,6 +14,9 @@
- #define CPU_ARCH_ARMv6		8
- #define CPU_ARCH_ARMv7		9
- 
-+#define CPU_IS_ARM720		0x41007200
-+#define CPU_IS_ARM720_MASK	0xff00fff0
-+
- #define CPU_IS_ARM920		0x41009200
- #define CPU_IS_ARM920_MASK	0xff00fff0
- 
-@@ -55,11 +58,13 @@
- #else
- #define ARM_ARCH CPU_ARCH_ARMv4T
- #endif
-+#define cpu_is_arm720()	cpu_is_arm(ARM720)
- #define cpu_is_arm920()	cpu_is_arm(ARM920)
- #define cpu_is_pxa250() cpu_is_arm(PXA250)
- #define cpu_is_pxa255() cpu_is_arm(PXA255)
- #define cpu_is_pxa270() cpu_is_arm(PXA270)
- #else
-+#define cpu_is_arm720() (0)
- #define cpu_is_arm920() (0)
- #define cpu_is_pxa250() (0)
- #define cpu_is_pxa255() (0)
--- 
-1.7.3.4
+  $ md 0x48040000
+  unable to handle paging request at address 0x48040000
+
+I suppose this is due to a turned off clock.
+
+Any hints?
+
+
+Thanks
+ -- Christoph
 
 
 _______________________________________________
