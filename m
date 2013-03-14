@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGC7C-0003fV-5e
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:39:00 +0000
+ id 1UGC7E-0003gm-00
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:39:04 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 14 Mar 2013 18:38:43 +0100
-Message-Id: <1363282729-18545-5-git-send-email-mkl@pengutronix.de>
+Date: Thu, 14 Mar 2013 18:38:47 +0100
+Message-Id: <1363282729-18545-9-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
 References: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,59 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] ARM i.MX bootsource: rename imx_27_boot_save_loc ->
- imx27_boot_save_loc
+Subject: [PATCH 08/10] bootsource: add support for bootsource instance
+ information
 To: barebox@lists.infradead.org
 
-This patch renames imx_27_boot_save_loc() to imx27_boot_save_loc(), so that all
-imx*_boot_save_loc() functions follow the same nameing sheme.
+Add a C interface to set and get the bootsource instance:
+
+    int bootsource_get_instance(void);
+    void bootsource_set_instance(int instance);
+
+Also export the shell variable "barebox_loc_instance".
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c                 | 2 +-
- arch/arm/mach-imx/imx27.c                | 2 +-
- arch/arm/mach-imx/include/mach/generic.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ common/bootsource.c  | 20 ++++++++++++++++++++
+ include/bootsource.h |  2 ++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 37f1180..473b9d1 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -114,7 +114,7 @@ void imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type)
- #define IMX27_GPCR_BOOT_32BIT_CS0		6
- #define IMX27_GPCR_BOOT_8BIT_NAND_512		7
+diff --git a/common/bootsource.c b/common/bootsource.c
+index ebe4407..fae554d 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -34,6 +34,7 @@ static const char *bootsource_str[] = {
+ };
  
--void imx_27_boot_save_loc(void __iomem *sysctrl_base)
-+void imx27_boot_save_loc(void __iomem *sysctrl_base)
+ static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
++static int bootsource_instance = 0;
+ 
+ void bootsource_set(enum bootsource src)
  {
- 	enum imx_bootsource src;
- 	uint32_t val;
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index 6d30276..7615b98 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -99,7 +99,7 @@ static void imx27_init_max(void)
- static int imx27_init(void)
+@@ -45,6 +46,16 @@ void bootsource_set(enum bootsource src)
+ 	setenv("barebox_loc", bootsource_str[src]);
+ }
+ 
++void bootsource_set_instance(int instance)
++{
++	char buf[32];
++
++	bootsource_instance = instance;
++	snprintf(buf, sizeof(buf), "%d", instance);
++
++	setenv("barebox_loc_instance", buf);
++}
++
+ enum bootsource bootsource_get(void)
  {
- 	imx27_silicon_revision();
--	imx_27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
-+	imx27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
+ 	return bootsource;
+@@ -52,10 +63,19 @@ enum bootsource bootsource_get(void)
  
- 	imx_iomuxv1_init((void *)MX27_GPIO1_BASE_ADDR);
+ BAREBOX_MAGICVAR(barebox_loc, "The source barebox has been booted from");
  
-diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
-index e6edb94..d39369b 100644
---- a/arch/arm/mach-imx/include/mach/generic.h
-+++ b/arch/arm/mach-imx/include/mach/generic.h
-@@ -17,7 +17,7 @@ enum imx_bootsource imx_bootsource(void);
- void imx_set_bootsource(enum imx_bootsource src);
++int bootsource_get_instance(void)
++{
++	return bootsource_instance;
++}
++
++BAREBOX_MAGICVAR(barebox_loc_instance, "The instance of the source barebox has been booted from");
++
+ static int bootsource_init(void)
+ {
+ 	bootsource_set(bootsource);
++	bootsource_set_instance(bootsource_instance);
+ 	export("barebox_loc");
++	export("barebox_loc_instance");
  
- void imx_25_35_boot_save_loc(unsigned int ctrl, unsigned int type);
--void imx_27_boot_save_loc(void __iomem *sysctrl_base);
-+void imx27_boot_save_loc(void __iomem *sysctrl_base);
- void imx51_boot_save_loc(void __iomem *src_base);
- void imx53_boot_save_loc(void __iomem *src_base);
- void imx6_boot_save_loc(void __iomem *src_base);
+ 	return 0;
+ }
+diff --git a/include/bootsource.h b/include/bootsource.h
+index ecd5938..dfcad49 100644
+--- a/include/bootsource.h
++++ b/include/bootsource.h
+@@ -14,6 +14,8 @@ enum bootsource {
+ };
+ 
+ enum bootsource bootsource_get(void);
++int bootsource_get_instance(void);
+ void bootsource_set(enum bootsource src);
++void bootsource_set_instance(int instance);
+ 
+ #endif	/* __BOOTSOURCE_H__ */
 -- 
 1.8.2.rc2
 
