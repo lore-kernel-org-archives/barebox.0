@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG387-0004dp-91
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 08:03:19 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 14 Mar 2013 09:03:12 +0100
-Message-Id: <1363248192-30541-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UG4Zl-0003Xp-Mq
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 09:35:59 +0000
+Message-ID: <1363253743.29331.49.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Thu, 14 Mar 2013 10:35:43 +0100
+In-Reply-To: <20130314073040.GB1906@pengutronix.de>
+References: <1363097053-25784-1-git-send-email-t.gamez@phytec.de>
+ <20130314073040.GB1906@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,122 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM i.MX ESDCTL: Fix default enabled esdctl v2 controller
-To: barebox@lists.infradead.org
+Subject: Re: [RFC PATCH 1/2] AM33XX: Move muxing defines to header file
+To: Sascha Hauer <s.hauer@pengutronix.de>, Teresa =?ISO-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-On some i.MX SoCs the SDRAM controller has chipselect 2 enabled
-by reset default. This confuses our SDRAM size detection. We
-already have a fix for this in place. This patch adds the fix
-for i.MX35 which needs it aswell. Also since we now detect the
-SDRAM size in the SoC specific entry functions we have to apply
-the fixup there, too.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/esdctl.c | 43 ++++++++++++++++++++++++++++---------------
- 1 file changed, 28 insertions(+), 15 deletions(-)
-
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index cc2bdc1..cb57d45 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -173,6 +173,26 @@ static void add_mem(unsigned long base0, unsigned long size0,
- 		arm_add_mem_device(size0 ? "ram1" : "ram0", base1, size1);
- }
- 
-+/*
-+ * On i.MX27, i.MX31 and i.MX35 the second chipselect is enabled by reset default.
-+ * This setting makes it impossible to detect the correct SDRAM size on
-+ * these SoCs. We disable the chipselect if this reset default setting is
-+ * found. This of course leads to incorrect SDRAM detection on boards which
-+ * really have this reset default as a valid setting. If you have such a
-+ * board drop a mail to search for a solution.
-+ */
-+#define ESDCTL1_RESET_DEFAULT 0x81120080
-+
-+static inline void imx_esdctl_v2_disable_default(void *esdctlbase)
-+{
-+	u32 ctlval = readl(esdctlbase + IMX_ESDCTL1);
-+
-+	if (ctlval == ESDCTL1_RESET_DEFAULT) {
-+		ctlval &= ~(1 << 31);
-+		writel(ctlval, esdctlbase + IMX_ESDCTL1);
-+	}
-+}
-+
- static void imx_esdctl_v1_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
- {
- 	add_mem(data->base0, imx_v1_sdram_size(esdctlbase, 0),
-@@ -185,22 +205,9 @@ static void imx_esdctl_v2_add_mem(void *esdctlbase, struct imx_esdctl_data *data
- 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
- }
- 
--/*
-- * On i.MX27 and i.MX31 the second chipselect is enabled by reset default.
-- * This setting makes it impossible to detect the correct SDRAM size on
-- * these SoCs. We disable the chipselect if this reset default setting is
-- * found. This of course leads to incorrect SDRAM detection on boards which
-- * really have this reset default as a valid setting. If you have such a
-- * board drop a mail to search for a solution.
-- */
--#define ESDCTL1_RESET_DEFAULT 0x81120080
--
- static void imx_esdctl_v2_bug_add_mem(void *esdctlbase, struct imx_esdctl_data *data)
- {
--	u32 ctlval = readl(esdctlbase + IMX_ESDCTL1);
--
--	if (ctlval == ESDCTL1_RESET_DEFAULT)
--		writel(0x0, esdctlbase + IMX_ESDCTL1);
-+	imx_esdctl_v2_disable_default(esdctlbase);
- 
- 	add_mem(data->base0, imx_v2_sdram_size(esdctlbase, 0),
- 			data->base1, imx_v2_sdram_size(esdctlbase, 1));
-@@ -264,7 +271,7 @@ static __maybe_unused struct imx_esdctl_data imx31_data = {
- static __maybe_unused struct imx_esdctl_data imx35_data = {
- 	.base0 = MX35_CSD0_BASE_ADDR,
- 	.base1 = MX35_CSD1_BASE_ADDR,
--	.add_mem = imx_esdctl_v2_add_mem,
-+	.add_mem = imx_esdctl_v2_bug_add_mem,
- };
- 
- static __maybe_unused struct imx_esdctl_data imx51_data = {
-@@ -383,6 +390,8 @@ void __naked __noreturn imx27_barebox_entry(uint32_t boarddata)
- 	unsigned long base;
- 	unsigned long size;
- 
-+	imx_esdctl_v2_disable_default((void *)MX27_ESDCTL_BASE_ADDR);
-+
- 	base = MX27_CSD0_BASE_ADDR;
- 
- 	size = imx_v2_sdram_size((void *)MX27_ESDCTL_BASE_ADDR, 0);
-@@ -397,6 +406,8 @@ void __naked __noreturn imx31_barebox_entry(uint32_t boarddata)
- 	unsigned long base;
- 	unsigned long size;
- 
-+	imx_esdctl_v2_disable_default((void *)MX31_ESDCTL_BASE_ADDR);
-+
- 	base = MX31_CSD0_BASE_ADDR;
- 
- 	size = imx_v2_sdram_size((void *)MX31_ESDCTL_BASE_ADDR, 0);
-@@ -411,6 +422,8 @@ void __naked __noreturn imx35_barebox_entry(uint32_t boarddata)
- 	unsigned long base;
- 	unsigned long size;
- 
-+	imx_esdctl_v2_disable_default((void *)MX35_ESDCTL_BASE_ADDR);
-+
- 	base = MX35_CSD0_BASE_ADDR;
- 
- 	size = imx_v2_sdram_size((void *)MX35_ESDCTL_BASE_ADDR, 0);
--- 
-1.8.2.rc2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCAyMDEzLTAzLTE0IGF0IDA4OjMwICswMTAwLCBTYXNjaGEgSGF1ZXIgd3JvdGU6Cj4g
+SGkgVGVyZXNhLAo+IAo+IE9uIFR1ZSwgTWFyIDEyLCAyMDEzIGF0IDAzOjA0OjEyUE0gKzAxMDAs
+IFRlcmVzYSBHw6FtZXogd3JvdGU6Cj4gPiBUaGUgbXV4aW5nIGluIHRoZSBhbTMzeHhfbXV4LmMg
+ZmlsZSBpcyBub3QgZ2VuZXJpYyBhcyB0aGUgbXV4aW5nCj4gPiBzZXR1cCBkb2VzIG5vdCBmaXQg
+Zm9yIGV2ZXJ5IGJvYXJkLiBNb3ZlIHRoZSBzdHJ1Y3RzIGFuZCBmdW5jdGlvbnMKPiA+IHRvIHRo
+ZSBtYWNoL2FtMzN4eC1tdXguaCBzbyBib2FyZCBkZXBlbmRlbmQgbXV4IHNldHVwcyBjYW4gYmUK
+PiA+IGNyZWF0ZWQuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2Ft
+ZXpAcGh5dGVjLmRlPgo+IAo+IExvb2tzIGdvb2QgdG8gbWUuIEphbiBpcyBtb3JlIGZhbWlsaWFy
+IHdpdGggdGhlIGFtMzN4eC4gSmFuLAo+IGNvdWxkIHlvdSBoYXZlIGEgbG9vayBvbiBpdD8KCkkg
+aGF2ZW4ndCB0ZXN0ZWQgaXQsIGJ1dCB0aGUgYXBwcm9hY2ggc2VlbXMgZ29vZC4gV2hlbiBhZGRp
+bmcgYSBuZXcKYm9hcmQsIEkgd291bGQgcHJvYmFibHkgaGF2ZSBkb25lIHRoZSBzYW1lLgoKVGhl
+IGN1cnJlbnQgUGluTXV4IGlzIHN0aWxsIGEgYml0IEJlYWdsZUJvbmUtc3BlY2lmaWMsIGJ1dCB0
+aGF0IHNob3VsZApiZSBmaXhlZCBpbiBhIHNlcGFyYXRlIHBhdGNoLiAoT3IgaW5zdGVhZCB3cml0
+ZSBhIHBpbmN0cmwtc2luZ2xlIGRyaXZlcgphbmQgY29uZmlndXJlIFBpbk11eCB2aWEgRFQpLgoK
+UmVnYXJkcywKSmFuCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0
+aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWlu
+ZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEt
+MjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAg
+fCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
