@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UG2j2-0007cF-MT
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 07:37:21 +0000
-Date: Thu, 14 Mar 2013 08:37:19 +0100
+ id 1UG2w9-0003nb-BO
+ for barebox@lists.infradead.org; Thu, 14 Mar 2013 07:50:55 +0000
+Date: Thu, 14 Mar 2013 08:50:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130314073719.GD1906@pengutronix.de>
-References: <51408197.6090407@til-technologies.fr>
+Message-ID: <20130314075047.GB19970@pengutronix.de>
+References: <1362871182-25726-1-git-send-email-vicencb@gmail.com>
+ <1362871182-25726-7-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <51408197.6090407@til-technologies.fr>
+In-Reply-To: <1362871182-25726-7-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/5] at91: debug unit typo fix
-To: Cerrato Renaud <r.cerrato@til-technologies.fr>
+Subject: Re: [PATCH 6/9] omap4_romusb: allow adding usb-serial when not
+ booting from usb
+To: Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Mar 13, 2013 at 02:39:35PM +0100, Cerrato Renaud wrote:
-> This patch fix the debug unit output by correcting a typo into an #ifdef statement.
-> 
-> Signed-off-by: Cerrato Renaud <r.cerrato@til-technologies.fr>
-> ---
->  arch/arm/mach-at91/include/mach/debug_ll.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
+Hi Vicente,
 
-This one is ok, but unfortunately also whitespace damaged.
+On Sun, Mar 10, 2013 at 12:19:39AM +0100, Vicente Bergas wrote:
+> 
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+> ---
+>  arch/arm/mach-omap/include/mach/omap4_rom_usb.h |  3 +++
+>  arch/arm/mach-omap/omap4_rom_usb.c              | 23 +++++++++++------------
+>  drivers/serial/serial_omap4_usbboot.c           |  2 ++
+>  3 files changed, 16 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
+> index f0a2fd1..ee5b19a 100644
+> --- a/drivers/serial/serial_omap4_usbboot.c
+> +++ b/drivers/serial/serial_omap4_usbboot.c
+> @@ -78,6 +78,8 @@ static struct driver_d serial_omap4_usbboot_driver = {
+>  
+>  static int serial_omap4_usbboot_init(void)
+>  {
+> +	if (!omap4_usbboot_ready())
+> +		return 0;
+>  	return platform_driver_register(&serial_omap4_usbboot_driver);
+>  }
+>  console_initcall(serial_omap4_usbboot_init);
+
+Here you register the driver only when usb boot is ready. It would be
+better your register the device only when usb boot is ready. Are you
+fine with this? Could you send a follow up patch?
 
 Sascha
-
-> 
-> diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
-> index 1a85ae4..42728a4 100644
-> --- a/arch/arm/mach-at91/include/mach/debug_ll.h
-> +++ b/arch/arm/mach-at91/include/mach/debug_ll.h
-> @@ -11,7 +11,7 @@
->  #include <asm/io.h>
->  #include <mach/hardware.h>
->  
-> -#ifdef COFNIG_HAVE_AT91_DBGU0
-> +#ifdef CONFIG_HAVE_AT91_DBGU0
->  #define UART_BASE    AT91_BASE_DBGU0
->  #else
->  #define UART_BASE    AT91_BASE_DBGU1
-> -- 
-> 1.7.2.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
