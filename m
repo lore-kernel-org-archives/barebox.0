@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGUr2-0002MR-7o
- for barebox@lists.infradead.org; Fri, 15 Mar 2013 13:39:29 +0000
-Received: by mail-ea0-f180.google.com with SMTP id j14so1512994eak.39
- for <barebox@lists.infradead.org>; Fri, 15 Mar 2013 06:39:26 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <1363336811.543222125@f383.i.mail.ru>
-References: <1363263561.4022.37.camel@mars>
- <1363278551.867951799@f270.mail.ru> <1363335600.13088.40.camel@mars>
- <1363336811.543222125@f383.i.mail.ru>
-Date: Fri, 15 Mar 2013 14:39:22 +0100
-Message-ID: <1363354762.13088.261.camel@mars>
-Mime-Version: 1.0
+ id 1UGWJn-0007PA-E6
+ for barebox@lists.infradead.org; Fri, 15 Mar 2013 15:13:16 +0000
+Date: Fri, 15 Mar 2013 16:13:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130315151312.GG1906@pengutronix.de>
+References: <1363165138-3085-1-git-send-email-gwenhael.goavec-merou@armadeus.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1363165138-3085-1-git-send-email-gwenhael.goavec-merou@armadeus.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,66 +22,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [RFC] ARM OMAP4: enable DSS by default
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] [ARM] imx1: add #define to configure frequency for the
+ clk32
+To: Gwenhael Goavec-Merou <gwenhael.goavec-merou@armadeus.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Fri, 2013-03-15 at 12:40 +0400, Alexander Shiyan wrote:
+On Wed, Mar 13, 2013 at 09:58:58AM +0100, Gwenhael Goavec-Merou wrote:
+> From: gwenhael <gwenhael.goavec-merou@armadeus.com>
+> 
+> i.MX1 allows to use a 32kHz or a 32.768kHz quartz for the 32kHz clock source
+> (MC9328MXLRM p.177).
+> This patch adds the ability for the developer to change the default value for
+> the 32kHz clock source.
 
-> MD command causes an error due to the inability of the reading memory area.
-> Error can be disabled via the option "enable arm exception handling support",
-> but it does not help solve the problem.
-> OMAP has a memory areas (modules), which are locked,
+Ok, I see we have to do something here as there are systems out there
+which have different clock frequencies. This also happens on other i.MX
+SoCs.
 
-This corresponds with my register observations. As noted above, register
-CM_DSS_DSS_CLKCTRL (0x4a009120) reads 0x00070F02 which means: "Module is
-disabled and cannot be accessed".
+I don't really like the solution, although I can't currently think of a
+better one (at least not as long devicetrees are not available
+everywhere). Using board specific defines which propagate to generic
+drivers is not a very good design. However, is it ok for you when we
+apply it along with the first user? This way we do not have this dead
+define in the code.
 
->  so you need to
-> search this information from datasheet.
+Sascha
 
-Finnaly I was very wise inspired to do "mw 0x4a009100 2". This disables
-the HW_AUTO-Mode (Automatic transition) and starts a software forced
-wake-up (SW_WKUP).
 
-Now even the IDLEST field from CM_DSS_CLKSTCTRL reads 0x0: "Module is
-fully functional, including INTRCONN" :-)
+> 
+> Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@armadeus.com>
+> ---
+>  arch/arm/mach-imx/clk-imx1.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-imx/clk-imx1.c b/arch/arm/mach-imx/clk-imx1.c
+> index 0d04a92..b779ab2 100644
+> --- a/arch/arm/mach-imx/clk-imx1.c
+> +++ b/arch/arm/mach-imx/clk-imx1.c
+> @@ -26,6 +26,10 @@
+>  
+>  #include "clk.h"
+>  
+> +#ifndef MX1_CLK32_FREQ
+> +#define MX1_CLK32_FREQ 32000
+> +#endif
+> +
+>  #define CCM_CSCR	0x0
+>  #define CCM_MPCTL0	0x4
+>  #define CCM_SPCTL0	0xc
+> @@ -91,7 +95,7 @@ static int imx1_ccm_probe(struct device_d *dev)
+>  
+>  	regs = dev_request_mem_region(dev, 0);
+>  
+> -	mx1_clocks_init(regs, 32000);
+> +	mx1_clocks_init(regs, MX1_CLK32_FREQ);
+>  
+>  	return 0;
+>  }
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-et la voila:
-md 0x48040000+4
-48040000: 00000040
-
-What do you think about the patch below?
-
----
-Subject: [PATCH] [RFC] ARM OMAP4: enable DSS by default
-
-This patch removes the anyway default reset setting of HW_AUTO in favour of
-SW_WKUP. So the DSS Module gets enabled and you gain full register access.
----
- arch/arm/mach-omap/omap4_clock.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index 0621fd3..72335d9 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -375,8 +375,8 @@ void omap4_enable_all_clocks(void)
- 	/* Check for DSS Clocks */
- 	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
- 		;
--	/* Set HW_AUTO transition mode */
--	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x3);
-+	/* Set SW_WKUP to enable DSS Module with full register access */
-+	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x2);
- 
- 	/* Enable SGX clocks */
- 	sr32(CM_SGX_CLKSTCTRL, 0, 32, 0x2);
 -- 
-1.7.10.4
-
-
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
