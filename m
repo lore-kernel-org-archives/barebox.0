@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UGC7E-0003gn-FU
- for barebox@lists.infradead.org; Thu, 14 Mar 2013 17:39:04 +0000
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 14 Mar 2013 18:38:48 +0100
-Message-Id: <1363282729-18545-10-git-send-email-mkl@pengutronix.de>
-In-Reply-To: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
-References: <1363282729-18545-1-git-send-email-mkl@pengutronix.de>
+Received: from fallback3.mail.ru ([94.100.176.58])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UGOFK-0004Zb-NT
+ for barebox@lists.infradead.org; Fri, 15 Mar 2013 06:36:07 +0000
+Received: from smtp38.i.mail.ru (smtp38.i.mail.ru [94.100.177.98])
+ by fallback3.mail.ru (mPOP.Fallback_MX) with ESMTP id BB988D95BAC8
+ for <barebox@lists.infradead.org>; Fri, 15 Mar 2013 10:36:01 +0400 (MSK)
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 15 Mar 2013 10:35:40 +0400
+Message-Id: <1363329340-13126-3-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1363329340-13126-1-git-send-email-shc_work@mail.ru>
+References: <1363329340-13126-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/10] bootsource: add definition for usb and eeprom
+Subject: [RFC 3/3] clk: Add "is_enabled" callback for gated clocks
 To: barebox@lists.infradead.org
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- common/bootsource.c  | 2 ++
- include/bootsource.h | 2 ++
- 2 files changed, 4 insertions(+)
 
-diff --git a/common/bootsource.c b/common/bootsource.c
-index fae554d..599bcd2 100644
---- a/common/bootsource.c
-+++ b/common/bootsource.c
-@@ -31,6 +31,8 @@ static const char *bootsource_str[] = {
- 	[BOOTSOURCE_SERIAL] = "serial",
- 	[BOOTSOURCE_ONENAND] = "onenand",
- 	[BOOTSOURCE_HD] = "harddisk",
-+	[BOOTSOURCE_USB] = "usb",
-+	[BOOTSOURCE_EEPROM] = "eeprom",
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/clk/clk-gate.c |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/clk/clk-gate.c b/drivers/clk/clk-gate.c
+index 2dca11c..580720b 100644
+--- a/drivers/clk/clk-gate.c
++++ b/drivers/clk/clk-gate.c
+@@ -48,9 +48,17 @@ static void clk_gate_disable(struct clk *clk)
+ 	writel(val, g->reg);
+ }
+ 
++static int clk_gate_is_enabled(struct clk *clk)
++{
++	struct clk_gate *g = container_of(clk, struct clk_gate, clk);
++
++	return !!(readl(g->reg) & (1 << g->shift));
++}
++
+ struct clk_ops clk_gate_ops = {
+ 	.enable = clk_gate_enable,
+ 	.disable = clk_gate_disable,
++	.is_enabled = clk_gate_is_enabled,
  };
  
- static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
-diff --git a/include/bootsource.h b/include/bootsource.h
-index dfcad49..84a6696 100644
---- a/include/bootsource.h
-+++ b/include/bootsource.h
-@@ -11,6 +11,8 @@ enum bootsource {
- 	BOOTSOURCE_SERIAL,
- 	BOOTSOURCE_ONENAND,
- 	BOOTSOURCE_HD,
-+	BOOTSOURCE_USB,
-+	BOOTSOURCE_EEPROM,
- };
- 
- enum bootsource bootsource_get(void);
+ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
 -- 
-1.8.2.rc2
+1.7.3.4
 
 
 _______________________________________________
