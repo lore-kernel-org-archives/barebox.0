@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UH05j-0007S5-Sp
- for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:44 +0000
-Received: by mail-wi0-f175.google.com with SMTP id l13so1579656wie.14
- for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:42 -0700 (PDT)
+ id 1UH05i-0007S4-3i
+ for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:42 +0000
+Received: by mail-wi0-f177.google.com with SMTP id hm14so1546593wib.16
+ for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:40 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 16 Mar 2013 23:59:37 +0100
-Message-Id: <1363474782-21973-2-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
-References: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
+Date: Sat, 16 Mar 2013 23:59:36 +0100
+Message-Id: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] OMAP4: check for usb availability at device registration
+Subject: [PATCH 0/6] ArchosG9: add keyboard input and new reset menu entries
+ (v2)
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-this way serial-over-usb driver is registered always, but the device is
-only registered when booting from usb.
+This is the second version of this patch series, it includes all feedback received
+which is greatly appreciated.
 
-Signed-off-by: Vicente Bergas <vicencb@gmail.com>
----
- arch/arm/boards/archosg9/board.c      | 6 +++++-
- drivers/serial/serial_omap4_usbboot.c | 2 --
- 2 files changed, 5 insertions(+), 3 deletions(-)
+Vicente Bergas (6):
+  OMAP4: check for usb availability at device registration
+  ArchosG9: zero all features before setting them
+  gpio_keys: detect keys pressed before booting
+  OMAP4: add command to select next boot device priority
+  ArchosG9: add keyboard input and new reset menu entries
+  menu: avoid errors when building submenus
 
-diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
-index bf247de..3ae7051 100644
---- a/arch/arm/boards/archosg9/board.c
-+++ b/arch/arm/boards/archosg9/board.c
-@@ -17,15 +17,19 @@
- #include <generated/mach-types.h>
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-devices.h>
-+#include <mach/omap4_rom_usb.h>
- #include <sizes.h>
- #include <i2c/i2c.h>
- #include <gpio.h>
- #include "archos_features.h"
- 
- static int archosg9_console_init(void){
--	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT))
-+	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT) &&
-+		omap4_usbboot_ready()
-+	){
- 		add_generic_device("serial_omap4_usbboot", DEVICE_ID_DYNAMIC
- 			, NULL, 0, 0, 0, NULL);
-+	}
- 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_NS16550)) {
- 		gpio_direction_output(41, 0); /* gps_disable */
- 		gpio_direction_output(34, 1); /* 1v8_pwron */
-diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
-index e377fc4..f0a2fd1 100644
---- a/drivers/serial/serial_omap4_usbboot.c
-+++ b/drivers/serial/serial_omap4_usbboot.c
-@@ -78,8 +78,6 @@ static struct driver_d serial_omap4_usbboot_driver = {
- 
- static int serial_omap4_usbboot_init(void)
- {
--	if (!omap4_usbboot_ready())
--		return 0;
- 	return platform_driver_register(&serial_omap4_usbboot_driver);
- }
- console_initcall(serial_omap4_usbboot_init);
+ arch/arm/boards/archosg9/archos_features.c         | 58 +++++------------
+ arch/arm/boards/archosg9/board.c                   | 28 +++++++-
+ arch/arm/boards/archosg9/env/bin/init              | 28 ++++++++
+ arch/arm/boards/archosg9/env/boot/usb-android      |  2 +-
+ arch/arm/boards/archosg9/env/boot/usb-linux        |  2 +-
+ arch/arm/boards/archosg9/env/menu/mainmenu         | 25 ++++++++
+ arch/arm/boards/at91sam9m10ihd/env/boot/android    |  2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/mmc        |  2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net        |  2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net-usb    |  2 +-
+ arch/arm/boards/beagle/env/boot/mmc                |  2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi           |  2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi-dt        |  2 +-
+ arch/arm/boards/beaglebone/env/boot/sd             |  2 +-
+ arch/arm/boards/clep7212/env/boot/nor              |  2 +-
+ .../boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |  2 +-
+ .../boards/efika-mx-smartbook/env/boot/hd-internal |  2 +-
+ .../boards/efika-mx-smartbook/env/boot/mmc-left    |  2 +-
+ arch/arm/boards/guf-vincell/env/boot/nand-ubi      |  2 +-
+ arch/arm/boards/karo-tx25/env/boot/nand-ubi        |  2 +-
+ arch/arm/boards/panda/env/boot/mmc                 |  2 +-
+ arch/arm/boards/pcm037/env/boot/nand-ubi           |  2 +-
+ arch/arm/boards/pcm038/env/boot/nand-ubi           |  2 +-
+ arch/arm/boards/pcm043/env/boot/nand-ubi           |  2 +-
+ arch/arm/boards/pcm051/env/boot/sd                 |  2 +-
+ arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi   |  2 +-
+ arch/arm/configs/archosg9_defconfig                | 11 ++--
+ arch/arm/mach-omap/include/mach/omap4-silicon.h    | 20 ++++++
+ arch/arm/mach-omap/omap4_generic.c                 | 20 ++++++
+ commands/Kconfig                                   |  5 ++
+ commands/Makefile                                  |  1 +
+ commands/boot_order.c                              | 75 ++++++++++++++++++++++
+ defaultenv-2/base/boot/net                         |  2 +-
+ defaultenv-2/base/data/boot-template               |  2 +-
+ defaultenv-2/menu/menu/boot-entries-collect        |  4 +-
+ defaultenv-2/menu/menu/boot-entries-edit           |  2 +-
+ defaultenv-2/menu/menu/boot-entries-remove         |  2 +-
+ defaultenv-2/menu/menu/boot-menu-add-entry         |  6 +-
+ defaultenv-2/menu/menu/mainmenu                    |  2 +-
+ drivers/input/gpio_keys.c                          |  2 +
+ drivers/serial/serial_omap4_usbboot.c              |  2 -
+ 41 files changed, 258 insertions(+), 81 deletions(-)
+ create mode 100644 arch/arm/boards/archosg9/env/bin/init
+ create mode 100644 arch/arm/boards/archosg9/env/menu/mainmenu
+ create mode 100644 commands/boot_order.c
+
 -- 
 1.8.2
 
