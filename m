@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
+Received: from mail-wg0-f49.google.com ([74.125.82.49])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UH05i-0007S4-3i
- for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:42 +0000
-Received: by mail-wi0-f177.google.com with SMTP id hm14so1546593wib.16
- for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:40 -0700 (PDT)
+ id 1UH05o-0007T9-5M
+ for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:49 +0000
+Received: by mail-wg0-f49.google.com with SMTP id ds1so3023174wgb.4
+ for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:43 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 16 Mar 2013 23:59:36 +0100
-Message-Id: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
+Date: Sat, 16 Mar 2013 23:59:38 +0100
+Message-Id: <1363474782-21973-3-git-send-email-vicencb@gmail.com>
+In-Reply-To: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
+References: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,68 +23,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/6] ArchosG9: add keyboard input and new reset menu entries
- (v2)
+Subject: [PATCH 2/6] ArchosG9: zero all features before setting them
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-This is the second version of this patch series, it includes all feedback received
-which is greatly appreciated.
 
-Vicente Bergas (6):
-  OMAP4: check for usb availability at device registration
-  ArchosG9: zero all features before setting them
-  gpio_keys: detect keys pressed before booting
-  OMAP4: add command to select next boot device priority
-  ArchosG9: add keyboard input and new reset menu entries
-  menu: avoid errors when building submenus
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+---
+ arch/arm/boards/archosg9/archos_features.c | 58 +++++++++---------------------
+ 1 file changed, 16 insertions(+), 42 deletions(-)
 
- arch/arm/boards/archosg9/archos_features.c         | 58 +++++------------
- arch/arm/boards/archosg9/board.c                   | 28 +++++++-
- arch/arm/boards/archosg9/env/bin/init              | 28 ++++++++
- arch/arm/boards/archosg9/env/boot/usb-android      |  2 +-
- arch/arm/boards/archosg9/env/boot/usb-linux        |  2 +-
- arch/arm/boards/archosg9/env/menu/mainmenu         | 25 ++++++++
- arch/arm/boards/at91sam9m10ihd/env/boot/android    |  2 +-
- arch/arm/boards/at91sam9m10ihd/env/boot/mmc        |  2 +-
- arch/arm/boards/at91sam9m10ihd/env/boot/net        |  2 +-
- arch/arm/boards/at91sam9m10ihd/env/boot/net-usb    |  2 +-
- arch/arm/boards/beagle/env/boot/mmc                |  2 +-
- arch/arm/boards/beagle/env/boot/nand-ubi           |  2 +-
- arch/arm/boards/beagle/env/boot/nand-ubi-dt        |  2 +-
- arch/arm/boards/beaglebone/env/boot/sd             |  2 +-
- arch/arm/boards/clep7212/env/boot/nor              |  2 +-
- .../boards/crystalfontz-cfa10036/env/boot/mmc-ext3 |  2 +-
- .../boards/efika-mx-smartbook/env/boot/hd-internal |  2 +-
- .../boards/efika-mx-smartbook/env/boot/mmc-left    |  2 +-
- arch/arm/boards/guf-vincell/env/boot/nand-ubi      |  2 +-
- arch/arm/boards/karo-tx25/env/boot/nand-ubi        |  2 +-
- arch/arm/boards/panda/env/boot/mmc                 |  2 +-
- arch/arm/boards/pcm037/env/boot/nand-ubi           |  2 +-
- arch/arm/boards/pcm038/env/boot/nand-ubi           |  2 +-
- arch/arm/boards/pcm043/env/boot/nand-ubi           |  2 +-
- arch/arm/boards/pcm051/env/boot/sd                 |  2 +-
- arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi   |  2 +-
- arch/arm/configs/archosg9_defconfig                | 11 ++--
- arch/arm/mach-omap/include/mach/omap4-silicon.h    | 20 ++++++
- arch/arm/mach-omap/omap4_generic.c                 | 20 ++++++
- commands/Kconfig                                   |  5 ++
- commands/Makefile                                  |  1 +
- commands/boot_order.c                              | 75 ++++++++++++++++++++++
- defaultenv-2/base/boot/net                         |  2 +-
- defaultenv-2/base/data/boot-template               |  2 +-
- defaultenv-2/menu/menu/boot-entries-collect        |  4 +-
- defaultenv-2/menu/menu/boot-entries-edit           |  2 +-
- defaultenv-2/menu/menu/boot-entries-remove         |  2 +-
- defaultenv-2/menu/menu/boot-menu-add-entry         |  6 +-
- defaultenv-2/menu/menu/mainmenu                    |  2 +-
- drivers/input/gpio_keys.c                          |  2 +
- drivers/serial/serial_omap4_usbboot.c              |  2 -
- 41 files changed, 258 insertions(+), 81 deletions(-)
- create mode 100644 arch/arm/boards/archosg9/env/bin/init
- create mode 100644 arch/arm/boards/archosg9/env/menu/mainmenu
- create mode 100644 commands/boot_order.c
-
+diff --git a/arch/arm/boards/archosg9/archos_features.c b/arch/arm/boards/archosg9/archos_features.c
+index 5d93403..b396734 100644
+--- a/arch/arm/boards/archosg9/archos_features.c
++++ b/arch/arm/boards/archosg9/archos_features.c
+@@ -27,9 +27,9 @@ static void setup_feature_core(void)
+ 	features->hdr.tag = FTAG_CORE;
+ 	features->hdr.size = feature_tag_size(feature_tag_core);
+ 
++	memset(&features->u.core, 0, sizeof(features->u.core));
+ 	features->u.core.magic = FEATURE_LIST_MAGIC;
+ 	features->u.core.list_revision = FEATURE_LIST_REV;
+-	features->u.core.flags = 0;
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -38,8 +38,7 @@ static void setup_feature_product_name(void)
+ 	features->hdr.tag = FTAG_PRODUCT_NAME;
+ 	features->hdr.size = feature_tag_size(feature_tag_product_name);
+ 
+-	memset(features->u.product_name.name, 0,
+-		sizeof(features->u.product_name.name));
++	memset(&features->u.product_name, 0, sizeof(features->u.product_name));
+ 	sprintf(features->u.product_name.name, "A80S");
+ 	features->u.product_name.id = 0x13A8;
+ 
+@@ -50,10 +49,8 @@ static void setup_feature_product_serial_number(void)
+ 	features->hdr.tag = FTAG_PRODUCT_SERIAL_NUMBER;
+ 	features->hdr.size = feature_tag_size(feature_tag_product_serial);
+ 
+-	features->u.product_serial.serial[0] = 0;
+-	features->u.product_serial.serial[1] = 0;
+-	features->u.product_serial.serial[2] = 0;
+-	features->u.product_serial.serial[3] = 0;
++	memset(&features->u.product_serial, 0,
++		sizeof(features->u.product_serial));
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -62,14 +59,7 @@ static void setup_feature_product_mac_address(void)
+ 	features->hdr.tag = FTAG_PRODUCT_MAC_ADDRESS;
+ 	features->hdr.size = feature_tag_size(feature_tag_product_mac_address);
+ 
+-	features->u.mac_address.addr[0] = 0;
+-	features->u.mac_address.addr[1] = 0;
+-	features->u.mac_address.addr[2] = 0;
+-	features->u.mac_address.addr[3] = 0;
+-	features->u.mac_address.addr[4] = 0;
+-	features->u.mac_address.addr[5] = 0;
+-	features->u.mac_address.reserved1 = 0;
+-	features->u.mac_address.reserved2 = 0;
++	memset(&features->u.mac_address, 0, sizeof(features->u.mac_address));
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -78,6 +68,8 @@ static void setup_feature_board_pcb_revision(void)
+ 	features->hdr.tag = FTAG_BOARD_PCB_REVISION;
+ 	features->hdr.size = feature_tag_size(feature_tag_board_revision);
+ 
++	memset(&features->u.board_revision, 0,
++		sizeof(features->u.board_revision));
+ 	features->u.board_revision.revision = 5;
+ 
+ 	features = feature_tag_next(features);
+@@ -87,23 +79,10 @@ static void setup_feature_sdram(void)
+ 	features->hdr.tag = FTAG_SDRAM;
+ 	features->hdr.size = feature_tag_size(feature_tag_sdram);
+ 
+-	memset(features->u.sdram.vendor, 0, sizeof(features->u.sdram.vendor));
+-	memset(features->u.sdram.product, 0,
+-		sizeof(features->u.sdram.product));
++	memset(&features->u.sdram, 0, sizeof(features->u.sdram));
+ 	sprintf(features->u.sdram.vendor , "elpida");
+-	sprintf(features->u.sdram.product, "EDB8064B1PB"/*"EDB4064B2PB"*/);
+-	features->u.sdram.type     = 0;
+-	features->u.sdram.revision = 0;
+-	features->u.sdram.flags    = 0;
+-	features->u.sdram.clock    = 400;
+-	features->u.sdram.param_0  = 0;
+-	features->u.sdram.param_1  = 0;
+-	features->u.sdram.param_2  = 0;
+-	features->u.sdram.param_3  = 0;
+-	features->u.sdram.param_4  = 0;
+-	features->u.sdram.param_5  = 0;
+-	features->u.sdram.param_6  = 0;
+-	features->u.sdram.param_7  = 0;
++	sprintf(features->u.sdram.product, "EDB8064B1PB");
++	features->u.sdram.clock = 400;
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -112,6 +91,7 @@ static void setup_feature_pmic(void)
+ 	features->hdr.tag = FTAG_PMIC;
+ 	features->hdr.size = feature_tag_size(feature_tag_pmic);
+ 
++	memset(&features->u.pmic, 0, sizeof(features->u.pmic));
+ 	features->u.pmic.flags = FTAG_PMIC_TPS62361;
+ 
+ 	features = feature_tag_next(features);
+@@ -121,6 +101,7 @@ static void setup_feature_serial_port(void)
+ 	features->hdr.tag = FTAG_SERIAL_PORT;
+ 	features->hdr.size = feature_tag_size(feature_tag_serial_port);
+ 
++	memset(&features->u.serial_port, 0, sizeof(features->u.serial_port));
+ 	features->u.serial_port.uart_id = 1;
+ 	features->u.serial_port.speed = 115200;
+ 
+@@ -131,9 +112,10 @@ static void setup_feature_has_gpio_volume_keys(void)
+ 	features->hdr.tag = FTAG_HAS_GPIO_VOLUME_KEYS;
+ 	features->hdr.size = feature_tag_size(feature_tag_gpio_volume_keys);
+ 
++	memset(&features->u.gpio_volume_keys, 0,
++		sizeof(features->u.gpio_volume_keys));
+ 	features->u.gpio_volume_keys.gpio_vol_up   = 0x2B;
+ 	features->u.gpio_volume_keys.gpio_vol_down = 0x2C;
+-	features->u.gpio_volume_keys.flags = 0;
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -142,18 +124,9 @@ static void setup_feature_screen(void)
+ 	features->hdr.tag = FTAG_SCREEN;
+ 	features->hdr.size = feature_tag_size(feature_tag_screen);
+ 
+-	memset(features->u.screen.vendor, 0,
+-		sizeof(features->u.screen.vendor));
++	memset(&features->u.screen, 0, sizeof(features->u.screen));
+ 	sprintf(features->u.screen.vendor, "CMI");
+-	features->u.screen.type = 0;
+-	features->u.screen.revision = 0;
+-	features->u.screen.vcom = 0;
+ 	features->u.screen.backlight = 0xC8;
+-	features->u.screen.reserved[0] = 0;
+-	features->u.screen.reserved[1] = 0;
+-	features->u.screen.reserved[2] = 0;
+-	features->u.screen.reserved[3] = 0;
+-	features->u.screen.reserved[4] = 0;
+ 
+ 	features = feature_tag_next(features);
+ }
+@@ -162,6 +135,7 @@ static void setup_feature_turbo(void)
+ 	features->hdr.tag = FTAG_TURBO;
+ 	features->hdr.size = feature_tag_size(feature_tag_turbo);
+ 
++	memset(&features->u.turbo, 0, sizeof(features->u.turbo));
+ 	features->u.turbo.flag = 1;
+ 
+ 	features = feature_tag_next(features);
 -- 
 1.8.2
 
