@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f47.google.com ([74.125.82.47])
+Received: from mail-wg0-f43.google.com ([74.125.82.43])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UH05o-0007TO-WF
- for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:51 +0000
-Received: by mail-wg0-f47.google.com with SMTP id dr13so4145003wgb.14
- for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:47 -0700 (PDT)
+ id 1UH05s-0007UY-Ck
+ for barebox@lists.infradead.org; Sat, 16 Mar 2013 23:00:55 +0000
+Received: by mail-wg0-f43.google.com with SMTP id e12so3748539wge.10
+ for <barebox@lists.infradead.org>; Sat, 16 Mar 2013 16:00:50 -0700 (PDT)
 From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 16 Mar 2013 23:59:40 +0100
-Message-Id: <1363474782-21973-5-git-send-email-vicencb@gmail.com>
+Date: Sat, 16 Mar 2013 23:59:42 +0100
+Message-Id: <1363474782-21973-7-git-send-email-vicencb@gmail.com>
 In-Reply-To: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
 References: <1363474782-21973-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,202 +23,471 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] OMAP4: add command to select next boot device priority
+Subject: [PATCH 6/6] menu: avoid errors when building submenus
 To: barebox@lists.infradead.org
 Cc: Vicente Bergas <vicencb@gmail.com>
 
-On OMAP4 SoC there is a SAR memory region (Save & Rescue) where the ROM
-code reads the device to boot from.
-This patch adds a way to set this.
+This patch is not intended to be applied because has already been rejected.
+It's here only for completeness as the only solution available nowadays for
+the problem it solves.
 
 Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- arch/arm/mach-omap/include/mach/omap4-silicon.h | 20 +++++++
- arch/arm/mach-omap/omap4_generic.c              | 20 +++++++
- commands/Kconfig                                |  5 ++
- commands/Makefile                               |  1 +
- commands/boot_order.c                           | 75 +++++++++++++++++++++++++
- 5 files changed, 121 insertions(+)
- create mode 100644 commands/boot_order.c
+ arch/arm/boards/archosg9/env/boot/sd-card-android       | 2 +-
+ arch/arm/boards/archosg9/env/boot/sd-card-linux         | 2 +-
+ arch/arm/boards/archosg9/env/boot/usb-android           | 2 +-
+ arch/arm/boards/archosg9/env/boot/usb-linux             | 2 +-
+ arch/arm/boards/archosg9/env/menu/mainmenu              | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/android         | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/mmc             | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net             | 2 +-
+ arch/arm/boards/at91sam9m10ihd/env/boot/net-usb         | 2 +-
+ arch/arm/boards/beagle/env/boot/mmc                     | 2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/beagle/env/boot/nand-ubi-dt             | 2 +-
+ arch/arm/boards/beaglebone/env/boot/sd                  | 2 +-
+ arch/arm/boards/clep7212/env/boot/nor                   | 2 +-
+ arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 | 2 +-
+ arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal | 2 +-
+ arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left    | 2 +-
+ arch/arm/boards/guf-vincell/env/boot/nand-ubi           | 2 +-
+ arch/arm/boards/karo-tx25/env/boot/nand-ubi             | 2 +-
+ arch/arm/boards/panda/env/boot/mmc                      | 2 +-
+ arch/arm/boards/pcm037/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm038/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm043/env/boot/nand-ubi                | 2 +-
+ arch/arm/boards/pcm051/env/boot/sd                      | 2 +-
+ arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi        | 2 +-
+ defaultenv-2/base/boot/net                              | 2 +-
+ defaultenv-2/base/data/boot-template                    | 2 +-
+ defaultenv-2/menu/menu/boot-entries-collect             | 4 ++--
+ defaultenv-2/menu/menu/boot-entries-edit                | 2 +-
+ defaultenv-2/menu/menu/boot-entries-remove              | 2 +-
+ defaultenv-2/menu/menu/boot-menu-add-entry              | 6 +++---
+ defaultenv-2/menu/menu/mainmenu                         | 2 +-
+ 32 files changed, 35 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index 9e82435..666e721 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -161,6 +161,25 @@
- #define OMAP44XX_PRM_RSTCTRL_RESET	0x01
+diff --git a/arch/arm/boards/archosg9/env/boot/sd-card-android b/arch/arm/boards/archosg9/env/boot/sd-card-android
+index a10a763..dc6f15e 100644
+--- a/arch/arm/boards/archosg9/env/boot/sd-card-android
++++ b/arch/arm/boards/archosg9/env/boot/sd-card-android
+@@ -1,7 +1,7 @@
+ #!/bin/sh
  
- /*
-+ * SAR (Save & Rescue) memory region
-+ */
-+#define OMAP44XX_SAR_RAM_BASE      0x4a326000
-+#define OMAP44XX_SAR_CH_ADDRESS    (OMAP44XX_SAR_RAM_BASE + 0xA00)
-+#define OMAP44XX_SAR_CH_START      (OMAP44XX_SAR_RAM_BASE + 0xA0C)
-+#define OMAP44XX_SAR_BOOT_VOID     0x00
-+#define OMAP44XX_SAR_BOOT_XIP      0x01
-+#define OMAP44XX_SAR_BOOT_XIPWAIT  0x02
-+#define OMAP44XX_SAR_BOOT_NAND     0x03
-+#define OMAP44XX_SAR_BOOT_ONENAND  0x04
-+#define OMAP44XX_SAR_BOOT_MMC1     0x05
-+#define OMAP44XX_SAR_BOOT_MMC2_1   0x06
-+#define OMAP44XX_SAR_BOOT_MMC2_2   0x07
-+#define OMAP44XX_SAR_BOOT_UART     0x43
-+#define OMAP44XX_SAR_BOOT_USB_1    0x45
-+#define OMAP44XX_SAR_BOOT_USB_ULPI 0x46
-+#define OMAP44XX_SAR_BOOT_USB_2    0x47
-+
-+/*
-  * Non-secure SRAM Addresses
-  * Non-secure RAM starts at 0x40300000 for GP devices. But we keep SRAM_BASE
-  * at 0x40304000(EMU base) so that our code works for both EMU and GP
-@@ -212,6 +231,7 @@ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
- void omap4_power_i2c_send(u32);
- unsigned int omap4_revision(void);
- noinline int omap4_scale_vcores(unsigned vsel0_pin);
-+void omap4_set_warmboot_order(u32 *device_list);
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Android from SD card"
++	boot-menu-add-entry "$0" "Android from SD card" "$2"
+ 	exit
+ fi
  
- #endif
+diff --git a/arch/arm/boards/archosg9/env/boot/sd-card-linux b/arch/arm/boards/archosg9/env/boot/sd-card-linux
+index 2ba9b9e..1ae7340 100644
+--- a/arch/arm/boards/archosg9/env/boot/sd-card-linux
++++ b/arch/arm/boards/archosg9/env/boot/sd-card-linux
+@@ -1,7 +1,7 @@
+ #!/bin/sh
  
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 2a09eb6..e062332 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -41,6 +41,26 @@ void __noreturn reset_cpu(unsigned long addr)
- 	while (1);
- }
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Linux from SD card"
++	boot-menu-add-entry "$0" "Linux from SD card" "$2"
+ 	exit
+ fi
  
-+void omap4_set_warmboot_order(u32 *device_list)
-+{
-+	const u32 CH[] = {
-+		0xCF00AA01,
-+		0x0000000C,
-+		(device_list[0] << 16) | 0x0000,
-+		(device_list[2] << 16) | device_list[1],
-+		0x0000 | device_list[3],
-+		0x00000000,
-+		0x00000000,
-+		0x00000000,
-+		0x00000000
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(CH); i++)
-+		writel(CH[i], OMAP44XX_SAR_CH_START + i*sizeof(CH[0]));
-+	writel(OMAP44XX_SAR_CH_START, OMAP44XX_SAR_CH_ADDRESS);
-+}
-+
- #define WATCHDOG_WSPR	0x48
- #define WATCHDOG_WWPS	0x34
+diff --git a/arch/arm/boards/archosg9/env/boot/usb-android b/arch/arm/boards/archosg9/env/boot/usb-android
+index a7ddabe..7c6fb1f 100644
+--- a/arch/arm/boards/archosg9/env/boot/usb-android
++++ b/arch/arm/boards/archosg9/env/boot/usb-android
+@@ -1,7 +1,7 @@
+ #!/bin/sh
  
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 0062758..524f00e 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -474,6 +474,11 @@ config CMD_POWEROFF
- 	depends on HAS_POWEROFF
- 	prompt "poweroff"
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Android over usb"
++	boot-menu-add-entry "$0" "Android over usb" "$2"
+ 	exit
+ fi
  
-+config CMD_BOOT_ORDER
-+	tristate
-+	depends on ARCH_OMAP4
-+	prompt "boot_order"
-+
- config CMD_GO
- 	tristate
- 	prompt "go"
-diff --git a/commands/Makefile b/commands/Makefile
-index 0ae6b95..428da57 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -14,6 +14,7 @@ obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
- obj-$(CONFIG_CMD_MSLEEP)	+= msleep.o
- obj-$(CONFIG_CMD_RESET)		+= reset.o
- obj-$(CONFIG_CMD_POWEROFF)	+= poweroff.o
-+obj-$(CONFIG_CMD_BOOT_ORDER)	+= boot_order.o
- obj-$(CONFIG_CMD_GO)		+= go.o
- obj-$(CONFIG_NET)		+= net.o
- obj-$(CONFIG_CMD_PARTITION)	+= partition.o
-diff --git a/commands/boot_order.c b/commands/boot_order.c
-new file mode 100644
-index 0000000..66b87bc
---- /dev/null
-+++ b/commands/boot_order.c
-@@ -0,0 +1,75 @@
-+/*
-+ * boot_order.c - configure omap warm boot
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <mach/omap4-silicon.h>
-+
-+struct bootsrc {
-+	const char *name;
-+	uint32_t sar;
-+};
-+
-+static int cmd_boot_order(int argc, char *argv[])
-+{
-+	const struct bootsrc src_list[] = {
-+		{"xip"     , OMAP44XX_SAR_BOOT_XIP     },
-+		{"xipwait" , OMAP44XX_SAR_BOOT_XIPWAIT },
-+		{"nand"    , OMAP44XX_SAR_BOOT_NAND    },
-+		{"onenand" , OMAP44XX_SAR_BOOT_ONENAND },
-+		{"mmc1"    , OMAP44XX_SAR_BOOT_MMC1    },
-+		{"mmc2_1"  , OMAP44XX_SAR_BOOT_MMC2_1  },
-+		{"mmc2_2"  , OMAP44XX_SAR_BOOT_MMC2_2  },
-+		{"uart"    , OMAP44XX_SAR_BOOT_UART    },
-+		{"usb_1"   , OMAP44XX_SAR_BOOT_USB_1   },
-+		{"usb_ulpi", OMAP44XX_SAR_BOOT_USB_ULPI},
-+		{"usb_2"   , OMAP44XX_SAR_BOOT_USB_2   },
-+	};
-+	uint32_t device_list[] = {
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+	};
-+	int i, j;
-+
-+	for (i = 0; i + 1 < argc && i < ARRAY_SIZE(device_list); i++) {
-+		for (j = 0; j < ARRAY_SIZE(src_list); j++) {
-+			if (strcmp(argv[i + 1], src_list[j].name) == 0) {
-+				device_list[i] = src_list[j].sar;
-+				break;
-+			}
-+		}
-+	}
-+	if (device_list[0] == OMAP44XX_SAR_BOOT_VOID) {
-+		printf("First boot device can't be void\n");
-+		return COMMAND_ERROR_USAGE;
-+	}
-+	omap4_set_warmboot_order(device_list);
-+	return 0;
-+}
-+
-+static const __maybe_unused char cmd_boot_order_help[] =
-+"Usage: boot_order <device 1> [<device n>]\n"
-+"Set warm boot order of up to four devices.\n"
-+"Each device can be one of:\n"
-+"xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2\n";
-+
-+BAREBOX_CMD_START(boot_order)
-+	.cmd		= cmd_boot_order,
-+	.usage		= "boot_order <device 1> [<device n>]",
-+	BAREBOX_CMD_HELP(cmd_boot_order_help)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
-+BAREBOX_CMD_END
+diff --git a/arch/arm/boards/archosg9/env/boot/usb-linux b/arch/arm/boards/archosg9/env/boot/usb-linux
+index 12ae638..fe979fb 100644
+--- a/arch/arm/boards/archosg9/env/boot/usb-linux
++++ b/arch/arm/boards/archosg9/env/boot/usb-linux
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "Linux over usb"
++	boot-menu-add-entry "$0" "Linux over usb" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/archosg9/env/menu/mainmenu b/arch/arm/boards/archosg9/env/menu/mainmenu
+index 6856261..3427ad9 100644
+--- a/arch/arm/boards/archosg9/env/menu/mainmenu
++++ b/arch/arm/boards/archosg9/env/menu/mainmenu
+@@ -12,7 +12,7 @@ while true; do
+ 
+ 	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot
+ 
+ 	menu -e -a -m boot -c "settings" -d "Settings"
+ 	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/android b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+index e440f18..e7387c5 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/android
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/android
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "android (nand)"
++	boot-menu-add-entry "$0" "android (nand)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/mmc b/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
+index 89c66ee..1ed98e3 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC slot"
++	boot-menu-add-entry "$0" "MMC slot" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/net b/arch/arm/boards/at91sam9m10ihd/env/boot/net
+index cdb2520..35f0a54 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/net
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/net
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs) (macb)"
++	boot-menu-add-entry "$0" "network (tftp, nfs) (macb)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb b/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
+index 6e341a0..c4c01c3 100644
+--- a/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
++++ b/arch/arm/boards/at91sam9m10ihd/env/boot/net-usb
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs) (usb ethernet)"
++	boot-menu-add-entry "$0" "network (tftp, nfs) (usb ethernet)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/mmc b/arch/arm/boards/beagle/env/boot/mmc
+index 58bd557..d1a5486 100644
+--- a/arch/arm/boards/beagle/env/boot/mmc
++++ b/arch/arm/boards/beagle/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext3)"
++	boot-menu-add-entry "$0" "MMC (ext3)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi b/arch/arm/boards/beagle/env/boot/nand-ubi
+index 3037fd4..f0e932b 100644
+--- a/arch/arm/boards/beagle/env/boot/nand-ubi
++++ b/arch/arm/boards/beagle/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beagle/env/boot/nand-ubi-dt b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
+index b7a1f19..e7539b8 100644
+--- a/arch/arm/boards/beagle/env/boot/nand-ubi-dt
++++ b/arch/arm/boards/beagle/env/boot/nand-ubi-dt
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/beaglebone/env/boot/sd b/arch/arm/boards/beaglebone/env/boot/sd
+index dce0605..6315e08 100644
+--- a/arch/arm/boards/beaglebone/env/boot/sd
++++ b/arch/arm/boards/beaglebone/env/boot/sd
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
++	boot-menu-add-entry "$0" "kernel & rootfs on SD card" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/clep7212/env/boot/nor b/arch/arm/boards/clep7212/env/boot/nor
+index df8c983..cca2bfa 100644
+--- a/arch/arm/boards/clep7212/env/boot/nor
++++ b/arch/arm/boards/clep7212/env/boot/nor
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "NOR Flash"
++	boot-menu-add-entry "$0" "NOR Flash" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3 b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
+index 4d830ed..b600a56 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
++++ b/arch/arm/boards/crystalfontz-cfa10036/env/boot/mmc-ext3
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext)"
++	boot-menu-add-entry "$0" "MMC (ext)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal b/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
+index ccd0f69..564f10e 100644
+--- a/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
++++ b/arch/arm/boards/efika-mx-smartbook/env/boot/hd-internal
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "internal harddisk"
++	boot-menu-add-entry "$0" "internal harddisk" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left b/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
+index 21935c6..6bba754 100644
+--- a/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
++++ b/arch/arm/boards/efika-mx-smartbook/env/boot/mmc-left
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "left MMC slot"
++	boot-menu-add-entry "$0" "left MMC slot" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/guf-vincell/env/boot/nand-ubi b/arch/arm/boards/guf-vincell/env/boot/nand-ubi
+index a3f748e..1745e58 100644
+--- a/arch/arm/boards/guf-vincell/env/boot/nand-ubi
++++ b/arch/arm/boards/guf-vincell/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/karo-tx25/env/boot/nand-ubi b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/karo-tx25/env/boot/nand-ubi
++++ b/arch/arm/boards/karo-tx25/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/panda/env/boot/mmc b/arch/arm/boards/panda/env/boot/mmc
+index 58bd557..d1a5486 100644
+--- a/arch/arm/boards/panda/env/boot/mmc
++++ b/arch/arm/boards/panda/env/boot/mmc
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "MMC (ext3)"
++	boot-menu-add-entry "$0" "MMC (ext3)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm037/env/boot/nand-ubi b/arch/arm/boards/pcm037/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm037/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm037/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm038/env/boot/nand-ubi b/arch/arm/boards/pcm038/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm038/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm038/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm043/env/boot/nand-ubi b/arch/arm/boards/pcm043/env/boot/nand-ubi
+index 67b0cb4..a6f6d7a 100644
+--- a/arch/arm/boards/pcm043/env/boot/nand-ubi
++++ b/arch/arm/boards/pcm043/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/pcm051/env/boot/sd b/arch/arm/boards/pcm051/env/boot/sd
+index f303c10..9debd73 100644
+--- a/arch/arm/boards/pcm051/env/boot/sd
++++ b/arch/arm/boards/pcm051/env/boot/sd
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
++	boot-menu-add-entry "$0" "kernel & rootfs on SD card" "$2"
+ 	exit
+ fi
+ 
+diff --git a/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi b/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
+index 1987492..ffc64f1 100644
+--- a/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
++++ b/arch/arm/boards/telit-evk-pro3/env/boot/nand-ubi
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "nand (UBI)"
++	boot-menu-add-entry "$0" "nand (UBI)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/base/boot/net b/defaultenv-2/base/boot/net
+index 90c25aa..25d2d12 100644
+--- a/defaultenv-2/base/boot/net
++++ b/defaultenv-2/base/boot/net
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "network (tftp, nfs)"
++	boot-menu-add-entry "$0" "network (tftp, nfs)" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/base/data/boot-template b/defaultenv-2/base/data/boot-template
+index 9297499..2b3e018 100644
+--- a/defaultenv-2/base/data/boot-template
++++ b/defaultenv-2/base/data/boot-template
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+ if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "<menu text here>"
++	boot-menu-add-entry "$0" "<menu text here>" "$2"
+ 	exit
+ fi
+ 
+diff --git a/defaultenv-2/menu/menu/boot-entries-collect b/defaultenv-2/menu/menu/boot-entries-collect
+index c066c93..ba82bf1 100644
+--- a/defaultenv-2/menu/menu/boot-entries-collect
++++ b/defaultenv-2/menu/menu/boot-entries-collect
+@@ -2,11 +2,11 @@
+ 
+ cd /env/boot
+ 
+-./$global.boot.default menu
++./$global.boot.default menu $1
+ 
+ for i in *; do
+ 	if [ "$i" != "$global.boot.default" ]; then
+-		./$i menu
++		./$i menu $1
+ 	fi
+ done
+ 
+diff --git a/defaultenv-2/menu/menu/boot-entries-edit b/defaultenv-2/menu/menu/boot-entries-edit
+index c4e1c3d..bc5ae56 100644
+--- a/defaultenv-2/menu/menu/boot-entries-edit
++++ b/defaultenv-2/menu/menu/boot-entries-edit
+@@ -5,7 +5,7 @@ export menu_exit=false
+ while true; do
+ 	menu -a -m boot_entries_edit -d "\e[1;36mEdit boot entries\e[0m"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot_entries_edit
+ 
+ 	menu -e -a -m boot_entries_edit -c "boot-menu-new-boot-entry" -d "Add a new entry"
+ 	menu -e -a -m boot_entries_edit -c "boot-entries-remove" -d "Remove an entry"
+diff --git a/defaultenv-2/menu/menu/boot-entries-remove b/defaultenv-2/menu/menu/boot-entries-remove
+index 566be9d..54cd360 100644
+--- a/defaultenv-2/menu/menu/boot-entries-remove
++++ b/defaultenv-2/menu/menu/boot-entries-remove
+@@ -5,7 +5,7 @@ export menu_exit=false
+ while true; do
+ 	menu -a -m boot_entries_remove -d "\e[1;36mRemove Boot entry\e[0m"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot_entries_remove
+ 
+ 	menu -e -a -m boot_entries_remove -c "menu_exit=true" -d "back"
+ 
+diff --git a/defaultenv-2/menu/menu/boot-menu-add-entry b/defaultenv-2/menu/menu/boot-menu-add-entry
+index f06c524..44820d2 100644
+--- a/defaultenv-2/menu/menu/boot-menu-add-entry
++++ b/defaultenv-2/menu/menu/boot-menu-add-entry
+@@ -1,5 +1,5 @@
+ #!/bin/sh
+ 
+-menu -e -a -m boot -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
+-menu -e -a -m boot_entries_edit -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
+-menu -e -a -m boot_entries_remove -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
++[ "$3" = boot                ] && menu -e -a -m "$3" -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
++[ "$3" = boot_entries_edit   ] && menu -e -a -m "$3" -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
++[ "$3" = boot_entries_remove ] && menu -e -a -m "$3" -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
+diff --git a/defaultenv-2/menu/menu/mainmenu b/defaultenv-2/menu/menu/mainmenu
+index f10f67a..20e2ae9 100644
+--- a/defaultenv-2/menu/menu/mainmenu
++++ b/defaultenv-2/menu/menu/mainmenu
+@@ -12,7 +12,7 @@ while true; do
+ 
+ 	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
+ 
+-	boot-entries-collect
++	boot-entries-collect boot
+ 
+ 	menu -e -a -m boot -c "settings" -d "Settings"
+ 	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
 -- 
 1.8.2
 
