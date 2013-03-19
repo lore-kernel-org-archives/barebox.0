@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from eso.teric.us ([69.164.192.171])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UHw7h-00013j-Or
- for barebox@lists.infradead.org; Tue, 19 Mar 2013 12:58:39 +0000
-Date: Tue, 19 Mar 2013 08:05:28 -0500
+ id 1UHwJt-0001ep-Kd
+ for barebox@lists.infradead.org; Tue, 19 Mar 2013 13:11:14 +0000
+Date: Tue, 19 Mar 2013 08:18:02 -0500
 From: Josh Cartwright <joshc@eso.teric.us>
-Message-ID: <20130319130528.GW16050@kryptos>
+Message-ID: <20130319131802.GX16050@kryptos>
 References: <1363684920-3034-1-git-send-email-s.trumtrar@pengutronix.de>
  <1363684920-3034-3-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
@@ -33,31 +33,63 @@ On Tue, Mar 19, 2013 at 10:21:57AM +0100, Steffen Trumtrar wrote:
 > dualcore MPSoC with an Artix-7 FPGA.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
 [..]
-> +static int zynq_init(void)
-> +{
-> +	u32 val;
+> diff --git a/arch/arm/mach-zynq/include/mach/zynq-flash-header.h b/arch/arm/mach-zynq/include/mach/zynq-flash-header.h
+> new file mode 100644
+> index 0000000..a0251cb
+> --- /dev/null
+> +++ b/arch/arm/mach-zynq/include/mach/zynq-flash-header.h
+> @@ -0,0 +1,40 @@
+> +#ifndef __MACH_FLASH_HEADER_H
+> +#define __MACH_FLASH_HEADER_H
 > +
-> +	dsb();
-> +	isb();
-> +	writel(0xDF0D, ZYNQ_SLCR_UNLOCK);
-> +	/* remap ocm high */
-> +	writel(0x0000000F, 0xf8000910);
-> +	/* mpcore.filtering_start_address */
-> +	writel(0x00000000, 0xf8f00040);
-> +	/* mpcore.filtering_end_address */
-> +	writel(0xffe00000, 0xf8f00044);
-> +	val = readl(0xf8f00000);
-> +	val |= 0x2;
-> +	writel(val, 0xf8f00000);
-> +	dmb();
+> +#include <asm-generic/sections.h>
+> +
+> +#define __flash_header_start		__section(.flash_header_start)
+> +
+> +#define __flash_header_section		__section(.flash_header_0x0)
+> +#define __ps7reg_entry_section		__section(.ps7reg_entry_0x0A0)
+> +#define __image_len_section		__section(.image_len_0x08c0)
+> +#define FLASH_HEADER_OFFSET		0x0
+> +#define IMAGE_OFFSET			0x8c0
+> +
+> +#define DEST_BASE			0x8c0
+> +#define FLASH_HEADER_BASE	(DEST_BASE + FLASH_HEADER_OFFSET)
+> +
+> +struct zynq_reg_entry {
+> +	__le32 addr;
+> +	__le32 val;
+> +};
+> +
+> +#define WIDTH_DETECTION_MAGIC	0xAA995566
+> +#define IMAGE_IDENTIFICATION	0x584C4E58	/* "XLNX" */
+> +
+> +struct zynq_flash_header {
+> +	uint32_t width_det;
+> +	uint32_t image_id;
+> +	uint32_t enc_stat;
+> +	uint32_t user;
+> +	uint32_t flash_offset;
+> +	uint32_t length;
+> +	uint32_t res0;
+> +	uint32_t start_of_exec;
+> +	uint32_t total_len;
+> +	uint32_t res1;
+> +	uint32_t checksum;
+> +	uint32_t res2;
+> +};
 
-Doh!  I should have read this before replying!  This is what I was
-looking for!
+Did you disagree with my suggestion last time around of merging the
+flash_header and ps7reg_entry sections?  At the very least, it seems
+inconsistent that the zynq_reg_entrys have type __le32, and the members
+of zynq_flash_header are uint32_t (even though they have the same
+endianness requirement).
 
-I think this will work nicely.
+I still maintain you should move the REG macro currently in the board
+flash_header.c here.
 
-    Josh
+   Josh
 
 _______________________________________________
 barebox mailing list
