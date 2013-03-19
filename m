@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo1.mail-out.ovh.net ([87.98.158.110]
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UHyWO-0007EQ-10
- for barebox@lists.infradead.org; Tue, 19 Mar 2013 15:32:17 +0000
+ id 1UHybX-0007Te-6Z
+ for barebox@lists.infradead.org; Tue, 19 Mar 2013 15:37:36 +0000
 Received: from mail415.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 85EF0FFA067
- for <barebox@lists.infradead.org>; Tue, 19 Mar 2013 16:49:15 +0100 (CET)
-Date: Tue, 19 Mar 2013 16:28:00 +0100
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 204FFFFA07B
+ for <barebox@lists.infradead.org>; Tue, 19 Mar 2013 16:44:08 +0100 (CET)
+Date: Tue, 19 Mar 2013 16:22:53 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130319152800.GN1568@game.jcrosoft.org>
+Message-ID: <20130319152253.GL1568@game.jcrosoft.org>
 References: <1363684920-3034-1-git-send-email-s.trumtrar@pengutronix.de>
- <1363684920-3034-6-git-send-email-s.trumtrar@pengutronix.de>
+ <1363684920-3034-2-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1363684920-3034-6-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1363684920-3034-2-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,500 +27,360 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 5/5] ARM: zynq: Add support for the Avnet Zedboard
+Subject: Re: [PATCH v2 1/5] serial: Add driver for Cadence UART
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:22 Tue 19 Mar     , Steffen Trumtrar wrote:
-> The Avnet ZedBoard is an evalboard with a Zynq-7020 based MPSoC.
-> There is also a Digilent ZedBoard, that is the same but only for
-> academic customers.
+On 10:21 Tue 19 Mar     , Steffen Trumtrar wrote:
+> Support for Cadence UART core.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  arch/arm/boards/avnet-zedboard/Makefile            |   1 +
->  arch/arm/boards/avnet-zedboard/board.c             |  38 ++++
->  arch/arm/boards/avnet-zedboard/config.h            |   4 +
->  .../boards/avnet-zedboard/env/init/config-board    |   7 +
->  arch/arm/boards/avnet-zedboard/flash_header.c      |  76 +++++++
->  arch/arm/boards/avnet-zedboard/lowlevel.c          | 252 +++++++++++++++++++++
->  arch/arm/configs/zedboard_defconfig                |  45 ++++
->  7 files changed, 423 insertions(+)
->  create mode 100644 arch/arm/boards/avnet-zedboard/Makefile
->  create mode 100644 arch/arm/boards/avnet-zedboard/board.c
->  create mode 100644 arch/arm/boards/avnet-zedboard/config.h
->  create mode 100644 arch/arm/boards/avnet-zedboard/env/init/config-board
->  create mode 100644 arch/arm/boards/avnet-zedboard/flash_header.c
->  create mode 100644 arch/arm/boards/avnet-zedboard/lowlevel.c
->  create mode 100644 arch/arm/configs/zedboard_defconfig
+>  drivers/serial/Kconfig          |   4 +
+>  drivers/serial/Makefile         |   1 +
+>  drivers/serial/serial_cadence.c | 307 ++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 312 insertions(+)
+>  create mode 100644 drivers/serial/serial_cadence.c
 > 
-> diff --git a/arch/arm/boards/avnet-zedboard/Makefile b/arch/arm/boards/avnet-zedboard/Makefile
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index f61d670..a51510e 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -113,4 +113,8 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+>  	help
+>  	  Enable this to get console support over the usb bus used to boot an OMAP4
+>  
+> +config DRIVER_SERIAL_CADENCE
+> +	default n
+no need it's already n
+> +	bool "Cadence UART driver"
+> +
+>  endmenu
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 893e282..963a7df 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+>  obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+>  obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+>  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+> +obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+> diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
 > new file mode 100644
-> index 0000000..5c05544
+> index 0000000..c29c391
 > --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/Makefile
-> @@ -0,0 +1 @@
-> +obj-y += board.o lowlevel.o flash_header.o
-> diff --git a/arch/arm/boards/avnet-zedboard/board.c b/arch/arm/boards/avnet-zedboard/board.c
-> new file mode 100644
-> index 0000000..4e3d5a5
-> --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/board.c
-> @@ -0,0 +1,38 @@
+> +++ b/drivers/serial/serial_cadence.c
+> @@ -0,0 +1,307 @@
 > +/*
-> + * Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> + * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
 > + *
 > + * This program is distributed in the hope that it will be useful,
 > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 > + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 > + * GNU General Public License for more details.
+> + *
 > + */
-> +
-> +#include <asm/armlinux.h>
 > +#include <common.h>
-> +#include <environment.h>
-> +#include <generated/mach-types.h>
+> +#include <driver.h>
 > +#include <init.h>
-> +#include <mach/devices.h>
-> +#include <mach/zynq7000-regs.h>
-> +#include <sizes.h>
-> +
-> +static int zedboard_mem_init(void)
-> +{
-> +	arm_add_mem_device("ram0", 0, SZ_512M);
-> +
-> +	return 0;
-> +}
-> +mem_initcall(zedboard_mem_init);
-> +
-> +static int zedboard_console_init(void)
-> +{
-> +	zynq_add_uart1();
-> +
-> +	return 0;
-> +}
-> +console_initcall(zedboard_console_init);
-> diff --git a/arch/arm/boards/avnet-zedboard/config.h b/arch/arm/boards/avnet-zedboard/config.h
-> new file mode 100644
-> index 0000000..ca15136
-> --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/config.h
-> @@ -0,0 +1,4 @@
-> +#ifndef __CONFIG_H
-> +#define __CONFIG_H
-> +
-> +#endif	/* __CONFIG_H */
-> diff --git a/arch/arm/boards/avnet-zedboard/env/init/config-board b/arch/arm/boards/avnet-zedboard/env/init/config-board
-> new file mode 100644
-> index 0000000..9957653
-> --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/env/init/config-board
-> @@ -0,0 +1,7 @@
-> +#!/bin/sh
-> +
-> +# board defaults, do not change in running system. Change /env/config
-> +# instead
-> +
-> +global.hostname=ZedBoard
-> +global.linux.bootargs.base="console=ttyPS1,115200"
-> diff --git a/arch/arm/boards/avnet-zedboard/flash_header.c b/arch/arm/boards/avnet-zedboard/flash_header.c
-> new file mode 100644
-> index 0000000..e7e2f8d
-> --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/flash_header.c
-> @@ -0,0 +1,76 @@
-> +/*
-> + * Copyright (C) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +
-> +#include <common.h>
-> +#include <asm/byteorder.h>
-> +#include <mach/zynq-flash-header.h>
-> +#include <mach/zynq7000-regs.h>
-> +#include <asm/barebox-arm-head.h>
-> +
-> +void __naked __flash_header_start go(void)
-> +{
-> +	__asm__ __volatile__ (
-> +		"b barebox_arm_reset_vector\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +		"1: b 1b\n"
-> +	);
-> +}
-> +
-> +#define REG(a, v) { .addr = cpu_to_le32(a), .val = cpu_to_le32(v), }
-> +
-> +struct zynq_reg_entry __ps7reg_entry_section reg_entry[] = {
-> +	REG(ZYNQ_SLCR_UNLOCK, 0x0000DF0D),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_CLK_621_TRUE, 0x00000001),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_APER_CLK_CTRL, 0x01FC044D),
-> +
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL, 0x00028008),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CFG, 0x000FA220),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL, 0x00028010),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL, 0x00028011),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL, 0x00028010),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL, 0x00028000),
-> +
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL, 0x0001E008),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CFG, 0x001452C0),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL, 0x0001E010),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL, 0x0001E011),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL, 0x0001E010),
-> +	REG(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL, 0x0001E000),
-> +
-> +	REG(0xf8000150, 0x00000a03),
-> +
-> +	/* stop */
-> +	REG(0xFFFFFFFF, 0x00000000),
-> +};
-> +
-> +struct zynq_flash_header __flash_header_section flash_header = {
-> +	.width_det		= WIDTH_DETECTION_MAGIC,
-> +	.image_id		= IMAGE_IDENTIFICATION,
-> +	.enc_stat		= 0x0,
-> +	.user			= 0x0,
-> +	.flash_offset		= 0x8c0,
-> +	.length			= barebox_image_size,
-> +	.res0			= 0x0,
-> +	.start_of_exec		= 0x0,
-> +	.total_len		= barebox_image_size,
-> +	.res1			= 0x1,
-> +	.checksum		= 0x0,
-> +	.res2			= 0x0,
-> +};
-> diff --git a/arch/arm/boards/avnet-zedboard/lowlevel.c b/arch/arm/boards/avnet-zedboard/lowlevel.c
-> new file mode 100644
-> index 0000000..b50886e
-> --- /dev/null
-> +++ b/arch/arm/boards/avnet-zedboard/lowlevel.c
-> @@ -0,0 +1,252 @@
-> +/*
-> + *
-> + * (c) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + */
-> +#include <common.h>
+> +#include <malloc.h>
+> +#include <notifier.h>
 > +#include <io.h>
-> +#include <asm/barebox-arm.h>
-> +#include <asm/barebox-arm-head.h>
-> +#include <mach/zynq7000-regs.h>
+> +#include <linux/err.h>
+> +#include <linux/clk.h>
 > +
-> +#define DCI_DONE	(1 << 13)
-> +#define PLL_ARM_LOCK	(1 << 0)
-> +#define PLL_DDR_LOCK	(1 << 1)
-> +#define PLL_IO_LOCK	(1 << 2)
+> +#define CADENCE_UART_CONTROL		0x00
+> +#define CADENCE_UART_MODE		0x04
+> +#define CADENCE_UART_BAUD_GEN		0x18
+> +#define CADENCE_UART_CHANNEL_STS	0x2C
+> +#define CADENCE_UART_RXTXFIFO		0x30
+> +#define CADENCE_UART_BAUD_DIV		0x34
 > +
-> +void __naked barebox_arm_reset_vector(void)
+> +#define CADENCE_CTRL_RXRES		(1 << 0)
+> +#define CADENCE_CTRL_TXRES		(1 << 1)
+> +#define CADENCE_CTRL_RXEN		(1 << 2)
+> +#define CADENCE_CTRL_RXDIS		(1 << 3)
+> +#define CADENCE_CTRL_TXEN		(1 << 4)
+> +#define CADENCE_CTRL_TXDIS		(1 << 5)
+> +#define CADENCE_CTRL_RSTTO		(1 << 6)
+> +#define CADENCE_CTRL_STTBRK		(1 << 7)
+> +#define CADENCE_CTRL_STPBRK		(1 << 8)
+> +
+> +#define CADENCE_MODE_CLK_REF		(0 << 0)
+> +#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
+> +#define CADENCE_MODE_CHRL_6		(3 << 1)
+> +#define CADENCE_MODE_CHRL_7		(2 << 1)
+> +#define CADENCE_MODE_CHRL_8		(0 << 1)
+> +#define CADENCE_MODE_PAR_EVEN		(0 << 3)
+> +#define CADENCE_MODE_PAR_ODD		(1 << 3)
+> +#define CADENCE_MODE_PAR_SPACE		(2 << 3)
+> +#define CADENCE_MODE_PAR_MARK		(3 << 3)
+> +#define CADENCE_MODE_PAR_NONE		(4 << 3)
+> +
+> +#define CADENCE_STS_REMPTY		(1 << 1)
+> +#define CADENCE_STS_RFUL		(1 << 2)
+> +#define CADENCE_STS_TEMPTY		(1 << 3)
+> +#define CADENCE_STS_TFUL		(1 << 4)
+move this to an include as we will use them for debug_ll
+> +
+> +/*
+> + * create default values for different platforms
+> + */
+> +struct cadence_serial_devtype_data {
+> +	u32 ctrl;
+> +	u32 mode;
+> +};
+> +
+> +static struct cadence_serial_devtype_data cadence_r1p08_data = {
+> +	.ctrl = CADENCE_CTRL_RXEN | CADENCE_CTRL_TXEN,
+> +	.mode = CADENCE_MODE_CLK_REF | CADENCE_MODE_CHRL_8 | CADENCE_MODE_PAR_NONE,
+> +};
+> +
+> +struct cadence_serial_priv {
+> +	struct console_device cdev;
+> +	int baudrate;
+> +	struct notifier_block notify;
+> +	void __iomem *regs;
+> +	struct clk *clk;
+> +	struct cadence_serial_devtype_data *devtype;
+> +};
+> +
+> +static int cadence_serial_reset(struct console_device *cdev)
 > +{
-> +	/* open sesame */
-> +	writel(0x0000DF0D, ZYNQ_SLCR_UNLOCK);
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
 > +
-> +	/* turn on LD9 */
-> +	writel(0x00000200, 0xF800071C);
-> +	writel(0x00000080, 0xE000A204);
-> +	writel(0x00000080, 0xE000A000);
+> +	/* Soft-Reset Tx/Rx paths */
+> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
+> +		CADENCE_UART_CONTROL);
 > +
-> +	/* ps7_clock_init_data */
-> +	writel(0x1F000200, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_CLK_CTRL);
-> +	writel(0x00F00701, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DCI_CLK_CTRL);
-> +	writel(0x00002803, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_UART_CLK_CTRL);
-> +	writel(0x00000A03, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DBG_CLK_CTRL);
-> +	writel(0x00000501, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_PCAP_CLK_CTRL);
-> +	writel(0x00000000, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_TOPSW_CLK_CTRL);
-> +	writel(0x00100A00, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_FPGA0_CLK_CTRL);
-> +	writel(0x00100700, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_FPGA1_CLK_CTRL);
-> +	writel(0x00101400, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_FPGA2_CLK_CTRL);
-> +	writel(0x00101400, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_FPGA3_CLK_CTRL);
-> +	/* 6:2:1 mode */
-> +	writel(0x00000001, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_CLK_621_TRUE);
-> +	writel(0x01FC044D, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_APER_CLK_CTRL);
-> +
-> +	/* configure the PLLs */
-> +	/* ARM PLL */
-> +	writel(0x00028008, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL);
-> +	writel(0x000FA220, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CFG);
-> +	writel(0x00028010, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL);
-> +	writel(0x00028011, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL);
-> +	writel(0x00028010, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL);
-> +
-> +	while (!(readl(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_PLL_STATUS) & PLL_ARM_LOCK))
-> +		;
-> +	writel(0x00028000, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_ARM_PLL_CTRL);
-> +
-> +	/* DDR PLL */
-> +	/* set to bypass mode */
-> +	writel(0x0001A018, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CTRL);
-> +	/* assert reset */
-> +	writel(0x0001A019, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CTRL);
-> +	/* set feedback divs */
-> +	writel(0x00020019, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CTRL);
-> +	writel(0x0012C220, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CFG);
-> +	/* set ddr2xclk and ddr3xclk: 3,2 */
-> +	writel(0x0C200003, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_CLK_CTRL);
-> +	/* deassert reset */
-> +	writel(0x00020018, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CTRL);
-> +	/* wait pll lock */
-> +	while (!(readl(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_PLL_STATUS) & PLL_DDR_LOCK))
-> +		;
-> +	/* remove bypass mode */
-> +	writel(0x00020008, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_DDR_PLL_CTRL);
-> +
-> +	/* IO PLL */
-> +	writel(0x0001E008, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL);
-> +	writel(0x001452C0, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CFG);
-> +	writel(0x0001E010, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL);
-> +	writel(0x0001E011, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL);
-> +	writel(0x0001E010, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL);
-> +
-> +	while (!(readl(ZYNQ_CLOCK_CTRL_BASE + ZYNQ_PLL_STATUS) & PLL_IO_LOCK))
-> +		;
-> +	writel(0x0001E000, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_IO_PLL_CTRL);
-> +
-> +	/*
-> +	 * INP_TYPE[1:2] = {off, vref, diff, lvcmos}
-> +	 * DCI_UPDATE[3], TERM_EN[4]
-> +	 * DCI_TYPE[5:6] = {off, drive, res, term}
-> +	 * IBUF_DISABLE_MODE[7] = {ibuf, ibuf_disable}
-> +	 * TERM_DISABLE_MODE[8] = {always, dynamic}
-> +	 * OUTPUT_EN[9:10] = {ibuf, res, res, obuf}
-> +	 * PULLUP_EN[11]
-> +	 */
-> +	writel(0x00000600, ZYNQ_DDRIOB_ADDR0);
-> +	writel(0x00000600, ZYNQ_DDRIOB_ADDR1);
-> +	writel(0x00000672, ZYNQ_DDRIOB_DATA0);
-> +	writel(0x00000672, ZYNQ_DDRIOB_DATA1);
-> +	writel(0x00000674, ZYNQ_DDRIOB_DIFF0);
-> +	writel(0x00000674, ZYNQ_DDRIOB_DIFF1);
-> +	writel(0x00000600, ZYNQ_DDRIOB_CLOCK);
-> +	/*
-> +	 * Drive_P[0:6], Drive_N[7:13]
-> +	 * Slew_P[14:18], Slew_N[19:23]
-> +	 * GTL[24:26], RTerm[27:31]
-> +	 */
-> +	writel(0x00D6861C, ZYNQ_DDRIOB_DRIVE_SLEW_ADDR);
-> +	writel(0x00F9861C, ZYNQ_DDRIOB_DRIVE_SLEW_DATA);
-> +	writel(0x00F9861C, ZYNQ_DDRIOB_DRIVE_SLEW_DIFF);
-> +	writel(0x00D6861C, ZYNQ_DDRIOB_DRIVE_SLEW_CLOCK);
-> +	/*
-> +	 * VREF_INT_EN[0]
-> +	 * VREF_SEL[1:4] = {0001=0.6V, 0100=0.75V, 1000=0.9V}
-> +	 * VREF_EXT_EN[5:6] = {dis/dis, dis/en, en/dis, en/en}
-> +	 * RES[7:8], REFIO_EN[9]
-> +	 */
-> +	/* FIXME: Xilinx sets this to internal, but Zedboard should support
-> +	   external VRef, too */
-> +	writel(0x00000E09, ZYNQ_DDRIOB_DDR_CTRL);
-> +	/*
-> +	 * RESET[0], ENABLE[1]
-> +	 * NREF_OPT1[6:7], NREF_OPT2[8:10], NREF_OPT4[11:13]
-> +	 * PREF_OPT1[14:15], PREF_OPT2[17:19], UPDATE_CONTROL[20]
-> +	 */
-> +	writel(0x00000021, ZYNQ_DDRIOB_DCI_CTRL);
-> +	writel(0x00000020, ZYNQ_DDRIOB_DCI_CTRL);
-> +	writel(0x00100823, ZYNQ_DDRIOB_DCI_CTRL);
-> +
-> +	while (!(readl(ZYNQ_DDRIOB_DCI_STATUS) & DCI_DONE))
+> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
+> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
 > +		;
 > +
-> +	writel(0x0E00E07F, 0xF8007000);
-> +
-> +	/* ps7_ddr_init_data */
-> +	writel(0x00000080, 0XF8006000);
-> +	writel(0x00081081, 0XF8006004);
-> +	writel(0x03C0780F, 0XF8006008);
-> +	writel(0x02001001, 0XF800600C);
-> +	writel(0x00014001, 0XF8006010);
-> +	writel(0x0004159B, 0XF8006014);
-> +	writel(0x452460D2, 0XF8006018);
-> +	writel(0x720238E5, 0XF800601C);
-> +	writel(0x272872D0, 0XF8006020);
-> +	writel(0x0000003C, 0XF8006024);
-> +	writel(0x00002007, 0XF8006028);
-> +	writel(0x00000008, 0XF800602C);
-> +	writel(0x00040930, 0XF8006030);
-> +	writel(0x00010694, 0XF8006034);
-> +	writel(0x00000000, 0XF8006038);
-> +	writel(0x00000777, 0XF800603C);
-> +	writel(0xFFF00000, 0XF8006040);
-> +	writel(0x0FF66666, 0XF8006044);
-> +	writel(0x0003C248, 0XF8006048);
-> +	writel(0x77010800, 0XF8006050);
-> +	writel(0x00000101, 0XF8006058);
-> +	writel(0x00005003, 0XF800605C);
-> +	writel(0x0000003E, 0XF8006060);
-> +	writel(0x00020000, 0XF8006064);
-> +	writel(0x00284141, 0XF8006068);
-> +	writel(0x00001610, 0XF800606C);
-> +	writel(0x00008000, 0XF80060A0);
-> +	writel(0x10200802, 0XF80060A4);
-> +	writel(0x0690CB73, 0XF80060A8);
-> +	writel(0x000001FE, 0XF80060AC);
-> +	writel(0x1CFFFFFF, 0XF80060B0);
-> +	writel(0x00000200, 0XF80060B4);
-> +	writel(0x00200066, 0XF80060B8);
-> +	writel(0x00000000, 0XF80060BC);
-> +	writel(0x00000000, 0XF80060C4);
-> +	writel(0x00000000, 0XF80060C8);
-> +	writel(0x00000000, 0XF80060DC);
-> +	writel(0x00000000, 0XF80060F0);
-> +	writel(0x00000008, 0XF80060F4);
-> +	writel(0x00000000, 0XF8006114);
-> +	writel(0x40000001, 0XF8006118);
-> +	writel(0x40000001, 0XF800611C);
-> +	writel(0x40000001, 0XF8006120);
-> +	writel(0x40000001, 0XF8006124);
-> +	writel(0x00033C03, 0XF800612C);
-> +	writel(0x00034003, 0XF8006130);
-> +	writel(0x0002F400, 0XF8006134);
-> +	writel(0x00030400, 0XF8006138);
-> +	writel(0x00000035, 0XF8006140);
-> +	writel(0x00000035, 0XF8006144);
-> +	writel(0x00000035, 0XF8006148);
-> +	writel(0x00000035, 0XF800614C);
-> +	writel(0x00000083, 0XF8006154);
-> +	writel(0x00000083, 0XF8006158);
-> +	writel(0x0000007F, 0XF800615C);
-> +	writel(0x00000078, 0XF8006160);
-> +	writel(0x00000124, 0XF8006168);
-> +	writel(0x00000125, 0XF800616C);
-> +	writel(0x00000112, 0XF8006170);
-> +	writel(0x00000116, 0XF8006174);
-> +	writel(0x000000C3, 0XF800617C);
-> +	writel(0x000000C3, 0XF8006180);
-> +	writel(0x000000BF, 0XF8006184);
-> +	writel(0x000000B8, 0XF8006188);
-> +	writel(0x10040080, 0XF8006190);
-> +	writel(0x0001FC82, 0XF8006194);
-> +	writel(0x00000000, 0XF8006204);
-> +	writel(0x000803FF, 0XF8006208);
-> +	writel(0x000803FF, 0XF800620C);
-> +	writel(0x000803FF, 0XF8006210);
-> +	writel(0x000803FF, 0XF8006214);
-> +	writel(0x000003FF, 0XF8006218);
-> +	writel(0x000003FF, 0XF800621C);
-> +	writel(0x000003FF, 0XF8006220);
-> +	writel(0x000003FF, 0XF8006224);
-> +	writel(0x00000000, 0XF80062A8);
-> +	writel(0x00000000, 0XF80062AC);
-> +	writel(0x00005125, 0XF80062B0);
-> +	writel(0x000012A8, 0XF80062B4);
-> +	writel(0x00000081, 0XF8006000);
-> +
-> +	/* poor mans pinctrl */
-> +	writel(0x000002E0, ZYNQ_MIO_BASE + 0xC0);
-> +	writel(0x000002E1, ZYNQ_MIO_BASE + 0xC4);
-> +	/* UART1 pinmux */
-> +	writel(0x000002E1, ZYNQ_MIO_BASE + 0xC8);
-> +	writel(0x000002E0, ZYNQ_MIO_BASE + 0xCC);
-> +
-> +	/* poor mans clkctrl */
-> +	writel(0x00001403, ZYNQ_CLOCK_CTRL_BASE + ZYNQ_UART_CLK_CTRL);
-> +
-> +	writel(0x00000001, 0xf8000138);
-> +	writel(0x00100801, 0xf8000140);
-> +	writel(0x00000302, 0xf8000740);
-> +	writel(0x00000302, 0xf8000744);
-> +	writel(0x00000302, 0xf8000748);
-> +	writel(0x00000302, 0xf800074C);
-> +	writel(0x00000302, 0xf8000750);
-> +	writel(0x00000302, 0xf8000754);
-> +
-> +	writel(0x00000001, 0xf8000B00);
-> +
-> +	/* lock up. secure, secure */
-> +	writel(0x0000767B, ZYNQ_SLCR_LOCK);
-
-why so many ocde htat early
-> +
-> +	arm_cpu_lowlevel_init();
-> +	barebox_arm_entry(0, SZ_512M, 0);
+> +	return 0;
 > +}
-> diff --git a/arch/arm/configs/zedboard_defconfig b/arch/arm/configs/zedboard_defconfig
-> new file mode 100644
-> index 0000000..978689f
-> --- /dev/null
-> +++ b/arch/arm/configs/zedboard_defconfig
-> @@ -0,0 +1,45 @@
-> +CONFIG_ARCH_ZYNQ=y
-> +CONFIG_AEABI=y
-> +CONFIG_CMD_ARM_MMUINFO=y
-> +CONFIG_ARM_UNWIND=y
-> +CONFIG_MMU=y
-> +CONFIG_STACK_SIZE=0xf000
-> +CONFIG_MALLOC_SIZE=0x8000000
-> +CONFIG_MALLOC_TLSF=y
-> +CONFIG_KALLSYMS=y
-> +CONFIG_HUSH_FANCY_PROMPT=y
-> +CONFIG_CMDLINE_EDITING=y
-> +CONFIG_AUTO_COMPLETE=y
-> +CONFIG_MENU=y
-> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-> +CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/avnet-zedboard/env"
-> +CONFIG_DEBUG_INFO=y
-> +CONFIG_DEBUG_LL=y
-> +CONFIG_CMD_EDIT=y
-> +CONFIG_CMD_SLEEP=y
-> +CONFIG_CMD_SAVEENV=y
-> +CONFIG_CMD_EXPORT=y
-> +CONFIG_CMD_PRINTENV=y
-> +CONFIG_CMD_READLINE=y
-> +CONFIG_CMD_MENU=y
-> +CONFIG_CMD_MENU_MANAGEMENT=y
-> +CONFIG_CMD_TIME=y
-> +CONFIG_CMD_DIRNAME=y
-> +CONFIG_CMD_LN=y
-> +CONFIG_CMD_READLINK=y
-> +CONFIG_CMD_MEMINFO=y
-> +CONFIG_CMD_BOOTM_VERBOSE=y
-> +CONFIG_CMD_BOOTM_OFTREE=y
-> +CONFIG_CMD_RESET=y
-> +CONFIG_CMD_OFTREE=y
-> +CONFIG_CMD_OFTREE_PROBE=y
-> +CONFIG_CMD_TIMEOUT=y
-> +CONFIG_CMD_PARTITION=y
-> +# CONFIG_CMD_HELP is not set
-> +CONFIG_CMD_CLK=y
-> +CONFIG_NET=y
-> +CONFIG_NET_DHCP=y
-> +# CONFIG_SPI is not set
-> +CONFIG_FS_TFTP=y
-> +CONFIG_DIGEST=y
-> +CONFIG_MD5=y
+> +
+> +static int cadence_serial_setbaudrate(struct console_device *cdev, int baudrate)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +	unsigned int gen, div;
+> +	int calc_rate;
+> +	unsigned long clk;
+> +	int error;
+> +	int val;
+> +
+> +	clk = clk_get_rate(priv->clk);
+> +	priv->baudrate = baudrate;
+> +
+> +	/* disable transmitter and receiver */
+> +	val = readl(priv->regs + CADENCE_UART_CONTROL);
+> +	val &= ~CADENCE_CTRL_TXEN & ~CADENCE_CTRL_RXEN;
+> +	writel(val, priv->regs + CADENCE_UART_CONTROL);
+> +
+> +	/*
+> +	 *	      clk
+> +	 * rate = -----------
+> +	 *	  gen*(div+1)
+> +	 */
+> +
+> +	for (div = 4; div < 256; div++) {
+> +		gen = clk / (baudrate * (div + 1));
+> +
+> +		if (gen < 1 || gen > 65535)
+> +			continue;
+> +
+> +		calc_rate = clk / (gen * (div + 1));
+> +		error = baudrate - calc_rate;
+> +		if (error < 0)
+> +			error *= -1;
+> +		if (((error * 100) / baudrate) < 3)
+> +			break;
+> +	}
+> +
+> +	writel(gen, priv->regs + CADENCE_UART_BAUD_GEN);
+> +	writel(div, priv->regs + CADENCE_UART_BAUD_DIV);
+> +
+> +	/* Soft-Reset Tx/Rx paths */
+> +	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
+> +		CADENCE_UART_CONTROL);
+> +
+> +	while (readl(priv->regs + CADENCE_UART_CONTROL) &
+> +		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
+> +		;
+> +
+> +	/* Enable UART */
+> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
+> +
+> +	return 0;
+> +}
+> +
+> +static int cadence_serial_init_port(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	cadence_serial_reset(cdev);
+> +
+> +	/* Enable UART */
+> +	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
+> +	writel(priv->devtype->mode, priv->regs + CADENCE_UART_MODE);
+> +
+> +	return 0;
+> +}
+> +
+> +static void cadence_serial_putc(struct console_device *cdev, char c)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		CADENCE_STS_TFUL) != 0)
+> +		;
+> +
+> +	writel(c, priv->regs + CADENCE_UART_RXTXFIFO);
+> +}
+> +
+> +static int cadence_serial_tstc(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	return ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		 CADENCE_STS_REMPTY) == 0);
+> +}
+> +
+> +static int cadence_serial_getc(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while (!cadence_serial_tstc(cdev))
+> +		;
+> +
+> +	return readl(priv->regs + CADENCE_UART_RXTXFIFO);
+> +}
+> +
+> +static void cadence_serial_flush(struct console_device *cdev)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(cdev,
+> +					struct cadence_serial_priv, cdev);
+> +
+> +	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
+> +		CADENCE_STS_TEMPTY) != 0)
+> +		;
+> +}
+> +
+> +static int cadence_clocksource_clock_change(struct notifier_block *nb,
+> +			unsigned long event, void *data)
+> +{
+> +	struct cadence_serial_priv *priv = container_of(nb,
+> +					struct cadence_serial_priv, notify);
+> +
+> +	cadence_serial_setbaudrate(&priv->cdev, priv->baudrate);
+> +
+> +	return 0;
+> +}
+> +
+> +static int cadence_serial_probe(struct device_d *dev)
+> +{
+> +	struct console_device *cdev;
+> +	struct cadence_serial_priv *priv;
+> +	struct cadence_serial_devtype_data *devtype;
+> +	int ret;
+> +
+> +	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
+> +	if (ret)
+> +		return ret;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +	priv->devtype = devtype;
+> +	cdev = &priv->cdev;
+> +	dev->priv = priv;
+> +
+> +	priv->clk = clk_get(dev, NULL);
+> +	if (IS_ERR(priv->clk)) {
+> +		ret = -ENODEV;
+> +		goto err_free;
+> +	}
+> +
+> +	if (devtype->mode & CADENCE_MODE_CLK_REF_DIV)
+> +		clk_set_rate(priv->clk, clk_get_rate(priv->clk) / 8);
+> +
+> +	priv->regs = dev_request_mem_region(dev, 0);
+> +	if (!priv->regs) {
+> +		ret = -EBUSY;
+> +		goto err_free;
+> +	}
+> +
+> +	cdev->dev = dev;
+> +	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+> +	cdev->tstc = cadence_serial_tstc;
+> +	cdev->putc = cadence_serial_putc;
+> +	cdev->getc = cadence_serial_getc;
+> +	cdev->flush = cadence_serial_flush;
+> +	cdev->setbrg = cadence_serial_setbaudrate;
+> +
+> +	cadence_serial_init_port(cdev);
+> +
+> +	console_register(cdev);
+> +	priv->notify.notifier_call = cadence_clocksource_clock_change;
+> +	clock_register_client(&priv->notify);
+> +
+> +	return 0;
+> +
+> +err_free:
+> +	free(priv);
+> +	return ret;
+> +}
+> +
+> +static void cadence_serial_remove(struct device_d *dev)
+> +{
+> +	struct cadence_serial_priv *priv = dev->priv;
+> +
+> +	console_unregister(&priv->cdev);
+> +	free(priv);
+> +}
+> +
+> +static __maybe_unused struct of_device_id cadence_serial_dt_ids[] = {
+> +	{
+> +		.compatible = "xlnx,xuartps",
+> +		.data = (unsigned long)&cadence_r1p08_data,
+> +	}, {
+> +		/* sentinel */
+> +	}
+> +};
+> +
+> +static struct platform_device_id cadence_serial_ids[] = {
+> +	{
+> +		.name = "cadence-uart",
+> +		.driver_data = (unsigned long)&cadence_r1p08_data,
+> +	}, {
+> +		/* sentinel */
+> +	},
+> +};
+> +
+> +static struct driver_d cadence_serial_driver = {
+> +	.name   = "cadence_serial",
+> +	.probe  = cadence_serial_probe,
+> +	.remove = cadence_serial_remove,
+don't do so
+otherwise no uncompress in the kernel
+> +	.of_compatible = DRV_OF_COMPAT(cadence_serial_dt_ids),
+> +	.id_table = cadence_serial_ids,
+> +};
+> +
+> +static int cadence_serial_init(void)
+> +{
+> +	return platform_driver_register(&cadence_serial_driver);
+> +}
+> +console_initcall(cadence_serial_init);
 > -- 
 > 1.8.2.rc2
 > 
