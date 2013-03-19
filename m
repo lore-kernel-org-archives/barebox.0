@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UHtuX-0004Zk-BY
- for barebox@lists.infradead.org; Tue, 19 Mar 2013 10:36:54 +0000
-Date: Tue, 19 Mar 2013 11:36:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130319103649.GO1906@pengutronix.de>
-References: <1363337641-17685-1-git-send-email-s.hauer@pengutronix.de>
- <1363417134.599382752@f216.mail.ru>
+Received: from eso.teric.us ([69.164.192.171])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UHw1t-0000sf-Nq
+ for barebox@lists.infradead.org; Tue, 19 Mar 2013 12:52:38 +0000
+Date: Tue, 19 Mar 2013 07:59:27 -0500
+From: Josh Cartwright <joshc@eso.teric.us>
+Message-ID: <20130319125927.GV16050@kryptos>
+References: <1363684920-3034-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1363417134.599382752@f216.mail.ru>
+In-Reply-To: <1363684920-3034-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +22,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clk: Add is_enabled callback
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH v2 0/5] ARM: add support for Zynq
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Mar 16, 2013 at 10:58:54AM +0400, Alexander Shiyan wrote:
-> > This allows us to better detect whether a clk is enabled or not.
-> > 
-> > - If we can ask a clk, ask it. If it's enabled, go on and ask parents
-> > - If we can't ask it, but it can be enabled, depend on the enable_count.
-> >   if it's positive, go on and ask parents
-> > - If we can't ask it and it cannot be enabled, assume it is enabled
-> >   and ask parents.
-> > 
-> > This makes the CLK_ALWAYS_ENABLED unnecessary, since the fixed clk now
-> > always returns 1 in its is_enabled callback.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/clk/clk-fixed.c |  2 +-
-> >  drivers/clk/clk-gate.c  | 14 ++++++++++++
-> >  drivers/clk/clk.c       | 61 +++++++++++++++++++++++++++++++++++++------------
-> >  include/linux/clk.h     |  4 ++--
-> >  4 files changed, 63 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/drivers/clk/clk-fixed.c b/drivers/clk/clk-fixed.c
-> > +
-> > +	if (val & (1 << g->shift))
-> > +		return 1;
-> > +	else
-> > +		return 0;
-> > +}
+On Tue, Mar 19, 2013 at 10:21:55AM +0100, Steffen Trumtrar wrote:
+> Hi!
 > 
-> Make it simper, like:
-> return !!(readl(g->reg) & (1 << g->shift));
+> Still nothing fancy. Boots a little faster from SD and has a console.
+> For ethernet the macb-driver works fine,
+
+I've also found the macb driver works, but it does require a change to
+prevent byteswapping during DMA, have you run into this on the ZedBoard?
+(patch below).
+
+Also, have you thought about how you'll handle the OCM mapping?  For my
+testing, I'm using a PBL image (which contains the lowlevel init), but I
+still need some hook into the decompressed image to remove the OCM
+mapping from the lower address space.  This can't be done during the
+execution of the PBL image, since it's running from OCM.
+
+As far as I could tell, there was no good way to hook in early to the
+decompressed image.
+
+I ran into this trying to boot the 14.4 release uImage, since it has a
+load address of 0x8000, and spans the 'hole' at 0x30000 configured out
+of BootROM to be 'Reserved' (writes to here trigger a Data Abort).
+
+> but needs to be "freed" from its at91 heritage (meaning: the struct
+> at91_ether_platform_data should be renamed first and defined someplace
+> else than a board.h)
+
+I'm assuming you've done this, but if not, I've made this change in my
+tree.  For what it's worth, I went with 'struct macb_platform_data' and
+moved it into include/platform_data/macb.h.
+
+>
+> Changelog:
+> 	- addressed all comments by Sascha and Josh
+> 	  (some uart stuff, defines, endianess, ...)
+> 	- squashed a little
 > 
+> Regards,
+> Steffen
 
-Hm, do you find this simpler to read? The compiler will most likely
-produce the same result.
+-- 8< --
+Subject: [PATCH] macb: disable byte-order translation through DMA
 
-> >  	unsigned int	div;
-> > @@ -202,6 +200,8 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
-> >  struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
-> >  		u8 shift);
-> >  
-> > +int clk_is_enabled_always(struct clk *clk);
-> 
-> Used only in clk-fixed.c, is it really need to be declared global?
+Packet data already exists in memory in network byte-order.  Prevent the
+GEM from performing endianness translation through DMA.
 
-No, you're right. Will make this a local function in clk-fixed.c
+Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
+---
+ drivers/net/macb.c | 1 +
+ drivers/net/macb.h | 2 ++
+ 2 files changed, 3 insertions(+)
 
-Sascha
-
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 14a0689..25d1b9f 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -307,6 +307,7 @@ static void macb_configure_dma(struct macb_device *bp)
+ 		dmacfg |= GEM_BF(FBLDO, 16);
+ 		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
+ 		dmacfg |= GEM_BIT(DDRP);
++		dmacfg &= ~GEM_BIT(ENDIAN);
+ 		gem_writel(bp, DMACFG, dmacfg);
+ 	}
+ }
+diff --git a/drivers/net/macb.h b/drivers/net/macb.h
+index cadd561..fc4d1a9 100644
+--- a/drivers/net/macb.h
++++ b/drivers/net/macb.h
+@@ -168,6 +168,8 @@
+ /* Bitfields in DMACFG. */
+ #define GEM_FBLDO_OFFSET			0
+ #define GEM_FBLDO_SIZE				5
++#define GEM_ENDIAN_OFFSET			7
++#define GEM_ENDIAN_SIZE				1
+ #define GEM_RXBMS_OFFSET			8
+ #define GEM_RXBMS_SIZE				2
+ #define GEM_TXPBMS_OFFSET			10
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.5
+
 
 _______________________________________________
 barebox mailing list
