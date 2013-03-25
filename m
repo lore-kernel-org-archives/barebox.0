@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK73S-0008DU-7D
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 13:03:15 +0000
+ id 1UK73h-0008H5-9C
+ for barebox@lists.infradead.org; Mon, 25 Mar 2013 13:03:35 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 25 Mar 2013 14:02:45 +0100
-Message-Id: <1364216570-18315-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Mon, 25 Mar 2013 14:02:49 +0100
+Message-Id: <1364216570-18315-5-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1364216570-18315-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1364216570-18315-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,77 +21,114 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 0/5] ARM: add support for Zynq
+Subject: [PATCH v2 4/5] ARM: zynq: add zynq fsbl checksum script
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Hi!
+The bootrom only reads an image if the correct checksum is present in the
+header. The calculation is pretty simple:
+sum over all words from 0x20 to 0x44
+Two of this words are the image length. That is why the checksum can not be
+calculated until barebox_image_size is known.
+The easiest solution is a program that has to be run after make.
 
-Next shot at Zynq support.
-I addressed all/most comments from Jean-Christophe and Josh
-(changelogs are in the respective patches).
-The lowlevel stuff is still suboptimal with a bunch of writels.
-Reason: no complete clk- and no pinctrl-support yet. This will be added
-next.
-
-Regards,
-Steffen
-
-Steffen Trumtrar (5):
-  serial: Add driver for Cadence UART
-  ARM: zynq: Add new architecture zynq
-  ARM: zynq: add clk support for zynq7000
-  ARM: zynq: add zynq fsbl checksum script
-  ARM: zynq: Add support for the Avnet Zedboard
-
- arch/arm/Kconfig                                   |   5 +
- arch/arm/Makefile                                  |   2 +
- arch/arm/boards/avnet-zedboard/Makefile            |   3 +
- arch/arm/boards/avnet-zedboard/board.c             |  38 ++
- arch/arm/boards/avnet-zedboard/config.h            |   4 +
- .../boards/avnet-zedboard/env/init/config-board    |   7 +
- arch/arm/boards/avnet-zedboard/flash_header.c      |  62 +++
- arch/arm/boards/avnet-zedboard/lowlevel.c          | 252 +++++++++++++
- arch/arm/configs/zedboard_defconfig                |  49 +++
- arch/arm/mach-zynq/Kconfig                         |  38 ++
- arch/arm/mach-zynq/Makefile                        |   1 +
- arch/arm/mach-zynq/clk-zynq7000.c                  | 417 +++++++++++++++++++++
- arch/arm/mach-zynq/devices.c                       |   8 +
- arch/arm/mach-zynq/include/mach/barebox.lds.h      |   8 +
- arch/arm/mach-zynq/include/mach/clkdev.h           |   6 +
- arch/arm/mach-zynq/include/mach/debug_ll.h         |  37 ++
- arch/arm/mach-zynq/include/mach/devices.h          |  13 +
- .../arm/mach-zynq/include/mach/zynq-flash-header.h |  38 ++
- arch/arm/mach-zynq/include/mach/zynq7000-regs.h    | 132 +++++++
- arch/arm/mach-zynq/zynq.c                          |  56 +++
- drivers/serial/Kconfig                             |   5 +
- drivers/serial/Makefile                            |   1 +
- drivers/serial/serial_cadence.c                    | 307 +++++++++++++++
- include/asm-generic/barebox.lds.h                  |   3 +-
- scripts/Makefile                                   |   1 +
- scripts/zynq_checksum.c                            |  72 ++++
- 26 files changed, 1564 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/avnet-zedboard/Makefile
- create mode 100644 arch/arm/boards/avnet-zedboard/board.c
- create mode 100644 arch/arm/boards/avnet-zedboard/config.h
- create mode 100644 arch/arm/boards/avnet-zedboard/env/init/config-board
- create mode 100644 arch/arm/boards/avnet-zedboard/flash_header.c
- create mode 100644 arch/arm/boards/avnet-zedboard/lowlevel.c
- create mode 100644 arch/arm/configs/zedboard_defconfig
- create mode 100644 arch/arm/mach-zynq/Kconfig
- create mode 100644 arch/arm/mach-zynq/Makefile
- create mode 100644 arch/arm/mach-zynq/clk-zynq7000.c
- create mode 100644 arch/arm/mach-zynq/devices.c
- create mode 100644 arch/arm/mach-zynq/include/mach/barebox.lds.h
- create mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
- create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-zynq/include/mach/devices.h
- create mode 100644 arch/arm/mach-zynq/include/mach/zynq-flash-header.h
- create mode 100644 arch/arm/mach-zynq/include/mach/zynq7000-regs.h
- create mode 100644 arch/arm/mach-zynq/zynq.c
- create mode 100644 drivers/serial/serial_cadence.c
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ scripts/Makefile        |  1 +
+ scripts/zynq_checksum.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
  create mode 100644 scripts/zynq_checksum.c
 
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 08b325c..41c892e 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -12,6 +12,7 @@ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+ hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
++hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_checksum
+ 
+ HOSTLOADLIBES_omap4_usbboot = -lpthread
+ omap4_usbboot-objs               := usb_linux.o omap4_usbboot.o
+diff --git a/scripts/zynq_checksum.c b/scripts/zynq_checksum.c
+new file mode 100644
+index 0000000..f32db61
+--- /dev/null
++++ b/scripts/zynq_checksum.c
+@@ -0,0 +1,72 @@
++#include <endian.h>
++#include <errno.h>
++#include <malloc.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/stat.h>
++
++static void usage(char *name)
++{
++	printf("Usage: %s barebox.bin <outfile>\n", name);
++}
++
++int main(int argc, char *argv[])
++{
++	FILE *ifile, *ofile;
++	unsigned int *buf;
++	const char *infile;
++	const char *outfile;
++	struct stat st;
++	unsigned int i;
++	unsigned long sum = 0;
++
++	if (argc != 3) {
++		usage(argv[0]);
++		exit(1);
++	}
++
++	infile = argv[1];
++	outfile = argv[2];
++
++	if (stat(infile, &st) == -1) {
++		perror("stat");
++		exit(EXIT_FAILURE);
++	}
++
++	buf = malloc(sizeof(*buf) * st.st_size);
++	if (!buf) {
++		fprintf(stderr, "Unable to allocate buffer\n");
++		return -1;
++	}
++	ifile = fopen(infile, "rb");
++	if (!ifile) {
++		fprintf(stderr, "Cannot open %s for reading\n",
++			infile);
++		free(buf);
++		exit(EXIT_FAILURE);
++	}
++	ofile = fopen(outfile, "wb");
++	if (!ofile) {
++		fprintf(stderr, "Cannot open %s for writing\n",
++			outfile);
++		fclose(ifile);
++		free(buf);
++		exit(EXIT_FAILURE);
++	}
++
++	fread(buf, 4, st.st_size, ifile);
++
++	for (i = 0x8; i < 0x12; i++)
++		sum += htole32(buf[i]);
++
++	sum = ~sum;
++	buf[i] = sum;
++
++	fwrite(buf, st.st_size / 4, 4, ofile);
++
++	fclose(ofile);
++	fclose(ifile);
++	free(buf);
++
++	return 0;
++}
 -- 
 1.8.2.rc2
 
