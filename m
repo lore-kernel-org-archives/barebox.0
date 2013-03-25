@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK8R0-0001Fw-OT
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 14:31:41 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Mar 2013 15:31:30 +0100
-Message-Id: <1364221890-5671-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UK983-0003ud-71
+ for barebox@lists.infradead.org; Mon, 25 Mar 2013 15:16:08 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 814D1BF0F9
+ for <barebox@lists.infradead.org>; Mon, 25 Mar 2013 16:16:03 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Mon, 25 Mar 2013 16:15:57 +0100
+Message-Id: <1364224557-1840-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,199 +22,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] clk: remove unused __clk_[get|put]
+Subject: [PATCH] ubiformat: get buffer from malloc
 To: barebox@lists.infradead.org
 
-This is some unused code resulting from copying stuff from the
-kernel. Remove it.
+There was a erase block sized (here 131072) char buf array on the stack.
+Changed this to get the space from malloc preventing stack overflows.
+Also fix a wrong return without clean up.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- arch/arm/include/asm/clkdev.h                 | 17 -----------------
- arch/arm/mach-at91/include/mach/clkdev.h      |  7 -------
- arch/arm/mach-bcm2835/include/mach/clkdev.h   |  7 -------
- arch/arm/mach-clps711x/include/mach/clkdev.h  |  7 -------
- arch/arm/mach-highbank/include/mach/clkdev.h  |  7 -------
- arch/arm/mach-imx/include/mach/clkdev.h       |  7 -------
- arch/arm/mach-nomadik/include/mach/clkdev.h   |  7 -------
- arch/arm/mach-versatile/include/mach/clkdev.h |  7 -------
- arch/arm/mach-vexpress/include/mach/clkdev.h  |  7 -------
- drivers/clk/clkdev.c                          |  3 ---
- include/linux/clkdev.h                        |  2 --
- 11 files changed, 78 deletions(-)
- delete mode 100644 arch/arm/include/asm/clkdev.h
- delete mode 100644 arch/arm/mach-at91/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-bcm2835/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-clps711x/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-highbank/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-imx/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-nomadik/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-versatile/include/mach/clkdev.h
- delete mode 100644 arch/arm/mach-vexpress/include/mach/clkdev.h
+ commands/ubiformat.c |   22 +++++++++++++++-------
+ 1 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/include/asm/clkdev.h b/arch/arm/include/asm/clkdev.h
-deleted file mode 100644
-index ad33945..0000000
---- a/arch/arm/include/asm/clkdev.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/*
-- *  arch/arm/include/asm/clkdev.h
-- *
-- *  Copyright (C) 2008 Russell King.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * Helper for the clk API to assist looking up a struct clk.
-- */
--#ifndef __ASM_CLKDEV_H
--#define __ASM_CLKDEV_H
--
--#include <mach/clkdev.h>
--
--#endif
-diff --git a/arch/arm/mach-at91/include/mach/clkdev.h b/arch/arm/mach-at91/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-at91/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-bcm2835/include/mach/clkdev.h b/arch/arm/mach-bcm2835/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-bcm2835/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-clps711x/include/mach/clkdev.h b/arch/arm/mach-clps711x/include/mach/clkdev.h
-deleted file mode 100644
-index 9278209..0000000
---- a/arch/arm/mach-clps711x/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __MACH_CLKDEV_H
--#define __MACH_CLKDEV_H
--
--#define __clk_get(clk)	({ 1; })
--#define __clk_put(clk)	do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-highbank/include/mach/clkdev.h b/arch/arm/mach-highbank/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-highbank/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-imx/include/mach/clkdev.h b/arch/arm/mach-imx/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-imx/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-nomadik/include/mach/clkdev.h b/arch/arm/mach-nomadik/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-nomadik/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-versatile/include/mach/clkdev.h b/arch/arm/mach-versatile/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-versatile/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/arch/arm/mach-vexpress/include/mach/clkdev.h b/arch/arm/mach-vexpress/include/mach/clkdev.h
-deleted file mode 100644
-index 04b37a8..0000000
---- a/arch/arm/mach-vexpress/include/mach/clkdev.h
-+++ /dev/null
-@@ -1,7 +0,0 @@
--#ifndef __ASM_MACH_CLKDEV_H
--#define __ASM_MACH_CLKDEV_H
--
--#define __clk_get(clk) ({ 1; })
--#define __clk_put(clk) do { } while (0)
--
--#endif
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index 5441eeb..338b9e8 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -95,8 +95,6 @@ struct clk *clk_get_sys(const char *dev_id, const char *con_id)
- 	struct clk *clk;
- 
- 	clk = clk_find(dev_id, con_id);
--	if (clk && !__clk_get(clk))
--		clk = NULL;
- 
- 	return clk ? clk : ERR_PTR(-ENOENT);
- }
-@@ -117,7 +115,6 @@ EXPORT_SYMBOL(clk_get);
- 
- void clk_put(struct clk *clk)
+diff --git a/commands/ubiformat.c b/commands/ubiformat.c
+index 47941be..121816f 100644
+--- a/commands/ubiformat.c
++++ b/commands/ubiformat.c
+@@ -296,13 +296,20 @@ static int mark_bad(const struct mtd_dev_info *mtd, struct ubi_scan_info *si, in
+ static int flash_image(const struct mtd_dev_info *mtd,
+ 		       const struct ubigen_info *ui, struct ubi_scan_info *si)
  {
--	__clk_put(clk);
+-	int fd, img_ebs, eb, written_ebs = 0, divisor;
++	int fd, img_ebs, eb, written_ebs = 0, divisor, ret = -1;
+ 	off_t st_size;
++	char *buf = NULL;
+ 
+ 	fd = open_file(&st_size);
+ 	if (fd < 0)
+ 		return fd;
+ 
++	buf = malloc(mtd->eb_size);
++	if (!buf) {
++		sys_errmsg("cannot allocate %d bytes of memory", mtd->eb_size);
++		goto out_close;
++	}
++
+ 	img_ebs = st_size / mtd->eb_size;
+ 
+ 	if (img_ebs > si->good_cnt) {
+@@ -312,8 +319,9 @@ static int flash_image(const struct mtd_dev_info *mtd,
+ 	}
+ 
+ 	if (st_size % mtd->eb_size) {
+-		return sys_errmsg("file \"%s\" (size %lld bytes) is not multiple of ""eraseblock size (%d bytes)",
+-				  args.image, (long long)st_size, mtd->eb_size);
++		sys_errmsg("file \"%s\" (size %lld bytes) is not multiple of "
++			   "eraseblock size (%d bytes)",
++			   args.image, (long long)st_size, mtd->eb_size);
+ 		goto out_close;
+ 	}
+ 
+@@ -321,7 +329,6 @@ static int flash_image(const struct mtd_dev_info *mtd,
+ 	divisor = img_ebs;
+ 	for (eb = 0; eb < mtd->eb_cnt; eb++) {
+ 		int err, new_len;
+-		char buf[mtd->eb_size];
+ 		long long ec;
+ 
+ 		if (!args.quiet && !args.verbose) {
+@@ -404,12 +411,13 @@ static int flash_image(const struct mtd_dev_info *mtd,
+ 
+ 	if (!args.quiet && !args.verbose)
+ 		printf("\n");
+-	close(fd);
+-	return eb + 1;
++
++	ret = eb + 1;
+ 
+ out_close:
++	free(buf);
+ 	close(fd);
+-	return -1;
++	return ret;
  }
- EXPORT_SYMBOL(clk_put);
  
-diff --git a/include/linux/clkdev.h b/include/linux/clkdev.h
-index 1fc0ab9..eeadcfe 100644
---- a/include/linux/clkdev.h
-+++ b/include/linux/clkdev.h
-@@ -12,8 +12,6 @@
- #ifndef __CLKDEV_H
- #define __CLKDEV_H
- 
--#include <asm/clkdev.h>
--
- struct clk;
- struct device_d;
- 
+ static int format(const struct mtd_dev_info *mtd,
 -- 
-1.8.2.rc2
+1.7.0.4
 
 
 _______________________________________________
