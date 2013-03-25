@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK9Go-0000EU-Si
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 15:25:12 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 79658BF0F9
- for <barebox@lists.infradead.org>; Mon, 25 Mar 2013 16:25:14 +0100 (CET)
-Message-ID: <1364225108.7010.2.camel@lws-weitzel>
-From: Jan Weitzel <J.Weitzel@phytec.de>
-Date: Mon, 25 Mar 2013 16:25:08 +0100
-In-Reply-To: <1364224557-1840-1-git-send-email-j.weitzel@phytec.de>
+Received: from mail-ea0-x22c.google.com ([2a00:1450:4013:c01::22c])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UK9MR-00036V-31
+ for barebox@lists.infradead.org; Mon, 25 Mar 2013 15:31:00 +0000
+Received: by mail-ea0-f172.google.com with SMTP id z7so728833eaf.3
+ for <barebox@lists.infradead.org>; Mon, 25 Mar 2013 08:30:46 -0700 (PDT)
+Date: Mon, 25 Mar 2013 16:32:16 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130325153215.GA6967@x61s.campuswlan.hs-rm.de>
 References: <1364224557-1840-1-git-send-email-j.weitzel@phytec.de>
-Mime-Version: 1.0
-Reply-To: J.Weitzel@phytec.de
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1364224557-1840-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,17 +25,16 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ubiformat: get buffer from malloc
-To: barebox@lists.infradead.org
+To: Jan Weitzel <j.weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Am Montag, den 25.03.2013, 16:15 +0100 schrieb Jan Weitzel:
+Hi,
+
+On Mon, Mar 25, 2013 at 04:15:57PM +0100, Jan Weitzel wrote:
 > There was a erase block sized (here 131072) char buf array on the stack.
 > Changed this to get the space from malloc preventing stack overflows.
 > Also fix a wrong return without clean up.
 > 
-btw the command works fine with the stack overflow till CONFIG_MMU_EARLY
-was turned on. 
-
-Jan
 > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 > ---
 >  commands/ubiformat.c |   22 +++++++++++++++-------
@@ -63,6 +61,10 @@ Jan
 > +	if (!buf) {
 > +		sys_errmsg("cannot allocate %d bytes of memory", mtd->eb_size);
 > +		goto out_close;
+
+meep, out_close will call free(buf). You need to add a new label above
+free(buf);
+
 > +	}
 > +
 >  	img_ebs = st_size / mtd->eb_size;
@@ -99,14 +101,19 @@ Jan
 >  
 >  out_close:
 > +	free(buf);
+here!
 >  	close(fd);
 > -	return -1;
 > +	return ret;
 >  }
 >  
 >  static int format(const struct mtd_dev_info *mtd,
+> -- 
+> 1.7.0.4
+> 
+> 
 
-
+Alex
 
 _______________________________________________
 barebox mailing list
