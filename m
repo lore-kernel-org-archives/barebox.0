@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK72y-0008A9-FM
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 13:02:45 +0000
-Message-ID: <51504AF2.2070000@free-electrons.com>
-Date: Mon, 25 Mar 2013 14:02:42 +0100
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-MIME-Version: 1.0
-References: <1363880198-21029-1-git-send-email-alexandre.belloni@free-electrons.com>
- <20130325125156.GD1906@pengutronix.de> <51504A00.3050303@free-electrons.com>
-In-Reply-To: <51504A00.3050303@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UK73S-0008DU-7D
+ for barebox@lists.infradead.org; Mon, 25 Mar 2013 13:03:15 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Mon, 25 Mar 2013 14:02:45 +0100
+Message-Id: <1364216570-18315-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +14,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfa10036: Retrieve the RAM size at runtime
-To: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 0/5] ARM: add support for Zynq
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-HI,
+Hi!
 
-Le 25/03/2013 13:58, Alexandre Belloni a =E9crit :
-> On 25/03/2013 13:51, Sascha Hauer wrote:
->>
->> index 1bc20cf..37cc17e 100644
->> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
->> @@ -39,6 +39,8 @@
->>  #include <asm/armlinux.h>
->>  #include <asm/mmu.h>
->>  =
+Next shot at Zynq support.
+I addressed all/most comments from Jean-Christophe and Josh
+(changelogs are in the respective patches).
+The lowlevel stuff is still suboptimal with a bunch of writels.
+Reason: no complete clk- and no pinctrl-support yet. This will be added
+next.
 
->> +#include <asm-generic/sections.h>
->> +
->>  #include <mach/fb.h>
->>  =
+Regards,
+Steffen
 
->>  #include <generated/mach-types.h>
->> @@ -90,9 +92,77 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata =
-=3D {
->>  	.udelay			=3D 5,		/* ~100 kHz */
->>  };
->>  =
+Steffen Trumtrar (5):
+  serial: Add driver for Cadence UART
+  ARM: zynq: Add new architecture zynq
+  ARM: zynq: add clk support for zynq7000
+  ARM: zynq: add zynq fsbl checksum script
+  ARM: zynq: Add support for the Avnet Zedboard
 
->> +/*
->> + * Copied from get_ram_size in common/memory.c
->> + */
->> +long cfa10036_get_ram_size(volatile long *base, long maxsize)
->> +{
->> When I asked for a local version of this function I had something like
->> this in mind, not a complete copy of the function.
->>
->> 	volatile u32 *base =3D (void *)IMX_MEMORY_BASE;
->> 	volatile u32 *ofs =3D base + SZ_128M;
->>
->> 	*base =3D *ofs =3D 0xdeadbeef;
->>
->> 	*ofs =3D 0x11223344;
->> 	if (*base =3D=3D 0x11223344)
->> 		return SZ_128M;
->> 	else
->> 		return SZ_256M;
->>
-> =
+ arch/arm/Kconfig                                   |   5 +
+ arch/arm/Makefile                                  |   2 +
+ arch/arm/boards/avnet-zedboard/Makefile            |   3 +
+ arch/arm/boards/avnet-zedboard/board.c             |  38 ++
+ arch/arm/boards/avnet-zedboard/config.h            |   4 +
+ .../boards/avnet-zedboard/env/init/config-board    |   7 +
+ arch/arm/boards/avnet-zedboard/flash_header.c      |  62 +++
+ arch/arm/boards/avnet-zedboard/lowlevel.c          | 252 +++++++++++++
+ arch/arm/configs/zedboard_defconfig                |  49 +++
+ arch/arm/mach-zynq/Kconfig                         |  38 ++
+ arch/arm/mach-zynq/Makefile                        |   1 +
+ arch/arm/mach-zynq/clk-zynq7000.c                  | 417 +++++++++++++++++++++
+ arch/arm/mach-zynq/devices.c                       |   8 +
+ arch/arm/mach-zynq/include/mach/barebox.lds.h      |   8 +
+ arch/arm/mach-zynq/include/mach/clkdev.h           |   6 +
+ arch/arm/mach-zynq/include/mach/debug_ll.h         |  37 ++
+ arch/arm/mach-zynq/include/mach/devices.h          |  13 +
+ .../arm/mach-zynq/include/mach/zynq-flash-header.h |  38 ++
+ arch/arm/mach-zynq/include/mach/zynq7000-regs.h    | 132 +++++++
+ arch/arm/mach-zynq/zynq.c                          |  56 +++
+ drivers/serial/Kconfig                             |   5 +
+ drivers/serial/Makefile                            |   1 +
+ drivers/serial/serial_cadence.c                    | 307 +++++++++++++++
+ include/asm-generic/barebox.lds.h                  |   3 +-
+ scripts/Makefile                                   |   1 +
+ scripts/zynq_checksum.c                            |  72 ++++
+ 26 files changed, 1564 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/avnet-zedboard/Makefile
+ create mode 100644 arch/arm/boards/avnet-zedboard/board.c
+ create mode 100644 arch/arm/boards/avnet-zedboard/config.h
+ create mode 100644 arch/arm/boards/avnet-zedboard/env/init/config-board
+ create mode 100644 arch/arm/boards/avnet-zedboard/flash_header.c
+ create mode 100644 arch/arm/boards/avnet-zedboard/lowlevel.c
+ create mode 100644 arch/arm/configs/zedboard_defconfig
+ create mode 100644 arch/arm/mach-zynq/Kconfig
+ create mode 100644 arch/arm/mach-zynq/Makefile
+ create mode 100644 arch/arm/mach-zynq/clk-zynq7000.c
+ create mode 100644 arch/arm/mach-zynq/devices.c
+ create mode 100644 arch/arm/mach-zynq/include/mach/barebox.lds.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/devices.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/zynq-flash-header.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+ create mode 100644 arch/arm/mach-zynq/zynq.c
+ create mode 100644 drivers/serial/serial_cadence.c
+ create mode 100644 scripts/zynq_checksum.c
 
-> Yeah, I was also thinking about stripping it. But, for the sake of being
-> future proof, I finally chose to keep the full version.
-> =
+-- 
+1.8.2.rc2
 
-> Maybe, we can assume that we will never have less than 128M of ram if
-> you want to simplify it ?
-> =
-
-> Maxime, any input ?
-
-For now, we only have 128M or 256M, so I guess it's a safe assumption, yes.
-
-Maxime
-
-
--- =
-
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
