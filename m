@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK5Xn-0006Dg-9h
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 11:26:27 +0000
-Message-ID: <51503461.8080306@free-electrons.com>
-Date: Mon, 25 Mar 2013 12:26:25 +0100
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UK6kQ-0006HD-7i
+ for barebox@lists.infradead.org; Mon, 25 Mar 2013 12:43:35 +0000
+Date: Mon, 25 Mar 2013 13:43:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130325124331.GC1906@pengutronix.de>
+References: <1363165138-3085-1-git-send-email-gwenhael.goavec-merou@armadeus.com>
+ <20130315151312.GG1906@pengutronix.de>
+ <20130325121434.2f343c06@dell.trabucayre.com>
 MIME-Version: 1.0
-References: <1363880198-21029-1-git-send-email-alexandre.belloni@free-electrons.com>
-In-Reply-To: <1363880198-21029-1-git-send-email-alexandre.belloni@free-electrons.com>
+Content-Disposition: inline
+In-Reply-To: <20130325121434.2f343c06@dell.trabucayre.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,36 +20,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfa10036: Retrieve the RAM size at runtime
-To: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] [ARM] imx1: add #define to configure frequency for the
+ clk32
+To: "gwenhael.goavec" <gwenhael.goavec-merou@armadeus.com>
+Cc: barebox <barebox@lists.infradead.org>
 
-Hi Alexandre,
+On Mon, Mar 25, 2013 at 12:14:34PM +0100, gwenhael.goavec wrote:
+> Hi,
+> What do you mean by "first user" ?
 
-Le 21/03/2013 16:36, Alexandre Belloni a =E9crit :
-> The cfa-10036 comes in two flavours, with either 128MB or 256MB of RAM
-> on it.
-> =
+A patch which adds a board which makes use of this.
 
-> Since it's not stored anywhere, we need to runtime detect it by
-> introducing the cfa10036_get_ram_size function which is similar to
-> get_ram_size. As we run from RAM, we can then use _text and __bss_stop
-> to prevent poking in the barebox memory which is not supported on other
-> platforms.
+Sascha
 
-Just tested it on my 256MB cfa-10036, and it works fine, you can add my
-Tested-by
 
-Maxime
--- =
-
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
