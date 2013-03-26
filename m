@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKUjw-0004OV-Q7
- for barebox@lists.infradead.org; Tue, 26 Mar 2013 14:20:41 +0000
-Received: by mail-wi0-f176.google.com with SMTP id hm14so916263wib.15
- for <barebox@lists.infradead.org>; Tue, 26 Mar 2013 07:20:38 -0700 (PDT)
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UKUmW-0006FY-SP
+ for barebox@lists.infradead.org; Tue, 26 Mar 2013 14:23:22 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 04E7ABF0E6
+ for <barebox@lists.infradead.org>; Tue, 26 Mar 2013 15:23:20 +0100 (CET)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 26 Mar 2013 15:23:16 +0100
+Message-Id: <1364307796-2407-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1364307796-2407-1-git-send-email-t.gamez@phytec.de>
+References: <1364307796-2407-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-In-Reply-To: <20130326132553.GG16050@kryptos>
-References: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
- <1364289086-2241-4-git-send-email-s.trumtrar@pengutronix.de>
- <20130326132015.GF16050@kryptos> <20130326132553.GG16050@kryptos>
-Date: Tue, 26 Mar 2013 15:20:35 +0100
-Message-ID: <CAHTX3dJtwA_Jj6NTTkxf8jheQzesF=Pf2mNcmo1Oibs4HFPSwg@mail.gmail.com>
-From: Michal Simek <monstr@monstr.eu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +20,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 3/5] ARM: zynq: add clk support for zynq7000
-To: Josh Cartwright <joshc@eso.teric.us>
-Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: [RFC PATCH 2/2] OMAP: Add option to use enviroment from MMC
+To: barebox@lists.infradead.org
 
-2013/3/26 Josh Cartwright <joshc@eso.teric.us>:
-> On Tue, Mar 26, 2013 at 08:20:15AM -0500, Josh Cartwright wrote:
->> On Tue, Mar 26, 2013 at 10:11:24AM +0100, Steffen Trumtrar wrote:
->> > This adds support for the clocktree on zynq7000 SoCs.
->> > The patch is based on clocks.c from the larger patch
->> >     ARM: zynq: add suppport for Zynq 7000 SoC
->> > by Josh Cartwright.
->> >
->> > The driver in that patch is converted to a platform_driver and code to
->> > enable plls was added.
->> >
->> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
->>
->> Reviewed-off-by: Josh Cartwright <joshc@eso.teric.us>
->
-> Heh, clearly I meant Reviewed-by: .  I should stop reading my email
-> before my morning coffee. :)
-
-:-)
-
-M
-
-
-
--- 
-Michal Simek, Ing. (M.Eng)
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
-Maintainer of Linux kernel - Xilinx Zynq ARM architecture
-Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TWFrZSBsb2FkaW5nIGVudmlyb21lbnQgZnJvbSBNTUMgZ2VuZXJpYyBmb3IgYWxsIE9NQVAuCgpU
+ZXN0ZWQgb24gQU0zMzV4LCBPTUFQNC4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQu
+Z2FtZXpAcGh5dGVjLmRlPgpUZXN0ZWQtYnk6IEphbiBXZWl0emVsIDxqLndlaXR6ZWxAcGh5dGVj
+LmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jICAgICAgICAgICAgIHwgICAz
+MCAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRl
+L21hY2gvZ2VuZXJpYy5oIHwgICAgMSArCiBhcmNoL2FybS9tYWNoLW9tYXAvb21hcF9nZW5lcmlj
+LmMgICAgICAgICB8ICAgMzIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIDMgZmlsZXMg
+Y2hhbmdlZCwgMzMgaW5zZXJ0aW9ucygrKSwgMzAgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vYm9hcmRzL3BhbmRhL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9h
+cmQuYwppbmRleCAyNTE4ZDNhLi5kMWY5YTVlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMv
+cGFuZGEvYm9hcmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQuYwpAQCAtMSwx
+MiArMSwxMCBAQAogI2luY2x1ZGUgPGNvbW1vbi5oPgogI2luY2x1ZGUgPGNvbnNvbGUuaD4KICNp
+bmNsdWRlIDxpbml0Lmg+Ci0jaW5jbHVkZSA8ZnMuaD4KICNpbmNsdWRlIDxkcml2ZXIuaD4KICNp
+bmNsdWRlIDxpby5oPgogI2luY2x1ZGUgPG5zMTY1NTAuaD4KICNpbmNsdWRlIDxhc20vYXJtbGlu
+dXguaD4KLSNpbmNsdWRlIDxsaW51eC9zdGF0Lmg+CiAjaW5jbHVkZSA8Z2VuZXJhdGVkL21hY2gt
+dHlwZXMuaD4KICNpbmNsdWRlIDxtYWNoL29tYXA0LXNpbGljb24uaD4KICNpbmNsdWRlIDxtYWNo
+L29tYXA0LWRldmljZXMuaD4KQEAgLTIwLDcgKzE4LDYgQEAKICNpbmNsdWRlIDxhc20vbW11Lmg+
+CiAjaW5jbHVkZSA8bWFjaC9ncGlvLmg+CiAjaW5jbHVkZSA8ZW52ZnMuaD4KLSNpbmNsdWRlIDxt
+YWNoL2dlbmVyaWMuaD4KICNpbmNsdWRlIDxpMmMvaTJjLmg+CiAjaW5jbHVkZSA8Z3Bpby5oPgog
+I2luY2x1ZGUgPGxlZC5oPgpAQCAtMTY0LDMwICsxNjEsMyBAQCBzdGF0aWMgaW50IHBhbmRhX2Rl
+dmljZXNfaW5pdCh2b2lkKQogCXJldHVybiAwOwogfQogZGV2aWNlX2luaXRjYWxsKHBhbmRhX2Rl
+dmljZXNfaW5pdCk7Ci0KLSNpZmRlZiBDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVAotc3RhdGlj
+IGludCBwYW5kYV9lbnZfaW5pdCh2b2lkKQotewotCXN0cnVjdCBzdGF0IHM7Ci0JY2hhciAqZGlz
+a2RldiA9ICIvZGV2L2Rpc2swLjAiOwotCWludCByZXQ7Ci0KLQlyZXQgPSBzdGF0KGRpc2tkZXYs
+ICZzKTsKLQlpZiAocmV0KSB7Ci0JCXByaW50Zigibm8gJXMuIHVzaW5nIGRlZmF1bHQgZW52XG4i
+LCBkaXNrZGV2KTsKLQkJcmV0dXJuIDA7Ci0JfQotCi0JbWtkaXIgKCIvYm9vdCIsIDA2NjYpOwot
+CXJldCA9IG1vdW50KGRpc2tkZXYsICJmYXQiLCAiL2Jvb3QiKTsKLQlpZiAocmV0KSB7Ci0JCXBy
+aW50ZigiZmFpbGVkIHRvIG1vdW50ICVzXG4iLCBkaXNrZGV2KTsKLQkJcmV0dXJuIDA7Ci0JfQot
+Ci0JZGVmYXVsdF9lbnZpcm9ubWVudF9wYXRoID0gIi9ib290L2JhcmVib3hlbnYiOwotCi0JcmV0
+dXJuIDA7Ci19Ci1sYXRlX2luaXRjYWxsKHBhbmRhX2Vudl9pbml0KTsKLSNlbmRpZgpkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5lcmljLmggYi9hcmNoL2Fy
+bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaAppbmRleCBlZGM0ZjFkLi43NDU1NDA0
+IDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaAor
+KysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaApAQCAtMzUsNiAr
+MzUsNyBAQCBlbnVtIG9tYXBfYm9vdF9zcmMgewogCU9NQVBfQk9PVFNSQ19VU0IxLAogfTsKIAor
+ZW51bSBvbWFwX2Jvb3Rfc3JjIG9tYXBfYm9vdHNyYyh2b2lkKTsKIGVudW0gb21hcF9ib290X3Ny
+YyBhbTMzeHhfYm9vdHNyYyh2b2lkKTsKIGVudW0gb21hcF9ib290X3NyYyBvbWFwM19ib290c3Jj
+KHZvaWQpOwogZW51bSBvbWFwX2Jvb3Rfc3JjIG9tYXA0X2Jvb3RzcmModm9pZCk7CmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvb21hcF9nZW5lcmljLmMgYi9hcmNoL2FybS9tYWNoLW9t
+YXAvb21hcF9nZW5lcmljLmMKaW5kZXggZjJmZDFkMy4uNTg4Mjc5NCAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vbWFjaC1vbWFwL29tYXBfZ2VuZXJpYy5jCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9v
+bWFwX2dlbmVyaWMuYwpAQCAtMzAsMyArMzAsMzUgQEAgZW51bSBvbWFwX2Jvb3Rfc3JjIG9tYXBf
+Ym9vdHNyYyh2b2lkKQogCXJldHVybiBhbTMzeHhfYm9vdHNyYygpOwogI2VuZGlmCiB9CisKKyNp
+ZiBkZWZpbmVkKENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UKSAmJiBkZWZpbmVkKENPTkZJR19N
+Q0lfU1RBUlRVUCkKK3N0YXRpYyBpbnQgb21hcF9lbnZfaW5pdCh2b2lkKQoreworCXN0cnVjdCBz
+dGF0IHM7CisJY2hhciAqZGlza2RldiA9ICIvZGV2L2Rpc2swLjAiOworCWludCByZXQ7CisKKwlp
+ZiAob21hcF9ib290c3JjKCkgIT0gT01BUF9CT09UU1JDX01NQzEpCisJCXJldHVybiAwOworCisJ
+cmV0ID0gc3RhdChkaXNrZGV2LCAmcyk7CisJaWYgKHJldCkgeworCQlwcmludGYoIm5vICVzLiB1
+c2luZyBkZWZhdWx0IGVudlxuIiwgZGlza2Rldik7CisJCXJldHVybiAwOworCX0KKworCW1rZGly
+KCIvYm9vdCIsIDA2NjYpOworCXJldCA9IG1vdW50KGRpc2tkZXYsICJmYXQiLCAiL2Jvb3QiKTsK
+KwlpZiAocmV0KSB7CisJCXByaW50ZigiZmFpbGVkIHRvIG1vdW50ICVzXG4iLCBkaXNrZGV2KTsK
+KwkJcmV0dXJuIDA7CisJfQorCisJcHJpbnRmKCJMb2FkaW5nIGVudmlyb21lbnQgZnJvbSBNTUNc
+biIpOworCisJZGVmYXVsdF9lbnZpcm9ubWVudF9wYXRoID0gIi9ib290L2JhcmVib3hlbnYiOwor
+CisJcmV0dXJuIDA7Cit9CitsYXRlX2luaXRjYWxsKG9tYXBfZW52X2luaXQpOworI2VuZGlmCi0t
+IAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
