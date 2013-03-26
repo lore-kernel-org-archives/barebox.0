@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKPvE-00039g-Ez
- for barebox@lists.infradead.org; Tue, 26 Mar 2013 09:12:02 +0000
+ id 1UKPv5-00037I-Dj
+ for barebox@lists.infradead.org; Tue, 26 Mar 2013 09:11:53 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 26 Mar 2013 10:11:25 +0100
-Message-Id: <1364289086-2241-5-git-send-email-s.trumtrar@pengutronix.de>
+Date: Tue, 26 Mar 2013 10:11:22 +0100
+Message-Id: <1364289086-2241-2-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 4/5] ARM: zynq: add zynq fsbl checksum script
+Subject: [PATCH v3 1/5] serial: Add driver for Cadence UART
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The bootrom only reads an image if the correct checksum is present in the
-header. The calculation is pretty simple:
-sum over all words from 0x20 to 0x44
-Two of this words are the image length. That is why the checksum can not be
-calculated until barebox_image_size is known.
-The easiest solution is a program that has to be run after make.
+Support for Cadence UART core.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
 
 Changes since v2:
-	- rename to zynq_mkimage
-	- add to gitignores
-	- always pipe barebox through zynq_mkimage
-	- don't waste memory with malloc
-	- add license header
+	- remove superfluous Kconfig option
+	- add help text to Kconfig option
 
- .gitignore             |  1 +
- arch/arm/Makefile      |  8 +++++
- scripts/.gitignore     |  1 +
- scripts/Makefile       |  1 +
- scripts/zynq_mkimage.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 97 insertions(+)
- create mode 100644 scripts/zynq_mkimage.c
+ drivers/serial/Kconfig          |   5 +
+ drivers/serial/Makefile         |   1 +
+ drivers/serial/serial_cadence.c | 307 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 313 insertions(+)
+ create mode 100644 drivers/serial/serial_cadence.c
 
-diff --git a/.gitignore b/.gitignore
-index 064753d..d197196 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -36,6 +36,7 @@ barebox.netx
- barebox.s5p
- barebox.spi
- barebox.ubl
-+barebox.zynq
- barebox.uimage
- barebox.map
- barebox-flash-image
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index ceb45dc..5682e36 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -244,6 +244,14 @@ KBUILD_TARGET := barebox.spi
- KBUILD_IMAGE := barebox.spi
- endif
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index f61d670..73cb9f8 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -113,4 +113,9 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+ 	help
+ 	  Enable this to get console support over the usb bus used to boot an OMAP4
  
-+barebox.zynq: $(KBUILD_BINARY)
-+	$(Q)scripts/zynq_mkimage $< $@
++config DRIVER_SERIAL_CADENCE
++	bool "Cadence UART driver"
++	help
++	  Say Y here if you have a Cadence serial IP core.
 +
-+ifeq ($(machine-y),zynq)
-+KBUILD_TARGET := barebox.zynq
-+KBUILD_IMAGE := barebox.zynq
-+endif
-+
- pbl := arch/arm/pbl
- zbarebox.S zbarebox.bin zbarebox: barebox.bin
- 	$(Q)$(MAKE) $(build)=$(pbl) $(pbl)/$@
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 1ca6603..bff805d 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -7,3 +7,4 @@ mkimage
- mkublheader
- omap_signGP
- omap4_usbboot
-+zynq_mkimage
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 08b325c..fd526e5 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -12,6 +12,7 @@ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
- hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
- hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
-+hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
- 
- HOSTLOADLIBES_omap4_usbboot = -lpthread
- omap4_usbboot-objs               := usb_linux.o omap4_usbboot.o
-diff --git a/scripts/zynq_mkimage.c b/scripts/zynq_mkimage.c
+ endmenu
+diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+index 893e282..963a7df 100644
+--- a/drivers/serial/Makefile
++++ b/drivers/serial/Makefile
+@@ -21,3 +21,4 @@ obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
+ obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
+ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+ obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
++obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+diff --git a/drivers/serial/serial_cadence.c b/drivers/serial/serial_cadence.c
 new file mode 100644
-index 0000000..a096b83
+index 0000000..c29c391
 --- /dev/null
-+++ b/scripts/zynq_mkimage.c
-@@ -0,0 +1,86 @@
++++ b/drivers/serial/serial_cadence.c
+@@ -0,0 +1,307 @@
 +/*
-+ * Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
++ * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -120,80 +81,301 @@ index 0000000..a096b83
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
++ *
 + */
-+
-+#include <endian.h>
-+#include <errno.h>
++#include <common.h>
++#include <driver.h>
++#include <init.h>
 +#include <malloc.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/stat.h>
++#include <notifier.h>
++#include <io.h>
++#include <linux/err.h>
++#include <linux/clk.h>
 +
-+static void usage(char *name)
++#define CADENCE_UART_CONTROL		0x00
++#define CADENCE_UART_MODE		0x04
++#define CADENCE_UART_BAUD_GEN		0x18
++#define CADENCE_UART_CHANNEL_STS	0x2C
++#define CADENCE_UART_RXTXFIFO		0x30
++#define CADENCE_UART_BAUD_DIV		0x34
++
++#define CADENCE_CTRL_RXRES		(1 << 0)
++#define CADENCE_CTRL_TXRES		(1 << 1)
++#define CADENCE_CTRL_RXEN		(1 << 2)
++#define CADENCE_CTRL_RXDIS		(1 << 3)
++#define CADENCE_CTRL_TXEN		(1 << 4)
++#define CADENCE_CTRL_TXDIS		(1 << 5)
++#define CADENCE_CTRL_RSTTO		(1 << 6)
++#define CADENCE_CTRL_STTBRK		(1 << 7)
++#define CADENCE_CTRL_STPBRK		(1 << 8)
++
++#define CADENCE_MODE_CLK_REF		(0 << 0)
++#define CADENCE_MODE_CLK_REF_DIV	(1 << 0)
++#define CADENCE_MODE_CHRL_6		(3 << 1)
++#define CADENCE_MODE_CHRL_7		(2 << 1)
++#define CADENCE_MODE_CHRL_8		(0 << 1)
++#define CADENCE_MODE_PAR_EVEN		(0 << 3)
++#define CADENCE_MODE_PAR_ODD		(1 << 3)
++#define CADENCE_MODE_PAR_SPACE		(2 << 3)
++#define CADENCE_MODE_PAR_MARK		(3 << 3)
++#define CADENCE_MODE_PAR_NONE		(4 << 3)
++
++#define CADENCE_STS_REMPTY		(1 << 1)
++#define CADENCE_STS_RFUL		(1 << 2)
++#define CADENCE_STS_TEMPTY		(1 << 3)
++#define CADENCE_STS_TFUL		(1 << 4)
++
++/*
++ * create default values for different platforms
++ */
++struct cadence_serial_devtype_data {
++	u32 ctrl;
++	u32 mode;
++};
++
++static struct cadence_serial_devtype_data cadence_r1p08_data = {
++	.ctrl = CADENCE_CTRL_RXEN | CADENCE_CTRL_TXEN,
++	.mode = CADENCE_MODE_CLK_REF | CADENCE_MODE_CHRL_8 | CADENCE_MODE_PAR_NONE,
++};
++
++struct cadence_serial_priv {
++	struct console_device cdev;
++	int baudrate;
++	struct notifier_block notify;
++	void __iomem *regs;
++	struct clk *clk;
++	struct cadence_serial_devtype_data *devtype;
++};
++
++static int cadence_serial_reset(struct console_device *cdev)
 +{
-+	printf("Usage: %s barebox-flash-image <outfile>\n", name);
-+}
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
 +
-+int main(int argc, char *argv[])
-+{
-+	FILE *ifile, *ofile;
-+	unsigned int *buf;
-+	const char *infile;
-+	const char *outfile;
-+	struct stat st;
-+	unsigned int i;
-+	unsigned long sum = 0;
++	/* Soft-Reset Tx/Rx paths */
++	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
++		CADENCE_UART_CONTROL);
 +
-+	if (argc != 3) {
-+		usage(argv[0]);
-+		exit(1);
-+	}
-+
-+	infile = argv[1];
-+	outfile = argv[2];
-+
-+	if (stat(infile, &st) == -1) {
-+		perror("stat");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	buf = malloc(st.st_size);
-+	if (!buf) {
-+		fprintf(stderr, "Unable to allocate buffer\n");
-+		return -1;
-+	}
-+	ifile = fopen(infile, "rb");
-+	if (!ifile) {
-+		fprintf(stderr, "Cannot open %s for reading\n",
-+			infile);
-+		free(buf);
-+		exit(EXIT_FAILURE);
-+	}
-+	ofile = fopen(outfile, "wb");
-+	if (!ofile) {
-+		fprintf(stderr, "Cannot open %s for writing\n",
-+			outfile);
-+		fclose(ifile);
-+		free(buf);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	fread(buf, 4, st.st_size, ifile);
-+
-+	for (i = 0x8; i < 0x12; i++)
-+		sum += htole32(buf[i]);
-+
-+	sum = ~sum;
-+	buf[i] = sum;
-+
-+	fwrite(buf, st.st_size / 4, 4, ofile);
-+
-+	fclose(ofile);
-+	fclose(ifile);
-+	free(buf);
++	while (readl(priv->regs + CADENCE_UART_CONTROL) &
++		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
++		;
 +
 +	return 0;
 +}
++
++static int cadence_serial_setbaudrate(struct console_device *cdev, int baudrate)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++	unsigned int gen, div;
++	int calc_rate;
++	unsigned long clk;
++	int error;
++	int val;
++
++	clk = clk_get_rate(priv->clk);
++	priv->baudrate = baudrate;
++
++	/* disable transmitter and receiver */
++	val = readl(priv->regs + CADENCE_UART_CONTROL);
++	val &= ~CADENCE_CTRL_TXEN & ~CADENCE_CTRL_RXEN;
++	writel(val, priv->regs + CADENCE_UART_CONTROL);
++
++	/*
++	 *	      clk
++	 * rate = -----------
++	 *	  gen*(div+1)
++	 */
++
++	for (div = 4; div < 256; div++) {
++		gen = clk / (baudrate * (div + 1));
++
++		if (gen < 1 || gen > 65535)
++			continue;
++
++		calc_rate = clk / (gen * (div + 1));
++		error = baudrate - calc_rate;
++		if (error < 0)
++			error *= -1;
++		if (((error * 100) / baudrate) < 3)
++			break;
++	}
++
++	writel(gen, priv->regs + CADENCE_UART_BAUD_GEN);
++	writel(div, priv->regs + CADENCE_UART_BAUD_DIV);
++
++	/* Soft-Reset Tx/Rx paths */
++	writel(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES, priv->regs +
++		CADENCE_UART_CONTROL);
++
++	while (readl(priv->regs + CADENCE_UART_CONTROL) &
++		(CADENCE_CTRL_RXRES | CADENCE_CTRL_TXRES))
++		;
++
++	/* Enable UART */
++	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
++
++	return 0;
++}
++
++static int cadence_serial_init_port(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	cadence_serial_reset(cdev);
++
++	/* Enable UART */
++	writel(priv->devtype->ctrl, priv->regs + CADENCE_UART_CONTROL);
++	writel(priv->devtype->mode, priv->regs + CADENCE_UART_MODE);
++
++	return 0;
++}
++
++static void cadence_serial_putc(struct console_device *cdev, char c)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		CADENCE_STS_TFUL) != 0)
++		;
++
++	writel(c, priv->regs + CADENCE_UART_RXTXFIFO);
++}
++
++static int cadence_serial_tstc(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	return ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		 CADENCE_STS_REMPTY) == 0);
++}
++
++static int cadence_serial_getc(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while (!cadence_serial_tstc(cdev))
++		;
++
++	return readl(priv->regs + CADENCE_UART_RXTXFIFO);
++}
++
++static void cadence_serial_flush(struct console_device *cdev)
++{
++	struct cadence_serial_priv *priv = container_of(cdev,
++					struct cadence_serial_priv, cdev);
++
++	while ((readl(priv->regs + CADENCE_UART_CHANNEL_STS) &
++		CADENCE_STS_TEMPTY) != 0)
++		;
++}
++
++static int cadence_clocksource_clock_change(struct notifier_block *nb,
++			unsigned long event, void *data)
++{
++	struct cadence_serial_priv *priv = container_of(nb,
++					struct cadence_serial_priv, notify);
++
++	cadence_serial_setbaudrate(&priv->cdev, priv->baudrate);
++
++	return 0;
++}
++
++static int cadence_serial_probe(struct device_d *dev)
++{
++	struct console_device *cdev;
++	struct cadence_serial_priv *priv;
++	struct cadence_serial_devtype_data *devtype;
++	int ret;
++
++	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
++	if (ret)
++		return ret;
++
++	priv = xzalloc(sizeof(*priv));
++	priv->devtype = devtype;
++	cdev = &priv->cdev;
++	dev->priv = priv;
++
++	priv->clk = clk_get(dev, NULL);
++	if (IS_ERR(priv->clk)) {
++		ret = -ENODEV;
++		goto err_free;
++	}
++
++	if (devtype->mode & CADENCE_MODE_CLK_REF_DIV)
++		clk_set_rate(priv->clk, clk_get_rate(priv->clk) / 8);
++
++	priv->regs = dev_request_mem_region(dev, 0);
++	if (!priv->regs) {
++		ret = -EBUSY;
++		goto err_free;
++	}
++
++	cdev->dev = dev;
++	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
++	cdev->tstc = cadence_serial_tstc;
++	cdev->putc = cadence_serial_putc;
++	cdev->getc = cadence_serial_getc;
++	cdev->flush = cadence_serial_flush;
++	cdev->setbrg = cadence_serial_setbaudrate;
++
++	cadence_serial_init_port(cdev);
++
++	console_register(cdev);
++	priv->notify.notifier_call = cadence_clocksource_clock_change;
++	clock_register_client(&priv->notify);
++
++	return 0;
++
++err_free:
++	free(priv);
++	return ret;
++}
++
++static void cadence_serial_remove(struct device_d *dev)
++{
++	struct cadence_serial_priv *priv = dev->priv;
++
++	console_unregister(&priv->cdev);
++	free(priv);
++}
++
++static __maybe_unused struct of_device_id cadence_serial_dt_ids[] = {
++	{
++		.compatible = "xlnx,xuartps",
++		.data = (unsigned long)&cadence_r1p08_data,
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct platform_device_id cadence_serial_ids[] = {
++	{
++		.name = "cadence-uart",
++		.driver_data = (unsigned long)&cadence_r1p08_data,
++	}, {
++		/* sentinel */
++	},
++};
++
++static struct driver_d cadence_serial_driver = {
++	.name   = "cadence_serial",
++	.probe  = cadence_serial_probe,
++	.remove = cadence_serial_remove,
++	.of_compatible = DRV_OF_COMPAT(cadence_serial_dt_ids),
++	.id_table = cadence_serial_ids,
++};
++
++static int cadence_serial_init(void)
++{
++	return platform_driver_register(&cadence_serial_driver);
++}
++console_initcall(cadence_serial_init);
 -- 
 1.8.2.rc2
 
