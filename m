@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UK9Nz-0003wN-Rg
- for barebox@lists.infradead.org; Mon, 25 Mar 2013 15:32:37 +0000
-Received: by mail-ea0-f170.google.com with SMTP id a15so2376222eae.15
- for <barebox@lists.infradead.org>; Mon, 25 Mar 2013 08:32:33 -0700 (PDT)
-Date: Mon, 25 Mar 2013 16:34:08 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130325153406.GB6967@x61s.campuswlan.hs-rm.de>
-References: <1364224557-1840-1-git-send-email-j.weitzel@phytec.de>
- <20130325153215.GA6967@x61s.campuswlan.hs-rm.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130325153215.GA6967@x61s.campuswlan.hs-rm.de>
+ id 1UKPv2-00036X-Rj
+ for barebox@lists.infradead.org; Tue, 26 Mar 2013 09:11:50 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue, 26 Mar 2013 10:11:21 +0100
+Message-Id: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +14,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ubiformat: get buffer from malloc
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v4 0/5] ARM: add support for Zynq
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Mon, Mar 25, 2013 at 04:32:15PM +0100, Alexander Aring wrote:
-> Hi,
-> 
-> On Mon, Mar 25, 2013 at 04:15:57PM +0100, Jan Weitzel wrote:
-> > There was a erase block sized (here 131072) char buf array on the stack.
-> > Changed this to get the space from malloc preventing stack overflows.
-> > Also fix a wrong return without clean up.
-> > 
-> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> > ---
-> >  commands/ubiformat.c |   22 +++++++++++++++-------
-> >  1 files changed, 15 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-> > index 47941be..121816f 100644
-> > --- a/commands/ubiformat.c
-> > +++ b/commands/ubiformat.c
-> > @@ -296,13 +296,20 @@ static int mark_bad(const struct mtd_dev_info *mtd, struct ubi_scan_info *si, in
-> >  static int flash_image(const struct mtd_dev_info *mtd,
-> >  		       const struct ubigen_info *ui, struct ubi_scan_info *si)
-> >  {
-> > -	int fd, img_ebs, eb, written_ebs = 0, divisor;
-> > +	int fd, img_ebs, eb, written_ebs = 0, divisor, ret = -1;
-> >  	off_t st_size;
-> > +	char *buf = NULL;
-> >  
-> >  	fd = open_file(&st_size);
-> >  	if (fd < 0)
-> >  		return fd;
-> >  
-> > +	buf = malloc(mtd->eb_size);
-> > +	if (!buf) {
-> > +		sys_errmsg("cannot allocate %d bytes of memory", mtd->eb_size);
-> > +		goto out_close;
-> 
-> meep, out_close will call free(buf). You need to add a new label above
-> free(buf);
-> 
+Hi!
 
-ah, free is null proofed sry.
+This is mostly a repost of v3. Only changes are in 4/5.
+The final image now gets always piped through zynq_mkimage. This is needed
+anyway, so do it always.
+This tool will eventually replace all the flash_header linker stuff, although
+it is pretty simple on the Zynq.
 
-Alex
+Regards,
+Steffen
+
+Steffen Trumtrar (5):
+  serial: Add driver for Cadence UART
+  ARM: zynq: Add new architecture zynq
+  ARM: zynq: add clk support for zynq7000
+  ARM: zynq: add zynq fsbl checksum script
+  ARM: zynq: Add support for the Avnet Zedboard
+
+ .gitignore                                         |   1 +
+ arch/arm/Kconfig                                   |   5 +
+ arch/arm/Makefile                                  |  10 +
+ arch/arm/boards/avnet-zedboard/Makefile            |   3 +
+ arch/arm/boards/avnet-zedboard/board.c             |  38 ++
+ arch/arm/boards/avnet-zedboard/config.h            |   4 +
+ .../boards/avnet-zedboard/env/init/config-board    |   7 +
+ arch/arm/boards/avnet-zedboard/flash_header.c      |  62 +++
+ arch/arm/boards/avnet-zedboard/lowlevel.c          | 252 +++++++++++++
+ arch/arm/configs/zedboard_defconfig                |  49 +++
+ arch/arm/mach-zynq/Kconfig                         |  38 ++
+ arch/arm/mach-zynq/Makefile                        |   1 +
+ arch/arm/mach-zynq/clk-zynq7000.c                  | 417 +++++++++++++++++++++
+ arch/arm/mach-zynq/devices.c                       |   8 +
+ arch/arm/mach-zynq/include/mach/barebox.lds.h      |   8 +
+ arch/arm/mach-zynq/include/mach/clkdev.h           |   6 +
+ arch/arm/mach-zynq/include/mach/debug_ll.h         |  37 ++
+ arch/arm/mach-zynq/include/mach/devices.h          |  13 +
+ .../arm/mach-zynq/include/mach/zynq-flash-header.h |  38 ++
+ arch/arm/mach-zynq/include/mach/zynq7000-regs.h    | 132 +++++++
+ arch/arm/mach-zynq/zynq.c                          |  56 +++
+ drivers/serial/Kconfig                             |   5 +
+ drivers/serial/Makefile                            |   1 +
+ drivers/serial/serial_cadence.c                    | 307 +++++++++++++++
+ include/asm-generic/barebox.lds.h                  |   3 +-
+ scripts/.gitignore                                 |   1 +
+ scripts/Makefile                                   |   1 +
+ scripts/zynq_mkimage.c                             |  86 +++++
+ 28 files changed, 1588 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/avnet-zedboard/Makefile
+ create mode 100644 arch/arm/boards/avnet-zedboard/board.c
+ create mode 100644 arch/arm/boards/avnet-zedboard/config.h
+ create mode 100644 arch/arm/boards/avnet-zedboard/env/init/config-board
+ create mode 100644 arch/arm/boards/avnet-zedboard/flash_header.c
+ create mode 100644 arch/arm/boards/avnet-zedboard/lowlevel.c
+ create mode 100644 arch/arm/configs/zedboard_defconfig
+ create mode 100644 arch/arm/mach-zynq/Kconfig
+ create mode 100644 arch/arm/mach-zynq/Makefile
+ create mode 100644 arch/arm/mach-zynq/clk-zynq7000.c
+ create mode 100644 arch/arm/mach-zynq/devices.c
+ create mode 100644 arch/arm/mach-zynq/include/mach/barebox.lds.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/devices.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/zynq-flash-header.h
+ create mode 100644 arch/arm/mach-zynq/include/mach/zynq7000-regs.h
+ create mode 100644 arch/arm/mach-zynq/zynq.c
+ create mode 100644 drivers/serial/serial_cadence.c
+ create mode 100644 scripts/zynq_mkimage.c
+
+-- 
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
