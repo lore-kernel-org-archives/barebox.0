@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKPv7-00037s-76
- for barebox@lists.infradead.org; Tue, 26 Mar 2013 09:11:56 +0000
+ id 1UKPvE-00039g-Ez
+ for barebox@lists.infradead.org; Tue, 26 Mar 2013 09:12:02 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 26 Mar 2013 10:11:23 +0100
-Message-Id: <1364289086-2241-3-git-send-email-s.trumtrar@pengutronix.de>
+Date: Tue, 26 Mar 2013 10:11:25 +0100
+Message-Id: <1364289086-2241-5-git-send-email-s.trumtrar@pengutronix.de>
 In-Reply-To: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
 References: <1364289086-2241-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,285 +21,95 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 2/5] ARM: zynq: Add new architecture zynq
+Subject: [PATCH v3 4/5] ARM: zynq: add zynq fsbl checksum script
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Add basic support for the Xilinx Zynq-7000 EPP architecture.
-The Zynq-7000 is an embedded processing platform that combines a Cortex A9
-dualcore MPSoC with an Artix-7 FPGA.
+The bootrom only reads an image if the correct checksum is present in the
+header. The calculation is pretty simple:
+sum over all words from 0x20 to 0x44
+Two of this words are the image length. That is why the checksum can not be
+calculated until barebox_image_size is known.
+The easiest solution is a program that has to be run after make.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
 
 Changes since v2:
-	- don't force serial driver in Kconfig
-	- remove MACH_HAS_LOWLEVEL_INIT
-	- use (void __iomem *) in debug_ll.h
-	- remove zynq_add_device inline function
-	- use resource_size_t instead of void *
-	- use __le32 consistently in zynq-flash-header.h
-	- remove useless flash_header_start section
+	- rename to zynq_mkimage
+	- add to gitignores
+	- always pipe barebox through zynq_mkimage
+	- don't waste memory with malloc
+	- add license header
 
- arch/arm/Kconfig                                   |   5 +
- arch/arm/Makefile                                  |   2 +
- arch/arm/mach-zynq/Kconfig                         |  38 ++++++
- arch/arm/mach-zynq/Makefile                        |   1 +
- arch/arm/mach-zynq/devices.c                       |   8 ++
- arch/arm/mach-zynq/include/mach/barebox.lds.h      |   8 ++
- arch/arm/mach-zynq/include/mach/debug_ll.h         |  37 ++++++
- arch/arm/mach-zynq/include/mach/devices.h          |  13 ++
- .../arm/mach-zynq/include/mach/zynq-flash-header.h |  38 ++++++
- arch/arm/mach-zynq/include/mach/zynq7000-regs.h    | 132 +++++++++++++++++++++
- arch/arm/mach-zynq/zynq.c                          |  56 +++++++++
- include/asm-generic/barebox.lds.h                  |   3 +-
- 12 files changed, 340 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-zynq/Kconfig
- create mode 100644 arch/arm/mach-zynq/Makefile
- create mode 100644 arch/arm/mach-zynq/devices.c
- create mode 100644 arch/arm/mach-zynq/include/mach/barebox.lds.h
- create mode 100644 arch/arm/mach-zynq/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-zynq/include/mach/devices.h
- create mode 100644 arch/arm/mach-zynq/include/mach/zynq-flash-header.h
- create mode 100644 arch/arm/mach-zynq/include/mach/zynq7000-regs.h
- create mode 100644 arch/arm/mach-zynq/zynq.c
+ .gitignore             |  1 +
+ arch/arm/Makefile      |  8 +++++
+ scripts/.gitignore     |  1 +
+ scripts/Makefile       |  1 +
+ scripts/zynq_mkimage.c | 86 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 97 insertions(+)
+ create mode 100644 scripts/zynq_mkimage.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 28332ec..8431fa8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -110,6 +110,10 @@ config ARCH_TEGRA
- 	select CPU_ARM926T
- 	select HAS_DEBUG_LL
- 
-+config ARCH_ZYNQ
-+	bool "Xilinx Zynq-based boards"
-+	select HAS_DEBUG_LL
-+
- endchoice
- 
- source arch/arm/cpu/Kconfig
-@@ -126,6 +130,7 @@ source arch/arm/mach-pxa/Kconfig
- source arch/arm/mach-samsung/Kconfig
- source arch/arm/mach-versatile/Kconfig
- source arch/arm/mach-tegra/Kconfig
-+source arch/arm/mach-zynq/Kconfig
- 
- config ARM_ASM_UNIFIED
- 	bool
+diff --git a/.gitignore b/.gitignore
+index 064753d..d197196 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -36,6 +36,7 @@ barebox.netx
+ barebox.s5p
+ barebox.spi
+ barebox.ubl
++barebox.zynq
+ barebox.uimage
+ barebox.map
+ barebox-flash-image
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index fcb2969..ceb45dc 100644
+index ceb45dc..5682e36 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -64,6 +64,7 @@ machine-$(CONFIG_ARCH_PXA)		:= pxa
- machine-$(CONFIG_ARCH_SAMSUNG)		:= samsung
- machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
- machine-$(CONFIG_ARCH_TEGRA)		:= tegra
-+machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
+@@ -244,6 +244,14 @@ KBUILD_TARGET := barebox.spi
+ KBUILD_IMAGE := barebox.spi
+ endif
  
- # Board directory name.  This list is sorted alphanumerically
- # by CONFIG_* macro name.
-@@ -157,6 +158,7 @@ board-$(CONFIG_MACH_SABRELITE)			:= freescale-mx6-sabrelite
- board-$(CONFIG_MACH_TX53)			:= karo-tx53
- board-$(CONFIG_MACH_GUF_VINCELL)		:= guf-vincell
- board-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		:= efika-mx-smartbook
-+board-$(CONFIG_MACH_ZEDBOARD)			:= avnet-zedboard
- 
- machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
- 
-diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
-new file mode 100644
-index 0000000..5bbd648
---- /dev/null
-+++ b/arch/arm/mach-zynq/Kconfig
-@@ -0,0 +1,38 @@
-+if ARCH_ZYNQ
++barebox.zynq: $(KBUILD_BINARY)
++	$(Q)scripts/zynq_mkimage $< $@
 +
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x1ff00000 if MACH_ZEDBOARD
-+
-+config ZYNQ_DEBUG_LL_UART_BASE
-+	hex
-+	default 0xe0001000 if MACH_ZEDBOARD
-+
-+config BOARDINFO
-+	default "ZedBoard" if MACH_ZEDBOARD
-+
-+choice
-+	prompt "Xilinx Zynq type board"
-+
-+config ARCH_ZYNQ7000
-+	bool "Zynq-7000"
-+	select CPU_V7
-+	select CLKDEV_LOOKUP
-+	select COMMON_CLK
-+	select ARM_SMP_TWD
-+
-+endchoice
-+
-+if ARCH_ZYNQ7000
-+
-+choice
-+	prompt "Zynq-7000 Board Type"
-+
-+config MACH_ZEDBOARD
-+	bool "Avnet Zynq-7000 ZedBoard"
-+	select DRIVER_SERIAL_CADENCE
-+
-+endchoice
++ifeq ($(machine-y),zynq)
++KBUILD_TARGET := barebox.zynq
++KBUILD_IMAGE := barebox.zynq
 +endif
 +
-+endif
-diff --git a/arch/arm/mach-zynq/Makefile b/arch/arm/mach-zynq/Makefile
+ pbl := arch/arm/pbl
+ zbarebox.S zbarebox.bin zbarebox: barebox.bin
+ 	$(Q)$(MAKE) $(build)=$(pbl) $(pbl)/$@
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 1ca6603..bff805d 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -7,3 +7,4 @@ mkimage
+ mkublheader
+ omap_signGP
+ omap4_usbboot
++zynq_mkimage
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 08b325c..fd526e5 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -12,6 +12,7 @@ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+ hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
++hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
+ 
+ HOSTLOADLIBES_omap4_usbboot = -lpthread
+ omap4_usbboot-objs               := usb_linux.o omap4_usbboot.o
+diff --git a/scripts/zynq_mkimage.c b/scripts/zynq_mkimage.c
 new file mode 100644
-index 0000000..459c957
+index 0000000..a096b83
 --- /dev/null
-+++ b/arch/arm/mach-zynq/Makefile
-@@ -0,0 +1 @@
-+obj-y += zynq.o devices.o clk-zynq7000.o
-diff --git a/arch/arm/mach-zynq/devices.c b/arch/arm/mach-zynq/devices.c
-new file mode 100644
-index 0000000..777bb87
---- /dev/null
-+++ b/arch/arm/mach-zynq/devices.c
-@@ -0,0 +1,8 @@
-+#include <common.h>
-+#include <driver.h>
-+#include <mach/devices.h>
-+
-+struct device_d *zynq_add_uart(resource_size_t base, int id)
-+{
-+	return add_generic_device("cadence-uart", id, NULL, base, 0x1000, IORESOURCE_MEM, NULL);
-+}
-diff --git a/arch/arm/mach-zynq/include/mach/barebox.lds.h b/arch/arm/mach-zynq/include/mach/barebox.lds.h
-new file mode 100644
-index 0000000..3d35fe9
---- /dev/null
-+++ b/arch/arm/mach-zynq/include/mach/barebox.lds.h
-@@ -0,0 +1,8 @@
-+#define PRE_IMAGE \
-+	.pre_image : {					\
-+		. = 0x20;				\
-+		KEEP(*(.flash_header_0x0*))		\
-+		. = 0xa0;				\
-+		KEEP(*(.ps7reg_entry_0x0A0))		\
-+		. = 0x8c0;				\
-+	}
-diff --git a/arch/arm/mach-zynq/include/mach/debug_ll.h b/arch/arm/mach-zynq/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..6c20dd5
---- /dev/null
-+++ b/arch/arm/mach-zynq/include/mach/debug_ll.h
-@@ -0,0 +1,37 @@
++++ b/scripts/zynq_mkimage.c
+@@ -0,0 +1,86 @@
 +/*
-+ * based on mach-imx/include/mach/debug_ll.h
-+ */
-+
-+#ifndef __MACH_DEBUG_LL_H__
-+#define __MACH_DEBUG_LL_H__
-+
-+#include <io.h>
-+#include <mach/zynq7000-regs.h>
-+
-+#ifndef CONFIG_ZYNQ_DEBUG_LL_UART_BASE
-+#warning define ZYNQ_DEBUG_LL_UART_BASE properly for debug_ll
-+#define ZYNQ_DEBUG_LL_UART_BASE ZYNQ_UART1_BASE_ADDR
-+#else
-+#define ZYNQ_DEBUG_LL_UART_BASE CONFIG_ZYNQ_DEBUG_LL_UART_BASE
-+#endif
-+
-+#define ZYNQ_UART_RXTXFIFO	0x30
-+#define ZYNQ_UART_CHANNEL_STS	0x2C
-+
-+#define ZYNQ_UART_STS_TFUL	(1 << 4)
-+#define ZYNQ_UART_TXDIS		(1 << 5)
-+
-+static inline void PUTC_LL(int c)
-+{
-+	void __iomem *base = (void __iomem *)ZYNQ_DEBUG_LL_UART_BASE;
-+
-+	if (readl(base) & ZYNQ_UART_TXDIS)
-+		return;
-+
-+	while ((readl(base + ZYNQ_UART_CHANNEL_STS) & ZYNQ_UART_STS_TFUL) != 0)
-+		;
-+
-+	writel(c, base + ZYNQ_UART_RXTXFIFO);
-+}
-+
-+#endif
-diff --git a/arch/arm/mach-zynq/include/mach/devices.h b/arch/arm/mach-zynq/include/mach/devices.h
-new file mode 100644
-index 0000000..281d7c6
---- /dev/null
-+++ b/arch/arm/mach-zynq/include/mach/devices.h
-@@ -0,0 +1,13 @@
-+#include <mach/zynq7000-regs.h>
-+
-+struct device_d *zynq_add_uart(resource_size_t base, int id);
-+
-+static inline struct device_d *zynq_add_uart0(void)
-+{
-+	return zynq_add_uart((resource_size_t)ZYNQ_UART0_BASE_ADDR, 0);
-+}
-+
-+static inline struct device_d *zynq_add_uart1(void)
-+{
-+	return zynq_add_uart((resource_size_t)ZYNQ_UART1_BASE_ADDR, 1);
-+}
-diff --git a/arch/arm/mach-zynq/include/mach/zynq-flash-header.h b/arch/arm/mach-zynq/include/mach/zynq-flash-header.h
-new file mode 100644
-index 0000000..3b67e55
---- /dev/null
-+++ b/arch/arm/mach-zynq/include/mach/zynq-flash-header.h
-@@ -0,0 +1,38 @@
-+#ifndef __MACH_FLASH_HEADER_H
-+#define __MACH_FLASH_HEADER_H
-+
-+#include <asm-generic/sections.h>
-+
-+#define __flash_header_section		__section(.flash_header_0x0)
-+#define __ps7reg_entry_section		__section(.ps7reg_entry_0x0A0)
-+#define __image_len_section		__section(.image_len_0x08c0)
-+#define FLASH_HEADER_OFFSET		0x0
-+#define IMAGE_OFFSET			0x8c0
-+
-+#define DEST_BASE			0x8c0
-+#define FLASH_HEADER_BASE	(DEST_BASE + FLASH_HEADER_OFFSET)
-+
-+struct zynq_reg_entry {
-+	__le32 addr;
-+	__le32 val;
-+};
-+
-+#define WIDTH_DETECTION_MAGIC	0xAA995566
-+#define IMAGE_IDENTIFICATION	0x584C4E58	/* "XLNX" */
-+
-+struct zynq_flash_header {
-+	__le32 width_det;
-+	__le32 image_id;
-+	__le32 enc_stat;
-+	__le32 user;
-+	__le32 flash_offset;
-+	__le32 length;
-+	__le32 res0;
-+	__le32 start_of_exec;
-+	__le32 total_len;
-+	__le32 res1;
-+	__le32 checksum;
-+	__le32 res2;
-+};
-+
-+#endif /* __MACH_FLASH_HEADER_H */
-diff --git a/arch/arm/mach-zynq/include/mach/zynq7000-regs.h b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-new file mode 100644
-index 0000000..f5ccbb0
---- /dev/null
-+++ b/arch/arm/mach-zynq/include/mach/zynq7000-regs.h
-@@ -0,0 +1,132 @@
-+/*
-+ * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
++ * Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -310,202 +120,80 @@ index 0000000..f5ccbb0
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
-+ *
 + */
 +
-+#define ZYNQ_UART0_BASE_ADDR		0xE0000000
-+#define ZYNQ_UART1_BASE_ADDR		0xE0001000
-+#define ZYNQ_I2C0_BASE_ADDR		0xE0004000
-+#define ZYNQ_I2C1_BASE_ADDR		0xE0005000
-+#define ZYNQ_SPI0_BASE_ADDR		0xE0006000
-+#define ZYNQ_SPI1_BASE_ADDR		0xE0007000
-+#define ZYNQ_CAN0_BASE_ADDR		0xE0008000
-+#define ZYNQ_CAN1_BASE_ADDR		0xE0009000
-+#define ZYNQ_GPIO_BASE_ADDR		0xE000A000
++#include <endian.h>
++#include <errno.h>
++#include <malloc.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/stat.h>
 +
-+#define ZYNQ_SLCR_BASE			0xF8000000
-+#define ZYNQ_SLCR_SCL			(ZYNQ_SLCR_BASE + 0x000)
-+#define ZYNQ_SLCR_LOCK			(ZYNQ_SLCR_BASE + 0x004)
-+#define ZYNQ_SLCR_UNLOCK		(ZYNQ_SLCR_BASE + 0x008)
-+#define ZYNQ_SLCR_LOCKSTA		(ZYNQ_SLCR_BASE + 0x00C)
-+#define ZYNQ_CLOCK_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x100)
-+#define ZYNQ_ARM_PLL_CTRL		0x000
-+#define ZYNQ_DDR_PLL_CTRL		0x004
-+#define ZYNQ_IO_PLL_CTRL		0x008
-+#define ZYNQ_PLL_STATUS			0x00C
-+#define ZYNQ_ARM_PLL_CFG		0x010
-+#define ZYNQ_DDR_PLL_CFG		0x014
-+#define ZYNQ_IO_PLL_CFG			0x018
-+#define ZYNQ_ARM_CLK_CTRL		0x020
-+#define ZYNQ_DDR_CLK_CTRL		0x024
-+#define ZYNQ_DCI_CLK_CTRL		0x028
-+#define ZYNQ_APER_CLK_CTRL		0x02C
-+#define ZYNQ_USB0_CLK_CTRL		0x030
-+#define ZYNQ_USB1_CLK_CTRL		0x034
-+#define ZYNQ_GEM0_RCLK_CTRL		0x038
-+#define ZYNQ_GEM1_RCLK_CTRL		0x03C
-+#define ZYNQ_GEM0_CLK_CTRL		0x040
-+#define ZYNQ_GEM1_CLK_CTRL		0x044
-+#define ZYNQ_SMC_CLK_CTRL		0x048
-+#define ZYNQ_LQSPI_CLK_CTRL		0x04C
-+#define ZYNQ_SDIO_CLK_CTRL		0x050
-+#define ZYNQ_UART_CLK_CTRL		0x054
-+#define ZYNQ_SPI_CLK_CTRL		0x058
-+#define ZYNQ_CAN_CLK_CTRL		0x05C
-+#define ZYNQ_CAN_MIOCLK_CTRL		0x060
-+#define ZYNQ_DBG_CLK_CTRL		0x064
-+#define ZYNQ_PCAP_CLK_CTRL		0x068
-+#define ZYNQ_TOPSW_CLK_CTRL		0x06C
-+#define ZYNQ_FPGA0_CLK_CTRL		0x070
-+#define ZYNQ_FPGA1_CLK_CTRL		0x080
-+#define ZYNQ_FPGA2_CLK_CTRL		0x090
-+#define ZYNQ_FPGA3_CLK_CTRL		0x0A0
-+#define ZYNQ_CLK_621_TRUE		0x0C4
-+#define ZYNQ_RST_CTRL_BASE		(ZYNQ_SLCR_BASE + 0x200)
-+#define ZYNQ_PSS_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x000)
-+#define ZYNQ_DDR_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x004)
-+#define ZYNQ_TOPSW_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x008)
-+#define ZYNQ_DMAC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x00C)
-+#define ZYNQ_USB_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x010)
-+#define ZYNQ_GEM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x014)
-+#define ZYNQ_SDIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x018)
-+#define ZYNQ_SPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x01C)
-+#define ZYNQ_CAN_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x020)
-+#define ZYNQ_I2C_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x024)
-+#define ZYNQ_UART_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x028)
-+#define ZYNQ_GPIO_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x02C)
-+#define ZYNQ_LQSPI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x030)
-+#define ZYNQ_SMC_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x034)
-+#define ZYNQ_OCM_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x038)
-+#define ZYNQ_DEVCI_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x03C)
-+#define ZYNQ_FPGA_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x040)
-+#define ZYNQ_A9_CPU_RST_CTRL		(ZYNQ_RST_CTRL_BASE + 0x044)
-+#define ZYNQ_RS_AWDT_CTRL		(ZYNQ_RST_CTRL_BASE + 0x04C)
-+#define ZYNQ_REBOOT_STATUS		(ZYNQ_SLCR_BASE + 0x258)
-+#define ZYNQ_BOOT_MODE			(ZYNQ_SLCR_BASE + 0x25C)
-+#define ZYNQ_APU_CTRL			(ZYNQ_SLCR_BASE + 0x300)
-+#define ZYNQ_WDT_CLK_SEL		(ZYNQ_SLCR_BASE + 0x304)
-+#define ZYNQ_PSS_IDCODE			(ZYNQ_SLCR_BASE + 0x530)
-+#define ZYNQ_DDR_URGENT			(ZYNQ_SLCR_BASE + 0x600)
-+#define ZYNQ_DDR_CAL_START		(ZYNQ_SLCR_BASE + 0x60C)
-+#define ZYNQ_DDR_REF_START		(ZYNQ_SLCR_BASE + 0x614)
-+#define ZYNQ_DDR_CMD_STA		(ZYNQ_SLCR_BASE + 0x618)
-+#define ZYNQ_DDR_URGENT_SEL		(ZYNQ_SLCR_BASE + 0x61C)
-+#define ZYNQ_DDR_DFI_STATUS		(ZYNQ_SLCR_BASE + 0x620)
-+#define ZYNQ_MIO_BASE			(ZYNQ_SLCR_BASE + 0x700)
-+#define ZYNQ_MIO_LOOPBACK		(ZYNQ_MIO_BASE + 0x104)
-+#define ZYNQ_MIO_MST_TRI0		(ZYNQ_MIO_BASE + 0x10C)
-+#define ZYNQ_MIO_MST_TRI1		(ZYNQ_MIO_BASE + 0x110)
-+#define ZYNQ_SD0_WP_SEL			(ZYNQ_SLCR_BASE + 0x830)
-+#define ZYNQ_SD1_WP_SEL			(ZYNQ_SLCR_BASE + 0x834)
-+#define ZYNQ_LVL_SHIFTR_EN		(ZYNQ_SLCR_BASE + 0x900)
-+#define ZYNQ_OCM_CFG			(ZYNQ_SLCR_BASE + 0x910)
-+#define ZYNQ_GPIOB_BASE			(ZYNQ_SLCR_BASE + 0xB00)
-+#define ZYNQ_GPIOB_CTRL			(ZYNQ_GPIOB_BASE + 0x000)
-+#define ZYNQ_GPIOB_CFG_CMOS18		(ZYNQ_GPIOB_BASE + 0x004)
-+#define ZYNQ_GPIOB_CFG_CMOS25		(ZYNQ_GPIOB_BASE + 0x008)
-+#define ZYNQ_GPIOB_CFG_CMOS33		(ZYNQ_GPIOB_BASE + 0x00C)
-+#define ZYNQ_GPIOB_CFG_LVTTL		(ZYNQ_GPIOB_BASE + 0x010)
-+#define ZYNQ_GPIOB_CFG_HSTL		(ZYNQ_GPIOB_BASE + 0x014)
-+#define ZYNQ_GPIOB_DRV_BIAS_CTRL	(ZYNQ_GPIOB_BASE + 0x018)
-+#define ZYNQ_DDRIOB_BASE		(ZYNQ_SLCR_BASE + 0xB40)
-+#define ZYNQ_DDRIOB_ADDR0		(ZYNQ_DDRIOB_BASE + 0x000)
-+#define ZYNQ_DDRIOB_ADDR1		(ZYNQ_DDRIOB_BASE + 0x004)
-+#define ZYNQ_DDRIOB_DATA0		(ZYNQ_DDRIOB_BASE + 0x008)
-+#define ZYNQ_DDRIOB_DATA1		(ZYNQ_DDRIOB_BASE + 0x00C)
-+#define ZYNQ_DDRIOB_DIFF0		(ZYNQ_DDRIOB_BASE + 0x010)
-+#define ZYNQ_DDRIOB_DIFF1		(ZYNQ_DDRIOB_BASE + 0x014)
-+#define ZYNQ_DDRIOB_CLOCK		(ZYNQ_DDRIOB_BASE + 0x018)
-+#define ZYNQ_DDRIOB_DRIVE_SLEW_ADDR	(ZYNQ_DDRIOB_BASE + 0x01C)
-+#define ZYNQ_DDRIOB_DRIVE_SLEW_DATA	(ZYNQ_DDRIOB_BASE + 0x020)
-+#define ZYNQ_DDRIOB_DRIVE_SLEW_DIFF	(ZYNQ_DDRIOB_BASE + 0x024)
-+#define ZYNQ_DDRIOB_DRIVE_SLEW_CLOCK	(ZYNQ_DDRIOB_BASE + 0x028)
-+#define ZYNQ_DDRIOB_DDR_CTRL		(ZYNQ_DDRIOB_BASE + 0x02C)
-+#define ZYNQ_DDRIOB_DCI_CTRL		(ZYNQ_DDRIOB_BASE + 0x030)
-+#define ZYNQ_DDRIOB_DCI_STATUS		(ZYNQ_DDRIOB_BASE + 0x034)
-+
-+#define ZYNQ_TTC0_BASE_ADDR		0xF8001000
-+#define ZYNQ_TTC1_BASE_ADDR		0xF8002000
-+
-+#define ZYNQ_DDRC_BASE			0xF8006000
-+
-+#define CORTEXA9_SCU_TIMER_BASE_ADDR	0xF8F00600
-diff --git a/arch/arm/mach-zynq/zynq.c b/arch/arm/mach-zynq/zynq.c
-new file mode 100644
-index 0000000..bd29e13
---- /dev/null
-+++ b/arch/arm/mach-zynq/zynq.c
-@@ -0,0 +1,56 @@
-+/*
-+ * (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm/system.h>
-+#include <asm-generic/io.h>
-+#include <common.h>
-+#include <init.h>
-+#include <mach/zynq7000-regs.h>
-+
-+static int zynq_init(void)
++static void usage(char *name)
 +{
-+	u32 val;
++	printf("Usage: %s barebox-flash-image <outfile>\n", name);
++}
 +
-+	dsb();
-+	isb();
-+	writel(0xDF0D, ZYNQ_SLCR_UNLOCK);
-+	/* remap ocm high */
-+	writel(0x0000000F, 0xf8000910);
-+	/* mpcore.filtering_start_address */
-+	writel(0x00000000, 0xf8f00040);
-+	/* mpcore.filtering_end_address */
-+	writel(0xffe00000, 0xf8f00044);
-+	val = readl(0xf8f00000);
-+	val |= 0x2;
-+	writel(val, 0xf8f00000);
-+	dmb();
++int main(int argc, char *argv[])
++{
++	FILE *ifile, *ofile;
++	unsigned int *buf;
++	const char *infile;
++	const char *outfile;
++	struct stat st;
++	unsigned int i;
++	unsigned long sum = 0;
 +
-+	add_generic_device("zynq-clock", 0, NULL, ZYNQ_SLCR_BASE, 0x4000, IORESOURCE_MEM, NULL);
-+	add_generic_device("smp_twd", 0, NULL, CORTEXA9_SCU_TIMER_BASE_ADDR,
-+				0x4000, IORESOURCE_MEM, NULL);
++	if (argc != 3) {
++		usage(argv[0]);
++		exit(1);
++	}
++
++	infile = argv[1];
++	outfile = argv[2];
++
++	if (stat(infile, &st) == -1) {
++		perror("stat");
++		exit(EXIT_FAILURE);
++	}
++
++	buf = malloc(st.st_size);
++	if (!buf) {
++		fprintf(stderr, "Unable to allocate buffer\n");
++		return -1;
++	}
++	ifile = fopen(infile, "rb");
++	if (!ifile) {
++		fprintf(stderr, "Cannot open %s for reading\n",
++			infile);
++		free(buf);
++		exit(EXIT_FAILURE);
++	}
++	ofile = fopen(outfile, "wb");
++	if (!ofile) {
++		fprintf(stderr, "Cannot open %s for writing\n",
++			outfile);
++		fclose(ifile);
++		free(buf);
++		exit(EXIT_FAILURE);
++	}
++
++	fread(buf, 4, st.st_size, ifile);
++
++	for (i = 0x8; i < 0x12; i++)
++		sum += htole32(buf[i]);
++
++	sum = ~sum;
++	buf[i] = sum;
++
++	fwrite(buf, st.st_size / 4, 4, ofile);
++
++	fclose(ofile);
++	fclose(ifile);
++	free(buf);
++
 +	return 0;
 +}
-+postcore_initcall(zynq_init);
-+
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	/* write unlock key to slcr */
-+	writel(0xDF0D, ZYNQ_SLCR_UNLOCK);
-+	/* reset */
-+	writel(0x1, ZYNQ_PSS_RST_CTRL);
-+
-+	while (1)
-+		;
-+}
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index b2bd19e..0b98c96 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -5,7 +5,8 @@
- 	defined CONFIG_ARCH_IMX53 || \
- 	defined CONFIG_ARCH_IMX6 || \
- 	defined CONFIG_X86 || \
--	defined CONFIG_ARCH_EP93XX
-+	defined CONFIG_ARCH_EP93XX || \
-+	defined CONFIG_ARCH_ZYNQ
- #include <mach/barebox.lds.h>
- #endif
- 
 -- 
 1.8.2.rc2
 
