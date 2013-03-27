@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKlRI-0000jM-Nb
- for barebox@lists.infradead.org; Wed, 27 Mar 2013 08:10:34 +0000
-Message-ID: <5152A974.4020905@phytec.de>
-Date: Wed, 27 Mar 2013 09:10:28 +0100
-From: Teresa Gamez <t.gamez@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UKllG-0002Xy-TM
+ for barebox@lists.infradead.org; Wed, 27 Mar 2013 08:31:12 +0000
+Date: Wed, 27 Mar 2013 09:31:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130327083109.GP1906@pengutronix.de>
+References: <20130319154901.9111A25817@kryptos.localdomain>
+ <20130319155432.GC16050@kryptos>
+ <20130325091247.GW1906@pengutronix.de>
+ <20130326152109.GH16050@kryptos>
 MIME-Version: 1.0
-References: <1364307796-2407-1-git-send-email-t.gamez@phytec.de>
- <1364307796-2407-2-git-send-email-t.gamez@phytec.de>
- <20130326201713.GA3564@x61s.Speedport_W_921V_1_21_000>
-In-Reply-To: <20130326201713.GA3564@x61s.Speedport_W_921V_1_21_000>
+Content-Disposition: inline
+In-Reply-To: <20130326152109.GH16050@kryptos>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,87 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC PATCH 2/2] OMAP: Add option to use enviroment from MMC
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] macb: rename platform data
+To: Josh Cartwright <joshc@eso.teric.us>
+Cc: barebox@lists.infradead.org
 
-QW0gMjYuMDMuMjAxMyAyMToxNywgc2NocmllYiBBbGV4YW5kZXIgQXJpbmc6Cgo+IEhpLAo+Cj4g
-T24gVHVlLCBNYXIgMjYsIDIwMTMgYXQgMDM6MjM6MTZQTSArMDEwMCwgVGVyZXNhIEfDoW1leiB3
-cm90ZToKPj4gTWFrZSBsb2FkaW5nIGVudmlyb21lbnQgZnJvbSBNTUMgZ2VuZXJpYyBmb3IgYWxs
-IE9NQVAuCj4+Cj4+IFRlc3RlZCBvbiBBTTMzNXgsIE9NQVA0Lgo+Pgo+PiBTaWduZWQtb2ZmLWJ5
-OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KPj4gVGVzdGVkLWJ5OiBKYW4gV2Vp
-dHplbCA8ai53ZWl0emVsQHBoeXRlYy5kZT4KPj4gLS0tCj4+ICAgYXJjaC9hcm0vYm9hcmRzL3Bh
-bmRhL2JvYXJkLmMgICAgICAgICAgICAgfCAgIDMwIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQo+PiAgIGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oIHwgICAgMSAr
-Cj4+ICAgYXJjaC9hcm0vbWFjaC1vbWFwL29tYXBfZ2VuZXJpYy5jICAgICAgICAgfCAgIDMyICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrCj4+ICAgMyBmaWxlcyBjaGFuZ2VkLCAzMyBpbnNl
-cnRpb25zKCspLCAzMCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jv
-YXJkcy9wYW5kYS9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL3BhbmRhL2JvYXJkLmMKPj4gaW5k
-ZXggMjUxOGQzYS4uZDFmOWE1ZSAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BhbmRh
-L2JvYXJkLmMKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BhbmRhL2JvYXJkLmMKPj4gQEAgLTEs
-MTIgKzEsMTAgQEAKPj4gICAjaW5jbHVkZSA8Y29tbW9uLmg+Cj4+ICAgI2luY2x1ZGUgPGNvbnNv
-bGUuaD4KPj4gICAjaW5jbHVkZSA8aW5pdC5oPgo+PiAtI2luY2x1ZGUgPGZzLmg+Cj4+ICAgI2lu
-Y2x1ZGUgPGRyaXZlci5oPgo+PiAgICNpbmNsdWRlIDxpby5oPgo+PiAgICNpbmNsdWRlIDxuczE2
-NTUwLmg+Cj4+ICAgI2luY2x1ZGUgPGFzbS9hcm1saW51eC5oPgo+PiAtI2luY2x1ZGUgPGxpbnV4
-L3N0YXQuaD4KPj4gICAjaW5jbHVkZSA8Z2VuZXJhdGVkL21hY2gtdHlwZXMuaD4KPj4gICAjaW5j
-bHVkZSA8bWFjaC9vbWFwNC1zaWxpY29uLmg+Cj4+ICAgI2luY2x1ZGUgPG1hY2gvb21hcDQtZGV2
-aWNlcy5oPgo+PiBAQCAtMjAsNyArMTgsNiBAQAo+PiAgICNpbmNsdWRlIDxhc20vbW11Lmg+Cj4+
-ICAgI2luY2x1ZGUgPG1hY2gvZ3Bpby5oPgo+PiAgICNpbmNsdWRlIDxlbnZmcy5oPgo+PiAtI2lu
-Y2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPgo+PiAgICNpbmNsdWRlIDxpMmMvaTJjLmg+Cj4+ICAgI2lu
-Y2x1ZGUgPGdwaW8uaD4KPj4gICAjaW5jbHVkZSA8bGVkLmg+Cj4+IEBAIC0xNjQsMzAgKzE2MSwz
-IEBAIHN0YXRpYyBpbnQgcGFuZGFfZGV2aWNlc19pbml0KHZvaWQpCj4+ICAgCXJldHVybiAwOwo+
-PiAgIH0KPj4gICBkZXZpY2VfaW5pdGNhbGwocGFuZGFfZGV2aWNlc19pbml0KTsKPj4gLQo+PiAt
-I2lmZGVmIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UCj4+IC1zdGF0aWMgaW50IHBhbmRhX2Vu
-dl9pbml0KHZvaWQpCj4+IC17Cj4+IC0Jc3RydWN0IHN0YXQgczsKPj4gLQljaGFyICpkaXNrZGV2
-ID0gIi9kZXYvZGlzazAuMCI7Cj4+IC0JaW50IHJldDsKPj4gLQo+PiAtCXJldCA9IHN0YXQoZGlz
-a2RldiwgJnMpOwo+PiAtCWlmIChyZXQpIHsKPj4gLQkJcHJpbnRmKCJubyAlcy4gdXNpbmcgZGVm
-YXVsdCBlbnZcbiIsIGRpc2tkZXYpOwo+PiAtCQlyZXR1cm4gMDsKPj4gLQl9Cj4+IC0KPj4gLQlt
-a2RpciAoIi9ib290IiwgMDY2Nik7Cj4+IC0JcmV0ID0gbW91bnQoZGlza2RldiwgImZhdCIsICIv
-Ym9vdCIpOwo+PiAtCWlmIChyZXQpIHsKPj4gLQkJcHJpbnRmKCJmYWlsZWQgdG8gbW91bnQgJXNc
-biIsIGRpc2tkZXYpOwo+PiAtCQlyZXR1cm4gMDsKPj4gLQl9Cj4+IC0KPj4gLQlkZWZhdWx0X2Vu
-dmlyb25tZW50X3BhdGggPSAiL2Jvb3QvYmFyZWJveGVudiI7Cj4+IC0KPj4gLQlyZXR1cm4gMDsK
-Pj4gLX0KPj4gLWxhdGVfaW5pdGNhbGwocGFuZGFfZW52X2luaXQpOwo+PiAtI2VuZGlmCj4gVGhl
-cmUgaXMgYSBzZWNvbmQgZW52X2luaXQgaW4gYmVhZ2xlYm9uZToKPgo+IGxhdGVfaW5pdGNhbGwo
-YmVhZ2xlYm9uZV9lbnZfaW5pdCk7IGluCj4gYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvYm9h
-cmQuYwo+Cj4gSSB0aGluayB5b3UgbmVlZCB0byByZW1vdmUgdGhpcyB0b28uIE90aGVyd2lzZSB0
-aGlzIHdpbGwgYmUgY2FsbGVkIHR3aWNlLgoKT2gsIG1pc3NlZCB0aGF0IG9uZS4uLi4KCj4KPj4g
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oIGIv
-YXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5lcmljLmgKPj4gaW5kZXggZWRjNGYx
-ZC4uNzQ1NTQwNCAxMDA2NDQKPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFj
-aC9nZW5lcmljLmgKPj4gKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5l
-cmljLmgKPj4gQEAgLTM1LDYgKzM1LDcgQEAgZW51bSBvbWFwX2Jvb3Rfc3JjIHsKPj4gICAJT01B
-UF9CT09UU1JDX1VTQjEsCj4+ICAgfTsKPj4gICAKPj4gK2VudW0gb21hcF9ib290X3NyYyBvbWFw
-X2Jvb3RzcmModm9pZCk7Cj4+ICAgZW51bSBvbWFwX2Jvb3Rfc3JjIGFtMzN4eF9ib290c3JjKHZv
-aWQpOwo+PiAgIGVudW0gb21hcF9ib290X3NyYyBvbWFwM19ib290c3JjKHZvaWQpOwo+PiAgIGVu
-dW0gb21hcF9ib290X3NyYyBvbWFwNF9ib290c3JjKHZvaWQpOwo+PiBkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vbWFjaC1vbWFwL29tYXBfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29tYXBf
-Z2VuZXJpYy5jCj4+IGluZGV4IGYyZmQxZDMuLjU4ODI3OTQgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gv
-YXJtL21hY2gtb21hcC9vbWFwX2dlbmVyaWMuYwo+PiArKysgYi9hcmNoL2FybS9tYWNoLW9tYXAv
-b21hcF9nZW5lcmljLmMKPj4gQEAgLTMwLDMgKzMwLDM1IEBAIGVudW0gb21hcF9ib290X3NyYyBv
-bWFwX2Jvb3RzcmModm9pZCkKPj4gICAJcmV0dXJuIGFtMzN4eF9ib290c3JjKCk7Cj4+ICAgI2Vu
-ZGlmCj4+ICAgfQo+PiArCj4+ICsjaWYgZGVmaW5lZChDT05GSUdfREVGQVVMVF9FTlZJUk9OTUVO
-VCkgJiYgZGVmaW5lZChDT05GSUdfTUNJX1NUQVJUVVApCj4+ICtzdGF0aWMgaW50IG9tYXBfZW52
-X2luaXQodm9pZCkKPj4gK3sKPj4gKwlzdHJ1Y3Qgc3RhdCBzOwo+PiArCWNoYXIgKmRpc2tkZXYg
-PSAiL2Rldi9kaXNrMC4wIjsKPj4gKwlpbnQgcmV0Owo+PiArCj4+ICsJaWYgKG9tYXBfYm9vdHNy
-YygpICE9IE9NQVBfQk9PVFNSQ19NTUMxKQo+PiArCQlyZXR1cm4gMDsKPj4gKwo+PiArCXJldCA9
-IHN0YXQoZGlza2RldiwgJnMpOwo+PiArCWlmIChyZXQpIHsKPj4gKwkJcHJpbnRmKCJubyAlcy4g
-dXNpbmcgZGVmYXVsdCBlbnZcbiIsIGRpc2tkZXYpOwo+PiArCQlyZXR1cm4gMDsKPj4gKwl9Cj4+
-ICsKPj4gKwlta2RpcigiL2Jvb3QiLCAwNjY2KTsKPj4gKwlyZXQgPSBtb3VudChkaXNrZGV2LCAi
-ZmF0IiwgIi9ib290Iik7Cj4+ICsJaWYgKHJldCkgewo+PiArCQlwcmludGYoImZhaWxlZCB0byBt
-b3VudCAlc1xuIiwgZGlza2Rldik7Cj4+ICsJCXJldHVybiAwOwo+PiArCX0KPj4gKwo+PiArCXBy
-aW50ZigiTG9hZGluZyBlbnZpcm9tZW50IGZyb20gTU1DXG4iKTsKPiBzL2Vudmlyb21lbnQvZW52
-aXJvbm1lbnQKPj4gKwo+PiArCWRlZmF1bHRfZW52aXJvbm1lbnRfcGF0aCA9ICIvYm9vdC9iYXJl
-Ym94ZW52IjsKPj4gKwo+PiArCXJldHVybiAwOwo+PiArfQo+PiArbGF0ZV9pbml0Y2FsbChvbWFw
-X2Vudl9pbml0KTsKPj4gKyNlbmRpZgo+IFRoZSBwYXJ0IGluIGJlYWdsZWJvbmUvYm9hcmQuYyBj
-aGVja3MgZm9yIGJ1aWxkIGluIGVudmlyb25tZW50Ogo+IElTX0VOQUJMRUQoQ09ORklHX09NQVBf
-QlVJTERfSUZUKQo+Cj4gTWF5YmUgeW91IGNhbiBhZGQgdGhpcyBoZXJlLCB0b28uIEJ1dCByZW1l
-bWJlciB0byBkaXNhYmxlCj4gQ09ORklHX09NQVBfQlVJTERfSUZUIHRvIHVzZSBhIG1tYyBlbnZp
-cm9ubWVudC4KPgo+IEJ1dCBtYXliZSB5b3UgY2FuIGRyb3AgdGhpcyBoZXJlLCBiZWNhdXNlIHlv
-dSBjaGVjayBvbgo+IENPTkZJR19NQ0lfU1RBUlRVUC4KCklzIHRoaXMgdXNlZCBmb3IgdGhlIGFt
-MzM1eF9iZWFnbGVib25lX21sb19sYXJnZV9kZWZjb25maWc/CgpUZXJlc2EKCj4gQWxleAoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Tue, Mar 26, 2013 at 10:21:09AM -0500, Josh Cartwright wrote:
+> On Mon, Mar 25, 2013 at 10:12:47AM +0100, Sascha Hauer wrote:
+> > Hi Josh,
+> > 
+> > On Tue, Mar 19, 2013 at 10:54:32AM -0500, Josh Cartwright wrote:
+> > > On Fri, Mar 15, 2013 at 06:26:00PM -0500, Josh Cartwright wrote:
+> > > [..]
+> > > > >From 0d51dc731ff3934e22e78405a992658a8d3bf1de Mon Sep 17 00:00:00 2001
+> > > > From: Josh Cartwright <joshc@eso.teric.us>
+> > > > Date: Tue, 19 Mar 2013 10:22:48 -0500
+> > > > Subject: [PATCH] parameter: fix build warning when !CONFIG_PARAMETER
+> > > > To: barebox@lists.infradead.org
+> > > 
+> > > Ugh, sorry that I butchered patch submission and this mail ended up with
+> > > two patches together; should I resend?
+> > 
+> > No, it's ok. I applied the macb pdata rename. If you wish to have the
+> > other one applied, please resend this one.
+> 
+> It looks like what was applied to your tree was a squash of these two
+> changes together, so no need to resend.
+
+Ups, this was not intentional. I removed the hunk which should really be
+a separate patch, so you indeed have to resend ;)
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
