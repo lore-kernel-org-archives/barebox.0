@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from eso.teric.us ([69.164.192.171])
+Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKpwh-0002KN-Q4
- for barebox@lists.infradead.org; Wed, 27 Mar 2013 12:59:16 +0000
-In-Reply-To: <20130327083109.GP1906@pengutronix.de>
-References: <20130327083109.GP1906@pengutronix.de>
-From: Josh Cartwright <joshc@eso.teric.us>
-Date: Tue, 19 Mar 2013 10:22:48 -0500
-Message-Id: <20130327130025.7FF1725817@kryptos.localdomain>
+ id 1UKrXE-0001Lg-0y
+ for barebox@lists.infradead.org; Wed, 27 Mar 2013 14:41:05 +0000
+From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Date: Wed, 27 Mar 2013 15:40:36 +0100
+Message-Id: <1364395236-539-1-git-send-email-alexandre.belloni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,43 +19,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RESEND] parameter: fix build warning when !CONFIG_PARAMETER
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] cfa10036: Retrieve the RAM size at runtime
+To: barebox@lists.infradead.org
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>, jimwall@q.com, brian@crystalfontz.com
 
-Commit 51f2ded17c35c146488f6f3b697764bb2953a156 ("param: make return
-value of param getter function const") made the parameter getter const,
-but neglected to change the dev_add_param() function prototype in the
-!CONFIG_PARAMETER case.
+The cfa-10036 comes in two flavours, with either 128MB or 256MB of RAM
+on it.
 
-Fixes the following warning with CONFIG_NAND and !CONFIG_PARAMETER:
+Since it's not stored anywhere, we need to runtime detect it by
+introducing the cfa10036_get_ram_size function.
 
-drivers/mtd/nand/nand_base.c: In function 'add_mtd_nand_device':
-drivers/mtd/nand/nand_base.c:1720:2: warning: passing argument 4 of 'dev_add_param' from incompatible pointer type [enabled by default]
-include/param.h:59:19: note: expected 'char * (*)(struct device_d *, struct param_d *)' but argument is of type 'const char * (*)(struct device_d *, struct param_d *)'
-
-Signed-off-by: Josh Cartwright <joshc@eso.teric.us>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---
-Sorry again for then noise!
+changes since v1:
+  - stripped cfa10036_get_ram_size as suggested by Sacha
+  - I'm not too happy about the v5_mmu_cache_flush definition and call but that
+	has to be done, else we are not reading the modified value, even on 128MB
+	boards.
 
- include/param.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/param.h b/include/param.h
-index 21f4f7d..3a585cd 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -58,7 +58,7 @@ static inline struct param_d *get_param_by_name(struct device_d *dev,
+ arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+index 1bc20cf..a37b089 100644
+--- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
++++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
+@@ -90,9 +90,25 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata = {
+ 	.udelay			= 5,		/* ~100 kHz */
+ };
  
- static inline int dev_add_param(struct device_d *dev, char *name,
- 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
--		char *(*get)(struct device_d *, struct param_d *p),
-+		const char *(*get)(struct device_d *, struct param_d *p),
- 		unsigned long flags)
++void v5_mmu_cache_flush(void);
++long cfa10036_get_ram_size(void)
++{
++	volatile u32 *base = (void *)IMX_MEMORY_BASE;
++	volatile u32 *ofs = base + SZ_128M / sizeof(u32);
++
++	*base = *ofs = 0xdeadbeef;
++	*ofs = 0xbaadcafe;
++
++	v5_mmu_cache_flush();
++	if (*base == 0xbaadcafe)
++		return SZ_128M;
++	else
++		return SZ_256M;
++}
++
+ static int cfa10036_mem_init(void)
  {
+-	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
++	arm_add_mem_device("ram0", IMX_MEMORY_BASE, cfa10036_get_ram_size());
+ 
  	return 0;
+ }
 -- 
-1.8.1.5
+1.7.10.4
 
 
 _______________________________________________
