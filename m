@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UKrXE-0001Lg-0y
- for barebox@lists.infradead.org; Wed, 27 Mar 2013 14:41:05 +0000
-From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Date: Wed, 27 Mar 2013 15:40:36 +0100
-Message-Id: <1364395236-539-1-git-send-email-alexandre.belloni@free-electrons.com>
+ id 1UL9w8-0001en-9k
+ for barebox@lists.infradead.org; Thu, 28 Mar 2013 10:20:01 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 27C20BF0F4
+ for <barebox@lists.infradead.org>; Thu, 28 Mar 2013 11:19:48 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 28 Mar 2013 11:19:50 +0100
+Message-Id: <1364465990-9494-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] cfa10036: Retrieve the RAM size at runtime
+Subject: [PATCH] fb: calculate resource end
 To: barebox@lists.infradead.org
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>, jimwall@q.com, brian@crystalfontz.com
 
-The cfa-10036 comes in two flavours, with either 128MB or 256MB of RAM
-on it.
+commit 5f03074 changed storing struct resource end insted of size.
+Fix calculation of end in fb
 
-Since it's not stored anywhere, we need to runtime detect it by
-introducing the cfa10036_get_ram_size function.
-
-Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
-changes since v1:
-  - stripped cfa10036_get_ram_size as suggested by Sacha
-  - I'm not too happy about the v5_mmu_cache_flush definition and call but that
-	has to be done, else we are not reading the modified value, even on 128MB
-	boards.
+ drivers/video/fb.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-
- arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-index 1bc20cf..a37b089 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-+++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-@@ -90,9 +90,25 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata = {
- 	.udelay			= 5,		/* ~100 kHz */
- };
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index ee53272..be29695 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -86,7 +86,7 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+ 	if (!ret) {
+ 		dev->resource[0].start = (resource_size_t)info->screen_base;
+ 		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
+-		dev->resource[0].end = info->cdev.size - 1;
++		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
+ 		dev_param_set_generic(dev, param, val);
+ 	} else
+ 		info->cdev.size = 0;
+@@ -116,7 +116,7 @@ int register_framebuffer(struct fb_info *info)
+ 	info->cdev.priv = info;
+ 	dev->resource = xzalloc(sizeof(struct resource));
+ 	dev->resource[0].start = (resource_size_t)info->screen_base;
+-	dev->resource[0].end = info->cdev.size - 1;
++	dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
+ 	dev->resource[0].flags = IORESOURCE_MEM;
+ 	dev->num_resources = 1;
  
-+void v5_mmu_cache_flush(void);
-+long cfa10036_get_ram_size(void)
-+{
-+	volatile u32 *base = (void *)IMX_MEMORY_BASE;
-+	volatile u32 *ofs = base + SZ_128M / sizeof(u32);
-+
-+	*base = *ofs = 0xdeadbeef;
-+	*ofs = 0xbaadcafe;
-+
-+	v5_mmu_cache_flush();
-+	if (*base == 0xbaadcafe)
-+		return SZ_128M;
-+	else
-+		return SZ_256M;
-+}
-+
- static int cfa10036_mem_init(void)
- {
--	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
-+	arm_add_mem_device("ram0", IMX_MEMORY_BASE, cfa10036_get_ram_size());
- 
- 	return 0;
- }
 -- 
-1.7.10.4
+1.7.0.4
 
 
 _______________________________________________
