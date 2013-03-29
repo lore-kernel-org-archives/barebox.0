@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UL9w8-0001en-9k
- for barebox@lists.infradead.org; Thu, 28 Mar 2013 10:20:01 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 27C20BF0F4
- for <barebox@lists.infradead.org>; Thu, 28 Mar 2013 11:19:48 +0100 (CET)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Thu, 28 Mar 2013 11:19:50 +0100
-Message-Id: <1364465990-9494-1-git-send-email-j.weitzel@phytec.de>
+Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1ULY9T-0008Qh-DK
+ for barebox@lists.infradead.org; Fri, 29 Mar 2013 12:11:24 +0000
+Received: by mail-ea0-f180.google.com with SMTP id d10so183202eaj.25
+ for <barebox@lists.infradead.org>; Fri, 29 Mar 2013 05:11:19 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri, 29 Mar 2013 13:10:28 +0100
+Message-Id: <1364559028-5177-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fb: calculate resource end
+Subject: [PATCH] ARM: sabresd: move config-board out of /env/init
 To: barebox@lists.infradead.org
 
-commit 5f03074 changed storing struct resource end insted of size.
-Fix calculation of end in fb
-
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 ---
- drivers/video/fb.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/freescale-mx6-sabresd/env/config-board      | 7 +++++++
+ arch/arm/boards/freescale-mx6-sabresd/env/init/config-board | 7 -------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx6-sabresd/env/config-board
+ delete mode 100644 arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index ee53272..be29695 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -86,7 +86,7 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
- 	if (!ret) {
- 		dev->resource[0].start = (resource_size_t)info->screen_base;
- 		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
--		dev->resource[0].end = info->cdev.size - 1;
-+		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
- 		dev_param_set_generic(dev, param, val);
- 	} else
- 		info->cdev.size = 0;
-@@ -116,7 +116,7 @@ int register_framebuffer(struct fb_info *info)
- 	info->cdev.priv = info;
- 	dev->resource = xzalloc(sizeof(struct resource));
- 	dev->resource[0].start = (resource_size_t)info->screen_base;
--	dev->resource[0].end = info->cdev.size - 1;
-+	dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
- 	dev->resource[0].flags = IORESOURCE_MEM;
- 	dev->num_resources = 1;
- 
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/env/config-board b/arch/arm/boards/freescale-mx6-sabresd/env/config-board
+new file mode 100644
+index 0000000..cf936fb
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx6-sabresd/env/config-board
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++# board defaults, do not change in running system. Change /env/config
++# instead
++
++global.hostname=SabreSD
++global.linux.bootargs.base="console=ttymxc0,115200"
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board b/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
+deleted file mode 100644
+index cf936fb..0000000
+--- a/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#!/bin/sh
+-
+-# board defaults, do not change in running system. Change /env/config
+-# instead
+-
+-global.hostname=SabreSD
+-global.linux.bootargs.base="console=ttymxc0,115200"
 -- 
-1.7.0.4
+1.8.1.3
 
 
 _______________________________________________
