@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ULtBg-0003pb-Uv
- for barebox@lists.infradead.org; Sat, 30 Mar 2013 10:39:05 +0000
-Date: Sat, 30 Mar 2013 11:39:00 +0100
+ id 1ULtDQ-0003ty-BC
+ for barebox@lists.infradead.org; Sat, 30 Mar 2013 10:40:52 +0000
+Date: Sat, 30 Mar 2013 11:40:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130330103900.GV1906@pengutronix.de>
-References: <1364395236-539-1-git-send-email-alexandre.belloni@free-electrons.com>
+Message-ID: <20130330104050.GW1906@pengutronix.de>
+References: <1364559028-5177-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1364395236-539-1-git-send-email-alexandre.belloni@free-electrons.com>
+In-Reply-To: <1364559028-5177-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] cfa10036: Retrieve the RAM size at runtime
-To: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Cc: barebox@lists.infradead.org, Maxime Ripard <maxime.ripard@free-electrons.com>, jimwall@q.com, brian@crystalfontz.com
+Subject: Re: [PATCH] ARM: sabresd: move config-board out of /env/init
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, Mar 27, 2013 at 03:40:36PM +0100, Alexandre Belloni wrote:
-> The cfa-10036 comes in two flavours, with either 128MB or 256MB of RAM
-> on it.
-> 
-> Since it's not stored anywhere, we need to runtime detect it by
-> introducing the cfa10036_get_ram_size function.
-> 
-> Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+On Fri, Mar 29, 2013 at 01:10:28PM +0100, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 
-Applied, thanks.
-
-> Cc: Maxime Ripard <maxime.ripard@free-electrons.com>
-> ---
-> changes since v1:
->   - stripped cfa10036_get_ram_size as suggested by Sacha
->   - I'm not too happy about the v5_mmu_cache_flush definition and call but that
-> 	has to be done, else we are not reading the modified value, even on 128MB
-> 	boards.
-
-So your data cache works. That's good news ;)
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/boards/freescale-mx6-sabresd/env/config-board      | 7 +++++++
+>  arch/arm/boards/freescale-mx6-sabresd/env/init/config-board | 7 -------
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+>  create mode 100644 arch/arm/boards/freescale-mx6-sabresd/env/config-board
+>  delete mode 100644 arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
 > 
-> 
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c |   18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> index 1bc20cf..a37b089 100644
-> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> @@ -90,9 +90,25 @@ static struct i2c_gpio_platform_data i2c_gpio_pdata = {
->  	.udelay			= 5,		/* ~100 kHz */
->  };
->  
-> +void v5_mmu_cache_flush(void);
-> +long cfa10036_get_ram_size(void)
-> +{
-> +	volatile u32 *base = (void *)IMX_MEMORY_BASE;
-> +	volatile u32 *ofs = base + SZ_128M / sizeof(u32);
+> diff --git a/arch/arm/boards/freescale-mx6-sabresd/env/config-board b/arch/arm/boards/freescale-mx6-sabresd/env/config-board
+> new file mode 100644
+> index 0000000..cf936fb
+> --- /dev/null
+> +++ b/arch/arm/boards/freescale-mx6-sabresd/env/config-board
+> @@ -0,0 +1,7 @@
+> +#!/bin/sh
 > +
-> +	*base = *ofs = 0xdeadbeef;
-> +	*ofs = 0xbaadcafe;
+> +# board defaults, do not change in running system. Change /env/config
+> +# instead
 > +
-> +	v5_mmu_cache_flush();
-> +	if (*base == 0xbaadcafe)
-> +		return SZ_128M;
-> +	else
-> +		return SZ_256M;
-> +}
-> +
->  static int cfa10036_mem_init(void)
->  {
-> -	arm_add_mem_device("ram0", IMX_MEMORY_BASE, 128 * 1024 * 1024);
-> +	arm_add_mem_device("ram0", IMX_MEMORY_BASE, cfa10036_get_ram_size());
->  
->  	return 0;
->  }
+> +global.hostname=SabreSD
+> +global.linux.bootargs.base="console=ttymxc0,115200"
+> diff --git a/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board b/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
+> deleted file mode 100644
+> index cf936fb..0000000
+> --- a/arch/arm/boards/freescale-mx6-sabresd/env/init/config-board
+> +++ /dev/null
+> @@ -1,7 +0,0 @@
+> -#!/bin/sh
+> -
+> -# board defaults, do not change in running system. Change /env/config
+> -# instead
+> -
+> -global.hostname=SabreSD
+> -global.linux.bootargs.base="console=ttymxc0,115200"
 > -- 
-> 1.7.10.4
+> 1.8.1.3
 > 
 > 
 > _______________________________________________
