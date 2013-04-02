@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMwkQ-0008MR-Nv
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 08:39:19 +0000
-Message-ID: <1364891989.4213.8.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Tue, 02 Apr 2013 10:39:49 +0200
-In-Reply-To: <trinity-9b800437-dda7-4884-9539-55f191f34bcd-1364888497084@3capp-gmx-bs47>
-References: <trinity-9b800437-dda7-4884-9539-55f191f34bcd-1364888497084@3capp-gmx-bs47>
-Mime-Version: 1.0
+Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UMzfg-00015y-HW
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 11:46:37 +0000
+Received: from mail407.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 69DB6FF8C2F
+ for <barebox@lists.infradead.org>; Tue,  2 Apr 2013 14:03:26 +0200 (CEST)
+Date: Tue, 2 Apr 2013 13:42:30 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130402114230.GR1568@game.jcrosoft.org>
+References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
+ <1364883552-6563-4-git-send-email-dev@lynxeye.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1364883552-6563-4-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,50 +23,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Problems with the Load a new kernel image
-To: "\"Breixo =?ISO-8859-1?Q?L=F3pez_Garc=EDa=22?=" <Breixo.Lopez@gmx.de>
+Subject: Re: [PATCH v3 03/10] tegra: switch to DT only
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-T24gVHVlLCAyMDEzLTA0LTAyIGF0IDA5OjQxICswMjAwLCAiQnJlaXhvIEzDs3BleiBHYXJjw61h
-IiB3cm90ZToKPiBtYWxsb2Mgc3BhY2U6IDB4ODBiMDAwMDAgLT4gMHg4MGZmZmZmZiAoc2l6ZSAg
-NSBNQikgICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gc3RhY2sgc3BhY2U6ICAweDgwYWY4
-MDAwIC0+IDB4ODBiMDAwMDAgKHNpemUgMzIga0IpICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IAo+IHJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gSGl0
-IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9vdDogIDMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIAo+IGJhcmVib3hAUGh5dGVjIHBoeUNPUkUtQU0zMzV4Oi8gYm9v
-dCAtayB0ZnRwIC1yIG5ldCAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPiBkb190ZnRwYjog
-Ly50ZnRwX3RtcF9wYXRoL2xpbnV4aW1hZ2UgLT4gL2ltYWdlICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgCj4gMTAwTWJwcyBmdWxsIGR1cGxleCBsaW5rIGRldGVjdGVkCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyAgICAgIAo+ICAgICAgICAg
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMgICAgICAKPiAgICAgICAgICMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjICAgICAgCj4gICAgICAgICAjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyAgICAgIAo+ICAgICAgICAgIyMjIyMjIyMjIyMjd3JpdGU6IE91dCBvZiBtZW1vcnkgICAgICAg
-ICAgIAo+ICAgICAgCj4gSSBoYXZlIGNoYW5nZWQgdGhlIGJhcmVib3gncyBwcm9wZXJ0eSBtYWxs
-b2Nfc2l6ZSBvZiB0aGUgYmFyZWJveAo+IGJlY2F1c2UgdGhlIGltYWdlIGlzID40TUIgYW5kIEkg
-c3VwcG9zZWQgdGhhdCB0aGUgcHJvYmxlbSB3YXMgdGhhdCB0aGUKPiBrZXJuZWwgaXMgb3V0IG9m
-IHRoZSByZXNlcnZlciBhcmVhIGZvciBrZXJuZWwgaW4gdGhlIFJBTSAodGZ0cCBtb2RlKQo+IGJl
-Zm9yZSBpdCBpcyBzYXZlZCBpbiB0aGUgZmxhc2ggYnV0IHdpdGhvdXQgc3VjY2Vzc2Z1bC4gV2hh
-dCBpcyB0aGUKPiByZWFsIElzc3VlIHRoYXQgZG9lc24ndCBhbGxvdyB0byBib290IHByb3BlcnRs
-eSB0aGUga2VybmVsCj4gIAo+IFRoZSBrZXJuZWwgdGhhdCBpcyB1c2VkOgo+ICQgbHMgLWwgL3Rm
-dHBib290Cj4gLXJ3LXItLXItLSAxIHNzdCAgc3N0ICAgNDk2NDg2NCBBcHIgIDIgMDk6MzUgbGlu
-dXhpbWFnZQoKUGxlYXNlIHRyeSB3aXRoIGEgbGFyZ2VyIG1hbGxvYyBzaXplIHRoYW4gNU1CLCBi
-YXJlYm94IG5lZWRzIG1hbGxvYwpzcGFjZSBmb3Igb3RoZXIgdGhpbmdzIGJlc2lkZXMgdGhlIGtl
-cm5lbCBpbWFnZSBhcyB3ZWxsLiBXaHkgaXMgaXQgc28Kc21hbGwgd2hlbiB5b3VyIGJvYXJkIGhh
-cyA1MTJNQj8KClJlZ2FyZHMsCkphbgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwg
-TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
-ZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
-OiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2
-ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
-YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 08:19 Tue 02 Apr     , Lucas Stach wrote:
+> We will follow the Linux kernel and go devicetree only for Tegra. This
+> doesn't prevent specific code for certain boards, but always requires a
+> valid DTB for all boards.
+> 
+> Also regenerate the AC100 defconfig to reflect this change.
+> 
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/Kconfig                         |  2 ++
+>  arch/arm/configs/toshiba_ac100_defconfig |  9 ++++++---
+>  arch/arm/dts/tegra20-paz00.dts           | 12 ++++++++++++
+>  arch/arm/dts/tegra20.dtsi                |  5 +++++
+>  4 files changed, 25 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/arm/dts/tegra20-paz00.dts
+>  create mode 100644 arch/arm/dts/tegra20.dtsi
+> 
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index 7d42826..8f37d12 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -139,6 +139,8 @@ config ARCH_TEGRA
+>  	bool "Nvidia Tegra"
+>  	select CPU_V7
+>  	select HAS_DEBUG_LL
+> +	select BUILTIN_DTB
+where does this come from>?
+
+> +	select OFTREE
+>  
+>  config ARCH_ZYNQ
+>  	bool "Xilinx Zynq-based boards"
+> diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
+> index 065189d..b44fd26 100644
+> --- a/arch/arm/configs/toshiba_ac100_defconfig
+> +++ b/arch/arm/configs/toshiba_ac100_defconfig
+> @@ -1,4 +1,5 @@
+> -CONFIG_ARCH_TEGRA=y
+> +CONFIG_BUILTIN_DTB=y
+> +CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_TEXT_BASE=0x01000000
+>  CONFIG_BROKEN=y
+> @@ -14,6 +15,7 @@ CONFIG_ENABLE_DEVICE_NOISE=y
+>  CONFIG_CMD_SLEEP=y
+>  # CONFIG_CMD_TRUE is not set
+>  # CONFIG_CMD_FALSE is not set
+> +CONFIG_CMD_TFTP=y
+>  CONFIG_CMD_LOADB=y
+>  CONFIG_CMD_LOADY=y
+>  CONFIG_CMD_LOADS=y
+> @@ -23,12 +25,12 @@ CONFIG_CMD_SHA1SUM=y
+>  CONFIG_CMD_BOOTM_SHOW_TYPE=y
+>  CONFIG_CMD_RESET=y
+>  CONFIG_CMD_GO=y
+> +CONFIG_CMD_OFTREE=y
+>  CONFIG_NET=y
+>  CONFIG_NET_DHCP=y
+>  CONFIG_NET_PING=y
+> -CONFIG_CMD_TFTP=y
+> -CONFIG_FS_TFTP=y
+>  CONFIG_NET_NETCONSOLE=y
+> +CONFIG_OFDEVICE=y
+>  CONFIG_DRIVER_SERIAL_NS16550=y
+>  CONFIG_NET_USB=y
+>  CONFIG_NET_USB_ASIX=y
+> @@ -36,4 +38,5 @@ CONFIG_NET_USB_ASIX=y
+>  CONFIG_USB=y
+>  CONFIG_USB_EHCI=y
+>  CONFIG_USB_STORAGE=y
+> +CONFIG_FS_TFTP=y
+>  CONFIG_FS_FAT=y
+> diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
+> new file mode 100644
+> index 0000000..09ccb8b
+> --- /dev/null
+> +++ b/arch/arm/dts/tegra20-paz00.dts
+> @@ -0,0 +1,12 @@
+> +/dts-v1/;
+> +
+> +/include/ "tegra20.dtsi"
+> +
+> +/ {
+> +	model = "Toshiba AC100 / Dynabook AZ";
+> +	compatible = "compal,paz00", "nvidia,tegra20";
+> +
+> +	memory {
+> +		reg = <0x00000000 0x20000000>;
+> +	};
+> +};
+> diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
+> new file mode 100644
+> index 0000000..9f8860b
+> --- /dev/null
+> +++ b/arch/arm/dts/tegra20.dtsi
+> @@ -0,0 +1,5 @@
+> +/include/ "skeleton.dtsi"
+> +
+> +/ {
+> +	compatible = "nvidia,tegra20";
+> +};
+> -- 
+> 1.8.1.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
