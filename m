@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMuaU-0007DO-0P
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 06:20:54 +0000
+ id 1UMuaX-0007Fa-5t
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 06:20:58 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  2 Apr 2013 08:19:11 +0200
-Message-Id: <1364883552-6563-10-git-send-email-dev@lynxeye.de>
+Date: Tue,  2 Apr 2013 08:19:12 +0200
+Message-Id: <1364883552-6563-11-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
 References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -22,61 +22,329 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 09/10] tegra: add generic meminit
+Subject: [PATCH v3 10/10] tegra: add GPIO controller driver
 To: barebox@lists.infradead.org
 
-ODMdata tells us how much RAM is installed, so no need to define this at
-the board level.
+Taken from the Linux kernel, simplified and reworked to match barebox.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/toshiba-ac100/board.c | 8 --------
- arch/arm/mach-tegra/tegra20.c         | 9 +++++++++
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ arch/arm/Kconfig                        |   2 +
+ arch/arm/dts/tegra20.dtsi               |  16 +++
+ arch/arm/mach-tegra/include/mach/gpio.h |   1 +
+ drivers/gpio/Kconfig                    |   7 +
+ drivers/gpio/Makefile                   |   1 +
+ drivers/gpio/gpio-tegra.c               | 226 ++++++++++++++++++++++++++++++++
+ 6 files changed, 253 insertions(+)
+ create mode 100644 arch/arm/mach-tegra/include/mach/gpio.h
+ create mode 100644 drivers/gpio/gpio-tegra.c
 
-diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
-index 0eb85c5..51232ef 100644
---- a/arch/arm/boards/toshiba-ac100/board.c
-+++ b/arch/arm/boards/toshiba-ac100/board.c
-@@ -23,14 +23,6 @@
- #include <usb/ehci.h>
- #include <mach/iomap.h>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e163e18..9151e66 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -142,6 +142,8 @@ config ARCH_TEGRA
+ 	select BUILTIN_DTB
+ 	select COMMON_CLK
+ 	select CLKDEV_LOOKUP
++	select GPIOLIB
++	select GPIO_TEGRA
+ 	select OFTREE
  
--static int ac100_mem_init(void)
--{
--	arm_add_mem_device("ram0", 0x0, SZ_512M);
--
--	return 0;
--}
--mem_initcall(ac100_mem_init);
--
- static struct ehci_platform_data ehci_pdata = {
- 	.flags = EHCI_HAS_TT,
- };
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index 9104c3b..2b95994 100644
---- a/arch/arm/mach-tegra/tegra20.c
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -17,6 +17,7 @@
- #include <common.h>
- #include <init.h>
- #include <ns16550.h>
-+#include <asm/memory.h>
- #include <mach/iomap.h>
- #include <mach/lowlevel.h>
+ config ARCH_ZYNQ
+diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
+index 91858ec..b7d1e27 100644
+--- a/arch/arm/dts/tegra20.dtsi
++++ b/arch/arm/dts/tegra20.dtsi
+@@ -18,6 +18,22 @@
+ 		#clock-cells = <1>;
+ 	};
  
-@@ -39,3 +40,11 @@ static int tegra20_add_debug_console(void)
- 	return 0;
- }
- console_initcall(tegra20_add_debug_console);
++	gpio: gpio {
++		compatible = "nvidia,tegra20-gpio";
++		reg = <0x6000d000 0x1000>;
++		interrupts = <0 32 0x04
++			      0 33 0x04
++			      0 34 0x04
++			      0 35 0x04
++			      0 55 0x04
++			      0 87 0x04
++			      0 89 0x04>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		#interrupt-cells = <2>;
++		interrupt-controller;
++	};
 +
-+static int tegra20_mem_init(void)
+ 	pmc {
+ 		compatible = "nvidia,tegra20-pmc";
+ 		reg = <0x7000e400 0x400>;
+diff --git a/arch/arm/mach-tegra/include/mach/gpio.h b/arch/arm/mach-tegra/include/mach/gpio.h
+new file mode 100644
+index 0000000..306ab4c
+--- /dev/null
++++ b/arch/arm/mach-tegra/include/mach/gpio.h
+@@ -0,0 +1 @@
++#include <asm-generic/gpio.h>
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index ea07028..d5e0ed1 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -36,6 +36,13 @@ config GPIO_PL061
+ config GPIO_STMPE
+ 	depends on MFD_STMPE
+ 	bool "STMPE GPIO Expander"
++
++config GPIO_TEGRA
++	bool "GPIO support for the Tegra SoCs"
++	depends on ARCH_TEGRA
++	help
++	  Say yes here to include the driver for the GPIO controller found on the
++	  Tegra line of SoCs.
+ endmenu
+ 
+ endif
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index 00acb68..5dcb6c8 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
+ obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
+ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
++obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
+diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+new file mode 100644
+index 0000000..55276f6
+--- /dev/null
++++ b/drivers/gpio/gpio-tegra.c
+@@ -0,0 +1,226 @@
++/* *
++ * Copyright (C) 2010 Erik Gilling <konkers@google.com>, Google, Inc
++ * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <common.h>
++#include <gpio.h>
++#include <init.h>
++#include <io.h>
++#include <linux/err.h>
++
++#define GPIO_BANK(x)		((x) >> 5)
++#define GPIO_PORT(x)		(((x) >> 3) & 0x3)
++#define GPIO_BIT(x)		((x) & 0x7)
++
++#define GPIO_REG(x)		(GPIO_BANK(x) * config->bank_stride + \
++					GPIO_PORT(x) * 4)
++
++#define GPIO_CNF(x)		(GPIO_REG(x) + 0x00)
++#define GPIO_OE(x)		(GPIO_REG(x) + 0x10)
++#define GPIO_OUT(x)		(GPIO_REG(x) + 0x20)
++#define GPIO_IN(x)		(GPIO_REG(x) + 0x30)
++#define GPIO_INT_ENB(x)		(GPIO_REG(x) + 0x50)
++
++#define GPIO_MSK_CNF(x)		(GPIO_REG(x) + config->upper_offset + 0x00)
++#define GPIO_MSK_OE(x)		(GPIO_REG(x) + config->upper_offset + 0x10)
++#define GPIO_MSK_OUT(x)		(GPIO_REG(x) + config->upper_offset + 0X20)
++
++struct tegra_gpio_bank {
++	int bank;
++	int irq;
++};
++
++struct tegra_gpio_soc_config {
++	u32 bank_stride;
++	u32 upper_offset;
++	u32 bank_count;
++};
++
++static void __iomem *gpio_base;
++static 	struct tegra_gpio_soc_config *config;
++
++static inline void tegra_gpio_writel(u32 val, u32 reg)
 +{
-+	arm_add_mem_device("ram0", 0x0, tegra20_get_ramsize());
++	writel(val, gpio_base + reg);
++}
++
++static inline u32 tegra_gpio_readl(u32 reg)
++{
++	return readl(gpio_base + reg);
++}
++
++static int tegra_gpio_compose(int bank, int port, int bit)
++{
++	return (bank << 5) | ((port & 0x3) << 3) | (bit & 0x7);
++}
++
++static void tegra_gpio_mask_write(u32 reg, int gpio, int value)
++{
++	u32 val;
++
++	val = 0x100 << GPIO_BIT(gpio);
++	if (value)
++		val |= 1 << GPIO_BIT(gpio);
++	tegra_gpio_writel(val, reg);
++}
++
++static void tegra_gpio_enable(int gpio)
++{
++	tegra_gpio_mask_write(GPIO_MSK_CNF(gpio), gpio, 1);
++}
++
++static void tegra_gpio_disable(int gpio)
++{
++	tegra_gpio_mask_write(GPIO_MSK_CNF(gpio), gpio, 0);
++}
++
++static int tegra_gpio_request(struct gpio_chip *chip, unsigned offset)
++{
++	return 0;
++}
++
++static void tegra_gpio_free(struct gpio_chip *chip, unsigned offset)
++{
++	tegra_gpio_disable(offset);
++}
++
++static void tegra_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
++{
++	tegra_gpio_mask_write(GPIO_MSK_OUT(offset), offset, value);
++}
++
++static int tegra_gpio_get(struct gpio_chip *chip, unsigned offset)
++{
++	/* If gpio is in output mode then read from the out value */
++	if ((tegra_gpio_readl(GPIO_OE(offset)) >> GPIO_BIT(offset)) & 1) {
++		printf("GPIO output mode\n");
++		return (tegra_gpio_readl(GPIO_OUT(offset)) >>
++				GPIO_BIT(offset)) & 0x1;
++	}
++
++	printf("GPIO input mode\n");
++	return (tegra_gpio_readl(GPIO_IN(offset)) >> GPIO_BIT(offset)) & 0x1;
++}
++
++static int tegra_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
++{
++	tegra_gpio_mask_write(GPIO_MSK_OE(offset), offset, 0);
++	tegra_gpio_enable(offset);
++	return 0;
++}
++
++static int tegra_gpio_direction_output(struct gpio_chip *chip, unsigned offset,
++					int value)
++{
++	tegra_gpio_set(chip, offset, value);
++	tegra_gpio_mask_write(GPIO_MSK_OE(offset), offset, 1);
++	tegra_gpio_enable(offset);
++	return 0;
++}
++
++static struct gpio_ops tegra_gpio_ops = {
++	.request		= tegra_gpio_request,
++	.free			= tegra_gpio_free,
++	.direction_input	= tegra_gpio_direction_input,
++	.direction_output	= tegra_gpio_direction_output,
++	.get			= tegra_gpio_get,
++	.set			= tegra_gpio_set,
++};
++
++static struct gpio_chip tegra_gpio_chip = {
++	.ops	= &tegra_gpio_ops,
++	.base	= 0,
++};
++
++static int tegra_gpio_probe(struct device_d *dev)
++{
++	int i, j, ret;
++
++	ret = dev_get_drvdata(dev, (unsigned long *)&config);
++	if (ret) {
++		dev_err(dev, "dev_get_drvdata failed: %d\n", ret);
++		return ret;
++	}
++
++	gpio_base = dev_request_mem_region(dev, 0);
++	if (!gpio_base) {
++		dev_err(dev, "could not get memory region\n");
++		return -ENODEV;
++	}
++
++	for (i = 0; i < config->bank_count; i++) {
++		for (j = 0; j < 4; j++) {
++			int gpio = tegra_gpio_compose(i, j, 0);
++			tegra_gpio_writel(0x00, GPIO_INT_ENB(gpio));
++		}
++	}
++
++	tegra_gpio_chip.ngpio = config->bank_count * 32;
++	tegra_gpio_chip.dev = dev;
++
++	gpiochip_add(&tegra_gpio_chip);
 +
 +	return 0;
 +}
-+mem_initcall(tegra20_mem_init);
++
++static struct tegra_gpio_soc_config tegra20_gpio_config = {
++	.bank_stride = 0x80,
++	.upper_offset = 0x800,
++	.bank_count = 7,
++};
++
++static struct tegra_gpio_soc_config tegra30_gpio_config = {
++	.bank_stride = 0x100,
++	.upper_offset = 0x80,
++	.bank_count = 8,
++};
++
++static struct platform_device_id tegra_gpio_ids[] = {
++	{
++		.name = "tegra20-gpio",
++		.driver_data = (unsigned long)&tegra20_gpio_config,
++	}, {
++		.name = "tegra30-gpio",
++		.driver_data = (unsigned long)&tegra30_gpio_config,
++	}, {
++		/* sentinel */
++	},
++};
++
++static __maybe_unused struct of_device_id tegra_gpio_dt_ids[] = {
++	{
++		.compatible = "nvidia,tegra30-gpio",
++		.data = (unsigned long)&tegra30_gpio_config
++	}, {
++		.compatible = "nvidia,tegra20-gpio",
++		.data = (unsigned long)&tegra20_gpio_config
++	}, {
++		/* sentinel */
++	},
++};
++
++static struct driver_d tegra_gpio_driver = {
++	.name		= "tegra-gpio",
++	.id_table	= tegra_gpio_ids,
++	.of_compatible	= DRV_OF_COMPAT(tegra_gpio_dt_ids),
++	.probe		= tegra_gpio_probe,
++};
++
++static int __init tegra_gpio_init(void)
++{
++	return platform_driver_register(&tegra_gpio_driver);
++}
++coredevice_initcall(tegra_gpio_init);
 -- 
 1.8.1.4
 
