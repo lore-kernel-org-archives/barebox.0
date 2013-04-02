@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UN0dN-0001c6-Jl
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 12:48:19 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 50D6ABF0F8
- for <barebox@lists.infradead.org>; Tue,  2 Apr 2013 14:47:52 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Tue, 2 Apr 2013 14:48:06 +0200
-Message-Id: <1364906887-21907-1-git-send-email-t.gamez@phytec.de>
+Received: from mail-da0-x22b.google.com ([2607:f8b0:400e:c00::22b])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UN0xc-00040S-PO
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 13:09:13 +0000
+Received: by mail-da0-f43.google.com with SMTP id u36so186780dak.2
+ for <barebox@lists.infradead.org>; Tue, 02 Apr 2013 06:09:10 -0700 (PDT)
 MIME-Version: 1.0
+In-Reply-To: <1364883552-6563-3-git-send-email-dev@lynxeye.de>
+References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
+ <1364883552-6563-3-git-send-email-dev@lynxeye.de>
+Date: Tue, 2 Apr 2013 17:09:10 +0400
+Message-ID: <CAA4bVAEZLuoeAUZjiCM0V1Ok42g01B_0JZp6ce8LjWinG26nQg@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,170 +20,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFCv2 PATCH 1/2] OMAP: Move bootsource functions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 02/10] tegra: define TEGRA20 arch type
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-VGhlIGJvb3Rzb3VyY2UgZnVuY3Rpb25zIGFyZSBub3Qgc3BlY2lmaWMgdG8gdGhlIGZpcnN0IHN0
-YWdlCmJvb3Rsb2FkZXIuIFRoZXkgbWF5IGFsc28gYmUgdXNlZCBmb3IgZGV0ZWN0aW5nIHRoZQpi
-b290c291cmNlIHRvIGRlY2lkZSB3aGVyZSB0byBsb2FkIHRoZSBlbnZpcm9ubWVudCBmcm9tLgoK
-QWxzbyBjbGVhbiB1cCBpbmNsdWRlcyBpbiBib2FyZCBmaWxlcy4KClNpZ25lZC1vZmYtYnk6IFRl
-cmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9iZWFn
-bGUvYm9hcmQuYyAgICAgICAgICAgIHwgICAgMSAtCiBhcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9u
-ZS9ib2FyZC5jICAgICAgICB8ICAgIDEgLQogYXJjaC9hcm0vYm9hcmRzL3BhbmRhL2JvYXJkLmMg
-ICAgICAgICAgICAgfCAgICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMgICAg
-ICAgICAgICB8ICAgIDEgLQogYXJjaC9hcm0vYm9hcmRzL3BoeWNhcmQtYS1sMS9wY2EtYS1sMS5j
-ICAgfCAgICAxIC0KIGFyY2gvYXJtL2JvYXJkcy9waHljYXJkLWEteGwyL3BjYS1hLXhsMi5jIHwg
-ICAgMSAtCiBhcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUgICAgICAgICAgICAgICB8ICAgIDIg
-Ky0KIGFyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jICAgICAgIHwgICAgMiArLQog
-YXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5lcmljLmggfCAgIDE2ICsrKysrKysr
-KysrKysrCiBhcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3hsb2FkLmggICB8ICAgMTYg
-LS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL21hY2gtb21hcC9vbWFwM19nZW5lcmljLmMgICAgICAg
-IHwgICAgMiArLQogYXJjaC9hcm0vbWFjaC1vbWFwL29tYXA0X2dlbmVyaWMuYyAgICAgICAgfCAg
-ICAyICstCiBhcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfcm9tX3VzYi5jICAgICAgICB8ICAgIDIg
-Ky0KIGFyY2gvYXJtL21hY2gtb21hcC9vbWFwX2dlbmVyaWMuYyAgICAgICAgIHwgICAzMiArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vbWFjaC1vbWFwL3hsb2FkLmMgICAg
-ICAgICAgICAgICAgfCAgIDEzICstLS0tLS0tLS0tCiAxNSBmaWxlcyBjaGFuZ2VkLCA1NSBpbnNl
-cnRpb25zKCspLCAzOSBkZWxldGlvbnMoLSkKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9t
-YWNoLW9tYXAvaW5jbHVkZS9tYWNoL3hsb2FkLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2Fy
-bS9tYWNoLW9tYXAvb21hcF9nZW5lcmljLmMKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMv
-YmVhZ2xlL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvYmVhZ2xlL2JvYXJkLmMKaW5kZXggYmVk
-NDY1MS4uOTcyYzA1ZSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZS9ib2FyZC5j
-CisrKyBiL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGUvYm9hcmQuYwpAQCAtNjIsNyArNjIsNiBAQAog
-I2luY2x1ZGUgPGkyYy9pMmMuaD4KICNpbmNsdWRlIDxsaW51eC9lcnIuaD4KICNpbmNsdWRlIDx1
-c2IvZWhjaS5oPgotI2luY2x1ZGUgPG1hY2gveGxvYWQuaD4KIAogI2lmZGVmIENPTkZJR19EUklW
-RVJfU0VSSUFMX05TMTY1NTAKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJv
-bmUvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2JvYXJkLmMKaW5kZXggZTRi
-OGIwYS4uNTZlNjlhMiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvYm9h
-cmQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9uZS9ib2FyZC5jCkBAIC00NSw3ICs0
-NSw2IEBACiAjaW5jbHVkZSA8bGludXgvZXJyLmg+CiAjaW5jbHVkZSA8bGludXgvcGh5Lmg+CiAj
-aW5jbHVkZSA8dXNiL2VoY2kuaD4KLSNpbmNsdWRlIDxtYWNoL3hsb2FkLmg+CiAjaW5jbHVkZSA8
-bWFjaC9hbTMzeHgtZGV2aWNlcy5oPgogI2luY2x1ZGUgPG1hY2gvYW0zM3h4LW11eC5oPgogI2lu
-Y2x1ZGUgPG1hY2gvd2R0Lmg+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGFuZGEvYm9h
-cmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jCmluZGV4IGYxZmJkNWUuLjI1MThk
-M2EgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jCisrKyBiL2FyY2gv
-YXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jCkBAIC0yMCw3ICsyMCw3IEBACiAjaW5jbHVkZSA8YXNt
-L21tdS5oPgogI2luY2x1ZGUgPG1hY2gvZ3Bpby5oPgogI2luY2x1ZGUgPGVudmZzLmg+Ci0jaW5j
-bHVkZSA8bWFjaC94bG9hZC5oPgorI2luY2x1ZGUgPG1hY2gvZ2VuZXJpYy5oPgogI2luY2x1ZGUg
-PGkyYy9pMmMuaD4KICNpbmNsdWRlIDxncGlvLmg+CiAjaW5jbHVkZSA8bGVkLmg+CmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNt
-MDQ5L2JvYXJkLmMKaW5kZXggNjgwNTM5YS4uYjBkNjg5YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
-Ym9hcmRzL3BjbTA0OS9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNDkvYm9hcmQu
-YwpAQCAtMzYsNyArMzYsNiBAQAogI2luY2x1ZGUgPG1hY2gvZ3Bpby5oPgogI2luY2x1ZGUgPG1h
-Y2gvZ3BtYy5oPgogI2luY2x1ZGUgPG1hY2gvZ3BtY19uYW5kLmg+Ci0jaW5jbHVkZSA8bWFjaC94
-bG9hZC5oPgogI2luY2x1ZGUgPGkyYy9pMmMuaD4KIAogc3RhdGljIGludCBwY20wNDlfY29uc29s
-ZV9pbml0KHZvaWQpCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLWwxL3Bj
-YS1hLWwxLmMgYi9hcmNoL2FybS9ib2FyZHMvcGh5Y2FyZC1hLWwxL3BjYS1hLWwxLmMKaW5kZXgg
-MjM0ZDY4OS4uN2NmNmFlOCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeWNhcmQtYS1s
-MS9wY2EtYS1sMS5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHljYXJkLWEtbDEvcGNhLWEtbDEu
-YwpAQCAtNTQsNyArNTQsNiBAQAogI2luY2x1ZGUgPG1hY2gvZ3BtYy5oPgogI2luY2x1ZGUgPG1h
-Y2gvZ3BtY19uYW5kLmg+CiAjaW5jbHVkZSA8bWFjaC9vbWFwX2hzbW1jLmg+Ci0jaW5jbHVkZSA8
-bWFjaC94bG9hZC5oPgogI2luY2x1ZGUgPG1hY2gvc2RyYy5oPgogI2luY2x1ZGUgPG1hY2gvb21h
-cDMtc2lsaWNvbi5oPgogI2luY2x1ZGUgPG1hY2gvc3lzX2luZm8uaD4KZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9waHljYXJkLWEteGwyL3BjYS1hLXhsMi5jIGIvYXJjaC9hcm0vYm9hcmRz
-L3BoeWNhcmQtYS14bDIvcGNhLWEteGwyLmMKaW5kZXggYmU3MDYwZi4uOGY3OWQ5OCAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BoeWNhcmQtYS14bDIvcGNhLWEteGwyLmMKKysrIGIvYXJj
-aC9hcm0vYm9hcmRzL3BoeWNhcmQtYS14bDIvcGNhLWEteGwyLmMKQEAgLTM1LDcgKzM1LDYgQEAK
-ICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRlIDxtYWNoL2dwbWMuaD4KICNpbmNsdWRl
-IDxtYWNoL2dwbWNfbmFuZC5oPgotI2luY2x1ZGUgPG1hY2gveGxvYWQuaD4KICNpbmNsdWRlIDxt
-YWNoL29tYXBfaHNtbWMuaD4KICNpbmNsdWRlIDxtYWNoL29tYXA0LWRldmljZXMuaD4KICNpbmNs
-dWRlIDxpMmMvaTJjLmg+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUg
-Yi9hcmNoL2FybS9tYWNoLW9tYXAvTWFrZWZpbGUKaW5kZXggMzg3ODZiMi4uZDllMDBmNyAxMDA2
-NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL01ha2VmaWxlCisrKyBiL2FyY2gvYXJtL21hY2gt
-b21hcC9NYWtlZmlsZQpAQCAtMTUsNyArMTUsNyBAQAogIyBHTlUgR2VuZXJhbCBQdWJsaWMgTGlj
-ZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgogIwogIwotb2JqLSQoQ09ORklHX0FSQ0hfT01BUCkgKz0g
-c3lzbGliLm8gb21hcF9kZXZpY2VzLm8KK29iai0kKENPTkZJR19BUkNIX09NQVApICs9IHN5c2xp
-Yi5vIG9tYXBfZGV2aWNlcy5vIG9tYXBfZ2VuZXJpYy5vCiBwYmwtJChDT05GSUdfQVJDSF9PTUFQ
-KSArPSBzeXNsaWIubwogb2JqLSQoQ09ORklHX09NQVBfQ0xPQ0tfU09VUkNFX1MzMkspICs9IHMz
-MmtfY2xrc291cmNlLm8KIG9iai0kKENPTkZJR19PTUFQX0NMT0NLX1NPVVJDRV9ETVRJTUVSMCkg
-Kz0gZG10aW1lcjAubwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5l
-cmljLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYwppbmRleCBkMzAxNGMy
-Li4wNTljNTVlIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMu
-YworKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYwpAQCAtMjQsNyArMjQs
-NyBAQAogI2luY2x1ZGUgPG1hY2gvYW0zM3h4LXNpbGljb24uaD4KICNpbmNsdWRlIDxtYWNoL2Ft
-MzN4eC1jbG9jay5oPgogI2luY2x1ZGUgPG1hY2gvc3lzX2luZm8uaD4KLSNpbmNsdWRlIDxtYWNo
-L3hsb2FkLmg+CisjaW5jbHVkZSA8bWFjaC9nZW5lcmljLmg+CiAjaW5jbHVkZSA8bWFjaC9hbTMz
-eHgtZ2VuZXJpYy5oPgogCiB2b2lkIF9fbm9yZXR1cm4gcmVzZXRfY3B1KHVuc2lnbmVkIGxvbmcg
-YWRkcikKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJp
-Yy5oIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5lcmljLmgKaW5kZXggYzgw
-MWEwNi4uZWRjNGYxZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFj
-aC9nZW5lcmljLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9nZW5lcmlj
-LmgKQEAgLTEsMyArMSw1IEBACisjaWZuZGVmIF9NQUNIX0dFTkVSSUNfSAorI2RlZmluZSBfTUFD
-SF9HRU5FUklDX0gKIAogLyogSTJDIGNvbnRyb2xsZXIgcmV2aXNpb25zICovCiAjZGVmaW5lIE9N
-QVBfSTJDX1JFVl8yCQkJMHgyMApAQCAtMjQsMyArMjYsMTcgQEAKICNlbHNlCiAjZGVmaW5lIGNw
-dV9pc19vbWFwNHh4eCgpCSgwKQogI2VuZGlmCisKK2VudW0gb21hcF9ib290X3NyYyB7CisJT01B
-UF9CT09UU1JDX1VOS05PV04sCisJT01BUF9CT09UU1JDX01NQzEsCisJT01BUF9CT09UU1JDX05B
-TkQsCisJT01BUF9CT09UU1JDX1NQSTEsCisJT01BUF9CT09UU1JDX1VTQjEsCit9OworCitlbnVt
-IG9tYXBfYm9vdF9zcmMgYW0zM3h4X2Jvb3RzcmModm9pZCk7CitlbnVtIG9tYXBfYm9vdF9zcmMg
-b21hcDNfYm9vdHNyYyh2b2lkKTsKK2VudW0gb21hcF9ib290X3NyYyBvbWFwNF9ib290c3JjKHZv
-aWQpOworCisjZW5kaWYKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21h
-Y2gveGxvYWQuaCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gveGxvYWQuaApkZWxl
-dGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggZDYzMjczNS4uMDAwMDAwMAotLS0gYS9hcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3hsb2FkLmgKKysrIC9kZXYvbnVsbApAQCAtMSwxNiAr
-MCwwIEBACi0jaWZuZGVmIF9NQUNIX1hMT0FEX0gKLSNkZWZpbmUgX01BQ0hfWExPQURfSAotCi1l
-bnVtIG9tYXBfYm9vdF9zcmMgewotCU9NQVBfQk9PVFNSQ19VTktOT1dOLAotCU9NQVBfQk9PVFNS
-Q19NTUMxLAotCU9NQVBfQk9PVFNSQ19OQU5ELAotCU9NQVBfQk9PVFNSQ19TUEkxLAotCU9NQVBf
-Qk9PVFNSQ19VU0IxLAotfTsKLQotZW51bSBvbWFwX2Jvb3Rfc3JjIGFtMzN4eF9ib290c3JjKHZv
-aWQpOwotZW51bSBvbWFwX2Jvb3Rfc3JjIG9tYXAzX2Jvb3RzcmModm9pZCk7Ci1lbnVtIG9tYXBf
-Ym9vdF9zcmMgb21hcDRfYm9vdHNyYyh2b2lkKTsKLQotI2VuZGlmIC8qIF9NQUNIX1hMT0FEX0gg
-Ki8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwM19nZW5lcmljLmMgYi9hcmNo
-L2FybS9tYWNoLW9tYXAvb21hcDNfZ2VuZXJpYy5jCmluZGV4IGEyMWE5MzguLjEwZTAzYWUgMTAw
-NjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwM19nZW5lcmljLmMKKysrIGIvYXJjaC9h
-cm0vbWFjaC1vbWFwL29tYXAzX2dlbmVyaWMuYwpAQCAtNDAsNyArNDAsNyBAQAogI2luY2x1ZGUg
-PG1hY2gvd2R0Lmg+CiAjaW5jbHVkZSA8bWFjaC9zeXNfaW5mby5oPgogI2luY2x1ZGUgPG1hY2gv
-c3lzbGliLmg+Ci0jaW5jbHVkZSA8bWFjaC94bG9hZC5oPgorI2luY2x1ZGUgPG1hY2gvZ2VuZXJp
-Yy5oPgogCiAvKioKICAqIEBicmllZiBSZXNldCB0aGUgQ1BVCmRpZmYgLS1naXQgYS9hcmNoL2Fy
-bS9tYWNoLW9tYXAvb21hcDRfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29tYXA0X2dl
-bmVyaWMuYwppbmRleCAyYTA5ZWI2Li5lMWVkZmZhIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNo
-LW9tYXAvb21hcDRfZ2VuZXJpYy5jCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9nZW5l
-cmljLmMKQEAgLTUsNyArNSw3IEBACiAjaW5jbHVkZSA8bWFjaC9vbWFwNC1zaWxpY29uLmg+CiAj
-aW5jbHVkZSA8bWFjaC9vbWFwNC1tdXguaD4KICNpbmNsdWRlIDxtYWNoL3N5c2xpYi5oPgotI2lu
-Y2x1ZGUgPG1hY2gveGxvYWQuaD4KKyNpbmNsdWRlIDxtYWNoL2dlbmVyaWMuaD4KICNpbmNsdWRl
-IDxtYWNoL2dwbWMuaD4KICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRlIDxtYWNoL29t
-YXA0X3JvbV91c2IuaD4KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9yb21f
-dXNiLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAvb21hcDRfcm9tX3VzYi5jCmluZGV4IDQ4ZDY0MzMu
-Ljc4MjViZTMgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwNF9yb21fdXNiLmMK
-KysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29tYXA0X3JvbV91c2IuYwpAQCAtMzMsNyArMzMsNyBA
-QAogI2luY2x1ZGUgPGNvbW1vbi5oPgogI2luY2x1ZGUgPG1hY2gvb21hcDQtc2lsaWNvbi5oPgog
-I2luY2x1ZGUgPG1hY2gvb21hcDRfcm9tX3VzYi5oPgotI2luY2x1ZGUgPG1hY2gveGxvYWQuaD4K
-KyNpbmNsdWRlIDxtYWNoL2dlbmVyaWMuaD4KICNpbmNsdWRlIDxpbml0Lmg+CiAKIHN0YXRpYyBz
-dHJ1Y3Qgb21hcDRfdXNiYm9vdCBvbWFwNF91c2Jib290X3BkYXRhOwpkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vbWFjaC1vbWFwL29tYXBfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29tYXBf
-Z2VuZXJpYy5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAuLmYyZmQxZDMKLS0t
-IC9kZXYvbnVsbAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvb21hcF9nZW5lcmljLmMKQEAgLTAs
-MCArMSwzMiBAQAorLyoKKyAqIChDKSBDb3B5cmlnaHQgMjAxMyBUZXJlc2EgR8OhbWV6LCBQaHl0
-ZWMgTWVzc3RlY2huaWsgR21iSAorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
-OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKKyAqIG1vZGlmeSBpdCB1bmRlciB0aGUg
-dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCisgKiBwdWJsaXNoZWQg
-YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgorICog
-dGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgor
-ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
-ZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
-aW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
-UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
-c2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKyNpbmNsdWRlIDxjb21tb24uaD4KKyNpbmNs
-dWRlIDxlbnZmcy5oPgorI2luY2x1ZGUgPGluaXQuaD4KKyNpbmNsdWRlIDxpby5oPgorI2luY2x1
-ZGUgPGZzLmg+CisjaW5jbHVkZSA8bGludXgvc3RhdC5oPgorI2luY2x1ZGUgPG1hY2gvZ2VuZXJp
-Yy5oPgorCitlbnVtIG9tYXBfYm9vdF9zcmMgb21hcF9ib290c3JjKHZvaWQpCit7CisjaWYgZGVm
-aW5lZChDT05GSUdfQVJDSF9PTUFQMykKKwlyZXR1cm4gb21hcDNfYm9vdHNyYygpOworI2VsaWYg
-ZGVmaW5lZChDT05GSUdfQVJDSF9PTUFQNCkKKwlyZXR1cm4gb21hcDRfYm9vdHNyYygpOworI2Vs
-aWYgZGVmaW5lZChDT05GSUdfQVJDSF9BTTMzWFgpCisJcmV0dXJuIGFtMzN4eF9ib290c3JjKCk7
-CisjZW5kaWYKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC94bG9hZC5jIGIvYXJj
-aC9hcm0vbWFjaC1vbWFwL3hsb2FkLmMKaW5kZXggNDE1MzNhOS4uNzJhYTM3OSAxMDA2NDQKLS0t
-IGEvYXJjaC9hcm0vbWFjaC1vbWFwL3hsb2FkLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL3hs
-b2FkLmMKQEAgLTYsNyArNiw3IEBACiAjaW5jbHVkZSA8bGludXgvbXRkL210ZC5oPgogI2luY2x1
-ZGUgPGZzLmg+CiAjaW5jbHVkZSA8ZmNudGwuaD4KLSNpbmNsdWRlIDxtYWNoL3hsb2FkLmg+Cisj
-aW5jbHVkZSA8bWFjaC9nZW5lcmljLmg+CiAjaW5jbHVkZSA8c2l6ZXMuaD4KICNpbmNsdWRlIDxm
-aWxldHlwZS5oPgogCkBAIC0xNTgsMTcgKzE1OCw2IEBAIHN0YXRpYyB2b2lkICpvbWFwNF94bG9h
-ZF9ib290X3VzYih2b2lkKXsKIAlyZXR1cm4gYnVmOwogfQogCi1lbnVtIG9tYXBfYm9vdF9zcmMg
-b21hcF9ib290c3JjKHZvaWQpCi17Ci0jaWYgZGVmaW5lZChDT05GSUdfQVJDSF9PTUFQMykKLQly
-ZXR1cm4gb21hcDNfYm9vdHNyYygpOwotI2VsaWYgZGVmaW5lZChDT05GSUdfQVJDSF9PTUFQNCkK
-LQlyZXR1cm4gb21hcDRfYm9vdHNyYygpOwotI2VsaWYgZGVmaW5lZChDT05GSUdfQVJDSF9BTTMz
-WFgpCi0JcmV0dXJuIGFtMzN4eF9ib290c3JjKCk7Ci0jZW5kaWYKLX0KLQogLyoKICAqIFJlcGxh
-Y2VzIHRoZSBkZWZhdWx0IHNoZWxsIGluIHhsb2FkIGNvbmZpZ3VyYXRpb24KICAqLwotLSAKMS43
-LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 02/04/2013, Lucas Stach <dev@lynxeye.de> wrote:
+> Tegra is not a single arch type, but a collection of different
+> generations. Define TEGAR20 arch type to differentiate between the
+> generations. Switch to ARMv7 cpu type for all Tegras.
+>
+
+Actually you introduce at least four __INDEPENDENT___ changes in this patch:
+1. CPU_ARM926T -> CPU_V7
+2. bool "Nvidia Tegra-based boards" -> bool "Nvidia Tegra" (change
+comment, unifyx with linux kernel --- very good;
+3. Define TEGAR20;
+4. change default ARCH_TEXT_BASE.
+
+Can you split this commit, please?
+
+Also I propose to use ARCH_TEGRA_2x_SOC (like in Linux kernel) instead
+of MACH_TEGRA20.
+
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> ---
+>  arch/arm/Kconfig            |  4 ++--
+>  arch/arm/mach-tegra/Kconfig | 20 ++++++++++++++++++--
+>  2 files changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+> index bb9b47b..7d42826 100644
+> --- a/arch/arm/Kconfig
+> +++ b/arch/arm/Kconfig
+> @@ -136,8 +136,8 @@ config ARCH_VEXPRESS
+>  	select COMMON_CLK
+>
+>  config ARCH_TEGRA
+> -	bool "Nvidia Tegra-based boards"
+> -	select CPU_ARM926T
+> +	bool "Nvidia Tegra"
+> +	select CPU_V7
+>  	select HAS_DEBUG_LL
+>
+>  config ARCH_ZYNQ
+> diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+> index eda786b..0adf4be 100644
+> --- a/arch/arm/mach-tegra/Kconfig
+> +++ b/arch/arm/mach-tegra/Kconfig
+> @@ -1,11 +1,23 @@
+>  if ARCH_TEGRA
+> +	
+> +choice
+> +	prompt "Tegra processor type"
+> +
+> +config MACH_TEGRA20
+> +	bool "Tegra 20"
+> +
+> +endchoice
+> +
+> +# ---------------------------------------------------------
+> +
+> +if MACH_TEGRA20
+>
+>  config ARCH_TEXT_BASE
+>  	hex
+> -	default 0x31fc0000
+> +	default 0x00108000
+>
+>  choice
+> -	prompt "Tegra Board Type"
+> +	prompt "Tegra 20 Board Type"
+>
+>  config MACH_TOSHIBA_AC100
+>  	bool "Toshiba AC100"
+> @@ -16,4 +28,8 @@ endchoice
+>
+>  source arch/arm/boards/toshiba-ac100/Kconfig
+>
+> +endif #MACH_TEGRA20
+> +
+> +# ---------------------------------------------------------
+> +
+>  endif
+> --
+> 1.8.1.4
+>
+>
+
+
+-- 
+Best regards,
+  Antony Pavlov
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
