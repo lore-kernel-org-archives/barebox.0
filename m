@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
- helo=mo3.mail-out.ovh.net)
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMzfg-00015y-HW
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 11:46:37 +0000
-Received: from mail407.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 69DB6FF8C2F
- for <barebox@lists.infradead.org>; Tue,  2 Apr 2013 14:03:26 +0200 (CEST)
-Date: Tue, 2 Apr 2013 13:42:30 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130402114230.GR1568@game.jcrosoft.org>
-References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
- <1364883552-6563-4-git-send-email-dev@lynxeye.de>
+ id 1UN0dN-0001av-Jd
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 12:48:19 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 2F982BF0F7
+ for <barebox@lists.infradead.org>; Tue,  2 Apr 2013 14:47:47 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 2 Apr 2013 14:48:07 +0200
+Message-Id: <1364906887-21907-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1364906887-21907-1-git-send-email-t.gamez@phytec.de>
+References: <1364906887-21907-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1364883552-6563-4-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,125 +20,90 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 03/10] tegra: switch to DT only
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFCv2 PATCH 2/2] OMAP: Add option to use environment from MMC
+To: barebox@lists.infradead.org
 
-On 08:19 Tue 02 Apr     , Lucas Stach wrote:
-> We will follow the Linux kernel and go devicetree only for Tegra. This
-> doesn't prevent specific code for certain boards, but always requires a
-> valid DTB for all boards.
-> 
-> Also regenerate the AC100 defconfig to reflect this change.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  arch/arm/Kconfig                         |  2 ++
->  arch/arm/configs/toshiba_ac100_defconfig |  9 ++++++---
->  arch/arm/dts/tegra20-paz00.dts           | 12 ++++++++++++
->  arch/arm/dts/tegra20.dtsi                |  5 +++++
->  4 files changed, 25 insertions(+), 3 deletions(-)
->  create mode 100644 arch/arm/dts/tegra20-paz00.dts
->  create mode 100644 arch/arm/dts/tegra20.dtsi
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 7d42826..8f37d12 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -139,6 +139,8 @@ config ARCH_TEGRA
->  	bool "Nvidia Tegra"
->  	select CPU_V7
->  	select HAS_DEBUG_LL
-> +	select BUILTIN_DTB
-where does this come from>?
-
-> +	select OFTREE
->  
->  config ARCH_ZYNQ
->  	bool "Xilinx Zynq-based boards"
-> diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
-> index 065189d..b44fd26 100644
-> --- a/arch/arm/configs/toshiba_ac100_defconfig
-> +++ b/arch/arm/configs/toshiba_ac100_defconfig
-> @@ -1,4 +1,5 @@
-> -CONFIG_ARCH_TEGRA=y
-> +CONFIG_BUILTIN_DTB=y
-> +CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_TEXT_BASE=0x01000000
->  CONFIG_BROKEN=y
-> @@ -14,6 +15,7 @@ CONFIG_ENABLE_DEVICE_NOISE=y
->  CONFIG_CMD_SLEEP=y
->  # CONFIG_CMD_TRUE is not set
->  # CONFIG_CMD_FALSE is not set
-> +CONFIG_CMD_TFTP=y
->  CONFIG_CMD_LOADB=y
->  CONFIG_CMD_LOADY=y
->  CONFIG_CMD_LOADS=y
-> @@ -23,12 +25,12 @@ CONFIG_CMD_SHA1SUM=y
->  CONFIG_CMD_BOOTM_SHOW_TYPE=y
->  CONFIG_CMD_RESET=y
->  CONFIG_CMD_GO=y
-> +CONFIG_CMD_OFTREE=y
->  CONFIG_NET=y
->  CONFIG_NET_DHCP=y
->  CONFIG_NET_PING=y
-> -CONFIG_CMD_TFTP=y
-> -CONFIG_FS_TFTP=y
->  CONFIG_NET_NETCONSOLE=y
-> +CONFIG_OFDEVICE=y
->  CONFIG_DRIVER_SERIAL_NS16550=y
->  CONFIG_NET_USB=y
->  CONFIG_NET_USB_ASIX=y
-> @@ -36,4 +38,5 @@ CONFIG_NET_USB_ASIX=y
->  CONFIG_USB=y
->  CONFIG_USB_EHCI=y
->  CONFIG_USB_STORAGE=y
-> +CONFIG_FS_TFTP=y
->  CONFIG_FS_FAT=y
-> diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
-> new file mode 100644
-> index 0000000..09ccb8b
-> --- /dev/null
-> +++ b/arch/arm/dts/tegra20-paz00.dts
-> @@ -0,0 +1,12 @@
-> +/dts-v1/;
-> +
-> +/include/ "tegra20.dtsi"
-> +
-> +/ {
-> +	model = "Toshiba AC100 / Dynabook AZ";
-> +	compatible = "compal,paz00", "nvidia,tegra20";
-> +
-> +	memory {
-> +		reg = <0x00000000 0x20000000>;
-> +	};
-> +};
-> diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
-> new file mode 100644
-> index 0000000..9f8860b
-> --- /dev/null
-> +++ b/arch/arm/dts/tegra20.dtsi
-> @@ -0,0 +1,5 @@
-> +/include/ "skeleton.dtsi"
-> +
-> +/ {
-> +	compatible = "nvidia,tegra20";
-> +};
-> -- 
-> 1.8.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TWFrZSBsb2FkaW5nIGVudmlyb25tZW50IGZyb20gTU1DIGdlbmVyaWMgZm9yIGFsbCBPTUFQLgoK
+VGVzdGVkIG9uIEFNMzM1eCwgT01BUDQuCgpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0
+LmdhbWV6QHBoeXRlYy5kZT4KVGVzdGVkLWJ5OiBKYW4gV2VpdHplbCA8ai53ZWl0emVsQHBoeXRl
+Yy5kZT4KLS0tCnYyOgoJLSByZW1vdmVkIGVudmlyb25tZW50IGNvZGUgYWxzbyBmcm9tIGJlYWds
+ZWJvbmUKCiBhcmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9uZS9ib2FyZC5jICAgICAgICB8ICAgMzIg
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vYm9hcmRzL3BhbmRhL2JvYXJk
+LmMgICAgICAgICAgICAgfCAgIDMwIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiBhcmNoL2Fy
+bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaCB8ICAgIDEgKwogYXJjaC9hcm0vbWFj
+aC1vbWFwL29tYXBfZ2VuZXJpYy5jICAgICAgICAgfCAgIDMzICsrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrCiA0IGZpbGVzIGNoYW5nZWQsIDM0IGluc2VydGlvbnMoKyksIDYyIGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2JvYXJkLmMgYi9h
+cmNoL2FybS9ib2FyZHMvYmVhZ2xlYm9uZS9ib2FyZC5jCmluZGV4IDU2ZTY5YTIuLjBhMDUzMjMg
+MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2JvYXJkLmMKKysrIGIvYXJj
+aC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvYm9hcmQuYwpAQCAtMjUsOCArMjUsNiBAQAogI2luY2x1
+ZGUgPGNvbnNvbGUuaD4KICNpbmNsdWRlIDxpbml0Lmg+CiAjaW5jbHVkZSA8ZHJpdmVyLmg+Ci0j
+aW5jbHVkZSA8ZnMuaD4KLSNpbmNsdWRlIDxsaW51eC9zdGF0Lmg+CiAjaW5jbHVkZSA8ZW52ZnMu
+aD4KICNpbmNsdWRlIDxzaXplcy5oPgogI2luY2x1ZGUgPGlvLmg+CkBAIC0xMTIsMzMgKzExMCwz
+IEBAIHN0YXRpYyBpbnQgYmVhZ2xlYm9uZV9kZXZpY2VzX2luaXQodm9pZCkKIAlyZXR1cm4gMDsK
+IH0KIGRldmljZV9pbml0Y2FsbChiZWFnbGVib25lX2RldmljZXNfaW5pdCk7Ci0KLSNpZmRlZiBD
+T05GSUdfREVGQVVMVF9FTlZJUk9OTUVOVAotc3RhdGljIGludCBiZWFnbGVib25lX2Vudl9pbml0
+KHZvaWQpCi17Ci0Jc3RydWN0IHN0YXQgczsKLQljaGFyICpkaXNrZGV2ID0gIi9kZXYvZGlzazAu
+MCI7Ci0JaW50IHJldDsKLQotCXJldCA9IHN0YXQoZGlza2RldiwgJnMpOwotCWlmIChyZXQpIHsK
+LQkJcHJpbnRmKCJkZXZpY2UgJXMgbm90IGZvdW5kLiBVc2luZyBkZWZhdWx0IGVudmlyb25tZW50
+XG4iLCBkaXNrZGV2KTsKLQkJcmV0dXJuIDA7Ci0JfQotCi0JbWtkaXIgKCIvYm9vdCIsIDA2NjYp
+OwotCXJldCA9IG1vdW50KGRpc2tkZXYsICJmYXQiLCAiL2Jvb3QiKTsKLQlpZiAocmV0KSB7Ci0J
+CXByaW50ZigiZmFpbGVkIHRvIG1vdW50ICVzXG4iLCBkaXNrZGV2KTsKLQkJcmV0dXJuIDA7Ci0J
+fQotCi0JaWYgKElTX0VOQUJMRUQoQ09ORklHX09NQVBfQlVJTERfSUZUKSkKLQkJZGVmYXVsdF9l
+bnZpcm9ubWVudF9wYXRoID0gIi9kZXYvZGVmYXVsdGVudiI7Ci0JZWxzZQotCQlkZWZhdWx0X2Vu
+dmlyb25tZW50X3BhdGggPSAiL2Jvb3QvYmFyZWJveC5lbnYiOwotCi0JcmV0dXJuIDA7Ci19Ci1s
+YXRlX2luaXRjYWxsKGJlYWdsZWJvbmVfZW52X2luaXQpOwotI2VuZGlmCmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9ib2FyZHMvcGFuZGEvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2Fy
+ZC5jCmluZGV4IDI1MThkM2EuLmQxZjlhNWUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9w
+YW5kYS9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wYW5kYS9ib2FyZC5jCkBAIC0xLDEy
+ICsxLDEwIEBACiAjaW5jbHVkZSA8Y29tbW9uLmg+CiAjaW5jbHVkZSA8Y29uc29sZS5oPgogI2lu
+Y2x1ZGUgPGluaXQuaD4KLSNpbmNsdWRlIDxmcy5oPgogI2luY2x1ZGUgPGRyaXZlci5oPgogI2lu
+Y2x1ZGUgPGlvLmg+CiAjaW5jbHVkZSA8bnMxNjU1MC5oPgogI2luY2x1ZGUgPGFzbS9hcm1saW51
+eC5oPgotI2luY2x1ZGUgPGxpbnV4L3N0YXQuaD4KICNpbmNsdWRlIDxnZW5lcmF0ZWQvbWFjaC10
+eXBlcy5oPgogI2luY2x1ZGUgPG1hY2gvb21hcDQtc2lsaWNvbi5oPgogI2luY2x1ZGUgPG1hY2gv
+b21hcDQtZGV2aWNlcy5oPgpAQCAtMjAsNyArMTgsNiBAQAogI2luY2x1ZGUgPGFzbS9tbXUuaD4K
+ICNpbmNsdWRlIDxtYWNoL2dwaW8uaD4KICNpbmNsdWRlIDxlbnZmcy5oPgotI2luY2x1ZGUgPG1h
+Y2gvZ2VuZXJpYy5oPgogI2luY2x1ZGUgPGkyYy9pMmMuaD4KICNpbmNsdWRlIDxncGlvLmg+CiAj
+aW5jbHVkZSA8bGVkLmg+CkBAIC0xNjQsMzAgKzE2MSwzIEBAIHN0YXRpYyBpbnQgcGFuZGFfZGV2
+aWNlc19pbml0KHZvaWQpCiAJcmV0dXJuIDA7CiB9CiBkZXZpY2VfaW5pdGNhbGwocGFuZGFfZGV2
+aWNlc19pbml0KTsKLQotI2lmZGVmIENPTkZJR19ERUZBVUxUX0VOVklST05NRU5UCi1zdGF0aWMg
+aW50IHBhbmRhX2Vudl9pbml0KHZvaWQpCi17Ci0Jc3RydWN0IHN0YXQgczsKLQljaGFyICpkaXNr
+ZGV2ID0gIi9kZXYvZGlzazAuMCI7Ci0JaW50IHJldDsKLQotCXJldCA9IHN0YXQoZGlza2Rldiwg
+JnMpOwotCWlmIChyZXQpIHsKLQkJcHJpbnRmKCJubyAlcy4gdXNpbmcgZGVmYXVsdCBlbnZcbiIs
+IGRpc2tkZXYpOwotCQlyZXR1cm4gMDsKLQl9Ci0KLQlta2RpciAoIi9ib290IiwgMDY2Nik7Ci0J
+cmV0ID0gbW91bnQoZGlza2RldiwgImZhdCIsICIvYm9vdCIpOwotCWlmIChyZXQpIHsKLQkJcHJp
+bnRmKCJmYWlsZWQgdG8gbW91bnQgJXNcbiIsIGRpc2tkZXYpOwotCQlyZXR1cm4gMDsKLQl9Ci0K
+LQlkZWZhdWx0X2Vudmlyb25tZW50X3BhdGggPSAiL2Jvb3QvYmFyZWJveGVudiI7Ci0KLQlyZXR1
+cm4gMDsKLX0KLWxhdGVfaW5pdGNhbGwocGFuZGFfZW52X2luaXQpOwotI2VuZGlmCmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaCBiL2FyY2gvYXJt
+L21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oCmluZGV4IGVkYzRmMWQuLjc0NTU0MDQg
+MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oCisr
+KyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oCkBAIC0zNSw2ICsz
+NSw3IEBAIGVudW0gb21hcF9ib290X3NyYyB7CiAJT01BUF9CT09UU1JDX1VTQjEsCiB9OwogCitl
+bnVtIG9tYXBfYm9vdF9zcmMgb21hcF9ib290c3JjKHZvaWQpOwogZW51bSBvbWFwX2Jvb3Rfc3Jj
+IGFtMzN4eF9ib290c3JjKHZvaWQpOwogZW51bSBvbWFwX2Jvb3Rfc3JjIG9tYXAzX2Jvb3RzcmMo
+dm9pZCk7CiBlbnVtIG9tYXBfYm9vdF9zcmMgb21hcDRfYm9vdHNyYyh2b2lkKTsKZGlmZiAtLWdp
+dCBhL2FyY2gvYXJtL21hY2gtb21hcC9vbWFwX2dlbmVyaWMuYyBiL2FyY2gvYXJtL21hY2gtb21h
+cC9vbWFwX2dlbmVyaWMuYwppbmRleCBmMmZkMWQzLi41ODBlZDNlIDEwMDY0NAotLS0gYS9hcmNo
+L2FybS9tYWNoLW9tYXAvb21hcF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL29t
+YXBfZ2VuZXJpYy5jCkBAIC0zMCwzICszMCwzNiBAQCBlbnVtIG9tYXBfYm9vdF9zcmMgb21hcF9i
+b290c3JjKHZvaWQpCiAJcmV0dXJuIGFtMzN4eF9ib290c3JjKCk7CiAjZW5kaWYKIH0KKworI2lm
+IGRlZmluZWQoQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlQpICYmIGRlZmluZWQoQ09ORklHX01D
+SV9TVEFSVFVQKQorc3RhdGljIGludCBvbWFwX2Vudl9pbml0KHZvaWQpCit7CisJc3RydWN0IHN0
+YXQgczsKKwljaGFyICpkaXNrZGV2ID0gIi9kZXYvZGlzazAuMCI7CisJaW50IHJldDsKKworCWlm
+IChvbWFwX2Jvb3RzcmMoKSAhPSBPTUFQX0JPT1RTUkNfTU1DMSkKKwkJcmV0dXJuIDA7CisKKwly
+ZXQgPSBzdGF0KGRpc2tkZXYsICZzKTsKKwlpZiAocmV0KSB7CisJCXByaW50Zigibm8gJXMuIHVz
+aW5nIGRlZmF1bHQgZW52XG4iLCBkaXNrZGV2KTsKKwkJcmV0dXJuIDA7CisJfQorCisJbWtkaXIo
+Ii9ib290IiwgMDY2Nik7CisJcmV0ID0gbW91bnQoZGlza2RldiwgImZhdCIsICIvYm9vdCIpOwor
+CWlmIChyZXQpIHsKKwkJcHJpbnRmKCJmYWlsZWQgdG8gbW91bnQgJXNcbiIsIGRpc2tkZXYpOwor
+CQlyZXR1cm4gMDsKKwl9CisKKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfT01BUF9CVUlMRF9JRlQp
+KQorCQlkZWZhdWx0X2Vudmlyb25tZW50X3BhdGggPSAiL2Rldi9kZWZhdWx0ZW52IjsKKwllbHNl
+CisJCWRlZmF1bHRfZW52aXJvbm1lbnRfcGF0aCA9ICIvYm9vdC9iYXJlYm94LmVudiI7CisKKwly
+ZXR1cm4gMDsKK30KK2xhdGVfaW5pdGNhbGwob21hcF9lbnZfaW5pdCk7CisjZW5kaWYKLS0gCjEu
+Ny4wLjQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
+YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
+c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
