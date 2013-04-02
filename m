@@ -2,11 +2,13 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMuZr-0006wB-TS
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 06:20:18 +0000
+ id 1UMua7-00071h-0b
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 06:20:31 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  2 Apr 2013 08:19:02 +0200
-Message-Id: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
+Date: Tue,  2 Apr 2013 08:19:05 +0200
+Message-Id: <1364883552-6563-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
+References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,98 +22,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: 
+Subject: [PATCH v3 03/10] tegra: switch to DT only
 To: barebox@lists.infradead.org
 
-From dc699f96a6f4305793f737c18ded63fea926b675 Mon Sep 17 00:00:00 2001
-From: Lucas Stach <dev@lynxeye.de>
-Date: Tue, 2 Apr 2013 07:50:22 +0200
-Subject: [PATCH v3 00/10] Rework current Tegra support
+We will follow the Linux kernel and go devicetree only for Tegra. This
+doesn't prevent specific code for certain boards, but always requires a
+valid DTB for all boards.
 
-Round 3 of the Tegra rework. A bit beefier this time, as I folded in
-some real advancements. Most notable a working GPIO driver and
-the 1st stage loading support. Barebox is now aware of the CPU it's
-running on and boots the Tegra main CPU cluster if needed. Don't get
-too exited yet, you most likely won't see anything when running first
-stage, as the pinmux stays in reset state and there is no driver to
-switch it to the state needed for your board. 2nd stage loading
-should work as before from the same binary.
+Also regenerate the AC100 defconfig to reflect this change.
 
-I've also converted Tegra to builtin DTB, as I would like to
-follow the kernel and go a DT only way. Let's see how this works out,
-but as U-Boot isn't far away from defining Tegra boards only through
-the DT I'm almost sure we can make it work in barebox.
-
-A note for the review: I won't split patches just for the sake of
-it. I'm actively working on this code as long as it isn't pulled into
-the basebox repo and it's already hard enough to keep track of which
-hunks of code should go into the individual patches.
-
-Antony: I've converted the serial and ramsize detection to the
-standard used in U-Boot and Linux. Please test if this works for
-your board. If not it's not really a barebox error, as your ODMdata
-is most likely wrong in this case, but please let me know anyway as
-I would like to avoid breaking existing boards.
-
-Lucas Stach (10):
-  tegra: pull in iomap.h from the Linux kernel
-  tegra: define TEGRA20 arch type
-  tegra: switch to DT only
-  tegra: add driver for the clock and reset module
-  tegra: add T20 timer driver
-  tegra: add T20 power management controller driver
-  tegra: add common lowlevel startup
-  tegra: add generic debug UART support
-  tegra: add generic meminit
-  tegra: add GPIO controller driver
-
- arch/arm/Kconfig                               |  10 +-
- arch/arm/boards/toshiba-ac100/Makefile         |   2 -
- arch/arm/boards/toshiba-ac100/board.c          |   8 -
- arch/arm/boards/toshiba-ac100/lowlevel.c       |  10 --
- arch/arm/boards/toshiba-ac100/serial.c         |  39 -----
- arch/arm/configs/toshiba_ac100_defconfig       |   9 +-
- arch/arm/dts/tegra20-paz00.dts                 |  12 ++
- arch/arm/dts/tegra20.dtsi                      |  41 +++++
- arch/arm/mach-tegra/Kconfig                    |  20 ++-
- arch/arm/mach-tegra/Makefile                   |   8 +-
- arch/arm/mach-tegra/clock.c                    |  56 ------
- arch/arm/mach-tegra/include/mach/clkdev.h      |   7 +
- arch/arm/mach-tegra/include/mach/gpio.h        |   1 +
- arch/arm/mach-tegra/include/mach/iomap.h       |  65 +++----
- arch/arm/mach-tegra/include/mach/lowlevel.h    | 147 ++++++++++++++++
- arch/arm/mach-tegra/include/mach/tegra20-car.h | 179 +++++++++++++++++++
- arch/arm/mach-tegra/include/mach/tegra20-pmc.h |  67 ++++++++
- arch/arm/mach-tegra/reset.c                    |  39 -----
- arch/arm/mach-tegra/tegra20-car.c              | 121 +++++++++++++
- arch/arm/mach-tegra/tegra20-pmc.c              |  68 ++++++++
- arch/arm/mach-tegra/tegra20-timer.c            | 120 +++++++++++++
- arch/arm/mach-tegra/tegra20.c                  |  50 ++++++
- arch/arm/mach-tegra/tegra_avp_init.c           | 228 +++++++++++++++++++++++++
- arch/arm/mach-tegra/tegra_maincomplex_init.c   |  46 +++++
- drivers/gpio/Kconfig                           |   7 +
- drivers/gpio/Makefile                          |   1 +
- drivers/gpio/gpio-tegra.c                      | 226 ++++++++++++++++++++++++
- 27 files changed, 1380 insertions(+), 207 deletions(-)
- delete mode 100644 arch/arm/boards/toshiba-ac100/lowlevel.c
- delete mode 100644 arch/arm/boards/toshiba-ac100/serial.c
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/Kconfig                         |  2 ++
+ arch/arm/configs/toshiba_ac100_defconfig |  9 ++++++---
+ arch/arm/dts/tegra20-paz00.dts           | 12 ++++++++++++
+ arch/arm/dts/tegra20.dtsi                |  5 +++++
+ 4 files changed, 25 insertions(+), 3 deletions(-)
  create mode 100644 arch/arm/dts/tegra20-paz00.dts
  create mode 100644 arch/arm/dts/tegra20.dtsi
- delete mode 100644 arch/arm/mach-tegra/clock.c
- create mode 100644 arch/arm/mach-tegra/include/mach/clkdev.h
- create mode 100644 arch/arm/mach-tegra/include/mach/gpio.h
- create mode 100644 arch/arm/mach-tegra/include/mach/lowlevel.h
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra20-car.h
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra20-pmc.h
- delete mode 100644 arch/arm/mach-tegra/reset.c
- create mode 100644 arch/arm/mach-tegra/tegra20-car.c
- create mode 100644 arch/arm/mach-tegra/tegra20-pmc.c
- create mode 100644 arch/arm/mach-tegra/tegra20-timer.c
- create mode 100644 arch/arm/mach-tegra/tegra20.c
- create mode 100644 arch/arm/mach-tegra/tegra_avp_init.c
- create mode 100644 arch/arm/mach-tegra/tegra_maincomplex_init.c
- create mode 100644 drivers/gpio/gpio-tegra.c
 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7d42826..8f37d12 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -139,6 +139,8 @@ config ARCH_TEGRA
+ 	bool "Nvidia Tegra"
+ 	select CPU_V7
+ 	select HAS_DEBUG_LL
++	select BUILTIN_DTB
++	select OFTREE
+ 
+ config ARCH_ZYNQ
+ 	bool "Xilinx Zynq-based boards"
+diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
+index 065189d..b44fd26 100644
+--- a/arch/arm/configs/toshiba_ac100_defconfig
++++ b/arch/arm/configs/toshiba_ac100_defconfig
+@@ -1,4 +1,5 @@
+-CONFIG_ARCH_TEGRA=y
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_TEXT_BASE=0x01000000
+ CONFIG_BROKEN=y
+@@ -14,6 +15,7 @@ CONFIG_ENABLE_DEVICE_NOISE=y
+ CONFIG_CMD_SLEEP=y
+ # CONFIG_CMD_TRUE is not set
+ # CONFIG_CMD_FALSE is not set
++CONFIG_CMD_TFTP=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_LOADS=y
+@@ -23,12 +25,12 @@ CONFIG_CMD_SHA1SUM=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_ASIX=y
+@@ -36,4 +38,5 @@ CONFIG_NET_USB_ASIX=y
+ CONFIG_USB=y
+ CONFIG_USB_EHCI=y
+ CONFIG_USB_STORAGE=y
++CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
+new file mode 100644
+index 0000000..09ccb8b
+--- /dev/null
++++ b/arch/arm/dts/tegra20-paz00.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++
++/include/ "tegra20.dtsi"
++
++/ {
++	model = "Toshiba AC100 / Dynabook AZ";
++	compatible = "compal,paz00", "nvidia,tegra20";
++
++	memory {
++		reg = <0x00000000 0x20000000>;
++	};
++};
+diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
+new file mode 100644
+index 0000000..9f8860b
+--- /dev/null
++++ b/arch/arm/dts/tegra20.dtsi
+@@ -0,0 +1,5 @@
++/include/ "skeleton.dtsi"
++
++/ {
++	compatible = "nvidia,tegra20";
++};
 -- 
 1.8.1.4
 
