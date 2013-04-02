@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMwFg-00010N-2b
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 08:07:33 +0000
-Received: by mail-ea0-f182.google.com with SMTP id q15so71434ead.13
- for <barebox@lists.infradead.org>; Tue, 02 Apr 2013 01:07:29 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue,  2 Apr 2013 10:07:07 +0200
-Message-Id: <1364890027-7807-1-git-send-email-h.feurstein@gmail.com>
-In-Reply-To: <20130329163237.GP1568@game.jcrosoft.org>
-References: <20130329163237.GP1568@game.jcrosoft.org>
+ id 1UMwkQ-0008MR-Nv
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 08:39:19 +0000
+Message-ID: <1364891989.4213.8.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Tue, 02 Apr 2013 10:39:49 +0200
+In-Reply-To: <trinity-9b800437-dda7-4884-9539-55f191f34bcd-1364888497084@3capp-gmx-bs47>
+References: <trinity-9b800437-dda7-4884-9539-55f191f34bcd-1364888497084@3capp-gmx-bs47>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +17,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] commands/tftp: use debug() for debug output
-To: barebox@lists.infradead.org
+Subject: Re: Problems with the Load a new kernel image
+To: "\"Breixo =?ISO-8859-1?Q?L=F3pez_Garc=EDa=22?=" <Breixo.Lopez@gmx.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- commands/tftp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/commands/tftp.c b/commands/tftp.c
-index 558b0ac..c83d174 100644
---- a/commands/tftp.c
-+++ b/commands/tftp.c
-@@ -76,7 +76,7 @@ static int do_tftpb(int argc, char *argv[])
- 	if (ret)
- 		goto err_rmdir;
- 
--	printk("%s: %s -> %s\n", __func__, source, dest);
-+	debug("%s: %s -> %s\n", __func__, source, dest);
- 
- 	ret = copy_file(source, dest, 1);
- 
--- 
-1.8.1.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCAyMDEzLTA0LTAyIGF0IDA5OjQxICswMjAwLCAiQnJlaXhvIEzDs3BleiBHYXJjw61h
+IiB3cm90ZToKPiBtYWxsb2Mgc3BhY2U6IDB4ODBiMDAwMDAgLT4gMHg4MGZmZmZmZiAoc2l6ZSAg
+NSBNQikgICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gc3RhY2sgc3BhY2U6ICAweDgwYWY4
+MDAwIC0+IDB4ODBiMDAwMDAgKHNpemUgMzIga0IpICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAo+IHJ1bm5pbmcgL2Vudi9iaW4vaW5pdC4uLiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gSGl0
+IGFueSBrZXkgdG8gc3RvcCBhdXRvYm9vdDogIDMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIAo+IGJhcmVib3hAUGh5dGVjIHBoeUNPUkUtQU0zMzV4Oi8gYm9v
+dCAtayB0ZnRwIC1yIG5ldCAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPiBkb190ZnRwYjog
+Ly50ZnRwX3RtcF9wYXRoL2xpbnV4aW1hZ2UgLT4gL2ltYWdlICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCj4gMTAwTWJwcyBmdWxsIGR1cGxleCBsaW5rIGRldGVjdGVkCj4gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyAgICAgIAo+ICAgICAgICAg
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMgICAgICAKPiAgICAgICAgICMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjICAgICAgCj4gICAgICAgICAjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyAgICAgIAo+ICAgICAgICAgIyMjIyMjIyMjIyMjd3JpdGU6IE91dCBvZiBtZW1vcnkgICAgICAg
+ICAgIAo+ICAgICAgCj4gSSBoYXZlIGNoYW5nZWQgdGhlIGJhcmVib3gncyBwcm9wZXJ0eSBtYWxs
+b2Nfc2l6ZSBvZiB0aGUgYmFyZWJveAo+IGJlY2F1c2UgdGhlIGltYWdlIGlzID40TUIgYW5kIEkg
+c3VwcG9zZWQgdGhhdCB0aGUgcHJvYmxlbSB3YXMgdGhhdCB0aGUKPiBrZXJuZWwgaXMgb3V0IG9m
+IHRoZSByZXNlcnZlciBhcmVhIGZvciBrZXJuZWwgaW4gdGhlIFJBTSAodGZ0cCBtb2RlKQo+IGJl
+Zm9yZSBpdCBpcyBzYXZlZCBpbiB0aGUgZmxhc2ggYnV0IHdpdGhvdXQgc3VjY2Vzc2Z1bC4gV2hh
+dCBpcyB0aGUKPiByZWFsIElzc3VlIHRoYXQgZG9lc24ndCBhbGxvdyB0byBib290IHByb3BlcnRs
+eSB0aGUga2VybmVsCj4gIAo+IFRoZSBrZXJuZWwgdGhhdCBpcyB1c2VkOgo+ICQgbHMgLWwgL3Rm
+dHBib290Cj4gLXJ3LXItLXItLSAxIHNzdCAgc3N0ICAgNDk2NDg2NCBBcHIgIDIgMDk6MzUgbGlu
+dXhpbWFnZQoKUGxlYXNlIHRyeSB3aXRoIGEgbGFyZ2VyIG1hbGxvYyBzaXplIHRoYW4gNU1CLCBi
+YXJlYm94IG5lZWRzIG1hbGxvYwpzcGFjZSBmb3Igb3RoZXIgdGhpbmdzIGJlc2lkZXMgdGhlIGtl
+cm5lbCBpbWFnZSBhcyB3ZWxsLiBXaHkgaXMgaXQgc28Kc21hbGwgd2hlbiB5b3VyIGJvYXJkIGhh
+cyA1MTJNQj8KClJlZ2FyZHMsCkphbgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwg
+TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
+ZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
+OiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2
+ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QK
+YmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
+aWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
