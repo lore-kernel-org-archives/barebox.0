@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
+ helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UMj64-0003i3-Au
- for barebox@lists.infradead.org; Mon, 01 Apr 2013 18:04:45 +0000
-Date: Mon, 1 Apr 2013 20:04:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130401180438.GZ1906@pengutronix.de>
-References: <m3r4ixgmok.fsf@intrepid.localdomain>
- <m3ip49gmds.fsf@intrepid.localdomain>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <m3ip49gmds.fsf@intrepid.localdomain>
+ id 1UMuZw-0006y0-1x
+ for barebox@lists.infradead.org; Tue, 02 Apr 2013 06:20:20 +0000
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue,  2 Apr 2013 08:19:04 +0200
+Message-Id: <1364883552-6563-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
+References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +17,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Implement ALTERNATE memory layout.
-To: Krzysztof Halasa <khc@pm.waw.pl>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3 02/10] tegra: define TEGRA20 arch type
+To: barebox@lists.infradead.org
 
-T24gU2F0LCBNYXIgMzAsIDIwMTMgYXQgMTI6MjU6MzVQTSArMDEwMCwgS3J6eXN6dG9mIEhhbGFz
-YSB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBLcnp5c3p0b2YgSGHFgmFzYSA8a2hjQHBtLndhdy5w
-bD4KPiAKPiAtLS0gYS9hcmNoL2FybS9jcHUvc3RhcnQuYwo+ICsrKyBiL2FyY2gvYXJtL2NwdS9z
-dGFydC5jCj4gQEAgLTU4LDcgKzU4LDYgQEAgc3RhdGljIG5vaW5saW5lIF9fbm9yZXR1cm4gdm9p
-ZCBfX3N0YXJ0KHVpbnQzMl90IG1lbWJhc2UsIHVpbnQzMl90IG1lbXNpemUsCj4gIAllbmRtZW0g
-LT0gU1RBQ0tfU0laRTsgLyogU3RhY2sgKi8KPiAgCj4gIAlpZiAoSVNfRU5BQkxFRChDT05GSUdf
-TU1VX0VBUkxZKSkgewo+IC0KPiAgCQllbmRtZW0gJj0gfjB4M2ZmZjsKPiAgCQllbmRtZW0gLT0g
-U1pfMTZLOyAvKiB0dGIgKi8KPiAgCj4gQEAgLTY2LDYgKzY1LDkgQEAgc3RhdGljIG5vaW5saW5l
-IF9fbm9yZXR1cm4gdm9pZCBfX3N0YXJ0KHVpbnQzMl90IG1lbWJhc2UsIHVpbnQzMl90IG1lbXNp
-emUsCj4gIAkJCW1tdV9lYXJseV9lbmFibGUobWVtYmFzZSwgbWVtc2l6ZSwgZW5kbWVtKTsKPiAg
-CX0KPiAgCj4gKyNpZmRlZiBDT05GSUdfTUVNT1JZX0xBWU9VVF9BTFRFUk5BVEUKPiArCQltYWxs
-b2NfZW5kID0gZW5kbWVtOwo+ICsjZWxzZQoKV2Ugc2hvdWxkIG5vdCBuZWVkIGEga2NvbmZpZyBv
-cHRpb24gZm9yIHRoaXMuIFdoeSBub3QganVzdCB1c2UgdGhlCmJpZ2dlc3QgbWVtb3J5IHJlZ2lv
-biB3ZSBmaW5kPyBXaGV0aGVyIHRoaXMgaXMgYmVsb3cgb3IgYWJvdmUgdGhlCmJhcmVib3ggYmlu
-YXJ5IGRvZXNuJ3QgbmVlZCB0byBiZSBrbm93biBhdCBjb21waWxlIHRpbWUuCgpTYXNjaGEKCi0t
-IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAg
-ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMx
-MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Tegra is not a single arch type, but a collection of different
+generations. Define TEGAR20 arch type to differentiate between the
+generations. Switch to ARMv7 cpu type for all Tegras.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/Kconfig            |  4 ++--
+ arch/arm/mach-tegra/Kconfig | 20 ++++++++++++++++++--
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index bb9b47b..7d42826 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -136,8 +136,8 @@ config ARCH_VEXPRESS
+ 	select COMMON_CLK
+ 
+ config ARCH_TEGRA
+-	bool "Nvidia Tegra-based boards"
+-	select CPU_ARM926T
++	bool "Nvidia Tegra"
++	select CPU_V7
+ 	select HAS_DEBUG_LL
+ 
+ config ARCH_ZYNQ
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index eda786b..0adf4be 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -1,11 +1,23 @@
+ if ARCH_TEGRA
++	
++choice
++	prompt "Tegra processor type"
++
++config MACH_TEGRA20
++	bool "Tegra 20"
++
++endchoice
++
++# ---------------------------------------------------------
++
++if MACH_TEGRA20
+ 
+ config ARCH_TEXT_BASE
+ 	hex
+-	default 0x31fc0000
++	default 0x00108000
+ 
+ choice
+-	prompt "Tegra Board Type"
++	prompt "Tegra 20 Board Type"
+ 
+ config MACH_TOSHIBA_AC100
+ 	bool "Toshiba AC100"
+@@ -16,4 +28,8 @@ endchoice
+ 
+ source arch/arm/boards/toshiba-ac100/Kconfig
+ 
++endif #MACH_TEGRA20
++
++# ---------------------------------------------------------
++
+ endif
+-- 
+1.8.1.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
