@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNHpG-0000Kc-JY
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:09:46 +0000
+ id 1UNHrR-0000mp-Oy
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:11:58 +0000
+Date: Wed, 3 Apr 2013 09:11:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Apr 2013 09:09:38 +0200
-Message-Id: <1364972980-32527-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
-References: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130403071155.GQ1906@pengutronix.de>
+References: <20130329163237.GP1568@game.jcrosoft.org>
+ <1364890027-7807-1-git-send-email-h.feurstein@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1364890027-7807-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,70 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: i.MX53: split lowlevel function into early/nonearly
- version
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] commands/tftp: use debug() for debug output
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-clock_notifier_call_chain() can't be called before init time. Protecting
-it with IS_ENABLED(__PBL__) is not enough. This patch splits out a new
-imx53_init_lowlevel_early which can be called before init time and does
-not have the call to clock_notifier_call_chain() in it.
+On Tue, Apr 02, 2013 at 10:07:07AM +0200, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx53.c             | 12 ++++++++----
- arch/arm/mach-imx/include/mach/imx5.h |  1 +
- 2 files changed, 9 insertions(+), 4 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
-index b06a5d0..193406f 100644
---- a/arch/arm/mach-imx/imx53.c
-+++ b/arch/arm/mach-imx/imx53.c
-@@ -75,7 +75,7 @@ static int imx53_init(void)
- }
- postcore_initcall(imx53_init);
- 
--void imx53_init_lowlevel(unsigned int cpufreq_mhz)
-+void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
- {
- 	void __iomem *ccm = (void __iomem *)MX53_CCM_BASE_ADDR;
- 	u32 r;
-@@ -188,8 +188,12 @@ void imx53_init_lowlevel(unsigned int cpufreq_mhz)
- 	writel(0xffffffff, ccm + MX5_CCM_CCGR6);
- 	writel(0xffffffff, ccm + MX53_CCM_CCGR7);
- 
--	if (!IS_ENABLED(__PBL__))
--		clock_notifier_call_chain();
--
- 	writel(0, ccm + MX5_CCM_CCDR);
- }
-+
-+void imx53_init_lowlevel(unsigned int cpufreq_mhz)
-+{
-+	imx53_init_lowlevel_early(cpufreq_mhz);
-+
-+	clock_notifier_call_chain();
-+}
-diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
-index ff570c4..7f5c2ef 100644
---- a/arch/arm/mach-imx/include/mach/imx5.h
-+++ b/arch/arm/mach-imx/include/mach/imx5.h
-@@ -3,6 +3,7 @@
- 
- void imx51_init_lowlevel(unsigned int cpufreq_mhz);
- void imx53_init_lowlevel(unsigned int cpufreq_mhz);
-+void imx53_init_lowlevel_early(unsigned int cpufreq_mhz);
- void imx5_init_lowlevel(void);
- 
- void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
+Sascha
+
+> ---
+>  commands/tftp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/commands/tftp.c b/commands/tftp.c
+> index 558b0ac..c83d174 100644
+> --- a/commands/tftp.c
+> +++ b/commands/tftp.c
+> @@ -76,7 +76,7 @@ static int do_tftpb(int argc, char *argv[])
+>  	if (ret)
+>  		goto err_rmdir;
+>  
+> -	printk("%s: %s -> %s\n", __func__, source, dest);
+> +	debug("%s: %s -> %s\n", __func__, source, dest);
+>  
+>  	ret = copy_file(source, dest, 1);
+>  
+> -- 
+> 1.8.1.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
