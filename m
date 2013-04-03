@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNHpG-0000Ke-JY
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:09:45 +0000
+ id 1UNHpG-0000Kc-JY
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:09:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Apr 2013 09:09:40 +0200
-Message-Id: <1364972980-32527-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  3 Apr 2013 09:09:38 +0200
+Message-Id: <1364972980-32527-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
 References: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: tqma53: call SoC lowlevel function early
+Subject: [PATCH 2/4] ARM: i.MX53: split lowlevel function into early/nonearly
+ version
 To: barebox@lists.infradead.org
 
-With CONFIG_MMU_EARLY enabled the board does not survive the call
-to imx53_init_lowlevel(). This should not happen, but the reasons
-are currently unknown. This works on other boards like the i.MX53
-QSB.
-This patch moves the call to imx53_init_lowlevel to
-barebox_arm_reset_vector() which is executed with MMU disabled.
+clock_notifier_call_chain() can't be called before init time. Protecting
+it with IS_ENABLED(__PBL__) is not enough. This patch splits out a new
+imx53_init_lowlevel_early which can be called before init time and does
+not have the call to clock_notifier_call_chain() in it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqma53/board.c    | 1 -
- arch/arm/boards/tqma53/lowlevel.c | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/imx53.c             | 12 ++++++++----
+ arch/arm/mach-imx/include/mach/imx5.h |  1 +
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
-index 03cb8ea..432f29f 100644
---- a/arch/arm/boards/tqma53/board.c
-+++ b/arch/arm/boards/tqma53/board.c
-@@ -253,7 +253,6 @@ late_initcall(tqma53_part_init);
- static int tqma53_console_init(void)
- {
- 	mxc_iomux_v3_setup_multiple_pads(tqma53_pads, ARRAY_SIZE(tqma53_pads));
--	imx53_init_lowlevel(800);
- 	imx53_add_uart0();
- 
- 	return 0;
-diff --git a/arch/arm/boards/tqma53/lowlevel.c b/arch/arm/boards/tqma53/lowlevel.c
-index 60c28f7..a6eaa46 100644
---- a/arch/arm/boards/tqma53/lowlevel.c
-+++ b/arch/arm/boards/tqma53/lowlevel.c
-@@ -1,9 +1,11 @@
- #include <common.h>
- #include <mach/esdctl.h>
- #include <asm/barebox-arm-head.h>
-+#include <mach/imx5.h>
- 
- void __naked barebox_arm_reset_vector(void)
- {
- 	arm_cpu_lowlevel_init();
-+	imx53_init_lowlevel_early(800);
- 	imx53_barebox_entry(0);
+diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
+index b06a5d0..193406f 100644
+--- a/arch/arm/mach-imx/imx53.c
++++ b/arch/arm/mach-imx/imx53.c
+@@ -75,7 +75,7 @@ static int imx53_init(void)
  }
+ postcore_initcall(imx53_init);
+ 
+-void imx53_init_lowlevel(unsigned int cpufreq_mhz)
++void imx53_init_lowlevel_early(unsigned int cpufreq_mhz)
+ {
+ 	void __iomem *ccm = (void __iomem *)MX53_CCM_BASE_ADDR;
+ 	u32 r;
+@@ -188,8 +188,12 @@ void imx53_init_lowlevel(unsigned int cpufreq_mhz)
+ 	writel(0xffffffff, ccm + MX5_CCM_CCGR6);
+ 	writel(0xffffffff, ccm + MX53_CCM_CCGR7);
+ 
+-	if (!IS_ENABLED(__PBL__))
+-		clock_notifier_call_chain();
+-
+ 	writel(0, ccm + MX5_CCM_CCDR);
+ }
++
++void imx53_init_lowlevel(unsigned int cpufreq_mhz)
++{
++	imx53_init_lowlevel_early(cpufreq_mhz);
++
++	clock_notifier_call_chain();
++}
+diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
+index ff570c4..7f5c2ef 100644
+--- a/arch/arm/mach-imx/include/mach/imx5.h
++++ b/arch/arm/mach-imx/include/mach/imx5.h
+@@ -3,6 +3,7 @@
+ 
+ void imx51_init_lowlevel(unsigned int cpufreq_mhz);
+ void imx53_init_lowlevel(unsigned int cpufreq_mhz);
++void imx53_init_lowlevel_early(unsigned int cpufreq_mhz);
+ void imx5_init_lowlevel(void);
+ 
+ void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
 -- 
 1.8.2.rc2
 
