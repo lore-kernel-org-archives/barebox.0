@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x230.google.com ([2a00:1450:4013:c01::230])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UN4Xr-0006PH-RL
- for barebox@lists.infradead.org; Tue, 02 Apr 2013 16:58:52 +0000
-Received: by mail-ea0-f176.google.com with SMTP id h10so336405eaj.21
- for <barebox@lists.infradead.org>; Tue, 02 Apr 2013 09:58:49 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Tue,  2 Apr 2013 18:58:06 +0200
-Message-Id: <1364921887-6487-1-git-send-email-h.feurstein@gmail.com>
+ id 1UNHYd-0005dq-Tv
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 06:52:32 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UNHYb-0004k0-N0
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:52:29 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UNHYb-0006Vw-Lh
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:52:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed,  3 Apr 2013 08:52:20 +0200
+Message-Id: <1364971945-24352-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,70 +26,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] mci-core: use dev_* for messages
+Subject: [PATCH] bootsource
 To: barebox@lists.infradead.org
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
----
- drivers/mci/mci-core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+This is a series based on earlier work by Marc. It creates an arch
+independent framework for storing/retrieving the bootsource. Changes
+to Marcs version are:
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index a269aee..49612de 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -430,8 +430,10 @@ static int mmc_change_freq(struct mci *mci)
- 	}
- 
- 	/* No high-speed support */
--	if (!mci->ext_csd[EXT_CSD_HS_TIMING])
-+	if (!mci->ext_csd[EXT_CSD_HS_TIMING]) {
-+		dev_dbg(mci->mci_dev, "No high-speed support\n");
- 		return 0;
-+	}
- 
- 	/* High Speed is set, there are two types: 52MHz and 26MHz */
- 	if (cardtype & EXT_CSD_CARD_TYPE_52)
-@@ -669,7 +671,8 @@ static void mci_detect_version_from_csd(struct mci *mci)
- 			mci->version = MMC_VERSION_1_2;
- 			break;
- 		}
--		printf("detected card version %s\n", vstr);
-+
-+		dev_info(mci->mci_dev, "detected card version %s\n", vstr);
- 	}
- }
- 
-@@ -1169,7 +1172,7 @@ static int mci_sd_read(struct block_device *blk, void *buffer, int block,
- 	}
- 
- 	if (block > MAX_BUFFER_NUMBER) {
--		pr_err("Cannot handle block number %d. Too large!\n", block);
-+		dev_err(mci->mci_dev, "Cannot handle block number %d. Too large!\n", block);
- 		return -EINVAL;
- 	}
- 
-@@ -1366,7 +1369,7 @@ static int mci_card_probe(struct mci *mci)
- 	/* start with a host interface reset */
- 	rc = (host->init)(host, mci->mci_dev);
- 	if (rc) {
--		pr_err("Cannot reset the SD/MMC interface\n");
-+		dev_err(mci->mci_dev, "Cannot reset the SD/MMC interface\n");
- 		return rc;
- 	}
- 
-@@ -1376,7 +1379,7 @@ static int mci_card_probe(struct mci *mci)
- 	/* reset the card */
- 	rc = mci_go_idle(mci);
- 	if (rc) {
--		pr_warning("Cannot reset the SD/MMC card\n");
-+		dev_warn(mci->mci_dev, "Cannot reset the SD/MMC card\n");
- 		goto on_error;
- 	}
- 
--- 
-1.8.1.3
+- rename (currently i.MX specific) barebox_loc environment variable
+  to 'bootsource'
+- initialize the bootsource instance to unknown (-1) instead of 0
+  which is a valid bootsource instance
 
+Sascha
+
+----------------------------------------------------------------
+Marc Kleine-Budde (3):
+      bootsource: create arch independent bootsource framework
+      bootsource: use initcall to export bootsource location to environment
+      bootsource: add support for bootsource instance information
+
+Sascha Hauer (2):
+      ARM: i.MX: rename barebox_loc to bootsource
+      ARM: i.MX53: Add bootsource instance information
+
+ arch/arm/boards/efika-mx-smartbook/board.c         |  3 +-
+ .../boards/efika-mx-smartbook/env/init/bootsource  |  2 +-
+ arch/arm/boards/karo-tx53/board.c                  |  3 +-
+ arch/arm/boards/pcm038/pcm038.c                    |  3 +-
+ arch/arm/mach-imx/boot.c                           | 77 ++++++++-----------
+ arch/arm/mach-imx/imx51.c                          |  2 +-
+ arch/arm/mach-imx/include/mach/generic.h           | 15 ----
+ common/Makefile                                    |  1 +
+ common/bootsource.c                                | 86 ++++++++++++++++++++++
+ include/bootsource.h                               | 23 ++++++
+ 10 files changed, 148 insertions(+), 67 deletions(-)
+ create mode 100644 common/bootsource.c
+ create mode 100644 include/bootsource.h
 
 _______________________________________________
 barebox mailing list
