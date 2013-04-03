@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNHpG-0000Kb-JZ
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:09:44 +0000
+ id 1UNHpG-0000KZ-JX
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 07:09:43 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UNHpE-0005c5-Nw
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 09:09:40 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UNHpE-0000Yf-Mg
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 09:09:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Apr 2013 09:09:37 +0200
-Message-Id: <1364972980-32527-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
-References: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  3 Apr 2013 09:09:36 +0200
+Message-Id: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,62 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM: i.MX53: Fix pll216 setup
+Subject: [PATCH] i.MX53 lowlevel work
 To: barebox@lists.infradead.org
 
-The value for i.MX53 216MHz is actually 432MHz. Use the same value
-as for i.MX51 which really corresponds to 216MHz. These are the same
-PLL216 values as U-Boot uses.
+These are some early setup fixes for i.MX53. First PLL3 was initialized
+to 432MHz instead of what the code claims (and what U-Boot does) to 216MHz.
+We now really initialize it to 216MHz.
+Second the imx53_init_lowlevel code was not really save for calling from
+early code due to a call to clock_notifier_call_chain() inside. This fixes
+this.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx51.c             | 2 +-
- arch/arm/mach-imx/imx53.c             | 2 +-
- arch/arm/mach-imx/include/mach/imx5.h | 3 +--
- 3 files changed, 3 insertions(+), 4 deletions(-)
+Sascha
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index cffcca3..737ab9b 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -151,7 +151,7 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
- 	writel(0x19239145, ccm + MX5_CCM_CBCDR);
- 	writel(0x000020C0, ccm + MX5_CCM_CBCMR);
- 
--	imx51_setup_pll_216((void __iomem *)MX51_PLL3_BASE_ADDR);
-+	imx5_setup_pll_216((void __iomem *)MX51_PLL3_BASE_ADDR);
- 
- 	/* Set the platform clock dividers */
- 	writel(0x00000124, MX51_ARM_BASE_ADDR + 0x14);
-diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
-index 3135ada..b06a5d0 100644
---- a/arch/arm/mach-imx/imx53.c
-+++ b/arch/arm/mach-imx/imx53.c
-@@ -146,7 +146,7 @@ void imx53_init_lowlevel(unsigned int cpufreq_mhz)
- 	/* make sure change is effective */
- 	while (readl(ccm + MX5_CCM_CDHIPR));
- 
--	imx53_setup_pll_216((void __iomem *)MX53_PLL3_BASE_ADDR);
-+	imx5_setup_pll_216((void __iomem *)MX53_PLL3_BASE_ADDR);
- 	imx5_setup_pll_455((void __iomem *)MX53_PLL4_BASE_ADDR);
- 
- 	/* Set the platform clock dividers */
-diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
-index cd0a347..ff570c4 100644
---- a/arch/arm/mach-imx/include/mach/imx5.h
-+++ b/arch/arm/mach-imx/include/mach/imx5.h
-@@ -13,7 +13,6 @@ void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
- #define imx5_setup_pll_600(base)	imx5_setup_pll((base),  600, (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
- #define imx5_setup_pll_455(base)	imx5_setup_pll((base),  455, (( 9 << 4) + ((2 - 1) << 0)), (48 - 1), 23)
- #define imx5_setup_pll_400(base)	imx5_setup_pll((base),  400, (( 8 << 4) + ((2 - 1) << 0)), (3 - 1), 1)
--#define imx53_setup_pll_216(base)	imx5_setup_pll((base),  216, (( 8 << 4) + ((2 - 1) << 0)), (1 - 1), 1)
--#define imx51_setup_pll_216(base)	imx5_setup_pll((base),  216, (( 6 << 4) + ((3 - 1) << 0)), (4 - 1), 3)
-+#define imx5_setup_pll_216(base)	imx5_setup_pll((base),  216, (( 6 << 4) + ((3 - 1) << 0)), (4 - 1), 3)
- 
- #endif /* __MACH_MX53_H */
--- 
-1.8.2.rc2
+----------------------------------------------------------------
+Sascha Hauer (4):
+      ARM: i.MX53: Fix pll216 setup
+      ARM: i.MX53: split lowlevel function into early/nonearly version
+      ARM: tx53: use early lowlevel function
+      ARM: tqma53: call SoC lowlevel function early
 
+ arch/arm/boards/karo-tx53/lowlevel.c  |  2 +-
+ arch/arm/boards/tqma53/board.c        |  1 -
+ arch/arm/boards/tqma53/lowlevel.c     |  2 ++
+ arch/arm/mach-imx/imx51.c             |  2 +-
+ arch/arm/mach-imx/imx53.c             | 14 +++++++++-----
+ arch/arm/mach-imx/include/mach/imx5.h |  4 ++--
+ 6 files changed, 15 insertions(+), 10 deletions(-)
 
 _______________________________________________
 barebox mailing list
