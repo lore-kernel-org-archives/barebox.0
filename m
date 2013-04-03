@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNHYd-0005dq-Tv
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 06:52:32 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UNHYb-0004k0-N0
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:52:29 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UNHYb-0006Vw-Lh
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:52:29 +0200
+ id 1UNHYd-0005dw-Tx
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 06:52:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  3 Apr 2013 08:52:20 +0200
-Message-Id: <1364971945-24352-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  3 Apr 2013 08:52:24 +0200
+Message-Id: <1364971945-24352-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1364971945-24352-1-git-send-email-s.hauer@pengutronix.de>
+References: <1364971945-24352-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,43 +21,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootsource
+Subject: [PATCH 4/5] bootsource: add support for bootsource instance
+ information
 To: barebox@lists.infradead.org
 
-This is a series based on earlier work by Marc. It creates an arch
-independent framework for storing/retrieving the bootsource. Changes
-to Marcs version are:
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-- rename (currently i.MX specific) barebox_loc environment variable
-  to 'bootsource'
-- initialize the bootsource instance to unknown (-1) instead of 0
-  which is a valid bootsource instance
+Add a C interface to set and get the bootsource instance:
 
-Sascha
+    int bootsource_get_instance(void);
+    void bootsource_set_instance(int instance);
 
-----------------------------------------------------------------
-Marc Kleine-Budde (3):
-      bootsource: create arch independent bootsource framework
-      bootsource: use initcall to export bootsource location to environment
-      bootsource: add support for bootsource instance information
+Also export the shell variable "barebox_loc_instance".
 
-Sascha Hauer (2):
-      ARM: i.MX: rename barebox_loc to bootsource
-      ARM: i.MX53: Add bootsource instance information
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/bootsource.c  | 24 ++++++++++++++++++++++++
+ include/bootsource.h |  4 ++++
+ 2 files changed, 28 insertions(+)
 
- arch/arm/boards/efika-mx-smartbook/board.c         |  3 +-
- .../boards/efika-mx-smartbook/env/init/bootsource  |  2 +-
- arch/arm/boards/karo-tx53/board.c                  |  3 +-
- arch/arm/boards/pcm038/pcm038.c                    |  3 +-
- arch/arm/mach-imx/boot.c                           | 77 ++++++++-----------
- arch/arm/mach-imx/imx51.c                          |  2 +-
- arch/arm/mach-imx/include/mach/generic.h           | 15 ----
- common/Makefile                                    |  1 +
- common/bootsource.c                                | 86 ++++++++++++++++++++++
- include/bootsource.h                               | 23 ++++++
- 10 files changed, 148 insertions(+), 67 deletions(-)
- create mode 100644 common/bootsource.c
- create mode 100644 include/bootsource.h
+diff --git a/common/bootsource.c b/common/bootsource.c
+index 5f1d40c..7367215 100644
+--- a/common/bootsource.c
++++ b/common/bootsource.c
+@@ -34,6 +34,7 @@ static const char *bootsource_str[] = {
+ };
+ 
+ static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
++static int bootsource_instance = BOOTSOURCE_INSTANCE_UNKNOWN;
+ 
+ void bootsource_set(enum bootsource src)
+ {
+@@ -45,6 +46,20 @@ void bootsource_set(enum bootsource src)
+ 	setenv("bootsource", bootsource_str[src]);
+ }
+ 
++void bootsource_set_instance(int instance)
++{
++	char buf[32];
++
++	bootsource_instance = instance;
++
++	if (instance < 0)
++		sprintf(buf, "unknown");
++	else
++		snprintf(buf, sizeof(buf), "%d", instance);
++
++	setenv("bootsource_instance", buf);
++}
++
+ enum bootsource bootsource_get(void)
+ {
+ 	return bootsource;
+@@ -52,10 +67,19 @@ enum bootsource bootsource_get(void)
+ 
+ BAREBOX_MAGICVAR(bootsource, "The source barebox has been booted from");
+ 
++int bootsource_get_instance(void)
++{
++	return bootsource_instance;
++}
++
++BAREBOX_MAGICVAR(bootsource_instance, "The instance of the source barebox has been booted from");
++
+ static int bootsource_init(void)
+ {
+ 	bootsource_set(bootsource);
++	bootsource_set_instance(bootsource_instance);
+ 	export("bootsource");
++	export("bootsource_instance");
+ 
+ 	return 0;
+ }
+diff --git a/include/bootsource.h b/include/bootsource.h
+index ecd5938..44b69b1 100644
+--- a/include/bootsource.h
++++ b/include/bootsource.h
+@@ -13,7 +13,11 @@ enum bootsource {
+ 	BOOTSOURCE_HD,
+ };
+ 
++#define BOOTSOURCE_INSTANCE_UNKNOWN	-1
++
+ enum bootsource bootsource_get(void);
++int bootsource_get_instance(void);
+ void bootsource_set(enum bootsource src);
++void bootsource_set_instance(int instance);
+ 
+ #endif	/* __BOOTSOURCE_H__ */
+-- 
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
