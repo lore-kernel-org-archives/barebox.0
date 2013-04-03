@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNIns-0007kG-IN
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:12:22 +0000
+ id 1UNIns-0007kE-0e
+ for barebox@lists.infradead.org; Wed, 03 Apr 2013 08:12:21 +0000
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed,  3 Apr 2013 10:12:14 +0200
-Message-Id: <1364976736-23869-6-git-send-email-mkl@pengutronix.de>
+Date: Wed,  3 Apr 2013 10:12:12 +0200
+Message-Id: <1364976736-23869-4-git-send-email-mkl@pengutronix.de>
 In-Reply-To: <1364976736-23869-1-git-send-email-mkl@pengutronix.de>
 References: <1364976736-23869-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] bootsource: add definition for i2c-eeprom, spi-nor,
- spi-eeprom and usb
+Subject: [PATCH v2 3/7] bootsource: use initcall to export bootsource location
+ to environment
 To: barebox@lists.infradead.org
 
+This way the bootsource is exported to the environment, even if unknown.
+
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/bootsource.c  | 4 ++++
- include/bootsource.h | 4 ++++
- 2 files changed, 8 insertions(+)
+ common/bootsource.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/common/bootsource.c b/common/bootsource.c
-index 7367215..7f3d51f 100644
+index 6f9ae54..5f1d40c 100644
 --- a/common/bootsource.c
 +++ b/common/bootsource.c
-@@ -27,10 +27,14 @@ static const char *bootsource_str[] = {
- 	[BOOTSOURCE_NOR] = "nor",
- 	[BOOTSOURCE_MMC] = "mmc",
- 	[BOOTSOURCE_I2C] = "i2c",
-+	[BOOTSOURCE_I2C_EEPROM] = "i2c-eeprom",
- 	[BOOTSOURCE_SPI] = "spi",
-+	[BOOTSOURCE_SPI_EEPROM] = "spi-eeprom",
-+	[BOOTSOURCE_SPI_NOR] = "spi-nor",
- 	[BOOTSOURCE_SERIAL] = "serial",
- 	[BOOTSOURCE_ONENAND] = "onenand",
- 	[BOOTSOURCE_HD] = "harddisk",
-+	[BOOTSOURCE_USB] = "usb",
- };
+@@ -19,6 +19,7 @@
+ #include <bootsource.h>
+ #include <environment.h>
+ #include <magicvar.h>
++#include <init.h>
  
- static enum bootsource bootsource = BOOTSOURCE_UNKNOWN;
-diff --git a/include/bootsource.h b/include/bootsource.h
-index 44b69b1..4bca9b9 100644
---- a/include/bootsource.h
-+++ b/include/bootsource.h
-@@ -7,10 +7,14 @@ enum bootsource {
- 	BOOTSOURCE_NOR,
- 	BOOTSOURCE_MMC,
- 	BOOTSOURCE_I2C,
-+	BOOTSOURCE_I2C_EEPROM,
- 	BOOTSOURCE_SPI,
-+	BOOTSOURCE_SPI_EEPROM,
-+	BOOTSOURCE_SPI_NOR,
- 	BOOTSOURCE_SERIAL,
- 	BOOTSOURCE_ONENAND,
- 	BOOTSOURCE_HD,
-+	BOOTSOURCE_USB,
- };
+ static const char *bootsource_str[] = {
+ 	[BOOTSOURCE_UNKNOWN] = "unknown",
+@@ -42,7 +43,6 @@ void bootsource_set(enum bootsource src)
+ 	bootsource = src;
  
- #define BOOTSOURCE_INSTANCE_UNKNOWN	-1
+ 	setenv("bootsource", bootsource_str[src]);
+-	export("bootsource");
+ }
+ 
+ enum bootsource bootsource_get(void)
+@@ -51,3 +51,12 @@ enum bootsource bootsource_get(void)
+ }
+ 
+ BAREBOX_MAGICVAR(bootsource, "The source barebox has been booted from");
++
++static int bootsource_init(void)
++{
++	bootsource_set(bootsource);
++	export("bootsource");
++
++	return 0;
++}
++coredevice_initcall(bootsource_init);
 -- 
 1.8.2.rc2
 
