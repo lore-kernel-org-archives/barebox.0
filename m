@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-x233.google.com ([2a00:1450:4008:c01::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNMek-0001r8-Kj
- for barebox@lists.infradead.org; Wed, 03 Apr 2013 12:19:12 +0000
-Date: Wed, 3 Apr 2013 14:19:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130403121906.GW1906@pengutronix.de>
-References: <1364883674-6637-1-git-send-email-dev@lynxeye.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1364883674-6637-1-git-send-email-dev@lynxeye.de>
+ id 1UNdse-0007yI-Sr
+ for barebox@lists.infradead.org; Thu, 04 Apr 2013 06:42:41 +0000
+Received: by mail-bk0-f51.google.com with SMTP id y8so1264270bkt.24
+ for <barebox@lists.infradead.org>; Wed, 03 Apr 2013 23:42:38 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+Date: Thu, 04 Apr 2013 08:42:35 +0200
+Message-ID: <1365057755.3836.17.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] dtc: add .gitignore for generated files
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM omap: add omap4_get_sysclk()
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-On Tue, Apr 02, 2013 at 08:21:14AM +0200, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
+This patch adds a function to get actual system clock.
 
-Applied, thanks
+Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+---
+ arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++++
+ arch/arm/mach-omap/omap4_clock.c              |   19 +++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-Sascha
-
-> ---
->  arch/arm/dts/.gitignore | 1 +
->  scripts/dtc/.gitignore  | 4 ++++
->  2 files changed, 5 insertions(+)
->  create mode 100644 arch/arm/dts/.gitignore
->  create mode 100644 scripts/dtc/.gitignore
-> 
-> diff --git a/arch/arm/dts/.gitignore b/arch/arm/dts/.gitignore
-> new file mode 100644
-> index 0000000..077903c
-> --- /dev/null
-> +++ b/arch/arm/dts/.gitignore
-> @@ -0,0 +1 @@
-> +*dtb*
-> diff --git a/scripts/dtc/.gitignore b/scripts/dtc/.gitignore
-> new file mode 100644
-> index 0000000..cdabdc9
-> --- /dev/null
-> +++ b/scripts/dtc/.gitignore
-> @@ -0,0 +1,4 @@
-> +dtc
-> +dtc-lexer.lex.c
-> +dtc-parser.tab.c
-> +dtc-parser.tab.h
-> -- 
-> 1.8.1.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
+index 8f49aa3..9e53e16 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-clock.h
++++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
+@@ -4,7 +4,10 @@
+ /* PRCM */
+ #define CM_SYS_CLKSEL				0x4a306110
+ 
++#define CM_SYS_CLKSEL_12M		0x1
++#define CM_SYS_CLKSEL_16M8		0x3
+ #define CM_SYS_CLKSEL_19M2		0x4
++#define CM_SYS_CLKSEL_26M		0x5
+ #define CM_SYS_CLKSEL_38M4		0x7
+ 
+ /* PRM.CKGEN module registers */
+@@ -341,5 +344,6 @@ void omap4_enable_gpio1_wup_clocks(void);
+ void omap4_enable_gpio_clocks(void);
+ void omap4_enable_all_clocks(void);
+ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
++int omap4_get_sysclk(void);
+ 
+ #endif /* __MACH_OMAP4_CLOCK_H */
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index 889d1f9..37af756 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -413,3 +413,22 @@ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+ 				OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
+ 		debug("Scaling voltage failed for vdd_mpu from TPS\n");
+ }
++
++int omap4_get_sysclk(void)
++{
++	int omap4_cm_sys_clks[] = {
++		-1,
++		12000000, /* CM_SYS_CLKSEL_12M */
++		-1,
++		16800000, /* CM_SYS_CLKSEL_16M8 */
++		19200000, /* CM_SYS_CLKSEL_19M2 */
++		26000000, /* CM_SYS_CLKSEL_26M */
++		-1,
++		38400000, /* CM_SYS_CLKSEL_38M4 */
++	};
++	int v = __raw_readl(CM_SYS_CLKSEL);
++
++	if (v >= ARRAY_SIZE(omap4_cm_sys_clks))
++		return -1;
++	return omap4_cm_sys_clks[v];
++}
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
+
+
 
 _______________________________________________
 barebox mailing list
