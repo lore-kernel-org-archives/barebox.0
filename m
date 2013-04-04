@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x233.google.com ([2a00:1450:4008:c01::233])
+Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNdse-0007yI-Sr
- for barebox@lists.infradead.org; Thu, 04 Apr 2013 06:42:41 +0000
-Received: by mail-bk0-f51.google.com with SMTP id y8so1264270bkt.24
- for <barebox@lists.infradead.org>; Wed, 03 Apr 2013 23:42:38 -0700 (PDT)
+ id 1UNdsa-0007x7-1j
+ for barebox@lists.infradead.org; Thu, 04 Apr 2013 06:42:36 +0000
+Received: by mail-bk0-f50.google.com with SMTP id jg1so1267306bkc.9
+ for <barebox@lists.infradead.org>; Wed, 03 Apr 2013 23:42:33 -0700 (PDT)
 From: Christoph Fritz <chf.fritz@googlemail.com>
-Date: Thu, 04 Apr 2013 08:42:35 +0200
-Message-ID: <1365057755.3836.17.camel@mars>
+In-Reply-To: <1363354762.13088.261.camel@mars>
+References: <1363263561.4022.37.camel@mars>
+ <1363278551.867951799@f270.mail.ru> <1363335600.13088.40.camel@mars>
+ <1363336811.543222125@f383.i.mail.ru>  <1363354762.13088.261.camel@mars>
+Date: Thu, 04 Apr 2013 08:42:29 +0200
+Message-ID: <1365057749.3836.16.camel@mars>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,70 +25,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM omap: add omap4_get_sysclk()
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH] [RFC] ARM OMAP4: enable DSS by default
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This patch adds a function to get actual system clock.
+On Fri, 2013-03-15 at 14:39 +0100, Christoph Fritz wrote:
+> On Fri, 2013-03-15 at 12:40 +0400, Alexander Shiyan wrote:
+> 
+> > MD command causes an error due to the inability of the reading memory area.
+> > Error can be disabled via the option "enable arm exception handling support",
+> > but it does not help solve the problem.
+> > OMAP has a memory areas (modules), which are locked,
+> 
+> This corresponds with my register observations. As noted above, register
+> CM_DSS_DSS_CLKCTRL (0x4a009120) reads 0x00070F02 which means: "Module is
+> disabled and cannot be accessed".
+> 
+> >  so you need to
+> > search this information from datasheet.
+> 
+> Finnaly I was very wise inspired to do "mw 0x4a009100 2". This disables
+> the HW_AUTO-Mode (Automatic transition) and starts a software forced
+> wake-up (SW_WKUP).
+> 
+> Now even the IDLEST field from CM_DSS_CLKSTCTRL reads 0x0: "Module is
+> fully functional, including INTRCONN" :-)
+> 
+> et la voila:
+> md 0x48040000+4
+> 48040000: 00000040
+> 
+> What do you think about the patch below?
+> 
+> ---
+> Subject: [PATCH] [RFC] ARM OMAP4: enable DSS by default
+> 
+> This patch removes the anyway default reset setting of HW_AUTO in favour of
+> SW_WKUP. So the DSS Module gets enabled and you gain full register access.
+> ---
+>  arch/arm/mach-omap/omap4_clock.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> index 0621fd3..72335d9 100644
+> --- a/arch/arm/mach-omap/omap4_clock.c
+> +++ b/arch/arm/mach-omap/omap4_clock.c
+> @@ -375,8 +375,8 @@ void omap4_enable_all_clocks(void)
+>  	/* Check for DSS Clocks */
+>  	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
+>  		;
+> -	/* Set HW_AUTO transition mode */
+> -	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x3);
+> +	/* Set SW_WKUP to enable DSS Module with full register access */
+> +	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x2);
+>  
+>  	/* Enable SGX clocks */
+>  	sr32(CM_SGX_CLKSTCTRL, 0, 32, 0x2);
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
----
- arch/arm/mach-omap/include/mach/omap4-clock.h |    4 ++++
- arch/arm/mach-omap/omap4_clock.c              |   19 +++++++++++++++++++
- 2 files changed, 23 insertions(+)
-
-diff --git a/arch/arm/mach-omap/include/mach/omap4-clock.h b/arch/arm/mach-omap/include/mach/omap4-clock.h
-index 8f49aa3..9e53e16 100644
---- a/arch/arm/mach-omap/include/mach/omap4-clock.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-clock.h
-@@ -4,7 +4,10 @@
- /* PRCM */
- #define CM_SYS_CLKSEL				0x4a306110
- 
-+#define CM_SYS_CLKSEL_12M		0x1
-+#define CM_SYS_CLKSEL_16M8		0x3
- #define CM_SYS_CLKSEL_19M2		0x4
-+#define CM_SYS_CLKSEL_26M		0x5
- #define CM_SYS_CLKSEL_38M4		0x7
- 
- /* PRM.CKGEN module registers */
-@@ -341,5 +344,6 @@ void omap4_enable_gpio1_wup_clocks(void);
- void omap4_enable_gpio_clocks(void);
- void omap4_enable_all_clocks(void);
- void omap4_do_scale_tps62361(u32 reg, u32 volt_mv);
-+int omap4_get_sysclk(void);
- 
- #endif /* __MACH_OMAP4_CLOCK_H */
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index 889d1f9..37af756 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -413,3 +413,22 @@ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
- 				OMAP44XX_PRM_VC_VAL_BYPASS, LDELAY))
- 		debug("Scaling voltage failed for vdd_mpu from TPS\n");
- }
-+
-+int omap4_get_sysclk(void)
-+{
-+	int omap4_cm_sys_clks[] = {
-+		-1,
-+		12000000, /* CM_SYS_CLKSEL_12M */
-+		-1,
-+		16800000, /* CM_SYS_CLKSEL_16M8 */
-+		19200000, /* CM_SYS_CLKSEL_19M2 */
-+		26000000, /* CM_SYS_CLKSEL_26M */
-+		-1,
-+		38400000, /* CM_SYS_CLKSEL_38M4 */
-+	};
-+	int v = __raw_readl(CM_SYS_CLKSEL);
-+
-+	if (v >= ARRAY_SIZE(omap4_cm_sys_clks))
-+		return -1;
-+	return omap4_cm_sys_clks[v];
-+}
--- 
-1.7.10.4
-
-
+*ping*
 
 
 _______________________________________________
