@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f163.mail.ru ([94.100.178.82])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UO3YP-0003iE-DK
- for barebox@lists.infradead.org; Fri, 05 Apr 2013 10:07:31 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 05 Apr 2013 14:07:23 +0400
-Message-ID: <1365156443.913580448@f163.mail.ru>
-In-Reply-To: <20130405093655.GM1906@pengutronix.de>
-References: <1363018250-6169-1-git-send-email-shc_work@mail.ru>
- <1365153649.537566045@f429.i.mail.ru>
- <20130405093655.GM1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UO5Pb-0005Bf-8I
+ for barebox@lists.infradead.org; Fri, 05 Apr 2013 12:06:32 +0000
+Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1UO5PW-0004Ye-7R
+ for barebox@lists.infradead.org; Fri, 05 Apr 2013 14:06:26 +0200
+From: Juergen Beisert <jbe@pengutronix.de>
+Date: Fri, 5 Apr 2013 14:04:31 +0200
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201304051404.31877.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,87 +20,127 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAxLzJdIE1ha2VmaWxlOiBDcmVhdGUgZW1wdHkgPGNv?=
- =?UTF-8?B?bmZpZy5oPiBpZiB0aGlzIGhlYWRlciBmaWxlIGlzIG5vdCBuZWVkZWQgYnkg?=
- =?UTF-8?B?Ym9hcmQ=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM/MXS: add more ROM code related documentation
+To: barebox@lists.infradead.org
 
-PiA+ID4gT24gTW9uLCBNYXIgMTEsIDIwMTMgYXQgMDg6MTA6NDlQTSArMDQwMCwgQWxleGFuZGVy
-IFNoaXlhbiB3cm90ZToKPiA+ID4gPiBQYXRjaCBjcmVhdGVzIGVtcHR5IDxjb25maWcuaD4gaWYg
-dGhpcyBoZWFkZXIgaXMgbm90IG5lZWRlZCBieSBib2FyZC4KPiA+ID4gPiBUaGlzIHdpbGwgYWxs
-b3cgdG8gcmVtb3ZlIG1hbnkgZW1wdHkgY29uZmlnLmggZmlsZXMgZnJvbSBib2FyZHMuCj4gPiA+
-ID4gCj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFp
-bC5ydT4KPiA+ID4gPiAtLS0KPiA+ID4gPiAgTWFrZWZpbGUgfCAxNyArKysrKysrKysrKy0tLS0t
-LQo+ID4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMo
-LSkKPiA+ID4gPiAKPiA+ID4gPiBkaWZmIC0tZ2l0IGEvTWFrZWZpbGUgYi9NYWtlZmlsZQo+ID4g
-PiA+IGluZGV4IGI1ODE5ZmMuLmU4ZDk5ODQgMTAwNjQ0Cj4gPiA+ID4gLS0tIGEvTWFrZWZpbGUK
-PiA+ID4gPiArKysgYi9NYWtlZmlsZQo+ID4gPiA+IEBAIC04OTgsMTMgKzg5OCwxOCBAQCBpbmNs
-dWRlL2FzbToKPiA+ID4gPiAgCSQoUSkkKGNoZWNrLXN5bWxpbmspCj4gPiA+ID4gIAkkKFEpJChj
-cmVhdGUtc3ltbGluaykKPiA+ID4gPiAgCj4gPiA+ID4gK2RlZmluZSBzeW1saW5rLWNvbmZpZy1o
-Cj4gPiA+ID4gKwlpZiBbIC1mICQoc3JjdHJlZSkvJChCT0FSRCkvY29uZmlnLmggXTsgdGhlbgkJ
-XAo+ID4gPiA+ICsJCSQoa2VjaG8pICcgIFNZTUxJTksgJEAgLT4gJChCT0FSRCkvY29uZmlnLmgn
-OwlcCj4gPiA+ID4gKwkJbG4gLWZzbiAkKHNyY3RyZWUpLyQoQk9BUkQpL2NvbmZpZy5oICRAOwlc
-Cj4gPiA+ID4gKwllbHNlCQkJCQkJCVwKPiA+ID4gPiArCQkkKGtlY2hvKSAnICBDUkVBVEUgICRA
-JzsJCQlcCj4gPiA+ID4gKwkJZWNobyAtbiA+ICRAOwkJCQkJXAo+ID4gPiA+ICsJZmkKPiA+ID4g
-PiArZW5kZWYKPiA+ID4gCj4gPiA+IEkgZHJvcHBlZCB0aGlzIHBhdGNoIGJlY2F1c2UgaXQgYXV0
-b2dlbmVyYXRlcyBmaWxlcyB3aGljaCB3ZXJlCj4gPiA+IHByZXZpb3VzbHkgcGFydCBvZiB0aGUg
-cmVwb3NpdG9yeS4gVGhpcyBjYXVzZXMgZ2l0IGNoZWNrb3V0IHRvCj4gPiA+IGNvbXBsYWluIGFi
-b3V0IG92ZXJ3cml0aW5nIGV4aXN0aW5nIGZpbGVzIHdoZW4gd2Ugd2FudCB0byBjaGVja291dAo+
-ID4gPiBlYXJsaWVyIHZlcnNpb25zLgo+ID4gCj4gPiBQYXRjaCBjcmVhdGVzIGluY2x1ZGUvY29u
-ZmlnLmggKHdoaWNoIGlzIGluIC5naXRpZ25vcmUpIG9ubHkKPiA+IG9yIG1ha2VzIHN5bWxpbmsg
-dG8gYm9hcmQvY29uZmlnLmguIFNvIGFsbCBhbHJlYWR5IGFzIHlvdSBzYXkgYmVsb3cuCj4gCj4g
-SXQgY3JlYXRlcyBhIGFyY2gvJGFyY2gvJGJvYXJkL2NvbmZpZy5oLCBzbyB3ZSBnZXQgdGhlIGZv
-bGxvd2luZzoKQ2FuIHlvdSBwb2ludCBpdCBpbiB0aGUgY29kZT8KCj4gCj4gIyBnaXQgY2hlY2tv
-dXQgZm9yLW5leHQvcmVtb3ZlLWNvbmZpZy1oCj4gLi4uCj4gIyBtYWtlIHBjbTAzOF9kZWZjb25m
-aWcgJiYgbWFrZQo+IC4uLgo+ICMgZ2l0IGNoZWNrb3V0IG1hc3Rlcgo+IGVycm9yOiBUaGUgZm9s
-bG93aW5nIHVudHJhY2tlZCB3b3JraW5nIHRyZWUgZmlsZXMgd291bGQgYmUgb3ZlcndyaXR0ZW4g
-YnkgY2hlY2tvdXQ6Cj4gICAgICAgICBhcmNoL2FybS9ib2FyZHMvcGNtMDM4L2NvbmZpZy5oCj4g
-UGxlYXNlIG1vdmUgb3IgcmVtb3ZlIHRoZW0gYmVmb3JlIHlvdSBjYW4gc3dpdGNoIGJyYW5jaGVz
-Lgo+IEFib3J0aW5nCj4gCj4gU28gdGhpcyBwYXRjaCBmb3JjZXMgdXMgdG8gbWFudWFsbHkgcmVt
-b3ZlIGFyY2gvJGFyY2gvJGJvYXJkL2NvbmZpZy5oCj4gb3IgdG8gdXNlIGdpdCBjaGVja291dCAt
-ZgoKSSBhbSBkbyBub3QgdW5kZXJzdGFuZCBhIHByb2JsZW0uIEZvciBtZSBpdCB3b3JrcyBPSy4K
-CnNoY0BzaGMgL2hvbWUvZ2l0L2JiLXRlc3QtY2ZnICQgbHMgYXJjaC9hcm0vYm9hcmRzL3BjbTAz
-OC8KZW52ICBsb3dsZXZlbC5jICBNYWtlZmlsZSAgcGNtMDM4LmMgIHBjbTAzOC5kb3ggIHBjbTk3
-MC5jICBwbGwuaAoKc2hjQHNoYyAvaG9tZS9naXQvYmItdGVzdC1jZmcgJCBtYWtlIEFSQ0g9YXJt
-IENST1NTX0NPTVBJTEU9YXJtLWxpbnV4LWdudWVhYmktIHBjbTAzOF9kZWZjb25maWcKICBIT1NU
-Q0MgIHNjcmlwdHMvYmFzaWMvZml4ZGVwCiAgSE9TVENDICBzY3JpcHRzL2Jhc2ljL2RvY3Byb2MK
-ICBIT1NUQ0MgIHNjcmlwdHMva2NvbmZpZy9jb25mLm8KICBTSElQUEVEIHNjcmlwdHMva2NvbmZp
-Zy96Y29uZi50YWIuYwogIFNISVBQRUQgc2NyaXB0cy9rY29uZmlnL3pjb25mLmxleC5jCiAgU0hJ
-UFBFRCBzY3JpcHRzL2tjb25maWcvemNvbmYuaGFzaC5jCiAgSE9TVENDICBzY3JpcHRzL2tjb25m
-aWcvemNvbmYudGFiLm8Kc2NyaXB0cy9rY29uZmlnL3pjb25mLnRhYi5jOiDQkiDRhNGD0L3QutGG
-0LjQuCDCq2hlYWRlcl9wcmludF9jb21tZW50wrs6CnNjcmlwdHMva2NvbmZpZy9jb25mZGF0YS5j
-OjU0MDoxMDog0L/RgNC10LTRg9C/0YDQtdC20LTQtdC90LjQtTogaWdub3JpbmcgcmV0dXJuIHZh
-bHVlIG9mIMKrZndyaXRlwrssIGRlY2xhcmVkIHdpdGggYXR0cmlidXRlIHdhcm5fdW51c2VkX3Jl
-c3VsdCBbLVd1bnVzZWQtcmVzdWx0XQpzY3JpcHRzL2tjb25maWcvemNvbmYudGFiLmM6INCSINGE
-0YPQvdC60YbQuNC4IMKra2NvbmZpZ19wcmludF9jb21tZW50wrs6CnNjcmlwdHMva2NvbmZpZy9j
-b25mZGF0YS5jOjQ2NzoxMDog0L/RgNC10LTRg9C/0YDQtdC20LTQtdC90LjQtTogaWdub3Jpbmcg
-cmV0dXJuIHZhbHVlIG9mIMKrZndyaXRlwrssIGRlY2xhcmVkIHdpdGggYXR0cmlidXRlIHdhcm5f
-dW51c2VkX3Jlc3VsdCBbLVd1bnVzZWQtcmVzdWx0XQogIEhPU1RMRCAgc2NyaXB0cy9rY29uZmln
-L2NvbmYKIwojIGNvbmZpZ3VyYXRpb24gd3JpdHRlbiB0byAuY29uZmlnCiMKCnNoY0BzaGMgL2hv
-bWUvZ2l0L2JiLXRlc3QtY2ZnICQgbWFrZSBBUkNIPWFybSBDUk9TU19DT01QSUxFPWFybS1saW51
-eC1nbnVlYWJpLQpzY3JpcHRzL2tjb25maWcvY29uZiAtLXNpbGVudG9sZGNvbmZpZyBLY29uZmln
-CiAgR2VuZXJhdGluZyBpbmNsdWRlL2dlbmVyYXRlZC9tYWNoLXR5cGVzLmgKICBDSEsgICAgIGlu
-Y2x1ZGUvZ2VuZXJhdGVkL3ZlcnNpb24uaAogIFVQRCAgICAgaW5jbHVkZS9nZW5lcmF0ZWQvdmVy
-c2lvbi5oCiAgQ0hLICAgICBpbmNsdWRlL2dlbmVyYXRlZC91dHNyZWxlYXNlLmgKICBVUEQgICAg
-IGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaAogIFNZTUxJTksgaW5jbHVkZS9hc20gLT4g
-aW5jbHVkZS9hc20tYXJtCiAgQ1JFQVRFICBpbmNsdWRlL2NvbmZpZy5oCl5eXl5eXl5eXl5eXl5e
-Xl5eXl5eXl5eXl5eXl5eCiAgTEQgICAgICBzY3JpcHRzL2J1aWx0LWluLm8KICBDQyAgICAgIHNj
-cmlwdHMvbW9kL2VtcHR5Lm8KICBIT1NUQ0MgIHNjcmlwdHMvbW9kL21rX2VsZmNvbmZpZwogIE1L
-RUxGICAgc2NyaXB0cy9tb2QvZWxmY29uZmlnLmgKICBIT1NUQ0MgIHNjcmlwdHMvbW9kL21vZHBv
-c3QubwpeQ21ha2VbMl06ICoqKiBbc2NyaXB0cy9tb2QvbW9kcG9zdC5vXSDQn9GA0LXRgNGL0LLQ
-sNC90LjQtQptYWtlWzFdOiAqKiogW3NjcmlwdHMvbW9kXSDQn9GA0LXRgNGL0LLQsNC90LjQtQpt
-YWtlOiAqKiogW3NjcmlwdHNdINCf0YDQtdGA0YvQstCw0L3QuNC1CgpzaGNAc2hjIC9ob21lL2dp
-dC9iYi10ZXN0LWNmZyAkIGxzIGFyY2gvYXJtL2JvYXJkcy9wY20wMzgvCmVudiAgbG93bGV2ZWwu
-YyAgTWFrZWZpbGUgIHBjbTAzOC5jICBwY20wMzguZG94ICBwY205NzAuYyAgcGxsLmgKCnNoY0Bz
-aGMgL2hvbWUvZ2l0L2JiLXRlc3QtY2ZnICQgZ2l0IGNvbW1pdCAtYQojIE9uIGJyYW5jaCBjZmcK
-bm90aGluZyB0byBjb21taXQsIHdvcmtpbmcgZGlyZWN0b3J5IGNsZWFuCgouLi4KU28sIG5vIGJv
-YXJkL2NvbmZpZy5oLiBKdXN0IGEgZW1wdHkgaW5jbHVkZS9jb25maWcuaC4KCi4uLiBOb3QgdW5k
-ZXJzdGFuZCBhIHByb2JsZW0uCgotLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+Commit 17176c2e2bba606190d9ae51943acb5701063573 adds a test of a new RTC
+register flag to distinguish a system reset and a wake up event. Shame on me,
+I have forgotten to define the newly used flag yet.
+
+While already here, I also try to document the other flags the RTC provides.
+
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+Note: this patch is a build fix. Without this patch the i.MX28 watchdog driver
+cannot be built since commit 17176c2e2bba606190d9ae51943acb5701063573 anymore.
+
+ drivers/watchdog/im28wd.c |   73 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
+
+Index: barebox-2013.04.0/drivers/watchdog/im28wd.c
+===================================================================
+--- barebox-2013.04.0.orig/drivers/watchdog/im28wd.c
++++ barebox-2013.04.0/drivers/watchdog/im28wd.c
+@@ -33,16 +33,89 @@
+ 
+ #define MXS_RTC_WATCHDOG 0x50
+ 
++/* HW_RTC_PERSISTENT0 - holds bits used to configure various hardware settings */
+ #define MXS_RTC_PERSISTENT0 0x60
++
++/* FIXME */
++# define MXS_RTC_PERSISTENT0_SPARE_ANALOG (1 << 22)
+ /* dubious meaning from inside the SoC's firmware ROM */
+ # define MXS_RTC_PERSISTENT0_EXT_RST (1 << 21)
+ /* dubious meaning from inside the SoC's firmware ROM */
+ # define MXS_RTC_PERSISTENT0_THM_RST (1 << 20)
++/* reserved on i.MX28 */
++# define MXS_RTC_PERSISTENT0_RELEASE_GND (1 << 19)
++# define MXS_RTC_PERSISTENT0_ENABLE_LRADC_PWRUP (1 << 18)
++# define MXS_RTC_PERSISTENT0_AUTO_RESTART (1 << 17)
++# define MXS_RTC_PERSISTENT0_DISABLE_PSWITCH (1 << 16)
++# define MXS_RTC_PERSISTENT0_LOWERBIAS (1 << 14)
++# define MXS_RTC_PERSISTENT0_DISABLE_XTALOK (1 << 13)
++# define MXS_RTC_PERSISTENT0_MSEC_RES (1 << 8)
++# define MXS_RTC_PERSISTENT0_ALARM_WAKE (1 << 7)
++# define MXS_RTC_PERSISTENT0_XTAL32_FREQ (1 << 6)
++# define MXS_RTC_PERSISTENT0_XTAL32KHZ_PWRUP (1 << 5)
++# define MXS_RTC_PERSISTENT0_XTAL24MHZ_PWRUP (1 << 4)
++# define MXS_RTC_PERSISTENT0_LCK_SECS (1 << 3)
++# define MXS_RTC_PERSISTENT0_ALARM_EN (1 << 2)
++# define MXS_RTC_PERSISTENT0_ALARM_WAKE_EN (1 << 1)
++# define MXS_RTC_PERSISTENT0_CLOCKSOURCE (1 << 0)
+ 
++/* HW_RTC_PERSISTENT1 - holds bits related to the ROM and redundant boot handling */
+ #define MXS_RTC_PERSISTENT1 0x70
++
++
++/*
++ * some of the following bits are for error reporting from ROM to the chained
++ * firmware. It seems, if the error reporting bits are not cleared when the
++ * chained firmware is running, the next time the following rule is active:
++ *  "Loader enters recovery mode if any non-USB boot mode has an error.
++ * Which results into a system that seems not to start anymore.
++ */
++
+ /* dubious meaning from inside the SoC's firmware ROM */
+ # define MXS_RTC_PERSISTENT1_FORCE_UPDATER (1 << 31)
+ 
++/* names are from the i.MX28 datasheet. Undocumented behaviour */
++# define MXS_RTC_PERSISTENT1_ENUMERATE_500MA_TWICE (1 << 12)
++# define MXS_RTC_PERSISTENT1_USB_BOOT_PLAYER_MODE (1 << 11)
++# define MXS_RTC_PERSISTENT1_SKIP_CHECKDISK (1 << 10)
++# define MXS_RTC_PERSISTENT1_USB_LOW_POWER_MODE (1 << 9)
++# define MXS_RTC_PERSISTENT1_OTG_HNP_BIT (1 << 8)
++# define MXS_RTC_PERSISTENT1_OTG_ATL_ROLE_BIT (1 << 7)
++/*
++ * a few undocumented bits
++ */
++# define MXS_RTC_PERSISTENT1_SD_INIT_SEQ_2_ENABLE (1 << 6)
++# define MXS_RTC_PERSISTENT1_SD_CMD0_DISABLE (1 << 5)
++# define MXS_RTC_PERSISTENT1_SD_INIT_SEQ_1_DISABLE (1 << 4)
++/*
++ * If this bit is set, ROM puts the SD/MMC card in high-speed mode.
++ * If this bit is set, the ROM driver will use a maximum speed based on the
++ * results of device identification and limited by choices available in the
++ * SSP clock index.
++ */
++# define MXS_RTC_PERSISTENT1_SD_SPEED_ENABLE (1 << 3)
++/*
++ * The NAND driver sets this bit to indicate to the SDK that the boot image
++ * has ECC errors that reached the warning threshold. The SDK regenerates the
++ * firmware by copying it from the backup image. The SDK clears this bit.
++ * This bit had change its meaning from i.XM23 to i.MX28. Refer section
++ * 35.8 "NAND Boot Mode" for further details in the i.MX23 RM.
++ */
++# define MXS_RTC_PERSISTENT1_NAND_SDK_BLOCK_REWRITE (1 << 2)
++/*
++ * When this bit is set, ROM attempts to boot from the secondary image if the
++ * boot driver supports it. This bit is set by the ROM boot driver and cleared
++ * by the SDK after repair.
++ * If not reset, the ROM seems to continue to start from the secondary image
++ * which will fail forever if there is no secondary image
++ */
++# define MXS_RTC_PERSISTENT1_NAND_SECONDARY_BOOT (1 << 1)
++/*
++ * When this bit is set, the ROM code forces the system to boot in recovery
++ * mode, regardless of the selected mode. The ROM clears the bit.
++ */
++# define MXS_RTC_PERSISTENT1_FORCE_RECOVERY (1 << 0)
++
+ #define MXS_RTC_DEBUG 0xc0
+ 
+ #define WDOG_TICK_RATE 1000 /* the watchdog uses a 1 kHz clock rate */
+
+-- 
+Pengutronix e.K.                              | Juergen Beisert             |
+Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
