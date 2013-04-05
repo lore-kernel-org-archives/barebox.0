@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UO3ih-0005e8-OG
- for barebox@lists.infradead.org; Fri, 05 Apr 2013 10:18:09 +0000
-Date: Fri, 5 Apr 2013 12:18:04 +0200
+ id 1UO34r-0000Zo-HS
+ for barebox@lists.infradead.org; Fri, 05 Apr 2013 09:36:58 +0000
+Date: Fri, 5 Apr 2013 11:36:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130405101804.GN1906@pengutronix.de>
+Message-ID: <20130405093655.GM1906@pengutronix.de>
 References: <1363018250-6169-1-git-send-email-shc_work@mail.ru>
+ <20130405091250.GF20989@pengutronix.de>
  <1365153649.537566045@f429.i.mail.ru>
- <20130405093655.GM1906@pengutronix.de>
- <1365156443.913580448@f163.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1365156443.913580448@f163.mail.ru>
+In-Reply-To: <1365153649.537566045@f429.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,8 +20,8 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/2] Makefile: Create empty <config.h> if this header
@@ -30,96 +29,67 @@ Subject: Re: [PATCH 1/2] Makefile: Create empty <config.h> if this header
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBBcHIgMDUsIDIwMTMgYXQgMDI6MDc6MjNQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiA+ID4gPiBPbiBNb24sIE1hciAxMSwgMjAxMyBhdCAwODoxMDo0OVBNICswNDAw
-LCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gPiA+ID4gUGF0Y2ggY3JlYXRlcyBlbXB0eSA8
-Y29uZmlnLmg+IGlmIHRoaXMgaGVhZGVyIGlzIG5vdCBuZWVkZWQgYnkgYm9hcmQuCj4gPiA+ID4g
-PiBUaGlzIHdpbGwgYWxsb3cgdG8gcmVtb3ZlIG1hbnkgZW1wdHkgY29uZmlnLmggZmlsZXMgZnJv
-bSBib2FyZHMuCj4gPiA+ID4gPiAKPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEFsZXhhbmRlciBT
-aGl5YW4gPHNoY193b3JrQG1haWwucnU+Cj4gPiA+ID4gPiAtLS0KPiA+ID4gPiA+ICBNYWtlZmls
-ZSB8IDE3ICsrKysrKysrKysrLS0tLS0tCj4gPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDExIGlu
-c2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCj4gPiA+ID4gPiAKPiA+ID4gPiA+IGRpZmYgLS1n
-aXQgYS9NYWtlZmlsZSBiL01ha2VmaWxlCj4gPiA+ID4gPiBpbmRleCBiNTgxOWZjLi5lOGQ5OTg0
-IDEwMDY0NAo+ID4gPiA+ID4gLS0tIGEvTWFrZWZpbGUKPiA+ID4gPiA+ICsrKyBiL01ha2VmaWxl
-Cj4gPiA+ID4gPiBAQCAtODk4LDEzICs4OTgsMTggQEAgaW5jbHVkZS9hc206Cj4gPiA+ID4gPiAg
-CSQoUSkkKGNoZWNrLXN5bWxpbmspCj4gPiA+ID4gPiAgCSQoUSkkKGNyZWF0ZS1zeW1saW5rKQo+
-ID4gPiA+ID4gIAo+ID4gPiA+ID4gK2RlZmluZSBzeW1saW5rLWNvbmZpZy1oCj4gPiA+ID4gPiAr
-CWlmIFsgLWYgJChzcmN0cmVlKS8kKEJPQVJEKS9jb25maWcuaCBdOyB0aGVuCQlcCj4gPiA+ID4g
-PiArCQkkKGtlY2hvKSAnICBTWU1MSU5LICRAIC0+ICQoQk9BUkQpL2NvbmZpZy5oJzsJXAo+ID4g
-PiA+ID4gKwkJbG4gLWZzbiAkKHNyY3RyZWUpLyQoQk9BUkQpL2NvbmZpZy5oICRAOwlcCj4gPiA+
-ID4gPiArCWVsc2UJCQkJCQkJXAo+ID4gPiA+ID4gKwkJJChrZWNobykgJyAgQ1JFQVRFICAkQCc7
-CQkJXAo+ID4gPiA+ID4gKwkJZWNobyAtbiA+ICRAOwkJCQkJXAo+ID4gPiA+ID4gKwlmaQo+ID4g
-PiA+ID4gK2VuZGVmCj4gPiA+ID4gCj4gPiA+ID4gSSBkcm9wcGVkIHRoaXMgcGF0Y2ggYmVjYXVz
-ZSBpdCBhdXRvZ2VuZXJhdGVzIGZpbGVzIHdoaWNoIHdlcmUKPiA+ID4gPiBwcmV2aW91c2x5IHBh
-cnQgb2YgdGhlIHJlcG9zaXRvcnkuIFRoaXMgY2F1c2VzIGdpdCBjaGVja291dCB0bwo+ID4gPiA+
-IGNvbXBsYWluIGFib3V0IG92ZXJ3cml0aW5nIGV4aXN0aW5nIGZpbGVzIHdoZW4gd2Ugd2FudCB0
-byBjaGVja291dAo+ID4gPiA+IGVhcmxpZXIgdmVyc2lvbnMuCj4gPiA+IAo+ID4gPiBQYXRjaCBj
-cmVhdGVzIGluY2x1ZGUvY29uZmlnLmggKHdoaWNoIGlzIGluIC5naXRpZ25vcmUpIG9ubHkKPiA+
-ID4gb3IgbWFrZXMgc3ltbGluayB0byBib2FyZC9jb25maWcuaC4gU28gYWxsIGFscmVhZHkgYXMg
-eW91IHNheSBiZWxvdy4KPiA+IAo+ID4gSXQgY3JlYXRlcyBhIGFyY2gvJGFyY2gvJGJvYXJkL2Nv
-bmZpZy5oLCBzbyB3ZSBnZXQgdGhlIGZvbGxvd2luZzoKPiBDYW4geW91IHBvaW50IGl0IGluIHRo
-ZSBjb2RlPwo+IAo+ID4gCj4gPiAjIGdpdCBjaGVja291dCBmb3ItbmV4dC9yZW1vdmUtY29uZmln
-LWgKPiA+IC4uLgo+ID4gIyBtYWtlIHBjbTAzOF9kZWZjb25maWcgJiYgbWFrZQo+ID4gLi4uCj4g
-PiAjIGdpdCBjaGVja291dCBtYXN0ZXIKPiA+IGVycm9yOiBUaGUgZm9sbG93aW5nIHVudHJhY2tl
-ZCB3b3JraW5nIHRyZWUgZmlsZXMgd291bGQgYmUgb3ZlcndyaXR0ZW4gYnkgY2hlY2tvdXQ6Cj4g
-PiAgICAgICAgIGFyY2gvYXJtL2JvYXJkcy9wY20wMzgvY29uZmlnLmgKPiA+IFBsZWFzZSBtb3Zl
-IG9yIHJlbW92ZSB0aGVtIGJlZm9yZSB5b3UgY2FuIHN3aXRjaCBicmFuY2hlcy4KPiA+IEFib3J0
-aW5nCj4gPiAKPiA+IFNvIHRoaXMgcGF0Y2ggZm9yY2VzIHVzIHRvIG1hbnVhbGx5IHJlbW92ZSBh
-cmNoLyRhcmNoLyRib2FyZC9jb25maWcuaAo+ID4gb3IgdG8gdXNlIGdpdCBjaGVja291dCAtZgo+
-IAo+IEkgYW0gZG8gbm90IHVuZGVyc3RhbmQgYSBwcm9ibGVtLiBGb3IgbWUgaXQgd29ya3MgT0su
-Cj4gCj4gc2hjQHNoYyAvaG9tZS9naXQvYmItdGVzdC1jZmcgJCBscyBhcmNoL2FybS9ib2FyZHMv
-cGNtMDM4Lwo+IGVudiAgbG93bGV2ZWwuYyAgTWFrZWZpbGUgIHBjbTAzOC5jICBwY20wMzguZG94
-ICBwY205NzAuYyAgcGxsLmgKPiAKPiBzaGNAc2hjIC9ob21lL2dpdC9iYi10ZXN0LWNmZyAkIG1h
-a2UgQVJDSD1hcm0gQ1JPU1NfQ09NUElMRT1hcm0tbGludXgtZ251ZWFiaS0gcGNtMDM4X2RlZmNv
-bmZpZwo+ICAgSE9TVENDICBzY3JpcHRzL2Jhc2ljL2ZpeGRlcAo+ICAgSE9TVENDICBzY3JpcHRz
-L2Jhc2ljL2RvY3Byb2MKPiAgIEhPU1RDQyAgc2NyaXB0cy9rY29uZmlnL2NvbmYubwo+ICAgU0hJ
-UFBFRCBzY3JpcHRzL2tjb25maWcvemNvbmYudGFiLmMKPiAgIFNISVBQRUQgc2NyaXB0cy9rY29u
-ZmlnL3pjb25mLmxleC5jCj4gICBTSElQUEVEIHNjcmlwdHMva2NvbmZpZy96Y29uZi5oYXNoLmMK
-PiAgIEhPU1RDQyAgc2NyaXB0cy9rY29uZmlnL3pjb25mLnRhYi5vCj4gc2NyaXB0cy9rY29uZmln
-L3pjb25mLnRhYi5jOiDQkiDRhNGD0L3QutGG0LjQuCDCq2hlYWRlcl9wcmludF9jb21tZW50wrs6
-Cj4gc2NyaXB0cy9rY29uZmlnL2NvbmZkYXRhLmM6NTQwOjEwOiDQv9GA0LXQtNGD0L/RgNC10LbQ
-tNC10L3QuNC1OiBpZ25vcmluZyByZXR1cm4gdmFsdWUgb2Ygwqtmd3JpdGXCuywgZGVjbGFyZWQg
-d2l0aCBhdHRyaWJ1dGUgd2Fybl91bnVzZWRfcmVzdWx0IFstV3VudXNlZC1yZXN1bHRdCj4gc2Ny
-aXB0cy9rY29uZmlnL3pjb25mLnRhYi5jOiDQkiDRhNGD0L3QutGG0LjQuCDCq2tjb25maWdfcHJp
-bnRfY29tbWVudMK7Ogo+IHNjcmlwdHMva2NvbmZpZy9jb25mZGF0YS5jOjQ2NzoxMDog0L/RgNC1
-0LTRg9C/0YDQtdC20LTQtdC90LjQtTogaWdub3JpbmcgcmV0dXJuIHZhbHVlIG9mIMKrZndyaXRl
-wrssIGRlY2xhcmVkIHdpdGggYXR0cmlidXRlIHdhcm5fdW51c2VkX3Jlc3VsdCBbLVd1bnVzZWQt
-cmVzdWx0XQo+ICAgSE9TVExEICBzY3JpcHRzL2tjb25maWcvY29uZgo+ICMKPiAjIGNvbmZpZ3Vy
-YXRpb24gd3JpdHRlbiB0byAuY29uZmlnCj4gIwo+IAo+IHNoY0BzaGMgL2hvbWUvZ2l0L2JiLXRl
-c3QtY2ZnICQgbWFrZSBBUkNIPWFybSBDUk9TU19DT01QSUxFPWFybS1saW51eC1nbnVlYWJpLQo+
-IHNjcmlwdHMva2NvbmZpZy9jb25mIC0tc2lsZW50b2xkY29uZmlnIEtjb25maWcKPiAgIEdlbmVy
-YXRpbmcgaW5jbHVkZS9nZW5lcmF0ZWQvbWFjaC10eXBlcy5oCj4gICBDSEsgICAgIGluY2x1ZGUv
-Z2VuZXJhdGVkL3ZlcnNpb24uaAo+ICAgVVBEICAgICBpbmNsdWRlL2dlbmVyYXRlZC92ZXJzaW9u
-LmgKPiAgIENISyAgICAgaW5jbHVkZS9nZW5lcmF0ZWQvdXRzcmVsZWFzZS5oCj4gICBVUEQgICAg
-IGluY2x1ZGUvZ2VuZXJhdGVkL3V0c3JlbGVhc2UuaAo+ICAgU1lNTElOSyBpbmNsdWRlL2FzbSAt
-PiBpbmNsdWRlL2FzbS1hcm0KPiAgIENSRUFURSAgaW5jbHVkZS9jb25maWcuaAo+IF5eXl5eXl5e
-Xl5eXl5eXl5eXl5eXl5eXl5eXl5eCj4gICBMRCAgICAgIHNjcmlwdHMvYnVpbHQtaW4ubwo+ICAg
-Q0MgICAgICBzY3JpcHRzL21vZC9lbXB0eS5vCj4gICBIT1NUQ0MgIHNjcmlwdHMvbW9kL21rX2Vs
-ZmNvbmZpZwo+ICAgTUtFTEYgICBzY3JpcHRzL21vZC9lbGZjb25maWcuaAo+ICAgSE9TVENDICBz
-Y3JpcHRzL21vZC9tb2Rwb3N0Lm8KPiBeQ21ha2VbMl06ICoqKiBbc2NyaXB0cy9tb2QvbW9kcG9z
-dC5vXSDQn9GA0LXRgNGL0LLQsNC90LjQtQo+IG1ha2VbMV06ICoqKiBbc2NyaXB0cy9tb2RdINCf
-0YDQtdGA0YvQstCw0L3QuNC1Cj4gbWFrZTogKioqIFtzY3JpcHRzXSDQn9GA0LXRgNGL0LLQsNC9
-0LjQtQo+IAo+IHNoY0BzaGMgL2hvbWUvZ2l0L2JiLXRlc3QtY2ZnICQgbHMgYXJjaC9hcm0vYm9h
-cmRzL3BjbTAzOC8KPiBlbnYgIGxvd2xldmVsLmMgIE1ha2VmaWxlICBwY20wMzguYyAgcGNtMDM4
-LmRveCAgcGNtOTcwLmMgIHBsbC5oCj4gCj4gc2hjQHNoYyAvaG9tZS9naXQvYmItdGVzdC1jZmcg
-JCBnaXQgY29tbWl0IC1hCj4gIyBPbiBicmFuY2ggY2ZnCj4gbm90aGluZyB0byBjb21taXQsIHdv
-cmtpbmcgZGlyZWN0b3J5IGNsZWFuCj4gCj4gLi4uCj4gU28sIG5vIGJvYXJkL2NvbmZpZy5oLiBK
-dXN0IGEgZW1wdHkgaW5jbHVkZS9jb25maWcuaC4KPiAKPiAuLi4gTm90IHVuZGVyc3RhbmQgYSBw
-cm9ibGVtLgoKQWgsIEkgdW5kZXJzdGFuZCBub3cgOykKClRoZSBwcm9ibGVtIGhlcmUgaXMgdGhh
-dCBpbmNsdWRlL2NvbmZpZy5oIHByZXZpb3VzbHkgZXhpc3RlZCBhcyBhIGxpbmsuCllvdXIgcGF0
-Y2ggZG9lcyBhICdlY2hvID4gaW5jbHVkZS9jb25maWcuaCcuIFdoZW4gdGhpcyBpcyBhIGxpbmsg
-dGhlbiBpdAp3aWxsIGVtcHR5IHRoZSBmaWxlIHRoZSBsaW5rIHBvaW50cyB0byBpbnN0ZWFkIG9m
-IGNyZWF0aW5nIGFuIGVtcHR5CmluY2x1ZGUvY29uZmlnLmguCgpTbywgdG8gcnVuIGludG8gaXQg
-eW91IGhhdmUgdG86CgojIGdpdCBjaGVja291dCBtYXN0ZXIKIyBtYWtlIHBjbTAzOF9kZWZjb25m
-aWcgJiYgbWFrZQojIGdpdCBjaGVja291dCBmb3ItbmV4dC9mb3ItbmV4dC9yZW1vdmUtY29uZmln
-LWgKIyBtYWtlCiMgZ2l0IGNoZWNrb3V0IG1hc3RlcgoKVGhlIHNvbHV0aW9uIHRvIHRoaXMgc2Vl
-bXMgdG8gYmUgdG8gcmVtb3ZlIGluY2x1ZGUvY29uZmlnLmggYmVmb3JlCmVjaG9pbmcgaW50byBp
-dC4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRp
-b25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5l
-ciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0y
-MDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
-IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+On Fri, Apr 05, 2013 at 01:20:49PM +0400, Alexander Shiyan wrote:
+> > On Mon, Mar 11, 2013 at 08:10:49PM +0400, Alexander Shiyan wrote:
+> > > Patch creates empty <config.h> if this header is not needed by board.
+> > > This will allow to remove many empty config.h files from boards.
+> > > 
+> > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> > > ---
+> > >  Makefile | 17 +++++++++++------
+> > >  1 file changed, 11 insertions(+), 6 deletions(-)
+> > > 
+> > > diff --git a/Makefile b/Makefile
+> > > index b5819fc..e8d9984 100644
+> > > --- a/Makefile
+> > > +++ b/Makefile
+> > > @@ -898,13 +898,18 @@ include/asm:
+> > >  	$(Q)$(check-symlink)
+> > >  	$(Q)$(create-symlink)
+> > >  
+> > > +define symlink-config-h
+> > > +	if [ -f $(srctree)/$(BOARD)/config.h ]; then		\
+> > > +		$(kecho) '  SYMLINK $@ -> $(BOARD)/config.h';	\
+> > > +		ln -fsn $(srctree)/$(BOARD)/config.h $@;	\
+> > > +	else							\
+> > > +		$(kecho) '  CREATE  $@';			\
+> > > +		echo -n > $@;					\
+> > > +	fi
+> > > +endef
+> > 
+> > I dropped this patch because it autogenerates files which were
+> > previously part of the repository. This causes git checkout to
+> > complain about overwriting existing files when we want to checkout
+> > earlier versions.
+> 
+> Patch creates include/config.h (which is in .gitignore) only
+> or makes symlink to board/config.h. So all already as you say below.
+
+It creates a arch/$arch/$board/config.h, so we get the following:
+
+# git checkout for-next/remove-config-h
+...
+# make pcm038_defconfig && make
+...
+# git checkout master
+error: The following untracked working tree files would be overwritten by checkout:
+        arch/arm/boards/pcm038/config.h
+Please move or remove them before you can switch branches.
+Aborting
+
+So this patch forces us to manually remove arch/$arch/$board/config.h
+or to use git checkout -f
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
