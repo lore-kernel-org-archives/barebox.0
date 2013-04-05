@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f176.google.com ([209.85.217.176])
+Received: from f377.i.mail.ru ([185.5.136.48])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UNqwo-0006Qj-37
- for barebox@lists.infradead.org; Thu, 04 Apr 2013 20:39:50 +0000
-Received: by mail-lb0-f176.google.com with SMTP id y8so3144030lbh.35
- for <barebox@lists.infradead.org>; Thu, 04 Apr 2013 13:39:47 -0700 (PDT)
-Date: Fri, 5 Apr 2013 00:39:19 +0400
-From: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Message-Id: <20130405003919.f8f49fab40da401164d710ce@gmail.com>
-In-Reply-To: <1364883552-6563-4-git-send-email-dev@lynxeye.de>
-References: <1364883552-6563-1-git-send-email-dev@lynxeye.de>
- <1364883552-6563-4-git-send-email-dev@lynxeye.de>
+ id 1UO0Iz-00055N-LJ
+ for barebox@lists.infradead.org; Fri, 05 Apr 2013 06:39:23 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Mime-Version: 1.0
+Date: Fri, 05 Apr 2013 10:39:16 +0400
+Message-ID: <1365143956.92002480@f377.i.mail.ru>
+In-Reply-To: <1365057749.3836.16.camel@mars>
+References: <1363263561.4022.37.camel@mars> <1363354762.13088.261.camel@mars>
+ <1365057749.3836.16.camel@mars>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,128 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 03/10] tegra: switch to DT only
-To: Lucas Stach <dev@lynxeye.de>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gW1JGQ10gQVJNIE9NQVA0OiBlbmFibGUgRFNTIGJ5?=
+ =?UTF-8?B?IGRlZmF1bHQ=?=
+To: =?UTF-8?B?Q2hyaXN0b3BoIEZyaXR6?= <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue,  2 Apr 2013 08:19:05 +0200
-Lucas Stach <dev@lynxeye.de> wrote:
+> On Fri, 2013-03-15 at 14:39 +0100, Christoph Fritz wrote:
+> > On Fri, 2013-03-15 at 12:40 +0400, Alexander Shiyan wrote:
+> > 
+> > > MD command causes an error due to the inability of the reading memory area.
+> > > Error can be disabled via the option "enable arm exception handling support",
+> > > but it does not help solve the problem.
+> > > OMAP has a memory areas (modules), which are locked,
+> > 
+> > This corresponds with my register observations. As noted above, register
+> > CM_DSS_DSS_CLKCTRL (0x4a009120) reads 0x00070F02 which means: "Module is
+> > disabled and cannot be accessed".
+> > 
+> > >  so you need to
+> > > search this information from datasheet.
+> > 
+> > Finnaly I was very wise inspired to do "mw 0x4a009100 2". This disables
+> > the HW_AUTO-Mode (Automatic transition) and starts a software forced
+> > wake-up (SW_WKUP).
+> > 
+> > Now even the IDLEST field from CM_DSS_CLKSTCTRL reads 0x0: "Module is
+> > fully functional, including INTRCONN" :-)
+> > 
+> > et la voila:
+> > md 0x48040000+4
+> > 48040000: 00000040
+> > 
+> > What do you think about the patch below?
+> > 
+> > ---
+> > Subject: [PATCH] [RFC] ARM OMAP4: enable DSS by default
+> > 
+> > This patch removes the anyway default reset setting of HW_AUTO in favour of
+> > SW_WKUP. So the DSS Module gets enabled and you gain full register access.
+> > ---
+> >  arch/arm/mach-omap/omap4_clock.c |    4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> > index 0621fd3..72335d9 100644
+> > --- a/arch/arm/mach-omap/omap4_clock.c
+> > +++ b/arch/arm/mach-omap/omap4_clock.c
+> > @@ -375,8 +375,8 @@ void omap4_enable_all_clocks(void)
+> >  	/* Check for DSS Clocks */
+> >  	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
+> >  		;
+> > -	/* Set HW_AUTO transition mode */
+> > -	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x3);
+> > +	/* Set SW_WKUP to enable DSS Module with full register access */
+> > +	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x2);
+> >  
+> >  	/* Enable SGX clocks */
+> >  	sr32(CM_SGX_CLKSTCTRL, 0, 32, 0x2);
 
-> We will follow the Linux kernel and go devicetree only for Tegra. This
-> doesn't prevent specific code for certain boards, but always requires a
-> valid DTB for all boards.
-> 
-> Also regenerate the AC100 defconfig to reflect this change.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  arch/arm/Kconfig                         |  2 ++
->  arch/arm/configs/toshiba_ac100_defconfig |  9 ++++++---
->  arch/arm/dts/tegra20-paz00.dts           | 12 ++++++++++++
->  arch/arm/dts/tegra20.dtsi                |  5 +++++
->  4 files changed, 25 insertions(+), 3 deletions(-)
->  create mode 100644 arch/arm/dts/tegra20-paz00.dts
->  create mode 100644 arch/arm/dts/tegra20.dtsi
-> 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 7d42826..8f37d12 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -139,6 +139,8 @@ config ARCH_TEGRA
->  	bool "Nvidia Tegra"
->  	select CPU_V7
->  	select HAS_DEBUG_LL
-> +	select BUILTIN_DTB
-> +	select OFTREE
->  
->  config ARCH_ZYNQ
->  	bool "Xilinx Zynq-based boards"
-> diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
-> index 065189d..b44fd26 100644
-> --- a/arch/arm/configs/toshiba_ac100_defconfig
-> +++ b/arch/arm/configs/toshiba_ac100_defconfig
-> @@ -1,4 +1,5 @@
-> -CONFIG_ARCH_TEGRA=y
+I do not use OMAP and therefore can not comment on these changes.
+I think AUTO mode should work by default, and the fact that it does not
+work suggests that not all operations are performed (power, clocks etc.) ...
+May be necessary to switch to AUTO back after forcing WKUP.
 
-Why?
-
-We will get this after 'make toshiba_ac100_defconfig':
-
-CONFIG_ARCH_AT91=y
-...
-# CONFIG_ARCH_TEGRA is not set
-
-> +CONFIG_BUILTIN_DTB=y
-> +CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_TEXT_BASE=0x01000000
->  CONFIG_BROKEN=y
-> @@ -14,6 +15,7 @@ CONFIG_ENABLE_DEVICE_NOISE=y
->  CONFIG_CMD_SLEEP=y
->  # CONFIG_CMD_TRUE is not set
->  # CONFIG_CMD_FALSE is not set
-> +CONFIG_CMD_TFTP=y
->  CONFIG_CMD_LOADB=y
->  CONFIG_CMD_LOADY=y
->  CONFIG_CMD_LOADS=y
-> @@ -23,12 +25,12 @@ CONFIG_CMD_SHA1SUM=y
->  CONFIG_CMD_BOOTM_SHOW_TYPE=y
->  CONFIG_CMD_RESET=y
->  CONFIG_CMD_GO=y
-> +CONFIG_CMD_OFTREE=y
->  CONFIG_NET=y
->  CONFIG_NET_DHCP=y
->  CONFIG_NET_PING=y
-> -CONFIG_CMD_TFTP=y
-> -CONFIG_FS_TFTP=y
->  CONFIG_NET_NETCONSOLE=y
-> +CONFIG_OFDEVICE=y
->  CONFIG_DRIVER_SERIAL_NS16550=y
->  CONFIG_NET_USB=y
->  CONFIG_NET_USB_ASIX=y
-> @@ -36,4 +38,5 @@ CONFIG_NET_USB_ASIX=y
->  CONFIG_USB=y
->  CONFIG_USB_EHCI=y
->  CONFIG_USB_STORAGE=y
-> +CONFIG_FS_TFTP=y
->  CONFIG_FS_FAT=y
-> diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
-> new file mode 100644
-> index 0000000..09ccb8b
-> --- /dev/null
-> +++ b/arch/arm/dts/tegra20-paz00.dts
-> @@ -0,0 +1,12 @@
-> +/dts-v1/;
-> +
-> +/include/ "tegra20.dtsi"
-> +
-> +/ {
-> +	model = "Toshiba AC100 / Dynabook AZ";
-> +	compatible = "compal,paz00", "nvidia,tegra20";
-> +
-> +	memory {
-> +		reg = <0x00000000 0x20000000>;
-> +	};
-> +};
-> diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
-> new file mode 100644
-> index 0000000..9f8860b
-> --- /dev/null
-> +++ b/arch/arm/dts/tegra20.dtsi
-> @@ -0,0 +1,5 @@
-> +/include/ "skeleton.dtsi"
-> +
-> +/ {
-> +	compatible = "nvidia,tegra20";
-> +};
-> -- 
-> 1.8.1.4
-> 
-
-
--- 
-antonynpavlov@gmail.com <antonynpavlov@gmail.com>
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
