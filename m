@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f377.i.mail.ru ([185.5.136.48])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UO0Iz-00055N-LJ
- for barebox@lists.infradead.org; Fri, 05 Apr 2013 06:39:23 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 05 Apr 2013 10:39:16 +0400
-Message-ID: <1365143956.92002480@f377.i.mail.ru>
-In-Reply-To: <1365057749.3836.16.camel@mars>
-References: <1363263561.4022.37.camel@mars> <1363354762.13088.261.camel@mars>
- <1365057749.3836.16.camel@mars>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UO2UT-0005JV-US
+ for barebox@lists.infradead.org; Fri, 05 Apr 2013 08:59:23 +0000
+Date: Fri, 5 Apr 2013 10:59:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130405085917.GK1906@pengutronix.de>
+References: <1365057762.3836.18.camel@mars>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1365057762.3836.18.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,70 +22,275 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gW1JGQ10gQVJNIE9NQVA0OiBlbmFibGUgRFNTIGJ5?=
- =?UTF-8?B?IGRlZmF1bHQ=?=
-To: =?UTF-8?B?Q2hyaXN0b3BoIEZyaXR6?= <chf.fritz@googlemail.com>
+Subject: Re: [PATCH] omap4-fb: add driver
+To: Christoph Fritz <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-> On Fri, 2013-03-15 at 14:39 +0100, Christoph Fritz wrote:
-> > On Fri, 2013-03-15 at 12:40 +0400, Alexander Shiyan wrote:
-> > 
-> > > MD command causes an error due to the inability of the reading memory area.
-> > > Error can be disabled via the option "enable arm exception handling support",
-> > > but it does not help solve the problem.
-> > > OMAP has a memory areas (modules), which are locked,
-> > 
-> > This corresponds with my register observations. As noted above, register
-> > CM_DSS_DSS_CLKCTRL (0x4a009120) reads 0x00070F02 which means: "Module is
-> > disabled and cannot be accessed".
-> > 
-> > >  so you need to
-> > > search this information from datasheet.
-> > 
-> > Finnaly I was very wise inspired to do "mw 0x4a009100 2". This disables
-> > the HW_AUTO-Mode (Automatic transition) and starts a software forced
-> > wake-up (SW_WKUP).
-> > 
-> > Now even the IDLEST field from CM_DSS_CLKSTCTRL reads 0x0: "Module is
-> > fully functional, including INTRCONN" :-)
-> > 
-> > et la voila:
-> > md 0x48040000+4
-> > 48040000: 00000040
-> > 
-> > What do you think about the patch below?
-> > 
-> > ---
-> > Subject: [PATCH] [RFC] ARM OMAP4: enable DSS by default
-> > 
-> > This patch removes the anyway default reset setting of HW_AUTO in favour of
-> > SW_WKUP. So the DSS Module gets enabled and you gain full register access.
-> > ---
-> >  arch/arm/mach-omap/omap4_clock.c |    4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-> > index 0621fd3..72335d9 100644
-> > --- a/arch/arm/mach-omap/omap4_clock.c
-> > +++ b/arch/arm/mach-omap/omap4_clock.c
-> > @@ -375,8 +375,8 @@ void omap4_enable_all_clocks(void)
-> >  	/* Check for DSS Clocks */
-> >  	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
-> >  		;
-> > -	/* Set HW_AUTO transition mode */
-> > -	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x3);
-> > +	/* Set SW_WKUP to enable DSS Module with full register access */
-> > +	sr32(CM_DSS_CLKSTCTRL, 0, 32, 0x2);
-> >  
-> >  	/* Enable SGX clocks */
-> >  	sr32(CM_SGX_CLKSTCTRL, 0, 32, 0x2);
+Hi Christoph,
 
-I do not use OMAP and therefore can not comment on these changes.
-I think AUTO mode should work by default, and the fact that it does not
-work suggests that not all operations are performed (power, clocks etc.) ...
-May be necessary to switch to AUTO back after forcing WKUP.
+mostly ok, some comments inline.
 
----
+On Thu, Apr 04, 2013 at 08:42:42AM +0200, Christoph Fritz wrote:
+> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+> index 6d6b08f..15eaa2f 100644
+> --- a/drivers/video/Kconfig
+> +++ b/drivers/video/Kconfig
+> @@ -45,6 +45,14 @@ config DRIVER_VIDEO_S3C24XX
+>  	help
+>  	  Add support for the S3C244x LCD controller.
+>  
+> +config DRIVER_VIDEO_OMAP4
+> +        bool "OMAP4 framebuffer driver"
+
+\t please
+
+> +	depends on ARCH_OMAP4
+> +	help
+> +	  Add support for the OMAP4 Display Controller.
+> +	  DSI is unsupported, only DISPC parallel mode on LCD2
+> +	  is supported.
+> +
+>  if DRIVER_VIDEO_S3C24XX
+> +
+> +struct omap4fb_colors {
+> +	struct fb_bitfield	red;
+> +	struct fb_bitfield	green;
+> +	struct fb_bitfield	blue;
+> +	struct fb_bitfield	transp;
+> +};
+> +
+> +static struct omap4fb_colors const omap4FB_COLORS[] = {
+
+lower case variable names please.
+
+> +	[0] = {
+> +		.red	= { .length = 0, .offset = 0 },
+> +	},
+> +	[1] = {
+> +		.blue	= { .length = 8, .offset = 0 },
+> +		.green	= { .length = 8, .offset = 8 },
+> +		.red	= { .length = 8, .offset = 16 },
+> +	},
+> +	[2] = {
+> +		.blue	= { .length = 8, .offset = 0 },
+> +		.green	= { .length = 8, .offset = 8 },
+> +		.red	= { .length = 8, .offset = 16 },
+> +		.transp	= { .length = 8, .offset = 24 },
+> +	},
+> +};
+> +
+> +static void omap4fb_fill_bootenv(struct omap4fb_device *fbi,
+> +				 size_t screen_size)
+> +{
+> +	char buf[sizeof("bootsplash=0x12345678+12345678910")];
+> +	int rc;
+> +
+> +	snprintf(buf, sizeof buf, "bootsplash=0x%08lx+%zu",
+> +		 (unsigned long)fbi->info.screen_base,
+> +		 screen_size);
+> +
+> +	rc = dev_set_param(fbi->dev, "bootargs", buf);
+> +	if (rc < 0) {
+> +		dev_err(fbi->dev, "failed to set bootargs '%s': %d\n",
+> +			buf, rc);
+> +	}
+> +}
+
+Where is this used in the kernel? You should probably rather use the
+simple fb driver Steven Warren suggested.
+
+> +
+> +	rc = register_framebuffer(info);
+> +	if (rc < 0) {
+> +		dev_err(dev, "failed to register framebuffer: %d\n", rc);
+> +		goto out;
+> +	}
+> +
+> +	rc = 0;
+> +	dev_info(dev, "registered omap4 framebuffer\n");
+
+The context is already in dev_info, so you can just do a
+
+	dev_info(dev, "registered\n");
+
+> +/* TRM: 10.2.7.3 Display Controller Registers */
+> +struct omap4_regs_dispc {
+> +	uint32_t const revision;
+> +	OMAP4_RESERVED(0x04, 0x10);
+> +	uint32_t sysconfig;
+> +	uint32_t const sysstatus;
+> +	uint32_t irqstatus;
+> +	uint32_t irqenable;
+> +	OMAP4_RESERVED(0x20, 0x40);
+> +	uint32_t control1;
+> +	uint32_t config1;
+> +	OMAP4_RESERVED(0x48, 0x4C);
+> +
+> +	uint32_t default_color[2];
+> +	uint32_t trans_color[2];
+> +
+> +	uint32_t const line_status;
+> +	uint32_t line_number;
+> +	uint32_t timing_h1;
+> +	uint32_t timing_v1;
+> +	uint32_t pol_freq1;
+> +	uint32_t divisor1;
+> +	uint32_t global_alpha;
+> +	uint32_t size_tv;
+> +	uint32_t size_lcd1;
+> +
+> +	struct {
+> +		uint32_t ba[2];
+> +		uint32_t position;
+> +		uint32_t size;
+> +		OMAP4_RESERVED(0x90, 0xA0);
+> +		uint32_t attributes;
+> +		uint32_t buf_threshold;
+> +		uint32_t const buf_size_status;
+> +		uint32_t row_inc;
+> +		uint32_t pixel_inc;
+> +		OMAP4_RESERVED(0xB4, 0xB8);
+> +		uint32_t table_ba;
+> +	} gfx;
+> +
+> +	struct omap4_regs_dispc_vid vid1;
+> +	OMAP4_RESERVED(0x144, 0x14C);
+> +	struct omap4_regs_dispc_vid vid2;
+> +
+> +	uint32_t data1_cycle[3];
+> +
+> +	uint32_t vid1_fir_coef_v[8];
+> +	uint32_t vid2_fir_coef_v[8];
+> +	uint32_t cpr1_coef_r;
+> +	uint32_t cpr1_coef_g;
+> +	uint32_t cpr1_coef_b;
+> +	uint32_t gfx_preload;
+> +	uint32_t vid_preload[2];
+> +	uint32_t control2;
+> +	OMAP4_RESERVED(0x23C, 0x300);
+> +
+> +	struct {
+> +		uint32_t accu[2];
+> +		uint32_t ba[2];
+> +		struct {
+> +			uint32_t h;
+> +			uint32_t hv;
+> +		} fir_coef[8];
+> +		uint32_t fir_coef_v[8];
+> +		uint32_t attributes;
+> +		uint32_t conv_coef0;
+> +		uint32_t conv_coef1;
+> +		uint32_t conv_coef2;
+> +		uint32_t conv_coef3;
+> +		uint32_t conv_coef4;
+> +		uint32_t const buf_size_status;
+> +		uint32_t buf_threshold;
+> +		uint32_t fir;
+> +		uint32_t picture_size;
+> +		uint32_t pixel_inc;
+> +		uint32_t position;
+> +		uint32_t preload;
+> +		uint32_t row_inc;
+> +		uint32_t size;
+> +	} vid3;
+> +
+> +	uint32_t default_color2;
+> +	uint32_t trans_color2;
+> +	uint32_t cpr2_coef_b;
+> +	uint32_t cpr2_coef_g;
+> +	uint32_t cpr2_coef_r;
+> +	uint32_t data2_cycle[3];
+> +	uint32_t size_lcd2;
+> +	OMAP4_RESERVED(0x3D0, 0x400);
+> +	uint32_t timing_h2;
+> +	uint32_t timing_v2;
+> +	uint32_t pol_freq2;
+> +	uint32_t divisor2;
+> +	OMAP4_RESERVED(0x410, 0x500);
+> +
+> +	struct {
+> +		uint32_t accu[2];
+> +		uint32_t ba[2];
+> +		struct {
+> +			uint32_t h;
+> +			uint32_t hv;
+> +		} fir_coef[8];
+> +		uint32_t fir_coef_v[8];
+> +		uint32_t attributes;
+> +		uint32_t conv_coef0;
+> +		uint32_t conv_coef1;
+> +		uint32_t conv_coef2;
+> +		uint32_t conv_coef3;
+> +		uint32_t conv_coef4;
+> +		uint32_t const buf_size_status;
+> +		uint32_t buf_threshold;
+> +		uint32_t fir;
+> +		uint32_t picture_size;
+> +		uint32_t pixel_inc;
+> +		OMAP4_RESERVED(0x59C, 0x5A4);
+> +		uint32_t row_inc;
+> +		uint32_t size;
+> +	} wb;
+> +
+> +	OMAP4_RESERVED(0x5AC, 0x600);
+> +	uint32_t vid1_ba_uv[2];
+> +	uint32_t vid2_ba_uv[2];
+> +	uint32_t vid3_ba_uv[2];
+> +	uint32_t wb_ba_uv[2];
+> +	uint32_t config2;
+> +	uint32_t vid1_attributes2;
+> +	uint32_t vid2_attributes2;
+> +	uint32_t vid3_attributes2;
+> +	uint32_t gamma_table0;
+> +	uint32_t gamma_table1;
+> +	uint32_t gamma_table2;
+> +	uint32_t vid1_fir2;
+> +	uint32_t vid1_accu2[2];
+> +	struct {
+> +		uint32_t h2;
+> +		uint32_t hv2;
+> +	} vid1_fir_coef[8];
+> +	uint32_t vid1_fir_coef_v2[8];
+> +	uint32_t vid2_fir2;
+> +	uint32_t vid2_accu2[2];
+> +	struct {
+> +		uint32_t h2;
+> +		uint32_t hv2;
+> +	} vid2_fir_coef[8];
+> +	uint32_t vid2_fir_coef_v2[8];
+> +	OMAP4_RESERVED(0x714, 0x724);
+> +	uint32_t vid3_fir2;
+> +	uint32_t vid3_accu2[2];
+> +	struct {
+> +		uint32_t h2;
+> +		uint32_t hv2;
+> +	} vid3_fir_coef[8];
+> +	uint32_t vid3_fir_coef_v2[8];
+> +	uint32_t wb_fir2;
+> +	uint32_t wb_accu2[2];
+> +	OMAP4_RESERVED(0x79C, 0x7A0);
+> +	struct {
+> +		uint32_t h2;
+> +		uint32_t hv2;
+> +	} wb_fir_coef[8];
+> +	uint32_t wb_fir_coef_v2[8];
+> +	uint32_t global_buffer;
+> +	uint32_t divisor;
+> +	OMAP4_RESERVED(0x808, 0x810);
+> +	uint32_t wb_attributes2;
+> +};
+
+This looks awful. I wonder who ever had the idea that placing structs
+over registers is a good idea.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
