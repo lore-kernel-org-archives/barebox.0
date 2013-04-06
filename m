@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOF6C-0002pm-Om
- for barebox@lists.infradead.org; Fri, 05 Apr 2013 22:27:09 +0000
-Received: by mail-wi0-f181.google.com with SMTP id hj8so1041326wib.14
- for <barebox@lists.infradead.org>; Fri, 05 Apr 2013 15:27:06 -0700 (PDT)
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat,  6 Apr 2013 00:25:55 +0200
-Message-Id: <1365200755-8102-2-git-send-email-vicencb@gmail.com>
-In-Reply-To: <1365200755-8102-1-git-send-email-vicencb@gmail.com>
-References: <1365200755-8102-1-git-send-email-vicencb@gmail.com>
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UOWIE-0005FR-HB
+ for barebox@lists.infradead.org; Sat, 06 Apr 2013 16:48:44 +0000
+Received: from mail180.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 3ACF5DC3A7A
+ for <barebox@lists.infradead.org>; Sat,  6 Apr 2013 18:48:04 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat,  6 Apr 2013 18:31:57 +0200
+Message-Id: <1365265917-25480-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,212 +23,390 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] OMAP4: add command to select next boot device priority
+Subject: [PATCH 1/1] highbank: switch to defaultenv-2
 To: barebox@lists.infradead.org
-Cc: Vicente Bergas <vicencb@gmail.com>
+Cc: Rob Herring <rob.herring@calxeda.com>
 
-On OMAP4 SoC there is a SAR memory region (Save & Rescue)
-where the ROM code reads the device to boot from.
-This patch adds a way to set this.
+this will allow to have boot sequence and later to use PXE
 
-Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Rob Herring <rob.herring@calxeda.com>
 ---
- arch/arm/mach-omap/Makefile                     |  1 +
- arch/arm/mach-omap/boot_order.c                 | 83 +++++++++++++++++++++++++
- arch/arm/mach-omap/include/mach/omap4-silicon.h | 20 ++++++
- arch/arm/mach-omap/omap4_generic.c              | 20 ++++++
- commands/Kconfig                                |  7 +++
- 5 files changed, 131 insertions(+)
- create mode 100644 arch/arm/mach-omap/boot_order.c
+ arch/arm/boards/highbank/env/boot.d/010-ahci-boot  |    1 +
+ arch/arm/boards/highbank/env/boot.d/011-ahci       |    1 +
+ arch/arm/boards/highbank/env/boot.d/020-mmc-boot   |    1 +
+ arch/arm/boards/highbank/env/boot.d/021-mmc        |    1 +
+ arch/arm/boards/highbank/env/boot.d/030-net        |    1 +
+ arch/arm/boards/highbank/env/boot.d/031-net-eth1   |    1 +
+ arch/arm/boards/highbank/env/boot/ahci             |   21 +++++++++++++
+ arch/arm/boards/highbank/env/boot/ahci-boot        |   21 +++++++++++++
+ arch/arm/boards/highbank/env/boot/mmc              |   21 +++++++++++++
+ arch/arm/boards/highbank/env/boot/mmc-boot         |   21 +++++++++++++
+ arch/arm/boards/highbank/env/boot/net              |   18 +++++++++++
+ arch/arm/boards/highbank/env/boot/net-eth1         |   18 +++++++++++
+ arch/arm/boards/highbank/env/config                |   33 --------------------
+ arch/arm/boards/highbank/env/config-board          |   11 +++++++
+ arch/arm/boards/highbank/env/data/oftree           |    4 +++
+ .../env/{bin/init_board => init/001-dtb-probe}     |    0
+ arch/arm/boards/highbank/env/init/automount        |   27 ++++++++++++++++
+ arch/arm/boards/highbank/env/init/ps1              |    9 ++++++
+ arch/arm/mach-highbank/Kconfig                     |    1 +
+ 19 files changed, 178 insertions(+), 33 deletions(-)
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/010-ahci-boot
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/011-ahci
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/020-mmc-boot
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/021-mmc
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/030-net
+ create mode 120000 arch/arm/boards/highbank/env/boot.d/031-net-eth1
+ create mode 100644 arch/arm/boards/highbank/env/boot/ahci
+ create mode 100644 arch/arm/boards/highbank/env/boot/ahci-boot
+ create mode 100644 arch/arm/boards/highbank/env/boot/mmc
+ create mode 100644 arch/arm/boards/highbank/env/boot/mmc-boot
+ create mode 100644 arch/arm/boards/highbank/env/boot/net
+ create mode 100644 arch/arm/boards/highbank/env/boot/net-eth1
+ delete mode 100644 arch/arm/boards/highbank/env/config
+ create mode 100644 arch/arm/boards/highbank/env/config-board
+ create mode 100644 arch/arm/boards/highbank/env/data/oftree
+ rename arch/arm/boards/highbank/env/{bin/init_board => init/001-dtb-probe} (100%)
+ create mode 100644 arch/arm/boards/highbank/env/init/automount
+ create mode 100644 arch/arm/boards/highbank/env/init/ps1
 
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index d9e00f7..973068d 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -30,4 +30,5 @@ obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
- obj-$(CONFIG_SHELL_NONE) += xload.o
- obj-$(CONFIG_MFD_TWL6030) += omap4_twl6030_mmc.o
- obj-$(CONFIG_OMAP4_USBBOOT) += omap4_rom_usb.o
-+obj-$(CONFIG_CMD_BOOT_ORDER) += boot_order.o
- obj-y += gpio.o
-diff --git a/arch/arm/mach-omap/boot_order.c b/arch/arm/mach-omap/boot_order.c
-new file mode 100644
-index 0000000..2f2846d
+diff --git a/arch/arm/boards/highbank/env/boot.d/010-ahci-boot b/arch/arm/boards/highbank/env/boot.d/010-ahci-boot
+new file mode 120000
+index 0000000..3672f04
 --- /dev/null
-+++ b/arch/arm/mach-omap/boot_order.c
-@@ -0,0 +1,83 @@
-+/*
-+ * boot_order.c - configure omap warm boot
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/arch/arm/boards/highbank/env/boot.d/010-ahci-boot
+@@ -0,0 +1 @@
++../boot/ahci-boot
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot.d/011-ahci b/arch/arm/boards/highbank/env/boot.d/011-ahci
+new file mode 120000
+index 0000000..36b3b28
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot.d/011-ahci
+@@ -0,0 +1 @@
++../boot/ahci
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot.d/020-mmc-boot b/arch/arm/boards/highbank/env/boot.d/020-mmc-boot
+new file mode 120000
+index 0000000..85c19bb
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot.d/020-mmc-boot
+@@ -0,0 +1 @@
++../boot/mmc-boot
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot.d/021-mmc b/arch/arm/boards/highbank/env/boot.d/021-mmc
+new file mode 120000
+index 0000000..5af95d0
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot.d/021-mmc
+@@ -0,0 +1 @@
++../boot/mmc
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot.d/030-net b/arch/arm/boards/highbank/env/boot.d/030-net
+new file mode 120000
+index 0000000..70b8ea3
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot.d/030-net
+@@ -0,0 +1 @@
++../boot/net
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot.d/031-net-eth1 b/arch/arm/boards/highbank/env/boot.d/031-net-eth1
+new file mode 120000
+index 0000000..5a30a30
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot.d/031-net-eth1
+@@ -0,0 +1 @@
++../boot/net-eth1
+\ No newline at end of file
+diff --git a/arch/arm/boards/highbank/env/boot/ahci b/arch/arm/boards/highbank/env/boot/ahci
+new file mode 100644
+index 0000000..3bdb809
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/ahci
+@@ -0,0 +1,21 @@
++#!/bin/sh
 +
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <mach/omap4-silicon.h>
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "AHCI"
++	exit
++fi
 +
-+struct bootsrc {
-+	const char *name;
-+	uint32_t sar;
-+};
++path="/mnt/ahci"
 +
-+const struct bootsrc src_list[] = {
-+	{"xip"     , OMAP44XX_SAR_BOOT_XIP     },
-+	{"xipwait" , OMAP44XX_SAR_BOOT_XIPWAIT },
-+	{"nand"    , OMAP44XX_SAR_BOOT_NAND    },
-+	{"onenand" , OMAP44XX_SAR_BOOT_ONENAND },
-+	{"mmc1"    , OMAP44XX_SAR_BOOT_MMC1    },
-+	{"mmc2_1"  , OMAP44XX_SAR_BOOT_MMC2_1  },
-+	{"mmc2_2"  , OMAP44XX_SAR_BOOT_MMC2_2  },
-+	{"uart"    , OMAP44XX_SAR_BOOT_UART    },
-+	{"usb_1"   , OMAP44XX_SAR_BOOT_USB_1   },
-+	{"usb_ulpi", OMAP44XX_SAR_BOOT_USB_ULPI},
-+	{"usb_2"   , OMAP44XX_SAR_BOOT_USB_2   },
-+};
++global.bootm.image="${path}/zImage"
 +
-+static uint32_t parse_device(char *str)
-+{
-+	int i;
++. /env/data/oftree
 +
-+	for (i = 0; i < ARRAY_SIZE(src_list); i++) {
-+		if (strcmp(str, src_list[i].name) == 0)
-+			return src_list[i].sar;
-+	}
-+	printf("Unknown device '%s'\n", str);
-+	return OMAP44XX_SAR_BOOT_VOID;
-+}
++oftree=${path}/oftree
++if [ -f $oftree ]; then
++	global.bootm.oftree="$oftree"
++fi
 +
-+static int cmd_boot_order(int argc, char *argv[])
-+{
-+	uint32_t device_list[] = {
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+		OMAP44XX_SAR_BOOT_VOID,
-+	};
-+	int i;
++# The rootdevice may actually be mmcblk1p2 if a card
++# is inserted to the back MMC slot
++global.linux.bootargs.dyn.root="root=/dev/sda2"
+diff --git a/arch/arm/boards/highbank/env/boot/ahci-boot b/arch/arm/boards/highbank/env/boot/ahci-boot
+new file mode 100644
+index 0000000..0064a46
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/ahci-boot
+@@ -0,0 +1,21 @@
++#!/bin/sh
 +
-+	if (argc < 2)
-+		return COMMAND_ERROR_USAGE;
-+	for (i = 0; i + 1 < argc && i < ARRAY_SIZE(device_list); i++) {
-+		device_list[i] = parse_device(argv[i + 1]);
-+		if (device_list[i] == OMAP44XX_SAR_BOOT_VOID)
-+			return COMMAND_ERROR_USAGE;
-+	}
-+	omap4_set_warmboot_order(device_list);
-+	return 0;
-+}
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "AHCI (UEFI boot partiton)"
++	exit
++fi
 +
-+static const __maybe_unused char cmd_boot_order_help[] =
-+"Usage: boot_order <device 1> [<device n>]\n"
-+"Set warm boot order of up to four devices.\n"
-+"Each device can be one of:\n"
-+"xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2\n";
++path="/mnt/ahci-boot"
 +
-+BAREBOX_CMD_START(boot_order)
-+	.cmd		= cmd_boot_order,
-+	.usage		= "boot_order <device 1> [<device n>]",
-+	BAREBOX_CMD_HELP(cmd_boot_order_help)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
-+BAREBOX_CMD_END
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index 9e82435..666e721 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -161,6 +161,25 @@
- #define OMAP44XX_PRM_RSTCTRL_RESET	0x01
++global.bootm.image="${path}/zImage"
++
++. /env/data/oftree
++
++oftree=${path}/oftree
++if [ -f $oftree ]; then
++	global.bootm.oftree="$oftree"
++fi
++
++# The rootdevice may actually be mmcblk1p2 if a card
++# is inserted to the back MMC slot
++global.linux.bootargs.dyn.root="root=/dev/sda2"
+diff --git a/arch/arm/boards/highbank/env/boot/mmc b/arch/arm/boards/highbank/env/boot/mmc
+new file mode 100644
+index 0000000..43a04b5
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/mmc
+@@ -0,0 +1,21 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "MMC slot"
++	exit
++fi
++
++path="/mnt/mmc"
++
++global.bootm.image="${path}/zimage"
++
++. /env/data/oftree
++
++oftree=${path}/oftree
++if [ -f $oftree ]; then
++	global.bootm.oftree="$oftree"
++fi
++
++# The rootdevice may actually be mmcblk1p2 if a card
++# is inserted to the back MMC slot
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2"
+diff --git a/arch/arm/boards/highbank/env/boot/mmc-boot b/arch/arm/boards/highbank/env/boot/mmc-boot
+new file mode 100644
+index 0000000..93cd99b
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/mmc-boot
+@@ -0,0 +1,21 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "MMC slot (UEFI boot partiton)"
++	exit
++fi
++
++path="/mnt/mmc-boot"
++
++global.bootm.image="${path}/zimage"
++
++. /env/data/oftree
++
++oftree=${path}/oftree
++if [ -f $oftree ]; then
++	global.bootm.oftree="$oftree"
++fi
++
++# The rootdevice may actually be mmcblk1p2 if a card
++# is inserted to the back MMC slot
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2"
+diff --git a/arch/arm/boards/highbank/env/boot/net b/arch/arm/boards/highbank/env/boot/net
+new file mode 100644
+index 0000000..80862cd
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/net
+@@ -0,0 +1,18 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "network (tftp, nfs) (eth0)"
++	exit
++fi
++
++ethact eth0
++
++path="/mnt/tftp"
++
++. /env/data/oftree
++
++global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
++#global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
++nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
++bootargs-ip
++global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+diff --git a/arch/arm/boards/highbank/env/boot/net-eth1 b/arch/arm/boards/highbank/env/boot/net-eth1
+new file mode 100644
+index 0000000..d9e9804
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/boot/net-eth1
+@@ -0,0 +1,18 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "network (tftp, nfs) (eth1)"
++	exit
++fi
++
++ethact eth1
++
++path="/mnt/tftp"
++
++. /env/data/oftree
++
++global.bootm.image="${path}/${global.user}-linux-${global.hostname}"
++#global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
++nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
++bootargs-ip
++global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+diff --git a/arch/arm/boards/highbank/env/config b/arch/arm/boards/highbank/env/config
+deleted file mode 100644
+index 1bb2c49..0000000
+--- a/arch/arm/boards/highbank/env/config
++++ /dev/null
+@@ -1,33 +0,0 @@
+-#!/bin/sh
+-
+-# use 'dhcp' to do dhcp in barebox and in kernel
+-# use 'none' if you want to skip kernel ip autoconfiguration
+-ip=dhcp
+-global.dhcp.vendor_id=barebox-highbank
+-
+-# or set your networking parameters here
+-#eth0.ipaddr=a.b.c.d
+-#eth0.netmask=a.b.c.d
+-#eth0.gateway=a.b.c.d
+-#eth0.serverip=a.b.c.d
+-
+-# can be either 'nfs', 'tftp' or 'nor'
+-kernel_loc=tftp
+-# can be either 'net', 'nor' or 'initrd'
+-rootfs_loc=initrd
+-
+-# can be either 'jffs2' or 'ubifs'
+-rootfs_type=ubifs
+-rootfsimage=root.$rootfs_type
+-
+-kernelimage=zImage
+-#kernelimage=uImage
+-#kernelimage=Image
+-#kernelimage=Image.lzo
+-
+-autoboot_timeout=3
+-
+-bootargs="console=ttyAMA0,115200n8 CONSOLE=/dev/ttyAMA0"
+-
+-# set a fancy prompt (if support is compiled in)
+-PS1="\e[1;31m[barebox@\h]:\w\e[0m\n# "
+diff --git a/arch/arm/boards/highbank/env/config-board b/arch/arm/boards/highbank/env/config-board
+new file mode 100644
+index 0000000..a64d9e3
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/config-board
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++# board defaults, do not change in running system. Change /env/config
++# instead
++
++global.hostname=highbank
++global.allow_color=true
++global.autoboot_timeout=3
++global.bootm.oftree="/dev/dtb"
++global.linux.bootargs.base="console=ttyAMA0,115200n8 CONSOLE=/dev/ttyAMA0"
++global.boot.default=/env/boot.d
+diff --git a/arch/arm/boards/highbank/env/data/oftree b/arch/arm/boards/highbank/env/data/oftree
+new file mode 100644
+index 0000000..9a94b31
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/data/oftree
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++#device tree provided by the firmware
++global.bootm.oftree="/dev/dtb"
+diff --git a/arch/arm/boards/highbank/env/bin/init_board b/arch/arm/boards/highbank/env/init/001-dtb-probe
+similarity index 100%
+rename from arch/arm/boards/highbank/env/bin/init_board
+rename to arch/arm/boards/highbank/env/init/001-dtb-probe
+diff --git a/arch/arm/boards/highbank/env/init/automount b/arch/arm/boards/highbank/env/init/automount
+new file mode 100644
+index 0000000..2c283c6
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/init/automount
+@@ -0,0 +1,27 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	init-menu-add-entry "$0" "Automountpoints"
++	exit
++fi
++
++# automount tftp server based on $eth0.serverip
++
++mkdir -p /mnt/tftp
++automount /mnt/tftp 'ifup eth0 && mount -t tftp $eth0.serverip /mnt/tftp'
++
++# SD card slot, boot partition
++mkdir -p /mnt/mmc-boot
++automount -d /mnt/mmc 'mount /dev/disk0.boot /mnt/mmc-boot'
++
++# SD card slot, first partition
++mkdir -p /mnt/mmc
++automount -d /mnt/mmc 'mount /dev/disk0.0 /mnt/mmc'
++
++# AHCI, boot partition
++mkdir -p /mnt/ahci-boot
++automount -d /mnt/ahci 'mount /dev/ata0.boot /mnt/ahci-boot'
++
++# AHCI, first partition
++mkdir -p /mnt/ahci
++automount -d /mnt/ahci 'mount /dev/ata0.0 /mnt/ahci'
+diff --git a/arch/arm/boards/highbank/env/init/ps1 b/arch/arm/boards/highbank/env/init/ps1
+new file mode 100644
+index 0000000..a94acc1
+--- /dev/null
++++ b/arch/arm/boards/highbank/env/init/ps1
+@@ -0,0 +1,9 @@
++#!/bin/sh
++
++/env/config
++
++if [ ${global.allow_color} = "true" ]; then
++	export PS1="\e[1;32mbarebox@\e[1;36m\h:\w\e[0m\n# "
++else
++	export PS1="barebox@\h:\w\n# "
++fi
+diff --git a/arch/arm/mach-highbank/Kconfig b/arch/arm/mach-highbank/Kconfig
+index 47c6405..9cfe539 100644
+--- a/arch/arm/mach-highbank/Kconfig
++++ b/arch/arm/mach-highbank/Kconfig
+@@ -12,6 +12,7 @@ choice
  
- /*
-+ * SAR (Save & Rescue) memory region
-+ */
-+#define OMAP44XX_SAR_RAM_BASE      0x4a326000
-+#define OMAP44XX_SAR_CH_ADDRESS    (OMAP44XX_SAR_RAM_BASE + 0xA00)
-+#define OMAP44XX_SAR_CH_START      (OMAP44XX_SAR_RAM_BASE + 0xA0C)
-+#define OMAP44XX_SAR_BOOT_VOID     0x00
-+#define OMAP44XX_SAR_BOOT_XIP      0x01
-+#define OMAP44XX_SAR_BOOT_XIPWAIT  0x02
-+#define OMAP44XX_SAR_BOOT_NAND     0x03
-+#define OMAP44XX_SAR_BOOT_ONENAND  0x04
-+#define OMAP44XX_SAR_BOOT_MMC1     0x05
-+#define OMAP44XX_SAR_BOOT_MMC2_1   0x06
-+#define OMAP44XX_SAR_BOOT_MMC2_2   0x07
-+#define OMAP44XX_SAR_BOOT_UART     0x43
-+#define OMAP44XX_SAR_BOOT_USB_1    0x45
-+#define OMAP44XX_SAR_BOOT_USB_ULPI 0x46
-+#define OMAP44XX_SAR_BOOT_USB_2    0x47
-+
-+/*
-  * Non-secure SRAM Addresses
-  * Non-secure RAM starts at 0x40300000 for GP devices. But we keep SRAM_BASE
-  * at 0x40304000(EMU base) so that our code works for both EMU and GP
-@@ -212,6 +231,7 @@ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
- void omap4_power_i2c_send(u32);
- unsigned int omap4_revision(void);
- noinline int omap4_scale_vcores(unsigned vsel0_pin);
-+void omap4_set_warmboot_order(u32 *device_list);
+ config MACH_HIGHBANK
+ 	bool "Calxeda Highbank"
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
  
- #endif
+ endchoice
  
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index e1edffa..790746b 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -41,6 +41,26 @@ void __noreturn reset_cpu(unsigned long addr)
- 	while (1);
- }
- 
-+void omap4_set_warmboot_order(u32 *device_list)
-+{
-+	const u32 CH[] = {
-+		0xCF00AA01,
-+		0x0000000C,
-+		(device_list[0] << 16) | 0x0000,
-+		(device_list[2] << 16) | device_list[1],
-+		0x0000 | device_list[3],
-+		0x00000000,
-+		0x00000000,
-+		0x00000000,
-+		0x00000000
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(CH); i++)
-+		writel(CH[i], OMAP44XX_SAR_CH_START + i*sizeof(CH[0]));
-+	writel(OMAP44XX_SAR_CH_START, OMAP44XX_SAR_CH_ADDRESS);
-+}
-+
- #define WATCHDOG_WSPR	0x48
- #define WATCHDOG_WWPS	0x34
- 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 0062758..bef83e0 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -474,6 +474,13 @@ config CMD_POWEROFF
- 	depends on HAS_POWEROFF
- 	prompt "poweroff"
- 
-+config CMD_BOOT_ORDER
-+	tristate
-+	depends on ARCH_OMAP4
-+	prompt "boot_order"
-+	help
-+	  A command to choose the next boot device on a warm reset.
-+
- config CMD_GO
- 	tristate
- 	prompt "go"
 -- 
-1.8.2
+1.7.10.4
 
 
 _______________________________________________
