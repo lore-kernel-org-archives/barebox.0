@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9U-0001MS-Dg
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:05 +0000
+ id 1UOq9U-0001MP-DN
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:53 +0200
-Message-Id: <1365343255-26497-20-git-send-email-s.hauer@pengutronix.de>
+Date: Sun,  7 Apr 2013 16:00:51 +0200
+Message-Id: <1365343255-26497-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,71 +21,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 19/21] mtd: Nand: Use dev_add_param_bool for erasebad parameter
+Subject: [PATCH 17/21] ARM: i.MX: iim: Use dev_add_param_bool for parameters
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_base.c | 22 ++++++++++++----------
- include/linux/mtd/mtd.h      |  1 +
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ arch/arm/mach-imx/iim.c | 65 +++++++++++--------------------------------------
+ 1 file changed, 14 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index fa10d95..67e913a 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -1672,18 +1672,20 @@ EXPORT_SYMBOL(nand_scan_ident);
- EXPORT_SYMBOL(nand_scan_tail);
- EXPORT_SYMBOL(nand_release);
+diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
+index 69ddc4d..ce2bbaf 100644
+--- a/arch/arm/mach-imx/iim.c
++++ b/arch/arm/mach-imx/iim.c
+@@ -33,6 +33,9 @@
  
--static int mtd_set_erasebad(struct device_d *dev, struct param_d *param,
--		const char *val)
-+static int mtd_set_erasebad(struct param_d *param, void *priv)
+ static unsigned long mac_addr_base;
+ 
++static int iim_write_enable;
++static int iim_sense_enable;
++
+ struct iim_priv {
+ 	struct cdev cdev;
+ 	void __iomem *base;
+@@ -88,14 +91,9 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
  {
--	struct mtd_info *mtd = container_of(dev, struct mtd_info, class_dev);
--	int erasebad;
-+	struct mtd_info *mtd = priv;
+ 	ulong size, i;
+ 	struct iim_priv *priv = cdev->priv;
+-	const char *sense_param;
+-	unsigned long explicit_sense = 0;
+-
+-	if ((sense_param = dev_get_param(cdev->dev, "explicit_sense_enable")))
+-		explicit_sense = simple_strtoul(sense_param, NULL, 0);
  
--	erasebad = simple_strtoul(val, NULL, 0);
-+	if (!mtd->p_allow_erasebad) {
-+		mtd->allow_erasebad = false;
-+		return 0;
-+	}
+ 	size = min((loff_t)count, priv->banksize - offset);
+-	if (explicit_sense) {
++	if (iim_sense_enable) {
+ 		for (i = 0; i < size; i++) {
+ 			int row_val;
  
--	if (erasebad && !mtd->allow_erasebad)
--		dev_warn(dev, "Allowing to erase bad blocks. This may be dangerous!\n");
-+	if (!mtd->allow_erasebad)
-+		dev_warn(&mtd->class_dev,
-+			"Allowing to erase bad blocks. This may be dangerous!\n");
+@@ -113,7 +111,6 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 	return size;
+ }
  
--	mtd->allow_erasebad = erasebad ? true : false;
-+	mtd->allow_erasebad = true;
+-#ifdef CONFIG_IMX_IIM_FUSE_BLOW
+ static int do_fuse_blow(void __iomem *reg_base, unsigned int bank,
+ 		unsigned int row, u8 value)
+ {
+@@ -173,22 +170,16 @@ out:
+ 	writeb(0, reg_base + IIM_PREG_P);
+ 	return ret;
+ }
+-#endif /* CONFIG_IMX_IIM_FUSE_BLOW */
+ 
+ static ssize_t imx_iim_cdev_write(struct cdev *cdev, const void *buf, size_t count,
+ 		loff_t offset, ulong flags)
+ {
+ 	ulong size, i;
+ 	struct iim_priv *priv = cdev->priv;
+-	const char *write_param;
+-	unsigned int blow_enable = 0;
+-
+-	if ((write_param = dev_get_param(cdev->dev, "permanent_write_enable")))
+-		blow_enable = simple_strtoul(write_param, NULL, 0);
+ 
+ 	size = min((loff_t)count, priv->banksize - offset);
+-#ifdef CONFIG_IMX_IIM_FUSE_BLOW
+-	if (blow_enable) {
++
++	if (IS_ENABLED(CONFIG_IMX_IIM_FUSE_BLOW) && iim_write_enable) {
+ 		for (i = 0; i < size; i++) {
+ 			int ret;
+ 
+@@ -197,9 +188,7 @@ static ssize_t imx_iim_cdev_write(struct cdev *cdev, const void *buf, size_t cou
+ 			if (ret < 0)
+ 				return ret;
+ 		}
+-	} else
+-#endif /* CONFIG_IMX_IIM_FUSE_BLOW */
+-	{
++	} else {
+ 		for (i = 0; i < size; i++)
+ 			((u8 *)priv->bankbase)[(offset+i)*4] = ((u8 *)buf)[i];
+ 	}
+@@ -213,21 +202,6 @@ static struct file_operations imx_iim_ops = {
+ 	.lseek	= dev_lseek_default,
+ };
+ 
+-static int imx_iim_blow_enable_set(struct device_d *dev, struct param_d *param,
+-		const char *val)
+-{
+-	unsigned long blow_enable;
+-
+-	if (val == NULL)
+-		return -EINVAL;
+-
+-	blow_enable = simple_strtoul(val, NULL, 0);
+-	if (blow_enable > 1)
+-		return -EINVAL;
+-
+-	return dev_param_set_generic(dev, param, blow_enable ? "1" : "0");
+-}
+-
+ static int imx_iim_add_bank(struct device_d *dev, void __iomem *base, int num)
+ {
+ 	struct iim_priv *priv;
+@@ -254,7 +228,6 @@ static int imx_iim_add_bank(struct device_d *dev, void __iomem *base, int num)
+ static int imx_iim_probe(struct device_d *dev)
+ {
+ 	struct imx_iim_platform_data *pdata = dev->platform_data;
+-	int err;
+ 	int i;
+ 	void __iomem *base;
+ 
+@@ -267,23 +240,13 @@ static int imx_iim_probe(struct device_d *dev)
+ 		imx_iim_add_bank(dev, base, i);
+ 	}
+ 
+-#ifdef CONFIG_IMX_IIM_FUSE_BLOW
+-	err = dev_add_param(dev, "permanent_write_enable",
+-			imx_iim_blow_enable_set, NULL, 0);
+-	if (err < 0)
+-		return err;
+-	err = dev_set_param(dev, "permanent_write_enable", "0");
+-	if (err < 0)
+-		return err;
+-#endif /* CONFIG_IMX_IIM_FUSE_BLOW */
+-
+-	err = dev_add_param(dev, "explicit_sense_enable",
+-			imx_iim_blow_enable_set, NULL, 0);
+-	if (err < 0)
+-		return err;
+-	err = dev_set_param(dev, "explicit_sense_enable", "1");
+-	if (err < 0)
+-		return err;
++
++	if (IS_ENABLED(CONFIG_IMX_IIM_FUSE_BLOW))
++		dev_add_param_bool(dev, "permanent_write_enable",
++			NULL, NULL, &iim_write_enable, NULL);
++
++	dev_add_param_bool(dev, "explicit_sense_enable",
++			NULL, NULL, &iim_sense_enable, NULL);
  
  	return 0;
  }
-@@ -1714,8 +1716,8 @@ int add_mtd_nand_device(struct mtd_info *mtd, char *devname)
- 		return ret;
- 
- 	if (IS_ENABLED(CONFIG_NAND_ALLOW_ERASE_BAD))
--		dev_add_param(&mtd->class_dev, "erasebad", mtd_set_erasebad,
--				NULL, 0);
-+		dev_add_param_bool(&mtd->class_dev, "erasebad", mtd_set_erasebad,
-+			NULL, &mtd->p_allow_erasebad, mtd);
- 
- 	dev_add_param(&mtd->class_dev, "bbt", NULL, mtd_get_bbt_type, 0);
- 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 390f4b0..df04030 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -208,6 +208,7 @@ struct mtd_info {
- 
- 	/* If true erasing bad blocks is allowed, this is set via a device parameter */
- 	bool allow_erasebad;
-+	int p_allow_erasebad;
- };
- 
- int mtd_erase(struct mtd_info *mtd, struct erase_info *instr);
 -- 
 1.8.2.rc2
 
