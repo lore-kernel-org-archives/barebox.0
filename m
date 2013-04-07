@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp38.i.mail.ru ([94.100.177.98])
+Received: from smtp43.i.mail.ru ([94.100.177.103])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOoZb-00008E-QH
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 12:19:53 +0000
+ id 1UOlHi-0005K2-2x
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 08:49:12 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun,  7 Apr 2013 16:19:39 +0400
-Message-Id: <1365337179-778-1-git-send-email-shc_work@mail.ru>
+Date: Sun,  7 Apr 2013 12:48:57 +0400
+Message-Id: <1365324537-23090-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
+References: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +21,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: Fix bug if probe parameter is omitted
+Subject: [PATCH 2/2] ARM: i.MX: Update MX51 iomux definitions
 To: barebox@lists.infradead.org
 
-barebox@Phytec phyCORE-i.MX27:/ mci0.probe=
-unable to handle NULL pointer dereference at address 0x00000000
-pc : [<a7f24700>]    lr : [<a7f193f4>]
-sp : a7fff8e0  ip : 00000000  fp : 00000001
-r10: 00000000  r9 : a6ffba8c  r8 : 00000000
-r7 : a7fffad0  r6 : a6ffbb04  r5 : a6fdd5cc  r4 : a6fdd658
-r3 : a7f18760  r2 : 00000000  r1 : 00000000  r0 : 00000000
-Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-[<a7f24700>] (simple_strtoul+0xc/0xc0) from [<a7f193f4>] (mci_set_probe+0xc94/0xd64)
-[<a7f193f4>] (mci_set_probe+0xc94/0xd64) from [<a7f252cc>] (dev_set_param+0x74/0x8c)
-[<a7f252cc>] (dev_set_param+0x74/0x8c) from [<a7f0606c>] (setenv+0x60/0xd8)
-[<a7f0606c>] (setenv+0x60/0xd8) from [<a7f00820>] (set_local_var.isra.3+0x5c/0x7c)
-[<a7f00820>] (set_local_var.isra.3+0x5c/0x7c) from [<a7f01a6c>] (run_list_real+0x494/0x934)
-[<a7f01a6c>] (run_list_real+0x494/0x934) from [<a7f01400>] (parse_stream_outer+0x198/0x270)
-[<a7f01400>] (parse_stream_outer+0x198/0x270) from [<a7f0209c>] (run_shell+0x3c/0x7c)
-[<a7f0209c>] (run_shell+0x3c/0x7c) from [<a7f05494>] (execute_command+0x38/0x78)
-[<a7f05494>] (execute_command+0x38/0x78) from [<a7f01db8>] (run_list_real+0x7e0/0x934)
-[<a7f01db8>] (run_list_real+0x7e0/0x934) from [<a7f019ec>] (run_list_real+0x414/0x934)
-[<a7f39578>] (unwind_backtrace+0x0/0xa8) from [<a7f24ed4>] (panic+0x28/0x3c)
-[<a7f24ed4>] (panic+0x28/0x3c) from [<a7f39a3c>] (do_exception+0x10/0x14)
-[<a7f39a3c>] (do_exception+0x10/0x14) from [<a7f39ac8>] (do_data_abort+0x2c/0x38)
-[<a7f39ac8>] (do_data_abort+0x2c/0x38) from [<a7f39788>] (data_abort+0x48/0x60)
+The patch updates MX51 iomux definitions from kernel.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mci/mci-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/mach-imx/include/mach/iomux-mx51.h | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index c8598c2..aef5c69 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1465,6 +1465,9 @@ static int mci_set_probe(struct device_d *mci_dev, struct param_d *param,
- 	if (rc != 0)
- 		return 0;
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx51.h b/arch/arm/mach-imx/include/mach/iomux-mx51.h
+index 0252d41..2623e7a 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx51.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx51.h
+@@ -107,11 +107,13 @@
+ #define MX51_PAD_EIM_D25__UART2_CTS		IOMUX_PAD(0x414, 0x080, 4, __NA_, 0, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_EIM_D25__UART3_RXD		IOMUX_PAD(0x414, 0x080, 3, 0x9f4, 0, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_EIM_D25__USBOTG_DATA1		IOMUX_PAD(0x414, 0x080, 2, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_EIM_D25__GPT_CMPOUT1		IOMUX_PAD(0x414, 0x080, 5, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D26__EIM_D26		IOMUX_PAD(0x418, 0x084, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D26__KEY_COL7		IOMUX_PAD(0x418, 0x084, 1, 0x9cc, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D26__UART2_RTS		IOMUX_PAD(0x418, 0x084, 4, 0x9e8, 3, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_EIM_D26__UART3_TXD		IOMUX_PAD(0x418, 0x084, 3, __NA_, 0, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_EIM_D26__USBOTG_DATA2		IOMUX_PAD(0x418, 0x084, 2, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_EIM_D26__GPT_CMPOUT2		IOMUX_PAD(0x418, 0x084, 5, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D27__AUD6_RXC		IOMUX_PAD(0x41c, 0x088, 5, 0x8f4, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D27__EIM_D27		IOMUX_PAD(0x41c, 0x088, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_D27__GPIO2_9		IOMUX_PAD(0x41c, 0x088, 1, __NA_, 0, MX51_GPIO_PAD_CTRL)
+@@ -228,6 +230,7 @@
+ #define MX51_PAD_EIM_CRE__EIM_CRE		IOMUX_PAD(0x4a0, 0x100, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_EIM_CRE__GPIO3_2		IOMUX_PAD(0x4a0, 0x100, 1, 0x97c, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_DRAM_CS1__DRAM_CS1		IOMUX_PAD(0x4d0, 0x104, 0, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_DRAM_CS1__CCM_CLKO		IOMUX_PAD(0x4d0, 0x104, 1, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_WE_B__GPIO3_3		IOMUX_PAD(0x4e4, 0x108, 3, 0x980, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_NANDF_WE_B__NANDF_WE_B		IOMUX_PAD(0x4e4, 0x108, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_WE_B__PATA_DIOW		IOMUX_PAD(0x4e4, 0x108, 1, __NA_, 0, NO_PAD_CTRL)
+@@ -256,12 +259,14 @@
+ #define MX51_PAD_NANDF_RB1__GPIO3_9		IOMUX_PAD(0x4fc, 0x120, 3, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB1__NANDF_RB1		IOMUX_PAD(0x4fc, 0x120, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB1__PATA_IORDY		IOMUX_PAD(0x4fc, 0x120, 1, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_RB1__GPT_CMPOUT2		IOMUX_PAD(0x4fc, 0x120, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB1__SD4_CMD		IOMUX_PAD(0x4fc, 0x120, 0x15, __NA_, 0, MX51_SDHCI_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__DISP2_WAIT		IOMUX_PAD(0x500, 0x124, 5, 0x9a8, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__ECSPI2_SCLK		IOMUX_PAD(0x500, 0x124, 2, __NA_, 0, MX51_ECSPI_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__FEC_COL		IOMUX_PAD(0x500, 0x124, 1, 0x94c, 0, MX51_PAD_CTRL_2)
+ #define MX51_PAD_NANDF_RB2__GPIO3_10		IOMUX_PAD(0x500, 0x124, 3, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__NANDF_RB2		IOMUX_PAD(0x500, 0x124, 0, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_NANDF_RB2__GPT_CMPOUT3		IOMUX_PAD(0x500, 0x124, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__USBH3_H3_DP		IOMUX_PAD(0x500, 0x124, 0x17, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB2__USBH3_NXT		IOMUX_PAD(0x500, 0x124, 6, 0xa20, 0, NO_PAD_CTRL)
+ #define MX51_PAD_NANDF_RB3__DISP1_WAIT		IOMUX_PAD(0x504, 0x128, 5, __NA_, 0, NO_PAD_CTRL)
+@@ -637,7 +642,9 @@
+ #define MX51_PAD_DISP1_DAT23__DISP2_DAT17	IOMUX_PAD(0x728, 0x328, 5, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DISP1_DAT23__DISP2_SER_CS	IOMUX_PAD(0x728, 0x328, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI1_PIN3__DI1_PIN3		IOMUX_PAD(0x72c, 0x32c, 0, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_DI1_DISP_CLK__DI1_DISP_CLK	IOMUX_PAD(0x730, __NA_, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI1_PIN2__DI1_PIN2		IOMUX_PAD(0x734, 0x330, 0, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_DI1_PIN15__DI1_PIN15		IOMUX_PAD(0x738, __NA_, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP2__DISP1_SER_CLK		IOMUX_PAD(0x740, 0x338, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP2__DISP2_WAIT		IOMUX_PAD(0x740, 0x338, 2, 0x9a8, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP3__CSI1_DATA_EN		IOMUX_PAD(0x744, 0x33c, 3, 0x9a0, 1, NO_PAD_CTRL)
+@@ -649,20 +656,20 @@
+ #define MX51_PAD_DI2_PIN2__DI2_PIN2		IOMUX_PAD(0x74c, 0x344, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI2_PIN2__FEC_MDC		IOMUX_PAD(0x74c, 0x344, 2, __NA_, 0, MX51_PAD_CTRL_5)
+ #define MX51_PAD_DI2_PIN3__DI2_PIN3		IOMUX_PAD(0x750, 0x348, 0, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DI2_PIN3__FEC_MDIO		IOMUX_PAD(0x750, 0x348, 2, 0x954, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DI2_PIN3__FEC_MDIO		IOMUX_PAD(0x750, 0x348, 2, 0x954, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DI2_DISP_CLK__DI2_DISP_CLK	IOMUX_PAD(0x754, 0x34c, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI2_DISP_CLK__FEC_RDATA1	IOMUX_PAD(0x754, 0x34c, 2, 0x95c, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP4__DI2_PIN15		IOMUX_PAD(0x758, 0x350, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP4__DISP1_SER_DIN		IOMUX_PAD(0x758, 0x350, 0, 0x9c0, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DI_GP4__DISP2_PIN1		IOMUX_PAD(0x758, 0x350, 3, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DI_GP4__FEC_RDATA2		IOMUX_PAD(0x758, 0x350, 2, 0x960, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DI_GP4__FEC_RDATA2		IOMUX_PAD(0x758, 0x350, 2, 0x960, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT0__DISP2_DAT0		IOMUX_PAD(0x75c, 0x354, 0, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DISP2_DAT0__FEC_RDATA3		IOMUX_PAD(0x75c, 0x354, 2, 0x964, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DISP2_DAT0__FEC_RDATA3		IOMUX_PAD(0x75c, 0x354, 2, 0x964, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT0__KEY_COL6		IOMUX_PAD(0x75c, 0x354, 4, 0x9c8, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT0__UART3_RXD		IOMUX_PAD(0x75c, 0x354, 5, 0x9f4, 8, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT0__USBH3_CLK		IOMUX_PAD(0x75c, 0x354, 3, 0x9f8, 1, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT1__DISP2_DAT1		IOMUX_PAD(0x760, 0x358, 0, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DISP2_DAT1__FEC_RX_ER		IOMUX_PAD(0x760, 0x358, 2, 0x970, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DISP2_DAT1__FEC_RX_ER		IOMUX_PAD(0x760, 0x358, 2, 0x970, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT1__KEY_COL7		IOMUX_PAD(0x760, 0x358, 4, 0x9cc, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT1__UART3_TXD		IOMUX_PAD(0x760, 0x358, 5, __NA_, 0, MX51_UART_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT1__USBH3_DIR		IOMUX_PAD(0x760, 0x358, 3, 0xa1c, 1, NO_PAD_CTRL)
+@@ -692,17 +699,17 @@
+ #define MX51_PAD_DISP2_DAT9__USBH3_DATA1	IOMUX_PAD(0x780, 0x378, 3, 0xa00, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT10__DISP2_DAT10	IOMUX_PAD(0x784, 0x37c, 0, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT10__DISP2_SER_CS	IOMUX_PAD(0x784, 0x37c, 5, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DISP2_DAT10__FEC_COL		IOMUX_PAD(0x784, 0x37c, 2, 0x94c, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DISP2_DAT10__FEC_COL		IOMUX_PAD(0x784, 0x37c, 2, 0x94c, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT10__KEY_ROW7		IOMUX_PAD(0x784, 0x37c, 4, 0x9dc, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT10__USBH3_DATA2	IOMUX_PAD(0x784, 0x37c, 3, 0xa04, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT11__AUD6_TXD		IOMUX_PAD(0x788, 0x380, 4, 0x8f0, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT11__DISP2_DAT11	IOMUX_PAD(0x788, 0x380, 0, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DISP2_DAT11__FEC_RX_CLK	IOMUX_PAD(0x788, 0x380, 2, 0x968, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DISP2_DAT11__FEC_RX_CLK	IOMUX_PAD(0x788, 0x380, 2, 0x968, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT11__GPIO1_10		IOMUX_PAD(0x788, 0x380, 7, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT11__USBH3_DATA3	IOMUX_PAD(0x788, 0x380, 3, 0xa08, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT12__AUD6_RXD		IOMUX_PAD(0x78c, 0x384, 4, 0x8ec, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT12__DISP2_DAT12	IOMUX_PAD(0x78c, 0x384, 0, __NA_, 0, NO_PAD_CTRL)
+-#define MX51_PAD_DISP2_DAT12__FEC_RX_DV		IOMUX_PAD(0x78c, 0x384, 2, 0x96c, 1, MX51_PAD_CTRL_5)
++#define MX51_PAD_DISP2_DAT12__FEC_RX_DV		IOMUX_PAD(0x78c, 0x384, 2, 0x96c, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT12__USBH3_DATA4	IOMUX_PAD(0x78c, 0x384, 3, 0xa0c, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT13__AUD6_TXC		IOMUX_PAD(0x790, 0x388, 4, 0x8fc, 1, NO_PAD_CTRL)
+ #define MX51_PAD_DISP2_DAT13__DISP2_DAT13	IOMUX_PAD(0x790, 0x388, 0, __NA_, 0, NO_PAD_CTRL)
+@@ -780,6 +787,8 @@
+ #define MX51_PAD_GPIO1_2__PWM1_PWMO		IOMUX_PAD(0x7d4, 0x3cc, 1, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_3__GPIO1_3		IOMUX_PAD(0x7d8, 0x3d0, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_3__I2C2_SDA		IOMUX_PAD(0x7d8, 0x3d0, 0x12, 0x9bc, 3, MX51_I2C_PAD_CTRL)
++#define MX51_PAD_GPIO1_3__CCM_CLKO2		IOMUX_PAD(0x7d8, 0x3d0, 5, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_3__GPT_CLKIN		IOMUX_PAD(0x7d8, 0x3d0, 6, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_3__PLL2_BYP		IOMUX_PAD(0x7d8, 0x3d0, 7, 0x910, 1, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_3__PWM2_PWMO		IOMUX_PAD(0x7d8, 0x3d0, 1, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_PMIC_INT_REQ__PMIC_INT_REQ	IOMUX_PAD(0x7fc, 0x3d4, 0, __NA_, 0, NO_PAD_CTRL)
+@@ -788,13 +797,16 @@
+ #define MX51_PAD_GPIO1_4__EIM_RDY		IOMUX_PAD(0x804, 0x3d8, 3, 0x938, 1, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_4__GPIO1_4		IOMUX_PAD(0x804, 0x3d8, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_4__WDOG1_WDOG_B		IOMUX_PAD(0x804, 0x3d8, 2, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_4__GPT_CAPIN1		IOMUX_PAD(0x804, 0x3d8, 6, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_5__CSI2_MCLK		IOMUX_PAD(0x808, 0x3dc, 6, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_5__DISP2_PIN16		IOMUX_PAD(0x808, 0x3dc, 3, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_5__GPIO1_5		IOMUX_PAD(0x808, 0x3dc, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_5__WDOG2_WDOG_B		IOMUX_PAD(0x808, 0x3dc, 2, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_5__CCM_CLKO		IOMUX_PAD(0x808, 0x3dc, 5, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_6__DISP2_PIN17		IOMUX_PAD(0x80c, 0x3e0, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_6__GPIO1_6		IOMUX_PAD(0x80c, 0x3e0, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_6__REF_EN_B		IOMUX_PAD(0x80c, 0x3e0, 3, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_6__GPT_CAPIN2		IOMUX_PAD(0x80c, 0x3e0, 6, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_7__CCM_OUT_0		IOMUX_PAD(0x810, 0x3e4, 3, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_7__GPIO1_7		IOMUX_PAD(0x810, 0x3e4, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_7__SD2_WP		IOMUX_PAD(0x810, 0x3e4, 6, __NA_, 0, MX51_ESDHC_PAD_CTRL)
+@@ -803,11 +815,13 @@
+ #define MX51_PAD_GPIO1_8__GPIO1_8		IOMUX_PAD(0x814, 0x3e8, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_8__SD2_CD		IOMUX_PAD(0x814, 0x3e8, 6, __NA_, 0, MX51_ESDHC_PAD_CTRL)
+ #define MX51_PAD_GPIO1_8__USBH3_PWR		IOMUX_PAD(0x814, 0x3e8, 1, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_8__CCM_CLKO2		IOMUX_PAD(0x814, 0x3e8, 4, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__CCM_OUT_1		IOMUX_PAD(0x818, 0x3ec, 3, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__DISP2_D1_CS		IOMUX_PAD(0x818, 0x3ec, 2, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__DISP2_SER_CS		IOMUX_PAD(0x818, 0x3ec, 7, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__GPIO1_9		IOMUX_PAD(0x818, 0x3ec, 0, __NA_, 0, MX51_GPIO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__SD2_LCTL		IOMUX_PAD(0x818, 0x3ec, 6, __NA_, 0, NO_PAD_CTRL)
+ #define MX51_PAD_GPIO1_9__USBH3_OC		IOMUX_PAD(0x818, 0x3ec, 1, __NA_, 0, NO_PAD_CTRL)
++#define MX51_PAD_GPIO1_9__CCM_CLKO		IOMUX_PAD(0x818, 0x3ec, 4, __NA_, 0, NO_PAD_CTRL)
  
-+	if (!val)
-+		return -EINVAL;
-+
- 	probe = simple_strtoul(val, NULL, 0);
- 	if (probe != 0) {
- 		rc = mci_card_probe(mci);
+ #endif /* __MACH_IOMUX_MX51_H__ */
 -- 
 1.8.1.5
 
