@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9T-0001MB-Jt
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:01 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:36 +0200
-Message-Id: <1365343255-26497-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
-References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UOoZb-00008E-QH
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 12:19:53 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  7 Apr 2013 16:19:39 +0400
+Message-Id: <1365337179-778-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,91 +19,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/21] param: refactor __dev_add_param
+Subject: [PATCH] mci: Fix bug if probe parameter is omitted
 To: barebox@lists.infradead.org
 
-Let __dev_add_param take a previously allocated struct param_d. This
-helps when later other users wish to embed a struct param_d in a bigger
-struct.
+barebox@Phytec phyCORE-i.MX27:/ mci0.probe=
+unable to handle NULL pointer dereference at address 0x00000000
+pc : [<a7f24700>]    lr : [<a7f193f4>]
+sp : a7fff8e0  ip : 00000000  fp : 00000001
+r10: 00000000  r9 : a6ffba8c  r8 : 00000000
+r7 : a7fffad0  r6 : a6ffbb04  r5 : a6fdd5cc  r4 : a6fdd658
+r3 : a7f18760  r2 : 00000000  r1 : 00000000  r0 : 00000000
+Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
+[<a7f24700>] (simple_strtoul+0xc/0xc0) from [<a7f193f4>] (mci_set_probe+0xc94/0xd64)
+[<a7f193f4>] (mci_set_probe+0xc94/0xd64) from [<a7f252cc>] (dev_set_param+0x74/0x8c)
+[<a7f252cc>] (dev_set_param+0x74/0x8c) from [<a7f0606c>] (setenv+0x60/0xd8)
+[<a7f0606c>] (setenv+0x60/0xd8) from [<a7f00820>] (set_local_var.isra.3+0x5c/0x7c)
+[<a7f00820>] (set_local_var.isra.3+0x5c/0x7c) from [<a7f01a6c>] (run_list_real+0x494/0x934)
+[<a7f01a6c>] (run_list_real+0x494/0x934) from [<a7f01400>] (parse_stream_outer+0x198/0x270)
+[<a7f01400>] (parse_stream_outer+0x198/0x270) from [<a7f0209c>] (run_shell+0x3c/0x7c)
+[<a7f0209c>] (run_shell+0x3c/0x7c) from [<a7f05494>] (execute_command+0x38/0x78)
+[<a7f05494>] (execute_command+0x38/0x78) from [<a7f01db8>] (run_list_real+0x7e0/0x934)
+[<a7f01db8>] (run_list_real+0x7e0/0x934) from [<a7f019ec>] (run_list_real+0x414/0x934)
+[<a7f39578>] (unwind_backtrace+0x0/0xa8) from [<a7f24ed4>] (panic+0x28/0x3c)
+[<a7f24ed4>] (panic+0x28/0x3c) from [<a7f39a3c>] (do_exception+0x10/0x14)
+[<a7f39a3c>] (do_exception+0x10/0x14) from [<a7f39ac8>] (do_data_abort+0x2c/0x38)
+[<a7f39ac8>] (do_data_abort+0x2c/0x38) from [<a7f39788>] (data_abort+0x48/0x60)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- lib/parameter.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ drivers/mci/mci-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/lib/parameter.c b/lib/parameter.c
-index 94da79c..70f035a 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -139,14 +139,13 @@ static const char *param_get_generic(struct device_d *dev, struct param_d *p)
- 	return p->value ? p->value : "";
- }
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index c8598c2..aef5c69 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1465,6 +1465,9 @@ static int mci_set_probe(struct device_d *mci_dev, struct param_d *param,
+ 	if (rc != 0)
+ 		return 0;
  
--static struct param_d *__dev_add_param(struct device_d *dev, const char *name,
-+static int __dev_add_param(struct param_d *param, struct device_d *dev, const char *name,
- 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
- 		const char *(*get)(struct device_d *dev, struct param_d *p),
- 		unsigned long flags)
- {
--	struct param_d *param;
--
--	param = xzalloc(sizeof(*param));
-+	if (get_param_by_name(dev, name))
-+		return -EEXIST;
- 
- 	if (set)
- 		param->set = set;
-@@ -162,7 +161,7 @@ static struct param_d *__dev_add_param(struct device_d *dev, const char *name,
- 	param->dev = dev;
- 	list_add_tail(&param->list, &dev->parameters);
- 
--	return param;
-+	return 0;
- }
- 
- /**
-@@ -184,14 +183,15 @@ int dev_add_param(struct device_d *dev, const char *name,
- 		unsigned long flags)
- {
- 	struct param_d *param;
-+	int ret;
- 
--	param = get_param_by_name(dev, name);
--	if (param)
--		return -EEXIST;
-+	param = xzalloc(sizeof(*param));
- 
--	param = __dev_add_param(dev, name, set, get, flags);
-+	ret = __dev_add_param(param, dev, name, set, get, flags);
-+	if (ret)
-+		free(param);
- 
--	return param ? 0 : -EINVAL;
-+	return ret;
- }
- 
- /**
-@@ -203,10 +203,15 @@ int dev_add_param(struct device_d *dev, const char *name,
- int dev_add_param_fixed(struct device_d *dev, char *name, char *value)
- {
- 	struct param_d *param;
-+	int ret;
- 
--	param = __dev_add_param(dev, name, NULL, NULL, PARAM_FLAG_RO);
--	if (!param)
--		return -EINVAL;
-+	param = xzalloc(sizeof(*param));
++	if (!val)
++		return -EINVAL;
 +
-+	ret = __dev_add_param(param, dev, name, NULL, NULL, PARAM_FLAG_RO);
-+	if (ret) {
-+		free(param);
-+		return ret;
-+	}
- 
- 	param->value = strdup(value);
- 
+ 	probe = simple_strtoul(val, NULL, 0);
+ 	if (probe != 0) {
+ 		rc = mci_card_probe(mci);
 -- 
-1.8.2.rc2
+1.8.1.5
 
 
 _______________________________________________
