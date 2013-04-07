@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9U-0001MK-6e
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:15 +0000
+ id 1UOq9c-0001Qq-Ie
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:49 +0200
-Message-Id: <1365343255-26497-16-git-send-email-s.hauer@pengutronix.de>
+Date: Sun,  7 Apr 2013 16:00:45 +0200
+Message-Id: <1365343255-26497-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,67 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/21] param: pass param to dev_remove_param
+Subject: [PATCH 11/21] ata: Use dev_add_param_bool for probe parameter
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/param.h |  4 ++--
- lib/parameter.c | 17 ++++++-----------
- 2 files changed, 8 insertions(+), 13 deletions(-)
+ drivers/ata/disk_ata_drive.c | 21 ++++++++++-----------
+ include/ata_drive.h          |  1 +
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/include/param.h b/include/param.h
-index 3061cfd..2dc2c83 100644
---- a/include/param.h
-+++ b/include/param.h
-@@ -50,7 +50,7 @@ struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
- 
- int dev_add_param_fixed(struct device_d *dev, char *name, char *value);
- 
--void dev_remove_param(struct device_d *dev, char *name);
-+void dev_remove_param(struct param_d *p);
- 
- void dev_remove_parameters(struct device_d *dev);
- 
-@@ -116,7 +116,7 @@ static inline int dev_add_param_fixed(struct device_d *dev, char *name, char *va
- 	return 0;
+diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+index 6fe526a..2cff584 100644
+--- a/drivers/ata/disk_ata_drive.c
++++ b/drivers/ata/disk_ata_drive.c
+@@ -325,20 +325,18 @@ on_error:
+ 	return rc;
  }
  
--static inline void dev_remove_param(struct device_d *dev, char *name) {}
-+static inline void dev_remove_param(struct param_d *p) {}
- 
- static inline void dev_remove_parameters(struct device_d *dev) {}
- 
-diff --git a/lib/parameter.c b/lib/parameter.c
-index fe35f54..7fe3aee 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -442,19 +442,14 @@ struct param_d *dev_add_param_ip(struct device_d *dev, const char *name,
- /**
-  * dev_remove_param - remove a parameter from a device and free its
-  * memory
-- * @param dev	The device
-- * @param name	The name of the parameter
-+ * @param p	The parameter
-  */
--void dev_remove_param(struct device_d *dev, char *name)
-+void dev_remove_param(struct param_d *p)
+-static int ata_set_probe(struct device_d *class_dev, struct param_d *param,
+-				const char *val)
++static int ata_set_probe(struct param_d *param, void *priv)
  {
--	struct param_d *p = get_param_by_name(dev, name);
--
--	if (p) {
--		p->set(dev, p, NULL);
--		list_del(&p->list);
--		free(p->name);
--		free(p);
+-	struct ata_port *port = container_of(class_dev, struct ata_port, class_dev);
+-	int ret, probe;
++	struct ata_port *port = priv;
++	int ret;
+ 
+-	if (port->initialized) {
+-		dev_info(class_dev, "already initialized\n");
++	if (!port->probe)
+ 		return 0;
 -	}
-+	p->set(p->dev, p, NULL);
-+	list_del(&p->list);
-+	free(p->name);
-+	free(p);
+ 
+-	probe = !!simple_strtoul(val, NULL, 0);
+-	if (!probe)
++	if (port->initialized) {
++		dev_info(&port->class_dev, "already initialized\n");
+ 		return 0;
++	}
+ 
+ 	ret = ata_port_init(port);
+ 	if (ret)
+@@ -346,7 +344,7 @@ static int ata_set_probe(struct device_d *class_dev, struct param_d *param,
+ 
+ 	port->initialized = 1;
+ 
+-	return dev_param_set_generic(class_dev, param, "1");
++	return 0;
  }
  
  /**
+@@ -367,7 +365,8 @@ int ata_port_register(struct ata_port *port)
+ 	if (ret)
+ 		return ret;
+ 
+-	dev_add_param(&port->class_dev, "probe", ata_set_probe, NULL, 0);
++	dev_add_param_bool(&port->class_dev, "probe", ata_set_probe,
++			NULL, &port->probe, port);
+ 
+ 	return ret;
+ }
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 4f8b6c0..049082f 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -95,6 +95,7 @@ struct ata_port {
+ 	struct block_device blk;
+ 	uint16_t *id;
+ 	int initialized;
++	int probe;
+ };
+ 
+ int ide_port_register(struct device_d *, struct ata_ioports *);
 -- 
 1.8.2.rc2
 
