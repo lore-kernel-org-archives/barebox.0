@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp43.i.mail.ru ([94.100.177.103])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9T-0001MG-SD
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:11 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:41 +0200
-Message-Id: <1365343255-26497-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
-References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UOlHi-0005K1-2v
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 08:49:11 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  7 Apr 2013 12:48:56 +0400
+Message-Id: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,96 +19,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/21] netconsole: use dev_add_param_* helpers
+Subject: [PATCH 1/2] ARM: i.MX: Update MX2x iomux definitions
 To: barebox@lists.infradead.org
 
-For shorter code.
+The patch updates MX2x iomux definitions from kernel.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- net/netconsole.c | 50 ++++++--------------------------------------------
- 1 file changed, 6 insertions(+), 44 deletions(-)
+ arch/arm/mach-imx/include/mach/iomux-mx27.h |  6 ------
+ arch/arm/mach-imx/include/mach/iomux-mx2x.h | 12 ++++++------
+ 2 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 960de8d..9989194 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -43,7 +43,7 @@ struct nc_priv {
- 	int busy;
- 	struct net_connection *con;
- 
--	uint16_t port;
-+	unsigned int port;
- 	IPaddr_t ip;
- };
- 
-@@ -123,49 +123,10 @@ static void nc_putc(struct console_device *cdev, char c)
- 	priv->busy = 0;
- }
- 
--static int nc_port_set(struct device_d *dev, struct param_d *param,
--		const char *val)
-+static int nc_port_set(struct param_d *p, void *_priv)
- {
--	struct nc_priv *priv = g_priv;
--	char portstr[16];
--	int port;
--
--	if (!val)
--		dev_param_set_generic(dev, param, NULL);
--
--	port = simple_strtoul(val, NULL, 10);
--	if (port > 65535)
--		return -EINVAL;
--
--	priv->port = port;
- 	nc_init();
- 
--	sprintf(portstr, "%d", port);
--	dev_param_set_generic(dev, param, portstr);
--
--	return 0;
--}
--
--static int nc_remoteip_set(struct device_d *dev, struct param_d *param,
--		const char *val)
--{
--	struct nc_priv *priv = g_priv;
--	IPaddr_t ip;
--	int ret;
--
--	if (!val)
--		dev_param_set_generic(dev, param, NULL);
--
--	if (string_to_ip(val, &ip))
--		return -EINVAL;
--
--	priv->ip = ip;
--	ret = nc_init();
--	if (ret)
--		return ret;
--
--	dev_param_set_generic(dev, param, val);
--
- 	return 0;
- }
- 
-@@ -192,9 +153,10 @@ static int netconsole_init(void)
- 		return ret;
- 	}
- 
--	dev_add_param(&cdev->class_dev, "ip", nc_remoteip_set, NULL, 0);
--	dev_add_param(&cdev->class_dev, "port", nc_port_set, NULL, 0);
--	dev_set_param(&cdev->class_dev, "port", "6666");
-+	priv->port = 6666;
-+
-+	dev_add_param_ip(&cdev->class_dev, "ip", NULL, NULL, &priv->ip, NULL);
-+	dev_add_param_int(&cdev->class_dev, "port", nc_port_set, NULL, &priv->port, "%u", NULL);
- 
- 	pr_info("registered as %s%d\n", cdev->class_dev.name, cdev->class_dev.id);
- 
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx27.h b/arch/arm/mach-imx/include/mach/iomux-mx27.h
+index 7d24967..b6e3345 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx27.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx27.h
+@@ -25,12 +25,6 @@
+ #define PA2_PF_USBH2_DATA7	(GPIO_PORTA | GPIO_PF | 2)
+ #define PA3_PF_USBH2_NXT	(GPIO_PORTA | GPIO_PF | 3)
+ #define PA4_PF_USBH2_STP	(GPIO_PORTA | GPIO_PF | 4)
+-#define PB4_PF_SD2_D0		(GPIO_PORTB | GPIO_PF | 4)
+-#define PB5_PF_SD2_D1		(GPIO_PORTB | GPIO_PF | 5)
+-#define PB6_PF_SD2_D2		(GPIO_PORTB | GPIO_PF | 6)
+-#define PB7_PF_SD2_D3		(GPIO_PORTB | GPIO_PF | 7)
+-#define PB8_PF_SD2_CMD		(GPIO_PORTB | GPIO_PF | 8)
+-#define PB9_PF_SD2_CLK		(GPIO_PORTB | GPIO_PF | 9)
+ #define PB22_PF_USBH1_SUSP	(GPIO_PORTB | GPIO_PF | 22)
+ #define PB25_PF_USBH1_RCV	(GPIO_PORTB | GPIO_PF | 25)
+ #define PC5_PF_I2C2_SDA		(GPIO_PORTC | GPIO_PF | GPIO_IN | 5)
+diff --git a/arch/arm/mach-imx/include/mach/iomux-mx2x.h b/arch/arm/mach-imx/include/mach/iomux-mx2x.h
+index 2f9560f..15c2e2b 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-mx2x.h
++++ b/arch/arm/mach-imx/include/mach/iomux-mx2x.h
+@@ -86,12 +86,12 @@
+ #define PC31_PF_SSI3_CLK	(GPIO_PORTC | GPIO_PF | GPIO_IN | 31)
+ #define PD17_PF_I2C_DATA	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 17)
+ #define PD18_PF_I2C_CLK		(GPIO_PORTD | GPIO_PF | GPIO_OUT | 18)
+-#define PD19_PF_CSPI2_SS2	(GPIO_PORTD | GPIO_PF | 19)
+-#define PD20_PF_CSPI2_SS1	(GPIO_PORTD | GPIO_PF | 20)
+-#define PD21_PF_CSPI2_SS0	(GPIO_PORTD | GPIO_PF | 21)
+-#define PD22_PF_CSPI2_SCLK	(GPIO_PORTD | GPIO_PF | 22)
+-#define PD23_PF_CSPI2_MISO	(GPIO_PORTD | GPIO_PF | 23)
+-#define PD24_PF_CSPI2_MOSI	(GPIO_PORTD | GPIO_PF | 24)
++#define PD19_PF_CSPI2_SS2	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 19)
++#define PD20_PF_CSPI2_SS1	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 20)
++#define PD21_PF_CSPI2_SS0	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 21)
++#define PD22_PF_CSPI2_SCLK	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 22)
++#define PD23_PF_CSPI2_MISO	(GPIO_PORTD | GPIO_PF | GPIO_IN | 23)
++#define PD24_PF_CSPI2_MOSI	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 24)
+ #define PD25_PF_CSPI1_RDY	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 25)
+ #define PD26_PF_CSPI1_SS2	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 26)
+ #define PD27_PF_CSPI1_SS1	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 27)
 -- 
-1.8.2.rc2
+1.8.1.5
 
 
 _______________________________________________
