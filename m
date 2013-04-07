@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9U-0001MQ-Dl
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:05 +0000
+ id 1UOq9T-0001MG-SD
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:55 +0200
-Message-Id: <1365343255-26497-22-git-send-email-s.hauer@pengutronix.de>
+Date: Sun,  7 Apr 2013 16:00:41 +0200
+Message-Id: <1365343255-26497-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,85 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/21] ARM: MXS: ocotp: Use dev_add_param_bool for parameter
+Subject: [PATCH 07/21] netconsole: use dev_add_param_* helpers
 To: barebox@lists.infradead.org
+
+For shorter code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/ocotp.c | 34 ++++------------------------------
- 1 file changed, 4 insertions(+), 30 deletions(-)
+ net/netconsole.c | 50 ++++++--------------------------------------------
+ 1 file changed, 6 insertions(+), 44 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/ocotp.c b/arch/arm/mach-mxs/ocotp.c
-index 84f38b5..dd98446 100644
---- a/arch/arm/mach-mxs/ocotp.c
-+++ b/arch/arm/mach-mxs/ocotp.c
-@@ -44,6 +44,7 @@
- struct ocotp_priv {
- 	struct cdev cdev;
- 	void __iomem *base;
-+	unsigned int write_enable;
+diff --git a/net/netconsole.c b/net/netconsole.c
+index 960de8d..9989194 100644
+--- a/net/netconsole.c
++++ b/net/netconsole.c
+@@ -43,7 +43,7 @@ struct nc_priv {
+ 	int busy;
+ 	struct net_connection *con;
+ 
+-	uint16_t port;
++	unsigned int port;
+ 	IPaddr_t ip;
  };
  
- static int mxs_ocotp_wait_busy(struct ocotp_priv *priv)
-@@ -103,18 +104,12 @@ static ssize_t mxs_ocotp_cdev_write(struct cdev *cdev, const void *buf, size_t c
- {
- 	struct ocotp_priv *priv = cdev->priv;
- 	void __iomem *base = priv->base;
--	const char *write_param;
--	unsigned int write_enabled = 0;
- 	unsigned long old_hclk, aligned_offset;
- 	int old_vddio, num_words, num_bytes, i, ret = 0;
- 	u8 *work_buf;
- 	u32 reg;
+@@ -123,49 +123,10 @@ static void nc_putc(struct console_device *cdev, char c)
+ 	priv->busy = 0;
+ }
  
--	write_param = dev_get_param(cdev->dev, "permanent_write_enable");
--	if (write_param)
--		write_enabled = simple_strtoul(write_param, NULL, 0);
--
--	if (!write_param || !write_enabled)
-+	if (!priv->write_enable)
- 		return -EPERM;
- 
- 	/* we can only work on u32, so calc some helpers */
-@@ -179,21 +174,6 @@ static struct file_operations mxs_ocotp_ops = {
- 	.lseek	= dev_lseek_default,
- };
- 
--static int mxs_ocotp_write_enable_set(struct device_d *dev, struct param_d *param,
+-static int nc_port_set(struct device_d *dev, struct param_d *param,
 -		const char *val)
--{
--	unsigned long write_enable;
++static int nc_port_set(struct param_d *p, void *_priv)
+ {
+-	struct nc_priv *priv = g_priv;
+-	char portstr[16];
+-	int port;
 -
 -	if (!val)
+-		dev_param_set_generic(dev, param, NULL);
+-
+-	port = simple_strtoul(val, NULL, 10);
+-	if (port > 65535)
 -		return -EINVAL;
 -
--	write_enable = simple_strtoul(val, NULL, 0);
--	if (write_enable > 1)
--		return -EINVAL;
+-	priv->port = port;
+ 	nc_init();
+ 
+-	sprintf(portstr, "%d", port);
+-	dev_param_set_generic(dev, param, portstr);
 -
--	return dev_param_set_generic(dev, param, write_enable ? "1" : "0");
+-	return 0;
 -}
 -
- static int mxs_ocotp_probe(struct device_d *dev)
- {
- 	int err;
-@@ -212,14 +192,8 @@ static int mxs_ocotp_probe(struct device_d *dev)
- 
- 	if (IS_ENABLED(CONFIG_MXS_OCOTP_WRITABLE)) {
- 		mxs_ocotp_ops.write = mxs_ocotp_cdev_write;
+-static int nc_remoteip_set(struct device_d *dev, struct param_d *param,
+-		const char *val)
+-{
+-	struct nc_priv *priv = g_priv;
+-	IPaddr_t ip;
+-	int ret;
 -
--		err = dev_add_param(dev, "permanent_write_enable",
--				mxs_ocotp_write_enable_set, NULL, 0);
--		if (err < 0)
--			return err;
--		err = dev_set_param(dev, "permanent_write_enable", "0");
--		if (err < 0)
--			return err;
-+		dev_add_param_bool(dev, "permanent_write_enable",
-+			NULL, NULL, &priv->write_enable, NULL);
+-	if (!val)
+-		dev_param_set_generic(dev, param, NULL);
+-
+-	if (string_to_ip(val, &ip))
+-		return -EINVAL;
+-
+-	priv->ip = ip;
+-	ret = nc_init();
+-	if (ret)
+-		return ret;
+-
+-	dev_param_set_generic(dev, param, val);
+-
+ 	return 0;
+ }
+ 
+@@ -192,9 +153,10 @@ static int netconsole_init(void)
+ 		return ret;
  	}
  
- 	return 0;
+-	dev_add_param(&cdev->class_dev, "ip", nc_remoteip_set, NULL, 0);
+-	dev_add_param(&cdev->class_dev, "port", nc_port_set, NULL, 0);
+-	dev_set_param(&cdev->class_dev, "port", "6666");
++	priv->port = 6666;
++
++	dev_add_param_ip(&cdev->class_dev, "ip", NULL, NULL, &priv->ip, NULL);
++	dev_add_param_int(&cdev->class_dev, "port", nc_port_set, NULL, &priv->port, "%u", NULL);
+ 
+ 	pr_info("registered as %s%d\n", cdev->class_dev.name, cdev->class_dev.id);
+ 
 -- 
 1.8.2.rc2
 
