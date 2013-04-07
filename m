@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOq9U-0001MR-DW
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:06 +0000
+ id 1UOq9U-0001ML-6b
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun,  7 Apr 2013 16:00:54 +0200
-Message-Id: <1365343255-26497-21-git-send-email-s.hauer@pengutronix.de>
+Date: Sun,  7 Apr 2013 16:00:46 +0200
+Message-Id: <1365343255-26497-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/21] USB gadget at91: Use dev_add_param_bool for vbus
- parameter
+Subject: [PATCH 12/21] fb: Use dev_add_param_bool for enable parameter
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/at91_udc.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ drivers/video/fb.c | 33 ++++++++++++---------------------
+ include/fb.h       |  1 +
+ 2 files changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index 917ec4d..a11379c 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -1316,17 +1316,9 @@ static struct at91_udc controller = {
- 
- static void at91_udc_irq (void *_udc);
- 
--static void at91_update_vbus(struct at91_udc *udc, u32 value)
-+static int at91_udc_vbus_set(struct param_d *p, void *priv)
- {
--	if (value == udc->gpio_vbus_val)
--		return;
--
--	if (value)
--		dev_set_param(udc->dev, "vbus", "1");
--	else
--		dev_set_param(udc->dev, "vbus", "0");
--
--	udc->gpio_vbus_val = value;
-+	return -EROFS;
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index be29695..0e00cb7 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -28,31 +28,22 @@ static int fb_ioctl(struct cdev* cdev, int req, void *data)
+ 	return 0;
  }
  
- int usb_gadget_poll(void)
-@@ -1340,11 +1332,10 @@ int usb_gadget_poll(void)
- 	value = gpio_get_value(udc->board.vbus_pin);
- 	value ^= udc->board.vbus_active_low;
+-static int fb_enable_set(struct device_d *dev, struct param_d *param,
+-		const char *val)
++static int fb_enable_set(struct param_d *param, void *priv)
+ {
+-	struct fb_info *info = dev->priv;
++	struct fb_info *info = priv;
+ 	int enable;
+-	char *new;
+-
+-	if (!val)
+-		return dev_param_set_generic(dev, param, NULL);
  
--	if (!value) {
--		at91_update_vbus(udc, value);
-+	udc->gpio_vbus_val = value;
-+
-+	if (!value)
- 		return 0;
+-	enable = simple_strtoul(val, NULL, 0);
++	enable = info->p_enable;
+ 
+-	if (enable) {
+-		if (!info->enabled)
+-			info->fbops->fb_enable(info);
+-		new = "1";
+-	} else {
+-		if (info->enabled)
+-			info->fbops->fb_disable(info);
+-		new = "0";
 -	}
--	at91_update_vbus(udc, value);
++	if (enable == info->enabled)
++		return 0;
  
- 	value = at91_udp_read(udc, AT91_UDP_ISR) & (~(AT91_UDP_SOFINT));
- 	if (value)
-@@ -1516,8 +1507,8 @@ static int __init at91udc_probe(struct device_d *dev)
- 		udc->vbus = 1;
- 	}
+-	dev_param_set_generic(dev, param, new);
++	if (enable)
++		info->fbops->fb_enable(info);
++	else
++		info->fbops->fb_disable(info);
  
--	dev_add_param(dev, "vbus", NULL, NULL, 0);
--	dev_set_param(dev, "vbus", "0");
-+	dev_add_param_bool(dev, "vbus",
-+			at91_udc_vbus_set, NULL, &udc->gpio_vbus_val, udc);
+-	info->enabled = !!enable;
++	info->enabled = enable;
  
- 	poller_register(&poller);
+ 	return 0;
+ }
+@@ -165,8 +156,8 @@ static int fb_probe(struct device_d *dev)
+ {
+ 	struct fb_info *info = dev->priv;
  
+-	dev_add_param(dev, "enable", fb_enable_set, NULL, 0);
+-	dev_set_param(dev, "enable", "0");
++	dev_add_param_bool(dev, "enable", fb_enable_set, NULL,
++			&info->p_enable, info);
+ 
+ 	if (info->num_modes && (info->mode_list != NULL) &&
+ 			(info->fbops->fb_activate_var != NULL)) {
+diff --git a/include/fb.h b/include/fb.h
+index c594418..23d6c6d 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -102,6 +102,7 @@ struct fb_info {
+ 	struct fb_bitfield transp;	/* transparency			*/
+ 
+ 	int enabled;
++	int p_enable;
+ };
+ 
+ int register_framebuffer(struct fb_info *info);
 -- 
 1.8.2.rc2
 
