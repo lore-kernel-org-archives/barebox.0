@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp43.i.mail.ru ([94.100.177.103])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UOlHi-0005K1-2v
- for barebox@lists.infradead.org; Sun, 07 Apr 2013 08:49:11 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun,  7 Apr 2013 12:48:56 +0400
-Message-Id: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
+ id 1UOq9U-0001MO-Df
+ for barebox@lists.infradead.org; Sun, 07 Apr 2013 14:01:06 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun,  7 Apr 2013 16:00:50 +0200
+Message-Id: <1365343255-26497-17-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
+References: <1365343255-26497-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +21,161 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: Update MX2x iomux definitions
+Subject: [PATCH 16/21] pwm: Use dev_add_param_int for pwm parameters
 To: barebox@lists.infradead.org
 
-The patch updates MX2x iomux definitions from kernel.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- arch/arm/mach-imx/include/mach/iomux-mx27.h |  6 ------
- arch/arm/mach-imx/include/mach/iomux-mx2x.h | 12 ++++++------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ drivers/pwm/core.c | 89 ++++++++++++++++++------------------------------------
+ 1 file changed, 30 insertions(+), 59 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx27.h b/arch/arm/mach-imx/include/mach/iomux-mx27.h
-index 7d24967..b6e3345 100644
---- a/arch/arm/mach-imx/include/mach/iomux-mx27.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx27.h
-@@ -25,12 +25,6 @@
- #define PA2_PF_USBH2_DATA7	(GPIO_PORTA | GPIO_PF | 2)
- #define PA3_PF_USBH2_NXT	(GPIO_PORTA | GPIO_PF | 3)
- #define PA4_PF_USBH2_STP	(GPIO_PORTA | GPIO_PF | 4)
--#define PB4_PF_SD2_D0		(GPIO_PORTB | GPIO_PF | 4)
--#define PB5_PF_SD2_D1		(GPIO_PORTB | GPIO_PF | 5)
--#define PB6_PF_SD2_D2		(GPIO_PORTB | GPIO_PF | 6)
--#define PB7_PF_SD2_D3		(GPIO_PORTB | GPIO_PF | 7)
--#define PB8_PF_SD2_CMD		(GPIO_PORTB | GPIO_PF | 8)
--#define PB9_PF_SD2_CLK		(GPIO_PORTB | GPIO_PF | 9)
- #define PB22_PF_USBH1_SUSP	(GPIO_PORTB | GPIO_PF | 22)
- #define PB25_PF_USBH1_RCV	(GPIO_PORTB | GPIO_PF | 25)
- #define PC5_PF_I2C2_SDA		(GPIO_PORTC | GPIO_PF | GPIO_IN | 5)
-diff --git a/arch/arm/mach-imx/include/mach/iomux-mx2x.h b/arch/arm/mach-imx/include/mach/iomux-mx2x.h
-index 2f9560f..15c2e2b 100644
---- a/arch/arm/mach-imx/include/mach/iomux-mx2x.h
-+++ b/arch/arm/mach-imx/include/mach/iomux-mx2x.h
-@@ -86,12 +86,12 @@
- #define PC31_PF_SSI3_CLK	(GPIO_PORTC | GPIO_PF | GPIO_IN | 31)
- #define PD17_PF_I2C_DATA	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 17)
- #define PD18_PF_I2C_CLK		(GPIO_PORTD | GPIO_PF | GPIO_OUT | 18)
--#define PD19_PF_CSPI2_SS2	(GPIO_PORTD | GPIO_PF | 19)
--#define PD20_PF_CSPI2_SS1	(GPIO_PORTD | GPIO_PF | 20)
--#define PD21_PF_CSPI2_SS0	(GPIO_PORTD | GPIO_PF | 21)
--#define PD22_PF_CSPI2_SCLK	(GPIO_PORTD | GPIO_PF | 22)
--#define PD23_PF_CSPI2_MISO	(GPIO_PORTD | GPIO_PF | 23)
--#define PD24_PF_CSPI2_MOSI	(GPIO_PORTD | GPIO_PF | 24)
-+#define PD19_PF_CSPI2_SS2	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 19)
-+#define PD20_PF_CSPI2_SS1	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 20)
-+#define PD21_PF_CSPI2_SS0	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 21)
-+#define PD22_PF_CSPI2_SCLK	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 22)
-+#define PD23_PF_CSPI2_MISO	(GPIO_PORTD | GPIO_PF | GPIO_IN | 23)
-+#define PD24_PF_CSPI2_MOSI	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 24)
- #define PD25_PF_CSPI1_RDY	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 25)
- #define PD26_PF_CSPI1_SS2	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 26)
- #define PD27_PF_CSPI1_SS1	(GPIO_PORTD | GPIO_PF | GPIO_OUT | 27)
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 70ec590..db7d260 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -18,6 +18,7 @@
+ #include <malloc.h>
+ #include <pwm.h>
+ #include <linux/list.h>
++#include <linux/err.h>
+ 
+ struct pwm_device {
+ 	struct			pwm_chip *chip;
+@@ -26,22 +27,14 @@ struct pwm_device {
+ #define FLAG_ENABLED	1
+ 	struct list_head	node;
+ 	struct device_d		*dev;
++
++	unsigned int		duty_ns;
++	unsigned int		period_ns;
++	unsigned int		p_enable;
+ };
+ 
+ static LIST_HEAD(pwm_list);
+ 
+-static struct pwm_device *dev_to_pwm(struct device_d *dev)
+-{
+-	struct pwm_device *pwm;
+-
+-	list_for_each_entry(pwm, &pwm_list, node) {
+-		if (pwm->dev == dev)
+-			return pwm;
+-	}
+-
+-	return NULL;
+-}
+-
+ static struct pwm_device *_find_pwm(const char *devname)
+ {
+ 	struct pwm_device *pwm;
+@@ -54,61 +47,25 @@ static struct pwm_device *_find_pwm(const char *devname)
+ 	return NULL;
+ }
+ 
+-static int set_period_ns(struct device_d *dev, struct param_d *p,
+-			 const char *val)
++static int set_duty_period_ns(struct param_d *p, void *priv)
+ {
+-	struct pwm_device *pwm = dev_to_pwm(dev);
+-	int period_ns;
++	struct pwm_device *pwm = priv;
+ 
+-	if (!val)
+-		return dev_param_set_generic(dev, p, NULL);
++	pwm_config(pwm, pwm->chip->duty_ns, pwm->chip->period_ns);
+ 
+-	period_ns = simple_strtoul(val, NULL, 0);
+-	pwm_config(pwm, pwm->chip->duty_ns, period_ns);
+-	return dev_param_set_generic(dev, p, val);
+-}
+-
+-static int set_duty_ns(struct device_d *dev, struct param_d *p, const char *val)
+-{
+-	struct pwm_device *pwm = dev_to_pwm(dev);
+-	int duty_ns;
+-
+-	if (!val)
+-		return dev_param_set_generic(dev, p, NULL);
+-
+-	duty_ns = simple_strtoul(val, NULL, 0);
+-	pwm_config(pwm, duty_ns, pwm->chip->period_ns);
+-	return dev_param_set_generic(dev, p, val);
++	return 0;
+ }
+ 
+-static int set_enable(struct device_d *dev, struct param_d *p, const char *val)
++static int set_enable(struct param_d *p, void *priv)
+ {
+-	struct pwm_device *pwm = dev_to_pwm(dev);
+-	int enable;
+-
+-	if (!val)
+-		return dev_param_set_generic(dev, p, NULL);
++	struct pwm_device *pwm = priv;
+ 
+-	enable = !!simple_strtoul(val, NULL, 0);
+-	if (enable)
++	if (pwm->p_enable)
+ 		pwm_enable(pwm);
+ 	else
+ 		pwm_disable(pwm);
+-	return dev_param_set_generic(dev, p, enable ? "1" : "0");
+-}
+ 
+-static int pwm_register_vars(struct device_d *dev)
+-{
+-	int ret;
+-
+-	ret = dev_add_param(dev, "duty_ns", set_duty_ns, NULL, 0);
+-	if (!ret)
+-		ret = dev_add_param(dev, "period_ns", set_period_ns, NULL, 0);
+-	if (!ret)
+-		ret = dev_add_param(dev, "enable", set_enable, NULL, 0);
+-	if (!ret)
+-		ret = dev_set_param(dev, "enable", 0);
+-	return ret;
++	return 0;
+ }
+ 
+ /**
+@@ -121,7 +78,7 @@ static int pwm_register_vars(struct device_d *dev)
+ int pwmchip_add(struct pwm_chip *chip, struct device_d *dev)
+ {
+ 	struct pwm_device *pwm;
+-	int ret = 0;
++	struct param_d *p;
+ 
+ 	if (_find_pwm(chip->devname))
+ 		return -EBUSY;
+@@ -131,9 +88,23 @@ int pwmchip_add(struct pwm_chip *chip, struct device_d *dev)
+ 	pwm->dev = dev;
+ 
+ 	list_add_tail(&pwm->node, &pwm_list);
+-	pwm_register_vars(dev);
+ 
+-	return ret;
++	p = dev_add_param_int(dev, "duty_ns", set_duty_period_ns,
++			NULL, &pwm->chip->duty_ns, "%u", pwm);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	p = dev_add_param_int(dev, "period_ns", set_duty_period_ns,
++			NULL, &pwm->chip->period_ns, "%u", pwm);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	p = dev_add_param_bool(dev, "enable", set_enable,
++			NULL, &pwm->p_enable, pwm);
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pwmchip_add);
+ 
 -- 
-1.8.1.5
+1.8.2.rc2
 
 
 _______________________________________________
