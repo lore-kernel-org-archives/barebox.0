@@ -1,20 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo25.mail-out.ovh.net ([178.32.228.25])
+Received: from 10.mo4.mail-out.ovh.net ([188.165.33.109]
+ helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UP6OK-0000nL-0Y
- for barebox@lists.infradead.org; Mon, 08 Apr 2013 07:21:27 +0000
+ id 1UP6Y4-0000xO-9b
+ for barebox@lists.infradead.org; Mon, 08 Apr 2013 07:31:30 +0000
 Received: from mail628.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo25.mail-out.ovh.net (Postfix) with SMTP id 6B7F2FF9256
- for <barebox@lists.infradead.org>; Mon,  8 Apr 2013 09:37:02 +0200 (CEST)
-Date: Mon, 8 Apr 2013 09:17:15 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id C1B1F104DFAB
+ for <barebox@lists.infradead.org>; Mon,  8 Apr 2013 09:43:29 +0200 (CEST)
+Date: Mon, 8 Apr 2013 09:27:08 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130408071715.GS1568@game.jcrosoft.org>
-References: <1365057762.3836.18.camel@mars>
- <20130405085917.GK1906@pengutronix.de>
- <1365372959.20809.6.camel@lovely>
+Message-ID: <20130408072708.GT1568@game.jcrosoft.org>
+References: <m3r4ixgmok.fsf@intrepid.localdomain>
+ <m3ehexgmbs.fsf@intrepid.localdomain>
+ <20130402065241.GB1906@pengutronix.de>
+ <m3bo9q36ua.fsf@intrepid.localdomain>
+ <m3obdq15hr.fsf_-_@intrepid.localdomain>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1365372959.20809.6.camel@lovely>
+In-Reply-To: <m3obdq15hr.fsf_-_@intrepid.localdomain>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,1109 +26,471 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] omap4-fb: add driver
-To: Christoph Fritz <chf.fritz@googlemail.com>
+Subject: Re: [PATCH] ARM: Support for IXP4xx CPU.
+To: Krzysztof Halasa <khc@pm.waw.pl>
 Cc: barebox@lists.infradead.org
 
-On 00:15 Mon 08 Apr     , Christoph Fritz wrote:
-> This patch adds omap4 display controller support.
-> 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-> ---
->  arch/arm/mach-omap/Makefile                |    1 +
->  arch/arm/mach-omap/include/mach/omap4-fb.h |   52 +++
->  arch/arm/mach-omap/omap4_fb.c              |   29 ++
->  drivers/video/Kconfig                      |    8 +
->  drivers/video/Makefile                     |    1 +
->  drivers/video/omap4.c                      |  507 ++++++++++++++++++++++++++++
->  drivers/video/omap4.h                      |  408 ++++++++++++++++++++++
->  7 files changed, 1006 insertions(+)
->  create mode 100644 arch/arm/mach-omap/include/mach/omap4-fb.h
->  create mode 100644 arch/arm/mach-omap/omap4_fb.c
->  create mode 100644 drivers/video/omap4.c
->  create mode 100644 drivers/video/omap4.h
-> 
-> diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-> index 94e42c6..e70ddbd 100644
-> --- a/arch/arm/mach-omap/Makefile
-> +++ b/arch/arm/mach-omap/Makefile
-> @@ -28,6 +28,7 @@ obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
->  pbl-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
->  obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
->  obj-$(CONFIG_SHELL_NONE) += xload.o
-> +obj-$(CONFIG_DRIVER_VIDEO_OMAP4) += omap4_fb.o
->  obj-$(CONFIG_I2C_TWL6030) += omap4_twl6030_mmc.o
->  obj-$(CONFIG_OMAP4_USBBOOT) += omap4_rom_usb.o
->  obj-y += gpio.o
-> diff --git a/arch/arm/mach-omap/include/mach/omap4-fb.h b/arch/arm/mach-omap/include/mach/omap4-fb.h
-> new file mode 100644
-> index 0000000..bb4c8e9
-> --- /dev/null
-> +++ b/arch/arm/mach-omap/include/mach/omap4-fb.h
-> @@ -0,0 +1,52 @@
-> +#ifndef H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H
-> +#define H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H
-> +
-> +#include <fb.h>
-> +
-> +/* device resource index */
-> +enum {
-> +	OMAP4_FB_RESOURCE_DSS,
-> +	OMAP4_FB_RESOURCE_DISPC,
-> +};
-> +
-> +#define OMAP_DSS_LCD_TFT	(1u << 0)
-> +#define OMAP_DSS_LCD_IVS	(1u << 1)
-> +#define OMAP_DSS_LCD_IHS	(1u << 2)
-> +#define OMAP_DSS_LCD_IPC	(1u << 3)
-> +#define OMAP_DSS_LCD_IEO	(1u << 4)
-> +#define OMAP_DSS_LCD_RF	(1u << 5)
-> +#define OMAP_DSS_LCD_ONOFF	(1u << 6)
-> +
-> +#define OMAP_DSS_LCD_DATALINES(_l)	((_l) << 10)
-> +#define OMAP_DSS_LCD_DATALINES_msk	OMAP_DSS_LCD_DATALINES(3u)
-> +#define OMAP_DSS_LCD_DATALINES_12	OMAP_DSS_LCD_DATALINES(0u)
-> +#define OMAP_DSS_LCD_DATALINES_16	OMAP_DSS_LCD_DATALINES(1u)
-> +#define OMAP_DSS_LCD_DATALINES_18	OMAP_DSS_LCD_DATALINES(2u)
-> +#define OMAP_DSS_LCD_DATALINES_24	OMAP_DSS_LCD_DATALINES(3u)
-> +
-> +struct omap4fb_display {
-> +	struct fb_videomode mode;
-> +
-> +	unsigned long config;
-> +
-> +	unsigned int power_on_delay;
-> +	unsigned int power_off_delay;
-> +};
-> +
-> +struct omap4fb_platform_data {
-> +	struct omap4fb_display const *displays;
-> +	size_t num_displays;
-> +
-> +	unsigned int dss_clk_hz;
-> +
-> +	unsigned int bpp;
-> +
-> +	struct resource const *screen;
-> +
-> +	void (*enable)(int p);
-> +};
-> +
-> +struct device_d;
-> +struct device_d *omap4_add_display(void *pdata);
-> +
-> +#endif	/* H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H */
-> diff --git a/arch/arm/mach-omap/omap4_fb.c b/arch/arm/mach-omap/omap4_fb.c
-> new file mode 100644
-> index 0000000..70fbab6
-> --- /dev/null
-> +++ b/arch/arm/mach-omap/omap4_fb.c
-> @@ -0,0 +1,29 @@
-> +#include <driver.h>
-> +#include <common.h>
-> +#include <linux/ioport.h>
-> +#include <mach/omap4-fb.h>
-> +
-> +static struct resource omap4_fb_resources[] = {
-> +	[OMAP4_FB_RESOURCE_DSS] = {
-> +		.start	= 0x48040000,
-> +		.end	= 0x48040000 + 512 - 1,
-> +		.flags	= IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
-> +		.name	= "DSS",
-> +	},
-> +
-> +	[OMAP4_FB_RESOURCE_DISPC] = {
-> +		.start	= 0x48041000,
-> +		.end	= 0x48041000 + 3072 - 1,
-> +		.flags	= IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
-> +		.name	= "DISPC",
-> +	},
-> +};
-> +
-> +struct device_d *omap4_add_display(void *pdata)
-> +{
-> +	return add_generic_device_res("omap4_fb", -1,
-> +				      omap4_fb_resources,
-> +				      ARRAY_SIZE(omap4_fb_resources),
-> +				      pdata);
-> +}
-> +EXPORT_SYMBOL(omap4_add_display);
-> diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-> index 6d6b08f..9dfa0cd 100644
-> --- a/drivers/video/Kconfig
-> +++ b/drivers/video/Kconfig
-> @@ -45,6 +45,14 @@ config DRIVER_VIDEO_S3C24XX
->  	help
->  	  Add support for the S3C244x LCD controller.
->  
-> +config DRIVER_VIDEO_OMAP4
-> +	bool "OMAP4 framebuffer driver"
-> +	depends on ARCH_OMAP4
-> +	help
-> +	  Add support for the OMAP4 Display Controller.
-> +	  DSI is unsupported, only DISPC parallel mode on LCD2
-> +	  is supported.
-> +
->  if DRIVER_VIDEO_S3C24XX
->  
->  config DRIVER_VIDEO_S3C_VERBOSE
-> diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-> index 7429141..83feebb 100644
-> --- a/drivers/video/Makefile
-> +++ b/drivers/video/Makefile
-> @@ -8,3 +8,4 @@ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
->  obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
->  obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
->  obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
-> +obj-$(CONFIG_DRIVER_VIDEO_OMAP4) += omap4.o
-> diff --git a/drivers/video/omap4.c b/drivers/video/omap4.c
-> new file mode 100644
-> index 0000000..23c64d0
-> --- /dev/null
-> +++ b/drivers/video/omap4.c
-> @@ -0,0 +1,507 @@
-> +/*
-> + * TI Omap4 Frame Buffer device driver
-> + *
-> + * Copyright (C) 2013 Christoph Fritz <chf.fritz@googlemail.com>
-> + *   Based on work by Enrico Scholz, sponsored by Phytec
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#include <driver.h>
-> +#include <fb.h>
-> +#include <errno.h>
-> +#include <xfuncs.h>
-> +#include <init.h>
-> +#include <stdio.h>
-> +#include <io.h>
-> +#include <common.h>
-> +#include <malloc.h>
-> +#include <common.h>
-> +#include <clock.h>
-> +
-> +#include <mach/omap4-silicon.h>
-> +#include <mach/omap4-fb.h>
-> +
-> +#include "omap4.h"
-> +
-> +struct omap4fb_device {
-> +	struct fb_info info;
-> +	struct device_d *dev;
-> +
-> +	struct omap4fb_display const *cur_display;
-> +
-> +	struct omap4fb_display const *displays;
-> +	size_t num_displays;
-> +
-> +	struct {
-> +		struct omap4_regs_dss __iomem *dss;
-> +		struct omap4_regs_dispc __iomem *dispc;
-> +	} regs;
-please drop those non-sense regs struct
-> +
-> +	struct {
-> +		void __iomem *addr;
-> +		size_t size;
-> +	} prealloc_screen;
-> +
-> +	struct {
-> +		uint32_t dispc_control;
-> +		uint32_t dispc_pol_freq;
-> +	} shadow;
-> +
-> +	struct {
-> +		unsigned int dss_clk_hz;
-> +		unsigned int lckd;
-> +		unsigned int pckd;
-> +	} divisor;
-> +
-> +	void (*enable_fn)(int);
-> +
-> +	struct fb_videomode	video_modes[];
-> +};
-> +
-> +static inline void fb_write(uint32_t v, void __iomem *addr)
-> +{
-> +	__raw_writel(v, addr);
-> +}
-> +
-> +static inline uint32_t fb_read(void const __iomem *addr)
-> +{
-> +	return __raw_readl(addr);
-> +}
-what is the dif?
-> +
-> +static void omap4fb_enable(struct fb_info *info)
-> +{
-> +	struct omap4fb_device *fbi =
-> +		container_of(info, struct omap4fb_device, info);
-> +	struct omap4_regs_dispc __iomem	*dispc = fbi->regs.dispc;
-> +
-> +	dev_info(fbi->dev, "%s\n", __func__);
-> +
-> +	if (!fbi->cur_display) {
-> +		dev_err(fbi->dev, "no valid mode set\n");
-> +		return;
-> +	}
-> +
-> +	if (fbi->enable_fn)
-> +		fbi->enable_fn(1);
-> +
-> +	udelay(fbi->cur_display->power_on_delay * 1000u);
-mdelay
-> +
-> +	fb_write(fb_read(&dispc->control2) |
-> +		 DSS_DISPC_CONTROL_LCDENABLE |
-> +		 1*DSS_DISPC_CONTROL_LCDENABLESIGNAL,
-> +		 &dispc->control2);
-> +
-> +	fb_write(fb_read(&dispc->vid1.attributes) |
-> +		 DSS_DISPC_VIDn_ATTRIBUTES_VIDENABLE,
-> +		 &dispc->vid1.attributes);
-> +
-> +	fb_write(fb_read(&dispc->control2) |
-> +		 DSS_DISPC_CONTROL_GOLCD,
-> +		 &dispc->control2);
-> +}
-> +
-> +static void omap4fb_disable(struct fb_info *info)
-> +{
-> +	struct omap4fb_device	*fbi =
-> +		container_of(info, struct omap4fb_device, info);
-> +	struct omap4_regs_dispc __iomem	*dispc = fbi->regs.dispc;
-> +
-> +	dev_info(fbi->dev, "%s\n", __func__);
-> +
-> +	if (!fbi->cur_display) {
-> +		dev_err(fbi->dev, "no valid mode set\n");
-> +		return;
-> +	}
-> +
-> +	fb_write(fb_read(&dispc->control2) &
-> +		 ~(DSS_DISPC_CONTROL_LCDENABLE |
-> +		   DSS_DISPC_CONTROL_LCDENABLESIGNAL),
-> +		 &dispc->control2);
-> +
-> +	fb_write(fb_read(&dispc->vid1.attributes) &
-> +		 ~(DSS_DISPC_VIDn_ATTRIBUTES_VIDENABLE),
-> +		 &dispc->vid1.attributes);
-> +
-> +	if (fbi->prealloc_screen.addr == NULL)
-> +		/* free frame buffer; but only when screen is not
-> +		 * preallocated */
-> +		free(info->screen_base);
-> +
-> +	info->screen_base = NULL;
-> +
-> +	udelay(fbi->cur_display->power_off_delay * 1000u);
-> +
-> +	if (fbi->enable_fn)
-> +		fbi->enable_fn(0);
-> +}
-> +
-> +static void omap4fb_calc_divisor(struct omap4fb_device *fbi,
-> +			struct fb_videomode const *mode)
-> +{
-> +	unsigned int l, k, t, b;
-> +
-> +	b = UINT_MAX;
-> +	for (l = 1; l < 256; l++) {
-> +		for (k = 1; k < 256; k++) {
-> +			t = abs(mode->pixclock * 100 -
-> +				(fbi->divisor.dss_clk_hz / l / k));
-> +			if (t <= b) {
-> +				b = t;
-> +				fbi->divisor.lckd = l;
-> +				fbi->divisor.pckd = k;
-> +			}
-> +		}
-> +	}
-> +}
-> +
-> +static unsigned int omap4fb_calc_format(struct fb_info const *info)
-> +{
-> +	switch (info->bits_per_pixel) {
-> +	case 24: return 9;
-> +	case 32: return 0x8; /* xRGB24-8888 (32-bit container) */
-> +	default:
-> +		printf("%s: unsupported bpp %d\n", __func__,
-> +		       info->bits_per_pixel);
-> +		return 0;
-> +	}
-> +}
-> +
-> +struct omap4fb_colors {
-> +	struct fb_bitfield	red;
-> +	struct fb_bitfield	green;
-> +	struct fb_bitfield	blue;
-> +	struct fb_bitfield	transp;
-> +};
-> +
-> +static struct omap4fb_colors const omap4fb_col[] = {
-> +	[0] = {
-> +		.red	= { .length = 0, .offset = 0 },
-> +	},
-> +	[1] = {
-> +		.blue	= { .length = 8, .offset = 0 },
-> +		.green	= { .length = 8, .offset = 8 },
-> +		.red	= { .length = 8, .offset = 16 },
-> +	},
-> +	[2] = {
-> +		.blue	= { .length = 8, .offset = 0 },
-> +		.green	= { .length = 8, .offset = 8 },
-> +		.red	= { .length = 8, .offset = 16 },
-> +		.transp	= { .length = 8, .offset = 24 },
-> +	},
-> +};
-> +
-> +static void omap4fb_fill_shadow(struct omap4fb_device *fbi,
-> +				struct omap4fb_display const *display)
-> +{
-> +	fbi->shadow.dispc_control = 0;
-> +	fbi->shadow.dispc_pol_freq = 0;
-> +
-> +	fbi->shadow.dispc_control |= DSS_DISPC_CONTROL_STNTFT;
-> +
-> +	switch (display->config & OMAP_DSS_LCD_DATALINES_msk) {
-> +	case OMAP_DSS_LCD_DATALINES_12:
-> +		fbi->shadow.dispc_control |= DSS_DISPC_CONTROL_TFTDATALINES_12;
-> +		break;
-> +	case OMAP_DSS_LCD_DATALINES_16:
-> +		fbi->shadow.dispc_control |= DSS_DISPC_CONTROL_TFTDATALINES_16;
-> +		break;
-> +	case OMAP_DSS_LCD_DATALINES_18:
-> +		fbi->shadow.dispc_control |= DSS_DISPC_CONTROL_TFTDATALINES_18;
-> +		break;
-> +	case OMAP_DSS_LCD_DATALINES_24:
-> +		fbi->shadow.dispc_control |= DSS_DISPC_CONTROL_TFTDATALINES_24;
-> +		break;
-> +	}
-> +
-> +	if (display->config & OMAP_DSS_LCD_IPC)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_IPC;
-> +
-> +	if (display->config & OMAP_DSS_LCD_IVS)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_IVS;
-> +
-> +	if (display->config & OMAP_DSS_LCD_IHS)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_IHS;
-> +
-> +	if (display->config & OMAP_DSS_LCD_IEO)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_IEO;
-> +
-> +	if (display->config & OMAP_DSS_LCD_RF)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_RF;
-> +
-> +	if (display->config & OMAP_DSS_LCD_ONOFF)
-> +		fbi->shadow.dispc_pol_freq |= DSS_DISPC_POL_FREQ_ONOFF;
-> +}
-> +
-> +static int omap4fb_activate_var(struct fb_info *info)
-> +{
-> +	struct omap4fb_device *fbi =
-> +		container_of(info, struct omap4fb_device, info);
-> +	struct omap4_regs_dispc __iomem	*dispc = fbi->regs.dispc;
-> +	struct fb_videomode const *mode = info->mode;
-> +	size_t size = mode->xres * mode->yres * (info->bits_per_pixel / 8);
-> +	int rc;
-> +	unsigned int fmt = omap4fb_calc_format(info);
-> +	struct omap4fb_colors const *cols;
-> +	size_t i;
-> +	struct omap4fb_display const *new_display = NULL;
-> +
-> +	for (i = 0; i < fbi->num_displays && new_display == NULL; ++i) {
-> +		if (strcmp(mode->name, fbi->displays[i].mode.name) == 0)
-> +			new_display = &fbi->displays[i];
-> +	}
-> +
-> +	if (WARN_ON(!new_display)) {
-> +		dev_err(fbi->dev, "no matching display found for this mode '%s'\n",
-> +			mode->name);
-> +		rc = -ENXIO;
-> +		goto out;
-> +	}
-> +
-> +	if (fbi->prealloc_screen.addr == NULL) {
-> +		/* case 1: no preallocated screen */
-> +		free(info->screen_base);
-> +		info->screen_base = memalign(0x100, size);
-> +	} else if (fbi->prealloc_screen.size < size) {
-> +		/* case 2: preallocated screen, but too small */
-> +		dev_err(fbi->dev,
-> +			"allocated framebuffer too small (%zu < %zu)\n",
-> +			fbi->prealloc_screen.size, size);
-> +		rc = -ENOMEM;
-> +		goto out;
-> +	} else {
-> +		/* case 3: preallocated screen */
-> +		info->screen_base = fbi->prealloc_screen.addr;
-> +	}
-> +
-> +	omap4fb_fill_shadow(fbi, new_display);
-> +
-> +	omap4fb_calc_divisor(fbi, mode);
-> +
-> +	switch (info->bits_per_pixel) {
-> +	case 24:
-> +		cols = &omap4fb_col[1];
-> +		break;
-> +	case 32:
-> +		cols = &omap4fb_col[2];
-> +		break;
-> +	default:
-> +		cols = &omap4fb_col[0];
-> +	}
-> +
-> +	info->red = cols->red;
-> +	info->green = cols->green;
-> +	info->blue = cols->blue;
-> +	info->transp = cols->transp;
-> +
-> +	fb_write(fbi->shadow.dispc_control,
-> +		 &dispc->control2);
-> +
-> +	fb_write(fbi->shadow.dispc_pol_freq,
-> +		 &dispc->pol_freq2);
-> +
-> +	fb_write(DSS_DISPC_TIMING_H_HSW(mode->hsync_len - 1) |
-> +		 DSS_DISPC_TIMING_H_HFP(mode->right_margin - 1) |
-> +		 DSS_DISPC_TIMING_H_HBP(mode->left_margin - 1),
-> +		 &dispc->timing_h2);
-> +
-> +	fb_write(DSS_DISPC_TIMING_V_VSW(mode->vsync_len - 1) |
-> +		 DSS_DISPC_TIMING_V_VFP(mode->lower_margin) |
-> +		 DSS_DISPC_TIMING_V_VBP(mode->upper_margin),
-> +		 &dispc->timing_v2);
-> +
-> +	fb_write(DSS_DISPC_DIVISOR_ENABLE | DSS_DISPC_DIVISOR_LCD(1),
-> +			&dispc->divisor);
-> +
-> +	fb_write(DSS_DISPC_DIVISOR2_LCD(fbi->divisor.lckd) |
-> +		 DSS_DISPC_DIVISOR2_PCD(fbi->divisor.pckd),
-> +		 &dispc->divisor2);
-> +
-> +	fb_write(DSS_DISPC_SIZE_LCD_PPL(mode->xres - 1) |
-> +		 DSS_DISPC_SIZE_LCD_LPP(mode->yres - 1),
-> +		 &dispc->size_lcd2);
-> +
-> +	fb_write(0x0000FF00, &dispc->default_color2);
-> +
-> +	/* we use VID1 */
-> +	fb_write((uintptr_t)info->screen_base, &dispc->vid1.ba[0]);
-> +	fb_write((uintptr_t)info->screen_base, &dispc->vid1.ba[1]);
-> +
-> +	fb_write(DSS_DISPC_VIDn_POSITION_VIDPOSX(0) |
-> +		 DSS_DISPC_VIDn_POSITION_VIDPOSY(0),
-> +		 &dispc->vid1.position);
-> +	fb_write(DSS_DISPC_VIDn_SIZE_VIDSIZEX(mode->xres - 1) |
-> +		 DSS_DISPC_VIDn_SIZE_VIDSIZEY(mode->yres - 1),
-> +		 &dispc->vid1.size);
-> +	fb_write(DSS_DISPC_VIDn_PICTURE_SIZE_VIDORGSIZEX(mode->xres - 1) |
-> +		 DSS_DISPC_VIDn_PICTURE_SIZE_VIDORGSIZEY(mode->yres - 1),
-> +		 &dispc->vid1.picture_size);
-> +	fb_write(1, &dispc->vid1.row_inc);
-> +	fb_write(1, &dispc->vid1.pixel_inc);
-> +
-> +	fb_write(0xfff, &dispc->vid_preload[0]);
-> +
-> +	fb_write(DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(fmt) |
-> +			 DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE_8x128 |
-> +			 DSS_DISPC_VIDn_ATTRIBUTES_ZORDERENABLE |
-> +			 DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2_SECONDARY_LCD,
-> +			 &dispc->vid1.attributes);
-> +
-> +	while (fb_read(&dispc->control2) & DSS_DISPC_CONTROL_GOLCD)
-> +		;			/* noop */
-> +
-> +	fb_write(fb_read(&dispc->control2) |
-> +		 DSS_DISPC_CONTROL_GOLCD,
-> +		 &dispc->control2);
-> +
-> +	fbi->cur_display = new_display;
-> +	info->xres = mode->xres;
-> +	info->yres = mode->yres;
-> +
-> +	rc = 0;
-> +
-> +out:
-> +	return rc;
-> +}
-> +
-> +static void omap4fb_reset(struct omap4fb_device const *fbi)
-> +{
-> +	struct omap4_regs_dispc __iomem	*dispc = fbi->regs.dispc;
-> +	struct omap4_regs_dss __iomem *dss = fbi->regs.dss;
-> +
-> +	uint32_t	v = fb_read(&dispc->control2);
-> +
-> +	/* step 1: stop the LCD controller */
-> +	if (v & DSS_DISPC_CONTROL_LCDENABLE) {
-> +		fb_write(v & ~DSS_DISPC_CONTROL_LCDENABLE,
-> +			 &dispc->control2);
-> +
-> +		fb_write(DSS_DISPC_IRQSTATUS_FRAMEDONE2, &dispc->irqstatus);
-> +
-> +		while ((fb_read(&dispc->irqstatus) &
-> +			DSS_DISPC_IRQSTATUS_FRAMEDONE) == 0)
-> +			;		/* noop */
-> +	}
-> +
-> +	/* step 2: wait for reset done status */
-> +	while (!(fb_read(&dss->sysstatus) & DSS_DSS_SYSSTATUS_RESETDONE))
-> +		;			/* noop */
-> +
-> +	/* DSS_CTL: set to reset value */
-> +	fb_write(0, &dss->ctrl);
-> +}
-> +
-> +static struct fb_ops omap4fb_ops = {
-> +	.fb_enable		= omap4fb_enable,
-> +	.fb_disable		= omap4fb_disable,
-> +	.fb_activate_var	= omap4fb_activate_var,
-> +};
-> +
-> +static int omap4fb_probe(struct device_d *dev)
-> +{
-> +	struct omap4fb_platform_data const *pdata = dev->platform_data;
-> +	struct omap4fb_device *fbi;
-> +	struct fb_info *info;
-> +	struct omap4_regs_dispc __iomem	*dispc;
-> +	struct omap4_regs_dss __iomem *dss;
-> +	int rc;
-> +	size_t i;
-> +
-> +	if (!pdata)
-> +		return -ENODEV;
-> +
-> +	fbi = xzalloc(sizeof *fbi +
-> +		      pdata->num_displays * sizeof fbi->video_modes[0]);
-> +	info = &fbi->info;
-> +
-> +	fbi->dev = dev;
-> +
-> +	/* CM_DSS_CLKSTCTRL (TRM: 935) trigger SW_WKUP */
-> +	__raw_writel(0x2, 0x4a009100); /* TODO: move this to clockmanagement */
-> +
-> +	fbi->regs.dss   = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DSS);
-> +	fbi->regs.dispc = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DISPC);
-use named dev_request
-> +
-> +	if (!fbi->regs.dss || !fbi->regs.dispc) {
-> +		dev_err(dev, "Insufficient register description\n");
-> +		rc = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	dispc = fbi->regs.dispc;
-> +	dss = fbi->regs.dss;
-> +	dev_info(dev, "HW-Revision 0x%04x 0x%04x\n",
-> +		fb_read(&dispc->revision),
-> +		fb_read(&dss->revision));
-> +
-> +
-> +	if (!pdata->dss_clk_hz | !pdata->displays | !pdata->num_displays |
-> +		!pdata->bpp) {
-> +		dev_err(dev, "Insufficient omap4fb_platform_data\n");
-> +		rc = -EINVAL;
-> +		goto out;
-> +	}
-> +
-> +	fbi->enable_fn    = pdata->enable;
-> +	fbi->displays     = pdata->displays;
-> +	fbi->num_displays = pdata->num_displays;
-> +	fbi->divisor.dss_clk_hz = pdata->dss_clk_hz;
-why via pdata?
-> +
-> +	for (i = 0; i < pdata->num_displays; ++i)
-> +		fbi->video_modes[i] = pdata->displays[i].mode;
-> +
-> +	info->mode_list = fbi->video_modes;
-> +	info->num_modes = pdata->num_displays;
-> +
-> +	info->priv = fbi;
-> +	info->fbops = &omap4fb_ops;
-> +	info->bits_per_pixel = pdata->bpp;
-> +
-> +	if (pdata->screen) {
-> +		fbi->prealloc_screen.addr =
-> +				(void __iomem *)pdata->screen->start;
-> +		fbi->prealloc_screen.size = resource_size(pdata->screen);
-> +	}
-> +
-> +	omap4fb_reset(fbi);
-> +
-> +	dev_add_param(fbi->dev, "bootargs", NULL, NULL, 0);
-??
-> +
-> +	rc = register_framebuffer(info);
-> +	if (rc < 0) {
-> +		dev_err(dev, "failed to register framebuffer: %d\n", rc);
-> +		goto out;
-> +	}
-> +
-> +	rc = 0;
-> +	dev_info(dev, "registered\n");
-> +
-> +out:
-> +	if (rc < 0)
-> +		free(fbi);
-> +
-> +	return rc;
-> +}
-> +
-> +static struct driver_d omap4fb_driver = {
-> +	.name	= "omap4_fb",
-> +	.probe	= omap4fb_probe,
-> +};
-> +
-> +static int omap4fb_init(void)
-> +{
-> +	return platform_driver_register(&omap4fb_driver);
-> +}
-> +
-> +device_initcall(omap4fb_init);
-> diff --git a/drivers/video/omap4.h b/drivers/video/omap4.h
-> new file mode 100644
-> index 0000000..b3364a5
-> --- /dev/null
-> +++ b/drivers/video/omap4.h
-> @@ -0,0 +1,408 @@
-> +/*
-> + * TI Omap4 Frame Buffer device driver
-> + *
-> + * Copyright (C) 2013 Christoph Fritz <chf.fritz@googlemail.com>
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public License as
-> + * published by the Free Software Foundation; either version 2 of
-> + * the License, or (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#ifndef H_BAREBOX_DRIVER_VIDEO_OMAP4_REGS_H
-> +#define H_BAREBOX_DRIVER_VIDEO_OMAP4_REGS_H
-> +
-> +#include <types.h>
-> +#include <common.h>
-> +
-> +#define OMAP4_RESERVED(_f, _t) \
-> +	uint32_t const reserved_ ## _f ## _ ## _t[((_t) - (_f)) / 4]
-> +
-> +
-> +/* TRM: 10.1.3.2 DSS Registers */
-> +struct omap4_regs_dss {
-> +	uint32_t revision;
-> +	OMAP4_RESERVED(0x4, 0x14);
-> +	uint32_t const sysstatus;
-> +	OMAP4_RESERVED(0x18, 0x40);
-> +	uint32_t ctrl;
-> +	OMAP4_RESERVED(0x44, 0x5C);
-> +	uint32_t const status;
-> +};
-> +
-> +
-> +struct omap4_regs_dispc_vid {
-> +	uint32_t ba[2];
-> +	uint32_t position;
-> +	uint32_t size;
-> +	uint32_t attributes;
-> +	uint32_t buf_threshold;
-> +	uint32_t const buf_size_status;
-> +	uint32_t row_inc;
-> +	uint32_t pixel_inc;
-> +	uint32_t fir;
-> +	uint32_t picture_size;
-> +	uint32_t accu[2];
-> +	struct {
-> +		uint32_t h;
-> +		uint32_t hv;
-> +	} fir_coef[8];
-> +	uint32_t conv_coef0;
-> +	uint32_t conv_coef1;
-> +	uint32_t conv_coef2;
-> +	uint32_t conv_coef3;
-> +	uint32_t conv_coef4;
-> +};
-> +
-> +/* TRM: 10.2.7.3 Display Controller Registers */
-> +struct omap4_regs_dispc {
-> +	uint32_t const revision;
-> +	OMAP4_RESERVED(0x04, 0x10);
-> +	uint32_t sysconfig;
-> +	uint32_t const sysstatus;
-> +	uint32_t irqstatus;
-> +	uint32_t irqenable;
-> +	OMAP4_RESERVED(0x20, 0x40);
-> +	uint32_t control1;
-> +	uint32_t config1;
-> +	OMAP4_RESERVED(0x48, 0x4C);
-> +
-> +	uint32_t default_color[2];
-> +	uint32_t trans_color[2];
-> +
-> +	uint32_t const line_status;
-> +	uint32_t line_number;
-> +	uint32_t timing_h1;
-> +	uint32_t timing_v1;
-> +	uint32_t pol_freq1;
-> +	uint32_t divisor1;
-> +	uint32_t global_alpha;
-> +	uint32_t size_tv;
-> +	uint32_t size_lcd1;
-> +
-> +	struct {
-> +		uint32_t ba[2];
-> +		uint32_t position;
-> +		uint32_t size;
-> +		OMAP4_RESERVED(0x90, 0xA0);
-> +		uint32_t attributes;
-> +		uint32_t buf_threshold;
-> +		uint32_t const buf_size_status;
-> +		uint32_t row_inc;
-> +		uint32_t pixel_inc;
-> +		OMAP4_RESERVED(0xB4, 0xB8);
-> +		uint32_t table_ba;
-> +	} gfx;
-> +
-> +	struct omap4_regs_dispc_vid vid1;
-> +	OMAP4_RESERVED(0x144, 0x14C);
-> +	struct omap4_regs_dispc_vid vid2;
-> +
-> +	uint32_t data1_cycle[3];
-> +
-> +	uint32_t vid1_fir_coef_v[8];
-> +	uint32_t vid2_fir_coef_v[8];
-> +	uint32_t cpr1_coef_r;
-> +	uint32_t cpr1_coef_g;
-> +	uint32_t cpr1_coef_b;
-> +	uint32_t gfx_preload;
-> +	uint32_t vid_preload[2];
-> +	uint32_t control2;
-> +	OMAP4_RESERVED(0x23C, 0x300);
-> +
-> +	struct {
-> +		uint32_t accu[2];
-> +		uint32_t ba[2];
-> +		struct {
-> +			uint32_t h;
-> +			uint32_t hv;
-> +		} fir_coef[8];
-> +		uint32_t fir_coef_v[8];
-> +		uint32_t attributes;
-> +		uint32_t conv_coef0;
-> +		uint32_t conv_coef1;
-> +		uint32_t conv_coef2;
-> +		uint32_t conv_coef3;
-> +		uint32_t conv_coef4;
-> +		uint32_t const buf_size_status;
-> +		uint32_t buf_threshold;
-> +		uint32_t fir;
-> +		uint32_t picture_size;
-> +		uint32_t pixel_inc;
-> +		uint32_t position;
-> +		uint32_t preload;
-> +		uint32_t row_inc;
-> +		uint32_t size;
-> +	} vid3;
-> +
-> +	uint32_t default_color2;
-> +	uint32_t trans_color2;
-> +	uint32_t cpr2_coef_b;
-> +	uint32_t cpr2_coef_g;
-> +	uint32_t cpr2_coef_r;
-> +	uint32_t data2_cycle[3];
-> +	uint32_t size_lcd2;
-> +	OMAP4_RESERVED(0x3D0, 0x400);
-> +	uint32_t timing_h2;
-> +	uint32_t timing_v2;
-> +	uint32_t pol_freq2;
-> +	uint32_t divisor2;
-> +	OMAP4_RESERVED(0x410, 0x500);
-> +
-> +	struct {
-> +		uint32_t accu[2];
-> +		uint32_t ba[2];
-> +		struct {
-> +			uint32_t h;
-> +			uint32_t hv;
-> +		} fir_coef[8];
-> +		uint32_t fir_coef_v[8];
-> +		uint32_t attributes;
-> +		uint32_t conv_coef0;
-> +		uint32_t conv_coef1;
-> +		uint32_t conv_coef2;
-> +		uint32_t conv_coef3;
-> +		uint32_t conv_coef4;
-> +		uint32_t const buf_size_status;
-> +		uint32_t buf_threshold;
-> +		uint32_t fir;
-> +		uint32_t picture_size;
-> +		uint32_t pixel_inc;
-> +		OMAP4_RESERVED(0x59C, 0x5A4);
-> +		uint32_t row_inc;
-> +		uint32_t size;
-> +	} wb;
-> +
-> +	OMAP4_RESERVED(0x5AC, 0x600);
-> +	uint32_t vid1_ba_uv[2];
-> +	uint32_t vid2_ba_uv[2];
-> +	uint32_t vid3_ba_uv[2];
-> +	uint32_t wb_ba_uv[2];
-> +	uint32_t config2;
-> +	uint32_t vid1_attributes2;
-> +	uint32_t vid2_attributes2;
-> +	uint32_t vid3_attributes2;
-> +	uint32_t gamma_table0;
-> +	uint32_t gamma_table1;
-> +	uint32_t gamma_table2;
-> +	uint32_t vid1_fir2;
-> +	uint32_t vid1_accu2[2];
-> +	struct {
-> +		uint32_t h2;
-> +		uint32_t hv2;
-> +	} vid1_fir_coef[8];
-> +	uint32_t vid1_fir_coef_v2[8];
-> +	uint32_t vid2_fir2;
-> +	uint32_t vid2_accu2[2];
-> +	struct {
-> +		uint32_t h2;
-> +		uint32_t hv2;
-> +	} vid2_fir_coef[8];
-> +	uint32_t vid2_fir_coef_v2[8];
-> +	OMAP4_RESERVED(0x714, 0x724);
-> +	uint32_t vid3_fir2;
-> +	uint32_t vid3_accu2[2];
-> +	struct {
-> +		uint32_t h2;
-> +		uint32_t hv2;
-> +	} vid3_fir_coef[8];
-> +	uint32_t vid3_fir_coef_v2[8];
-> +	uint32_t wb_fir2;
-> +	uint32_t wb_accu2[2];
-> +	OMAP4_RESERVED(0x79C, 0x7A0);
-> +	struct {
-> +		uint32_t h2;
-> +		uint32_t hv2;
-> +	} wb_fir_coef[8];
-> +	uint32_t wb_fir_coef_v2[8];
-> +	uint32_t global_buffer;
-> +	uint32_t divisor;
-> +	OMAP4_RESERVED(0x808, 0x810);
-> +	uint32_t wb_attributes2;
-> +};
-> +
-> +#define DSS_DISPC_VIDn_POSITION_VIDPOSX(_x)		((_x) << 0)
-> +#define DSS_DISPC_VIDn_POSITION_VIDPOSY(_y)		((_y) << 16)
-> +
-> +#define DSS_DISPC_VIDn_PICTURE_SIZE_VIDORGSIZEX(_x)	((_x) << 0)
-> +#define DSS_DISPC_VIDn_PICTURE_SIZE_VIDORGSIZEY(_y)	((_y) << 16)
-> +
-> +#define DSS_DISPC_VIDn_SIZE_VIDSIZEX(_x)		((_x) << 0)
-> +#define DSS_DISPC_VIDn_SIZE_VIDSIZEY(_y)		((_y) << 16)
-> +
-> +#define DSS_DISPC_SIZE_LCD_PPL(_x)			((_x) << 0)
-> +#define DSS_DISPC_SIZE_LCD_LPP(_y)			((_y) << 16)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDENABLE		(1u << 0)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(_fmt)	((_fmt) << 1)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_RGB12	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(4u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_ARGB16	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(5u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_RGB16	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(6u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_ARGB16o	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(7u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_xRGB24u	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(8u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_RGB24p	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(9u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_YUV2	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(10u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_UYVY	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(11u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_ARGB32	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(12u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_RGBA32	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(13u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT_xRGB32	\
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDFORMAT(14u)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE(_f)	((_f) << 5)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE_NONE \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE(0u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE_H \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE(1u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE_V \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE(2u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE_HV \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDRESIZEENABLE(3u)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDCOLORCONVENABLE	(1u << 9)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDREPLICATIONENABLE	(1u << 10)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFULLRANGE		(1u << 11)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION(_r)	((_r) << 12)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION_0 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION(0u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION_90 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION(1u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION_180 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION(2u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION_270 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDROTATION(3u)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE(_b)	((_b) << 14)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE_2x128 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE(0u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE_4x128 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE(1u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE_8x128 \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_VIDBURSTSIZE(2u)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDCHANNELOUT	(1u << 16)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_SELFREFRESHAUTO	(1u << 17)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDFIFOPRELOAD	(1u << 19)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDVERTICALTAPS	(1u << 21)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_DOUBLESTRIDE		(1u << 22)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDARBITRATION	(1u << 23)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_VIDSELFREFRESH	(1u << 24)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_ZORDERENABLE		(1u << 25)
-> +
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2(_b)  ((_b) << 30)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2_PRIMARY_LCD \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2(0u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2_SECONDARY_LCD \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2(1u)
-> +#define DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2_WRITEBACK_MEM \
-> +	DSS_DISPC_VIDn_ATTRIBUTES_CHANNELOUT2(3u)
-> +
-> +#define DSS_DISPC_CONFIG_PIXELGATED			(1u << 0)
-> +#define DSS_DISPC_CONFIG_PIXELDATAGATED		(1u << 4)
-> +#define DSS_DISPC_CONFIG_PIXELCLOCKGATED		(1u << 5)
-> +#define DSS_DISPC_CONFIG_HSYNCGATED			(1u << 6)
-> +#define DSS_DISPC_CONFIG_VSYNCGATED			(1u << 7)
-> +#define DSS_DISPC_CONFIG_ACBIASGATED			(1u << 8)
-> +#define DSS_DISPC_CONFIG_FUNCGATED			(1u << 9)
-> +#define DSS_DISPC_CONFIG_TCKLCDENABLE			(1u << 10)
-> +#define DSS_DISPC_CONFIG_TCKLCDSELECTION		(1u << 11)
-> +#define DSS_DISPC_CONFIG_CPR				(1u << 15)
-> +#define DSS_DISPC_CONFIG_FIFOHANDCHECK			(1u << 16)
-> +#define DSS_DISPC_CONFIG_OUTPUTMODE			(1u << 22)
-> +#define DSS_DISPC_CONFIG_FIDFIRST			(1u << 23)
-> +#define DSS_DISPC_CONFIG_COLORCONV			(1u << 24)
-> +#define DSS_DISPC_CONFIG_FULLRANGE			(1u << 25)
-> +
-> +#define DSS_DISPC_CONTROL_LCDENABLE			(1u << 0)
-> +#define DSS_DISPC_CONTROL_TVENABLE			(1u << 1)
-> +#define DSS_DISPC_CONTROL_MONOCOLOR			(1u << 2)
-> +#define DSS_DISPC_CONTROL_STNTFT			(1u << 3)
-> +#define DSS_DISPC_CONTROL_M8B				(1u << 4)
-> +#define DSS_DISPC_CONTROL_GOLCD			(1u << 5)
-> +#define DSS_DISPC_CONTROL_GOTV				(1u << 6)
-> +#define DSS_DISPC_CONTROL_STDITHERENABLE		(1u << 7)
-> +
-> +#define DSS_DISPC_CONTROL_TFTDATALINES(_l)		((_l) << 8)
-> +#define DSS_DISPC_CONTROL_TFTDATALINES_12 \
-> +	DSS_DISPC_CONTROL_TFTDATALINES(0u)
-> +#define DSS_DISPC_CONTROL_TFTDATALINES_16 \
-> +	DSS_DISPC_CONTROL_TFTDATALINES(1u)
-> +#define DSS_DISPC_CONTROL_TFTDATALINES_18 \
-> +	DSS_DISPC_CONTROL_TFTDATALINES(2u)
-> +#define DSS_DISPC_CONTROL_TFTDATALINES_24 \
-> +	DSS_DISPC_CONTROL_TFTDATALINES(3u)
-> +
-> +#define DSS_DISPC_CONTROL_STALLMODE			(1u << 11)
-> +#define DSS_DISPC_CONTROL_OVERLAYOPTIMIZATION		(1u << 12)
-> +#define DSS_DISPC_CONTROL_GPIN0			(1u << 13) /* ro */
-> +#define DSS_DISPC_CONTROL_GPIN1			(1u << 14) /* ro */
-> +#define DSS_DISPC_CONTROL_GPOUT0			(1u << 15)
-> +#define DSS_DISPC_CONTROL_GPOUT1			(1u << 16)
-> +#define DSS_DISPC_CONTROL_HT(_ht)			((_ht) << 17)
-> +#define DSS_DISPC_CONTROL_TDMENABLE			(1u << 20)
-> +#define DSS_DISPC_CONTROL_TDMPARALLELMODE(_pm)		((_pm) << 21)
-> +#define DSS_DISPC_CONTROL_TDMCYCLEFORMAT(_cf)		((_cf) << 23)
-> +#define DSS_DISPC_CONTROL_TDMUNUSEDBITS(_ub)		((_ub) << 25)
-> +#define DSS_DISPC_CONTROL_PCKFREEENABLE		(1u << 27)
-> +#define DSS_DISPC_CONTROL_LCDENABLESIGNAL		(1u << 28)
-> +#define DSS_DISPC_CONTROL_LCDENABLEPOL			(1u << 29)
-> +#define DSS_DISPC_CONTROL_SPATIALTEMPD(_df)		((_df) << 30)
-> +
-> +#define DSS_DISPC_POL_FREQ_IVS				(1u << 12)
-> +#define DSS_DISPC_POL_FREQ_IHS				(1u << 13)
-> +#define DSS_DISPC_POL_FREQ_IPC				(1u << 14)
-> +#define DSS_DISPC_POL_FREQ_IEO				(1u << 15)
-> +#define DSS_DISPC_POL_FREQ_RF				(1u << 16)
-> +#define DSS_DISPC_POL_FREQ_ONOFF			(1u << 17)
-> +
-> +#define DSS_DISPC_TIMING_H_HSW(_hsw)			((_hsw) << 0)
-> +#define DSS_DISPC_TIMING_H_HFP(_hfp)			((_hfp) << 8)
-> +#define DSS_DISPC_TIMING_H_HBP(_hbp)			((_hbp) << 20)
-> +
-> +#define DSS_DISPC_TIMING_V_VSW(_vsw)			((_vsw) << 0)
-> +#define DSS_DISPC_TIMING_V_VFP(_vfp)			((_vfp) << 8)
-> +#define DSS_DISPC_TIMING_V_VBP(_vbp)			((_vbp) << 20)
-> +
-> +#define DSS_DISPC_DIVISOR_ENABLE			(1u << 0)
-> +#define DSS_DISPC_DIVISOR_LCD(_lcd)			((_lcd) << 16)
-> +
-> +#define DSS_DISPC_DIVISOR2_PCD(_pcd)			((_pcd) << 0)
-> +#define DSS_DISPC_DIVISOR2_LCD(_lcd)			((_lcd) << 16)
-> +
-> +#define DSS_DISPC_IRQSTATUS_FRAMEDONE			(1u << 0)
-> +#define DSS_DISPC_IRQSTATUS_FRAMEDONE2			(1u << 22)
-> +
-> +#define DSS_DSS_SYSCONFIG_SOFTRESET			(1u << 1)
-> +#define DSS_DSS_SYSSTATUS_RESETDONE			(1u << 0)
-> +
-> +#define DSS_DSS_CONTROL_DISPC_CLK_SWITCH		(1u << 0)
-> +#define DSS_DSS_CONTROL_DSI_CLK_SWITCH			(1u << 1)
-> +
-> +#define CM_FCLKEN_DSS_EN_DSS1	(1u << 0)
-> +#define CM_FCLKEN_DSS_EN_DSS2	(1u << 1)
-> +#define CM_FCLKEN_DSS_EN_TV	(1u << 2)
-> +
-> +#define CM_ICLKEN_DSS_EN_DSS	(1u << 0)
-> +
-> +
-> +#undef OMAP4_RESERVED
-> +
-> +#endif	/* H_BAREBOX_DRIVER_VIDEO_OMAP4_REGS_H */
-> -- 
-> 1.7.10.4
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMjE6NTQgU3VuIDA3IEFwciAgICAgLCBLcnp5c3p0b2YgSGFsYXNhIHdyb3RlOgo+IFNpZ25l
+ZC1vZmYtYnk6IEtyenlzenRvZiBIYcWCYXNhIDxraGNAcG0ud2F3LnBsPgo+IAo+IGRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9LY29uZmlnIGIvYXJjaC9hcm0vS2NvbmZpZwo+IGluZGV4IGJiOWI0N2Iu
+LjJhNzc1ZDUgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vS2NvbmZpZwo+ICsrKyBiL2FyY2gvYXJt
+L0tjb25maWcKPiBAQCAtNzksNiArNzksMTIgQEAgY29uZmlnIEFSQ0hfSU1YCj4gIAlzZWxlY3Qg
+V0FUQ0hET0dfSU1YX1JFU0VUX1NPVVJDRQo+ICAJc2VsZWN0IEhBU19ERUJVR19MTAo+ICAKPiAr
+Y29uZmlnIEFSQ0hfSVhQNFhYCj4gKwlib29sICJJbnRlbCBJWFA0eHgtYmFzZWQiCj4gKwlzZWxl
+Y3QgQ1BVX1hTQ0FMRQo+ICsJc2VsZWN0IEFSQ0hfU1VQUE9SVFNfQklHX0VORElBTgo+ICsJc2Vs
+ZWN0IENQVV9CSUdfRU5ESUFOCj4gKwo+ICBjb25maWcgQVJDSF9NWFMKPiAgCWJvb2wgIkZyZWVz
+Y2FsZSBpLk1YMjMvMjggKG14cykgYmFzZWQiCj4gIAlzZWxlY3QgR0VORVJJQ19HUElPCj4gQEAg
+LTE1Myw2ICsxNTksNyBAQCBzb3VyY2UgYXJjaC9hcm0vbWFjaC1jbHBzNzExeC9LY29uZmlnCj4g
+IHNvdXJjZSBhcmNoL2FybS9tYWNoLWVwOTN4eC9LY29uZmlnCj4gIHNvdXJjZSBhcmNoL2FybS9t
+YWNoLWhpZ2hiYW5rL0tjb25maWcKPiAgc291cmNlIGFyY2gvYXJtL21hY2gtaW14L0tjb25maWcK
+PiArc291cmNlIGFyY2gvYXJtL21hY2gtaXhwNHh4L0tjb25maWcKPiAgc291cmNlIGFyY2gvYXJt
+L21hY2gtbXhzL0tjb25maWcKPiAgc291cmNlIGFyY2gvYXJtL21hY2gtbmV0eC9LY29uZmlnCj4g
+IHNvdXJjZSBhcmNoL2FybS9tYWNoLW5vbWFkaWsvS2NvbmZpZwo+IGRpZmYgLS1naXQgYS9hcmNo
+L2FybS9NYWtlZmlsZSBiL2FyY2gvYXJtL01ha2VmaWxlCj4gaW5kZXggZDUwNmIxMi4uNTg0ZDM5
+YiAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9NYWtlZmlsZQo+ICsrKyBiL2FyY2gvYXJtL01ha2Vm
+aWxlCj4gQEAgLTU3LDYgKzU3LDcgQEAgbWFjaGluZS0kKENPTkZJR19BUkNIX0NMUFM3MTFYKQkJ
+Oj0gY2xwczcxMXgKPiAgbWFjaGluZS0kKENPTkZJR19BUkNIX0VQOTNYWCkJCTo9IGVwOTN4eAo+
+ICBtYWNoaW5lLSQoQ09ORklHX0FSQ0hfSElHSEJBTkspCQk6PSBoaWdoYmFuawo+ICBtYWNoaW5l
+LSQoQ09ORklHX0FSQ0hfSU1YKQkJOj0gaW14Cj4gK21hY2hpbmUtJChDT05GSUdfQVJDSF9JWFA0
+WFgpCQk6PSBpeHA0eHgKPiAgbWFjaGluZS0kKENPTkZJR19BUkNIX01YUykJCTo9IG14cwo+ICBt
+YWNoaW5lLSQoQ09ORklHX0FSQ0hfTk9NQURJSykJCTo9IG5vbWFkaWsKPiAgbWFjaGluZS0kKENP
+TkZJR19BUkNIX05FVFgpCQk6PSBuZXR4Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtaXhw
+NHh4L0tjb25maWcgYi9hcmNoL2FybS9tYWNoLWl4cDR4eC9LY29uZmlnCj4gbmV3IGZpbGUgbW9k
+ZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi5lNjlkZTI5Cj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJt
+L21hY2gtaXhwNHh4L01ha2VmaWxlIGIvYXJjaC9hcm0vbWFjaC1peHA0eHgvTWFrZWZpbGUKPiBu
+ZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLmQ4YTNkN2YKPiAtLS0gL2Rldi9u
+dWxsCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1peHA0eHgvTWFrZWZpbGUKPiBAQCAtMCwwICsxIEBA
+Cj4gK29iai15ICs9IGdlbmVyaWMubwo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWl4cDR4
+eC9nZW5lcmljLmMgYi9hcmNoL2FybS9tYWNoLWl4cDR4eC9nZW5lcmljLmMKPiBuZXcgZmlsZSBt
+b2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLmU4MTk5NGIKPiAtLS0gL2Rldi9udWxsCj4gKysr
+IGIvYXJjaC9hcm0vbWFjaC1peHA0eHgvZ2VuZXJpYy5jCj4gQEAgLTAsMCArMSwxMTQgQEAKPiAr
+I2luY2x1ZGUgPGNvbW1vbi5oPgo+ICsjaW5jbHVkZSA8aW5pdC5oPgo+ICsjaW5jbHVkZSA8bnMx
+NjU1MC5oPgo+ICsjaW5jbHVkZSA8YXNtL2FybWxpbnV4Lmg+Cj4gKyNpbmNsdWRlIDxhc20vaW8u
+aD4KPiArI2luY2x1ZGUgPG1hY2gvaXhwNHh4LXJlZ3MuaD4KPiArCj4gKyNkZWZpbmUgT1NUU19G
+UkVRVUVOQ1kgNjY2NjYwMDAKPiArCj4gK3ZvaWQgcmVzZXRfY3B1KHVsb25nIGFkZHIpCj4gK3sK
+PiArCS8qIFVzZSBvbi1jaGlwIHJlc2V0IGNhcGFiaWxpdHkgKi8KPiArCS8qIFRoaXMgbWF5IG5v
+dCB3b3JrIG9uIElYUDQyNSByZXYuIEEwICovCj4gKwo+ICsJSVhQNFhYX09TV0sgPSBJWFA0WFhf
+V0RUX0tFWTsKPiArCUlYUDRYWF9PU1dUID0gMDsgLyogcmVxdWVzdCBpbW1lZGlhdGUgcmVzZXQg
+Ki8KPiArCUlYUDRYWF9PU1dFID0gSVhQNFhYX1dEVF9SRVNFVF9FTkFCTEUgfCBJWFA0WFhfV0RU
+X0NPVU5UX0VOQUJMRTsKPiArCXdoaWxlICgxKQo+ICsJCTsKPiArfQo+ICsKPiArI2luY2x1ZGUg
+PGNsb2NrLmg+Cj4gKwo+ICsvKioKPiArICogQGJyaWVmIFByb3ZpZGUgYSBzaW1wbGUgY2xvY2sg
+cmVhZAo+ICsgKgo+ICsgKiBOb3RoaW5nIGlzIHNpbXBsZXIuLiByZWFkIGRpcmVjdCBmcm9tIGNs
+b2NrIGFuZCBwcm92aWRlIGl0Cj4gKyAqIHRvIHRoZSBjYWxsZXIuCj4gKyAqCj4gKyAqIEByZXR1
+cm4gY2xvY2sgY291bnRlcgo+ICsgKi8KPiArc3RhdGljIHVpbnQ2NF90IGl4cDR4eF9jbG9ja3Nv
+dXJjZV9yZWFkKHZvaWQpCj4gK3sKPiArCXJldHVybiBJWFA0WFhfT1NUUzsKPiArfQo+ICsKPiAr
+c3RhdGljIHN0cnVjdCBjbG9ja3NvdXJjZSBjcyA9IHsKPiArCS5yZWFkID0gaXhwNHh4X2Nsb2Nr
+c291cmNlX3JlYWQsCj4gKwkubWFzayA9IDB4ZmZmZmZmZmYsCnVzZSBDTE9DS1NPVVJDRV9NQVNL
+KDMyKSwKPiArCS5zaGlmdCA9IDEwLAo+ICt9Owo+ICsKPiArLyoqCj4gKyAqIEBicmllZiBJbml0
+aWFsaXplIHRoZSBDbG9jawo+ICsgKgo+ICsgKiBXZSB1c2UgdGhlIFRpbWUtU3RhbXAgVGltZXIK
+PiArICoKPiArICogQHJldHVybiByZXN1bHQgb2YgQHJlZiBpbml0X2Nsb2NrCj4gKyAqLwo+ICtz
+dGF0aWMgaW50IGl4cDR4eF9jbG9ja3NvdXJjZV9pbml0KHZvaWQpCj4gK3sKPiArCWNzLm11bHQg
+PSBjbG9ja3NvdXJjZV9oejJtdWx0KE9TVFNfRlJFUVVFTkNZLCBjcy5zaGlmdCk7Cj4gKwo+ICsJ
+cmV0dXJuIGluaXRfY2xvY2soJmNzKTsKPiArfQo+ICsKPiArLyogUnVuIG1lIGF0IGJvb3QgdGlt
+ZSAqLwo+ICtjb3JlX2luaXRjYWxsKGl4cDR4eF9jbG9ja3NvdXJjZV9pbml0KTsKPiArCj4gKwo+
+ICsjaWZkZWYgQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMxNjU1MAo+ICsKPiArLyoqCj4gKyAqIEBi
+cmllZiBVQVJUIHBvcnQgcmVnaXN0ZXIgcmVhZCBmdW5jdGlvbiBmb3IgSVhQNFhYCj4gKyAqCj4g
+KyAqIEBwYXJhbSBiYXNlIGJhc2UgYWRkcmVzcyBvZiBVQVJUCj4gKyAqIEBwYXJhbSByZWdfaWR4
+IHJlZ2lzdGVyIGluZGV4Cj4gKyAqCj4gKyAqIEByZXR1cm4gY2hhcmFjdGVyIHJlYWQgZnJvbSBy
+ZWdpc3Rlcgo+ICsgKi8KPiArdW5zaWduZWQgaW50IGl4cDR4eF91YXJ0X3JlYWQodW5zaWduZWQg
+bG9uZyBiYXNlLCB1bnNpZ25lZCBjaGFyIHJlZ19pZHgpCj4gK3sKPiArCXJldHVybiByZWFkYig0
+ICogcmVnX2lkeCArIDMgLyogYmlnLWVuZGlhbiAqLyArICh1aW50OF90ICopYmFzZSk7CmRyb3Ag
+dGhlIDQgYW5kIHVzZSBzaGlmdCA9IDIgaW4gcGRhdGEKPiArfQo+ICtFWFBPUlRfU1lNQk9MKGl4
+cDR4eF91YXJ0X3JlYWQpOwo+ICsKPiArLyoqCj4gKyAqIEBicmllZiBVQVJUIHBvcnQgcmVnaXN0
+ZXIgd3JpdGUgZnVuY3Rpb24gZm9yIElYUDRYWAo+ICsgKgo+ICsgKiBAcGFyYW0gdmFsIHZhbHVl
+IHRvIHdyaXRlCj4gKyAqIEBwYXJhbSBiYXNlIGJhc2UgYWRkcmVzcyBvZiBVQVJUCj4gKyAqIEBw
+YXJhbSByZWdfaWR4IHJlZ2lzdGVyIGluZGV4Cj4gKyAqCj4gKyAqIEByZXR1cm4gdm9pZAo+ICsg
+Ki8KPiArdm9pZCBpeHA0eHhfdWFydF93cml0ZSh1bnNpZ25lZCBpbnQgdmFsLCB1bnNpZ25lZCBs
+b25nIGJhc2UsIHVuc2lnbmVkIGNoYXIgcmVnX2lkeCkKPiArewo+ICsJd3JpdGViKHZhbCwgNCAq
+IHJlZ19pZHggKyAzIC8qIGJpZy1lbmRpYW4gKi8gKyAodWludDhfdCAqKWJhc2UpOwo+ICt9Cj4g
+K0VYUE9SVF9TWU1CT0woaXhwNHh4X3VhcnRfd3JpdGUpOwo+ICsKPiArCj4gK3N0YXRpYyBzdHJ1
+Y3QgTlMxNjU1MF9wbGF0IHNlcmlhbF9wbGF0ID0gewo+ICsJLmNsb2NrID0gMTQ3NDU2MDAsCj4g
+KwkuZl9jYXBzID0gQ09OU09MRV9TVERJTiB8IENPTlNPTEVfU1RET1VUIHwgQ09OU09MRV9TVERF
+UlIsCj4gKwkucmVnX3JlYWQgPSBpeHA0eHhfdWFydF9yZWFkLAo+ICsJLnJlZ193cml0ZSA9IGl4
+cDR4eF91YXJ0X3dyaXRlLAo+ICt9Owo+ICsKPiArLyoqCj4gKyAqIEBicmllZiBVQVJUIHNlcmlh
+bCBwb3J0IGluaXRpYWxpemF0aW9uCj4gKyAqCj4gKyAqIEByZXR1cm4gcmVzdWx0IG9mIGRldmlj
+ZSByZWdpc3RyYXRpb24KPiArICovCj4gK3N0YXRpYyBpbnQgaXhwNHh4X2NvbnNvbGVfaW5pdCh2
+b2lkKQo+ICt7Cj4gKwkvKiBSZWdpc3RlciB0aGUgc2VyaWFsIHBvcnQgKi8KPiArCWFkZF9uczE2
+NTUwX2RldmljZSgwLCAodTMyKUlYUDRYWF9VQVJUMV9CQVNFLCAxMDI0LCBJT1JFU09VUkNFX01F
+TV84QklULCAmc2VyaWFsX3BsYXQpOwp3ZSBoYXZlIG11bHRpcGxlIHVhcnQgb24gaXhwIGRvIG5v
+IGhhcmQgY29kZSBpdAo+ICsJcmV0dXJuIDA7Cj4gK30KPiArCj4gK2NvbnNvbGVfaW5pdGNhbGwo
+aXhwNHh4X2NvbnNvbGVfaW5pdCk7Cj4gKwo+ICsjZW5kaWYgLyogQ09ORklHX0RSSVZFUl9TRVJJ
+QUxfTlMxNjU1MCAqLwo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLWl4cDR4eC9pbmNsdWRl
+L21hY2gvY3B1LmggYi9hcmNoL2FybS9tYWNoLWl4cDR4eC9pbmNsdWRlL21hY2gvY3B1LmgKPiBu
+ZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjFhZWY5MzIKPiAtLS0gL2Rldi9u
+dWxsCj4gKysrIGIvYXJjaC9hcm0vbWFjaC1peHA0eHgvaW5jbHVkZS9tYWNoL2NwdS5oCj4gQEAg
+LTAsMCArMSw1NSBAQAo+ICsvKgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMDcsIDIwMDkgS3J6eXN6
+dG9mIEhhbGFzYQo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMDcgTW9udGFWaXN0YSBTb2Z0d2FyZSwg
+SW5jLgo+ICsgKgo+ICsgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiBy
+ZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQo+ICsgKiBpdCB1bmRlciB0aGUgdGVybXMgb2Yg
+dGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZlcnNpb24gMiBhcwo+ICsgKiBwdWJsaXNo
+ZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbi4KPiArICoKPiArICovCj4gKwo+ICsj
+aWZuZGVmIF9fTUFDSF9DUFVfSF9fCj4gKyNkZWZpbmUgX19NQUNIX0NQVV9IX18KPiArCj4gKyNp
+bmNsdWRlIDxsaW51eC90eXBlcy5oPgo+ICsjaW5jbHVkZSA8YXNtL2NwdXR5cGUuaD4KPiArCj4g
+Ky8qIFByb2Nlc3NvciBpZCB2YWx1ZSBpbiBDUDE1IFJlZ2lzdGVyIDAgKi8KPiArI2RlZmluZSBJ
+WFA0MlhfUFJPQ0VTU09SX0lEX1ZBTFVFIDB4NjkwNTQxYzAgLyogaW5jbHVkaW5nIHVudXNlZCAw
+eDY5MDU0MUV4ICovCj4gKyNkZWZpbmUgSVhQNDJYX1BST0NFU1NPUl9JRF9NQVNLICAweGZmZmZm
+ZmMwCj4gKwo+ICsjZGVmaW5lIElYUDQzWF9QUk9DRVNTT1JfSURfVkFMVUUgMHg2OTA1NDA0MAo+
+ICsjZGVmaW5lIElYUDQzWF9QUk9DRVNTT1JfSURfTUFTSyAgMHhmZmZmZmZmMAo+ICsKPiArI2Rl
+ZmluZSBJWFA0NlhfUFJPQ0VTU09SX0lEX1ZBTFVFIDB4NjkwNTQyMDAgLyogaW5jbHVkaW5nIElY
+UDQ1NSAqLwo+ICsjZGVmaW5lIElYUDQ2WF9QUk9DRVNTT1JfSURfTUFTSyAgMHhmZmZmZmZmMAo+
+ICsKPiArI2RlZmluZSBjcHVfaXNfaXhwNDJ4X3Jldl9hMCgpICgocmVhZF9jcHVpZF9pZCgpICYg
+KElYUDQyWF9QUk9DRVNTT1JfSURfTUFTSyB8IDB4RikpID09IFwKPiArCQkJCUlYUDQyWF9QUk9D
+RVNTT1JfSURfVkFMVUUpCj4gKyNkZWZpbmUgY3B1X2lzX2l4cDQyeCgpICgocmVhZF9jcHVpZF9p
+ZCgpICYgSVhQNDJYX1BST0NFU1NPUl9JRF9NQVNLKSA9PSBcCj4gKwkJCSBJWFA0MlhfUFJPQ0VT
+U09SX0lEX1ZBTFVFKQo+ICsjZGVmaW5lIGNwdV9pc19peHA0M3goKSAoKHJlYWRfY3B1aWRfaWQo
+KSAmIElYUDQzWF9QUk9DRVNTT1JfSURfTUFTSykgPT0gXAo+ICsJCQkgSVhQNDNYX1BST0NFU1NP
+Ul9JRF9WQUxVRSkKPiArI2RlZmluZSBjcHVfaXNfaXhwNDZ4KCkgKChyZWFkX2NwdWlkX2lkKCkg
+JiBJWFA0NlhfUFJPQ0VTU09SX0lEX01BU0spID09IFwKPiArCQkJIElYUDQ2WF9QUk9DRVNTT1Jf
+SURfVkFMVUUpCj4gKwo+ICtzdGF0aWMgaW5saW5lIHUzMiBpeHA0eHhfcmVhZF9mZWF0dXJlX2Jp
+dHModm9pZCkKPiArewo+ICsJdTMyIHZhbCA9IH5JWFA0WFhfRVhQX0NGRzI7Cj4gKwo+ICsJaWYg
+KGNwdV9pc19peHA0MnhfcmV2X2EwKCkpCj4gKwkJcmV0dXJuIElYUDQyWF9GRUFUVVJFX01BU0sg
+JiB+KElYUDRYWF9GRUFUVVJFX1JDT01QIHwKPiArCQkJCQkgICAgICAgSVhQNFhYX0ZFQVRVUkVf
+QUVTKTsKPiArCWlmIChjcHVfaXNfaXhwNDJ4KCkpCj4gKwkJcmV0dXJuIHZhbCAmIElYUDQyWF9G
+RUFUVVJFX01BU0s7Cj4gKwlpZiAoY3B1X2lzX2l4cDQzeCgpKQo+ICsJCXJldHVybiB2YWwgJiBJ
+WFA0M1hfRkVBVFVSRV9NQVNLOwo+ICsJcmV0dXJuIHZhbCAmIElYUDQ2WF9GRUFUVVJFX01BU0s7
+Cj4gK30KPiArCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBpeHA0eHhfd3JpdGVfZmVhdHVyZV9iaXRz
+KHUzMiB2YWx1ZSkKPiArewo+ICsJSVhQNFhYX0VYUF9DRkcyID0gfnZhbHVlOwo+ICt9Cj4gKwo+
+ICsjZW5kaWYgLyogX01BQ0hfQ1BVX0ggKi8KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1p
+eHA0eHgvaW5jbHVkZS9tYWNoL2l4cDR4eC1oZWFkLmggYi9hcmNoL2FybS9tYWNoLWl4cDR4eC9p
+bmNsdWRlL21hY2gvaXhwNHh4LWhlYWQuaAo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXgg
+MDAwMDAwMC4uYjNkMzU3Zgo+IC0tLSAvZGV2L251bGwKPiArKysgYi9hcmNoL2FybS9tYWNoLWl4
+cDR4eC9pbmNsdWRlL21hY2gvaXhwNHh4LWhlYWQuaAo+IEBAIC0wLDAgKzEsMTYgQEAKPiArI2lu
+Y2x1ZGUgPG1hY2gvaXhwNHh4LXJlZ3MuaD4KPiArI2luY2x1ZGUgPGFzbS9iYXJlYm94LWFybS1o
+ZWFkLmg+Cj4gKwo+ICsubWFjcm8JaXhwNHh4X2NwdV9sb3dsZXZlbF9pbml0Cj4gKwo+ICsJYXJt
+X2NwdV9sb3dsZXZlbF9pbml0IHIwCj4gKwo+ICsJYWRkIHBjLCAjKDB4NTAwMDAwMDAgLSA0KSAv
+KiBqdW1wIHRvIFJPTSBhcmVhICovCj4gKwo+ICsJbW92IHIwLCAjKElYUDRYWF9FWFBfQ0ZHMCAm
+IDB4RkZGRjAwMDApCj4gKwlvcnIgcjAsICMoSVhQNFhYX0VYUF9DRkcwICYgMHgwMDAwRkZGRikK
+PiArCWxkciByMSwgW3IwXQo+ICsJYW5kIHIxLCByMSwgI34weDgwMDAwMDAwIC8qIHVubWFwIEVY
+UCBidXMgZnJvbSAweDAgKi8KPiArCXN0ciByMSwgW3IwXQo+ICsKPiArLmVuZG0KPiBkaWZmIC0t
+Z2l0IGEvYXJjaC9hcm0vbWFjaC1peHA0eHgvaW5jbHVkZS9tYWNoL2l4cDR4eC1yZWdzLmggYi9h
+cmNoL2FybS9tYWNoLWl4cDR4eC9pbmNsdWRlL21hY2gvaXhwNHh4LXJlZ3MuaAo+IG5ldyBmaWxl
+IG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMC4uZGE0ZGM4YQo+IC0tLSAvZGV2L251bGwKPiAr
+KysgYi9hcmNoL2FybS9tYWNoLWl4cDR4eC9pbmNsdWRlL21hY2gvaXhwNHh4LXJlZ3MuaAo+IEBA
+IC0wLDAgKzEsMzY1IEBACj4gKy8qCj4gKyAqIFJlZ2lzdGVyIGRlZmluaXRpb25zIGZvciBJWFA0
+eHggY2hpcHNldC4KPiArICoKPiArICogQ29weXJpZ2h0IChDKSAyMDAyIEludGVsIENvcnBvcmF0
+aW9uLgo+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMDMtMjAwNCBNb250YVZpc3RhIFNvZnR3YXJlLCBJ
+bmMuCj4gKyAqCj4gKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJl
+ZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5Cj4gKyAqIGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0
+aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgdmVyc2lvbiAyIGFzCj4gKyAqIHB1Ymxpc2hl
+ZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLgo+ICsgKgo+ICsgKi8KPiArCj4gKyNp
+Zm5kZWYgX0FTTV9BUk1fSVhQNFhYX0hfCj4gKyNkZWZpbmUgX0FTTV9BUk1fSVhQNFhYX0hfCj4g
+Kwo+ICsjaWZkZWYgX19BU1NFTUJMRVJfXwo+ICsjZGVmaW5lIElYUDRYWF9SRUcocmVnKSAgKHJl
+ZykKPiArI2Vsc2UKPiArI2RlZmluZSBJWFA0WFhfUkVHKHJlZykgICgqKHZvbGF0aWxlIHUzMiAq
+KShyZWcpKQo+ICsjZGVmaW5lIElYUDRYWF9CQVNFKHJlZykgKCh1MzIqKShyZWcpKQo+ICsjZW5k
+aWYKPiArCj4gKy8qIEV4cGFuc2lvbiBCdXMgcmVnaW9uICovCj4gKwo+ICsvKiBRdWV1ZSBNYW5h
+Z2VyICovCj4gKyNkZWZpbmUgSVhQNFhYX1FNR1JfQkFTRSAgICAgICAgICAgICAgKDB4NjAwMDAw
+MDApCj4gKyNkZWZpbmUgSVhQNFhYX1FNR1JfUkVHSU9OX1NJWkUgICAgICAgKDB4MDAwMDQwMDAp
+Cj4gKwo+ICsKPiArLyogUENJIENvbmZpZyByZWdpc3RlcnMgKi8KPiArI2RlZmluZSBJWFA0WFhf
+UENJX0NGR19CQVNFICAgICAgICAgICAoMHhDMDAwMDAwMCkKPiArI2RlZmluZSBJWFA0WFhfUENJ
+X0NGR19SRUdJT05fU0laRSAgICAoMHgwMDAwMTAwMCkKPiArCj4gKy8qIFBlcmlwaGVyYWwgc3Bh
+Y2UgKi8KPiArI2RlZmluZSBJWFA0WFhfUEVSSVBIRVJBTF9CQVNFICAgICAgICAoMHhDODAwMDAw
+MCkKPiArI2RlZmluZSBJWFA0WFhfUEVSSVBIRVJBTF9SRUdJT05fU0laRSAoMHgwMDAxMzAwMCkK
+PiArCj4gKy8qCj4gKyAqIERlYnVnIFVBUlQKPiArICoKPiArICogVGhpcyBpcyBiYXNpY2FsbHkg
+YSByZW1hcCBvZiBVQVJUMSBpbnRvIGEgcmVnaW9uIHRoYXQgaXMgc2VjdGlvbgo+ICsgKiBhbGln
+bmVkIHNvIHRoYXQgaXQgY2FuIGJlIHVzZWQgd2l0aCB0aGUgbG93LWxldmVsIGRlYnVnIGNvZGUu
+Cj4gKyAqLwo+ICsjZGVmaW5lIElYUDRYWF9ERUJVR19VQVJUX0JBU0UgICAgICAgICgweEM4MDAw
+MDAwKQo+ICsjZGVmaW5lIElYUDRYWF9ERUJVR19VQVJUX1JFR0lPTl9TSVpFICgweDAwMDAxMDAw
+KQo+ICsKPiArLyogRXhwYW5zaW9uIEJ1cyBDb250cm9sbGVyIHJlZ2lzdGVycy4gKi8KPiArI2Rl
+ZmluZSBJWFA0WFhfRVhQX0NTMCAgICAgICBJWFA0WFhfUkVHKDB4QzQwMDAwMDApCj4gKyNkZWZp
+bmUgSVhQNFhYX0VYUF9DUzEgICAgICAgSVhQNFhYX1JFRygweEM0MDAwMDA0KQo+ICsjZGVmaW5l
+IElYUDRYWF9FWFBfQ1MyICAgICAgIElYUDRYWF9SRUcoMHhDNDAwMDAwOCkKPiArI2RlZmluZSBJ
+WFA0WFhfRVhQX0NTMyAgICAgICBJWFA0WFhfUkVHKDB4QzQwMDAwMEMpCj4gKyNkZWZpbmUgSVhQ
+NFhYX0VYUF9DUzQgICAgICAgSVhQNFhYX1JFRygweEM0MDAwMDEwKQo+ICsjZGVmaW5lIElYUDRY
+WF9FWFBfQ1M1ICAgICAgIElYUDRYWF9SRUcoMHhDNDAwMDAxNCkKPiArI2RlZmluZSBJWFA0WFhf
+RVhQX0NTNiAgICAgICBJWFA0WFhfUkVHKDB4QzQwMDAwMTgpCj4gKyNkZWZpbmUgSVhQNFhYX0VY
+UF9DUzcgICAgICAgSVhQNFhYX1JFRygweEM0MDAwMDFDKQo+ICsKPiArI2RlZmluZSBJWFA0WFhf
+RVhQX0JBU0UobikgICgweDUwMDAwMDAwICsgKG4pICogMTAwMDAwMCkKPiArCj4gKyNkZWZpbmUg
+SVhQNFhYX0VYUF9FTiAgICAgICAgMHg4MDAwMDAwMAo+ICsjZGVmaW5lIElYUDRYWF9FWFBfVDEo
+bikgICAgKDB4MTAwMDAwMDAgKiAobikpIC8qIHZhbGlkOiAwIC0gMyAqLwo+ICsjZGVmaW5lIElY
+UDRYWF9FWFBfVDIobikgICAgKDB4MDQwMDAwMDAgKiAobikpIC8qIHZhbGlkOiAwIC0gMyAqLwo+
+ICsjZGVmaW5lIElYUDRYWF9FWFBfVDMobikgICAgKDB4MDA0MDAwMDAgKiAobikpIC8qIHZhbGlk
+OiAwIC0gMTUgKi8KPiArI2RlZmluZSBJWFA0WFhfRVhQX1Q0KG4pICAgICgweDAwMTAwMDAwICog
+KG4pKSAvKiB2YWxpZDogMCAtIDMgKi8KPiArI2RlZmluZSBJWFA0WFhfRVhQX1Q1KG4pICAgICgw
+eDAwMDEwMDAwICogKG4pKSAvKiB2YWxpZDogMCAtIDE1ICovCj4gKyNkZWZpbmUgSVhQNFhYX0VY
+UF9JTlRFTCAgICAgMHgwMDAwMDAwMAo+ICsjZGVmaW5lIElYUDRYWF9FWFBfTU9UTyAgICAgIDB4
+MDAwMDQwMDAKPiArI2RlZmluZSBJWFA0WFhfRVhQX0hQSSAgICAgICAweDAwMDA4MDAwCj4gKyNk
+ZWZpbmUgSVhQNFhYX0VYUF9CSVRTKG4pICAoMHgwMDAwMDQwMCAqICgobikgLSA5KSkgLyogdmFs
+aWQ6IDkgLSAyNCAqLwo+ICsjZGVmaW5lIElYUDRYWF9FWFBfQllURV9SRDE2IDB4MDAwMDAwNDAK
+PiArI2RlZmluZSBJWFA0WFhfRVhQX0hSRFlfUE9MICAweDAwMDAwMDIwCj4gKyNkZWZpbmUgSVhQ
+NFhYX0VYUF9NVVhfRU4gICAgMHgwMDAwMDAxMAo+ICsjZGVmaW5lIElYUDRYWF9FWFBfU1BMVF9F
+TiAgIDB4MDAwMDAwMDgKPiArI2RlZmluZSBJWFA0WFhfRVhQX1dSX0VOICAgICAweDAwMDAwMDAy
+Cj4gKyNkZWZpbmUgSVhQNFhYX0VYUF9CWVRFX0VOICAgMHgwMDAwMDAwMQo+ICsKPiArI2RlZmlu
+ZSBJWFA0WFhfRVhQX0NGRzAgICAgICBJWFA0WFhfUkVHKDB4QzQwMDAwMjApCj4gKyNkZWZpbmUg
+SVhQNFhYX0VYUF9DRkcxICAgICAgSVhQNFhYX1JFRygweEM0MDAwMDI0KQo+ICsjZGVmaW5lIElY
+UDRYWF9FWFBfQ0ZHMiAgICAgIElYUDRYWF9SRUcoMHhDNDAwMDAyOCkKPiArI2RlZmluZSBJWFA0
+WFhfRVhQX0NGRzMgICAgICBJWFA0WFhfUkVHKDB4QzQwMDAwMkMpCj4gKwo+ICsKPiArLyogUGVy
+aXBoZXJhbCBTcGFjZSBSZWdpc3RlciBSZWdpb24gQmFzZSBBZGRyZXNzZXMgKi8KPiArI2RlZmlu
+ZSBJWFA0WFhfVUFSVDFfQkFTRSAgICBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJBTF9CQVNF
+ICsgMHgwMDAwKQo+ICsjZGVmaW5lIElYUDRYWF9VQVJUMl9CQVNFICAgIElYUDRYWF9CQVNFKElY
+UDRYWF9QRVJJUEhFUkFMX0JBU0UgKyAweDEwMDApCj4gKyNkZWZpbmUgSVhQNFhYX1BNVV9CQVNF
+ICAgICAgSVhQNFhYX0JBU0UoSVhQNFhYX1BFUklQSEVSQUxfQkFTRSArIDB4MjAwMCkKPiArI2Rl
+ZmluZSBJWFA0WFhfSU5UQ19CQVNFICAgICBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJBTF9C
+QVNFICsgMHgzMDAwKQo+ICsjZGVmaW5lIElYUDRYWF9HUElPX0JBU0UgICAgIElYUDRYWF9CQVNF
+KElYUDRYWF9QRVJJUEhFUkFMX0JBU0UgKyAweDQwMDApCj4gKyNkZWZpbmUgSVhQNFhYX05QRUFf
+QkFTRSAgICAgSVhQNFhYX0JBU0UoSVhQNFhYX1BFUklQSEVSQUxfQkFTRSArIDB4NjAwMCkKPiAr
+I2RlZmluZSBJWFA0WFhfTlBFQl9CQVNFICAgICBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJB
+TF9CQVNFICsgMHg3MDAwKQo+ICsjZGVmaW5lIElYUDRYWF9OUEVDX0JBU0UgICAgIElYUDRYWF9C
+QVNFKElYUDRYWF9QRVJJUEhFUkFMX0JBU0UgKyAweDgwMDApCj4gKyNkZWZpbmUgSVhQNFhYX0V0
+aEJfQkFTRSAgICAgSVhQNFhYX0JBU0UoSVhQNFhYX1BFUklQSEVSQUxfQkFTRSArIDB4OTAwMCkK
+PiArI2RlZmluZSBJWFA0WFhfRXRoQ19CQVNFICAgICBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBI
+RVJBTF9CQVNFICsgMHhBMDAwKQo+ICsjZGVmaW5lIElYUDRYWF9VU0JfQkFTRSAgICAgIElYUDRY
+WF9CQVNFKElYUDRYWF9QRVJJUEhFUkFMX0JBU0UgKyAweEIwMDApCj4gKy8qIElYUDQ2eCBvbmx5
+ICovCj4gKyNkZWZpbmUgSVhQNFhYX0V0aEFfQkFTRSAgICAgSVhQNFhYX0JBU0UoSVhQNFhYX1BF
+UklQSEVSQUxfQkFTRSArIDB4QzAwMCkKPiArI2RlZmluZSBJWFA0WFhfRXRoQjFfQkFTRSAgICBJ
+WFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJBTF9CQVNFICsgMHhEMDAwKQo+ICsjZGVmaW5lIElY
+UDRYWF9FdGhCMl9CQVNFICAgIElYUDRYWF9CQVNFKElYUDRYWF9QRVJJUEhFUkFMX0JBU0UgKyAw
+eEUwMDApCj4gKyNkZWZpbmUgSVhQNFhYX0V0aEIzX0JBU0UgICAgSVhQNFhYX0JBU0UoSVhQNFhY
+X1BFUklQSEVSQUxfQkFTRSArIDB4RjAwMCkKPiArI2RlZmluZSBJWFA0WFhfVElNRVNZTkNfQkFT
+RSBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJBTF9CQVNFICsgMHgxMDAwMCkKPiArI2RlZmlu
+ZSBJWFA0WFhfSTJDX0JBU0UgICAgICBJWFA0WFhfQkFTRShJWFA0WFhfUEVSSVBIRVJBTF9CQVNF
+ICsgMHgxMTAwMCkKPiArI2RlZmluZSBJWFA0WFhfU1NQX0JBU0UgICAgICBJWFA0WFhfQkFTRShJ
+WFA0WFhfUEVSSVBIRVJBTF9CQVNFICsgMHgxMjAwMCkKPiArCj4gKy8qCj4gKyAgQ29uc3RhbnRz
+IHRvIG1ha2UgaXQgZWFzeSB0byBhY2Nlc3MgSW50ZXJydXB0IENvbnRyb2xsZXIgcmVnaXN0ZXJz
+Cj4gKyAqLwo+ICsjZGVmaW5lIElYUDRYWF9JQ1BSX09GRlNFVCAgIDB4MDAgLyogSW50ZXJydXB0
+IFN0YXR1cyAqLwo+ICsjZGVmaW5lIElYUDRYWF9JQ01SX09GRlNFVCAgIDB4MDQgLyogSW50ZXJy
+dXB0IEVuYWJsZSAqLwo+ICsjZGVmaW5lIElYUDRYWF9JQ0xSX09GRlNFVCAgIDB4MDggLyogSW50
+ZXJydXB0IElSUS9GSVEgU2VsZWN0ICovCj4gKyNkZWZpbmUgSVhQNFhYX0lDSVBfT0ZGU0VUICAg
+MHgwQyAvKiBJUlEgU3RhdHVzICovCj4gKyNkZWZpbmUgSVhQNFhYX0lDRlBfT0ZGU0VUICAgMHgx
+MCAvKiBGSVEgU3RhdHVzICovCj4gKyNkZWZpbmUgSVhQNFhYX0lDSFJfT0ZGU0VUICAgMHgxNCAv
+KiBJbnRlcnJ1cHQgUHJpb3JpdHkgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNJSF9PRkZTRVQgICAw
+eDE4IC8qIElSUSBIaWdoZXN0IFByaSBJbnQgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNGSF9PRkZT
+RVQgICAweDFDIC8qIEZJUSBIaWdoZXN0IFByaSBJbnQgKi8KPiArCj4gKy8qIElYUDQ2NS1vbmx5
+ICovCj4gKyNkZWZpbmUgSVhQNFhYX0lDUFIyX09GRlNFVCAgMHgyMCAvKiBJbnRlcnJ1cHQgU3Rh
+dHVzIDIgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNNUjJfT0ZGU0VUICAweDI0IC8qIEludGVycnVw
+dCBFbmFibGUgMiAqLwo+ICsjZGVmaW5lIElYUDRYWF9JQ0xSMl9PRkZTRVQgIDB4MjggLyogSW50
+ZXJydXB0IElSUS9GSVEgU2VsZWN0IDIgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNJUDJfT0ZGU0VU
+ICAweDJDIC8qIElSUSBTdGF0dXMgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNGUDJfT0ZGU0VUICAw
+eDMwIC8qIEZJUSBTdGF0dXMgKi8KPiArI2RlZmluZSBJWFA0WFhfSUNFRU5fT0ZGU0VUICAweDM0
+IC8qIEVycm9yIEhpZ2ggUHJpIEVuYWJsZSAqLwo+ICsKPiArCj4gKy8qIEludGVycnVwdCBDb250
+cm9sbGVyIFJlZ2lzdGVyIERlZmluaXRpb25zLiAqLwo+ICsjZGVmaW5lIElYUDRYWF9JTlRDX1JF
+Ryh4KSAgICgodm9sYXRpbGUgdTMyICopKElYUDRYWF9JTlRDX0JBU0UgKyAoeCkpKQo+ICsKPiAr
+I2RlZmluZSBJWFA0WFhfSUNQUiAgICAgICAgICBJWFA0WFhfSU5UQ19SRUcoSVhQNFhYX0lDUFJf
+T0ZGU0VUKQo+ICsjZGVmaW5lIElYUDRYWF9JQ01SICAgICAgICAgIElYUDRYWF9JTlRDX1JFRyhJ
+WFA0WFhfSUNNUl9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0lDTFIgICAgICAgICAgSVhQNFhY
+X0lOVENfUkVHKElYUDRYWF9JQ0xSX09GRlNFVCkKPiArI2RlZmluZSBJWFA0WFhfSUNJUCAgICAg
+ICAgICBJWFA0WFhfSU5UQ19SRUcoSVhQNFhYX0lDSVBfT0ZGU0VUKQo+ICsjZGVmaW5lIElYUDRY
+WF9JQ0ZQICAgICAgICAgIElYUDRYWF9JTlRDX1JFRyhJWFA0WFhfSUNGUF9PRkZTRVQpCj4gKyNk
+ZWZpbmUgSVhQNFhYX0lDSFIgICAgICAgICAgSVhQNFhYX0lOVENfUkVHKElYUDRYWF9JQ0hSX09G
+RlNFVCkKPiArI2RlZmluZSBJWFA0WFhfSUNJSCAgICAgICAgICBJWFA0WFhfSU5UQ19SRUcoSVhQ
+NFhYX0lDSUhfT0ZGU0VUKQo+ICsjZGVmaW5lIElYUDRYWF9JQ0ZIICAgICAgICAgIElYUDRYWF9J
+TlRDX1JFRyhJWFA0WFhfSUNGSF9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0lDUFIyICAgICAg
+ICAgSVhQNFhYX0lOVENfUkVHKElYUDRYWF9JQ1BSMl9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhY
+X0lDTVIyICAgICAgICAgSVhQNFhYX0lOVENfUkVHKElYUDRYWF9JQ01SMl9PRkZTRVQpCj4gKyNk
+ZWZpbmUgSVhQNFhYX0lDTFIyICAgICAgICAgSVhQNFhYX0lOVENfUkVHKElYUDRYWF9JQ0xSMl9P
+RkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0lDSVAyICAgICAgICAgSVhQNFhYX0lOVENfUkVHKElY
+UDRYWF9JQ0lQMl9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0lDRlAyICAgICAgICAgSVhQNFhY
+X0lOVENfUkVHKElYUDRYWF9JQ0ZQMl9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0lDRUVOICAg
+ICAgICAgSVhQNFhYX0lOVENfUkVHKElYUDRYWF9JQ0VFTl9PRkZTRVQpCj4gKwo+ICsvKiBDb25z
+dGFudHMgdG8gbWFrZSBpdCBlYXN5IHRvIGFjY2VzcyBHUElPIHJlZ2lzdGVycyAqLwo+ICsjZGVm
+aW5lIElYUDRYWF9HUElPX0dQT1VUUl9PRkZTRVQgICAweDAwCj4gKyNkZWZpbmUgSVhQNFhYX0dQ
+SU9fR1BPRVJfT0ZGU0VUICAgIDB4MDQKPiArI2RlZmluZSBJWFA0WFhfR1BJT19HUElOUl9PRkZT
+RVQgICAgMHgwOAo+ICsjZGVmaW5lIElYUDRYWF9HUElPX0dQSVNSX09GRlNFVCAgICAweDBDCj4g
+KyNkZWZpbmUgSVhQNFhYX0dQSU9fR1BJVDFSX09GRlNFVCAgIDB4MTAKPiArI2RlZmluZSBJWFA0
+WFhfR1BJT19HUElUMlJfT0ZGU0VUICAgMHgxNAo+ICsjZGVmaW5lIElYUDRYWF9HUElPX0dQQ0xL
+Ul9PRkZTRVQgICAweDE4Cj4gKyNkZWZpbmUgSVhQNFhYX0dQSU9fR1BEQlNFTFJfT0ZGU0VUIDB4
+MUMKPiArCj4gKy8qIEdQSU8gUmVnaXN0ZXIgRGVmaW5pdGlvbnMgLSBwZXJmb3JtIG9ubHkgMzIt
+Yml0IHJlYWRzL3dyaXRlcyAqLwo+ICsjZGVmaW5lIElYUDRYWF9HUElPX1JFRyh4KSAgICgodm9s
+YXRpbGUgdTMyICopKElYUDRYWF9HUElPX0JBU0UgKyAoeCkpKQo+ICsKPiArI2RlZmluZSBJWFA0
+WFhfR1BJT19HUE9VVFIgICBJWFA0WFhfR1BJT19SRUcoSVhQNFhYX0dQSU9fR1BPVVRSX09GRlNF
+VCkKPiArI2RlZmluZSBJWFA0WFhfR1BJT19HUE9FUiAgICBJWFA0WFhfR1BJT19SRUcoSVhQNFhY
+X0dQSU9fR1BPRVJfT0ZGU0VUKQo+ICsjZGVmaW5lIElYUDRYWF9HUElPX0dQSU5SICAgIElYUDRY
+WF9HUElPX1JFRyhJWFA0WFhfR1BJT19HUElOUl9PRkZTRVQpCj4gKyNkZWZpbmUgSVhQNFhYX0dQ
+SU9fR1BJU1IgICAgSVhQNFhYX0dQSU9fUkVHKElYUDRYWF9HUElPX0dQSVNSX09GRlNFVCkKPiAr
+I2RlZmluZSBJWFA0WFhfR1BJT19HUElUMVIgICBJWFA0WFhfR1BJT19SRUcoSVhQNFhYX0dQSU9f
+R1BJVDFSX09GRlNFVCkKPiArI2RlZmluZSBJWFA0WFhfR1BJT19HUElUMlIgICBJWFA0WFhfR1BJ
+T19SRUcoSVhQNFhYX0dQSU9fR1BJVDJSX09GRlNFVCkKPiArI2RlZmluZSBJWFA0WFhfR1BJT19H
+UENMS1IgICBJWFA0WFhfR1BJT19SRUcoSVhQNFhYX0dQSU9fR1BDTEtSX09GRlNFVCkKPiArI2Rl
+ZmluZSBJWFA0WFhfR1BJT19HUERCU0VMUiBJWFA0WFhfR1BJT19SRUcoSVhQNFhYX0dQSU9fR1BE
+QlNFTFJfT0ZGU0VUKQo+ICsKPiArLyogR1BJTyByZWdpc3RlciBiaXQgZGVmaW5pdGlvbnMgKi8K
+PiArCj4gKy8qIEludGVycnVwdCBzdHlsZXMgKi8KPiArI2RlZmluZSBJWFA0WFhfR1BJT19TVFlM
+RV9BQ1RJVkVfSElHSCAgMHgwCj4gKyNkZWZpbmUgSVhQNFhYX0dQSU9fU1RZTEVfQUNUSVZFX0xP
+VyAgIDB4MQo+ICsjZGVmaW5lIElYUDRYWF9HUElPX1NUWUxFX1JJU0lOR19FREdFICAweDIKPiAr
+I2RlZmluZSBJWFA0WFhfR1BJT19TVFlMRV9GQUxMSU5HX0VER0UgMHgzCj4gKyNkZWZpbmUgSVhQ
+NFhYX0dQSU9fU1RZTEVfVFJBTlNJVElPTkFMIDB4NAo+ICsKPiArLyogTWFzayB1c2VkIHRvIGNs
+ZWFyIGludGVycnVwdCBzdHlsZXMgKi8KPiArI2RlZmluZSBJWFA0WFhfR1BJT19TVFlMRV9DTEVB
+UiAgICAgICAgMHg3Cj4gKyNkZWZpbmUgSVhQNFhYX0dQSU9fU1RZTEVfU0laRSAgICAgICAgIDMK
+PiArCj4gKy8qIE9wZXJhdGluZyBTeXN0ZW0gVGltZXIgUmVnaXN0ZXIgRGVmaW5pdGlvbnMuICov
+Cj4gKyNkZWZpbmUgSVhQNFhYX09TVFMgICAgICAgICAgSVhQNFhYX1JFRygweEM4MDA1MDAwKSAv
+KiBDb250aW5pb3VzIFRpbWVTdGFtcCAqLwo+ICsjZGVmaW5lIElYUDRYWF9PU1QxICAgICAgICAg
+IElYUDRYWF9SRUcoMHhDODAwNTAwNCkgLyogVGltZXIgMSBUaW1lc3RhbXAgKi8KPiArI2RlZmlu
+ZSBJWFA0WFhfT1NSVDEgICAgICAgICBJWFA0WFhfUkVHKDB4QzgwMDUwMDgpIC8qIFRpbWVyIDEg
+UmVsb2FkICovCj4gKyNkZWZpbmUgSVhQNFhYX09TVDIgICAgICAgICAgSVhQNFhYX1JFRygweEM4
+MDA1MDBDKSAvKiBUaW1lciAyIFRpbWVzdGFtcCAqLwo+ICsjZGVmaW5lIElYUDRYWF9PU1JUMiAg
+ICAgICAgIElYUDRYWF9SRUcoMHhDODAwNTAxMCkgLyogVGltZXIgMiBSZWxvYWQgKi8KPiArI2Rl
+ZmluZSBJWFA0WFhfT1NXVCAgICAgICAgICBJWFA0WFhfUkVHKDB4QzgwMDUwMTQpIC8qIFdhdGNo
+ZG9nIFRpbWVyICovCj4gKyNkZWZpbmUgSVhQNFhYX09TV0UgICAgICAgICAgSVhQNFhYX1JFRygw
+eEM4MDA1MDE4KSAvKiBXYXRjaGRvZyBFbmFibGUgKi8KPiArI2RlZmluZSBJWFA0WFhfT1NXSyAg
+ICAgICAgICBJWFA0WFhfUkVHKDB4QzgwMDUwMUMpIC8qIFdhdGNoZG9nIEtleSAqLwo+ICsjZGVm
+aW5lIElYUDRYWF9PU1NUICAgICAgICAgIElYUDRYWF9SRUcoMHhDODAwNTAyMCkgLyogVGltZXIg
+U3RhdHVzICovCj4gKwo+ICsvKiBUaW1lciByZWdpc3RlciB2YWx1ZXMgYW5kIGJpdCBkZWZpbml0
+aW9ucyAqLwo+ICsjZGVmaW5lIElYUDRYWF9PU1RfRU5BQkxFICAgICAgICAgICAgMHgwMDAwMDAw
+MQo+ICsjZGVmaW5lIElYUDRYWF9PU1RfT05FX1NIT1QgICAgICAgICAgMHgwMDAwMDAwMgo+ICsv
+KiBMb3cgb3JkZXIgYml0cyBvZiByZWxvYWQgdmFsdWUgaWdub3JlZCAqLwo+ICsjZGVmaW5lIElY
+UDRYWF9PU1RfUkVMT0FEX01BU0sgICAgICAgMHgwMDAwMDAwMwo+ICsjZGVmaW5lIElYUDRYWF9P
+U1RfRElTQUJMRUQgICAgICAgICAgMHgwMDAwMDAwMAo+ICsjZGVmaW5lIElYUDRYWF9PU1NUX1RJ
+TUVSXzFfUEVORCAgICAgMHgwMDAwMDAwMQo+ICsjZGVmaW5lIElYUDRYWF9PU1NUX1RJTUVSXzJf
+UEVORCAgICAgMHgwMDAwMDAwMgo+ICsjZGVmaW5lIElYUDRYWF9PU1NUX1RJTUVSX1RTX1BFTkQg
+ICAgMHgwMDAwMDAwNAo+ICsjZGVmaW5lIElYUDRYWF9PU1NUX1RJTUVSX1dET0dfUEVORCAgMHgw
+MDAwMDAwOAo+ICsjZGVmaW5lIElYUDRYWF9PU1NUX1RJTUVSX1dBUk1fUkVTRVQgMHgwMDAwMDAx
+MAo+ICsKPiArI2RlZmluZSBJWFA0WFhfV0RUX0tFWSAgICAgICAgICAgICAgIDB4MDAwMDQ4MkUK
+PiArCj4gKyNkZWZpbmUgSVhQNFhYX1dEVF9SRVNFVF9FTkFCTEUgICAgICAweDAwMDAwMDAxCj4g
+KyNkZWZpbmUgSVhQNFhYX1dEVF9JUlFfRU5BQkxFICAgICAgICAweDAwMDAwMDAyCj4gKyNkZWZp
+bmUgSVhQNFhYX1dEVF9DT1VOVF9FTkFCTEUgICAgICAweDAwMDAwMDA0Cj4gKwo+ICsKPiArLyog
+Q29uc3RhbnRzIHRvIG1ha2UgaXQgZWFzeSB0byBhY2Nlc3MgUENJIENvbnRyb2wvU3RhdHVzIHJl
+Z2lzdGVycyAqLwo+ICsjZGVmaW5lIFBDSV9OUF9BRF9PRkZTRVQgICAgICAgICAgIDB4MDAKPiAr
+I2RlZmluZSBQQ0lfTlBfQ0JFX09GRlNFVCAgICAgICAgICAweDA0Cj4gKyNkZWZpbmUgUENJX05Q
+X1dEQVRBX09GRlNFVCAgICAgICAgMHgwOAo+ICsjZGVmaW5lIFBDSV9OUF9SREFUQV9PRkZTRVQg
+ICAgICAgIDB4MGMKPiArI2RlZmluZSBQQ0lfQ1JQX0FEX0NCRV9PRkZTRVQgICAgICAweDEwCj4g
+KyNkZWZpbmUgUENJX0NSUF9XREFUQV9PRkZTRVQgICAgICAgMHgxNAo+ICsjZGVmaW5lIFBDSV9D
+UlBfUkRBVEFfT0ZGU0VUICAgICAgIDB4MTgKPiArI2RlZmluZSBQQ0lfQ1NSX09GRlNFVCAgICAg
+ICAgICAgICAweDFjCj4gKyNkZWZpbmUgUENJX0lTUl9PRkZTRVQgICAgICAgICAgICAgMHgyMAo+
+ICsjZGVmaW5lIFBDSV9JTlRFTl9PRkZTRVQgICAgICAgICAgIDB4MjQKPiArI2RlZmluZSBQQ0lf
+RE1BQ1RSTF9PRkZTRVQgICAgICAgICAweDI4Cj4gKyNkZWZpbmUgUENJX0FIQk1FTUJBU0VfT0ZG
+U0VUICAgICAgMHgyYwo+ICsjZGVmaW5lIFBDSV9BSEJJT0JBU0VfT0ZGU0VUICAgICAgIDB4MzAK
+PiArI2RlZmluZSBQQ0lfUENJTUVNQkFTRV9PRkZTRVQgICAgICAweDM0Cj4gKyNkZWZpbmUgUENJ
+X0FIQkRPT1JCRUxMX09GRlNFVCAgICAgMHgzOAo+ICsjZGVmaW5lIFBDSV9QQ0lET09SQkVMTF9P
+RkZTRVQgICAgIDB4M0MKPiArI2RlZmluZSBQQ0lfQVRQRE1BMF9BSEJBRERSX09GRlNFVCAweDQw
+Cj4gKyNkZWZpbmUgUENJX0FUUERNQTBfUENJQUREUl9PRkZTRVQgMHg0NAo+ICsjZGVmaW5lIFBD
+SV9BVFBETUEwX0xFTkFERFJfT0ZGU0VUIDB4NDgKPiArI2RlZmluZSBQQ0lfQVRQRE1BMV9BSEJB
+RERSX09GRlNFVCAweDRDCj4gKyNkZWZpbmUgUENJX0FUUERNQTFfUENJQUREUl9PRkZTRVQgMHg1
+MAo+ICsjZGVmaW5lIFBDSV9BVFBETUExX0xFTkFERFJfT0ZGU0VUIDB4NTQKPiArCj4gKy8qIFBD
+SSBDb250cm9sL1N0YXR1cyBSZWdpc3RlcnMgKi8KPiArI2RlZmluZSBJWFA0WFhfUENJX0NTUih4
+KSAoKHZvbGF0aWxlIHUzMiAqKShJWFA0WFhfUENJX0NGR19CQVNFICsgKHgpKSkKPiArCj4gKyNk
+ZWZpbmUgUENJX05QX0FEICAgICAgICAgICAgSVhQNFhYX1BDSV9DU1IoUENJX05QX0FEX09GRlNF
+VCkKPiArI2RlZmluZSBQQ0lfTlBfQ0JFICAgICAgICAgICBJWFA0WFhfUENJX0NTUihQQ0lfTlBf
+Q0JFX09GRlNFVCkKPiArI2RlZmluZSBQQ0lfTlBfV0RBVEEgICAgICAgICBJWFA0WFhfUENJX0NT
+UihQQ0lfTlBfV0RBVEFfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9OUF9SREFUQSAgICAgICAgIElY
+UDRYWF9QQ0lfQ1NSKFBDSV9OUF9SREFUQV9PRkZTRVQpCj4gKyNkZWZpbmUgUENJX0NSUF9BRF9D
+QkUgICAgICAgSVhQNFhYX1BDSV9DU1IoUENJX0NSUF9BRF9DQkVfT0ZGU0VUKQo+ICsjZGVmaW5l
+IFBDSV9DUlBfV0RBVEEgICAgICAgIElYUDRYWF9QQ0lfQ1NSKFBDSV9DUlBfV0RBVEFfT0ZGU0VU
+KQo+ICsjZGVmaW5lIFBDSV9DUlBfUkRBVEEgICAgICAgIElYUDRYWF9QQ0lfQ1NSKFBDSV9DUlBf
+UkRBVEFfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9DU1IgICAgICAgICAgICAgIElYUDRYWF9QQ0lf
+Q1NSKFBDSV9DU1JfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9JU1IgICAgICAgICAgICAgIElYUDRY
+WF9QQ0lfQ1NSKFBDSV9JU1JfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9JTlRFTiAgICAgICAgICAg
+IElYUDRYWF9QQ0lfQ1NSKFBDSV9JTlRFTl9PRkZTRVQpCj4gKyNkZWZpbmUgUENJX0RNQUNUUkwg
+ICAgICAgICAgSVhQNFhYX1BDSV9DU1IoUENJX0RNQUNUUkxfT0ZGU0VUKQo+ICsjZGVmaW5lIFBD
+SV9BSEJNRU1CQVNFICAgICAgIElYUDRYWF9QQ0lfQ1NSKFBDSV9BSEJNRU1CQVNFX09GRlNFVCkK
+PiArI2RlZmluZSBQQ0lfQUhCSU9CQVNFICAgICAgICBJWFA0WFhfUENJX0NTUihQQ0lfQUhCSU9C
+QVNFX09GRlNFVCkKPiArI2RlZmluZSBQQ0lfUENJTUVNQkFTRSAgICAgICBJWFA0WFhfUENJX0NT
+UihQQ0lfUENJTUVNQkFTRV9PRkZTRVQpCj4gKyNkZWZpbmUgUENJX0FIQkRPT1JCRUxMICAgICAg
+SVhQNFhYX1BDSV9DU1IoUENJX0FIQkRPT1JCRUxMX09GRlNFVCkKPiArI2RlZmluZSBQQ0lfUENJ
+RE9PUkJFTEwgICAgICBJWFA0WFhfUENJX0NTUihQQ0lfUENJRE9PUkJFTExfT0ZGU0VUKQo+ICsj
+ZGVmaW5lIFBDSV9BVFBETUEwX0FIQkFERFIgIElYUDRYWF9QQ0lfQ1NSKFBDSV9BVFBETUEwX0FI
+QkFERFJfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9BVFBETUEwX1BDSUFERFIgIElYUDRYWF9QQ0lf
+Q1NSKFBDSV9BVFBETUEwX1BDSUFERFJfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9BVFBETUEwX0xF
+TkFERFIgIElYUDRYWF9QQ0lfQ1NSKFBDSV9BVFBETUEwX0xFTkFERFJfT0ZGU0VUKQo+ICsjZGVm
+aW5lIFBDSV9BVFBETUExX0FIQkFERFIgIElYUDRYWF9QQ0lfQ1NSKFBDSV9BVFBETUExX0FIQkFE
+RFJfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9BVFBETUExX1BDSUFERFIgIElYUDRYWF9QQ0lfQ1NS
+KFBDSV9BVFBETUExX1BDSUFERFJfT0ZGU0VUKQo+ICsjZGVmaW5lIFBDSV9BVFBETUExX0xFTkFE
+RFIgIElYUDRYWF9QQ0lfQ1NSKFBDSV9BVFBETUExX0xFTkFERFJfT0ZGU0VUKQo+ICsKPiArLyog
+UENJIHJlZ2lzdGVyIHZhbHVlcyBhbmQgYml0IGRlZmluaXRpb25zICovCj4gKwo+ICsvKiBDU1Ig
+Yml0IGRlZmluaXRpb25zICovCj4gKyNkZWZpbmUgUENJX0NTUl9IT1NUICAgICAgICAgMHgwMDAw
+MDAwMQo+ICsjZGVmaW5lIFBDSV9DU1JfQVJCRU4gICAgICAgIDB4MDAwMDAwMDIKPiArI2RlZmlu
+ZSBQQ0lfQ1NSX0FEUyAgICAgICAgICAweDAwMDAwMDA0Cj4gKyNkZWZpbmUgUENJX0NTUl9QRFMg
+ICAgICAgICAgMHgwMDAwMDAwOAo+ICsjZGVmaW5lIFBDSV9DU1JfQUJFICAgICAgICAgIDB4MDAw
+MDAwMTAKPiArI2RlZmluZSBQQ0lfQ1NSX0RCVCAgICAgICAgICAweDAwMDAwMDIwCj4gKyNkZWZp
+bmUgUENJX0NTUl9BU0UgICAgICAgICAgMHgwMDAwMDEwMAo+ICsjZGVmaW5lIFBDSV9DU1JfSUMg
+ICAgICAgICAgIDB4MDAwMDgwMDAKPiArCj4gKy8qIElTUiAoSW50ZXJydXB0IHN0YXR1cykgUmVn
+aXN0ZXIgYml0IGRlZmluaXRpb25zICovCj4gKyNkZWZpbmUgUENJX0lTUl9QU0UgICAgICAgICAg
+MHgwMDAwMDAwMQo+ICsjZGVmaW5lIFBDSV9JU1JfUEZFICAgICAgICAgIDB4MDAwMDAwMDIKPiAr
+I2RlZmluZSBQQ0lfSVNSX1BQRSAgICAgICAgICAweDAwMDAwMDA0Cj4gKyNkZWZpbmUgUENJX0lT
+Ul9BSEJFICAgICAgICAgMHgwMDAwMDAwOAo+ICsjZGVmaW5lIFBDSV9JU1JfQVBEQyAgICAgICAg
+IDB4MDAwMDAwMTAKPiArI2RlZmluZSBQQ0lfSVNSX1BBREMgICAgICAgICAweDAwMDAwMDIwCj4g
+KyNkZWZpbmUgUENJX0lTUl9BREIgICAgICAgICAgMHgwMDAwMDA0MAo+ICsjZGVmaW5lIFBDSV9J
+U1JfUERCICAgICAgICAgIDB4MDAwMDAwODAKPiArCj4gKy8qIElOVEVOIChJbnRlcnJ1cHQgRW5h
+YmxlKSBSZWdpc3RlciBiaXQgZGVmaW5pdGlvbnMgKi8KPiArI2RlZmluZSBQQ0lfSU5URU5fUFNF
+ICAgICAgICAweDAwMDAwMDAxCj4gKyNkZWZpbmUgUENJX0lOVEVOX1BGRSAgICAgICAgMHgwMDAw
+MDAwMgo+ICsjZGVmaW5lIFBDSV9JTlRFTl9QUEUgICAgICAgIDB4MDAwMDAwMDQKPiArI2RlZmlu
+ZSBQQ0lfSU5URU5fQUhCRSAgICAgICAweDAwMDAwMDA4Cj4gKyNkZWZpbmUgUENJX0lOVEVOX0FQ
+REMgICAgICAgMHgwMDAwMDAxMAo+ICsjZGVmaW5lIFBDSV9JTlRFTl9QQURDICAgICAgIDB4MDAw
+MDAwMjAKPiArI2RlZmluZSBQQ0lfSU5URU5fQURCICAgICAgICAweDAwMDAwMDQwCj4gKyNkZWZp
+bmUgUENJX0lOVEVOX1BEQiAgICAgICAgMHgwMDAwMDA4MAo+ICsKPiArLyogU2hpZnQgdmFsdWUg
+Zm9yIGJ5dGUgZW5hYmxlIG9uIE5QIGNtZC9ieXRlIGVuYWJsZSByZWdpc3RlciAqLwo+ICsjZGVm
+aW5lIElYUDRYWF9QQ0lfTlBfQ0JFX0JFU0wgNAo+ICsKPiArLyogUENJIGNvbW1hbmRzIHN1cHBv
+cnRlZCBieSBOUCBhY2Nlc3MgdW5pdCAqLwo+ICsjZGVmaW5lIE5QX0NNRF9JT1JFQUQgICAgICAg
+IDB4Mgo+ICsjZGVmaW5lIE5QX0NNRF9JT1dSSVRFICAgICAgIDB4Mwo+ICsjZGVmaW5lIE5QX0NN
+RF9DT05GSUdSRUFEICAgIDB4QQo+ICsjZGVmaW5lIE5QX0NNRF9DT05GSUdXUklURSAgIDB4Qgo+
+ICsjZGVmaW5lIE5QX0NNRF9NRU1SRUFEICAgICAgIDB4Ngo+ICsjZGVmaW5lIE5QX0NNRF9NRU1X
+UklURSAgICAgIDB4Nwo+ICsKPiArLyogQ29uc3RhbnRzIGZvciBDUlAgYWNjZXNzIGludG8gbG9j
+YWwgY29uZmlnIHNwYWNlICovCj4gKyNkZWZpbmUgQ1JQX0FEX0NCRV9CRVNMICAgICAgMjAKPiAr
+I2RlZmluZSBDUlBfQURfQ0JFX1dSSVRFICAgICAweDAwMDEwMDAwCj4gKwo+ICsvKiBVU0IgRGV2
+aWNlIENvbnRyb2xsZXIgKi8KPiArIyBkZWZpbmUgSVhQNFhYX1VTQl9SRUcoeCkgICAoKigodm9s
+YXRpbGUgdTMyICopKHgpKSkKPiArCj4gKy8qIFNEUkFNIENvbnRyb2xsZXIgcmVnaXN0ZXJzLiAq
+Lwo+ICsjZGVmaW5lIElYUDRYWF9TRFJBTV9DT05GSUcgIElYUDRYWF9SRUcoMHhDQzAwMDAwMCkK
+PiArI2RlZmluZSBJWFA0WFhfU0RSQU1fUkVGUkVTSCBJWFA0WFhfUkVHKDB4Q0MwMDAwMDQpCj4g
+KyNkZWZpbmUgSVhQNFhYX1NEUkFNX0lSICAgICAgSVhQNFhYX1JFRygweENDMDAwMDA4KQo+ICsK
+PiArLyogImZ1c2UiIGJpdHMgb2YgSVhQX0VYUF9DRkcyICovCj4gKy8qIEFsbCBJWFA0eHggQ1BV
+cyAqLwo+ICsjZGVmaW5lIElYUDRYWF9GRUFUVVJFX1JDT01QICAgICAgICAgICAgKDEgPDwgMCkK
+PiArI2RlZmluZSBJWFA0WFhfRkVBVFVSRV9VU0JfREVWSUNFICAgICAgICgxIDw8IDEpCj4gKyNk
+ZWZpbmUgSVhQNFhYX0ZFQVRVUkVfSEFTSCAgICAgICAgICAgICAoMSA8PCAyKQo+ICsjZGVmaW5l
+IElYUDRYWF9GRUFUVVJFX0FFUyAgICAgICAgICAgICAgKDEgPDwgMykKPiArI2RlZmluZSBJWFA0
+WFhfRkVBVFVSRV9ERVMgICAgICAgICAgICAgICgxIDw8IDQpCj4gKyNkZWZpbmUgSVhQNFhYX0ZF
+QVRVUkVfSERMQyAgICAgICAgICAgICAoMSA8PCA1KQo+ICsjZGVmaW5lIElYUDRYWF9GRUFUVVJF
+X0FBTCAgICAgICAgICAgICAgKDEgPDwgNikKPiArI2RlZmluZSBJWFA0WFhfRkVBVFVSRV9IU1Mg
+ICAgICAgICAgICAgICgxIDw8IDcpCj4gKyNkZWZpbmUgSVhQNFhYX0ZFQVRVUkVfVVRPUElBICAg
+ICAgICAgICAoMSA8PCA4KQo+ICsjZGVmaW5lIElYUDRYWF9GRUFUVVJFX05QRUJfRVRIMCAgICAg
+ICAgKDEgPDwgOSkKPiArI2RlZmluZSBJWFA0WFhfRkVBVFVSRV9OUEVDX0VUSCAgICAgICAgICgx
+IDw8IDEwKQo+ICsjZGVmaW5lIElYUDRYWF9GRUFUVVJFX1JFU0VUX05QRUEgICAgICAgKDEgPDwg
+MTEpCj4gKyNkZWZpbmUgSVhQNFhYX0ZFQVRVUkVfUkVTRVRfTlBFQiAgICAgICAoMSA8PCAxMikK
+PiArI2RlZmluZSBJWFA0WFhfRkVBVFVSRV9SRVNFVF9OUEVDICAgICAgICgxIDw8IDEzKQo+ICsj
+ZGVmaW5lIElYUDRYWF9GRUFUVVJFX1BDSSAgICAgICAgICAgICAgKDEgPDwgMTQpCj4gKyNkZWZp
+bmUgSVhQNFhYX0ZFQVRVUkVfVVRPUElBX1BIWV9MSU1JVCAoMyA8PCAxNikKPiArI2RlZmluZSBJ
+WFA0WFhfRkVBVFVSRV9YU0NBTEVfTUFYX0ZSRVEgICgzIDw8IDIyKQo+ICsjZGVmaW5lIElYUDQy
+WF9GRUFUVVJFX01BU0sgKElYUDRYWF9GRUFUVVJFX1JDT01QICAgICAgICAgICAgfCBcCj4gKwkJ
+CSAgICAgSVhQNFhYX0ZFQVRVUkVfVVNCX0RFVklDRSAgICAgICB8IFwKPiArCQkJICAgICBJWFA0
+WFhfRkVBVFVSRV9IQVNIICAgICAgICAgICAgIHwgXAo+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJF
+X0FFUyAgICAgICAgICAgICAgfCBcCj4gKwkJCSAgICAgSVhQNFhYX0ZFQVRVUkVfREVTICAgICAg
+ICAgICAgICB8IFwKPiArCQkJICAgICBJWFA0WFhfRkVBVFVSRV9IRExDICAgICAgICAgICAgIHwg
+XAo+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJFX0FBTCAgICAgICAgICAgICAgfCBcCj4gKwkJCSAg
+ICAgSVhQNFhYX0ZFQVRVUkVfSFNTICAgICAgICAgICAgICB8IFwKPiArCQkJICAgICBJWFA0WFhf
+RkVBVFVSRV9VVE9QSUEgICAgICAgICAgIHwgXAo+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJFX05Q
+RUJfRVRIMCAgICAgICAgfCBcCj4gKwkJCSAgICAgSVhQNFhYX0ZFQVRVUkVfTlBFQ19FVEggICAg
+ICAgICB8IFwKPiArCQkJICAgICBJWFA0WFhfRkVBVFVSRV9SRVNFVF9OUEVBICAgICAgIHwgXAo+
+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJFX1JFU0VUX05QRUIgICAgICAgfCBcCj4gKwkJCSAgICAg
+SVhQNFhYX0ZFQVRVUkVfUkVTRVRfTlBFQyAgICAgICB8IFwKPiArCQkJICAgICBJWFA0WFhfRkVB
+VFVSRV9QQ0kgICAgICAgICAgICAgIHwgXAo+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJFX1VUT1BJ
+QV9QSFlfTElNSVQgfCBcCj4gKwkJCSAgICAgSVhQNFhYX0ZFQVRVUkVfWFNDQUxFX01BWF9GUkVR
+KQo+ICsKPiArLyogSVhQNDN4LzQ2eCBDUFVzICovCj4gKyNkZWZpbmUgSVhQNFhYX0ZFQVRVUkVf
+RUNDX1RJTUVTWU5DICAgICAoMSA8PCAxNSkKPiArI2RlZmluZSBJWFA0WFhfRkVBVFVSRV9VU0Jf
+SE9TVCAgICAgICAgICgxIDw8IDE4KQo+ICsjZGVmaW5lIElYUDRYWF9GRUFUVVJFX05QRUFfRVRI
+ICAgICAgICAgKDEgPDwgMTkpCj4gKyNkZWZpbmUgSVhQNDNYX0ZFQVRVUkVfTUFTSyAoSVhQNDJY
+X0ZFQVRVUkVfTUFTSyAgICAgICAgICAgICB8IFwKPiArCQkJICAgICBJWFA0WFhfRkVBVFVSRV9F
+Q0NfVElNRVNZTkMgICAgIHwgXAo+ICsJCQkgICAgIElYUDRYWF9GRUFUVVJFX1VTQl9IT1NUICAg
+ICAgICAgfCBcCj4gKwkJCSAgICAgSVhQNFhYX0ZFQVRVUkVfTlBFQV9FVEgpCj4gKwo+ICsvKiBJ
+WFA0NnggQ1BVIChpbmNsdWRpbmcgSVhQNDU1KSBvbmx5ICovCj4gKyNkZWZpbmUgSVhQNFhYX0ZF
+QVRVUkVfTlBFQl9FVEhfMV9UT18zICAoMSA8PCAyMCkKPiArI2RlZmluZSBJWFA0WFhfRkVBVFVS
+RV9SU0EgICAgICAgICAgICAgICgxIDw8IDIxKQo+ICsjZGVmaW5lIElYUDQ2WF9GRUFUVVJFX01B
+U0sgKElYUDQzWF9GRUFUVVJFX01BU0sgICAgICAgICAgICAgfCBcCj4gKwkJCSAgICAgSVhQNFhY
+X0ZFQVRVUkVfTlBFQl9FVEhfMV9UT18zICB8IFwKPiArCQkJICAgICBJWFA0WFhfRkVBVFVSRV9S
+U0EpCj4gKwo+ICsjZW5kaWYKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9zZXJpYWwvc2VyaWFsX25z
+MTY1NTAuYyBiL2RyaXZlcnMvc2VyaWFsL3NlcmlhbF9uczE2NTUwLmMKPiBpbmRleCBiNzkxM2Fh
+Li5iZTFiOTY4IDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvc2VyaWFsL3NlcmlhbF9uczE2NTUwLmMK
+PiArKysgYi9kcml2ZXJzL3NlcmlhbC9zZXJpYWxfbnMxNjU1MC5jCnBsZWFzZSBzcGxpdCB0aGlz
+IGluIGFuIG90aGVyIHBhdGNoCgphbmQgcGFzcyB0aGlzIGFzIGEgcGRhdGEKPiBAQCAtMTM3LDcg
+KzEzNywxMSBAQCBzdGF0aWMgdm9pZCBuczE2NTUwX3NlcmlhbF9pbml0X3BvcnQoc3RydWN0IGNv
+bnNvbGVfZGV2aWNlICpjZGV2KQo+ICB7Cj4gIAkvKiBpbml0aWFsaXppbmcgdGhlIGRldmljZSBm
+b3IgdGhlIGZpcnN0IHRpbWUgKi8KPiAgCW5zMTY1NTBfd3JpdGUoY2RldiwgMHgwMCwgbGNyKTsg
+Lyogc2VsZWN0IGllciByZWcgKi8KPiArI2lmZGVmIENPTkZJR19BUkNIX0lYUDRYWAo+ICsJbnMx
+NjU1MF93cml0ZShjZGV2LCBJRVJfVVVFLCBpZXIpOyAvKiBFbmFibGUgVUFSVCBvcGVyYXRpb24g
+Ki8KPiArI2Vsc2UKPiAgCW5zMTY1NTBfd3JpdGUoY2RldiwgMHgwMCwgaWVyKTsKPiArI2VuZGlm
+Cj4gIAo+ICAjaWZkZWYgQ09ORklHX0RSSVZFUl9TRVJJQUxfTlMxNjU1MF9PTUFQX0VYVEVOU0lP
+TlMKPiAgCW5zMTY1NTBfd3JpdGUoY2RldiwgMHgwNywgbWRyMSk7CS8qIERpc2FibGUgKi8KPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9zZXJpYWwvc2VyaWFsX25zMTY1NTAuaCBiL2RyaXZlcnMvc2Vy
+aWFsL3NlcmlhbF9uczE2NTUwLmgKPiBpbmRleCBkYjhmZTY0Li4xMzJmNDZlIDEwMDY0NAo+IC0t
+LSBhL2RyaXZlcnMvc2VyaWFsL3NlcmlhbF9uczE2NTUwLmgKPiArKysgYi9kcml2ZXJzL3Nlcmlh
+bC9zZXJpYWxfbnMxNjU1MC5oCj4gQEAgLTUwLDYgKzUwLDggQEAKPiAgI2RlZmluZSBkbGwJCXJi
+cgo+ICAjZGVmaW5lIGRsbQkJaWVyCj4gIAo+ICsjZGVmaW5lIElFUl9VVUUJCTB4NDAJLyogVUFS
+VCBVbml0IEVuYWJsZSAoWFNjYWxlKSAqLwo+ICsKPiAgI2RlZmluZSBGQ1JfRklGT19FTiAgICAg
+MHgwMQkvKiBGaWZvIGVuYWJsZSAqLwo+ICAjZGVmaW5lIEZDUl9SWFNSICAgICAgICAweDAyCS8q
+IFJlY2VpdmVyIHNvZnQgcmVzZXQgKi8KPiAgI2RlZmluZSBGQ1JfVFhTUiAgICAgICAgMHgwNAkv
+KiBUcmFuc21pdHRlciBzb2Z0IHJlc2V0ICovCj4gCj4gLS0gCj4gS3J6eXN6dG9mIEhhbGFzYQo+
+IAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
+CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
