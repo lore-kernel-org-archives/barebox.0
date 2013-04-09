@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo5.mail-out.ovh.net ([178.32.228.5])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPYfs-0002nf-Dz
- for barebox@lists.infradead.org; Tue, 09 Apr 2013 13:33:25 +0000
-Received: from mail404.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id D5527FFA779
- for <barebox@lists.infradead.org>; Tue,  9 Apr 2013 15:45:38 +0200 (CEST)
-Date: Tue, 9 Apr 2013 15:29:17 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130409132917.GX1568@game.jcrosoft.org>
-References: <1365057762.3836.18.camel@mars>
- <20130405085917.GK1906@pengutronix.de>
- <1365372959.20809.6.camel@lovely>
- <20130408071715.GS1568@game.jcrosoft.org>
- <20130409071608.GD1906@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130409071608.GD1906@pengutronix.de>
+Received: from f101.mail.ru ([94.100.178.73])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UPa77-0005RZ-Fl
+ for barebox@lists.infradead.org; Tue, 09 Apr 2013 15:05:39 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 09 Apr 2013 19:05:31 +0400
+Message-ID: <1365519925.926164842@f101.mail.ru>
+In-Reply-To: <20130409100345.327f1f7c@e6520eb>
+References: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
+ <1365494511.379687833@f154.mail.ru>
+ <20130409100345.327f1f7c@e6520eb>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,57 +20,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] omap4-fb: add driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAyLzJdIEFSTTogaS5NWDogVXBkYXRlIE1YNTEgaW9t?=
+ =?UTF-8?B?dXggZGVmaW5pdGlvbnM=?=
+To: =?UTF-8?B?RXJpYyBC77+9bmFyZA==?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On 09:16 Tue 09 Apr     , Sascha Hauer wrote:
-> On Mon, Apr 08, 2013 at 09:17:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 00:15 Mon 08 Apr     , Christoph Fritz wrote:
-> > > This patch adds omap4 display controller support.
-> > > 
-> > > +
-> > > +static inline void fb_write(uint32_t v, void __iomem *addr)
-> > > +{
-> > > +	__raw_writel(v, addr);
-> > > +}
-> > > +
-> > > +static inline uint32_t fb_read(void const __iomem *addr)
-> > > +{
-> > > +	return __raw_readl(addr);
-> > > +}
-> > what is the dif?
-> 
-> Maybe Christoph understands what you mean here. I don't
-those 2 inline as useless
-> 
-> > > +
-> > > +	fbi->regs.dss   = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DSS);
-> > > +	fbi->regs.dispc = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DISPC);
-> > use named dev_request
-> 
-> We don't have such a function.
-yes we do
-
-dev_request_mem_region_by_name
-> 
-> Could you please trim the context to sensible limits when reviewing
-> patches? It's hard to find your comments when you keep the complete
-> patch.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PiBMZSBUdWUsIDA5IEFwciAyMDEzIDEyOjAxOjUxICswNDAwLAo+IEFsZXhhbmRlciBTaGl5YW4g
+PHNoY193b3JrQG1haWwucnU+IGEgw6ljcml0IDoKPiAKPiA+ID4gPiA+IE9uIFN1biwgQXByIDA3
+LCAyMDEzIGF0IDEyOjQ4OjU3UE0gKzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiA+
+ID4gPiA+IFRoZSBwYXRjaCB1cGRhdGVzIE1YNTEgaW9tdXggZGVmaW5pdGlvbnMgZnJvbSBrZXJu
+ZWwuCj4gPiA+ID4gPiA+IAo+ID4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kZXIgU2hp
+eWFuIDxzaGNfd29ya0BtYWlsLnJ1Pgo+ID4gPiA+ID4gCj4gPiA+ID4gPiBUaGlzIHBhdGNoIGVm
+ZmVjdGl2ZWx5IHJldmVydHM6Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IGNvbW1pdCAyOThkMTU1NzFk
+YThkMWNiNzFlN2ZkODdjYzUzY2FkM2IyYmYxZDEyCj4gPiA+ID4gPiBBdXRob3I6IEVyaWMgQsOp
+bmFyZCA8ZXJpY0BldWtyZWEuY29tPgo+ID4gPiA+ID4gRGF0ZTogICBUaHUgU2VwIDYgMjE6Mzk6
+MzAgMjAxMiArMDIwMAo+ID4gPiA+ID4gCj4gPiA+ID4gPiAgICAgaS5NWDUxOiB1bmJyZWFrIEZF
+QyBpb211eAo+ID4gPiA+ID4gICAgIAo+ID4gPiA+ID4gICAgIGluIGNvbW1pdCAyYmRjOWY1N2E4
+NmRmZjQxY2ZjMWY4N2I2NDRhMmU1M2ZkY2NlMmI2IHRoZSBpb211eCB3YXMgc3luY2VkCj4gPiA+
+ID4gPiAgICAgd2l0aCB0aGUga2VybmVsIGJ1dCB0aGlzIGxlYWRzIHRvIHNvbWUgY2hhbmdlcyBp
+biB0aGUgUEFEX0NUUkwgb2Ygc29tZQo+ID4gPiA+ID4gICAgIEZFQyBwaW5zIGxlYWRpbmcgdG8g
+YSBub24gd29ya2luZyBGRUMgb24gb3VyIGNwdWlteDUxIGJvYXJkLgo+ID4gPiA+ID4gICAgIAo+
+ID4gPiA+ID4gICAgIFRoaXMgcGF0Y2ggc2V0IGJhY2sgdGhlIFBBRF9DVFJMIG9mIHRoZSBtaXNz
+aW5nIHBpbnMgdG8gdGhlIGluaXRpYWwKPiA+ID4gPiA+ICAgICB2YWx1ZS4KPiA+ID4gPiA+ICAg
+ICAKPiA+ID4gPiA+ICAgICBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVh
+LmNvbT4KPiA+ID4gPiA+ICAgICBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
+cGVuZ3V0cm9uaXguZGU+Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IFlvdSBzaG91bGRuJ3QgZG8gdGhp
+cy4KPiA+ID4gPiAKPiA+ID4gPiBXaGF0IGFib3V0IHdyaXRlIGEgcGF0Y2ggZm9yIHRoZSBrZXJu
+ZWwgZm9yIHRoaXM/Cj4gPiA+IAo+ID4gPiBCeSB0aGUgdGltZSBJIGFwcGxpZWQgRXJpY3MgcGF0
+Y2ggSSBjb25zaWRlcmVkIHRoZSBkYXlzIG9mIHRoZQo+ID4gPiB0cmFkaXRpb25hbCBpb211eCBz
+dXBwb3J0IGluIHRoZSBrZXJuZWwgY291bnRlZC4gRnJvbSB0aGF0IGRheSBvbgo+ID4gPiB3ZSBo
+YXZlIHRvIG1haW50YWluIG91ciBvd24gdmVyc2lvbnMgYW55d2F5Lgo+ID4gCj4gPiBPSy4gTWF5
+YmUgYXMgdGVtcG9yYXJ5IHNvbHV0aW9uIHdlIGNhbiBkZWZpbmUgZXVrcmVhX2NwdWlteDUxIEZF
+Qwo+ID4gcGlucyB3aXRoIE5FV19QQURfQ1RSTCBtYWNybz8gSWYgc28sIEknbGwgY3JlYXRlIGEg
+cGF0Y2ggZm9yIHRoaXMuCj4gPiBUaGlzIHdpbGwga2VlcCBpb211eC1teDUxLmggZmlsZSBzeW5j
+ZWQuCj4gPiAKPiBGaW5lIGZvciBtZS4gRG8geW91IGhhdmUgYSBwcm9ibGVtIHdpdGggdGhlc2Ug
+cGFkcyBzZXR0aW5nIHNvIHRoYXQgeW91Cj4gbmVlZCB0byByZXZlcnQgdGhlIGNoYW5nZSA/ClNv
+LCBiZWxvdyBpcyBhIHRlbXBvcmFyeSBmaXh1cC4KCkZyb20gNDdkMGQ3YjljMDM1NWJhMzFlNGM1
+NjM4OTFiMmU5MTU5ZGMwNzUzMyBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKRnJvbTogQWxleGFu
+ZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KRGF0ZTogVHVlLCA5IEFwciAyMDEzIDE5OjAx
+OjQwICswNDAwClN1YmplY3Q6IFtQQVRDSF0gQVJNOiBjcHVpbXg1MTogRml4IFBBRF9DVFJMcyBm
+b3IgRkVDCgoKU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5y
+dT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDUxL2V1a3JlYV9jcHVpbXg1MS5j
+IHwgMTQgKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDcg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXg1
+MS9ldWtyZWFfY3B1aW14NTEuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14NTEvZXVr
+cmVhX2NwdWlteDUxLmMKaW5kZXggNWU3N2Y5MC4uNTIzYTgwNSAxMDA2NDQKLS0tIGEvYXJjaC9h
+cm0vYm9hcmRzL2V1a3JlYV9jcHVpbXg1MS9ldWtyZWFfY3B1aW14NTEuYworKysgYi9hcmNoL2Fy
+bS9ib2FyZHMvZXVrcmVhX2NwdWlteDUxL2V1a3JlYV9jcHVpbXg1MS5jCkBAIC01NSwyMyArNTUs
+MjMgQEAgc3RhdGljIGlvbXV4X3YzX2NmZ190IGV1a3JlYV9jcHVpbXg1MV9wYWRzW10gPSB7CiAJ
+TVg1MV9QQURfVUFSVDFfUlRTX19VQVJUMV9SVFMsCiAJTVg1MV9QQURfVUFSVDFfQ1RTX19VQVJU
+MV9DVFMsCiAJLyogRkVDICovCi0JTVg1MV9QQURfRElTUDJfREFUMV9fRkVDX1JYX0VSLAorCU5F
+V19QQURfQ1RSTChNWDUxX1BBRF9ESVNQMl9EQVQxX19GRUNfUlhfRVIsIE1YNTFfUEFEX0NUUkxf
+NSksCiAJTVg1MV9QQURfRElTUDJfREFUMTVfX0ZFQ19UREFUQTAsCiAJTVg1MV9QQURfRElTUDJf
+REFUNl9fRkVDX1REQVRBMSwKIAlNWDUxX1BBRF9ESVNQMl9EQVQ3X19GRUNfVERBVEEyLAogCU1Y
+NTFfUEFEX0RJU1AyX0RBVDhfX0ZFQ19UREFUQTMsCiAJTVg1MV9QQURfRElTUDJfREFUOV9fRkVD
+X1RYX0VOLAotCU1YNTFfUEFEX0RJU1AyX0RBVDEwX19GRUNfQ09MLAotCU1YNTFfUEFEX0RJU1Ay
+X0RBVDExX19GRUNfUlhfQ0xLLAotCU1YNTFfUEFEX0RJU1AyX0RBVDEyX19GRUNfUlhfRFYsCisJ
+TkVXX1BBRF9DVFJMKE1YNTFfUEFEX0RJU1AyX0RBVDEwX19GRUNfQ09MLCBNWDUxX1BBRF9DVFJM
+XzUpLAorCU5FV19QQURfQ1RSTChNWDUxX1BBRF9ESVNQMl9EQVQxMV9fRkVDX1JYX0NMSywgTVg1
+MV9QQURfQ1RSTF81KSwKKwlORVdfUEFEX0NUUkwoTVg1MV9QQURfRElTUDJfREFUMTJfX0ZFQ19S
+WF9EViwgTVg1MV9QQURfQ1RSTF81KSwKIAlNWDUxX1BBRF9ESVNQMl9EQVQxM19fRkVDX1RYX0NM
+SywKIAlNWDUxX1BBRF9ESTJfUElONF9fRkVDX0NSUywKIAlNWDUxX1BBRF9ESTJfUElOMl9fRkVD
+X01EQywKLQlNWDUxX1BBRF9ESTJfUElOM19fRkVDX01ESU8sCisJTkVXX1BBRF9DVFJMKE1YNTFf
+UEFEX0RJMl9QSU4zX19GRUNfTURJTywgTVg1MV9QQURfQ1RSTF81KSwKIAlNWDUxX1BBRF9ESVNQ
+Ml9EQVQxNF9fRkVDX1JEQVRBMCwKIAlNWDUxX1BBRF9ESTJfRElTUF9DTEtfX0ZFQ19SREFUQTEs
+Ci0JTVg1MV9QQURfRElfR1A0X19GRUNfUkRBVEEyLAotCU1YNTFfUEFEX0RJU1AyX0RBVDBfX0ZF
+Q19SREFUQTMsCisJTkVXX1BBRF9DVFJMKE1YNTFfUEFEX0RJX0dQNF9fRkVDX1JEQVRBMiwgTVg1
+MV9QQURfQ1RSTF81KSwKKwlORVdfUEFEX0NUUkwoTVg1MV9QQURfRElTUDJfREFUMF9fRkVDX1JE
+QVRBMywgTVg1MV9QQURfQ1RSTF81KSwKIAlNWDUxX1BBRF9ESV9HUDNfX0ZFQ19UWF9FUiwKIAlN
+WDUxX1BBRF9FSU1fRFRBQ0tfX0dQSU8yXzMxLCAvKiBMQU44NzAwIHJlc2V0IHBpbiAqLwogCS8q
+IE5BTkQgKi8KLS0gCjEuOC4xLjUKCi0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
