@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f154.mail.ru ([217.69.128.108])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPTiK-00034d-Cu
- for barebox@lists.infradead.org; Tue, 09 Apr 2013 08:15:37 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Tue, 09 Apr 2013 12:15:33 +0400
-Message-ID: <1365495333.523084379@f154.mail.ru>
-In-Reply-To: <20130409100345.327f1f7c@e6520eb>
-References: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
- <1365494511.379687833@f154.mail.ru>
- <20130409100345.327f1f7c@e6520eb>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from mo5.mail-out.ovh.net ([178.32.228.5])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UPYfs-0002nf-Dz
+ for barebox@lists.infradead.org; Tue, 09 Apr 2013 13:33:25 +0000
+Received: from mail404.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id D5527FFA779
+ for <barebox@lists.infradead.org>; Tue,  9 Apr 2013 15:45:38 +0200 (CEST)
+Date: Tue, 9 Apr 2013 15:29:17 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130409132917.GX1568@game.jcrosoft.org>
+References: <1365057762.3836.18.camel@mars>
+ <20130405085917.GK1906@pengutronix.de>
+ <1365372959.20809.6.camel@lovely>
+ <20130408071715.GS1568@game.jcrosoft.org>
+ <20130409071608.GD1906@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130409071608.GD1906@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +25,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAyLzJdIEFSTTogaS5NWDogVXBkYXRlIE1YNTEgaW9t?=
- =?UTF-8?B?dXggZGVmaW5pdGlvbnM=?=
-To: =?UTF-8?B?RXJpYyBC77+9bmFyZA==?= <eric@eukrea.com>
+Subject: Re: [PATCH v2] omap4-fb: add driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-PiBMZSBUdWUsIDA5IEFwciAyMDEzIDEyOjAxOjUxICswNDAwLAo+IEFsZXhhbmRlciBTaGl5YW4g
-PHNoY193b3JrQG1haWwucnU+IGEgw6ljcml0IDoKPiAKPiA+ID4gPiA+IE9uIFN1biwgQXByIDA3
-LCAyMDEzIGF0IDEyOjQ4OjU3UE0gKzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiA+
-ID4gPiA+IFRoZSBwYXRjaCB1cGRhdGVzIE1YNTEgaW9tdXggZGVmaW5pdGlvbnMgZnJvbSBrZXJu
-ZWwuCj4gPiA+ID4gPiA+IAo+ID4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kZXIgU2hp
-eWFuIDxzaGNfd29ya0BtYWlsLnJ1Pgo+ID4gPiA+ID4gCj4gPiA+ID4gPiBUaGlzIHBhdGNoIGVm
-ZmVjdGl2ZWx5IHJldmVydHM6Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IGNvbW1pdCAyOThkMTU1NzFk
-YThkMWNiNzFlN2ZkODdjYzUzY2FkM2IyYmYxZDEyCj4gPiA+ID4gPiBBdXRob3I6IEVyaWMgQsOp
-bmFyZCA8ZXJpY0BldWtyZWEuY29tPgo+ID4gPiA+ID4gRGF0ZTogICBUaHUgU2VwIDYgMjE6Mzk6
-MzAgMjAxMiArMDIwMAo+ID4gPiA+ID4gCj4gPiA+ID4gPiAgICAgaS5NWDUxOiB1bmJyZWFrIEZF
-QyBpb211eAo+ID4gPiA+ID4gICAgIAo+ID4gPiA+ID4gICAgIGluIGNvbW1pdCAyYmRjOWY1N2E4
-NmRmZjQxY2ZjMWY4N2I2NDRhMmU1M2ZkY2NlMmI2IHRoZSBpb211eCB3YXMgc3luY2VkCj4gPiA+
-ID4gPiAgICAgd2l0aCB0aGUga2VybmVsIGJ1dCB0aGlzIGxlYWRzIHRvIHNvbWUgY2hhbmdlcyBp
-biB0aGUgUEFEX0NUUkwgb2Ygc29tZQo+ID4gPiA+ID4gICAgIEZFQyBwaW5zIGxlYWRpbmcgdG8g
-YSBub24gd29ya2luZyBGRUMgb24gb3VyIGNwdWlteDUxIGJvYXJkLgo+ID4gPiA+ID4gICAgIAo+
-ID4gPiA+ID4gICAgIFRoaXMgcGF0Y2ggc2V0IGJhY2sgdGhlIFBBRF9DVFJMIG9mIHRoZSBtaXNz
-aW5nIHBpbnMgdG8gdGhlIGluaXRpYWwKPiA+ID4gPiA+ICAgICB2YWx1ZS4KPiA+ID4gPiA+ICAg
-ICAKPiA+ID4gPiA+ICAgICBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVh
-LmNvbT4KPiA+ID4gPiA+ICAgICBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
-cGVuZ3V0cm9uaXguZGU+Cj4gPiA+ID4gPiAKPiA+ID4gPiA+IFlvdSBzaG91bGRuJ3QgZG8gdGhp
-cy4KPiA+ID4gPiAKPiA+ID4gPiBXaGF0IGFib3V0IHdyaXRlIGEgcGF0Y2ggZm9yIHRoZSBrZXJu
-ZWwgZm9yIHRoaXM/Cj4gPiA+IAo+ID4gPiBCeSB0aGUgdGltZSBJIGFwcGxpZWQgRXJpY3MgcGF0
-Y2ggSSBjb25zaWRlcmVkIHRoZSBkYXlzIG9mIHRoZQo+ID4gPiB0cmFkaXRpb25hbCBpb211eCBz
-dXBwb3J0IGluIHRoZSBrZXJuZWwgY291bnRlZC4gRnJvbSB0aGF0IGRheSBvbgo+ID4gPiB3ZSBo
-YXZlIHRvIG1haW50YWluIG91ciBvd24gdmVyc2lvbnMgYW55d2F5Lgo+ID4gCj4gPiBPSy4gTWF5
-YmUgYXMgdGVtcG9yYXJ5IHNvbHV0aW9uIHdlIGNhbiBkZWZpbmUgZXVrcmVhX2NwdWlteDUxIEZF
-Qwo+ID4gcGlucyB3aXRoIE5FV19QQURfQ1RSTCBtYWNybz8gSWYgc28sIEknbGwgY3JlYXRlIGEg
-cGF0Y2ggZm9yIHRoaXMuCj4gPiBUaGlzIHdpbGwga2VlcCBpb211eC1teDUxLmggZmlsZSBzeW5j
-ZWQuCj4gPiAKPiBGaW5lIGZvciBtZS4gRG8geW91IGhhdmUgYSBwcm9ibGVtIHdpdGggdGhlc2Ug
-cGFkcyBzZXR0aW5nIHNvIHRoYXQgeW91Cj4gbmVlZCB0byByZXZlcnQgdGhlIGNoYW5nZSA/CgpO
-byBwcm9ibGVtcy4gSnVzdCB3YW50IHRvIHN5bmMgdGhpcyBoZWFkZXIgc2luY2UgaXQgaGF2ZSBh
-IGZldyBwaW4gZGVmaW5pdGlvbnMKdGhhdCBjdXJyZW50bHkgaXMgbWlzc2luZyBpbiBiYXJlYm94
-LgoKLS0tCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJh
-cmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlz
-dHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 09:16 Tue 09 Apr     , Sascha Hauer wrote:
+> On Mon, Apr 08, 2013 at 09:17:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 00:15 Mon 08 Apr     , Christoph Fritz wrote:
+> > > This patch adds omap4 display controller support.
+> > > 
+> > > +
+> > > +static inline void fb_write(uint32_t v, void __iomem *addr)
+> > > +{
+> > > +	__raw_writel(v, addr);
+> > > +}
+> > > +
+> > > +static inline uint32_t fb_read(void const __iomem *addr)
+> > > +{
+> > > +	return __raw_readl(addr);
+> > > +}
+> > what is the dif?
+> 
+> Maybe Christoph understands what you mean here. I don't
+those 2 inline as useless
+> 
+> > > +
+> > > +	fbi->regs.dss   = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DSS);
+> > > +	fbi->regs.dispc = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DISPC);
+> > use named dev_request
+> 
+> We don't have such a function.
+yes we do
+
+dev_request_mem_region_by_name
+> 
+> Could you please trim the context to sensible limits when reviewing
+> patches? It's hard to find your comments when you keep the complete
+> patch.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
