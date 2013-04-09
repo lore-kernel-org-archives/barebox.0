@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f289.mail.ru ([217.69.138.189])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPSMg-0001C1-H4
- for barebox@lists.infradead.org; Tue, 09 Apr 2013 06:49:11 +0000
-Date: Tue, 9 Apr 2013 08:49:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130409064908.GX1906@pengutronix.de>
+ id 1UPSPn-0001GO-Ae
+ for barebox@lists.infradead.org; Tue, 09 Apr 2013 06:52:24 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 09 Apr 2013 10:52:16 +0400
+Message-ID: <1365490336.8263645@f289.mail.ru>
+In-Reply-To: <20130409064908.GX1906@pengutronix.de>
 References: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
  <1365324537-23090-2-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1365324537-23090-2-git-send-email-shc_work@mail.ru>
+ <20130409064908.GX1906@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX: Update MX51 iomux definitions
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAyLzJdIEFSTTogaS5NWDogVXBkYXRlIE1YNTEgaW9t?=
+ =?UTF-8?B?dXggZGVmaW5pdGlvbnM=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Apr 07, 2013 at 12:48:57PM +0400, Alexander Shiyan wrote:
-> The patch updates MX51 iomux definitions from kernel.
-> =
-
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-
-This patch effectively reverts:
-
-commit 298d15571da8d1cb71e7fd87cc53cad3b2bf1d12
-Author: Eric B=E9nard <eric@eukrea.com>
-Date:   Thu Sep 6 21:39:30 2012 +0200
-
-    i.MX51: unbreak FEC iomux
-    =
-
-    in commit 2bdc9f57a86dff41cfc1f87b644a2e53fdcce2b6 the iomux was synced
-    with the kernel but this leads to some changes in the PAD_CTRL of some
-    FEC pins leading to a non working FEC on our cpuimx51 board.
-    =
-
-    This patch set back the PAD_CTRL of the missing pins to the initial
-    value.
-    =
-
-    Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-You shouldn't do this.
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+PiBPbiBTdW4sIEFwciAwNywgMjAxMyBhdCAxMjo0ODo1N1BNICswNDAwLCBBbGV4YW5kZXIgU2hp
+eWFuIHdyb3RlOgo+ID4gVGhlIHBhdGNoIHVwZGF0ZXMgTVg1MSBpb211eCBkZWZpbml0aW9ucyBm
+cm9tIGtlcm5lbC4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIFNoaXlhbiA8c2hj
+X3dvcmtAbWFpbC5ydT4KPiAKPiBUaGlzIHBhdGNoIGVmZmVjdGl2ZWx5IHJldmVydHM6Cj4gCj4g
+Y29tbWl0IDI5OGQxNTU3MWRhOGQxY2I3MWU3ZmQ4N2NjNTNjYWQzYjJiZjFkMTIKPiBBdXRob3I6
+IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgo+IERhdGU6ICAgVGh1IFNlcCA2IDIxOjM5
+OjMwIDIwMTIgKzAyMDAKPiAKPiAgICAgaS5NWDUxOiB1bmJyZWFrIEZFQyBpb211eAo+ICAgICAK
+PiAgICAgaW4gY29tbWl0IDJiZGM5ZjU3YTg2ZGZmNDFjZmMxZjg3YjY0NGEyZTUzZmRjY2UyYjYg
+dGhlIGlvbXV4IHdhcyBzeW5jZWQKPiAgICAgd2l0aCB0aGUga2VybmVsIGJ1dCB0aGlzIGxlYWRz
+IHRvIHNvbWUgY2hhbmdlcyBpbiB0aGUgUEFEX0NUUkwgb2Ygc29tZQo+ICAgICBGRUMgcGlucyBs
+ZWFkaW5nIHRvIGEgbm9uIHdvcmtpbmcgRkVDIG9uIG91ciBjcHVpbXg1MSBib2FyZC4KPiAgICAg
+Cj4gICAgIFRoaXMgcGF0Y2ggc2V0IGJhY2sgdGhlIFBBRF9DVFJMIG9mIHRoZSBtaXNzaW5nIHBp
+bnMgdG8gdGhlIGluaXRpYWwKPiAgICAgdmFsdWUuCj4gICAgIAo+ICAgICBTaWduZWQtb2ZmLWJ5
+OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiAgICAgU2lnbmVkLW9mZi1ieTogU2Fz
+Y2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+IAo+IFlvdSBzaG91bGRuJ3QgZG8g
+dGhpcy4KCldoYXQgYWJvdXQgd3JpdGUgYSBwYXRjaCBmb3IgdGhlIGtlcm5lbCBmb3IgdGhpcz8K
+Ci0tLQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
