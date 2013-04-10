@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
- helo=mo1.mail-out.ovh.net)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPxd3-0000VO-17
- for barebox@lists.infradead.org; Wed, 10 Apr 2013 16:12:10 +0000
-Received: from mail635.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id A9233FF9AFF
- for <barebox@lists.infradead.org>; Wed, 10 Apr 2013 18:12:04 +0200 (CEST)
-Date: Wed, 10 Apr 2013 18:08:03 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130410160803.GY1568@game.jcrosoft.org>
-References: <1365603058-9368-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1365603058-9368-1-git-send-email-eric@eukrea.com>
+ id 1UQ0pd-0005LB-7R
+ for barebox@lists.infradead.org; Wed, 10 Apr 2013 19:37:22 +0000
+Date: Wed, 10 Apr 2013 21:37:10 +0200
+From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
+Message-ID: <20130410213710.4ed13edf@e6520eb>
+In-Reply-To: <1364972980-32527-5-git-send-email-s.hauer@pengutronix.de>
+References: <1364972980-32527-1-git-send-email-s.hauer@pengutronix.de>
+ <1364972980-32527-5-git-send-email-s.hauer@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,69 +18,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mx53-loco: provide the right header for serial
- downloader
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 4/4] ARM: tqma53: call SoC lowlevel function early
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 16:10 Wed 10 Apr     , Eric B=E9nard wrote:
-> this patch allows barebox to run when loaded on the iMX53QSB
-> using the serial downloader.
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/boards/freescale-mx53-loco/flash_header.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> =
-
-> diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/ar=
-m/boards/freescale-mx53-loco/flash_header.c
-> index dc1162b..5358f0b 100644
-> --- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> +++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> @@ -34,10 +34,17 @@ struct imx_flash_header_v2 __flash_header_section fla=
-sh_header =3D {
->  	.header.length		=3D cpu_to_be16(32),
->  	.header.version		=3D IVT_VERSION,
->  =
-
-> +#ifdef CONFIG_ARCH_IMX_INTERNAL_BOOT_SERIAL
-> +	.entry			=3D APP_DEST + 0x400,
-> +	.dcd_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, dcd),
-> +	.boot_data_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, boo=
-t_data),
-> +	.self			=3D APP_DEST,
-> +#else
->  	.entry			=3D APP_DEST + 0x1000,
->  	.dcd_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, d=
-cd),
->  	.boot_data_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header=
-_v2, boot_data),
->  	.self			=3D APP_DEST + 0x400,
-> +#endif
-use a define to void duplication
->  =
-
->  	.boot_data.start	=3D APP_DEST,
->  	.boot_data.size		=3D DCD_BAREBOX_SIZE,
-> -- =
-
-> 1.7.11.7
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FjaGEsCgpMZSBXZWQsICAzIEFwciAyMDEzIDA5OjA5OjQwICswMjAwLApTYXNjaGEgSGF1
+ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+IGEgw6ljcml0IDoKCj4gV2l0aCBDT05GSUdfTU1V
+X0VBUkxZIGVuYWJsZWQgdGhlIGJvYXJkIGRvZXMgbm90IHN1cnZpdmUgdGhlIGNhbGwKPiB0byBp
+bXg1M19pbml0X2xvd2xldmVsKCkuIFRoaXMgc2hvdWxkIG5vdCBoYXBwZW4sIGJ1dCB0aGUgcmVh
+c29ucwo+IGFyZSBjdXJyZW50bHkgdW5rbm93bi4gVGhpcyB3b3JrcyBvbiBvdGhlciBib2FyZHMg
+bGlrZSB0aGUgaS5NWDUzCj4gUVNCLgo+IFRoaXMgcGF0Y2ggbW92ZXMgdGhlIGNhbGwgdG8gaW14
+NTNfaW5pdF9sb3dsZXZlbCB0bwo+IGJhcmVib3hfYXJtX3Jlc2V0X3ZlY3RvcigpIHdoaWNoIGlz
+IGV4ZWN1dGVkIHdpdGggTU1VIGRpc2FibGVkLgo+IApGV0lXIDogb24gdGhlIFFTQiBJIGFsc28g
+bWV0IHRoaXMga2luZCBvZiBwcm9ibGVtIDoKLSB3aGVuIHRoZSBib2FyZCBpcyBjb25maWd1cmVk
+IGZvciBzZXJpYWwgZG93bmxvYWQgYm9vdCAoYm9vdG1vZGUgMAogICYgMSA9IDEpIDogYmFyZWJv
+eCBmYWlscyB0byBleGVjdXRlIGlmIE1NVSBpcyBlbmFibGVkCi0gd2hlbiB0aGUgYm9hcmQgaXMg
+Y29uZmlndXJlZCBmb3IgdXN1YWwgU0RDYXJkIGJvb3QgYW5kIHRoZSBTRENhcmQgaXMKICBub3Qg
+aW5zZXJ0ZWQsIHRoZSBib290cm9tIGZhbGxzIGJhY2sgdG8gc2VyaWFsIGRvd25sb2FkIG1vZGUg
+YW5kCiAgdGhlbiBiYXJlYm94IHJ1bnMgZmluZSBldmVuIHdpdGggTU1VIGVuYWJsZWQuCgpCZXN0
+IHJlZ2FyZHMsCkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
