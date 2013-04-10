@@ -2,13 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPr7U-0008Jm-Qw
- for barebox@lists.infradead.org; Wed, 10 Apr 2013 09:15:13 +0000
+ id 1UPr7R-0008Ia-Sj
+ for barebox@lists.infradead.org; Wed, 10 Apr 2013 09:15:09 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 10 Apr 2013 11:14:48 +0200
-Message-Id: <1365585295-2420-6-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
-References: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
+Date: Wed, 10 Apr 2013 11:14:43 +0200
+Message-Id: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,106 +20,135 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 06/13] tegra: switch to DT only
+Subject: [PATCH v4 01/13] tegra: pull in iomap.h from the Linux kernel
 To: barebox@lists.infradead.org
 
-We will follow the Linux kernel and go devicetree only for Tegra. This
-doesn't prevent specific code for certain boards, but always requires a
-valid DTB for all boards.
-
-Also regenerate the AC100 defconfig to reflect this change.
+This synchronizes the Tegra iomap.h with the latest Linux kernel code.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-v4: unbrick ac100 defconfig
----
- arch/arm/Kconfig                         |  3 +++
- arch/arm/configs/toshiba_ac100_defconfig |  6 ++++--
- arch/arm/dts/tegra20-paz00.dts           | 12 ++++++++++++
- arch/arm/dts/tegra20.dtsi                |  5 +++++
- 4 files changed, 24 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/dts/tegra20-paz00.dts
- create mode 100644 arch/arm/dts/tegra20.dtsi
+ arch/arm/mach-tegra/include/mach/iomap.h | 64 ++++++++++----------------------
+ 1 file changed, 19 insertions(+), 45 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index befed5d..fdd803e 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -139,6 +139,9 @@ config ARCH_TEGRA
- 	bool "NVIDIA Tegra"
- 	select CPU_V7
- 	select HAS_DEBUG_LL
-+	select BUILTIN_DTB
-+	select OFDEVICE
-+	select OFTREE
+diff --git a/arch/arm/mach-tegra/include/mach/iomap.h b/arch/arm/mach-tegra/include/mach/iomap.h
+index ba478e7..6ca6504 100644
+--- a/arch/arm/mach-tegra/include/mach/iomap.h
++++ b/arch/arm/mach-tegra/include/mach/iomap.h
+@@ -62,47 +62,35 @@
+ #define TEGRA_RES_SEMA_BASE		0x60001000
+ #define TEGRA_RES_SEMA_SIZE		SZ_4K
  
- config ARCH_ZYNQ
- 	bool "Xilinx Zynq-based boards"
-diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
-index 065189d..6f7011b 100644
---- a/arch/arm/configs/toshiba_ac100_defconfig
-+++ b/arch/arm/configs/toshiba_ac100_defconfig
-@@ -1,3 +1,4 @@
-+CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
- CONFIG_ARCH_TEGRA=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0x01000000
-@@ -14,6 +15,7 @@ CONFIG_ENABLE_DEVICE_NOISE=y
- CONFIG_CMD_SLEEP=y
- # CONFIG_CMD_TRUE is not set
- # CONFIG_CMD_FALSE is not set
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_LOADB=y
- CONFIG_CMD_LOADY=y
- CONFIG_CMD_LOADS=y
-@@ -23,11 +25,10 @@ CONFIG_CMD_SHA1SUM=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_NET_USB=y
-@@ -36,4 +37,5 @@ CONFIG_NET_USB_ASIX=y
- CONFIG_USB=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_STORAGE=y
-+CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
-diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
-new file mode 100644
-index 0000000..09ccb8b
---- /dev/null
-+++ b/arch/arm/dts/tegra20-paz00.dts
-@@ -0,0 +1,12 @@
-+/dts-v1/;
+-#define TEGRA_HDMI_BASE			0x54280000
+-#define TEGRA_HDMI_SIZE			SZ_256K
+-
+-#define TEGRA_GART_BASE			0x58000000
+-#define TEGRA_GART_SIZE			SZ_32M
+-
+-#define TEGRA_RES_SEMA_BASE		0x60001000
+-#define TEGRA_RES_SEMA_SIZE		SZ_4K
+-
+-#define TEGRA_ARB_SEMA_BASE		0x60002000
+-#define TEGRA_ARB_SEMA_SIZE		SZ_4K
+-
+ #define TEGRA_PRIMARY_ICTLR_BASE	0x60004000
+-#define TEGRA_PRIMARY_ICTLR_SIZE	64
+-
+-#define TEGRA_ARBGNT_ICTLR_BASE		0x60004040
+-#define TEGRA_ARBGNT_ICTLR_SIZE		192
++#define TEGRA_PRIMARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_SECONDARY_ICTLR_BASE	0x60004100
+-#define TEGRA_SECONDARY_ICTLR_SIZE	64
++#define TEGRA_SECONDARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_TERTIARY_ICTLR_BASE	0x60004200
+-#define TEGRA_TERTIARY_ICTLR_SIZE	64
++#define TEGRA_TERTIARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_QUATERNARY_ICTLR_BASE	0x60004300
+-#define TEGRA_QUATERNARY_ICTLR_SIZE	64
++#define TEGRA_QUATERNARY_ICTLR_SIZE	SZ_64
 +
-+/include/ "tegra20.dtsi"
++#define TEGRA_QUINARY_ICTLR_BASE	0x60004400
++#define TEGRA_QUINARY_ICTLR_SIZE	SZ_64
+ 
+ #define TEGRA_TMR1_BASE			0x60005000
+-#define TEGRA_TMR1_SIZE			8
++#define TEGRA_TMR1_SIZE			SZ_8
+ 
+ #define TEGRA_TMR2_BASE			0x60005008
+-#define TEGRA_TMR2_SIZE			8
++#define TEGRA_TMR2_SIZE			SZ_8
+ 
+ #define TEGRA_TMRUS_BASE		0x60005010
+-#define TEGRA_TMRUS_SIZE		64
++#define TEGRA_TMRUS_SIZE		SZ_64
+ 
+ #define TEGRA_TMR3_BASE			0x60005050
+-#define TEGRA_TMR3_SIZE			8
++#define TEGRA_TMR3_SIZE			SZ_8
+ 
+ #define TEGRA_TMR4_BASE			0x60005058
+-#define TEGRA_TMR4_SIZE			8
++#define TEGRA_TMR4_SIZE			SZ_8
+ 
+ #define TEGRA_CLK_RESET_BASE		0x60006000
+ #define TEGRA_CLK_RESET_SIZE		SZ_4K
+@@ -125,17 +113,17 @@
+ #define TEGRA_AHB_GIZMO_BASE		0x6000C004
+ #define TEGRA_AHB_GIZMO_SIZE		0x10C
+ 
++#define TEGRA_SB_BASE			0x6000C200
++#define TEGRA_SB_SIZE			256
 +
-+/ {
-+	model = "Toshiba AC100 / Dynabook AZ";
-+	compatible = "compal,paz00", "nvidia,tegra20";
-+
-+	memory {
-+		reg = <0x00000000 0x20000000>;
-+	};
-+};
-diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
-new file mode 100644
-index 0000000..9f8860b
---- /dev/null
-+++ b/arch/arm/dts/tegra20.dtsi
-@@ -0,0 +1,5 @@
-+/include/ "skeleton.dtsi"
-+
-+/ {
-+	compatible = "nvidia,tegra20";
-+};
+ #define TEGRA_STATMON_BASE		0x6000C400
+ #define TEGRA_STATMON_SIZE		SZ_1K
+ 
+ #define TEGRA_GPIO_BASE			0x6000D000
+ #define TEGRA_GPIO_SIZE			SZ_4K
+ 
+-#define TEGRA_EXCEPTION_VECTORS_BASE    0x6000F000
+-#define TEGRA_EXCEPTION_VECTORS_SIZE    SZ_4K
+-
+-#define TEGRA_VDE_BASE		0x6001A000
+-#define TEGRA_VDE_SIZE		(SZ_8K + SZ_4K - SZ_256)
++#define TEGRA_EXCEPTION_VECTORS_BASE	0x6000F000
++#define TEGRA_EXCEPTION_VECTORS_SIZE	SZ_4K
+ 
+ #define TEGRA_APB_MISC_BASE		0x70000000
+ #define TEGRA_APB_MISC_SIZE		SZ_4K
+@@ -156,10 +144,10 @@
+ #define TEGRA_I2S2_SIZE			SZ_256
+ 
+ #define TEGRA_UARTA_BASE		0x70006000
+-#define TEGRA_UARTA_SIZE		64
++#define TEGRA_UARTA_SIZE		SZ_64
+ 
+ #define TEGRA_UARTB_BASE		0x70006040
+-#define TEGRA_UARTB_SIZE		64
++#define TEGRA_UARTB_SIZE		SZ_64
+ 
+ #define TEGRA_UARTC_BASE		0x70006200
+ #define TEGRA_UARTC_SIZE		SZ_256
+@@ -275,18 +263,4 @@
+ #define TEGRA_SDMMC4_BASE		0xC8000600
+ #define TEGRA_SDMMC4_SIZE		SZ_512
+ 
+-#if defined(CONFIG_TEGRA_DEBUG_UART_NONE)
+-# define TEGRA_DEBUG_UART_BASE 0
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTA)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTA_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTB)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTB_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTC)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTC_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTD)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTD_BASE
+-#elif defined(CONFIG_TEGRA_DEBUG_UARTE)
+-# define TEGRA_DEBUG_UART_BASE TEGRA_UARTE_BASE
+-#endif
+-
+ #endif
 -- 
 1.8.1.2
 
