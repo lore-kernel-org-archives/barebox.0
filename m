@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPxW6-0000J9-V8
- for barebox@lists.infradead.org; Wed, 10 Apr 2013 16:05:00 +0000
-Received: from e6520eb.local.eukrea.com (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 583DB4B0074
- for <barebox@lists.infradead.org>; Wed, 10 Apr 2013 18:04:53 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 10 Apr 2013 18:04:52 +0200
-Message-Id: <1365609892-2322-1-git-send-email-eric@eukrea.com>
-In-Reply-To: <20130410172212.3c672251@e6520eb>
-References: <20130410172212.3c672251@e6520eb>
+ id 1UPxd3-0000VO-17
+ for barebox@lists.infradead.org; Wed, 10 Apr 2013 16:12:10 +0000
+Received: from mail635.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id A9233FF9AFF
+ for <barebox@lists.infradead.org>; Wed, 10 Apr 2013 18:12:04 +0200 (CEST)
+Date: Wed, 10 Apr 2013 18:08:03 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130410160803.GY1568@game.jcrosoft.org>
+References: <1365603058-9368-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1365603058-9368-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +22,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] nand_base: detect more ONFI flash
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] mx53-loco: provide the right header for serial
+ downloader
+To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-aWYgdGhlIGZsYXNoIGhhcyBhIGtub3duIHR5cGUsIHRoZSBPTkZJIGRldGVjdGlvbiB3b24ndCBv
-Y2N1cgphbmQgdGh1cyB3ZSBtYXkgbm90IGRldGVjdCB0aGUgcmlnaHQgcGFyYW1ldGVycy4KQnkg
-dGVzdGluZyBib3RoIG5hbWQgYW5kIHBhZ2VzaXplLCBhcyBkb25lIGluIHRoZSBrZXJuZWwsIHdl
-CmNhbiBkZXRlY3QgT05GSSBmbGFzaCB3aXRoIGtub3cgSURzLgoKQXMgYW4gZXhhbXBsZSBvbiBh
-biBpLk1YNTMgYm9hcmQgOgotIHdpdGhvdXQgdGhlIHBhdGNoIDoKTkFORCBkZXZpY2U6IE1hbnVm
-YWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkMwooTWljcm9uIE5BTkQgMUdpQiAzLDNWIDgt
-Yml0KSwgcGFnZSBzaXplOiA0MDk2LCBPT0Igc2l6ZTogMTI4CgotIHdpdGggdGhlIHBhdGNoIDoK
-T05GSSBmbGFzaCBkZXRlY3RlZCAuLi4gT05GSSBwYXJhbSBwYWdlIDAgdmFsaWQKTkFORCBkZXZp
-Y2U6IE1hbnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkMwooTWljcm9uIE1UMjlGOEcw
-OEFCQUNBV1ApLCBwYWdlIHNpemU6IDQwOTYsIE9PQiBzaXplOiAyMjQKCmluIHRoZSBmaXJzdCBj
-YXNlIHRoZSBPT0Igc2l6ZSBpcyB3cm9uZy4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8
-ZXJpY0BldWtyZWEuY29tPgotLS0KdjI6IGNvcnJlY3RseSBpbnRlZ3JhdGUgdGhlIGtlcm5lbCBj
-aGFuZ2Ugc28gdGhhdCBpZiB0aGUgZmxhc2ggSUQKaXMgbm90IGtub3duICh3aGVuIHRoZSBmbGFz
-aCBpbiBhIHJlY2VudCBPTkZJIG9uZSksIHdlIGRvbid0IGdldAphIE5VTEwgcG9pbnRlciBmb3Ig
-dHlwZSBhbmQgdGh1cyBhIGNyYXNoLgoKIGRyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMgfCAx
-MyArKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCA3IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMgYi9kcml2
-ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCmluZGV4IGZhMTBkOTUuLmM2M2FhZjkgMTAwNjQ0Ci0t
-LSBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9u
-YW5kX2Jhc2UuYwpAQCAtMTE3OSwxNiArMTE3OSwxNSBAQCBzdGF0aWMgc3RydWN0IG5hbmRfZmxh
-c2hfZGV2ICpuYW5kX2dldF9mbGFzaF90eXBlKHN0cnVjdCBtdGRfaW5mbyAqbXRkLAogCQlyZXR1
-cm4gRVJSX1BUUigtRU5PREVWKTsKIAl9CiAKLQkvKiBMb29rdXAgdGhlIGZsYXNoIGlkICovCi0J
-Zm9yIChpID0gMDsgbmFuZF9mbGFzaF9pZHNbaV0ubmFtZSAhPSBOVUxMOyBpKyspIHsKLQkJaWYg
-KGRldl9pZCA9PSBuYW5kX2ZsYXNoX2lkc1tpXS5pZCkgewotCQkJdHlwZSA9ICAmbmFuZF9mbGFz
-aF9pZHNbaV07CisJaWYgKCF0eXBlKQorCQl0eXBlID0gbmFuZF9mbGFzaF9pZHM7CisKKwlmb3Ig
-KDsgdHlwZS0+bmFtZSAhPSBOVUxMOyB0eXBlKyspCisJCWlmIChkZXZfaWQgPT0gdHlwZS0+aWQp
-CiAJCQlicmVhazsKLQkJfQotCX0KIAogCWNoaXAtPm9uZmlfdmVyc2lvbiA9IDA7Ci0JaWYgKCF0
-eXBlKSB7CisJaWYgKCF0eXBlLT5uYW1lIHx8ICF0eXBlLT5wYWdlc2l6ZSkgewogCQkvKiBDaGVj
-ayBpcyBjaGlwIGlzIE9ORkkgY29tcGxpYW50ICovCiAJCXJldCA9IG5hbmRfZmxhc2hfZGV0ZWN0
-X29uZmkobXRkLCBjaGlwLCAmYnVzdyk7CiAJCWlmIChyZXQpCi0tIAoxLjcuMTEuNwoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 16:10 Wed 10 Apr     , Eric B=E9nard wrote:
+> this patch allows barebox to run when loaded on the iMX53QSB
+> using the serial downloader.
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  arch/arm/boards/freescale-mx53-loco/flash_header.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> =
+
+> diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/ar=
+m/boards/freescale-mx53-loco/flash_header.c
+> index dc1162b..5358f0b 100644
+> --- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
+> +++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+> @@ -34,10 +34,17 @@ struct imx_flash_header_v2 __flash_header_section fla=
+sh_header =3D {
+>  	.header.length		=3D cpu_to_be16(32),
+>  	.header.version		=3D IVT_VERSION,
+>  =
+
+> +#ifdef CONFIG_ARCH_IMX_INTERNAL_BOOT_SERIAL
+> +	.entry			=3D APP_DEST + 0x400,
+> +	.dcd_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, dcd),
+> +	.boot_data_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, boo=
+t_data),
+> +	.self			=3D APP_DEST,
+> +#else
+>  	.entry			=3D APP_DEST + 0x1000,
+>  	.dcd_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, d=
+cd),
+>  	.boot_data_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header=
+_v2, boot_data),
+>  	.self			=3D APP_DEST + 0x400,
+> +#endif
+use a define to void duplication
+>  =
+
+>  	.boot_data.start	=3D APP_DEST,
+>  	.boot_data.size		=3D DCD_BAREBOX_SIZE,
+> -- =
+
+> 1.7.11.7
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
