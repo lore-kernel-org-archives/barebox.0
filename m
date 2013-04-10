@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UPr7W-0008KV-TR
- for barebox@lists.infradead.org; Wed, 10 Apr 2013 09:15:25 +0000
+ id 1UPr7V-0008Jl-BJ
+ for barebox@lists.infradead.org; Wed, 10 Apr 2013 09:15:21 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 10 Apr 2013 11:14:53 +0200
-Message-Id: <1365585295-2420-11-git-send-email-dev@lynxeye.de>
+Date: Wed, 10 Apr 2013 11:14:49 +0200
+Message-Id: <1365585295-2420-7-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
 References: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -22,206 +22,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4 11/13] tegra: add generic debug UART support
+Subject: [PATCH v4 07/13] tegra: add driver for the clock and reset module
 To: barebox@lists.infradead.org
 
-ODMdata tells us which UART to use for debugging purposes. This is
-agreed upon in both the upstream Linux kernel and U-Boot, so do it the
-same way in barebox.
+Only a basic set of clocks is supported. This is a temporary solution
+and will go away as soon as the port of the Tegra common clock code from
+the Linux kernel is ready to go.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-v4:
-- fix rebase error
-- provide Kconfig option to ovveride ODMdata
----
- arch/arm/boards/toshiba-ac100/Makefile      |  1 -
- arch/arm/boards/toshiba-ac100/serial.c      | 39 --------------------
- arch/arm/configs/toshiba_ac100_defconfig    |  1 +
- arch/arm/mach-tegra/Kconfig                 | 33 +++++++++++++++++
- arch/arm/mach-tegra/Makefile                |  1 +
- arch/arm/mach-tegra/include/mach/lowlevel.h | 34 +++++++++++++++++
- arch/arm/mach-tegra/tegra20.c               | 57 +++++++++++++++++++++++++++++
- 7 files changed, 126 insertions(+), 40 deletions(-)
- delete mode 100644 arch/arm/boards/toshiba-ac100/serial.c
- create mode 100644 arch/arm/mach-tegra/tegra20.c
+ arch/arm/Kconfig                               |   2 +
+ arch/arm/dts/tegra20.dtsi                      |   6 ++
+ arch/arm/mach-tegra/Makefile                   |   1 +
+ arch/arm/mach-tegra/include/mach/clkdev.h      |   7 ++
+ arch/arm/mach-tegra/include/mach/tegra20-car.h |  22 +++++
+ arch/arm/mach-tegra/tegra20-car.c              | 117 +++++++++++++++++++++++++
+ 6 files changed, 155 insertions(+)
+ create mode 100644 arch/arm/mach-tegra/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-tegra/include/mach/tegra20-car.h
+ create mode 100644 arch/arm/mach-tegra/tegra20-car.c
 
-diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
-index 9e14763..dcfc293 100644
---- a/arch/arm/boards/toshiba-ac100/Makefile
-+++ b/arch/arm/boards/toshiba-ac100/Makefile
-@@ -1,2 +1 @@
- obj-y += board.o
--obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-diff --git a/arch/arm/boards/toshiba-ac100/serial.c b/arch/arm/boards/toshiba-ac100/serial.c
-deleted file mode 100644
-index 880270d..0000000
---- a/arch/arm/boards/toshiba-ac100/serial.c
-+++ /dev/null
-@@ -1,39 +0,0 @@
--/*
-- * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
-- *
-- * This file is part of barebox.
-- * See file CREDITS for list of people who contributed to this project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--
--#include <common.h>
--#include <types.h>
--#include <driver.h>
--#include <init.h>
--#include <ns16550.h>
--#include <asm/io.h>
--#include <asm/common.h>
--#include <mach/iomap.h>
--
--static struct NS16550_plat serial_plat = {
--	.clock = 0x75 * 115200 * 16 /* MODE_X_DIV */,
--	.shift = 2,
--};
--
--static int ac100_serial_console_init(void)
--{
--	/* Register the serial port */
--	add_ns16550_device(DEVICE_ID_DYNAMIC, TEGRA_UARTA_BASE, 8 << serial_plat.shift,
--			IORESOURCE_MEM_8BIT, &serial_plat);
--
--	return 0;
--}
--console_initcall(ac100_serial_console_init);
-diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/toshiba_ac100_defconfig
-index 6f7011b..1903910 100644
---- a/arch/arm/configs/toshiba_ac100_defconfig
-+++ b/arch/arm/configs/toshiba_ac100_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_BUILTIN_DTB_NAME="tegra20-paz00"
- CONFIG_ARCH_TEGRA=y
-+CONFIG_TEGRA_UART_A=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0x01000000
- CONFIG_BROKEN=y
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index 2f15b27..965e7ab 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -8,6 +8,39 @@ config ARCH_TEGRA_2x_SOC
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index fdd803e..ed34d2c 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -140,6 +140,8 @@ config ARCH_TEGRA
+ 	select CPU_V7
+ 	select HAS_DEBUG_LL
+ 	select BUILTIN_DTB
++	select COMMON_CLK
++	select CLKDEV_LOOKUP
+ 	select OFDEVICE
+ 	select OFTREE
  
- endchoice
+diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
+index 9f8860b..2edfda1 100644
+--- a/arch/arm/dts/tegra20.dtsi
++++ b/arch/arm/dts/tegra20.dtsi
+@@ -2,4 +2,10 @@
  
-+choice
-+	prompt "Tegra debug UART"
-+	help
-+	  This is the first serial console that gets activated by barebox.
-+	  Normally each board vendor should program a valid debug UART into
-+	  the ODMdata section of the boot configuration table, so it's a
-+	  reasonably good bet to use that.
-+	  If you know your ODMdata is broken, or you don't wish to activate
-+	  any serial console at all you can override the default here.
+ / {
+ 	compatible = "nvidia,tegra20";
 +
-+config TEGRA_UART_ODMDATA
-+	bool "ODMdata defined UART"
-+
-+config TEGRA_UART_A
-+	bool "UART A"
-+
-+config TEGRA_UART_B
-+	bool "UART B"
-+
-+config TEGRA_UART_C
-+	bool "UART C"
-+
-+config TEGRA_UART_D
-+	bool "UART D"
-+
-+config TEGRA_UART_E
-+	bool "UART E"
-+
-+config TEGRA_UART_NONE
-+	bool "None"
-+
-+endchoice
-+
- # ---------------------------------------------------------
- 
- if ARCH_TEGRA_2x_SOC
++	tegra_car: clock {
++		compatible = "nvidia,tegra20-car";
++		reg = <0x60006000 0x1000>;
++		#clock-cells = <1>;
++	};
+ };
 diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
-index 0807af6..f9c771f 100644
+index 11915e5..9aa7725 100644
 --- a/arch/arm/mach-tegra/Makefile
 +++ b/arch/arm/mach-tegra/Makefile
-@@ -1,6 +1,7 @@
- CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
- lwl-y += tegra_avp_init.o
- lwl-y += tegra_maincomplex_init.o
-+obj-y += tegra20.o
- obj-y += tegra20-car.o
- obj-y += tegra20-pmc.o
- obj-y += tegra20-timer.o
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index bd1a8db..a24b8c2 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -35,6 +35,10 @@
- 
- #define T20_ODMDATA_RAMSIZE_SHIFT	28
- #define T20_ODMDATA_RAMSIZE_MASK	(3 << T20_ODMDATA_RAMSIZE_SHIFT)
-+#define T20_ODMDATA_UARTTYPE_SHIFT	18
-+#define T20_ODMDATA_UARTTYPE_MASK	(3 << T20_ODMDATA_UARTTYPE_SHIFT)
-+#define T20_ODMDATA_UARTID_SHIFT	15
-+#define T20_ODMDATA_UARTID_MASK		(7 << T20_ODMDATA_UARTID_SHIFT)
- 
- static inline u32 tegra_get_odmdata(void)
- {
-@@ -109,5 +113,35 @@ static inline uint32_t tegra20_get_ramsize(void)
- 	}
- }
- 
-+static long uart_id_to_base[] = {
-+	TEGRA_UARTA_BASE,
-+	TEGRA_UARTB_BASE,
-+	TEGRA_UARTC_BASE,
-+	TEGRA_UARTD_BASE,
-+	TEGRA_UARTE_BASE,
-+};
-+
-+static inline long tegra20_get_debuguart_base(void)
-+{
-+	u32 odmdata;
-+	int id;
-+
-+	odmdata = tegra_get_odmdata();
-+
-+	/*
-+	 * Get type, we accept both "2" and "3", as they both demark a UART,
-+	 * depending on the board type.
-+	 */
-+	if (!(((odmdata & T20_ODMDATA_UARTTYPE_MASK) >>
-+	      T20_ODMDATA_UARTTYPE_SHIFT) & 0x2))
-+		return 0;
-+
-+	id = (odmdata & T20_ODMDATA_UARTID_MASK) >> T20_ODMDATA_UARTID_SHIFT;
-+	if (id > ARRAY_SIZE(uart_id_to_base))
-+		return 0;
-+
-+	return uart_id_to_base[id];
-+}
-+
- /* reset vector for the main CPU complex */
- void tegra_maincomplex_entry(void);
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
+@@ -1,2 +1,3 @@
+ obj-y += clock.o
+ obj-y += reset.o
++obj-y += tegra20-car.o
+diff --git a/arch/arm/mach-tegra/include/mach/clkdev.h b/arch/arm/mach-tegra/include/mach/clkdev.h
 new file mode 100644
-index 0000000..1a09e55
+index 0000000..04b37a8
 --- /dev/null
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -0,0 +1,57 @@
++++ b/arch/arm/mach-tegra/include/mach/clkdev.h
+@@ -0,0 +1,7 @@
++#ifndef __ASM_MACH_CLKDEV_H
++#define __ASM_MACH_CLKDEV_H
++
++#define __clk_get(clk) ({ 1; })
++#define __clk_put(clk) do { } while (0)
++
++#endif
+diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+new file mode 100644
+index 0000000..43ed059
+--- /dev/null
++++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+@@ -0,0 +1,22 @@
 +/*
 + * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
 + *
@@ -238,47 +113,135 @@ index 0000000..1a09e55
 + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
++/* Register definitions */
++#define CRC_OSC_CTRL			0x050
++#define CRC_OSC_CTRL_OSC_FREQ_SHIFT	30
++#define CRC_OSC_CTRL_OSC_FREQ_MASK	(0x3 << CRC_OSC_CTRL_OSC_FREQ_SHIFT)
++#define CRC_OSC_CTRL_PLL_REF_DIV_SHIFT	28
++#define CRC_OSC_CTRL_PLL_REF_DIV_MASK	(0x3 << CRC_OSC_CTRL_PLL_REF_DIV_SHIFT)
+diff --git a/arch/arm/mach-tegra/tegra20-car.c b/arch/arm/mach-tegra/tegra20-car.c
+new file mode 100644
+index 0000000..63c6ca5
+--- /dev/null
++++ b/arch/arm/mach-tegra/tegra20-car.c
+@@ -0,0 +1,117 @@
++/*
++ * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++/**
++ * @file
++ * @brief Device driver for the Tegra 20 clock and reset (CAR) controller
++ */
++
 +#include <common.h>
 +#include <init.h>
-+#include <ns16550.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/err.h>
 +#include <mach/iomap.h>
-+#include <mach/lowlevel.h>
 +
-+static struct NS16550_plat debug_uart = {
-+	.clock = 216000000, /* pll_p rate */
-+	.shift = 2,
++#include <mach/tegra20-car.h>
++
++static void __iomem *car_base;
++
++enum tegra20_clks {
++	cpu, ac97 = 3, rtc, timer, uarta, gpio = 8, sdmmc2, i2s1 = 11, i2c1,
++	ndflash, sdmmc1, sdmmc4, twc, pwm, i2s2, epp, gr2d = 21, usbd, isp,
++	gr3d, ide, disp2, disp1, host1x, vcp, cache2 = 31, mem, ahbdma, apbdma,
++	kbc = 36, stat_mon, pmc, fuse, kfuse, sbc1, nor, spi, sbc2, xio, sbc3,
++	dvc, dsi, mipi = 50, hdmi, csi, tvdac, i2c2, uartc, emc = 57, usb2,
++	usb3, mpe, vde, bsea, bsev, speedo, uartd, uarte, i2c3, sbc4, sdmmc3,
++	pex, owr, afi, csite, pcie_xclk, avpucq = 75, la, irama = 84, iramb,
++	iramc, iramd, cram2, audio_2x, clk_d, csus = 92, cdev1, cdev2,
++	uartb = 96, vfir, spdif_in, spdif_out, vi, vi_sensor, tvo, cve,
++	osc, clk_32k, clk_m, sclk, cclk, hclk, pclk, blink, pll_a, pll_a_out0,
++	pll_c, pll_c_out1, pll_d, pll_d_out0, pll_e, pll_m, pll_m_out1,
++	pll_p, pll_p_out1, pll_p_out2, pll_p_out3, pll_p_out4, pll_u,
++	pll_x, audio, pll_ref, twd, clk_max,
 +};
 +
-+static int tegra20_add_debug_console(void)
++static struct clk *clks[clk_max];
++
++static unsigned long get_osc_frequency(void)
 +{
-+	unsigned long base = 0;
++	u32 osc_ctrl = readl(car_base + CRC_OSC_CTRL);
 +
-+	/* figure out which UART to use */
-+#if defined(CONFIG_TEGRA_UART_NONE)
-+	return 0;
-+#elif defined(CONFIG_TEGRA_UART_ODMDATA)
-+	base = tegra20_get_debuguart_base();
-+#elif defined(CONFIG_TEGRA_UART_A)
-+	base = TEGRA_UARTA_BASE;
-+#elif defined(CONFIG_TEGRA_UART_B)
-+	base = TEGRA_UARTB_BASE;
-+#elif defined(CONFIG_TEGRA_UART_C)
-+	base = TEGRA_UARTC_BASE;
-+#elif defined(CONFIG_TEGRA_UART_D)
-+	base = TEGRA_UARTD_BASE;
-+#elif defined(CONFIG_TEGRA_UART_E)
-+	base = TEGRA_UARTE_BASE;
-+#endif
++	switch ((osc_ctrl & CRC_OSC_CTRL_OSC_FREQ_MASK) >>
++		CRC_OSC_CTRL_OSC_FREQ_SHIFT)
++	{
++	case 0:
++		return 13000000;
++	case 1:
++		return 19200000;
++	case 2:
++		return 12000000;
++	case 3:
++		return 26000000;
++	default:
++		return 0;
++	}
++}
 +
-+	if (!base)
-+		return -ENODEV;
++static unsigned int get_pll_ref_div(void)
++{
++	u32 osc_ctrl = readl(car_base + CRC_OSC_CTRL);
 +
-+	add_ns16550_device(DEVICE_ID_DYNAMIC, base, 8 << debug_uart.shift,
-+			   IORESOURCE_MEM_8BIT, &debug_uart);
++	return 1U << ((osc_ctrl & CRC_OSC_CTRL_PLL_REF_DIV_MASK) >>
++		      CRC_OSC_CTRL_PLL_REF_DIV_SHIFT);
++}
++
++static int tegra20_car_probe(struct device_d *dev)
++{
++	car_base = dev_request_mem_region(dev, 0);
++	if (!car_base)
++		return -EBUSY;
++
++	/* primary clocks */
++	clks[clk_m] = clk_fixed("clk_m", get_osc_frequency());
++	clks[clk_32k] = clk_fixed("clk_32k", 32768);
++
++	clks[pll_ref] = clk_fixed_factor("pll_ref", "clk_m", 1,
++					 get_pll_ref_div());
++
++	/* derived clocks */
++	/* timer is a gate, but as it's enabled by BOOTROM we needn't worry */
++	clks[timer] = clk_fixed_factor("timer", "clk_m", 1, 1);
 +
 +	return 0;
 +}
-+console_initcall(tegra20_add_debug_console);
++
++static __maybe_unused struct of_device_id tegra20_car_dt_ids[] = {
++	{
++		.compatible = "nvidia,tegra20-car",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d tegra20_car_driver = {
++	.probe	= tegra20_car_probe,
++	.name	= "tegra20-car",
++	.of_compatible = DRV_OF_COMPAT(tegra20_car_dt_ids),
++};
++
++static int tegra20_car_init(void)
++{
++	return platform_driver_register(&tegra20_car_driver);
++}
++postcore_initcall(tegra20_car_init);
 -- 
 1.8.1.2
 
