@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-lb0-f173.google.com ([209.85.217.173])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQ1uz-0006uF-LX
- for barebox@lists.infradead.org; Wed, 10 Apr 2013 20:47:02 +0000
-Received: by mail-la0-f53.google.com with SMTP id fp13so847929lab.26
- for <barebox@lists.infradead.org>; Wed, 10 Apr 2013 13:46:55 -0700 (PDT)
-Date: Thu, 11 Apr 2013 00:46:22 +0400
+ id 1UQ20d-00071y-Or
+ for barebox@lists.infradead.org; Wed, 10 Apr 2013 20:52:49 +0000
+Received: by mail-lb0-f173.google.com with SMTP id w20so979313lbh.32
+ for <barebox@lists.infradead.org>; Wed, 10 Apr 2013 13:52:45 -0700 (PDT)
+Date: Thu, 11 Apr 2013 00:52:12 +0400
 From: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Message-Id: <20130411004622.94adca1a24f3c44871f3a06d@gmail.com>
-In-Reply-To: <1365585295-2420-13-git-send-email-dev@lynxeye.de>
+Message-Id: <20130411005212.0cea9ae3319501d232dd2d55@gmail.com>
+In-Reply-To: <1365585295-2420-11-git-send-email-dev@lynxeye.de>
 References: <1365585295-2420-1-git-send-email-dev@lynxeye.de>
- <1365585295-2420-13-git-send-email-dev@lynxeye.de>
+ <1365585295-2420-11-git-send-email-dev@lynxeye.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,119 +24,225 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4 13/13] tegra: add GPIO controller driver
+Subject: Re: [PATCH v4 11/13] tegra: add generic debug UART support
 To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, 10 Apr 2013 11:14:55 +0200
+On Wed, 10 Apr 2013 11:14:53 +0200
 Lucas Stach <dev@lynxeye.de> wrote:
 
-> Taken from the Linux kernel, simplified and reworked to match barebox.
+> ODMdata tells us which UART to use for debugging purposes. This is
+> agreed upon in both the upstream Linux kernel and U-Boot, so do it the
+> same way in barebox.
 > =
 
 > Signed-off-by: Lucas Stach <dev@lynxeye.de>
 > ---
-> v4: remove Tegra 30 parts for now
+> v4:
+> - fix rebase error
+> - provide Kconfig option to ovveride ODMdata
 > ---
->  arch/arm/Kconfig                        |   2 +
->  arch/arm/dts/tegra20.dtsi               |  16 +++
->  arch/arm/mach-tegra/include/mach/gpio.h |   1 +
->  drivers/gpio/Kconfig                    |   7 ++
->  drivers/gpio/Makefile                   |   1 +
->  drivers/gpio/gpio-tegra.c               | 214 ++++++++++++++++++++++++++=
+>  arch/arm/boards/toshiba-ac100/Makefile      |  1 -
+>  arch/arm/boards/toshiba-ac100/serial.c      | 39 --------------------
+>  arch/arm/configs/toshiba_ac100_defconfig    |  1 +
+>  arch/arm/mach-tegra/Kconfig                 | 33 +++++++++++++++++
+>  arch/arm/mach-tegra/Makefile                |  1 +
+>  arch/arm/mach-tegra/include/mach/lowlevel.h | 34 +++++++++++++++++
+>  arch/arm/mach-tegra/tegra20.c               | 57 +++++++++++++++++++++++=
 ++++++
->  6 files changed, 241 insertions(+)
->  create mode 100644 arch/arm/mach-tegra/include/mach/gpio.h
->  create mode 100644 drivers/gpio/gpio-tegra.c
+>  7 files changed, 126 insertions(+), 40 deletions(-)
+>  delete mode 100644 arch/arm/boards/toshiba-ac100/serial.c
+>  create mode 100644 arch/arm/mach-tegra/tegra20.c
 > =
 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index ed34d2c..0a4f821 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -142,6 +142,8 @@ config ARCH_TEGRA
->  	select BUILTIN_DTB
->  	select COMMON_CLK
->  	select CLKDEV_LOOKUP
-> +	select GPIOLIB
-> +	select GPIO_TEGRA
->  	select OFDEVICE
->  	select OFTREE
+> diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/tos=
+hiba-ac100/Makefile
+> index 9e14763..dcfc293 100644
+> --- a/arch/arm/boards/toshiba-ac100/Makefile
+> +++ b/arch/arm/boards/toshiba-ac100/Makefile
+> @@ -1,2 +1 @@
+>  obj-y +=3D board.o
+> -obj-$(CONFIG_DRIVER_SERIAL_NS16550) +=3D serial.o
+> diff --git a/arch/arm/boards/toshiba-ac100/serial.c b/arch/arm/boards/tos=
+hiba-ac100/serial.c
+> deleted file mode 100644
+> index 880270d..0000000
+> --- a/arch/arm/boards/toshiba-ac100/serial.c
+> +++ /dev/null
+> @@ -1,39 +0,0 @@
+> -/*
+> - * Copyright (C) 2011 Antony Pavlov <antonynpavlov@gmail.com>
+> - *
+> - * This file is part of barebox.
+> - * See file CREDITS for list of people who contributed to this project.
+> - *
+> - * This program is free software; you can redistribute it and/or modify
+> - * it under the terms of the GNU General Public License version 2
+> - * as published by the Free Software Foundation.
+> - *
+> - * This program is distributed in the hope that it will be useful,
+> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> - * GNU General Public License for more details.
+> - */
+> -
+> -#include <common.h>
+> -#include <types.h>
+> -#include <driver.h>
+> -#include <init.h>
+> -#include <ns16550.h>
+> -#include <asm/io.h>
+> -#include <asm/common.h>
+> -#include <mach/iomap.h>
+> -
+> -static struct NS16550_plat serial_plat =3D {
+> -	.clock =3D 0x75 * 115200 * 16 /* MODE_X_DIV */,
+> -	.shift =3D 2,
+> -};
+> -
+> -static int ac100_serial_console_init(void)
+> -{
+> -	/* Register the serial port */
+> -	add_ns16550_device(DEVICE_ID_DYNAMIC, TEGRA_UARTA_BASE, 8 << serial_pla=
+t.shift,
+> -			IORESOURCE_MEM_8BIT, &serial_plat);
+> -
+> -	return 0;
+> -}
+> -console_initcall(ac100_serial_console_init);
+> diff --git a/arch/arm/configs/toshiba_ac100_defconfig b/arch/arm/configs/=
+toshiba_ac100_defconfig
+> index 6f7011b..1903910 100644
+> --- a/arch/arm/configs/toshiba_ac100_defconfig
+> +++ b/arch/arm/configs/toshiba_ac100_defconfig
+> @@ -1,5 +1,6 @@
+>  CONFIG_BUILTIN_DTB_NAME=3D"tegra20-paz00"
+>  CONFIG_ARCH_TEGRA=3Dy
+> +CONFIG_TEGRA_UART_A=3Dy
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=3Dy
+>  CONFIG_TEXT_BASE=3D0x01000000
+>  CONFIG_BROKEN=3Dy
+> diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+> index 2f15b27..965e7ab 100644
+> --- a/arch/arm/mach-tegra/Kconfig
+> +++ b/arch/arm/mach-tegra/Kconfig
+> @@ -8,6 +8,39 @@ config ARCH_TEGRA_2x_SOC
 >  =
 
-> diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
-> index 91858ec..b7d1e27 100644
-> --- a/arch/arm/dts/tegra20.dtsi
-> +++ b/arch/arm/dts/tegra20.dtsi
-> @@ -18,6 +18,22 @@
->  		#clock-cells =3D <1>;
->  	};
+>  endchoice
 >  =
 
-> +	gpio: gpio {
-> +		compatible =3D "nvidia,tegra20-gpio";
-> +		reg =3D <0x6000d000 0x1000>;
-> +		interrupts =3D <0 32 0x04
-> +			      0 33 0x04
-> +			      0 34 0x04
-> +			      0 35 0x04
-> +			      0 55 0x04
-> +			      0 87 0x04
-> +			      0 89 0x04>;
-> +		#gpio-cells =3D <2>;
-> +		gpio-controller;
-> +		#interrupt-cells =3D <2>;
-> +		interrupt-controller;
-> +	};
-> +
->  	pmc {
->  		compatible =3D "nvidia,tegra20-pmc";
->  		reg =3D <0x7000e400 0x400>;
-> diff --git a/arch/arm/mach-tegra/include/mach/gpio.h b/arch/arm/mach-tegr=
-a/include/mach/gpio.h
-> new file mode 100644
-> index 0000000..306ab4c
-> --- /dev/null
-> +++ b/arch/arm/mach-tegra/include/mach/gpio.h
-> @@ -0,0 +1 @@
-> +#include <asm-generic/gpio.h>
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index ea07028..d5e0ed1 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -36,6 +36,13 @@ config GPIO_PL061
->  config GPIO_STMPE
->  	depends on MFD_STMPE
->  	bool "STMPE GPIO Expander"
-> +
-> +config GPIO_TEGRA
-> +	bool "GPIO support for the Tegra SoCs"
-> +	depends on ARCH_TEGRA
+> +choice
+> +	prompt "Tegra debug UART"
 > +	help
-> +	  Say yes here to include the driver for the GPIO controller found on t=
-he
-> +	  Tegra line of SoCs.
->  endmenu
+> +	  This is the first serial console that gets activated by barebox.
+> +	  Normally each board vendor should program a valid debug UART into
+> +	  the ODMdata section of the boot configuration table, so it's a
+> +	  reasonably good bet to use that.
+> +	  If you know your ODMdata is broken, or you don't wish to activate
+> +	  any serial console at all you can override the default here.
+> +
+> +config TEGRA_UART_ODMDATA
+> +	bool "ODMdata defined UART"
+> +
+> +config TEGRA_UART_A
+> +	bool "UART A"
+> +
+> +config TEGRA_UART_B
+> +	bool "UART B"
+> +
+> +config TEGRA_UART_C
+> +	bool "UART C"
+> +
+> +config TEGRA_UART_D
+> +	bool "UART D"
+> +
+> +config TEGRA_UART_E
+> +	bool "UART E"
+> +
+> +config TEGRA_UART_NONE
+> +	bool "None"
+> +
+> +endchoice
+> +
+>  # ---------------------------------------------------------
 >  =
 
->  endif
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index 00acb68..5dcb6c8 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -4,3 +4,4 @@ obj-$(CONFIG_GPIO_CLPS711X)	+=3D gpio-clps711x.o
->  obj-$(CONFIG_GPIO_GENERIC)	+=3D gpio-generic.o
->  obj-$(CONFIG_GPIO_PL061)	+=3D gpio-pl061.o
->  obj-$(CONFIG_GPIO_STMPE)	+=3D gpio-stmpe.o
-> +obj-$(CONFIG_GPIO_TEGRA)	+=3D gpio-tegra.o
-> diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+>  if ARCH_TEGRA_2x_SOC
+> diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+> index 0807af6..f9c771f 100644
+> --- a/arch/arm/mach-tegra/Makefile
+> +++ b/arch/arm/mach-tegra/Makefile
+> @@ -1,6 +1,7 @@
+>  CFLAGS_tegra_avp_init.o :=3D -mcpu=3Darm7tdmi -march=3Darmv4t
+>  lwl-y +=3D tegra_avp_init.o
+>  lwl-y +=3D tegra_maincomplex_init.o
+> +obj-y +=3D tegra20.o
+>  obj-y +=3D tegra20-car.o
+>  obj-y +=3D tegra20-pmc.o
+>  obj-y +=3D tegra20-timer.o
+> diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-=
+tegra/include/mach/lowlevel.h
+> index bd1a8db..a24b8c2 100644
+> --- a/arch/arm/mach-tegra/include/mach/lowlevel.h
+> +++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+> @@ -35,6 +35,10 @@
+>  =
+
+>  #define T20_ODMDATA_RAMSIZE_SHIFT	28
+>  #define T20_ODMDATA_RAMSIZE_MASK	(3 << T20_ODMDATA_RAMSIZE_SHIFT)
+> +#define T20_ODMDATA_UARTTYPE_SHIFT	18
+> +#define T20_ODMDATA_UARTTYPE_MASK	(3 << T20_ODMDATA_UARTTYPE_SHIFT)
+> +#define T20_ODMDATA_UARTID_SHIFT	15
+> +#define T20_ODMDATA_UARTID_MASK		(7 << T20_ODMDATA_UARTID_SHIFT)
+>  =
+
+>  static inline u32 tegra_get_odmdata(void)
+>  {
+> @@ -109,5 +113,35 @@ static inline uint32_t tegra20_get_ramsize(void)
+>  	}
+>  }
+>  =
+
+> +static long uart_id_to_base[] =3D {
+> +	TEGRA_UARTA_BASE,
+> +	TEGRA_UARTB_BASE,
+> +	TEGRA_UARTC_BASE,
+> +	TEGRA_UARTD_BASE,
+> +	TEGRA_UARTE_BASE,
+> +};
+> +
+> +static inline long tegra20_get_debuguart_base(void)
+> +{
+> +	u32 odmdata;
+> +	int id;
+> +
+> +	odmdata =3D tegra_get_odmdata();
+> +
+> +	/*
+> +	 * Get type, we accept both "2" and "3", as they both demark a UART,
+> +	 * depending on the board type.
+> +	 */
+> +	if (!(((odmdata & T20_ODMDATA_UARTTYPE_MASK) >>
+> +	      T20_ODMDATA_UARTTYPE_SHIFT) & 0x2))
+> +		return 0;
+> +
+> +	id =3D (odmdata & T20_ODMDATA_UARTID_MASK) >> T20_ODMDATA_UARTID_SHIFT;
+> +	if (id > ARRAY_SIZE(uart_id_to_base))
+> +		return 0;
+> +
+> +	return uart_id_to_base[id];
+> +}
+> +
+>  /* reset vector for the main CPU complex */
+>  void tegra_maincomplex_entry(void);
+> diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
 > new file mode 100644
-> index 0000000..227a12f
+> index 0000000..1a09e55
 > --- /dev/null
-> +++ b/drivers/gpio/gpio-tegra.c
-> @@ -0,0 +1,214 @@
-> +/* *
-> + * Copyright (C) 2010 Erik Gilling <konkers@google.com>, Google, Inc
+> +++ b/arch/arm/mach-tegra/tegra20.c
+> @@ -0,0 +1,57 @@
+> +/*
 > + * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
 > + *
 > + * This program is free software; you can redistribute it and/or modify =
@@ -155,213 +261,52 @@ it
 > + */
 > +
 > +#include <common.h>
-> +#include <gpio.h>
 > +#include <init.h>
-> +#include <io.h>
-> +#include <linux/err.h>
+> +#include <ns16550.h>
+> +#include <mach/iomap.h>
+> +#include <mach/lowlevel.h>
 > +
-> +#define GPIO_BANK(x)		((x) >> 5)
-> +#define GPIO_PORT(x)		(((x) >> 3) & 0x3)
-> +#define GPIO_BIT(x)		((x) & 0x7)
-> +
-> +#define GPIO_REG(x)		(GPIO_BANK(x) * config->bank_stride + \
-> +					GPIO_PORT(x) * 4)
-> +
-> +#define GPIO_CNF(x)		(GPIO_REG(x) + 0x00)
-> +#define GPIO_OE(x)		(GPIO_REG(x) + 0x10)
-> +#define GPIO_OUT(x)		(GPIO_REG(x) + 0x20)
-> +#define GPIO_IN(x)		(GPIO_REG(x) + 0x30)
-> +#define GPIO_INT_ENB(x)		(GPIO_REG(x) + 0x50)
-> +
-> +#define GPIO_MSK_CNF(x)		(GPIO_REG(x) + config->upper_offset + 0x00)
-> +#define GPIO_MSK_OE(x)		(GPIO_REG(x) + config->upper_offset + 0x10)
-> +#define GPIO_MSK_OUT(x)		(GPIO_REG(x) + config->upper_offset + 0X20)
-> +
-> +struct tegra_gpio_bank {
-> +	int bank;
-> +	int irq;
+> +static struct NS16550_plat debug_uart =3D {
+> +	.clock =3D 216000000, /* pll_p rate */
+> +	.shift =3D 2,
 > +};
 > +
-> +struct tegra_gpio_soc_config {
-> +	u32 bank_stride;
-> +	u32 upper_offset;
-> +	u32 bank_count;
-> +};
+> +static int tegra20_add_debug_console(void)
+> +{
+> +	unsigned long base =3D 0;
 > +
-> +static void __iomem *gpio_base;
-> +static 	struct tegra_gpio_soc_config *config;
+> +	/* figure out which UART to use */
+> +#if defined(CONFIG_TEGRA_UART_NONE)
 
-The scripts/checkpatch.pl reports about formatting error here:
+There is a practice to avoid preprocessor directives in the .c-files
+for checking CONFIG_* options.
 
-WARNING: please, no space before tabs   =
+Use the IS_ENABLED() macro instead.
 
-#175: FILE: drivers/gpio/gpio-tegra.c:53:
-+static ^Istruct tegra_gpio_soc_config *config;$
-
-> +
-> +static inline void tegra_gpio_writel(u32 val, u32 reg)
-> +{
-> +	writel(val, gpio_base + reg);
-> +}
-> +
-> +static inline u32 tegra_gpio_readl(u32 reg)
-> +{
-> +	return readl(gpio_base + reg);
-> +}
-> +
-> +static int tegra_gpio_compose(int bank, int port, int bit)
-> +{
-> +	return (bank << 5) | ((port & 0x3) << 3) | (bit & 0x7);
-> +}
-> +
-> +static void tegra_gpio_mask_write(u32 reg, int gpio, int value)
-> +{
-> +	u32 val;
-> +
-> +	val =3D 0x100 << GPIO_BIT(gpio);
-> +	if (value)
-> +		val |=3D 1 << GPIO_BIT(gpio);
-> +	tegra_gpio_writel(val, reg);
-> +}
-> +
-> +static void tegra_gpio_enable(int gpio)
-> +{
-> +	tegra_gpio_mask_write(GPIO_MSK_CNF(gpio), gpio, 1);
-> +}
-> +
-> +static void tegra_gpio_disable(int gpio)
-> +{
-> +	tegra_gpio_mask_write(GPIO_MSK_CNF(gpio), gpio, 0);
-> +}
-> +
-> +static int tegra_gpio_request(struct gpio_chip *chip, unsigned offset)
-> +{
 > +	return 0;
-> +}
+> +#elif defined(CONFIG_TEGRA_UART_ODMDATA)
+> +	base =3D tegra20_get_debuguart_base();
+> +#elif defined(CONFIG_TEGRA_UART_A)
+> +	base =3D TEGRA_UARTA_BASE;
+> +#elif defined(CONFIG_TEGRA_UART_B)
+> +	base =3D TEGRA_UARTB_BASE;
+> +#elif defined(CONFIG_TEGRA_UART_C)
+> +	base =3D TEGRA_UARTC_BASE;
+> +#elif defined(CONFIG_TEGRA_UART_D)
+> +	base =3D TEGRA_UARTD_BASE;
+> +#elif defined(CONFIG_TEGRA_UART_E)
+> +	base =3D TEGRA_UARTE_BASE;
+> +#endif
 > +
-> +static void tegra_gpio_free(struct gpio_chip *chip, unsigned offset)
-> +{
-> +	tegra_gpio_disable(offset);
-> +}
-> +
-> +static void tegra_gpio_set(struct gpio_chip *chip, unsigned offset, int =
-value)
-> +{
-> +	tegra_gpio_mask_write(GPIO_MSK_OUT(offset), offset, value);
-> +}
-> +
-> +static int tegra_gpio_get(struct gpio_chip *chip, unsigned offset)
-> +{
-> +	/* If gpio is in output mode then read from the out value */
-> +	if ((tegra_gpio_readl(GPIO_OE(offset)) >> GPIO_BIT(offset)) & 1) {
-> +		printf("GPIO output mode\n");
-> +		return (tegra_gpio_readl(GPIO_OUT(offset)) >>
-> +				GPIO_BIT(offset)) & 0x1;
-> +	}
-> +
-> +	printf("GPIO input mode\n");
-> +	return (tegra_gpio_readl(GPIO_IN(offset)) >> GPIO_BIT(offset)) & 0x1;
-> +}
-> +
-> +static int tegra_gpio_direction_input(struct gpio_chip *chip, unsigned o=
-ffset)
-> +{
-> +	tegra_gpio_mask_write(GPIO_MSK_OE(offset), offset, 0);
-> +	tegra_gpio_enable(offset);
-> +	return 0;
-> +}
-> +
-> +static int tegra_gpio_direction_output(struct gpio_chip *chip, unsigned =
-offset,
-> +					int value)
-> +{
-> +	tegra_gpio_set(chip, offset, value);
-> +	tegra_gpio_mask_write(GPIO_MSK_OE(offset), offset, 1);
-> +	tegra_gpio_enable(offset);
-> +	return 0;
-> +}
-> +
-> +static struct gpio_ops tegra_gpio_ops =3D {
-> +	.request		=3D tegra_gpio_request,
-> +	.free			=3D tegra_gpio_free,
-> +	.direction_input	=3D tegra_gpio_direction_input,
-> +	.direction_output	=3D tegra_gpio_direction_output,
-> +	.get			=3D tegra_gpio_get,
-> +	.set			=3D tegra_gpio_set,
-> +};
-> +
-> +static struct gpio_chip tegra_gpio_chip =3D {
-> +	.ops	=3D &tegra_gpio_ops,
-> +	.base	=3D 0,
-> +};
-> +
-> +static int tegra_gpio_probe(struct device_d *dev)
-> +{
-> +	int i, j, ret;
-> +
-> +	ret =3D dev_get_drvdata(dev, (unsigned long *)&config);
-> +	if (ret) {
-> +		dev_err(dev, "dev_get_drvdata failed: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	gpio_base =3D dev_request_mem_region(dev, 0);
-> +	if (!gpio_base) {
-> +		dev_err(dev, "could not get memory region\n");
+> +	if (!base)
 > +		return -ENODEV;
-> +	}
 > +
-> +	for (i =3D 0; i < config->bank_count; i++) {
-> +		for (j =3D 0; j < 4; j++) {
-> +			int gpio =3D tegra_gpio_compose(i, j, 0);
-> +			tegra_gpio_writel(0x00, GPIO_INT_ENB(gpio));
-> +		}
-> +	}
-> +
-> +	tegra_gpio_chip.ngpio =3D config->bank_count * 32;
-> +	tegra_gpio_chip.dev =3D dev;
-> +
-> +	gpiochip_add(&tegra_gpio_chip);
+> +	add_ns16550_device(DEVICE_ID_DYNAMIC, base, 8 << debug_uart.shift,
+> +			   IORESOURCE_MEM_8BIT, &debug_uart);
 > +
 > +	return 0;
 > +}
-> +
-> +static struct tegra_gpio_soc_config tegra20_gpio_config =3D {
-> +	.bank_stride =3D 0x80,
-> +	.upper_offset =3D 0x800,
-> +	.bank_count =3D 7,
-> +};
-> +
-> +static struct platform_device_id tegra_gpio_ids[] =3D {
-> +	{
-> +		.name =3D "tegra20-gpio",
-> +		.driver_data =3D (unsigned long)&tegra20_gpio_config,
-> +	}, {
-> +		/* sentinel */
-> +	},
-> +};
-> +
-> +static __maybe_unused struct of_device_id tegra_gpio_dt_ids[] =3D {
-> +	{
-> +		.compatible =3D "nvidia,tegra20-gpio",
-> +		.data =3D (unsigned long)&tegra20_gpio_config
-> +	}, {
-> +		/* sentinel */
-> +	},
-> +};
-> +
-> +static struct driver_d tegra_gpio_driver =3D {
-> +	.name		=3D "tegra-gpio",
-> +	.id_table	=3D tegra_gpio_ids,
-> +	.of_compatible	=3D DRV_OF_COMPAT(tegra_gpio_dt_ids),
-> +	.probe		=3D tegra_gpio_probe,
-> +};
-> +
-> +static int __init tegra_gpio_init(void)
-> +{
-> +	return platform_driver_register(&tegra_gpio_driver);
-> +}
-> +coredevice_initcall(tegra_gpio_init);
+> +console_initcall(tegra20_add_debug_console);
 > -- =
 
 > 1.8.1.2
