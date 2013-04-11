@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQGFP-0007W5-LY
- for barebox@lists.infradead.org; Thu, 11 Apr 2013 12:05:02 +0000
-Received: from e6520eb.local.eukrea.com (unknown [82.240.38.71])
- by smtp2-g21.free.fr (Postfix) with ESMTP id 40D9B4B012B
- for <barebox@lists.infradead.org>; Thu, 11 Apr 2013 14:04:52 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 11 Apr 2013 14:04:51 +0200
-Message-Id: <1365681891-9135-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ id 1UQFg5-0006Qq-Ry
+ for barebox@lists.infradead.org; Thu, 11 Apr 2013 11:28:30 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 8F576BF0E6
+ for <barebox@lists.infradead.org>; Thu, 11 Apr 2013 13:27:29 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 11 Apr 2013 13:28:19 +0200
+Message-Id: <1365679699-4475-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,32 +17,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtdraw: fix oob read and write
+Subject: [RFC] omap4-fb: use uncached screen_base
 To: barebox@lists.infradead.org
 
-YWN0dWFsbHkgb3BzLm9vYm9mZnMgaXMgbm90IGRlZmF1bHRlZCBzbyB3aGVuIGl0cyB2YWx1ZSBn
-ZXRzCmFkZGVkIHRvIGNoaXAtPm9vYl9wb2kgaW4gbmFuZF9maWxsX29vYiBvciBuYW5kX3RyYW5z
-ZmVyX29vYgp0aGUgcmVzcGVjdGl2ZSBtZW1jcHkgaXMgdXNpbmcgYSB3cm9uZyBhZGRyZXNzLgoK
-V2l0aCB0aGlzIHBhdGNoLCBib3RoIG1kIC1zIC9kZXYvbmFuZHJhdzAgYW5kIGNwIHh5eiAvZGV2
-L25hbmRyYXcwLnNiCmFyZSB3b3JraW5nIGZpbmUgb24gYW4gaS5NWDI4IHRhcmdldCAoaW5zdGVh
-ZCBvZiBjcmFzaGluZyB0aGUgYm9hcmQpLgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxl
-cmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVycy9tdGQvbXRkcmF3LmMgfCAyICsrCiAxIGZpbGUg
-Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbXRkcmF3
-LmMgYi9kcml2ZXJzL210ZC9tdGRyYXcuYwppbmRleCAzODQxMDRlLi5jMjg5ZThkIDEwMDY0NAot
-LS0gYS9kcml2ZXJzL210ZC9tdGRyYXcuYworKysgYi9kcml2ZXJzL210ZC9tdGRyYXcuYwpAQCAt
-OTgsNiArOTgsNyBAQCBzdGF0aWMgc3NpemVfdCBtdGRyYXdfcmVhZF91bmFsaWduZWQoc3RydWN0
-IG10ZF9pbmZvICptdGQsIHZvaWQgKmRzdCwKIAlpZiAoIXRtcCkKIAkJcmV0dXJuIC1FTk9NRU07
-CiAJb3BzLm1vZGUgPSBNVERfT09CX1JBVzsKKwlvcHMub29ib2ZmcyA9IDA7CiAJb3BzLmRhdGJ1
-ZiA9IHRtcDsKIAlvcHMubGVuID0gbXRkLT53cml0ZXNpemU7CiAJb3BzLm9vYmJ1ZiA9IHRtcCAr
-IG10ZC0+d3JpdGVzaXplOwpAQCAtMTUyLDYgKzE1Myw3IEBAIHN0YXRpYyBzc2l6ZV90IG10ZHJh
-d19ibGt3cml0ZShzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgY29uc3Qgdm9pZCAqYnVmLAogCWludCBy
-ZXQ7CiAKIAlvcHMubW9kZSA9IE1URF9PT0JfUkFXOworCW9wcy5vb2JvZmZzID0gMDsKIAlvcHMu
-ZGF0YnVmID0gKHZvaWQgKilidWY7CiAJb3BzLmxlbiA9IG10ZC0+d3JpdGVzaXplOwogCW9wcy5v
-b2JidWYgPSAodm9pZCAqKWJ1ZiArIG10ZC0+d3JpdGVzaXplOwotLSAKMS43LjExLjcKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+If the buffer is cached the image on the LCD is broken. Only some small
+lines on the last rows. Flushing the cache "repairs" the image.
+
+Is remap_range the right way to get a non cached buffer?
+This patch only covers prealloc_screen, not dynamic
+If the buffer is dynamic, is the use of dma_alloc_coherent right? Or should
+the buffer remaped again if freed?
+---
+ drivers/video/omap4.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/video/omap4.c b/drivers/video/omap4.c
+index 5642f25..1ade988 100644
+--- a/drivers/video/omap4.c
++++ b/drivers/video/omap4.c
+@@ -32,6 +32,8 @@
+ #include <mach/omap4-silicon.h>
+ #include <mach/omap4-fb.h>
+ 
++#include <asm/mmu.h>
++
+ #include "omap4.h"
+ 
+ struct omap4fb_device {
+@@ -489,6 +491,9 @@ static int omap4fb_probe(struct device_d *dev)
+ 		fbi->prealloc_screen.addr =
+ 				(void __iomem *)pdata->screen->start;
+ 		fbi->prealloc_screen.size = resource_size(pdata->screen);
++		remap_range(fbi->prealloc_screen.addr,
++			fbi->prealloc_screen.size,
++			mmu_get_pte_uncached_flags());
+ 	}
+ 
+ 	omap4fb_reset(fbi);
+-- 
+1.7.0.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
