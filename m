@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQCTB-0000Ik-UB
- for barebox@lists.infradead.org; Thu, 11 Apr 2013 08:02:59 +0000
-Date: Thu, 11 Apr 2013 10:02:53 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130411080253.GI1906@pengutronix.de>
-References: <1365603058-9368-1-git-send-email-eric@eukrea.com>
+Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UQGFP-0007W5-LY
+ for barebox@lists.infradead.org; Thu, 11 Apr 2013 12:05:02 +0000
+Received: from e6520eb.local.eukrea.com (unknown [82.240.38.71])
+ by smtp2-g21.free.fr (Postfix) with ESMTP id 40D9B4B012B
+ for <barebox@lists.infradead.org>; Thu, 11 Apr 2013 14:04:52 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Thu, 11 Apr 2013 14:04:51 +0200
+Message-Id: <1365681891-9135-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1365603058-9368-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,83 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] mx53-loco: provide the right header for serial
- downloader
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtdraw: fix oob read and write
+To: barebox@lists.infradead.org
 
-Hi Eric,
-
-On Wed, Apr 10, 2013 at 04:10:57PM +0200, Eric B=E9nard wrote:
-> this patch allows barebox to run when loaded on the iMX53QSB
-> using the serial downloader.
-
-What serial downloader do you use? We have a serial downloader here:
-
-git://git.pengutronix.de/git/tools/imx-usb-loader.git
-
-This one works by parsing the flash headers from the images and
-executing them manually by doing register writes. It works with
-the currently generated images just fine.
-
-I though about integrating this tool into barebox. Part of the reason
-for doing this is that this repository also contains a image generation
-tool which could replace the compiler/linker mechanism we currently use
-to generate i.MX images. Using a dedicated tool for this job seems more
-flexible.
-
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/boards/freescale-mx53-loco/flash_header.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> =
-
-> diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/ar=
-m/boards/freescale-mx53-loco/flash_header.c
-> index dc1162b..5358f0b 100644
-> --- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> +++ b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-> @@ -34,10 +34,17 @@ struct imx_flash_header_v2 __flash_header_section fla=
-sh_header =3D {
->  	.header.length		=3D cpu_to_be16(32),
->  	.header.version		=3D IVT_VERSION,
->  =
-
-> +#ifdef CONFIG_ARCH_IMX_INTERNAL_BOOT_SERIAL
-> +	.entry			=3D APP_DEST + 0x400,
-> +	.dcd_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, dcd),
-> +	.boot_data_ptr		=3D APP_DEST + offsetof(struct imx_flash_header_v2, boo=
-t_data),
-> +	.self			=3D APP_DEST,
-> +#else
->  	.entry			=3D APP_DEST + 0x1000,
->  	.dcd_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, d=
-cd),
->  	.boot_data_ptr		=3D APP_DEST + 0x400 + offsetof(struct imx_flash_header=
-_v2, boot_data),
->  	.self			=3D APP_DEST + 0x400,
-> +#endif
-
-We already have a FLASH_HEADER_OFFSET define which seems to solve half
-of the problem. Extending the ifdefs already present int the header
-file should work better.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+YWN0dWFsbHkgb3BzLm9vYm9mZnMgaXMgbm90IGRlZmF1bHRlZCBzbyB3aGVuIGl0cyB2YWx1ZSBn
+ZXRzCmFkZGVkIHRvIGNoaXAtPm9vYl9wb2kgaW4gbmFuZF9maWxsX29vYiBvciBuYW5kX3RyYW5z
+ZmVyX29vYgp0aGUgcmVzcGVjdGl2ZSBtZW1jcHkgaXMgdXNpbmcgYSB3cm9uZyBhZGRyZXNzLgoK
+V2l0aCB0aGlzIHBhdGNoLCBib3RoIG1kIC1zIC9kZXYvbmFuZHJhdzAgYW5kIGNwIHh5eiAvZGV2
+L25hbmRyYXcwLnNiCmFyZSB3b3JraW5nIGZpbmUgb24gYW4gaS5NWDI4IHRhcmdldCAoaW5zdGVh
+ZCBvZiBjcmFzaGluZyB0aGUgYm9hcmQpLgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxl
+cmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVycy9tdGQvbXRkcmF3LmMgfCAyICsrCiAxIGZpbGUg
+Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbXRkcmF3
+LmMgYi9kcml2ZXJzL210ZC9tdGRyYXcuYwppbmRleCAzODQxMDRlLi5jMjg5ZThkIDEwMDY0NAot
+LS0gYS9kcml2ZXJzL210ZC9tdGRyYXcuYworKysgYi9kcml2ZXJzL210ZC9tdGRyYXcuYwpAQCAt
+OTgsNiArOTgsNyBAQCBzdGF0aWMgc3NpemVfdCBtdGRyYXdfcmVhZF91bmFsaWduZWQoc3RydWN0
+IG10ZF9pbmZvICptdGQsIHZvaWQgKmRzdCwKIAlpZiAoIXRtcCkKIAkJcmV0dXJuIC1FTk9NRU07
+CiAJb3BzLm1vZGUgPSBNVERfT09CX1JBVzsKKwlvcHMub29ib2ZmcyA9IDA7CiAJb3BzLmRhdGJ1
+ZiA9IHRtcDsKIAlvcHMubGVuID0gbXRkLT53cml0ZXNpemU7CiAJb3BzLm9vYmJ1ZiA9IHRtcCAr
+IG10ZC0+d3JpdGVzaXplOwpAQCAtMTUyLDYgKzE1Myw3IEBAIHN0YXRpYyBzc2l6ZV90IG10ZHJh
+d19ibGt3cml0ZShzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgY29uc3Qgdm9pZCAqYnVmLAogCWludCBy
+ZXQ7CiAKIAlvcHMubW9kZSA9IE1URF9PT0JfUkFXOworCW9wcy5vb2JvZmZzID0gMDsKIAlvcHMu
+ZGF0YnVmID0gKHZvaWQgKilidWY7CiAJb3BzLmxlbiA9IG10ZC0+d3JpdGVzaXplOwogCW9wcy5v
+b2JidWYgPSAodm9pZCAqKWJ1ZiArIG10ZC0+d3JpdGVzaXplOwotLSAKMS43LjExLjcKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
