@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQFg5-0006Qq-Ry
- for barebox@lists.infradead.org; Thu, 11 Apr 2013 11:28:30 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 8F576BF0E6
- for <barebox@lists.infradead.org>; Thu, 11 Apr 2013 13:27:29 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Thu, 11 Apr 2013 13:28:19 +0200
-Message-Id: <1365679699-4475-1-git-send-email-j.weitzel@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UQD9r-0001OM-NK
+ for barebox@lists.infradead.org; Thu, 11 Apr 2013 08:47:04 +0000
+Date: Thu, 11 Apr 2013 10:47:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130411084702.GL1906@pengutronix.de>
+References: <20130410172212.3c672251@e6520eb>
+ <1365609892-2322-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1365609892-2322-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,51 +19,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] omap4-fb: use uncached screen_base
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] nand_base: detect more ONFI flash
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-If the buffer is cached the image on the LCD is broken. Only some small
-lines on the last rows. Flushing the cache "repairs" the image.
+On Wed, Apr 10, 2013 at 06:04:52PM +0200, Eric B=E9nard wrote:
+> if the flash has a known type, the ONFI detection won't occur
+> and thus we may not detect the right parameters.
+> By testing both namd and pagesize, as done in the kernel, we
+> can detect ONFI flash with know IDs.
+> =
 
-Is remap_range the right way to get a non cached buffer?
-This patch only covers prealloc_screen, not dynamic
-If the buffer is dynamic, is the use of dma_alloc_coherent right? Or should
-the buffer remaped again if freed?
----
- drivers/video/omap4.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
+> As an example on an i.MX53 board :
+> - without the patch :
+> NAND device: Manufacturer ID: 0x2c, Chip ID: 0xd3
+> (Micron NAND 1GiB 3,3V 8-bit), page size: 4096, OOB size: 128
+> =
 
-diff --git a/drivers/video/omap4.c b/drivers/video/omap4.c
-index 5642f25..1ade988 100644
---- a/drivers/video/omap4.c
-+++ b/drivers/video/omap4.c
-@@ -32,6 +32,8 @@
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-fb.h>
- 
-+#include <asm/mmu.h>
-+
- #include "omap4.h"
- 
- struct omap4fb_device {
-@@ -489,6 +491,9 @@ static int omap4fb_probe(struct device_d *dev)
- 		fbi->prealloc_screen.addr =
- 				(void __iomem *)pdata->screen->start;
- 		fbi->prealloc_screen.size = resource_size(pdata->screen);
-+		remap_range(fbi->prealloc_screen.addr,
-+			fbi->prealloc_screen.size,
-+			mmu_get_pte_uncached_flags());
- 	}
- 
- 	omap4fb_reset(fbi);
--- 
-1.7.0.4
+> - with the patch :
+> ONFI flash detected ... ONFI param page 0 valid
+> NAND device: Manufacturer ID: 0x2c, Chip ID: 0xd3
+> (Micron MT29F8G08ABACAWP), page size: 4096, OOB size: 224
+> =
 
+> in the first case the OOB size is wrong.
+> =
+
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+
+Applied, thanks
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
