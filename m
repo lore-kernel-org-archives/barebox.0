@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQbDd-0008Nk-MT
- for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:28:35 +0000
+ id 1UQbDd-0008Nl-Ql
+ for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:28:36 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Fri, 12 Apr 2013 12:28:14 +0200
-Message-Id: <1365762505-2540-2-git-send-email-dev@lynxeye.de>
+Date: Fri, 12 Apr 2013 12:28:15 +0200
+Message-Id: <1365762505-2540-3-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
 References: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -22,10 +22,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 02/13] tegra: switch to proper CPU type
+Subject: [PATCH v5 03/13] tegra: unify spelling in Kconfig with Linux kernel
 To: barebox@lists.infradead.org
-
-Tegras main CPUs are all ARMv7.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
@@ -33,18 +31,18 @@ Signed-off-by: Lucas Stach <dev@lynxeye.de>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index bb9b47b..dfb7e24 100644
+index dfb7e24..befed5d 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -137,7 +137,7 @@ config ARCH_VEXPRESS
+@@ -136,7 +136,7 @@ config ARCH_VEXPRESS
+ 	select COMMON_CLK
  
  config ARCH_TEGRA
- 	bool "Nvidia Tegra-based boards"
--	select CPU_ARM926T
-+	select CPU_V7
+-	bool "Nvidia Tegra-based boards"
++	bool "NVIDIA Tegra"
+ 	select CPU_V7
  	select HAS_DEBUG_LL
  
- config ARCH_ZYNQ
 -- 
 1.8.1.4
 
