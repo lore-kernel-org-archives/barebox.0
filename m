@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
+Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
+ helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQMkj-0002X2-22
- for barebox@lists.infradead.org; Thu, 11 Apr 2013 19:01:45 +0000
-Received: by mail-bk0-f41.google.com with SMTP id i18so1000406bkv.28
- for <barebox@lists.infradead.org>; Thu, 11 Apr 2013 12:01:41 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <20130409132917.GX1568@game.jcrosoft.org>
-References: <1365057762.3836.18.camel@mars>
- <20130405085917.GK1906@pengutronix.de> <1365372959.20809.6.camel@lovely>
- <20130408071715.GS1568@game.jcrosoft.org>
- <20130409071608.GD1906@pengutronix.de>
- <20130409132917.GX1568@game.jcrosoft.org>
-Date: Thu, 11 Apr 2013 21:01:37 +0200
-Message-ID: <1365706897.4136.24.camel@mars>
-Mime-Version: 1.0
+ id 1UQbDd-0008Nm-Lt
+ for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:28:34 +0000
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri, 12 Apr 2013 12:28:16 +0200
+Message-Id: <1365762505-2540-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
+References: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +17,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] omap4-fb: add driver
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v5 04/13] tegra: introduce Tegra 20 SoC type
+To: barebox@lists.infradead.org
 
-Hi Jean-Christophe
+Tegra isn't a single architecture, but a collection of more or less
+similar chip families. Introduce the same conf define as used in the
+Linux kernel to differentiate between those families.
 
-On Tue, 2013-04-09 at 15:29 +0200, Jean-Christophe PLAGNIOL-VILLARD
-wrote:
-> On 09:16 Tue 09 Apr     , Sascha Hauer wrote:
-> > On Mon, Apr 08, 2013 at 09:17:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 00:15 Mon 08 Apr     , Christoph Fritz wrote:
-> > > > This patch adds omap4 display controller support.
-> > > > 
-> > > > +
-> > > > +static inline void fb_write(uint32_t v, void __iomem *addr)
-> > > > +{
-> > > > +	__raw_writel(v, addr);
-> > > > +}
-> > > > +
-> > > > +static inline uint32_t fb_read(void const __iomem *addr)
-> > > > +{
-> > > > +	return __raw_readl(addr);
-> > > > +}
-> > > what is the dif?
-> > 
-> > Maybe Christoph understands what you mean here. I don't
-> those 2 inline as useless
+Currently we are only supporting the Tegra20 chip type.
 
-You want me to purge the "inline" because gcc is smart enough to use
-inlining on its own?
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/mach-tegra/Kconfig | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-Or are you noting that using a function here is overkill for only one
-call inside?
-
-I use functions here because it makes debugging more easy and if you
-have a weird hardware config, here you can easily adapt the read and
-write functions.
-
-> > > > +
-> > > > +	fbi->regs.dss   = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DSS);
-> > > > +	fbi->regs.dispc = dev_request_mem_region(dev, OMAP4_FB_RESOURCE_DISPC);
-> > > use named dev_request
-> > 
-> > We don't have such a function.
-> yes we do
-> 
-> dev_request_mem_region_by_name
-
-Ok
-
- Thanks
-  -- Christoph
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index eda786b..f91267f 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -1,11 +1,23 @@
+ if ARCH_TEGRA
+ 
++choice
++	prompt "Tegra processor type"
++
++config ARCH_TEGRA_2x_SOC
++	bool "Tegra 20"
++
++endchoice
++
++# ---------------------------------------------------------
++
++if ARCH_TEGRA_2x_SOC
++
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x31fc0000
+ 
+ choice
+-	prompt "Tegra Board Type"
++	prompt "Tegra 20 Board Type"
+ 
+ config MACH_TOSHIBA_AC100
+ 	bool "Toshiba AC100"
+@@ -16,4 +28,8 @@ endchoice
+ 
+ source arch/arm/boards/toshiba-ac100/Kconfig
+ 
++endif #ARCH_TEGRA_2x_SOC
++
++# ---------------------------------------------------------
++
+ endif
+-- 
+1.8.1.4
 
 
 _______________________________________________
