@@ -2,11 +2,11 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQbDd-0008Nl-Ql
- for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:28:36 +0000
+ id 1UQbDi-0008PK-6u
+ for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:28:44 +0000
 From: Lucas Stach <dev@lynxeye.de>
-Date: Fri, 12 Apr 2013 12:28:15 +0200
-Message-Id: <1365762505-2540-3-git-send-email-dev@lynxeye.de>
+Date: Fri, 12 Apr 2013 12:28:24 +0200
+Message-Id: <1365762505-2540-12-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
 References: <1365762505-2540-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -22,27 +22,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v5 03/13] tegra: unify spelling in Kconfig with Linux kernel
+Subject: [PATCH v5 12/13] tegra: add generic meminit
 To: barebox@lists.infradead.org
+
+ODMdata tells us how much RAM is installed, so no need to define this at
+the board level.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/toshiba-ac100/board.c | 8 --------
+ arch/arm/mach-tegra/tegra20.c         | 9 +++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index dfb7e24..befed5d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -136,7 +136,7 @@ config ARCH_VEXPRESS
- 	select COMMON_CLK
+diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
+index 0eb85c5..51232ef 100644
+--- a/arch/arm/boards/toshiba-ac100/board.c
++++ b/arch/arm/boards/toshiba-ac100/board.c
+@@ -23,14 +23,6 @@
+ #include <usb/ehci.h>
+ #include <mach/iomap.h>
  
- config ARCH_TEGRA
--	bool "Nvidia Tegra-based boards"
-+	bool "NVIDIA Tegra"
- 	select CPU_V7
- 	select HAS_DEBUG_LL
+-static int ac100_mem_init(void)
+-{
+-	arm_add_mem_device("ram0", 0x0, SZ_512M);
+-
+-	return 0;
+-}
+-mem_initcall(ac100_mem_init);
+-
+ static struct ehci_platform_data ehci_pdata = {
+ 	.flags = EHCI_HAS_TT,
+ };
+diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
+index 9e14c98..cc2d748 100644
+--- a/arch/arm/mach-tegra/tegra20.c
++++ b/arch/arm/mach-tegra/tegra20.c
+@@ -17,6 +17,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <ns16550.h>
++#include <asm/memory.h>
+ #include <mach/iomap.h>
+ #include <mach/lowlevel.h>
  
+@@ -54,3 +55,11 @@ static int tegra20_add_debug_console(void)
+ 	return 0;
+ }
+ console_initcall(tegra20_add_debug_console);
++
++static int tegra20_mem_init(void)
++{
++	arm_add_mem_device("ram0", 0x0, tegra20_get_ramsize());
++
++	return 0;
++}
++mem_initcall(tegra20_mem_init);
 -- 
 1.8.1.4
 
