@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f250.mail.ru ([217.69.128.175])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UQbL3-0000Ay-SU
- for barebox@lists.infradead.org; Fri, 12 Apr 2013 10:36:15 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 12 Apr 2013 14:36:09 +0400
-Message-ID: <1365762969.191898774@f250.mail.ru>
-In-Reply-To: <1365519925.926164842@f101.mail.ru>
-References: <1365324537-23090-1-git-send-email-shc_work@mail.ru>
- <20130409100345.327f1f7c@e6520eb>
- <1365519925.926164842@f101.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UQfW7-00069U-KX
+ for barebox@lists.infradead.org; Fri, 12 Apr 2013 15:03:56 +0000
+Date: Fri, 12 Apr 2013 17:03:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130412150353.GR1906@pengutronix.de>
+References: <1365679699-4475-1-git-send-email-j.weitzel@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1365679699-4475-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +18,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbM106IFtQQVRDSCAyLzJdIEFSTTogaS5NWDogVXBkYXRlIE1YNTEgaW9t?=
- =?UTF-8?B?dXggZGVmaW5pdGlvbnM=?=
-To: =?UTF-8?B?RXJpYyBC77+9bmFyZA==?= <eric@eukrea.com>, =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [RFC] omap4-fb: use uncached screen_base
+To: Jan Weitzel <j.weitzel@phytec.de>
+Cc: barebox@lists.infradead.org
 
-PiA+IExlIFR1ZSwgMDkgQXByIDIwMTMgMTI6MDE6NTEgKzA0MDAsCj4gPiBBbGV4YW5kZXIgU2hp
-eWFuIDxzaGNfd29ya0BtYWlsLnJ1PiBhIMOpY3JpdCA6Cj4gPiAKPiA+ID4gPiA+ID4gT24gU3Vu
-LCBBcHIgMDcsIDIwMTMgYXQgMTI6NDg6NTdQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90
-ZToKPiA+ID4gPiA+ID4gPiBUaGUgcGF0Y2ggdXBkYXRlcyBNWDUxIGlvbXV4IGRlZmluaXRpb25z
-IGZyb20ga2VybmVsLgo+ID4gPiA+ID4gPiA+IAo+ID4gPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6
-IEFsZXhhbmRlciBTaGl5YW4gPHNoY193b3JrQG1haWwucnU+Cj4gPiA+ID4gPiA+IAo+ID4gPiA+
-ID4gPiBUaGlzIHBhdGNoIGVmZmVjdGl2ZWx5IHJldmVydHM6Cj4gPiA+ID4gPiA+IAo+ID4gPiA+
-ID4gPiBjb21taXQgMjk4ZDE1NTcxZGE4ZDFjYjcxZTdmZDg3Y2M1M2NhZDNiMmJmMWQxMgo+ID4g
-PiA+ID4gPiBBdXRob3I6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgo+ID4gPiA+ID4g
-PiBEYXRlOiAgIFRodSBTZXAgNiAyMTozOTozMCAyMDEyICswMjAwCj4gPiA+ID4gPiA+IAo+ID4g
-PiA+ID4gPiAgICAgaS5NWDUxOiB1bmJyZWFrIEZFQyBpb211eAo+ID4gPiA+ID4gPiAgICAgCj4g
-PiA+ID4gPiA+ICAgICBpbiBjb21taXQgMmJkYzlmNTdhODZkZmY0MWNmYzFmODdiNjQ0YTJlNTNm
-ZGNjZTJiNiB0aGUgaW9tdXggd2FzIHN5bmNlZAo+ID4gPiA+ID4gPiAgICAgd2l0aCB0aGUga2Vy
-bmVsIGJ1dCB0aGlzIGxlYWRzIHRvIHNvbWUgY2hhbmdlcyBpbiB0aGUgUEFEX0NUUkwgb2Ygc29t
-ZQo+ID4gPiA+ID4gPiAgICAgRkVDIHBpbnMgbGVhZGluZyB0byBhIG5vbiB3b3JraW5nIEZFQyBv
-biBvdXIgY3B1aW14NTEgYm9hcmQuCj4gPiA+ID4gPiA+ICAgICAKPiA+ID4gPiA+ID4gICAgIFRo
-aXMgcGF0Y2ggc2V0IGJhY2sgdGhlIFBBRF9DVFJMIG9mIHRoZSBtaXNzaW5nIHBpbnMgdG8gdGhl
-IGluaXRpYWwKPiA+ID4gPiA+ID4gICAgIHZhbHVlLgo+ID4gPiA+ID4gPiAgICAgCj4gPiA+ID4g
-PiA+ICAgICBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiA+
-ID4gPiA+ID4gICAgIFNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRy
-b25peC5kZT4KPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IFlvdSBzaG91bGRuJ3QgZG8gdGhpcy4K
-PiA+ID4gPiA+IAo+ID4gPiA+ID4gV2hhdCBhYm91dCB3cml0ZSBhIHBhdGNoIGZvciB0aGUga2Vy
-bmVsIGZvciB0aGlzPwo+ID4gPiA+IAo+ID4gPiA+IEJ5IHRoZSB0aW1lIEkgYXBwbGllZCBFcmlj
-cyBwYXRjaCBJIGNvbnNpZGVyZWQgdGhlIGRheXMgb2YgdGhlCj4gPiA+ID4gdHJhZGl0aW9uYWwg
-aW9tdXggc3VwcG9ydCBpbiB0aGUga2VybmVsIGNvdW50ZWQuIEZyb20gdGhhdCBkYXkgb24KPiA+
-ID4gPiB3ZSBoYXZlIHRvIG1haW50YWluIG91ciBvd24gdmVyc2lvbnMgYW55d2F5Lgo+ID4gPiAK
-PiA+ID4gT0suIE1heWJlIGFzIHRlbXBvcmFyeSBzb2x1dGlvbiB3ZSBjYW4gZGVmaW5lIGV1a3Jl
-YV9jcHVpbXg1MSBGRUMKPiA+ID4gcGlucyB3aXRoIE5FV19QQURfQ1RSTCBtYWNybz8gSWYgc28s
-IEknbGwgY3JlYXRlIGEgcGF0Y2ggZm9yIHRoaXMuCj4gPiA+IFRoaXMgd2lsbCBrZWVwIGlvbXV4
-LW14NTEuaCBmaWxlIHN5bmNlZC4KPiA+ID4gCj4gPiBGaW5lIGZvciBtZS4gRG8geW91IGhhdmUg
-YSBwcm9ibGVtIHdpdGggdGhlc2UgcGFkcyBzZXR0aW5nIHNvIHRoYXQgeW91Cj4gPiBuZWVkIHRv
-IHJldmVydCB0aGUgY2hhbmdlID8KPiBTbywgYmVsb3cgaXMgYSB0ZW1wb3JhcnkgZml4dXAuCj4g
-Cj4gRnJvbSA0N2QwZDdiOWMwMzU1YmEzMWU0YzU2Mzg5MWIyZTkxNTlkYzA3NTMzIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQo+IEZyb206IEFsZXhhbmRlciBTaGl5YW4gPHNoY193b3JrQG1haWwu
-cnU+Cj4gRGF0ZTogVHVlLCA5IEFwciAyMDEzIDE5OjAxOjQwICswNDAwCj4gU3ViamVjdDogW1BB
-VENIXSBBUk06IGNwdWlteDUxOiBGaXggUEFEX0NUUkxzIGZvciBGRUMKPiAKPiAKPiBTaWduZWQt
-b2ZmLWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1Pgo+IC0tLQo+ICBhcmNo
-L2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDUxL2V1a3JlYV9jcHVpbXg1MS5jIHwgMTQgKysrKysr
-Ky0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMo
-LSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXg1MS9ldWty
-ZWFfY3B1aW14NTEuYyBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14NTEvZXVrcmVhX2Nw
-dWlteDUxLmMKPiBpbmRleCA1ZTc3ZjkwLi41MjNhODA1IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJt
-L2JvYXJkcy9ldWtyZWFfY3B1aW14NTEvZXVrcmVhX2NwdWlteDUxLmMKPiArKysgYi9hcmNoL2Fy
-bS9ib2FyZHMvZXVrcmVhX2NwdWlteDUxL2V1a3JlYV9jcHVpbXg1MS5jCj4gQEAgLTU1LDIzICs1
-NSwyMyBAQCBzdGF0aWMgaW9tdXhfdjNfY2ZnX3QgZXVrcmVhX2NwdWlteDUxX3BhZHNbXSA9IHsK
-PiAgCU1YNTFfUEFEX1VBUlQxX1JUU19fVUFSVDFfUlRTLAo+ICAJTVg1MV9QQURfVUFSVDFfQ1RT
-X19VQVJUMV9DVFMsCj4gIAkvKiBGRUMgKi8KPiAtCU1YNTFfUEFEX0RJU1AyX0RBVDFfX0ZFQ19S
-WF9FUiwKPiArCU5FV19QQURfQ1RSTChNWDUxX1BBRF9ESVNQMl9EQVQxX19GRUNfUlhfRVIsIE1Y
-NTFfUEFEX0NUUkxfNSksCj4gIAlNWDUxX1BBRF9ESVNQMl9EQVQxNV9fRkVDX1REQVRBMCwKPiAg
-CU1YNTFfUEFEX0RJU1AyX0RBVDZfX0ZFQ19UREFUQTEsCj4gIAlNWDUxX1BBRF9ESVNQMl9EQVQ3
-X19GRUNfVERBVEEyLAo+ICAJTVg1MV9QQURfRElTUDJfREFUOF9fRkVDX1REQVRBMywKPiAgCU1Y
-NTFfUEFEX0RJU1AyX0RBVDlfX0ZFQ19UWF9FTiwKPiAtCU1YNTFfUEFEX0RJU1AyX0RBVDEwX19G
-RUNfQ09MLAo+IC0JTVg1MV9QQURfRElTUDJfREFUMTFfX0ZFQ19SWF9DTEssCj4gLQlNWDUxX1BB
-RF9ESVNQMl9EQVQxMl9fRkVDX1JYX0RWLAo+ICsJTkVXX1BBRF9DVFJMKE1YNTFfUEFEX0RJU1Ay
-X0RBVDEwX19GRUNfQ09MLCBNWDUxX1BBRF9DVFJMXzUpLAo+ICsJTkVXX1BBRF9DVFJMKE1YNTFf
-UEFEX0RJU1AyX0RBVDExX19GRUNfUlhfQ0xLLCBNWDUxX1BBRF9DVFJMXzUpLAo+ICsJTkVXX1BB
-RF9DVFJMKE1YNTFfUEFEX0RJU1AyX0RBVDEyX19GRUNfUlhfRFYsIE1YNTFfUEFEX0NUUkxfNSks
-Cj4gIAlNWDUxX1BBRF9ESVNQMl9EQVQxM19fRkVDX1RYX0NMSywKPiAgCU1YNTFfUEFEX0RJMl9Q
-SU40X19GRUNfQ1JTLAo+ICAJTVg1MV9QQURfREkyX1BJTjJfX0ZFQ19NREMsCj4gLQlNWDUxX1BB
-RF9ESTJfUElOM19fRkVDX01ESU8sCj4gKwlORVdfUEFEX0NUUkwoTVg1MV9QQURfREkyX1BJTjNf
-X0ZFQ19NRElPLCBNWDUxX1BBRF9DVFJMXzUpLAo+ICAJTVg1MV9QQURfRElTUDJfREFUMTRfX0ZF
-Q19SREFUQTAsCj4gIAlNWDUxX1BBRF9ESTJfRElTUF9DTEtfX0ZFQ19SREFUQTEsCj4gLQlNWDUx
-X1BBRF9ESV9HUDRfX0ZFQ19SREFUQTIsCj4gLQlNWDUxX1BBRF9ESVNQMl9EQVQwX19GRUNfUkRB
-VEEzLAo+ICsJTkVXX1BBRF9DVFJMKE1YNTFfUEFEX0RJX0dQNF9fRkVDX1JEQVRBMiwgTVg1MV9Q
-QURfQ1RSTF81KSwKPiArCU5FV19QQURfQ1RSTChNWDUxX1BBRF9ESVNQMl9EQVQwX19GRUNfUkRB
-VEEzLCBNWDUxX1BBRF9DVFJMXzUpLAo+ICAJTVg1MV9QQURfRElfR1AzX19GRUNfVFhfRVIsCj4g
-IAlNWDUxX1BBRF9FSU1fRFRBQ0tfX0dQSU8yXzMxLCAvKiBMQU44NzAwIHJlc2V0IHBpbiAqLwo+
-ICAJLyogTkFORCAqLwo+IC0tIAo+IDEuOC4xLjUKPiAKPiAtLS0KCnBpbmcKCi0tLQpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
-bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Jan,
+
+On Thu, Apr 11, 2013 at 01:28:19PM +0200, Jan Weitzel wrote:
+> If the buffer is cached the image on the LCD is broken. Only some small
+> lines on the last rows. Flushing the cache "repairs" the image.
+> 
+> Is remap_range the right way to get a non cached buffer?
+
+I think using this is ok for now, at least when the driver is ARM
+specific, which the omap fb driver is. We do not have a propert API
+for this kind of stuff and I currently have no idea how such an API
+would look like.
+
+You should make sure though that pdata->screen->start and the screen
+size are page aligned.
+
+> This patch only covers prealloc_screen, not dynamic
+> If the buffer is dynamic, is the use of dma_alloc_coherent right?
+
+correct.
+
+> Or should
+> the buffer remaped again if freed?
+
+ideally it should, at least when the screen is passed via platform data.
+Anyway, when you pass it via platform_data then you normally do it to
+preserve the screen during kernel start, so I wouldn't free it in this
+case.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
