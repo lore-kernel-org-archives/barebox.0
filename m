@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1URm65-0007PI-6C
- for barebox@lists.infradead.org; Mon, 15 Apr 2013 16:17:37 +0000
+ id 1URm8L-0007Tz-C0
+ for barebox@lists.infradead.org; Mon, 15 Apr 2013 16:19:57 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Mon, 15 Apr 2013 18:17:30 +0200
-Message-Id: <1366042650-28468-1-git-send-email-jlu@pengutronix.de>
+Date: Mon, 15 Apr 2013 18:19:45 +0200
+Message-Id: <1366042785-31147-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] console: fix console without CONFIG_PARAMETER
+Subject: [PATCH] commands: the crc command is actually called crc32
 To: barebox@lists.infradead.org
-
-If CONFIG_PARAMETER is not set, dev_set_param() does not call the setter
-function. Call it directly instead in this case.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- common/console.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ commands/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index beb37bd..e4b0275 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -156,7 +156,10 @@ int console_register(struct console_device *newcdev)
+diff --git a/commands/Kconfig b/commands/Kconfig
+index c1454c7..777b52c 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -308,12 +308,12 @@ config CMD_MEMORY
+ config CMD_CRC
+ 	tristate
+ 	select CRC32
+-	prompt "crc"
++	prompt "crc32"
  
- 	if (newcdev->setbrg) {
- 		dev_add_param(dev, "baudrate", console_baudrate_set, NULL, 0);
--		dev_set_param(dev, "baudrate", __stringify(CONFIG_BAUDRATE));
-+		if (IS_ENABLED(CONFIG_PARAMETER))
-+			dev_set_param(dev, "baudrate", __stringify(CONFIG_BAUDRATE));
-+		else
-+			console_baudrate_set(dev, NULL, __stringify(CONFIG_BAUDRATE));
- 	}
+ config CMD_CRC_CMP
+ 	tristate
+ 	depends on CMD_CRC
+-	prompt "compare 2 files crc"
++	prompt "compare 2 files using crc32"
  
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
-@@ -173,8 +176,12 @@ int console_register(struct console_device *newcdev)
- 
- 	list_add_tail(&newcdev->list, &console_list);
- 
--	if (activate)
--		dev_set_param(dev, "active", "ioe");
-+	if (activate) {
-+		if (IS_ENABLED(CONFIG_PARAMETER))
-+			dev_set_param(dev, "active", "ioe");
-+		else
-+			console_std_set(dev, NULL, "ioe");
-+	}
- 
- 	return 0;
- }
+ config CMD_DIGEST
+ 	tristate
 -- 
 1.8.2.rc2
 
