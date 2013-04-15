@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1URiMx-0000Ym-Nt
- for barebox@lists.infradead.org; Mon, 15 Apr 2013 12:18:48 +0000
-Received: by mail-ea0-f174.google.com with SMTP id m14so2131123eaj.5
- for <barebox@lists.infradead.org>; Mon, 15 Apr 2013 05:18:45 -0700 (PDT)
-Date: Mon, 15 Apr 2013 14:20:44 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130415122043.GA3750@x61s.campuswlan.hs-rm.de>
-References: <1365679699-4475-1-git-send-email-j.weitzel@phytec.de>
- <20130412150353.GR1906@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130412150353.GR1906@pengutronix.de>
+Received: from 7.mo3.mail-out.ovh.net ([46.105.57.200]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1URibI-0000uH-Cw
+ for barebox@lists.infradead.org; Mon, 15 Apr 2013 12:33:38 +0000
+Received: from mail181.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 5EC29FF8D1A
+ for <barebox@lists.infradead.org>; Mon, 15 Apr 2013 14:33:29 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Mon, 15 Apr 2013 14:28:45 +0200
+Message-Id: <1366028925-27776-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +18,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] omap4-fb: use uncached screen_base
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] at91sam9m10g45ek: add spi dataflash supprt
+To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/at91sam9m10g45ek/init.c     |   18 ++++++++++++++++++
+ arch/arm/configs/at91sam9m10g45ek_defconfig |    4 +++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-On Fri, Apr 12, 2013 at 05:03:53PM +0200, Sascha Hauer wrote:
-> Hi Jan,
-> 
-> On Thu, Apr 11, 2013 at 01:28:19PM +0200, Jan Weitzel wrote:
-> > If the buffer is cached the image on the LCD is broken. Only some small
-> > lines on the last rows. Flushing the cache "repairs" the image.
-> > 
-> > Is remap_range the right way to get a non cached buffer?
-> 
-> I think using this is ok for now, at least when the driver is ARM
-> specific, which the omap fb driver is. We do not have a propert API
-> for this kind of stuff and I currently have no idea how such an API
-> would look like.
-> 
-> You should make sure though that pdata->screen->start and the screen
-> size are page aligned.
-> 
-> > This patch only covers prealloc_screen, not dynamic
-> > If the buffer is dynamic, is the use of dma_alloc_coherent right?
-> 
-> correct.
-> 
-> > Or should
-> > the buffer remaped again if freed?
-> 
-> ideally it should, at least when the screen is passed via platform data.
-> Anyway, when you pass it via platform_data then you normally do it to
-> preserve the screen during kernel start, so I wouldn't free it in this
-> case.
-> 
-maybe we check the page table flags on freeing a resource and restore
-them to the "defaults"..., but we need to do this in an api which works
-for all architectures.
+diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+index f32215d..d9a2f1f 100644
+--- a/arch/arm/boards/at91sam9m10g45ek/init.c
++++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+@@ -38,6 +38,7 @@
+ #include <mach/at91sam9_smc.h>
+ #include <gpio_keys.h>
+ #include <readkey.h>
++#include <spi/spi.h>
+ 
+ /*
+  * board revision encoding
+@@ -125,6 +126,22 @@ static void ek_add_device_mci(void)
+ static void ek_add_device_mci(void) {}
+ #endif
+ 
++static const struct spi_board_info ek_spi_devices[] = {
++	{
++		.name		= "mtd_dataflash",
++		.chip_select	= 0,
++		.max_speed_hz	= 15 * 1000 * 1000,
++		.bus_num	= 0,
++	}
++};
++
++static void ek_add_device_spi(void)
++{
++	spi_register_board_info(ek_spi_devices,
++			ARRAY_SIZE(ek_spi_devices));
++	at91_add_device_spi(0, NULL);
++}
++
+ #ifdef CONFIG_LED_GPIO
+ struct gpio_led ek_leds[] = {
+ 	{
+@@ -281,6 +298,7 @@ static void ek_add_device_lcdc(void) {}
+ static int at91sam9m10g45ek_devices_init(void)
+ {
+ 	ek_add_device_nand();
++	ek_add_device_spi();
+ 	at91_add_device_eth(0, &macb_pdata);
+ 	ek_add_device_mci();
+ 	ek_add_device_usb();
+diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
+index 1df34f7..7e05e95 100644
+--- a/arch/arm/configs/at91sam9m10g45ek_defconfig
++++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
+@@ -64,8 +64,10 @@ CONFIG_NET_RESOLV=y
+ CONFIG_DRIVER_NET_MACB=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_ASIX=y
+-# CONFIG_SPI is not set
++CONFIG_DRIVER_SPI_ATMEL=y
+ CONFIG_MTD=y
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_DATAFLASH=y
+ CONFIG_NAND=y
+ # CONFIG_NAND_ECC_HW is not set
+ # CONFIG_NAND_ECC_HW_SYNDROME is not set
+-- 
+1.7.10.4
 
-Regards
-Alex
 
 _______________________________________________
 barebox mailing list
