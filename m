@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp41.i.mail.ru ([94.100.177.101])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1US9nk-0003hu-L0
- for barebox@lists.infradead.org; Tue, 16 Apr 2013 17:36:17 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue, 16 Apr 2013 21:36:09 +0400
-Message-Id: <1366133769-14022-1-git-send-email-shc_work@mail.ru>
+ id 1USDUv-0007tK-BX
+ for barebox@lists.infradead.org; Tue, 16 Apr 2013 21:33:06 +0000
+Received: by mail-wi0-f174.google.com with SMTP id m6so2032871wiv.1
+ for <barebox@lists.infradead.org>; Tue, 16 Apr 2013 14:33:03 -0700 (PDT)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Tue, 16 Apr 2013 23:32:01 +0200
+Message-Id: <1366147921-23073-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Remove unimplemented usb_driver_unregister declaration
+Subject: [PATCH] omap4 regression: set correct boot source
 To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-We do not have usb_driver_unregister function, so remove this declaration.
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 ---
- include/usb/usb.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-omap/omap4_generic.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index afccf70..b270012 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -196,7 +196,6 @@ struct usb_driver {
- extern struct bus_type usb_bus_type;
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index b33ed60..3d6ec25 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -507,11 +507,11 @@ static int omap4_bootsource(void)
+ 	u32 bootsrc = readl(OMAP4_TRACING_VECTOR3);
  
- int usb_driver_register(struct usb_driver *);
--int usb_driver_unregister(struct usb_driver *);
+ 	if (bootsrc & (1 << 5))
+-		return BOOTSOURCE_MMC;
++		src = BOOTSOURCE_MMC;
+ 	if (bootsrc & (1 << 3))
+-		return BOOTSOURCE_NAND;
++		src = BOOTSOURCE_NAND;
+ 	if (bootsrc & (1<<20))
+-		return BOOTSOURCE_USB;
++		src = BOOTSOURCE_USB;
+ 	bootsource_set(src);
+ 	bootsource_set_instance(0);
  
- struct usb_host {
- 	int (*init)(struct usb_host *);
 -- 
-1.8.1.5
+1.8.2.1
 
 
 _______________________________________________
