@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1US5L6-00055R-TR
- for barebox@lists.infradead.org; Tue, 16 Apr 2013 12:50:26 +0000
-Date: Tue, 16 Apr 2013 14:50:23 +0200
+ id 1US5Ld-00055z-SZ
+ for barebox@lists.infradead.org; Tue, 16 Apr 2013 12:50:58 +0000
+Date: Tue, 16 Apr 2013 14:50:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130416125023.GK1906@pengutronix.de>
-References: <1366027438-18095-1-git-send-email-jlu@pengutronix.de>
+Message-ID: <20130416125056.GL1906@pengutronix.de>
+References: <1366028925-27776-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366027438-18095-1-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1366028925-27776-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,308 +22,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] omap: move to common bootsource framework
-To: Jan Luebbe <jlu@pengutronix.de>
+Subject: Re: [PATCH 1/1] at91sam9m10g45ek: add spi dataflash supprt
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 15, 2013 at 02:03:58PM +0200, Jan Luebbe wrote:
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
-> This is based on current master.
+On Mon, Apr 15, 2013 at 02:28:45PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
+MSascha
 
-Sascha
 
+> ---
+>  arch/arm/boards/at91sam9m10g45ek/init.c     |   18 ++++++++++++++++++
+>  arch/arm/configs/at91sam9m10g45ek_defconfig |    4 +++-
+>  2 files changed, 21 insertions(+), 1 deletion(-)
 > 
->  arch/arm/mach-omap/am33xx_generic.c       | 10 +++++++---
->  arch/arm/mach-omap/include/mach/generic.h | 13 -------------
->  arch/arm/mach-omap/omap3_generic.c        | 16 ++++++++++------
->  arch/arm/mach-omap/omap4_generic.c        | 24 +++++++++++++++---------
->  arch/arm/mach-omap/omap_generic.c         | 15 ++-------------
->  arch/arm/mach-omap/xload.c                | 26 ++++++++++++++------------
->  6 files changed, 48 insertions(+), 56 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-> index 059c55e..96432c9 100644
-> --- a/arch/arm/mach-omap/am33xx_generic.c
-> +++ b/arch/arm/mach-omap/am33xx_generic.c
-> @@ -19,12 +19,13 @@
->   */
+> diff --git a/arch/arm/boards/at91sam9m10g45ek/init.c b/arch/arm/boards/at91sam9m10g45ek/init.c
+> index f32215d..d9a2f1f 100644
+> --- a/arch/arm/boards/at91sam9m10g45ek/init.c
+> +++ b/arch/arm/boards/at91sam9m10g45ek/init.c
+> @@ -38,6 +38,7 @@
+>  #include <mach/at91sam9_smc.h>
+>  #include <gpio_keys.h>
+>  #include <readkey.h>
+> +#include <spi/spi.h>
 >  
->  #include <common.h>
-> +#include <bootsource.h>
-> +#include <init.h>
->  #include <io.h>
->  #include <net.h>
->  #include <mach/am33xx-silicon.h>
->  #include <mach/am33xx-clock.h>
->  #include <mach/sys_info.h>
-> -#include <mach/generic.h>
->  #include <mach/am33xx-generic.h>
->  
->  void __noreturn reset_cpu(unsigned long addr)
-> @@ -94,10 +95,13 @@ u32 running_in_sdram(void)
->  	return 0;		/* running in SRAM or FLASH */
->  }
->  
-> -enum omap_boot_src am33xx_bootsrc(void)
-> +static int am33xx_bootsource(void)
->  {
-> -	return OMAP_BOOTSRC_MMC1; /* only MMC for now */
-> +	bootsource_set(BOOTSOURCE_MMC); /* only MMC for now */
-> +	bootsource_set_instance(0);
-> +	return 0;
->  }
-> +postcore_initcall(am33xx_bootsource);
->  
->  int am33xx_register_ethaddr(int eth_id, int mac_id)
->  {
-> diff --git a/arch/arm/mach-omap/include/mach/generic.h b/arch/arm/mach-omap/include/mach/generic.h
-> index 7455404..5a10a54 100644
-> --- a/arch/arm/mach-omap/include/mach/generic.h
-> +++ b/arch/arm/mach-omap/include/mach/generic.h
-> @@ -27,17 +27,4 @@
->  #define cpu_is_omap4xxx()	(0)
+>  /*
+>   * board revision encoding
+> @@ -125,6 +126,22 @@ static void ek_add_device_mci(void)
+>  static void ek_add_device_mci(void) {}
 >  #endif
 >  
-> -enum omap_boot_src {
-> -	OMAP_BOOTSRC_UNKNOWN,
-> -	OMAP_BOOTSRC_MMC1,
-> -	OMAP_BOOTSRC_NAND,
-> -	OMAP_BOOTSRC_SPI1,
-> -	OMAP_BOOTSRC_USB1,
-> -};
-> -
-> -enum omap_boot_src omap_bootsrc(void);
-> -enum omap_boot_src am33xx_bootsrc(void);
-> -enum omap_boot_src omap3_bootsrc(void);
-> -enum omap_boot_src omap4_bootsrc(void);
-> -
->  #endif
-> diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-> index 10e03ae..f144813 100644
-> --- a/arch/arm/mach-omap/omap3_generic.c
-> +++ b/arch/arm/mach-omap/omap3_generic.c
-> @@ -28,6 +28,7 @@
->   */
->  
->  #include <common.h>
-> +#include <bootsource.h>
->  #include <init.h>
->  #include <io.h>
->  #include <mach/omap3-silicon.h>
-> @@ -40,7 +41,6 @@
->  #include <mach/wdt.h>
->  #include <mach/sys_info.h>
->  #include <mach/syslib.h>
-> -#include <mach/generic.h>
->  
->  /**
->   * @brief Reset the CPU
-> @@ -461,21 +461,25 @@ void omap3_core_init(void)
->  #ifdef CONFIG_OMAP3_CLOCK_CONFIG
->  	prcm_init();
->  #endif
-> -
->  }
->  
->  #define OMAP3_TRACING_VECTOR1 0x4020ffb4
->  
-> -enum omap_boot_src omap3_bootsrc(void)
-> +static int omap3_bootsource(void)
->  {
-> +	enum bootsource src = BOOTSOURCE_UNKNOWN;
->  	u32 bootsrc = readl(OMAP3_TRACING_VECTOR1);
->  
->  	if (bootsrc & (1 << 2))
-> -		return OMAP_BOOTSRC_NAND;
-> +		src = BOOTSOURCE_NAND;
->  	if (bootsrc & (1 << 6))
-> -		return OMAP_BOOTSRC_MMC1;
-> -	return OMAP_BOOTSRC_UNKNOWN;
-> +		src = BOOTSOURCE_MMC;
-> +	bootsource_set(src);
-> +	bootsource_set_instance(0);
+> +static const struct spi_board_info ek_spi_devices[] = {
+> +	{
+> +		.name		= "mtd_dataflash",
+> +		.chip_select	= 0,
+> +		.max_speed_hz	= 15 * 1000 * 1000,
+> +		.bus_num	= 0,
+> +	}
+> +};
 > +
-> +	return 0;
->  }
-> +postcore_initcall(omap3_bootsource);
->  
->  /* GPMC timing for OMAP3 nand device */
->  const struct gpmc_config omap3_nand_cfg = {
-> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-> index e1edffa..e08a355 100644
-> --- a/arch/arm/mach-omap/omap4_generic.c
-> +++ b/arch/arm/mach-omap/omap4_generic.c
-> @@ -1,11 +1,11 @@
->  #include <common.h>
-> +#include <bootsource.h>
->  #include <init.h>
->  #include <io.h>
->  #include <mach/omap4-clock.h>
->  #include <mach/omap4-silicon.h>
->  #include <mach/omap4-mux.h>
->  #include <mach/syslib.h>
-> -#include <mach/generic.h>
->  #include <mach/gpmc.h>
->  #include <mach/gpio.h>
->  #include <mach/omap4_rom_usb.h>
-> @@ -339,7 +339,7 @@ void omap4_ddr_init(const struct ddr_regs *ddr_regs,
->  	/* PHY control values */
->  
->  	sr32(CM_MEMIF_EMIF_1_CLKCTRL, 0, 32, 0x1);
-> -        sr32(CM_MEMIF_EMIF_2_CLKCTRL, 0, 32, 0x1);
-> +	sr32(CM_MEMIF_EMIF_2_CLKCTRL, 0, 32, 0x1);
->  
->  	/* Put the Core Subsystem PD to ON State */
->  
-> @@ -466,7 +466,7 @@ static int omap_vector_init(void)
->  	 * The ROM code uses interrupts for the transfers, so do not modify the
->  	 * interrupt vectors in this case.
->  	 */
-> -	if (omap4_bootsrc() != OMAP_BOOTSRC_USB1) {
-> +	if (bootsource_get() != BOOTSOURCE_USB) {
->  		__asm__ __volatile__ (
->  			"mov    r0, #0;"
->  			"mcr    p15, #0, r0, c12, c0, #0;"
-> @@ -478,22 +478,28 @@ static int omap_vector_init(void)
->  
->  	return 0;
->  }
-> -core_initcall(omap_vector_init);
->  
->  #define OMAP4_TRACING_VECTOR3 0x4030d048
->  
-> -enum omap_boot_src omap4_bootsrc(void)
-> +static int omap4_bootsource(void)
->  {
-> +	enum bootsource src = BOOTSOURCE_UNKNOWN;
->  	u32 bootsrc = readl(OMAP4_TRACING_VECTOR3);
->  
->  	if (bootsrc & (1 << 5))
-> -		return OMAP_BOOTSRC_MMC1;
-> +		return BOOTSOURCE_MMC;
->  	if (bootsrc & (1 << 3))
-> -		return OMAP_BOOTSRC_NAND;
-> +		return BOOTSOURCE_NAND;
->  	if (bootsrc & (1<<20))
-> -		return OMAP_BOOTSRC_USB1;
-> -	return OMAP_BOOTSRC_UNKNOWN;
-> +		return BOOTSOURCE_USB;
-> +	bootsource_set(src);
-> +	bootsource_set_instance(0);
+> +static void ek_add_device_spi(void)
+> +{
+> +	spi_register_board_info(ek_spi_devices,
+> +			ARRAY_SIZE(ek_spi_devices));
+> +	at91_add_device_spi(0, NULL);
+> +}
 > +
-> +	omap_vector_init();
-> +
-> +	return 0;
->  }
-> +core_initcall(omap4_bootsource);
->  
->  #define GPIO_MASK 0x1f
->  
-> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-> index 580ed3e..cfd3dec 100644
-> --- a/arch/arm/mach-omap/omap_generic.c
-> +++ b/arch/arm/mach-omap/omap_generic.c
-> @@ -13,23 +13,12 @@
->   *
->   */
->  #include <common.h>
-> +#include <bootsource.h>
->  #include <envfs.h>
->  #include <init.h>
->  #include <io.h>
->  #include <fs.h>
->  #include <linux/stat.h>
-> -#include <mach/generic.h>
-> -
-> -enum omap_boot_src omap_bootsrc(void)
-> -{
-> -#if defined(CONFIG_ARCH_OMAP3)
-> -	return omap3_bootsrc();
-> -#elif defined(CONFIG_ARCH_OMAP4)
-> -	return omap4_bootsrc();
-> -#elif defined(CONFIG_ARCH_AM33XX)
-> -	return am33xx_bootsrc();
-> -#endif
-> -}
->  
->  #if defined(CONFIG_DEFAULT_ENVIRONMENT) && defined(CONFIG_MCI_STARTUP)
->  static int omap_env_init(void)
-> @@ -38,7 +27,7 @@ static int omap_env_init(void)
->  	char *diskdev = "/dev/disk0.0";
->  	int ret;
->  
-> -	if (omap_bootsrc() != OMAP_BOOTSRC_MMC1)
-> +	if (bootsource_get() != BOOTSOURCE_MMC)
->  		return 0;
->  
->  	ret = stat(diskdev, &s);
-> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> index 72aa379..3cce3f2 100644
-> --- a/arch/arm/mach-omap/xload.c
-> +++ b/arch/arm/mach-omap/xload.c
-> @@ -1,4 +1,5 @@
->  #include <common.h>
-> +#include <bootsource.h>
->  #include <partition.h>
->  #include <nand.h>
->  #include <init.h>
-> @@ -6,7 +7,6 @@
->  #include <linux/mtd/mtd.h>
->  #include <fs.h>
->  #include <fcntl.h>
-> -#include <mach/generic.h>
->  #include <sizes.h>
->  #include <filetype.h>
->  
-> @@ -165,30 +165,32 @@ static __noreturn int omap_xload(void)
->  {
->  	int (*func)(void) = NULL;
->  
-> -	switch (omap_bootsrc())
-> +	switch (bootsource_get())
+>  #ifdef CONFIG_LED_GPIO
+>  struct gpio_led ek_leds[] = {
 >  	{
-> -	case OMAP_BOOTSRC_MMC1:
-> -		printf("booting from MMC1\n");
-> +	case BOOTSOURCE_MMC:
-> +		printf("booting from MMC\n");
->  		func = omap_xload_boot_mmc();
->  		break;
-> -	case OMAP_BOOTSRC_USB1:
-> +	case BOOTSOURCE_USB:
->  		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
-> -			printf("booting from USB1\n");
-> +			printf("booting from USB\n");
->  			func = omap4_xload_boot_usb();
->  			break;
->  		} else {
-> -			printf("booting from usb1 not enabled\n");
-> +			printf("booting from USB not enabled\n");
->  		}
-> -	case OMAP_BOOTSRC_UNKNOWN:
-> -		printf("unknown boot source. Fall back to nand\n");
-> -	case OMAP_BOOTSRC_NAND:
-> +	case BOOTSOURCE_NAND:
->  		printf("booting from NAND\n");
->  		func = omap_xload_boot_nand(SZ_128K);
->  		break;
-> -	case OMAP_BOOTSRC_SPI1:
-> -		printf("booting from SPI1\n");
-> +	case BOOTSOURCE_SPI:
-> +		printf("booting from SPI\n");
->  		func = omap_xload_boot_spi(SZ_128K);
->  		break;
-> +	default:
-> +		printf("unknown boot source. Fall back to nand\n");
-> +		func = omap_xload_boot_nand(SZ_128K);
-> +		break;
->  	}
->  
->  	if (!func) {
+> @@ -281,6 +298,7 @@ static void ek_add_device_lcdc(void) {}
+>  static int at91sam9m10g45ek_devices_init(void)
+>  {
+>  	ek_add_device_nand();
+> +	ek_add_device_spi();
+>  	at91_add_device_eth(0, &macb_pdata);
+>  	ek_add_device_mci();
+>  	ek_add_device_usb();
+> diff --git a/arch/arm/configs/at91sam9m10g45ek_defconfig b/arch/arm/configs/at91sam9m10g45ek_defconfig
+> index 1df34f7..7e05e95 100644
+> --- a/arch/arm/configs/at91sam9m10g45ek_defconfig
+> +++ b/arch/arm/configs/at91sam9m10g45ek_defconfig
+> @@ -64,8 +64,10 @@ CONFIG_NET_RESOLV=y
+>  CONFIG_DRIVER_NET_MACB=y
+>  CONFIG_NET_USB=y
+>  CONFIG_NET_USB_ASIX=y
+> -# CONFIG_SPI is not set
+> +CONFIG_DRIVER_SPI_ATMEL=y
+>  CONFIG_MTD=y
+> +# CONFIG_MTD_OOB_DEVICE is not set
+> +CONFIG_MTD_DATAFLASH=y
+>  CONFIG_NAND=y
+>  # CONFIG_NAND_ECC_HW is not set
+>  # CONFIG_NAND_ECC_HW_SYNDROME is not set
 > -- 
-> 1.8.2.rc2
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
