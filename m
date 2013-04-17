@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USQhk-0002KP-1Z
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 11:39:15 +0000
+ id 1USQhk-0002KK-1W
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 11:39:16 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1USQhh-0000uC-ID
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 13:39:09 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1USQhh-0005wY-H4
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 13:39:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Apr 2013 13:39:04 +0200
-Message-Id: <1366198748-22717-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1366198748-22717-1-git-send-email-s.hauer@pengutronix.de>
-References: <1366198748-22717-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Apr 2013 13:39:01 +0200
+Message-Id: <1366198748-22717-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +26,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/7] Use a common define for RW_BUF_SIZE
+Subject: [PATCH] memory commands
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/mem.c   | 1 -
- include/common.h | 1 +
- lib/copy_file.c  | 2 --
- 3 files changed, 1 insertion(+), 3 deletions(-)
+This series contains some cleanups for the memory commands and a new
+memory command: mm. 'mm' allows to manipulate registers bitwise.
 
-diff --git a/commands/mem.c b/commands/mem.c
-index a4a1658..d48f92e 100644
---- a/commands/mem.c
-+++ b/commands/mem.c
-@@ -39,7 +39,6 @@
- #define PRINTF(fmt,args...)
- #endif
- 
--#define RW_BUF_SIZE	4096
- static char *rw_buf;
- 
- static char *DEVMEM = "/dev/mem";
-diff --git a/include/common.h b/include/common.h
-index 11904ab..59fcd35 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -224,6 +224,7 @@ int memory_display(char *addr, loff_t offs, unsigned nbytes, int size, int swab)
- int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
- 		char **sourcefile, char **destfile, int *swab);
- int open_and_lseek(const char *filename, int mode, loff_t pos);
-+#define RW_BUF_SIZE	(unsigned)4096
- 
- extern const char version_string[];
- #ifdef CONFIG_BANNER
-diff --git a/lib/copy_file.c b/lib/copy_file.c
-index 484b2ca..ab3d845 100644
---- a/lib/copy_file.c
-+++ b/lib/copy_file.c
-@@ -6,8 +6,6 @@
- #include <libbb.h>
- #include <progress.h>
- 
--#define RW_BUF_SIZE	(ulong)4096
--
- /**
-  * @param[in] src FIXME
-  * @param[out] dst FIXME
--- 
-1.8.2.rc2
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (7):
+      memory commands: export common functions
+      memory commands: move memory_display to separate file
+      Use a common define for RW_BUF_SIZE
+      memory commands: cleanup initialization
+      memory commands: make rw_buf global
+      memory commands: separate into one file per command
+      Add memory modify command (mm)
+
+ commands/Kconfig        |  50 ++++-
+ commands/Makefile       |   6 +
+ commands/md.c           | 116 +++++++++++
+ commands/mem.c          | 524 +-----------------------------------------------
+ commands/memcmp.c       | 148 ++++++++++++++
+ commands/memcpy.c       | 145 ++++++++++++++
+ commands/memset.c       | 101 ++++++++++
+ commands/mm.c           | 117 +++++++++++
+ commands/mw.c           | 104 ++++++++++
+ common/Makefile         |   1 +
+ common/memory_display.c |  64 ++++++
+ include/common.h        |   7 +-
+ lib/copy_file.c         |   2 -
+ 13 files changed, 868 insertions(+), 517 deletions(-)
+ create mode 100644 commands/md.c
+ create mode 100644 commands/memcmp.c
+ create mode 100644 commands/memcpy.c
+ create mode 100644 commands/memset.c
+ create mode 100644 commands/mm.c
+ create mode 100644 commands/mw.c
+ create mode 100644 common/memory_display.c
 
 _______________________________________________
 barebox mailing list
