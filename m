@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f123.mail.ru ([94.100.178.187])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USQj5-0002SD-Ad
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 11:40:36 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 17 Apr 2013 15:40:29 +0400
-Message-ID: <1366198829.567651896@f123.mail.ru>
-In-Reply-To: <20130417100148.GQ1906@pengutronix.de>
+ id 1USR4N-00030w-Dn
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 12:02:36 +0000
+Date: Wed, 17 Apr 2013 14:02:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130417120233.GS1906@pengutronix.de>
 References: <1366188021.710900767@f16.mail.ru>
  <20130417100148.GQ1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ <1366198829.567651896@f123.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366198829.567651896@f123.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +20,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IEJvb3QgZnJvbSBTRCBmYWlsIGFmdGVyIDIwMTMuMDI=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: Boot from SD fail after 2013.02
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-PiBPbiBXZWQsIEFwciAxNywgMjAxMyBhdCAxMjo0MDoyMVBNICswNDAwLCBBbGV4YW5kZXIgU2hp
-eWFuIHdyb3RlOgo+ID4gIEhlbGxvLgo+ID4gCj4gPiBJIGZvdW5kIHN0cmFuZ2UgcHJvYmxlbSB3
-aXRoIGJvb3QgZnJvbSBTRCBhZnRlciAyMDEzLjAyIHJlbGVhc2UuCj4gPiBVc2luZyBhIGdpdC1i
-aXNlY3QgSSBmb3VuZCBwcm9ibGVtIHN0YXJ0IHBvaW50LCBzbzoKPiA+IAo+ID4gOGUxOWVlOTRh
-YjdhZWE1MDYzNTg0NWRlMzFkYWVmMWI1OTNlMTIwNSBpcyB0aGUgZmlyc3QgYmFkIGNvbW1pdAo+
-ID4gY29tbWl0IDhlMTllZTk0YWI3YWVhNTA2MzU4NDVkZTMxZGFlZjFiNTkzZTEyMDUKPiA+IEF1
-dGhvcjogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+ID4gRGF0ZTrCoMKg
-IEZyaSBKYW4gMjUgMjM6Mzk6MjAgMjAxMyArMDEwMAo+ID4gCj4gPiDCoMKgwqAgQVJNOiBTZXR1
-cCBzdGFjayBhdCBlbmQgb2YgU0RSQU0KPiA+IMKgwqAgwqAKPiA+IMKgwqDCoCBTaWduZWQtb2Zm
-LWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiAKPiA+IAo+ID4g
-RXhwbG9yaW5nIHRoaXMgY29tbWl0IGRvZXMgbm90IGhlbHBzIG1lIHRvIGhhdmUgYW55IGlkZWEg
-aG93IGl0Cj4gPiBkZXBlbmRzIG9uIFNELWJvb3QuCj4gPiBNeSB0YXJnZXQgaXMgQVJNIGlteDUx
-IENvbm5lY3RDb3JlIGJvYXJkLgo+ID4gQWxzbyBJIHRlc3QgaXQgd2l0aCBmcmVlc2NhbGVfbXg1
-MV9iYWJiYWdlX2RlZmNvbmZpZyBzaW5jZSBzb21lCj4gPiBzdHVmZiBpcyBjb21wYXRpYmxlIHdp
-dGggQ29ubmVjdENvcmUgYm9hcmQuCj4gPiBDYW4gYW55b25lIGNvbmZpcm0gdGhpcyBpc3N1ZSBv
-ciBoYXZlIGEgc29sdXRpb24/Cj4gCj4gV2l0aG91dCB0aGlzIHBhdGNoIGFwcGxpZWQsIGNhbiB5
-b3UgcG9zdCB0aGUgb3V0cHV0IG9mIHRoZSAnaW9tZW0nCj4gY29tbWFuZCBhbmQgY29uZmlybSB0
-aGF0IHRoZSBTRFJBTSBzaXplIGlzIGRldGVjdGVkIGNvcnJlY3RseT8KCk1lbW9yeSBzaXplIGlz
-IGNvcnJlY3QsIDI1Nk0uIEF0IHRoaXMgdGltZSBJIGNhbm5vdCBydW4gImlvbWVtIiBzaW5jZQpJ
-IGFtIHJlc3RvcmUgdGhlIGZhdWx0eSBwYXJ0IGFzIGEgcmVzdWx0IG9mIG15IGdhbWVzLgoKLS0t
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Wed, Apr 17, 2013 at 03:40:29PM +0400, Alexander Shiyan wrote:
+> > On Wed, Apr 17, 2013 at 12:40:21PM +0400, Alexander Shiyan wrote:
+> > >  Hello.
+> > > =
+
+> > > I found strange problem with boot from SD after 2013.02 release.
+> > > Using a git-bisect I found problem start point, so:
+> > > =
+
+> > > 8e19ee94ab7aea50635845de31daef1b593e1205 is the first bad commit
+> > > commit 8e19ee94ab7aea50635845de31daef1b593e1205
+> > > Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > > Date:=A0=A0 Fri Jan 25 23:39:20 2013 +0100
+> > > =
+
+> > > =A0=A0=A0 ARM: Setup stack at end of SDRAM
+> > > =A0=A0 =A0
+> > > =A0=A0=A0 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > =
+
+> > > =
+
+> > > Exploring this commit does not helps me to have any idea how it
+> > > depends on SD-boot.
+> > > My target is ARM imx51 ConnectCore board.
+> > > Also I test it with freescale_mx51_babbage_defconfig since some
+> > > stuff is compatible with ConnectCore board.
+> > > Can anyone confirm this issue or have a solution?
+> > =
+
+> > Without this patch applied, can you post the output of the 'iomem'
+> > command and confirm that the SDRAM size is detected correctly?
+> =
+
+> Memory size is correct, 256M. At this time I cannot run "iomem" since
+> I am restore the faulty part as a result of my games.
+
+Does barebox still work 2nd stage or is this a 1st stage only problem?
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
