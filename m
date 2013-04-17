@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from fallback2.mail.ru ([94.100.176.87])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USRLf-0003J0-4O
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 12:20:28 +0000
-Received: from f388.i.mail.ru (f388.i.mail.ru [185.5.136.59])
- by fallback2.mail.ru (mPOP.Fallback_MX) with ESMTP id EAEF3D576581
- for <barebox@lists.infradead.org>; Wed, 17 Apr 2013 16:19:48 +0400 (MSK)
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 17 Apr 2013 16:19:32 +0400
-Message-ID: <1366201172.161158985@f388.i.mail.ru>
-In-Reply-To: <20130417120233.GS1906@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1USRO3-0003Ky-7K
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 12:22:55 +0000
+Date: Wed, 17 Apr 2013 14:22:53 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130417122253.GT1906@pengutronix.de>
 References: <1366188021.710900767@f16.mail.ru>
  <1366198829.567651896@f123.mail.ru>
  <20130417120233.GS1906@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ <1366201172.161158985@f388.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366201172.161158985@f388.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,43 +21,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IEJvb3QgZnJvbSBTRCBmYWlsIGFmdGVyIDIwMTMuMDI=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: Boot from SD fail after 2013.02
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-PiBPbiBXZWQsIEFwciAxNywgMjAxMyBhdCAwMzo0MDoyOVBNICswNDAwLCBBbGV4YW5kZXIgU2hp
-eWFuIHdyb3RlOgo+ID4gPiBPbiBXZWQsIEFwciAxNywgMjAxMyBhdCAxMjo0MDoyMVBNICswNDAw
-LCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gPiA+ICBIZWxsby4KPiA+ID4gPiAKPiA+ID4g
-PiBJIGZvdW5kIHN0cmFuZ2UgcHJvYmxlbSB3aXRoIGJvb3QgZnJvbSBTRCBhZnRlciAyMDEzLjAy
-IHJlbGVhc2UuCj4gPiA+ID4gVXNpbmcgYSBnaXQtYmlzZWN0IEkgZm91bmQgcHJvYmxlbSBzdGFy
-dCBwb2ludCwgc286Cj4gPiA+ID4gCj4gPiA+ID4gOGUxOWVlOTRhYjdhZWE1MDYzNTg0NWRlMzFk
-YWVmMWI1OTNlMTIwNSBpcyB0aGUgZmlyc3QgYmFkIGNvbW1pdAo+ID4gPiA+IGNvbW1pdCA4ZTE5
-ZWU5NGFiN2FlYTUwNjM1ODQ1ZGUzMWRhZWYxYjU5M2UxMjA1Cj4gPiA+ID4gQXV0aG9yOiBTYXNj
-aGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiA+ID4gRGF0ZTrCoMKgIEZyaSBK
-YW4gMjUgMjM6Mzk6MjAgMjAxMyArMDEwMAo+ID4gPiA+IAo+ID4gPiA+IMKgwqDCoCBBUk06IFNl
-dHVwIHN0YWNrIGF0IGVuZCBvZiBTRFJBTQo+ID4gPiA+IMKgwqAgwqAKPiA+ID4gPiDCoMKgwqAg
-U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgo+ID4g
-PiA+IAo+ID4gPiA+IAo+ID4gPiA+IEV4cGxvcmluZyB0aGlzIGNvbW1pdCBkb2VzIG5vdCBoZWxw
-cyBtZSB0byBoYXZlIGFueSBpZGVhIGhvdyBpdAo+ID4gPiA+IGRlcGVuZHMgb24gU0QtYm9vdC4K
-PiA+ID4gPiBNeSB0YXJnZXQgaXMgQVJNIGlteDUxIENvbm5lY3RDb3JlIGJvYXJkLgo+ID4gPiA+
-IEFsc28gSSB0ZXN0IGl0IHdpdGggZnJlZXNjYWxlX214NTFfYmFiYmFnZV9kZWZjb25maWcgc2lu
-Y2Ugc29tZQo+ID4gPiA+IHN0dWZmIGlzIGNvbXBhdGlibGUgd2l0aCBDb25uZWN0Q29yZSBib2Fy
-ZC4KPiA+ID4gPiBDYW4gYW55b25lIGNvbmZpcm0gdGhpcyBpc3N1ZSBvciBoYXZlIGEgc29sdXRp
-b24/Cj4gPiA+IAo+ID4gPiBXaXRob3V0IHRoaXMgcGF0Y2ggYXBwbGllZCwgY2FuIHlvdSBwb3N0
-IHRoZSBvdXRwdXQgb2YgdGhlICdpb21lbScKPiA+ID4gY29tbWFuZCBhbmQgY29uZmlybSB0aGF0
-IHRoZSBTRFJBTSBzaXplIGlzIGRldGVjdGVkIGNvcnJlY3RseT8KPiA+IAo+ID4gTWVtb3J5IHNp
-emUgaXMgY29ycmVjdCwgMjU2TS4gQXQgdGhpcyB0aW1lIEkgY2Fubm90IHJ1biAiaW9tZW0iIHNp
-bmNlCj4gPiBJIGFtIHJlc3RvcmUgdGhlIGZhdWx0eSBwYXJ0IGFzIGEgcmVzdWx0IG9mIG15IGdh
-bWVzLgo+IAo+IERvZXMgYmFyZWJveCBzdGlsbCB3b3JrIDJuZCBzdGFnZSBvciBpcyB0aGlzIGEg
-MXN0IHN0YWdlIG9ubHkgcHJvYmxlbT8KClBCTCBpcyBub3QgdXNlZCBpbiBteSBjb25maWcgbm93
-IGFuZCBJIHRoaW5rIHRoaXMgaXMgYSBsb3dsZXZlbCBzdHVmZgpiZWNhdXNlIHNlcmlhbCBpcyBu
-b3QgaW5pdGVkIGFuZCBJIGNhbm5vdCBzZWUgYW55IG1lc3NhZ2UuCkkgYW55IGNhc2UgSSBjYW5u
-b3QgdGVzdCBtb3JlIG5vdyBkdWUgYnJva2VuIGhhcmR3YXJlLiBJIHJldHVybiB0bwp0ZXN0IHRo
-aXMgYWZ0ZXIgcmVwYWlyLiBUaGFua3MhCgotLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+On Wed, Apr 17, 2013 at 04:19:32PM +0400, Alexander Shiyan wrote:
+> > On Wed, Apr 17, 2013 at 03:40:29PM +0400, Alexander Shiyan wrote:
+> > > > On Wed, Apr 17, 2013 at 12:40:21PM +0400, Alexander Shiyan wrote:
+> > > > >  Hello.
+> > > > > =
+
+> > > > > I found strange problem with boot from SD after 2013.02 release.
+> > > > > Using a git-bisect I found problem start point, so:
+> > > > > =
+
+> > > > > 8e19ee94ab7aea50635845de31daef1b593e1205 is the first bad commit
+> > > > > commit 8e19ee94ab7aea50635845de31daef1b593e1205
+> > > > > Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > Date:=A0=A0 Fri Jan 25 23:39:20 2013 +0100
+> > > > > =
+
+> > > > > =A0=A0=A0 ARM: Setup stack at end of SDRAM
+> > > > > =A0=A0 =A0
+> > > > > =A0=A0=A0 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > > =
+
+> > > > > =
+
+> > > > > Exploring this commit does not helps me to have any idea how it
+> > > > > depends on SD-boot.
+> > > > > My target is ARM imx51 ConnectCore board.
+> > > > > Also I test it with freescale_mx51_babbage_defconfig since some
+> > > > > stuff is compatible with ConnectCore board.
+> > > > > Can anyone confirm this issue or have a solution?
+> > > > =
+
+> > > > Without this patch applied, can you post the output of the 'iomem'
+> > > > command and confirm that the SDRAM size is detected correctly?
+> > > =
+
+> > > Memory size is correct, 256M. At this time I cannot run "iomem" since
+> > > I am restore the faulty part as a result of my games.
+> > =
+
+> > Does barebox still work 2nd stage or is this a 1st stage only problem?
+> =
+
+> PBL is not used in my config now and I think this is a lowlevel stuff
+> because serial is not inited and I cannot see any message.
+
+I was not asking about pbl, but only if you can start barebox from a
+running barebox.
+
+> I any case I cannot test more now due broken hardware. I return to
+> test this after repair. Thanks!
+
+ok.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
