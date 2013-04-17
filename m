@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USSDu-0004Pf-7L
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 13:16:30 +0000
+ id 1USSEd-0004Re-I9
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 13:17:15 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 17 Apr 2013 15:16:25 +0200
-Message-Id: <1366204585-2626-1-git-send-email-jlu@pengutronix.de>
+Date: Wed, 17 Apr 2013 15:17:11 +0200
+Message-Id: <1366204631-2792-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,159 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] arm: omap: am33xx: store boot source info from ROM loader
+Subject: [PATCH] am33xx-clock: configure PLLs based on oscillator frequency
 To: barebox@lists.infradead.org
-
-The ROM loader passes the address of a buffer to the MLO in
-register 0. Store this data so we can find the boot source later.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- arch/arm/boards/beaglebone/lowlevel.c            |  4 +++-
- arch/arm/mach-omap/Makefile                      |  2 +-
- arch/arm/mach-omap/am33xx_bootinfo.S             | 24 ++++++++++++++++++++++++
- arch/arm/mach-omap/am33xx_generic.c              | 14 +++++++++++++-
- arch/arm/mach-omap/include/mach/am33xx-generic.h |  3 +++
- arch/arm/mach-omap/xload.c                       | 12 ++++++++++--
- 6 files changed, 54 insertions(+), 5 deletions(-)
- create mode 100644 arch/arm/mach-omap/am33xx_bootinfo.S
+ arch/arm/mach-omap/include/mach/am33xx-clock.h | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index a9737d9..5a14a1d 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -248,8 +248,10 @@ static int beaglebone_board_init(void)
- 	return 0;
- }
+diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+index 39c107f..f496756 100644
+--- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
++++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+@@ -31,12 +31,12 @@
+ #define MPUPLL_M_600	600	/* 125 * n */
+ #define MPUPLL_M_720	720	/* 125 * n */
  
--void __naked barebox_arm_reset_vector(void)
-+void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
-+	am33xx_save_bootinfo();
-+
- 	arm_cpu_lowlevel_init();
+-#define MPUPLL_N	23	/* (n -1 ) */
++#define MPUPLL_N	(OSC-1)
+ #define MPUPLL_M2	1
  
- 	beaglebone_board_init();
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index d9e00f7..63f8164 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -23,7 +23,7 @@ obj-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
- pbl-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
- obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
- pbl-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
--obj-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o
-+obj-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o am33xx_bootinfo.o
- obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
- pbl-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
- obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
-diff --git a/arch/arm/mach-omap/am33xx_bootinfo.S b/arch/arm/mach-omap/am33xx_bootinfo.S
-new file mode 100644
-index 0000000..60e8aba
---- /dev/null
-+++ b/arch/arm/mach-omap/am33xx_bootinfo.S
-@@ -0,0 +1,24 @@
-+#include <config.h>
-+#include <linux/linkage.h>
-+#include <asm/assembler.h>
-+
-+.section ".text_bare_init","ax"
-+.globl am33xx_bootinfo
-+am33xx_bootinfo:
-+	.word 0x0
-+	.word 0x0
-+	.word 0x0
-+
-+.section ".text_bare_init","ax"
-+ENTRY(am33xx_save_bootinfo)
-+	/*
-+	* save data from rom boot loader
-+	*/
-+	adr     r2, am33xx_bootinfo
-+	ldr     r1, [r0, #0x00]
-+	str     r1, [r2, #0x00]
-+	ldr     r1, [r0, #0x04]
-+	str     r1, [r2, #0x04]
-+	ldr     r1, [r0, #0x08]
-+	str     r1, [r2, #0x08]
-+	mov	pc, lr
-diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index 96432c9..6271ee1 100644
---- a/arch/arm/mach-omap/am33xx_generic.c
-+++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -97,7 +97,19 @@ u32 running_in_sdram(void)
+ /* Core PLL Fdll = 1 GHZ, */
+ #define COREPLL_M	1000	/* 125 * n */
+-#define COREPLL_N	23	/* (n -1 ) */
++#define COREPLL_N	(OSC-1)
  
- static int am33xx_bootsource(void)
- {
--	bootsource_set(BOOTSOURCE_MMC); /* only MMC for now */
-+	enum bootsource src;
-+
-+	switch (am33xx_bootinfo[2] & 0xFF) {
-+	case 0x05:
-+		src = BOOTSOURCE_NAND;
-+		break;
-+	case 0x08:
-+		src = BOOTSOURCE_MMC;
-+		break;
-+	default:
-+		src = BOOTSOURCE_UNKNOWN;
-+	}
-+	bootsource_set(src);
- 	bootsource_set_instance(0);
- 	return 0;
- }
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-index ba69caf..dbf390c 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-@@ -1,6 +1,9 @@
- #ifndef __MACH_AM33XX_GENERIC_H
- #define __MACH_AM33XX_GENERIC_H
- 
-+extern uint32_t am33xx_bootinfo[3];
-+void am33xx_save_bootinfo(void);
-+
- int am33xx_register_ethaddr(int eth_id, int mac_id);
- 
- #endif /* __MACH_AM33XX_GENERIC_H */
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-index 3cce3f2..bab56ae 100644
---- a/arch/arm/mach-omap/xload.c
-+++ b/arch/arm/mach-omap/xload.c
-@@ -10,6 +10,10 @@
- #include <sizes.h>
- #include <filetype.h>
- 
-+#ifdef CONFIG_ARCH_AM33XX
-+#include <mach/am33xx-generic.h>
-+#endif
-+
- static void *read_image_head(const char *name)
- {
- 	void *header = xmalloc(ARM_HEAD_SIZE);
-@@ -163,7 +167,8 @@ static void *omap4_xload_boot_usb(void){
+ #define COREPLL_M4	10	/* CORE_CLKOUTM4 = 200 MHZ */
+ #define COREPLL_M5	8	/* CORE_CLKOUTM5 = 250 MHZ */
+@@ -48,19 +48,14 @@
+  * For clkout = 192 MHZ, Fdll = 960 MHZ, divider values are given below
   */
- static __noreturn int omap_xload(void)
- {
--	int (*func)(void) = NULL;
-+	int (*func)(void *) = NULL;
-+	uint32_t arg = 0;
+ #define PERPLL_M	960
+-#define PERPLL_N	23
++#define PERPLL_N	(OSC-1)
+ #define PERPLL_M2	5
  
- 	switch (bootsource_get())
- 	{
-@@ -198,8 +203,11 @@ static __noreturn int omap_xload(void)
- 		while (1);
- 	}
+-/* DDR Freq is 166 MHZ for now*/
++/* DDR Freq is 266 MHZ for now*/
+ /* Set Fdll = 400 MHZ , Fdll = M * 2 * CLKINP/ N + 1; clkout = Fdll /(2 * M2) */
+ //#if	(CONFIG_AM335X_EVM_IS_13x13 == 1)
+-#if 0
+-#define DDRPLL_M	166	/* M/N + 1 = 25/3 */
+-#else
+ #define DDRPLL_M	266
+-#endif
+-
+-#define DDRPLL_N	23
++#define DDRPLL_N	(OSC-1)
+ #define DDRPLL_M2	1
  
-+	if (IS_ENABLED(CONFIG_ARCH_AM33XX))
-+		arg = (uint32_t)&am33xx_bootinfo;
-+
- 	shutdown_barebox();
--	func();
-+	func(arg);
- 
- 	while (1);
- }
+ /* PRCM */
 -- 
 1.8.2.rc2
 
