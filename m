@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USVtt-0001mj-09
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 17:12:05 +0000
+ id 1USVv7-0001pW-9S
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 17:13:21 +0000
 From: Jan Luebbe <jlu@pengutronix.de>
-Date: Wed, 17 Apr 2013 19:12:49 +0200
-Message-Id: <1366218769-30808-1-git-send-email-jlu@pengutronix.de>
+Date: Wed, 17 Apr 2013 19:14:12 +0200
+Message-Id: <1366218852-30912-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] am33xx: add defines for GPIOs
+Subject: [PATCH] defaultenv-2: init: display prompt after running /env/init/*
 To: barebox@lists.infradead.org
+
+This allows init scripts to print messages to the console without messing
+up the timeout prompt.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/am33xx-clock.h   |    2 ++
- arch/arm/mach-omap/include/mach/am33xx-silicon.h |    6 ++++++
- 2 files changed, 8 insertions(+)
+ defaultenv-2/base/bin/init |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index 39c107f..cbee641 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -139,7 +139,9 @@
- #define CM_PER_CPGMAC0_CLKCTRL          (CM_PER + 0x14) /* Ethernet */
- #define CM_PER_CPSW_CLKSTCTRL           (CM_PER + 0x144)/* Ethernet */
- #define CM_PER_OCMCRAM_CLKCTRL          (CM_PER + 0x2C) /* OCMC RAM */
-+#define CM_PER_GPIO1_CLKCTRL            (CM_PER + 0xAC) /* GPIO1 */
- #define CM_PER_GPIO2_CLKCTRL            (CM_PER + 0xB0) /* GPIO2 */
-+#define CM_PER_GPIO3_CLKCTRL            (CM_PER + 0xB4) /* GPIO3 */
- #define CM_PER_UART3_CLKCTRL            (CM_PER + 0x74) /* UART3 */
- #define CM_PER_I2C1_CLKCTRL             (CM_PER + 0x48) /* I2C1 */
- #define CM_PER_I2C2_CLKCTRL             (CM_PER + 0x44) /* I2C2 */
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-index e69d345..9edf4ca 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-@@ -29,6 +29,12 @@
- #define AM33XX_UART1_BASE		(AM33XX_L4_PER_BASE + 0x22000)
- #define AM33XX_UART2_BASE		(AM33XX_L4_PER_BASE + 0x24000)
+diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+index 6a658d1..ca02ba6 100644
+--- a/defaultenv-2/base/bin/init
++++ b/defaultenv-2/base/bin/init
+@@ -16,12 +16,6 @@ global editcmd=sedit
+ [ -e /env/config-board ] && /env/config-board
+ /env/config
  
-+/* GPIO */
-+#define AM33XX_GPIO0_BASE		(AM33XX_L4_WKUP_BASE + 0x207000 + 0x100)
-+#define AM33XX_GPIO1_BASE		(AM33XX_L4_PER_BASE + 0x4C000 + 0x100)
-+#define AM33XX_GPIO2_BASE		(AM33XX_L4_PER_BASE + 0x1AC000 + 0x100)
-+#define AM33XX_GPIO3_BASE		(AM33XX_L4_PER_BASE + 0x1AE000 + 0x100)
+-if [ -e /env/menu ]; then
+-	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
+-else
+-	echo -e -n "\nHit any key to stop autoboot: "
+-fi
+-
+ # allow to stop the boot before execute the /env/init/*
+ # but without waiting
+ timeout -s -a -v key 0
+@@ -34,6 +28,12 @@ for i in /env/init/*; do
+ 	. $i
+ done
+ 
++if [ -e /env/menu ]; then
++	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
++else
++	echo -e -n "\nHit any key to stop autoboot: "
++fi
 +
- /* EMFI Registers */
- #define AM33XX_EMFI0_BASE		0x4C000000
+ timeout -a $global.autoboot_timeout -v key
+ autoboot="$?"
  
 -- 
 1.7.10.4
