@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USQhk-0002KS-1g
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 11:39:20 +0000
+ id 1USQhr-0002N6-FX
+ for barebox@lists.infradead.org; Wed, 17 Apr 2013 11:39:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 17 Apr 2013 13:39:08 +0200
-Message-Id: <1366198748-22717-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 17 Apr 2013 13:39:03 +0200
+Message-Id: <1366198748-22717-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1366198748-22717-1-git-send-email-s.hauer@pengutronix.de>
 References: <1366198748-22717-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,179 +21,196 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] Add memory modify command (mm)
+Subject: [PATCH 2/7] memory commands: move memory_display to separate file
 To: barebox@lists.infradead.org
 
-As of now we have no way to manipulate individual bits of registers on the
-command line. This introduces a memory modify command which allows this. It
-has the syntax:
-
-mm [OPTIONS] <adr> <val> <mask>
-
-With [OPTIONS] being the usual memory command options (-b, -w, -l, -d <file>).
+memory_display is a function which should generally be available.
+Currently it depends on memory command support being compiled in,
+so move the function to a separate file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/Kconfig  |   8 ++++
- commands/Makefile |   1 +
- commands/mm.c     | 117 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 126 insertions(+)
- create mode 100644 commands/mm.c
+ commands/mem.c          | 68 -------------------------------------------------
+ common/Makefile         |  1 +
+ common/memory_display.c | 64 ++++++++++++++++++++++++++++++++++++++++++++++
+ include/common.h        |  2 +-
+ 4 files changed, 66 insertions(+), 69 deletions(-)
+ create mode 100644 common/memory_display.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index fe171d8..e6168ce 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -320,6 +320,14 @@ config CMD_MW
- 	help
- 	  the mw command allows to write to memory locations and files.
+diff --git a/commands/mem.c b/commands/mem.c
+index f25c6b6..a4a1658 100644
+--- a/commands/mem.c
++++ b/commands/mem.c
+@@ -44,74 +44,6 @@ static char *rw_buf;
  
-+config CMD_MM
-+	tristate
-+	select CMD_MEMORY
-+	prompt "memory modify (mm)"
-+	help
-+	  the mm command allows to read-modify-write registers by doing:
-+	  reg = (reg & ~mask) | (val & mask)
-+
- config CMD_MEMCMP
- 	tristate
- 	default y
-diff --git a/commands/Makefile b/commands/Makefile
-index beec8e9..953ecc2 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_CMD_LOADS)		+= loads.o
- obj-$(CONFIG_CMD_ECHO)		+= echo.o
- obj-$(CONFIG_CMD_MEMORY)	+= mem.o
- obj-$(CONFIG_CMD_MD)		+= md.o
-+obj-$(CONFIG_CMD_MM)		+= mm.o
- obj-$(CONFIG_CMD_MW)		+= mw.o
- obj-$(CONFIG_CMD_MEMCMP)	+= memcmp.o
- obj-$(CONFIG_CMD_MEMCPY)	+= memcpy.o
-diff --git a/commands/mm.c b/commands/mm.c
+ static char *DEVMEM = "/dev/mem";
+ 
+-/* Memory Display
+- *
+- * Syntax:
+- *	md{.b, .w, .l} {addr} {len}
+- */
+-#define DISP_LINE_LEN	16
+-
+-int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab)
+-{
+-	ulong linebytes, i;
+-	u_char	*cp;
+-
+-	/* Print the lines.
+-	 *
+-	 * We buffer all read data, so we can make sure data is read only
+-	 * once, and all accesses are with the specified bus width.
+-	 */
+-	do {
+-		char	linebuf[DISP_LINE_LEN];
+-		uint	*uip = (uint   *)linebuf;
+-		ushort	*usp = (ushort *)linebuf;
+-		u_char	*ucp = (u_char *)linebuf;
+-		uint	count = 52;
+-
+-		printf("%08llx:", offs);
+-		linebytes = (nbytes > DISP_LINE_LEN) ? DISP_LINE_LEN : nbytes;
+-
+-		for (i = 0; i < linebytes; i += size) {
+-			if (size == 4) {
+-				u32 res;
+-				res = (*uip++ = *((uint *)addr));
+-				if (swab)
+-					res = __swab32(res);
+-				count -= printf(" %08x", res);
+-			} else if (size == 2) {
+-				u16 res;
+-				res = (*usp++ = *((ushort *)addr));
+-				if (swab)
+-					res = __swab16(res);
+-				count -= printf(" %04x", res);
+-			} else {
+-				count -= printf(" %02x", (*ucp++ = *((u_char *)addr)));
+-			}
+-			addr += size;
+-			offs += size;
+-		}
+-
+-		while(count--)
+-			putchar(' ');
+-
+-		cp = (u_char *)linebuf;
+-		for (i=0; i<linebytes; i++) {
+-			if ((*cp < 0x20) || (*cp > 0x7e))
+-				putchar('.');
+-			else
+-				printf("%c", *cp);
+-			cp++;
+-		}
+-		putchar('\n');
+-		nbytes -= linebytes;
+-		if (ctrlc()) {
+-			return -EINTR;
+-		}
+-	} while (nbytes > 0);
+-
+-	return 0;
+-}
+-
+ int open_and_lseek(const char *filename, int mode, loff_t pos)
+ {
+ 	int fd, ret;
+diff --git a/common/Makefile b/common/Makefile
+index dcb07c2..9460172 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -13,6 +13,7 @@ obj-$(CONFIG_CMD_LOADS)		+= s_record.o
+ obj-$(CONFIG_OFTREE)		+= oftree.o
+ 
+ obj-y += memory.o
++obj-y += memory_display.o
+ obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
+ obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
+ obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
+diff --git a/common/memory_display.c b/common/memory_display.c
 new file mode 100644
-index 0000000..f51fd27
+index 0000000..eb188e1
 --- /dev/null
-+++ b/commands/mm.c
-@@ -0,0 +1,117 @@
-+/*
-+ * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
++++ b/common/memory_display.c
+@@ -0,0 +1,64 @@
 +#include <common.h>
-+#include <command.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <getopt.h>
-+#include <linux/stat.h>
-+#include <xfuncs.h>
 +
-+static int do_mem_mm(int argc, char *argv[])
++#define DISP_LINE_LEN	16
++
++int memory_display(char *addr, loff_t offs, unsigned nbytes, int size, int swab)
 +{
-+	int ret = 0;
-+	int fd;
-+	char *filename = "/dev/mem";
-+	int mode = O_RWSIZE_4;
-+	loff_t adr;
-+	int swab = 0;
-+	u8 val8;
-+	u16 val16;
-+	u32 val32;
-+	u32 value, mask;
++	ulong linebytes, i;
++	u_char	*cp;
 +
-+	if (mem_parse_options(argc, argv, "bwld:", &mode, NULL, &filename,
-+			&swab) < 0)
-+		return 1;
++	/* Print the lines.
++	 *
++	 * We buffer all read data, so we can make sure data is read only
++	 * once, and all accesses are with the specified bus width.
++	 */
++	do {
++		char linebuf[DISP_LINE_LEN];
++		uint32_t *uip = (uint   *)linebuf;
++		uint16_t *usp = (ushort *)linebuf;
++		uint8_t *ucp = (u_char *)linebuf;
++		unsigned count = 52;
 +
-+	if (optind + 2 >= argc)
-+		return COMMAND_ERROR_USAGE;
++		printf("%08llx:", offs);
++		linebytes = (nbytes > DISP_LINE_LEN) ? DISP_LINE_LEN : nbytes;
 +
-+	adr = strtoull_suffix(argv[optind++], NULL, 0);
-+	value = simple_strtoul(argv[optind++], NULL, 0);
-+	mask = simple_strtoul(argv[optind++], NULL, 0);
++		for (i = 0; i < linebytes; i += size) {
++			if (size == 4) {
++				u32 res;
++				res = (*uip++ = *((uint *)addr));
++				if (swab)
++					res = __swab32(res);
++				count -= printf(" %08x", res);
++			} else if (size == 2) {
++				u16 res;
++				res = (*usp++ = *((ushort *)addr));
++				if (swab)
++					res = __swab16(res);
++				count -= printf(" %04x", res);
++			} else {
++				count -= printf(" %02x", (*ucp++ = *((u_char *)addr)));
++			}
++			addr += size;
++			offs += size;
++		}
 +
-+	fd = open_and_lseek(filename, mode | O_RDWR, adr);
-+	if (fd < 0)
-+		return 1;
++		while (count--)
++			putchar(' ');
 +
-+	switch (mode) {
-+	case O_RWSIZE_1:
-+		ret = pread(fd, &val8, 1, adr);
-+		if (ret < 0)
-+			goto out_read;
-+		val8 &= ~mask;
-+		val8 |= (value & mask);
-+		ret = pwrite(fd, &val8, 1, adr);
-+		if (ret < 0)
-+			goto out_write;
-+		break;
-+	case O_RWSIZE_2:
-+		ret = pread(fd, &val16, 2, adr);
-+		if (ret < 0)
-+			goto out_read;
-+		val16 &= ~mask;
-+		val16 |= (value & mask);
-+		ret = pwrite(fd, &val16, 2, adr);
-+		if (ret < 0)
-+			goto out_write;
-+		break;
-+	case O_RWSIZE_4:
-+		if (ret < 0)
-+			goto out_read;
-+		ret = pread(fd, &val32, 4, adr);
-+		val32 &= ~mask;
-+		val32 |= (value & mask);
-+		ret = pwrite(fd, &val32, 4, adr);
-+		if (ret < 0)
-+			goto out_write;
-+		break;
-+	}
++		cp = (uint8_t *)linebuf;
++		for (i = 0; i < linebytes; i++) {
++			if ((*cp < 0x20) || (*cp > 0x7e))
++				putchar('.');
++			else
++				printf("%c", *cp);
++			cp++;
++		}
 +
-+	close(fd);
++		putchar('\n');
++		nbytes -= linebytes;
++		if (ctrlc())
++			return -EINTR;
++	} while (nbytes > 0);
 +
 +	return 0;
-+
-+out_read:
-+	perror("read");
-+	close(fd);
-+	return 1;
-+
-+out_write:
-+	perror("write");
-+	close(fd);
-+	return 1;
 +}
-+
-+static const __maybe_unused char cmd_mm_help[] =
-+"Usage: mm [OPTIONS] <adr> <val> <mask>\n"
-+"set/clear bits specified with <mask> in <adr> to <value>\n"
-+"options:\n"
-+"  -b, -w, -l	use byte, halfword, or word accesses\n"
-+"  -d <file>	write file (default /dev/mem)\n";
-+
-+BAREBOX_CMD_START(mm)
-+	.cmd		= do_mem_mm,
-+	.usage		= "memory modify write with mask",
-+	BAREBOX_CMD_HELP(cmd_mm_help)
-+BAREBOX_CMD_END
+diff --git a/include/common.h b/include/common.h
+index 2263c00..11904ab 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -219,7 +219,7 @@ int run_shell(void);
+ #define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
+ #define PAGE_ALIGN_DOWN(x) ((x) & ~(PAGE_SIZE - 1))
+ 
+-int memory_display(char *addr, loff_t offs, ulong nbytes, int size, int swab);
++int memory_display(char *addr, loff_t offs, unsigned nbytes, int size, int swab);
+ 
+ int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ 		char **sourcefile, char **destfile, int *swab);
 -- 
 1.8.2.rc2
 
