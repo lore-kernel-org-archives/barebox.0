@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f26.mail.ru ([128.140.169.155])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USm2A-0001bK-5Z
- for barebox@lists.infradead.org; Thu, 18 Apr 2013 10:25:42 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 18 Apr 2013 12:25:33 +0200
-Message-Id: <1366280733-19581-1-git-send-email-jlu@pengutronix.de>
+ id 1USsEb-00049o-89
+ for barebox@lists.infradead.org; Thu, 18 Apr 2013 17:02:58 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Thu, 18 Apr 2013 21:02:52 +0400
+Message-ID: <1366304572.52315039@f26.mail.ru>
+In-Reply-To: <20130418115918.GG1906@pengutronix.de>
+References: <1366188021.710900767@f16.mail.ru>
+ <1366283186.701174674@f366.mail.ru>
+ <20130418115918.GG1906@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Makefile: drop duplicate definition of cmd_objcopy
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmVbMl06IEJvb3QgZnJvbSBTRCBmYWlsIGFmdGVyIDIwMTMuMDI=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This command is already defined in scripts/Makefile.lib, which is included
-from Makefile.
+> On Thu, Apr 18, 2013 at 03:06:26PM +0400, Alexander Shiyan wrote:
+> > 
+> > So. OK, I temporary patch my board and it working now.
+> > Please forget about correct memory size, it is not true.
+> > Size is incorrect. Both banks are enabled and size detected as 512M.
+> > I think this size is programmed by flash_header:
+> >   { .ptr_type = 4, .addr = 0x83fd9000, .val = 0xb2a20000, },
+> >   { .ptr_type = 4, .addr = 0x83fd9008, .val = 0xb2a20000, },
+> > 
+> > After program NAND and start from NAND, size is still wrong...
+> > So, what we can do it this case for proper operation? Disable second bank?
+> 
+> When writing the autodetection code I assumed that all boards correctly
+> setup the SDRAM controller. Appearently I was wrong.
+> 
+> I suggest disabling the second chip select since it's not used on your
+> board. However, I begin doubting that it was the right decision to
+> depend on ram size detection.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Yes, disabling second bank is helps.
+So, I repair my second board (same as first, but with real 512M of SDRAM).
+Works, but of course memory is fixed at 256M. Tomorrow I will test current
+2013.04 on this board since probably problem appears only on 256M-version.
+Currently I think about return fixed table of memory in the board file or get
+memory size by testing memory. In both cases we need to disable ESDCTL
+module and now I do not know how make it better rather than simple remove
+this module from Makefile.
+Thanks.
+
 ---
-All defconfigs still build ok.
-
- Makefile | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 71f181c..ebfe8ca 100644
---- a/Makefile
-+++ b/Makefile
-@@ -667,9 +667,6 @@ define rule_barebox-modpost
- 	$(Q)echo 'cmd_$@ := $(cmd_barebox-modpost)' > $(dot-target).cmd
- endef
- 
--quiet_cmd_objcopy = OBJCOPY $@
--      cmd_objcopy = $(OBJCOPY) $(OBJCOPYFLAGS) $(OBJCOPYFLAGS_$(@F)) $< $@
--
- OBJCOPYFLAGS_barebox.bin = -O binary
- 
- barebox.bin: barebox FORCE
--- 
-1.8.2.rc2
-
-
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
