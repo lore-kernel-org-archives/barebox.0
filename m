@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-gh0-f173.google.com ([209.85.160.173])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USXD2-0003ht-FL
- for barebox@lists.infradead.org; Wed, 17 Apr 2013 18:35:57 +0000
-Received: by mail-gh0-f173.google.com with SMTP id g16so212795ghb.32
- for <barebox@lists.infradead.org>; Wed, 17 Apr 2013 11:35:53 -0700 (PDT)
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 17 Apr 2013 15:35:43 -0300
-Message-Id: <1366223743-29178-1-git-send-email-festevam@gmail.com>
+ id 1UShtK-0004ag-OB
+ for barebox@lists.infradead.org; Thu, 18 Apr 2013 06:00:19 +0000
+Date: Thu, 18 Apr 2013 08:00:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130418060017.GZ1906@pengutronix.de>
+References: <1366133769-14022-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366133769-14022-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,53 +18,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mx6-sabrelite: Setup CCM_CCOSR register
-To: s.hauer@pengutronix.de
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] Remove unimplemented usb_driver_unregister declaration
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-From: Fabio Estevam <fabio.estevam@freescale.com>
+On Tue, Apr 16, 2013 at 09:36:09PM +0400, Alexander Shiyan wrote:
+> We do not have usb_driver_unregister function, so remove this declaration.
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Setup CCM_CCOSR register to provide a CKO1 clock frequency of 16.5 MHz.
+Applied, thanks
 
-CKO1 drives sgtl5000 codec clock on mx6qsabrelite and doing this setup in the 
-bootloader will allow us to remove a lot of code in arch/arm/mach-imx/mach-imx6q.c 
-from the mainline kernel.
+Sascha
 
-Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
----
- .../boards/freescale-mx6-sabrelite/flash_header.c  |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+> ---
+>  include/usb/usb.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/usb/usb.h b/include/usb/usb.h
+> index afccf70..b270012 100644
+> --- a/include/usb/usb.h
+> +++ b/include/usb/usb.h
+> @@ -196,7 +196,6 @@ struct usb_driver {
+>  extern struct bus_type usb_bus_type;
+>  
+>  int usb_driver_register(struct usb_driver *);
+> -int usb_driver_unregister(struct usb_driver *);
+>  
+>  struct usb_host {
+>  	int (*init)(struct usb_host *);
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c b/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
-index 61d482b..49326e0 100644
---- a/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
-@@ -152,6 +152,17 @@ struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
- 	/* set IPU AXI-id0 Qos=0xf(bypass) AXI-id1 Qos=0x7 */
- 	DCD(MX6_IOMUXC_BASE_ADDR + 0x018, 0x007f007f),
- 	DCD(MX6_IOMUXC_BASE_ADDR + 0x01c, 0x007f007f),
-+
-+	/*
-+	 * Setup CCM_CCOSR register as follows:
-+	 *
-+	 * cko1_en  = 1	   --> CKO1 enabled
-+	 * cko1_div = 111  --> divide by 8
-+	 * cko1_sel = 1011 --> ahb_clk_root
-+	 *
-+	 * This sets CKO1 at ahb_clk_root/8 = 132/8 = 16.5 MHz
-+	 */
-+	DCD(MX6_CCM_BASE_ADDR + 0x060, 0x000000fb),
- };
- 
- #define APP_DEST	CONFIG_TEXT_BASE
 -- 
-1.7.9.5
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
