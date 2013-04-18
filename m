@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UShtK-0004ag-OB
- for barebox@lists.infradead.org; Thu, 18 Apr 2013 06:00:19 +0000
-Date: Thu, 18 Apr 2013 08:00:17 +0200
+ id 1UShx5-0004ca-8a
+ for barebox@lists.infradead.org; Thu, 18 Apr 2013 06:04:11 +0000
+Date: Thu, 18 Apr 2013 08:04:09 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130418060017.GZ1906@pengutronix.de>
-References: <1366133769-14022-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130418060409.GA1906@pengutronix.de>
+References: <1366147921-23073-1-git-send-email-vicencb@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366133769-14022-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1366147921-23073-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Remove unimplemented usb_driver_unregister declaration
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] omap4 regression: set correct boot source
+To: Vicente Bergas <vicencb@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 16, 2013 at 09:36:09PM +0400, Alexander Shiyan wrote:
-> We do not have usb_driver_unregister function, so remove this declaration.
+On Tue, Apr 16, 2013 at 11:32:01PM +0200, Vicente Bergas wrote:
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> Signed-off-by: Vicente Bergas <vicencb@gmail.com>
 
-Applied, thanks
+Folded into the original patch breaking it.
 
 Sascha
 
 > ---
->  include/usb/usb.h | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/arm/mach-omap/omap4_generic.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/include/usb/usb.h b/include/usb/usb.h
-> index afccf70..b270012 100644
-> --- a/include/usb/usb.h
-> +++ b/include/usb/usb.h
-> @@ -196,7 +196,6 @@ struct usb_driver {
->  extern struct bus_type usb_bus_type;
+> diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+> index b33ed60..3d6ec25 100644
+> --- a/arch/arm/mach-omap/omap4_generic.c
+> +++ b/arch/arm/mach-omap/omap4_generic.c
+> @@ -507,11 +507,11 @@ static int omap4_bootsource(void)
+>  	u32 bootsrc = readl(OMAP4_TRACING_VECTOR3);
 >  
->  int usb_driver_register(struct usb_driver *);
-> -int usb_driver_unregister(struct usb_driver *);
+>  	if (bootsrc & (1 << 5))
+> -		return BOOTSOURCE_MMC;
+> +		src = BOOTSOURCE_MMC;
+>  	if (bootsrc & (1 << 3))
+> -		return BOOTSOURCE_NAND;
+> +		src = BOOTSOURCE_NAND;
+>  	if (bootsrc & (1<<20))
+> -		return BOOTSOURCE_USB;
+> +		src = BOOTSOURCE_USB;
+>  	bootsource_set(src);
+>  	bootsource_set_instance(0);
 >  
->  struct usb_host {
->  	int (*init)(struct usb_host *);
 > -- 
-> 1.8.1.5
+> 1.8.2.1
 > 
 > 
 > _______________________________________________
