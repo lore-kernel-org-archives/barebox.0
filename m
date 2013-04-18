@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1USiGK-0004p6-Vl
- for barebox@lists.infradead.org; Thu, 18 Apr 2013 06:24:05 +0000
-Date: Thu, 18 Apr 2013 08:24:02 +0200
+ id 1USiHS-0004qQ-S2
+ for barebox@lists.infradead.org; Thu, 18 Apr 2013 06:25:15 +0000
+Date: Thu, 18 Apr 2013 08:25:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130418062402.GD1906@pengutronix.de>
-References: <1366204631-2792-1-git-send-email-jlu@pengutronix.de>
+Message-ID: <20130418062513.GE1906@pengutronix.de>
+References: <1366218769-30808-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366204631-2792-1-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1366218769-30808-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] am33xx-clock: configure PLLs based on oscillator frequency
+Subject: Re: [PATCH] am33xx: add defines for GPIOs
 To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 17, 2013 at 03:17:11PM +0200, Jan Luebbe wrote:
+On Wed, Apr 17, 2013 at 07:12:49PM +0200, Jan Luebbe wrote:
 > Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 
-This patch deserves a bit more description why it does what it does
-and also that it includes no functional change.
-
-> ---
->  arch/arm/mach-omap/include/mach/am33xx-clock.h | 15 +++++----------
->  1 file changed, 5 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-> index 39c107f..f496756 100644
-> --- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-> +++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-> @@ -31,12 +31,12 @@
->  #define MPUPLL_M_600	600	/* 125 * n */
->  #define MPUPLL_M_720	720	/* 125 * n */
->  
-> -#define MPUPLL_N	23	/* (n -1 ) */
-> +#define MPUPLL_N	(OSC-1)
-
-Add whitespaces left and right to operators please.
-
-
->  #define MPUPLL_M2	1
->  
->  /* Core PLL Fdll = 1 GHZ, */
->  #define COREPLL_M	1000	/* 125 * n */
-> -#define COREPLL_N	23	/* (n -1 ) */
-> +#define COREPLL_N	(OSC-1)
->  
->  #define COREPLL_M4	10	/* CORE_CLKOUTM4 = 200 MHZ */
->  #define COREPLL_M5	8	/* CORE_CLKOUTM5 = 250 MHZ */
-> @@ -48,19 +48,14 @@
->   * For clkout = 192 MHZ, Fdll = 960 MHZ, divider values are given below
->   */
->  #define PERPLL_M	960
-> -#define PERPLL_N	23
-> +#define PERPLL_N	(OSC-1)
->  #define PERPLL_M2	5
->  
-> -/* DDR Freq is 166 MHZ for now*/
-> +/* DDR Freq is 266 MHZ for now*/
->  /* Set Fdll = 400 MHZ , Fdll = M * 2 * CLKINP/ N + 1; clkout = Fdll /(2 * M2) */
->  //#if	(CONFIG_AM335X_EVM_IS_13x13 == 1)
-> -#if 0
-> -#define DDRPLL_M	166	/* M/N + 1 = 25/3 */
-> -#else
->  #define DDRPLL_M	266
-> -#endif
-
-Please make this a separate patch.
+Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/mach-omap/include/mach/am33xx-clock.h   |    2 ++
+>  arch/arm/mach-omap/include/mach/am33xx-silicon.h |    6 ++++++
+>  2 files changed, 8 insertions(+)
+> 
+> diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+> index 39c107f..cbee641 100644
+> --- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
+> +++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+> @@ -139,7 +139,9 @@
+>  #define CM_PER_CPGMAC0_CLKCTRL          (CM_PER + 0x14) /* Ethernet */
+>  #define CM_PER_CPSW_CLKSTCTRL           (CM_PER + 0x144)/* Ethernet */
+>  #define CM_PER_OCMCRAM_CLKCTRL          (CM_PER + 0x2C) /* OCMC RAM */
+> +#define CM_PER_GPIO1_CLKCTRL            (CM_PER + 0xAC) /* GPIO1 */
+>  #define CM_PER_GPIO2_CLKCTRL            (CM_PER + 0xB0) /* GPIO2 */
+> +#define CM_PER_GPIO3_CLKCTRL            (CM_PER + 0xB4) /* GPIO3 */
+>  #define CM_PER_UART3_CLKCTRL            (CM_PER + 0x74) /* UART3 */
+>  #define CM_PER_I2C1_CLKCTRL             (CM_PER + 0x48) /* I2C1 */
+>  #define CM_PER_I2C2_CLKCTRL             (CM_PER + 0x44) /* I2C2 */
+> diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
+> index e69d345..9edf4ca 100644
+> --- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
+> +++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
+> @@ -29,6 +29,12 @@
+>  #define AM33XX_UART1_BASE		(AM33XX_L4_PER_BASE + 0x22000)
+>  #define AM33XX_UART2_BASE		(AM33XX_L4_PER_BASE + 0x24000)
+>  
+> +/* GPIO */
+> +#define AM33XX_GPIO0_BASE		(AM33XX_L4_WKUP_BASE + 0x207000 + 0x100)
+> +#define AM33XX_GPIO1_BASE		(AM33XX_L4_PER_BASE + 0x4C000 + 0x100)
+> +#define AM33XX_GPIO2_BASE		(AM33XX_L4_PER_BASE + 0x1AC000 + 0x100)
+> +#define AM33XX_GPIO3_BASE		(AM33XX_L4_PER_BASE + 0x1AE000 + 0x100)
+> +
+>  /* EMFI Registers */
+>  #define AM33XX_EMFI0_BASE		0x4C000000
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
