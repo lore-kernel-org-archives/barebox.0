@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UStUP-0005cz-7z
- for barebox@lists.infradead.org; Thu, 18 Apr 2013 18:23:22 +0000
-Date: Thu, 18 Apr 2013 20:23:17 +0200
+ id 1UT3qj-0005TS-5S
+ for barebox@lists.infradead.org; Fri, 19 Apr 2013 05:27:07 +0000
+Date: Fri, 19 Apr 2013 07:27:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130418182317.GJ1906@pengutronix.de>
-References: <1366188021.710900767@f16.mail.ru>
- <1366283186.701174674@f366.mail.ru>
- <20130418115918.GG1906@pengutronix.de>
- <1366304572.52315039@f26.mail.ru>
+Message-ID: <20130419052701.GH20989@pengutronix.de>
+References: <1366204585-2626-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366304572.52315039@f26.mail.ru>
+In-Reply-To: <1366204585-2626-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,45 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Boot from SD fail after 2013.02
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] arm: omap: am33xx: store boot source info from ROM loader
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 18, 2013 at 09:02:52PM +0400, Alexander Shiyan wrote:
-> > On Thu, Apr 18, 2013 at 03:06:26PM +0400, Alexander Shiyan wrote:
-> > > 
-> > > So. OK, I temporary patch my board and it working now.
-> > > Please forget about correct memory size, it is not true.
-> > > Size is incorrect. Both banks are enabled and size detected as 512M.
-> > > I think this size is programmed by flash_header:
-> > >   { .ptr_type = 4, .addr = 0x83fd9000, .val = 0xb2a20000, },
-> > >   { .ptr_type = 4, .addr = 0x83fd9008, .val = 0xb2a20000, },
-> > > 
-> > > After program NAND and start from NAND, size is still wrong...
-> > > So, what we can do it this case for proper operation? Disable second bank?
-> > 
-> > When writing the autodetection code I assumed that all boards correctly
-> > setup the SDRAM controller. Appearently I was wrong.
-> > 
-> > I suggest disabling the second chip select since it's not used on your
-> > board. However, I begin doubting that it was the right decision to
-> > depend on ram size detection.
+On Wed, Apr 17, 2013 at 03:16:25PM +0200, Jan Luebbe wrote:
+> The ROM loader passes the address of a buffer to the MLO in
+> register 0. Store this data so we can find the boot source later.
 > 
-> Yes, disabling second bank is helps.
-> So, I repair my second board (same as first, but with real 512M of SDRAM).
-> Works, but of course memory is fixed at 256M. Tomorrow I will test current
-> 2013.04 on this board since probably problem appears only on 256M-version.
-> Currently I think about return fixed table of memory in the board file or get
-> memory size by testing memory. In both cases we need to disable ESDCTL
-> module and now I do not know how make it better rather than simple remove
-> this module from Makefile.
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+>  
+> +#ifdef CONFIG_ARCH_AM33XX
+> +#include <mach/am33xx-generic.h>
+> +#endif
+> +
+>  static void *read_image_head(const char *name)
+>  {
+>  	void *header = xmalloc(ARM_HEAD_SIZE);
+> @@ -163,7 +167,8 @@ static void *omap4_xload_boot_usb(void){
+>   */
+>  static __noreturn int omap_xload(void)
+>  {
+> -	int (*func)(void) = NULL;
+> +	int (*func)(void *) = NULL;
+> +	uint32_t arg = 0;
+>  
+>  	switch (bootsource_get())
+>  	{
+> @@ -198,8 +203,11 @@ static __noreturn int omap_xload(void)
+>  		while (1);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_ARCH_AM33XX))
+> +		arg = (uint32_t)&am33xx_bootinfo;
+> +
 
-I wonder if it's possible to detect whether there actually is memory on
-the seconf bank. I remember trying it (probably on some other i.MX), but
-all I got was a locked up system when I tried to access non present
-SDRAM.
+I had to drop this one, it breaks compilation on omap based boards:
 
-Sascha
+arch/arm/mach-omap/xload.c: In function 'omap_xload':
+arch/arm/mach-omap/xload.c:207:20: error: 'am33xx_bootinfo' undeclared (first use in this function)
+arch/arm/mach-omap/xload.c:207:20: note: each undeclared identifier is reported only once for each function it appears in
+arch/arm/mach-omap/xload.c:210:2: warning: passing argument 1 of 'func' makes pointer from integer without a cast [enabled by default]
+arch/arm/mach-omap/xload.c:210:2: note: expected 'void *' but argument is of type 'uint32_t'
+make[1]: *** [arch/arm/mach-omap/xload.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [arch/arm/mach-omap] Error 2
+make: *** Waiting for unfinished jobs....
+
 
 -- 
 Pengutronix e.K.                           |                             |
