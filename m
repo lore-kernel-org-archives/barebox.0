@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f51.google.com ([74.125.83.51])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UT6yC-0008Vs-Kz
- for barebox@lists.infradead.org; Fri, 19 Apr 2013 08:47:01 +0000
-Received: by mail-ee0-f51.google.com with SMTP id c4so1640957eek.10
- for <barebox@lists.infradead.org>; Fri, 19 Apr 2013 01:46:58 -0700 (PDT)
-From: Hubert Feurstein <h.feurstein@gmail.com>
-Date: Fri, 19 Apr 2013 10:46:05 +0200
-Message-Id: <1366361165-28803-2-git-send-email-h.feurstein@gmail.com>
-In-Reply-To: <1366361165-28803-1-git-send-email-h.feurstein@gmail.com>
-References: <1366361165-28803-1-git-send-email-h.feurstein@gmail.com>
+ id 1UTCQT-0007aw-2H
+ for barebox@lists.infradead.org; Fri, 19 Apr 2013 14:36:33 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri, 19 Apr 2013 16:36:29 +0200
+Message-Id: <1366382189-15575-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,41 +19,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] common/partition: check only for partition table types
+Subject: [PATCH v2] ARM i.MX28: make chip reset via reset pin work again
 To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The detection of the partition table fails when we have a barebox image
-in the MBR. So check only for partition table types.
+Since commit:
 
-Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+    2ccd451 ARM i.MX28: change default watchdog reset method
+
+the external reset via the reset pin is broken. That commit overwrites the
+HW_CLKCTRL_RESET register with only WDOG_POR_DISABLE set, which results in
+disabling the external reset.
+
+This patch uses read-modify-write to set the WDOG_POR_DISABLE, leaving the
+WDOG_POR_DISABLE untouched.
+
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- common/partitions.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+changes since v1:
+* use r-m-w to change HW_CLKCTRL_RESET register (thanks jbe)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index dd25160..683b258 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -89,7 +89,7 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
- 	struct partition_parser *parser;
+ arch/arm/mach-mxs/soc-imx28.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+index 8972a3d..ed931af 100644
+--- a/arch/arm/mach-mxs/soc-imx28.c
++++ b/arch/arm/mach-mxs/soc-imx28.c
+@@ -39,12 +39,16 @@ EXPORT_SYMBOL(reset_cpu);
  
- 	/* first new partition table as EFI GPT */
--	type = file_detect_type(buf, SECTOR_SIZE * 2);
-+	type = file_detect_partition_table(buf, SECTOR_SIZE * 2);
- 
- 	list_for_each_entry(parser, &partition_parser_list, list) {
- 		if (parser->type == type)
-@@ -100,7 +100,7 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
- 	 * so if EFI GPT not enable take it as MBR
- 	 * useful for compatibility
+ static int imx28_init(void)
+ {
++	u32 reg;
++
+ 	/*
+ 	 * The default setting for the WDT is to do a POR. If the SoC is only
+ 	 * powered via battery, then a WDT reset powers the chip down instead
+ 	 * of resetting it. Use a software reset only.
  	 */
--	type = file_detect_type(buf, SECTOR_SIZE);
-+	type = file_detect_partition_table(buf, SECTOR_SIZE);
+-	writel(HW_CLKCTRL_WDOG_POR_DISABLE, IMX_CCM_BASE + HW_CLKCTRL_RESET);
++	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_RESET) |
++		HW_CLKCTRL_WDOG_POR_DISABLE;
++	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_RESET);
  
- 	list_for_each_entry(parser, &partition_parser_list, list) {
- 		if (parser->type == type)
+ 	return 0;
+ }
 -- 
-1.8.1.3
+1.8.2.rc2
 
 
 _______________________________________________
