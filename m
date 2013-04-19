@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UT3qj-0005TS-5S
- for barebox@lists.infradead.org; Fri, 19 Apr 2013 05:27:07 +0000
-Date: Fri, 19 Apr 2013 07:27:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130419052701.GH20989@pengutronix.de>
-References: <1366204585-2626-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1366204585-2626-1-git-send-email-jlu@pengutronix.de>
+ id 1UT5lv-0007Ck-E7
+ for barebox@lists.infradead.org; Fri, 19 Apr 2013 07:30:16 +0000
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Fri, 19 Apr 2013 09:30:10 +0200
+Message-Id: <1366356610-16536-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +14,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: omap: am33xx: store boot source info from ROM loader
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM i.MX28: make chip reset via reset pin work again
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On Wed, Apr 17, 2013 at 03:16:25PM +0200, Jan Luebbe wrote:
-> The ROM loader passes the address of a buffer to the MLO in
-> register 0. Store this data so we can find the boot source later.
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
->  
-> +#ifdef CONFIG_ARCH_AM33XX
-> +#include <mach/am33xx-generic.h>
-> +#endif
-> +
->  static void *read_image_head(const char *name)
->  {
->  	void *header = xmalloc(ARM_HEAD_SIZE);
-> @@ -163,7 +167,8 @@ static void *omap4_xload_boot_usb(void){
->   */
->  static __noreturn int omap_xload(void)
->  {
-> -	int (*func)(void) = NULL;
-> +	int (*func)(void *) = NULL;
-> +	uint32_t arg = 0;
->  
->  	switch (bootsource_get())
->  	{
-> @@ -198,8 +203,11 @@ static __noreturn int omap_xload(void)
->  		while (1);
->  	}
->  
-> +	if (IS_ENABLED(CONFIG_ARCH_AM33XX))
-> +		arg = (uint32_t)&am33xx_bootinfo;
-> +
+Since commit:
 
-I had to drop this one, it breaks compilation on omap based boards:
+    2ccd451 ARM i.MX28: change default watchdog reset method
 
-arch/arm/mach-omap/xload.c: In function 'omap_xload':
-arch/arm/mach-omap/xload.c:207:20: error: 'am33xx_bootinfo' undeclared (first use in this function)
-arch/arm/mach-omap/xload.c:207:20: note: each undeclared identifier is reported only once for each function it appears in
-arch/arm/mach-omap/xload.c:210:2: warning: passing argument 1 of 'func' makes pointer from integer without a cast [enabled by default]
-arch/arm/mach-omap/xload.c:210:2: note: expected 'void *' but argument is of type 'uint32_t'
-make[1]: *** [arch/arm/mach-omap/xload.o] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [arch/arm/mach-omap] Error 2
-make: *** Waiting for unfinished jobs....
+the external reset via the reset pin is broken. That commit overwrites the
+HW_CLKCTRL_RESET register with only WDOG_POR_DISABLE set, which results in
+disabling the external reset.
 
+This patch sets the EXTERNAL_RESET_ENABLE bit, too. While there clean up the
+name of the WDOG_POR_DISABLE define.
 
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ arch/arm/mach-mxs/soc-imx28.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/mach-mxs/soc-imx28.c b/arch/arm/mach-mxs/soc-imx28.c
+index 8972a3d..bcf4bcc 100644
+--- a/arch/arm/mach-mxs/soc-imx28.c
++++ b/arch/arm/mach-mxs/soc-imx28.c
+@@ -20,8 +20,9 @@
+ #include <io.h>
+ 
+ #define HW_CLKCTRL_RESET 0x1e0
+-# define HW_CLKCTRL_RESET_CHIP (1 << 1)
+-#define HW_CLKCTRL_WDOG_POR_DISABLE (1 << 5)
++#define HW_CLKCTRL_RESET_CHIP (1 << 1)
++#define HW_CLKCTRL_RESET_EXTERNAL_RESET_ENABLE (1 << 4)
++#define HW_CLKCTRL_RESET_WDOG_POR_DISABLE (1 << 5)
+ 
+ /* Reset the full i.MX28 SoC via a chipset feature */
+ void __noreturn reset_cpu(unsigned long addr)
+@@ -44,7 +45,9 @@ static int imx28_init(void)
+ 	 * powered via battery, then a WDT reset powers the chip down instead
+ 	 * of resetting it. Use a software reset only.
+ 	 */
+-	writel(HW_CLKCTRL_WDOG_POR_DISABLE, IMX_CCM_BASE + HW_CLKCTRL_RESET);
++	writel(HW_CLKCTRL_RESET_WDOG_POR_DISABLE |
++	       HW_CLKCTRL_RESET_EXTERNAL_RESET_ENABLE,
++	       IMX_CCM_BASE + HW_CLKCTRL_RESET);
+ 
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
