@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp37.i.mail.ru ([94.100.177.97])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UTPGi-0001yr-7M
- for barebox@lists.infradead.org; Sat, 20 Apr 2013 04:19:24 +0000
+ id 1UTPGg-0001yU-UY
+ for barebox@lists.infradead.org; Sat, 20 Apr 2013 04:19:23 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 20 Apr 2013 08:18:52 +0400
-Message-Id: <1366431532-29121-6-git-send-email-shc_work@mail.ru>
+Date: Sat, 20 Apr 2013 08:18:51 +0400
+Message-Id: <1366431532-29121-5-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
 References: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,119 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] Introduce coredevice_platform_driver() macro and use it
- for GPIO drivers
+Subject: [PATCH 4/5] GPIO: i.MX: Cleanup driver code
 To: barebox@lists.infradead.org
 
+This patch provides only cleanup for i.MX GPIO driver.
+Indentation, reduced licence text etc.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/gpio/gpio-bcm2835.c  | 7 +------
- drivers/gpio/gpio-clps711x.c | 7 +------
- drivers/gpio/gpio-generic.c  | 8 +-------
- drivers/gpio/gpio-imx.c      | 7 +------
- drivers/gpio/gpio-stmpe.c    | 7 +------
- include/driver.h             | 6 ++++--
- 6 files changed, 9 insertions(+), 33 deletions(-)
+ drivers/gpio/gpio-imx.c | 34 ++++++++++++----------------------
+ 1 file changed, 12 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/gpio/gpio-bcm2835.c b/drivers/gpio/gpio-bcm2835.c
-index cec15c9..9df8a1a 100644
---- a/drivers/gpio/gpio-bcm2835.c
-+++ b/drivers/gpio/gpio-bcm2835.c
-@@ -150,9 +150,4 @@ static struct driver_d bcm2835_gpio_driver = {
- 	.probe = bcm2835_gpio_probe,
- 	.of_compatible = DRV_OF_COMPAT(bcm2835_gpio_dt_ids),
- };
--
--static int bcm2835_gpio_add(void)
--{
--	return platform_driver_register(&bcm2835_gpio_driver);
--}
--coredevice_initcall(bcm2835_gpio_add);
-+coredevice_platform_driver(bcm2835_gpio_driver);
-diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
-index feead51..778a8d1 100644
---- a/drivers/gpio/gpio-clps711x.c
-+++ b/drivers/gpio/gpio-clps711x.c
-@@ -62,9 +62,4 @@ static struct driver_d clps711x_gpio_driver = {
- 	.name	= "clps711x-gpio",
- 	.probe	= clps711x_gpio_probe,
- };
--
--static __init int clps711x_gpio_register(void)
--{
--	return platform_driver_register(&clps711x_gpio_driver);
--}
--coredevice_initcall(clps711x_gpio_register);
-+coredevice_platform_driver(clps711x_gpio_driver);
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index a2fc400..0f49712 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -414,13 +414,7 @@ static struct driver_d bgpio_driver = {
- 	.probe		= bgpio_dev_probe,
- 	.remove		= bgpio_dev_remove,
- };
--
--static int bgpio_register(void)
--{
--	return platform_driver_register(&bgpio_driver);
--}
--coredevice_initcall(bgpio_register);
--
-+coredevice_platform_driver(bgpio_driver);
- #endif
- 
- MODULE_DESCRIPTION("Driver for basic memory-mapped GPIO controllers");
 diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
-index f56346b..17261e4 100644
+index 9dcabfc..f56346b 100644
 --- a/drivers/gpio/gpio-imx.c
 +++ b/drivers/gpio/gpio-imx.c
-@@ -124,9 +124,4 @@ static struct driver_d imx_gpio_driver = {
- 	.of_compatible	= DRV_OF_COMPAT(imx_gpio_dt_ids),
- 	.id_table	= imx_gpio_ids,
+@@ -1,23 +1,14 @@
+ /*
+- *  arch/arm/mach-imx/gpio.c
++ *  GPIO driver for i.MX machines
+  *
+  *  author: Sascha Hauer
+  *  Created: april 20th, 2004
+  *  Copyright: Synertronixx GmbH
+  *
+- *  Common code for i.MX machines
+- *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 2 of the License, or
+  * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- *
+  */
+ 
+ #include <init.h>
+@@ -33,15 +24,15 @@ struct imx_gpio_regs {
  };
--
--static int imx_gpio_add(void)
--{
--	return platform_driver_register(&imx_gpio_driver);
--}
--coredevice_initcall(imx_gpio_add);
-+coredevice_platform_driver(imx_gpio_driver);
-diff --git a/drivers/gpio/gpio-stmpe.c b/drivers/gpio/gpio-stmpe.c
-index d7e6404..d0319a6 100644
---- a/drivers/gpio/gpio-stmpe.c
-+++ b/drivers/gpio/gpio-stmpe.c
-@@ -153,9 +153,4 @@ static struct driver_d stmpe_gpio_driver = {
- 	.name = "stmpe-gpio",
- 	.probe = stmpe_gpio_probe,
+ 
+ static struct imx_gpio_regs regs_imx1 = {
+-	.dr = 0x1c,
+-	.gdir = 0x00,
+-	.psr = 0x24,
++	.dr	= 0x1c,
++	.gdir	= 0x00,
++	.psr	= 0x24,
  };
--
--static int stmpe_gpio_add(void)
--{
--	return platform_driver_register(&stmpe_gpio_driver);
--}
--coredevice_initcall(stmpe_gpio_add);
-+coredevice_platform_driver(stmpe_gpio_driver);
-diff --git a/include/driver.h b/include/driver.h
-index 716f792..5e8561f 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -406,10 +406,12 @@ int platform_driver_register(struct driver_d *drv);
- 	}						\
- 	level##_initcall(drv##_register)
  
--#define device_platform_driver(drv)	\
--	register_driver_macro(device,platform,drv)
- #define console_platform_driver(drv)	\
- 	register_driver_macro(console,platform,drv)
-+#define coredevice_platform_driver(drv)	\
-+	register_driver_macro(coredevice,platform,drv)
-+#define device_platform_driver(drv)	\
-+	register_driver_macro(device,platform,drv)
+ static struct imx_gpio_regs regs_imx31 = {
+-	.dr = 0x00,
+-	.gdir = 0x04,
+-	.psr = 0x08,
++	.dr	= 0x00,
++	.gdir	= 0x04,
++	.psr	= 0x08,
+ };
  
- int platform_device_register(struct device_d *new_device);
+ static int imx_gpio_probe(struct device_d *dev)
+@@ -128,15 +119,14 @@ static struct platform_device_id imx_gpio_ids[] = {
+ };
  
+ static struct driver_d imx_gpio_driver = {
+-	.name = "imx-gpio",
+-	.probe = imx_gpio_probe,
+-	.of_compatible = DRV_OF_COMPAT(imx_gpio_dt_ids),
+-	.id_table = imx_gpio_ids,
++	.name		= "imx-gpio",
++	.probe		= imx_gpio_probe,
++	.of_compatible	= DRV_OF_COMPAT(imx_gpio_dt_ids),
++	.id_table	= imx_gpio_ids,
+ };
+ 
+ static int imx_gpio_add(void)
+ {
+-	platform_driver_register(&imx_gpio_driver);
+-	return 0;
++	return platform_driver_register(&imx_gpio_driver);
+ }
+ coredevice_initcall(imx_gpio_add);
 -- 
 1.8.1.5
 
