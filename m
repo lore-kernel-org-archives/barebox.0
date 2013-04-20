@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp37.i.mail.ru ([94.100.177.97])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UTPGg-0001yS-NP
- for barebox@lists.infradead.org; Sat, 20 Apr 2013 04:19:22 +0000
+ id 1UTPGg-0001yT-NO
+ for barebox@lists.infradead.org; Sat, 20 Apr 2013 04:19:24 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 20 Apr 2013 08:18:49 +0400
-Message-Id: <1366431532-29121-3-git-send-email-shc_work@mail.ru>
+Date: Sat, 20 Apr 2013 08:18:50 +0400
+Message-Id: <1366431532-29121-4-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
 References: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,58 +21,198 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM: i.MX: Move GPIO driver to drivers/gpio
+Subject: [PATCH 3/5] GPIO: i.MX: Rewrite driver for using generic GPIO code
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-imx/Makefile                          | 2 +-
- drivers/gpio/Kconfig                                | 3 +++
- drivers/gpio/Makefile                               | 1 +
- arch/arm/mach-imx/gpio.c => drivers/gpio/gpio-imx.c | 0
- 4 files changed, 5 insertions(+), 1 deletion(-)
- rename arch/arm/mach-imx/gpio.c => drivers/gpio/gpio-imx.c (100%)
+ arch/arm/Kconfig        |   1 -
+ drivers/gpio/Kconfig    |   1 +
+ drivers/gpio/gpio-imx.c | 125 ++++++++++++------------------------------------
+ 3 files changed, 31 insertions(+), 96 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index ff8f15b..b703ed1 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -1,4 +1,4 @@
--obj-y += clocksource.o gpio.o
-+obj-y += clocksource.o
- obj-$(CONFIG_ARCH_IMX1)  += imx1.o  iomux-v1.o clk-imx1.o
- obj-$(CONFIG_ARCH_IMX25) += imx25.o iomux-v3.o clk-imx25.o
- obj-$(CONFIG_ARCH_IMX21) += imx21.o iomux-v1.o clk-imx21.o
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index bb9b47b..5607754 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -72,7 +72,6 @@ config ARCH_HIGHBANK
+ 
+ config ARCH_IMX
+ 	bool "Freescale iMX-based"
+-	select GENERIC_GPIO
+ 	select GPIOLIB
+ 	select COMMON_CLK
+ 	select CLKDEV_LOOKUP
 diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index ea07028..74a4baa 100644
+index 74a4baa..5ccd35b 100644
 --- a/drivers/gpio/Kconfig
 +++ b/drivers/gpio/Kconfig
-@@ -27,6 +27,9 @@ config GPIO_GENERIC_PLATFORM
- 	  Say yes here to support basic platform memory-mapped
- 	  GPIO controllers
+@@ -29,6 +29,7 @@ config GPIO_GENERIC_PLATFORM
  
-+config GPIO_IMX
-+	def_bool ARCH_IMX
-+
+ config GPIO_IMX
+ 	def_bool ARCH_IMX
++	select GPIO_GENERIC
+ 
  config GPIO_PL061
  	bool "PrimeCell PL061 GPIO support"
- 	depends on ARM_AMBA
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index 6a94430..205d553 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -3,5 +3,6 @@ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
- obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
-+obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
-diff --git a/arch/arm/mach-imx/gpio.c b/drivers/gpio/gpio-imx.c
-similarity index 100%
-rename from arch/arm/mach-imx/gpio.c
-rename to drivers/gpio/gpio-imx.c
+diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+index 1bf4100..9dcabfc 100644
+--- a/drivers/gpio/gpio-imx.c
++++ b/drivers/gpio/gpio-imx.c
+@@ -20,17 +20,11 @@
+  *
+  */
+ 
+-#include <common.h>
+-#include <errno.h>
+-#include <io.h>
+-#include <gpio.h>
+ #include <init.h>
++#include <common.h>
++#include <malloc.h>
+ 
+-struct imx_gpio_chip {
+-	void __iomem *base;
+-	struct gpio_chip chip;
+-	struct imx_gpio_regs *regs;
+-};
++#include <linux/basic_mmio_gpio.h>
+ 
+ struct imx_gpio_regs {
+ 	unsigned int dr;
+@@ -50,104 +44,45 @@ static struct imx_gpio_regs regs_imx31 = {
+ 	.psr = 0x08,
+ };
+ 
+-static void imx_gpio_set_value(struct gpio_chip *chip, unsigned gpio, int value)
+-{
+-	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+-	void __iomem *base = imxgpio->base;
+-	u32 val;
+-
+-	if (!base)
+-		return;
+-
+-	val = readl(base + imxgpio->regs->dr);
+-
+-	if (value)
+-		val |= 1 << gpio;
+-	else
+-		val &= ~(1 << gpio);
+-
+-	writel(val, base + imxgpio->regs->dr);
+-}
+-
+-static int imx_gpio_direction_input(struct gpio_chip *chip, unsigned gpio)
+-{
+-	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+-	void __iomem *base = imxgpio->base;
+-	u32 val;
+-
+-	if (!base)
+-		return -EINVAL;
+-
+-	val = readl(base + imxgpio->regs->gdir);
+-	val &= ~(1 << gpio);
+-	writel(val, base + imxgpio->regs->gdir);
+-
+-	return 0;
+-}
+-
+-
+-static int imx_gpio_direction_output(struct gpio_chip *chip, unsigned gpio, int value)
+-{
+-	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+-	void __iomem *base = imxgpio->base;
+-	u32 val;
+-
+-	gpio_set_value(gpio + chip->base, value);
+-
+-	val = readl(base + imxgpio->regs->gdir);
+-	val |= 1 << gpio;
+-	writel(val, base + imxgpio->regs->gdir);
+-
+-	return 0;
+-}
+-
+-static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+-{
+-	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+-	void __iomem *base = imxgpio->base;
+-	u32 val;
+-
+-	val = readl(base + imxgpio->regs->psr);
+-
+-	return val & (1 << gpio) ? 1 : 0;
+-}
+-
+-static struct gpio_ops imx_gpio_ops = {
+-	.direction_input = imx_gpio_direction_input,
+-	.direction_output = imx_gpio_direction_output,
+-	.get = imx_gpio_get_value,
+-	.set = imx_gpio_set_value,
+-};
+-
+ static int imx_gpio_probe(struct device_d *dev)
+ {
+-	struct imx_gpio_chip *imxgpio;
+ 	struct imx_gpio_regs *regs;
++	struct bgpio_chip *bgc;
++	void __iomem *base;
+ 	int ret;
+ 
+ 	ret = dev_get_drvdata(dev, (unsigned long *)&regs);
+ 	if (ret)
+ 		return ret;
+ 
+-	imxgpio = xzalloc(sizeof(*imxgpio));
+-	imxgpio->base = dev_request_mem_region(dev, 0);
+-	imxgpio->chip.ops = &imx_gpio_ops;
+-	if (dev->id < 0) {
+-		imxgpio->chip.base = of_alias_get_id(dev->device_node, "gpio");
+-		if (imxgpio->chip.base < 0)
+-			return imxgpio->chip.base;
+-		imxgpio->chip.base *= 32;
+-	} else {
+-		imxgpio->chip.base = dev->id * 32;
++	bgc = xzalloc(sizeof(*bgc));
++	if (!bgc)
++		return -ENOMEM;
++
++	base = dev_request_mem_region(dev, 0);
++	if (!base) {
++		free(bgc);
++		return -EINVAL;
+ 	}
+-	imxgpio->chip.ngpio = 32;
+-	imxgpio->chip.dev = dev;
+-	imxgpio->regs = regs;
+-	gpiochip_add(&imxgpio->chip);
+ 
+-	dev_dbg(dev, "probed gpiochip%d with base %d\n", dev->id, imxgpio->chip.base);
++	ret = bgpio_init(bgc, dev, 4, base + regs->psr, base + regs->dr, NULL,
++			 base + regs->gdir, NULL, 0);
++	if (ret) {
++		free(bgc);
++		return ret;
++	}
+ 
+-	return 0;
++	if (dev->id < 0) {
++		bgc->gc.base = of_alias_get_id(dev->device_node, "gpio");
++		if (bgc->gc.base < 0) {
++			free(bgc);
++			return bgc->gc.base;
++		}
++		bgc->gc.base *= 32;
++	} else
++		bgc->gc.base = dev->id * 32;
++
++	return gpiochip_add(&bgc->gc);
+ }
+ 
+ static __maybe_unused struct of_device_id imx_gpio_dt_ids[] = {
 -- 
 1.8.1.5
 
