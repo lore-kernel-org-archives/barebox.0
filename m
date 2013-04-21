@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UTbH8-0008RS-Ke
- for barebox@lists.infradead.org; Sat, 20 Apr 2013 17:08:35 +0000
-Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 4DEB5104E149
- for <barebox@lists.infradead.org>; Sat, 20 Apr 2013 19:08:33 +0200 (CEST)
-Date: Sat, 20 Apr 2013 19:04:02 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130420170402.GA13393@game.jcrosoft.org>
-References: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
- <1366431532-29121-5-git-send-email-shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UTsM6-0003Rs-55
+ for barebox@lists.infradead.org; Sun, 21 Apr 2013 11:22:52 +0000
+Date: Sun, 21 Apr 2013 13:22:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130421112246.GF32299@pengutronix.de>
+References: <1366361035-28653-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366431532-29121-5-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1366361035-28653-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,100 +22,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] GPIO: i.MX: Cleanup driver code
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] commands/digest: add verify support
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 08:18 Sat 20 Apr     , Alexander Shiyan wrote:
-> This patch provides only cleanup for i.MX GPIO driver.
-> Indentation, reduced licence text etc.
-no please drop it this is just noise on the history when doing blame
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Fri, Apr 19, 2013 at 10:43:55AM +0200, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 > ---
->  drivers/gpio/gpio-imx.c | 34 ++++++++++++----------------------
->  1 file changed, 12 insertions(+), 22 deletions(-)
+>  commands/digest.c | 94 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 83 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
-> index 9dcabfc..f56346b 100644
-> --- a/drivers/gpio/gpio-imx.c
-> +++ b/drivers/gpio/gpio-imx.c
-> @@ -1,23 +1,14 @@
->  /*
-> - *  arch/arm/mach-imx/gpio.c
-> + *  GPIO driver for i.MX machines
->   *
->   *  author: Sascha Hauer
->   *  Created: april 20th, 2004
->   *  Copyright: Synertronixx GmbH
->   *
-> - *  Common code for i.MX machines
-> - *
->   * This program is free software; you can redistribute it and/or modify
->   * it under the terms of the GNU General Public License as published by
->   * the Free Software Foundation; either version 2 of the License, or
->   * (at your option) any later version.
-> - *
-> - * This program is distributed in the hope that it will be useful,
-> - * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> - * GNU General Public License for more details.
-> - *
-> - *
->   */
+> diff --git a/commands/digest.c b/commands/digest.c
+> index c9bb132..56173a5 100644
+> --- a/commands/digest.c
+> +++ b/commands/digest.c
+> @@ -25,24 +25,76 @@
+>  #include <xfuncs.h>
+>  #include <malloc.h>
+>  #include <digest.h>
+> +#include <linux/ctype.h>
+> +#include <getopt.h>
+> +
+> +static inline unsigned char parse_hexchar(char c)
+> +{
+> +	if (!isxdigit(c))
+> +		return 0;
+> +
+> +	return isdigit(c) ? (c - '0') : ((islower(c) ? toupper(c) : c) - 'A' + 0xA);
+> +}
+> +
+> +static inline unsigned char parse_hexbyte(const char *p)
+> +{
+> +	return (parse_hexchar(*p) << 4) | parse_hexchar(*(p + 1));
+> +}
 >  
->  #include <init.h>
-> @@ -33,15 +24,15 @@ struct imx_gpio_regs {
->  };
->  
->  static struct imx_gpio_regs regs_imx1 = {
-> -	.dr = 0x1c,
-> -	.gdir = 0x00,
-> -	.psr = 0x24,
-> +	.dr	= 0x1c,
-> +	.gdir	= 0x00,
-> +	.psr	= 0x24,
->  };
->  
->  static struct imx_gpio_regs regs_imx31 = {
-> -	.dr = 0x00,
-> -	.gdir = 0x04,
-> -	.psr = 0x08,
-> +	.dr	= 0x00,
-> +	.gdir	= 0x04,
-> +	.psr	= 0x08,
->  };
->  
->  static int imx_gpio_probe(struct device_d *dev)
-> @@ -128,15 +119,14 @@ static struct platform_device_id imx_gpio_ids[] = {
->  };
->  
->  static struct driver_d imx_gpio_driver = {
-> -	.name = "imx-gpio",
-> -	.probe = imx_gpio_probe,
-> -	.of_compatible = DRV_OF_COMPAT(imx_gpio_dt_ids),
-> -	.id_table = imx_gpio_ids,
-> +	.name		= "imx-gpio",
-> +	.probe		= imx_gpio_probe,
-> +	.of_compatible	= DRV_OF_COMPAT(imx_gpio_dt_ids),
-> +	.id_table	= imx_gpio_ids,
->  };
->  
->  static int imx_gpio_add(void)
+>  static int do_digest(char *algorithm, int argc, char *argv[])
 >  {
-> -	platform_driver_register(&imx_gpio_driver);
-> -	return 0;
-> +	return platform_driver_register(&imx_gpio_driver);
->  }
->  coredevice_initcall(imx_gpio_add);
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+>  	struct digest *d;
+>  	int ret = 0;
+>  	int i;
+> -	unsigned char *hash;
+> +	unsigned char *hash = 0;
+> +	int opt;
+> +	unsigned char *verify_hash = 0;
+
+NULL for pointers please.
+
+> +	int verify = 0;
+> +	int min_argc = 2;
+>  
+>  	d = digest_get_by_name(algorithm);
+>  	BUG_ON(!d);
+>  
+> -	if (argc < 2)
+> -		return COMMAND_ERROR_USAGE;
+> +	while ((opt = getopt(argc, argv, "v:")) > 0) {
+> +		switch (opt) {
+> +		case 'v':
+> +			verify = 1;
+> +			min_argc += 2;
+> +
+> +			if (d->length != (strlen(optarg) / 2)) {
+> +				ret = COMMAND_ERROR_USAGE;
+> +				goto out;
+> +			}
+
+Maybe give the user a hint here? It's not really obvious to the user
+what's wrong here.
+
+> +
+> +			verify_hash = calloc(d->length, sizeof(unsigned char));
+> +			if (!verify_hash) {
+> +				perror("calloc");
+> +				ret = -ENOMEM;
+> +				goto out;
+> +			}
+> +
+> +			for (i = 0; i < d->length; i++)
+> +				verify_hash[i] = parse_hexbyte(&optarg[i * 2]);
+> +
+> +			break;
+
+You should only save optarg for later use in the loop. Otherwise when
+somebody gives -v multiple times you allocate memory each time which you
+don't free later.
+
+> +		default:
+> +			ret = COMMAND_ERROR_USAGE;
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	if (argc < min_argc) {
+> +		ret = COMMAND_ERROR_USAGE;
+> +		goto out;
+> +	}
+> +
+> +	argv += min_argc - 2;
+>  
+>  	hash = calloc(d->length, sizeof(unsigned char));
+>  	if (!hash) {
+>  		perror("calloc");
+> -		return COMMAND_ERROR_USAGE;
+> +		ret = -ENOMEM;
+> +		goto out;
+>  	}
+>  
+>  	argv++;
+> @@ -60,17 +112,33 @@ static int do_digest(char *algorithm, int argc, char *argv[])
+>  		if (digest_file_window(d, filename, hash, start, size) < 0) {
+>  			ret = 1;
+>  		} else {
+> -			for (i = 0; i < d->length; i++)
+> +			for (i = 0; i < d->length; i++) {
+>  				printf("%02x", hash[i]);
+> +				if (verify > 0 && hash[i] != verify_hash[i])
+> +					verify = -1;
+> +			}
+>  
+> -			printf("  %s\t0x%08llx ... 0x%08llx\n",
+> +			printf("  %s\t0x%08llx ... 0x%08llx",
+>  				filename, start, start + size);
+> +
+> +			if (verify < 0) {
+> +				printf(" ** ERROR **");
+> +				ret = 1;
+> +				verify = 1;
+> +			}
+> +
+> +			printf("\n");
+>  		}
+
+The digest commands can work on multiple files. When verifying you
+verify multiple files against a single hash. Is this really useful
+behaviour? I'd suggest to allow only a single file in verify mode.
+
+>  
+>  		argv++;
+>  	}
+>  
+> -	free(hash);
+> +out:
+> +	if (hash)
+> +		free(hash);
+> +
+> +	if (verify_hash)
+> +		free(verify_hash);
+
+No need to check. free() works fine on NULL pointers.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
