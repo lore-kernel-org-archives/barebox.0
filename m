@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUJwz-0005d6-PH
- for barebox@lists.infradead.org; Mon, 22 Apr 2013 16:50:46 +0000
-Date: Mon, 22 Apr 2013 18:50:43 +0200
+ id 1UUK4b-0005qH-MH
+ for barebox@lists.infradead.org; Mon, 22 Apr 2013 16:58:38 +0000
+Date: Mon, 22 Apr 2013 18:58:35 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130422165043.GK32299@pengutronix.de>
-References: <1366621553-8947-1-git-send-email-linux@rempel-privat.de>
+Message-ID: <20130422165835.GL32299@pengutronix.de>
+References: <1366431532-29121-1-git-send-email-shc_work@mail.ru>
+ <1366431532-29121-5-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366621553-8947-1-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1366431532-29121-5-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +23,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3][WiP] add atheros MIPS based ar2313 WiSoC chips
-To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <bug-track@fisher-privat.net>
+Subject: Re: [PATCH 4/5] GPIO: i.MX: Cleanup driver code
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Only some comments for now, I think you are still working on this
-anyway, right?
+On Sat, Apr 20, 2013 at 08:18:51AM +0400, Alexander Shiyan wrote:
+> This patch provides only cleanup for i.MX GPIO driver.
+> Indentation, reduced licence text etc.
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  drivers/gpio/gpio-imx.c | 34 ++++++++++++----------------------
+>  1 file changed, 12 insertions(+), 22 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+> index 9dcabfc..f56346b 100644
+> --- a/drivers/gpio/gpio-imx.c
+> +++ b/drivers/gpio/gpio-imx.c
+> @@ -1,23 +1,14 @@
+>  /*
+> - *  arch/arm/mach-imx/gpio.c
+> + *  GPIO driver for i.MX machines
 
-On Mon, Apr 22, 2013 at 11:05:53AM +0200, Oleksij Rempel wrote:
- +
-> +static void
-> +ar231x_print_mac(unsigned char *mac)
-> +{
-> +	int i;
-> +	for (i = 0; i < 5; i++) {
-> +		printf("%02x:", mac[i]);
-> +	}
-> +	printf("%02x\n", mac[5]);
-> +}
+This hunk is good.
 
-We have a ethaddr_to_string function which could be of use here.
+>   *
+>   *  author: Sascha Hauer
+>   *  Created: april 20th, 2004
+>   *  Copyright: Synertronixx GmbH
+>   *
+> - *  Common code for i.MX machines
+> - *
 
-> +ar231x_find_config(u8 *flash_limit)
-> +{
-> +	struct ar231x_board_config *config;
-> +	u8 *bcfg, bsize;
-> +	u8 brocken;
-> +
-> +	bcfg = ar231x_find_board_config(flash_limit);
-> +
-> +	bsize = sizeof(struct ar231x_board_config);
-> +	config = xzalloc(bsize);
-> +	ar231x_board.config = config;
-> +
-> +	if (bcfg) {
-> +		u16 cksum;
-> +		/* Copy the board and radio data to RAM, because accessing the mapped
-> +		 * memory of the flash directly after booting is not safe */
-> +		memcpy(config, bcfg, bsize);
-> +		cksum= 0xca + ar231x_cksum16((unsigned char *)config + HDR_SIZE,
-> +				sizeof(struct ar231x_board_config) - HDR_SIZE);
-> +		if (cksum != config->cksum) {
-> +			pr_err("config: checksum is invalid: %04x != %04x\n",
-> +					cksum, config->cksum);
-> +			brocken = 1;
+Ok aswell.
 
-This variable is unused.
+>  static int imx_gpio_add(void)
+>  {
+> -	platform_driver_register(&imx_gpio_driver);
+> -	return 0;
+> +	return platform_driver_register(&imx_gpio_driver);
 
- +
-> +/*
-> + * Platform device information for the Ethernet MAC
-> + */
-> +struct ar231x_eth_platform_data {
-> +	u32 base_eth;
-> +	u32 base_reset;
-> +	u32 reset_mac;
-> +	u32 reset_phy;
-> +	u32 base_phy;
-> +
-> +	u8 *mac;
-> +};
+Also fine. Drop the remaining hunks please.
 
-This should be part of the patch adding the ethernet driver.
-
-> +
-> +.globl lowlevel_init
-> +lowlevel_init:
-> +	li	t5, MEM_CFG0_X	# try x16
-> +	li	t6, 0x23000	# use 8-word burst
-> +
-> +        /* Configure for a x16 SDRAM with 8-word burst */
-> +        li      t5, MEM_CFG0_X           # try x16
-> +        li      t6, 0x23000              # use 8-word burst
-
-This could use a coding style cleanup, remove trailing whitespaces, use
-tabs consistently, remove C++ comments.
-
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
