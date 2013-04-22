@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUB9y-0008F2-FG
+ id 1UUB9y-0008F0-DR
  for barebox@lists.infradead.org; Mon, 22 Apr 2013 07:27:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Apr 2013 09:27:22 +0200
-Message-Id: <1366615643-22213-6-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Apr 2013 09:27:18 +0200
+Message-Id: <1366615643-22213-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1366615643-22213-1-git-send-email-s.hauer@pengutronix.de>
 References: <1366615643-22213-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] of: partitions: pass struct cdev as argument
+Subject: [PATCH 1/6] of: parse phandles before probing devices
 To: barebox@lists.infradead.org
 
-pass a struct cdev instead of the cdev name to of_parse_partitions.
-This is available to the caller anyway and makes it easier to use
-additional stuff from the cdev (like knowing whether it's a mtd
-device).
+The phandles have to be parsed completely before registering the devices
+from the devicetree. Otherwise drivers can't rely on of_find_node_by_phandle
+in their probe.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/partition.c | 9 ++++-----
- include/of.h           | 7 ++++---
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/of/base.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 6a57a60..a78466b 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -22,8 +22,7 @@
- #include <malloc.h>
- #include <linux/mtd/mtd.h>
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index d22031f..65d8171 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -873,15 +873,8 @@ static int add_of_device_resource(struct device_node *node)
+ 	u64 address, size;
+ 	struct resource *res;
+ 	struct device_d *dev;
+-	phandle phandle;
+ 	int ret;
  
--int of_parse_partitions(const char *cdevname,
--				   struct device_node *node)
-+int of_parse_partitions(struct cdev *cdev, struct device_node *node)
- {
- 	struct device_node *n;
- 	const char *partname;
-@@ -48,14 +47,14 @@ int of_parse_partitions(const char *cdevname,
- 			partname = of_get_property(n, "name", &len);
- 		name = (char *)partname;
+-	ret = of_property_read_u32(node, "phandle", &phandle);
+-	if (!ret) {
+-		node->phandle = phandle;
+-		list_add_tail(&node->phandles, &phandle_list);
+-	}
+-
+ 	ret = of_add_memory(node, false);
+ 	if (ret != -ENXIO)
+ 		return ret;
+@@ -975,6 +968,22 @@ static void __of_probe(struct device_node *node)
+ 		__of_probe(n);
+ }
  
--		debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdevname, partname, offset, size);
-+		debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdev->name, partname, offset, size);
- 
- 		if (of_get_property(n, "read-only", &len))
- 			flags = DEVFS_PARTITION_READONLY;
- 
--		filename = asprintf("%s.%s", cdevname, partname);
-+		filename = asprintf("%s.%s", cdev->name, partname);
- 
--		devfs_add_partition(cdevname, offset, size, flags, filename);
-+		devfs_add_partition(cdev->name, offset, size, flags, filename);
- 
- 		free(filename);
- 	}
-diff --git a/include/of.h b/include/of.h
-index 9349e6a..4dcf37e 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -170,9 +170,10 @@ struct device_node *of_create_node(struct device_node *root, const char *path);
- struct device_node *of_get_root_node(void);
- int of_set_root_node(struct device_node *);
- 
-+struct cdev;
++static void __of_parse_phandles(struct device_node *node)
++{
++	struct device_node *n;
++	phandle phandle;
++	int ret;
 +
- #ifdef CONFIG_OFTREE
--int of_parse_partitions(const char *cdevname,
--			    struct device_node *node);
-+int of_parse_partitions(struct cdev *cdev, struct device_node *node);
++	ret = of_property_read_u32(node, "phandle", &phandle);
++	if (!ret) {
++		node->phandle = phandle;
++		list_add_tail(&node->phandles, &phandle_list);
++	}
++
++	list_for_each_entry(n, &node->children, parent_list)
++		__of_parse_phandles(n);
++}
++
+ struct device_node *of_chosen;
+ const char *of_model;
  
- int of_alias_get_id(struct device_node *np, const char *stem);
- int of_device_is_stdout_path(struct device_d *dev);
-@@ -180,7 +181,7 @@ const char *of_get_model(void);
- void *of_flatten_dtb(struct device_node *node);
- int of_add_memory(struct device_node *node, bool dump);
- #else
--static inline int of_parse_partitions(const char *cdevname,
-+static inline int of_parse_partitions(struct cdev *cdev,
- 					  struct device_node *node)
- {
- 	return -EINVAL;
+@@ -991,6 +1000,7 @@ int of_probe(void)
+ 	of_chosen = of_find_node_by_path(root_node, "/chosen");
+ 	of_property_read_string(root_node, "model", &of_model);
+ 
++	__of_parse_phandles(root_node);
+ 	__of_probe(root_node);
+ 
+ 	return 0;
 -- 
 1.8.2.rc2
 
