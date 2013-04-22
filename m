@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f352.mail.ru ([217.69.140.248])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUJRt-0004y5-Vm
- for barebox@lists.infradead.org; Mon, 22 Apr 2013 16:18:39 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 22 Apr 2013 20:18:31 +0400
-Message-ID: <1366647511.938569164@f352.mail.ru>
-In-Reply-To: <20130422161022.GI32299@pengutronix.de>
-References: <1366620830-8574-1-git-send-email-linux@rempel-privat.de>
- <20130422161022.GI32299@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UUJTR-0004zQ-AG
+ for barebox@lists.infradead.org; Mon, 22 Apr 2013 16:20:14 +0000
+Received: from mail432.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id ABA97FF918C
+ for <barebox@lists.infradead.org>; Mon, 22 Apr 2013 18:20:11 +0200 (CEST)
+Date: Mon, 22 Apr 2013 18:15:40 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130422161540.GC13393@game.jcrosoft.org>
+References: <1366439718-31495-1-git-send-email-shc_work@mail.ru>
+ <1366622000.671448158@f347.mail.ru>
+ <20130422135908.GB13393@game.jcrosoft.org>
+ <1366640359.9607106@f239.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366640359.9607106@f239.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +29,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAxLzNdIGNmaV9mbGFzaDogYWRkIHNoaWZ0IG9wdGlv?=
- =?UTF-8?B?biBmb3Igc29tZSBjZmkgbWVtb3J5IGNoaXBz?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, =?UTF-8?B?T2xla3NpaiBSZW1wZWw=?= <bug-track@fisher-privat.net>
+Subject: Re: [PATCH] clocksource: Add pointer to clocksource structure in
+ read function
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-> From: Oleksij Rempel <bug-track@fisher-privat.net>
+On 18:19 Mon 22 Apr     , Alexander Shiyan wrote:
+> > On 13:13 Mon 22 Apr     , Alexander Shiyan wrote:
+> > > > On 10:35 Sat 20 Apr     , Alexander Shiyan wrote:
+> > > > > 
+> > > > > This patch adds pointer to clocksource structure in read function.
+> > > > > For avoid name collisions, clocksource names for all drivers was
+> > > > > changed to be unique.
+> > > > why?
+> > > > 
+> > > > no need the clocksource is hot path don't touch it
+> > > > and we do not need the struct pointer as we can have only 1 cs in barebox
+> > > 
+> > > This change allows to add an additional field in struct clocksource then
+> > > we can remove static variables from clocksource drivers.
+> > why we have only one clocksource at a time
+> > what you propose will require to use container_of
 > > 
-> > diff --git a/drivers/nor/cfi_flash.h b/drivers/nor/cfi_flash.h
-> > index 8f818ba..6c7cac4 100644
-> > --- a/drivers/nor/cfi_flash.h
-> > +++ b/drivers/nor/cfi_flash.h
-> > @@ -295,7 +295,11 @@ static inline u64 flash_read64(void *addr)
-> >   */
-> >  static inline uchar *flash_make_addr (struct flash_info *info, flash_sect_t sect, uint offset)
-> >  {
-> > +#ifdef CONFIG_DRIVER_CFI_BANK_SHIFT_1
-> > +	return ((uchar *) (info->start[sect] + (offset * info->portwidth << 1)));
-> > +#else
-> >  	return ((uchar *) (info->start[sect] + (offset * info->portwidth)));
-> > +#endif
-> >  }
+> > so will slow down a lot barebox
 > 
-> Please make this a runtime option configurable via platform data. Making
-> this a compile time option is not so nice.
-> Or could this be automatically detected?
+> I hope to see any comments about this patch from Sascha.
+> Of course, we have only one instance of clocksource, but generally
+> direction of this patch is avoid of usage static variables in clocksource drivers.
+> With path we can remove all usage. Is this not good for you?
+if this result by increase the instruction to execute it's worth
 
-Do not treat my opinion as solution but I think better if we
-make this option as integer as make it available always.
-In this case we can avoid using #ifdef.
+Best Regards,
+J.
+> 
+> ---
 
----
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
