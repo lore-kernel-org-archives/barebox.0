@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUY4Z-0001ku-UC
+ id 1UUY4Z-0001kw-UE
  for barebox@lists.infradead.org; Tue, 23 Apr 2013 07:55:33 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UUY4X-0006TL-W8
- for barebox@lists.infradead.org; Tue, 23 Apr 2013 09:55:29 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UUY4X-0006Uh-V0
- for barebox@lists.infradead.org; Tue, 23 Apr 2013 09:55:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Apr 2013 09:55:25 +0200
-Message-Id: <1366703729-1258-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 23 Apr 2013 09:55:28 +0200
+Message-Id: <1366703729-1258-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1366703729-1258-1-git-send-email-s.hauer@pengutronix.de>
+References: <1366703729-1258-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,52 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl support
+Subject: [PATCH 3/4] pinctrl: move imx-iomux-v2 to drivers/pinctrl/
 To: barebox@lists.infradead.org
 
-This adds some initial pinctrl support. I don't want to go the
-way of adding full fledged pinctrl support, but still we will
-need some instance which parses the devicetree for pinctrl
-setup. The following does not parse the pinctrl devicetree
-setup into internal data structures, but instead only calls
-the pinmux driver with the devicetree node containing the
-setup for a device. Turning this into register values is
-completely up the pinmux driver then. The device core
-will automatically call the pinctrl default setup before
-probing a device so that we normally do not have to add
-pinctrl code to device drivers.
+For consistency reasons.
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      Add initial pinctrl support
-      pinctrl: switch i.MX iomux-v3 support to pinctrl
-      pinctrl: move imx-iomux-v2 to drivers/pinctrl/
-      pinctrl: move imx-iomux-v1 to drivers/pinctrl/
-
- arch/arm/mach-imx/Kconfig                          |   9 +
- arch/arm/mach-imx/Makefile                         |  18 +-
- arch/arm/mach-imx/iomux-v3.c                       | 107 -----------
- drivers/Kconfig                                    |   1 +
- drivers/Makefile                                   |   1 +
- drivers/base/driver.c                              |   3 +
- drivers/pinctrl/Kconfig                            |  28 +++
- drivers/pinctrl/Makefile                           |   4 +
- .../iomux-v1.c => drivers/pinctrl/imx-iomux-v1.c   |   0
- .../iomux-v2.c => drivers/pinctrl/imx-iomux-v2.c   |   0
- drivers/pinctrl/imx-iomux-v3.c                     | 212 +++++++++++++++++++++
- drivers/pinctrl/pinctrl.c                          | 149 +++++++++++++++
- include/pinctrl.h                                  |  35 ++++
- 13 files changed, 451 insertions(+), 116 deletions(-)
- delete mode 100644 arch/arm/mach-imx/iomux-v3.c
- create mode 100644 drivers/pinctrl/Kconfig
- create mode 100644 drivers/pinctrl/Makefile
- rename arch/arm/mach-imx/iomux-v1.c => drivers/pinctrl/imx-iomux-v1.c (100%)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/Kconfig                                      | 1 +
+ arch/arm/mach-imx/Makefile                                     | 2 +-
+ drivers/pinctrl/Kconfig                                        | 5 +++++
+ drivers/pinctrl/Makefile                                       | 1 +
+ arch/arm/mach-imx/iomux-v2.c => drivers/pinctrl/imx-iomux-v2.c | 0
+ 5 files changed, 8 insertions(+), 1 deletion(-)
  rename arch/arm/mach-imx/iomux-v2.c => drivers/pinctrl/imx-iomux-v2.c (100%)
- create mode 100644 drivers/pinctrl/imx-iomux-v3.c
- create mode 100644 drivers/pinctrl/pinctrl.c
- create mode 100644 include/pinctrl.h
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 1c3199f..d76732b 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -184,6 +184,7 @@ config ARCH_IMX27
+ config ARCH_IMX31
+ 	select CPU_V6
+ 	bool "i.MX31"
++	select PINCTRL_IMX_IOMUX_V2
+ 
+ config ARCH_IMX35
+ 	bool "i.MX35"
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index c98a302..0b156aa 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -3,7 +3,7 @@ obj-$(CONFIG_ARCH_IMX1)  += imx1.o  iomux-v1.o clk-imx1.o
+ obj-$(CONFIG_ARCH_IMX25) += imx25.o clk-imx25.o
+ obj-$(CONFIG_ARCH_IMX21) += imx21.o iomux-v1.o clk-imx21.o
+ obj-$(CONFIG_ARCH_IMX27) += imx27.o iomux-v1.o clk-imx27.o
+-obj-$(CONFIG_ARCH_IMX31) += imx31.o iomux-v2.o clk-imx31.o
++obj-$(CONFIG_ARCH_IMX31) += imx31.o clk-imx31.o
+ obj-$(CONFIG_ARCH_IMX35) += imx35.o clk-imx35.o
+ obj-$(CONFIG_ARCH_IMX51) += imx51.o imx5.o clk-imx5.o
+ obj-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o clk-imx5.o esdctl-v4.o
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 6ce01bf..6b73d7b 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -9,6 +9,11 @@ config PINCTRL
+ 	  from the devicetree. Legacy drivers here may not need this core
+ 	  support but instead provide their own SoC specific APIs
+ 
++config PINCTRL_IMX_IOMUX_V2
++	bool "i.MX iomux v2"
++	help
++	  This iomux controller is found on i.MX31.
++
+ config PINCTRL_IMX_IOMUX_V3
+ 	select PINCTRL if OFDEVICE
+ 	bool "i.MX iomux v3"
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index 134c889..b03a20f 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_PINCTRL)	+= pinctrl.o
++obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
+ obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
+diff --git a/arch/arm/mach-imx/iomux-v2.c b/drivers/pinctrl/imx-iomux-v2.c
+similarity index 100%
+rename from arch/arm/mach-imx/iomux-v2.c
+rename to drivers/pinctrl/imx-iomux-v2.c
+-- 
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
