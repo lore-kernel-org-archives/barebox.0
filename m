@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUsfv-0000M1-LA
- for barebox@lists.infradead.org; Wed, 24 Apr 2013 05:55:28 +0000
-Date: Wed, 24 Apr 2013 07:55:23 +0200
+ id 1UUsh4-0000O6-1R
+ for barebox@lists.infradead.org; Wed, 24 Apr 2013 05:56:38 +0000
+Date: Wed, 24 Apr 2013 07:56:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130424055523.GX32299@pengutronix.de>
-References: <20130421112246.GF32299@pengutronix.de>
- <1366709085-20067-1-git-send-email-h.feurstein@gmail.com>
+Message-ID: <20130424055636.GY32299@pengutronix.de>
+References: <1366218852-30912-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366709085-20067-1-git-send-email-h.feurstein@gmail.com>
+In-Reply-To: <1366218852-30912-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,165 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2] commands/digest: add verify support
-To: Hubert Feurstein <h.feurstein@gmail.com>
+Subject: Re: [PATCH] defaultenv-2: init: display prompt after running
+ /env/init/*
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 23, 2013 at 11:24:45AM +0200, Hubert Feurstein wrote:
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
-> ---
->  Changes:
->   v2:
->     - updated according to comments from Sascha
->     - add support for verify against hash-file
+On Wed, Apr 17, 2013 at 07:14:12PM +0200, Jan Luebbe wrote:
+> This allows init scripts to print messages to the console without messing
+> up the timeout prompt.
 > 
->  commands/digest.c | 141 ++++++++++++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 131 insertions(+), 10 deletions(-)
-> 
-> diff --git a/commands/digest.c b/commands/digest.c
-> index c9bb132..a4611d7 100644
-> --- a/commands/digest.c
-> +++ b/commands/digest.c
-> @@ -25,24 +25,122 @@
->  #include <xfuncs.h>
->  #include <malloc.h>
->  #include <digest.h>
-> +#include <linux/ctype.h>
-> +#include <getopt.h>
-> +
-> +static inline unsigned char parse_hexchar(char c)
-> +{
-> +	if (!isxdigit(c))
-> +		return 0;
-> +
-> +	return isdigit(c) ? (c - '0') : ((islower(c) ? toupper(c) : c) - 'A' + 0xA);
-> +}
-> +
-> +static inline unsigned char parse_hexbyte(const char *p)
-> +{
-> +	return (parse_hexchar(*p) << 4) | parse_hexchar(*(p + 1));
-> +}
-> +
-> +static unsigned char *parse_hash(int hash_len, const char *hexstr)
-> +{
-> +	int i;
-> +	unsigned char *p;
-> +
-> +	p = calloc(hash_len, sizeof(unsigned char));
-> +	if (!p) {
-> +		perror("calloc");
-> +		return NULL;
-> +	}
-> +
-> +	for (i = 0; i < hash_len; i++)
-> +		p[i] = parse_hexbyte(&hexstr[i * 2]);
-> +
-> +	return p;
-> +}
->  
->  static int do_digest(char *algorithm, int argc, char *argv[])
->  {
->  	struct digest *d;
->  	int ret = 0;
->  	int i;
-> -	unsigned char *hash;
-> +	unsigned char *hash = NULL;
-> +	int opt;
-> +	unsigned char *verify_hash = NULL;
-> +	int verify = 0;
-> +	int min_argc = 2;
-> +	void *buf;
-> +	ssize_t bufsz;
->  
->  	d = digest_get_by_name(algorithm);
->  	BUG_ON(!d);
->  
-> -	if (argc < 2)
-> -		return COMMAND_ERROR_USAGE;
-> +	while ((opt = getopt(argc, argv, "v:V:")) > 0) {
-> +		switch (opt) {
-> +		case 'v':
-> +			if (verify) {
-> +				ret = COMMAND_ERROR_USAGE;
-> +				goto out;
-> +			}
-> +
-> +			verify = 1;
-> +			min_argc += 2;
-> +
-> +			if (d->length != (strlen(optarg) / 2)) {
-> +				printf("invalid hash length (%d chars required)\n",
-> +					d->length * 2);
-> +				ret = COMMAND_ERROR_USAGE;
-> +				goto out;
-> +			}
-> +
-> +			verify_hash = parse_hash(d->length, optarg);
-> +			if (!verify_hash) {
-> +				ret = -ENOMEM;
-> +				goto out;
-> +			}
-> +
-> +			break;
-> +		case 'V':
-> +			if (verify) {
-> +				ret = COMMAND_ERROR_USAGE;
-> +				goto out;
-> +			}
-> +
-> +			verify = 1;
-> +			min_argc += 2;
-> +
-> +			buf = read_file(optarg, &bufsz);
-> +			if (!buf) {
-> +				ret = -ENOMEM;
-> +				goto out;
-> +			}
-> +
-> +			if (bufsz < d->length) {
-> +				free(buf);
-> +				ret = COMMAND_ERROR_USAGE;
-> +				goto out;
-> +			}
-> +
-> +			verify_hash = parse_hash(d->length, buf);
-> +			free(buf);
-> +			break;
-> +		default:
-> +			ret = COMMAND_ERROR_USAGE;
-> +			goto out;
-> +		}
-> +	}
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 
-Please use something around the following lines to avoid some code
-duplication.
-
-	case 'v':
-		verify++;
-		free(hash);
-		hash = xstrdup(optarg);
-		break;
-	case 'V':
-		verify++;
-		free(hash);
-		hash = read_file(optarg, &bufsiz);
-		break;
-	default:
-		ret = COMMAND_ERROR_USAGE;
-		goto out;
-	}
-
-	if (verify > 1)
-		return COMMAND_ERROR_USAGE;
-
-	if (verify) {
-		min_argc += 2;
-		verify_hash = parse_hash(d, buf);
-		if (!verify_hash)
-			return -ESOMETHING;
-	}
+Applied, thanks
 
 Sascha
+
+> ---
+>  defaultenv-2/base/bin/init |   12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
+> index 6a658d1..ca02ba6 100644
+> --- a/defaultenv-2/base/bin/init
+> +++ b/defaultenv-2/base/bin/init
+> @@ -16,12 +16,6 @@ global editcmd=sedit
+>  [ -e /env/config-board ] && /env/config-board
+>  /env/config
+>  
+> -if [ -e /env/menu ]; then
+> -	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
+> -else
+> -	echo -e -n "\nHit any key to stop autoboot: "
+> -fi
+> -
+>  # allow to stop the boot before execute the /env/init/*
+>  # but without waiting
+>  timeout -s -a -v key 0
+> @@ -34,6 +28,12 @@ for i in /env/init/*; do
+>  	. $i
+>  done
+>  
+> +if [ -e /env/menu ]; then
+> +	echo -e -n "\nHit m for menu or any other key to stop autoboot: "
+> +else
+> +	echo -e -n "\nHit any key to stop autoboot: "
+> +fi
+> +
+>  timeout -a $global.autoboot_timeout -v key
+>  autoboot="$?"
+>  
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
