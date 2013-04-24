@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo5.mail-out.ovh.net ([188.165.51.82]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUyQU-0007tY-Km
- for barebox@lists.infradead.org; Wed, 24 Apr 2013 12:03:55 +0000
-Received: from mail173.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 25E32FF8FAA
- for <barebox@lists.infradead.org>; Wed, 24 Apr 2013 14:03:51 +0200 (CEST)
-Date: Wed, 24 Apr 2013 13:58:55 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130424115855.GF13393@game.jcrosoft.org>
-References: <1366794547-29296-1-git-send-email-plagnioj@jcrosoft.com>
- <20130424095455.GC32299@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UV0wv-0002sD-Dj
+ for barebox@lists.infradead.org; Wed, 24 Apr 2013 14:45:33 +0000
+Date: Wed, 24 Apr 2013 16:45:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130424144531.GE32299@pengutronix.de>
+References: <1366382189-15575-1-git-send-email-mkl@pengutronix.de>
+ <517797C5.3010208@pengutronix.de>
+ <20130424083521.GB32299@pengutronix.de>
+ <517799B8.3000305@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130424095455.GC32299@pengutronix.de>
+In-Reply-To: <517799B8.3000305@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,30 +25,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] mci: add Secure Digital Host Controller Interface
- support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] ARM i.MX28: make chip reset via reset pin work again
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-On 11:54 Wed 24 Apr     , Sascha Hauer wrote:
-> On Wed, Apr 24, 2013 at 11:09:07AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > as today more and more hw use it so import a sdhci implemetation based on
-> > linux.
+On Wed, Apr 24, 2013 at 10:37:12AM +0200, Marc Kleine-Budde wrote:
+> On 04/24/2013 10:35 AM, Sascha Hauer wrote:
+> > On Wed, Apr 24, 2013 at 10:28:53AM +0200, Marc Kleine-Budde wrote:
+> >> On 04/19/2013 04:36 PM, Marc Kleine-Budde wrote:
+> >>> Since commit:
+> >>>
+> >>>     2ccd451 ARM i.MX28: change default watchdog reset method
+> >>>
+> >>> the external reset via the reset pin is broken. That commit overwrites the
+> >>> HW_CLKCTRL_RESET register with only WDOG_POR_DISABLE set, which results in
+> >>> disabling the external reset.
+> >>>
+> >>> This patch uses read-modify-write to set the WDOG_POR_DISABLE, leaving the
+> >>> WDOG_POR_DISABLE untouched.
+> >>>
+> >>> Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> >>> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> >>
+> >> ping
+> > 
+> > pong.
+> > 
+> > For master?
 > 
-> Problem is that the Linux implementation sucks :/
-> 
-> At least on i.MX this driver is a pain to use. It needs more quirks than
-> fit into a 32bit variable and still the i.MX port needs driver logic
-> in the register accessor functions. Maybe i.MX is the worst of all
-> implementations, but I'm not considering using the Linux driver for
-> i.MX on barebox.
-> If other SoCs work better with the Linux driver we can still merge it
-> though.
+> at least
 
-on STM it work better
+Applied now.
 
-Bes Regards,
-J.
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
