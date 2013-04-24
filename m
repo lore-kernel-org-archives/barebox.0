@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UUsid-0000P8-I9
- for barebox@lists.infradead.org; Wed, 24 Apr 2013 05:58:16 +0000
-Date: Wed, 24 Apr 2013 07:58:13 +0200
+ id 1UUuDf-0001rT-4a
+ for barebox@lists.infradead.org; Wed, 24 Apr 2013 07:34:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130424055813.GZ32299@pengutronix.de>
-References: <1366711752-25176-1-git-send-email-jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1366711752-25176-1-git-send-email-jbe@pengutronix.de>
+Date: Wed, 24 Apr 2013 09:34:18 +0200
+Message-Id: <1366788859-11565-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1366788859-11565-1-git-send-email-s.hauer@pengutronix.de>
+References: <1366788859-11565-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +16,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Make Chumby work again with its SD card
-To: Juergen Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mci: imx-esdhc: remove cache snoop register access
+To: barebox@lists.infradead.org
 
-On Tue, Apr 23, 2013 at 12:09:10PM +0200, Juergen Beisert wrote:
-> Due to a missing resource size the Chumby isn't able to work with its SD card
-> anymore. Instead it hangs forever. By using the generic block reset routine I
-> was able to discover the cause. The following two patches makes the Chumby
-> work again. At least the resource size patch should be applied to the current
-> master.
+Remove some leftover from former powerpc support which has no
+relevance for i.MX based esdhc controllers.
 
-Applied, first to master, second one to -next.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/imx-esdhc.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Sascha
-
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8c2695c..f4fdac8 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -61,14 +61,11 @@ struct fsl_esdhc {
+ 	u32	fevt;
+ 	char	reserved2[168];
+ 	u32	hostver;
+-	char	reserved3[780];
+-	u32	scr;
+ };
+ 
+ struct fsl_esdhc_host {
+ 	struct mci_host		mci;
+ 	struct fsl_esdhc __iomem	*regs;
+-	u32			no_snoop;
+ 	unsigned long		cur_clock;
+ 	struct device_d		*dev;
+ 	struct clk		*clk;
+@@ -454,10 +451,6 @@ static int esdhc_init(struct mci_host *mci, struct device_d *dev)
+ 	int timeout = 1000;
+ 	int ret = 0;
+ 
+-	/* Enable cache snooping */
+-	if (host && !host->no_snoop)
+-		esdhc_write32(&regs->scr, 0x00000040);
+-
+ 	/* Reset the entire host controller */
+ 	esdhc_write32(&regs->sysctl, SYSCTL_RSTA);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
