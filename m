@@ -1,12 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVLca-0008B7-B9
- for barebox@lists.infradead.org; Thu, 25 Apr 2013 12:49:57 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 25 Apr 2013 14:49:47 +0200
-Message-Id: <1366894187-25299-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1UVLi0-0008PM-Na
+ for barebox@lists.infradead.org; Thu, 25 Apr 2013 12:55:33 +0000
+Message-ID: <517927B3.9040708@sam-solutions.net>
+Date: Thu, 25 Apr 2013 15:55:15 +0300
+From: Uladzimir Bely <u.bely@sam-solutions.net>
 MIME-Version: 1.0
+References: <51767713.8070507@sam-solutions.net>
+ <1366794590.4158.81.camel@coredoba.hi.pengutronix.de>
+ <1366891012.4158.115.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1366891012.4158.115.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +19,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: fix how an initrd is passed to Linux
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM OMAP5: Basic support of Texas Instruments OMAP5
+ processors
+To: =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-TGludXggZXhwZWN0cyBsaW51eCxpbml0cmQtZW5kIHRvIGNvbnRhaW4gdGhlIGZpcnN0IHVudXNl
-ZCBhZGRyZXNzLiBBcwp0aGlzIGRvZXNuJ3QgbWF0Y2ggdGhlIGVuZCBzZW1hbnRpYyB1c2VkIGJ5
-IGJhcmVib3ggKGkuZS4gZW5kIGNvbnRhaW5zCnRoZSBsYXN0IHVzZWQgYWRkcmVzcykgYWRkaW5n
-IG9uZSBpcyBuZWNlc3NhcnkuCgpXaXRob3V0IHRoaXMgY2hhbmdlIExpbnV4IGZhaWxzIGZvciBt
-ZSB0byBjb3JyZWN0bHkgZXh0cmFjdCBhIGd6aXBwZWQKY3BpbyBhcmNoaXZlIHByb3ZpZGVkIGFz
-IGluaXRyZC4KClNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2Vu
-aWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9vZi9iYXNlLmMgfCA2ICsrKysrLQogMSBm
-aWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvb2YvYmFzZS5jIGIvZHJpdmVycy9vZi9iYXNlLmMKaW5kZXggZDIyMDMxZi4uNmNi
-NTUyMSAxMDA2NDQKLS0tIGEvZHJpdmVycy9vZi9iYXNlLmMKKysrIGIvZHJpdmVycy9vZi9iYXNl
-LmMKQEAgLTEwNzgsNiArMTA3OCwxMCBAQCBpbnQgb2ZfZGV2aWNlX2lzX3N0ZG91dF9wYXRoKHN0
-cnVjdCBkZXZpY2VfZCAqZGV2KQogICoKICAqIEFkZCBpbml0cmQgcHJvcGVydGllcyB0byB0aGUg
-ZGV2aWNldHJlZSwgb3IsIGlmIGVuZCBpcyAwLAogICogZGVsZXRlIHRoZW0uCisgKgorICogTm90
-ZSB0aGF0IExpbnV4IGludGVycHJldHMgZW5kIGRpZmZlcmVudGx5IHRoYW4gQmFyZWJveC4gRm9y
-IExpbnV4IGVuZCBwb2ludHMKKyAqIHRvIHRoZSBmaXJzdCBhZGRyZXNzIGFmdGVyIHRoZSBtZW1v
-cnkgb2NjdXBpZWQgYnkgdGhlIGltYWdlIHdoaWxlIGJhcmVib3gKKyAqIGxldHMgZW5kIHBvaW50
-aW5nIHRoZSB0aGUgbGFzdCBvY2N1cGllZCBieXRlLgogICovCiBpbnQgb2ZfYWRkX2luaXRyZChz
-dHJ1Y3QgZGV2aWNlX25vZGUgKnJvb3QsIHJlc291cmNlX3NpemVfdCBzdGFydCwKIAkJcmVzb3Vy
-Y2Vfc2l6ZV90IGVuZCkKQEAgLTEwOTIsNyArMTA5Niw3IEBAIGludCBvZl9hZGRfaW5pdHJkKHN0
-cnVjdCBkZXZpY2Vfbm9kZSAqcm9vdCwgcmVzb3VyY2Vfc2l6ZV90IHN0YXJ0LAogCWlmIChlbmQp
-IHsKIAkJb2Zfd3JpdGVfbnVtYmVyKGJ1Ziwgc3RhcnQsIDIpOwogCQlvZl9zZXRfcHJvcGVydHko
-Y2hvc2VuLCAibGludXgsaW5pdHJkLXN0YXJ0IiwgYnVmLCA4LCAxKTsKLQkJb2Zfd3JpdGVfbnVt
-YmVyKGJ1ZiwgZW5kLCAyKTsKKwkJb2Zfd3JpdGVfbnVtYmVyKGJ1ZiwgZW5kICsgMSwgMik7CiAJ
-CW9mX3NldF9wcm9wZXJ0eShjaG9zZW4sICJsaW51eCxpbml0cmQtZW5kIiwgYnVmLCA4LCAxKTsK
-IAl9IGVsc2UgewogCQlzdHJ1Y3QgcHJvcGVydHkgKnBwOwotLSAKMS44LjIucmMyCgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5n
-IGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQu
-b3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+MjUuMDQuMjAxMyAxNDo1NiwgSmFuIEzDvGJiZSDQv9C40YjQtdGCOgo+IEhpLAo+Cj4geW91IGRp
+ZG4ndCByZXNwb25kIHRvIG15IGNvbW1lbnRzIGluIHlvdXIgbmV3IHZlcnNpb24sIGVzcGVjaWFs
+bHkKPiByZWdhcmRpbmcgdGhlIGNvZGUgZHVwbGljYXRpb24gaW4gYXJjaC9hcm0vbWFjaC1vbWFw
+L29tYXA1X2dlbmVyaWMuYwo+IChyZWxhdGl2ZSB0byBvbWFwNF9nZW5lcmljLmMpLgo+Cj4gUmVn
+YXJkcywKPiBKYW4KPgoKU29ycnksIEkganVzdCBub3Qgbm90aWNlZCB5b3VyIGNvbW1lbnRzIGlu
+IHlvdSByZXBseSAoSSB0aG91Z2h0LCBpdCB3YXMKanVzdCBhIHF1b3RlIG9mIG15IGVtYWlsKS4g
+SSB3aWxsIHRyeSB0byBhY2NvbW1vZGF0ZSB0aGlzIGluIG5leHQgcGF0Y2guCgoKLS0gCldpdGgg
+cmVnYXJkcywKVWxhZHppbWlyIEJlbHkuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
+ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
+Ym94Cg==
