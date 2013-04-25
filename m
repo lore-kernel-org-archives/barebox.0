@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVKo4-00077p-Pr
- for barebox@lists.infradead.org; Thu, 25 Apr 2013 11:57:45 +0000
-Message-ID: <1366891124.4158.117.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Thu, 25 Apr 2013 13:58:44 +0200
-In-Reply-To: <1366880959-25765-1-git-send-email-u.bely@sam-solutions.com>
+ id 1UVLVO-00080q-AZ
+ for barebox@lists.infradead.org; Thu, 25 Apr 2013 12:42:31 +0000
+Message-ID: <517924A2.9030300@sam-solutions.net>
+Date: Thu, 25 Apr 2013 15:42:10 +0300
+From: Uladzimir Bely <u.bely@sam-solutions.net>
+MIME-Version: 1.0
 References: <20130424201127.GG32299@pengutronix.de>
  <1366880959-25765-1-git-send-email-u.bely@sam-solutions.com>
-Mime-Version: 1.0
+ <1366891124.4158.117.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1366891124.4158.117.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +19,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] ARM: OMAP5 processors support
-To: Uladzimir Bely <u.bely@sam-solutions.com>
-Cc: barebox@lists.infradead.org
+To: =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, 2013-04-25 at 12:09 +0300, Uladzimir Bely wrote:
-> diff --git a/arch/arm/boards/omap5_sevm/env/config b/arch/arm/boards/omap5_sevm/env/config
-> new file mode 100644
-> index 0000000..9752957
-> --- /dev/null
-> +++ b/arch/arm/boards/omap5_sevm/env/config
-> @@ -0,0 +1,11 @@
-> +#!/bin/sh
-> +
-> +machine=omap5
-> +
-> +autoboot_timeout=2
-> +
-> +bootargs="console=ttyO2,115200"
-> +
-> +kernel_loc=disk
-> +
-> +PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
-
-Please use defaultenv-2.
-
-> diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-> index 42e5f4a..0ad3864 100644
-> --- a/arch/arm/mach-omap/Kconfig
-> +++ b/arch/arm/mach-omap/Kconfig
-> @@ -41,6 +41,14 @@ config ARCH_OMAP4
->  	help
->  	  Say Y here if you are using Texas Instrument's OMAP4 based platform
->  
-> +config ARCH_OMAP5
-> +	bool "OMAP5"
-> +	select CPU_V7
-> +	select GENERIC_GPIO
-> +	select OMAP_CLOCK_SOURCE_S32K
-> +	help
-> +	  Say Y here if you are using Texas Instrument's OMAP5 based platform
-> +
->  config ARCH_AM33XX
->  	bool "AM33xx"
->  	select CPU_V7
-> @@ -115,6 +123,7 @@ config BOARDINFO
->  	default "Phytec phyCARD-A-L1" if MACH_PCAAL1
->  	default "Phytec phyCARD-A-XL2" if MACH_PCAAXL2
->  	default "Phytec phyCORE-AM335x" if MACH_PCM051
-> +	default "Phytec phyCORE omap5_sevm" if MACH_OMAP5_SEVM
->  
->  choice
->  	prompt "Select OMAP board"
-> @@ -177,6 +186,13 @@ config MACH_PCAAXL2
->  	help
->  	  Say Y here if you are using a phyCARD-A-XL1 PCA-A-XL1
->  
-> +config MACH_OMAP5_SEVM
-> +	bool "Phytec phyCORE omap5_sevm"
-> +	depends on ARCH_OMAP5
-> +	help
-> +	  Say Y here if you are using Phytecs phyCORE omap5_sevm board
-> +	  based on OMAP5
-> +
->  config MACH_PCM051
->  	bool "Phytec phyCORE pcm051"
->  	select OMAP_CLOCK_ALL
-
-Isn't the OMAP5 sEVM from TI?
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+MjUuMDQuMjAxMyAxNDo1OCwgSmFuIEzDvGJiZSDQv9C40YjQtdGCOgo+IE9uIFRodSwgMjAxMy0w
+NC0yNSBhdCAxMjowOSArMDMwMCwgVWxhZHppbWlyIEJlbHkgd3JvdGU6Cj4+IGRpZmYgLS1naXQg
+YS9hcmNoL2FybS9ib2FyZHMvb21hcDVfc2V2bS9lbnYvY29uZmlnIGIvYXJjaC9hcm0vYm9hcmRz
+L29tYXA1X3Nldm0vZW52L2NvbmZpZwo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+PiBpbmRleCAw
+MDAwMDAwLi45NzUyOTU3Cj4+IC0tLSAvZGV2L251bGwKPj4gKysrIGIvYXJjaC9hcm0vYm9hcmRz
+L29tYXA1X3Nldm0vZW52L2NvbmZpZwo+PiBAQCAtMCwwICsxLDExIEBACj4+ICsjIS9iaW4vc2gK
+Pj4gKwo+PiArbWFjaGluZT1vbWFwNQo+PiArCj4+ICthdXRvYm9vdF90aW1lb3V0PTIKPj4gKwo+
+PiArYm9vdGFyZ3M9ImNvbnNvbGU9dHR5TzIsMTE1MjAwIgo+PiArCj4+ICtrZXJuZWxfbG9jPWRp
+c2sKPj4gKwo+PiArUFMxPSJcZVsxOzMybWJhcmVib3hAXGVbMTszMW1caDpcd1xlWzBtICIKPgo+
+IFBsZWFzZSB1c2UgZGVmYXVsdGVudi0yLgo+CgpJJ20gbm90IHRvbyBmYW1pbGlhciB3aXRoIGJh
+cmVib3gncyBkZWZhdWx0ZW52L2RlZmF1bHRlbnYtMi4gT3VyIHdvcmsgb24Kb21hcDUgd2FzIGJh
+c2VkIG1vc3RseSBvbiBvbWFwNSBjb2RlIGZyb20gVS1Cb290IGFuZCBvbWFwNCBjb2RlIGZyb20g
+YmFyZWJveC4KTW9zdGx5LCBJIHVzZWQgcGNtMDQ5IGFzIGFuIGV4YW1wbGUgb2Ygb21hcDQtYmFz
+ZWQgYm9hcmQgaW4gYmFyZWJveC4gU28KYXJjaC9hcm0vYm9hcmRzL29tYXA1X3Nldm0vZW52L2Nv
+bmZpZyBsb29rcyBsaWtlIHRoaXMgb25lLCBidXQgaW5jbHVkZXMKb25seSBtb3N0IG5lY2Vzc2Fy
+eSB0aGlua3MgdG8gbG9hZCB0byBiYXJlYm94IHByb21wdC4KClBsZWFzZSwgZ2l2ZSBtZSBhIGhp
+bnQsIHdoaWNoIGJvYXJkIGNhbiBiZSB1c2VkIGFzIGFuIGV4YW1wbGUgb2YgdXNpbmcKZGVmYXVs
+dGVudi0yLCBtYXliZSBJJ2xsIGRvIHNvbWV0aGluZy4KCj4+IGRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9tYWNoLW9tYXAvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCj4+IGluZGV4
+IDQyZTVmNGEuLjBhZDM4NjQgMTAwNjQ0Cj4+IC0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9LY29u
+ZmlnCj4+ICsrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCj4+IEBAIC00MSw2ICs0MSwx
+NCBAQCBjb25maWcgQVJDSF9PTUFQNAo+PiAgIAloZWxwCj4+ICAgCSAgU2F5IFkgaGVyZSBpZiB5
+b3UgYXJlIHVzaW5nIFRleGFzIEluc3RydW1lbnQncyBPTUFQNCBiYXNlZCBwbGF0Zm9ybQo+Pgo+
+PiArY29uZmlnIEFSQ0hfT01BUDUKPj4gKwlib29sICJPTUFQNSIKPj4gKwlzZWxlY3QgQ1BVX1Y3
+Cj4+ICsJc2VsZWN0IEdFTkVSSUNfR1BJTwo+PiArCXNlbGVjdCBPTUFQX0NMT0NLX1NPVVJDRV9T
+MzJLCj4+ICsJaGVscAo+PiArCSAgU2F5IFkgaGVyZSBpZiB5b3UgYXJlIHVzaW5nIFRleGFzIElu
+c3RydW1lbnQncyBPTUFQNSBiYXNlZCBwbGF0Zm9ybQo+PiArCj4+ICAgY29uZmlnIEFSQ0hfQU0z
+M1hYCj4+ICAgCWJvb2wgIkFNMzN4eCIKPj4gICAJc2VsZWN0IENQVV9WNwo+PiBAQCAtMTE1LDYg
+KzEyMyw3IEBAIGNvbmZpZyBCT0FSRElORk8KPj4gICAJZGVmYXVsdCAiUGh5dGVjIHBoeUNBUkQt
+QS1MMSIgaWYgTUFDSF9QQ0FBTDEKPj4gICAJZGVmYXVsdCAiUGh5dGVjIHBoeUNBUkQtQS1YTDIi
+IGlmIE1BQ0hfUENBQVhMMgo+PiAgIAlkZWZhdWx0ICJQaHl0ZWMgcGh5Q09SRS1BTTMzNXgiIGlm
+IE1BQ0hfUENNMDUxCj4+ICsJZGVmYXVsdCAiUGh5dGVjIHBoeUNPUkUgb21hcDVfc2V2bSIgaWYg
+TUFDSF9PTUFQNV9TRVZNCj4+Cj4+ICAgY2hvaWNlCj4+ICAgCXByb21wdCAiU2VsZWN0IE9NQVAg
+Ym9hcmQiCj4+IEBAIC0xNzcsNiArMTg2LDEzIEBAIGNvbmZpZyBNQUNIX1BDQUFYTDIKPj4gICAJ
+aGVscAo+PiAgIAkgIFNheSBZIGhlcmUgaWYgeW91IGFyZSB1c2luZyBhIHBoeUNBUkQtQS1YTDEg
+UENBLUEtWEwxCj4+Cj4+ICtjb25maWcgTUFDSF9PTUFQNV9TRVZNCj4+ICsJYm9vbCAiUGh5dGVj
+IHBoeUNPUkUgb21hcDVfc2V2bSIKPj4gKwlkZXBlbmRzIG9uIEFSQ0hfT01BUDUKPj4gKwloZWxw
+Cj4+ICsJICBTYXkgWSBoZXJlIGlmIHlvdSBhcmUgdXNpbmcgUGh5dGVjcyBwaHlDT1JFIG9tYXA1
+X3Nldm0gYm9hcmQKPj4gKwkgIGJhc2VkIG9uIE9NQVA1Cj4+ICsKPj4gICBjb25maWcgTUFDSF9Q
+Q00wNTEKPj4gICAJYm9vbCAiUGh5dGVjIHBoeUNPUkUgcGNtMDUxIgo+PiAgIAlzZWxlY3QgT01B
+UF9DTE9DS19BTEwKPgo+IElzbid0IHRoZSBPTUFQNSBzRVZNIGZyb20gVEk/Cj4KCldlIHdvcmtl
+ZCB3aXRoIE9NQVA1LWJhc2VkIGJvYXJkLCBwcm9kdWNlZCBieSBQaHl0ZWMgKFBoeXRlYyBwaHlD
+T1JFLU9NQVA1KSwKYnV0LCBhcyBJIGhhdmUgbWVudGlvbmVkIGFib3ZlLCBjb2RlIHdhcyBwYXJ0
+aWFsbHkgcG9ydGVkIGZyb20gVS1Cb290J3MKT01BUDUtc2V2bSBib2FyZC4gSSdsbCBjb3JyZWN0
+IGl0LgoKLS0gCldpdGggcmVnYXJkcywKVWxhZHppbWlyIEJlbHkuCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
