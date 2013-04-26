@@ -1,24 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f391.i.mail.ru ([185.5.136.62])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVe33-0004wT-CH
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 08:30:30 +0000
-Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1UVe30-0004lm-Uh
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 10:30:26 +0200
-Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jlu@pengutronix.de>) id 1UVe3z-0000dS-Uy
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 10:31:28 +0200
-Message-ID: <1366965087.4158.129.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 26 Apr 2013 10:31:27 +0200
-In-Reply-To: <517924A2.9030300@sam-solutions.net>
-References: <20130424201127.GG32299@pengutronix.de>
- <1366880959-25765-1-git-send-email-u.bely@sam-solutions.com>
- <1366891124.4158.117.camel@coredoba.hi.pengutronix.de>
- <517924A2.9030300@sam-solutions.net>
+ id 1UVeRI-0005V5-QB
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 08:55:34 +0000
+Received: from mail by f391.i.mail.ru with local (envelope-from
+ <shc_work@mail.ru>) id 1UVeRD-0005XA-66
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 12:55:27 +0400
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Mime-Version: 1.0
+Date: Fri, 26 Apr 2013 12:55:27 +0400
+Message-ID: <1366966527.864498237@f391.i.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,70 +19,20 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: OMAP5 processors support
-To: Barebox List <barebox@lists.infradead.org>
+Subject: =?UTF-8?B?T1RHIERldmljZSBtb2RlIG9uIGkuTVg1MQ==?=
+To: barebox@lists.infradead.org
 
-T24gVGh1LCAyMDEzLTA0LTI1IGF0IDE1OjQyICswMzAwLCBVbGFkemltaXIgQmVseSB3cm90ZToK
-PiAyNS4wNC4yMDEzIDE0OjU4LCBKYW4gTMO8YmJlINC/0LjRiNC10YI6Cj4gPiBPbiBUaHUsIDIw
-MTMtMDQtMjUgYXQgMTI6MDkgKzAzMDAsIFVsYWR6aW1pciBCZWx5IHdyb3RlOgo+ID4+IGRpZmYg
-LS1naXQgYS9hcmNoL2FybS9ib2FyZHMvb21hcDVfc2V2bS9lbnYvY29uZmlnIGIvYXJjaC9hcm0v
-Ym9hcmRzL29tYXA1X3Nldm0vZW52L2NvbmZpZwo+ID4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4g
-Pj4gaW5kZXggMDAwMDAwMC4uOTc1Mjk1Nwo+ID4+IC0tLSAvZGV2L251bGwKPiA+PiArKysgYi9h
-cmNoL2FybS9ib2FyZHMvb21hcDVfc2V2bS9lbnYvY29uZmlnCj4gPj4gQEAgLTAsMCArMSwxMSBA
-QAo+ID4+ICsjIS9iaW4vc2gKPiA+PiArCj4gPj4gK21hY2hpbmU9b21hcDUKPiA+PiArCj4gPj4g
-K2F1dG9ib290X3RpbWVvdXQ9Mgo+ID4+ICsKPiA+PiArYm9vdGFyZ3M9ImNvbnNvbGU9dHR5TzIs
-MTE1MjAwIgo+ID4+ICsKPiA+PiAra2VybmVsX2xvYz1kaXNrCj4gPj4gKwo+ID4+ICtQUzE9Ilxl
-WzE7MzJtYmFyZWJveEBcZVsxOzMxbVxoOlx3XGVbMG0gIgo+ID4KPiA+IFBsZWFzZSB1c2UgZGVm
-YXVsdGVudi0yLgo+ID4KPiAKPiBJJ20gbm90IHRvbyBmYW1pbGlhciB3aXRoIGJhcmVib3gncyBk
-ZWZhdWx0ZW52L2RlZmF1bHRlbnYtMi4gT3VyIHdvcmsgb24KPiBvbWFwNSB3YXMgYmFzZWQgbW9z
-dGx5IG9uIG9tYXA1IGNvZGUgZnJvbSBVLUJvb3QgYW5kIG9tYXA0IGNvZGUgZnJvbSBiYXJlYm94
-Lgo+IE1vc3RseSwgSSB1c2VkIHBjbTA0OSBhcyBhbiBleGFtcGxlIG9mIG9tYXA0LWJhc2VkIGJv
-YXJkIGluIGJhcmVib3guIFNvCj4gYXJjaC9hcm0vYm9hcmRzL29tYXA1X3Nldm0vZW52L2NvbmZp
-ZyBsb29rcyBsaWtlIHRoaXMgb25lLCBidXQgaW5jbHVkZXMKPiBvbmx5IG1vc3QgbmVjZXNzYXJ5
-IHRoaW5rcyB0byBsb2FkIHRvIGJhcmVib3ggcHJvbXB0Lgo+IAo+IFBsZWFzZSwgZ2l2ZSBtZSBh
-IGhpbnQsIHdoaWNoIGJvYXJkIGNhbiBiZSB1c2VkIGFzIGFuIGV4YW1wbGUgb2YgdXNpbmcKPiBk
-ZWZhdWx0ZW52LTIsIG1heWJlIEknbGwgZG8gc29tZXRoaW5nLgoKVGFrZSBhIGxvb2sgYXQgYXJj
-aC9hcm0vYm9hcmRzL2JlYWdsZSAob21hcDMpIG9yIGFyY2gvYXJtL2JvYXJkcy9wYW5kYQoob21h
-cDQpLgoKPiA+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcgYi9hcmNo
-L2FybS9tYWNoLW9tYXAvS2NvbmZpZwo+ID4+IGluZGV4IDQyZTVmNGEuLjBhZDM4NjQgMTAwNjQ0
-Cj4gPj4gLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKPiA+PiArKysgYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvS2NvbmZpZwo+ID4+IEBAIC00MSw2ICs0MSwxNCBAQCBjb25maWcgQVJDSF9P
-TUFQNAo+ID4+ICAgCWhlbHAKPiA+PiAgIAkgIFNheSBZIGhlcmUgaWYgeW91IGFyZSB1c2luZyBU
-ZXhhcyBJbnN0cnVtZW50J3MgT01BUDQgYmFzZWQgcGxhdGZvcm0KPiA+Pgo+ID4+ICtjb25maWcg
-QVJDSF9PTUFQNQo+ID4+ICsJYm9vbCAiT01BUDUiCj4gPj4gKwlzZWxlY3QgQ1BVX1Y3Cj4gPj4g
-KwlzZWxlY3QgR0VORVJJQ19HUElPCj4gPj4gKwlzZWxlY3QgT01BUF9DTE9DS19TT1VSQ0VfUzMy
-Swo+ID4+ICsJaGVscAo+ID4+ICsJICBTYXkgWSBoZXJlIGlmIHlvdSBhcmUgdXNpbmcgVGV4YXMg
-SW5zdHJ1bWVudCdzIE9NQVA1IGJhc2VkIHBsYXRmb3JtCj4gPj4gKwo+ID4+ICAgY29uZmlnIEFS
-Q0hfQU0zM1hYCj4gPj4gICAJYm9vbCAiQU0zM3h4Igo+ID4+ICAgCXNlbGVjdCBDUFVfVjcKPiA+
-PiBAQCAtMTE1LDYgKzEyMyw3IEBAIGNvbmZpZyBCT0FSRElORk8KPiA+PiAgIAlkZWZhdWx0ICJQ
-aHl0ZWMgcGh5Q0FSRC1BLUwxIiBpZiBNQUNIX1BDQUFMMQo+ID4+ICAgCWRlZmF1bHQgIlBoeXRl
-YyBwaHlDQVJELUEtWEwyIiBpZiBNQUNIX1BDQUFYTDIKPiA+PiAgIAlkZWZhdWx0ICJQaHl0ZWMg
-cGh5Q09SRS1BTTMzNXgiIGlmIE1BQ0hfUENNMDUxCj4gPj4gKwlkZWZhdWx0ICJQaHl0ZWMgcGh5
-Q09SRSBvbWFwNV9zZXZtIiBpZiBNQUNIX09NQVA1X1NFVk0KPiA+Pgo+ID4+ICAgY2hvaWNlCj4g
-Pj4gICAJcHJvbXB0ICJTZWxlY3QgT01BUCBib2FyZCIKPiA+PiBAQCAtMTc3LDYgKzE4NiwxMyBA
-QCBjb25maWcgTUFDSF9QQ0FBWEwyCj4gPj4gICAJaGVscAo+ID4+ICAgCSAgU2F5IFkgaGVyZSBp
-ZiB5b3UgYXJlIHVzaW5nIGEgcGh5Q0FSRC1BLVhMMSBQQ0EtQS1YTDEKPiA+Pgo+ID4+ICtjb25m
-aWcgTUFDSF9PTUFQNV9TRVZNCj4gPj4gKwlib29sICJQaHl0ZWMgcGh5Q09SRSBvbWFwNV9zZXZt
-Igo+ID4+ICsJZGVwZW5kcyBvbiBBUkNIX09NQVA1Cj4gPj4gKwloZWxwCj4gPj4gKwkgIFNheSBZ
-IGhlcmUgaWYgeW91IGFyZSB1c2luZyBQaHl0ZWNzIHBoeUNPUkUgb21hcDVfc2V2bSBib2FyZAo+
-ID4+ICsJICBiYXNlZCBvbiBPTUFQNQo+ID4+ICsKPiA+PiAgIGNvbmZpZyBNQUNIX1BDTTA1MQo+
-ID4+ICAgCWJvb2wgIlBoeXRlYyBwaHlDT1JFIHBjbTA1MSIKPiA+PiAgIAlzZWxlY3QgT01BUF9D
-TE9DS19BTEwKPiA+Cj4gPiBJc24ndCB0aGUgT01BUDUgc0VWTSBmcm9tIFRJPwo+ID4KPiAKPiBX
-ZSB3b3JrZWQgd2l0aCBPTUFQNS1iYXNlZCBib2FyZCwgcHJvZHVjZWQgYnkgUGh5dGVjIChQaHl0
-ZWMgcGh5Q09SRS1PTUFQNSksCj4gYnV0LCBhcyBJIGhhdmUgbWVudGlvbmVkIGFib3ZlLCBjb2Rl
-IHdhcyBwYXJ0aWFsbHkgcG9ydGVkIGZyb20gVS1Cb290J3MKPiBPTUFQNS1zZXZtIGJvYXJkLiBJ
-J2xsIGNvcnJlY3QgaXQuCgpUaGUgbmFtZXMgc2hvdWxkIGJlIGNvbnNpc3RlbnQgYW5kIG1hdGNo
-IHRoZSBoYXJkd2FyZSB0aGUgbmV3IGNvZGUgeW91CmFyZSBhZGRpbmcgaW4gdGhpcyBwYXRjaCBp
-cyBpbnRlbmRlZCBmb3IuCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBT
-b2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwK
-UGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01
-MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAg
-ICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+Hello.
+
+Is anyone have successful works OTG in device mode on iMX51?
+Thanks!.
+
+---
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
