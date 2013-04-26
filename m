@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVbCI-00021A-Um
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 05:27:51 +0000
-Date: Fri, 26 Apr 2013 07:27:49 +0200
+ id 1UVbCi-000221-UG
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 05:28:17 +0000
+Date: Fri, 26 Apr 2013 07:28:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130426052749.GN32299@pengutronix.de>
-References: <1366902742-30993-1-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20130426052815.GO32299@pengutronix.de>
+References: <1366906170-4509-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1366902742-30993-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1366906170-4509-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: property: fix error message
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] of: fix typos
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 25, 2013 at 05:12:22PM +0200, Steffen Trumtrar wrote:
-> At least in standard oxford english one not is enough.
-
-:)
+On Thu, Apr 25, 2013 at 08:09:30PM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
 
 Sascha
 
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  commands/of_property.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/of/base.c |    4 ++--
+>  drivers/of/gpio.c |    1 -
+>  2 files changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/commands/of_property.c b/commands/of_property.c
-> index 6311b70..44bb388 100644
-> --- a/commands/of_property.c
-> +++ b/commands/of_property.c
-> @@ -62,7 +62,7 @@ static int of_parse_prop_cells(char * const *newval, int count, char *data, int
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index fde91b3..5661e8d 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -902,13 +902,13 @@ int of_add_memory(struct device_node *node, bool dump)
 >  
->  		/* If the ptr didn't advance, something went wrong */
->  		if ((newp - cp) <= 0) {
-> -			printf("cannot not convert \"%s\"\n", cp);
-> +			printf("cannot convert \"%s\"\n", cp);
->  			return -EINVAL;
->  		}
+>  		sprintf(str, "ram%d", r);
 >  
-> @@ -105,7 +105,7 @@ static int of_parse_prop_stream(char * const *newval, int count, char *data, int
+> -                barebox_add_memory_bank(str, base, size);
+> +		barebox_add_memory_bank(str, base, size);
 >  
->  		/* If the ptr didn't advance, something went wrong */
->  		if ((newp - cp) <= 0) {
-> -			printf("cannot not convert \"%s\"\n", cp);
-> +			printf("cannot convert \"%s\"\n", cp);
->  			return -EINVAL;
->  		}
->  	}
+>  		if (dump)
+>  			pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
+>  
+>  		r++;
+> -        }
+> +	}
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/of/gpio.c b/drivers/of/gpio.c
+> index d4314f3..83b72c0 100644
+> --- a/drivers/of/gpio.c
+> +++ b/drivers/of/gpio.c
+> @@ -25,4 +25,3 @@ int of_get_named_gpio(struct device_node *np,
+>  
+>  	return ret;
+>  }
+> -
 > -- 
-> 1.8.2.rc2
+> 1.7.10.4
 > 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
