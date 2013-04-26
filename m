@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVqVT-0005ra-L7
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 21:48:40 +0000
+ id 1UVqXQ-0005uk-Ep
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 21:50:41 +0000
+Date: Fri, 26 Apr 2013 23:50:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 Apr 2013 23:48:35 +0200
-Message-Id: <1367012916-22780-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1367012916-22780-1-git-send-email-s.hauer@pengutronix.de>
-References: <1366977055.331524144@f355.mail.ru>
- <1367012916-22780-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130426215038.GZ32299@pengutronix.de>
+References: <1366967553-23985-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366967553-23985-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,70 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: Allow disabling SDRAM autodetection
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: ccxmx51: Fix OTG Host USB mode
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Some boards setup more memory than they actually have. The real memory
-size can then be detected later for example by reading a board id.
+On Fri, Apr 26, 2013 at 01:12:33PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/esdctl.c              | 14 ++++++++++++++
- arch/arm/mach-imx/include/mach/esdctl.h |  1 +
- 2 files changed, 15 insertions(+)
+Applied, thanks
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index cb57d45..e2025b3 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -39,6 +39,17 @@ struct imx_esdctl_data {
- 	void (*add_mem)(void *esdctlbase, struct imx_esdctl_data *);
- };
- 
-+static int imx_esdctl_disabled;
-+
-+/*
-+ * Boards can disable SDRAM detection if it doesn't work for them. In
-+ * this case arm_add_mem_device has to be called by board code.
-+ */
-+void imx_esdctl_disable(void)
-+{
-+	imx_esdctl_disabled = 1;
-+}
-+
- /*
-  * v1 - found on i.MX1
-  */
-@@ -239,6 +250,9 @@ static int imx_esdctl_probe(struct device_d *dev)
- 	if (!base)
- 		return -ENOMEM;
- 
-+	if (imx_esdctl_disabled)
-+		return 0;
-+
- 	data->add_mem(base, data);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/include/mach/esdctl.h b/arch/arm/mach-imx/include/mach/esdctl.h
-index 26436d9..b7219d9 100644
---- a/arch/arm/mach-imx/include/mach/esdctl.h
-+++ b/arch/arm/mach-imx/include/mach/esdctl.h
-@@ -136,6 +136,7 @@ void __naked __noreturn imx35_barebox_entry(uint32_t boarddata);
- void __naked __noreturn imx51_barebox_entry(uint32_t boarddata);
- void __naked __noreturn imx53_barebox_entry(uint32_t boarddata);
- void __naked __noreturn imx6_barebox_entry(uint32_t boarddata);
-+void imx_esdctl_disable(void);
- #endif
- 
- #endif /* __MACH_ESDCTL_V2_H */
+Sascha
+
+> ---
+>  arch/arm/boards/ccxmx51/ccxmx51.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
+> index a14c9bc..df565d9 100644
+> --- a/arch/arm/boards/ccxmx51/ccxmx51.c
+> +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
+> @@ -196,7 +196,8 @@ static const struct spi_board_info ccxmx51_spi_board_info[] = {
+>  };
+>  
+>  static struct imxusb_platformdata ccxmx51_otg_pdata = {
+> -	.flags	= MXC_EHCI_MODE_UTMI_16_BIT | MXC_EHCI_POWER_PINS_ENABLED,
+> +	.flags	= MXC_EHCI_MODE_UTMI_16_BIT | MXC_EHCI_INTERNAL_PHY |
+> +		  MXC_EHCI_POWER_PINS_ENABLED,
+>  	.mode	= IMX_USB_MODE_HOST,
+>  };
+>  
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
