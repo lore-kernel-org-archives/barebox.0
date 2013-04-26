@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVgHg-0008HC-Av
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 10:53:44 +0000
-Message-ID: <1366973682.4158.142.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Fri, 26 Apr 2013 12:54:42 +0200
-In-Reply-To: <517A57F8.8020805@sam-solutions.net>
-References: <20130424201127.GG32299@pengutronix.de>
- <1366880959-25765-1-git-send-email-u.bely@sam-solutions.com>
- <1366891124.4158.117.camel@coredoba.hi.pengutronix.de>
- <517A57F8.8020805@sam-solutions.net>
-Mime-Version: 1.0
+ id 1UVgNf-0008UT-Hb
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 10:59:56 +0000
+Message-ID: <517A5E0A.3000507@sam-solutions.net>
+Date: Fri, 26 Apr 2013 13:59:22 +0300
+From: Uladzimir Bely <u.bely@sam-solutions.net>
+MIME-Version: 1.0
+References: <1366973682.4158.142.camel@coredoba.hi.pengutronix.de>
+In-Reply-To: <1366973682.4158.142.camel@coredoba.hi.pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,48 +17,20 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: OMAP5 processors support
-To: Uladzimir Bely <u.bely@sam-solutions.net>
-Cc: Barebox List <barebox@lists.infradead.org>
+Subject: Re: Re: [PATCH] ARM: OMAP5 processors support
+To: barebox@lists.infradead.org, =?UTF-8?B?SmFuIEzDvGJiZQ==?= <jlu@pengutronix.de>
 
-T24gRnJpLCAyMDEzLTA0LTI2IGF0IDEzOjMzICswMzAwLCBVbGFkemltaXIgQmVseSB3cm90ZToK
-PiA+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcgYi9hcmNoL2FybS9t
-YWNoLW9tYXAvS2NvbmZpZwo+ID4+IGluZGV4IDQyZTVmNGEuLjBhZDM4NjQgMTAwNjQ0Cj4gPj4g
-LS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL0tjb25maWcKPiA+PiArKysgYi9hcmNoL2FybS9tYWNo
-LW9tYXAvS2NvbmZpZwo+ID4+IEBAIC00MSw2ICs0MSwxNCBAQCBjb25maWcgQVJDSF9PTUFQNAo+
-ID4+ICAJaGVscAo+ID4+ICAJICBTYXkgWSBoZXJlIGlmIHlvdSBhcmUgdXNpbmcgVGV4YXMgSW5z
-dHJ1bWVudCdzIE9NQVA0IGJhc2VkIHBsYXRmb3JtCj4gPj4gIAo+ID4+ICAKPiA+PiArY29uZmln
-IE1BQ0hfT01BUDVfU0VWTQo+ID4+ICsJYm9vbCAiUGh5dGVjIHBoeUNPUkUgb21hcDVfc2V2bSIK
-PiA+PiArCWRlcGVuZHMgb24gQVJDSF9PTUFQNQo+ID4+ICsJaGVscAo+ID4+ICsJICBTYXkgWSBo
-ZXJlIGlmIHlvdSBhcmUgdXNpbmcgUGh5dGVjcyBwaHlDT1JFIG9tYXA1X3Nldm0gYm9hcmQKPiA+
-PiArCSAgYmFzZWQgb24gT01BUDUKPiA+PiArCj4gPj4gIGNvbmZpZyBNQUNIX1BDTTA1MQo+ID4+
-ICAJYm9vbCAiUGh5dGVjIHBoeUNPUkUgcGNtMDUxIgo+ID4+ICAJc2VsZWN0IE9NQVBfQ0xPQ0tf
-QUxMCj4gPiAKPiA+IElzbid0IHRoZSBPTUFQNSBzRVZNIGZyb20gVEk/Cj4gPiAKPiAKPiBUaGlz
-IHF1ZXN0aW9uIGlzIG1vcmUgY29tcGxpY2F0ZWQuIFdlIHVzZSBQaHl0ZWMgcGh5Q09SRSBPTUFQ
-NCBib2FyZCwgYnV0Cj4gd2l0aCBPTUFQNSBTT0MgaW5zdGFsbGVkLiBXZSB1c2VkIG9tYXA1X3Nl
-dm0gd2l0aCBudW1iZXIgMzc3NyB3aGljaCBhbHJlYWR5Cj4gZXhpc3RzIGluIGFyY2gvYXJtL3Rv
-b2xzLiBLZXJuZWwgYWxzbyB3YXMgY29tcGlsZWQgZm9yIHRoaXMgbWFjaC10eXBlLgoKU28gdGhl
-IGJvYXJkIHdoaWNoIHlvdSB1c2UgZm9yIGRldmVsb3BtZW50IGlzIG5vdCBnZW5lcmFsbHkgYXZh
-aWxhYmxlLgpNYXliZSB5b3UgY291bGQgY2FsbCBpdCBzb21ldGhpbmcgbGlrZSAiTUFDSF9QQ00w
-NDlfT01BUDUiIG9yCiJNQUNIX1BIWUNPUkVfT01BUDVfRVZBTCIuLi4/Cgo+IEFzIEkgdW5kZXJz
-dGFuZCwgbmV3IGJvYXJkIChQaHl0ZWMgcGh5Q09SRSBPTUFQNSkgbXVzdCBiZSBhZGRlZCB0byB0
-aGlzIGZpbGUKPiAoaHR0cDovL3d3dy5hcm0ubGludXgub3JnLnVrL2RldmVsb3Blci9tYWNoaW5l
-cy9kb3dubG9hZC5waHApIGZpcnN0LCBhbmQgYmFyZWJveAo+IHdpbGwgdXNlIHRoaXMgdXBkYXRl
-ZCBmaWxlIGZvciB0aGlzIGJvYXJkIHRvby4gQW0gSSByaWdodD8gSG93IGNhbiBJIGFkZCBuZXcK
-PiBib2FyZCBoZXJlIGNvcnJlY3RseT8KClRvIHJlcXVlc3QgYSBuZXcgbWFjaGluZSBJRCwgdXNl
-Cmh0dHA6Ly93d3cuYXJtLmxpbnV4Lm9yZy51ay9kZXZlbG9wZXIvbWFjaGluZXMvP2FjdGlvbj1u
-ZXcKCk5vdGUgdGhhdCBuZXcgbGVnYWN5IChub24tRGV2aWNlLVRyZWUpIGJvYXJkcyBhcmUgbm8g
-bG9uZ2VyIGFjY2VwdGVkCmludG8gdGhlIGtlcm5lbCEgRm9yIERULW9ubHkgYm9hcmRzIG5vIG1h
-Y2hpbmUgSUQgaXMgbmVlZGVkIGF0IGFsbC4KClJlZ2FyZHMsCkphbiBMw7xiYmUKLS0gClBlbmd1
-dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8
-IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGls
-ZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJp
-Y2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5
-MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+As an example, are there any DT-only (without machine ID) boards in barebox?
+
+-- 
+With regards,
+Uladzimir Bely.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
