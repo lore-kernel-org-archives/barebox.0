@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVli9-0008TE-IN
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 16:41:28 +0000
+ id 1UVli8-0008Sg-5X
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 16:41:27 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 26 Apr 2013 20:41:12 +0400
-Message-Id: <1366994474-21325-7-git-send-email-shc_work@mail.ru>
+Date: Fri, 26 Apr 2013 20:41:11 +0400
+Message-Id: <1366994474-21325-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 References: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] NAND: imx: Fix memory leak
+Subject: [PATCH 6/9] MCI: imx: Fix possible null pointer dereference
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mtd/nand/nand_imx_bbm.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mci/imx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_bbm.c
-index 03961a0..135d74e 100644
---- a/drivers/mtd/nand/nand_imx_bbm.c
-+++ b/drivers/mtd/nand/nand_imx_bbm.c
-@@ -91,7 +91,7 @@ static void *create_bbt(struct mtd_info *mtd)
- 	buf = malloc(mtd->writesize);
- 	if (!buf) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto out2;
- 	}
+diff --git a/drivers/mci/imx.c b/drivers/mci/imx.c
+index 3d9bd0d..c985964 100644
+--- a/drivers/mci/imx.c
++++ b/drivers/mci/imx.c
+@@ -225,12 +225,13 @@ static int mxcmci_read_response(struct mxcmci_host *host, unsigned int stat)
+ {
+ 	struct mci_cmd *cmd = host->cmd;
+ 	int i;
+-	u32 a, b, c;
+-	u32 *resp = (u32 *)cmd->response;
++	u32 a, b, c, *resp;
  
- 	numblocks = mtd->size >> (chip->bbt_erase_shift - 1);
-@@ -99,7 +99,7 @@ static void *create_bbt(struct mtd_info *mtd)
- 	for (i = 0; i < numblocks;) {
- 		ret = checkbad(mtd, from, buf);
- 		if (ret < 0)
--			goto out;
-+			goto out1;
+ 	if (!cmd)
+ 		return 0;
  
- 		if (ret) {
- 			bbt[i >> 3] |= 0x03 << (i & 0x6);
-@@ -112,8 +112,11 @@ static void *create_bbt(struct mtd_info *mtd)
- 	}
- 
- 	return bbt;
--out:
++	resp = (u32 *)cmd->response;
 +
-+out1:
- 	free(buf);
-+out2:
-+	free(bbt);
- 
- 	return ERR_PTR(ret);
- }
+ 	if (stat & STATUS_TIME_OUT_RESP) {
+ 		printf("CMD TIMEOUT\n");
+ 		return -ETIMEDOUT;
 -- 
 1.8.1.5
 
