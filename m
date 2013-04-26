@@ -1,20 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp46.i.mail.ru ([94.100.177.106])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVf0a-0006LG-OW
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 09:32:03 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1UVf0X-0007tS-8D
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 11:31:57 +0200
-Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1UVf0W-0004Nl-86
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 11:31:56 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 26 Apr 2013 11:31:50 +0200
-Message-Id: <1366968712-17851-5-git-send-email-jbe@pengutronix.de>
-In-Reply-To: <1366968712-17851-1-git-send-email-jbe@pengutronix.de>
-References: <1366968712-17851-1-git-send-email-jbe@pengutronix.de>
+ id 1UVfn0-0007aV-Ma
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 10:22:04 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 26 Apr 2013 14:21:54 +0400
+Message-Id: <1366971714-32682-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,42 +19,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] MCI/Core: honor transmission limits at the card's side
+Subject: [RFC only] ARM: i.MX: Fix SDRAM size detect
 To: barebox@lists.infradead.org
 
-The host limits are only one limit we must honor when changing the transmission frequency.
-The SD cards have their own limits, so take them also into account.
+This is a trying to fix problem described in:
+http://lists.infradead.org/pipermail/barebox/2013-April/014182.html
 
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/mci/mci-core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/esdctl.c | 13 ++-----------
+ arch/arm/mach-imx/imx51.c  | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 9aeaa4d..42e3d4b 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -605,13 +605,17 @@ static void mci_set_clock(struct mci *mci, unsigned clock)
- {
- 	struct mci_host *host = mci->host;
- 
--	/* check against any given limits */
-+	/* check against any given limits at the host's side */
- 	if (clock > host->f_max)
- 		clock = host->f_max;
- 
- 	if (clock < host->f_min)
- 		clock = host->f_min;
- 
-+	/* check against the limit at the card's side */
-+	if (mci->tran_speed != 0 && clock > mci->tran_speed)
-+		clock = mci->tran_speed;
-+
- 	host->clock = clock;	/* the new target frequency */
- 	mci_set_ios(mci);
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index cb57d45..bde02fd 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -345,7 +345,7 @@ static int imx_esdctl_init(void)
+ 	return platform_driver_register(&imx_serial_driver);
  }
+ 
+-mem_initcall(imx_esdctl_init);
++//mem_initcall(imx_esdctl_init);
+ 
+ /*
+  * The i.MX SoCs usually have two SDRAM chipselects. The following
+@@ -435,16 +435,7 @@ void __naked __noreturn imx35_barebox_entry(uint32_t boarddata)
+ 
+ void __naked __noreturn imx51_barebox_entry(uint32_t boarddata)
+ {
+-	unsigned long base;
+-	unsigned long size;
+-
+-	base = MX51_CSD0_BASE_ADDR;
+-
+-	size = imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 0);
+-	if (size == SZ_256M)
+-		size += imx_v3_sdram_size((void *)MX51_ESDCTL_BASE_ADDR, 1);
+-
+-	barebox_arm_entry(base, size, boarddata);
++	barebox_arm_entry(MX51_CSD0_BASE_ADDR, SZ_128M, boarddata);
+ }
+ 
+ void __naked __noreturn imx53_barebox_entry(uint32_t boarddata)
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 54d99a4..6593b7d 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -21,6 +21,8 @@
+ #include <mach/revision.h>
+ #include <mach/clock-imx51_53.h>
+ #include <mach/generic.h>
++#include <mach/esdctl.h>
++#include <asm/memory.h>
+ 
+ #define SI_REV 0x48
+ 
+@@ -76,6 +78,25 @@ static int imx51_init(void)
+ }
+ postcore_initcall(imx51_init);
+ 
++static int imx51_memory_init(void)
++{
++	void __iomem *esdctl = IOMEM(MX51_ESDCTL_BASE_ADDR + IMX_ESDCTL1);
++	unsigned long add, size = SZ_128M;
++
++	add = get_ram_size((ulong *)(MX51_CSD0_BASE_ADDR + SZ_128M), SZ_128M);
++	if (add) {
++		size += add;
++		if (readl(esdctl) & ESDCTL0_SDE)
++			size += get_ram_size((ulong *)MX51_CSD1_BASE_ADDR, SZ_256M);
++
++	}
++
++	arm_add_mem_device("ram0", MX51_CSD0_BASE_ADDR, size);
++
++	return 0;
++}
++mem_initcall(imx51_memory_init);
++
+ /*
+  * Saves the boot source media into the $bootsource environment variable
+  *
 -- 
-1.8.2.rc2
+1.8.1.5
 
 
 _______________________________________________
