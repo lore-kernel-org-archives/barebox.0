@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVbBq-00020K-37
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 05:27:23 +0000
-Date: Fri, 26 Apr 2013 07:27:16 +0200
+ id 1UVbCI-00021A-Um
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 05:27:51 +0000
+Date: Fri, 26 Apr 2013 07:27:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130426052716.GM32299@pengutronix.de>
-References: <1366894187-25299-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <20130425210037.GR15233@pengutronix.de>
+Message-ID: <20130426052749.GN32299@pengutronix.de>
+References: <1366902742-30993-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130425210037.GR15233@pengutronix.de>
+In-Reply-To: <1366902742-30993-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: fix how an initrd is passed to Linux
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] of: property: fix error message
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 25, 2013 at 11:00:37PM +0200, Uwe Kleine-K=F6nig wrote:
-> On Thu, Apr 25, 2013 at 02:49:47PM +0200, Uwe Kleine-K=F6nig wrote:
-> > Linux expects linux,initrd-end to contain the first unused address. As
-> > this doesn't match the end semantic used by barebox (i.e. end contains
-> > the last used address) adding one is necessary.
-> > =
+On Thu, Apr 25, 2013 at 05:12:22PM +0200, Steffen Trumtrar wrote:
+> At least in standard oxford english one not is enough.
 
-> > Without this change Linux fails for me to correctly extract a gzipped
-> > cpio archive provided as initrd.
-> > =
+:)
 
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/of/base.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > =
+Applied, thanks
 
-> > diff --git a/drivers/of/base.c b/drivers/of/base.c
-> > index d22031f..6cb5521 100644
-> > --- a/drivers/of/base.c
-> > +++ b/drivers/of/base.c
-> > @@ -1078,6 +1078,10 @@ int of_device_is_stdout_path(struct device_d *de=
-v)
-> >   *
-> >   * Add initrd properties to the devicetree, or, if end is 0,
-> >   * delete them.
-> > + *
-> > + * Note that Linux interprets end differently than Barebox. For Linux =
-end points
-> > + * to the first address after the memory occupied by the image while b=
-arebox
-> > + * lets end pointing the the last occupied byte.
-> The first "the" in the line above should be a "to". Sascha: Assuming you
-> are happy with the patch: Can you fix this up while committing?
+Sascha
 
-Applied and fixed.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  commands/of_property.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/commands/of_property.c b/commands/of_property.c
+> index 6311b70..44bb388 100644
+> --- a/commands/of_property.c
+> +++ b/commands/of_property.c
+> @@ -62,7 +62,7 @@ static int of_parse_prop_cells(char * const *newval, int count, char *data, int
+>  
+>  		/* If the ptr didn't advance, something went wrong */
+>  		if ((newp - cp) <= 0) {
+> -			printf("cannot not convert \"%s\"\n", cp);
+> +			printf("cannot convert \"%s\"\n", cp);
+>  			return -EINVAL;
+>  		}
+>  
+> @@ -105,7 +105,7 @@ static int of_parse_prop_stream(char * const *newval, int count, char *data, int
+>  
+>  		/* If the ptr didn't advance, something went wrong */
+>  		if ((newp - cp) <= 0) {
+> -			printf("cannot not convert \"%s\"\n", cp);
+> +			printf("cannot convert \"%s\"\n", cp);
+>  			return -EINVAL;
+>  		}
+>  	}
+> -- 
+> 1.8.2.rc2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Thanks
- Sascha
-
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
