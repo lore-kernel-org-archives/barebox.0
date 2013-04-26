@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVliB-0008TT-3F
+ id 1UVli9-0008TE-IN
  for barebox@lists.infradead.org; Fri, 26 Apr 2013 16:41:28 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 26 Apr 2013 20:41:13 +0400
-Message-Id: <1366994474-21325-8-git-send-email-shc_work@mail.ru>
+Date: Fri, 26 Apr 2013 20:41:12 +0400
+Message-Id: <1366994474-21325-7-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 References: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,34 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] Serial: mpc5xxx: Fix setup mode at port initialization
+Subject: [PATCH 7/9] NAND: imx: Fix memory leak
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/serial/serial_mpc5xxx.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/nand_imx_bbm.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/serial/serial_mpc5xxx.c b/drivers/serial/serial_mpc5xxx.c
-index 532eea3..ed77807 100644
---- a/drivers/serial/serial_mpc5xxx.c
-+++ b/drivers/serial/serial_mpc5xxx.c
-@@ -82,12 +82,10 @@ static int __mpc5xxx_serial_init(struct mpc5xxx_psc *psc)
- 	psc->sicr = 0;
+diff --git a/drivers/mtd/nand/nand_imx_bbm.c b/drivers/mtd/nand/nand_imx_bbm.c
+index 03961a0..135d74e 100644
+--- a/drivers/mtd/nand/nand_imx_bbm.c
++++ b/drivers/mtd/nand/nand_imx_bbm.c
+@@ -91,7 +91,7 @@ static void *create_bbt(struct mtd_info *mtd)
+ 	buf = malloc(mtd->writesize);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+-		goto out;
++		goto out2;
+ 	}
  
- 	/* configure parity, bit length and so on */
-+	psc->mode = PSC_MODE_8_BITS | PSC_MODE_PARNONE | PSC_MODE_ONE_STOP;
- #if defined(CONFIG_MGT5100)
--	psc->mode = PSC_MODE_ERR | PSC_MODE_8_BITS | PSC_MODE_PARNONE;
--#elif defined(CONFIG_MPC5200)
--	psc->mode = PSC_MODE_8_BITS | PSC_MODE_PARNONE;
-+	psc->mode |= PSC_MODE_ERR;
- #endif
--	psc->mode = PSC_MODE_ONE_STOP;
+ 	numblocks = mtd->size >> (chip->bbt_erase_shift - 1);
+@@ -99,7 +99,7 @@ static void *create_bbt(struct mtd_info *mtd)
+ 	for (i = 0; i < numblocks;) {
+ 		ret = checkbad(mtd, from, buf);
+ 		if (ret < 0)
+-			goto out;
++			goto out1;
  
- 	/* disable all interrupts */
- 	psc->psc_imr = 0;
+ 		if (ret) {
+ 			bbt[i >> 3] |= 0x03 << (i & 0x6);
+@@ -112,8 +112,11 @@ static void *create_bbt(struct mtd_info *mtd)
+ 	}
+ 
+ 	return bbt;
+-out:
++
++out1:
+ 	free(buf);
++out2:
++	free(bbt);
+ 
+ 	return ERR_PTR(ret);
+ }
 -- 
 1.8.1.5
 
