@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UVli5-0008Rf-Ix
- for barebox@lists.infradead.org; Fri, 26 Apr 2013 16:41:23 +0000
+ id 1UVliC-0008Tz-OB
+ for barebox@lists.infradead.org; Fri, 26 Apr 2013 16:41:29 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri, 26 Apr 2013 20:41:07 +0400
-Message-Id: <1366994474-21325-2-git-send-email-shc_work@mail.ru>
+Date: Fri, 26 Apr 2013 20:41:14 +0400
+Message-Id: <1366994474-21325-9-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 References: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,40 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] ARM: at91 gpio: Fix possible null pointer dereference
+Subject: [PATCH 9/9] MCI: imx-esdhc: Remove now unneeded check
 To: barebox@lists.infradead.org
 
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-at91/gpio.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mci/imx-esdhc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/gpio.c b/arch/arm/mach-at91/gpio.c
-index c2618c7..0e39a52 100644
---- a/arch/arm/mach-at91/gpio.c
-+++ b/arch/arm/mach-at91/gpio.c
-@@ -185,10 +185,10 @@ static struct at91_pinctrl_mux_ops at91sam9x5_ops = {
- int at91_mux_pin(unsigned pin, enum at91_mux mux, int use_pullup)
- {
- 	struct at91_gpio_chip *at91_gpio = pin_to_controller(pin);
--	void __iomem *pio = at91_gpio->regbase;
-+	void __iomem *pio;
-+	struct device_d *dev;
- 	unsigned mask = pin_to_mask(pin);
- 	int bank = pin_to_bank(pin);
--	struct device_d *dev = at91_gpio->chip.dev;
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8194b4d..8133d2e 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -460,7 +460,7 @@ static int esdhc_init(struct mci_host *mci, struct device_d *dev)
+ 	regs = host->regs;
  
- 	if (!at91_gpio)
- 		return -EINVAL;
-@@ -197,6 +197,7 @@ int at91_mux_pin(unsigned pin, enum at91_mux mux, int use_pullup)
- 	if (!pio)
- 		return -EINVAL;
+ 	/* Enable cache snooping */
+-	if (host && !host->no_snoop)
++	if (!host->no_snoop)
+ 		esdhc_write32(&regs->scr, 0x00000040);
  
-+	dev = at91_gpio->chip.dev;
- 	at91_mux_disable_interrupt(pio, mask);
- 
- 	pin %= MAX_NB_GPIO_PER_BANK;
+ 	/* Reset the entire host controller */
 -- 
 1.8.1.5
 
