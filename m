@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2.mail.ru ([94.100.176.130])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UWJDM-00069I-5u
+ id 1UWJDM-00069N-5x
  for barebox@lists.infradead.org; Sun, 28 Apr 2013 04:27:54 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 28 Apr 2013 08:27:26 +0400
-Message-Id: <1367123249-24119-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 28 Apr 2013 08:27:29 +0400
+Message-Id: <1367123249-24119-4-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1367123249-24119-1-git-send-email-shc_work@mail.ru>
+References: <1367123249-24119-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,28 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ata: Remove wrong DISK_DRIVE symbol
+Subject: [PATCH 4/4] ARM: imx: Fix incorrect Kconfig symbols for some boards
 To: barebox@lists.infradead.org
 
-DISK_DRIVE is missing in Kconfig, so remove the "select" statement.
+This patch fix incorrect Kconfig symbols for MACH_FREESCALE_MX51_PDK,
+MACH_FREESCALE_MX53_LOCO and MACH_FREESCALE_MX53_SMD.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/ata/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/mach-imx/Kconfig | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 42f2065..9830cc0 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -35,7 +35,6 @@ config DISK_ATA
- config DISK_AHCI
- 	bool "AHCI support"
- 	select DISK_ATA
--	select DISK_DRIVE
- 
- config DISK_AHCI_IMX
- 	depends on ARCH_IMX
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 8ddec9d..eee6acd 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -17,9 +17,9 @@ config ARCH_TEXT_BASE
+ 	default 0x87f00000 if MACH_PCM043
+ 	default 0x08f80000 if MACH_SCB9328
+ 	default 0xa7e00000 if MACH_NESO
+-	default 0x97f00000 if MACH_MX51_PDK
+-	default 0x7ff00000 if MACH_MX53_LOCO
+-	default 0x7ff00000 if MACH_MX53_SMD
++	default 0x97f00000 if MACH_FREESCALE_MX51_PDK
++	default 0x7ff00000 if MACH_FREESCALE_MX53_LOCO
++	default 0x7ff00000 if MACH_FREESCALE_MX53_SMD
+ 	default 0x87f00000 if MACH_GUF_CUPID
+ 	default 0x93d00000 if MACH_TX25
+ 	default 0x7ff00000 if MACH_TQMA53
 -- 
 1.8.1.5
 
