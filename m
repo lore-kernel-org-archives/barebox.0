@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2.mail.ru ([94.100.176.130])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UWJDM-00069J-5v
- for barebox@lists.infradead.org; Sun, 28 Apr 2013 04:27:55 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 28 Apr 2013 08:27:27 +0400
-Message-Id: <1367123249-24119-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1367123249-24119-1-git-send-email-shc_work@mail.ru>
-References: <1367123249-24119-1-git-send-email-shc_work@mail.ru>
+ id 1UWicp-0003jH-3e
+ for barebox@lists.infradead.org; Mon, 29 Apr 2013 07:35:52 +0000
+Date: Mon, 29 Apr 2013 09:35:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130429073548.GK20989@pengutronix.de>
+References: <1366361165-28803-1-git-send-email-h.feurstein@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1366361165-28803-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,76 +18,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: omap: Remove wrong OMAP_CLOCK_ALL symbol
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] common/filetype: move partition-table detection into
+ own function
+To: Hubert Feurstein <h.feurstein@gmail.com>
+Cc: barebox@lists.infradead.org
 
-OMAP_CLOCK_ALL is missing in Kconfig, so remove the "select" statement
-and all other references to this symbol.
+Hi Hubert,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Fri, Apr 19, 2013 at 10:46:04AM +0200, Hubert Feurstein wrote:
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+> ---
+>  common/filetype.c  | 41 ++++++++++++++++++++++++-----------------
+>  include/filetype.h |  1 +
+>  2 files changed, 25 insertions(+), 17 deletions(-)
+
+Modified this slightly to the below and applied both.
+
+Thanks
+ Sascha
+
+8<------------------------------------------------------
+
+From c06956e15f8fb32d46e479950719c30bae57e5bb Mon Sep 17 00:00:00 2001
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri, 19 Apr 2013 10:46:04 +0200
+Subject: [PATCH] common/filetype: move partition-table detection into own
+ function
+
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/phycard_a_l1_defconfig | 1 -
- arch/arm/mach-omap/Kconfig              | 2 --
- arch/arm/mach-omap/omap3_clock.c        | 6 ------
- 3 files changed, 9 deletions(-)
+ common/filetype.c  | 36 ++++++++++++++++++++++++------------
+ include/filetype.h |  1 +
+ 2 files changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/configs/phycard_a_l1_defconfig b/arch/arm/configs/phycard_a_l1_defconfig
-index d90a333..fabaa2d 100644
---- a/arch/arm/configs/phycard_a_l1_defconfig
-+++ b/arch/arm/configs/phycard_a_l1_defconfig
-@@ -7,7 +7,6 @@ CONFIG_CPU_V7=y
- CONFIG_CPU_32v7=y
- CONFIG_BOARDINFO="Phytec phyCARD-A-L1"
- CONFIG_ARCH_OMAP3=y
--CONFIG_OMAP_CLOCK_ALL=y
- CONFIG_OMAP_CLOCK_SOURCE_S32K=y
- CONFIG_OMAP3_CLOCK_CONFIG=y
- CONFIG_OMAP3_COPY_CLOCK_SRAM=n
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 42e5f4a..0913d0e 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -134,7 +134,6 @@ config MACH_BEAGLE
+diff --git a/common/filetype.c b/common/filetype.c
+index 8652f1d..1ff3dd2 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -151,6 +151,28 @@ enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
+ 	return filetype_mbr;
+ }
  
- config MACH_BEAGLEBONE
- 	bool "Texas Instrument's Beagle Bone"
--	select OMAP_CLOCK_ALL
- 	depends on ARCH_AM33XX
- 	  help
- 	  Say Y here if you are using Beagle Bone
-@@ -179,7 +178,6 @@ config MACH_PCAAXL2
++enum filetype file_detect_partition_table(const void *_buf, size_t bufsize)
++{
++	const u8 *buf8 = _buf;
++	enum filetype type;
++
++	if (bufsize < 512)
++		return filetype_unknown;
++
++	/*
++	 * EFI GPT need to be detected before MBR otherwise
++	 * we will detect a MBR
++	 */
++	if (bufsize >= 520 && is_gpt_valid(buf8))
++		return filetype_gpt;
++
++	type = is_fat_or_mbr(buf8, NULL);
++	if (type != filetype_unknown)
++		return type;
++
++	return filetype_unknown;
++}
++
+ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ {
+ 	const u32 *buf = _buf;
+@@ -204,21 +226,11 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (bufsize < 512)
+ 		return filetype_unknown;
  
- config MACH_PCM051
- 	bool "Phytec phyCORE pcm051"
--	select OMAP_CLOCK_ALL
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	depends on ARCH_AM33XX
- 	help
-diff --git a/arch/arm/mach-omap/omap3_clock.c b/arch/arm/mach-omap/omap3_clock.c
-index bcde48f..03aca49 100644
---- a/arch/arm/mach-omap/omap3_clock.c
-+++ b/arch/arm/mach-omap/omap3_clock.c
-@@ -652,12 +652,6 @@ void prcm_init(void)
- /**
-  * @brief Enable the clks & power for perifs
-  *
-- * GPT2 Sysclk, ICLK,FCLK, 32k Sync is enabled by default
-- * Uses CONFIG_OMAP_CLOCK_UART to enable UART clocks
-- * Uses CONFIG_OMAP_CLOCK_I2C to enable I2C clocks
-- * Uses CONFIG_OMAP_CLOCK_ALL to enable All Clocks!
-- *    - Not a wise idea in most cases
-- *
-  * @return void
-  */
- static void per_clocks_enable(void)
+-	/*
+-	 * EFI GPT need to be detected before MBR otherwise
+-	 * we will detect a MBR
+-	 */
+-	if (bufsize >= 520 && is_gpt_valid(buf8))
+-		return filetype_gpt;
+-
+-	type = is_fat_or_mbr(buf8, NULL);
++	type = file_detect_partition_table(_buf, bufsize);
+ 	if (type != filetype_unknown)
+ 		return type;
+ 
+-	if (bufsize < 1536)
+-		return filetype_unknown;
+-
+-	if (buf16[512 + 28] == le16_to_cpu(0xef53))
++	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
+ 		return filetype_ext;
+ 
+ 	return filetype_unknown;
+diff --git a/include/filetype.h b/include/filetype.h
+index 78ca5d2..ee777ac 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -31,6 +31,7 @@ enum filetype {
+ 
+ const char *file_type_to_string(enum filetype f);
+ const char *file_type_to_short_string(enum filetype f);
++enum filetype file_detect_partition_table(const void *_buf, size_t bufsize);
+ enum filetype file_detect_type(const void *_buf, size_t bufsize);
+ enum filetype file_name_detect_type(const char *filename);
+ enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec);
 -- 
-1.8.1.5
+1.8.2.rc2
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
