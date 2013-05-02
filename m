@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UXpUM-00042C-3y
- for barebox@lists.infradead.org; Thu, 02 May 2013 09:07:44 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  2 May 2013 11:07:11 +0200
-Message-Id: <1367485632-10725-2-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1367485632-10725-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1367485632-10725-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UXq51-0004h5-4x
+ for barebox@lists.infradead.org; Thu, 02 May 2013 09:45:36 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 0532BBF0E7
+ for <barebox@lists.infradead.org>; Thu,  2 May 2013 11:43:05 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 2 May 2013 11:45:06 +0200
+Message-Id: <1367487906-25318-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,52 +17,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RFC 1/2] bootm: Simplify initrd address handling
+Subject: [PATCH] omap4-fb: use uncached screen_base
 To: barebox@lists.infradead.org
 
-CWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBVSU1BR0VfU09NRV9BRERSRVNTOwoJLi4uCglpZiAoLUwg
-d2FzIGdpdmVuIHRvIGJvb3RtKQoJCWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBhZGRyZXNzX3Byb3Zp
-ZGVkX3RvXy1MOwoJLi4uCglpZiAoaW5pdHJkIGlzIHByb3ZpZGVkIGFzIHVJbml0cmQgJiYgZGF0
-YS5pbml0cmRfYWRkcmVzcyA9PSBVSU1BR0VfU09NRV9BRERSRVNTKQoJCWRhdGEuaW5pdHJkX2Fk
-ZHJlc3MgPSBsb2FkX2FkZHJlc3NfZnJvbV91SW5pdHJkOwoJLi4uCglpZiAoZGF0YS5pbml0cmRf
-YWRkcmVzcyA9PSBVSU1BR0VfU09NRV9BRERSRVNTKQoJCWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBV
-SU1BR0VfSU5WQUxJRF9BRERSRVNTOwoKY2FuIGJlIHNpbXBsaWZpZWQgdG86CgoJZGF0YS5pbml0
-cmRfYWRkcmVzcyA9IFVJTUFHRV9JTlZBTElEX0FERFJFU1M7CgkuLi4KCWlmICgtTCB3YXMgZ2l2
-ZW4gdG8gYm9vdG0pCgkJZGF0YS5pbml0cmRfYWRkcmVzcyA9IGFkZHJlc3NfcHJvdmlkZWRfdG9f
-LUw7CgkuLi4KCWlmIChpbml0cmQgaXMgcHJvdmlkZWQgYXMgdUluaXRyZCAmJiBkYXRhLmluaXRy
-ZF9hZGRyZXNzID09IFVJTUFHRV9JTlZBTElEX0FERFJFU1MpCgkJZGF0YS5pbml0cmRfYWRkcmVz
-cyA9IGxvYWRfYWRkcmVzc19mcm9tX3VJbml0cmQ7CgkuLi4KClRoZSBvbmx5IGNoYW5nZSBpbnRy
-b2R1Y2VkIGJ5IHRoaXMgc2ltcGxpZmljYXRpb24gaXMgZm9yIGNhc2VzIHdoZXJlIHRoZQp1c2Vy
-IHBhc3NlcyAtTCBVSU1BR0VfU09NRV9BRERSRVNTIG9yIC1MIFVJTUFHRV9JTlZBTElEX0FERFJF
-U1MgdG8KYm9vdG0uICgtTCBVSU1BR0VfU09NRV9BRERSRVNTIGlzIG5vdyB1c2VkIGxpdGVyYWxs
-eSBpbnN0ZWFkIG9mIGlnbm9yZWQKYmVmb3JlLiAtTCBVSU1BR0VfSU5WQUxJRF9BRERSRVNTIHVz
-ZWQgdG8gc2tpcCBnZXR0aW5nIHRoZQppbml0cmQtYWRkcmVzcyBmcm9tIHRoZSB1SW5pdHJkLCBu
-b3cgdGhlIHVJbml0cmQgYWRkcmVzcyBpcyBob25vcmVkLikKClNpZ25lZC1vZmYtYnk6IFV3ZSBL
-bGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2VuaWdAcGVuZ3V0cm9uaXguZGU+Ci0tLQogY29tbWFu
-ZHMvYm9vdG0uYyB8IDYgKystLS0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0
-IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1hbmRzL2Jvb3RtLmMgYi9jb21tYW5kcy9i
-b290bS5jCmluZGV4IGU1ZGZjNmEuLmJiNDQ3NzYgMTAwNjQ0Ci0tLSBhL2NvbW1hbmRzL2Jvb3Rt
-LmMKKysrIGIvY29tbWFuZHMvYm9vdG0uYwpAQCAtMTI3LDcgKzEyNyw3IEBAIHN0YXRpYyBpbnQg
-Ym9vdG1fb3Blbl9pbml0cmRfdWltYWdlKHN0cnVjdCBpbWFnZV9kYXRhICpkYXRhKQogCQlkYXRh
-LT5pbml0cmQgPSBkYXRhLT5vczsKIAl9CiAKLQlpZiAoZGF0YS0+aW5pdHJkX2FkZHJlc3MgPT0g
-VUlNQUdFX1NPTUVfQUREUkVTUykKKwlpZiAoZGF0YS0+aW5pdHJkX2FkZHJlc3MgPT0gVUlNQUdF
-X0lOVkFMSURfQUREUkVTUykKIAkJZGF0YS0+aW5pdHJkX2FkZHJlc3MgPSBkYXRhLT5pbml0cmQt
-PmhlYWRlci5paF9sb2FkOwogCiAJcmV0dXJuIDA7CkBAIC0yNTYsNyArMjU2LDcgQEAgc3RhdGlj
-IGludCBkb19ib290bShpbnQgYXJnYywgY2hhciAqYXJndltdKQogCiAJbWVtc2V0KCZkYXRhLCAw
-LCBzaXplb2Yoc3RydWN0IGltYWdlX2RhdGEpKTsKIAotCWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBV
-SU1BR0VfU09NRV9BRERSRVNTOworCWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBVSU1BR0VfSU5WQUxJ
-RF9BRERSRVNTOwogCWRhdGEub3NfYWRkcmVzcyA9IFVJTUFHRV9TT01FX0FERFJFU1M7CiAJZGF0
-YS52ZXJpZnkgPSAwOwogCWRhdGEudmVyYm9zZSA9IDA7CkBAIC00MDgsOCArNDA4LDYgQEAgc3Rh
-dGljIGludCBkb19ib290bShpbnQgYXJnYywgY2hhciAqYXJndltdKQogI2VuZGlmCiAJaWYgKGRh
-dGEub3NfYWRkcmVzcyA9PSBVSU1BR0VfU09NRV9BRERSRVNTKQogCQlkYXRhLm9zX2FkZHJlc3Mg
-PSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTOwotCWlmIChkYXRhLmluaXRyZF9hZGRyZXNzID09IFVJ
-TUFHRV9TT01FX0FERFJFU1MpCi0JCWRhdGEuaW5pdHJkX2FkZHJlc3MgPSBVSU1BR0VfSU5WQUxJ
-RF9BRERSRVNTOwogCiAJaGFuZGxlciA9IGJvb3RtX2ZpbmRfaGFuZGxlcihvc190eXBlLCAmZGF0
-YSk7CiAJaWYgKCFoYW5kbGVyKSB7Ci0tIAoxLjguMi5yYzIKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+If the buffer is cached the image on the LCD is broken. Only some small
+lines on the last rows. Flushing the cache "repairs" the image.
+
+Use remap_range for preallocated screen and dma_alloc_coherent for
+dynamic.
+
+based on '[PATCH] omap4-fb: add driver' could be squashed in.
+
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ drivers/video/omap4.c |   32 +++++++++++++++++++++++++-------
+ 1 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/video/omap4.c b/drivers/video/omap4.c
+index 5642f25..f510cb3 100644
+--- a/drivers/video/omap4.c
++++ b/drivers/video/omap4.c
+@@ -32,6 +32,8 @@
+ #include <mach/omap4-silicon.h>
+ #include <mach/omap4-fb.h>
+ 
++#include <asm/mmu.h>
++
+ #include "omap4.h"
+ 
+ struct omap4fb_device {
+@@ -63,7 +65,7 @@ struct omap4fb_device {
+ 		unsigned int lckd;
+ 		unsigned int pckd;
+ 	} divisor;
+-
++	size_t dma_size;
+ 	void (*enable_fn)(int);
+ 
+ 	struct fb_videomode	video_modes[];
+@@ -133,10 +135,12 @@ static void omap4fb_disable(struct fb_info *info)
+ 		 ~(DSS_DISPC_VIDn_ATTRIBUTES_VIDENABLE),
+ 		 &dispc->vid1.attributes);
+ 
+-	if (fbi->prealloc_screen.addr == NULL)
++	if (fbi->prealloc_screen.addr == NULL) {
+ 		/* free frame buffer; but only when screen is not
+ 		 * preallocated */
+-		free(info->screen_base);
++		if (info->screen_base)
++			dma_free_coherent(info->screen_base, fbi->dma_size);
++	}
+ 
+ 	info->screen_base = NULL;
+ 
+@@ -285,15 +289,20 @@ static int omap4fb_activate_var(struct fb_info *info)
+ 		goto out;
+ 	}
+ 
++	/*Free old screen buf*/
++	if (!fbi->prealloc_screen.addr && info->screen_base)
++		dma_free_coherent(info->screen_base, fbi->dma_size);
++
++	fbi->dma_size = PAGE_ALIGN(size);
++
+ 	if (fbi->prealloc_screen.addr == NULL) {
+ 		/* case 1: no preallocated screen */
+-		free(info->screen_base);
+-		info->screen_base = memalign(0x100, size);
+-	} else if (fbi->prealloc_screen.size < size) {
++		info->screen_base = dma_alloc_coherent(size);
++	} else if (fbi->prealloc_screen.size < fbi->dma_size) {
+ 		/* case 2: preallocated screen, but too small */
+ 		dev_err(fbi->dev,
+ 			"allocated framebuffer too small (%zu < %zu)\n",
+-			fbi->prealloc_screen.size, size);
++			fbi->prealloc_screen.size, fbi->dma_size);
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	} else {
+@@ -486,9 +495,18 @@ static int omap4fb_probe(struct device_d *dev)
+ 	info->bits_per_pixel = pdata->bpp;
+ 
+ 	if (pdata->screen) {
++		if (!IS_ALIGNED(pdata->screen->start, PAGE_SIZE) ||
++		    !IS_ALIGNED(resource_size(pdata->screen), PAGE_SIZE)) {
++			dev_err(dev, "screen resource not aligned\n");
++			rc = -EINVAL;
++			goto out;
++		}
+ 		fbi->prealloc_screen.addr =
+ 				(void __iomem *)pdata->screen->start;
+ 		fbi->prealloc_screen.size = resource_size(pdata->screen);
++		remap_range(fbi->prealloc_screen.addr,
++			fbi->prealloc_screen.size,
++			mmu_get_pte_uncached_flags());
+ 	}
+ 
+ 	omap4fb_reset(fbi);
+-- 
+1.7.0.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
