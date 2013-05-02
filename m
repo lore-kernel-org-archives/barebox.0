@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f311.mail.ru ([128.140.169.175])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UX5H9-0004OM-HN
- for barebox@lists.infradead.org; Tue, 30 Apr 2013 07:47:00 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Tue, 30 Apr 2013 11:46:33 +0400
-Message-ID: <1367307993.386136970@f311.mail.ru>
-In-Reply-To: <20130430073942.GL20989@pengutronix.de>
-References: <1366994474-21325-1-git-send-email-shc_work@mail.ru>
- <1366994474-21325-8-git-send-email-shc_work@mail.ru>
- <20130430073942.GL20989@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UXpUM-00042D-40
+ for barebox@lists.infradead.org; Thu, 02 May 2013 09:07:43 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu,  2 May 2013 11:07:12 +0200
+Message-Id: <1367485632-10725-3-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1367485632-10725-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1367485632-10725-1-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +17,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCA4LzldIFNlcmlhbDogbXBjNXh4eDogRml4IHNldHVw?=
- =?UTF-8?B?IG1vZGUgYXQgcG9ydCBpbml0aWFsaXphdGlvbg==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH RFC 2/2] Don't honor initrd load address
+To: barebox@lists.infradead.org
 
-> On Fri, Apr 26, 2013 at 08:41:13PM +0400, Alexander Shiyan wrote:
-> > 
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  drivers/serial/serial_mpc5xxx.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/serial/serial_mpc5xxx.c b/drivers/serial/serial_mpc5xxx.c
-> > index 532eea3..ed77807 100644
-> > --- a/drivers/serial/serial_mpc5xxx.c
-> > +++ b/drivers/serial/serial_mpc5xxx.c
-> > @@ -82,12 +82,10 @@ static int __mpc5xxx_serial_init(struct mpc5xxx_psc *psc)
-> >  	psc->sicr = 0;
-> >  
-> >  	/* configure parity, bit length and so on */
-> > +	psc->mode = PSC_MODE_8_BITS | PSC_MODE_PARNONE | PSC_MODE_ONE_STOP;
-> >  #if defined(CONFIG_MGT5100)
-> > -	psc->mode = PSC_MODE_ERR | PSC_MODE_8_BITS | PSC_MODE_PARNONE;
-> > -#elif defined(CONFIG_MPC5200)
-> > -	psc->mode = PSC_MODE_8_BITS | PSC_MODE_PARNONE;
-> > +	psc->mode |= PSC_MODE_ERR;
-> >  #endif
-> > -	psc->mode = PSC_MODE_ONE_STOP;
-> 
-> Without this patch psc->mode gets configured differently on mpc5200 and
-> on mgt5100, then afterwards overwritten on both. This surely was not
-> intended, but nevertheless the driver works as expected. Was this patch
-> tested?
-No. I not have such hardware.
-
-> BTW CONFIG_MGT5100 could be removed, we do not have support for this
-> SoC.
-> 
-> Meanwhile I applied most patches of this series.
-OK.
-
----
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgoKVS1Cb290IGRvZXNu
+J3QgaG9ub3IgdGhlIGxvYWQgYWRkcmVzcyBzcGVjaWZpZWQgaW4gYW4gaW5pdHJkLiBCYXJlYm94
+CnNob3VsZG4ndCBiZSBtb3JlIHN0cmljdCBoZXJlLiBUaGlzIHVuYnJlYWtzIGJvb3RpbmcgYW4g
+dUluaXRyZApnZW5lcmF0ZWQgYnkgRGViaWFuJ3MgZmxhc2gta2VybmVsIHRoYXQgdXNlcyAwIGFz
+IGVudHJ5IGFkZHJlc3Mgd2hlcmUKdGhlcmUgaXMgbm90aGluZyBvbiB0aGUgaS5NWDUzIHRoYXQg
+d2FzIHVzZWQuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5rbGVpbmUta29l
+bmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1hbmRzL2Jvb3RtLmMgfCAzIC0tLQogMSBmaWxl
+IGNoYW5nZWQsIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvY29tbWFuZHMvYm9vdG0uYyBi
+L2NvbW1hbmRzL2Jvb3RtLmMKaW5kZXggYmI0NDc3Ni4uNWRkMTcwMyAxMDA2NDQKLS0tIGEvY29t
+bWFuZHMvYm9vdG0uYworKysgYi9jb21tYW5kcy9ib290bS5jCkBAIC0xMjcsOSArMTI3LDYgQEAg
+c3RhdGljIGludCBib290bV9vcGVuX2luaXRyZF91aW1hZ2Uoc3RydWN0IGltYWdlX2RhdGEgKmRh
+dGEpCiAJCWRhdGEtPmluaXRyZCA9IGRhdGEtPm9zOwogCX0KIAotCWlmIChkYXRhLT5pbml0cmRf
+YWRkcmVzcyA9PSBVSU1BR0VfSU5WQUxJRF9BRERSRVNTKQotCQlkYXRhLT5pbml0cmRfYWRkcmVz
+cyA9IGRhdGEtPmluaXRyZC0+aGVhZGVyLmloX2xvYWQ7Ci0KIAlyZXR1cm4gMDsKIH0KIAotLSAK
+MS44LjIucmMyCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
