@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UXq51-0004h5-4x
- for barebox@lists.infradead.org; Thu, 02 May 2013 09:45:36 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 0532BBF0E7
- for <barebox@lists.infradead.org>; Thu,  2 May 2013 11:43:05 +0200 (CEST)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Thu, 2 May 2013 11:45:06 +0200
-Message-Id: <1367487906-25318-1-git-send-email-j.weitzel@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UY7YA-0007Tv-3D
+ for barebox@lists.infradead.org; Fri, 03 May 2013 04:24:51 +0000
+Date: Fri, 3 May 2013 06:24:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130503042426.GS32299@pengutronix.de>
+References: <1367485632-10725-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1367485632-10725-2-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1367485632-10725-2-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,111 +19,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] omap4-fb: use uncached screen_base
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH RFC 1/2] bootm: Simplify initrd address handling
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-If the buffer is cached the image on the LCD is broken. Only some small
-lines on the last rows. Flushing the cache "repairs" the image.
+On Thu, May 02, 2013 at 11:07:11AM +0200, Uwe Kleine-K=F6nig wrote:
+> 	data.initrd_address =3D UIMAGE_SOME_ADDRESS;
+> 	...
+> 	if (-L was given to bootm)
+> 		data.initrd_address =3D address_provided_to_-L;
+> 	...
+> 	if (initrd is provided as uInitrd && data.initrd_address =3D=3D UIMAGE_S=
+OME_ADDRESS)
+> 		data.initrd_address =3D load_address_from_uInitrd;
+> 	...
+> 	if (data.initrd_address =3D=3D UIMAGE_SOME_ADDRESS)
+> 		data.initrd_address =3D UIMAGE_INVALID_ADDRESS;
+> =
 
-Use remap_range for preallocated screen and dma_alloc_coherent for
-dynamic.
+> can be simplified to:
+> =
 
-based on '[PATCH] omap4-fb: add driver' could be squashed in.
+> 	data.initrd_address =3D UIMAGE_INVALID_ADDRESS;
+> 	...
+> 	if (-L was given to bootm)
+> 		data.initrd_address =3D address_provided_to_-L;
+> 	...
+> 	if (initrd is provided as uInitrd && data.initrd_address =3D=3D UIMAGE_I=
+NVALID_ADDRESS)
+> 		data.initrd_address =3D load_address_from_uInitrd;
+> 	...
+> =
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- drivers/video/omap4.c |   32 +++++++++++++++++++++++++-------
- 1 files changed, 25 insertions(+), 7 deletions(-)
+> The only change introduced by this simplification is for cases where the
+> user passes -L UIMAGE_SOME_ADDRESS or -L UIMAGE_INVALID_ADDRESS to
+> bootm. (-L UIMAGE_SOME_ADDRESS is now used literally instead of ignored
+> before. -L UIMAGE_INVALID_ADDRESS used to skip getting the
+> initrd-address from the uInitrd, now the uInitrd address is honored.)
 
-diff --git a/drivers/video/omap4.c b/drivers/video/omap4.c
-index 5642f25..f510cb3 100644
---- a/drivers/video/omap4.c
-+++ b/drivers/video/omap4.c
-@@ -32,6 +32,8 @@
- #include <mach/omap4-silicon.h>
- #include <mach/omap4-fb.h>
- 
-+#include <asm/mmu.h>
-+
- #include "omap4.h"
- 
- struct omap4fb_device {
-@@ -63,7 +65,7 @@ struct omap4fb_device {
- 		unsigned int lckd;
- 		unsigned int pckd;
- 	} divisor;
--
-+	size_t dma_size;
- 	void (*enable_fn)(int);
- 
- 	struct fb_videomode	video_modes[];
-@@ -133,10 +135,12 @@ static void omap4fb_disable(struct fb_info *info)
- 		 ~(DSS_DISPC_VIDn_ATTRIBUTES_VIDENABLE),
- 		 &dispc->vid1.attributes);
- 
--	if (fbi->prealloc_screen.addr == NULL)
-+	if (fbi->prealloc_screen.addr == NULL) {
- 		/* free frame buffer; but only when screen is not
- 		 * preallocated */
--		free(info->screen_base);
-+		if (info->screen_base)
-+			dma_free_coherent(info->screen_base, fbi->dma_size);
-+	}
- 
- 	info->screen_base = NULL;
- 
-@@ -285,15 +289,20 @@ static int omap4fb_activate_var(struct fb_info *info)
- 		goto out;
- 	}
- 
-+	/*Free old screen buf*/
-+	if (!fbi->prealloc_screen.addr && info->screen_base)
-+		dma_free_coherent(info->screen_base, fbi->dma_size);
-+
-+	fbi->dma_size = PAGE_ALIGN(size);
-+
- 	if (fbi->prealloc_screen.addr == NULL) {
- 		/* case 1: no preallocated screen */
--		free(info->screen_base);
--		info->screen_base = memalign(0x100, size);
--	} else if (fbi->prealloc_screen.size < size) {
-+		info->screen_base = dma_alloc_coherent(size);
-+	} else if (fbi->prealloc_screen.size < fbi->dma_size) {
- 		/* case 2: preallocated screen, but too small */
- 		dev_err(fbi->dev,
- 			"allocated framebuffer too small (%zu < %zu)\n",
--			fbi->prealloc_screen.size, size);
-+			fbi->prealloc_screen.size, fbi->dma_size);
- 		rc = -ENOMEM;
- 		goto out;
- 	} else {
-@@ -486,9 +495,18 @@ static int omap4fb_probe(struct device_d *dev)
- 	info->bits_per_pixel = pdata->bpp;
- 
- 	if (pdata->screen) {
-+		if (!IS_ALIGNED(pdata->screen->start, PAGE_SIZE) ||
-+		    !IS_ALIGNED(resource_size(pdata->screen), PAGE_SIZE)) {
-+			dev_err(dev, "screen resource not aligned\n");
-+			rc = -EINVAL;
-+			goto out;
-+		}
- 		fbi->prealloc_screen.addr =
- 				(void __iomem *)pdata->screen->start;
- 		fbi->prealloc_screen.size = resource_size(pdata->screen);
-+		remap_range(fbi->prealloc_screen.addr,
-+			fbi->prealloc_screen.size,
-+			mmu_get_pte_uncached_flags());
- 	}
- 
- 	omap4fb_reset(fbi);
--- 
-1.7.0.4
+And now I remember why I did that in the first place. It was to be able
+to explicitly ignore a uInitrd load address from an image. Anyway, since
+we ignore this address in any case with the next patch these patches are
+ok.
 
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
