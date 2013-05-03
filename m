@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UYJDI-0004DM-3o
- for barebox@lists.infradead.org; Fri, 03 May 2013 16:52:04 +0000
+ id 1UYJDD-0004Cj-3g
+ for barebox@lists.infradead.org; Fri, 03 May 2013 16:52:00 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Fri,  3 May 2013 18:51:11 +0200
-Message-Id: <1367599871-28479-8-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Fri,  3 May 2013 18:51:10 +0200
+Message-Id: <1367599871-28479-7-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,113 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] arm: add basic support for the Armada XP GP platform
+Subject: [PATCH 6/7] arm: add basic support for the Armada 370 Mirabox platform
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-The Armada XP GP platform is an evaluation platform designed by
-Marvell, that uses the MV78460 quad-core SoC from the Armada XP
-family.
+The Mirabox is a platform manufactured by Globalscale, and based on
+the Marvell Armada 370 SoC.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
  arch/arm/Makefile                                  |    1 +
- arch/arm/boards/marvell-armada-xp-gp/Makefile      |    2 ++
- arch/arm/boards/marvell-armada-xp-gp/config.h      |    4 ++++
- arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg  |    8 +++++++
- arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    |   25 ++++++++++++++++++++
- .../marvell-armada-xp-gp/marvell-armada-xp-gp.c    |   25 ++++++++++++++++++++
- arch/arm/configs/marvell_armada_xp_gp_defconfig    |   10 ++++++++
+ arch/arm/boards/globalscale-mirabox/Makefile       |    2 ++
+ arch/arm/boards/globalscale-mirabox/config.h       |    4 +++
+ .../globalscale-mirabox/globalscale-mirabox.c      |   26 ++++++++++++++++++++
+ arch/arm/boards/globalscale-mirabox/kwbimage.cfg   |    8 ++++++
+ arch/arm/boards/globalscale-mirabox/lowlevel.c     |   26 ++++++++++++++++++++
+ arch/arm/configs/globalscale_mirabox_defconfig     |    8 ++++++
  arch/arm/mach-mvebu/Kconfig                        |    5 ++++
  8 files changed, 80 insertions(+)
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/Makefile
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/config.h
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
- create mode 100644 arch/arm/configs/marvell_armada_xp_gp_defconfig
+ create mode 100644 arch/arm/boards/globalscale-mirabox/Makefile
+ create mode 100644 arch/arm/boards/globalscale-mirabox/config.h
+ create mode 100644 arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c
+ create mode 100644 arch/arm/boards/globalscale-mirabox/kwbimage.cfg
+ create mode 100644 arch/arm/boards/globalscale-mirabox/lowlevel.c
+ create mode 100644 arch/arm/configs/globalscale_mirabox_defconfig
 
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index e6604b4..5ac1765 100644
+index ad8b355..e6604b4 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -106,6 +106,7 @@ board-$(CONFIG_MACH_HIGHBANK)			:= highbank
+@@ -101,6 +101,7 @@ board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		:= eukrea_cpuimx51
+ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
+ board-$(CONFIG_MACH_GE863)			:= telit-evk-pro3
++board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)        := globalscale-mirabox
+ board-$(CONFIG_MACH_HIGHBANK)			:= highbank
  board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
  board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
- board-$(CONFIG_MACH_IMX233_OLINUXINO)	:= imx233-olinuxino
-+board-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)	:= marvell-armada-xp-gp
- board-$(CONFIG_MACH_MIOA701)			:= mioa701
- board-$(CONFIG_MACH_MMCCPU)			:= mmccpu
- board-$(CONFIG_MACH_NOMADIK_8815NHK)		:= nhk8815
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/Makefile b/arch/arm/boards/marvell-armada-xp-gp/Makefile
+diff --git a/arch/arm/boards/globalscale-mirabox/Makefile b/arch/arm/boards/globalscale-mirabox/Makefile
 new file mode 100644
-index 0000000..ea89963
+index 0000000..bd5d47e
 --- /dev/null
-+++ b/arch/arm/boards/marvell-armada-xp-gp/Makefile
++++ b/arch/arm/boards/globalscale-mirabox/Makefile
 @@ -0,0 +1,2 @@
-+obj-y = marvell-armada-xp-gp.o
++obj-y = globalscale-mirabox.o
 +lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/config.h b/arch/arm/boards/marvell-armada-xp-gp/config.h
+diff --git a/arch/arm/boards/globalscale-mirabox/config.h b/arch/arm/boards/globalscale-mirabox/config.h
 new file mode 100644
 index 0000000..ca15136
 --- /dev/null
-+++ b/arch/arm/boards/marvell-armada-xp-gp/config.h
++++ b/arch/arm/boards/globalscale-mirabox/config.h
 @@ -0,0 +1,4 @@
 +#ifndef __CONFIG_H
 +#define __CONFIG_H
 +
 +#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg b/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
+diff --git a/arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c b/arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c
 new file mode 100644
-index 0000000..9562633
+index 0000000..b8f4bff
 --- /dev/null
-+++ b/arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
-@@ -0,0 +1,8 @@
-+VERSION 1
-+BOOT_FROM uart
-+DESTADDR 00000000
-+EXECADDR 00000000
-+NAND_BLKSZ 00000000
-+NAND_BADBLK_LOCATION 00
-+BINARY binary.0 0000005b 00000068
-+PAYLOAD barebox.bin
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c b/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
-new file mode 100644
-index 0000000..e9b2e30
---- /dev/null
-+++ b/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <mach/mvebu.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+
-+void __naked barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	mvebu_barebox_entry();
-+}
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c b/arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
-new file mode 100644
-index 0000000..7351329
---- /dev/null
-+++ b/arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
-@@ -0,0 +1,25 @@
++++ b/arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c
+@@ -0,0 +1,26 @@
 +/*
 + * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 + *
@@ -145,23 +99,68 @@ index 0000000..7351329
 +
 +#include <common.h>
 +#include <init.h>
++#include <sizes.h>
 +#include <mach/mvebu.h>
 +
-+static int marvell_armada_xp_gp_console_init(void)
++static int globalscale_mirabox_console_init(void)
 +{
 +	return mvebu_add_uart0();
 +}
 +
-+console_initcall(marvell_armada_xp_gp_console_init);
-diff --git a/arch/arm/configs/marvell_armada_xp_gp_defconfig b/arch/arm/configs/marvell_armada_xp_gp_defconfig
++console_initcall(globalscale_mirabox_console_init);
+diff --git a/arch/arm/boards/globalscale-mirabox/kwbimage.cfg b/arch/arm/boards/globalscale-mirabox/kwbimage.cfg
 new file mode 100644
-index 0000000..5a7ef52
+index 0000000..c83bf92
 --- /dev/null
-+++ b/arch/arm/configs/marvell_armada_xp_gp_defconfig
-@@ -0,0 +1,10 @@
++++ b/arch/arm/boards/globalscale-mirabox/kwbimage.cfg
+@@ -0,0 +1,8 @@
++VERSION 1
++BOOT_FROM uart
++DESTADDR 2000000
++EXECADDR 2000000
++NAND_BLKSZ 00020000
++NAND_BADBLK_LOCATION 01
++BINARY binary.0 0000005b 00000068
++PAYLOAD barebox.bin
+diff --git a/arch/arm/boards/globalscale-mirabox/lowlevel.c b/arch/arm/boards/globalscale-mirabox/lowlevel.c
+new file mode 100644
+index 0000000..3ca202e
+--- /dev/null
++++ b/arch/arm/boards/globalscale-mirabox/lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/mvebu.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	mvebu_barebox_entry();
++}
+diff --git a/arch/arm/configs/globalscale_mirabox_defconfig b/arch/arm/configs/globalscale_mirabox_defconfig
+new file mode 100644
+index 0000000..ed9d94d
+--- /dev/null
++++ b/arch/arm/configs/globalscale_mirabox_defconfig
+@@ -0,0 +1,8 @@
 +CONFIG_ARCH_MVEBU=y
-+CONFIG_ARCH_ARMADA_XP=y
-+CONFIG_MACH_MARVELL_ARMADA_XP_GP=y
 +CONFIG_AEABI=y
 +CONFIG_DEBUG_LL=y
 +CONFIG_CMD_LOADY=y
@@ -170,32 +169,31 @@ index 0000000..5a7ef52
 +CONFIG_CMD_CLK=y
 +CONFIG_DRIVER_SERIAL_NS16550=y
 diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 8489335..e553e2d 100644
+index 9196251..8489335 100644
 --- a/arch/arm/mach-mvebu/Kconfig
 +++ b/arch/arm/mach-mvebu/Kconfig
-@@ -4,10 +4,12 @@ config ARCH_TEXT_BASE
+@@ -3,9 +3,11 @@ if ARCH_MVEBU
+ config ARCH_TEXT_BASE
  	hex
  	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
- 	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
-+	default 0x2000000 if MACH_MARVELL_ARMADA_XP_GP
++	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
  
  config BOARDINFO
  	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
- 	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
-+	default "Marvell Armada XP GP" if MACH_MARVELL_ARMADA_XP_GP
++	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
  
  choice
  	prompt "Marvell EBU Processor"
-@@ -42,6 +44,9 @@ choice
- config MACH_PLATHOME_OPENBLOCKS_AX3
- 	bool "PlatHome OpenBlocks AX3"
+@@ -25,6 +27,9 @@ if ARCH_ARMADA_370
+ choice
+ 	prompt "Armada 370 Board Type"
  
-+config MACH_MARVELL_ARMADA_XP_GP
-+	bool "Marvell Armada XP GP"
++config MACH_GLOBALSCALE_MIRABOX
++	bool "Globalscale Mirabox"
 +
  endchoice
  
- endif # ARCH_ARMADA_XP
+ endif # ARCH_ARMADA_370
 -- 
 1.7.9.5
 
