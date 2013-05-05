@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UYsd7-00061W-L5
- for barebox@lists.infradead.org; Sun, 05 May 2013 06:41:06 +0000
-Date: Sun, 5 May 2013 08:40:39 +0200
+ id 1UYsuv-00064Z-Jl
+ for barebox@lists.infradead.org; Sun, 05 May 2013 06:59:30 +0000
+Date: Sun, 5 May 2013 08:59:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130505064039.GY32299@pengutronix.de>
+Message-ID: <20130505065907.GZ32299@pengutronix.de>
 References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130504195125.GJ13393@game.jcrosoft.org>
- <20130504203213.GS31290@titan.lakedaemon.net>
+ <1367599871-28479-6-git-send-email-thomas.petazzoni@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130504203213.GS31290@titan.lakedaemon.net>
+In-Reply-To: <1367599871-28479-6-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
- SoC boot images
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH 5/7] arm: add basic support for Armada XP OpenBlocks AX3
+ platform
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On Sat, May 04, 2013 at 04:32:13PM -0400, Jason Cooper wrote:
-> On Sat, May 04, 2013 at 09:51:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 18:51 Fri 03 May     , Thomas Petazzoni wrote:
-> > > The Marvell EBU SoCs (Kirkwood, Armada 370, Armada XP) have a BootROM
-> > > that understand a specific image format, composed of a main header,
-> > > several extension headers and a paylod. This image can be booted from
-> > > NAND, SPI, SATA, UART, NOR, etc.
-> > > 
-> > > This patch adds a tool that allows to extract the components and
-> > > configuration of existing images, and to create new images.
-> > 
-> > I don't like this
-> 
-> Why?
-> 
-> > please as on imx in barebox directly
-> 
-> what?  Could you please explain?
+On Fri, May 03, 2013 at 06:51:09PM +0200, Thomas Petazzoni wrote:
+> diff --git a/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
+> new file mode 100644
+> index 0000000..0ae1efd
+> --- /dev/null
+> +++ b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
+> @@ -0,0 +1,8 @@
+> +VERSION 1
+> +BOOT_FROM spi
+> +DESTADDR 00000000
+> +EXECADDR 00000000
+> +NAND_BLKSZ 00000000
+> +NAND_BADBLK_LOCATION 00
+> +BINARY binary.0 0000005b 00000068
+> +PAYLOAD barebox.bin
 
-I can only guess that he means that he doesn't want to have a separate
-tool for generating images but instead wants to generate the images
-using C structures in the original binary like we do on i.MX currently.
-Anyway, what we do on i.MX doesn't really scale anymore since the more
-complicated features of the image format can't be used with C
-structures. I'm working on replacing this with a imx-image tool.
-You seem to use checksums in your images. These can't be generated
-in C or CPP anyway.
+I think the payload file should be configurable on the commandline of
+the kwbimage tool. When using compressed images the filename would be
+zbarebox.bin for example.
 
 Sascha
 
