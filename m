@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZLaH-0004VQ-2F
- for barebox@lists.infradead.org; Mon, 06 May 2013 13:36:06 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon,  6 May 2013 17:35:39 +0400
-Message-Id: <1367847339-28363-1-git-send-email-shc_work@mail.ru>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UZLrt-0004lT-M6
+ for barebox@lists.infradead.org; Mon, 06 May 2013 13:54:18 +0000
+Date: Mon, 6 May 2013 15:53:52 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130506155352.15f23d3a@skate>
+In-Reply-To: <20130505111927.GK13393@game.jcrosoft.org>
+References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
+ <20130504195125.GJ13393@game.jcrosoft.org>
+ <20130504203213.GS31290@titan.lakedaemon.net>
+ <20130505111927.GK13393@game.jcrosoft.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,79 +21,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: pcm038: Add support for USB OTG device
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
+ SoC boot images
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Willy Tarreau <w@1wt.eu>
 
+Dear Jean-Christophe PLAGNIOL-VILLARD,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/boards/pcm038/pcm038.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+On Sun, 5 May 2013 13:19:27 +0200, Jean-Christophe PLAGNIOL-VILLARD
+wrote:
 
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 4b2fa6c..3aec320 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -48,6 +48,7 @@
- 
- #define PCM038_GPIO_FEC_RST	(GPIO_PORTC + 30)
- #define PCM038_GPIO_SPI_CS0	(GPIO_PORTD + 28)
-+#define PCM038_GPIO_OTG_STP	(GPIO_PORTE + 1)
- 
- static struct fec_platform_data fec_info = {
- 	.xcv_type = PHY_INTERFACE_MODE_MII,
-@@ -186,6 +187,11 @@ static int pcm038_power_init(void)
- 	return 0;
- }
- 
-+struct imxusb_platformdata pcm038_otg_pdata = {
-+	.mode	= IMX_USB_MODE_DEVICE,
-+	.flags	= MXC_EHCI_MODE_ULPI | MXC_EHCI_INTERFACE_DIFF_UNI,
-+};
-+
- static int pcm038_devices_init(void)
- {
- 	int i;
-@@ -253,7 +259,7 @@ static int pcm038_devices_init(void)
- 		PA29_PF_VSYNC,
- 		PA30_PF_CONTRAST,
- 		PA31_PF_OE_ACD,
--		/* OTG host */
-+		/* USB OTG */
- 		PC7_PF_USBOTG_DATA5,
- 		PC8_PF_USBOTG_DATA6,
- 		PC9_PF_USBOTG_DATA0,
-@@ -262,7 +268,7 @@ static int pcm038_devices_init(void)
- 		PC12_PF_USBOTG_DATA4,
- 		PC13_PF_USBOTG_DATA3,
- 		PE0_PF_USBOTG_NXT,
--		PE1_PF_USBOTG_STP,
-+		PCM038_GPIO_OTG_STP | GPIO_GPIO | GPIO_OUT,
- 		PE2_PF_USBOTG_DIR,
- 		PE24_PF_USBOTG_CLK,
- 		PE25_PF_USBOTG_DATA7,
-@@ -308,6 +314,13 @@ static int pcm038_devices_init(void)
- 	gpio_set_value(PCM038_GPIO_FEC_RST, 1);
- 	imx27_add_fec(&fec_info);
- 
-+	/* Apply delay for STP line to stop ULPI */
-+	gpio_direction_output(PCM038_GPIO_OTG_STP, 1);
-+	mdelay(1);
-+	imx_gpio_mode(PE1_PF_USBOTG_STP);
-+
-+	imx27_add_usbotg(&pcm038_otg_pdata);
-+
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_NAND:
- 		devfs_add_partition("nand0", 0x00000, 0x80000,
+> > > > This patch adds a tool that allows to extract the components and
+> > > > configuration of existing images, and to create new images.
+> > > 
+> > > I don't like this
+> > 
+> > Why?
+> to geneate a simple header do it in C not with a tools
+
+Then it seems like you haven't read the code at all. The 'simple
+header' has the following properties:
+
+ * Is of variable length: it contains a main header, and an optional
+   arbitrary number of binary headers, security headers and register
+   headers.
+
+ * A 8-bit checksum that covers the entire size of headers. This cannot
+   be easily computed directly by compiling C code and using linker
+   scrips.
+
+ * A 32-bit checksum that covers the binary payload.
+
+ * The contents of the binary header are extracted from existing boot
+   images for Armada 370/XP platforms because this binary header
+   contains some DDR3 training code that I haven't worked on for now.
+   And since this binary header is cleanly isolated from the bootloader
+   itself, it is easier to re-use such binary code for now.
+
+The tool also allows to extract binary images, which is needed to
+extract the binary header mentioned above, and re-use when building a
+bootable image that includes Barebox.
+
+> read the imx code we do it in C and place it at the begenning of the binary so
+> no need such tools and we can use linker scirpt and CONFIG_xx
+> 
+> Stop to think u-boot here
+
+Could you please adopt a nicer language? You are very aggressive... and
+at that the same time completely wrong. Your comments make it entirely
+clear that you haven't even read the comments at the top of file.
+
+Thomas
 -- 
-1.8.1.5
-
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
