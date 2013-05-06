@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZRvs-0003UP-Hh
- for barebox@lists.infradead.org; Mon, 06 May 2013 20:22:48 +0000
-Date: Mon, 6 May 2013 22:22:23 +0200
+ id 1UZS60-0003eD-D8
+ for barebox@lists.infradead.org; Mon, 06 May 2013 20:33:17 +0000
+Date: Mon, 6 May 2013 22:32:52 +0200
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130506222223.7bd1412b@skate>
-In-Reply-To: <20130506191615.GO20989@pengutronix.de>
+Message-ID: <20130506223252.63ca0ae8@skate>
+In-Reply-To: <20130506192826.GP20989@pengutronix.de>
 References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130506191615.GO20989@pengutronix.de>
+ <20130506192826.GP20989@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,28 +22,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
- SoC boot images
+Subject: Re: [PATCH 0/7] Basic support for Marvell Armada 370/XP SoC
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
 Dear Sascha Hauer,
 
-On Mon, 6 May 2013 21:16:15 +0200, Sascha Hauer wrote:
+On Mon, 6 May 2013 21:28:26 +0200, Sascha Hauer wrote:
 
-> >  quiet_cmd_csingle	= CC      $@
-> > -      cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
-> > +      cmd_csingle	= $(CC)  -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
-> 
-> This is a whitespace change only, right? Please drop this.
+> So now I have the DDR3 training blob and the payload. I would then
+> replace the payload with barebox and call kwbimage again to generate
+> a new image, right?
 
-Correct, will fix in v2.
+Exact, that's what I'm doing for the moment: retrieve a u-boot.bin that
+is provided by the board vendor, or dump it somehow from the NAND or
+SPI flash of the board. In fact, this u-boot.bin is not just U-Boot,
+but it contains the header + the DDR3 training code. Once I have this
+image, I use the 'kwbimage -x' option to separate the configuration,
+the DDR3 binary blob and the payload. I just trash the payload, and
+using the configuration, the DDR3 binary blob, barebox.bin and
+'kwbimage -c', I create a new bootable image.
 
-(For the record, I think this white space change was due to me adding
--g to the CFLAGS of host tools in order to run the kwbimage tool under
-gdb).
+I am interested in writing documentation that explains how to do this,
+because this is not trivial, and I want Barebox users to be able to do
+this on their own. But I haven't really figured out where is the good
+place to document that: the Doxygen documentation has some
+board-specific documentation, but this problem is mostly SoC-family
+related. Just let me know where I can insert a documentation blurb
+about this, and I'll do it.
 
-Thanks for the review!
+> Just to understand what the problem here is: Am I right that we do not
+> have the source code for the DDR3 training code and that the code is not
+> GPL so that we can't distribute it with barebox?
+
+No, I don't have the source code for the DDR3 training code. Or more
+precisely, I have access to a very small part of it, but the largest
+part of it is just a binary .a library for which I don't have access to
+the source code, and even if I had, I doubt it would be licensed under
+the GPL.
+
+So, for now, this code is not available, and in any case not under a
+license that allows it to be distributed with Barebox. Long term, I'd
+like this to be possible, but it will require quite some work.
+
+In the mean time, I think the reason Marvell invented this "binary
+header" thing is precisely to avoid linking the DDR3 training code with
+the bootloader, so that the DDR3 training code can remain proprietary,
+while allowing users to use an GPL-licensed bootloader. I believe that
+what kwbimage does is just a mere aggregation of components, and not
+linking, and distributing the mere aggregation of a proprietary binary
+and GPL-licensed binary is allowed by the GPL license. Of course, IANAL.
+
+> Independently of this I repeat that adding a tool for the job of
+> generating images is the right way to go, at least when the images are
+> of a certain complexity which is the case here.
+
+Good to hear this confirmation, thanks.
+
+Best regards,
 
 Thomas
 -- 
