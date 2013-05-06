@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZFij-0007ns-H7
- for barebox@lists.infradead.org; Mon, 06 May 2013 07:20:26 +0000
-Date: Mon, 6 May 2013 09:20:00 +0200
+ id 1UZFmI-0007tb-Mm
+ for barebox@lists.infradead.org; Mon, 06 May 2013 07:24:07 +0000
+Date: Mon, 6 May 2013 09:23:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130506072000.GA32299@pengutronix.de>
-References: <1367739827-26855-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20130506072344.GB32299@pengutronix.de>
+References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <1367599871-28479-2-git-send-email-thomas.petazzoni@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1367739827-26855-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1367599871-28479-2-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +23,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clkdev: fix typo
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/7] scripts: allow lines longer than 80 cols with
+ printf() in checkpatch
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On Sun, May 05, 2013 at 11:43:47AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Fri, May 03, 2013 at 06:51:05PM +0200, Thomas Petazzoni wrote:
+> The checkpatch.pl script is also used to validate user-space code in
+> the scripts/ directory, so it should allow printf() lines to be longer
+> than 80 columns.
+> 
+> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Applied, thanks
+Applied this one for now. The rest of this series already looks really
+good so I think they can go in quite fast.
 
 Sascha
-
-> ---
->  drivers/clk/clkdev.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-> index 338b9e8..256927e 100644
-> --- a/drivers/clk/clkdev.c
-> +++ b/drivers/clk/clkdev.c
-> @@ -182,7 +182,7 @@ int clk_register_clkdev(struct clk *clk, const char *con_id,
->  	va_list ap;
->  
->  	if (IS_ERR(clk))
-> -                return PTR_ERR(clk);
-> +		return PTR_ERR(clk);
->  
->  	va_start(ap, dev_fmt);
->  	cl = clkdev_alloc(clk, con_id, dev_fmt, ap);
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
