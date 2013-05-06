@@ -1,26 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
- helo=mo2.mail-out.ovh.net)
+Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZM6a-00058V-D3
- for barebox@lists.infradead.org; Mon, 06 May 2013 14:09:29 +0000
-Received: from mail411.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 82AC0DC1132
- for <barebox@lists.infradead.org>; Mon,  6 May 2013 16:09:02 +0200 (CEST)
-Date: Mon, 6 May 2013 16:04:39 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130506140439.GM13393@game.jcrosoft.org>
+ id 1UZM6o-00058q-LF
+ for barebox@lists.infradead.org; Mon, 06 May 2013 14:09:43 +0000
+Date: Mon, 6 May 2013 16:09:16 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130506160916.04c7bfdc@skate>
+In-Reply-To: <1367599871-28479-5-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130504195125.GJ13393@game.jcrosoft.org>
- <20130504203213.GS31290@titan.lakedaemon.net>
- <20130505111927.GK13393@game.jcrosoft.org>
- <20130506155352.15f23d3a@skate>
- <20130506135435.GL13393@game.jcrosoft.org>
- <20130506160614.054b5e1a@skate>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130506160614.054b5e1a@skate>
+ <1367599871-28479-5-git-send-email-thomas.petazzoni@free-electrons.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -33,63 +22,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for
- Marvell SoC boot images
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Willy Tarreau <w@1wt.eu>
+Subject: Re: [PATCH 4/7] arm: initial support for Marvell Armada 370/XP SoCs
+To: Sascha Hauer <s.hauer@pengutronix.de>, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On 16:06 Mon 06 May     , Thomas Petazzoni wrote:
-> Dear Jean-Christophe PLAGNIOL-VILLARD,
-> 
-> On Mon, 6 May 2013 15:54:35 +0200, Jean-Christophe PLAGNIOL-VILLARD
-> wrote:
-> 
-> > > Could you please adopt a nicer language? You are very aggressive... and
-> > > at that the same time completely wrong. Your comments make it entirely
-> > > clear that you haven't even read the comments at the top of file.
-> > I did but still think we can handle it in C
-> > 
-> > and need to handle by barebox itself when flashing
-> 
-> The image is pushed to the target through X-modem, directly talking to
-> the ROM code of the SoC. Do you want the kwboot tool to prepare the
-> image? It seems to me like it makes a lot more sense to have a tool to
-> prepare the image.
+Sascha, Jean-Christophe,
 
-yes a you want to re-flash barebox itself and you will do for ddr and I do not
-want to care about all of this blob stuff twht the board already known
+I have one question below regarding the SoC code.
 
-> 
-> Remember also that this tool is needed to *extract* existing images.
-> And you haven't explained how you intend to do this without a proper
-> userspace tool such as kwbimage.
+On Fri,  3 May 2013 18:51:08 +0200, Thomas Petazzoni wrote:
+> +static inline void mvebu_memory_find(unsigned long *phys_base,
+> +				     unsigned long *phys_size)
+> +{
+> +	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
+> +	int cs;
 
-why extract?
 
-you generated at runtime
+Here...
 
-> 
-> And by the way, the tool is a simple userspace tool written entirely in
-> C, I'm not sure to see where the problem is.
-> 
-> Quoting Sascha, an e-mail for this thread:
-> 
-> """
-> Anyway, what we do on i.MX doesn't really scale anymore since the more
-> complicated features of the image format can't be used with C
-> structures. I'm working on replacing this with a imx-image tool.
-> You seem to use checksums in your images. These can't be generated
-> in C or CPP anyway.
-> """
-> 
-> Thanks,
-> 
-> Thomas
-> -- 
-> Thomas Petazzoni, Free Electrons
-> Kernel, drivers, real-time and embedded Linux
-> development, consulting, training and support.
-> http://free-electrons.com
+> +	*phys_base = ~0;
+> +	*phys_size = 0;
+> +
+> +	for (cs = 0; cs < 4; cs++) {
+> +		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
+> +		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
+
+... here ...
+
+
+> +#if defined(CONFIG_ARCH_ARMADA_370)
+> +static int mvebu_init_clocks(void)
+> +{
+> +	uint32_t val;
+> +	unsigned int rate;
+> +	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
+> +
+> +	val = readl(sar);
+
+... and here, I'm directly poking at physical addresses, but it seems
+like Barebox can run with the MMU enabled. Should I be mapping those
+registers before accessing them? I see that drivers use
+dev_request_mem_region(), but this clock and memory code isn't (yet?) a
+driver per-se.
+
+Thanks,
+
+Thomas
+-- 
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
