@@ -1,28 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
- helo=mo5.mail-out.ovh.net)
+Received: from 1wt.eu ([62.212.114.60])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZRKH-0002oT-Iy
- for barebox@lists.infradead.org; Mon, 06 May 2013 19:43:58 +0000
-Received: from mail414.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 382D7FF9823
- for <barebox@lists.infradead.org>; Mon,  6 May 2013 21:43:36 +0200 (CEST)
-Date: Mon, 6 May 2013 21:39:13 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130506193913.GB30509@game.jcrosoft.org>
-References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130504195125.GJ13393@game.jcrosoft.org>
- <20130504203213.GS31290@titan.lakedaemon.net>
- <20130505111927.GK13393@game.jcrosoft.org>
- <20130506155352.15f23d3a@skate>
- <20130506135435.GL13393@game.jcrosoft.org>
- <20130506160614.054b5e1a@skate>
- <20130506140439.GM13393@game.jcrosoft.org>
- <20130506142115.GU31290@titan.lakedaemon.net>
-MIME-Version: 1.0
+ id 1UZRUQ-00030G-O6
+ for barebox@lists.infradead.org; Mon, 06 May 2013 19:54:27 +0000
+Date: Mon, 6 May 2013 21:53:59 +0200
+From: Willy Tarreau <w@1wt.eu>
+Message-ID: <20130506195359.GK22505@1wt.eu>
+References: <20130504203213.GS31290@titan.lakedaemon.net>
+ <20130505111927.GK13393@game.jcrosoft.org> <20130506155352.15f23d3a@skate>
+ <20130506135435.GL13393@game.jcrosoft.org> <20130506160614.054b5e1a@skate>
+ <20130506140439.GM13393@game.jcrosoft.org> <20130506161329.74d58c37@skate>
+ <20130506141447.GO13393@game.jcrosoft.org> <20130506143113.GB22505@1wt.eu>
+ <20130506193422.GA30509@game.jcrosoft.org>
+Mime-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130506142115.GU31290@titan.lakedaemon.net>
+In-Reply-To: <20130506193422.GA30509@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -35,58 +27,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for
- Marvell SoC boot images
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
+ SoC boot images
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Jason Cooper <jason@lakedaemon.net>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, barebox@lists.infradead.org
 
-On 10:21 Mon 06 May     , Jason Cooper wrote:
-> On Mon, May 06, 2013 at 04:04:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 16:06 Mon 06 May     , Thomas Petazzoni wrote:
-> > > Dear Jean-Christophe PLAGNIOL-VILLARD,
-> > > 
-> > > On Mon, 6 May 2013 15:54:35 +0200, Jean-Christophe PLAGNIOL-VILLARD
-> > > wrote:
-> > > 
-> > > > > Could you please adopt a nicer language? You are very aggressive... and
-> > > > > at that the same time completely wrong. Your comments make it entirely
-> > > > > clear that you haven't even read the comments at the top of file.
-> > > > I did but still think we can handle it in C
-> > > > 
-> > > > and need to handle by barebox itself when flashing
-> > > 
-> > > The image is pushed to the target through X-modem, directly talking to
-> > > the ROM code of the SoC. Do you want the kwboot tool to prepare the
-> > > image? It seems to me like it makes a lot more sense to have a tool to
-> > > prepare the image.
+On Mon, May 06, 2013 at 09:34:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > This is the barebox update that will ensure a binary is correct before
+> > > flashing and can only request barebox and not the blob stuff to udpate itself
 > > 
-> > yes a you want to re-flash barebox itself and you will do for ddr and I do not
-> > want to care about all of this blob stuff twht the board already known
+> > I have read your comments as well and still don't understand what you want
+> > to explain. I think it would be more productive to spend the time to write
+> > real sentences and detailed explanations. Right now you're only in the
+> > "no thanks" mode and it's very hard to understand your concerns.
 > > 
-> > > 
-> > > Remember also that this tool is needed to *extract* existing images.
-> > > And you haven't explained how you intend to do this without a proper
-> > > userspace tool such as kwbimage.
-> > 
-> > why extract?
+> > You can't blame people for not understanding you when you are the one who
+> > has difficulties explaining basic things in public.
+> so read the code of barebox before speaking
 > 
-> Because you *received* the blob over xmodem from the SoC.  It came from
-> the factory that way.  You need to take it apart to get the DDR info and
-> the stock bootloader blob.  Think of this as a tool to assist board
-> hackers when the mfgr doesn't have the time/experience to help the open
-> source community.
-This will only work if you known the DDR which is a huge suposition.
+> when I mention barebox update is a specific part of the code, if you do not
+> read the code you can not understand what I talk about. So no I'll not spend
+> time to explain you code that you did not read.
 
-When porting barebox on new hardware this will not help at all
+Then I think we're speaking about two different thing which might be the reason
+for your misunderstanding. In order to get the bootloader run on these chips,
+you *need* the DDR3 training code. So whatever is in the bootloader update code
+is irrelevant at this step as it will not be used at all yet.
 
-so not this tool can not be the default tool generate fashable images
+> > > > Have you read Sascha comment?
+> > > Yes you do not read what I write. I write *runtime* not *compiling* time
+> > 
+> > But for runtime to work, you need to boot at least once. The concern here
+> > is to get it to boot the first time, and for this, extracting the binary
+> > blob is needed.
 > 
-> Since a separate tool is needed to do this, it makes sense to have the
-> same code perform the packing as well.  As opposed to the CPP.
-> 
-> hth,
-> 
-> Jason.
+> No, it's not.
+> It's to simplify the job of hacker.
+> Not mandatory.
+
+No, it's to get the CPU to boot and to accept to load the boot loader. Period.
+
+> And it's does not require you to generate the image before flashing.
+> And request the blob by XMODEM will NEVER work to update at runtime as can not
+> discuss with the ROM code via XMODEM. So yes this will not work for self
+> update
+
+You seem to be assuming that the bootloader is already running fine on the
+box, which is not the case that Thomas has addressed. In order to *flash*
+the bootloader to the device, you need that DDR3 code to be *executed*, and
+if you had read his cover mail carefully, you'd have seen that this happens
+*during* the XMODEM upload sequence (hence the changes to kwboot to protect
+the upload while this code talks to the serial port). It's painful but that's
+how it works, and once you get it after all it's rather flexible in the end.
+
+So please don't use your update code as an argument as it's not the interesting
+part here.
+
+Thank you,
+Willy
+
 
 _______________________________________________
 barebox mailing list
