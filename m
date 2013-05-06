@@ -1,15 +1,27 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from 6.mo5.mail-out.ovh.net ([178.32.119.138]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZS60-0003eD-D8
- for barebox@lists.infradead.org; Mon, 06 May 2013 20:33:17 +0000
-Date: Mon, 6 May 2013 22:32:52 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130506223252.63ca0ae8@skate>
-In-Reply-To: <20130506192826.GP20989@pengutronix.de>
-References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130506192826.GP20989@pengutronix.de>
-Mime-Version: 1.0
+ id 1UZSCw-00043O-Ni
+ for barebox@lists.infradead.org; Mon, 06 May 2013 20:40:27 +0000
+Received: from mail414.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 9FB35FF956E
+ for <barebox@lists.infradead.org>; Mon,  6 May 2013 22:40:04 +0200 (CEST)
+Date: Mon, 6 May 2013 22:35:40 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130506203540.GC30509@game.jcrosoft.org>
+References: <20130506155352.15f23d3a@skate>
+ <20130506135435.GL13393@game.jcrosoft.org>
+ <20130506160614.054b5e1a@skate>
+ <20130506140439.GM13393@game.jcrosoft.org>
+ <20130506161329.74d58c37@skate>
+ <20130506141447.GO13393@game.jcrosoft.org>
+ <20130506143113.GB22505@1wt.eu>
+ <20130506193422.GA30509@game.jcrosoft.org>
+ <20130506195359.GK22505@1wt.eu> <20130506222104.7ea22be0@skate>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130506222104.7ea22be0@skate>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,71 +34,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/7] Basic support for Marvell Armada 370/XP SoC
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for
+ Marvell SoC boot images
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Jason Cooper <jason@lakedaemon.net>
 
-Dear Sascha Hauer,
+On 22:21 Mon 06 May     , Thomas Petazzoni wrote:
+> Hello,
+> 
+> On Mon, 6 May 2013 21:53:59 +0200, Willy Tarreau wrote:
+> 
+> > > And it's does not require you to generate the image before flashing.
+> > > And request the blob by XMODEM will NEVER work to update at runtime
+> > > as can not discuss with the ROM code via XMODEM. So yes this will
+> > > not work for self update
+> > 
+> > You seem to be assuming that the bootloader is already running fine
+> > on the box, which is not the case that Thomas has addressed. In order
+> > to *flash* the bootloader to the device, you need that DDR3 code to
+> > be *executed*, and if you had read his cover mail carefully, you'd
+> > have seen that this happens *during* the XMODEM upload sequence
+> > (hence the changes to kwboot to protect the upload while this code
+> > talks to the serial port). It's painful but that's how it works, and
+> > once you get it after all it's rather flexible in the end.
+> > 
+> > So please don't use your update code as an argument as it's not the
+> > interesting part here.
+> 
+> Just to expand on what Willy explains: the bootable image contains
+> essentially 3 things:
+> 
+>  * A header describing the image
+>  * A binary header that contains the binary blob responsible for
+>    calculating the DDR3 timings
+>  * The payload, which in our case is Barebox.
+> 
+> When the ROM code sees a bootable image on SPI/NAND, or receives it
+> through Xmodem, it sets up the MMU, initializes the L2 cache as SRAM,
+> and it copies the header of the image (including the binary header)
+> into the SRAM. At this point, it *stops* getting data from Xmodem, and
+> executes the binary blob to configure the DDR3. Then, it goes on to
+> fetch the rest of the image (i.e the payload) and pushes that directly
+> to the DRAM, at an address defined in the header of the image. So the
+> DDR3 training code actually gets executed in the *middle* of the Xmodem
+> transfer, and the Xmodem transfer cannot continue if the DDR3 timings
+> have not been set up properly by the binary blob.
+Same principle as on Atmel when you flash via XMODEM or USB Device
 
-On Mon, 6 May 2013 21:28:26 +0200, Sascha Hauer wrote:
+This does not means you need to generate any specific media file
+> 
+> So, when you have in front of your eyes a device with *nothing* on it,
+> then you *must* have an image as prepared by kwbimage, that contains
+> those three elements: the header, the binary blob, and the payload, and
+> you must use the kwboot tool to push it through Xmodem to the SoC.
+> 
+> For self-update, there is no problem: the same kwbimage tool can
+> generate either an image that boots from UART, SPI, NAND or SATA. So
+> you can simply flash the generated image wherever you want on a SPI
+> flash or NAND flash, reboot and that's it. The image needs to be
+> slightly different depending on the boot media, but that's really
+> because the Marvell ROM code insists in the image having a 'blockid',
+> which identifies on which boot media the image is stored.
 
-> So now I have the DDR3 training blob and the payload. I would then
-> replace the payload with barebox and call kwbimage again to generate
-> a new image, right?
+this is where it's wrong, you does not need such binary at all, barebox update
+will handle this by himself and will never requiere one image per media
 
-Exact, that's what I'm doing for the moment: retrieve a u-boot.bin that
-is provided by the board vendor, or dump it somehow from the NAND or
-SPI flash of the board. In fact, this u-boot.bin is not just U-Boot,
-but it contains the header + the DDR3 training code. Once I have this
-image, I use the 'kwbimage -x' option to separate the configuration,
-the DDR3 binary blob and the payload. I just trash the payload, and
-using the configuration, the DDR3 binary blob, barebox.bin and
-'kwbimage -c', I create a new bootable image.
+As barebox does not care wheren it boot from or where the dev is stored. we
+choose is at runtime not at compile time
 
-I am interested in writing documentation that explains how to do this,
-because this is not trivial, and I want Barebox users to be able to do
-this on their own. But I haven't really figured out where is the good
-place to document that: the Doxygen documentation has some
-board-specific documentation, but this problem is mostly SoC-family
-related. Just let me know where I can insert a documentation blurb
-about this, and I'll do it.
+Barebox update will generate the correct image for the storagemedia at
+runtime
+> 
+> Jean-Christophe, I think you should have a serious look at the boot
+> process of Marvell SoC before aggressively telling everybody that they
+> are wrong. It's not because you know how AT91 and i.MX are booting that
+> you necessarily know the specificities of Marvell SoCs. Remember also
+> that the Marvell Armada 370 and XP have a different booting process than
+> Marvell Kirkwood (Marvell Kirkwood does not have this mechanism of
+> binary blob).
 
-> Just to understand what the problem here is: Am I right that we do not
-> have the source code for the DDR3 training code and that the code is not
-> GPL so that we can't distribute it with barebox?
-
-No, I don't have the source code for the DDR3 training code. Or more
-precisely, I have access to a very small part of it, but the largest
-part of it is just a binary .a library for which I don't have access to
-the source code, and even if I had, I doubt it would be licensed under
-the GPL.
-
-So, for now, this code is not available, and in any case not under a
-license that allows it to be distributed with Barebox. Long term, I'd
-like this to be possible, but it will require quite some work.
-
-In the mean time, I think the reason Marvell invented this "binary
-header" thing is precisely to avoid linking the DDR3 training code with
-the bootloader, so that the DDR3 training code can remain proprietary,
-while allowing users to use an GPL-licensed bootloader. I believe that
-what kwbimage does is just a mere aggregation of components, and not
-linking, and distributing the mere aggregation of a proprietary binary
-and GPL-licensed binary is allowed by the GPL license. Of course, IANAL.
-
-> Independently of this I repeat that adding a tool for the job of
-> generating images is the right way to go, at least when the images are
-> of a certain complexity which is the case here.
-
-Good to hear this confirmation, thanks.
-
-Best regards,
-
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+I very well such mecanism ST and ST-Ericsson use similar way. But mandatory to
+generate the barebox image for a storage media is a non sense. That's why we
+work to have multi-arch. SO no this is in the oposite way of the whole work on
+barebox done for months. It's regression
+> 
+> Best regards,
+> 
+> Thomas
+> -- 
+> Thomas Petazzoni, Free Electrons
+> Kernel, drivers, real-time and embedded Linux
+> development, consulting, training and support.
+> http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
