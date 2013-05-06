@@ -1,23 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZMIc-0005PZ-MZ
- for barebox@lists.infradead.org; Mon, 06 May 2013 14:21:55 +0000
-Date: Mon, 6 May 2013 10:21:15 -0400
-From: Jason Cooper <jason@lakedaemon.net>
-Message-ID: <20130506142115.GU31290@titan.lakedaemon.net>
+ id 1UZMRO-0005Zq-W4
+ for barebox@lists.infradead.org; Mon, 06 May 2013 14:31:04 +0000
+Date: Mon, 6 May 2013 16:30:30 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130506143030.GF32299@pengutronix.de>
 References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1367599871-28479-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130504195125.GJ13393@game.jcrosoft.org>
- <20130504203213.GS31290@titan.lakedaemon.net>
- <20130505111927.GK13393@game.jcrosoft.org>
- <20130506155352.15f23d3a@skate>
- <20130506135435.GL13393@game.jcrosoft.org>
- <20130506160614.054b5e1a@skate>
- <20130506140439.GM13393@game.jcrosoft.org>
+ <1367599871-28479-5-git-send-email-thomas.petazzoni@free-electrons.com>
+ <20130506160916.04c7bfdc@skate>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130506140439.GM13393@game.jcrosoft.org>
+In-Reply-To: <20130506160916.04c7bfdc@skate>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,52 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for
- Marvell SoC boot images
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH 4/7] arm: initial support for Marvell Armada 370/XP SoCs
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Willy Tarreau <w@1wt.eu>
 
-On Mon, May 06, 2013 at 04:04:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 16:06 Mon 06 May     , Thomas Petazzoni wrote:
-> > Dear Jean-Christophe PLAGNIOL-VILLARD,
-> > 
-> > On Mon, 6 May 2013 15:54:35 +0200, Jean-Christophe PLAGNIOL-VILLARD
-> > wrote:
-> > 
-> > > > Could you please adopt a nicer language? You are very aggressive... and
-> > > > at that the same time completely wrong. Your comments make it entirely
-> > > > clear that you haven't even read the comments at the top of file.
-> > > I did but still think we can handle it in C
-> > > 
-> > > and need to handle by barebox itself when flashing
-> > 
-> > The image is pushed to the target through X-modem, directly talking to
-> > the ROM code of the SoC. Do you want the kwboot tool to prepare the
-> > image? It seems to me like it makes a lot more sense to have a tool to
-> > prepare the image.
+On Mon, May 06, 2013 at 04:09:16PM +0200, Thomas Petazzoni wrote:
+> Sascha, Jean-Christophe,
 > 
-> yes a you want to re-flash barebox itself and you will do for ddr and I do not
-> want to care about all of this blob stuff twht the board already known
+> I have one question below regarding the SoC code.
 > 
-> > 
-> > Remember also that this tool is needed to *extract* existing images.
-> > And you haven't explained how you intend to do this without a proper
-> > userspace tool such as kwbimage.
+> On Fri,  3 May 2013 18:51:08 +0200, Thomas Petazzoni wrote:
+> > +static inline void mvebu_memory_find(unsigned long *phys_base,
+> > +				     unsigned long *phys_size)
+> > +{
+> > +	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
+> > +	int cs;
 > 
-> why extract?
+> 
+> Here...
+> 
+> > +	*phys_base = ~0;
+> > +	*phys_size = 0;
+> > +
+> > +	for (cs = 0; cs < 4; cs++) {
+> > +		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
+> > +		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
+> 
+> ... here ...
+> 
+> 
+> > +#if defined(CONFIG_ARCH_ARMADA_370)
+> > +static int mvebu_init_clocks(void)
+> > +{
+> > +	uint32_t val;
+> > +	unsigned int rate;
+> > +	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
+> > +
+> > +	val = readl(sar);
+> 
+> ... and here, I'm directly poking at physical addresses, but it seems
+> like Barebox can run with the MMU enabled. Should I be mapping those
+> registers before accessing them?
 
-Because you *received* the blob over xmodem from the SoC.  It came from
-the factory that way.  You need to take it apart to get the DDR info and
-the stock bootloader blob.  Think of this as a tool to assist board
-hackers when the mfgr doesn't have the time/experience to help the open
-source community.
+We use the MMU, but we use a 1:1 mapping. The SDRAM is mapped cached and
+the rest is mapped uncached. This means you can simply access all
+registers without mapping them
 
-Since a separate tool is needed to do this, it makes sense to have the
-same code perform the packing as well.  As opposed to the CPP.
+Sascha
 
-hth,
 
-Jason.
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
