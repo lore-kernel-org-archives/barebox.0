@@ -1,23 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from mail.mars-solutions.de ([213.239.212.107])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZSZo-0004mJ-JO
- for barebox@lists.infradead.org; Mon, 06 May 2013 21:04:05 +0000
-Date: Mon, 6 May 2013 23:03:37 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130506230337.30516881@skate>
-In-Reply-To: <20130506205631.GM32299@pengutronix.de>
-References: <20130506160614.054b5e1a@skate>
- <20130506140439.GM13393@game.jcrosoft.org>
- <20130506161329.74d58c37@skate>
- <20130506141447.GO13393@game.jcrosoft.org>
- <20130506143113.GB22505@1wt.eu>
- <20130506193422.GA30509@game.jcrosoft.org>
- <20130506195359.GK22505@1wt.eu> <20130506222104.7ea22be0@skate>
- <20130506203540.GC30509@game.jcrosoft.org>
- <20130506224456.3d32284d@skate>
- <20130506205631.GM32299@pengutronix.de>
-Mime-Version: 1.0
+ id 1UZSrD-0005HP-2Y
+ for barebox@lists.infradead.org; Mon, 06 May 2013 21:22:04 +0000
+Received: from localhost (localhost [127.0.0.1])
+ by mail.mars-solutions.de (Postfix) with ESMTP id 0FB19A0458A
+ for <barebox@lists.infradead.org>; Mon,  6 May 2013 23:21:35 +0200 (CEST)
+Received: from mail.mars-solutions.de ([127.0.0.1])
+ by localhost (mars-solutions.de [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id qRgKxF63dQES for <barebox@lists.infradead.org>;
+ Mon,  6 May 2013 23:21:34 +0200 (CEST)
+Received: from ASSP.nospam (mars [213.239.212.107])
+ by mail.mars-solutions.de (Postfix) with ESMTP id 37E63A0458A
+ for <barebox@lists.infradead.org>; Mon,  6 May 2013 23:21:34 +0200 (CEST)
+From: Andreas Pretzsch <apr@cn-eng.de>
+Date: Mon,  6 May 2013 23:21:27 +0200
+Message-Id: <1367875288-29066-2-git-send-email-apr@cn-eng.de>
+In-Reply-To: <1367875288-29066-1-git-send-email-apr@cn-eng.de>
+References: <1367875288-29066-1-git-send-email-apr@cn-eng.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,59 +26,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
- SoC boot images
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>, Willy Tarreau <w@1wt.eu>
+Subject: [PATCH 1/2] ARM i.MX31: cleanup MX31_ prefix: fix leftover
+ IOMUXC_BASE defines
+To: barebox@lists.infradead.org
 
-Dear Sascha Hauer,
+The prefix/cleanup series
+	ad09b59f8bb58c27e3872b41f41beb1b9eb1aeb1
+	a8c6359667704ffc3bd2249dd76f3fbbb2134b55
+	4c53af062b38f15f6bc40c586e5760e640f5b8b1
+missed a few unprefixed IOMUXC_BASE define users. Fix these.
 
-On Mon, 6 May 2013 22:56:31 +0200, Sascha Hauer wrote:
+Signed-off-by: Andreas Pretzsch <apr@cn-eng.de>
+---
+ arch/arm/mach-imx/include/mach/imx31-regs.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> > > Barebox update will generate the correct image for the storagemedia at
-> > > runtime
-> > 
-> > What is "Barebox update" ?
-> 
-> barebox_update is a command that you can call during runtime to update
-> barebox. Over writing images directly to the storage it has the
-> advantage that you can do additional sanity checks on the images.
-> 
-> Also for example on i.MX a board specific poke table is all you need
-> to bring up SDRAM. As long as you have this poke table and a devicetree
-> you could use the same binary on different boards.
-
-Ok, makes sense. On Marvell Kirkwood, the SDRAM bring up is also done
-using a set of (address, value) pairs that are part of the image
-header. This mechanism is also available for Armada 370/XP, but
-apparently, DDR3 requires a more dynamic tuning to find optimal
-timings, so having static values in a table is no longer appropriate.
-
-In our case, how would barebox_update work? Would it overwrite just the
-barebox.bin payload (which would require updating the 32 bits checksum
-and the payload size in the header, otherwise the Marvell SoC would not
-boot the image at the next reboot), or should it overwrite the whole
-image (in which case it would have to re-extract the configuration and
-the binary blob, and reconstruct the image at runtime) ? Probably the
-first solution is the easiest one.
-
-> For initial bring up you would still need a SoC specific image though
-> (at least when not using JTAG), so you still need a tool to generate it.
-
-Indeed.
-
-Thanks,
-
-Thomas
+diff --git a/arch/arm/mach-imx/include/mach/imx31-regs.h b/arch/arm/mach-imx/include/mach/imx31-regs.h
+index be3e4c1..599f800 100644
+--- a/arch/arm/mach-imx/include/mach/imx31-regs.h
++++ b/arch/arm/mach-imx/include/mach/imx31-regs.h
+@@ -162,9 +162,9 @@
+ #define MX31_PDR0_MAX_PODF(x)	(((x) & 0x7) << 3)
+ #define MX31_PDR0_MCU_PODF(x)	((x) & 0x7)
+ 
+-#define MX31_IOMUXC_GPR	(IOMUXC_BASE + 0x8)
+-#define MX31_IOMUXC_SW_MUX_CTL(x)	(IOMUXC_BASE + 0xc + (x) * 4)
+-#define MX31_IOMUXC_SW_PAD_CTL(x)	(IOMUXC_BASE + 0x154 + (x) * 4)
++#define MX31_IOMUXC_GPR	(MX31_IOMUXC_BASE_ADDR + 0x8)
++#define MX31_IOMUXC_SW_MUX_CTL(x)	(MX31_IOMUXC_BASE_ADDR + 0xc + (x) * 4)
++#define MX31_IOMUXC_SW_PAD_CTL(x)	(MX31_IOMUXC_BASE_ADDR + 0x154 + (x) * 4)
+ 
+ /*
+  * Signal Multiplexing (IOMUX)
 -- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
