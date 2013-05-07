@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f207.mail.ru ([217.69.128.146])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZgKn-0001Aw-NA
- for barebox@lists.infradead.org; Tue, 07 May 2013 11:45:31 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from optimeas.de ([78.46.18.2])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UZh59-00025j-9y
+ for barebox@lists.infradead.org; Tue, 07 May 2013 12:33:23 +0000
+Received: from [192.168.178.21] (krlh-d9be6584.pool.mediaWays.net
+ [217.190.101.132])
+ by optimeas.de (Postfix) with ESMTPSA id 2B6474207A56
+ for <barebox@lists.infradead.org>; Tue,  7 May 2013 14:33:02 +0200 (CEST)
+From: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
+Date: Tue, 07 May 2013 12:33:03 +0000
+Message-Id: <em7b5cc4bb-6894-49f9-9210-8a36eef2d5d4@plh001-think>
 Mime-Version: 1.0
-Date: Tue, 07 May 2013 15:45:04 +0400
-Message-ID: <1367927104.601416016@f207.mail.ru>
-In-Reply-To: <1367012916-22780-3-git-send-email-s.hauer@pengutronix.de>
-References: <1366977055.331524144@f355.mail.ru>
- <1367012916-22780-1-git-send-email-s.hauer@pengutronix.de>
- <1367012916-22780-3-git-send-email-s.hauer@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Reply-To: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +20,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzJdIEFSTTogaS5NWDogY2N4bXg1MTogZGV0ZWN0IFNE?=
- =?UTF-8?B?UkFNIHNpemUgYnkgYm9hcmQgaWQ=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Installing barebox for karo-tx53
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-> This partly reverts:
-> 
-> commit 697e02b74fddd80527e8ababba10239c83dba029
-> Author: Alexander Shiyan <shc_work@mail.ru>
-> Date:   Tue Jan 22 15:08:31 2013 +0400
-> 
->     ARM: ccmx51: Remove SDRAM size settings
-> 
->     This patch removes SDRAM memory size setting from board due
->     to auto detect last one by ESDCTL.
-> 
->     Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
->     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> The board originally configured the SDRAM controller for the
-> maximum size and detected the usable SDRAM size by reading the
-> board id. This became broken after switching to automatic SDRAM
-> size detection by reading back ESDCTL values.
-> 
-> This patch brings back the old behaviour.
+Hi,
+I want to install barebox on a Karo TX53 module as a primary bootloader.
+Now I have a few questions:
 
-Please, apply both to git.
-Thanks.
+a)
+With wich version should I start. I found the branch karo-tx53 at 
+git://github.com/gchiii/barebox-tx53.git
+Is this the right one (as it seems to be quit old with latest commit 9 
+month ago)
 
----
+Or should I start with the master branch at 
+git://git.pengutronix.de/git/barebox.git ?
+
+b)
+Is there even a simpler way as I am using ptxdist?
+
+c) How can I flash barebox over u-boot, which is my current bootloader?
+
+Best regards
+Patrick
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
