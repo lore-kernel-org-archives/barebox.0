@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZkrO-0008Mp-CO
- for barebox@lists.infradead.org; Tue, 07 May 2013 16:35:27 +0000
-Received: by mail-la0-f44.google.com with SMTP id ed20so788339lab.31
- for <barebox@lists.infradead.org>; Tue, 07 May 2013 09:35:02 -0700 (PDT)
+ id 1UZkrS-0008NG-IZ
+ for barebox@lists.infradead.org; Tue, 07 May 2013 16:35:31 +0000
+Received: by mail-la0-f52.google.com with SMTP id fm20so777999lab.39
+ for <barebox@lists.infradead.org>; Tue, 07 May 2013 09:35:08 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue,  7 May 2013 20:34:08 +0400
-Message-Id: <1367944452-20946-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue,  7 May 2013 20:34:11 +0400
+Message-Id: <1367944452-20946-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1367944452-20946-1-git-send-email-antonynpavlov@gmail.com>
+References: <1367944452-20946-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,16 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 0/4] MIPS: add initial device tree support
+Subject: [RFC 3/4] MIPS: qemu-malta: add device tree support
 To: barebox@lists.infradead.org
 
-The patch 2/4 (of: add MIPS memory bank adding support) is debatable,
-please comment it.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boards/qemu-malta/init.c |   11 -----------
+ arch/mips/dts/qemu-malta.dts       |   12 ++++++++++++
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+ create mode 100644 arch/mips/dts/qemu-malta.dts
 
-[RFC 1/4] MIPS: add initial device tree support
-[RFC 2/4] of: add MIPS memory bank adding support
-[RFC 3/4] MIPS: qemu-malta: add device tree support
-[RFC 4/4] MIPS: qemu-malta_defconfig: enable OF support
+diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
+index fb4472f..db26b3b 100644
+--- a/arch/mips/boards/qemu-malta/init.c
++++ b/arch/mips/boards/qemu-malta/init.c
+@@ -20,21 +20,10 @@
+ #include <types.h>
+ #include <driver.h>
+ #include <init.h>
+-#include <asm/memory.h>
+ #include <ns16550.h>
+ #include <mach/hardware.h>
+-#include <io.h>
+ #include <partition.h>
+ #include <sizes.h>
+-#include <asm/common.h>
+-
+-static int malta_mem_init(void)
+-{
+-	mips_add_ram0(SZ_256M);
+-
+-	return 0;
+-}
+-mem_initcall(malta_mem_init);
+ 
+ static int malta_devices_init(void)
+ {
+diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
+new file mode 100644
+index 0000000..c4dcf05
+--- /dev/null
++++ b/arch/mips/dts/qemu-malta.dts
+@@ -0,0 +1,12 @@
++/dts-v1/;
++
++/include/ "skeleton.dtsi"
++
++/ {
++	model = "qemu malta";
++	compatible = "qemu,malta";
++
++	memory {
++		reg = <0x00000000 0x10000000>;
++	};
++};
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
