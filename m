@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1wt.eu ([62.212.114.60])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZeTi-0007hj-5C
- for barebox@lists.infradead.org; Tue, 07 May 2013 09:46:35 +0000
-Date: Tue, 7 May 2013 11:46:07 +0200
-From: Willy Tarreau <w@1wt.eu>
-Message-ID: <20130507094607.GD465@1wt.eu>
-References: <20130506141447.GO13393@game.jcrosoft.org>
- <20130506143113.GB22505@1wt.eu> <20130506193422.GA30509@game.jcrosoft.org>
- <20130506195359.GK22505@1wt.eu> <20130506222104.7ea22be0@skate>
- <20130506203540.GC30509@game.jcrosoft.org> <20130506224456.3d32284d@skate>
- <20130506205631.GM32299@pengutronix.de> <20130506230337.30516881@skate>
- <20130507093324.GA1884@game.jcrosoft.org>
+Received: from f276.mail.ru ([217.69.138.65])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UZeeS-00082K-Bo
+ for barebox@lists.infradead.org; Tue, 07 May 2013 09:57:41 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Mime-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130507093324.GA1884@game.jcrosoft.org>
+Date: Tue, 07 May 2013 13:57:13 +0400
+Message-ID: <1367920633.721879227@f276.mail.ru>
+In-Reply-To: <20130506143152.GG32299@pengutronix.de>
+References: <1366966527.864498237@f391.i.mail.ru>
+ <1367846636.53670006@f347.mail.ru>
+ <20130506143152.GG32299@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,34 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] scripts: new kwbimage manipulation tool for Marvell
- SoC boot images
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Jason Cooper <jason@lakedaemon.net>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: =?UTF-8?B?UmVbMl06IE9URyBEZXZpY2UgbW9kZSBvbiBpLk1YNTE=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Tue, May 07, 2013 at 11:33:24AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> no you do not need to generate an image (file) you just need to upload it
+> > > On Mon, May 06, 2013 at 01:52:11PM +0400, Alexander Shiyan wrote:
+> > > > > Hello.
+> > > > > 
+> > > > > Is anyone have successful works OTG in device mode on iMX51?
+> > > > > Thanks!.
+> > > 
+> > > I have the driver working in devicemode on several boards, but not on an
+> > > i.MX51 I think. I have no indication though that the UDC core itself is
+> > > in any way different to the ones on other i.MXs.
+> > 
+> > I have tested usage device mode on i.MX27. It works (Patch for PCM-038
+> > will be sent), but driver(?) does not work for me on i.MX51...
+> > Executing is freeze at dr_controller_setup (drivers/usb/gadget/fsl_udc.c).
+> > Now I trying to check for missing clocks, but not sure about this since we
+> > enable all clocks at start...
+> > So, if anyone can test this feature on i.MX51 it will be helpful.
+> 
+> If there's a problem it's more likely that the usbmisc registers are not
+> correctly initialized, so it probably won't help to test on another
+> board
 
-I disagree with you on this. While this can generally be true, I (as a user)
-absolutely want to have an image that I can upload using various tools, as I
-had several issues while trying to upload the image on the mirabox the first
-time, leading me to try several different tools.
+First sucessful work is done.
+It is neccesary to set an additional bit in MX5_UTMI_PHY_CTRL_0.
+#define MX5_OTG_PHYCTRL_OTG_XCVR_BIT (1 << 7)
+...
+v |= MX5_OTG_PHYCTRL_OTG_XCVR_BIT;
+...
 
-Also, please note that Xmodem is commonly supported by many terminal servers
-on many platforms and does not require that you try to build your code on
-these platforms.
+But now it still works only with "fsl-udc" driver, not with "chipidea".
+I will continue work on it.
 
-In my opinion, the C code should provide a portable, multi-platform binary,
-and an external tool should transform it to the finally uploadable binary
-image for your specific board or CPU. That way you can ship pre-compiled
-binary barebox code if you want, and have the end user adapt it to his own
-board.
-
-I don't see how this could be a problem.
-
-Willy
-
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
