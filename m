@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaAI3-0001FU-O2
- for barebox@lists.infradead.org; Wed, 08 May 2013 19:44:41 +0000
-Date: Wed, 8 May 2013 21:44:09 +0200
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130508214409.4d8450c7@e6520eb>
-In-Reply-To: <37ABC944-893A-4BF1-B223-6B0C060A81C1@jcrosoft.com>
-References: <1368034748-15462-1-git-send-email-eric@eukrea.com>
- <20130508174541.GA16240@game.jcrosoft.org>
- <20130508202003.3499c5a9@e6520eb>
- <37ABC944-893A-4BF1-B223-6B0C060A81C1@jcrosoft.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UaAUa-0001QL-8e
+ for barebox@lists.infradead.org; Wed, 08 May 2013 19:57:37 +0000
+Date: Wed, 8 May 2013 21:57:10 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130508195710.GE32299@pengutronix.de>
+References: <1367081935-6738-1-git-send-email-shc_work@mail.ru>
+ <20130508073549.GZ32299@pengutronix.de>
+ <1367998970.200330799@f170.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1367998970.200330799@f170.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,31 +20,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] nand_base: sync flash detection functions with linux
- 3.9's code
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/2] ARM: Make OMAP syslib.c functions available for
+ other ARM targets
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-TGUgVGh1LCA5IE1heSAyMDEzIDAyOjUwOjIzICswODAwLApKZWFuLUNocmlzdG9waGUgUExBR05J
-T0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPiBhIMOpY3JpdCA6Cgo+IAo+IE9uIE1h
-eSA5LCAyMDEzLCBhdCAyOjIwIEFNLCBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4gd3Jv
-dGU6Cj4gCj4gPiBMZSBXZWQsIDggTWF5IDIwMTMgMTk6NDU6NDEgKzAyMDAsCj4gPiBKZWFuLUNo
-cmlzdG9waGUgUExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPiBhIMOpY3Jp
-dCA6Cj4gPiAKPiA+PiBvbmUgc21hbGwgaXNzdWUKPiA+PiAKPiA+PiAvb3B0L3dvcmsvYmFyZWJv
-eC9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jOiBJbiBmdW5jdGlvbiAnbmFuZF9nZXRfZmxh
-c2hfdHlwZSc6Cj4gPj4gL29wdC93b3JrL2JhcmVib3gvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jh
-c2UuYzoxMzgzOjY6IHdhcm5pbmc6IHVudXNlZCB2YXJpYWJsZSAncmV0Jwo+ID4+IAo+ID4+IG90
-aGVyd2lzZSBpdCB3b3JrCj4gPj4gCj4gPiBPSyB0Cj4gPiBoYW5rcy4gSSdsbCB0ZXN0IG9uIHNl
-dmVyYWwgcGxhdGZvcm1zIHdoZW4gSSdtIGJhY2sgYXQgdGhlIG9mZmljZQo+ID4gYW5kIHNlbmQg
-YSBmaW5hbCB2ZXJzaW9uLgo+ID4gCj4gCj4geWVzIHRoaXMgaXMgbmVlZCB0byBiZSB0ZXN0ZWQg
-Y2FyZWZ1bGx5IHRoaXMgdGltZQo+IAp0aGFuayB5b3UgZm9yIHRoZSAidGhpcyB0aW1lIi4gVGhl
-IHBhdGNoIHdoaWNoIGNyZWF0ZWQgdHJvdWJsZSBmb3IgeW91cgpjYXNlIHdhcyBwb3N0ZWQgdG8g
-dGhlIE1MIGFuZCBub3RoaW5nIHByZXZlbnRlZCBwZW9wbGUgdG8gdGVzdCBpdCBiZWZvcmUKaXQg
-cmVhY2hlZCB0aGUgcmVsZWFzZS4KCkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+On Wed, May 08, 2013 at 11:42:50AM +0400, Alexander Shiyan wrote:
+> > On Sat, Apr 27, 2013 at 08:58:54PM +0400, Alexander Shiyan wrote:
+> > > This patch moves OMAP syslib functions into common ARM location, so
+> > > make these functions available to other ARM targets.
+> > > 
+> > > +/**
+> > > + * @brief clear & set a value in a bit range for a 32 bit address
+> > > + *
+> > > + * @param[in] addr Address to set/read from
+> > > + * @param[in] start_bit Where to put the value
+> > > + * @param[in] num_bits number of bits the value should be set
+> > > + * @param[in] value the value to set
+> > > + *
+> > > + * @return void
+> > > + */
+> > > +static inline void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value)
+> > > +{
+> > > +	u32 tmp, msk = 0;
+> > > +	msk = 1 << num_bits;
+> > > +	--msk;
+> > > +	tmp = readl(addr) & ~(msk << start_bit);
+> > > +	tmp |=  value << start_bit;
+> > > +	writel(tmp, addr);
+> > > +}
+> > > +
+> > > +u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound);
+> > 
+> > I'm still undecided on this. On one hand it's good to have common
+> > functions for these jobs, but on the other hand I'm not sure these are
+> > the versions we should use as the definite answer to the problem. I
+> > don't know how many versions of read-modify-write functions are around,
+> > but there are many.
+> > 
+> > > +void sdelay(unsigned long loops);
+> > 
+> > The sdelay change is a good one, though I think this should be a static
+> > inline function.
+> 
+> The U-Boot contain followed note about this inline:
+> 
+> /************************************************************
+> * sdelay() - simple spin loop. Will be constant time as
+> * its generally used in bypass conditions only. This
+> * is necessary until timers are accessible.
+> *
+> * not inline to increase chances its in cache when called
+
+I have no idea what difference this should make. After the first
+iteration of the loop the code is in cache.
+When the code is not in the cache the loop maybe takes a bit longer, but
+that's ok.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
