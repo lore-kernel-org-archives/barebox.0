@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaAUa-0001QL-8e
- for barebox@lists.infradead.org; Wed, 08 May 2013 19:57:37 +0000
-Date: Wed, 8 May 2013 21:57:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130508195710.GE32299@pengutronix.de>
-References: <1367081935-6738-1-git-send-email-shc_work@mail.ru>
- <20130508073549.GZ32299@pengutronix.de>
- <1367998970.200330799@f170.mail.ru>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UaBVr-0002MI-Qd
+ for barebox@lists.infradead.org; Wed, 08 May 2013 21:03:00 +0000
+Message-ID: <518ABD64.2010204@free-electrons.com>
+Date: Wed, 08 May 2013 23:02:28 +0200
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1367998970.200330799@f170.mail.ru>
+References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <51898E2F.3010404@free-electrons.com> <20130508124606.228f1433@skate>
+In-Reply-To: <20130508124606.228f1433@skate>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,70 +22,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: Make OMAP syslib.c functions available for
- other ARM targets
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/7] Basic support for Marvell Armada 370/XP SoC
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On Wed, May 08, 2013 at 11:42:50AM +0400, Alexander Shiyan wrote:
-> > On Sat, Apr 27, 2013 at 08:58:54PM +0400, Alexander Shiyan wrote:
-> > > This patch moves OMAP syslib functions into common ARM location, so
-> > > make these functions available to other ARM targets.
-> > > 
-> > > +/**
-> > > + * @brief clear & set a value in a bit range for a 32 bit address
-> > > + *
-> > > + * @param[in] addr Address to set/read from
-> > > + * @param[in] start_bit Where to put the value
-> > > + * @param[in] num_bits number of bits the value should be set
-> > > + * @param[in] value the value to set
-> > > + *
-> > > + * @return void
-> > > + */
-> > > +static inline void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value)
-> > > +{
-> > > +	u32 tmp, msk = 0;
-> > > +	msk = 1 << num_bits;
-> > > +	--msk;
-> > > +	tmp = readl(addr) & ~(msk << start_bit);
-> > > +	tmp |=  value << start_bit;
-> > > +	writel(tmp, addr);
-> > > +}
-> > > +
-> > > +u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound);
-> > 
-> > I'm still undecided on this. On one hand it's good to have common
-> > functions for these jobs, but on the other hand I'm not sure these are
-> > the versions we should use as the definite answer to the problem. I
-> > don't know how many versions of read-modify-write functions are around,
-> > but there are many.
-> > 
-> > > +void sdelay(unsigned long loops);
-> > 
-> > The sdelay change is a good one, though I think this should be a static
-> > inline function.
+On 05/08/2013 12:46 PM, Thomas Petazzoni wrote:
+> Dear Gregory CLEMENT,
 > 
-> The U-Boot contain followed note about this inline:
+> On Wed, 08 May 2013 01:28:47 +0200, Gregory CLEMENT wrote:
 > 
-> /************************************************************
-> * sdelay() - simple spin loop. Will be constant time as
-> * its generally used in bypass conditions only. This
-> * is necessary until timers are accessible.
-> *
-> * not inline to increase chances its in cache when called
+>> it was a great work, I am currently trying to use but unfortunately,
+>> I didn't managed to run barebox on the Armada XP OpenBlocks AX3 from
+>> Plathome :/
+>>
+>> I get something like that:
+>>
+>> kwboot -t -b barebix.bin.kw -B 115200 /dev/ttyUSB0
+>> Sending boot message. Please reboot the target...-
+>>
+>> [here I power up the AX3]
+>>
+>> Sending boot image...
+>>   0 % [......................................................................]
+>>   4 % [......................................................................]
+>>   9 % [......................................................................]
+>>  14 % [......................................................................]
+>>  18 % [......................................................................]
+>>  23 % [......................................................................]
+>>  28 % [......................................................................]
+>>  33 % [......................................................................]
+>>  37 % [......................................................................]
+>>  42 % [......................................................................]
+>>  47 % [......................................................................]
+>>  52 % [.............................................................BootROM: Invalid header ID
+>> Booting from NOR flash
+>> DDR3 Training Sequence - Ver 3.0.0
+> 
+> Thanks for testing!
+> 
+> The kwbimage.cfg for the OpenBlocks AX3 was wrong in this first version
+> of the patches. 'BOOT_FROM spi' should have been 'BOOT_FROM uart' if
+> you want the image to be bootable from the UART.
 
-I have no idea what difference this should make. After the first
-iteration of the loop the code is in cache.
-When the code is not in the cache the loop maybe takes a bit longer, but
-that's ok.
+Indeed, by updating kwbimage.cfg with 'BOOT_FROM uart' I also managed to run
+barebox on the OpenBlocks AX3.
 
-Sascha
+Thanks!
+
+
+> 
+>>>    An image is then later created with:
+>>>
+>>>     ./scripts/kwbimage -x -i <path/to/kwbimage.cfg> -o <image>
+>>
+>> I think it should be:
+>> ./scripts/kwbimage -c -i <path/to/kwbimage.cfg> -o <image>
+> 
+> Correct, will fix!
+> 
+> I plan to send a v2 either today or tomorrow.
+> 
+> Thanks again for the testing,
+> 
+> Thomas
+> 
+
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
