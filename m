@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ua3yI-00006l-Bp
- for barebox@lists.infradead.org; Wed, 08 May 2013 12:59:55 +0000
-Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Ua3xw-0006j1-AK
- for barebox@lists.infradead.org; Wed, 08 May 2013 14:59:28 +0200
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed, 8 May 2013 14:57:07 +0200
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ua77N-00060C-06
+ for barebox@lists.infradead.org; Wed, 08 May 2013 16:21:26 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed,  8 May 2013 18:20:50 +0200
+Message-Id: <1368030050-7989-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201305081457.07670.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,35 +15,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: MXS: fix SoC detecting
+Subject: [PATCH] nand_base: fix to test for JCPV problem
 To: barebox@lists.infradead.org
 
-The missing 'break' statement lets look an i.MX23 like an i.MX28.
-    
-Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
-
-diff --git a/arch/arm/mach-mxs/imx.c b/arch/arm/mach-mxs/imx.c
-index cdf9275..fcb26f7 100644
---- a/arch/arm/mach-mxs/imx.c
-+++ b/arch/arm/mach-mxs/imx.c
-@@ -101,6 +101,7 @@ static void mxs_silicon_revision(void)
- 		case 0x3: revision = SILICON_REVISION_1_3; break;
- 		case 0x4: revision = SILICON_REVISION_1_4; break;
- 		}
-+		break;
- 	case HW_DIGCTL_CHIPID_MX28:
- 		product = "i.MX28";
- 		switch (rev) {
-
--- 
-Pengutronix e.K.                              | Juergen Beisert             |
-Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVy
+cy9tdGQvbmFuZC9uYW5kX2Jhc2UuYyB8IDIwICsrKysrLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUg
+Y2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAxNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9k
+cml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2Uu
+YwppbmRleCBlODEwM2NmLi5kMDRlMjRiIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25h
+bmRfYmFzZS5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMKQEAgLTExNjcsMTAg
+KzExNjcsOSBAQCBzdGF0aWMgc3RydWN0IG5hbmRfZmxhc2hfZGV2ICpuYW5kX2dldF9mbGFzaF90
+eXBlKHN0cnVjdCBtdGRfaW5mbyAqbXRkLAogCiAJY2hpcC0+Y21kZnVuYyhtdGQsIE5BTkRfQ01E
+X1JFQURJRCwgMHgwMCwgLTEpOwogCi0JLyogUmVhZCBtYW51ZmFjdHVyZXIgYW5kIGRldmljZSBJ
+RHMgKi8KLQotCWlkX2RhdGFbMF0gPSBjaGlwLT5yZWFkX2J5dGUobXRkKTsKLQlpZF9kYXRhWzFd
+ID0gY2hpcC0+cmVhZF9ieXRlKG10ZCk7CisJLyogUmVhZCBlbnRpcmUgSUQgc3RyaW5nICovCisJ
+Zm9yIChpID0gMDsgaSA8IDg7IGkrKykKKwkJaWRfZGF0YVtpXSA9IGNoaXAtPnJlYWRfYnl0ZSht
+dGQpOwogCiAJaWYgKGlkX2RhdGFbMF0gIT0gKm1hZl9pZCB8fCBpZF9kYXRhWzFdICE9IGRldl9p
+ZCkgewogCQlwcl9lcnIoIiVzOiBzZWNvbmQgSUQgcmVhZCBkaWQgbm90IG1hdGNoICIKQEAgLTEx
+OTAsMjAgKzExODksMTEgQEAgc3RhdGljIHN0cnVjdCBuYW5kX2ZsYXNoX2RldiAqbmFuZF9nZXRf
+Zmxhc2hfdHlwZShzdHJ1Y3QgbXRkX2luZm8gKm10ZCwKIAlpZiAoIXR5cGUtPm5hbWUgfHwgIXR5
+cGUtPnBhZ2VzaXplKSB7CiAJCS8qIENoZWNrIGlzIGNoaXAgaXMgT05GSSBjb21wbGlhbnQgKi8K
+IAkJcmV0ID0gbmFuZF9mbGFzaF9kZXRlY3Rfb25maShtdGQsIGNoaXAsICZidXN3KTsKLQkJaWYg
+KHJldCkKIAkJCWdvdG8gaWRlbnRfZG9uZTsKLQkJZWxzZSB7Ci0JCQlwcl9lcnIoIk5BTkQgdHlw
+ZSB1bmtub3duOiAlMDJ4LCUwMnhcbiIsICptYWZfaWQsIGRldl9pZCk7Ci0JCQlyZXR1cm4gRVJS
+X1BUUigtRU5PREVWKTsKLQkJfQogCX0KIAotCWNoaXAtPmNtZGZ1bmMobXRkLCBOQU5EX0NNRF9S
+RUFESUQsIDB4MDAsIC0xKTsKLQotCS8qIFJlYWQgZW50aXJlIElEIHN0cmluZyAqLwotCi0JZm9y
+IChpID0gMDsgaSA8IDg7IGkrKykKLQkJaWRfZGF0YVtpXSA9IGNoaXAtPnJlYWRfYnl0ZShtdGQp
+OworCWlmICghdHlwZS0+bmFtZSkKKwkJcmV0dXJuIEVSUl9QVFIoLUVOT0RFVik7CiAKIAlpZiAo
+IW10ZC0+bmFtZSkKIAkJbXRkLT5uYW1lID0gdHlwZS0+bmFtZTsKLS0gCjEuOC4xLjQKCgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
+bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
+ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
