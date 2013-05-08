@@ -1,22 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ua7Qp-0006a1-TH
- for barebox@lists.infradead.org; Wed, 08 May 2013 16:41:33 +0000
+ id 1Ua7Vo-0006lq-HB
+ for barebox@lists.infradead.org; Wed, 08 May 2013 16:46:41 +0000
 Received: from mail607.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 4CB9EFF8F4E
- for <barebox@lists.infradead.org>; Wed,  8 May 2013 18:41:10 +0200 (CEST)
-Date: Wed, 8 May 2013 18:36:48 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 4AA9BFF8F61
+ for <barebox@lists.infradead.org>; Wed,  8 May 2013 18:46:19 +0200 (CEST)
+Date: Wed, 8 May 2013 18:41:58 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130508163648.GD1884@game.jcrosoft.org>
-References: <1367958099-5063-1-git-send-email-plagnioj@jcrosoft.com>
- <20130508051106.GS32299@pengutronix.de>
- <6061FD58-D248-4A13-98E4-7AAD7A80CFCF@jcrosoft.com>
- <20130508182526.40de08c6@e6520eb>
+Message-ID: <20130508164158.GE1884@game.jcrosoft.org>
+References: <1368030050-7989-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130508182526.40de08c6@e6520eb>
+In-Reply-To: <1368030050-7989-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,70 +26,89 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Revert "nand_base: detect more ONFI flash"
+Subject: Re: [PATCH] nand_base: fix to test for JCPV problem
 To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On 18:25 Wed 08 May     , Eric B=E9nard wrote:
-> Hi Jean-Christophe,
+On 18:20 Wed 08 May     , Eric B=E9nard wrote:
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+
+better but an other BUG
+
+Board: Atmel at91sam9x5-ek
+AT91: Detected soc type: at91sam9x5
+AT91: Detected soc subtype: at91sam9x25
+Clocks: CPU 400 MHz, master 133 MHz, main 12.000 MHz
+netconsole: registered as cs2
+CM: SAM9X25-CM [B2] from RONETIX
+EK: SAM9x5-EK [B0] from FLEX
+DM: SAM9x5-DM [B0] from FLEX
+sn: 0x4010465, rev: 0x10421
+atmel_nand: Use On Flash BBT
+nand: ONFI flash detected ... nand: no valid ONFI param page found
+nand: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB 3,3V 8-bit), =
+page size: 0, OOB size: 0
+atmel_nand atmel_nand0: Initialize PMECC params, cap: 2, sector: 512
+nand: No oob scheme defined for oobsize 0
+BUG: failure at /opt/work/barebox/drivers/mtd/nand/nand_base.c:1483/nand_sc=
+an_tail()!
+BUG!
+> ---
+>  drivers/mtd/nand/nand_base.c | 20 +++++---------------
+>  1 file changed, 5 insertions(+), 15 deletions(-)
 > =
 
-> Le Wed, 8 May 2013 15:30:24 +0800,
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> =
+> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+> index e8103cf..d04e24b 100644
+> --- a/drivers/mtd/nand/nand_base.c
+> +++ b/drivers/mtd/nand/nand_base.c
+> @@ -1167,10 +1167,9 @@ static struct nand_flash_dev *nand_get_flash_type(=
+struct mtd_info *mtd,
+>  =
 
-> > =
+>  	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+>  =
 
-> > On May 8, 2013, at 1:11 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > =
+> -	/* Read manufacturer and device IDs */
+> -
+> -	id_data[0] =3D chip->read_byte(mtd);
+> -	id_data[1] =3D chip->read_byte(mtd);
+> +	/* Read entire ID string */
+> +	for (i =3D 0; i < 8; i++)
+> +		id_data[i] =3D chip->read_byte(mtd);
+>  =
 
-> > > On Tue, May 07, 2013 at 10:21:39PM +0200, Jean-Christophe PLAGNIOL-VI=
-LLARD wrote:
-> > >> this brake the nand support on at91sam9x5ek
-> > >> where we have a non compliant ONFI nand
-> > >> NAND device: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB=
- 3,3V 8-bit), 256MiB, page size: 2048, OOB size: 64
-> > >> =
+>  	if (id_data[0] !=3D *maf_id || id_data[1] !=3D dev_id) {
+>  		pr_err("%s: second ID read did not match "
+> @@ -1190,20 +1189,11 @@ static struct nand_flash_dev *nand_get_flash_type=
+(struct mtd_info *mtd,
+>  	if (!type->name || !type->pagesize) {
+>  		/* Check is chip is ONFI compliant */
+>  		ret =3D nand_flash_detect_onfi(mtd, chip, &busw);
+> -		if (ret)
+>  			goto ident_done;
+> -		else {
+> -			pr_err("NAND type unknown: %02x,%02x\n", *maf_id, dev_id);
+> -			return ERR_PTR(-ENODEV);
+> -		}
+>  	}
+>  =
 
-> > >> This reverts commit 4c2bdc8728016b3412523e3264651651fe752860.
-> > > =
+> -	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
+> -
+> -	/* Read entire ID string */
+> -
+> -	for (i =3D 0; i < 8; i++)
+> -		id_data[i] =3D chip->read_byte(mtd);
+> +	if (!type->name)
+> +		return ERR_PTR(-ENODEV);
+>  =
 
-> > > Thank you for letting us know that this patch causes a regression for
-> > > you. I this happens, please first try and fix the regression. If that
-> > > doesn't work please tell us what about the original patch is so wrong
-> > > that it needs to be reverted. With a good explanation it could be that
-> > > someone else has an idea. And whatever you do, put the original autho=
-r,
-> > > Eric in this case, on Cc.
-> > =
+>  	if (!mtd->name)
+>  		mtd->name =3D type->name;
+> -- =
 
-> > This commit was supposed just able to detect that a Nand is ONFI
-> > =
-
-> > but instead it brake supported Nand
-> > =
-
-> > So Eric can fix it but I've not time to debug this before 1 month
-> > and the few platform that use ONFI are all busy
-> > =
-
-> > So as the commit just allow to detect a band is ONFI can we revert it
-> > =
-
-> > to keep non-ONFI Nand to work
-> > =
-
-> IIRC, I tested this patch on some i.MX board with non ONFI NAND flash
-> and that worked fine unless I made a mistake in my tests which is
-> always possible.
-> =
-
-> I've just sent a patch which may fix your problem, please give it a try
-> (only compile tested, not tested on real hardware).
-ok will try
-> =
-
-> Eric
+> 1.8.1.4
 > =
 
 
