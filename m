@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaBdg-0002Ts-Fp
- for barebox@lists.infradead.org; Wed, 08 May 2013 21:11:05 +0000
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed,  8 May 2013 23:10:20 +0200
-Message-Id: <1368047422-3397-6-git-send-email-thomas.petazzoni@free-electrons.com>
-In-Reply-To: <1368047422-3397-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ id 1UaCJO-00037K-Sh
+ for barebox@lists.infradead.org; Wed, 08 May 2013 21:54:12 +0000
+Message-ID: <518AC964.50304@free-electrons.com>
+Date: Wed, 08 May 2013 23:53:40 +0200
+From: Gregory CLEMENT <gregory.clement@free-electrons.com>
+MIME-Version: 1.0
 References: <1368047422-3397-1-git-send-email-thomas.petazzoni@free-electrons.com>
+In-Reply-To: <1368047422-3397-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,182 +17,223 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] arm: add basic support for Armada XP OpenBlocks AX3
- platform
-To: barebox@lists.infradead.org
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: [PATCH v2 0/7] Basic support for Armada 370/XP SOCs
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-The OpenBlocks AX3 platform is manufactured by PlatHome and uses the
-MV78260 dual-core SoC from the Armada XP family.
+Hi Thomas,
+On 05/08/2013 11:10 PM, Thomas Petazzoni wrote:
+> Hello,
+> 
+> Here is a patch set that adds basic support for the Marvell Armada 370
+> and Armada XP SOCs. For now, the support is quite minimal, since only
+> the serial port is supported. However, a significant part of the work
+> has been the development of the tools that allow to extract/create
+> bootable images and to push a bootable image through the UART to the
+> hardware platform.
+> 
+> I expect to work on adding support for more devices (such as the
+> network interface) and possibly to add support for the older, but
+> popular, Marvell Kirkwood SoC family. Contributions are of course
+> welcome.
+> 
+> Changes since v1:
+> 
+>  - Drop the patch fixing scripts/checkpatch.pl since it has been
+>    merged upstream.
+> 
+>  - Improve kwbimage to add options that allow to override the payload
+>    filename, the boot media, the destination address and execution
+>    address from the command line. Suggested by Sascha Hauer.
+> 
+>  - Add an integration of kwbimage to the Barebox build process. Now,
+>    when an ARCH_MVEBU platform is selected, a barebox.kwb file is
+>    automatically generated using the board kwbimage.cfg, and a
+>    barebox.kwbuart is generated using the board kwbimage.cfg + an
+>    override of the boot media to be UART.
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
----
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/plathome-openblocks-ax3/Makefile   |    2 ++
- arch/arm/boards/plathome-openblocks-ax3/config.h   |    4 ++++
- .../boards/plathome-openblocks-ax3/kwbimage.cfg    |    3 +++
- arch/arm/boards/plathome-openblocks-ax3/lowlevel.c |   25 ++++++++++++++++++++
- .../plathome-openblocks-ax3.c                      |   25 ++++++++++++++++++++
- arch/arm/configs/plathome_openblocks_ax3_defconfig |    9 +++++++
- arch/arm/mach-mvebu/Kconfig                        |    6 ++++-
- 8 files changed, 74 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/Makefile
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/config.h
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c
- create mode 100644 arch/arm/configs/plathome_openblocks_ax3_defconfig
+It is a very nice improvement however, you should maybe mention somwhere
+that you expect to find a file named binary.0 at the root of the barebox
+sources. But it is not very important.
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 3103db4..13799fd 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -143,6 +143,7 @@ board-$(CONFIG_MACH_GUF_CUPID)			:= guf-cupid
- board-$(CONFIG_MACH_MINI2440)			:= friendlyarm-mini2440
- board-$(CONFIG_MACH_MINI6410)			:= friendlyarm-mini6410
- board-$(CONFIG_MACH_TINY6410)			:= friendlyarm-tiny6410
-+board-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	:= plathome-openblocks-ax3
- board-$(CONFIG_MACH_QIL_A9260)			:= qil-a9260
- board-$(CONFIG_MACH_TNY_A9260)			:= tny-a926x
- board-$(CONFIG_MACH_TNY_A9263)			:= tny-a926x
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/Makefile b/arch/arm/boards/plathome-openblocks-ax3/Makefile
-new file mode 100644
-index 0000000..91dc764
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-ax3/Makefile
-@@ -0,0 +1,2 @@
-+obj-y = plathome-openblocks-ax3.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/config.h b/arch/arm/boards/plathome-openblocks-ax3/config.h
-new file mode 100644
-index 0000000..ca15136
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-ax3/config.h
-@@ -0,0 +1,4 @@
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
-+
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
-new file mode 100644
-index 0000000..05d398c
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
-@@ -0,0 +1,3 @@
-+VERSION 1
-+BOOT_FROM spi
-+BINARY binary.0 0000005b 00000068
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c b/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
-new file mode 100644
-index 0000000..e9b2e30
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <mach/mvebu.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+
-+void __naked barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	mvebu_barebox_entry();
-+}
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c b/arch/arm/boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c
-new file mode 100644
-index 0000000..9daf020
---- /dev/null
-+++ b/arch/arm/boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <mach/mvebu.h>
-+
-+static int plathome_openblocks_ax3_console_init(void)
-+{
-+	return mvebu_add_uart0();
-+}
-+
-+console_initcall(plathome_openblocks_ax3_console_init);
-diff --git a/arch/arm/configs/plathome_openblocks_ax3_defconfig b/arch/arm/configs/plathome_openblocks_ax3_defconfig
-new file mode 100644
-index 0000000..95449c9
---- /dev/null
-+++ b/arch/arm/configs/plathome_openblocks_ax3_defconfig
-@@ -0,0 +1,9 @@
-+CONFIG_ARCH_MVEBU=y
-+CONFIG_ARCH_ARMADA_XP=y
-+CONFIG_AEABI=y
-+CONFIG_DEBUG_LL=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_LOADS=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_CLK=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 4cbe546..9196251 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -2,9 +2,10 @@ if ARCH_MVEBU
- 
- config ARCH_TEXT_BASE
- 	hex
-+	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
- 
- config BOARDINFO
--	default
-+	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
- 
- choice
- 	prompt "Marvell EBU Processor"
-@@ -33,6 +34,9 @@ if ARCH_ARMADA_XP
- choice
- 	prompt "Armada XP Board Type"
- 
-+config MACH_PLATHOME_OPENBLOCKS_AX3
-+	bool "PlatHome OpenBlocks AX3"
-+
- endchoice
- 
- endif # ARCH_ARMADA_XP
+However you didn't manage the out of tree building when KBUILD_OUTPUT is
+set. This is more annoying but it should be easily fixed.
+
+> 
+>  - Simplify the kwbimage.cfg to no longer contain the payload filename
+>    (it is passed by Barebox using kwbimage -p option), the destination
+>    and execution addresses (those are passed by Barebox using kwbimage
+>    -d and -e options, which allows to ensure they match
+>    CONFIG_TEXT_BASE).
+> 
+>  - Change the default boot media of the kwbimage.cfg to be the real
+>    boot media used on the platform, typically SPI or NAND. Since an
+>    image for UART is always automatically generated by overriding the
+>    boot media, it makes sense to have the real boot media in
+>    kwbimage.cfg.
+
+It didn't work for me when I tested the on the OpenBlocks AX3. The boot
+media didn't seem to have been overridden ie it still try to boot on the
+NOR. And if I modify the file arch/arm/boards/plathome-openblocks-ax3//kwbimage.cfg
+and replace spi by uart, then it works.
+
+Thanks for your work,
+
+> 
+>  - Remove incorrect whitespace change in scripts/Makefile. Noticed by
+>    Sascha Hauer.
+> 
+> In detail, the patch set contains:
+> 
+>  * A kwbimage tool. This tool allows to extract existing bootloader
+>    images, and create new bootloader images. It is more or less
+>    similar in purpose to the kwbimage tool from U-Boot, but is capable
+>    of handling 'version 1' images used by Armada 370/XP, and not only
+>    allows to create images, but also extract images.
+> 
+>    A typical usage is to first extract an existing bootloader image:
+> 
+>     ./scripts/kwbimage -x -i <existing-image> -o <some-directory>
+> 
+>    As an output, you typically get 3 files: kwbimage.cfg (a text file
+>    that describes the configuration of the image in a format
+>    ressembling the one used by U-Boot), binary.0 (the binary blob that
+>    does the DDR3 training) and payload (the bootloader itself).
+> 
+>    Being able to extract an image is needed in order to get the DDR3
+>    training code, and re-use it with Barebox.
+> 
+>    An image is then later created with:
+> 
+>     ./scripts/kwbimage -c -i <path/to/kwbimage.cfg> -o <image>
+> 
+>    For each board, the kwbimage.cfg file is typically located in
+>    arch/arm/boards/<board-name>/. The DDR3 training code must however
+>    be extracted from an existing bootloader image of your board,
+>    usually the one provided by the board manufacturer.
+> 
+>  * A kwboot tool to push a bootloader through UART. It is directly
+>    taken from U-Boot source code, to which I've added some fixes:
+> 
+>    - Extend the timeouts, to actually make it work on Armada
+>      370/XP. This has originally been found by Willy Tarreau.
+> 
+>    - Ignore non-Xmodem characters, so that the original DDR3 training
+>      code can be used without modifications (Willy had to change it to
+>      make it output its messages on a different serial port, otherwise
+>      it was confusing the Xmodem implementation)
+> 
+>    - Output to stdout all the non-Xmodem characters so that if
+>      something goes wrong during the transfer, we have some
+>      informations. It also shows the messages output by the DDR3
+>      training code.
+> 
+>    - Remove the 'patch' feature that patches an image to have the UART
+>      type. This requires a knowledge of the header format, which is
+>      different between version 0 (kirkwood) and version 1 (armada
+>      370/xp). It is not really needed anyway since kwbimage can
+>      extract and create images.
+> 
+>  * The SoC-level code, which for now only consists in a minimal
+>    clocksource driver, a function to register an UART, a fixed-rate
+>    clock, and a function that determines the amount of RAM by looking
+>    at the SDRAM windows registers.
+> 
+>  * An integration of kwbimage generation. When an ARCH_MVEBU platform
+>    is selected, both barebox.kwb and barebox.kwbuart images are
+>    generated automatically.
+> 
+>  * The board-level code for the Armada 370 Mirabox from Globalscale,
+>    the Armada XP OpenBlocks AX3 from Plathome and the Armada XP GP
+>    from Marvell.
+> 
+> Best regards,
+> 
+> Thomas
+> 
+> Thomas Petazzoni (7):
+>   scripts: new kwbimage manipulation tool for Marvell SoC boot images
+>   scripts: add kwboot tool
+>   arm: initial support for Marvell Armada 370/XP SoCs
+>   arm: integrate kwbimage in the image generation
+>   arm: add basic support for Armada XP OpenBlocks AX3 platform
+>   arm: add basic support for the Armada 370 Mirabox platform
+>   arm: add basic support for the Armada XP GP platform
+> 
+>  Makefile                                           |    2 +-
+>  arch/arm/Kconfig                                   |    8 +
+>  arch/arm/Makefile                                  |   24 +
+>  arch/arm/boards/globalscale-mirabox/Makefile       |    2 +
+>  arch/arm/boards/globalscale-mirabox/config.h       |    4 +
+>  .../globalscale-mirabox/globalscale-mirabox.c      |   26 +
+>  arch/arm/boards/globalscale-mirabox/kwbimage.cfg   |    5 +
+>  arch/arm/boards/globalscale-mirabox/lowlevel.c     |   26 +
+>  arch/arm/boards/marvell-armada-xp-gp/Makefile      |    2 +
+>  arch/arm/boards/marvell-armada-xp-gp/config.h      |    4 +
+>  arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg  |    3 +
+>  arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    |   25 +
+>  .../marvell-armada-xp-gp/marvell-armada-xp-gp.c    |   25 +
+>  arch/arm/boards/plathome-openblocks-ax3/Makefile   |    2 +
+>  arch/arm/boards/plathome-openblocks-ax3/config.h   |    4 +
+>  .../boards/plathome-openblocks-ax3/kwbimage.cfg    |    3 +
+>  arch/arm/boards/plathome-openblocks-ax3/lowlevel.c |   25 +
+>  .../plathome-openblocks-ax3.c                      |   25 +
+>  arch/arm/configs/globalscale_mirabox_defconfig     |    8 +
+>  arch/arm/configs/marvell_armada_xp_gp_defconfig    |   10 +
+>  arch/arm/configs/plathome_openblocks_ax3_defconfig |    9 +
+>  arch/arm/mach-mvebu/Kconfig                        |   54 +
+>  arch/arm/mach-mvebu/Makefile                       |    1 +
+>  arch/arm/mach-mvebu/core.c                         |  142 ++
+>  arch/arm/mach-mvebu/include/mach/clkdev.h          |    7 +
+>  arch/arm/mach-mvebu/include/mach/debug_ll.h        |   40 +
+>  arch/arm/mach-mvebu/include/mach/mvebu.h           |   22 +
+>  drivers/clocksource/Kconfig                        |    4 +
+>  drivers/clocksource/Makefile                       |    1 +
+>  drivers/clocksource/mvebu.c                        |   90 ++
+>  scripts/.gitignore                                 |    2 +
+>  scripts/Makefile                                   |    1 +
+>  scripts/kwbimage.c                                 | 1443 ++++++++++++++++++++
+>  scripts/kwboot.c                                   |  717 ++++++++++
+>  34 files changed, 2765 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/boards/globalscale-mirabox/Makefile
+>  create mode 100644 arch/arm/boards/globalscale-mirabox/config.h
+>  create mode 100644 arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c
+>  create mode 100644 arch/arm/boards/globalscale-mirabox/kwbimage.cfg
+>  create mode 100644 arch/arm/boards/globalscale-mirabox/lowlevel.c
+>  create mode 100644 arch/arm/boards/marvell-armada-xp-gp/Makefile
+>  create mode 100644 arch/arm/boards/marvell-armada-xp-gp/config.h
+>  create mode 100644 arch/arm/boards/marvell-armada-xp-gp/kwbimage.cfg
+>  create mode 100644 arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
+>  create mode 100644 arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
+>  create mode 100644 arch/arm/boards/plathome-openblocks-ax3/Makefile
+>  create mode 100644 arch/arm/boards/plathome-openblocks-ax3/config.h
+>  create mode 100644 arch/arm/boards/plathome-openblocks-ax3/kwbimage.cfg
+>  create mode 100644 arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
+>  create mode 100644 arch/arm/boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c
+>  create mode 100644 arch/arm/configs/globalscale_mirabox_defconfig
+>  create mode 100644 arch/arm/configs/marvell_armada_xp_gp_defconfig
+>  create mode 100644 arch/arm/configs/plathome_openblocks_ax3_defconfig
+>  create mode 100644 arch/arm/mach-mvebu/Kconfig
+>  create mode 100644 arch/arm/mach-mvebu/Makefile
+>  create mode 100644 arch/arm/mach-mvebu/core.c
+>  create mode 100644 arch/arm/mach-mvebu/include/mach/clkdev.h
+>  create mode 100644 arch/arm/mach-mvebu/include/mach/debug_ll.h
+>  create mode 100644 arch/arm/mach-mvebu/include/mach/mvebu.h
+>  create mode 100644 drivers/clocksource/mvebu.c
+>  create mode 100644 scripts/kwbimage.c
+>  create mode 100644 scripts/kwboot.c
+> 
+
+
 -- 
-1.7.9.5
-
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
