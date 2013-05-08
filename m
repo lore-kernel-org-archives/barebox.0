@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx2.rafi.de ([178.15.151.13])
+Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZzjE-0003Vf-HH
- for barebox@lists.infradead.org; Wed, 08 May 2013 08:28:00 +0000
-Message-ID: <OFAB321AD6.9AFA0E51-ONC1257B65.002D90FB-C1257B65.002E7A38@o0802.rafi.inhouse>
-From: andreas.willig@rafi.de
-Date: Wed, 8 May 2013 10:27:39 +0200
-MIME-Version: 1.0
+ id 1Ua1tH-0006M9-MK
+ for barebox@lists.infradead.org; Wed, 08 May 2013 10:46:36 +0000
+Date: Wed, 8 May 2013 12:46:06 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130508124606.228f1433@skate>
+In-Reply-To: <51898E2F.3010404@free-electrons.com>
+References: <1367599871-28479-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <51898E2F.3010404@free-electrons.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Barebox Enviroment FileSystem
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/7] Basic support for Marvell Armada 370/XP SoC
+To: Gregory CLEMENT <gregory.clement@free-electrons.com>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
+Dear Gregory CLEMENT,
 
-Hi there
+On Wed, 08 May 2013 01:28:47 +0200, Gregory CLEMENT wrote:
 
-I'm just about to implement direct access to BareBox Env FileSystem from
-Windows Embedded Compact 7 launched through BB and it seems to me I met a
-bug in the environment code.
+> it was a great work, I am currently trying to use but unfortunately,
+> I didn't managed to run barebox on the Armada XP OpenBlocks AX3 from
+> Plathome :/
+> 
+> I get something like that:
+> 
+> kwboot -t -b barebix.bin.kw -B 115200 /dev/ttyUSB0
+> Sending boot message. Please reboot the target...-
+> 
+> [here I power up the AX3]
+> 
+> Sending boot image...
+>   0 % [......................................................................]
+>   4 % [......................................................................]
+>   9 % [......................................................................]
+>  14 % [......................................................................]
+>  18 % [......................................................................]
+>  23 % [......................................................................]
+>  28 % [......................................................................]
+>  33 % [......................................................................]
+>  37 % [......................................................................]
+>  42 % [......................................................................]
+>  47 % [......................................................................]
+>  52 % [.............................................................BootROM: Invalid header ID
+> Booting from NOR flash
+> DDR3 Training Sequence - Ver 3.0.0
 
-File: common/environment.c
-Line: 89 (latest revision by 8th of May)
-Function: file_save_action
+Thanks for testing!
 
-The creation of the File's INODE is done strange:
+The kwbimage.cfg for the OpenBlocks AX3 was wrong in this first version
+of the patches. 'BOOT_FROM spi' should have been 'BOOT_FROM uart' if
+you want the image to be bootable from the UART.
 
-  87         inode = (struct envfs_inode*)data->writep;
-  88         inode->magic = ENVFS_32(ENVFS_INODE_MAGIC);
-  89         inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct
-envfs_inode_end)));
+> >    An image is then later created with:
+> > 
+> >     ./scripts/kwbimage -x -i <path/to/kwbimage.cfg> -o <image>
+> 
+> I think it should be:
+> ./scripts/kwbimage -c -i <path/to/kwbimage.cfg> -o <image>
 
-Now the bug / my question is:
-Why is the HeaderLen of the Inode created by padded filename + sizeof
-inode_end instead of padded filename + sizeof(inode) did i get something
-wrong or is this a bug?
+Correct, will fix!
 
-envfs_load will not meet this problem since headerlen is not used during
-expansion of FS to ram.
+I plan to send a v2 either today or tomorrow.
 
-An additional question i got btw: Is it intentionally desired that empty
-directories are dropped during creation of bin file? The inode_end seems to
-support an empty directory entry, but code does not create such entries.
+Thanks again for the testing,
 
-Thanks in advance
-
-Andreas
-
+Thomas
+-- 
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
