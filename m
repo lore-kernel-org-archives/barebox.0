@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaBjD-0002bD-4o
- for barebox@lists.infradead.org; Wed, 08 May 2013 21:16:48 +0000
-Date: Wed, 8 May 2013 23:16:23 +0200
+ id 1UaBv6-0002jq-KQ
+ for barebox@lists.infradead.org; Wed, 08 May 2013 21:29:05 +0000
+Date: Wed, 8 May 2013 23:28:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130508211623.GF32299@pengutronix.de>
-References: <OFAB321AD6.9AFA0E51-ONC1257B65.002D90FB-C1257B65.002E7A38@o0802.rafi.inhouse>
+Message-ID: <20130508212842.GK32299@pengutronix.de>
+References: <1367998478-9314-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <OFAB321AD6.9AFA0E51-ONC1257B65.002D90FB-C1257B65.002E7A38@o0802.rafi.inhouse>
+In-Reply-To: <1367998478-9314-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,69 +22,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox Enviroment FileSystem
-To: andreas.willig@rafi.de
+Subject: Re: [PATCH] ARM: PCM970: Add definition for SPI CS1
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 08, 2013 at 10:27:39AM +0200, andreas.willig@rafi.de wrote:
+On Wed, May 08, 2013 at 11:34:38AM +0400, Alexander Shiyan wrote:
+> This chipselect is used on RDK Zigbee connector. Since we cannot
+> define additional chipselect after SPI is initialized, define this one
+> in main SPI initialization in PCM038 SOM.
 > 
-> Hi there
-> 
-> I'm just about to implement direct access to BareBox Env FileSystem from
-> Windows Embedded Compact 7 launched through BB and it seems to me I met a
-> bug in the environment code.
-> 
-> File: common/environment.c
-> Line: 89 (latest revision by 8th of May)
-> Function: file_save_action
-> 
-> The creation of the File's INODE is done strange:
-> 
->   87         inode = (struct envfs_inode*)data->writep;
->   88         inode->magic = ENVFS_32(ENVFS_INODE_MAGIC);
->   89         inode->headerlen = ENVFS_32(PAD4(namelen + sizeof(struct
-> envfs_inode_end)));
-> 
-> Now the bug / my question is:
-> Why is the HeaderLen of the Inode created by padded filename + sizeof
-> inode_end instead of padded filename + sizeof(inode) did i get something
-> wrong or is this a bug?
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-No, it's not a bug. On storage we have:
-
-|-- struct inode --||-- name --||-- struct inode_end --| <next inode>
-
-headerlen is the length of name and struct inode_end. To understand the
-layout it helps to look at the history. Originally we had:
-
-|-- struct inode --||-- name --| <next inode>
-
-The field 'headerlen' was named 'namelen' back then. Then
-Jean-Christophe wanted to add a new data field (the file mode). The
-obvious way of adding it to struct inode was not chosen because it would
-have changed the storage data format. Instead a struct inode_end was
-added which could be read by both the old and the new code.
-
-I think more correctly the line you reference should read:
-
-inode->headerlen = ENVFS_32(PAD4(namelen) + sizeof(struct envfs_inode_end));
-
-But the result is the same.
-
-> 
-> envfs_load will not meet this problem since headerlen is not used during
-> expansion of FS to ram.
-> 
-> An additional question i got btw: Is it intentionally desired that empty
-> directories are dropped during creation of bin file? The inode_end seems to
-> support an empty directory entry, but code does not create such entries.
-
-No, this was not intentional. You're probably the first one who ever
-spotted this.
-This might be worth fixing, but appearently this doesn't seem to be very
-important ;)
+Applied, thanks
 
 Sascha
+
+> ---
+>  arch/arm/boards/pcm038/pcm038.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index 4b2fa6c..cfc1e5e 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -48,13 +48,19 @@
+>  
+>  #define PCM038_GPIO_FEC_RST	(GPIO_PORTC + 30)
+>  #define PCM038_GPIO_SPI_CS0	(GPIO_PORTD + 28)
+> +#define PCM970_GPIO_SPI_CS1	(GPIO_PORTD + 27)
+>  
+>  static struct fec_platform_data fec_info = {
+>  	.xcv_type = PHY_INTERFACE_MODE_MII,
+>  	.phy_addr = 1,
+>  };
+>  
+> -static int pcm038_spi_cs[] = { PCM038_GPIO_SPI_CS0 };
+> +static int pcm038_spi_cs[] = {
+> +	PCM038_GPIO_SPI_CS0,
+> +#ifdef CONFIG_MACH_PCM970_BASEBOARD
+> +	PCM970_GPIO_SPI_CS1,
+> +#endif
+> +};
+>  
+>  static struct spi_imx_master pcm038_spi_0_data = {
+>  	.chipselect = pcm038_spi_cs,
+> @@ -221,10 +227,13 @@ static int pcm038_devices_init(void)
+>  		PE15_PF_UART1_RTS,
+>  		/* CSPI1 */
+>  		PD25_PF_CSPI1_RDY,
+> -		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
+>  		PD29_PF_CSPI1_SCLK,
+>  		PD30_PF_CSPI1_MISO,
+>  		PD31_PF_CSPI1_MOSI,
+> +		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
+> +#ifdef CONFIG_MACH_PCM970_BASEBOARD
+> +		PCM970_GPIO_SPI_CS1 | GPIO_GPIO | GPIO_OUT,
+> +#endif
+>  		/* Display */
+>  		PA5_PF_LSCLK,
+>  		PA6_PF_LD0,
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
