@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo4.mail-out.ovh.net ([188.165.54.143]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZyq0-0002p9-G8
- for barebox@lists.infradead.org; Wed, 08 May 2013 07:31:00 +0000
-Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 9A61D104E49D
- for <barebox@lists.infradead.org>; Wed,  8 May 2013 09:30:34 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 6.3 \(1503\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <20130508051106.GS32299@pengutronix.de>
-Date: Wed, 8 May 2013 15:30:24 +0800
-Message-Id: <6061FD58-D248-4A13-98E4-7AAD7A80CFCF@jcrosoft.com>
-References: <1367958099-5063-1-git-send-email-plagnioj@jcrosoft.com>
- <20130508051106.GS32299@pengutronix.de>
+Received: from smtp12.mail.ru ([94.100.176.89])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UZyu1-0002tN-Cx
+ for barebox@lists.infradead.org; Wed, 08 May 2013 07:35:06 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Wed,  8 May 2013 11:34:38 +0400
+Message-Id: <1367998478-9314-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,52 +14,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Revert "nand_base: detect more ONFI flash"
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: PCM970: Add definition for SPI CS1
+To: barebox@lists.infradead.org
 
+This chipselect is used on RDK Zigbee connector. Since we cannot
+define additional chipselect after SPI is initialized, define this one
+in main SPI initialization in PCM038 SOM.
 
-On May 8, 2013, at 1:11 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/pcm038/pcm038.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-> On Tue, May 07, 2013 at 10:21:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
->> this brake the nand support on at91sam9x5ek
->> where we have a non compliant ONFI nand
->> NAND device: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB 3,3V 8-bit), 256MiB, page size: 2048, OOB size: 64
->> 
->> This reverts commit 4c2bdc8728016b3412523e3264651651fe752860.
-> 
-> Thank you for letting us know that this patch causes a regression for
-> you. I this happens, please first try and fix the regression. If that
-> doesn't work please tell us what about the original patch is so wrong
-> that it needs to be reverted. With a good explanation it could be that
-> someone else has an idea. And whatever you do, put the original author,
-> Eric in this case, on Cc.
-
-This commit was supposed just able to detect that a Nand is ONFI
-
-but instead it brake supported Nand
-
-So Eric can fix it but I've not time to debug this before 1 month
-and the few platform that use ONFI are all busy
-
-So as the commit just allow to detect a band is ONFI can we revert it
-
-to keep non-ONFI Nand to work
-
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 4b2fa6c..cfc1e5e 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -48,13 +48,19 @@
+ 
+ #define PCM038_GPIO_FEC_RST	(GPIO_PORTC + 30)
+ #define PCM038_GPIO_SPI_CS0	(GPIO_PORTD + 28)
++#define PCM970_GPIO_SPI_CS1	(GPIO_PORTD + 27)
+ 
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type = PHY_INTERFACE_MODE_MII,
+ 	.phy_addr = 1,
+ };
+ 
+-static int pcm038_spi_cs[] = { PCM038_GPIO_SPI_CS0 };
++static int pcm038_spi_cs[] = {
++	PCM038_GPIO_SPI_CS0,
++#ifdef CONFIG_MACH_PCM970_BASEBOARD
++	PCM970_GPIO_SPI_CS1,
++#endif
++};
+ 
+ static struct spi_imx_master pcm038_spi_0_data = {
+ 	.chipselect = pcm038_spi_cs,
+@@ -221,10 +227,13 @@ static int pcm038_devices_init(void)
+ 		PE15_PF_UART1_RTS,
+ 		/* CSPI1 */
+ 		PD25_PF_CSPI1_RDY,
+-		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
+ 		PD29_PF_CSPI1_SCLK,
+ 		PD30_PF_CSPI1_MISO,
+ 		PD31_PF_CSPI1_MOSI,
++		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
++#ifdef CONFIG_MACH_PCM970_BASEBOARD
++		PCM970_GPIO_SPI_CS1 | GPIO_GPIO | GPIO_OUT,
++#endif
+ 		/* Display */
+ 		PA5_PF_LSCLK,
+ 		PA6_PF_LD0,
+-- 
+1.8.1.5
 
 
 _______________________________________________
