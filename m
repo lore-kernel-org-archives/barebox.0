@@ -1,19 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
- helo=mo3.mail-out.ovh.net)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ua7yR-0007Jb-7L
- for barebox@lists.infradead.org; Wed, 08 May 2013 17:16:17 +0000
-Received: from mail607.ha.ovh.net (b7.ovh.net [213.186.33.57])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 46C0BFF8F79
- for <barebox@lists.infradead.org>; Wed,  8 May 2013 19:15:53 +0200 (CEST)
-Date: Wed, 8 May 2013 19:11:32 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130508171132.GF1884@game.jcrosoft.org>
-References: <1368032610-11277-1-git-send-email-eric@eukrea.com>
+ id 1Ua8L2-0007Yc-8r
+ for barebox@lists.infradead.org; Wed, 08 May 2013 17:39:38 +0000
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed,  8 May 2013 19:39:08 +0200
+Message-Id: <1368034748-15462-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1368032610-11277-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,554 +15,270 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] nand_base: fix to test for JCPV problem
-To: Eric =?iso-8859-1?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v3] nand_base: sync flash detection functions with linux 3.9's
+ code
+To: barebox@lists.infradead.org
 
-Hi,
-
-	same
-
-barebox 2013.05.0-00119-g57955f2 #613 Thu May 9 01:12:00 CST 2013
-
-
-Board: Atmel at91sam9x5-ek
-AT91: Detected soc type: at91sam9x5
-AT91: Detected soc subtype: at91sam9x25
-Clocks: CPU 400 MHz, master 133 MHz, main 12.000 MHz
-netconsole: registered as cs2
-CM: SAM9X25-CM [B2] from RONETIX
-EK: SAM9x5-EK [B0] from FLEX
-DM: SAM9x5-DM [B0] from FLEX
-sn: 0x4010465, rev: 0x10421
-atmel_nand: Use On Flash BBT
-nand: no valid ONFI param page found
-nand: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB 3,3V 8-bit), =
-page size: 0, OOB size: 0
-atmel_nand atmel_nand0: Initialize PMECC params, cap: 2, sector: 512
-nand: No oob scheme defined for oobsize 0
-BUG: failure at /opt/work/barebox/drivers/mtd/nand/nand_base.c:1642/nand_sc=
-an_tail()!
-BUG!
-no stack data available
-
-Best Regards,
-J.
-On 19:03 Wed 08 May     , Eric B=E9nard wrote:
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
-> this patch sync flash detection functions with linux 3.9's code
->  drivers/mtd/nand/nand_base.c | 377 ++++++++++++++++++++++++++++++-------=
-------
->  include/linux/mtd/bbm.h      |   2 +
->  2 files changed, 265 insertions(+), 114 deletions(-)
-> =
-
-> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-> index e8103cf..9bfddf9 100644
-> --- a/drivers/mtd/nand/nand_base.c
-> +++ b/drivers/mtd/nand/nand_base.c
-> @@ -1077,7 +1077,6 @@ static int nand_flash_detect_onfi(struct mtd_info *=
-mtd, struct nand_chip *chip,
->  		chip->read_byte(mtd) !=3D 'F' || chip->read_byte(mtd) !=3D 'I')
->  		return 0;
->  =
-
-> -	pr_info("ONFI flash detected ... ");
->  	chip->cmdfunc(mtd, NAND_CMD_PARAM, 0, -1);
->  	for (i =3D 0; i < 3; i++) {
->  		chip->read_buf(mtd, (uint8_t *)p, sizeof(*p));
-> @@ -1128,10 +1127,252 @@ static int nand_flash_detect_onfi(struct mtd_inf=
-o *mtd, struct nand_chip *chip,
->  	chip->options &=3D ~NAND_CHIPOPTIONS_MSK;
->  	chip->options |=3D NAND_NO_READRDY & NAND_CHIPOPTIONS_MSK;
->  =
-
-> +	pr_info("ONFI flash detected ... ");
-> +	return 1;
-> +}
-> +
-> +/*
-> + * nand_id_has_period - Check if an ID string has a given wraparound per=
-iod
-> + * @id_data: the ID string
-> + * @arrlen: the length of the @id_data array
-> + * @period: the period of repitition
-> + *
-> + * Check if an ID string is repeated within a given sequence of bytes at
-> + * specific repetition interval period (e.g., {0x20,0x01,0x7F,0x20} has a
-> + * period of 3). This is a helper function for nand_id_len(). Returns no=
-n-zero
-> + * if the repetition has a period of @period; otherwise, returns zero.
-> + */
-> +static int nand_id_has_period(u8 *id_data, int arrlen, int period)
-> +{
-> +	int i, j;
-> +	for (i =3D 0; i < period; i++)
-> +		for (j =3D i + period; j < arrlen; j +=3D period)
-> +			if (id_data[i] !=3D id_data[j])
-> +				return 0;
->  	return 1;
->  }
->  =
-
->  /*
-> + * nand_id_len - Get the length of an ID string returned by CMD_READID
-> + * @id_data: the ID string
-> + * @arrlen: the length of the @id_data array
-> +
-> + * Returns the length of the ID string, according to known wraparound/tr=
-ailing
-> + * zero patterns. If no pattern exists, returns the length of the array.
-> + */
-> +static int nand_id_len(u8 *id_data, int arrlen)
-> +{
-> +	int last_nonzero, period;
-> +
-> +	/* Find last non-zero byte */
-> +	for (last_nonzero =3D arrlen - 1; last_nonzero >=3D 0; last_nonzero--)
-> +		if (id_data[last_nonzero])
-> +			break;
-> +
-> +	/* All zeros */
-> +	if (last_nonzero < 0)
-> +		return 0;
-> +
-> +	/* Calculate wraparound period */
-> +	for (period =3D 1; period < arrlen; period++)
-> +		if (nand_id_has_period(id_data, arrlen, period))
-> +			break;
-> +
-> +	/* There's a repeated pattern */
-> +	if (period < arrlen)
-> +		return period;
-> +
-> +	/* There are trailing zeros */
-> +	if (last_nonzero < arrlen - 1)
-> +		return last_nonzero + 1;
-> +
-> +	/* No pattern detected */
-> +	return arrlen;
-> +}
-> +
-> +/*
-> + * Many new NAND share similar device ID codes, which represent the size=
- of the
-> + * chip. The rest of the parameters must be decoded according to generic=
- or
-> + * manufacturer-specific "extended ID" decoding patterns.
-> + */
-> +static void nand_decode_ext_id(struct mtd_info *mtd, struct nand_chip *c=
-hip,
-> +				u8 id_data[8], int *busw)
-> +{
-> +	int extid, id_len;
-> +	/* The 3rd id byte holds MLC / multichip data */
-> +	chip->cellinfo =3D id_data[2];
-> +	/* The 4th id byte is the important one */
-> +	extid =3D id_data[3];
-> +
-> +	id_len =3D nand_id_len(id_data, 8);
-> +
-> +	/*
-> +	 * Field definitions are in the following datasheets:
-> +	 * Old style (4,5 byte ID): Samsung K9GAG08U0M (p.32)
-> +	 * New Samsung (6 byte ID): Samsung K9GAG08U0F (p.44)
-> +	 * Hynix MLC   (6 byte ID): Hynix H27UBG8T2B (p.22)
-> +	 *
-> +	 * Check for ID length, non-zero 6th byte, cell type, and Hynix/Samsung
-> +	 * ID to decide what to do.
-> +	 */
-> +	if (id_len =3D=3D 6 && id_data[0] =3D=3D NAND_MFR_SAMSUNG &&
-> +			(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
-> +			id_data[5] !=3D 0x00) {
-> +		/* Calc pagesize */
-> +		mtd->writesize =3D 2048 << (extid & 0x03);
-> +		extid >>=3D 2;
-> +		/* Calc oobsize */
-> +		switch (((extid >> 2) & 0x04) | (extid & 0x03)) {
-> +		case 1:
-> +			mtd->oobsize =3D 128;
-> +			break;
-> +		case 2:
-> +			mtd->oobsize =3D 218;
-> +			break;
-> +		case 3:
-> +			mtd->oobsize =3D 400;
-> +			break;
-> +		case 4:
-> +			mtd->oobsize =3D 436;
-> +			break;
-> +		case 5:
-> +			mtd->oobsize =3D 512;
-> +			break;
-> +		case 6:
-> +		default: /* Other cases are "reserved" (unknown) */
-> +			mtd->oobsize =3D 640;
-> +			break;
-> +		}
-> +		extid >>=3D 2;
-> +		/* Calc blocksize */
-> +		mtd->erasesize =3D (128 * 1024) <<
-> +			(((extid >> 1) & 0x04) | (extid & 0x03));
-> +		*busw =3D 0;
-> +	} else if (id_len =3D=3D 6 && id_data[0] =3D=3D NAND_MFR_HYNIX &&
-> +			(chip->cellinfo & NAND_CI_CELLTYPE_MSK)) {
-> +		unsigned int tmp;
-> +
-> +		/* Calc pagesize */
-> +		mtd->writesize =3D 2048 << (extid & 0x03);
-> +		extid >>=3D 2;
-> +		/* Calc oobsize */
-> +		switch (((extid >> 2) & 0x04) | (extid & 0x03)) {
-> +		case 0:
-> +			mtd->oobsize =3D 128;
-> +			break;
-> +		case 1:
-> +			mtd->oobsize =3D 224;
-> +			break;
-> +		case 2:
-> +			mtd->oobsize =3D 448;
-> +			break;
-> +		case 3:
-> +			mtd->oobsize =3D 64;
-> +			break;
-> +		case 4:
-> +			mtd->oobsize =3D 32;
-> +			break;
-> +		case 5:
-> +			mtd->oobsize =3D 16;
-> +			break;
-> +		default:
-> +			mtd->oobsize =3D 640;
-> +			break;
-> +		}
-> +		extid >>=3D 2;
-> +		/* Calc blocksize */
-> +		tmp =3D ((extid >> 1) & 0x04) | (extid & 0x03);
-> +		if (tmp < 0x03)
-> +			mtd->erasesize =3D (128 * 1024) << tmp;
-> +		else if (tmp =3D=3D 0x03)
-> +			mtd->erasesize =3D 768 * 1024;
-> +		else
-> +			mtd->erasesize =3D (64 * 1024) << tmp;
-> +		*busw =3D 0;
-> +	} else {
-> +		/* Calc pagesize */
-> +		mtd->writesize =3D 1024 << (extid & 0x03);
-> +		extid >>=3D 2;
-> +		/* Calc oobsize */
-> +		mtd->oobsize =3D (8 << (extid & 0x01)) *
-> +			(mtd->writesize >> 9);
-> +		extid >>=3D 2;
-> +		/* Calc blocksize. Blocksize is multiples of 64KiB */
-> +		mtd->erasesize =3D (64 * 1024) << (extid & 0x03);
-> +		extid >>=3D 2;
-> +		/* Get buswidth information */
-> +		*busw =3D (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
-> +	}
-> +}
-> +
-> +/*
-> + * Old devices have chip data hardcoded in the device ID table. nand_dec=
-ode_id
-> + * decodes a matching ID table entry and assigns the MTD size parameters=
- for
-> + * the chip.
-> + */
-> +static void nand_decode_id(struct mtd_info *mtd, struct nand_chip *chip,
-> +				struct nand_flash_dev *type, u8 id_data[8],
-> +				int *busw)
-> +{
-> +	int maf_id =3D id_data[0];
-> +
-> +	mtd->erasesize =3D type->erasesize;
-> +	mtd->writesize =3D type->pagesize;
-> +	mtd->oobsize =3D mtd->writesize / 32;
-> +	*busw =3D type->options & NAND_BUSWIDTH_16;
-> +
-> +	/*
-> +	 * Check for Spansion/AMD ID + repeating 5th, 6th byte since
-> +	 * some Spansion chips have erasesize that conflicts with size
-> +	 * listed in nand_ids table.
-> +	 * Data sheet (5 byte ID): Spansion S30ML-P ORNAND (p.39)
-> +	 */
-> +	if (maf_id =3D=3D NAND_MFR_AMD && id_data[4] !=3D 0x00 && id_data[5] =
-=3D=3D 0x00
-> +			&& id_data[6] =3D=3D 0x00 && id_data[7] =3D=3D 0x00
-> +			&& mtd->writesize =3D=3D 512) {
-> +		mtd->erasesize =3D 128 * 1024;
-> +		mtd->erasesize <<=3D ((id_data[3] & 0x03) << 1);
-> +	}
-> +}
-> +
-> +/*
-> + * Set the bad block marker/indicator (BBM/BBI) patterns according to so=
-me
-> + * heuristic patterns using various detected parameters (e.g., manufactu=
-rer,
-> + * page size, cell-type information).
-> + */
-> +static void nand_decode_bbm_options(struct mtd_info *mtd,
-> +				    struct nand_chip *chip, u8 id_data[8])
-> +{
-> +	int maf_id =3D id_data[0];
-> +
-> +	/* Set the bad block position */
-> +	if (mtd->writesize > 512 || (chip->options & NAND_BUSWIDTH_16))
-> +		chip->badblockpos =3D NAND_LARGE_BADBLOCK_POS;
-> +	else
-> +		chip->badblockpos =3D NAND_SMALL_BADBLOCK_POS;
-> +
-> +	/*
-> +	 * Bad block marker is stored in the last page of each block on Samsung
-> +	 * and Hynix MLC devices; stored in first two pages of each block on
-> +	 * Micron devices with 2KiB pages and on SLC Samsung, Hynix, Toshiba,
-> +	 * AMD/Spansion, and Macronix.  All others scan only the first page.
-> +	 */
-> +	if ((chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
-> +			(maf_id =3D=3D NAND_MFR_SAMSUNG ||
-> +			 maf_id =3D=3D NAND_MFR_HYNIX))
-> +		chip->bbt_options |=3D NAND_BBT_SCANLASTPAGE;
-> +	else if ((!(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
-> +				(maf_id =3D=3D NAND_MFR_SAMSUNG ||
-> +				 maf_id =3D=3D NAND_MFR_HYNIX ||
-> +				 maf_id =3D=3D NAND_MFR_TOSHIBA ||
-> +				 maf_id =3D=3D NAND_MFR_AMD ||
-> +				 maf_id =3D=3D NAND_MFR_MACRONIX)) ||
-> +			(mtd->writesize =3D=3D 2048 &&
-> +			 maf_id =3D=3D NAND_MFR_MICRON))
-> +		chip->bbt_options |=3D NAND_BBT_SCAN2NDPAGE;
-> +}
-> +
-> +/*
->   * Get the flash and manufacturer id and lookup if the type is supported
->   */
->  static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
-> @@ -1140,7 +1381,7 @@ static struct nand_flash_dev *nand_get_flash_type(s=
-truct mtd_info *mtd,
->  {
->  	struct nand_flash_dev *type =3D NULL;
->  	int i, dev_id, maf_idx;
-> -	int id_data[8];
-> +	u8 id_data[8];
->  	int ret;
->  =
-
->  	/* Select the device */
-> @@ -1167,10 +1408,9 @@ static struct nand_flash_dev *nand_get_flash_type(=
-struct mtd_info *mtd,
->  =
-
->  	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
->  =
-
-> -	/* Read manufacturer and device IDs */
-> -
-> -	id_data[0] =3D chip->read_byte(mtd);
-> -	id_data[1] =3D chip->read_byte(mtd);
-> +	/* Read entire ID string */
-> +	for (i =3D 0; i < 8; i++)
-> +		id_data[i] =3D chip->read_byte(mtd);
->  =
-
->  	if (id_data[0] !=3D *maf_id || id_data[1] !=3D dev_id) {
->  		pr_err("%s: second ID read did not match "
-> @@ -1190,20 +1430,11 @@ static struct nand_flash_dev *nand_get_flash_type=
-(struct mtd_info *mtd,
->  	if (!type->name || !type->pagesize) {
->  		/* Check is chip is ONFI compliant */
->  		ret =3D nand_flash_detect_onfi(mtd, chip, &busw);
-> -		if (ret)
->  			goto ident_done;
-> -		else {
-> -			pr_err("NAND type unknown: %02x,%02x\n", *maf_id, dev_id);
-> -			return ERR_PTR(-ENODEV);
-> -		}
->  	}
->  =
-
-> -	chip->cmdfunc(mtd, NAND_CMD_READID, 0x00, -1);
-> -
-> -	/* Read entire ID string */
-> -
-> -	for (i =3D 0; i < 8; i++)
-> -		id_data[i] =3D chip->read_byte(mtd);
-> +	if (!type->name)
-> +		return ERR_PTR(-ENODEV);
->  =
-
->  	if (!mtd->name)
->  		mtd->name =3D type->name;
-> @@ -1211,102 +1442,20 @@ static struct nand_flash_dev *nand_get_flash_typ=
-e(struct mtd_info *mtd,
->  	chip->chipsize =3D type->chipsize << 20;
->  =
-
->  	if (!type->pagesize) {
-> -		int extid;
-> -		/* The 3rd id byte holds MLC / multichip data */
-> -		chip->cellinfo =3D id_data[2];
-> -		/* The 4th id byte is the important one */
-> -		extid =3D id_data[3];
-> -
-> -		/*
-> -		 * Field definitions are in the following datasheets:
-> -		 * Old style (4,5 byte ID): Samsung K9GAG08U0M (p.32)
-> -		 * New style   (6 byte ID): Samsung K9GBG08U0M (p.40)
-> -		 *
-> -		 * Check for wraparound + Samsung ID + nonzero 6th byte
-> -		 * to decide what to do.
-> -		 */
-> -		if (id_data[0] =3D=3D id_data[6] && id_data[1] =3D=3D id_data[7] &&
-> -				id_data[0] =3D=3D NAND_MFR_SAMSUNG &&
-> -				(chip->cellinfo & NAND_CI_CELLTYPE_MSK) &&
-> -				id_data[5] !=3D 0x00) {
-> -			/* Calc pagesize */
-> -			mtd->writesize =3D 2048 << (extid & 0x03);
-> -			extid >>=3D 2;
-> -			/* Calc oobsize */
-> -			switch (extid & 0x03) {
-> -			case 1:
-> -				mtd->oobsize =3D 128;
-> -				break;
-> -			case 2:
-> -				mtd->oobsize =3D 218;
-> -				break;
-> -			case 3:
-> -				mtd->oobsize =3D 400;
-> -				break;
-> -			default:
-> -				mtd->oobsize =3D 436;
-> -				break;
-> -			}
-> -			extid >>=3D 2;
-> -			/* Calc blocksize */
-> -			mtd->erasesize =3D (128 * 1024) <<
-> -				(((extid >> 1) & 0x04) | (extid & 0x03));
-> -			busw =3D 0;
-> -		} else {
-> -			/* Calc pagesize */
-> -			mtd->writesize =3D 1024 << (extid & 0x03);
-> -			extid >>=3D 2;
-> -			/* Calc oobsize */
-> -			mtd->oobsize =3D (8 << (extid & 0x01)) *
-> -				(mtd->writesize >> 9);
-> -			extid >>=3D 2;
-> -			/* Calc blocksize. Blocksize is multiples of 64KiB */
-> -			mtd->erasesize =3D (64 * 1024) << (extid & 0x03);
-> -			extid >>=3D 2;
-> -			/* Get buswidth information */
-> -			busw =3D (extid & 0x01) ? NAND_BUSWIDTH_16 : 0;
-> -		}
-> -
-> -
-> +		/* Decode parameters from extended ID */
-> +		nand_decode_ext_id(mtd, chip, id_data, &busw);
->  	} else {
-> -		/*
-> -		 * Old devices have chip data hardcoded in the device id table
-> -		 */
-> -		mtd->erasesize =3D type->erasesize;
-> -		mtd->writesize =3D type->pagesize;
-> -		mtd->oobsize =3D mtd->writesize / 32;
-> -		busw =3D type->options & NAND_BUSWIDTH_16;
-> -
-> -		/*
-> -		 * Check for Spansion/AMD ID + repeating 5th, 6th byte since
-> -		 * some Spansion chips have erasesize that conflicts with size
-> -		 * listed in nand_ids table
-> -		 * Data sheet (5 byte ID): Spansion S30ML-P ORNAND (p.39)
-> -		 */
-> -		if (*maf_id =3D=3D NAND_MFR_AMD && id_data[4] !=3D 0x00 &&
-> -				id_data[5] =3D=3D 0x00 && id_data[6] =3D=3D 0x00 &&
-> -				id_data[7] =3D=3D 0x00 && mtd->writesize =3D=3D 512) {
-> -			mtd->erasesize =3D 128 * 1024;
-> -			mtd->erasesize <<=3D ((id_data[3] & 0x03) << 1);
-> -		}
-> +		nand_decode_id(mtd, chip, type, id_data, &busw);
->  	}
-> +	/* Get chip options */
-> +	chip->options |=3D type->options;
->  =
-
-> -	/* Try to identify manufacturer */
-> -	for (maf_idx =3D 0; nand_manuf_ids[maf_idx].id !=3D 0x0; maf_idx++) {
-> -		if (nand_manuf_ids[maf_idx].id =3D=3D *maf_id)
-> -			break;
-> -	}
-> -
-> -	/* Get chip options, preserve non chip based options */
-> -	chip->options &=3D ~NAND_CHIPOPTIONS_MSK;
-> -	chip->options |=3D type->options & NAND_CHIPOPTIONS_MSK;
-> -
-> -	/* Check if chip is a not a samsung device. Do not clear the
-> -	 * options for chips which are not having an extended id.
-> +	/*
-> +	 * Check if chip is not a Samsung device. Do not clear the
-> +	 * options for chips which do not have an extended id.
->  	 */
->  	if (*maf_id !=3D NAND_MFR_SAMSUNG && !type->pagesize)
->  		chip->options &=3D ~NAND_SAMSUNG_LP_OPTIONS;
-> -
->  ident_done:
->  	/*
->  	 * Set chip as a default. Board drivers can override it, if necessary
-> @@ -1324,13 +1473,11 @@ ident_done:
->  		nand_set_defaults(chip, busw);
->  		if (chip->set_buswidth)
->  			chip->set_buswidth(mtd, chip, busw);
-> -	}
-> -
-> -	/*
-> -	 * Check, if buswidth is correct. Hardware drivers should set
-> -	 * chip correct !
-> -	 */
-> -	if (busw !=3D (chip->options & NAND_BUSWIDTH_16)) {
-> +	} else 	if (busw !=3D (chip->options & NAND_BUSWIDTH_16)) {
-> +		/*
-> +		 * Check, if buswidth is correct. Hardware drivers should set
-> +		 * chip correct !
-> +		 */
->  		pr_info("NAND device: Manufacturer ID:"
->  			" 0x%02x, Chip ID: 0x%02x (%s %s)\n", *maf_id,
->  			dev_id, nand_manuf_ids[maf_idx].name, mtd->name);
-> @@ -1340,6 +1487,8 @@ ident_done:
->  		return ERR_PTR(-EINVAL);
->  	}
->  =
-
-> +	nand_decode_bbm_options(mtd, chip, id_data);
-> +
->  	/* Calculate the address shift from the page size */
->  	chip->page_shift =3D ffs(mtd->writesize) - 1;
->  	/* Convert chipsize to number of pages per chip -1. */
-> diff --git a/include/linux/mtd/bbm.h b/include/linux/mtd/bbm.h
-> index d546f40..50bc4d9 100644
-> --- a/include/linux/mtd/bbm.h
-> +++ b/include/linux/mtd/bbm.h
-> @@ -79,6 +79,8 @@ struct nand_bbt_descr {
->  #define NAND_BBT_SAVECONTENT	0x00002000
->  /* Search good / bad pattern on the first and the second page */
->  #define NAND_BBT_SCAN2NDPAGE	0x00004000
-> +/* Search good / bad pattern on the last page of the eraseblock */
-> +#define NAND_BBT_SCANLASTPAGE	0x00010000
->  =
-
->  /*
->   * Use a flash based bad block table. By default, OOB identifier is save=
-d in
-> -- =
-
-> 1.8.1.4
-> =
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVy
+cy9tdGQvbmFuZC9uYW5kX2Jhc2UuYyB8IDM4NSArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KystLS0tLS0tLS0tLS0tCiBpbmNsdWRlL2xpbnV4L210ZC9iYm0uaCAgICAgIHwgICAyICsKIDIg
+ZmlsZXMgY2hhbmdlZCwgMjY4IGluc2VydGlvbnMoKyksIDExOSBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jIGIvZHJpdmVycy9tdGQvbmFuZC9u
+YW5kX2Jhc2UuYwppbmRleCBlODEwM2NmLi5lNjAxZjg0IDEwMDY0NAotLS0gYS9kcml2ZXJzL210
+ZC9uYW5kL25hbmRfYmFzZS5jCisrKyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMKQEAg
+LTEwNzcsNyArMTA3Nyw2IEBAIHN0YXRpYyBpbnQgbmFuZF9mbGFzaF9kZXRlY3Rfb25maShzdHJ1
+Y3QgbXRkX2luZm8gKm10ZCwgc3RydWN0IG5hbmRfY2hpcCAqY2hpcCwKIAkJY2hpcC0+cmVhZF9i
+eXRlKG10ZCkgIT0gJ0YnIHx8IGNoaXAtPnJlYWRfYnl0ZShtdGQpICE9ICdJJykKIAkJcmV0dXJu
+IDA7CiAKLQlwcl9pbmZvKCJPTkZJIGZsYXNoIGRldGVjdGVkIC4uLiAiKTsKIAljaGlwLT5jbWRm
+dW5jKG10ZCwgTkFORF9DTURfUEFSQU0sIDAsIC0xKTsKIAlmb3IgKGkgPSAwOyBpIDwgMzsgaSsr
+KSB7CiAJCWNoaXAtPnJlYWRfYnVmKG10ZCwgKHVpbnQ4X3QgKilwLCBzaXplb2YoKnApKTsKQEAg
+LTEwODgsMTAgKzEwODcsOCBAQCBzdGF0aWMgaW50IG5hbmRfZmxhc2hfZGV0ZWN0X29uZmkoc3Ry
+dWN0IG10ZF9pbmZvICptdGQsIHN0cnVjdCBuYW5kX2NoaXAgKmNoaXAsCiAJCX0KIAl9CiAKLQlp
+ZiAoaSA9PSAzKSB7Ci0JCXByX2luZm8oIm5vIHZhbGlkIE9ORkkgcGFyYW0gcGFnZSBmb3VuZFxu
+Iik7CisJaWYgKGkgPT0gMykKIAkJcmV0dXJuIDA7Ci0JfQogCiAJLyogY2hlY2sgdmVyc2lvbiAq
+LwogCXZhbCA9IGxlMTZfdG9fY3B1KHAtPnJldmlzaW9uKTsKQEAgLTExMjgsMTAgKzExMjUsMjUy
+IEBAIHN0YXRpYyBpbnQgbmFuZF9mbGFzaF9kZXRlY3Rfb25maShzdHJ1Y3QgbXRkX2luZm8gKm10
+ZCwgc3RydWN0IG5hbmRfY2hpcCAqY2hpcCwKIAljaGlwLT5vcHRpb25zICY9IH5OQU5EX0NISVBP
+UFRJT05TX01TSzsKIAljaGlwLT5vcHRpb25zIHw9IE5BTkRfTk9fUkVBRFJEWSAmIE5BTkRfQ0hJ
+UE9QVElPTlNfTVNLOwogCisJcHJfaW5mbygiT05GSSBmbGFzaCBkZXRlY3RlZCAuLi4gIik7CisJ
+cmV0dXJuIDE7Cit9CisKKy8qCisgKiBuYW5kX2lkX2hhc19wZXJpb2QgLSBDaGVjayBpZiBhbiBJ
+RCBzdHJpbmcgaGFzIGEgZ2l2ZW4gd3JhcGFyb3VuZCBwZXJpb2QKKyAqIEBpZF9kYXRhOiB0aGUg
+SUQgc3RyaW5nCisgKiBAYXJybGVuOiB0aGUgbGVuZ3RoIG9mIHRoZSBAaWRfZGF0YSBhcnJheQor
+ICogQHBlcmlvZDogdGhlIHBlcmlvZCBvZiByZXBpdGl0aW9uCisgKgorICogQ2hlY2sgaWYgYW4g
+SUQgc3RyaW5nIGlzIHJlcGVhdGVkIHdpdGhpbiBhIGdpdmVuIHNlcXVlbmNlIG9mIGJ5dGVzIGF0
+CisgKiBzcGVjaWZpYyByZXBldGl0aW9uIGludGVydmFsIHBlcmlvZCAoZS5nLiwgezB4MjAsMHgw
+MSwweDdGLDB4MjB9IGhhcyBhCisgKiBwZXJpb2Qgb2YgMykuIFRoaXMgaXMgYSBoZWxwZXIgZnVu
+Y3Rpb24gZm9yIG5hbmRfaWRfbGVuKCkuIFJldHVybnMgbm9uLXplcm8KKyAqIGlmIHRoZSByZXBl
+dGl0aW9uIGhhcyBhIHBlcmlvZCBvZiBAcGVyaW9kOyBvdGhlcndpc2UsIHJldHVybnMgemVyby4K
+KyAqLworc3RhdGljIGludCBuYW5kX2lkX2hhc19wZXJpb2QodTggKmlkX2RhdGEsIGludCBhcnJs
+ZW4sIGludCBwZXJpb2QpCit7CisJaW50IGksIGo7CisJZm9yIChpID0gMDsgaSA8IHBlcmlvZDsg
+aSsrKQorCQlmb3IgKGogPSBpICsgcGVyaW9kOyBqIDwgYXJybGVuOyBqICs9IHBlcmlvZCkKKwkJ
+CWlmIChpZF9kYXRhW2ldICE9IGlkX2RhdGFbal0pCisJCQkJcmV0dXJuIDA7CiAJcmV0dXJuIDE7
+CiB9CiAKIC8qCisgKiBuYW5kX2lkX2xlbiAtIEdldCB0aGUgbGVuZ3RoIG9mIGFuIElEIHN0cmlu
+ZyByZXR1cm5lZCBieSBDTURfUkVBRElECisgKiBAaWRfZGF0YTogdGhlIElEIHN0cmluZworICog
+QGFycmxlbjogdGhlIGxlbmd0aCBvZiB0aGUgQGlkX2RhdGEgYXJyYXkKKworICogUmV0dXJucyB0
+aGUgbGVuZ3RoIG9mIHRoZSBJRCBzdHJpbmcsIGFjY29yZGluZyB0byBrbm93biB3cmFwYXJvdW5k
+L3RyYWlsaW5nCisgKiB6ZXJvIHBhdHRlcm5zLiBJZiBubyBwYXR0ZXJuIGV4aXN0cywgcmV0dXJu
+cyB0aGUgbGVuZ3RoIG9mIHRoZSBhcnJheS4KKyAqLworc3RhdGljIGludCBuYW5kX2lkX2xlbih1
+OCAqaWRfZGF0YSwgaW50IGFycmxlbikKK3sKKwlpbnQgbGFzdF9ub256ZXJvLCBwZXJpb2Q7CisK
+KwkvKiBGaW5kIGxhc3Qgbm9uLXplcm8gYnl0ZSAqLworCWZvciAobGFzdF9ub256ZXJvID0gYXJy
+bGVuIC0gMTsgbGFzdF9ub256ZXJvID49IDA7IGxhc3Rfbm9uemVyby0tKQorCQlpZiAoaWRfZGF0
+YVtsYXN0X25vbnplcm9dKQorCQkJYnJlYWs7CisKKwkvKiBBbGwgemVyb3MgKi8KKwlpZiAobGFz
+dF9ub256ZXJvIDwgMCkKKwkJcmV0dXJuIDA7CisKKwkvKiBDYWxjdWxhdGUgd3JhcGFyb3VuZCBw
+ZXJpb2QgKi8KKwlmb3IgKHBlcmlvZCA9IDE7IHBlcmlvZCA8IGFycmxlbjsgcGVyaW9kKyspCisJ
+CWlmIChuYW5kX2lkX2hhc19wZXJpb2QoaWRfZGF0YSwgYXJybGVuLCBwZXJpb2QpKQorCQkJYnJl
+YWs7CisKKwkvKiBUaGVyZSdzIGEgcmVwZWF0ZWQgcGF0dGVybiAqLworCWlmIChwZXJpb2QgPCBh
+cnJsZW4pCisJCXJldHVybiBwZXJpb2Q7CisKKwkvKiBUaGVyZSBhcmUgdHJhaWxpbmcgemVyb3Mg
+Ki8KKwlpZiAobGFzdF9ub256ZXJvIDwgYXJybGVuIC0gMSkKKwkJcmV0dXJuIGxhc3Rfbm9uemVy
+byArIDE7CisKKwkvKiBObyBwYXR0ZXJuIGRldGVjdGVkICovCisJcmV0dXJuIGFycmxlbjsKK30K
+KworLyoKKyAqIE1hbnkgbmV3IE5BTkQgc2hhcmUgc2ltaWxhciBkZXZpY2UgSUQgY29kZXMsIHdo
+aWNoIHJlcHJlc2VudCB0aGUgc2l6ZSBvZiB0aGUKKyAqIGNoaXAuIFRoZSByZXN0IG9mIHRoZSBw
+YXJhbWV0ZXJzIG11c3QgYmUgZGVjb2RlZCBhY2NvcmRpbmcgdG8gZ2VuZXJpYyBvcgorICogbWFu
+dWZhY3R1cmVyLXNwZWNpZmljICJleHRlbmRlZCBJRCIgZGVjb2RpbmcgcGF0dGVybnMuCisgKi8K
+K3N0YXRpYyB2b2lkIG5hbmRfZGVjb2RlX2V4dF9pZChzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgc3Ry
+dWN0IG5hbmRfY2hpcCAqY2hpcCwKKwkJCQl1OCBpZF9kYXRhWzhdLCBpbnQgKmJ1c3cpCit7CisJ
+aW50IGV4dGlkLCBpZF9sZW47CisJLyogVGhlIDNyZCBpZCBieXRlIGhvbGRzIE1MQyAvIG11bHRp
+Y2hpcCBkYXRhICovCisJY2hpcC0+Y2VsbGluZm8gPSBpZF9kYXRhWzJdOworCS8qIFRoZSA0dGgg
+aWQgYnl0ZSBpcyB0aGUgaW1wb3J0YW50IG9uZSAqLworCWV4dGlkID0gaWRfZGF0YVszXTsKKwor
+CWlkX2xlbiA9IG5hbmRfaWRfbGVuKGlkX2RhdGEsIDgpOworCisJLyoKKwkgKiBGaWVsZCBkZWZp
+bml0aW9ucyBhcmUgaW4gdGhlIGZvbGxvd2luZyBkYXRhc2hlZXRzOgorCSAqIE9sZCBzdHlsZSAo
+NCw1IGJ5dGUgSUQpOiBTYW1zdW5nIEs5R0FHMDhVME0gKHAuMzIpCisJICogTmV3IFNhbXN1bmcg
+KDYgYnl0ZSBJRCk6IFNhbXN1bmcgSzlHQUcwOFUwRiAocC40NCkKKwkgKiBIeW5peCBNTEMgICAo
+NiBieXRlIElEKTogSHluaXggSDI3VUJHOFQyQiAocC4yMikKKwkgKgorCSAqIENoZWNrIGZvciBJ
+RCBsZW5ndGgsIG5vbi16ZXJvIDZ0aCBieXRlLCBjZWxsIHR5cGUsIGFuZCBIeW5peC9TYW1zdW5n
+CisJICogSUQgdG8gZGVjaWRlIHdoYXQgdG8gZG8uCisJICovCisJaWYgKGlkX2xlbiA9PSA2ICYm
+IGlkX2RhdGFbMF0gPT0gTkFORF9NRlJfU0FNU1VORyAmJgorCQkJKGNoaXAtPmNlbGxpbmZvICYg
+TkFORF9DSV9DRUxMVFlQRV9NU0spICYmCisJCQlpZF9kYXRhWzVdICE9IDB4MDApIHsKKwkJLyog
+Q2FsYyBwYWdlc2l6ZSAqLworCQltdGQtPndyaXRlc2l6ZSA9IDIwNDggPDwgKGV4dGlkICYgMHgw
+Myk7CisJCWV4dGlkID4+PSAyOworCQkvKiBDYWxjIG9vYnNpemUgKi8KKwkJc3dpdGNoICgoKGV4
+dGlkID4+IDIpICYgMHgwNCkgfCAoZXh0aWQgJiAweDAzKSkgeworCQljYXNlIDE6CisJCQltdGQt
+Pm9vYnNpemUgPSAxMjg7CisJCQlicmVhazsKKwkJY2FzZSAyOgorCQkJbXRkLT5vb2JzaXplID0g
+MjE4OworCQkJYnJlYWs7CisJCWNhc2UgMzoKKwkJCW10ZC0+b29ic2l6ZSA9IDQwMDsKKwkJCWJy
+ZWFrOworCQljYXNlIDQ6CisJCQltdGQtPm9vYnNpemUgPSA0MzY7CisJCQlicmVhazsKKwkJY2Fz
+ZSA1OgorCQkJbXRkLT5vb2JzaXplID0gNTEyOworCQkJYnJlYWs7CisJCWNhc2UgNjoKKwkJZGVm
+YXVsdDogLyogT3RoZXIgY2FzZXMgYXJlICJyZXNlcnZlZCIgKHVua25vd24pICovCisJCQltdGQt
+Pm9vYnNpemUgPSA2NDA7CisJCQlicmVhazsKKwkJfQorCQlleHRpZCA+Pj0gMjsKKwkJLyogQ2Fs
+YyBibG9ja3NpemUgKi8KKwkJbXRkLT5lcmFzZXNpemUgPSAoMTI4ICogMTAyNCkgPDwKKwkJCSgo
+KGV4dGlkID4+IDEpICYgMHgwNCkgfCAoZXh0aWQgJiAweDAzKSk7CisJCSpidXN3ID0gMDsKKwl9
+IGVsc2UgaWYgKGlkX2xlbiA9PSA2ICYmIGlkX2RhdGFbMF0gPT0gTkFORF9NRlJfSFlOSVggJiYK
+KwkJCShjaGlwLT5jZWxsaW5mbyAmIE5BTkRfQ0lfQ0VMTFRZUEVfTVNLKSkgeworCQl1bnNpZ25l
+ZCBpbnQgdG1wOworCisJCS8qIENhbGMgcGFnZXNpemUgKi8KKwkJbXRkLT53cml0ZXNpemUgPSAy
+MDQ4IDw8IChleHRpZCAmIDB4MDMpOworCQlleHRpZCA+Pj0gMjsKKwkJLyogQ2FsYyBvb2JzaXpl
+ICovCisJCXN3aXRjaCAoKChleHRpZCA+PiAyKSAmIDB4MDQpIHwgKGV4dGlkICYgMHgwMykpIHsK
+KwkJY2FzZSAwOgorCQkJbXRkLT5vb2JzaXplID0gMTI4OworCQkJYnJlYWs7CisJCWNhc2UgMToK
+KwkJCW10ZC0+b29ic2l6ZSA9IDIyNDsKKwkJCWJyZWFrOworCQljYXNlIDI6CisJCQltdGQtPm9v
+YnNpemUgPSA0NDg7CisJCQlicmVhazsKKwkJY2FzZSAzOgorCQkJbXRkLT5vb2JzaXplID0gNjQ7
+CisJCQlicmVhazsKKwkJY2FzZSA0OgorCQkJbXRkLT5vb2JzaXplID0gMzI7CisJCQlicmVhazsK
+KwkJY2FzZSA1OgorCQkJbXRkLT5vb2JzaXplID0gMTY7CisJCQlicmVhazsKKwkJZGVmYXVsdDoK
+KwkJCW10ZC0+b29ic2l6ZSA9IDY0MDsKKwkJCWJyZWFrOworCQl9CisJCWV4dGlkID4+PSAyOwor
+CQkvKiBDYWxjIGJsb2Nrc2l6ZSAqLworCQl0bXAgPSAoKGV4dGlkID4+IDEpICYgMHgwNCkgfCAo
+ZXh0aWQgJiAweDAzKTsKKwkJaWYgKHRtcCA8IDB4MDMpCisJCQltdGQtPmVyYXNlc2l6ZSA9ICgx
+MjggKiAxMDI0KSA8PCB0bXA7CisJCWVsc2UgaWYgKHRtcCA9PSAweDAzKQorCQkJbXRkLT5lcmFz
+ZXNpemUgPSA3NjggKiAxMDI0OworCQllbHNlCisJCQltdGQtPmVyYXNlc2l6ZSA9ICg2NCAqIDEw
+MjQpIDw8IHRtcDsKKwkJKmJ1c3cgPSAwOworCX0gZWxzZSB7CisJCS8qIENhbGMgcGFnZXNpemUg
+Ki8KKwkJbXRkLT53cml0ZXNpemUgPSAxMDI0IDw8IChleHRpZCAmIDB4MDMpOworCQlleHRpZCA+
+Pj0gMjsKKwkJLyogQ2FsYyBvb2JzaXplICovCisJCW10ZC0+b29ic2l6ZSA9ICg4IDw8IChleHRp
+ZCAmIDB4MDEpKSAqCisJCQkobXRkLT53cml0ZXNpemUgPj4gOSk7CisJCWV4dGlkID4+PSAyOwor
+CQkvKiBDYWxjIGJsb2Nrc2l6ZS4gQmxvY2tzaXplIGlzIG11bHRpcGxlcyBvZiA2NEtpQiAqLwor
+CQltdGQtPmVyYXNlc2l6ZSA9ICg2NCAqIDEwMjQpIDw8IChleHRpZCAmIDB4MDMpOworCQlleHRp
+ZCA+Pj0gMjsKKwkJLyogR2V0IGJ1c3dpZHRoIGluZm9ybWF0aW9uICovCisJCSpidXN3ID0gKGV4
+dGlkICYgMHgwMSkgPyBOQU5EX0JVU1dJRFRIXzE2IDogMDsKKwl9Cit9CisKKy8qCisgKiBPbGQg
+ZGV2aWNlcyBoYXZlIGNoaXAgZGF0YSBoYXJkY29kZWQgaW4gdGhlIGRldmljZSBJRCB0YWJsZS4g
+bmFuZF9kZWNvZGVfaWQKKyAqIGRlY29kZXMgYSBtYXRjaGluZyBJRCB0YWJsZSBlbnRyeSBhbmQg
+YXNzaWducyB0aGUgTVREIHNpemUgcGFyYW1ldGVycyBmb3IKKyAqIHRoZSBjaGlwLgorICovCitz
+dGF0aWMgdm9pZCBuYW5kX2RlY29kZV9pZChzdHJ1Y3QgbXRkX2luZm8gKm10ZCwgc3RydWN0IG5h
+bmRfY2hpcCAqY2hpcCwKKwkJCQlzdHJ1Y3QgbmFuZF9mbGFzaF9kZXYgKnR5cGUsIHU4IGlkX2Rh
+dGFbOF0sCisJCQkJaW50ICpidXN3KQoreworCWludCBtYWZfaWQgPSBpZF9kYXRhWzBdOworCisJ
+bXRkLT5lcmFzZXNpemUgPSB0eXBlLT5lcmFzZXNpemU7CisJbXRkLT53cml0ZXNpemUgPSB0eXBl
+LT5wYWdlc2l6ZTsKKwltdGQtPm9vYnNpemUgPSBtdGQtPndyaXRlc2l6ZSAvIDMyOworCSpidXN3
+ID0gdHlwZS0+b3B0aW9ucyAmIE5BTkRfQlVTV0lEVEhfMTY7CisKKwkvKgorCSAqIENoZWNrIGZv
+ciBTcGFuc2lvbi9BTUQgSUQgKyByZXBlYXRpbmcgNXRoLCA2dGggYnl0ZSBzaW5jZQorCSAqIHNv
+bWUgU3BhbnNpb24gY2hpcHMgaGF2ZSBlcmFzZXNpemUgdGhhdCBjb25mbGljdHMgd2l0aCBzaXpl
+CisJICogbGlzdGVkIGluIG5hbmRfaWRzIHRhYmxlLgorCSAqIERhdGEgc2hlZXQgKDUgYnl0ZSBJ
+RCk6IFNwYW5zaW9uIFMzME1MLVAgT1JOQU5EIChwLjM5KQorCSAqLworCWlmIChtYWZfaWQgPT0g
+TkFORF9NRlJfQU1EICYmIGlkX2RhdGFbNF0gIT0gMHgwMCAmJiBpZF9kYXRhWzVdID09IDB4MDAK
+KwkJCSYmIGlkX2RhdGFbNl0gPT0gMHgwMCAmJiBpZF9kYXRhWzddID09IDB4MDAKKwkJCSYmIG10
+ZC0+d3JpdGVzaXplID09IDUxMikgeworCQltdGQtPmVyYXNlc2l6ZSA9IDEyOCAqIDEwMjQ7CisJ
+CW10ZC0+ZXJhc2VzaXplIDw8PSAoKGlkX2RhdGFbM10gJiAweDAzKSA8PCAxKTsKKwl9Cit9CisK
+Ky8qCisgKiBTZXQgdGhlIGJhZCBibG9jayBtYXJrZXIvaW5kaWNhdG9yIChCQk0vQkJJKSBwYXR0
+ZXJucyBhY2NvcmRpbmcgdG8gc29tZQorICogaGV1cmlzdGljIHBhdHRlcm5zIHVzaW5nIHZhcmlv
+dXMgZGV0ZWN0ZWQgcGFyYW1ldGVycyAoZS5nLiwgbWFudWZhY3R1cmVyLAorICogcGFnZSBzaXpl
+LCBjZWxsLXR5cGUgaW5mb3JtYXRpb24pLgorICovCitzdGF0aWMgdm9pZCBuYW5kX2RlY29kZV9i
+Ym1fb3B0aW9ucyhzdHJ1Y3QgbXRkX2luZm8gKm10ZCwKKwkJCQkgICAgc3RydWN0IG5hbmRfY2hp
+cCAqY2hpcCwgdTggaWRfZGF0YVs4XSkKK3sKKwlpbnQgbWFmX2lkID0gaWRfZGF0YVswXTsKKwor
+CS8qIFNldCB0aGUgYmFkIGJsb2NrIHBvc2l0aW9uICovCisJaWYgKG10ZC0+d3JpdGVzaXplID4g
+NTEyIHx8IChjaGlwLT5vcHRpb25zICYgTkFORF9CVVNXSURUSF8xNikpCisJCWNoaXAtPmJhZGJs
+b2NrcG9zID0gTkFORF9MQVJHRV9CQURCTE9DS19QT1M7CisJZWxzZQorCQljaGlwLT5iYWRibG9j
+a3BvcyA9IE5BTkRfU01BTExfQkFEQkxPQ0tfUE9TOworCisJLyoKKwkgKiBCYWQgYmxvY2sgbWFy
+a2VyIGlzIHN0b3JlZCBpbiB0aGUgbGFzdCBwYWdlIG9mIGVhY2ggYmxvY2sgb24gU2Ftc3VuZwor
+CSAqIGFuZCBIeW5peCBNTEMgZGV2aWNlczsgc3RvcmVkIGluIGZpcnN0IHR3byBwYWdlcyBvZiBl
+YWNoIGJsb2NrIG9uCisJICogTWljcm9uIGRldmljZXMgd2l0aCAyS2lCIHBhZ2VzIGFuZCBvbiBT
+TEMgU2Ftc3VuZywgSHluaXgsIFRvc2hpYmEsCisJICogQU1EL1NwYW5zaW9uLCBhbmQgTWFjcm9u
+aXguICBBbGwgb3RoZXJzIHNjYW4gb25seSB0aGUgZmlyc3QgcGFnZS4KKwkgKi8KKwlpZiAoKGNo
+aXAtPmNlbGxpbmZvICYgTkFORF9DSV9DRUxMVFlQRV9NU0spICYmCisJCQkobWFmX2lkID09IE5B
+TkRfTUZSX1NBTVNVTkcgfHwKKwkJCSBtYWZfaWQgPT0gTkFORF9NRlJfSFlOSVgpKQorCQljaGlw
+LT5iYnRfb3B0aW9ucyB8PSBOQU5EX0JCVF9TQ0FOTEFTVFBBR0U7CisJZWxzZSBpZiAoKCEoY2hp
+cC0+Y2VsbGluZm8gJiBOQU5EX0NJX0NFTExUWVBFX01TSykgJiYKKwkJCQkobWFmX2lkID09IE5B
+TkRfTUZSX1NBTVNVTkcgfHwKKwkJCQkgbWFmX2lkID09IE5BTkRfTUZSX0hZTklYIHx8CisJCQkJ
+IG1hZl9pZCA9PSBOQU5EX01GUl9UT1NISUJBIHx8CisJCQkJIG1hZl9pZCA9PSBOQU5EX01GUl9B
+TUQgfHwKKwkJCQkgbWFmX2lkID09IE5BTkRfTUZSX01BQ1JPTklYKSkgfHwKKwkJCShtdGQtPndy
+aXRlc2l6ZSA9PSAyMDQ4ICYmCisJCQkgbWFmX2lkID09IE5BTkRfTUZSX01JQ1JPTikpCisJCWNo
+aXAtPmJidF9vcHRpb25zIHw9IE5BTkRfQkJUX1NDQU4yTkRQQUdFOworfQorCisvKgogICogR2V0
+IHRoZSBmbGFzaCBhbmQgbWFudWZhY3R1cmVyIGlkIGFuZCBsb29rdXAgaWYgdGhlIHR5cGUgaXMg
+c3VwcG9ydGVkCiAgKi8KIHN0YXRpYyBzdHJ1Y3QgbmFuZF9mbGFzaF9kZXYgKm5hbmRfZ2V0X2Zs
+YXNoX3R5cGUoc3RydWN0IG10ZF9pbmZvICptdGQsCkBAIC0xMTQwLDcgKzEzNzksNyBAQCBzdGF0
+aWMgc3RydWN0IG5hbmRfZmxhc2hfZGV2ICpuYW5kX2dldF9mbGFzaF90eXBlKHN0cnVjdCBtdGRf
+aW5mbyAqbXRkLAogewogCXN0cnVjdCBuYW5kX2ZsYXNoX2RldiAqdHlwZSA9IE5VTEw7CiAJaW50
+IGksIGRldl9pZCwgbWFmX2lkeDsKLQlpbnQgaWRfZGF0YVs4XTsKKwl1OCBpZF9kYXRhWzhdOwog
+CWludCByZXQ7CiAKIAkvKiBTZWxlY3QgdGhlIGRldmljZSAqLwpAQCAtMTE2NywxMCArMTQwNiw5
+IEBAIHN0YXRpYyBzdHJ1Y3QgbmFuZF9mbGFzaF9kZXYgKm5hbmRfZ2V0X2ZsYXNoX3R5cGUoc3Ry
+dWN0IG10ZF9pbmZvICptdGQsCiAKIAljaGlwLT5jbWRmdW5jKG10ZCwgTkFORF9DTURfUkVBRElE
+LCAweDAwLCAtMSk7CiAKLQkvKiBSZWFkIG1hbnVmYWN0dXJlciBhbmQgZGV2aWNlIElEcyAqLwot
+Ci0JaWRfZGF0YVswXSA9IGNoaXAtPnJlYWRfYnl0ZShtdGQpOwotCWlkX2RhdGFbMV0gPSBjaGlw
+LT5yZWFkX2J5dGUobXRkKTsKKwkvKiBSZWFkIGVudGlyZSBJRCBzdHJpbmcgKi8KKwlmb3IgKGkg
+PSAwOyBpIDwgODsgaSsrKQorCQlpZF9kYXRhW2ldID0gY2hpcC0+cmVhZF9ieXRlKG10ZCk7CiAK
+IAlpZiAoaWRfZGF0YVswXSAhPSAqbWFmX2lkIHx8IGlkX2RhdGFbMV0gIT0gZGV2X2lkKSB7CiAJ
+CXByX2VycigiJXM6IHNlY29uZCBJRCByZWFkIGRpZCBub3QgbWF0Y2ggIgpAQCAtMTE4OSwxMjQg
+KzE0MjcsMzMgQEAgc3RhdGljIHN0cnVjdCBuYW5kX2ZsYXNoX2RldiAqbmFuZF9nZXRfZmxhc2hf
+dHlwZShzdHJ1Y3QgbXRkX2luZm8gKm10ZCwKIAljaGlwLT5vbmZpX3ZlcnNpb24gPSAwOwogCWlm
+ICghdHlwZS0+bmFtZSB8fCAhdHlwZS0+cGFnZXNpemUpIHsKIAkJLyogQ2hlY2sgaXMgY2hpcCBp
+cyBPTkZJIGNvbXBsaWFudCAqLwotCQlyZXQgPSBuYW5kX2ZsYXNoX2RldGVjdF9vbmZpKG10ZCwg
+Y2hpcCwgJmJ1c3cpOwotCQlpZiAocmV0KQorCQlpZiAobmFuZF9mbGFzaF9kZXRlY3Rfb25maSht
+dGQsIGNoaXAsICZidXN3KSkKIAkJCWdvdG8gaWRlbnRfZG9uZTsKLQkJZWxzZSB7Ci0JCQlwcl9l
+cnIoIk5BTkQgdHlwZSB1bmtub3duOiAlMDJ4LCUwMnhcbiIsICptYWZfaWQsIGRldl9pZCk7Ci0J
+CQlyZXR1cm4gRVJSX1BUUigtRU5PREVWKTsKLQkJfQogCX0KIAotCWNoaXAtPmNtZGZ1bmMobXRk
+LCBOQU5EX0NNRF9SRUFESUQsIDB4MDAsIC0xKTsKLQotCS8qIFJlYWQgZW50aXJlIElEIHN0cmlu
+ZyAqLwotCi0JZm9yIChpID0gMDsgaSA8IDg7IGkrKykKLQkJaWRfZGF0YVtpXSA9IGNoaXAtPnJl
+YWRfYnl0ZShtdGQpOworCWlmICghdHlwZS0+bmFtZSkKKwkJcmV0dXJuIEVSUl9QVFIoLUVOT0RF
+Vik7CiAKIAlpZiAoIW10ZC0+bmFtZSkKIAkJbXRkLT5uYW1lID0gdHlwZS0+bmFtZTsKIAotCWNo
+aXAtPmNoaXBzaXplID0gdHlwZS0+Y2hpcHNpemUgPDwgMjA7CisJY2hpcC0+Y2hpcHNpemUgPSAo
+dWludDY0X3QpdHlwZS0+Y2hpcHNpemUgPDwgMjA7CiAKIAlpZiAoIXR5cGUtPnBhZ2VzaXplKSB7
+Ci0JCWludCBleHRpZDsKLQkJLyogVGhlIDNyZCBpZCBieXRlIGhvbGRzIE1MQyAvIG11bHRpY2hp
+cCBkYXRhICovCi0JCWNoaXAtPmNlbGxpbmZvID0gaWRfZGF0YVsyXTsKLQkJLyogVGhlIDR0aCBp
+ZCBieXRlIGlzIHRoZSBpbXBvcnRhbnQgb25lICovCi0JCWV4dGlkID0gaWRfZGF0YVszXTsKLQot
+CQkvKgotCQkgKiBGaWVsZCBkZWZpbml0aW9ucyBhcmUgaW4gdGhlIGZvbGxvd2luZyBkYXRhc2hl
+ZXRzOgotCQkgKiBPbGQgc3R5bGUgKDQsNSBieXRlIElEKTogU2Ftc3VuZyBLOUdBRzA4VTBNIChw
+LjMyKQotCQkgKiBOZXcgc3R5bGUgICAoNiBieXRlIElEKTogU2Ftc3VuZyBLOUdCRzA4VTBNIChw
+LjQwKQotCQkgKgotCQkgKiBDaGVjayBmb3Igd3JhcGFyb3VuZCArIFNhbXN1bmcgSUQgKyBub256
+ZXJvIDZ0aCBieXRlCi0JCSAqIHRvIGRlY2lkZSB3aGF0IHRvIGRvLgotCQkgKi8KLQkJaWYgKGlk
+X2RhdGFbMF0gPT0gaWRfZGF0YVs2XSAmJiBpZF9kYXRhWzFdID09IGlkX2RhdGFbN10gJiYKLQkJ
+CQlpZF9kYXRhWzBdID09IE5BTkRfTUZSX1NBTVNVTkcgJiYKLQkJCQkoY2hpcC0+Y2VsbGluZm8g
+JiBOQU5EX0NJX0NFTExUWVBFX01TSykgJiYKLQkJCQlpZF9kYXRhWzVdICE9IDB4MDApIHsKLQkJ
+CS8qIENhbGMgcGFnZXNpemUgKi8KLQkJCW10ZC0+d3JpdGVzaXplID0gMjA0OCA8PCAoZXh0aWQg
+JiAweDAzKTsKLQkJCWV4dGlkID4+PSAyOwotCQkJLyogQ2FsYyBvb2JzaXplICovCi0JCQlzd2l0
+Y2ggKGV4dGlkICYgMHgwMykgewotCQkJY2FzZSAxOgotCQkJCW10ZC0+b29ic2l6ZSA9IDEyODsK
+LQkJCQlicmVhazsKLQkJCWNhc2UgMjoKLQkJCQltdGQtPm9vYnNpemUgPSAyMTg7Ci0JCQkJYnJl
+YWs7Ci0JCQljYXNlIDM6Ci0JCQkJbXRkLT5vb2JzaXplID0gNDAwOwotCQkJCWJyZWFrOwotCQkJ
+ZGVmYXVsdDoKLQkJCQltdGQtPm9vYnNpemUgPSA0MzY7Ci0JCQkJYnJlYWs7Ci0JCQl9Ci0JCQll
+eHRpZCA+Pj0gMjsKLQkJCS8qIENhbGMgYmxvY2tzaXplICovCi0JCQltdGQtPmVyYXNlc2l6ZSA9
+ICgxMjggKiAxMDI0KSA8PAotCQkJCSgoKGV4dGlkID4+IDEpICYgMHgwNCkgfCAoZXh0aWQgJiAw
+eDAzKSk7Ci0JCQlidXN3ID0gMDsKLQkJfSBlbHNlIHsKLQkJCS8qIENhbGMgcGFnZXNpemUgKi8K
+LQkJCW10ZC0+d3JpdGVzaXplID0gMTAyNCA8PCAoZXh0aWQgJiAweDAzKTsKLQkJCWV4dGlkID4+
+PSAyOwotCQkJLyogQ2FsYyBvb2JzaXplICovCi0JCQltdGQtPm9vYnNpemUgPSAoOCA8PCAoZXh0
+aWQgJiAweDAxKSkgKgotCQkJCShtdGQtPndyaXRlc2l6ZSA+PiA5KTsKLQkJCWV4dGlkID4+PSAy
+OwotCQkJLyogQ2FsYyBibG9ja3NpemUuIEJsb2Nrc2l6ZSBpcyBtdWx0aXBsZXMgb2YgNjRLaUIg
+Ki8KLQkJCW10ZC0+ZXJhc2VzaXplID0gKDY0ICogMTAyNCkgPDwgKGV4dGlkICYgMHgwMyk7Ci0J
+CQlleHRpZCA+Pj0gMjsKLQkJCS8qIEdldCBidXN3aWR0aCBpbmZvcm1hdGlvbiAqLwotCQkJYnVz
+dyA9IChleHRpZCAmIDB4MDEpID8gTkFORF9CVVNXSURUSF8xNiA6IDA7Ci0JCX0KLQotCisJCS8q
+IERlY29kZSBwYXJhbWV0ZXJzIGZyb20gZXh0ZW5kZWQgSUQgKi8KKwkJbmFuZF9kZWNvZGVfZXh0
+X2lkKG10ZCwgY2hpcCwgaWRfZGF0YSwgJmJ1c3cpOwogCX0gZWxzZSB7Ci0JCS8qCi0JCSAqIE9s
+ZCBkZXZpY2VzIGhhdmUgY2hpcCBkYXRhIGhhcmRjb2RlZCBpbiB0aGUgZGV2aWNlIGlkIHRhYmxl
+Ci0JCSAqLwotCQltdGQtPmVyYXNlc2l6ZSA9IHR5cGUtPmVyYXNlc2l6ZTsKLQkJbXRkLT53cml0
+ZXNpemUgPSB0eXBlLT5wYWdlc2l6ZTsKLQkJbXRkLT5vb2JzaXplID0gbXRkLT53cml0ZXNpemUg
+LyAzMjsKLQkJYnVzdyA9IHR5cGUtPm9wdGlvbnMgJiBOQU5EX0JVU1dJRFRIXzE2OwotCi0JCS8q
+Ci0JCSAqIENoZWNrIGZvciBTcGFuc2lvbi9BTUQgSUQgKyByZXBlYXRpbmcgNXRoLCA2dGggYnl0
+ZSBzaW5jZQotCQkgKiBzb21lIFNwYW5zaW9uIGNoaXBzIGhhdmUgZXJhc2VzaXplIHRoYXQgY29u
+ZmxpY3RzIHdpdGggc2l6ZQotCQkgKiBsaXN0ZWQgaW4gbmFuZF9pZHMgdGFibGUKLQkJICogRGF0
+YSBzaGVldCAoNSBieXRlIElEKTogU3BhbnNpb24gUzMwTUwtUCBPUk5BTkQgKHAuMzkpCi0JCSAq
+LwotCQlpZiAoKm1hZl9pZCA9PSBOQU5EX01GUl9BTUQgJiYgaWRfZGF0YVs0XSAhPSAweDAwICYm
+Ci0JCQkJaWRfZGF0YVs1XSA9PSAweDAwICYmIGlkX2RhdGFbNl0gPT0gMHgwMCAmJgotCQkJCWlk
+X2RhdGFbN10gPT0gMHgwMCAmJiBtdGQtPndyaXRlc2l6ZSA9PSA1MTIpIHsKLQkJCW10ZC0+ZXJh
+c2VzaXplID0gMTI4ICogMTAyNDsKLQkJCW10ZC0+ZXJhc2VzaXplIDw8PSAoKGlkX2RhdGFbM10g
+JiAweDAzKSA8PCAxKTsKLQkJfQorCQluYW5kX2RlY29kZV9pZChtdGQsIGNoaXAsIHR5cGUsIGlk
+X2RhdGEsICZidXN3KTsKIAl9CisJLyogR2V0IGNoaXAgb3B0aW9ucyAqLworCWNoaXAtPm9wdGlv
+bnMgfD0gdHlwZS0+b3B0aW9uczsKIAotCS8qIFRyeSB0byBpZGVudGlmeSBtYW51ZmFjdHVyZXIg
+Ki8KLQlmb3IgKG1hZl9pZHggPSAwOyBuYW5kX21hbnVmX2lkc1ttYWZfaWR4XS5pZCAhPSAweDA7
+IG1hZl9pZHgrKykgewotCQlpZiAobmFuZF9tYW51Zl9pZHNbbWFmX2lkeF0uaWQgPT0gKm1hZl9p
+ZCkKLQkJCWJyZWFrOwotCX0KLQotCS8qIEdldCBjaGlwIG9wdGlvbnMsIHByZXNlcnZlIG5vbiBj
+aGlwIGJhc2VkIG9wdGlvbnMgKi8KLQljaGlwLT5vcHRpb25zICY9IH5OQU5EX0NISVBPUFRJT05T
+X01TSzsKLQljaGlwLT5vcHRpb25zIHw9IHR5cGUtPm9wdGlvbnMgJiBOQU5EX0NISVBPUFRJT05T
+X01TSzsKLQotCS8qIENoZWNrIGlmIGNoaXAgaXMgYSBub3QgYSBzYW1zdW5nIGRldmljZS4gRG8g
+bm90IGNsZWFyIHRoZQotCSAqIG9wdGlvbnMgZm9yIGNoaXBzIHdoaWNoIGFyZSBub3QgaGF2aW5n
+IGFuIGV4dGVuZGVkIGlkLgorCS8qCisJICogQ2hlY2sgaWYgY2hpcCBpcyBub3QgYSBTYW1zdW5n
+IGRldmljZS4gRG8gbm90IGNsZWFyIHRoZQorCSAqIG9wdGlvbnMgZm9yIGNoaXBzIHdoaWNoIGRv
+IG5vdCBoYXZlIGFuIGV4dGVuZGVkIGlkLgogCSAqLwogCWlmICgqbWFmX2lkICE9IE5BTkRfTUZS
+X1NBTVNVTkcgJiYgIXR5cGUtPnBhZ2VzaXplKQogCQljaGlwLT5vcHRpb25zICY9IH5OQU5EX1NB
+TVNVTkdfTFBfT1BUSU9OUzsKLQogaWRlbnRfZG9uZToKIAkvKgogCSAqIFNldCBjaGlwIGFzIGEg
+ZGVmYXVsdC4gQm9hcmQgZHJpdmVycyBjYW4gb3ZlcnJpZGUgaXQsIGlmIG5lY2Vzc2FyeQpAQCAt
+MTMyNCwxMyArMTQ3MSwxMSBAQCBpZGVudF9kb25lOgogCQluYW5kX3NldF9kZWZhdWx0cyhjaGlw
+LCBidXN3KTsKIAkJaWYgKGNoaXAtPnNldF9idXN3aWR0aCkKIAkJCWNoaXAtPnNldF9idXN3aWR0
+aChtdGQsIGNoaXAsIGJ1c3cpOwotCX0KLQotCS8qCi0JICogQ2hlY2ssIGlmIGJ1c3dpZHRoIGlz
+IGNvcnJlY3QuIEhhcmR3YXJlIGRyaXZlcnMgc2hvdWxkIHNldAotCSAqIGNoaXAgY29ycmVjdCAh
+Ci0JICovCi0JaWYgKGJ1c3cgIT0gKGNoaXAtPm9wdGlvbnMgJiBOQU5EX0JVU1dJRFRIXzE2KSkg
+eworCX0gZWxzZSAJaWYgKGJ1c3cgIT0gKGNoaXAtPm9wdGlvbnMgJiBOQU5EX0JVU1dJRFRIXzE2
+KSkgeworCQkvKgorCQkgKiBDaGVjaywgaWYgYnVzd2lkdGggaXMgY29ycmVjdC4gSGFyZHdhcmUg
+ZHJpdmVycyBzaG91bGQgc2V0CisJCSAqIGNoaXAgY29ycmVjdCAhCisJCSAqLwogCQlwcl9pbmZv
+KCJOQU5EIGRldmljZTogTWFudWZhY3R1cmVyIElEOiIKIAkJCSIgMHglMDJ4LCBDaGlwIElEOiAw
+eCUwMnggKCVzICVzKVxuIiwgKm1hZl9pZCwKIAkJCWRldl9pZCwgbmFuZF9tYW51Zl9pZHNbbWFm
+X2lkeF0ubmFtZSwgbXRkLT5uYW1lKTsKQEAgLTEzNDAsNiArMTQ4NSw4IEBAIGlkZW50X2RvbmU6
+CiAJCXJldHVybiBFUlJfUFRSKC1FSU5WQUwpOwogCX0KIAorCW5hbmRfZGVjb2RlX2JibV9vcHRp
+b25zKG10ZCwgY2hpcCwgaWRfZGF0YSk7CisKIAkvKiBDYWxjdWxhdGUgdGhlIGFkZHJlc3Mgc2hp
+ZnQgZnJvbSB0aGUgcGFnZSBzaXplICovCiAJY2hpcC0+cGFnZV9zaGlmdCA9IGZmcyhtdGQtPndy
+aXRlc2l6ZSkgLSAxOwogCS8qIENvbnZlcnQgY2hpcHNpemUgdG8gbnVtYmVyIG9mIHBhZ2VzIHBl
+ciBjaGlwIC0xLiAqLwpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9tdGQvYmJtLmggYi9pbmNs
+dWRlL2xpbnV4L210ZC9iYm0uaAppbmRleCBkNTQ2ZjQwLi41MGJjNGQ5IDEwMDY0NAotLS0gYS9p
+bmNsdWRlL2xpbnV4L210ZC9iYm0uaAorKysgYi9pbmNsdWRlL2xpbnV4L210ZC9iYm0uaApAQCAt
+NzksNiArNzksOCBAQCBzdHJ1Y3QgbmFuZF9iYnRfZGVzY3IgewogI2RlZmluZSBOQU5EX0JCVF9T
+QVZFQ09OVEVOVAkweDAwMDAyMDAwCiAvKiBTZWFyY2ggZ29vZCAvIGJhZCBwYXR0ZXJuIG9uIHRo
+ZSBmaXJzdCBhbmQgdGhlIHNlY29uZCBwYWdlICovCiAjZGVmaW5lIE5BTkRfQkJUX1NDQU4yTkRQ
+QUdFCTB4MDAwMDQwMDAKKy8qIFNlYXJjaCBnb29kIC8gYmFkIHBhdHRlcm4gb24gdGhlIGxhc3Qg
+cGFnZSBvZiB0aGUgZXJhc2VibG9jayAqLworI2RlZmluZSBOQU5EX0JCVF9TQ0FOTEFTVFBBR0UJ
+MHgwMDAxMDAwMAogCiAvKgogICogVXNlIGEgZmxhc2ggYmFzZWQgYmFkIGJsb2NrIHRhYmxlLiBC
+eSBkZWZhdWx0LCBPT0IgaWRlbnRpZmllciBpcyBzYXZlZCBpbgotLSAKMS44LjEuNAoKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
