@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZxp1-0001xi-41
- for barebox@lists.infradead.org; Wed, 08 May 2013 06:25:51 +0000
-Date: Wed, 8 May 2013 08:25:28 +0200
+ id 1UZxrk-0001z2-UB
+ for barebox@lists.infradead.org; Wed, 08 May 2013 06:28:42 +0000
+Date: Wed, 8 May 2013 08:28:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130508062528.GW32299@pengutronix.de>
-References: <1366977055.331524144@f355.mail.ru>
- <1367012916-22780-1-git-send-email-s.hauer@pengutronix.de>
- <1367012916-22780-3-git-send-email-s.hauer@pengutronix.de>
- <1367927104.601416016@f207.mail.ru>
+Message-ID: <20130508062818.GX32299@pengutronix.de>
+References: <1367852182-28870-1-git-send-email-dev@lynxeye.de>
+ <20130506152725.GP13393@game.jcrosoft.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1367927104.601416016@f207.mail.ru>
+In-Reply-To: <20130506152725.GP13393@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,38 +23,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX: ccxmx51: detect SDRAM size by board id
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 1/2] tegra20: add pinctrl driver
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 07, 2013 at 03:45:04PM +0400, Alexander Shiyan wrote:
-> > This partly reverts:
+On Mon, May 06, 2013 at 05:27:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 16:56 Mon 06 May     , Lucas Stach wrote:
+> > This adds a pinctrl driver for the Tegra 20 line of SoCs. It only
+> > supports the three basic pinconfiguration settings function mux,
+> > tristate control and pullup/down control.
 > > 
-> > commit 697e02b74fddd80527e8ababba10239c83dba029
-> > Author: Alexander Shiyan <shc_work@mail.ru>
-> > Date:   Tue Jan 22 15:08:31 2013 +0400
+> > The driver understands the same devicetree bindings as the Linux one,
+> > unimplemented pinconfiguration options will be ignored.
 > > 
-> >     ARM: ccmx51: Remove SDRAM size settings
+> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> > ---
+> >  arch/arm/dts/tegra20.dtsi         |   8 +
+> >  drivers/pinctrl/Kconfig           |   6 +
+> >  drivers/pinctrl/Makefile          |   1 +
+> >  drivers/pinctrl/pinctrl-tegra20.c | 336 ++++++++++++++++++++++++++++++++++++++
+> >  4 files changed, 351 insertions(+)
+> >  create mode 100644 drivers/pinctrl/pinctrl-tegra20.c
 > > 
-> >     This patch removes SDRAM memory size setting from board due
-> >     to auto detect last one by ESDCTL.
-> > 
-> >     Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > 
-> > The board originally configured the SDRAM controller for the
-> > maximum size and detected the usable SDRAM size by reading the
-> > board id. This became broken after switching to automatic SDRAM
-> > size detection by reading back ESDCTL values.
-> > 
-> > This patch brings back the old behaviour.
-> 
-> Please, apply both to git.
+> > diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
+> > index b7d1e27..f63ead8 100644
+> > --- a/arch/arm/dts/tegra20.dtsi
+> > +++ b/arch/arm/dts/tegra20.dtsi
+> > @@ -34,6 +34,14 @@
+> >  		interrupt-controller;
+> >  	};
+> >  
+> > +	pinmux: pinmux {
+> > +	compatible = "nvidia,tegra20-pinmux";
+> > +	reg = <0x70000014 0x10   /* Tri-state registers */
+> > +	       0x70000080 0x20   /* Mux registers */
+> > +	       0x700000a0 0x14   /* Pull-up/down registers */
+> > +	       0x70000868 0xa8>; /* Pad control registers */
+> tab here
 
-Did that.
+This is done to align under the lines above. I wouldn't do it in my
+code, but it's perfectly fine to do it.
+
+> > +	};
+> > +
+> >  	pmc {
+> >  		compatible = "nvidia,tegra20-pmc";
+> >  		reg = <0x7000e400 0x400>;
+> > diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+> > index e6aee50..0b859b8 100644
+> > --- a/drivers/pinctrl/Kconfig
+> > +++ b/drivers/pinctrl/Kconfig
+> > @@ -25,4 +25,10 @@ config PINCTRL_IMX_IOMUX_V3
+> >  	help
+> >  	  This iomux controller is found on i.MX25,35,51,53,6.
+> >  
+> > +config PINCTRL_TEGRA20
+> > +	select PINCTRL
+> > +	bool "Tegra 20 pinmux"
+> > +	help
+> > +	  The pinmux controller found on the Tegra 20 line of SoCs.
+> pinctrl will be mandatory on tegra
+
+It will, yes, but no need to do it now. There can well be some time to
+test the driver before it becomes mandatory.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
