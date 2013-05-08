@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp12.mail.ru ([94.100.176.89])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UZyu1-0002tN-Cx
- for barebox@lists.infradead.org; Wed, 08 May 2013 07:35:06 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed,  8 May 2013 11:34:38 +0400
-Message-Id: <1367998478-9314-1-git-send-email-shc_work@mail.ru>
+ id 1UZyv5-0002uE-Lp
+ for barebox@lists.infradead.org; Wed, 08 May 2013 07:36:16 +0000
+Date: Wed, 8 May 2013 09:35:49 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130508073549.GZ32299@pengutronix.de>
+References: <1367081935-6738-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1367081935-6738-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,66 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: PCM970: Add definition for SPI CS1
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] ARM: Make OMAP syslib.c functions available for
+ other ARM targets
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-This chipselect is used on RDK Zigbee connector. Since we cannot
-define additional chipselect after SPI is initialized, define this one
-in main SPI initialization in PCM038 SOM.
+On Sat, Apr 27, 2013 at 08:58:54PM +0400, Alexander Shiyan wrote:
+> This patch moves OMAP syslib functions into common ARM location, so
+> make these functions available to other ARM targets.
+> 
+> +/**
+> + * @brief clear & set a value in a bit range for a 32 bit address
+> + *
+> + * @param[in] addr Address to set/read from
+> + * @param[in] start_bit Where to put the value
+> + * @param[in] num_bits number of bits the value should be set
+> + * @param[in] value the value to set
+> + *
+> + * @return void
+> + */
+> +static inline void sr32(u32 addr, u32 start_bit, u32 num_bits, u32 value)
+> +{
+> +	u32 tmp, msk = 0;
+> +	msk = 1 << num_bits;
+> +	--msk;
+> +	tmp = readl(addr) & ~(msk << start_bit);
+> +	tmp |=  value << start_bit;
+> +	writel(tmp, addr);
+> +}
+> +
+> +u32 wait_on_value(u32 read_bit_mask, u32 match_value, u32 read_addr, u32 bound);
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/boards/pcm038/pcm038.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+I'm still undecided on this. On one hand it's good to have common
+functions for these jobs, but on the other hand I'm not sure these are
+the versions we should use as the definite answer to the problem. I
+don't know how many versions of read-modify-write functions are around,
+but there are many.
 
-diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-index 4b2fa6c..cfc1e5e 100644
---- a/arch/arm/boards/pcm038/pcm038.c
-+++ b/arch/arm/boards/pcm038/pcm038.c
-@@ -48,13 +48,19 @@
- 
- #define PCM038_GPIO_FEC_RST	(GPIO_PORTC + 30)
- #define PCM038_GPIO_SPI_CS0	(GPIO_PORTD + 28)
-+#define PCM970_GPIO_SPI_CS1	(GPIO_PORTD + 27)
- 
- static struct fec_platform_data fec_info = {
- 	.xcv_type = PHY_INTERFACE_MODE_MII,
- 	.phy_addr = 1,
- };
- 
--static int pcm038_spi_cs[] = { PCM038_GPIO_SPI_CS0 };
-+static int pcm038_spi_cs[] = {
-+	PCM038_GPIO_SPI_CS0,
-+#ifdef CONFIG_MACH_PCM970_BASEBOARD
-+	PCM970_GPIO_SPI_CS1,
-+#endif
-+};
- 
- static struct spi_imx_master pcm038_spi_0_data = {
- 	.chipselect = pcm038_spi_cs,
-@@ -221,10 +227,13 @@ static int pcm038_devices_init(void)
- 		PE15_PF_UART1_RTS,
- 		/* CSPI1 */
- 		PD25_PF_CSPI1_RDY,
--		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
- 		PD29_PF_CSPI1_SCLK,
- 		PD30_PF_CSPI1_MISO,
- 		PD31_PF_CSPI1_MOSI,
-+		PCM038_GPIO_SPI_CS0 | GPIO_GPIO | GPIO_OUT,
-+#ifdef CONFIG_MACH_PCM970_BASEBOARD
-+		PCM970_GPIO_SPI_CS1 | GPIO_GPIO | GPIO_OUT,
-+#endif
- 		/* Display */
- 		PA5_PF_LSCLK,
- 		PA6_PF_LD0,
+> +void sdelay(unsigned long loops);
+
+The sdelay change is a good one, though I think this should be a static
+inline function.
+
+Sascha
+
 -- 
-1.8.1.5
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
