@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaNXN-0002Dz-Me
- for barebox@lists.infradead.org; Thu, 09 May 2013 09:53:26 +0000
+ id 1UaNXN-0002Dx-MZ
+ for barebox@lists.infradead.org; Thu, 09 May 2013 09:53:27 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Thu,  9 May 2013 11:52:47 +0200
-Message-Id: <1368093171-17845-4-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Thu,  9 May 2013 11:52:46 +0200
+Message-Id: <1368093171-17845-3-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,482 +21,773 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 3/7] arm: initial support for Marvell Armada 370/XP SoCs
+Subject: [PATCH v3 2/7] scripts: add kwboot tool
 To: barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-This commit adds minimal support for the Armada 370 and Armada XP SoCs
-from Marvell.
+This tool is used with Marvell EBU SoC to trigger the UART boot mode
+provided by the SoC BootROM, and push the bootloader image to the
+target using the Xmodem protocol.
+
+It has been taken from the U-Boot source code, with minor
+modifications to make it work with Armada 370/XP platforms.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/Kconfig                            |    8 ++
- arch/arm/Makefile                           |    1 +
- arch/arm/mach-mvebu/Kconfig                 |   40 ++++++++
- arch/arm/mach-mvebu/Makefile                |    1 +
- arch/arm/mach-mvebu/core.c                  |  142 +++++++++++++++++++++++++++
- arch/arm/mach-mvebu/include/mach/clkdev.h   |    7 ++
- arch/arm/mach-mvebu/include/mach/debug_ll.h |   40 ++++++++
- arch/arm/mach-mvebu/include/mach/mvebu.h    |   22 +++++
- drivers/clocksource/Kconfig                 |    4 +
- drivers/clocksource/Makefile                |    1 +
- drivers/clocksource/mvebu.c                 |   90 +++++++++++++++++
- 11 files changed, 356 insertions(+)
- create mode 100644 arch/arm/mach-mvebu/Kconfig
- create mode 100644 arch/arm/mach-mvebu/Makefile
- create mode 100644 arch/arm/mach-mvebu/core.c
- create mode 100644 arch/arm/mach-mvebu/include/mach/clkdev.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/mvebu.h
- create mode 100644 drivers/clocksource/mvebu.c
+ scripts/.gitignore |    1 +
+ scripts/Makefile   |    2 +-
+ scripts/kwboot.c   |  717 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 719 insertions(+), 1 deletion(-)
+ create mode 100644 scripts/kwboot.c
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 0a4f821..a044ab3 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -79,6 +79,13 @@ config ARCH_IMX
- 	select WATCHDOG_IMX_RESET_SOURCE
- 	select HAS_DEBUG_LL
- 
-+config ARCH_MVEBU
-+	bool "Marvell EBU platforms"
-+	select COMMON_CLK
-+	select CLOCKSOURCE_MVEBU
-+	select CLKDEV_LOOKUP
-+	select HAS_DEBUG_LL
-+
- config ARCH_MXS
- 	bool "Freescale i.MX23/28 (mxs) based"
- 	select GENERIC_GPIO
-@@ -161,6 +168,7 @@ source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-highbank/Kconfig
- source arch/arm/mach-imx/Kconfig
- source arch/arm/mach-mxs/Kconfig
-+source arch/arm/mach-mvebu/Kconfig
- source arch/arm/mach-netx/Kconfig
- source arch/arm/mach-nomadik/Kconfig
- source arch/arm/mach-omap/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index d506b12..bb47506 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -58,6 +58,7 @@ machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
- machine-$(CONFIG_ARCH_IMX)		:= imx
- machine-$(CONFIG_ARCH_MXS)		:= mxs
-+machine-$(CONFIG_ARCH_MVEBU)		:= mvebu
- machine-$(CONFIG_ARCH_NOMADIK)		:= nomadik
- machine-$(CONFIG_ARCH_NETX)		:= netx
- machine-$(CONFIG_ARCH_OMAP)		:= omap
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index a28ea52..6518c0f 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -3,6 +3,7 @@ bin2c
+ gen_netx_image
+ kallsyms
+ kwbimage
++kwboot
+ mk-am35xx-spi-image
+ mkimage
+ mkublheader
+diff --git a/scripts/Makefile b/scripts/Makefile
+index e0b9868..cd0b976 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -8,7 +8,7 @@ hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+ hostprogs-y                      += bin2c
+ hostprogs-y                      += mkimage
+ hostprogs-y                      += bareboxenv
+-hostprogs-$(CONFIG_ARCH_MVEBU)   += kwbimage
++hostprogs-$(CONFIG_ARCH_MVEBU)   += kwbimage kwboot
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+diff --git a/scripts/kwboot.c b/scripts/kwboot.c
 new file mode 100644
-index 0000000..4cbe546
+index 0000000..afc8493
 --- /dev/null
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -0,0 +1,40 @@
-+if ARCH_MVEBU
-+
-+config ARCH_TEXT_BASE
-+	hex
-+
-+config BOARDINFO
-+	default
-+
-+choice
-+	prompt "Marvell EBU Processor"
-+
-+config ARCH_ARMADA_370
-+	bool "Armada 370"
-+	select CPU_V7
-+
-+config ARCH_ARMADA_XP
-+	bool "Armada XP"
-+	select CPU_V7
-+
-+endchoice
-+
-+if ARCH_ARMADA_370
-+
-+choice
-+	prompt "Armada 370 Board Type"
-+
-+endchoice
-+
-+endif # ARCH_ARMADA_370
-+
-+if ARCH_ARMADA_XP
-+
-+choice
-+	prompt "Armada XP Board Type"
-+
-+endchoice
-+
-+endif # ARCH_ARMADA_XP
-+
-+endif # ARCH_MVEBU
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-new file mode 100644
-index 0000000..820eb10
---- /dev/null
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -0,0 +1 @@
-+obj-y += core.o
-diff --git a/arch/arm/mach-mvebu/core.c b/arch/arm/mach-mvebu/core.c
-new file mode 100644
-index 0000000..f4672a3
---- /dev/null
-+++ b/arch/arm/mach-mvebu/core.c
-@@ -0,0 +1,142 @@
++++ b/scripts/kwboot.c
+@@ -0,0 +1,717 @@
 +/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ * Boot a Marvell Kirkwood SoC, with Xmodem over UART0.
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
++ * (c) 2012 Daniel Stodden <daniel.stodden@gmail.com>
 + *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
++ * References: marvell.com, "88F6180, 88F6190, 88F6192, and 88F6281
++ *   Integrated Controller: Functional Specifications" December 2,
++ *   2008. Chapter 24.2 "BootROM Firmware".
 + */
 +
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <ns16550.h>
-+#include <asm/memory.h>
-+#include <asm/barebox-arm.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <stdarg.h>
++#include <libgen.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <unistd.h>
++#include <stdint.h>
++#include <termios.h>
++#include <sys/mman.h>
++#include <sys/stat.h>
 +
-+#define MVEBU_INT_REGS_BASE (0xd0000000)
-+#define  MVEBU_UART0_BASE     (MVEBU_INT_REGS_BASE + 0x12000)
-+#define  MVEBU_SYSCTL_BASE    (MVEBU_INT_REGS_BASE + 0x18200)
-+#define  MVEBU_SDRAM_WIN_BASE (MVEBU_INT_REGS_BASE + 0x20180)
-+#define  MVEBU_TIMER_BASE     (MVEBU_INT_REGS_BASE + 0x20300)
-+#define  MVEBU_SAR_BASE       (MVEBU_INT_REGS_BASE + 0x18230)
++/*
++ * Marvell BootROM UART Sensing
++ */
 +
-+#define DDR_BASE_CS_OFF(n)     (0x0000 + ((n) << 3))
-+#define  DDR_BASE_CS_HIGH_MASK  0xf
-+#define  DDR_BASE_CS_LOW_MASK   0xff000000
-+#define DDR_SIZE_CS_OFF(n)     (0x0004 + ((n) << 3))
-+#define  DDR_SIZE_ENABLED       (1 << 0)
-+#define  DDR_SIZE_CS_MASK       0x1c
-+#define  DDR_SIZE_CS_SHIFT      2
-+#define  DDR_SIZE_MASK          0xff000000
++static unsigned char kwboot_msg_boot[] = {
++	0xBB, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
++};
 +
-+#define SAR_LOW_REG_OFF         0
-+#define  SAR_TCLK_FREQ_BIT      20
-+#define SAR_HIGH_REG_OFF        0x4
++static unsigned char kwboot_msg_debug[] = {
++	0xDD, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
++};
 +
-+static struct clk *tclk;
++#define KWBOOT_MSG_REQ_DELAY	1000 /* ms */
++#define KWBOOT_MSG_RSP_TIMEO	1000 /* ms */
 +
-+static inline void mvebu_memory_find(unsigned long *phys_base,
-+				     unsigned long *phys_size)
++/*
++ * Xmodem Transfers
++ */
++
++#define SOH	1	/* sender start of block header */
++#define EOT	4	/* sender end of block transfer */
++#define ACK	6	/* target block ack */
++#define NAK	21	/* target block negative ack */
++#define CAN	24	/* target/sender transfer cancellation */
++
++struct kwboot_block {
++	uint8_t soh;
++	uint8_t pnum;
++	uint8_t _pnum;
++	uint8_t data[128];
++	uint8_t csum;
++} __attribute((packed));
++
++#define KWBOOT_BLK_RSP_TIMEO 1000 /* ms */
++
++static int kwboot_verbose;
++
++static void
++kwboot_printv(const char *fmt, ...)
 +{
-+	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
-+	int cs;
++	va_list ap;
 +
-+	*phys_base = ~0;
-+	*phys_size = 0;
-+
-+	for (cs = 0; cs < 4; cs++) {
-+		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
-+		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
-+
-+		/* Skip non-enabled CS */
-+		if (! (ctrl & DDR_SIZE_ENABLED))
-+			continue;
-+
-+		base &= DDR_BASE_CS_LOW_MASK;
-+		if (base < *phys_base)
-+			*phys_base = base;
-+		*phys_size += (ctrl | ~DDR_SIZE_MASK) + 1;
++	if (kwboot_verbose) {
++		va_start(ap, fmt);
++		vprintf(fmt, ap);
++		va_end(ap);
++		fflush(stdout);
 +	}
 +}
 +
-+void __naked __noreturn mvebu_barebox_entry(void)
++static void
++__spinner(void)
 +{
-+	unsigned long phys_base, phys_size;
-+	mvebu_memory_find(&phys_base, &phys_size);
-+	barebox_arm_entry(phys_base, phys_size, 0);
++	const char seq[] = { '-', '\\', '|', '/' };
++	const int div = 8;
++	static int state, bs;
++
++	if (state % div == 0) {
++		fputc(bs, stdout);
++		fputc(seq[state / div % sizeof(seq)], stdout);
++		fflush(stdout);
++	}
++
++	bs = '\b';
++	state++;
 +}
 +
-+static struct NS16550_plat uart0_plat = {
-+	.shift = 2,
-+};
-+
-+int mvebu_add_uart0(void)
++static void
++kwboot_spinner(void)
 +{
-+	uart0_plat.clock = clk_get_rate(tclk);
-+	add_ns16550_device(DEVICE_ID_DYNAMIC, MVEBU_UART0_BASE, 32,
-+			   IORESOURCE_MEM_32BIT, &uart0_plat);
++	if (kwboot_verbose)
++		__spinner();
++}
++
++static void
++__progress(int pct, char c)
++{
++	const int width = 70;
++	static const char *nl = "";
++	static int pos;
++
++	if (pos % width == 0)
++		printf("%s%3d %% [", nl, pct);
++
++	fputc(c, stdout);
++
++	nl = "]\n";
++	pos++;
++
++	if (pct == 100) {
++		while (pos++ < width)
++			fputc(' ', stdout);
++		fputs(nl, stdout);
++	}
++
++	fflush(stdout);
++
++}
++
++static void
++kwboot_progress(int _pct, char c)
++{
++	static int pct;
++
++	if (_pct != -1)
++		pct = _pct;
++
++	if (kwboot_verbose)
++		__progress(pct, c);
++}
++
++static int
++kwboot_tty_recv(int fd, void *buf, size_t len, int timeo)
++{
++	int rc, nfds;
++	fd_set rfds;
++	struct timeval tv;
++	ssize_t n;
++
++	rc = -1;
++
++	FD_ZERO(&rfds);
++	FD_SET(fd, &rfds);
++
++	tv.tv_sec = 0;
++	tv.tv_usec = timeo * 1000;
++	if (tv.tv_usec > 1000000) {
++		tv.tv_sec += tv.tv_usec / 1000000;
++		tv.tv_usec %= 1000000;
++	}
++
++	do {
++		nfds = select(fd + 1, &rfds, NULL, NULL, &tv);
++		if (nfds < 0)
++			goto out;
++		if (!nfds) {
++			errno = ETIMEDOUT;
++			goto out;
++		}
++
++		n = read(fd, buf, len);
++		if (n < 0)
++			goto out;
++
++		buf = (char *)buf + n;
++		len -= n;
++	} while (len > 0);
++
++	rc = 0;
++out:
++	return rc;
++}
++
++static int
++kwboot_tty_send(int fd, const void *buf, size_t len)
++{
++	int rc;
++	ssize_t n;
++
++	rc = -1;
++
++	do {
++		n = write(fd, buf, len);
++		if (n < 0)
++			goto out;
++
++		buf = (char *)buf + n;
++		len -= n;
++	} while (len > 0);
++
++	rc = tcdrain(fd);
++out:
++	return rc;
++}
++
++static int
++kwboot_tty_send_char(int fd, unsigned char c)
++{
++	return kwboot_tty_send(fd, &c, 1);
++}
++
++static speed_t
++kwboot_tty_speed(int baudrate)
++{
++	switch (baudrate) {
++	case 115200:
++		return B115200;
++	case 57600:
++		return B57600;
++	case 38400:
++		return B38400;
++	case 19200:
++		return B19200;
++	case 9600:
++		return B9600;
++	}
++
++	return -1;
++}
++
++static int
++kwboot_open_tty(const char *path, speed_t speed)
++{
++	int rc, fd;
++	struct termios tio;
++
++	rc = -1;
++
++	fd = open(path, O_RDWR|O_NOCTTY|O_NDELAY);
++	if (fd < 0)
++		goto out;
++
++	memset(&tio, 0, sizeof(tio));
++
++	tio.c_iflag = 0;
++	tio.c_cflag = CREAD|CLOCAL|CS8;
++
++	tio.c_cc[VMIN] = 1;
++	tio.c_cc[VTIME] = 10;
++
++	cfsetospeed(&tio, speed);
++	cfsetispeed(&tio, speed);
++
++	rc = tcsetattr(fd, TCSANOW, &tio);
++	if (rc)
++		goto out;
++
++	rc = fd;
++out:
++	if (rc < 0) {
++		if (fd >= 0)
++			close(fd);
++	}
++
++	return rc;
++}
++
++static int
++kwboot_bootmsg(int tty, void *msg)
++{
++	int rc;
++	char c;
++
++	kwboot_printv("Sending boot message. Please reboot the target...");
++
++	do {
++		rc = tcflush(tty, TCIOFLUSH);
++		if (rc)
++			break;
++
++		rc = kwboot_tty_send(tty, msg, 8);
++		if (rc) {
++			usleep(KWBOOT_MSG_REQ_DELAY * 1000);
++			continue;
++		}
++
++		rc = kwboot_tty_recv(tty, &c, 1, KWBOOT_MSG_RSP_TIMEO);
++
++		kwboot_spinner();
++
++	} while (rc || c != NAK);
++
++	kwboot_printv("\n");
++
++	return rc;
++}
++
++static int
++kwboot_debugmsg(int tty, void *msg)
++{
++	int rc;
++
++	kwboot_printv("Sending debug message. Please reboot the target...");
++
++	do {
++		char buf[16];
++
++		rc = tcflush(tty, TCIOFLUSH);
++		if (rc)
++			break;
++
++		rc = kwboot_tty_send(tty, msg, 8);
++		if (rc) {
++			usleep(KWBOOT_MSG_REQ_DELAY * 1000);
++			continue;
++		}
++
++		rc = kwboot_tty_recv(tty, buf, 16, KWBOOT_MSG_RSP_TIMEO);
++
++		kwboot_spinner();
++
++	} while (rc);
++
++	kwboot_printv("\n");
++
++	return rc;
++}
++
++static int
++kwboot_xm_makeblock(struct kwboot_block *block, const void *data,
++		    size_t size, int pnum)
++{
++	const size_t blksz = sizeof(block->data);
++	size_t n;
++	int i;
++
++	block->pnum = pnum;
++	block->_pnum = ~block->pnum;
++
++	n = size < blksz ? size : blksz;
++	memcpy(&block->data[0], data, n);
++	memset(&block->data[n], 0, blksz - n);
++
++	block->csum = 0;
++	for (i = 0; i < n; i++)
++		block->csum += block->data[i];
++
++	return n;
++}
++
++static int
++kwboot_xm_sendblock(int fd, struct kwboot_block *block)
++{
++	int rc, retries;
++	char c;
++
++	retries = 16;
++	do {
++		rc = kwboot_tty_send(fd, block, sizeof(*block));
++		if (rc)
++			break;
++
++		do {
++			rc = kwboot_tty_recv(fd, &c, 1, KWBOOT_BLK_RSP_TIMEO);
++			if (rc)
++				break;
++
++			if (c != ACK && c!= NAK && c != CAN)
++				printf("%c", c);
++
++		} while (c != ACK && c != NAK && c != CAN);
++
++		if (c != ACK)
++			kwboot_progress(-1, '+');
++
++	} while (c == NAK && retries-- > 0);
++
++	rc = -1;
++
++	switch (c) {
++	case ACK:
++		rc = 0;
++		break;
++	case NAK:
++		errno = EBADMSG;
++		break;
++	case CAN:
++		errno = ECANCELED;
++		break;
++	default:
++		errno = EPROTO;
++		break;
++	}
++
++	return rc;
++}
++
++static int
++kwboot_xmodem(int tty, const void *_data, size_t size)
++{
++	const uint8_t *data = _data;
++	int rc, pnum, N, err;
++
++	pnum = 1;
++	N = 0;
++
++	kwboot_printv("Sending boot image...\n");
++
++	do {
++		struct kwboot_block block;
++		int n;
++
++		n = kwboot_xm_makeblock(&block,
++					data + N, size - N,
++					pnum++);
++		if (n < 0)
++			goto can;
++
++		if (!n)
++			break;
++
++		rc = kwboot_xm_sendblock(tty, &block);
++		if (rc)
++			goto out;
++
++		N += n;
++		kwboot_progress(N * 100 / size, '.');
++	} while (1);
++
++	rc = kwboot_tty_send_char(tty, EOT);
++
++out:
++	return rc;
++
++can:
++	err = errno;
++	kwboot_tty_send_char(tty, CAN);
++	errno = err;
++	goto out;
++}
++
++static int
++kwboot_term_pipe(int in, int out, char *quit, int *s)
++{
++	ssize_t nin, nout;
++	char _buf[128], *buf = _buf;
++
++	nin = read(in, buf, sizeof(buf));
++	if (nin < 0)
++		return -1;
++
++	if (quit) {
++		int i;
++
++		for (i = 0; i < nin; i++) {
++			if (*buf == quit[*s]) {
++				(*s)++;
++				if (!quit[*s])
++					return 0;
++				buf++;
++				nin--;
++			} else
++				while (*s > 0) {
++					nout = write(out, quit, *s);
++					if (nout <= 0)
++						return -1;
++					(*s) -= nout;
++				}
++		}
++	}
++
++	while (nin > 0) {
++		nout = write(out, buf, nin);
++		if (nout <= 0)
++			return -1;
++		nin -= nout;
++	}
++
 +	return 0;
 +}
 +
-+#if defined(CONFIG_ARCH_ARMADA_370)
-+static int mvebu_init_clocks(void)
++static int
++kwboot_terminal(int tty)
 +{
-+	uint32_t val;
-+	unsigned int rate;
-+	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
++	int rc, in, s;
++	char *quit = "\34c";
++	struct termios otio, tio;
 +
-+	val = readl(sar);
++	rc = -1;
 +
-+	/* On Armada 370, the TCLK frequency can be either 166 Mhz or
-+	 * 200 Mhz */
-+	if (val & (1 << SAR_TCLK_FREQ_BIT))
-+		rate = 200 * 1000 * 1000;
-+	else
-+		rate = 166 * 1000 * 1000;
++	in = STDIN_FILENO;
++	if (isatty(in)) {
++		rc = tcgetattr(in, &otio);
++		if (!rc) {
++			tio = otio;
++			cfmakeraw(&tio);
++			rc = tcsetattr(in, TCSANOW, &tio);
++		}
++		if (rc) {
++			perror("tcsetattr");
++			goto out;
++		}
 +
-+	tclk = clk_fixed("tclk", rate);
-+	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
-+}
-+#endif
++		kwboot_printv("[Type Ctrl-%c + %c to quit]\r\n",
++			      quit[0]|0100, quit[1]);
++	} else
++		in = -1;
 +
-+#if defined(CONFIG_ARCH_ARMADA_XP)
-+static int mvebu_init_clocks(void)
-+{
-+	/* On Armada XP, the TCLK frequency is always 250 Mhz */
-+	tclk = clk_fixed("tclk", 250 * 1000 * 1000);
-+	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
-+}
-+#endif
++	rc = 0;
++	s = 0;
 +
-+static int mvebu_init_soc(void)
-+{
-+	unsigned long phys_base, phys_size;
++	do {
++		fd_set rfds;
++		int nfds = 0;
 +
-+	mvebu_init_clocks();
-+	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
-+			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
-+			   NULL);
-+	mvebu_memory_find(&phys_base, &phys_size);
-+	arm_add_mem_device("ram0", phys_base, phys_size);
-+	return 0;
-+}
++		FD_SET(tty, &rfds);
++		nfds = nfds < tty ? tty : nfds;
 +
-+postcore_initcall(mvebu_init_soc);
++		if (in >= 0) {
++			FD_SET(in, &rfds);
++			nfds = nfds < in ? in : nfds;
++		}
 +
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	writel(0x1, MVEBU_SYSCTL_BASE + 0x60);
-+	writel(0x1, MVEBU_SYSCTL_BASE + 0x64);
-+	while (1)
-+		;
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-mvebu/include/mach/clkdev.h b/arch/arm/mach-mvebu/include/mach/clkdev.h
-new file mode 100644
-index 0000000..04b37a8
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/clkdev.h
-@@ -0,0 +1,7 @@
-+#ifndef __ASM_MACH_CLKDEV_H
-+#define __ASM_MACH_CLKDEV_H
++		nfds = select(nfds + 1, &rfds, NULL, NULL, NULL);
++		if (nfds < 0)
++			break;
 +
-+#define __clk_get(clk) ({ 1; })
-+#define __clk_put(clk) do { } while (0)
++		if (FD_ISSET(tty, &rfds)) {
++			rc = kwboot_term_pipe(tty, STDOUT_FILENO, NULL, NULL);
++			if (rc)
++				break;
++		}
 +
-+#endif
-diff --git a/arch/arm/mach-mvebu/include/mach/debug_ll.h b/arch/arm/mach-mvebu/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..2653573
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/debug_ll.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++		if (FD_ISSET(in, &rfds)) {
++			rc = kwboot_term_pipe(in, tty, quit, &s);
++			if (rc)
++				break;
++		}
++	} while (quit[s] != 0);
 +
-+#ifndef __MACH_DEBUG_LL_H__
-+#define __MACH_DEBUG_LL_H__
-+
-+#include <io.h>
-+
-+#define UART_BASE 0xd0012000
-+#define UART_THR  0x0
-+#define UART_LSR  0x14
-+#define   UART_LSR_THRE   (1 << 5)
-+
-+static inline void PUTC_LL(char c)
-+{
-+	/* Wait until there is space in the FIFO */
-+	while (!(readl(UART_BASE + UART_LSR) & UART_LSR_THRE))
-+		;
-+
-+	/* Send the character */
-+	writel(c, UART_BASE + UART_THR)
-+		;
-+
-+	/* Wait to make sure it hits the line, in case we die too soon. */
-+	while (!(readl(UART_BASE + UART_LSR) & UART_LSR_THRE))
-+		;
-+}
-+#endif
-diff --git a/arch/arm/mach-mvebu/include/mach/mvebu.h b/arch/arm/mach-mvebu/include/mach/mvebu.h
-new file mode 100644
-index 0000000..e13a446
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/mvebu.h
-@@ -0,0 +1,22 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_MVEBU_H
-+#define __MACH_MVEBU_H
-+
-+int mvebu_add_uart0(void);
-+void __naked __noreturn mvebu_barebox_entry(void);
-+
-+#endif /* __MACH_MVEBU_H */
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index 9f3558b..dfc89dd 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -14,6 +14,10 @@ config CLOCKSOURCE_CLPS711X
- 	bool
- 	depends on ARCH_CLPS711X
- 
-+config CLOCKSOURCE_MVEBU
-+	bool
-+	depends on ARCH_MVEBU
-+
- config CLOCKSOURCE_NOMADIK
- 	bool
- 	depends on ARM
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index d919881..0b42ce4 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -2,4 +2,5 @@ obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
- obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
- obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
- obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
-+obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
- obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
-diff --git a/drivers/clocksource/mvebu.c b/drivers/clocksource/mvebu.c
-new file mode 100644
-index 0000000..2b48a5c
---- /dev/null
-+++ b/drivers/clocksource/mvebu.c
-@@ -0,0 +1,90 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <linux/clk.h>
-+#include <io.h>
-+
-+#define TIMER_CTRL_OFF          0x0000
-+#define  TIMER0_EN               0x0001
-+#define  TIMER0_RELOAD_EN        0x0002
-+#define  TIMER0_25MHZ            0x0800
-+#define  TIMER0_DIV(div)         ((div) << 19)
-+#define  TIMER1_EN               0x0004
-+#define  TIMER1_RELOAD_EN        0x0008
-+#define  TIMER1_25MHZ            0x1000
-+#define  TIMER1_DIV(div)         ((div) << 22)
-+#define TIMER_EVENTS_STATUS     0x0004
-+#define  TIMER0_CLR_MASK         (~0x1)
-+#define  TIMER1_CLR_MASK         (~0x100)
-+#define TIMER0_RELOAD_OFF       0x0010
-+#define TIMER0_VAL_OFF          0x0014
-+#define TIMER1_RELOAD_OFF       0x0018
-+#define TIMER1_VAL_OFF          0x001c
-+
-+#define TIMER_DIVIDER_SHIFT     5
-+
-+static __iomem void *timer_base;
-+
-+uint64_t mvebu_clocksource_read(void)
-+{
-+	return __raw_readl(timer_base + TIMER0_VAL_OFF);
++	tcsetattr(in, TCSANOW, &otio);
++out:
++	return rc;
 +}
 +
-+static struct clocksource cs = {
-+	.read	= mvebu_clocksource_read,
-+	.mask	= CLOCKSOURCE_MASK(32),
-+	.shift	= 10,
-+};
-+
-+static int mvebu_timer_probe(struct device_d *dev)
++static void *
++kwboot_mmap_image(const char *path, size_t *size, int prot)
 +{
-+	struct clk *tclk;
-+	u32 val;
++	int rc, fd, flags;
++	struct stat st;
++	void *img;
 +
-+	timer_base = dev_request_mem_region(dev, 0);
++	rc = -1;
++	fd = -1;
++	img = NULL;
 +
-+	tclk = clk_get(dev, "tclk");
++	fd = open(path, O_RDONLY);
++	if (fd < 0)
++		goto out;
 +
-+	val = __raw_readl(timer_base + TIMER_CTRL_OFF);
-+	val &= ~TIMER0_25MHZ;
-+	__raw_writel(val, timer_base + TIMER_CTRL_OFF);
++	rc = fstat(fd, &st);
++	if (rc)
++		goto out;
 +
-+	__raw_writel(0xffffffff, timer_base + TIMER0_VAL_OFF);
-+	__raw_writel(0xffffffff, timer_base + TIMER0_RELOAD_OFF);
++	flags = (prot & PROT_WRITE) ? MAP_PRIVATE : MAP_SHARED;
 +
-+	val = __raw_readl(timer_base + TIMER_CTRL_OFF);
-+	val |= TIMER0_EN | TIMER0_RELOAD_EN | TIMER0_DIV(TIMER_DIVIDER_SHIFT);
-+	__raw_writel(val, timer_base + TIMER_CTRL_OFF);
++	img = mmap(NULL, st.st_size, prot, flags, fd, 0);
++	if (img == MAP_FAILED) {
++		img = NULL;
++		goto out;
++	}
 +
-+	cs.mult = clocksource_hz2mult(clk_get_rate(tclk), cs.shift);
++	rc = 0;
++	*size = st.st_size;
++out:
++	if (rc && img) {
++		munmap(img, st.st_size);
++		img = NULL;
++	}
++	if (fd >= 0)
++		close(fd);
 +
-+	init_clock(&cs);
-+
-+	return 0;
++	return img;
 +}
 +
-+static struct driver_d mvebu_timer_driver = {
-+	.name = "mvebu-timer",
-+	.probe = mvebu_timer_probe,
-+};
-+
-+static int mvebu_timer_init(void)
++static void
++kwboot_usage(FILE *stream, char *progname)
 +{
-+	return platform_driver_register(&mvebu_timer_driver);
++	fprintf(stream,
++		"Usage: %s [-d | -b <image>] [ -p ] [ -t ] "
++		"[-B <baud> ] <TTY>\n", progname);
++	fprintf(stream, "\n");
++	fprintf(stream, "  -b <image>: boot <image>\n");
++	fprintf(stream, "  -d: enter debug mode\n");
++	fprintf(stream, "\n");
++	fprintf(stream, "  -t: mini terminal\n");
++	fprintf(stream, "\n");
++	fprintf(stream, "  -B <baud>: set baud rate\n");
++	fprintf(stream, "\n");
 +}
-+postcore_initcall(mvebu_timer_init);
++
++int
++main(int argc, char **argv)
++{
++	const char *ttypath, *imgpath;
++	int rv, rc, tty, term;
++	void *bootmsg;
++	void *debugmsg;
++	void *img;
++	size_t size;
++	speed_t speed;
++
++	rv = 1;
++	tty = -1;
++	bootmsg = NULL;
++	debugmsg = NULL;
++	imgpath = NULL;
++	img = NULL;
++	term = 0;
++	size = 0;
++	speed = B115200;
++
++	kwboot_verbose = isatty(STDOUT_FILENO);
++
++	do {
++		int c = getopt(argc, argv, "hb:dptB:");
++		if (c < 0)
++			break;
++
++		switch (c) {
++		case 'b':
++			bootmsg = kwboot_msg_boot;
++			imgpath = optarg;
++			break;
++
++		case 'd':
++			debugmsg = kwboot_msg_debug;
++			break;
++
++		case 't':
++			term = 1;
++			break;
++
++		case 'B':
++			speed = kwboot_tty_speed(atoi(optarg));
++			if (speed == -1)
++				goto usage;
++			break;
++
++		case 'h':
++			rv = 0;
++		default:
++			goto usage;
++		}
++	} while (1);
++
++	if (!bootmsg && !term && !debugmsg)
++		goto usage;
++
++	if (argc - optind < 1)
++		goto usage;
++
++	ttypath = argv[optind++];
++
++	tty = kwboot_open_tty(ttypath, speed);
++	if (tty < 0) {
++		perror(ttypath);
++		goto out;
++	}
++
++	if (imgpath) {
++		img = kwboot_mmap_image(imgpath, &size, PROT_READ);
++		if (!img) {
++			perror(imgpath);
++			goto out;
++		}
++	}
++
++	if (debugmsg) {
++		rc = kwboot_debugmsg(tty, debugmsg);
++		if (rc) {
++			perror("debugmsg");
++			goto out;
++		}
++	}
++
++	if (bootmsg) {
++		rc = kwboot_bootmsg(tty, bootmsg);
++		if (rc) {
++			perror("bootmsg");
++			goto out;
++		}
++	}
++
++	if (img) {
++		rc = kwboot_xmodem(tty, img, size);
++		if (rc) {
++			perror("xmodem");
++			goto out;
++		}
++	}
++
++	if (term) {
++		rc = kwboot_terminal(tty);
++		if (rc && !(errno == EINTR)) {
++			perror("terminal");
++			goto out;
++		}
++	}
++
++	rv = 0;
++out:
++	if (tty >= 0)
++		close(tty);
++
++	if (img)
++		munmap(img, size);
++
++	return rv;
++
++usage:
++	kwboot_usage(rv ? stderr : stdout, basename(argv[0]));
++	goto out;
++}
 -- 
 1.7.9.5
 
