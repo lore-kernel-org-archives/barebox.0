@@ -1,12 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UaNXN-0002Dv-Mb
+ id 1UaNXN-0002Dz-Me
  for barebox@lists.infradead.org; Thu, 09 May 2013 09:53:26 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Thu,  9 May 2013 11:52:44 +0200
-Message-Id: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
-MIME-Version: 1.0
+Date: Thu,  9 May 2013 11:52:47 +0200
+Message-Id: <1368093171-17845-4-git-send-email-thomas.petazzoni@free-electrons.com>
+In-Reply-To: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
+References: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,184 +16,492 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?q?=5BPATCH=20v3=200/7=5D=20Basic=20support=20for=20Armada=20370/XP=20SOCs?=
+Subject: [PATCH v3 3/7] arm: initial support for Marvell Armada 370/XP SoCs
 To: barebox@lists.infradead.org
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-SGVsbG8sCgpIZXJlIGlzIGEgcGF0Y2ggc2V0IHRoYXQgYWRkcyBiYXNpYyBzdXBwb3J0IGZvciB0
-aGUgTWFydmVsbCBBcm1hZGEgMzcwCmFuZCBBcm1hZGEgWFAgU09Dcy4gRm9yIG5vdywgdGhlIHN1
-cHBvcnQgaXMgcXVpdGUgbWluaW1hbCwgc2luY2Ugb25seQp0aGUgc2VyaWFsIHBvcnQgaXMgc3Vw
-cG9ydGVkLiBIb3dldmVyLCBhIHNpZ25pZmljYW50IHBhcnQgb2YgdGhlIHdvcmsKaGFzIGJlZW4g
-dGhlIGRldmVsb3BtZW50IG9mIHRoZSB0b29scyB0aGF0IGFsbG93IHRvIGV4dHJhY3QvY3JlYXRl
-CmJvb3RhYmxlIGltYWdlcyBhbmQgdG8gcHVzaCBhIGJvb3RhYmxlIGltYWdlIHRocm91Z2ggdGhl
-IFVBUlQgdG8gdGhlCmhhcmR3YXJlIHBsYXRmb3JtLgoKSSBleHBlY3QgdG8gd29yayBvbiBhZGRp
-bmcgc3VwcG9ydCBmb3IgbW9yZSBkZXZpY2VzIChzdWNoIGFzIHRoZQpuZXR3b3JrIGludGVyZmFj
-ZSkgYW5kIHBvc3NpYmx5IHRvIGFkZCBzdXBwb3J0IGZvciB0aGUgb2xkZXIsIGJ1dApwb3B1bGFy
-LCBNYXJ2ZWxsIEtpcmt3b29kIFNvQyBmYW1pbHkuIENvbnRyaWJ1dGlvbnMgYXJlIG9mIGNvdXJz
-ZQp3ZWxjb21lLgoKQ2hhbmdlcyBzaW5jZSB2MjoKCiAtIFVzZSAkKHNyY3RyZWUpIHdoZW4gYWNj
-ZXNzaW5nIGt3YmltYWdlLmNmZyBmcm9tIGFyY2gvYXJtL01ha2VmaWxlLAogICBpbiBvcmRlciB0
-byBhbGxvdyBvdXQtb2YtdHJlZSBidWlsZHMgdG8gd29yayBwcm9wZXJseS4gTm90aWNlZCBieQog
-ICBHcsOpZ29yeSBDbGVtZW50LgoKIC0gSW1wcm92ZSB0aGUgZXJyb3IgbWVzc2FnZSBkaXNwbGF5
-ZWQgYnkga3diaW1hZ2Ugd2hlbiB0aGUgRERSMwogICB0cmFpbmluZyBibG9iIGNhbm5vdCBiZSBm
-b3VuZC4gU2luY2UgaXQgbXVzdCBmaXJzdCBiZSBleHRyYWN0ZWQgYnkKICAgdGhlIHVzZXIsIGl0
-IGlzIGEgZ29vZCBpZGVhIHRvIGd1aWRlIGhpbS4gU3VnZ2VzdGVkIGJ5IEdyw6lnb3J5CiAgIENs
-ZW1lbnQuCgogLSBDaGFuZ2UgdGhlIGZpbGUgbmFtZSBvZiB0aGUgYmluYXJ5IGJsb2JzIGZvciBl
-YWNoIGJvYXJkLCBpbiBvcmRlcgogICB0byBtYWtlIGl0IGRpZmZlcmVudCBmb3IgZWFjaCBib2Fy
-ZC4gU28gaW5zdGVhZCBvZiBiZWluZyAnYmluYXJ5LjAnCiAgIGl0IGlzIGtub3cgJ2dsb2JhbHNj
-YWxlLW1pcmFib3gtYmluYXJ5LjAnLCBldGMuIFRoaXMgYWxsb3dzIHRvIGtlZXAKICAgbXVsdGlw
-bGUgYmluYXJ5IGJsb2JzIGZvciBkaWZmZXJlbnQgYm9hcmRzIGFyb3VuZCBhdCB0aGUgc2FtZSB0
-aW1lLgoKQ2hhbmdlcyBzaW5jZSB2MToKCiAtIERyb3AgdGhlIHBhdGNoIGZpeGluZyBzY3JpcHRz
-L2NoZWNrcGF0Y2gucGwgc2luY2UgaXQgaGFzIGJlZW4KICAgbWVyZ2VkIHVwc3RyZWFtLgoKIC0g
-SW1wcm92ZSBrd2JpbWFnZSB0byBhZGQgb3B0aW9ucyB0aGF0IGFsbG93IHRvIG92ZXJyaWRlIHRo
-ZSBwYXlsb2FkCiAgIGZpbGVuYW1lLCB0aGUgYm9vdCBtZWRpYSwgdGhlIGRlc3RpbmF0aW9uIGFk
-ZHJlc3MgYW5kIGV4ZWN1dGlvbgogICBhZGRyZXNzIGZyb20gdGhlIGNvbW1hbmQgbGluZS4gU3Vn
-Z2VzdGVkIGJ5IFNhc2NoYSBIYXVlci4KCiAtIEFkZCBhbiBpbnRlZ3JhdGlvbiBvZiBrd2JpbWFn
-ZSB0byB0aGUgQmFyZWJveCBidWlsZCBwcm9jZXNzLiBOb3csCiAgIHdoZW4gYW4gQVJDSF9NVkVC
-VSBwbGF0Zm9ybSBpcyBzZWxlY3RlZCwgYSBiYXJlYm94Lmt3YiBmaWxlIGlzCiAgIGF1dG9tYXRp
-Y2FsbHkgZ2VuZXJhdGVkIHVzaW5nIHRoZSBib2FyZCBrd2JpbWFnZS5jZmcsIGFuZCBhCiAgIGJh
-cmVib3gua3didWFydCBpcyBnZW5lcmF0ZWQgdXNpbmcgdGhlIGJvYXJkIGt3YmltYWdlLmNmZyAr
-IGFuCiAgIG92ZXJyaWRlIG9mIHRoZSBib290IG1lZGlhIHRvIGJlIFVBUlQuCgogLSBTaW1wbGlm
-eSB0aGUga3diaW1hZ2UuY2ZnIHRvIG5vIGxvbmdlciBjb250YWluIHRoZSBwYXlsb2FkIGZpbGVu
-YW1lCiAgIChpdCBpcyBwYXNzZWQgYnkgQmFyZWJveCB1c2luZyBrd2JpbWFnZSAtcCBvcHRpb24p
-LCB0aGUgZGVzdGluYXRpb24KICAgYW5kIGV4ZWN1dGlvbiBhZGRyZXNzZXMgKHRob3NlIGFyZSBw
-YXNzZWQgYnkgQmFyZWJveCB1c2luZyBrd2JpbWFnZQogICAtZCBhbmQgLWUgb3B0aW9ucywgd2hp
-Y2ggYWxsb3dzIHRvIGVuc3VyZSB0aGV5IG1hdGNoCiAgIENPTkZJR19URVhUX0JBU0UpLgoKIC0g
-Q2hhbmdlIHRoZSBkZWZhdWx0IGJvb3QgbWVkaWEgb2YgdGhlIGt3YmltYWdlLmNmZyB0byBiZSB0
-aGUgcmVhbAogICBib290IG1lZGlhIHVzZWQgb24gdGhlIHBsYXRmb3JtLCB0eXBpY2FsbHkgU1BJ
-IG9yIE5BTkQuIFNpbmNlIGFuCiAgIGltYWdlIGZvciBVQVJUIGlzIGFsd2F5cyBhdXRvbWF0aWNh
-bGx5IGdlbmVyYXRlZCBieSBvdmVycmlkaW5nIHRoZQogICBib290IG1lZGlhLCBpdCBtYWtlcyBz
-ZW5zZSB0byBoYXZlIHRoZSByZWFsIGJvb3QgbWVkaWEgaW4KICAga3diaW1hZ2UuY2ZnLgoKIC0g
-UmVtb3ZlIGluY29ycmVjdCB3aGl0ZXNwYWNlIGNoYW5nZSBpbiBzY3JpcHRzL01ha2VmaWxlLiBO
-b3RpY2VkIGJ5CiAgIFNhc2NoYSBIYXVlci4KCkluIGRldGFpbCwgdGhlIHBhdGNoIHNldCBjb250
-YWluczoKCiAqIEEga3diaW1hZ2UgdG9vbC4gVGhpcyB0b29sIGFsbG93cyB0byBleHRyYWN0IGV4
-aXN0aW5nIGJvb3Rsb2FkZXIKICAgaW1hZ2VzLCBhbmQgY3JlYXRlIG5ldyBib290bG9hZGVyIGlt
-YWdlcy4gSXQgaXMgbW9yZSBvciBsZXNzCiAgIHNpbWlsYXIgaW4gcHVycG9zZSB0byB0aGUga3di
-aW1hZ2UgdG9vbCBmcm9tIFUtQm9vdCwgYnV0IGlzIGNhcGFibGUKICAgb2YgaGFuZGxpbmcgJ3Zl
-cnNpb24gMScgaW1hZ2VzIHVzZWQgYnkgQXJtYWRhIDM3MC9YUCwgYW5kIG5vdCBvbmx5CiAgIGFs
-bG93cyB0byBjcmVhdGUgaW1hZ2VzLCBidXQgYWxzbyBleHRyYWN0IGltYWdlcy4KCiAgIEEgdHlw
-aWNhbCB1c2FnZSBpcyB0byBmaXJzdCBleHRyYWN0IGFuIGV4aXN0aW5nIGJvb3Rsb2FkZXIgaW1h
-Z2U6CgogICAgLi9zY3JpcHRzL2t3YmltYWdlIC14IC1pIDxleGlzdGluZy1pbWFnZT4gLW8gPHNv
-bWUtZGlyZWN0b3J5PgoKICAgQXMgYW4gb3V0cHV0LCB5b3UgdHlwaWNhbGx5IGdldCAzIGZpbGVz
-OiBrd2JpbWFnZS5jZmcgKGEgdGV4dCBmaWxlCiAgIHRoYXQgZGVzY3JpYmVzIHRoZSBjb25maWd1
-cmF0aW9uIG9mIHRoZSBpbWFnZSBpbiBhIGZvcm1hdAogICByZXNzZW1ibGluZyB0aGUgb25lIHVz
-ZWQgYnkgVS1Cb290KSwgYmluYXJ5LjAgKHRoZSBiaW5hcnkgYmxvYiB0aGF0CiAgIGRvZXMgdGhl
-IEREUjMgdHJhaW5pbmcpIGFuZCBwYXlsb2FkICh0aGUgYm9vdGxvYWRlciBpdHNlbGYpLgoKICAg
-QmVpbmcgYWJsZSB0byBleHRyYWN0IGFuIGltYWdlIGlzIG5lZWRlZCBpbiBvcmRlciB0byBnZXQg
-dGhlIEREUjMKICAgdHJhaW5pbmcgY29kZSwgYW5kIHJlLXVzZSBpdCB3aXRoIEJhcmVib3guCgog
-ICBBbiBpbWFnZSBpcyB0aGVuIGxhdGVyIGNyZWF0ZWQgd2l0aDoKCiAgICAuL3NjcmlwdHMva3di
-aW1hZ2UgLWMgLWkgPHBhdGgvdG8va3diaW1hZ2UuY2ZnPiAtbyA8aW1hZ2U+CgogICBGb3IgZWFj
-aCBib2FyZCwgdGhlIGt3YmltYWdlLmNmZyBmaWxlIGlzIHR5cGljYWxseSBsb2NhdGVkIGluCiAg
-IGFyY2gvYXJtL2JvYXJkcy88Ym9hcmQtbmFtZT4vLiBUaGUgRERSMyB0cmFpbmluZyBjb2RlIG11
-c3QgaG93ZXZlcgogICBiZSBleHRyYWN0ZWQgZnJvbSBhbiBleGlzdGluZyBib290bG9hZGVyIGlt
-YWdlIG9mIHlvdXIgYm9hcmQsCiAgIHVzdWFsbHkgdGhlIG9uZSBwcm92aWRlZCBieSB0aGUgYm9h
-cmQgbWFudWZhY3R1cmVyLgoKICogQSBrd2Jvb3QgdG9vbCB0byBwdXNoIGEgYm9vdGxvYWRlciB0
-aHJvdWdoIFVBUlQuIEl0IGlzIGRpcmVjdGx5CiAgIHRha2VuIGZyb20gVS1Cb290IHNvdXJjZSBj
-b2RlLCB0byB3aGljaCBJJ3ZlIGFkZGVkIHNvbWUgZml4ZXM6CgogICAtIEV4dGVuZCB0aGUgdGlt
-ZW91dHMsIHRvIGFjdHVhbGx5IG1ha2UgaXQgd29yayBvbiBBcm1hZGEKICAgICAzNzAvWFAuIFRo
-aXMgaGFzIG9yaWdpbmFsbHkgYmVlbiBmb3VuZCBieSBXaWxseSBUYXJyZWF1LgoKICAgLSBJZ25v
-cmUgbm9uLVhtb2RlbSBjaGFyYWN0ZXJzLCBzbyB0aGF0IHRoZSBvcmlnaW5hbCBERFIzIHRyYWlu
-aW5nCiAgICAgY29kZSBjYW4gYmUgdXNlZCB3aXRob3V0IG1vZGlmaWNhdGlvbnMgKFdpbGx5IGhh
-ZCB0byBjaGFuZ2UgaXQgdG8KICAgICBtYWtlIGl0IG91dHB1dCBpdHMgbWVzc2FnZXMgb24gYSBk
-aWZmZXJlbnQgc2VyaWFsIHBvcnQsIG90aGVyd2lzZQogICAgIGl0IHdhcyBjb25mdXNpbmcgdGhl
-IFhtb2RlbSBpbXBsZW1lbnRhdGlvbikKCiAgIC0gT3V0cHV0IHRvIHN0ZG91dCBhbGwgdGhlIG5v
-bi1YbW9kZW0gY2hhcmFjdGVycyBzbyB0aGF0IGlmCiAgICAgc29tZXRoaW5nIGdvZXMgd3Jvbmcg
-ZHVyaW5nIHRoZSB0cmFuc2Zlciwgd2UgaGF2ZSBzb21lCiAgICAgaW5mb3JtYXRpb25zLiBJdCBh
-bHNvIHNob3dzIHRoZSBtZXNzYWdlcyBvdXRwdXQgYnkgdGhlIEREUjMKICAgICB0cmFpbmluZyBj
-b2RlLgoKICAgLSBSZW1vdmUgdGhlICdwYXRjaCcgZmVhdHVyZSB0aGF0IHBhdGNoZXMgYW4gaW1h
-Z2UgdG8gaGF2ZSB0aGUgVUFSVAogICAgIHR5cGUuIFRoaXMgcmVxdWlyZXMgYSBrbm93bGVkZ2Ug
-b2YgdGhlIGhlYWRlciBmb3JtYXQsIHdoaWNoIGlzCiAgICAgZGlmZmVyZW50IGJldHdlZW4gdmVy
-c2lvbiAwIChraXJrd29vZCkgYW5kIHZlcnNpb24gMSAoYXJtYWRhCiAgICAgMzcwL3hwKS4gSXQg
-aXMgbm90IHJlYWxseSBuZWVkZWQgYW55d2F5IHNpbmNlIGt3YmltYWdlIGNhbgogICAgIGV4dHJh
-Y3QgYW5kIGNyZWF0ZSBpbWFnZXMuCgogKiBUaGUgU29DLWxldmVsIGNvZGUsIHdoaWNoIGZvciBu
-b3cgb25seSBjb25zaXN0cyBpbiBhIG1pbmltYWwKICAgY2xvY2tzb3VyY2UgZHJpdmVyLCBhIGZ1
-bmN0aW9uIHRvIHJlZ2lzdGVyIGFuIFVBUlQsIGEgZml4ZWQtcmF0ZQogICBjbG9jaywgYW5kIGEg
-ZnVuY3Rpb24gdGhhdCBkZXRlcm1pbmVzIHRoZSBhbW91bnQgb2YgUkFNIGJ5IGxvb2tpbmcKICAg
-YXQgdGhlIFNEUkFNIHdpbmRvd3MgcmVnaXN0ZXJzLgoKICogQW4gaW50ZWdyYXRpb24gb2Yga3di
-aW1hZ2UgZ2VuZXJhdGlvbi4gV2hlbiBhbiBBUkNIX01WRUJVIHBsYXRmb3JtCiAgIGlzIHNlbGVj
-dGVkLCBib3RoIGJhcmVib3gua3diIGFuZCBiYXJlYm94Lmt3YnVhcnQgaW1hZ2VzIGFyZQogICBn
-ZW5lcmF0ZWQgYXV0b21hdGljYWxseS4KCiAqIFRoZSBib2FyZC1sZXZlbCBjb2RlIGZvciB0aGUg
-QXJtYWRhIDM3MCBNaXJhYm94IGZyb20gR2xvYmFsc2NhbGUsCiAgIHRoZSBBcm1hZGEgWFAgT3Bl
-bkJsb2NrcyBBWDMgZnJvbSBQbGF0aG9tZSBhbmQgdGhlIEFybWFkYSBYUCBHUAogICBmcm9tIE1h
-cnZlbGwuCgpCZXN0IHJlZ2FyZHMsCgpUaG9tYXMKClRob21hcyBQZXRhenpvbmkgKDcpOgogIHNj
-cmlwdHM6IG5ldyBrd2JpbWFnZSBtYW5pcHVsYXRpb24gdG9vbCBmb3IgTWFydmVsbCBTb0MgYm9v
-dCBpbWFnZXMKICBzY3JpcHRzOiBhZGQga3dib290IHRvb2wKICBhcm06IGluaXRpYWwgc3VwcG9y
-dCBmb3IgTWFydmVsbCBBcm1hZGEgMzcwL1hQIFNvQ3MKICBhcm06IGludGVncmF0ZSBrd2JpbWFn
-ZSBpbiB0aGUgaW1hZ2UgZ2VuZXJhdGlvbgogIGFybTogYWRkIGJhc2ljIHN1cHBvcnQgZm9yIEFy
-bWFkYSBYUCBPcGVuQmxvY2tzIEFYMyBwbGF0Zm9ybQogIGFybTogYWRkIGJhc2ljIHN1cHBvcnQg
-Zm9yIHRoZSBBcm1hZGEgMzcwIE1pcmFib3ggcGxhdGZvcm0KICBhcm06IGFkZCBiYXNpYyBzdXBw
-b3J0IGZvciB0aGUgQXJtYWRhIFhQIEdQIHBsYXRmb3JtCgogTWFrZWZpbGUgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAyICstCiBhcmNoL2FybS9LY29uZmln
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDggKwogYXJjaC9hcm0vTWFr
-ZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDI0ICsKIGFyY2gvYXJt
-L2JvYXJkcy9nbG9iYWxzY2FsZS1taXJhYm94L01ha2VmaWxlICAgICAgIHwgICAgMiArCiBhcmNo
-L2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9jb25maWcuaCAgICAgICB8ICAgIDQgKwog
-Li4uL2dsb2JhbHNjYWxlLW1pcmFib3gvZ2xvYmFsc2NhbGUtbWlyYWJveC5jICAgICAgfCAgIDI2
-ICsKIGFyY2gvYXJtL2JvYXJkcy9nbG9iYWxzY2FsZS1taXJhYm94L2t3YmltYWdlLmNmZyAgIHwg
-ICAgNSArCiBhcmNoL2FybS9ib2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9sb3dsZXZlbC5jICAg
-ICB8ICAgMjYgKwogYXJjaC9hcm0vYm9hcmRzL21hcnZlbGwtYXJtYWRhLXhwLWdwL01ha2VmaWxl
-ICAgICAgfCAgICAyICsKIGFyY2gvYXJtL2JvYXJkcy9tYXJ2ZWxsLWFybWFkYS14cC1ncC9jb25m
-aWcuaCAgICAgIHwgICAgNCArCiBhcmNoL2FybS9ib2FyZHMvbWFydmVsbC1hcm1hZGEteHAtZ3Av
-a3diaW1hZ2UuY2ZnICB8ICAgIDMgKwogYXJjaC9hcm0vYm9hcmRzL21hcnZlbGwtYXJtYWRhLXhw
-LWdwL2xvd2xldmVsLmMgICAgfCAgIDI1ICsKIC4uLi9tYXJ2ZWxsLWFybWFkYS14cC1ncC9tYXJ2
-ZWxsLWFybWFkYS14cC1ncC5jICAgIHwgICAyNSArCiBhcmNoL2FybS9ib2FyZHMvcGxhdGhvbWUt
-b3BlbmJsb2Nrcy1heDMvTWFrZWZpbGUgICB8ICAgIDIgKwogYXJjaC9hcm0vYm9hcmRzL3BsYXRo
-b21lLW9wZW5ibG9ja3MtYXgzL2NvbmZpZy5oICAgfCAgICA0ICsKIC4uLi9ib2FyZHMvcGxhdGhv
-bWUtb3BlbmJsb2Nrcy1heDMva3diaW1hZ2UuY2ZnICAgIHwgICAgMyArCiBhcmNoL2FybS9ib2Fy
-ZHMvcGxhdGhvbWUtb3BlbmJsb2Nrcy1heDMvbG93bGV2ZWwuYyB8ICAgMjUgKwogLi4uL3BsYXRo
-b21lLW9wZW5ibG9ja3MtYXgzLmMgICAgICAgICAgICAgICAgICAgICAgfCAgIDI1ICsKIGFyY2gv
-YXJtL2NvbmZpZ3MvZ2xvYmFsc2NhbGVfbWlyYWJveF9kZWZjb25maWcgICAgIHwgICAgOCArCiBh
-cmNoL2FybS9jb25maWdzL21hcnZlbGxfYXJtYWRhX3hwX2dwX2RlZmNvbmZpZyAgICB8ICAgMTAg
-KwogYXJjaC9hcm0vY29uZmlncy9wbGF0aG9tZV9vcGVuYmxvY2tzX2F4M19kZWZjb25maWcgfCAg
-ICA5ICsKIGFyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICA1NCArCiBhcmNoL2FybS9tYWNoLW12ZWJ1L01ha2VmaWxlICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgIDEgKwogYXJjaC9hcm0vbWFjaC1tdmVidS9jb3JlLmMgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCAgMTQyICsrCiBhcmNoL2FybS9tYWNoLW12ZWJ1L2luY2x1ZGUvbWFjaC9jbGtk
-ZXYuaCAgICAgICAgICB8ICAgIDcgKwogYXJjaC9hcm0vbWFjaC1tdmVidS9pbmNsdWRlL21hY2gv
-ZGVidWdfbGwuaCAgICAgICAgfCAgIDQwICsKIGFyY2gvYXJtL21hY2gtbXZlYnUvaW5jbHVkZS9t
-YWNoL212ZWJ1LmggICAgICAgICAgIHwgICAyMiArCiBkcml2ZXJzL2Nsb2Nrc291cmNlL0tjb25m
-aWcgICAgICAgICAgICAgICAgICAgICAgICB8ICAgIDQgKwogZHJpdmVycy9jbG9ja3NvdXJjZS9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxICsKIGRyaXZlcnMvY2xvY2tzb3Vy
-Y2UvbXZlYnUuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICA5MCArKwogc2NyaXB0cy8uZ2l0
-aWdub3JlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAyICsKIHNjcmlwdHMv
-TWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgMSArCiBzY3Jp
-cHRzL2t3YmltYWdlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDE0NDggKysr
-KysrKysrKysrKysrKysrKysKIHNjcmlwdHMva3dib290LmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgIDcxNyArKysrKysrKysrCiAzNCBmaWxlcyBjaGFuZ2VkLCAyNzcwIGlu
-c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9i
-b2FyZHMvZ2xvYmFsc2NhbGUtbWlyYWJveC9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFy
-Y2gvYXJtL2JvYXJkcy9nbG9iYWxzY2FsZS1taXJhYm94L2NvbmZpZy5oCiBjcmVhdGUgbW9kZSAx
-MDA2NDQgYXJjaC9hcm0vYm9hcmRzL2dsb2JhbHNjYWxlLW1pcmFib3gvZ2xvYmFsc2NhbGUtbWly
-YWJveC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL2dsb2JhbHNjYWxlLW1p
-cmFib3gva3diaW1hZ2UuY2ZnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL2ds
-b2JhbHNjYWxlLW1pcmFib3gvbG93bGV2ZWwuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJt
-L2JvYXJkcy9tYXJ2ZWxsLWFybWFkYS14cC1ncC9NYWtlZmlsZQogY3JlYXRlIG1vZGUgMTAwNjQ0
-IGFyY2gvYXJtL2JvYXJkcy9tYXJ2ZWxsLWFybWFkYS14cC1ncC9jb25maWcuaAogY3JlYXRlIG1v
-ZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9tYXJ2ZWxsLWFybWFkYS14cC1ncC9rd2JpbWFnZS5j
-ZmcKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbWFydmVsbC1hcm1hZGEteHAt
-Z3AvbG93bGV2ZWwuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9tYXJ2ZWxs
-LWFybWFkYS14cC1ncC9tYXJ2ZWxsLWFybWFkYS14cC1ncC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQg
-YXJjaC9hcm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYXgzL01ha2VmaWxlCiBjcmVhdGUg
-bW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYXgzL2NvbmZp
-Zy5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9j
-a3MtYXgzL2t3YmltYWdlLmNmZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9w
-bGF0aG9tZS1vcGVuYmxvY2tzLWF4My9sb3dsZXZlbC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vYm9hcmRzL3BsYXRob21lLW9wZW5ibG9ja3MtYXgzL3BsYXRob21lLW9wZW5ibG9ja3Mt
-YXgzLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL2dsb2JhbHNjYWxlX21p
-cmFib3hfZGVmY29uZmlnCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vY29uZmlncy9tYXJ2
-ZWxsX2FybWFkYV94cF9ncF9kZWZjb25maWcKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9j
-b25maWdzL3BsYXRob21lX29wZW5ibG9ja3NfYXgzX2RlZmNvbmZpZwogY3JlYXRlIG1vZGUgMTAw
-NjQ0IGFyY2gvYXJtL21hY2gtbXZlYnUvS2NvbmZpZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gv
-YXJtL21hY2gtbXZlYnUvTWFrZWZpbGUKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9tYWNo
-LW12ZWJ1L2NvcmUuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21hY2gtbXZlYnUvaW5j
-bHVkZS9tYWNoL2Nsa2Rldi5oCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vbWFjaC1tdmVi
-dS9pbmNsdWRlL21hY2gvZGVidWdfbGwuaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL21h
-Y2gtbXZlYnUvaW5jbHVkZS9tYWNoL212ZWJ1LmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJz
-L2Nsb2Nrc291cmNlL212ZWJ1LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBzY3JpcHRzL2t3YmltYWdl
-LmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBzY3JpcHRzL2t3Ym9vdC5jCgotLSAKMS43LjkuNQoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
-bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
-ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This commit adds minimal support for the Armada 370 and Armada XP SoCs
+from Marvell.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ arch/arm/Kconfig                            |    8 ++
+ arch/arm/Makefile                           |    1 +
+ arch/arm/mach-mvebu/Kconfig                 |   40 ++++++++
+ arch/arm/mach-mvebu/Makefile                |    1 +
+ arch/arm/mach-mvebu/core.c                  |  142 +++++++++++++++++++++++++++
+ arch/arm/mach-mvebu/include/mach/clkdev.h   |    7 ++
+ arch/arm/mach-mvebu/include/mach/debug_ll.h |   40 ++++++++
+ arch/arm/mach-mvebu/include/mach/mvebu.h    |   22 +++++
+ drivers/clocksource/Kconfig                 |    4 +
+ drivers/clocksource/Makefile                |    1 +
+ drivers/clocksource/mvebu.c                 |   90 +++++++++++++++++
+ 11 files changed, 356 insertions(+)
+ create mode 100644 arch/arm/mach-mvebu/Kconfig
+ create mode 100644 arch/arm/mach-mvebu/Makefile
+ create mode 100644 arch/arm/mach-mvebu/core.c
+ create mode 100644 arch/arm/mach-mvebu/include/mach/clkdev.h
+ create mode 100644 arch/arm/mach-mvebu/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-mvebu/include/mach/mvebu.h
+ create mode 100644 drivers/clocksource/mvebu.c
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0a4f821..a044ab3 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -79,6 +79,13 @@ config ARCH_IMX
+ 	select WATCHDOG_IMX_RESET_SOURCE
+ 	select HAS_DEBUG_LL
+ 
++config ARCH_MVEBU
++	bool "Marvell EBU platforms"
++	select COMMON_CLK
++	select CLOCKSOURCE_MVEBU
++	select CLKDEV_LOOKUP
++	select HAS_DEBUG_LL
++
+ config ARCH_MXS
+ 	bool "Freescale i.MX23/28 (mxs) based"
+ 	select GENERIC_GPIO
+@@ -161,6 +168,7 @@ source arch/arm/mach-ep93xx/Kconfig
+ source arch/arm/mach-highbank/Kconfig
+ source arch/arm/mach-imx/Kconfig
+ source arch/arm/mach-mxs/Kconfig
++source arch/arm/mach-mvebu/Kconfig
+ source arch/arm/mach-netx/Kconfig
+ source arch/arm/mach-nomadik/Kconfig
+ source arch/arm/mach-omap/Kconfig
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index d506b12..bb47506 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -58,6 +58,7 @@ machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
+ machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
+ machine-$(CONFIG_ARCH_IMX)		:= imx
+ machine-$(CONFIG_ARCH_MXS)		:= mxs
++machine-$(CONFIG_ARCH_MVEBU)		:= mvebu
+ machine-$(CONFIG_ARCH_NOMADIK)		:= nomadik
+ machine-$(CONFIG_ARCH_NETX)		:= netx
+ machine-$(CONFIG_ARCH_OMAP)		:= omap
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+new file mode 100644
+index 0000000..4cbe546
+--- /dev/null
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -0,0 +1,40 @@
++if ARCH_MVEBU
++
++config ARCH_TEXT_BASE
++	hex
++
++config BOARDINFO
++	default
++
++choice
++	prompt "Marvell EBU Processor"
++
++config ARCH_ARMADA_370
++	bool "Armada 370"
++	select CPU_V7
++
++config ARCH_ARMADA_XP
++	bool "Armada XP"
++	select CPU_V7
++
++endchoice
++
++if ARCH_ARMADA_370
++
++choice
++	prompt "Armada 370 Board Type"
++
++endchoice
++
++endif # ARCH_ARMADA_370
++
++if ARCH_ARMADA_XP
++
++choice
++	prompt "Armada XP Board Type"
++
++endchoice
++
++endif # ARCH_ARMADA_XP
++
++endif # ARCH_MVEBU
+diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
+new file mode 100644
+index 0000000..820eb10
+--- /dev/null
++++ b/arch/arm/mach-mvebu/Makefile
+@@ -0,0 +1 @@
++obj-y += core.o
+diff --git a/arch/arm/mach-mvebu/core.c b/arch/arm/mach-mvebu/core.c
+new file mode 100644
+index 0000000..f4672a3
+--- /dev/null
++++ b/arch/arm/mach-mvebu/core.c
+@@ -0,0 +1,142 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <ns16550.h>
++#include <asm/memory.h>
++#include <asm/barebox-arm.h>
++
++#define MVEBU_INT_REGS_BASE (0xd0000000)
++#define  MVEBU_UART0_BASE     (MVEBU_INT_REGS_BASE + 0x12000)
++#define  MVEBU_SYSCTL_BASE    (MVEBU_INT_REGS_BASE + 0x18200)
++#define  MVEBU_SDRAM_WIN_BASE (MVEBU_INT_REGS_BASE + 0x20180)
++#define  MVEBU_TIMER_BASE     (MVEBU_INT_REGS_BASE + 0x20300)
++#define  MVEBU_SAR_BASE       (MVEBU_INT_REGS_BASE + 0x18230)
++
++#define DDR_BASE_CS_OFF(n)     (0x0000 + ((n) << 3))
++#define  DDR_BASE_CS_HIGH_MASK  0xf
++#define  DDR_BASE_CS_LOW_MASK   0xff000000
++#define DDR_SIZE_CS_OFF(n)     (0x0004 + ((n) << 3))
++#define  DDR_SIZE_ENABLED       (1 << 0)
++#define  DDR_SIZE_CS_MASK       0x1c
++#define  DDR_SIZE_CS_SHIFT      2
++#define  DDR_SIZE_MASK          0xff000000
++
++#define SAR_LOW_REG_OFF         0
++#define  SAR_TCLK_FREQ_BIT      20
++#define SAR_HIGH_REG_OFF        0x4
++
++static struct clk *tclk;
++
++static inline void mvebu_memory_find(unsigned long *phys_base,
++				     unsigned long *phys_size)
++{
++	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
++	int cs;
++
++	*phys_base = ~0;
++	*phys_size = 0;
++
++	for (cs = 0; cs < 4; cs++) {
++		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
++		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
++
++		/* Skip non-enabled CS */
++		if (! (ctrl & DDR_SIZE_ENABLED))
++			continue;
++
++		base &= DDR_BASE_CS_LOW_MASK;
++		if (base < *phys_base)
++			*phys_base = base;
++		*phys_size += (ctrl | ~DDR_SIZE_MASK) + 1;
++	}
++}
++
++void __naked __noreturn mvebu_barebox_entry(void)
++{
++	unsigned long phys_base, phys_size;
++	mvebu_memory_find(&phys_base, &phys_size);
++	barebox_arm_entry(phys_base, phys_size, 0);
++}
++
++static struct NS16550_plat uart0_plat = {
++	.shift = 2,
++};
++
++int mvebu_add_uart0(void)
++{
++	uart0_plat.clock = clk_get_rate(tclk);
++	add_ns16550_device(DEVICE_ID_DYNAMIC, MVEBU_UART0_BASE, 32,
++			   IORESOURCE_MEM_32BIT, &uart0_plat);
++	return 0;
++}
++
++#if defined(CONFIG_ARCH_ARMADA_370)
++static int mvebu_init_clocks(void)
++{
++	uint32_t val;
++	unsigned int rate;
++	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
++
++	val = readl(sar);
++
++	/* On Armada 370, the TCLK frequency can be either 166 Mhz or
++	 * 200 Mhz */
++	if (val & (1 << SAR_TCLK_FREQ_BIT))
++		rate = 200 * 1000 * 1000;
++	else
++		rate = 166 * 1000 * 1000;
++
++	tclk = clk_fixed("tclk", rate);
++	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
++}
++#endif
++
++#if defined(CONFIG_ARCH_ARMADA_XP)
++static int mvebu_init_clocks(void)
++{
++	/* On Armada XP, the TCLK frequency is always 250 Mhz */
++	tclk = clk_fixed("tclk", 250 * 1000 * 1000);
++	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
++}
++#endif
++
++static int mvebu_init_soc(void)
++{
++	unsigned long phys_base, phys_size;
++
++	mvebu_init_clocks();
++	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
++			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
++			   NULL);
++	mvebu_memory_find(&phys_base, &phys_size);
++	arm_add_mem_device("ram0", phys_base, phys_size);
++	return 0;
++}
++
++postcore_initcall(mvebu_init_soc);
++
++void __noreturn reset_cpu(unsigned long addr)
++{
++	writel(0x1, MVEBU_SYSCTL_BASE + 0x60);
++	writel(0x1, MVEBU_SYSCTL_BASE + 0x64);
++	while (1)
++		;
++}
++EXPORT_SYMBOL(reset_cpu);
+diff --git a/arch/arm/mach-mvebu/include/mach/clkdev.h b/arch/arm/mach-mvebu/include/mach/clkdev.h
+new file mode 100644
+index 0000000..04b37a8
+--- /dev/null
++++ b/arch/arm/mach-mvebu/include/mach/clkdev.h
+@@ -0,0 +1,7 @@
++#ifndef __ASM_MACH_CLKDEV_H
++#define __ASM_MACH_CLKDEV_H
++
++#define __clk_get(clk) ({ 1; })
++#define __clk_put(clk) do { } while (0)
++
++#endif
+diff --git a/arch/arm/mach-mvebu/include/mach/debug_ll.h b/arch/arm/mach-mvebu/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..2653573
+--- /dev/null
++++ b/arch/arm/mach-mvebu/include/mach/debug_ll.h
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MACH_DEBUG_LL_H__
++#define __MACH_DEBUG_LL_H__
++
++#include <io.h>
++
++#define UART_BASE 0xd0012000
++#define UART_THR  0x0
++#define UART_LSR  0x14
++#define   UART_LSR_THRE   (1 << 5)
++
++static inline void PUTC_LL(char c)
++{
++	/* Wait until there is space in the FIFO */
++	while (!(readl(UART_BASE + UART_LSR) & UART_LSR_THRE))
++		;
++
++	/* Send the character */
++	writel(c, UART_BASE + UART_THR)
++		;
++
++	/* Wait to make sure it hits the line, in case we die too soon. */
++	while (!(readl(UART_BASE + UART_LSR) & UART_LSR_THRE))
++		;
++}
++#endif
+diff --git a/arch/arm/mach-mvebu/include/mach/mvebu.h b/arch/arm/mach-mvebu/include/mach/mvebu.h
+new file mode 100644
+index 0000000..e13a446
+--- /dev/null
++++ b/arch/arm/mach-mvebu/include/mach/mvebu.h
+@@ -0,0 +1,22 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MACH_MVEBU_H
++#define __MACH_MVEBU_H
++
++int mvebu_add_uart0(void);
++void __naked __noreturn mvebu_barebox_entry(void);
++
++#endif /* __MACH_MVEBU_H */
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 9f3558b..dfc89dd 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -14,6 +14,10 @@ config CLOCKSOURCE_CLPS711X
+ 	bool
+ 	depends on ARCH_CLPS711X
+ 
++config CLOCKSOURCE_MVEBU
++	bool
++	depends on ARCH_MVEBU
++
+ config CLOCKSOURCE_NOMADIK
+ 	bool
+ 	depends on ARM
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index d919881..0b42ce4 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -2,4 +2,5 @@ obj-$(CONFIG_AMBA_SP804) += amba-sp804.o
+ obj-$(CONFIG_ARM_SMP_TWD) += arm_smp_twd.o
+ obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
+ obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
++obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
+ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
+diff --git a/drivers/clocksource/mvebu.c b/drivers/clocksource/mvebu.c
+new file mode 100644
+index 0000000..2b48a5c
+--- /dev/null
++++ b/drivers/clocksource/mvebu.c
+@@ -0,0 +1,90 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <clock.h>
++#include <linux/clk.h>
++#include <io.h>
++
++#define TIMER_CTRL_OFF          0x0000
++#define  TIMER0_EN               0x0001
++#define  TIMER0_RELOAD_EN        0x0002
++#define  TIMER0_25MHZ            0x0800
++#define  TIMER0_DIV(div)         ((div) << 19)
++#define  TIMER1_EN               0x0004
++#define  TIMER1_RELOAD_EN        0x0008
++#define  TIMER1_25MHZ            0x1000
++#define  TIMER1_DIV(div)         ((div) << 22)
++#define TIMER_EVENTS_STATUS     0x0004
++#define  TIMER0_CLR_MASK         (~0x1)
++#define  TIMER1_CLR_MASK         (~0x100)
++#define TIMER0_RELOAD_OFF       0x0010
++#define TIMER0_VAL_OFF          0x0014
++#define TIMER1_RELOAD_OFF       0x0018
++#define TIMER1_VAL_OFF          0x001c
++
++#define TIMER_DIVIDER_SHIFT     5
++
++static __iomem void *timer_base;
++
++uint64_t mvebu_clocksource_read(void)
++{
++	return __raw_readl(timer_base + TIMER0_VAL_OFF);
++}
++
++static struct clocksource cs = {
++	.read	= mvebu_clocksource_read,
++	.mask	= CLOCKSOURCE_MASK(32),
++	.shift	= 10,
++};
++
++static int mvebu_timer_probe(struct device_d *dev)
++{
++	struct clk *tclk;
++	u32 val;
++
++	timer_base = dev_request_mem_region(dev, 0);
++
++	tclk = clk_get(dev, "tclk");
++
++	val = __raw_readl(timer_base + TIMER_CTRL_OFF);
++	val &= ~TIMER0_25MHZ;
++	__raw_writel(val, timer_base + TIMER_CTRL_OFF);
++
++	__raw_writel(0xffffffff, timer_base + TIMER0_VAL_OFF);
++	__raw_writel(0xffffffff, timer_base + TIMER0_RELOAD_OFF);
++
++	val = __raw_readl(timer_base + TIMER_CTRL_OFF);
++	val |= TIMER0_EN | TIMER0_RELOAD_EN | TIMER0_DIV(TIMER_DIVIDER_SHIFT);
++	__raw_writel(val, timer_base + TIMER_CTRL_OFF);
++
++	cs.mult = clocksource_hz2mult(clk_get_rate(tclk), cs.shift);
++
++	init_clock(&cs);
++
++	return 0;
++}
++
++static struct driver_d mvebu_timer_driver = {
++	.name = "mvebu-timer",
++	.probe = mvebu_timer_probe,
++};
++
++static int mvebu_timer_init(void)
++{
++	return platform_driver_register(&mvebu_timer_driver);
++}
++postcore_initcall(mvebu_timer_init);
+-- 
+1.7.9.5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
