@@ -2,13 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uas4f-00036J-PT
- for barebox@lists.infradead.org; Fri, 10 May 2013 18:29:47 +0000
+ id 1Uas5C-00037g-0a
+ for barebox@lists.infradead.org; Fri, 10 May 2013 18:30:19 +0000
+Received: from localhost.localdomain (tmo-104-228.customers.d1-online.com
+ [80.187.104.228])
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id 2A9AC7D416E
+ for <barebox@lists.infradead.org>; Fri, 10 May 2013 20:29:55 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Fri, 10 May 2013 20:28:58 +0200
-Message-Id: <1368210538-15286-2-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1368210538-15286-1-git-send-email-dev@lynxeye.de>
-References: <1368210538-15286-1-git-send-email-dev@lynxeye.de>
+Date: Fri, 10 May 2013 20:29:49 +0200
+Message-Id: <1368210589-21434-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,239 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] tegra: paz00: import pinconfig from Linux
+Subject: [PATCH] arm: properly init alignment trap bit
 To: barebox@lists.infradead.org
+
+On ARMv7 the intention is to disable the alignment trap to be able to
+use hardware assisted unaligned load/stores. Fix the init to do the
+right thing.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/tegra20-paz00.dts | 216 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 216 insertions(+)
+ arch/arm/include/asm/barebox-arm-head.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/tegra20-paz00.dts b/arch/arm/dts/tegra20-paz00.dts
-index 09ccb8b..e8486aa 100644
---- a/arch/arm/dts/tegra20-paz00.dts
-+++ b/arch/arm/dts/tegra20-paz00.dts
-@@ -9,4 +9,220 @@
- 	memory {
- 		reg = <0x00000000 0x20000000>;
- 	};
-+
-+	pinmux {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&state_default>;
-+
-+		state_default: pinmux {
-+			ata {
-+				nvidia,pins = "ata", "atc", "atd", "ate",
-+					"dap2", "gmb", "gmc", "gmd", "spia",
-+					"spib", "spic", "spid", "spie";
-+				nvidia,function = "gmi";
-+			};
-+			atb {
-+				nvidia,pins = "atb", "gma", "gme";
-+				nvidia,function = "sdio4";
-+			};
-+			cdev1 {
-+				nvidia,pins = "cdev1";
-+				nvidia,function = "plla_out";
-+			};
-+			cdev2 {
-+				nvidia,pins = "cdev2";
-+				nvidia,function = "pllp_out4";
-+			};
-+			crtp {
-+				nvidia,pins = "crtp";
-+				nvidia,function = "crt";
-+			};
-+			csus {
-+				nvidia,pins = "csus";
-+				nvidia,function = "pllc_out1";
-+			};
-+			dap1 {
-+				nvidia,pins = "dap1";
-+				nvidia,function = "dap1";
-+			};
-+			dap3 {
-+				nvidia,pins = "dap3";
-+				nvidia,function = "dap3";
-+			};
-+			dap4 {
-+				nvidia,pins = "dap4";
-+				nvidia,function = "dap4";
-+			};
-+			ddc {
-+				nvidia,pins = "ddc";
-+				nvidia,function = "i2c2";
-+			};
-+			dta {
-+				nvidia,pins = "dta", "dtb", "dtc", "dtd", "dte";
-+				nvidia,function = "rsvd1";
-+			};
-+			dtf {
-+				nvidia,pins = "dtf";
-+				nvidia,function = "i2c3";
-+			};
-+			gpu {
-+				nvidia,pins = "gpu", "sdb", "sdd";
-+				nvidia,function = "pwm";
-+			};
-+			gpu7 {
-+				nvidia,pins = "gpu7";
-+				nvidia,function = "rtck";
-+			};
-+			gpv {
-+				nvidia,pins = "gpv", "slxa", "slxk";
-+				nvidia,function = "pcie";
-+			};
-+			hdint {
-+				nvidia,pins = "hdint", "pta";
-+				nvidia,function = "hdmi";
-+			};
-+			i2cp {
-+				nvidia,pins = "i2cp";
-+				nvidia,function = "i2cp";
-+			};
-+			irrx {
-+				nvidia,pins = "irrx", "irtx";
-+				nvidia,function = "uarta";
-+			};
-+			kbca {
-+				nvidia,pins = "kbca", "kbcc", "kbce", "kbcf";
-+				nvidia,function = "kbc";
-+			};
-+			kbcb {
-+				nvidia,pins = "kbcb", "kbcd";
-+				nvidia,function = "sdio2";
-+			};
-+			lcsn {
-+				nvidia,pins = "lcsn", "ld0", "ld1", "ld2",
-+					"ld3", "ld4", "ld5", "ld6", "ld7",
-+					"ld8", "ld9", "ld10", "ld11", "ld12",
-+					"ld13", "ld14", "ld15", "ld16", "ld17",
-+					"ldc", "ldi", "lhp0", "lhp1", "lhp2",
-+					"lhs", "lm0", "lm1", "lpp", "lpw0",
-+					"lpw1", "lpw2", "lsc0", "lsc1", "lsck",
-+					"lsda", "lsdi", "lspi", "lvp0", "lvp1",
-+					"lvs";
-+				nvidia,function = "displaya";
-+			};
-+			owc {
-+				nvidia,pins = "owc";
-+				nvidia,function = "owr";
-+			};
-+			pmc {
-+				nvidia,pins = "pmc";
-+				nvidia,function = "pwr_on";
-+			};
-+			rm {
-+				nvidia,pins = "rm";
-+				nvidia,function = "i2c1";
-+			};
-+			sdc {
-+				nvidia,pins = "sdc";
-+				nvidia,function = "twc";
-+			};
-+			sdio1 {
-+				nvidia,pins = "sdio1";
-+				nvidia,function = "sdio1";
-+			};
-+			slxc {
-+				nvidia,pins = "slxc", "slxd";
-+				nvidia,function = "spi4";
-+			};
-+			spdi {
-+				nvidia,pins = "spdi", "spdo";
-+				nvidia,function = "rsvd2";
-+			};
-+			spif {
-+				nvidia,pins = "spif", "uac";
-+				nvidia,function = "rsvd4";
-+			};
-+			spig {
-+				nvidia,pins = "spig", "spih";
-+				nvidia,function = "spi2_alt";
-+			};
-+			uaa {
-+				nvidia,pins = "uaa", "uab", "uda";
-+				nvidia,function = "ulpi";
-+			};
-+			uad {
-+				nvidia,pins = "uad";
-+				nvidia,function = "spdif";
-+			};
-+			uca {
-+				nvidia,pins = "uca", "ucb";
-+				nvidia,function = "uartc";
-+			};
-+			conf_ata {
-+				nvidia,pins = "ata", "atb", "atc", "atd", "ate",
-+					"cdev1", "cdev2", "dap1", "dap2", "dtf",
-+					"gma", "gmb", "gmc", "gmd", "gme",
-+					"gpu", "gpu7", "gpv", "i2cp", "pta",
-+					"rm", "sdio1", "slxk", "spdo", "uac",
-+					"uda";
-+				nvidia,pull = <0>;
-+				nvidia,tristate = <0>;
-+			};
-+			conf_ck32 {
-+				nvidia,pins = "ck32", "ddrc", "pmca", "pmcb",
-+					"pmcc", "pmcd", "pmce", "xm2c", "xm2d";
-+				nvidia,pull = <0>;
-+			};
-+			conf_crtp {
-+				nvidia,pins = "crtp", "dap3", "dap4", "dtb",
-+					"dtc", "dte", "slxa", "slxc", "slxd",
-+					"spdi";
-+				nvidia,pull = <0>;
-+				nvidia,tristate = <1>;
-+			};
-+			conf_csus {
-+				nvidia,pins = "csus", "spia", "spib", "spid",
-+					"spif";
-+				nvidia,pull = <1>;
-+				nvidia,tristate = <1>;
-+			};
-+			conf_ddc {
-+				nvidia,pins = "ddc", "irrx", "irtx", "kbca",
-+					"kbcb", "kbcc", "kbcd", "kbce", "kbcf",
-+					"spic", "spig", "uaa", "uab";
-+				nvidia,pull = <2>;
-+				nvidia,tristate = <0>;
-+			};
-+			conf_dta {
-+				nvidia,pins = "dta", "dtd", "owc", "sdc", "sdd",
-+					"spie", "spih", "uad", "uca", "ucb";
-+				nvidia,pull = <2>;
-+				nvidia,tristate = <1>;
-+			};
-+			conf_hdint {
-+				nvidia,pins = "hdint", "ld0", "ld1", "ld2",
-+					"ld3", "ld4", "ld5", "ld6", "ld7",
-+					"ld8", "ld9", "ld10", "ld11", "ld12",
-+					"ld13", "ld14", "ld15", "ld16", "ld17",
-+					"ldc", "ldi", "lhs", "lsc0", "lspi",
-+					"lvs", "pmc";
-+				nvidia,tristate = <0>;
-+			};
-+			conf_lc {
-+				nvidia,pins = "lc", "ls";
-+				nvidia,pull = <2>;
-+			};
-+			conf_lcsn {
-+				nvidia,pins = "lcsn", "lhp0", "lhp1", "lhp2",
-+					"lm0", "lm1", "lpp", "lpw0", "lpw1",
-+					"lpw2", "lsc1", "lsck", "lsda", "lsdi",
-+					"lvp0", "lvp1", "sdb";
-+				nvidia,tristate = <1>;
-+			};
-+			conf_ld17_0 {
-+				nvidia,pins = "ld17_0", "ld19_18", "ld21_20",
-+					"ld23_22";
-+				nvidia,pull = <1>;
-+			};
-+		};
-+	};
- };
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+index 9385415..9a8cc87 100644
+--- a/arch/arm/include/asm/barebox-arm-head.h
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -22,7 +22,7 @@ static inline void arm_cpu_lowlevel_init(void)
+ 
+ #if __LINUX_ARM_ARCH__ >= 6
+ 	r |= CR_U;
+-	r &= CR_A;
++	r &= ~CR_A;
+ #else
+ 	r |= CR_A;
+ #endif
 -- 
 1.8.1.4
 
