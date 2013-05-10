@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uamq2-0005wa-9o
- for barebox@lists.infradead.org; Fri, 10 May 2013 12:54:19 +0000
-Date: Fri, 10 May 2013 14:53:46 +0200
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130510145346.6854c389@e6520eb>
-In-Reply-To: <20130510105350.GM32299@pengutronix.de>
-References: <20130507175549.GR32299@pengutronix.de>
- <em6083fb6c-e073-40f9-aa90-2878d59c3517@plh001-think>
- <20130510105350.GM32299@pengutronix.de>
+Received: from f345.mail.ru ([217.69.140.241])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UanFP-0006Qi-Ev
+ for barebox@lists.infradead.org; Fri, 10 May 2013 13:20:34 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 Mime-Version: 1.0
+Date: Fri, 10 May 2013 17:20:06 +0400
+Message-ID: <1368192006.902657520@f345.mail.ru>
+In-Reply-To: <20130510124125.GC19265@game.jcrosoft.org>
+References: <1368170834-28657-1-git-send-email-shc_work@mail.ru>
+ <20130510124125.GC19265@game.jcrosoft.org>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,37 +19,252 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Installing barebox for karo-tx53 in nand-flash
-To: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAxLzJdIEdQSU86IENoZWNrIGZvciAiZ3Bpb19pc192?=
+ =?UTF-8?B?YWxpZCIgZmlyc3Q=?=
+To: =?UTF-8?B?SmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQ=?= <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-SGkgUGF0cmljaywKCkxlIEZyaSwgMTAgTWF5IDIwMTMgMTI6NTM6NTAgKzAyMDAsClNhc2NoYSBI
-YXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4gYSDDqWNyaXQgOgoKPiBPbiBGcmksIE1heSAx
-MCwgMjAxMyBhdCAwOToyMDo1MEFNICswMDAwLCBEci4gUGF0cmljayBMYW5nZmVsZCB3cm90ZToK
-PiA+IFRoYW5rcyBTYXNjaGEsCj4gPiBidWlsZGluZyBiYXJlYm94IHJlc3VsdHMgaW4gdHdvIC5i
-aW4gZmlsZXM6IGJhcmVib3guYmluIGFuZAo+ID4gemJhcmVib3guYmluLgo+ID4gSXMgemJhcmVi
-b3guYmluIGEgY29tcHJlc3NlZCB2ZXJzaW9uIG9mIGJhcmVib3guYmluPwo+ID4gV2hpY2ggb25l
-IHNob3VsZCBJIHVzZSBmb3IgZmxhc2hpbmcgdGhlIHR4NTMgbmFuZC1mbGFzaD8KPiAKPiBJZiBp
-dCBleGlzdHMgdGhlbiB6YmFyZWJveC5iaW4gcGxlYXNlLiBUaGVyZSBpcyBhIGNvbnZlbmllbmNl
-IGxpbmsKPiAoYmFyZWJveC1mbGFzaC1pbWFnZSkgd2hpY2ggYWx3YXlzIHBvaW50cyB0byB0aGUg
-Y29ycmVjdCBiaW5hcnkuCj4gCj4gPiAKPiA+IE15IGJvb3Qgc291cmNlcyBhcmUgbmFuZC1mbGFz
-aCAodGhhdHMgd2hlcmUgdS1ib290IGlzIGF0IHRoZSBtb21lbnQpCj4gPiAoYW5kIFNELWNhcmQg
-Zm9yIHRlc3RpbmcpLgo+ID4gCj4gPiBJIHRyaWVkIHRvIGZsYXNoIHpiYXJlYm94LmJpbiB0byBu
-YW5kLWZsYXNoLiBJdCBzdGFydGVkIGJ1dCB3aXRoIGVycm9yCj4gPiBuYW5kOiBOQU5EIHR5cGUg
-dW5rbm93biwgZWMsZjEKPiA+IG5hbmQ6IE5vIE5BTkQgZGV2aWNlIGZvdW5kICgtMTkpIQo+IAo+
-IEhtLCBzdHJhbmdlLiBUaGlzIHNob3VsZCBiZSBhIFNhbXN1bmcgMTI4TWlCIE5BTkQgZmxhc2gu
-IFRoZSBpZCBpcyBpbgo+IHRoZSBkYXRhYmFzZS4gSSBjdXJyZW50bHkgaGF2ZSBubyBnb29kIGlk
-ZWEgd2h5IHRoaXMgaXNhIHVua25vd24uCj4gCm1heSB5b3UgcGxlYXNlIHRyeSB3aXRoIGhpcyBw
-YXRjaCA6Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL3BpcGVybWFpbC9iYXJlYm94LzIwMTMt
-TWF5LzAxNDQ3MC5odG1sCmFuZCB0ZWxsIGlmIHRoYXQgc29sdmVzIHRoaXMgTkFORCBmbGFzaCBp
-c3N1ZS4KCkl0IHNlZW1zIG15IHRlc3RzIGZvciA0YzJiZGM4NzI4MDE2YjM0MTI1MjNlMzI2NDY1
-MTY1MWZlNzUyODYwIHdlcmUKd3JvbmcgYXMgYWxsIHRoZSBib2FyZCBJJ20gdXNpbmcgZm9yIG15
-IHRlc3RzIGhhdmUgT05GSSBmbGFzaGVzIC4uLgpzbyBJJ2xsIGZpdCBvbmUgd2l0aCBhIG5vbiBP
-TkZJIGZsYXNoIGZvciB0aGUgbmV4dCB0aW1lLgoKRXJpYwoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+> HI,
+> 
+> 	do as in linux
+> 
+> 	introduce
+> 
+> 	static struct gpio_desc *gpio_to_desc(unsigned gpio)
+> 
+> 	and we need to check the gpio is valid before calling _free/ser/get
+> 	etc..
+
+Indeed.
+
+> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> > ---
+> >  drivers/gpio/gpiolib.c | 181 ++++++++++++++++++++++++++-----------------------
+> >  1 file changed, 95 insertions(+), 86 deletions(-)
+> > 
+> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> > index 6398268..1662dcd 100644
+> > --- a/drivers/gpio/gpiolib.c
+> > +++ b/drivers/gpio/gpiolib.c
+> > @@ -34,117 +34,126 @@ static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
+> >  
+> >  int gpio_request(unsigned gpio, const char *label)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -	int ret;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return -EINVAL;
+> > -	if (!chip)
+> > -		return -EINVAL;
+> > -	if (gi->requested)
+> > -		return -EBUSY;
+> > -	if (chip->ops->request) {
+> > -		ret = chip->ops->request(chip, gpio - chip->base);
+> > -		if (ret)
+> > -			return ret;
+> > -	}
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +		int ret;
+> > +
+> > +		if (!chip)
+> > +			return -EINVAL;
+> > +		if (gi->requested)
+> > +			return -EBUSY;
+> > +		if (chip->ops->request) {
+> > +			ret = chip->ops->request(chip, gpio - chip->base);
+> > +			if (ret)
+> > +				return ret;
+> > +		}
+> >  
+> > -	gi->requested = true;
+> > -	gi->label = xstrdup(label);
+> > +		gi->requested = true;
+> > +		gi->label = xstrdup(label);
+> >  
+> > -	return 0;
+> > +		return 0;
+> > +	}
+> > +
+> > +	return -EINVAL;
+> >  }
+> >  
+> >  void gpio_free(unsigned gpio)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return;
+> > -	if (!chip)
+> > -		return;
+> > -	if (!gi->requested)
+> > -		return;
+> > -	if (chip->ops->free)
+> > -		chip->ops->free(chip, gpio - chip->base);
+> > -
+> > -	gi->requested = false;
+> > -	free(gi->label);
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +
+> > +		if (!chip)
+> > +			return;
+> > +		if (!gi->requested)
+> > +			return;
+> > +		if (chip->ops->free)
+> > +			chip->ops->free(chip, gpio - chip->base);
+> > +
+> > +		gi->requested = false;
+> > +		free(gi->label);
+> > +	}
+> >  }
+> >  
+> >  void gpio_set_value(unsigned gpio, int value)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return;
+> > -	if (!chip)
+> > -		return;
+> > -	if (gpio_ensure_requested(gi, gpio))
+> > -		return;
+> > -	if (!chip->ops->set)
+> > -		return;
+> > -	chip->ops->set(chip, gpio - chip->base, value);
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +
+> > +		if (!chip)
+> > +			return;
+> > +		if (gpio_ensure_requested(gi, gpio))
+> > +			return;
+> > +		if (!chip->ops->set)
+> > +			return;
+> > +		chip->ops->set(chip, gpio - chip->base, value);
+> > +	}
+> >  }
+> >  EXPORT_SYMBOL(gpio_set_value);
+> >  
+> >  int gpio_get_value(unsigned gpio)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -	int ret;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return -EINVAL;
+> > -	if (!chip)
+> > -		return -ENODEV;
+> > -	ret = gpio_ensure_requested(gi, gpio);
+> > -	if (ret)
+> > -		return ret;
+> > -	if (!chip->ops->get)
+> > -		return -ENOSYS;
+> > -	return chip->ops->get(chip, gpio - chip->base);
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +		int ret;
+> > +
+> > +		if (!chip)
+> > +			return -ENODEV;
+> > +		ret = gpio_ensure_requested(gi, gpio);
+> > +		if (ret)
+> > +			return ret;
+> > +		if (!chip->ops->get)
+> > +			return -ENOSYS;
+> > +		return chip->ops->get(chip, gpio - chip->base);
+> > +	}
+> > +
+> > +	return -EINVAL;
+> >  }
+> >  EXPORT_SYMBOL(gpio_get_value);
+> >  
+> >  int gpio_direction_output(unsigned gpio, int value)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -	int ret;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return -EINVAL;
+> > -	if (!chip)
+> > -		return -ENODEV;
+> > -	ret = gpio_ensure_requested(gi, gpio);
+> > -	if (ret)
+> > -		return ret;
+> > -	if (!chip->ops->direction_output)
+> > -		return -ENOSYS;
+> > -	return chip->ops->direction_output(chip, gpio - chip->base, value);
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +		int ret;
+> > +
+> > +		if (!chip)
+> > +			return -ENODEV;
+> > +		ret = gpio_ensure_requested(gi, gpio);
+> > +		if (ret)
+> > +			return ret;
+> > +		if (!chip->ops->direction_output)
+> > +			return -ENOSYS;
+> > +		return chip->ops->direction_output(chip, gpio - chip->base,
+> > +						   value);
+> > +	}
+> > +
+> > +	return -EINVAL;
+> >  }
+> >  EXPORT_SYMBOL(gpio_direction_output);
+> >  
+> >  int gpio_direction_input(unsigned gpio)
+> >  {
+> > -	struct gpio_info *gi = &gpio_desc[gpio];
+> > -	struct gpio_chip *chip = gi->chip;
+> > -	int ret;
+> > -
+> > -	if (!gpio_is_valid(gpio))
+> > -		return -EINVAL;
+> > -	if (!chip)
+> > -		return -ENODEV;
+> > -	ret = gpio_ensure_requested(gi, gpio);
+> > -	if (ret)
+> > -		return ret;
+> > -	if (!chip->ops->direction_input)
+> > -		return -ENOSYS;
+> > -	return chip->ops->direction_input(chip, gpio - chip->base);
+> > +	if (gpio_is_valid(gpio)) {
+> > +		struct gpio_info *gi = &gpio_desc[gpio];
+> > +		struct gpio_chip *chip = gi->chip;
+> > +		int ret;
+> > +
+> > +		if (!chip)
+> > +			return -ENODEV;
+> > +		ret = gpio_ensure_requested(gi, gpio);
+> > +		if (ret)
+> > +			return ret;
+> > +		if (!chip->ops->direction_input)
+> > +			return -ENOSYS;
+> > +		return chip->ops->direction_input(chip, gpio - chip->base);
+> > +	}
+> > +
+> > +	return -EINVAL;
+> >  }
+> >  EXPORT_SYMBOL(gpio_direction_input);
+
+---
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
