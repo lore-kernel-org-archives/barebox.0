@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo4.mail-out.ovh.net ([178.32.98.131]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UameQ-0005hu-Mc
- for barebox@lists.infradead.org; Fri, 10 May 2013 12:42:19 +0000
+ id 1Uami6-0005nv-AL
+ for barebox@lists.infradead.org; Fri, 10 May 2013 12:46:07 +0000
 Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 958EA104EC9F
- for <barebox@lists.infradead.org>; Fri, 10 May 2013 14:41:56 +0200 (CEST)
-Date: Fri, 10 May 2013 14:37:36 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 8BFFE104EC8F
+ for <barebox@lists.infradead.org>; Fri, 10 May 2013 14:45:45 +0200 (CEST)
+Date: Fri, 10 May 2013 14:41:25 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130510123736.GB19265@game.jcrosoft.org>
+Message-ID: <20130510124125.GC19265@game.jcrosoft.org>
 References: <1368170834-28657-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
@@ -30,14 +30,16 @@ Subject: Re: [PATCH 1/2] GPIO: Check for "gpio_is_valid" first
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-no the current code is more clean
+HI,
 
-just move
+	do as in linux
 
-gi = &gpio_desc[gpio];
-chip = gi->chip
+	introduce
 
-after the current check;
+	static struct gpio_desc *gpio_to_desc(unsigned gpio)
+
+	and we need to check the gpio is valid before calling _free/ser/get
+	etc..
 
 On 11:27 Fri 10 May     , Alexander Shiyan wrote:
 > 
