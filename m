@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp48.i.mail.ru ([94.100.177.108])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UanKL-0006XW-HY
- for barebox@lists.infradead.org; Fri, 10 May 2013 13:25:38 +0000
-Date: Fri, 10 May 2013 15:25:12 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130510132512.GN32299@pengutronix.de>
-References: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1368093171-17845-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130509111639.GF31290@titan.lakedaemon.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130509111639.GF31290@titan.lakedaemon.net>
+ id 1UanwD-00075k-IG
+ for barebox@lists.infradead.org; Fri, 10 May 2013 14:04:47 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri, 10 May 2013 18:04:18 +0400
+Message-Id: <1368194658-2961-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +14,205 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 2/7] scripts: add kwboot tool
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Lior Amsalem <alior@marvell.com>, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: [PATCH] GPIO: Add gpio_to_desc helper
+To: barebox@lists.infradead.org
 
-On Thu, May 09, 2013 at 07:16:39AM -0400, Jason Cooper wrote:
-> Thomas,
-> 
-> On Thu, May 09, 2013 at 11:52:46AM +0200, Thomas Petazzoni wrote:
-> > This tool is used with Marvell EBU SoC to trigger the UART boot mode
-> > provided by the SoC BootROM, and push the bootloader image to the
-> > target using the Xmodem protocol.
-> > 
-> > It has been taken from the U-Boot source code, with minor
-> > modifications to make it work with Armada 370/XP platforms.
-> 
-> Could you add a note which revision of u-boot it was pulled from?  That
-> should make later syncs between the two versions much easier.
-> 
-> To that end, Sascha, do you think it is worth the extra commit to have
-> one commit copying the file over, and a second adding changes to make it
-> work with Armada 370/XP?
+Patch adds gpio_to_desc helper for validate GPIO.
+A bit optimization is performed (about -250 bytes on ARM).
 
-The revision the tool originally came from should be enough I think.
-Anyway, if Thomas is willing to split this into two patches I'll take
-that version instead.
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/gpio/gpiolib.c | 97 ++++++++++++++++++++++++++------------------------
+ 1 file changed, 51 insertions(+), 46 deletions(-)
 
-Sascha
-
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 6398268..d7aa094 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -32,20 +32,30 @@ static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
+ 	return gpio_request(gpio, "gpio");
+ }
+ 
++static struct gpio_info *gpio_to_desc(unsigned gpio)
++{
++	if (!gpio_is_valid(gpio))
++		return NULL;
++
++	if (!gpio_desc[gpio].chip)
++		return NULL;
++
++	return &gpio_desc[gpio];
++}
++
+ int gpio_request(unsigned gpio, const char *label)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
+-		return -EINVAL;
++	if (!gi)
++		return -ENODEV;
++
+ 	if (gi->requested)
+ 		return -EBUSY;
+-	if (chip->ops->request) {
+-		ret = chip->ops->request(chip, gpio - chip->base);
++
++	if (gi->chip->ops->request) {
++		ret = gi->chip->ops->request(gi->chip, gpio - gi->chip->base);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -58,17 +68,16 @@ int gpio_request(unsigned gpio, const char *label)
+ 
+ void gpio_free(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 
+-	if (!gpio_is_valid(gpio))
+-		return;
+-	if (!chip)
++	if (!gi)
+ 		return;
++
+ 	if (!gi->requested)
+ 		return;
+-	if (chip->ops->free)
+-		chip->ops->free(chip, gpio - chip->base);
++
++	if (gi->chip->ops->free)
++		gi->chip->ops->free(gi->chip, gpio - gi->chip->base);
+ 
+ 	gi->requested = false;
+ 	free(gi->label);
+@@ -76,75 +85,71 @@ void gpio_free(unsigned gpio)
+ 
+ void gpio_set_value(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 
+-	if (!gpio_is_valid(gpio))
+-		return;
+-	if (!chip)
++	if (!gi)
+ 		return;
++
+ 	if (gpio_ensure_requested(gi, gpio))
+ 		return;
+-	if (!chip->ops->set)
+-		return;
+-	chip->ops->set(chip, gpio - chip->base, value);
++
++	if (gi->chip->ops->set)
++		gi->chip->ops->set(gi->chip, gpio - gi->chip->base, value);
+ }
+ EXPORT_SYMBOL(gpio_set_value);
+ 
+ int gpio_get_value(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->get)
++
++	if (!gi->chip->ops->get)
+ 		return -ENOSYS;
+-	return chip->ops->get(chip, gpio - chip->base);
++	return gi->chip->ops->get(gi->chip, gpio - gi->chip->base);
+ }
+ EXPORT_SYMBOL(gpio_get_value);
+ 
+ int gpio_direction_output(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->direction_output)
++
++	if (!gi->chip->ops->direction_output)
+ 		return -ENOSYS;
+-	return chip->ops->direction_output(chip, gpio - chip->base, value);
++	return gi->chip->ops->direction_output(gi->chip, gpio - gi->chip->base,
++					       value);
+ }
+ EXPORT_SYMBOL(gpio_direction_output);
+ 
+ int gpio_direction_input(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->direction_input)
++
++	if (!gi->chip->ops->direction_input)
+ 		return -ENOSYS;
+-	return chip->ops->direction_input(chip, gpio - chip->base);
++	return gi->chip->ops->direction_input(gi->chip, gpio - gi->chip->base);
+ }
+ EXPORT_SYMBOL(gpio_direction_input);
+ 
+@@ -224,9 +229,9 @@ static int do_gpiolib(int argc, char *argv[])
+ 	printf("%*crequested  label\n", 11, ' ');
+ 
+ 	for (i = 0; i < ARCH_NR_GPIOS; i++) {
+-		struct gpio_info *gi = &gpio_desc[i];
++		struct gpio_info *gi = gpio_to_desc(i);
+ 
+-		if (!gi->chip)
++		if (!gi)
+ 			continue;
+ 
+ 		printf("gpio %*d: %*s  %s\n", 4,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.5
+
 
 _______________________________________________
 barebox mailing list
