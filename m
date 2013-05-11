@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo5.mail-out.ovh.net ([178.33.109.111]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbBC6-0003Qm-Il
- for barebox@lists.infradead.org; Sat, 11 May 2013 14:54:43 +0000
-Received: from mail639.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 3A6B5FF968E
- for <barebox@lists.infradead.org>; Sat, 11 May 2013 16:54:20 +0200 (CEST)
-Date: Sat, 11 May 2013 16:50:01 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130511145001.GG19265@game.jcrosoft.org>
-References: <1368194658-2961-1-git-send-email-shc_work@mail.ru>
- <1368273956.326411741@f386.i.mail.ru>
- <20130511143817.GF19265@game.jcrosoft.org>
- <1368283608.730392767@f336.mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UbBY6-0003Zi-4m
+ for barebox@lists.infradead.org; Sat, 11 May 2013 15:17:29 +0000
+Date: Sat, 11 May 2013 17:17:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130511151700.GQ32299@pengutronix.de>
+References: <1368210538-15286-1-git-send-email-dev@lynxeye.de>
+ <20130510190309.GA1500@x61s.Speedport_W_921V_1_21_000>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368283608.730392767@f336.mail.ru>
+In-Reply-To: <20130510190309.GA1500@x61s.Speedport_W_921V_1_21_000>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,67 +23,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] GPIO: Add gpio_to_desc helper
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH v2 1/2] tegra20: add pinctrl driver
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On 18:46 Sat 11 May     , Alexander Shiyan wrote:
-> > > > > > On 18:04 Fri 10 May     , Alexander Shiyan wrote:
-> > > > > > > Patch adds gpio_to_desc helper for validate GPIO.
-> > > > > > > A bit optimization is performed (about -250 bytes on ARM).
-> > > > > > > 
-> > > > > > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > > > > > > ---
-> > > > > > >  drivers/gpio/gpiolib.c | 97 ++++++++++++++++++++++++++------------------------
-> > > > > > >  1 file changed, 51 insertions(+), 46 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> > > > > > > index 6398268..d7aa094 100644
-> > > > > > > --- a/drivers/gpio/gpiolib.c
-> > > > > > > +++ b/drivers/gpio/gpiolib.c
-> > > > > > > @@ -32,20 +32,30 @@ static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
-> > > > > > >  	return gpio_request(gpio, "gpio");
-> > > > > > >  }
-> > > > > > >  
-> > > > > > > +static struct gpio_info *gpio_to_desc(unsigned gpio)
-> > > > > > > +{
-> > > > > > > +	if (!gpio_is_valid(gpio))
-> > > > > > put the WARN too as we need to known a gpio_xxx is used on a non valid gpio
-> > > > > 
-> > > > > Original bb code does not contain any warnings here. So if it really
-> > > > > necessary it can be added later.
-> > > > 
-> > > > put it as we keep the code inline with the kernel a key point for sync
-> > > 
-> > > And this warning avoid my second patch to remove checks when we are
-> > > call gpio_free/set/get etc... with non existent (optional) gpios.
-> > 
-> > yes as this patch break the compatibility with the kernel sorry NACK on it
-> > 
-> > > I strongly do not want to add it.
-> > 
-> > if you can gpio_xxx with an invalid gpio it's wrong
-> > and as we keep the same API as in linux we need to WARN
-> > as you DO need to check the gpio is valid before calling the gpio lib
-> > 
-> > we keep api in sync to simplify maintainance between barebox and the kernel
+On Fri, May 10, 2013 at 09:03:10PM +0200, Alexander Aring wrote:
+> Hi Lucas,
 > 
-> I prefer to add one warning to gpio_request only. It can be useful for debug
-> and not annoy if gpio is really is optional. OK?
-please follow the linux implementation
+> On Fri, May 10, 2013 at 08:28:57PM +0200, Lucas Stach wrote:
+> > This adds a pinctrl driver for the Tegra 20 line of SoCs. It only
+> > supports the three basic pinconfiguration settings function mux,
+> > tristate control and pullup/down control.
+> > 
+> > The driver understands the same devicetree bindings as the Linux one,
+> > unimplemented pinconfiguration options will be ignored.
+> > 
+> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
 
-all of them
+[...]
 
-if I call the gpio_set_value I expect it to set the value
+> > +
+> > +static int pinctrl_tegra20_probe(struct device_d *dev)
+> > +{
+> > +	struct pinctrl_tegra20 *ctrl;
+> > +	int i, ret;
+> > +	u32 **regs;
+> > +
+> > +	ctrl = xzalloc(sizeof(*ctrl));
+> > +
+> > +	/*
+> > +	 * Tegra pincontrol is split out into four independent memory ranges:
+> > +	 * tristate control, function mux, pullup/down control, pad control
+> > +	 * (from lowest to highest hardware address).
+> > +	 * We are only interested in the first three for now.
+> > +	 */
+> > +	regs = (u32 **)&ctrl->regs;
+> > +	for (i = 0; i <= 2; i++) {
+> > +		regs[i] = dev_request_mem_region(dev, i);
+> > +		if (!regs[i]) {
+> > +			dev_err(dev, "Could not get iomem region %d\n", i);
+> Do we need a free(ctrl); here?
 
-If I'm nust and call with a invalid big warning fix your code
+To be correct, yes, we would need a free() here.
 
-if the code we mostly do not check the return of gpio_set & co
+I've never been very thoroughly with releasing the resources in the
+error pathes in the drivers in barebox though and I never felt bad about
+it.
 
-as they work if you have the gpio requested and always return 0 (mostlty)
+The probe calls are called only once for each device and whether or not
+we have a few bytes of malloc space more doesn't really matter. Also you
+may have noticed that there even is no dev_release_mem_region in barebox
+which makes nearly all error pathes wrong in barebox anyway.
 
-Best Regards,
-J.
+And no, I don't want to have -EPROBE_DEFER in barebox.
+
+So I don't really know what to do with the error pathes in driver probe
+functions. I don't really care about them, but I also don't feel like
+removing the freeing of resources either to reduce the binary size.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
