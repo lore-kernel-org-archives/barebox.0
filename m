@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f49.google.com ([74.125.83.49])
+Received: from mail-ee0-f42.google.com ([74.125.83.42])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbW1y-0002tR-RL
- for barebox@lists.infradead.org; Sun, 12 May 2013 13:09:51 +0000
-Received: by mail-ee0-f49.google.com with SMTP id d17so3072745eek.36
- for <barebox@lists.infradead.org>; Sun, 12 May 2013 06:09:17 -0700 (PDT)
+ id 1UbW20-0002tS-1w
+ for barebox@lists.infradead.org; Sun, 12 May 2013 13:09:50 +0000
+Received: by mail-ee0-f42.google.com with SMTP id c50so34089eek.15
+ for <barebox@lists.infradead.org>; Sun, 12 May 2013 06:09:15 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sun, 12 May 2013 15:09:06 +0200
-Message-Id: <1368364146-6024-6-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sun, 12 May 2013 15:09:05 +0200
+Message-Id: <1368364146-6024-5-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,13 +23,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] arm: mach-mvebu: rename Armada 370/XP core code
+Subject: [PATCH 4/5] arm: add basic support for SolidRun CuBox
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-There are more than Armada 370/XP in Marvell MVEBU SoC familiy. To avoid
-irritation with source file nameing, we rename setup source file for
-Armada 370/XP from core.c to armada-370-xp.c.
+The SolidRun CuBox is a small cubic platform based on the Marvell
+Dove SoC. There is nothing more than a console, yet.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
@@ -37,31 +36,138 @@ Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/mach-mvebu/Makefile        |    4 +-
- arch/arm/mach-mvebu/armada-370-xp.c |  142 +++++++++++++++++++++++++++++++++++
- arch/arm/mach-mvebu/core.c          |  142 -----------------------------------
- 3 files changed, 144 insertions(+), 144 deletions(-)
- create mode 100644 arch/arm/mach-mvebu/armada-370-xp.c
- delete mode 100644 arch/arm/mach-mvebu/core.c
+ arch/arm/Makefile                               |    1 +
+ arch/arm/boards/solidrun-cubox/Makefile         |    2 ++
+ arch/arm/boards/solidrun-cubox/config.h         |    4 +++
+ arch/arm/boards/solidrun-cubox/kwbimage.cfg     |   39 +++++++++++++++++++++++
+ arch/arm/boards/solidrun-cubox/lowlevel.c       |   26 +++++++++++++++
+ arch/arm/boards/solidrun-cubox/solidrun-cubox.c |   28 ++++++++++++++++
+ arch/arm/configs/solidrun_cubox_defconfig       |    9 ++++++
+ arch/arm/mach-mvebu/Kconfig                     |    5 +++
+ 8 files changed, 114 insertions(+)
+ create mode 100644 arch/arm/boards/solidrun-cubox/Makefile
+ create mode 100644 arch/arm/boards/solidrun-cubox/config.h
+ create mode 100644 arch/arm/boards/solidrun-cubox/kwbimage.cfg
+ create mode 100644 arch/arm/boards/solidrun-cubox/lowlevel.c
+ create mode 100644 arch/arm/boards/solidrun-cubox/solidrun-cubox.c
+ create mode 100644 arch/arm/configs/solidrun_cubox_defconfig
 
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index 0257b73..043f08f 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1,3 +1,3 @@
--obj-$(CONFIG_ARCH_ARMADA_370)	+= core.o
--obj-$(CONFIG_ARCH_ARMADA_XP)	+= core.o
-+obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
-+obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_DOVE)		+= dove.o
-diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index af8294d..8f17e7e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -147,6 +147,7 @@ board-$(CONFIG_MACH_MINI6410)			:= friendlyarm-mini6410
+ board-$(CONFIG_MACH_TINY6410)			:= friendlyarm-tiny6410
+ board-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	:= plathome-openblocks-ax3
+ board-$(CONFIG_MACH_QIL_A9260)			:= qil-a9260
++board-$(CONFIG_MACH_SOLIDRUN_CUBOX)		:= solidrun-cubox
+ board-$(CONFIG_MACH_TNY_A9260)			:= tny-a926x
+ board-$(CONFIG_MACH_TNY_A9263)			:= tny-a926x
+ board-$(CONFIG_MACH_TNY_A9G20)			:= tny-a926x
+diff --git a/arch/arm/boards/solidrun-cubox/Makefile b/arch/arm/boards/solidrun-cubox/Makefile
 new file mode 100644
-index 0000000..f4672a3
+index 0000000..6dfe2c8
 --- /dev/null
-+++ b/arch/arm/mach-mvebu/armada-370-xp.c
-@@ -0,0 +1,142 @@
++++ b/arch/arm/boards/solidrun-cubox/Makefile
+@@ -0,0 +1,2 @@
++obj-y = solidrun-cubox.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/solidrun-cubox/config.h b/arch/arm/boards/solidrun-cubox/config.h
+new file mode 100644
+index 0000000..ca15136
+--- /dev/null
++++ b/arch/arm/boards/solidrun-cubox/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/solidrun-cubox/kwbimage.cfg b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
+new file mode 100644
+index 0000000..cb0c360
+--- /dev/null
++++ b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
+@@ -0,0 +1,39 @@
++VERSION 0
++BOOT_FROM spi
++DESTADDR ffffffff # overwritten by kwbimage -c
++EXECADDR ffffffff # overwritten by kwbimage -c
++DATA d0020104 00000000
++DATA d0800020 00022430
++DATA d0800030 00022430
++DATA d0800050 911500c3
++DATA d0800060 646602c4
++DATA d0800190 c2003053
++DATA d08001c0 34f4a187
++DATA d0800650 000f0121
++DATA d0800660 04040200
++DATA d0800080 00000000
++DATA d0800090 00080000
++DATA d08000f0 c0000000
++DATA d08001a0 20c0c009
++DATA d0800280 010e0202
++DATA d0800760 00000000
++DATA d0800770 0000000a
++DATA d0800140 20004044
++DATA d08001d0 133c2339
++DATA d08001e0 07700330
++DATA d08001f0 00000033
++DATA d0800200 0011311c
++DATA d0800210 00300000
++DATA d0800240 80000000
++DATA d0800510 010e0101
++DATA d0800230 2028006a
++DATA d0800e10 00280062
++DATA d0800e20 00280062
++DATA d0800e30 00280062
++DATA d0800100 000d0001
++DATA d0800110 200d0001
++DATA d0020104 00000000
++DATA d0020104 00000000
++DATA d0020104 00000000
++DATA d0020104 00000000
++DATA d0020104 00000000
+diff --git a/arch/arm/boards/solidrun-cubox/lowlevel.c b/arch/arm/boards/solidrun-cubox/lowlevel.c
+new file mode 100644
+index 0000000..8a06cbc
+--- /dev/null
++++ b/arch/arm/boards/solidrun-cubox/lowlevel.c
+@@ -0,0 +1,26 @@
 +/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <mach/dove.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	dove_barebox_entry();
++}
+diff --git a/arch/arm/boards/solidrun-cubox/solidrun-cubox.c b/arch/arm/boards/solidrun-cubox/solidrun-cubox.c
+new file mode 100644
+index 0000000..60acc3b
+--- /dev/null
++++ b/arch/arm/boards/solidrun-cubox/solidrun-cubox.c
+@@ -0,0 +1,28 @@
++/*
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -77,279 +183,59 @@ index 0000000..f4672a3
 +
 +#include <common.h>
 +#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <ns16550.h>
-+#include <asm/memory.h>
-+#include <asm/barebox-arm.h>
++#include <mach/dove.h>
 +
-+#define MVEBU_INT_REGS_BASE (0xd0000000)
-+#define  MVEBU_UART0_BASE     (MVEBU_INT_REGS_BASE + 0x12000)
-+#define  MVEBU_SYSCTL_BASE    (MVEBU_INT_REGS_BASE + 0x18200)
-+#define  MVEBU_SDRAM_WIN_BASE (MVEBU_INT_REGS_BASE + 0x20180)
-+#define  MVEBU_TIMER_BASE     (MVEBU_INT_REGS_BASE + 0x20300)
-+#define  MVEBU_SAR_BASE       (MVEBU_INT_REGS_BASE + 0x18230)
++#include <mach/debug_ll.h>
 +
-+#define DDR_BASE_CS_OFF(n)     (0x0000 + ((n) << 3))
-+#define  DDR_BASE_CS_HIGH_MASK  0xf
-+#define  DDR_BASE_CS_LOW_MASK   0xff000000
-+#define DDR_SIZE_CS_OFF(n)     (0x0004 + ((n) << 3))
-+#define  DDR_SIZE_ENABLED       (1 << 0)
-+#define  DDR_SIZE_CS_MASK       0x1c
-+#define  DDR_SIZE_CS_SHIFT      2
-+#define  DDR_SIZE_MASK          0xff000000
-+
-+#define SAR_LOW_REG_OFF         0
-+#define  SAR_TCLK_FREQ_BIT      20
-+#define SAR_HIGH_REG_OFF        0x4
-+
-+static struct clk *tclk;
-+
-+static inline void mvebu_memory_find(unsigned long *phys_base,
-+				     unsigned long *phys_size)
++static int solidrun_cubox_console_init(void)
 +{
-+	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
-+	int cs;
-+
-+	*phys_base = ~0;
-+	*phys_size = 0;
-+
-+	for (cs = 0; cs < 4; cs++) {
-+		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
-+		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
-+
-+		/* Skip non-enabled CS */
-+		if (! (ctrl & DDR_SIZE_ENABLED))
-+			continue;
-+
-+		base &= DDR_BASE_CS_LOW_MASK;
-+		if (base < *phys_base)
-+			*phys_base = base;
-+		*phys_size += (ctrl | ~DDR_SIZE_MASK) + 1;
-+	}
++	return dove_add_uart(0);
 +}
 +
-+void __naked __noreturn mvebu_barebox_entry(void)
-+{
-+	unsigned long phys_base, phys_size;
-+	mvebu_memory_find(&phys_base, &phys_size);
-+	barebox_arm_entry(phys_base, phys_size, 0);
-+}
++console_initcall(solidrun_cubox_console_init);
+diff --git a/arch/arm/configs/solidrun_cubox_defconfig b/arch/arm/configs/solidrun_cubox_defconfig
+new file mode 100644
+index 0000000..1a27d81
+--- /dev/null
++++ b/arch/arm/configs/solidrun_cubox_defconfig
+@@ -0,0 +1,9 @@
++CONFIG_ARCH_MVEBU=y
++CONFIG_ARCH_DOVE=y
++CONFIG_AEABI=y
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_CLK=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index c02eea1..3d8c2c3 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -5,11 +5,13 @@ config ARCH_TEXT_BASE
+ 	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
+ 	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
+ 	default 0x2000000 if MACH_MARVELL_ARMADA_XP_GP
++	default 0x2000000 if MACH_SOLIDRUN_CUBOX
+ 
+ config BOARDINFO
+ 	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
+ 	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
+ 	default "Marvell Armada XP GP" if MACH_MARVELL_ARMADA_XP_GP
++	default "SolidRun CuBox" if MACH_SOLIDRUN_CUBOX
+ 
+ choice
+ 	prompt "Marvell EBU Processor"
+@@ -63,6 +65,9 @@ if ARCH_DOVE
+ choice
+ 	prompt "Dove 88AP510 Board Type"
+ 
++config MACH_SOLIDRUN_CUBOX
++	bool "SolidRun CuBox"
 +
-+static struct NS16550_plat uart0_plat = {
-+	.shift = 2,
-+};
-+
-+int mvebu_add_uart0(void)
-+{
-+	uart0_plat.clock = clk_get_rate(tclk);
-+	add_ns16550_device(DEVICE_ID_DYNAMIC, MVEBU_UART0_BASE, 32,
-+			   IORESOURCE_MEM_32BIT, &uart0_plat);
-+	return 0;
-+}
-+
-+#if defined(CONFIG_ARCH_ARMADA_370)
-+static int mvebu_init_clocks(void)
-+{
-+	uint32_t val;
-+	unsigned int rate;
-+	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
-+
-+	val = readl(sar);
-+
-+	/* On Armada 370, the TCLK frequency can be either 166 Mhz or
-+	 * 200 Mhz */
-+	if (val & (1 << SAR_TCLK_FREQ_BIT))
-+		rate = 200 * 1000 * 1000;
-+	else
-+		rate = 166 * 1000 * 1000;
-+
-+	tclk = clk_fixed("tclk", rate);
-+	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
-+}
-+#endif
-+
-+#if defined(CONFIG_ARCH_ARMADA_XP)
-+static int mvebu_init_clocks(void)
-+{
-+	/* On Armada XP, the TCLK frequency is always 250 Mhz */
-+	tclk = clk_fixed("tclk", 250 * 1000 * 1000);
-+	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
-+}
-+#endif
-+
-+static int mvebu_init_soc(void)
-+{
-+	unsigned long phys_base, phys_size;
-+
-+	mvebu_init_clocks();
-+	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
-+			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
-+			   NULL);
-+	mvebu_memory_find(&phys_base, &phys_size);
-+	arm_add_mem_device("ram0", phys_base, phys_size);
-+	return 0;
-+}
-+
-+postcore_initcall(mvebu_init_soc);
-+
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	writel(0x1, MVEBU_SYSCTL_BASE + 0x60);
-+	writel(0x1, MVEBU_SYSCTL_BASE + 0x64);
-+	while (1)
-+		;
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-mvebu/core.c b/arch/arm/mach-mvebu/core.c
-deleted file mode 100644
-index f4672a3..0000000
---- a/arch/arm/mach-mvebu/core.c
-+++ /dev/null
-@@ -1,142 +0,0 @@
--/*
-- * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <init.h>
--#include <io.h>
--#include <linux/clk.h>
--#include <linux/clkdev.h>
--#include <ns16550.h>
--#include <asm/memory.h>
--#include <asm/barebox-arm.h>
--
--#define MVEBU_INT_REGS_BASE (0xd0000000)
--#define  MVEBU_UART0_BASE     (MVEBU_INT_REGS_BASE + 0x12000)
--#define  MVEBU_SYSCTL_BASE    (MVEBU_INT_REGS_BASE + 0x18200)
--#define  MVEBU_SDRAM_WIN_BASE (MVEBU_INT_REGS_BASE + 0x20180)
--#define  MVEBU_TIMER_BASE     (MVEBU_INT_REGS_BASE + 0x20300)
--#define  MVEBU_SAR_BASE       (MVEBU_INT_REGS_BASE + 0x18230)
--
--#define DDR_BASE_CS_OFF(n)     (0x0000 + ((n) << 3))
--#define  DDR_BASE_CS_HIGH_MASK  0xf
--#define  DDR_BASE_CS_LOW_MASK   0xff000000
--#define DDR_SIZE_CS_OFF(n)     (0x0004 + ((n) << 3))
--#define  DDR_SIZE_ENABLED       (1 << 0)
--#define  DDR_SIZE_CS_MASK       0x1c
--#define  DDR_SIZE_CS_SHIFT      2
--#define  DDR_SIZE_MASK          0xff000000
--
--#define SAR_LOW_REG_OFF         0
--#define  SAR_TCLK_FREQ_BIT      20
--#define SAR_HIGH_REG_OFF        0x4
--
--static struct clk *tclk;
--
--static inline void mvebu_memory_find(unsigned long *phys_base,
--				     unsigned long *phys_size)
--{
--	void __iomem *sdram_win = IOMEM(MVEBU_SDRAM_WIN_BASE);
--	int cs;
--
--	*phys_base = ~0;
--	*phys_size = 0;
--
--	for (cs = 0; cs < 4; cs++) {
--		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
--		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
--
--		/* Skip non-enabled CS */
--		if (! (ctrl & DDR_SIZE_ENABLED))
--			continue;
--
--		base &= DDR_BASE_CS_LOW_MASK;
--		if (base < *phys_base)
--			*phys_base = base;
--		*phys_size += (ctrl | ~DDR_SIZE_MASK) + 1;
--	}
--}
--
--void __naked __noreturn mvebu_barebox_entry(void)
--{
--	unsigned long phys_base, phys_size;
--	mvebu_memory_find(&phys_base, &phys_size);
--	barebox_arm_entry(phys_base, phys_size, 0);
--}
--
--static struct NS16550_plat uart0_plat = {
--	.shift = 2,
--};
--
--int mvebu_add_uart0(void)
--{
--	uart0_plat.clock = clk_get_rate(tclk);
--	add_ns16550_device(DEVICE_ID_DYNAMIC, MVEBU_UART0_BASE, 32,
--			   IORESOURCE_MEM_32BIT, &uart0_plat);
--	return 0;
--}
--
--#if defined(CONFIG_ARCH_ARMADA_370)
--static int mvebu_init_clocks(void)
--{
--	uint32_t val;
--	unsigned int rate;
--	void __iomem *sar = IOMEM(MVEBU_SAR_BASE) + SAR_LOW_REG_OFF;
--
--	val = readl(sar);
--
--	/* On Armada 370, the TCLK frequency can be either 166 Mhz or
--	 * 200 Mhz */
--	if (val & (1 << SAR_TCLK_FREQ_BIT))
--		rate = 200 * 1000 * 1000;
--	else
--		rate = 166 * 1000 * 1000;
--
--	tclk = clk_fixed("tclk", rate);
--	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
--}
--#endif
--
--#if defined(CONFIG_ARCH_ARMADA_XP)
--static int mvebu_init_clocks(void)
--{
--	/* On Armada XP, the TCLK frequency is always 250 Mhz */
--	tclk = clk_fixed("tclk", 250 * 1000 * 1000);
--	return clk_register_clkdev(tclk, NULL, "mvebu-timer");
--}
--#endif
--
--static int mvebu_init_soc(void)
--{
--	unsigned long phys_base, phys_size;
--
--	mvebu_init_clocks();
--	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
--			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
--			   NULL);
--	mvebu_memory_find(&phys_base, &phys_size);
--	arm_add_mem_device("ram0", phys_base, phys_size);
--	return 0;
--}
--
--postcore_initcall(mvebu_init_soc);
--
--void __noreturn reset_cpu(unsigned long addr)
--{
--	writel(0x1, MVEBU_SYSCTL_BASE + 0x60);
--	writel(0x1, MVEBU_SYSCTL_BASE + 0x64);
--	while (1)
--		;
--}
--EXPORT_SYMBOL(reset_cpu);
+ endchoice
+ 
+ endif # ARCH_DOVE
 -- 
 1.7.10.4
 
