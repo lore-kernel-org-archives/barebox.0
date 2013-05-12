@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbTfw-0001nb-Ej
- for barebox@lists.infradead.org; Sun, 12 May 2013 10:38:44 +0000
-Date: Sun, 12 May 2013 12:38:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130512103822.GZ32299@pengutronix.de>
-References: <1368164349-24479-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1368164349-24479-1-git-send-email-shc_work@mail.ru>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UbTjH-0001pK-72
+ for barebox@lists.infradead.org; Sun, 12 May 2013 10:42:11 +0000
+Date: Sun, 12 May 2013 12:41:42 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130512124142.3f5a97c0@skate>
+In-Reply-To: <20130512102404.GV32299@pengutronix.de>
+References: <1368093171-17845-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <20130512075644.GT20989@pengutronix.de>
+ <20130512111246.72df8918@skate>
+ <20130512102404.GV32299@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: OMAP MCI: Move TWL6030 power initialization
- into OMAP directory
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v3 0/7] Basic support for Armada 370/XP SOCs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Lior Amsalem <alior@marvell.com>, barebox@lists.infradead.org, Willy Tarreau <w@1wt.eu>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On Fri, May 10, 2013 at 09:39:08AM +0400, Alexander Shiyan wrote:
+Dear Sascha Hauer,
+
+On Sun, 12 May 2013 12:24:04 +0200, Sascha Hauer wrote:
+
+> How about a warning like:
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/mach-omap/omap4_twl6030_mmc.c | 18 ++++++++++++++++--
->  drivers/mci/Makefile                   |  1 -
->  drivers/mci/twl6030.c                  | 29 -----------------------------
->  include/mci/twl6030.h                  | 10 ----------
->  4 files changed, 16 insertions(+), 42 deletions(-)
->  delete mode 100644 drivers/mci/twl6030.c
->  delete mode 100644 include/mci/twl6030.h
+> "Warning: 'plathome-openblocks-ax3-binary.0' does not exist. Not building barebox.kwb"
+> 
+> Also not an ideal solution, but I think there is no really good way to
+> solve this other than including the binary in the tree which probably
+> has some licensing issues.
 
-Applied (both), thanks
+The problem is that the Makefile doesn't know that kwbimage will need
+plathome-openblocks-ax3-binary.0, it would have to parse the
+kwbimage.cfg file to know about this.
 
-Sascha
+Also, not all .kwb images will require this binary blob. Kirkwood and
+Dove do not require such a binary blob, and a kwb image can be built
+with just the kwbimage.cfg and barebox.bin. So it is really a
+per-kwbimage.cfg knowledge.
 
+Another solution is to add an option to kwbimage that allows it to list
+which files are needed to make the build succeed. Then
+arch/arm/Makefile can call this, check that we have the needed files.
+If not, it shows a warning, otherwise it goes on with the build.
 
+Other ideas welcome, of course.
+
+Best regards,
+
+Thomas
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
