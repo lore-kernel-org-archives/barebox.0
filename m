@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbTYq-0001jG-GA
- for barebox@lists.infradead.org; Sun, 12 May 2013 10:31:24 +0000
-Date: Sun, 12 May 2013 12:31:07 +0200
+ id 1UbTYg-0001j8-O8
+ for barebox@lists.infradead.org; Sun, 12 May 2013 10:31:15 +0000
+Date: Sun, 12 May 2013 12:30:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130512103107.GX32299@pengutronix.de>
-References: <1368341836-19152-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20130512103052.GW32299@pengutronix.de>
+References: <1368341819-19115-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368341836-19152-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1368341819-19115-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +22,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: fix typos
+Subject: Re: [PATCH] ARM: remove unused clkdev.h
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, May 12, 2013 at 10:57:16AM +0400, Antony Pavlov wrote:
+On Sun, May 12, 2013 at 10:56:59AM +0400, Antony Pavlov wrote:
+> See also:
+> 
+>   commit eb84709192f1b616cd141594c34ddbc072c8d6ec
+>   Author: Sascha Hauer <s.hauer@pengutronix.de>
+>   Date:   Mon Mar 25 15:18:38 2013 +0100
+> 
+>       clk: remove unused __clk_[get|put]
+> 
+>       This is some unused code resulting from copying stuff from
+>       the kernel. Remove it.
+> 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  include/asm-generic/gpio.h |    1 -
->  include/gpio.h             |    2 +-
->  2 files changed, 1 insertion(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/mach-tegra/include/mach/clkdev.h |    7 -------
+>  arch/arm/mach-zynq/include/mach/clkdev.h  |    6 ------
+>  2 files changed, 13 deletions(-)
+>  delete mode 100644 arch/arm/mach-tegra/include/mach/clkdev.h
+>  delete mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
 > 
-> diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
-> index c2e7a5d..95fdd05 100644
-> --- a/include/asm-generic/gpio.h
-> +++ b/include/asm-generic/gpio.h
-> @@ -18,4 +18,3 @@ int gpio_direction_output(unsigned gpio, int value);
->  int gpio_direction_input(unsigned gpio);
->  
->  #endif /* __ASM_GENERIC_GPIO_H */
+> diff --git a/arch/arm/mach-tegra/include/mach/clkdev.h b/arch/arm/mach-tegra/include/mach/clkdev.h
+> deleted file mode 100644
+> index 04b37a8..0000000
+> --- a/arch/arm/mach-tegra/include/mach/clkdev.h
+> +++ /dev/null
+> @@ -1,7 +0,0 @@
+> -#ifndef __ASM_MACH_CLKDEV_H
+> -#define __ASM_MACH_CLKDEV_H
 > -
-> diff --git a/include/gpio.h b/include/gpio.h
-> index c2fb9f7..140d53c 100644
-> --- a/include/gpio.h
-> +++ b/include/gpio.h
-> @@ -6,7 +6,7 @@
->  #ifndef CONFIG_GPIOLIB
->  static inline int gpio_request(unsigned gpio, const char *label)
->  {
-> -       return 0;
-> +	return 0;
->  }
->  
->  static inline void gpio_free(unsigned gpio)
+> -#define __clk_get(clk) ({ 1; })
+> -#define __clk_put(clk) do { } while (0)
+> -
+> -#endif
+> diff --git a/arch/arm/mach-zynq/include/mach/clkdev.h b/arch/arm/mach-zynq/include/mach/clkdev.h
+> deleted file mode 100644
+> index 31f7035..0000000
+> --- a/arch/arm/mach-zynq/include/mach/clkdev.h
+> +++ /dev/null
+> @@ -1,6 +0,0 @@
+> -#ifndef __ASM_MACH_CLKDEV_H
+> -#define __ASM_MACH_CLKDEV_H
+> -
+> -#define __clk_get(clk) ({ 1; })
+> -#define __clk_put(clk) do { } while (0)
+> -#endif
 > -- 
 > 1.7.10.4
 > 
