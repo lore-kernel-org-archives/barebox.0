@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo5.mail-out.ovh.net ([188.165.57.91]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbWjD-0003Ki-Pj
- for barebox@lists.infradead.org; Sun, 12 May 2013 13:54:20 +0000
-Received: from mail644.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id A2632FF932C
- for <barebox@lists.infradead.org>; Sun, 12 May 2013 15:53:58 +0200 (CEST)
-Date: Sun, 12 May 2013 15:49:40 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130512134940.GI19265@game.jcrosoft.org>
-References: <1368341836-19152-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UbXZy-00040T-R4
+ for barebox@lists.infradead.org; Sun, 12 May 2013 14:48:51 +0000
+Date: Sun, 12 May 2013 16:48:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130512144828.GA32299@pengutronix.de>
+References: <1367847339-28363-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368341836-19152-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1367847339-28363-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,51 +22,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: fix typos
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] ARM: pcm038: Add support for USB OTG device
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-this is not typos it's coding style
-
-Best Regards,
-J.
-On 10:57 Sun 12 May     , Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  include/asm-generic/gpio.h |    1 -
->  include/gpio.h             |    2 +-
->  2 files changed, 1 insertion(+), 2 deletions(-)
+On Mon, May 06, 2013 at 05:35:39PM +0400, Alexander Shiyan wrote:
 > 
-> diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
-> index c2e7a5d..95fdd05 100644
-> --- a/include/asm-generic/gpio.h
-> +++ b/include/asm-generic/gpio.h
-> @@ -18,4 +18,3 @@ int gpio_direction_output(unsigned gpio, int value);
->  int gpio_direction_input(unsigned gpio);
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/boards/pcm038/pcm038.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index 4b2fa6c..3aec320 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -48,6 +48,7 @@
 >  
->  #endif /* __ASM_GENERIC_GPIO_H */
-> -
-> diff --git a/include/gpio.h b/include/gpio.h
-> index c2fb9f7..140d53c 100644
-> --- a/include/gpio.h
-> +++ b/include/gpio.h
-> @@ -6,7 +6,7 @@
->  #ifndef CONFIG_GPIOLIB
->  static inline int gpio_request(unsigned gpio, const char *label)
->  {
-> -       return 0;
-> +	return 0;
+>  #define PCM038_GPIO_FEC_RST	(GPIO_PORTC + 30)
+>  #define PCM038_GPIO_SPI_CS0	(GPIO_PORTD + 28)
+> +#define PCM038_GPIO_OTG_STP	(GPIO_PORTE + 1)
+>  
+>  static struct fec_platform_data fec_info = {
+>  	.xcv_type = PHY_INTERFACE_MODE_MII,
+> @@ -186,6 +187,11 @@ static int pcm038_power_init(void)
+>  	return 0;
 >  }
 >  
->  static inline void gpio_free(unsigned gpio)
+> +struct imxusb_platformdata pcm038_otg_pdata = {
+> +	.mode	= IMX_USB_MODE_DEVICE,
+> +	.flags	= MXC_EHCI_MODE_ULPI | MXC_EHCI_INTERFACE_DIFF_UNI,
+> +};
+> +
+>  static int pcm038_devices_init(void)
+>  {
+>  	int i;
+> @@ -253,7 +259,7 @@ static int pcm038_devices_init(void)
+>  		PA29_PF_VSYNC,
+>  		PA30_PF_CONTRAST,
+>  		PA31_PF_OE_ACD,
+> -		/* OTG host */
+> +		/* USB OTG */
+>  		PC7_PF_USBOTG_DATA5,
+>  		PC8_PF_USBOTG_DATA6,
+>  		PC9_PF_USBOTG_DATA0,
+> @@ -262,7 +268,7 @@ static int pcm038_devices_init(void)
+>  		PC12_PF_USBOTG_DATA4,
+>  		PC13_PF_USBOTG_DATA3,
+>  		PE0_PF_USBOTG_NXT,
+> -		PE1_PF_USBOTG_STP,
+> +		PCM038_GPIO_OTG_STP | GPIO_GPIO | GPIO_OUT,
+>  		PE2_PF_USBOTG_DIR,
+>  		PE24_PF_USBOTG_CLK,
+>  		PE25_PF_USBOTG_DATA7,
+> @@ -308,6 +314,13 @@ static int pcm038_devices_init(void)
+>  	gpio_set_value(PCM038_GPIO_FEC_RST, 1);
+>  	imx27_add_fec(&fec_info);
+>  
+> +	/* Apply delay for STP line to stop ULPI */
+> +	gpio_direction_output(PCM038_GPIO_OTG_STP, 1);
+> +	mdelay(1);
+> +	imx_gpio_mode(PE1_PF_USBOTG_STP);
+> +
+> +	imx27_add_usbotg(&pcm038_otg_pdata);
+> +
+>  	switch (bootsource_get()) {
+>  	case BOOTSOURCE_NAND:
+>  		devfs_add_partition("nand0", 0x00000, 0x80000,
 > -- 
-> 1.7.10.4
+> 1.8.1.5
 > 
 > 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
