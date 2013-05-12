@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f180.google.com ([209.85.217.180])
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbcMj-0007O5-EH
- for barebox@lists.infradead.org; Sun, 12 May 2013 19:55:30 +0000
-Received: by mail-lb0-f180.google.com with SMTP id o10so169941lbi.39
- for <barebox@lists.infradead.org>; Sun, 12 May 2013 12:55:05 -0700 (PDT)
+ id 1UbcMn-0007OT-K2
+ for barebox@lists.infradead.org; Sun, 12 May 2013 19:55:34 +0000
+Received: by mail-la0-f51.google.com with SMTP id ep20so5377929lab.24
+ for <barebox@lists.infradead.org>; Sun, 12 May 2013 12:55:11 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 12 May 2013 23:54:03 +0400
-Message-Id: <1368388446-31669-2-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 12 May 2013 23:54:06 +0400
+Message-Id: <1368388446-31669-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1368388446-31669-1-git-send-email-antonynpavlov@gmail.com>
 References: <1368388446-31669-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,115 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/4] of: separate out "generic" memory bank adding
+Subject: [PATCH v2 4/4] MIPS: qemu-malta_defconfig: enable OF support
 To: barebox@lists.infradead.org
 
-This patch separates out the "generic" memory
-segment registration function (of_add_memory_bank())
-from of_add_memory().
-The MIPS architecture has different view on memory
-resources than the ARM and PPC architectures
-so the "generic" of_add_memory_bank() is
-unusable for the MIPS architecture.
-We can add MIPS-specific of_add_memory_bank()
-into arch/mips code.
+Also enable iomem.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/of/Kconfig       |    5 +++++
- drivers/of/Makefile      |    1 +
- drivers/of/base.c        |    8 +-------
- drivers/of/mem_generic.c |   15 +++++++++++++++
- include/of.h             |    2 ++
- 5 files changed, 24 insertions(+), 7 deletions(-)
- create mode 100644 drivers/of/mem_generic.c
+ arch/mips/configs/qemu-malta_defconfig |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 56762e4..ffe063e 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -1,6 +1,11 @@
- config OFTREE
- 	bool
- 
-+config OFTREE_MEM_GENERIC
-+	depends on OFTREE
-+	depends on PPC || ARM
-+	def_bool y
-+
- config DTC
- 	bool
- 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index d16a946..c81bbec 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,4 +1,5 @@
- obj-y += base.o fdt.o
-+obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
- obj-$(CONFIG_GPIOLIB) += gpio.o
- obj-y += partition.o
- obj-y += of_net.o
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 8383549..1158132 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -873,7 +873,6 @@ int of_add_memory(struct device_node *node, bool dump)
- 	int na, nc;
- 	const __be32 *reg, *endp;
- 	int len, r = 0, ret;
--	static char str[6];
- 	const char *device_type;
- 
- 	ret = of_property_read_string(node, "device_type", &device_type);
-@@ -900,12 +899,7 @@ int of_add_memory(struct device_node *node, bool dump)
- 		if (size == 0)
- 			continue;
- 
--		sprintf(str, "ram%d", r);
--
--		barebox_add_memory_bank(str, base, size);
--
--		if (dump)
--			pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
-+		of_add_memory_bank(node, dump, r, base, size);
- 
- 		r++;
- 	}
-diff --git a/drivers/of/mem_generic.c b/drivers/of/mem_generic.c
-new file mode 100644
-index 0000000..9094243
---- /dev/null
-+++ b/drivers/of/mem_generic.c
-@@ -0,0 +1,15 @@
-+#include <common.h>
-+#include <of.h>
-+#include <memory.h>
-+
-+void of_add_memory_bank(struct device_node *node, bool dump, int r,
-+		u64 base, u64 size)
-+{
-+	static char str[6];
-+
-+	sprintf(str, "ram%d", r);
-+	barebox_add_memory_bank(str, base, size);
-+
-+	if (dump)
-+		pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
-+}
-diff --git a/include/of.h b/include/of.h
-index 4dcf37e..e0fc768 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -180,6 +180,8 @@ int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
- void *of_flatten_dtb(struct device_node *node);
- int of_add_memory(struct device_node *node, bool dump);
-+void of_add_memory_bank(struct device_node *node, bool dump, int r,
-+		u64 base, u64 size);
- #else
- static inline int of_parse_partitions(struct cdev *cdev,
- 					  struct device_node *node)
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index 7dab969..18c840d 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -1,3 +1,5 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="qemu-malta"
+ CONFIG_PBL_IMAGE=y
+ CONFIG_STACK_SIZE=0x7000
+ CONFIG_BROKEN=y
+@@ -23,22 +25,25 @@ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_TIME=y
++CONFIG_CMD_TFTP=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_CRC=y
+ CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_MD5SUM=y
+ CONFIG_CMD_SHA1SUM=y
+ CONFIG_CMD_SHA256SUM=y
+-CONFIG_CMD_MTEST=y
+ CONFIG_CMD_FLASH=y
+-CONFIG_CMD_BOOTM_ZLIB=y
+-CONFIG_CMD_BOOTM_BZLIB=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_MTEST=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_UNCOMPRESS=y
+@@ -46,18 +51,18 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_FS_TFTP=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
++CONFIG_OFDEVICE=y
+ # CONFIG_SPI is not set
++CONFIG_MTD=y
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_AMD is not set
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
+ # CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
+ CONFIG_CFI_BUFFER_WRITE=y
+-CONFIG_MTD=y
+ CONFIG_FS_CRAMFS=y
++CONFIG_FS_TFTP=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
 -- 
 1.7.10.4
 
