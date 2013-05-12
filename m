@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-f178.google.com ([209.85.215.178])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbZX5-0005V5-Oz
- for barebox@lists.infradead.org; Sun, 12 May 2013 16:54:00 +0000
-Received: by mail-ea0-f178.google.com with SMTP id q16so60894ead.9
- for <barebox@lists.infradead.org>; Sun, 12 May 2013 09:53:34 -0700 (PDT)
-Message-ID: <518FC90B.6050208@gmail.com>
-Date: Sun, 12 May 2013 18:53:31 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UbZvq-0005hr-SQ
+ for barebox@lists.infradead.org; Sun, 12 May 2013 17:19:35 +0000
+Date: Sun, 12 May 2013 19:19:09 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130512191909.754566fc@skate>
+In-Reply-To: <518FC8A2.20309@gmail.com>
 References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368364146-6024-6-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130512185032.3d99434a@skate>
-In-Reply-To: <20130512185032.3d99434a@skate>
+ <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130512184935.29bce329@skate> <518FC8A2.20309@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/5] arm: mach-mvebu: rename Armada 370/XP core code
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-On 05/12/2013 06:50 PM, Thomas Petazzoni wrote:
-> Dear Sebastian Hesselbarth,
->
-> On Sun, 12 May 2013 15:09:06 +0200, Sebastian Hesselbarth wrote:
->> There are more than Armada 370/XP in Marvell MVEBU SoC familiy. To avoid
->> irritation with source file nameing, we rename setup source file for
->> Armada 370/XP from core.c to armada-370-xp.c.
->>
->> Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
->> ---
->> Cc: Thomas Petazzoni<thomas.petazzoni@free-electrons.com>
->> Cc: Ezequiel Garcia<ezequiel.garcia@free-electrons.com>
->> Cc: barebox@lists.infradead.org
->> ---
->>   arch/arm/mach-mvebu/Makefile        |    4 +-
->>   arch/arm/mach-mvebu/armada-370-xp.c |  142 +++++++++++++++++++++++++++++++++++
->>   arch/arm/mach-mvebu/core.c          |  142 -----------------------------------
->>   3 files changed, 144 insertions(+), 144 deletions(-)
->>   create mode 100644 arch/arm/mach-mvebu/armada-370-xp.c
->>   delete mode 100644 arch/arm/mach-mvebu/core.c
->
-> Acked-by: Thomas Petazzoni<thomas.petazzoni@free-electrons.com>
->
-> thought it would be nice to use git format-patch -M to enable rename
-> detection in Git, so that we see this is just a rename and not a
-> complete rewrite of the file.
+Dear Sebastian Hesselbarth,
 
-True. I will send a v2 of some patches anyway as I found a left-over
-include elsewhere.
+On Sun, 12 May 2013 18:51:46 +0200, Sebastian Hesselbarth wrote:
 
-Sebastian
+> > How does the remapping of the registers plays with the debug_ll code in
+> > arch/arm/mach-mvebu/include/mach/debug_ll.h, which assumes the UART is
+> > at 0xd0012000 ?
+> 
+> Thomas, currently it does not play with debug_ll. That's why I don't
+> remap registers yet. I rather suggest to have a pre-linux boot hook in
+> barebox to allow to tweak platform specific things before control is
+> handed over to linux kernel.
+
+Ok. I guess we have a choice: either we do the remapping very early,
+and we execute everything at 0xf1. Or we do the remapping very late
+(right before jumping into Linux), and Barebox lives with 0xd0.
+
+I'm not sure what the best way to proceed.
+
+Best regards,
+
+Thomas
+-- 
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
