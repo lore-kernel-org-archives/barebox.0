@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-lb0-f180.google.com ([209.85.217.180])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbcMj-0007O7-LC
+ id 1UbcMj-0007O5-EH
  for barebox@lists.infradead.org; Sun, 12 May 2013 19:55:30 +0000
-Received: by mail-la0-f53.google.com with SMTP id eo20so5395822lab.26
- for <barebox@lists.infradead.org>; Sun, 12 May 2013 12:55:07 -0700 (PDT)
+Received: by mail-lb0-f180.google.com with SMTP id o10so169941lbi.39
+ for <barebox@lists.infradead.org>; Sun, 12 May 2013 12:55:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 12 May 2013 23:54:04 +0400
-Message-Id: <1368388446-31669-3-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 12 May 2013 23:54:03 +0400
+Message-Id: <1368388446-31669-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1368388446-31669-1-git-send-email-antonynpavlov@gmail.com>
 References: <1368388446-31669-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,196 +23,115 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/4] MIPS: add initial device tree support
+Subject: [PATCH v2 1/4] of: separate out "generic" memory bank adding
 To: barebox@lists.infradead.org
+
+This patch separates out the "generic" memory
+segment registration function (of_add_memory_bank())
+from of_add_memory().
+The MIPS architecture has different view on memory
+resources than the ARM and PPC architectures
+so the "generic" of_add_memory_bank() is
+unusable for the MIPS architecture.
+We can add MIPS-specific of_add_memory_bank()
+into arch/mips code.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig           |    8 ++++++
- arch/mips/Makefile          |   12 +++++++++
- arch/mips/boot/Makefile     |    2 ++
- arch/mips/boot/dtb.c        |   61 +++++++++++++++++++++++++++++++++++++++++++
- arch/mips/dts/Makefile      |   10 +++++++
- arch/mips/dts/skeleton.dtsi |   13 +++++++++
- arch/mips/lib/barebox.lds.S |    2 ++
- 7 files changed, 108 insertions(+)
- create mode 100644 arch/mips/boot/dtb.c
- create mode 100644 arch/mips/dts/Makefile
- create mode 100644 arch/mips/dts/skeleton.dtsi
+ drivers/of/Kconfig       |    5 +++++
+ drivers/of/Makefile      |    1 +
+ drivers/of/base.c        |    8 +-------
+ drivers/of/mem_generic.c |   15 +++++++++++++++
+ include/of.h             |    2 ++
+ 5 files changed, 24 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/of/mem_generic.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 947edcf..d58b804 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -23,6 +23,14 @@ config GENERIC_LINKER_SCRIPT
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 56762e4..ffe063e 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -1,6 +1,11 @@
+ config OFTREE
+ 	bool
  
- menu "Machine selection"
- 
-+config BUILTIN_DTB
-+	bool "link a DTB into the barebox image"
++config OFTREE_MEM_GENERIC
 +	depends on OFTREE
++	depends on PPC || ARM
++	def_bool y
 +
-+config BUILTIN_DTB_NAME
-+	string "DTB to build into the barebox image"
-+	depends on BUILTIN_DTB
-+
- choice
- 	prompt "System type"
- 	default MACH_MIPS_MALTA
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 3c565a4..c038933 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -113,6 +113,8 @@ common-y += $(BOARD) $(MACH)
- common-y += arch/mips/lib/
- common-y += arch/mips/boot/
+ config DTC
+ 	bool
  
-+common-$(CONFIG_BUILTIN_DTB) += arch/mips/dts/
-+
- CPPFLAGS += $(cflags-y)
- CFLAGS += $(cflags-y)
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index d16a946..c81bbec 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -1,4 +1,5 @@
+ obj-y += base.o fdt.o
++obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
+ obj-$(CONFIG_GPIOLIB) += gpio.o
+ obj-y += partition.o
+ obj-y += of_net.o
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 8383549..1158132 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -873,7 +873,6 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	int na, nc;
+ 	const __be32 *reg, *endp;
+ 	int len, r = 0, ret;
+-	static char str[6];
+ 	const char *device_type;
  
-@@ -127,4 +129,14 @@ zbarebox.S zbarebox.bin zbarebox: barebox.bin
- archclean:
- 	$(MAKE) $(clean)=$(pbl)
+ 	ret = of_property_read_string(node, "device_type", &device_type);
+@@ -900,12 +899,7 @@ int of_add_memory(struct device_node *node, bool dump)
+ 		if (size == 0)
+ 			continue;
  
-+dts := arch/mips/dts
-+
-+%.dtb: scripts
-+	$(Q)$(MAKE) $(build)=$(dts) $(dts)/$@
-+
-+dtbs: scripts
-+	$(Q)$(MAKE) $(build)=$(dts) dtbs
-+
-+KBUILD_DTBS := dtbs
-+
- KBUILD_IMAGE ?= $(KBUILD_BINARY)
-diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
-index 6b093f1..b865b10 100644
---- a/arch/mips/boot/Makefile
-+++ b/arch/mips/boot/Makefile
-@@ -1,4 +1,6 @@
- obj-y += start.o
- obj-y += main_entry.o
+-		sprintf(str, "ram%d", r);
+-
+-		barebox_add_memory_bank(str, base, size);
+-
+-		if (dump)
+-			pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
++		of_add_memory_bank(node, dump, r, base, size);
  
-+obj-$(CONFIG_BUILTIN_DTB) += dtb.o
-+
- pbl-y += start-pbl.o main_entry-pbl.o
-diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
+ 		r++;
+ 	}
+diff --git a/drivers/of/mem_generic.c b/drivers/of/mem_generic.c
 new file mode 100644
-index 0000000..c1962bf
+index 0000000..9094243
 --- /dev/null
-+++ b/arch/mips/boot/dtb.c
-@@ -0,0 +1,61 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * Based on arch/arm/cpu/dtb.c:
-+ * Copyright (C) 2013 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/drivers/of/mem_generic.c
+@@ -0,0 +1,15 @@
 +#include <common.h>
-+#include <init.h>
 +#include <of.h>
 +#include <memory.h>
-+#include <asm/addrspace.h>
 +
 +void of_add_memory_bank(struct device_node *node, bool dump, int r,
 +		u64 base, u64 size)
 +{
-+	static char str[12];
++	static char str[6];
 +
-+	sprintf(str, "kseg0_ram%d", r);
-+	barebox_add_memory_bank(str, KSEG0 | base, size);
-+
-+	sprintf(str, "kseg1_ram%d", r);
-+	barebox_add_memory_bank(str, KSEG1 | base, size);
++	sprintf(str, "ram%d", r);
++	barebox_add_memory_bank(str, base, size);
 +
 +	if (dump)
 +		pr_info("%s: %s: 0x%llx@0x%llx\n", node->name, str, size, base);
 +}
-+
-+extern char __dtb_start[];
-+
-+static int of_mips_init(void)
-+{
-+	struct device_node *root;
-+
-+	root = of_get_root_node();
-+	if (root)
-+		return 0;
-+
-+	root = of_unflatten_dtb(NULL, __dtb_start);
-+	if (root) {
-+		pr_debug("using internal DTB\n");
-+		of_set_root_node(root);
-+		if (IS_ENABLED(CONFIG_OFDEVICE))
-+			of_probe();
-+	}
-+
-+	return 0;
-+}
-+core_initcall(of_mips_init);
-diff --git a/arch/mips/dts/Makefile b/arch/mips/dts/Makefile
-new file mode 100644
-index 0000000..3ee8924
---- /dev/null
-+++ b/arch/mips/dts/Makefile
-@@ -0,0 +1,10 @@
-+
-+BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME)).dtb.o
-+obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB)
-+
-+targets += dtbs
-+targets += $(dtb-y)
-+
-+dtbs: $(addprefix $(obj)/, $(dtb-y))
-+
-+clean-files := *.dtb *.dtb.S
-diff --git a/arch/mips/dts/skeleton.dtsi b/arch/mips/dts/skeleton.dtsi
-new file mode 100644
-index 0000000..b41d241
---- /dev/null
-+++ b/arch/mips/dts/skeleton.dtsi
-@@ -0,0 +1,13 @@
-+/*
-+ * Skeleton device tree; the bare minimum needed to boot; just include and
-+ * add a compatible value.  The bootloader will typically populate the memory
-+ * node.
-+ */
-+
-+/ {
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+	chosen { };
-+	aliases { };
-+	memory { device_type = "memory"; reg = <0 0>; };
-+};
-diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-index 5b3d45d..bc78d2b 100644
---- a/arch/mips/lib/barebox.lds.S
-+++ b/arch/mips/lib/barebox.lds.S
-@@ -69,6 +69,8 @@ SECTIONS
- 	__usymtab : { BAREBOX_SYMS }
- 	__usymtab_end = .;
- 
-+	.dtb : { BAREBOX_DTB() }
-+
- 	_edata = .;
- 	. = ALIGN(4);
- 	__bss_start = .;
+diff --git a/include/of.h b/include/of.h
+index 4dcf37e..e0fc768 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -180,6 +180,8 @@ int of_device_is_stdout_path(struct device_d *dev);
+ const char *of_get_model(void);
+ void *of_flatten_dtb(struct device_node *node);
+ int of_add_memory(struct device_node *node, bool dump);
++void of_add_memory_bank(struct device_node *node, bool dump, int r,
++		u64 base, u64 size);
+ #else
+ static inline int of_parse_partitions(struct cdev *cdev,
+ 					  struct device_node *node)
 -- 
 1.7.10.4
 
