@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f181.google.com ([209.85.217.181])
+Received: from mail-lb0-f178.google.com ([209.85.217.178])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbQEp-0000XJ-QL
- for barebox@lists.infradead.org; Sun, 12 May 2013 06:58:32 +0000
-Received: by mail-lb0-f181.google.com with SMTP id w10so5446961lbi.12
- for <barebox@lists.infradead.org>; Sat, 11 May 2013 23:58:08 -0700 (PDT)
+ id 1UbQEZ-0000XI-7C
+ for barebox@lists.infradead.org; Sun, 12 May 2013 06:58:16 +0000
+Received: by mail-lb0-f178.google.com with SMTP id p10so1701457lbv.23
+ for <barebox@lists.infradead.org>; Sat, 11 May 2013 23:57:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 12 May 2013 10:57:16 +0400
-Message-Id: <1368341836-19152-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 12 May 2013 10:56:59 +0400
+Message-Id: <1368341819-19115-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +21,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] gpio: fix typos
+Subject: [PATCH] ARM: remove unused clkdev.h
 To: barebox@lists.infradead.org
+
+See also:
+
+  commit eb84709192f1b616cd141594c34ddbc072c8d6ec
+  Author: Sascha Hauer <s.hauer@pengutronix.de>
+  Date:   Mon Mar 25 15:18:38 2013 +0100
+
+      clk: remove unused __clk_[get|put]
+
+      This is some unused code resulting from copying stuff from
+      the kernel. Remove it.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- include/asm-generic/gpio.h |    1 -
- include/gpio.h             |    2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/mach-tegra/include/mach/clkdev.h |    7 -------
+ arch/arm/mach-zynq/include/mach/clkdev.h  |    6 ------
+ 2 files changed, 13 deletions(-)
+ delete mode 100644 arch/arm/mach-tegra/include/mach/clkdev.h
+ delete mode 100644 arch/arm/mach-zynq/include/mach/clkdev.h
 
-diff --git a/include/asm-generic/gpio.h b/include/asm-generic/gpio.h
-index c2e7a5d..95fdd05 100644
---- a/include/asm-generic/gpio.h
-+++ b/include/asm-generic/gpio.h
-@@ -18,4 +18,3 @@ int gpio_direction_output(unsigned gpio, int value);
- int gpio_direction_input(unsigned gpio);
- 
- #endif /* __ASM_GENERIC_GPIO_H */
+diff --git a/arch/arm/mach-tegra/include/mach/clkdev.h b/arch/arm/mach-tegra/include/mach/clkdev.h
+deleted file mode 100644
+index 04b37a8..0000000
+--- a/arch/arm/mach-tegra/include/mach/clkdev.h
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#ifndef __ASM_MACH_CLKDEV_H
+-#define __ASM_MACH_CLKDEV_H
 -
-diff --git a/include/gpio.h b/include/gpio.h
-index c2fb9f7..140d53c 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -6,7 +6,7 @@
- #ifndef CONFIG_GPIOLIB
- static inline int gpio_request(unsigned gpio, const char *label)
- {
--       return 0;
-+	return 0;
- }
- 
- static inline void gpio_free(unsigned gpio)
+-#define __clk_get(clk) ({ 1; })
+-#define __clk_put(clk) do { } while (0)
+-
+-#endif
+diff --git a/arch/arm/mach-zynq/include/mach/clkdev.h b/arch/arm/mach-zynq/include/mach/clkdev.h
+deleted file mode 100644
+index 31f7035..0000000
+--- a/arch/arm/mach-zynq/include/mach/clkdev.h
++++ /dev/null
+@@ -1,6 +0,0 @@
+-#ifndef __ASM_MACH_CLKDEV_H
+-#define __ASM_MACH_CLKDEV_H
+-
+-#define __clk_get(clk) ({ 1; })
+-#define __clk_put(clk) do { } while (0)
+-#endif
 -- 
 1.7.10.4
 
