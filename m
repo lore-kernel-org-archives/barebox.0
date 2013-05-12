@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbZTF-0005Qa-3q
- for barebox@lists.infradead.org; Sun, 12 May 2013 16:50:01 +0000
-Date: Sun, 12 May 2013 18:49:35 +0200
+ id 1UbZU9-0005RL-Ux
+ for barebox@lists.infradead.org; Sun, 12 May 2013 16:50:58 +0000
+Date: Sun, 12 May 2013 18:50:32 +0200
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130512184935.29bce329@skate>
-In-Reply-To: <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130512185032.3d99434a@skate>
+In-Reply-To: <1368364146-6024-6-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368364146-6024-6-git-send-email-sebastian.hesselbarth@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -22,42 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
+Subject: Re: [PATCH 5/5] arm: mach-mvebu: rename Armada 370/XP core code
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
 Dear Sebastian Hesselbarth,
 
-On Sun, 12 May 2013 15:09:04 +0200, Sebastian Hesselbarth wrote:
+On Sun, 12 May 2013 15:09:06 +0200, Sebastian Hesselbarth wrote:
+> There are more than Armada 370/XP in Marvell MVEBU SoC familiy. To avoid
+> irritation with source file nameing, we rename setup source file for
+> Armada 370/XP from core.c to armada-370-xp.c.
+> 
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+> Cc: barebox@lists.infradead.org
+> ---
+>  arch/arm/mach-mvebu/Makefile        |    4 +-
+>  arch/arm/mach-mvebu/armada-370-xp.c |  142 +++++++++++++++++++++++++++++++++++
+>  arch/arm/mach-mvebu/core.c          |  142 -----------------------------------
+>  3 files changed, 144 insertions(+), 144 deletions(-)
+>  create mode 100644 arch/arm/mach-mvebu/armada-370-xp.c
+>  delete mode 100644 arch/arm/mach-mvebu/core.c
 
-> +static inline void dove_remap_reg_base(uint32_t intbase,
-> +				       uint32_t mcbase)
-> +{
-> +	uint32_t val;
-> +
-> +	/* remap ahb slave base */
-> +	val  = readl(DOVE_CPU_CTRL) & 0xffff0000;
-> +	val |= (mcbase & 0xffff0000) >> 16;
-> +	writel(val, DOVE_CPU_CTRL);
-> +
-> +	/* remap axi bridge address */
-> +	val  = readl(DOVE_AXI_CTRL) & 0x007fffff;
-> +	val |= mcbase & 0xff800000;
-> +	writel(val, DOVE_AXI_CTRL);
-> +
-> +	/* remap memory controller base address */
-> +	val = readl(DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
-> +	val |= mcbase & 0xffff0000;
-> +	writel(val, DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE);
-> +
-> +	/* remap internal register */
-> +	val = intbase & 0xfff00000;
-> +	writel(val, DOVE_BRIDGE_BASE + INT_REGS_BASE_MAP);
-> +}
+Acked-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-How does the remapping of the registers plays with the debug_ll code in
-arch/arm/mach-mvebu/include/mach/debug_ll.h, which assumes the UART is
-at 0xd0012000 ?
+thought it would be nice to use git format-patch -M to enable rename
+detection in Git, so that we see this is just a rename and not a
+complete rewrite of the file.
 
 Thanks!
 
