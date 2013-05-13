@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ubnf9-0006q7-8p
- for barebox@lists.infradead.org; Mon, 13 May 2013 07:59:16 +0000
-Date: Mon, 13 May 2013 09:58:52 +0200
+ id 1Ubnyk-0007Jb-0p
+ for barebox@lists.infradead.org; Mon, 13 May 2013 08:19:31 +0000
+Date: Mon, 13 May 2013 10:19:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130513075852.GG32299@pengutronix.de>
-References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130513081907.GJ32299@pengutronix.de>
+References: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: [PATCH] arm: mach-mvebu: drop useless clkdev.h
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: barebox@lists.infradead.org
 
-On Sun, May 12, 2013 at 03:09:04PM +0200, Sebastian Hesselbarth wrote:
-> This commit adds minimal support for the Marvell Dove SoC (88AP510) as
-> first SoC of the Marvell Orion family. Orion SoCs have a different timer,
-> therefore current mach-mvebu and Armada 370/XP Kconfig and Makefiles are
-> slightly modified and a new clocksource drivers is added.
+On Sun, May 12, 2013 at 01:26:09PM +0200, Thomas Petazzoni wrote:
+> As suggested by Antony Pavlov, get rid of the useless clkdev.h in
+> arch/arm/mach-mvebu/.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> Note: Linux for Dove expects internal registers to be remapped. For more
-> compatibility with barebox for MVEBU, I did not remap those yet. I rather
-> suggest to allow to add a pre-boot hook right before linux gets booted by
-> barebox.
+> Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Damn, I thought that the PowerPC SoCs are the only ones that have such a
-crazy register hiding feature.
-
-I'd really prefer that the barebox memory layout is compatible to the
-existing devicetrees. Otherwise we block the way of probing barebox from
-the devicetree and to start barebox second stage.
-
-Is it possible to remap the registers using the kwbimage tool? That way
-every code that runs would see the desired register layout.
+Folded this into the original patch adding it.
 
 Sascha
 
+> ---
+>  arch/arm/mach-mvebu/include/mach/clkdev.h |    7 -------
+>  1 file changed, 7 deletions(-)
+>  delete mode 100644 arch/arm/mach-mvebu/include/mach/clkdev.h
+> 
+> diff --git a/arch/arm/mach-mvebu/include/mach/clkdev.h b/arch/arm/mach-mvebu/include/mach/clkdev.h
+> deleted file mode 100644
+> index 04b37a8..0000000
+> --- a/arch/arm/mach-mvebu/include/mach/clkdev.h
+> +++ /dev/null
+> @@ -1,7 +0,0 @@
+> -#ifndef __ASM_MACH_CLKDEV_H
+> -#define __ASM_MACH_CLKDEV_H
+> -
+> -#define __clk_get(clk) ({ 1; })
+> -#define __clk_put(clk) do { } while (0)
+> -
+> -#endif
+> -- 
+> 1.7.9.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
