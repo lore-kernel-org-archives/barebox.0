@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from optimeas.de ([78.46.18.2])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UboMo-0007mW-B7
- for barebox@lists.infradead.org; Mon, 13 May 2013 08:44:23 +0000
-From: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
-Date: Mon, 13 May 2013 08:43:58 +0000
-In-Reply-To: <20130513045912.GB32299@pengutronix.de>
-Message-Id: <em693f4276-887c-4945-ba22-230c24dc89b1@plh001-think>
-Mime-Version: 1.0
-Reply-To: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
+Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UbotA-0008ML-Dj
+ for barebox@lists.infradead.org; Mon, 13 May 2013 09:17:49 +0000
+Received: by mail-bk0-f45.google.com with SMTP id je9so2283767bkc.4
+ for <barebox@lists.infradead.org>; Mon, 13 May 2013 02:17:25 -0700 (PDT)
+Message-ID: <5190AFA1.1080503@gmail.com>
+Date: Mon, 13 May 2013 11:17:21 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130513075852.GG32299@pengutronix.de>
+In-Reply-To: <20130513075852.GG32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +25,60 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re[2]: Error when starting kernel with devicetree on tx53
+Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Thanks Sascha,
-but whats wrong with the devicetree blob?
-I mean the same dtb is working, when I boot the board with uboot.
-
-I use ptxdist to build the kernel image and to build the tx53.dtb from 
-tx53.dts
-
-Are there some special settings to build the dtb for use with barebox?
-
-What can be wrong with the dtb.
-
-Best regards, Patrick
-
-
------- Originalnachricht ------
-Von: "Sascha Hauer" <s.hauer@pengutronix.de>
-An: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
-Cc: barebox@lists.infradead.org
-Gesendet: 13.05.2013 06:59:12
-Betreff: Re: Error when starting kernel with devicetree on tx53
->On Sun, May 12, 2013 at 06:12:11PM +0000, Dr. Patrick Langfeld wrote:
+On 05/13/2013 09:58 AM, Sascha Hauer wrote:
+> On Sun, May 12, 2013 at 03:09:04PM +0200, Sebastian Hesselbarth wrote:
+>> This commit adds minimal support for the Marvell Dove SoC (88AP510) as
+>> first SoC of the Marvell Orion family. Orion SoCs have a different timer,
+>> therefore current mach-mvebu and Armada 370/XP Kconfig and Makefiles are
+>> slightly modified and a new clocksource drivers is added.
 >>
->>  Loading OS U-Boot uImage '/mnt/tftp/uImage'
->>  OS image is at 0x70008000-0x70233917
->>  Loading devicetree from '/mnt/tftp/tx53.dtb'
->>  /mnt/tftp/tx53.dtb is not an oftree but unknown
->>  bad magic: 0x0000f085
+>> Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
+>> ---
+>> Note: Linux for Dove expects internal registers to be remapped. For more
+>> compatibility with barebox for MVEBU, I did not remap those yet. I rather
+>> suggest to allow to add a pre-boot hook right before linux gets booted by
+>> barebox.
 >
->Your problem is that this not a devicetree blob.
->Of course barebox should not crash then, this seems to be a bug.
+> Damn, I thought that the PowerPC SoCs are the only ones that have such a
+> crazy register hiding feature.
 >
->Sascha
->
->--
->Pengutronix e.K. | |
->Industrial Linux Solutions | http://www.pengutronix.de/ |
->Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 |
->Amtsgericht Hildesheim, HRA 2686 | Fax: +49-5121-206917-5555 |
->
+> I'd really prefer that the barebox memory layout is compatible to the
+> existing devicetrees. Otherwise we block the way of probing barebox from
+> the devicetree and to start barebox second stage.
 
+Sascha,
+
+memory layout will be compatible for sure. Just because I will not
+rewrite the whole bunch of dtsi files we built up in the past ;)
+
+> Is it possible to remap the registers using the kwbimage tool? That way
+> every code that runs would see the desired register layout.
+
+Although possible, I prefer a different approach:
+- IIRC all MVEBU SoCs boot up at 0xd0000000
+- Have a regbase variable within barebox that initially points to that
+- Have a mvreadl/mvwritel that adds it to reg offsets
+- Rewrite _initial_ SoC code to use mvreadl/mvwritel
+- Remap during init after we can parse the DT tree but before timer and
+   modify the pointer above
+
+The regbase pointer is required as early debug _will_ access register
+before and after remap and there is no way around it. But
+mvreadl/mvwritel will be limited to code that sits in mach-mvebu, all
+drivers will depend on DT.
+
+Actually, I have a branch at
+
+git://github.com/shesselba/barebox-dove.git mvebu-dt-v0
+
+booting Dove and Armada 370 from full DT. You can have a sneak preview
+where Thomas and I will push Marvell support to soon.
+
+Sebastian
 
 _______________________________________________
 barebox mailing list
