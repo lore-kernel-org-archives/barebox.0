@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ubnyk-0007Jb-0p
- for barebox@lists.infradead.org; Mon, 13 May 2013 08:19:31 +0000
-Date: Mon, 13 May 2013 10:19:07 +0200
+ id 1Ubnza-0007LK-Ru
+ for barebox@lists.infradead.org; Mon, 13 May 2013 08:20:23 +0000
+Date: Mon, 13 May 2013 10:20:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130513081907.GJ32299@pengutronix.de>
-References: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Message-ID: <20130513082001.GK32299@pengutronix.de>
+References: <1368358553-22936-1-git-send-email-thomas.petazzoni@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
+In-Reply-To: <1368358553-22936-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mach-mvebu: drop useless clkdev.h
+Subject: Re: [PATCH] arm: ensure the build doesn't fail when kwbimage lacks
+ the binary blob
 To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, May 12, 2013 at 01:26:09PM +0200, Thomas Petazzoni wrote:
-> As suggested by Antony Pavlov, get rid of the useless clkdev.h in
-> arch/arm/mach-mvebu/.
+On Sun, May 12, 2013 at 01:35:53PM +0200, Thomas Petazzoni wrote:
+> mach-mvebu images for Armada 370 and Armada XP SoC require a DDR3
+> training code which should be extracted from existing bootable images
+> for the relevant board. When such binary blob has not been extracted,
+> the build of the .kwb and .kwbuart images will fail. This is annoying
+> as it makes the build of all Armada 370/XP defconfig fail, which can
+> be a problem for automated builds.
+> 
+> This proposal makes the failure of kwbimage not a fatal failure for
+> the build process, and shows a warning. The user therefore sees:
+> 
+> ====================================================================
+>   KWB     barebox.kwb
+> Didn't find the file 'plathome-openblocks-ax3-binary.0' in '/home/thomas/projets/barebox' which is mandatory to generate the image
+> This file generally contains the DDR3 training code, and should be extracted from an existing bootable
+> image for your board. See 'kwbimage -x' to extract it from an existing image.
+> Could not create image
+> WARNING: Couldn't create KWB image due to previous errors.
+>   KWBUART barebox.kwbuart
+> Didn't find the file 'plathome-openblocks-ax3-binary.0' in '/home/thomas/projets/barebox' which is mandatory to generate the image
+> This file generally contains the DDR3 training code, and should be extracted from an existing bootable
+> image for your board. See 'kwbimage -x' to extract it from an existing image.
+> Could not create image
+> WARNING Couldn't create KWB image due to previous errors.
+> ====================================================================
+> 
+> The only drawback is that barebox-flash-image, which normally points
+> to barebox.kwb, becomes a state symbolic link.
 > 
 > Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Folded this into the original patch adding it.
+Folded this into the original commit and fixed the typo along the way.
 
 Sascha
-
-> ---
->  arch/arm/mach-mvebu/include/mach/clkdev.h |    7 -------
->  1 file changed, 7 deletions(-)
->  delete mode 100644 arch/arm/mach-mvebu/include/mach/clkdev.h
-> 
-> diff --git a/arch/arm/mach-mvebu/include/mach/clkdev.h b/arch/arm/mach-mvebu/include/mach/clkdev.h
-> deleted file mode 100644
-> index 04b37a8..0000000
-> --- a/arch/arm/mach-mvebu/include/mach/clkdev.h
-> +++ /dev/null
-> @@ -1,7 +0,0 @@
-> -#ifndef __ASM_MACH_CLKDEV_H
-> -#define __ASM_MACH_CLKDEV_H
-> -
-> -#define __clk_get(clk) ({ 1; })
-> -#define __clk_put(clk) do { } while (0)
-> -
-> -#endif
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
