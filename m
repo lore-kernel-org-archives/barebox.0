@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ubo0h-0007Mg-Of
- for barebox@lists.infradead.org; Mon, 13 May 2013 08:21:32 +0000
-Date: Mon, 13 May 2013 10:21:09 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130513082109.GL32299@pengutronix.de>
-References: <1368359995-1754-1-git-send-email-sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1368359995-1754-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UboIP-0007jY-B7
+ for barebox@lists.infradead.org; Mon, 13 May 2013 08:39:49 +0000
+Date: Mon, 13 May 2013 10:39:24 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130513103924.0506f211@skate>
+In-Reply-To: <20130513081907.GJ32299@pengutronix.de>
+References: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <20130513081907.GJ32299@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,27 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gitignore: add kwb binary images to gitignore file
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: mach-mvebu: drop useless clkdev.h
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Sun, May 12, 2013 at 01:59:55PM +0200, Sebastian Hesselbarth wrote:
-> This adds barebox.kwb and barebox.kwbuart to the list of files to
-> be ignored by git.
+Dear Sascha Hauer,
+
+On Mon, 13 May 2013 10:19:07 +0200, Sascha Hauer wrote:
+> On Sun, May 12, 2013 at 01:26:09PM +0200, Thomas Petazzoni wrote:
+> > As suggested by Antony Pavlov, get rid of the useless clkdev.h in
+> > arch/arm/mach-mvebu/.
+> > 
+> > Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> Acked-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Folded this into the original patch adding it.
 
-Applied, thanks
+Just a development process question: since you're folding it, it means
+that you're rebasing the 'next' branch constantly?
 
-Sascha
+This sounds off for a public branch on top of which people might be
+basing some more work, no?
 
+Thanks!
 
+Thomas
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
