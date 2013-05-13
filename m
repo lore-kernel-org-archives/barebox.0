@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from optimeas.de ([78.46.18.2])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UboIP-0007jY-B7
- for barebox@lists.infradead.org; Mon, 13 May 2013 08:39:49 +0000
-Date: Mon, 13 May 2013 10:39:24 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130513103924.0506f211@skate>
-In-Reply-To: <20130513081907.GJ32299@pengutronix.de>
-References: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130513081907.GJ32299@pengutronix.de>
+ id 1UboMo-0007mW-B7
+ for barebox@lists.infradead.org; Mon, 13 May 2013 08:44:23 +0000
+From: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
+Date: Mon, 13 May 2013 08:43:58 +0000
+In-Reply-To: <20130513045912.GB32299@pengutronix.de>
+Message-Id: <em693f4276-887c-4945-ba22-230c24dc89b1@plh001-think>
 Mime-Version: 1.0
+Reply-To: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,39 +17,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mach-mvebu: drop useless clkdev.h
+Subject: Re[2]: Error when starting kernel with devicetree on tx53
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Dear Sascha Hauer,
+Thanks Sascha,
+but whats wrong with the devicetree blob?
+I mean the same dtb is working, when I boot the board with uboot.
 
-On Mon, 13 May 2013 10:19:07 +0200, Sascha Hauer wrote:
-> On Sun, May 12, 2013 at 01:26:09PM +0200, Thomas Petazzoni wrote:
-> > As suggested by Antony Pavlov, get rid of the useless clkdev.h in
-> > arch/arm/mach-mvebu/.
-> > 
-> > Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> 
-> Folded this into the original patch adding it.
+I use ptxdist to build the kernel image and to build the tx53.dtb from 
+tx53.dts
 
-Just a development process question: since you're folding it, it means
-that you're rebasing the 'next' branch constantly?
+Are there some special settings to build the dtb for use with barebox?
 
-This sounds off for a public branch on top of which people might be
-basing some more work, no?
+What can be wrong with the dtb.
 
-Thanks!
+Best regards, Patrick
 
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+
+------ Originalnachricht ------
+Von: "Sascha Hauer" <s.hauer@pengutronix.de>
+An: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
+Cc: barebox@lists.infradead.org
+Gesendet: 13.05.2013 06:59:12
+Betreff: Re: Error when starting kernel with devicetree on tx53
+>On Sun, May 12, 2013 at 06:12:11PM +0000, Dr. Patrick Langfeld wrote:
+>>
+>>  Loading OS U-Boot uImage '/mnt/tftp/uImage'
+>>  OS image is at 0x70008000-0x70233917
+>>  Loading devicetree from '/mnt/tftp/tx53.dtb'
+>>  /mnt/tftp/tx53.dtb is not an oftree but unknown
+>>  bad magic: 0x0000f085
+>
+>Your problem is that this not a devicetree blob.
+>Of course barebox should not crash then, this seems to be a bug.
+>
+>Sascha
+>
+>--
+>Pengutronix e.K. | |
+>Industrial Linux Solutions | http://www.pengutronix.de/ |
+>Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0 |
+>Amtsgericht Hildesheim, HRA 2686 | Fax: +49-5121-206917-5555 |
+>
+
 
 _______________________________________________
 barebox mailing list
