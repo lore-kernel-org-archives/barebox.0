@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UbrbG-0003jv-GR
- for barebox@lists.infradead.org; Mon, 13 May 2013 12:11:31 +0000
-Date: Mon, 13 May 2013 14:11:01 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130513141101.1a894d81@skate>
-In-Reply-To: <20130513115322.GQ32299@pengutronix.de>
-References: <1368357969-21633-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <20130513081907.GJ32299@pengutronix.de>
- <20130513103924.0506f211@skate>
- <20130513115322.GQ32299@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ubs7u-0004TW-Ot
+ for barebox@lists.infradead.org; Mon, 13 May 2013 12:45:15 +0000
+Date: Mon, 13 May 2013 14:44:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130513124452.GR32299@pengutronix.de>
+References: <20130513045912.GB32299@pengutronix.de>
+ <em693f4276-887c-4945-ba22-230c24dc89b1@plh001-think>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <em693f4276-887c-4945-ba22-230c24dc89b1@plh001-think>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mach-mvebu: drop useless clkdev.h
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Error when starting kernel with devicetree on tx53
+To: "Dr. Patrick Langfeld" <patrick.langfeld@optimeas.de>
 Cc: barebox@lists.infradead.org
 
-Dear Sascha Hauer,
+On Mon, May 13, 2013 at 08:43:58AM +0000, Dr. Patrick Langfeld wrote:
+> Thanks Sascha,
+> but whats wrong with the devicetree blob?
+> I mean the same dtb is working, when I boot the board with uboot.
+> 
+> I use ptxdist to build the kernel image and to build the tx53.dtb
+> from tx53.dts
+> 
+> Are there some special settings to build the dtb for use with barebox?
+> 
+> What can be wrong with the dtb.
 
-On Mon, 13 May 2013 13:53:22 +0200, Sascha Hauer wrote:
+A dtb must have 0xd00dfeed (big endian) in the first 4 bytes. Your dtb
+seems to have 0x0000f085 instead so barebox doesn't recognize this as
+dtb.
 
-> You should normally be able to work on the master branch. If you have
-> dependencies to -next then yes, you would have to rebase which means
-> some work for you.
-> Not having a fast forward branch means that we have a better commit
-> history and that bugs noticed early enough do not even make it to the
-> master branch which increases bisectability significantly.
+You could do a:
 
-Ok, good to know. Thanks!
+md -s /mnt/tftp/tx53.dtb
 
-Thomas
+on the commandline. You should see the magic.
+
+Then afterwards you can add the following to commands/bootm.c just below
+the line printing "...is not an oftree but...":
+
+	memory_display(fdt, 0, 0x100, 4, 0);
+
+The result should be identical and both should have 0xedfe0dd0 as the
+first value.
+
+Sascha
+
 -- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
