@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNmS-0002IO-HL
+ id 1UcNmS-0002IP-HR
  for barebox@lists.infradead.org; Tue, 14 May 2013 22:33:18 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:24 +0200
-Message-Id: <1368570745-23348-12-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:25 +0200
+Message-Id: <1368570745-23348-13-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,148 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/12] arm: mvebu: add basic support for SolidRun CuBox
+Subject: [PATCH 12/12] arm: mvebu: add basic support for Globalscale Guruplug
+ board
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+The Globalscale Guruplug board is a small NAS-type plug platform that
+uses a Marvell Kirkwood SoC.
 
-The SolidRun CuBox is a small cubic platform based on the Marvell
-Dove SoC. There is nothing more than a console, yet.
-
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/Makefile                               |    1 +
- arch/arm/boards/solidrun-cubox/Makefile         |    2 ++
- arch/arm/boards/solidrun-cubox/config.h         |    4 +++
- arch/arm/boards/solidrun-cubox/kwbimage.cfg     |   37 +++++++++++++++++++++++
- arch/arm/boards/solidrun-cubox/lowlevel.c       |   26 ++++++++++++++++
- arch/arm/boards/solidrun-cubox/solidrun-cubox.c |   28 +++++++++++++++++
- arch/arm/configs/solidrun_cubox_defconfig       |    9 ++++++
- arch/arm/mach-mvebu/Kconfig                     |    5 +++
- 8 files changed, 112 insertions(+)
- create mode 100644 arch/arm/boards/solidrun-cubox/Makefile
- create mode 100644 arch/arm/boards/solidrun-cubox/config.h
- create mode 100644 arch/arm/boards/solidrun-cubox/kwbimage.cfg
- create mode 100644 arch/arm/boards/solidrun-cubox/lowlevel.c
- create mode 100644 arch/arm/boards/solidrun-cubox/solidrun-cubox.c
- create mode 100644 arch/arm/configs/solidrun_cubox_defconfig
+ arch/arm/Makefile                                  |    1 +
+ arch/arm/boards/globalscale-guruplug/Makefile      |    2 ++
+ arch/arm/boards/globalscale-guruplug/config.h      |    4 +++
+ .../globalscale-guruplug/globalscale-guruplug.c    |   26 +++++++++++++++++++
+ arch/arm/boards/globalscale-guruplug/kwbimage.cfg  |   27 ++++++++++++++++++++
+ arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 +++++++++++++++++++
+ arch/arm/configs/globalscale_guruplug_defconfig    |    6 +++++
+ arch/arm/mach-mvebu/Kconfig                        |    5 ++++
+ 8 files changed, 97 insertions(+)
+ create mode 100644 arch/arm/boards/globalscale-guruplug/Makefile
+ create mode 100644 arch/arm/boards/globalscale-guruplug/config.h
+ create mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
+ create mode 100644 arch/arm/boards/globalscale-guruplug/kwbimage.cfg
+ create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
+ create mode 100644 arch/arm/configs/globalscale_guruplug_defconfig
 
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index af8294d..8f17e7e 100644
+index 8f17e7e..1e7ace4 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -147,6 +147,7 @@ board-$(CONFIG_MACH_MINI6410)			:= friendlyarm-mini6410
- board-$(CONFIG_MACH_TINY6410)			:= friendlyarm-tiny6410
- board-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	:= plathome-openblocks-ax3
- board-$(CONFIG_MACH_QIL_A9260)			:= qil-a9260
-+board-$(CONFIG_MACH_SOLIDRUN_CUBOX)		:= solidrun-cubox
- board-$(CONFIG_MACH_TNY_A9260)			:= tny-a926x
- board-$(CONFIG_MACH_TNY_A9263)			:= tny-a926x
- board-$(CONFIG_MACH_TNY_A9G20)			:= tny-a926x
-diff --git a/arch/arm/boards/solidrun-cubox/Makefile b/arch/arm/boards/solidrun-cubox/Makefile
+@@ -103,6 +103,7 @@ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
+ board-$(CONFIG_MACH_GE863)			:= telit-evk-pro3
+ board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)        := globalscale-mirabox
++board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)       := globalscale-guruplug
+ board-$(CONFIG_MACH_HIGHBANK)			:= highbank
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
 new file mode 100644
-index 0000000..6dfe2c8
+index 0000000..3b48b32
 --- /dev/null
-+++ b/arch/arm/boards/solidrun-cubox/Makefile
++++ b/arch/arm/boards/globalscale-guruplug/Makefile
 @@ -0,0 +1,2 @@
-+obj-y = solidrun-cubox.o
++obj-y = globalscale-guruplug.o
 +lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/solidrun-cubox/config.h b/arch/arm/boards/solidrun-cubox/config.h
+diff --git a/arch/arm/boards/globalscale-guruplug/config.h b/arch/arm/boards/globalscale-guruplug/config.h
 new file mode 100644
 index 0000000..ca15136
 --- /dev/null
-+++ b/arch/arm/boards/solidrun-cubox/config.h
++++ b/arch/arm/boards/globalscale-guruplug/config.h
 @@ -0,0 +1,4 @@
 +#ifndef __CONFIG_H
 +#define __CONFIG_H
 +
 +#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/solidrun-cubox/kwbimage.cfg b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
+diff --git a/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
 new file mode 100644
-index 0000000..db35aca
+index 0000000..dfc1d1a
 --- /dev/null
-+++ b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
-@@ -0,0 +1,37 @@
-+VERSION 0
-+BOOT_FROM spi
-+DATA d0020104 00000000
-+DATA d0800020 00022430
-+DATA d0800030 00022430
-+DATA d0800050 911500c3
-+DATA d0800060 646602c4
-+DATA d0800190 c2003053
-+DATA d08001c0 34f4a187
-+DATA d0800650 000f0121
-+DATA d0800660 04040200
-+DATA d0800080 00000000
-+DATA d0800090 00080000
-+DATA d08000f0 c0000000
-+DATA d08001a0 20c0c009
-+DATA d0800280 010e0202
-+DATA d0800760 00000000
-+DATA d0800770 0000000a
-+DATA d0800140 20004044
-+DATA d08001d0 133c2339
-+DATA d08001e0 07700330
-+DATA d08001f0 00000033
-+DATA d0800200 0011311c
-+DATA d0800210 00300000
-+DATA d0800240 80000000
-+DATA d0800510 010e0101
-+DATA d0800230 2028006a
-+DATA d0800e10 00280062
-+DATA d0800e20 00280062
-+DATA d0800e30 00280062
-+DATA d0800100 000d0001
-+DATA d0800110 200d0001
-+DATA d0020104 00000000
-+DATA d0020104 00000000
-+DATA d0020104 00000000
-+DATA d0020104 00000000
-+DATA d0020104 00000000
-diff --git a/arch/arm/boards/solidrun-cubox/lowlevel.c b/arch/arm/boards/solidrun-cubox/lowlevel.c
-new file mode 100644
-index 0000000..8a06cbc
---- /dev/null
-+++ b/arch/arm/boards/solidrun-cubox/lowlevel.c
++++ b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
 @@ -0,0 +1,26 @@
 +/*
-+ * Copyright
-+ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <mach/dove.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+
-+void __naked barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	dove_barebox_entry();
-+}
-diff --git a/arch/arm/boards/solidrun-cubox/solidrun-cubox.c b/arch/arm/boards/solidrun-cubox/solidrun-cubox.c
-new file mode 100644
-index 0000000..60acc3b
---- /dev/null
-+++ b/arch/arm/boards/solidrun-cubox/solidrun-cubox.c
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright
-+ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -178,59 +100,121 @@ index 0000000..60acc3b
 +
 +#include <common.h>
 +#include <init.h>
-+#include <mach/dove.h>
++#include <sizes.h>
++#include <mach/kirkwood.h>
 +
-+#include <mach/debug_ll.h>
-+
-+static int solidrun_cubox_console_init(void)
++static int globalscale_guruplug_console_init(void)
 +{
-+	return dove_add_uart(0);
++	return kirkwood_add_uart0();
 +}
 +
-+console_initcall(solidrun_cubox_console_init);
-diff --git a/arch/arm/configs/solidrun_cubox_defconfig b/arch/arm/configs/solidrun_cubox_defconfig
++console_initcall(globalscale_guruplug_console_init);
+diff --git a/arch/arm/boards/globalscale-guruplug/kwbimage.cfg b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
 new file mode 100644
-index 0000000..1a27d81
+index 0000000..d0f3bdb
 --- /dev/null
-+++ b/arch/arm/configs/solidrun_cubox_defconfig
-@@ -0,0 +1,9 @@
++++ b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
+@@ -0,0 +1,27 @@
++VERSION 0
++BOOT_FROM nand
++NAND_ECCMODE default
++NAND_PAGESZ 00000800
++DATA ffd100e0 1b1b9b9b
++DATA ffd01400 43000c30
++DATA ffd01404 37543000
++DATA ffd01408 22125451
++DATA ffd0140c 00000a33
++DATA ffd01410 000000cc
++DATA ffd01414 00000000
++DATA ffd01418 00000000
++DATA ffd0141c 00000c52
++DATA ffd01420 00000040
++DATA ffd01424 0000f17f
++DATA ffd01428 00085520
++DATA ffd0147c 00008552
++DATA ffd01500 00000000
++DATA ffd01504 0ffffff1
++DATA ffd01508 10000000
++DATA ffd0150c 0ffffff5
++DATA ffd01514 00000000
++DATA ffd0151c 00000000
++DATA ffd01494 00030000
++DATA ffd01498 00000000
++DATA ffd0149c 0000e803
++DATA ffd01480 00000001
+diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
+new file mode 100644
+index 0000000..d270cda
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/kirkwood.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	kirkwood_barebox_entry();
++}
+diff --git a/arch/arm/configs/globalscale_guruplug_defconfig b/arch/arm/configs/globalscale_guruplug_defconfig
+new file mode 100644
+index 0000000..d21de45
+--- /dev/null
++++ b/arch/arm/configs/globalscale_guruplug_defconfig
+@@ -0,0 +1,6 @@
 +CONFIG_ARCH_MVEBU=y
-+CONFIG_ARCH_DOVE=y
-+CONFIG_AEABI=y
++CONFIG_ARCH_KIRKWOOD=y
++CONFIG_TEXT_BASE=0x2000000
 +CONFIG_DEBUG_LL=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_LOADS=y
 +CONFIG_CMD_RESET=y
-+CONFIG_CMD_CLK=y
 +CONFIG_DRIVER_SERIAL_NS16550=y
 diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index d7d5c1f..92ba009 100644
+index 92ba009..1d46f87 100644
 --- a/arch/arm/mach-mvebu/Kconfig
 +++ b/arch/arm/mach-mvebu/Kconfig
-@@ -5,11 +5,13 @@ config ARCH_TEXT_BASE
+@@ -4,12 +4,14 @@ config ARCH_TEXT_BASE
+ 	hex
  	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
  	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
++	default 0x2000000 if MACH_GLOBALSCALE_GURUPLUG
  	default 0x2000000 if MACH_MARVELL_ARMADA_XP_GP
-+	default 0x2000000 if MACH_SOLIDRUN_CUBOX
+ 	default 0x2000000 if MACH_SOLIDRUN_CUBOX
  
  config BOARDINFO
  	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
  	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
++	default "Globalscale Guruplug" if MACH_GLOBALSCALE_GURUPLUG
  	default "Marvell Armada XP GP" if MACH_MARVELL_ARMADA_XP_GP
-+	default "SolidRun CuBox" if MACH_SOLIDRUN_CUBOX
+ 	default "SolidRun CuBox" if MACH_SOLIDRUN_CUBOX
  
+@@ -82,6 +84,9 @@ if ARCH_KIRKWOOD
  choice
- 	prompt "Marvell EBU Processor"
-@@ -68,6 +70,9 @@ if ARCH_DOVE
- choice
- 	prompt "Dove 88AP510 Board Type"
+ 	prompt "Kirkwood Board Type"
  
-+config MACH_SOLIDRUN_CUBOX
-+	bool "SolidRun CuBox"
++config MACH_GLOBALSCALE_GURUPLUG
++	bool "Guruplug"
 +
  endchoice
  
- endif # ARCH_DOVE
+ endif # ARCH_KIRKWOOD
 -- 
 1.7.9.5
 
