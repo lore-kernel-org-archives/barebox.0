@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail.cvg.de ([62.153.82.30])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWot-0001dc-1q
- for barebox@lists.infradead.org; Wed, 15 May 2013 08:12:19 +0000
-Date: Wed, 15 May 2013 10:11:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130515081157.GI32299@pengutronix.de>
-References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130513075852.GG32299@pengutronix.de>
- <5190AFA1.1080503@gmail.com>
- <20130515055550.GZ32299@pengutronix.de>
- <20130515092611.1fe76e5c@skate>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130515092611.1fe76e5c@skate>
+ id 1UcF5s-00067d-9k
+ for barebox@lists.infradead.org; Tue, 14 May 2013 13:16:41 +0000
+Received: from mail.cvg.de (mail.cvg.de [62.153.82.30])
+ by mailout-1.intern.sigma-chemnitz.de (8.14.4/8.14.4) with ESMTP id
+ r4EDFUx1009815
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK)
+ for <barebox@lists.infradead.org>; Tue, 14 May 2013 15:15:30 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Date: Tue, 14 May 2013 15:14:55 +0200
+Message-Id: <1368537296-19610-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
+In-Reply-To: <1368537296-19610-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+References: <1368537296-19610-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: [PATCH 2/3] ARM v7: v7_mmu_cache_flush(): do not restore r0-r3 (minor
+ optimization)
+To: barebox@lists.infradead.org
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 
-On Wed, May 15, 2013 at 09:26:11AM +0200, Thomas Petazzoni wrote:
-> Dear Sascha Hauer,
-> 
-> On Wed, 15 May 2013 07:55:50 +0200, Sascha Hauer wrote:
-> 
-> > > Although possible, I prefer a different approach:
-> > > - IIRC all MVEBU SoCs boot up at 0xd0000000
-> > > - Have a regbase variable within barebox that initially points to that
-> > > - Have a mvreadl/mvwritel that adds it to reg offsets
-> > > - Rewrite _initial_ SoC code to use mvreadl/mvwritel
-> > 
-> > I applied this series, but please get this topic done before more code
-> > enters that has to be changed when doing the above.
-> 
-> Hum, too bad, I have sent yesterday a new series, that included
-> Sebastian code, plus basic Kirkwood support, and improvements to the
-> kwbimage tool. The improvements to the kwbimage tool allowed to get rid
-> of some dummy lines in the SolidRun Cubox kwbimage.cfg that Sebastian
-> had submitted.
+Registers 'r0' till 'r3' are scratch registers and do not need to be
+restored.
 
-Sorry, I misread it. What I understood is that your series needs
-Sebastians patches as base.
+Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+---
+ arch/arm/cpu/cache-armv7.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sascha
-
+diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
+index 5bdf7e4..5595cf6 100644
+--- a/arch/arm/cpu/cache-armv7.S
++++ b/arch/arm/cpu/cache-armv7.S
+@@ -65,7 +65,7 @@ ENTRY(v7_mmu_cache_flush)
+ 		mcr	p15, 0, r12, c7, c14, 0	@ clean+invalidate D
+ 		b	iflush
+ hierarchical:
+-		stmfd	sp!, {r0-r7, r9-r11}
++		stmfd	sp!, {r4-r7, r9-r11}
+ 		mcr	p15, 0, r12, c7, c10, 5	@ DMB
+ 		mrc	p15, 1, r0, c0, c0, 1	@ read clidr
+ 		ands	r3, r0, #0x7000000	@ extract loc from clidr
+@@ -107,7 +107,7 @@ skip:
+ 		cmp	r3, r12
+ 		bgt	loop1
+ finished:
+-		ldmfd	sp!, {r0-r7, r9-r11}
++		ldmfd	sp!, {r4-r7, r9-r11}
+ 		mov	r12, #0			@ switch back to cache level 0
+ 		mcr	p15, 2, r12, c0, c0, 0	@ select current cache level in cssr
+ iflush:
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.4
+
 
 _______________________________________________
 barebox mailing list
