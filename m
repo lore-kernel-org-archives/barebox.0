@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNm7-0002G6-8z
- for barebox@lists.infradead.org; Tue, 14 May 2013 22:32:52 +0000
+ id 1UcNm7-0002G7-92
+ for barebox@lists.infradead.org; Tue, 14 May 2013 22:32:54 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:15 +0200
-Message-Id: <1368570745-23348-3-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:16 +0200
+Message-Id: <1368570745-23348-4-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] scripts/kwbimage: add a few sanity checks
+Subject: [PATCH 03/12] scripts/kwbimage: make the v0 image creation more
+ flexible
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-This commit uses the newly introduced image_count_options() function
-to:
+Until now, the v0 image creation function was expecting the
+configuration parameters to be ordered with first the configuration
+parameters affecting the main header, then the DATA configuration
+parameters that affect the extended header, then the payload.
 
- - See if there is any DATA option that require the creation of an
-   extended header for v0 header.
+However, with the recently added ability to override the destination
+address or execution address, the configuration options corresponding
+to those values may now appear at the end of the configuration
+options. This commit allows to handle that by making the image
+creation more flexible:
 
- - Verify that no more than one payload has been provided when
-   creating a v0 header.
+ - The configuration options for the main header are just searched
+   amongst all options, the first match is used.
 
- - Verify that no more than one binary payload has been provided when
-   creating a v1 header. Technically speaking, it is possible to
-   support several payloads, but in real life, only one gets used, so
-   we will only support that to make the code simpler for now. It can
-   always be extended later on if needed.
+ - When building the extension header with the DATA options, all DATA
+   options from the configuration file are used, in the order in which
+   they appear in the kwbimage.cfg file.
 
- - Verify that no more than one payload has been provided when
-   creating a v1 header.
+This will for example allow a kwbimage.cfg for a v0 image to not
+specify any destination or execution address, and simply override it
+from the command line.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- scripts/kwbimage.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ scripts/kwbimage.c |   48 ++++++++++++++++++++----------------------------
+ 1 file changed, 20 insertions(+), 28 deletions(-)
 
 diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-index 0d5dcac..cca20ab 100644
+index cca20ab..d4f65a8 100644
 --- a/scripts/kwbimage.c
 +++ b/scripts/kwbimage.c
-@@ -712,12 +712,16 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
- 	headersz  = sizeof(struct main_hdr_v0);
- 	payloadsz = 0;
+@@ -705,7 +705,7 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	struct ext_hdr_v0 *ext_hdr;
+ 	void *image;
+ 	int has_ext = 0;
+-	int cfgi, ret;
++	int ret;
  
--	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_DATA);
--	if (e) {
-+	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_DATA) > 0) {
- 		has_ext = 1;
- 		headersz += sizeof(struct ext_hdr_v0);
- 	}
+ 	/* Calculate the size of the header and the size of the
+ 	 * payload */
+@@ -754,42 +754,34 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	main_hdr->blocksize = payloadsz + sizeof(uint32_t);
+ 	main_hdr->srcaddr   = headersz;
+ 	main_hdr->ext       = has_ext;
+-	for (cfgi = 0; cfgi < cfgn; cfgi++) {
+-		struct image_cfg_element *el = &image_cfg[cfgi];
+-		if (el->type == IMAGE_CFG_BOOT_FROM)
+-			main_hdr->blockid = el->bootfrom;
+-		else if (el->type == IMAGE_CFG_DEST_ADDR)
+-			main_hdr->destaddr = el->dstaddr;
+-		else if (el->type == IMAGE_CFG_EXEC_ADDR)
+-			main_hdr->execaddr = el->execaddr;
+-		else if (el->type != IMAGE_CFG_VERSION)
+-			break;
+-	}
+-
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BOOT_FROM);
++	if (e)
++		main_hdr->blockid = e->bootfrom;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_DEST_ADDR);
++	if (e)
++		main_hdr->destaddr = e->dstaddr;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_EXEC_ADDR);
++	if (e)
++		main_hdr->execaddr = e->execaddr;
+ 	main_hdr->checksum = image_checksum8(image,
+ 					     sizeof(struct main_hdr_v0));
  
-+	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
-+		fprintf(stderr, "More than one payload, not possible\n");
-+		return NULL;
-+	}
-+
- 	payloade = image_find_option(image_cfg, cfgn, IMAGE_CFG_PAYLOAD);
- 	if (payloade) {
- 		struct stat s;
-@@ -818,6 +822,16 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
- 	headersz = sizeof(struct main_hdr_v1);
- 	payloadsz = 0;
+ 	/* Generate the ext header */
+ 	if (has_ext) {
+-		int datai = 0;
++		int cfgi, datai;
  
-+	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_BINARY) > 1) {
-+		fprintf(stderr, "More than one binary blob, not supported\n");
-+		return NULL;
-+	}
+ 		ext_hdr = image + sizeof(struct main_hdr_v0);
+ 		ext_hdr->offset = 0x40;
+ 
+-		for (; cfgi < cfgn; cfgi++) {
+-			struct image_cfg_element *el = &image_cfg[cfgi];
+-			if (el->type == IMAGE_CFG_DATA) {
+-				ext_hdr->rcfg[datai].raddr = el->regdata.raddr;
+-				ext_hdr->rcfg[datai].rdata = el->regdata.rdata;
+-				datai++;
+-			}
+-			else if (el->type == IMAGE_CFG_PAYLOAD)
+-				break;
+-			else {
+-				fprintf(stderr, "Invalid element of type %d\n",
+-					el->type);
+-				return NULL;
+-			}
++		for (cfgi = 0, datai = 0; cfgi < cfgn; cfgi++) {
++			e = &image_cfg[cfgi];
 +
-+	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
-+		fprintf(stderr, "More than one payload, not possible\n");
-+		return NULL;
-+	}
++			if (e->type != IMAGE_CFG_DATA)
++				continue;
 +
- 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BINARY);
- 	if (e) {
- 		struct stat s;
++			ext_hdr->rcfg[datai].raddr = e->regdata.raddr;
++			ext_hdr->rcfg[datai].rdata = e->regdata.rdata;
++			datai++;
+ 		}
+ 
+ 		ext_hdr->checksum = image_checksum8(ext_hdr,
 -- 
 1.7.9.5
 
