@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWvk-0001mC-M6
- for barebox@lists.infradead.org; Wed, 15 May 2013 08:19:25 +0000
-Date: Wed, 15 May 2013 10:19:01 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130515101901.7c2427b3@skate>
-In-Reply-To: <20130515081157.GI32299@pengutronix.de>
-References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130513075852.GG32299@pengutronix.de>
- <5190AFA1.1080503@gmail.com>
- <20130515055550.GZ32299@pengutronix.de>
- <20130515092611.1fe76e5c@skate>
- <20130515081157.GI32299@pengutronix.de>
+ id 1UcJpK-00068A-Ay
+ for barebox@lists.infradead.org; Tue, 14 May 2013 18:19:56 +0000
+Date: Tue, 14 May 2013 20:19:21 +0200
+From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
+Message-ID: <20130514201921.7d7ec9fe@e6520eb>
+In-Reply-To: <1368551731.19898.3.camel@mars>
+References: <20130507175549.GR32299@pengutronix.de>
+ <em6083fb6c-e073-40f9-aa90-2878d59c3517@plh001-think>
+ <20130510105350.GM32299@pengutronix.de>
+ <20130510145346.6854c389@e6520eb> <1368551731.19898.3.camel@mars>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,50 +20,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: Re: Installing barebox for karo-tx53 in nand-flash
+To: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Dear Sascha Hauer,
-
-On Wed, 15 May 2013 10:11:57 +0200, Sascha Hauer wrote:
-
-> > Hum, too bad, I have sent yesterday a new series, that included
-> > Sebastian code, plus basic Kirkwood support, and improvements to the
-> > kwbimage tool. The improvements to the kwbimage tool allowed to get rid
-> > of some dummy lines in the SolidRun Cubox kwbimage.cfg that Sebastian
-> > had submitted.
-> 
-> Sorry, I misread it. What I understood is that your series needs
-> Sebastians patches as base.
-
-No, since Sebastian patches were not yet applied, I thought "let's try
-to make the life easier for Sascha and offer a patch series with both
-Sebastian patches and my patches together". But in the mean time, you
-merged the ones from Sebastian.
-
-No big deal, I've already resent a rebased patch series, on top of
-current 'next', which no longer includes Sebastian patches. It however
-includes a fix to a patch from Sebastian, which in my earlier version
-was folded into Sebastian patch. This fix is made possible thanks to
-the improvements made in the kwbimage tool, so it should /not/ be
-folded into the original patch from Sebastian, unless you shuffle the
-order of commits.
-
-Thanks,
-
-Thomas
--- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgQ2hyaXN0b3BoLAoKTGUgVHVlLCAxNCBNYXkgMjAxMyAxOToxNTozMSArMDIwMCwKQ2hyaXN0
+b3BoIEZyaXR6IDxjaGYuZnJpdHpAZ29vZ2xlbWFpbC5jb20+IGEgw6ljcml0IDoKCj4gT24gRnJp
+LCAyMDEzLTA1LTEwIGF0IDE0OjUzICswMjAwLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiA+ID4g
+TXkgYm9vdCBzb3VyY2VzIGFyZSBuYW5kLWZsYXNoICh0aGF0cyB3aGVyZSB1LWJvb3QgaXMgYXQg
+dGhlIG1vbWVudCkKPiA+ID4gPiAoYW5kIFNELWNhcmQgZm9yIHRlc3RpbmcpLgo+ID4gPiA+IAo+
+ID4gPiA+IEkgdHJpZWQgdG8gZmxhc2ggemJhcmVib3guYmluIHRvIG5hbmQtZmxhc2guIEl0IHN0
+YXJ0ZWQgYnV0IHdpdGggZXJyb3IKPiA+ID4gPiBuYW5kOiBOQU5EIHR5cGUgdW5rbm93biwgZWMs
+ZjEKPiA+ID4gPiBuYW5kOiBObyBOQU5EIGRldmljZSBmb3VuZCAoLTE5KSEKPiA+ID4gCj4gPiA+
+IEhtLCBzdHJhbmdlLiBUaGlzIHNob3VsZCBiZSBhIFNhbXN1bmcgMTI4TWlCIE5BTkQgZmxhc2gu
+IFRoZSBpZCBpcyBpbgo+ID4gPiB0aGUgZGF0YWJhc2UuIEkgY3VycmVudGx5IGhhdmUgbm8gZ29v
+ZCBpZGVhIHdoeSB0aGlzIGlzYSB1bmtub3duLgo+ID4gPiAKPiA+IG1heSB5b3UgcGxlYXNlIHRy
+eSB3aXRoIGhpcyBwYXRjaCA6Cj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1h
+aWwvYmFyZWJveC8yMDEzLU1heS8wMTQ0NzAuaHRtbAo+ID4gYW5kIHRlbGwgaWYgdGhhdCBzb2x2
+ZXMgdGhpcyBOQU5EIGZsYXNoIGlzc3VlLgo+IAo+IFN1Y2Nlc3NmdWxseSB0ZXN0ZWQgeW91ciBw
+YXRjaCBvbiBhbiBvbWFwMy1ib2FyZDogTkFORCBkZXRlY3Rpb24gd29ya3MKPiBhZ2Fpbi4gV2l0
+aG91dCB0aGUgcGF0Y2ggSSBnZXQgdGhlIHNhbWUga2luZCBvZiBlcnJvciBhcyBhYm92ZS4KPiAK
+T0sgdGhhbmtzIGZvciB0aGUgdGVzdGluZy4gSSdsbCBzZW5kIGFuIHVwZGF0ZWQgcGF0Y2ggKGNv
+c21ldGljIGZpeCkKdG9tb3Jyb3cuCgpCZXN0IHJlZ2FyZHMKRXJpYwoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
