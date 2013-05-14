@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNm7-0002G4-9K
- for barebox@lists.infradead.org; Tue, 14 May 2013 22:32:55 +0000
+ id 1UcNm7-0002G6-8z
+ for barebox@lists.infradead.org; Tue, 14 May 2013 22:32:52 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:13 +0200
-Message-Id: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:15 +0200
+Message-Id: <1368570745-23348-3-git-send-email-thomas.petazzoni@free-electrons.com>
+In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
+References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,97 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/12] Support for Marvell Kirkwood and Dove SoCs
+Subject: [PATCH 02/12] scripts/kwbimage: add a few sanity checks
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Hello,
+This commit uses the newly introduced image_count_options() function
+to:
 
-This patch set builds on top of Sebastian Hesselbarth work on the
-Marvell Dove support, and adds basic Marvell Kirkwood support, as well
-as a number of improvements to the kwbimage tool to have a better
-support for v0 images used on Kirkwood and Dove.
+ - See if there is any DATA option that require the creation of an
+   extended header for v0 header.
 
-In particular, the patches on kwbimage allow a more flexible ordering
-of the options in the kwbimage.cfg file, and allows for v0 images to
-override the destination address and execution address from the
-command line, without having any related settings defined in the
-kwbimage.cfg. This way, Barebox can pass the appropriate -d and -e
-options when building the kwb images.
+ - Verify that no more than one payload has been provided when
+   creating a v0 header.
 
-The patches apply on top of the current 'next' branch.
+ - Verify that no more than one binary payload has been provided when
+   creating a v1 header. Technically speaking, it is possible to
+   support several payloads, but in real life, only one gets used, so
+   we will only support that to make the code simpler for now. It can
+   always be extended later on if needed.
 
-Best regards,
+ - Verify that no more than one payload has been provided when
+   creating a v1 header.
 
-Thomas
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ scripts/kwbimage.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-Sebastian Hesselbarth (3):
-  arm: mach-mvebu: rename Armada 370/XP core code
-  arm: mvebu: initial support for Marvell Dove SoCs
-  arm: mvebu: add basic support for SolidRun CuBox
-
-Thomas Petazzoni (9):
-  scripts/kwbimage: add a new function image_count_options()
-  scripts/kwbimage: add a few sanity checks
-  scripts/kwbimage: make the v0 image creation more flexible
-  scripts/kwbimage: simplify the v1 image creation
-  scripts/kwbimage: make image_boot_mode_id() return -1 on failure
-  scripts/kwbimage: add support for NAND ECC and page size header
-    fields
-  arm: mvebu: add Feroceon CPU type
-  arm: mvebu: initial support for Marvell Kirkwood SoCs
-  arm: mvebu: add basic support for Globalscale Guruplug board
-
- arch/arm/Kconfig                                   |    1 -
- arch/arm/Makefile                                  |    2 +
- arch/arm/boards/globalscale-guruplug/Makefile      |    2 +
- arch/arm/boards/globalscale-guruplug/config.h      |    4 +
- .../globalscale-guruplug/globalscale-guruplug.c    |   26 ++
- arch/arm/boards/globalscale-guruplug/kwbimage.cfg  |   27 ++
- arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 ++
- arch/arm/boards/solidrun-cubox/Makefile            |    2 +
- arch/arm/boards/solidrun-cubox/config.h            |    4 +
- arch/arm/boards/solidrun-cubox/kwbimage.cfg        |   37 +++
- arch/arm/boards/solidrun-cubox/lowlevel.c          |   26 ++
- arch/arm/boards/solidrun-cubox/solidrun-cubox.c    |   28 ++
- arch/arm/configs/globalscale_guruplug_defconfig    |    6 +
- arch/arm/configs/solidrun_cubox_defconfig          |    9 +
- arch/arm/cpu/Kconfig                               |    8 +
- arch/arm/mach-mvebu/Kconfig                        |   40 +++
- arch/arm/mach-mvebu/Makefile                       |    5 +-
- arch/arm/mach-mvebu/{core.c => armada-370-xp.c}    |    0
- arch/arm/mach-mvebu/dove.c                         |  161 +++++++++++
- arch/arm/mach-mvebu/include/mach/dove-regs.h       |   59 +++++
- arch/arm/mach-mvebu/include/mach/dove.h            |   23 ++
- arch/arm/mach-mvebu/include/mach/kirkwood-regs.h   |   37 +++
- arch/arm/mach-mvebu/include/mach/kirkwood.h        |   22 ++
- arch/arm/mach-mvebu/kirkwood.c                     |  111 ++++++++
- drivers/clocksource/Kconfig                        |    4 +
- drivers/clocksource/Makefile                       |    1 +
- drivers/clocksource/orion.c                        |   76 ++++++
- scripts/kwbimage.c                                 |  279 ++++++++++++--------
- 28 files changed, 908 insertions(+), 118 deletions(-)
- create mode 100644 arch/arm/boards/globalscale-guruplug/Makefile
- create mode 100644 arch/arm/boards/globalscale-guruplug/config.h
- create mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
- create mode 100644 arch/arm/boards/globalscale-guruplug/kwbimage.cfg
- create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
- create mode 100644 arch/arm/boards/solidrun-cubox/Makefile
- create mode 100644 arch/arm/boards/solidrun-cubox/config.h
- create mode 100644 arch/arm/boards/solidrun-cubox/kwbimage.cfg
- create mode 100644 arch/arm/boards/solidrun-cubox/lowlevel.c
- create mode 100644 arch/arm/boards/solidrun-cubox/solidrun-cubox.c
- create mode 100644 arch/arm/configs/globalscale_guruplug_defconfig
- create mode 100644 arch/arm/configs/solidrun_cubox_defconfig
- rename arch/arm/mach-mvebu/{core.c => armada-370-xp.c} (100%)
- create mode 100644 arch/arm/mach-mvebu/dove.c
- create mode 100644 arch/arm/mach-mvebu/include/mach/dove-regs.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/dove.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood-regs.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood.h
- create mode 100644 arch/arm/mach-mvebu/kirkwood.c
- create mode 100644 drivers/clocksource/orion.c
-
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 0d5dcac..cca20ab 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -712,12 +712,16 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	headersz  = sizeof(struct main_hdr_v0);
+ 	payloadsz = 0;
+ 
+-	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_DATA);
+-	if (e) {
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_DATA) > 0) {
+ 		has_ext = 1;
+ 		headersz += sizeof(struct ext_hdr_v0);
+ 	}
+ 
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
++		fprintf(stderr, "More than one payload, not possible\n");
++		return NULL;
++	}
++
+ 	payloade = image_find_option(image_cfg, cfgn, IMAGE_CFG_PAYLOAD);
+ 	if (payloade) {
+ 		struct stat s;
+@@ -818,6 +822,16 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
+ 	headersz = sizeof(struct main_hdr_v1);
+ 	payloadsz = 0;
+ 
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_BINARY) > 1) {
++		fprintf(stderr, "More than one binary blob, not supported\n");
++		return NULL;
++	}
++
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
++		fprintf(stderr, "More than one payload, not possible\n");
++		return NULL;
++	}
++
+ 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BINARY);
+ 	if (e) {
+ 		struct stat s;
 -- 
 1.7.9.5
 
