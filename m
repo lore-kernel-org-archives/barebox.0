@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNmS-0002IP-HR
- for barebox@lists.infradead.org; Tue, 14 May 2013 22:33:18 +0000
+ id 1UcNmS-0002Hv-HK
+ for barebox@lists.infradead.org; Tue, 14 May 2013 22:33:20 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:25 +0200
-Message-Id: <1368570745-23348-13-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:21 +0200
+Message-Id: <1368570745-23348-9-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,70 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] arm: mvebu: add basic support for Globalscale Guruplug
- board
+Subject: [PATCH 08/12] arm: mvebu: initial support for Marvell Dove SoCs
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-The Globalscale Guruplug board is a small NAS-type plug platform that
-uses a Marvell Kirkwood SoC.
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 
+This commit adds minimal support for the Marvell Dove SoC (88AP510) as
+first SoC of the Marvell Orion family. Orion SoCs have a different timer,
+therefore current mach-mvebu and Armada 370/XP Kconfig and Makefiles are
+slightly modified and a new clocksource drivers is added.
+
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/globalscale-guruplug/Makefile      |    2 ++
- arch/arm/boards/globalscale-guruplug/config.h      |    4 +++
- .../globalscale-guruplug/globalscale-guruplug.c    |   26 +++++++++++++++++++
- arch/arm/boards/globalscale-guruplug/kwbimage.cfg  |   27 ++++++++++++++++++++
- arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 +++++++++++++++++++
- arch/arm/configs/globalscale_guruplug_defconfig    |    6 +++++
- arch/arm/mach-mvebu/Kconfig                        |    5 ++++
- 8 files changed, 97 insertions(+)
- create mode 100644 arch/arm/boards/globalscale-guruplug/Makefile
- create mode 100644 arch/arm/boards/globalscale-guruplug/config.h
- create mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
- create mode 100644 arch/arm/boards/globalscale-guruplug/kwbimage.cfg
- create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
- create mode 100644 arch/arm/configs/globalscale_guruplug_defconfig
+ arch/arm/Kconfig                             |    1 -
+ arch/arm/mach-mvebu/Kconfig                  |   16 +++
+ arch/arm/mach-mvebu/Makefile                 |    1 +
+ arch/arm/mach-mvebu/dove.c                   |  161 ++++++++++++++++++++++++++
+ arch/arm/mach-mvebu/include/mach/dove-regs.h |   59 ++++++++++
+ arch/arm/mach-mvebu/include/mach/dove.h      |   23 ++++
+ drivers/clocksource/Kconfig                  |    4 +
+ drivers/clocksource/Makefile                 |    1 +
+ drivers/clocksource/orion.c                  |   76 ++++++++++++
+ 9 files changed, 341 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-mvebu/dove.c
+ create mode 100644 arch/arm/mach-mvebu/include/mach/dove-regs.h
+ create mode 100644 arch/arm/mach-mvebu/include/mach/dove.h
+ create mode 100644 drivers/clocksource/orion.c
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 8f17e7e..1e7ace4 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -103,6 +103,7 @@ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
- board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
- board-$(CONFIG_MACH_GE863)			:= telit-evk-pro3
- board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)        := globalscale-mirabox
-+board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)       := globalscale-guruplug
- board-$(CONFIG_MACH_HIGHBANK)			:= highbank
- board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
- board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
-diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
-new file mode 100644
-index 0000000..3b48b32
---- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/Makefile
-@@ -0,0 +1,2 @@
-+obj-y = globalscale-guruplug.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/globalscale-guruplug/config.h b/arch/arm/boards/globalscale-guruplug/config.h
-new file mode 100644
-index 0000000..ca15136
---- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/config.h
-@@ -0,0 +1,4 @@
-+#ifndef __CONFIG_H
-+#define __CONFIG_H
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index a044ab3..cfb82b0 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -82,7 +82,6 @@ config ARCH_IMX
+ config ARCH_MVEBU
+ 	bool "Marvell EBU platforms"
+ 	select COMMON_CLK
+-	select CLOCKSOURCE_MVEBU
+ 	select CLKDEV_LOOKUP
+ 	select HAS_DEBUG_LL
+ 
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index e553e2d..c02eea1 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -17,10 +17,17 @@ choice
+ config ARCH_ARMADA_370
+ 	bool "Armada 370"
+ 	select CPU_V7
++	select CLOCKSOURCE_MVEBU
+ 
+ config ARCH_ARMADA_XP
+ 	bool "Armada XP"
+ 	select CPU_V7
++	select CLOCKSOURCE_MVEBU
 +
-+#endif	/* __CONFIG_H */
-diff --git a/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
++config ARCH_DOVE
++	bool "Dove 88AP510"
++	select CPU_V7
++	select CLOCKSOURCE_ORION
+ 
+ endchoice
+ 
+@@ -51,4 +58,13 @@ endchoice
+ 
+ endif # ARCH_ARMADA_XP
+ 
++if ARCH_DOVE
++
++choice
++	prompt "Dove 88AP510 Board Type"
++
++endchoice
++
++endif # ARCH_DOVE
++
+ endif # ARCH_MVEBU
+diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
+index 16d271d..043f08f 100644
+--- a/arch/arm/mach-mvebu/Makefile
++++ b/arch/arm/mach-mvebu/Makefile
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
+ obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
++obj-$(CONFIG_ARCH_DOVE)		+= dove.o
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
 new file mode 100644
-index 0000000..dfc1d1a
+index 0000000..f073596
 --- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
-@@ -0,0 +1,26 @@
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -0,0 +1,161 @@
 +/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -100,56 +130,273 @@ index 0000000..dfc1d1a
 +
 +#include <common.h>
 +#include <init.h>
-+#include <sizes.h>
-+#include <mach/kirkwood.h>
++#include <io.h>
++#include <linux/clk.h>
++#include <linux/clkdev.h>
++#include <ns16550.h>
++#include <mach/dove-regs.h>
++#include <asm/memory.h>
++#include <asm/barebox-arm.h>
 +
-+static int globalscale_guruplug_console_init(void)
++static struct clk *tclk;
++
++static inline void dove_remap_reg_base(uint32_t intbase,
++				       uint32_t mcbase)
 +{
-+	return kirkwood_add_uart0();
++	uint32_t val;
++
++	/* remap ahb slave base */
++	val  = readl(DOVE_CPU_CTRL) & 0xffff0000;
++	val |= (mcbase & 0xffff0000) >> 16;
++	writel(val, DOVE_CPU_CTRL);
++
++	/* remap axi bridge address */
++	val  = readl(DOVE_AXI_CTRL) & 0x007fffff;
++	val |= mcbase & 0xff800000;
++	writel(val, DOVE_AXI_CTRL);
++
++	/* remap memory controller base address */
++	val = readl(DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
++	val |= mcbase & 0xffff0000;
++	writel(val, DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE);
++
++	/* remap internal register */
++	val = intbase & 0xfff00000;
++	writel(val, DOVE_BRIDGE_BASE + INT_REGS_BASE_MAP);
 +}
 +
-+console_initcall(globalscale_guruplug_console_init);
-diff --git a/arch/arm/boards/globalscale-guruplug/kwbimage.cfg b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
-new file mode 100644
-index 0000000..d0f3bdb
---- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
-@@ -0,0 +1,27 @@
-+VERSION 0
-+BOOT_FROM nand
-+NAND_ECCMODE default
-+NAND_PAGESZ 00000800
-+DATA ffd100e0 1b1b9b9b
-+DATA ffd01400 43000c30
-+DATA ffd01404 37543000
-+DATA ffd01408 22125451
-+DATA ffd0140c 00000a33
-+DATA ffd01410 000000cc
-+DATA ffd01414 00000000
-+DATA ffd01418 00000000
-+DATA ffd0141c 00000c52
-+DATA ffd01420 00000040
-+DATA ffd01424 0000f17f
-+DATA ffd01428 00085520
-+DATA ffd0147c 00008552
-+DATA ffd01500 00000000
-+DATA ffd01504 0ffffff1
-+DATA ffd01508 10000000
-+DATA ffd0150c 0ffffff5
-+DATA ffd01514 00000000
-+DATA ffd0151c 00000000
-+DATA ffd01494 00030000
-+DATA ffd01498 00000000
-+DATA ffd0149c 0000e803
-+DATA ffd01480 00000001
-diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-new file mode 100644
-index 0000000..d270cda
---- /dev/null
-+++ b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-@@ -0,0 +1,26 @@
++static inline void dove_memory_find(unsigned long *phys_base,
++				    unsigned long *phys_size)
++{
++	int n;
++
++	*phys_base = ~0;
++	*phys_size = 0;
++
++	for (n = 0; n < 2; n++) {
++		uint32_t map = readl(DOVE_SDRAM_BASE + SDRAM_MAPn(n));
++		uint32_t base, size;
++
++		/* skip disabled areas */
++		if ((map & SDRAM_MAP_VALID) != SDRAM_MAP_VALID)
++			continue;
++
++		base = map & SDRAM_START_MASK;
++		if (base < *phys_base)
++			*phys_base = base;
++
++		/* real size is encoded as ld(2^(16+length)) */
++		size = (map & SDRAM_LENGTH_MASK) >> SDRAM_LENGTH_SHIFT;
++		*phys_size += 1 << (16 + size);
++	}
++}
++
++void __naked __noreturn dove_barebox_entry(void)
++{
++	unsigned long phys_base, phys_size;
++	dove_memory_find(&phys_base, &phys_size);
++	barebox_arm_entry(phys_base, phys_size, 0);
++}
++
++static struct NS16550_plat uart_plat[] = {
++	[0] = { .shift = 2, },
++	[1] = { .shift = 2, },
++	[2] = { .shift = 2, },
++	[3] = { .shift = 2, },
++};
++
++int dove_add_uart(int num)
++{
++	struct NS16550_plat *plat;
++
++	if (num < 0 || num > 4)
++		return -EINVAL;
++
++	plat = &uart_plat[num];
++	plat->clock = clk_get_rate(tclk);
++	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
++				(unsigned int)DOVE_UARTn_BASE(num),
++				32, IORESOURCE_MEM_32BIT, plat))
++		return -ENODEV;
++	return 0;
++}
++
 +/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ * Dove TCLK sample-at-reset configuation
++ *
++ * SAR0[24:23] : TCLK frequency
++ *		 0 = 166 MHz
++ *		 1 = 125 MHz
++ *		 others reserved.
++ */
++static int dove_init_clocks(void)
++{
++	uint32_t strap, sar = readl(DOVE_SAR_BASE + SAR0);
++	unsigned int rate;
++
++	strap = (sar & TCLK_FREQ_MASK) >> TCLK_FREQ_SHIFT;
++	switch (strap) {
++	case 0:
++		rate = 166666667;
++		break;
++	case 1:
++		rate = 125000000;
++		break;
++	default:
++		panic("Unknown TCLK strapping %d\n", strap);
++	}
++
++	tclk = clk_fixed("tclk", rate);
++	return clk_register_clkdev(tclk, NULL, "orion-timer");
++}
++
++static int dove_init_soc(void)
++{
++	unsigned long phys_base, phys_size;
++
++	dove_init_clocks();
++	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
++			   (unsigned int)DOVE_TIMER_BASE, 0x30,
++			   IORESOURCE_MEM, NULL);
++	dove_memory_find(&phys_base, &phys_size);
++	arm_add_mem_device("ram0", phys_base, phys_size);
++	return 0;
++}
++postcore_initcall(dove_init_soc);
++
++void __noreturn reset_cpu(unsigned long addr)
++{
++	/* enable and assert RSTOUTn */
++	writel(SOFT_RESET_OUT_EN, DOVE_BRIDGE_BASE + BRIDGE_RSTOUT_MASK);
++	writel(SOFT_RESET_EN, DOVE_BRIDGE_BASE + BRIDGE_SYS_SOFT_RESET);
++	while (1)
++		;
++}
++EXPORT_SYMBOL(reset_cpu);
+diff --git a/arch/arm/mach-mvebu/include/mach/dove-regs.h b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+new file mode 100644
+index 0000000..5e20368
+--- /dev/null
++++ b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+@@ -0,0 +1,59 @@
++/*
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MACH_MVEBU_DOVE_REGS_H
++#define __MACH_MVEBU_DOVE_REGS_H
++
++/* At Boot-up register base is at 0xd000000 */
++#define DOVE_INT_REGS_BOOTUP	0xd0000000
++#define DOVE_MC_REGS_BOOTUP	0xd0800000
++/* Linux wants it remapped to 0xf1000000 */
++#define DOVE_INT_REGS_REMAP	0xf1000000
++#define DOVE_MC_REGS_REMAP	0xf1800000
++
++#define DOVE_INT_REGS_BASE	IOMEM(DOVE_INT_REGS_BOOTUP)
++#define DOVE_MC_REGS_BASE	IOMEM(DOVE_MC_REGS_BOOTUP)
++
++#define DOVE_UART_BASE		(DOVE_INT_REGS_BASE + 0x12000)
++#define DOVE_UARTn_BASE(n)	(DOVE_UART_BASE + ((n) * 0x100))
++
++#define DOVE_BRIDGE_BASE	(DOVE_INT_REGS_BASE + 0x20000)
++#define  INT_REGS_BASE_MAP	0x080
++#define  BRIDGE_RSTOUT_MASK	0x108
++#define  SOFT_RESET_OUT_EN	BIT(2)
++#define  BRIDGE_SYS_SOFT_RESET	0x10c
++#define  SOFT_RESET_EN		BIT(0)
++#define DOVE_TIMER_BASE		(DOVE_INT_REGS_BASE + 0x20300)
++
++#define DOVE_SAR_BASE		(DOVE_INT_REGS_BASE + 0xd0214)
++#define  SAR0			0x000
++#define  TCLK_FREQ_SHIFT	23
++#define  TCLK_FREQ_MASK		(0x3 << TCLK_FREQ_SHIFT)
++#define  SAR1			0x004
++
++#define DOVE_AXI_CTRL		(DOVE_INT_REGS_BASE + 0xd0224)
++#define DOVE_CPU_CTRL		(DOVE_INT_REGS_BASE + 0xd025c)
++
++#define DOVE_SDRAM_BASE		(DOVE_MC_REGS_BASE)
++#define  SDRAM_REGS_BASE_DECODE	0x010
++#define  SDRAM_MAPn(n)		(0x100 + ((n) * 0x10))
++#define  SDRAM_START_MASK	(0x1ff << 23)
++#define  SDRAM_LENGTH_SHIFT	16
++#define  SDRAM_LENGTH_MASK	(0x00f << SDRAM_LENGTH_SHIFT)
++#define  SDRAM_ADDRESS_MASK	(0x1ff << 7)
++#define  SDRAM_MAP_VALID	BIT(0)
++
++#endif /* __MACH_MVEBU_DOVE_REGS_H */
+diff --git a/arch/arm/mach-mvebu/include/mach/dove.h b/arch/arm/mach-mvebu/include/mach/dove.h
+new file mode 100644
+index 0000000..1712fa7
+--- /dev/null
++++ b/arch/arm/mach-mvebu/include/mach/dove.h
+@@ -0,0 +1,23 @@
++/*
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MACH_MVEBU_DOVE_H
++#define __MACH_MVEBU_DOVE_H
++
++int dove_add_uart(int num);
++void __naked __noreturn dove_barebox_entry(void);
++
++#endif /* __MACH_MVEBU_DOVE_H */
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index dfc89dd..4ef25ec 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -21,3 +21,7 @@ config CLOCKSOURCE_MVEBU
+ config CLOCKSOURCE_NOMADIK
+ 	bool
+ 	depends on ARM
++
++config CLOCKSOURCE_ORION
++	bool
++	depends on ARCH_MVEBU
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index 0b42ce4..25b7f46 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_CLOCKSOURCE_BCM2835) += bcm2835.o
+ obj-$(CONFIG_CLOCKSOURCE_CLPS711X) += clps711x.o
+ obj-$(CONFIG_CLOCKSOURCE_MVEBU)   += mvebu.o
+ obj-$(CONFIG_CLOCKSOURCE_NOMADIK) += nomadik.o
++obj-$(CONFIG_CLOCKSOURCE_ORION)   += orion.o
+diff --git a/drivers/clocksource/orion.c b/drivers/clocksource/orion.c
+new file mode 100644
+index 0000000..604b414
+--- /dev/null
++++ b/drivers/clocksource/orion.c
+@@ -0,0 +1,76 @@
++/*
++ * Copyright
++ * (C) 2013 Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -164,57 +411,65 @@ index 0000000..d270cda
 + */
 +
 +#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/kirkwood.h>
++#include <init.h>
++#include <clock.h>
++#include <linux/clk.h>
++#include <io.h>
 +
-+void __naked barebox_arm_reset_vector(void)
++#define TIMER_CTRL		0x00
++#define  TIMER0_EN		BIT(0)
++#define  TIMER0_RELOAD_EN	BIT(1)
++#define  TIMER1_EN		BIT(2)
++#define  TIMER1_RELOAD_EN	BIT(3)
++#define TIMER0_RELOAD		0x10
++#define TIMER0_VAL		0x14
++#define TIMER1_RELOAD		0x18
++#define TIMER1_VAL		0x1c
++
++static __iomem void *timer_base;
++
++static uint64_t orion_clocksource_read(void)
 +{
-+	arm_cpu_lowlevel_init();
-+	kirkwood_barebox_entry();
++	return __raw_readl(timer_base + TIMER0_VAL);
 +}
-diff --git a/arch/arm/configs/globalscale_guruplug_defconfig b/arch/arm/configs/globalscale_guruplug_defconfig
-new file mode 100644
-index 0000000..d21de45
---- /dev/null
-+++ b/arch/arm/configs/globalscale_guruplug_defconfig
-@@ -0,0 +1,6 @@
-+CONFIG_ARCH_MVEBU=y
-+CONFIG_ARCH_KIRKWOOD=y
-+CONFIG_TEXT_BASE=0x2000000
-+CONFIG_DEBUG_LL=y
-+CONFIG_CMD_RESET=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 92ba009..1d46f87 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -4,12 +4,14 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
- 	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
-+	default 0x2000000 if MACH_GLOBALSCALE_GURUPLUG
- 	default 0x2000000 if MACH_MARVELL_ARMADA_XP_GP
- 	default 0x2000000 if MACH_SOLIDRUN_CUBOX
- 
- config BOARDINFO
- 	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
- 	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
-+	default "Globalscale Guruplug" if MACH_GLOBALSCALE_GURUPLUG
- 	default "Marvell Armada XP GP" if MACH_MARVELL_ARMADA_XP_GP
- 	default "SolidRun CuBox" if MACH_SOLIDRUN_CUBOX
- 
-@@ -82,6 +84,9 @@ if ARCH_KIRKWOOD
- choice
- 	prompt "Kirkwood Board Type"
- 
-+config MACH_GLOBALSCALE_GURUPLUG
-+	bool "Guruplug"
 +
- endchoice
- 
- endif # ARCH_KIRKWOOD
++static struct clocksource clksrc = {
++	.read	= orion_clocksource_read,
++	.mask	= CLOCKSOURCE_MASK(32),
++	.shift	= 10,
++};
++
++static int orion_timer_probe(struct device_d *dev)
++{
++	struct clk *tclk;
++	uint32_t val;
++
++	timer_base = dev_request_mem_region(dev, 0);
++	tclk = clk_get(dev, "tclk");
++
++	/* setup TIMER0 as free-running clock source */
++	__raw_writel(~0, timer_base + TIMER0_VAL);
++	__raw_writel(~0, timer_base + TIMER0_RELOAD);
++	val = __raw_readl(timer_base + TIMER_CTRL);
++	__raw_writel(val | TIMER0_EN | TIMER0_RELOAD_EN,
++		     timer_base + TIMER_CTRL);
++
++	clksrc.mult = clocksource_hz2mult(clk_get_rate(tclk), clksrc.shift);
++	init_clock(&clksrc);
++
++	return 0;
++}
++
++static struct driver_d orion_timer_driver = {
++	.name = "orion-timer",
++	.probe = orion_timer_probe,
++};
++
++static int orion_timer_init(void)
++{
++	return platform_driver_register(&orion_timer_driver);
++}
++postcore_initcall(orion_timer_init);
 -- 
 1.7.9.5
 
