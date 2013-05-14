@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNmS-0002Hw-HN
+ id 1UcNmS-0002II-HO
  for barebox@lists.infradead.org; Tue, 14 May 2013 22:33:13 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:20 +0200
-Message-Id: <1368570745-23348-8-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:22 +0200
+Message-Id: <1368570745-23348-10-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] arm: mach-mvebu: rename Armada 370/XP core code
+Subject: [PATCH 09/12] arm: mvebu: add Feroceon CPU type
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+The Kirkwood Marvell SoC uses a Marvell-specific implementation of an
+ARMv5TE compatible ARM core, the Feroceon. This patch introduces a
+Kconfig option that allows to select this CPU type.
 
-There are more than Armada 370/XP in Marvell MVEBU SoC familiy. To avoid
-irritation with source file nameing, we rename setup source file for
-Armada 370/XP from core.c to armada-370-xp.c.
-
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/Makefile                    |    3 ++-
- arch/arm/mach-mvebu/{core.c => armada-370-xp.c} |    0
- 2 files changed, 2 insertions(+), 1 deletion(-)
- rename arch/arm/mach-mvebu/{core.c => armada-370-xp.c} (100%)
+ arch/arm/cpu/Kconfig |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index 820eb10..16d271d 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1 +1,2 @@
--obj-y += core.o
-+obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
-+obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
-diff --git a/arch/arm/mach-mvebu/core.c b/arch/arm/mach-mvebu/armada-370-xp.c
-similarity index 100%
-rename from arch/arm/mach-mvebu/core.c
-rename to arch/arm/mach-mvebu/armada-370-xp.c
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 86bc174..aed4cb7 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -39,6 +39,14 @@ config CPU_ARM926T
+ 	  Say Y if you want support for the ARM926T processor.
+ 	  Otherwise, say N.
+ 
++# Feroceon
++config CPU_FEROCEON
++	bool
++	select CPU_32v5
++	help
++	  This is a Marvell implementation of an ARMv5TE compatible
++	  ARM core, used in the Marvell Kirkwood SoC family.
++
+ # ARMv6
+ config CPU_V6
+ 	bool
 -- 
 1.7.9.5
 
