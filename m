@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcNm7-0002G8-9I
- for barebox@lists.infradead.org; Tue, 14 May 2013 22:32:55 +0000
+ id 1UcNmS-0002Hm-HS
+ for barebox@lists.infradead.org; Tue, 14 May 2013 22:33:17 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 00:32:17 +0200
-Message-Id: <1368570745-23348-5-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 00:32:19 +0200
+Message-Id: <1368570745-23348-7-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368570745-23348-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,234 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] scripts/kwbimage: simplify the v1 image creation
+Subject: [PATCH 06/12] scripts/kwbimage: add support for NAND ECC and page
+ size header fields
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-We now assume that at most one binary header can be added, so we no
-longer need to loop for all configuration options to find the binary
-blobs. We simply find the binary blob configuration option in
-'binarye' and use that when we need to generate the corresponding
-header.
-
-Also, just like we did for the v0 image creation, use
-image_find_option() to find the value of the different options needed
-to create the main header.
+The v0 header, used on Kirkwood, has some fields to indicate the type
+of the NAND ECC, and the page size of the NAND. This commit adds
+support for such fields, which are needed to support the Kirkwood
+Guruplug platform.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- scripts/kwbimage.c |  151 ++++++++++++++++++++++++----------------------------
- 1 file changed, 70 insertions(+), 81 deletions(-)
+ scripts/kwbimage.c |   42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
 diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-index d4f65a8..631f131 100644
+index 0127e2b..4ebb07f 100644
 --- a/scripts/kwbimage.c
 +++ b/scripts/kwbimage.c
-@@ -802,12 +802,12 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
- static void *image_create_v1(struct image_cfg_element *image_cfg,
- 			     int cfgn, const char *output, size_t *imagesz)
- {
--	struct image_cfg_element *e, *payloade;
-+	struct image_cfg_element *e, *payloade, *binarye;
- 	struct main_hdr_v1 *main_hdr;
- 	size_t headersz, payloadsz, totalsz;
- 	void *image, *cur;
- 	int hasext = 0;
--	int cfgi, ret;
-+	int ret;
+@@ -177,6 +177,8 @@ struct image_cfg_element {
+ 		IMAGE_CFG_EXEC_ADDR,
+ 		IMAGE_CFG_NAND_BLKSZ,
+ 		IMAGE_CFG_NAND_BADBLK_LOCATION,
++		IMAGE_CFG_NAND_ECC_MODE,
++		IMAGE_CFG_NAND_PAGESZ,
+ 		IMAGE_CFG_BINARY,
+ 		IMAGE_CFG_PAYLOAD,
+ 		IMAGE_CFG_DATA,
+@@ -194,6 +196,8 @@ struct image_cfg_element {
+ 		unsigned int execaddr;
+ 		unsigned int nandblksz;
+ 		unsigned int nandbadblklocation;
++		unsigned int nandeccmode;
++		unsigned int nandpagesz;
+ 		struct ext_hdr_v0_reg regdata;
+ 	};
+ };
+@@ -245,6 +249,15 @@ static const char *image_nand_ecc_mode_name(unsigned int id)
+ 	return NULL;
+ }
  
- 	/* Calculate the size of the header and the size of the
- 	 * payload */
-@@ -824,24 +824,24 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
- 		return NULL;
++int image_nand_ecc_mode_id(const char *nand_ecc_mode_name)
++{
++	int i;
++	for (i = 0; nand_ecc_modes[i].name; i++)
++		if (!strcmp(nand_ecc_modes[i].name, nand_ecc_mode_name))
++			return nand_ecc_modes[i].id;
++	return -1;
++}
++
+ static struct image_cfg_element *
+ image_find_option(struct image_cfg_element *image_cfg,
+ 		  int cfgn, unsigned int optiontype)
+@@ -409,9 +422,9 @@ static int image_extract_v0(void *fdimap, const char *output, FILE *focfg)
+ 	if (!strcmp(boot_mode_name, "nand")) {
+ 		const char *nand_ecc_mode =
+ 			image_nand_ecc_mode_name(main_hdr->nandeccmode);
+-		fprintf(focfg, "NAND_ECC_MODE %s\n",
++		fprintf(focfg, "NAND_ECCMODE %s\n",
+ 			nand_ecc_mode);
+-		fprintf(focfg, "NAND_PAGE_SIZE %08x\n",
++		fprintf(focfg, "NAND_PAGESZ %08x\n",
+ 			main_hdr->nandpagesize);
  	}
  
--	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BINARY);
--	if (e) {
-+	binarye = image_find_option(image_cfg, cfgn, IMAGE_CFG_BINARY);
-+	if (binarye) {
- 		struct stat s;
- 
--		ret = stat(e->binary.file, &s);
-+		ret = stat(binarye->binary.file, &s);
- 		if (ret < 0) {
- 			char *cwd = get_current_dir_name();
- 			fprintf(stderr,
- 				"Didn't find the file '%s' in '%s' which is mandatory to generate the image\n"
- 				"This file generally contains the DDR3 training code, and should be extracted from an existing bootable\n"
- 				"image for your board. See 'kwbimage -x' to extract it from an existing image.\n",
--				e->binary.file, cwd);
-+				binarye->binary.file, cwd);
- 			free(cwd);
- 			return NULL;
- 		}
- 
- 		headersz += s.st_size +
--			e->binary.nargs * sizeof(unsigned int);
-+			binarye->binary.nargs * sizeof(unsigned int);
- 		hasext = 1;
- 	}
- 
-@@ -878,96 +878,85 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
- 	cur = main_hdr = image;
- 	cur += sizeof(struct main_hdr_v1);
- 
-+	/* Fill the main header */
- 	main_hdr->blocksize    = payloadsz + sizeof(uint32_t);
- 	main_hdr->headersz_lsb = headersz & 0xFFFF;
- 	main_hdr->headersz_msb = (headersz & 0xFFFF0000) >> 16;
- 	main_hdr->srcaddr      = headersz;
- 	main_hdr->ext          = hasext;
-+	main_hdr->version      = 1;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BOOT_FROM);
+@@ -763,6 +776,12 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_EXEC_ADDR);
+ 	if (e)
+ 		main_hdr->execaddr = e->execaddr;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_ECC_MODE);
 +	if (e)
-+		main_hdr->blockid = e->bootfrom;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_DEST_ADDR);
++		main_hdr->nandeccmode = e->nandeccmode;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_PAGESZ);
 +	if (e)
-+		main_hdr->destaddr = e->dstaddr;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_EXEC_ADDR);
-+	if (e)
-+		main_hdr->execaddr = e->execaddr;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_BLKSZ);
-+	if (e)
-+		main_hdr->nandblocksize = e->nandblksz / (64 * 1024);
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_BADBLK_LOCATION);
-+	if (e)
-+		main_hdr->nandbadblklocation = e->nandbadblklocation;
++		main_hdr->nandpagesize = e->nandpagesz;
+ 	main_hdr->checksum = image_checksum8(image,
+ 					     sizeof(struct main_hdr_v0));
  
--	/* First, take care of filling the main header */
--	for (cfgi = 0; cfgi < cfgn; cfgi++) {
--		struct image_cfg_element *el = &image_cfg[cfgi];
--		if (el->type == IMAGE_CFG_VERSION)
--			main_hdr->version = 1;
--		else if (el->type == IMAGE_CFG_BOOT_FROM)
--			main_hdr->blockid = el->bootfrom;
--		else if (el->type == IMAGE_CFG_DEST_ADDR)
--			main_hdr->destaddr = el->dstaddr;
--		else if (el->type == IMAGE_CFG_EXEC_ADDR)
--			main_hdr->execaddr = el->execaddr;
--		else if (el->type == IMAGE_CFG_NAND_BLKSZ)
--			main_hdr->nandblocksize = el->nandblksz / (64 * 1024);
--		else if (el->type == IMAGE_CFG_NAND_BADBLK_LOCATION)
--			main_hdr->nandbadblklocation = el->nandbadblklocation;
--		else
--			break;
--	}
--
--	/* Then, fill the extension headers */
--	for (; cfgi < cfgn; cfgi++) {
--		struct image_cfg_element *el = &image_cfg[cfgi];
--
--		if (el->type == IMAGE_CFG_BINARY) {
--			struct opt_hdr_v1 *hdr = cur;
--			unsigned int *args;
--			size_t binhdrsz;
--			struct stat s;
--			int argi;
--			FILE *bin;
--
--			hdr->headertype = OPT_HDR_V1_BINARY_TYPE;
--
--			bin = fopen(el->binary.file, "r");
--			if (!bin) {
--				fprintf(stderr, "Cannot open binary file %s\n",
--					el->binary.file);
--				return NULL;
--			}
--
--			fstat(fileno(bin), &s);
-+	if (binarye) {
-+		struct opt_hdr_v1 *hdr = cur;
-+		unsigned int *args;
-+		size_t binhdrsz;
-+		struct stat s;
-+		int argi;
-+		FILE *bin;
- 
--			binhdrsz = sizeof(struct opt_hdr_v1) +
--				(el->binary.nargs + 1) * sizeof(unsigned int) +
--				s.st_size;
--			hdr->headersz_lsb = binhdrsz & 0xFFFF;
--			hdr->headersz_msb = (binhdrsz & 0xFFFF0000) >> 16;
-+		hdr->headertype = OPT_HDR_V1_BINARY_TYPE;
- 
--			cur += sizeof(struct opt_hdr_v1);
-+		bin = fopen(binarye->binary.file, "r");
-+		if (!bin) {
-+			fprintf(stderr, "Cannot open binary file %s\n",
-+				binarye->binary.file);
-+			return NULL;
-+		}
- 
--			args = cur;
--			*args = el->binary.nargs;
--			args++;
--			for (argi = 0; argi < el->binary.nargs; argi++)
--				args[argi] = el->binary.args[argi];
-+		fstat(fileno(bin), &s);
- 
--			cur += (el->binary.nargs + 1) * sizeof(unsigned int);
-+		binhdrsz = sizeof(struct opt_hdr_v1) +
-+			(binarye->binary.nargs + 1) * sizeof(unsigned int) +
-+			s.st_size;
-+		hdr->headersz_lsb = binhdrsz & 0xFFFF;
-+		hdr->headersz_msb = (binhdrsz & 0xFFFF0000) >> 16;
- 
--			ret = fread(cur, s.st_size, 1, bin);
--			if (ret != 1) {
--				fprintf(stderr,
--					"Could not read binary image %s\n",
--					el->binary.file);
--				return NULL;
--			}
-+		cur += sizeof(struct opt_hdr_v1);
- 
--			fclose(bin);
-+		args = cur;
-+		*args = binarye->binary.nargs;
-+		args++;
-+		for (argi = 0; argi < binarye->binary.nargs; argi++)
-+			args[argi] = binarye->binary.args[argi];
- 
--			cur += s.st_size;
-+		cur += (binarye->binary.nargs + 1) * sizeof(unsigned int);
- 
--			/* See if we have a next header or not, and if
--			 * so, add the marker indicating that we are
--			 * not the last header */
--			if ((cfgi < (cfgn - 1)) &&
--			    (image_cfg[cfgi + 1].type != IMAGE_CFG_PAYLOAD))
--				*((unsigned char *) cur) = 1;
--			cur += sizeof(uint32_t);
--		} else if (el->type == IMAGE_CFG_PAYLOAD)
--			break;
--		else {
--			fprintf(stderr, "Invalid element type %d (cfgi=%d)\n",
--				el->type, cfgi);
-+		ret = fread(cur, s.st_size, 1, bin);
-+		if (ret != 1) {
+@@ -1009,6 +1028,19 @@ static int image_create_config_parse_oneline(char *line,
+ 		el->type = IMAGE_CFG_NAND_BADBLK_LOCATION;
+ 		el->nandbadblklocation =
+ 			strtol(value, NULL, 16);
++	} else if (!strcmp(keyword, "NAND_ECCMODE")) {
++		char *value = strtok_r(NULL, " ", &saveptr);
++		el->type = IMAGE_CFG_NAND_ECC_MODE;
++		el->nandeccmode = image_nand_ecc_mode_id(value);
++		if (el->nandeccmode < 0) {
 +			fprintf(stderr,
-+				"Could not read binary image %s\n",
-+				binarye->binary.file);
- 			return NULL;
- 		}
-+
-+		fclose(bin);
-+
-+		cur += s.st_size;
-+
-+		/*
-+		 * For now, we don't support more than one binary
-+		 * header, and no other header types are
-+		 * supported. So, the binary header is necessarily the
-+		 * last one
-+		 */
-+		*((unsigned char *) cur) = 0;
-+
-+		cur += sizeof(uint32_t);
- 	}
- 
- 	/* Calculate and set the header checksum */
++				"Invalid NAND ECC mode '%s'\n", value);
++			return -1;
++		}
++	} else if (!strcmp(keyword, "NAND_PAGESZ")) {
++		char *value = strtok_r(NULL, " ", &saveptr);
++		el->type = IMAGE_CFG_NAND_PAGESZ;
++		el->nandpagesz = strtol(value, NULL, 16);
+ 	} else if (!strcmp(keyword, "BINARY")) {
+ 		char *value = strtok_r(NULL, " ", &saveptr);
+ 		int argi = 0;
+@@ -1241,6 +1273,12 @@ static void image_dump_config(struct image_cfg_element *image_cfg,
+ 		case IMAGE_CFG_NAND_BADBLK_LOCATION:
+ 			printf("NANDBADBLK 0x%x\n", e->nandbadblklocation);
+ 			break;
++		case IMAGE_CFG_NAND_ECC_MODE:
++			printf("NAND_ECCMODE 0x%x\n", e->nandeccmode);
++			break;
++		case IMAGE_CFG_NAND_PAGESZ:
++			printf("NAND_PAGESZ 0x%x\n", e->nandpagesz);
++			break;
+ 		case IMAGE_CFG_BINARY:
+ 			printf("BINARY %s (%d args)\n", e->binary.file,
+ 			       e->binary.nargs);
 -- 
 1.7.9.5
 
