@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f150.mail.ru ([94.100.178.200])
+Received: from mail-bk0-x233.google.com ([2a00:1450:4008:c01::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcVTz-0008WA-6G
- for barebox@lists.infradead.org; Wed, 15 May 2013 06:46:40 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 15 May 2013 10:46:13 +0400
-Message-ID: <1368600373.828822510@f150.mail.ru>
-In-Reply-To: <20130508182526.40de08c6@e6520eb>
-References: <1367958099-5063-1-git-send-email-plagnioj@jcrosoft.com>
- <6061FD58-D248-4A13-98E4-7AAD7A80CFCF@jcrosoft.com>
- <20130508182526.40de08c6@e6520eb>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UcVWG-00007x-U4
+ for barebox@lists.infradead.org; Wed, 15 May 2013 06:49:01 +0000
+Received: by mail-bk0-f51.google.com with SMTP id ji2so792791bkc.38
+ for <barebox@lists.infradead.org>; Tue, 14 May 2013 23:48:37 -0700 (PDT)
+Message-ID: <51932FC2.2050900@gmail.com>
+Date: Wed, 15 May 2013 08:48:34 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130513075852.GG32299@pengutronix.de> <5190AFA1.1080503@gmail.com>
+ <20130515055550.GZ32299@pengutronix.de> <51932913.90704@gmail.com>
+ <20130515063920.GC32299@pengutronix.de>
+In-Reply-To: <20130515063920.GC32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +23,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSCAxLzFdIFJldmVydCAibmFuZF9iYXNlOiBkZXRlY3Qg?=
- =?UTF-8?B?bW9yZSBPTkZJIGZsYXNoIg==?=
-To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-> > > On Tue, May 07, 2013 at 10:21:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > >> this brake the nand support on at91sam9x5ek
-> > >> where we have a non compliant ONFI nand
-> > >> NAND device: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB 3,3V 8-bit), 256MiB, page size: 2048, OOB size: 64
-> > >> 
-> > >> This reverts commit 4c2bdc8728016b3412523e3264651651fe752860.
-> > > 
-> > > Thank you for letting us know that this patch causes a regression for
-> > > you. I this happens, please first try and fix the regression. If that
-> > > doesn't work please tell us what about the original patch is so wrong
-> > > that it needs to be reverted. With a good explanation it could be that
-> > > someone else has an idea. And whatever you do, put the original author,
-> > > Eric in this case, on Cc.
-> > 
-> > This commit was supposed just able to detect that a Nand is ONFI
-> > 
-> > but instead it brake supported Nand
-> > 
-> > So Eric can fix it but I've not time to debug this before 1 month
-> > and the few platform that use ONFI are all busy
-> > 
-> > So as the commit just allow to detect a band is ONFI can we revert it
-> > 
-> > to keep non-ONFI Nand to work
-> > 
-> IIRC, I tested this patch on some i.MX board with non ONFI NAND flash
-> and that worked fine unless I made a mistake in my tests which is
-> always possible.
-> 
-> I've just sent a patch which may fix your problem, please give it a try
-> (only compile tested, not tested on real hardware).
+On 05/15/2013 08:39 AM, Sascha Hauer wrote:
+> On Wed, May 15, 2013 at 08:20:03AM +0200, Sebastian Hesselbarth wrote:
+>> On 05/15/2013 07:55 AM, Sascha Hauer wrote:
+>>>>> Is it possible to remap the registers using the kwbimage tool? That way
+>>>>> every code that runs would see the desired register layout.
+>>>>
+>>>> Although possible, I prefer a different approach:
+>>>> - IIRC all MVEBU SoCs boot up at 0xd0000000
+>>>> - Have a regbase variable within barebox that initially points to that
+>>>> - Have a mvreadl/mvwritel that adds it to reg offsets
+>>>> - Rewrite _initial_ SoC code to use mvreadl/mvwritel
+>>>
+>>> I applied this series, but please get this topic done before more code
+>>> enters that has to be changed when doing the above.
+...
+>> I will work with Thomas on this asap and find a solution, but I am
+>> not sure if it will work without dirty tricks. Thomas has one in
+>> mind and I tend to agree with him on this one.
+>
+> I hope the tricks won't get too dirty, otherwise it may be better to
+> drop the 2nd stage feature.
+> BTW. in earlier days we used to start 2nd stage loaders with the 'go'
+> command, but nowadays we have 'bootm' which could detect that it's a
+> barebox image we are about to start and could create whatever register
+> mapping  a barebox image expects.
 
-What is a patch to fix this? I've got some errors after update to latest master tree:
+Ok, then I guess it would be easier and cleaner to remap registers to
+the bootup register base.
 
-Board: ConnectCore i.MX51
-detected i.MX51 revision 3.0
-mmu: Error: Can't request SDRAM region for ttb
-Error: Cannot request SDRAM region for stack
-Module Variant: i.MX515@600MHz, PHY, Accel (0x0b)
-Module HW Rev : 03
-Module Serial : B111156789
-mc13xxx-spi mc13xxx-spi0: Found MC13892 ID: 0x0045d0 [Rev: 2.0a]
-nand: ONFI flash detected ... nand: ONFI param page 0 valid
-nand: Manufacturer ID: 0x2c, Chip ID: 0xda (Micron MT29F2G08AAD), page size: 2048, OOB size: 64
-BUG: failure at arch/arm/cpu/mmu.c:122/find_pte()!
-BUG!
-no stack data available
+> This wouldn't help when starting a barebox image for example from
+> U-Boot or JTAG, but would at least make it possible to chainload barebox
+> from barebox.
+>
+>> Further, yesterday when I played with Armada 370 I wasn't able to
+>> have it boot with a variable pointer but the same code boots with
+>> a pointer that never gets modified. Haven't investigated more, but
+>> if we remap first thing after boot, that can remain constant at the
+>> remapped reg base.
+>
+> Is the barebox binary copied to its link address by the ROM already or
+> does barebox need to copy itself to the link address? That would make
+> using global variables impossible befor copying to the correct address.
 
----
+BootROM takes care of copying the binary to TEXT_BASE. But with the
+above re-remap it should remain constant all the time.
+
+Sebastian
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
