@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWH2-0000tn-9G
+ id 1UcWH2-0000th-9H
  for barebox@lists.infradead.org; Wed, 15 May 2013 07:37:25 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 09:36:34 +0200
-Message-Id: <1368603396-27887-9-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 09:36:32 +0200
+Message-Id: <1368603396-27887-7-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,254 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 08/10] arm: mvebu: initial support for Marvell Kirkwood SoCs
+Subject: [PATCHv2 06/10] scripts/kwbimage: add support for NAND ECC and page
+ size header fields
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Marvell Kirkwood SoCs are based on a ARMv5 compatible core designed by
-Marvell, and a large number of peripherals with Marvell Dove, Marvell
-Armada 370 and Marvell Armada XP SoCs. The Marvell Kirkwood are used
-in a large number of consumer-grade NAS devices, for example.
+The v0 header, used on Kirkwood, has some fields to indicate the type
+of the NAND ECC, and the page size of the NAND. This commit adds
+support for such fields, which are needed to support the Kirkwood
+Guruplug platform.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/mach-mvebu/Kconfig                      |   14 +++
- arch/arm/mach-mvebu/Makefile                     |    1 +
- arch/arm/mach-mvebu/include/mach/kirkwood-regs.h |   37 ++++++++
- arch/arm/mach-mvebu/include/mach/kirkwood.h      |   22 +++++
- arch/arm/mach-mvebu/kirkwood.c                   |  111 ++++++++++++++++++++++
- 5 files changed, 185 insertions(+)
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood-regs.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood.h
- create mode 100644 arch/arm/mach-mvebu/kirkwood.c
+ scripts/kwbimage.c |   42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 3d8c2c3..92ba009 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -31,6 +31,11 @@ config ARCH_DOVE
- 	select CPU_V7
- 	select CLOCKSOURCE_ORION
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 0127e2b..4ebb07f 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -177,6 +177,8 @@ struct image_cfg_element {
+ 		IMAGE_CFG_EXEC_ADDR,
+ 		IMAGE_CFG_NAND_BLKSZ,
+ 		IMAGE_CFG_NAND_BADBLK_LOCATION,
++		IMAGE_CFG_NAND_ECC_MODE,
++		IMAGE_CFG_NAND_PAGESZ,
+ 		IMAGE_CFG_BINARY,
+ 		IMAGE_CFG_PAYLOAD,
+ 		IMAGE_CFG_DATA,
+@@ -194,6 +196,8 @@ struct image_cfg_element {
+ 		unsigned int execaddr;
+ 		unsigned int nandblksz;
+ 		unsigned int nandbadblklocation;
++		unsigned int nandeccmode;
++		unsigned int nandpagesz;
+ 		struct ext_hdr_v0_reg regdata;
+ 	};
+ };
+@@ -245,6 +249,15 @@ static const char *image_nand_ecc_mode_name(unsigned int id)
+ 	return NULL;
+ }
  
-+config ARCH_KIRKWOOD
-+	bool "Kirkwood"
-+	select CPU_FEROCEON
-+	select CLOCKSOURCE_ORION
++int image_nand_ecc_mode_id(const char *nand_ecc_mode_name)
++{
++	int i;
++	for (i = 0; nand_ecc_modes[i].name; i++)
++		if (!strcmp(nand_ecc_modes[i].name, nand_ecc_mode_name))
++			return nand_ecc_modes[i].id;
++	return -1;
++}
 +
- endchoice
+ static struct image_cfg_element *
+ image_find_option(struct image_cfg_element *image_cfg,
+ 		  int cfgn, unsigned int optiontype)
+@@ -409,9 +422,9 @@ static int image_extract_v0(void *fdimap, const char *output, FILE *focfg)
+ 	if (!strcmp(boot_mode_name, "nand")) {
+ 		const char *nand_ecc_mode =
+ 			image_nand_ecc_mode_name(main_hdr->nandeccmode);
+-		fprintf(focfg, "NAND_ECC_MODE %s\n",
++		fprintf(focfg, "NAND_ECCMODE %s\n",
+ 			nand_ecc_mode);
+-		fprintf(focfg, "NAND_PAGE_SIZE %08x\n",
++		fprintf(focfg, "NAND_PAGESZ %08x\n",
+ 			main_hdr->nandpagesize);
+ 	}
  
- if ARCH_ARMADA_370
-@@ -72,4 +77,13 @@ endchoice
+@@ -763,6 +776,12 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_EXEC_ADDR);
+ 	if (e)
+ 		main_hdr->execaddr = e->execaddr;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_ECC_MODE);
++	if (e)
++		main_hdr->nandeccmode = e->nandeccmode;
++	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_PAGESZ);
++	if (e)
++		main_hdr->nandpagesize = e->nandpagesz;
+ 	main_hdr->checksum = image_checksum8(image,
+ 					     sizeof(struct main_hdr_v0));
  
- endif # ARCH_DOVE
- 
-+if ARCH_KIRKWOOD
-+
-+choice
-+	prompt "Kirkwood Board Type"
-+
-+endchoice
-+
-+endif # ARCH_KIRKWOOD
-+
- endif # ARCH_MVEBU
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index 043f08f..8047725 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_DOVE)		+= dove.o
-+obj-$(CONFIG_ARCH_KIRKWOOD)	+= kirkwood.o
-diff --git a/arch/arm/mach-mvebu/include/mach/kirkwood-regs.h b/arch/arm/mach-mvebu/include/mach/kirkwood-regs.h
-new file mode 100644
-index 0000000..23e221b
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/kirkwood-regs.h
-@@ -0,0 +1,37 @@
-+/*
-+ * Copyright
-+ * (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_MVEBU_KIRKWOOD_REGS_H
-+#define __MACH_MVEBU_KIRKWOOD_REGS_H
-+
-+#define KIRKWOOD_INT_REGS_BASE IOMEM(0xd0000000)
-+
-+#define KIRKWOOD_SDRAM_WIN_BASE (KIRKWOOD_INT_REGS_BASE + 0x1500)
-+#define  DDR_BASE_CS_OFF(n)     (0x0000 + ((n) << 3))
-+#define   DDR_BASE_CS_HIGH_MASK  0xf
-+#define   DDR_BASE_CS_LOW_MASK   0xff000000
-+#define  DDR_SIZE_CS_OFF(n)     (0x0004 + ((n) << 3))
-+#define   DDR_SIZE_ENABLED       (1 << 0)
-+#define   DDR_SIZE_CS_MASK       0x1c
-+#define   DDR_SIZE_CS_SHIFT      2
-+#define   DDR_SIZE_MASK          0xff000000
-+#define KIRKWOOD_SAR_BASE       (KIRKWOOD_INT_REGS_BASE + 0x10030)
-+#define  KIRKWOOD_TCLK_BIT      21
-+#define KIRKWOOD_UART_BASE      (KIRKWOOD_INT_REGS_BASE + 0x12000)
-+#define KIRKWOOD_CPUCTRL_BASE   (KIRKWOOD_INT_REGS_BASE + 0x20100)
-+#define KIRKWOOD_TIMER_BASE     (KIRKWOOD_INT_REGS_BASE + 0x20300)
-+
-+#endif /* __MACH_MVEBU_KIRKWOOD_REGS_H */
-diff --git a/arch/arm/mach-mvebu/include/mach/kirkwood.h b/arch/arm/mach-mvebu/include/mach/kirkwood.h
-new file mode 100644
-index 0000000..7fe002d
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/kirkwood.h
-@@ -0,0 +1,22 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_KIRKWOOD_H
-+#define __MACH_KIRKWOOD_H
-+
-+int kirkwood_add_uart0(void);
-+void __naked __noreturn kirkwood_barebox_entry(void);
-+
-+#endif /* __MACH_KIRKWOOD_H */
-diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
-new file mode 100644
-index 0000000..b5b6aaf
---- /dev/null
-+++ b/arch/arm/mach-mvebu/kirkwood.c
-@@ -0,0 +1,111 @@
-+/*
-+ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <ns16550.h>
-+#include <mach/kirkwood-regs.h>
-+#include <asm/memory.h>
-+#include <asm/barebox-arm.h>
-+
-+static struct clk *tclk;
-+
-+static inline void kirkwood_memory_find(unsigned long *phys_base,
-+				     unsigned long *phys_size)
-+{
-+	void __iomem *sdram_win = IOMEM(KIRKWOOD_SDRAM_WIN_BASE);
-+	int cs;
-+
-+	*phys_base = ~0;
-+	*phys_size = 0;
-+
-+	for (cs = 0; cs < 4; cs++) {
-+		uint32_t base = readl(sdram_win + DDR_BASE_CS_OFF(cs));
-+		uint32_t ctrl = readl(sdram_win + DDR_SIZE_CS_OFF(cs));
-+
-+		/* Skip non-enabled CS */
-+		if (! (ctrl & DDR_SIZE_ENABLED))
-+			continue;
-+
-+		base &= DDR_BASE_CS_LOW_MASK;
-+		if (base < *phys_base)
-+			*phys_base = base;
-+		*phys_size += (ctrl | ~DDR_SIZE_MASK) + 1;
-+	}
-+}
-+
-+void __naked __noreturn kirkwood_barebox_entry(void)
-+{
-+	unsigned long phys_base, phys_size;
-+	kirkwood_memory_find(&phys_base, &phys_size);
-+	writel('E', 0xD0012000);
-+	barebox_arm_entry(phys_base, phys_size, 0);
-+}
-+
-+static struct NS16550_plat uart_plat = {
-+	.shift = 2,
-+};
-+
-+int kirkwood_add_uart0(void)
-+{
-+	uart_plat.clock = clk_get_rate(tclk);
-+	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
-+				(unsigned int)KIRKWOOD_UART_BASE,
-+				32, IORESOURCE_MEM_32BIT, &uart_plat))
-+		return -ENODEV;
-+	return 0;
-+}
-+
-+static int kirkwood_init_clocks(void)
-+{
-+	uint32_t sar = readl(KIRKWOOD_SAR_BASE);
-+	unsigned int rate;
-+
-+	if (sar & (1 << KIRKWOOD_TCLK_BIT))
-+		rate = 166666667;
-+	else
-+		rate = 200000000;
-+
-+	tclk = clk_fixed("tclk", rate);
-+	return clk_register_clkdev(tclk, NULL, "orion-timer");
-+}
-+
-+static int kirkwood_init_soc(void)
-+{
-+	unsigned long phys_base, phys_size;
-+
-+	kirkwood_init_clocks();
-+	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
-+			   (unsigned int)KIRKWOOD_TIMER_BASE, 0x30,
-+			   IORESOURCE_MEM, NULL);
-+	kirkwood_memory_find(&phys_base, &phys_size);
-+	arm_add_mem_device("ram0", phys_base, phys_size);
-+
-+	return 0;
-+}
-+
-+postcore_initcall(kirkwood_init_soc);
-+
-+void __noreturn reset_cpu(unsigned long addr)
-+{
-+	writel(0x4, KIRKWOOD_CPUCTRL_BASE + 0x8);
-+	writel(0x1, KIRKWOOD_CPUCTRL_BASE + 0xC);
-+	for(;;)
-+		;
-+}
-+EXPORT_SYMBOL(reset_cpu);
+@@ -1009,6 +1028,19 @@ static int image_create_config_parse_oneline(char *line,
+ 		el->type = IMAGE_CFG_NAND_BADBLK_LOCATION;
+ 		el->nandbadblklocation =
+ 			strtol(value, NULL, 16);
++	} else if (!strcmp(keyword, "NAND_ECCMODE")) {
++		char *value = strtok_r(NULL, " ", &saveptr);
++		el->type = IMAGE_CFG_NAND_ECC_MODE;
++		el->nandeccmode = image_nand_ecc_mode_id(value);
++		if (el->nandeccmode < 0) {
++			fprintf(stderr,
++				"Invalid NAND ECC mode '%s'\n", value);
++			return -1;
++		}
++	} else if (!strcmp(keyword, "NAND_PAGESZ")) {
++		char *value = strtok_r(NULL, " ", &saveptr);
++		el->type = IMAGE_CFG_NAND_PAGESZ;
++		el->nandpagesz = strtol(value, NULL, 16);
+ 	} else if (!strcmp(keyword, "BINARY")) {
+ 		char *value = strtok_r(NULL, " ", &saveptr);
+ 		int argi = 0;
+@@ -1241,6 +1273,12 @@ static void image_dump_config(struct image_cfg_element *image_cfg,
+ 		case IMAGE_CFG_NAND_BADBLK_LOCATION:
+ 			printf("NANDBADBLK 0x%x\n", e->nandbadblklocation);
+ 			break;
++		case IMAGE_CFG_NAND_ECC_MODE:
++			printf("NAND_ECCMODE 0x%x\n", e->nandeccmode);
++			break;
++		case IMAGE_CFG_NAND_PAGESZ:
++			printf("NAND_PAGESZ 0x%x\n", e->nandpagesz);
++			break;
+ 		case IMAGE_CFG_BINARY:
+ 			printf("BINARY %s (%d args)\n", e->binary.file,
+ 			       e->binary.nargs);
 -- 
 1.7.9.5
 
