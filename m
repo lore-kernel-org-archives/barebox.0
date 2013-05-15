@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UchzF-0000hv-S7
- for barebox@lists.infradead.org; Wed, 15 May 2013 20:07:46 +0000
-Received: by mail-bk0-f41.google.com with SMTP id jc3so1238672bkc.14
- for <barebox@lists.infradead.org>; Wed, 15 May 2013 13:07:23 -0700 (PDT)
-Message-ID: <5193EAF6.2000605@gmail.com>
-Date: Wed, 15 May 2013 22:07:18 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
-In-Reply-To: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Received: from fallback3.mail.ru ([94.100.176.58])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uck1C-00033N-5n
+ for barebox@lists.infradead.org; Wed, 15 May 2013 22:17:55 +0000
+Received: from smtp53.i.mail.ru (smtp53.i.mail.ru [94.100.177.113])
+ by fallback3.mail.ru (mPOP.Fallback_MX) with ESMTP id 5CAFFE2D494B
+ for <barebox@lists.infradead.org>; Thu, 16 May 2013 02:14:50 +0400 (MSK)
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 16 May 2013 02:13:28 +0400
+Message-Id: <1368656008-13621-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,51 +17,199 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 00/10] kwbimage improvements, Kirkwood support
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc: barebox@lists.infradead.org, Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Subject: [PATCH v2] GPIO: Add gpio_to_desc helper
+To: barebox@lists.infradead.org
 
-On 05/15/13 09:36, Thomas Petazzoni wrote:
-> Hello,
->
-> This is a resend of yesterday patch set, rebased on top of the current
-> 'next' branch. I have dropped the commits from Sebastian, since they
-> have been merged by Sascha, and I've added one commit that fixes the
-> SolidRun CuBox kwbimage.cfg to remove some lines that are no longer
-> necessary after the kwbimage improvements that are introduced by this
-> patch set.
->
-> Best regards,
->
-> Thomas
->
-> Thomas Petazzoni (10):
->    scripts/kwbimage: add a new function image_count_options()
->    scripts/kwbimage: add a few sanity checks
->    scripts/kwbimage: make the v0 image creation more flexible
->    scripts/kwbimage: simplify the v1 image creation
->    scripts/kwbimage: make image_boot_mode_id() return -1 on failure
->    scripts/kwbimage: add support for NAND ECC and page size header
->      fields
->    arm: mvebu: add Feroceon CPU type
->    arm: mvebu: initial support for Marvell Kirkwood SoCs
->    arm: mvebu: add basic support for Globalscale Guruplug board
->    arm: mvebu: remove useless lines in kwbimage.cfg for CuBox
+Patch adds gpio_to_desc helper for validate GPIO.
+A bit optimization is performed (about -160 bytes on ARM).
 
-Thomas,
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/gpio/gpiolib.c | 95 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 51 insertions(+), 44 deletions(-)
 
-I tested barebox-next with all patches applied on Dove and Armada 370.
-So you get my
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 6398268..ca6e8ad 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1,3 +1,5 @@
++#define pr_fmt(fmt)	"gpiolib: " fmt
++
+ #include <init.h>
+ #include <common.h>
+ #include <command.h>
+@@ -32,20 +34,30 @@ static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
+ 	return gpio_request(gpio, "gpio");
+ }
+ 
++static struct gpio_info *gpio_to_desc(unsigned gpio)
++{
++	if (gpio_is_valid(gpio))
++		if (gpio_desc[gpio].chip)
++			return &gpio_desc[gpio];
++
++	pr_warning("invalid GPIO %d\n", gpio);
++
++	return NULL;
++}
++
+ int gpio_request(unsigned gpio, const char *label)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
+-		return -EINVAL;
++	if (!gi)
++		return -ENODEV;
++
+ 	if (gi->requested)
+ 		return -EBUSY;
+-	if (chip->ops->request) {
+-		ret = chip->ops->request(chip, gpio - chip->base);
++
++	if (gi->chip->ops->request) {
++		ret = gi->chip->ops->request(gi->chip, gpio - gi->chip->base);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -58,17 +70,16 @@ int gpio_request(unsigned gpio, const char *label)
+ 
+ void gpio_free(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 
+-	if (!gpio_is_valid(gpio))
+-		return;
+-	if (!chip)
++	if (!gi)
+ 		return;
++
+ 	if (!gi->requested)
+ 		return;
+-	if (chip->ops->free)
+-		chip->ops->free(chip, gpio - chip->base);
++
++	if (gi->chip->ops->free)
++		gi->chip->ops->free(gi->chip, gpio - gi->chip->base);
+ 
+ 	gi->requested = false;
+ 	free(gi->label);
+@@ -76,75 +87,71 @@ void gpio_free(unsigned gpio)
+ 
+ void gpio_set_value(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 
+-	if (!gpio_is_valid(gpio))
+-		return;
+-	if (!chip)
++	if (!gi)
+ 		return;
++
+ 	if (gpio_ensure_requested(gi, gpio))
+ 		return;
+-	if (!chip->ops->set)
+-		return;
+-	chip->ops->set(chip, gpio - chip->base, value);
++
++	if (gi->chip->ops->set)
++		gi->chip->ops->set(gi->chip, gpio - gi->chip->base, value);
+ }
+ EXPORT_SYMBOL(gpio_set_value);
+ 
+ int gpio_get_value(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->get)
++
++	if (!gi->chip->ops->get)
+ 		return -ENOSYS;
+-	return chip->ops->get(chip, gpio - chip->base);
++	return gi->chip->ops->get(gi->chip, gpio - gi->chip->base);
+ }
+ EXPORT_SYMBOL(gpio_get_value);
+ 
+ int gpio_direction_output(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->direction_output)
++
++	if (!gi->chip->ops->direction_output)
+ 		return -ENOSYS;
+-	return chip->ops->direction_output(chip, gpio - chip->base, value);
++	return gi->chip->ops->direction_output(gi->chip, gpio - gi->chip->base,
++					       value);
+ }
+ EXPORT_SYMBOL(gpio_direction_output);
+ 
+ int gpio_direction_input(unsigned gpio)
+ {
+-	struct gpio_info *gi = &gpio_desc[gpio];
+-	struct gpio_chip *chip = gi->chip;
++	struct gpio_info *gi = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
+-	if (!chip)
++	if (!gi)
+ 		return -ENODEV;
++
+ 	ret = gpio_ensure_requested(gi, gpio);
+ 	if (ret)
+ 		return ret;
+-	if (!chip->ops->direction_input)
++
++	if (!gi->chip->ops->direction_input)
+ 		return -ENOSYS;
+-	return chip->ops->direction_input(chip, gpio - chip->base);
++	return gi->chip->ops->direction_input(gi->chip, gpio - gi->chip->base);
+ }
+ EXPORT_SYMBOL(gpio_direction_input);
+ 
+-- 
+1.8.1.5
 
-Tested-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-
-for all patches not directly related to Kirkwood (patches 7-9).
-
-Sebastian
 
 _______________________________________________
 barebox mailing list
