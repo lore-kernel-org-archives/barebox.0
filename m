@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcF5s-00067d-9k
- for barebox@lists.infradead.org; Tue, 14 May 2013 13:16:41 +0000
-Received: from mail.cvg.de (mail.cvg.de [62.153.82.30])
- by mailout-1.intern.sigma-chemnitz.de (8.14.4/8.14.4) with ESMTP id
- r4EDFUx1009815
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK)
- for <barebox@lists.infradead.org>; Tue, 14 May 2013 15:15:30 +0200
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-Date: Tue, 14 May 2013 15:14:55 +0200
-Message-Id: <1368537296-19610-2-git-send-email-enrico.scholz@sigma-chemnitz.de>
-In-Reply-To: <1368537296-19610-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
-References: <1368537296-19610-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UcWvk-0001mC-M6
+ for barebox@lists.infradead.org; Wed, 15 May 2013 08:19:25 +0000
+Date: Wed, 15 May 2013 10:19:01 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130515101901.7c2427b3@skate>
+In-Reply-To: <20130515081157.GI32299@pengutronix.de>
+References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130513075852.GG32299@pengutronix.de>
+ <5190AFA1.1080503@gmail.com>
+ <20130515055550.GZ32299@pengutronix.de>
+ <20130515092611.1fe76e5c@skate>
+ <20130515081157.GI32299@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,49 +23,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM v7: v7_mmu_cache_flush(): do not restore r0-r3 (minor
- optimization)
-To: barebox@lists.infradead.org
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Registers 'r0' till 'r3' are scratch registers and do not need to be
-restored.
+Dear Sascha Hauer,
 
-Signed-off-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
----
- arch/arm/cpu/cache-armv7.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, 15 May 2013 10:11:57 +0200, Sascha Hauer wrote:
 
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index 5bdf7e4..5595cf6 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -65,7 +65,7 @@ ENTRY(v7_mmu_cache_flush)
- 		mcr	p15, 0, r12, c7, c14, 0	@ clean+invalidate D
- 		b	iflush
- hierarchical:
--		stmfd	sp!, {r0-r7, r9-r11}
-+		stmfd	sp!, {r4-r7, r9-r11}
- 		mcr	p15, 0, r12, c7, c10, 5	@ DMB
- 		mrc	p15, 1, r0, c0, c0, 1	@ read clidr
- 		ands	r3, r0, #0x7000000	@ extract loc from clidr
-@@ -107,7 +107,7 @@ skip:
- 		cmp	r3, r12
- 		bgt	loop1
- finished:
--		ldmfd	sp!, {r0-r7, r9-r11}
-+		ldmfd	sp!, {r4-r7, r9-r11}
- 		mov	r12, #0			@ switch back to cache level 0
- 		mcr	p15, 2, r12, c0, c0, 0	@ select current cache level in cssr
- iflush:
+> > Hum, too bad, I have sent yesterday a new series, that included
+> > Sebastian code, plus basic Kirkwood support, and improvements to the
+> > kwbimage tool. The improvements to the kwbimage tool allowed to get rid
+> > of some dummy lines in the SolidRun Cubox kwbimage.cfg that Sebastian
+> > had submitted.
+> 
+> Sorry, I misread it. What I understood is that your series needs
+> Sebastians patches as base.
+
+No, since Sebastian patches were not yet applied, I thought "let's try
+to make the life easier for Sascha and offer a patch series with both
+Sebastian patches and my patches together". But in the mean time, you
+merged the ones from Sebastian.
+
+No big deal, I've already resent a rebased patch series, on top of
+current 'next', which no longer includes Sebastian patches. It however
+includes a fix to a patch from Sebastian, which in my earlier version
+was folded into Sebastian patch. This fix is made possible thanks to
+the improvements made in the kwbimage tool, so it should /not/ be
+folded into the original patch from Sebastian, unless you shuffle the
+order of commits.
+
+Thanks,
+
+Thomas
 -- 
-1.8.1.4
-
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
