@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWH2-0000tu-9L
- for barebox@lists.infradead.org; Wed, 15 May 2013 07:37:21 +0000
+ id 1UcWH2-0000ti-9L
+ for barebox@lists.infradead.org; Wed, 15 May 2013 07:37:22 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 09:36:36 +0200
-Message-Id: <1368603396-27887-11-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 09:36:31 +0200
+Message-Id: <1368603396-27887-6-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,33 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 10/10] arm: mvebu: remove useless lines in kwbimage.cfg for
- CuBox
+Subject: [PATCHv2 05/10] scripts/kwbimage: make image_boot_mode_id() return -1
+ on failure
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Thanks to the improvements brought into the kwbimage tool, it is no
-longer necessary to have dummy DEST_ADDR and EXEC_ADDR lines in the
-kwbimage.cfg file if those values are passed on the command line to
-the kwbimage tool, which is what the Barebox build process does.
+The function image_boot_mode_id() converts the name of a boot media
+into the corresponding Marvell specific code. However, 0 that we
+currently used to indicate that the boot media name wasn't found,
+could potentially be a valid value. So instead we use -1 to indicate a
+failure.
+
+This is also done in preparation to the introduction of
+image_nand_ecc_mode_id(), which will convert a NAND ECC mode name into
+the corresponding identifier. And in this case 0 is a valid identifier
+of a NAND ECC mode, so we cannot use it to indicate a failure. Since
+we want image_boot_mode_id() and image_nand_ecc_mode_id() to have a
+consistent behavior, we change the former in this commit. The latter
+is introduced in the next commit.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- arch/arm/boards/solidrun-cubox/kwbimage.cfg |    2 --
- 1 file changed, 2 deletions(-)
+ scripts/kwbimage.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/solidrun-cubox/kwbimage.cfg b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
-index cb0c360..db35aca 100644
---- a/arch/arm/boards/solidrun-cubox/kwbimage.cfg
-+++ b/arch/arm/boards/solidrun-cubox/kwbimage.cfg
-@@ -1,7 +1,5 @@
- VERSION 0
- BOOT_FROM spi
--DESTADDR ffffffff # overwritten by kwbimage -c
--EXECADDR ffffffff # overwritten by kwbimage -c
- DATA d0020104 00000000
- DATA d0800020 00022430
- DATA d0800030 00022430
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 631f131..0127e2b 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -226,14 +226,14 @@ static const char *image_boot_mode_name(unsigned int id)
+ 	return NULL;
+ }
+ 
+-unsigned int image_boot_mode_id(const char *boot_mode_name)
++int image_boot_mode_id(const char *boot_mode_name)
+ {
+ 	int i;
+ 	for (i = 0; boot_modes[i].name; i++)
+ 		if (!strcmp(boot_modes[i].name, boot_mode_name))
+ 			return boot_modes[i].id;
+ 
+-	return 0;
++	return -1;
+ }
+ 
+ static const char *image_nand_ecc_mode_name(unsigned int id)
+@@ -987,7 +987,7 @@ static int image_create_config_parse_oneline(char *line,
+ 		char *value = strtok_r(NULL, " ", &saveptr);
+ 		el->type = IMAGE_CFG_BOOT_FROM;
+ 		el->bootfrom = image_boot_mode_id(value);
+-		if (!el->bootfrom) {
++		if (el->bootfrom < 0) {
+ 			fprintf(stderr,
+ 				"Invalid boot media '%s'\n", value);
+ 			return -1;
 -- 
 1.7.9.5
 
