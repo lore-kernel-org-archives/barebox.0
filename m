@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcJpK-00068A-Ay
- for barebox@lists.infradead.org; Tue, 14 May 2013 18:19:56 +0000
-Date: Tue, 14 May 2013 20:19:21 +0200
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130514201921.7d7ec9fe@e6520eb>
-In-Reply-To: <1368551731.19898.3.camel@mars>
-References: <20130507175549.GR32299@pengutronix.de>
- <em6083fb6c-e073-40f9-aa90-2878d59c3517@plh001-think>
- <20130510105350.GM32299@pengutronix.de>
- <20130510145346.6854c389@e6520eb> <1368551731.19898.3.camel@mars>
-Mime-Version: 1.0
+ id 1UccJJ-0001GO-EJ
+ for barebox@lists.infradead.org; Wed, 15 May 2013 14:04:08 +0000
+Received: from mail243.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 6D122FFB87C
+ for <barebox@lists.infradead.org>; Wed, 15 May 2013 16:03:41 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Wed, 15 May 2013 15:59:17 +0200
+Message-Id: <1368626359-23966-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1368626359-23966-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130515135821.GG22508@game.jcrosoft.org>
+ <1368626359-23966-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +21,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Installing barebox for karo-tx53 in nand-flash
-To: Christoph Fritz <chf.fritz@googlemail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 3/5] ARM: at91: dt: add pinctrl pre-processor define
+To: barebox@lists.infradead.org
 
-SGkgQ2hyaXN0b3BoLAoKTGUgVHVlLCAxNCBNYXkgMjAxMyAxOToxNTozMSArMDIwMCwKQ2hyaXN0
-b3BoIEZyaXR6IDxjaGYuZnJpdHpAZ29vZ2xlbWFpbC5jb20+IGEgw6ljcml0IDoKCj4gT24gRnJp
-LCAyMDEzLTA1LTEwIGF0IDE0OjUzICswMjAwLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiA+ID4g
-TXkgYm9vdCBzb3VyY2VzIGFyZSBuYW5kLWZsYXNoICh0aGF0cyB3aGVyZSB1LWJvb3QgaXMgYXQg
-dGhlIG1vbWVudCkKPiA+ID4gPiAoYW5kIFNELWNhcmQgZm9yIHRlc3RpbmcpLgo+ID4gPiA+IAo+
-ID4gPiA+IEkgdHJpZWQgdG8gZmxhc2ggemJhcmVib3guYmluIHRvIG5hbmQtZmxhc2guIEl0IHN0
-YXJ0ZWQgYnV0IHdpdGggZXJyb3IKPiA+ID4gPiBuYW5kOiBOQU5EIHR5cGUgdW5rbm93biwgZWMs
-ZjEKPiA+ID4gPiBuYW5kOiBObyBOQU5EIGRldmljZSBmb3VuZCAoLTE5KSEKPiA+ID4gCj4gPiA+
-IEhtLCBzdHJhbmdlLiBUaGlzIHNob3VsZCBiZSBhIFNhbXN1bmcgMTI4TWlCIE5BTkQgZmxhc2gu
-IFRoZSBpZCBpcyBpbgo+ID4gPiB0aGUgZGF0YWJhc2UuIEkgY3VycmVudGx5IGhhdmUgbm8gZ29v
-ZCBpZGVhIHdoeSB0aGlzIGlzYSB1bmtub3duLgo+ID4gPiAKPiA+IG1heSB5b3UgcGxlYXNlIHRy
-eSB3aXRoIGhpcyBwYXRjaCA6Cj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9waXBlcm1h
-aWwvYmFyZWJveC8yMDEzLU1heS8wMTQ0NzAuaHRtbAo+ID4gYW5kIHRlbGwgaWYgdGhhdCBzb2x2
-ZXMgdGhpcyBOQU5EIGZsYXNoIGlzc3VlLgo+IAo+IFN1Y2Nlc3NmdWxseSB0ZXN0ZWQgeW91ciBw
-YXRjaCBvbiBhbiBvbWFwMy1ib2FyZDogTkFORCBkZXRlY3Rpb24gd29ya3MKPiBhZ2Fpbi4gV2l0
-aG91dCB0aGUgcGF0Y2ggSSBnZXQgdGhlIHNhbWUga2luZCBvZiBlcnJvciBhcyBhYm92ZS4KPiAK
-T0sgdGhhbmtzIGZvciB0aGUgdGVzdGluZy4gSSdsbCBzZW5kIGFuIHVwZGF0ZWQgcGF0Y2ggKGNv
-c21ldGljIGZpeCkKdG9tb3Jyb3cuCgpCZXN0IHJlZ2FyZHMKRXJpYwoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/dt-bindings/pinctrl/at91.h |   35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+ create mode 100644 include/dt-bindings/pinctrl/at91.h
+
+diff --git a/include/dt-bindings/pinctrl/at91.h b/include/dt-bindings/pinctrl/at91.h
+new file mode 100644
+index 0000000..d7988b4
+--- /dev/null
++++ b/include/dt-bindings/pinctrl/at91.h
+@@ -0,0 +1,35 @@
++/*
++ * This header provides constants for most at91 pinctrl bindings.
++ *
++ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * GPLv2 only
++ */
++
++#ifndef __DT_BINDINGS_AT91_PINCTRL_H__
++#define __DT_BINDINGS_AT91_PINCTRL_H__
++
++#define AT91_PINCTRL_NONE		(0 << 0)
++#define AT91_PINCTRL_PULL_UP		(1 << 0)
++#define AT91_PINCTRL_MULTI_DRIVE	(1 << 1)
++#define AT91_PINCTRL_DEGLITCH		(1 << 2)
++#define AT91_PINCTRL_PULL_DOWN		(1 << 3)
++#define AT91_PINCTRL_DIS_SCHMIT		(1 << 4)
++#define AT91_PINCTRL_DEBOUNCE		(1 << 16)
++#define AT91_PINCTRL_DEBOUNCE_VA(x)	(x << 17)
++
++#define AT91_PINCTRL_PULL_UP_DEGLITCH	(AT91_PINCTRL_PULL_UP | AT91_PINCTRL_DEGLITCH)
++
++#define AT91_PIOA	0
++#define AT91_PIOB	1
++#define AT91_PIOC	2
++#define AT91_PIOD	3
++#define AT91_PIOE	4
++
++#define AT91_PERIPH_GPIO	0
++#define AT91_PERIPH_A		1
++#define AT91_PERIPH_B		2
++#define AT91_PERIPH_C		3
++#define AT91_PERIPH_D		4
++
++#endif /* __DT_BINDINGS_AT91_PINCTRL_H__ */
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
