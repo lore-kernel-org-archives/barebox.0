@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f392.i.mail.ru ([185.5.136.63])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWUL-0001BF-8J
- for barebox@lists.infradead.org; Wed, 15 May 2013 07:51:06 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UcWhq-0001R7-JZ
+ for barebox@lists.infradead.org; Wed, 15 May 2013 08:05:05 +0000
+Message-ID: <1368604987.4171.4.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 15 May 2013 10:03:07 +0200
+In-Reply-To: <20130515092920.161eb910@skate>
+References: <1368364146-6024-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368364146-6024-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130513075852.GG32299@pengutronix.de> <5190AFA1.1080503@gmail.com>
+ <20130515055550.GZ32299@pengutronix.de> <51932913.90704@gmail.com>
+ <20130515092920.161eb910@skate>
 Mime-Version: 1.0
-Date: Wed, 15 May 2013 11:50:37 +0400
-Message-ID: <1368604237.60751970@f392.i.mail.ru>
-In-Reply-To: <1368601703.210769916@f185.mail.ru>
-References: <1367958099-5063-1-git-send-email-plagnioj@jcrosoft.com>
- <20130515065902.GE32299@pengutronix.de>
- <1368601703.210769916@f185.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,75 +25,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbM106IFtQQVRDSCAxLzFdIFJldmVydCAibmFuZF9iYXNlOiBkZXRlY3Qg?=
- =?UTF-8?B?bW9yZSBPTkZJIGZsYXNoIg==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Subject: Re: [PATCH 3/5] arm: initial support for Marvell Dove SoCs
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-> > > > > > On Tue, May 07, 2013 at 10:21:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > >> this brake the nand support on at91sam9x5ek
-> > > > > >> where we have a non compliant ONFI nand
-> > > > > >> NAND device: Manufacturer ID: 0xad, Chip ID: 0xda (Hynix NAND 256MiB 3,3V 8-bit), 256MiB, page size: 2048, OOB size: 64
-> > > > > >> 
-> > > > > >> This reverts commit 4c2bdc8728016b3412523e3264651651fe752860.
-> > > > > > 
-> > > > > > Thank you for letting us know that this patch causes a regression for
-> > > > > > you. I this happens, please first try and fix the regression. If that
-> > > > > > doesn't work please tell us what about the original patch is so wrong
-> > > > > > that it needs to be reverted. With a good explanation it could be that
-> > > > > > someone else has an idea. And whatever you do, put the original author,
-> > > > > > Eric in this case, on Cc.
-> > > > > 
-> > > > > This commit was supposed just able to detect that a Nand is ONFI
-> > > > > 
-> > > > > but instead it brake supported Nand
-> > > > > 
-> > > > > So Eric can fix it but I've not time to debug this before 1 month
-> > > > > and the few platform that use ONFI are all busy
-> > > > > 
-> > > > > So as the commit just allow to detect a band is ONFI can we revert it
-> > > > > 
-> > > > > to keep non-ONFI Nand to work
-> > > > > 
-> > > > IIRC, I tested this patch on some i.MX board with non ONFI NAND flash
-> > > > and that worked fine unless I made a mistake in my tests which is
-> > > > always possible.
-> > > > 
-> > > > I've just sent a patch which may fix your problem, please give it a try
-> > > > (only compile tested, not tested on real hardware).
-> > > 
-> > > What is a patch to fix this? I've got some errors after update to latest master tree:
-> > 
-> > This one:
-> > 
-> > http://comments.gmane.org/gmane.comp.boot-loaders.barebox/8883
-> > 
-> > Eric, you mentioned you would send a final version of this patch. Could
-> > you do this? master is still broken.
+Am Mittwoch, den 15.05.2013, 09:29 +0200 schrieb Thomas Petazzoni:
+> Dear Sebastian Hesselbarth,
 > 
-> Oh, sorry. It was other error. SDRAM size detection for this board is not
-> fully completed yet.
+> On Wed, 15 May 2013 08:20:03 +0200, Sebastian Hesselbarth wrote:
+> 
+> > it's not that easy as I thought. Armada 370 behaves very different
+> > from Dove here. While Dove allows to read from unmapped adresses,
+> > Armada 370 hangs immediately.
+> > 
+> > I will work with Thomas on this asap and find a solution, but I am
+> > not sure if it will work without dirty tricks. Thomas has one in
+> > mind and I tend to agree with him on this one.
+> 
+> Hum, then either I don't remember, or something, but I don't have a
+> trick in mind. We're doing something very custom in the kernel to
+> support legacy bootloaders for Armada 370/XP that were not remapping to
+> 0xf1, and therefore new bootloaders for Armada 370/XP should remap to
+> 0xf1 *and* set a specific CP15 to indicate the kernel that the
+> remapping has already been done. So this second thing is basically what
+> Barebox will have to do for Armada 370/XP platforms.
+> 
+> But other than that, I don't have a specific idea in mind. For the
+> kernel, I've thought about the problem many times, had many discussions
+> with Marvell engineers, and our conclusion is that there is not
+> reliable way to detect where the registers are currently mapped.
+> 
+> So to me, Barebox should do the 0xf1 remapping as soon as possible in
+> its initialization, for all Marvell EBU platforms, and give up the idea
+> of being able to chainload a second stage Barebox.
+> 
+> Is there anything I'm missing?
+> 
 
-I any case I have tested both my modules with this patch.
-One module contain chip with ONFI, second chip w/o ONFI.
+If you are indicating that the remapping was done through a specific
+CP15 entry, barebox should equally be able to read this bit out and
+decide if remapping has to be applied or not.
 
-This is error of non-ONFI module without patch:
-mc13xxx-spi mc13xxx-spi0: Found MC13892 ID: 0x0045d0 [Rev: 2.0a]
-nand: NAND type unknown: ec,dc
-nand: No NAND device found (-19)!
-imx_nand imx_nand0: probe failed: No such device or address
+Is this CP15 bit persistent? Even if not you may be able to set it in
+bootm, just before you jump to the chainloaded image.
 
-Then with patch:
-mc13xxx-spi mc13xxx-spi0: Found MC13892 ID: 0x0045d0 [Rev: 2.0a]
-nand: Manufacturer ID: 0xec, Chip ID: 0xdc (Samsung NAND 512MiB 3,3V 8-bit), page size: 2048, OOB size: 64
+Regards,
+Lucas
+-- 
+Pengutronix e.K.                           | Lucas Stach                 |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-With ONFI chip:
-mc13xxx-spi mc13xxx-spi0: Found MC13892 ID: 0x0045d0 [Rev: 2.0a]
-nand: ONFI flash detected ... nand: ONFI param page 0 valid
-nand: Manufacturer ID: 0x2c, Chip ID: 0xda (Micron MT29F2G08AAD), page size: 2048, OOB size: 64
 
-So, now both works fine.
-
----
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
