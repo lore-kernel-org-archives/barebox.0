@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWH2-0000th-9H
+ id 1UcWH2-0000tv-9I
  for barebox@lists.infradead.org; Wed, 15 May 2013 07:37:25 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 09:36:32 +0200
-Message-Id: <1368603396-27887-7-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 09:36:35 +0200
+Message-Id: <1368603396-27887-10-git-send-email-thomas.petazzoni@free-electrons.com>
 In-Reply-To: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 References: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,117 +21,200 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 06/10] scripts/kwbimage: add support for NAND ECC and page
- size header fields
+Subject: [PATCHv2 09/10] arm: mvebu: add basic support for Globalscale
+ Guruplug board
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-The v0 header, used on Kirkwood, has some fields to indicate the type
-of the NAND ECC, and the page size of the NAND. This commit adds
-support for such fields, which are needed to support the Kirkwood
-Guruplug platform.
+The Globalscale Guruplug board is a small NAS-type plug platform that
+uses a Marvell Kirkwood SoC.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
- scripts/kwbimage.c |   42 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 2 deletions(-)
+ arch/arm/Makefile                                  |    1 +
+ arch/arm/boards/globalscale-guruplug/Makefile      |    2 ++
+ arch/arm/boards/globalscale-guruplug/config.h      |    4 +++
+ .../globalscale-guruplug/globalscale-guruplug.c    |   26 +++++++++++++++++++
+ arch/arm/boards/globalscale-guruplug/kwbimage.cfg  |   27 ++++++++++++++++++++
+ arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 +++++++++++++++++++
+ arch/arm/configs/globalscale_guruplug_defconfig    |    6 +++++
+ arch/arm/mach-mvebu/Kconfig                        |    5 ++++
+ 8 files changed, 97 insertions(+)
+ create mode 100644 arch/arm/boards/globalscale-guruplug/Makefile
+ create mode 100644 arch/arm/boards/globalscale-guruplug/config.h
+ create mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
+ create mode 100644 arch/arm/boards/globalscale-guruplug/kwbimage.cfg
+ create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
+ create mode 100644 arch/arm/configs/globalscale_guruplug_defconfig
 
-diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-index 0127e2b..4ebb07f 100644
---- a/scripts/kwbimage.c
-+++ b/scripts/kwbimage.c
-@@ -177,6 +177,8 @@ struct image_cfg_element {
- 		IMAGE_CFG_EXEC_ADDR,
- 		IMAGE_CFG_NAND_BLKSZ,
- 		IMAGE_CFG_NAND_BADBLK_LOCATION,
-+		IMAGE_CFG_NAND_ECC_MODE,
-+		IMAGE_CFG_NAND_PAGESZ,
- 		IMAGE_CFG_BINARY,
- 		IMAGE_CFG_PAYLOAD,
- 		IMAGE_CFG_DATA,
-@@ -194,6 +196,8 @@ struct image_cfg_element {
- 		unsigned int execaddr;
- 		unsigned int nandblksz;
- 		unsigned int nandbadblklocation;
-+		unsigned int nandeccmode;
-+		unsigned int nandpagesz;
- 		struct ext_hdr_v0_reg regdata;
- 	};
- };
-@@ -245,6 +249,15 @@ static const char *image_nand_ecc_mode_name(unsigned int id)
- 	return NULL;
- }
- 
-+int image_nand_ecc_mode_id(const char *nand_ecc_mode_name)
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 8f17e7e..1e7ace4 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -103,6 +103,7 @@ board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	:= freescale-mx25-3-stack
+ board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	:= freescale-mx35-3-stack
+ board-$(CONFIG_MACH_GE863)			:= telit-evk-pro3
+ board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)        := globalscale-mirabox
++board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)       := globalscale-guruplug
+ board-$(CONFIG_MACH_HIGHBANK)			:= highbank
+ board-$(CONFIG_MACH_IMX21ADS)			:= imx21ads
+ board-$(CONFIG_MACH_IMX27ADS)			:= imx27ads
+diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
+new file mode 100644
+index 0000000..3b48b32
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/Makefile
+@@ -0,0 +1,2 @@
++obj-y = globalscale-guruplug.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/globalscale-guruplug/config.h b/arch/arm/boards/globalscale-guruplug/config.h
+new file mode 100644
+index 0000000..ca15136
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/config.h
+@@ -0,0 +1,4 @@
++#ifndef __CONFIG_H
++#define __CONFIG_H
++
++#endif	/* __CONFIG_H */
+diff --git a/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
+new file mode 100644
+index 0000000..dfc1d1a
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <sizes.h>
++#include <mach/kirkwood.h>
++
++static int globalscale_guruplug_console_init(void)
 +{
-+	int i;
-+	for (i = 0; nand_ecc_modes[i].name; i++)
-+		if (!strcmp(nand_ecc_modes[i].name, nand_ecc_mode_name))
-+			return nand_ecc_modes[i].id;
-+	return -1;
++	return kirkwood_add_uart0();
 +}
 +
- static struct image_cfg_element *
- image_find_option(struct image_cfg_element *image_cfg,
- 		  int cfgn, unsigned int optiontype)
-@@ -409,9 +422,9 @@ static int image_extract_v0(void *fdimap, const char *output, FILE *focfg)
- 	if (!strcmp(boot_mode_name, "nand")) {
- 		const char *nand_ecc_mode =
- 			image_nand_ecc_mode_name(main_hdr->nandeccmode);
--		fprintf(focfg, "NAND_ECC_MODE %s\n",
-+		fprintf(focfg, "NAND_ECCMODE %s\n",
- 			nand_ecc_mode);
--		fprintf(focfg, "NAND_PAGE_SIZE %08x\n",
-+		fprintf(focfg, "NAND_PAGESZ %08x\n",
- 			main_hdr->nandpagesize);
- 	}
++console_initcall(globalscale_guruplug_console_init);
+diff --git a/arch/arm/boards/globalscale-guruplug/kwbimage.cfg b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
+new file mode 100644
+index 0000000..d0f3bdb
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/kwbimage.cfg
+@@ -0,0 +1,27 @@
++VERSION 0
++BOOT_FROM nand
++NAND_ECCMODE default
++NAND_PAGESZ 00000800
++DATA ffd100e0 1b1b9b9b
++DATA ffd01400 43000c30
++DATA ffd01404 37543000
++DATA ffd01408 22125451
++DATA ffd0140c 00000a33
++DATA ffd01410 000000cc
++DATA ffd01414 00000000
++DATA ffd01418 00000000
++DATA ffd0141c 00000c52
++DATA ffd01420 00000040
++DATA ffd01424 0000f17f
++DATA ffd01428 00085520
++DATA ffd0147c 00008552
++DATA ffd01500 00000000
++DATA ffd01504 0ffffff1
++DATA ffd01508 10000000
++DATA ffd0150c 0ffffff5
++DATA ffd01514 00000000
++DATA ffd0151c 00000000
++DATA ffd01494 00030000
++DATA ffd01498 00000000
++DATA ffd0149c 0000e803
++DATA ffd01480 00000001
+diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
+new file mode 100644
+index 0000000..d270cda
+--- /dev/null
++++ b/arch/arm/boards/globalscale-guruplug/lowlevel.c
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <mach/kirkwood.h>
++
++void __naked barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++	kirkwood_barebox_entry();
++}
+diff --git a/arch/arm/configs/globalscale_guruplug_defconfig b/arch/arm/configs/globalscale_guruplug_defconfig
+new file mode 100644
+index 0000000..d21de45
+--- /dev/null
++++ b/arch/arm/configs/globalscale_guruplug_defconfig
+@@ -0,0 +1,6 @@
++CONFIG_ARCH_MVEBU=y
++CONFIG_ARCH_KIRKWOOD=y
++CONFIG_TEXT_BASE=0x2000000
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_RESET=y
++CONFIG_DRIVER_SERIAL_NS16550=y
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 92ba009..1d46f87 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -4,12 +4,14 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x2000000 if MACH_PLATHOME_OPENBLOCKS_AX3
+ 	default 0x2000000 if MACH_GLOBALSCALE_MIRABOX
++	default 0x2000000 if MACH_GLOBALSCALE_GURUPLUG
+ 	default 0x2000000 if MACH_MARVELL_ARMADA_XP_GP
+ 	default 0x2000000 if MACH_SOLIDRUN_CUBOX
  
-@@ -763,6 +776,12 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
- 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_EXEC_ADDR);
- 	if (e)
- 		main_hdr->execaddr = e->execaddr;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_ECC_MODE);
-+	if (e)
-+		main_hdr->nandeccmode = e->nandeccmode;
-+	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_NAND_PAGESZ);
-+	if (e)
-+		main_hdr->nandpagesize = e->nandpagesz;
- 	main_hdr->checksum = image_checksum8(image,
- 					     sizeof(struct main_hdr_v0));
+ config BOARDINFO
+ 	default "PlatHome OpenBlocks AX3" if MACH_PLATHOME_OPENBLOCKS_AX3
+ 	default "Globalscale Mirabox" if MACH_GLOBALSCALE_MIRABOX
++	default "Globalscale Guruplug" if MACH_GLOBALSCALE_GURUPLUG
+ 	default "Marvell Armada XP GP" if MACH_MARVELL_ARMADA_XP_GP
+ 	default "SolidRun CuBox" if MACH_SOLIDRUN_CUBOX
  
-@@ -1009,6 +1028,19 @@ static int image_create_config_parse_oneline(char *line,
- 		el->type = IMAGE_CFG_NAND_BADBLK_LOCATION;
- 		el->nandbadblklocation =
- 			strtol(value, NULL, 16);
-+	} else if (!strcmp(keyword, "NAND_ECCMODE")) {
-+		char *value = strtok_r(NULL, " ", &saveptr);
-+		el->type = IMAGE_CFG_NAND_ECC_MODE;
-+		el->nandeccmode = image_nand_ecc_mode_id(value);
-+		if (el->nandeccmode < 0) {
-+			fprintf(stderr,
-+				"Invalid NAND ECC mode '%s'\n", value);
-+			return -1;
-+		}
-+	} else if (!strcmp(keyword, "NAND_PAGESZ")) {
-+		char *value = strtok_r(NULL, " ", &saveptr);
-+		el->type = IMAGE_CFG_NAND_PAGESZ;
-+		el->nandpagesz = strtol(value, NULL, 16);
- 	} else if (!strcmp(keyword, "BINARY")) {
- 		char *value = strtok_r(NULL, " ", &saveptr);
- 		int argi = 0;
-@@ -1241,6 +1273,12 @@ static void image_dump_config(struct image_cfg_element *image_cfg,
- 		case IMAGE_CFG_NAND_BADBLK_LOCATION:
- 			printf("NANDBADBLK 0x%x\n", e->nandbadblklocation);
- 			break;
-+		case IMAGE_CFG_NAND_ECC_MODE:
-+			printf("NAND_ECCMODE 0x%x\n", e->nandeccmode);
-+			break;
-+		case IMAGE_CFG_NAND_PAGESZ:
-+			printf("NAND_PAGESZ 0x%x\n", e->nandpagesz);
-+			break;
- 		case IMAGE_CFG_BINARY:
- 			printf("BINARY %s (%d args)\n", e->binary.file,
- 			       e->binary.nargs);
+@@ -82,6 +84,9 @@ if ARCH_KIRKWOOD
+ choice
+ 	prompt "Kirkwood Board Type"
+ 
++config MACH_GLOBALSCALE_GURUPLUG
++	bool "Guruplug"
++
+ endchoice
+ 
+ endif # ARCH_KIRKWOOD
 -- 
 1.7.9.5
 
