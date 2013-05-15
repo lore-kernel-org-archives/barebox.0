@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.free-electrons.com ([94.23.35.102])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UcWGh-0000rI-23
- for barebox@lists.infradead.org; Wed, 15 May 2013 07:37:00 +0000
+ id 1UcWGh-0000rM-22
+ for barebox@lists.infradead.org; Wed, 15 May 2013 07:36:59 +0000
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 15 May 2013 09:36:26 +0200
-Message-Id: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Date: Wed, 15 May 2013 09:36:28 +0200
+Message-Id: <1368603396-27887-3-git-send-email-thomas.petazzoni@free-electrons.com>
+In-Reply-To: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
+References: <1368603396-27887-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,62 +21,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 00/10] kwbimage improvements, Kirkwood support
+Subject: [PATCHv2 02/10] scripts/kwbimage: add a few sanity checks
 To: barebox@lists.infradead.org
 Cc: Lior Amsalem <alior@marvell.com>, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Hello,
+This commit uses the newly introduced image_count_options() function
+to:
 
-This is a resend of yesterday patch set, rebased on top of the current
-'next' branch. I have dropped the commits from Sebastian, since they
-have been merged by Sascha, and I've added one commit that fixes the
-SolidRun CuBox kwbimage.cfg to remove some lines that are no longer
-necessary after the kwbimage improvements that are introduced by this
-patch set.
+ - See if there is any DATA option that require the creation of an
+   extended header for v0 header.
 
-Best regards,
+ - Verify that no more than one payload has been provided when
+   creating a v0 header.
 
-Thomas
+ - Verify that no more than one binary payload has been provided when
+   creating a v1 header. Technically speaking, it is possible to
+   support several payloads, but in real life, only one gets used, so
+   we will only support that to make the code simpler for now. It can
+   always be extended later on if needed.
 
-Thomas Petazzoni (10):
-  scripts/kwbimage: add a new function image_count_options()
-  scripts/kwbimage: add a few sanity checks
-  scripts/kwbimage: make the v0 image creation more flexible
-  scripts/kwbimage: simplify the v1 image creation
-  scripts/kwbimage: make image_boot_mode_id() return -1 on failure
-  scripts/kwbimage: add support for NAND ECC and page size header
-    fields
-  arm: mvebu: add Feroceon CPU type
-  arm: mvebu: initial support for Marvell Kirkwood SoCs
-  arm: mvebu: add basic support for Globalscale Guruplug board
-  arm: mvebu: remove useless lines in kwbimage.cfg for CuBox
+ - Verify that no more than one payload has been provided when
+   creating a v1 header.
 
- arch/arm/Makefile                                  |    1 +
- arch/arm/boards/globalscale-guruplug/Makefile      |    2 +
- arch/arm/boards/globalscale-guruplug/config.h      |    4 +
- .../globalscale-guruplug/globalscale-guruplug.c    |   26 ++
- arch/arm/boards/globalscale-guruplug/kwbimage.cfg  |   27 ++
- arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 ++
- arch/arm/boards/solidrun-cubox/kwbimage.cfg        |    2 -
- arch/arm/configs/globalscale_guruplug_defconfig    |    6 +
- arch/arm/cpu/Kconfig                               |    8 +
- arch/arm/mach-mvebu/Kconfig                        |   19 ++
- arch/arm/mach-mvebu/Makefile                       |    1 +
- arch/arm/mach-mvebu/include/mach/kirkwood-regs.h   |   37 +++
- arch/arm/mach-mvebu/include/mach/kirkwood.h        |   22 ++
- arch/arm/mach-mvebu/kirkwood.c                     |  111 ++++++++
- scripts/kwbimage.c                                 |  279 ++++++++++++--------
- 15 files changed, 453 insertions(+), 118 deletions(-)
- create mode 100644 arch/arm/boards/globalscale-guruplug/Makefile
- create mode 100644 arch/arm/boards/globalscale-guruplug/config.h
- create mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
- create mode 100644 arch/arm/boards/globalscale-guruplug/kwbimage.cfg
- create mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
- create mode 100644 arch/arm/configs/globalscale_guruplug_defconfig
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood-regs.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/kirkwood.h
- create mode 100644 arch/arm/mach-mvebu/kirkwood.c
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ scripts/kwbimage.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 0d5dcac..cca20ab 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -712,12 +712,16 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 	headersz  = sizeof(struct main_hdr_v0);
+ 	payloadsz = 0;
+ 
+-	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_DATA);
+-	if (e) {
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_DATA) > 0) {
+ 		has_ext = 1;
+ 		headersz += sizeof(struct ext_hdr_v0);
+ 	}
+ 
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
++		fprintf(stderr, "More than one payload, not possible\n");
++		return NULL;
++	}
++
+ 	payloade = image_find_option(image_cfg, cfgn, IMAGE_CFG_PAYLOAD);
+ 	if (payloade) {
+ 		struct stat s;
+@@ -818,6 +822,16 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
+ 	headersz = sizeof(struct main_hdr_v1);
+ 	payloadsz = 0;
+ 
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_BINARY) > 1) {
++		fprintf(stderr, "More than one binary blob, not supported\n");
++		return NULL;
++	}
++
++	if (image_count_options(image_cfg, cfgn, IMAGE_CFG_PAYLOAD) > 1) {
++		fprintf(stderr, "More than one payload, not possible\n");
++		return NULL;
++	}
++
+ 	e = image_find_option(image_cfg, cfgn, IMAGE_CFG_BINARY);
+ 	if (e) {
+ 		struct stat s;
 -- 
 1.7.9.5
 
