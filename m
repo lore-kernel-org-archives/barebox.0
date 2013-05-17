@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.cvg.de ([62.153.82.30])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UdGsz-00030x-Ce
- for barebox@lists.infradead.org; Fri, 17 May 2013 09:23:38 +0000
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-References: <1368537296-19610-1-git-send-email-enrico.scholz@sigma-chemnitz.de>
- <20130515062811.GB32299@pengutronix.de>
- <20130517082411.GW20989@pengutronix.de>
-Date: Fri, 17 May 2013 11:22:20 +0200
-In-Reply-To: <20130517082411.GW20989@pengutronix.de> (Sascha Hauer's message
- of "Fri, 17 May 2013 10:24:11 +0200")
-Message-ID: <lyli7eot9v.fsf@ensc-virt.intern.sigma-chemnitz.de>
-MIME-Version: 1.0
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UdIdU-0005OG-Q6
+ for barebox@lists.infradead.org; Fri, 17 May 2013 11:15:45 +0000
+Received: from mail606.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6E27BDC131C
+ for <barebox@lists.infradead.org>; Fri, 17 May 2013 13:15:20 +0200 (CEST)
+Mime-Version: 1.0 (Mac OS X Mail 6.3 \(1503\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20130517054349.GQ32299@pengutronix.de>
+Date: Fri, 17 May 2013 19:15:12 +0800
+Message-Id: <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
+References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+ <20130517054349.GQ32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +22,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM v7: fix mmu-off operation
+Subject: Re: [PATCH v2] nand_base: sync flash detection functions with linux
+ 3.9's code
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+HI,
 
->> So you can drop this stack push by using r12 instead of r10. That's fine
->> I think, but should be a patch of its own. Can you resend this as two
->> patches?
->
-> Oh, I just saw you can't since then r12 would be corrupted when
-> v7_mmu_cache_flush is called from v7_mmu_cache_off.
->
-> Applied this one to master and the rest to -next with a small
-> modification.
+	can we have stable release as this patch fix the band support as it's brok=
+en since
+	4c2bdc8728016b3412523e3264651651fe752860
 
-ok; I was about to split patches by renaming 'r10' to 'r12' in the first
-step (which will work afais because r12 will be pushed on stack on top
-of v7_mmu_cache_flush()) but was interrupted by other work.
+Best Regards,
+J.
+On May 17, 2013, at 1:43 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
+> On Wed, May 15, 2013 at 09:43:29AM +0200, Eric B=E9nard wrote:
+>> this fix the problems introduced when detecting non ONFI flashes in
+>> commit 4c2bdc8728016b3412523e3264651651fe752860
+>> "nand_base: detect more ONFI flash"
+>> =
 
-Enrico
+>> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> =
+
+> Applied, thanks
+> =
+
+> Sascha
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
 
 _______________________________________________
 barebox mailing list
