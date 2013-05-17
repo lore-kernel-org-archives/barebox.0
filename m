@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UdDSd-0007iZ-4j
- for barebox@lists.infradead.org; Fri, 17 May 2013 05:44:12 +0000
-Date: Fri, 17 May 2013 07:43:49 +0200
+ id 1UdDVM-0007m2-JG
+ for barebox@lists.infradead.org; Fri, 17 May 2013 05:47:01 +0000
+Date: Fri, 17 May 2013 07:46:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130517054349.GQ32299@pengutronix.de>
-References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+Message-ID: <20130517054638.GR32299@pengutronix.de>
+References: <1368656008-13621-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <1368656008-13621-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +18,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] nand_base: sync flash detection functions with linux
- 3.9's code
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH v2] GPIO: Add gpio_to_desc helper
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 15, 2013 at 09:43:29AM +0200, Eric B=E9nard wrote:
-> this fix the problems introduced when detecting non ONFI flashes in
-> commit 4c2bdc8728016b3412523e3264651651fe752860
-> "nand_base: detect more ONFI flash"
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+On Thu, May 16, 2013 at 02:13:28AM +0400, Alexander Shiyan wrote:
+> Patch adds gpio_to_desc helper for validate GPIO.
+> A bit optimization is performed (about -160 bytes on ARM).
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
 Applied, thanks
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
