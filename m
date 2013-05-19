@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x232.google.com ([2a00:1450:4013:c01::232])
+Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ue8HV-0005pa-H5
- for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:31 +0000
-Received: by mail-ea0-f178.google.com with SMTP id q16so3620425ead.9
+ id 1Ue8HV-0005pY-VY
+ for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:33 +0000
+Received: by mail-ea0-f180.google.com with SMTP id g10so3392097eak.11
  for <barebox@lists.infradead.org>; Sun, 19 May 2013 11:24:05 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sun, 19 May 2013 20:23:44 +0200
-Message-Id: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sun, 19 May 2013 20:23:45 +0200
+Message-Id: <1368987835-13323-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,84 +23,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/11] arm: mvebu: SoC consolidation
+Subject: [PATCH 01/11] arm: mvebu: add more visible SoC separators to Kconfig
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-After power-up, Marvell EBU SoCs are common enough to justify common
-init code. All SoCs start up with internal registers mapped at 0xd0000000
-and Linux wants them remapped to 0xf1000000 which gives ~512M contiguous
-address space. As internal registers base address is remapped from within
-internal registers itself, we do this remap as soon as possible.
+This just add more visible separators between each subconfig of the
+supported Marvell EBU SoCs.
 
-This patch set consolidates lowlevel init for all MVEBU SoCs which is
-currently performed on every board supported. Also common console UART
-is created. Then Dove, Armada 370/XP, and Kirkwood are moved to use
-common init functions, and finally all board specific init is removed
-to its bare minimum.
-
-The patch set has been tested on CuBox (Dove), Guruplug (Kirkwood),
-Mirabox and OpenBlocks AX3 (Armada 370) by either me or Thomas Petazzoni.
-
-Sebastian Hesselbarth (11):
-  arm: mvebu: add more visible SoC separators to Kconfig
-  arm: mvebu: introduce common lowlevel and early init
-  arm: mvebu: introduce common console UART config
-  arm: mvebu: convert Dove to common init
-  arm: mvebu: convert Armada 370/XP to common init
-  arm: mvebu: convert Kirkwood to common init
-  arm: mvebu: convert SolidRun CuBox to common init
-  arm: mvebu: convert Globalscale Mirabox to common init
-  arm: mvebu: convert PlatHome OpenBlocks AX3 to common init
-  arm: mvebu: convert Marvell Armada XP GP board to common init
-  arm: mvebu: convert Globalscale Guruplug to common init
-
- arch/arm/boards/globalscale-guruplug/Makefile      |    3 +-
- .../board.c}                                       |   12 +--
- .../globalscale-guruplug/globalscale-guruplug.c    |   26 -----
- arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 -----
- arch/arm/boards/globalscale-mirabox/Makefile       |    3 +-
- .../lowlevel.c => globalscale-mirabox/board.c}     |   13 +--
- .../globalscale-mirabox/globalscale-mirabox.c      |   26 -----
- arch/arm/boards/marvell-armada-xp-gp/Makefile      |    3 +-
- arch/arm/boards/marvell-armada-xp-gp/board.c       |   17 ++++
- arch/arm/boards/plathome-openblocks-ax3/Makefile   |    3 +-
- arch/arm/boards/plathome-openblocks-ax3/board.c    |   17 ++++
- arch/arm/boards/plathome-openblocks-ax3/lowlevel.c |   25 -----
- arch/arm/boards/solidrun-cubox/Makefile            |    3 +-
- .../lowlevel.c => solidrun-cubox/board.c}          |   14 +--
- arch/arm/mach-mvebu/Kconfig                        |   30 ++++++
- arch/arm/mach-mvebu/Makefile                       |    2 +
- arch/arm/mach-mvebu/armada-370-xp.c                |  103 ++++++++------------
- arch/arm/mach-mvebu/common.c                       |   57 +++++++++++
- arch/arm/mach-mvebu/dove.c                         |   56 ++++-------
- .../mach-mvebu/include/mach/armada-370-xp-regs.h   |   47 +++++++++
- .../include/mach/common.h}                         |   16 ++-
- arch/arm/mach-mvebu/include/mach/debug_ll.h        |   23 +++--
- arch/arm/mach-mvebu/include/mach/dove-regs.h       |   21 ++--
- arch/arm/mach-mvebu/include/mach/kirkwood-regs.h   |   45 ++++++---
- .../include/mach/lowlevel.h}                       |   16 ++-
- arch/arm/mach-mvebu/kirkwood.c                     |   44 ++++-----
- .../globalscale-mirabox => mach-mvebu}/lowlevel.c  |    6 +-
- 27 files changed, 335 insertions(+), 322 deletions(-)
- rename arch/arm/boards/{solidrun-cubox/solidrun-cubox.c => globalscale-guruplug/board.c} (67%)
- delete mode 100644 arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
- delete mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
- rename arch/arm/boards/{solidrun-cubox/lowlevel.c => globalscale-mirabox/board.c} (66%)
- delete mode 100644 arch/arm/boards/globalscale-mirabox/globalscale-mirabox.c
- create mode 100644 arch/arm/boards/marvell-armada-xp-gp/board.c
- create mode 100644 arch/arm/boards/plathome-openblocks-ax3/board.c
- delete mode 100644 arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
- rename arch/arm/boards/{marvell-armada-xp-gp/lowlevel.c => solidrun-cubox/board.c} (64%)
- create mode 100644 arch/arm/mach-mvebu/common.c
- create mode 100644 arch/arm/mach-mvebu/include/mach/armada-370-xp-regs.h
- rename arch/arm/{boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c => mach-mvebu/include/mach/common.h} (65%)
- rename arch/arm/{boards/plathome-openblocks-ax3/plathome-openblocks-ax3.c => mach-mvebu/include/mach/lowlevel.h} (64%)
- rename arch/arm/{boards/globalscale-mirabox => mach-mvebu}/lowlevel.c (80%)
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
+---
+ arch/arm/mach-mvebu/Kconfig |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 1d46f87..400e41b 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -40,6 +40,10 @@ config ARCH_KIRKWOOD
+ 
+ endchoice
+ 
++#
++# Armada 370 SoC boards
++#
++
+ if ARCH_ARMADA_370
+ 
+ choice
+@@ -52,6 +56,10 @@ endchoice
+ 
+ endif # ARCH_ARMADA_370
+ 
++#
++# Armada XP SoC boards
++#
++
+ if ARCH_ARMADA_XP
+ 
+ choice
+@@ -67,6 +75,10 @@ endchoice
+ 
+ endif # ARCH_ARMADA_XP
+ 
++#
++# Dove 88AP510 SoC boards
++#
++
+ if ARCH_DOVE
+ 
+ choice
+@@ -79,6 +91,10 @@ endchoice
+ 
+ endif # ARCH_DOVE
+ 
++#
++# Kirkwood SoC boards
++#
++
+ if ARCH_KIRKWOOD
+ 
+ choice
 -- 
 1.7.10.4
 
