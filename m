@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f49.google.com ([74.125.83.49])
+Received: from mail-ee0-f51.google.com ([74.125.83.51])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ue8HY-0005pg-QV
- for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:43 +0000
-Received: by mail-ee0-f49.google.com with SMTP id d17so3505576eek.22
- for <barebox@lists.infradead.org>; Sun, 19 May 2013 11:24:09 -0700 (PDT)
+ id 1Ue8HY-0005pf-OQ
+ for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:41 +0000
+Received: by mail-ee0-f51.google.com with SMTP id e51so3491063eek.24
+ for <barebox@lists.infradead.org>; Sun, 19 May 2013 11:24:10 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sun, 19 May 2013 20:23:54 +0200
-Message-Id: <1368987835-13323-11-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sun, 19 May 2013 20:23:55 +0200
+Message-Id: <1368987835-13323-12-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,43 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] arm: mvebu: convert Marvell Armada XP GP board to
- common init
+Subject: [PATCH 11/11] arm: mvebu: convert Globalscale Guruplug to common init
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-With Marvell Armada XP converted to common SoC init, board specific
+With Marvell Kirkwood converted to common SoC init, board specific
 lowlevel and init code can be removed. This patch leaves an empty board
 source file to allow to have board specific quirks.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Tested-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/boards/marvell-armada-xp-gp/Makefile      |    3 +--
- .../{marvell-armada-xp-gp.c => board.c}            |   14 +++--------
- arch/arm/boards/marvell-armada-xp-gp/lowlevel.c    |   25 --------------------
- 3 files changed, 4 insertions(+), 38 deletions(-)
- rename arch/arm/boards/marvell-armada-xp-gp/{marvell-armada-xp-gp.c => board.c} (65%)
- delete mode 100644 arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
+ arch/arm/boards/globalscale-guruplug/Makefile      |    3 +--
+ .../{globalscale-guruplug.c => board.c}            |   15 +++--------
+ arch/arm/boards/globalscale-guruplug/lowlevel.c    |   26 --------------------
+ 3 files changed, 4 insertions(+), 40 deletions(-)
+ rename arch/arm/boards/globalscale-guruplug/{globalscale-guruplug.c => board.c} (63%)
+ delete mode 100644 arch/arm/boards/globalscale-guruplug/lowlevel.c
 
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/Makefile b/arch/arm/boards/marvell-armada-xp-gp/Makefile
-index ea89963..dcfc293 100644
---- a/arch/arm/boards/marvell-armada-xp-gp/Makefile
-+++ b/arch/arm/boards/marvell-armada-xp-gp/Makefile
+diff --git a/arch/arm/boards/globalscale-guruplug/Makefile b/arch/arm/boards/globalscale-guruplug/Makefile
+index 3b48b32..dcfc293 100644
+--- a/arch/arm/boards/globalscale-guruplug/Makefile
++++ b/arch/arm/boards/globalscale-guruplug/Makefile
 @@ -1,2 +1 @@
--obj-y = marvell-armada-xp-gp.o
+-obj-y = globalscale-guruplug.o
 -lwl-y += lowlevel.o
 +obj-y += board.o
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c b/arch/arm/boards/marvell-armada-xp-gp/board.c
-similarity index 65%
-rename from arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
-rename to arch/arm/boards/marvell-armada-xp-gp/board.c
-index 7351329..9c800c5 100644
---- a/arch/arm/boards/marvell-armada-xp-gp/marvell-armada-xp-gp.c
-+++ b/arch/arm/boards/marvell-armada-xp-gp/board.c
+diff --git a/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c b/arch/arm/boards/globalscale-guruplug/board.c
+similarity index 63%
+rename from arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
+rename to arch/arm/boards/globalscale-guruplug/board.c
+index dfc1d1a..9c800c5 100644
+--- a/arch/arm/boards/globalscale-guruplug/globalscale-guruplug.c
++++ b/arch/arm/boards/globalscale-guruplug/board.c
 @@ -1,5 +1,6 @@
  /*
 - * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
@@ -68,27 +68,28 @@ index 7351329..9c800c5 100644
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License as
-@@ -13,13 +14,4 @@
+@@ -13,14 +14,4 @@
   *
   */
  
 -#include <common.h>
 -#include <init.h>
--#include <mach/mvebu.h>
+-#include <sizes.h>
+-#include <mach/kirkwood.h>
 -
--static int marvell_armada_xp_gp_console_init(void)
+-static int globalscale_guruplug_console_init(void)
 -{
--	return mvebu_add_uart0();
+-	return kirkwood_add_uart0();
 -}
 -
--console_initcall(marvell_armada_xp_gp_console_init);
+-console_initcall(globalscale_guruplug_console_init);
 +/* empty */
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c b/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
+diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
 deleted file mode 100644
-index e9b2e30..0000000
---- a/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
+index d270cda..0000000
+--- a/arch/arm/boards/globalscale-guruplug/lowlevel.c
 +++ /dev/null
-@@ -1,25 +0,0 @@
+@@ -1,26 +0,0 @@
 -/*
 - * Copyright (C) 2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 - *
@@ -105,14 +106,15 @@ index e9b2e30..0000000
 - */
 -
 -#include <common.h>
--#include <mach/mvebu.h>
+-#include <sizes.h>
 -#include <asm/barebox-arm.h>
 -#include <asm/barebox-arm-head.h>
+-#include <mach/kirkwood.h>
 -
 -void __naked barebox_arm_reset_vector(void)
 -{
 -	arm_cpu_lowlevel_init();
--	mvebu_barebox_entry();
+-	kirkwood_barebox_entry();
 -}
 -- 
 1.7.10.4
