@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-f175.google.com ([209.85.192.175])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Udexp-0006cW-J1
- for barebox@lists.infradead.org; Sat, 18 May 2013 11:06:14 +0000
-Received: by mail-pd0-f175.google.com with SMTP id y14so4041096pdi.6
- for <barebox@lists.infradead.org>; Sat, 18 May 2013 04:05:52 -0700 (PDT)
-Message-ID: <5197608A.40707@gmail.com>
-Date: Sat, 18 May 2013 16:35:46 +0530
-From: Vikram Narayanan <vikram186@gmail.com>
+ id 1Udy8Q-00005o-1z
+ for barebox@lists.infradead.org; Sun, 19 May 2013 07:34:27 +0000
+Date: Sun, 19 May 2013 09:34:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130519073403.GY32299@pengutronix.de>
+References: <1368400146-30443-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1368400146-30443-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,103 +18,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Unable to Boot from NAND on Mini2440
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Cc: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH] of: add ranges address translation for default bus
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Hello,
+Hi Sebastian,
 
-I followed the instructions here
-<http://barebox.org/documentation/barebox-2011.04.0/mini2440.html>
+On Mon, May 13, 2013 at 01:09:06AM +0200, Sebastian Hesselbarth wrote:
+> This patch adds address translation for default bus types. It has been
+> shamelessly ported from Linux device tree address translation with the
+> following exceptions:
+> - only default bus map and translate are supported
+> - of_bus has not been ported
+> - check for #size-cells > 0 has been removed
+> 
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 
-After writing to NAND, I switched the boot mode to NAND and did a reset. 
-Nothing comes up on the prompt. I tried to verify the 'write', by a 
-'nand_boot_test'. That works. Please find the log below. I'm on the 
-latest master.
+I just gave this one a test.
 
---- start log ---
-Supervivi> go 0x31000000
-go to 0x31000000
-   argument 0 = 0x00000000
-   argument 1 = 0x00000000
-   argument 2 = 0x00000000
-   argument 3 = 0x00000000
+First of all you dropped 1:1 translation, see the attached fixup.
+
+Then, since this code duplicates the majority of drivers/of/address.c,
+would it make sense to move it to the same file in barebox aswell?
+
+Sascha
+
+8<---------------------------------------------------------
+From bb502b1154a135f7aead65858ffa420f3d3e2df3 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 19 May 2013 09:28:56 +0200
+Subject: [PATCH] fixup! of: add ranges address translation for default bus
+
+Fix 1:1 translation using empty ranges property
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/base.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 5d449d1..7f3b76d 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -260,11 +260,21 @@ static int of_translate_one(struct device_node *parent,
+ 	unsigned int rlen;
+ 	int rone;
+ 	u64 offset = OF_BAD_ADDR;
++	struct property *prop = of_find_property(parent, rprop);
+ 
+-	ranges = of_get_property(parent, rprop, &rlen);
+-	if (!ranges)
++	if (!prop)
+ 		return 1;
+ 
++	rlen = prop->length;
++	ranges = prop->value;
++
++	if (rlen == 0) {
++		/* empty ranges; 1:1 translation */
++		offset = of_read_number(addr, na);
++		memset(addr, 0, pna * 4);
++		goto finish;
++	}
++
+ 	/* walk through ranges */
+ 	rlen /= 4;
+ 	rone = na + pna + ns;
+@@ -277,6 +287,7 @@ static int of_translate_one(struct device_node *parent,
+ 		return 1;
+ 
+ 	memcpy(addr, ranges + na, 4 * pna);
++finish:
+ 	/* translate into parent address space */
+ 	return of_bus_default_translate(addr, offset, pna);
+ }
+-- 
+1.8.2.rc2
 
 
-barebox 2013.05.0-00126-g19bc427 #4 Sat May 18 15:53:01 IST 2013
-
-
-Board: Mini 2440
-nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V 
-8-bit), page size: 2048, OOB size: 64
-dm9000 dm90000: Found DM9000E at i/o: 0x20000300
-mdio_bus: miibus0: probed
-s3c_mci s3c_mci0: registered as s3c_mci0
-malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
-refclk:    12000 kHz
-mpll:     405000 kHz
-upll:      48000 kHz
-fclk:     405000 kHz
-hclk:     101250 kHz
-pclk:      50625 kHz
-SDRAM1:   CL4@101MHz
-SDRAM2:   CL4@101MHz
-envfs: wrong magic on /dev/env0
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-set parameter: Invalid argument
-
-Hit any key to stop autoboot:  3
-mini2440:/ eth0.ipaddr=192.168.1.240 
-
-mini2440:/ eth0.netmask=255.255.255.0
-mini2440:/ eth0.serverip=192.168.1.14
-mini2440:/ erase /dev/nand0.barebox.bb
-mini2440:/ tftp barebox.bin /dev/nand0.barebox.bb
-warning: No MAC address set. Using random address F2:08:F4:9F:14:99
-100Mbps full duplex link detected
-         ###############
-mini2440:/ nand_boot_test 0x32000000 0x40000
-mini2440:/ go 0x32000000
-## Starting application at 0x32000000 ...
-
-
-barebox 2013.05.0-00126-g19bc427 #4 Sat May 18 15:53:01 IST 2013
-
-
-Board: Mini 2440
-nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V 
-8-bit), page size: 2048, OOB size: 64
-dm9000 dm90000: Found DM9000E at i/o: 0x20000300
-mdio_bus: miibus0: probed
-s3c_mci s3c_mci0: registered as s3c_mci0
-malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
-refclk:    12000 kHz
-mpll:     405000 kHz
-upll:      48000 kHz
-fclk:     405000 kHz
-hclk:     101250 kHz
-pclk:      50625 kHz
-SDRAM1:   CL4@101MHz
-SDRAM2:   CL4@101MHz
-envfs: wrong magic on /dev/env0
-no valid environment found on /dev/env0. Using default environment
-running /env/bin/init...
-set parameter: Invalid argument
-
-Hit any key to stop autoboot:  3
-mini2440:/
-
---- end log ----
-
-Any idea on what goes wrong?
-
-Thanks,
-Vikram
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
