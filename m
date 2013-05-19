@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x233.google.com ([2a00:1450:4013:c01::233])
+Received: from mail-ee0-f43.google.com ([74.125.83.43])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ue8HW-0005pb-SB
- for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:39 +0000
-Received: by mail-ea0-f179.google.com with SMTP id z16so3456974ead.38
+ id 1Ue8HY-0005pe-0z
+ for barebox@lists.infradead.org; Sun, 19 May 2013 18:24:42 +0000
+Received: by mail-ee0-f43.google.com with SMTP id d41so3267843eek.2
  for <barebox@lists.infradead.org>; Sun, 19 May 2013 11:24:08 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sun, 19 May 2013 20:23:46 +0200
-Message-Id: <1368987835-13323-3-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sun, 19 May 2013 20:23:48 +0200
+Message-Id: <1368987835-13323-5-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,199 +23,166 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] arm: mvebu: introduce common lowlevel and early init
+Subject: [PATCH 04/11] arm: mvebu: convert Dove to common init
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-At early stage after boot, all MVEBU SoCs are similar enough to have
-a common lowlevel and barebox entry. We  also remap the internal register
-base address to 0xf100000 as it gives some 512M more of contiguous address
-space. As we cannot determine real memory size that early, we start with
-a default memory size of 64M and probe correct size later in SoC init.
+This patch converts Marvell Dove SoC init to make use of common lowlevel
+and init functions. Postcore initcall will now setup memory controller
+base registers to match internal registers base, probe real memory size,
+and setup UART console by config option.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Tested-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/mach-mvebu/Makefile                |    2 +
- arch/arm/mach-mvebu/common.c                |   57 +++++++++++++++++++++++++++
- arch/arm/mach-mvebu/include/mach/common.h   |   23 +++++++++++
- arch/arm/mach-mvebu/include/mach/lowlevel.h |   23 +++++++++++
- arch/arm/mach-mvebu/lowlevel.c              |   28 +++++++++++++
- 5 files changed, 133 insertions(+)
- create mode 100644 arch/arm/mach-mvebu/common.c
- create mode 100644 arch/arm/mach-mvebu/include/mach/common.h
- create mode 100644 arch/arm/mach-mvebu/include/mach/lowlevel.h
- create mode 100644 arch/arm/mach-mvebu/lowlevel.c
+ arch/arm/mach-mvebu/dove.c                   |   56 +++++++++-----------------
+ arch/arm/mach-mvebu/include/mach/dove-regs.h |   21 +++++-----
+ 2 files changed, 32 insertions(+), 45 deletions(-)
 
-diff --git a/arch/arm/mach-mvebu/Makefile b/arch/arm/mach-mvebu/Makefile
-index 8047725..80b3947 100644
---- a/arch/arm/mach-mvebu/Makefile
-+++ b/arch/arm/mach-mvebu/Makefile
-@@ -1,3 +1,5 @@
-+lwl-y				+= lowlevel.o
-+obj-y				+= common.o
- obj-$(CONFIG_ARCH_ARMADA_370)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_ARMADA_XP)	+= armada-370-xp.o
- obj-$(CONFIG_ARCH_DOVE)		+= dove.o
-diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-new file mode 100644
-index 0000000..e2092c8
---- /dev/null
-+++ b/arch/arm/mach-mvebu/common.c
-@@ -0,0 +1,57 @@
-+/*
-+ * Copyright (C) 2013
-+ *  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index f073596..6e8e113 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -17,38 +17,35 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
++#include <ns16550.h>
+ #include <linux/clk.h>
+ #include <linux/clkdev.h>
+-#include <ns16550.h>
+-#include <mach/dove-regs.h>
+ #include <asm/memory.h>
+-#include <asm/barebox-arm.h>
++#include <mach/dove-regs.h>
 +
-+#include <common.h>
-+#include <io.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
++#define CONSOLE_UART_BASE	DOVE_UARTn_BASE(CONFIG_MVEBU_CONSOLE_UART)
+ 
+ static struct clk *tclk;
+ 
+-static inline void dove_remap_reg_base(uint32_t intbase,
+-				       uint32_t mcbase)
++static inline void dove_remap_mc_regs(void)
+ {
++	void __iomem *mcboot = IOMEM(DOVE_BOOTUP_MC_REGS);
+ 	uint32_t val;
+ 
+ 	/* remap ahb slave base */
+ 	val  = readl(DOVE_CPU_CTRL) & 0xffff0000;
+-	val |= (mcbase & 0xffff0000) >> 16;
++	val |= (DOVE_REMAP_MC_REGS & 0xffff0000) >> 16;
+ 	writel(val, DOVE_CPU_CTRL);
+ 
+ 	/* remap axi bridge address */
+ 	val  = readl(DOVE_AXI_CTRL) & 0x007fffff;
+-	val |= mcbase & 0xff800000;
++	val |= DOVE_REMAP_MC_REGS & 0xff800000;
+ 	writel(val, DOVE_AXI_CTRL);
+ 
+ 	/* remap memory controller base address */
+-	val = readl(DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
+-	val |= mcbase & 0xffff0000;
+-	writel(val, DOVE_SDRAM_BASE + SDRAM_REGS_BASE_DECODE);
+-
+-	/* remap internal register */
+-	val = intbase & 0xfff00000;
+-	writel(val, DOVE_BRIDGE_BASE + INT_REGS_BASE_MAP);
++	val = readl(mcboot + SDRAM_REGS_BASE_DECODE) & 0x0000ffff;
++	val |= DOVE_REMAP_MC_REGS & 0xffff0000;
++	writel(val, mcboot + SDRAM_REGS_BASE_DECODE);
+ }
+ 
+ static inline void dove_memory_find(unsigned long *phys_base,
+@@ -77,32 +74,16 @@ static inline void dove_memory_find(unsigned long *phys_base,
+ 	}
+ }
+ 
+-void __naked __noreturn dove_barebox_entry(void)
+-{
+-	unsigned long phys_base, phys_size;
+-	dove_memory_find(&phys_base, &phys_size);
+-	barebox_arm_entry(phys_base, phys_size, 0);
+-}
+-
+-static struct NS16550_plat uart_plat[] = {
+-	[0] = { .shift = 2, },
+-	[1] = { .shift = 2, },
+-	[2] = { .shift = 2, },
+-	[3] = { .shift = 2, },
++static struct NS16550_plat uart_plat = {
++	.shift = 2,
+ };
+ 
+-int dove_add_uart(int num)
++static int dove_add_uart(void)
+ {
+-	struct NS16550_plat *plat;
+-
+-	if (num < 0 || num > 4)
+-		return -EINVAL;
+-
+-	plat = &uart_plat[num];
+-	plat->clock = clk_get_rate(tclk);
++	uart_plat.clock = clk_get_rate(tclk);
+ 	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
+-				(unsigned int)DOVE_UARTn_BASE(num),
+-				32, IORESOURCE_MEM_32BIT, plat))
++				(unsigned int)CONSOLE_UART_BASE, 32,
++				IORESOURCE_MEM_32BIT, &uart_plat))
+ 		return -ENODEV;
+ 	return 0;
+ }
+@@ -140,12 +121,15 @@ static int dove_init_soc(void)
+ {
+ 	unsigned long phys_base, phys_size;
+ 
++	dove_remap_mc_regs();
+ 	dove_init_clocks();
+ 	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
+ 			   (unsigned int)DOVE_TIMER_BASE, 0x30,
+ 			   IORESOURCE_MEM, NULL);
+ 	dove_memory_find(&phys_base, &phys_size);
+ 	arm_add_mem_device("ram0", phys_base, phys_size);
++	dove_add_uart();
++
+ 	return 0;
+ }
+ postcore_initcall(dove_init_soc);
+diff --git a/arch/arm/mach-mvebu/include/mach/dove-regs.h b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+index 5e20368..519457e 100644
+--- a/arch/arm/mach-mvebu/include/mach/dove-regs.h
++++ b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+@@ -17,15 +17,18 @@
+ #ifndef __MACH_MVEBU_DOVE_REGS_H
+ #define __MACH_MVEBU_DOVE_REGS_H
+ 
+-/* At Boot-up register base is at 0xd000000 */
+-#define DOVE_INT_REGS_BOOTUP	0xd0000000
+-#define DOVE_MC_REGS_BOOTUP	0xd0800000
+-/* Linux wants it remapped to 0xf1000000 */
+-#define DOVE_INT_REGS_REMAP	0xf1000000
+-#define DOVE_MC_REGS_REMAP	0xf1800000
+-
+-#define DOVE_INT_REGS_BASE	IOMEM(DOVE_INT_REGS_BOOTUP)
+-#define DOVE_MC_REGS_BASE	IOMEM(DOVE_MC_REGS_BOOTUP)
 +#include <mach/common.h>
 +
 +/*
-+ * All MVEBU SoCs start with internal registers at 0xd0000000.
-+ * To get more contiguous address space and as Linux expects them
-+ * there, we remap them early to 0xf1000000.
-+ *
-+ * There is no way to determine internal registers base address
-+ * safely later on, as the remap register itself is within the
-+ * internal registers.
-+ */
-+#define MVEBU_BOOTUP_INT_REG_BASE	0xd0000000
-+#define MVEBU_BRIDGE_REG_BASE		0x20000
-+#define DEVICE_INTERNAL_BASE_ADDR	(MVEBU_BRIDGE_REG_BASE + 0x80)
++ * Even after MVEBU SoC internal register base remap. Dove MC
++ * registers are still at 0xd0800000. We remap it right after
++ * internal registers to 0xf1800000.
++*/
++#define DOVE_BOOTUP_MC_REGS	0xd0800000
++#define DOVE_REMAP_MC_REGS	0xf1800000
 +
-+static void mvebu_remap_registers(void)
-+{
-+	writel(MVEBU_REMAP_INT_REG_BASE,
-+	       IOMEM(MVEBU_BOOTUP_INT_REG_BASE) + DEVICE_INTERNAL_BASE_ADDR);
-+}
-+
-+/*
-+ * Determining the actual memory size is highly SoC dependent,
-+ * but for all SoCs RAM starts at 0x00000000. Therefore, we start
-+ * with a minimal memory setup of 64M and probe correct memory size
-+ * later.
-+ */
-+#define MVEBU_BOOTUP_MEMORY_BASE	0x00000000
-+#define MVEBU_BOOTUP_MEMORY_SIZE	SZ_64M
-+
-+void __naked __noreturn mvebu_barebox_entry(void)
-+{
-+	mvebu_remap_registers();
-+	barebox_arm_entry(MVEBU_BOOTUP_MEMORY_BASE,
-+			  MVEBU_BOOTUP_MEMORY_SIZE, 0);
-+}
-diff --git a/arch/arm/mach-mvebu/include/mach/common.h b/arch/arm/mach-mvebu/include/mach/common.h
-new file mode 100644
-index 0000000..3cc1bf7
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/common.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2013
-+ *  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_COMMON_H__
-+#define __MACH_COMMON_H__
-+
-+#define MVEBU_REMAP_INT_REG_BASE	0xf1000000
-+
-+#endif
-diff --git a/arch/arm/mach-mvebu/include/mach/lowlevel.h b/arch/arm/mach-mvebu/include/mach/lowlevel.h
-new file mode 100644
-index 0000000..e86d928
---- /dev/null
-+++ b/arch/arm/mach-mvebu/include/mach/lowlevel.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Copyright (C) 2013
-+ *  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_LOWLEVEL_H__
-+#define __MACH_LOWLEVEL_H__
-+
-+void mvebu_barebox_entry(void);
-+
-+#endif
-diff --git a/arch/arm/mach-mvebu/lowlevel.c b/arch/arm/mach-mvebu/lowlevel.c
-new file mode 100644
-index 0000000..3f64c4a
---- /dev/null
-+++ b/arch/arm/mach-mvebu/lowlevel.c
-@@ -0,0 +1,28 @@
-+/*
-+ * Copyright (C) 2013
-+ *  Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-+ *  Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/lowlevel.h>
-+
-+void __naked barebox_arm_reset_vector(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	mvebu_barebox_entry();
-+}
++#define DOVE_INT_REGS_BASE	IOMEM(MVEBU_REMAP_INT_REG_BASE)
++#define DOVE_MC_REGS_BASE	IOMEM(DOVE_REMAP_MC_REGS)
+ 
+ #define DOVE_UART_BASE		(DOVE_INT_REGS_BASE + 0x12000)
+ #define DOVE_UARTn_BASE(n)	(DOVE_UART_BASE + ((n) * 0x100))
 -- 
 1.7.10.4
 
