@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeRvI-00038m-M8
- for barebox@lists.infradead.org; Mon, 20 May 2013 15:22:53 +0000
-Message-ID: <1369063297.1918.2.camel@antimon>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 20 May 2013 17:21:37 +0200
-In-Reply-To: <20130518091137.GV32299@pengutronix.de>
-References: <1368779715-3143-1-git-send-email-s.hauer@pengutronix.de>
- <1368817605.2463.1.camel@antimon> <20130518091137.GV32299@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UeWQu-0000ZX-Nk
+ for barebox@lists.infradead.org; Mon, 20 May 2013 20:11:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 20 May 2013 22:11:20 +0200
+Message-Id: <1369080684-11138-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
+References: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,166 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7251732413545843110=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: invalidate data caches during early init
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Subject: [PATCH 1/5] i2c: Add missing result check
+To: barebox@lists.infradead.org
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/i2c/i2c.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---===============7251732413545843110==
-Content-Type: multipart/signed; micalg="sha1"; protocol="application/x-pkcs7-signature";
-	boundary="=-6OdIoIpbXsZP7c6DV73G"
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 4862df3..488b636 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -260,6 +260,10 @@ struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
+ 	client->dev.parent = &adapter->dev;
+ 
+ 	status = register_device(&client->dev);
++	if (status) {
++		free(client);
++		return NULL;
++	}
+ 
+ #if 0
+ 	/* drivers may modify this initial i/o setup */
+-- 
+1.8.2.rc2
 
-
---=-6OdIoIpbXsZP7c6DV73G
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Am Samstag, den 18.05.2013, 11:11 +0200 schrieb Sascha Hauer:
-> On Fri, May 17, 2013 at 09:06:45PM +0200, Lucas Stach wrote:
-> > Am Freitag, den 17.05.2013, 10:35 +0200 schrieb Sascha Hauer:
-> > > Some SoCs come up with invalid entries in the data cache. This can
-> > > lead to memory corruption when we enable them later, so invalidate
-> > > the caches early.
-> > >=20
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > CC: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-> >=20
-> > Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-> > Tested-by: Lucas Stach <l.stach@pengutronix.de>
->=20
-> Cool. Does that mean the MMU now works on Tegra?
-
-Yep. I've tested both MMU and EARLY_MMU with this patch applied
-(together with some of my WIP stuff) and it now works without any
-problems.
-
-Regards,
-Lucas
-
---=-6OdIoIpbXsZP7c6DV73G
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIISpjCCBjMw
-ggUboAMCAQICAwZk4jANBgkqhkiG9w0BAQUFADCBjDELMAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0
-YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdpdGFsIENlcnRpZmljYXRlIFNpZ25pbmcx
-ODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUgQ2xpZW50IENB
-MB4XDTEzMDQxNDA4MTkxMFoXDTE0MDQxNTE1MjIzNlowUzEZMBcGA1UEDRMQVzBZM3MzM2ZHVmRM
-N1paSjEXMBUGA1UEAwwOZGV2QGx5bnhleWUuZGUxHTAbBgkqhkiG9w0BCQEWDmRldkBseW54ZXll
-LmRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArjc3YKE/IXk1HEbR+aIwMbueNy32
-yL+vhBTFm3jfL+iHdj+jBFjeYQPKir/00APafOS5yn+Qzgfy+TRzVv5mzOD8ySW8TE4xPg/+wyt+
-xGWuhLzLIkNxwAghdn6omePL8S55ok0EUsQyb3X7MFNRHEnrk945Yxa6IY6a1ZizHqKqsBqAwSeu
-z0Kl34kcCAYnL4NOD8sqDrtlknFXFcnmMtkxp/R5zFE4YlFVs2RuSjuI85iNvVETbXZYaFKEWDH9
-NB6u0CJaGQUSa6JZejTxJ9rH3QTYSjtqgmQ9QySmRoWe99ncLboJVlxAMKiO9boyzoAB1s9OLUjP
-7IztqMapkwIDAQABo4IC1DCCAtAwCQYDVR0TBAIwADALBgNVHQ8EBAMCBLAwHQYDVR0lBBYwFAYI
-KwYBBQUHAwIGCCsGAQUFBwMEMB0GA1UdDgQWBBRHpUJZsGgoLm9G6Z22DdazyY1VYDAfBgNVHSME
-GDAWgBRTcu2SnODaywFcfH6WNU7y1LhRgjAZBgNVHREEEjAQgQ5kZXZAbHlueGV5ZS5kZTCCAUwG
-A1UdIASCAUMwggE/MIIBOwYLKwYBBAGBtTcBAgMwggEqMC4GCCsGAQUFBwIBFiJodHRwOi8vd3d3
-LnN0YXJ0c3NsLmNvbS9wb2xpY3kucGRmMIH3BggrBgEFBQcCAjCB6jAnFiBTdGFydENvbSBDZXJ0
-aWZpY2F0aW9uIEF1dGhvcml0eTADAgEBGoG+VGhpcyBjZXJ0aWZpY2F0ZSB3YXMgaXNzdWVkIGFj
-Y29yZGluZyB0byB0aGUgQ2xhc3MgMSBWYWxpZGF0aW9uIHJlcXVpcmVtZW50cyBvZiB0aGUgU3Rh
-cnRDb20gQ0EgcG9saWN5LCByZWxpYW5jZSBvbmx5IGZvciB0aGUgaW50ZW5kZWQgcHVycG9zZSBp
-biBjb21wbGlhbmNlIG9mIHRoZSByZWx5aW5nIHBhcnR5IG9ibGlnYXRpb25zLjA2BgNVHR8ELzAt
-MCugKaAnhiVodHRwOi8vY3JsLnN0YXJ0c3NsLmNvbS9jcnR1MS1jcmwuY3JsMIGOBggrBgEFBQcB
-AQSBgTB/MDkGCCsGAQUFBzABhi1odHRwOi8vb2NzcC5zdGFydHNzbC5jb20vc3ViL2NsYXNzMS9j
-bGllbnQvY2EwQgYIKwYBBQUHMAKGNmh0dHA6Ly9haWEuc3RhcnRzc2wuY29tL2NlcnRzL3N1Yi5j
-bGFzczEuY2xpZW50LmNhLmNydDAjBgNVHRIEHDAahhhodHRwOi8vd3d3LnN0YXJ0c3NsLmNvbS8w
-DQYJKoZIhvcNAQEFBQADggEBAKb6AtMA7a6sbuRG8oHTFJRD5vsLleuAw+uEOJTYMFCymBRFYqQx
-Oa6+SE+h+9ZYW059GIvnxYaQY+LmpvLIZ6EBgg7TpT37WrJiifLUfvb/U2hignujEgsNeDUobdoj
-Y7hKSW0gJ/7p6Q4VIMTdaEl/PFTfH81yv3ePqHe9NfuWbVYFAsXOIfh8Ii1UOwv+HaVQ7AN99SC4
-bb7CDUVx9ClN271h9TsLgSKgGCzKhvEGTaeV4UrHufp4XLq5bxvht68OjINhTeIr86E7vKxGmRal
-qDFigTV12UmijO2vtBTL23UEt6Ym85nsSF+Uk+33JRhTtJ+P8MTY74K6PZCcrPcwggYzMIIFG6AD
-AgECAgMGZOIwDQYJKoZIhvcNAQEFBQAwgYwxCzAJBgNVBAYTAklMMRYwFAYDVQQKEw1TdGFydENv
-bSBMdGQuMSswKQYDVQQLEyJTZWN1cmUgRGlnaXRhbCBDZXJ0aWZpY2F0ZSBTaWduaW5nMTgwNgYD
-VQQDEy9TdGFydENvbSBDbGFzcyAxIFByaW1hcnkgSW50ZXJtZWRpYXRlIENsaWVudCBDQTAeFw0x
-MzA0MTQwODE5MTBaFw0xNDA0MTUxNTIyMzZaMFMxGTAXBgNVBA0TEFcwWTNzMzNmR1ZkTDdaWkox
-FzAVBgNVBAMMDmRldkBseW54ZXllLmRlMR0wGwYJKoZIhvcNAQkBFg5kZXZAbHlueGV5ZS5kZTCC
-ASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK43N2ChPyF5NRxG0fmiMDG7njct9si/r4QU
-xZt43y/oh3Y/owRY3mEDyoq/9NAD2nzkucp/kM4H8vk0c1b+Zszg/MklvExOMT4P/sMrfsRlroS8
-yyJDccAIIXZ+qJnjy/EueaJNBFLEMm91+zBTURxJ65PeOWMWuiGOmtWYsx6iqrAagMEnrs9Cpd+J
-HAgGJy+DTg/LKg67ZZJxVxXJ5jLZMaf0ecxROGJRVbNkbko7iPOYjb1RE212WGhShFgx/TQertAi
-WhkFEmuiWXo08Sfax90E2Eo7aoJkPUMkpkaFnvfZ3C26CVZcQDCojvW6Ms6AAdbPTi1Iz+yM7ajG
-qZMCAwEAAaOCAtQwggLQMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgSwMB0GA1UdJQQWMBQGCCsGAQUF
-BwMCBggrBgEFBQcDBDAdBgNVHQ4EFgQUR6VCWbBoKC5vRumdtg3Ws8mNVWAwHwYDVR0jBBgwFoAU
-U3Ltkpzg2ssBXHx+ljVO8tS4UYIwGQYDVR0RBBIwEIEOZGV2QGx5bnhleWUuZGUwggFMBgNVHSAE
-ggFDMIIBPzCCATsGCysGAQQBgbU3AQIDMIIBKjAuBggrBgEFBQcCARYiaHR0cDovL3d3dy5zdGFy
-dHNzbC5jb20vcG9saWN5LnBkZjCB9wYIKwYBBQUHAgIwgeowJxYgU3RhcnRDb20gQ2VydGlmaWNh
-dGlvbiBBdXRob3JpdHkwAwIBARqBvlRoaXMgY2VydGlmaWNhdGUgd2FzIGlzc3VlZCBhY2NvcmRp
-bmcgdG8gdGhlIENsYXNzIDEgVmFsaWRhdGlvbiByZXF1aXJlbWVudHMgb2YgdGhlIFN0YXJ0Q29t
-IENBIHBvbGljeSwgcmVsaWFuY2Ugb25seSBmb3IgdGhlIGludGVuZGVkIHB1cnBvc2UgaW4gY29t
-cGxpYW5jZSBvZiB0aGUgcmVseWluZyBwYXJ0eSBvYmxpZ2F0aW9ucy4wNgYDVR0fBC8wLTAroCmg
-J4YlaHR0cDovL2NybC5zdGFydHNzbC5jb20vY3J0dTEtY3JsLmNybDCBjgYIKwYBBQUHAQEEgYEw
-fzA5BggrBgEFBQcwAYYtaHR0cDovL29jc3Auc3RhcnRzc2wuY29tL3N1Yi9jbGFzczEvY2xpZW50
-L2NhMEIGCCsGAQUFBzAChjZodHRwOi8vYWlhLnN0YXJ0c3NsLmNvbS9jZXJ0cy9zdWIuY2xhc3Mx
-LmNsaWVudC5jYS5jcnQwIwYDVR0SBBwwGoYYaHR0cDovL3d3dy5zdGFydHNzbC5jb20vMA0GCSqG
-SIb3DQEBBQUAA4IBAQCm+gLTAO2urG7kRvKB0xSUQ+b7C5XrgMPrhDiU2DBQspgURWKkMTmuvkhP
-ofvWWFtOfRiL58WGkGPi5qbyyGehAYIO06U9+1qyYony1H72/1NoYoJ7oxILDXg1KG3aI2O4Sklt
-ICf+6ekOFSDE3WhJfzxU3x/Ncr93j6h3vTX7lm1WBQLFziH4fCItVDsL/h2lUOwDffUguG2+wg1F
-cfQpTdu9YfU7C4EioBgsyobxBk2nleFKx7n6eFy6uW8b4bevDoyDYU3iK/OhO7ysRpkWpagxYoE1
-ddlJooztr7QUy9t1BLemJvOZ7EhflJPt9yUYU7Sfj/DE2O+Cuj2QnKz3MIIGNDCCBBygAwIBAgIB
-HjANBgkqhkiG9w0BAQUFADB9MQswCQYDVQQGEwJJTDEWMBQGA1UEChMNU3RhcnRDb20gTHRkLjEr
-MCkGA1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUgU2lnbmluZzEpMCcGA1UEAxMgU3Rh
-cnRDb20gQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkwHhcNMDcxMDI0MjEwMTU1WhcNMTcxMDI0MjEw
-MTU1WjCBjDELMAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNl
-Y3VyZSBEaWdpdGFsIENlcnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNz
-IDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUgQ2xpZW50IENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
-MIIBCgKCAQEAxwmDzM4t2BqxKaQuE6uWvooyg4ymiEGWVUet1G8SD+rqvyNH4QrvnEIaFHxOhESi
-p7vMz39ScLpNLbL1QpOlPW/tFIzNHS3qd2XRNYG5Sv9RcGE+T4qbLtsjjJbi6sL7Ls/f/X9ftTyh
-xvxWkf8KW37iKrueKsxw2HqolH7GM6FX5UfNAwAu4ZifkpmZzU1slBhyWwaQPEPPZRsWoTb7q8hm
-gv6Nv3Hg9rmA1/VPBIOQ6SKRkHXG0Hhmq1dOFoAFI411+a/9nWm5rcVjGcIWZ2v/43Yksq60jExi
-pA4l5uv9/+Hm33mbgmCszdj/Dthf13tgAv2O83hLJ0exTqfrlwIDAQABo4IBrTCCAakwDwYDVR0T
-AQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMCAQYwHQYDVR0OBBYEFFNy7ZKc4NrLAVx8fpY1TvLUuFGC
-MB8GA1UdIwQYMBaAFE4L7xqkQFulF2mHMMo0aEPQQa7yMGYGCCsGAQUFBwEBBFowWDAnBggrBgEF
-BQcwAYYbaHR0cDovL29jc3Auc3RhcnRzc2wuY29tL2NhMC0GCCsGAQUFBzAChiFodHRwOi8vd3d3
-LnN0YXJ0c3NsLmNvbS9zZnNjYS5jcnQwWwYDVR0fBFQwUjAnoCWgI4YhaHR0cDovL3d3dy5zdGFy
-dHNzbC5jb20vc2ZzY2EuY3JsMCegJaAjhiFodHRwOi8vY3JsLnN0YXJ0c3NsLmNvbS9zZnNjYS5j
-cmwwgYAGA1UdIAR5MHcwdQYLKwYBBAGBtTcBAgEwZjAuBggrBgEFBQcCARYiaHR0cDovL3d3dy5z
-dGFydHNzbC5jb20vcG9saWN5LnBkZjA0BggrBgEFBQcCARYoaHR0cDovL3d3dy5zdGFydHNzbC5j
-b20vaW50ZXJtZWRpYXRlLnBkZjANBgkqhkiG9w0BAQUFAAOCAgEACoMIfXirLAZcuGOMXq4cuSN3
-TaFx2H2GvD5VSy/6rV55BYHbWNaPeQn3oBSU8KgQZn/Kck1JxbLpAxVCNtsxeW1R87ifhsYZ0qjd
-rA9anrW2MAWCtosmAOT4OxK9QPoSjCMxM3HbkZCDJgnlE8jMopH21BbyAYr7b5EfGRQJNtgWcvqS
-XwKHnTutR08+Kkn0KAkXCzeQNLeA5LlYUzFyM7kPAp8pIRMQ+seHunmyG642S2+y/qHEdMuGIwpf
-z3eDF1PdctL04qYK/zu+Qg1Bw0RwgigVZs/0c5HP2/e9DBHh7eSwtzYlk4AUr6yxLlcwSjOfOmKE
-Q/Q8tzh0IFiNu9IPuTGAPBn4CPxD0+Ru8T2wg8/s43R/PT3kd1OEqOJUl7q+h+r6fpvU0Fzxd2tC
-8Ga6fDEPme+1Nbi+03pVjuZQKbGwKJ66gEn06WqaxVZC+J8hh/jR0k9mST1iAZPNYulcNJ8tKmVt
-jYsv0L1TSm2+NwON58tO+pIVzu3DWwSEXSf+qkDavQam+QtEOZxLBXI++aMUEapSn+k3Lxm48ZCY
-fAWLb/Xj7F5JQMbZvCexglAbYR0kIHqW5DnsYSdMD/IplJMojx0NBrxJ3fN9dvX2Y6BIXRsF1du4
-qESm4/3CKuyUV7p9DW3mPlHTGLvYxnyKQy7VFBkoLINszBrOUeIxggNvMIIDawIBATCBlDCBjDEL
-MAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdp
-dGFsIENlcnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNzIDEgUHJpbWFy
-eSBJbnRlcm1lZGlhdGUgQ2xpZW50IENBAgMGZOIwCQYFKw4DAhoFAKCCAa8wGAYJKoZIhvcNAQkD
-MQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTMwNTIwMTUyMTM3WjAjBgkqhkiG9w0BCQQx
-FgQUc8+wPzKPOQ9U8MlllAz8IOZjZlYwgaUGCSsGAQQBgjcQBDGBlzCBlDCBjDELMAkGA1UEBhMC
-SUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdpdGFsIENlcnRp
-ZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRlcm1l
-ZGlhdGUgQ2xpZW50IENBAgMGZOIwgacGCyqGSIb3DQEJEAILMYGXoIGUMIGMMQswCQYDVQQGEwJJ
-TDEWMBQGA1UEChMNU3RhcnRDb20gTHRkLjErMCkGA1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlm
-aWNhdGUgU2lnbmluZzE4MDYGA1UEAxMvU3RhcnRDb20gQ2xhc3MgMSBQcmltYXJ5IEludGVybWVk
-aWF0ZSBDbGllbnQgQ0ECAwZk4jANBgkqhkiG9w0BAQEFAASCAQBPX36d/BQxPP4Jy6+ptzNgk9K6
-jju0Kvq20Pqf8FhRkd41WxVLwDvKmVBrhdauP+BJ+46GlRuve1bhHe2qQt8vXG3ykZkcmYQ447mp
-U8mAQvt4izqW3DHHnedeqojuF/kG7ZfsyZvSinGnyMZd6HBcUvHP83siYDpiGfSfEIcrdVoZbblc
-z08pnX/KTxuHurMAsISEB9lzvVTqwd1Qx0YtUYJwuMUKlDE/wtcyohk5XzbqV/upWn/gRjn9Gp//
-kzjvKu0pPuivrS8IWzwi6KOPVmv9LMSF1/opt7ow0UqGUX2Xt2GsJ6Ai5cLA1jTx4DIka/GDJJzd
-XgJLJWwYnu6JAAAAAAAA
-
-
---=-6OdIoIpbXsZP7c6DV73G--
-
-
-
---===============7251732413545843110==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7251732413545843110==--
