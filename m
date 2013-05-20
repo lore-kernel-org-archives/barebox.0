@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeQrK-0001R3-S9
- for barebox@lists.infradead.org; Mon, 20 May 2013 14:14:51 +0000
+ id 1UeQrK-0001R8-S9
+ for barebox@lists.infradead.org; Mon, 20 May 2013 14:14:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 May 2013 16:14:15 +0200
-Message-Id: <1369059260-28872-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 20 May 2013 16:14:20 +0200
+Message-Id: <1369059260-28872-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369059260-28872-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369059260-28872-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,334 +21,159 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] scripts: fixdep: update from v3.10-rc1
+Subject: [PATCH 8/8] of: populate devices based on "simple-bus" property
 To: barebox@lists.infradead.org
 
-This brings us the following which we need for dtb file generation.
-
-  commit 2ab8a99661f4ce052bbad064237c441371df8751
-  Author: Stephen Warren <swarren@nvidia.com>
-  Date:   Wed Mar 6 10:27:45 2013 -0700
-
-      kbuild: fixdep: support concatenated dep files
+We used to populate the devices from the devicetree based on the
+presence of the 'reg' property. This is incorrect since this only
+allows us to probe devices with resources.
+Instead use the 'simple-bus' property to see if we have iterate
+deeper. This also registers devices with their buses as parents.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/basic/fixdep.c | 206 ++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 135 insertions(+), 71 deletions(-)
+ drivers/of/base.c | 47 +++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 33 insertions(+), 14 deletions(-)
 
-diff --git a/scripts/basic/fixdep.c b/scripts/basic/fixdep.c
-index ea26b23..078fe1d 100644
---- a/scripts/basic/fixdep.c
-+++ b/scripts/basic/fixdep.c
-@@ -138,38 +138,36 @@ static void print_cmdline(void)
- 	printf("cmd_%s := %s\n\n", target, cmdline);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 85d9dc0..3b9cc65 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -825,13 +825,16 @@ static struct device_d *add_of_amba_device(struct device_node *node)
+ 	return &dev->dev;
  }
  
--char * str_config  = NULL;
--int    size_config = 0;
--int    len_config  = 0;
-+struct item {
-+	struct item	*next;
-+	unsigned int	len;
-+	unsigned int	hash;
-+	char		name[0];
-+};
- 
--/*
-- * Grow the configuration string to a desired length.
-- * Usually the first growth is plenty.
-- */
--static void grow_config(int len)
--{
--	while (len_config + len > size_config) {
--		if (size_config == 0)
--			size_config = 2048;
--		str_config = realloc(str_config, size_config *= 2);
--		if (str_config == NULL)
--			{ perror("fixdep:malloc"); exit(1); }
--	}
--}
-+#define HASHSZ 256
-+static struct item *hashtab[HASHSZ];
- 
-+static unsigned int strhash(const char *str, unsigned int sz)
-+{
-+	/* fnv32 hash */
-+	unsigned int i, hash = 2166136261U;
- 
-+	for (i = 0; i < sz; i++)
-+		hash = (hash ^ str[i]) * 0x01000193;
-+	return hash;
-+}
- 
- /*
-  * Lookup a value in the configuration string.
-  */
--static int is_defined_config(const char * name, int len)
-+static int is_defined_config(const char *name, int len, unsigned int hash)
+-static struct device_d *add_of_platform_device(struct device_node *node)
++static struct device_d *add_of_platform_device(struct device_node *node,
++		struct device_d *parent)
  {
--	const char * pconfig;
--	const char * plast = str_config + len_config - len;
--	for ( pconfig = str_config + 1; pconfig < plast; pconfig++ ) {
--		if (pconfig[ -1] == '\n'
--		&&  pconfig[len] == '\n'
--		&&  !memcmp(pconfig, name, len))
-+	struct item *aux;
+ 	struct device_d *dev;
+ 	char *name, *at;
+ 
+ 	dev = xzalloc(sizeof(*dev));
+ 
++	dev->parent = parent;
 +
-+	for (aux = hashtab[hash % HASHSZ]; aux; aux = aux->next) {
-+		if (aux->hash == hash && aux->len == len &&
-+		    memcmp(aux->name, name, len) == 0)
- 			return 1;
- 	}
+ 	name = xstrdup(node->name);
+ 	at = strchr(name, '@');
+ 	if (at) {
+@@ -856,7 +859,8 @@ static struct device_d *add_of_platform_device(struct device_node *node)
+ 	return dev;
+ }
+ 
+-static struct device_d *add_of_device(struct device_node *node)
++static struct device_d *add_of_device(struct device_node *node,
++		struct device_d *parent)
+ {
+ 	const struct property *cp;
+ 
+@@ -871,7 +875,7 @@ static struct device_d *add_of_device(struct device_node *node)
+ 	    of_device_is_compatible(node, "arm,primecell") == 1)
+ 		return add_of_amba_device(node);
+ 	else
+-		return add_of_platform_device(node);
++		return add_of_platform_device(node, parent);
+ }
+ EXPORT_SYMBOL(add_of_device);
+ 
+@@ -928,7 +932,8 @@ int of_add_memory(struct device_node *node, bool dump)
  	return 0;
-@@ -178,13 +176,19 @@ static int is_defined_config(const char * name, int len)
- /*
-  * Add a new value to the configuration string.
-  */
--static void define_config(const char * name, int len)
-+static void define_config(const char *name, int len, unsigned int hash)
- {
--	grow_config(len + 1);
-+	struct item *aux = malloc(sizeof(*aux) + len);
- 
--	memcpy(str_config+len_config, name, len);
--	len_config += len;
--	str_config[len_config++] = '\n';
-+	if (!aux) {
-+		perror("fixdep:malloc");
-+		exit(1);
-+	}
-+	memcpy(aux->name, name, len);
-+	aux->len = len;
-+	aux->hash = hash;
-+	aux->next = hashtab[hash % HASHSZ];
-+	hashtab[hash % HASHSZ] = aux;
  }
  
- /*
-@@ -192,40 +196,49 @@ static void define_config(const char * name, int len)
-  */
- static void clear_config(void)
+-static int add_of_device_resource(struct device_node *node)
++static struct device_d *add_of_device_resource(struct device_node *node,
++		struct device_d *parent)
  {
--	len_config = 0;
--	define_config("", 0);
-+	struct item *aux, *next;
-+	unsigned int i;
-+
-+	for (i = 0; i < HASHSZ; i++) {
-+		for (aux = hashtab[i]; aux; aux = next) {
-+			next = aux->next;
-+			free(aux);
-+		}
-+		hashtab[i] = NULL;
-+	}
- }
+ 	u64 address = 0, size;
+ 	struct resource *res, *resp;
+@@ -940,7 +945,7 @@ static int add_of_device_resource(struct device_node *node)
  
- /*
-  * Record the use of a CONFIG_* word.
-  */
--static void use_config(char *m, int slen)
-+static void use_config(const char *m, int slen)
- {
--	char s[PATH_MAX];
--	char *p;
-+	unsigned int hash = strhash(m, slen);
-+	int c, i;
+ 	reg = of_get_property(node, "reg", &len);
+ 	if (!reg)
+-		return -EINVAL;
++		return add_of_device(node, parent);
  
--	if (is_defined_config(m, slen))
-+	if (is_defined_config(m, slen, hash))
- 	    return;
+ 	of_bus_count_cells(node, &na, &nc);
  
--	define_config(m, slen);
+@@ -995,14 +1000,12 @@ static int add_of_device_resource(struct device_node *node)
+ 	node->resource = res;
+ 	node->num_resource = n_resources;
+ 
+-	add_of_device(node);
 -
--	memcpy(s, m, slen); s[slen] = 0;
-+	define_config(m, slen, hash);
+-	return 0;
++	return add_of_device(node, parent);
  
--	for (p = s; p < s + slen; p++) {
--		if (*p == '_')
--			*p = '/';
-+	printf("    $(wildcard include/config/");
-+	for (i = 0; i < slen; i++) {
-+		c = m[i];
-+		if (c == '_')
-+			c = '/';
- 		else
--			*p = tolower((int)*p);
-+			c = tolower(c);
-+		putchar(c);
- 	}
--	printf("    $(wildcard include/config/%s.h) \\\n", s);
-+	printf(".h) \\\n");
+ err_free:
+ 	free(res);
+ 
+-	return ret;
++	return NULL;
  }
  
--static void parse_config_file(char *map, size_t len)
-+static void parse_config_file(const char *map, size_t len)
- {
--	int *end = (int *) (map + len);
-+	const int *end = (const int *) (map + len);
- 	/* start at +1, so that p can never be < map */
--	int *m   = (int *) map + 1;
--	char *p, *q;
-+	const int *m   = (const int *) map + 1;
-+	const char *p, *q;
- 
- 	for (; m < end; m++) {
- 		if (*m == INT_CONF) { p = (char *) m  ; goto conf; }
-@@ -265,7 +278,7 @@ static int strrcmp(char *s, char *sub)
- 	return memcmp(s + slen - sublen, sub, sublen);
+ void of_free(struct device_node *node)
+@@ -1042,17 +1045,23 @@ void of_free(struct device_node *node)
+ 		of_set_root_node(NULL);
  }
  
--static void do_config_file(char *filename)
-+static void do_config_file(const char *filename)
+-static void __of_probe(struct device_node *node)
++static void __of_probe(struct device_node *node,
++		const struct of_device_id *matches,
++		struct device_d *parent)
  {
- 	struct stat st;
- 	int fd;
-@@ -273,7 +286,7 @@ static void do_config_file(char *filename)
+ 	struct device_node *n;
++	struct device_d *dev;
  
- 	fd = open(filename, O_RDONLY);
- 	if (fd < 0) {
--		fprintf(stderr, "fixdep: ");
-+		fprintf(stderr, "fixdep: error opening config file: ");
- 		perror(filename);
- 		exit(2);
- 	}
-@@ -296,42 +309,89 @@ static void do_config_file(char *filename)
- 	close(fd);
- }
+ 	if (node->device)
+ 		return;
  
-+/*
-+ * Important: The below generated source_foo.o and deps_foo.o variable
-+ * assignments are parsed not only by make, but also by the rather simple
-+ * parser in scripts/mod/sumversion.c.
-+ */
- static void parse_dep_file(void *map, size_t len)
- {
- 	char *m = map;
- 	char *end = m + len;
- 	char *p;
- 	char s[PATH_MAX];
--
--	p = strchr(m, ':');
--	if (!p) {
--		fprintf(stderr, "fixdep: parse error\n");
--		exit(1);
--	}
--	memcpy(s, m, p-m); s[p-m] = 0;
--	printf("deps_%s := \\\n", target);
--	m = p+1;
-+	int is_target;
-+	int saw_any_target = 0;
-+	int is_first_dep = 0;
- 
- 	clear_config();
- 
- 	while (m < end) {
-+		/* Skip any "white space" */
- 		while (m < end && (*m == ' ' || *m == '\\' || *m == '\n'))
- 			m++;
-+		/* Find next "white space" */
- 		p = m;
--		while (p < end && *p != ' ') p++;
--		if (p == end) {
--			do p--; while (!isalnum(*p));
-+		while (p < end && *p != ' ' && *p != '\\' && *p != '\n')
- 			p++;
-+		/* Is the token we found a target name? */
-+		is_target = (*(p-1) == ':');
-+		/* Don't write any target names into the dependency file */
-+		if (is_target) {
-+			/* The /next/ file is the first dependency */
-+			is_first_dep = 1;
-+		} else {
-+			/* Save this token/filename */
-+			memcpy(s, m, p-m);
-+			s[p - m] = 0;
+-	add_of_device_resource(node);
++	dev = add_of_device_resource(node, parent);
 +
-+			/* Ignore certain dependencies */
-+			if (strrcmp(s, "include/generated/autoconf.h") &&
-+			    strrcmp(s, "arch/um/include/uml-config.h") &&
-+			    strrcmp(s, "include/linux/kconfig.h") &&
-+			    strrcmp(s, ".ver")) {
-+				/*
-+				 * Do not list the source file as dependency,
-+				 * so that kbuild is not confused if a .c file
-+				 * is rewritten into .S or vice versa. Storing
-+				 * it in source_* is needed for modpost to
-+				 * compute srcversions.
-+				 */
-+				if (is_first_dep) {
-+					/*
-+					 * If processing the concatenation of
-+					 * multiple dependency files, only
-+					 * process the first target name, which
-+					 * will be the original source name,
-+					 * and ignore any other target names,
-+					 * which will be intermediate temporary
-+					 * files.
-+					 */
-+					if (!saw_any_target) {
-+						saw_any_target = 1;
-+						printf("source_%s := %s\n\n",
-+							target, s);
-+						printf("deps_%s := \\\n",
-+							target);
-+					}
-+					is_first_dep = 0;
-+				} else
-+					printf("  %s \\\n", s);
-+				do_config_file(s);
-+			}
- 		}
--		memcpy(s, m, p-m); s[p-m] = 0;
--		if (strrcmp(s, "include/generated/autoconf.h") &&
--		    strrcmp(s, "arch/um/include/uml-config.h") &&
--		    strrcmp(s, ".ver")) {
--			printf("  %s \\\n", s);
--			do_config_file(s);
--		}
-+		/*
-+		 * Start searching for next token immediately after the first
-+		 * "whitespace" character that follows this token.
-+		 */
- 		m = p + 1;
- 	}
-+
-+	if (!saw_any_target) {
-+		fprintf(stderr, "fixdep: parse error; no targets found\n");
-+		exit(1);
++	if (!of_match_node(matches, node))
++		return;
+ 
+ 	list_for_each_entry(n, &node->children, parent_list)
+-		__of_probe(n);
++		__of_probe(n, matches, dev);
+ }
+ 
+ static void __of_parse_phandles(struct device_node *node)
+@@ -1079,9 +1088,17 @@ const char *of_get_model(void)
+ 	return of_model;
+ }
+ 
++const struct of_device_id of_default_bus_match_table[] = {
++	{
++		.compatible = "simple-bus",
++	}, {
++		/* sentinel */
 +	}
++};
 +
- 	printf("\n%s: $(deps_%s)\n\n", target, target);
- 	printf("$(deps_%s):\n", target);
+ int of_probe(void)
+ {
+-	struct device_node *memory;
++	struct device_node *memory, *n;
+ 
+ 	if(!root_node)
+ 		return -ENODEV;
+@@ -1090,12 +1107,14 @@ int of_probe(void)
+ 	of_property_read_string(root_node, "model", &of_model);
+ 
+ 	__of_parse_phandles(root_node);
+-	__of_probe(root_node);
+ 
+ 	memory = of_find_node_by_path(root_node, "/memory");
+ 	if (memory)
+ 		of_add_memory(memory, false);
+ 
++	list_for_each_entry(n, &root_node->children, parent_list)
++		__of_probe(n, of_default_bus_match_table, NULL);
++
+ 	return 0;
  }
-@@ -344,11 +404,15 @@ static void print_deps(void)
  
- 	fd = open(depfile, O_RDONLY);
- 	if (fd < 0) {
--		fprintf(stderr, "fixdep: ");
-+		fprintf(stderr, "fixdep: error opening depfile: ");
- 		perror(depfile);
- 		exit(2);
- 	}
--	fstat(fd, &st);
-+	if (fstat(fd, &st) < 0) {
-+                fprintf(stderr, "fixdep: error fstat'ing depfile: ");
-+                perror(depfile);
-+                exit(2);
-+        }
- 	if (st.st_size == 0) {
- 		fprintf(stderr,"fixdep: %s is empty\n",depfile);
- 		close(fd);
-@@ -374,7 +438,7 @@ static void traps(void)
- 	int *p = (int *)test;
- 
- 	if (*p != INT_CONF) {
--		fprintf(stderr, "fixdep: sizeof(int) != 4 or wrong endianess? %#x\n",
-+		fprintf(stderr, "fixdep: sizeof(int) != 4 or wrong endianness? %#x\n",
- 			*p);
- 		exit(2);
- 	}
 -- 
 1.8.2.rc2
 
