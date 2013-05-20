@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ue8Y8-00065d-HB
- for barebox@lists.infradead.org; Sun, 19 May 2013 18:41:41 +0000
-Date: Sun, 19 May 2013 20:41:06 +0200
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Message-ID: <20130519204106.6ce2d109@skate>
-In-Reply-To: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UeQgw-0001Gp-RS
+ for barebox@lists.infradead.org; Mon, 20 May 2013 14:04:00 +0000
+Date: Mon, 20 May 2013 16:03:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130520140335.GC32299@pengutronix.de>
+References: <1368800933-8019-1-git-send-email-gregory.hermant@calao-systems.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1368800933-8019-1-git-send-email-gregory.hermant@calao-systems.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +22,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] arm: mvebu: SoC consolidation
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH] at91: add Calao QIL-A9G20
+To: Gregory Hermant <gregory.hermant@calao-systems.com>
 Cc: barebox@lists.infradead.org
 
-Dear Sebastian Hesselbarth,
-
-On Sun, 19 May 2013 20:23:44 +0200, Sebastian Hesselbarth wrote:
-> After power-up, Marvell EBU SoCs are common enough to justify common
-> init code. All SoCs start up with internal registers mapped at 0xd0000000
-> and Linux wants them remapped to 0xf1000000 which gives ~512M contiguous
-> address space. As internal registers base address is remapped from within
-> internal registers itself, we do this remap as soon as possible.
+On Fri, May 17, 2013 at 04:28:53PM +0200, Gregory Hermant wrote:
 > 
-> This patch set consolidates lowlevel init for all MVEBU SoCs which is
-> currently performed on every board supported. Also common console UART
-> is created. Then Dove, Armada 370/XP, and Kirkwood are moved to use
-> common init functions, and finally all board specific init is removed
-> to its bare minimum.
-> 
-> The patch set has been tested on CuBox (Dove), Guruplug (Kirkwood),
-> Mirabox and OpenBlocks AX3 (Armada 370) by either me or Thomas Petazzoni.
+> Signed-off-by: Gregory Hermant <gregory.hermant@calao-systems.com>
 
-Minor comment: OpenBlocks AX3 is an Armada XP machine.
+Applied, thanks
 
-Best regards,
+Sascha
 
-Thomas
+
 -- 
-Thomas Petazzoni, Free Electrons
-Kernel, drivers, real-time and embedded Linux
-development, consulting, training and support.
-http://free-electrons.com
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
