@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeQrK-0001R7-S6
- for barebox@lists.infradead.org; Mon, 20 May 2013 14:14:47 +0000
+ id 1UeQrK-0001R2-S4
+ for barebox@lists.infradead.org; Mon, 20 May 2013 14:14:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 May 2013 16:14:19 +0200
-Message-Id: <1369059260-28872-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 20 May 2013 16:14:14 +0200
+Message-Id: <1369059260-28872-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369059260-28872-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369059260-28872-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,97 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] of: Add of_match_node function
+Subject: [PATCH 2/8] ARM: build dtbs during build process using extra-y
 To: barebox@lists.infradead.org
 
-To match a of_device_id arrays against a device_node. Same functionality
-as in the kernel.
+When using a builtin dtb the builtin dtb is built twice, once
+from as a dependency of the 'dtbs' target and once as a dependency
+of the corresponding dtb.o target. This can happen in parallel
+with parallel make which results in build corruption when two
+processes try to generate the dtb at the same time. Typical errors
+include:
+
+fixdep: error opening depfile: arch/arm/dts/.imx51-babbage.dtb.d: No such file or directory
+make[1]: *** [arch/arm/dts/imx51-babbage.dtb] Error 2
+
+fixdep: arch/arm/dts/.imx51-babbage.dtb.d is empty
+mv: cannot stat `arch/arm/dts/.imx51-babbage.dtb.tmp': No such file or directory
+make[1]: *** [arch/arm/dts/imx51-babbage.dtb] Error 1
+
+To fix this build the devicetree blobs using extra-y instead of
+a separate target.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/base.c | 35 +++++++++++++++++++++++++----------
- include/driver.h  |  2 +-
- include/of.h      |  3 +++
- 3 files changed, 29 insertions(+), 11 deletions(-)
+ arch/arm/Makefile     | 5 -----
+ arch/arm/dts/Makefile | 2 +-
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index c3395cf..85d9dc0 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -295,21 +295,36 @@ int of_device_is_compatible(const struct device_node *device,
- }
- EXPORT_SYMBOL(of_device_is_compatible);
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index d506b12..5da0a8f 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -274,11 +274,6 @@ dts := arch/arm/dts
+ %.dtb: scripts
+ 	$(Q)$(MAKE) $(build)=$(dts) $(dts)/$@
  
-+/**
-+ * of_match_node - Tell if an device_node has a matching of_match structure
-+ *      @matches:       array of of device match structures to search in
-+ *      @node:          the of device structure to match against
-+ *
-+ *      Low level utility function used by device matching.
-+ */
-+const struct of_device_id *of_match_node(const struct of_device_id *matches,
-+					 const struct device_node *node)
-+{
-+	while (matches->compatible) {
-+		if (of_device_is_compatible(node, matches->compatible) == 1)
-+			return matches;
-+		matches++;
-+	}
-+
-+	return NULL;
-+}
-+
- int of_match(struct device_d *dev, struct driver_d *drv)
- {
--	struct of_device_id *id;
-+	const struct of_device_id *id;
+-dtbs: scripts
+-	$(Q)$(MAKE) $(build)=$(dts) dtbs
+-
+-KBUILD_DTBS := dtbs
+-
+ KBUILD_IMAGE ?= $(KBUILD_BINARY)
  
--	id = drv->of_compatible;
-+	id = of_match_node(drv->of_compatible, dev->device_node);
-+	if (!id)
-+		return 1;
+ archprepare: maketools
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 45a3304..4569e3d 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -7,6 +7,6 @@ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ targets += dtbs
+ targets += $(dtb-y)
  
--	while (id->compatible) {
--		if (of_device_is_compatible(dev->device_node, id->compatible) == 1) {
--			dev->of_id_entry = id;
--			return 0;
--		}
--		id++;
--	}
-+	dev->of_id_entry = id;
+-dtbs: $(addprefix $(obj)/, $(dtb-y))
++extra-y += $(dtb-y)
  
--	return 1;
-+	return 0;
- }
- EXPORT_SYMBOL(of_match);
- 
-diff --git a/include/driver.h b/include/driver.h
-index 716f792..7d5f65e 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -106,7 +106,7 @@ struct device_d {
- 	struct platform_device_id *id_entry;
- 	struct device_node *device_node;
- 
--	struct of_device_id *of_id_entry;
-+	const struct of_device_id *of_id_entry;
- };
- 
- /** @brief Describes a driver present in the system */
-diff --git a/include/of.h b/include/of.h
-index 4dcf37e..3f64667 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -170,6 +170,9 @@ struct device_node *of_create_node(struct device_node *root, const char *path);
- struct device_node *of_get_root_node(void);
- int of_set_root_node(struct device_node *);
- 
-+const struct of_device_id *of_match_node(const struct of_device_id *matches,
-+					 const struct device_node *node);
-+
- struct cdev;
- 
- #ifdef CONFIG_OFTREE
+ clean-files := *.dtb *.dtb.S
 -- 
 1.8.2.rc2
 
