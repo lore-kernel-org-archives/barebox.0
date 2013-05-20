@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeWQu-0000ZZ-Nk
+ id 1UeWQu-0000Za-Ng
  for barebox@lists.infradead.org; Mon, 20 May 2013 20:11:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 May 2013 22:11:22 +0200
-Message-Id: <1369080684-11138-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 20 May 2013 22:11:24 +0200
+Message-Id: <1369080684-11138-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] i2c: Add support for dynamic i2c bus numbers
+Subject: [PATCH 5/5] i2c: fsl: Add devicetree probe support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 53a11fe..ddf0082 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -384,8 +384,17 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
- {
- 	int ret;
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 9fcfd5c..c607bcb 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -545,6 +545,7 @@ static int __init i2c_fsl_probe(struct device_d *pdev)
+ 	i2c_fsl->adapter.master_xfer = i2c_fsl_xfer;
+ 	i2c_fsl->adapter.nr = pdev->id;
+ 	i2c_fsl->adapter.dev.parent = pdev;
++	i2c_fsl->adapter.dev.device_node = pdev->device_node;
+ 	i2c_fsl->base = dev_request_mem_region(pdev, 0);
+ 	i2c_fsl->dfsrr = -1;
  
--	if (i2c_get_adapter(adapter->nr))
--		return -EBUSY;
-+	if (adapter->nr < 0) {
-+		int nr;
-+
-+		for (nr = 0;; nr++)
-+			if (!i2c_get_adapter(nr))
-+				break;
-+		adapter->nr = nr;
-+	} else {
-+		if (i2c_get_adapter(adapter->nr))
-+			return -EBUSY;
+@@ -572,8 +573,17 @@ fail:
+ 	return ret;
+ }
+ 
++static __maybe_unused struct of_device_id imx_i2c_dt_ids[] = {
++	{
++		.compatible = "fsl,imx21-i2c",
++	}, {
++		/* sentinel */
 +	}
- 
- 	adapter->dev.id = adapter->nr;
- 	strcpy(adapter->dev.name, "i2c");
++};
++
+ static struct driver_d i2c_fsl_driver = {
+ 	.probe	= i2c_fsl_probe,
+ 	.name	= DRIVER_NAME,
++	.of_compatible = DRV_OF_COMPAT(imx_i2c_dt_ids),
+ };
+ device_platform_driver(i2c_fsl_driver);
 -- 
 1.8.2.rc2
 
