@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeWQu-0000ZY-Ni
- for barebox@lists.infradead.org; Mon, 20 May 2013 20:11:49 +0000
+ id 1UeWQu-0000ZZ-Nk
+ for barebox@lists.infradead.org; Mon, 20 May 2013 20:11:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 May 2013 22:11:21 +0200
-Message-Id: <1369080684-11138-3-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 20 May 2013 22:11:22 +0200
+Message-Id: <1369080684-11138-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369080684-11138-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] i2c: remove dead code
+Subject: [PATCH 3/5] i2c: Add support for dynamic i2c bus numbers
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/i2c.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/i2c/i2c.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 488b636..53a11fe 100644
+index 53a11fe..ddf0082 100644
 --- a/drivers/i2c/i2c.c
 +++ b/drivers/i2c/i2c.c
-@@ -265,23 +265,7 @@ struct i2c_client *i2c_new_device(struct i2c_adapter *adapter,
- 		return NULL;
- 	}
+@@ -384,8 +384,17 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ {
+ 	int ret;
  
--#if 0
--	/* drivers may modify this initial i/o setup */
--	status = master->setup(client);
--	if (status < 0) {
--		printf("can't setup %s, status %d\n",
--		       client->dev.name, status);
--		goto fail;
--	}
--#endif
--
- 	return client;
--
--#if 0
-- fail:
--	free(proxy);
--	return NULL;
--#endif
- }
- EXPORT_SYMBOL(i2c_new_device);
+-	if (i2c_get_adapter(adapter->nr))
+-		return -EBUSY;
++	if (adapter->nr < 0) {
++		int nr;
++
++		for (nr = 0;; nr++)
++			if (!i2c_get_adapter(nr))
++				break;
++		adapter->nr = nr;
++	} else {
++		if (i2c_get_adapter(adapter->nr))
++			return -EBUSY;
++	}
  
+ 	adapter->dev.id = adapter->nr;
+ 	strcpy(adapter->dev.name, "i2c");
 -- 
 1.8.2.rc2
 
