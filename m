@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo5.mail-out.ovh.net ([178.32.228.5])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeoHE-0008JG-HC
- for barebox@lists.infradead.org; Tue, 21 May 2013 15:15:01 +0000
-Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id E7D601018085
- for <barebox@lists.infradead.org>; Tue, 21 May 2013 17:14:35 +0200 (CEST)
-Date: Tue, 21 May 2013 17:10:22 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130521151022.GC27130@game.jcrosoft.org>
-References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
- <20130517054349.GQ32299@pengutronix.de>
- <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
- <20130521064117.GH32299@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UegVx-0001qu-1f
+ for barebox@lists.infradead.org; Tue, 21 May 2013 06:57:41 +0000
+Date: Tue, 21 May 2013 08:57:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130521065718.GK32299@pengutronix.de>
+References: <201305171018.39539.jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130521064117.GH32299@pengutronix.de>
+In-Reply-To: <201305171018.39539.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,25 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] nand_base: sync flash detection functions with
- linux 3.9's code
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [RFC] MXS/i.MX23: detecting the boot source
+To: Juergen Beisert <jbe@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 08:41 Tue 21 May     , Sascha Hauer wrote:
-> On Fri, May 17, 2013 at 07:15:12PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > HI,
-> > 
-> > 	can we have stable release as this patch fix the band support as it's broken since
-> > 	4c2bdc8728016b3412523e3264651651fe752860
+On Fri, May 17, 2013 at 10:18:39AM +0200, Juergen Beisert wrote:
+> The boot source for the i.MX23 is configured via a few GPIOs, which are later
+> be used for different purposes (like LCD data for example). The SoC internal
+> ROM reads these GPIOs and uses the selected boot source.
 > 
-> Said commit is not in 2013.05.0
-wired git refs give
+> For various reasons the boot source is also of interest when Barebox is running.
+> This detection approach reads again the GPIOs. It switches temporarily the pins
+> to act as GPIOs and input, reads their values, and switches back to their
+> previous functions.
+> 
+> Could this be a reliable way to detect the boot source?
 
-Refs: v2013.04.0-188-g4c2bdc8
+I don't know. Are the bootstrap pins used as outputs only in the normal
+usecase? Otherwise I could imagine that something is overriding the
+bootstrap pins by the time you read them.
 
-Best Regards,
-J.
+> 
+> BTW: is there a reason why the bootsource will create environment variables,
+> while other detected features find their way to the "global" device?
+
+No, at least not a good one ;)
+
+> +static uint32_t mxs23_boot_save_loc(void)
+
+Should you continue working on this please change the name to something
+like mx23_get_bootsource(). This function does not save anything.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
