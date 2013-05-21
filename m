@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ueqgq-0004RO-2E
- for barebox@lists.infradead.org; Tue, 21 May 2013 17:49:37 +0000
-Date: Tue, 21 May 2013 19:49:13 +0200
+ id 1Ueh9b-0002QT-Ti
+ for barebox@lists.infradead.org; Tue, 21 May 2013 07:38:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130521174913.GR32299@pengutronix.de>
-References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368987835-13323-5-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130521134920.GP32299@pengutronix.de>
- <519B91A5.4040807@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <519B91A5.4040807@gmail.com>
+Date: Tue, 21 May 2013 09:38:12 +0200
+Message-Id: <1369121895-11282-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1369121895-11282-1-git-send-email-s.hauer@pengutronix.de>
+References: <1369121895-11282-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +16,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/11] arm: mvebu: convert Dove to common init
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH 2/5] spi: improve devicetree support
+To: barebox@lists.infradead.org
 
-On Tue, May 21, 2013 at 05:24:21PM +0200, Sebastian Hesselbarth wrote:
-> On 05/21/13 15:49, Sascha Hauer wrote:
-> >On Sun, May 19, 2013 at 08:23:48PM +0200, Sebastian Hesselbarth wrote:
-> >>This patch converts Marvell Dove SoC init to make use of common lowlevel
-> >>and init functions. Postcore initcall will now setup memory controller
-> >>base registers to match internal registers base, probe real memory size,
-> >>and setup UART console by config option.
-> >>
-> >>Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> >
-> >This patch breaks bisectibility:
-> >
-> >  config:     arm              globalscale_guruplug_defconfig
-> >arch/arm/mach-mvebu/built-in.o: In function `barebox_arm_reset_vector':
-> >lowlevel.c:(.text.barebox_arm_reset_vector+0x0): multiple definition of `barebox_arm_reset_vector'
-> >arch/arm/boards/globalscale-guruplug/built-in.o:lowlevel.c:(.text.barebox_arm_reset_vector+0x0): first defined here
-> >make: *** [barebox] Error 1
-> >------------------------------------------------------------
-> >  config:     arm              globalscale_mirabox_defconfig
-> >arch/arm/mach-mvebu/armada-370-xp.o: In function `mvebu_barebox_entry':
-> >armada-370-xp.c:(.text.mvebu_barebox_entry+0x0): multiple definition of `mvebu_barebox_entry'
-> >arch/arm/mach-mvebu/common.o:common.c:(.text.mvebu_barebox_entry+0x0): first defined here
-> >make[1]: *** [arch/arm/mach-mvebu/built-in.o] Error 1
-> >make: *** [arch/arm/mach-mvebu] Error 2
-> >make: *** Waiting for unfinished jobs....
-> >
-> >I'm fine with squashing the rest of this series together in a single
-> >patch. Is this ok with you or do you want to look for a better solution?
-> 
-> Yeah, Thomas already mentioned it will break bisectibility. IIRC,
-> Thomas agreed on squashing if you are fine with it.
+- zero spi_board_info structure to not accidently pass
+  unitilialized fields
+- parse spi-max-frequency property from devicetree
+- parse mode flags from devicetree
 
-Ok, just did that.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/spi/spi.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d58b664..f460a7a 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -108,9 +108,20 @@ void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
+ 	struct property *reg;
+ 
+ 	device_node_for_nach_child(node, n) {
+-		chip.name = n->name;
++		memset(&chip, 0, sizeof(chip));
++		chip.name = xstrdup(n->name);
+ 		chip.bus_num = master->bus_num;
+-		chip.max_speed_hz = 300000; /* FIXME */
++		/* Mode (clock phase/polarity/etc.) */
++		if (of_find_property(n, "spi-cpha"))
++			chip.mode |= SPI_CPHA;
++		if (of_find_property(n, "spi-cpol"))
++			chip.mode |= SPI_CPOL;
++		if (of_find_property(n, "spi-cs-high"))
++			chip.mode |= SPI_CS_HIGH;
++		if (of_find_property(n, "spi-3wire"))
++			chip.mode |= SPI_3WIRE;
++		of_property_read_u32(n, "spi-max-frequency",
++				&chip.max_speed_hz);
+ 		reg = of_find_property(n, "reg");
+ 		if (!reg)
+ 			continue;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
