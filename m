@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f99.mail.ru ([217.69.129.122])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UegVx-0001qu-1f
- for barebox@lists.infradead.org; Tue, 21 May 2013 06:57:41 +0000
-Date: Tue, 21 May 2013 08:57:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130521065718.GK32299@pengutronix.de>
-References: <201305171018.39539.jbe@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <201305171018.39539.jbe@pengutronix.de>
+ id 1UeoP8-00008R-Nq
+ for barebox@lists.infradead.org; Tue, 21 May 2013 15:23:12 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 21 May 2013 19:22:45 +0400
+Message-ID: <1369149765.377662790@f99.mail.ru>
+In-Reply-To: <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
+References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+ <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] MXS/i.MX23: detecting the boot source
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAwOC8xMF0gQVJNOiBpLk1YNTEgYmFiYmFnZTogcHJvdmlk?=
+ =?UTF-8?B?ZSBNQUMgYWRyZXNzIGluIGRldmljZXRyZWU=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 17, 2013 at 10:18:39AM +0200, Juergen Beisert wrote:
-> The boot source for the i.MX23 is configured via a few GPIOs, which are later
-> be used for different purposes (like LCD data for example). The SoC internal
-> ROM reads these GPIOs and uses the selected boot source.
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/dts/imx51-babbage.dts | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> For various reasons the boot source is also of interest when Barebox is running.
-> This detection approach reads again the GPIOs. It switches temporarily the pins
-> to act as GPIOs and input, reads their values, and switches back to their
-> previous functions.
-> 
-> Could this be a reliable way to detect the boot source?
+> diff --git a/arch/arm/dts/imx51-babbage.dts b/arch/arm/dts/imx51-babbage.dts
+> index 9630b61..4c43312 100644
+> --- a/arch/arm/dts/imx51-babbage.dts
+> +++ b/arch/arm/dts/imx51-babbage.dts
+> @@ -216,6 +216,10 @@
+>  	status = "okay";
+>  };
+>  
+> +&iim {
+> +	barebox,provide-mac-address = <&fec 1 9>;
+> +};
 
-I don't know. Are the bootstrap pins used as outputs only in the normal
-usecase? Otherwise I could imagine that something is overriding the
-bootstrap pins by the time you read them.
+Fixme, is this entry compatible with kernel devicetree?
+If not, should it be stripped from dt passed to kernel?
 
-> 
-> BTW: is there a reason why the bootsource will create environment variables,
-> while other detected features find their way to the "global" device?
-
-No, at least not a good one ;)
-
-> +static uint32_t mxs23_boot_save_loc(void)
-
-Should you continue working on this please change the name to something
-like mx23_get_bootsource(). This function does not save anything.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
