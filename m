@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f48.google.com ([74.125.83.48])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UegDi-0001Lc-Ou
- for barebox@lists.infradead.org; Tue, 21 May 2013 06:38:51 +0000
-Received: by mail-ee0-f48.google.com with SMTP id b47so138147eek.7
- for <barebox@lists.infradead.org>; Mon, 20 May 2013 23:38:29 -0700 (PDT)
-Message-ID: <519B1662.7070502@gmail.com>
-Date: Tue, 21 May 2013 08:38:26 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ id 1UegGS-0001Q8-00
+ for barebox@lists.infradead.org; Tue, 21 May 2013 06:41:40 +0000
+Date: Tue, 21 May 2013 08:41:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130521064117.GH32299@pengutronix.de>
+References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+ <20130517054349.GQ32299@pengutronix.de>
+ <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
 MIME-Version: 1.0
-References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1368987835-13323-6-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130521062810.GE32299@pengutronix.de>
- <20130521063331.GF32299@pengutronix.de>
-In-Reply-To: <20130521063331.GF32299@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +20,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 05/11] arm: mvebu: convert Armada 370/XP to common init
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH v2] nand_base: sync flash detection functions with linux
+ 3.9's code
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 05/21/2013 08:33 AM, Sascha Hauer wrote:
-> On Tue, May 21, 2013 at 08:28:10AM +0200, Sascha Hauer wrote:
->> Sebastian,
->>
->>> +static int armada_370_xp_init_soc(void)
->>>   {
->>>   	unsigned long phys_base, phys_size;
->>>
->>> -	mvebu_init_clocks();
->>> +	armada_370_xp_init_clocks();
->>>   	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
->>> -			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
->>> -			   NULL);
->>> -	mvebu_memory_find(&phys_base,&phys_size);
->>> +			   (unsigned int)ARMADA_370_XP_TIMER_BASE, 0x30,
->>> +			   IORESOURCE_MEM, NULL);
->>> +	armada_370_xp_memory_find(&phys_base,&phys_size);
->>>   	arm_add_mem_device("ram0", phys_base, phys_size);
->>> +	armada_370_xp_add_uart();
->>
->> How do you want to support a board which uses another UART instead of
->> uart0 when you call this from SoC code?
->
-> Ok, I see. You use CONFIG_MVEBU_CONSOLE_UART to determine an UART base.
-> What's the rationale for doing this? We don't want to have compile time
-> decisions for things we know at runtime.
+On Fri, May 17, 2013 at 07:15:12PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
+> 
+> 	can we have stable release as this patch fix the band support as it's broken since
+> 	4c2bdc8728016b3412523e3264651651fe752860
 
-How do you know the UART console by runtime? It can be on any UART
-possible. Anyway, as we are moving to DT with the next patches, all
-enabled uarts will be registered.
+Said commit is not in 2013.05.0
 
-But leaves the question, how to get the correct UART for console?
+Sascha
 
-Sebastian
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
