@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejKh-0005Mz-Rk
- for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:18 +0000
+ id 1UeglR-000269-LU
+ for barebox@lists.infradead.org; Tue, 21 May 2013 07:13:42 +0000
+Date: Tue, 21 May 2013 09:13:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 11:57:43 +0200
-Message-Id: <1369130267-8094-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130521071319.GM32299@pengutronix.de>
+References: <5197608A.40707@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5197608A.40707@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +18,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] ARM: i.MX51: skip devices register when devicetree is
- present
-To: barebox@lists.infradead.org
+Subject: Re: Unable to Boot from NAND on Mini2440
+To: Vikram Narayanan <vikram186@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Juergen Beisert <jbe@pengutronix.de>
 
-When we have a devicetree, do not register the platform devices.
+Hi Vikram,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx51.c | 3 +++
- 1 file changed, 3 insertions(+)
+On Sat, May 18, 2013 at 04:35:46PM +0530, Vikram Narayanan wrote:
+> Hello,
+> 
+> I followed the instructions here
+> <http://barebox.org/documentation/barebox-2011.04.0/mini2440.html>
+> 
+> After writing to NAND, I switched the boot mode to NAND and did a
+> reset. Nothing comes up on the prompt. I tried to verify the
+> 'write', by a 'nand_boot_test'. That works. Please find the log
+> below. I'm on the latest master.
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 54d99a4..0766a21 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -58,6 +58,9 @@ static int imx51_init(void)
- 	imx51_silicon_revision();
- 	imx51_boot_save_loc((void *)MX51_SRC_BASE_ADDR);
- 
-+	if (of_get_root_node())
-+		return 0;
-+
- 	add_generic_device("imx_iim", 0, NULL, MX51_IIM_BASE_ADDR, SZ_4K,
- 			IORESOURCE_MEM, NULL);
- 
+Sorry, I can't help you here. I think Juergen can tell you more once
+he is back in the office.
+
+Sascha
+
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
