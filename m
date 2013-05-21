@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejpO-00064U-JL
- for barebox@lists.infradead.org; Tue, 21 May 2013 10:29:59 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 21 May 2013 12:29:20 +0200
-Message-Id: <1369132160-7903-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1UejKh-0005Mz-Rk
+ for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:18 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 21 May 2013 11:57:43 +0200
+Message-Id: <1369130267-8094-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,117 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci i.MX esdhc: Fix clock divider calculation
+Subject: [PATCH 06/10] ARM: i.MX51: skip devices register when devicetree is
+ present
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
-
-This updates the i.MX esdhc divider settings to FSLs U-Boot.
-Current timings work fine for SD cards, but not for eMMC.
-Although the calculation is fine according to the datasheet and reading from
-eMMC works, writing is broken. Atleast on i.MX53/tqma53.
-With this patch the result is the same, but uses different divider values to
-achieve it.
-
-While at it, replace the udelay with a busy-loop.
+When we have a devicetree, do not register the platform devices.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mci/imx-esdhc.c | 46 +++++++++++++++++++++++++++-------------------
- drivers/mci/imx-esdhc.h |  1 +
- 2 files changed, 28 insertions(+), 19 deletions(-)
+ arch/arm/mach-imx/imx51.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index 8c2695c..6a9faf9 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -69,7 +69,6 @@ struct fsl_esdhc_host {
- 	struct mci_host		mci;
- 	struct fsl_esdhc __iomem	*regs;
- 	u32			no_snoop;
--	unsigned long		cur_clock;
- 	struct device_d		*dev;
- 	struct clk		*clk;
- };
-@@ -358,37 +357,46 @@ static void set_sysctl(struct mci_host *mci, u32 clock)
- 	struct fsl_esdhc __iomem *regs = host->regs;
- 	int sdhc_clk = clk_get_rate(host->clk);
- 	u32 clk;
--
--	if (clock < mci->f_min)
--		clock = mci->f_min;
--
--	pre_div = 0;
--
--	for (pre_div = 1; pre_div < 256; pre_div <<= 1) {
--		if (sdhc_clk / pre_div < clock * 16)
-+	unsigned long  cur_clock;
+diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
+index 54d99a4..0766a21 100644
+--- a/arch/arm/mach-imx/imx51.c
++++ b/arch/arm/mach-imx/imx51.c
+@@ -58,6 +58,9 @@ static int imx51_init(void)
+ 	imx51_silicon_revision();
+ 	imx51_boot_save_loc((void *)MX51_SRC_BASE_ADDR);
+ 
++	if (of_get_root_node())
++		return 0;
 +
-+	/*
-+	 * With eMMC and imx53 (sdhc_clk=200MHz) a pre_div of 1 results in
-+	 *	pre_div=1,div=4 (=50MHz)
-+	 * which is valid and should work, but somehow doesn't.
-+	 * Starting with pre_div=2 gives
-+	 *	pre_div=2, div=2 (=50MHz)
-+	 * and works fine.
-+	 */
-+	pre_div = 2;
-+
-+	if (sdhc_clk == clock)
-+		pre_div = 1;
-+	else if (sdhc_clk / 16 > clock)
-+		for (; pre_div < 256; pre_div *= 2)
-+			if ((sdhc_clk / pre_div) <= (clock * 16))
-+				break;
-+
-+	for (div = 1; div <= 16; div++)
-+		if ((sdhc_clk / (div * pre_div)) <= clock)
- 			break;
--	};
--
--	div = sdhc_clk / pre_div / clock;
+ 	add_generic_device("imx_iim", 0, NULL, MX51_IIM_BASE_ADDR, SZ_4K,
+ 			IORESOURCE_MEM, NULL);
  
--	if (sdhc_clk / pre_div / div > clock)
--		div++;
-+	cur_clock = sdhc_clk / pre_div / div;
- 
--	host->cur_clock = sdhc_clk / pre_div / div;
-+	dev_dbg(host->dev, "set clock: wanted: %d got: %ld\n", clock, cur_clock);
-+	dev_dbg(host->dev, "pre_div: %d div: %d\n", pre_div, div);
- 
-+	/* the register values start with 0 */
- 	div -= 1;
- 	pre_div >>= 1;
- 
--	dev_dbg(host->dev, "set clock: wanted: %d got: %ld\n", clock, host->cur_clock);
--	dev_dbg(host->dev, "pre_div: %d div: %d\n", pre_div, div);
--
- 	clk = (pre_div << 8) | (div << 4);
- 
- 	esdhc_clrbits32(&regs->sysctl, SYSCTL_CKEN);
- 
- 	esdhc_clrsetbits32(&regs->sysctl, SYSCTL_CLOCK_MASK, clk);
- 
--	udelay(10000);
-+	wait_on_timeout(10 * MSECOND,
-+			!(esdhc_read32(&regs->prsstat) & PRSSTAT_SDSTB));
- 
- 	clk = SYSCTL_PEREN | SYSCTL_CKEN;
- 
-diff --git a/drivers/mci/imx-esdhc.h b/drivers/mci/imx-esdhc.h
-index 2be63a5..e145bcb 100644
---- a/drivers/mci/imx-esdhc.h
-+++ b/drivers/mci/imx-esdhc.h
-@@ -86,6 +86,7 @@
- #define PRSSTAT_CINS		(0x00010000)
- #define PRSSTAT_BREN		(0x00000800)
- #define PRSSTAT_BWEN		(0x00000400)
-+#define PRSSTAT_SDSTB		(0x00000008)
- #define PRSSTAT_DLA		(0x00000004)
- #define PRSSTAT_CICHB		(0x00000002)
- #define PRSSTAT_CIDHB		(0x00000001)
 -- 
 1.8.2.rc2
 
