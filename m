@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejKd-0005Mc-6A
- for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:12 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 11:57:45 +0200
-Message-Id: <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mo5.mail-out.ovh.net ([178.32.228.5])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UeoHE-0008JG-HC
+ for barebox@lists.infradead.org; Tue, 21 May 2013 15:15:01 +0000
+Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id E7D601018085
+ for <barebox@lists.infradead.org>; Tue, 21 May 2013 17:14:35 +0200 (CEST)
+Date: Tue, 21 May 2013 17:10:22 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130521151022.GC27130@game.jcrosoft.org>
+References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+ <20130517054349.GQ32299@pengutronix.de>
+ <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
+ <20130521064117.GH32299@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130521064117.GH32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,37 +24,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] ARM: i.MX51 babbage: provide MAC adress in devicetree
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] nand_base: sync flash detection functions with
+ linux 3.9's code
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx51-babbage.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+On 08:41 Tue 21 May     , Sascha Hauer wrote:
+> On Fri, May 17, 2013 at 07:15:12PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > HI,
+> > 
+> > 	can we have stable release as this patch fix the band support as it's broken since
+> > 	4c2bdc8728016b3412523e3264651651fe752860
+> 
+> Said commit is not in 2013.05.0
+wired git refs give
 
-diff --git a/arch/arm/dts/imx51-babbage.dts b/arch/arm/dts/imx51-babbage.dts
-index 9630b61..4c43312 100644
---- a/arch/arm/dts/imx51-babbage.dts
-+++ b/arch/arm/dts/imx51-babbage.dts
-@@ -216,6 +216,10 @@
- 	status = "okay";
- };
- 
-+&iim {
-+	barebox,provide-mac-address = <&fec 1 9>;
-+};
-+
- &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
--- 
-1.8.2.rc2
+Refs: v2013.04.0-188-g4c2bdc8
 
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
