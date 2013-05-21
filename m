@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejKd-0005Md-68
- for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:13 +0000
+ id 1UegMR-0001dF-Jz
+ for barebox@lists.infradead.org; Tue, 21 May 2013 06:47:52 +0000
+Date: Tue, 21 May 2013 08:47:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 11:57:38 +0200
-Message-Id: <1369130267-8094-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130521064726.GI32299@pengutronix.de>
+References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368987835-13323-6-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130521062810.GE32299@pengutronix.de>
+ <20130521063331.GF32299@pengutronix.de>
+ <519B1662.7070502@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <519B1662.7070502@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,90 +22,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] ARM: i.MX: remove unused .mac_addr_base in iim
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 05/11] arm: mvebu: convert Armada 370/XP to common init
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/iim.c              | 6 ------
- arch/arm/mach-imx/imx25.c            | 6 +-----
- arch/arm/mach-imx/include/mach/iim.h | 4 ----
- 3 files changed, 1 insertion(+), 15 deletions(-)
+On Tue, May 21, 2013 at 08:38:26AM +0200, Sebastian Hesselbarth wrote:
+> On 05/21/2013 08:33 AM, Sascha Hauer wrote:
+> >On Tue, May 21, 2013 at 08:28:10AM +0200, Sascha Hauer wrote:
+> >>Sebastian,
+> >>
+> >>>+static int armada_370_xp_init_soc(void)
+> >>>  {
+> >>>  	unsigned long phys_base, phys_size;
+> >>>
+> >>>-	mvebu_init_clocks();
+> >>>+	armada_370_xp_init_clocks();
+> >>>  	add_generic_device("mvebu-timer", DEVICE_ID_SINGLE, NULL,
+> >>>-			   MVEBU_TIMER_BASE, 0x30, IORESOURCE_MEM,
+> >>>-			   NULL);
+> >>>-	mvebu_memory_find(&phys_base,&phys_size);
+> >>>+			   (unsigned int)ARMADA_370_XP_TIMER_BASE, 0x30,
+> >>>+			   IORESOURCE_MEM, NULL);
+> >>>+	armada_370_xp_memory_find(&phys_base,&phys_size);
+> >>>  	arm_add_mem_device("ram0", phys_base, phys_size);
+> >>>+	armada_370_xp_add_uart();
+> >>
+> >>How do you want to support a board which uses another UART instead of
+> >>uart0 when you call this from SoC code?
+> >
+> >Ok, I see. You use CONFIG_MVEBU_CONSOLE_UART to determine an UART base.
+> >What's the rationale for doing this? We don't want to have compile time
+> >decisions for things we know at runtime.
+> 
+> How do you know the UART console by runtime? It can be on any UART
+> possible.
 
-diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index ce2bbaf..bb806d7 100644
---- a/arch/arm/mach-imx/iim.c
-+++ b/arch/arm/mach-imx/iim.c
-@@ -31,8 +31,6 @@
- 
- #define DRIVERNAME	"imx_iim"
- 
--static unsigned long mac_addr_base;
--
- static int iim_write_enable;
- static int iim_sense_enable;
- 
-@@ -227,15 +225,11 @@ static int imx_iim_add_bank(struct device_d *dev, void __iomem *base, int num)
- 
- static int imx_iim_probe(struct device_d *dev)
- {
--	struct imx_iim_platform_data *pdata = dev->platform_data;
- 	int i;
- 	void __iomem *base;
- 
- 	base = dev_request_mem_region(dev, 0);
- 
--	if (pdata)
--		mac_addr_base = pdata->mac_addr_base;
--
- 	for (i = 0; i < 8; i++) {
- 		imx_iim_add_bank(dev, base, i);
- 	}
-diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-index 5011918..63e91a5 100644
---- a/arch/arm/mach-imx/imx25.c
-+++ b/arch/arm/mach-imx/imx25.c
-@@ -53,16 +53,12 @@ u64 imx_uid(void)
- 	return uid;
- }
- 
--static struct imx_iim_platform_data imx25_iim_pdata = {
--	.mac_addr_base	= IIM_MAC_ADDR,
--};
--
- static int imx25_init(void)
- {
- 	imx25_boot_save_loc((void *)MX25_CCM_BASE_ADDR);
- 
- 	add_generic_device("imx_iim", 0, NULL, MX25_IIM_BASE_ADDR, SZ_4K,
--			IORESOURCE_MEM, &imx25_iim_pdata);
-+			IORESOURCE_MEM, NULL);
- 
- 	add_generic_device("imx-iomuxv3", 0, NULL, MX25_IOMUXC_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx25-ccm", 0, NULL, MX25_CCM_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
-diff --git a/arch/arm/mach-imx/include/mach/iim.h b/arch/arm/mach-imx/include/mach/iim.h
-index 713f0de..1d28149 100644
---- a/arch/arm/mach-imx/include/mach/iim.h
-+++ b/arch/arm/mach-imx/include/mach/iim.h
-@@ -38,10 +38,6 @@
- #define IIM_SCS2	0x0034
- #define IIM_SCS3	0x0038
- 
--struct imx_iim_platform_data {
--	unsigned long	mac_addr_base;
--};
--
- #ifdef CONFIG_IMX_IIM
- int imx_iim_read(unsigned int bank, int offset, void *buf, int count);
- #else
+Well ok, you can't really know it at runtime, but you could use multiple
+consoles or maybe you could register a specific uart based on a
+configuration option in the environment or some bootstrap pin. These
+are all not very common examples, but I think you shouldn't prevent them
+in your SoC code.
+
+> Anyway, as we are moving to DT with the next patches, all
+> enabled uarts will be registered.
+> 
+> But leaves the question, how to get the correct UART for console?
+
+Using the linux,stdout-path property in the chosen node.
+
+Sascha
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
