@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ueh9b-0002QT-Ti
- for barebox@lists.infradead.org; Tue, 21 May 2013 07:38:42 +0000
+ id 1Ueqkh-0004XX-TK
+ for barebox@lists.infradead.org; Tue, 21 May 2013 17:53:36 +0000
+Date: Tue, 21 May 2013 19:53:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 09:38:12 +0200
-Message-Id: <1369121895-11282-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369121895-11282-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369121895-11282-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130521175313.GS32299@pengutronix.de>
+References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+ <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
+ <1369149765.377662790@f99.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1369149765.377662790@f99.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,54 +20,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] spi: improve devicetree support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 08/10] ARM: i.MX51 babbage: provide MAC adress in
+ devicetree
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-- zero spi_board_info structure to not accidently pass
-  unitilialized fields
-- parse spi-max-frequency property from devicetree
-- parse mode flags from devicetree
+On Tue, May 21, 2013 at 07:22:45PM +0400, Alexander Shiyan wrote:
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/dts/imx51-babbage.dts | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/arch/arm/dts/imx51-babbage.dts b/arch/arm/dts/imx51-babbage.dts
+> > index 9630b61..4c43312 100644
+> > --- a/arch/arm/dts/imx51-babbage.dts
+> > +++ b/arch/arm/dts/imx51-babbage.dts
+> > @@ -216,6 +216,10 @@
+> >  	status = "okay";
+> >  };
+> >  
+> > +&iim {
+> > +	barebox,provide-mac-address = <&fec 1 9>;
+> > +};
+> 
+> Fixme, is this entry compatible with kernel devicetree?
+> If not, should it be stripped from dt passed to kernel?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/spi/spi.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+It's compatible in the sense that the Kernel does not use this
+property (it does not even use the iim node).
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d58b664..f460a7a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -108,9 +108,20 @@ void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
- 	struct property *reg;
- 
- 	device_node_for_nach_child(node, n) {
--		chip.name = n->name;
-+		memset(&chip, 0, sizeof(chip));
-+		chip.name = xstrdup(n->name);
- 		chip.bus_num = master->bus_num;
--		chip.max_speed_hz = 300000; /* FIXME */
-+		/* Mode (clock phase/polarity/etc.) */
-+		if (of_find_property(n, "spi-cpha"))
-+			chip.mode |= SPI_CPHA;
-+		if (of_find_property(n, "spi-cpol"))
-+			chip.mode |= SPI_CPOL;
-+		if (of_find_property(n, "spi-cs-high"))
-+			chip.mode |= SPI_CS_HIGH;
-+		if (of_find_property(n, "spi-3wire"))
-+			chip.mode |= SPI_3WIRE;
-+		of_property_read_u32(n, "spi-max-frequency",
-+				&chip.max_speed_hz);
- 		reg = of_find_property(n, "reg");
- 		if (!reg)
- 			continue;
+I see no reason why it should hurt the Kernel when there are some
+barebox specific properties in the devicetree, at least not when they
+are explicitly specified as barebox specific.
+
+Sascha
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
