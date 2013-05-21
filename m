@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejKd-0005Ma-67
- for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:12 +0000
+ id 1UeqZR-0004C9-B9
+ for barebox@lists.infradead.org; Tue, 21 May 2013 17:41:58 +0000
+Date: Tue, 21 May 2013 19:41:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 11:57:41 +0200
-Message-Id: <1369130267-8094-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130521174134.GQ32299@pengutronix.de>
+References: <1368603809-5476-1-git-send-email-eric@eukrea.com>
+ <20130517054349.GQ32299@pengutronix.de>
+ <F6661D01-12A7-4ED2-A277-CF829AE802CD@jcrosoft.com>
+ <20130521064117.GH32299@pengutronix.de>
+ <20130521151022.GC27130@game.jcrosoft.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130521151022.GC27130@game.jcrosoft.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +22,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] ARM: i.MX51: Add IIM devicetree node
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] nand_base: sync flash detection functions with linux
+ 3.9's code
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx51.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+On Tue, May 21, 2013 at 05:10:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 08:41 Tue 21 May     , Sascha Hauer wrote:
+> > On Fri, May 17, 2013 at 07:15:12PM +0800, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > HI,
+> > > 
+> > > 	can we have stable release as this patch fix the band support as it's broken since
+> > > 	4c2bdc8728016b3412523e3264651651fe752860
+> > 
+> > Said commit is not in 2013.05.0
+> wired git refs give
+> 
+> Refs: v2013.04.0-188-g4c2bdc8
 
-diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
-index 21bb786..af953f2 100644
---- a/arch/arm/dts/imx51.dtsi
-+++ b/arch/arm/dts/imx51.dtsi
-@@ -605,6 +605,13 @@
- 			reg = <0x80000000 0x10000000>;
- 			ranges;
- 
-+			iim: iim@83f98000 {
-+				compatible = "fsl,imx51-iim", "fsl,imx-iim";
-+				reg = <0x83f98000 0x4000>;
-+				interrupts = <69>;
-+				clocks = <&clks 107>;
-+			};
-+
- 			ecspi2: ecspi@83fac000 {
- 				#address-cells = <1>;
- 				#size-cells = <0>;
+Which means that it was applied to -next after v2013.04.0 and went into
+master after v2013.05.0
+
+Sascha
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
