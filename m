@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UehJl-0002h6-4i
- for barebox@lists.infradead.org; Tue, 21 May 2013 07:49:10 +0000
+ id 1UeiDy-0003jw-He
+ for barebox@lists.infradead.org; Tue, 21 May 2013 08:47:15 +0000
+Received: from isonoe.hi.pengutronix.de ([10.1.0.76])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jbe@pengutronix.de>) id 1UeiDc-0003mB-Kh
+ for barebox@lists.infradead.org; Tue, 21 May 2013 10:46:52 +0200
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Mon, 20 May 2013 20:56:35 +0200
-References: <5197608A.40707@gmail.com>
-In-Reply-To: <5197608A.40707@gmail.com>
+Date: Tue, 21 May 2013 10:44:12 +0200
+References: <201305171018.39539.jbe@pengutronix.de>
+ <20130521065718.GK32299@pengutronix.de>
+In-Reply-To: <20130521065718.GK32299@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-Message-Id: <201305202056.35305.jbe@pengutronix.de>
+Message-Id: <201305211044.12956.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,103 +27,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Unable to Boot from NAND on Mini2440
+Subject: [PATCH] MXS/i.MX23: add boot source detection
 To: barebox@lists.infradead.org
 
-Vikram Narayanan wrote:
-> Hello,
->
-> I followed the instructions here
-> <http://barebox.org/documentation/barebox-2011.04.0/mini2440.html>
->
-> After writing to NAND, I switched the boot mode to NAND and did a reset.
-> Nothing comes up on the prompt. I tried to verify the 'write', by a
-> 'nand_boot_test'. That works. Please find the log below. I'm on the
-> latest master.
->
-> --- start log ---
-> Supervivi> go 0x31000000
-> go to 0x31000000
->    argument 0 = 0x00000000
->    argument 1 = 0x00000000
->    argument 2 = 0x00000000
->    argument 3 = 0x00000000
->
->
-> barebox 2013.05.0-00126-g19bc427 #4 Sat May 18 15:53:01 IST 2013
->
->
-> Board: Mini 2440
-> nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V
-> 8-bit), page size: 2048, OOB size: 64
-> dm9000 dm90000: Found DM9000E at i/o: 0x20000300
-> mdio_bus: miibus0: probed
-> s3c_mci s3c_mci0: registered as s3c_mci0
-> malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
-> refclk:    12000 kHz
-> mpll:     405000 kHz
-> upll:      48000 kHz
-> fclk:     405000 kHz
-> hclk:     101250 kHz
-> pclk:      50625 kHz
-> SDRAM1:   CL4@101MHz
-> SDRAM2:   CL4@101MHz
-> envfs: wrong magic on /dev/env0
-> no valid environment found on /dev/env0. Using default environment
-> running /env/bin/init...
-> set parameter: Invalid argument
->
-> Hit any key to stop autoboot:  3
-> mini2440:/ eth0.ipaddr=192.168.1.240
->
-> mini2440:/ eth0.netmask=255.255.255.0
-> mini2440:/ eth0.serverip=192.168.1.14
-> mini2440:/ erase /dev/nand0.barebox.bb
-> mini2440:/ tftp barebox.bin /dev/nand0.barebox.bb
-> warning: No MAC address set. Using random address F2:08:F4:9F:14:99
-> 100Mbps full duplex link detected
->          ###############
-> mini2440:/ nand_boot_test 0x32000000 0x40000
-> mini2440:/ go 0x32000000
-> ## Starting application at 0x32000000 ...
->
->
-> barebox 2013.05.0-00126-g19bc427 #4 Sat May 18 15:53:01 IST 2013
->
->
-> Board: Mini 2440
-> nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V
-> 8-bit), page size: 2048, OOB size: 64
-> dm9000 dm90000: Found DM9000E at i/o: 0x20000300
-> mdio_bus: miibus0: probed
-> s3c_mci s3c_mci0: registered as s3c_mci0
-> malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
-> refclk:    12000 kHz
-> mpll:     405000 kHz
-> upll:      48000 kHz
-> fclk:     405000 kHz
-> hclk:     101250 kHz
-> pclk:      50625 kHz
-> SDRAM1:   CL4@101MHz
-> SDRAM2:   CL4@101MHz
-> envfs: wrong magic on /dev/env0
-> no valid environment found on /dev/env0. Using default environment
-> running /env/bin/init...
-> set parameter: Invalid argument
->
-> Hit any key to stop autoboot:  3
-> mini2440:/
->
-> --- end log ----
->
-> Any idea on what goes wrong?
+The boot source for the i.MX23 is configured via a few GPIOs, which are later
+be used for different purposes (like LCD data for example). The SoC internal
+ROM reads these GPIOs and uses the selected boot source.
 
-Hmm, never had a Mini2440 with a 1 GiB NAND. Can you see, what kind of SDRAM 
-devices are on your Mini2440 board? Maybe they also changed the SDRAMs...
+For various reasons the boot source is also of interest when Barebox is running.
+This detection approach reads again the GPIOs. It switches temporarily the pins
+to act as GPIOs and input, reads their settings, and switches back to their
+previous functions.
 
-Regards,
-Juergen
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
 
+---
+ arch/arm/mach-mxs/imx.c |   44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
+
+Index: barebox-2013.05.0/arch/arm/mach-mxs/imx.c
+===================================================================
+--- barebox-2013.05.0.orig/arch/arm/mach-mxs/imx.c
++++ barebox-2013.05.0/arch/arm/mach-mxs/imx.c
+@@ -112,6 +112,48 @@ static void mxs_silicon_revision(void)
+ 	silicon_revision_set(product, revision);
+ }
+ 
++#define HW_PINCTRL_MUXSEL2 0x120
++#define HW_PINCTRL_MUXSEL3 0x130
++#define HW_PINCTRL_DOE1 0x710
++#define HW_PINCTRL_DIN1 0x610
++
++/*
++ * we are interested in the setting of:
++ * - GPIO BANK1/19: 1 = the ROM has used the following pins for boot source selection
++ * - GPIO BANK1/5: ETM enable
++ * - GPIO BANK1/3: BM3
++ * - GPIO BANK1/2: BM2
++ * - GPIO BANK1/1: BM1
++ * - GPIO BANK1/0: BM0
++ */
++static uint32_t mx23_detect_bootsource(void)
++{
++	uint32_t mux2, mux3, dir, mode;
++
++	mux3 = readl(IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL3);
++	mux2 = readl(IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL2);
++	dir = readl(IMX_IOMUXC_BASE + HW_PINCTRL_DOE1);
++
++	/* force the GPIO lines of interest to input */
++	writel(0x0008002f, IMX_IOMUXC_BASE + HW_PINCTRL_DOE1 + 8);
++	/* force the GPIO lines of interest to act as GPIO */
++	writel(0x00000cff, IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL2 + 4);
++	writel(0x000000c0, IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL3 + 4);
++
++	/* read the bootstrapping */
++	mode = readl(IMX_IOMUXC_BASE + HW_PINCTRL_DIN1) & 0x8002f;
++
++	/* restore previous settings */
++	writel(mux3, IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL3);
++	writel(mux2, IMX_IOMUXC_BASE + HW_PINCTRL_MUXSEL2);
++	writel(dir, IMX_IOMUXC_BASE + HW_PINCTRL_DOE1);
++
++	if (!(mode & (1 << 19)))
++		return 0xff; /* invalid marker */
++
++	return (mode & 0xf) | ((mode & 0x20) >> 1);
++}
++
+ #define MX28_REV_1_0_MODE	(0x0001a7f0)
+ #define MX28_REV_1_2_MODE	(0x00019bf0)
+ 
+@@ -122,7 +164,7 @@ static void mxs_boot_save_loc(void)
+ 	uint32_t mode = 0xff;
+ 
+ 	if (cpu_is_mx23()) {
+-		/* not implemented yet */
++		mode = mx23_detect_bootsource();
+ 	} else if (cpu_is_mx28()) {
+ 		enum silicon_revision rev = silicon_revision_get();
+ 
 -- 
 Pengutronix e.K.                              | Juergen Beisert             |
 Linux Solutions for Science and Industry      | http://www.pengutronix.de/  |
