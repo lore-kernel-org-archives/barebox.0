@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f99.mail.ru ([217.69.129.122])
+Received: from mail-ea0-x235.google.com ([2a00:1450:4013:c01::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UeoP8-00008R-Nq
- for barebox@lists.infradead.org; Tue, 21 May 2013 15:23:12 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Tue, 21 May 2013 19:22:45 +0400
-Message-ID: <1369149765.377662790@f99.mail.ru>
-In-Reply-To: <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
- <1369130267-8094-9-git-send-email-s.hauer@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UeoQk-0000Bf-5C
+ for barebox@lists.infradead.org; Tue, 21 May 2013 15:24:50 +0000
+Received: by mail-ea0-f181.google.com with SMTP id a11so481844eae.12
+ for <barebox@lists.infradead.org>; Tue, 21 May 2013 08:24:25 -0700 (PDT)
+Message-ID: <519B91A5.4040807@gmail.com>
+Date: Tue, 21 May 2013 17:24:21 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368987835-13323-5-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130521134920.GP32299@pengutronix.de>
+In-Reply-To: <20130521134920.GP32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAwOC8xMF0gQVJNOiBpLk1YNTEgYmFiYmFnZTogcHJvdmlk?=
- =?UTF-8?B?ZSBNQUMgYWRyZXNzIGluIGRldmljZXRyZWU=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 04/11] arm: mvebu: convert Dove to common init
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/dts/imx51-babbage.dts | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/arm/dts/imx51-babbage.dts b/arch/arm/dts/imx51-babbage.dts
-> index 9630b61..4c43312 100644
-> --- a/arch/arm/dts/imx51-babbage.dts
-> +++ b/arch/arm/dts/imx51-babbage.dts
-> @@ -216,6 +216,10 @@
->  	status = "okay";
->  };
->  
-> +&iim {
-> +	barebox,provide-mac-address = <&fec 1 9>;
-> +};
+On 05/21/13 15:49, Sascha Hauer wrote:
+> On Sun, May 19, 2013 at 08:23:48PM +0200, Sebastian Hesselbarth wrote:
+>> This patch converts Marvell Dove SoC init to make use of common lowlevel
+>> and init functions. Postcore initcall will now setup memory controller
+>> base registers to match internal registers base, probe real memory size,
+>> and setup UART console by config option.
+>>
+>> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>
+> This patch breaks bisectibility:
+>
+>   config:     arm              globalscale_guruplug_defconfig
+> arch/arm/mach-mvebu/built-in.o: In function `barebox_arm_reset_vector':
+> lowlevel.c:(.text.barebox_arm_reset_vector+0x0): multiple definition of `barebox_arm_reset_vector'
+> arch/arm/boards/globalscale-guruplug/built-in.o:lowlevel.c:(.text.barebox_arm_reset_vector+0x0): first defined here
+> make: *** [barebox] Error 1
+> ------------------------------------------------------------
+>   config:     arm              globalscale_mirabox_defconfig
+> arch/arm/mach-mvebu/armada-370-xp.o: In function `mvebu_barebox_entry':
+> armada-370-xp.c:(.text.mvebu_barebox_entry+0x0): multiple definition of `mvebu_barebox_entry'
+> arch/arm/mach-mvebu/common.o:common.c:(.text.mvebu_barebox_entry+0x0): first defined here
+> make[1]: *** [arch/arm/mach-mvebu/built-in.o] Error 1
+> make: *** [arch/arm/mach-mvebu] Error 2
+> make: *** Waiting for unfinished jobs....
+>
+> I'm fine with squashing the rest of this series together in a single
+> patch. Is this ok with you or do you want to look for a better solution?
 
-Fixme, is this entry compatible with kernel devicetree?
-If not, should it be stripped from dt passed to kernel?
+Yeah, Thomas already mentioned it will break bisectibility. IIRC,
+Thomas agreed on squashing if you are fine with it.
 
----
+Sebastian
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
