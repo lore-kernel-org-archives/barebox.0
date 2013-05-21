@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x229.google.com ([2a00:1450:4013:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UejKr-0005N3-RJ
- for barebox@lists.infradead.org; Tue, 21 May 2013 09:58:27 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 21 May 2013 11:57:42 +0200
-Message-Id: <1369130267-8094-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
-References: <1369130267-8094-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UeguE-0002Fu-OD
+ for barebox@lists.infradead.org; Tue, 21 May 2013 07:22:47 +0000
+Received: by mail-ea0-f169.google.com with SMTP id m14so168560eaj.28
+ for <barebox@lists.infradead.org>; Tue, 21 May 2013 00:22:24 -0700 (PDT)
+Message-ID: <519B1F55.1090607@gmail.com>
+Date: Tue, 21 May 2013 09:16:37 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <1368987835-13323-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1368987835-13323-6-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130521062810.GE32299@pengutronix.de>
+ <20130521063331.GF32299@pengutronix.de> <519B1662.7070502@gmail.com>
+ <20130521064726.GI32299@pengutronix.de>
+In-Reply-To: <20130521064726.GI32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,72 +23,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] ARM: i.MX51: Fixup fec pads in dts
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 05/11] arm: mvebu: convert Armada 370/XP to common init
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-The Kernel dts relies on reset default pad settings for the FEC.
-Add correct pad settings.
+On 05/21/2013 08:47 AM, Sascha Hauer wrote:
+> On Tue, May 21, 2013 at 08:38:26AM +0200, Sebastian Hesselbarth wrote:
+>> On 05/21/2013 08:33 AM, Sascha Hauer wrote:
+>>> On Tue, May 21, 2013 at 08:28:10AM +0200, Sascha Hauer wrote:
+>>>>> +	armada_370_xp_add_uart();
+>>>>
+>>>> How do you want to support a board which uses another UART instead of
+>>>> uart0 when you call this from SoC code?
+>>>
+>>> Ok, I see. You use CONFIG_MVEBU_CONSOLE_UART to determine an UART base.
+>>> What's the rationale for doing this? We don't want to have compile time
+>>> decisions for things we know at runtime.
+>>
+>> How do you know the UART console by runtime? It can be on any UART
+>> possible.
+>
+> Well ok, you can't really know it at runtime, but you could use multiple
+> consoles or maybe you could register a specific uart based on a
+> configuration option in the environment or some bootstrap pin. These
+> are all not very common examples, but I think you shouldn't prevent them
+> in your SoC code.
+>
+>> Anyway, as we are moving to DT with the next patches, all
+>> enabled uarts will be registered.
+>>
+>> But leaves the question, how to get the correct UART for console?
+>
+> Using the linux,stdout-path property in the chosen node.
 
-Also, add missing MX51_PAD_NANDF_D11__FEC_RX_DV.
+Well, okay then consider the above a temporary compile time config
+option that will be removed as soon as DT patches come. ;)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx51.dtsi | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
-
-diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
-index af953f2..02c132d 100644
---- a/arch/arm/dts/imx51.dtsi
-+++ b/arch/arm/dts/imx51.dtsi
-@@ -292,23 +292,24 @@
- 				fec {
- 					pinctrl_fec_1: fecgrp-1 {
- 						fsl,pins = <
--							MX51_PAD_EIM_EB2__FEC_MDIO	   0x80000000
--							MX51_PAD_EIM_EB3__FEC_RDATA1	   0x80000000
--							MX51_PAD_EIM_CS2__FEC_RDATA2	   0x80000000
--							MX51_PAD_EIM_CS3__FEC_RDATA3	   0x80000000
--							MX51_PAD_EIM_CS4__FEC_RX_ER	   0x80000000
--							MX51_PAD_EIM_CS5__FEC_CRS	   0x80000000
--							MX51_PAD_NANDF_RB2__FEC_COL	   0x80000000
--							MX51_PAD_NANDF_RB3__FEC_RX_CLK	   0x80000000
--							MX51_PAD_NANDF_D9__FEC_RDATA0	   0x80000000
--							MX51_PAD_NANDF_D8__FEC_TDATA0	   0x80000000
--							MX51_PAD_NANDF_CS2__FEC_TX_ER	   0x80000000
--							MX51_PAD_NANDF_CS3__FEC_MDC	   0x80000000
--							MX51_PAD_NANDF_CS4__FEC_TDATA1	   0x80000000
--							MX51_PAD_NANDF_CS5__FEC_TDATA2	   0x80000000
--							MX51_PAD_NANDF_CS6__FEC_TDATA3	   0x80000000
--							MX51_PAD_NANDF_CS7__FEC_TX_EN	   0x80000000
--							MX51_PAD_NANDF_RDY_INT__FEC_TX_CLK 0x80000000
-+							MX51_PAD_EIM_EB2__FEC_MDIO	   0x000001f5
-+							MX51_PAD_EIM_EB3__FEC_RDATA1	   0x00000085
-+							MX51_PAD_EIM_CS2__FEC_RDATA2	   0x00000085
-+							MX51_PAD_EIM_CS3__FEC_RDATA3	   0x00000085
-+							MX51_PAD_EIM_CS4__FEC_RX_ER	   0x00000180
-+							MX51_PAD_EIM_CS5__FEC_CRS	   0x00000180
-+							MX51_PAD_NANDF_RB2__FEC_COL	   0x00000180
-+							MX51_PAD_NANDF_RB3__FEC_RX_CLK	   0x00000180
-+							MX51_PAD_NANDF_D9__FEC_RDATA0	   0x00002180
-+							MX51_PAD_NANDF_D8__FEC_TDATA0	   0x00002004
-+							MX51_PAD_NANDF_CS2__FEC_TX_ER	   0x00002004
-+							MX51_PAD_NANDF_CS3__FEC_MDC	   0x00002004
-+							MX51_PAD_NANDF_CS4__FEC_TDATA1	   0x00002004
-+							MX51_PAD_NANDF_CS5__FEC_TDATA2	   0x00002004
-+							MX51_PAD_NANDF_CS6__FEC_TDATA3	   0x00002004
-+							MX51_PAD_NANDF_CS7__FEC_TX_EN	   0x00002004
-+							MX51_PAD_NANDF_RDY_INT__FEC_TX_CLK 0x00002180
-+							MX51_PAD_NANDF_D11__FEC_RX_DV      0x000020a4
- 						>;
- 					};
- 
--- 
-1.8.2.rc2
+Sebastian
 
 
 _______________________________________________
