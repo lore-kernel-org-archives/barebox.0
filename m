@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uf3l0-0001KN-L6
- for barebox@lists.infradead.org; Wed, 22 May 2013 07:46:48 +0000
-Date: Wed, 22 May 2013 09:46:21 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130522074621.GA29850@pengutronix.de>
-References: <1369132160-7903-1-git-send-email-s.trumtrar@pengutronix.de>
- <20130521192708.GV32299@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130521192708.GV32299@pengutronix.de>
+Received: from mout.gmx.net ([212.227.17.22])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uf3oY-0001PV-1m
+ for barebox@lists.infradead.org; Wed, 22 May 2013 07:50:26 +0000
+Received: from mailout-de.gmx.net ([10.1.76.35]) by mrigmx.server.lan
+ (mrigmx001) with ESMTP (Nemesis) id 0Lu28G-1UVkeT2bDy-011Vgn for
+ <barebox@lists.infradead.org>; Wed, 22 May 2013 09:50:03 +0200
+From: Oleksij Rempel <linux@rempel-privat.de>
+Date: Wed, 22 May 2013 09:49:49 +0200
+Message-Id: <1369208989-14369-4-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1369208989-14369-1-git-send-email-linux@rempel-privat.de>
+References: <1369208989-14369-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,48 +19,99 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci i.MX esdhc: Fix clock divider calculation
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [RFC, PATCH v2 3/3] MIPS: ar231x: add netgear-wg102
+To: barebox@lists.infradead.org
 
-On Tue, May 21, 2013 at 09:27:08PM +0200, Sascha Hauer wrote:
-> On Tue, May 21, 2013 at 12:29:20PM +0200, Steffen Trumtrar wrote:
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > 
-> > This updates the i.MX esdhc divider settings to FSLs U-Boot.
-> > Current timings work fine for SD cards, but not for eMMC.
-> > Although the calculation is fine according to the datasheet and reading from
-> > eMMC works, writing is broken. Atleast on i.MX53/tqma53.
-> > With this patch the result is the same, but uses different divider values to
-> > achieve it.
-> > 
-> > While at it, replace the udelay with a busy-loop.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  drivers/mci/imx-esdhc.c | 46 +++++++++++++++++++++++++++-------------------
-> >  drivers/mci/imx-esdhc.h |  1 +
-> >  2 files changed, 28 insertions(+), 19 deletions(-)
-> 
-> Could you rebase this one on -next?
-> 
-> Sascha
-> 
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ arch/mips/Makefile                      |  1 +
+ arch/mips/boards/netgear-wg102/Kconfig  |  6 ++++++
+ arch/mips/boards/netgear-wg102/Makefile |  1 +
+ arch/mips/boards/netgear-wg102/ram.c    | 13 +++++++++++++
+ arch/mips/mach-ar231x/Kconfig           | 10 ++++++++++
+ 5 files changed, 31 insertions(+)
+ create mode 100644 arch/mips/boards/netgear-wg102/Kconfig
+ create mode 100644 arch/mips/boards/netgear-wg102/Makefile
+ create mode 100644 arch/mips/boards/netgear-wg102/ram.c
 
-Sure. Will resend in a second.
-
-Steffen
-
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 135259f..dc0fe56 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -73,6 +73,7 @@ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ 
+ machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
++board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
+ 
+ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
+ board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
+diff --git a/arch/mips/boards/netgear-wg102/Kconfig b/arch/mips/boards/netgear-wg102/Kconfig
+new file mode 100644
+index 0000000..ceca6de
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/Kconfig
+@@ -0,0 +1,6 @@
++if BOARD_NETGEAR_WG102
++
++config BOARDINFO
++	default "Netgear WG102"
++
++endif
+diff --git a/arch/mips/boards/netgear-wg102/Makefile b/arch/mips/boards/netgear-wg102/Makefile
+new file mode 100644
+index 0000000..0899b66
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/Makefile
+@@ -0,0 +1 @@
++obj-y += ram.o
+diff --git a/arch/mips/boards/netgear-wg102/ram.c b/arch/mips/boards/netgear-wg102/ram.c
+new file mode 100644
+index 0000000..43beb52
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/ram.c
+@@ -0,0 +1,13 @@
++#include <common.h>
++#include <init.h>
++#include <sizes.h>
++#include <asm/memory.h>
++
++static int mem_init(void)
++{
++	/* FIXME: theoretically we can calculate ram size */
++	mips_add_ram0(SZ_16M);
++
++	return 0;
++}
++mem_initcall(mem_init);
+diff --git a/arch/mips/mach-ar231x/Kconfig b/arch/mips/mach-ar231x/Kconfig
+index 7694fe2..1c6a12f 100644
+--- a/arch/mips/mach-ar231x/Kconfig
++++ b/arch/mips/mach-ar231x/Kconfig
+@@ -4,4 +4,14 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0xa0800000
+ 
++choice
++	prompt "Board type"
++
++config BOARD_NETGEAR_WG102
++	bool "Netgear WG102"
++
++endchoice
++
++source arch/mips/boards/netgear-wg102/Kconfig
++
+ endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.2
+
 
 _______________________________________________
 barebox mailing list
