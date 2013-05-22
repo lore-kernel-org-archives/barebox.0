@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UesDZ-0006uA-Oy
- for barebox@lists.infradead.org; Tue, 21 May 2013 19:27:30 +0000
-Date: Tue, 21 May 2013 21:27:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130521192708.GV32299@pengutronix.de>
+ id 1Uf3l0-0001KN-L6
+ for barebox@lists.infradead.org; Wed, 22 May 2013 07:46:48 +0000
+Date: Wed, 22 May 2013 09:46:21 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20130522074621.GA29850@pengutronix.de>
 References: <1369132160-7903-1-git-send-email-s.trumtrar@pengutronix.de>
+ <20130521192708.GV32299@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369132160-7903-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <20130521192708.GV32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +24,37 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mci i.MX esdhc: Fix clock divider calculation
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 21, 2013 at 12:29:20PM +0200, Steffen Trumtrar wrote:
-> From: Sascha Hauer <s.hauer@pengutronix.de>
+On Tue, May 21, 2013 at 09:27:08PM +0200, Sascha Hauer wrote:
+> On Tue, May 21, 2013 at 12:29:20PM +0200, Steffen Trumtrar wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > This updates the i.MX esdhc divider settings to FSLs U-Boot.
+> > Current timings work fine for SD cards, but not for eMMC.
+> > Although the calculation is fine according to the datasheet and reading from
+> > eMMC works, writing is broken. Atleast on i.MX53/tqma53.
+> > With this patch the result is the same, but uses different divider values to
+> > achieve it.
+> > 
+> > While at it, replace the udelay with a busy-loop.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > ---
+> >  drivers/mci/imx-esdhc.c | 46 +++++++++++++++++++++++++++-------------------
+> >  drivers/mci/imx-esdhc.h |  1 +
+> >  2 files changed, 28 insertions(+), 19 deletions(-)
 > 
-> This updates the i.MX esdhc divider settings to FSLs U-Boot.
-> Current timings work fine for SD cards, but not for eMMC.
-> Although the calculation is fine according to the datasheet and reading from
-> eMMC works, writing is broken. Atleast on i.MX53/tqma53.
-> With this patch the result is the same, but uses different divider values to
-> achieve it.
+> Could you rebase this one on -next?
 > 
-> While at it, replace the udelay with a busy-loop.
+> Sascha
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  drivers/mci/imx-esdhc.c | 46 +++++++++++++++++++++++++++-------------------
->  drivers/mci/imx-esdhc.h |  1 +
->  2 files changed, 28 insertions(+), 19 deletions(-)
 
-Could you rebase this one on -next?
+Sure. Will resend in a second.
 
-Sascha
+Steffen
 
 -- 
 Pengutronix e.K.                           |                             |
