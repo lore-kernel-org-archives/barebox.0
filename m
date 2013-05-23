@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfVoZ-0005Pl-Ml
- for barebox@lists.infradead.org; Thu, 23 May 2013 13:44:20 +0000
-Received: from mailout-de.gmx.net ([10.1.76.27]) by mrigmx.server.lan
- (mrigmx001) with ESMTP (Nemesis) id 0LeOot-1U7pYJ0ZkD-00q9vp for
- <barebox@lists.infradead.org>; Thu, 23 May 2013 15:43:58 +0200
-Message-ID: <519E1D19.4090402@rempel-privat.de>
-Date: Thu, 23 May 2013 15:43:53 +0200
-From: Oleksij Rempel <linux@rempel-privat.de>
-MIME-Version: 1.0
-References: <1369208989-14369-1-git-send-email-linux@rempel-privat.de>
- <1369208989-14369-2-git-send-email-linux@rempel-privat.de>
- <20130523133545.GR32299@pengutronix.de>
-In-Reply-To: <20130523133545.GR32299@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UfW0b-0005fG-UW
+ for barebox@lists.infradead.org; Thu, 23 May 2013 13:56:46 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UfW0A-0003T3-Ni
+ for barebox@lists.infradead.org; Thu, 23 May 2013 15:56:18 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UfW09-0006QB-Ks
+ for barebox@lists.infradead.org; Thu, 23 May 2013 15:56:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 23 May 2013 15:56:14 +0200
+Message-Id: <1369317377-17153-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,64 +21,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC, PATCH v2 1/3] MIPS: add Atheros ar531x family support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MCI: support boot partitions
+To: barebox@lists.infradead.org
 
-Am 23.05.2013 15:35, schrieb Sascha Hauer:
-> Hi Oleksij,
->
-> On Wed, May 22, 2013 at 09:49:47AM +0200, Oleksij Rempel wrote:
->> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
->> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
->> +
->> +/*
->> + * This table is indexed by bits 5..4 of the CLOCKCTL1 register
->> + * to determine the predevisor value.
->> + */
->> +static int CLOCKCTL1_PREDIVIDE_TABLE[4] = { 1, 2, 4, 5 };
->> +
->> +static unsigned int
->> +ar2312_cpu_frequency(void)
->> +{
->> +	unsigned int predivide_mask, predivide_shift;
->> +	unsigned int multiplier_mask, multiplier_shift;
->> +	unsigned int clockCtl1, preDivideSelect, preDivisor, multiplier;
->
-> No CamelCase please.
+(newer?) eMMCs have some areas intended for bootloaders. This series
+adds support for them. i.MX SoCs support booting from these areas which
+is quite convenient since we no longer have to take care about the
+regular partition table.
 
-ok. i'll fix it.
+Also this series adds a new device parameter convenience helper for enums.
 
->> +static int platform_init(void)
->> +{
->> +	add_generic_device("ar2312_reset", DEVICE_ID_SINGLE, NULL,
->> +			KSEG1ADDR(AR2312_RESETTMR), 0x4,
->> +			IORESOURCE_MEM, NULL);
->> +	watchdog_init();
->> +	flash_init();
->> +	ether_init();
->
-> Whether or not the flash/ethernet/serial device is available is board
-> specific, not SoC specific, so this should be done in board code. It's
-> good to provide helpers to make this simple for the board code though,
-> so a good option would be to add a SoC prefix to the functions and call
-> it from board code.
+Sascha
 
-Probably it will make sense to have generic type of board. Because this 
-will work with most configurations. Since it is WiSoC (Wireless SoC), 
-ethernet is on chip too.
+----------------------------------------------------------------
+Sascha Hauer (3):
+      param: Add info function
+      param: Add helpers to provide an enum parameter
+      mci: Add support for MMC boot partitions
 
-> Otherwise I am fine with this patch, but maybe Antony still has some
-> comments.
-
-
--- 
-Regards,
-Oleksij
+ drivers/base/driver.c  |   8 ++-
+ drivers/mci/Kconfig    |   3 +
+ drivers/mci/mci-core.c | 192 ++++++++++++++++++++++++++++++++++++++-----------
+ include/mci.h          |  31 +++++++-
+ include/param.h        |  15 ++++
+ lib/parameter.c        | 104 +++++++++++++++++++++++++++
+ 6 files changed, 308 insertions(+), 45 deletions(-)
 
 _______________________________________________
 barebox mailing list
