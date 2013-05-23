@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfVLG-0004SY-Oj
- for barebox@lists.infradead.org; Thu, 23 May 2013 13:14:03 +0000
-Date: Thu, 23 May 2013 15:13:41 +0200
+ id 1UfVYy-0004tr-JA
+ for barebox@lists.infradead.org; Thu, 23 May 2013 13:28:13 +0000
+Date: Thu, 23 May 2013 15:27:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130523131341.GN32299@pengutronix.de>
-References: <1369209220-14529-1-git-send-email-linux@rempel-privat.de>
- <1369209220-14529-3-git-send-email-linux@rempel-privat.de>
+Message-ID: <20130523132749.GQ32299@pengutronix.de>
+References: <1369241656-9219-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369209220-14529-3-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1369241656-9219-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] cfi_flash: size_ratio should not be 0
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH] mtd-core: fix mtd erase operation for non-uniform flashes.
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, May 22, 2013 at 09:53:40AM +0200, Oleksij Rempel wrote:
-> We will get size = 0 if size_ratio = 0
+On Wed, May 22, 2013 at 05:54:16PM +0100, Renaud Barbier wrote:
+> This patch supports the erasing of CFI flash with non-uniform sector.
+> When more than one erase region exists, the mtd_erasesize function
+> assigns the erase size of the sector to the erase_info structure.
 > 
-> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
-> ---
->  drivers/mtd/nor/cfi_flash.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> The problem was discovered when erasing /dev/env0 on my PPC board.
+> This is a partition of size 0x8000 at offset 0 of a 32MB Intel compatible
+> flash with a bottom boot block i.e 4 32KB sectors followed by 255
+> 128KB sectors.
 > 
-> diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
-> index 4b4e29d..85e96ce 100644
-> --- a/drivers/mtd/nor/cfi_flash.c
-> +++ b/drivers/mtd/nor/cfi_flash.c
-> @@ -371,7 +371,8 @@ static ulong flash_get_size (struct flash_info *info)
->  		size_ratio = info->portwidth / info->chipwidth;
->  		/* if the chip is x8/x16 reduce the ratio by half */
->  		if ((info->interface == FLASH_CFI_X8X16)
-> -		    && (info->chipwidth == FLASH_CFI_BY8)) {
-> +		    && (info->chipwidth == FLASH_CFI_BY8)
-> +		    && (size_ratio != 1)) {
->  			size_ratio >>= 1;
->  		}
+> barebox> unprotect /dev/env0
+> barebox> erase /dev/env0
+> cfi_erase: start = 0x0, end = 0x3, count = 0x20000
+> Flash erase error at address fe008000
+> Block Erase Error.
+> Block locked.
+> erase: I/O error
+> 
+> The error above is that a count of 0x20000 is passed instead of 0x8000
+> by mtd_op_erase. This is because the code does not take into account
+> multiple erase regions.
+> 
+> After taking into account the erase regions, only the first sector is
+> erased:
+> 
+> barebox> unprotect /dev/env0
+> barebox> erase /dev/env0
+> cfi_erase: start = 0x0, end = 0x0, count = 0x8000
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 
-Could you elaborate in which constellation this happens?
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
