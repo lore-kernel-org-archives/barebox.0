@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfS6M-0006fy-Ec
- for barebox@lists.infradead.org; Thu, 23 May 2013 09:46:28 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Thu, 23 May 2013 11:45:58 +0200
-Message-Id: <1369302358-9934-2-git-send-email-jlu@pengutronix.de>
-In-Reply-To: <1369302358-9934-1-git-send-email-jlu@pengutronix.de>
-References: <1369302358-9934-1-git-send-email-jlu@pengutronix.de>
+Received: from mail.free-electrons.com ([94.23.35.102])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UfS7C-0006kr-Ix
+ for barebox@lists.infradead.org; Thu, 23 May 2013 09:47:19 +0000
+Date: Thu, 23 May 2013 11:46:55 +0200
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Message-ID: <20130523094655.GD8595@lukather>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,78 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] arm: am33xx: add pinmux config for RMII2
+Subject: 2013.05 breaking Linux boot on imx28 CFA-10036
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
----
- arch/arm/mach-omap/am33xx_mux.c              |   24 ++++++++++++++++++++++++
- arch/arm/mach-omap/include/mach/am33xx-mux.h |    2 ++
- 2 files changed, 26 insertions(+)
+Hi,
 
-diff --git a/arch/arm/mach-omap/am33xx_mux.c b/arch/arm/mach-omap/am33xx_mux.c
-index 61014d9..424d120 100644
---- a/arch/arm/mach-omap/am33xx_mux.c
-+++ b/arch/arm/mach-omap/am33xx_mux.c
-@@ -148,6 +148,20 @@ static const __maybe_unused struct module_pin_mux rmii1_pin_mux[] = {
- 	{-1},
- };
- 
-+static const __maybe_unused struct module_pin_mux rmii2_pin_mux[] = {
-+	{OFFSET(gpmc_a0), MODE(3)},           /* RMII2_TXEN */
-+	{OFFSET(gpmc_a4), MODE(3)},           /* RMII2_TXD1 */
-+	{OFFSET(gpmc_a5), MODE(3)},           /* RMII2_TXD0 */
-+	{OFFSET(gpmc_a10), MODE(3) | RXACTIVE},    /* RMII2_RXD1 */
-+	{OFFSET(gpmc_a11), MODE(3) | RXACTIVE},    /* RMII2_RXD0 */
-+	{OFFSET(gpmc_wait0), MODE(3) | RXACTIVE},     /* RMII2_CRS */
-+	{OFFSET(gpmc_wpn), MODE(3) | RXACTIVE},   /* RMII2_RXERR */
-+	{OFFSET(mdio_data), MODE(0) | RXACTIVE | PULLUP_EN}, /* MDIO_DATA */
-+	{OFFSET(mdio_clk), MODE(0) | PULLUP_EN},    /* MDIO_CLK */
-+	{OFFSET(mii1_col), MODE(1) | RXACTIVE}, /* RMII2_REFCLK */
-+	{-1},
-+};
-+
- #ifdef CONFIG_NOR
- static const __maybe_unused struct module_pin_mux nor_pin_mux[] = {
- 	{OFFSET(lcd_data0), MODE(1) | PULLUDEN},	/* NOR_A0 */
-@@ -261,6 +275,16 @@ void am33xx_enable_mii1_pin_mux(void)
- 	configure_module_pin_mux(mii1_pin_mux);
- }
- 
-+void am33xx_enable_rmii1_pin_mux(void)
-+{
-+	configure_module_pin_mux(rmii1_pin_mux);
-+}
-+
-+void am33xx_enable_rmii2_pin_mux(void)
-+{
-+	configure_module_pin_mux(rmii2_pin_mux);
-+}
-+
- void am33xx_enable_i2c0_pin_mux(void)
- {
- 	configure_module_pin_mux(i2c0_pin_mux);
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-mux.h b/arch/arm/mach-omap/include/mach/am33xx-mux.h
-index e0f7077..44b93bd 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-mux.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-mux.h
-@@ -248,6 +248,8 @@ extern void configure_module_pin_mux(const struct module_pin_mux *mod_pin_mux);
- 
- /* Standard mux settings */
- extern void am33xx_enable_mii1_pin_mux(void);
-+extern void am33xx_enable_rmii1_pin_mux(void);
-+extern void am33xx_enable_rmii2_pin_mux(void);
- extern void am33xx_enable_i2c0_pin_mux(void);
- extern void am33xx_enable_i2c1_pin_mux(void);
- extern void am33xx_enable_i2c2_pin_mux(void);
+I've tested lately both 2013.05.0 and the master of Barebox on the imx28
+cfa-10036 board we have.
+
+Everything works fine with 2013.04.0.
+
+The issue I have is that Barebox in itself works fine, however, Linux
+fails to boot after it has been started by Barebox, quite early and
+badly:
+
+http://code.bulix.org/s3z010-83581
+
+I've tried to bisect it, but didn't get very far, since there are other
+issues coming in, that prevent a full Linux boot (but it might be
+related to Linux itself, anyway.)
+
+So, the last fully working commit I could find is cf95711e
+
+Its child commit, 9d8e0835, boots the kernel, but just before actually
+booting it, displays the error "fdt_initrd: FDT_ERR_BADLAYOUT", so that
+might be an hint.
+
+The configuration I'm using is cfa10036_defconfig.
+
+Thanks,
+Maxime
+
 -- 
-1.7.10.4
-
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
