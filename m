@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfVKf-0004R2-7U
- for barebox@lists.infradead.org; Thu, 23 May 2013 13:13:25 +0000
-Date: Thu, 23 May 2013 15:13:03 +0200
+ id 1UfVLG-0004SY-Oj
+ for barebox@lists.infradead.org; Thu, 23 May 2013 13:14:03 +0000
+Date: Thu, 23 May 2013 15:13:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130523131303.GM32299@pengutronix.de>
+Message-ID: <20130523131341.GN32299@pengutronix.de>
 References: <1369209220-14529-1-git-send-email-linux@rempel-privat.de>
- <1369209220-14529-2-git-send-email-linux@rempel-privat.de>
+ <1369209220-14529-3-git-send-email-linux@rempel-privat.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369209220-14529-2-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1369209220-14529-3-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v2] cfi_flash: add shift option for some cfi memory
- chips
+Subject: Re: [PATCH 2/2] cfi_flash: size_ratio should not be 0
 To: Oleksij Rempel <linux@rempel-privat.de>
-Cc: barebox@lists.infradead.org, Oleksij Rempel <bug-track@fisher-privat.net>
+Cc: barebox@lists.infradead.org
 
-On Wed, May 22, 2013 at 09:53:39AM +0200, Oleksij Rempel wrote:
-> From: Oleksij Rempel <bug-track@fisher-privat.net>
-> 
-> Many cfi chips support 16 and 8 bit modes. Most important
-> difference is use of so called "Q15/A-1" pin. In 16bit mode this
-> pin is used for data IO. In 8bit mode, it is an address input
-> which add one more least significant bit (LSB). In this case
-> we should shift all adresses by one:
-> For example 0xaa << 1 = 0x154
+On Wed, May 22, 2013 at 09:53:40AM +0200, Oleksij Rempel wrote:
+> We will get size = 0 if size_ratio = 0
 > 
 > Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+> ---
+>  drivers/mtd/nor/cfi_flash.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
+> index 4b4e29d..85e96ce 100644
+> --- a/drivers/mtd/nor/cfi_flash.c
+> +++ b/drivers/mtd/nor/cfi_flash.c
+> @@ -371,7 +371,8 @@ static ulong flash_get_size (struct flash_info *info)
+>  		size_ratio = info->portwidth / info->chipwidth;
+>  		/* if the chip is x8/x16 reduce the ratio by half */
+>  		if ((info->interface == FLASH_CFI_X8X16)
+> -		    && (info->chipwidth == FLASH_CFI_BY8)) {
+> +		    && (info->chipwidth == FLASH_CFI_BY8)
+> +		    && (size_ratio != 1)) {
+>  			size_ratio >>= 1;
+>  		}
 
-Applied, thanks
+Could you elaborate in which constellation this happens?
 
 Sascha
 
