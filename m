@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfW0c-0005fH-AD
- for barebox@lists.infradead.org; Thu, 23 May 2013 13:56:48 +0000
+ id 1UfW0c-0005fK-S0
+ for barebox@lists.infradead.org; Thu, 23 May 2013 13:56:49 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 May 2013 15:56:16 +0200
-Message-Id: <1369317377-17153-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 23 May 2013 15:56:15 +0200
+Message-Id: <1369317377-17153-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369317377-17153-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369317377-17153-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,166 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] param: Add helpers to provide an enum parameter
+Subject: [PATCH 1/3] param: Add info function
 To: barebox@lists.infradead.org
 
-We recently gained helper functions for different types of
-device parameters. One thing missing was a helper for an
-enum type parameter. This patch adds this.
+Some parameters may wish to provide some information about their
+meaning or possible values. Provide an info callback for parameters.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/param.h |  14 ++++++++
- lib/parameter.c | 104 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 118 insertions(+)
+ drivers/base/driver.c | 8 ++++++--
+ include/param.h       | 1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index edd49b3..30a4bc5 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -495,8 +495,12 @@ static int do_devinfo(int argc, char *argv[])
+ 		printf("%s\n", list_empty(&dev->parameters) ?
+ 				"no parameters available" : "Parameters:");
+ 
+-		list_for_each_entry(param, &dev->parameters, list)
+-			printf("%16s = %s\n", param->name, dev_get_param(dev, param->name));
++		list_for_each_entry(param, &dev->parameters, list) {
++			printf("%16s = %s", param->name, dev_get_param(dev, param->name));
++			if (param->info)
++				param->info(param);
++			printf("\n");
++		}
+ #ifdef CONFIG_OFDEVICE
+ 		if (dev->device_node) {
+ 			printf("\ndevice node: %s\n", dev->device_node->full_name);
 diff --git a/include/param.h b/include/param.h
-index 54dea56..7830f6f 100644
+index 4af2d09..54dea56 100644
 --- a/include/param.h
 +++ b/include/param.h
-@@ -41,6 +41,11 @@ struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
- 		int (*get)(struct param_d *p, void *priv),
- 		int *value, void *priv);
- 
-+struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
-+		int (*set)(struct param_d *p, void *priv),
-+		int (*get)(struct param_d *p, void *priv),
-+		int *value, const char **names, int max, void *priv);
-+
- struct param_d *dev_add_param_int_ro(struct device_d *dev, const char *name,
- 		int value, const char *format);
- 
-@@ -90,6 +95,15 @@ static inline struct param_d *dev_add_param_int(struct device_d *dev, const char
- 	return NULL;
- }
- 
-+static inline struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
-+		int (*set)(struct param_d *p, void *priv),
-+		int (*get)(struct param_d *p, void *priv),
-+		int *value, const char **names, int max, void *priv)
-+
-+{
-+	return NULL;
-+}
-+
- static inline struct param_d *dev_add_param_bool(struct device_d *dev, const char *name,
- 		int (*set)(struct param_d *p, void *priv),
- 		int (*get)(struct param_d *p, void *priv),
-diff --git a/lib/parameter.c b/lib/parameter.c
-index e47e8b9..c5c6426 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -299,6 +299,110 @@ struct param_d *dev_add_param_int(struct device_d *dev, const char *name,
- 	return &pi->param;
- }
- 
-+struct param_enum {
-+	struct param_d param;
-+	int *value;
-+	const char **names;
-+	int num_names;
-+	int (*set)(struct param_d *p, void *priv);
-+	int (*get)(struct param_d *p, void *priv);
-+};
-+
-+static inline struct param_enum *to_param_enum(struct param_d *p)
-+{
-+	return container_of(p, struct param_enum, param);
-+}
-+
-+static int param_enum_set(struct device_d *dev, struct param_d *p, const char *val)
-+{
-+	struct param_enum *pe = to_param_enum(p);
-+	int value_save = *pe->value;
-+	int i, ret;
-+
-+	if (!val)
-+		return -EINVAL;
-+
-+	for (i = 0; i < pe->num_names; i++)
-+		if (pe->names[i] && !strcmp(val, pe->names[i]))
-+			break;
-+
-+	if (i == pe->num_names)
-+		return -EINVAL;
-+
-+	*pe->value = i;
-+
-+	if (!pe->set)
-+		return 0;
-+
-+	ret = pe->set(p, p->driver_priv);
-+	if (ret)
-+		*pe->value = value_save;
-+
-+	return ret;
-+}
-+
-+static const char *param_enum_get(struct device_d *dev, struct param_d *p)
-+{
-+	struct param_enum *pe = to_param_enum(p);
-+	int ret;
-+
-+	if (pe->get) {
-+		ret = pe->get(p, p->driver_priv);
-+		if (ret)
-+			return NULL;
-+	}
-+
-+	free(p->value);
-+	p->value = strdup(pe->names[*pe->value]);
-+
-+	return p->value;
-+}
-+
-+static void param_enum_info(struct param_d *p)
-+{
-+	struct param_enum *pe = to_param_enum(p);
-+	int i;
-+
-+	printf(" (");
-+
-+	for (i = 0; i < pe->num_names; i++) {
-+		if (!pe->names[i] || !*pe->names[i])
-+			continue;
-+		printf("\"%s\"%s", pe->names[i],
-+				i ==  pe->num_names - 1 ? ")" : ", ");
-+	}
-+}
-+
-+struct param_d *dev_add_param_enum(struct device_d *dev, const char *name,
-+		int (*set)(struct param_d *p, void *priv),
-+		int (*get)(struct param_d *p, void *priv),
-+		int *value, const char **names, int num_names, void *priv)
-+{
-+	struct param_enum *pe;
-+	struct param_d *p;
-+	int ret;
-+
-+	pe = xzalloc(sizeof(*pe));
-+
-+	pe->value = value;
-+	pe->set = set;
-+	pe->get = get;
-+	pe->names = names;
-+	pe->num_names = num_names;
-+	p = &pe->param;
-+	p->driver_priv = priv;
-+
-+	ret = __dev_add_param(p, dev, name, param_enum_set, param_enum_get, 0);
-+	if (ret) {
-+		free(pe);
-+		return ERR_PTR(ret);
-+	}
-+
-+	p->info = param_enum_info;
-+
-+	return &pe->param;
-+}
-+
- /**
-  * dev_add_param_bool - add an boolean parameter to a device
-  * @param dev	The device
+@@ -12,6 +12,7 @@ typedef unsigned long          IPaddr_t;
+ struct param_d {
+ 	const char* (*get)(struct device_d *, struct param_d *param);
+ 	int (*set)(struct device_d *, struct param_d *param, const char *val);
++	void (*info)(struct param_d *param);
+ 	unsigned int flags;
+ 	char *name;
+ 	char *value;
 -- 
 1.8.2.rc2
 
