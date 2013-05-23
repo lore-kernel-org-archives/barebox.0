@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og117.obsmtp.com ([64.18.0.149])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfCK8-0006QX-2S
- for barebox@lists.infradead.org; Wed, 22 May 2013 16:55:36 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 22 May 2013 17:54:16 +0100
-Message-Id: <1369241656-9219-1-git-send-email-renaud.barbier@ge.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UfP41-0002Hj-Lm
+ for barebox@lists.infradead.org; Thu, 23 May 2013 06:31:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 23 May 2013 08:31:15 +0200
+Message-Id: <1369290675-15806-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,93 +19,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd-core: fix mtd erase operation for non-uniform flashes.
+Subject: [PATCH urgent] ARM: fix the memset fix
 To: barebox@lists.infradead.org
+Cc: Nicolas Pitre <nicolas.pitre@linaro.org>
 
-This patch supports the erasing of CFI flash with non-uniform sector.
-When more than one erase region exists, the mtd_erasesize function
-assigns the erase size of the sector to the erase_info structure.
+From: Nicolas Pitre <nicolas.pitre@linaro.org>
 
-The problem was discovered when erasing /dev/env0 on my PPC board.
-This is a partition of size 0x8000 at offset 0 of a 32MB Intel compatible
-flash with a bottom boot block i.e 4 32KB sectors followed by 255
-128KB sectors.
+From Kernel commit 418df63a ARM: 7670/1: fix the memset fix
 
-barebox> unprotect /dev/env0
-barebox> erase /dev/env0
-cfi_erase: start = 0x0, end = 0x3, count = 0x20000
-Flash erase error at address fe008000
-Block Erase Error.
-Block locked.
-erase: I/O error
+| Commit 455bd4c430b0 ("ARM: 7668/1: fix memset-related crashes caused by
+| recent GCC (4.7.2) optimizations") attempted to fix a compliance issue
+| with the memset return value.  However the memset itself became broken
+| by that patch for misaligned pointers.
+|
+| This fixes the above by branching over the entry code from the
+| misaligned fixup code to avoid reloading the original pointer.
+|
+| Also, because the function entry alignment is wrong in the Thumb mode
+| compilation, that fixup code is moved to the end.
+|
+| While at it, the entry instructions are slightly reworked to help dual
+| issue pipelines.
+|
+| Signed-off-by: Nicolas Pitre <nico@linaro.org>
+| Tested-by: Alexander Holler <holler@ahsoftware.de>
+| Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
-The error above is that a count of 0x20000 is passed instead of 0x8000
-by mtd_op_erase. This is because the code does not take into account
-multiple erase regions.
-
-After taking into account the erase regions, only the first sector is
-erased:
-
-barebox> unprotect /dev/env0
-barebox> erase /dev/env0
-cfi_erase: start = 0x0, end = 0x0, count = 0x8000
-
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c |   24 ++++++++++++++++++++++--
- 1 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 61744b6..8139b98 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -98,6 +98,23 @@ static ssize_t mtd_op_write(struct cdev* cdev, const void *buf, size_t _count,
- 	return ret ? ret : _count;
- }
+This was reported one of our customers. One effect was that the
+md5sum implementation produced wrong results.
+
+ arch/arm/lib/memset.S | 33 +++++++++++++--------------------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
+
+diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
+index 5e35d7f..c4d2672 100644
+--- a/arch/arm/lib/memset.S
++++ b/arch/arm/lib/memset.S
+@@ -14,31 +14,15 @@
  
-+static void mtd_erasesize(struct erase_info *erase)
-+{
-+	struct mtd_info *mtd = erase->mtd;
-+	int ix, size;
+ 	.text
+ 	.align	5
+-	.word	0
+-
+-1:	subs	r2, r2, #4		@ 1 do we have enough
+-	blt	5f			@ 1 bytes to align with?
+-	cmp	r3, #2			@ 1
+-	strltb	r1, [ip], #1		@ 1
+-	strleb	r1, [ip], #1		@ 1
+-	strb	r1, [ip], #1		@ 1
+-	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
+-/*
+- * The pointer is now aligned and the length is adjusted.  Try doing the
+- * memset again.
+- */
+ 
+ ENTRY(memset)
+-/*
+- * Preserve the contents of r0 for the return value.
+- */
+-	mov	ip, r0
+-	ands	r3, ip, #3		@ 1 unaligned?
+-	bne	1b			@ 1
++	ands	r3, r0, #3		@ 1 unaligned?
++	mov	ip, r0			@ preserve r0 as return value
++	bne	6f			@ 1
+ /*
+  * we know that the pointer in ip is aligned to a word boundary.
+  */
+-	orr	r1, r1, r1, lsl #8
++1:	orr	r1, r1, r1, lsl #8
+ 	orr	r1, r1, r1, lsl #16
+ 	mov	r3, r1
+ 	cmp	r2, #16
+@@ -127,5 +111,14 @@ ENTRY(memset)
+ 	tst	r2, #1
+ 	strneb	r1, [ip], #1
+ 	mov	pc, lr
 +
-+	size = 0;
-+	for (ix = 0; ix < mtd->numeraseregions; ix++) {
-+		size += mtd->eraseregions[ix].erasesize *
-+			mtd->eraseregions[ix].numblocks;
-+
-+		if (erase->addr < size) {
-+			erase->len =  mtd->eraseregions[ix].erasesize;
-+			break;
-+		}
-+	}
-+}
-+
- static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- {
- 	struct mtd_info *mtd = cdev->priv;
-@@ -110,6 +127,9 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	erase.len = mtd->erasesize;
++6:	subs	r2, r2, #4		@ 1 do we have enough
++	blt	5b			@ 1 bytes to align with?
++	cmp	r3, #2			@ 1
++	strltb	r1, [ip], #1		@ 1
++	strleb	r1, [ip], #1		@ 1
++	strb	r1, [ip], #1		@ 1
++	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
++	b	1b
+ ENDPROC(memset)
  
- 	while (count > 0) {
-+		if (mtd->numeraseregions > 1)
-+			mtd_erasesize(&erase);
-+
- 		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
- 
- 		if (!mtd->allow_erasebad)
-@@ -125,8 +145,8 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 				return ret;
- 		}
- 
--		erase.addr += mtd->erasesize;
--		count -= count > mtd->erasesize ? mtd->erasesize : count;
-+		erase.addr += erase.len;
-+		count -= count > erase.len ? erase.len : count;
- 	}
- 
- 	return 0;
 -- 
-1.7.1
+1.8.2.rc2
 
 
 _______________________________________________
