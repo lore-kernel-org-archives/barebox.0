@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfQMT-0003gZ-3B
- for barebox@lists.infradead.org; Thu, 23 May 2013 07:54:58 +0000
-Date: Thu, 23 May 2013 09:54:35 +0200
+ id 1UfQOg-0003j7-Ai
+ for barebox@lists.infradead.org; Thu, 23 May 2013 07:57:15 +0000
+Date: Thu, 23 May 2013 09:56:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130523075435.GB32299@pengutronix.de>
-References: <201305171018.39539.jbe@pengutronix.de>
- <20130521065718.GK32299@pengutronix.de>
- <201305211044.12956.jbe@pengutronix.de>
+Message-ID: <20130523075652.GC32299@pengutronix.de>
+References: <1369232642-16009-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <201305211044.12956.jbe@pengutronix.de>
+In-Reply-To: <1369232642-16009-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,21 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MXS/i.MX23: add boot source detection
-To: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH] defaultenv-2: Fix settings entry
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 21, 2013 at 10:44:12AM +0200, Juergen Beisert wrote:
-> The boot source for the i.MX23 is configured via a few GPIOs, which are later
-> be used for different purposes (like LCD data for example). The SoC internal
-> ROM reads these GPIOs and uses the selected boot source.
+On Wed, May 22, 2013 at 04:24:02PM +0200, Steffen Trumtrar wrote:
+> There is no "settings-entries-edit" command. This results in a recursive call
+> to the settings menu. Use the missing "boot-entries-edit" command instead.
 > 
-> For various reasons the boot source is also of interest when Barebox is running.
-> This detection approach reads again the GPIOs. It switches temporarily the pins
-> to act as GPIOs and input, reads their settings, and switches back to their
-> previous functions.
-> 
-> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 Applied, thanks
 
