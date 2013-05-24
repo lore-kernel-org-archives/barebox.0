@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.free-electrons.com ([94.23.35.102])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UfWtq-0007mp-FG
- for barebox@lists.infradead.org; Thu, 23 May 2013 14:53:51 +0000
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Date: Thu, 23 May 2013 16:53:07 +0200
-Message-Id: <1369320787-29172-1-git-send-email-maxime.ripard@free-electrons.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ufla6-0006ZQ-OZ
+ for barebox@lists.infradead.org; Fri, 24 May 2013 06:34:29 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UflZj-0004Ev-L9
+ for barebox@lists.infradead.org; Fri, 24 May 2013 08:34:03 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UflZj-0006L7-K5
+ for barebox@lists.infradead.org; Fri, 24 May 2013 08:34:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 24 May 2013 08:33:59 +0200
+Message-Id: <1369377242-23493-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +26,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: cfa10036: Add more board ID for boot time detection
+Subject: [PATCH] imx-image support
 To: barebox@lists.infradead.org
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>, Brian Lilly <brian@crystalfontz.com>
 
-From: Brian Lilly <brian@crystalfontz.com>
 
-As new breakout boards are being developped, we need to add their IDs in
-the device detection code, otherwise they will be treated as regular
-CFA-10036.
+This series adds a imx-image and a imx-usb-loader tool. The imx-image
+tool can be used to generate the i.MX images for the internal boot mode.
+Advantage over generating them with gcc/ld is that we can use the more
+advanced features of the image format, like the register polling
+functions. Also I think the process is easier to understand.
 
-Signed-off-by: Brian Lilly <brian@crystalfontz.com>
-Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
----
- arch/arm/boards/crystalfontz-cfa10036/hwdetect.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+The second tool is a USB upload tool for i.MX SoCs. It's based on work
+by Eric Nelson, but heavily updated. This tool can directly upload and
+execute the imx-images. It is known to work on i.MX35,51,53,6.
 
-diff --git a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-index 5eb3ca4..21199d6 100644
---- a/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-+++ b/arch/arm/boards/crystalfontz-cfa10036/hwdetect.c
-@@ -29,6 +29,10 @@ enum board_type {
- 	BOARD_ID_CFA10036 = 0,
- 	BOARD_ID_CFA10037 = 1,
- 	BOARD_ID_CFA10049 = 2,
-+	BOARD_ID_CFA10055 = 3,
-+	BOARD_ID_CFA10056 = 4,
-+	BOARD_ID_CFA10057 = 5,
-+	BOARD_ID_CFA10058 = 6,
- };
- 
- struct cfa_eeprom_info {
-@@ -83,6 +87,18 @@ void cfa10036_detect_hw(void)
- 	case BOARD_ID_CFA10049:
- 		board_name = "cfa10049";
- 		break;
-+	case BOARD_ID_CFA10055:
-+		board_name = "cfa10055";
-+		break;
-+	case BOARD_ID_CFA10056:
-+		board_name = "cfa10056";
-+		break;
-+	case BOARD_ID_CFA10057:
-+		board_name = "cfa10057";
-+		break;
-+	case BOARD_ID_CFA10058:
-+		board_name = "cfa10058";
-+		break;
- 	default:
- 		pr_err("Board ID not supported\n");
- 		return;
--- 
-1.8.1.2
+Last not least the babbage board is converted to use the imx-image
+tool as an example how to use this stuff.
 
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (3):
+      ARM: Makefile: Make sure to clean boarddirs
+      scripts: Add imx-usb-loader tool
+      ARM: i.MX51 babbage: switch to imx-image
+
+ arch/arm/Makefile                                  |  201 +--
+ arch/arm/boards/freescale-mx51-pdk/Makefile        |    4 +-
+ arch/arm/boards/freescale-mx51-pdk/board.c         |    7 +-
+ arch/arm/boards/freescale-mx51-pdk/dcd-data.h      |   60 -
+ .../boards/freescale-mx51-pdk/flash-header.imxcfg  |   59 +
+ arch/arm/boards/freescale-mx51-pdk/flash_header.c  |   29 -
+ arch/arm/mach-imx/Kconfig                          |   22 +
+ scripts/Makefile                                   |    1 +
+ scripts/Makefile.lib                               |   25 +
+ scripts/imx/.gitignore                             |    2 +
+ scripts/imx/Makefile                               |   10 +
+ scripts/imx/README                                 |   89 ++
+ scripts/imx/imx-image.c                            |  742 ++++++++++
+ scripts/imx/imx-usb-loader.c                       | 1427 ++++++++++++++++++++
+ 14 files changed, 2488 insertions(+), 190 deletions(-)
+ delete mode 100644 arch/arm/boards/freescale-mx51-pdk/dcd-data.h
+ create mode 100644 arch/arm/boards/freescale-mx51-pdk/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/freescale-mx51-pdk/flash_header.c
+ create mode 100644 scripts/imx/.gitignore
+ create mode 100644 scripts/imx/Makefile
+ create mode 100644 scripts/imx/README
+ create mode 100644 scripts/imx/imx-image.c
+ create mode 100644 scripts/imx/imx-usb-loader.c
 
 _______________________________________________
 barebox mailing list
