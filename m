@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UgEaU-0000gz-Ks
- for barebox@lists.infradead.org; Sat, 25 May 2013 13:32:47 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UgEa7-0003mH-FS
- for barebox@lists.infradead.org; Sat, 25 May 2013 15:32:23 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UgEa6-0001lv-9C
- for barebox@lists.infradead.org; Sat, 25 May 2013 15:32:22 +0200
+ id 1UgEaZ-0000h5-AN
+ for barebox@lists.infradead.org; Sat, 25 May 2013 13:32:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 25 May 2013 15:32:17 +0200
-Message-Id: <1369488741-4313-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 25 May 2013 15:32:21 +0200
+Message-Id: <1369488741-4313-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1369488741-4313-1-git-send-email-s.hauer@pengutronix.de>
+References: <1369488741-4313-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,36 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make dependency fixes
+Subject: [PATCH 4/4] ARM: zynq: Add cmd to generate zynq image
 To: barebox@lists.infradead.org
 
-Hi All,
+Add a command to generate the zynq image instead of generating it
+directly. This causes a rebuild exactly when necessary and prints
+a "ZYNQ-IMG" to the commandline during compilation.
 
-The following are some fixes to the make dependencies. On ARM with
-PBL enabled the SoC specific images (MLO, ubl) were not rebuilt:
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-make				<- generates MLO
-touch common/console.c
-make				<- MLO is not rebuilt
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 9bfa2c7..90a4713 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -246,8 +246,11 @@ ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
+ KBUILD_IMAGE := barebox.spi
+ endif
+ 
+-barebox.zynq: $(KBUILD_BINARY)
+-	$(Q)scripts/zynq_mkimage $< $@
++quiet_cmd_zynq_image = ZYNQ-IMG $@
++      cmd_zynq_image = scripts/zynq_mkimage $< $@
++
++barebox.zynq: $(KBUILD_BINARY) FORCE
++	$(call if_changed,zynq_image)
+ 
+ ifeq ($(machine-y),zynq)
+ KBUILD_IMAGE := barebox.zynq
+-- 
+1.8.2.rc2
 
-OTOH with PBL enabled the zbarebox.bin was rebuilt everytime even
-when nothing has changed.
-
-This and two other things are fixed in this series.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      pbl: Fix typo in make causing pbl files to be rebuilt
-      ARM: pbl: fix make dependencies
-      make: Add barebox_default_env.* to targets
-      ARM: zynq: Add cmd to generate zynq image
-
- arch/arm/Makefile      | 20 +++++++-------------
- common/Makefile        |  2 ++
- scripts/Makefile.build |  2 +-
- 3 files changed, 10 insertions(+), 14 deletions(-)
 
 _______________________________________________
 barebox mailing list
