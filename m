@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UgEd9-0000m2-Js
- for barebox@lists.infradead.org; Sat, 25 May 2013 13:35:32 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 25 May 2013 15:35:07 +0200
-Message-Id: <1369488907-7397-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mout.gmx.net ([212.227.15.19])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UgGqb-0002Nq-0D
+ for barebox@lists.infradead.org; Sat, 25 May 2013 15:57:34 +0000
+Received: from mailout-de.gmx.net ([10.1.76.10]) by mrigmx.server.lan
+ (mrigmx001) with ESMTP (Nemesis) id 0LrGyY-1UIzIy1oD6-0139sd for
+ <barebox@lists.infradead.org>; Sat, 25 May 2013 17:57:04 +0200
+Message-ID: <51A0DF4E.8020009@rempel-privat.de>
+Date: Sat, 25 May 2013 17:57:02 +0200
+From: Oleksij Rempel <linux@rempel-privat.de>
+MIME-Version: 1.0
+References: <1369208989-14369-1-git-send-email-linux@rempel-privat.de>
+ <1369208989-14369-3-git-send-email-linux@rempel-privat.de>
+ <20130524070916.GX32299@pengutronix.de>
+In-Reply-To: <20130524070916.GX32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,132 +22,146 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: i.MX51: PLL errata workaround
-To: barebox@lists.infradead.org
+Subject: Re: [RFC, PATCH v2 2/3] net: add ar231x-eth support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is a port of the official PLL errata workaround from Freescale.
-The PLL's in the i.MX51 processor can go out of lock due to a metastable
-condition in an analog flip-flop when used at high frequencies.
-This workaround implements an undocumented feature in the PLL (dither
-mode), which causes the effect of this failure to be much lower (in terms
-of frequency deviation), avoiding system failure, or at least decreasing
-the likelihood of system failure.
+Am 24.05.2013 09:09, schrieb Sascha Hauer:
+> On Wed, May 22, 2013 at 09:49:48AM +0200, Oleksij Rempel wrote:
+>> This driver should work with some Atheros WiSoCs:
+>> - ar2312, ar2313
+>> - ar2315, ar2316 ...
+>>
+>> Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+>> ---
+>>   drivers/net/Kconfig  |   7 +
+>>   drivers/net/Makefile |   1 +
+>>   drivers/net/ar231x.c | 429 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>>   drivers/net/ar231x.h | 219 ++++++++++++++++++++++++++
+>>   4 files changed, 656 insertions(+)
+>>   create mode 100644 drivers/net/ar231x.c
+>>   create mode 100644 drivers/net/ar231x.h
+>>
+>> +
+>> +	/* FIXME: priv->{t,r}x_ring are virtual addresses,
+>> +	 * use virt-to-phys convertion */
+>
+> We use 1:1 mappings, so I think this comment should be removed.
 
-This is based on U-Boot commit:
+This part should be fixed after Anthonys "MIPS: add initial cache support"
 
-  commit 9db1bfa110ac411ab3468e817f7f74b2439eb8c8
-  Author: David Jander <david@protonic.nl>
-  Date:   Wed Jul 13 21:11:53 2011 +0000
+>> +
+>> +static void ar231x_allocate_dma_descriptors(struct eth_device *edev)
+>> +{
+>> +	struct ar231x_eth_priv *priv = edev->priv;
+>> +	u16 ar231x_descr_size = sizeof(struct ar231x_descr);
+>> +	u16 i;
+>> +
+>> +	priv->tx_ring = xmalloc(ar231x_descr_size);
+>
+> What alignment do you need here? This may or may not be safe.
 
-    ARM: MX51: PLL errata workaround
+Currently there is no other choice.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx51.c             | 55 +++++++++++++++++++++++++++++++++--
- arch/arm/mach-imx/include/mach/imx5.h |  1 +
- 2 files changed, 54 insertions(+), 2 deletions(-)
+>> +
+>> +static int ar231x_eth_recv(struct eth_device *edev)
+>> +{
+>> +	struct ar231x_eth_priv *priv = edev->priv;
+>> +
+>> +	while (1) {
+>> +		struct ar231x_descr *rxdsc = priv->next_rxdsc;
+>> +		u32 status = rxdsc->status;
+>> +
+>> +		/* owned by DMA? */
+>> +		if (status & DMA_RX_OWN)
+>> +			break;
+>> +
+>> +		/* Pick only packets what we can handle:
+>> +		 * - only complete packet per buffer
+>> +		 *   (First and Last at same time)
+>> +		 * - drop multicast */
+>> +		if (!priv->kill_rx_ring &&
+>> +				((status & DMA_RX_MASK) == DMA_RX_FSLS)) {
+>> +			u16 length =
+>> +				((status >> DMA_RX_LEN_SHIFT) & 0x3fff)
+>> +				- CRC_LEN;
+>> +			net_receive((void *)rxdsc->buffer_ptr, length);
+>> +		}
+>> +		/* Clean descriptor. now it is owned by DMA. */
+>> +		priv->next_rxdsc = (struct ar231x_descr *)rxdsc->next_dsc_ptr;
+>> +		ar231x_flash_rxdsc(rxdsc);
+>> +	}
+>
+> This loop looks wrong. You should only receive a single packet for each
+> call of this function.
 
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index 0766a21..fdf2374 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -98,15 +98,63 @@ postcore_initcall(imx51_init);
-  * power up.
-  */
- 
-+#define DP_MFN_800_DIT 60 /* PL Dither mode */
-+
-+/*
-+ * Workaround for i.MX51 PLL errata. This is needed by all boards using the
-+ * i.MX51 silicon version up until (including) 3.0 running at 800MHz.
-+ * The PLL's in the i.MX51 processor can go out of lock due to a metastable
-+ * condition in an analog flip-flop when used at high frequencies.
-+ * This workaround implements an undocumented feature in the PLL (dither
-+ * mode), which causes the effect of this failure to be much lower (in terms
-+ * of frequency deviation), avoiding system failure, or at least decreasing
-+ * the likelihood of system failure.
-+ */
-+static void imx51_setup_pll800_bug(void)
-+{
-+	void __iomem *base = (void *)MX51_PLL1_BASE_ADDR;
-+	u32 dp_config;
-+	volatile int i;
-+
-+	imx5_setup_pll_864(base);
-+
-+	dp_config = readl(base + MX5_PLL_DP_CONFIG);
-+	dp_config &= ~MX5_PLL_DP_CONFIG_AREN;
-+	writel(dp_config, base + MX5_PLL_DP_CONFIG);
-+
-+	/* Restart PLL with PLM = 1 */
-+	writel(0x00001236, base + MX5_PLL_DP_CTL);
-+
-+	/* Wait for lock */
-+	while (!(readl(base + MX5_PLL_DP_CTL) & 1));
-+
-+	/* Modify MFN value */
-+	writel(DP_MFN_800_DIT, base + MX5_PLL_DP_MFN);
-+	writel(DP_MFN_800_DIT, base + MX5_PLL_DP_HFS_MFN);
-+
-+	/* Reload MFN value */
-+	writel(0x1, base + MX5_PLL_DP_CONFIG);
-+
-+	while (readl(base + MX5_PLL_DP_CONFIG) & 1);
-+
-+	/* Wait at least 4 us */
-+	for (i = 0; i < 100; i++);
-+
-+	/* Enable auto-restart AREN bit */
-+	dp_config |= MX5_PLL_DP_CONFIG_AREN;
-+	writel(dp_config, base + MX5_PLL_DP_CONFIG);
-+}
-+
- void imx51_init_lowlevel(unsigned int cpufreq_mhz)
- {
- 	void __iomem *ccm = (void __iomem *)MX51_CCM_BASE_ADDR;
- 	u32 r;
-+	int rev = imx_silicon_revision();
- 
- 	imx5_init_lowlevel();
- 
- 	/* disable write combine for TO 2 and lower revs */
--	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
-+	if (rev < IMX_CHIP_REV_3_0) {
- 		__asm__ __volatile__("mrc 15, 1, %0, c9, c0, 1":"=r"(r));
- 		r |= (1 << 25);
- 		__asm__ __volatile__("mcr 15, 1, %0, c9, c0, 1" : : "r"(r));
-@@ -138,7 +186,10 @@ void imx51_init_lowlevel(unsigned int cpufreq_mhz)
- 		break;
- 	default:
- 		/* Default maximum 800MHz */
--		imx5_setup_pll_800((void __iomem *)MX51_PLL1_BASE_ADDR);
-+		if (rev <= IMX_CHIP_REV_3_0)
-+			imx51_setup_pll800_bug();
-+		else
-+			imx5_setup_pll_800((void __iomem *)MX51_PLL1_BASE_ADDR);
- 		break;
- 	}
- 
-diff --git a/arch/arm/mach-imx/include/mach/imx5.h b/arch/arm/mach-imx/include/mach/imx5.h
-index 7f5c2ef..5d1a7d7 100644
---- a/arch/arm/mach-imx/include/mach/imx5.h
-+++ b/arch/arm/mach-imx/include/mach/imx5.h
-@@ -9,6 +9,7 @@ void imx5_init_lowlevel(void);
- void imx5_setup_pll(void __iomem *base, int freq, u32 op, u32 mfd, u32 mfn);
- 
- #define imx5_setup_pll_1000(base)	imx5_setup_pll((base), 1000, ((10 << 4) + ((1 - 1) << 0)), (12 - 1), 5)
-+#define imx5_setup_pll_864(base)	imx5_setup_pll((base),  864, (( 8 << 4) + ((1 - 1) << 0)), (180 - 1), 180)
- #define imx5_setup_pll_800(base)	imx5_setup_pll((base),  800, (( 8 << 4) + ((1 - 1) << 0)), (3 - 1), 1)
- #define imx5_setup_pll_665(base)	imx5_setup_pll((base),  665, (( 6 << 4) + ((1 - 1) << 0)), (96 - 1), 89)
- #define imx5_setup_pll_600(base)	imx5_setup_pll((base),  600, (( 6 << 4) + ((1 - 1) << 0)), ( 4 - 1),  1)
+This loop is needed to filter broadcast packtes. If remove this loop and 
+reduce rx buffer, i will get really bad packet losses.
+
+>
+>> +
+>> +static int ar231x_eth_probe(struct device_d *dev)
+>> +{
+>> +	struct ar231x_eth_priv *priv;
+>> +	struct eth_device *edev;
+>> +	struct mii_bus *miibus;
+>> +	struct ar231x_eth_platform_data *pdata;
+>> +
+>> +	if (!dev->platform_data) {
+>> +		dev_err(dev, "no platform data\n");
+>> +		return -ENODEV;
+>> +	}
+>> +
+>> +	pdata = dev->platform_data;
+>> +
+>> +	priv = xzalloc(sizeof(struct ar231x_eth_priv));
+>> +	edev = &priv->edev;
+>> +	miibus = &priv->miibus;
+>> +	edev->priv = priv;
+>> +
+>> +	/* link all platform depended regs */
+>> +	priv->mac = pdata->mac;
+>> +
+>> +	priv->eth_regs = dev_request_mem_region(dev, 0);
+>> +	/* we have 0x100000 for eth, part of it are dma regs.
+>> +	 * So they are already requested */
+>> +	priv->dma_regs = (void *)(priv->eth_regs + 0x1000);
+>> +
+>> +	priv->phy_regs = dev_request_mem_region(dev, 1);
+>> +
+>> +	priv->cfg = pdata;
+>> +	edev->init = ar231x_eth_init;
+>> +	edev->open = ar231x_eth_open;
+>> +	edev->send = ar231x_eth_send;
+>> +	edev->recv = ar231x_eth_recv;
+>> +	edev->halt = ar231x_eth_halt;
+>> +	edev->get_ethaddr = ar231x_get_ethaddr;
+>> +	edev->set_ethaddr = ar231x_set_ethaddr;
+>> +
+>> +	priv->miibus.read = ar231x_miibus_read;
+>> +	priv->miibus.write = ar231x_miibus_write;
+>> +	priv->miibus.reset = ar231x_mdiibus_reset;
+>> +	priv->miibus.priv = priv;
+>> +	priv->miibus.parent = dev;
+>> +
+>> +	mdiobus_register(miibus);
+>> +	eth_register(edev);
+>
+> Please check the return values of dev_request_mem_region,
+> mdiobus_register and eth_register. I'm fine with not properly cleaning
+> up afterwards, but we should be able to notice the user if something
+> goes wrong here. (Yeah, I know, many network driver don't do so)
+
+ok
+
+
 -- 
-1.8.2.rc2
-
+Regards,
+Oleksij
 
 _______________________________________________
 barebox mailing list
