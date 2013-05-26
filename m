@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f46.google.com ([209.85.215.46])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UgZ7j-0003x3-6G
- for barebox@lists.infradead.org; Sun, 26 May 2013 11:28:27 +0000
-Received: by mail-la0-f46.google.com with SMTP id er20so5622806lab.5
- for <barebox@lists.infradead.org>; Sun, 26 May 2013 04:28:02 -0700 (PDT)
+ id 1UgZ7k-0003x4-49
+ for barebox@lists.infradead.org; Sun, 26 May 2013 11:28:29 +0000
+Received: by mail-la0-f45.google.com with SMTP id ec20so5751687lab.18
+ for <barebox@lists.infradead.org>; Sun, 26 May 2013 04:28:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 26 May 2013 15:26:59 +0400
-Message-Id: <1369567621-12415-2-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 26 May 2013 15:27:01 +0400
+Message-Id: <1369567621-12415-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1369567621-12415-1-git-send-email-antonynpavlov@gmail.com>
 References: <1369567621-12415-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] MIPS: rzx50: add trivial board_pbl_start
+Subject: [PATCH 3/3] MIPS: rzx50: enable pbl in defconfig
 To: barebox@lists.infradead.org
+
+Also enable the iomem and poweroff commands.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- .../boards/rzx50/include/board/board_pbl_start.h   |   34 ++++++++++++++++++++
- 1 file changed, 34 insertions(+)
- create mode 100644 arch/mips/boards/rzx50/include/board/board_pbl_start.h
+ arch/mips/configs/rzx50_defconfig |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/boards/rzx50/include/board/board_pbl_start.h b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-new file mode 100644
-index 0000000..cba3e7f
---- /dev/null
-+++ b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-@@ -0,0 +1,34 @@
-+/*
-+ * Startup Code for Ritmix RZX-50 board
-+ *
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <asm/pbl_macros.h>
-+
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_disable_interrupts
-+
-+	/* CPU/SoC specific setup ... */
-+	/* ... absent */
-+
-+	copy_to_link_location	pbl_start
-+
-+	.set	pop
-+	.endm
+diff --git a/arch/mips/configs/rzx50_defconfig b/arch/mips/configs/rzx50_defconfig
+index 722d977..5d994c7 100644
+--- a/arch/mips/configs/rzx50_defconfig
++++ b/arch/mips/configs/rzx50_defconfig
+@@ -1,4 +1,5 @@
+ CONFIG_MACH_MIPS_XBURST=y
++CONFIG_PBL_IMAGE=y
+ CONFIG_BAUDRATE=57600
+ CONFIG_GLOB=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+@@ -14,6 +15,7 @@ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_LOADS=y
+ CONFIG_CMD_SAVES=y
+ CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_IOMEM=y
+ CONFIG_CMD_MD5SUM=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+@@ -22,6 +24,7 @@ CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_GO=y
+ # CONFIG_SPI is not set
+ CONFIG_SHA1=y
 -- 
 1.7.10.4
 
