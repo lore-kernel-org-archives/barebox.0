@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UgtB7-0001E3-R5
- for barebox@lists.infradead.org; Mon, 27 May 2013 08:53:26 +0000
+ id 1UgtB7-0001Dy-R9
+ for barebox@lists.infradead.org; Mon, 27 May 2013 08:53:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 27 May 2013 10:52:55 +0200
-Message-Id: <1369644775-29887-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 27 May 2013 10:52:50 +0200
+Message-Id: <1369644775-29887-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369644775-29887-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369644775-29887-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] ARM: i.MX51: Add aliases for MMC controllers
+Subject: [PATCH 2/7] mci: make mci device a pure device
 To: barebox@lists.infradead.org
 
-To get persistent names for the MMC controllers add aliases to
-them
+No need to match and probe the device if all that we want is a logical
+deivice for the mci.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c | 6 +++---
- arch/arm/dts/imx51.dtsi                    | 4 ++++
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/mci/mci-core.c | 28 ++++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index 2c934b5..6807796 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -170,7 +170,7 @@ static int f3s_devices_init(void)
- 	armlinux_set_bootparams((void *)0x90000100);
- 	armlinux_set_architecture(MACH_TYPE_MX51_BABBAGE);
- 
--	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/disk0",
-+	imx51_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0",
- 		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_start,
- 		flash_header_end - flash_header_start, 0);
- 
-@@ -181,8 +181,8 @@ device_initcall(f3s_devices_init);
- 
- static int f3s_part_init(void)
- {
--	devfs_add_partition("disk0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
--	devfs_add_partition("disk0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
-+	devfs_add_partition("mmc0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
-+	devfs_add_partition("mmc0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
- 
- 	return 0;
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 5c00018..9cc6cfb 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1629,15 +1629,11 @@ on_error:
+ 	return rc;
  }
-diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
-index 02c132d..a900287 100644
---- a/arch/arm/dts/imx51.dtsi
-+++ b/arch/arm/dts/imx51.dtsi
-@@ -22,6 +22,10 @@
- 		gpio1 = &gpio2;
- 		gpio2 = &gpio3;
- 		gpio3 = &gpio4;
-+		mmc0 = &esdhc1;
-+		mmc1 = &esdhc2;
-+		mmc2 = &esdhc3;
-+		mmc3 = &esdhc4;
- 	};
  
- 	tzic: tz-interrupt-controller@e0000000 {
+-static struct driver_d mci_driver = {
+-	.name	= "mci",
+-	.probe	= mci_probe,
+-};
+-
+ static int mci_init(void)
+ {
+ 	sector_buf = xmemalign(32, 512);
+-	return platform_driver_register(&mci_driver);
++
++	return 0;
+ }
+ 
+ device_initcall(mci_init);
+@@ -1649,12 +1645,28 @@ device_initcall(mci_init);
+  */
+ int mci_register(struct mci_host *host)
+ {
++	int ret;
+ 	struct device_d *mci_dev = xzalloc(sizeof(struct device_d));
+ 
++	strcpy(mci_dev->name, "mci");
+ 	mci_dev->id = DEVICE_ID_DYNAMIC;
+-	strcpy(mci_dev->name, mci_driver.name);
+ 	mci_dev->platform_data = host;
+ 	mci_dev->parent = host->hw_dev;
+ 
+-	return platform_device_register(mci_dev);
++	ret = register_device(mci_dev);
++	if (ret)
++		goto err_free;
++
++	ret = mci_probe(mci_dev);
++	if (ret)
++		goto err_unregister;
++
++	return 0;
++
++err_unregister:
++	unregister_device(mci_dev);
++err_free:
++	free(mci_dev);
++
++	return ret;
+ }
 -- 
 1.8.2.rc2
 
