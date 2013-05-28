@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
- helo=mo3.mail-out.ovh.net)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UhHdV-0002gi-T4
- for barebox@lists.infradead.org; Tue, 28 May 2013 11:00:14 +0000
-Received: from mail422.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 42E45FF909E
- for <barebox@lists.infradead.org>; Tue, 28 May 2013 12:59:48 +0200 (CEST)
-Date: Tue, 28 May 2013 12:55:38 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130528105538.GE27130@game.jcrosoft.org>
-References: <1369727146-15275-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1369727146-15275-1-git-send-email-jlu@pengutronix.de>
+ id 1UhIRk-0003fm-EY
+ for barebox@lists.infradead.org; Tue, 28 May 2013 11:52:09 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id BC3C0BF0F5
+ for <barebox@lists.infradead.org>; Tue, 28 May 2013 13:48:12 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Tue, 28 May 2013 13:51:42 +0200
+Message-Id: <1369741903-24988-4-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +17,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [SPAM] [PATCH] scripts: genenv: remove empty files from tempdir
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pcm049: clean up
+To: barebox@lists.infradead.org
 
-On 09:45 Tue 28 May     , Jan Luebbe wrote:
-> This allows leaving out default files from the environment by overriding
-> them with empty files in the board or BSP.
-> 
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-> ---
-can we move it to the buildir and keep it
+Remove magic numbers
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/boards/pcm049/lowlevel.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-and no need to have a uniq name everytime
->  scripts/genenv | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/genenv b/scripts/genenv
-> index 374db6d..3e91062 100755
-> --- a/scripts/genenv
-> +++ b/scripts/genenv
-> @@ -24,7 +24,7 @@ for i in $*; do
->  done
->  )
->  
-> -find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
-> +find $tempdir -name '.svn' -o -name '*~' -o -size 0 | xargs --no-run-if-empty rm -r
->  
->  $objtree/scripts/bareboxenv -s $tempdir $target
->  
-> -- 
-> 1.8.2.rc2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+index 8548868..caac21e 100644
+--- a/arch/arm/boards/pcm049/lowlevel.c
++++ b/arch/arm/boards/pcm049/lowlevel.c
+@@ -127,11 +127,11 @@ static void noinline pcm049_init_lowlevel(void)
+ 	/* Enable all clocks */
+ 	omap4_enable_all_clocks();
+ 
+-	sr32(0x4A30a31C, 8, 1, 0x1);  /* enable software ioreq */
+-	sr32(0x4A30a31C, 1, 2, 0x0);  /* set for sys_clk (19.2MHz) */
+-	sr32(0x4A30a31C, 16, 4, 0x0); /* set divisor to 1 */
+-	sr32(0x4A30a110, 0, 1, 0x1);  /* set the clock source to active */
+-	sr32(0x4A30a110, 2, 2, 0x3);  /* enable clocks */
++	sr32(OMAP44XX_SCRM_AUXCLK3, 8, 1, 0x1);  /* enable software ioreq */
++	sr32(OMAP44XX_SCRM_AUXCLK3, 1, 2, 0x0);  /* set for sys_clk (19.2MHz) */
++	sr32(OMAP44XX_SCRM_AUXCLK3, 16, 4, 0x0); /* set divisor to 1 */
++	sr32(OMAP44XX_SCRM_ALTCLKSRC, 0, 1, 0x1);  /* activate clock source */
++	sr32(OMAP44XX_SCRM_ALTCLKSRC, 2, 2, 0x3);  /* enable clocks */
+ }
+ 
+ void barebox_arm_reset_vector(void)
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
