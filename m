@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UhIRk-0003fl-Gr
+ id 1UhIRk-0003fn-Hf
  for barebox@lists.infradead.org; Tue, 28 May 2013 11:52:11 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id BC365BF0F4
+ by root.phytec.de (Postfix) with ESMTP id AFAC4BF0EB
  for <barebox@lists.infradead.org>; Tue, 28 May 2013 13:48:12 +0200 (CEST)
 From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Tue, 28 May 2013 13:51:41 +0200
-Message-Id: <1369741903-24988-3-git-send-email-j.weitzel@phytec.de>
-MIME-Version: 1.0
+Date: Tue, 28 May 2013 13:51:39 +0200
+Message-Id: <1369741903-24988-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +17,124 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pcm049: add 1GB RAM support
+Subject: [PATCH] omap4: set voltage according to mpu freq
 To: barebox@lists.infradead.org
 
-RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpBZGQgY29uZmlnIHRvIHNl
-bGVjdCBSQU0gYXNzZW1ibHkuIFRoZSBkaWZmZXJlbmNlIGlzIGlmIG9uZSBvciB0d28gY2hpcCBz
-ZWxlY3RzCmFyZSB1c2VkLiBUaGlzIGNhbid0IGJlIGNoZWNrdCBhdCBydW50aW1lLgoKU2lnbmVk
-LW9mZi1ieTogSmFuIFdlaXR6ZWwgPGoud2VpdHplbEBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0v
-Ym9hcmRzL3BjbTA0OS9ib2FyZC5jICAgIHwgICAgNCArKysrCiBhcmNoL2FybS9ib2FyZHMvcGNt
-MDQ5L2xvd2xldmVsLmMgfCAgIDIxICsrKysrKysrKysrKysrKysrKysrLQogYXJjaC9hcm0vbWFj
-aC1vbWFwL0tjb25maWcgICAgICAgIHwgICAxMiArKysrKysrKysrKysKIDMgZmlsZXMgY2hhbmdl
-ZCwgMzYgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2Fy
-bS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMK
-aW5kZXggYjBkNjg5Yi4uM2M0YjFhNyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0
-OS9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNDkvYm9hcmQuYwpAQCAtNDgsNyAr
-NDgsMTEgQEAgY29uc29sZV9pbml0Y2FsbChwY20wNDlfY29uc29sZV9pbml0KTsKIAogc3RhdGlj
-IGludCBwY20wNDlfbWVtX2luaXQodm9pZCkKIHsKKyNpZmRlZiBDT05GSUdfMTAyNE1CX0REUjJS
-QU0KKwlvbWFwX2FkZF9yYW0wKFNaXzFHKTsKKyNlbHNlCiAJb21hcF9hZGRfcmFtMChTWl81MTJN
-KTsKKyNlbmRpZgogCiAJb21hcDQ0eHhfYWRkX3NyYW0wKCk7CiAJcmV0dXJuIDA7CmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMv
-cGNtMDQ5L2xvd2xldmVsLmMKaW5kZXggNTA3NWJiYi4uMmRmNWZhZSAxMDA2NDQKLS0tIGEvYXJj
-aC9hcm0vYm9hcmRzL3BjbTA0OS9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20w
-NDkvbG93bGV2ZWwuYwpAQCAtMzAsNiArMzAsNyBAQAogCiB2b2lkIHNldF9tdXhjb25mX3JlZ3Mo
-dm9pZCk7CiAKKy8qIDUxMk1CICovCiBzdGF0aWMgY29uc3Qgc3RydWN0IGRkcl9yZWdzIGRkcl9y
-ZWdzX210NDJMNjRNNjRfMjVfNDAwX21oeiA9IHsKIAkudGltMQkJPSAweDBFRUIwNjYyLAogCS50
-aW0yCQk9IDB4MjAzNzBERDIsCkBAIC00Myw2ICs0NCwyMCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
-IGRkcl9yZWdzIGRkcl9yZWdzX210NDJMNjRNNjRfMjVfNDAwX21oeiA9IHsKIAkubXIyCQk9IDB4
-NAogfTsKIAorLyogMUdCICovCitzdGF0aWMgY29uc3Qgc3RydWN0IGRkcl9yZWdzIGRkcl9yZWdz
-X210NDJMMTI4TTY0XzI1XzQwMF9taHogPSB7CisJLnRpbTEJCT0gMHgwRUVCMDY2MywKKwkudGlt
-MgkJPSAweDIwNTcxNUQyLAorCS50aW0zCQk9IDB4MDBCRkM1M0YsCisJLnBoeV9jdHJsXzEJPSAw
-eDg0OUZGNDA4LAorCS5yZWZfY3RybAk9IDB4MDAwMDA2MTgsCisJLmNvbmZpZ19pbml0CT0gMHg4
-MDAwMUFCOSwKKwkuY29uZmlnX2ZpbmFsCT0gMHg4MDAwMUFCOSwKKwkuenFfY29uZmlnCT0gMHg1
-MDA5MzIxNSwKKwkubXIxCQk9IDB4ODMsCisJLm1yMgkJPSAweDQKK307CisKIHN0YXRpYyB2b2lk
-IG5vaW5saW5lIHBjbTA0OV9pbml0X2xvd2xldmVsKHZvaWQpCiB7CiAJc3RydWN0IGRwbGxfcGFy
-YW0gY29yZSA9IE9NQVA0X0NPUkVfRFBMTF9QQVJBTV8xOU0yX0REUjQwMDsKQEAgLTU1LDcgKzcw
-LDExIEBAIHN0YXRpYyB2b2lkIG5vaW5saW5lIHBjbTA0OV9pbml0X2xvd2xldmVsKHZvaWQpCiAK
-IAlzZXRfbXV4Y29uZl9yZWdzKCk7CiAKLQlvbWFwNF9kZHJfaW5pdCgmZGRyX3JlZ3NfbXQ0Mkw2
-NE02NF8yNV80MDBfbWh6LCAmY29yZSk7CisjaWZkZWYgQ09ORklHXzEwMjRNQl9ERFIyUkFNCisJ
-CW9tYXA0X2Rkcl9pbml0KCZkZHJfcmVnc19tdDQyTDEyOE02NF8yNV80MDBfbWh6LCAmY29yZSk7
-CisjZWxzZQorCQlvbWFwNF9kZHJfaW5pdCgmZGRyX3JlZ3NfbXQ0Mkw2NE02NF8yNV80MDBfbWh6
-LCAmY29yZSk7CisjZW5kaWYKIAogCS8qIFNldCBWQ09SRTEgPSAxLjMgViwgVkNPUkUyID0gVkNP
-UkUzID0gMS4yMVYgKi8KIAlvbWFwNF9zY2FsZV92Y29yZXMoVFBTNjIzNjFfVlNFTDBfR1BJTyk7
-CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gt
-b21hcC9LY29uZmlnCmluZGV4IDQyZTVmNGEuLjg3ZDNiM2UgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
-L21hY2gtb21hcC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCkBAIC0y
-MDksNiArMjA5LDE4IEBAIGVuZGNob2ljZQogCiBlbmRpZgogCitpZiBNQUNIX1BDTTA0OQorCWNo
-b2ljZQorCXByb21wdCAiU2VsZWN0IEREUjItUkFNIFNpemUiCisKKwljb25maWcgNTEyTUJfRERS
-MlJBTQorCQlib29sICI1MTJNQiIKKwljb25maWcgMTAyNE1CX0REUjJSQU0KKwkJYm9vbCAiMTAy
-NE1CIgorCisJZW5kY2hvaWNlCitlbmRpZgorCiBjb25maWcgTUFDSF9PTUFQX0FEVkFOQ0VEX01V
-WAogCWJvb2wgIkVuYWJsZSBhZHZhbmNlZCBwaW4gbXV4aW5nIgogCWRlcGVuZHMgb24gTUFDSF9P
-TUFQMzQzeFNEUAotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+For OMAP4460 omap4_scale_vcores must set the voltage according to mpu freq.
+
+OPP100  700MHz 1210mV
+OPPTB   920MHz 1320mV
+OPPNT  1200MHz 1380mV
+
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ arch/arm/boards/archosg9/lowlevel.c             |    2 +-
+ arch/arm/boards/panda/lowlevel.c                |    2 +-
+ arch/arm/boards/pcm049/lowlevel.c               |    2 +-
+ arch/arm/boards/phycard-a-xl2/lowlevel.c        |    2 +-
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |    2 +-
+ arch/arm/mach-omap/omap4_generic.c              |    6 +++---
+ 6 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
+index 0334693..0fae6da 100644
+--- a/arch/arm/boards/archosg9/lowlevel.c
++++ b/arch/arm/boards/archosg9/lowlevel.c
+@@ -49,7 +49,7 @@ static noinline void archosg9_init_lowlevel(void)
+ 	set_muxconf_regs();
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO, 1380);
+ 
+ 	/* Enable all clocks */
+ 	omap4_enable_all_clocks();
+diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
+index ed1dc6f..591ff2f 100644
+--- a/arch/arm/boards/panda/lowlevel.c
++++ b/arch/arm/boards/panda/lowlevel.c
+@@ -70,7 +70,7 @@ static void noinline panda_init_lowlevel(void)
+ 	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO, 1210);
+ }
+ 
+ void barebox_arm_reset_vector(void)
+diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+index 33519f7..8548868 100644
+--- a/arch/arm/boards/pcm049/lowlevel.c
++++ b/arch/arm/boards/pcm049/lowlevel.c
+@@ -109,7 +109,7 @@ static void noinline pcm049_init_lowlevel(void)
+ #endif
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO, 1320);
+ 
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+index 07505ff..3750bae 100644
+--- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
++++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+@@ -58,7 +58,7 @@ static noinline void pcaaxl2_init_lowlevel(void)
+ 	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+ 
+ 	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	omap4_scale_vcores(TPS62361_VSEL0_GPIO, 1320);
+ 
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index 9e82435..5684a38 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -211,7 +211,7 @@ struct dpll_param;
+ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
+ void omap4_power_i2c_send(u32);
+ unsigned int omap4_revision(void);
+-noinline int omap4_scale_vcores(unsigned vsel0_pin);
++noinline int omap4_scale_vcores(unsigned vsel0_pin, unsigned volt_mv);
+ 
+ #endif
+ 
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 38993be..1eeaf30 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -511,7 +511,7 @@ static void __iomem *omap4_get_gpio_base(unsigned gpio)
+ 
+ #define I2C_SLAVE 0x12
+ 
+-noinline int omap4_scale_vcores(unsigned vsel0_pin)
++noinline int omap4_scale_vcores(unsigned vsel0_pin, unsigned volt_mv)
+ {
+ 	void __iomem *base;
+ 	unsigned int rev = omap4_revision();
+@@ -529,8 +529,8 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+ 		 * Setup SET1 and SET0 with right values so that kernel
+ 		 * can use either of them based on its needs.
+ 		 */
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
++		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, volt_mv);
++		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, volt_mv);
+ 
+ 		/*
+ 		 * Select SET1 in TPS62361:
+-- 
+1.7.0.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
