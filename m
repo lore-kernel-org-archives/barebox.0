@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UhEbq-0006iJ-8U
- for barebox@lists.infradead.org; Tue, 28 May 2013 07:46:18 +0000
-From: Jan Luebbe <jlu@pengutronix.de>
-Date: Tue, 28 May 2013 09:45:46 +0200
-Message-Id: <1369727146-15275-1-git-send-email-jlu@pengutronix.de>
+ id 1UhFVG-000800-RW
+ for barebox@lists.infradead.org; Tue, 28 May 2013 08:43:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 28 May 2013 10:43:10 +0200
+Message-Id: <1369730590-12904-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts: genenv: remove empty files from tempdir
+Subject: [PATCH] ARM: i.MX53 vincell: Fix lowlevel startup
 To: barebox@lists.infradead.org
 
-This allows leaving out default files from the environment by overriding
-them with empty files in the board or BSP.
+This is a i.MX53 board, not i.MX51.
 
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/genenv | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/guf-vincell/lowlevel.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/genenv b/scripts/genenv
-index 374db6d..3e91062 100755
---- a/scripts/genenv
-+++ b/scripts/genenv
-@@ -24,7 +24,7 @@ for i in $*; do
- done
- )
+diff --git a/arch/arm/boards/guf-vincell/lowlevel.c b/arch/arm/boards/guf-vincell/lowlevel.c
+index ee7aafd..534e506 100644
+--- a/arch/arm/boards/guf-vincell/lowlevel.c
++++ b/arch/arm/boards/guf-vincell/lowlevel.c
+@@ -132,7 +132,7 @@ void __bare_init __naked barebox_arm_reset_vector(void)
+ 	/* Skip SDRAM initialization if we run from RAM */
+ 	r = get_pc();
+ 	if (r > 0x70000000 && r < 0xf0000000)
+-		imx51_barebox_entry(0);
++		imx53_barebox_entry(0);
  
--find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
-+find $tempdir -name '.svn' -o -name '*~' -o -size 0 | xargs --no-run-if-empty rm -r
+ 	/* Setup a preliminary stack */
+ 	r = 0xf8000000 + 0x60000 - 16;
+@@ -146,5 +146,5 @@ void __bare_init __naked barebox_arm_reset_vector(void)
  
- $objtree/scripts/bareboxenv -s $tempdir $target
+ 	imx_esdctlv4_init();
  
+-	imx51_barebox_entry(0);
++	imx53_barebox_entry(0);
+ }
 -- 
 1.8.2.rc2
 
