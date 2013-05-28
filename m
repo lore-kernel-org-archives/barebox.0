@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UhIRk-0003fk-HR
- for barebox@lists.infradead.org; Tue, 28 May 2013 11:52:10 +0000
+ id 1UhIRk-0003fl-Gr
+ for barebox@lists.infradead.org; Tue, 28 May 2013 11:52:11 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 92ACEBF0E0
+ by root.phytec.de (Postfix) with ESMTP id BC365BF0F4
  for <barebox@lists.infradead.org>; Tue, 28 May 2013 13:48:12 +0200 (CEST)
 From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Tue, 28 May 2013 13:51:40 +0200
-Message-Id: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+Date: Tue, 28 May 2013 13:51:41 +0200
+Message-Id: <1369741903-24988-3-git-send-email-j.weitzel@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,45 +18,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] OMAP4: Use default clock source for mcbsp
+Subject: [PATCH] pcm049: add 1GB RAM support
 To: barebox@lists.infradead.org
 
-In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
-change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
-to the reset state.
-
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/mach-omap/omap4_clock.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-index 0621fd3..889d1f9 100644
---- a/arch/arm/mach-omap/omap4_clock.c
-+++ b/arch/arm/mach-omap/omap4_clock.c
-@@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
- 	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
- 	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
- 	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
--	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
--	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
--	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
-+	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
-+	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
-+	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
- 	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
- 	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
- 	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
--- 
-1.7.0.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpBZGQgY29uZmlnIHRvIHNl
+bGVjdCBSQU0gYXNzZW1ibHkuIFRoZSBkaWZmZXJlbmNlIGlzIGlmIG9uZSBvciB0d28gY2hpcCBz
+ZWxlY3RzCmFyZSB1c2VkLiBUaGlzIGNhbid0IGJlIGNoZWNrdCBhdCBydW50aW1lLgoKU2lnbmVk
+LW9mZi1ieTogSmFuIFdlaXR6ZWwgPGoud2VpdHplbEBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0v
+Ym9hcmRzL3BjbTA0OS9ib2FyZC5jICAgIHwgICAgNCArKysrCiBhcmNoL2FybS9ib2FyZHMvcGNt
+MDQ5L2xvd2xldmVsLmMgfCAgIDIxICsrKysrKysrKysrKysrKysrKysrLQogYXJjaC9hcm0vbWFj
+aC1vbWFwL0tjb25maWcgICAgICAgIHwgICAxMiArKysrKysrKysrKysKIDMgZmlsZXMgY2hhbmdl
+ZCwgMzYgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL2Fy
+bS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2JvYXJkLmMK
+aW5kZXggYjBkNjg5Yi4uM2M0YjFhNyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3BjbTA0
+OS9ib2FyZC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNDkvYm9hcmQuYwpAQCAtNDgsNyAr
+NDgsMTEgQEAgY29uc29sZV9pbml0Y2FsbChwY20wNDlfY29uc29sZV9pbml0KTsKIAogc3RhdGlj
+IGludCBwY20wNDlfbWVtX2luaXQodm9pZCkKIHsKKyNpZmRlZiBDT05GSUdfMTAyNE1CX0REUjJS
+QU0KKwlvbWFwX2FkZF9yYW0wKFNaXzFHKTsKKyNlbHNlCiAJb21hcF9hZGRfcmFtMChTWl81MTJN
+KTsKKyNlbmRpZgogCiAJb21hcDQ0eHhfYWRkX3NyYW0wKCk7CiAJcmV0dXJuIDA7CmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9ib2FyZHMvcGNtMDQ5L2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMv
+cGNtMDQ5L2xvd2xldmVsLmMKaW5kZXggNTA3NWJiYi4uMmRmNWZhZSAxMDA2NDQKLS0tIGEvYXJj
+aC9hcm0vYm9hcmRzL3BjbTA0OS9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20w
+NDkvbG93bGV2ZWwuYwpAQCAtMzAsNiArMzAsNyBAQAogCiB2b2lkIHNldF9tdXhjb25mX3JlZ3Mo
+dm9pZCk7CiAKKy8qIDUxMk1CICovCiBzdGF0aWMgY29uc3Qgc3RydWN0IGRkcl9yZWdzIGRkcl9y
+ZWdzX210NDJMNjRNNjRfMjVfNDAwX21oeiA9IHsKIAkudGltMQkJPSAweDBFRUIwNjYyLAogCS50
+aW0yCQk9IDB4MjAzNzBERDIsCkBAIC00Myw2ICs0NCwyMCBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
+IGRkcl9yZWdzIGRkcl9yZWdzX210NDJMNjRNNjRfMjVfNDAwX21oeiA9IHsKIAkubXIyCQk9IDB4
+NAogfTsKIAorLyogMUdCICovCitzdGF0aWMgY29uc3Qgc3RydWN0IGRkcl9yZWdzIGRkcl9yZWdz
+X210NDJMMTI4TTY0XzI1XzQwMF9taHogPSB7CisJLnRpbTEJCT0gMHgwRUVCMDY2MywKKwkudGlt
+MgkJPSAweDIwNTcxNUQyLAorCS50aW0zCQk9IDB4MDBCRkM1M0YsCisJLnBoeV9jdHJsXzEJPSAw
+eDg0OUZGNDA4LAorCS5yZWZfY3RybAk9IDB4MDAwMDA2MTgsCisJLmNvbmZpZ19pbml0CT0gMHg4
+MDAwMUFCOSwKKwkuY29uZmlnX2ZpbmFsCT0gMHg4MDAwMUFCOSwKKwkuenFfY29uZmlnCT0gMHg1
+MDA5MzIxNSwKKwkubXIxCQk9IDB4ODMsCisJLm1yMgkJPSAweDQKK307CisKIHN0YXRpYyB2b2lk
+IG5vaW5saW5lIHBjbTA0OV9pbml0X2xvd2xldmVsKHZvaWQpCiB7CiAJc3RydWN0IGRwbGxfcGFy
+YW0gY29yZSA9IE9NQVA0X0NPUkVfRFBMTF9QQVJBTV8xOU0yX0REUjQwMDsKQEAgLTU1LDcgKzcw
+LDExIEBAIHN0YXRpYyB2b2lkIG5vaW5saW5lIHBjbTA0OV9pbml0X2xvd2xldmVsKHZvaWQpCiAK
+IAlzZXRfbXV4Y29uZl9yZWdzKCk7CiAKLQlvbWFwNF9kZHJfaW5pdCgmZGRyX3JlZ3NfbXQ0Mkw2
+NE02NF8yNV80MDBfbWh6LCAmY29yZSk7CisjaWZkZWYgQ09ORklHXzEwMjRNQl9ERFIyUkFNCisJ
+CW9tYXA0X2Rkcl9pbml0KCZkZHJfcmVnc19tdDQyTDEyOE02NF8yNV80MDBfbWh6LCAmY29yZSk7
+CisjZWxzZQorCQlvbWFwNF9kZHJfaW5pdCgmZGRyX3JlZ3NfbXQ0Mkw2NE02NF8yNV80MDBfbWh6
+LCAmY29yZSk7CisjZW5kaWYKIAogCS8qIFNldCBWQ09SRTEgPSAxLjMgViwgVkNPUkUyID0gVkNP
+UkUzID0gMS4yMVYgKi8KIAlvbWFwNF9zY2FsZV92Y29yZXMoVFBTNjIzNjFfVlNFTDBfR1BJTyk7
+CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvS2NvbmZpZyBiL2FyY2gvYXJtL21hY2gt
+b21hcC9LY29uZmlnCmluZGV4IDQyZTVmNGEuLjg3ZDNiM2UgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L21hY2gtb21hcC9LY29uZmlnCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9LY29uZmlnCkBAIC0y
+MDksNiArMjA5LDE4IEBAIGVuZGNob2ljZQogCiBlbmRpZgogCitpZiBNQUNIX1BDTTA0OQorCWNo
+b2ljZQorCXByb21wdCAiU2VsZWN0IEREUjItUkFNIFNpemUiCisKKwljb25maWcgNTEyTUJfRERS
+MlJBTQorCQlib29sICI1MTJNQiIKKwljb25maWcgMTAyNE1CX0REUjJSQU0KKwkJYm9vbCAiMTAy
+NE1CIgorCisJZW5kY2hvaWNlCitlbmRpZgorCiBjb25maWcgTUFDSF9PTUFQX0FEVkFOQ0VEX01V
+WAogCWJvb2wgIkVuYWJsZSBhZHZhbmNlZCBwaW4gbXV4aW5nIgogCWRlcGVuZHMgb24gTUFDSF9P
+TUFQMzQzeFNEUAotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
+ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
+b3gK
