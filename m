@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uhz4X-0002Vz-AK
- for barebox@lists.infradead.org; Thu, 30 May 2013 09:23:01 +0000
-Date: Thu, 30 May 2013 11:22:43 +0200
+ id 1Uhz4m-0002WX-AW
+ for barebox@lists.infradead.org; Thu, 30 May 2013 09:23:16 +0000
+Date: Thu, 30 May 2013 11:22:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130530092243.GZ32299@pengutronix.de>
-References: <1369741903-24988-4-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20130530092256.GA32299@pengutronix.de>
+References: <1369741903-24988-5-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369741903-24988-4-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1369741903-24988-5-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,12 +22,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pcm049: clean up
+Subject: Re: [PATCH] twl6030: Set WR_S for VMMC
 To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 28, 2013 at 01:51:42PM +0200, Jan Weitzel wrote:
-> Remove magic numbers
+On Tue, May 28, 2013 at 01:51:43PM +0200, Jan Weitzel wrote:
+> After Reset VMMC goes to default VSEL. This is not a clean power cycle for
+> some SD cards.
+> Set flag WR_S for VMMC to avoid going to default VSEL.
+> 
 > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
 Applied, thanks
@@ -35,30 +38,21 @@ Applied, thanks
 Sascha
 
 > ---
->  arch/arm/boards/pcm049/lowlevel.c |   10 +++++-----
->  1 files changed, 5 insertions(+), 5 deletions(-)
+>  drivers/mci/twl6030.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
 > 
-> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-> index 8548868..caac21e 100644
-> --- a/arch/arm/boards/pcm049/lowlevel.c
-> +++ b/arch/arm/boards/pcm049/lowlevel.c
-> @@ -127,11 +127,11 @@ static void noinline pcm049_init_lowlevel(void)
->  	/* Enable all clocks */
->  	omap4_enable_all_clocks();
->  
-> -	sr32(0x4A30a31C, 8, 1, 0x1);  /* enable software ioreq */
-> -	sr32(0x4A30a31C, 1, 2, 0x0);  /* set for sys_clk (19.2MHz) */
-> -	sr32(0x4A30a31C, 16, 4, 0x0); /* set divisor to 1 */
-> -	sr32(0x4A30a110, 0, 1, 0x1);  /* set the clock source to active */
-> -	sr32(0x4A30a110, 2, 2, 0x3);  /* enable clocks */
-> +	sr32(OMAP44XX_SCRM_AUXCLK3, 8, 1, 0x1);  /* enable software ioreq */
-> +	sr32(OMAP44XX_SCRM_AUXCLK3, 1, 2, 0x0);  /* set for sys_clk (19.2MHz) */
-> +	sr32(OMAP44XX_SCRM_AUXCLK3, 16, 4, 0x0); /* set divisor to 1 */
-> +	sr32(OMAP44XX_SCRM_ALTCLKSRC, 0, 1, 0x1);  /* activate clock source */
-> +	sr32(OMAP44XX_SCRM_ALTCLKSRC, 2, 2, 0x3);  /* enable clocks */
->  }
->  
->  void barebox_arm_reset_vector(void)
+> diff --git a/drivers/mci/twl6030.c b/drivers/mci/twl6030.c
+> index 4a875bd..ad1043d 100644
+> --- a/drivers/mci/twl6030.c
+> +++ b/drivers/mci/twl6030.c
+> @@ -21,6 +21,7 @@ static int twl6030_mci_write(u8 address, u8 data)
+>  void twl6030_mci_power_init(void)
+>  {
+>  	twl6030_mci_write(TWL6030_PMCS_VMMC_CFG_VOLTAGE,
+> +			TWL6030_VMMC_WR_S | 
+>  			TWL6030_VMMC_VSEL_0 | TWL6030_VMMC_VSEL_2 |
+>  			TWL6030_VMMC_VSEL_4);
+>  	twl6030_mci_write(TWL6030_PMCS_VMMC_CFG_STATE,
 > -- 
 > 1.7.0.4
 > 
