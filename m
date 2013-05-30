@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.18])
+Received: from mout.gmx.net ([212.227.17.20])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ui7RV-0006wG-D0
- for barebox@lists.infradead.org; Thu, 30 May 2013 18:19:25 +0000
+ id 1Ui7RV-0006wI-KA
+ for barebox@lists.infradead.org; Thu, 30 May 2013 18:19:27 +0000
 Received: from mailout-de.gmx.net ([10.1.76.29]) by mrigmx.server.lan
- (mrigmx001) with ESMTP (Nemesis) id 0MARzI-1Uaztw2o1q-00Bamv for
+ (mrigmx002) with ESMTP (Nemesis) id 0MPbHb-1UmEAt1YMz-004n9P for
  <barebox@lists.infradead.org>; Thu, 30 May 2013 20:18:50 +0200
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Thu, 30 May 2013 20:18:41 +0200
-Message-Id: <1369937922-1557-3-git-send-email-linux@rempel-privat.de>
+Date: Thu, 30 May 2013 20:18:40 +0200
+Message-Id: <1369937922-1557-2-git-send-email-linux@rempel-privat.de>
 In-Reply-To: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
 References: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,510 +24,301 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3  2/3] net: add ar231x-eth support
+Subject: [PATCH v3  1/3] MIPS: add Atheros ar531x family support
 To: barebox@lists.infradead.org
 
-This driver should work with some Atheros WiSoCs:
-- ar2312, ar2313
-- ar2315, ar2316 ...
-
 Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/Kconfig  |   7 +
- drivers/net/Makefile |   1 +
- drivers/net/ar231x.c | 437 +++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/net/ar231x.h | 219 ++++++++++++++++++++++++++
- 4 files changed, 664 insertions(+)
- create mode 100644 drivers/net/ar231x.c
- create mode 100644 drivers/net/ar231x.h
+ arch/mips/Kconfig                                  |   9 +
+ arch/mips/Makefile                                 |   2 +
+ arch/mips/mach-ar231x/Kconfig                      |   7 +
+ arch/mips/mach-ar231x/Makefile                     |   3 +
+ arch/mips/mach-ar231x/ar231x.c                     | 195 +++++++++++++
+ arch/mips/mach-ar231x/ar231x_reset.c               |  73 +++++
+ arch/mips/mach-ar231x/board.c                      | 188 +++++++++++++
+ arch/mips/mach-ar231x/include/mach/ar2312_regs.h   | 302 +++++++++++++++++++++
+ .../mach-ar231x/include/mach/ar231x_platform.h     | 104 +++++++
+ 9 files changed, 883 insertions(+)
+ create mode 100644 arch/mips/mach-ar231x/Kconfig
+ create mode 100644 arch/mips/mach-ar231x/Makefile
+ create mode 100644 arch/mips/mach-ar231x/ar231x.c
+ create mode 100644 arch/mips/mach-ar231x/ar231x_reset.c
+ create mode 100644 arch/mips/mach-ar231x/board.c
+ create mode 100644 arch/mips/mach-ar231x/include/mach/ar2312_regs.h
+ create mode 100644 arch/mips/mach-ar231x/include/mach/ar231x_platform.h
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 2736094..5ad3e4d 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -27,6 +27,13 @@ menu "Network drivers"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index d58b804..aee9671 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -45,6 +45,14 @@ config MACH_MIPS_MALTA
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select HAS_DEBUG_LL
  
- source "drivers/net/phy/Kconfig"
- 
-+config DRIVER_NET_AR231X
-+	bool "AR231X Ethernet support"
-+	depends on MACH_MIPS_AR231X
-+	select PHYLIB
-+	help
-+	  Support for the AR231x/531x ethernet controller
++config MACH_MIPS_AR231X
++	bool "Atheros ar231x-based boards"
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_BIG_ENDIAN
++	select CSRC_R4K_LIB
++	select DRIVER_SERIAL_NS16550
 +
- config DRIVER_NET_CALXEDA_XGMAC
- 	bool "Calxeda xgmac"
+ config MACH_MIPS_BCM47XX
+ 	bool "Broadcom BCM47xx-based boards"
+ 	select CSRC_R4K_LIB
+@@ -64,6 +72,7 @@ config MACH_MIPS_XBURST
+ endchoice
  
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 42136f8..73403fe 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -1,3 +1,4 @@
-+obj-$(CONFIG_DRIVER_NET_AR231X)		+= ar231x.o
- obj-$(CONFIG_DRIVER_NET_CALXEDA_XGMAC)	+= xgmac.o
- obj-$(CONFIG_DRIVER_NET_CS8900)		+= cs8900.o
- obj-$(CONFIG_DRIVER_NET_CPSW)		+= cpsw.o
-diff --git a/drivers/net/ar231x.c b/drivers/net/ar231x.c
+ source arch/mips/mach-malta/Kconfig
++source arch/mips/mach-ar231x/Kconfig
+ source arch/mips/mach-bcm47xx/Kconfig
+ source arch/mips/mach-xburst/Kconfig
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index c038933..135259f 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -72,6 +72,8 @@ LDFLAGS_barebox += -nostdlib
+ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ 
++machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
++
+ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
+ board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
+ 
+diff --git a/arch/mips/mach-ar231x/Kconfig b/arch/mips/mach-ar231x/Kconfig
 new file mode 100644
-index 0000000..5c09114
+index 0000000..7694fe2
 --- /dev/null
-+++ b/drivers/net/ar231x.c
-@@ -0,0 +1,437 @@
++++ b/arch/mips/mach-ar231x/Kconfig
+@@ -0,0 +1,7 @@
++if MACH_MIPS_AR231X
++
++config ARCH_TEXT_BASE
++	hex
++	default 0xa0800000
++
++endif
+diff --git a/arch/mips/mach-ar231x/Makefile b/arch/mips/mach-ar231x/Makefile
+new file mode 100644
+index 0000000..eba8e81
+--- /dev/null
++++ b/arch/mips/mach-ar231x/Makefile
+@@ -0,0 +1,3 @@
++obj-y += ar231x.o
++obj-y += board.o
++obj-y += ar231x_reset.o
+diff --git a/arch/mips/mach-ar231x/ar231x.c b/arch/mips/mach-ar231x/ar231x.c
+new file mode 100644
+index 0000000..ca912bf
+--- /dev/null
++++ b/arch/mips/mach-ar231x/ar231x.c
+@@ -0,0 +1,195 @@
 +/*
-+ * ar231x.c: driver for the Atheros AR231x Ethernet device.
-+ * This device is build in to SoC on ar231x series.
-+ * All known of them are big endian.
-+ *
 + * Based on Linux driver:
-+ *   Copyright (C) 2004 by Sameer Dekate <sdekate@arubanetworks.com>
-+ *   Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
-+ *   Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
++ *  Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
++ *  Copyright (C) 2006 FON Technology, SL.
++ *  Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
 + * Ported to Barebox:
-+ *   Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
++ *  Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
 + * the Free Software Foundation; either version 2 of the License, or
 + * (at your option) any later version.
-+ */
-+/*
-+ * Known issues:
-+ * - broadcast packets are not filtered by hardware. On noisy network with
-+ * lots of bcast packages rx_buffer can be completely filled after. Currently
-+ * we clear rx_buffer transmit some package.
 + */
 +
 +#include <common.h>
-+#include <net.h>
 +#include <init.h>
 +#include <io.h>
++#include <ns16550.h>
++#include <mach/ar231x_platform.h>
++#include <mach/ar2312_regs.h>
 +
-+#include "ar231x.h"
++struct ar231x_board_data ar231x_board;
 +
-+static inline void dma_writel(struct ar231x_eth_priv *priv,
-+		u32 val, int reg)
-+{
-+	__raw_writel(val, priv->dma_regs + reg);
-+}
-+
-+static inline u32 dma_readl(struct ar231x_eth_priv *priv, int reg)
-+{
-+	return __raw_readl(priv->dma_regs + reg);
-+}
-+
-+static inline void eth_writel(struct ar231x_eth_priv *priv,
-+		u32 val, int reg)
-+{
-+	__raw_writel(val, priv->eth_regs + reg);
-+}
-+
-+static inline u32 eth_readl(struct ar231x_eth_priv *priv, int reg)
-+{
-+	return __raw_readl(priv->eth_regs + reg);
-+}
-+
-+static inline void phy_writel(struct ar231x_eth_priv *priv,
-+		u32 val, int reg)
-+{
-+	__raw_writel(val, priv->phy_regs + reg);
-+}
-+
-+static inline u32 phy_readl(struct ar231x_eth_priv *priv, int reg)
-+{
-+	return __raw_readl(priv->phy_regs + reg);
-+}
-+
-+static void ar231x_reset_bit_(struct ar231x_eth_priv *priv,
-+		u32 val, enum reset_state state)
-+{
-+	if (priv->reset_bit)
-+		(*priv->reset_bit)(val, state);
-+}
-+
-+static int ar231x_set_ethaddr(struct eth_device *edev, unsigned char *addr);
-+static void ar231x_reset_regs(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	struct ar231x_eth_platform_data *cfg = priv->cfg;
-+	u32 flags;
-+
-+	ar231x_reset_bit_(priv, cfg->reset_mac, SET);
-+	mdelay(10);
-+
-+	ar231x_reset_bit_(priv, cfg->reset_mac, REMOVE);
-+	mdelay(10);
-+
-+	ar231x_reset_bit_(priv, cfg->reset_phy, SET);
-+	mdelay(10);
-+
-+	ar231x_reset_bit_(priv, cfg->reset_phy, REMOVE);
-+	mdelay(10);
-+
-+	dma_writel(priv, DMA_BUS_MODE_SWR, AR231X_DMA_BUS_MODE);
-+	mdelay(10);
-+
-+	dma_writel(priv, ((32 << DMA_BUS_MODE_PBL_SHIFT) | DMA_BUS_MODE_BLE),
-+			AR231X_DMA_BUS_MODE);
-+
-+	/* FIXME: priv->{t,r}x_ring are virtual addresses,
-+	 * use virt-to-phys convertion */
-+	dma_writel(priv, (u32)priv->tx_ring, AR231X_DMA_TX_RING);
-+	dma_writel(priv, (u32)priv->rx_ring, AR231X_DMA_RX_RING);
-+
-+	dma_writel(priv, (DMA_CONTROL_SR | DMA_CONTROL_ST | DMA_CONTROL_SF),
-+			AR231X_DMA_CONTROL);
-+
-+	eth_writel(priv, FLOW_CONTROL_FCE, AR231X_ETH_FLOW_CONTROL);
-+	/* TODO: not sure if we need it here. */
-+	eth_writel(priv, 0x8100, AR231X_ETH_VLAN_TAG);
-+
-+	/* Enable Ethernet Interface */
-+	flags = (MAC_CONTROL_TE |	/* transmit enable */
-+			/* FIXME: MAC_CONTROL_PM - pass mcast.
-+			 * Seems like it makes no difference on some WiSoCs,
-+			 * for example ar2313.
-+			 * It should be tested on ar231[5,6,7] */
-+			MAC_CONTROL_PM |
-+			MAC_CONTROL_F  |	/* full duplex */
-+			MAC_CONTROL_HBD);	/* heart beat disabled */
-+	eth_writel(priv, flags, AR231X_ETH_MAC_CONTROL);
-+}
-+
-+static void ar231x_flash_rxdsc(struct ar231x_descr *rxdsc)
-+{
-+	rxdsc->status = DMA_RX_OWN;
-+	rxdsc->devcs = ((AR2313_RX_BUFSIZE << DMA_RX1_BSIZE_SHIFT) |
-+			DMA_RX1_CHAINED);
-+}
-+
-+static void ar231x_allocate_dma_descriptors(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	u16 ar231x_descr_size = sizeof(struct ar231x_descr);
-+	u16 i;
-+
-+	priv->tx_ring = xmalloc(ar231x_descr_size);
-+	dev_dbg(&edev->dev, "allocate tx_ring @ %p\n", priv->tx_ring);
-+
-+	priv->rx_ring = xmalloc(ar231x_descr_size * AR2313_RXDSC_ENTRIES);
-+	dev_dbg(&edev->dev, "allocate rx_ring @ %p\n", priv->rx_ring);
-+
-+	priv->rx_buffer = xmalloc(AR2313_RX_BUFSIZE * AR2313_RXDSC_ENTRIES);
-+	dev_dbg(&edev->dev, "allocate rx_buffer @ %p\n", priv->rx_buffer);
-+
-+	/* Initialize the rx Descriptors */
-+	for (i = 0; i < AR2313_RXDSC_ENTRIES; i++) {
-+		struct ar231x_descr *rxdsc = &priv->rx_ring[i];
-+		ar231x_flash_rxdsc(rxdsc);
-+		rxdsc->buffer_ptr =
-+			(u32)(priv->rx_buffer + AR2313_RX_BUFSIZE * i);
-+		rxdsc->next_dsc_ptr = (u32)&priv->rx_ring[DSC_NEXT(i)];
-+	}
-+	/* set initial position of ring descriptor */
-+	priv->next_rxdsc = &priv->rx_ring[0];
-+}
-+
-+static void ar231x_adjust_link(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	u32 mc;
-+
-+	if (edev->phydev->duplex != priv->oldduplex) {
-+		mc = eth_readl(priv, AR231X_ETH_MAC_CONTROL);
-+		mc &= ~(MAC_CONTROL_F | MAC_CONTROL_DRO);
-+		if (edev->phydev->duplex)
-+			mc |= MAC_CONTROL_F;
-+		else
-+			mc |= MAC_CONTROL_DRO;
-+		eth_writel(priv, mc, AR231X_ETH_MAC_CONTROL);
-+		priv->oldduplex = edev->phydev->duplex;
-+	}
-+}
-+
-+static int ar231x_eth_init(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+
-+	ar231x_allocate_dma_descriptors(edev);
-+	ar231x_reset_regs(edev);
-+	ar231x_set_ethaddr(edev, priv->mac);
-+	return 0;
-+}
-+
-+static int ar231x_eth_open(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	u32 tmp;
-+
-+	/* Enable RX. Now the rx_buffer will be filled.
-+	 * If it is full we may lose first transmission. In this case
-+	 * barebox should retry it.
-+	 * Or TODO: - force HW to filter some how broadcasts
-+	 *			- disable RX if we do not need it. */
-+	tmp = eth_readl(priv, AR231X_ETH_MAC_CONTROL);
-+	eth_writel(priv, (tmp | MAC_CONTROL_RE), AR231X_ETH_MAC_CONTROL);
-+
-+	return phy_device_connect(edev, &priv->miibus, (int)priv->phy_regs,
-+			ar231x_adjust_link, 0, PHY_INTERFACE_MODE_MII);
-+}
-+
-+static int ar231x_eth_recv(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+
-+	while (1) {
-+		struct ar231x_descr *rxdsc = priv->next_rxdsc;
-+		u32 status = rxdsc->status;
-+
-+		/* owned by DMA? */
-+		if (status & DMA_RX_OWN)
-+			break;
-+
-+		/* Pick only packets what we can handle:
-+		 * - only complete packet per buffer
-+		 *   (First and Last at same time)
-+		 * - drop multicast */
-+		if (!priv->kill_rx_ring &&
-+				((status & DMA_RX_MASK) == DMA_RX_FSLS)) {
-+			u16 length =
-+				((status >> DMA_RX_LEN_SHIFT) & 0x3fff)
-+				- CRC_LEN;
-+			net_receive((void *)rxdsc->buffer_ptr, length);
-+		}
-+		/* Clean descriptor. now it is owned by DMA. */
-+		priv->next_rxdsc = (struct ar231x_descr *)rxdsc->next_dsc_ptr;
-+		ar231x_flash_rxdsc(rxdsc);
-+	}
-+	priv->kill_rx_ring = 0;
-+	return 0;
-+}
-+
-+static int ar231x_eth_send(struct eth_device *edev, void *packet,
-+		int length)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	struct ar231x_descr *txdsc = priv->tx_ring;
-+	u32 rx_missed;
-+
-+	/* We do not do async work.
-+	 * If rx_ring is full, there is nothing we can use. */
-+	rx_missed = dma_readl(priv, AR231X_DMA_RX_MISSED);
-+	if (rx_missed) {
-+		priv->kill_rx_ring = 1;
-+		ar231x_eth_recv(edev);
-+	}
-+
-+	/* Setup the transmit descriptor. */
-+	txdsc->devcs = ((length << DMA_TX1_BSIZE_SHIFT) | DMA_TX1_DEFAULT);
-+	txdsc->buffer_ptr = (uint)packet;
-+	txdsc->status = DMA_TX_OWN;
-+
-+	/* Trigger transmission */
-+	dma_writel(priv, 0, AR231X_DMA_TX_POLL);
-+
-+	/* Take enough time to transmit packet. 100 is not enough. */
-+	wait_on_timeout(2000 * MSECOND,
-+		!(txdsc->status & DMA_TX_OWN));
-+
-+	/* We can't do match here. If it is still in progress,
-+	 * then engine is probably stalled or we wait not enough. */
-+	if (txdsc->status & DMA_TX_OWN)
-+		dev_err(&edev->dev, "Frame is still in progress.\n");
-+
-+	if (txdsc->status & DMA_TX_ERROR)
-+		dev_err(&edev->dev, "Frame was aborted by engine\n");
-+
-+	/* Ready or not. Stop it. */
-+	txdsc->status = 0;
-+	return 0;
-+}
-+
-+static void ar231x_eth_halt(struct eth_device *edev)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+	u32 tmp;
-+
-+	/* kill the MAC: disable RX and TX */
-+	tmp = eth_readl(priv, AR231X_ETH_MAC_CONTROL);
-+	eth_writel(priv, tmp & ~(MAC_CONTROL_RE | MAC_CONTROL_TE),
-+			AR231X_ETH_MAC_CONTROL);
-+
-+	/* stop DMA */
-+	dma_writel(priv, 0, AR231X_DMA_CONTROL);
-+	dma_writel(priv, DMA_BUS_MODE_SWR, AR231X_DMA_BUS_MODE);
-+
-+	/* place PHY and MAC in reset */
-+	ar231x_reset_bit_(priv, (priv->cfg->reset_mac | priv->cfg->reset_phy), SET);
-+}
-+
-+static int ar231x_get_ethaddr(struct eth_device *edev, unsigned char *addr)
-+{
-+	struct ar231x_eth_priv *priv = edev->priv;
-+
-+	/* MAC address is stored on flash, in some kind of atheros config
-+	 * area. Platform code should read it and pass to the driver. */
-+	memcpy(addr, priv->mac, 6);
-+	return 0;
-+}
-+
-+/**
-+ * These device do not have build in MAC address.
-+ * It is located on atheros-config field on flash.
++/*
++ * This table is indexed by bits 5..4 of the CLOCKCTL1 register
++ * to determine the predevisor value.
 + */
-+static int ar231x_set_ethaddr(struct eth_device *edev, unsigned char *addr)
++static int CLOCKCTL1_PREDIVIDE_TABLE[4] = { 1, 2, 4, 5 };
++
++static unsigned int
++ar2312_cpu_frequency(void)
 +{
-+	struct ar231x_eth_priv *priv = edev->priv;
++	unsigned int predivide_mask, predivide_shift;
++	unsigned int multiplier_mask, multiplier_shift;
++	unsigned int clock_ctl1, pre_divide_select, pre_divisor, multiplier;
++	unsigned int doubler_mask;
++	u32 devid;
 +
-+	eth_writel(priv,
-+			(addr[5] <<  8) | (addr[4]),
-+			AR231X_ETH_MAC_ADDR1);
-+	eth_writel(priv,
-+			(addr[3] << 24) | (addr[2] << 16) |
-+			(addr[1] <<  8) | addr[0],
-+			AR231X_ETH_MAC_ADDR2);
++	devid = __raw_readl((char *)KSEG1ADDR(AR2312_REV));
++	devid &= AR2312_REV_MAJ;
++	devid >>= AR2312_REV_MAJ_S;
++	if (devid == AR2312_REV_MAJ_AR2313) {
++		predivide_mask = AR2313_CLOCKCTL1_PREDIVIDE_MASK;
++		predivide_shift = AR2313_CLOCKCTL1_PREDIVIDE_SHIFT;
++		multiplier_mask = AR2313_CLOCKCTL1_MULTIPLIER_MASK;
++		multiplier_shift = AR2313_CLOCKCTL1_MULTIPLIER_SHIFT;
++		doubler_mask = AR2313_CLOCKCTL1_DOUBLER_MASK;
++	} else { /* AR5312 and AR2312 */
++		predivide_mask = AR2312_CLOCKCTL1_PREDIVIDE_MASK;
++		predivide_shift = AR2312_CLOCKCTL1_PREDIVIDE_SHIFT;
++		multiplier_mask = AR2312_CLOCKCTL1_MULTIPLIER_MASK;
++		multiplier_shift = AR2312_CLOCKCTL1_MULTIPLIER_SHIFT;
++		doubler_mask = AR2312_CLOCKCTL1_DOUBLER_MASK;
++	}
 +
-+	mdelay(10);
++	/*
++	 * Clocking is derived from a fixed 40MHz input clock.
++	 *
++	 *  cpuFreq = InputClock * MULT (where MULT is PLL multiplier)
++	 *  sysFreq = cpuFreq / 4	   (used for APB clock, serial,
++	 *				    flash, Timer, Watchdog Timer)
++	 *
++	 *  cntFreq = cpuFreq / 2	   (use for CPU count/compare)
++	 *
++	 * So, for example, with a PLL multiplier of 5, we have
++	 *
++	 *  cpuFreq = 200MHz
++	 *  sysFreq = 50MHz
++	 *  cntFreq = 100MHz
++	 *
++	 * We compute the CPU frequency, based on PLL settings.
++	 */
++
++	clock_ctl1 = __raw_readl((char *)KSEG1ADDR(AR2312_CLOCKCTL1));
++	pre_divide_select = (clock_ctl1 & predivide_mask) >> predivide_shift;
++	pre_divisor = CLOCKCTL1_PREDIVIDE_TABLE[pre_divide_select];
++	multiplier = (clock_ctl1 & multiplier_mask) >> multiplier_shift;
++
++	if (clock_ctl1 & doubler_mask)
++		multiplier = multiplier << 1;
++
++	return (40000000 / pre_divisor) * multiplier;
++}
++
++static unsigned int
++ar2312_sys_frequency(void)
++{
++	return ar2312_cpu_frequency() / 4;
++}
++
++/*
++ * shutdown watchdog
++ */
++static int watchdog_init(void)
++{
++	pr_debug("Disable watchdog.\n");
++	__raw_writeb(AR2312_WD_CTRL_IGNORE_EXPIRATION,
++					(char *)KSEG1ADDR(AR2312_WD_CTRL));
 +	return 0;
 +}
 +
-+#define MII_ADDR(phy, reg) \
-+	((reg << MII_ADDR_REG_SHIFT) | (phy << MII_ADDR_PHY_SHIFT))
-+
-+static int ar231x_miibus_read(struct mii_bus *bus, int phy_id, int regnum)
++static void flash_init(void)
 +{
-+	struct ar231x_eth_priv *priv = bus->priv;
-+	uint64_t time_start;
++	u32 ctl, old_ctl;
 +
-+	phy_writel(priv, MII_ADDR(phy_id, regnum), AR231X_ETH_MII_ADDR);
-+	time_start = get_time_ns();
-+	while (phy_readl(priv, AR231X_ETH_MII_ADDR) & MII_ADDR_BUSY) {
-+		if (is_timeout(time_start, SECOND)) {
-+			dev_err(&bus->dev, "miibus read timeout\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
-+	return phy_readl(priv, AR231X_ETH_MII_DATA) >> MII_DATA_SHIFT;
++	/* Configure flash bank 0.
++	 * Assume 8M maximum window size on this SoC.
++	 * Flash will be aliased if it's smaller
++	 */
++	old_ctl = __raw_readl((char *)KSEG1ADDR(AR2312_FLASHCTL0));
++	ctl = FLASHCTL_E | FLASHCTL_AC_8M | FLASHCTL_RBLE |
++			(0x01 << FLASHCTL_IDCY_S) |
++			(0x07 << FLASHCTL_WST1_S) |
++			(0x07 << FLASHCTL_WST2_S) | (old_ctl & FLASHCTL_MW);
++
++	__raw_writel(ctl, (char *)KSEG1ADDR(AR2312_FLASHCTL0));
++	/* Disable other flash banks */
++	old_ctl = __raw_readl((char *)KSEG1ADDR(AR2312_FLASHCTL1));
++	__raw_writel(old_ctl & ~(FLASHCTL_E | FLASHCTL_AC),
++			(char *)KSEG1ADDR(AR2312_FLASHCTL1));
++
++	old_ctl = __raw_readl((char *)KSEG1ADDR(AR2312_FLASHCTL2));
++	__raw_writel(old_ctl & ~(FLASHCTL_E | FLASHCTL_AC),
++			(char *)KSEG1ADDR(AR2312_FLASHCTL2));
++
++	/* We need to find atheros config. MAC address is there. */
++	ar231x_find_config((char *)KSEG1ADDR(AR2312_FLASH +
++					     AR2312_MAX_FLASH_SIZE));
 +}
 +
-+static int ar231x_miibus_write(struct mii_bus *bus, int phy_id,
-+			       int regnum, u16 val)
++static int ether_init(void)
 +{
-+	struct ar231x_eth_priv *priv = bus->priv;
-+	uint64_t time_start = get_time_ns();
++	static struct resource res[2];
++	struct ar231x_eth_platform_data *eth = &ar231x_board.eth_pdata;
 +
-+	while (phy_readl(priv, AR231X_ETH_MII_ADDR) & MII_ADDR_BUSY) {
-+		if (is_timeout(time_start, SECOND)) {
-+			dev_err(&bus->dev, "miibus write timeout\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
-+	phy_writel(priv, val << MII_DATA_SHIFT, AR231X_ETH_MII_DATA);
-+	phy_writel(priv, MII_ADDR(phy_id, regnum) | MII_ADDR_WRITE,
-+		   AR231X_ETH_MII_ADDR);
++	/* Base ETH registers  */
++	res[0].start = KSEG1ADDR(AR2312_ENET1);
++	res[0].end = res[0].start + 0x100000 - 1;
++	res[0].flags = IORESOURCE_MEM;
++	/* Base PHY registers */
++	res[1].start = KSEG1ADDR(AR2312_ENET0);
++	res[1].end = res[1].start + 0x100000 - 1;
++	res[1].flags = IORESOURCE_MEM;
++
++	/* MAC address located in atheros config on flash. */
++	eth->mac = ar231x_board.config->enet0_mac;
++
++	eth->reset_mac = AR2312_RESET_ENET0 | AR2312_RESET_ENET1;
++	eth->reset_phy = AR2312_RESET_EPHY0 | AR2312_RESET_EPHY1;
++
++	eth->reset_bit = ar231x_reset_bit;
++
++	/* FIXME: base_reset should be replaced with reset driver */
++	eth->base_reset = KSEG1ADDR(AR2312_RESET);
++
++	add_generic_device_res("ar231x_eth", DEVICE_ID_DYNAMIC, res, 2, eth);
 +	return 0;
 +}
 +
-+static int ar231x_mdiibus_reset(struct mii_bus *bus)
++static int platform_init(void)
 +{
-+	struct ar231x_eth_priv *priv = bus->priv;
-+
-+	ar231x_reset_regs(&priv->edev);
++	add_generic_device("ar231x_reset", DEVICE_ID_SINGLE, NULL,
++			KSEG1ADDR(AR2312_RESET), 0x4,
++			IORESOURCE_MEM, NULL);
++	watchdog_init();
++	flash_init();
++	ether_init();
 +	return 0;
 +}
++late_initcall(platform_init);
 +
-+static int ar231x_eth_probe(struct device_d *dev)
-+{
-+	struct ar231x_eth_priv *priv;
-+	struct eth_device *edev;
-+	struct mii_bus *miibus;
-+	struct ar231x_eth_platform_data *pdata;
-+
-+	if (!dev->platform_data) {
-+		dev_err(dev, "no platform data\n");
-+		return -ENODEV;
-+	}
-+
-+	pdata = dev->platform_data;
-+
-+	priv = xzalloc(sizeof(struct ar231x_eth_priv));
-+	edev = &priv->edev;
-+	miibus = &priv->miibus;
-+	edev->priv = priv;
-+
-+	/* link all platform depended regs */
-+	priv->mac = pdata->mac;
-+	priv->reset_bit = pdata->reset_bit;
-+
-+	priv->eth_regs = dev_request_mem_region(dev, 0);
-+	if (priv->eth_regs == NULL) {
-+		dev_err(dev, "No eth_regs!!\n");
-+		return -ENODEV;
-+	}
-+	/* we have 0x100000 for eth, part of it are dma regs.
-+	 * So they are already requested */
-+	priv->dma_regs = (void *)(priv->eth_regs + 0x1000);
-+
-+	priv->phy_regs = dev_request_mem_region(dev, 1);
-+	if (priv->phy_regs == NULL) {
-+		dev_err(dev, "No phy_regs!!\n");
-+		return -ENODEV;
-+	}
-+
-+	priv->cfg = pdata;
-+	edev->init = ar231x_eth_init;
-+	edev->open = ar231x_eth_open;
-+	edev->send = ar231x_eth_send;
-+	edev->recv = ar231x_eth_recv;
-+	edev->halt = ar231x_eth_halt;
-+	edev->get_ethaddr = ar231x_get_ethaddr;
-+	edev->set_ethaddr = ar231x_set_ethaddr;
-+
-+	priv->miibus.read = ar231x_miibus_read;
-+	priv->miibus.write = ar231x_miibus_write;
-+	priv->miibus.reset = ar231x_mdiibus_reset;
-+	priv->miibus.priv = priv;
-+	priv->miibus.parent = dev;
-+
-+	mdiobus_register(miibus);
-+	eth_register(edev);
-+
-+	return 0;
-+}
-+
-+static void ar231x_eth_remove(struct device_d *dev)
-+{
-+
-+}
-+
-+static struct driver_d ar231x_eth_driver = {
-+	.name = "ar231x_eth",
-+	.probe = ar231x_eth_probe,
-+	.remove = ar231x_eth_remove,
++static struct NS16550_plat serial_plat = {
++	.shift = AR2312_UART_SHIFT,
 +};
 +
-+static int ar231x_eth_driver_init(void)
++static int ar2312_console_init(void)
 +{
-+	return platform_driver_register(&ar231x_eth_driver);
++	u32 reset;
++
++	/* reset UART0 */
++	reset = __raw_readl((char *)KSEG1ADDR(AR2312_RESET));
++	reset = ((reset & ~AR2312_RESET_APB) | AR2312_RESET_UART0);
++	__raw_writel(reset, (char *)KSEG1ADDR(AR2312_RESET));
++
++	reset &= ~AR2312_RESET_UART0;
++	__raw_writel(reset, (char *)KSEG1ADDR(AR2312_RESET));
++
++	/* Register the serial port */
++	serial_plat.clock = ar2312_sys_frequency();
++	add_ns16550_device(DEVICE_ID_DYNAMIC, KSEG1ADDR(AR2312_UART0),
++		8 << AR2312_UART_SHIFT, IORESOURCE_MEM_8BIT, &serial_plat);
++	return 0;
 +}
-+device_initcall(ar231x_eth_driver_init);
-diff --git a/drivers/net/ar231x.h b/drivers/net/ar231x.h
++console_initcall(ar2312_console_init);
+diff --git a/arch/mips/mach-ar231x/ar231x_reset.c b/arch/mips/mach-ar231x/ar231x_reset.c
 new file mode 100644
-index 0000000..2468412
+index 0000000..5ececb5
 --- /dev/null
-+++ b/drivers/net/ar231x.h
-@@ -0,0 +1,219 @@
++++ b/arch/mips/mach-ar231x/ar231x_reset.c
+@@ -0,0 +1,73 @@
 +/*
-+ * ar231x.h: Linux driver for the Atheros AR231x Ethernet device.
-+ * Based on Linux driver:
-+ *		Copyright (C) 2004 by Sameer Dekate <sdekate@arubanetworks.com>
-+ *		Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
-+ *		Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
-+ * Ported to Barebox:
-+ *		Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * Thanks to Atheros for providing hardware and documentation
-+ * enabling me to write this driver.
++ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -535,207 +326,682 @@ index 0000000..2468412
 + * (at your option) any later version.
 + */
 +
-+#ifndef _AR2313_2_H_
-+#define _AR2313_2_H_
++#include <common.h>
++#include <init.h>
++#include <io.h>
 +
-+#include <net.h>
++#include <mach/ar2312_regs.h>
 +#include <mach/ar231x_platform.h>
 +
-+/* Allocate 64 RX buffers. This will reduce packet loss, until we will start
-+ * processing them. It is important in noisy network with lots of broadcasts. */
-+#define AR2313_RXDSC_ENTRIES	64
-+#define DSC_NEXT(idx)		(((idx) + 1) & (AR2313_RXDSC_ENTRIES - 1))
++static void __iomem *reset_base;
 +
-+/* Use system default buffers size. At the moment of writing it was 1518 */
-+#define AR2313_RX_BUFSIZE	PKTSIZE
-+#define CRC_LEN			4
++void __noreturn reset_cpu(ulong addr)
++{
++	printf("reseting cpu\n");
++	__raw_writel(0x10000,
++		(char *)KSEG1ADDR(AR2312_WD_TIMER));
++	__raw_writel(AR2312_WD_CTRL_RESET,
++		(char *)KSEG1ADDR(AR2312_WD_CTRL));
++	unreachable();
++}
++EXPORT_SYMBOL(reset_cpu);
 +
-+/**
-+ * DMA controller
-+ */
-+#define AR231X_DMA_BUS_MODE		0x00 /* (CSR0) */
-+#define AR231X_DMA_TX_POLL		0x04 /* (CSR1) */
-+#define AR231X_DMA_RX_POLL		0x08 /* (CSR2) */
-+#define AR231X_DMA_RX_RING		0x0c /* (CSR3) */
-+#define AR231X_DMA_TX_RING		0x10 /* (CSR4) */
-+#define AR231X_DMA_STATUS		0x14 /* (CSR5) */
-+#define AR231X_DMA_CONTROL		0x18 /* (CSR6) */
-+#define AR231X_DMA_INTR_ENA		0x1c /* (CSR7) */
-+#define AR231X_DMA_RX_MISSED		0x20 /* (CSR8) */
-+/* reserverd 0x24-0x4c (CSR9-19) */
-+#define AR231X_DMA_CUR_TX_BUF_ADDR	0x50 /* (CSR20) */
-+#define AR231X_DMA_CUR_RX_BUF_ADDR	0x54 /* (CSR21) */
++static u32 ar231x_reset_readl(void)
++{
++	return __raw_readl(reset_base);
++}
 +
-+/**
-+ * Ethernet controller
-+ */
-+#define AR231X_ETH_MAC_CONTROL		0x00
-+#define AR231X_ETH_MAC_ADDR1		0x04
-+#define AR231X_ETH_MAC_ADDR2		0x08
-+#define AR231X_ETH_MCAST_TABLE1		0x0c
-+#define AR231X_ETH_MCAST_TABLE2		0x10
-+#define AR231X_ETH_MII_ADDR		0x14
-+#define AR231X_ETH_MII_DATA		0x18
-+#define AR231X_ETH_FLOW_CONTROL		0x1c
-+#define AR231X_ETH_VLAN_TAG		0x20
-+/* pad 0x24 - 0x3c */
-+/* ucast_table 0x40-0x5c */
++static void ar231x_reset_writel(u32 val)
++{
++	__raw_writel(val, reset_base);
++}
 +
-+/**
-+ * RX descriptor status bits. ar231x_descr.status
-+ */
-+#define DMA_RX_ERR_CRC		BIT(1)
-+#define DMA_RX_ERR_DRIB		BIT(2)
-+#define DMA_RX_ERR_MII		BIT(3)
-+#define DMA_RX_EV2		BIT(5)
-+#define DMA_RX_ERR_COL		BIT(6)
-+#define DMA_RX_LONG		BIT(7)
-+#define DMA_RX_LS		BIT(8)	/* last descriptor */
-+#define DMA_RX_FS		BIT(9)	/* first descriptor */
-+#define DMA_RX_MF		BIT(10)	/* multicast frame */
-+#define DMA_RX_ERR_RUNT		BIT(11)	/* runt frame */
-+#define DMA_RX_ERR_LENGTH	BIT(12)	/* length error */
-+#define DMA_RX_ERR_DESC		BIT(14)	/* descriptor error */
-+#define DMA_RX_ERROR		BIT(15)	/* error summary */
-+#define DMA_RX_LEN_MASK		0x3fff0000
-+#define DMA_RX_LEN_SHIFT	16
-+#define DMA_RX_FILT		BIT(30)
-+#define DMA_RX_OWN		BIT(31)	/* desc owned by DMA controller */
-+#define DMA_RX_FSLS		(DMA_RX_LS | DMA_RX_FS)
-+#define DMA_RX_MASK		(DMA_RX_FSLS | DMA_RX_MF | DMA_RX_ERROR)
++void ar231x_reset_bit(u32 val, enum reset_state state)
++{
++	u32 tmp;
 +
-+/**
-+ * RX descriptor configuration bits. ar231x_descr.devcs
-+ */
-+#define DMA_RX1_BSIZE_MASK	0x000007ff
-+#define DMA_RX1_BSIZE_SHIFT	0
-+#define DMA_RX1_CHAINED		BIT(24)
-+#define DMA_RX1_RER		BIT(25)
++	tmp = ar231x_reset_readl();
 +
-+/**
-+ * TX descriptor status fields. ar231x_descr.status
-+ */
-+#define DMA_TX_ERR_UNDER	BIT(1)	/* underflow error */
-+#define DMA_TX_ERR_DEFER	BIT(2)	/* excessive deferral */
-+#define DMA_TX_COL_MASK		0x78
-+#define DMA_TX_COL_SHIFT	3
-+#define DMA_TX_ERR_HB		BIT(7)	/* hearbeat failure */
-+#define DMA_TX_ERR_COL		BIT(8)	/* excessive collisions */
-+#define DMA_TX_ERR_LATE		BIT(9)	/* late collision */
-+#define DMA_TX_ERR_LINK		BIT(10)	/* no carrier */
-+#define DMA_TX_ERR_LOSS		BIT(11)	/* loss of carrier */
-+#define DMA_TX_ERR_JABBER	BIT(14)	/* transmit jabber timeout */
-+#define DMA_TX_ERROR		BIT(15)	/* frame aborted */
-+#define DMA_TX_OWN		BIT(31)	/* descr owned by DMA controller */
++	if (state == REMOVE)
++		ar231x_reset_writel(tmp & ~val);
++	else
++		ar231x_reset_writel(tmp | val);
++}
++EXPORT_SYMBOL(ar231x_reset_bit);
 +
-+/**
-+ * TX descriptor configuration bits. ar231x_descr.devcs
-+ */
-+#define DMA_TX1_BSIZE_MASK	0x000007ff
-+#define DMA_TX1_BSIZE_SHIFT	0
-+#define DMA_TX1_CHAINED		BIT(24)	/* chained descriptors */
-+#define DMA_TX1_TER		BIT(25)	/* transmit end of ring */
-+#define DMA_TX1_FS		BIT(29)	/* first segment */
-+#define DMA_TX1_LS		BIT(30)	/* last segment */
-+#define DMA_TX1_IC		BIT(31)	/* interrupt on completion */
-+#define DMA_TX1_DEFAULT		(DMA_TX1_FS | DMA_TX1_LS | DMA_TX1_TER)
++static int ar231x_reset_probe(struct device_d *dev)
++{
++	reset_base = dev_request_mem_region(dev, 0);
++	if (!reset_base) {
++		dev_err(dev, "could not get memory region\n");
++		return -ENODEV;
++	}
 +
-+#define MAC_CONTROL_RE		BIT(2)	/* receive enable */
-+#define MAC_CONTROL_TE		BIT(3)	/* transmit enable */
-+#define MAC_CONTROL_DC		BIT(5)	/* Deferral check */
-+#define MAC_CONTROL_ASTP	BIT(8)	/* Auto pad strip */
-+#define MAC_CONTROL_DRTY	BIT(10)	/* Disable retry */
-+#define MAC_CONTROL_DBF		BIT(11)	/* Disable bcast frames */
-+#define MAC_CONTROL_LCC		BIT(12)	/* late collision ctrl */
-+#define MAC_CONTROL_HP		BIT(13)	/* Hash Perfect filtering */
-+#define MAC_CONTROL_HASH	BIT(14)	/* Unicast hash filtering */
-+#define MAC_CONTROL_HO		BIT(15)	/* Hash only filtering */
-+#define MAC_CONTROL_PB		BIT(16)	/* Pass Bad frames */
-+#define MAC_CONTROL_IF		BIT(17)	/* Inverse filtering */
-+#define MAC_CONTROL_PR		BIT(18)	/* promiscuous mode
-+					 * (valid frames only) */
-+#define MAC_CONTROL_PM		BIT(19)	/* pass multicast */
-+#define MAC_CONTROL_F		BIT(20)	/* full-duplex */
-+#define MAC_CONTROL_DRO		BIT(23)	/* Disable Receive Own */
-+#define MAC_CONTROL_HBD		BIT(28)	/* heart-beat disabled (MUST BE SET) */
-+#define MAC_CONTROL_BLE		BIT(30)	/* big endian mode */
-+#define MAC_CONTROL_RA		BIT(31)	/* receive all
-+					 * (valid and invalid frames) */
++	return 0;
++}
 +
-+#define MII_ADDR_BUSY		BIT(0)
-+#define MII_ADDR_WRITE		BIT(1)
-+#define MII_ADDR_REG_SHIFT	6
-+#define MII_ADDR_PHY_SHIFT	11
-+#define MII_DATA_SHIFT		0
-+
-+#define FLOW_CONTROL_FCE	BIT(1)
-+
-+#define DMA_BUS_MODE_SWR	BIT(0)	/* software reset */
-+#define DMA_BUS_MODE_BLE	BIT(7)	/* big endian mode */
-+#define DMA_BUS_MODE_PBL_SHIFT	8	/* programmable burst length 32 */
-+#define DMA_BUS_MODE_DBO	BIT(20)	/* big-endian descriptors */
-+
-+#define DMA_STATUS_TI		BIT(0)	/* transmit interrupt */
-+#define DMA_STATUS_TPS		BIT(1)	/* transmit process stopped */
-+#define DMA_STATUS_TU		BIT(2)	/* transmit buffer unavailable */
-+#define DMA_STATUS_TJT		BIT(3)	/* transmit buffer timeout */
-+#define DMA_STATUS_UNF		BIT(5)	/* transmit underflow */
-+#define DMA_STATUS_RI		BIT(6)	/* receive interrupt */
-+#define DMA_STATUS_RU		BIT(7)	/* receive buffer unavailable */
-+#define DMA_STATUS_RPS		BIT(8)	/* receive process stopped */
-+#define DMA_STATUS_ETI		BIT(10)	/* early transmit interrupt */
-+#define DMA_STATUS_FBE		BIT(13)	/* fatal bus interrupt */
-+#define DMA_STATUS_ERI		BIT(14)	/* early receive interrupt */
-+#define DMA_STATUS_AIS		BIT(15)	/* abnormal interrupt summary */
-+#define DMA_STATUS_NIS		BIT(16)	/* normal interrupt summary */
-+#define DMA_STATUS_RS_SHIFT	17	/* receive process state */
-+#define DMA_STATUS_TS_SHIFT	20	/* transmit process state */
-+#define DMA_STATUS_EB_SHIFT	23	/* error bits */
-+
-+#define DMA_CONTROL_SR		BIT(1)	/* start receive */
-+#define DMA_CONTROL_ST		BIT(13)	/* start transmit */
-+#define DMA_CONTROL_SF		BIT(21)	/* store and forward */
-+
-+
-+struct ar231x_descr {
-+	u32 status;		/* OWN, Device control and status. */
-+	u32 devcs;		/* Packet control bitmap + Length. */
-+	u32 buffer_ptr;		/* Pointer to packet buffer. */
-+	u32 next_dsc_ptr;	/* Pointer to next descriptor in chain. */
++static struct driver_d ar231x_reset_driver = {
++	.probe	= ar231x_reset_probe,
++	.name	= "ar231x_reset",
 +};
 +
-+/**
-+ * Struct private for the Sibyte.
++static int ar231x_reset_init(void)
++{
++	return platform_driver_register(&ar231x_reset_driver);
++}
++coredevice_initcall(ar231x_reset_init);
+diff --git a/arch/mips/mach-ar231x/board.c b/arch/mips/mach-ar231x/board.c
+new file mode 100644
+index 0000000..f1b876f
+--- /dev/null
++++ b/arch/mips/mach-ar231x/board.c
+@@ -0,0 +1,188 @@
++/*
++ * Based on Linux driver:
++ *  Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
++ *  Copyright (C) 2006 FON Technology, SL.
++ *  Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
++ * Ported to Barebox:
++ *  Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
 + *
-+ * Elements are grouped so variables used by the tx handling goes
-+ * together, and will go into the same cache lines etc. in order to
-+ * avoid cache line contention between the rx and tx handling on SMP.
-+ *
-+ * Frequently accessed variables are put at the beginning of the
-+ * struct to help the compiler generate better/shorter code.
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
 + */
-+struct ar231x_eth_priv {
-+	struct ar231x_eth_platform_data *cfg;
++
++
++#include <common.h>
++#include <io.h>
++#include <mach/ar2312_regs.h>
++#include <mach/ar231x_platform.h>
++#include <linux/stddef.h>
++#include <net.h>
++
++#define HDR_SIZE 6
++
++#define TAB_1 "\t"
++#define TAB_2 "\t\t"
++
++extern struct ar231x_board_data ar231x_board;
++
++static void
++ar231x_print_mac(unsigned char *mac)
++{
++	int i;
++	for (i = 0; i < 5; i++)
++		printf("%02x:", mac[i]);
++	printf("%02x\n", mac[5]);
++}
++
++#ifdef DEBUG_BOARD
++static void
++ar231x_print_board_config(struct ar231x_board_config *config)
++{
++	printf("board config:\n");
++	printf(TAB_1 "chsum:"		TAB_2 "%04x\n", config->cksum);
++	printf(TAB_1 "rev:"		TAB_2 "%04x\n", config->rev);
++	printf(TAB_1 "name:"		TAB_2 "%s\n", config->board_name);
++	printf(TAB_1 "maj:"		TAB_2 "%04x\n", config->major);
++	printf(TAB_1 "min:"		TAB_2 "%04x\n", config->minor);
++	printf(TAB_1 "board flags:" TAB_1 "%08x\n", config->flags);
++
++	if (config->flags & BD_ENET0)
++		printf(TAB_2 "ENET0 is stuffed\n");
++	if (config->flags & BD_ENET1)
++		printf(TAB_2 "ENET1 is stuffed\n");
++	if (config->flags & BD_UART1)
++		printf(TAB_2 "UART1 is stuffed\n");
++	if (config->flags & BD_UART0)
++		printf(TAB_2 "UART0 is stuffed (dma)\n");
++	if (config->flags & BD_RSTFACTORY)
++		printf(TAB_2 "Reset factory defaults stuffed\n");
++	if (config->flags & BD_SYSLED)
++		printf(TAB_2 "System LED stuffed\n");
++	if (config->flags & BD_EXTUARTCLK)
++		printf(TAB_2 "External UART clock\n");
++	if (config->flags & BD_CPUFREQ)
++		printf(TAB_2 "cpu freq is valid in nvram\n");
++	if (config->flags & BD_SYSFREQ)
++		printf(TAB_2 "sys freq is set in nvram\n");
++	if (config->flags & BD_WLAN0)
++		printf(TAB_2 "Enable WLAN0\n");
++	if (config->flags & BD_MEMCAP)
++		printf(TAB_2 "CAP SDRAM @ memCap for testing\n");
++	if (config->flags & BD_DISWATCHDOG)
++		printf(TAB_2 "disable system watchdog\n");
++	if (config->flags & BD_WLAN1)
++		printf(TAB_2 "Enable WLAN1 (ar5212)\n");
++	if (config->flags & BD_ISCASPER)
++		printf(TAB_2 "FLAG for AR2312\n");
++	if (config->flags & BD_WLAN0_2G_EN)
++		printf(TAB_2 "FLAG for radio0_2G\n");
++	if (config->flags & BD_WLAN0_5G_EN)
++		printf(TAB_2 "FLAG for radio0_5G\n");
++	if (config->flags & BD_WLAN1_2G_EN)
++		printf(TAB_2 "FLAG for radio1_2G\n");
++	if (config->flags & BD_WLAN1_5G_EN)
++		printf(TAB_2 "FLAG for radio1_5G\n");
++
++	printf(TAB_1 "ResetConf GPIO pin:" TAB_1 "%04x\n",
++	       config->reset_config_gpio);
++	printf(TAB_1 "Sys LED GPIO pin:" TAB_1 "%04x\n", config->sys_led_gpio);
++	printf(TAB_1 "CPU Freq:" TAB_2 "%u\n", config->cpu_freq);
++	printf(TAB_1 "Sys Freq:" TAB_2 "%u\n", config->sys_freq);
++	printf(TAB_1 "Calculated Freq:" TAB_1 "%u\n", config->cnt_freq);
++
++	printf(TAB_1 "wlan0 mac:" TAB_2);
++	ar231x_print_mac(config->wlan0_mac);
++	printf(TAB_1 "wlan1 mac:" TAB_2);
++	ar231x_print_mac(config->wlan1_mac);
++	printf(TAB_1 "eth0 mac:" TAB_2);
++	ar231x_print_mac(config->enet0_mac);
++	printf(TAB_1 "eth1 mac:" TAB_2);
++	ar231x_print_mac(config->enet1_mac);
++
++	printf(TAB_1 "Pseudo PCIID:" TAB_2 "%04x\n", config->pci_id);
++	printf(TAB_1 "Mem capacity:" TAB_2 "%u\n", config->mem_cap);
++}
++#endif
++
++static u16
++ar231x_cksum16(u8 *data, int size)
++{
++	int i;
++	u16 sum;
++
++	for (i = 0; i < size; i++)
++		sum += data[i];
++
++	return sum;
++}
++
++static void
++ar231x_check_mac(u8 *addr)
++{
++	if (!is_valid_ether_addr(addr)) {
++		pr_warn("config: no valid mac was found. "
++				"Generating random mac: ");
++		random_ether_addr(addr);
++		ar231x_print_mac(addr);
++	}
++}
++
++static u8 *
++ar231x_find_board_config(u8 *flash_limit)
++{
++	u8 *addr;
++	int found = 0;
++
++	for (addr = flash_limit - 0x1000;
++		addr >= flash_limit - 0x30000;
++		addr -= 0x1000) {
++
++		if (*((u32 *)addr) == AR231X_BD_MAGIC) {
++			found = 1;
++			pr_debug("config at %x\n", addr);
++			break;
++		}
++	}
++
++	if (!found)
++		addr = NULL;
++
++	return addr;
++}
++
++void
++ar231x_find_config(u8 *flash_limit)
++{
++	struct ar231x_board_config *config;
++	u8 *bcfg, bsize;
++	u8 brocken;
++
++	bcfg = ar231x_find_board_config(flash_limit);
++
++	bsize = sizeof(struct ar231x_board_config);
++	config = xzalloc(bsize);
++	ar231x_board.config = config;
++
++	if (bcfg) {
++		u16 cksum;
++		/* Copy the board and radio data to RAM.
++		 * If flash will go to CFI mode, we won't
++		 * be able to read to from mapped memory area */
++		memcpy(config, bcfg, bsize);
++		cksum = 0xca + ar231x_cksum16((unsigned char *)config + HDR_SIZE,
++				sizeof(struct ar231x_board_config) - HDR_SIZE);
++		if (cksum != config->cksum) {
++			pr_err("config: checksum is invalid: %04x != %04x\n",
++					cksum, config->cksum);
++			brocken = 1;
++		}
++		/* ar231x_print_board_config(config); */
++	}
++
++	/* We do not care about wlans here */
++	ar231x_check_mac(config->enet0_mac);
++	ar231x_check_mac(config->enet1_mac);
++}
+diff --git a/arch/mips/mach-ar231x/include/mach/ar2312_regs.h b/arch/mips/mach-ar231x/include/mach/ar2312_regs.h
+new file mode 100644
+index 0000000..7ac1b09
+--- /dev/null
++++ b/arch/mips/mach-ar231x/include/mach/ar2312_regs.h
+@@ -0,0 +1,302 @@
++/*
++ * Based on Linux driver:
++ *  Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
++ *  Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
++ * Ported to Barebox:
++ *  Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef AR2312_H
++#define AR2312_H
++
++#include <asm/addrspace.h>
++
++/* Address Map */
++#define AR2312_SDRAM0		0x00000000
++#define AR2312_SDRAM1		0x08000000
++#define AR2312_WLAN0		0x18000000
++#define AR2312_WLAN1		0x18500000
++#define AR2312_ENET0		0x18100000
++#define AR2312_ENET1		0x18200000
++#define AR2312_SDRAMCTL		0x18300000
++#define AR2312_FLASHCTL		0x18400000
++#define AR2312_APBBASE		0x1c000000
++#define AR2312_FLASH		0x1e000000
++
++#define AR2312_CPU_CLOCK_RATE	180000000
++/* Used by romSizeMemory to set SDRAM Memory Refresh */
++#define AR2312_SDRAM_CLOCK_RATE	(AR2312_CPU_CLOCK_RATE / 2)
++/*
++ * SDRAM Memory Refresh (MEM_REF) value is computed as:
++ *    15.625us * SDRAM_CLOCK_RATE (in MHZ)
++ */
++#define DESIRED_MEMORY_REFRESH_NSECS	15625
++#define AR2312_SDRAM_MEMORY_REFRESH_VALUE \
++	((DESIRED_MEMORY_REFRESH_NSECS * AR2312_SDRAM_CLOCK_RATE/1000000) / 1000)
++
++/*
++ * APB Address Map
++ */
++#define AR2312_UART0		(AR2312_APBBASE + 0x0003) /* high speed uart */
++#define AR2312_UART_SHIFT	2
++#define AR2312_UART1		(AR2312_APBBASE + 0x1000) /* ar2312 only */
++#define AR2312_GPIO		(AR2312_APBBASE + 0x2000)
++#define AR2312_RESETTMR		(AR2312_APBBASE + 0x3000)
++#define AR2312_APB2AHB		(AR2312_APBBASE + 0x4000)
++
++/*
++ * AR2312_NUM_ENET_MAC defines the number of ethernet MACs that
++ * should be considered available.  The AR2312 supports 2 enet MACS,
++ * even though many reference boards only actually use 1 of them
++ * (i.e. Only MAC 0 is actually connected to an enet PHY or PHY switch.
++ * The AR2312 supports 1 enet MAC.
++ */
++#define AR2312_NUM_ENET_MAC	2
++
++/*
++ * Need these defines to determine true number of ethernet MACs
++ */
++#define AR5212_AR2312_REV2	0x52	/* AR2312 WMAC (AP31) */
++#define AR5212_AR2312_REV7	0x57	/* AR2312 WMAC (AP30-040) */
++#define AR5212_AR2313_REV8	0x58	/* AR2313 WMAC (AP43-030) */
++
++/* Reset/Timer Block Address Map */
++#define AR2312_RESETTMR		(AR2312_APBBASE  + 0x3000)
++#define AR2312_TIMER		(AR2312_RESETTMR + 0x0000) /* countdown timer */
++#define AR2312_WD_CTRL		(AR2312_RESETTMR + 0x0008) /* watchdog cntrl */
++#define AR2312_WD_TIMER		(AR2312_RESETTMR + 0x000c) /* watchdog timer */
++#define AR2312_ISR		(AR2312_RESETTMR + 0x0010) /* Intr Status Reg */
++#define AR2312_IMR		(AR2312_RESETTMR + 0x0014) /* Intr Mask Reg */
++#define AR2312_RESET		(AR2312_RESETTMR + 0x0020)
++#define AR2312_CLOCKCTL0	(AR2312_RESETTMR + 0x0060)
++#define AR2312_CLOCKCTL1	(AR2312_RESETTMR + 0x0064)
++#define AR2312_CLOCKCTL2	(AR2312_RESETTMR + 0x0068)
++#define AR2312_SCRATCH		(AR2312_RESETTMR + 0x006c)
++#define AR2312_PROCADDR		(AR2312_RESETTMR + 0x0070)
++#define AR2312_PROC1		(AR2312_RESETTMR + 0x0074)
++#define AR2312_DMAADDR		(AR2312_RESETTMR + 0x0078)
++#define AR2312_DMA1		(AR2312_RESETTMR + 0x007c)
++#define AR2312_ENABLE		(AR2312_RESETTMR + 0x0080) /* interface enb */
++#define AR2312_REV		(AR2312_RESETTMR + 0x0090) /* revision */
++
++/* AR2312_WD_CTRL register bit field definitions */
++#define AR2312_WD_CTRL_IGNORE_EXPIRATION	0x0000
++#define AR2312_WD_CTRL_NMI			0x0001
++#define AR2312_WD_CTRL_RESET			0x0002
++
++/* AR2312_ISR register bit field definitions */
++#define AR2312_ISR_NONE		0x0000
++#define AR2312_ISR_TIMER	0x0001
++#define AR2312_ISR_AHBPROC	0x0002
++#define AR2312_ISR_AHBDMA	0x0004
++#define AR2312_ISR_GPIO		0x0008
++#define AR2312_ISR_UART0	0x0010
++#define AR2312_ISR_UART0DMA	0x0020
++#define AR2312_ISR_WD		0x0040
++#define AR2312_ISR_LOCAL	0x0080
++
++/* AR2312_RESET register bit field definitions */
++#define AR2312_RESET_SYSTEM	0x00000001  /* cold reset full system */
++#define AR2312_RESET_PROC	0x00000002  /* cold reset MIPS core */
++#define AR2312_RESET_WLAN0	0x00000004  /* cold reset WLAN MAC and BB */
++#define AR2312_RESET_EPHY0	0x00000008  /* cold reset ENET0 phy */
++#define AR2312_RESET_EPHY1	0x00000010  /* cold reset ENET1 phy */
++#define AR2312_RESET_ENET0	0x00000020  /* cold reset ENET0 mac */
++#define AR2312_RESET_ENET1	0x00000040  /* cold reset ENET1 mac */
++#define AR2312_RESET_UART0	0x00000100  /* cold reset UART0 (high speed) */
++#define AR2312_RESET_WLAN1	0x00000200  /* cold reset WLAN MAC/BB */
++#define AR2312_RESET_APB	0x00000400  /* cold reset APB (ar2312) */
++#define AR2312_RESET_WARM_PROC	0x00001000  /* warm reset MIPS core */
++#define AR2312_RESET_WARM_WLAN0_MAC	0x00002000  /* warm reset WLAN0 MAC */
++#define AR2312_RESET_WARM_WLAN0_BB	0x00004000  /* warm reset WLAN0 BaseBand */
++#define AR2312_RESET_NMI	0x00010000  /* send an NMI to the processor */
++#define AR2312_RESET_WARM_WLAN1_MAC	0x00020000  /* warm reset WLAN1 mac */
++#define AR2312_RESET_WARM_WLAN1_BB	0x00040000  /* warm reset WLAN1 baseband */
++#define AR2312_RESET_LOCAL_BUS	0x00080000  /* reset local bus */
++#define AR2312_RESET_WDOG	0x00100000  /* last reset was a watchdog */
++
++/* Values for AR2312_CLOCKCTL1
++ *
++ * The AR2312_CLOCKCTL1 register is loaded based on the speed of
++ * our incoming clock.  Currently, all valid configurations
++ * for an AR2312 use an ar5112 radio clocked at 40MHz.  Until
++ * there are other configurations available, we'll hardcode
++ * this 40MHz assumption.
++ */
++#define AR2312_INPUT_CLOCK		40000000
++#define AR2312_CLOCKCTL1_IN40_OUT160MHZ	0x0405 /* 40MHz in, 160Mhz out */
++#define AR2312_CLOCKCTL1_IN40_OUT180MHZ	0x0915 /* 40MHz in, 180Mhz out */
++#define AR2312_CLOCKCTL1_IN40_OUT200MHZ	0x1935 /* 40MHz in, 200Mhz out */
++#define AR2312_CLOCKCTL1_IN40_OUT220MHZ	0x0b15 /* 40MHz in, 220Mhz out */
++#define AR2312_CLOCKCTL1_IN40_OUT240MHZ	0x0605 /* 40MHz in, 240Mhz out */
++
++#define AR2312_CLOCKCTL1_SELECTION AR2312_CLOCKCTL1_IN40_OUT180MHZ
++#define AR2312_CPU_CLOCK_RATE		180000000
++
++/*
++ * Special values for AR2313 'VIPER' PLL.
++ *
++ * These values do not match the latest datasheet for the AR2313,
++ * which appears to be an exact copy of the AR2312 in this area.
++ * The values were derived from the ECOS code provided in the Atheros
++ * LSDK-1.0 (and confirmed by checking values on an AR2313 reference
++ * design).
++ */
++#define AR2313_CLOCKCTL1_SELECTION	0x91245
++
++/* Bit fields for AR2312_CLOCKCTL2 */
++#define AR2312_CLOCKCTL2_WANT_RESET	0x00000001   /* reset with new vals */
++#define AR2312_CLOCKCTL2_WANT_DIV2	0x00000010   /* request /2 clock */
++#define AR2312_CLOCKCTL2_WANT_DIV4	0x00000020   /* request /4 clock */
++#define AR2312_CLOCKCTL2_WANT_PLL_BYPASS 0x00000080   /* request PLL bypass */
++#define AR2312_CLOCKCTL2_STATUS_DIV2	0x10000000   /* have /2 clock */
++#define AR2312_CLOCKCTL2_STATUS_DIV4	0x20000000   /* have /4 clock */
++#define AR2312_CLOCKCTL2_STATUS_PLL_BYPASS 0x80000000   /* PLL is bypassed */
++
++/* AR2312_CLOCKCTL1 register bit field definitions */
++#define AR2312_CLOCKCTL1_PREDIVIDE_MASK		0x00000030
++#define AR2312_CLOCKCTL1_PREDIVIDE_SHIFT	4
++#define AR2312_CLOCKCTL1_MULTIPLIER_MASK	0x00001f00
++#define AR2312_CLOCKCTL1_MULTIPLIER_SHIFT	8
++#define AR2312_CLOCKCTL1_DOUBLER_MASK		0x00010000
++
++/* Valid for AR2313 */
++#define AR2313_CLOCKCTL1_PREDIVIDE_MASK		0x00003000
++#define AR2313_CLOCKCTL1_PREDIVIDE_SHIFT	12
++#define AR2313_CLOCKCTL1_MULTIPLIER_MASK	0x001f0000
++#define AR2313_CLOCKCTL1_MULTIPLIER_SHIFT	16
++#define AR2313_CLOCKCTL1_DOUBLER_MASK		0x00000000
++
++/* Values for AR2312_CLOCKCTL */
++#define AR2312_CLOCKCTL_ETH0	0x0004	/* enable eth0 clock */
++#define AR2312_CLOCKCTL_ETH1	0x0008	/* enable eth1 clock */
++#define AR2312_CLOCKCTL_UART0	0x0010	/* enable UART0 external clock */
++
++
++/* AR2312_ENABLE register bit field definitions */
++#define AR2312_ENABLE_ENET0		0x0002
++#define AR2312_ENABLE_ENET1		0x0004
++
++/* AR2312_REV register bit field definitions */
++#define AR2312_REV_WMAC_MAJ	0xf000
++#define AR2312_REV_WMAC_MAJ_S	12
++#define AR2312_REV_WMAC_MIN	0x0f00
++#define AR2312_REV_WMAC_MIN_S	8
++#define AR2312_REV_MAJ		0x00f0
++#define AR2312_REV_MAJ_S	4
++#define AR2312_REV_MIN		0x000f
++#define AR2312_REV_MIN_S	0
++#define AR2312_REV_CHIP	(AR2312_REV_MAJ|AR2312_REV_MIN)
++
++/* Major revision numbers, bits 7..4 of Revision ID register */
++#define AR2312_REV_MAJ_AR2312	0x4
++#define AR2312_REV_MAJ_AR2313	0x5
++
++/* Minor revision numbers, bits 3..0 of Revision ID register */
++#define AR2312_REV_MIN_DUAL	0x0	/* Dual WLAN version */
++#define AR2312_REV_MIN_SINGLE	0x1	/* Single WLAN version */
++
++/* AR2312_FLASHCTL register bit field definitions */
++#define FLASHCTL_IDCY	0x0000000f	/* Idle cycle turn around time */
++#define FLASHCTL_IDCY_S	0
++#define FLASHCTL_WST1	0x000003e0	/* Wait state 1 */
++#define FLASHCTL_WST1_S	5
++#define FLASHCTL_RBLE	0x00000400	/* Read byte lane enable */
++#define FLASHCTL_WST2	0x0000f800	/* Wait state 2 */
++#define FLASHCTL_WST2_S	11
++#define FLASHCTL_AC	0x00070000	/* Flash address check (added) */
++#define FLASHCTL_AC_S	16
++#define FLASHCTL_AC_128K	0x00000000
++#define FLASHCTL_AC_256K	0x00010000
++#define FLASHCTL_AC_512K	0x00020000
++#define FLASHCTL_AC_1M	0x00030000
++#define FLASHCTL_AC_2M	0x00040000
++#define FLASHCTL_AC_4M	0x00050000
++#define FLASHCTL_AC_8M	0x00060000
++#define FLASHCTL_AC_RES	0x00070000	/* 16MB is not supported */
++#define FLASHCTL_E	0x00080000	/* Flash bank enable (added) */
++#define FLASHCTL_BUSERR	0x01000000	/* Bus transfer error status flag */
++#define FLASHCTL_WPERR	0x02000000	/* Write protect error status flag */
++#define FLASHCTL_WP	0x04000000	/* Write protect */
++#define FLASHCTL_BM	0x08000000	/* Burst mode */
++#define FLASHCTL_MW	0x30000000	/* Memory width */
++#define FLASHCTL_MWx8	0x00000000	/* Memory width x8 */
++#define FLASHCTL_MWx16	0x10000000	/* Memory width x16 */
++#define FLASHCTL_MWx32	0x20000000	/* Memory width x32 (not supported) */
++#define FLASHCTL_ATNR	0x00000000	/* Access type == no retry */
++#define FLASHCTL_ATR	0x80000000	/* Access type == retry every */
++#define FLASHCTL_ATR4	0xc0000000	/* Access type == retry every 4 */
++
++#define AR2312_MAX_FLASH_SIZE	0x800000
++
++/* ARM Flash Controller -- 3 flash banks with either x8 or x16 devices.  */
++#define AR2312_FLASHCTL0	(AR2312_FLASHCTL + 0x00)
++#define AR2312_FLASHCTL1	(AR2312_FLASHCTL + 0x04)
++#define AR2312_FLASHCTL2	(AR2312_FLASHCTL + 0x08)
++
++/* ARM SDRAM Controller -- just enough to determine memory size */
++#define AR2312_MEM_CFG0	(AR2312_SDRAMCTL + 0x00)
++#define AR2312_MEM_CFG1	(AR2312_SDRAMCTL + 0x04)
++#define AR2312_MEM_REF	(AR2312_SDRAMCTL + 0x08)	/* 16 bit value */
++
++#define MEM_CFG0_F0	0x00000002	/* bank 0: 256Mb support */
++#define MEM_CFG0_T0	0x00000004	/* bank 0: chip width */
++#define MEM_CFG0_B0	0x00000008	/* bank 0: 2 vs 4 bank */
++#define MEM_CFG0_F1	0x00000020	/* bank 1: 256Mb support */
++#define MEM_CFG0_T1	0x00000040	/* bank 1: chip width */
++#define MEM_CFG0_B1	0x00000080	/* bank 1: 2 vs 4 bank */
++					/* bank 2 and 3 are not supported */
++#define MEM_CFG0_E	0x00020000	/* SDRAM clock control */
++#define MEM_CFG0_C	0x00040000	/* SDRAM clock enable */
++#define MEM_CFG0_X	0x00080000	/* bus width (0 == 32b) */
++#define MEM_CFG0_CAS	0x00300000	/* CAS latency (1-3) */
++#define MEM_CFG0_C1	0x00100000
++#define MEM_CFG0_C2	0x00200000
++#define MEM_CFG0_C3	0x00300000
++#define MEM_CFG0_R	0x00c00000	/* RAS to CAS latency (1-3) */
++#define MEM_CFG0_R1	0x00400000
++#define MEM_CFG0_R2	0x00800000
++#define MEM_CFG0_R3	0x00c00000
++#define MEM_CFG0_A	0x01000000	/* AHB auto pre-charge */
++
++#define MEM_CFG1_I	0x0001	/* memory init control */
++#define MEM_CFG1_M	0x0002	/* memory init control */
++#define MEM_CFG1_R	0x0004	/* read buffer enable (unused) */
++#define MEM_CFG1_W	0x0008	/* write buffer enable (unused) */
++#define MEM_CFG1_B	0x0010	/* SDRAM engine busy */
++#define MEM_CFG1_AC_2	0	/* AC of 2MB */
++#define MEM_CFG1_AC_4	1	/* AC of 4MB */
++#define MEM_CFG1_AC_8	2	/* AC of 8MB */
++#define MEM_CFG1_AC_16	3	/* AC of 16MB */
++#define MEM_CFG1_AC_32	4	/* AC of 32MB */
++#define MEM_CFG1_AC_64	5	/* AC of 64MB */
++#define MEM_CFG1_AC_128	6	/* AC of 128MB */
++
++#define MEM_CFG1_AC0_S	8
++#define MEM_CFG1_AC0	0x0700	/* bank 0: SDRAM addr check (added) */
++#define MEM_CFG1_E0	0x0800	/* bank 0: enable */
++#define MEM_CFG1_AC1_S	12
++#define MEM_CFG1_AC1	0x7000	/* bank 1: SDRAM addr check (added) */
++#define MEM_CFG1_E1	0x8000	/* bank 1: enable */
++
++/* GPIO Address Map */
++#define AR2312_GPIO	(AR2312_APBBASE  + 0x2000)
++#define AR2312_GPIO_DO	(AR2312_GPIO + 0x00)	/* output register */
++#define AR2312_GPIO_DI	(AR2312_GPIO + 0x04)	/* intput register */
++#define AR2312_GPIO_CR	(AR2312_GPIO + 0x08)	/* control register */
++
++/* GPIO Control Register bit field definitions */
++#define AR2312_GPIO_CR_M(x)    (1 << (x))	/* mask for i/o */
++#define AR2312_GPIO_CR_O(x)    (0 << (x))	/* mask for output */
++#define AR2312_GPIO_CR_I(x)    (1 << (x))	/* mask for input */
++#define AR2312_GPIO_CR_INT(x)  (1 << ((x)+8))	/* mask for interrupt */
++#define AR2312_GPIO_CR_UART(x) (1 << ((x)+16))	/* uart multiplex */
++#define AR2312_NUM_GPIO		8
++
++#endif
+diff --git a/arch/mips/mach-ar231x/include/mach/ar231x_platform.h b/arch/mips/mach-ar231x/include/mach/ar231x_platform.h
+new file mode 100644
+index 0000000..18f55b6
+--- /dev/null
++++ b/arch/mips/mach-ar231x/include/mach/ar231x_platform.h
+@@ -0,0 +1,104 @@
++/*
++ * Based on Linux driver:
++ *  Copyright (C) 2003 Atheros Communications, Inc.,  All Rights Reserved.
++ *  Copyright (C) 2006 FON Technology, SL.
++ *  Copyright (C) 2006 Imre Kaloz <kaloz@openwrt.org>
++ *  Copyright (C) 2006-2009 Felix Fietkau <nbd@openwrt.org>
++ * Ported to Barebox:
++ *  Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef __AR231X_PLATFORM_H
++#define __AR231X_PLATFORM_H
++
++/*
++ * This is board-specific data that is stored in a "fixed" location in flash.
++ * It is shared across operating systems, so it should not be changed lightly.
++ * The main reason we need it is in order to extract the ethernet MAC
++ * address(es).
++ */
++struct ar231x_board_config {
++	u32 magic;			/* board data is valid */
++#define AR231X_BD_MAGIC	0x35333131	/* "5311", for all 531x platforms */
++	u16 cksum;			/* checksum (starting with BD_REV 2) */
++	u16 rev;			/* revision of this struct */
++#define BD_REV  4
++	char boardName[64];		/* Name of board */
++	u16 major;			/* Board major number */
++	u16 minor;			/* Board minor number */
++	u32 flags;			/* Board configuration */
++#define BD_ENET0	0x00000001	/* ENET0 is stuffed */
++#define BD_ENET1	0x00000002	/* ENET1 is stuffed */
++#define BD_UART1	0x00000004	/* UART1 is stuffed */
++#define BD_UART0	0x00000008	/* UART0 is stuffed (dma) */
++#define BD_RSTFACTORY	0x00000010	/* Reset factory defaults stuffed */
++#define BD_SYSLED	0x00000020	/* System LED stuffed */
++#define BD_EXTUARTCLK	0x00000040	/* External UART clock */
++#define BD_CPUFREQ	0x00000080	/* cpu freq is valid in nvram */
++#define BD_SYSFREQ	0x00000100	/* sys freq is set in nvram */
++#define BD_WLAN0	0x00000200	/* Enable WLAN0 */
++#define BD_MEMCAP	0x00000400	/* CAP SDRAM @ memCap for testing */
++#define BD_DISWATCHDOG	0x00000800	/* disable system watchdog */
++#define BD_WLAN1	0x00001000	/* Enable WLAN1 (ar5212) */
++#define BD_ISCASPER	0x00002000	/* FLAG for AR2312 */
++#define BD_WLAN0_2G_EN	0x00004000	/* FLAG for radio0_2G */
++#define BD_WLAN0_5G_EN	0x00008000	/* FLAG for radio0_2G */
++#define BD_WLAN1_2G_EN	0x00020000	/* FLAG for radio0_2G */
++#define BD_WLAN1_5G_EN	0x00040000	/* FLAG for radio0_2G */
++	u16 resetConfigGpio;		/* Reset factory GPIO pin */
++	u16 sysLedGpio;			/* System LED GPIO pin */
++
++	u32 cpuFreq;			/* CPU core frequency in Hz */
++	u32 sysFreq;			/* System frequency in Hz */
++	u32 cntFreq;			/* Calculated C0_COUNT frequency */
++
++	u8  wlan0_mac[6];
++	u8  enet0_mac[6];
++	u8  enet1_mac[6];
++
++	u16 pciId;			/* Pseudo PCIID for common code */
++	u16 memCap;			/* cap bank1 in MB */
++
++	/* version 3 */
++	u8  wlan1_mac[6];		/* (ar5212) */
++};
++
++#define BOARD_CONFIG_BUFSZ		0x1000
++
++/*
++ * Platform device information for the Ethernet MAC
++ */
++enum reset_state {
++	SET,
++	REMOVE,
++};
++
++struct ar231x_eth_platform_data {
++	u32 base_reset;
++	u32 reset_mac;
++	u32 reset_phy;
++
 +	u8 *mac;
-+	void __iomem *phy_regs;
-+	void __iomem *eth_regs;
-+	void __iomem *dma_regs;
-+	void __iomem *reset_regs;
 +
-+	struct eth_device edev;
-+	struct mii_bus miibus;
-+
-+	struct ar231x_descr *tx_ring;
-+	struct ar231x_descr *rx_ring;
-+	struct ar231x_descr *next_rxdsc;
-+	u8 kill_rx_ring;
-+	void *rx_buffer;
-+
-+	int oldduplex;
 +	void (*reset_bit)(u32 val, enum reset_state state);
 +};
 +
-+#endif							/* _AR2313_H_ */
++struct ar231x_board_data {
++	u16 devid;
++
++	/* board config data */
++	struct ar231x_board_config *config;
++
++	struct ar231x_eth_platform_data eth_pdata;
++};
++
++void ar231x_find_config(u8 *flash_limit);
++
++void ar231x_reset_bit(u32 val, enum reset_state state);
++
++#endif /* __AR231X_PLATFORM_H */
 -- 
 1.8.1.2
 
