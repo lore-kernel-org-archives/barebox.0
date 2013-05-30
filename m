@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ui0U1-0004Qo-BT
- for barebox@lists.infradead.org; Thu, 30 May 2013 10:53:26 +0000
+ id 1Ui0Tt-0004Qi-4d
+ for barebox@lists.infradead.org; Thu, 30 May 2013 10:53:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 30 May 2013 12:52:47 +0200
-Message-Id: <1369911168-15654-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 30 May 2013 12:52:46 +0200
+Message-Id: <1369911168-15654-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369911168-15654-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369911168-15654-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,317 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] usb: i.MX chipidea: Add devicetree support
+Subject: [PATCH 1/3] usb: Add devicetree helpers
 To: barebox@lists.infradead.org
+
+Add helpers to get the dr_mode and the phy_mode.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/imx/chipidea-imx.c | 133 +++++++++++++++++++++++++++++++++--------
- drivers/usb/imx/imx-usb-misc.c |  49 +++++++++++++++
- drivers/usb/imx/imx-usb-phy.c  |  11 +++-
- 3 files changed, 166 insertions(+), 27 deletions(-)
+ drivers/usb/core/Makefile |  1 +
+ drivers/usb/core/of.c     | 91 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/usb/usb.h         | 21 +++++++++++
+ 3 files changed, 113 insertions(+)
+ create mode 100644 drivers/usb/core/of.c
 
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 1570f90..508dbd8 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -16,6 +16,7 @@
- #include <init.h>
- #include <io.h>
- #include <driver.h>
+diff --git a/drivers/usb/core/Makefile b/drivers/usb/core/Makefile
+index d49c68d..368fb56 100644
+--- a/drivers/usb/core/Makefile
++++ b/drivers/usb/core/Makefile
+@@ -1,2 +1,3 @@
+ 
+ obj-y += usb.o
++obj-$(CONFIG_OFDEVICE) += of.o
+diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
+new file mode 100644
+index 0000000..222b760
+--- /dev/null
++++ b/drivers/usb/core/of.c
+@@ -0,0 +1,91 @@
++/*
++ * usb devicetree helper functions
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
 +#include <usb/usb.h>
- #include <usb/ehci.h>
- #include <usb/chipidea-imx.h>
- #include <usb/ulpi.h>
-@@ -23,64 +24,135 @@
- 
- #define MXC_EHCI_PORTSC_MASK ((0xf << 28) | (1 << 25))
- 
-+struct imx_chipidea {
-+	struct device_d *dev;
-+	struct ehci_data data;
-+	unsigned long flags;
-+	enum imx_usb_mode mode;
-+	int (*init)(int port);
-+	int portno;
++#include <of.h>
++
++static const char *usb_dr_modes[] = {
++	[USB_DR_MODE_UNKNOWN]		= "",
++	[USB_DR_MODE_HOST]		= "host",
++	[USB_DR_MODE_PERIPHERAL]	= "peripheral",
++	[USB_DR_MODE_OTG]		= "otg",
 +};
 +
- static int imx_chipidea_port_init(void *drvdata)
- {
--	struct device_d *dev = drvdata;
--	struct imxusb_platformdata *pdata = dev->platform_data;
-+	struct imx_chipidea *ci = drvdata;
- 	int ret;
- 
--	ret = imx_usbmisc_port_init(dev->id, pdata->flags);
-+	ret = imx_usbmisc_port_init(ci->portno, ci->flags);
- 	if (ret)
--		dev_err(dev, "misc init failed: %s\n", strerror(-ret));
-+		dev_err(ci->dev, "misc init failed: %s\n", strerror(-ret));
- 
--	if (pdata->init)
--		pdata->init(dev->id);
-+	if (ci->init)
-+		ci->init(ci->portno);
- 
- 	return ret;
- }
- 
- static int imx_chipidea_port_post_init(void *drvdata)
- {
--	struct device_d *dev = drvdata;
--	struct imxusb_platformdata *pdata = dev->platform_data;
-+	struct imx_chipidea *ci = drvdata;
- 	int ret;
- 
--	ret = imx_usbmisc_port_post_init(dev->id, pdata->flags);
-+	ret = imx_usbmisc_port_post_init(ci->portno, ci->flags);
- 	if (ret)
--		dev_err(dev, "post misc init failed: %s\n", strerror(-ret));
-+		dev_err(ci->dev, "post misc init failed: %s\n", strerror(-ret));
- 
- 	return ret;
- }
- 
-+static int imx_chipidea_probe_dt(struct imx_chipidea *ci)
++/**
++ * of_usb_get_dr_mode - Get dual role mode for given device_node
++ * @np:	Pointer to the given device_node
++ *
++ * The function gets phy interface string from property 'dr_mode',
++ * and returns the correspondig enum usb_dr_mode
++ */
++enum usb_dr_mode of_usb_get_dr_mode(struct device_node *np,
++		const char *propname)
 +{
-+	const void *out_args;
-+	struct device_node *usbmisc_np;
-+	enum usb_dr_mode mode;
-+	enum usb_phy_interface phymode;
++	const char *dr_mode;
++	int err, i;
 +
-+	of_parse_phandles_with_args(ci->dev->device_node, "fsl,usbmisc",
-+			"#index-cells", 0, &usbmisc_np, &out_args);
++	if (!propname)
++		propname = "barebox,dr_mode";
 +
-+	ci->portno = be32_to_cpup(out_args);
++	err = of_property_read_string(np, propname, &dr_mode);
++	if (err < 0)
++		return USB_DR_MODE_UNKNOWN;
 +
-+	ci->flags = MXC_EHCI_MODE_UTMI_8BIT;
++	for (i = 0; i < ARRAY_SIZE(usb_dr_modes); i++)
++		if (!strcmp(dr_mode, usb_dr_modes[i]))
++			return i;
 +
-+	mode = of_usb_get_dr_mode(ci->dev->device_node, NULL);
-+
-+	switch (mode) {
-+	case USB_DR_MODE_HOST:
-+	default:
-+		ci->mode = IMX_USB_MODE_HOST;
-+		break;
-+	case USB_DR_MODE_PERIPHERAL:
-+		ci->mode = IMX_USB_MODE_DEVICE;
-+		break;
-+	}
-+
-+	phymode = of_usb_get_phy_mode(ci->dev->device_node, NULL);
-+	switch (phymode) {
-+	case USBPHY_INTERFACE_MODE_UTMI:
-+		ci->flags = MXC_EHCI_MODE_UTMI_8BIT;
-+		break;
-+	case USBPHY_INTERFACE_MODE_UTMIW:
-+		ci->flags = MXC_EHCI_MODE_UTMI_16_BIT;
-+		break;
-+	case USBPHY_INTERFACE_MODE_ULPI:
-+		ci->flags = MXC_EHCI_MODE_ULPI;
-+		break;
-+	case USBPHY_INTERFACE_MODE_SERIAL:
-+		ci->flags = MXC_EHCI_MODE_SERIAL;
-+		break;
-+	case USBPHY_INTERFACE_MODE_HSIC:
-+		ci->flags = MXC_EHCI_MODE_HSIC;
-+		break;
-+	default:
-+		dev_err(ci->dev, "no or invalid phy mode setting\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++	return USB_DR_MODE_UNKNOWN;
 +}
++EXPORT_SYMBOL_GPL(of_usb_get_dr_mode);
 +
- static int imx_chipidea_probe(struct device_d *dev)
- {
- 	struct imxusb_platformdata *pdata = dev->platform_data;
- 	int ret;
- 	void __iomem *base;
--	struct ehci_data data = {};
-+	struct imx_chipidea *ci;
- 	uint32_t portsc;
- 
--	if (!pdata) {
--		dev_err(dev, "no pdata!\n");
--		return -EINVAL;
-+	ci = xzalloc(sizeof(*ci));
-+	ci->dev = dev;
-+
-+	if (IS_ENABLED(CONFIG_OFDEVICE) && dev->device_node) {
-+		ret = imx_chipidea_probe_dt(ci);
-+		if (ret)
-+			return ret;
-+	} else {
-+		if (!pdata) {
-+			dev_err(dev, "no pdata!\n");
-+			return -EINVAL;
-+		}
-+		ci->portno = dev->id;
-+		ci->flags = pdata->flags;
-+		ci->init = pdata->init;
-+		ci->mode = pdata->mode;
- 	}
- 
- 	base = dev_request_mem_region(dev, 0);
- 	if (!base)
- 		return -ENODEV;
- 
--	data.init = imx_chipidea_port_init;
--	data.post_init = imx_chipidea_port_post_init;
--	data.drvdata = dev;
-+	ci->data.init = imx_chipidea_port_init;
-+	ci->data.post_init = imx_chipidea_port_post_init;
-+	ci->data.drvdata = ci;
- 
- 	portsc = readl(base + 0x184);
- 	portsc &= ~MXC_EHCI_PORTSC_MASK;
--	portsc |= pdata->flags & MXC_EHCI_PORTSC_MASK;
-+	portsc |= ci->flags & MXC_EHCI_PORTSC_MASK;
- 	writel(portsc, base + 0x184);
- 
--	imx_chipidea_port_init(dev);
-+	imx_chipidea_port_init(ci);
- 
--	if ((pdata->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_ULPI) {
-+	if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_ULPI) {
- 		dev_dbg(dev, "using ULPI phy\n");
- 		if (IS_ENABLED(CONFIG_USB_ULPI)) {
- 			ret = ulpi_setup(base + 0x170, 1);
-@@ -93,13 +165,13 @@ static int imx_chipidea_probe(struct device_d *dev)
- 			return ret;
- 	}
- 
--	data.hccr = base + 0x100;
--	data.hcor = base + 0x140;
--	data.flags = EHCI_HAS_TT;
-+	ci->data.hccr = base + 0x100;
-+	ci->data.hcor = base + 0x140;
-+	ci->data.flags = EHCI_HAS_TT;
- 
--	if (pdata->mode == IMX_USB_MODE_HOST && IS_ENABLED(CONFIG_USB_EHCI)) {
--		ret = ehci_register(dev, &data);
--	} else if (pdata->mode == IMX_USB_MODE_DEVICE && IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC)) {
-+	if (ci->mode == IMX_USB_MODE_HOST && IS_ENABLED(CONFIG_USB_EHCI)) {
-+		ret = ehci_register(dev, &ci->data);
-+	} else if (ci->mode == IMX_USB_MODE_DEVICE && IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC)) {
- 		ret = ci_udc_register(dev, base);
- 	} else {
- 		dev_err(dev, "No supported role\n");
-@@ -109,8 +181,17 @@ static int imx_chipidea_probe(struct device_d *dev)
- 	return ret;
- };
- 
-+static __maybe_unused struct of_device_id imx_chipidea_dt_ids[] = {
-+	{
-+		.compatible = "fsl,imx27-usb",
-+	}, {
-+		/* sentinel */
-+	},
++static const char *usbphy_modes[] = {
++	[USBPHY_INTERFACE_MODE_UNKNOWN]	= "",
++	[USBPHY_INTERFACE_MODE_UTMI]	= "utmi",
++	[USBPHY_INTERFACE_MODE_UTMIW]	= "utmi_wide",
++	[USBPHY_INTERFACE_MODE_ULPI]	= "ulpi",
++	[USBPHY_INTERFACE_MODE_SERIAL]	= "serial",
++	[USBPHY_INTERFACE_MODE_HSIC]	= "hsic",
 +};
 +
- static struct driver_d imx_chipidea_driver = {
- 	.name   = "imx-usb",
- 	.probe  = imx_chipidea_probe,
-+	.of_compatible = DRV_OF_COMPAT(imx_chipidea_dt_ids),
- };
- device_platform_driver(imx_chipidea_driver);
-diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-index 901ced4..2729684 100644
---- a/drivers/usb/imx/imx-usb-misc.c
-+++ b/drivers/usb/imx/imx-usb-misc.c
-@@ -463,6 +463,54 @@ static struct platform_device_id imx_usbmisc_ids[] = {
- 	},
- };
++/**
++ * of_usb_get_phy_mode - Get phy mode for given device_node
++ * @np:	Pointer to the given device_node
++ *
++ * The function gets phy interface string from property 'phy_type',
++ * and returns the correspondig enum usb_phy_interface
++ */
++enum usb_phy_interface of_usb_get_phy_mode(struct device_node *np,
++		const char *propname)
++{
++	const char *phy_type;
++	int err, i;
++
++	if (!propname)
++		propname = "barebox,phy_type";
++
++	err = of_property_read_string(np, propname, &phy_type);
++	if (err < 0)
++		return USBPHY_INTERFACE_MODE_UNKNOWN;
++
++	for (i = 0; i < ARRAY_SIZE(usbphy_modes); i++)
++		if (!strcmp(phy_type, usbphy_modes[i]))
++			return i;
++
++	return USBPHY_INTERFACE_MODE_UNKNOWN;
++}
++EXPORT_SYMBOL_GPL(of_usb_get_phy_mode);
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index b270012..da0090e 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -519,4 +519,25 @@ struct usb_device_id {
  
-+static __maybe_unused struct of_device_id imx_usbmisc_dt_ids[] = {
-+#ifdef CONFIG_ARCH_IMX25
-+	{
-+		.compatible = "fsl,imx25-usbmisc",
-+		.data = (unsigned long)&mx25_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX27
-+	{
-+		.compatible = "fsl,imx27-usbmisc",
-+		.data = (unsigned long)&mx27_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX31
-+	{
-+		.compatible = "fsl,imx31-usbmisc",
-+		.data = (unsigned long)&mx31_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX35
-+	{
-+		.compatible = "fsl,imx35-usbmisc",
-+		.data = (unsigned long)&mx35_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX51
-+	{
-+		.compatible = "fsl,imx51-usbmisc",
-+		.data = (unsigned long)&mx5_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX53
-+	{
-+		.compatible = "fsl,imx53-usbmisc",
-+		.data = (unsigned long)&mx5_data,
-+	},
-+#endif
-+#ifdef CONFIG_ARCH_IMX6
-+	{
-+		.compatible = "fsl,imx6q-usbmisc",
-+		.data = (unsigned long)&mx6_data,
-+	},
-+#endif
-+	{
-+		/* sentinel */
-+	},
+ #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+ 
++enum usb_dr_mode of_usb_get_dr_mode(struct device_node *np,
++		const char *propname);
++
++enum usb_dr_mode {
++	USB_DR_MODE_UNKNOWN,
++	USB_DR_MODE_HOST,
++	USB_DR_MODE_PERIPHERAL,
++	USB_DR_MODE_OTG,
 +};
 +
- static struct imx_usb_misc_data *imxusbmisc_data;
- static void __iomem *usbmisc_base;
- 
-@@ -510,6 +558,7 @@ static struct driver_d imx_usbmisc_driver = {
- 	.name   = "imx-usbmisc",
- 	.probe  = imx_usbmisc_probe,
- 	.id_table = imx_usbmisc_ids,
-+	.of_compatible = DRV_OF_COMPAT(imx_usbmisc_dt_ids),
- };
- 
- static int imx_usbmisc_init(void)
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-index ce9c93f..776bfe5 100644
---- a/drivers/usb/imx/imx-usb-phy.c
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -93,13 +93,22 @@ err_free:
- 	return ret;
- };
- 
-+static __maybe_unused struct of_device_id imx_usbphy_dt_ids[] = {
-+	{
-+		.compatible = "fsl,imx23-usbphy",
-+	}, {
-+		/* sentinel */
-+	},
-+};
++enum usb_phy_interface of_usb_get_phy_mode(struct device_node *np,
++		const char *propname);
 +
- static struct driver_d imx_usbphy_driver = {
- 	.name   = "imx-usb-phy",
- 	.probe  = imx_usbphy_probe,
-+	.of_compatible = DRV_OF_COMPAT(imx_usbphy_dt_ids),
- };
- 
- static int imx_usbphy_init(void)
- {
- 	return platform_driver_register(&imx_usbphy_driver);
- }
--coredevice_initcall(imx_usbphy_init);
-+fs_initcall(imx_usbphy_init);
++enum usb_phy_interface {
++	USBPHY_INTERFACE_MODE_UNKNOWN,
++	USBPHY_INTERFACE_MODE_UTMI,
++	USBPHY_INTERFACE_MODE_UTMIW,
++	USBPHY_INTERFACE_MODE_ULPI,
++	USBPHY_INTERFACE_MODE_SERIAL,
++	USBPHY_INTERFACE_MODE_HSIC,
++};
+ #endif /*_USB_H_ */
 -- 
 1.8.2.rc2
 
