@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ui1iz-00066e-2I
- for barebox@lists.infradead.org; Thu, 30 May 2013 12:12:57 +0000
-Received: by mail-la0-f54.google.com with SMTP id eg20so163152lab.13
- for <barebox@lists.infradead.org>; Thu, 30 May 2013 05:12:34 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu, 30 May 2013 16:11:29 +0400
-Message-Id: <1369915889-30767-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Ui2A2-0006d0-Nl
+ for barebox@lists.infradead.org; Thu, 30 May 2013 12:40:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1Ui29f-00045C-T6
+ for barebox@lists.infradead.org; Thu, 30 May 2013 14:40:31 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1Ui29f-0006j9-Ro
+ for barebox@lists.infradead.org; Thu, 30 May 2013 14:40:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 30 May 2013 14:40:28 +0200
+Message-Id: <1369917631-31436-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +26,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: asm/mipsregs.h: remove unused stuff
+Subject: [PATCH] 'detect' command to detect devices
 To: barebox@lists.infradead.org
 
-In barebox we have no CONFIG_MIPS_MT_SMTC Kconfig option.
-So remove the code under this macro.
+This adds a 'detect' callback for devices which can be used for
+MMC/ATA/USB and maybe other stuff. See the first patch for details.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/mipsregs.h |    8 --------
- 1 file changed, 8 deletions(-)
+In short with this series we get a 'detect' command to trigger
+a devices detect callback to detect SD/MMC cards. Currently only
+SD/MMC is implemented, but this should also be used for USB/ATA
+aswell later.
 
-diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-index 608f19b..f923860 100644
---- a/arch/mips/include/asm/mipsregs.h
-+++ b/arch/mips/include/asm/mipsregs.h
-@@ -673,19 +673,11 @@ do {									\
- #define write_c0_compare3(val)	__write_32bit_c0_register($11, 7, val)
- 
- #define read_c0_status()	__read_32bit_c0_register($12, 0)
--#ifdef CONFIG_MIPS_MT_SMTC
--#define write_c0_status(val)						\
--do {									\
--	__write_32bit_c0_register($12, 0, val);				\
--	__ehb();							\
--} while (0)
--#else
- /*
-  * Legacy non-SMTC code, which may be hazardous
-  * but which might not support EHB
-  */
- #define write_c0_status(val)	__write_32bit_c0_register($12, 0, val)
--#endif /* CONFIG_MIPS_MT_SMTC */
- 
- #define read_c0_cause()		__read_32bit_c0_register($13, 0)
- #define write_c0_cause(val)	__write_32bit_c0_register($13, 0, val)
--- 
-1.7.10.4
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (3):
+      devices: add detect mechanism
+      mci: implement detect driver callback
+      mci fsl-esdhc: implement detect driver callback
+
+ commands/Kconfig        |  9 +++++++
+ commands/Makefile       |  1 +
+ commands/detect.c       | 70 +++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/base/driver.c   |  7 +++++
+ drivers/mci/imx-esdhc.c | 13 +++++++--
+ drivers/mci/mci-core.c  | 21 +++++++++++++++
+ include/driver.h        |  8 ++++++
+ include/mci.h           |  6 +++--
+ 8 files changed, 131 insertions(+), 4 deletions(-)
+ create mode 100644 commands/detect.c
 
 _______________________________________________
 barebox mailing list
