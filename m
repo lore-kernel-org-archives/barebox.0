@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ui0M9-0004Hn-B2
- for barebox@lists.infradead.org; Thu, 30 May 2013 10:45:17 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Ui0Ln-0007ME-MD
- for barebox@lists.infradead.org; Thu, 30 May 2013 12:44:55 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Ui0Ln-0002gs-KU
- for barebox@lists.infradead.org; Thu, 30 May 2013 12:44:55 +0200
+ id 1Ui0M9-0004Hq-B4
+ for barebox@lists.infradead.org; Thu, 30 May 2013 10:45:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 30 May 2013 12:44:50 +0200
-Message-Id: <1369910694-20991-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 30 May 2013 12:44:53 +0200
+Message-Id: <1369910694-20991-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1369910694-20991-1-git-send-email-s.hauer@pengutronix.de>
+References: <1369910694-20991-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] OF updates
+Subject: [PATCH 3/4] bootm: make sure to print fixed oftree
 To: barebox@lists.infradead.org
 
-This fixes some OF oddities we currently have.
+when doing bootm -v -v we dumped the original tree to the console.
+Make sure to print the fixed tree instead so that the fixups can
+be examined.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib/bootm.c | 2 ++
+ commands/bootm.c     | 4 ----
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      of: Also print disabled nodes
-      of: remove unused define
-      bootm: make sure to print fixed oftree
-      bootm: print Kernel commandline in verbose mode
+diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+index e7a0625..133e04d 100644
+--- a/arch/arm/lib/bootm.c
++++ b/arch/arm/lib/bootm.c
+@@ -91,6 +91,8 @@ static int __do_bootm_linux(struct image_data *data, int swap)
+ 			of_add_reserve_entry(initrd_start, initrd_end);
+ 		data->oftree = of_get_fixed_tree(data->of_root_node);
+ 		fdt_add_reserve_map(data->oftree);
++		if (bootm_verbose(data) > 1)
++			of_print_nodes(data->of_root_node, 0);
+ 	}
+ 
+ 	if (bootm_verbose(data)) {
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 5dd1703..3976eb4 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -398,10 +398,6 @@ static int do_bootm(int argc, char *argv[])
+ 		if (bootm_verbose(&data) && data.of_root_node)
+ 			printf("using internal devicetree\n");
+ 	}
+-
+-
+-	if (bootm_verbose(&data) > 1 && data.of_root_node)
+-		of_print_nodes(data.of_root_node, 0);
+ #endif
+ 	if (data.os_address == UIMAGE_SOME_ADDRESS)
+ 		data.os_address = UIMAGE_INVALID_ADDRESS;
+-- 
+1.8.2.rc2
 
- arch/arm/lib/bootm.c |  4 ++++
- commands/bootm.c     |  4 ----
- common/oftree.c      | 21 +++++++++++++++------
- drivers/of/base.c    |  3 ---
- include/of.h         |  1 +
- 5 files changed, 20 insertions(+), 13 deletions(-)
 
 _______________________________________________
 barebox mailing list
