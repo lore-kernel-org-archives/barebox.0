@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from mout.gmx.net ([212.227.17.20])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ui7RV-0006wF-5k
+ id 1Ui7RV-0006wH-Gn
  for barebox@lists.infradead.org; Thu, 30 May 2013 18:19:18 +0000
 Received: from mailout-de.gmx.net ([10.1.76.29]) by mrigmx.server.lan
- (mrigmx002) with ESMTP (Nemesis) id 0LfUwx-1U6Jqy31Jp-00p5ti for
- <barebox@lists.infradead.org>; Thu, 30 May 2013 20:18:49 +0200
+ (mrigmx002) with ESMTP (Nemesis) id 0MSFkr-1UsOKP3zpr-00TRcR for
+ <barebox@lists.infradead.org>; Thu, 30 May 2013 20:18:50 +0200
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Thu, 30 May 2013 20:18:39 +0200
-Message-Id: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
+Date: Thu, 30 May 2013 20:18:42 +0200
+Message-Id: <1369937922-1557-4-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
+References: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +24,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3  0/3] work on atheros ar2313
+Subject: [PATCH v3  3/3] MIPS: ar231x: add netgear-wg102
 To: barebox@lists.infradead.org
 
-here is next version of pachtes for atheros ar2313.
-All previous comments and style fixes was handled here.
-
-Oleksij Rempel (3):
-  MIPS: add Atheros ar531x family support
-  net: add ar231x-eth support
-  MIPS: ar231x: add netgear-wg102
-
- arch/mips/Kconfig                                  |   9 +
- arch/mips/Makefile                                 |   3 +
- arch/mips/boards/netgear-wg102/Kconfig             |   6 +
- arch/mips/boards/netgear-wg102/Makefile            |   1 +
- arch/mips/boards/netgear-wg102/ram.c               |  11 +
- arch/mips/mach-ar231x/Kconfig                      |  17 +
- arch/mips/mach-ar231x/Makefile                     |   3 +
- arch/mips/mach-ar231x/ar231x.c                     | 195 +++++++++
- arch/mips/mach-ar231x/ar231x_reset.c               |  73 ++++
- arch/mips/mach-ar231x/board.c                      | 188 +++++++++
- arch/mips/mach-ar231x/include/mach/ar2312_regs.h   | 302 ++++++++++++++
- .../mach-ar231x/include/mach/ar231x_platform.h     | 104 +++++
- drivers/net/Kconfig                                |   7 +
- drivers/net/Makefile                               |   1 +
- drivers/net/ar231x.c                               | 437 +++++++++++++++++++++
- drivers/net/ar231x.h                               | 219 +++++++++++
- 16 files changed, 1576 insertions(+)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
+---
+ arch/mips/Makefile                      |  1 +
+ arch/mips/boards/netgear-wg102/Kconfig  |  6 ++++++
+ arch/mips/boards/netgear-wg102/Makefile |  1 +
+ arch/mips/boards/netgear-wg102/ram.c    | 11 +++++++++++
+ arch/mips/mach-ar231x/Kconfig           | 10 ++++++++++
+ 5 files changed, 29 insertions(+)
  create mode 100644 arch/mips/boards/netgear-wg102/Kconfig
  create mode 100644 arch/mips/boards/netgear-wg102/Makefile
  create mode 100644 arch/mips/boards/netgear-wg102/ram.c
- create mode 100644 arch/mips/mach-ar231x/Kconfig
- create mode 100644 arch/mips/mach-ar231x/Makefile
- create mode 100644 arch/mips/mach-ar231x/ar231x.c
- create mode 100644 arch/mips/mach-ar231x/ar231x_reset.c
- create mode 100644 arch/mips/mach-ar231x/board.c
- create mode 100644 arch/mips/mach-ar231x/include/mach/ar2312_regs.h
- create mode 100644 arch/mips/mach-ar231x/include/mach/ar231x_platform.h
- create mode 100644 drivers/net/ar231x.c
- create mode 100644 drivers/net/ar231x.h
 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 135259f..dc0fe56 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -73,6 +73,7 @@ machine-$(CONFIG_MACH_MIPS_MALTA)	:= malta
+ board-$(CONFIG_BOARD_QEMU_MALTA)	:= qemu-malta
+ 
+ machine-$(CONFIG_MACH_MIPS_AR231X)	:= ar231x
++board-$(CONFIG_BOARD_NETGEAR_WG102)	:= netgear-wg102
+ 
+ machine-$(CONFIG_MACH_MIPS_BCM47XX)	:= bcm47xx
+ board-$(CONFIG_BOARD_DLINK_DIR320)	:= dlink-dir-320
+diff --git a/arch/mips/boards/netgear-wg102/Kconfig b/arch/mips/boards/netgear-wg102/Kconfig
+new file mode 100644
+index 0000000..ceca6de
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/Kconfig
+@@ -0,0 +1,6 @@
++if BOARD_NETGEAR_WG102
++
++config BOARDINFO
++	default "Netgear WG102"
++
++endif
+diff --git a/arch/mips/boards/netgear-wg102/Makefile b/arch/mips/boards/netgear-wg102/Makefile
+new file mode 100644
+index 0000000..0899b66
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/Makefile
+@@ -0,0 +1 @@
++obj-y += ram.o
+diff --git a/arch/mips/boards/netgear-wg102/ram.c b/arch/mips/boards/netgear-wg102/ram.c
+new file mode 100644
+index 0000000..00a008a
+--- /dev/null
++++ b/arch/mips/boards/netgear-wg102/ram.c
+@@ -0,0 +1,11 @@
++#include <common.h>
++#include <init.h>
++#include <sizes.h>
++#include <asm/memory.h>
++
++static int mem_init(void)
++{
++	mips_add_ram0(SZ_16M);
++	return 0;
++}
++mem_initcall(mem_init);
+diff --git a/arch/mips/mach-ar231x/Kconfig b/arch/mips/mach-ar231x/Kconfig
+index 7694fe2..1c6a12f 100644
+--- a/arch/mips/mach-ar231x/Kconfig
++++ b/arch/mips/mach-ar231x/Kconfig
+@@ -4,4 +4,14 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0xa0800000
+ 
++choice
++	prompt "Board type"
++
++config BOARD_NETGEAR_WG102
++	bool "Netgear WG102"
++
++endchoice
++
++source arch/mips/boards/netgear-wg102/Kconfig
++
+ endif
 -- 
 1.8.1.2
 
