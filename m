@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UiJDF-0000pc-UB
- for barebox@lists.infradead.org; Fri, 31 May 2013 06:53:22 +0000
-Date: Fri, 31 May 2013 08:52:57 +0200
+ id 1UiJEW-0000qj-QS
+ for barebox@lists.infradead.org; Fri, 31 May 2013 06:54:41 +0000
+Date: Fri, 31 May 2013 08:54:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130531065257.GF32299@pengutronix.de>
-References: <1369927045-24309-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20130531065418.GG32299@pengutronix.de>
+References: <1369762076-7179-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369927045-24309-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1369762076-7179-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,21 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ppc io.h: fix indentation
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH] ARM: Using unsigned specifiers for unsigned arguments
+ for printf
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Hi Renaud,
-
-On Thu, May 30, 2013 at 04:17:24PM +0100, Renaud Barbier wrote:
-> To prepare for an update of the I/O functions to the latest Linux
-> version, the indentation is fixed.
+On Tue, May 28, 2013 at 09:27:56PM +0400, Alexander Shiyan wrote:
 > 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied (both), thanks
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
