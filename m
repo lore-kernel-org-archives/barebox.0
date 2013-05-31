@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UiQ7W-0002xe-FH
- for barebox@lists.infradead.org; Fri, 31 May 2013 14:15:57 +0000
+ id 1UiQQg-0003TY-IV
+ for barebox@lists.infradead.org; Fri, 31 May 2013 14:35:43 +0000
+Date: Fri, 31 May 2013 16:35:19 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 May 2013 16:15:29 +0200
-Message-Id: <1370009729-15784-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130531143519.GJ32299@pengutronix.de>
+References: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1369937922-1557-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,39 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootm: Print internal devicetree information without verbose
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v3  0/3] work on atheros ar2313
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-It's a precious information that barebox will boot the kernel
-with the internal devicetree, so print it even in non verbose
-mode.
+On Thu, May 30, 2013 at 08:18:39PM +0200, Oleksij Rempel wrote:
+> here is next version of pachtes for atheros ar2313.
+> All previous comments and style fixes was handled here.
+> 
+> Oleksij Rempel (3):
+>   MIPS: add Atheros ar531x family support
+>   net: add ar231x-eth support
+>   MIPS: ar231x: add netgear-wg102
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 3976eb4..6ce2ca9 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -395,7 +395,7 @@ static int do_bootm(int argc, char *argv[])
- 			goto err_out;
- 	} else {
- 		data.of_root_node = of_get_root_node();
--		if (bootm_verbose(&data) && data.of_root_node)
-+		if (data.of_root_node)
- 			printf("using internal devicetree\n");
- 	}
- #endif
+Sascha
+
+
 -- 
-1.8.2.rc2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
