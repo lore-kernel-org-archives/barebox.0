@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UiIwW-0000X9-Vp
- for barebox@lists.infradead.org; Fri, 31 May 2013 06:36:06 +0000
-Date: Fri, 31 May 2013 08:35:40 +0200
+ id 1UiJDF-0000pc-UB
+ for barebox@lists.infradead.org; Fri, 31 May 2013 06:53:22 +0000
+Date: Fri, 31 May 2013 08:52:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130531063540.GE32299@pengutronix.de>
-References: <1369915889-30767-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20130531065257.GF32299@pengutronix.de>
+References: <1369927045-24309-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369915889-30767-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1369927045-24309-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +22,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: asm/mipsregs.h: remove unused stuff
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 1/2] ppc io.h: fix indentation
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, May 30, 2013 at 04:11:29PM +0400, Antony Pavlov wrote:
-> In barebox we have no CONFIG_MIPS_MT_SMTC Kconfig option.
-> So remove the code under this macro.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Hi Renaud,
 
-Applied, thanks
+On Thu, May 30, 2013 at 04:17:24PM +0100, Renaud Barbier wrote:
+> To prepare for an update of the I/O functions to the latest Linux
+> version, the indentation is fixed.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+
+Applied (both), thanks
 
 Sascha
-
-> ---
->  arch/mips/include/asm/mipsregs.h |    8 --------
->  1 file changed, 8 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
-> index 608f19b..f923860 100644
-> --- a/arch/mips/include/asm/mipsregs.h
-> +++ b/arch/mips/include/asm/mipsregs.h
-> @@ -673,19 +673,11 @@ do {									\
->  #define write_c0_compare3(val)	__write_32bit_c0_register($11, 7, val)
->  
->  #define read_c0_status()	__read_32bit_c0_register($12, 0)
-> -#ifdef CONFIG_MIPS_MT_SMTC
-> -#define write_c0_status(val)						\
-> -do {									\
-> -	__write_32bit_c0_register($12, 0, val);				\
-> -	__ehb();							\
-> -} while (0)
-> -#else
->  /*
->   * Legacy non-SMTC code, which may be hazardous
->   * but which might not support EHB
->   */
->  #define write_c0_status(val)	__write_32bit_c0_register($12, 0, val)
-> -#endif /* CONFIG_MIPS_MT_SMTC */
->  
->  #define read_c0_cause()		__read_32bit_c0_register($13, 0)
->  #define write_c0_cause(val)	__write_32bit_c0_register($13, 0, val)
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
