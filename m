@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UiMj9-0005wj-UH
- for barebox@lists.infradead.org; Fri, 31 May 2013 10:38:33 +0000
+ id 1UiMj9-0005wl-Uh
+ for barebox@lists.infradead.org; Fri, 31 May 2013 10:38:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 May 2013 12:38:04 +0200
-Message-Id: <1369996686-15900-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 31 May 2013 12:38:06 +0200
+Message-Id: <1369996686-15900-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1369996686-15900-1-git-send-email-s.hauer@pengutronix.de>
 References: <1369996686-15900-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,143 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] block: rename file operation functions
+Subject: [PATCH 4/4] partition: DOS: Add parameter for the NT disk Signature
 To: barebox@lists.infradead.org
 
-block_read and block_write collide with a to-be-introduced
-global function, so rename the file operation functions.
+The NT disk Signature is a unique 32-bit value in the MBR allowing
+to identify a MSDOS partitioned disk. The signature can be used to
+specify the Linux rootfs.
+This patch adds support for the NT disk Signature in the form of a
+device parameter which can both be read and written.
+This is particularly useful when a board has multiple SD/MMC
+devices and we want to boot from a particular one without depending
+on the initialization order under Linux.
+
+Given that the device is known under barebox as 'mmc1' and the
+rootfs can be found on the second partition of that device the
+Linux rootfs can then be specified with:
+
+root=PARTUUID=${mmc1.nt_signature}-02
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/block.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ common/partitions/dos.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-diff --git a/common/block.c b/common/block.c
-index 120d659..2cf85ae 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -176,7 +176,7 @@ static void *block_get(struct block_device *blk, int block)
- 	return outdata;
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 597f9ba..e7c98f5 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -16,6 +16,8 @@
+ #include <disks.h>
+ #include <init.h>
+ #include <asm/unaligned.h>
++#include <dma.h>
++#include <linux/err.h>
+ 
+ #include "parser.h"
+ 
+@@ -40,6 +42,68 @@ static int disk_guess_size(struct device_d *dev, struct partition_entry *table)
+ 	return (int)size;
  }
  
--static ssize_t block_read(struct cdev *cdev, void *buf, size_t count,
-+static ssize_t block_op_read(struct cdev *cdev, void *buf, size_t count,
- 		loff_t offset, unsigned long flags)
- {
- 	struct block_device *blk = cdev->priv;
-@@ -253,7 +253,7 @@ static int block_put(struct block_device *blk, const void *buf, int block)
- 	return 0;
++static void *read_mbr(struct block_device *blk)
++{
++	void *buf = dma_alloc(SECTOR_SIZE);
++	int ret;
++
++	ret = block_read(blk, buf, 0, 1);
++	if (ret) {
++		free(buf);
++		return NULL;
++	}
++
++	return buf;
++}
++
++static int write_mbr(struct block_device *blk, void *buf)
++{
++	return block_write(blk, buf, 0, 1);
++}
++
++struct disk_signature_priv {
++	uint32_t signature;
++	struct block_device *blk;
++};
++
++static int dos_set_disk_signature(struct param_d *p, void *_priv)
++{
++	struct disk_signature_priv *priv = _priv;
++	struct block_device *blk = priv->blk;
++	void *buf;
++	__le32 *disksigp;
++	int ret;
++
++	buf = read_mbr(blk);
++	if (!buf)
++		return -EIO;
++
++	disksigp = buf + 0x1b8;
++
++	*disksigp = cpu_to_le32(priv->signature);
++
++	ret = write_mbr(blk, buf);
++
++	free(buf);
++
++	return ret;
++}
++
++static int dos_get_disk_signature(struct param_d *p, void *_priv)
++{
++	struct disk_signature_priv *priv = _priv;
++	struct block_device *blk = priv->blk;
++	void *buf;
++
++	buf = read_mbr(blk);
++	if (!buf)
++		return -EIO;
++
++	priv->signature = le32_to_cpup((__le32 *)(buf + 0x1b8));
++
++	return 0;
++}
++
+ /**
+  * Check if a DOS like partition describes this block device
+  * @param blk Block device to register to
+@@ -55,6 +119,7 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 	struct partition pentry;
+ 	uint8_t *buffer = buf;
+ 	int i;
++	struct disk_signature_priv *dsp;
+ 
+ 	table = (struct partition_entry *)&buffer[446];
+ 
+@@ -74,6 +139,23 @@ static void dos_partition(void *buf, struct block_device *blk,
+ 			dev_dbg(blk->dev, "Skipping empty partition %d\n", i);
+ 		}
+ 	}
++
++	dsp = xzalloc(sizeof(*dsp));
++	dsp->blk = blk;
++
++	/*
++	 * This parameter contains the NT disk signature. This allows to
++	 * to specify the Linux rootfs using the following syntax:
++	 *
++	 *   root=PARTUUID=ssssssss-pp
++	 *
++	 * where ssssssss is a zero-filled hex representation of the 32-bit
++	 * signature and pp is a zero-filled hex representation of the 1-based
++	 * partition number.
++	 */
++	dev_add_param_int(blk->dev, "nt_signature",
++			dos_set_disk_signature, dos_get_disk_signature,
++			&dsp->signature, "%08x", dsp);
  }
  
--static ssize_t block_write(struct cdev *cdev, const void *buf, size_t count,
-+static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
- 		loff_t offset, ulong flags)
- {
- 	struct block_device *blk = cdev->priv;
-@@ -310,14 +310,14 @@ static ssize_t block_write(struct cdev *cdev, const void *buf, size_t count,
- }
- #endif
- 
--static int block_close(struct cdev *cdev)
-+static int block_op_close(struct cdev *cdev)
- {
- 	struct block_device *blk = cdev->priv;
- 
- 	return writebuffer_flush(blk);
- }
- 
--static int block_flush(struct cdev *cdev)
-+static int block_op_flush(struct cdev *cdev)
- {
- 	struct block_device *blk = cdev->priv;
- 
-@@ -325,12 +325,12 @@ static int block_flush(struct cdev *cdev)
- }
- 
- static struct file_operations block_ops = {
--	.read	= block_read,
-+	.read	= block_op_read,
- #ifdef CONFIG_BLOCK_WRITE
--	.write	= block_write,
-+	.write	= block_op_write,
- #endif
--	.close	= block_close,
--	.flush	= block_flush,
-+	.close	= block_op_close,
-+	.flush	= block_op_flush,
- 	.lseek	= dev_lseek_default,
- };
- 
+ static struct partition_parser dos = {
 -- 
 1.8.2.rc2
 
