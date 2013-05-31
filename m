@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og111.obsmtp.com ([64.18.0.22])
+Received: from exprod5og103.obsmtp.com ([64.18.0.145])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UiSb5-0006ni-1l
- for barebox@lists.infradead.org; Fri, 31 May 2013 16:54:36 +0000
+ id 1UiSbT-0006pF-Gd
+ for barebox@lists.infradead.org; Fri, 31 May 2013 16:55:00 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri, 31 May 2013 17:53:56 +0100
-Message-Id: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
+Date: Fri, 31 May 2013 17:54:01 +0100
+Message-Id: <1370019244-7873-6-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
+References: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +21,292 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] U-Boot DDR initialisation import
+Subject: [PATCH 5/8] ppc 8xxx: DDR utility functions
 To: barebox@lists.infradead.org
 
-This is a direct import of U-Boot DDR initialization code from
-git tree id a71d45d706a5b51c348160163b6c159632273fed.
+This file is imported from U-Boot as is.
 
-It is for Freescale mpc8xxx CPUs such as the mpc8544, P2020.
-Memory controller initialisation is based on data retrieved
-from a Serial Presence Detect (SPD) eeprom for DDR1/DDR2 and
-DDR3 memory.
+It adds utility functions to calculate clock cycles, configure the
+LAW registers and print information on the memory configuration.
 
-These patches are needed for the GEIP DA923RC board initialisation
-which will be submitted shortly.
-
-Renaud Barbier (8):
-  ppc 8xxx: DDR headers
-  ppc 8xxx: memory controller register manipulation functions
-  ppc 8xxx: dimm parameters calculation
-  ppc 8xxx: lowest common dimm parameters
-  ppc 8xxx: DDR utility functions
-  ppc 8xxx: DDR specific options
-  ppc 8xxx: core DDR driver functions
-  ppc 8xxx: remove interactive debugging
-
- arch/ppc/ddr-8xxx/common_timing_params.h   |   56 +
- arch/ppc/ddr-8xxx/ctrl_regs.c              | 1645 ++++++++++++++++++++++++++++
- arch/ppc/ddr-8xxx/ddr.h                    |  103 ++
- arch/ppc/ddr-8xxx/ddr1_dimm_params.c       |  343 ++++++
- arch/ppc/ddr-8xxx/ddr2_dimm_params.c       |  342 ++++++
- arch/ppc/ddr-8xxx/ddr3_dimm_params.c       |  336 ++++++
- arch/ppc/ddr-8xxx/lc_common_dimm_params.c  |  517 +++++++++
- arch/ppc/ddr-8xxx/main.c                   |  659 +++++++++++
- arch/ppc/ddr-8xxx/options.c                | 1148 +++++++++++++++++++
- arch/ppc/ddr-8xxx/util.c                   |  264 +++++
- arch/ppc/include/asm/fsl_ddr_dimm_params.h |   99 ++
- 11 files changed, 5512 insertions(+), 0 deletions(-)
- create mode 100644 arch/ppc/ddr-8xxx/common_timing_params.h
- create mode 100644 arch/ppc/ddr-8xxx/ctrl_regs.c
- create mode 100644 arch/ppc/ddr-8xxx/ddr.h
- create mode 100644 arch/ppc/ddr-8xxx/ddr1_dimm_params.c
- create mode 100644 arch/ppc/ddr-8xxx/ddr2_dimm_params.c
- create mode 100644 arch/ppc/ddr-8xxx/ddr3_dimm_params.c
- create mode 100644 arch/ppc/ddr-8xxx/lc_common_dimm_params.c
- create mode 100644 arch/ppc/ddr-8xxx/main.c
- create mode 100644 arch/ppc/ddr-8xxx/options.c
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ arch/ppc/ddr-8xxx/util.c |  264 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 264 insertions(+), 0 deletions(-)
  create mode 100644 arch/ppc/ddr-8xxx/util.c
- create mode 100644 arch/ppc/include/asm/fsl_ddr_dimm_params.h
+
+diff --git a/arch/ppc/ddr-8xxx/util.c b/arch/ppc/ddr-8xxx/util.c
+new file mode 100644
+index 0000000..acfe1f0
+--- /dev/null
++++ b/arch/ppc/ddr-8xxx/util.c
+@@ -0,0 +1,264 @@
++/*
++ * Copyright 2008-2012 Freescale Semiconductor, Inc.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License
++ * Version 2 as published by the Free Software Foundation.
++ */
++
++#include <common.h>
++#include <asm/fsl_law.h>
++#include <div64.h>
++
++#include "ddr.h"
++
++/* To avoid 64-bit full-divides, we factor this here */
++#define ULL_2E12 2000000000000ULL
++#define UL_5POW12 244140625UL
++#define UL_2POW13 (1UL << 13)
++
++#define ULL_8FS 0xFFFFFFFFULL
++
++/*
++ * Round up mclk_ps to nearest 1 ps in memory controller code
++ * if the error is 0.5ps or more.
++ *
++ * If an imprecise data rate is too high due to rounding error
++ * propagation, compute a suitably rounded mclk_ps to compute
++ * a working memory controller configuration.
++ */
++unsigned int get_memory_clk_period_ps(void)
++{
++	unsigned int data_rate = get_ddr_freq(0);
++	unsigned int result;
++
++	/* Round to nearest 10ps, being careful about 64-bit multiply/divide */
++	unsigned long long rem, mclk_ps = ULL_2E12;
++
++	/* Now perform the big divide, the result fits in 32-bits */
++	rem = do_div(mclk_ps, data_rate);
++	result = (rem >= (data_rate >> 1)) ? mclk_ps + 1 : mclk_ps;
++
++	return result;
++}
++
++/* Convert picoseconds into DRAM clock cycles (rounding up if needed). */
++unsigned int picos_to_mclk(unsigned int picos)
++{
++	unsigned long long clks, clks_rem;
++	unsigned long data_rate = get_ddr_freq(0);
++
++	/* Short circuit for zero picos */
++	if (!picos)
++		return 0;
++
++	/* First multiply the time by the data rate (32x32 => 64) */
++	clks = picos * (unsigned long long)data_rate;
++	/*
++	 * Now divide by 5^12 and track the 32-bit remainder, then divide
++	 * by 2*(2^12) using shifts (and updating the remainder).
++	 */
++	clks_rem = do_div(clks, UL_5POW12);
++	clks_rem += (clks & (UL_2POW13-1)) * UL_5POW12;
++	clks >>= 13;
++
++	/* If we had a remainder greater than the 1ps error, then round up */
++	if (clks_rem > data_rate)
++		clks++;
++
++	/* Clamp to the maximum representable value */
++	if (clks > ULL_8FS)
++		clks = ULL_8FS;
++	return (unsigned int) clks;
++}
++
++unsigned int mclk_to_picos(unsigned int mclk)
++{
++	return get_memory_clk_period_ps() * mclk;
++}
++
++void
++__fsl_ddr_set_lawbar(const common_timing_params_t *memctl_common_params,
++			   unsigned int law_memctl,
++			   unsigned int ctrl_num)
++{
++	unsigned long long base = memctl_common_params->base_address;
++	unsigned long long size = memctl_common_params->total_mem;
++
++	/*
++	 * If no DIMMs on this controller, do not proceed any further.
++	 */
++	if (!memctl_common_params->ndimms_present) {
++		return;
++	}
++
++#if !defined(CONFIG_PHYS_64BIT)
++	if (base >= CONFIG_MAX_MEM_MAPPED)
++		return;
++	if ((base + size) >= CONFIG_MAX_MEM_MAPPED)
++		size = CONFIG_MAX_MEM_MAPPED - base;
++#endif
++	if (set_ddr_laws(base, size, law_memctl) < 0) {
++		printf("%s: ERROR (ctrl #%d, TRGT ID=%x)\n", __func__, ctrl_num,
++			law_memctl);
++		return ;
++	}
++	debug("setup ddr law base = 0x%llx, size 0x%llx, TRGT_ID 0x%x\n",
++		base, size, law_memctl);
++}
++
++__attribute__((weak, alias("__fsl_ddr_set_lawbar"))) void
++fsl_ddr_set_lawbar(const common_timing_params_t *memctl_common_params,
++			 unsigned int memctl_interleaved,
++			 unsigned int ctrl_num);
++
++void fsl_ddr_set_intl3r(const unsigned int granule_size)
++{
++#ifdef CONFIG_E6500
++	u32 *mcintl3r = (void *) (CONFIG_SYS_IMMR + 0x18004);
++	*mcintl3r = 0x80000000 | (granule_size & 0x1f);
++	debug("Enable MCINTL3R with granule size 0x%x\n", granule_size);
++#endif
++}
++
++u32 fsl_ddr_get_intl3r(void)
++{
++	u32 val = 0;
++#ifdef CONFIG_E6500
++	u32 *mcintl3r = (void *) (CONFIG_SYS_IMMR + 0x18004);
++	val = *mcintl3r;
++#endif
++	return val;
++}
++
++void board_add_ram_info(int use_default)
++{
++	ccsr_ddr_t *ddr = (void *)(CONFIG_SYS_MPC8xxx_DDR_ADDR);
++
++#if	defined(CONFIG_E6500) && (CONFIG_NUM_DDR_CONTROLLERS == 3)
++	u32 *mcintl3r = (void *) (CONFIG_SYS_IMMR + 0x18004);
++#endif
++#if (CONFIG_NUM_DDR_CONTROLLERS > 1)
++	uint32_t cs0_config = in_be32(&ddr->cs0_config);
++#endif
++	uint32_t sdram_cfg = in_be32(&ddr->sdram_cfg);
++	int cas_lat;
++
++#if CONFIG_NUM_DDR_CONTROLLERS >= 2
++	if (!(sdram_cfg & SDRAM_CFG_MEM_EN)) {
++		ddr = (void __iomem *)CONFIG_SYS_MPC8xxx_DDR2_ADDR;
++		sdram_cfg = in_be32(&ddr->sdram_cfg);
++	}
++#endif
++#if CONFIG_NUM_DDR_CONTROLLERS >= 3
++	if (!(sdram_cfg & SDRAM_CFG_MEM_EN)) {
++		ddr = (void __iomem *)CONFIG_SYS_MPC8xxx_DDR3_ADDR;
++		sdram_cfg = in_be32(&ddr->sdram_cfg);
++	}
++#endif
++	puts(" (DDR");
++	switch ((sdram_cfg & SDRAM_CFG_SDRAM_TYPE_MASK) >>
++		SDRAM_CFG_SDRAM_TYPE_SHIFT) {
++	case SDRAM_TYPE_DDR1:
++		puts("1");
++		break;
++	case SDRAM_TYPE_DDR2:
++		puts("2");
++		break;
++	case SDRAM_TYPE_DDR3:
++		puts("3");
++		break;
++	default:
++		puts("?");
++		break;
++	}
++
++	if (sdram_cfg & SDRAM_CFG_32_BE)
++		puts(", 32-bit");
++	else if (sdram_cfg & SDRAM_CFG_16_BE)
++		puts(", 16-bit");
++	else
++		puts(", 64-bit");
++
++	/* Calculate CAS latency based on timing cfg values */
++	cas_lat = ((in_be32(&ddr->timing_cfg_1) >> 16) & 0xf) + 1;
++	if ((in_be32(&ddr->timing_cfg_3) >> 12) & 1)
++		cas_lat += (8 << 1);
++	printf(", CL=%d", cas_lat >> 1);
++	if (cas_lat & 0x1)
++		puts(".5");
++
++	if (sdram_cfg & SDRAM_CFG_ECC_EN)
++		puts(", ECC on)");
++	else
++		puts(", ECC off)");
++
++#if (CONFIG_NUM_DDR_CONTROLLERS == 3)
++#ifdef CONFIG_E6500
++	if (*mcintl3r & 0x80000000) {
++		puts("\n");
++		puts("       DDR Controller Interleaving Mode: ");
++		switch (*mcintl3r & 0x1f) {
++		case FSL_DDR_3WAY_1KB_INTERLEAVING:
++			puts("3-way 1KB");
++			break;
++		case FSL_DDR_3WAY_4KB_INTERLEAVING:
++			puts("3-way 4KB");
++			break;
++		case FSL_DDR_3WAY_8KB_INTERLEAVING:
++			puts("3-way 8KB");
++			break;
++		default:
++			puts("3-way UNKNOWN");
++			break;
++		}
++	}
++#endif
++#endif
++#if (CONFIG_NUM_DDR_CONTROLLERS >= 2)
++	if (cs0_config & 0x20000000) {
++		puts("\n");
++		puts("       DDR Controller Interleaving Mode: ");
++
++		switch ((cs0_config >> 24) & 0xf) {
++		case FSL_DDR_CACHE_LINE_INTERLEAVING:
++			puts("cache line");
++			break;
++		case FSL_DDR_PAGE_INTERLEAVING:
++			puts("page");
++			break;
++		case FSL_DDR_BANK_INTERLEAVING:
++			puts("bank");
++			break;
++		case FSL_DDR_SUPERBANK_INTERLEAVING:
++			puts("super-bank");
++			break;
++		default:
++			puts("invalid");
++			break;
++		}
++	}
++#endif
++
++	if ((sdram_cfg >> 8) & 0x7f) {
++		puts("\n");
++		puts("       DDR Chip-Select Interleaving Mode: ");
++		switch(sdram_cfg >> 8 & 0x7f) {
++		case FSL_DDR_CS0_CS1_CS2_CS3:
++			puts("CS0+CS1+CS2+CS3");
++			break;
++		case FSL_DDR_CS0_CS1:
++			puts("CS0+CS1");
++			break;
++		case FSL_DDR_CS2_CS3:
++			puts("CS2+CS3");
++			break;
++		case FSL_DDR_CS0_CS1_AND_CS2_CS3:
++			puts("CS0+CS1 and CS2+CS3");
++			break;
++		default:
++			puts("invalid");
++			break;
++		}
++	}
++}
+-- 
+1.7.1
 
 
 _______________________________________________
