@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-x230.google.com ([2607:f8b0:400e:c01::230])
+Received: from mail-pd0-f174.google.com ([209.85.192.174])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UimKl-0008LZ-OL
- for barebox@lists.infradead.org; Sat, 01 Jun 2013 13:59:04 +0000
-Received: by mail-pb0-f48.google.com with SMTP id md4so3622726pbc.7
- for <barebox@lists.infradead.org>; Sat, 01 Jun 2013 06:58:38 -0700 (PDT)
+ id 1UimRM-0008Qd-Pv
+ for barebox@lists.infradead.org; Sat, 01 Jun 2013 14:05:53 +0000
+Received: by mail-pd0-f174.google.com with SMTP id 3so3604079pdj.33
+ for <barebox@lists.infradead.org>; Sat, 01 Jun 2013 07:05:30 -0700 (PDT)
 From: monaka@monami-ya.jp
-Date: Sat,  1 Jun 2013 22:58:25 +0900
-Message-Id: <1370095105-63468-1-git-send-email-monaka@monami-ya.com>
+Date: Sat,  1 Jun 2013 23:05:22 +0900
+Message-Id: <1370095522-63657-1-git-send-email-monaka@monami-ya.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Enables to build bootm command on generic_x86.
+Subject: [PATCH] [x86] Avoid build error on "config SPI" is y
 To: barebox@lists.infradead.org
-Cc: Masaki Muranaka <monaka@monami-ya.jp>
 
-From: Masaki Muranaka <monaka@monami-ya.jp>
+From: Masaki Muranaka <monaka@monami-ya.com>
 
-I'm not sure but I guess we don't need defined(__I386__) check.
-I kept it for now.
+In case he configures with make ARCH=x85 menuconfig,
+config SPI will be set to "y". And he will got an error on spi.h.
 
 Signed-off-by: Masaki Muranaka <monaka@monami-ya.com>
 ---
- include/image.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/types.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/image.h b/include/image.h
-index 219419b..0c8a4b1 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -89,7 +89,7 @@
- #define IH_ARCH IH_ARCH_PPC
- #elif defined(__ARM__)
- #define IH_ARCH IH_ARCH_ARM
--#elif defined(__I386__) || defined(__x86_64__)
-+#elif defined(__I386__) || defined(__x86_64__) || defined(__i386__)
- #define IH_ARCH IH_ARCH_I386
- #elif defined(__mips__)
- #define IH_ARCH IH_ARCH_MIPS
+diff --git a/arch/x86/include/asm/types.h b/arch/x86/include/asm/types.h
+index b0218d2..d473405 100644
+--- a/arch/x86/include/asm/types.h
++++ b/arch/x86/include/asm/types.h
+@@ -29,12 +29,16 @@ typedef unsigned int __u32;
+ typedef __signed__ long long __s64;
+ typedef unsigned long long __u64;
+ 
++typedef signed char s8;
+ typedef unsigned char u8;
+ 
++typedef signed short s16;
+ typedef unsigned short u16;
+ 
++typedef signed int s32;
+ typedef unsigned int u32;
+ 
++typedef signed long long s64;
+ typedef unsigned long long u64;
+ 
+ #endif /* __ASSEMBLY__ */
 -- 
 1.8.3
 
