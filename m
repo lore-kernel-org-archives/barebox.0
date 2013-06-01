@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uiayc-0006mD-Js
- for barebox@lists.infradead.org; Sat, 01 Jun 2013 01:51:27 +0000
-Received: by mail-la0-f43.google.com with SMTP id fe20so458437lab.30
- for <barebox@lists.infradead.org>; Fri, 31 May 2013 18:51:03 -0700 (PDT)
+ id 1Uib42-0006om-S1
+ for barebox@lists.infradead.org; Sat, 01 Jun 2013 01:57:03 +0000
+Received: by mail-la0-f50.google.com with SMTP id ed20so1950330lab.9
+ for <barebox@lists.infradead.org>; Fri, 31 May 2013 18:56:40 -0700 (PDT)
 MIME-Version: 1.0
-Date: Sat, 1 Jun 2013 10:51:03 +0900
-Message-ID: <CAJBvFxM9zECHftuSLWfLaiN+ZiVRZQjx0zTggUD3KVRttRBTtg@mail.gmail.com>
+Date: Sat, 1 Jun 2013 10:56:40 +0900
+Message-ID: <CAJBvFxNw3yip2gozgC6-cnxL5=OVMOZ9xBy5ZLhY0grSjyonQA@mail.gmail.com>
 From: Masaki Muranaka <monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,28 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bootm command support for x86
+Subject: [patch][x86] Avoid build error on "config SPI" is y
 To: barebox@lists.infradead.org
 
 Hello,
 
-It enables to build bootm command on generic_x86.
-I'm not sure but I guess we don't need defined(__I386__) check.
-I kept it for now.
+In case he configures with make ARCH=x85 menuconfig,
+config SPI will be set to "y". And he will got an error on spi.h.
 
-diff --git a/include/image.h b/include/image.h
-index 219419b..0c8a4b1 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -89,7 +89,7 @@
- #define IH_ARCH IH_ARCH_PPC
- #elif defined(__ARM__)
- #define IH_ARCH IH_ARCH_ARM
--#elif defined(__I386__) || defined(__x86_64__)
-+#elif defined(__I386__) || defined(__x86_64__) || defined(__i386__)
- #define IH_ARCH IH_ARCH_I386
- #elif defined(__mips__)
- #define IH_ARCH IH_ARCH_MIPS
+After applied this patch, the error will be fixed.
+
+diff --git a/arch/x86/include/asm/types.h b/arch/x86/include/asm/types.h
+index b0218d2..d473405 100644
+--- a/arch/x86/include/asm/types.h
++++ b/arch/x86/include/asm/types.h
+@@ -29,12 +29,16 @@ typedef unsigned int __u32;
+ typedef __signed__ long long __s64;
+ typedef unsigned long long __u64;
+
++typedef signed char s8;
+ typedef unsigned char u8;
+
++typedef signed short s16;
+ typedef unsigned short u16;
+
++typedef signed int s32;
+ typedef unsigned int u32;
+
++typedef signed long long s64;
+ typedef unsigned long long u64;
+
+ #endif /* __ASSEMBLY__ */
 
 
 --
