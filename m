@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-x236.google.com ([2607:f8b0:400e:c01::236])
+Received: from mail-pd0-f180.google.com ([209.85.192.180])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uj87O-0003cW-Lp
- for barebox@lists.infradead.org; Sun, 02 Jun 2013 13:14:43 +0000
-Received: by mail-pb0-f54.google.com with SMTP id ro12so4476900pbb.13
- for <barebox@lists.infradead.org>; Sun, 02 Jun 2013 06:14:20 -0700 (PDT)
+ id 1Uj8pH-000435-9a
+ for barebox@lists.infradead.org; Sun, 02 Jun 2013 14:00:03 +0000
+Received: by mail-pd0-f180.google.com with SMTP id 14so4457908pdc.39
+ for <barebox@lists.infradead.org>; Sun, 02 Jun 2013 06:59:40 -0700 (PDT)
 From: Masaki Muranaka <monaka@monami-ya.jp>
-Date: Sun,  2 Jun 2013 22:14:09 +0900
-Message-Id: <1370178849-37125-1-git-send-email-monaka@monami-ya.com>
+Date: Sun,  2 Jun 2013 22:59:19 +0900
+Message-Id: <1370181559-53032-1-git-send-email-monaka@monami-ya.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,25 +21,164 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Remove ftstc(). It is declared but not implemented.
+Subject: [PATCH] Provide and use dirent.h.
 To: barebox@lists.infradead.org
 
+It is for compatibility with the POSIX standard.
 ---
- include/stdio.h | 1 -
- 1 file changed, 1 deletion(-)
+ commands/ls.c          |  2 +-
+ common/complete.c      |  2 +-
+ common/hush.c          |  2 +-
+ fs/ramfs.c             |  1 +
+ include/dirent.h       | 25 +++++++++++++++++++++++++
+ include/fs.h           | 16 +---------------
+ lib/glob.c             |  2 +-
+ lib/recursive_action.c |  2 +-
+ 8 files changed, 32 insertions(+), 20 deletions(-)
+ create mode 100644 include/dirent.h
 
-diff --git a/include/stdio.h b/include/stdio.h
-index 5c091a8..ff2572e 100644
---- a/include/stdio.h
-+++ b/include/stdio.h
-@@ -101,7 +101,6 @@ static inline void putchar(char c)
- int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
- int	fputs(int file, const char *s);
- int	fputc(int file, const char c);
--int	ftstc(int file);
- int	fgetc(int file);
+diff --git a/commands/ls.c b/commands/ls.c
+index f2d9903..2b1b08b 100644
+--- a/commands/ls.c
++++ b/commands/ls.c
+@@ -19,7 +19,7 @@
  
- #endif /* __STDIO_H */
+ #include <common.h>
+ #include <command.h>
+-#include <fs.h>
++#include <dirent.h>
+ #include <linux/stat.h>
+ #include <errno.h>
+ #include <malloc.h>
+diff --git a/common/complete.c b/common/complete.c
+index 9206ef0..1fdc320 100644
+--- a/common/complete.c
++++ b/common/complete.c
+@@ -17,7 +17,7 @@
+ #include <common.h>
+ #include <complete.h>
+ #include <xfuncs.h>
+-#include <fs.h>
++#include <dirent.h>
+ #include <linux/stat.h>
+ #include <libgen.h>
+ #include <command.h>
+diff --git a/common/hush.c b/common/hush.c
+index b5e111a..64c0b06 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -114,7 +114,7 @@
+ #include <command.h>        /* find_cmd */
+ #include <driver.h>
+ #include <errno.h>
+-#include <fs.h>
++#include <dirent.h>
+ #include <libbb.h>
+ #include <glob.h>
+ #include <getopt.h>
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index f45a454..3f9df7c 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -21,6 +21,7 @@
+ #include <driver.h>
+ #include <init.h>
+ #include <malloc.h>
++#include <dirent.h>
+ #include <fs.h>
+ #include <command.h>
+ #include <errno.h>
+diff --git a/include/dirent.h b/include/dirent.h
+new file mode 100644
+index 0000000..2faee78
+--- /dev/null
++++ b/include/dirent.h
+@@ -0,0 +1,25 @@
++#ifndef BAREBOX_DIRENT_H__
++#define BAREBOX_DIRENT_H__
++
++struct device_d;
++struct fs_driver_d;
++struct node_d;
++
++struct dirent {
++	char d_name[256];
++};
++
++typedef struct dir {
++	struct device_d *dev;
++	struct fs_driver_d *fsdrv;
++	struct node_d *node;
++	struct dirent d;
++	void *priv; /* private data for the fs driver */
++} DIR;
++
++DIR *opendir(const char *pathname);
++struct dirent *readdir(DIR *dir);
++int closedir(DIR *dir);
++
++
++#endif /* BAREBOX_DIRENT_H__ */
+diff --git a/include/fs.h b/include/fs.h
+index 7c4e461..0984da1 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -10,17 +10,7 @@ struct partition;
+ struct node_d;
+ struct stat;
+ 
+-struct dirent {
+-	char d_name[256];
+-};
+-
+-typedef struct dir {
+-	struct device_d *dev;
+-	struct fs_driver_d *fsdrv;
+-	struct node_d *node;
+-	struct dirent d;
+-	void *priv; /* private data for the fs driver */
+-} DIR;
++#include <dirent.h>
+ 
+ typedef struct filep {
+ 	struct device_d *dev; /* The device this FILE belongs to              */
+@@ -133,10 +123,6 @@ int rmdir (const char *pathname);
+ const char *getcwd(void);
+ int chdir(const char *pathname);
+ 
+-DIR *opendir(const char *pathname);
+-struct dirent *readdir(DIR *dir);
+-int closedir(DIR *dir);
+-
+ int symlink(const char *pathname, const char *newpath);
+ int readlink(const char *path, char *buf, size_t bufsiz);
+ 
+diff --git a/lib/glob.c b/lib/glob.c
+index 1b0137b..7a522a9 100644
+--- a/lib/glob.c
++++ b/lib/glob.c
+@@ -17,7 +17,7 @@ Cambridge, MA 02139, USA.  */
+ 
+ #include <common.h>
+ #include <errno.h>
+-#include <fs.h>
++#include <dirent.h>
+ #include <linux/stat.h>
+ #include <malloc.h>
+ #include <xfuncs.h>
+diff --git a/lib/recursive_action.c b/lib/recursive_action.c
+index 345d3db..06e60b8 100644
+--- a/lib/recursive_action.c
++++ b/lib/recursive_action.c
+@@ -9,7 +9,7 @@
+ #ifdef __BAREBOX__
+ 
+ #include <common.h>
+-#include <fs.h>
++#include <dirent.h>
+ #include <linux/stat.h>
+ #include <malloc.h>
+ #include <libbb.h>
 -- 
 1.8.3
 
