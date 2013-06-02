@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f297.mail.ru ([217.69.129.79])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjAT1-0005TP-DK
- for barebox@lists.infradead.org; Sun, 02 Jun 2013 15:45:13 +0000
-Date: Sun, 2 Jun 2013 17:44:44 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130602154444.GU32299@pengutronix.de>
-References: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
- <1370019244-7873-8-git-send-email-renaud.barbier@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1370019244-7873-8-git-send-email-renaud.barbier@ge.com>
+ id 1UjAVZ-0005Zx-Jr
+ for barebox@lists.infradead.org; Sun, 02 Jun 2013 15:47:51 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Sun, 02 Jun 2013 19:47:24 +0400
+Message-ID: <1370188044.845875578@f297.mail.ru>
+In-Reply-To: <1370178849-37125-1-git-send-email-monaka@monami-ya.com>
+References: <1370178849-37125-1-git-send-email-monaka@monami-ya.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,85 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/8] ppc 8xxx: core DDR driver functions
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gUmVtb3ZlIGZ0c3RjKCkuIEl0IGlzIGRlY2xhcmVkIGJ1?=
+ =?UTF-8?B?dCBub3QgaW1wbGVtZW50ZWQu?=
+To: =?UTF-8?B?TWFzYWtpIE11cmFuYWth?= <monaka@monami-ya.jp>
 Cc: barebox@lists.infradead.org
 
-On Fri, May 31, 2013 at 05:54:03PM +0100, Renaud Barbier wrote:
-> This file is imported from U-Boot as is.
-> 
-> This code provides the 8xxx memory controller core driver interface.
-> 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 > ---
->  arch/ppc/ddr-8xxx/main.c |  667 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 files changed, 667 insertions(+), 0 deletions(-)
->  create mode 100644 arch/ppc/ddr-8xxx/main.c
+>  include/stdio.h | 1 -
+>  1 file changed, 1 deletion(-)
 > 
+> diff --git a/include/stdio.h b/include/stdio.h
+> index 5c091a8..ff2572e 100644
+> --- a/include/stdio.h
+> +++ b/include/stdio.h
+> @@ -101,7 +101,6 @@ static inline void putchar(char c)
+>  int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
+>  int	fputs(int file, const char *s);
+>  int	fputc(int file, const char c);
+> -int	ftstc(int file);
+>  int	fgetc(int file);
+>  
+>  #endif /* __STDIO_H */
+> -- 
 
-[...]
+Here (and in some other pathes) is missing Signed-off-by line.
+Additionally, I want to focus on the fact that the address of From and Signed-off-by differ.
+Git documentation says not to have been used aliases.
+So, I think this field should be equal in the future.
 
-> +
-> +/*
-> + * fsl_ddr_sdram() -- this is the main function to be called by
-> + *	initdram() in the board file.
-> + *
-> + * It returns amount of memory configured in bytes.
-> + */
-> +phys_size_t fsl_ddr_sdram(void)
-> +{
-
-THe behaviour of this function is defined by:
-
-CONFIG_BUFFER_SIZE
-CONFIG_CHIP_SELECT_QUAD_CAPABLE
-CONFIG_CHIP_SELECTS_PER_CTRL
-CONFIG_DDR_ECC
-CONFIG_DDR_SPD
-CONFIG_DIMM_SLOTS_PER_CTLR
-CONFIG_E500MC
-CONFIG_E6500
-CONFIG_ECC_INIT_VIA_DDRCONTROLLER
-CONFIG_FSL_DDR1
-CONFIG_FSL_DDR2
-CONFIG_FSL_DDR3
-CONFIG_FSL_DDR_FIRST_SLOT_QUAD_CAPABLE
-CONFIG_FSL_DDR_INTERACTIVE
-CONFIG_FSL_SDRAM_TYPE
-CONFIG_HWCONFIG
-CONFIG_MAX_MEM_MAPPED
-CONFIG_MEM_INIT_VALUE
-CONFIG_NUM_DDR_CONTROLLERS
-CONFIG_PHYS_64BIT
-CONFIG_SPD_EEPROM
-CONFIG_SYS_DDR_RAW_TIMING
-CONFIG_SYS_DIMM_SLOTS_PER_CTLR
-CONFIG_SYS_FSL_DDR_VER
-CONFIG_SYS_IMMR
-CONFIG_SYS_MPC8xxx_DDR2_ADDR
-CONFIG_SYS_MPC8xxx_DDR3_ADDR
-CONFIG_SYS_MPC8xxx_DDR_ADDR
-CONFIG_SYS_NUM_DDR_CTLRS
-
-Some of these a board specific, others are SoC specific, but all are
-input parameters to this function. The prototype should really be:
-
-phys_size_t mpc8xxx_setup_ddr(struct mpc8xxx_ddr_params *)
-
-(or maybe mpc8xxx_setup_ddr1/2/3 to be able to let the linker throw away
-some unused code)
-
-Code written in CPP rather than C was one of the major reasons why I
-originally wrote barebox, so please let's not reintroduce this.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
