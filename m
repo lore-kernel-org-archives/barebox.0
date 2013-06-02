@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f180.google.com ([209.85.217.180])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uj9mc-0004nf-Mr
- for barebox@lists.infradead.org; Sun, 02 Jun 2013 15:01:23 +0000
-Received: by mail-lb0-f180.google.com with SMTP id r10so3006563lbi.39
- for <barebox@lists.infradead.org>; Sun, 02 Jun 2013 08:01:00 -0700 (PDT)
+ id 1UjAT1-0005TP-DK
+ for barebox@lists.infradead.org; Sun, 02 Jun 2013 15:45:13 +0000
+Date: Sun, 2 Jun 2013 17:44:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130602154444.GU32299@pengutronix.de>
+References: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
+ <1370019244-7873-8-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
-In-Reply-To: <1370102204-74399-1-git-send-email-monaka@monami-ya.com>
-References: <1370102204-74399-1-git-send-email-monaka@monami-ya.com>
-Date: Mon, 3 Jun 2013 00:01:00 +0900
-Message-ID: <CAJBvFxOLE6=LnV2aeYJSev3aiimaf9U8Wms7SLFsc-Y_j7SbBQ@mail.gmail.com>
-From: Masaki Muranaka <monaka@monami-ya.jp>
+Content-Disposition: inline
+In-Reply-To: <1370019244-7873-8-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,153 +23,84 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Use FILE structure for stdin/stdout/stderr.
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 7/8] ppc 8xxx: core DDR driver functions
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-Hello,
-
-This patch has side effects to echo.c.
-Please reject it for now. I'm working in progress. I'll re-send soon.
-
-2013/6/2  <monaka@monami-ya.jp>:
-> From: Masaki Muranaka <monaka@monami-ya.com>
->
-> Signed-off-by: Masaki Muranaka <monaka@monami-ya.com>
+On Fri, May 31, 2013 at 05:54:03PM +0100, Renaud Barbier wrote:
+> This file is imported from U-Boot as is.
+> 
+> This code provides the 8xxx memory controller core driver interface.
+> 
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 > ---
->  common/console.c        |  6 +++---
->  common/console_common.c | 19 +++++++++----------
->  include/filetype.h      |  2 ++
->  include/stdio.h         | 17 +++++++++--------
->  4 files changed, 23 insertions(+), 21 deletions(-)
->
-> diff --git a/common/console.c b/common/console.c
-> index a0a06f6..7a8ac4f 100644
-> --- a/common/console.c
-> +++ b/common/console.c
-> @@ -246,13 +246,13 @@ int getc(void)
->  }
->  EXPORT_SYMBOL(getc);
->
-> -int fgetc(int fd)
-> +int fgetc(FILE *file)
->  {
->         char c;
->
-> -       if (!fd)
-> +       if (file == stdin)
->                 return getc();
-> -       return read(fd, &c, 1);
-> +       return read(file->no, &c, 1);
->  }
->  EXPORT_SYMBOL(fgetc);
->
-> diff --git a/common/console_common.c b/common/console_common.c
-> index d139d1a..34713f9 100644
-> --- a/common/console_common.c
-> +++ b/common/console_common.c
-> @@ -66,7 +66,7 @@ EXPORT_SYMBOL(vprintf);
->
->  #endif /* !CONFIG_CONSOLE_NONE */
->
-> -int fprintf(int file, const char *fmt, ...)
-> +int fprintf(FILE *file, const char *fmt, ...)
->  {
->         va_list args;
->         char printbuffer[CFG_PBSIZE];
-> @@ -85,26 +85,25 @@ int fprintf(int file, const char *fmt, ...)
->  }
->  EXPORT_SYMBOL(fprintf);
->
-> -int fputs(int fd, const char *s)
-> +int fputs(FILE *file, const char *s)
->  {
-> -       if (fd == 1)
-> +       if (file == stdout)
->                 return puts(s);
-> -       else if (fd == 2)
-> +       else if (file == stderr)
->                 return eputs(s);
->         else
-> -               return write(fd, s, strlen(s));
-> +               return write(file->no, s, strlen(s));
->  }
->  EXPORT_SYMBOL(fputs);
->
-> -int fputc(int fd, char c)
-> +int fputc(FILE *file, char c)
->  {
-> -       if (fd == 1)
-> +       if (file == stdout)
->                 putchar(c);
-> -       else if (fd == 2)
-> +       else if (file == stderr)
->                 eputc(c);
->         else
-> -               return write(fd, &c, 1);
-> -
-> +               return write(file->no, &c, 1);
->         return 0;
->  }
->  EXPORT_SYMBOL(fputc);
-> diff --git a/include/filetype.h b/include/filetype.h
-> index ee777ac..c73c64a 100644
-> --- a/include/filetype.h
-> +++ b/include/filetype.h
-> @@ -1,6 +1,8 @@
->  #ifndef __FILE_TYPE_H
->  #define __FILE_TYPE_H
->
-> +#include <linux/string.h>
+>  arch/ppc/ddr-8xxx/main.c |  667 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 667 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/ppc/ddr-8xxx/main.c
+> 
+
+[...]
+
 > +
->  /*
->   * List of file types we know
->   */
-> diff --git a/include/stdio.h b/include/stdio.h
-> index 5c091a8..00d1ed7 100644
-> --- a/include/stdio.h
-> +++ b/include/stdio.h
-> @@ -3,6 +3,7 @@
->
->  #include <stdarg.h>
->  #include <console.h>
-> +#include <fs.h>
->
->  /*
->   * STDIO based functions (can always be used)
-> @@ -93,15 +94,15 @@ static inline void putchar(char c)
->   * FILE based functions
->   */
->
-> -#define stdin          0
-> -#define stdout         1
-> -#define stderr         2
-> +#define stdin          ((FILE *)0x10)
-> +#define stdout         ((FILE *)0x11)
-> +#define stderr         ((FILE *)0x12)
->  #define MAX_FILES      128
->
-> -int    fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
-> -int    fputs(int file, const char *s);
-> -int    fputc(int file, const char c);
-> -int    ftstc(int file);
-> -int    fgetc(int file);
-> +int    fprintf(FILE *file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
-> +int    fputs(FILE *file, const char *s);
-> +int    fputc(FILE *file, const char c);
-> +int    ftstc(FILE *file);
-> +int    fgetc(FILE *file);
->
->  #endif /* __STDIO_H */
-> --
-> 1.8.3
->
+> +/*
+> + * fsl_ddr_sdram() -- this is the main function to be called by
+> + *	initdram() in the board file.
+> + *
+> + * It returns amount of memory configured in bytes.
+> + */
+> +phys_size_t fsl_ddr_sdram(void)
+> +{
 
+THe behaviour of this function is defined by:
 
+CONFIG_BUFFER_SIZE
+CONFIG_CHIP_SELECT_QUAD_CAPABLE
+CONFIG_CHIP_SELECTS_PER_CTRL
+CONFIG_DDR_ECC
+CONFIG_DDR_SPD
+CONFIG_DIMM_SLOTS_PER_CTLR
+CONFIG_E500MC
+CONFIG_E6500
+CONFIG_ECC_INIT_VIA_DDRCONTROLLER
+CONFIG_FSL_DDR1
+CONFIG_FSL_DDR2
+CONFIG_FSL_DDR3
+CONFIG_FSL_DDR_FIRST_SLOT_QUAD_CAPABLE
+CONFIG_FSL_DDR_INTERACTIVE
+CONFIG_FSL_SDRAM_TYPE
+CONFIG_HWCONFIG
+CONFIG_MAX_MEM_MAPPED
+CONFIG_MEM_INIT_VALUE
+CONFIG_NUM_DDR_CONTROLLERS
+CONFIG_PHYS_64BIT
+CONFIG_SPD_EEPROM
+CONFIG_SYS_DDR_RAW_TIMING
+CONFIG_SYS_DIMM_SLOTS_PER_CTLR
+CONFIG_SYS_FSL_DDR_VER
+CONFIG_SYS_IMMR
+CONFIG_SYS_MPC8xxx_DDR2_ADDR
+CONFIG_SYS_MPC8xxx_DDR3_ADDR
+CONFIG_SYS_MPC8xxx_DDR_ADDR
+CONFIG_SYS_NUM_DDR_CTLRS
+
+Some of these a board specific, others are SoC specific, but all are
+input parameters to this function. The prototype should really be:
+
+phys_size_t mpc8xxx_setup_ddr(struct mpc8xxx_ddr_params *)
+
+(or maybe mpc8xxx_setup_ddr1/2/3 to be able to let the linker throw away
+some unused code)
+
+Code written in CPP rather than C was one of the major reasons why I
+originally wrote barebox, so please let's not reintroduce this.
+
+Sascha
 
 -- 
---
-Masaki Muranaka
-Monami-ya LLC, Japan.
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
