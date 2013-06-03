@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f173.google.com ([209.85.217.173])
+Received: from mail-lb0-f174.google.com ([209.85.217.174])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjPcO-00088l-BL
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:55:52 +0000
-Received: by mail-lb0-f173.google.com with SMTP id t10so3501981lbi.32
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 00:55:29 -0700 (PDT)
+ id 1UjPjY-0008JY-GV
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 08:03:17 +0000
+Received: by mail-lb0-f174.google.com with SMTP id u10so3486118lbi.19
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 01:02:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20130603072427.GW32299@pengutronix.de>
+In-Reply-To: <20130603072604.GX32299@pengutronix.de>
 References: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
- <20130603072427.GW32299@pengutronix.de>
-Date: Mon, 3 Jun 2013 16:55:29 +0900
-Message-ID: <CAJBvFxN8nu2CkYMz-y4YJoKMQqu9y9LvkPXMg2Lgpm==7cv5Rw@mail.gmail.com>
+ <1370184829-66576-2-git-send-email-monaka@monami-ya.com>
+ <20130603072604.GX32299@pengutronix.de>
+Date: Mon, 3 Jun 2013 17:02:53 +0900
+Message-ID: <CAJBvFxPc5-O9FL0VsM=LfzdOn4wCyZ89zD+aLJoAa9=86x5kRQ@mail.gmail.com>
 From: Masaki Muranaka <monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,48 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] Remove unnesessory malloc.h inclusions.
+Subject: Re: [PATCH 2/3] Refactor malloc.h.
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello Sascha,
+Hello,
 
-Opps sorry. I'll revert includes that causes warnings.
+My wish is to use POSIX/ISO-C-hosted way in commands/ and lib/
+They are similar to user-land in Unix.
+
+But I'm not sure if it's better replacing all malloc.h to stdlib.h.
+common/, fs/ and some places are equivalent to kernel inside.
+There are not always required to confirm to POSIX/ISO-C-hosted.
+
+
 
 2013/6/3 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Sun, Jun 02, 2013 at 11:53:47PM +0900, Masaki Muranaka wrote:
+> On Sun, Jun 02, 2013 at 11:53:48PM +0900, Masaki Muranaka wrote:
+>>  Some functions should be defined in stdlib.h or unistd.h.
 >> ---
->> diff --git a/common/resource.c b/common/resource.c
->> index 5795e79..954357e 100644
->> --- a/common/resource.c
->> +++ b/common/resource.c
->> @@ -16,7 +16,6 @@
->>   * GNU General Public License for more details.
->>   */
->>  #include <common.h>
->> -#include <malloc.h>
->>  #include <errno.h>
->>  #include <init.h>
->>  #include <linux/ioport.h>
+>>  include/malloc.h       |  8 +++-----
+>>  include/malloc_isoc.h  | 11 +++++++++++
+>>  include/malloc_posix.h |  8 ++++++++
+>>  include/stdlib.h       |  1 +
+>>  include/unistd.h       |  6 ++++++
+>>  5 files changed, 29 insertions(+), 5 deletions(-)
+>>  create mode 100644 include/malloc_isoc.h
+>>  create mode 100644 include/malloc_posix.h
+>>  create mode 100644 include/unistd.h
+>>
+>> diff --git a/include/malloc.h b/include/malloc.h
+>> index 7b9b062..9554597 100644
+>> --- a/include/malloc.h
+>> +++ b/include/malloc.h
+>> @@ -5,20 +5,18 @@
+>>
+>>  /* Public routines */
+>>
+>> -void* malloc(size_t);
+>> -void free(void*);
+>> -void* realloc(void*, size_t);
+>> +#include <malloc_isoc.h>
+>> +#include <malloc_posix.h>
+>> +
+>>  void* memalign(size_t, size_t);
+>>  void* vallocc(size_t);
+>>  void* pvalloc(size_t);
+>> -void* calloc(size_t, size_t);
+>>  void cfree(void*);
+>>  int malloc_trim(size_t);
+>>  size_t malloc_usable_size(void*);
+>>  void malloc_stats(void);
+>>  int mallopt(int, int);
+>>  struct mallinfo mallinfo(void);
+>> -void *sbrk(ptrdiff_t increment);
 >
-> Applying this patch leads to several compiler warnings:
->
-> common/resource.c: In function 'release_region':
-> common/resource.c:105:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-> commands/readline.c: In function 'do_readline':
-> commands/readline.c:33:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-> commands/time.c: In function 'do_time':
-> commands/time.c:41:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-> commands/oftree.c: In function 'do_oftree':
-> commands/oftree.c:197:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-> commands/readlink.c: In function 'do_readlink':
-> commands/readlink.c:58:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-> commands/global.c: In function 'globalvar_set':
-> commands/global.c:34:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
->
-> So indeed we do not use malloc in these files, but we still use free.
-> I think you would have to replace the includes with #include <stdlib.h>
-> rather than removing them completely.
+> Wouldn't it be nicer to move the prototypes to unistd.h / stdlib.h
+> instead of adding new files?
 >
 > Sascha
 >
@@ -77,7 +93,7 @@ Opps sorry. I'll revert includes that causes warnings.
 
 
 
---
+-- 
 --
 Masaki Muranaka
 Monami-ya LLC, Japan.
