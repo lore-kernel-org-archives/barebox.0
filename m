@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f174.google.com ([209.85.217.174])
+Received: from mail-bk0-x22c.google.com ([2a00:1450:4008:c01::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjSoH-0004xU-HA
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 11:20:22 +0000
-Received: by mail-lb0-f174.google.com with SMTP id u10so3598089lbi.5
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 04:19:57 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  3 Jun 2013 14:53:23 +0400
-Message-Id: <1370256807-26755-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
-References: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
+ id 1UjduQ-0005qz-7h
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 23:11:26 +0000
+Received: by mail-bk0-f44.google.com with SMTP id r7so642481bkg.31
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 16:11:03 -0700 (PDT)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Tue,  4 Jun 2013 01:13:49 +0200
+Message-Id: <1370301232-12962-3-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
+References: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +23,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/5] MIPS: rzx50: prepare for new debug_ll
+Subject: [PATCH 2/5] common: add ALIGN_DOWN macro
 To: barebox@lists.infradead.org
 
-Set DEBUG_LL_UART_DIVISOR to use <asm/debug_ll_ns16550.h>.
-
-The JZ4755 uses 24 MHz as the main reference frequency (EXCLK).
-The UART controller can work on full EXCLK or on EXCLK/2.
-Just now we use EXCLK/2 legacy clock setup made by U-Boot.
-So set UART controller base frequency to 12 MHz.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ include/common.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h b/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
-index 7bf66b1..2a55dea 100644
---- a/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
-+++ b/arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h
-@@ -34,4 +34,8 @@
+diff --git a/include/common.h b/include/common.h
+index 293ca49..fc2c8ca 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -184,6 +184,7 @@ int run_shell(void);
  
- #define DEBUG_LL_UART_SHIFT	2
+ #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
+ #define __ALIGN_MASK(x, mask)	(((x) + (mask)) & ~(mask))
++#define ALIGN_DOWN(x, a)	((x) & ~((typeof(x))(a) - 1))
+ #define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
+ #define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
  
-+#define DEBUG_LL_UART_CLK	(12000000 / 16)
-+#define DEBUG_LL_UART_BPS	CONFIG_BAUDRATE
-+#define DEBUG_LL_UART_DIVISOR	(DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-+
- #endif /* __INCLUDE_DEBUG_LL_JZ4750D_H__ */
 -- 
-1.7.10.4
+1.8.3
 
 
 _______________________________________________
