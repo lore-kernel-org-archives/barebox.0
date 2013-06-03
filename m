@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjSL2-0004Fj-HR
+ id 1UjSL2-0004Fl-HP
  for barebox@lists.infradead.org; Mon, 03 Jun 2013 10:50:10 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  3 Jun 2013 12:49:38 +0200
-Message-Id: <1370256580-3113-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  3 Jun 2013 12:49:40 +0200
+Message-Id: <1370256580-3113-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1370256580-3113-1-git-send-email-s.hauer@pengutronix.de>
 References: <1370256580-3113-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,80 +21,87 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] mci: Print more info
+Subject: [PATCH 4/4] mci: Use tran_speed field to fix highspeed MMC card clock
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <jbe@pengutronix.de>
 
-In devinfo for the card also print:
+The tran_speed field as decoded from csd is valid in most cases,
+so use it to determine the maximum clock we can support. It is
+not valid though for MMC highspeed cards, in this case the
+csd contains invalid values and we have to set tran_speed explicitly
+to the maximum speed. As the values passed into mci_set_clock are
+now based on tran_speed we no longer have to limit the rate to
+tran_speed in mci_set_clock.
 
-- capabilities for host and card
-- current bus width
-- current clock
+The (intended) effect of this patch is that highspeed MMC cards are
+no longer limited to non highspeed rates.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mci-core.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/mci/mci-core.c | 19 ++++++-------------
+ include/mci.h          |  2 +-
+ 2 files changed, 7 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index fc921e5..86600ec 100644
+index 74aab91..6fc9805 100644
 --- a/drivers/mci/mci-core.c
 +++ b/drivers/mci/mci-core.c
-@@ -1366,6 +1366,16 @@ static unsigned extract_mtd_year(struct mci *mci)
- 		return UNSTUFF_BITS(mci->cid, 8, 4) + 1997;
+@@ -669,10 +669,6 @@ static void mci_set_clock(struct mci *mci, unsigned clock)
+ 	if (clock < host->f_min)
+ 		clock = host->f_min;
+ 
+-	/* check against the limit at the card's side */
+-	if (mci->tran_speed != 0 && clock > mci->tran_speed)
+-		clock = mci->tran_speed;
+-
+ 	host->clock = clock;	/* the new target frequency */
+ 	mci_set_ios(mci);
  }
- 
-+static void mci_print_caps(unsigned caps)
-+{
-+	printf("  capabilities: %s%s%s%s%s\n",
-+		caps & MMC_CAP_4_BIT_DATA ? "4bit " : "",
-+		caps & MMC_CAP_8_BIT_DATA ? "8bit " : "",
-+		caps & MMC_CAP_SD_HIGHSPEED ? "sd-hs " : "",
-+		caps & MMC_CAP_MMC_HIGHSPEED ? "mmc-hs " : "",
-+		caps & MMC_CAP_MMC_HIGHSPEED_52MHZ ? "mmc-52MHz " : "");
-+}
+@@ -924,11 +920,8 @@ static int mci_startup_sd(struct mci *mci)
+ 		}
+ 		mci_set_bus_width(mci, MMC_BUS_WIDTH_4);
+ 	}
+-	/* if possible, speed up the transfer */
+-	if (mci_caps(mci) & MMC_CAP_SD_HIGHSPEED)
+-		mci_set_clock(mci, 50000000);
+-	else
+-		mci_set_clock(mci, 25000000);
 +
- /**
-  * Output some valuable information when the user runs 'devinfo' on an MCI device
-  * @param mci MCI device instance
-@@ -1373,13 +1383,28 @@ static unsigned extract_mtd_year(struct mci *mci)
- static void mci_info(struct device_d *dev)
- {
- 	struct mci *mci = container_of(dev, struct mci, dev);
-+	struct mci_host *host = mci->host;
-+	int bw;
++	mci_set_clock(mci, mci->tran_speed);
  
- 	if (mci->ready_for_use == 0) {
- 		printf(" No information available:\n  MCI card not probed yet\n");
- 		return;
+ 	return 0;
+ }
+@@ -950,13 +943,13 @@ static int mci_startup_mmc(struct mci *mci)
+ 	/* if possible, speed up the transfer */
+ 	if (mci_caps(mci) & MMC_CAP_MMC_HIGHSPEED) {
+ 		if (mci->card_caps & MMC_CAP_MMC_HIGHSPEED_52MHZ)
+-			mci_set_clock(mci, 52000000);
++			mci->tran_speed = 52000000;
+ 		else
+-			mci_set_clock(mci, 26000000);
+-	} else {
+-		mci_set_clock(mci, 20000000);
++			mci->tran_speed = 26000000;
  	}
  
--	printf(" Card:\n");
-+	printf("Host information:\n");
-+	printf("  current clock: %d\n", host->clock);
++	mci_set_clock(mci, mci->tran_speed);
 +
-+	if (host->bus_width == MMC_BUS_WIDTH_8)
-+		bw = 8;
-+	else if (host->bus_width == MMC_BUS_WIDTH_4)
-+		bw = 4;
-+	else
-+		bw = 1;
-+
-+	printf("  current buswidth: %d\n", bw);
-+	mci_print_caps(host->host_caps);
-+
-+	printf("Card information:\n");
- 	if (mci->version < SD_VERSION_SD) {
- 		printf("  Attached is a MultiMediaCard (Version: %u.%u)\n",
- 			(mci->version >> 4) & 0xf, mci->version & 0xf);
-@@ -1396,6 +1421,7 @@ static void mci_info(struct device_d *dev)
- 	printf("   CSD: %08X-%08X-%08X-%08X\n", mci->csd[0], mci->csd[1],
- 		mci->csd[2], mci->csd[3]);
- 	printf("  Max. transfer speed: %u Hz\n", mci->tran_speed);
-+	mci_print_caps(mci->card_caps);
- 	printf("  Manufacturer ID: %02X\n", extract_mid(mci));
- 	printf("  OEM/Application ID: %04X\n", extract_oid(mci));
- 	printf("  Product name: '%c%c%c%c%c'\n", mci->cid[0] & 0xff,
+ 	/*
+ 	 * Unlike SD, MMC cards dont have a configuration register to notify
+ 	 * supported bus width. So bus test command should be run to identify
+diff --git a/include/mci.h b/include/mci.h
+index 3989f46..1ae27f0 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -342,7 +342,7 @@ struct mci {
+ 	unsigned csd[4];	/**< card's "card specific data register" */
+ 	unsigned cid[4];	/**< card's "card identification register" */
+ 	unsigned short rca;	/* FIXME */
+-	unsigned tran_speed;	/**< not yet used */
++	unsigned tran_speed;	/**< Maximum transfer speed */
+ 	/** currently used data block length for read accesses */
+ 	unsigned read_bl_len;
+ 	/** currently used data block length for write accesses */
 -- 
 1.8.2.rc2
 
