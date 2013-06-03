@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-pd0-f172.google.com ([209.85.192.172])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjPSW-0007ud-HG
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:45:41 +0000
-Received: by mail-la0-f51.google.com with SMTP id lx15so3154397lab.38
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 00:45:18 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20130603073740.GB32299@pengutronix.de>
-References: <1370181559-53032-1-git-send-email-monaka@monami-ya.com>
- <20130603073740.GB32299@pengutronix.de>
-Date: Mon, 3 Jun 2013 16:45:17 +0900
-Message-ID: <CAJBvFxPLF7Kb40R6DNEiNkx5_8CUrr-0jsiMBQge+6NPi57BNw@mail.gmail.com>
+ id 1UjPTu-0007vi-VZ
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:47:07 +0000
+Received: by mail-pd0-f172.google.com with SMTP id t10so1746118pdi.31
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 00:46:45 -0700 (PDT)
 From: Masaki Muranaka <monaka@monami-ya.jp>
+Date: Mon,  3 Jun 2013 16:46:33 +0900
+Message-Id: <1370245593-68520-1-git-send-email-monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,201 +16,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Provide and use dirent.h.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Fix typo.
+To: barebox@lists.infradead.org
 
-Hello, Sascha.
-I re-sent it with signed-off-by.
+This fix is harmless and obvious.
 
-2013/6/3 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Sun, Jun 02, 2013 at 10:59:19PM +0900, Masaki Muranaka wrote:
->> It is for compatibility with the POSIX standard.
->
-> This one also lacks a signed-off-by
->
-> Sascha
->
->> ---
->>  commands/ls.c          |  2 +-
->>  common/complete.c      |  2 +-
->>  common/hush.c          |  2 +-
->>  fs/ramfs.c             |  1 +
->>  include/dirent.h       | 25 +++++++++++++++++++++++++
->>  include/fs.h           | 16 +---------------
->>  lib/glob.c             |  2 +-
->>  lib/recursive_action.c |  2 +-
->>  8 files changed, 32 insertions(+), 20 deletions(-)
->>  create mode 100644 include/dirent.h
->>
->> diff --git a/commands/ls.c b/commands/ls.c
->> index f2d9903..2b1b08b 100644
->> --- a/commands/ls.c
->> +++ b/commands/ls.c
->> @@ -19,7 +19,7 @@
->>
->>  #include <common.h>
->>  #include <command.h>
->> -#include <fs.h>
->> +#include <dirent.h>
->>  #include <linux/stat.h>
->>  #include <errno.h>
->>  #include <malloc.h>
->> diff --git a/common/complete.c b/common/complete.c
->> index 9206ef0..1fdc320 100644
->> --- a/common/complete.c
->> +++ b/common/complete.c
->> @@ -17,7 +17,7 @@
->>  #include <common.h>
->>  #include <complete.h>
->>  #include <xfuncs.h>
->> -#include <fs.h>
->> +#include <dirent.h>
->>  #include <linux/stat.h>
->>  #include <libgen.h>
->>  #include <command.h>
->> diff --git a/common/hush.c b/common/hush.c
->> index b5e111a..64c0b06 100644
->> --- a/common/hush.c
->> +++ b/common/hush.c
->> @@ -114,7 +114,7 @@
->>  #include <command.h>        /* find_cmd */
->>  #include <driver.h>
->>  #include <errno.h>
->> -#include <fs.h>
->> +#include <dirent.h>
->>  #include <libbb.h>
->>  #include <glob.h>
->>  #include <getopt.h>
->> diff --git a/fs/ramfs.c b/fs/ramfs.c
->> index f45a454..3f9df7c 100644
->> --- a/fs/ramfs.c
->> +++ b/fs/ramfs.c
->> @@ -21,6 +21,7 @@
->>  #include <driver.h>
->>  #include <init.h>
->>  #include <malloc.h>
->> +#include <dirent.h>
->>  #include <fs.h>
->>  #include <command.h>
->>  #include <errno.h>
->> diff --git a/include/dirent.h b/include/dirent.h
->> new file mode 100644
->> index 0000000..2faee78
->> --- /dev/null
->> +++ b/include/dirent.h
->> @@ -0,0 +1,25 @@
->> +#ifndef BAREBOX_DIRENT_H__
->> +#define BAREBOX_DIRENT_H__
->> +
->> +struct device_d;
->> +struct fs_driver_d;
->> +struct node_d;
->> +
->> +struct dirent {
->> +     char d_name[256];
->> +};
->> +
->> +typedef struct dir {
->> +     struct device_d *dev;
->> +     struct fs_driver_d *fsdrv;
->> +     struct node_d *node;
->> +     struct dirent d;
->> +     void *priv; /* private data for the fs driver */
->> +} DIR;
->> +
->> +DIR *opendir(const char *pathname);
->> +struct dirent *readdir(DIR *dir);
->> +int closedir(DIR *dir);
->> +
->> +
->> +#endif /* BAREBOX_DIRENT_H__ */
->> diff --git a/include/fs.h b/include/fs.h
->> index 7c4e461..0984da1 100644
->> --- a/include/fs.h
->> +++ b/include/fs.h
->> @@ -10,17 +10,7 @@ struct partition;
->>  struct node_d;
->>  struct stat;
->>
->> -struct dirent {
->> -     char d_name[256];
->> -};
->> -
->> -typedef struct dir {
->> -     struct device_d *dev;
->> -     struct fs_driver_d *fsdrv;
->> -     struct node_d *node;
->> -     struct dirent d;
->> -     void *priv; /* private data for the fs driver */
->> -} DIR;
->> +#include <dirent.h>
->>
->>  typedef struct filep {
->>       struct device_d *dev; /* The device this FILE belongs to              */
->> @@ -133,10 +123,6 @@ int rmdir (const char *pathname);
->>  const char *getcwd(void);
->>  int chdir(const char *pathname);
->>
->> -DIR *opendir(const char *pathname);
->> -struct dirent *readdir(DIR *dir);
->> -int closedir(DIR *dir);
->> -
->>  int symlink(const char *pathname, const char *newpath);
->>  int readlink(const char *path, char *buf, size_t bufsiz);
->>
->> diff --git a/lib/glob.c b/lib/glob.c
->> index 1b0137b..7a522a9 100644
->> --- a/lib/glob.c
->> +++ b/lib/glob.c
->> @@ -17,7 +17,7 @@ Cambridge, MA 02139, USA.  */
->>
->>  #include <common.h>
->>  #include <errno.h>
->> -#include <fs.h>
->> +#include <dirent.h>
->>  #include <linux/stat.h>
->>  #include <malloc.h>
->>  #include <xfuncs.h>
->> diff --git a/lib/recursive_action.c b/lib/recursive_action.c
->> index 345d3db..06e60b8 100644
->> --- a/lib/recursive_action.c
->> +++ b/lib/recursive_action.c
->> @@ -9,7 +9,7 @@
->>  #ifdef __BAREBOX__
->>
->>  #include <common.h>
->> -#include <fs.h>
->> +#include <dirent.h>
->>  #include <linux/stat.h>
->>  #include <malloc.h>
->>  #include <libbb.h>
->> --
->> 1.8.3
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
+---
+ include/stdio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-
+diff --git a/include/stdio.h b/include/stdio.h
+index 5c091a8..0eacdfc 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -70,7 +70,7 @@ static inline int ctrlc (void)
+ {
+ 	return 0;
+ }
+-#endif /* ARCH_HAS_CTRC */
++#endif /* ARCH_HAS_CTRLC */
+ 
+ #endif
+ 
 -- 
---
-Masaki Muranaka
-Monami-ya LLC, Japan.
+1.8.3
+
 
 _______________________________________________
 barebox mailing list
