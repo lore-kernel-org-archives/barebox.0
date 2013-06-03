@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x236.google.com ([2a00:1450:4008:c01::236])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjduQ-0005r4-O5
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 23:11:29 +0000
-Received: by mail-bk0-f54.google.com with SMTP id it19so744892bkc.41
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 16:11:04 -0700 (PDT)
+ id 1UjduS-0005r7-C2
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 23:11:30 +0000
+Received: by mail-bk0-f46.google.com with SMTP id na10so2254240bkb.5
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 16:11:06 -0700 (PDT)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Tue,  4 Jun 2013 01:13:50 +0200
-Message-Id: <1370301232-12962-4-git-send-email-alex.aring@gmail.com>
+Date: Tue,  4 Jun 2013 01:13:52 +0200
+Message-Id: <1370301232-12962-6-git-send-email-alex.aring@gmail.com>
 In-Reply-To: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
 References: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,408 +23,317 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] memtest: remove memtest command
+Subject: [PATCH 5/5] commands: add new memtest command
 To: barebox@lists.infradead.org
 
-Remove memtest command.
+This new memtest can test the whole unused memory. The new memtest
+command try to request the whole unused sdram regions on all banks and
+run the mem_test routine from common/memtest.c on it.
+
+The memtest command has only two parameters;
+  -i	Amount of iterations, default 1, iteration of 0 is endless.
+  -b	Set this to skip integrity check.(Do only a fast test for bus lines)
+
+If MMU support is enable, memtest try to run memtest twice. The first with
+cache enabled, the second with cache disabled.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
- commands/Kconfig   |   9 --
- commands/Makefile  |   1 -
- commands/memtest.c | 351 -----------------------------------------------------
- 3 files changed, 361 deletions(-)
- delete mode 100644 commands/memtest.c
+ commands/Kconfig   |  10 +++
+ commands/Makefile  |   1 +
+ commands/memtest.c | 250 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 261 insertions(+)
+ create mode 100644 commands/memtest.c
 
 diff --git a/commands/Kconfig b/commands/Kconfig
-index 6a759ce..add547f 100644
+index add547f..9135f5d 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -561,15 +561,6 @@ config CMD_NANDTEST
+@@ -561,6 +561,16 @@ config CMD_NANDTEST
  	select PARTITION_NEED_MTD
  	prompt "nandtest"
  
--config CMD_MTEST
--	tristate
--	prompt "mtest"
--
--config CMD_MTEST_ALTERNATIVE
--	bool
--	depends on CMD_MTEST
--	prompt "alternative mtest implementation"
--
++config CMD_MEMTEST
++    tristate
++    prompt "memtest"
++       help
++         The memtest command can test the registered barebox memory.
++         During this test barebox memory regions like heap, stack, ...
++	 will be skipped. If the tested architecture has MMU with PTE
++	 flags support, the memtest is running twice with cache enabled
++	 and with cache disabled
++
  endmenu
  
  menu "video command"
 diff --git a/commands/Makefile b/commands/Makefile
-index 953ecc2..9d34a56 100644
+index 9d34a56..0ae01a5 100644
 --- a/commands/Makefile
 +++ b/commands/Makefile
-@@ -13,7 +13,6 @@ obj-$(CONFIG_CMD_MW)		+= mw.o
- obj-$(CONFIG_CMD_MEMCMP)	+= memcmp.o
- obj-$(CONFIG_CMD_MEMCPY)	+= memcpy.o
- obj-$(CONFIG_CMD_MEMSET)	+= memset.o
--obj-$(CONFIG_CMD_MTEST)		+= memtest.o
- obj-$(CONFIG_CMD_EDIT)		+= edit.o
- obj-$(CONFIG_CMD_EXEC)		+= exec.o
- obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
+@@ -48,6 +48,7 @@ obj-$(CONFIG_CMD_SAVEENV)	+= saveenv.o
+ obj-$(CONFIG_CMD_LOADENV)	+= loadenv.o
+ obj-$(CONFIG_CMD_NAND)		+= nand.o
+ obj-$(CONFIG_CMD_NANDTEST)	+= nandtest.o
++obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
+ obj-$(CONFIG_CMD_TRUE)		+= true.o
+ obj-$(CONFIG_CMD_FALSE)		+= false.o
+ obj-$(CONFIG_CMD_VERSION)	+= version.o
 diff --git a/commands/memtest.c b/commands/memtest.c
-deleted file mode 100644
-index 2d64d00..0000000
---- a/commands/memtest.c
-+++ /dev/null
-@@ -1,351 +0,0 @@
--/*
-- * mtest - Perform a memory test
-- *
-- * (C) Copyright 2000
-- * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <command.h>
--#include <types.h>
--
--/*
-- * Perform a memory test. A more complete alternative test can be
-- * configured using CONFIG_CMD_MTEST_ALTERNATIVE. The complete test
-- * loops until interrupted by ctrl-c or by a failure of one of the
-- * sub-tests.
-- */
--#ifdef CONFIG_CMD_MTEST_ALTERNATIVE
--static int mem_test(ulong _start, ulong _end, ulong pattern_unused)
--{
--	vu_long *start = (vu_long *)_start;
--	vu_long *end   = (vu_long *)_end;
--	vu_long *addr;
--	ulong	val;
--	ulong	readback;
--	vu_long	addr_mask;
--	vu_long	offset;
--	vu_long	test_offset;
--	vu_long	pattern;
--	vu_long	temp;
--	vu_long	anti_pattern;
--	vu_long	num_words;
--#ifdef CFG_MEMTEST_SCRATCH
--	vu_long *dummy = (vu_long*)CFG_MEMTEST_SCRATCH;
--#else
--	vu_long *dummy = start;
--#endif
--	int	j;
--	int iterations = 1;
--
--	static const ulong bitpattern[] = {
--		0x00000001,	/* single bit */
--		0x00000003,	/* two adjacent bits */
--		0x00000007,	/* three adjacent bits */
--		0x0000000F,	/* four adjacent bits */
--		0x00000005,	/* two non-adjacent bits */
--		0x00000015,	/* three non-adjacent bits */
--		0x00000055,	/* four non-adjacent bits */
--		0xaaaaaaaa,	/* alternating 1/0 */
--	};
--
--	/* XXX: enforce alignment of start and end? */
--	for (;;) {
--		if (ctrlc()) {
--			putchar ('\n');
--			return 1;
--		}
--
--		printf("Iteration: %6d\r", iterations);
--		iterations++;
--
--		/*
--		 * Data line test: write a pattern to the first
--		 * location, write the 1's complement to a 'parking'
--		 * address (changes the state of the data bus so a
--		 * floating bus doen't give a false OK), and then
--		 * read the value back. Note that we read it back
--		 * into a variable because the next time we read it,
--		 * it might be right (been there, tough to explain to
--		 * the quality guys why it prints a failure when the
--		 * "is" and "should be" are obviously the same in the
--		 * error message).
--		 *
--		 * Rather than exhaustively testing, we test some
--		 * patterns by shifting '1' bits through a field of
--		 * '0's and '0' bits through a field of '1's (i.e.
--		 * pattern and ~pattern).
--		 */
--		addr = start;
--		/* XXX */
--		if (addr == dummy) ++addr;
--		for (j = 0; j < sizeof(bitpattern)/sizeof(bitpattern[0]); j++) {
--		    val = bitpattern[j];
--		    for(; val != 0; val <<= 1) {
--			*addr  = val;
--			*dummy  = ~val; /* clear the test data off of the bus */
--			readback = *addr;
--			if(readback != val) {
--			     printf ("FAILURE (data line): "
--				"expected 0x%08lx, actual 0x%08lx at address 0x%p\n",
--					  val, readback, addr);
--			}
--			*addr  = ~val;
--			*dummy  = val;
--			readback = *addr;
--			if(readback != ~val) {
--			    printf ("FAILURE (data line): "
--				"Is 0x%08lx, should be 0x%08lx at address 0x%p\n",
--					readback, ~val, addr);
--			}
--		    }
--		}
--
--		/*
--		 * Based on code whose Original Author and Copyright
--		 * information follows: Copyright (c) 1998 by Michael
--		 * Barr. This software is placed into the public
--		 * domain and may be used for any purpose. However,
--		 * this notice must not be changed or removed and no
--		 * warranty is either expressed or implied by its
--		 * publication or distribution.
--		 */
--
--		/*
--		 * Address line test
--		 *
--		 * Description: Test the address bus wiring in a
--		 *              memory region by performing a walking
--		 *              1's test on the relevant bits of the
--		 *              address and checking for aliasing.
--		 *              This test will find single-bit
--		 *              address failures such as stuck -high,
--		 *              stuck-low, and shorted pins. The base
--		 *              address and size of the region are
--		 *              selected by the caller.
--		 *
--		 * Notes:	For best results, the selected base
--		 *              address should have enough LSB 0's to
--		 *              guarantee single address bit changes.
--		 *              For example, to test a 64-Kbyte
--		 *              region, select a base address on a
--		 *              64-Kbyte boundary. Also, select the
--		 *              region size as a power-of-two if at
--		 *              all possible.
--		 *
--		 * Returns:     0 if the test succeeds, 1 if the test fails.
--		 *
--		 * ## NOTE ##	Be sure to specify start and end
--		 *              addresses such that addr_mask has
--		 *              lots of bits set. For example an
--		 *              address range of 01000000 02000000 is
--		 *              bad while a range of 01000000
--		 *              01ffffff is perfect.
--		 */
--		addr_mask = ((ulong)end - (ulong)start)/sizeof(vu_long);
--		pattern = (vu_long) 0xaaaaaaaa;
--		anti_pattern = (vu_long) 0x55555555;
--
--		debug("%s:%d: addr mask = 0x%.8lx\n",
--			__FUNCTION__, __LINE__,
--			addr_mask);
--		/*
--		 * Write the default pattern at each of the
--		 * power-of-two offsets.
--		 */
--		for (offset = 1; (offset & addr_mask) != 0; offset <<= 1)
--			start[offset] = pattern;
--
--		/*
--		 * Check for address bits stuck high.
--		 */
--		test_offset = 0;
--		start[test_offset] = anti_pattern;
--
--		for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
--		    temp = start[offset];
--		    if (temp != pattern) {
--			printf ("\nFAILURE: Address bit stuck high @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx\n",
--				(ulong)&start[offset], pattern, temp);
--			return 1;
--		    }
--		}
--		start[test_offset] = pattern;
--
--		/*
--		 * Check for addr bits stuck low or shorted.
--		 */
--		for (test_offset = 1; (test_offset & addr_mask) != 0; test_offset <<= 1) {
--		    start[test_offset] = anti_pattern;
--
--		    for (offset = 1; (offset & addr_mask) != 0; offset <<= 1) {
--			temp = start[offset];
--			if ((temp != pattern) && (offset != test_offset)) {
--			    printf ("\nFAILURE: Address bit stuck low or shorted @"
--				" 0x%.8lx: expected 0x%.8lx, actual 0x%.8lx\n",
--				(ulong)&start[offset], pattern, temp);
--			    return 1;
--			}
--		    }
--		    start[test_offset] = pattern;
--		}
--
--		/*
--		 * Description: Test the integrity of a physical
--		 *		memory device by performing an
--		 *		increment/decrement test over the
--		 *		entire region. In the process every
--		 *		storage bit in the device is tested
--		 *		as a zero and a one. The base address
--		 *		and the size of the region are
--		 *		selected by the caller.
--		 *
--		 * Returns:     0 if the test succeeds, 1 if the test fails.
--		 */
--		num_words = ((ulong)end - (ulong)start)/sizeof(vu_long) + 1;
--
--		/*
--		 * Fill memory with a known pattern.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--			start[offset] = pattern;
--		}
--
--		/*
--		 * Check each location and invert it for the second pass.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--		    temp = start[offset];
--		    if (temp != pattern) {
--			printf ("\nFAILURE (read/write) @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx)\n",
--				(ulong)&start[offset], pattern, temp);
--			return 1;
--		    }
--
--		    anti_pattern = ~pattern;
--		    start[offset] = anti_pattern;
--		}
--
--		/*
--		 * Check each location for the inverted pattern and zero it.
--		 */
--		for (pattern = 1, offset = 0; offset < num_words; pattern++, offset++) {
--		    anti_pattern = ~pattern;
--		    temp = start[offset];
--		    if (temp != anti_pattern) {
--			printf ("\nFAILURE (read/write): @ 0x%.8lx:"
--				" expected 0x%.8lx, actual 0x%.8lx)\n",
--				(ulong)&start[offset], anti_pattern, temp);
--			return 1;
--		    }
--		    start[offset] = 0;
--		}
--	}
--
--}
--#else
--static int mem_test(ulong _start, ulong _end, ulong pattern)
--{
--	vu_long	*addr;
--	vu_long *start = (vu_long *)_start;
--	vu_long *end   = (vu_long *)_end;
--	ulong	val;
--	ulong	readback;
--	ulong	incr;
--	int rcode;
--
--	incr = 1;
--	for (;;) {
--		if (ctrlc()) {
--			putchar('\n');
--			return 1;
--		}
--
--		printf ("\rPattern 0x%08lX  Writing..."
--			"%12s"
--			"\b\b\b\b\b\b\b\b\b\b",
--			pattern, "");
--
--		for (addr=start,val=pattern; addr<end; addr++) {
--			*addr = val;
--			val  += incr;
--		}
--
--		puts ("Reading...");
--
--		for (addr=start,val=pattern; addr<end; addr++) {
--			readback = *addr;
--			if (readback != val) {
--				printf ("\nMem error @ 0x%08X: "
--					"found 0x%08lX, expected 0x%08lX\n",
--					(uint)addr, readback, val);
--				rcode = 1;
--			}
--			val += incr;
--		}
--
--		/*
--		 * Flip the pattern each time to make lots of zeros and
--		 * then, the next time, lots of ones.  We decrement
--		 * the "negative" patterns and increment the "positive"
--		 * patterns to preserve this feature.
--		 */
--		if(pattern & 0x80000000) {
--			pattern = -pattern;	/* complement & increment */
--		}
--		else {
--			pattern = ~pattern;
--		}
--		incr = -incr;
--	}
--	return rcode;
--}
--#endif
--
--static int do_mem_mtest(int argc, char *argv[])
--{
--	ulong start, end, pattern = 0;
--
--	if (argc < 3)
--		return COMMAND_ERROR_USAGE;
--
--	start = simple_strtoul(argv[1], NULL, 0);
--	end = simple_strtoul(argv[2], NULL, 0);
--
--	if (argc > 3)
--		pattern = simple_strtoul(argv[3], NULL, 0);
--
--	printf ("Testing 0x%08x ... 0x%08x:\n", (uint)start, (uint)end);
--	
--	return mem_test(start, end, pattern);
--}
--
--static const __maybe_unused char cmd_mtest_help[] =
--"Usage: <start> <end> "
--#ifdef CONFIG_CMD_MTEST_ALTERNATIVE
--"[pattern]"
--#endif
--"\nsimple RAM read/write test\n";
--
--BAREBOX_CMD_START(mtest)
--	.cmd		= do_mem_mtest,
--	.usage		= "simple RAM test",
--	BAREBOX_CMD_HELP(cmd_mtest_help)
--BAREBOX_CMD_END
--
+new file mode 100644
+index 0000000..a67d868
+--- /dev/null
++++ b/commands/memtest.c
+@@ -0,0 +1,250 @@
++/*
++ * memtest - Perform a memory test
++ *
++ * (C) Copyright 2013
++ * Alexander Aring <aar@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <command.h>
++#include <getopt.h>
++#include <asm/mmu.h>
++#include <memory.h>
++
++#include <memtest.h>
++
++static int alloc_memtest_region(struct list_head *list,
++		resource_size_t start, resource_size_t size)
++{
++	struct resource *r_new;
++	struct mem_test_resource *r;
++
++	r = xzalloc(sizeof(struct mem_test_resource));
++	r_new = request_sdram_region("memtest", start, size);
++	if (!r_new)
++		return -EINVAL;
++
++	r->r = r_new;
++	list_add_tail(&r->list, list);
++
++	return 0;
++}
++
++static int request_memtest_regions(struct list_head *list)
++{
++	int ret;
++	struct memory_bank *bank;
++	struct resource *r, *r_prev = NULL;
++	resource_size_t start, end, size;
++
++	for_each_memory_bank(bank) {
++		/*
++		 * If we don't have any allocated region on bank,
++		 * we use the whole bank boundary
++		 */
++		if (list_empty(&bank->res->children)) {
++			start = PAGE_ALIGN(bank->res->start);
++			end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
++			size = end - start + 1;
++
++			ret = alloc_memtest_region(list, start, size);
++			if (ret < 0)
++				return ret;
++
++			continue;
++		}
++
++		/*
++		 * We assume that the regions are sorted in this list
++		 * So the first element has start boundary on bank->res->start
++		 * and the last element hast end boundary on bank->res->end
++		 */
++		list_for_each_entry(r, &bank->res->children, sibling) {
++			/*
++			 * Do on head element for bank boundary
++			 */
++			if (r->sibling.prev == &bank->res->children) {
++				/*
++				 * remember last used element
++				 */
++				start = PAGE_ALIGN(bank->res->start);
++				end = PAGE_ALIGN_DOWN(r->start) - 1;
++				size = end - start + 1;
++				r_prev = r;
++				if (start >= end)
++					continue;
++
++				ret = alloc_memtest_region(list, start, size);
++				if (ret < 0)
++					return ret;
++				continue;
++			}
++			/*
++			 * Between used regions
++			 */
++			start = PAGE_ALIGN(r_prev->end);
++			end = PAGE_ALIGN_DOWN(r->start) - 1;
++			size = end - start + 1;
++			r_prev = r;
++			if (start >= end)
++				continue;
++
++			ret = alloc_memtest_region(list, start, size);
++			if (ret < 0)
++				return ret;
++
++			if (list_is_last(&r->sibling, &bank->res->children)) {
++				/*
++				 * Do on head element for bank boundary
++				 */
++				start = PAGE_ALIGN(r->end);
++				end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
++				size = end - start + 1;
++				if (start >= end)
++					continue;
++
++				ret = alloc_memtest_region(list, start, size);
++				if (ret < 0)
++					return ret;
++			}
++		}
++	}
++
++	return 0;
++}
++
++static int __do_memtest(struct list_head *memtest_regions,
++		int bus_only, uint32_t cache_flag)
++{
++	struct mem_test_resource *r;
++	int ret;
++
++	list_for_each_entry(r, memtest_regions, list) {
++		printf("Testing memory space: "
++				"0x%08x -> 0x%08x:\n",
++				r->r->start,  r->r->end);
++		remap_range((void *)r->r->start, r->r->end -
++				r->r->start + 1, cache_flag);
++
++		ret = mem_test(r->r->start, r->r->end, bus_only);
++		if (ret < 0)
++			return ret;
++		printf("done.\n\n");
++	}
++
++	return 0;
++}
++
++static int do_memtest(int argc, char *argv[])
++{
++	int bus_only = 0, ret, opt;
++	uint32_t i, max_i = 1, pte_flags_cached, pte_flags_uncached;
++	struct mem_test_resource *r, *r_tmp;
++	struct list_head memtest_used_regions;
++
++	while ((opt = getopt(argc, argv, "i:b")) > 0) {
++		switch (opt) {
++		case 'i':
++			max_i = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 'b':
++			bus_only = 1;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (optind > argc)
++		return COMMAND_ERROR_USAGE;
++
++	/*
++	 * Get pte flags for enable and disable cache support on page.
++	 */
++	pte_flags_cached = mmu_get_pte_cached_flags();
++	pte_flags_uncached = mmu_get_pte_uncached_flags();
++
++	INIT_LIST_HEAD(&memtest_used_regions);
++
++	ret = request_memtest_regions(&memtest_used_regions);
++	if (ret < 0)
++		goto out;
++
++	for (i = 1; (i <= max_i) || !max_i; i++) {
++		if (max_i)
++			printf("Start iteration %u of %u.\n", i, max_i);
++		/*
++		 * First try a memtest with caching enabled.
++		 */
++		if (IS_ENABLED(CONFIG_MMU)) {
++			printf("Do memtest with caching enabled.\n");
++			ret = __do_memtest(&memtest_used_regions,
++					bus_only, pte_flags_cached);
++			if (ret < 0)
++				goto out;
++		}
++		/*
++		 * Second try a memtest with caching disabled.
++		 */
++		printf("Do memtest with caching disabled.\n");
++		ret = __do_memtest(&memtest_used_regions,
++				bus_only, pte_flags_uncached);
++		if (ret < 0)
++			goto out;
++	}
++
++out:
++	list_for_each_entry_safe(r, r_tmp, &memtest_used_regions, list) {
++		/*
++		 * Ensure to leave with a cached on non used sdram regions.
++		 */
++		remap_range((void *)r->r->start, r->r->end -
++				r->r->start + 1, pte_flags_cached);
++		release_sdram_region(r->r);
++		free(r);
++	}
++
++	if (ret < 0) {
++		/*
++		 * Set cursor to newline, because mem_test failed at
++		 * drawing of progressbar.
++		 */
++		if (ret == -EINTR)
++			printf("\n");
++
++		printf("Memtest failed.\n");
++		return 1;
++	} else {
++		printf("Memtest successful.\n");
++		return 1;
++	}
++}
++
++static const __maybe_unused char cmd_memtest_help[] =
++"Usage: memtest [OPTION]...\n"
++"memtest related commands\n"
++"	-i	<iterations>	iterations [default=1, endless=0].\n"
++"	-b			perform only a test on buslines.";
++
++BAREBOX_CMD_START(memtest)
++	.cmd		= do_memtest,
++	.usage		= "Memory Test",
++	BAREBOX_CMD_HELP(cmd_memtest_help)
++BAREBOX_CMD_END
 -- 
 1.8.3
 
