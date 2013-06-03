@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f179.google.com ([209.85.217.179])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjHP8-0001vV-K3
- for barebox@lists.infradead.org; Sun, 02 Jun 2013 23:09:39 +0000
-Received: by mail-lb0-f179.google.com with SMTP id w20so235198lbh.10
- for <barebox@lists.infradead.org>; Sun, 02 Jun 2013 16:09:14 -0700 (PDT)
+ id 1UjP0c-0007LR-Cy
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:16:51 +0000
+Date: Mon, 3 Jun 2013 09:16:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130603071626.GV32299@pengutronix.de>
+References: <1370214158-67194-1-git-send-email-monaka@monami-ya.jp>
 MIME-Version: 1.0
-In-Reply-To: <1370188044.845875578@f297.mail.ru>
-References: <1370178849-37125-1-git-send-email-monaka@monami-ya.com>
- <1370188044.845875578@f297.mail.ru>
-Date: Mon, 3 Jun 2013 08:02:03 +0900
-Message-ID: <CAJBvFxMPRRJNEJjeb5XNeEfatN5-XT56knNJioT=ycsN1PP6WQ@mail.gmail.com>
-From: Masaki Muranaka <monaka@monami-ya.jp>
+Content-Disposition: inline
+In-Reply-To: <1370214158-67194-1-git-send-email-monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,48 +23,47 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Remove ftstc(). It is declared but not implemented.
-To: Alexander Shiyan <shc_work@mail.ru>
+To: Masaki Muranaka <monaka@monami-ya.jp>
 Cc: barebox@lists.infradead.org
 
-Hello,
+On Mon, Jun 03, 2013 at 08:02:38AM +0900, Masaki Muranaka wrote:
+> Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
 
-It's easy to check by using whois service whether monami-ya.com and
-monami-ya.jp are owned by same company...
-Ok. I'll use monami-ya.jp in this project. I'm going to resend the patch.
-Please inform me when I should fix my environment.
+Applied, thanks
 
-2013/6/3 Alexander Shiyan <shc_work@mail.ru>:
->> ---
->>  include/stdio.h | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/include/stdio.h b/include/stdio.h
->> index 5c091a8..ff2572e 100644
->> --- a/include/stdio.h
->> +++ b/include/stdio.h
->> @@ -101,7 +101,6 @@ static inline void putchar(char c)
->>  int  fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
->>  int  fputs(int file, const char *s);
->>  int  fputc(int file, const char c);
->> -int  ftstc(int file);
->>  int  fgetc(int file);
->>
->>  #endif /* __STDIO_H */
->> --
->
-> Here (and in some other pathes) is missing Signed-off-by line.
-> Additionally, I want to focus on the fact that the address of From and Signed-off-by differ.
-> Git documentation says not to have been used aliases.
-> So, I think this field should be equal in the future.
->
+Sascha
+
 > ---
-
-
+>  include/stdio.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/stdio.h b/include/stdio.h
+> index 5c091a8..ff2572e 100644
+> --- a/include/stdio.h
+> +++ b/include/stdio.h
+> @@ -101,7 +101,6 @@ static inline void putchar(char c)
+>  int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
+>  int	fputs(int file, const char *s);
+>  int	fputc(int file, const char c);
+> -int	ftstc(int file);
+>  int	fgetc(int file);
+>  
+>  #endif /* __STDIO_H */
+> -- 
+> 1.8.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
---
-Masaki Muranaka
-Monami-ya LLC, Japan.
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
