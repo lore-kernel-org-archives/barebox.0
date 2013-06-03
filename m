@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjP8L-0007U1-Nl
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:24:50 +0000
-Date: Mon, 3 Jun 2013 09:24:27 +0200
+ id 1UjP9u-0007W6-LZ
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:26:27 +0000
+Date: Mon, 3 Jun 2013 09:26:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130603072427.GW32299@pengutronix.de>
+Message-ID: <20130603072604.GX32299@pengutronix.de>
 References: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
+ <1370184829-66576-2-git-send-email-monaka@monami-ya.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
+In-Reply-To: <1370184829-66576-2-git-send-email-monaka@monami-ya.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] Remove unnesessory malloc.h inclusions.
+Subject: Re: [PATCH 2/3] Refactor malloc.h.
 To: Masaki Muranaka <monaka@monami-ya.jp>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jun 02, 2013 at 11:53:47PM +0900, Masaki Muranaka wrote:
+On Sun, Jun 02, 2013 at 11:53:48PM +0900, Masaki Muranaka wrote:
+>  Some functions should be defined in stdlib.h or unistd.h.
 > ---
-> diff --git a/common/resource.c b/common/resource.c
-> index 5795e79..954357e 100644
-> --- a/common/resource.c
-> +++ b/common/resource.c
-> @@ -16,7 +16,6 @@
->   * GNU General Public License for more details.
->   */
->  #include <common.h>
-> -#include <malloc.h>
->  #include <errno.h>
->  #include <init.h>
->  #include <linux/ioport.h>
+>  include/malloc.h       |  8 +++-----
+>  include/malloc_isoc.h  | 11 +++++++++++
+>  include/malloc_posix.h |  8 ++++++++
+>  include/stdlib.h       |  1 +
+>  include/unistd.h       |  6 ++++++
+>  5 files changed, 29 insertions(+), 5 deletions(-)
+>  create mode 100644 include/malloc_isoc.h
+>  create mode 100644 include/malloc_posix.h
+>  create mode 100644 include/unistd.h
+> 
+> diff --git a/include/malloc.h b/include/malloc.h
+> index 7b9b062..9554597 100644
+> --- a/include/malloc.h
+> +++ b/include/malloc.h
+> @@ -5,20 +5,18 @@
+>  
+>  /* Public routines */
+>  
+> -void* malloc(size_t);
+> -void free(void*);
+> -void* realloc(void*, size_t);
+> +#include <malloc_isoc.h>
+> +#include <malloc_posix.h>
+> +
+>  void* memalign(size_t, size_t);
+>  void* vallocc(size_t);
+>  void* pvalloc(size_t);
+> -void* calloc(size_t, size_t);
+>  void cfree(void*);
+>  int malloc_trim(size_t);
+>  size_t malloc_usable_size(void*);
+>  void malloc_stats(void);
+>  int mallopt(int, int);
+>  struct mallinfo mallinfo(void);
+> -void *sbrk(ptrdiff_t increment);
 
-Applying this patch leads to several compiler warnings:
-
-common/resource.c: In function 'release_region':
-common/resource.c:105:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-commands/readline.c: In function 'do_readline':
-commands/readline.c:33:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-commands/time.c: In function 'do_time':
-commands/time.c:41:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-commands/oftree.c: In function 'do_oftree':
-commands/oftree.c:197:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-commands/readlink.c: In function 'do_readlink':
-commands/readlink.c:58:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-commands/global.c: In function 'globalvar_set':
-commands/global.c:34:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
-
-So indeed we do not use malloc in these files, but we still use free.
-I think you would have to replace the includes with #include <stdlib.h>
-rather than removing them completely.
+Wouldn't it be nicer to move the prototypes to unistd.h / stdlib.h
+instead of adding new files?
 
 Sascha
 
