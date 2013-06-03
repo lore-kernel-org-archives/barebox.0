@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjSPl-0004MQ-Uq
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 10:55:02 +0000
-Received: by mail-la0-f51.google.com with SMTP id lx15so3234014lab.24
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 03:54:38 -0700 (PDT)
+ id 1UjSPj-0004MP-3B
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 10:54:59 +0000
+Received: by mail-la0-f47.google.com with SMTP id fq12so3268211lab.20
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 03:54:34 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  3 Jun 2013 14:53:24 +0400
-Message-Id: <1370256807-26755-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
-References: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  3 Jun 2013 14:53:22 +0400
+Message-Id: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,31 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/5] MIPS: malta: prepare for new debug_ll
+Subject: [PATCH v2 0/5] MIPS: rework ns16550 debug_ll
 To: barebox@lists.infradead.org
 
-Set fake DEBUG_LL_UART_DIVISOR to use <asm/debug_ll_ns16550.h>.
+This patch series makes possible easely produce
+debug output via ns16550-like UART on very early pbl stage.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/mach-malta/include/mach/hardware.h |    1 +
- 1 file changed, 1 insertion(+)
+v2 patch series is based on the 'master' branch
+and it does not break bisectibility.
 
-diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
-index 5e8e276..8bd814d 100644
---- a/arch/mips/mach-malta/include/mach/hardware.h
-+++ b/arch/mips/mach-malta/include/mach/hardware.h
-@@ -20,6 +20,7 @@
- 
- #define DEBUG_LL_UART_ADDR	0xb00003f8
- #define DEBUG_LL_UART_SHIFT	0
-+#define DEBUG_LL_UART_DIVISOR	1	/* no matter for emulated port */
- 
- /*
-  * Reset register.
--- 
-1.7.10.4
-
+[PATCH v2 1/5] MIPS: rzx50: prepare for new debug_ll
+[PATCH v2 2/5] MIPS: malta: prepare for new debug_ll
+[PATCH v2 3/5] MIPS: unify ns16550 debug_ll support code
+[PATCH v2 4/5] MIPS: rzx50: pbl: use debug_ll
+[PATCH v2 5/5] MIPS: rzx50_defconfig: use UART1 for low-level debug
 
 _______________________________________________
 barebox mailing list
