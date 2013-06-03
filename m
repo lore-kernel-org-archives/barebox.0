@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjP0c-0007LR-Cy
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:16:51 +0000
-Date: Mon, 3 Jun 2013 09:16:26 +0200
+ id 1UjP8L-0007U1-Nl
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:24:50 +0000
+Date: Mon, 3 Jun 2013 09:24:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130603071626.GV32299@pengutronix.de>
-References: <1370214158-67194-1-git-send-email-monaka@monami-ya.jp>
+Message-ID: <20130603072427.GW32299@pengutronix.de>
+References: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370214158-67194-1-git-send-email-monaka@monami-ya.jp>
+In-Reply-To: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Remove ftstc(). It is declared but not implemented.
+Subject: Re: [PATCH 1/3] Remove unnesessory malloc.h inclusions.
 To: Masaki Muranaka <monaka@monami-ya.jp>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 03, 2013 at 08:02:38AM +0900, Masaki Muranaka wrote:
-> Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
+On Sun, Jun 02, 2013 at 11:53:47PM +0900, Masaki Muranaka wrote:
+> ---
+> diff --git a/common/resource.c b/common/resource.c
+> index 5795e79..954357e 100644
+> --- a/common/resource.c
+> +++ b/common/resource.c
+> @@ -16,7 +16,6 @@
+>   * GNU General Public License for more details.
+>   */
+>  #include <common.h>
+> -#include <malloc.h>
+>  #include <errno.h>
+>  #include <init.h>
+>  #include <linux/ioport.h>
 
-Applied, thanks
+Applying this patch leads to several compiler warnings:
+
+common/resource.c: In function 'release_region':
+common/resource.c:105:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+commands/readline.c: In function 'do_readline':
+commands/readline.c:33:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+commands/time.c: In function 'do_time':
+commands/time.c:41:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+commands/oftree.c: In function 'do_oftree':
+commands/oftree.c:197:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+commands/readlink.c: In function 'do_readlink':
+commands/readlink.c:58:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+commands/global.c: In function 'globalvar_set':
+commands/global.c:34:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+
+So indeed we do not use malloc in these files, but we still use free.
+I think you would have to replace the includes with #include <stdlib.h>
+rather than removing them completely.
 
 Sascha
-
-> ---
->  include/stdio.h | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/include/stdio.h b/include/stdio.h
-> index 5c091a8..ff2572e 100644
-> --- a/include/stdio.h
-> +++ b/include/stdio.h
-> @@ -101,7 +101,6 @@ static inline void putchar(char c)
->  int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
->  int	fputs(int file, const char *s);
->  int	fputc(int file, const char c);
-> -int	ftstc(int file);
->  int	fgetc(int file);
->  
->  #endif /* __STDIO_H */
-> -- 
-> 1.8.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
