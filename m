@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjSPj-0004MP-3B
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 10:54:59 +0000
-Received: by mail-la0-f47.google.com with SMTP id fq12so3268211lab.20
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 03:54:34 -0700 (PDT)
+ id 1UjSPm-0004MR-RG
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 10:55:03 +0000
+Received: by mail-la0-f43.google.com with SMTP id gw10so837348lab.2
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 03:54:40 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  3 Jun 2013 14:53:22 +0400
-Message-Id: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  3 Jun 2013 14:53:25 +0400
+Message-Id: <1370256807-26755-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
+References: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,20 +23,126 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 0/5] MIPS: rework ns16550 debug_ll
+Subject: [PATCH v2 3/5] MIPS: unify ns16550 debug_ll support code
 To: barebox@lists.infradead.org
 
-This patch series makes possible easely produce
-debug output via ns16550-like UART on very early pbl stage.
+This commit moves the C debug_ll code from
+the MIPS <debug_ll_ns16550.h> header file to
+the MIPS <asm/debug_ll_ns16550.h> header file,
+so the C code and the asm code can use the same
+register address macros.
 
-v2 patch series is based on the 'master' branch
-and it does not break bisectibility.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/debug_ll_ns16550.h      |   15 ++++++++++
+ arch/mips/include/debug_ll_ns16550.h          |   37 -------------------------
+ arch/mips/mach-malta/include/mach/debug_ll.h  |    2 +-
+ arch/mips/mach-xburst/include/mach/debug_ll.h |    2 +-
+ 4 files changed, 17 insertions(+), 39 deletions(-)
+ delete mode 100644 arch/mips/include/debug_ll_ns16550.h
 
-[PATCH v2 1/5] MIPS: rzx50: prepare for new debug_ll
-[PATCH v2 2/5] MIPS: malta: prepare for new debug_ll
-[PATCH v2 3/5] MIPS: unify ns16550 debug_ll support code
-[PATCH v2 4/5] MIPS: rzx50: pbl: use debug_ll
-[PATCH v2 5/5] MIPS: rzx50_defconfig: use UART1 for low-level debug
+diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
+index 5dd1b39..f00f348 100644
+--- a/arch/mips/include/asm/debug_ll_ns16550.h
++++ b/arch/mips/include/asm/debug_ll_ns16550.h
+@@ -48,6 +48,20 @@
+ 
+ #define UART_LSR_THRE	0x20	/* Xmit holding register empty */
+ 
++#ifndef __ASSEMBLY__
++/*
++ * C macros
++ */
++
++#include <asm/io.h>
++
++static __inline__ void PUTC_LL(char ch)
++{
++	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
++		;
++	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
++}
++#else /* __ASSEMBLY__ */
+ /*
+  * Macros for use in assembly language code
+  */
+@@ -96,5 +110,6 @@
+ 	debug_ll_ns16550_outc '\n'
+ #endif /* CONFIG_DEBUG_LL */
+ .endm
++#endif /* __ASSEMBLY__ */
+ 
+ #endif /* __INCLUDE_MIPS_ASM_DEBUG_LL_NS16550_H__ */
+diff --git a/arch/mips/include/debug_ll_ns16550.h b/arch/mips/include/debug_ll_ns16550.h
+deleted file mode 100644
+index e9c7ecf..0000000
+--- a/arch/mips/include/debug_ll_ns16550.h
++++ /dev/null
+@@ -1,37 +0,0 @@
+-/*
+- * Copyright (C) 2012 Antony Pavlov <antonynpavlov@gmail.com>
+- *
+- * This file is part of barebox.
+- * See file CREDITS for list of people who contributed to this project.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-/** @file
+- *  This file contains declaration for early output support
+- */
+-#ifndef __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
+-#define __INCLUDE_ARCH_DEBUG_LL_NS16550_H__
+-
+-#include <asm/io.h>
+-
+-#define rbr		(0 << DEBUG_LL_UART_SHIFT)
+-#define lsr		(5 << DEBUG_LL_UART_SHIFT)
+-
+-#define LSR_THRE	0x20	/* Xmit holding register empty */
+-
+-static __inline__ void PUTC_LL(char ch)
+-{
+-	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
+-	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + rbr);
+-}
+-
+-#endif  /* __INCLUDE_ARCH_DEBUG_LL_NS16550_H__ */
+diff --git a/arch/mips/mach-malta/include/mach/debug_ll.h b/arch/mips/mach-malta/include/mach/debug_ll.h
+index 3a91c93..3e8b01b 100644
+--- a/arch/mips/mach-malta/include/mach/debug_ll.h
++++ b/arch/mips/mach-malta/include/mach/debug_ll.h
+@@ -23,6 +23,6 @@
+ 
+ #include <mach/hardware.h>
+ 
+-#include <debug_ll_ns16550.h>
++#include <asm/debug_ll_ns16550.h>
+ 
+ #endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+diff --git a/arch/mips/mach-xburst/include/mach/debug_ll.h b/arch/mips/mach-xburst/include/mach/debug_ll.h
+index f260e65..6c3c980 100644
+--- a/arch/mips/mach-xburst/include/mach/debug_ll.h
++++ b/arch/mips/mach-xburst/include/mach/debug_ll.h
+@@ -22,6 +22,6 @@
+  *  This File contains declaration for early output support
+  */
+ #include <board/debug_ll.h>
+-#include <debug_ll_ns16550.h>
++#include <asm/debug_ll_ns16550.h>
+ 
+ #endif  /* __MACH_XBURST_DEBUG_LL__ */
+-- 
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
