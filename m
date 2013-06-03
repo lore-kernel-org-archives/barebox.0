@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-lb0-f173.google.com ([209.85.217.173])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjPUe-0007wU-Ol
- for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:47:53 +0000
-Received: by mail-la0-f52.google.com with SMTP id fo13so3087457lab.25
- for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 00:47:29 -0700 (PDT)
-Date: Mon, 3 Jun 2013 11:46:25 +0400
-From: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Message-Id: <20130603114625.775db202a34aabcd581ff461@gmail.com>
-In-Reply-To: <20130603073132.GB26150@pengutronix.de>
-References: <1370073169-29009-1-git-send-email-antonynpavlov@gmail.com>
- <1370073169-29009-4-git-send-email-antonynpavlov@gmail.com>
- <20130603073132.GB26150@pengutronix.de>
-Mime-Version: 1.0
+ id 1UjPcO-00088l-BL
+ for barebox@lists.infradead.org; Mon, 03 Jun 2013 07:55:52 +0000
+Received: by mail-lb0-f173.google.com with SMTP id t10so3501981lbi.32
+ for <barebox@lists.infradead.org>; Mon, 03 Jun 2013 00:55:29 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20130603072427.GW32299@pengutronix.de>
+References: <1370184829-66576-1-git-send-email-monaka@monami-ya.com>
+ <20130603072427.GW32299@pengutronix.de>
+Date: Mon, 3 Jun 2013 16:55:29 +0900
+Message-ID: <CAJBvFxN8nu2CkYMz-y4YJoKMQqu9y9LvkPXMg2Lgpm==7cv5Rw@mail.gmail.com>
+From: Masaki Muranaka <monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,69 +20,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] MIPS: rzx50: pbl: use debug_ll
+Subject: Re: [PATCH 1/3] Remove unnesessory malloc.h inclusions.
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, 3 Jun 2013 09:31:32 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hello Sascha,
 
-> On Sat, Jun 01, 2013 at 11:52:46AM +0400, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  arch/mips/boards/rzx50/include/board/board_pbl_start.h |    6 ++++++
-> >  arch/mips/mach-xburst/include/mach/debug_ll_jz4750d.h  |    4 ++++
-> >  2 files changed, 10 insertions(+)
-> > =
+Opps sorry. I'll revert includes that causes warnings.
 
-> > diff --git a/arch/mips/boards/rzx50/include/board/board_pbl_start.h b/a=
-rch/mips/boards/rzx50/include/board/board_pbl_start.h
-> > index cba3e7f..f71641a 100644
-> > --- a/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-> > +++ b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-> > @@ -18,6 +18,7 @@
-> >   */
-> >  =
+2013/6/3 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Sun, Jun 02, 2013 at 11:53:47PM +0900, Masaki Muranaka wrote:
+>> ---
+>> diff --git a/common/resource.c b/common/resource.c
+>> index 5795e79..954357e 100644
+>> --- a/common/resource.c
+>> +++ b/common/resource.c
+>> @@ -16,7 +16,6 @@
+>>   * GNU General Public License for more details.
+>>   */
+>>  #include <common.h>
+>> -#include <malloc.h>
+>>  #include <errno.h>
+>>  #include <init.h>
+>>  #include <linux/ioport.h>
+>
+> Applying this patch leads to several compiler warnings:
+>
+> common/resource.c: In function 'release_region':
+> common/resource.c:105:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+> commands/readline.c: In function 'do_readline':
+> commands/readline.c:33:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+> commands/time.c: In function 'do_time':
+> commands/time.c:41:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+> commands/oftree.c: In function 'do_oftree':
+> commands/oftree.c:197:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+> commands/readlink.c: In function 'do_readlink':
+> commands/readlink.c:58:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+> commands/global.c: In function 'globalvar_set':
+> commands/global.c:34:3: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+>
+> So indeed we do not use malloc in these files, but we still use free.
+> I think you would have to replace the includes with #include <stdlib.h>
+> rather than removing them completely.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-> >  #include <asm/pbl_macros.h>
-> > +#include <mach/debug_ll.h>
-> >  =
 
-> >  	.macro	board_pbl_start
-> >  	.set	push
-> > @@ -28,6 +29,11 @@
-> >  	/* CPU/SoC specific setup ... */
-> >  	/* ... absent */
-> >  =
 
-> > +	debug_ll_ns16550_init
-> > +
-> > +	debug_ll_ns16550_outc '.'
-> > +	debug_ll_ns16550_outnl
-> > +
-> >  	copy_to_link_location	pbl_start
-> =
-
-> I had to drop this series beginning from this patch as it breaks
-> bisectibility. There seem to be some C stuff leaking in to the
-> assembler.
-
-Yes, I have moved the similar C and asm stuff to one place.
-
-> I tried to fix this myself but I wasn't really sure what to
-> to. Could you update this based on current master?
-
-Hmm, I used the 'next' branch as the base for this patches.
-
-I'll update the patches in a few hours.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+--
+--
+Masaki Muranaka
+Monami-ya LLC, Japan.
 
 _______________________________________________
 barebox mailing list
