@@ -2,15 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ujlgl-0004V9-DB
- for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:29:55 +0000
+ id 1Ujlgl-0004V7-8r
+ for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:29:53 +0000
 Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
  [212.202.120.50])
- by km20343-01.keymachine.de (Postfix) with ESMTPA id B610F7D4421
- for <barebox@lists.infradead.org>; Tue,  4 Jun 2013 09:29:28 +0200 (CEST)
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id DE0017D4419
+ for <barebox@lists.infradead.org>; Tue,  4 Jun 2013 09:29:15 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  4 Jun 2013 09:29:18 +0200
-Message-Id: <1370330963-3610-1-git-send-email-dev@lynxeye.de>
+Date: Tue,  4 Jun 2013 09:29:11 +0200
+Message-Id: <1370330951-3548-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1370330951-3548-1-git-send-email-dev@lynxeye.de>
+References: <1370330951-3548-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,103 +26,278 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] tegra: change clocksource driver to be more lowlevel
+Subject: [PATCH 3/3] clk: add clock lookup from devicetree
 To: barebox@lists.infradead.org
 
-In order to properly bring up the system PLLs we need a reliable
-clocksource. To break the circular dependency between the clocksource
-and the CAR driver, get the OSC frequency with a lowlevel function.
+Taken from the Linuxkernel with some small adjustments for barebox.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h | 23 +++++++++++++++++++++++
- arch/arm/mach-tegra/tegra20-timer.c         | 16 +++-------------
- 2 files changed, 26 insertions(+), 13 deletions(-)
+ drivers/clk/clk.c    | 97 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/clkdev.c | 74 +++++++++++++++++++++++++++++++++++++++
+ include/linux/clk.h  | 33 ++++++++++++++++++
+ 3 files changed, 204 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index b7c01c0..071416f 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -142,5 +142,28 @@ static inline long tegra20_get_debuguart_base(void)
- 	return uart_id_to_base[id];
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 690a0c6..bad3386 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -16,6 +16,7 @@
+  */
+ #include <common.h>
+ #include <errno.h>
++#include <malloc.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ 
+@@ -253,6 +254,102 @@ int clk_is_enabled_always(struct clk *clk)
+ 	return 1;
  }
  
-+#define CRC_OSC_CTRL			0x050
-+#define CRC_OSC_CTRL_OSC_FREQ_SHIFT	30
-+#define CRC_OSC_CTRL_OSC_FREQ_MASK	(0x3 << CRC_OSC_CTRL_OSC_FREQ_SHIFT)
++#ifdef CONFIG_OFTREE
++/**
++ * struct of_clk_provider - Clock provider registration structure
++ * @link: Entry in global list of clock providers
++ * @node: Pointer to device tree node of clock provider
++ * @get: Get clock callback.  Returns NULL or a struct clk for the
++ *       given clock specifier
++ * @data: context pointer to be passed into @get callback
++ */
++struct of_clk_provider {
++	struct list_head link;
 +
-+static inline unsigned int tegra_get_osc_clock(void)
++	struct device_node *node;
++	struct clk *(*get)(struct of_phandle_args *clkspec, void *data);
++	void *data;
++};
++
++static LIST_HEAD(of_clk_providers);
++
++struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
 +{
-+	u32 osc_ctrl = readl(TEGRA_CLK_RESET_BASE + CRC_OSC_CTRL);
++	struct clk_onecell_data *clk_data = data;
++	unsigned int idx = clkspec->args[0];
 +
-+	switch ((osc_ctrl & CRC_OSC_CTRL_OSC_FREQ_MASK) >>
-+		CRC_OSC_CTRL_OSC_FREQ_SHIFT) {
-+	case 0:
-+		return 13000000;
-+	case 1:
-+		return 19200000;
-+	case 2:
-+		return 12000000;
-+	case 3:
-+		return 26000000;
-+	default:
-+		return 0;
++	if (idx >= clk_data->clk_num) {
++		pr_err("%s: invalid clock index %d\n", __func__, idx);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return clk_data->clks[idx];
++}
++EXPORT_SYMBOL_GPL(of_clk_src_onecell_get);
++
++/**
++ * of_clk_add_provider() - Register a clock provider for a node
++ * @np: Device node pointer associated with clock provider
++ * @clk_src_get: callback for decoding clock
++ * @data: context pointer for @clk_src_get callback.
++ */
++int of_clk_add_provider(struct device_node *np,
++			struct clk *(*clk_src_get)(struct of_phandle_args *clkspec,
++						   void *data),
++			void *data)
++{
++	struct of_clk_provider *cp;
++
++	cp = kzalloc(sizeof(struct of_clk_provider), GFP_KERNEL);
++	if (!cp)
++		return -ENOMEM;
++
++	cp->node = np;
++	cp->data = data;
++	cp->get = clk_src_get;
++
++	list_add(&cp->link, &of_clk_providers);
++	pr_debug("Added clock from %s\n", np->full_name);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(of_clk_add_provider);
++
++/**
++ * of_clk_del_provider() - Remove a previously registered clock provider
++ * @np: Device node pointer associated with clock provider
++ */
++void of_clk_del_provider(struct device_node *np)
++{
++	struct of_clk_provider *cp;
++
++	list_for_each_entry(cp, &of_clk_providers, link) {
++		if (cp->node == np) {
++			list_del(&cp->link);
++			kfree(cp);
++			break;
++		}
 +	}
 +}
++EXPORT_SYMBOL_GPL(of_clk_del_provider);
 +
- /* reset vector for the main CPU complex */
- void tegra_maincomplex_entry(void);
-diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
-index aafbfd4..2b32647 100644
---- a/arch/arm/mach-tegra/tegra20-timer.c
-+++ b/arch/arm/mach-tegra/tegra20-timer.c
-@@ -24,6 +24,7 @@
++struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
++{
++	struct of_clk_provider *provider;
++	struct clk *clk = ERR_PTR(-ENOENT);
++
++	/* Check if we have such a provider in our array */
++	list_for_each_entry(provider, &of_clk_providers, link) {
++		if (provider->node == clkspec->np)
++			clk = provider->get(clkspec, provider->data);
++		if (!IS_ERR(clk))
++			break;
++	}
++
++	return clk;
++}
++#endif
++
+ static void dump_one(struct clk *clk, int verbose, int indent)
+ {
+ 	struct clk *c;
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index 256927e..0b91af0 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
+@@ -19,10 +19,80 @@
+ #include <linux/clkdev.h>
  #include <init.h>
- #include <io.h>
- #include <linux/clk.h>
-+#include <mach/lowlevel.h>
+ #include <malloc.h>
++#include <of.h>
+ #include <stdio.h>
  
- /* register definitions */
- #define TIMERUS_CNTR_1US	0x10
-@@ -43,8 +44,6 @@ static struct clocksource cs = {
+ static LIST_HEAD(clocks);
  
- static int tegra20_timer_probe(struct device_d *dev)
- {
--	struct clk *timer_clk;
--	unsigned long rate;
- 	u32 reg;
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK)
++struct clk *of_clk_get(struct device_node *np, int index)
++{
++	struct of_phandle_args clkspec;
++	struct clk *clk;
++	int rc;
++
++	if (index < 0)
++		return ERR_PTR(-EINVAL);
++
++	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
++					&clkspec);
++	if (rc)
++		return ERR_PTR(rc);
++
++	clk = of_clk_get_from_provider(&clkspec);
++	return clk;
++}
++EXPORT_SYMBOL(of_clk_get);
++
++/**
++ * of_clk_get_by_name() - Parse and lookup a clock referenced by a device node
++ * @np: pointer to clock consumer node
++ * @name: name of consumer's clock input, or NULL for the first clock reference
++ *
++ * This function parses the clocks and clock-names properties,
++ * and uses them to look up the struct clk from the registered list of clock
++ * providers.
++ */
++struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
++{
++	struct clk *clk = ERR_PTR(-ENOENT);
++
++	/* Walk up the tree of devices looking for a clock that matches */
++	while (np) {
++		int index = 0;
++
++		/*
++		 * For named clocks, first look up the name in the
++		 * "clock-names" property.  If it cannot be found, then
++		 * index will be an error code, and of_clk_get() will fail.
++		 */
++		if (name)
++			index = of_property_match_string(np, "clock-names",
++							 name);
++		clk = of_clk_get(np, index);
++		if (!IS_ERR(clk))
++			break;
++		else if (name && index >= 0) {
++			pr_err("ERROR: could not get clock %s:%s(%i)\n",
++				np->full_name, name ? name : "", index);
++			return clk;
++		}
++
++		/*
++		 * No matching clock found on this node.  If the parent node
++		 * has a "clock-ranges" property, then we can try one of its
++		 * clocks.
++		 */
++		np = np->parent;
++		if (np && !of_get_property(np, "clock-ranges", NULL))
++			break;
++	}
++
++	return clk;
++}
++EXPORT_SYMBOL(of_clk_get_by_name);
++#endif
++
+ /*
+  * Find the correct struct clk for the device and connection ID.
+  * We do slightly fuzzy matching here:
+@@ -109,6 +179,10 @@ struct clk *clk_get(struct device_d *dev, const char *con_id)
+ 	if (!IS_ERR(clk))
+ 		return clk;
  
- 	/* use only one timer */
-@@ -57,22 +56,13 @@ static int tegra20_timer_probe(struct device_d *dev)
- 		return -ENODEV;
- 	}
- 
--	timer_clk = clk_get(dev, NULL);
--	if (!timer_clk) {
--		dev_err(dev, "could not get clock\n");
--		return -ENODEV;
--	}
--
--	clk_enable(timer_clk);
--
- 	/*
- 	 * calibrate timer to run at 1MHz
- 	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
- 	 * representing the divisor and bits [8:15] representing the dividend
- 	 * each in n+1 form.
- 	 */
--	rate = clk_get_rate(timer_clk);
--	switch (rate) {
-+	switch (tegra_get_osc_clock()) {
- 	case 12000000:
- 		reg = 0x000b;
- 		break;
-@@ -116,4 +106,4 @@ static int tegra20_timer_init(void)
- {
- 	return platform_driver_register(&tegra20_timer_driver);
++	clk = of_clk_get_by_name(dev->device_node, con_id);
++		if (!IS_ERR(clk))
++			return clk;
++
+ 	return clk_get_sys(dev_id, con_id);
  }
--coredevice_initcall(tegra20_timer_init);
-+core_initcall(tegra20_timer_init);
+ EXPORT_SYMBOL(clk_get);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 37a4813..0f7158a 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -11,6 +11,8 @@
+ #ifndef __LINUX_CLK_H
+ #define __LINUX_CLK_H
+ 
++#include <linux/err.h>
++
+ struct device_d;
+ 
+ /*
+@@ -210,4 +212,35 @@ void clk_dump(int verbose);
+ 
+ #endif
+ 
++struct device_node;
++struct of_phandle_args;
++
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK)
++int of_clk_add_provider(struct device_node *np,
++			struct clk *(*clk_src_get)(struct of_phandle_args *args,
++						   void *data),
++			void *data);
++void of_clk_del_provider(struct device_node *np);
++
++struct clk_onecell_data {
++	struct clk **clks;
++	unsigned int clk_num;
++};
++struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data);
++
++struct clk *of_clk_get(struct device_node *np, int index);
++struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
++struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
++#else
++static inline struct clk *of_clk_get(struct device_node *np, int index)
++{
++	return ERR_PTR(-ENOENT);
++}
++static inline struct clk *of_clk_get_by_name(struct device_node *np,
++					     const char *name)
++{
++	return ERR_PTR(-ENOENT);
++}
++#endif
++
+ #endif
 -- 
 1.8.2.1
 
