@@ -2,15 +2,15 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
  helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ujlh8-0004XB-6G
- for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:30:19 +0000
+ id 1Ujlh8-0004X3-6H
+ for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:30:16 +0000
 Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
  [212.202.120.50])
- by km20343-01.keymachine.de (Postfix) with ESMTPA id 933147D44B7
- for <barebox@lists.infradead.org>; Tue,  4 Jun 2013 09:29:30 +0200 (CEST)
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id BC7D27D44B5
+ for <barebox@lists.infradead.org>; Tue,  4 Jun 2013 09:29:29 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  4 Jun 2013 09:29:23 +0200
-Message-Id: <1370330963-3610-6-git-send-email-dev@lynxeye.de>
+Date: Tue,  4 Jun 2013 09:29:21 +0200
+Message-Id: <1370330963-3610-4-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1370330963-3610-1-git-send-email-dev@lynxeye.de>
 References: <1370330963-3610-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -26,388 +26,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] tegra: add peripheral clocks
+Subject: [PATCH 4/6] tegra: deduplicate clk defines
 To: barebox@lists.infradead.org
-
-Only UART clocks are included for now, but the code should cover
-other peripherals need too.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra20-car.h |  49 ++++++
- drivers/clk/tegra/Makefile                     |   1 +
- drivers/clk/tegra/clk-periph.c                 | 202 +++++++++++++++++++++++++
- drivers/clk/tegra/clk-tegra20.c                |  28 ++++
- drivers/clk/tegra/clk.h                        |  23 +++
- 5 files changed, 303 insertions(+)
- create mode 100644 drivers/clk/tegra/clk-periph.c
+ arch/arm/mach-tegra/include/mach/tegra20-car.h | 90 +++++++++-----------------
+ arch/arm/mach-tegra/tegra_avp_init.c           |  6 +-
+ 2 files changed, 33 insertions(+), 63 deletions(-)
 
 diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-index b770ae3..d4cb238 100644
+index 5669732..54c74c7 100644
 --- a/arch/arm/mach-tegra/include/mach/tegra20-car.h
 +++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-@@ -146,6 +146,55 @@
- #define CRC_PLLE_BASE			0x0e8
- #define CRC_PLLE_MISC			0x0ec
+@@ -111,68 +111,38 @@
+ #define CRC_PLLX_MISC_VCOCON_MASK	(0xf << CRC_PLLX_MISC_VCOCON_SHIFT)
  
-+#define CRC_CLK_SOURCE_I2S1		0x100
-+#define CRC_CLK_SOURCE_I2S2		0x104
-+#define CRC_CLK_SOURCE_SPDIF_OUT	0x108
-+#define CRC_CLK_SOURCE_SPDIF_IN		0x10c
-+#define CRC_CLK_SOURCE_PWM		0x110
-+#define CRC_CLK_SOURCE_SPI		0x114
-+#define CRC_CLK_SOURCE_SBC1		0x134
-+#define CRC_CLK_SOURCE_SBC2		0x118
-+#define CRC_CLK_SOURCE_SBC3		0x11c
-+#define CRC_CLK_SOURCE_SBC4		0x1b4
-+#define CRC_CLK_SOURCE_XIO		0x120
-+#define CRC_CLK_SOURCE_TWC		0x12c
-+#define CRC_CLK_SOURCE_IDE		0x144
-+#define CRC_CLK_SOURCE_NDFLASH		0x160
-+#define CRC_CLK_SOURCE_VFIR		0x168
-+#define CRC_CLK_SOURCE_SDMMC1		0x150
-+#define CRC_CLK_SOURCE_SDMMC2		0x154
-+#define CRC_CLK_SOURCE_SDMMC3		0x1bc
-+#define CRC_CLK_SOURCE_SDMMC4		0x164
-+#define CRC_CLK_SOURCE_CVE		0x140
-+#define CRC_CLK_SOURCE_TVO		0x188
-+#define CRC_CLK_SOURCE_TVDAC		0x194
-+#define CRC_CLK_SOURCE_HDMI		0x18c
-+#define CRC_CLK_SOURCE_DISP1		0x138
-+#define CRC_CLK_SOURCE_DISP2		0x13c
-+#define CRC_CLK_SOURCE_CSITE		0x1d4
-+#define CRC_CLK_SOURCE_LA		0x1f8
-+#define CRC_CLK_SOURCE_OWR		0x1cc
-+#define CRC_CLK_SOURCE_NOR		0x1d0
-+#define CRC_CLK_SOURCE_MIPI		0x174
-+#define CRC_CLK_SOURCE_I2C1		0x124
-+#define CRC_CLK_SOURCE_I2C2		0x198
-+#define CRC_CLK_SOURCE_I2C3		0x1b8
-+#define CRC_CLK_SOURCE_DVC		0x128
-+#define CRC_CLK_SOURCE_UARTA		0x178
-+#define CRC_CLK_SOURCE_UARTB		0x17c
-+#define CRC_CLK_SOURCE_UARTC		0x1a0
-+#define CRC_CLK_SOURCE_UARTD		0x1c0
-+#define CRC_CLK_SOURCE_UARTE		0x1c4
-+#define CRC_CLK_SOURCE_3D		0x158
-+#define CRC_CLK_SOURCE_2D		0x15c
-+#define CRC_CLK_SOURCE_MPE		0x170
-+#define CRC_CLK_SOURCE_EPP		0x16c
-+#define CRC_CLK_SOURCE_HOST1X		0x180
-+#define CRC_CLK_SOURCE_VDE		0x1c8
-+#define CRC_CLK_SOURCE_VI		0x148
-+#define CRC_CLK_SOURCE_VI_SENSOR	0x1a8
-+#define CRC_CLK_SOURCE_EMC		0x19c
-+
  #define CRC_RST_DEV_L_SET		0x300
- #define CRC_RST_DEV_L_CACHE2		(1 << 31)
- #define CRC_RST_DEV_L_VCP		(1 << 29)
-diff --git a/drivers/clk/tegra/Makefile b/drivers/clk/tegra/Makefile
-index be58c20..e614722 100644
---- a/drivers/clk/tegra/Makefile
-+++ b/drivers/clk/tegra/Makefile
-@@ -1,5 +1,6 @@
- obj-y	+= clk.o
- obj-y	+= clk-divider.o
-+obj-y	+= clk-periph.o
- obj-y	+= clk-pll.o
- obj-y	+= clk-pll-out.o
+-#define CRC_RST_DEV_L_SET_CACHE2	(1 << 31)
+-#define CRC_RST_DEV_L_SET_VCP		(1 << 29)
+-#define CRC_RST_DEV_L_SET_HOST1X	(1 << 28)
+-#define CRC_RST_DEV_L_SET_DISP1		(1 << 27)
+-#define CRC_RST_DEV_L_SET_DISP2		(1 << 26)
+-#define CRC_RST_DEV_L_SET_IDE		(1 << 25)
+-#define CRC_RST_DEV_L_SET_3D		(1 << 24)
+-#define CRC_RST_DEV_L_SET_ISP		(1 << 23)
+-#define CRC_RST_DEV_L_SET_USBD		(1 << 22)
+-#define CRC_RST_DEV_L_SET_2D		(1 << 21)
+-#define CRC_RST_DEV_L_SET_VI		(1 << 20)
+-#define CRC_RST_DEV_L_SET_EPP		(1 << 19)
+-#define CRC_RST_DEV_L_SET_I2S2		(1 << 18)
+-#define CRC_RST_DEV_L_SET_PWM		(1 << 17)
+-#define CRC_RST_DEV_L_SET_TWC		(1 << 16)
+-#define CRC_RST_DEV_L_SET_SDMMC4	(1 << 15)
+-#define CRC_RST_DEV_L_SET_SDMMC1	(1 << 14)
+-#define CRC_RST_DEV_L_SET_NDFLASH	(1 << 13)
+-#define CRC_RST_DEV_L_SET_I2C1		(1 << 12)
+-#define CRC_RST_DEV_L_SET_I2S1		(1 << 11)
+-#define CRC_RST_DEV_L_SET_SPDIF		(1 << 10)
+-#define CRC_RST_DEV_L_SET_SDMMC2	(1 << 9)
+-#define CRC_RST_DEV_L_SET_GPIO		(1 << 8)
+-#define CRC_RST_DEV_L_SET_UART2		(1 << 7)
+-#define CRC_RST_DEV_L_SET_UART1		(1 << 6)
+-#define CRC_RST_DEV_L_SET_TMR		(1 << 5)
+-#define CRC_RST_DEV_L_SET_AC97		(1 << 3)
+-#define CRC_RST_DEV_L_SET_SYS		(1 << 2)
+-#define CRC_RST_DEV_L_SET_COP		(1 << 1)
+-#define CRC_RST_DEV_L_SET_CPU		(1 << 0)
++#define CRC_RST_DEV_L_CACHE2		(1 << 31)
++#define CRC_RST_DEV_L_VCP		(1 << 29)
++#define CRC_RST_DEV_L_HOST1X		(1 << 28)
++#define CRC_RST_DEV_L_DISP1		(1 << 27)
++#define CRC_RST_DEV_L_DISP2		(1 << 26)
++#define CRC_RST_DEV_L_IDE		(1 << 25)
++#define CRC_RST_DEV_L_3D		(1 << 24)
++#define CRC_RST_DEV_L_ISP		(1 << 23)
++#define CRC_RST_DEV_L_USBD		(1 << 22)
++#define CRC_RST_DEV_L_2D		(1 << 21)
++#define CRC_RST_DEV_L_VI		(1 << 20)
++#define CRC_RST_DEV_L_EPP		(1 << 19)
++#define CRC_RST_DEV_L_I2S2		(1 << 18)
++#define CRC_RST_DEV_L_PWM		(1 << 17)
++#define CRC_RST_DEV_L_TWC		(1 << 16)
++#define CRC_RST_DEV_L_SDMMC4		(1 << 15)
++#define CRC_RST_DEV_L_SDMMC1		(1 << 14)
++#define CRC_RST_DEV_L_NDFLASH		(1 << 13)
++#define CRC_RST_DEV_L_I2C1		(1 << 12)
++#define CRC_RST_DEV_L_I2S1		(1 << 11)
++#define CRC_RST_DEV_L_SPDIF		(1 << 10)
++#define CRC_RST_DEV_L_SDMMC2		(1 << 9)
++#define CRC_RST_DEV_L_GPIO		(1 << 8)
++#define CRC_RST_DEV_L_UART2		(1 << 7)
++#define CRC_RST_DEV_L_UART1		(1 << 6)
++#define CRC_RST_DEV_L_TMR		(1 << 5)
++#define CRC_RST_DEV_L_AC97		(1 << 3)
++#define CRC_RST_DEV_L_SYS		(1 << 2)
++#define CRC_RST_DEV_L_COP		(1 << 1)
++#define CRC_RST_DEV_L_CPU		(1 << 0)
  
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-new file mode 100644
-index 0000000..e969495
---- /dev/null
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -0,0 +1,202 @@
-+/*
-+ * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * Based on the Linux Tegra clock code
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include <common.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#include "clk.h"
-+
-+#define to_clk_periph(_hw) container_of(_hw, struct tegra_clk_periph, hw)
-+
-+static int clk_periph_get_parent(struct clk *hw)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->mux->ops->get_parent(periph->mux);
-+}
-+
-+static int clk_periph_set_parent(struct clk *hw, u8 index)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->mux->ops->set_parent(periph->mux, index);
-+}
-+
-+static unsigned long clk_periph_recalc_rate(struct clk *hw,
-+					    unsigned long parent_rate)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->div->ops->recalc_rate(periph->div, parent_rate);
-+}
-+
-+static long clk_periph_round_rate(struct clk *hw, unsigned long rate,
-+				  unsigned long *prate)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->div->ops->round_rate(periph->div, rate, prate);
-+}
-+
-+static int clk_periph_set_rate(struct clk *hw, unsigned long rate,
-+			       unsigned long parent_rate)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->div->ops->set_rate(periph->div, rate, parent_rate);
-+}
-+
-+static int clk_periph_is_enabled(struct clk *hw)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+
-+	return periph->gate->ops->is_enabled(periph->gate);
-+}
-+
-+static int clk_periph_enable(struct clk *hw)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+	u32 reg;
-+
-+	reg = readl(periph->rst_reg);
-+	reg |= (1 << periph->rst_shift);
-+	writel(reg, periph->rst_reg);
-+
-+	periph->gate->ops->enable(periph->gate);
-+
-+	udelay(2);
-+
-+	reg = readl(periph->rst_reg);
-+	reg &= ~(1 << periph->rst_shift);
-+	writel(reg, periph->rst_reg);
-+
-+	return 0;
-+}
-+
-+static void clk_periph_disable(struct clk *hw)
-+{
-+	struct tegra_clk_periph *periph = to_clk_periph(hw);
-+	u32 reg;
-+
-+	reg = readl(periph->rst_reg);
-+	reg |= (1 << periph->rst_shift);
-+	writel(reg, periph->rst_reg);
-+
-+	udelay(2);
-+
-+	periph->gate->ops->disable(periph->gate);
-+}
-+
-+const struct clk_ops tegra_clk_periph_ops = {
-+	.get_parent = clk_periph_get_parent,
-+	.set_parent = clk_periph_set_parent,
-+	.recalc_rate = clk_periph_recalc_rate,
-+	.round_rate = clk_periph_round_rate,
-+	.set_rate = clk_periph_set_rate,
-+	.is_enabled = clk_periph_is_enabled,
-+	.enable = clk_periph_enable,
-+	.disable = clk_periph_disable,
-+};
-+
-+const struct clk_ops tegra_clk_periph_nodiv_ops = {
-+	.get_parent = clk_periph_get_parent,
-+	.set_parent = clk_periph_set_parent,
-+	.is_enabled = clk_periph_is_enabled,
-+	.enable = clk_periph_enable,
-+	.disable = clk_periph_disable,
-+};
-+
-+struct clk *_tegra_clk_register_periph(const char *name,
-+		const char **parent_names, int num_parents,
-+		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags,
-+		bool has_div)
-+{
-+	struct tegra_clk_periph *periph;
-+	int ret;
-+
-+	periph = kzalloc(sizeof(*periph), GFP_KERNEL);
-+	if (!periph) {
-+		pr_err("%s: could not allocate peripheral clk\n",
-+		       __func__);
-+		goto out_periph;
-+	}
-+
-+	periph->mux = clk_mux_alloc(NULL, clk_base + reg_offset, 30, 2,
-+				    parent_names, num_parents);
-+	if (!periph->mux)
-+		goto out_mux;
-+
-+	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + 0x10 +
-+				      ((id >> 3) & 0xc), id & 0x1f);
-+	if (!periph->gate)
-+		goto out_gate;
-+
-+	if (has_div) {
-+		periph->div = tegra_clk_divider_alloc(NULL, NULL, clk_base +
-+				reg_offset, 0, TEGRA_DIVIDER_ROUND_UP, 0, 8, 1);
-+		if (!periph->div)
-+			goto out_div;
-+	}
-+
-+	periph->hw.name = name;
-+	periph->hw.ops = has_div ? &tegra_clk_periph_ops :
-+				   &tegra_clk_periph_nodiv_ops;
-+	periph->hw.parent_names = parent_names;
-+	periph->hw.num_parents = num_parents;
-+	periph->flags = flags;
-+	periph->rst_reg = clk_base + 0x4 + ((id >> 3) & 0xc);
-+	periph->rst_shift = id & 0x1f;
-+
-+	ret = clk_register(&periph->hw);
-+	if (ret)
-+		goto out_register;
-+
-+	return &periph->hw;
-+
-+out_register:
-+	tegra_clk_divider_free(periph->div);
-+out_div:
-+	clk_gate_free(periph->gate);
-+out_gate:
-+	clk_mux_free(periph->mux);
-+out_mux:
-+	kfree(periph);
-+out_periph:
-+	return NULL;
-+}
-+
-+struct clk *tegra_clk_register_periph_nodiv(const char *name,
-+		const char **parent_names, int num_parents,
-+		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags)
-+{
-+	return _tegra_clk_register_periph(name, parent_names, num_parents,
-+					  clk_base, reg_offset, id, flags,
-+					  false);
-+}
-+
-+struct clk *tegra_clk_register_periph(const char *name,
-+		const char **parent_names, int num_parents,
-+		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags)
-+{
-+	return _tegra_clk_register_periph(name, parent_names, num_parents,
-+					  clk_base, reg_offset, id, flags,
-+					  true);
-+}
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index 5f668cb..e70f99a 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -275,6 +275,28 @@ static void tegra20_pll_init(void)
- 			TEGRA_PLL_HAS_CPCON, pll_u_freq_table);
+ #define CRC_RST_DEV_L_CLR		0x304
+-#define CRC_RST_DEV_L_CLR_CACHE2	(1 << 31)
+-#define CRC_RST_DEV_L_CLR_VCP		(1 << 29)
+-#define CRC_RST_DEV_L_CLR_HOST1X	(1 << 28)
+-#define CRC_RST_DEV_L_CLR_DISP1		(1 << 27)
+-#define CRC_RST_DEV_L_CLR_DISP2		(1 << 26)
+-#define CRC_RST_DEV_L_CLR_IDE		(1 << 25)
+-#define CRC_RST_DEV_L_CLR_3D		(1 << 24)
+-#define CRC_RST_DEV_L_CLR_ISP		(1 << 23)
+-#define CRC_RST_DEV_L_CLR_USBD		(1 << 22)
+-#define CRC_RST_DEV_L_CLR_2D		(1 << 21)
+-#define CRC_RST_DEV_L_CLR_VI		(1 << 20)
+-#define CRC_RST_DEV_L_CLR_EPP		(1 << 19)
+-#define CRC_RST_DEV_L_CLR_I2S2		(1 << 18)
+-#define CRC_RST_DEV_L_CLR_PWM		(1 << 17)
+-#define CRC_RST_DEV_L_CLR_TWC		(1 << 16)
+-#define CRC_RST_DEV_L_CLR_SDMMC4	(1 << 15)
+-#define CRC_RST_DEV_L_CLR_SDMMC1	(1 << 14)
+-#define CRC_RST_DEV_L_CLR_NDFLASH	(1 << 13)
+-#define CRC_RST_DEV_L_CLR_I2C1		(1 << 12)
+-#define CRC_RST_DEV_L_CLR_I2S1		(1 << 11)
+-#define CRC_RST_DEV_L_CLR_SPDIF		(1 << 10)
+-#define CRC_RST_DEV_L_CLR_SDMMC2	(1 << 9)
+-#define CRC_RST_DEV_L_CLR_GPIO		(1 << 8)
+-#define CRC_RST_DEV_L_CLR_UART2		(1 << 7)
+-#define CRC_RST_DEV_L_CLR_UART1		(1 << 6)
+-#define CRC_RST_DEV_L_CLR_TMR		(1 << 5)
+-#define CRC_RST_DEV_L_CLR_AC97		(1 << 3)
+-#define CRC_RST_DEV_L_CLR_SYS		(1 << 2)
+-#define CRC_RST_DEV_L_CLR_COP		(1 << 1)
+-#define CRC_RST_DEV_L_CLR_CPU		(1 << 0)
+ 
+ #define CRC_RST_CPU_CMPLX_SET		0x340
+ 
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 4823733..5099e91 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -54,14 +54,14 @@ static void assert_maincomplex_reset(int num_cores)
+ 		mask |= 0x1111 << i;
+ 
+ 	writel(mask, TEGRA_CLK_RESET_BASE + CRC_RST_CPU_CMPLX_SET);
+-	writel(CRC_RST_DEV_L_SET_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
++	writel(CRC_RST_DEV_L_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
  }
  
-+static const char *mux_pllpcm_clkm[] = {"pll_p", "pll_c", "pll_m", "clk_m"};
-+
-+static void tegra20_periph_init(void)
-+{
-+	/* peripheral clocks without a divider */
-+	clks[uarta] = tegra_clk_register_periph_nodiv("uarta", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTA, uarta, TEGRA_PERIPH_ON_APB);
-+	clks[uartb] = tegra_clk_register_periph_nodiv("uartb", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTB, uartb, TEGRA_PERIPH_ON_APB);
-+	clks[uartc] = tegra_clk_register_periph_nodiv("uartc", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTC, uartc, TEGRA_PERIPH_ON_APB);
-+	clks[uartd] = tegra_clk_register_periph_nodiv("uartd", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTD, uartd, TEGRA_PERIPH_ON_APB);
-+	clks[uarte] = tegra_clk_register_periph_nodiv("uarte", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTE, uarte, TEGRA_PERIPH_ON_APB);
-+}
-+
- static struct tegra_clk_init_table init_table[] = {
- 	{pll_p,		clk_max,	216000000,	1},
- 	{pll_p_out1,	clk_max,	28800000,	1},
-@@ -283,6 +305,11 @@ static struct tegra_clk_init_table init_table[] = {
- 	{pll_p_out4,	clk_max,	24000000,	1},
- 	{pll_c,		clk_max,	600000000,	1},
- 	{pll_c_out1,	clk_max,	120000000,	1},
-+	{uarta,		pll_p,		0,		1},
-+	{uartb,		pll_p,		0,		1},
-+	{uartc,		pll_p,		0,		1},
-+	{uartd,		pll_p,		0,		1},
-+	{uarte,		pll_p,		0,		1},
- 	{clk_max,	clk_max,	0,		0}, /* sentinel */
- };
+ /* release reset state of the first core of the main CPU complex */
+ static void deassert_cpu0_reset(void)
+ {
+ 	writel(0x1111, TEGRA_CLK_RESET_BASE + CRC_RST_CPU_CMPLX_CLR);
+-	writel(CRC_RST_DEV_L_CLR_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_CLR);
++	writel(CRC_RST_DEV_L_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_CLR);
+ }
  
-@@ -294,6 +321,7 @@ static int tegra20_car_probe(struct device_d *dev)
+ /* stop all internal and external clocks to the main CPU complex */
+@@ -220,7 +220,7 @@ void barebox_arm_reset_vector(void)
+ 	deassert_cpu0_reset();
  
- 	tegra20_osc_clk_init();
- 	tegra20_pll_init();
-+	tegra20_periph_init();
+ 	/* assert AVP reset to stop execution here */
+-	writel(CRC_RST_DEV_L_SET_COP, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
++	writel(CRC_RST_DEV_L_COP, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
  
- 	tegra_init_from_table(init_table, clks, clk_max);
- 
-diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
-index 2bc3698..9bb8f1c 100644
---- a/drivers/clk/tegra/clk.h
-+++ b/drivers/clk/tegra/clk.h
-@@ -115,6 +115,29 @@ struct clk *tegra_clk_register_pll_out(const char *name,
- 		const char *parent_name, void __iomem *reg, u8 shift,
- 		u8 divider_flags);
- 
-+/* struct clk-periph - peripheral clock */
-+struct tegra_clk_periph {
-+	struct clk	hw;
-+	struct clk	*gate;
-+	struct clk	*mux;
-+	struct clk	*div;
-+	u8 		flags;
-+	u8		rst_shift;
-+	void __iomem	*rst_reg;
-+};
-+
-+#define TEGRA_PERIPH_NO_RESET BIT(0)
-+#define TEGRA_PERIPH_MANUAL_RESET BIT(1)
-+#define TEGRA_PERIPH_ON_APB BIT(2)
-+
-+struct clk *tegra_clk_register_periph_nodiv(const char *name,
-+		const char **parent_names, int num_parents,
-+		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags);
-+
-+struct clk *tegra_clk_register_periph(const char *name,
-+		const char **parent_names, int num_parents,
-+		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags);
-+
- /* struct clk_init_table - clock initialization table */
- struct tegra_clk_init_table {
- 	unsigned int	clk_id;
+ 	unreachable();
+ }
 -- 
 1.8.2.1
 
