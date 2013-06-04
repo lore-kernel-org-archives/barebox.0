@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ns.km20343-01.keymachine.de ([84.19.182.79]
+ helo=km20343-01.keymachine.de)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjlHu-0003kN-Dy
- for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:04:11 +0000
-Date: Tue, 4 Jun 2013 09:03:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130604070348.GG32299@pengutronix.de>
-References: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1370256807-26755-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Ujlgl-0004V5-AN
+ for barebox@lists.infradead.org; Tue, 04 Jun 2013 07:29:52 +0000
+Received: from antimon.pengutronix.de (port-212-202-120-50.static.qsc.de
+ [212.202.120.50])
+ by km20343-01.keymachine.de (Postfix) with ESMTPA id A2F5E7D42E3
+ for <barebox@lists.infradead.org>; Tue,  4 Jun 2013 09:29:15 +0200 (CEST)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Tue,  4 Jun 2013 09:29:10 +0200
+Message-Id: <1370330951-3548-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1370330951-3548-1-git-send-email-dev@lynxeye.de>
+References: <1370330951-3548-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,38 +21,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/5] MIPS: rework ns16550 debug_ll
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] of: import of_property_match_string from Linux
+To: barebox@lists.infradead.org
 
-On Mon, Jun 03, 2013 at 02:53:22PM +0400, Antony Pavlov wrote:
-> This patch series makes possible easely produce
-> debug output via ns16550-like UART on very early pbl stage.
-> 
-> v2 patch series is based on the 'master' branch
-> and it does not break bisectibility.
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/of/base.c | 37 +++++++++++++++++++++++++++++++++++++
+ include/of.h      |  2 ++
+ 2 files changed, 39 insertions(+)
 
-Thanks for redoing this. Applied.
-
-Sascha
-
-> 
-> [PATCH v2 1/5] MIPS: rzx50: prepare for new debug_ll
-> [PATCH v2 2/5] MIPS: malta: prepare for new debug_ll
-> [PATCH v2 3/5] MIPS: unify ns16550 debug_ll support code
-> [PATCH v2 4/5] MIPS: rzx50: pbl: use debug_ll
-> [PATCH v2 5/5] MIPS: rzx50_defconfig: use UART1 for low-level debug
-> 
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index b3d012c..912e793 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -683,6 +683,43 @@ int of_property_read_string_index(struct device_node *np, const char *propname,
+ EXPORT_SYMBOL_GPL(of_property_read_string_index);
+ 
+ /**
++ * of_property_match_string() - Find string in a list and return index
++ * @np: pointer to node containing string list property
++ * @propname: string list property name
++ * @string: pointer to string to search for in string list
++ *
++ * This function searches a string list property and returns the index
++ * of a specific string value.
++ */
++int of_property_match_string(struct device_node *np, const char *propname,
++			     const char *string)
++{
++	struct property *prop = of_find_property(np, propname);
++	size_t l;
++	int i;
++	const char *p, *end;
++
++	if (!prop)
++		return -EINVAL;
++	if (!prop->value)
++		return -ENODATA;
++
++	p = prop->value;
++	end = p + prop->length;
++
++	for (i = 0; p < end; i++, p += l) {
++		l = strlen(p) + 1;
++		if (p + l > end)
++			return -EILSEQ;
++		pr_debug("comparing %s with %s\n", string, p);
++		if (strcmp(string, p) == 0)
++			return i; /* Found it; return index */
++	}
++	return -ENODATA;
++}
++EXPORT_SYMBOL_GPL(of_property_match_string);
++
++/**
+  * of_modalias_node - Lookup appropriate modalias for a device node
+  * @node:	pointer to a device tree node
+  * @modalias:	Pointer to buffer that modalias value will be copied into
+diff --git a/include/of.h b/include/of.h
+index f00d1b4..27fd8da 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -172,6 +172,8 @@ int of_property_read_string(struct device_node *np, const char *propname,
+ 				const char **out_string);
+ int of_property_read_string_index(struct device_node *np, const char *propname,
+ 				  int index, const char **output);
++int of_property_match_string(struct device_node *np, const char *propname,
++			     const char *string);
+ int of_set_property(struct device_node *node, const char *p, const void *val, int len,
+ 		int create);
+ struct device_node *of_create_node(struct device_node *root, const char *path);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.2.1
+
 
 _______________________________________________
 barebox mailing list
