@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UjscR-0007ai-CV
- for barebox@lists.infradead.org; Tue, 04 Jun 2013 14:53:52 +0000
-Date: Tue, 4 Jun 2013 16:53:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130604145327.GJ32299@pengutronix.de>
-References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UjucP-0002ax-Co
+ for barebox@lists.infradead.org; Tue, 04 Jun 2013 17:01:58 +0000
+Message-ID: <51AE1D69.4050205@ge.com>
+Date: Tue, 04 Jun 2013 18:01:29 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+References: <1369926935-24159-1-git-send-email-renaud.barbier@ge.com>
+ <20130601092018.GO32299@pengutronix.de> <51AC6286.5030001@ge.com>
+In-Reply-To: <51AC6286.5030001@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +18,69 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] gianfar: prevent resource conflict
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-Hi Jan,
+Hello Sacha,
+I applied your patch and try it on our mpc8544 based board
+with a few modification.
+This board uses eTSEC1. This means all 3 regions have the same
+base address.
 
-On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
-> In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
-> change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
-> to the reset state.
+I just did the following update to your patch.
+It only maps the eTSEC registers and mdio bus registers.
 
-Can you add a description why this is necessary?
+  static int fsl_phy_init(void)
+{
+          add_generic_device("gfar-phy", 0, NULL, MDIO_BASE_ADDR, 0x1000,
+                          IORESOURCE_MEM, NULL);
+          return 0;
+  }
 
-Sascha
+  coredevice_initcall(fsl_phy_init);
 
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> ---
->  arch/arm/mach-omap/omap4_clock.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-> index 0621fd3..889d1f9 100644
-> --- a/arch/arm/mach-omap/omap4_clock.c
-> +++ b/arch/arm/mach-omap/omap4_clock.c
-> @@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
->  	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
-> -	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
-> -	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
-> -	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
-> +	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
-> +	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
-> +	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
->  	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+   int fsl_eth_init(int num, struct gfar_info_struct *gf)
+  {
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+          printf("FSL_ETH_INIT: num = %d, 0x%x\n", num - 1,
+                          GFAR_BASE_ADDR + (num - 1) * 0x1000);
+          add_generic_device("gfar", num - 1, NULL,
+                          GFAR_BASE_ADDR + (num - 1) * 0x1000, 0x1000,
+                          IORESOURCE_MEM, gf);
+
+           return 0;
+   }
+
+
+I added a few debug messages in request_region and got:
+
+barebox 2013.05.0-00706-g87df6ec-dirty #13 Tue Jun 4 17:17:34 BST 2013
+
+Board: DA923RC
+
+dev_request_mem_region:got resource
+request_region:name = gfar-phy0, parent = 1ffa6494
+request_region ok: 0xe0024000:0xe0024fff
+gfar_phy_probe:phy->regs= e0024000, 0
+gfar_phy_probe: id = 0
+mdio_bus: miibus0: probed
+...
+FSL_ETH_INIT: num = 0, 0xe0024000
+dev_request_mem_region:got resource
+request_region:name = gfar0, parent = 1ffa6494
+request_region: 0xe0024000:0xe0024fff conflicts with 0xe0024000:0xe0024fff
+gfar_probe:priv->regs 00000000, 0
+gfar_halt:regs = 00000000
+
+Even though, two devices have been added, both have the same parent 
+iomem and the same region is compared. A conflict is then detected.
+When gfar_probe requests its Ethernet register region, NULL is returned.
+
+
 
 _______________________________________________
 barebox mailing list
