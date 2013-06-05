@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uk7ae-0007FN-V3
- for barebox@lists.infradead.org; Wed, 05 Jun 2013 06:53:01 +0000
-Date: Wed, 5 Jun 2013 08:52:39 +0200
+ id 1Uk7tZ-00083V-Sx
+ for barebox@lists.infradead.org; Wed, 05 Jun 2013 07:12:34 +0000
+Date: Wed, 5 Jun 2013 09:12:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130605065239.GP32299@pengutronix.de>
-References: <1370351277-23582-1-git-send-email-sfricke@data-modul.com>
+Message-ID: <20130605071211.GQ32299@pengutronix.de>
+References: <1369926935-24159-1-git-send-email-renaud.barbier@ge.com>
+ <20130601092018.GO32299@pengutronix.de> <51AC6286.5030001@ge.com>
+ <51AE1D69.4050205@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370351277-23582-1-git-send-email-sfricke@data-modul.com>
+In-Reply-To: <51AE1D69.4050205@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +24,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH V2] ARM i.MX6: set imx6 silicon revision
-To: "S. Fricke" <sfricke@data-modul.com>
+Subject: Re: [PATCH] gianfar: prevent resource conflict
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 04, 2013 at 03:07:57PM +0200, S. Fricke wrote:
-> From: "S. Fricke" <sfricke@data-modul.com>
-> 
-> This is mainly a backport of the imx6_revision function of
-> arch/arm/mach-imx/mach-imx6q.c in the linux kernel sources.
-> 
-> Signed-off-by: S. Fricke <sfricke@data-modul.com>
+On Tue, Jun 04, 2013 at 06:01:29PM +0100, Renaud Barbier wrote:
+> Hello Sacha,
+> I applied your patch and try it on our mpc8544 based board
+> with a few modification.
+> This board uses eTSEC1. This means all 3 regions have the same
+> base address.
 
-Applied, thanks
+I think I misunderstood the situation. I thought that the mdio register
+space is separate from the network interface register space. So in
+reality the mdio register space is inside the network register (the
+TSEC) space, but one TSEC instance needs the mdio bus from the other
+one, right?
+
+If that's the case then it's probably best to register a phy driver for
+each phy in a coredevice_initcall like I suggested and then use
+dev_get_mem_region in the phy driver instead of dev_request_mem_region.
 
 Sascha
-
-> ---
->  arch/arm/mach-imx/imx6.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
-> index 5c20aa1..1d69ec8 100644
-> --- a/arch/arm/mach-imx/imx6.c
-> +++ b/arch/arm/mach-imx/imx6.c
-> @@ -16,8 +16,11 @@
->  #include <io.h>
->  #include <sizes.h>
->  #include <mach/generic.h>
-> +#include <mach/revision.h>
->  #include <mach/imx6-regs.h>
->  
-> +#define SI_REV 0x260
-> +
->  void imx6_init_lowlevel(void)
->  {
->  	void __iomem *aips1 = (void *)MX6_AIPS1_ON_BASE_ADDR;
-> @@ -55,8 +58,31 @@ void imx6_init_lowlevel(void)
->  
->  static int imx6_init(void)
->  {
-> +	u32 rev;
-> +	u32 mx6_silicon_revision;
-> +
->  	imx6_boot_save_loc((void *)MX6_SRC_BASE_ADDR);
->  
-> +	rev = readl(MX6_ANATOP_BASE_ADDR + SI_REV);
-> +	switch (rev & 0xff) {
-> +	case 0x00:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_0;
-> +		break;
-> +
-> +	case 0x01:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_1;
-> +		break;
-> +
-> +	case 0x02:
-> +		mx6_silicon_revision = IMX_CHIP_REV_1_2;
-> +		break;
-> +
-> +	default:
-> +		mx6_silicon_revision = IMX_CHIP_REV_UNKNOWN;
-> +	}
-> +
-> +	imx_set_silicon_revision("i.MX6", mx6_silicon_revision);
-> +
->  	if (of_get_root_node())
->  		return 0;
->  
-> -- 
-> 1.8.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
