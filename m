@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f166.mail.ru ([94.100.178.85])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UkDr1-0003oF-Bs
- for barebox@lists.infradead.org; Wed, 05 Jun 2013 13:34:21 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1UkFWO-0006w3-8w
+ for barebox@lists.infradead.org; Wed, 05 Jun 2013 15:21:09 +0000
+Message-ID: <1370445529.4279.11.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 05 Jun 2013 17:18:49 +0200
+In-Reply-To: <1369121895-11282-2-git-send-email-s.hauer@pengutronix.de>
+References: <1369121895-11282-1-git-send-email-s.hauer@pengutronix.de>
+ <1369121895-11282-2-git-send-email-s.hauer@pengutronix.de>
 Mime-Version: 1.0
-Date: Wed, 05 Jun 2013 17:33:55 +0400
-Message-ID: <1370439235.553989759@f166.mail.ru>
-In-Reply-To: <1370438768-13729-1-git-send-email-l.stach@pengutronix.de>
-References: <1370438768-13729-1-git-send-email-l.stach@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,48 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gUmV2ZXJ0ICJ1c2I6IGNoaXBpZGVhLWlteDogRml4IHVz?=
- =?UTF-8?B?YiBpbml0aWFsaXphdGlvbiI=?=
-To: =?UTF-8?B?THVjYXMgU3RhY2g=?= <l.stach@pengutronix.de>
+Subject: Re: [PATCH 1/5] pinctrl: imx-iomux-v3: only register pinctrl when
+ device node is available
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
+This commit isn't included in the 2013.06 release.
 
+I hereby nominate it as a candidate for the v2013.06 stable branch.
 
-> This breaks HSIC and has no good justification why this would
-> be needed for ULPI.
+Am Dienstag, den 21.05.2013, 09:38 +0200 schrieb Sascha Hauer:
+> The pinctrl support is devicetree only, so only register it
+> when we actually have a devicetree. Otherwise we crash boards
+> using the iomux-v3 from platform code in pinctrl_register().
 > 
-> This reverts commit 2e7d66f526217f6ff3167e4580aecb9548a0de33.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  drivers/usb/imx/chipidea-imx.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/pinctrl/imx-iomux-v3.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-> index 928ebf3..4ee7610 100644
-> --- a/drivers/usb/imx/chipidea-imx.c
-> +++ b/drivers/usb/imx/chipidea-imx.c
-> @@ -148,13 +148,13 @@ static int imx_chipidea_probe(struct device_d *dev)
->  	ci->data.post_init = imx_chipidea_port_post_init;
->  	ci->data.drvdata = ci;
+> diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
+> index 3ff3c15..c867a23 100644
+> --- a/drivers/pinctrl/imx-iomux-v3.c
+> +++ b/drivers/pinctrl/imx-iomux-v3.c
+> @@ -177,7 +177,7 @@ static int imx_iomux_v3_probe(struct device_d *dev)
+>  	iomuxv3_base = dev_request_mem_region(dev, 0);
+>  	iomuxv3_dev = dev;
 >  
-> +	imx_chipidea_port_init(ci);
-> +
->  	portsc = readl(base + 0x184);
->  	portsc &= ~MXC_EHCI_PORTSC_MASK;
->  	portsc |= ci->flags & MXC_EHCI_PORTSC_MASK;
->  	writel(portsc, base + 0x184);
+> -	if (IS_ENABLED(CONFIG_PINCTRL))
+> +	if (IS_ENABLED(CONFIG_PINCTRL) && dev->device_node)
+>  		ret = imx_pinctrl_dt(dev, iomuxv3_base);
 >  
-> -	imx_chipidea_port_init(ci);
-> -
->  	if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_ULPI) {
->  		dev_dbg(dev, "using ULPI phy\n");
->  		if (IS_ENABLED(CONFIG_USB_ULPI)) {
+>  	return ret;
 
-This order was be before driver rework. Unfortunately I can not check right now,
-but when I test initial version, it was be a proper order, at least for pcm038 (imx27 module).
+-- 
+Pengutronix e.K.                           | Lucas Stach                 |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
----
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
