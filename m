@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uk7Vj-00077z-3D
- for barebox@lists.infradead.org; Wed, 05 Jun 2013 06:47:56 +0000
-Date: Wed, 5 Jun 2013 08:47:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130605064733.GN32299@pengutronix.de>
-References: <1370330951-3548-1-git-send-email-dev@lynxeye.de>
- <1370330951-3548-3-git-send-email-dev@lynxeye.de>
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uk9g0-0004Zd-Ql
+ for barebox@lists.infradead.org; Wed, 05 Jun 2013 09:06:41 +0000
+Message-ID: <51AEFF73.204@ge.com>
+Date: Wed, 05 Jun 2013 10:05:55 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1370330951-3548-3-git-send-email-dev@lynxeye.de>
+References: <1369926935-24159-1-git-send-email-renaud.barbier@ge.com>
+ <20130601092018.GO32299@pengutronix.de> <51AC6286.5030001@ge.com>
+ <51AE1D69.4050205@ge.com> <20130605071211.GQ32299@pengutronix.de>
+In-Reply-To: <20130605071211.GQ32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,285 +19,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] clk: add clock lookup from devicetree
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH] gianfar: prevent resource conflict
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 04, 2013 at 09:29:11AM +0200, Lucas Stach wrote:
-> Taken from the Linuxkernel with some small adjustments for barebox.
-> 
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  drivers/clk/clk.c    | 97 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->  drivers/clk/clkdev.c | 74 +++++++++++++++++++++++++++++++++++++++
->  include/linux/clk.h  | 33 ++++++++++++++++++
->  3 files changed, 204 insertions(+)
-> 
-> diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-> index 690a0c6..bad3386 100644
-> --- a/drivers/clk/clk.c
-> +++ b/drivers/clk/clk.c
-> @@ -16,6 +16,7 @@
->   */
->  #include <common.h>
->  #include <errno.h>
-> +#include <malloc.h>
->  #include <linux/clk.h>
->  #include <linux/err.h>
->  
-> @@ -253,6 +254,102 @@ int clk_is_enabled_always(struct clk *clk)
->  	return 1;
->  }
->  
-> +#ifdef CONFIG_OFTREE
-> +/**
-> + * struct of_clk_provider - Clock provider registration structure
-> + * @link: Entry in global list of clock providers
-> + * @node: Pointer to device tree node of clock provider
-> + * @get: Get clock callback.  Returns NULL or a struct clk for the
-> + *       given clock specifier
-> + * @data: context pointer to be passed into @get callback
-> + */
-> +struct of_clk_provider {
-> +	struct list_head link;
-> +
-> +	struct device_node *node;
-> +	struct clk *(*get)(struct of_phandle_args *clkspec, void *data);
-> +	void *data;
-> +};
-> +
-> +static LIST_HEAD(of_clk_providers);
-> +
-> +struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
-> +{
-> +	struct clk_onecell_data *clk_data = data;
-> +	unsigned int idx = clkspec->args[0];
-> +
-> +	if (idx >= clk_data->clk_num) {
-> +		pr_err("%s: invalid clock index %d\n", __func__, idx);
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
-> +	return clk_data->clks[idx];
-> +}
-> +EXPORT_SYMBOL_GPL(of_clk_src_onecell_get);
-> +
-> +/**
-> + * of_clk_add_provider() - Register a clock provider for a node
-> + * @np: Device node pointer associated with clock provider
-> + * @clk_src_get: callback for decoding clock
-> + * @data: context pointer for @clk_src_get callback.
-> + */
-> +int of_clk_add_provider(struct device_node *np,
-> +			struct clk *(*clk_src_get)(struct of_phandle_args *clkspec,
-> +						   void *data),
-> +			void *data)
-> +{
-> +	struct of_clk_provider *cp;
-> +
-> +	cp = kzalloc(sizeof(struct of_clk_provider), GFP_KERNEL);
-> +	if (!cp)
-> +		return -ENOMEM;
-> +
-> +	cp->node = np;
-> +	cp->data = data;
-> +	cp->get = clk_src_get;
-> +
-> +	list_add(&cp->link, &of_clk_providers);
-> +	pr_debug("Added clock from %s\n", np->full_name);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(of_clk_add_provider);
-> +
-> +/**
-> + * of_clk_del_provider() - Remove a previously registered clock provider
-> + * @np: Device node pointer associated with clock provider
-> + */
-> +void of_clk_del_provider(struct device_node *np)
-> +{
-> +	struct of_clk_provider *cp;
-> +
-> +	list_for_each_entry(cp, &of_clk_providers, link) {
-> +		if (cp->node == np) {
-> +			list_del(&cp->link);
-> +			kfree(cp);
-> +			break;
-> +		}
-> +	}
-> +}
-> +EXPORT_SYMBOL_GPL(of_clk_del_provider);
-> +
-> +struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
-> +{
-> +	struct of_clk_provider *provider;
-> +	struct clk *clk = ERR_PTR(-ENOENT);
-> +
-> +	/* Check if we have such a provider in our array */
-> +	list_for_each_entry(provider, &of_clk_providers, link) {
-> +		if (provider->node == clkspec->np)
-> +			clk = provider->get(clkspec, provider->data);
-> +		if (!IS_ERR(clk))
-> +			break;
-> +	}
-> +
-> +	return clk;
-> +}
-> +#endif
-> +
->  static void dump_one(struct clk *clk, int verbose, int indent)
->  {
->  	struct clk *c;
-> diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-> index 256927e..0b91af0 100644
-> --- a/drivers/clk/clkdev.c
-> +++ b/drivers/clk/clkdev.c
-> @@ -19,10 +19,80 @@
->  #include <linux/clkdev.h>
->  #include <init.h>
->  #include <malloc.h>
-> +#include <of.h>
->  #include <stdio.h>
->  
->  static LIST_HEAD(clocks);
->  
-> +#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK)
-> +struct clk *of_clk_get(struct device_node *np, int index)
-> +{
-> +	struct of_phandle_args clkspec;
-> +	struct clk *clk;
-> +	int rc;
-> +
-> +	if (index < 0)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
-> +					&clkspec);
-> +	if (rc)
-> +		return ERR_PTR(rc);
-> +
-> +	clk = of_clk_get_from_provider(&clkspec);
-> +	return clk;
-> +}
-> +EXPORT_SYMBOL(of_clk_get);
-> +
-> +/**
-> + * of_clk_get_by_name() - Parse and lookup a clock referenced by a device node
-> + * @np: pointer to clock consumer node
-> + * @name: name of consumer's clock input, or NULL for the first clock reference
-> + *
-> + * This function parses the clocks and clock-names properties,
-> + * and uses them to look up the struct clk from the registered list of clock
-> + * providers.
-> + */
-> +struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
-> +{
-> +	struct clk *clk = ERR_PTR(-ENOENT);
-> +
-> +	/* Walk up the tree of devices looking for a clock that matches */
-> +	while (np) {
-> +		int index = 0;
-> +
-> +		/*
-> +		 * For named clocks, first look up the name in the
-> +		 * "clock-names" property.  If it cannot be found, then
-> +		 * index will be an error code, and of_clk_get() will fail.
-> +		 */
-> +		if (name)
-> +			index = of_property_match_string(np, "clock-names",
-> +							 name);
-> +		clk = of_clk_get(np, index);
-> +		if (!IS_ERR(clk))
-> +			break;
-> +		else if (name && index >= 0) {
-> +			pr_err("ERROR: could not get clock %s:%s(%i)\n",
-> +				np->full_name, name ? name : "", index);
-> +			return clk;
-> +		}
-> +
-> +		/*
-> +		 * No matching clock found on this node.  If the parent node
-> +		 * has a "clock-ranges" property, then we can try one of its
-> +		 * clocks.
-> +		 */
-> +		np = np->parent;
-> +		if (np && !of_get_property(np, "clock-ranges", NULL))
-> +			break;
-> +	}
-> +
-> +	return clk;
-> +}
-> +EXPORT_SYMBOL(of_clk_get_by_name);
-> +#endif
-> +
->  /*
->   * Find the correct struct clk for the device and connection ID.
->   * We do slightly fuzzy matching here:
-> @@ -109,6 +179,10 @@ struct clk *clk_get(struct device_d *dev, const char *con_id)
->  	if (!IS_ERR(clk))
->  		return clk;
->  
-> +	clk = of_clk_get_by_name(dev->device_node, con_id);
-> +		if (!IS_ERR(clk))
-> +			return clk;
-> +
->  	return clk_get_sys(dev_id, con_id);
->  }
->  EXPORT_SYMBOL(clk_get);
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index 37a4813..0f7158a 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -11,6 +11,8 @@
->  #ifndef __LINUX_CLK_H
->  #define __LINUX_CLK_H
->  
-> +#include <linux/err.h>
-> +
->  struct device_d;
->  
->  /*
-> @@ -210,4 +212,35 @@ void clk_dump(int verbose);
->  
->  #endif
->  
-> +struct device_node;
-> +struct of_phandle_args;
-> +
-> +#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK)
-> +int of_clk_add_provider(struct device_node *np,
-> +			struct clk *(*clk_src_get)(struct of_phandle_args *args,
-> +						   void *data),
-> +			void *data);
-> +void of_clk_del_provider(struct device_node *np);
-> +
-> +struct clk_onecell_data {
-> +	struct clk **clks;
-> +	unsigned int clk_num;
-> +};
-> +struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data);
-> +
-> +struct clk *of_clk_get(struct device_node *np, int index);
-> +struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
-> +struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
+On 05/06/2013 08:12, Sascha Hauer wrote:
+> On Tue, Jun 04, 2013 at 06:01:29PM +0100, Renaud Barbier wrote:
+>> Hello Sacha,
+>> I applied your patch and try it on our mpc8544 based board
+>> with a few modification.
+>> This board uses eTSEC1. This means all 3 regions have the same
+>> base address.
+>
+> I think I misunderstood the situation. I thought that the mdio register
+> space is separate from the network interface register space. So in
+> reality the mdio register space is inside the network register (the
+> TSEC) space, but one TSEC instance needs the mdio bus from the other
+> one, right?
 
-Can we have a CLK_HAVE_OF_PROVIDER Kconfig symbol and a static inline
-version of of_clk_get_from_provider if this is not set? On architectures
-which do not call of_clk_add_provider this only adds to the binary space
-otherwise.
+Yes.
+All eTSEC uses the eTSEC1 region to access the mdio bus for external 
+PHYs. Port eTSEC1 3 regions (Ethernet reg, External phy access, TBI 
+interface) are in fact just one region.
 
-Sascha
+For eTSEC2, the Ethernet registers and TBI interface are mapped by the 
+same region but are not the same as the other port regions.
+The same applies for eTSEC3.
 
+For TSEC version 2, the mapping is a bit different.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I will  implement your suggestions below.
+
+>
+> If that's the case then it's probably best to register a phy driver for
+> each phy in a coredevice_initcall like I suggested and then use
+> dev_get_mem_region in the phy driver instead of dev_request_mem_region.
+>
+> Sascha
+>
+
 
 _______________________________________________
 barebox mailing list
