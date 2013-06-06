@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x232.google.com ([2a00:1450:400c:c00::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UkaRB-00019R-7s
- for barebox@lists.infradead.org; Thu, 06 Jun 2013 13:41:09 +0000
-Received: by mail-wg0-f50.google.com with SMTP id k13so2087388wgh.17
- for <barebox@lists.infradead.org>; Thu, 06 Jun 2013 06:40:46 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1370522836-11258-1-git-send-email-j.weitzel@phytec.de>
-References: <1370425962.3824.1.camel@lws-weitzel>
- <1370522836-11258-1-git-send-email-j.weitzel@phytec.de>
-Date: Thu, 6 Jun 2013 08:40:46 -0500
-Message-ID: <CAGo_u6rixBCzggcuLAfOLuxgTrzyDhY7ipf2garfTiDb_Ce0WA@mail.gmail.com>
-From: "menon.nishanth@gmail.com" <menon.nishanth@gmail.com>
+ id 1Ukb3K-000259-2A
+ for barebox@lists.infradead.org; Thu, 06 Jun 2013 14:20:34 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  6 Jun 2013 16:20:09 +0200
+Message-Id: <1370528409-3439-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,39 +14,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] omap4: set voltage according to mpu freq
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
+Subject: [PATCH] mfd: stmpe: Add devicetree probe support
+To: barebox@lists.infradead.org
 
-On Thu, Jun 6, 2013 at 7:47 AM, Jan Weitzel <j.weitzel@phytec.de> wrote:
-> +noinline int omap4460_scale_vcores(unsigned vsel0_pin, unsigned volt_mv)
-> +{
-> +       void __iomem *base;
-> +       u32 val = 0;
-> +
-> +       /* For VC bypass only VCOREx_CGF_FORCE  is necessary and
-> +        * VCOREx_CFG_VOLTAGE  changes can be discarded
-> +        */
-> +       writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
-> +       writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
-> +
-> +       /* TPS - supplies vdd_mpu on 4460
-> +        * Setup SET1 and SET0 with right values so that kernel
-> +        * can use either of them based on its needs.
-> +        */
-> +
-> +       omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, volt_mv);
-Just a nitpick - the general rule of TPS+OMAP4460 integration is *NOT*
-to program SET0 register. this is intended to be at boot voltage
-required to be used when reboot due to s/w controlled or h/w watchdog.
-> +       omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, volt_mv);
-> +
-Regards,
-Nishanth Menon
+Our driver matches stmpe-i2c and stmpe-spi. It seems the device
+we really support is the stmpe1601, so use this one for matching
+the devicetree compatible.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mfd/stmpe-i2c.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
+index d87620e..d785430 100644
+--- a/drivers/mfd/stmpe-i2c.c
++++ b/drivers/mfd/stmpe-i2c.c
+@@ -106,6 +106,25 @@ static struct file_operations stmpe_fops = {
+ 	.write	= stmpe_write,
+ };
+ 
++static struct stmpe_platform_data *stmpe_of_probe(struct device_d *dev)
++{
++	struct stmpe_platform_data *pdata;
++	struct device_node *node;
++
++	if (!IS_ENABLED(CONFIG_OFDEVICE) || !dev->device_node)
++		return NULL;
++
++	pdata = xzalloc(sizeof(*pdata));
++
++	device_node_for_nach_child(dev->device_node, node) {
++		if (!strcmp(node->name, "stmpe_gpio")) {
++			pdata->blocks |= STMPE_BLOCK_GPIO;
++		}
++	}
++
++	return pdata;
++}
++
+ static int stmpe_probe(struct device_d *dev)
+ {
+ 	struct stmpe_platform_data *pdata = dev->platform_data;
+@@ -113,8 +132,11 @@ static int stmpe_probe(struct device_d *dev)
+ 	struct stmpe_client_info *i2c_ci;
+ 
+ 	if (!pdata) {
+-		dev_dbg(dev, "no platform data\n");
+-		return -ENODEV;
++		pdata = stmpe_of_probe(dev);
++		if (!pdata) {
++			dev_dbg(dev, "no platform data\n");
++			return -ENODEV;
++		}
+ 	}
+ 
+ 	stmpe_dev = xzalloc(sizeof(struct stmpe));
+@@ -140,9 +162,15 @@ static int stmpe_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
++static struct platform_device_id stmpe_i2c_id[] = {
++	{ "stmpe1601", 0 },
++	{ }
++};
++
+ static struct driver_d stmpe_driver = {
+ 	.name  = DRIVERNAME,
+ 	.probe = stmpe_probe,
++	.id_table = stmpe_i2c_id,
+ };
+ 
+ static int stmpe_init(void)
+-- 
+1.8.2.rc2
+
 
 _______________________________________________
 barebox mailing list
