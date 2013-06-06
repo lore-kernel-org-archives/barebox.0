@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-f171.google.com ([209.85.217.171])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UkV1Z-0000Du-Kf
- for barebox@lists.infradead.org; Thu, 06 Jun 2013 07:54:22 +0000
-Received: by mail-lb0-f171.google.com with SMTP id v5so2756238lbc.2
- for <barebox@lists.infradead.org>; Thu, 06 Jun 2013 00:53:54 -0700 (PDT)
-Date: Thu, 6 Jun 2013 11:52:45 +0400
-From: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Message-Id: <20130606115245.a8add6e7ee99b4354fd9df84@gmail.com>
-In-Reply-To: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
-References: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
-Mime-Version: 1.0
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UkZbV-0008Lb-9d
+ for barebox@lists.infradead.org; Thu, 06 Jun 2013 12:47:47 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 6D7D2BF0E6
+ for <barebox@lists.infradead.org>; Thu,  6 Jun 2013 14:43:15 +0200 (CEST)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Thu, 6 Jun 2013 14:47:16 +0200
+Message-Id: <1370522836-11258-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1370425962.3824.1.camel@lws-weitzel>
+References: <1370425962.3824.1.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,175 +19,282 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH/RFC 0/5] Another try for a new memtest implementation
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] omap4: set voltage according to mpu freq
+To: barebox@lists.infradead.org
 
-On Tue,  4 Jun 2013 01:13:47 +0200
-Alexander Aring <alex.aring@gmail.com> wrote:
+For OMAP4460 omap4_scale_vcores must set the voltage according to mpu freq.
 
-> Hi,
-> =
+OPP100  700MHz 1210mV
+OPPTB   920MHz 1320mV
+OPPNT  1200MHz 1380mV
 
-> this is a new try to get a new memtest implementation into barebox.
-> =
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+v2: split omap4_scale_vcores
 
+ arch/arm/boards/archosg9/lowlevel.c             |    3 +-
+ arch/arm/boards/panda/lowlevel.c                |    7 +-
+ arch/arm/boards/pcm049/lowlevel.c               |    9 ++-
+ arch/arm/boards/phycard-a-xl2/lowlevel.c        |    9 ++-
+ arch/arm/mach-omap/include/mach/omap4-silicon.h |    3 +-
+ arch/arm/mach-omap/omap4_generic.c              |   96 +++++++++++++----------
+ 6 files changed, 74 insertions(+), 53 deletions(-)
 
-I have got the new memtest command from the next branch.
+diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
+index 0334693..49c1541 100644
+--- a/arch/arm/boards/archosg9/lowlevel.c
++++ b/arch/arm/boards/archosg9/lowlevel.c
+@@ -48,8 +48,7 @@ static noinline void archosg9_init_lowlevel(void)
+ 
+ 	set_muxconf_regs();
+ 
+-	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	omap4460_scale_vcores(TPS62361_VSEL0_GPIO, 1380);
+ 
+ 	/* Enable all clocks */
+ 	omap4_enable_all_clocks();
+diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
+index ed1dc6f..5d3490f 100644
+--- a/arch/arm/boards/panda/lowlevel.c
++++ b/arch/arm/boards/panda/lowlevel.c
+@@ -52,6 +52,7 @@ static void noinline panda_init_lowlevel(void)
+ 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_38M4;
+ 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_38M4;
+ 	struct dpll_param usb = OMAP4_USB_DPLL_PARAM_38M4;
++	unsigned int rev = omap4_revision();
+ 
+ 	writel(CM_SYS_CLKSEL_38M4, CM_SYS_CLKSEL);
+ 
+@@ -69,8 +70,10 @@ static void noinline panda_init_lowlevel(void)
+ 
+ 	omap4_ddr_init(&ddr_regs_400_mhz_2cs, &core);
+ 
+-	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	if (rev < OMAP4460_ES1_0)
++		omap4430_scale_vcores();
++	else
++		omap4460_scale_vcores(TPS62361_VSEL0_GPIO, 1210);
+ }
+ 
+ void barebox_arm_reset_vector(void)
+diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+index c855bff..aa6502d 100644
+--- a/arch/arm/boards/pcm049/lowlevel.c
++++ b/arch/arm/boards/pcm049/lowlevel.c
+@@ -99,6 +99,7 @@ static void noinline pcm049_init_lowlevel(void)
+ 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+ 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+ 	struct dpll_param usb = OMAP4_USB_DPLL_PARAM_19M2;
++	unsigned int rev = omap4_revision();
+ 
+ 	set_muxconf_regs();
+ 
+@@ -108,13 +109,15 @@ static void noinline pcm049_init_lowlevel(void)
+ 	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+ #endif
+ 
+-	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	if (rev < OMAP4460_ES1_0)
++		omap4430_scale_vcores();
++	else
++		omap4460_scale_vcores(TPS62361_VSEL0_GPIO, 1320);
+ 
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+ 	/* Configure all DPLL's */
+-	if (omap4_revision() < OMAP4460_ES1_0)
++	if (rev < OMAP4460_ES1_0)
+ 		omap4_configure_mpu_dpll(&mpu44xx);
+ 	else
+ 		omap4_configure_mpu_dpll(&mpu4460);
+diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+index 07505ff..86d7c51 100644
+--- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
++++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
+@@ -52,18 +52,21 @@ static noinline void pcaaxl2_init_lowlevel(void)
+ 	struct dpll_param per = OMAP4_PER_DPLL_PARAM_19M2;
+ 	struct dpll_param abe = OMAP4_ABE_DPLL_PARAM_19M2;
+ 	struct dpll_param usb = OMAP4_USB_DPLL_PARAM_19M2;
++	unsigned int rev = omap4_revision();
+ 
+ 	set_muxconf_regs();
+ 
+ 	omap4_ddr_init(&ddr_regs_mt42L64M64_25_400_mhz, &core);
+ 
+-	/* Set VCORE1 = 1.3 V, VCORE2 = VCORE3 = 1.21V */
+-	omap4_scale_vcores(TPS62361_VSEL0_GPIO);
++	if (ref < OMAP4460_ES1_0)
++		omap4430_scale_vcores();
++	else
++		omap4460_scale_vcores(TPS62361_VSEL0_GPIO, 1320);
+ 
+ 	writel(CM_SYS_CLKSEL_19M2, CM_SYS_CLKSEL);
+ 
+ 	/* Configure all DPLL's at 100% OPP */
+-	if (omap4_revision() < OMAP4460_ES1_0)
++	if (rev < OMAP4460_ES1_0)
+ 		omap4_configure_mpu_dpll(&mpu44xx);
+ 	else
+ 		omap4_configure_mpu_dpll(&mpu4460);
+diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+index 9e82435..ba48c30 100644
+--- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
++++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
+@@ -211,7 +211,8 @@ struct dpll_param;
+ void omap4_ddr_init(const struct ddr_regs *, const struct dpll_param *);
+ void omap4_power_i2c_send(u32);
+ unsigned int omap4_revision(void);
+-noinline int omap4_scale_vcores(unsigned vsel0_pin);
++noinline int omap4430_scale_vcores(void);
++noinline int omap4460_scale_vcores(unsigned vsel0_pin, unsigned volt_mv);
+ 
+ #endif
+ 
+diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
+index 3fd3a54..b5e166d 100644
+--- a/arch/arm/mach-omap/omap4_generic.c
++++ b/arch/arm/mach-omap/omap4_generic.c
+@@ -514,11 +514,9 @@ static void __iomem *omap4_get_gpio_base(unsigned gpio)
+ 
+ #define I2C_SLAVE 0x12
+ 
+-noinline int omap4_scale_vcores(unsigned vsel0_pin)
++noinline int omap4430_scale_vcores(void)
+ {
+-	void __iomem *base;
+ 	unsigned int rev = omap4_revision();
+-	u32 val = 0;
+ 
+ 	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
+ 	 * VCOREx_CFG_VOLTAGE  changes can be discarded
+@@ -526,50 +524,16 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+ 	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
+ 	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
+ 
+-	/* TPS - supplies vdd_mpu on 4460 */
+-	if (rev >= OMAP4460_ES1_0) {
+-		/*
+-		 * Setup SET1 and SET0 with right values so that kernel
+-		 * can use either of them based on its needs.
+-		 */
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, 1430);
+-		omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, 1430);
+-
+-		/*
+-		 * Select SET1 in TPS62361:
+-		 * VSEL1 is grounded on board. So the following selects
+-		 * VSEL1 = 0 and VSEL0 = 1
+-		 */
+-		base = omap4_get_gpio_base(vsel0_pin);
+-
+-		val = 1 << (vsel0_pin & GPIO_MASK);
+-		writel(val, base + 0x190);
+-
+-		val =  readl(base + 0x134);
+-		val &= ~(1 << (vsel0_pin & GPIO_MASK));
+-		writel(val, base + 0x134);
+-
+-		val = 1 << (vsel0_pin & GPIO_MASK);
+-		writel(val, base + 0x194);
+-	}
+-
+-	/* set VCORE1 force VSEL */
+-	/*
++	/* set VCORE1 force VSEL
+ 	 * 4430 : supplies vdd_mpu
+ 	 * Setting a high voltage for Nitro mode as smart reflex is not enabled.
+ 	 * We use the maximum possible value in the AVS range because the next
+ 	 * higher voltage in the discrete range (code >= 0b111010) is way too
+ 	 * high
+-	 *
+-	 * 4460 : supplies vdd_core
+-	 *
+ 	 */
+-	if (rev < OMAP4460_ES1_0)
+-		/* 0x55: i2c addr, 3A: ~ 1430 mvolts*/
+-		omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
+-	else
+-		/* 0x55: i2c addr, 28: ~ 1200 mvolts*/
+-		omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
++
++	/* 0x55: i2c addr, 3A: ~ 1430 mvolts*/
++	omap4_power_i2c_send((0x3A55 << 8) | I2C_SLAVE);
+ 
+ 	/* FIXME: set VCORE2 force VSEL, Check the reset value */
+ 	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
+@@ -582,12 +546,60 @@ noinline int omap4_scale_vcores(unsigned vsel0_pin)
+ 	case OMAP4430_ES2_1:
+ 		omap4_power_i2c_send((0x2A61 << 8) | I2C_SLAVE);
+ 		break;
+-	/* > OMAP4460_ES1_0 : VCORE3 not connected */
+ 	}
+ 
+ 	return 0;
+ }
+ 
++noinline int omap4460_scale_vcores(unsigned vsel0_pin, unsigned volt_mv)
++{
++	void __iomem *base;
++	u32 val = 0;
++
++	/* For VC bypass only VCOREx_CGF_FORCE  is necessary and
++	 * VCOREx_CFG_VOLTAGE  changes can be discarded
++	 */
++	writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
++	writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
++
++	/* TPS - supplies vdd_mpu on 4460
++	 * Setup SET1 and SET0 with right values so that kernel
++	 * can use either of them based on its needs.
++	 */
++
++	omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, volt_mv);
++	omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET1, volt_mv);
++
++	/*
++	 * Select SET1 in TPS62361:
++	 * VSEL1 is grounded on board. So the following selects
++	 * VSEL1 = 0 and VSEL0 = 1
++	 */
++	base = omap4_get_gpio_base(vsel0_pin);
++
++	val = 1 << (vsel0_pin & GPIO_MASK);
++	writel(val, base + 0x190);
++
++	val =  readl(base + 0x134);
++	val &= ~(1 << (vsel0_pin & GPIO_MASK));
++	writel(val, base + 0x134);
++
++	val = 1 << (vsel0_pin & GPIO_MASK);
++	writel(val, base + 0x194);
++
++	/* set VCORE1 force VSEL
++	 * 4460 : supplies vdd_core
++	 */
++
++	/* 0x55: i2c addr, 28: ~ 1200 mvolts*/
++	omap4_power_i2c_send((0x2855 << 8) | I2C_SLAVE);
++
++	/* FIXME: set VCORE2 force VSEL, Check the reset value */
++	omap4_power_i2c_send((0x295B << 8) | I2C_SLAVE);
++
++	return 0;
++}
++
+ void omap4_do_set_mux(u32 base, struct pad_conf_entry const *array, int size)
+ {
+ 	int i;
+-- 
+1.7.0.4
 
-Here is my MIPS qemu-malta build log:
-
-  CC      commands/memtest.o
-commands/memtest.c: In function `alloc_memtest_region':
-commands/memtest.c:39: warning: implicit declaration of function `xzalloc'
-commands/memtest.c:39: warning: assignment makes pointer from integer witho=
-ut a cast
-commands/memtest.c:42: error: `EINVAL' undeclared (first use in this functi=
-on)
-commands/memtest.c:42: error: (Each undeclared identifier is reported only =
-once
-commands/memtest.c:42: error: for each function it appears in.)
-commands/memtest.c: In function `request_memtest_regions':
-commands/memtest.c:57: warning: implicit declaration of function `container=
-_of'
-commands/memtest.c:57: error: syntax error before "typeof"
-commands/memtest.c:57: error: syntax error before "typeof"
-commands/memtest.c:64: warning: implicit declaration of function `PAGE_ALIG=
-N_DOWN'
-commands/memtest.c:71: error: continue statement not within a loop
-commands/memtest.c: At top level:
-commands/memtest.c:79: error: syntax error before "for"
-commands/memtest.c:79: error: syntax error before '->' token
-commands/memtest.c:79: warning: type defaults to `int' in declaration of `p=
-refetch'
-commands/memtest.c:79: warning: function declaration isn't a prototype
-commands/memtest.c:79: error: conflicting types for 'prefetch'
-include/linux/list.h:18: error: previous definition of 'prefetch' was here
-commands/memtest.c:79: warning: type defaults to `int' in declaration of `r'
-commands/memtest.c:79: error: invalid type argument of `->'
-commands/memtest.c:79: error: syntax error before "typeof"
-commands/memtest.c:88: warning: type defaults to `int' in declaration of `e=
-nd'
-commands/memtest.c:88: error: invalid type argument of `->'
-commands/memtest.c:88: error: initializer element is not constant
-commands/memtest.c:88: warning: data definition has no type or storage class
-commands/memtest.c:89: warning: type defaults to `int' in declaration of `s=
-ize'
-commands/memtest.c:89: error: `start' undeclared here (not in a function)
-commands/memtest.c:89: warning: data definition has no type or storage class
-commands/memtest.c:90: warning: type defaults to `int' in declaration of `r=
-_prev'
-commands/memtest.c:90: error: initializer element is not constant
-commands/memtest.c:90: warning: data definition has no type or storage class
-commands/memtest.c:91: error: syntax error before "if"
-commands/memtest.c:94: warning: type defaults to `int' in declaration of `r=
-et'
-commands/memtest.c:94: error: `list' undeclared here (not in a function)
-commands/memtest.c:94: error: initializer element is not constant
-commands/memtest.c:94: warning: data definition has no type or storage class
-commands/memtest.c:95: error: syntax error before "if"
-commands/memtest.c:102: warning: type defaults to `int' in declaration of `=
-start'
-commands/memtest.c:102: warning: implicit declaration of function `PAGE_ALI=
-GN'
-commands/memtest.c:102: error: invalid type argument of `->'
-commands/memtest.c:102: error: initializer element is not constant
-commands/memtest.c:102: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:103: warning: type defaults to `int' in declaration of `=
-end'
-commands/memtest.c:103: error: redefinition of 'end'
-commands/memtest.c:88: error: previous definition of 'end' was here
-commands/memtest.c:103: error: invalid type argument of `->'
-commands/memtest.c:103: error: initializer element is not constant
-commands/memtest.c:103: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:104: warning: type defaults to `int' in declaration of `=
-size'
-commands/memtest.c:104: error: redefinition of 'size'
-commands/memtest.c:89: error: previous definition of 'size' was here
-commands/memtest.c:104: error: initializer element is not constant
-commands/memtest.c:104: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:105: warning: type defaults to `int' in declaration of `=
-r_prev'
-commands/memtest.c:105: error: redefinition of 'r_prev'
-commands/memtest.c:90: error: previous definition of 'r_prev' was here
-commands/memtest.c:105: error: initializer element is not constant
-commands/memtest.c:105: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:106: error: syntax error before "if"
-commands/memtest.c:109: warning: type defaults to `int' in declaration of `=
-ret'
-commands/memtest.c:109: error: redefinition of 'ret'
-commands/memtest.c:94: error: previous definition of 'ret' was here
-commands/memtest.c:109: error: initializer element is not constant
-commands/memtest.c:109: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:110: error: syntax error before "if"
-commands/memtest.c:118: warning: type defaults to `int' in declaration of `=
-end'
-commands/memtest.c:118: error: redefinition of 'end'
-commands/memtest.c:103: error: previous definition of 'end' was here
-commands/memtest.c:118: error: redefinition of 'end'
-commands/memtest.c:103: error: previous definition of 'end' was here
-commands/memtest.c:118: error: `bank' undeclared here (not in a function)
-commands/memtest.c:118: error: initializer element is not constant
-commands/memtest.c:118: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:119: warning: type defaults to `int' in declaration of `=
-size'
-commands/memtest.c:119: error: redefinition of 'size'
-commands/memtest.c:104: error: previous definition of 'size' was here
-commands/memtest.c:119: error: redefinition of 'size'
-commands/memtest.c:104: error: previous definition of 'size' was here
-commands/memtest.c:119: error: initializer element is not constant
-commands/memtest.c:119: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:120: error: syntax error before "if"
-commands/memtest.c:123: warning: type defaults to `int' in declaration of `=
-ret'
-commands/memtest.c:123: error: redefinition of 'ret'
-commands/memtest.c:109: error: previous definition of 'ret' was here
-commands/memtest.c:123: error: redefinition of 'ret'
-commands/memtest.c:109: error: previous definition of 'ret' was here
-commands/memtest.c:123: error: initializer element is not constant
-commands/memtest.c:123: warning: data definition has no type or storage cla=
-ss
-commands/memtest.c:124: error: syntax error before "if"
-commands/memtest.c: In function `__do_memtest':
-commands/memtest.c:139: error: syntax error before "typeof"
-commands/memtest.c:139: error: syntax error before "typeof"
-commands/memtest.c:149: warning: implicit declaration of function `printf'
-commands/memtest.c: At top level:
-commands/memtest.c:152: error: syntax error before "return"
-commands/memtest.c: In function `do_memtest':
-commands/memtest.c:165: warning: implicit declaration of function `simple_s=
-trtoul'
-commands/memtest.c:214: error: syntax error before "typeof"
-commands/memtest.c:214: error: syntax error before "typeof"
-commands/memtest.c:221: warning: implicit declaration of function `free'
-commands/memtest.c: At top level:
-commands/memtest.c:224: error: syntax error before "if"
-commands/memtest.c:232: error: syntax error before string constant
-commands/memtest.c:232: warning: type defaults to `int' in declaration of `=
-printf'
-commands/memtest.c:232: warning: function declaration isn't a prototype
-commands/memtest.c:232: warning: data definition has no type or storage cla=
-ss
-make[1]: *** [commands/memtest.o] Error 1
-make: *** [commands] Error 2
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
