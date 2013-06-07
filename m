@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x233.google.com ([2a00:1450:4013:c01::233])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UkeJn-0007BL-Ku
- for barebox@lists.infradead.org; Thu, 06 Jun 2013 17:49:50 +0000
-Received: by mail-ea0-f179.google.com with SMTP id b15so1709864eae.38
- for <barebox@lists.infradead.org>; Thu, 06 Jun 2013 10:49:24 -0700 (PDT)
-Date: Thu, 6 Jun 2013 19:52:25 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130606175223.GA2892@x61s.8.8.8.8>
-References: <1370301232-12962-1-git-send-email-alex.aring@gmail.com>
- <20130606115245.a8add6e7ee99b4354fd9df84@gmail.com>
+Received: from lvps83-169-36-49.dedicated.hosteurope.de ([83.169.36.49]
+ helo=knowtrek.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Ukov2-0001TD-2I
+ for barebox@lists.infradead.org; Fri, 07 Jun 2013 05:08:57 +0000
+Received: from [192.168.0.10] (37-5-69-114-dynip.superkabel.de [37.5.69.114])
+ by knowtrek.com (Postfix) with ESMTPSA id 9B2F82EF835B
+ for <barebox@lists.infradead.org>; Fri,  7 Jun 2013 07:08:33 +0200 (CEST)
+Message-ID: <51B16AD0.4030206@knowtrek.com>
+Date: Fri, 07 Jun 2013 07:08:32 +0200
+From: Adam Furmanczuk <afurmanczuk@knowtrek.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130606115245.a8add6e7ee99b4354fd9df84@gmail.com>
+References: <51B0B2D6.3030407@knowtrek.com>
+ <20130606162120.GA32299@pengutronix.de>
+In-Reply-To: <20130606162120.GA32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,42 +26,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH/RFC 0/5] Another try for a new memtest implementation
-To: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: how to flash barebox and set root variable?
+To: barebox@lists.infradead.org
 
-Hi Antony,
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-On Thu, Jun 06, 2013 at 11:52:45AM +0400, antonynpavlov@gmail.com wrote:
-> On Tue,  4 Jun 2013 01:13:47 +0200
-> Alexander Aring <alex.aring@gmail.com> wrote:
-> 
-> > Hi,
-> > 
-> > this is a new try to get a new memtest implementation into barebox.
-> > 
-> 
-> I have got the new memtest command from the next branch.
-> 
-> Here is my MIPS qemu-malta build log:
-> 
->   CC      commands/memtest.o
-> commands/memtest.c: In function `alloc_memtest_region':
-> commands/memtest.c:39: warning: implicit declaration of function `xzalloc'
-> commands/memtest.c:39: warning: assignment makes pointer from integer without a cast
+Hi Sascha,
 
-thanks for send this notice. I know why this happend.
+thank you very much for your help.
 
-We get an include from architecure specific header file "asm/mmu.h" and
-some mmu.h in other architecure don't include "inside of arch specific
-asm/mmu.h" headers like "malloc.h", "errno.h".
+> What board do you have? Is it one supported by barebox or do you
+> have your own patches?
 
-I simple forgot to handle this.
+The board is a imx536 based [1]. The expansion board for this is self
+made. We connect RX, TX, Ground to a OCD-Adapter [2] and are able to
+communicate with barebox.
 
-I will send a patch "for-next" to add these header files to memtest.
+My Barebox version is: barebox 2012.03.0-00162-g3f84abc-dirty (Sep 24
+2012 - 10:51:42) it was already flashed in nor when we recieved the board.
 
-Regards
-Alex
+
+> What to do next depends on the environment you have. Please send
+> the output of 'ls -l /env'.
+
+The module is at my work place, I will post back on monday. I also
+post you the config file, which at this stage is still diffucilt for
+me to read.
+
+> Using a more recent version of barebox probably is a good idea. We 
+> gained a lot of interesting features in the last year.
+
+Exactly, I have seen in 'make menuconfig' when building the latest image.
+
+I try to write barebox.bin to my sd-card on host with:
+
+cat barebox.bin > /dev/sdx
+
+and report back to barebox reaction.
+
+
+Greetings,
+
+Adam
+
+
+[1] http://www.in-circuit.de/produkte/icnova-sodimm-cpu-module.html
+[2]
+http://shop.in-circuit.de/products/Home/Programmieradapter/16/ICprog-OpenOCD
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAlGxatAACgkQefEEI87R1DdcrQCfYL5nfs8K4Hsdp6GTuDWHCfXs
+khoAoIa0wy08POHDy8SZeLCrhV35iZET
+=M7kH
+-----END PGP SIGNATURE-----
 
 _______________________________________________
 barebox mailing list
