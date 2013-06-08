@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UlIs7-0005PM-9Y
- for barebox@lists.infradead.org; Sat, 08 Jun 2013 13:07:56 +0000
-Date: Sat, 8 Jun 2013 15:07:30 +0200
+ id 1UlIxe-0005Ys-1u
+ for barebox@lists.infradead.org; Sat, 08 Jun 2013 13:13:38 +0000
+Date: Sat, 8 Jun 2013 15:13:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130608130730.GH32299@pengutronix.de>
-References: <1370608890-13776-1-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20130608131315.GC26150@pengutronix.de>
+References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370608890-13776-1-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] tqma53: fixes for Kconfig and flash_header
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 07, 2013 at 02:41:27PM +0200, Steffen Trumtrar wrote:
-> Hi!
+On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
+> In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
+> change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
+> to the reset state.
 > 
-> Some fixes for the tqma53:
-> 	- rename "tqma53"->"TQMa53" in Kconfig text
-> 	- move RAM size selection to boardspecific submenu
-> 	- update flash_header with Errata settings
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
 Applied, thanks
 
 Sascha
 
+> ---
+>  arch/arm/mach-omap/omap4_clock.c |    6 +++---
+>  1 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> Regards,
-> Steffen
-> 
-> 
-> Markus Niebel (3):
->   ARM: i.MX53: tqma53: fix board name in Kconfig
->   ARM: i.MX53: tqma53: move RAM setting to submenu
->   ARM: i.MX53: tqma53: update flash_header
-> 
->  arch/arm/boards/tqma53/flash_header.c |  9 ++++++---
->  arch/arm/mach-imx/Kconfig             | 20 ++++++++++++--------
->  2 files changed, 18 insertions(+), 11 deletions(-)
-> 
+> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> index 0621fd3..889d1f9 100644
+> --- a/arch/arm/mach-omap/omap4_clock.c
+> +++ b/arch/arm/mach-omap/omap4_clock.c
+> @@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
+>  	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
+>  	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
+>  	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
+> -	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
+> -	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
+> -	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
+> +	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
+> +	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
+> +	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
+>  	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
+>  	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
+>  	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
 > -- 
-> 1.8.2.rc2
+> 1.7.0.4
 > 
 > 
 > _______________________________________________
