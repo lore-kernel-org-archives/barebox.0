@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UlIxe-0005Ys-1u
- for barebox@lists.infradead.org; Sat, 08 Jun 2013 13:13:38 +0000
-Date: Sat, 8 Jun 2013 15:13:15 +0200
+ id 1UlJ5k-0005kE-OI
+ for barebox@lists.infradead.org; Sat, 08 Jun 2013 13:22:01 +0000
+Date: Sat, 8 Jun 2013 15:21:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130608131315.GC26150@pengutronix.de>
-References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20130608132138.GI32299@pengutronix.de>
+References: <1370425962.3824.1.camel@lws-weitzel>
+ <1370522836-11258-1-git-send-email-j.weitzel@phytec.de>
+ <CAGo_u6rixBCzggcuLAfOLuxgTrzyDhY7ipf2garfTiDb_Ce0WA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <CAGo_u6rixBCzggcuLAfOLuxgTrzyDhY7ipf2garfTiDb_Ce0WA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +24,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] omap4: set voltage according to mpu freq
+To: "menon.nishanth@gmail.com" <menon.nishanth@gmail.com>
+Cc: "U-Boot Version 2 (barebox)" <barebox@lists.infradead.org>
 
-On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
-> In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
-> change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
-> to the reset state.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+On Thu, Jun 06, 2013 at 08:40:46AM -0500, menon.nishanth@gmail.com wrote:
+> On Thu, Jun 6, 2013 at 7:47 AM, Jan Weitzel <j.weitzel@phytec.de> wrote:
+> > +noinline int omap4460_scale_vcores(unsigned vsel0_pin, unsigned volt_mv)
+> > +{
+> > +       void __iomem *base;
+> > +       u32 val = 0;
+> > +
+> > +       /* For VC bypass only VCOREx_CGF_FORCE  is necessary and
+> > +        * VCOREx_CFG_VOLTAGE  changes can be discarded
+> > +        */
+> > +       writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
+> > +       writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
+> > +
+> > +       /* TPS - supplies vdd_mpu on 4460
+> > +        * Setup SET1 and SET0 with right values so that kernel
+> > +        * can use either of them based on its needs.
+> > +        */
+> > +
+> > +       omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, volt_mv);
+> Just a nitpick - the general rule of TPS+OMAP4460 integration is *NOT*
+> to program SET0 register. this is intended to be at boot voltage
+> required to be used when reboot due to s/w controlled or h/w watchdog.
 
-Applied, thanks
+So this line should simply be removed?
+
+Ok, this line is only moved and not introduced in this patch, so it
+should be fine to apply this patch and leave this for a separate patch.
 
 Sascha
-
-> ---
->  arch/arm/mach-omap/omap4_clock.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-> index 0621fd3..889d1f9 100644
-> --- a/arch/arm/mach-omap/omap4_clock.c
-> +++ b/arch/arm/mach-omap/omap4_clock.c
-> @@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
->  	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
-> -	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
-> -	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
-> -	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
-> +	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
-> +	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
-> +	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
->  	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
->  	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
