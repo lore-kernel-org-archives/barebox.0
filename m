@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UlJ6Y-0005lj-Kf
- for barebox@lists.infradead.org; Sat, 08 Jun 2013 13:22:51 +0000
-Date: Sat, 8 Jun 2013 15:22:29 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130608132229.GJ32299@pengutronix.de>
-References: <1370500369-3657-1-git-send-email-philipp.zabel@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1370500369-3657-1-git-send-email-philipp.zabel@gmail.com>
+ id 1UlbAw-0002Gr-T6
+ for barebox@lists.infradead.org; Sun, 09 Jun 2013 08:40:36 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  9 Jun 2013 12:40:08 +0400
+Message-Id: <1370767208-22789-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,30 +14,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM i.MX6: Fix bootsource detection
-To: Philipp Zabel <philipp.zabel@gmail.com>
-Cc: barebox@lists.infradead.org
-
-On Thu, Jun 06, 2013 at 08:32:49AM +0200, Philipp Zabel wrote:
-> This patch fixes bootsource detection on i.MX6 for serial and i2c boot.
-> The bootsource_instance is now determined for spi, i2c, and mmc/sd boot.
-> 
-> Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
-
-Applied, thanks
-
-Sascha
+Subject: [PATCH] ARM: pcm038: Fix partition size definitions
+To: barebox@lists.infradead.org
 
 
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ arch/arm/boards/pcm038/pcm038.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+index 372aea5..49677c2 100644
+--- a/arch/arm/boards/pcm038/pcm038.c
++++ b/arch/arm/boards/pcm038/pcm038.c
+@@ -332,22 +332,20 @@ static int pcm038_devices_init(void)
+ 
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_NAND:
+-		devfs_add_partition("nand0", 0x00000, 0x80000,
+-					DEVFS_PARTITION_FIXED, "self_raw");
++		devfs_add_partition("nand0", 0, SZ_512K,
++				    DEVFS_PARTITION_FIXED, "self_raw");
+ 		dev_add_bb_dev("self_raw", "self0");
+-
+-		devfs_add_partition("nand0", 0x80000, 0x100000,
+-					DEVFS_PARTITION_FIXED, "env_raw");
++		devfs_add_partition("nand0", SZ_512K, SZ_128K,
++				    DEVFS_PARTITION_FIXED, "env_raw");
+ 		dev_add_bb_dev("env_raw", "env0");
+ 		envdev = "NAND";
+ 		break;
+ 	default:
+-		devfs_add_partition("nor0", 0x00000, 0x80000,
+-					DEVFS_PARTITION_FIXED, "self0");
+-		devfs_add_partition("nor0", 0x80000, 0x100000,
+-					DEVFS_PARTITION_FIXED, "env0");
++		devfs_add_partition("nor0", 0, SZ_512K,
++				    DEVFS_PARTITION_FIXED, "self0");
++		devfs_add_partition("nor0", SZ_512K, SZ_128K,
++				    DEVFS_PARTITION_FIXED, "env0");
+ 		protect_file("/dev/env0", 1);
+-
+ 		envdev = "NOR";
+ 	}
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.5
+
 
 _______________________________________________
 barebox mailing list
