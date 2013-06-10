@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-f46.google.com ([209.85.160.46])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UllWo-0002Ls-9S
- for barebox@lists.infradead.org; Sun, 09 Jun 2013 19:43:51 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Sun,  9 Jun 2013 21:43:13 +0200
-Message-Id: <1370806993-28524-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1UlsOw-0007xw-5u
+ for barebox@lists.infradead.org; Mon, 10 Jun 2013 03:04:12 +0000
+Received: by mail-pb0-f46.google.com with SMTP id rq2so1707606pbb.5
+ for <barebox@lists.infradead.org>; Sun, 09 Jun 2013 20:03:42 -0700 (PDT)
+From: Masaki Muranaka <monaka@monami-ya.jp>
+Date: Mon, 10 Jun 2013 12:03:29 +0900
+Message-Id: <1370833409-1870-1-git-send-email-monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,34 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] console: fix new console registration
+Subject: [PATCH] Remove ftstc(). It is declared but not implemented.
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-The console_register-function gets the baudrate from a kconfig parameter and
-sets the console accordingly, if a setbrg function is registered.
-Add the missing call to setbrg on the newly registered console to actually
-use the baudrate setting.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
 ---
- common/console.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/stdio.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/common/console.c b/common/console.c
-index a0a06f6..abf5322 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -147,6 +147,7 @@ int console_register(struct console_device *newcdev)
- 		newcdev->baudrate = CONFIG_BAUDRATE;
- 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
- 			NULL, &newcdev->baudrate, "%u", newcdev);
-+		newcdev->setbrg(newcdev, newcdev->baudrate);
- 	}
+diff --git a/include/stdio.h b/include/stdio.h
+index 5c091a8..ff2572e 100644
+--- a/include/stdio.h
++++ b/include/stdio.h
+@@ -101,7 +101,6 @@ static inline void putchar(char c)
+ int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
+ int	fputs(int file, const char *s);
+ int	fputc(int file, const char c);
+-int	ftstc(int file);
+ int	fgetc(int file);
  
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+ #endif /* __STDIO_H */
 -- 
-1.8.2.rc2
+1.8.3
 
 
 _______________________________________________
