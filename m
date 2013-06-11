@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f314.mail.ru ([128.140.169.178])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UmQZb-0007hg-Bl
- for barebox@lists.infradead.org; Tue, 11 Jun 2013 15:33:28 +0000
-Date: Tue, 11 Jun 2013 17:33:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130611153305.GR32299@pengutronix.de>
-References: <1370848400-10380-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1370848400-10380-1-git-send-email-shc_work@mail.ru>
+ id 1UmQuH-0008CI-4H
+ for barebox@lists.infradead.org; Tue, 11 Jun 2013 15:54:50 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Tue, 11 Jun 2013 19:54:23 +0400
+Message-ID: <1370966063.553147631@f314.mail.ru>
+In-Reply-To: <20130611152747.GP32299@pengutronix.de>
+References: <1370773361-25588-1-git-send-email-shc_work@mail.ru>
+ <20130611152747.GP32299@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,89 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: ccmx51: Export available module GPIOs to
- barebox userspace
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gQVJNOiBwY20wMzg6IEF2b2lkIHdhcm5pbmcgaWYg?=
+ =?UTF-8?B?Z2FkZ2V0IHN1cHBvcnQgbm90IGNvbXBpbGVkIGlu?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 10, 2013 at 11:13:18AM +0400, Alexander Shiyan wrote:
-> Patch will help to develop user devices connected to module, so
-> user can operate GPIOs in barebox console.
+> On Sun, Jun 09, 2013 at 02:22:41PM +0400, Alexander Shiyan wrote:
+> > 
+> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> > ---
+> >  arch/arm/boards/pcm038/pcm038.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> > index 49677c2..dec5164 100644
+> > --- a/arch/arm/boards/pcm038/pcm038.c
+> > +++ b/arch/arm/boards/pcm038/pcm038.c
+> > @@ -328,7 +328,8 @@ static int pcm038_devices_init(void)
+> >  	mdelay(1);
+> >  	imx_gpio_mode(PE1_PF_USBOTG_STP);
+> >  
+> > -	imx27_add_usbotg(&pcm038_otg_pdata);
+> > +	if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC))
+> > +		imx27_add_usbotg(&pcm038_otg_pdata);
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> What warning do you get without this patch?
 
-Applied, thanks
+Runtime warning "No supported role" from chipidea driver.
 
-Sascha
-
-> ---
->  arch/arm/boards/ccxmx51/ccxmx51.c   | 24 ++++++++++++++++++++++++
->  arch/arm/boards/ccxmx51/ccxmx51js.c |  1 -
->  2 files changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
-> index 7f92043..d34759a 100644
-> --- a/arch/arm/boards/ccxmx51/ccxmx51.c
-> +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
-> @@ -176,6 +176,30 @@ static iomux_v3_cfg_t ccxmx51_pads[] = {
->  	MX51_PAD_GPIO1_7__GPIO1_7,
->  	/* MMA7455LR IRQ2 (GPIO1.6) */
->  	MX51_PAD_GPIO1_6__GPIO1_6,
-> +	/* User GPIOs */
-> +	MX51_PAD_GPIO1_0__GPIO1_0,
-> +	MX51_PAD_GPIO1_1__GPIO1_1,
-> +	MX51_PAD_GPIO1_8__GPIO1_8,
-> +	MX51_PAD_DI1_PIN11__GPIO3_0,
-> +	MX51_PAD_DI1_PIN12__GPIO3_1,
-> +	MX51_PAD_DI1_PIN13__GPIO3_2,
-> +	MX51_PAD_DI1_D0_CS__GPIO3_3,
-> +	MX51_PAD_DI1_D1_CS__GPIO3_4,
-> +	MX51_PAD_DISPB2_SER_DIN__GPIO3_5,
-> +	MX51_PAD_DISPB2_SER_DIO__GPIO3_6,
-> +	MX51_PAD_DISPB2_SER_CLK__GPIO3_7,
-> +	MX51_PAD_DISPB2_SER_RS__GPIO3_8,
-> +	MX51_PAD_NANDF_RB1__GPIO3_9,
-> +	MX51_PAD_NANDF_RB2__GPIO3_10,
-> +	MX51_PAD_NANDF_RB3__GPIO3_11,
-> +	MX51_PAD_CSI1_D8__GPIO3_12,
-> +	MX51_PAD_CSI1_D9__GPIO3_13,
-> +	MX51_PAD_NANDF_CS1__GPIO3_17,
-> +	MX51_PAD_NANDF_CS2__GPIO3_18,
-> +	MX51_PAD_NANDF_CS3__GPIO3_19,
-> +	MX51_PAD_NANDF_CS4__GPIO3_20,
-> +	MX51_PAD_NANDF_CS5__GPIO3_21,
-> +	MX51_PAD_NANDF_CS6__GPIO3_22,
->  };
->  
->  #define CCXMX51_ECSPI1_CS0	IMX_GPIO_NR(4, 24)
-> diff --git a/arch/arm/boards/ccxmx51/ccxmx51js.c b/arch/arm/boards/ccxmx51/ccxmx51js.c
-> index ae31caf..7d269c3 100644
-> --- a/arch/arm/boards/ccxmx51/ccxmx51js.c
-> +++ b/arch/arm/boards/ccxmx51/ccxmx51js.c
-> @@ -63,7 +63,6 @@ static iomux_v3_cfg_t ccxmx51js_pads[] = {
->  	MX51_PAD_USBH1_DATA5__USBH1_DATA5,
->  	MX51_PAD_USBH1_DATA6__USBH1_DATA6,
->  	MX51_PAD_USBH1_DATA7__USBH1_DATA7,
-> -	MX51_PAD_DISPB2_SER_RS__GPIO3_8,	/* Reset */
->  };
->  
->  static struct esdhc_platform_data sdhc1_pdata = {
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
