@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UmQUS-0007YQ-JA
- for barebox@lists.infradead.org; Tue, 11 Jun 2013 15:28:09 +0000
-Date: Tue, 11 Jun 2013 17:27:47 +0200
+ id 1UmQVm-0007an-5L
+ for barebox@lists.infradead.org; Tue, 11 Jun 2013 15:29:30 +0000
+Date: Tue, 11 Jun 2013 17:29:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130611152747.GP32299@pengutronix.de>
-References: <1370773361-25588-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130611152908.GQ32299@pengutronix.de>
+References: <1370833409-1870-1-git-send-email-monaka@monami-ya.jp>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370773361-25588-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1370833409-1870-1-git-send-email-monaka@monami-ya.jp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: pcm038: Avoid warning if gadget support not
- compiled in
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] Remove ftstc(). It is declared but not implemented.
+To: Masaki Muranaka <monaka@monami-ya.jp>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jun 09, 2013 at 02:22:41PM +0400, Alexander Shiyan wrote:
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/boards/pcm038/pcm038.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-> index 49677c2..dec5164 100644
-> --- a/arch/arm/boards/pcm038/pcm038.c
-> +++ b/arch/arm/boards/pcm038/pcm038.c
-> @@ -328,7 +328,8 @@ static int pcm038_devices_init(void)
->  	mdelay(1);
->  	imx_gpio_mode(PE1_PF_USBOTG_STP);
->  
-> -	imx27_add_usbotg(&pcm038_otg_pdata);
-> +	if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC))
-> +		imx27_add_usbotg(&pcm038_otg_pdata);
+On Mon, Jun 10, 2013 at 12:03:29PM +0900, Masaki Muranaka wrote:
+> Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
 
-What warning do you get without this patch?
+I applied it already.
 
 Sascha
+
+> ---
+>  include/stdio.h | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/include/stdio.h b/include/stdio.h
+> index 5c091a8..ff2572e 100644
+> --- a/include/stdio.h
+> +++ b/include/stdio.h
+> @@ -101,7 +101,6 @@ static inline void putchar(char c)
+>  int	fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
+>  int	fputs(int file, const char *s);
+>  int	fputc(int file, const char c);
+> -int	ftstc(int file);
+>  int	fgetc(int file);
+>  
+>  #endif /* __STDIO_H */
+> -- 
+> 1.8.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
