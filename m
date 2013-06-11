@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UmKxI-0007jq-BW
- for barebox@lists.infradead.org; Tue, 11 Jun 2013 09:33:33 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so3847291bkc.35
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2013 02:33:10 -0700 (PDT)
-Message-ID: <51B6EED2.3010707@gmail.com>
-Date: Tue, 11 Jun 2013 11:33:06 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ id 1UmQT0-0007WU-VS
+ for barebox@lists.infradead.org; Tue, 11 Jun 2013 15:26:40 +0000
+Date: Tue, 11 Jun 2013 17:26:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130611152614.GO32299@pengutronix.de>
+References: <1370767208-22789-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
-References: <1368400146-30443-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130519073403.GY32299@pengutronix.de>
-In-Reply-To: <20130519073403.GY32299@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1370767208-22789-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: add ranges address translation for default bus
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: pcm038: Fix partition size definitions
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-On 05/19/13 09:34, Sascha Hauer wrote:
-> Hi Sebastian,
->
-> On Mon, May 13, 2013 at 01:09:06AM +0200, Sebastian Hesselbarth wrote:
->> This patch adds address translation for default bus types. It has been
->> shamelessly ported from Linux device tree address translation with the
->> following exceptions:
->> - only default bus map and translate are supported
->> - of_bus has not been ported
->> - check for #size-cells > 0 has been removed
->>
->> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
->
-> I just gave this one a test.
->
-> First of all you dropped 1:1 translation, see the attached fixup.
->
-> Then, since this code duplicates the majority of drivers/of/address.c,
-> would it make sense to move it to the same file in barebox aswell?
+On Sun, Jun 09, 2013 at 12:40:08PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Sascha,
+Applied, though I really had liked some hint what was wrong with the
+partition sizes.
 
-coming back to this I am wondering if a full sync of linux' drivers/of
-with barebox' drivers/of should be done. IMHO at least for the core
-stuff (base/address/fdt) it makes sense, of_* can come later if
-required.
+Sascha
 
-I started merging already, and from what I can see we should just remove
-the spinlocks and OF_DYNAMIC stuff (but leave of_node_get/_put as stubs)
+> ---
+>  arch/arm/boards/pcm038/pcm038.c | 18 ++++++++----------
+>  1 file changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
+> index 372aea5..49677c2 100644
+> --- a/arch/arm/boards/pcm038/pcm038.c
+> +++ b/arch/arm/boards/pcm038/pcm038.c
+> @@ -332,22 +332,20 @@ static int pcm038_devices_init(void)
+>  
+>  	switch (bootsource_get()) {
+>  	case BOOTSOURCE_NAND:
+> -		devfs_add_partition("nand0", 0x00000, 0x80000,
+> -					DEVFS_PARTITION_FIXED, "self_raw");
+> +		devfs_add_partition("nand0", 0, SZ_512K,
+> +				    DEVFS_PARTITION_FIXED, "self_raw");
+>  		dev_add_bb_dev("self_raw", "self0");
+> -
+> -		devfs_add_partition("nand0", 0x80000, 0x100000,
+> -					DEVFS_PARTITION_FIXED, "env_raw");
+> +		devfs_add_partition("nand0", SZ_512K, SZ_128K,
+> +				    DEVFS_PARTITION_FIXED, "env_raw");
+>  		dev_add_bb_dev("env_raw", "env0");
+>  		envdev = "NAND";
+>  		break;
+>  	default:
+> -		devfs_add_partition("nor0", 0x00000, 0x80000,
+> -					DEVFS_PARTITION_FIXED, "self0");
+> -		devfs_add_partition("nor0", 0x80000, 0x100000,
+> -					DEVFS_PARTITION_FIXED, "env0");
+> +		devfs_add_partition("nor0", 0, SZ_512K,
+> +				    DEVFS_PARTITION_FIXED, "self0");
+> +		devfs_add_partition("nor0", SZ_512K, SZ_128K,
+> +				    DEVFS_PARTITION_FIXED, "env0");
+>  		protect_file("/dev/env0", 1);
+> -
+>  		envdev = "NOR";
+>  	}
+>  
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Sebastian
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
