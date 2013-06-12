@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from lvps83-169-36-49.dedicated.hosteurope.de ([83.169.36.49]
- helo=knowtrek.com)
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UmeIQ-0005NV-MR
- for barebox@lists.infradead.org; Wed, 12 Jun 2013 06:12:39 +0000
-Received: from [192.168.10.59] (p548771C1.dip0.t-ipconnect.de [84.135.113.193])
- by knowtrek.com (Postfix) with ESMTPSA id 53C702EF8435
- for <barebox@lists.infradead.org>; Wed, 12 Jun 2013 08:12:15 +0200 (CEST)
-Message-ID: <51B8113F.2050207@knowtrek.com>
-Date: Wed, 12 Jun 2013 08:12:15 +0200
-From: Adam Furmanczuk <afurmanczuk@knowtrek.com>
-MIME-Version: 1.0
-References: <51B0B2D6.3030407@knowtrek.com> <51B5C56C.4050801@knowtrek.com>
- <51B6066A.5020801@knowtrek.com> <1370884028.154515180@f150.mail.ru>
- <51B60B95.8020506@knowtrek.com> <20130610172901.GN32299@pengutronix.de>
-In-Reply-To: <20130610172901.GN32299@pengutronix.de>
+ id 1UmfGp-0006Ec-Dd
+ for barebox@lists.infradead.org; Wed, 12 Jun 2013 07:15:04 +0000
+Message-ID: <1371021279.4131.1.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Wed, 12 Jun 2013 09:14:39 +0200
+In-Reply-To: <20130608131315.GC26150@pengutronix.de>
+References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+ <20130608131315.GC26150@pengutronix.de>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,49 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: how to flash barebox and set root variable? - barebox is gone :(
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+Am Samstag, den 08.06.2013, 15:13 +0200 schrieb Sascha Hauer:
+> On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
+> > In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
+> > change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
+> > to the reset state.
+> > 
+> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> 
+> Applied, thanks
+Didn't find it on next or master branch. Is rework needed?
 
-On 10.06.2013 19:29, Sascha Hauer wrote:
-> On Mon, Jun 10, 2013 at 07:23:33PM +0200, Adam Furmanczuk wrote:
->> On 10.06.2013 19:07, Alexander Shiyan wrote:
->>>> flashing barebox.bin to /dev/nor0.kernel
->>>>> Unknown command 'tftp' - try 'help'
->>> Seems tftp command is not compiled in. Ensure that you have 
->>> CONFIG_CMD_TFTP in your .config.
->> Thanks Alexander,
->> 
->> but my barebox binary is gone . Have been a bit careles... I 
->> would need to flash the binary over my OCD USB controller, but
->> do not realy have a clue how to do this. I am waiting for
->> support reply for this ICnova iMX536 SODIMM module, they should
->> give me some steps how to proceed.
-> [...] CONFIG_ARCH_IMX_USBLOADER in a recent barebox. After 
-> compiling you will have scripts/imx/imx-usb-loader
+Jan
 
-Hi Sascha,
+> Sascha
+> 
+> > ---
+> >  arch/arm/mach-omap/omap4_clock.c |    6 +++---
+> >  1 files changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+> > index 0621fd3..889d1f9 100644
+> > --- a/arch/arm/mach-omap/omap4_clock.c
+> > +++ b/arch/arm/mach-omap/omap4_clock.c
+> > @@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
+> >  	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
+> >  	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
+> >  	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
+> > -	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
+> > -	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
+> > -	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
+> > +	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
+> > +	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
+> > +	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
+> >  	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
+> >  	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
+> >  	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
+> > -- 
+> > 1.7.0.4
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
 
-I have included the option: CONFIG_ARCH_IMX_USBLOADER=y
-then run make clean and then make again, but there is no such file,
-tried to search recursively for similar file in barebox top directory
-with: find ./ -iname \*usb-loader\*
 
-My barebox version is 2013.06.0.
-
-Greetings,
-
-Adam
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
-
-iEYEARECAAYFAlG4ET8ACgkQefEEI87R1DevIACfUbLM6uGz+zbhkDdbrjQocGa5
-qBAAoK1WY7dMzIARnpvBlXKSAgIrJ5Cm
-=dKAZ
------END PGP SIGNATURE-----
 
 _______________________________________________
 barebox mailing list
