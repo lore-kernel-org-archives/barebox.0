@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UmfGp-0006Ec-Dd
- for barebox@lists.infradead.org; Wed, 12 Jun 2013 07:15:04 +0000
-Message-ID: <1371021279.4131.1.camel@lws-weitzel>
+ id 1UmfIp-0006H2-4q
+ for barebox@lists.infradead.org; Wed, 12 Jun 2013 07:17:08 +0000
+Message-ID: <1371021405.4131.3.camel@lws-weitzel>
 From: Jan Weitzel <J.Weitzel@phytec.de>
-Date: Wed, 12 Jun 2013 09:14:39 +0200
-In-Reply-To: <20130608131315.GC26150@pengutronix.de>
-References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
- <20130608131315.GC26150@pengutronix.de>
+Date: Wed, 12 Jun 2013 09:16:45 +0200
+In-Reply-To: <20130608132138.GI32299@pengutronix.de>
+References: <1370425962.3824.1.camel@lws-weitzel>
+ <1370522836-11258-1-git-send-email-j.weitzel@phytec.de>
+ <CAGo_u6rixBCzggcuLAfOLuxgTrzyDhY7ipf2garfTiDb_Ce0WA@mail.gmail.com>
+ <20130608132138.GI32299@pengutronix.de>
 Mime-Version: 1.0
 Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +25,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
+Subject: Re: [PATCH v2] omap4: set voltage according to mpu freq
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: "U-Boot Version
+	2 (barebox)" <barebox@lists.infradead.org>
 
-Am Samstag, den 08.06.2013, 15:13 +0200 schrieb Sascha Hauer:
-> On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
-> > In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
-> > change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
-> > to the reset state.
-> > 
-> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+Am Samstag, den 08.06.2013, 15:21 +0200 schrieb Sascha Hauer:
+> On Thu, Jun 06, 2013 at 08:40:46AM -0500, menon.nishanth@gmail.com wrote:
+> > On Thu, Jun 6, 2013 at 7:47 AM, Jan Weitzel <j.weitzel@phytec.de> wrote:
+> > > +noinline int omap4460_scale_vcores(unsigned vsel0_pin, unsigned volt_mv)
+> > > +{
+> > > +       void __iomem *base;
+> > > +       u32 val = 0;
+> > > +
+> > > +       /* For VC bypass only VCOREx_CGF_FORCE  is necessary and
+> > > +        * VCOREx_CFG_VOLTAGE  changes can be discarded
+> > > +        */
+> > > +       writel(0, OMAP44XX_PRM_VC_CFG_I2C_MODE);
+> > > +       writel(0x6026, OMAP44XX_PRM_VC_CFG_I2C_CLK);
+> > > +
+> > > +       /* TPS - supplies vdd_mpu on 4460
+> > > +        * Setup SET1 and SET0 with right values so that kernel
+> > > +        * can use either of them based on its needs.
+> > > +        */
+> > > +
+> > > +       omap4_do_scale_tps62361(TPS62361_REG_ADDR_SET0, volt_mv);
+> > Just a nitpick - the general rule of TPS+OMAP4460 integration is *NOT*
+> > to program SET0 register. this is intended to be at boot voltage
+> > required to be used when reboot due to s/w controlled or h/w watchdog.
 > 
-> Applied, thanks
-Didn't find it on next or master branch. Is rework needed?
+> So this line should simply be removed?
+> 
+> Ok, this line is only moved and not introduced in this patch, so it
+> should be fine to apply this patch and leave this for a separate patch.
+I create a separate patch. I had the problem that our gpio module
+(gpio6) goes low due to a reset at init time. Must fix this in kernel.
 
 Jan
-
-> Sascha
 > 
-> > ---
-> >  arch/arm/mach-omap/omap4_clock.c |    6 +++---
-> >  1 files changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
-> > index 0621fd3..889d1f9 100644
-> > --- a/arch/arm/mach-omap/omap4_clock.c
-> > +++ b/arch/arm/mach-omap/omap4_clock.c
-> > @@ -253,9 +253,9 @@ void omap4_enable_all_clocks(void)
-> >  	sr32(CM1_ABE_PDM_CLKCTRL, 0, 32, 0x2);
-> >  	sr32(CM1_ABE_DMIC_CLKCTRL, 0, 32, 0x2);
-> >  	sr32(CM1_ABE_MCASP_CLKCTRL, 0, 32, 0x2);
-> > -	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x08000002);
-> > -	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x08000002);
-> > -	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x08000002);
-> > +	sr32(CM1_ABE_MCBSP1_CLKCTRL, 0, 32, 0x2);
-> > +	sr32(CM1_ABE_MCBSP2_CLKCTRL, 0, 32, 0x2);
-> > +	sr32(CM1_ABE_MCBSP3_CLKCTRL, 0, 32, 0x2);
-> >  	sr32(CM1_ABE_SLIMBUS_CLKCTRL, 0, 32, 0xf02);
-> >  	sr32(CM1_ABE_TIMER5_CLKCTRL, 0, 32, 0x2);
-> >  	sr32(CM1_ABE_TIMER6_CLKCTRL, 0, 32, 0x2);
-> > -- 
-> > 1.7.0.4
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
+> Sascha
 > 
 
 
