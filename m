@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ume4S-0005Ak-DM
- for barebox@lists.infradead.org; Wed, 12 Jun 2013 05:58:13 +0000
-Received: by mail-la0-f52.google.com with SMTP id fo12so5700644lab.11
- for <barebox@lists.infradead.org>; Tue, 11 Jun 2013 22:57:49 -0700 (PDT)
+Received: from lvps83-169-36-49.dedicated.hosteurope.de ([83.169.36.49]
+ helo=knowtrek.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UmeIQ-0005NV-MR
+ for barebox@lists.infradead.org; Wed, 12 Jun 2013 06:12:39 +0000
+Received: from [192.168.10.59] (p548771C1.dip0.t-ipconnect.de [84.135.113.193])
+ by knowtrek.com (Postfix) with ESMTPSA id 53C702EF8435
+ for <barebox@lists.infradead.org>; Wed, 12 Jun 2013 08:12:15 +0200 (CEST)
+Message-ID: <51B8113F.2050207@knowtrek.com>
+Date: Wed, 12 Jun 2013 08:12:15 +0200
+From: Adam Furmanczuk <afurmanczuk@knowtrek.com>
 MIME-Version: 1.0
-In-Reply-To: <20130611152908.GQ32299@pengutronix.de>
-References: <1370833409-1870-1-git-send-email-monaka@monami-ya.jp>
- <20130611152908.GQ32299@pengutronix.de>
-Date: Wed, 12 Jun 2013 14:50:36 +0900
-Message-ID: <CAJBvFxOZn_S-vphXiNhyJmMobAonMmjFUOj_vSsaYwvTe4C+MQ@mail.gmail.com>
-From: Masaki Muranaka <monaka@monami-ya.jp>
+References: <51B0B2D6.3030407@knowtrek.com> <51B5C56C.4050801@knowtrek.com>
+ <51B6066A.5020801@knowtrek.com> <1370884028.154515180@f150.mail.ru>
+ <51B60B95.8020506@knowtrek.com> <20130610172901.GN32299@pengutronix.de>
+In-Reply-To: <20130610172901.GN32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,61 +27,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Remove ftstc(). It is declared but not implemented.
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: how to flash barebox and set root variable? - barebox is gone :(
+To: barebox@lists.infradead.org
 
-Hello,
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-I couldn't find it on master branch at git://git.pengutronix.de/git/barebox.git.
-You mean it was applied but not pushed yet?
+On 10.06.2013 19:29, Sascha Hauer wrote:
+> On Mon, Jun 10, 2013 at 07:23:33PM +0200, Adam Furmanczuk wrote:
+>> On 10.06.2013 19:07, Alexander Shiyan wrote:
+>>>> flashing barebox.bin to /dev/nor0.kernel
+>>>>> Unknown command 'tftp' - try 'help'
+>>> Seems tftp command is not compiled in. Ensure that you have 
+>>> CONFIG_CMD_TFTP in your .config.
+>> Thanks Alexander,
+>> 
+>> but my barebox binary is gone . Have been a bit careles... I 
+>> would need to flash the binary over my OCD USB controller, but
+>> do not realy have a clue how to do this. I am waiting for
+>> support reply for this ICnova iMX536 SODIMM module, they should
+>> give me some steps how to proceed.
+> [...] CONFIG_ARCH_IMX_USBLOADER in a recent barebox. After 
+> compiling you will have scripts/imx/imx-usb-loader
 
-2013/6/12 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Mon, Jun 10, 2013 at 12:03:29PM +0900, Masaki Muranaka wrote:
->> Signed-off-by: Masaki Muranaka <monaka@monami-ya.jp>
->
-> I applied it already.
->
-> Sascha
->
->> ---
->>  include/stdio.h | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/include/stdio.h b/include/stdio.h
->> index 5c091a8..ff2572e 100644
->> --- a/include/stdio.h
->> +++ b/include/stdio.h
->> @@ -101,7 +101,6 @@ static inline void putchar(char c)
->>  int  fprintf(int file, const char *fmt, ...) __attribute__ ((format(__printf__, 2, 3)));
->>  int  fputs(int file, const char *s);
->>  int  fputc(int file, const char c);
->> -int  ftstc(int file);
->>  int  fgetc(int file);
->>
->>  #endif /* __STDIO_H */
->> --
->> 1.8.3
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Hi Sascha,
 
+I have included the option: CONFIG_ARCH_IMX_USBLOADER=y
+then run make clean and then make again, but there is no such file,
+tried to search recursively for similar file in barebox top directory
+with: find ./ -iname \*usb-loader\*
 
+My barebox version is 2013.06.0.
 
--- 
---
-Masaki Muranaka
-Monami-ya LLC, Japan.
+Greetings,
+
+Adam
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAlG4ET8ACgkQefEEI87R1DevIACfUbLM6uGz+zbhkDdbrjQocGa5
+qBAAoK1WY7dMzIARnpvBlXKSAgIrJ5Cm
+=dKAZ
+-----END PGP SIGNATURE-----
 
 _______________________________________________
 barebox mailing list
