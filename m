@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Un1f8-0003lW-VA
- for barebox@lists.infradead.org; Thu, 13 Jun 2013 07:09:40 +0000
-From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Thu, 13 Jun 2013 09:09:11 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ECF0A3DAA@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+ id 1Un3nS-00075J-2d
+ for barebox@lists.infradead.org; Thu, 13 Jun 2013 09:26:23 +0000
+Date: Thu, 13 Jun 2013 11:25:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130613092557.GC32299@pengutronix.de>
+References: <1368400146-30443-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130519073403.GY32299@pengutronix.de>
+ <51B6EED2.3010707@gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <51B6EED2.3010707@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +24,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: NAND + imx53, BBT/timings?
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] of: add ranges address translation for default bus
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Hi all,
+On Tue, Jun 11, 2013 at 11:33:06AM +0200, Sebastian Hesselbarth wrote:
+> On 05/19/13 09:34, Sascha Hauer wrote:
+> >Hi Sebastian,
+> >
+> >On Mon, May 13, 2013 at 01:09:06AM +0200, Sebastian Hesselbarth wrote:
+> >>This patch adds address translation for default bus types. It has been
+> >>shamelessly ported from Linux device tree address translation with the
+> >>following exceptions:
+> >>- only default bus map and translate are supported
+> >>- of_bus has not been ported
+> >>- check for #size-cells > 0 has been removed
+> >>
+> >>Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> >
+> >I just gave this one a test.
+> >
+> >First of all you dropped 1:1 translation, see the attached fixup.
+> >
+> >Then, since this code duplicates the majority of drivers/of/address.c,
+> >would it make sense to move it to the same file in barebox aswell?
+> 
+> Sascha,
+> 
+> coming back to this I am wondering if a full sync of linux' drivers/of
+> with barebox' drivers/of should be done. IMHO at least for the core
+> stuff (base/address/fdt) it makes sense, of_* can come later if
+> required.
+> 
+> I started merging already, and from what I can see we should just remove
+> the spinlocks and OF_DYNAMIC stuff (but leave of_node_get/_put as stubs)
 
-I'm working on a custom design which has an imx53 and a 1GB NAND flash (Samsung k9k8g08u0d) via an 8 bit bus.
-So I added this imx_nand_platform_data structure with a .width=1, .hw_ecc=1 and .flash_bbt=1.
-The flash gets detected at startup (also loads the bootloader from it).
+Sounds like a plan. Functions existing both in barebox and Linux should
+behave the same way. However, if Linux turns out to do something silly
+or (for our usecase) too bloated, we shouldn't do the same just because
+Linux does it.
 
-nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V 8-bit), page size 2048, OOB size:64 
-but then
-nand: Bad block table not found for chip 0
-nand: Bad block table not found for chip 0
+I want to keep the Linux list usage in the devicetree, so they won't be
+really in sync.
 
-etc
+Sascha
 
-and when I do imx_nand_bbm, I get:
-Bad eraseblock 0 at 0x00000000
-Bad eraseblock 1 at 0x00020000
-And for the rest UnCorrectable RS-ECC errors
-
-This is a barenew flash, so I suppose I should find a factory bad block table?
-I'm using the barebox 2013.05.1 stable release from git
-
-Grtz,
-Wouter
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
