@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
+Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Un1pZ-000420-WF
- for barebox@lists.infradead.org; Thu, 13 Jun 2013 07:20:30 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 13 Jun 2013 11:19:56 +0400
-Message-Id: <1371107996-11771-1-git-send-email-shc_work@mail.ru>
+ id 1Un1f8-0003lW-VA
+ for barebox@lists.infradead.org; Thu, 13 Jun 2013 07:09:40 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Thu, 13 Jun 2013 09:09:11 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ECF0A3DAA@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,49 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: ccmx51: Set PMIC SW1 voltage for i.MX51 less than TO3
- only
-To: barebox@lists.infradead.org
+Subject: NAND + imx53, BBT/timings?
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-This settings taken from original DIGI U-boot source code.
+Hi all,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/boards/ccxmx51/ccxmx51.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+I'm working on a custom design which has an imx53 and a 1GB NAND flash (Samsung k9k8g08u0d) via an 8 bit bus.
+So I added this imx_nand_platform_data structure with a .width=1, .hw_ecc=1 and .flash_bbt=1.
+The flash gets detected at startup (also loads the bootloader from it).
 
-diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
-index 9610e41..b760ca8 100644
---- a/arch/arm/boards/ccxmx51/ccxmx51.c
-+++ b/arch/arm/boards/ccxmx51/ccxmx51.c
-@@ -256,13 +256,13 @@ static int ccxmx51_power_init(void)
- 	val = 0x238033;
- 	mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_CHARGE, val);
- 
--	/* Set core voltage (SW1) to 1.1V */
--	mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_0, &val);
--	val &= ~0x00001f;
--	val |=  0x000014;
--	mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_SW_0, val);
--
- 	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
-+		/* Set core voltage (SW1) to 1.1V */
-+		mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_0, &val);
-+		val &= ~0x00001f;
-+		val |=  0x000014;
-+		mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_SW_0, val);
-+
- 		/* Setup VCC (SW2) to 1.25 */
- 		mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_1, &val);
- 		val &= ~0x00001f;
--- 
-1.8.1.5
+nand: Manufacturer ID: 0xec, Chip ID: 0xd3 (Samsung NAND 1GiB 3,3V 8-bit), page size 2048, OOB size:64 
+but then
+nand: Bad block table not found for chip 0
+nand: Bad block table not found for chip 0
 
+etc
+
+and when I do imx_nand_bbm, I get:
+Bad eraseblock 0 at 0x00000000
+Bad eraseblock 1 at 0x00020000
+And for the rest UnCorrectable RS-ECC errors
+
+This is a barenew flash, so I suppose I should find a factory bad block table?
+I'm using the barebox 2013.05.1 stable release from git
+
+Grtz,
+Wouter
 
 _______________________________________________
 barebox mailing list
