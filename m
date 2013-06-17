@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
+Received: from mail-lb0-f169.google.com ([209.85.217.169])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UocQW-0006Ji-RZ
- for barebox@lists.infradead.org; Mon, 17 Jun 2013 16:37:10 +0000
-Received: by mail-la0-f42.google.com with SMTP id eb20so2689632lab.15
- for <barebox@lists.infradead.org>; Mon, 17 Jun 2013 09:36:44 -0700 (PDT)
+ id 1UocQS-0006JU-UK
+ for barebox@lists.infradead.org; Mon, 17 Jun 2013 16:37:06 +0000
+Received: by mail-lb0-f169.google.com with SMTP id d10so2759908lbj.28
+ for <barebox@lists.infradead.org>; Mon, 17 Jun 2013 09:36:41 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 17 Jun 2013 20:35:19 +0400
-Message-Id: <1371486920-4614-3-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 17 Jun 2013 20:35:18 +0400
+Message-Id: <1371486920-4614-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1371486920-4614-1-git-send-email-antonynpavlov@gmail.com>
 References: <1371486920-4614-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,38 +23,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] MIPS: pbl: use generated label in ADR macro
+Subject: [PATCH 1/3] MIPS: pbl: remove extra LONGSIZE definition
 To: barebox@lists.infradead.org
 
-The generated label usage make possible
-to use the ADR macro many times.
-
-If we don't use a generated label and we try
-to use the ADR macro second time then we get
-
-   Error: symbol `_pc' is already defined
+We already have the LONGSIZE macro definition in <asm/asm.h>.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/pbl_macros.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/pbl_macros.h |    2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index 6a48ca4..3971b61 100644
+index c32a229..6a48ca4 100644
 --- a/arch/mips/include/asm/pbl_macros.h
 +++ b/arch/mips/include/asm/pbl_macros.h
-@@ -41,9 +41,9 @@
- 	.set	push
- 	.set	noreorder
- 	move	\temp, ra			# preserve ra beforehand
--	bal	_pc
-+	bal	255f
- 	 nop
--_pc:	addiu	\rd, ra, \label - _pc		# label is assumed to be
-+255:	addiu	\rd, ra, \label - 255b		# label is assumed to be
- 	move	ra, \temp			# within pc +/- 32KB
+@@ -48,8 +48,6 @@ _pc:	addiu	\rd, ra, \label - _pc		# label is assumed to be
  	.set	pop
  	.endm
+ 
+-#define LONGSIZE	4
+-
+ 	.macro	copy_to_link_location start_addr
+ 	.set	push
+ 	.set	noreorder
 -- 
 1.7.10.4
 
