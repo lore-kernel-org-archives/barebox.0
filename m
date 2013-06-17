@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UoTcN-0006mT-IQ
- for barebox@lists.infradead.org; Mon, 17 Jun 2013 07:12:48 +0000
-Date: Mon, 17 Jun 2013 09:12:25 +0200
+ id 1UoTei-0006pT-Tg
+ for barebox@lists.infradead.org; Mon, 17 Jun 2013 07:15:19 +0000
+Date: Mon, 17 Jun 2013 09:14:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130617071225.GG32299@pengutronix.de>
-References: <1370773361-25588-1-git-send-email-shc_work@mail.ru>
- <20130611152747.GP32299@pengutronix.de>
- <1370966063.553147631@f314.mail.ru>
+Message-ID: <20130617071451.GH32299@pengutronix.de>
+References: <1369741903-24988-2-git-send-email-j.weitzel@phytec.de>
+ <20130608131315.GC26150@pengutronix.de>
+ <1371021279.4131.1.camel@lws-weitzel>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1370966063.553147631@f314.mail.ru>
+In-Reply-To: <1371021279.4131.1.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,36 +24,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: pcm038: Avoid warning if gadget support not
- compiled in
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] OMAP4: Use default clock source for mcbsp
+To: Jan Weitzel <J.Weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 11, 2013 at 07:54:23PM +0400, Alexander Shiyan wrote:
-> > On Sun, Jun 09, 2013 at 02:22:41PM +0400, Alexander Shiyan wrote:
+On Wed, Jun 12, 2013 at 09:14:39AM +0200, Jan Weitzel wrote:
+> Am Samstag, den 08.06.2013, 15:13 +0200 schrieb Sascha Hauer:
+> > On Tue, May 28, 2013 at 01:51:40PM +0200, Jan Weitzel wrote:
+> > > In omap4_enable_all_clocks we not only enable the mcbsp clocks, but also
+> > > change the source from ABE_24M_FCLK to 24M_FCLK. Revert this and default
+> > > to the reset state.
 > > > 
-> > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > > ---
-> > >  arch/arm/boards/pcm038/pcm038.c | 3 ++-
-> > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/boards/pcm038/pcm038.c b/arch/arm/boards/pcm038/pcm038.c
-> > > index 49677c2..dec5164 100644
-> > > --- a/arch/arm/boards/pcm038/pcm038.c
-> > > +++ b/arch/arm/boards/pcm038/pcm038.c
-> > > @@ -328,7 +328,8 @@ static int pcm038_devices_init(void)
-> > >  	mdelay(1);
-> > >  	imx_gpio_mode(PE1_PF_USBOTG_STP);
-> > >  
-> > > -	imx27_add_usbotg(&pcm038_otg_pdata);
-> > > +	if (IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC))
-> > > +		imx27_add_usbotg(&pcm038_otg_pdata);
+> > > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 > > 
-> > What warning do you get without this patch?
-> 
-> Runtime warning "No supported role" from chipidea driver.
+> > Applied, thanks
+> Didn't find it on next or master branch. Is rework needed?
 
-Applied now, thanks
+Look again, it should be there now.
 
 Sascha
 
