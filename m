@@ -1,11 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UoVHp-0000uu-RK
- for barebox@lists.infradead.org; Mon, 17 Jun 2013 08:59:42 +0000
+ id 1UoWsB-0003Tf-CI
+ for barebox@lists.infradead.org; Mon, 17 Jun 2013 10:41:20 +0000
+Date: Mon, 17 Jun 2013 12:40:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 17 Jun 2013 10:59:13 +0200
-Message-Id: <1371459556-24073-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130617104055.GQ32299@pengutronix.de>
+References: <1368400146-30443-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130519073403.GY32299@pengutronix.de>
+ <51B6EED2.3010707@gmail.com>
+ <20130613092557.GC32299@pengutronix.de>
+ <51B9930B.8080609@gmail.com>
+ <20130613124833.GD32299@pengutronix.de>
+ <51BA1476.3060309@gmail.com>
+ <20130617074724.GK32299@pengutronix.de> <51BEE3AD.20406@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <51BEE3AD.20406@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,89 +25,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ata: implement detect callback
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] of: add ranges address translation for default bus
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-This makes it possible to use the 'detect' command for ata devices.
+On Mon, Jun 17, 2013 at 12:23:41PM +0200, Sebastian Hesselbarth wrote:
+> On 06/17/2013 09:47 AM, Sascha Hauer wrote:
+> >On Thu, Jun 13, 2013 at 08:50:30PM +0200, Sebastian Hesselbarth wrote:
+> >>On 06/13/13 14:48, Sascha Hauer wrote:
+> >>>On Thu, Jun 13, 2013 at 11:38:19AM +0200, Sebastian Hesselbarth wrote:
+> >>>>On 06/13/13 11:25, Sascha Hauer wrote:
+> >>>>>Sounds like a plan. Functions existing both in barebox and Linux should
+> >>>>>behave the same way. However, if Linux turns out to do something silly
+> >>>>>or (for our usecase) too bloated, we shouldn't do the same just because
+> >>>>>Linux does it.
+> >>pushed a branch you can have a first look at to
+> >>
+> >>git://github.com/shesselba/barebox-dove.git of-sync-v1
+> >
+> >I had a quick look at this branch. It has some really good stuff in it.
+> >You should post it for a closer review if you consider it ready.
+> 
+> Ok, I've had another round of patches in branch of-sync-part2-v1. I will
+> merge both and either send an RFC or merge in some clean-ups. I didn't
+> provide stubs for !CONFIG_OF at some places.
+> 
+> It is already kind of huge patch, so I prefer sending it before more
+> stuff gets in. Currently, it is more or less fully merged with Linux OF
+> API wrt base.c.
+> 
+> Next would be to move code that should have been in common/oftree.c in
+> the first place (of_add_initrd, of_print_nodes, ...), move out stuff to
+> of/device.c and of/address.c.
+> 
+> I haven't looked into barebox' driver/device backend but realized that
+> struct resource is attached to the device_node. Maybe it should also
+> move to some other struct (device_d) ?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/ata/disk_ata_drive.c | 24 +++++++++++++++++++-----
- include/ata_drive.h          |  1 +
- 2 files changed, 20 insertions(+), 5 deletions(-)
+It already is attached to struct device_d. It should be easy to drop the
+reference in struct device_node. I don't know why struct device_node has
+the resources in it anyway, probably this happened during development
+and I never thought about it again.
 
-diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
-index 2cff584..4ad7564 100644
---- a/drivers/ata/disk_ata_drive.c
-+++ b/drivers/ata/disk_ata_drive.c
-@@ -325,14 +325,10 @@ on_error:
- 	return rc;
- }
- 
--static int ata_set_probe(struct param_d *param, void *priv)
-+int ata_port_detect(struct ata_port *port)
- {
--	struct ata_port *port = priv;
- 	int ret;
- 
--	if (!port->probe)
--		return 0;
--
- 	if (port->initialized) {
- 		dev_info(&port->class_dev, "already initialized\n");
- 		return 0;
-@@ -347,6 +343,23 @@ static int ata_set_probe(struct param_d *param, void *priv)
- 	return 0;
- }
- 
-+static int ata_set_probe(struct param_d *param, void *priv)
-+{
-+	struct ata_port *port = priv;
-+
-+	if (!port->probe)
-+		return 0;
-+
-+	return ata_port_detect(port);
-+}
-+
-+static int ata_detect(struct device_d *dev)
-+{
-+	struct ata_port *port = container_of(dev, struct ata_port, class_dev);
-+
-+	return ata_port_detect(port);
-+}
-+
- /**
-  * Register an ATA drive behind an IDE like interface
-  * @param dev The interface device
-@@ -360,6 +373,7 @@ int ata_port_register(struct ata_port *port)
- 	port->class_dev.id = DEVICE_ID_DYNAMIC;
- 	strcpy(port->class_dev.name, "ata");
- 	port->class_dev.parent = port->dev;
-+	port->class_dev.detect = ata_detect;
- 
- 	ret = register_device(&port->class_dev);
- 	if (ret)
-diff --git a/include/ata_drive.h b/include/ata_drive.h
-index 049082f..fcb3a3c 100644
---- a/include/ata_drive.h
-+++ b/include/ata_drive.h
-@@ -100,6 +100,7 @@ struct ata_port {
- 
- int ide_port_register(struct device_d *, struct ata_ioports *);
- int ata_port_register(struct ata_port *port);
-+int ata_port_detect(struct ata_port *port);
- 
- struct device_d;
- 
+Sascha
+
 -- 
-1.8.3.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
