@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UoTgI-0006tD-9q
- for barebox@lists.infradead.org; Mon, 17 Jun 2013 07:16:51 +0000
-Date: Mon, 17 Jun 2013 09:16:28 +0200
+ id 1UoTzz-0007Lz-Vi
+ for barebox@lists.infradead.org; Mon, 17 Jun 2013 07:37:12 +0000
+Date: Mon, 17 Jun 2013 09:36:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130617071628.GI32299@pengutronix.de>
-References: <1371107996-11771-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130617073647.GJ32299@pengutronix.de>
+References: <1365706897.4136.24.camel@mars> <1370207222.5021.0.camel@lovely>
+ <1371069946.25992.104.camel@mars>
+ <B2329465-02EF-41CF-8B29-5C7A8BDFB349@jcrosoft.com>
+ <1371163239.4055.180.camel@mars>
+ <20130614062910.GA10743@x61s.8.8.8.8>
+ <1371194628.3655.1.camel@lws-weitzel>
+ <1371197742.3873.8.camel@mars>
+ <20130614114312.GG27130@game.jcrosoft.org>
+ <1371222662.28854.15.camel@mars>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1371107996-11771-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1371222662.28854.15.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +30,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: ccmx51: Set PMIC SW1 voltage for i.MX51 less than
- TO3 only
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH v6] omap4-fb: add driver
+To: Christoph Fritz <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jun 13, 2013 at 11:19:56AM +0400, Alexander Shiyan wrote:
-> This settings taken from original DIGI U-boot source code.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Hi Christoph,
 
-Applied, thanks
+Some small comments, then we shoulf be good to go.
+
+On Fri, Jun 14, 2013 at 05:11:02PM +0200, Christoph Fritz wrote:
+> This patch adds omap4 display controller support.
+> 
+> index 94e42c6..e70ddbd 100644
+> --- a/arch/arm/mach-omap/Makefile
+> +++ b/arch/arm/mach-omap/Makefile
+> @@ -28,6 +28,7 @@ obj-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
+>  pbl-$(CONFIG_OMAP3_CLOCK_CONFIG) += omap3_clock.o
+>  obj-$(CONFIG_OMAP_GPMC) += gpmc.o devices-gpmc-nand.o
+>  obj-$(CONFIG_SHELL_NONE) += xload.o
+> +obj-$(CONFIG_DRIVER_VIDEO_OMAP4) += omap4_fb.o
+
+Please compile this in unconditionally. Otherwise board using this have
+to add a dependency on CONFIG_DRIVER_VIDEO_OMAP4 aswell.
+
+> +struct device_d *omap4_add_display(void *pdata)
+
+Let this function take a struct omap4fb_platform_data *. This makes it
+more clear how to call it.
+
+> +static void omap4fb_enable(struct fb_info *info)
+> +{
+> +	struct omap4fb_device *fbi =
+> +		container_of(info, struct omap4fb_device, info);
+
+You could add a static inline to_omap4fb function. It's less error prone
+and the above would fit into a single line.
 
 Sascha
-
-> ---
->  arch/arm/boards/ccxmx51/ccxmx51.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/arm/boards/ccxmx51/ccxmx51.c b/arch/arm/boards/ccxmx51/ccxmx51.c
-> index 9610e41..b760ca8 100644
-> --- a/arch/arm/boards/ccxmx51/ccxmx51.c
-> +++ b/arch/arm/boards/ccxmx51/ccxmx51.c
-> @@ -256,13 +256,13 @@ static int ccxmx51_power_init(void)
->  	val = 0x238033;
->  	mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_CHARGE, val);
->  
-> -	/* Set core voltage (SW1) to 1.1V */
-> -	mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_0, &val);
-> -	val &= ~0x00001f;
-> -	val |=  0x000014;
-> -	mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_SW_0, val);
-> -
->  	if (imx_silicon_revision() < IMX_CHIP_REV_3_0) {
-> +		/* Set core voltage (SW1) to 1.1V */
-> +		mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_0, &val);
-> +		val &= ~0x00001f;
-> +		val |=  0x000014;
-> +		mc13xxx_reg_write(mc13xxx_dev, MC13892_REG_SW_0, val);
-> +
->  		/* Setup VCC (SW2) to 1.25 */
->  		mc13xxx_reg_read(mc13xxx_dev, MC13892_REG_SW_1, &val);
->  		val &= ~0x00001f;
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
