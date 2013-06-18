@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
+Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozpo-00077U-7d
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:36:49 +0000
-Received: by mail-bk0-f46.google.com with SMTP id na10so1913845bkb.19
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:36:26 -0700 (PDT)
+ id 1Uozpo-00077V-MF
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:36:54 +0000
+Received: by mail-bk0-f52.google.com with SMTP id d7so1924972bkh.25
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:36:27 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:30:05 +0200
-Message-Id: <1371576607-8090-21-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:30:07 +0200
+Message-Id: <1371576607-8090-23-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,116 +23,268 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 20/22] OF: base: remove of_find_child_by_name
+Subject: [PATCH 22/22] OF: base: cleanup base function include
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-With of_get_child_by_name from Linux API, we can now convert and remove
-of_find_child_by_name.
+This cleans up include/of.h by moving some function prototypes below
+CONFIG_OFTREE and provide bogus stubs for !CONFIG_OFTREE.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/boards/at91sam9x5ek/hw_version.c |    2 +-
- drivers/of/base.c                         |   15 ++-------------
- drivers/of/fdt.c                          |    9 +++++----
- include/of.h                              |    2 --
- 4 files changed, 8 insertions(+), 20 deletions(-)
+ include/of.h |  138 +++++++++++++++++++++++++++++++++++++++++++++------------
+ 1 files changed, 109 insertions(+), 29 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
-index 426bd35..1207a3e 100644
---- a/arch/arm/boards/at91sam9x5ek/hw_version.c
-+++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
-@@ -236,7 +236,7 @@ static int cm_cogent_fixup(struct device_node *root)
- 
- 	for_each_compatible_node(node, NULL, "atmel,hsmci") {
- 		struct device_node *slotnode =
--			of_find_child_by_name(node, "slot");
-+			of_get_child_by_name(node, "slot");
- 		if (!slotnode)
- 			continue;
- 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 94a5c61..a59a1b1 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1269,7 +1269,7 @@ struct device_node *of_find_node_by_path(const char *path)
- 		if (slash)
- 			*slash = 0;
- 
--		dn = of_find_child_by_name(dn, p);
-+		dn = of_get_child_by_name(dn, p);
- 		if (!dn)
- 			goto out;
- 
-@@ -1873,17 +1873,6 @@ int of_probe(void)
- 	return 0;
- }
- 
--struct device_node *of_find_child_by_name(struct device_node *node, const char *name)
--{
--	struct device_node *_n;
--
--	device_node_for_nach_child(node, _n)
--		if (!of_node_cmp(_n->name, name))
--			return _n;
--
--	return NULL;
--}
--
- /**
-  * of_create_node - create a new node including its parents
-  * @path - the nodepath to create
-@@ -1908,7 +1897,7 @@ struct device_node *of_create_node(struct device_node *root, const char *path)
- 		if (slash)
- 			*slash = 0;
- 
--		tmp = of_find_child_by_name(dn, p);
-+		tmp = of_get_child_by_name(dn, p);
- 		if (tmp)
- 			dn = tmp;
- 		else
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index a76396e..afaa4e0 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -61,7 +61,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
- 	int  len;		/* length of the property */
- 	const struct fdt_property *fdt_prop;
- 	const char *pathp, *name;
--	struct device_node *node = NULL, *n;
-+	struct device_node *node = NULL;
- 	struct property *p;
- 	uint32_t dt_struct;
- 	struct fdt_node_header *fnh;
-@@ -135,9 +135,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
- 			if (!node) {
- 				node = root;
- 			} else {
--				if (merge && (n = of_find_child_by_name(node, pathp)))
--					node = n;
--				else
-+				if (merge)
-+					node = of_get_child_by_name(node,
-+								    pathp);
-+				if (!merge || !node)
- 					node = of_new_node(node, pathp);
- 			}
- 
 diff --git a/include/of.h b/include/of.h
-index 0797dbe..b4e18b9 100644
+index 4cf4313..798f17a 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -74,8 +74,6 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
- int of_n_addr_cells(struct device_node *np);
- int of_n_size_cells(struct device_node *np);
+@@ -71,15 +71,10 @@ int of_match(struct device_d *dev, struct driver_d *drv);
+ int of_add_initrd(struct device_node *root, resource_size_t start,
+ 		resource_size_t end);
  
--struct device_node *of_find_child_by_name(struct device_node *node, const char *name);
+-int of_n_addr_cells(struct device_node *np);
+-int of_n_size_cells(struct device_node *np);
 -
  struct fdt_header *fdt_get_tree(void);
  
  struct fdt_header *of_get_fixed_tree(struct device_node *node);
+ 
+-int of_modalias_node(struct device_node *node, char *modalias, int len);
+-
+ /* Helper to read a big number; size is in cells (not bytes) */
+ static inline u64 of_read_number(const __be32 *cell, int size)
+ {
+@@ -100,21 +95,12 @@ static inline void of_write_number(void *__cell, u64 val, int size)
+ 	}
+ }
+ 
+-const void *of_get_property(const struct device_node *np, const char *name,
+-			 int *lenp);
+-
+ int of_get_named_gpio(struct device_node *np,
+                                    const char *propname, int index);
+ 
+-struct device_node *of_find_node_by_phandle(phandle phandle);
+ void of_print_property(const void *data, int len);
+ void of_print_cmdline(struct device_node *root);
+ 
+-int of_device_is_compatible(const struct device_node *device,
+-		const char *compat);
+-
+-int of_machine_is_compatible(const char *compat);
+-
+ u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
+ 
+ #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
+@@ -123,39 +109,49 @@ u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
+ void of_print_nodes(struct device_node *node, int indent);
+ int of_probe(void);
+ int of_parse_dtb(struct fdt_header *fdt);
+-void of_free(struct device_node *node);
+ struct device_node *of_unflatten_dtb(struct device_node *root, void *fdt);
+-struct device_node *of_new_node(struct device_node *parent, const char *name);
+-struct property *of_new_property(struct device_node *node, const char *name,
+-		const void *data, int len);
+-void of_delete_property(struct property *pp);
+-
+-int of_set_property(struct device_node *node, const char *p, const void *val, int len,
+-		int create);
+-struct device_node *of_create_node(struct device_node *root, const char *path);
+-
+-int of_set_root_node(struct device_node *);
+-
+-const struct of_device_id *of_match_node(const struct of_device_id *matches,
+-					 const struct device_node *node);
+ 
+ struct cdev;
+ 
+ #ifdef CONFIG_OFTREE
++extern int of_n_addr_cells(struct device_node *np);
++extern int of_n_size_cells(struct device_node *np);
++
+ extern struct property *of_find_property(const struct device_node *np,
+ 					const char *name, int *lenp);
++extern const void *of_get_property(const struct device_node *np,
++				const char *name, int *lenp);
++
++extern int of_set_property(struct device_node *node, const char *p,
++			const void *val, int len, int create);
++extern struct property *of_new_property(struct device_node *node,
++				const char *name, const void *data, int len);
++extern void of_delete_property(struct property *pp);
+ 
+ extern struct device_node *of_find_node_by_name(struct device_node *from,
+ 	const char *name);
+ extern struct device_node *of_find_node_by_path(const char *path);
++extern struct device_node *of_find_node_by_phandle(phandle phandle);
+ extern struct device_node *of_find_compatible_node(struct device_node *from,
+ 	const char *type, const char *compat);
++extern const struct of_device_id *of_match_node(
++	const struct of_device_id *matches, const struct device_node *node);
+ extern struct device_node *of_find_matching_node_and_match(
+ 	struct device_node *from,
+ 	const struct of_device_id *matches,
+ 	const struct of_device_id **match);
+ extern struct device_node *of_find_node_with_property(
+ 	struct device_node *from, const char *prop_name);
++
++extern struct device_node *of_new_node(struct device_node *parent,
++				const char *name);
++extern struct device_node *of_create_node(struct device_node *root,
++					const char *path);
++extern void of_free(struct device_node *node);
++
++extern int of_machine_is_compatible(const char *compat);
++extern int of_device_is_compatible(const struct device_node *device,
++		const char *compat);
+ extern int of_device_is_available(const struct device_node *device);
+ 
+ extern struct device_node *of_get_parent(const struct device_node *node);
+@@ -223,6 +219,10 @@ extern int of_count_phandle_with_args(const struct device_node *np,
+ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern const char *of_alias_get(struct device_node *np);
++extern int of_modalias_node(struct device_node *node, char *modalias, int len);
++
++extern struct device_node *of_get_root_node(void);
++extern int of_set_root_node(struct device_node *node);
+ 
+ int of_parse_partitions(struct cdev *cdev, struct device_node *node);
+ int of_device_is_stdout_path(struct device_d *dev);
+@@ -231,7 +231,6 @@ void *of_flatten_dtb(struct device_node *node);
+ int of_add_memory(struct device_node *node, bool dump);
+ void of_add_memory_bank(struct device_node *node, bool dump, int r,
+ 		u64 base, u64 size);
+-struct device_node *of_get_root_node(void);
+ #else
+ static inline int of_parse_partitions(struct cdev *cdev,
+ 					  struct device_node *node)
+@@ -264,6 +263,21 @@ static inline struct device_node *of_get_root_node(void)
+ 	return NULL;
+ }
+ 
++static inline int of_set_root_node(struct device_node *node)
++{
++	return -ENOSYS;
++}
++
++static inline int of_n_addr_cells(struct device_node *np)
++{
++	return 0;
++}
++
++static inline int of_n_size_cells(struct device_node *np)
++{
++	return 0;
++}
++
+ static inline struct device_node *of_get_parent(const struct device_node *node)
+ {
+ 	return NULL;
+@@ -294,6 +308,28 @@ static inline struct property *of_find_property(const struct device_node *np,
+ 	return NULL;
+ }
+ 
++static inline const void *of_get_property(const struct device_node *np,
++				const char *name, int *lenp)
++{
++	return NULL;
++}
++
++static inline int of_set_property(struct device_node *node, const char *p,
++			const void *val, int len, int create)
++{
++	return -ENOSYS;
++}
++
++static inline struct property *of_new_property(struct device_node *node,
++				const char *name, const void *data, int len)
++{
++	return NULL;
++}
++
++static inline void of_delete_property(struct property *pp)
++{
++}
++
+ static inline int of_property_read_u32_index(const struct device_node *np,
+ 				const char *propname, u32 index, u32 *out_value)
+ {
+@@ -420,6 +456,11 @@ static inline struct device_node *of_find_node_by_name(struct device_node *from,
+ 	return NULL;
+ }
+ 
++static inline struct device_node *of_find_node_by_phandle(phandle phandle)
++{
++	return NULL;
++}
++
+ static inline struct device_node *of_find_compatible_node(
+ 						struct device_node *from,
+ 						const char *type,
+@@ -428,6 +469,12 @@ static inline struct device_node *of_find_compatible_node(
+ 	return NULL;
+ }
+ 
++static inline const struct of_device_id *of_match_node(
++	const struct of_device_id *matches, const struct device_node *node)
++{
++	return NULL;
++}
++
+ static inline struct device_node *of_find_matching_node_and_match(
+ 					struct device_node *from,
+ 					const struct of_device_id *matches,
+@@ -442,6 +489,33 @@ static inline struct device_node *of_find_node_with_property(
+ 	return NULL;
+ }
+ 
++static inline struct device_node *of_new_node(struct device_node *parent,
++				const char *name)
++{
++	return NULL;
++}
++
++static inline struct device_node *of_create_node(struct device_node *root,
++					const char *path)
++{
++	return NULL;
++}
++
++static inline void of_free(struct device_node *node)
++{
++}
++
++static inline int of_machine_is_compatible(const char *compat)
++{
++	return 0;
++}
++
++static inline int of_device_is_compatible(const struct device_node *device,
++		const char *compat)
++{
++	return 0;
++}
++
+ static inline int of_device_is_available(const struct device_node *device)
+ {
+ 	return 0;
+@@ -460,6 +534,12 @@ static inline const char *of_alias_get(struct device_node *np)
+ {
+ 	return NULL;
+ }
++
++static inline int of_modalias_node(struct device_node *node, char *modalias,
++				int len)
++{
++	return -ENOSYS;
++}
+ #endif
+ 
+ #define for_each_node_by_name(dn, name) \
 -- 
 1.7.2.5
 
