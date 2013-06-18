@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
+Received: from mail-bk0-x22b.google.com ([2a00:1450:4008:c01::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozpo-00077V-MF
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:36:54 +0000
-Received: by mail-bk0-f52.google.com with SMTP id d7so1924972bkh.25
+ id 1Uozpp-00077W-8J
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:36:55 +0000
+Received: by mail-bk0-f43.google.com with SMTP id jm2so1935813bkc.16
  for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:36:27 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:30:07 +0200
-Message-Id: <1371576607-8090-23-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:30:02 +0200
+Message-Id: <1371576607-8090-18-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,268 +23,308 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/22] OF: base: cleanup base function include
+Subject: [PATCH 17/22] OF: base: introduce property write for bool, u8, u16,
+ and u64
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This cleans up include/of.h by moving some function prototypes below
-CONFIG_OFTREE and provide bogus stubs for !CONFIG_OFTREE.
+This adds functions to set an array of or a single value for bool,
+u8, u16, and u64 properties.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- include/of.h |  138 +++++++++++++++++++++++++++++++++++++++++++++------------
- 1 files changed, 109 insertions(+), 29 deletions(-)
+ drivers/of/base.c |  156 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of.h      |   82 ++++++++++++++++++++++++----
+ 2 files changed, 227 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index a3a9aac..4c6f2f4 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -798,6 +798,119 @@ int of_property_count_strings(struct device_node *np, const char *propname)
+ EXPORT_SYMBOL_GPL(of_property_count_strings);
+ 
+ /**
++ * of_property_write_bool - Create/Delete empty (bool) property.
++ *
++ * @np:		device node from which the property is to be set.
++ * @propname:	name of the property to be set.
++ *
++ * Search for a property in a device node and create or delete the property.
++ * If the property already exists and write value is false, the property is
++ * deleted. If write value is true and the property does not exist, it is
++ * created. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
++int of_property_write_bool(struct device_node *np, const char *propname,
++			   const bool value)
++{
++	struct property *prop = of_find_property(np, propname, NULL);
++
++	if (!value) {
++		if (prop)
++			of_delete_property(prop);
++		return 0;
++	}
++
++	if (!prop)
++		prop = of_new_property(np, propname, NULL, 0);
++	if (!prop)
++		return -ENOMEM;
++
++	return 0;
++}
++
++/**
++ * of_property_write_u8_array - Write an array of u8 to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write 8-bit value(s) to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
++int of_property_write_u8_array(struct device_node *np,
++			       const char *propname, const u8 *values,
++			       size_t sz)
++{
++	struct property *prop = of_find_property(np, propname, NULL);
++	u8 *val;
++
++	if (!prop)
++		prop = of_new_property(np, propname, NULL, 0);
++	if (!prop)
++		return -ENOMEM;
++
++	free(prop->value);
++
++	prop->length = sizeof(*val) * sz;
++	prop->value = malloc(prop->length);
++	if (!prop->value)
++		return -ENOMEM;
++
++	val = prop->value;
++	while (sz--)
++		*val++ = *values++;
++
++	return 0;
++}
++
++/**
++ * of_property_write_u16_array - Write an array of u16 to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write 16-bit value(s) to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
++int of_property_write_u16_array(struct device_node *np,
++				const char *propname, const u16 *values,
++				size_t sz)
++{
++	struct property *prop = of_find_property(np, propname, NULL);
++	__be16 *val;
++
++	if (!prop)
++		prop = of_new_property(np, propname, NULL, 0);
++	if (!prop)
++		return -ENOMEM;
++
++	free(prop->value);
++
++	prop->length = sizeof(*val) * sz;
++	prop->value = malloc(prop->length);
++	if (!prop->value)
++		return -ENOMEM;
++
++	val = prop->value;
++	while (sz--)
++		*val++ = cpu_to_be16(*values++);
++
++	return 0;
++}
++
++/**
+  * of_property_write_u32_array - Write an array of u32 to a property. If
+  * the property does not exist, it will be created and appended to the given
+  * device node.
+@@ -839,6 +952,49 @@ int of_property_write_u32_array(struct device_node *np,
+ }
+ 
+ /**
++ * of_property_write_u64_array - Write an array of u64 to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write 64-bit value(s) to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
++int of_property_write_u64_array(struct device_node *np,
++				const char *propname, const u64 *values,
++				size_t sz)
++{
++	struct property *prop = of_find_property(np, propname, NULL);
++	__be32 *val;
++
++	if (!prop)
++		prop = of_new_property(np, propname, NULL, 0);
++	if (!prop)
++		return -ENOMEM;
++
++	free(prop->value);
++
++	prop->length = 2 * sizeof(*val) * sz;
++	prop->value = malloc(prop->length);
++	if (!prop->value)
++		return -ENOMEM;
++
++	val = prop->value;
++	while (sz--) {
++		of_write_number(val, *values++, 2);
++		val += 2;
++	}
++
++	return 0;
++}
++
++/**
+  * of_parse_phandle - Resolve a phandle property to a device_node pointer
+  * @np: Pointer to device node holding phandle property
+  * @phandle_name: Name of property holding a phandle value
 diff --git a/include/of.h b/include/of.h
-index 4cf4313..798f17a 100644
+index 51ecf4d..53a135a 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -71,15 +71,10 @@ int of_match(struct device_d *dev, struct driver_d *drv);
- int of_add_initrd(struct device_node *root, resource_size_t start,
- 		resource_size_t end);
- 
--int of_n_addr_cells(struct device_node *np);
--int of_n_size_cells(struct device_node *np);
--
- struct fdt_header *fdt_get_tree(void);
- 
- struct fdt_header *of_get_fixed_tree(struct device_node *node);
- 
--int of_modalias_node(struct device_node *node, char *modalias, int len);
--
- /* Helper to read a big number; size is in cells (not bytes) */
- static inline u64 of_read_number(const __be32 *cell, int size)
- {
-@@ -100,21 +95,12 @@ static inline void of_write_number(void *__cell, u64 val, int size)
+@@ -113,17 +113,6 @@ static inline void of_write_number(void *__cell, u64 val, int size)
  	}
  }
  
--const void *of_get_property(const struct device_node *np, const char *name,
--			 int *lenp);
+-int of_property_write_u32_array(struct device_node *np,
+-				const char *propname, const u32 *values,
+-				size_t sz);
 -
- int of_get_named_gpio(struct device_node *np,
-                                    const char *propname, int index);
+-static inline int of_property_write_u32(struct device_node *np,
+-					const char *propname,
+-					u32 value)
+-{
+-	return of_property_write_u32_array(np, propname, &value, 1);
+-}
+-
+ const void *of_get_property(const struct device_node *np, const char *name,
+ 			 int *lenp);
  
--struct device_node *of_find_node_by_phandle(phandle phandle);
- void of_print_property(const void *data, int len);
- void of_print_cmdline(struct device_node *root);
+@@ -216,6 +205,21 @@ extern int of_property_match_string(struct device_node *np,
+ extern int of_property_count_strings(struct device_node *np,
+ 				     const char *propname);
  
--int of_device_is_compatible(const struct device_node *device,
--		const char *compat);
--
--int of_machine_is_compatible(const char *compat);
--
- u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
- 
- #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
-@@ -123,39 +109,49 @@ u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
- void of_print_nodes(struct device_node *node, int indent);
- int of_probe(void);
- int of_parse_dtb(struct fdt_header *fdt);
--void of_free(struct device_node *node);
- struct device_node *of_unflatten_dtb(struct device_node *root, void *fdt);
--struct device_node *of_new_node(struct device_node *parent, const char *name);
--struct property *of_new_property(struct device_node *node, const char *name,
--		const void *data, int len);
--void of_delete_property(struct property *pp);
--
--int of_set_property(struct device_node *node, const char *p, const void *val, int len,
--		int create);
--struct device_node *of_create_node(struct device_node *root, const char *path);
--
--int of_set_root_node(struct device_node *);
--
--const struct of_device_id *of_match_node(const struct of_device_id *matches,
--					 const struct device_node *node);
- 
- struct cdev;
- 
- #ifdef CONFIG_OFTREE
-+extern int of_n_addr_cells(struct device_node *np);
-+extern int of_n_size_cells(struct device_node *np);
++extern int of_property_write_bool(struct device_node *np,
++				const char *propname, const bool value);
++extern int of_property_write_u8_array(struct device_node *np,
++				const char *propname, const u8 *values,
++				size_t sz);
++extern int of_property_write_u16_array(struct device_node *np,
++				const char *propname, const u16 *values,
++				size_t sz);
++extern int of_property_write_u32_array(struct device_node *np,
++				const char *propname, const u32 *values,
++				size_t sz);
++extern int of_property_write_u64_array(struct device_node *np,
++				const char *propname, const u64 *values,
++				size_t sz);
 +
- extern struct property *of_find_property(const struct device_node *np,
- 					const char *name, int *lenp);
-+extern const void *of_get_property(const struct device_node *np,
-+				const char *name, int *lenp);
-+
-+extern int of_set_property(struct device_node *node, const char *p,
-+			const void *val, int len, int create);
-+extern struct property *of_new_property(struct device_node *node,
-+				const char *name, const void *data, int len);
-+extern void of_delete_property(struct property *pp);
- 
- extern struct device_node *of_find_node_by_name(struct device_node *from,
- 	const char *name);
- extern struct device_node *of_find_node_by_path(const char *path);
-+extern struct device_node *of_find_node_by_phandle(phandle phandle);
- extern struct device_node *of_find_compatible_node(struct device_node *from,
- 	const char *type, const char *compat);
-+extern const struct of_device_id *of_match_node(
-+	const struct of_device_id *matches, const struct device_node *node);
- extern struct device_node *of_find_matching_node_and_match(
- 	struct device_node *from,
- 	const struct of_device_id *matches,
- 	const struct of_device_id **match);
- extern struct device_node *of_find_node_with_property(
- 	struct device_node *from, const char *prop_name);
-+
-+extern struct device_node *of_new_node(struct device_node *parent,
-+				const char *name);
-+extern struct device_node *of_create_node(struct device_node *root,
-+					const char *path);
-+extern void of_free(struct device_node *node);
-+
-+extern int of_machine_is_compatible(const char *compat);
-+extern int of_device_is_compatible(const struct device_node *device,
-+		const char *compat);
- extern int of_device_is_available(const struct device_node *device);
- 
- extern struct device_node *of_get_parent(const struct device_node *node);
-@@ -223,6 +219,10 @@ extern int of_count_phandle_with_args(const struct device_node *np,
- extern void of_alias_scan(void);
- extern int of_alias_get_id(struct device_node *np, const char *stem);
- extern const char *of_alias_get(struct device_node *np);
-+extern int of_modalias_node(struct device_node *node, char *modalias, int len);
-+
-+extern struct device_node *of_get_root_node(void);
-+extern int of_set_root_node(struct device_node *node);
- 
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_device_is_stdout_path(struct device_d *dev);
-@@ -231,7 +231,6 @@ void *of_flatten_dtb(struct device_node *node);
- int of_add_memory(struct device_node *node, bool dump);
- void of_add_memory_bank(struct device_node *node, bool dump, int r,
- 		u64 base, u64 size);
--struct device_node *of_get_root_node(void);
- #else
- static inline int of_parse_partitions(struct cdev *cdev,
- 					  struct device_node *node)
-@@ -264,6 +263,21 @@ static inline struct device_node *of_get_root_node(void)
- 	return NULL;
+ extern struct device_node *of_parse_phandle(const struct device_node *np,
+ 					    const char *phandle_name,
+ 					    int index);
+@@ -353,6 +357,36 @@ static inline int of_property_count_strings(struct device_node *np,
+ 	return -ENOSYS;
  }
  
-+static inline int of_set_root_node(struct device_node *node)
++static inline int of_property_write_bool(struct device_node *np,
++				const char *propname, const bool value)
 +{
 +	return -ENOSYS;
 +}
 +
-+static inline int of_n_addr_cells(struct device_node *np)
-+{
-+	return 0;
-+}
-+
-+static inline int of_n_size_cells(struct device_node *np)
-+{
-+	return 0;
-+}
-+
- static inline struct device_node *of_get_parent(const struct device_node *node)
- {
- 	return NULL;
-@@ -294,6 +308,28 @@ static inline struct property *of_find_property(const struct device_node *np,
- 	return NULL;
- }
- 
-+static inline const void *of_get_property(const struct device_node *np,
-+				const char *name, int *lenp)
-+{
-+	return NULL;
-+}
-+
-+static inline int of_set_property(struct device_node *node, const char *p,
-+			const void *val, int len, int create)
++static inline int of_property_write_u8_array(struct device_node *np,
++			const char *propname, const u8 *values, size_t sz)
 +{
 +	return -ENOSYS;
 +}
 +
-+static inline struct property *of_new_property(struct device_node *node,
-+				const char *name, const void *data, int len)
-+{
-+	return NULL;
-+}
-+
-+static inline void of_delete_property(struct property *pp)
-+{
-+}
-+
- static inline int of_property_read_u32_index(const struct device_node *np,
- 				const char *propname, u32 index, u32 *out_value)
- {
-@@ -420,6 +456,11 @@ static inline struct device_node *of_find_node_by_name(struct device_node *from,
- 	return NULL;
- }
- 
-+static inline struct device_node *of_find_node_by_phandle(phandle phandle)
-+{
-+	return NULL;
-+}
-+
- static inline struct device_node *of_find_compatible_node(
- 						struct device_node *from,
- 						const char *type,
-@@ -428,6 +469,12 @@ static inline struct device_node *of_find_compatible_node(
- 	return NULL;
- }
- 
-+static inline const struct of_device_id *of_match_node(
-+	const struct of_device_id *matches, const struct device_node *node)
-+{
-+	return NULL;
-+}
-+
- static inline struct device_node *of_find_matching_node_and_match(
- 					struct device_node *from,
- 					const struct of_device_id *matches,
-@@ -442,6 +489,33 @@ static inline struct device_node *of_find_node_with_property(
- 	return NULL;
- }
- 
-+static inline struct device_node *of_new_node(struct device_node *parent,
-+				const char *name)
-+{
-+	return NULL;
-+}
-+
-+static inline struct device_node *of_create_node(struct device_node *root,
-+					const char *path)
-+{
-+	return NULL;
-+}
-+
-+static inline void of_free(struct device_node *node)
-+{
-+}
-+
-+static inline int of_machine_is_compatible(const char *compat)
-+{
-+	return 0;
-+}
-+
-+static inline int of_device_is_compatible(const struct device_node *device,
-+		const char *compat)
-+{
-+	return 0;
-+}
-+
- static inline int of_device_is_available(const struct device_node *device)
- {
- 	return 0;
-@@ -460,6 +534,12 @@ static inline const char *of_alias_get(struct device_node *np)
- {
- 	return NULL;
- }
-+
-+static inline int of_modalias_node(struct device_node *node, char *modalias,
-+				int len)
++static inline int of_property_write_u16_array(struct device_node *np,
++			const char *propname, const u16 *values, size_t sz)
 +{
 +	return -ENOSYS;
 +}
- #endif
++
++static inline int of_property_write_u32_array(struct device_node *np,
++			const char *propname, const u32 *values, size_t sz)
++{
++	return -ENOSYS;
++}
++
++static inline int of_property_write_u64_array(struct device_node *np,
++			const char *propname, const u64 *values, size_t sz)
++{
++	return -ENOSYS;
++}
++
+ static inline struct device_node *of_parse_phandle(const struct device_node *np,
+ 					    const char *phandle_name, int index)
+ {
+@@ -502,4 +536,30 @@ static inline int of_property_read_u32(const struct device_node *np,
+ 	return of_property_read_u32_array(np, propname, out_value, 1);
+ }
  
- #define for_each_node_by_name(dn, name) \
++static inline int of_property_write_u8(struct device_node *np,
++				       const char *propname, u8 value)
++{
++	return of_property_write_u8_array(np, propname, &value, 1);
++}
++
++static inline int of_property_write_u16(struct device_node *np,
++					const char *propname, u16 value)
++{
++	return of_property_write_u16_array(np, propname, &value, 1);
++}
++
++static inline int of_property_write_u32(struct device_node *np,
++					const char *propname,
++					u32 value)
++{
++	return of_property_write_u32_array(np, propname, &value, 1);
++}
++
++static inline int of_property_write_u64(struct device_node *np,
++					const char *propname,
++					u64 value)
++{
++	return of_property_write_u64_array(np, propname, &value, 1);
++}
++
+ #endif /* __OF_H */
 -- 
 1.7.2.5
 
