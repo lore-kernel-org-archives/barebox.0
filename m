@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozpo-00077T-8A
+ id 1Uozpo-00077U-7d
  for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:36:49 +0000
-Received: by mail-bk0-f50.google.com with SMTP id ik8so1890970bkc.23
+Received: by mail-bk0-f46.google.com with SMTP id na10so1913845bkb.19
  for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:36:26 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:30:06 +0200
-Message-Id: <1371576607-8090-22-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:30:05 +0200
+Message-Id: <1371576607-8090-21-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,95 +23,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/22] OF: base: convert and remove device_node_for_nach_child
+Subject: [PATCH 20/22] OF: base: remove of_find_child_by_name
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Remove device_node_for_nach_child and convert users to corresponding
-imported OF API functions.
+With of_get_child_by_name from Linux API, we can now convert and remove
+of_find_child_by_name.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/i2c/i2c.c       |    2 +-
- drivers/mfd/stmpe-i2c.c |    7 ++-----
- drivers/of/partition.c  |    2 +-
- drivers/spi/spi.c       |    2 +-
- include/of.h            |    3 ---
- 5 files changed, 5 insertions(+), 11 deletions(-)
+ arch/arm/boards/at91sam9x5ek/hw_version.c |    2 +-
+ drivers/of/base.c                         |   15 ++-------------
+ drivers/of/fdt.c                          |    9 +++++----
+ include/of.h                              |    2 --
+ 4 files changed, 8 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index b63d946..3e09547 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -278,7 +278,7 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
- 	if (!IS_ENABLED(CONFIG_OFDEVICE) || !adap->dev.device_node)
- 		return;
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 426bd35..1207a3e 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -236,7 +236,7 @@ static int cm_cogent_fixup(struct device_node *root)
  
--	device_node_for_nach_child(adap->dev.device_node, n) {
-+	for_each_child_of_node(adap->dev.device_node, n) {
- 		struct i2c_board_info info = {};
- 		struct i2c_client *result;
- 		const __be32 *addr;
-diff --git a/drivers/mfd/stmpe-i2c.c b/drivers/mfd/stmpe-i2c.c
-index d785430..c505bc1 100644
---- a/drivers/mfd/stmpe-i2c.c
-+++ b/drivers/mfd/stmpe-i2c.c
-@@ -116,11 +116,8 @@ static struct stmpe_platform_data *stmpe_of_probe(struct device_d *dev)
+ 	for_each_compatible_node(node, NULL, "atmel,hsmci") {
+ 		struct device_node *slotnode =
+-			of_find_child_by_name(node, "slot");
++			of_get_child_by_name(node, "slot");
+ 		if (!slotnode)
+ 			continue;
  
- 	pdata = xzalloc(sizeof(*pdata));
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 94a5c61..a59a1b1 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1269,7 +1269,7 @@ struct device_node *of_find_node_by_path(const char *path)
+ 		if (slash)
+ 			*slash = 0;
  
--	device_node_for_nach_child(dev->device_node, node) {
--		if (!strcmp(node->name, "stmpe_gpio")) {
--			pdata->blocks |= STMPE_BLOCK_GPIO;
--		}
--	}
-+	if (of_get_child_by_name(dev->device_node, "stmpe_gpio"))
-+		pdata->blocks |= STMPE_BLOCK_GPIO;
+-		dn = of_find_child_by_name(dn, p);
++		dn = of_get_child_by_name(dn, p);
+ 		if (!dn)
+ 			goto out;
  
- 	return pdata;
+@@ -1873,17 +1873,6 @@ int of_probe(void)
+ 	return 0;
  }
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 2d70cf5..e4b7d1e 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -29,7 +29,7 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
- 	const char *partname;
- 	char *filename;
  
--	device_node_for_nach_child(node, n) {
-+	for_each_child_of_node(node, n) {
- 		const __be32 *reg;
- 		unsigned long offset, size;
- 		const char *name;
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index eebf64c..5d4dfd6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -107,7 +107,7 @@ void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
- 	struct spi_board_info chip;
- 	struct property *reg;
+-struct device_node *of_find_child_by_name(struct device_node *node, const char *name)
+-{
+-	struct device_node *_n;
+-
+-	device_node_for_nach_child(node, _n)
+-		if (!of_node_cmp(_n->name, name))
+-			return _n;
+-
+-	return NULL;
+-}
+-
+ /**
+  * of_create_node - create a new node including its parents
+  * @path - the nodepath to create
+@@ -1908,7 +1897,7 @@ struct device_node *of_create_node(struct device_node *root, const char *path)
+ 		if (slash)
+ 			*slash = 0;
  
--	device_node_for_nach_child(node, n) {
-+	for_each_child_of_node(node, n) {
- 		memset(&chip, 0, sizeof(chip));
- 		chip.name = xstrdup(n->name);
- 		chip.bus_num = master->bus_num;
+-		tmp = of_find_child_by_name(dn, p);
++		tmp = of_get_child_by_name(dn, p);
+ 		if (tmp)
+ 			dn = tmp;
+ 		else
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index a76396e..afaa4e0 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -61,7 +61,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 	int  len;		/* length of the property */
+ 	const struct fdt_property *fdt_prop;
+ 	const char *pathp, *name;
+-	struct device_node *node = NULL, *n;
++	struct device_node *node = NULL;
+ 	struct property *p;
+ 	uint32_t dt_struct;
+ 	struct fdt_node_header *fnh;
+@@ -135,9 +135,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 			if (!node) {
+ 				node = root;
+ 			} else {
+-				if (merge && (n = of_find_child_by_name(node, pathp)))
+-					node = n;
+-				else
++				if (merge)
++					node = of_get_child_by_name(node,
++								    pathp);
++				if (!merge || !node)
+ 					node = of_new_node(node, pathp);
+ 			}
+ 
 diff --git a/include/of.h b/include/of.h
-index b4e18b9..4cf4313 100644
+index 0797dbe..b4e18b9 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -80,9 +80,6 @@ struct fdt_header *of_get_fixed_tree(struct device_node *node);
+@@ -74,8 +74,6 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
+ int of_n_addr_cells(struct device_node *np);
+ int of_n_size_cells(struct device_node *np);
  
- int of_modalias_node(struct device_node *node, char *modalias, int len);
- 
--#define device_node_for_nach_child(node, child) \
--	list_for_each_entry(child, &node->children, parent_list)
+-struct device_node *of_find_child_by_name(struct device_node *node, const char *name);
 -
- /* Helper to read a big number; size is in cells (not bytes) */
- static inline u64 of_read_number(const __be32 *cell, int size)
- {
+ struct fdt_header *fdt_get_tree(void);
+ 
+ struct fdt_header *of_get_fixed_tree(struct device_node *node);
 -- 
 1.7.2.5
 
