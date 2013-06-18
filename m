@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Up1X0-0000wR-7G
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 19:25:31 +0000
-Date: Tue, 18 Jun 2013 21:25:04 +0200
+ id 1Up2HN-0001qc-BB
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 20:13:26 +0000
+Date: Tue, 18 Jun 2013 22:13:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130618192504.GX32299@pengutronix.de>
-References: <E78BBE677EB9144B8F0A0A29674CD5338ED01639D6@SRV-VS06.TELEVIC.COM>
+Message-ID: <20130618201303.GA32299@pengutronix.de>
+References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1371576607-8090-8-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD5338ED01639D6@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <1371576607-8090-8-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,38 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox fails to boot 1/40 boots...
-To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH 07/22] OF: base: sync of_find_node_by_path with linux OF
+ API
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jun 18, 2013 at 02:59:57PM +0200, Vanhauwaert Wouter wrote:
-> Hello all,
-> 
-> I have this issue with our custom design (IMX53, NAND, DDR3)
-> 
-> Everything goes well most of the time, but now and then  the system does not boot and halts during initialization... 
-> To be more specific, the function on which the system blocks is 'setup_c()' in arch/arm/cpu/start-pbl.c
-> 
-> What can I do more to debug this? This function is completely in assembler...
+On Tue, Jun 18, 2013 at 07:29:52PM +0200, Sebastian Hesselbarth wrote:
+> Barebox of_find_node_by_path requires a node to be passed as start node
+> to start searching. Linux OF API does not pass this node and no current
+> user of it in barebox is passing anything else than the root node.
+> Therefore, the device_node argument is removed and all current users of
+> that function are updated to reflect the API change.
 
-What makes you sure barebox stops there? Do you have DEBUG_LL enabled or
-do you use a JTAG debugger?
+This is a patch I'm not quite happy with. devicetree is such a nice data
+structure that it can be useful for other purposes than just a
+singular tree for describing the hardware layout.
 
-Does this happen in first stage boot only or also when you chainload
-barebox from an already running barebox?
-
-You could try calling imx53_init_lowlevel_early from
-barebox_arm_reset_vector(). This *could* make a difference.
-
-Since you are using v2013.05-stable you should have the following
-patches, but maybe it's worth rechecking.
-
-76820df ARM: invalidate data caches during early init
-f9d7582 ARM v7: added v7_mmu_cache_invalidate()
-ee5f859 ARM v7: v7_mmu_cache_flush(): do not restore r0-r3 (minor optimization)
-eb7d85c arm: properly init alignment trap bit
-7904d90 ARM v7: fix mmu-off operation
-9af1150 ARM: fix the memset fix
+Maybe we should rename the current implementatiion to
+of_find_node_by_path_from() and add a of_find_node_by_path() which calls
+this with root_node as first argument?
 
 Sascha
 
