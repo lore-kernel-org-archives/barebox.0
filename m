@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uovos-0000I1-Jr
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 13:19:36 +0000
-Message-ID: <1371561590.4168.67.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Tue, 18 Jun 2013 15:19:50 +0200
-In-Reply-To: <1371561347-3530-2-git-send-email-t.gamez@phytec.de>
-References: <1371561347-3530-1-git-send-email-t.gamez@phytec.de>
- <1371561347-3530-2-git-send-email-t.gamez@phytec.de>
-Mime-Version: 1.0
+ id 1Uovq5-0000ME-C2
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 13:20:49 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Tue, 18 Jun 2013 15:20:27 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ED0163A0C@SRV-VS06.TELEVIC.COM>
+References: <E78BBE677EB9144B8F0A0A29674CD5338ED01639D6@SRV-VS06.TELEVIC.COM>
+ <1371561189.10579.3.camel@weser.hi.pengutronix.de>
+In-Reply-To: <1371561189.10579.3.camel@weser.hi.pengutronix.de>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,58 +19,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 2/3] omap3_spi: Add CS check for AM33xx
-To: Teresa =?ISO-8859-1?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: RE: Barebox fails to boot 1/40 boots...
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-T24gVHVlLCAyMDEzLTA2LTE4IGF0IDE1OjE1ICswMjAwLCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+
-IEFNMzN4eCBoYXMgb25seSAyIE1jU1BJIGJ1c3NlcyBhbmQgMiBDUyBmb3IgZWFjaCBidXMuCj4g
-QWRkZWQgY29tbWVudCBhbmQgdGhlIGNoZWNrLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFRlcmVzYSBH
-w6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgo+IC0tLQo+ICBkcml2ZXJzL3NwaS9vbWFwM19zcGku
-YyB8ICAgMjAgKysrKysrKysrKysrKysrKystLS0KPiAgMSBmaWxlcyBjaGFuZ2VkLCAxNyBpbnNl
-cnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9v
-bWFwM19zcGkuYyBiL2RyaXZlcnMvc3BpL29tYXAzX3NwaS5jCj4gaW5kZXggZTY1ODFkZi4uMWVi
-MGU2YSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL3NwaS9vbWFwM19zcGkuYwo+ICsrKyBiL2RyaXZl
-cnMvc3BpL29tYXAzX3NwaS5jCj4gQEAgLTMyNiwxMSArMzI2LDE3IEBAIHN0YXRpYyBpbnQgb21h
-cDNfc3BpX3RyYW5zZmVyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksIHN0cnVjdCBzcGlfbWVzc2Fn
-ZSAqbWVzZykKPiAgc3RhdGljIGludCBvbWFwM19zcGlfc2V0dXAoc3RydWN0IHNwaV9kZXZpY2Ug
-KnNwaSkKPiAgewo+ICAJc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlciA9IHNwaS0+bWFzdGVyOwo+
-ICsJaW50IGlzX25vdF92YWxpZDsKPiAgCj4gLQlpZiAoKChtYXN0ZXItPmJ1c19udW0gPT0gMSkg
-JiYgKHNwaS0+Y2hpcF9zZWxlY3QgPiAzKSkgfHwKPiArCWlmIChJU19FTkFCTEVEKENPTkZJR19B
-UkNIX09NQVAzKSkKPiArCQlpc19ub3RfdmFsaWQgPSAoKG1hc3Rlci0+YnVzX251bSA9PSAxKSAm
-JiAoc3BpLT5jaGlwX3NlbGVjdCA+IDMpKSB8fAo+ICAJCQkoKG1hc3Rlci0+YnVzX251bSA9PSAy
-KSAmJiAoc3BpLT5jaGlwX3NlbGVjdCA+IDEpKSB8fAo+ICAJCQkoKG1hc3Rlci0+YnVzX251bSA9
-PSAzKSAmJiAoc3BpLT5jaGlwX3NlbGVjdCA+IDEpKSB8fAo+IC0JCQkoKG1hc3Rlci0+YnVzX251
-bSA9PSA0KSAmJiAoc3BpLT5jaGlwX3NlbGVjdCA+IDApKSkgewo+ICsJCQkoKG1hc3Rlci0+YnVz
-X251bSA9PSA0KSAmJiAoc3BpLT5jaGlwX3NlbGVjdCA+IDApKTsKPiArCWVsc2UKPiArCQlpc19u
-b3RfdmFsaWQgPSAoc3BpLT5jaGlwX3NlbGVjdCA+IDEpOwo+ICsKPiArCWlmIChpc19ub3RfdmFs
-aWQpIHsKPiAgCQlwcmludGYoIlNQSSBlcnJvcjogdW5zdXBwb3J0ZWQgY2hpcCBzZWxlY3QgJWkg
-XAo+ICAJCQlvbiBidXMgJWlcbiIsIHNwaS0+Y2hpcF9zZWxlY3QsIG1hc3Rlci0+YnVzX251bSk7
-Cj4gIAkJcmV0dXJuIC1FSU5WQUw7Cj4gQEAgLTM2OCwxMiArMzc0LDIwIEBAIHN0YXRpYyBpbnQg
-b21hcDNfc3BpX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+ICAJICogTWNTUEkzIGhhcyAy
-IENTIChidXMgMywgY3MgMCAtIDEpCj4gIAkgKiBNY1NQSTQgaGFzIDEgQ1MgKGJ1cyA0LCBjcyAw
-KQo+ICAJICoKPiArCSAqIEFNMzM1eCBNY1NQSSBoYXMgMiBidXNzZXMgd2l0aCAyIGNoaXAgc2Vs
-ZWN0czoKPiArCSAqIE1jU1BJMCBoYXMgMiBDUyAoYnVzIDAsIGNzIDAgLSAxKQo+ICsJICogTWNT
-UEkxIGhhcyAyIENTIChidXMgMSwgY3MgMCAtIDEpCj4gKwkgKgo+ICAJICogVGhlIGJvYXJkIGNv
-ZGUgaGFzIHRvIG1ha2Ugc3VyZSB0aGF0IGl0IGRvZXMgbm90IHVzZQo+ICAJICogaW52YWxpZCBi
-dXNlcyBvciBjaGlwIHNlbGVjdHMuCj4gIAkgKi8KPiAgCj4gIAltYXN0ZXItPmJ1c19udW0gPSBk
-ZXYtPmlkOwo+IC0JbWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9IDQ7Cj4gKwo+ICsJaWYgKElTX0VO
-QUJMRUQoQ09ORklHX0FSQ0hfT01BUDMpKQo+ICsJCW1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgPSA0
-Owo+ICsJZWxzZQo+ICsJCW1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgPSAyOwo+ICAJbWFzdGVyLT5z
-ZXR1cCA9IG9tYXAzX3NwaV9zZXR1cDsKPiAgCW1hc3Rlci0+dHJhbnNmZXIgPSBvbWFwM19zcGlf
-dHJhbnNmZXI7CgpCeSBub3csIEkgdGhpbmsgd2Ugc2hvdWxkIGp1c3QgZHJvcCB0aGUgQ1MvYnVz
-IGNoZWNrcyBpbiB0aGUgZHJpdmVyLiBXZQpkb24ndCBuZWVkIHRvIHByb3RlY3QgYWdhaW5zdCB3
-cm9uZyBkZXZpY2Ugc2V0dXAgZnJvbSB0aGUgYm9hcmQgZmlsZSBvZgpsYXRlciBmcm9tIERULgoK
-UmVnYXJkcywKSmFuCgoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAg
-ICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29s
-dXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBl
-aW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEy
-MS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAg
-ICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+>  -----Original Message-----
+> From: Lucas Stach [mailto:l.stach@pengutronix.de]
+> Sent: dinsdag 18 juni 2013 15:13
+> To: Vanhauwaert Wouter
+> Cc: barebox@lists.infradead.org
+> Subject: Re: Barebox fails to boot 1/40 boots...
+> 
+> Am Dienstag, den 18.06.2013, 14:59 +0200 schrieb Vanhauwaert Wouter:
+> > Hello all,
+> >
+> > I have this issue with our custom design (IMX53, NAND, DDR3)
+> >
+> > Everything goes well most of the time, but now and then  the system does not
+> boot and halts during initialization...
+> > To be more specific, the function on which the system blocks is
+> > 'setup_c()' in arch/arm/cpu/start-pbl.c
+> >
+> > What can I do more to debug this? This function is completely in assembler...
+> >
+> > Grtz,
+> > Wouter
+> >
+> 
+> First of all: what barebox version are you running?
+> 
+> System crash in setup_c() smells suspiciously like the unclean cache issue which
+> was fixed with the 2013.05.1 release.
+> 
+
+I'm using stable/v2013.05
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
