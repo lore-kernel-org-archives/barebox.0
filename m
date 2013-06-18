@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x235.google.com ([2a00:1450:400c:c05::235])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uouhw-0006jS-F3
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 12:08:21 +0000
-Received: by mail-wi0-f181.google.com with SMTP id hq4so3142070wib.14
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 05:07:58 -0700 (PDT)
-Date: Tue, 18 Jun 2013 14:11:14 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130618121113.GB7885@x61s.8.8.8.8>
-References: <1371554747-9052-1-git-send-email-t.gamez@phytec.de>
- <1371554747-9052-4-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1371554747-9052-4-git-send-email-t.gamez@phytec.de>
+ id 1UovNa-0007hY-T7
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 12:51:23 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Tue, 18 Jun 2013 14:50:50 +0200
+Message-Id: <1371559850-21867-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +14,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: OMAP: pcm051: Add spi flash support
-To: Teresa =?utf-8?B?R8OhbWV6?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] devfs-core: introduce devfs_append_partition
+To: barebox@lists.infradead.org
 
-SGksCgpPbiBUdWUsIEp1biAxOCwgMjAxMyBhdCAwMToyNTo0N1BNICswMjAwLCBUZXJlc2EgR8Oh
-bWV6IHdyb3RlOgo+IEFkZCBzdXBwb3J0IGZvciB3MjVxNjQgU1BJIE5PUiBmbGFzaC4KPiAKPiBT
-aWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KPiAtLS0KPiAg
-YXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9ib2FyZC5jICAgICAgICAgICAgICAgfCAgIDQxICsrKysr
-KysrKysrKysrKysrKysrKysrKysrCj4gIGFyY2gvYXJtL2JvYXJkcy9wY20wNTEvZW52L2luaXQv
-bXRkcGFydHMtbm9yIHwgICAxMiArKysrKysrCj4gIGFyY2gvYXJtL2NvbmZpZ3MvcGNtMDUxX2Rl
-ZmNvbmZpZyAgICAgICAgICAgIHwgICAgMyArLQo+ICAzIGZpbGVzIGNoYW5nZWQsIDU1IGluc2Vy
-dGlvbnMoKyksIDEgZGVsZXRpb25zKC0pCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9i
-b2FyZHMvcGNtMDUxL2Vudi9pbml0L210ZHBhcnRzLW5vcgo+IAo+IGRpZmYgLS1naXQgYS9hcmNo
-L2FybS9ib2FyZHMvcGNtMDUxL2JvYXJkLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDUxL2JvYXJk
-LmMKPiBpbmRleCA4NzU0YmE1Li5jMzkwYzQ1IDEwMDY0NAo+IC0tLSBhL2FyY2gvYXJtL2JvYXJk
-cy9wY20wNTEvYm9hcmQuYwo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvYm9hcmQuYwo+
-IEBAIC0yNiw2ICsyNiw4IEBACj4gICNpbmNsdWRlIDxtYWNoL2FtMzN4eC1kZXZpY2VzLmg+Cj4g
-ICNpbmNsdWRlIDxtYWNoL2FtMzN4eC1tdXguaD4KPiAgI2luY2x1ZGUgPG1hY2gvYW0zM3h4LXNp
-bGljb24uaD4KPiArI2luY2x1ZGUgPHNwaS9zcGkuaD4KPiArI2luY2x1ZGUgPHNwaS9mbGFzaC5o
-Pgo+ICAKPiAgI2luY2x1ZGUgIm11eC5oIgo+ICAKPiBAQCAtNTIsMTIgKzU0LDUxIEBAIHN0YXRp
-YyBpbnQgcGNtMDUxX21lbV9pbml0KHZvaWQpCj4gIH0KPiAgbWVtX2luaXRjYWxsKHBjbTA1MV9t
-ZW1faW5pdCk7Cj4gIAo+ICtzdGF0aWMgc3RydWN0IGZsYXNoX3BsYXRmb3JtX2RhdGEgcGNtMDUx
-X3NwaV9mbGFzaCA9IHsKPiArCS5uYW1lCT0gIm5vciIsCj4gKwkudHlwZQk9ICJ3MjVxNjQiLAo+
-ICt9Owo+ICsKPiArLyoKPiArKiBTUEkgRmxhc2ggd29ya3MgYXQgODBNaHogaG93ZXZlciB0aGUg
-U1BJIGNvbnRyb2xsZXIgcnVucyB3aXRoIDQ4TUh6Lgo+ICsqIFNvIHNldHVwIE1heCBzcGVlZCB0
-byBiZSBsZXNzIHRoYW4gdGhlIGNvbnRyb2xsZXIgc3BlZWQuCj4gKyovCj4gK3N0YXRpYyBzdHJ1
-Y3Qgc3BpX2JvYXJkX2luZm8gcGNtMDUxX3NwaV9ib2FyZF9pbmZvW10gPSB7Cj4gKwl7Cj4gKwkJ
-Lm5hbWUJCT0gIm0yNXA4MCIsCj4gKwkJLnBsYXRmb3JtX2RhdGEJPSAmcGNtMDUxX3NwaV9mbGFz
-aCwKPiArCQkubWF4X3NwZWVkX2h6CT0gMjQwMDAwMDAsCj4gKwkJLmJ1c19udW0JPSAwLAo+ICsJ
-CS5jaGlwX3NlbGVjdAk9IDAsCj4gKwl9LAo+ICt9Owo+ICsKPiArc3RhdGljIHZvaWQgcGNtMDUx
-X3NwaV9pbml0KHZvaWQpCj4gK3sKPiArCWludCByZXQ7Cj4gKwo+ICsJYW0zM3h4X2VuYWJsZV9z
-cGkwX3Bpbl9tdXgoKTsKPiArCj4gKwlyZXQgPSBzcGlfcmVnaXN0ZXJfYm9hcmRfaW5mbyhwY20w
-NTFfc3BpX2JvYXJkX2luZm8sCj4gKwkJCQkJQVJSQVlfU0laRShwY20wNTFfc3BpX2JvYXJkX2lu
-Zm8pKTsKPiArCWFtMzN4eF9hZGRfc3BpMCgpOwo+ICt9Cj4gKwo+ICBzdGF0aWMgaW50IHBjbTA1
-MV9kZXZpY2VzX2luaXQodm9pZCkKPiAgewo+ICAJcGNtMDUxX2VuYWJsZV9tbWMwX3Bpbl9tdXgo
-KTsKPiAgCj4gIAlhbTMzeHhfYWRkX21tYzAoTlVMTCk7Cj4gIAo+ICsJcGNtMDUxX3NwaV9pbml0
-KCk7Cj4gKwo+ICsJZGV2ZnNfYWRkX3BhcnRpdGlvbigibm9yMCIsIDB4MDAwMDAsIFNaXzEyOEss
-Cj4gKwkJCQkJREVWRlNfUEFSVElUSU9OX0ZJWEVELCAieGxvYWQiKTsKPiArCWRldmZzX2FkZF9w
-YXJ0aXRpb24oIm5vcjAiLCBTWl8xMjhLLCBTWl8yNTZLLAo+ICsJCQkJCURFVkZTX1BBUlRJVElP
-Tl9GSVhFRCwgInNlbGYwIik7CgpJIHRoaW5rIHRoaXMgc2l6ZSBuZWVkIHRvIGJlIHRvIFNaXzUx
-Mksgb3IuLi4KCj4gKwlkZXZmc19hZGRfcGFydGl0aW9uKCJub3IwIiwgU1pfMTI4SyArIFNaXzI1
-NkssIFNaXzEyOEssCj4gKwkJCQkJREVWRlNfUEFSVElUSU9OX0ZJWEVELCAiZW52MCIpOwo+ICsK
-PiAgCWFybWxpbnV4X3NldF9ib290cGFyYW1zKCh2b2lkICopKEFNMzNYWF9EUkFNX0FERFJfU1BB
-Q0VfU1RBUlQgKyAweDEwMCkpOwo+ICAJYXJtbGludXhfc2V0X2FyY2hpdGVjdHVyZShNQUNIX1RZ
-UEVfUENNMDUxKTsKPiAgCj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvZW52
-L2luaXQvbXRkcGFydHMtbm9yIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9lbnYvaW5pdC9tdGRw
-YXJ0cy1ub3IKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAuLjkxYWE4NDcK
-PiAtLS0gL2Rldi9udWxsCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9lbnYvaW5pdC9t
-dGRwYXJ0cy1ub3IKPiBAQCAtMCwwICsxLDEyIEBACj4gKyMhL2Jpbi9zaAo+ICsKPiAraWYgWyAi
-JDEiID0gbWVudSBdOyB0aGVuCj4gKwlpbml0LW1lbnUtYWRkLWVudHJ5ICIkMCIgIk5PUiBwYXJ0
-aXRpb25zIgo+ICsJZXhpdAo+ICtmaQo+ICsKPiArbXRkcGFydHM9IjEyOGsobm9yMC54bG9hZCks
-NTEyayhub3IwLmJhcmVib3gpLDEyOGsobm9yMC5iYXJlYm94ZW52KSw0TShub3IwLmtlcm5lbCks
-LShub3IwLnJvb3QpIgoKLi4uIDUxMmsobm9yMC5iYXJlYm94KSB0byAyNTZrKG5vcjAuYmFyZWJv
-eCkuCgpSZWdhcmRzCkFsZXgKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9y
-ZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This simplifies board code for partition setup by keeping track of the
+offset.
+
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ fs/devfs-core.c  | 9 +++++++++
+ include/driver.h | 2 ++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 262e0a2..f7d79ff 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -267,6 +267,15 @@ int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 	return 0;
+ }
+ 
++int devfs_append_partition(const char *devname, loff_t *offset, loff_t size,
++		int flags, const char *name)
++{
++	int ret;
++	ret = devfs_add_partition(devname, *offset, size, flags, name);
++	*offset += size;
++	return ret;
++}
++
+ int devfs_del_partition(const char *name)
+ {
+ 	struct cdev *cdev;
+diff --git a/include/driver.h b/include/driver.h
+index 716f792..3f4f7b9 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -463,6 +463,8 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+ 
+ int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		int flags, const char *name);
++int devfs_append_partition(const char *devname, loff_t *offset, loff_t size,
++		int flags, const char *name);
+ int devfs_del_partition(const char *name);
+ 
+ #define DRV_OF_COMPAT(compat) \
+-- 
+1.8.3.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
