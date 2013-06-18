@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
+Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozjw-0006ox-CD
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:48 +0000
-Received: by mail-bk0-f46.google.com with SMTP id na10so1904631bkb.33
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:22 -0700 (PDT)
+ id 1Uozjz-0006p0-21
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:50 +0000
+Received: by mail-bk0-f49.google.com with SMTP id mz10so1905866bkb.36
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:23 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:29:48 +0200
-Message-Id: <1371576607-8090-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:29:53 +0200
+Message-Id: <1371576607-8090-9-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,68 +23,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/22] OF: base: also update property length on
- of_property_write_u32
+Subject: [PATCH 08/22] OF: base: rename of_node_disabled to
+ of_device_is_available
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Current implementation of of_property_write_u32 does free old property
-values and allocates new values depending on the size passed. While
-copying the new values to the property, corresponding length is not
-set. This makes of_property_write_u32 set the length of the new property
-values and also adds a API header describing the function.
+According to ePAPR 1.1 spec, device tree nodes status can be either
+"okay", "disabled", "fail", or "fail-sss". Barebox already has a function
+to check for "disabled" nodes, while Linux checks for "okay" or "ok".
+To synchronize Barebox and Linux OF APIs, rename of_node_disabled to
+of_device_is_available and check for "okay" instead of "disabled" as it
+also makes "fail"ed devices unavailable.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   20 ++++++++++++++++++--
- 1 files changed, 18 insertions(+), 2 deletions(-)
+ drivers/of/base.c |   26 ++++++++++++++++++++------
+ include/of.h      |    6 ++++++
+ 2 files changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index ab0f4cd..616b93d 100644
+index 34793b3..827a1db 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -383,6 +383,21 @@ int of_property_read_u32_array(const struct device_node *np,
- }
- EXPORT_SYMBOL_GPL(of_property_read_u32_array);
- 
-+/**
-+ * of_property_write_u32_array - Write an array of u32 to a property. If
-+ * the property does not exist, it will be created and appended to the given
-+ * device node.
-+ *
-+ * @np:		device node to which the property value is to be written.
-+ * @propname:	name of the property to be written.
-+ * @values:	pointer to array elements to write.
-+ * @sz:		number of array elements to write.
-+ *
-+ * Search for a property in a device node and write 32-bit value(s) to
-+ * it. If the property does not exist, it will be created and appended to
-+ * the device node. Returns 0 on success, -ENOMEM if the property or array
-+ * of elements cannot be created.
-+ */
- int of_property_write_u32_array(struct device_node *np,
- 				const char *propname, const u32 *values,
- 				size_t sz)
-@@ -397,14 +412,15 @@ int of_property_write_u32_array(struct device_node *np,
- 
- 	free(prop->value);
- 
--	prop->value = malloc(sizeof(__be32) * sz);
-+	prop->length = sizeof(*val) * sz;
-+	prop->value = malloc(prop->length);
- 	if (!prop->value)
- 		return -ENOMEM;
- 
- 	val = prop->value;
--
- 	while (sz--)
- 		*val++ = cpu_to_be32(*values++);
-+
+@@ -717,17 +717,31 @@ int of_set_root_node(struct device_node *node)
  	return 0;
  }
  
+-static int of_node_disabled(struct device_node *node)
++/**
++ *  of_device_is_available - check if a device is available for use
++ *
++ *  @device: Node to check for availability
++ *
++ *  Returns 1 if the status property is absent or set to "okay" or "ok",
++ *  0 otherwise
++ */
++int of_device_is_available(const struct device_node *device)
+ {
+-	struct property *p;
++	const char *status;
++	int statlen;
++
++	status = of_get_property(device, "status", &statlen);
++	if (status == NULL)
++		return 1;
+ 
+-	p = of_find_property(node, "status", NULL);
+-	if (p) {
+-		if (!strcmp("disabled", p->value))
++	if (statlen > 0) {
++		if (!strcmp(status, "okay") || !strcmp(status, "ok"))
+ 			return 1;
+ 	}
++
+ 	return 0;
+ }
++EXPORT_SYMBOL(of_device_is_available);
+ 
+ void of_print_nodes(struct device_node *node, int indent)
+ {
+@@ -921,7 +935,7 @@ static struct device_d *add_of_device(struct device_node *node,
+ {
+ 	const struct property *cp;
+ 
+-	if (of_node_disabled(node))
++	if (!of_device_is_available(node))
+ 		return NULL;
+ 
+ 	cp = of_get_property(node, "compatible", NULL);
+diff --git a/include/of.h b/include/of.h
+index 871f5e9..340fb83 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -183,6 +183,7 @@ extern struct property *of_find_property(const struct device_node *np,
+ 					const char *name, int *lenp);
+ 
+ extern struct device_node *of_find_node_by_path(const char *path);
++extern int of_device_is_available(const struct device_node *device);
+ 
+ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+@@ -240,6 +241,11 @@ static inline struct device_node *of_find_node_by_path(const char *path)
+ 	return NULL;
+ }
+ 
++static inline int of_device_is_available(const struct device_node *device)
++{
++	return 0;
++}
++
+ static inline void of_alias_scan(void)
+ {
+ }
 -- 
 1.7.2.5
 
