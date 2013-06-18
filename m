@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Up2HN-0001qc-BB
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 20:13:26 +0000
-Date: Tue, 18 Jun 2013 22:13:03 +0200
+ id 1Up2MA-00025i-67
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 20:18:22 +0000
+Date: Tue, 18 Jun 2013 22:18:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130618201303.GA32299@pengutronix.de>
+Message-ID: <20130618201800.GB32299@pengutronix.de>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1371576607-8090-8-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1371576607-8090-14-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1371576607-8090-8-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1371576607-8090-14-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/22] OF: base: sync of_find_node_by_path with linux OF
- API
+Subject: Re: [PATCH 13/22] OF: base: import parent/child functions from Linux
+ OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 18, 2013 at 07:29:52PM +0200, Sebastian Hesselbarth wrote:
-> Barebox of_find_node_by_path requires a node to be passed as start node
-> to start searching. Linux OF API does not pass this node and no current
-> user of it in barebox is passing anything else than the root node.
-> Therefore, the device_node argument is removed and all current users of
-> that function are updated to reflect the API change.
+On Tue, Jun 18, 2013 at 07:29:58PM +0200, Sebastian Hesselbarth wrote:
+> This imports of_get_parent, of_get_next_child, of_get_next_available_child,
+> and of_get_child_by_name and corresponding helpers from Linux OF API.
+> 
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Cc: barebox@lists.infradead.org
+> ---
+>  drivers/of/base.c |   78 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/of.h      |   49 +++++++++++++++++++++++++++++++++
+>  2 files changed, 127 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 148f832..17364ea 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -862,6 +862,84 @@ int of_device_is_available(const struct device_node *device)
+>  }
+>  EXPORT_SYMBOL(of_device_is_available);
+>  
+> +/**
+> + *	of_get_parent - Get a node's parent if any
+> + *	@node:	Node to get parent
+> + *
+> + *	Returns a pointer to the parent node or NULL if already at root.
+> + */
+> +struct device_node *of_get_parent(const struct device_node *node)
+> +{
+> +	if (!node)
+> +		return NULL;
+> +
+> +	return (node == root_node) ? NULL : node->parent;
 
-This is a patch I'm not quite happy with. devicetree is such a nice data
-structure that it can be useful for other purposes than just a
-singular tree for describing the hardware layout.
-
-Maybe we should rename the current implementatiion to
-of_find_node_by_path_from() and add a of_find_node_by_path() which calls
-this with root_node as first argument?
+parent should be NULL for the root_node, so it should be safe to remove
+this additional check. This is also in the sense of making multiple
+devicetrees possible.
 
 Sascha
 
