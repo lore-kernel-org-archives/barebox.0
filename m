@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozjw-0006ow-8d
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:46 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so1900806bkc.7
+ id 1Uozjw-0006ox-CD
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:48 +0000
+Received: by mail-bk0-f46.google.com with SMTP id na10so1904631bkb.33
  for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:22 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:29:49 +0200
-Message-Id: <1371576607-8090-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:29:48 +0200
+Message-Id: <1371576607-8090-4-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,98 +23,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/22] OF: base: export of_alias_scan
+Subject: [PATCH 03/22] OF: base: also update property length on
+ of_property_write_u32
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-To prepare clean-up of OF API, we need to export of_alias_scan.
+Current implementation of of_property_write_u32 does free old property
+values and allocates new values depending on the size passed. While
+copying the new values to the property, corresponding length is not
+set. This makes of_property_write_u32 set the length of the new property
+values and also adds a API header describing the function.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |    3 ++-
- include/of.h      |   31 ++++++++++++++++++-------------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/of/base.c |   20 ++++++++++++++++++--
+ 1 files changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 616b93d..f3ed836 100644
+index ab0f4cd..616b93d 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -135,7 +135,7 @@ static void of_alias_add(struct alias_prop *ap, struct device_node *np,
-  * the global lookup table with the properties.  It returns the
-  * number of alias_prop found, or error code in error case.
-  */
--static void of_alias_scan(void)
-+void of_alias_scan(void)
- {
- 	struct property *pp;
- 	struct alias_prop *app, *tmp;
-@@ -187,6 +187,7 @@ static void of_alias_scan(void)
- 		of_alias_add(ap, np, id, start, len);
- 	}
+@@ -383,6 +383,21 @@ int of_property_read_u32_array(const struct device_node *np,
  }
-+EXPORT_SYMBOL(of_alias_scan);
+ EXPORT_SYMBOL_GPL(of_property_read_u32_array);
  
- /**
-  * of_alias_get_id - Get alias id for the given device_node
-diff --git a/include/of.h b/include/of.h
-index 300b706..8a69793 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -178,10 +178,11 @@ const struct of_device_id *of_match_node(const struct of_device_id *matches,
- struct cdev;
++/**
++ * of_property_write_u32_array - Write an array of u32 to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write 32-bit value(s) to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created.
++ */
+ int of_property_write_u32_array(struct device_node *np,
+ 				const char *propname, const u32 *values,
+ 				size_t sz)
+@@ -397,14 +412,15 @@ int of_property_write_u32_array(struct device_node *np,
  
- #ifdef CONFIG_OFTREE
--int of_parse_partitions(struct cdev *cdev, struct device_node *node);
-+extern void of_alias_scan(void);
-+extern int of_alias_get_id(struct device_node *np, const char *stem);
-+extern const char *of_alias_get(struct device_node *np);
+ 	free(prop->value);
  
--int of_alias_get_id(struct device_node *np, const char *stem);
--const char *of_alias_get(struct device_node *np);
-+int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
- void *of_flatten_dtb(struct device_node *node);
-@@ -196,16 +197,6 @@ static inline int of_parse_partitions(struct cdev *cdev,
- 	return -EINVAL;
- }
+-	prop->value = malloc(sizeof(__be32) * sz);
++	prop->length = sizeof(*val) * sz;
++	prop->value = malloc(prop->length);
+ 	if (!prop->value)
+ 		return -ENOMEM;
  
--static inline int of_alias_get_id(struct device_node *np, const char *stem)
--{
--	return -ENOENT;
--}
+ 	val = prop->value;
 -
--static inline const char *of_alias_get(struct device_node *np)
--{
--	return NULL;
--}
--
- static inline int of_device_is_stdout_path(struct device_d *dev)
- {
+ 	while (sz--)
+ 		*val++ = cpu_to_be32(*values++);
++
  	return 0;
-@@ -230,6 +221,20 @@ static inline struct device_node *of_get_root_node(void)
- {
- 	return NULL;
  }
-+
-+static inline void of_alias_scan(void)
-+{
-+}
-+
-+static inline int of_alias_get_id(struct device_node *np, const char *stem)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline const char *of_alias_get(struct device_node *np)
-+{
-+	return NULL;
-+}
- #endif
  
- #endif /* __OF_H */
 -- 
 1.7.2.5
 
