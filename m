@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22f.google.com ([2a00:1450:4008:c01::22f])
+Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozjv-0006ov-N3
+ id 1Uozjw-0006ow-8d
  for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:46 +0000
-Received: by mail-bk0-f47.google.com with SMTP id jg1so1910464bkc.34
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:21 -0700 (PDT)
+Received: by mail-bk0-f48.google.com with SMTP id jf17so1900806bkc.7
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:22 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:29:45 +0200
-Message-Id: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:29:49 +0200
+Message-Id: <1371576607-8090-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,84 +23,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/22] Barebox OF API fixes, sync, and cleanup
+Subject: [PATCH 04/22] OF: base: export of_alias_scan
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This is a quite large patch set to make Barebox OF API more behave
-like Linux OF API. Also, it prepares Barebox to reuse Linux OF address
-handling and drivers/of/of_* helpers soon.
+To prepare clean-up of OF API, we need to export of_alias_scan.
 
-The patch set is roughly divided into 5 sections:
-
-(1) Patch 1 introduces case-insensitive string compare functions that will
-    be used later during import of Linux OF API functions.
-
-(2) Patches 2 and 3 fix some bugs in existing OF API functions.
-
-(3) Patches 4-8 synchronize existing OF API functions with Linux OF API
-    counterparts.
-
-(4) Patches 9-18 import API functions from Linux OF API or introduce new
-    functions based on existing Barebox OF API functions.
-
-(5) Patches 19-22 convert to new API functions and remove now obsolete
-    functions. Further, it cleans up existing OF include, by providing
-    OFTREE prototypes and !OFTREE bogus stubs.
-
-I have tested the patch set with both CONFIG_OFTREE set and not set.
-
-The patch set applied to barebox/next can also be found at
-git://github.com/shesselba/barebox-dove.git  barebox-of-sync-v1
-
-Sebastian Hesselbarth (22):
-  lib: string: import case-insensitive string compare
-  OF: base: bail out early on missing matches for of_match_node
-  OF: base: also update property length on of_property_write_u32
-  OF: base: export of_alias_scan
-  OF: base: convert strcmp to default string compare functions
-  OF: base: sync of_find_property with linux OF API
-  OF: base: sync of_find_node_by_path with linux OF API
-  OF: base: rename of_node_disabled to of_device_is_available
-  OF: base: import of_find_node_by_name from Linux OF API
-  OF: base: import of_find_compatible_node from Linux OF API
-  OF: base: import of_find_matching_node_and_match from Linux OF API
-  OF: base: import of_find_node_with_property from Linux OF API
-  OF: base: import parent/child functions from Linux OF API
-  OF: base: import of_property_read_* helpers from Linux OF API
-  OF: base: import of_parse_phandle from Linux OF API
-  OF: base: import parse phandle functions from Linux OF API
-  OF: base: introduce property write for bool, u8, u16, and u64
-  OF: base: import property iterators from Linux OF API
-  OF: base: remove of_tree_for_each_node from public API
-  OF: base: remove of_find_child_by_name
-  OF: base: convert and remove device_node_for_nach_child
-  OF: base: cleanup base function include
-
- arch/arm/boards/at91sam9x5ek/hw_version.c |   10 +-
- arch/arm/boards/highbank/init.c           |   20 +-
- arch/ppc/mach-mpc5xxx/cpu.c               |    4 +-
- commands/of_node.c                        |    2 +-
- commands/of_property.c                    |   12 +-
- commands/oftree.c                         |   11 +-
- common/oftree.c                           |    2 +-
- drivers/i2c/i2c.c                         |    2 +-
- drivers/mfd/stmpe-i2c.c                   |    7 +-
- drivers/of/base.c                         | 1234 +++++++++++++++++++++++------
- drivers/of/fdt.c                          |   14 +-
- drivers/of/gpio.c                         |    9 +-
- drivers/of/of_net.c                       |    6 +-
- drivers/of/partition.c                    |    2 +-
- drivers/pinctrl/pinctrl.c                 |    4 +-
- drivers/spi/spi.c                         |   12 +-
- drivers/usb/imx/chipidea-imx.c            |   14 +-
- include/linux/string.h                    |    9 +
- include/of.h                              |  616 ++++++++++++--
- lib/string.c                              |   60 ++
- net/eth.c                                 |    2 +-
- 21 files changed, 1624 insertions(+), 428 deletions(-)
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c |    3 ++-
+ include/of.h      |   31 ++++++++++++++++++-------------
+ 2 files changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 616b93d..f3ed836 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -135,7 +135,7 @@ static void of_alias_add(struct alias_prop *ap, struct device_node *np,
+  * the global lookup table with the properties.  It returns the
+  * number of alias_prop found, or error code in error case.
+  */
+-static void of_alias_scan(void)
++void of_alias_scan(void)
+ {
+ 	struct property *pp;
+ 	struct alias_prop *app, *tmp;
+@@ -187,6 +187,7 @@ static void of_alias_scan(void)
+ 		of_alias_add(ap, np, id, start, len);
+ 	}
+ }
++EXPORT_SYMBOL(of_alias_scan);
+ 
+ /**
+  * of_alias_get_id - Get alias id for the given device_node
+diff --git a/include/of.h b/include/of.h
+index 300b706..8a69793 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -178,10 +178,11 @@ const struct of_device_id *of_match_node(const struct of_device_id *matches,
+ struct cdev;
+ 
+ #ifdef CONFIG_OFTREE
+-int of_parse_partitions(struct cdev *cdev, struct device_node *node);
++extern void of_alias_scan(void);
++extern int of_alias_get_id(struct device_node *np, const char *stem);
++extern const char *of_alias_get(struct device_node *np);
+ 
+-int of_alias_get_id(struct device_node *np, const char *stem);
+-const char *of_alias_get(struct device_node *np);
++int of_parse_partitions(struct cdev *cdev, struct device_node *node);
+ int of_device_is_stdout_path(struct device_d *dev);
+ const char *of_get_model(void);
+ void *of_flatten_dtb(struct device_node *node);
+@@ -196,16 +197,6 @@ static inline int of_parse_partitions(struct cdev *cdev,
+ 	return -EINVAL;
+ }
+ 
+-static inline int of_alias_get_id(struct device_node *np, const char *stem)
+-{
+-	return -ENOENT;
+-}
+-
+-static inline const char *of_alias_get(struct device_node *np)
+-{
+-	return NULL;
+-}
+-
+ static inline int of_device_is_stdout_path(struct device_d *dev)
+ {
+ 	return 0;
+@@ -230,6 +221,20 @@ static inline struct device_node *of_get_root_node(void)
+ {
+ 	return NULL;
+ }
++
++static inline void of_alias_scan(void)
++{
++}
++
++static inline int of_alias_get_id(struct device_node *np, const char *stem)
++{
++	return -ENOSYS;
++}
++
++static inline const char *of_alias_get(struct device_node *np)
++{
++	return NULL;
++}
+ #endif
+ 
+ #endif /* __OF_H */
 -- 
 1.7.2.5
 
