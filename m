@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
+Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UozkG-0006q0-IA
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:31:06 +0000
-Received: by mail-bk0-f50.google.com with SMTP id ik8so1888529bkc.23
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:41 -0700 (PDT)
+ id 1UozkE-0006pk-A2
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:31:04 +0000
+Received: by mail-bk0-f53.google.com with SMTP id e11so1898518bkh.40
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:40 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:30:03 +0200
-Message-Id: <1371576607-8090-19-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:30:00 +0200
+Message-Id: <1371576607-8090-16-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,141 +23,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/22] OF: base: import property iterators from Linux OF API
+Subject: [PATCH 15/22] OF: base: import of_parse_phandle from Linux OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports of_prop_next_u32, of_prop_next_string, and the corresponding
-for_property_for_each_ helpers from Linux OF API.
+This imports of_parse_phandle from Linux OF API.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   41 +++++++++++++++++++++++++++++++++++++++++
- include/of.h      |   43 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+), 0 deletions(-)
+ drivers/of/base.c |   23 +++++++++++++++++++++++
+ include/of.h      |   10 ++++++++++
+ 2 files changed, 33 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4c6f2f4..489fa89 100644
+index 4689f3e..e729a65 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -797,6 +797,47 @@ int of_property_count_strings(struct device_node *np, const char *propname)
+@@ -839,6 +839,29 @@ int of_property_write_u32_array(struct device_node *np,
  }
- EXPORT_SYMBOL_GPL(of_property_count_strings);
  
-+const __be32 *of_prop_next_u32(struct property *prop, const __be32 *cur,
-+			u32 *pu)
-+{
-+	const void *curv = cur;
-+
-+	if (!prop)
-+		return NULL;
-+
-+	if (!cur) {
-+		curv = prop->value;
-+		goto out_val;
-+	}
-+
-+	curv += sizeof(*cur);
-+	if (curv >= prop->value + prop->length)
-+		return NULL;
-+
-+out_val:
-+	*pu = be32_to_cpup(curv);
-+	return curv;
-+}
-+EXPORT_SYMBOL_GPL(of_prop_next_u32);
-+
-+const char *of_prop_next_string(struct property *prop, const char *cur)
-+{
-+	const void *curv = cur;
-+
-+	if (!prop)
-+		return NULL;
-+
-+	if (!cur)
-+		return prop->value;
-+
-+	curv += strlen(cur) + 1;
-+	if (curv >= prop->value + prop->length)
-+		return NULL;
-+
-+	return curv;
-+}
-+EXPORT_SYMBOL_GPL(of_prop_next_string);
-+
  /**
-  * of_property_write_bool - Create/Delete empty (bool) property.
-  *
++ * of_parse_phandle - Resolve a phandle property to a device_node pointer
++ * @np: Pointer to device node holding phandle property
++ * @phandle_name: Name of property holding a phandle value
++ * @index: For properties holding a table of phandles, this is the index into
++ *         the table
++ *
++ * Returns the device_node pointer found or NULL.
++ */
++struct device_node *of_parse_phandle(const struct device_node *np,
++				     const char *phandle_name, int index)
++{
++	const __be32 *phandle;
++	int size;
++
++	phandle = of_get_property(np, phandle_name, &size);
++	if ((!phandle) || (size < sizeof(*phandle) * (index + 1)))
++		return NULL;
++
++	return of_find_node_by_phandle(be32_to_cpup(phandle + index));
++}
++EXPORT_SYMBOL(of_parse_phandle);
++
++/**
+  * of_parse_phandles_with_args - Find a node pointed by phandle in a list
+  * @np:		pointer to a device tree node containing a list
+  * @list_name:	property name that contains a list
 diff --git a/include/of.h b/include/of.h
-index 53a135a..0306742 100644
+index d782eaf..81df5a6 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -205,6 +205,10 @@ extern int of_property_match_string(struct device_node *np,
+@@ -214,6 +214,10 @@ extern int of_property_match_string(struct device_node *np,
  extern int of_property_count_strings(struct device_node *np,
  				     const char *propname);
  
-+extern const __be32 *of_prop_next_u32(struct property *prop,
-+				const __be32 *cur, u32 *pu);
-+extern const char *of_prop_next_string(struct property *prop, const char *cur);
++extern struct device_node *of_parse_phandle(const struct device_node *np,
++					    const char *phandle_name,
++					    int index);
 +
- extern int of_property_write_bool(struct device_node *np,
- 				const char *propname, const bool value);
- extern int of_property_write_u8_array(struct device_node *np,
-@@ -357,6 +361,18 @@ static inline int of_property_count_strings(struct device_node *np,
+ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern const char *of_alias_get(struct device_node *np);
+@@ -342,6 +346,12 @@ static inline int of_property_count_strings(struct device_node *np,
  	return -ENOSYS;
  }
  
-+static inline const __be32 *of_prop_next_u32(struct property *prop,
-+					const __be32 *cur, u32 *pu)
-+{
-+	return 0;
-+}
-+
-+static inline const char *of_prop_next_string(struct property *prop,
-+					const char *cur)
++static inline struct device_node *of_parse_phandle(const struct device_node *np,
++					    const char *phandle_name, int index)
 +{
 +	return NULL;
 +}
 +
- static inline int of_property_write_bool(struct device_node *np,
- 				const char *propname, const bool value)
+ static inline struct device_node *of_find_node_by_path(const char *path)
  {
-@@ -536,6 +552,33 @@ static inline int of_property_read_u32(const struct device_node *np,
- 	return of_property_read_u32_array(np, propname, out_value, 1);
- }
- 
-+/*
-+ * struct property *prop;
-+ * const __be32 *p;
-+ * u32 u;
-+ *
-+ * of_property_for_each_u32(np, "propname", prop, p, u)
-+ *         printk("U32 value: %x\n", u);
-+ */
-+#define of_property_for_each_u32(np, propname, prop, p, u)	\
-+	for (prop = of_find_property(np, propname, NULL),	\
-+		p = of_prop_next_u32(prop, NULL, &u);		\
-+		p;						\
-+		p = of_prop_next_u32(prop, p, &u))
-+
-+/*
-+ * struct property *prop;
-+ * const char *s;
-+ *
-+ * of_property_for_each_string(np, "propname", prop, s)
-+ *         printk("String value: %s\n", s);
-+ */
-+#define of_property_for_each_string(np, propname, prop, s)	\
-+	for (prop = of_find_property(np, propname, NULL),	\
-+		s = of_prop_next_string(prop, NULL);		\
-+		s;						\
-+		s = of_prop_next_string(prop, s))
-+
- static inline int of_property_write_u8(struct device_node *np,
- 				       const char *propname, u8 value)
- {
+ 	return NULL;
 -- 
 1.7.2.5
 
