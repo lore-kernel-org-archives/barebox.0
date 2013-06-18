@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozk5-0006pB-K9
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:31:00 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so1935351bkc.35
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:34 -0700 (PDT)
+ id 1UozkL-0006rr-9R
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:31:12 +0000
+Received: by mail-bk0-f52.google.com with SMTP id d7so1915072bkh.11
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:47 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:29:55 +0200
-Message-Id: <1371576607-8090-11-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:30:04 +0200
+Message-Id: <1371576607-8090-20-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,100 +23,113 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/22] OF: base: import of_find_compatible_node from Linux OF
- API
+Subject: [PATCH 19/22] OF: base: remove of_tree_for_each_node from public API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports of_find_compatible_node and corresponding for_each_compatible_node
-helper from Linux OF API.
+This patch converts users of of_tree_for_each_node to recently added
+for_eacg_compatible_node helper. Also of_tree_for_each_node is removed
+from public OF API.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   30 ++++++++++++++++++++++++++++++
- include/of.h      |   13 +++++++++++++
- 2 files changed, 43 insertions(+), 0 deletions(-)
+ arch/arm/boards/at91sam9x5ek/hw_version.c |   10 +++-------
+ arch/arm/boards/highbank/init.c           |   16 ++++++----------
+ drivers/of/base.c                         |    8 ++++++++
+ include/of.h                              |    8 --------
+ 4 files changed, 17 insertions(+), 25 deletions(-)
 
+diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
+index 91af331..426bd35 100644
+--- a/arch/arm/boards/at91sam9x5ek/hw_version.c
++++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
+@@ -234,13 +234,9 @@ static int cm_cogent_fixup(struct device_node *root)
+ 	int ret;
+ 	struct device_node *node;
+ 
+-	of_tree_for_each_node(node, root) {
+-		struct device_node *slotnode;
+-
+-		if (!of_device_is_compatible(node, "atmel,hsmci"))
+-			continue;
+-
+-		slotnode = of_find_child_by_name(node, "slot");
++	for_each_compatible_node(node, NULL, "atmel,hsmci") {
++		struct device_node *slotnode =
++			of_find_child_by_name(node, "slot");
+ 		if (!slotnode)
+ 			continue;
+ 
+diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
+index 1aa713b..46ecc88 100644
+--- a/arch/arm/boards/highbank/init.c
++++ b/arch/arm/boards/highbank/init.c
+@@ -35,19 +35,15 @@ static int hb_fixup(struct device_node *root)
+ 	__be32 latency;
+ 
+ 	if (!(reg & HB_PWRDOM_STAT_SATA)) {
+-		of_tree_for_each_node(node, root) {
+-			if (of_device_is_compatible(node, "calxeda,hb-ahci"))
+-				of_set_property(node, "status", "disabled",
+-						sizeof("disabled"), 1);
+-		}
++		for_each_compatible_node(node, NULL, "calxeda,hb-ahci")
++			of_set_property(node, "status", "disabled",
++					sizeof("disabled"), 1);
+ 	}
+ 
+ 	if (!(reg & HB_PWRDOM_STAT_EMMC)) {
+-		of_tree_for_each_node(node, root) {
+-			if (of_device_is_compatible(node, "calxeda,hb-sdhci"))
+-				of_set_property(node, "status", "disabled",
+-						sizeof("disabled"), 1);
+-		}
++		for_each_compatible_node(node, NULL, "calxeda,hb-sdhci")
++			of_set_property(node, "status", "disabled",
++					sizeof("disabled"), 1);
+ 	}
+ 
+ 	if ((opp_table[0] >> 16) != HB_OPP_VERSION)
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 85358d9..50a3c22 100644
+index 489fa89..94a5c61 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -338,6 +338,36 @@ struct device_node *of_find_node_by_name(struct device_node *from,
- EXPORT_SYMBOL(of_find_node_by_name);
+@@ -28,6 +28,14 @@
+ #include <linux/amba/bus.h>
+ #include <linux/err.h>
  
- /**
-+ *	of_find_compatible_node - Find a node based on type and one of the
-+ *                                tokens in its "compatible" property
-+ *	@from:		The node to start searching from or NULL, the node
-+ *			you pass will not be searched, only the next one
-+ *			will; typically, you pass what the previous call
-+ *			returned.
-+ *	@type:		The type string to match "device_type" or NULL to ignore
-+ *                      (currently always ignored in barebox)
-+ *	@compatible:	The string to match to one of the tokens in the device
-+ *			"compatible" list.
-+ *
-+ *	Returns a pointer to the node found or NULL.
++/*
++ * Iterate over all nodes of a tree. As a devicetree does not
++ * have a dedicated list head, the start node (usually the root
++ * node) will not be iterated over.
 + */
-+struct device_node *of_find_compatible_node(struct device_node *from,
-+	const char *type, const char *compatible)
-+{
-+	struct device_node *np;
++#define of_tree_for_each_node(node, root) \
++	list_for_each_entry(node, &root->list, list)
 +
-+	if (!from)
-+		from = root_node;
-+
-+	of_tree_for_each_node(np, from)
-+		if (of_device_is_compatible(np, compatible))
-+			return np;
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL(of_find_compatible_node);
-+
-+/**
-  * of_match_node - Tell if an device_node has a matching of_match structure
-  *      @matches:       array of of device match structures to search in
-  *      @node:          the of device structure to match against
+ /**
+  * struct alias_prop - Alias property in 'aliases' node
+  * @link:	List node to link the structure in aliases_lookup list
 diff --git a/include/of.h b/include/of.h
-index d1503de..e170e2b 100644
+index 0306742..0797dbe 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -185,6 +185,8 @@ extern struct property *of_find_property(const struct device_node *np,
- extern struct device_node *of_find_node_by_name(struct device_node *from,
- 	const char *name);
- extern struct device_node *of_find_node_by_path(const char *path);
-+extern struct device_node *of_find_compatible_node(struct device_node *from,
-+	const char *type, const char *compat);
- extern int of_device_is_available(const struct device_node *device);
+@@ -85,14 +85,6 @@ int of_modalias_node(struct device_node *node, char *modalias, int len);
+ #define device_node_for_nach_child(node, child) \
+ 	list_for_each_entry(child, &node->children, parent_list)
  
- extern void of_alias_scan(void);
-@@ -249,6 +251,14 @@ static inline struct device_node *of_find_node_by_name(struct device_node *from,
- 	return NULL;
- }
- 
-+static inline struct device_node *of_find_compatible_node(
-+						struct device_node *from,
-+						const char *type,
-+						const char *compat)
-+{
-+	return NULL;
-+}
-+
- static inline int of_device_is_available(const struct device_node *device)
+-/*
+- * Iterate over all nodes of a tree. As a devicetree does not
+- * have a dedicated list head, the start node (usually the root
+- * node) will not be iterated over.
+- */
+-#define of_tree_for_each_node(node, root) \
+-	list_for_each_entry(node, &root->list, list)
+-
+ /* Helper to read a big number; size is in cells (not bytes) */
+ static inline u64 of_read_number(const __be32 *cell, int size)
  {
- 	return 0;
-@@ -272,5 +282,8 @@ static inline const char *of_alias_get(struct device_node *np)
- #define for_each_node_by_name(dn, name) \
- 	for (dn = of_find_node_by_name(NULL, name); dn; \
- 	     dn = of_find_node_by_name(dn, name))
-+#define for_each_compatible_node(dn, type, compatible) \
-+	for (dn = of_find_compatible_node(NULL, type, compatible); dn; \
-+	     dn = of_find_compatible_node(dn, type, compatible))
- 
- #endif /* __OF_H */
 -- 
 1.7.2.5
 
