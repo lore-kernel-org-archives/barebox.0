@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22c.google.com ([2a00:1450:4008:c01::22c])
+Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uozk3-0006p7-LA
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:54 +0000
-Received: by mail-bk0-f44.google.com with SMTP id r7so1916169bkg.3
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:29 -0700 (PDT)
+ id 1Uozjz-0006oz-1F
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:51 +0000
+Received: by mail-bk0-f42.google.com with SMTP id jk13so1946089bkc.29
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:23 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 18 Jun 2013 19:29:50 +0200
-Message-Id: <1371576607-8090-6-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:29:52 +0200
+Message-Id: <1371576607-8090-8-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,122 +23,279 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/22] OF: base: convert strcmp to default string compare
- functions
+Subject: [PATCH 07/22] OF: base: sync of_find_node_by_path with linux OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Barebox compares compatible, node names, and property names with strcmp.
-Linux by default compares compatible and node names with strcasecmp. To
-avoid inconsitencies between Barebox and Linux dts files, we convert to
-these default string compare functions.
+Barebox of_find_node_by_path requires a node to be passed as start node
+to start searching. Linux OF API does not pass this node and no current
+user of it in barebox is passing anything else than the root node.
+Therefore, the device_node argument is removed and all current users of
+that function are updated to reflect the API change.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   25 +++++++++++++------------
- include/of.h      |    5 +++++
- 2 files changed, 18 insertions(+), 12 deletions(-)
+ arch/arm/boards/highbank/init.c |    4 ++--
+ arch/ppc/mach-mpc5xxx/cpu.c     |    4 ++--
+ commands/of_node.c              |    2 +-
+ commands/of_property.c          |   10 ++--------
+ commands/oftree.c               |   11 +----------
+ common/oftree.c                 |    2 +-
+ drivers/of/base.c               |   22 ++++++++++------------
+ include/of.h                    |    9 +++++++--
+ net/eth.c                       |    2 +-
+ 9 files changed, 27 insertions(+), 39 deletions(-)
 
+diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
+index d4a5c5a..1aa713b 100644
+--- a/arch/arm/boards/highbank/init.c
++++ b/arch/arm/boards/highbank/init.c
+@@ -53,7 +53,7 @@ static int hb_fixup(struct device_node *root)
+ 	if ((opp_table[0] >> 16) != HB_OPP_VERSION)
+ 		return 0;
+ 
+-	node = of_find_node_by_path(root, "/cpus/cpu@0");
++	node = of_find_node_by_path("/cpus/cpu@0");
+ 	if (!node)
+ 		return 0;
+ 
+@@ -89,7 +89,7 @@ static int highbank_mem_init(void)
+ 
+ 	of_set_root_node(root);
+ 
+-	np = of_find_node_by_path(root, "/memory");
++	np = of_find_node_by_path("/memory");
+ 	if (!np) {
+ 		pr_warn("no memory node use default configuration\n");
+ 		goto not_found;
+diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
+index 99f16eb..0ece4a9 100644
+--- a/arch/ppc/mach-mpc5xxx/cpu.c
++++ b/arch/ppc/mach-mpc5xxx/cpu.c
+@@ -83,7 +83,7 @@ static int of_mpc5200_fixup(struct device_node *root)
+ 
+ 	int div = in_8((void*)CFG_MBAR + 0x204) & 0x0020 ? 8 : 4;
+ 
+-	node = of_find_node_by_path(root, "/cpus/PowerPC,5200@0");
++	node = of_find_node_by_path("/cpus/PowerPC,5200@0");
+ 	if (!node)
+ 		return -EINVAL;
+ 
+@@ -91,7 +91,7 @@ static int of_mpc5200_fixup(struct device_node *root)
+ 	of_property_write_u32(node, "bus-frequency", get_bus_clock());
+ 	of_property_write_u32(node, "clock-frequency", get_cpu_clock());
+ 
+-	node = of_find_node_by_path(root, "/soc5200@f0000000");
++	node = of_find_node_by_path("/soc5200@f0000000");
+ 	if (!node)
+ 		return -EINVAL;
+ 
+diff --git a/commands/of_node.c b/commands/of_node.c
+index 0249d97..e60ef66 100644
+--- a/commands/of_node.c
++++ b/commands/of_node.c
+@@ -81,7 +81,7 @@ static int do_of_node(int argc, char *argv[])
+ 		if (!path)
+ 			return COMMAND_ERROR_USAGE;
+ 
+-		node = of_find_node_by_path(root, path);
++		node = of_find_node_by_path(path);
+ 		if (!node) {
+ 			printf("Cannot find nodepath %s\n", path);
+ 			return -ENOENT;
+diff --git a/commands/of_property.c b/commands/of_property.c
+index d1a9a17..8ffe30b 100644
+--- a/commands/of_property.c
++++ b/commands/of_property.c
+@@ -175,7 +175,7 @@ static int do_of_property(int argc, char *argv[])
+ 	int set = 0;
+ 	int ret;
+ 	char *path = NULL, *propname = NULL;
+-	struct device_node *root, *node = NULL;
++	struct device_node *node = NULL;
+ 	struct property *pp = NULL;
+ 
+ 	while ((opt = getopt(argc, argv, "ds")) > 0) {
+@@ -194,15 +194,9 @@ static int do_of_property(int argc, char *argv[])
+ 	if (optind == argc)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	root = of_get_root_node();
+-	if (!root) {
+-		printf("root node not set\n");
+-		return -ENOENT;
+-	}
+-
+ 	if (optind < argc) {
+ 		path = argv[optind];
+-		node = of_find_node_by_path(root, path);
++		node = of_find_node_by_path(path);
+ 		if (!node) {
+ 			printf("Cannot find nodepath %s\n", path);
+ 			return -ENOENT;
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 468235a..9149517 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -164,16 +164,7 @@ static int do_oftree(int argc, char *argv[])
+ 			of_print_nodes(root, 0);
+ 			of_free(root);
+ 		} else {
+-			struct device_node *root, *n;
+-
+-			root = of_get_root_node();
+-			if (!root) {
+-				ret = -ENOENT;
+-				goto out;
+-			}
+-
+-			n = of_find_node_by_path(root, node);
+-
++			struct device_node *n = of_find_node_by_path(node);
+ 			if (!n) {
+ 				ret = -ENOENT;
+ 				goto out;
+diff --git a/common/oftree.c b/common/oftree.c
+index 475d418..aff4c28 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -100,7 +100,7 @@ void of_print_property(const void *data, int len)
+ 
+ void of_print_cmdline(struct device_node *root)
+ {
+-	struct device_node *node = of_find_node_by_path(root, "/chosen");
++	struct device_node *node = of_find_node_by_path("/chosen");
+ 	const char *cmdline;
+ 
+ 	if (!node) {
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index f3ed836..1c9ef58 100644
+index 85199b6..34793b3 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -104,14 +104,15 @@ static void of_bus_count_cells(struct device_node *dev,
+@@ -153,7 +153,7 @@ void of_alias_scan(void)
+ 	if (!root_node)
+ 		return;
  
- struct property *of_find_property(const struct device_node *node, const char *name)
+-	of_aliases = of_find_node_by_path(root_node, "/aliases");
++	of_aliases = of_find_node_by_path("/aliases");
+ 	if (!of_aliases)
+ 		return;
+ 
+@@ -170,7 +170,7 @@ void of_alias_scan(void)
+ 		    !of_prop_cmp(pp->name, "linux,phandle"))
+ 			continue;
+ 
+-		np = of_find_node_by_path(root_node, pp->value);
++		np = of_find_node_by_path(pp->value);
+ 		if (!np)
+ 			continue;
+ 
+@@ -557,18 +557,16 @@ EXPORT_SYMBOL(of_machine_is_compatible);
+ 
+ /**
+  *	of_find_node_by_path - Find a node matching a full OF path
+- *	@root:	The root node of this tree
+  *	@path:	The full path to match
+  *
+- *	Returns a node pointer with refcount incremented, use
+- *	of_node_put() on it when done.
++ *	Returns a pointer to the node found or NULL.
+  */
+-struct device_node *of_find_node_by_path(struct device_node *root, const char *path)
++struct device_node *of_find_node_by_path(const char *path)
  {
--	struct property *p;
-+	struct property *pp;
+ 	char *slash, *p, *freep;
+-	struct device_node *dn = root;
++	struct device_node *dn = root_node;
  
- 	if (!node)
+-	if (*path != '/')
++	if (!dn || !path || *path != '/')
  		return NULL;
  
--	list_for_each_entry(p, &node->properties, list)
--		if (!strcmp(p->name, name))
--			return p;
-+	list_for_each_entry(pp, &node->properties, list)
-+		if (of_prop_cmp(pp->name, name) == 0)
-+			return pp;
-+
- 	return NULL;
- }
- EXPORT_SYMBOL(of_find_property);
-@@ -160,9 +161,9 @@ void of_alias_scan(void)
- 		int id, len;
+ 	path++;
+@@ -1156,12 +1154,12 @@ int of_probe(void)
+ 	if(!root_node)
+ 		return -ENODEV;
  
- 		/* Skip those we do not want to proceed */
--		if (!strcmp(pp->name, "name") ||
--		    !strcmp(pp->name, "phandle") ||
--		    !strcmp(pp->name, "linux,phandle"))
-+		if (!of_prop_cmp(pp->name, "name") ||
-+		    !of_prop_cmp(pp->name, "phandle") ||
-+		    !of_prop_cmp(pp->name, "linux,phandle"))
- 			continue;
+-	of_chosen = of_find_node_by_path(root_node, "/chosen");
++	of_chosen = of_find_node_by_path("/chosen");
+ 	of_property_read_string(root_node, "model", &of_model);
  
- 		np = of_find_node_by_path(root_node, pp->value);
-@@ -203,7 +204,7 @@ int of_alias_get_id(struct device_node *np, const char *stem)
- 	int id = -ENODEV;
+ 	__of_parse_phandles(root_node);
  
- 	list_for_each_entry(app, &aliases_lookup, link) {
--		if (strcmp(app->stem, stem) != 0)
-+		if (of_node_cmp(app->stem, stem) != 0)
- 			continue;
+-	memory = of_find_node_by_path(root_node, "/memory");
++	memory = of_find_node_by_path("/memory");
+ 	if (memory)
+ 		of_add_memory(memory, false);
  
- 		if (np == app->np) {
-@@ -221,7 +222,7 @@ const char *of_alias_get(struct device_node *np)
- 	struct property *pp;
- 
- 	list_for_each_entry(pp, &of_aliases->properties, list) {
--		if (!strcmp(np->full_name, pp->value))
-+		if (!of_node_cmp(np->full_name, pp->value))
- 			return pp->name;
- 	}
- 
-@@ -301,7 +302,7 @@ int of_device_is_compatible(const struct device_node *device,
- 	if (cp == NULL)
+@@ -1234,8 +1232,8 @@ int of_device_is_stdout_path(struct device_d *dev)
+ 	name = of_get_property(of_chosen, "linux,stdout-path", NULL);
+ 	if (name == NULL)
  		return 0;
- 	while (cplen > 0) {
--		if (strcmp(cp, compat) == 0)
-+		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
- 			return 1;
- 		l = strlen(cp) + 1;
- 		cp += l;
-@@ -958,7 +959,7 @@ int of_add_memory(struct device_node *node, bool dump)
- 	if (ret)
- 		return -ENXIO;
+-	dn = of_find_node_by_path(root_node, name);
  
--	if (strcmp(device_type, "memory"))
-+	if (of_node_cmp(device_type, "memory"))
- 		return -ENXIO;
++	dn = of_find_node_by_path(name);
+ 	if (!dn)
+ 		return 0;
  
- 	of_bus_count_cells(node, &na, &nc);
-@@ -1177,7 +1178,7 @@ struct device_node *of_find_child_by_name(struct device_node *node, const char *
- 	struct device_node *_n;
+@@ -1264,7 +1262,7 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
+ 	struct device_node *chosen;
+ 	__be32 buf[2];
  
- 	device_node_for_nach_child(node, _n)
--		if (!strcmp(_n->name, name))
-+		if (!of_node_cmp(_n->name, name))
- 			return _n;
+-	chosen = of_find_node_by_path(root, "/chosen");
++	chosen = of_find_node_by_path("/chosen");
+ 	if (!chosen)
+ 		return -EINVAL;
  
- 	return NULL;
 diff --git a/include/of.h b/include/of.h
-index 8a69793..a91a4c9 100644
+index 7ebde62..871f5e9 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -5,6 +5,11 @@
- #include <errno.h>
- #include <asm/byteorder.h>
+@@ -67,8 +67,6 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
+ int of_n_addr_cells(struct device_node *np);
+ int of_n_size_cells(struct device_node *np);
  
-+/* Default string compare functions */
-+#define of_compat_cmp(s1, s2, l)	strcasecmp((s1), (s2))
-+#define of_prop_cmp(s1, s2)		strcmp((s1), (s2))
-+#define of_node_cmp(s1, s2)		strcasecmp((s1), (s2))
+-struct device_node *of_find_node_by_path(struct device_node *root, const char *path);
+-
+ struct device_node *of_find_child_by_name(struct device_node *node, const char *name);
+ 
+ struct fdt_header *fdt_get_tree(void);
+@@ -184,6 +182,8 @@ struct cdev;
+ extern struct property *of_find_property(const struct device_node *np,
+ 					const char *name, int *lenp);
+ 
++extern struct device_node *of_find_node_by_path(const char *path);
 +
- #define OF_BAD_ADDR      ((u64)-1)
+ extern void of_alias_scan(void);
+ extern int of_alias_get_id(struct device_node *np, const char *stem);
+ extern const char *of_alias_get(struct device_node *np);
+@@ -235,6 +235,11 @@ static inline struct property *of_find_property(const struct device_node *np,
+ 	return NULL;
+ }
  
- typedef u32 phandle;
++static inline struct device_node *of_find_node_by_path(const char *path)
++{
++	return NULL;
++}
++
+ static inline void of_alias_scan(void)
+ {
+ }
+diff --git a/net/eth.c b/net/eth.c
+index 7240b4d..09b3bd5 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -296,7 +296,7 @@ static int eth_of_fixup(struct device_node *root)
+ 			continue;
+ 		}
+ 
+-		node = of_find_node_by_path(root, edev->nodepath);
++		node = of_find_node_by_path(edev->nodepath);
+ 		if (!node) {
+ 			dev_dbg(&edev->dev, "%s: fixup node %s not found\n",
+ 					__func__, edev->nodepath);
 -- 
 1.7.2.5
 
