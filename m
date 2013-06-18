@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uovq5-0000ME-C2
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 13:20:49 +0000
-From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Tue, 18 Jun 2013 15:20:27 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ED0163A0C@SRV-VS06.TELEVIC.COM>
-References: <E78BBE677EB9144B8F0A0A29674CD5338ED01639D6@SRV-VS06.TELEVIC.COM>
- <1371561189.10579.3.camel@weser.hi.pengutronix.de>
-In-Reply-To: <1371561189.10579.3.camel@weser.hi.pengutronix.de>
-Content-Language: en-US
-MIME-Version: 1.0
+ id 1Uozjs-0006ot-Pg
+ for barebox@lists.infradead.org; Tue, 18 Jun 2013 17:30:42 +0000
+Received: by mail-bk0-f52.google.com with SMTP id d7so1922363bkh.25
+ for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 10:30:18 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 18 Jun 2013 19:29:46 +0200
+Message-Id: <1371576607-8090-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +18,119 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Barebox fails to boot 1/40 boots...
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 01/22] lib: string: import case-insensitive string compare
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
->  -----Original Message-----
-> From: Lucas Stach [mailto:l.stach@pengutronix.de]
-> Sent: dinsdag 18 juni 2013 15:13
-> To: Vanhauwaert Wouter
-> Cc: barebox@lists.infradead.org
-> Subject: Re: Barebox fails to boot 1/40 boots...
-> 
-> Am Dienstag, den 18.06.2013, 14:59 +0200 schrieb Vanhauwaert Wouter:
-> > Hello all,
-> >
-> > I have this issue with our custom design (IMX53, NAND, DDR3)
-> >
-> > Everything goes well most of the time, but now and then  the system does not
-> boot and halts during initialization...
-> > To be more specific, the function on which the system blocks is
-> > 'setup_c()' in arch/arm/cpu/start-pbl.c
-> >
-> > What can I do more to debug this? This function is completely in assembler...
-> >
-> > Grtz,
-> > Wouter
-> >
-> 
-> First of all: what barebox version are you running?
-> 
-> System crash in setup_c() smells suspiciously like the unclean cache issue which
-> was fixed with the 2013.05.1 release.
-> 
+This imports strnicmp, strcasecmp, and strncasecmp from Linux to barebox.
 
-I'm using stable/v2013.05
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: barebox@lists.infradead.org
+---
+ include/linux/string.h |    9 +++++++
+ lib/string.c           |   60 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 0 deletions(-)
+
+diff --git a/include/linux/string.h b/include/linux/string.h
+index afd0aa6..658264c 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -53,6 +53,15 @@ extern int strcmp(const char *,const char *);
+ #ifndef __HAVE_ARCH_STRNCMP
+ extern int strncmp(const char *,const char *,__kernel_size_t);
+ #endif
++#ifndef __HAVE_ARCH_STRNICMP
++extern int strnicmp(const char *, const char *, __kernel_size_t);
++#endif
++#ifndef __HAVE_ARCH_STRCASECMP
++extern int strcasecmp(const char *s1, const char *s2);
++#endif
++#ifndef __HAVE_ARCH_STRNCASECMP
++extern int strncasecmp(const char *s1, const char *s2, size_t n);
++#endif
+ #ifndef __HAVE_ARCH_STRCHR
+ extern char * _strchr(const char *,int);
+ #endif
+diff --git a/lib/string.c b/lib/string.c
+index db4f2ae..f544b23 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -22,6 +22,66 @@
+ 
+ char * ___strtok;
+ 
++#ifndef __HAVE_ARCH_STRNICMP
++/**
++ * strnicmp - Case insensitive, length-limited string comparison
++ * @s1: One string
++ * @s2: The other string
++ * @len: the maximum number of characters to compare
++ */
++int strnicmp(const char *s1, const char *s2, size_t len)
++{
++	/* Yes, Virginia, it had better be unsigned */
++	unsigned char c1, c2;
++
++	if (!len)
++		return 0;
++
++	do {
++		c1 = *s1++;
++		c2 = *s2++;
++		if (!c1 || !c2)
++			break;
++		if (c1 == c2)
++			continue;
++		c1 = tolower(c1);
++		c2 = tolower(c2);
++		if (c1 != c2)
++			break;
++	} while (--len);
++	return (int)c1 - (int)c2;
++}
++EXPORT_SYMBOL(strnicmp);
++#endif
++
++#ifndef __HAVE_ARCH_STRCASECMP
++int strcasecmp(const char *s1, const char *s2)
++{
++	int c1, c2;
++
++	do {
++		c1 = tolower(*s1++);
++		c2 = tolower(*s2++);
++	} while (c1 == c2 && c1 != 0);
++	return c1 - c2;
++}
++EXPORT_SYMBOL(strcasecmp);
++#endif
++
++#ifndef __HAVE_ARCH_STRNCASECMP
++int strncasecmp(const char *s1, const char *s2, size_t n)
++{
++	int c1, c2;
++
++	do {
++		c1 = tolower(*s1++);
++		c2 = tolower(*s2++);
++	} while ((--n > 0) && c1 == c2 && c1 != 0);
++	return c1 - c2;
++}
++EXPORT_SYMBOL(strncasecmp);
++#endif
++
+ #ifndef __HAVE_ARCH_STRCPY
+ /**
+  * strcpy - Copy a %NUL terminated string
+-- 
+1.7.2.5
+
 
 _______________________________________________
 barebox mailing list
