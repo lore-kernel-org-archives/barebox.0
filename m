@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
+Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPH-0004z2-DA
+ id 1UpEPH-0004z4-E5
  for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:35 +0000
-Received: by mail-bk0-f42.google.com with SMTP id jk13so2261504bkc.29
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:03 -0700 (PDT)
+Received: by mail-bk0-f52.google.com with SMTP id d7so2223306bkh.11
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:04 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:36 +0200
-Message-Id: <1371632991-1504-8-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:35 +0200
+Message-Id: <1371632991-1504-7-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,311 +23,293 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/22] OF: base: sync of_find_node_by_path with linux OF API
+Subject: [PATCH v2 06/22] OF: base: sync of_find_property with linux OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Barebox of_find_node_by_path requires a node to be passed as start node
-to start searching. Linux OF API does not pass this node and no current
-user of it in barebox is passing anything else than the root node.
-Therefore, we rename current function to of_find_node_by_path_from and
-introduce a Linux OF API compatible of_find_node_by_path that always
-passes the current root_node. Also, all current users of that function
-are updated to reflect the API change.
+To start synchronizing OF API of barebox with linux OF API, this adds
+a length pointer to of_find_property. Also all current users of that
+function are updated to reflect the API change.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
-
-Changelog:
-v1->v2:
-- rename current of_find_node_by_path to of_find_node_by_path_from
-  (Suggested by Sascha Hauer)
-- implement of_find_node_by_path with root_node passed to above
-  (Suggested by Sascha Hauer)
 ---
- arch/arm/boards/highbank/init.c |    4 +-
- arch/ppc/mach-mpc5xxx/cpu.c     |    4 +-
- commands/of_node.c              |    2 +-
- commands/of_property.c          |   10 +-------
- commands/oftree.c               |   11 +---------
- common/oftree.c                 |    2 +-
- drivers/of/base.c               |   43 ++++++++++++++++++++++++--------------
- include/of.h                    |   17 +++++++++++++-
- net/eth.c                       |    2 +-
- 9 files changed, 52 insertions(+), 43 deletions(-)
+ commands/of_property.c         |    2 +-
+ drivers/of/base.c              |   38 ++++++++++++++++++--------------------
+ drivers/of/fdt.c               |    5 ++++-
+ drivers/of/of_net.c            |    6 +++---
+ drivers/pinctrl/pinctrl.c      |    4 ++--
+ drivers/spi/spi.c              |   10 +++++-----
+ drivers/usb/imx/chipidea-imx.c |    3 ++-
+ include/of.h                   |   12 ++++++++++--
+ 8 files changed, 45 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm/boards/highbank/init.c b/arch/arm/boards/highbank/init.c
-index d4a5c5a..1aa713b 100644
---- a/arch/arm/boards/highbank/init.c
-+++ b/arch/arm/boards/highbank/init.c
-@@ -53,7 +53,7 @@ static int hb_fixup(struct device_node *root)
- 	if ((opp_table[0] >> 16) != HB_OPP_VERSION)
- 		return 0;
- 
--	node = of_find_node_by_path(root, "/cpus/cpu@0");
-+	node = of_find_node_by_path("/cpus/cpu@0");
- 	if (!node)
- 		return 0;
- 
-@@ -89,7 +89,7 @@ static int highbank_mem_init(void)
- 
- 	of_set_root_node(root);
- 
--	np = of_find_node_by_path(root, "/memory");
-+	np = of_find_node_by_path("/memory");
- 	if (!np) {
- 		pr_warn("no memory node use default configuration\n");
- 		goto not_found;
-diff --git a/arch/ppc/mach-mpc5xxx/cpu.c b/arch/ppc/mach-mpc5xxx/cpu.c
-index 99f16eb..0ece4a9 100644
---- a/arch/ppc/mach-mpc5xxx/cpu.c
-+++ b/arch/ppc/mach-mpc5xxx/cpu.c
-@@ -83,7 +83,7 @@ static int of_mpc5200_fixup(struct device_node *root)
- 
- 	int div = in_8((void*)CFG_MBAR + 0x204) & 0x0020 ? 8 : 4;
- 
--	node = of_find_node_by_path(root, "/cpus/PowerPC,5200@0");
-+	node = of_find_node_by_path("/cpus/PowerPC,5200@0");
- 	if (!node)
- 		return -EINVAL;
- 
-@@ -91,7 +91,7 @@ static int of_mpc5200_fixup(struct device_node *root)
- 	of_property_write_u32(node, "bus-frequency", get_bus_clock());
- 	of_property_write_u32(node, "clock-frequency", get_cpu_clock());
- 
--	node = of_find_node_by_path(root, "/soc5200@f0000000");
-+	node = of_find_node_by_path("/soc5200@f0000000");
- 	if (!node)
- 		return -EINVAL;
- 
-diff --git a/commands/of_node.c b/commands/of_node.c
-index 0249d97..e60ef66 100644
---- a/commands/of_node.c
-+++ b/commands/of_node.c
-@@ -81,7 +81,7 @@ static int do_of_node(int argc, char *argv[])
- 		if (!path)
- 			return COMMAND_ERROR_USAGE;
- 
--		node = of_find_node_by_path(root, path);
-+		node = of_find_node_by_path(path);
- 		if (!node) {
- 			printf("Cannot find nodepath %s\n", path);
- 			return -ENOENT;
 diff --git a/commands/of_property.c b/commands/of_property.c
-index d1a9a17..8ffe30b 100644
+index 44bb388..d1a9a17 100644
 --- a/commands/of_property.c
 +++ b/commands/of_property.c
-@@ -175,7 +175,7 @@ static int do_of_property(int argc, char *argv[])
- 	int set = 0;
- 	int ret;
- 	char *path = NULL, *propname = NULL;
--	struct device_node *root, *node = NULL;
-+	struct device_node *node = NULL;
- 	struct property *pp = NULL;
+@@ -212,7 +212,7 @@ static int do_of_property(int argc, char *argv[])
+ 	if (optind + 1 < argc) {
+ 		propname = argv[optind + 1];
  
- 	while ((opt = getopt(argc, argv, "ds")) > 0) {
-@@ -194,15 +194,9 @@ static int do_of_property(int argc, char *argv[])
- 	if (optind == argc)
- 		return COMMAND_ERROR_USAGE;
- 
--	root = of_get_root_node();
--	if (!root) {
--		printf("root node not set\n");
--		return -ENOENT;
--	}
--
- 	if (optind < argc) {
- 		path = argv[optind];
--		node = of_find_node_by_path(root, path);
-+		node = of_find_node_by_path(path);
- 		if (!node) {
- 			printf("Cannot find nodepath %s\n", path);
+-		pp = of_find_property(node, propname);
++		pp = of_find_property(node, propname, NULL);
+ 		if (!set && !pp) {
+ 			printf("Cannot find property %s\n", propname);
  			return -ENOENT;
-diff --git a/commands/oftree.c b/commands/oftree.c
-index 468235a..9149517 100644
---- a/commands/oftree.c
-+++ b/commands/oftree.c
-@@ -164,16 +164,7 @@ static int do_oftree(int argc, char *argv[])
- 			of_print_nodes(root, 0);
- 			of_free(root);
- 		} else {
--			struct device_node *root, *n;
--
--			root = of_get_root_node();
--			if (!root) {
--				ret = -ENOENT;
--				goto out;
--			}
--
--			n = of_find_node_by_path(root, node);
--
-+			struct device_node *n = of_find_node_by_path(node);
- 			if (!n) {
- 				ret = -ENOENT;
- 				goto out;
-diff --git a/common/oftree.c b/common/oftree.c
-index 475d418..aff4c28 100644
---- a/common/oftree.c
-+++ b/common/oftree.c
-@@ -100,7 +100,7 @@ void of_print_property(const void *data, int len)
- 
- void of_print_cmdline(struct device_node *root)
- {
--	struct device_node *node = of_find_node_by_path(root, "/chosen");
-+	struct device_node *node = of_find_node_by_path("/chosen");
- 	const char *cmdline;
- 
- 	if (!node) {
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 85199b6..f822f8d 100644
+index 1c9ef58..85199b6 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -153,7 +153,7 @@ void of_alias_scan(void)
- 	if (!root_node)
- 		return;
+@@ -102,16 +102,20 @@ static void of_bus_count_cells(struct device_node *dev,
+ 	of_bus_default_count_cells(dev, addrc, sizec);
+ }
  
--	of_aliases = of_find_node_by_path(root_node, "/aliases");
-+	of_aliases = of_find_node_by_path("/aliases");
- 	if (!of_aliases)
- 		return;
- 
-@@ -170,7 +170,7 @@ void of_alias_scan(void)
- 		    !of_prop_cmp(pp->name, "linux,phandle"))
- 			continue;
- 
--		np = of_find_node_by_path(root_node, pp->value);
-+		np = of_find_node_by_path(pp->value);
- 		if (!np)
- 			continue;
- 
-@@ -556,19 +556,18 @@ int of_machine_is_compatible(const char *compat)
- EXPORT_SYMBOL(of_machine_is_compatible);
- 
- /**
-- *	of_find_node_by_path - Find a node matching a full OF path
-- *	@root:	The root node of this tree
-+ *	of_find_node_by_path_from - Find a node matching a full OF path
-+ *      relative to a given root node.
-  *	@path:	The full path to match
-  *
-- *	Returns a node pointer with refcount incremented, use
-- *	of_node_put() on it when done.
-+ *	Returns a pointer to the node found or NULL.
-  */
--struct device_node *of_find_node_by_path(struct device_node *root, const char *path)
-+struct device_node *of_find_node_by_path_from(struct device_node *from,
-+					const char *path)
+-struct property *of_find_property(const struct device_node *node, const char *name)
++struct property *of_find_property(const struct device_node *np,
++				  const char *name, int *lenp)
  {
- 	char *slash, *p, *freep;
--	struct device_node *dn = root;
+ 	struct property *pp;
  
--	if (*path != '/')
-+	if (!from || !path || *path != '/')
+-	if (!node)
++	if (!np)
  		return NULL;
  
- 	path++;
-@@ -583,8 +582,8 @@ struct device_node *of_find_node_by_path(struct device_node *root, const char *p
- 		if (slash)
- 			*slash = 0;
+-	list_for_each_entry(pp, &node->properties, list)
+-		if (of_prop_cmp(pp->name, name) == 0)
++	list_for_each_entry(pp, &np->properties, list)
++		if (of_prop_cmp(pp->name, name) == 0) {
++			if (lenp)
++				*lenp = pp->length;
+ 			return pp;
++		}
  
--		dn = of_find_child_by_name(dn, p);
--		if (!dn)
-+		from = of_get_child_by_name(from, p);
-+		if (!from)
- 			goto out;
- 
- 		if (!slash)
-@@ -595,7 +594,19 @@ struct device_node *of_find_node_by_path(struct device_node *root, const char *p
- out:
- 	free(freep);
- 
--	return dn;
-+	return from;
-+}
-+EXPORT_SYMBOL(of_find_node_by_path_from);
-+
-+/**
-+ *	of_find_node_by_path - Find a node matching a full OF path
-+ *	@path:	The full path to match
-+ *
-+ *	Returns a pointer to the node found or NULL.
-+ */
-+struct device_node *of_find_node_by_path(const char *path)
-+{
-+	return of_find_node_by_path_from(root_node, path);
+ 	return NULL;
  }
- EXPORT_SYMBOL(of_find_node_by_path);
+@@ -242,7 +246,7 @@ u64 of_translate_address(struct device_node *node, const __be32 *in_addr)
+ 			return addr;
  
-@@ -1156,12 +1167,12 @@ int of_probe(void)
- 	if(!root_node)
- 		return -ENODEV;
+ 		node = node->parent;
+-		p = of_find_property(node, "ranges");
++		p = of_find_property(node, "ranges", NULL);
+ 		if (!p && node->parent)
+ 			return OF_BAD_ADDR;
+ 		of_bus_count_cells(node, &na, &nc);
+@@ -277,13 +281,7 @@ EXPORT_SYMBOL(of_find_node_by_phandle);
+ const void *of_get_property(const struct device_node *np, const char *name,
+ 			 int *lenp)
+ {
+-	struct property *pp = of_find_property(np, name);
+-
+-	if (!pp)
+-		return NULL;
+-
+-	if (lenp)
+-		*lenp = pp->length;
++	struct property *pp = of_find_property(np, name, lenp);
  
--	of_chosen = of_find_node_by_path(root_node, "/chosen");
-+	of_chosen = of_find_node_by_path("/chosen");
- 	of_property_read_string(root_node, "model", &of_model);
+ 	return pp ? pp->value : NULL;
+ }
+@@ -368,7 +366,7 @@ int of_property_read_u32_array(const struct device_node *np,
+ 			       const char *propname, u32 *out_values,
+ 			       size_t sz)
+ {
+-	struct property *prop = of_find_property(np, propname);
++	struct property *prop = of_find_property(np, propname, NULL);
+ 	const __be32 *val;
  
- 	__of_parse_phandles(root_node);
+ 	if (!prop)
+@@ -404,7 +402,7 @@ int of_property_write_u32_array(struct device_node *np,
+ 				const char *propname, const u32 *values,
+ 				size_t sz)
+ {
+-	struct property *prop = of_find_property(np, propname);
++	struct property *prop = of_find_property(np, propname, NULL);
+ 	__be32 *val;
  
--	memory = of_find_node_by_path(root_node, "/memory");
-+	memory = of_find_node_by_path("/memory");
- 	if (memory)
- 		of_add_memory(memory, false);
- 
-@@ -1234,8 +1245,8 @@ int of_device_is_stdout_path(struct device_d *dev)
- 	name = of_get_property(of_chosen, "linux,stdout-path", NULL);
- 	if (name == NULL)
- 		return 0;
--	dn = of_find_node_by_path(root_node, name);
- 
-+	dn = of_find_node_by_path(name);
- 	if (!dn)
- 		return 0;
- 
-@@ -1264,7 +1275,7 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
- 	struct device_node *chosen;
- 	__be32 buf[2];
- 
--	chosen = of_find_node_by_path(root, "/chosen");
-+	chosen = of_find_node_by_path("/chosen");
- 	if (!chosen)
+ 	if (!prop)
+@@ -619,7 +617,7 @@ EXPORT_SYMBOL(of_find_node_by_path);
+ int of_property_read_string(struct device_node *np, const char *propname,
+ 				const char **out_string)
+ {
+-	struct property *prop = of_find_property(np, propname);
++	struct property *prop = of_find_property(np, propname, NULL);
+ 	if (!prop)
  		return -EINVAL;
+ 	if (!prop->value)
+@@ -652,7 +650,7 @@ EXPORT_SYMBOL_GPL(of_property_read_string);
+ int of_property_read_string_index(struct device_node *np, const char *propname,
+ 				  int index, const char **output)
+ {
+-	struct property *prop = of_find_property(np, propname);
++	struct property *prop = of_find_property(np, propname, NULL);
+ 	int i = 0;
+ 	size_t l = 0, total = 0;
+ 	const char *p;
+@@ -725,7 +723,7 @@ static int of_node_disabled(struct device_node *node)
+ {
+ 	struct property *p;
  
+-	p = of_find_property(node, "status");
++	p = of_find_property(node, "status", NULL);
+ 	if (p) {
+ 		if (!strcmp("disabled", p->value))
+ 			return 1;
+@@ -833,7 +831,7 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
+ 	if (!np)
+ 		return -ENOENT;
+ 
+-	pp = of_find_property(np, name);
++	pp = of_find_property(np, name, NULL);
+ 	if (pp) {
+ 		void *data;
+ 
+@@ -1278,11 +1276,11 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
+ 	} else {
+ 		struct property *pp;
+ 
+-		pp = of_find_property(chosen, "linux,initrd-start");
++		pp = of_find_property(chosen, "linux,initrd-start", NULL);
+ 		if (pp)
+ 			of_delete_property(pp);
+ 
+-		pp = of_find_property(chosen, "linux,initrd-end");
++		pp = of_find_property(chosen, "linux,initrd-end", NULL);
+ 		if (pp)
+ 			of_delete_property(pp);
+ 	}
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index a3ec576..a76396e 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -178,7 +178,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 				goto err;
+ 			}
+ 
+-			if (merge && (p = of_find_property(node, name))) {
++			p = NULL;
++			if (merge)
++				p = of_find_property(node, name, NULL);
++			if (merge && p) {
+ 				free(p->value);
+ 				p->value = xzalloc(len);
+ 				memcpy(p->value, nodep, len);
+diff --git a/drivers/of/of_net.c b/drivers/of/of_net.c
+index de93fbc..2bf05e2 100644
+--- a/drivers/of/of_net.c
++++ b/drivers/of/of_net.c
+@@ -76,15 +76,15 @@ const void *of_get_mac_address(struct device_node *np)
+ {
+ 	struct property *pp;
+ 
+-	pp = of_find_property(np, "mac-address");
++	pp = of_find_property(np, "mac-address", NULL);
+ 	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+ 		return pp->value;
+ 
+-	pp = of_find_property(np, "local-mac-address");
++	pp = of_find_property(np, "local-mac-address", NULL);
+ 	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+ 		return pp->value;
+ 
+-	pp = of_find_property(np, "address");
++	pp = of_find_property(np, "address", NULL);
+ 	if (pp && (pp->length == 6) && is_valid_ether_addr(pp->value))
+ 		return pp->value;
+ 
+diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
+index fa979a1..7c797d3 100644
+--- a/drivers/pinctrl/pinctrl.c
++++ b/drivers/pinctrl/pinctrl.c
+@@ -64,14 +64,14 @@ int pinctrl_select_state(struct device_d *dev, const char *name)
+ 	if (!np)
+ 		return 0;
+ 
+-	if (!of_find_property(np, "pinctrl-0"))
++	if (!of_find_property(np, "pinctrl-0", NULL))
+ 		return 0;
+ 
+ 	/* For each defined state ID */
+ 	for (state = 0; ; state++) {
+ 		/* Retrieve the pinctrl-* property */
+ 		propname = asprintf("pinctrl-%d", state);
+-		prop = of_find_property(np, propname);
++		prop = of_find_property(np, propname, NULL);
+ 		free(propname);
+ 
+ 		if (!prop) {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index f460a7a..eebf64c 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -112,17 +112,17 @@ void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
+ 		chip.name = xstrdup(n->name);
+ 		chip.bus_num = master->bus_num;
+ 		/* Mode (clock phase/polarity/etc.) */
+-		if (of_find_property(n, "spi-cpha"))
++		if (of_find_property(n, "spi-cpha", NULL))
+ 			chip.mode |= SPI_CPHA;
+-		if (of_find_property(n, "spi-cpol"))
++		if (of_find_property(n, "spi-cpol", NULL))
+ 			chip.mode |= SPI_CPOL;
+-		if (of_find_property(n, "spi-cs-high"))
++		if (of_find_property(n, "spi-cs-high", NULL))
+ 			chip.mode |= SPI_CS_HIGH;
+-		if (of_find_property(n, "spi-3wire"))
++		if (of_find_property(n, "spi-3wire", NULL))
+ 			chip.mode |= SPI_3WIRE;
+ 		of_property_read_u32(n, "spi-max-frequency",
+ 				&chip.max_speed_hz);
+-		reg = of_find_property(n, "reg");
++		reg = of_find_property(n, "reg", NULL);
+ 		if (!reg)
+ 			continue;
+ 		chip.chip_select = of_read_number(reg->value, 1);
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 4ee7610..32b05aa 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -108,7 +108,8 @@ static int imx_chipidea_probe_dt(struct imx_chipidea *ci)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (of_find_property(ci->dev->device_node, "disable-over-current"))
++	if (of_find_property(ci->dev->device_node,
++				"disable-over-current"), NULL)
+ 		ci->flags |= MXC_EHCI_DISABLE_OVERCURRENT;
+ 
+ 	return 0;
 diff --git a/include/of.h b/include/of.h
-index 7ebde62..a56587f 100644
+index a91a4c9..7ebde62 100644
 --- a/include/of.h
 +++ b/include/of.h
 @@ -67,8 +67,6 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
  int of_n_addr_cells(struct device_node *np);
  int of_n_size_cells(struct device_node *np);
  
--struct device_node *of_find_node_by_path(struct device_node *root, const char *path);
+-struct property *of_find_property(const struct device_node *node, const char *name);
 -
+ struct device_node *of_find_node_by_path(struct device_node *root, const char *path);
+ 
  struct device_node *of_find_child_by_name(struct device_node *node, const char *name);
+@@ -183,6 +181,9 @@ const struct of_device_id *of_match_node(const struct of_device_id *matches,
+ struct cdev;
  
- struct fdt_header *fdt_get_tree(void);
-@@ -184,6 +182,10 @@ struct cdev;
- extern struct property *of_find_property(const struct device_node *np,
- 					const char *name, int *lenp);
- 
-+extern struct device_node *of_find_node_by_path_from(struct device_node *from,
-+						const char *path);
-+extern struct device_node *of_find_node_by_path(const char *path);
+ #ifdef CONFIG_OFTREE
++extern struct property *of_find_property(const struct device_node *np,
++					const char *name, int *lenp);
 +
  extern void of_alias_scan(void);
  extern int of_alias_get_id(struct device_node *np, const char *stem);
  extern const char *of_alias_get(struct device_node *np);
-@@ -235,6 +237,17 @@ static inline struct property *of_find_property(const struct device_node *np,
+@@ -227,6 +228,13 @@ static inline struct device_node *of_get_root_node(void)
  	return NULL;
  }
  
-+static inline struct device_node *of_find_node_by_path_from(
-+	struct device_node *from, const char *path)
-+{
-+	return NULL;
-+}
-+
-+static inline struct device_node *of_find_node_by_path(const char *path)
++static inline struct property *of_find_property(const struct device_node *np,
++						const char *name,
++						int *lenp)
 +{
 +	return NULL;
 +}
@@ -335,19 +317,6 @@ index 7ebde62..a56587f 100644
  static inline void of_alias_scan(void)
  {
  }
-diff --git a/net/eth.c b/net/eth.c
-index 7240b4d..09b3bd5 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -296,7 +296,7 @@ static int eth_of_fixup(struct device_node *root)
- 			continue;
- 		}
- 
--		node = of_find_node_by_path(root, edev->nodepath);
-+		node = of_find_node_by_path(edev->nodepath);
- 		if (!node) {
- 			dev_dbg(&edev->dev, "%s: fixup node %s not found\n",
- 					__func__, edev->nodepath);
 -- 
 1.7.2.5
 
