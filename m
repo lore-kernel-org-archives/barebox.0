@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPK-0004zB-Pp
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:40 +0000
-Received: by mail-bk0-f53.google.com with SMTP id e11so2220655bkh.12
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:06 -0700 (PDT)
+ id 1UpEPK-0004z7-Pn
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:36 +0000
+Received: by mail-bk0-f53.google.com with SMTP id e11so2220637bkh.12
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:05 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:41 +0200
-Message-Id: <1371632991-1504-13-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:40 +0200
+Message-Id: <1371632991-1504-12-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,78 +23,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 12/22] OF: base: import of_find_node_with_property from
- Linux OF API
+Subject: [PATCH v2 11/22] OF: base: import of_find_matching_node_and_match
+ from Linux OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports of_find_node_with_property and corresponding helpers
+This imports of_find_matching_node_and_match and corresponding helpers
 from Linux OF API.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   26 ++++++++++++++++++++++++++
- include/of.h      |   11 +++++++++++
- 2 files changed, 37 insertions(+), 0 deletions(-)
+ drivers/of/base.c |   37 +++++++++++++++++++++++++++++++++++++
+ include/of.h      |   24 ++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 38d6789..39eddb2 100644
+index 50a4df0..38d6789 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -368,6 +368,32 @@ struct device_node *of_find_compatible_node(struct device_node *from,
- EXPORT_SYMBOL(of_find_compatible_node);
+@@ -389,6 +389,43 @@ const struct of_device_id *of_match_node(const struct of_device_id *matches,
+ 	return NULL;
+ }
  
- /**
-+ *	of_find_node_with_property - Find a node which has a property with
-+ *                                   the given name.
++/**
++ *	of_find_matching_node_and_match - Find a node based on an of_device_id
++ *					  match table.
 + *	@from:		The node to start searching from or NULL, the node
 + *			you pass will not be searched, only the next one
 + *			will; typically, you pass what the previous call
 + *			returned.
-+ *	@prop_name:	The name of the property to look for.
++ *	@matches:	array of of device match structures to search in
++ *	@match		Updated to point at the matches entry which matched
 + *
 + *	Returns a pointer to the node found or NULL.
 + */
-+struct device_node *of_find_node_with_property(struct device_node *from,
-+	const char *prop_name)
++struct device_node *of_find_matching_node_and_match(struct device_node *from,
++					const struct of_device_id *matches,
++					const struct of_device_id **match)
 +{
 +	struct device_node *np;
 +
++	if (match)
++		*match = NULL;
++
++	if (!from)
++		from = root_node;
++
 +	of_tree_for_each_node(np, from) {
-+		struct property *pp = of_find_property(np, prop_name, NULL);
-+		if (pp)
++		const struct of_device_id *m = of_match_node(matches, np);
++		if (m) {
++			if (match)
++				*match = m;
 +			return np;
++		}
 +	}
 +
 +	return NULL;
 +}
-+EXPORT_SYMBOL(of_find_node_with_property);
++EXPORT_SYMBOL(of_find_matching_node_and_match);
 +
-+/**
-  * of_match_node - Tell if an device_node has a matching of_match structure
-  *      @matches:       array of of device match structures to search in
-  *      @node:          the of device structure to match against
+ int of_match(struct device_d *dev, struct driver_d *drv)
+ {
+ 	const struct of_device_id *id;
 diff --git a/include/of.h b/include/of.h
-index a33ccfa..f508435 100644
+index b334e3a..a33ccfa 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -193,6 +193,8 @@ extern struct device_node *of_find_matching_node_and_match(
- 	struct device_node *from,
- 	const struct of_device_id *matches,
- 	const struct of_device_id **match);
-+extern struct device_node *of_find_node_with_property(
-+	struct device_node *from, const char *prop_name);
+@@ -189,6 +189,10 @@ extern struct device_node *of_find_node_by_path_from(struct device_node *from,
+ extern struct device_node *of_find_node_by_path(const char *path);
+ extern struct device_node *of_find_compatible_node(struct device_node *from,
+ 	const char *type, const char *compat);
++extern struct device_node *of_find_matching_node_and_match(
++	struct device_node *from,
++	const struct of_device_id *matches,
++	const struct of_device_id **match);
  extern int of_device_is_available(const struct device_node *device);
  
  extern void of_alias_scan(void);
-@@ -279,6 +281,12 @@ static inline struct device_node *of_find_matching_node_and_match(
+@@ -267,6 +271,14 @@ static inline struct device_node *of_find_compatible_node(
  	return NULL;
  }
  
-+static inline struct device_node *of_find_node_with_property(
-+			struct device_node *from, const char *prop_name)
++static inline struct device_node *of_find_matching_node_and_match(
++					struct device_node *from,
++					const struct of_device_id *matches,
++					const struct of_device_id **match)
 +{
 +	return NULL;
 +}
@@ -102,13 +117,22 @@ index a33ccfa..f508435 100644
  static inline int of_device_is_available(const struct device_node *device)
  {
  	return 0;
-@@ -317,5 +325,8 @@ static inline struct device_node *of_find_matching_node(
- #define for_each_matching_node_and_match(dn, matches, match) \
- 	for (dn = of_find_matching_node_and_match(NULL, matches, match); \
- 	     dn; dn = of_find_matching_node_and_match(dn, matches, match))
-+#define for_each_node_with_property(dn, prop_name) \
-+	for (dn = of_find_node_with_property(NULL, prop_name); dn; \
-+	     dn = of_find_node_with_property(dn, prop_name))
+@@ -293,5 +305,17 @@ static inline const char *of_alias_get(struct device_node *np)
+ #define for_each_compatible_node(dn, type, compatible) \
+ 	for (dn = of_find_compatible_node(NULL, type, compatible); dn; \
+ 	     dn = of_find_compatible_node(dn, type, compatible))
++static inline struct device_node *of_find_matching_node(
++	struct device_node *from,
++	const struct of_device_id *matches)
++{
++	return of_find_matching_node_and_match(from, matches, NULL);
++}
++#define for_each_matching_node(dn, matches) \
++	for (dn = of_find_matching_node(NULL, matches); dn; \
++	     dn = of_find_matching_node(dn, matches))
++#define for_each_matching_node_and_match(dn, matches, match) \
++	for (dn = of_find_matching_node_and_match(NULL, matches, match); \
++	     dn; dn = of_find_matching_node_and_match(dn, matches, match))
  
  #endif /* __OF_H */
 -- 
