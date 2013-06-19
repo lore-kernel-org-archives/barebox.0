@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from mail-bk0-x22b.google.com ([2a00:1450:4008:c01::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPH-0004ye-1N
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:26 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so2249022bkc.35
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:00 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:30 +0200
-Message-Id: <1371632991-1504-2-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ id 1UpEs2-00065k-73
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:40:07 +0000
+Received: by mail-bk0-f43.google.com with SMTP id jm2so2233150bkc.2
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:39:44 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+In-Reply-To: <1371634395.4111.54.camel@mars>
+References: <1371634395.4111.54.camel@mars>
+Date: Wed, 19 Jun 2013 11:39:41 +0200
+Message-ID: <1371634781.28361.0.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,118 +19,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 01/22] lib: string: import case-insensitive string compare
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] ARM omap-fb: add board helper code
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>, barebox@lists.infradead.org
 
-This imports strnicmp, strcasecmp, and strncasecmp from Linux to barebox.
+This patch adds OMAP machine dependent framebuffer code so that
+board files can make use of driver omap-fb.
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 ---
-Cc: barebox@lists.infradead.org
----
- include/linux/string.h |    9 +++++++
- lib/string.c           |   60 ++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+), 0 deletions(-)
+ arch/arm/mach-omap/Makefile               |    2 +-
+ arch/arm/mach-omap/include/mach/omap-fb.h |   47 +++++++++++++++++++++++++++++
+ arch/arm/mach-omap/omap_fb.c              |   34 +++++++++++++++++++++
+ 3 files changed, 82 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-omap/include/mach/omap-fb.h
+ create mode 100644 arch/arm/mach-omap/omap_fb.c
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index afd0aa6..658264c 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -53,6 +53,15 @@ extern int strcmp(const char *,const char *);
- #ifndef __HAVE_ARCH_STRNCMP
- extern int strncmp(const char *,const char *,__kernel_size_t);
- #endif
-+#ifndef __HAVE_ARCH_STRNICMP
-+extern int strnicmp(const char *, const char *, __kernel_size_t);
-+#endif
-+#ifndef __HAVE_ARCH_STRCASECMP
-+extern int strcasecmp(const char *s1, const char *s2);
-+#endif
-+#ifndef __HAVE_ARCH_STRNCASECMP
-+extern int strncasecmp(const char *s1, const char *s2, size_t n);
-+#endif
- #ifndef __HAVE_ARCH_STRCHR
- extern char * _strchr(const char *,int);
- #endif
-diff --git a/lib/string.c b/lib/string.c
-index db4f2ae..f544b23 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -22,6 +22,66 @@
- 
- char * ___strtok;
- 
-+#ifndef __HAVE_ARCH_STRNICMP
-+/**
-+ * strnicmp - Case insensitive, length-limited string comparison
-+ * @s1: One string
-+ * @s2: The other string
-+ * @len: the maximum number of characters to compare
-+ */
-+int strnicmp(const char *s1, const char *s2, size_t len)
+diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
+index 94e42c6..bc5daab 100644
+--- a/arch/arm/mach-omap/Makefile
++++ b/arch/arm/mach-omap/Makefile
+@@ -15,7 +15,7 @@
+ # GNU General Public License for more details.
+ #
+ #
+-obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o
++obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o omap_fb.o
+ pbl-$(CONFIG_ARCH_OMAP) += syslib.o
+ obj-$(CONFIG_OMAP_CLOCK_SOURCE_S32K) += s32k_clksource.o
+ obj-$(CONFIG_OMAP_CLOCK_SOURCE_DMTIMER0) += dmtimer0.o
+diff --git a/arch/arm/mach-omap/include/mach/omap-fb.h b/arch/arm/mach-omap/include/mach/omap-fb.h
+new file mode 100644
+index 0000000..f68dc1a
+--- /dev/null
++++ b/arch/arm/mach-omap/include/mach/omap-fb.h
+@@ -0,0 +1,47 @@
++#ifndef H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H
++#define H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H
++
++#include <fb.h>
++
++#define OMAP_DSS_LCD_TFT	(1u << 0)
++#define OMAP_DSS_LCD_IVS	(1u << 1)
++#define OMAP_DSS_LCD_IHS	(1u << 2)
++#define OMAP_DSS_LCD_IPC	(1u << 3)
++#define OMAP_DSS_LCD_IEO	(1u << 4)
++#define OMAP_DSS_LCD_RF	(1u << 5)
++#define OMAP_DSS_LCD_ONOFF	(1u << 6)
++
++#define OMAP_DSS_LCD_DATALINES(_l)	((_l) << 10)
++#define OMAP_DSS_LCD_DATALINES_msk	OMAP_DSS_LCD_DATALINES(3u)
++#define OMAP_DSS_LCD_DATALINES_12	OMAP_DSS_LCD_DATALINES(0u)
++#define OMAP_DSS_LCD_DATALINES_16	OMAP_DSS_LCD_DATALINES(1u)
++#define OMAP_DSS_LCD_DATALINES_18	OMAP_DSS_LCD_DATALINES(2u)
++#define OMAP_DSS_LCD_DATALINES_24	OMAP_DSS_LCD_DATALINES(3u)
++
++struct omapfb_display {
++	struct fb_videomode mode;
++
++	unsigned long config;
++
++	unsigned int power_on_delay;
++	unsigned int power_off_delay;
++};
++
++struct omapfb_platform_data {
++	struct omapfb_display const *displays;
++	size_t num_displays;
++
++	unsigned int dss_clk_hz;
++
++	unsigned int bpp;
++
++	struct resource const *screen;
++
++	void (*enable)(int p);
++};
++
++struct device_d;
++struct device_d *omap_add_display(struct omapfb_platform_data *o_pdata);
++
++
++#endif	/* H_BAREBOX_ARCH_ARM_MACH_OMAP_MACH_FB4_H */
+diff --git a/arch/arm/mach-omap/omap_fb.c b/arch/arm/mach-omap/omap_fb.c
+new file mode 100644
+index 0000000..ae318d8
+--- /dev/null
++++ b/arch/arm/mach-omap/omap_fb.c
+@@ -0,0 +1,34 @@
++#include <driver.h>
++#include <common.h>
++#include <linux/ioport.h>
++#include <mach/omap-fb.h>
++
++#if defined(CONFIG_DRIVER_VIDEO_OMAP)
++static struct resource omapfb_resources[] = {
++	{
++		.name	= "omap4_dss",
++		.start	= 0x48040000,
++		.end	= 0x48040000 + 512 - 1,
++		.flags	= IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
++	}, {
++		.name	= "omap4_dispc",
++		.start	= 0x48041000,
++		.end	= 0x48041000 + 3072 - 1,
++		.flags	= IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
++	},
++};
++
++struct device_d *omap_add_display(struct omapfb_platform_data *o_pdata)
 +{
-+	/* Yes, Virginia, it had better be unsigned */
-+	unsigned char c1, c2;
-+
-+	if (!len)
-+		return 0;
-+
-+	do {
-+		c1 = *s1++;
-+		c2 = *s2++;
-+		if (!c1 || !c2)
-+			break;
-+		if (c1 == c2)
-+			continue;
-+		c1 = tolower(c1);
-+		c2 = tolower(c2);
-+		if (c1 != c2)
-+			break;
-+	} while (--len);
-+	return (int)c1 - (int)c2;
++	return add_generic_device_res("omap_fb", -1,
++				      omapfb_resources,
++				      ARRAY_SIZE(omapfb_resources),
++				      o_pdata);
 +}
-+EXPORT_SYMBOL(strnicmp);
-+#endif
-+
-+#ifndef __HAVE_ARCH_STRCASECMP
-+int strcasecmp(const char *s1, const char *s2)
++#else
++struct device_d *omap_add_display(struct omapfb_platform_data *o_pdata)
 +{
-+	int c1, c2;
-+
-+	do {
-+		c1 = tolower(*s1++);
-+		c2 = tolower(*s2++);
-+	} while (c1 == c2 && c1 != 0);
-+	return c1 - c2;
++	return NULL;
 +}
-+EXPORT_SYMBOL(strcasecmp);
 +#endif
-+
-+#ifndef __HAVE_ARCH_STRNCASECMP
-+int strncasecmp(const char *s1, const char *s2, size_t n)
-+{
-+	int c1, c2;
-+
-+	do {
-+		c1 = tolower(*s1++);
-+		c2 = tolower(*s2++);
-+	} while ((--n > 0) && c1 == c2 && c1 != 0);
-+	return c1 - c2;
-+}
-+EXPORT_SYMBOL(strncasecmp);
-+#endif
-+
- #ifndef __HAVE_ARCH_STRCPY
- /**
-  * strcpy - Copy a %NUL terminated string
++EXPORT_SYMBOL(omap_add_display);
 -- 
-1.7.2.5
+1.7.10.4
+
+
 
 
 _______________________________________________
