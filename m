@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPH-0004yl-E5
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:28 +0000
-Received: by mail-bk0-f52.google.com with SMTP id d7so2223277bkh.11
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:01 -0700 (PDT)
+ id 1UpEPJ-0004yr-QK
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:34 +0000
+Received: by mail-bk0-f46.google.com with SMTP id na10so2220537bkb.19
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:03 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:32 +0200
-Message-Id: <1371632991-1504-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:34 +0200
+Message-Id: <1371632991-1504-6-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,68 +23,122 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/22] OF: base: also update property length on
- of_property_write_u32
+Subject: [PATCH v2 05/22] OF: base: convert strcmp to default string compare
+ functions
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Current implementation of of_property_write_u32 does free old property
-values and allocates new values depending on the size passed. While
-copying the new values to the property, corresponding length is not
-set. This makes of_property_write_u32 set the length of the new property
-values and also adds a API header describing the function.
+Barebox compares compatible, node names, and property names with strcmp.
+Linux by default compares compatible and node names with strcasecmp. To
+avoid inconsitencies between Barebox and Linux dts files, we convert to
+these default string compare functions.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   20 ++++++++++++++++++--
- 1 files changed, 18 insertions(+), 2 deletions(-)
+ drivers/of/base.c |   25 +++++++++++++------------
+ include/of.h      |    5 +++++
+ 2 files changed, 18 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index ab0f4cd..616b93d 100644
+index f3ed836..1c9ef58 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -383,6 +383,21 @@ int of_property_read_u32_array(const struct device_node *np,
- }
- EXPORT_SYMBOL_GPL(of_property_read_u32_array);
+@@ -104,14 +104,15 @@ static void of_bus_count_cells(struct device_node *dev,
  
-+/**
-+ * of_property_write_u32_array - Write an array of u32 to a property. If
-+ * the property does not exist, it will be created and appended to the given
-+ * device node.
-+ *
-+ * @np:		device node to which the property value is to be written.
-+ * @propname:	name of the property to be written.
-+ * @values:	pointer to array elements to write.
-+ * @sz:		number of array elements to write.
-+ *
-+ * Search for a property in a device node and write 32-bit value(s) to
-+ * it. If the property does not exist, it will be created and appended to
-+ * the device node. Returns 0 on success, -ENOMEM if the property or array
-+ * of elements cannot be created.
-+ */
- int of_property_write_u32_array(struct device_node *np,
- 				const char *propname, const u32 *values,
- 				size_t sz)
-@@ -397,14 +412,15 @@ int of_property_write_u32_array(struct device_node *np,
+ struct property *of_find_property(const struct device_node *node, const char *name)
+ {
+-	struct property *p;
++	struct property *pp;
  
- 	free(prop->value);
+ 	if (!node)
+ 		return NULL;
  
--	prop->value = malloc(sizeof(__be32) * sz);
-+	prop->length = sizeof(*val) * sz;
-+	prop->value = malloc(prop->length);
- 	if (!prop->value)
- 		return -ENOMEM;
- 
- 	val = prop->value;
--
- 	while (sz--)
- 		*val++ = cpu_to_be32(*values++);
+-	list_for_each_entry(p, &node->properties, list)
+-		if (!strcmp(p->name, name))
+-			return p;
++	list_for_each_entry(pp, &node->properties, list)
++		if (of_prop_cmp(pp->name, name) == 0)
++			return pp;
 +
- 	return 0;
+ 	return NULL;
  }
+ EXPORT_SYMBOL(of_find_property);
+@@ -160,9 +161,9 @@ void of_alias_scan(void)
+ 		int id, len;
  
+ 		/* Skip those we do not want to proceed */
+-		if (!strcmp(pp->name, "name") ||
+-		    !strcmp(pp->name, "phandle") ||
+-		    !strcmp(pp->name, "linux,phandle"))
++		if (!of_prop_cmp(pp->name, "name") ||
++		    !of_prop_cmp(pp->name, "phandle") ||
++		    !of_prop_cmp(pp->name, "linux,phandle"))
+ 			continue;
+ 
+ 		np = of_find_node_by_path(root_node, pp->value);
+@@ -203,7 +204,7 @@ int of_alias_get_id(struct device_node *np, const char *stem)
+ 	int id = -ENODEV;
+ 
+ 	list_for_each_entry(app, &aliases_lookup, link) {
+-		if (strcmp(app->stem, stem) != 0)
++		if (of_node_cmp(app->stem, stem) != 0)
+ 			continue;
+ 
+ 		if (np == app->np) {
+@@ -221,7 +222,7 @@ const char *of_alias_get(struct device_node *np)
+ 	struct property *pp;
+ 
+ 	list_for_each_entry(pp, &of_aliases->properties, list) {
+-		if (!strcmp(np->full_name, pp->value))
++		if (!of_node_cmp(np->full_name, pp->value))
+ 			return pp->name;
+ 	}
+ 
+@@ -301,7 +302,7 @@ int of_device_is_compatible(const struct device_node *device,
+ 	if (cp == NULL)
+ 		return 0;
+ 	while (cplen > 0) {
+-		if (strcmp(cp, compat) == 0)
++		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
+ 			return 1;
+ 		l = strlen(cp) + 1;
+ 		cp += l;
+@@ -958,7 +959,7 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	if (ret)
+ 		return -ENXIO;
+ 
+-	if (strcmp(device_type, "memory"))
++	if (of_node_cmp(device_type, "memory"))
+ 		return -ENXIO;
+ 
+ 	of_bus_count_cells(node, &na, &nc);
+@@ -1177,7 +1178,7 @@ struct device_node *of_find_child_by_name(struct device_node *node, const char *
+ 	struct device_node *_n;
+ 
+ 	device_node_for_nach_child(node, _n)
+-		if (!strcmp(_n->name, name))
++		if (!of_node_cmp(_n->name, name))
+ 			return _n;
+ 
+ 	return NULL;
+diff --git a/include/of.h b/include/of.h
+index 8a69793..a91a4c9 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -5,6 +5,11 @@
+ #include <errno.h>
+ #include <asm/byteorder.h>
+ 
++/* Default string compare functions */
++#define of_compat_cmp(s1, s2, l)	strcasecmp((s1), (s2))
++#define of_prop_cmp(s1, s2)		strcmp((s1), (s2))
++#define of_node_cmp(s1, s2)		strcasecmp((s1), (s2))
++
+ #define OF_BAD_ADDR      ((u64)-1)
+ 
+ typedef u32 phandle;
 -- 
 1.7.2.5
 
