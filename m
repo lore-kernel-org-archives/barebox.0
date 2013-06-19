@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.15.15])
+Received: from mout.gmx.net ([212.227.17.22])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEQs-0005Ej-Bz
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:12:07 +0000
+ id 1UpEQr-0005Ed-5S
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:12:03 +0000
 Received: from mailout-de.gmx.net ([10.1.76.30]) by mrigmx.server.lan
- (mrigmx001) with ESMTP (Nemesis) id 0LZk7m-1USEwz1may-00lR8B for
- <barebox@lists.infradead.org>; Wed, 19 Jun 2013 11:11:41 +0200
+ (mrigmx002) with ESMTP (Nemesis) id 0LcEEV-1UPkuk3NMD-00jYGm for
+ <barebox@lists.infradead.org>; Wed, 19 Jun 2013 11:11:39 +0200
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 19 Jun 2013 11:11:31 +0200
-Message-Id: <1371633093-23179-7-git-send-email-linux@rempel-privat.de>
+Date: Wed, 19 Jun 2013 11:11:26 +0200
+Message-Id: <1371633093-23179-2-git-send-email-linux@rempel-privat.de>
 In-Reply-To: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,54 +24,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] MIPS: netgear-wg102: add debug_ll
+Subject: [PATCH 1/8] MIPS: pbl: add mips_barebox_10h asm macro
 To: barebox@lists.infradead.org
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- .../boards/netgear-wg102/include/board/debug_ll.h  | 33 ++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
- create mode 100644 arch/mips/boards/netgear-wg102/include/board/debug_ll.h
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
-diff --git a/arch/mips/boards/netgear-wg102/include/board/debug_ll.h b/arch/mips/boards/netgear-wg102/include/board/debug_ll.h
-new file mode 100644
-index 0000000..2725032
---- /dev/null
-+++ b/arch/mips/boards/netgear-wg102/include/board/debug_ll.h
-@@ -0,0 +1,33 @@
-+/*
-+ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
+The mips_barebox_10h macro inserts at offset 0x10
+of the barebox image the string 'barebox ' followed
+by compile time version mark.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/pbl_macros.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+index 3971b61..a3f970c 100644
+--- a/arch/mips/include/asm/pbl_macros.h
++++ b/arch/mips/include/asm/pbl_macros.h
+@@ -97,6 +97,22 @@ copy_loop_exit:
+ 	.set	pop
+ 	.endm
+ 
++	.macro	mips_barebox_10h
++	.set	push
++	.set	noreorder
 +
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __NETGEAR_WG102_DEBUG_LL_H__
-+#define __NETGEAR_WG102_DEBUG_LL_H__
++	b	1f
++	 nop
 +
-+#include <mach/ar2312_regs.h>
++	.org	0x10
++	.ascii	"barebox " UTS_RELEASE " " UTS_VERSION
++	.byte	0
 +
-+#define DEBUG_LL_UART_ADDR	KSEG1ADDR(AR2312_UART0)
-+#define DEBUG_LL_UART_SHIFT	AR2312_UART_SHIFT
++	.align	4
++1:
++	.set	pop
++	.endm
 +
-+#define DEBUG_LL_UART_CLK   (45000000 / 16)
-+#define DEBUG_LL_UART_BPS   CONFIG_BAUDRATE
-+#define DEBUG_LL_UART_DIVISOR   (DEBUG_LL_UART_CLK / DEBUG_LL_UART_BPS)
-+
-+#endif /* __NETGEAR_WG102_DEBUG_LL_H__ */
+ 	/*
+ 	 * Dominic Sweetman, See MIPS Run, Morgan Kaufmann, 2nd edition, 2006
+ 	 *
 -- 
 1.8.1.2
 
