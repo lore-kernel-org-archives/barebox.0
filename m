@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.eu ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpCWu-0002aP-Qe
+ id 1UpCWu-0002bB-Qd
  for barebox@lists.infradead.org; Wed, 19 Jun 2013 07:10:10 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 23166BF0E7
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 09:05:01 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 26845BF0F4
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 09:05:06 +0200 (CEST)
 From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Wed, 19 Jun 2013 09:09:44 +0200
-Message-Id: <1371625785-27704-3-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1371625785-27704-1-git-send-email-t.gamez@phytec.de>
-References: <1371625785-27704-1-git-send-email-t.gamez@phytec.de>
+Date: Wed, 19 Jun 2013 09:09:42 +0200
+Message-Id: <1371625785-27704-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,32 +22,29 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv3 3/4] omap3_spi: Set the correct CS number for AM33xx
+Subject: [PATCHv3 1/4] ARM: OMAP: AM33xx: Add muxing function for spi0
 To: barebox@lists.infradead.org
 
-Q2hhbmdlZCB0aGUgbnVtYmVyIG9mIENTIGZvciBBTTMzeHggYm9hcmRzIHRvIDIuCgpTaWduZWQt
-b2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4KLS0tCmNoYW5nZXMgc2lu
-Y2UgdjM6CiAgICAgICAgLSBzcGxpdHRlZCB0aGUgZm9ybWVyICJvbWFwM19zcGk6IEFkZCBDUyBj
-aGVjayBmb3IgQU0zMzV4IgogICAgICAgICAgcGF0Y2ggaW50byB0d28KCS0gU2V0IGNvcnJlY3Qg
-bnVtYmVyIG9mIENTIGhlcmUKCiBkcml2ZXJzL3NwaS9vbWFwM19zcGkuYyB8ICAgMTIgKysrKysr
-KysrKy0tCiAxIGZpbGVzIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvb21hcDNfc3BpLmMgYi9kcml2ZXJzL3NwaS9vbWFw
-M19zcGkuYwppbmRleCA1MDhlMmQ5Li4xYTkyNTY1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9v
-bWFwM19zcGkuYworKysgYi9kcml2ZXJzL3NwaS9vbWFwM19zcGkuYwpAQCAtMzU5LDE2ICszNTks
-MjQgQEAgc3RhdGljIGludCBvbWFwM19zcGlfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYpCiAJ
-ICogTWNTUEkzIGhhcyAyIENTIChidXMgMywgY3MgMCAtIDEpCiAJICogTWNTUEk0IGhhcyAxIENT
-IChidXMgNCwgY3MgMCkKIAkgKgorCSAqIEFNMzM1eCBNY1NQSSBoYXMgMiBidXNzZXMgd2l0aCAy
-IGNoaXAgc2VsZWN0czoKKwkgKiBNY1NQSTAgaGFzIDIgQ1MgKGJ1cyAwLCBjcyAwIC0gMSkKKwkg
-KiBNY1NQSTEgaGFzIDIgQ1MgKGJ1cyAxLCBjcyAwIC0gMSkKKwkgKgogCSAqIFRoZSBib2FyZCBj
-b2RlIGhhcyB0byBtYWtlIHN1cmUgdGhhdCBpdCBkb2VzIG5vdCB1c2UKIAkgKiBpbnZhbGlkIGJ1
-c2VzIG9yIGNoaXAgc2VsZWN0cy4KIAkgKi8KIAogCW1hc3Rlci0+YnVzX251bSA9IGRldi0+aWQ7
-Ci0JbWFzdGVyLT5udW1fY2hpcHNlbGVjdCA9IDQ7CisKKwlpZiAoSVNfRU5BQkxFRChDT05GSUdf
-QVJDSF9PTUFQMykpCisJCW1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgPSA0OworCWVsc2UKKwkJbWFz
-dGVyLT5udW1fY2hpcHNlbGVjdCA9IDI7CiAJbWFzdGVyLT5zZXR1cCA9IG9tYXAzX3NwaV9zZXR1
-cDsKIAltYXN0ZXItPnRyYW5zZmVyID0gb21hcDNfc3BpX3RyYW5zZmVyOwogCi0Jb21hcDNfbWFz
-dGVyLT5yZWdzID0gZGV2X3JlcXVlc3RfbWVtX3JlZ2lvbihkZXYsIDApOzsKKwlvbWFwM19tYXN0
-ZXItPnJlZ3MgPSBkZXZfcmVxdWVzdF9tZW1fcmVnaW9uKGRldiwgMCk7CiAKIAlzcGlfcmVzZXQo
-bWFzdGVyKTsKIAotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJj
+aC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9tdXguYyAgICAgICAgICAgICAgfCAgICA1ICsrKysrCiBh
+cmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1tdXguaCB8ICAgIDEgKwogMiBm
+aWxlcyBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDAgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9tdXguYyBiL2FyY2gvYXJtL21hY2gtb21hcC9h
+bTMzeHhfbXV4LmMKaW5kZXggNDI0ZDEyMC4uYWJjODU4NiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
+bWFjaC1vbWFwL2FtMzN4eF9tdXguYworKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X211
+eC5jCkBAIC0zMTQsMyArMzE0LDggQEAgdm9pZCBhbTMzeHhfZW5hYmxlX21tYzBfcGluX211eCh2
+b2lkKQogewogCWNvbmZpZ3VyZV9tb2R1bGVfcGluX211eChtbWMwX3Bpbl9tdXgpOwogfQorCit2
+b2lkIGFtMzN4eF9lbmFibGVfc3BpMF9waW5fbXV4KHZvaWQpCit7CisJY29uZmlndXJlX21vZHVs
+ZV9waW5fbXV4KHNwaTBfcGluX211eCk7Cit9CmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9t
+YXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1tdXguaCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRl
+L21hY2gvYW0zM3h4LW11eC5oCmluZGV4IDQ0YjkzYmQuLmQ2YjE5ZGQgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LW11eC5oCisrKyBiL2FyY2gvYXJt
+L21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LW11eC5oCkBAIC0yNTYsNSArMjU2LDYgQEAg
+ZXh0ZXJuIHZvaWQgYW0zM3h4X2VuYWJsZV9pMmMyX3Bpbl9tdXgodm9pZCk7CiBleHRlcm4gdm9p
+ZCBhbTMzeHhfZW5hYmxlX3VhcnQwX3Bpbl9tdXgodm9pZCk7CiBleHRlcm4gdm9pZCBhbTMzeHhf
+ZW5hYmxlX3VhcnQyX3Bpbl9tdXgodm9pZCk7CiBleHRlcm4gdm9pZCBhbTMzeHhfZW5hYmxlX21t
+YzBfcGluX211eCh2b2lkKTsKK2V4dGVybiB2b2lkIGFtMzN4eF9lbmFibGVfc3BpMF9waW5fbXV4
+KHZvaWQpOwogCiAjZW5kaWYgLypfX0FNMzNYWF9NVVhfSF9fICovCi0tIAoxLjcuMC40CgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
