@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Up2cH-0002Wc-29
- for barebox@lists.infradead.org; Tue, 18 Jun 2013 20:35:03 +0000
-Received: by mail-bk0-f53.google.com with SMTP id e11so1994188bkh.12
- for <barebox@lists.infradead.org>; Tue, 18 Jun 2013 13:34:39 -0700 (PDT)
-Message-ID: <51C0C45C.80004@gmail.com>
-Date: Tue, 18 Jun 2013 22:34:36 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+ id 1UpB6Y-00014T-3p
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 05:38:51 +0000
+Date: Wed, 19 Jun 2013 07:38:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130619053827.GF32299@pengutronix.de>
+References: <1371559850-21867-1-git-send-email-jlu@pengutronix.de>
 MIME-Version: 1.0
-References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1371576607-8090-14-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130618202931.GC32299@pengutronix.de>
-In-Reply-To: <20130618202931.GC32299@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <1371559850-21867-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +18,78 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/22] OF: base: import parent/child functions from Linux
- OF API
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] devfs-core: introduce devfs_append_partition
+To: Jan Luebbe <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 06/18/2013 10:29 PM, Sascha Hauer wrote:
-> On Tue, Jun 18, 2013 at 07:29:58PM +0200, Sebastian Hesselbarth wrote:
->> This imports of_get_parent, of_get_next_child, of_get_next_available_child,
->> and of_get_child_by_name and corresponding helpers from Linux OF API.
->>
->> Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
->> ---
-[...]
->> +#define for_each_child_of_node(parent, child) \
->> +	for (child = of_get_next_child(parent, NULL); child != NULL; \
->> +	     child = of_get_next_child(parent, child))
->
-> Why don't we just rename the original list iteration #define?
->
-> I think we shouldn't generate worse code just for the sake of being in
-> sync with Linux.
+On Tue, Jun 18, 2013 at 02:50:50PM +0200, Jan Luebbe wrote:
+> This simplifies board code for partition setup by keeping track of the
+> offset.
+> 
+> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 
-Agree, reworking this will take some days as I will not be able to
-get back to it soon. Rebasing that 22 patches beast is time-consuming ;)
+Good idea. There seem to be some bugs in this area. I'm fine with the
+patch when some users are converted to this.
 
-> I wonder why the Linux implementation doesn't use the Linux list
-> implementation...
+Sascha
 
-Maybe you should also raise that question on devtree-discuss?
+> ---
+>  fs/devfs-core.c  | 9 +++++++++
+>  include/driver.h | 2 ++
+>  2 files changed, 11 insertions(+)
+> 
+> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+> index 262e0a2..f7d79ff 100644
+> --- a/fs/devfs-core.c
+> +++ b/fs/devfs-core.c
+> @@ -267,6 +267,15 @@ int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+>  	return 0;
+>  }
+>  
+> +int devfs_append_partition(const char *devname, loff_t *offset, loff_t size,
+> +		int flags, const char *name)
+> +{
+> +	int ret;
+> +	ret = devfs_add_partition(devname, *offset, size, flags, name);
+> +	*offset += size;
+> +	return ret;
+> +}
+> +
+>  int devfs_del_partition(const char *name)
+>  {
+>  	struct cdev *cdev;
+> diff --git a/include/driver.h b/include/driver.h
+> index 716f792..3f4f7b9 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -463,6 +463,8 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+>  
+>  int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+>  		int flags, const char *name);
+> +int devfs_append_partition(const char *devname, loff_t *offset, loff_t size,
+> +		int flags, const char *name);
+>  int devfs_del_partition(const char *name);
+>  
+>  #define DRV_OF_COMPAT(compat) \
+> -- 
+> 1.8.3.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Sebastian
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
