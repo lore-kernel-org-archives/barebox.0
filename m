@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPH-0004yk-1R
+ id 1UpEPH-0004z3-1Q
  for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:24 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so2208859bkc.7
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:01 -0700 (PDT)
+Received: by mail-bk0-f48.google.com with SMTP id jf17so2208881bkc.7
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:04 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:31 +0200
-Message-Id: <1371632991-1504-3-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:38 +0200
+Message-Id: <1371632991-1504-10-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,36 +23,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 02/22] OF: base: bail out early on missing matches for
- of_match_node
+Subject: [PATCH v2 09/22] OF: base: import of_find_node_by_name from Linux OF
+ API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-of_match_node checks for compatiblity between a set of matches and a
-node. Neither the matches nor node pointer are checked for validity.
-This adds the required checks to of_match_node.
+This imports of_find_node_by_name and corresponding for_each_node_by_name
+helper from Linux OF API.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ drivers/of/base.c |   26 ++++++++++++++++++++++++++
+ include/of.h      |   12 ++++++++++++
+ 2 files changed, 38 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4241e65..ab0f4cd 100644
+index 2176251..d736bef 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -321,6 +321,9 @@ EXPORT_SYMBOL(of_device_is_compatible);
- const struct of_device_id *of_match_node(const struct of_device_id *matches,
- 					 const struct device_node *node)
- {
-+	if (!matches || !node)
-+		return NULL;
+@@ -312,6 +312,32 @@ int of_device_is_compatible(const struct device_node *device,
+ EXPORT_SYMBOL(of_device_is_compatible);
+ 
+ /**
++ *	of_find_node_by_name - Find a node by its "name" property
++ *	@from:	The node to start searching from or NULL, the node
++ *		you pass will not be searched, only the next one
++ *		will; typically, you pass what the previous call
++ *		returned.
++ *	@name:	The name string to match against
++ *
++ *	Returns a pointer to the node found or NULL.
++ */
++struct device_node *of_find_node_by_name(struct device_node *from,
++	const char *name)
++{
++	struct device_node *np;
 +
- 	while (matches->compatible) {
- 		if (of_device_is_compatible(node, matches->compatible) == 1)
- 			return matches;
++	if (!from)
++		from = root_node;
++
++	of_tree_for_each_node(np, from)
++		if (np->name && !of_node_cmp(np->name, name))
++			return np;
++
++	return NULL;
++}
++EXPORT_SYMBOL(of_find_node_by_name);
++
++/**
+  * of_match_node - Tell if an device_node has a matching of_match structure
+  *      @matches:       array of of device match structures to search in
+  *      @node:          the of device structure to match against
+diff --git a/include/of.h b/include/of.h
+index 56b7be1..8cbfe7a 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -182,6 +182,8 @@ struct cdev;
+ extern struct property *of_find_property(const struct device_node *np,
+ 					const char *name, int *lenp);
+ 
++extern struct device_node *of_find_node_by_name(struct device_node *from,
++	const char *name);
+ extern struct device_node *of_find_node_by_path_from(struct device_node *from,
+ 						const char *path);
+ extern struct device_node *of_find_node_by_path(const char *path);
+@@ -249,6 +251,12 @@ static inline struct device_node *of_find_node_by_path(const char *path)
+ 	return NULL;
+ }
+ 
++static inline struct device_node *of_find_node_by_name(struct device_node *from,
++	const char *name)
++{
++	return NULL;
++}
++
+ static inline int of_device_is_available(const struct device_node *device)
+ {
+ 	return 0;
+@@ -269,4 +277,8 @@ static inline const char *of_alias_get(struct device_node *np)
+ }
+ #endif
+ 
++#define for_each_node_by_name(dn, name) \
++	for (dn = of_find_node_by_name(NULL, name); dn; \
++	     dn = of_find_node_by_name(dn, name))
++
+ #endif /* __OF_H */
 -- 
 1.7.2.5
 
