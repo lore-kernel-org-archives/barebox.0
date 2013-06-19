@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
+Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPM-0004zD-FY
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:51 +0000
-Received: by mail-bk0-f49.google.com with SMTP id mz10so2220869bkb.22
+ id 1UpEPL-0004zH-Pk
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:47 +0000
+Received: by mail-bk0-f42.google.com with SMTP id jk13so2230969bkc.1
  for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:07 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:43 +0200
-Message-Id: <1371632991-1504-15-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:42 +0200
+Message-Id: <1371632991-1504-14-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,615 +23,204 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 14/22] OF: base: import of_property_read_* helpers from
- Linux OF API
+Subject: [PATCH v2 13/22] OF: base: import parent/child functions from Linux
+ OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports of_property_read_* helpers from Linux OF API to allow
-to read all kinds of properties.
+This imports of_get_parent, of_get_next_available_child, and
+of_get_child_by_name and corresponding helpers from Linux OF API.
+of_get_next_child is not imported but implemented as list iterator
+instead. Also, of_get_child_count and of_get_available_child_count
+are introduced.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
+
+Changelog:
+v1->v2:
+- make of_get_parent return node->parent also for root_node
+  (Suggested by Sascha Hauer)
+- use list iterator instead of of_get_next_child
+  (Suggested by Sascha Hauer)
+- move of_get_child_count to base.c to avoid compile warnings
+- introduce of_get_available_child_count
 ---
- drivers/of/base.c |  387 +++++++++++++++++++++++++++++++++++++++++------------
- include/of.h      |  132 ++++++++++++++++--
- 2 files changed, 420 insertions(+), 99 deletions(-)
+ drivers/of/base.c |   97 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of.h      |   41 ++++++++++++++++++++++
+ 2 files changed, 138 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index ee0496d..d58ba4d 100644
+index 39eddb2..ee0496d 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -467,12 +467,137 @@ int of_match(struct device_d *dev, struct driver_d *drv)
- EXPORT_SYMBOL(of_match);
- 
- /**
-+ * of_find_property_value_of_size
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @len:	requested length of property value
-+ *
-+ * Search for a property in a device node and valid the requested size.
-+ * Returns the property value on success, -EINVAL if the property does not
-+ *  exist, -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ */
-+static void *of_find_property_value_of_size(const struct device_node *np,
-+			const char *propname, u32 len)
-+{
-+	struct property *prop = of_find_property(np, propname, NULL);
-+
-+	if (!prop)
-+		return ERR_PTR(-EINVAL);
-+	if (!prop->value)
-+		return ERR_PTR(-ENODATA);
-+	if (len > prop->length)
-+		return ERR_PTR(-EOVERFLOW);
-+
-+	return prop->value;
-+}
-+
-+/**
-+ * of_property_read_u32_index - Find and read a u32 from a multi-value property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @index:	index of the u32 in the list of values
-+ * @out_value:	pointer to return value, modified only if no error.
-+ *
-+ * Search for a property in a device node and read nth 32-bit value from
-+ * it. Returns 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_value is modified only if a valid u32 value can be decoded.
-+ */
-+int of_property_read_u32_index(const struct device_node *np,
-+				       const char *propname,
-+				       u32 index, u32 *out_value)
-+{
-+	const u32 *val = of_find_property_value_of_size(np, propname,
-+					((index + 1) * sizeof(*out_value)));
-+
-+	if (IS_ERR(val))
-+		return PTR_ERR(val);
-+
-+	*out_value = be32_to_cpup(((__be32 *)val) + index);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_u32_index);
-+
-+/**
-+ * of_property_read_u8_array - Find and read an array of u8 from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_value:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 8-bit value(s) from
-+ * it. Returns 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * dts entry of array should be like:
-+ *	property = /bits/ 8 <0x50 0x60 0x70>;
-+ *
-+ * The out_value is modified only if a valid u8 value can be decoded.
-+ */
-+int of_property_read_u8_array(const struct device_node *np,
-+			const char *propname, u8 *out_values, size_t sz)
-+{
-+	const u8 *val = of_find_property_value_of_size(np, propname,
-+						(sz * sizeof(*out_values)));
-+
-+	if (IS_ERR(val))
-+		return PTR_ERR(val);
-+
-+	while (sz--)
-+		*out_values++ = *val++;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_u8_array);
-+
-+/**
-+ * of_property_read_u16_array - Find and read an array of u16 from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_value:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 16-bit value(s) from
-+ * it. Returns 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * dts entry of array should be like:
-+ *	property = /bits/ 16 <0x5000 0x6000 0x7000>;
-+ *
-+ * The out_value is modified only if a valid u16 value can be decoded.
-+ */
-+int of_property_read_u16_array(const struct device_node *np,
-+			const char *propname, u16 *out_values, size_t sz)
-+{
-+	const __be16 *val = of_find_property_value_of_size(np, propname,
-+						(sz * sizeof(*out_values)));
-+
-+	if (IS_ERR(val))
-+		return PTR_ERR(val);
-+
-+	while (sz--)
-+		*out_values++ = be16_to_cpup(val++);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_u16_array);
-+
-+/**
-  * of_property_read_u32_array - Find and read an array of 32 bit integers
-  * from a property.
-  *
-  * @np:		device node from which the property value is to be read.
-  * @propname:	name of the property to be searched.
-  * @out_value:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-  *
-  * Search for a property in a device node and read 32-bit value(s) from
-  * it. Returns 0 on success, -EINVAL if the property does not exist,
-@@ -485,22 +610,192 @@ int of_property_read_u32_array(const struct device_node *np,
- 			       const char *propname, u32 *out_values,
- 			       size_t sz)
- {
-+	const __be32 *val = of_find_property_value_of_size(np, propname,
-+						(sz * sizeof(*out_values)));
-+
-+	if (IS_ERR(val))
-+		return PTR_ERR(val);
-+
-+	while (sz--)
-+		*out_values++ = be32_to_cpup(val++);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_u32_array);
-+
-+/**
-+ * of_property_read_u64 - Find and read a 64 bit integer from a property
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_value:	pointer to return value, modified only if return value is 0.
-+ *
-+ * Search for a property in a device node and read a 64-bit value from
-+ * it. Returns 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_value is modified only if a valid u64 value can be decoded.
-+ */
-+int of_property_read_u64(const struct device_node *np, const char *propname,
-+			 u64 *out_value)
-+{
-+	const __be32 *val = of_find_property_value_of_size(np, propname,
-+						sizeof(*out_value));
-+
-+	if (IS_ERR(val))
-+		return PTR_ERR(val);
-+
-+	*out_value = of_read_number(val, 2);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_u64);
-+
-+/**
-+ * of_property_read_string - Find and read a string from a property
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_string:	pointer to null terminated return string, modified only if
-+ *		return value is 0.
-+ *
-+ * Search for a property in a device tree node and retrieve a null
-+ * terminated string value (pointer to data, not a copy). Returns 0 on
-+ * success, -EINVAL if the property does not exist, -ENODATA if property
-+ * does not have a value, and -EILSEQ if the string is not null-terminated
-+ * within the length of the property data.
-+ *
-+ * The out_string pointer is modified only if a valid string can be decoded.
-+ */
-+int of_property_read_string(struct device_node *np, const char *propname,
-+				const char **out_string)
-+{
- 	struct property *prop = of_find_property(np, propname, NULL);
--	const __be32 *val;
-+	if (!prop)
-+		return -EINVAL;
-+	if (!prop->value)
-+		return -ENODATA;
-+	if (strnlen(prop->value, prop->length) >= prop->length)
-+		return -EILSEQ;
-+	*out_string = prop->value;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(of_property_read_string);
-+
-+/**
-+ * of_property_read_string_index - Find and read a string from a multiple
-+ * strings property.
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @index:	index of the string in the list of strings
-+ * @out_string:	pointer to null terminated return string, modified only if
-+ *		return value is 0.
-+ *
-+ * Search for a property in a device tree node and retrieve a null
-+ * terminated string value (pointer to data, not a copy) in the list of strings
-+ * contained in that property.
-+ * Returns 0 on success, -EINVAL if the property does not exist, -ENODATA if
-+ * property does not have a value, and -EILSEQ if the string is not
-+ * null-terminated within the length of the property data.
-+ *
-+ * The out_string pointer is modified only if a valid string can be decoded.
-+ */
-+int of_property_read_string_index(struct device_node *np, const char *propname,
-+				  int index, const char **output)
-+{
-+	struct property *prop = of_find_property(np, propname, NULL);
-+	int i = 0;
-+	size_t l = 0, total = 0;
-+	const char *p;
- 
- 	if (!prop)
- 		return -EINVAL;
- 	if (!prop->value)
- 		return -ENODATA;
--	if ((sz * sizeof(*out_values)) > prop->length)
--		return -EOVERFLOW;
-+	if (strnlen(prop->value, prop->length) >= prop->length)
-+		return -EILSEQ;
- 
--	val = prop->value;
--	while (sz--)
--		*out_values++ = be32_to_cpup(val++);
--	return 0;
-+	p = prop->value;
-+
-+	for (i = 0; total < prop->length; total += l, p += l) {
-+		l = strlen(p) + 1;
-+		if (i++ == index) {
-+			*output = p;
-+			return 0;
-+		}
-+	}
-+	return -ENODATA;
+@@ -875,6 +875,103 @@ int of_device_is_available(const struct device_node *device)
  }
--EXPORT_SYMBOL_GPL(of_property_read_u32_array);
-+EXPORT_SYMBOL_GPL(of_property_read_string_index);
+ EXPORT_SYMBOL(of_device_is_available);
+ 
++/**
++ *	of_get_parent - Get a node's parent if any
++ *	@node:	Node to get parent
++ *
++ *	Returns a pointer to the parent node or NULL if already at root.
++ */
++struct device_node *of_get_parent(const struct device_node *node)
++{
++	return (!node) ? NULL : node->parent;
++}
++EXPORT_SYMBOL(of_get_parent);
 +
 +/**
-+ * of_property_match_string() - Find string in a list and return index
-+ * @np: pointer to node containing string list property
-+ * @propname: string list property name
-+ * @string: pointer to string to search for in string list
++ *	of_get_next_available_child - Find the next available child node
++ *	@node:	parent node
++ *	@prev:	previous child of the parent node, or NULL to get first
 + *
-+ * This function searches a string list property and returns the index
-+ * of a specific string value.
++ *      This function is like of_get_next_child(), except that it
++ *      automatically skips any disabled nodes (i.e. status = "disabled").
 + */
-+int of_property_match_string(struct device_node *np, const char *propname,
-+			     const char *string)
++struct device_node *of_get_next_available_child(const struct device_node *node,
++	struct device_node *prev)
 +{
-+	struct property *prop = of_find_property(np, propname, NULL);
-+	size_t l;
-+	int i;
-+	const char *p, *end;
-+
-+	if (!prop)
-+		return -EINVAL;
-+	if (!prop->value)
-+		return -ENODATA;
-+
-+	p = prop->value;
-+	end = p + prop->length;
-+
-+	for (i = 0; p < end; i++, p += l) {
-+		l = strlen(p) + 1;
-+		if (p + l > end)
-+			return -EILSEQ;
-+		pr_debug("comparing %s with %s\n", string, p);
-+		if (strcmp(string, p) == 0)
-+			return i; /* Found it; return index */
-+	}
-+	return -ENODATA;
++	for_each_child_of_node(node, prev)
++		if (of_device_is_available(prev))
++			return prev;
++	return NULL;
 +}
-+EXPORT_SYMBOL_GPL(of_property_match_string);
++EXPORT_SYMBOL(of_get_next_available_child);
 +
 +/**
-+ * of_property_count_strings - Find and return the number of strings from a
-+ * multiple strings property.
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
++ *	of_get_child_count - Count child nodes of given parent node
++ *	@parent:	parent node
 + *
-+ * Search for a property in a device tree node and retrieve the number of null
-+ * terminated string contain in it. Returns the number of strings on
-+ * success, -EINVAL if the property does not exist, -ENODATA if property
-+ * does not have a value, and -EILSEQ if the string is not null-terminated
-+ * within the length of the property data.
++ *      Returns the number of child nodes or -EINVAL on NULL parent node.
 + */
-+int of_property_count_strings(struct device_node *np, const char *propname)
++int of_get_child_count(const struct device_node *parent)
 +{
-+	struct property *prop = of_find_property(np, propname, NULL);
-+	int i = 0;
-+	size_t l = 0, total = 0;
-+	const char *p;
++	struct device_node *child;
++	int num = 0;
 +
-+	if (!prop)
++	if (!parent)
 +		return -EINVAL;
-+	if (!prop->value)
-+		return -ENODATA;
-+	if (strnlen(prop->value, prop->length) >= prop->length)
-+		return -EILSEQ;
 +
-+	p = prop->value;
++	for_each_child_of_node(parent, child)
++		num++;
 +
-+	for (i = 0; total < prop->length; total += l, p += l, i++)
-+		l = strlen(p) + 1;
-+
-+	return i;
++	return num;
 +}
-+EXPORT_SYMBOL_GPL(of_property_count_strings);
- 
- /**
-  * of_property_write_u32_array - Write an array of u32 to a property. If
-@@ -730,82 +1025,6 @@ struct device_node *of_find_node_by_path(const char *path)
- EXPORT_SYMBOL(of_find_node_by_path);
- 
- /**
-- * of_property_read_string - Find and read a string from a property
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @out_string:	pointer to null terminated return string, modified only if
-- *		return value is 0.
-- *
-- * Search for a property in a device tree node and retrieve a null
-- * terminated string value (pointer to data, not a copy). Returns 0 on
-- * success, -EINVAL if the property does not exist, -ENODATA if property
-- * does not have a value, and -EILSEQ if the string is not null-terminated
-- * within the length of the property data.
-- *
-- * The out_string pointer is modified only if a valid string can be decoded.
-- */
--int of_property_read_string(struct device_node *np, const char *propname,
--				const char **out_string)
--{
--	struct property *prop = of_find_property(np, propname, NULL);
--	if (!prop)
--		return -EINVAL;
--	if (!prop->value)
--		return -ENODATA;
--	if (strnlen(prop->value, prop->length) >= prop->length)
--		return -EILSEQ;
--	*out_string = prop->value;
--	return 0;
--}
--EXPORT_SYMBOL_GPL(of_property_read_string);
--
--/**
-- * of_property_read_string_index - Find and read a string from a multiple
-- * strings property.
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @index:	index of the string in the list of strings
-- * @out_string:	pointer to null terminated return string, modified only if
-- *		return value is 0.
-- *
-- * Search for a property in a device tree node and retrieve a null
-- * terminated string value (pointer to data, not a copy) in the list of strings
-- * contained in that property.
-- * Returns 0 on success, -EINVAL if the property does not exist, -ENODATA if
-- * property does not have a value, and -EILSEQ if the string is not
-- * null-terminated within the length of the property data.
-- *
-- * The out_string pointer is modified only if a valid string can be decoded.
-- */
--int of_property_read_string_index(struct device_node *np, const char *propname,
--				  int index, const char **output)
--{
--	struct property *prop = of_find_property(np, propname, NULL);
--	int i = 0;
--	size_t l = 0, total = 0;
--	const char *p;
--
--	if (!prop)
--		return -EINVAL;
--	if (!prop->value)
--		return -ENODATA;
--	if (strnlen(prop->value, prop->length) >= prop->length)
--		return -EILSEQ;
--
--	p = prop->value;
--
--	for (i = 0; total < prop->length; total += l, p += l) {
--		l = strlen(p) + 1;
--		if (i++ == index) {
--			*output = p;
--			return 0;
--		}
--	}
--	return -ENODATA;
--}
--EXPORT_SYMBOL_GPL(of_property_read_string_index);
--
--/**
-  * of_modalias_node - Lookup appropriate modalias for a device node
-  * @node:	pointer to a device tree node
-  * @modalias:	Pointer to buffer that modalias value will be copied into
++EXPORT_SYMBOL(of_get_child_count);
++
++/**
++ *	of_get_available_child_count - Count available child nodes of given
++ *      parent node
++ *	@parent:	parent node
++ *
++ *      Returns the number of available child nodes or -EINVAL on NULL parent
++ *      node.
++ */
++int of_get_available_child_count(const struct device_node *parent)
++{
++	struct device_node *child;
++	int num = 0;
++
++	if (!parent)
++		return -EINVAL;
++
++	for_each_child_of_node(parent, child)
++		if (of_device_is_available(child))
++			num++;
++
++	return num;
++}
++EXPORT_SYMBOL(of_get_available_child_count);
++
++/**
++ *	of_get_child_by_name - Find the child node by name for a given parent
++ *	@node:	parent node
++ *	@name:	child name to look for.
++ *
++ *      This function looks for child node for given matching name
++ *
++ *	Returns a node pointer if found or NULL.
++ */
++struct device_node *of_get_child_by_name(const struct device_node *node,
++				const char *name)
++{
++	struct device_node *child;
++
++	for_each_child_of_node(node, child)
++		if (child->name && (of_node_cmp(child->name, name) == 0))
++			return child;
++
++	return NULL;
++}
++EXPORT_SYMBOL(of_get_child_by_name);
++
+ void of_print_nodes(struct device_node *node, int indent)
+ {
+ 	struct device_node *n;
 diff --git a/include/of.h b/include/of.h
-index 917466f..d94527d 100644
+index f508435..917466f 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -106,17 +106,6 @@ static inline void of_write_number(void *__cell, u64 val, int size)
- 	}
- }
+@@ -197,6 +197,14 @@ extern struct device_node *of_find_node_with_property(
+ 	struct device_node *from, const char *prop_name);
+ extern int of_device_is_available(const struct device_node *device);
  
--int of_property_read_u32_array(const struct device_node *np,
--			       const char *propname, u32 *out_values,
--			       size_t sz);
--
--static inline int of_property_read_u32(const struct device_node *np,
--				       const char *propname,
--				       u32 *out_value)
--{
--	return of_property_read_u32_array(np, propname, out_value, 1);
--}
--
- int of_property_write_u32_array(struct device_node *np,
- 				const char *propname, const u32 *values,
- 				size_t sz);
-@@ -163,10 +152,6 @@ struct property *of_new_property(struct device_node *node, const char *name,
- 		const void *data, int len);
- void of_delete_property(struct property *pp);
- 
--int of_property_read_string(struct device_node *np, const char *propname,
--				const char **out_string);
--int of_property_read_string_index(struct device_node *np, const char *propname,
--				  int index, const char **output);
- int of_set_property(struct device_node *node, const char *p, const void *val, int len,
- 		int create);
- struct device_node *of_create_node(struct device_node *root, const char *path);
-@@ -205,6 +190,32 @@ extern int of_get_available_child_count(const struct device_node *parent);
- extern struct device_node *of_get_child_by_name(const struct device_node *node,
- 					const char *name);
- 
-+extern int of_property_read_u32_index(const struct device_node *np,
-+				       const char *propname,
-+				       u32 index, u32 *out_value);
-+extern int of_property_read_u8_array(const struct device_node *np,
-+			const char *propname, u8 *out_values, size_t sz);
-+extern int of_property_read_u16_array(const struct device_node *np,
-+			const char *propname, u16 *out_values, size_t sz);
-+extern int of_property_read_u32_array(const struct device_node *np,
-+				      const char *propname,
-+				      u32 *out_values,
-+				      size_t sz);
-+extern int of_property_read_u64(const struct device_node *np,
-+				const char *propname, u64 *out_value);
-+
-+extern int of_property_read_string(struct device_node *np,
-+				   const char *propname,
-+				   const char **out_string);
-+extern int of_property_read_string_index(struct device_node *np,
-+					 const char *propname,
-+					 int index, const char **output);
-+extern int of_property_match_string(struct device_node *np,
-+				    const char *propname,
-+				    const char *string);
-+extern int of_property_count_strings(struct device_node *np,
-+				     const char *propname);
++extern struct device_node *of_get_parent(const struct device_node *node);
++extern struct device_node *of_get_next_available_child(
++	const struct device_node *node, struct device_node *prev);
++extern int of_get_child_count(const struct device_node *parent);
++extern int of_get_available_child_count(const struct device_node *parent);
++extern struct device_node *of_get_child_by_name(const struct device_node *node,
++					const char *name);
 +
  extern void of_alias_scan(void);
  extern int of_alias_get_id(struct device_node *np, const char *stem);
  extern const char *of_alias_get(struct device_node *np);
-@@ -283,6 +294,60 @@ static inline struct property *of_find_property(const struct device_node *np,
+@@ -241,6 +249,33 @@ static inline struct device_node *of_get_root_node(void)
  	return NULL;
  }
  
-+static inline int of_property_read_u32_index(const struct device_node *np,
-+				const char *propname, u32 index, u32 *out_value)
++static inline struct device_node *of_get_parent(const struct device_node *node)
++{
++	return NULL;
++}
++
++static inline struct device_node *of_get_next_available_child(
++		const struct device_node *node, struct device_node *prev)
++{
++	return NULL;
++}
++
++static inline int of_get_child_count(const struct device_node *parent)
 +{
 +	return -ENOSYS;
 +}
 +
-+static inline int of_property_read_u8_array(const struct device_node *np,
-+				const char *propname, u8 *out_values, size_t sz)
++static inline int of_get_available_child_count(const struct device_node *parent)
 +{
 +	return -ENOSYS;
 +}
 +
-+static inline int of_property_read_u16_array(const struct device_node *np,
-+			const char *propname, u16 *out_values, size_t sz)
++static inline struct device_node *of_get_child_by_name(
++			const struct device_node *node, const char *name)
 +{
-+	return -ENOSYS;
++	return NULL;
 +}
 +
-+static inline int of_property_read_u32_array(const struct device_node *np,
-+			const char *propname, u32 *out_values, size_t sz)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_property_read_u64(const struct device_node *np,
-+				const char *propname, u64 *out_value)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_property_read_string(struct device_node *np,
-+				const char *propname, const char **out_string)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_property_read_string_index(struct device_node *np,
-+			 const char *propname, int index, const char **output)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_property_match_string(struct device_node *np,
-+				const char *propname, const char *string)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline int of_property_count_strings(struct device_node *np,
-+					const char *propname)
-+{
-+	return -ENOSYS;
-+}
-+
- static inline struct device_node *of_find_node_by_path_from(
- 	struct device_node *from, const char *path)
- {
-@@ -370,4 +435,41 @@ static inline struct device_node *of_find_matching_node(
- 	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
- 	     child = of_get_next_available_child(parent, child))
+ static inline struct property *of_find_property(const struct device_node *np,
+ 						const char *name,
+ 						int *lenp)
+@@ -329,4 +364,10 @@ static inline struct device_node *of_find_matching_node(
+ 	for (dn = of_find_node_with_property(NULL, prop_name); dn; \
+ 	     dn = of_find_node_with_property(dn, prop_name))
  
-+/**
-+ * of_property_read_bool - Findfrom a property
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ *
-+ * Search for a property in a device node.
-+ * Returns true if the property exist false otherwise.
-+ */
-+static inline bool of_property_read_bool(const struct device_node *np,
-+					 const char *propname)
-+{
-+	struct property *prop = of_find_property(np, propname, NULL);
-+
-+	return prop ? true : false;
-+}
-+
-+static inline int of_property_read_u8(const struct device_node *np,
-+				       const char *propname,
-+				       u8 *out_value)
-+{
-+	return of_property_read_u8_array(np, propname, out_value, 1);
-+}
-+
-+static inline int of_property_read_u16(const struct device_node *np,
-+				       const char *propname,
-+				       u16 *out_value)
-+{
-+	return of_property_read_u16_array(np, propname, out_value, 1);
-+}
-+
-+static inline int of_property_read_u32(const struct device_node *np,
-+				       const char *propname,
-+				       u32 *out_value)
-+{
-+	return of_property_read_u32_array(np, propname, out_value, 1);
-+}
++#define for_each_child_of_node(parent, child) \
++	list_for_each_entry(child, &parent->children, parent_list)
++#define for_each_available_child_of_node(parent, child) \
++	for (child = of_get_next_available_child(parent, NULL); child != NULL; \
++	     child = of_get_next_available_child(parent, child))
 +
  #endif /* __OF_H */
 -- 
