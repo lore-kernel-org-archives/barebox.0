@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpPws-000691-T9
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 21:29:51 +0000
-Received: by mail-bk0-f42.google.com with SMTP id jk13so2560112bkc.1
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 14:29:27 -0700 (PDT)
-Date: Wed, 19 Jun 2013 23:32:40 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130619213239.GA3707@x61s.8.8.8.8>
-References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UpPOY-0005an-1Z
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 20:54:22 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 19 Jun 2013 22:53:42 +0200
+Message-Id: <1371675222-25433-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1371675222-25433-1-git-send-email-s.hauer@pengutronix.de>
+References: <1371675222-25433-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
- pass size
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] menu: Make action callback optional
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Someone calling menu_show might only be interested in the entry the user
+selected without having something in the action callback. Make it optional.
 
-only a very small hint.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/menu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Wed, Jun 19, 2013 at 10:58:48PM +0200, Sascha Hauer wrote:
-> Some tftp servers (for example netkit-tftp) do not pass the filesize.
-> Add a workaround for read_file which reads the file into a temporary
-> file which then is copied to a buffer.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  fs/fs.c      | 18 ++++++++++++++++++
->  fs/tftp.c    |  5 ++++-
->  include/fs.h |  2 ++
->  3 files changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index dc3a6e3..7046f2c 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
->  	int fd;
-
-...
-
->  
->  	tftp_do_close(priv);
->  
-> diff --git a/include/fs.h b/include/fs.h
-> index 8ff7300..fa6a8da 100644
-> --- a/include/fs.h
-> +++ b/include/fs.h
-> @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
->  int protect_file(const char *file, int prot);
->  void *memmap(int fd, int flags);
->  
-> +#define FILESIZE_MAX	((size_t)-1)
-
-The type of st_size in struct stat is loff_t. I check this and
-((size_t)-1) is different than ((loff_t)-1), so I think we need to cast
-to loff_t. Maybe it's better to use a define from limits.h, but we don't
-have some header file like this.
+diff --git a/common/menu.c b/common/menu.c
+index d516db4..ef56190 100644
+--- a/common/menu.c
++++ b/common/menu.c
+@@ -361,7 +361,8 @@ int menu_show(struct menu *m)
+ 				break;
+ 			clear();
+ 			gotoXY(1,1);
+-			m->selected->action(m, m->selected);
++			if (m->selected->action)
++				m->selected->action(m, m->selected);
+ 			if (m->selected->non_re_ent)
+ 				return m->selected->num;
+ 			else
+-- 
+1.8.3.1
 
 
 _______________________________________________
