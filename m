@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
+Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEPL-0004zC-Pk
+ id 1UpEPL-0004z6-0c
  for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:10:41 +0000
-Received: by mail-bk0-f42.google.com with SMTP id jk13so2267397bkc.15
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:07 -0700 (PDT)
+Received: by mail-bk0-f45.google.com with SMTP id je9so2233072bkc.32
+ for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 02:10:05 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed, 19 Jun 2013 11:09:49 +0200
-Message-Id: <1371632991-1504-21-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed, 19 Jun 2013 11:09:39 +0200
+Message-Id: <1371632991-1504-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371576607-8090-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,107 +23,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 20/22] OF: base: remove of_find_child_by_name
+Subject: [PATCH v2 10/22] OF: base: import of_find_compatible_node from Linux
+ OF API
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-With of_get_child_by_name from Linux API, we can now convert and remove
-of_find_child_by_name.
+This imports of_find_compatible_node and corresponding for_each_compatible_node
+helper from Linux OF API.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/boards/at91sam9x5ek/hw_version.c |    2 +-
- drivers/of/base.c                         |   13 +------------
- drivers/of/fdt.c                          |    9 +++++----
- include/of.h                              |    2 --
- 4 files changed, 7 insertions(+), 19 deletions(-)
+ drivers/of/base.c |   30 ++++++++++++++++++++++++++++++
+ include/of.h      |   13 +++++++++++++
+ 2 files changed, 43 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9x5ek/hw_version.c b/arch/arm/boards/at91sam9x5ek/hw_version.c
-index 426bd35..1207a3e 100644
---- a/arch/arm/boards/at91sam9x5ek/hw_version.c
-+++ b/arch/arm/boards/at91sam9x5ek/hw_version.c
-@@ -236,7 +236,7 @@ static int cm_cogent_fixup(struct device_node *root)
- 
- 	for_each_compatible_node(node, NULL, "atmel,hsmci") {
- 		struct device_node *slotnode =
--			of_find_child_by_name(node, "slot");
-+			of_get_child_by_name(node, "slot");
- 		if (!slotnode)
- 			continue;
- 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index c8497f4..1b351ee 100644
+index d736bef..50a4df0 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -1905,17 +1905,6 @@ int of_probe(void)
- 	return 0;
- }
+@@ -338,6 +338,36 @@ struct device_node *of_find_node_by_name(struct device_node *from,
+ EXPORT_SYMBOL(of_find_node_by_name);
  
--struct device_node *of_find_child_by_name(struct device_node *node, const char *name)
--{
--	struct device_node *_n;
--
--	device_node_for_nach_child(node, _n)
--		if (!of_node_cmp(_n->name, name))
--			return _n;
--
--	return NULL;
--}
--
  /**
-  * of_create_node - create a new node including its parents
-  * @path - the nodepath to create
-@@ -1940,7 +1929,7 @@ struct device_node *of_create_node(struct device_node *root, const char *path)
- 		if (slash)
- 			*slash = 0;
- 
--		tmp = of_find_child_by_name(dn, p);
-+		tmp = of_get_child_by_name(dn, p);
- 		if (tmp)
- 			dn = tmp;
- 		else
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index a76396e..afaa4e0 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -61,7 +61,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
- 	int  len;		/* length of the property */
- 	const struct fdt_property *fdt_prop;
- 	const char *pathp, *name;
--	struct device_node *node = NULL, *n;
-+	struct device_node *node = NULL;
- 	struct property *p;
- 	uint32_t dt_struct;
- 	struct fdt_node_header *fnh;
-@@ -135,9 +135,10 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
- 			if (!node) {
- 				node = root;
- 			} else {
--				if (merge && (n = of_find_child_by_name(node, pathp)))
--					node = n;
--				else
-+				if (merge)
-+					node = of_get_child_by_name(node,
-+								    pathp);
-+				if (!merge || !node)
- 					node = of_new_node(node, pathp);
- 			}
- 
++ *	of_find_compatible_node - Find a node based on type and one of the
++ *                                tokens in its "compatible" property
++ *	@from:		The node to start searching from or NULL, the node
++ *			you pass will not be searched, only the next one
++ *			will; typically, you pass what the previous call
++ *			returned.
++ *	@type:		The type string to match "device_type" or NULL to ignore
++ *                      (currently always ignored in barebox)
++ *	@compatible:	The string to match to one of the tokens in the device
++ *			"compatible" list.
++ *
++ *	Returns a pointer to the node found or NULL.
++ */
++struct device_node *of_find_compatible_node(struct device_node *from,
++	const char *type, const char *compatible)
++{
++	struct device_node *np;
++
++	if (!from)
++		from = root_node;
++
++	of_tree_for_each_node(np, from)
++		if (of_device_is_compatible(np, compatible))
++			return np;
++
++	return NULL;
++}
++EXPORT_SYMBOL(of_find_compatible_node);
++
++/**
+  * of_match_node - Tell if an device_node has a matching of_match structure
+  *      @matches:       array of of device match structures to search in
+  *      @node:          the of device structure to match against
 diff --git a/include/of.h b/include/of.h
-index 2ef00be..c3bcabe 100644
+index 8cbfe7a..b334e3a 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -74,8 +74,6 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
- int of_n_addr_cells(struct device_node *np);
- int of_n_size_cells(struct device_node *np);
+@@ -187,6 +187,8 @@ extern struct device_node *of_find_node_by_name(struct device_node *from,
+ extern struct device_node *of_find_node_by_path_from(struct device_node *from,
+ 						const char *path);
+ extern struct device_node *of_find_node_by_path(const char *path);
++extern struct device_node *of_find_compatible_node(struct device_node *from,
++	const char *type, const char *compat);
+ extern int of_device_is_available(const struct device_node *device);
  
--struct device_node *of_find_child_by_name(struct device_node *node, const char *name);
--
- struct fdt_header *fdt_get_tree(void);
+ extern void of_alias_scan(void);
+@@ -257,6 +259,14 @@ static inline struct device_node *of_find_node_by_name(struct device_node *from,
+ 	return NULL;
+ }
  
- struct fdt_header *of_get_fixed_tree(struct device_node *node);
++static inline struct device_node *of_find_compatible_node(
++						struct device_node *from,
++						const char *type,
++						const char *compat)
++{
++	return NULL;
++}
++
+ static inline int of_device_is_available(const struct device_node *device)
+ {
+ 	return 0;
+@@ -280,5 +290,8 @@ static inline const char *of_alias_get(struct device_node *np)
+ #define for_each_node_by_name(dn, name) \
+ 	for (dn = of_find_node_by_name(NULL, name); dn; \
+ 	     dn = of_find_node_by_name(dn, name))
++#define for_each_compatible_node(dn, type, compatible) \
++	for (dn = of_find_compatible_node(NULL, type, compatible); dn; \
++	     dn = of_find_compatible_node(dn, type, compatible))
+ 
+ #endif /* __OF_H */
 -- 
 1.7.2.5
 
