@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mout.gmx.net ([212.227.17.21])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpEQr-0005Eg-5Q
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:12:05 +0000
+ id 1UpEQt-0005Ek-8H
+ for barebox@lists.infradead.org; Wed, 19 Jun 2013 09:12:08 +0000
 Received: from mailout-de.gmx.net ([10.1.76.30]) by mrigmx.server.lan
- (mrigmx001) with ESMTP (Nemesis) id 0Lkmks-1UHGaO3I9c-00aTGh for
- <barebox@lists.infradead.org>; Wed, 19 Jun 2013 11:11:40 +0200
+ (mrigmx001) with ESMTP (Nemesis) id 0M7WX3-1U4G0w2kPX-00xO9L for
+ <barebox@lists.infradead.org>; Wed, 19 Jun 2013 11:11:41 +0200
 From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Wed, 19 Jun 2013 11:11:30 +0200
-Message-Id: <1371633093-23179-6-git-send-email-linux@rempel-privat.de>
+Date: Wed, 19 Jun 2013 11:11:32 +0200
+Message-Id: <1371633093-23179-8-git-send-email-linux@rempel-privat.de>
 In-Reply-To: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,26 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] MIPS: netgear-wg102: add pbl support
+Subject: [PATCH 7/8] MIPS: mach-ar231x: enable DEBUG_LL
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- .../netgear-wg102/include/board/board_pbl_start.h  | 69 ++++++++++++++++++++++
- arch/mips/mach-ar231x/Kconfig                      |  2 +
- 2 files changed, 71 insertions(+)
- create mode 100644 arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h
+From: Antony Pavlov <antonynpavlov@gmail.com>
 
-diff --git a/arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h b/arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/Kconfig                             |  1 +
+ arch/mips/mach-ar231x/include/mach/debug_ll.h | 27 +++++++++++++++++++++++++++
+ 2 files changed, 28 insertions(+)
+ create mode 100644 arch/mips/mach-ar231x/include/mach/debug_ll.h
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2e44619..6179fd8 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -52,6 +52,7 @@ config MACH_MIPS_AR231X
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select CSRC_R4K_LIB
+ 	select DRIVER_SERIAL_NS16550
++	select HAS_DEBUG_LL
+ 
+ config MACH_MIPS_BCM47XX
+ 	bool "Broadcom BCM47xx-based boards"
+diff --git a/arch/mips/mach-ar231x/include/mach/debug_ll.h b/arch/mips/mach-ar231x/include/mach/debug_ll.h
 new file mode 100644
-index 0000000..4deae06
+index 0000000..5ab7f9a
 --- /dev/null
-+++ b/arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h
-@@ -0,0 +1,69 @@
++++ b/arch/mips/mach-ar231x/include/mach/debug_ll.h
+@@ -0,0 +1,27 @@
 +/*
 + * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ * Copyright (C) 2013 Oleksij Rempel <linux@rempel-privat.de>
 + *
 + * This file is part of barebox.
 + * See file CREDITS for list of people who contributed to this project.
@@ -54,75 +66,21 @@ index 0000000..4deae06
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
 + */
 +
-+#include <asm/pbl_macros.h>
-+#include <mach/pbl_macros.h>
++#ifndef __MACH_AR231X_DEBUG_LL__
++#define __MACH_AR231X_DEBUG_LL__
 +
-+#include <mach/debug_ll.h>
++/** @file
++ *  This File contains declaration for early output support
++ */
++#include <board/debug_ll.h>
++#include <asm/debug_ll_ns16550.h>
 +
-+	.macro	board_pbl_start
-+	.set	push
-+	.set	noreorder
-+
-+	mips_barebox_10h
-+
-+	mips_disable_interrupts
-+
-+	pbl_ar2312_pll
-+
-+	pbl_ar2312_rst_uart0
-+	debug_ll_ns16550_init
-+
-+	debug_ll_ns16550_outc 'a'
-+	debug_ll_ns16550_outnl
-+
-+	/* check if SDRAM is already configured,
-+	 * if yes, we are probably starting
-+	 * as second stage loader and can skip configuration */
-+	pbl_probe_mem t0, t1, KSEG1
-+	beq t0, t1, sdram_configured
-+	 nop
-+
-+	/* start SDRAM configuration */
-+	pbl_ar2312_x16_sdram
-+
-+	/* check one more time. if some thing wrong,
-+	 * we don't need to continue */
-+	pbl_probe_mem t0, t1, KSEG1
-+	beq t0, t1, sdram_configured
-+	 nop
-+	debug_ll_ns16550_outc '#'
-+	debug_ll_ns16550_outnl
-+
-+1:
-+	b	1b /* dead end */
-+	 nop
-+
-+sdram_configured:
-+	debug_ll_ns16550_outc 'b'
-+	debug_ll_ns16550_outnl
-+
-+	copy_to_link_location	pbl_start
-+
-+	.set	pop
-+	.endm
-diff --git a/arch/mips/mach-ar231x/Kconfig b/arch/mips/mach-ar231x/Kconfig
-index 1c6a12f..3f338ea 100644
---- a/arch/mips/mach-ar231x/Kconfig
-+++ b/arch/mips/mach-ar231x/Kconfig
-@@ -9,6 +9,8 @@ choice
- 
- config BOARD_NETGEAR_WG102
- 	bool "Netgear WG102"
-+	select HAVE_PBL_IMAGE
-+	select HAVE_IMAGE_COMPRESSION
- 
- endchoice
- 
++#endif /* __MACH_AR231X_DEBUG_LL__ */
 -- 
 1.8.1.2
 
