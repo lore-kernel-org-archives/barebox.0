@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpgjC-0002Ij-1o
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 15:24:50 +0000
-Date: Thu, 20 Jun 2013 17:24:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130620152428.GU32299@pengutronix.de>
-References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
- <1371726931.3466.3.camel@lws-weitzel>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UpeKH-0005pv-Mf
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 12:50:59 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 79A75BF0F5
+ for <barebox@lists.infradead.org>; Thu, 20 Jun 2013 14:45:42 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 20 Jun 2013 14:50:30 +0200
+Message-Id: <1371732630-27966-4-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
+References: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1371726931.3466.3.camel@lws-weitzel>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,106 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
- pass size
-To: Jan Weitzel <J.Weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] ARM: OMAP: pcm051: Add i2c0 and at24 eeprom support
+To: barebox@lists.infradead.org
 
-On Thu, Jun 20, 2013 at 01:15:31PM +0200, Jan Weitzel wrote:
-> Am Mittwoch, den 19.06.2013, 22:58 +0200 schrieb Sascha Hauer:
-> > Some tftp servers (for example netkit-tftp) do not pass the filesize.
-> > Add a workaround for read_file which reads the file into a temporary
-> > file which then is copied to a buffer.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  fs/fs.c      | 18 ++++++++++++++++++
-> >  fs/tftp.c    |  5 ++++-
-> >  include/fs.h |  2 ++
-> >  3 files changed, 24 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index dc3a6e3..7046f2c 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
-> >  	int fd;
-> >  	struct stat s;
-> >  	void *buf = NULL;
-> > +	const char *tmpfile = "/.read_file_tmp";
-> > +	int ret;
-> >  
-> > +again:
-> >  	if (stat(filename, &s))
-> >  		return NULL;
-> >  
-> > +	if (s.st_size == FILESIZE_MAX) {
-> > +		ret = copy_file(filename, tmpfile, 0);
-> > +		if (ret)
-> > +			return NULL;
-> > +		filename = tmpfile;
-> > +		goto again;
-> > +	}
-> > +
-> >  	buf = xzalloc(s.st_size + 1);
-> >  
-> >  	fd = open(filename, O_RDONLY);
-> > @@ -56,12 +67,19 @@ void *read_file(const char *filename, size_t *size)
-> >  	if (size)
-> >  		*size = s.st_size;
-> >  
-> > +	if (filename == tmpfile)
-> > +		unlink(tmpfile);
-> > +
-> >  	return buf;
-> >  
-> >  err_out1:
-> >  	close(fd);
-> >  err_out:
-> >  	free(buf);
-> > +
-> > +	if (filename == tmpfile)
-> > +		unlink(tmpfile);
-> > +
-> >  	return NULL;
-> >  }
-> >  
-> > diff --git a/fs/tftp.c b/fs/tftp.c
-> > index 98cbb37..1c37acf 100644
-> > --- a/fs/tftp.c
-> > +++ b/fs/tftp.c
-> > @@ -597,7 +597,10 @@ static int tftp_stat(struct device_d *dev, const char *filename, struct stat *s)
-> >  		return PTR_ERR(priv);
-> >  
-> >  	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
-> > -	s->st_size = priv->filesize;
-> > +	if (priv->filesize)
-> > +		s->st_size = priv->filesize;
-> > +	else
-> > +		s->st_size = FILESIZE_MAX;
-> Maybe we can determine the size here? Commands like "ls -l" and
-> "ubiformat" asks about the filesize via stat. I'm not sure how much
-> overheat it will be.
-
-How do you want to do that? You would have to transfer the whole file
-first and see how big it is. That works for small files we expect to fit
-into memory like the ones read_file normally is called with. If you want
-to transfer a rootfs image it might happen that it's bigger than the
-available memory.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJj
+aC9hcm0vYm9hcmRzL3BjbTA1MS9ib2FyZC5jICAgIHwgICAxOCArKysrKysrKysrKysrKysrKysK
+IGFyY2gvYXJtL2NvbmZpZ3MvcGNtMDUxX2RlZmNvbmZpZyB8ICAgIDQgKysrKwogMiBmaWxlcyBj
+aGFuZ2VkLCAyMiBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL2JvYXJkcy9wY20wNTEvYm9hcmQuYyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvYm9h
+cmQuYwppbmRleCAwYWQ4Y2I0Li5lZWE1ZWJiIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMv
+cGNtMDUxL2JvYXJkLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9ib2FyZC5jCkBAIC0z
+Miw2ICszMiw4IEBACiAjaW5jbHVkZSA8bWFjaC9jcHN3Lmg+CiAjaW5jbHVkZSA8c3BpL3NwaS5o
+PgogI2luY2x1ZGUgPHNwaS9mbGFzaC5oPgorI2luY2x1ZGUgPGkyYy9pMmMuaD4KKyNpbmNsdWRl
+IDxpMmMvYXQyNC5oPgogCiAjaW5jbHVkZSAibXV4LmgiCiAKQEAgLTg5LDYgKzkxLDEyIEBAIHN0
+YXRpYyBzdHJ1Y3QgY3Bzd19wbGF0Zm9ybV9kYXRhIGNwc3dfZGF0YSA9IHsKIAkubnVtX3NsYXZl
+cwk9IEFSUkFZX1NJWkUoY3Bzd19zbGF2ZXMpLAogfTsKIAorc3RhdGljIHN0cnVjdCBpMmNfYm9h
+cmRfaW5mbyBpMmMwX2RldmljZXNbXSA9IHsKKwl7CisJCUkyQ19CT0FSRF9JTkZPKCIyNGMzMiIs
+IDB4NTIpLAorCX0sCit9OworCiBzdGF0aWMgdm9pZCBwY20wNTFfc3BpX2luaXQodm9pZCkKIHsK
+IAlpbnQgcmV0OwpAQCAtMTExLDYgKzExOSwxNSBAQCBzdGF0aWMgdm9pZCBwY20wNTFfZXRoX2lu
+aXQodm9pZCkKIAlhbTMzeHhfYWRkX2Nwc3coJmNwc3dfZGF0YSk7CiB9CiAKK3N0YXRpYyB2b2lk
+IHBjbTA1MV9pMmNfaW5pdCh2b2lkKQoreworCWFtMzN4eF9lbmFibGVfaTJjMF9waW5fbXV4KCk7
+CisKKwlpMmNfcmVnaXN0ZXJfYm9hcmRfaW5mbygwLCBpMmMwX2RldmljZXMsIEFSUkFZX1NJWkUo
+aTJjMF9kZXZpY2VzKSk7CisKKwlhbTMzeHhfYWRkX2kyYzAoTlVMTCk7Cit9CisKIHN0YXRpYyBp
+bnQgcGNtMDUxX2RldmljZXNfaW5pdCh2b2lkKQogewogCXBjbTA1MV9lbmFibGVfbW1jMF9waW5f
+bXV4KCk7CkBAIC0xMTksNiArMTM2LDcgQEAgc3RhdGljIGludCBwY20wNTFfZGV2aWNlc19pbml0
+KHZvaWQpCiAKIAlwY20wNTFfc3BpX2luaXQoKTsKIAlwY20wNTFfZXRoX2luaXQoKTsKKwlwY20w
+NTFfaTJjX2luaXQoKTsKIAogCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5vcjAiLCAweDAwMDAwLCBT
+Wl8xMjhLLAogCQkJCQlERVZGU19QQVJUSVRJT05fRklYRUQsICJ4bG9hZCIpOwpkaWZmIC0tZ2l0
+IGEvYXJjaC9hcm0vY29uZmlncy9wY20wNTFfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy9w
+Y20wNTFfZGVmY29uZmlnCmluZGV4IDgwNGNhMTQuLjhkZTM3MTQgMTAwNjQ0Ci0tLSBhL2FyY2gv
+YXJtL2NvbmZpZ3MvcGNtMDUxX2RlZmNvbmZpZworKysgYi9hcmNoL2FybS9jb25maWdzL3BjbTA1
+MV9kZWZjb25maWcKQEAgLTQyLDYgKzQyLDcgQEAgQ09ORklHX0NNRF9USU1FT1VUPXkKIENPTkZJ
+R19DTURfUEFSVElUSU9OPXkKIENPTkZJR19DTURfR1BJTz15CiBDT05GSUdfQ01EX1VOQ09NUFJF
+U1M9eQorQ09ORklHX0NNRF9JMkM9eQogQ09ORklHX05FVD15CiBDT05GSUdfTkVUX0RIQ1A9eQog
+Q09ORklHX05FVF9ORlM9eQpAQCAtNTAsNiArNTEsOCBAQCBDT05GSUdfRFJJVkVSX1NFUklBTF9O
+UzE2NTUwPXkKIENPTkZJR19EUklWRVJfU0VSSUFMX05TMTY1NTBfT01BUF9FWFRFTlNJT05TPXkK
+IENPTkZJR19EUklWRVJfTkVUX0NQU1c9eQogQ09ORklHX0RSSVZFUl9TUElfT01BUDM9eQorQ09O
+RklHX0kyQz15CitDT05GSUdfSTJDX09NQVA9eQogQ09ORklHX01URD15CiBDT05GSUdfTVREX00y
+NVA4MD15CiBDT05GSUdfTkFORD15CkBAIC01Nyw2ICs2MCw3IEBAIENPTkZJR19VU0I9eQogQ09O
+RklHX01DST15CiBDT05GSUdfTUNJX1NUQVJUVVA9eQogQ09ORklHX01DSV9PTUFQX0hTTU1DPXkK
+K0NPTkZJR19FRVBST01fQVQyND15CiBDT05GSUdfRlNfRkFUPXkKIENPTkZJR19GU19GQVRfV1JJ
+VEU9eQogQ09ORklHX0ZTX0ZBVF9MRk49eQotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
