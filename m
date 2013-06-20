@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f42.google.com ([74.125.83.42])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpYlZ-0004g2-53
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:54:49 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Jun 2013 08:54:06 +0200
-Message-Id: <1371711261-10039-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
-References: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UpZNG-0005UR-9h
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 07:33:43 +0000
+Received: by mail-ee0-f42.google.com with SMTP id c4so3766610eek.1
+ for <barebox@lists.infradead.org>; Thu, 20 Jun 2013 00:33:17 -0700 (PDT)
+Date: Thu, 20 Jun 2013 09:28:44 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130620072843.GA2086@x61s>
+References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
+ <20130619213239.GA3707@x61s.8.8.8.8>
+ <20130619215700.GA2135@x61s.8.8.8.8>
+ <20130620064217.GN32299@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130620064217.GN32299@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,113 +23,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/17] clk: gate: Add inverted gate support
-To: barebox@lists.infradead.org
-Cc: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
+ pass size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This adds support for gates which need 0 to enable.
+Hi Sascha,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/clk-gate.c | 37 +++++++++++++++++++++++++++++++++----
- include/linux/clk.h    |  2 ++
- 2 files changed, 35 insertions(+), 4 deletions(-)
+On Thu, Jun 20, 2013 at 08:42:17AM +0200, Sascha Hauer wrote:
+> On Wed, Jun 19, 2013 at 11:57:01PM +0200, Alexander Aring wrote:
+> > Hi,
+> > 
+> > On Wed, Jun 19, 2013 at 11:32:39PM +0200, Alexander Aring wrote:
+> > > Hi Sascha,
+> > > 
+> > > only a very small hint.
+> > > 
+> > > On Wed, Jun 19, 2013 at 10:58:48PM +0200, Sascha Hauer wrote:
+> > > > Some tftp servers (for example netkit-tftp) do not pass the filesize.
+> > > > Add a workaround for read_file which reads the file into a temporary
+> > > > file which then is copied to a buffer.
+> > > > 
+> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > ---
+> > > >  fs/fs.c      | 18 ++++++++++++++++++
+> > > >  fs/tftp.c    |  5 ++++-
+> > > >  include/fs.h |  2 ++
+> > > >  3 files changed, 24 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/fs/fs.c b/fs/fs.c
+> > > > index dc3a6e3..7046f2c 100644
+> > > > --- a/fs/fs.c
+> > > > +++ b/fs/fs.c
+> > > > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
+> > > >  	int fd;
+> > > 
+> > > ...
+> > > 
+> > > >  
+> > > >  	tftp_do_close(priv);
+> > > >  
+> > > > diff --git a/include/fs.h b/include/fs.h
+> > > > index 8ff7300..fa6a8da 100644
+> > > > --- a/include/fs.h
+> > > > +++ b/include/fs.h
+> > > > @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
+> > > >  int protect_file(const char *file, int prot);
+> > > >  void *memmap(int fd, int flags);
+> > > >  
+> > > > +#define FILESIZE_MAX	((size_t)-1)
+> > > 
+> > > The type of st_size in struct stat is loff_t. I check this and
+> > > ((size_t)-1) is different than ((loff_t)-1), so I think we need to cast
+> > > to loff_t. Maybe it's better to use a define from limits.h, but we don't
+> > > have some header file like this.
+> > > 
+> > 
+> > ah, I see it now. The fs layer use size_t instead of loff_t. Sorry for
+> > the noise.
+> 
+> No no, you were right. This indeed has to be a loff_t. Where did you
+> find that the fs layer uses size_t? It should do so only for the length
+> arguments of read/write and friends.
+> 
 
-diff --git a/drivers/clk/clk-gate.c b/drivers/clk/clk-gate.c
-index a455094..f632d85 100644
---- a/drivers/clk/clk-gate.c
-+++ b/drivers/clk/clk-gate.c
-@@ -25,6 +25,8 @@ struct clk_gate {
- 	void __iomem *reg;
- 	int shift;
- 	const char *parent;
-+#define CLK_GATE_INVERTED	(1 << 0)
-+	unsigned flags;
- };
- 
- static int clk_gate_enable(struct clk *clk)
-@@ -33,7 +35,12 @@ static int clk_gate_enable(struct clk *clk)
- 	u32 val;
- 
- 	val = readl(g->reg);
--	val |= 1 << g->shift;
-+
-+	if (g->flags & CLK_GATE_INVERTED)
-+		val &= ~(1 << g->shift);
-+	else
-+		val |= 1 << g->shift;
-+
- 	writel(val, g->reg);
- 
- 	return 0;
-@@ -45,7 +52,12 @@ static void clk_gate_disable(struct clk *clk)
- 	u32 val;
- 
- 	val = readl(g->reg);
--	val &= ~(1 << g->shift);
-+
-+	if (g->flags & CLK_GATE_INVERTED)
-+		val |= 1 << g->shift;
-+	else
-+		val &= ~(1 << g->shift);
-+
- 	writel(val, g->reg);
- }
- 
-@@ -57,9 +69,9 @@ static int clk_gate_is_enabled(struct clk *clk)
- 	val = readl(g->reg);
- 
- 	if (val & (1 << g->shift))
--		return 1;
-+		return g->flags & CLK_GATE_INVERTED ? 0 : 1;
- 	else
--		return 0;
-+		return g->flags & CLK_GATE_INVERTED ? 1 : 0;
- }
- 
- struct clk_ops clk_gate_ops = {
-@@ -90,3 +102,20 @@ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
- 
- 	return &g->clk;
- }
-+
-+struct clk *clk_gate_inverted(const char *name, const char *parent,
-+		void __iomem *reg, u8 shift)
-+{
-+	struct clk *clk;
-+	struct clk_gate *g;
-+
-+	clk = clk_gate(name, parent, reg, shift);
-+	if (IS_ERR(clk))
-+		return clk;
-+
-+	g = container_of(clk, struct clk_gate, clk);
-+
-+	g->flags = CLK_GATE_INVERTED;
-+
-+	return clk;
-+}
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 9c41cb8..718faa0 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -214,6 +214,8 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents);
- struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
- 		u8 shift);
-+struct clk *clk_gate_inverted(const char *name, const char *parent, void __iomem *reg,
-+		u8 shift);
- 
- int clk_is_enabled_always(struct clk *clk);
- 
--- 
-1.8.3.1
+In function read_file :). The parameter size should be changed to
+loff_t instead of size_t, because we make "*size = s.st_size;".
 
+
+
+The point is, that a file can be greater than 4GB, but we _can't_
+read/write a "block" from a file that is greather than 4GB.
+
+But in this function we do "read(fd, buf, s.st_size) < s.st_size", this
+need to be in small (max) 4GB pieces(if necessary). In other words, we
+can't use s.st_size here if the file is greater than ((size_t)-1).
+
+I don't think if we need something like this, because we never handle
+files which are greater than 4GB.
+
+That's my point of view. This example is only for a 32Bit architecture.
+
+Regards
+Alex
 
 _______________________________________________
 barebox mailing list
