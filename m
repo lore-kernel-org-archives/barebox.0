@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpeKH-0005pw-M6
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 12:51:00 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6A49EBF0E8
- for <barebox@lists.infradead.org>; Thu, 20 Jun 2013 14:45:42 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Thu, 20 Jun 2013 14:50:29 +0200
-Message-Id: <1371732630-27966-3-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
-References: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UpfQQ-0007o0-18
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 14:01:22 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 20 Jun 2013 16:00:53 +0200
+Message-Id: <1371736854-7543-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1371736854-7543-1-git-send-email-s.hauer@pengutronix.de>
+References: <1371736854-7543-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,89 +16,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: AM33xx: Add i2c support for AM33xx
+Subject: [PATCH 2/3] ata: pata-imx: implement detect callback for hardware
+ device
 To: barebox@lists.infradead.org
 
-QWRkZWQgZGV2aWNlIHJlZ2lzdGVyIGZ1bmN0aW9ucyBhbmQgY3B1X2lzX2FtMzN4eCgpCmZ1bmN0
-aW9uLgpBZGFwdGVkIHRoZSBpMmMtb21hcCBkcml2ZXIuIEFNMzM1eCBoYXMgYSBsb3dlcgpjbG9j
-ayByYXRlIGFuZCB0aGUgdGltZW91dCBvZiBwb2xsaW5nIHRoZSBpc3IgZnVuY3Rpb24KaGFkIHRv
-IGJlIGluY3JlYXNlZC4KCkJhc2VkIG9uIGEgcGF0Y2ggZnJvbSBTaHJhdmFuIEt1bWFyIDxzaHJh
-dmFuLmtAcGh5dGVjLmluPi4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpA
-cGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWRl
-dmljZXMuaCB8ICAgMTUgKysrKysrKysrKysrKysrCiBhcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVk
-ZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggfCAgICA1ICsrKysrCiBhcmNoL2FybS9tYWNoLW9tYXAv
-aW5jbHVkZS9tYWNoL2dlbmVyaWMuaCAgICAgICAgfCAgICA2ICsrKysrKwogZHJpdmVycy9pMmMv
-YnVzc2VzL2kyYy1vbWFwLmMgICAgICAgICAgICAgICAgICAgIHwgICAxNCArKysrKysrKystLS0t
-LQogNCBmaWxlcyBjaGFuZ2VkLCAzNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWRldmljZXMu
-aCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWRldmljZXMuaAppbmRl
-eCA3ZGE0Yjk5Li44MjJjYWFiIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVk
-ZS9tYWNoL2FtMzN4eC1kZXZpY2VzLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUv
-bWFjaC9hbTMzeHgtZGV2aWNlcy5oCkBAIC01Myw0ICs1MywxOSBAQCBzdGF0aWMgaW5saW5lIHN0
-cnVjdCBkZXZpY2VfZCAqYW0zM3h4X2FkZF9zcGkxKHZvaWQpCiAJcmV0dXJuIGFtMzN4eF9hZGRf
-c3BpKDEsIEFNMzNYWF9NQ1NQSTFfQkFTRSk7CiB9CiAKK3N0YXRpYyBpbmxpbmUgc3RydWN0IGRl
-dmljZV9kICphbTMzeHhfYWRkX2kyYzAodm9pZCAqcGRhdGEpCit7CisJcmV0dXJuIG9tYXBfYWRk
-X2kyYygwLCBBTTMzWFhfSTJDMF9CQVNFLCBwZGF0YSk7Cit9CisKK3N0YXRpYyBpbmxpbmUgc3Ry
-dWN0IGRldmljZV9kICphbTMzeHhfYWRkX2kyYzEodm9pZCAqcGRhdGEpCit7CisJcmV0dXJuIG9t
-YXBfYWRkX2kyYygxLCBBTTMzWFhfSTJDMV9CQVNFLCBwZGF0YSk7Cit9CisKK3N0YXRpYyBpbmxp
-bmUgc3RydWN0IGRldmljZV9kICphbTMzeHhfYWRkX2kyYzIodm9pZCAqcGRhdGEpCit7CisJcmV0
-dXJuIG9tYXBfYWRkX2kyYygyLCBBTTMzWFhfSTJDMl9CQVNFLCBwZGF0YSk7Cit9CisKICNlbmRp
-ZiAvKiBfX01BQ0hfT01BUDNfREVWSUNFU19IICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNo
-LW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggYi9hcmNoL2FybS9tYWNoLW9tYXAv
-aW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKaW5kZXggNTkyODRhZi4uOGE3YmQxNiAxMDA2
-NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5o
-CisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24uaApA
-QCAtNDEsNiArNDEsMTEgQEAKICNkZWZpbmUgQU0zM1hYX0RSQU1fQUREUl9TUEFDRV9TVEFSVAkw
-eDgwMDAwMDAwCiAjZGVmaW5lIEFNMzNYWF9EUkFNX0FERFJfU1BBQ0VfRU5ECTB4QzAwMDAwMDAK
-IAorLyogSTJDICovCisjZGVmaW5lIEFNMzNYWF9JMkMwX0JBU0UJKEFNMzNYWF9MNF9XS1VQX0JB
-U0UgKyAweDIwQjAwMCkKKyNkZWZpbmUgQU0zM1hYX0kyQzFfQkFTRQkoQU0zM1hYX0w0X1BFUl9C
-QVNFICsgMHgwMkEwMDApCisjZGVmaW5lIEFNMzNYWF9JMkMyX0JBU0UJKEFNMzNYWF9MNF9QRVJf
-QkFTRSArIDB4MTlDMDAwKQorCiAvKiBHUE1DICovCiAjZGVmaW5lIEFNMzNYWF9HUE1DX0JBU0UJ
-CTB4NTAwMDAwMDAKIApkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFj
-aC9nZW5lcmljLmggYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2dlbmVyaWMuaApp
-bmRleCA1YTEwYTU0Li4xNzhjMjFmIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5j
-bHVkZS9tYWNoL2dlbmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNo
-L2dlbmVyaWMuaApAQCAtMjcsNCArMjcsMTAgQEAKICNkZWZpbmUgY3B1X2lzX29tYXA0eHh4KCkJ
-KDApCiAjZW5kaWYKIAorI2lmZGVmIENPTkZJR19BUkNIX0FNMzNYWAorI2RlZmluZSBjcHVfaXNf
-YW0zM3h4KCkJCSgxKQorI2Vsc2UKKyNkZWZpbmUgY3B1X2lzX2FtMzN4eCgpCQkoMCkKKyNlbmRp
-ZgorCiAjZW5kaWYKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtb21hcC5jIGIv
-ZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKaW5kZXggZWNiMzNlYS4uMTlkNTRlZSAxMDA2
-NDQKLS0tIGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMKKysrIGIvZHJpdmVycy9pMmMv
-YnVzc2VzL2kyYy1vbWFwLmMKQEAgLTI0NSw3ICsyNDUsNyBAQCBzdGF0aWMgaW5saW5lIHUxNiBv
-bWFwX2kyY19yZWFkX3JlZyhzdHJ1Y3Qgb21hcF9pMmNfc3RydWN0ICppMmNfb21hcCwgaW50IHJl
-ZykKIAogc3RhdGljIHZvaWQgb21hcF9pMmNfdW5pZGxlKHN0cnVjdCBvbWFwX2kyY19zdHJ1Y3Qg
-KmkyY19vbWFwKQogewotCWlmIChjcHVfaXNfb21hcDM0eHgoKSkgeworCWlmIChjcHVfaXNfb21h
-cDM0eHgoKSB8fCBjcHVfaXNfYW0zM3h4KCkpIHsKIAkJb21hcF9pMmNfd3JpdGVfcmVnKGkyY19v
-bWFwLCBPTUFQX0kyQ19DT05fUkVHLCAwKTsKIAkJb21hcF9pMmNfd3JpdGVfcmVnKGkyY19vbWFw
-LCBPTUFQX0kyQ19QU0NfUkVHLCBpMmNfb21hcC0+cHNjc3RhdGUpOwogCQlvbWFwX2kyY193cml0
-ZV9yZWcoaTJjX29tYXAsIE9NQVBfSTJDX1NDTExfUkVHLCBpMmNfb21hcC0+c2NsbHN0YXRlKTsK
-QEAgLTM1Myw3ICszNTMsMTEgQEAgc3RhdGljIGludCBvbWFwX2kyY19pbml0KHN0cnVjdCBvbWFw
-X2kyY19zdHJ1Y3QgKmkyY19vbWFwKQogCQlpbnRlcm5hbF9jbGsgPSA5NjAwOwogCWVsc2UKIAkJ
-aW50ZXJuYWxfY2xrID0gNDAwMDsKLQlmY2xrX3JhdGUgPSA5NjAwMDAwMCAvIDEwMDA7CisKKwlp
-ZiAoY3B1X2lzX2FtMzN4eCgpKQorCQlmY2xrX3JhdGUgPSA0ODAwMDsKKwllbHNlCisJCWZjbGtf
-cmF0ZSA9IDk2MDAwOwogCiAJLyogQ29tcHV0ZSBwcmVzY2FsZXIgZGl2aXNvciAqLwogCXBzYyA9
-IGZjbGtfcmF0ZSAvIGludGVybmFsX2NsazsKQEAgLTQxMCw3ICs0MTQsNyBAQCBzdGF0aWMgaW50
-IG9tYXBfaTJjX2luaXQoc3RydWN0IG9tYXBfaTJjX3N0cnVjdCAqaTJjX29tYXApCiAJCQlPTUFQ
-X0kyQ19JRV9BTCkgIHwgKChpMmNfb21hcC0+Zmlmb19zaXplKSA/CiAJCQkJKE9NQVBfSTJDX0lF
-X1JEUiB8IE9NQVBfSTJDX0lFX1hEUikgOiAwKTsKIAlvbWFwX2kyY193cml0ZV9yZWcoaTJjX29t
-YXAsIE9NQVBfSTJDX0lFX1JFRywgaTJjX29tYXAtPmllc3RhdGUpOwotCWlmIChjcHVfaXNfb21h
-cDM0eHgoKSkgeworCWlmIChjcHVfaXNfb21hcDM0eHgoKSB8fCBjcHVfaXNfYW0zM3h4KCkpIHsK
-IAkJaTJjX29tYXAtPnBzY3N0YXRlID0gcHNjOwogCQlpMmNfb21hcC0+c2NsbHN0YXRlID0gc2Ns
-bDsKIAkJaTJjX29tYXAtPnNjbGhzdGF0ZSA9IHNjbGg7CkBAIC02NjUsNyArNjY5LDcgQEAgc3Rh
-dGljIGludCBvbWFwX2kyY194ZmVyX21zZyhzdHJ1Y3QgaTJjX2FkYXB0ZXIgKmFkYXB0ZXIsCiAJ
-cmV0ID0gb21hcF9pMmNfaXNyKGkyY19vbWFwKTsKIAl3aGlsZSAocmV0KXsKIAkJcmV0ID0gb21h
-cF9pMmNfaXNyKGkyY19vbWFwKTsKLQkJaWYgKGlzX3RpbWVvdXQoc3RhcnQsIE1TRUNPTkQpKSB7
-CisJCWlmIChpc190aW1lb3V0KHN0YXJ0LCA1MCAqIE1TRUNPTkQpKSB7CiAJCQkJZGV2X2Vycigm
-YWRhcHRlci0+ZGV2LAogCQkJCSJ0aW1lZCBvdXQgb24gcG9sbGluZyBmb3IgIgogCQkJCSJvcGVu
-IGkyYyBtZXNzYWdlIGhhbmRsaW5nXG4iKTsKQEAgLTc0Myw3ICs3NDcsNyBAQCBpMmNfb21hcF9w
-cm9iZShzdHJ1Y3QgZGV2aWNlX2QgKnBkZXYpCiAJCWdvdG8gZXJyX2ZyZWVfbWVtOwogCX0KIAot
-CWlmIChjcHVfaXNfb21hcDR4eHgoKSkgeworCWlmIChjcHVfaXNfb21hcDR4eHgoKSB8fCBjcHVf
-aXNfYW0zM3h4KCkpIHsKIAkJaTJjX29tYXAtPnJlZ3MgPSAodTggKilvbWFwNF9yZWdfbWFwOwog
-CQlpMmNfb21hcC0+cmVnX3NoaWZ0ID0gMDsKIAl9IGVsc2UgewotLSAKMS43LjAuNAoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/ata/pata-imx.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
+index aed6df1..93809c2 100644
+--- a/drivers/ata/pata-imx.c
++++ b/drivers/ata/pata-imx.c
+@@ -146,6 +146,13 @@ static void imx_pata_setup_port(void *reg_base, void *alt_base,
+ 	}
+ }
+ 
++static int pata_imx_detect(struct device_d *dev)
++{
++	struct ide_port *ide = dev->priv;
++
++	return ata_port_detect(&ide->port);
++}
++
+ static int imx_pata_probe(struct device_d *dev)
+ {
+ 	struct ide_port *ide;
+@@ -182,6 +189,9 @@ static int imx_pata_probe(struct device_d *dev)
+ 	ide->port.dev = dev;
+ 	ide->port.devname = devname;
+ 
++	dev->priv = ide;
++	dev->detect = pata_imx_detect;
++
+ 	ret = ide_port_register(ide);
+ 	if (ret) {
+ 		dev_err(dev, "Cannot register IDE interface: %s\n",
+-- 
+1.8.3.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
