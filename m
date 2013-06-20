@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.x-arc.co.uk ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpcqT-0003Hs-AG
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 11:16:07 +0000
-Message-ID: <1371726931.3466.3.camel@lws-weitzel>
-From: Jan Weitzel <J.Weitzel@phytec.de>
-Date: Thu, 20 Jun 2013 13:15:31 +0200
-In-Reply-To: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
-References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
-Reply-To: J.Weitzel@phytec.de
+ id 1UpeKH-0005px-MG
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 12:51:01 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 885CEBF0F6
+ for <barebox@lists.infradead.org>; Thu, 20 Jun 2013 14:45:42 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Thu, 20 Jun 2013 14:50:28 +0200
+Message-Id: <1371732630-27966-2-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
+References: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,111 +20,136 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
- pass size
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] i2c-omap: cleanup cpu_is functions
+To: barebox@lists.infradead.org
 
-Am Mittwoch, den 19.06.2013, 22:58 +0200 schrieb Sascha Hauer:
-> Some tftp servers (for example netkit-tftp) do not pass the filesize.
-> Add a workaround for read_file which reads the file into a temporary
-> file which then is copied to a buffer.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  fs/fs.c      | 18 ++++++++++++++++++
->  fs/tftp.c    |  5 ++++-
->  include/fs.h |  2 ++
->  3 files changed, 24 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index dc3a6e3..7046f2c 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
->  	int fd;
->  	struct stat s;
->  	void *buf = NULL;
-> +	const char *tmpfile = "/.read_file_tmp";
-> +	int ret;
->  
-> +again:
->  	if (stat(filename, &s))
->  		return NULL;
->  
-> +	if (s.st_size == FILESIZE_MAX) {
-> +		ret = copy_file(filename, tmpfile, 0);
-> +		if (ret)
-> +			return NULL;
-> +		filename = tmpfile;
-> +		goto again;
-> +	}
-> +
->  	buf = xzalloc(s.st_size + 1);
->  
->  	fd = open(filename, O_RDONLY);
-> @@ -56,12 +67,19 @@ void *read_file(const char *filename, size_t *size)
->  	if (size)
->  		*size = s.st_size;
->  
-> +	if (filename == tmpfile)
-> +		unlink(tmpfile);
-> +
->  	return buf;
->  
->  err_out1:
->  	close(fd);
->  err_out:
->  	free(buf);
-> +
-> +	if (filename == tmpfile)
-> +		unlink(tmpfile);
-> +
->  	return NULL;
->  }
->  
-> diff --git a/fs/tftp.c b/fs/tftp.c
-> index 98cbb37..1c37acf 100644
-> --- a/fs/tftp.c
-> +++ b/fs/tftp.c
-> @@ -597,7 +597,10 @@ static int tftp_stat(struct device_d *dev, const char *filename, struct stat *s)
->  		return PTR_ERR(priv);
->  
->  	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
-> -	s->st_size = priv->filesize;
-> +	if (priv->filesize)
-> +		s->st_size = priv->filesize;
-> +	else
-> +		s->st_size = FILESIZE_MAX;
-Maybe we can determine the size here? Commands like "ls -l" and
-"ubiformat" asks about the filesize via stat. I'm not sure how much
-overheat it will be.
-
-Jan
->  
->  	tftp_do_close(priv);
->  
-> diff --git a/include/fs.h b/include/fs.h
-> index 8ff7300..fa6a8da 100644
-> --- a/include/fs.h
-> +++ b/include/fs.h
-> @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
->  int protect_file(const char *file, int prot);
->  void *memmap(int fd, int flags);
->  
-> +#define FILESIZE_MAX	((size_t)-1)
-> +
->  #define PROT_READ	1
->  #define PROT_WRITE	2
->  
-
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+Y3B1X2lzX29tYXAyNDMwKCkgaXMgc2V0IHdoZW4gQ09ORklHX0FSQ0hfT01BUCBpcyBlbmFibGVk
+LgpUaGlzIGZpdHMgZm9yIGFsbCBPTUFQL0FNMzN4eCBib2FyZHMgc3VwcG9ydGVkIGluIGJhcmVi
+b3guCkNsZWFuZWQgdXAgYWxsIGNvbmRpdGlvbnMgdGhhdCB1c2UgdGhlIGNwdV9pc19vbWFwMjQz
+MCgpLgpBbHNvIHJlbW92ZWQgc29tZSB1bnVzZWQgZGVmaW5lcy4KClNpZ25lZC1vZmYtYnk6IFRl
+cmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGRyaXZlcnMvaTJjL2J1c3Nlcy9p
+MmMtb21hcC5jIHwgIDE1OSArKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQogMSBmaWxlcyBjaGFuZ2VkLCA1NyBpbnNlcnRpb25zKCspLCAxMDIgZGVsZXRpb25zKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMgYi9kcml2ZXJzL2kyYy9i
+dXNzZXMvaTJjLW9tYXAuYwppbmRleCA1MDM0NDNmLi5lY2IzM2VhIDEwMDY0NAotLS0gYS9kcml2
+ZXJzL2kyYy9idXNzZXMvaTJjLW9tYXAuYworKysgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLW9t
+YXAuYwpAQCAtMjQsMTAgKzI0LDYgQEAKICAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZv
+ciBtb3JlIGRldGFpbHMuCiAgKi8KIAotCi0vKiAjaW5jbHVkZSA8bGludXgvZGVsYXkuaD4gKi8K
+LQotCiAjaW5jbHVkZSA8Y2xvY2suaD4KICNpbmNsdWRlIDxjb21tb24uaD4KICNpbmNsdWRlIDxk
+cml2ZXIuaD4KQEAgLTQ0LDEyICs0MCw2IEBACiAjaW5jbHVkZSA8bWFjaC9nZW5lcmljLmg+CiAj
+aW5jbHVkZSA8bWFjaC9vbWFwMy1jbG9jay5oPgogCi0jZGVmaW5lIE9NQVBfSTJDX1NJWkUJCTB4
+M2YKLSNkZWZpbmUgT01BUDFfSTJDX0JBU0UJCTB4ZmZmYjM4MDAKLSNkZWZpbmUgT01BUDJfSTJD
+X0JBU0UxCQkweDQ4MDcwMDAwCi0jZGVmaW5lIE9NQVAyX0kyQ19CQVNFMgkJMHg0ODA3MjAwMAot
+I2RlZmluZSBPTUFQMl9JMkNfQkFTRTMJCTB4NDgwNjAwMDAKLQogLyogVGhpcyB3aWxsIGJlIHRo
+ZSBkcml2ZXIgbmFtZSAqLwogI2RlZmluZSBEUklWRVJfTkFNRSAiaTJjLW9tYXAiCiAKQEAgLTE0
+MSw3ICsxMzEsNiBAQAogI2RlZmluZSBTWVNDX0lETEVNT0RFX1NNQVJUCQkweDIKICNkZWZpbmUg
+U1lTQ19DTE9DS0FDVElWSVRZX0ZDTEsJCTB4MgogCi0KIHN0cnVjdCBvbWFwX2kyY19zdHJ1Y3Qg
+ewogCXZvaWQgCQkJKmJhc2U7CiAJdTgJCQkqcmVnczsKQEAgLTM1Miw2MyArMzQxLDUxIEBAIHN0
+YXRpYyBpbnQgb21hcF9pMmNfaW5pdChzdHJ1Y3Qgb21hcF9pMmNfc3RydWN0ICppMmNfb21hcCkK
+IAl9CiAJb21hcF9pMmNfd3JpdGVfcmVnKGkyY19vbWFwLCBPTUFQX0kyQ19DT05fUkVHLCAwKTsK
+IAotCS8qIG9tYXAxIGhhbmRsaW5nIGlzIG1pc3NpbmcgaGVyZSAqLwotCi0JaWYgKGNwdV9pc19v
+bWFwMjQzMCgpIHx8IGNwdV9pc19vbWFwMzR4eCgpIHx8IGNwdV9pc19vbWFwNHh4eCgpKSB7Ci0K
+LQkJLyoKLQkJICogSFNJMkMgY29udHJvbGxlciBpbnRlcm5hbCBjbGsgcmF0ZSBzaG91bGQgYmUg
+MTkuMiBNaHogZm9yCi0JCSAqIEhTIGFuZCBmb3IgYWxsIG1vZGVzIG9uIDI0MzAuIE9uIDM0eHgg
+d2UgY2FuIHVzZSBsb3dlciByYXRlCi0JCSAqIHRvIGdldCBsb25nZXIgZmlsdGVyIHBlcmlvZCBm
+b3IgYmV0dGVyIG5vaXNlIHN1cHByZXNzaW9uLgotCQkgKiBUaGUgZmlsdGVyIGlzIGljbGsgKGZj
+bGsgZm9yIEhTKSBwZXJpb2QuCi0JCSAqLwotCQlpZiAoaTJjX29tYXAtPnNwZWVkID4gNDAwIHx8
+IGNwdV9pc19vbWFwMjQzMCgpKQotCQkJaW50ZXJuYWxfY2xrID0gMTkyMDA7Ci0JCWVsc2UgaWYg
+KGkyY19vbWFwLT5zcGVlZCA+IDEwMCkKLQkJCWludGVybmFsX2NsayA9IDk2MDA7Ci0JCWVsc2UK
+LQkJCWludGVybmFsX2NsayA9IDQwMDA7Ci0JCWZjbGtfcmF0ZSA9IDk2MDAwMDAwIC8gMTAwMDsK
+LQotCQkvKiBDb21wdXRlIHByZXNjYWxlciBkaXZpc29yICovCi0JCXBzYyA9IGZjbGtfcmF0ZSAv
+IGludGVybmFsX2NsazsKLQkJcHNjID0gcHNjIC0gMTsKLQotCQkvKiBJZiBjb25maWd1cmVkIGZv
+ciBIaWdoIFNwZWVkICovCi0JCWlmIChpMmNfb21hcC0+c3BlZWQgPiA0MDApIHsKLQkJCXVuc2ln
+bmVkIGxvbmcgc2NsOwotCi0JCQkvKiBGb3IgZmlyc3QgcGhhc2Ugb2YgSFMgbW9kZSAqLwotCQkJ
+c2NsID0gaW50ZXJuYWxfY2xrIC8gNDAwOwotCQkJZnNzY2xsID0gc2NsIC0gKHNjbCAvIDMpIC0g
+NzsKLQkJCWZzc2NsaCA9IChzY2wgLyAzKSAtIDU7Ci0KLQkJCS8qIEZvciBzZWNvbmQgcGhhc2Ug
+b2YgSFMgbW9kZSAqLwotCQkJc2NsID0gZmNsa19yYXRlIC8gaTJjX29tYXAtPnNwZWVkOwotCQkJ
+aHNzY2xsID0gc2NsIC0gKHNjbCAvIDMpIC0gNzsKLQkJCWhzc2NsaCA9IChzY2wgLyAzKSAtIDU7
+Ci0JCX0gZWxzZSBpZiAoaTJjX29tYXAtPnNwZWVkID4gMTAwKSB7Ci0JCQl1bnNpZ25lZCBsb25n
+IHNjbDsKLQotCQkJLyogRmFzdCBtb2RlICovCi0JCQlzY2wgPSBpbnRlcm5hbF9jbGsgLyBpMmNf
+b21hcC0+c3BlZWQ7Ci0JCQlmc3NjbGwgPSBzY2wgLSAoc2NsIC8gMykgLSA3OwotCQkJZnNzY2xo
+ID0gKHNjbCAvIDMpIC0gNTsKLQkJfSBlbHNlIHsKLQkJCS8qIFN0YW5kYXJkIG1vZGUgKi8KLQkJ
+CWZzc2NsbCA9IGludGVybmFsX2NsayAvIChpMmNfb21hcC0+c3BlZWQgKiAyKSAtIDc7Ci0JCQlm
+c3NjbGggPSBpbnRlcm5hbF9jbGsgLyAoaTJjX29tYXAtPnNwZWVkICogMikgLSA1OwotCQl9Ci0J
+CXNjbGwgPSAoaHNzY2xsIDw8IE9NQVBfSTJDX1NDTExfSFNTQ0xMKSB8IGZzc2NsbDsKLQkJc2Ns
+aCA9IChoc3NjbGggPDwgT01BUF9JMkNfU0NMSF9IU1NDTEgpIHwgZnNzY2xoOworCS8qCisJICog
+SFNJMkMgY29udHJvbGxlciBpbnRlcm5hbCBjbGsgcmF0ZSBzaG91bGQgYmUgMTkuMiBNaHogZm9y
+CisJICogSFMgYW5kIGZvciBhbGwgbW9kZXMgb24gMjQzMC4gT24gMzR4eCB3ZSBjYW4gdXNlIGxv
+d2VyIHJhdGUKKwkgKiB0byBnZXQgbG9uZ2VyIGZpbHRlciBwZXJpb2QgZm9yIGJldHRlciBub2lz
+ZSBzdXBwcmVzc2lvbi4KKwkgKiBUaGUgZmlsdGVyIGlzIGljbGsgKGZjbGsgZm9yIEhTKSBwZXJp
+b2QuCisJICovCisJaWYgKGkyY19vbWFwLT5zcGVlZCA+IDQwMCkKKwkJaW50ZXJuYWxfY2xrID0g
+MTkyMDA7CisJZWxzZSBpZiAoaTJjX29tYXAtPnNwZWVkID4gMTAwKQorCQlpbnRlcm5hbF9jbGsg
+PSA5NjAwOworCWVsc2UKKwkJaW50ZXJuYWxfY2xrID0gNDAwMDsKKwlmY2xrX3JhdGUgPSA5NjAw
+MDAwMCAvIDEwMDA7CisKKwkvKiBDb21wdXRlIHByZXNjYWxlciBkaXZpc29yICovCisJcHNjID0g
+ZmNsa19yYXRlIC8gaW50ZXJuYWxfY2xrOworCXBzYyA9IHBzYyAtIDE7CisKKwkvKiBJZiBjb25m
+aWd1cmVkIGZvciBIaWdoIFNwZWVkICovCisJaWYgKGkyY19vbWFwLT5zcGVlZCA+IDQwMCkgewor
+CQl1bnNpZ25lZCBsb25nIHNjbDsKKworCQkvKiBGb3IgZmlyc3QgcGhhc2Ugb2YgSFMgbW9kZSAq
+LworCQlzY2wgPSBpbnRlcm5hbF9jbGsgLyA0MDA7CisJCWZzc2NsbCA9IHNjbCAtIChzY2wgLyAz
+KSAtIDc7CisJCWZzc2NsaCA9IChzY2wgLyAzKSAtIDU7CisKKwkJLyogRm9yIHNlY29uZCBwaGFz
+ZSBvZiBIUyBtb2RlICovCisJCXNjbCA9IGZjbGtfcmF0ZSAvIGkyY19vbWFwLT5zcGVlZDsKKwkJ
+aHNzY2xsID0gc2NsIC0gKHNjbCAvIDMpIC0gNzsKKwkJaHNzY2xoID0gKHNjbCAvIDMpIC0gNTsK
+Kwl9IGVsc2UgaWYgKGkyY19vbWFwLT5zcGVlZCA+IDEwMCkgeworCQl1bnNpZ25lZCBsb25nIHNj
+bDsKKworCQkvKiBGYXN0IG1vZGUgKi8KKwkJc2NsID0gaW50ZXJuYWxfY2xrIC8gaTJjX29tYXAt
+PnNwZWVkOworCQlmc3NjbGwgPSBzY2wgLSAoc2NsIC8gMykgLSA3OworCQlmc3NjbGggPSAoc2Ns
+IC8gMykgLSA1OwogCX0gZWxzZSB7Ci0JCS8qIFByb2dyYW0gZGVzaXJlZCBvcGVyYXRpbmcgcmF0
+ZSAqLwotCQlmY2xrX3JhdGUgLz0gKHBzYyArIDEpICogMTAwMDsKLQkJaWYgKHBzYyA+IDIpCi0J
+CQlwc2MgPSAyOwotCQlzY2xsID0gZmNsa19yYXRlIC8gKGkyY19vbWFwLT5zcGVlZCAqIDIpIC0g
+NyArIHBzYzsKLQkJc2NsaCA9IGZjbGtfcmF0ZSAvIChpMmNfb21hcC0+c3BlZWQgKiAyKSAtIDcg
+KyBwc2M7CisJCS8qIFN0YW5kYXJkIG1vZGUgKi8KKwkJZnNzY2xsID0gaW50ZXJuYWxfY2xrIC8g
+KGkyY19vbWFwLT5zcGVlZCAqIDIpIC0gNzsKKwkJZnNzY2xoID0gaW50ZXJuYWxfY2xrIC8gKGky
+Y19vbWFwLT5zcGVlZCAqIDIpIC0gNTsKIAl9CisJc2NsbCA9IChoc3NjbGwgPDwgT01BUF9JMkNf
+U0NMTF9IU1NDTEwpIHwgZnNzY2xsOworCXNjbGggPSAoaHNzY2xoIDw8IE9NQVBfSTJDX1NDTEhf
+SFNTQ0xIKSB8IGZzc2NsaDsKIAogCS8qIFNldHVwIGNsb2NrIHByZXNjYWxlciB0byBvYnRhaW4g
+YXBwcm94IDEyTUh6IEkyQyBtb2R1bGUgY2xvY2s6ICovCiAJb21hcF9pMmNfd3JpdGVfcmVnKGky
+Y19vbWFwLCBPTUFQX0kyQ19QU0NfUkVHLCBwc2MpOwpAQCAtNTI1LDE1ICs1MDIsNiBAQCBjb21w
+bGV0ZToKIAkJCQlpZiAoZGV2LT5idWZfbGVuKSB7CiAJCQkJCSpkZXYtPmJ1ZisrID0gdzsKIAkJ
+CQkJZGV2LT5idWZfbGVuLS07Ci0JCQkJCS8qIERhdGEgcmVnIGZyb20gMjQzMCBpcyA4IGJpdCB3
+aWRlICovCi0JCQkJCWlmICghY3B1X2lzX29tYXAyNDMwKCkgJiYKLQkJCQkJCQkhY3B1X2lzX29t
+YXAzNHh4KCkgJiYKLQkJCQkJCQkhY3B1X2lzX29tYXA0eHh4KCkpIHsKLQkJCQkJCWlmIChkZXYt
+PmJ1Zl9sZW4pIHsKLQkJCQkJCQkqZGV2LT5idWYrKyA9IHcgPj4gODsKLQkJCQkJCQlkZXYtPmJ1
+Zl9sZW4tLTsKLQkJCQkJCX0KLQkJCQkJfQogCQkJCX0gZWxzZSB7CiAJCQkJCWlmIChzdGF0ICYg
+T01BUF9JMkNfU1RBVF9SUkRZKQogCQkJCQkJZGV2X2VycigmZGV2LT5hZGFwdGVyLmRldiwKQEAg
+LTU2NiwxNSArNTM0LDYgQEAgY29tcGxldGU6CiAJCQkJaWYgKGRldi0+YnVmX2xlbikgewogCQkJ
+CQl3ID0gKmRldi0+YnVmKys7CiAJCQkJCWRldi0+YnVmX2xlbi0tOwotCQkJCQkvKiBEYXRhIHJl
+ZyBmcm9tICAyNDMwIGlzIDggYml0IHdpZGUgKi8KLQkJCQkJaWYgKCFjcHVfaXNfb21hcDI0MzAo
+KSAmJgotCQkJCQkJCSFjcHVfaXNfb21hcDM0eHgoKSAmJgotCQkJCQkJCSFjcHVfaXNfb21hcDR4
+eHgoKSkgewotCQkJCQkJaWYgKGRldi0+YnVmX2xlbikgewotCQkJCQkJCXcgfD0gKmRldi0+YnVm
+KysgPDwgODsKLQkJCQkJCQlkZXYtPmJ1Zl9sZW4tLTsKLQkJCQkJCX0KLQkJCQkJfQogCQkJCX0g
+ZWxzZSB7CiAJCQkJCWlmIChzdGF0ICYgT01BUF9JMkNfU1RBVF9YUkRZKQogCQkJCQkJZGV2X2Vy
+cigmZGV2LT5hZGFwdGVyLmRldiwKQEAgLTc3Niw2ICs3MzUsNyBAQCBpMmNfb21hcF9wcm9iZShz
+dHJ1Y3QgZGV2aWNlX2QgKnBkZXYpCiAJLyogc3RydWN0IGkyY19wbGF0Zm9ybV9kYXRhICpwZGF0
+YTsgKi8KIAlpbnQgcjsKIAl1MzIgc3BlZWQgPSAwOworCXUxNiBzOwogCiAJaTJjX29tYXAgPSBr
+emFsbG9jKHNpemVvZihzdHJ1Y3Qgb21hcF9pMmNfc3RydWN0KSwgR0ZQX0tFUk5FTCk7CiAJaWYg
+KCFpMmNfb21hcCkgewpAQCAtODAyLDI4ICs3NjIsMjMgQEAgaTJjX29tYXBfcHJvYmUoc3RydWN0
+IGRldmljZV9kICpwZGV2KQogCW9tYXBfaTJjX3VuaWRsZShpMmNfb21hcCk7CiAKIAlpMmNfb21h
+cC0+cmV2ID0gb21hcF9pMmNfcmVhZF9yZWcoaTJjX29tYXAsIE9NQVBfSTJDX1JFVl9SRUcpICYg
+MHhmZjsKLQkvKiBpMmNfb21hcC0+YmFzZSA9IE9NQVAyX0kyQ19CQVNFMzsgKi8KLQotCWlmIChj
+cHVfaXNfb21hcDI0MzAoKSB8fCBjcHVfaXNfb21hcDM0eHgoKSB8fCBjcHVfaXNfb21hcDR4eHgo
+KSkgewotCQl1MTYgczsKIAotCQkvKiBTZXQgdXAgdGhlIGZpZm8gc2l6ZSAtIEdldCB0b3RhbCBz
+aXplICovCi0JCXMgPSAob21hcF9pMmNfcmVhZF9yZWcoaTJjX29tYXAsIE9NQVBfSTJDX0JVRlNU
+QVRfUkVHKSA+PiAxNCkgJiAweDM7Ci0JCWkyY19vbWFwLT5maWZvX3NpemUgPSAweDggPDwgczsK
+KwkvKiBTZXQgdXAgdGhlIGZpZm8gc2l6ZSAtIEdldCB0b3RhbCBzaXplICovCisJcyA9IChvbWFw
+X2kyY19yZWFkX3JlZyhpMmNfb21hcCwgT01BUF9JMkNfQlVGU1RBVF9SRUcpID4+IDE0KSAmIDB4
+MzsKKwlpMmNfb21hcC0+Zmlmb19zaXplID0gMHg4IDw8IHM7CiAKLQkJLyoKLQkJICogU2V0IHVw
+IG5vdGlmaWNhdGlvbiB0aHJlc2hvbGQgYXMgaGFsZiB0aGUgdG90YWwgYXZhaWxhYmxlCi0JCSAq
+IHNpemUuIFRoaXMgaXMgdG8gZW5zdXJlIHRoYXQgd2UgY2FuIGhhbmRsZSB0aGUgc3RhdHVzIG9u
+IGludAotCQkgKiBjYWxsIGJhY2sgbGF0ZW5jaWVzLgotCQkgKi8KKwkvKgorCSAqIFNldCB1cCBu
+b3RpZmljYXRpb24gdGhyZXNob2xkIGFzIGhhbGYgdGhlIHRvdGFsIGF2YWlsYWJsZQorCSAqIHNp
+emUuIFRoaXMgaXMgdG8gZW5zdXJlIHRoYXQgd2UgY2FuIGhhbmRsZSB0aGUgc3RhdHVzIG9uIGlu
+dAorCSAqIGNhbGwgYmFjayBsYXRlbmNpZXMuCisJICovCiAKLQkJaTJjX29tYXAtPmZpZm9fc2l6
+ZSA9IChpMmNfb21hcC0+Zmlmb19zaXplIC8gMik7CisJaTJjX29tYXAtPmZpZm9fc2l6ZSA9IChp
+MmNfb21hcC0+Zmlmb19zaXplIC8gMik7CiAKLQkJaWYgKGkyY19vbWFwLT5yZXYgPj0gT01BUF9J
+MkNfUkVWX09OXzQ0MzApCi0JCQlpMmNfb21hcC0+Yl9odyA9IDA7IC8qIERpc2FibGUgaGFyZHdh
+cmUgZml4ZXMgKi8KLQkJZWxzZQotCQkJaTJjX29tYXAtPmJfaHcgPSAxOyAvKiBFbmFibGUgaGFy
+ZHdhcmUgZml4ZXMgKi8KLQl9CisJaWYgKGkyY19vbWFwLT5yZXYgPj0gT01BUF9JMkNfUkVWX09O
+XzQ0MzApCisJCWkyY19vbWFwLT5iX2h3ID0gMDsgLyogRGlzYWJsZSBoYXJkd2FyZSBmaXhlcyAq
+LworCWVsc2UKKwkJaTJjX29tYXAtPmJfaHcgPSAxOyAvKiBFbmFibGUgaGFyZHdhcmUgZml4ZXMg
+Ki8KIAogCS8qIHJlc2V0IEFTQVAsIGNsZWFyaW5nIGFueSBJUlFzICovCiAJb21hcF9pMmNfaW5p
+dChpMmNfb21hcCk7Ci0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
+YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
+ZWJveAo=
