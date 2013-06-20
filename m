@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpYlZ-0004g8-51
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:54:52 +0000
+ id 1UpYlZ-0004gE-LU
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:55:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Jun 2013 08:54:13 +0200
-Message-Id: <1371711261-10039-10-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 20 Jun 2013 08:54:21 +0200
+Message-Id: <1371711261-10039-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
 References: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,131 +21,1075 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/17] mci: mxs: use common clk API
+Subject: [PATCH 17/17] ARM: MXS: remove old clock support
 To: barebox@lists.infradead.org
 Cc: Juergen Beisert <jbe@pengutronix.de>
 
+The old MXS clock support is now unused and can be removed.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/mxs.c | 60 ++++++++++++++++++-------------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ arch/arm/mach-mxs/Makefile                   |   5 +-
+ arch/arm/mach-mxs/imx.c                      |  16 -
+ arch/arm/mach-mxs/imx_lcd_clk.c              | 150 ----------
+ arch/arm/mach-mxs/include/mach/clock-imx23.h |  30 --
+ arch/arm/mach-mxs/include/mach/clock-imx28.h |  33 --
+ arch/arm/mach-mxs/include/mach/clock.h       |   7 -
+ arch/arm/mach-mxs/speed-imx23.c              | 315 -------------------
+ arch/arm/mach-mxs/speed-imx28.c              | 432 ---------------------------
+ 8 files changed, 2 insertions(+), 986 deletions(-)
+ delete mode 100644 arch/arm/mach-mxs/imx_lcd_clk.c
+ delete mode 100644 arch/arm/mach-mxs/include/mach/clock-imx23.h
+ delete mode 100644 arch/arm/mach-mxs/include/mach/clock-imx28.h
+ delete mode 100644 arch/arm/mach-mxs/speed-imx23.c
+ delete mode 100644 arch/arm/mach-mxs/speed-imx28.c
 
-diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-index cb2911a..023f922 100644
---- a/drivers/mci/mxs.c
-+++ b/drivers/mci/mxs.c
-@@ -36,6 +36,8 @@
- #include <errno.h>
- #include <clock.h>
- #include <io.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
- #include <asm/bitops.h>
- #include <mach/mxs.h>
- #include <mach/imx-regs.h>
-@@ -49,8 +51,8 @@
- struct mxs_mci_host {
- 	struct mci_host	host;
- 	void __iomem	*regs;
-+	struct clk	*clk;
- 	unsigned	clock;	/* current clock speed in Hz ("0" if disabled) */
--	unsigned	index;
- #ifdef CONFIG_MCI_INFO
- 	unsigned	f_min;
- 	unsigned	f_max;
-@@ -61,16 +63,6 @@ struct mxs_mci_host {
- #define to_mxs_mci(mxs) container_of(mxs, struct mxs_mci_host, host)
+diff --git a/arch/arm/mach-mxs/Makefile b/arch/arm/mach-mxs/Makefile
+index fe93096..a183987 100644
+--- a/arch/arm/mach-mxs/Makefile
++++ b/arch/arm/mach-mxs/Makefile
+@@ -1,6 +1,5 @@
+ obj-y += imx.o iomux-imx.o power.o common.o
+-obj-$(CONFIG_DRIVER_VIDEO_STM) += imx_lcd_clk.o
+-obj-$(CONFIG_ARCH_IMX23) += speed-imx23.o clocksource-imx23.o usb-imx23.o soc-imx23.o
+-obj-$(CONFIG_ARCH_IMX28) += speed-imx28.o clocksource-imx28.o usb-imx28.o soc-imx28.o
++obj-$(CONFIG_ARCH_IMX23) += clocksource-imx23.o usb-imx23.o soc-imx23.o
++obj-$(CONFIG_ARCH_IMX28) += clocksource-imx28.o usb-imx28.o soc-imx28.o
+ obj-$(CONFIG_MXS_OCOTP) += ocotp.o
+ obj-$(CONFIG_MXS_CMD_BCB) += bcb.o
+diff --git a/arch/arm/mach-mxs/imx.c b/arch/arm/mach-mxs/imx.c
+index 5acce93..9f195e4 100644
+--- a/arch/arm/mach-mxs/imx.c
++++ b/arch/arm/mach-mxs/imx.c
+@@ -45,22 +45,6 @@ static int imx_reset_usb_bootstrap(void)
+ }
+ device_initcall(imx_reset_usb_bootstrap);
  
- /**
-- * Get the SSP clock rate
-- * @param hw_dev Host interface device instance
-- * @return Unit's clock in [Hz]
-- */
--static unsigned mxs_mci_get_unit_clock(struct mxs_mci_host *mxs_mci)
+-extern void imx_dump_clocks(void);
+-
+-static int do_clocks(int argc, char *argv[])
 -{
--	return imx_get_sspclk(mxs_mci->index);
+-	imx_dump_clocks();
+-
+-	return 0;
+-}
+-
+-BAREBOX_CMD_START(dump_clocks)
+-	.cmd		= do_clocks,
+-	.usage		= "show clock frequencies",
+-	BAREBOX_CMD_COMPLETE(empty_complete)
+-BAREBOX_CMD_END
+-
+-
+ static int __silicon_revision = SILICON_REVISION_UNKNOWN;
+ 
+ int silicon_revision_get(void)
+diff --git a/arch/arm/mach-mxs/imx_lcd_clk.c b/arch/arm/mach-mxs/imx_lcd_clk.c
+deleted file mode 100644
+index 455dfcb..0000000
+--- a/arch/arm/mach-mxs/imx_lcd_clk.c
++++ /dev/null
+@@ -1,150 +0,0 @@
+-/*
+- * (C) Copyright 2010 Juergen Beisert - Pengutronix <kernel@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <mach/imx-regs.h>
+-#include <mach/clock.h>
+-#include <io.h>
+-
+-#ifdef CONFIG_ARCH_IMX23
+-
+-# define HW_CLKCTRL_DIS_LCDIF 0x060
+-#  define CLKCTRL_DIS_LCDIF_GATE (1 << 31)
+-#  define CLKCTRL_DIS_LCDIF_BUSY (1 << 29)
+-#  define MASK_DIS_LCDIF_DIV 0xfff
+-#  define SET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
+-#  define GET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
+-
+-# define HW_CLKCTRL_FRAC 0xf0
+-#  define MASK_PIXFRAC 0x3f
+-#  define GET_PIXFRAC(x) (((x) >> 16) & MASK_PIXFRAC)
+-#  define SET_PIXFRAC(x) (((x) & MASK_PIXFRAC) << 16)
+-#  define CLKCTRL_FRAC_CLKGATEPIX (1 << 23)
+-
+-# define HW_CLKCTRL_CLKSEQ 0x110
+-#  define CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF (1 << 1)
+-
+-#endif
+-
+-#ifdef CONFIG_ARCH_IMX28
+-
+-# define HW_CLKCTRL_DIS_LCDIF 0x120
+-#  define CLKCTRL_DIS_LCDIF_GATE (1 << 31)
+-#  define CLKCTRL_DIS_LCDIF_BUSY (1 << 29)
+-#  define MASK_DIS_LCDIF_DIV 0x1fff
+-#  define SET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
+-#  define GET_DIS_LCDIF_DIV(x) ((x) & MASK_DIS_LCDIF_DIV)
+-
+-/* note: On i.MX28 this is called 'FRAC1' */
+-# define HW_CLKCTRL_FRAC 0x1c0
+-#  define MASK_PIXFRAC 0x3f
+-#  define GET_PIXFRAC(x) ((x) & MASK_PIXFRAC)
+-#  define SET_PIXFRAC(x) ((x) & MASK_PIXFRAC)
+-#  define CLKCTRL_FRAC_CLKGATEPIX (1 << 7)
+-
+-# define HW_CLKCTRL_CLKSEQ 0x1d0
+-#  define CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF (1 << 14)
+-
+-#endif
+-
+-unsigned imx_get_lcdifclk(void)
+-{
+-	unsigned rate = (imx_get_mpllclk() / 1000) * 18U;
+-	unsigned div;
+-
+-	div = GET_PIXFRAC(readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC));
+-	if (div != 0U) {
+-		rate /= div;
+-		div = GET_DIS_LCDIF_DIV(readl(IMX_CCM_BASE +
+-							HW_CLKCTRL_DIS_LCDIF));
+-		if (div != 0U)
+-			rate /= div;
+-		else
+-			pr_debug("LCDIF clock has divisor 0!\n");
+-	} else
+-		pr_debug("LCDIF clock has frac divisor 0!\n");
+-
+-	return rate * 1000;
+-}
+-
+-/*
+- * The source of the pixel clock can be the external 24 MHz crystal or the
+- * internal PLL running at 480 MHz. In order to support at least VGA sized
+- * displays/resolutions this routine forces the PLL as the clock source.
+- */
+-unsigned imx_set_lcdifclk(unsigned nc)
+-{
+-	unsigned frac, best_frac = 0, div, best_div = 0, result;
+-	int delta, best_delta = 0xffffff;
+-	unsigned i, parent_rate = imx_get_mpllclk() / 1000;
+-	uint32_t reg;
+-
+-#define SH_DIV(NOM, DEN, LSH) ((((NOM) / (DEN)) << (LSH)) + \
+-			DIV_ROUND_CLOSEST(((NOM) % (DEN)) << (LSH), DEN))
+-#define SHIFT 4
+-
+-	nc /= 1000;
+-	nc <<= SHIFT;
+-
+-	for (frac = 18; frac <= 35; ++frac) {
+-		for (div = 1; div <= 255; ++div) {
+-			result = DIV_ROUND_CLOSEST(parent_rate *
+-						SH_DIV(18U, frac, SHIFT), div);
+-			delta = nc - result;
+-			if (abs(delta) < abs(best_delta)) {
+-				best_delta = delta;
+-				best_frac = frac;
+-				best_div = div;
+-			}
+-		}
+-	}
+-
+-	if (best_delta == 0xffffff) {
+-		pr_debug("Unable to match the pixelclock\n");
+-		return 0;
+-	}
+-
+-	pr_debug("Programming PFD=%u,DIV=%u ref_pix=%u MHz PIXCLK=%u kHz\n",
+-			best_frac, best_div, 480 * 18 / best_frac,
+-			480000 * 18 / best_frac / best_div);
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	reg &= ~SET_PIXFRAC(MASK_PIXFRAC);
+-	reg |= SET_PIXFRAC(best_frac);
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	writel(reg & ~CLKCTRL_FRAC_CLKGATEPIX, IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF) & ~MASK_DIS_LCDIF_DIV;
+-	reg &= ~CLKCTRL_DIS_LCDIF_GATE;
+-	reg |= SET_DIS_LCDIF_DIV(best_div);
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF);
+-
+-	/* Wait for divider update */
+-	for (i = 0; i < 10000; i++) {
+-		if (!(readl(IMX_CCM_BASE + HW_CLKCTRL_DIS_LCDIF) &
+-						CLKCTRL_DIS_LCDIF_BUSY))
+-			break;
+-	}
+-
+-	if (i >= 10000) {
+-		pr_debug("Setting LCD clock failed\n");
+-		return 0;
+-	}
+-
+-	writel(CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF,
+-		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_CLR);
+-
+-	return imx_get_lcdifclk();
+-}
+diff --git a/arch/arm/mach-mxs/include/mach/clock-imx23.h b/arch/arm/mach-mxs/include/mach/clock-imx23.h
+deleted file mode 100644
+index 6507792..0000000
+--- a/arch/arm/mach-mxs/include/mach/clock-imx23.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-
+-#ifndef MACH_CLOCK_IMX23_H
+-# define MACH_CLOCK_IMX23_H
+-
+-unsigned imx_get_mpllclk(void);
+-unsigned imx_get_emiclk(void);
+-unsigned imx_get_ioclk(void);
+-unsigned imx_get_armclk(void);
+-unsigned imx_get_hclk(void);
+-unsigned imx_set_hclk(unsigned);
+-unsigned imx_get_xclk(void);
+-unsigned imx_get_sspclk(unsigned);
+-unsigned imx_set_sspclk(unsigned, unsigned, int);
+-unsigned imx_set_ioclk(unsigned);
+-unsigned imx_set_lcdifclk(unsigned);
+-unsigned imx_get_lcdifclk(void);
+-void imx_enable_nandclk(void);
+-
+-#endif /* MACH_CLOCK_IMX23_H */
+diff --git a/arch/arm/mach-mxs/include/mach/clock-imx28.h b/arch/arm/mach-mxs/include/mach/clock-imx28.h
+deleted file mode 100644
+index 0604f0a..0000000
+--- a/arch/arm/mach-mxs/include/mach/clock-imx28.h
++++ /dev/null
+@@ -1,33 +0,0 @@
+-/*
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-
+-#ifndef MACH_CLOCK_IMX28_H
+-#define MACH_CLOCK_IMX28_H
+-
+-unsigned imx_get_mpllclk(void);
+-unsigned imx_get_emiclk(void);
+-unsigned imx_get_ioclk(unsigned);
+-unsigned imx_get_armclk(void);
+-unsigned imx_get_hclk(void);
+-unsigned imx_set_hclk(unsigned);
+-unsigned imx_get_xclk(void);
+-unsigned imx_get_sspclk(unsigned);
+-unsigned imx_set_sspclk(unsigned, unsigned, int);
+-unsigned imx_set_ioclk(unsigned, unsigned);
+-unsigned imx_set_lcdifclk(unsigned);
+-unsigned imx_get_lcdifclk(void);
+-unsigned imx_get_fecclk(void);
+-void imx_enable_enetclk(void);
+-void imx_enable_nandclk(void);
+-
+-#endif /* MACH_CLOCK_IMX28_H */
+-
+diff --git a/arch/arm/mach-mxs/include/mach/clock.h b/arch/arm/mach-mxs/include/mach/clock.h
+index 367297b..adbc330 100644
+--- a/arch/arm/mach-mxs/include/mach/clock.h
++++ b/arch/arm/mach-mxs/include/mach/clock.h
+@@ -16,11 +16,4 @@
+ #ifndef __MACH_CLOCK_H
+ # define __MACH_CLOCK_H
+ 
+-#if defined CONFIG_ARCH_IMX23
+-# include <mach/clock-imx23.h>
+-#endif
+-#if defined CONFIG_ARCH_IMX28
+-# include <mach/clock-imx28.h>
+-#endif
+-
+ #endif /* __MACH_CLOCK_H */
+diff --git a/arch/arm/mach-mxs/speed-imx23.c b/arch/arm/mach-mxs/speed-imx23.c
+deleted file mode 100644
+index 14885d5..0000000
+--- a/arch/arm/mach-mxs/speed-imx23.c
++++ /dev/null
+@@ -1,315 +0,0 @@
+-/*
+- * (C) Copyright 2010 Juergen Beisert - Pengutronix
+- *
+- * This code is based partially on code of:
+- *
+- * (c) 2008 Embedded Alley Solutions, Inc.
+- * (C) Copyright 2009-2010 Freescale Semiconductor, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <io.h>
+-#include <mach/imx-regs.h>
+-#include <mach/generic.h>
+-#include <mach/clock.h>
+-
+-#define HW_CLKCTRL_PLLCTRL0 0x000
+-#define HW_CLKCTRL_PLLCTRL1 0x010
+-#define HW_CLKCTRL_CPU 0x20
+-# define GET_CPU_XTAL_DIV(x) (((x) >> 16) & 0x3ff)
+-# define GET_CPU_PLL_DIV(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_HBUS 0x30
+-#define HW_CLKCTRL_XBUS 0x40
+-#define HW_CLKCTRL_XTAL 0x050
+-#define HW_CLKCTRL_PIX 0x060
+-/* note: no set/clear register! */
+-#define HW_CLKCTRL_SSP 0x070
+-/* note: no set/clear register! */
+-# define CLKCTRL_SSP_CLKGATE (1 << 31)
+-# define CLKCTRL_SSP_BUSY (1 << 29)
+-# define CLKCTRL_SSP_DIV_MASK 0x1ff
+-# define GET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+-# define SET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+-#define HW_CLKCTRL_GPMI 0x080
+-# define CLKCTRL_GPMI_CLKGATE (1 << 31)
+-# define CLKCTRL_GPMI_DIV_MASK 0x3ff
+-/* note: no set/clear register! */
+-#define HW_CLKCTRL_SPDIF 0x090
+-/* note: no set/clear register! */
+-#define HW_CLKCTRL_EMI	0xa0
+-/* note: no set/clear register! */
+-# define CLKCTRL_EMI_CLKGATE (1 << 31)
+-# define GET_EMI_XTAL_DIV(x) (((x) >> 8) & 0xf)
+-# define GET_EMI_PLL_DIV(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_SAIF 0x0c0
+-#define HW_CLKCTRL_TV 0x0d0
+-#define HW_CLKCTRL_ETM 0x0e0
+-#define HW_CLKCTRL_FRAC 0xf0
+-# define CLKCTRL_FRAC_CLKGATEIO (1 << 31)
+-# define GET_IOFRAC(x) (((x) >> 24) & 0x3f)
+-# define SET_IOFRAC(x) (((x) & 0x3f) << 24)
+-# define CLKCTRL_FRAC_CLKGATEPIX (1 << 23)
+-# define GET_PIXFRAC(x) (((x) >> 16) & 0x3f)
+-# define CLKCTRL_FRAC_CLKGATEEMI (1 << 15)
+-# define GET_EMIFRAC(x) (((x) >> 8) & 0x3f)
+-# define CLKCTRL_FRAC_CLKGATECPU (1 << 7)
+-# define GET_CPUFRAC(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_FRAC1 0x100
+-#define HW_CLKCTRL_CLKSEQ 0x110
+-# define CLKCTRL_CLKSEQ_BYPASS_ETM (1 << 8)
+-# define CLKCTRL_CLKSEQ_BYPASS_CPU (1 << 7)
+-# define CLKCTRL_CLKSEQ_BYPASS_EMI (1 << 6)
+-# define CLKCTRL_CLKSEQ_BYPASS_SSP (1 << 5)
+-# define CLKCTRL_CLKSEQ_BYPASS_GPMI (1 << 4)
+-#define HW_CLKCTRL_RESET 0x120
+-#define HW_CLKCTRL_STATUS 0x130
+-#define HW_CLKCTRL_VERSION 0x140
+-
+-unsigned imx_get_mpllclk(void)
+-{
+-	/* the main PLL runs at 480 MHz */
+-	return 480000000;
+-}
+-
+-unsigned imx_get_xtalclk(void)
+-{
+-	/* the external reference runs at 24 MHz */
+-	return 24000000;
+-}
+-
+-/* used for the SDRAM controller */
+-unsigned imx_get_emiclk(void)
+-{
+-	uint32_t reg;
+-	unsigned rate;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_EMI) & CLKCTRL_EMI_CLKGATE)
+-		return 0U;	/* clock is off */
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & CLKCTRL_CLKSEQ_BYPASS_EMI)
+-		return imx_get_xtalclk() / GET_EMI_XTAL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_EMI));
+-
+-	rate = imx_get_mpllclk() / 1000;
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	if (!(reg & CLKCTRL_FRAC_CLKGATEEMI)) {
+-		rate *= 18U;
+-		rate /= GET_EMIFRAC(reg);
+-	}
+-
+-	return (rate / GET_EMI_PLL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_EMI)))
+-			* 1000;
+-}
+-
+-/*
+- * Source of ssp, gpmi, ir
+- */
+-unsigned imx_get_ioclk(void)
+-{
+-	uint32_t reg;
+-	unsigned rate = imx_get_mpllclk() / 1000;
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	if (reg & CLKCTRL_FRAC_CLKGATEIO)
+-		return 0U;	/* clock is off */
+-
+-	rate *= 18U;
+-	rate /= GET_IOFRAC(reg);
+-	return rate * 1000;
 -}
 -
 -/**
-  * Get MCI cards response if defined for the type of command
-  * @param hw_dev Host interface device instance
-  * @param cmd Command description
-@@ -430,7 +422,7 @@ static unsigned mxs_mci_setup_clock_speed(struct mxs_mci_host *mxs_mci, unsigned
- 		return 0;
- 	}
- 
--	ssp = mxs_mci_get_unit_clock(mxs_mci);
-+	ssp = clk_get_rate(mxs_mci->clk);
- 
- 	for (div = 2; div < 255; div += 2) {
- 		rate = DIV_ROUND_CLOSEST(DIV_ROUND_CLOSEST(ssp, nc), div);
-@@ -558,6 +550,7 @@ static int mxs_mci_probe(struct device_d *hw_dev)
- 	struct mxs_mci_platform_data *pd = hw_dev->platform_data;
- 	struct mxs_mci_host *mxs_mci;
- 	struct mci_host *host;
-+	unsigned long rate;
- 
- 	if (hw_dev->platform_data == NULL) {
- 		dev_err(hw_dev, "Missing platform data\n");
-@@ -578,44 +571,29 @@ static int mxs_mci_probe(struct device_d *hw_dev)
- 	host->voltages = pd->voltages;
- 	host->host_caps = pd->caps;
- 
--#ifdef CONFIG_ARCH_IMX23
--	mxs_mci->index = 0;	/* there is only one clock for all */
--#endif
--#ifdef CONFIG_ARCH_IMX28
--	/* one dedicated clock per unit */
--	switch (hw_dev->resource[0].start) {
--	case IMX_SSP0_BASE:
--		mxs_mci->index = 0;
+- * Setup a new frequency to the IOCLK domain.
+- * @param nc New frequency in [Hz]
+- *
+- * The FRAC divider for the IOCLK must be between 18 (* 18/18) and 35 (* 18/35)
+- */
+-unsigned imx_set_ioclk(unsigned nc)
+-{
+-	uint32_t reg;
+-	unsigned div;
+-
+-	nc /= 1000;
+-	div = (imx_get_mpllclk() / 1000) * 18;
+-	div = DIV_ROUND_CLOSEST(div, nc);
+-	if (div > 0x3f)
+-		div = 0x3f;
+-	/* mask the current settings */
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC) & ~(SET_IOFRAC(0x3f));
+-	writel(reg | SET_IOFRAC(div), IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	/* enable the IO clock at its new frequency */
+-	writel(CLKCTRL_FRAC_CLKGATEIO, IMX_CCM_BASE + HW_CLKCTRL_FRAC + 8);
+-
+-	return imx_get_ioclk();
+-}
+-
+-/* this is CPU core clock */
+-unsigned imx_get_armclk(void)
+-{
+-	uint32_t reg;
+-	unsigned rate;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & CLKCTRL_CLKSEQ_BYPASS_CPU)
+-		return imx_get_xtalclk() / GET_CPU_XTAL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_CPU));
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC);
+-	if (reg & CLKCTRL_FRAC_CLKGATECPU)
+-		return 0U;	/* should not possible, shouldn't it? */
+-
+-	rate = imx_get_mpllclk() / 1000;
+-	rate *= 18U;
+-	rate /= GET_CPUFRAC(reg);
+-
+-	return (rate / GET_CPU_PLL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_CPU)))
+-			* 1000;
+-}
+-
+-/* this is the AHB and APBH bus clock */
+-unsigned imx_get_hclk(void)
+-{
+-	unsigned rate = imx_get_armclk() / 1000;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x20) {
+-		rate *= readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x1f;
+-		rate = DIV_ROUND_UP(rate, 32);
+-	} else
+-		rate = DIV_ROUND_UP(rate,
+-			readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x1f);
+-	return rate * 1000;
+-}
+-
+-unsigned imx_set_hclk(unsigned nc)
+-{
+-	unsigned root_rate = imx_get_armclk();
+-	unsigned reg, div;
+-
+-	div = DIV_ROUND_UP(root_rate, nc);
+-	if ((div == 0) || (div >= 32))
+-		return 0;
+-
+-	if ((root_rate < nc) && (root_rate == 64000000))
+-		div = 3;
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & ~0x3f;
+-	writel(reg | div, IMX_CCM_BASE + HW_CLKCTRL_HBUS);
+-
+-	while (readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & (1 << 31))
+-		;
+-
+-	return imx_get_hclk();
+-}
+-
+-/*
+- * Source of UART, debug UART, audio, PWM, dri, timer, digctl
+- */
+-unsigned imx_get_xclk(void)
+-{
+-	unsigned rate = imx_get_xtalclk();	/* runs from the 24 MHz crystal reference */
+-
+-	return rate / (readl(IMX_CCM_BASE + HW_CLKCTRL_XBUS) & 0x3ff);
+-}
+-
+-/* 'index' gets ignored on i.MX23 */
+-unsigned imx_get_sspclk(unsigned index)
+-{
+-	unsigned rate;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_SSP) & CLKCTRL_SSP_CLKGATE)
+-		return 0U;	/* clock is off */
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & CLKCTRL_CLKSEQ_BYPASS_SSP)
+-		rate = imx_get_xtalclk();
+-	else
+-		rate = imx_get_ioclk();
+-
+-	return rate / GET_SSP_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_SSP));
+-}
+-
+-/**
+- * @param index Unit index (ignored on i.MX23)
+- * @param nc New frequency in [Hz]
+- * @param high != 0 if ioclk should be the source
+- * @return The new possible frequency in [kHz]
+- */
+-unsigned imx_set_sspclk(unsigned index, unsigned nc, int high)
+-{
+-	uint32_t reg;
+-	unsigned ssp_div;
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_SSP) & ~CLKCTRL_SSP_CLKGATE;
+-	/* Datasheet says: Do not change the DIV setting if the clock is off */
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_SSP);
+-	/* Wait while clock is gated */
+-	while (readl(IMX_CCM_BASE + HW_CLKCTRL_SSP) & CLKCTRL_SSP_CLKGATE)
+-		;
+-
+-	if (high)
+-		ssp_div = imx_get_ioclk();
+-	else
+-		ssp_div = imx_get_xtalclk();
+-
+-	if (nc > ssp_div) {
+-		printf("Cannot setup SSP unit clock to %u Hz, base clock is only %u Hz\n", nc, ssp_div);
+-		ssp_div = 1U;
+-	} else {
+-		ssp_div = DIV_ROUND_UP(ssp_div, nc);
+-		if (ssp_div > CLKCTRL_SSP_DIV_MASK)
+-			ssp_div = CLKCTRL_SSP_DIV_MASK;
+-	}
+-
+-	/* Set new divider value */
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_SSP) & ~CLKCTRL_SSP_DIV_MASK;
+-	writel(reg | SET_SSP_DIV(ssp_div), IMX_CCM_BASE + HW_CLKCTRL_SSP);
+-
+-	/* Wait until new divider value is set */
+-	while (readl(IMX_CCM_BASE + HW_CLKCTRL_SSP) & CLKCTRL_SSP_BUSY)
+-		;
+-
+-	if (high)
+-		/* switch to ioclock */
+-		writel(CLKCTRL_CLKSEQ_BYPASS_SSP, IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + 8);
+-	else
+-		/* switch to 24 MHz crystal */
+-		writel(CLKCTRL_CLKSEQ_BYPASS_SSP, IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + 4);
+-
+-	return imx_get_sspclk(index);
+-}
+-
+-void imx_enable_nandclk(void)
+-{
+-	uint32_t reg;
+-
+-	/* Clear bypass bit; refman says clear, but fsl-code does set. Hooray! */
+-	writel(CLKCTRL_CLKSEQ_BYPASS_GPMI,
+-		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_SET);
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_GPMI) & ~CLKCTRL_GPMI_CLKGATE;
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
+-	udelay(1000);
+-	/* Initialize DIV to 1 */
+-	reg &= ~CLKCTRL_GPMI_DIV_MASK;
+-	reg |= 1;
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
+-}
+-
+-void imx_dump_clocks(void)
+-{
+-	printf("mpll:    %10u kHz\n", imx_get_mpllclk() / 1000);
+-	printf("arm:     %10u kHz\n", imx_get_armclk() / 1000);
+-	printf("ioclk:   %10u kHz\n", imx_get_ioclk() / 1000);
+-	printf("emiclk:  %10u kHz\n", imx_get_emiclk() / 1000);
+-	printf("hclk:    %10u kHz\n", imx_get_hclk() / 1000);
+-	printf("xclk:    %10u kHz\n", imx_get_xclk() / 1000);
+-	printf("ssp:     %10u kHz\n", imx_get_sspclk(0) / 1000);
+-}
+diff --git a/arch/arm/mach-mxs/speed-imx28.c b/arch/arm/mach-mxs/speed-imx28.c
+deleted file mode 100644
+index 2cab42d..0000000
+--- a/arch/arm/mach-mxs/speed-imx28.c
++++ /dev/null
+@@ -1,432 +0,0 @@
+-/*
+- * (C) Copyright 2010 Juergen Beisert - Pengutronix <kernel@pengutronix.de>
+- *
+- * This code is based partially on code that has:
+- *
+- * (c) 2008 Embedded Alley Solutions, Inc.
+- * (C) Copyright 2009-2010 Freescale Semiconductor, Inc.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-#include <common.h>
+-#include <init.h>
+-#include <io.h>
+-#include <mach/imx-regs.h>
+-#include <mach/generic.h>
+-#include <mach/clock.h>
+-
+-#define HW_CLKCTRL_PLL0CTRL0 0x000
+-#define HW_CLKCTRL_PLL0CTRL1 0x010
+-#define HW_CLKCTRL_PLL1CTRL0 0x020
+-#define HW_CLKCTRL_PLL1CTRL1 0x030
+-#define HW_CLKCTRL_PLL2CTRL0 0x040
+-# define CLKCTRL_PLL2CTRL0_CLKGATE (1 << 31)
+-# define CLKCTRL_PLL2CTRL0_POWER (1 << 23)
+-#define HW_CLKCTRL_CPU 0x50
+-# define GET_CPU_XTAL_DIV(x) (((x) >> 16) & 0x3ff)
+-# define GET_CPU_PLL_DIV(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_HBUS 0x60
+-#define HW_CLKCTRL_XBUS 0x70
+-#define HW_CLKCTRL_XTAL 0x080
+-#define HW_CLKCTRL_SSP0 0x090
+-#define HW_CLKCTRL_SSP1 0x0a0
+-#define HW_CLKCTRL_SSP2 0x0b0
+-#define HW_CLKCTRL_SSP3 0x0c0
+-/* note: no set/clear register! */
+-# define CLKCTRL_SSP_CLKGATE (1 << 31)
+-# define CLKCTRL_SSP_BUSY (1 << 29)
+-# define CLKCTRL_SSP_DIV_FRAC_EN (1 << 9)
+-# define CLKCTRL_SSP_DIV_MASK 0x1ff
+-# define GET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+-# define SET_SSP_DIV(x) ((x) & CLKCTRL_SSP_DIV_MASK)
+-#define HW_CLKCTRL_GPMI 0x0d0
+-# define CLKCTRL_GPMI_CLKGATE (1 << 31)
+-# define CLKCTRL_GPMI_DIV_MASK 0x3ff
+-/* note: no set/clear register! */
+-#define HW_CLKCTRL_SPDIF 0x0e0
+-/* note: no set/clear register! */
+-#define HW_CLKCTRL_EMI	0xf0
+-/* note: no set/clear register! */
+-# define CLKCTRL_EMI_CLKGATE (1 << 31)
+-# define GET_EMI_XTAL_DIV(x) (((x) >> 8) & 0xf)
+-# define GET_EMI_PLL_DIV(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_SAIF0 0x100
+-#define HW_CLKCTRL_SAIF1 0x110
+-#define HW_CLKCTRL_DIS_LCDIF 0x120
+-# define CLKCTRL_DIS_LCDIF_GATE (1 << 31)
+-# define CLKCTRL_DIS_LCDIF_BUSY (1 << 29)
+-# define SET_DIS_LCDIF_DIV(x) ((x) & 0x1fff)
+-# define GET_DIS_LCDIF_DIV(x) ((x) & 0x1fff)
+-#define HW_CLKCTRL_ETM 0x130
+-#define HW_CLKCTRL_ENET 0x140
+-# define SET_CLKCTRL_ENET_DIV(x) (((x) & 0x3f) << 21)
+-# define SET_CLKCTRL_ENET_SEL(x) (((x) & 0x3) << 19)
+-# define CLKCTRL_ENET_CLK_OUT_EN (1 << 18)
+-#define HW_CLKCTRL_HSADC 0x150
+-#define HW_CLKCTRL_FLEXCAN 0x160
+-#define HW_CLKCTRL_FRAC0 0x1b0
+-# define CLKCTRL_FRAC_CLKGATEIO0 (1 << 31)
+-# define GET_IO0FRAC(x) (((x) >> 24) & 0x3f)
+-# define SET_IO0FRAC(x) (((x) & 0x3f) << 24)
+-# define CLKCTRL_FRAC_CLKGATEIO1 (1 << 23)
+-# define GET_IO1FRAC(x) (((x) >> 16) & 0x3f)
+-# define SET_IO1FRAC(x) (((x) & 0x3f) << 16)
+-# define CLKCTRL_FRAC_CLKGATEEMI (1 << 15)
+-# define GET_EMIFRAC(x) (((x) >> 8) & 0x3f)
+-# define CLKCTRL_FRAC_CLKGATECPU (1 << 7)
+-# define GET_CPUFRAC(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_FRAC1 0x1c0
+-# define CLKCTRL_FRAC_CLKGATEGPMI (1 << 23)
+-# define GET_GPMIFRAC(x) (((x) >> 16) & 0x3f)
+-# define CLKCTRL_FRAC_CLKGATEHSADC (1 << 15)
+-# define GET_HSADCFRAC(x) (((x) >> 8) & 0x3f)
+-# define CLKCTRL_FRAC_CLKGATEPIX (1 << 7)
+-# define GET_PIXFRAC(x) ((x) & 0x3f)
+-# define SET_PIXFRAC(x) ((x) & 0x3f)
+-#define HW_CLKCTRL_CLKSEQ 0x1d0
+-# define CLKCTRL_CLKSEQ_BYPASS_CPU (1 << 18)
+-# define CLKCTRL_CLKSEQ_BYPASS_DIS_LCDIF (1 << 14)
+-# define CLKCTRL_CLKSEQ_BYPASS_ETM (1 << 8)
+-# define CLKCTRL_CLKSEQ_BYPASS_EMI (1 << 7)
+-# define CLKCTRL_CLKSEQ_BYPASS_SSP3 (1 << 6)
+-# define CLKCTRL_CLKSEQ_BYPASS_SSP2 (1 << 5)
+-# define CLKCTRL_CLKSEQ_BYPASS_SSP1 (1 << 4)
+-# define CLKCTRL_CLKSEQ_BYPASS_SSP0 (1 << 3)
+-# define CLKCTRL_CLKSEQ_BYPASS_GPMI (1 << 2)
+-# define CLKCTRL_CLKSEQ_BYPASS_SAIF1 (1 << 1)
+-# define CLKCTRL_CLKSEQ_BYPASS_SAIF0 (1 << 0)
+-#define HW_CLKCTRL_RESET 0x1e0
+-#define HW_CLKCTRL_STATUS 0x1f0
+-#define HW_CLKCTRL_VERSION 0x200
+-
+-unsigned imx_get_mpllclk(void)
+-{
+-	/* the main PLL runs at 480 MHz */
+-	return 480000000;
+-}
+-
+-unsigned imx_get_xtalclk(void)
+-{
+-	/* the external reference runs at 24 MHz */
+-	return 24000000;
+-}
+-
+-unsigned imx_get_fecclk(void)
+-{
+-	return imx_get_hclk();
+-}
+-
+-
+-/* used for the SDRAM controller */
+-unsigned imx_get_emiclk(void)
+-{
+-	uint32_t reg;
+-	unsigned rate;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_EMI) & CLKCTRL_EMI_CLKGATE)
+-		return 0;	/* clock is off */
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & CLKCTRL_CLKSEQ_BYPASS_EMI)
+-		return imx_get_xtalclk() /
+-			GET_EMI_XTAL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_EMI));
+-
+-	rate = imx_get_mpllclk() / 1000;
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC0);
+-	if (!(reg & CLKCTRL_FRAC_CLKGATEEMI)) {
+-		rate *= 18;
+-		rate /= GET_EMIFRAC(reg);
+-	}
+-
+-	return (rate / GET_EMI_PLL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_EMI)))
+-				* 1000;
+-}
+-
+-/*
+- * Source of ssp, gpmi, ir
+- * @param index 0 or 1 for ioclk0 or ioclock1
+- */
+-unsigned imx_get_ioclk(unsigned index)
+-{
+-	uint32_t reg;
+-	unsigned rate = imx_get_mpllclk() / 1000;
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC0);
+-	switch (index) {
+-	case 0:
+-		if (reg & CLKCTRL_FRAC_CLKGATEIO0)
+-			return 0;	/* clock is off */
+-
+-		rate *= 18;
+-		rate /= GET_IO0FRAC(reg);
 -		break;
--	case IMX_SSP1_BASE:
--		mxs_mci->index = 1;
+-	case 1:
+-		if (reg & CLKCTRL_FRAC_CLKGATEIO1)
+-			return 0;	/* clock is off */
+-
+-		rate *= 18;
+-		rate /= GET_IO1FRAC(reg);
 -		break;
--	case IMX_SSP2_BASE:
--		mxs_mci->index = 2;
+-	}
+-
+-	return rate * 1000;
+-}
+-
+-/**
+- * Setup a new frequency to the IOCLK domain.
+- * @param index 0 or 1 for ioclk0 or ioclock1
+- * @param nc New frequency in [Hz]
+- *
+- * The FRAC divider for the IOCLK must be between 18 (* 18/18) and 35 (* 18/35)
+- *
+- * ioclock0 is the shared clock source of SSP0/SSP1, ioclock1 the shared clock
+- * source of SSP2/SSP3
+- */
+-unsigned imx_set_ioclk(unsigned index, unsigned nc)
+-{
+-	uint32_t reg;
+-	unsigned div;
+-
+-	nc /= 1000;
+-	div = (imx_get_mpllclk() / 1000) * 18;
+-	div = DIV_ROUND_CLOSEST(div, nc);
+-	if (div > 0x3f)
+-		div = 0x3f;
+-
+-	switch (index) {
+-	case 0:
+-		reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC0) &
+-				~(SET_IO0FRAC(0x3f));
+-		/* mask the current settings */
+-		writel(reg | SET_IO0FRAC(div), IMX_CCM_BASE + HW_CLKCTRL_FRAC0);
+-		/* enable the IO clock at its new frequency */
+-		writel(CLKCTRL_FRAC_CLKGATEIO0,
+-				IMX_CCM_BASE + HW_CLKCTRL_FRAC0 + BIT_CLR);
 -		break;
--	case IMX_SSP3_BASE:
--		mxs_mci->index = 3;
+-	case 1:
+-		reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC0) &
+-				~(SET_IO1FRAC(0x3f));
+-		/* mask the current settings */
+-		writel(reg | SET_IO1FRAC(div), IMX_CCM_BASE + HW_CLKCTRL_FRAC0);
+-		/* enable the IO clock at its new frequency */
+-		writel(CLKCTRL_FRAC_CLKGATEIO1,
+-				IMX_CCM_BASE + HW_CLKCTRL_FRAC0 + BIT_CLR);
 -		break;
--	default:
--		pr_debug("Unknown SSP unit at address 0x%p\n", mxs_mci->regs);
+-	}
+-
+-	return imx_get_ioclk(index);
+-}
+-
+-/* this is CPU core clock */
+-unsigned imx_get_armclk(void)
+-{
+-	uint32_t reg;
+-	unsigned rate;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & CLKCTRL_CLKSEQ_BYPASS_CPU)
+-		return imx_get_xtalclk() /
+-			GET_CPU_XTAL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_CPU));
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_FRAC0);
+-	if (reg & CLKCTRL_FRAC_CLKGATECPU)
+-		return 0;	/* should not possible, shouldn't it? */
+-
+-	rate = (imx_get_mpllclk() / 1000) * 18;
+-	rate /= GET_CPUFRAC(reg);
+-
+-	return (rate / GET_CPU_PLL_DIV(readl(IMX_CCM_BASE + HW_CLKCTRL_CPU)))
+-			* 1000;
+-}
+-
+-/* this is the AHB and APBH bus clock */
+-unsigned imx_get_hclk(void)
+-{
+-	unsigned rate = imx_get_armclk() / 1000;
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x20) {
+-		rate *= readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x1f;
+-		rate = DIV_ROUND_UP(rate, 32);
+-	} else
+-		rate = DIV_ROUND_UP(rate,
+-			readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & 0x1f);
+-	return rate * 1000;
+-}
+-
+-unsigned imx_set_hclk(unsigned nc)
+-{
+-	unsigned root_rate = imx_get_armclk();
+-	unsigned reg, div;
+-
+-	div = DIV_ROUND_UP(root_rate, nc);
+-	if ((div == 0) || (div >= 32))
+-		return 0;
+-
+-	if ((root_rate < nc) && (root_rate == 64000000))
+-		div = 3;
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & ~0x3f;
+-	writel(reg | div, IMX_CCM_BASE + HW_CLKCTRL_HBUS);
+-
+-	while (readl(IMX_CCM_BASE + HW_CLKCTRL_HBUS) & (1 << 31))
+-		;
+-
+-	return imx_get_hclk();
+-}
+-
+-/*
+- * Source of UART, debug UART, audio, PWM, dri, timer, digctl
+- */
+-unsigned imx_get_xclk(void)
+-{
+-	/* runs from the 24 MHz crystal reference */
+-	unsigned rate = imx_get_xtalclk();
+-
+-	return rate / (readl(IMX_CCM_BASE + HW_CLKCTRL_XBUS) & 0x3ff);
+-}
+-
+-/**
+- * @param index The SSP unit (0...3)
+- */
+-unsigned imx_get_sspclk(unsigned index)
+-{
+-	unsigned rate, offset, shift, ioclk_index;
+-
+-	if (index > 3) {
+-		pr_debug("Unknown SSP unit: %u\n", index);
 -		return 0;
 -	}
--#endif
-+	mxs_mci->clk = clk_get(hw_dev, NULL);
-+	if (IS_ERR(mxs_mci->clk))
-+		return PTR_ERR(mxs_mci->clk);
-+
-+	clk_enable(mxs_mci->clk);
-+
-+	rate = clk_get_rate(mxs_mci->clk);
-+
- 	if (pd->f_min == 0) {
--		host->f_min = mxs_mci_get_unit_clock(mxs_mci) / 254 / 256;
-+		host->f_min = rate / 254 / 256;
- 		dev_dbg(hw_dev, "Min. frequency is %u Hz\n", host->f_min);
- 	} else {
- 		host->f_min = pd->f_min;
--		dev_dbg(hw_dev, "Min. frequency is %u Hz, could be %u Hz\n",
--			host->f_min, mxs_mci_get_unit_clock(mxs_mci) / 254 / 256);
-+		dev_dbg(hw_dev, "Min. frequency is %u Hz, could be %lu Hz\n",
-+			host->f_min, rate / 254 / 256);
- 	}
- 	if (pd->f_max == 0) {
--		host->f_max = mxs_mci_get_unit_clock(mxs_mci) / 2 / 1;
-+		host->f_max = rate / 2 / 1;
- 		dev_dbg(hw_dev, "Max. frequency is %u Hz\n", host->f_max);
- 	} else {
- 		host->f_max =  pd->f_max;
--		dev_dbg(hw_dev, "Max. frequency is %u Hz, could be %u Hz\n",
--			host->f_max, mxs_mci_get_unit_clock(mxs_mci) / 2 / 1);
-+		dev_dbg(hw_dev, "Max. frequency is %u Hz, could be %lu Hz\n",
-+			host->f_max, rate / 2 / 1);
- 	}
- 
- 	if (IS_ENABLED(CONFIG_MCI_INFO)) {
+-
+-	ioclk_index = index >> 1;
+-
+-	offset = HW_CLKCTRL_SSP0 + (0x10 * index);
+-	shift = CLKCTRL_CLKSEQ_BYPASS_SSP0 << index;
+-
+-	if (readl(IMX_CCM_BASE + offset) & CLKCTRL_SSP_CLKGATE)
+-		return 0;	/* clock is off */
+-
+-	if (readl(IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ) & shift)
+-		rate = imx_get_xtalclk();
+-	else
+-		rate = imx_get_ioclk(ioclk_index);
+-
+-	return rate / GET_SSP_DIV(readl(IMX_CCM_BASE + offset));
+-}
+-
+-/**
+- * @param index The SSP unit (0...3)
+- * @param nc New frequency in [Hz]
+- * @param high != 0 if ioclk should be the source
+- * @return The new possible frequency
+- */
+-unsigned imx_set_sspclk(unsigned index, unsigned nc, int high)
+-{
+-	uint32_t reg;
+-	unsigned ssp_div, offset, shift, ioclk_index;
+-
+-	if (index > 3) {
+-		pr_debug("Unknown SSP unit: %u\n", index);
+-		return 0;
+-	}
+-
+-	ioclk_index = index >> 1;
+-
+-	offset = HW_CLKCTRL_SSP0 + (0x10 * index);
+-	shift = CLKCTRL_CLKSEQ_BYPASS_SSP0 << index;
+-
+-	reg = readl(IMX_CCM_BASE + offset) & ~CLKCTRL_SSP_CLKGATE;
+-	/* Datasheet says: Do not change the DIV setting if the clock is off */
+-	writel(reg, IMX_CCM_BASE + offset);
+-	/* Wait while clock is gated */
+-	while (readl(IMX_CCM_BASE + offset) & CLKCTRL_SSP_CLKGATE)
+-		;
+-
+-	if (high)
+-		ssp_div = imx_get_ioclk(ioclk_index);
+-	else
+-		ssp_div = imx_get_xtalclk();
+-
+-	if (nc > ssp_div) {
+-		printf("Cannot setup SSP unit clock to %u kHz, base clock is "
+-						"only %u kHz\n", nc, ssp_div);
+-		ssp_div = 1;
+-	} else {
+-		ssp_div = DIV_ROUND_UP(ssp_div, nc);
+-		if (ssp_div > CLKCTRL_SSP_DIV_MASK)
+-			ssp_div = CLKCTRL_SSP_DIV_MASK;
+-	}
+-
+-	/* Set new divider value */
+-	reg = readl(IMX_CCM_BASE + offset) & ~CLKCTRL_SSP_DIV_MASK;
+-	writel(reg | SET_SSP_DIV(ssp_div), IMX_CCM_BASE + offset);
+-
+-	/* Wait until new divider value is set */
+-	while (readl(IMX_CCM_BASE + offset) & CLKCTRL_SSP_BUSY)
+-		;
+-
+-	if (high)
+-		/* switch to ioclock */
+-		writel(shift, IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_CLR);
+-	else
+-		/* switch to 24 MHz crystal */
+-		writel(shift, IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_SET);
+-
+-	return imx_get_sspclk(index);
+-}
+-
+-void imx_enable_enetclk(void)
+-{
+-	uint32_t reg;
+-
+-	/* wake up main enet PLL */
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_PLL2CTRL0);
+-	if (!(reg & CLKCTRL_PLL2CTRL0_POWER)) {
+-		reg |= CLKCTRL_PLL2CTRL0_POWER;
+-		writel(reg, IMX_CCM_BASE + HW_CLKCTRL_PLL2CTRL0);
+-		udelay(50);	/* wait until this PLL locks */
+-	}
+-	reg &= ~CLKCTRL_PLL2CTRL0_CLKGATE;
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_PLL2CTRL0);
+-
+-	writel(SET_CLKCTRL_ENET_DIV(1) | SET_CLKCTRL_ENET_SEL(0) |
+-		CLKCTRL_ENET_CLK_OUT_EN, /* FIXME may be platform specific */
+-		IMX_CCM_BASE + HW_CLKCTRL_ENET);
+-}
+-
+-void imx_enable_nandclk(void)
+-{
+-	uint32_t reg;
+-
+-	/* Clear bypass bit; refman says clear, but fsl-code does set. Hooray! */
+-	writel(CLKCTRL_CLKSEQ_BYPASS_GPMI,
+-		IMX_CCM_BASE + HW_CLKCTRL_CLKSEQ + BIT_SET);
+-
+-	reg = readl(IMX_CCM_BASE + HW_CLKCTRL_GPMI) & ~CLKCTRL_GPMI_CLKGATE;
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
+-	udelay(1000);
+-	/* Initialize DIV to 1 */
+-	reg &= ~CLKCTRL_GPMI_DIV_MASK;
+-	reg |= 1;
+-	writel(reg, IMX_CCM_BASE + HW_CLKCTRL_GPMI);
+-}
+-
+-void imx_dump_clocks(void)
+-{
+-	printf("mpll:    %10u kHz\n", imx_get_mpllclk() / 1000);
+-	printf("arm:     %10u kHz\n", imx_get_armclk() / 1000);
+-	printf("ioclk0:  %10u kHz\n", imx_get_ioclk(0) / 1000);
+-	printf("ioclk1:  %10u kHz\n", imx_get_ioclk(1) / 1000);
+-	printf("emiclk:  %10u kHz\n", imx_get_emiclk() / 1000);
+-	printf("hclk:    %10u kHz\n", imx_get_hclk() / 1000);
+-	printf("xclk:    %10u kHz\n", imx_get_xclk() / 1000);
+-	printf("ssp0:    %10u kHz\n", imx_get_sspclk(0) / 1000);
+-	printf("ssp1:    %10u kHz\n", imx_get_sspclk(1) / 1000);
+-	printf("ssp2:    %10u kHz\n", imx_get_sspclk(2) / 1000);
+-	printf("ssp3:    %10u kHz\n", imx_get_sspclk(3) / 1000);
+-}
 -- 
 1.8.3.1
 
