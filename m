@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpQKP-0006cK-Vb
- for barebox@lists.infradead.org; Wed, 19 Jun 2013 21:54:10 +0000
-Received: by mail-bk0-f49.google.com with SMTP id mz10so2550107bkb.36
- for <barebox@lists.infradead.org>; Wed, 19 Jun 2013 14:53:47 -0700 (PDT)
-Date: Wed, 19 Jun 2013 23:57:01 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130619215700.GA2135@x61s.8.8.8.8>
+ id 1UpYZs-0004Tg-9d
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:42:41 +0000
+Date: Thu, 20 Jun 2013 08:42:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130620064217.GN32299@pengutronix.de>
 References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
  <20130619213239.GA3707@x61s.8.8.8.8>
+ <20130619215700.GA2135@x61s.8.8.8.8>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130619213239.GA3707@x61s.8.8.8.8>
+In-Reply-To: <20130619215700.GA2135@x61s.8.8.8.8>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,61 +26,71 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
  pass size
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Wed, Jun 19, 2013 at 11:32:39PM +0200, Alexander Aring wrote:
-> Hi Sascha,
+On Wed, Jun 19, 2013 at 11:57:01PM +0200, Alexander Aring wrote:
+> Hi,
 > 
-> only a very small hint.
-> 
-> On Wed, Jun 19, 2013 at 10:58:48PM +0200, Sascha Hauer wrote:
-> > Some tftp servers (for example netkit-tftp) do not pass the filesize.
-> > Add a workaround for read_file which reads the file into a temporary
-> > file which then is copied to a buffer.
+> On Wed, Jun 19, 2013 at 11:32:39PM +0200, Alexander Aring wrote:
+> > Hi Sascha,
 > > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  fs/fs.c      | 18 ++++++++++++++++++
-> >  fs/tftp.c    |  5 ++++-
-> >  include/fs.h |  2 ++
-> >  3 files changed, 24 insertions(+), 1 deletion(-)
+> > only a very small hint.
 > > 
-> > diff --git a/fs/fs.c b/fs/fs.c
-> > index dc3a6e3..7046f2c 100644
-> > --- a/fs/fs.c
-> > +++ b/fs/fs.c
-> > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
-> >  	int fd;
+> > On Wed, Jun 19, 2013 at 10:58:48PM +0200, Sascha Hauer wrote:
+> > > Some tftp servers (for example netkit-tftp) do not pass the filesize.
+> > > Add a workaround for read_file which reads the file into a temporary
+> > > file which then is copied to a buffer.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  fs/fs.c      | 18 ++++++++++++++++++
+> > >  fs/tftp.c    |  5 ++++-
+> > >  include/fs.h |  2 ++
+> > >  3 files changed, 24 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/fs/fs.c b/fs/fs.c
+> > > index dc3a6e3..7046f2c 100644
+> > > --- a/fs/fs.c
+> > > +++ b/fs/fs.c
+> > > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
+> > >  	int fd;
+> > 
+> > ...
+> > 
+> > >  
+> > >  	tftp_do_close(priv);
+> > >  
+> > > diff --git a/include/fs.h b/include/fs.h
+> > > index 8ff7300..fa6a8da 100644
+> > > --- a/include/fs.h
+> > > +++ b/include/fs.h
+> > > @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
+> > >  int protect_file(const char *file, int prot);
+> > >  void *memmap(int fd, int flags);
+> > >  
+> > > +#define FILESIZE_MAX	((size_t)-1)
+> > 
+> > The type of st_size in struct stat is loff_t. I check this and
+> > ((size_t)-1) is different than ((loff_t)-1), so I think we need to cast
+> > to loff_t. Maybe it's better to use a define from limits.h, but we don't
+> > have some header file like this.
+> > 
 > 
-> ...
-> 
-> >  
-> >  	tftp_do_close(priv);
-> >  
-> > diff --git a/include/fs.h b/include/fs.h
-> > index 8ff7300..fa6a8da 100644
-> > --- a/include/fs.h
-> > +++ b/include/fs.h
-> > @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
-> >  int protect_file(const char *file, int prot);
-> >  void *memmap(int fd, int flags);
-> >  
-> > +#define FILESIZE_MAX	((size_t)-1)
-> 
-> The type of st_size in struct stat is loff_t. I check this and
-> ((size_t)-1) is different than ((loff_t)-1), so I think we need to cast
-> to loff_t. Maybe it's better to use a define from limits.h, but we don't
-> have some header file like this.
-> 
+> ah, I see it now. The fs layer use size_t instead of loff_t. Sorry for
+> the noise.
 
-ah, I see it now. The fs layer use size_t instead of loff_t. Sorry for
-the noise.
+No no, you were right. This indeed has to be a loff_t. Where did you
+find that the fs layer uses size_t? It should do so only for the length
+arguments of read/write and friends.
 
-Regards
-Alex
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
