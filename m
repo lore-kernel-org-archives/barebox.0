@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpYZs-0004Tg-9d
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:42:41 +0000
-Date: Thu, 20 Jun 2013 08:42:17 +0200
+ id 1UpYlZ-0004gA-50
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 06:54:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130620064217.GN32299@pengutronix.de>
-References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
- <20130619213239.GA3707@x61s.8.8.8.8>
- <20130619215700.GA2135@x61s.8.8.8.8>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130619215700.GA2135@x61s.8.8.8.8>
+Date: Thu, 20 Jun 2013 08:54:15 +0200
+Message-Id: <1371711261-10039-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
+References: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,77 +16,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
- pass size
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 11/17] serial: auart: Use clk support
+To: barebox@lists.infradead.org
+Cc: Juergen Beisert <jbe@pengutronix.de>
 
-On Wed, Jun 19, 2013 at 11:57:01PM +0200, Alexander Aring wrote:
-> Hi,
-> 
-> On Wed, Jun 19, 2013 at 11:32:39PM +0200, Alexander Aring wrote:
-> > Hi Sascha,
-> > 
-> > only a very small hint.
-> > 
-> > On Wed, Jun 19, 2013 at 10:58:48PM +0200, Sascha Hauer wrote:
-> > > Some tftp servers (for example netkit-tftp) do not pass the filesize.
-> > > Add a workaround for read_file which reads the file into a temporary
-> > > file which then is copied to a buffer.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  fs/fs.c      | 18 ++++++++++++++++++
-> > >  fs/tftp.c    |  5 ++++-
-> > >  include/fs.h |  2 ++
-> > >  3 files changed, 24 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/fs/fs.c b/fs/fs.c
-> > > index dc3a6e3..7046f2c 100644
-> > > --- a/fs/fs.c
-> > > +++ b/fs/fs.c
-> > > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
-> > >  	int fd;
-> > 
-> > ...
-> > 
-> > >  
-> > >  	tftp_do_close(priv);
-> > >  
-> > > diff --git a/include/fs.h b/include/fs.h
-> > > index 8ff7300..fa6a8da 100644
-> > > --- a/include/fs.h
-> > > +++ b/include/fs.h
-> > > @@ -147,6 +147,8 @@ int protect(int fd, size_t count, unsigned long offset, int prot);
-> > >  int protect_file(const char *file, int prot);
-> > >  void *memmap(int fd, int flags);
-> > >  
-> > > +#define FILESIZE_MAX	((size_t)-1)
-> > 
-> > The type of st_size in struct stat is loff_t. I check this and
-> > ((size_t)-1) is different than ((loff_t)-1), so I think we need to cast
-> > to loff_t. Maybe it's better to use a define from limits.h, but we don't
-> > have some header file like this.
-> > 
-> 
-> ah, I see it now. The fs layer use size_t instead of loff_t. Sorry for
-> the noise.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/serial/serial_auart.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-No no, you were right. This indeed has to be a loff_t. Where did you
-find that the fs layer uses size_t? It should do so only for the length
-arguments of read/write and friends.
-
-Sascha
-
+diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
+index a69e65b..98f7c75 100644
+--- a/drivers/serial/serial_auart.c
++++ b/drivers/serial/serial_auart.c
+@@ -42,6 +42,8 @@
+ #include <io.h>
+ #include <malloc.h>
+ #include <notifier.h>
++#include <linux/clk.h>
++#include <linux/err.h>
+ 
+ #include <mach/clock.h>
+ #include <mach/mxs.h>
+@@ -92,6 +94,7 @@ struct auart_priv {
+ 	int baudrate;
+ 	struct notifier_block notify;
+ 	void __iomem *base;
++	struct clk *clk;
+ };
+ 
+ static void auart_serial_putc(struct console_device *cdev, char c)
+@@ -143,7 +146,7 @@ static int auart_serial_setbaudrate(struct console_device *cdev, int new_baudrat
+ 	writel(0x0, priv->base + HW_UARTAPP_CTRL2);
+ 
+ 	/* Calculate and set baudrate */
+-	quot = (imx_get_xclk() * 32) / new_baudrate;
++	quot = (clk_get_rate(priv->clk) * 32) / new_baudrate;
+ 	reg = BF_UARTAPP_LINECTRL_BAUD_DIVFRAC(quot & 0x3F) |
+ 		BF_UARTAPP_LINECTRL_BAUD_DIVINT(quot >> 6) |
+ 		BF_UARTAPP_LINECTRL_WLEN(3) |
+@@ -194,6 +197,9 @@ static int auart_serial_probe(struct device_d *dev)
+ 
+ 	dev->priv = priv;
+ 	priv->base = dev_request_mem_region(dev, 0);
++	priv->clk = clk_get(dev, NULL);
++	if (IS_ERR(priv->clk))
++		return PTR_ERR(priv->clk);
+ 
+ 	auart_serial_init_port(priv);
+ 	auart_serial_setbaudrate(cdev, CONFIG_BAUDRATE);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.3.1
+
 
 _______________________________________________
 barebox mailing list
