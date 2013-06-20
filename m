@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpfVL-0007yt-Lz
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 14:06:28 +0000
+ id 1UpfUl-0007uY-61
+ for barebox@lists.infradead.org; Thu, 20 Jun 2013 14:05:53 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Jun 2013 16:06:05 +0200
-Message-Id: <1371737165-1313-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 20 Jun 2013 16:05:23 +0200
+Message-Id: <1371737125-18820-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1371737125-18820-1-git-send-email-s.hauer@pengutronix.de>
+References: <1371737125-18820-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] detect command: Add -a option to detect all devices
+Subject: [PATCH 2/4] usb: move scanned status into core
 To: barebox@lists.infradead.org
+
+A command should not be interested in the internal USB core state, so
+move the state handling into the core.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/detect.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ commands/usb.c         | 10 +++-------
+ drivers/usb/core/usb.c |  9 ++++++++-
+ include/usb/usb.h      |  2 +-
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/commands/detect.c b/commands/detect.c
-index 0010a17..fbce4eb 100644
---- a/commands/detect.c
-+++ b/commands/detect.c
-@@ -28,8 +28,9 @@ static int do_detect(int argc, char *argv[])
- 	int opt, i, ret;
- 	int option_list = 0;
- 	int option_error = 0;
-+	int option_all = 0;
+diff --git a/commands/usb.c b/commands/usb.c
+index e503065..9aee430 100644
+--- a/commands/usb.c
++++ b/commands/usb.c
+@@ -22,24 +22,20 @@
+ #include <usb/usb.h>
+ #include <getopt.h>
  
--	while ((opt = getopt(argc, argv, "el")) > 0) {
-+	while ((opt = getopt(argc, argv, "ela")) > 0) {
+-static int scanned;
+-
+ static int do_usb(int argc, char *argv[])
+ {
+ 	int opt;
++	int force = 0;
+ 
+ 	while ((opt = getopt(argc, argv, "f")) > 0) {
  		switch (opt) {
- 		case 'l':
- 			option_list = 1;
-@@ -37,6 +38,11 @@ static int do_detect(int argc, char *argv[])
- 		case 'e':
- 			option_error = 1;
+ 		case 'f':
+-			scanned = 0;
++			force = 1;
  			break;
-+		case 'a':
-+			option_all = 1;
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
  		}
  	}
  
-@@ -48,6 +54,15 @@ static int do_detect(int argc, char *argv[])
- 		return 0;
- 	}
+-	if (!scanned) {
+-		usb_rescan();
+-		scanned = 1;
+-	}
++	usb_rescan(force);
  
-+	if (option_all) {
-+		for_each_device(dev) {
-+			ret = device_detect(dev);
-+			if (ret && ret != -ENOSYS && option_error)
-+				return ret;
-+		}
-+		return 0;
-+	}
+ 	return 0;
+ }
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index e232111..07175dc 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -488,12 +488,19 @@ static struct usb_device *usb_alloc_new_device(void)
+ 	return usbdev;
+ }
+ 
+-void usb_rescan(void)
++static int scanned;
 +
- 	if (argc == optind)
- 		return COMMAND_ERROR_USAGE;
++void usb_rescan(int force)
+ {
+ 	struct usb_device *dev, *tmp;
+ 	struct usb_host *host;
+ 	int ret;
  
++	if (scanned && !force)
++		return;
++
++	scanned = 1;
++
+ 	list_for_each_entry_safe(dev, tmp, &usb_device_list, list) {
+ 		list_del(&dev->list);
+ 		unregister_device(&dev->dev);
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index da0090e..2e1498c 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -248,7 +248,7 @@ int usb_clear_halt(struct usb_device *dev, int pipe);
+ int usb_string(struct usb_device *dev, int index, char *buf, size_t size);
+ int usb_set_interface(struct usb_device *dev, int interface, int alternate);
+ 
+-void usb_rescan(void);
++void usb_rescan(int force);
+ 
+ /* big endian -> little endian conversion */
+ /* some CPUs are already little endian e.g. the ARM920T */
 -- 
 1.8.3.1
 
