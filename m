@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UpeKH-0005py-LW
- for barebox@lists.infradead.org; Thu, 20 Jun 2013 12:50:58 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5A5D6BF0F7
- for <barebox@lists.infradead.org>; Thu, 20 Jun 2013 14:45:45 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Thu, 20 Jun 2013 14:50:27 +0200
-Message-Id: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uptvm-0008QE-Mr
+ for barebox@lists.infradead.org; Fri, 21 Jun 2013 05:30:44 +0000
+Date: Fri, 21 Jun 2013 07:30:17 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130621053017.GW32299@pengutronix.de>
+References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,27 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] I2C support for AM33xx
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/8] low level initialisation for ar2313
+To: Oleksij Rempel <linux@rempel-privat.de>
+Cc: barebox@lists.infradead.org
 
-VGhpcyBzZXJpZXMsIGRvZXMgc29tZSBjbGVhbnVwIGluIHRoZSBpMmMtb21hcApkcml2ZXIgYW5k
-IGFkZHMgaTJjIHN1cHBvcnQgZm9yIEFNMzN4eC4KClRoaXMgc2hvdWxkIGJlIGFwcGxpZWQgb24g
-dG9wIG9mIHRoZSAKCWNvbW1pdCA5NzM4MzYxZTMyZjkwOGU0MzNjYjRhNWE0MmFkYTEzYjgzZmVk
-ZmNiCgoJQVJNOiBBTTMzeHg6IHBjbTA1MTogQWRkIG5ldHdvcmsgc3VwcG9ydApwYXRjaC4KClRl
-cmVzYSBHw6FtZXogKDMpOgogIGkyYy1vbWFwOiBjbGVhbnVwIGNwdV9pcyBmdW5jdGlvbnMKICBB
-Uk06IEFNMzN4eDogQWRkIGkyYyBzdXBwb3J0IGZvciBBTTMzeHgKICBBUk06IE9NQVA6IHBjbTA1
-MTogQWRkIGkyYzAgYW5kIGF0MjQgZWVwcm9tIHN1cHBvcnQKCiBhcmNoL2FybS9ib2FyZHMvcGNt
-MDUxL2JvYXJkLmMgICAgICAgICAgICAgICAgICAgfCAgIDE4ICsrKwogYXJjaC9hcm0vY29uZmln
-cy9wY20wNTFfZGVmY29uZmlnICAgICAgICAgICAgICAgIHwgICAgNCArCiBhcmNoL2FybS9tYWNo
-LW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1kZXZpY2VzLmggfCAgIDE1ICsrCiBhcmNoL2FybS9t
-YWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggfCAgICA1ICsKIGFyY2gvYXJt
-L21hY2gtb21hcC9pbmNsdWRlL21hY2gvZ2VuZXJpYy5oICAgICAgICB8ICAgIDYgKwogZHJpdmVy
-cy9pMmMvYnVzc2VzL2kyYy1vbWFwLmMgICAgICAgICAgICAgICAgICAgIHwgIDE2OSArKysrKysr
-Ky0tLS0tLS0tLS0tLS0tCiA2IGZpbGVzIGNoYW5nZWQsIDExMiBpbnNlcnRpb25zKCspLCAxMDUg
-ZGVsZXRpb25zKC0pCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Oleksij, Antony,
+
+I'm fine with this series. Antony, do you have comments?
+
+Sascha
+
+On Wed, Jun 19, 2013 at 11:11:25AM +0200, Oleksij Rempel wrote:
+> this patch set add low level initialisation for Atheros ar2313
+> and board based on this chip - Netgear wg102.
+> 
+> Antony Pavlov (2):
+>   MIPS: pbl: add mips_barebox_10h asm macro
+>   MIPS: mach-ar231x: enable DEBUG_LL
+> 
+> Oleksij Rempel (6):
+>   MIPS: pbl: add pbl_sleep macro
+>   MIPS: pbl: add pbl_probe_mem macro
+>   MIPS: mach-ar231x: add lowlevel init pbl macros
+>   MIPS: netgear-wg102: add pbl support
+>   MIPS: netgear-wg102: add debug_ll
+>   netgear-wg102: pbl, add extra check for mem config
+> 
+>  arch/mips/Kconfig                                  |   1 +
+>  .../netgear-wg102/include/board/board_pbl_start.h  |  77 +++++++++
+>  .../boards/netgear-wg102/include/board/debug_ll.h  |  33 ++++
+>  arch/mips/include/asm/pbl_macros.h                 |  38 +++++
+>  arch/mips/mach-ar231x/Kconfig                      |   2 +
+>  arch/mips/mach-ar231x/include/mach/debug_ll.h      |  27 ++++
+>  arch/mips/mach-ar231x/include/mach/pbl_macros.h    | 177 +++++++++++++++++++++
+>  7 files changed, 355 insertions(+)
+>  create mode 100644 arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h
+>  create mode 100644 arch/mips/boards/netgear-wg102/include/board/debug_ll.h
+>  create mode 100644 arch/mips/mach-ar231x/include/mach/debug_ll.h
+>  create mode 100644 arch/mips/mach-ar231x/include/mach/pbl_macros.h
+> 
+> -- 
+> 1.8.1.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
