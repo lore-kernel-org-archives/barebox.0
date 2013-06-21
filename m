@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.gmx.net ([212.227.17.22])
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Upv68-0001Qo-3Q
- for barebox@lists.infradead.org; Fri, 21 Jun 2013 06:45:28 +0000
-Received: from mailout-de.gmx.net ([10.1.76.17]) by mrigmx.server.lan
- (mrigmx001) with ESMTP (Nemesis) id 0MTdXC-1Uh16k1tEe-00QTeM for
- <barebox@lists.infradead.org>; Fri, 21 Jun 2013 08:45:02 +0200
-From: Oleksij Rempel <linux@rempel-privat.de>
-Date: Fri, 21 Jun 2013 08:44:56 +0200
-Message-Id: <1371797096-11927-1-git-send-email-linux@rempel-privat.de>
-In-Reply-To: <1371633093-23179-3-git-send-email-linux@rempel-privat.de>
-References: <1371633093-23179-3-git-send-email-linux@rempel-privat.de>
+ id 1UpvNy-0001nA-LK
+ for barebox@lists.infradead.org; Fri, 21 Jun 2013 07:03:56 +0000
+Message-ID: <1371798211.2957.6.camel@lws-weitzel>
+From: Jan Weitzel <J.Weitzel@phytec.de>
+Date: Fri, 21 Jun 2013 09:03:31 +0200
+In-Reply-To: <20130620152428.GU32299@pengutronix.de>
+References: <1371675528-6380-1-git-send-email-s.hauer@pengutronix.de>
+ <1371726931.3466.3.camel@lws-weitzel>
+ <20130620152428.GU32299@pengutronix.de>
+Mime-Version: 1.0
+Reply-To: J.Weitzel@phytec.de
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +20,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/8 v2] MIPS: pbl: add pbl_sleep macro
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] read_file: Make it work on tftp servers which do not
+ pass size
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Oleksij Rempel <linux@rempel-privat.de>
----
- arch/mips/include/asm/pbl_macros.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Am Donnerstag, den 20.06.2013, 17:24 +0200 schrieb Sascha Hauer:
+> On Thu, Jun 20, 2013 at 01:15:31PM +0200, Jan Weitzel wrote:
+> > Am Mittwoch, den 19.06.2013, 22:58 +0200 schrieb Sascha Hauer:
+> > > Some tftp servers (for example netkit-tftp) do not pass the filesize.
+> > > Add a workaround for read_file which reads the file into a temporary
+> > > file which then is copied to a buffer.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > ---
+> > >  fs/fs.c      | 18 ++++++++++++++++++
+> > >  fs/tftp.c    |  5 ++++-
+> > >  include/fs.h |  2 ++
+> > >  3 files changed, 24 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/fs/fs.c b/fs/fs.c
+> > > index dc3a6e3..7046f2c 100644
+> > > --- a/fs/fs.c
+> > > +++ b/fs/fs.c
+> > > @@ -38,10 +38,21 @@ void *read_file(const char *filename, size_t *size)
+> > >  	int fd;
+> > >  	struct stat s;
+> > >  	void *buf = NULL;
+> > > +	const char *tmpfile = "/.read_file_tmp";
+> > > +	int ret;
+> > >  
+> > > +again:
+> > >  	if (stat(filename, &s))
+> > >  		return NULL;
+> > >  
+> > > +	if (s.st_size == FILESIZE_MAX) {
+> > > +		ret = copy_file(filename, tmpfile, 0);
+> > > +		if (ret)
+> > > +			return NULL;
+> > > +		filename = tmpfile;
+> > > +		goto again;
+> > > +	}
+> > > +
+> > >  	buf = xzalloc(s.st_size + 1);
+> > >  
+> > >  	fd = open(filename, O_RDONLY);
+> > > @@ -56,12 +67,19 @@ void *read_file(const char *filename, size_t *size)
+> > >  	if (size)
+> > >  		*size = s.st_size;
+> > >  
+> > > +	if (filename == tmpfile)
+> > > +		unlink(tmpfile);
+> > > +
+> > >  	return buf;
+> > >  
+> > >  err_out1:
+> > >  	close(fd);
+> > >  err_out:
+> > >  	free(buf);
+> > > +
+> > > +	if (filename == tmpfile)
+> > > +		unlink(tmpfile);
+> > > +
+> > >  	return NULL;
+> > >  }
+> > >  
+> > > diff --git a/fs/tftp.c b/fs/tftp.c
+> > > index 98cbb37..1c37acf 100644
+> > > --- a/fs/tftp.c
+> > > +++ b/fs/tftp.c
+> > > @@ -597,7 +597,10 @@ static int tftp_stat(struct device_d *dev, const char *filename, struct stat *s)
+> > >  		return PTR_ERR(priv);
+> > >  
+> > >  	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
+> > > -	s->st_size = priv->filesize;
+> > > +	if (priv->filesize)
+> > > +		s->st_size = priv->filesize;
+> > > +	else
+> > > +		s->st_size = FILESIZE_MAX;
+> > Maybe we can determine the size here? Commands like "ls -l" and
+> > "ubiformat" asks about the filesize via stat. I'm not sure how much
+> > overheat it will be.
+> 
+> How do you want to do that? You would have to transfer the whole file
+> first and see how big it is. That works for small files we expect to fit
+> into memory like the ones read_file normally is called with. If you want
+> to transfer a rootfs image it might happen that it's bigger than the
+> available memory.
+That's a good point. I didn't see a way for big files. But setting the
+st_size to FILESIZE_MAX can cause trouble in other commands. ubiformat
+only blames that is doesn't fit to eraseblock boundaries. ll -l shows a
+really big size. What do you think about handle it complete in read_file
+if size == 0?
 
-diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
-index a3f970c..fde9434 100644
---- a/arch/mips/include/asm/pbl_macros.h
-+++ b/arch/mips/include/asm/pbl_macros.h
-@@ -28,6 +28,16 @@
- #include <generated/compile.h>
- #include <generated/utsrelease.h>
- 
-+	.macro	pbl_sleep reg count
-+	.set push
-+	.set noreorder
-+	li	\reg, \count
-+254:
-+	bgtz	\reg, 254b
-+	 addi	\reg, -1
-+	.set	pop
-+	.endm
-+
- 	/*
- 	 * ADR macro instruction (inspired by ARM)
- 	 *
--- 
-1.8.1.2
+Jan
+> 
+> Sascha
+> 
+
 
 
 _______________________________________________
