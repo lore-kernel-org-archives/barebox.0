@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uptvm-0008QE-Mr
- for barebox@lists.infradead.org; Fri, 21 Jun 2013 05:30:44 +0000
-Date: Fri, 21 Jun 2013 07:30:17 +0200
+ id 1Upu55-0008WN-9Q
+ for barebox@lists.infradead.org; Fri, 21 Jun 2013 05:40:19 +0000
+Date: Fri, 21 Jun 2013 07:39:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130621053017.GW32299@pengutronix.de>
-References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
+Message-ID: <20130621053956.GX32299@pengutronix.de>
+References: <1371732630-27966-1-git-send-email-t.gamez@phytec.de>
+ <1371732630-27966-3-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
+In-Reply-To: <1371732630-27966-3-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +19,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] low level initialisation for ar2313
-To: Oleksij Rempel <linux@rempel-privat.de>
+Subject: Re: [PATCH 2/3] ARM: AM33xx: Add i2c support for AM33xx
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Oleksij, Antony,
+Hi Teresa,
 
-I'm fine with this series. Antony, do you have comments?
+On Thu, Jun 20, 2013 at 02:50:29PM +0200, Teresa G=E1mez wrote:
+>  static void omap_i2c_unidle(struct omap_i2c_struct *i2c_omap)
+>  {
+> -	if (cpu_is_omap34xx()) {
+> +	if (cpu_is_omap34xx() || cpu_is_am33xx()) {
+
+Applied for now, but please consider converting this driver to use
+id_table and a sane set of driver data. All these cpu_is_* do not scale
+anymore for this driver.
 
 Sascha
 
-On Wed, Jun 19, 2013 at 11:11:25AM +0200, Oleksij Rempel wrote:
-> this patch set add low level initialisation for Atheros ar2313
-> and board based on this chip - Netgear wg102.
-> 
-> Antony Pavlov (2):
->   MIPS: pbl: add mips_barebox_10h asm macro
->   MIPS: mach-ar231x: enable DEBUG_LL
-> 
-> Oleksij Rempel (6):
->   MIPS: pbl: add pbl_sleep macro
->   MIPS: pbl: add pbl_probe_mem macro
->   MIPS: mach-ar231x: add lowlevel init pbl macros
->   MIPS: netgear-wg102: add pbl support
->   MIPS: netgear-wg102: add debug_ll
->   netgear-wg102: pbl, add extra check for mem config
-> 
->  arch/mips/Kconfig                                  |   1 +
->  .../netgear-wg102/include/board/board_pbl_start.h  |  77 +++++++++
->  .../boards/netgear-wg102/include/board/debug_ll.h  |  33 ++++
->  arch/mips/include/asm/pbl_macros.h                 |  38 +++++
->  arch/mips/mach-ar231x/Kconfig                      |   2 +
->  arch/mips/mach-ar231x/include/mach/debug_ll.h      |  27 ++++
->  arch/mips/mach-ar231x/include/mach/pbl_macros.h    | 177 +++++++++++++++++++++
->  7 files changed, 355 insertions(+)
->  create mode 100644 arch/mips/boards/netgear-wg102/include/board/board_pbl_start.h
->  create mode 100644 arch/mips/boards/netgear-wg102/include/board/debug_ll.h
->  create mode 100644 arch/mips/mach-ar231x/include/mach/debug_ll.h
->  create mode 100644 arch/mips/mach-ar231x/include/mach/pbl_macros.h
-> 
-> -- 
-> 1.8.1.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+-- =
 
--- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
