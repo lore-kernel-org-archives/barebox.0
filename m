@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x232.google.com ([2a00:1450:4013:c01::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Upy4s-0005mL-5y
- for barebox@lists.infradead.org; Fri, 21 Jun 2013 09:56:22 +0000
-Received: by mail-ea0-f178.google.com with SMTP id l15so4592940eak.9
- for <barebox@lists.infradead.org>; Fri, 21 Jun 2013 02:55:59 -0700 (PDT)
-Received: from [127.0.0.1] (fritzc.com. [78.47.220.26])
- by mx.google.com with ESMTPSA id n42sm6438792eeh.15.2013.06.21.02.55.57
- for <barebox@lists.infradead.org>
- (version=SSLv3 cipher=RC4-SHA bits=128/128);
- Fri, 21 Jun 2013 02:55:58 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <1371808410.3949.13.camel@mars>
-References: <1371808410.3949.13.camel@mars>
-Date: Fri, 21 Jun 2013 11:55:56 +0200
-Message-ID: <1371808556.3949.15.camel@mars>
-Mime-Version: 1.0
+ id 1Uq0EW-0000Wj-Hv
+ for barebox@lists.infradead.org; Fri, 21 Jun 2013 12:14:30 +0000
+From: =?iso-8859-15?q?J=FCrgen_Beisert?= <jbe@pengutronix.de>
+Date: Fri, 21 Jun 2013 14:14:25 +0200
+References: <1371711261-10039-1-git-send-email-s.hauer@pengutronix.de>
+ <1371711261-10039-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1371711261-10039-5-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <201306211414.25514.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,99 +19,106 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM OMAP: add support for loading Environment from UBI
+Subject: Re: [PATCH 04/17] ARM: MXS: Add MXS specific clk types
 To: barebox@lists.infradead.org
 
-This patch adds support to load environment from a static
-UBI volume.
+With the following patch on top of [PATCH 04/17]:
 
-Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
----
- common/Kconfig   |   34 ++++++++++++++++++++++++++++++++++
- common/startup.c |   17 +++++++++++++++++
- 2 files changed, 51 insertions(+)
+diff --git a/drivers/clk/mxs/clk-ref.c b/drivers/clk/mxs/clk-ref.c
+index d62ebfc..7ff5527 100644
+--- a/drivers/clk/mxs/clk-ref.c
++++ b/drivers/clk/mxs/clk-ref.c
+@@ -40,6 +40,17 @@ struct clk_ref {
+ #define SET	0x4
+ #define CLR	0x8
+ =
 
-diff --git a/common/Kconfig b/common/Kconfig
-index d36ed13..058eb21 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -103,6 +103,40 @@ config MEMINFO
- config ENVIRONMENT_VARIABLES
- 	bool "environment variables support"
- 
-+config ENVIRONMENT_IN_UBI
-+	bool "Load Environment from an UBI static volume"
-+	depends on UBI
-+	depends on ENV_HANDLING
-+	help
-+	  Say Y here if you would like to attach UBI and load
-+	  the environment from an UBI volume.
++static int clk_ref_is_enabled(struct clk *clk)
++{
++	struct clk_ref *ref =3D to_clk_ref(clk);
++	u32 reg =3D readl(ref->reg);
 +
-+if ENVIRONMENT_IN_UBI
++	if (reg & 1 << ((ref->idx + 1) * 8 - 1))
++		return 0;
 +
-+menu "Configure Loading Environment from UBI"
++	return 1;
++}
 +
-+config ENV_IN_UBI_PARTITION
-+	string
-+	default "/dev/root"
-+	prompt "Filepath of mtd partition holding UBI volumes"
-+	help
-+	  Filepath of mtd partition holding UBI static volume with Barebox
-+	  environment inside.  This value depends on your board partition
-+	  layout. Default string value is "/dev/root".
-+
-+config ENV_IN_UBI_VOLNAME
-+	string
-+	default "/dev/ubi0.bareboxenv_0"
-+	prompt "Filepath of UBI static volume holding environment"
-+	help
-+	  Filepath of UBI static volume holding Barebox environment inside the
-+	  partition. This string value depends on your UBI volume name
-+	  configuration scheme. Default string is "/dev/ubi0.bareboxenv_0".
-+
-+endmenu
-+
-+endif
-+
- menu "memory layout"
- 
- source "pbl/Kconfig"
-diff --git a/common/startup.c b/common/startup.c
-index ff00ca7..01c0e1d 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -117,6 +117,23 @@ void __noreturn start_barebox(void)
- 	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
- 		int ret;
- 
-+		if (IS_ENABLED(CONFIG_ENVIRONMENT_IN_UBI)) {
-+#ifdef CONFIG_ENVIRONMENT_IN_UBI
-+			char s[PATH_MAX + 32];
-+			sprintf(s, "%s%s ", "ubiattach ",
-+				CONFIG_ENV_IN_UBI_PARTITION);
-+			ret = run_command(s, 0);
-+			if (ret) {
-+				sprintf(s, "%s%s ", "unable to ubiattach ",
-+					CONFIG_ENV_IN_UBI_PARTITION);
-+				pr_err(s);
-+			} else {
-+				default_environment_path =
-+					CONFIG_ENV_IN_UBI_VOLNAME;
-+			}
-+#endif
-+		}
-+
- 		ret = envfs_load(default_environment_path, "/env", 0);
- 
- 		if (ret && IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT)) {
--- 
-1.7.10.4
+ static int clk_ref_enable(struct clk *clk)
+ {
+ 	struct clk_ref *ref =3D to_clk_ref(clk);
+@@ -118,6 +129,7 @@ static int clk_ref_set_rate(struct clk *clk, unsigned l=
+ong rate,
+ }
+ =
 
+ static const struct clk_ops clk_ref_ops =3D {
++	.is_enabled	=3D clk_ref_is_enabled,
+ 	.enable		=3D clk_ref_enable,
+ 	.disable	=3D clk_ref_disable,
+ 	.recalc_rate	=3D clk_ref_recalc_rate,
 
+...I get the expected output at runtime (e.g. CPU and EMI clocks get
+reported as 'enabled'):
+
+luma:/ clk_dump
+ref_xtal (rate 24000000, enabled)
+    pll (rate 480000000, enabled)
+        ref_cpu (rate 454736842, enabled) <---------
+            cpu_pll (rate 454736842, enabled)
+                cpu (rate 454736842, enabled)
+                    hbus (rate 151578947, enabled)
+        ref_emi (rate 261818181, enabled) <---------
+            emi_pll (rate 130909090, enabled)
+                emi_sel (rate 130909090, enabled)
+                    emi (rate 130909090, enabled)
+        ref_pix (rate 480000000, disabled)
+            lcdif_sel (rate 480000000, disabled)
+                lcdif_div (rate 480000000, disabled)
+                    lcdif (rate 480000000, disabled)
+        ref_io (rate 480000000, enabled)
+            ssp_sel (rate 480000000, enabled)
+                ssp_div (rate 96000000, enabled)
+                    ssp (rate 96000000, enabled)
+        spdif_div (rate 120000000, enabled)
+            spdif (rate 120000000, disabled)
+    saif_sel (rate 24000000, enabled)
+        saif_div (rate 366, enabled)
+            saif (rate 366, disabled)
+    gpmi_sel (rate 24000000, enabled)
+        gpmi_div (rate 24000000, enabled)
+            gpmi (rate 24000000, disabled)
+    etm_sel (rate 24000000, enabled)
+        etm_div (rate 24000000, enabled)
+            etm (rate 24000000, disabled)
+    cpu_xtal (rate 24000000, enabled)
+    xbus (rate 24000000, enabled)
+    emi_xtal (rate 24000000, enabled)
+    clk32k_div (rate 32000, enabled)
+        clk32k (rate 32000, enabled)
+            adc (rate 2000, enabled)
+    rtc (rate 31250, enabled)
+    dri (rate 24000000, disabled)
+    pwm (rate 24000000, disabled)
+    filt (rate 24000000, disabled)
+    uart (rate 24000000, enabled)
+
+jbe
+
+-- =
+
+Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
+Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-5121-20691=
+7-5128 |
+Peiner Str. 6-8, 31137 Hildesheim, Germany =A0 =A0| Fax: =A0 +49-5121-20691=
+7-5555 |
+Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://www.pe=
+ngutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
