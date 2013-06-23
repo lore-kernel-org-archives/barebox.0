@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqqDu-0000V9-EK
+ id 1UqqDu-0000V7-EI
  for barebox@lists.infradead.org; Sun, 23 Jun 2013 19:45:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 23 Jun 2013 21:44:52 +0200
-Message-Id: <1372016693-30160-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 23 Jun 2013 21:44:51 +0200
+Message-Id: <1372016693-30160-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372016693-30160-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372016693-30160-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,172 +21,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: i.MX: Make debug UART selectable from Kconfig
+Subject: [PATCH 1/3] remove unused debug Kconfig options
 To: barebox@lists.infradead.org
 
-To make early debugging on i.MX a bit simpler. This uses a similar
-magic than the kernel does.
+ENABLE_DEVICE_NOISE is used only in two network drivers and is
+otherwise unused. ENABLE_FLASH_NOISE is completely unused.
+ENABLE_PARTITION_NOISE enables DEBUG in the partition command,
+but this code has no debug messages at all.
+
+Remove all this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/debug_ll.h | 31 +++++++++--
- common/Kconfig                            | 92 +++++++++++++++++++++++++++++++
- 2 files changed, 117 insertions(+), 6 deletions(-)
+ commands/partition.c   |  4 ----
+ common/Kconfig         | 18 ------------------
+ drivers/net/smc91111.c |  4 ----
+ drivers/net/smc911x.c  |  4 ----
+ 4 files changed, 30 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/debug_ll.h b/arch/arm/mach-imx/include/mach/debug_ll.h
-index cb6dd03..0bb28ee 100644
---- a/arch/arm/mach-imx/include/mach/debug_ll.h
-+++ b/arch/arm/mach-imx/include/mach/debug_ll.h
-@@ -13,13 +13,31 @@
- #include <mach/imx53-regs.h>
- #include <mach/imx6-regs.h>
+diff --git a/commands/partition.c b/commands/partition.c
+index fdd6041..6f8d634 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -23,10 +23,6 @@
+  * @brief partition handling and addpart and delpart command
+  */
  
--/* #define IMX_DEBUG_LL_UART_BASE MXxy_UARTx_BASE_ADDR */
+-#ifdef CONFIG_ENABLE_PARTITION_NOISE
+-# define DEBUG
+-#endif
 -
--#ifndef IMX_DEBUG_LL_UART_BASE
--#warning define IMX_DEBUG_LL_UART_BASE properly for debug_ll
--#define IMX_DEBUG_LL_UART_BASE 0
-+#ifdef CONFIG_DEBUG_IMX1_UART
-+#define IMX_DEBUG_SOC MX1
-+#elif defined CONFIG_DEBUG_IMX21_UART
-+#define IMX_DEBUG_SOC MX21
-+#elif defined CONFIG_DEBUG_IMX25_UART
-+#define IMX_DEBUG_SOC MX25
-+#elif defined CONFIG_DEBUG_IMX27_UART
-+#define IMX_DEBUG_SOC MX27
-+#elif defined CONFIG_DEBUG_IMX31_UART
-+#define IMX_DEBUG_SOC MX31
-+#elif defined CONFIG_DEBUG_IMX35_UART
-+#define IMX_DEBUG_SOC MX35
-+#elif defined CONFIG_DEBUG_IMX51_UART
-+#define IMX_DEBUG_SOC MX51
-+#elif defined CONFIG_DEBUG_IMX53_UART
-+#define IMX_DEBUG_SOC MX53
-+#elif defined CONFIG_DEBUG_IMX6Q_UART
-+#define IMX_DEBUG_SOC MX6
-+#else
-+#error "unknown i.MX debug uart soc type"
- #endif
- 
-+#define __IMX_UART_BASE(soc, num) soc##_UART##num##_BASE_ADDR
-+#define IMX_UART_BASE(soc, num) __IMX_UART_BASE(soc, num)
-+
- #define URTX0		0x40		/* Transmitter Register */
- 
- #define UCR1		0x80		/* Control Register 1 */
-@@ -30,7 +48,8 @@
- 
- static inline void PUTC_LL(int c)
- {
--	void __iomem *base = (void *)IMX_DEBUG_LL_UART_BASE;
-+	void __iomem *base = (void *)IMX_UART_BASE(IMX_DEBUG_SOC,
-+			CONFIG_DEBUG_IMX_UART_PORT);
- 
- 	if (!base)
- 		return;
+ #include <common.h>
+ #include <command.h>
+ #include <complete.h>
 diff --git a/common/Kconfig b/common/Kconfig
-index d7e2ebd..6a72267 100644
+index 4cfbe4e..d7e2ebd 100644
 --- a/common/Kconfig
 +++ b/common/Kconfig
-@@ -618,6 +618,98 @@ config DEBUG_LL
- 	  This requires SoC specific support. Most SoCs require the debug UART to be
- 	  initialized by a debugger or first stage bootloader.
+@@ -609,24 +609,6 @@ config DEBUG_INFO
+ 	help
+ 	  Enable build of barebox with -g.
  
-+choice
-+	prompt "Kernel low-level debugging port"
-+	depends on DEBUG_LL
-+
-+config DEBUG_IMX1_UART
-+	bool "i.MX1 Debug UART"
-+	depends on ARCH_IMX1
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX1.
-+
-+config DEBUG_IMX21_UART
-+	bool "i.MX21 Debug UART"
-+	depends on ARCH_IMX21
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX21.
-+
-+config DEBUG_IMX25_UART
-+	bool "i.MX25 Debug UART"
-+	depends on ARCH_IMX25
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX25.
-+
-+config DEBUG_IMX27_UART
-+	bool "i.MX27 Debug UART"
-+	depends on ARCH_IMX1
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX27.
-+
-+config DEBUG_IMX31_UART
-+	bool "i.MX31 Debug UART"
-+	depends on ARCH_IMX31
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX31.
-+
-+config DEBUG_IMX35_UART
-+	bool "i.MX35 Debug UART"
-+	depends on ARCH_IMX35
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX35.
-+
-+config DEBUG_IMX51_UART
-+	bool "i.MX51 Debug UART"
-+	depends on ARCH_IMX51
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX51.
-+
-+config DEBUG_IMX53_UART
-+	bool "i.MX53 Debug UART"
-+	depends on ARCH_IMX53
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX53.
-+
-+config DEBUG_IMX6Q_UART
-+	bool "i.MX6Q Debug UART"
-+	depends on ARCH_IMX6Q
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX6Q.
-+
-+config DEBUG_IMX6SL_UART
-+	bool "i.MX6SL Debug UART"
-+	depends on ARCH_IMX6SL
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on i.MX6SL.
-+
-+endchoice
-+
-+config DEBUG_IMX_UART_PORT
-+	int "i.MX Debug UART Port Selection" if DEBUG_IMX1_UART || \
-+						DEBUG_IMX25_UART || \
-+						DEBUG_IMX21_IMX27_UART || \
-+						DEBUG_IMX31_UART || \
-+						DEBUG_IMX35_UART || \
-+						DEBUG_IMX51_UART || \
-+						DEBUG_IMX53_UART || \
-+						DEBUG_IMX6Q_UART || \
-+						DEBUG_IMX6SL_UART
-+	default 1
-+	depends on ARCH_IMX
-+	help
-+	  Choose UART port on which kernel low-level debug messages
-+	  should be output.
-+
- endmenu
+-config ENABLE_FLASH_NOISE
+-	bool
+-	prompt "verbose flash handling"
+-	help
+-	  Enable this to get noisy flash handling routines
+-
+-config ENABLE_PARTITION_NOISE
+-	bool
+-	prompt "verbose partition handling"
+-	help
+-	  Enable this to get noisy partition handling routines
+-
+-config ENABLE_DEVICE_NOISE
+-	bool
+-	prompt "verbose device handling"
+-	help
+-	  Enable this to get noisy device handling routines
+-
+ config DEBUG_LL
+ 	bool
+ 	depends on HAS_DEBUG_LL
+diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
+index 48183dd..b868cbf 100644
+--- a/drivers/net/smc91111.c
++++ b/drivers/net/smc91111.c
+@@ -55,10 +55,6 @@
+  .	03/16/01  Daris A Nevil	   Modified smc9194.c for use with LAN91C111
+  ----------------------------------------------------------------------------*/
  
- config HAS_DEBUG_LL
+-#ifdef CONFIG_ENABLE_DEVICE_NOISE
+-# define DEBUG
+-#endif
+-
+ #include <common.h>
+ 
+ #include <command.h>
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index 3b94779..e0d78d0 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -18,10 +18,6 @@
+  *
+  */
+ 
+-#ifdef CONFIG_ENABLE_DEVICE_NOISE
+-# define DEBUG
+-#endif
+-
+ #include <common.h>
+ 
+ #include <command.h>
 -- 
 1.8.3.1
 
