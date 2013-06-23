@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqrU0-0001XF-OE
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 21:06:02 +0000
+ id 1UqrU0-0001XK-O6
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 21:06:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 23 Jun 2013 23:05:34 +0200
-Message-Id: <1372021534-25470-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
-References: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 23 Jun 2013 23:05:27 +0200
+Message-Id: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,42 +19,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] ARM: i.MX51 vincell: Switch to imximage
+Subject: [PATCH 1/8] ARM: i.MX53 SMD: Switch to imximage
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/guf-vincell/Makefile            |  2 +-
- arch/arm/boards/guf-vincell/flash-header.imxcfg |  3 ++
- arch/arm/boards/guf-vincell/flash_header.c      | 41 -------------------------
- arch/arm/mach-imx/Kconfig                       |  1 +
- 4 files changed, 5 insertions(+), 42 deletions(-)
- create mode 100644 arch/arm/boards/guf-vincell/flash-header.imxcfg
- delete mode 100644 arch/arm/boards/guf-vincell/flash_header.c
+ arch/arm/boards/freescale-mx53-smd/Makefile        |   1 -
+ .../boards/freescale-mx53-smd/flash-header.imxcfg  |  54 +++++++++++
+ arch/arm/boards/freescale-mx53-smd/flash_header.c  | 102 ---------------------
+ arch/arm/mach-imx/Kconfig                          |   1 +
+ 4 files changed, 55 insertions(+), 103 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/freescale-mx53-smd/flash_header.c
 
-diff --git a/arch/arm/boards/guf-vincell/Makefile b/arch/arm/boards/guf-vincell/Makefile
-index aa30b7f..01c7a25 100644
---- a/arch/arm/boards/guf-vincell/Makefile
-+++ b/arch/arm/boards/guf-vincell/Makefile
-@@ -1,2 +1,2 @@
+diff --git a/arch/arm/boards/freescale-mx53-smd/Makefile b/arch/arm/boards/freescale-mx53-smd/Makefile
+index d44f697..01c7a25 100644
+--- a/arch/arm/boards/freescale-mx53-smd/Makefile
++++ b/arch/arm/boards/freescale-mx53-smd/Makefile
+@@ -1,3 +1,2 @@
  obj-y += board.o
--lwl-y += flash_header.o lowlevel.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/guf-vincell/flash-header.imxcfg b/arch/arm/boards/guf-vincell/flash-header.imxcfg
+-lwl-y += flash_header.o
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg b/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
 new file mode 100644
-index 0000000..bb0c318
+index 0000000..95bcd19
 --- /dev/null
-+++ b/arch/arm/boards/guf-vincell/flash-header.imxcfg
-@@ -0,0 +1,3 @@
++++ b/arch/arm/boards/freescale-mx53-smd/flash-header.imxcfg
+@@ -0,0 +1,54 @@
++loadaddr 0x70000000
 +soc imx53
-+loadaddr 0xf8020000
 +dcdofs 0x400
-diff --git a/arch/arm/boards/guf-vincell/flash_header.c b/arch/arm/boards/guf-vincell/flash_header.c
++wm 32 0x53fa8554 0x00300000
++wm 32 0x53fa8558 0x00300040
++wm 32 0x53fa8560 0x00300000
++wm 32 0x53fa8564 0x00300040
++wm 32 0x53fa8568 0x00300040
++wm 32 0x53fa8570 0x00300000
++wm 32 0x53fa8574 0x00300000
++wm 32 0x53fa8578 0x00300000
++wm 32 0x53fa857c 0x00300040
++wm 32 0x53fa8580 0x00300040
++wm 32 0x53fa8584 0x00300000
++wm 32 0x53fa8588 0x00300000
++wm 32 0x53fa8590 0x00300040
++wm 32 0x53fa8594 0x00300000
++wm 32 0x53fa86f0 0x00300000
++wm 32 0x53fa86f4 0x00000000
++wm 32 0x53fa86fc 0x00000000
++wm 32 0x53fa8714 0x00000000
++wm 32 0x53fa8718 0x00300000
++wm 32 0x53fa871c 0x00300000
++wm 32 0x53fa8720 0x00300000
++wm 32 0x53fa8724 0x04000000
++wm 32 0x53fa8728 0x00300000
++wm 32 0x53fa872c 0x00300000
++wm 32 0x63fd9088 0x35343535
++wm 32 0x63fd9090 0x4d444c44
++wm 32 0x63fd907c 0x01370138
++wm 32 0x63fd9080 0x013b013c
++wm 32 0x63fd9018 0x00011740
++wm 32 0x63fd9000 0xc3190000
++wm 32 0x63fd900c 0x9f5152e3
++wm 32 0x63fd9010 0xb68e8a63
++wm 32 0x63fd9014 0x01ff00db
++wm 32 0x63fd902c 0x000026d2
++wm 32 0x63fd9030 0x009f0e21
++wm 32 0x63fd9008 0x12273030
++wm 32 0x63fd9004 0x0002002d
++wm 32 0x63fd901c 0x00008032
++wm 32 0x63fd901c 0x00008033
++wm 32 0x63fd901c 0x00028031
++wm 32 0x63fd901c 0x052080b0
++wm 32 0x63fd901c 0x04008040
++wm 32 0x63fd901c 0x0000803a
++wm 32 0x63fd901c 0x0000803b
++wm 32 0x63fd901c 0x00028039
++wm 32 0x63fd901c 0x05208138
++wm 32 0x63fd901c 0x04008048
++wm 32 0x63fd9020 0x00005800
++wm 32 0x63fd9040 0x04b80003
++wm 32 0x63fd9058 0x00022227
++wm 32 0x63fd901c 0x00000000
+diff --git a/arch/arm/boards/freescale-mx53-smd/flash_header.c b/arch/arm/boards/freescale-mx53-smd/flash_header.c
 deleted file mode 100644
-index df480d2..0000000
---- a/arch/arm/boards/guf-vincell/flash_header.c
+index c2ab255..0000000
+--- a/arch/arm/boards/freescale-mx53-smd/flash_header.c
 +++ /dev/null
-@@ -1,41 +0,0 @@
+@@ -1,102 +0,0 @@
 -/*
 - * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
 - *
@@ -73,17 +122,70 @@ index df480d2..0000000
 - */
 -
 -#include <common.h>
--#include <sizes.h>
 -#include <asm/byteorder.h>
--#include <asm/barebox-arm-head.h>
 -#include <mach/imx-flash-header.h>
+-#include <asm/barebox-arm-head.h>
 -
 -void __naked __flash_header_start go(void)
 -{
 -	barebox_arm_head();
 -}
 -
--#define APP_DEST	0xf8020000
+-struct imx_dcd_v2_entry __dcd_entry_section dcd_entry[] = {
+-	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x04000000), },
+-	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x35343535), },
+-	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x4d444c44), },
+-	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01370138), },
+-	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x013b013c), },
+-	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00011740), },
+-	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0xc3190000), },
+-	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x9f5152e3), },
+-	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb68e8a63), },
+-	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x01ff00db), },
+-	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
+-	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f0e21), },
+-	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12273030), },
+-	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x0002002d), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
+-	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
+-	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
+-	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
+-};
+-
+-#define APP_DEST	0x70000000
 -
 -struct imx_flash_header_v2 __flash_header_section flash_header = {
 -	.header.tag		= IVT_HEADER_TAG,
@@ -97,19 +199,27 @@ index df480d2..0000000
 -
 -	.boot_data.start	= APP_DEST,
 -	.boot_data.size		= DCD_BAREBOX_SIZE,
+-
+-	.dcd.header.tag		= DCD_HEADER_TAG,
+-	.dcd.header.length	= cpu_to_be16(sizeof(struct imx_dcd) + sizeof(dcd_entry)),
+-	.dcd.header.version	= DCD_VERSION,
+-
+-	.dcd.command.tag	= DCD_COMMAND_WRITE_TAG,
+-	.dcd.command.length	= cpu_to_be16(sizeof(struct imx_dcd_command) + sizeof(dcd_entry)),
+-	.dcd.command.param	= DCD_COMMAND_WRITE_PARAM,
 -};
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index f334b17..a601c9d 100644
+index b13fa99..b7282bb 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -496,6 +496,7 @@ config MACH_TX53
+@@ -477,6 +477,7 @@ config MACH_FREESCALE_MX53_LOCO
+ 	bool "Freescale i.MX53 LOCO"
  
- config MACH_GUF_VINCELL
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ config MACH_FREESCALE_MX53_SMD
 +	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
- 	bool "Garz-Fricke Vincell"
+ 	bool "Freescale i.MX53 SMD"
  
- endchoice
+ config MACH_TQMA53
 -- 
 1.8.3.1
 
