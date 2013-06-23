@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqpFI-00087r-GJ
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 18:42:41 +0000
-Date: Sun, 23 Jun 2013 20:42:17 +0200
+ id 1UqpOn-0008Cy-He
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 18:52:30 +0000
+Date: Sun, 23 Jun 2013 20:52:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130623184217.GL32299@pengutronix.de>
-References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
- <20130621154840.GF32299@pengutronix.de>
- <20130621203745.932331ebb1544b8246d480d2@gmail.com>
+Message-ID: <20130623185206.GN32299@pengutronix.de>
+References: <CAGo_u6pP9djhzUZyOLNewL4kDwcY0A_KW1ZmdHVurCwBUxBEEg@mail.gmail.com>
+ <1371803042-1179-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130621203745.932331ebb1544b8246d480d2@gmail.com>
+In-Reply-To: <1371803042-1179-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,25 +23,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/8] low level initialisation for ar2313
-To: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2] OMAP4 do not set TPS62361_REG_ADDR_SET0
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 21, 2013 at 08:37:45PM +0400, antonynpavlov@gmail.com wrote:
-> On Fri, 21 Jun 2013 17:48:40 +0200
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Fri, Jun 21, 2013 at 10:24:02AM +0200, Jan Weitzel wrote:
+> Don't set SET0 voltage, because it acts as boot voltage for OPP boot.
+> Take care that the kernel doesn't drive vset gpio to low. This may
+> happen while reseting the gpio module at initialization, look for
+> HWMOD_INIT_NO_RESET.
 > 
-> Well done, Oleksij! Congratulations!
-> 
-> Thanks, Sascha!
-> 
-> Now we have in the next branch THE FIRST PUBLICLY AVAILABLE FULLY SUPPORTED "HARDWARE" MIPS-based BOARD!
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> Reviewed-by: Nishanth Menon <nm@ti.com>
 
-Hurray \o/
-
-What about the dlink 320? Does it only work 2nd stage?
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
