@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22d.google.com ([2a00:1450:4013:c01::22d])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uqquz-00016i-5d
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 20:29:49 +0000
-Received: by mail-ea0-f173.google.com with SMTP id g15so5701907eak.18
- for <barebox@lists.infradead.org>; Sun, 23 Jun 2013 13:29:26 -0700 (PDT)
-Message-ID: <51C75AA3.8080202@gmail.com>
-Date: Sun, 23 Jun 2013 22:29:23 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1371827718-7928-4-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130623183324.GJ32299@pengutronix.de> <51C7567B.20008@gmail.com>
- <20130623202619.GS32299@pengutronix.de>
-In-Reply-To: <20130623202619.GS32299@pengutronix.de>
+ id 1UqrU0-0001XF-OE
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 21:06:02 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 23 Jun 2013 23:05:34 +0200
+Message-Id: <1372021534-25470-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
+References: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +16,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] OF: base: add empty property value pointer
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 8/8] ARM: i.MX51 vincell: Switch to imximage
+To: barebox@lists.infradead.org
 
-On 06/23/2013 10:26 PM, Sascha Hauer wrote:
-> On Sun, Jun 23, 2013 at 10:11:39PM +0200, Sebastian Hesselbarth wrote:
->> On 06/23/2013 08:33 PM, Sascha Hauer wrote:
->>> Why do we need this anyway? We can always call of_find_property() to see
->>> if a property exists.
->>
->> Actually, I was preparing to import drivers/of/address.c from linux.
->> of_translate_one uses of_get_property on "ranges". This returns
->> the property's value pointer instead of the property itself, which
->> is NULL for an empty ranges property. Now that you point it out,
->> using of_find_property is also an option.
->>
->> Nevertheless, patches 1 (with your comments applied) and 2 seem
->> sensible to me. Patch 3 is an option to keep it in sync with Linux
->> OF API behavior but is optional.
->
-> How about allocating zero length property values with malloc(0)? This
-> makes them less special.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/guf-vincell/Makefile            |  2 +-
+ arch/arm/boards/guf-vincell/flash-header.imxcfg |  3 ++
+ arch/arm/boards/guf-vincell/flash_header.c      | 41 -------------------------
+ arch/arm/mach-imx/Kconfig                       |  1 +
+ 4 files changed, 5 insertions(+), 42 deletions(-)
+ create mode 100644 arch/arm/boards/guf-vincell/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/guf-vincell/flash_header.c
 
-Agree, I will update the patch set and send a v2 hopefully soon.
-
-Sebastian
+diff --git a/arch/arm/boards/guf-vincell/Makefile b/arch/arm/boards/guf-vincell/Makefile
+index aa30b7f..01c7a25 100644
+--- a/arch/arm/boards/guf-vincell/Makefile
++++ b/arch/arm/boards/guf-vincell/Makefile
+@@ -1,2 +1,2 @@
+ obj-y += board.o
+-lwl-y += flash_header.o lowlevel.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/guf-vincell/flash-header.imxcfg b/arch/arm/boards/guf-vincell/flash-header.imxcfg
+new file mode 100644
+index 0000000..bb0c318
+--- /dev/null
++++ b/arch/arm/boards/guf-vincell/flash-header.imxcfg
+@@ -0,0 +1,3 @@
++soc imx53
++loadaddr 0xf8020000
++dcdofs 0x400
+diff --git a/arch/arm/boards/guf-vincell/flash_header.c b/arch/arm/boards/guf-vincell/flash_header.c
+deleted file mode 100644
+index df480d2..0000000
+--- a/arch/arm/boards/guf-vincell/flash_header.c
++++ /dev/null
+@@ -1,41 +0,0 @@
+-/*
+- * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <sizes.h>
+-#include <asm/byteorder.h>
+-#include <asm/barebox-arm-head.h>
+-#include <mach/imx-flash-header.h>
+-
+-void __naked __flash_header_start go(void)
+-{
+-	barebox_arm_head();
+-}
+-
+-#define APP_DEST	0xf8020000
+-
+-struct imx_flash_header_v2 __flash_header_section flash_header = {
+-	.header.tag		= IVT_HEADER_TAG,
+-	.header.length		= cpu_to_be16(32),
+-	.header.version		= IVT_VERSION,
+-
+-	.entry			= APP_DEST + 0x1000,
+-	.dcd_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, dcd),
+-	.boot_data_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, boot_data),
+-	.self			= APP_DEST + 0x400,
+-
+-	.boot_data.start	= APP_DEST,
+-	.boot_data.size		= DCD_BAREBOX_SIZE,
+-};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index f334b17..a601c9d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -496,6 +496,7 @@ config MACH_TX53
+ 
+ config MACH_GUF_VINCELL
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
+ 	bool "Garz-Fricke Vincell"
+ 
+ endchoice
+-- 
+1.8.3.1
 
 
 _______________________________________________
