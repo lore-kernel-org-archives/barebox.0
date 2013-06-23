@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uqoxh-0007wK-NT
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 18:24:31 +0000
-Date: Sun, 23 Jun 2013 20:24:04 +0200
+ id 1Uqp6j-000836-Ru
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 18:33:50 +0000
+Date: Sun, 23 Jun 2013 20:33:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130623182404.GI32299@pengutronix.de>
+Message-ID: <20130623183324.GJ32299@pengutronix.de>
 References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1371827718-7928-2-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1371827718-7928-4-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1371827718-7928-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1371827718-7928-4-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] OF: base: add sanity checks to of_new/delete_property
+Subject: Re: [PATCH 3/3] OF: base: add empty property value pointer
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 21, 2013 at 05:15:16PM +0200, Sebastian Hesselbarth wrote:
-> This adds some sanity checks to of_new_property and of_delete_property.
-> Also, data passed to of_new_property is only copied if non-NULL.
+On Fri, Jun 21, 2013 at 05:15:18PM +0200, Sebastian Hesselbarth wrote:
+> Since property values can be empty, we need property value pointer to
+> be non-NULL to distinguish those properties from non-existing properties.
+> This adds a static u32 to which empty properties set their value pointer.
+> Also, the value memory is only freed, if property length is not zero.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
 > Cc: barebox@lists.infradead.org
 > ---
->  drivers/of/base.c |   18 +++++++++++++++++-
->  1 files changed, 17 insertions(+), 1 deletions(-)
+>  drivers/of/base.c |    6 +++++-
+>  1 files changed, 5 insertions(+), 1 deletions(-)
 > 
 > diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 1b351ee..bcfd73a 100644
+> index 7926d5d..a100a17 100644
 > --- a/drivers/of/base.c
 > +++ b/drivers/of/base.c
-> @@ -1527,21 +1527,37 @@ struct property *of_new_property(struct device_node *node, const char *name,
->  	struct property *prop;
+> @@ -1501,6 +1501,8 @@ struct device_node *of_new_node(struct device_node *parent, const char *name)
+>  	return node;
+>  }
 >  
->  	prop = xzalloc(sizeof(*prop));
-> +	if (!prop)
-> +		return NULL;
-
-xzalloc always returns valid memory. It's return-mem-or-panic.
-
->  
->  	prop->name = strdup(name);
-> +	if (!prop->name)
-> +		goto bail_out;
+> +static u32 empty_prop_value;
 > +
+>  struct property *of_new_property(struct device_node *node, const char *name,
+>  		const void *data, int len)
+>  {
+> @@ -1515,6 +1517,7 @@ struct property *of_new_property(struct device_node *node, const char *name,
+>  		goto bail_out;
+>  
 >  	prop->length = len;
->  	if (len) {
->  		prop->value = xzalloc(len);
-> -		memcpy(prop->value, data, len);
-> +		if (!prop->value)
-> +			goto bail_out;
+> +	prop->value = &empty_prop_value;
 
-ditto.
+This at least breaks of_set_property() and of_free(). Both unconditionally
+do a free(pp->value).
+
+Why do we need this anyway? We can always call of_find_property() to see
+if a property exists.
 
 Sascha
 
