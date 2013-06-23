@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uqqry-00012g-3I
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 20:26:43 +0000
-Date: Sun, 23 Jun 2013 22:26:19 +0200
+ id 1UqqtB-00013q-8z
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 20:27:57 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130623202619.GS32299@pengutronix.de>
-References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1371827718-7928-4-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130623183324.GJ32299@pengutronix.de> <51C7567B.20008@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <51C7567B.20008@gmail.com>
+Date: Sun, 23 Jun 2013 22:27:33 +0200
+Message-Id: <1372019254-23540-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,81 +14,88 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] OF: base: add empty property value pointer
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: scb9328: remove dead code
+To: barebox@lists.infradead.org
 
-On Sun, Jun 23, 2013 at 10:11:39PM +0200, Sebastian Hesselbarth wrote:
-> On 06/23/2013 08:33 PM, Sascha Hauer wrote:
-> >On Fri, Jun 21, 2013 at 05:15:18PM +0200, Sebastian Hesselbarth wrote:
-> >>Since property values can be empty, we need property value pointer to
-> >>be non-NULL to distinguish those properties from non-existing properties.
-> >>This adds a static u32 to which empty properties set their value pointer.
-> >>Also, the value memory is only freed, if property length is not zero.
-> >>
-> >>Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
-> >>---
-> >>Cc: barebox@lists.infradead.org
-> >>---
-> >>  drivers/of/base.c |    6 +++++-
-> >>  1 files changed, 5 insertions(+), 1 deletions(-)
-> >>
-> >>diff --git a/drivers/of/base.c b/drivers/of/base.c
-> >>index 7926d5d..a100a17 100644
-> >>--- a/drivers/of/base.c
-> >>+++ b/drivers/of/base.c
-> >>@@ -1501,6 +1501,8 @@ struct device_node *of_new_node(struct device_node *parent, const char *name)
-> >>  	return node;
-> >>  }
-> >>
-> >>+static u32 empty_prop_value;
-> >>+
-> >>  struct property *of_new_property(struct device_node *node, const char *name,
-> >>  		const void *data, int len)
-> >>  {
-> >>@@ -1515,6 +1517,7 @@ struct property *of_new_property(struct device_node *node, const char *name,
-> >>  		goto bail_out;
-> >>
-> >>  	prop->length = len;
-> >>+	prop->value =&empty_prop_value;
-> >
-> >This at least breaks of_set_property() and of_free(). Both unconditionally
-> >do a free(pp->value).
-> 
-> Sascha,
-> 
-> this is patch 3/3, the two functions above are taken care of patch 2/3.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/scb9328/lowlevel_init.S | 51 ---------------------------------
+ 1 file changed, 51 deletions(-)
 
-Ah, sorry, I missed that.
-
-> 
-> >Why do we need this anyway? We can always call of_find_property() to see
-> >if a property exists.
-> 
-> Actually, I was preparing to import drivers/of/address.c from linux.
-> of_translate_one uses of_get_property on "ranges". This returns
-> the property's value pointer instead of the property itself, which
-> is NULL for an empty ranges property. Now that you point it out,
-> using of_find_property is also an option.
-> 
-> Nevertheless, patches 1 (with your comments applied) and 2 seem
-> sensible to me. Patch 3 is an option to keep it in sync with Linux
-> OF API behavior but is optional.
-
-How about allocating zero length property values with malloc(0)? This
-makes them less special.
-
-Sascha
-
+diff --git a/arch/arm/boards/scb9328/lowlevel_init.S b/arch/arm/boards/scb9328/lowlevel_init.S
+index d7afa21..4250c95 100644
+--- a/arch/arm/boards/scb9328/lowlevel_init.S
++++ b/arch/arm/boards/scb9328/lowlevel_init.S
+@@ -15,61 +15,10 @@
+ #include <mach/imx1-regs.h>
+ #include <asm/barebox-arm-head.h>
+ 
+-#define CPU200
+-
+-#ifdef CPU200
+ #define CFG_MPCTL0_VAL 0x00321431
+-#else
+-#define CFG_MPCTL0_VAL 0x040e200e
+-#endif
+-
+-#define BUS72
+-
+-#ifdef BUS72
+ #define CFG_SPCTL0_VAL 0x04002400
+-#endif
+-
+-#ifdef BUS96
+-#define CFG_SPCTL0_VAL 0x04001800
+-#endif
+-
+-#ifdef BUS64
+-#define CFG_SPCTL0_VAL 0x08001800
+-#endif
+-
+-/* Das ist der BCLK Divider, der aus der System PLL
+-   BCLK und HCLK erzeugt:
+-   31 | xxxx xxxx xxxx xxxx xx10 11xx xxxx xxxx | 0
+-   0x2f008403 : 192MHz/2=96MHz, 144MHz/2=72MHz PRESC=1->BCLKDIV=2
+-   0x2f008803 : 192MHz/3=64MHz, 240MHz/3=80MHz PRESC=1->BCLKDIV=2
+-   0x2f001003 : 192MHz/5=38,4MHz
+-   0x2f000003 : 64MHz/1
+-   Bit 22: SPLL Restart
+-   Bit 21: MPLL Restart */
+-
+-#ifdef BUS64
+-#define CFG_CSCR_VAL 0x2f030003
+-#endif
+-
+-#ifdef BUS72
+ #define CFG_CSCR_VAL 0x2f030403
+-#endif
+-/* Bit[0:3] contain PERCLK1DIV for UART 1
+-   0x000b00b ->b<- -> 192MHz/12=16MHz
+-   0x000b00b ->8<- -> 144MHz/09=16MHz
+-   0x000b00b ->3<- -> 64MHz/4=16MHz */
+-
+-#ifdef BUS96
+-#define CFG_PCDR_VAL 0x000b00b5
+-#endif
+-
+-#ifdef BUS64
+-#define CFG_PCDR_VAL 0x000b00b3
+-#endif
+-
+-#ifdef BUS72
+ #define CFG_PCDR_VAL 0x000b00b8
+-#endif
+ 
+ #define writel(val, reg) \
+ 	ldr		r0,	=reg;	\
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.3.1
+
 
 _______________________________________________
 barebox mailing list
