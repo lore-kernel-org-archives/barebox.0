@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqrU0-0001XI-OD
+ id 1UqrU0-0001XJ-OB
  for barebox@lists.infradead.org; Sun, 23 Jun 2013 21:06:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 23 Jun 2013 23:05:29 +0200
-Message-Id: <1372021534-25470-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 23 Jun 2013 23:05:30 +0200
+Message-Id: <1372021534-25470-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372021534-25470-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: i.MX6 sabrelite: Switch to imximage
+Subject: [PATCH 4/8] ARM: i.MX6 sabresd: Switch to imximage
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx6-sabrelite/Makefile   |   1 -
- .../freescale-mx6-sabrelite/flash-header.imxcfg    | 128 +++++++++++++++
- .../boards/freescale-mx6-sabrelite/flash_header.c  | 178 ---------------------
+ arch/arm/boards/freescale-mx6-sabresd/Makefile     |   1 -
+ .../freescale-mx6-sabresd/flash-header.imxcfg      | 128 +++++++++++++++
+ .../boards/freescale-mx6-sabresd/flash_header.c    | 178 ---------------------
  arch/arm/mach-imx/Kconfig                          |   1 +
  4 files changed, 129 insertions(+), 179 deletions(-)
- create mode 100644 arch/arm/boards/freescale-mx6-sabrelite/flash-header.imxcfg
- delete mode 100644 arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
+ create mode 100644 arch/arm/boards/freescale-mx6-sabresd/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/freescale-mx6-sabresd/flash_header.c
 
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/Makefile b/arch/arm/boards/freescale-mx6-sabrelite/Makefile
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/Makefile b/arch/arm/boards/freescale-mx6-sabresd/Makefile
 index d44f697..01c7a25 100644
---- a/arch/arm/boards/freescale-mx6-sabrelite/Makefile
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/Makefile
+--- a/arch/arm/boards/freescale-mx6-sabresd/Makefile
++++ b/arch/arm/boards/freescale-mx6-sabresd/Makefile
 @@ -1,3 +1,2 @@
  obj-y += board.o
 -lwl-y += flash_header.o
  lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/flash-header.imxcfg b/arch/arm/boards/freescale-mx6-sabrelite/flash-header.imxcfg
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash-header.imxcfg b/arch/arm/boards/freescale-mx6-sabresd/flash-header.imxcfg
 new file mode 100644
 index 0000000..21f217c
 --- /dev/null
-+++ b/arch/arm/boards/freescale-mx6-sabrelite/flash-header.imxcfg
++++ b/arch/arm/boards/freescale-mx6-sabresd/flash-header.imxcfg
 @@ -0,0 +1,128 @@
 +loadaddr 0x10000000
 +soc imx6
@@ -176,10 +176,10 @@ index 0000000..21f217c
 +# set IPU AXI-id0 Qos=0xf(bypass) AXI-id1 Qos=0x7
 +wm 32 0x20e0018 0x007f007f
 +wm 32 0x20e001c 0x007f007f
-diff --git a/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c b/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
+diff --git a/arch/arm/boards/freescale-mx6-sabresd/flash_header.c b/arch/arm/boards/freescale-mx6-sabresd/flash_header.c
 deleted file mode 100644
 index 61d482b..0000000
---- a/arch/arm/boards/freescale-mx6-sabrelite/flash_header.c
+--- a/arch/arm/boards/freescale-mx6-sabresd/flash_header.c
 +++ /dev/null
 @@ -1,178 +0,0 @@
 -/*
@@ -361,17 +361,17 @@ index 61d482b..0000000
 -	.dcd.command.param	= DCD_COMMAND_WRITE_PARAM,
 -};
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 1269a08..11fd095 100644
+index 11fd095..c2d6348 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -522,6 +522,7 @@ config MACH_MX6Q_ARM2
- 
- config MACH_SABRELITE
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
+@@ -526,6 +526,7 @@ config MACH_SABRELITE
  	bool "Freescale i.MX6 Sabre Lite"
  
  config MACH_SABRESD
++	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
+ 	bool "Freescale i.MX6 SabreSD"
+ 
+ config MACH_REALQ7
 -- 
 1.8.3.1
 
