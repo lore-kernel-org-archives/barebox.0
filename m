@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqqVO-0000gu-R7
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 20:03:26 +0000
+ id 1UqqVT-0000hZ-LM
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 20:03:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 23 Jun 2013 22:02:56 +0200
-Message-Id: <1372017777-787-3-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 23 Jun 2013 22:02:57 +0200
+Message-Id: <1372017777-787-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372017777-787-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372017777-787-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,193 +16,230 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: i.MX boards: remove empty config.h files
+Subject: [PATCH 3/3] ARM: Turn most board directories into regular build
+ directories
 To: barebox@lists.infradead.org
 
-Y29uZmlnLmggaXMgYXV0b21hdGljYWxseSBnZW5lcmF0ZWQgaWYgbm90IGV4aXN0aW5nLCBzbyBy
-ZW1vdmUKdGhlIGVtcHR5IGZpbGVzIGFuZCBmaWxlcyB3aGljaCBvbmx5IGhhdmUgdW51c2VkIGRl
-ZmluZXMuCgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgyNS9jb25maWcuaCAgICAgICAg
-fCAyMyAtLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUv
-Y29uZmlnLmggICAgICAgIHwgMTkgLS0tLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvZnJl
-ZXNjYWxlLW14MjUtMy1zdGFjay9jb25maWcuaCB8IDI3IC0tLS0tLS0tLS0tLS0tLS0tLS0tLQog
-YXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2svY29uZmlnLmggfCAyNCAtLS0t
-LS0tLS0tLS0tLS0tLS0tCiBhcmNoL2FybS9ib2FyZHMvZ3VmLWN1cGlkL2NvbmZpZy5oICAgICAg
-ICAgICAgICB8IDI3IC0tLS0tLS0tLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vYm9hcmRzL2thcm8t
-dHgyNS9jb25maWcuaCAgICAgICAgICAgICAgfCAyNyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFy
-Y2gvYXJtL2JvYXJkcy9wY20wMzcvY29uZmlnLmggICAgICAgICAgICAgICAgIHwgMzEgLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQogYXJjaC9hcm0vYm9hcmRzL3BjbTA0My9jb25maWcuaCAgICAg
-ICAgICAgICAgICAgfCAyNyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0KIGFyY2gvYXJtL2JvYXJkcy9z
-Y2I5MzI4L2NvbmZpZy5oICAgICAgICAgICAgICAgIHwgMjYgLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CiA5IGZpbGVzIGNoYW5nZWQsIDIzMSBkZWxldGlvbnMoLSkKIGRlbGV0ZSBtb2RlIDEwMDY0NCBh
-cmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2NvbmZpZy5oCiBkZWxldGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9jb25maWcuaAogZGVsZXRlIG1vZGUg
-MTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgyNS0zLXN0YWNrL2NvbmZpZy5oCiBk
-ZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2sv
-Y29uZmlnLmgKIGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvZ3VmLWN1cGlkL2Nv
-bmZpZy5oCiBkZWxldGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL2thcm8tdHgyNS9jb25m
-aWcuaAogZGVsZXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9wY20wMzcvY29uZmlnLmgK
-IGRlbGV0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvcGNtMDQzL2NvbmZpZy5oCiBkZWxl
-dGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL3NjYjkzMjgvY29uZmlnLmgKCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlteDI1L2NvbmZpZy5oIGIvYXJjaC9hcm0v
-Ym9hcmRzL2V1a3JlYV9jcHVpbXgyNS9jb25maWcuaApkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQK
-aW5kZXggMTJlYzYyNy4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMvZXVrcmVhX2NwdWlt
-eDI1L2NvbmZpZy5oCisrKyAvZGV2L251bGwKQEAgLTEsMjMgKzAsMCBAQAotLyoKLSAqIChjKSAy
-MDEwIEV1a3JlYSBFbGVjdHJvbWF0aXF1ZSwgRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+
-Ci0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmli
-dXRlIGl0IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdl
-bmVyYWwgUHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2Fy
-ZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0
-IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMg
-ZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBX
-SVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9m
-Ci0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0Uu
-ICBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxz
-LgotICoKLSAqLwotCi0jaWZuZGVmIF9fQ09ORklHX0gKLSNkZWZpbmUgX19DT05GSUdfSAotCi0j
-ZGVmaW5lIENPTkZJR19NWDI1X0hDTEtfRlJFUQkyNDAwMDAwMAotCi0jZW5kaWYKLQotLyogbm90
-aGluZyB0byBkbyBoZXJlIHlldCAqLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3Jl
-YV9jcHVpbXgzNS9jb25maWcuaCBiL2FyY2gvYXJtL2JvYXJkcy9ldWtyZWFfY3B1aW14MzUvY29u
-ZmlnLmgKZGVsZXRlZCBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDA3MGIzMTQuLjAwMDAwMDAKLS0t
-IGEvYXJjaC9hcm0vYm9hcmRzL2V1a3JlYV9jcHVpbXgzNS9jb25maWcuaAorKysgL2Rldi9udWxs
-CkBAIC0xLDE5ICswLDAgQEAKLS8qCi0gKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsg
-eW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yCi0gKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRl
-cm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwotICogcHVibGlzaGVkIGJ5
-IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb247IGVpdGhlciB2ZXJzaW9uIDIgb2YKLSAqIHRo
-ZSBMaWNlbnNlLCBvciAoYXQgeW91ciBvcHRpb24pIGFueSBsYXRlciB2ZXJzaW9uLgotICoKLSAq
-IFRoaXMgcHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUg
-dXNlZnVsLAotICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGlt
-cGxpZWQgd2FycmFudHkgb2YKLSAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBB
-UlRJQ1VMQVIgUFVSUE9TRS4JIFNlZSB0aGUKLSAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNl
-IGZvciBtb3JlIGRldGFpbHMuCi0gKgotICovCi0KLSNpZm5kZWYgX19DT05GSUdfSAotI2RlZmlu
-ZSBfX0NPTkZJR19ICi0KLSNkZWZpbmUgQ09ORklHX01YMzVfSENMS19GUkVRICAgICAgICAyNDAw
-MDAwMAotCi0jZW5kaWYJLyogX19DT05GSUdfSCAqLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
-cmRzL2ZyZWVzY2FsZS1teDI1LTMtc3RhY2svY29uZmlnLmggYi9hcmNoL2FybS9ib2FyZHMvZnJl
-ZXNjYWxlLW14MjUtMy1zdGFjay9jb25maWcuaApkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5k
-ZXggZjVkMDViZS4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjUt
-My1zdGFjay9jb25maWcuaAorKysgL2Rldi9udWxsCkBAIC0xLDI3ICswLDAgQEAKLS8qCi0gKiAo
-QykgQ29weXJpZ2h0IDIwMDcgSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXguZGU+Ci0g
-KgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRl
-IGl0IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVy
-YWwgUHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBG
-b3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlv
-dXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlz
-dHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRI
-T1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0g
-KiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBT
-ZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgot
-ICoKLSAqLwotCi0jaWZuZGVmIF9fQ09ORklHX0gKLSNkZWZpbmUgX19DT05GSUdfSAotCi0vKgot
-ICogRGVmaW5pdGlvbnMgcmVsYXRlZCB0byBwYXNzaW5nIGFyZ3VtZW50cyB0byBrZXJuZWwuCi0g
-Ki8KLQotI2RlZmluZSBDT05GSUdfTVgyNV9IQ0xLX0ZSRVEJMjQwMDAwMDAKLQotI2VuZGlmCi0K
-LS8qIG5vdGhpbmcgdG8gZG8gaGVyZSB5ZXQgKi8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJk
-cy9mcmVlc2NhbGUtbXgzNS0zLXN0YWNrL2NvbmZpZy5oIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVz
-Y2FsZS1teDM1LTMtc3RhY2svY29uZmlnLmgKZGVsZXRlZCBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4
-IDM5ODMyZDkuLjAwMDAwMDAKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMt
-c3RhY2svY29uZmlnLmgKKysrIC9kZXYvbnVsbApAQCAtMSwyNCArMCwwIEBACi0vKgotICogVGhp
-cyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9v
-cgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGlj
-IExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9u
-OyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9u
-KSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQg
-aW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBX
-QVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFO
-VEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuCSBTZWUgdGhlCi0g
-KiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqLwot
-Ci0vKioKLSAqIEBmaWxlCi0gKiBAYnJpZWYgR2xvYmFsIGRlZmludGlvbnMgZm9yIHRoZSBGcmVl
-c2NhbGUgaS5NWDM1IDMtc3RhY2sgYm9hcmQKLSAqLwotCi0jaWZuZGVmIF9fQ09ORklHX0gKLSNk
-ZWZpbmUgX19DT05GSUdfSAotCi0jZGVmaW5lIENPTkZJR19NWDM1X0hDTEtfRlJFUSAgICAgICAg
-MjQwMDAwMDAKLQotI2VuZGlmCS8qIF9fQ09ORklHX0ggKi8KZGlmZiAtLWdpdCBhL2FyY2gvYXJt
-L2JvYXJkcy9ndWYtY3VwaWQvY29uZmlnLmggYi9hcmNoL2FybS9ib2FyZHMvZ3VmLWN1cGlkL2Nv
-bmZpZy5oCmRlbGV0ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA1MDFhNDRkLi4wMDAwMDAwCi0t
-LSBhL2FyY2gvYXJtL2JvYXJkcy9ndWYtY3VwaWQvY29uZmlnLmgKKysrIC9kZXYvbnVsbApAQCAt
-MSwyNyArMCwwIEBACi0vKgotICogKEMpIENvcHlyaWdodCAyMDA3IEp1ZXJnZW4gQmVpc2VydCA8
-amJlQHBlbmd1dHJvbml4LmRlPgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
-OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBpdCB1bmRlciB0aGUg
-dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCi0gKiBwdWJsaXNoZWQg
-YnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZgotICog
-dGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCi0gKgot
-ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
-ZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
-aW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
-UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
-c2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KLQotI2lmbmRlZiBfX0NPTkZJR19ICi0jZGVm
-aW5lIF9fQ09ORklHX0gKLQotLyoKLSAqIERlZmluaXRpb25zIHJlbGF0ZWQgdG8gcGFzc2luZyBh
-cmd1bWVudHMgdG8ga2VybmVsLgotICovCi0KLSNkZWZpbmUgQ09ORklHX01YMzVfSENMS19GUkVR
-CTI0MDAwMDAwCi0KLSNlbmRpZgotCi0vKiBub3RoaW5nIHRvIGRvIGhlcmUgeWV0ICovCmRpZmYg
-LS1naXQgYS9hcmNoL2FybS9ib2FyZHMva2Fyby10eDI1L2NvbmZpZy5oIGIvYXJjaC9hcm0vYm9h
-cmRzL2thcm8tdHgyNS9jb25maWcuaApkZWxldGVkIGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggNGNi
-YjRmNi4uMDAwMDAwMAotLS0gYS9hcmNoL2FybS9ib2FyZHMva2Fyby10eDI1L2NvbmZpZy5oCisr
-KyAvZGV2L251bGwKQEAgLTEsMjcgKzAsMCBAQAotLyoKLSAqIChDKSBDb3B5cmlnaHQgMjAxMSBT
-YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0gKgotICogVGhpcyBwcm9ncmFt
-IGlzIGZyZWUgc29mdHdhcmU7IHlvdSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9k
-aWZ5IGl0IHVuZGVyIHRoZSB0ZXJtcyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2Ug
-YXMKLSAqIHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIg
-dmVyc2lvbiAyIG9mCi0gKiB0aGUgTGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0
-ZXIgdmVyc2lvbi4KLSAqCi0gKiBUaGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhv
-cGUgdGhhdCBpdCB3aWxsIGJlIHVzZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsg
-d2l0aG91dCBldmVuIHRoZSBpbXBsaWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkg
-b3IgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UuICBTZWUgdGhlCi0gKiBHTlUgR2Vu
-ZXJhbCBQdWJsaWMgTGljZW5zZSBmb3IgbW9yZSBkZXRhaWxzLgotICoKLSAqLwotCi0jaWZuZGVm
-IF9fQ09ORklHX0gKLSNkZWZpbmUgX19DT05GSUdfSAotCi0vKgotICogRGVmaW5pdGlvbnMgcmVs
-YXRlZCB0byBwYXNzaW5nIGFyZ3VtZW50cyB0byBrZXJuZWwuCi0gKi8KLQotI2RlZmluZSBDT05G
-SUdfTVgyNV9IQ0xLX0ZSRVEJMjQwMDAwMDAKLQotI2VuZGlmCi0KLS8qIG5vdGhpbmcgdG8gZG8g
-aGVyZSB5ZXQgKi8KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wMzcvY29uZmlnLmgg
-Yi9hcmNoL2FybS9ib2FyZHMvcGNtMDM3L2NvbmZpZy5oCmRlbGV0ZWQgZmlsZSBtb2RlIDEwMDY0
-NAppbmRleCBjYTYyZGY2Li4wMDAwMDAwCi0tLSBhL2FyY2gvYXJtL2JvYXJkcy9wY20wMzcvY29u
-ZmlnLmgKKysrIC9kZXYvbnVsbApAQCAtMSwzMSArMCwwIEBACi0vKgotICogKEMpIENvcHlyaWdo
-dCAyMDA3IEp1ZXJnZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPgotICoKLSAqIFRoaXMg
-cHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IK
-LSAqIG1vZGlmeSBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBM
-aWNlbnNlIGFzCi0gKiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsg
-ZWl0aGVyIHZlcnNpb24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikg
-YW55IGxhdGVyIHZlcnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGlu
-IHRoZSBob3BlIHRoYXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FS
-UkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRB
-QklMSVRZIG9yIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICog
-R05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KLQot
-I2lmbmRlZiBfX0NPTkZJR19ICi0jZGVmaW5lIF9fQ09ORklHX0gKLQotLyoKLSAqIERlZmluaXRp
-b25zIHJlbGF0ZWQgdG8gcGFzc2luZyBhcmd1bWVudHMgdG8ga2VybmVsLgotICovCi0KLS8qICNk
-ZWZpbmUgQ09ORklHX1NZU1BMTF9DTEtfRlJFUQkyNjAwMDAwMCAqLwotCi0vKiBGSVhNRSAqLwot
-I2RlZmluZSBDT05GSUdfTVgzMV9IQ0xLX0ZSRVEJMjYwMDAwMDAKLSNkZWZpbmUgQ09ORklHX01Y
-MzFfQ0xLMzIJMzIwMDAKLQotI2VuZGlmCi0KLS8qIG5vdGhpbmcgdG8gZG8gaGVyZSB5ZXQgKi8K
-ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvY29uZmlnLmggYi9hcmNoL2FybS9i
-b2FyZHMvcGNtMDQzL2NvbmZpZy5oCmRlbGV0ZWQgZmlsZSBtb2RlIDEwMDY0NAppbmRleCA1MDFh
-NDRkLi4wMDAwMDAwCi0tLSBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNDMvY29uZmlnLmgKKysrIC9k
-ZXYvbnVsbApAQCAtMSwyNyArMCwwIEBACi0vKgotICogKEMpIENvcHlyaWdodCAyMDA3IEp1ZXJn
-ZW4gQmVpc2VydCA8amJlQHBlbmd1dHJvbml4LmRlPgotICoKLSAqIFRoaXMgcHJvZ3JhbSBpcyBm
-cmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IKLSAqIG1vZGlmeSBp
-dCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzCi0g
-KiBwdWJsaXNoZWQgYnkgdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNp
-b24gMiBvZgotICogdGhlIExpY2Vuc2UsIG9yIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZl
-cnNpb24uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRo
-YXQgaXQgd2lsbCBiZSB1c2VmdWwsCi0gKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhv
-dXQgZXZlbiB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgotICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJ
-VE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQotICogR05VIEdlbmVyYWwg
-UHVibGljIExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KLSAqCi0gKi8KLQotI2lmbmRlZiBfX0NP
-TkZJR19ICi0jZGVmaW5lIF9fQ09ORklHX0gKLQotLyoKLSAqIERlZmluaXRpb25zIHJlbGF0ZWQg
-dG8gcGFzc2luZyBhcmd1bWVudHMgdG8ga2VybmVsLgotICovCi0KLSNkZWZpbmUgQ09ORklHX01Y
-MzVfSENMS19GUkVRCTI0MDAwMDAwCi0KLSNlbmRpZgotCi0vKiBub3RoaW5nIHRvIGRvIGhlcmUg
-eWV0ICovCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvc2NiOTMyOC9jb25maWcuaCBiL2Fy
-Y2gvYXJtL2JvYXJkcy9zY2I5MzI4L2NvbmZpZy5oCmRlbGV0ZWQgZmlsZSBtb2RlIDEwMDY0NApp
-bmRleCBlODI1NDgyLi4wMDAwMDAwCi0tLSBhL2FyY2gvYXJtL2JvYXJkcy9zY2I5MzI4L2NvbmZp
-Zy5oCisrKyAvZGV2L251bGwKQEAgLTEsMjYgKzAsMCBAQAotLyoKLSAqIENvcHlyaWdodCAoQykg
-MjAwMyBFVEMgcy5yLm8uCi0gKgotICogVGhpcyBwcm9ncmFtIGlzIGZyZWUgc29mdHdhcmU7IHlv
-dSBjYW4gcmVkaXN0cmlidXRlIGl0IGFuZC9vcgotICogbW9kaWZ5IGl0IHVuZGVyIHRoZSB0ZXJt
-cyBvZiB0aGUgR05VIEdlbmVyYWwgUHVibGljIExpY2Vuc2UgYXMKLSAqIHB1Ymxpc2hlZCBieSB0
-aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uOyBlaXRoZXIgdmVyc2lvbiAyIG9mCi0gKiB0aGUg
-TGljZW5zZSwgb3IgKGF0IHlvdXIgb3B0aW9uKSBhbnkgbGF0ZXIgdmVyc2lvbi4KLSAqCi0gKiBU
-aGlzIHByb2dyYW0gaXMgZGlzdHJpYnV0ZWQgaW4gdGhlIGhvcGUgdGhhdCBpdCB3aWxsIGJlIHVz
-ZWZ1bCwKLSAqIGJ1dCBXSVRIT1VUIEFOWSBXQVJSQU5UWTsgd2l0aG91dCBldmVuIHRoZSBpbXBs
-aWVkIHdhcnJhbnR5IG9mCi0gKiBNRVJDSEFOVEFCSUxJVFkgb3IgRklUTkVTUyBGT1IgQSBQQVJU
-SUNVTEFSIFBVUlBPU0UuCSBTZWUgdGhlCi0gKiBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBm
-b3IgbW9yZSBkZXRhaWxzLgotICoKLSAqCi0gKiBXcml0dGVuIGJ5IFBldGVyIEZpZ3VsaSA8cGVw
-b3NoQGV0Yy5zaz4sIDIwMDMuCi0gKgotICogMjAwMy8xMy8wNiBJbml0aWFsIE1QMTAgU3VwcG9y
-dCBjb3BpZWQgZnJvbSB3ZXBlcDI1MAotICovCi0KLSNpZm5kZWYgX19DT05GSUdfSAotI2RlZmlu
-ZSBfX0NPTkZJR19ICi0KLSNkZWZpbmUgQ09ORklHX1NZU1BMTF9DTEtfRlJFUSAxNjAwMDAwMAot
-Ci0jZW5kaWYJLyogX19DT05GSUdfSCAqLwotCi0tIAoxLjguMy4xCgoKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
-ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile        | 78 ++++++------------------------------------------
+ arch/arm/boards/Makefile | 68 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+), 69 deletions(-)
+ create mode 100644 arch/arm/boards/Makefile
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 32bdd65..2f0f16e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -69,13 +69,19 @@ machine-$(CONFIG_ARCH_VEXPRESS)		:= vexpress
+ machine-$(CONFIG_ARCH_TEGRA)		:= tegra
+ machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
+ 
++
+ # Board directory name.  This list is sorted alphanumerically
+ # by CONFIG_* macro name.
+-
++#
++# DO NOT ADD NEW ENTRIES TO THIS LIST!
++# Add to arch/arm/boards/Makefile instead.
++#
++# These are here only because they have a board specific config.h.
++# TODO: Get rid of board specific config.h and move these to
++# arch/arm/boards/Makefile aswell.
+ board-$(CONFIG_MACH_A9M2410)			+= a9m2410
+ board-$(CONFIG_MACH_A9M2440)			+= a9m2440
+ board-$(CONFIG_MACH_ANIMEO_IP)			+= animeo_ip
+-board-$(CONFIG_MACH_ARCHOSG9)			+= archosg9
+ board-$(CONFIG_MACH_AT91RM9200EK)		+= at91rm9200ek
+ board-$(CONFIG_MACH_AT91SAM9260EK)		+= at91sam9260ek
+ board-$(CONFIG_MACH_AT91SAM9261EK)		+= at91sam9261ek
+@@ -86,93 +92,27 @@ board-$(CONFIG_MACH_AT91SAM9M10G45EK)		+= at91sam9m10g45ek
+ board-$(CONFIG_MACH_AT91SAM9M10IHD)		+= at91sam9m10ihd
+ board-$(CONFIG_MACH_AT91SAM9N12EK)		+= at91sam9n12ek
+ board-$(CONFIG_MACH_AT91SAM9X5EK)		+= at91sam9x5ek
+-board-$(CONFIG_MACH_BEAGLE)			+= beagle
+-board-$(CONFIG_MACH_BEAGLEBONE)			+= beaglebone
+-board-$(CONFIG_MACH_CCMX51)			+= ccxmx51
+-board-$(CONFIG_MACH_CFA10036)			+= crystalfontz-cfa10036
+-board-$(CONFIG_MACH_CHUMBY)			+= chumby_falconwing
+-board-$(CONFIG_MACH_CLEP7212)			+= clep7212
+ board-$(CONFIG_MACH_DSS11)			+= dss11
+-board-$(CONFIG_MACH_EDB93012)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9301)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9302A)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9302)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9307A)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9307)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9315A)			+= edb93xx
+-board-$(CONFIG_MACH_EDB9315)			+= edb93xx
+-board-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		+= efika-mx-smartbook
+-board-$(CONFIG_MACH_EUKREA_CPUIMX25)		+= eukrea_cpuimx25
+-board-$(CONFIG_MACH_EUKREA_CPUIMX27)		+= eukrea_cpuimx27
+-board-$(CONFIG_MACH_EUKREA_CPUIMX35)		+= eukrea_cpuimx35
+-board-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		+= eukrea_cpuimx51
+-board-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	+= freescale-mx25-3-stack
+-board-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	+= freescale-mx35-3-stack
+-board-$(CONFIG_MACH_FREESCALE_MX51_PDK)		+= freescale-mx51-pdk
+-board-$(CONFIG_MACH_FREESCALE_MX53_LOCO)	+= freescale-mx53-loco
+-board-$(CONFIG_MACH_FREESCALE_MX53_SMD)		+= freescale-mx53-smd
+ board-$(CONFIG_MACH_GE863)			+= telit-evk-pro3
+-board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)       += globalscale-guruplug
+-board-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)        += globalscale-mirabox
+-board-$(CONFIG_MACH_GUF_CUPID)			+= guf-cupid
+-board-$(CONFIG_MACH_GUF_VINCELL)		+= guf-vincell
+-board-$(CONFIG_MACH_HIGHBANK)			+= highbank
+-board-$(CONFIG_MACH_IMX21ADS)			+= imx21ads
+-board-$(CONFIG_MACH_IMX233_OLINUXINO)		+= imx233-olinuxino
+-board-$(CONFIG_MACH_IMX27ADS)			+= imx27ads
+-board-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)	+= marvell-armada-xp-gp
+ board-$(CONFIG_MACH_MINI2440)			+= friendlyarm-mini2440
+ board-$(CONFIG_MACH_MINI6410)			+= friendlyarm-mini6410
+-board-$(CONFIG_MACH_MIOA701)			+= mioa701
+ board-$(CONFIG_MACH_MMCCPU)			+= mmccpu
+-board-$(CONFIG_MACH_MX23EVK)			+= freescale-mx23-evk
+-board-$(CONFIG_MACH_MX28EVK)			+= freescale-mx28-evk
+-board-$(CONFIG_MACH_MX6Q_ARM2)			+= freescale-mx6-arm2
+-board-$(CONFIG_MACH_NESO)			+= guf-neso
+-board-$(CONFIG_MACH_NOMADIK_8815NHK)		+= nhk8815
+-board-$(CONFIG_MACH_NXDB500)			+= netx
+-board-$(CONFIG_MACH_OMAP343xSDP)		+= omap343xdsp
+-board-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm
+-board-$(CONFIG_MACH_PANDA)			+= panda
+-board-$(CONFIG_MACH_PCA100)			+= phycard-i.MX27
+-board-$(CONFIG_MACH_PCAAL1)			+= phycard-a-l1
+-board-$(CONFIG_MACH_PCAAXL2)			+= phycard-a-xl2
+ board-$(CONFIG_MACH_PCM027)			+= pcm027
+-board-$(CONFIG_MACH_PCM037)			+= pcm037
+-board-$(CONFIG_MACH_PCM038)			+= pcm038
+-board-$(CONFIG_MACH_PCM043)			+= pcm043
+-board-$(CONFIG_MACH_PCM049)			+= pcm049
+-board-$(CONFIG_MACH_PCM051)			+= pcm051
+-board-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3
+ board-$(CONFIG_MACH_PM9261)			+= pm9261
+ board-$(CONFIG_MACH_PM9263)			+= pm9263
+ board-$(CONFIG_MACH_PM9G45)			+= pm9g45
+ board-$(CONFIG_MACH_QIL_A9260)			+= qil-a926x
+ board-$(CONFIG_MACH_QIL_A9G20)			+= qil-a926x
+-board-$(CONFIG_MACH_REALQ7)			+= dmo-mx6-realq7
+-board-$(CONFIG_MACH_RPI)			+= raspberry-pi
+-board-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite
+-board-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd
+ board-$(CONFIG_MACH_SAMA5D3XEK)			+= sama5d3xek
+-board-$(CONFIG_MACH_SCB9328)			+= scb9328
+ board-$(CONFIG_MACH_SOLIDRUN_CUBOX)		+= solidrun-cubox
+ board-$(CONFIG_MACH_TINY210)			+= friendlyarm-tiny210
+ board-$(CONFIG_MACH_TINY6410)			+= friendlyarm-tiny6410
+ board-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x
+ board-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x
+ board-$(CONFIG_MACH_TNY_A9G20)			+= tny-a926x
+-board-$(CONFIG_MACH_TOSHIBA_AC100)		+= toshiba-ac100
+-board-$(CONFIG_MACH_TQMA53)			+= tqma53
+-board-$(CONFIG_MACH_TX25)			+= karo-tx25
+-board-$(CONFIG_MACH_TX28)			+= karo-tx28
+-board-$(CONFIG_MACH_TX51)			+= karo-tx51
+-board-$(CONFIG_MACH_TX53)			+= karo-tx53
+ board-$(CONFIG_MACH_USB_A9260)			+= usb-a926x
+ board-$(CONFIG_MACH_USB_A9263)			+= usb-a926x
+ board-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x
+-board-$(CONFIG_MACH_VERSATILEPB)		+= versatile
+-board-$(CONFIG_MACH_VEXPRESS)			+= vexpress
+-board-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard
+ 
+ machdirs := $(patsubst %,arch/arm/mach-%/,$(machine-y))
+ 
+@@ -325,7 +265,7 @@ else
+ MACH :=
+ endif
+ 
+-common-y += $(BOARD) $(MACH)
++common-y += $(BOARD) arch/arm/boards/ $(MACH)
+ common-y += arch/arm/lib/ arch/arm/cpu/
+ 
+ common-$(CONFIG_BUILTIN_DTB) += arch/arm/dts/
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+new file mode 100644
+index 0000000..6d1e98d
+--- /dev/null
++++ b/arch/arm/boards/Makefile
+@@ -0,0 +1,68 @@
++# keep sorted by CONFIG_* macro name.
++obj-$(CONFIG_MACH_ARCHOSG9)			+= archosg9/
++obj-$(CONFIG_MACH_BEAGLE)			+= beagle/
++obj-$(CONFIG_MACH_BEAGLEBONE)			+= beaglebone/
++obj-$(CONFIG_MACH_CCMX51)			+= ccxmx51/
++obj-$(CONFIG_MACH_CFA10036)			+= crystalfontz-cfa10036/
++obj-$(CONFIG_MACH_CHUMBY)			+= chumby_falconwing/
++obj-$(CONFIG_MACH_CLEP7212)			+= clep7212/
++obj-$(CONFIG_MACH_EDB93012)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9301)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9302A)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9302)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9307A)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9307)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9315A)			+= edb93xx/
++obj-$(CONFIG_MACH_EDB9315)			+= edb93xx/
++obj-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		+= efika-mx-smartbook/
++obj-$(CONFIG_MACH_EUKREA_CPUIMX25)		+= eukrea_cpuimx25/
++obj-$(CONFIG_MACH_EUKREA_CPUIMX27)		+= eukrea_cpuimx27/
++obj-$(CONFIG_MACH_EUKREA_CPUIMX35)		+= eukrea_cpuimx35/
++obj-$(CONFIG_MACH_EUKREA_CPUIMX51SD)		+= eukrea_cpuimx51/
++obj-$(CONFIG_MACH_FREESCALE_MX25_3STACK)	+= freescale-mx25-3-stack/
++obj-$(CONFIG_MACH_FREESCALE_MX35_3STACK)	+= freescale-mx35-3-stack/
++obj-$(CONFIG_MACH_FREESCALE_MX51_PDK)		+= freescale-mx51-pdk/
++obj-$(CONFIG_MACH_FREESCALE_MX53_LOCO)		+= freescale-mx53-loco/
++obj-$(CONFIG_MACH_FREESCALE_MX53_SMD)		+= freescale-mx53-smd/
++obj-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)		+= globalscale-guruplug/
++obj-$(CONFIG_MACH_GLOBALSCALE_MIRABOX)		+= globalscale-mirabox/
++obj-$(CONFIG_MACH_GUF_CUPID)			+= guf-cupid/
++obj-$(CONFIG_MACH_GUF_VINCELL)			+= guf-vincell/
++obj-$(CONFIG_MACH_HIGHBANK)			+= highbank/
++obj-$(CONFIG_MACH_IMX21ADS)			+= imx21ads/
++obj-$(CONFIG_MACH_IMX233_OLINUXINO)		+= imx233-olinuxino/
++obj-$(CONFIG_MACH_IMX27ADS)			+= imx27ads/
++obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)		+= marvell-armada-xp-gp/
++obj-$(CONFIG_MACH_MIOA701)			+= mioa701/
++obj-$(CONFIG_MACH_MX23EVK)			+= freescale-mx23-evk/
++obj-$(CONFIG_MACH_MX28EVK)			+= freescale-mx28-evk/
++obj-$(CONFIG_MACH_MX6Q_ARM2)			+= freescale-mx6-arm2/
++obj-$(CONFIG_MACH_NESO)				+= guf-neso/
++obj-$(CONFIG_MACH_NOMADIK_8815NHK)		+= nhk8815/
++obj-$(CONFIG_MACH_NXDB500)			+= netx/
++obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
++obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
++obj-$(CONFIG_MACH_PANDA)			+= panda/
++obj-$(CONFIG_MACH_PCA100)			+= phycard-i.MX27/
++obj-$(CONFIG_MACH_PCAAL1)			+= phycard-a-l1/
++obj-$(CONFIG_MACH_PCAAXL2)			+= phycard-a-xl2/
++obj-$(CONFIG_MACH_PCM037)			+= pcm037/
++obj-$(CONFIG_MACH_PCM038)			+= pcm038/
++obj-$(CONFIG_MACH_PCM043)			+= pcm043/
++obj-$(CONFIG_MACH_PCM049)			+= pcm049/
++obj-$(CONFIG_MACH_PCM051)			+= pcm051/
++obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
++obj-$(CONFIG_MACH_REALQ7)			+= dmo-mx6-realq7/
++obj-$(CONFIG_MACH_RPI)				+= raspberry-pi/
++obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
++obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
++obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
++obj-$(CONFIG_MACH_TOSHIBA_AC100)		+= toshiba-ac100/
++obj-$(CONFIG_MACH_TQMA53)			+= tqma53/
++obj-$(CONFIG_MACH_TX25)				+= karo-tx25/
++obj-$(CONFIG_MACH_TX28)				+= karo-tx28/
++obj-$(CONFIG_MACH_TX51)				+= karo-tx51/
++obj-$(CONFIG_MACH_TX53)				+= karo-tx53/
++obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
++obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
++obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
+-- 
+1.8.3.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
