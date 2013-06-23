@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UqpOn-0008Cy-He
- for barebox@lists.infradead.org; Sun, 23 Jun 2013 18:52:30 +0000
-Date: Sun, 23 Jun 2013 20:52:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130623185206.GN32299@pengutronix.de>
-References: <CAGo_u6pP9djhzUZyOLNewL4kDwcY0A_KW1ZmdHVurCwBUxBEEg@mail.gmail.com>
- <1371803042-1179-1-git-send-email-j.weitzel@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1371803042-1179-1-git-send-email-j.weitzel@phytec.de>
+ id 1UqpnP-00007Q-SK
+ for barebox@lists.infradead.org; Sun, 23 Jun 2013 19:17:57 +0000
+Received: by mail-la0-f47.google.com with SMTP id fe20so9421213lab.20
+ for <barebox@lists.infradead.org>; Sun, 23 Jun 2013 12:17:32 -0700 (PDT)
+Date: Sun, 23 Jun 2013 23:16:11 +0400
+From: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
+Message-Id: <20130623231611.45358b0e316e65de6bc77010@gmail.com>
+In-Reply-To: <20130623184217.GL32299@pengutronix.de>
+References: <1371633093-23179-1-git-send-email-linux@rempel-privat.de>
+ <20130621154840.GF32299@pengutronix.de>
+ <20130621203745.932331ebb1544b8246d480d2@gmail.com>
+ <20130623184217.GL32299@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,33 +22,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] OMAP4 do not set TPS62361_REG_ADDR_SET0
-To: Jan Weitzel <j.weitzel@phytec.de>
+Subject: Re: [PATCH 0/8] low level initialisation for ar2313
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Jun 21, 2013 at 10:24:02AM +0200, Jan Weitzel wrote:
-> Don't set SET0 voltage, because it acts as boot voltage for OPP boot.
-> Take care that the kernel doesn't drive vset gpio to low. This may
-> happen while reseting the gpio module at initialization, look for
-> HWMOD_INIT_NO_RESET.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> Reviewed-by: Nishanth Menon <nm@ti.com>
+On Sun, 23 Jun 2013 20:42:17 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Applied, thanks
+> On Fri, Jun 21, 2013 at 08:37:45PM +0400, antonynpavlov@gmail.com wrote:
+> > On Fri, 21 Jun 2013 17:48:40 +0200
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > =
 
-Sascha
+> > Well done, Oleksij! Congratulations!
+> > =
+
+> > Thanks, Sascha!
+> > =
+
+> > Now we have in the next branch THE FIRST PUBLICLY AVAILABLE FULLY SUPPO=
+RTED "HARDWARE" MIPS-based BOARD!
+> =
+
+> Hurray \o/
+> =
+
+> What about the dlink 320? Does it only work 2nd stage?
+
+Alas it works only 2nd stage.
+
+I have a Ingenic JZ4770-based tablet with barebox only firmware. I made the=
+ 1st stage loader as a very very dirty hack, but it works! It is time to cl=
+ean it...
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Sascha
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
