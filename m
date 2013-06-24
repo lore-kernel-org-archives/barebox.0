@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-f44.google.com ([209.85.214.44])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ur2xK-0002nd-5V
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 09:21:02 +0000
-Date: Mon, 24 Jun 2013 11:20:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130624092038.GT32299@pengutronix.de>
-References: <1372017777-787-1-git-send-email-s.hauer@pengutronix.de>
- <1372017777-787-4-git-send-email-s.hauer@pengutronix.de>
- <20130624083908.GJ27130@game.jcrosoft.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130624083908.GJ27130@game.jcrosoft.org>
+ id 1Ur4LO-0005BG-Ov
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 10:50:00 +0000
+Received: by mail-bk0-f44.google.com with SMTP id r7so4153747bkg.17
+ for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 03:49:32 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Mon, 24 Jun 2013 12:49:21 +0200
+Message-Id: <1372070961-10132-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +18,169 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] ARM: Turn most board directories into regular build
- directories
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: [PATCH v2 2/2] OF: base: use of_delete_property where applicable
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 24, 2013 at 10:39:08AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:02 Sun 23 Jun     , Sascha Hauer wrote:
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Why you did not move all of them?
+This patch makes OF API use of_delete_property where applicable instead
+of freeing allocated data in different places.
 
-Because they have a board specific config.h file which is not
-found when $(BOARD) is empty.
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Changelog:
+v1->v2:
+- remove offending whitespace lines
 
-Quoting my introductory mail:
+Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c |   81 ++++++++++++++++------------------------------------
+ 1 files changed, 25 insertions(+), 56 deletions(-)
 
-> Jean-Christophe, I'd like to get rid of the remaining config.h
-> files. The bulk of the remaining ones are at91 and most of
-> them contain a single define for AT91_MAIN_CLK. Could you work
-> on this? I could do it myself but I'm sure you have your own
-> idea how this should be accomplished.
-
-Sascha
-
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index e65cf85..63ff647 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -899,16 +899,11 @@ int of_property_write_u8_array(struct device_node *np,
+ 	struct property *prop = of_find_property(np, propname, NULL);
+ 	u8 *val;
+ 
+-	if (!prop)
+-		prop = of_new_property(np, propname, NULL, 0);
+-	if (!prop)
+-		return -ENOMEM;
+-
+-	free(prop->value);
++	if (prop)
++		of_delete_property(prop);
+ 
+-	prop->length = sizeof(*val) * sz;
+-	prop->value = malloc(prop->length);
+-	if (!prop->value)
++	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
++	if (!prop)
+ 		return -ENOMEM;
+ 
+ 	val = prop->value;
+@@ -940,16 +935,11 @@ int of_property_write_u16_array(struct device_node *np,
+ 	struct property *prop = of_find_property(np, propname, NULL);
+ 	__be16 *val;
+ 
+-	if (!prop)
+-		prop = of_new_property(np, propname, NULL, 0);
+-	if (!prop)
+-		return -ENOMEM;
+-
+-	free(prop->value);
++	if (prop)
++		of_delete_property(prop);
+ 
+-	prop->length = sizeof(*val) * sz;
+-	prop->value = malloc(prop->length);
+-	if (!prop->value)
++	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
++	if (!prop)
+ 		return -ENOMEM;
+ 
+ 	val = prop->value;
+@@ -981,16 +971,11 @@ int of_property_write_u32_array(struct device_node *np,
+ 	struct property *prop = of_find_property(np, propname, NULL);
+ 	__be32 *val;
+ 
+-	if (!prop)
+-		prop = of_new_property(np, propname, NULL, 0);
+-	if (!prop)
+-		return -ENOMEM;
++	if (prop)
++		of_delete_property(prop);
+ 
+-	free(prop->value);
+-
+-	prop->length = sizeof(*val) * sz;
+-	prop->value = malloc(prop->length);
+-	if (!prop->value)
++	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
++	if (!prop)
+ 		return -ENOMEM;
+ 
+ 	val = prop->value;
+@@ -1022,16 +1007,11 @@ int of_property_write_u64_array(struct device_node *np,
+ 	struct property *prop = of_find_property(np, propname, NULL);
+ 	__be32 *val;
+ 
+-	if (!prop)
+-		prop = of_new_property(np, propname, NULL, 0);
+-	if (!prop)
+-		return -ENOMEM;
++	if (prop)
++		of_delete_property(prop);
+ 
+-	free(prop->value);
+-
+-	prop->length = 2 * sizeof(*val) * sz;
+-	prop->value = malloc(prop->length);
+-	if (!prop->value)
++	prop = of_new_property(np, propname, NULL, 2 * sizeof(*val) * sz);
++	if (!prop)
+ 		return -ENOMEM;
+ 
+ 	val = prop->value;
+@@ -1567,26 +1547,19 @@ void of_delete_property(struct property *pp)
+ int of_set_property(struct device_node *np, const char *name, const void *val, int len,
+ 		int create)
+ {
+-	struct property *pp;
++	struct property *pp = of_find_property(np, name, NULL);
+ 
+ 	if (!np)
+ 		return -ENOENT;
+ 
+-	pp = of_find_property(np, name, NULL);
+-	if (pp) {
+-		void *data;
++	if (!pp && !create)
++		return -ENOENT;
+ 
+-		free(pp->value);
+-		data = xzalloc(len);
+-		memcpy(data, val, len);
+-		pp->value = data;
+-		pp->length = len;
+-	} else {
+-		if (!create)
+-			return -ENOENT;
++	of_delete_property(pp);
+ 
+-		pp = of_new_property(np, name, val, len);
+-	}
++	pp = of_new_property(np, name, val, len);
++	if (!pp)
++		return -ENOMEM;
+ 
+ 	return 0;
+ }
+@@ -1810,12 +1783,8 @@ void of_free(struct device_node *node)
+ 	if (!node)
+ 		return;
+ 
+-	list_for_each_entry_safe(p, pt, &node->properties, list) {
+-		list_del(&p->list);
+-		free(p->name);
+-		free(p->value);
+-		free(p);
+-	}
++	list_for_each_entry_safe(p, pt, &node->properties, list)
++		of_delete_property(p);
+ 
+ 	list_for_each_entry_safe(n, nt, &node->children, parent_list) {
+ 		of_free(n);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.5
+
 
 _______________________________________________
 barebox mailing list
