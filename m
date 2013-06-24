@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f192.mail.ru ([217.69.129.201])
+Received: from mail-pa0-x232.google.com ([2607:f8b0:400e:c03::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ur5qB-00083P-O6
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 12:25:52 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 24 Jun 2013 16:25:26 +0400
-Message-ID: <1372076726.78973270@f192.mail.ru>
-In-Reply-To: <51C83929.70001@gmail.com>
-References: <51C83929.70001@gmail.com>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1Ur60e-0008JO-Dq
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 12:36:41 +0000
+Received: by mail-pa0-f50.google.com with SMTP id fb1so10826178pad.23
+ for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 05:36:18 -0700 (PDT)
+Message-ID: <51C83D40.5090004@gmail.com>
+Date: Mon, 24 Jun 2013 21:36:16 +0900
+From: NISHIMOTO Hiroki <hiroki.nishimoto.if@gmail.com>
+MIME-Version: 1.0
+References: <51C83929.70001@gmail.com> <1372076726.78973270@f192.mail.ru>
+In-Reply-To: <1372076726.78973270@f192.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,19 +23,16 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gbnMxNjU1MDogYWRkIGRldmljZSB0cmVlIHN1cHBvcnQ=?=
-To: =?UTF-8?B?TklTSElNT1RPIEhpcm9raQ==?= <hiroki.nishimoto.if@gmail.com>
+Subject: Re: [PATCH] ns16550: add device tree support
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-> This patch adds device tree support for serial_ns16550 driver.
-> 
-> Tested with pcduino (allwinner a10).
+> Is we have mach-sunxi support in barebox already?
+> Do you have custom patches for support this subarch?
 
-Is we have mach-sunxi support in barebox already?
-Do you have custom patches for support this subarch?
-Thanks.
+As far as I know, mach-sunxi is not supported yet.
+Currently only serial/clocksource are working on my local environment.
 
----
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
