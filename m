@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrChq-0003JX-RH
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:45:44 +0000
-Date: Mon, 24 Jun 2013 21:45:20 +0200
+ id 1UrCnE-0003Vc-Vl
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:51:17 +0000
+Date: Mon, 24 Jun 2013 21:50:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130624194520.GX32299@pengutronix.de>
-References: <1372075722-9872-1-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20130624195021.GY32299@pengutronix.de>
+References: <1371634395.4111.54.camel@mars>
+ <1372080750.6281.4.camel@mars>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372075722-9872-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1372080750.6281.4.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] nand_base: fix chipsize for multi LUN nands
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] omap-fb: add driver
+To: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>, barebox@lists.infradead.org
 
-On Mon, Jun 24, 2013 at 02:08:42PM +0200, Jan Weitzel wrote:
-> Chipsize didn't take number of LUNs into account. Sync chipsize calculation
-> to kernel commit 63795755
-> Tested with MT29F8G16ADBDAH4 on OMAP4
+On Mon, Jun 24, 2013 at 03:32:30PM +0200, Christoph Fritz wrote:
+> On Wed, 2013-06-19 at 11:33 +0200, Christoph Fritz wrote:
+> > This patch adds omap display controller support. Currently only
+> > OMAP4 DSS is supported.
 > 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> Any objections here?
 
-Applied, thanks
+Oh, sorry, I missed this last version. Applied now
 
-Sascha
+Thanks
+ Sascha
 
-> ---
->  drivers/mtd/nand/nand_base.c |    3 ++-
->  1 files changed, 2 insertions(+), 1 deletions(-)
 > 
-> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-> index 8c14112..1969aff 100644
-> --- a/drivers/mtd/nand/nand_base.c
-> +++ b/drivers/mtd/nand/nand_base.c
-> @@ -1117,7 +1117,8 @@ static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
->  	mtd->writesize = le32_to_cpu(p->byte_per_page);
->  	mtd->erasesize = le32_to_cpu(p->pages_per_block) * mtd->writesize;
->  	mtd->oobsize = le16_to_cpu(p->spare_bytes_per_page);
-> -	chip->chipsize = (uint64_t)le32_to_cpu(p->blocks_per_lun) * mtd->erasesize;
-> +	chip->chipsize = le32_to_cpu(p->blocks_per_lun);
-> +	chip->chipsize *= (uint64_t)mtd->erasesize * p->lun_count;
->  	*busw = 0;
->  	if (le16_to_cpu(p->features) & 1)
->  		*busw = NAND_BUSWIDTH_16;
-> -- 
-> 1.7.0.4
+> These are the changes in the review-process so far:
 > 
+> changes since v2:
+>         - use dev_request_mem_region_by_name()
+> changes since v3:
+>         - remove register struct
+>         - use uncached screen_base
+> changes since v4:
+>         - remove useless dev_add_param()
+>         - use wait_on_timeout() instead while-deadlock
+> changes since v5:
+>         - use dev_dbg() and dev_err(), be less verbose
+>         - fix coding-style issues
+>         - add omap4fb_find_display_by_name()
+>         - add additional read/write macros
+> changes since v6:
+> 	- split driver into two commits
+> 	- rename driver to "omap-fb"
 > 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+>  Thanks
+>   -- Christoph
+> 
 > 
 
 -- 
