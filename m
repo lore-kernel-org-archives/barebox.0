@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
+Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ur6t7-0001qk-Ea
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 13:32:57 +0000
-Received: by mail-ea0-f174.google.com with SMTP id o10so6052510eaj.33
- for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 06:32:35 -0700 (PDT)
-From: Christoph Fritz <chf.fritz@googlemail.com>
-In-Reply-To: <1371634395.4111.54.camel@mars>
-References: <1371634395.4111.54.camel@mars>
-Date: Mon, 24 Jun 2013 15:32:30 +0200
-Message-ID: <1372080750.6281.4.camel@mars>
-Mime-Version: 1.0
+ id 1Ur8Ir-0004H8-4k
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 15:03:38 +0000
+Received: by mail-bk0-f41.google.com with SMTP id jc3so4282222bkc.14
+ for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 08:03:13 -0700 (PDT)
+Message-ID: <51C85FAD.5090002@gmail.com>
+Date: Mon, 24 Jun 2013 17:03:09 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <51C83929.70001@gmail.com>
+In-Reply-To: <51C83929.70001@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +19,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] omap-fb: add driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] ns16550: add device tree support
+To: NISHIMOTO Hiroki <hiroki.nishimoto.if@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Wed, 2013-06-19 at 11:33 +0200, Christoph Fritz wrote:
-> This patch adds omap display controller support. Currently only
-> OMAP4 DSS is supported.
+On 06/24/13 14:18, NISHIMOTO Hiroki wrote:
+> This patch adds device tree support for serial_ns16550 driver.
+>
+> Tested with pcduino (allwinner a10).
+>
+> Signed-off-by: NISHIMOTO Hiroki <hiroki.nishimoto.if@gmail.com>
+> ---
+>   .../devicetree/bindings/serial/ns16550_serial.txt  | 34 ++++++++++++++
+>   drivers/serial/serial_ns16550.c                    | 53 ++++++++++++++++++++--
+>   2 files changed, 84 insertions(+), 3 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/serial/ns16550_serial.txt
+>
+> diff --git a/Documentation/devicetree/bindings/serial/ns16550_serial.txt b/Documentation/devicetree/bindings/serial/ns16550_serial.txt
+> new file mode 100644
+> index 0000000..848f949
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/serial/ns16550_serial.txt
+> @@ -0,0 +1,34 @@
+> +* NS16550 UART
+> +
+> +Required properties:
+> +- compatible : "ns16550_serial"
 
-Any objections here?
+Hiroki,
 
-These are the changes in the review-process so far:
+as stated in Documentation/devicetree/bindings/README, barebox uses the 
+same bindings as "the kernel" which is Linux I guess. Linux already has
+a binding for ns16550 compatible serial.
 
-changes since v2:
-        - use dev_request_mem_region_by_name()
-changes since v3:
-        - remove register struct
-        - use uncached screen_base
-changes since v4:
-        - remove useless dev_add_param()
-        - use wait_on_timeout() instead while-deadlock
-changes since v5:
-        - use dev_dbg() and dev_err(), be less verbose
-        - fix coding-style issues
-        - add omap4fb_find_display_by_name()
-        - add additional read/write macros
-changes since v6:
-	- split driver into two commits
-	- rename driver to "omap-fb"
+I suggest to use that binding as a reference although it is not
+documented but needs to be stripped from its source code.
 
- Thanks
-  -- Christoph
+> +- reg : offset and length of the register set for the device.
+> +
+> +
+> +Optional properties:
+> +- clock-frequency : the input clock frequency for the UART.
+> +- reg-shift : quantity to shift the register offsets by.  If this property is
+> +  not present then the register offsets are not shifted.
+> +- reg-io-width : the size (in bytes) of the IO accesses that should be
+> +  performed on the device.  If this property is not present then single byte
+> +  accesses are used.
+> +- disable-fifo :
+> +	0: enable tx/rx fifo (default value)
+> +	1: disable tx/rx fifo
+> +- console-stdin : activate stdin on this console.
+> +- console-stdout : activate stdout on this console.
+> +- console-stderr : activate stderr on this console.
+
+ePAPR specification already defines stdout-path and stdin-path.
+Moreover, barebox has of_device_is_stdout_path to check if a device is
+referenced by stdout-path property.
+
+Sebastian
 
 
 _______________________________________________
