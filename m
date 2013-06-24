@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrCgd-0003Hc-EO
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:44:28 +0000
-Date: Mon, 24 Jun 2013 21:44:05 +0200
+ id 1UrChq-0003JX-RH
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:45:44 +0000
+Date: Mon, 24 Jun 2013 21:45:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130624194405.GW32299@pengutronix.de>
-References: <1372059045-18113-1-git-send-email-j.weitzel@phytec.de>
+Message-ID: <20130624194520.GX32299@pengutronix.de>
+References: <1372075722-9872-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372059045-18113-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1372075722-9872-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ubiformat: check file size
+Subject: Re: [PATCH] nand_base: fix chipsize for multi LUN nands
 To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 24, 2013 at 09:30:45AM +0200, Jan Weitzel wrote:
-> If size of a flash image file is 0 ubiformat silently formats the volume.
-> Check size and abort if size == 0. This may be the case if an empty or tftp
-> mounted file is used.
+On Mon, Jun 24, 2013 at 02:08:42PM +0200, Jan Weitzel wrote:
+> Chipsize didn't take number of LUNs into account. Sync chipsize calculation
+> to kernel commit 63795755
+> Tested with MT29F8G16ADBDAH4 on OMAP4
 > 
 > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
@@ -38,25 +38,23 @@ Applied, thanks
 Sascha
 
 > ---
->  commands/ubiformat.c |    5 +++++
->  1 files changed, 5 insertions(+), 0 deletions(-)
+>  drivers/mtd/nand/nand_base.c |    3 ++-
+>  1 files changed, 2 insertions(+), 1 deletions(-)
 > 
-> diff --git a/commands/ubiformat.c b/commands/ubiformat.c
-> index 121816f..5b4e572 100644
-> --- a/commands/ubiformat.c
-> +++ b/commands/ubiformat.c
-> @@ -325,6 +325,11 @@ static int flash_image(const struct mtd_dev_info *mtd,
->  		goto out_close;
->  	}
->  
-> +	if (st_size == 0) {
-> +		sys_errmsg("file \"%s\" has size 0 bytes", args.image);
-> +		goto out_close;
-> +	}
-> +
->  	verbose(args.verbose, "will write %d eraseblocks", img_ebs);
->  	divisor = img_ebs;
->  	for (eb = 0; eb < mtd->eb_cnt; eb++) {
+> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+> index 8c14112..1969aff 100644
+> --- a/drivers/mtd/nand/nand_base.c
+> +++ b/drivers/mtd/nand/nand_base.c
+> @@ -1117,7 +1117,8 @@ static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
+>  	mtd->writesize = le32_to_cpu(p->byte_per_page);
+>  	mtd->erasesize = le32_to_cpu(p->pages_per_block) * mtd->writesize;
+>  	mtd->oobsize = le16_to_cpu(p->spare_bytes_per_page);
+> -	chip->chipsize = (uint64_t)le32_to_cpu(p->blocks_per_lun) * mtd->erasesize;
+> +	chip->chipsize = le32_to_cpu(p->blocks_per_lun);
+> +	chip->chipsize *= (uint64_t)mtd->erasesize * p->lun_count;
+>  	*busw = 0;
+>  	if (le16_to_cpu(p->features) & 1)
+>  		*busw = NAND_BUSWIDTH_16;
 > -- 
 > 1.7.0.4
 > 
