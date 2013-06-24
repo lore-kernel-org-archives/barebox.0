@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f44.google.com ([209.85.214.44])
+Received: from mail-bk0-x233.google.com ([2a00:1450:4008:c01::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ur4LO-0005BG-Ov
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 10:50:00 +0000
-Received: by mail-bk0-f44.google.com with SMTP id r7so4153747bkg.17
+ id 1Ur4LM-0005BF-5O
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 10:49:56 +0000
+Received: by mail-bk0-f51.google.com with SMTP id ji1so4110512bkc.38
  for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 03:49:32 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Mon, 24 Jun 2013 12:49:21 +0200
-Message-Id: <1372070961-10132-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Mon, 24 Jun 2013 12:49:20 +0200
+Message-Id: <1372070961-10132-1-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,161 +23,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] OF: base: use of_delete_property where applicable
+Subject: [PATCH v2 1/2] OF: base: add sanity checks to of_new/delete_property
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This patch makes OF API use of_delete_property where applicable instead
-of freeing allocated data in different places.
+This adds some sanity checks to of_new_property and of_delete_property.
+Also, value pointer is always allocated even with zero length to allow
+empty properties to be distinguished from non-existing properties.
+Finally, data passed to of_new_property is only copied if non-NULL.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
+Note: Patch 3 of the former patch set has been dropped in favour of zero
+length allocation here.
+
 Changelog:
 v1->v2:
-- remove offending whitespace lines
+- remove unneccesary NULL checks after xzalloc (Suggested by Sascha Hauer)
+- allocate zero length value pointer (Suggested by Sascha Hauer)
 
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/base.c |   81 ++++++++++++++++------------------------------------
- 1 files changed, 25 insertions(+), 56 deletions(-)
+ drivers/of/base.c |   15 +++++++++++----
+ 1 files changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index e65cf85..63ff647 100644
+index 1b351ee..e65cf85 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -899,16 +899,11 @@ int of_property_write_u8_array(struct device_node *np,
- 	struct property *prop = of_find_property(np, propname, NULL);
- 	u8 *val;
+@@ -1527,13 +1527,17 @@ struct property *of_new_property(struct device_node *node, const char *name,
+ 	struct property *prop;
  
--	if (!prop)
--		prop = of_new_property(np, propname, NULL, 0);
--	if (!prop)
--		return -ENOMEM;
+ 	prop = xzalloc(sizeof(*prop));
 -
--	free(prop->value);
-+	if (prop)
-+		of_delete_property(prop);
+ 	prop->name = strdup(name);
++	if (!prop->name) {
++		free(prop);
++		return NULL;
++	}
++
+ 	prop->length = len;
+-	if (len) {
+-		prop->value = xzalloc(len);
++	prop->value = xzalloc(len);
++
++	if (data)
+ 		memcpy(prop->value, data, len);
+-	}
  
--	prop->length = sizeof(*val) * sz;
--	prop->value = malloc(prop->length);
--	if (!prop->value)
-+	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
-+	if (!prop)
- 		return -ENOMEM;
+ 	list_add_tail(&prop->list, &node->properties);
  
- 	val = prop->value;
-@@ -940,16 +935,11 @@ int of_property_write_u16_array(struct device_node *np,
- 	struct property *prop = of_find_property(np, propname, NULL);
- 	__be16 *val;
+@@ -1542,6 +1546,9 @@ struct property *of_new_property(struct device_node *node, const char *name,
  
--	if (!prop)
--		prop = of_new_property(np, propname, NULL, 0);
--	if (!prop)
--		return -ENOMEM;
--
--	free(prop->value);
-+	if (prop)
-+		of_delete_property(prop);
- 
--	prop->length = sizeof(*val) * sz;
--	prop->value = malloc(prop->length);
--	if (!prop->value)
-+	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
-+	if (!prop)
- 		return -ENOMEM;
- 
- 	val = prop->value;
-@@ -981,16 +971,11 @@ int of_property_write_u32_array(struct device_node *np,
- 	struct property *prop = of_find_property(np, propname, NULL);
- 	__be32 *val;
- 
--	if (!prop)
--		prop = of_new_property(np, propname, NULL, 0);
--	if (!prop)
--		return -ENOMEM;
-+	if (prop)
-+		of_delete_property(prop);
- 
--	free(prop->value);
--
--	prop->length = sizeof(*val) * sz;
--	prop->value = malloc(prop->length);
--	if (!prop->value)
-+	prop = of_new_property(np, propname, NULL, sizeof(*val) * sz);
-+	if (!prop)
- 		return -ENOMEM;
- 
- 	val = prop->value;
-@@ -1022,16 +1007,11 @@ int of_property_write_u64_array(struct device_node *np,
- 	struct property *prop = of_find_property(np, propname, NULL);
- 	__be32 *val;
- 
--	if (!prop)
--		prop = of_new_property(np, propname, NULL, 0);
--	if (!prop)
--		return -ENOMEM;
-+	if (prop)
-+		of_delete_property(prop);
- 
--	free(prop->value);
--
--	prop->length = 2 * sizeof(*val) * sz;
--	prop->value = malloc(prop->length);
--	if (!prop->value)
-+	prop = of_new_property(np, propname, NULL, 2 * sizeof(*val) * sz);
-+	if (!prop)
- 		return -ENOMEM;
- 
- 	val = prop->value;
-@@ -1567,26 +1547,19 @@ void of_delete_property(struct property *pp)
- int of_set_property(struct device_node *np, const char *name, const void *val, int len,
- 		int create)
+ void of_delete_property(struct property *pp)
  {
--	struct property *pp;
-+	struct property *pp = of_find_property(np, name, NULL);
- 
- 	if (!np)
- 		return -ENOENT;
- 
--	pp = of_find_property(np, name, NULL);
--	if (pp) {
--		void *data;
-+	if (!pp && !create)
-+		return -ENOENT;
- 
--		free(pp->value);
--		data = xzalloc(len);
--		memcpy(data, val, len);
--		pp->value = data;
--		pp->length = len;
--	} else {
--		if (!create)
--			return -ENOENT;
-+	of_delete_property(pp);
- 
--		pp = of_new_property(np, name, val, len);
--	}
-+	pp = of_new_property(np, name, val, len);
 +	if (!pp)
-+		return -ENOMEM;
++		return;
++
+ 	list_del(&pp->list);
  
- 	return 0;
- }
-@@ -1810,12 +1783,8 @@ void of_free(struct device_node *node)
- 	if (!node)
- 		return;
- 
--	list_for_each_entry_safe(p, pt, &node->properties, list) {
--		list_del(&p->list);
--		free(p->name);
--		free(p->value);
--		free(p);
--	}
-+	list_for_each_entry_safe(p, pt, &node->properties, list)
-+		of_delete_property(p);
- 
- 	list_for_each_entry_safe(n, nt, &node->children, parent_list) {
- 		of_free(n);
+ 	free(pp->name);
 -- 
 1.7.2.5
 
