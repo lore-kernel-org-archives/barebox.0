@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-x232.google.com ([2607:f8b0:400e:c03::232])
+Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ur60e-0008JO-Dq
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 12:36:41 +0000
-Received: by mail-pa0-f50.google.com with SMTP id fb1so10826178pad.23
- for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 05:36:18 -0700 (PDT)
-Message-ID: <51C83D40.5090004@gmail.com>
-Date: Mon, 24 Jun 2013 21:36:16 +0900
-From: NISHIMOTO Hiroki <hiroki.nishimoto.if@gmail.com>
-MIME-Version: 1.0
-References: <51C83929.70001@gmail.com> <1372076726.78973270@f192.mail.ru>
-In-Reply-To: <1372076726.78973270@f192.mail.ru>
+ id 1Ur6t7-0001qk-Ea
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 13:32:57 +0000
+Received: by mail-ea0-f174.google.com with SMTP id o10so6052510eaj.33
+ for <barebox@lists.infradead.org>; Mon, 24 Jun 2013 06:32:35 -0700 (PDT)
+From: Christoph Fritz <chf.fritz@googlemail.com>
+In-Reply-To: <1371634395.4111.54.camel@mars>
+References: <1371634395.4111.54.camel@mars>
+Date: Mon, 24 Jun 2013 15:32:30 +0200
+Message-ID: <1372080750.6281.4.camel@mars>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,15 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ns16550: add device tree support
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] omap-fb: add driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>, barebox@lists.infradead.org
 
-> Is we have mach-sunxi support in barebox already?
-> Do you have custom patches for support this subarch?
+On Wed, 2013-06-19 at 11:33 +0200, Christoph Fritz wrote:
+> This patch adds omap display controller support. Currently only
+> OMAP4 DSS is supported.
 
-As far as I know, mach-sunxi is not supported yet.
-Currently only serial/clocksource are working on my local environment.
+Any objections here?
+
+These are the changes in the review-process so far:
+
+changes since v2:
+        - use dev_request_mem_region_by_name()
+changes since v3:
+        - remove register struct
+        - use uncached screen_base
+changes since v4:
+        - remove useless dev_add_param()
+        - use wait_on_timeout() instead while-deadlock
+changes since v5:
+        - use dev_dbg() and dev_err(), be less verbose
+        - fix coding-style issues
+        - add omap4fb_find_display_by_name()
+        - add additional read/write macros
+changes since v6:
+	- split driver into two commits
+	- rename driver to "omap-fb"
+
+ Thanks
+  -- Christoph
+
 
 _______________________________________________
 barebox mailing list
