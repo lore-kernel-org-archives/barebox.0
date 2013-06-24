@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrCcv-00039g-Pb
- for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:40:39 +0000
-Date: Mon, 24 Jun 2013 21:40:14 +0200
+ id 1UrCgd-0003Hc-EO
+ for barebox@lists.infradead.org; Mon, 24 Jun 2013 19:44:28 +0000
+Date: Mon, 24 Jun 2013 21:44:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130624194014.GU32299@pengutronix.de>
-References: <1371827718-7928-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372070961-10132-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130624194405.GW32299@pengutronix.de>
+References: <1372059045-18113-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372070961-10132-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372059045-18113-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,76 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] OF: base: add sanity checks to
- of_new/delete_property
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH] ubiformat: check file size
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Jun 24, 2013 at 12:49:20PM +0200, Sebastian Hesselbarth wrote:
-> This adds some sanity checks to of_new_property and of_delete_property.
-> Also, value pointer is always allocated even with zero length to allow
-> empty properties to be distinguished from non-existing properties.
-> Finally, data passed to of_new_property is only copied if non-NULL.
+On Mon, Jun 24, 2013 at 09:30:45AM +0200, Jan Weitzel wrote:
+> If size of a flash image file is 0 ubiformat silently formats the volume.
+> Check size and abort if size == 0. This may be the case if an empty or tftp
+> mounted file is used.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-Applied both.
+Applied, thanks
 
-Thanks
- Sascha
+Sascha
 
 > ---
-> Note: Patch 3 of the former patch set has been dropped in favour of zero
-> length allocation here.
+>  commands/ubiformat.c |    5 +++++
+>  1 files changed, 5 insertions(+), 0 deletions(-)
 > 
-> Changelog:
-> v1->v2:
-> - remove unneccesary NULL checks after xzalloc (Suggested by Sascha Hauer)
-> - allocate zero length value pointer (Suggested by Sascha Hauer)
-> 
-> Cc: barebox@lists.infradead.org
-> ---
->  drivers/of/base.c |   15 +++++++++++----
->  1 files changed, 11 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 1b351ee..e65cf85 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1527,13 +1527,17 @@ struct property *of_new_property(struct device_node *node, const char *name,
->  	struct property *prop;
+> diff --git a/commands/ubiformat.c b/commands/ubiformat.c
+> index 121816f..5b4e572 100644
+> --- a/commands/ubiformat.c
+> +++ b/commands/ubiformat.c
+> @@ -325,6 +325,11 @@ static int flash_image(const struct mtd_dev_info *mtd,
+>  		goto out_close;
+>  	}
 >  
->  	prop = xzalloc(sizeof(*prop));
-> -
->  	prop->name = strdup(name);
-> +	if (!prop->name) {
-> +		free(prop);
-> +		return NULL;
+> +	if (st_size == 0) {
+> +		sys_errmsg("file \"%s\" has size 0 bytes", args.image);
+> +		goto out_close;
 > +	}
 > +
->  	prop->length = len;
-> -	if (len) {
-> -		prop->value = xzalloc(len);
-> +	prop->value = xzalloc(len);
-> +
-> +	if (data)
->  		memcpy(prop->value, data, len);
-> -	}
->  
->  	list_add_tail(&prop->list, &node->properties);
->  
-> @@ -1542,6 +1546,9 @@ struct property *of_new_property(struct device_node *node, const char *name,
->  
->  void of_delete_property(struct property *pp)
->  {
-> +	if (!pp)
-> +		return;
-> +
->  	list_del(&pp->list);
->  
->  	free(pp->name);
+>  	verbose(args.verbose, "will write %d eraseblocks", img_ebs);
+>  	divisor = img_ebs;
+>  	for (eb = 0; eb < mtd->eb_cnt; eb++) {
 > -- 
-> 1.7.2.5
+> 1.7.0.4
 > 
 > 
 > _______________________________________________
