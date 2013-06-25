@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x230.google.com ([2a00:1450:4013:c00::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPR9-0000IE-W0
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:43 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 11:20:49 +0200
-Message-Id: <1372152052-5463-10-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
-References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UrPRB-0000IN-8c
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:42 +0000
+Received: by mail-ee0-f48.google.com with SMTP id b47so6469665eek.21
+ for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:20:57 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 25 Jun 2013 11:20:40 +0200
+Message-Id: <1372152047-28134-3-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,253 +23,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] ARM: i.MX53 loco: Switch to imximage
-To: barebox@lists.infradead.org
+Subject: [PATCH 2/9] OF: convert of_translate_address to new API
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Use the imximage tool to generate an imximage instead of the linker
-based process.
+This converts existing of_translate_address to recently added API. In
+contrast to existing behavior, the new function honors ranges properties
+properly. It now allows reg properties to be set as offset with respect
+to the correspoding parent node.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
- arch/arm/boards/freescale-mx53-loco/Makefile       |  4 +-
- arch/arm/boards/freescale-mx53-loco/board.c        |  8 ++--
- arch/arm/boards/freescale-mx53-loco/dcd-data.h     | 54 ----------------------
- .../boards/freescale-mx53-loco/flash-header.imxcfg | 54 ++++++++++++++++++++++
- arch/arm/boards/freescale-mx53-loco/flash_header.c | 52 ---------------------
- arch/arm/mach-imx/Kconfig                          |  1 +
- 6 files changed, 60 insertions(+), 113 deletions(-)
- delete mode 100644 arch/arm/boards/freescale-mx53-loco/dcd-data.h
- create mode 100644 arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
- delete mode 100644 arch/arm/boards/freescale-mx53-loco/flash_header.c
+Cc: barebox@lists.infradead.org
+---
+ drivers/of/address.c |    6 ++++++
+ drivers/of/base.c    |   26 +-------------------------
+ include/of.h         |    2 --
+ include/of_address.h |    8 ++++++++
+ 4 files changed, 15 insertions(+), 27 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx53-loco/Makefile b/arch/arm/boards/freescale-mx53-loco/Makefile
-index d44f697..f1baae2 100644
---- a/arch/arm/boards/freescale-mx53-loco/Makefile
-+++ b/arch/arm/boards/freescale-mx53-loco/Makefile
-@@ -1,3 +1,3 @@
--obj-y += board.o
--lwl-y += flash_header.o
-+obj-y += board.o flash-header.o
-+extra-y += flash-header.S flash-header.dcd
- lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
-index 2f51128..0e3955f 100644
---- a/arch/arm/boards/freescale-mx53-loco/board.c
-+++ b/arch/arm/boards/freescale-mx53-loco/board.c
-@@ -75,9 +75,7 @@ static void loco_fec_reset(void)
- 
- #define MX53_LOCO_USB_PWREN		IMX_GPIO_NR(7, 8)
- 
--#define DCD_NAME static struct imx_dcd_v2_entry dcd_entry
--
--#include "dcd-data.h"
-+extern char flash_header_start[], flash_header_end[];
- 
- static int loco_late_init(void)
- {
-@@ -116,8 +114,8 @@ static int loco_late_init(void)
- 	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
- 
- 	imx53_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0",
--		BBU_HANDLER_FLAG_DEFAULT, dcd_entry, sizeof(dcd_entry), 0);
--
-+		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_start,
-+		flash_header_end - flash_header_start, 0);
- 
- 	return 0;
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+index 3e5387a..4cacdb1 100644
+--- a/drivers/of/address.c
++++ b/drivers/of/address.c
+@@ -278,6 +278,12 @@ static u64 __of_translate_address(struct device_node *dev,
+ 	return result;
  }
-diff --git a/arch/arm/boards/freescale-mx53-loco/dcd-data.h b/arch/arm/boards/freescale-mx53-loco/dcd-data.h
-deleted file mode 100644
-index 9f95fb4..0000000
---- a/arch/arm/boards/freescale-mx53-loco/dcd-data.h
-+++ /dev/null
-@@ -1,54 +0,0 @@
--
--DCD_NAME[] = {
--	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00300040), },
--	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000000), },
--	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
--	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
--	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x04000000), },
--	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00300000), },
--	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x35343535), },
--	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x4d444c44), },
--	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01370138), },
--	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x013b013c), },
--	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00011740), },
--	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0xc3190000), },
--	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x9f5152e3), },
--	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb68e8a63), },
--	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x01ff00db), },
--	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
--	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f0e21), },
--	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12273030), },
--	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x0002002d), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
--	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
--	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
--	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
--	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
--};
-diff --git a/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg b/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
-new file mode 100644
-index 0000000..95bcd19
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
-@@ -0,0 +1,54 @@
-+loadaddr 0x70000000
-+soc imx53
-+dcdofs 0x400
-+wm 32 0x53fa8554 0x00300000
-+wm 32 0x53fa8558 0x00300040
-+wm 32 0x53fa8560 0x00300000
-+wm 32 0x53fa8564 0x00300040
-+wm 32 0x53fa8568 0x00300040
-+wm 32 0x53fa8570 0x00300000
-+wm 32 0x53fa8574 0x00300000
-+wm 32 0x53fa8578 0x00300000
-+wm 32 0x53fa857c 0x00300040
-+wm 32 0x53fa8580 0x00300040
-+wm 32 0x53fa8584 0x00300000
-+wm 32 0x53fa8588 0x00300000
-+wm 32 0x53fa8590 0x00300040
-+wm 32 0x53fa8594 0x00300000
-+wm 32 0x53fa86f0 0x00300000
-+wm 32 0x53fa86f4 0x00000000
-+wm 32 0x53fa86fc 0x00000000
-+wm 32 0x53fa8714 0x00000000
-+wm 32 0x53fa8718 0x00300000
-+wm 32 0x53fa871c 0x00300000
-+wm 32 0x53fa8720 0x00300000
-+wm 32 0x53fa8724 0x04000000
-+wm 32 0x53fa8728 0x00300000
-+wm 32 0x53fa872c 0x00300000
-+wm 32 0x63fd9088 0x35343535
-+wm 32 0x63fd9090 0x4d444c44
-+wm 32 0x63fd907c 0x01370138
-+wm 32 0x63fd9080 0x013b013c
-+wm 32 0x63fd9018 0x00011740
-+wm 32 0x63fd9000 0xc3190000
-+wm 32 0x63fd900c 0x9f5152e3
-+wm 32 0x63fd9010 0xb68e8a63
-+wm 32 0x63fd9014 0x01ff00db
-+wm 32 0x63fd902c 0x000026d2
-+wm 32 0x63fd9030 0x009f0e21
-+wm 32 0x63fd9008 0x12273030
-+wm 32 0x63fd9004 0x0002002d
-+wm 32 0x63fd901c 0x00008032
-+wm 32 0x63fd901c 0x00008033
-+wm 32 0x63fd901c 0x00028031
-+wm 32 0x63fd901c 0x052080b0
-+wm 32 0x63fd901c 0x04008040
-+wm 32 0x63fd901c 0x0000803a
-+wm 32 0x63fd901c 0x0000803b
-+wm 32 0x63fd901c 0x00028039
-+wm 32 0x63fd901c 0x05208138
-+wm 32 0x63fd901c 0x04008048
-+wm 32 0x63fd9020 0x00005800
-+wm 32 0x63fd9040 0x04b80003
-+wm 32 0x63fd9058 0x00022227
-+wm 32 0x63fd901c 0x00000000
-diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
-deleted file mode 100644
-index dc1162b..0000000
---- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/*
-- * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
-- *
-- * This program is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU General Public License as
-- * published by the Free Software Foundation; either version 2 of
-- * the License, or (at your option) any later version.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <asm/byteorder.h>
--#include <mach/imx-flash-header.h>
--#include <asm/barebox-arm-head.h>
--
--void __naked __flash_header_start go(void)
+ 
++u64 of_translate_address(struct device_node *dev, const __be32 *in_addr)
++{
++	return __of_translate_address(dev, in_addr, "ranges");
++}
++EXPORT_SYMBOL(of_translate_address);
++
+ u64 of_translate_dma_address(struct device_node *dev, const __be32 *in_addr)
+ {
+ 	return __of_translate_address(dev, in_addr, "dma-ranges");
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 63ff647..2778230 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -19,6 +19,7 @@
+  */
+ #include <common.h>
+ #include <of.h>
++#include <of_address.h>
+ #include <errno.h>
+ #include <malloc.h>
+ #include <init.h>
+@@ -242,31 +243,6 @@ const char *of_alias_get(struct device_node *np)
+ }
+ EXPORT_SYMBOL_GPL(of_alias_get);
+ 
+-u64 of_translate_address(struct device_node *node, const __be32 *in_addr)
 -{
--	barebox_arm_head();
+-	struct property *p;
+-	u64 addr = be32_to_cpu(*in_addr);
+-
+-	while (1) {
+-		int na, nc;
+-
+-		if (!node->parent)
+-			return addr;
+-
+-		node = node->parent;
+-		p = of_find_property(node, "ranges", NULL);
+-		if (!p && node->parent)
+-			return OF_BAD_ADDR;
+-		of_bus_count_cells(node, &na, &nc);
+-		if (na != 1 || nc != 1) {
+-			printk("%s: #size-cells != 1 or #address-cells != 1 "
+-					"currently not supported\n", node->name);
+-			return OF_BAD_ADDR;
+-		}
+-	}
 -}
+-EXPORT_SYMBOL(of_translate_address);
 -
--#define DCD_NAME struct imx_dcd_v2_entry __dcd_entry_section dcd_entry
--
--#include "dcd-data.h"
--
--#define APP_DEST	0x70000000
--
--struct imx_flash_header_v2 __flash_header_section flash_header = {
--	.header.tag		= IVT_HEADER_TAG,
--	.header.length		= cpu_to_be16(32),
--	.header.version		= IVT_VERSION,
--
--	.entry			= APP_DEST + 0x1000,
--	.dcd_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, dcd),
--	.boot_data_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, boot_data),
--	.self			= APP_DEST + 0x400,
--
--	.boot_data.start	= APP_DEST,
--	.boot_data.size		= DCD_BAREBOX_SIZE,
--
--	.dcd.header.tag		= DCD_HEADER_TAG,
--	.dcd.header.length	= cpu_to_be16(sizeof(struct imx_dcd) + sizeof(dcd_entry)),
--	.dcd.header.version	= DCD_VERSION,
--
--	.dcd.command.tag	= DCD_COMMAND_WRITE_TAG,
--	.dcd.command.length	= cpu_to_be16(sizeof(struct imx_dcd_command) + sizeof(dcd_entry)),
--	.dcd.command.param	= DCD_COMMAND_WRITE_PARAM,
--};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index b80e885..4f9ef3e 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -476,6 +476,7 @@ choice
+ /*
+  * of_find_node_by_phandle - Find a node given a phandle
+  * @handle:    phandle of the node to find
+diff --git a/include/of.h b/include/of.h
+index b392ca9..e091326 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -101,8 +101,6 @@ int of_get_named_gpio(struct device_node *np,
+ void of_print_property(const void *data, int len);
+ void of_print_cmdline(struct device_node *root);
  
- config MACH_FREESCALE_MX53_LOCO
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
- 	bool "Freescale i.MX53 LOCO"
+-u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
+-
+ #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
+ #define OF_ROOT_NODE_ADDR_CELLS_DEFAULT 1
  
- config MACH_FREESCALE_MX53_SMD
+diff --git a/include/of_address.h b/include/of_address.h
+index a82e2e5..9022ab7 100644
+--- a/include/of_address.h
++++ b/include/of_address.h
+@@ -10,6 +10,8 @@ static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
+ 
+ #ifdef CONFIG_OFTREE
+ 
++extern u64 of_translate_address(struct device_node *dev,
++				const __be32 *in_addr);
+ extern u64 of_translate_dma_address(struct device_node *dev,
+ 				const __be32 *in_addr);
+ extern bool of_can_translate_address(struct device_node *dev);
+@@ -24,6 +26,12 @@ extern void __iomem *of_iomap(struct device_node *np, int index);
+ 
+ #else /* CONFIG_OFTREE */
+ 
++static inline u64 of_translate_address(struct device_node *dev,
++				const __be32 *in_addr)
++{
++	return OF_BAD_ADDR;
++}
++
+ static inline u64 of_translate_dma_address(struct device_node *dev,
+ 				const __be32 *in_addr)
+ {
 -- 
-1.8.3.1
+1.7.2.5
 
 
 _______________________________________________
