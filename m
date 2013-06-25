@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
+Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRC-0003Lj-1u
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:27 +0000
-Received: by mail-ea0-f182.google.com with SMTP id d10so6651500eaj.27
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:20:58 -0700 (PDT)
+ id 1UrPRE-0003Lo-NN
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:26 +0000
+Received: by mail-ee0-f47.google.com with SMTP id e49so6555555eek.34
+ for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:21:00 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 25 Jun 2013 11:20:42 +0200
-Message-Id: <1372152047-28134-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue, 25 Jun 2013 11:20:47 +0200
+Message-Id: <1372152047-28134-10-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,376 +23,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] OF: import bus/device related functions from Linux OF API
+Subject: [PATCH 9/9] OF: base: rename of_free to of_delete_node
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports some bus and device related functions from Linux OF API
-with some modifcations for Barebox.
+of_free is misleading about the actual purpose of the function. There is
+already a of_create_node counterpart, so rename of_free to of_create_node
+and update all users accordingly.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/Makefile   |    2 +-
- drivers/of/platform.c |  294 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/of.h          |   18 +++
- 3 files changed, 313 insertions(+), 1 deletions(-)
- create mode 100644 drivers/of/platform.c
+ commands/of_node.c |    2 +-
+ commands/oftree.c  |    4 +-
+ drivers/of/base.c  |   65 +++++++++++++++++++++++++--------------------------
+ drivers/of/fdt.c   |    2 +-
+ include/of.h       |    4 +-
+ 5 files changed, 38 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index b8add0b..186074e 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,4 +1,4 @@
--obj-y += address.o base.o fdt.o
-+obj-y += address.o base.o fdt.o platform.o
- obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
- obj-$(CONFIG_GPIOLIB) += gpio.o
- obj-y += partition.o
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-new file mode 100644
-index 0000000..450d770
---- /dev/null
-+++ b/drivers/of/platform.c
-@@ -0,0 +1,294 @@
-+/*
-+ * platform.c - bus/device related devicetree functions
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * based on Linux devicetree support
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <of.h>
-+#include <of_address.h>
-+#include <linux/amba/bus.h>
-+
-+/**
-+ * of_find_device_by_node - Find the platform_device associated with a node
-+ * @np: Pointer to device tree node
-+ *
-+ * Returns platform_device pointer, or NULL if not found
-+ */
-+struct device_d *of_find_device_by_node(struct device_node *np)
+diff --git a/commands/of_node.c b/commands/of_node.c
+index e60ef66..b1894b1 100644
+--- a/commands/of_node.c
++++ b/commands/of_node.c
+@@ -87,7 +87,7 @@ static int do_of_node(int argc, char *argv[])
+ 			return -ENOENT;
+ 		}
+ 
+-		of_free(node);
++		of_delete_node(node);
+ 	}
+ 
+ 	return 0;
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 9149517..00e54dc 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -86,7 +86,7 @@ static int do_oftree(int argc, char *argv[])
+ 		struct device_node *root = of_get_root_node();
+ 
+ 		if (root)
+-			of_free(root);
++			of_delete_node(root);
+ 
+ 		return 0;
+ 	}
+@@ -162,7 +162,7 @@ static int do_oftree(int argc, char *argv[])
+ 				goto out;
+ 			}
+ 			of_print_nodes(root, 0);
+-			of_free(root);
++			of_delete_node(root);
+ 		} else {
+ 			struct device_node *n = of_find_node_by_path(node);
+ 			if (!n) {
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 6fc962d..d077335 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1549,39 +1549,6 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	return 0;
+ }
+ 
+-void of_free(struct device_node *node)
+-{
+-	struct device_node *n, *nt;
+-	struct property *p, *pt;
+-	struct device_d *dev;
+-
+-	if (!node)
+-		return;
+-
+-	list_for_each_entry_safe(p, pt, &node->properties, list)
+-		of_delete_property(p);
+-
+-	list_for_each_entry_safe(n, nt, &node->children, parent_list) {
+-		of_free(n);
+-	}
+-
+-	if (node->parent) {
+-		list_del(&node->parent_list);
+-		list_del(&node->list);
+-	}
+-
+-	dev = of_find_device_by_node(node);
+-	if (dev)
+-		dev->device_node = NULL;
+-
+-	free(node->name);
+-	free(node->full_name);
+-	free(node);
+-
+-	if (node == root_node)
+-		of_set_root_node(NULL);
+-}
+-
+ static void __of_parse_phandles(struct device_node *node)
+ {
+ 	struct device_node *n;
+@@ -1679,6 +1646,38 @@ out:
+ 	return dn;
+ }
+ 
++void of_delete_node(struct device_node *node)
 +{
-+        struct device_d *dev;
-+
-+	for_each_device(dev)
-+		if (dev->device_node == np)
-+			return dev;
-+        return NULL;
-+}
-+EXPORT_SYMBOL(of_find_device_by_node);
-+
-+/**
-+ * of_device_make_bus_id - Use the device node data to assign a unique name
-+ * @dev: pointer to device structure that is linked to a device tree node
-+ *
-+ * This routine will first try using either the dcr-reg or the reg property
-+ * value to derive a unique name.  As a last resort it will use the node
-+ * name followed by a unique number.
-+ */
-+static void of_device_make_bus_id(struct device_d *dev)
-+{
-+	static int bus_no_reg_magic;
-+	struct device_node *np = dev->device_node;
-+	const __be32 *reg, *addrp;
-+	u64 addr;
-+	char *name, *at;
-+
-+	name = xstrdup(np->name);
-+	at = strchr(name, '@');
-+	if (at)
-+		*at = '\0';
-+
-+#ifdef CONFIG_PPC_DCR
-+	/*
-+	 * If it's a DCR based device, use 'd' for native DCRs
-+	 * and 'D' for MMIO DCRs.
-+	 */
-+	reg = of_get_property(np, "dcr-reg", NULL);
-+	if (reg) {
-+#ifdef CONFIG_PPC_DCR_NATIVE
-+		snprintf(dev->name, MAX_DRIVER_NAME, "d%x.%s", *reg, name);
-+#else /* CONFIG_PPC_DCR_NATIVE */
-+		u64 addr = of_translate_dcr_address(np, *reg, NULL);
-+		if (addr != OF_BAD_ADDR) {
-+			snprintf(dev->name, MAX_DRIVER_NAME, "D%llx.%s",
-+				(unsigned long long)addr, name);
-+			free(name);
-+			return;
-+		}
-+#endif /* !CONFIG_PPC_DCR_NATIVE */
-+	}
-+#endif /* CONFIG_PPC_DCR */
-+
-+	/*
-+	 * For MMIO, get the physical address
-+	 */
-+	reg = of_get_property(np, "reg", NULL);
-+	if (reg) {
-+		if (of_can_translate_address(np)) {
-+			addr = of_translate_address(np, reg);
-+		} else {
-+			addrp = of_get_address(np, 0, NULL, NULL);
-+			if (addrp)
-+				addr = of_read_number(addrp, 1);
-+			else
-+				addr = OF_BAD_ADDR;
-+		}
-+		if (addr != OF_BAD_ADDR) {
-+			snprintf(dev->name, MAX_DRIVER_NAME, "%llx.%s",
-+				(unsigned long long)addr, name);
-+			free(name);
-+			return;
-+		}
-+	}
-+
-+	/*
-+	 * No BusID, use the node name and add a globally incremented counter
-+	 */
-+	snprintf(dev->name, MAX_DRIVER_NAME, "%s.%d", name, bus_no_reg_magic++);
-+	free(name);
-+}
-+
-+/**
-+ * of_platform_device_create - Alloc, initialize and register an of_device
-+ * @np: pointer to node to create device for
-+ * @parent: device model parent device.
-+ *
-+ * Returns pointer to created platform device, or NULL if a device was not
-+ * registered. Unavailable devices will not get registered.
-+ */
-+static struct device_d *of_platform_device_create(struct device_node *np,
-+						struct device_d *parent)
-+{
++	struct device_node *n, *nt;
++	struct property *p, *pt;
 +	struct device_d *dev;
-+	struct resource *res, temp_res;
-+	int i, ret, num_reg = 0;
 +
-+	if (!of_device_is_available(np))
-+		return NULL;
++	if (!node)
++		return;
 +
-+	dev = xzalloc(sizeof(*dev));
++	list_for_each_entry_safe(p, pt, &node->properties, list)
++		of_delete_property(p);
 +
-+	/* setup generic device info */
-+	dev->id = DEVICE_ID_SINGLE;
-+	dev->device_node = np;
-+	dev->parent = parent;
-+	of_device_make_bus_id(dev);
++	list_for_each_entry_safe(n, nt, &node->children, parent_list)
++		of_delete_node(n);
 +
-+	/* count the io resources */
-+	if (of_can_translate_address(np))
-+		while (of_address_to_resource(np, num_reg, &temp_res) == 0)
-+			num_reg++;
-+
-+	/* Populate the resource table */
-+	if (num_reg) {
-+		res = xzalloc(sizeof(*res) * num_reg);
-+
-+		dev->num_resources = num_reg;
-+		dev->resource = res;
-+		for (i = 0; i < num_reg; i++, res++) {
-+			ret = of_address_to_resource(np, i, res);
-+			if (ret)
-+				goto err_free;
-+		}
++	if (node->parent) {
++		list_del(&node->parent_list);
++		list_del(&node->list);
 +	}
 +
-+	debug("register device 0x%08x\n", (num_reg) ? dev->resource[0].start : (-1));
++	dev = of_find_device_by_node(node);
++	if (dev)
++		dev->device_node = NULL;
 +
-+	ret = platform_device_register(dev);
-+	if (ret)
-+		goto err_free;
++	free(node->name);
++	free(node->full_name);
++	free(node);
 +
-+	return dev;
-+
-+err_free:
-+	free(dev);
-+	return NULL;
++	if (node == root_node)
++		of_set_root_node(NULL);
 +}
 +
-+#ifdef CONFIG_ARM_AMBA
-+static struct device_d *of_amba_device_create(struct device_node *np)
-+{
-+	struct amba_device *dev;
-+	int ret;
-+
-+	debug("Creating amba device %s\n", np->full_name);
-+
-+	if (!of_device_is_available(np))
-+		return NULL;
-+
-+	dev = xzalloc(sizeof(*dev));
-+
-+	/* setup generic device info */
-+	dev->dev.id = DEVICE_ID_SINGLE;
-+	dev->dev.device_node = np;
-+	of_device_make_bus_id(&dev->dev);
-+
-+	ret = of_address_to_resource(np, 0, &dev->res);
-+	if (ret)
-+		goto amba_err_free;
-+
-+	dev->dev.resource = &dev->res;
-+	dev->dev.num_resources = 1;
-+
-+	/* Allow the HW Peripheral ID to be overridden */
-+	of_property_read_u32(np, "arm,primecell-periphid", &dev->periphid);
-+
-+	debug("register device 0x%08x\n", dev->dev.resource[0].start);
-+
-+	ret = amba_device_add(dev);
-+	if (ret)
-+		goto amba_err_free;
-+
-+	return &dev->dev;
-+
-+amba_err_free:
-+	free(dev);
-+	return NULL;
-+}
-+#else /* CONFIG_ARM_AMBA */
-+static inline struct amba_device *of_amba_device_create(struct device_node *np)
-+{
-+	return NULL;
-+}
-+#endif /* CONFIG_ARM_AMBA */
-+
-+/**
-+ * of_platform_bus_create() - Create a device for a node and its children.
-+ * @bus: device node of the bus to instantiate
-+ * @matches: match table for bus nodes
-+ * @parent: parent for new device, or NULL for top level.
-+ *
-+ * Creates a platform_device for the provided device_node, and optionally
-+ * recursively create devices for all the child nodes.
-+ */
-+static int of_platform_bus_create(struct device_node *bus,
-+				const struct of_device_id *matches,
-+				struct device_d *parent)
-+{
-+	struct device_node *child;
-+	struct device_d *dev;
-+	int rc = 0;
-+
-+	/* Make sure it has a compatible property */
-+	if (!of_get_property(bus, "compatible", NULL)) {
-+		pr_debug("%s() - skipping %s, no compatible prop\n",
-+			__func__, bus->full_name);
-+		return 0;
-+	}
-+
-+	if (of_device_is_compatible(bus, "arm,primecell")) {
-+		of_amba_device_create(bus);
-+		return 0;
-+	}
-+
-+	dev = of_platform_device_create(bus, parent);
-+	if (!dev || !of_match_node(matches, bus))
-+		return 0;
-+
-+	for_each_child_of_node(bus, child) {
-+		pr_debug("   create child: %s\n", child->full_name);
-+		rc = of_platform_bus_create(child, matches, dev);
-+		if (rc)
-+			break;
-+	}
-+	return rc;
-+}
-+
-+/**
-+ * of_platform_populate() - Populate platform_devices from device tree data
-+ * @root: parent of the first level to probe or NULL for the root of the tree
-+ * @matches: match table, NULL to use the default
-+ * @lookup: auxdata table for matching id and platform_data with device nodes
-+ * @parent: parent to hook devices from, NULL for toplevel
-+ *
-+ * This function walks the device tree given by @root node and creates devices
-+ * from nodes.  It requires all device nodes to have a 'compatible' property,
-+ * and it is suitable for creating devices which are children of the root
-+ * node.
-+ *
-+ * Returns 0 on success, < 0 on failure.
-+ */
-+int of_platform_populate(struct device_node *root,
-+			const struct of_device_id *matches,
-+			struct device_d *parent)
-+{
-+	struct device_node *child;
-+	int rc = 0;
-+
-+	if (!root)
-+		root = of_find_node_by_path("/");
-+	if (!root)
-+		return -EINVAL;
-+
-+	for_each_child_of_node(root, child) {
-+		rc = of_platform_bus_create(child, matches, parent);
-+		if (rc)
-+			break;
-+	}
-+
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(of_platform_populate);
+ int of_device_is_stdout_path(struct device_d *dev)
+ {
+ 	struct device_node *dn;
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index afaa4e0..76d6bb1 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -211,7 +211,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 		}
+ 	}
+ err:
+-	of_free(root);
++	of_delete_node(root);
+ 
+ 	return ERR_PTR(ret);
+ }
 diff --git a/include/of.h b/include/of.h
-index 8cab797..f1f555f 100644
+index 0298189..e832a78 100644
 --- a/include/of.h
 +++ b/include/of.h
-@@ -61,6 +61,7 @@ struct of_reserve_map *of_get_reserve_map(void);
- void of_clean_reserve_map(void);
- void fdt_add_reserve_map(void *fdt);
+@@ -142,7 +142,7 @@ extern struct device_node *of_new_node(struct device_node *parent,
+ 				const char *name);
+ extern struct device_node *of_create_node(struct device_node *root,
+ 					const char *path);
+-extern void of_free(struct device_node *node);
++extern void of_delete_node(struct device_node *node);
  
-+struct device_d;
- struct driver_d;
- 
- int of_fix_tree(struct device_node *);
-@@ -221,6 +222,11 @@ extern int of_modalias_node(struct device_node *node, char *modalias, int len);
- extern struct device_node *of_get_root_node(void);
- extern int of_set_root_node(struct device_node *node);
- 
-+extern int of_platform_populate(struct device_node *root,
-+				const struct of_device_id *matches,
-+				struct device_d *parent);
-+extern struct device_d *of_find_device_by_node(struct device_node *np);
-+
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
-@@ -547,6 +553,18 @@ static inline int of_modalias_node(struct device_node *node, char *modalias,
- {
- 	return -ENOSYS;
+ extern int of_machine_is_compatible(const char *compat);
+ extern int of_device_is_compatible(const struct device_node *device,
+@@ -511,7 +511,7 @@ static inline struct device_node *of_create_node(struct device_node *root,
+ 	return NULL;
  }
-+
-+static inline int of_platform_populate(struct device_node *root,
-+				const struct of_device_id *matches,
-+				struct device_d *parent)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline struct device_d *of_find_device_by_node(struct device_node *np)
-+{
-+	return NULL;
-+}
- #endif
  
- #define for_each_node_by_name(dn, name) \
+-static inline void of_free(struct device_node *node)
++static inline void of_delete_node(struct device_node *node)
+ {
+ }
+ 
 -- 
 1.7.2.5
 
