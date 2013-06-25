@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRD-00023I-Km
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:25 +0000
-Received: by mail-ee0-f46.google.com with SMTP id d41so6481686eek.5
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:21:00 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 25 Jun 2013 11:20:45 +0200
-Message-Id: <1372152047-28134-8-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UrPR9-0000IE-W0
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:43 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:49 +0200
+Message-Id: <1372152052-5463-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,90 +21,253 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] OF: remove device and resource pointer from struct
- device_node
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 09/12] ARM: i.MX53 loco: Switch to imximage
+To: barebox@lists.infradead.org
 
-struct device_node has its own resources and a pointer to associated
-device_d. With recent platform related OF code, we can convert the
-only user of it and remove those pointers from struct device_node.
+Use the imximage tool to generate an imximage instead of the linker
+based process.
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Cc: barebox@lists.infradead.org
----
- drivers/of/base.c |    8 ++++----
- drivers/of/gpio.c |    6 +++++-
- include/of.h      |    3 ---
- 3 files changed, 9 insertions(+), 8 deletions(-)
+ arch/arm/boards/freescale-mx53-loco/Makefile       |  4 +-
+ arch/arm/boards/freescale-mx53-loco/board.c        |  8 ++--
+ arch/arm/boards/freescale-mx53-loco/dcd-data.h     | 54 ----------------------
+ .../boards/freescale-mx53-loco/flash-header.imxcfg | 54 ++++++++++++++++++++++
+ arch/arm/boards/freescale-mx53-loco/flash_header.c | 52 ---------------------
+ arch/arm/mach-imx/Kconfig                          |  1 +
+ 6 files changed, 60 insertions(+), 113 deletions(-)
+ delete mode 100644 arch/arm/boards/freescale-mx53-loco/dcd-data.h
+ create mode 100644 arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/freescale-mx53-loco/flash_header.c
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 9d63127..0244281 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1594,6 +1594,7 @@ void of_free(struct device_node *node)
+diff --git a/arch/arm/boards/freescale-mx53-loco/Makefile b/arch/arm/boards/freescale-mx53-loco/Makefile
+index d44f697..f1baae2 100644
+--- a/arch/arm/boards/freescale-mx53-loco/Makefile
++++ b/arch/arm/boards/freescale-mx53-loco/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += board.o
+-lwl-y += flash_header.o
++obj-y += board.o flash-header.o
++extra-y += flash-header.S flash-header.dcd
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index 2f51128..0e3955f 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -75,9 +75,7 @@ static void loco_fec_reset(void)
+ 
+ #define MX53_LOCO_USB_PWREN		IMX_GPIO_NR(7, 8)
+ 
+-#define DCD_NAME static struct imx_dcd_v2_entry dcd_entry
+-
+-#include "dcd-data.h"
++extern char flash_header_start[], flash_header_end[];
+ 
+ static int loco_late_init(void)
  {
- 	struct device_node *n, *nt;
- 	struct property *p, *pt;
-+	struct device_d *dev;
+@@ -116,8 +114,8 @@ static int loco_late_init(void)
+ 	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
  
- 	if (!node)
- 		return;
-@@ -1610,10 +1611,9 @@ void of_free(struct device_node *node)
- 		list_del(&node->list);
- 	}
+ 	imx53_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0",
+-		BBU_HANDLER_FLAG_DEFAULT, dcd_entry, sizeof(dcd_entry), 0);
+-
++		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_start,
++		flash_header_end - flash_header_start, 0);
  
--	if (node->device)
--		node->device->device_node = NULL;
--	else
--		free(node->resource);
-+	dev = of_find_device_by_node(node);
-+	if (dev)
-+		dev->device_node = NULL;
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/freescale-mx53-loco/dcd-data.h b/arch/arm/boards/freescale-mx53-loco/dcd-data.h
+deleted file mode 100644
+index 9f95fb4..0000000
+--- a/arch/arm/boards/freescale-mx53-loco/dcd-data.h
++++ /dev/null
+@@ -1,54 +0,0 @@
+-
+-DCD_NAME[] = {
+-	{ .addr = cpu_to_be32(0x53fa8554), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8558), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8560), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8564), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8568), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8570), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8574), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8578), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa857c), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8580), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8584), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8588), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8590), .val = cpu_to_be32(0x00300040), },
+-	{ .addr = cpu_to_be32(0x53fa8594), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f0), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa86f4), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa86fc), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8714), .val = cpu_to_be32(0x00000000), },
+-	{ .addr = cpu_to_be32(0x53fa8718), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa871c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8720), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa8724), .val = cpu_to_be32(0x04000000), },
+-	{ .addr = cpu_to_be32(0x53fa8728), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x53fa872c), .val = cpu_to_be32(0x00300000), },
+-	{ .addr = cpu_to_be32(0x63fd9088), .val = cpu_to_be32(0x35343535), },
+-	{ .addr = cpu_to_be32(0x63fd9090), .val = cpu_to_be32(0x4d444c44), },
+-	{ .addr = cpu_to_be32(0x63fd907c), .val = cpu_to_be32(0x01370138), },
+-	{ .addr = cpu_to_be32(0x63fd9080), .val = cpu_to_be32(0x013b013c), },
+-	{ .addr = cpu_to_be32(0x63fd9018), .val = cpu_to_be32(0x00011740), },
+-	{ .addr = cpu_to_be32(0x63fd9000), .val = cpu_to_be32(0xc3190000), },
+-	{ .addr = cpu_to_be32(0x63fd900c), .val = cpu_to_be32(0x9f5152e3), },
+-	{ .addr = cpu_to_be32(0x63fd9010), .val = cpu_to_be32(0xb68e8a63), },
+-	{ .addr = cpu_to_be32(0x63fd9014), .val = cpu_to_be32(0x01ff00db), },
+-	{ .addr = cpu_to_be32(0x63fd902c), .val = cpu_to_be32(0x000026d2), },
+-	{ .addr = cpu_to_be32(0x63fd9030), .val = cpu_to_be32(0x009f0e21), },
+-	{ .addr = cpu_to_be32(0x63fd9008), .val = cpu_to_be32(0x12273030), },
+-	{ .addr = cpu_to_be32(0x63fd9004), .val = cpu_to_be32(0x0002002d), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008032), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00008033), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028031), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x052080b0), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008040), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803a), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x0000803b), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00028039), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x05208138), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x04008048), },
+-	{ .addr = cpu_to_be32(0x63fd9020), .val = cpu_to_be32(0x00005800), },
+-	{ .addr = cpu_to_be32(0x63fd9040), .val = cpu_to_be32(0x04b80003), },
+-	{ .addr = cpu_to_be32(0x63fd9058), .val = cpu_to_be32(0x00022227), },
+-	{ .addr = cpu_to_be32(0x63fd901c), .val = cpu_to_be32(0x00000000), },
+-};
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg b/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
+new file mode 100644
+index 0000000..95bcd19
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
+@@ -0,0 +1,54 @@
++loadaddr 0x70000000
++soc imx53
++dcdofs 0x400
++wm 32 0x53fa8554 0x00300000
++wm 32 0x53fa8558 0x00300040
++wm 32 0x53fa8560 0x00300000
++wm 32 0x53fa8564 0x00300040
++wm 32 0x53fa8568 0x00300040
++wm 32 0x53fa8570 0x00300000
++wm 32 0x53fa8574 0x00300000
++wm 32 0x53fa8578 0x00300000
++wm 32 0x53fa857c 0x00300040
++wm 32 0x53fa8580 0x00300040
++wm 32 0x53fa8584 0x00300000
++wm 32 0x53fa8588 0x00300000
++wm 32 0x53fa8590 0x00300040
++wm 32 0x53fa8594 0x00300000
++wm 32 0x53fa86f0 0x00300000
++wm 32 0x53fa86f4 0x00000000
++wm 32 0x53fa86fc 0x00000000
++wm 32 0x53fa8714 0x00000000
++wm 32 0x53fa8718 0x00300000
++wm 32 0x53fa871c 0x00300000
++wm 32 0x53fa8720 0x00300000
++wm 32 0x53fa8724 0x04000000
++wm 32 0x53fa8728 0x00300000
++wm 32 0x53fa872c 0x00300000
++wm 32 0x63fd9088 0x35343535
++wm 32 0x63fd9090 0x4d444c44
++wm 32 0x63fd907c 0x01370138
++wm 32 0x63fd9080 0x013b013c
++wm 32 0x63fd9018 0x00011740
++wm 32 0x63fd9000 0xc3190000
++wm 32 0x63fd900c 0x9f5152e3
++wm 32 0x63fd9010 0xb68e8a63
++wm 32 0x63fd9014 0x01ff00db
++wm 32 0x63fd902c 0x000026d2
++wm 32 0x63fd9030 0x009f0e21
++wm 32 0x63fd9008 0x12273030
++wm 32 0x63fd9004 0x0002002d
++wm 32 0x63fd901c 0x00008032
++wm 32 0x63fd901c 0x00008033
++wm 32 0x63fd901c 0x00028031
++wm 32 0x63fd901c 0x052080b0
++wm 32 0x63fd901c 0x04008040
++wm 32 0x63fd901c 0x0000803a
++wm 32 0x63fd901c 0x0000803b
++wm 32 0x63fd901c 0x00028039
++wm 32 0x63fd901c 0x05208138
++wm 32 0x63fd901c 0x04008048
++wm 32 0x63fd9020 0x00005800
++wm 32 0x63fd9040 0x04b80003
++wm 32 0x63fd9058 0x00022227
++wm 32 0x63fd901c 0x00000000
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash_header.c b/arch/arm/boards/freescale-mx53-loco/flash_header.c
+deleted file mode 100644
+index dc1162b..0000000
+--- a/arch/arm/boards/freescale-mx53-loco/flash_header.c
++++ /dev/null
+@@ -1,52 +0,0 @@
+-/*
+- * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <asm/byteorder.h>
+-#include <mach/imx-flash-header.h>
+-#include <asm/barebox-arm-head.h>
+-
+-void __naked __flash_header_start go(void)
+-{
+-	barebox_arm_head();
+-}
+-
+-#define DCD_NAME struct imx_dcd_v2_entry __dcd_entry_section dcd_entry
+-
+-#include "dcd-data.h"
+-
+-#define APP_DEST	0x70000000
+-
+-struct imx_flash_header_v2 __flash_header_section flash_header = {
+-	.header.tag		= IVT_HEADER_TAG,
+-	.header.length		= cpu_to_be16(32),
+-	.header.version		= IVT_VERSION,
+-
+-	.entry			= APP_DEST + 0x1000,
+-	.dcd_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, dcd),
+-	.boot_data_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, boot_data),
+-	.self			= APP_DEST + 0x400,
+-
+-	.boot_data.start	= APP_DEST,
+-	.boot_data.size		= DCD_BAREBOX_SIZE,
+-
+-	.dcd.header.tag		= DCD_HEADER_TAG,
+-	.dcd.header.length	= cpu_to_be16(sizeof(struct imx_dcd) + sizeof(dcd_entry)),
+-	.dcd.header.version	= DCD_VERSION,
+-
+-	.dcd.command.tag	= DCD_COMMAND_WRITE_TAG,
+-	.dcd.command.length	= cpu_to_be16(sizeof(struct imx_dcd_command) + sizeof(dcd_entry)),
+-	.dcd.command.param	= DCD_COMMAND_WRITE_PARAM,
+-};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index b80e885..4f9ef3e 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -476,6 +476,7 @@ choice
  
- 	free(node->name);
- 	free(node->full_name);
-diff --git a/drivers/of/gpio.c b/drivers/of/gpio.c
-index 41e91ec..7f6d99c 100644
---- a/drivers/of/gpio.c
-+++ b/drivers/of/gpio.c
-@@ -10,6 +10,10 @@ int of_get_named_gpio(struct device_node *np,
- {
- 	int ret;
- 	struct of_phandle_args out_args;
-+	struct device_d *dev = of_find_device_by_node(np);
-+
-+	if (!dev)
-+		return -EINVAL;
+ config MACH_FREESCALE_MX53_LOCO
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
+ 	bool "Freescale i.MX53 LOCO"
  
- 	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
- 					index, &out_args);
-@@ -18,7 +22,7 @@ int of_get_named_gpio(struct device_node *np,
- 		return -EINVAL;
- 	}
- 
--	ret = gpio_get_num(out_args.np->device, out_args.args[0]);
-+	ret = gpio_get_num(dev, out_args.args[0]);
- 	if (ret < 0)
- 		return ret;
- 
-diff --git a/include/of.h b/include/of.h
-index f1f555f..0298189 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -30,9 +30,6 @@ struct device_node {
- 	struct list_head children;
- 	struct list_head parent_list;
- 	struct list_head list;
--	struct resource *resource;
--	int num_resource;
--	struct device_d *device;
- 	struct list_head phandles;
- 	phandle phandle;
- };
+ config MACH_FREESCALE_MX53_SMD
 -- 
-1.7.2.5
+1.8.3.1
 
 
 _______________________________________________
