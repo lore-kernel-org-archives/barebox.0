@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x233.google.com ([2a00:1450:4013:c00::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRA-0000Hy-0E
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:35 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UrPQj-0006H0-18
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 11:20:53 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UrPQi-0001bh-Vz
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 11:20:52 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 11:20:40 +0200
-Message-Id: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UrPR9-0000IK-KO
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:33 +0000
+Received: by mail-ee0-f51.google.com with SMTP id e52so6466212eek.38
+ for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:20:56 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 25 Jun 2013 11:20:39 +0200
+Message-Id: <1372152047-28134-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,80 +23,546 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] barebox multi image support
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/9] OF: import address related functions from Linux OF API
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-This series adds support for generating multiple images from a single
-barebox binary. This helps when for example boards come with different
-SDRAM setups. Instead of having a config for each SDRAM setup we only
-have a single configuration, but generate multiple images from it.
+This imports drivers/of/address.c from Linux with some minor modifications.
+of_translate_address is not yet enabled and PCI and ISA related bus translations
+have not been imported. Also, a corresponding include header is created with
+prototypes and non-OF function stubs.
 
-The basic idea behind this is using a PBL. As of now the PBL on ARM
-has a single entrypoint: barebox_arm_entry. With multi image support
-instead we have many entrypoints in the PBL. The correct one will
-be chosen by the linker when generating a particular image. The PBLs
-can also contain a devicetree which is passed to the regular barebox
-image. This opens up the way to a true multi board barebox.
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: barebox@lists.infradead.org
+---
+ drivers/of/Makefile  |    2 +-
+ drivers/of/address.c |  431 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/of_address.h |   64 ++++++++
+ 3 files changed, 496 insertions(+), 1 deletions(-)
+ create mode 100644 drivers/of/address.c
+ create mode 100644 include/of_address.h
 
-Additionally each PBL/barebox combination can be encapsulated into a
-SoC specific image so that the different requirements for the boards
-booting a image can be met.
+diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+index c81bbec..b8add0b 100644
+--- a/drivers/of/Makefile
++++ b/drivers/of/Makefile
+@@ -1,4 +1,4 @@
+-obj-y += base.o fdt.o
++obj-y += address.o base.o fdt.o
+ obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
+ obj-$(CONFIG_GPIOLIB) += gpio.o
+ obj-y += partition.o
+diff --git a/drivers/of/address.c b/drivers/of/address.c
+new file mode 100644
+index 0000000..3e5387a
+--- /dev/null
++++ b/drivers/of/address.c
+@@ -0,0 +1,431 @@
++/*
++ * address.c - address related devicetree functions
++ *
++ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * based on Linux devicetree support
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++#include <common.h>
++#include <of.h>
++#include <of_address.h>
++
++/* Max address size we deal with */
++#define OF_MAX_ADDR_CELLS	4
++#define OF_CHECK_ADDR_COUNT(na)	((na) > 0 && (na) <= OF_MAX_ADDR_CELLS)
++#define OF_CHECK_COUNTS(na, ns)	(OF_CHECK_ADDR_COUNT(na) && (ns) > 0)
++
++/* Debug utility */
++#ifdef DEBUG
++static void of_dump_addr(const char *s, const __be32 *addr, int na)
++{
++	printk(KERN_DEBUG "%s", s);
++	while (na--)
++		printk(" %08x", be32_to_cpu(*(addr++)));
++	printk("\n");
++}
++#else
++static void of_dump_addr(const char *s, const __be32 *addr, int na) { }
++#endif
++
++/* Callbacks for bus specific translators */
++struct of_bus {
++	const char	*name;
++	const char	*addresses;
++	int		(*match)(struct device_node *parent);
++	void		(*count_cells)(struct device_node *child,
++				       int *addrc, int *sizec);
++	u64		(*map)(__be32 *addr, const __be32 *range,
++				int na, int ns, int pna);
++	int		(*translate)(__be32 *addr, u64 offset, int na);
++	unsigned int	(*get_flags)(const __be32 *addr);
++};
++
++/*
++ * Default translator (generic bus)
++ */
++
++static void of_bus_default_count_cells(struct device_node *dev,
++				       int *addrc, int *sizec)
++{
++	if (addrc)
++		*addrc = of_n_addr_cells(dev);
++	if (sizec)
++		*sizec = of_n_size_cells(dev);
++}
++
++static u64 of_bus_default_map(__be32 *addr, const __be32 *range,
++		int na, int ns, int pna)
++{
++	u64 cp, s, da;
++
++	cp = of_read_number(range, na);
++	s  = of_read_number(range + na + pna, ns);
++	da = of_read_number(addr, na);
++
++	pr_debug("OF: default map, cp=%llx, s=%llx, da=%llx\n",
++		 (unsigned long long)cp, (unsigned long long)s,
++		 (unsigned long long)da);
++
++	/*
++	 * If the number of address cells is larger than 2 we assume the
++	 * mapping doesn't specify a physical address. Rather, the address
++	 * specifies an identifier that must match exactly.
++	 */
++	if (na > 2 && memcmp(range, addr, na * 4) != 0)
++		return OF_BAD_ADDR;
++
++	if (da < cp || da >= (cp + s))
++		return OF_BAD_ADDR;
++	return da - cp;
++}
++
++static int of_bus_default_translate(__be32 *addr, u64 offset, int na)
++{
++	u64 a = of_read_number(addr, na);
++	memset(addr, 0, na * 4);
++	a += offset;
++	if (na > 1)
++		addr[na - 2] = cpu_to_be32(a >> 32);
++	addr[na - 1] = cpu_to_be32(a & 0xffffffffu);
++
++	return 0;
++}
++
++static unsigned int of_bus_default_get_flags(const __be32 *addr)
++{
++	return IORESOURCE_MEM;
++}
++
++/*
++ * Array of bus specific translators
++ */
++
++static struct of_bus of_busses[] = {
++	/* Default */
++	{
++		.name = "default",
++		.addresses = "reg",
++		.match = NULL,
++		.count_cells = of_bus_default_count_cells,
++		.map = of_bus_default_map,
++		.translate = of_bus_default_translate,
++		.get_flags = of_bus_default_get_flags,
++	},
++};
++
++static struct of_bus *of_match_bus(struct device_node *np)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(of_busses); i++)
++		if (!of_busses[i].match || of_busses[i].match(np))
++			return &of_busses[i];
++	BUG();
++	return NULL;
++}
++
++static int of_translate_one(struct device_node *parent, struct of_bus *bus,
++			    struct of_bus *pbus, __be32 *addr,
++			    int na, int ns, int pna, const char *rprop)
++{
++	const __be32 *ranges;
++	unsigned int rlen;
++	int rone;
++	u64 offset = OF_BAD_ADDR;
++
++	/* Normally, an absence of a "ranges" property means we are
++	 * crossing a non-translatable boundary, and thus the addresses
++	 * below the current not cannot be converted to CPU physical ones.
++	 * Unfortunately, while this is very clear in the spec, it's not
++	 * what Apple understood, and they do have things like /uni-n or
++	 * /ht nodes with no "ranges" property and a lot of perfectly
++	 * useable mapped devices below them. Thus we treat the absence of
++	 * "ranges" as equivalent to an empty "ranges" property which means
++	 * a 1:1 translation at that level. It's up to the caller not to try
++	 * to translate addresses that aren't supposed to be translated in
++	 * the first place. --BenH.
++	 *
++	 * As far as we know, this damage only exists on Apple machines, so
++	 * This code is only enabled on powerpc. --gcl
++	 */
++	ranges = of_get_property(parent, rprop, &rlen);
++#if !defined(CONFIG_PPC)
++	if (ranges == NULL) {
++		pr_err("OF: no ranges; cannot translate\n");
++		return 1;
++	}
++#endif /* !defined(CONFIG_PPC) */
++	if (ranges == NULL || rlen == 0) {
++		offset = of_read_number(addr, na);
++		memset(addr, 0, pna * 4);
++		pr_debug("OF: empty ranges; 1:1 translation\n");
++		goto finish;
++	}
++
++	pr_debug("OF: walking ranges...\n");
++
++	/* Now walk through the ranges */
++	rlen /= 4;
++	rone = na + pna + ns;
++	for (; rlen >= rone; rlen -= rone, ranges += rone) {
++		offset = bus->map(addr, ranges, na, ns, pna);
++		if (offset != OF_BAD_ADDR)
++			break;
++	}
++	if (offset == OF_BAD_ADDR) {
++		pr_debug("OF: not found !\n");
++		return 1;
++	}
++	memcpy(addr, ranges + na, 4 * pna);
++
++ finish:
++	of_dump_addr("OF: parent translation for:", addr, pna);
++	pr_debug("OF: with offset: %llx\n", (unsigned long long)offset);
++
++	/* Translate it into parent bus space */
++	return pbus->translate(addr, offset, pna);
++}
++
++/*
++ * Translate an address from the device-tree into a CPU physical address,
++ * this walks up the tree and applies the various bus mappings on the
++ * way.
++ *
++ * Note: We consider that crossing any level with #size-cells == 0 to mean
++ * that translation is impossible (that is we are not dealing with a value
++ * that can be mapped to a cpu physical address). This is not really specified
++ * that way, but this is traditionally the way IBM at least do things
++ */
++static u64 __of_translate_address(struct device_node *dev,
++				  const __be32 *in_addr, const char *rprop)
++{
++	struct device_node *parent = NULL;
++	struct of_bus *bus, *pbus;
++	__be32 addr[OF_MAX_ADDR_CELLS];
++	int na, ns, pna, pns;
++	u64 result = OF_BAD_ADDR;
++
++	pr_debug("OF: ** translation for device %s **\n", dev->full_name);
++
++	/* Get parent & match bus type */
++	parent = of_get_parent(dev);
++	if (parent == NULL)
++		return OF_BAD_ADDR;
++	bus = of_match_bus(parent);
++
++	/* Count address cells & copy address locally */
++	bus->count_cells(dev, &na, &ns);
++	if (!OF_CHECK_COUNTS(na, ns)) {
++		printk(KERN_ERR "prom_parse: Bad cell count for %s\n",
++		       dev->full_name);
++		return OF_BAD_ADDR;
++	}
++	memcpy(addr, in_addr, na * 4);
++
++	pr_debug("OF: bus is %s (na=%d, ns=%d) on %s\n",
++	    bus->name, na, ns, parent->full_name);
++	of_dump_addr("OF: translating address:", addr, na);
++
++	/* Translate */
++	for (;;) {
++		/* Switch to parent bus */
++		dev = parent;
++		parent = of_get_parent(dev);
++
++		/* If root, we have finished */
++		if (parent == NULL) {
++			pr_debug("OF: reached root node\n");
++			result = of_read_number(addr, na);
++			break;
++		}
++
++		/* Get new parent bus and counts */
++		pbus = of_match_bus(parent);
++		pbus->count_cells(dev, &pna, &pns);
++		if (!OF_CHECK_COUNTS(pna, pns)) {
++			printk(KERN_ERR "prom_parse: Bad cell count for %s\n",
++			       dev->full_name);
++			break;
++		}
++
++		pr_debug("OF: parent bus is %s (na=%d, ns=%d) on %s\n",
++		    pbus->name, pna, pns, parent->full_name);
++
++		/* Apply bus translation */
++		if (of_translate_one(dev, bus, pbus, addr, na, ns, pna, rprop))
++			break;
++
++		/* Complete the move up one level */
++		na = pna;
++		ns = pns;
++		bus = pbus;
++
++		of_dump_addr("OF: one level translation:", addr, na);
++	}
++
++	return result;
++}
++
++u64 of_translate_dma_address(struct device_node *dev, const __be32 *in_addr)
++{
++	return __of_translate_address(dev, in_addr, "dma-ranges");
++}
++EXPORT_SYMBOL(of_translate_dma_address);
++
++bool of_can_translate_address(struct device_node *dev)
++{
++	struct device_node *parent;
++	struct of_bus *bus;
++	int na, ns;
++
++	parent = of_get_parent(dev);
++	if (parent == NULL)
++		return false;
++
++	bus = of_match_bus(parent);
++	bus->count_cells(dev, &na, &ns);
++
++	return OF_CHECK_COUNTS(na, ns);
++}
++EXPORT_SYMBOL(of_can_translate_address);
++
++const __be32 *of_get_address(struct device_node *dev, int index, u64 *size,
++		    unsigned int *flags)
++{
++	const __be32 *prop;
++	unsigned int psize;
++	struct device_node *parent;
++	struct of_bus *bus;
++	int onesize, i, na, ns;
++
++	/* Get parent & match bus type */
++	parent = of_get_parent(dev);
++	if (parent == NULL)
++		return NULL;
++	bus = of_match_bus(parent);
++	bus->count_cells(dev, &na, &ns);
++	if (!OF_CHECK_ADDR_COUNT(na))
++		return NULL;
++
++	/* Get "reg" or "assigned-addresses" property */
++	prop = of_get_property(dev, bus->addresses, &psize);
++	if (prop == NULL)
++		return NULL;
++	psize /= 4;
++
++	onesize = na + ns;
++	for (i = 0; psize >= onesize; psize -= onesize, prop += onesize, i++)
++		if (i == index) {
++			if (size)
++				*size = of_read_number(prop + na, ns);
++			if (flags)
++				*flags = bus->get_flags(prop);
++			return prop;
++		}
++	return NULL;
++}
++EXPORT_SYMBOL(of_get_address);
++
++static int __of_address_to_resource(struct device_node *dev,
++		const __be32 *addrp, u64 size, unsigned int flags,
++		const char *name, struct resource *r)
++{
++	u64 taddr;
++
++	if ((flags & (IORESOURCE_IO | IORESOURCE_MEM)) == 0)
++		return -EINVAL;
++	taddr = of_translate_address(dev, addrp);
++	if (taddr == OF_BAD_ADDR)
++		return -EINVAL;
++	memset(r, 0, sizeof(struct resource));
++	if (flags & IORESOURCE_IO) {
++		unsigned long port;
++		port = pci_address_to_pio(taddr);
++		if (port == (unsigned long)-1)
++			return -EINVAL;
++		r->start = port;
++		r->end = port + size - 1;
++	} else {
++		r->start = taddr;
++		r->end = taddr + size - 1;
++	}
++	r->flags = flags;
++	r->name = name ? name : dev->full_name;
++
++	return 0;
++}
++
++/**
++ * of_address_to_resource - Translate device tree address and return as resource
++ *
++ * Note that if your address is a PIO address, the conversion will fail if
++ * the physical address can't be internally converted to an IO token with
++ * pci_address_to_pio(), that is because it's either called to early or it
++ * can't be matched to any host bridge IO space
++ */
++int of_address_to_resource(struct device_node *dev, int index,
++			   struct resource *r)
++{
++	const __be32	*addrp;
++	u64		size;
++	unsigned int	flags;
++	const char	*name = NULL;
++
++	addrp = of_get_address(dev, index, &size, &flags);
++	if (addrp == NULL)
++		return -EINVAL;
++
++	/* Get optional "reg-names" property to add a name to a resource */
++	of_property_read_string_index(dev, "reg-names",	index, &name);
++
++	return __of_address_to_resource(dev, addrp, size, flags, name, r);
++}
++EXPORT_SYMBOL_GPL(of_address_to_resource);
++
++struct device_node *of_find_matching_node_by_address(struct device_node *from,
++					const struct of_device_id *matches,
++					u64 base_address)
++{
++	struct device_node *dn = of_find_matching_node(from, matches);
++	struct resource res;
++
++	while (dn) {
++		if (of_address_to_resource(dn, 0, &res))
++			continue;
++		if (res.start == base_address)
++			return dn;
++		dn = of_find_matching_node(dn, matches);
++	}
++
++	return NULL;
++}
++
++/**
++ * of_iomap - Maps the memory mapped IO for a given device_node
++ * @device:	the device whose io range will be mapped
++ * @index:	index of the io range
++ *
++ * Returns a pointer to the mapped memory
++ */
++void __iomem *of_iomap(struct device_node *np, int index)
++{
++	struct resource res;
++
++	if (of_address_to_resource(np, index, &res))
++		return NULL;
++
++	return IOMEM(res.start);
++}
++EXPORT_SYMBOL(of_iomap);
+diff --git a/include/of_address.h b/include/of_address.h
+new file mode 100644
+index 0000000..a82e2e5
+--- /dev/null
++++ b/include/of_address.h
+@@ -0,0 +1,64 @@
++#ifndef __OF_ADDRESS_H
++#define __OF_ADDRESS_H
++
++#include <common.h>
++#include <of.h>
++
++#ifndef pci_address_to_pio
++static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
++#endif
++
++#ifdef CONFIG_OFTREE
++
++extern u64 of_translate_dma_address(struct device_node *dev,
++				const __be32 *in_addr);
++extern bool of_can_translate_address(struct device_node *dev);
++extern const __be32 *of_get_address(struct device_node *dev, int index,
++				u64 *size, unsigned int *flags);
++extern int of_address_to_resource(struct device_node *dev, int index,
++				struct resource *r);
++extern struct device_node *of_find_matching_node_by_address(
++	struct device_node *from, const struct of_device_id *matches,
++	u64 base_address);
++extern void __iomem *of_iomap(struct device_node *np, int index);
++
++#else /* CONFIG_OFTREE */
++
++static inline u64 of_translate_dma_address(struct device_node *dev,
++				const __be32 *in_addr)
++{
++	return OF_BAD_ADDR;
++}
++
++static inline bool of_can_translate_address(struct device_node *dev)
++{
++	return false;
++}
++
++static inline const __be32 *of_get_address(struct device_node *dev, int index,
++				u64 *size, unsigned int *flags)
++{
++	return 0;
++}
++
++static inline int of_address_to_resource(struct device_node *dev, int index,
++				struct resource *r)
++{
++	return -ENOSYS;
++}
++
++static inline struct device_node *of_find_matching_node_by_address(
++	struct device_node *from, const struct of_device_id *matches,
++	u64 base_address)
++{
++	return NULL;
++}
++
++static inline void __iomem *of_iomap(struct device_node *np, int index)
++{
++	return NULL;
++}
++
++#endif /* CONFIG_OFTREE */
++
++#endif /* __OF_ADDRESS_H */
+-- 
+1.7.2.5
 
-This series adds the make infrastructure and converts a few boards
-over to use it.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (12):
-      ARM: split barebox_arm_head in two separate functions
-      ARM: pbl: move linker script to lib
-      ARM: build dtbs unconditionally
-      ARM: Add image end section
-      imx-image: fix path to imx-image binary
-      Add multi images support
-      ARM: i.MX: Add multi images support Makefile
-      ARM: i.MX27 pcm038: switch to multi image
-      ARM: i.MX53 loco: Switch to imximage
-      ARM: i.MX53 loco: Switch to multi image support
-      ARM: dmo realq7: switch to multi image support
-      ARM: i.MX51 babbage: switch to multi image support
-
- Makefile                                           |   8 ++
- arch/arm/Makefile                                  |   2 +-
- arch/arm/boards/dmo-mx6-realq7/lowlevel.c          |  12 +-
- arch/arm/boards/freescale-mx51-pdk/lowlevel.c      |  14 ++-
- arch/arm/boards/freescale-mx53-loco/Makefile       |   4 +-
- arch/arm/boards/freescale-mx53-loco/board.c        |   8 +-
- arch/arm/boards/freescale-mx53-loco/dcd-data.h     |  54 ---------
- .../boards/freescale-mx53-loco/flash-header.imxcfg |  54 +++++++++
- arch/arm/boards/freescale-mx53-loco/flash_header.c |  52 ---------
- arch/arm/boards/freescale-mx53-loco/lowlevel.c     |  14 ++-
- arch/arm/boards/pcm038/lowlevel.c                  |   4 +-
- arch/arm/cpu/Makefile                              |   4 +-
- arch/arm/cpu/start-images.c                        |  49 ++++++++
- arch/arm/cpu/uncompress.c                          | 108 ++++++++++++++++++
- arch/arm/dts/Makefile                              |   4 +
- arch/arm/include/asm/barebox-arm-head.h            |  14 ++-
- arch/arm/include/asm/barebox-arm.h                 |   4 +
- arch/arm/{pbl/zbarebox.lds.S => lib/pbl.lds.S}     |   9 +-
- arch/arm/lib/runtime-offset.S                      |   3 +
- arch/arm/mach-imx/Kconfig                          |   7 +-
- arch/arm/pbl/Makefile                              |   5 +-
- images/Makefile                                    | 124 +++++++++++++++++++++
- images/Makefile.imx                                |  36 ++++++
- include/asm-generic/sections.h                     |   1 +
- pbl/Kconfig                                        |  16 +++
- scripts/Makefile.lib                               |   2 +-
- 26 files changed, 481 insertions(+), 131 deletions(-)
- delete mode 100644 arch/arm/boards/freescale-mx53-loco/dcd-data.h
- create mode 100644 arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
- delete mode 100644 arch/arm/boards/freescale-mx53-loco/flash_header.c
- create mode 100644 arch/arm/cpu/start-images.c
- create mode 100644 arch/arm/cpu/uncompress.c
- rename arch/arm/{pbl/zbarebox.lds.S => lib/pbl.lds.S} (93%)
- create mode 100644 images/Makefile
- create mode 100644 images/Makefile.imx
 
 _______________________________________________
 barebox mailing list
