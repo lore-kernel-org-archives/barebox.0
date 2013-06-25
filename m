@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrToA-0000nL-LE
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 14:01:23 +0000
+ id 1UrZ2p-0001fl-JT
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 19:36:52 +0000
+Date: Tue, 25 Jun 2013 21:36:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 16:00:51 +0200
-Message-Id: <1372168851-28501-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130625193627.GK32299@pengutronix.de>
+References: <1372101012-11666-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1372101012-11666-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,60 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: gadget: fsl: Fix registering from chipidea driver
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] MIPS: pbl: add nmon MIPS nano-monitor
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The fsl gadget driver wants to configure the portsc register
-with information from platform_data. When registered from the
-chipidea driver there is no platform_data. Fix the resulting
-crash by not derefencing platform_data when NULL. In this
-case the PORTSC register is not touched, it will have been
-configured by the chipidea driver in this case.
+On Mon, Jun 24, 2013 at 11:10:09PM +0400, Antony Pavlov wrote:
+> nmon is a tiny monitor (<1200 bytes) program
+> for the MIPS processors.
+> It can operate with NO working RAM at all!
+> It uses only the processor registers and NS16550-compatible
+> UART port for operation, so it can be used for a memory
+> controller setup code debugging.
+> 
+> With no changes nmon should work on different MIPS
+> processors as it uses only common MIPS-I instructions.
+> 
+> [PATCH 1/3] MIPS: pbl: add nmon MIPS nano-monitor
+> [PATCH 2/3] MIPS: qemu-malta: rework debug_ll.h
+> [PATCH 3/3] MIPS: qemu-malta: add nmon
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/gadget/fsl_udc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Applied, thanks
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 81715f9..993c7eb 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -625,10 +625,13 @@ static int dr_controller_setup(struct fsl_udc *udc)
- 	case FSL_USB2_PHY_SERIAL:
- 		portctrl |= PORTSCX_PTS_FSLS;
- 		break;
-+	case FSL_USB2_PHY_NONE:
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
--	writel(portctrl, &dr_regs->portsc1);
-+	if (udc->phy_mode != FSL_USB2_PHY_NONE)
-+		writel(portctrl, &dr_regs->portsc1);
- 
- 	/* Stop and reset the usb controller */
- 	tmp = readl(&dr_regs->usbcmd);
-@@ -2077,7 +2080,10 @@ static int struct_udc_setup(struct fsl_udc *udc,
- 	struct fsl_usb2_platform_data *pdata = dev->platform_data;
- 	size_t size;
- 
--	udc->phy_mode = pdata->phy_mode;
-+	if (pdata)
-+		udc->phy_mode = pdata->phy_mode;
-+	else
-+		udc->phy_mode = FSL_USB2_PHY_NONE;
- 
- 	udc->eps = kzalloc(sizeof(struct fsl_ep) * udc->max_ep, GFP_KERNEL);
- 	if (!udc->eps) {
+Sascha
+
+
 -- 
-1.8.3.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
