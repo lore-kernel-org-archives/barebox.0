@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og109.obsmtp.com ([64.18.0.188])
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrQmm-0002dF-67
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 10:47:45 +0000
+ id 1UrQmg-0002cS-F6
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 10:47:39 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue, 25 Jun 2013 11:45:36 +0100
-Message-Id: <1372157137-7602-8-git-send-email-renaud.barbier@ge.com>
+Date: Tue, 25 Jun 2013 11:45:37 +0100
+Message-Id: <1372157137-7602-9-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
 References: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,329 +21,303 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ppc 8xxx: core DDR driver functions
+Subject: [PATCH 8/8] ppc 85xx: early I2C support
 To: barebox@lists.infradead.org
 
-These files are the driver interface to handle the memory
-initialisation from reading the SPD data to writing the memory
-controller registers.
+Early I2C support is introduced to read SPD data from memory
+modules prior to the loading of the I2C driver.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/ddr-8xxx/ddr2_setctrl.c |   58 +++++++++
- arch/ppc/ddr-8xxx/main.c         |  238 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 296 insertions(+), 0 deletions(-)
- create mode 100644 arch/ppc/ddr-8xxx/ddr2_setctrl.c
- create mode 100644 arch/ppc/ddr-8xxx/main.c
+ arch/ppc/mach-mpc85xx/fsl_i2c.c              |  253 ++++++++++++++++++++++++++
+ arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h |   18 ++
+ 2 files changed, 271 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_i2c.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
 
-diff --git a/arch/ppc/ddr-8xxx/ddr2_setctrl.c b/arch/ppc/ddr-8xxx/ddr2_setctrl.c
+diff --git a/arch/ppc/mach-mpc85xx/fsl_i2c.c b/arch/ppc/mach-mpc85xx/fsl_i2c.c
 new file mode 100644
-index 0000000..14571b0
+index 0000000..51fcc64
 --- /dev/null
-+++ b/arch/ppc/ddr-8xxx/ddr2_setctrl.c
-@@ -0,0 +1,58 @@
++++ b/arch/ppc/mach-mpc85xx/fsl_i2c.c
+@@ -0,0 +1,253 @@
 +/*
-+ * Copyright 2008 Freescale Semiconductor, Inc.
++ * Copyright 2013 GE Intelligent Platforms, Inc
++ * Copyright 2006,2009 Freescale Semiconductor, Inc.
 + *
 + * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Early I2C support functions to read SPD data or board
++ * information.
++ * Based on U-Boot drivers/i2c/fsl_i2c.c
 + */
-+
 +#include <common.h>
-+#include <config.h>
-+#include <asm/io.h>
-+#include <asm/fsl_ddr_sdram.h>
++#include <i2c/i2c.h>
++#include <mach/clock.h>
++#include <mach/immap_85xx.h>
 +#include <mach/early_udelay.h>
-+#include "ddr.h"
 +
-+int fsl_ddr_set_memctl_regs(const struct fsl_ddr_info_s *info)
++/* FSL I2C registers */
++#define FSL_I2C_ADR	0x00
++#define FSL_I2C_FDR	0x04
++#define FSL_I2C_CR	0x08
++#define FSL_I2C_SR	0x0C
++#define FSL_I2C_DR	0x10
++#define FSL_I2C_DFSRR	0x14
++
++/* Bits of FSL I2C registers */
++#define I2C_SR_RXAK	0x01
++#define I2C_SR_MIF	0x02
++#define I2C_SR_MAL	0x10
++#define I2C_SR_MBB	0x20
++#define I2C_SR_MCF	0x80
++#define I2C_CR_RSTA	0x04
++#define I2C_CR_TXAK	0x08
++#define I2C_CR_MTX	0x10
++#define I2C_CR_MSTA	0x20
++#define I2C_CR_MEN	0x80
++
++/*
++ * Set the I2C bus speed for a given I2C device
++ *
++ * parameters:
++ * - i2c: the I2C base address.
++ * - i2c_clk: I2C bus clock frequency.
++ * - speed: the desired speed of the bus.
++ *
++ * The I2C device must be stopped before calling this function.
++ *
++ * The return value is the actual bus speed that is set.
++ */
++static uint32_t fsl_set_i2c_bus_speed(const void __iomem *i2c,
++		uint32_t i2c_clk, uint32_t speed)
 +{
-+	uint32_t i;
-+	void __iomem *ddr;
-+	const struct fsl_ddr_cfg_regs_s *regs;
++	uint8_t dfsr, fdr = 0x31; /* Default if no FDR found */
++	uint16_t a, b, ga, gb, bin_gb, bin_ga, divider;
++	uint32_t c_div, est_div;
 +
-+	regs = &info->fsl_ddr_config_reg;
-+	ddr = info->board_info.ddr_base;
++	divider = min((uint16_t)(i2c_clk / speed), (uint16_t) -1);
++	/* Condition 1: dfsr <= 50/T */
++	dfsr = (5 * (i2c_clk / 1000)) / 100000;
++	if (!dfsr)
++		dfsr = 1;
++	est_div = ~0;
 +
-+	if (in_be32(ddr + DDR_OFF(SDRAM_CFG)) & SDRAM_CFG_MEM_EN)
-+		return 0;
++	/*
++	 * Bus speed is calculated as per Freescale AN2919.
++	 * a, b and dfsr matches identifiers A,B and C as in the
++	 * application note.
++	 */
++	for (ga = 0x4, a = 10; a <= 30; ga++, a += 2) {
++		for (gb = 0; gb < 8; gb++) {
++			b = 16 << gb;
++			c_div = b * (a + (((3 * dfsr) / b) * 2));
 +
-+	for (i = 0; i < info->board_info.cs_per_ctrl; i++) {
-+		out_be32(ddr + DDR_OFF(CS0_BNDS) + (i << 3), regs->cs[i].bnds);
-+		out_be32(ddr + DDR_OFF(CS0_CONFIG) + (i << 2),
-+				regs->cs[i].config);
++			if ((c_div > divider) && (c_div < est_div)) {
++				est_div = c_div;
++				bin_gb = gb << 2;
++				bin_ga = (ga & 0x3) | ((ga & 0x4) << 3);
++				fdr = bin_gb | bin_ga;
++				speed = i2c_clk / est_div;
++			}
++		}
++		if (a == 20)
++			a += 2;
++		if (a == 24)
++			a += 4;
++	}
++	writeb(dfsr, i2c + FSL_I2C_DFSRR);	/* set default filter */
++	writeb(fdr, i2c + FSL_I2C_FDR);		/* set bus speed */
++
++	return speed;
++}
++
++void fsl_i2c_init(void __iomem *i2c, int speed, int slaveadd)
++{
++	uint32_t i2c_clk;
++
++	i2c_clk =  fsl_get_i2c_freq();
++	writeb(0, i2c + FSL_I2C_CR);
++	early_udelay(5);
++
++	fsl_set_i2c_bus_speed(i2c, i2c_clk, speed);
++	writeb(slaveadd << 1, i2c + FSL_I2C_ADR);
++	writeb(0x0, i2c + FSL_I2C_SR);
++	writeb(I2C_CR_MEN, i2c + FSL_I2C_CR);
++}
++
++static uint32_t fsl_usec2ticks(uint32_t usec)
++{
++	ulong ticks;
++
++	if (usec < 1000) {
++		ticks = (usec * (fsl_get_timebase_clock() / 1000));
++		ticks = (ticks + 500) / 1000;
++	} else {
++		ticks = (usec / 10);
++		ticks *= (fsl_get_timebase_clock() / 100000);
 +	}
 +
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_3), regs->timing_cfg_3);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_0), regs->timing_cfg_0);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_1), regs->timing_cfg_1);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_2), regs->timing_cfg_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_CFG_2), regs->ddr_sdram_cfg_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_MODE), regs->ddr_sdram_mode);
-+	out_be32(ddr + DDR_OFF(SDRAM_MODE_2), regs->ddr_sdram_mode_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_MD_CNTL), regs->ddr_sdram_md_cntl);
-+	out_be32(ddr + DDR_OFF(SDRAM_INTERVAL), regs->ddr_sdram_interval);
-+	out_be32(ddr + DDR_OFF(SDRAM_DATA_INIT), regs->ddr_data_init);
-+	out_be32(ddr + DDR_OFF(SDRAM_CLK_CNTL), regs->ddr_sdram_clk_cntl);
-+	out_be32(ddr + DDR_OFF(SDRAM_INIT_ADDR), regs->ddr_init_addr);
-+	out_be32(ddr + DDR_OFF(SDRAM_INIT_ADDR_EXT), regs->ddr_init_ext_addr);
++	return ticks;
++}
 +
-+	early_udelay(200);
-+	asm volatile("sync;isync");
++static int fsl_i2c_wait4bus(void __iomem *i2c)
++{
++	uint64_t timeval = get_ticks();
++	const uint64_t timeout = fsl_usec2ticks(20000);
 +
-+	out_be32(ddr + DDR_OFF(SDRAM_CFG), regs->ddr_sdram_cfg);
-+
-+	/* Poll DDR_SDRAM_CFG_2[D_INIT] bit until auto-data init is done.  */
-+	while (in_be32(ddr + DDR_OFF(SDRAM_CFG_2)) & SDRAM_CFG2_D_INIT)
-+		early_udelay(10000);
++	while (readb(i2c + FSL_I2C_SR) & I2C_SR_MBB)
++		if ((get_ticks() - timeval) > timeout)
++			return -1;
 +
 +	return 0;
 +}
-diff --git a/arch/ppc/ddr-8xxx/main.c b/arch/ppc/ddr-8xxx/main.c
-new file mode 100644
-index 0000000..6e4a02d
---- /dev/null
-+++ b/arch/ppc/ddr-8xxx/main.c
-@@ -0,0 +1,238 @@
-+/*
-+ * Copyright 2008-2012 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
-+ */
 +
-+/*
-+ * Generic driver for Freescale DDR2 memory controller.
-+ * Based on code from spd_sdram.c
-+ * Author: James Yang [at freescale.com]
-+ */
-+
-+#include <common.h>
-+#include <config.h>
-+#include <asm/fsl_law.h>
-+#include "ddr.h"
-+
-+static int get_spd(generic_spd_eeprom_t *spd,
-+		      struct ddr_board_info_s *bi, u8 i2c_address)
++void fsl_i2c_stop(void __iomem *i2c)
 +{
-+	int ret;
-+
-+	fsl_i2c_init(bi->i2c_base, bi->i2c_speed, bi->i2c_slave);
-+	ret = fsl_i2c_read(bi->i2c_base, i2c_address, 0, 1, (uchar *) spd,
-+			sizeof(generic_spd_eeprom_t));
-+	fsl_i2c_stop(bi->i2c_base);
-+
-+	return ret;
++	writeb(I2C_CR_MEN, i2c + FSL_I2C_CR);
 +}
 +
-+int fsl_ddr_get_spd(generic_spd_eeprom_t *ctrl_dimms_spd,
-+		struct ddr_board_info_s *binfo)
++static int fsl_i2c_wait(void __iomem *i2c, int write)
 +{
-+	uint32_t i;
-+	uint8_t i2c_address;
++	const uint64_t timeout = fsl_usec2ticks(100000);
++	uint64_t timeval = get_ticks();
++	int csr;
 +
-+	for (i = 0; i < binfo->dimm_slots_per_ctrl; i++) {
-+		if (binfo->spd_i2c_addr == NULL)
-+			goto error;
-+		i2c_address = binfo->spd_i2c_addr[i];
-+		if (get_spd(&(ctrl_dimms_spd[i]), binfo, i2c_address))
-+				goto error;
-+	}
++	do {
++		csr = readb(i2c + FSL_I2C_SR);
++		if (csr & I2C_SR_MIF)
++			break;
++	} while ((get_ticks() - timeval) < timeout);
++
++	if ((get_ticks() - timeval) > timeout)
++		goto error;
++
++	csr = readb(i2c + FSL_I2C_SR);
++	writeb(0x0, i2c + FSL_I2C_SR);
++
++	if (csr & I2C_SR_MAL)
++		goto error;
++
++	if (!(csr & I2C_SR_MCF))
++		goto error;
++
++	if (write == 0 && (csr & I2C_SR_RXAK))
++		goto error;
 +
 +	return 0;
 +error:
++	return -1;
++}
++
++static int __i2c_write(void __iomem *i2c, uint8_t *data, int length)
++{
++	int i;
++
++	for (i = 0; i < length; i++) {
++		writeb(data[i], i2c + FSL_I2C_DR);
++		if (fsl_i2c_wait(i2c, 0) < 0)
++			break;
++	}
++
++	return i;
++}
++
++static int __i2c_read(void __iomem *i2c, uint8_t *data, int length)
++{
++	int i;
++	uint8_t val = I2C_CR_MEN | I2C_CR_MSTA;
++
++	if (length == 1)
++		writeb(val | I2C_CR_TXAK, i2c + FSL_I2C_CR);
++	else
++		writeb(val, i2c + FSL_I2C_CR);
++
++	readb(i2c + FSL_I2C_DR);
++	for (i = 0; i < length; i++) {
++		if (fsl_i2c_wait(i2c, 1) < 0)
++			break;
++
++		/* Generate ack on last next to last byte */
++		if (i == length - 2)
++			writeb(val | I2C_CR_TXAK, i2c + FSL_I2C_CR);
++		/* Do not generate stop on last byte */
++		if (i == length - 1)
++			writeb(val | I2C_CR_MTX, i2c + FSL_I2C_CR);
++
++		data[i] = readb(i2c + FSL_I2C_DR);
++	}
++
++	return i;
++}
++
++static int
++fsl_i2c_write_addr(void __iomem *i2c, uint8_t dev, uint8_t dir, int rsta)
++{
++	uint8_t val = I2C_CR_MEN | I2C_CR_MSTA | I2C_CR_MTX;
++
++	if (rsta)
++		val |= I2C_CR_RSTA;
++	writeb(val, i2c + FSL_I2C_CR);
++	writeb((dev << 1) | dir, i2c + FSL_I2C_DR);
++
++	if (fsl_i2c_wait(i2c, 0) < 0)
++		return 0;
++
 +	return 1;
 +}
 +
-+static uint64_t step_assign_addresses(struct fsl_ddr_info_s *pinfo,
-+		uint32_t dbw_cap_adj)
++int fsl_i2c_read(void __iomem *i2c, uint8_t dev, uint addr, int alen,
++			uint8_t *data, int length)
 +{
-+	uint64_t total_mem, current_mem_base, total_ctlr_mem, cap;
-+	uint32_t ndimm, dw, j, found = 0;
++	int i = -1;
++	uint8_t *a = (uint8_t *)&addr;
 +
-+	ndimm = pinfo->board_info.dimm_slots_per_ctrl;
-+	/*
-+	 * If a reduced data width is requested, but the SPD
-+	 * specifies a physically wider device, adjust the
-+	 * computed dimm capacities accordingly before
-+	 * assigning addresses.
-+	 */
-+	switch (pinfo->memctl_opts.data_bus_width) {
-+	case 2:
-+		/* 16-bit */
-+		for (j = 0; j < ndimm; j++) {
-+			if (!pinfo->dimm_params[j].n_ranks)
-+				continue;
-+			dw = pinfo->dimm_params[j].primary_sdram_width;
-+			if ((dw == 72 || dw == 64)) {
-+				dbw_cap_adj = 2;
-+				break;
-+			} else if ((dw == 40 || dw == 32)) {
-+				dbw_cap_adj = 1;
-+				break;
-+			}
-+		}
-+		break;
-+	case 1:
-+		/* 32-bit */
-+		for (j = 0; j < ndimm; j++) {
-+			dw = pinfo->dimm_params[j].data_width;
-+			if (pinfo->dimm_params[j].n_ranks
-+			    && (dw == 72 || dw == 64)) {
-+				/*
-+				 * FIXME: can't really do it
-+				 * like this because this just
-+				 * further reduces the memory
-+				 */
-+				found = 1;
-+				break;
-+			}
-+		}
-+		if (found)
-+			dbw_cap_adj = 1;
-+		break;
-+	case 0:
-+		/* 64-bit */
-+		break;
-+	default:
-+		return 1;
-+	}
++	if (alen && (fsl_i2c_wait4bus(i2c) >= 0) &&
++		(fsl_i2c_write_addr(i2c, dev, 0, 0) != 0) &&
++		(__i2c_write(i2c, &a[4 - alen], alen) == alen))
++		i = 0;
 +
-+	current_mem_base = 0ull;
-+	total_mem = 0;
-+	total_ctlr_mem = 0;
-+	pinfo->common_timing_params.base_address = current_mem_base;
++	if (length && fsl_i2c_write_addr(i2c, dev, 1, 1) != 0)
++		i = __i2c_read(i2c, data, length);
 +
-+	for (j = 0; j < ndimm; j++) {
-+		cap = pinfo->dimm_params[j].capacity >> dbw_cap_adj;
-+		pinfo->dimm_params[j].base_address = current_mem_base;
-+		current_mem_base += cap;
-+		total_ctlr_mem += cap;
-+
-+	}
-+
-+	pinfo->common_timing_params.total_mem = total_ctlr_mem;
-+	total_mem += total_ctlr_mem;
-+
-+	return total_mem;
-+}
-+
-+static uint32_t retrieve_max_size(struct fsl_ddr_cfg_regs_s *ddr_reg,
-+				uint32_t ncs)
-+{
-+	uint32_t max_end = 0, end, i;
-+
-+	for (i = 0; i < ncs; i++)
-+		if (ddr_reg->cs[i].config & 0x80000000) {
-+			end = ddr_reg->cs[i].bnds & 0xFFF;
-+			if (end > max_end)
-+				max_end = end;
-+		}
-+
-+	return max_end;
-+}
-+
-+static uint32_t compute_dimm_param(struct fsl_ddr_info_s *pinfo, uint32_t ndimm)
-+{
-+	struct dimm_params_s *pdimm;
-+	generic_spd_eeprom_t *spd;
-+	uint32_t i, retval;
-+
-+	for (i = 0; i < ndimm; i++) {
-+		spd = &(pinfo->spd_installed_dimms[i]);
-+		pdimm = &(pinfo->dimm_params[i]);
-+
-+		retval = compute_dimm_parameters(spd, pdimm);
-+
-+		if (retval == 2) /* Fatal error */
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+uint64_t fsl_ddr_compute(struct fsl_ddr_info_s *pinfo)
-+{
-+	uint64_t total_mem = 0;
-+	uint32_t ncs, ndimm, max_end = 0;
-+	struct fsl_ddr_cfg_regs_s *ddr_reg;
-+	struct common_timing_params_s *timing_params;
-+	/* data bus width capacity adjust shift amount */
-+	uint32_t dbw_capacity_adjust;
-+
-+	ddr_reg = &pinfo->fsl_ddr_config_reg;
-+	timing_params = &pinfo->common_timing_params;
-+	ncs = pinfo->board_info.cs_per_ctrl;
-+	ndimm = pinfo->board_info.dimm_slots_per_ctrl;
-+	dbw_capacity_adjust = 0;
-+	pinfo->memctl_opts.board_info = &pinfo->board_info;
-+
-+	/* STEP 1:  Gather all DIMM SPD data */
-+	if (fsl_ddr_get_spd(pinfo->spd_installed_dimms,
-+			pinfo->memctl_opts.board_info))
++	if (i == length)
 +		return 0;
 +
-+	/* STEP 2:  Compute DIMM parameters from SPD data */
-+	if (compute_dimm_param(pinfo, ndimm))
-+		return 0;
-+
-+	/*
-+	 * STEP 3: Compute a common set of timing parameters
-+	 * suitable for all of the DIMMs on each memory controller
-+	 */
-+	compute_lowest_common_dimm_parameters(pinfo->dimm_params,
-+			timing_params, ndimm);
-+
-+	/* STEP 4:  Gather configuration requirements from user */
-+	populate_memctl_options(timing_params->all_DIMMs_registered,
-+			&pinfo->memctl_opts,
-+			pinfo->dimm_params);
-+
-+	/* STEP 5:  Assign addresses to chip selects */
-+	total_mem = step_assign_addresses(pinfo, dbw_capacity_adjust);
-+
-+	/* STEP 6:  compute controller register values */
-+	if (timing_params->ndimms_present == 0)
-+		memset(ddr_reg, 0, sizeof(struct fsl_ddr_cfg_regs_s));
-+
-+	compute_fsl_memctl_config_regs(&pinfo->memctl_opts,
-+				       ddr_reg, timing_params,
-+				       pinfo->dimm_params,
-+				       dbw_capacity_adjust);
-+
-+	max_end = retrieve_max_size(ddr_reg, ncs);
-+	total_mem = 1 + (((uint64_t)max_end << 24ULL) | 0xFFFFFFULL);
-+
-+	return total_mem;
++	return -1;
 +}
-+
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h b/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
+new file mode 100644
+index 0000000..acf4cc7
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
+@@ -0,0 +1,18 @@
 +/*
-+ * fsl_ddr_sdram():
-+ * This is the main function to initialize the memory.
++ * Copyright 2013 GE Intelligent Platforms, Inc
 + *
-+ * It returns amount of memory configured in bytes.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + */
-+phys_size_t fsl_ddr_sdram(void)
-+{
-+	uint64_t total_memory;
-+	struct fsl_ddr_info_s info;
++void fsl_i2c_init(void __iomem *i2c, int speed, int slaveadd);
++int fsl_i2c_read(void __iomem *i2c, uint8_t dev, uint addr, int alen,
++		uint8_t *data, int length);
++void fsl_i2c_stop(void __iomem *i2c);
 +
-+	memset(&info, 0, sizeof(struct fsl_ddr_info_s));
-+	/* Gather board information on the  memory controller and I2C bus. */
-+	fsl_ddr_board_info(&info.board_info);
-+
-+	total_memory = fsl_ddr_compute(&info);
-+
-+	if (info.common_timing_params.ndimms_present == 0)
-+		return 0;
-+
-+	fsl_ddr_set_memctl_regs(&info);
-+	fsl_ddr_set_lawbar(&info.common_timing_params, LAW_TRGT_IF_DDR_1);
-+
-+	return total_memory;
-+}
 -- 
 1.7.1
 
