@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRA-0000I1-0E
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:32 +0000
+ id 1UrPR9-0000IF-WD
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 11:20:41 +0200
-Message-Id: <1372152052-5463-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:52 +0200
+Message-Id: <1372152052-5463-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] ARM: split barebox_arm_head in two separate functions
+Subject: [PATCH 12/12] ARM: i.MX51 babbage: switch to multi image support
 To: barebox@lists.infradead.org
 
-This adds a new function __barebox_arm_head() which defines an
-the regular barebox ARM header, but which jumps to the end of
-the function so that this can be embedded into another function.
-barebox_arm_head() now just uses it and jumps to barebox_arm_reset_vector
-just like it did before.
+The image will be named:
 
-This makes it possible to define board specific entry points.
+barebox-freescale-imx51-babbage.img
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/barebox-arm-head.h | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/arm/boards/freescale-mx51-pdk/lowlevel.c | 14 ++++++++++++--
+ arch/arm/dts/Makefile                         |  1 +
+ arch/arm/mach-imx/Kconfig                     |  2 +-
+ images/Makefile.imx                           |  7 +++++++
+ 4 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
-index 9a8cc87..af7164a 100644
---- a/arch/arm/include/asm/barebox-arm-head.h
-+++ b/arch/arm/include/asm/barebox-arm-head.h
-@@ -43,7 +43,7 @@ static inline void arm_cpu_lowlevel_init(void)
- #ifdef CONFIG_HAVE_MACH_ARM_HEAD
- #include <mach/barebox-arm-head.h>
- #else
--static inline void barebox_arm_head(void)
-+static inline void __barebox_arm_head(void)
+diff --git a/arch/arm/boards/freescale-mx51-pdk/lowlevel.c b/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
+index 3e6a0ee..8c1acb4 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
++++ b/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
+@@ -1,9 +1,19 @@
+ #include <common.h>
+ #include <mach/esdctl.h>
+ #include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
+ 
+-void __naked barebox_arm_reset_vector(void)
++extern char __dtb_imx51_babbage_start[];
++
++ENTRY_FUNCTION(start_imx51_babbage)(void)
  {
- 	__asm__ __volatile__ (
- #ifdef CONFIG_THUMB2_BAREBOX
-@@ -52,12 +52,12 @@ static inline void barebox_arm_head(void)
- 		"bx r9\n"
- 		".thumb\n"
- 		"1:\n"
--		"bl barebox_arm_reset_vector\n"
-+		"bl 2f\n"
- 		".rept 10\n"
- 		"1: b 1b\n"
- 		".endr\n"
- #else
--		"b barebox_arm_reset_vector\n"
-+		"b 2f\n"
- 		"1: b 1b\n"
- 		"1: b 1b\n"
- 		"1: b 1b\n"
-@@ -74,6 +74,14 @@ static inline void barebox_arm_head(void)
- 		".rept 8\n"
- 		".word 0x55555555\n"
- 		".endr\n"
-+		"2:\n"
-+	);
-+}
-+static inline void barebox_arm_head(void)
-+{
++	uint32_t fdt;
++
 +	__barebox_arm_head();
-+	__asm__ __volatile__ (
-+		"b barebox_arm_reset_vector\n"
- 	);
++
+ 	arm_cpu_lowlevel_init();
+-	imx51_barebox_entry(0);
++
++	fdt = (uint32_t)__dtb_imx51_babbage_start - get_runtime_offset();
++
++	imx51_barebox_entry(fdt);
  }
- #endif
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 2fdd2e7..df0e360 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -8,6 +8,7 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-dmo-realq7.dtb \
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ 
++pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
+ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
+ 
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9927a3d..a57e276 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -425,7 +425,7 @@ choice
+ 
+ config MACH_FREESCALE_MX51_PDK
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
++	select HAVE_PBL_MULTI_IMAGES
+ 	bool "Freescale i.MX51 PDK"
+ 
+ config MACH_EUKREA_CPUIMX51SD
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 11c4160..72e8cde 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -14,6 +14,13 @@ pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
+ FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
+ image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
+ 
++# ----------------------- i.MX51 based boards ---------------------------
++pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
++CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-pdk/flash-header.imxcfg
++imximage-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage.pblx.imximg
++FILE_barebox-freescale-imx51-babbage.img = start_imx51_babbage.pblx.imximg
++image-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
++
+ # ----------------------- i.MX53 based boards ---------------------------
+ pblx-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco
+ CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header.imxcfg
 -- 
 1.8.3.1
 
