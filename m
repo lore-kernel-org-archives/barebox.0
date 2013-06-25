@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x230.google.com ([2a00:1450:4013:c00::230])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRB-0000IN-8c
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:42 +0000
-Received: by mail-ee0-f48.google.com with SMTP id b47so6469665eek.21
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:20:57 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 25 Jun 2013 11:20:40 +0200
-Message-Id: <1372152047-28134-3-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1UrPRT-0003M5-9Y
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:41 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:51 +0200
+Message-Id: <1372152052-5463-12-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,127 +21,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/9] OF: convert of_translate_address to new API
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 11/12] ARM: dmo realq7: switch to multi image support
+To: barebox@lists.infradead.org
 
-This converts existing of_translate_address to recently added API. In
-contrast to existing behavior, the new function honors ranges properties
-properly. It now allows reg properties to be set as offset with respect
-to the correspoding parent node.
+The image will be named after the official name of this board:
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+barebox-datamodul-edm-qmx6.img
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Cc: barebox@lists.infradead.org
----
- drivers/of/address.c |    6 ++++++
- drivers/of/base.c    |   26 +-------------------------
- include/of.h         |    2 --
- include/of_address.h |    8 ++++++++
- 4 files changed, 15 insertions(+), 27 deletions(-)
+ arch/arm/boards/dmo-mx6-realq7/lowlevel.c | 12 ++++++++++--
+ arch/arm/dts/Makefile                     |  1 +
+ arch/arm/mach-imx/Kconfig                 |  2 +-
+ images/Makefile.imx                       |  7 +++++++
+ 4 files changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index 3e5387a..4cacdb1 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -278,6 +278,12 @@ static u64 __of_translate_address(struct device_node *dev,
- 	return result;
+diff --git a/arch/arm/boards/dmo-mx6-realq7/lowlevel.c b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+index ebcf76f..240116d 100644
+--- a/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
++++ b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+@@ -138,8 +138,14 @@ static void sdram_init(void)
+ 	writel(0x00000001, 0x021e8080);
  }
  
-+u64 of_translate_address(struct device_node *dev, const __be32 *in_addr)
-+{
-+	return __of_translate_address(dev, in_addr, "ranges");
-+}
-+EXPORT_SYMBOL(of_translate_address);
+-void __naked barebox_arm_reset_vector(void)
++extern char __dtb_imx6q_dmo_realq7_start[];
 +
- u64 of_translate_dma_address(struct device_node *dev, const __be32 *in_addr)
++ENTRY_FUNCTION(start_imx6_realq7)(void)
  {
- 	return __of_translate_address(dev, in_addr, "dma-ranges");
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 63ff647..2778230 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -19,6 +19,7 @@
-  */
- #include <common.h>
- #include <of.h>
-+#include <of_address.h>
- #include <errno.h>
- #include <malloc.h>
- #include <init.h>
-@@ -242,31 +243,6 @@ const char *of_alias_get(struct device_node *np)
++	uint32_t fdt;
++
++	__barebox_arm_head();
++
+ 	arm_cpu_lowlevel_init();
+ 
+ 	arm_setup_stack(0x00940000 - 8);
+@@ -151,5 +157,7 @@ void __naked barebox_arm_reset_vector(void)
+ 		mmdc_do_dqs_calibration();
+ 	}
+ 
+-	barebox_arm_entry(0x10000000, SZ_2G, 0);
++	fdt = (uint32_t)__dtb_imx6q_dmo_realq7_start - get_runtime_offset();
++
++	barebox_arm_entry(0x10000000, SZ_2G, fdt);
  }
- EXPORT_SYMBOL_GPL(of_alias_get);
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 19a1985..2fdd2e7 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -9,6 +9,7 @@ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
  
--u64 of_translate_address(struct device_node *node, const __be32 *in_addr)
--{
--	struct property *p;
--	u64 addr = be32_to_cpu(*in_addr);
--
--	while (1) {
--		int na, nc;
--
--		if (!node->parent)
--			return addr;
--
--		node = node->parent;
--		p = of_find_property(node, "ranges", NULL);
--		if (!p && node->parent)
--			return OF_BAD_ADDR;
--		of_bus_count_cells(node, &na, &nc);
--		if (na != 1 || nc != 1) {
--			printk("%s: #size-cells != 1 or #address-cells != 1 "
--					"currently not supported\n", node->name);
--			return OF_BAD_ADDR;
--		}
--	}
--}
--EXPORT_SYMBOL(of_translate_address);
--
- /*
-  * of_find_node_by_phandle - Find a node given a phandle
-  * @handle:    phandle of the node to find
-diff --git a/include/of.h b/include/of.h
-index b392ca9..e091326 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -101,8 +101,6 @@ int of_get_named_gpio(struct device_node *np,
- void of_print_property(const void *data, int len);
- void of_print_cmdline(struct device_node *root);
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
++pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
  
--u64 of_translate_address(struct device_node *node, const __be32 *in_addr);
--
- #define OF_ROOT_NODE_SIZE_CELLS_DEFAULT 1
- #define OF_ROOT_NODE_ADDR_CELLS_DEFAULT 1
+ .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
  
-diff --git a/include/of_address.h b/include/of_address.h
-index a82e2e5..9022ab7 100644
---- a/include/of_address.h
-+++ b/include/of_address.h
-@@ -10,6 +10,8 @@ static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 6560798..9927a3d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -530,8 +530,8 @@ config MACH_SABRESD
  
- #ifdef CONFIG_OFTREE
+ config MACH_REALQ7
+ 	bool "DataModul i.MX6Q Real Qseven Board"
+-	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	select HAVE_PBL_MULTI_IMAGES
  
-+extern u64 of_translate_address(struct device_node *dev,
-+				const __be32 *in_addr);
- extern u64 of_translate_dma_address(struct device_node *dev,
- 				const __be32 *in_addr);
- extern bool of_can_translate_address(struct device_node *dev);
-@@ -24,6 +26,12 @@ extern void __iomem *of_iomap(struct device_node *np, int index);
+ endchoice
  
- #else /* CONFIG_OFTREE */
- 
-+static inline u64 of_translate_address(struct device_node *dev,
-+				const __be32 *in_addr)
-+{
-+	return OF_BAD_ADDR;
-+}
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 3a5b5f1..11c4160 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -20,3 +20,10 @@ CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header.imx
+ imximage-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco.pblx.imximg
+ FILE_barebox-freescale-imx53-loco.img = start_imx53_loco.pblx.imximg
+ image-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += barebox-freescale-imx53-loco.img
 +
- static inline u64 of_translate_dma_address(struct device_node *dev,
- 				const __be32 *in_addr)
- {
++# ----------------------- i.MX6 based boards ---------------------------
++pblx-$(CONFIG_MACH_REALQ7) += start_imx6_realq7
++CFG_start_imx6_realq7.pblx.imximg = $(board)/dmo-mx6-realq7/flash-header.imxcfg
++imximage-$(CONFIG_MACH_REALQ7) += start_imx6_realq7.pblx.imximg
++FILE_barebox-datamodul-edm-qmx6.img = start_imx6_realq7.pblx.imximg
++image-$(CONFIG_MACH_REALQ7) += barebox-datamodul-edm-qmx6.img
 -- 
-1.7.2.5
+1.8.3.1
 
 
 _______________________________________________
