@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRD-00023O-M4
+ id 1UrPRF-00023Q-1d
  for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:26 +0000
-Received: by mail-ee0-f50.google.com with SMTP id d49so6423600eek.23
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:21:00 -0700 (PDT)
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue, 25 Jun 2013 11:20:46 +0200
-Message-Id: <1372152047-28134-9-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:50 +0200
+Message-Id: <1372152052-5463-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,106 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] OF: base: convert of_add_memory to OF API
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 10/12] ARM: i.MX53 loco: Switch to multi image support
+To: barebox@lists.infradead.org
 
-Convert of_add_memory parsing to make use of of_address_to_resource
-instead of parsing memory ranges itself. This makes some functions
-dead code which are also removed.
+This converts the Freescale i.MX53 loco aka qsb board to
+multi image. The image will be named:
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+barebox-freescale-imx53-loco.img
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Cc: barebox@lists.infradead.org
----
- drivers/of/base.c |   57 +++++++---------------------------------------------
- 1 files changed, 8 insertions(+), 49 deletions(-)
+ arch/arm/boards/freescale-mx53-loco/lowlevel.c | 14 ++++++++++++--
+ arch/arm/dts/Makefile                          |  2 ++
+ arch/arm/mach-imx/Kconfig                      |  2 +-
+ images/Makefile.imx                            |  7 +++++++
+ 4 files changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 0244281..6fc962d 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -99,21 +99,6 @@ int of_n_size_cells(struct device_node *np)
- }
- EXPORT_SYMBOL(of_n_size_cells);
+diff --git a/arch/arm/boards/freescale-mx53-loco/lowlevel.c b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+index 60c28f7..d920524 100644
+--- a/arch/arm/boards/freescale-mx53-loco/lowlevel.c
++++ b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+@@ -1,9 +1,19 @@
+ #include <common.h>
+ #include <mach/esdctl.h>
+ #include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
  
--static void of_bus_default_count_cells(struct device_node *dev,
--				       int *addrc, int *sizec)
--{
--	if (addrc)
--		*addrc = of_n_addr_cells(dev);
--	if (sizec)
--		*sizec = of_n_size_cells(dev);
--}
--
--static void of_bus_count_cells(struct device_node *dev,
--			int *addrc, int *sizec)
--{
--	of_bus_default_count_cells(dev, addrc, sizec);
--}
--
- struct property *of_find_property(const struct device_node *np,
- 				  const char *name, int *lenp)
+-void __naked barebox_arm_reset_vector(void)
++extern char __dtb_imx53_qsb_start[];
++
++ENTRY_FUNCTION(start_imx53_loco)(void)
  {
-@@ -1543,48 +1528,22 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
- 	return 0;
++	uint32_t fdt;
++
++	__barebox_arm_head();
++
+ 	arm_cpu_lowlevel_init();
+-	imx53_barebox_entry(0);
++
++	fdt = (uint32_t)__dtb_imx53_qsb_start - get_runtime_offset();
++
++	imx53_barebox_entry(fdt);
  }
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index b271618..19a1985 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -8,6 +8,8 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-dmo-realq7.dtb \
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
  
--static u64 dt_mem_next_cell(int s, const __be32 **cellp)
--{
--	const __be32 *p = *cellp;
--
--	*cellp = p + s;
--	return of_read_number(p, s);
--}
--
- int of_add_memory(struct device_node *node, bool dump)
- {
--	int na, nc;
--	const __be32 *reg, *endp;
--	int len, r = 0, ret;
- 	const char *device_type;
-+	struct resource res;
-+	int n = 0, ret;
++pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
++
+ .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
  
- 	ret = of_property_read_string(node, "device_type", &device_type);
--	if (ret)
-+	if (ret || of_node_cmp(device_type, "memory"))
- 		return -ENXIO;
+ targets += dtbs
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 4f9ef3e..6560798 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -476,7 +476,7 @@ choice
  
--	if (of_node_cmp(device_type, "memory"))
--		return -ENXIO;
--
--	of_bus_count_cells(node, &na, &nc);
--
--	reg = of_get_property(node, "reg", &len);
--	if (!reg)
--		return -EINVAL;
--
--	endp = reg + (len / sizeof(__be32));
--
--	while ((endp - reg) >= (na + nc)) {
--		u64 base, size;
--
--		base = dt_mem_next_cell(na, &reg);
--		size = dt_mem_next_cell(nc, &reg);
--
--		if (size == 0)
-+	while (of_address_to_resource(node, n, &res)) {
-+		if (!resource_size(&res))
- 			continue;
--
--		of_add_memory_bank(node, dump, r, base, size);
--
--		r++;
-+		of_add_memory_bank(node, dump, n,
-+				res.start, resource_size(&res));
-+		n++;
- 	}
+ config MACH_FREESCALE_MX53_LOCO
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
++	select HAVE_PBL_MULTI_IMAGES
+ 	bool "Freescale i.MX53 LOCO"
  
- 	return 0;
+ config MACH_FREESCALE_MX53_SMD
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 6334729..3a5b5f1 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -13,3 +13,10 @@ board = $(srctree)/arch/$(ARCH)/boards
+ pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
+ FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
+ image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
++
++# ----------------------- i.MX53 based boards ---------------------------
++pblx-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco
++CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header.imxcfg
++imximage-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco.pblx.imximg
++FILE_barebox-freescale-imx53-loco.img = start_imx53_loco.pblx.imximg
++image-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += barebox-freescale-imx53-loco.img
 -- 
-1.7.2.5
+1.8.3.1
 
 
 _______________________________________________
