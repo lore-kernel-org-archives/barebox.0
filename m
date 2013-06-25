@@ -1,22 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1UrPWq-0004tL-4a
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:27:12 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1UrPWT-0006uU-3P
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 11:26:49 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1UrPWT-0007OH-28
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 11:26:49 +0200
-Date: Tue, 25 Jun 2013 11:26:49 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130625092649.GG32299@pengutronix.de>
-References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UrPRD-00023O-M4
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:26 +0000
+Received: by mail-ee0-f50.google.com with SMTP id d49so6423600eek.23
+ for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 02:21:00 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 25 Jun 2013 11:20:46 +0200
+Message-Id: <1372152047-28134-9-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,32 +18,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox multi image support
-To: barebox@lists.infradead.org
+Subject: [PATCH 8/9] OF: base: convert of_add_memory to OF API
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Jun 25, 2013 at 11:20:40AM +0200, Sascha Hauer wrote:
-> This series adds support for generating multiple images from a single
-> barebox binary. This helps when for example boards come with different
-> SDRAM setups. Instead of having a config for each SDRAM setup we only
-> have a single configuration, but generate multiple images from it.
-> 
-> The basic idea behind this is using a PBL. As of now the PBL on ARM
-> has a single entrypoint: barebox_arm_entry.
+Convert of_add_memory parsing to make use of of_address_to_resource
+instead of parsing memory ranges itself. This makes some functions
+dead code which are also removed.
 
-s/barebox_arm_entry/barebox_arm_reset_vector/
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c |   57 +++++++---------------------------------------------
+ 1 files changed, 8 insertions(+), 49 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 0244281..6fc962d 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -99,21 +99,6 @@ int of_n_size_cells(struct device_node *np)
+ }
+ EXPORT_SYMBOL(of_n_size_cells);
+ 
+-static void of_bus_default_count_cells(struct device_node *dev,
+-				       int *addrc, int *sizec)
+-{
+-	if (addrc)
+-		*addrc = of_n_addr_cells(dev);
+-	if (sizec)
+-		*sizec = of_n_size_cells(dev);
+-}
+-
+-static void of_bus_count_cells(struct device_node *dev,
+-			int *addrc, int *sizec)
+-{
+-	of_bus_default_count_cells(dev, addrc, sizec);
+-}
+-
+ struct property *of_find_property(const struct device_node *np,
+ 				  const char *name, int *lenp)
+ {
+@@ -1543,48 +1528,22 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
+ 	return 0;
+ }
+ 
+-static u64 dt_mem_next_cell(int s, const __be32 **cellp)
+-{
+-	const __be32 *p = *cellp;
+-
+-	*cellp = p + s;
+-	return of_read_number(p, s);
+-}
+-
+ int of_add_memory(struct device_node *node, bool dump)
+ {
+-	int na, nc;
+-	const __be32 *reg, *endp;
+-	int len, r = 0, ret;
+ 	const char *device_type;
++	struct resource res;
++	int n = 0, ret;
+ 
+ 	ret = of_property_read_string(node, "device_type", &device_type);
+-	if (ret)
++	if (ret || of_node_cmp(device_type, "memory"))
+ 		return -ENXIO;
+ 
+-	if (of_node_cmp(device_type, "memory"))
+-		return -ENXIO;
+-
+-	of_bus_count_cells(node, &na, &nc);
+-
+-	reg = of_get_property(node, "reg", &len);
+-	if (!reg)
+-		return -EINVAL;
+-
+-	endp = reg + (len / sizeof(__be32));
+-
+-	while ((endp - reg) >= (na + nc)) {
+-		u64 base, size;
+-
+-		base = dt_mem_next_cell(na, &reg);
+-		size = dt_mem_next_cell(nc, &reg);
+-
+-		if (size == 0)
++	while (of_address_to_resource(node, n, &res)) {
++		if (!resource_size(&res))
+ 			continue;
+-
+-		of_add_memory_bank(node, dump, r, base, size);
+-
+-		r++;
++		of_add_memory_bank(node, dump, n,
++				res.start, resource_size(&res));
++		n++;
+ 	}
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.2.5
+
 
 _______________________________________________
 barebox mailing list
