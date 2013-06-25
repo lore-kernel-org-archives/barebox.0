@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrSmw-0007V5-Th
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 12:56:04 +0000
-Received: by mail-bk0-f49.google.com with SMTP id mz10so4459261bkb.22
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 05:55:41 -0700 (PDT)
-Message-ID: <51C99349.1010207@gmail.com>
-Date: Tue, 25 Jun 2013 14:55:37 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-5-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1372152047-28134-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from exprod5og104.obsmtp.com ([64.18.0.178])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UrT0u-0007pY-J6
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 13:10:36 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Tue, 25 Jun 2013 14:09:58 +0100
+Message-Id: <1372165800-18759-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1369926935-24159-1-git-send-email-renaud.barbier@ge.com>
+References: <1369926935-24159-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,126 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/9] OF: import bus/device related functions from Linux
- OF API
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/2] gianfar: prevent resource conflict
+To: barebox@lists.infradead.org
 
-On 06/25/13 11:20, Sebastian Hesselbarth wrote:
-> This imports some bus and device related functions from Linux OF API
-> with some modifcations for Barebox.
->
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> Cc: barebox@lists.infradead.org
-> ---
->   drivers/of/Makefile   |    2 +-
->   drivers/of/platform.c |  294 +++++++++++++++++++++++++++++++++++++++++++++++++
->   include/of.h          |   18 +++
->   3 files changed, 313 insertions(+), 1 deletions(-)
->   create mode 100644 drivers/of/platform.c
-[...]
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> new file mode 100644
-> index 0000000..450d770
-> --- /dev/null
-> +++ b/drivers/of/platform.c
-> @@ -0,0 +1,294 @@
-> +/*
-> + * platform.c - bus/device related devicetree functions
-> + *
-> + * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-> + *
-> + * based on Linux devicetree support
-> + *
-> + * See file CREDITS for list of people who contributed to this
-> + * project.
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2
-> + * as published by the Free Software Foundation.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-[...]
-> +/**
-> + * of_platform_device_create - Alloc, initialize and register an of_device
-> + * @np: pointer to node to create device for
-> + * @parent: device model parent device.
-> + *
-> + * Returns pointer to created platform device, or NULL if a device was not
-> + * registered. Unavailable devices will not get registered.
-> + */
-> +static struct device_d *of_platform_device_create(struct device_node *np,
-> +						struct device_d *parent)
-> +{
-> +	struct device_d *dev;
-> +	struct resource *res, temp_res;
-> +	int i, ret, num_reg = 0;
-> +
-> +	if (!of_device_is_available(np))
-> +		return NULL;
-> +
-> +	dev = xzalloc(sizeof(*dev));
-> +
-> +	/* setup generic device info */
-> +	dev->id = DEVICE_ID_SINGLE;
-> +	dev->device_node = np;
-> +	dev->parent = parent;
-> +	of_device_make_bus_id(dev);
-> +
-> +	/* count the io resources */
-> +	if (of_can_translate_address(np))
-> +		while (of_address_to_resource(np, num_reg, &temp_res) == 0)
-> +			num_reg++;
-> +
-> +	/* Populate the resource table */
-> +	if (num_reg) {
-> +		res = xzalloc(sizeof(*res) * num_reg);
-> +
-> +		dev->num_resources = num_reg;
-> +		dev->resource = res;
-> +		for (i = 0; i < num_reg; i++, res++) {
-> +			ret = of_address_to_resource(np, i, res);
-> +			if (ret)
-> +				goto err_free;
-> +		}
-> +	}
-> +
-> +	debug("register device 0x%08x\n", (num_reg) ? dev->resource[0].start : (-1));
-> +
-> +	ret = platform_device_register(dev);
-> +	if (ret)
-> +		goto err_free;
-> +
-> +	return dev;
-> +
-> +err_free:
-> +	free(dev);
-> +	return NULL;
-> +}
+This patch v2 avoids resource conflicts between the gianfar port
+instances by substituting dev_request_mem_region for
+dev_get_mem_region.
 
-of_platform_device_create is missing a check for already existing
-devices. I have added a check that tries to match all mem resources
-of the node with existing devices.
+In addition, it separates the MDIO buses from their Ethernet device
+by creating MDIO bus devices to access the external bus and TBI
+interfaces.
 
-[...]
-> +/**
-> + * of_platform_populate() - Populate platform_devices from device tree data
-> + * @root: parent of the first level to probe or NULL for the root of the tree
-> + * @matches: match table, NULL to use the default
-> + * @lookup: auxdata table for matching id and platform_data with device nodes
+This patch is tested on the P2020RDB for which there are 3 MDIO buses:
+- The main MDIO bus "gfar-mdio", linked to port eTSEC1 is used to
+  connect external PHYs for all ports and map the internal TBI
+  interface of eTSEC1.
+- The MDIO buses "gfar-tpiphy" map TBI interface registers on all
+  remaining ports.
 
-Removed the line above, as lookup auxdata is not used on barebox.
+Renaud Barbier (2):
+  ppc: gianfar MDIO buses
+  P2020RDB: update build configuration
 
-Sebastian
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |   13 ++-
+ arch/ppc/configs/p2020rdb_defconfig           |    4 +-
+ arch/ppc/mach-mpc85xx/eth-devices.c           |   44 +++++---
+ arch/ppc/mach-mpc85xx/include/mach/gianfar.h  |    4 +
+ drivers/net/gianfar.c                         |  146 +++++++++++++++++++------
+ drivers/net/gianfar.h                         |   13 ++-
+ 6 files changed, 165 insertions(+), 59 deletions(-)
+
 
 _______________________________________________
 barebox mailing list
