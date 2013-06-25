@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPR9-0000IF-WD
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:37 +0000
+ id 1UrPRA-0000I2-06
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 11:20:52 +0200
-Message-Id: <1372152052-5463-13-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:42 +0200
+Message-Id: <1372152052-5463-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,90 +21,236 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] ARM: i.MX51 babbage: switch to multi image support
+Subject: [PATCH 02/12] ARM: pbl: move linker script to lib
 To: barebox@lists.infradead.org
 
-The image will be named:
-
-barebox-freescale-imx51-babbage.img
+Since the pbl linker script can be reused by the upcoming multi image
+build process move it to a common place. Also remove ENTRY() from the
+linker script and instead add the -e option to the linker. This makes
+the entrypoint configurable.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/lowlevel.c | 14 ++++++++++++--
- arch/arm/dts/Makefile                         |  1 +
- arch/arm/mach-imx/Kconfig                     |  2 +-
- images/Makefile.imx                           |  7 +++++++
- 4 files changed, 21 insertions(+), 3 deletions(-)
+ arch/arm/lib/pbl.lds.S      | 91 ++++++++++++++++++++++++++++++++++++++++++++
+ arch/arm/pbl/Makefile       |  5 ++-
+ arch/arm/pbl/zbarebox.lds.S | 92 ---------------------------------------------
+ 3 files changed, 95 insertions(+), 93 deletions(-)
+ create mode 100644 arch/arm/lib/pbl.lds.S
+ delete mode 100644 arch/arm/pbl/zbarebox.lds.S
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/lowlevel.c b/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
-index 3e6a0ee..8c1acb4 100644
---- a/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/lowlevel.c
-@@ -1,9 +1,19 @@
- #include <common.h>
- #include <mach/esdctl.h>
- #include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
- 
--void __naked barebox_arm_reset_vector(void)
-+extern char __dtb_imx51_babbage_start[];
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+new file mode 100644
+index 0000000..d3ec2f8
+--- /dev/null
++++ b/arch/arm/lib/pbl.lds.S
+@@ -0,0 +1,91 @@
++/*
++ * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ *
++ */
++#include <sizes.h>
++#include <asm-generic/barebox.lds.h>
++#include <asm-generic/memory_layout.h>
 +
-+ENTRY_FUNCTION(start_imx51_babbage)(void)
- {
-+	uint32_t fdt;
++OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
++OUTPUT_ARCH(arm)
++SECTIONS
++{
++#ifdef CONFIG_PBL_RELOCATABLE
++	. = 0x0;
++#else
++	. = TEXT_BASE - SZ_2M;
++#endif
 +
-+	__barebox_arm_head();
++	PRE_IMAGE
 +
- 	arm_cpu_lowlevel_init();
--	imx51_barebox_entry(0);
++	. = ALIGN(4);
++	.text      :
++	{
++		_stext = .;
++		_text = .;
++		*(.text_head_entry*)
++		__bare_init_start = .;
++		*(.text_bare_init*)
++		__bare_init_end = .;
++		*(.text*)
++	}
 +
-+	fdt = (uint32_t)__dtb_imx51_babbage_start - get_runtime_offset();
++	/* Discard unwind if enable in barebox */
++	/DISCARD/ : { *(.ARM.ex*) }
 +
-+	imx51_barebox_entry(fdt);
- }
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 2fdd2e7..df0e360 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -8,6 +8,7 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-dmo-realq7.dtb \
- BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
- obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
- 
-+pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
- pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
- pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
- 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 9927a3d..a57e276 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -425,7 +425,7 @@ choice
- 
- config MACH_FREESCALE_MX51_PDK
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
--	select ARCH_IMX_INTERNAL_BOOT_USE_IMXIMAGE
-+	select HAVE_PBL_MULTI_IMAGES
- 	bool "Freescale i.MX51 PDK"
- 
- config MACH_EUKREA_CPUIMX51SD
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 11c4160..72e8cde 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -14,6 +14,13 @@ pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
- FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
- image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
- 
-+# ----------------------- i.MX51 based boards ---------------------------
-+pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
-+CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-pdk/flash-header.imxcfg
-+imximage-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage.pblx.imximg
-+FILE_barebox-freescale-imx51-babbage.img = start_imx51_babbage.pblx.imximg
-+image-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
++	BAREBOX_BARE_INIT_SIZE
 +
- # ----------------------- i.MX53 based boards ---------------------------
- pblx-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco
- CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header.imxcfg
++	. = ALIGN(4);
++	.rodata : { *(.rodata*) }
++
++	_etext = .;			/* End of text and rodata section */
++
++	. = ALIGN(4);
++	.data : { *(.data*) }
++
++	.rel.dyn : {
++		__rel_dyn_start = .;
++		*(.rel*)
++		__rel_dyn_end = .;
++	}
++
++	.dynsym : {
++		__dynsym_start = .;
++		*(.dynsym)
++		__dynsym_end = .;
++	}
++
++	. = ALIGN(4);
++	__bss_start = .;
++	.bss : { *(.bss*) }
++	__bss_stop = .;
++	_end = .;
++
++	. = ALIGN(4);
++	__piggydata_start = .;
++	.piggydata : {
++		*(.piggydata)
++	}
++	__piggydata_end = .;
++
++	_barebox_image_size = __piggydata_end - (TEXT_BASE - SZ_2M);
++	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
++}
+diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+index 3f50f77..8923a70 100644
+--- a/arch/arm/pbl/Makefile
++++ b/arch/arm/pbl/Makefile
+@@ -29,9 +29,12 @@ endif
+ zbarebox-common := $(barebox-pbl-common) $(obj)/$(piggy_o)
+ zbarebox-lds := $(obj)/zbarebox.lds
+ 
++$(zbarebox-lds): $(obj)/../lib/pbl.lds.S FORCE
++	$(call if_changed_dep,cpp_lds_S)
++
+ quiet_cmd_zbarebox__ ?= LD      $@
+       cmd_zbarebox__ ?= $(LD) $(LDFLAGS) $(LDFLAGS_zbarebox) -o $@ \
+-      -T $(zbarebox-lds)                                           \
++      -e pbl_start -T $(zbarebox-lds)                              \
+       --start-group $(zbarebox-common) --end-group                 \
+       $(filter-out $(zbarebox-lds) $(zbarebox-common) FORCE ,$^)
+ 
+diff --git a/arch/arm/pbl/zbarebox.lds.S b/arch/arm/pbl/zbarebox.lds.S
+deleted file mode 100644
+index 6b23bbe..0000000
+--- a/arch/arm/pbl/zbarebox.lds.S
++++ /dev/null
+@@ -1,92 +0,0 @@
+-/*
+- * (C) Copyright 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+- * MA 02111-1307 USA
+- *
+- */
+-#include <sizes.h>
+-#include <asm-generic/barebox.lds.h>
+-#include <asm-generic/memory_layout.h>
+-
+-OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+-OUTPUT_ARCH(arm)
+-ENTRY(pbl_start)
+-SECTIONS
+-{
+-#ifdef CONFIG_PBL_RELOCATABLE
+-	. = 0x0;
+-#else
+-	. = TEXT_BASE - SZ_2M;
+-#endif
+-
+-	PRE_IMAGE
+-
+-	. = ALIGN(4);
+-	.text      :
+-	{
+-		_stext = .;
+-		_text = .;
+-		*(.text_head_entry*)
+-		__bare_init_start = .;
+-		*(.text_bare_init*)
+-		__bare_init_end = .;
+-		*(.text*)
+-	}
+-
+-	/* Discard unwind if enable in barebox */
+-	/DISCARD/ : { *(.ARM.ex*) }
+-
+-	BAREBOX_BARE_INIT_SIZE
+-
+-	. = ALIGN(4);
+-	.rodata : { *(.rodata*) }
+-
+-	_etext = .;			/* End of text and rodata section */
+-
+-	. = ALIGN(4);
+-	.data : { *(.data*) }
+-
+-	.rel.dyn : {
+-		__rel_dyn_start = .;
+-		*(.rel*)
+-		__rel_dyn_end = .;
+-	}
+-
+-	.dynsym : {
+-		__dynsym_start = .;
+-		*(.dynsym)
+-		__dynsym_end = .;
+-	}
+-
+-	. = ALIGN(4);
+-	__bss_start = .;
+-	.bss : { *(.bss*) }
+-	__bss_stop = .;
+-	_end = .;
+-
+-	. = ALIGN(4);
+-	__piggydata_start = .;
+-	.piggydata : {
+-		*(.piggydata)
+-	}
+-	__piggydata_end = .;
+-
+-	_barebox_image_size = __piggydata_end - (TEXT_BASE - SZ_2M);
+-	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
+-}
 -- 
 1.8.3.1
 
