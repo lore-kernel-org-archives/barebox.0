@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrToP-0000oq-Fh
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 14:01:41 +0000
+ id 1UrToP-0000oi-Ff
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 14:01:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 16:01:10 +0200
-Message-Id: <1372168870-3005-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1372168870-3005-1-git-send-email-s.hauer@pengutronix.de>
-References: <1372168870-3005-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 16:01:09 +0200
+Message-Id: <1372168870-3005-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,27 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] pinctrl: imx-iomux-v3: Add imx6dl compatible entry
+Subject: [PATCH 1/2] imx-usb-loader: Add i.MX6 Solo/DualLite support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/imx-iomux-v3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/imx/imx-usb-loader.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/imx-iomux-v3.c b/drivers/pinctrl/imx-iomux-v3.c
-index c867a23..1223c02 100644
---- a/drivers/pinctrl/imx-iomux-v3.c
-+++ b/drivers/pinctrl/imx-iomux-v3.c
-@@ -194,6 +194,8 @@ static __maybe_unused struct of_device_id imx_iomux_v3_dt_ids[] = {
- 		.compatible = "fsl,imx53-iomuxc",
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index d58b1da..7ccfc99 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -92,7 +92,14 @@ struct mach_id imx_ids[] = {
  	}, {
- 		.compatible = "fsl,imx6q-iomuxc",
+ 		.vid = 0x15a2,
+ 		.pid = 0x0054,
+-		.name = "i.MX6",
++		.name = "i.MX6q",
++		.header_type = HDR_MX53,
++		.mode = MODE_HID,
++		.max_transfer = 1024,
 +	},  {
-+		.compatible = "fsl,imx6dl-iomuxc",
- 	}, {
- 		/* sentinel */
- 	}
++		.vid = 0x15a2,
++		.pid = 0x0061,
++		.name = "i.MX6dl/s",
+ 		.header_type = HDR_MX53,
+ 		.mode = MODE_HID,
+ 		.max_transfer = 1024,
 -- 
 1.8.3.1
 
