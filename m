@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrPRA-0000ID-0F
+ id 1UrPRA-0000I1-0E
  for barebox@lists.infradead.org; Tue, 25 Jun 2013 09:21:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Jun 2013 11:20:48 +0200
-Message-Id: <1372152052-5463-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 25 Jun 2013 11:20:41 +0200
+Message-Id: <1372152052-5463-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,65 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/12] ARM: i.MX27 pcm038: switch to multi image
+Subject: [PATCH 01/12] ARM: split barebox_arm_head in two separate functions
 To: barebox@lists.infradead.org
 
-This also converts the Phytec phyCORE i.MX27 aka pcm038 to use
-image compression. The image will be named
+This adds a new function __barebox_arm_head() which defines an
+the regular barebox ARM header, but which jumps to the end of
+the function so that this can be embedded into another function.
+barebox_arm_head() now just uses it and jumps to barebox_arm_reset_vector
+just like it did before.
 
-barebox-phytec-phycore-imx27.img
+This makes it possible to define board specific entry points.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/pcm038/lowlevel.c | 4 +++-
- arch/arm/mach-imx/Kconfig         | 1 +
- images/Makefile.imx               | 5 +++++
- 3 files changed, 9 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/barebox-arm-head.h | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-index 0ea2939..a3b2d13 100644
---- a/arch/arm/boards/pcm038/lowlevel.c
-+++ b/arch/arm/boards/pcm038/lowlevel.c
-@@ -33,11 +33,13 @@
- 
- #define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
- 
--void __bare_init __naked barebox_arm_reset_vector(void)
-+ENTRY_FUNCTION(start_imx27_pcm038)(void)
+diff --git a/arch/arm/include/asm/barebox-arm-head.h b/arch/arm/include/asm/barebox-arm-head.h
+index 9a8cc87..af7164a 100644
+--- a/arch/arm/include/asm/barebox-arm-head.h
++++ b/arch/arm/include/asm/barebox-arm-head.h
+@@ -43,7 +43,7 @@ static inline void arm_cpu_lowlevel_init(void)
+ #ifdef CONFIG_HAVE_MACH_ARM_HEAD
+ #include <mach/barebox-arm-head.h>
+ #else
+-static inline void barebox_arm_head(void)
++static inline void __barebox_arm_head(void)
  {
- 	uint32_t r;
- 	int i;
- 
+ 	__asm__ __volatile__ (
+ #ifdef CONFIG_THUMB2_BAREBOX
+@@ -52,12 +52,12 @@ static inline void barebox_arm_head(void)
+ 		"bx r9\n"
+ 		".thumb\n"
+ 		"1:\n"
+-		"bl barebox_arm_reset_vector\n"
++		"bl 2f\n"
+ 		".rept 10\n"
+ 		"1: b 1b\n"
+ 		".endr\n"
+ #else
+-		"b barebox_arm_reset_vector\n"
++		"b 2f\n"
+ 		"1: b 1b\n"
+ 		"1: b 1b\n"
+ 		"1: b 1b\n"
+@@ -74,6 +74,14 @@ static inline void barebox_arm_head(void)
+ 		".rept 8\n"
+ 		".word 0x55555555\n"
+ 		".endr\n"
++		"2:\n"
++	);
++}
++static inline void barebox_arm_head(void)
++{
 +	__barebox_arm_head();
-+
- 	arm_cpu_lowlevel_init();
- 
- 	/* ahb lite ip interface */
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index d58682b..b80e885 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -330,6 +330,7 @@ config MACH_PCM038
- 	select DRIVER_SPI_IMX
- 	select MFD_MC13XXX
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
- 	  with a Freescale i.MX27 Processor
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index cd7b610..6334729 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -8,3 +8,8 @@ $(obj)/%.imximg: $(obj)/% FORCE
- 	$(call if_changed,imx_image)
- 
- board = $(srctree)/arch/$(ARCH)/boards
-+
-+# ----------------------- i.MX27 based boards ---------------------------
-+pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
-+FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
-+image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
++	__asm__ __volatile__ (
++		"b barebox_arm_reset_vector\n"
+ 	);
+ }
+ #endif
 -- 
 1.8.3.1
 
