@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrKmp-0003QX-Me
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 04:23:25 +0000
-Date: Tue, 25 Jun 2013 06:22:58 +0200
+ id 1UrLmW-00044L-Fe
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 05:27:09 +0000
+Date: Tue, 25 Jun 2013 07:26:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130625042258.GF14308@pengutronix.de>
+Message-ID: <20130625052644.GG14308@pengutronix.de>
 References: <1371808410.3949.13.camel@mars>
- <1371808521.3949.14.camel@mars>
+ <1371808556.3949.15.camel@mars>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1371808521.3949.14.camel@mars>
+In-Reply-To: <1371808556.3949.15.camel@mars>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,82 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM OMAP: MLO: add support for loading Barebox from
- UBI
+Subject: Re: [PATCH 2/2] ARM OMAP: add support for loading Environment from UBI
 To: Christoph Fritz <chf.fritz@googlemail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Christoph,
-
-On Fri, Jun 21, 2013 at 11:55:21AM +0200, Christoph Fritz wrote:
-> This patch adds support to OMAP MLO to load a secound
-> stage bootloader from a static UBI volume.
+On Fri, Jun 21, 2013 at 11:55:56AM +0200, Christoph Fritz wrote:
+> This patch adds support to load environment from a static
+> UBI volume.
 > 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-> ---
->  arch/arm/mach-omap/Kconfig |   44 +++++++++++++++++++++++++
->  arch/arm/mach-omap/xload.c |   76 ++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 118 insertions(+), 2 deletions(-)
-> 
-> +static void *omap_xload_boot_ubi_nand(void)
-> +{
-> +	void *to = NULL;
-> +#ifdef CONFIG_BB_IN_UBI
-
-You shouldn't need this ifdef
-
-> +	void *header;
-> +	int ret;
-> +	struct cdev *cdev;
-> +	struct mtd_info_user user;
-> +	int size;
-> +
-> +	devfs_add_partition("nand0", CONFIG_BB_IN_UBI_PARTITION_START,
-> +		CONFIG_BB_IN_UBI_PARTITION_SIZE, DEVFS_PARTITION_FIXED, "u");
-
-I don't like putting these in kconfig. Ideally these should be passed by
-the board code.
-
-> +
-> +	cdev = cdev_open(CONFIG_BB_IN_UBI_VOLNAME, O_RDONLY);
-> +	if (!cdev) {
-> +		printf("cdev_open failed\n");
-
-Such error messages should always print the return value if possible.
-
-> +		return NULL;
-> +	}
-> +
-> +	if (cdev_read(cdev, to, size, 0, 0) < 0) {
-> +		printf("cdev_read failed\n");
-
-ditto.
-
-> +		cdev_close(cdev);
-> +		return NULL;
-> +        }
-> +
-> +	cdev_close(cdev);
-> +
+>  	if (IS_ENABLED(CONFIG_ENV_HANDLING)) {
+>  		int ret;
+>  
+> +		if (IS_ENABLED(CONFIG_ENVIRONMENT_IN_UBI)) {
+> +#ifdef CONFIG_ENVIRONMENT_IN_UBI
+> +			char s[PATH_MAX + 32];
+> +			sprintf(s, "%s%s ", "ubiattach ",
+> +				CONFIG_ENV_IN_UBI_PARTITION);
+> +			ret = run_command(s, 0);
+> +			if (ret) {
+> +				sprintf(s, "%s%s ", "unable to ubiattach ",
+> +					CONFIG_ENV_IN_UBI_PARTITION);
+> +				pr_err(s);
+> +			} else {
+> +				default_environment_path =
+> +					CONFIG_ENV_IN_UBI_VOLNAME;
+> +			}
 > +#endif
-> +	return to;
-> +}
-> +
->  static void *omap_xload_boot_mmc(void)
->  {
->  	int ret;
-> @@ -180,8 +247,13 @@ static __noreturn int omap_xload(void)
->  			printf("booting from USB not enabled\n");
->  		}
->  	case BOOTSOURCE_NAND:
-> -		printf("booting from NAND\n");
-> -		func = omap_xload_boot_nand(SZ_128K);
-> +		if (IS_ENABLED(CONFIG_BB_IN_UBI)) {
-> +			printf("booting from UBI static volume\n");
-> +			func = omap_xload_boot_ubi_nand();
 
-You could check for filetype_ubi here instead of making this a
-compiletime decision.
+You shouldn't need the ifdef here aswell. Also this should be a helper
+function called from board code rather than something in generic code.
+You can also hardcode the volume name in board code, I don't think this
+needs to be configurable.
+
+Configurability of stuff like environment position always has a problem.
+If it wasn't you who compiled a particular binary (or it even was you
+and you can't remember), you don't know how the binary behaves. For
+everything you hardcode the version printout in barebox will exactly
+tell you the behaviour.
 
 Sascha
 
