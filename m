@@ -1,12 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22a.google.com ([2a00:1450:4008:c01::22a])
+Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrZNT-00023K-DW
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 19:58:12 +0000
-Received: by mail-bk0-f42.google.com with SMTP id jk13so4666820bkc.15
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 12:57:46 -0700 (PDT)
-Message-ID: <51C9F636.6080805@gmail.com>
-Date: Tue, 25 Jun 2013 21:57:42 +0200
+ id 1UraxB-0005Vm-10
+ for barebox@lists.infradead.org; Tue, 25 Jun 2013 21:39:10 +0000
+Received: by mail-ee0-f42.google.com with SMTP id c4so7164023eek.1
+ for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 14:38:46 -0700 (PDT)
+Message-ID: <51CA0DE1.30605@gmail.com>
+Date: Tue, 25 Jun 2013 23:38:41 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
@@ -39,27 +39,16 @@ On 06/25/2013 09:48 PM, Sascha Hauer wrote:
 >
 > Haven't investigated further yet, but this one breaks my loco board
 > with:
->
-> mmu: Error: Can't request SDRAM region for ttb
-> prefetch abort
-> pc : [<00000004>]    lr : [<7ff20563>]
-> sp : 8fffff30  ip : 7ff20563  fp : 8fff4000
-> r10: 8fff4000  r9 : 00000000  r8 : 000298ec
-> r7 : 20000000  r6 : 7ff43e74  r5 : 7ff37824  r4 : 7ff37824
-> r3 : 7ff205a1  r2 : 00000000  r1 : ffffffff  r0 : 00000000
-> Flags: nzCv  IRQs off  FIQs off  Mode SVC_32
-> [<7ff20563>] (__mmu_cache_on+0xb/0x10) from [<7ff202d3>] (mmu_init+0x7b/0x1f4)
-> [<7ff202d3>] (mmu_init+0x7b/0x1f4) from [<7ff049f3>] (start_barebox+0x17/0xc4)
-> [<7ff049f3>] (start_barebox+0x17/0xc4) from [<7ff1ff09>] (__start+0x51/0x5c)
-> [<7ff1ff09>] (__start+0x51/0x5c) from [<7ff00005>] (__bare_init_start+0x1/0xc)
->
-> It looks like the memory cannot be found anymore.
 
-Ok, I just reworked Marvell Dove to boot from DT. I will have a look at
-loco code to get an impression of how of_add_memory should be called
-and add that to Dove. Maybe I can reproduce it there too.
+The check on the return value from of_address_to_resource in the while
+loop is wrong and should be
+
+while (!of_address_to_resource(...))
+
+I'll update for a v2.
 
 Sebastian
+
 
 _______________________________________________
 barebox mailing list
