@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Urkfk-0001vn-U8
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:49 +0000
+ Linux)) id 1Urkfg-0001vk-5X
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:00:52 +0200
-Message-Id: <1372233657-19455-7-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Jun 2013 10:00:54 +0200
+Message-Id: <1372233657-19455-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,44 +21,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] ARM: i.MX53 loco: prepare multiboard support
+Subject: [PATCH 08/11] ARM: i.MX6 realq7: prepare multiboard support
 To: barebox@lists.infradead.org
+
+Protect initcalls with the corrent of compatible.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx53-loco/board.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/arm/boards/dmo-mx6-realq7/board.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
-index 446b7f3..3c8842c 100644
---- a/arch/arm/boards/freescale-mx53-loco/board.c
-+++ b/arch/arm/boards/freescale-mx53-loco/board.c
-@@ -83,6 +83,9 @@ static int loco_late_init(void)
- 	struct mc34708 *mc34708;
- 	int rev;
+diff --git a/arch/arm/boards/dmo-mx6-realq7/board.c b/arch/arm/boards/dmo-mx6-realq7/board.c
+index 7983b88..9cf6c31 100644
+--- a/arch/arm/boards/dmo-mx6-realq7/board.c
++++ b/arch/arm/boards/dmo-mx6-realq7/board.c
+@@ -81,6 +81,9 @@ static int ksz9031rn_phy_fixup(struct phy_device *dev)
  
-+	if (!of_machine_is_compatible("fsl,imx53-qsb"))
-+		return 0;
-+
- 	device_detect_by_name("mmc0");
- 
- 	devfs_add_partition("mmc0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
-@@ -120,10 +123,13 @@ static int loco_late_init(void)
- }
- late_initcall(loco_late_init);
- 
--static int loco_core_init(void)
-+static int loco_postcore_init(void)
+ static int realq7_enet_init(void)
  {
-+	if (!of_machine_is_compatible("fsl,imx53-qsb"))
++	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
 +		return 0;
 +
- 	imx53_init_lowlevel(1000);
+ 	mxc_iomux_v3_setup_multiple_pads(realq7_pads_gpio, ARRAY_SIZE(realq7_pads_gpio));
+ 	gpio_direction_output(RQ7_GPIO_ENET_PHYADD2, 0);
+ 	gpio_direction_output(RQ7_GPIO_ENET_MODE0, 1);
+@@ -102,19 +105,16 @@ static int realq7_enet_init(void)
+ }
+ fs_initcall(realq7_enet_init);
+ 
+-static int realq7_devices_init(void)
++static int realq7_env_init(void)
+ {
++	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
++		return 0;
++
+ 	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
+ 		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x00907000);
+ 	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.barebox",
+ 		0, NULL, 0, 0x00907000);
+ 
+-	return 0;
+-}
+-device_initcall(realq7_devices_init);
+-
+-static int realq7_env_init(void)
+-{
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_MMC:
+ 		device_detect_by_name("mmc3");
+@@ -136,8 +136,11 @@ late_initcall(realq7_env_init);
+ 
+ static int realq7_console_init(void)
+ {
++	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
++		return 0;
++
+ 	imx6_init_lowlevel();
  
  	return 0;
  }
--core_initcall(loco_core_init);
-+postcore_initcall(loco_postcore_init);
+-core_initcall(realq7_console_init);
++postcore_initcall(realq7_console_init);
 -- 
 1.8.3.1
 
