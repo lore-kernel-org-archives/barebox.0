@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrlCp-0001x0-6s
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:36:00 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:35:14 +0200
-Message-Id: <1372235714-5568-1-git-send-email-s.hauer@pengutronix.de>
+Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Urtbl-0002KF-Eg
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:34:18 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed, 26 Jun 2013 18:33:39 +0100
+Message-Id: <1372268027-15271-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
+References: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mfd: mc34708: provide static inline wrapper
+Subject: [PATCH v3 0/8] DDR2 memory initialisation
 To: barebox@lists.infradead.org
 
-If the driver is disabled provide a static inline wrapper for
-mc34708_get() to prevent linker errors.
+This patch set addresses the following issues from the version v2.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/mfd/mc34708.h | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+It renames the function ddr2_spd_check to a more meaningful name.
+All commits acknowledge that the base of the source code is thanks
+to the U-Boot community.
 
-diff --git a/include/mfd/mc34708.h b/include/mfd/mc34708.h
-index f384c62..541c47f 100644
---- a/include/mfd/mc34708.h
-+++ b/include/mfd/mc34708.h
-@@ -93,7 +93,14 @@ struct mc34708 {
- 	unsigned int		revision;
- };
- 
--extern struct mc34708 *mc34708_get(void);
-+#ifdef CONFIG_MFD_MC34708
-+struct mc34708 *mc34708_get(void);
-+#else
-+static inline struct mc34708 *mc34708_get(void)
-+{
-+	return NULL;
-+}
-+#endif
- 
- extern int mc34708_reg_read(struct mc34708 *mc34708, enum mc34708_reg reg, u32 *val);
- extern int mc34708_reg_write(struct mc34708 *mc34708, enum mc34708_reg reg, u32 val);
--- 
-1.8.3.1
+Renaud Barbier (8):
+  common: DDR2 SPD checksum.
+  ppc asm: DDR headers
+  ppc 8xxx: DDR headers
+  ppc 8xxx: DIMM parameters calculation
+  ppc 8xxx: DDR utility and memory options
+  ppx 8xxx: DDR registers value calculation
+  ppc 8xxx: core DDR driver functions
+  ppc 85xx: early I2C support
+
+ arch/ppc/ddr-8xxx/common_timing_params.h     |   44 +++
+ arch/ppc/ddr-8xxx/ctrl_regs.c                |  425 ++++++++++++++++++++++++++
+ arch/ppc/ddr-8xxx/ddr.h                      |  105 +++++++
+ arch/ppc/ddr-8xxx/ddr2_dimm_params.c         |  303 ++++++++++++++++++
+ arch/ppc/ddr-8xxx/ddr2_setctrl.c             |   58 ++++
+ arch/ppc/ddr-8xxx/lc_common_dimm_params.c    |  214 +++++++++++++
+ arch/ppc/ddr-8xxx/main.c                     |  238 ++++++++++++++
+ arch/ppc/ddr-8xxx/options.c                  |  111 +++++++
+ arch/ppc/ddr-8xxx/util.c                     |  100 ++++++
+ arch/ppc/include/asm/fsl_ddr_dimm_params.h   |   60 ++++
+ arch/ppc/include/asm/fsl_ddr_sdram.h         |  131 ++++++++-
+ arch/ppc/mach-mpc85xx/fsl_i2c.c              |  253 +++++++++++++++
+ arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h |   18 ++
+ common/Makefile                              |    1 +
+ common/ddr_spd.c                             |   39 +++
+ include/ddr_spd.h                            |  135 ++++++++
+ 16 files changed, 2231 insertions(+), 4 deletions(-)
+ create mode 100644 arch/ppc/ddr-8xxx/common_timing_params.h
+ create mode 100644 arch/ppc/ddr-8xxx/ctrl_regs.c
+ create mode 100644 arch/ppc/ddr-8xxx/ddr.h
+ create mode 100644 arch/ppc/ddr-8xxx/ddr2_dimm_params.c
+ create mode 100644 arch/ppc/ddr-8xxx/ddr2_setctrl.c
+ create mode 100644 arch/ppc/ddr-8xxx/lc_common_dimm_params.c
+ create mode 100644 arch/ppc/ddr-8xxx/main.c
+ create mode 100644 arch/ppc/ddr-8xxx/options.c
+ create mode 100644 arch/ppc/ddr-8xxx/util.c
+ create mode 100644 arch/ppc/include/asm/fsl_ddr_dimm_params.h
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_i2c.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
+ create mode 100644 common/ddr_spd.c
+ create mode 100644 include/ddr_spd.h
 
 
 _______________________________________________
