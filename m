@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
+Received: from exprod5og106.obsmtp.com ([64.18.0.182])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urtcv-0002NM-2v
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:35:30 +0000
+ id 1Urtcr-0002Mc-Db
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:35:26 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 26 Jun 2013 18:33:46 +0100
-Message-Id: <1372268027-15271-8-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 26 Jun 2013 18:33:45 +0100
+Message-Id: <1372268027-15271-7-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 References: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,101 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ppc 8xxx: core DDR driver functions
+Subject: [PATCH 6/8] ppx 8xxx: DDR registers value calculation
 To: barebox@lists.infradead.org
 
-These files are the driver interface to handle the memory
-initialisation from reading the SPD data to writing the memory
-controller registers.
+The functions in this file calculate and store the value for each
+register of the memory controller.
 
-This code is based on the equivalent files main.c in directory
-arch/powerpc/cpu/mpc8xxx/ddr and ddr-gen2.c in directory
-arch/powerpc/cpu/mpc85xx. Both are from U-Boot version git-a71d45d.
+This code is based on the equivalent file in directory
+arch/powerpc/cpu/mpc8xxx/ddr from U-Boot version git-a71d45d.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/ddr-8xxx/ddr2_setctrl.c |   58 +++++++++
- arch/ppc/ddr-8xxx/main.c         |  238 ++++++++++++++++++++++++++++++++++++++
- 2 files changed, 296 insertions(+), 0 deletions(-)
- create mode 100644 arch/ppc/ddr-8xxx/ddr2_setctrl.c
- create mode 100644 arch/ppc/ddr-8xxx/main.c
+ arch/ppc/ddr-8xxx/ctrl_regs.c |  425 +++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 425 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/ddr-8xxx/ctrl_regs.c
 
-diff --git a/arch/ppc/ddr-8xxx/ddr2_setctrl.c b/arch/ppc/ddr-8xxx/ddr2_setctrl.c
+diff --git a/arch/ppc/ddr-8xxx/ctrl_regs.c b/arch/ppc/ddr-8xxx/ctrl_regs.c
 new file mode 100644
-index 0000000..14571b0
+index 0000000..3f8ecf7
 --- /dev/null
-+++ b/arch/ppc/ddr-8xxx/ddr2_setctrl.c
-@@ -0,0 +1,58 @@
-+/*
-+ * Copyright 2008 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
-+ */
-+
-+#include <common.h>
-+#include <config.h>
-+#include <asm/io.h>
-+#include <asm/fsl_ddr_sdram.h>
-+#include <mach/early_udelay.h>
-+#include "ddr.h"
-+
-+int fsl_ddr_set_memctl_regs(const struct fsl_ddr_info_s *info)
-+{
-+	uint32_t i;
-+	void __iomem *ddr;
-+	const struct fsl_ddr_cfg_regs_s *regs;
-+
-+	regs = &info->fsl_ddr_config_reg;
-+	ddr = info->board_info.ddr_base;
-+
-+	if (in_be32(ddr + DDR_OFF(SDRAM_CFG)) & SDRAM_CFG_MEM_EN)
-+		return 0;
-+
-+	for (i = 0; i < info->board_info.cs_per_ctrl; i++) {
-+		out_be32(ddr + DDR_OFF(CS0_BNDS) + (i << 3), regs->cs[i].bnds);
-+		out_be32(ddr + DDR_OFF(CS0_CONFIG) + (i << 2),
-+				regs->cs[i].config);
-+	}
-+
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_3), regs->timing_cfg_3);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_0), regs->timing_cfg_0);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_1), regs->timing_cfg_1);
-+	out_be32(ddr + DDR_OFF(TIMING_CFG_2), regs->timing_cfg_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_CFG_2), regs->ddr_sdram_cfg_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_MODE), regs->ddr_sdram_mode);
-+	out_be32(ddr + DDR_OFF(SDRAM_MODE_2), regs->ddr_sdram_mode_2);
-+	out_be32(ddr + DDR_OFF(SDRAM_MD_CNTL), regs->ddr_sdram_md_cntl);
-+	out_be32(ddr + DDR_OFF(SDRAM_INTERVAL), regs->ddr_sdram_interval);
-+	out_be32(ddr + DDR_OFF(SDRAM_DATA_INIT), regs->ddr_data_init);
-+	out_be32(ddr + DDR_OFF(SDRAM_CLK_CNTL), regs->ddr_sdram_clk_cntl);
-+	out_be32(ddr + DDR_OFF(SDRAM_INIT_ADDR), regs->ddr_init_addr);
-+	out_be32(ddr + DDR_OFF(SDRAM_INIT_ADDR_EXT), regs->ddr_init_ext_addr);
-+
-+	early_udelay(200);
-+	asm volatile("sync;isync");
-+
-+	out_be32(ddr + DDR_OFF(SDRAM_CFG), regs->ddr_sdram_cfg);
-+
-+	/* Poll DDR_SDRAM_CFG_2[D_INIT] bit until auto-data init is done.  */
-+	while (in_be32(ddr + DDR_OFF(SDRAM_CFG_2)) & SDRAM_CFG2_D_INIT)
-+		early_udelay(10000);
-+
-+	return 0;
-+}
-diff --git a/arch/ppc/ddr-8xxx/main.c b/arch/ppc/ddr-8xxx/main.c
-new file mode 100644
-index 0000000..6e4a02d
---- /dev/null
-+++ b/arch/ppc/ddr-8xxx/main.c
-@@ -0,0 +1,238 @@
++++ b/arch/ppc/ddr-8xxx/ctrl_regs.c
+@@ -0,0 +1,425 @@
 +/*
 + * Copyright 2008-2012 Freescale Semiconductor, Inc.
 + *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the Free
++ * Software Foundation; either version 2 of the License, or (at your option)
++ * any later version.
 + */
 +
 +/*
@@ -125,228 +58,414 @@ index 0000000..6e4a02d
 + */
 +
 +#include <common.h>
-+#include <config.h>
-+#include <asm/fsl_law.h>
++#include <asm/fsl_ddr_sdram.h>
 +#include "ddr.h"
 +
-+static int get_spd(generic_spd_eeprom_t *spd,
-+		      struct ddr_board_info_s *bi, u8 i2c_address)
++static void set_csn_config(int dimm_number, int i,
++			   struct fsl_ddr_cfg_regs_s *ddr,
++			   const struct memctl_options_s *popts,
++			   const struct dimm_params_s *dimm)
 +{
-+	int ret;
++	uint32_t cs_n_en = 0, ap_n_en = 0, odt_rd_cfg = 0, odt_wr_cfg = 0,
++		 ba_bits_cs_n = 0, row_bits_cs_n = 0, col_bits_cs_n = 0,
++		 n_banks_per_sdram_device;
++	int go_config = 0;
 +
-+	fsl_i2c_init(bi->i2c_base, bi->i2c_speed, bi->i2c_slave);
-+	ret = fsl_i2c_read(bi->i2c_base, i2c_address, 0, 1, (uchar *) spd,
-+			sizeof(generic_spd_eeprom_t));
-+	fsl_i2c_stop(bi->i2c_base);
-+
-+	return ret;
-+}
-+
-+int fsl_ddr_get_spd(generic_spd_eeprom_t *ctrl_dimms_spd,
-+		struct ddr_board_info_s *binfo)
-+{
-+	uint32_t i;
-+	uint8_t i2c_address;
-+
-+	for (i = 0; i < binfo->dimm_slots_per_ctrl; i++) {
-+		if (binfo->spd_i2c_addr == NULL)
-+			goto error;
-+		i2c_address = binfo->spd_i2c_addr[i];
-+		if (get_spd(&(ctrl_dimms_spd[i]), binfo, i2c_address))
-+				goto error;
-+	}
-+
-+	return 0;
-+error:
-+	return 1;
-+}
-+
-+static uint64_t step_assign_addresses(struct fsl_ddr_info_s *pinfo,
-+		uint32_t dbw_cap_adj)
-+{
-+	uint64_t total_mem, current_mem_base, total_ctlr_mem, cap;
-+	uint32_t ndimm, dw, j, found = 0;
-+
-+	ndimm = pinfo->board_info.dimm_slots_per_ctrl;
-+	/*
-+	 * If a reduced data width is requested, but the SPD
-+	 * specifies a physically wider device, adjust the
-+	 * computed dimm capacities accordingly before
-+	 * assigning addresses.
-+	 */
-+	switch (pinfo->memctl_opts.data_bus_width) {
-+	case 2:
-+		/* 16-bit */
-+		for (j = 0; j < ndimm; j++) {
-+			if (!pinfo->dimm_params[j].n_ranks)
-+				continue;
-+			dw = pinfo->dimm_params[j].primary_sdram_width;
-+			if ((dw == 72 || dw == 64)) {
-+				dbw_cap_adj = 2;
-+				break;
-+			} else if ((dw == 40 || dw == 32)) {
-+				dbw_cap_adj = 1;
-+				break;
-+			}
-+		}
++	switch (i) {
++	case 0:
++		if (dimm[dimm_number].n_ranks > 0)
++			go_config = 1;
 +		break;
 +	case 1:
-+		/* 32-bit */
-+		for (j = 0; j < ndimm; j++) {
-+			dw = pinfo->dimm_params[j].data_width;
-+			if (pinfo->dimm_params[j].n_ranks
-+			    && (dw == 72 || dw == 64)) {
-+				/*
-+				 * FIXME: can't really do it
-+				 * like this because this just
-+				 * further reduces the memory
-+				 */
-+				found = 1;
-+				break;
-+			}
-+		}
-+		if (found)
-+			dbw_cap_adj = 1;
++		if ((dimm_number == 0 && dimm[0].n_ranks > 1) ||
++		    (dimm_number == 1 && dimm[1].n_ranks > 0))
++			go_config = 1;
 +		break;
-+	case 0:
-+		/* 64-bit */
++	case 2:
++		if ((dimm_number == 0 && dimm[0].n_ranks > 2) ||
++		    (dimm_number >= 1 && dimm[dimm_number].n_ranks > 0))
++			go_config = 1;
++		break;
++	case 3:
++		if ((dimm_number == 0 && dimm[0].n_ranks > 3) ||
++		    (dimm_number == 1 && dimm[1].n_ranks > 1) ||
++		    (dimm_number == 3 && dimm[3].n_ranks > 0))
++			go_config = 1;
 +		break;
 +	default:
-+		return 1;
++		break;
 +	}
 +
-+	current_mem_base = 0ull;
-+	total_mem = 0;
-+	total_ctlr_mem = 0;
-+	pinfo->common_timing_params.base_address = current_mem_base;
-+
-+	for (j = 0; j < ndimm; j++) {
-+		cap = pinfo->dimm_params[j].capacity >> dbw_cap_adj;
-+		pinfo->dimm_params[j].base_address = current_mem_base;
-+		current_mem_base += cap;
-+		total_ctlr_mem += cap;
-+
++	if (go_config) {
++		/* Chip Select enable */
++		cs_n_en = 1;
++		/* CSn auto-precharge enable */
++		ap_n_en = popts->cs_local_opts[i].auto_precharge;
++		/* ODT for reads configuration */
++		odt_rd_cfg = popts->cs_local_opts[i].odt_rd_cfg;
++		/* ODT for writes configuration */
++		odt_wr_cfg = popts->cs_local_opts[i].odt_wr_cfg;
++		/* Num of bank bits for SDRAM on CSn */
++		n_banks_per_sdram_device =
++			dimm[dimm_number].n_banks_per_sdram_device;
++		ba_bits_cs_n = __ilog2(n_banks_per_sdram_device) - 2;
++		/* Num of row bits for SDRAM on CSn */
++		row_bits_cs_n = dimm[dimm_number].n_row_addr - 12;
++		/* Num of ocl bits for SDRAM on CSn */
++		col_bits_cs_n = dimm[dimm_number].n_col_addr - 8;
 +	}
 +
-+	pinfo->common_timing_params.total_mem = total_ctlr_mem;
-+	total_mem += total_ctlr_mem;
-+
-+	return total_mem;
++	ddr->cs[i].config = (((cs_n_en & 0x1) << 31)
++			     | ((ap_n_en & 0x1) << 23)
++			     | ((odt_rd_cfg & 0x7) << 20)
++			     | ((odt_wr_cfg & 0x7) << 16)
++			     | ((ba_bits_cs_n & 0x3) << 14)
++			     | ((row_bits_cs_n & 0x7) << 8)
++			     | ((col_bits_cs_n & 0x7) << 0));
 +}
 +
-+static uint32_t retrieve_max_size(struct fsl_ddr_cfg_regs_s *ddr_reg,
-+				uint32_t ncs)
++static void set_timing_cfg_0(struct fsl_ddr_cfg_regs_s *ddr,
++			     const struct memctl_options_s *popts)
 +{
-+	uint32_t max_end = 0, end, i;
++	uint32_t trwt_mclk = 0;
 +
-+	for (i = 0; i < ncs; i++)
-+		if (ddr_reg->cs[i].config & 0x80000000) {
-+			end = ddr_reg->cs[i].bnds & 0xFFF;
-+			if (end > max_end)
-+				max_end = end;
++	if (popts->trwt_override)
++		trwt_mclk = popts->trwt;
++
++	ddr->timing_cfg_0 = (((trwt_mclk & 0x3) << 30)
++			     | ((popts->txard & 0x7) << 20)
++			     | ((popts->txp & 0xF) << 16)
++			     | ((popts->taxpd & 0xf) << 8)
++			     | ((popts->tmrd & 0xf) << 0));
++}
++
++static void set_timing_cfg_3(struct fsl_ddr_cfg_regs_s *ddr,
++			     const struct common_timing_params_s *dimm,
++			     uint32_t cas_latency)
++{
++	uint32_t ext_pretoact, ext_acttopre, ext_acttorw, ext_refrec;
++
++	ext_pretoact = picos_to_mclk(dimm->tRP_ps) >> 4;
++	ext_acttopre = picos_to_mclk(dimm->tRAS_ps) >> 4;
++	ext_acttorw = picos_to_mclk(dimm->tRCD_ps) >> 4;
++	cas_latency = ((cas_latency << 1) - 1) >> 4;
++	ext_refrec = (picos_to_mclk(dimm->tRFC_ps) - 8) >> 4;
++
++	ddr->timing_cfg_3 = (((ext_pretoact & 0x1) << 28)
++			     | ((ext_acttopre & 0x2) << 24)
++			     | ((ext_acttorw & 0x1) << 22)
++			     | ((ext_refrec & 0x1F) << 16)
++			     | ((cas_latency & 0x3) << 12));
++}
++
++static void set_timing_cfg_1(struct fsl_ddr_cfg_regs_s *ddr,
++			     const struct common_timing_params_s *dimm,
++			     uint32_t cas_latency)
++{
++	uint32_t pretoact_mclk, acttopre_mclk, acttorw_mclk, refrec_ctrl,
++		 wrrec_mclk, acttoact_mclk, wrtord_mclk;
++	/* DDR_SDRAM_MODE doesn't support 9,11,13,15 */
++	static const u8 wrrec_table[] = {
++		1, 2, 3, 4, 5, 6, 7, 8, 10, 10, 12, 12, 14, 14, 0, 0
++	};
++
++	pretoact_mclk = picos_to_mclk(dimm->tRP_ps);
++	acttopre_mclk = picos_to_mclk(dimm->tRAS_ps);
++	acttorw_mclk = picos_to_mclk(dimm->tRCD_ps);
++
++	/*
++	 * Translate CAS Latency to a DDR controller field value:
++	 *
++	 *      CAS Lat DDR II  Ctrl
++	 *      Clocks  SPD Bit Value
++	 *      ------- ------- ------
++	 *      1.0             0001
++	 *      1.5             0010
++	 *      2.0     2       0011
++	 *      2.5             0100
++	 *      3.0     3       0101
++	 *      3.5             0110
++	 *      4.0     4       0111
++	 *      4.5             1000
++	 *      5.0     5       1001
++	 */
++	cas_latency = (cas_latency << 1) - 1;
++	refrec_ctrl = picos_to_mclk(dimm->tRFC_ps) - 8;
++	acttoact_mclk = picos_to_mclk(dimm->tRRD_ps);
++
++	wrrec_mclk = picos_to_mclk(dimm->tWR_ps);
++	if (wrrec_mclk <= 16)
++		wrrec_mclk = wrrec_table[wrrec_mclk - 1];
++
++	wrtord_mclk = picos_to_mclk(dimm->tWTR_ps);
++	if (wrtord_mclk < 2)
++		wrtord_mclk = 2;
++
++	ddr->timing_cfg_1 = (((pretoact_mclk & 0x0F) << 28)
++			     | ((acttopre_mclk & 0x0F) << 24)
++			     | ((acttorw_mclk & 0xF) << 20)
++			     | ((cas_latency & 0xF) << 16)
++			     | ((refrec_ctrl & 0xF) << 12)
++			     | ((wrrec_mclk & 0x0F) << 8)
++			     | ((acttoact_mclk & 0x0F) << 4)
++			     | ((wrtord_mclk & 0x0F) << 0));
++}
++
++static void set_timing_cfg_2(struct fsl_ddr_cfg_regs_s *ddr,
++			     const struct memctl_options_s *popts,
++			     const struct common_timing_params_s *dimm,
++			     uint32_t cas_latency, uint32_t additive_latency)
++{
++	uint32_t cpo, rd_to_pre, wr_data_delay, cke_pls, four_act;
++
++	cpo = popts->cpo_override;
++	rd_to_pre = picos_to_mclk(dimm->tRTP_ps);
++	if (rd_to_pre < 2)
++		rd_to_pre = 2;
++
++	if (additive_latency)
++		rd_to_pre += additive_latency;
++
++	wr_data_delay = popts->write_data_delay;
++	cke_pls = picos_to_mclk(popts->tCKE_clock_pulse_width_ps);
++	four_act = picos_to_mclk(popts->tFAW_window_four_activates_ps);
++
++	ddr->timing_cfg_2 = (((additive_latency & 0xf) << 28)
++			     | ((cpo & 0x1f) << 23)
++			     | (((cas_latency - 1) & 0xf) << 19)
++			     | ((rd_to_pre & 7) << 13)
++			     | ((wr_data_delay & 7) << 10)
++			     | ((cke_pls & 0x7) << 6)
++			     | ((four_act & 0x3f) << 0));
++}
++
++static void set_ddr_sdram_cfg(struct fsl_ddr_cfg_regs_s *ddr,
++			      const struct memctl_options_s *popts,
++			      const struct common_timing_params_s *dimm)
++{
++	uint32_t mem_en, sren, ecc_en, sdram_type, dyn_pwr, dbw, twoT_en, hse;
++
++	mem_en = 1;
++	sren = popts->self_refresh_in_sleep;
++	if (dimm->all_DIMMs_ECC_capable)
++		ecc_en = popts->ECC_mode;
++	else
++		ecc_en = 0;
++
++	if (popts->sdram_type)
++		sdram_type = popts->sdram_type;
++	else
++		sdram_type = FSL_SDRAM_TYPE;
++
++	twoT_en = popts->twoT_en;
++	dyn_pwr = popts->dynamic_power;
++	dbw = popts->data_bus_width;
++	hse = popts->half_strength_driver_enable;
++
++	ddr->ddr_sdram_cfg = (((mem_en & 0x1) << 31)
++			      | ((sren & 0x1) << 30)
++			      | ((ecc_en & 0x1) << 29)
++			      | ((sdram_type & 0x7) << 24)
++			      | ((dyn_pwr & 0x1) << 21)
++			      | ((dbw & 0x3) << 19)
++			      | ((twoT_en & 0x1) << 15)
++			      | ((hse & 0x1) << 3));
++}
++
++static void set_ddr_sdram_cfg_2(struct fsl_ddr_cfg_regs_s *ddr,
++				const struct memctl_options_s *popts)
++{
++	struct ddr_board_info_s *bi = popts->board_info;
++	uint32_t i, dll_rst_dis, dqs_cfg, odt_cfg = 0, num_pr, d_init = 0;
++
++	dll_rst_dis = popts->dll_rst_dis;
++	dqs_cfg = popts->DQS_config;
++
++	/*
++	 * Check for On-Die Termination options and
++	 * assert ODT only during reads to DRAM.
++	 */
++	for (i = 0; i < bi->cs_per_ctrl; i++)
++		if (popts->cs_local_opts[i].odt_rd_cfg ||
++				popts->cs_local_opts[i].odt_wr_cfg) {
++			odt_cfg = SDRAM_CFG2_ODT_ONLY_READ;
++			break;
 +		}
 +
-+	return max_end;
++	/* Default number of posted refresh */
++	num_pr = 1;
++
++	if (popts->ECC_init_using_memctl) {
++		d_init = 1;
++		ddr->ddr_data_init = popts->data_init;
++	}
++
++	ddr->ddr_sdram_cfg_2 = (((dll_rst_dis & 0x1) << 29)
++				| ((dqs_cfg & 0x3) << 26)
++				| ((odt_cfg & 0x3) << 21)
++				| ((num_pr & 0xf) << 12)
++				| ((d_init & 0x1) << 4));
 +}
 +
-+static uint32_t compute_dimm_param(struct fsl_ddr_info_s *pinfo, uint32_t ndimm)
++static void
++set_ddr_sdram_interval(struct fsl_ddr_cfg_regs_s *ddr,
++		const struct memctl_options_s *popts,
++		const struct common_timing_params_s *dimm)
 +{
-+	struct dimm_params_s *pdimm;
-+	generic_spd_eeprom_t *spd;
-+	uint32_t i, retval;
++	uint32_t refint, bstopre;
 +
-+	for (i = 0; i < ndimm; i++) {
-+		spd = &(pinfo->spd_installed_dimms[i]);
-+		pdimm = &(pinfo->dimm_params[i]);
++	refint = picos_to_mclk(dimm->refresh_rate_ps);
++	/* Precharge interval */
++	bstopre = popts->bstopre;
 +
-+		retval = compute_dimm_parameters(spd, pdimm);
++	ddr->ddr_sdram_interval = (((refint & 0xFFFF) << 16)
++				   | ((bstopre & 0x3FFF) << 0));
++}
 +
-+		if (retval == 2) /* Fatal error */
-+			return 1;
++static void set_ddr_sdram_mode(struct fsl_ddr_cfg_regs_s *ddr,
++			       const struct memctl_options_s *popts,
++			       const struct common_timing_params_s *dimm,
++			       uint32_t cas_latency,
++			       uint32_t additive_latency)
++{
++	uint16_t esdmode, sdmode;
++	uint32_t dqs_en, rtt, al, wr, bl;
++	const uint32_t mclk_ps = get_memory_clk_period_ps();
++
++	/* DQS# Enable: 0=enable, 1=disable */
++	dqs_en = !popts->DQS_config;
++	/* Posted CAS# additive latency (AL) */
++	al = additive_latency;
++	/* Internal Termination Resistor */
++	if (popts->rtt_override)
++		rtt = popts->rtt_override_value;
++	else
++		rtt = popts->cs_local_opts[0].odt_rtt_norm;
++
++	/*
++	 * Extended SDRAM mode.
++	 * The variable also selects:
++	 * - OCD set to exit mode
++	 * - all outputs bit i.e DQ, DQS, RDQS output enabled
++	 * - RDQS ball disabled
++	 * - DQS ball enabled
++	 * - DLL enabled
++	 * - Output drive strength: full strength.
++	 */
++	esdmode = (((dqs_en & 0x1) << 10)
++		   | ((rtt & 0x2) << 5)
++		   | ((al & 0x7) << 3)
++		   | ((rtt & 0x1) << 2));
++
++	/* Write recovery */
++	wr = (dimm->tWR_ps + mclk_ps - 1) / (mclk_ps - 1);
++
++	switch (popts->burst_length) {
++	case DDR_BL4:
++		bl = 2;
++		break;
++	case DDR_BL8:
++		bl = 3;
++		break;
++	default:
++		bl = 2;
++		break;
 +	}
++
++	/* SDRAM mode
++	 * The variable also selects:
++	 * - power down mode: fast exit (normal)
++	 * - DLL reset disabled.
++	 * - burst type: sequential
++	 */
++	sdmode = (((wr & 0x7) << 9)
++		  | ((cas_latency & 0x7) << 4)
++		  | ((bl & 0x7) << 0));
++
++	ddr->ddr_sdram_mode = (((esdmode & 0xFFFF) << 16)
++			       | ((sdmode & 0xFFFF) << 0));
++}
++
++uint32_t check_fsl_memctl_config_regs(const struct fsl_ddr_cfg_regs_s *ddr)
++{
++	/*
++	 * DDR_SDRAM_CFG[RD_EN] and DDR_SDRAM_CFG[2T_EN should not
++	 * be set at the same time.
++	 */
++	if ((ddr->ddr_sdram_cfg & 0x10000000) &&
++			(ddr->ddr_sdram_cfg & 0x00008000))
++		return 1;
 +
 +	return 0;
 +}
 +
-+uint64_t fsl_ddr_compute(struct fsl_ddr_info_s *pinfo)
++uint32_t
++compute_fsl_memctl_config_regs(const struct memctl_options_s *popts,
++			       struct fsl_ddr_cfg_regs_s *ddr,
++			       const struct common_timing_params_s *dimm,
++			       const struct dimm_params_s *dimmp,
++			       uint32_t dbw_cap_adj)
 +{
-+	uint64_t total_mem = 0;
-+	uint32_t ncs, ndimm, max_end = 0;
-+	struct fsl_ddr_cfg_regs_s *ddr_reg;
-+	struct common_timing_params_s *timing_params;
-+	/* data bus width capacity adjust shift amount */
-+	uint32_t dbw_capacity_adjust;
++	struct ddr_board_info_s *binfo = popts->board_info;
++	uint32_t cas_latency, additive_latency, i, cs_per_dimm,
++		 dimm_number;
++	uint64_t ea, sa, rank_density;
 +
-+	ddr_reg = &pinfo->fsl_ddr_config_reg;
-+	timing_params = &pinfo->common_timing_params;
-+	ncs = pinfo->board_info.cs_per_ctrl;
-+	ndimm = pinfo->board_info.dimm_slots_per_ctrl;
-+	dbw_capacity_adjust = 0;
-+	pinfo->memctl_opts.board_info = &pinfo->board_info;
++	if (dimm == NULL)
++		return 1;
 +
-+	/* STEP 1:  Gather all DIMM SPD data */
-+	if (fsl_ddr_get_spd(pinfo->spd_installed_dimms,
-+			pinfo->memctl_opts.board_info))
-+		return 0;
++	memset(ddr, 0, sizeof(struct fsl_ddr_cfg_regs_s));
 +
-+	/* STEP 2:  Compute DIMM parameters from SPD data */
-+	if (compute_dimm_param(pinfo, ndimm))
-+		return 0;
++	/* Process overrides first.  */
++	if (popts->cas_latency_override)
++		cas_latency = popts->cas_latency_override_value;
++	else
++		cas_latency =  dimm->lowest_common_SPD_caslat;
 +
-+	/*
-+	 * STEP 3: Compute a common set of timing parameters
-+	 * suitable for all of the DIMMs on each memory controller
-+	 */
-+	compute_lowest_common_dimm_parameters(pinfo->dimm_params,
-+			timing_params, ndimm);
++	if (popts->additive_latency_override)
++		additive_latency = popts->additive_latency_override_value;
++	else
++		additive_latency = dimm->additive_latency;
 +
-+	/* STEP 4:  Gather configuration requirements from user */
-+	populate_memctl_options(timing_params->all_DIMMs_registered,
-+			&pinfo->memctl_opts,
-+			pinfo->dimm_params);
++	/* Chip Select Memory Bounds (CSn_BNDS) */
++	for (i = 0; i < binfo->cs_per_ctrl; i++) {
++		cs_per_dimm = binfo->cs_per_ctrl / binfo->dimm_slots_per_ctrl;
++		dimm_number = i / cs_per_dimm;
++		rank_density =
++			dimmp[dimm_number].rank_density >> dbw_cap_adj;
 +
-+	/* STEP 5:  Assign addresses to chip selects */
-+	total_mem = step_assign_addresses(pinfo, dbw_capacity_adjust);
++		if (dimmp[dimm_number].n_ranks == 0)
++			continue;
 +
-+	/* STEP 6:  compute controller register values */
-+	if (timing_params->ndimms_present == 0)
-+		memset(ddr_reg, 0, sizeof(struct fsl_ddr_cfg_regs_s));
++		sa = dimmp[dimm_number].base_address;
++		ea = sa + rank_density - 1;
++		if (dimmp[dimm_number].n_ranks > (i % cs_per_dimm)) {
++			sa += (i % cs_per_dimm) * rank_density;
++			ea += (i % cs_per_dimm) * rank_density;
++		} else {
++			sa = 0;
++			ea = 0;
++		}
++		sa >>= 24;
++		ea >>= 24;
 +
-+	compute_fsl_memctl_config_regs(&pinfo->memctl_opts,
-+				       ddr_reg, timing_params,
-+				       pinfo->dimm_params,
-+				       dbw_capacity_adjust);
++		ddr->cs[i].bnds = (((sa & 0xFFF) << 16) | ((ea & 0xFFF) << 0));
++		set_csn_config(dimm_number, i, ddr, popts, dimmp);
++	}
 +
-+	max_end = retrieve_max_size(ddr_reg, ncs);
-+	total_mem = 1 + (((uint64_t)max_end << 24ULL) | 0xFFFFFFULL);
++	set_timing_cfg_0(ddr, popts);
++	set_timing_cfg_3(ddr, dimm, cas_latency);
++	set_timing_cfg_1(ddr, dimm, cas_latency);
++	set_timing_cfg_2(ddr, popts, dimm, cas_latency, additive_latency);
++	set_ddr_sdram_cfg(ddr, popts, dimm);
++	set_ddr_sdram_cfg_2(ddr, popts);
++	set_ddr_sdram_mode(ddr, popts, dimm, cas_latency, additive_latency);
++	set_ddr_sdram_interval(ddr, popts, dimm);
 +
-+	return total_mem;
-+}
++	ddr->ddr_data_init = popts->data_init;
++	ddr->ddr_sdram_clk_cntl = (popts->clk_adjust & 0xF) << 23;
 +
-+/*
-+ * fsl_ddr_sdram():
-+ * This is the main function to initialize the memory.
-+ *
-+ * It returns amount of memory configured in bytes.
-+ */
-+phys_size_t fsl_ddr_sdram(void)
-+{
-+	uint64_t total_memory;
-+	struct fsl_ddr_info_s info;
-+
-+	memset(&info, 0, sizeof(struct fsl_ddr_info_s));
-+	/* Gather board information on the  memory controller and I2C bus. */
-+	fsl_ddr_board_info(&info.board_info);
-+
-+	total_memory = fsl_ddr_compute(&info);
-+
-+	if (info.common_timing_params.ndimms_present == 0)
-+		return 0;
-+
-+	fsl_ddr_set_memctl_regs(&info);
-+	fsl_ddr_set_lawbar(&info.common_timing_params, LAW_TRGT_IF_DDR_1);
-+
-+	return total_memory;
++	return check_fsl_memctl_config_regs(ddr);
 +}
 -- 
 1.7.1
