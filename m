@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urkff-0000v0-6Z
+ id 1Urkff-0000v1-6Y
  for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:00:47 +0200
-Message-Id: <1372233657-19455-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Jun 2013 10:00:51 +0200
+Message-Id: <1372233657-19455-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,533 +21,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] ARM: i.MX: select SoC from board
+Subject: [PATCH 05/11] ARM: i.MX53 loco: add board name to flash header file
 To: barebox@lists.infradead.org
 
-In principle we could build barebox for multiple i.MX SoCs, so
-select the correct SoC from the board selection.
+This is necessary because the C name for the flash header matches
+the filename. For multiple board support we have to make the name
+unique to prevent linker errors.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/eukrea_cpuimx25_defconfig        |   1 +
- arch/arm/configs/eukrea_cpuimx27_defconfig        |   1 +
- arch/arm/configs/eukrea_cpuimx35_defconfig        |   1 +
- arch/arm/configs/freescale-mx6-arm2_defconfig     |   1 +
- arch/arm/configs/freescale_mx51_babbage_defconfig |   1 +
- arch/arm/configs/freescale_mx53_loco_defconfig    |   1 +
- arch/arm/configs/mx21ads_defconfig                |   1 +
- arch/arm/configs/pcm037_defconfig                 |   1 +
- arch/arm/mach-imx/Kconfig                         | 169 +++++++++-------------
- 9 files changed, 76 insertions(+), 101 deletions(-)
+ arch/arm/boards/freescale-mx53-loco/Makefile       |  4 +-
+ arch/arm/boards/freescale-mx53-loco/board.c        |  7 +--
+ .../flash-header-imx53-loco.imxcfg                 | 54 ++++++++++++++++++++++
+ .../boards/freescale-mx53-loco/flash-header.imxcfg | 54 ----------------------
+ images/Makefile.imx                                |  2 +-
+ 5 files changed, 61 insertions(+), 60 deletions(-)
+ create mode 100644 arch/arm/boards/freescale-mx53-loco/flash-header-imx53-loco.imxcfg
+ delete mode 100644 arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
 
-diff --git a/arch/arm/configs/eukrea_cpuimx25_defconfig b/arch/arm/configs/eukrea_cpuimx25_defconfig
-index c3537aa..4f8a95c 100644
---- a/arch/arm/configs/eukrea_cpuimx25_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx25_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX25=y
-+CONFIG_MACH_EUKREA_CPUIMX25=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_AEABI=y
-diff --git a/arch/arm/configs/eukrea_cpuimx27_defconfig b/arch/arm/configs/eukrea_cpuimx27_defconfig
-index bbcd454..97b4291 100644
---- a/arch/arm/configs/eukrea_cpuimx27_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx27_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX27=y
-+CONFIG_MACH_EUKREA_CPUIMX27=y
- CONFIG_IMX_CLKO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_MMU=y
-diff --git a/arch/arm/configs/eukrea_cpuimx35_defconfig b/arch/arm/configs/eukrea_cpuimx35_defconfig
-index f85e9a2..88e1e3d 100644
---- a/arch/arm/configs/eukrea_cpuimx35_defconfig
-+++ b/arch/arm/configs/eukrea_cpuimx35_defconfig
-@@ -1,6 +1,7 @@
- CONFIG_ARCH_IMX=y
- CONFIG_CACHE_L2X0=y
- CONFIG_ARCH_IMX35=y
-+CONFIG_MACH_EUKREA_CPUIMX35=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_AEABI=y
-diff --git a/arch/arm/configs/freescale-mx6-arm2_defconfig b/arch/arm/configs/freescale-mx6-arm2_defconfig
-index d2812e4..6982e0c 100644
---- a/arch/arm/configs/freescale-mx6-arm2_defconfig
-+++ b/arch/arm/configs/freescale-mx6-arm2_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX6=y
-+CONFIG_MACH_MX6Q_ARM2=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_AEABI=y
-diff --git a/arch/arm/configs/freescale_mx51_babbage_defconfig b/arch/arm/configs/freescale_mx51_babbage_defconfig
-index d382dc8..27f3ae8 100644
---- a/arch/arm/configs/freescale_mx51_babbage_defconfig
-+++ b/arch/arm/configs/freescale_mx51_babbage_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX51=y
-+CONFIG_MACH_FREESCALE_MX51_PDK=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_THUMB2_BAREBOX=y
-diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
-index f502f5e..b2b4c79 100644
---- a/arch/arm/configs/freescale_mx53_loco_defconfig
-+++ b/arch/arm/configs/freescale_mx53_loco_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX53=y
-+CONFIG_MACH_FREESCALE_MX53_LOCO=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_THUMB2_BAREBOX=y
-diff --git a/arch/arm/configs/mx21ads_defconfig b/arch/arm/configs/mx21ads_defconfig
-index dbc2962..13c005b 100644
---- a/arch/arm/configs/mx21ads_defconfig
-+++ b/arch/arm/configs/mx21ads_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_IMX=y
- CONFIG_ARCH_IMX21=y
-+CONFIG_MACH_IMX21ADS=y
- CONFIG_IMX_CLKO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_TEXT_BASE=0xc3000000
-diff --git a/arch/arm/configs/pcm037_defconfig b/arch/arm/configs/pcm037_defconfig
-index 7c630a5..1a75701 100644
---- a/arch/arm/configs/pcm037_defconfig
-+++ b/arch/arm/configs/pcm037_defconfig
-@@ -1,6 +1,7 @@
- CONFIG_ARCH_IMX=y
- CONFIG_CACHE_L2X0=y
- CONFIG_ARCH_IMX31=y
-+CONFIG_MACH_PCM037=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_AEABI=y
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index d9291bb..ac2e9b8 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -165,112 +165,98 @@ config BAREBOX_UPDATE_IMX_EXTERNAL_NAND
+diff --git a/arch/arm/boards/freescale-mx53-loco/Makefile b/arch/arm/boards/freescale-mx53-loco/Makefile
+index f1baae2..68fbe3a 100644
+--- a/arch/arm/boards/freescale-mx53-loco/Makefile
++++ b/arch/arm/boards/freescale-mx53-loco/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += board.o flash-header.o
+-extra-y += flash-header.S flash-header.dcd
++obj-y += board.o flash-header-imx53-loco.o
++extra-y += flash-header-imx53-loco.S flash-header-imx53-loco.dcd
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-loco/board.c b/arch/arm/boards/freescale-mx53-loco/board.c
+index dd4251d..446b7f3 100644
+--- a/arch/arm/boards/freescale-mx53-loco/board.c
++++ b/arch/arm/boards/freescale-mx53-loco/board.c
+@@ -75,7 +75,8 @@ static void loco_fec_reset(void)
  
- comment "Freescale i.MX System-on-Chip"
+ #define MX53_LOCO_USB_PWREN		IMX_GPIO_NR(7, 8)
  
--choice
--	prompt "Freescale i.MX Processor"
--
- config ARCH_IMX1
--	bool "i.MX1"
-+	bool
- 	select CPU_ARM920T
- 	select PINCTRL_IMX_IOMUX_V1
+-extern char flash_header_start[], flash_header_end[];
++extern char flash_header_imx53_loco_start[];
++extern char flash_header_imx53_loco_end[];
  
- config ARCH_IMX21
--	bool "i.MX21"
-+	bool
- 	select CPU_ARM926T
- 	select PINCTRL_IMX_IOMUX_V1
+ static int loco_late_init(void)
+ {
+@@ -112,8 +113,8 @@ static int loco_late_init(void)
+ 	armlinux_set_architecture(MACH_TYPE_MX53_LOCO);
  
- config ARCH_IMX25
--	bool "i.MX25"
-+	bool
- 	select CPU_ARM926T
- 	select ARCH_HAS_FEC_IMX
- 	select PINCTRL_IMX_IOMUX_V3
+ 	imx53_bbu_internal_mmc_register_handler("mmc", "/dev/mmc0",
+-		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_start,
+-		flash_header_end - flash_header_start, 0);
++		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_imx53_loco_start,
++		flash_header_imx53_loco_end - flash_header_imx53_loco_start, 0);
  
- config ARCH_IMX27
--	bool "i.MX27"
-+	bool
- 	select CPU_ARM926T
- 	select ARCH_HAS_FEC_IMX
- 	select PINCTRL_IMX_IOMUX_V1
+ 	return 0;
+ }
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash-header-imx53-loco.imxcfg b/arch/arm/boards/freescale-mx53-loco/flash-header-imx53-loco.imxcfg
+new file mode 100644
+index 0000000..95bcd19
+--- /dev/null
++++ b/arch/arm/boards/freescale-mx53-loco/flash-header-imx53-loco.imxcfg
+@@ -0,0 +1,54 @@
++loadaddr 0x70000000
++soc imx53
++dcdofs 0x400
++wm 32 0x53fa8554 0x00300000
++wm 32 0x53fa8558 0x00300040
++wm 32 0x53fa8560 0x00300000
++wm 32 0x53fa8564 0x00300040
++wm 32 0x53fa8568 0x00300040
++wm 32 0x53fa8570 0x00300000
++wm 32 0x53fa8574 0x00300000
++wm 32 0x53fa8578 0x00300000
++wm 32 0x53fa857c 0x00300040
++wm 32 0x53fa8580 0x00300040
++wm 32 0x53fa8584 0x00300000
++wm 32 0x53fa8588 0x00300000
++wm 32 0x53fa8590 0x00300040
++wm 32 0x53fa8594 0x00300000
++wm 32 0x53fa86f0 0x00300000
++wm 32 0x53fa86f4 0x00000000
++wm 32 0x53fa86fc 0x00000000
++wm 32 0x53fa8714 0x00000000
++wm 32 0x53fa8718 0x00300000
++wm 32 0x53fa871c 0x00300000
++wm 32 0x53fa8720 0x00300000
++wm 32 0x53fa8724 0x04000000
++wm 32 0x53fa8728 0x00300000
++wm 32 0x53fa872c 0x00300000
++wm 32 0x63fd9088 0x35343535
++wm 32 0x63fd9090 0x4d444c44
++wm 32 0x63fd907c 0x01370138
++wm 32 0x63fd9080 0x013b013c
++wm 32 0x63fd9018 0x00011740
++wm 32 0x63fd9000 0xc3190000
++wm 32 0x63fd900c 0x9f5152e3
++wm 32 0x63fd9010 0xb68e8a63
++wm 32 0x63fd9014 0x01ff00db
++wm 32 0x63fd902c 0x000026d2
++wm 32 0x63fd9030 0x009f0e21
++wm 32 0x63fd9008 0x12273030
++wm 32 0x63fd9004 0x0002002d
++wm 32 0x63fd901c 0x00008032
++wm 32 0x63fd901c 0x00008033
++wm 32 0x63fd901c 0x00028031
++wm 32 0x63fd901c 0x052080b0
++wm 32 0x63fd901c 0x04008040
++wm 32 0x63fd901c 0x0000803a
++wm 32 0x63fd901c 0x0000803b
++wm 32 0x63fd901c 0x00028039
++wm 32 0x63fd901c 0x05208138
++wm 32 0x63fd901c 0x04008048
++wm 32 0x63fd9020 0x00005800
++wm 32 0x63fd9040 0x04b80003
++wm 32 0x63fd9058 0x00022227
++wm 32 0x63fd901c 0x00000000
+diff --git a/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg b/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
+deleted file mode 100644
+index 95bcd19..0000000
+--- a/arch/arm/boards/freescale-mx53-loco/flash-header.imxcfg
++++ /dev/null
+@@ -1,54 +0,0 @@
+-loadaddr 0x70000000
+-soc imx53
+-dcdofs 0x400
+-wm 32 0x53fa8554 0x00300000
+-wm 32 0x53fa8558 0x00300040
+-wm 32 0x53fa8560 0x00300000
+-wm 32 0x53fa8564 0x00300040
+-wm 32 0x53fa8568 0x00300040
+-wm 32 0x53fa8570 0x00300000
+-wm 32 0x53fa8574 0x00300000
+-wm 32 0x53fa8578 0x00300000
+-wm 32 0x53fa857c 0x00300040
+-wm 32 0x53fa8580 0x00300040
+-wm 32 0x53fa8584 0x00300000
+-wm 32 0x53fa8588 0x00300000
+-wm 32 0x53fa8590 0x00300040
+-wm 32 0x53fa8594 0x00300000
+-wm 32 0x53fa86f0 0x00300000
+-wm 32 0x53fa86f4 0x00000000
+-wm 32 0x53fa86fc 0x00000000
+-wm 32 0x53fa8714 0x00000000
+-wm 32 0x53fa8718 0x00300000
+-wm 32 0x53fa871c 0x00300000
+-wm 32 0x53fa8720 0x00300000
+-wm 32 0x53fa8724 0x04000000
+-wm 32 0x53fa8728 0x00300000
+-wm 32 0x53fa872c 0x00300000
+-wm 32 0x63fd9088 0x35343535
+-wm 32 0x63fd9090 0x4d444c44
+-wm 32 0x63fd907c 0x01370138
+-wm 32 0x63fd9080 0x013b013c
+-wm 32 0x63fd9018 0x00011740
+-wm 32 0x63fd9000 0xc3190000
+-wm 32 0x63fd900c 0x9f5152e3
+-wm 32 0x63fd9010 0xb68e8a63
+-wm 32 0x63fd9014 0x01ff00db
+-wm 32 0x63fd902c 0x000026d2
+-wm 32 0x63fd9030 0x009f0e21
+-wm 32 0x63fd9008 0x12273030
+-wm 32 0x63fd9004 0x0002002d
+-wm 32 0x63fd901c 0x00008032
+-wm 32 0x63fd901c 0x00008033
+-wm 32 0x63fd901c 0x00028031
+-wm 32 0x63fd901c 0x052080b0
+-wm 32 0x63fd901c 0x04008040
+-wm 32 0x63fd901c 0x0000803a
+-wm 32 0x63fd901c 0x0000803b
+-wm 32 0x63fd901c 0x00028039
+-wm 32 0x63fd901c 0x05208138
+-wm 32 0x63fd901c 0x04008048
+-wm 32 0x63fd9020 0x00005800
+-wm 32 0x63fd9040 0x04b80003
+-wm 32 0x63fd9058 0x00022227
+-wm 32 0x63fd901c 0x00000000
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index d13be84..002e73b 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -23,7 +23,7 @@ image-$(CONFIG_MACH_FREESCALE_MX51_PDK) += barebox-freescale-imx51-babbage.img
  
- config ARCH_IMX31
- 	select CPU_V6
--	bool "i.MX31"
-+	bool
- 	select PINCTRL_IMX_IOMUX_V2
- 
- config ARCH_IMX35
--	bool "i.MX35"
-+	bool
- 	select CPU_V6
- 	select ARCH_HAS_FEC_IMX
- 	select PINCTRL_IMX_IOMUX_V3
- 
- config ARCH_IMX51
--	bool "i.MX51"
-+	bool
- 	select CPU_V7
- 	select ARCH_HAS_FEC_IMX
- 	select PINCTRL_IMX_IOMUX_V3
- 
- config ARCH_IMX53
--	bool "i.MX53"
-+	bool
- 	select CPU_V7
- 	select ARCH_HAS_FEC_IMX
- 	select PINCTRL_IMX_IOMUX_V3
- 
- config ARCH_IMX6
--	bool "i.MX6"
-+	bool
- 	select ARCH_HAS_FEC_IMX
- 	select CPU_V7
- 	select PINCTRL_IMX_IOMUX_V3
- 
--endchoice
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX1
--
- choice
--	prompt "i.MX1 Board Type"
-+	prompt "Select Board"
-+
-+comment "i.MX1 Boards"
- 
- config MACH_SCB9328
- 	bool "Synertronixx scb9328"
-+	select ARCH_IMX1
- 	select HAS_DM9000
- 	help
- 	  Say Y here if you are using the Synertronixx scb9328 board
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX21
--
--choice
--	prompt "i.MX21 Board Type"
-+comment "i.MX21 Boards"
- 
- config MACH_IMX21ADS
- 	bool "Freescale i.MX21ADS"
-+	select ARCH_IMX21
- 	select HAS_CS8900
- 	help
- 	  Say Y here if you are using the Freescale i.MX21ads board equipped
- 	  with a Freescale i.MX21 Processor
- 
--endchoice
--
--endif
- 
- # ----------------------------------------------------------
- 
--if ARCH_IMX25
--
--choice
--	prompt "i.MX25 Board Type"
-+comment "i.MX25 Boards"
- 
- config MACH_EUKREA_CPUIMX25
- 	bool "Eukrea CPUIMX25"
-+	select ARCH_IMX25
- 	help
- 	  Say Y here if you are using the Eukrea Electromatique's CPUIMX25
- 	  equipped with a Freescale i.MX25 Processor
- 
- config MACH_FREESCALE_MX25_3STACK
- 	bool "Freescale MX25 3stack"
-+	select ARCH_IMX25
- 	select I2C
- 	select MFD_MC34704
- 	help
-@@ -279,41 +265,39 @@ config MACH_FREESCALE_MX25_3STACK
- 
- config MACH_TX25
- 	bool "Ka-Ro TX25"
-+	select ARCH_IMX25
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	help
- 	  Say Y here if you are using the Ka-Ro tx25 board
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX27
--
--choice
--	prompt "i.MX27 Board Type"
-+comment "i.MX27 Boards"
- 
- config MACH_EUKREA_CPUIMX27
- 	bool "EUKREA CPUIMX27"
-+	select ARCH_IMX27
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX27 equipped
- 	  with a Freescale i.MX27 Processor
- 
- config MACH_IMX27ADS
- 	bool "Freescale i.MX27ADS"
-+	select ARCH_IMX27
- 	help
- 	  Say Y here if you are using the Freescale i.MX27ads board equipped
- 	  with a Freescale i.MX27 Processor
- 
- config MACH_PCA100
- 	bool "phyCard-i.MX27"
-+	select ARCH_IMX27
- 	help
- 	  Say Y here if you are using Phytec's phyCard-i.MX27 (pca100) equipped
- 	  with a Freescale i.MX27 Processor
- 
- config MACH_PCM038
- 	bool "phyCORE-i.MX27"
-+	select ARCH_IMX27
- 	select IMX_IIM
- 	select SPI
- 	select DRIVER_SPI_IMX
-@@ -334,23 +318,18 @@ config MACH_PCM970_BASEBOARD
- 
- config MACH_NESO
- 	bool "Garz+Fricke Neso"
-+	select ARCH_IMX27
- 	help
- 	  Say Y here if you are using the Garz+Fricke Neso board equipped
- 	  with a Freescale i.MX27 Processor
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX31
--
--choice
--	prompt "i.MX31 Board Type"
-+comment "i.MX31 Boards"
- 
- config MACH_PCM037
- 	bool "phyCORE-i.MX31"
-+	select ARCH_IMX31
- 	select USB_ULPI if USB
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	select ARCH_HAS_L2X0
-@@ -358,19 +337,13 @@ config MACH_PCM037
- 	  Say Y here if you are using Phytec's phyCORE-i.MX31 (pcm037) equipped
- 	  with a Freescale i.MX31 Processor
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX35
--
--choice
--	prompt "i.MX35 Board Type"
-+comment "i.MX35 Boards"
- 
- config MACH_EUKREA_CPUIMX35
- 	bool "EUKREA CPUIMX35"
-+	select ARCH_IMX35
- 	select ARCH_HAS_L2X0
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX35 equipped
-@@ -378,6 +351,7 @@ config MACH_EUKREA_CPUIMX35
- 
- config MACH_FREESCALE_MX35_3STACK
- 	bool "Freescale MX35 3stack"
-+	select ARCH_IMX35
- 	select I2C
- 	select I2C_IMX
- 	select MFD_MC13XXX
-@@ -388,6 +362,7 @@ config MACH_FREESCALE_MX35_3STACK
- 
- config MACH_PCM043
- 	bool "phyCORE-i.MX35"
-+	select ARCH_IMX35
- 	select ARCH_HAS_L2X0
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	help
-@@ -396,40 +371,38 @@ config MACH_PCM043
- 
- config MACH_GUF_CUPID
- 	bool "Garz+Fricke Cupid"
-+	select ARCH_IMX35
- 	select ARCH_HAS_L2X0
- 	help
- 	  Say Y here if you are using the Garz+Fricke Neso board equipped
- 	  with a Freescale i.MX35 Processor
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX51
--
--choice
--	prompt "i.MX51 Board Type"
-+comment "i.MX51 Boards"
- 
- config MACH_FREESCALE_MX51_PDK
-+	bool "Freescale i.MX51 PDK"
-+	select ARCH_IMX51
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	select HAVE_PBL_MULTI_IMAGES
--	bool "Freescale i.MX51 PDK"
- 
- config MACH_EUKREA_CPUIMX51SD
--	bool "EUKREA CPUIMX51"
-+	bool "Ka-Ro TX51"
-+	select ARCH_IMX51
- 	help
- 	  Say Y here if you are using Eukrea's CPUIMX51 equipped
- 	  with a Freescale i.MX51 Processor
- 
- config MACH_TX51
- 	bool "Ka-Ro TX51"
-+	select ARCH_IMX51
- 	help
- 	  Say Y here if you are using the Ka-Ro tx51 board
- 
- config MACH_CCMX51
- 	bool "ConnectCore i.MX51"
-+	select ARCH_IMX51
- 	select IMX_IIM
- 	select SPI
- 	select DRIVER_SPI_IMX
-@@ -448,84 +421,65 @@ config MACH_CCMX51_BASEBOARD
- 
- config MACH_EFIKA_MX_SMARTBOOK
- 	bool "Efika MX smartbook"
-+	select ARCH_IMX51
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	help
- 	  Choose this to compile barebox for the Efika MX Smartbook
- 
--endchoice
--
--endif
--
- # ----------------------------------------------------------
- 
--if ARCH_IMX53
--
--choice
--	prompt "i.MX53 Board Type"
-+comment "i.MX53 Boards"
- 
- config MACH_FREESCALE_MX53_LOCO
-+	bool "Freescale i.MX53 LOCO"
-+	select ARCH_IMX53
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	select HAVE_PBL_MULTI_IMAGES
--	bool "Freescale i.MX53 LOCO"
- 
- config MACH_FREESCALE_MX53_SMD
- 	bool "Freescale i.MX53 SMD"
-+	select ARCH_IMX53
- 
- config MACH_TQMA53
--	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	bool "TQ i.MX53 TQMa53"
-+	select ARCH_IMX53
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 
- config MACH_TX53
- 	bool "Ka-Ro TX53"
-+	select ARCH_IMX53
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	help
- 	  Say Y here if you are using the Ka-Ro tx53 board
- 
- config MACH_GUF_VINCELL
--	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	bool "Garz-Fricke Vincell"
-+	select ARCH_IMX53
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 
--endchoice
--
--if MACH_TX53
--
--choice
--	prompt "TX53 board revision"
--config TX53_REV_1011
--	bool "1011"
--config TX53_REV_XX30
--	bool "8030 / 1030"
--
--endchoice
--
--endif
--
--endif
--
--if ARCH_IMX6
--
--choice
--	prompt "i.MX6 Board Type"
-+comment "i.MX6 Boards"
- 
- config MACH_MX6Q_ARM2
- 	bool "Freescale i.MX6q Armadillo2"
-+	select ARCH_IMX6
- 
- config MACH_SABRELITE
--	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	bool "Freescale i.MX6 Sabre Lite"
-+	select ARCH_IMX6
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 
- config MACH_SABRESD
- 	bool "Freescale i.MX6 SabreSD"
-+	select ARCH_IMX6
- 
- config MACH_REALQ7
- 	bool "DataModul i.MX6Q Real Qseven Board"
-+	select ARCH_IMX6
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	select HAVE_PBL_MULTI_IMAGES
- 
- endchoice
- 
--endif
--
- # ----------------------------------------------------------
- 
- menu "Board specific settings"
-@@ -607,6 +561,19 @@ config MACH_TQMA53_1GB_RAM
- 
- endif
- 
-+if MACH_TX53
-+
-+choice
-+	prompt "TX53 board revision"
-+config TX53_REV_1011
-+	bool "1011"
-+config TX53_REV_XX30
-+	bool "8030 / 1030"
-+
-+endchoice
-+
-+endif
-+
- endmenu
- 
- menu "i.MX specific settings"
+ # ----------------------- i.MX53 based boards ---------------------------
+ pblx-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco
+-CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header.imxcfg
++CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header-imx53-loco.imxcfg
+ imximage-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco.pblx.imximg
+ FILE_barebox-freescale-imx53-loco.img = start_imx53_loco.pblx.imximg
+ image-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += barebox-freescale-imx53-loco.img
 -- 
 1.8.3.1
 
