@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urkff-0000uz-6R
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:45 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Urkew-0004Xp-PL
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 10:00:58 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Urkew-0004Co-OI
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 10:00:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:00:46 +0200
-Message-Id: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UrlKz-0003fg-UB
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:44:28 +0000
+Received: by mail-bk0-f45.google.com with SMTP id je9so4696146bkc.4
+ for <barebox@lists.infradead.org>; Wed, 26 Jun 2013 01:43:47 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Wed, 26 Jun 2013 10:43:38 +0200
+Message-Id: <1372236218-17103-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372152047-28134-9-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1372152047-28134-9-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,75 +23,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Multi board support
-To: barebox@lists.infradead.org
+Subject: [PATCH v2 8/9] OF: base: convert of_add_memory to OF API
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Following multi image support we now get multi board support.
+Convert of_add_memory parsing to make use of of_address_to_resource
+instead of parsing memory ranges itself. This makes some functions
+dead code which are also removed.
 
-With this series it's possible to build a barebox binary for multiple
-boards. At the end of this series a new imx_v7_defconfig is added
-which currently builds:
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Changelog:
+v1->v2:
+- fix check for return value of of_address_to_resource (Reported by
+  Sascha Hauer)
 
- barebox-freescale-imx51-babbage.img
- barebox-genesi-efikasb.img
- barebox-freescale-imx53-loco.img
- barebox-datamodul-edm-qmx6.img
+Cc: barebox@lists.infradead.org
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/of/base.c |   57 +++++++---------------------------------------------
+ 1 files changed, 8 insertions(+), 49 deletions(-)
 
-All are simply PBL/imximage wrappers around the same base binary. This
-finally brings together the various pieces like relocatable binary support,
-devicetree support, multiple cpu support and regular driver support for
-core SoC devices.
-
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (11):
-      ARM: i.MX: select SoC from board
-      ARM: i.MX51 babbage: add board name to flash header file
-      ARM: i.MX51 babbage: prepare for multiboard support
-      ARM: i.MX51 babbage: Move over to multiboard
-      ARM: i.MX53 loco: add board name to flash header file
-      ARM: i.MX53 loco: prepare multiboard support
-      ARM: i.MX53 loco: Move over to multiboard
-      ARM: i.MX6 realq7: prepare multiboard support
-      ARM: i.MX6 realq7: switch to multiboard
-      ARM: i.MX51 efikasb: switch to multiboard support
-      ARM: Add a imx_v7_defconfig
-
- arch/arm/boards/dmo-mx6-realq7/board.c             |  19 +-
- arch/arm/boards/efika-mx-smartbook/Makefile        |   5 +-
- arch/arm/boards/efika-mx-smartbook/board.c         |  17 +-
- arch/arm/boards/efika-mx-smartbook/dcd-data.h      |  56 ------
- .../flash-header-imx51-genesi-efikasb.imxcfg       |  57 ++++++
- arch/arm/boards/efika-mx-smartbook/flash_header.c  |  29 ---
- arch/arm/boards/efika-mx-smartbook/lowlevel.c      |  14 +-
- arch/arm/boards/freescale-mx51-pdk/Makefile        |   4 +-
- arch/arm/boards/freescale-mx51-pdk/board.c         |  21 +-
- ...er.imxcfg => flash-header-imx51-babbage.imxcfg} |   0
- arch/arm/boards/freescale-mx53-loco/Makefile       |   4 +-
- arch/arm/boards/freescale-mx53-loco/board.c        |  17 +-
- ...eader.imxcfg => flash-header-imx53-loco.imxcfg} |   0
- arch/arm/configs/dmo-realq7_defconfig              |   2 +-
- arch/arm/configs/efika-mx-smartbook_defconfig      |   1 +
- arch/arm/configs/eukrea_cpuimx25_defconfig         |   1 +
- arch/arm/configs/eukrea_cpuimx27_defconfig         |   1 +
- arch/arm/configs/eukrea_cpuimx35_defconfig         |   1 +
- arch/arm/configs/freescale-mx6-arm2_defconfig      |   1 +
- arch/arm/configs/freescale_mx51_babbage_defconfig  |   3 +-
- arch/arm/configs/freescale_mx53_loco_defconfig     |   3 +-
- arch/arm/configs/imx_v7_defconfig                  | 131 +++++++++++++
- arch/arm/configs/mx21ads_defconfig                 |   1 +
- arch/arm/configs/pcm037_defconfig                  |   1 +
- arch/arm/dts/Makefile                              |   1 +
- arch/arm/mach-imx/Kconfig                          | 215 +++++++++------------
- images/Makefile.imx                                |  10 +-
- 27 files changed, 366 insertions(+), 249 deletions(-)
- delete mode 100644 arch/arm/boards/efika-mx-smartbook/dcd-data.h
- create mode 100644 arch/arm/boards/efika-mx-smartbook/flash-header-imx51-genesi-efikasb.imxcfg
- delete mode 100644 arch/arm/boards/efika-mx-smartbook/flash_header.c
- rename arch/arm/boards/freescale-mx51-pdk/{flash-header.imxcfg => flash-header-imx51-babbage.imxcfg} (100%)
- rename arch/arm/boards/freescale-mx53-loco/{flash-header.imxcfg => flash-header-imx53-loco.imxcfg} (100%)
- create mode 100644 arch/arm/configs/imx_v7_defconfig
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 0244281..1cf7a5f 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -99,21 +99,6 @@ int of_n_size_cells(struct device_node *np)
+ }
+ EXPORT_SYMBOL(of_n_size_cells);
+ 
+-static void of_bus_default_count_cells(struct device_node *dev,
+-				       int *addrc, int *sizec)
+-{
+-	if (addrc)
+-		*addrc = of_n_addr_cells(dev);
+-	if (sizec)
+-		*sizec = of_n_size_cells(dev);
+-}
+-
+-static void of_bus_count_cells(struct device_node *dev,
+-			int *addrc, int *sizec)
+-{
+-	of_bus_default_count_cells(dev, addrc, sizec);
+-}
+-
+ struct property *of_find_property(const struct device_node *np,
+ 				  const char *name, int *lenp)
+ {
+@@ -1543,48 +1528,22 @@ int of_set_property(struct device_node *np, const char *name, const void *val, i
+ 	return 0;
+ }
+ 
+-static u64 dt_mem_next_cell(int s, const __be32 **cellp)
+-{
+-	const __be32 *p = *cellp;
+-
+-	*cellp = p + s;
+-	return of_read_number(p, s);
+-}
+-
+ int of_add_memory(struct device_node *node, bool dump)
+ {
+-	int na, nc;
+-	const __be32 *reg, *endp;
+-	int len, r = 0, ret;
+ 	const char *device_type;
++	struct resource res;
++	int n = 0, ret;
+ 
+ 	ret = of_property_read_string(node, "device_type", &device_type);
+-	if (ret)
++	if (ret || of_node_cmp(device_type, "memory"))
+ 		return -ENXIO;
+ 
+-	if (of_node_cmp(device_type, "memory"))
+-		return -ENXIO;
+-
+-	of_bus_count_cells(node, &na, &nc);
+-
+-	reg = of_get_property(node, "reg", &len);
+-	if (!reg)
+-		return -EINVAL;
+-
+-	endp = reg + (len / sizeof(__be32));
+-
+-	while ((endp - reg) >= (na + nc)) {
+-		u64 base, size;
+-
+-		base = dt_mem_next_cell(na, &reg);
+-		size = dt_mem_next_cell(nc, &reg);
+-
+-		if (size == 0)
++	while (!of_address_to_resource(node, n, &res)) {
++		if (!resource_size(&res))
+ 			continue;
+-
+-		of_add_memory_bank(node, dump, r, base, size);
+-
+-		r++;
++		of_add_memory_bank(node, dump, n,
++				res.start, resource_size(&res));
++		n++;
+ 	}
+ 
+ 	return 0;
+-- 
+1.7.2.5
 
 
 _______________________________________________
