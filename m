@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
+Received: from exprod5og106.obsmtp.com ([64.18.0.182])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urtc9-0002Kb-QJ
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:34:43 +0000
+ id 1Urtc8-0002KZ-Io
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:34:41 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 26 Jun 2013 18:33:40 +0100
-Message-Id: <1372268027-15271-2-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 26 Jun 2013 18:33:41 +0100
+Message-Id: <1372268027-15271-3-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 References: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] common: DDR2 SPD checksum.
+Subject: [PATCH 2/8] ppc asm: DDR headers
 To: barebox@lists.infradead.org
 
-The code calculates the DDR2 SPD checksum as per JEDEC standard
-No 21-C Appendix X (revision 1.2)
+Definitions and structures have been added to record DIMM parameters
+and configure memory options.
 
-The code is based on the equivalent files from U-Boot version
-git-a71d45d.
+The code is based on the equivalent files in the directory
+arch/powerpc/include/asm from U-boot version git-a71d45d.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- common/Makefile   |    1 +
- common/ddr_spd.c  |   39 +++++++++++++++
- include/ddr_spd.h |  135 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 175 insertions(+), 0 deletions(-)
- create mode 100644 common/ddr_spd.c
- create mode 100644 include/ddr_spd.h
+ arch/ppc/include/asm/fsl_ddr_dimm_params.h |   60 +++++++++++++
+ arch/ppc/include/asm/fsl_ddr_sdram.h       |  131 +++++++++++++++++++++++++++-
+ 2 files changed, 187 insertions(+), 4 deletions(-)
+ create mode 100644 arch/ppc/include/asm/fsl_ddr_dimm_params.h
 
-diff --git a/common/Makefile b/common/Makefile
-index 2f0bd34..fc23421 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_CMD_LOADS)		+= s_record.o
- obj-$(CONFIG_OFTREE)		+= oftree.o
- 
- obj-y += memory.o
-+obj-$(CONFIG_DDR_SPD)  += ddr_spd.o
- obj-y += memory_display.o
- obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
- obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
-diff --git a/common/ddr_spd.c b/common/ddr_spd.c
+diff --git a/arch/ppc/include/asm/fsl_ddr_dimm_params.h b/arch/ppc/include/asm/fsl_ddr_dimm_params.h
 new file mode 100644
-index 0000000..c8b73ff
+index 0000000..73c239b
 --- /dev/null
-+++ b/common/ddr_spd.c
-@@ -0,0 +1,39 @@
++++ b/arch/ppc/include/asm/fsl_ddr_dimm_params.h
+@@ -0,0 +1,60 @@
 +/*
 + * Copyright 2008 Freescale Semiconductor, Inc.
 + *
@@ -65,178 +51,211 @@ index 0000000..c8b73ff
 + * Version 2 as published by the Free Software Foundation.
 + */
 +
-+#include <common.h>
-+#include <ddr_spd.h>
++#ifndef DDR2_DIMM_PARAMS_H
++#define DDR2_DIMM_PARAMS_H
 +
-+uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd)
-+{
-+	uint32_t i, cksum = 0;
-+	const uint8_t *buf = (const uint8_t *)spd;
-+	uint8_t rev, spd_cksum;
++#define EDC_ECC		2
 +
-+	rev = spd->spd_rev;
-+	spd_cksum = spd->cksum;
-+
-+	/* Rev 1.X or less supported by this code */
-+	if (rev >= 0x20)
-+		goto error;
-+
-+	/*
-+	 * The checksum is calculated on the first 64 bytes
-+	 * of the SPD as per JEDEC specification.
-+	 */
-+	for (i = 0; i < 63; i++)
-+		cksum += *buf++;
-+	cksum &= 0xFF;
-+
-+	if (cksum != spd_cksum)
-+		goto error;
-+
-+	return 0;
-+error:
-+	return 1;
-+}
-diff --git a/include/ddr_spd.h b/include/ddr_spd.h
-new file mode 100644
-index 0000000..c8762a2
---- /dev/null
-+++ b/include/ddr_spd.h
-@@ -0,0 +1,135 @@
-+/*
-+ * Copyright 2008 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
-+ */
-+
-+#ifndef _DDR_SPD_H_
-+#define _DDR_SPD_H_
-+
-+/*
-+ * Format from "JEDEC Appendix X: Serial Presence Detects for DDR2 SDRAM",
-+ * SPD Revision 1.2
-+ */
-+struct ddr2_spd_eeprom_s {
-+	uint8_t info_size;   /*  0 # bytes written into serial memory */
-+	uint8_t chip_size;   /*  1 Total # bytes of SPD memory device */
-+	uint8_t mem_type;    /*  2 Fundamental memory type */
-+	uint8_t nrow_addr;   /*  3 # of Row Addresses on this assembly */
-+	uint8_t ncol_addr;   /*  4 # of Column Addrs on this assembly */
-+	uint8_t mod_ranks;   /*  5 Number of DIMM Ranks */
-+	uint8_t dataw;       /*  6 Module Data Width */
-+	uint8_t res_7;       /*  7 Reserved */
-+	uint8_t voltage;     /*  8 Voltage intf std of this assembly */
-+	uint8_t clk_cycle;   /*  9 SDRAM Cycle time @ CL=X */
-+	uint8_t clk_access;  /* 10 SDRAM Access from Clk @ CL=X (tAC) */
-+	uint8_t config;      /* 11 DIMM Configuration type */
-+	uint8_t refresh;     /* 12 Refresh Rate/Type */
-+	uint8_t primw;       /* 13 Primary SDRAM Width */
-+	uint8_t ecw;         /* 14 Error Checking SDRAM width */
-+	uint8_t res_15;      /* 15 Reserved */
-+	uint8_t burstl;      /* 16 Burst Lengths Supported */
-+	uint8_t nbanks;      /* 17 # of Banks on Each SDRAM Device */
-+	uint8_t cas_lat;     /* 18 CAS# Latencies Supported */
-+	uint8_t mech_char;   /* 19 DIMM Mechanical Characteristics */
-+	uint8_t dimm_type;   /* 20 DIMM type information */
-+	uint8_t mod_attr;    /* 21 SDRAM Module Attributes */
-+	uint8_t dev_attr;    /* 22 SDRAM Device Attributes */
-+	uint8_t clk_cycle2;  /* 23 Min SDRAM Cycle time @ CL=X-1 */
-+	uint8_t clk_access2; /* 24 SDRAM Access from Clk @ CL=X-1 (tAC) */
-+	uint8_t clk_cycle3;  /* 25 Min SDRAM Cycle time @ CL=X-2 */
-+	uint8_t clk_access3; /* 26 Max Access from Clk @ CL=X-2 (tAC) */
-+	uint8_t trp;         /* 27 Min Row Precharge Time (tRP)*/
-+	uint8_t trrd;        /* 28 Min Row Active to Row Active (tRRD) */
-+	uint8_t trcd;        /* 29 Min RAS to CAS Delay (tRCD) */
-+	uint8_t tras;        /* 30 Minimum RAS Pulse Width (tRAS) */
-+	uint8_t rank_dens;   /* 31 Density of each rank on module */
-+	uint8_t ca_setup;    /* 32 Addr+Cmd Setup Time Before Clk (tIS) */
-+	uint8_t ca_hold;     /* 33 Addr+Cmd Hold Time After Clk (tIH) */
-+	uint8_t data_setup;  /* 34 Data Input Setup Time Before Strobe
-+					(tDS) */
-+	uint8_t data_hold;   /* 35 Data Input Hold Time
-+					After Strobe (tDH) */
-+	uint8_t twr;         /* 36 Write Recovery time tWR */
-+	uint8_t twtr;        /* 37 Int write to read delay tWTR */
-+	uint8_t trtp;        /* 38 Int read to precharge delay tRTP */
-+	uint8_t mem_probe;   /* 39 Mem analysis probe characteristics */
-+	uint8_t trctrfc_ext; /* 40 Extensions to trc and trfc */
-+	uint8_t trc;         /* 41 Min Active to Auto refresh time tRC */
-+	uint8_t trfc;        /* 42 Min Auto to Active period tRFC */
-+	uint8_t tckmax;      /* 43 Max device cycle time tCKmax */
-+	uint8_t tdqsq;       /* 44 Max DQS to DQ skew (tDQSQ max) */
-+	uint8_t tqhs;        /* 45 Max Read DataHold skew (tQHS) */
-+	uint8_t pll_relock;  /* 46 PLL Relock time */
-+	uint8_t Tcasemax;    /* 47 Tcasemax */
-+	uint8_t psiTAdram;   /* 48 Thermal Resistance of DRAM Package
-+					from Top (Case) to Ambient
-+					(Psi T-A DRAM) */
-+	uint8_t dt0_mode;    /* 49 DRAM Case Temperature Rise from
-+					Ambient due to Activate-Precharge/Mode
-+					Bits (DT0/Mode Bits) */
-+	uint8_t dt2n_dt2q;   /* 50 DRAM Case Temperature Rise from
-+					Ambient due to Precharge/Quiet Standby
-+					(DT2N/DT2Q) */
-+	uint8_t dt2p;        /* 51 DRAM Case Temperature Rise from
-+					Ambient due to Precharge Power-Down
-+					(DT2P) */
-+	uint8_t dt3n;        /* 52 DRAM Case Temperature Rise from
-+					Ambient due to Active Standby (DT3N) */
-+	uint8_t dt3pfast;    /* 53 DRAM Case Temperature Rise from
-+					Ambient due to Active Power-Down with
-+					Fast PDN Exit (DT3Pfast) */
-+	uint8_t dt3pslow;    /* 54 DRAM Case Temperature Rise from
-+					Ambient due to Active Power-Down with
-+					Slow PDN Exit (DT3Pslow) */
-+	uint8_t dt4r_dt4r4w; /* 55 DRAM Case Temperature Rise from
-+					Ambient due to Page Open Burst
-+					Read/DT4R4W Mode Bit
-+					(DT4R/DT4R4W Mode Bit) */
-+	uint8_t dt5b;        /* 56 DRAM Case Temperature Rise from
-+					Ambient due to Burst Refresh (DT5B) */
-+	uint8_t dt7;         /* 57 DRAM Case Temperature Rise from
-+					Ambient due to Bank Interleave Reads
-+					with Auto-Precharge (DT7) */
-+	uint8_t psiTApll;    /* 58 Thermal Resistance of PLL Package
-+					form Top (Case) to Ambient
-+					(Psi T-A PLL) */
-+	uint8_t psiTAreg;    /* 59 Thermal Reisitance of Register
-+					Package from Top (Case) to Ambient
-+					(Psi T-A Register) */
-+	uint8_t dtpllactive; /* 60 PLL Case Temperature Rise from
-+					Ambient due to PLL Active
-+					(DT PLL Active) */
-+	uint8_t dtregact;    /* 61 Register Case Temperature Rise from
-+					Ambient due to Register Active/Mode
-+					Bit (DT Register Active/Mode Bit) */
-+	uint8_t spd_rev;     /* 62 SPD Data Revision Code */
-+	uint8_t cksum;       /* 63 Checksum for bytes 0-62 */
-+	uint8_t mid[8];      /* 64 Mfr's JEDEC ID code per JEP-106 */
-+	uint8_t mloc;        /* 72 Manufacturing Location */
-+	uint8_t mpart[18];   /* 73 Manufacturer's Part Number */
-+	uint8_t rev[2];      /* 91 Revision Code */
-+	uint8_t mdate[2];    /* 93 Manufacturing Date */
-+	uint8_t sernum[4];   /* 95 Assembly Serial Number */
-+	uint8_t mspec[27];   /* 99-127 Manufacturer Specific Data */
-+
++/* Parameters for a DDR2 dimm computed from the SPD */
++struct dimm_params_s {
++	char mpart[19];
++	uint32_t n_ranks;
++	uint64_t rank_density;
++	uint64_t capacity;
++	uint32_t data_width;
++	uint32_t primary_sdram_width;
++	uint32_t ec_sdram_width;
++	uint32_t registered_dimm;
++	uint32_t n_row_addr;
++	uint32_t n_col_addr;
++	uint32_t edc_config;		/* 0 = none, 1 = parity, 2 = ECC */
++	uint32_t n_banks_per_sdram_device;
++	uint32_t burst_lengths_bitmask;	/* BL=4 bit 2, BL=8 = bit 3 */
++	uint32_t row_density;
++	uint64_t base_address;
++	/* SDRAM clock periods */
++	uint32_t tCKmin_X_ps;
++	uint32_t tCKmin_X_minus_1_ps;
++	uint32_t tCKmin_X_minus_2_ps;
++	uint32_t tCKmax_ps;
++	/* SPD-defined CAS latencies */
++	uint32_t caslat_X;
++	uint32_t caslat_X_minus_1;
++	uint32_t caslat_X_minus_2;
++	uint32_t caslat_lowest_derated;
++	/* basic timing parameters */
++	uint32_t tRCD_ps;
++	uint32_t tRP_ps;
++	uint32_t tRAS_ps;
++	uint32_t tWR_ps;	/* maximum = 63750 ps */
++	uint32_t tWTR_ps;	/* maximum = 63750 ps */
++	uint32_t tRFC_ps;	/* max = 255 ns + 256 ns + .75 ns = 511750 ps */
++	uint32_t tRRD_ps;	/* maximum = 63750 ps */
++	uint32_t tRC_ps;	/* maximum = 254 ns + .75 ns = 254750 ps */
++	uint32_t refresh_rate_ps;
++	uint32_t tIS_ps;	/* byte 32, spd->ca_setup */
++	uint32_t tIH_ps;	/* byte 33, spd->ca_hold */
++	uint32_t tDS_ps;	/* byte 34, spd->data_setup */
++	uint32_t tDH_ps;	/* byte 35, spd->data_hold */
++	uint32_t tRTP_ps;	/* byte 38, spd->trtp */
++	uint32_t tDQSQ_max_ps;	/* byte 44, spd->tdqsq */
++	uint32_t tQHS_ps;	/* byte 45, spd->tqhs */
 +};
 +
-+extern uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd);
++#endif
+diff --git a/arch/ppc/include/asm/fsl_ddr_sdram.h b/arch/ppc/include/asm/fsl_ddr_sdram.h
+index ef793c9..444bcbc 100644
+--- a/arch/ppc/include/asm/fsl_ddr_sdram.h
++++ b/arch/ppc/include/asm/fsl_ddr_sdram.h
+@@ -10,9 +10,40 @@
+ #ifndef FSL_DDR_MEMCTL_H
+ #define FSL_DDR_MEMCTL_H
+ 
+-/*
+- * DDR_SDRAM_CFG - DDR SDRAM Control Configuration
+- */
++#include <ddr_spd.h>
 +
-+/* * Byte 2 Fundamental Memory Types. */
-+#define SPD_MEMTYPE_DDR2	(0x08)
++/* Basic DDR Technology. */
++#define SDRAM_TYPE_DDR1    2
++#define SDRAM_TYPE_DDR2    3
++#define SDRAM_TYPE_LPDDR1  6
++#define SDRAM_TYPE_DDR3    7
 +
-+/* DIMM Type for DDR2 SPD (according to v1.3) */
-+#define DDR2_SPD_DIMMTYPE_RDIMM		(0x01)
-+#define DDR2_SPD_DIMMTYPE_UDIMM		(0x02)
-+#define DDR2_SPD_DIMMTYPE_SO_DIMM	(0x04)
-+#define DDR2_SPD_DIMMTYPE_72B_SO_CDIMM	(0x06)
-+#define DDR2_SPD_DIMMTYPE_72B_SO_RDIMM	(0x07)
-+#define DDR2_SPD_DIMMTYPE_MICRO_DIMM	(0x08)
-+#define DDR2_SPD_DIMMTYPE_MINI_RDIMM	(0x10)
-+#define DDR2_SPD_DIMMTYPE_MINI_UDIMM	(0x20)
++#define DDR_BL4	4
++#define DDR_BL8	8
 +
-+#endif /* _DDR_SPD_H_ */
++#define DDR2_RTT_OFF		0
++#define DDR2_RTT_75_OHM		1
++#define DDR2_RTT_150_OHM	2
++#define DDR2_RTT_50_OHM		3
++
++#if defined(CONFIG_FSL_DDR2)
++#define FSL_DDR_MIN_TCKE_PULSE_WIDTH_DDR	(3)
++typedef struct ddr2_spd_eeprom_s generic_spd_eeprom_t;
++#define FSL_SDRAM_TYPE	SDRAM_TYPE_DDR2
++#endif
++
++#define FSL_DDR_ODT_NEVER		0x0
++#define FSL_DDR_ODT_CS			0x1
++#define FSL_DDR_ODT_ALL_OTHER_CS	0x2
++#define FSL_DDR_ODT_OTHER_DIMM		0x3
++#define FSL_DDR_ODT_ALL			0x4
++#define FSL_DDR_ODT_SAME_DIMM		0x5
++#define FSL_DDR_ODT_CS_AND_OTHER_DIMM	0x6
++#define FSL_DDR_ODT_OTHER_CS_ONSAMEDIMM	0x7
++
++#define SDRAM_CS_CONFIG_EN		0x80000000
++
++/* DDR_SDRAM_CFG - DDR SDRAM Control Configuration */
+ #define SDRAM_CFG_MEM_EN		0x80000000
+ #define SDRAM_CFG_SREN			0x40000000
+ #define SDRAM_CFG_ECC_EN		0x20000000
+@@ -23,11 +54,103 @@
+ #define SDRAM_CFG_SDRAM_TYPE_SHIFT	24
+ #define SDRAM_CFG_DYN_PWR		0x00200000
+ #define SDRAM_CFG_32_BE			0x00080000
++#define SDRAM_CFG_16_BE			0x00100000
+ #define SDRAM_CFG_8_BE			0x00040000
+ #define SDRAM_CFG_NCAP			0x00020000
+ #define SDRAM_CFG_2T_EN			0x00008000
+ #define SDRAM_CFG_BI			0x00000001
+ 
+-extern phys_size_t fixed_sdram(void);
++#define SDRAM_CFG2_D_INIT		0x00000010
++#define SDRAM_CFG2_ODT_CFG_MASK		0x00600000
++#define SDRAM_CFG2_ODT_NEVER		0
++#define SDRAM_CFG2_ODT_ONLY_WRITE	1
++#define SDRAM_CFG2_ODT_ONLY_READ	2
++#define SDRAM_CFG2_ODT_ALWAYS		3
++
++#define MAX_CHIP_SELECTS_PER_CTRL	4
++#define MAX_DIMM_SLOTS_PER_CTLR		4
++
++/*
++ * Memory controller characteristics and I2C parameters to
++ * read the SPD data.
++ */
++struct ddr_board_info_s {
++	uint32_t fsl_ddr_ver;
++	void __iomem *ddr_base;
++	uint32_t cs_per_ctrl;
++	uint32_t dimm_slots_per_ctrl;
++	uint32_t i2c_bus;
++	uint32_t i2c_slave;
++	uint32_t i2c_speed;
++	void __iomem *i2c_base;
++	uint8_t *spd_i2c_addr;
++};
+ 
++/*
++ * Generalized parameters for memory controller configuration,
++ * might be a little specific to the FSL memory controller
++ */
++struct memctl_options_s {
++	struct ddr_board_info_s *board_info;
++	uint32_t sdram_type;
++	/*
++	 * Memory organization parameters
++	 *
++	 * if DIMM is present in the system
++	 * where DIMMs are with respect to chip select
++	 * where chip selects are with respect to memory boundaries
++	 */
++	uint32_t registered_dimm_en;
++	/* Options local to a Chip Select */
++	struct cs_local_opts_s {
++		uint32_t auto_precharge;
++		uint32_t odt_rd_cfg;
++		uint32_t odt_wr_cfg;
++		uint32_t odt_rtt_norm;
++		uint32_t odt_rtt_wr;
++	} cs_local_opts[MAX_CHIP_SELECTS_PER_CTRL];
++	/* DLL reset disable */
++	uint32_t dll_rst_dis;
++	/* Operational mode parameters */
++	uint32_t ECC_mode;
++	uint32_t ECC_init_using_memctl;
++	uint32_t data_init;
++	/* Use DQS? maybe only with DDR2? */
++	uint32_t DQS_config;
++	uint32_t self_refresh_in_sleep;
++	uint32_t dynamic_power;
++	uint32_t data_bus_width;
++	uint32_t burst_length;
++	/* Global Timing Parameters */
++	uint32_t cas_latency_override;
++	uint32_t cas_latency_override_value;
++	uint32_t use_derated_caslat;
++	uint32_t additive_latency_override;
++	uint32_t additive_latency_override_value;
++	uint32_t clk_adjust;
++	uint32_t cpo_override;
++	uint32_t write_data_delay;
++	uint32_t half_strength_driver_enable;
++	uint32_t twoT_en;
++	uint32_t bstopre;
++	uint32_t tCKE_clock_pulse_width_ps;
++	uint32_t tFAW_window_four_activates_ps;
++	/* Rtt impedance */
++	uint32_t rtt_override;
++	uint32_t rtt_override_value;
++	/* Automatic self refresh */
++	uint32_t auto_self_refresh_en;
++	/* read-to-write turnaround */
++	uint32_t trwt_override;
++	uint32_t trwt;
++	/* Powerdon timings. */
++	uint32_t txp;
++	uint32_t taxpd;
++	uint32_t txard;
++	/* Load mode cycle time */
++	uint32_t tmrd;
++};
++
++extern phys_size_t fsl_ddr_sdram(void);
++extern phys_size_t fixed_sdram(void);
+ #endif
 -- 
 1.7.1
 
