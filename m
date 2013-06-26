@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UraxB-0005Vm-10
- for barebox@lists.infradead.org; Tue, 25 Jun 2013 21:39:10 +0000
-Received: by mail-ee0-f42.google.com with SMTP id c4so7164023eek.1
- for <barebox@lists.infradead.org>; Tue, 25 Jun 2013 14:38:46 -0700 (PDT)
-Message-ID: <51CA0DE1.30605@gmail.com>
-Date: Tue, 25 Jun 2013 23:38:41 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-9-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130625194847.GL32299@pengutronix.de>
-In-Reply-To: <20130625194847.GL32299@pengutronix.de>
+ id 1UriH2-0003iW-NM
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 05:28:09 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UriGf-0006ZV-Ss
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 07:27:45 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UriGf-0007F6-Ri
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 07:27:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 26 Jun 2013 07:27:41 +0200
+Message-Id: <1372224463-13629-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
+References: <1372152052-5463-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +23,17 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] OF: base: convert of_add_memory to OF API
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] barebox multi image support
+To: barebox@lists.infradead.org
 
-On 06/25/2013 09:48 PM, Sascha Hauer wrote:
-> On Tue, Jun 25, 2013 at 11:20:46AM +0200, Sebastian Hesselbarth wrote:
->> Convert of_add_memory parsing to make use of of_address_to_resource
->> instead of parsing memory ranges itself. This makes some functions
->> dead code which are also removed.
->>
->> Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
->
-> Haven't investigated further yet, but this one breaks my loco board
-> with:
+Two patches missing in this series.
 
-The check on the return value from of_address_to_resource in the while
-loop is wrong and should be
-
-while (!of_address_to_resource(...))
-
-I'll update for a v2.
-
-Sebastian
+Sascha
 
 
 _______________________________________________
