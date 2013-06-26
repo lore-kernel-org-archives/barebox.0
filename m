@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Urkfg-0001vm-5U
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:46 +0000
+ Linux)) id 1Urkfg-0001vl-5Z
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:00:57 +0200
-Message-Id: <1372233657-19455-12-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Jun 2013 10:00:53 +0200
+Message-Id: <1372233657-19455-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,162 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/11] ARM: Add a imx_v7_defconfig
+Subject: [PATCH 07/11] ARM: i.MX53 loco: Move over to multiboard
 To: barebox@lists.infradead.org
-
-This is a nearly full-blown config for the v7 i.MX (i.MX51, i.MX53 and
-i.MX6).
-
-currently the following images are built:
-
- barebox-imx51-babbage.img
- barebox-imx53-loco.img
- barebox-imx6-realq7.img
- barebox-genesi-efikasb.img
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/imx_v7_defconfig | 131 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 131 insertions(+)
- create mode 100644 arch/arm/configs/imx_v7_defconfig
+ arch/arm/configs/freescale_mx53_loco_defconfig |  2 +-
+ arch/arm/mach-imx/Kconfig                      | 12 +++++-------
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-new file mode 100644
-index 0000000..e088c2c
---- /dev/null
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -0,0 +1,131 @@
-+CONFIG_ARCH_IMX=y
+diff --git a/arch/arm/configs/freescale_mx53_loco_defconfig b/arch/arm/configs/freescale_mx53_loco_defconfig
+index b2b4c79..dbf4f4e 100644
+--- a/arch/arm/configs/freescale_mx53_loco_defconfig
++++ b/arch/arm/configs/freescale_mx53_loco_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_ARCH_IMX=y
+-CONFIG_ARCH_IMX53=y
 +CONFIG_IMX_MULTI_BOARDS=y
-+CONFIG_MACH_EFIKA_MX_SMARTBOOK=y
-+CONFIG_MACH_FREESCALE_MX51_PDK=y
-+CONFIG_MACH_FREESCALE_MX53_LOCO=y
-+CONFIG_MACH_REALQ7=y
-+CONFIG_IMX_IIM=y
-+CONFIG_IMX_IIM_FUSE_BLOW=y
-+CONFIG_THUMB2_BAREBOX=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_LONGHELP=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_PARTITION_DISK_EFI=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx51-pdk/env/"
-+CONFIG_RESET_SOURCE=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_UIMAGE=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_WD=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_OFDEVICE=y
-+CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
-+CONFIG_NET_USB_SMSC95XX=y
-+CONFIG_DRIVER_SPI_IMX=y
-+CONFIG_I2C=y
-+CONFIG_I2C_IMX=y
-+CONFIG_MTD=y
-+CONFIG_MTD_RAW_DEVICE=y
-+CONFIG_MTD_DATAFLASH=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_MTD_SST25L=y
-+CONFIG_DISK_AHCI=y
-+CONFIG_DISK_AHCI_IMX=y
-+CONFIG_DISK_INTF_PLATFORM_IDE=y
-+CONFIG_DISK_PATA_IMX=y
-+CONFIG_USB=y
-+CONFIG_USB_IMX_CHIPIDEA=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_ULPI=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_USB_GADGET=y
-+CONFIG_USB_GADGET_DFU=y
-+CONFIG_MCI=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_IMX_ESDHC=y
-+CONFIG_MFD_MC13XXX=y
-+CONFIG_MFD_MC34704=y
-+CONFIG_MFD_MC34708=y
-+CONFIG_MFD_MC9SDZ60=y
-+CONFIG_MFD_STMPE=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT25=y
-+CONFIG_EEPROM_AT24=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_WATCHDOG=y
-+CONFIG_WATCHDOG_IMX=y
-+CONFIG_GPIO_STMPE=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_LZO_DECOMPRESS=y
+ CONFIG_MACH_FREESCALE_MX53_LOCO=y
+ CONFIG_IMX_IIM=y
+ CONFIG_IMX_IIM_FUSE_BLOW=y
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index f530e89..ed9ae3d 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -48,7 +48,6 @@ config BOARDINFO
+ 	default "Phytec phyCORE-i.MX35" if MACH_PCM043
+ 	default "Synertronixx scb9328" if MACH_SCB9328
+ 	default "Garz+Fricke Neso" if MACH_NESO
+-	default "Freescale i.MX53 LOCO" if MACH_FREESCALE_MX53_LOCO
+ 	default "Freescale i.MX53 SMD" if MACH_FREESCALE_MX53_SMD
+ 	default "Efika MX smartbook" if MACH_EFIKA_MX_SMARTBOOK
+ 	default "Garz+Fricke Cupid" if MACH_GUF_CUPID
+@@ -226,6 +225,11 @@ if IMX_MULTI_BOARDS
+ config MACH_FREESCALE_MX51_PDK
+ 	bool "Freescale i.MX51 PDK"
+ 	select ARCH_IMX51
++
++config MACH_FREESCALE_MX53_LOCO
++	bool "Freescale i.MX53 LOCO"
++	select ARCH_IMX53
++
+ endif
+ 
+ # ----------------------------------------------------------
+@@ -437,12 +441,6 @@ config MACH_EFIKA_MX_SMARTBOOK
+ 
+ comment "i.MX53 Boards"
+ 
+-config MACH_FREESCALE_MX53_LOCO
+-	bool "Freescale i.MX53 LOCO"
+-	select ARCH_IMX53
+-	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select HAVE_PBL_MULTI_IMAGES
+-
+ config MACH_FREESCALE_MX53_SMD
+ 	bool "Freescale i.MX53 SMD"
+ 	select ARCH_IMX53
 -- 
 1.8.3.1
 
