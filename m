@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urkff-0000v2-6b
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:46 +0000
+ id 1Urkff-0000v6-6U
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 08:01:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Jun 2013 10:00:49 +0200
-Message-Id: <1372233657-19455-4-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 26 Jun 2013 10:00:55 +0200
+Message-Id: <1372233657-19455-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 References: <1372233657-19455-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] ARM: i.MX51 babbage: prepare for multiboard support
+Subject: [PATCH 09/11] ARM: i.MX6 realq7: switch to multiboard
 To: barebox@lists.infradead.org
-
-Merge two initcalls to one and add a protector for the board type.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx51-pdk/board.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ arch/arm/configs/dmo-realq7_defconfig |  2 +-
+ arch/arm/mach-imx/Kconfig             | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
-index 3906e47..2e7be85 100644
---- a/arch/arm/boards/freescale-mx51-pdk/board.c
-+++ b/arch/arm/boards/freescale-mx51-pdk/board.c
-@@ -160,8 +160,11 @@ static void babbage_power_init(void)
- extern char flash_header_imx51_babbage_start[];
- extern char flash_header_imx51_babbage_end[];
+diff --git a/arch/arm/configs/dmo-realq7_defconfig b/arch/arm/configs/dmo-realq7_defconfig
+index 1339391..ab8aa43 100644
+--- a/arch/arm/configs/dmo-realq7_defconfig
++++ b/arch/arm/configs/dmo-realq7_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_ARCH_IMX=y
+-CONFIG_ARCH_IMX6=y
++CONFIG_IMX_MULTI_BOARDS=y
+ CONFIG_MACH_REALQ7=y
+ CONFIG_IMX_IIM=y
+ CONFIG_IMX_IIM_FUSE_BLOW=y
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index ed9ae3d..ccdebca 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -230,6 +230,12 @@ config MACH_FREESCALE_MX53_LOCO
+ 	bool "Freescale i.MX53 LOCO"
+ 	select ARCH_IMX53
  
--static int f3s_devices_init(void)
-+static int imx51_babbage_late_init(void)
- {
-+	if (!of_machine_is_compatible("fsl,imx51-babbage"))
-+		return 0;
++config MACH_REALQ7
++	bool "DataModul i.MX6Q Real Qseven Board"
++	select ARCH_IMX6
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
++	select HAVE_PBL_MULTI_IMAGES
 +
- 	babbage_power_init();
+ endif
  
- 	console_flush();
-@@ -175,13 +178,6 @@ static int f3s_devices_init(void)
- 		BBU_HANDLER_FLAG_DEFAULT, (void *)flash_header_imx51_babbage_start,
- 		flash_header_imx51_babbage_end - flash_header_imx51_babbage_start, 0);
+ # ----------------------------------------------------------
+@@ -477,12 +483,6 @@ config MACH_SABRESD
+ 	bool "Freescale i.MX6 SabreSD"
+ 	select ARCH_IMX6
  
--	return 0;
--}
+-config MACH_REALQ7
+-	bool "DataModul i.MX6Q Real Qseven Board"
+-	select ARCH_IMX6
+-	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select HAVE_PBL_MULTI_IMAGES
 -
--device_initcall(f3s_devices_init);
--
--static int f3s_part_init(void)
--{
- 	device_detect_by_name("mmc0");
+ endchoice
  
- 	devfs_add_partition("mmc0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
-@@ -189,4 +185,4 @@ static int f3s_part_init(void)
- 
- 	return 0;
- }
--late_initcall(f3s_part_init);
-+late_initcall(imx51_babbage_late_init);
+ # ----------------------------------------------------------
 -- 
 1.8.3.1
 
