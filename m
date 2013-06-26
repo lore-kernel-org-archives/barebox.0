@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Urixm-0004H6-43
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 06:12:19 +0000
-Date: Wed, 26 Jun 2013 08:11:53 +0200
+ id 1UrjBb-0004QX-2s
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 06:26:36 +0000
+Date: Wed, 26 Jun 2013 08:26:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130626061153.GM32299@pengutronix.de>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-5-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130626062611.GN32299@pengutronix.de>
+References: <1370019244-7873-1-git-send-email-renaud.barbier@ge.com>
+ <1372157137-7602-2-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372152047-28134-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372157137-7602-2-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,23 +23,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/9] OF: import bus/device related functions from Linux
- OF API
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 1/8] common: DDR2 SPD checksum.
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 25, 2013 at 11:20:42AM +0200, Sebastian Hesselbarth wrote:
-> +struct device_d *of_find_device_by_node(struct device_node *np)
-> +{
-> +        struct device_d *dev;
-> +
-> +	for_each_device(dev)
-> +		if (dev->device_node == np)
-> +			return dev;
-> +        return NULL;
-> +}
+Hi Renaud,
 
-There's some whitespace damage in this function.
+On Tue, Jun 25, 2013 at 11:45:30AM +0100, Renaud Barbier wrote:
+> This commit adds support to calculate the DDR2 SPD checksum as per
+> JEDEC standard No 21-C Appendix X (revision 1.2)
+
+This code is from U-Boot. Please say so in the commit message, possibly
+also which commit you used. Also for the other patches. Wolfgang once
+complained about not doing so for code we used from U-Boot.
+
+> +uint32_t ddr2_spd_check(const struct ddr2_spd_eeprom_s *spd)
+
+The function name is a poor choice as it doesn't give a clue about its
+return value. Does it return 'Yes, the check failed" or "Yes, the check
+is ok"?. Please rename to something like ddr2_spd_checksum_ok.
 
 Sascha
 
