@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og106.obsmtp.com ([64.18.0.182])
+Received: from exprod5og110.obsmtp.com ([64.18.0.20])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UrtcU-0002L9-P6
- for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:35:04 +0000
+ id 1Urtcw-0002NZ-6w
+ for barebox@lists.infradead.org; Wed, 26 Jun 2013 17:35:31 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 26 Jun 2013 18:33:42 +0100
-Message-Id: <1372268027-15271-4-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 26 Jun 2013 18:33:47 +0100
+Message-Id: <1372268027-15271-9-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 References: <1372157137-7602-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,184 +21,306 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ppc 8xxx: DDR headers
+Subject: [PATCH 8/8] ppc 85xx: early I2C support
 To: barebox@lists.infradead.org
 
-Structures are defined to record the common DIMM parameters
-and memory options on a per DIMM basis.
+Early I2C support is introduced to read SPD data from memory
+modules prior to the loading of the I2C driver.
 
-This code is based on the equivalent files in directory
-arch/powerpc/cpu/mpc8xxx/ddr from U-Boot version git-a71d45d.
+This code is based on the equivalent file fsl_i2c.c in directory
+drivers/i2c from U-Boot version git-a71d45d.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/ddr-8xxx/common_timing_params.h |   44 ++++++++++++
- arch/ppc/ddr-8xxx/ddr.h                  |  105 ++++++++++++++++++++++++++++++
- 2 files changed, 149 insertions(+), 0 deletions(-)
- create mode 100644 arch/ppc/ddr-8xxx/common_timing_params.h
- create mode 100644 arch/ppc/ddr-8xxx/ddr.h
+ arch/ppc/mach-mpc85xx/fsl_i2c.c              |  253 ++++++++++++++++++++++++++
+ arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h |   18 ++
+ 2 files changed, 271 insertions(+), 0 deletions(-)
+ create mode 100644 arch/ppc/mach-mpc85xx/fsl_i2c.c
+ create mode 100644 arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
 
-diff --git a/arch/ppc/ddr-8xxx/common_timing_params.h b/arch/ppc/ddr-8xxx/common_timing_params.h
+diff --git a/arch/ppc/mach-mpc85xx/fsl_i2c.c b/arch/ppc/mach-mpc85xx/fsl_i2c.c
 new file mode 100644
-index 0000000..b262193
+index 0000000..51fcc64
 --- /dev/null
-+++ b/arch/ppc/ddr-8xxx/common_timing_params.h
-@@ -0,0 +1,44 @@
-+/*
-+ * Copyright 2008 Freescale Semiconductor, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
-+ */
-+
-+#ifndef COMMON_TIMING_PARAMS_H
-+#define COMMON_TIMING_PARAMS_H
-+
-+struct common_timing_params_s {
-+	uint32_t tCKmin_X_ps;
-+	uint32_t tCKmax_ps;
-+	uint32_t tCKmax_max_ps;
-+	uint32_t tRCD_ps;
-+	uint32_t tRP_ps;
-+	uint32_t tRAS_ps;
-+	uint32_t tWR_ps;	/* maximum = 63750 ps */
-+	uint32_t tWTR_ps;	/* maximum = 63750 ps */
-+	uint32_t tRFC_ps;	/* maximum = 255 ns + 256 ns + .75 ns
-+					   = 511750 ps */
-+	uint32_t tRRD_ps;	/* maximum = 63750 ps */
-+	uint32_t tRC_ps;	/* maximum = 254 ns + .75 ns = 254750 ps */
-+	uint32_t refresh_rate_ps;
-+	uint32_t tIS_ps;	/* byte 32, spd->ca_setup */
-+	uint32_t tIH_ps;	/* byte 33, spd->ca_hold */
-+	uint32_t tDS_ps;	/* byte 34, spd->data_setup */
-+	uint32_t tDH_ps;	/* byte 35, spd->data_hold */
-+	uint32_t tRTP_ps;	/* byte 38, spd->trtp */
-+	uint32_t tDQSQ_max_ps;	/* byte 44, spd->tdqsq */
-+	uint32_t tQHS_ps;	/* byte 45, spd->tqhs */
-+	uint32_t ndimms_present;
-+	uint32_t lowest_common_SPD_caslat;
-+	uint32_t highest_common_derated_caslat;
-+	uint32_t additive_latency;
-+	uint32_t all_DIMMs_burst_lengths_bitmask;
-+	uint32_t all_DIMMs_registered;
-+	uint32_t all_DIMMs_ECC_capable;
-+	uint64_t total_mem;
-+	uint64_t base_address;
-+};
-+
-+#endif
-diff --git a/arch/ppc/ddr-8xxx/ddr.h b/arch/ppc/ddr-8xxx/ddr.h
-new file mode 100644
-index 0000000..6574500
---- /dev/null
-+++ b/arch/ppc/ddr-8xxx/ddr.h
-@@ -0,0 +1,105 @@
++++ b/arch/ppc/mach-mpc85xx/fsl_i2c.c
+@@ -0,0 +1,253 @@
 +/*
 + * Copyright 2013 GE Intelligent Platforms, Inc
-+ * Copyright 2008-2011 Freescale Semiconductor, Inc.
++ * Copyright 2006,2009 Freescale Semiconductor, Inc.
 + *
 + * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * Version 2 as published by the Free Software Foundation.
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Early I2C support functions to read SPD data or board
++ * information.
++ * Based on U-Boot drivers/i2c/fsl_i2c.c
 + */
-+
-+#ifndef FSL_DDR_MAIN_H
-+#define FSL_DDR_MAIN_H
-+
-+#include <asm/fsl_ddr_sdram.h>
-+#include <asm/fsl_ddr_dimm_params.h>
-+#include <mach/fsl_i2c.h>
++#include <common.h>
++#include <i2c/i2c.h>
 +#include <mach/clock.h>
-+#include "common_timing_params.h"
-+
-+#ifdef CONFIG_MPC85xx
 +#include <mach/immap_85xx.h>
-+#endif
++#include <mach/early_udelay.h>
 +
-+/* Record of computed register values. */
-+struct fsl_ddr_cfg_regs_s {
-+	struct {
-+		uint32_t bnds;
-+		uint32_t config;
-+		uint32_t config_2;
-+	} cs[MAX_CHIP_SELECTS_PER_CTRL];
-+	uint32_t timing_cfg_3;
-+	uint32_t timing_cfg_0;
-+	uint32_t timing_cfg_1;
-+	uint32_t timing_cfg_2;
-+	uint32_t ddr_sdram_cfg;
-+	uint32_t ddr_sdram_cfg_2;
-+	uint32_t ddr_sdram_mode;
-+	uint32_t ddr_sdram_mode_2;
-+	uint32_t ddr_sdram_mode_3;
-+	uint32_t ddr_sdram_mode_4;
-+	uint32_t ddr_sdram_mode_5;
-+	uint32_t ddr_sdram_mode_6;
-+	uint32_t ddr_sdram_mode_7;
-+	uint32_t ddr_sdram_mode_8;
-+	uint32_t ddr_sdram_md_cntl;
-+	uint32_t ddr_sdram_interval;
-+	uint32_t ddr_data_init;
-+	uint32_t ddr_sdram_clk_cntl;
-+	uint32_t ddr_init_addr;
-+	uint32_t ddr_init_ext_addr;
-+	uint32_t err_disable;
-+	uint32_t err_int_en;
-+	uint32_t debug[32];
-+};
++/* FSL I2C registers */
++#define FSL_I2C_ADR	0x00
++#define FSL_I2C_FDR	0x04
++#define FSL_I2C_CR	0x08
++#define FSL_I2C_SR	0x0C
++#define FSL_I2C_DR	0x10
++#define FSL_I2C_DFSRR	0x14
++
++/* Bits of FSL I2C registers */
++#define I2C_SR_RXAK	0x01
++#define I2C_SR_MIF	0x02
++#define I2C_SR_MAL	0x10
++#define I2C_SR_MBB	0x20
++#define I2C_SR_MCF	0x80
++#define I2C_CR_RSTA	0x04
++#define I2C_CR_TXAK	0x08
++#define I2C_CR_MTX	0x10
++#define I2C_CR_MSTA	0x20
++#define I2C_CR_MEN	0x80
 +
 +/*
-+ * Data Structures
++ * Set the I2C bus speed for a given I2C device
 + *
-+ * All data structures have to be on the stack
++ * parameters:
++ * - i2c: the I2C base address.
++ * - i2c_clk: I2C bus clock frequency.
++ * - speed: the desired speed of the bus.
++ *
++ * The I2C device must be stopped before calling this function.
++ *
++ * The return value is the actual bus speed that is set.
 + */
-+struct fsl_ddr_info_s {
-+	generic_spd_eeprom_t
-+	spd_installed_dimms[MAX_DIMM_SLOTS_PER_CTLR];
-+	struct dimm_params_s
-+		dimm_params[MAX_DIMM_SLOTS_PER_CTLR];
-+	struct memctl_options_s memctl_opts;
-+	struct common_timing_params_s common_timing_params;
-+	struct fsl_ddr_cfg_regs_s fsl_ddr_config_reg;
-+	struct ddr_board_info_s board_info;
-+};
++static uint32_t fsl_set_i2c_bus_speed(const void __iomem *i2c,
++		uint32_t i2c_clk, uint32_t speed)
++{
++	uint8_t dfsr, fdr = 0x31; /* Default if no FDR found */
++	uint16_t a, b, ga, gb, bin_gb, bin_ga, divider;
++	uint32_t c_div, est_div;
 +
-+uint32_t mclk_to_picos(uint32_t mclk);
-+uint32_t get_memory_clk_period_ps(void);
-+uint32_t picos_to_mclk(uint32_t picos);
-+uint32_t check_fsl_memctl_config_regs(const struct fsl_ddr_cfg_regs_s *ddr);
-+uint64_t fsl_ddr_compute(struct fsl_ddr_info_s *pinfo);
-+uint32_t compute_fsl_memctl_config_regs(
-+		const struct memctl_options_s *popts,
-+		struct fsl_ddr_cfg_regs_s *ddr,
-+		const struct common_timing_params_s *common_dimm,
-+		const struct dimm_params_s *dimm_parameters,
-+		uint32_t dbw_capacity_adjust);
-+uint32_t compute_dimm_parameters(
-+		const generic_spd_eeprom_t *spdin,
-+		struct dimm_params_s *pdimm);
-+uint32_t compute_lowest_common_dimm_parameters(
-+		const struct dimm_params_s *dimm_params,
-+		struct common_timing_params_s *outpdimm,
-+		uint32_t number_of_dimms);
-+uint32_t populate_memctl_options(
-+		int all_DIMMs_registered,
-+		struct memctl_options_s *popts,
-+		struct dimm_params_s *pdimm);
-+int fsl_ddr_set_lawbar(
-+		const struct common_timing_params_s *memctl_common_params,
-+		uint32_t memctl_interleaved);
-+int fsl_ddr_get_spd(
-+		generic_spd_eeprom_t *ctrl_dimms_spd,
-+		struct ddr_board_info_s *binfo);
-+int fsl_ddr_set_memctl_regs(
-+		const struct fsl_ddr_info_s *info);
-+void fsl_ddr_board_options(
-+		struct memctl_options_s *popts,
-+		struct dimm_params_s *pdimm);
-+void fsl_ddr_board_info(struct ddr_board_info_s *info);
-+#endif
++	divider = min((uint16_t)(i2c_clk / speed), (uint16_t) -1);
++	/* Condition 1: dfsr <= 50/T */
++	dfsr = (5 * (i2c_clk / 1000)) / 100000;
++	if (!dfsr)
++		dfsr = 1;
++	est_div = ~0;
++
++	/*
++	 * Bus speed is calculated as per Freescale AN2919.
++	 * a, b and dfsr matches identifiers A,B and C as in the
++	 * application note.
++	 */
++	for (ga = 0x4, a = 10; a <= 30; ga++, a += 2) {
++		for (gb = 0; gb < 8; gb++) {
++			b = 16 << gb;
++			c_div = b * (a + (((3 * dfsr) / b) * 2));
++
++			if ((c_div > divider) && (c_div < est_div)) {
++				est_div = c_div;
++				bin_gb = gb << 2;
++				bin_ga = (ga & 0x3) | ((ga & 0x4) << 3);
++				fdr = bin_gb | bin_ga;
++				speed = i2c_clk / est_div;
++			}
++		}
++		if (a == 20)
++			a += 2;
++		if (a == 24)
++			a += 4;
++	}
++	writeb(dfsr, i2c + FSL_I2C_DFSRR);	/* set default filter */
++	writeb(fdr, i2c + FSL_I2C_FDR);		/* set bus speed */
++
++	return speed;
++}
++
++void fsl_i2c_init(void __iomem *i2c, int speed, int slaveadd)
++{
++	uint32_t i2c_clk;
++
++	i2c_clk =  fsl_get_i2c_freq();
++	writeb(0, i2c + FSL_I2C_CR);
++	early_udelay(5);
++
++	fsl_set_i2c_bus_speed(i2c, i2c_clk, speed);
++	writeb(slaveadd << 1, i2c + FSL_I2C_ADR);
++	writeb(0x0, i2c + FSL_I2C_SR);
++	writeb(I2C_CR_MEN, i2c + FSL_I2C_CR);
++}
++
++static uint32_t fsl_usec2ticks(uint32_t usec)
++{
++	ulong ticks;
++
++	if (usec < 1000) {
++		ticks = (usec * (fsl_get_timebase_clock() / 1000));
++		ticks = (ticks + 500) / 1000;
++	} else {
++		ticks = (usec / 10);
++		ticks *= (fsl_get_timebase_clock() / 100000);
++	}
++
++	return ticks;
++}
++
++static int fsl_i2c_wait4bus(void __iomem *i2c)
++{
++	uint64_t timeval = get_ticks();
++	const uint64_t timeout = fsl_usec2ticks(20000);
++
++	while (readb(i2c + FSL_I2C_SR) & I2C_SR_MBB)
++		if ((get_ticks() - timeval) > timeout)
++			return -1;
++
++	return 0;
++}
++
++void fsl_i2c_stop(void __iomem *i2c)
++{
++	writeb(I2C_CR_MEN, i2c + FSL_I2C_CR);
++}
++
++static int fsl_i2c_wait(void __iomem *i2c, int write)
++{
++	const uint64_t timeout = fsl_usec2ticks(100000);
++	uint64_t timeval = get_ticks();
++	int csr;
++
++	do {
++		csr = readb(i2c + FSL_I2C_SR);
++		if (csr & I2C_SR_MIF)
++			break;
++	} while ((get_ticks() - timeval) < timeout);
++
++	if ((get_ticks() - timeval) > timeout)
++		goto error;
++
++	csr = readb(i2c + FSL_I2C_SR);
++	writeb(0x0, i2c + FSL_I2C_SR);
++
++	if (csr & I2C_SR_MAL)
++		goto error;
++
++	if (!(csr & I2C_SR_MCF))
++		goto error;
++
++	if (write == 0 && (csr & I2C_SR_RXAK))
++		goto error;
++
++	return 0;
++error:
++	return -1;
++}
++
++static int __i2c_write(void __iomem *i2c, uint8_t *data, int length)
++{
++	int i;
++
++	for (i = 0; i < length; i++) {
++		writeb(data[i], i2c + FSL_I2C_DR);
++		if (fsl_i2c_wait(i2c, 0) < 0)
++			break;
++	}
++
++	return i;
++}
++
++static int __i2c_read(void __iomem *i2c, uint8_t *data, int length)
++{
++	int i;
++	uint8_t val = I2C_CR_MEN | I2C_CR_MSTA;
++
++	if (length == 1)
++		writeb(val | I2C_CR_TXAK, i2c + FSL_I2C_CR);
++	else
++		writeb(val, i2c + FSL_I2C_CR);
++
++	readb(i2c + FSL_I2C_DR);
++	for (i = 0; i < length; i++) {
++		if (fsl_i2c_wait(i2c, 1) < 0)
++			break;
++
++		/* Generate ack on last next to last byte */
++		if (i == length - 2)
++			writeb(val | I2C_CR_TXAK, i2c + FSL_I2C_CR);
++		/* Do not generate stop on last byte */
++		if (i == length - 1)
++			writeb(val | I2C_CR_MTX, i2c + FSL_I2C_CR);
++
++		data[i] = readb(i2c + FSL_I2C_DR);
++	}
++
++	return i;
++}
++
++static int
++fsl_i2c_write_addr(void __iomem *i2c, uint8_t dev, uint8_t dir, int rsta)
++{
++	uint8_t val = I2C_CR_MEN | I2C_CR_MSTA | I2C_CR_MTX;
++
++	if (rsta)
++		val |= I2C_CR_RSTA;
++	writeb(val, i2c + FSL_I2C_CR);
++	writeb((dev << 1) | dir, i2c + FSL_I2C_DR);
++
++	if (fsl_i2c_wait(i2c, 0) < 0)
++		return 0;
++
++	return 1;
++}
++
++int fsl_i2c_read(void __iomem *i2c, uint8_t dev, uint addr, int alen,
++			uint8_t *data, int length)
++{
++	int i = -1;
++	uint8_t *a = (uint8_t *)&addr;
++
++	if (alen && (fsl_i2c_wait4bus(i2c) >= 0) &&
++		(fsl_i2c_write_addr(i2c, dev, 0, 0) != 0) &&
++		(__i2c_write(i2c, &a[4 - alen], alen) == alen))
++		i = 0;
++
++	if (length && fsl_i2c_write_addr(i2c, dev, 1, 1) != 0)
++		i = __i2c_read(i2c, data, length);
++
++	if (i == length)
++		return 0;
++
++	return -1;
++}
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h b/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
+new file mode 100644
+index 0000000..acf4cc7
+--- /dev/null
++++ b/arch/ppc/mach-mpc85xx/include/mach/fsl_i2c.h
+@@ -0,0 +1,18 @@
++/*
++ * Copyright 2013 GE Intelligent Platforms, Inc
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++void fsl_i2c_init(void __iomem *i2c, int speed, int slaveadd);
++int fsl_i2c_read(void __iomem *i2c, uint8_t dev, uint addr, int alen,
++		uint8_t *data, int length);
++void fsl_i2c_stop(void __iomem *i2c);
++
 -- 
 1.7.1
 
