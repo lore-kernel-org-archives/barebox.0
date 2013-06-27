@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f281.mail.ru ([217.69.128.248])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Us63N-0007sG-7T
- for barebox@lists.infradead.org; Thu, 27 Jun 2013 06:51:38 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 27 Jun 2013 10:51:11 +0400
-Message-ID: <1372315871.448673693@f281.mail.ru>
-In-Reply-To: <20130627063708.GC516@pengutronix.de>
-References: <1372235714-5568-1-git-send-email-s.hauer@pengutronix.de>
- <1372269426.799780740@f180.mail.ru>
- <20130627063708.GC516@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1Us63P-0007sI-Ri
+ for barebox@lists.infradead.org; Thu, 27 Jun 2013 06:51:41 +0000
+Date: Thu, 27 Jun 2013 08:51:18 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130627065118.GA10414@pengutronix.de>
+References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,29 +22,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmVbMl06IFtQQVRDSF0gbWZkOiBtYzM0NzA4OiBwcm92aWRlIHN0YXRpYyBp?=
- =?UTF-8?B?bmxpbmUgd3JhcHBlcg==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 0/9] OF: address and device related sync and cleanup
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-> On Wed, Jun 26, 2013 at 09:57:06PM +0400, Alexander Shiyan wrote:
-> > > If the driver is disabled provide a static inline wrapper for
-> > > mc34708_get() to prevent linker errors.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-...
-> > Please apply this to master.
-> > I want to merge all m13xxx same as in kernel.
-> > If I get time, of course. :)
+On Tue, Jun 25, 2013 at 11:20:38AM +0200, Sebastian Hesselbarth wrote:
+> This patch set comprises a quite unsorted bunch of patches to further
+> improve and cleanup OF API. With address and device related functions,
+> two more API sets of Linux OF API are imported and modified to match
+> barebox driver core.
 > 
-> That's nicem but why should I apply it to master now? It will be there
-> anyway in a week.
+> With above API improvements, device and resource pointer are removed
+> from struct device_node. Futher, of_translate_address, of_probe, and
+> of_add_memory are converted to recently introduced OF API.
+> 
+> At last, of_free is renamed to of_delete_node, which gives a better
+> impression of what the function is doing.
+> 
+> Sebastian Hesselbarth (9):
+>   OF: import address related functions from Linux OF API
+>   OF: convert of_translate_address to new API
+>   OF: base: move OF_ROOT_NODE_ defines to local OF code
+>   OF: import bus/device related functions from Linux OF API
+>   OF: base: use of_platform_populate for probing
+>   OF: base: remove dead device related functions
+>   OF: remove device and resource pointer from struct device_node
+>   OF: base: convert of_add_memory to OF API
+>   OF: base: rename of_free to of_delete_node
 
-Well, let it be so, since we have as a lot of other changes.
-Thanks.
+Applied this series with the change that I removed the dead code
+ifdeffed with CONFIG_PPC_DCR.
 
----
+Thanks
+ Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
