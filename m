@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Usr21-0006Cc-JN
- for barebox@lists.infradead.org; Sat, 29 Jun 2013 09:01:22 +0000
-Date: Sat, 29 Jun 2013 11:00:59 +0200
+ id 1UsrIC-0006JX-Lx
+ for barebox@lists.infradead.org; Sat, 29 Jun 2013 09:18:05 +0000
+Date: Sat, 29 Jun 2013 11:17:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130629090059.GO516@pengutronix.de>
+Message-ID: <20130629091741.GP516@pengutronix.de>
 References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372443947-12599-5-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372443947-12599-7-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372443947-12599-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372443947-12599-7-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,64 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] spi: add Marvell MVEBU SoC SPI driver
+Subject: Re: [PATCH 6/6] ARM: mvebu: import DT files for Dove SoC and
+ SolidRun CuBox
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Fri, Jun 28, 2013 at 08:25:45PM +0200, Sebastian Hesselbarth wrote:
-> This adds support for the SPI controller found on Marvell MVEBU SoCs
-> (Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
-> is DT only. Compatible strings are provided for Orion (common denominator),
-> Armada 370/XP and Dove SoCs.
+On Fri, Jun 28, 2013 at 08:25:47PM +0200, Sebastian Hesselbarth wrote:
+> This imports dove.dtsi and dove-cubox.dts from Linux kernel with timer
+> node added.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Cc: barebox@lists.infradead.org
+> ---
+>  arch/arm/dts/dove-cubox.dts |  154 +++++++++++++++++++++++
+>  arch/arm/dts/dove.dtsi      |  285 +++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 439 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/arm/dts/dove-cubox.dts
+>  create mode 100644 arch/arm/dts/dove.dtsi
+> 
+> diff --git a/arch/arm/dts/dove-cubox.dts b/arch/arm/dts/dove-cubox.dts
+> new file mode 100644
+> index 0000000..b7dc243
+> --- /dev/null
+> +++ b/arch/arm/dts/dove-cubox.dts
+> @@ -0,0 +1,154 @@
+> +/dts-v1/;
+> +
+> +/include/ "dove.dtsi"
+> +
+> +/ {
+> +	compatible = "solidrun,cubox", "marvell,dove";
+> +	model = "SolidRun CuBox";
+> +
+> +	memory {
+> +		device_type = "memory";
+> +		reg = <0x00000000 0x3f000000>;
+> +	};
+> +
+> +	chosen {
+> +		bootargs = "console=ttyS0,115200n8 earlyprintk";
+> +	};
 
-Mostly good, some minor stuff inline.
+I would add a linux,stdoutpath property here. Then you can switch to
+CONFIG_CONSOLE_ACTIVATE_NONE in the defconfig and enable multiple uarts
+in the dts without risking that the first one to be activated is not the
+console port.
 
-> +static int mvebu_spi_set_transfer_size(struct mvebu_spi *p, int size)
-> +{
-> +	u32 val;
 > +
-> +	if (size != 8 && size != 16)
-> +		return -EINVAL;
-> +
-> +	p->data16 = (size == 16);
-> +
-> +	val = readl(p->base + SPI_IF_CONFIG) & ~IF_TRANSFER_2BYTE;
-> +	if (p->data16)
-> +		val |= IF_TRANSFER_2BYTE;
-> +	writel(val, p->base + SPI_IF_CONFIG);
-> +	
+> +&sdio0 {
+> +	status = "okay";
+> +        bus-width = <4>;
 
-Trailing whitespaces here and elsewhere.
+Use tab here.
 
-> +	return 0;
-> +}
-> +
-> +static int mvebu_spi_set_baudrate(struct mvebu_spi *p, u32 speed)
-> +{
-> +	u32 pscl, val;
-> +
-> +	/* standard prescaler values: 1,2,4,6,...,30 */
-> +	pscl = DIV_ROUND_UP(clk_get_rate(p->clk), speed);
-> +	pscl = roundup(pscl, 2);
-> +
-> +	debug("%s: clk = %lu, speed = %u, pscl = %d\n",
-> +		__func__, clk_get_rate(p->clk), speed, pscl);
+> +		};
+> +		
+> +		lcd0: lcd-controller@820000 {
+> +			compatible = "marvell,dove-lcd";
+> +			reg = <0x820000 0x200>;
+> +			interrupts = <47>;
+> +			clocks = <0>;
+> +			status = "disabled";
+> +		};
+> +		
 
-Please use dev_dbg and friends in drivers.
-
-> +	int ret = 0;
-> +
-> +	match = of_match_node(mvebu_spi_dt_ids, dev->device_node);
-> +	if (!match)
-> +		return -EINVAL;
-> +
-> +	priv = xzalloc(sizeof(*priv));
-> +	priv->base = dev_request_mem_region(dev, 0);
-
-Please check priv->base for validity. I know, most other drivers also
-don't do it, but at least new drivers should.
+Trailing whitespaces.
 
 Sascha
 
