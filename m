@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Usw3K-0000XX-SN
- for barebox@lists.infradead.org; Sat, 29 Jun 2013 14:23:06 +0000
-Date: Sat, 29 Jun 2013 16:22:40 +0200
+ id 1Usw9P-0000bh-Ok
+ for barebox@lists.infradead.org; Sat, 29 Jun 2013 14:29:20 +0000
+Date: Sat, 29 Jun 2013 16:28:57 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130629142240.GB10414@pengutronix.de>
+Message-ID: <20130629142857.GC10414@pengutronix.de>
 References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-6-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372152047-28134-8-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372152047-28134-6-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372152047-28134-8-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/9] OF: base: use of_platform_populate for probing
+Subject: Re: [PATCH 7/9] OF: remove device and resource pointer from struct
+ device_node
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jun 25, 2013 at 11:20:43AM +0200, Sebastian Hesselbarth wrote:
-> With recent bus/device related functions in OF API, we can now
-> convert to use of_platform_populate.
-> 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> Cc: barebox@lists.infradead.org
-> ---
->  drivers/of/base.c |    5 ++---
->  1 files changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 429f924..eb9ac84 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1840,7 +1840,7 @@ const struct of_device_id of_default_bus_match_table[] = {
->  
->  int of_probe(void)
+On Tue, Jun 25, 2013 at 11:20:45AM +0200, Sebastian Hesselbarth wrote:
+> diff --git a/drivers/of/gpio.c b/drivers/of/gpio.c
+> index 41e91ec..7f6d99c 100644
+> --- a/drivers/of/gpio.c
+> +++ b/drivers/of/gpio.c
+> @@ -10,6 +10,10 @@ int of_get_named_gpio(struct device_node *np,
 >  {
-> -	struct device_node *memory, *n;
-> +	struct device_node *memory;
+>  	int ret;
+>  	struct of_phandle_args out_args;
+> +	struct device_d *dev = of_find_device_by_node(np);
+> +
+> +	if (!dev)
+> +		return -EINVAL;
 >  
->  	if(!root_node)
->  		return -ENODEV;
-> @@ -1854,8 +1854,7 @@ int of_probe(void)
->  	if (memory)
->  		of_add_memory(memory, false);
+>  	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
+>  					index, &out_args);
+> @@ -18,7 +22,7 @@ int of_get_named_gpio(struct device_node *np,
+>  		return -EINVAL;
+>  	}
 >  
-> -	list_for_each_entry(n, &root_node->children, parent_list)
-> -		__of_probe(n, of_default_bus_match_table, NULL);
-> +	of_platform_populate(root_node, of_default_bus_match_table, NULL);
+> -	ret = gpio_get_num(out_args.np->device, out_args.args[0]);
+> +	ret = gpio_get_num(dev, out_args.args[0]);
 
-This patch breaks the SPI chip select gpios on my efikasb. Problem is
-that of_get_named_gpio depends on the device pointer in struct
-device_node which of_platform_populate doesn't set. A quick test adding
-the pointer in of_platform_device_create fixed this.
+This doesn't work. What gpio_get_num needs is the device pointer from
+the gpio device, not from the device from the node we pass to this
+function. You would have to use of_find_device_by_node(out_args.np) here
+I guess.
 
 Sascha
 
