@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UswC8-0000eH-0j
- for barebox@lists.infradead.org; Sat, 29 Jun 2013 14:32:08 +0000
-Date: Sat, 29 Jun 2013 16:31:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130629143146.GD10414@pengutronix.de>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-8-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130629142857.GC10414@pengutronix.de>
+ id 1UsxZa-0001QM-L5
+ for barebox@lists.infradead.org; Sat, 29 Jun 2013 16:00:27 +0000
+Received: by mail-we0-f170.google.com with SMTP id w57so2117455wes.29
+ for <barebox@lists.infradead.org>; Sat, 29 Jun 2013 09:00:04 -0700 (PDT)
+Message-ID: <51CF0481.8010907@gmail.com>
+Date: Sat, 29 Jun 2013 18:00:01 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130629142857.GC10414@pengutronix.de>
+References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372443947-12599-3-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130629084953.GN516@pengutronix.de>
+In-Reply-To: <20130629084953.GN516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,54 +21,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/9] OF: remove device and resource pointer from struct
- device_node
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/6] clocksource: orion: add DT support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Sat, Jun 29, 2013 at 04:28:57PM +0200, Sascha Hauer wrote:
-> On Tue, Jun 25, 2013 at 11:20:45AM +0200, Sebastian Hesselbarth wrote:
-> > diff --git a/drivers/of/gpio.c b/drivers/of/gpio.c
-> > index 41e91ec..7f6d99c 100644
-> > --- a/drivers/of/gpio.c
-> > +++ b/drivers/of/gpio.c
-> > @@ -10,6 +10,10 @@ int of_get_named_gpio(struct device_node *np,
-> >  {
-> >  	int ret;
-> >  	struct of_phandle_args out_args;
-> > +	struct device_d *dev = of_find_device_by_node(np);
-> > +
-> > +	if (!dev)
-> > +		return -EINVAL;
-> >  
-> >  	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
-> >  					index, &out_args);
-> > @@ -18,7 +22,7 @@ int of_get_named_gpio(struct device_node *np,
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	ret = gpio_get_num(out_args.np->device, out_args.args[0]);
-> > +	ret = gpio_get_num(dev, out_args.args[0]);
-> 
-> This doesn't work. What gpio_get_num needs is the device pointer from
-> the gpio device, not from the device from the node we pass to this
-> function. You would have to use of_find_device_by_node(out_args.np) here
-> I guess.
+On 06/29/2013 10:49 AM, Sascha Hauer wrote:
+> On Fri, Jun 28, 2013 at 08:25:43PM +0200, Sebastian Hesselbarth wrote:
+>> This adds device tree support to orion timer and also converts clk_get
+>> to clk_lookup to find TCLK without device name reference.
+>>
+>> Signed-off-by: Sebastian Hesselbarth<sebastian.hesselbarth@gmail.com>
+>> ---
+>> Cc: Thomas Petazzoni<thomas.petazzoni@free-electrons.com>
+>> Cc: barebox@lists.infradead.org
+>> ---
+>>   drivers/clocksource/orion.c |    8 +++++++-
+>>   1 files changed, 7 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/drivers/clocksource/orion.c b/drivers/clocksource/orion.c
+>> index e3db845..ed71fa4 100644
+>> --- a/drivers/clocksource/orion.c
+>> +++ b/drivers/clocksource/orion.c
+>> @@ -49,7 +49,7 @@ static int orion_timer_probe(struct device_d *dev)
+>>   	uint32_t val;
+>>
+>>   	timer_base = dev_request_mem_region(dev, 0);
+>> -	tclk = clk_get(dev, "tclk");
+>> +	tclk = clk_lookup("tclk");
+>
+> Please don't do this. I don't know how it is done in the kernel
+> for orion atm, but you could for example help yourself with
+> clkdev_add_physbase until the clocks can be properly looked up from
+> the devicetree.
 
-Apart from this of_find_device_by_node() only works on platform_devices,
-so this will break calling of_get_named_gpio on i2c gpio expanders.
+Ok, clock provider for MVEBU barebox is still missing. But in the
+meantime, I will use clkdev_add_physbase or any equivalent workaround
+until full clock provider will be available.
 
-Sascha
+Sebastian
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
