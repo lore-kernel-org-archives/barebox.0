@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Usql2-00062Z-0g
- for barebox@lists.infradead.org; Sat, 29 Jun 2013 08:43:48 +0000
-Date: Sat, 29 Jun 2013 10:43:25 +0200
+ id 1Usr21-0006Cc-JN
+ for barebox@lists.infradead.org; Sat, 29 Jun 2013 09:01:22 +0000
+Date: Sat, 29 Jun 2013 11:00:59 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130629084325.GM516@pengutronix.de>
-References: <1372354760-31955-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130629090059.GO516@pengutronix.de>
+References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372443947-12599-5-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372354760-31955-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372443947-12599-5-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,18 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] clocksource: fix Marvell timer read-back value
+Subject: Re: [PATCH 4/6] spi: add Marvell MVEBU SoC SPI driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Thu, Jun 27, 2013 at 07:39:20PM +0200, Sebastian Hesselbarth wrote:
-> Clocksource read callback expects incrementing timer values, while
-> internal timer on Marvell SoCs counts backwards. Fix value returned
-> by Marvell MVEBU and Orion clocksource drivers.
+On Fri, Jun 28, 2013 at 08:25:45PM +0200, Sebastian Hesselbarth wrote:
+> This adds support for the SPI controller found on Marvell MVEBU SoCs
+> (Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
+> is DT only. Compatible strings are provided for Orion (common denominator),
+> Armada 370/XP and Dove SoCs.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 
-Applied, thanks
+Mostly good, some minor stuff inline.
+
+> +static int mvebu_spi_set_transfer_size(struct mvebu_spi *p, int size)
+> +{
+> +	u32 val;
+> +
+> +	if (size != 8 && size != 16)
+> +		return -EINVAL;
+> +
+> +	p->data16 = (size == 16);
+> +
+> +	val = readl(p->base + SPI_IF_CONFIG) & ~IF_TRANSFER_2BYTE;
+> +	if (p->data16)
+> +		val |= IF_TRANSFER_2BYTE;
+> +	writel(val, p->base + SPI_IF_CONFIG);
+> +	
+
+Trailing whitespaces here and elsewhere.
+
+> +	return 0;
+> +}
+> +
+> +static int mvebu_spi_set_baudrate(struct mvebu_spi *p, u32 speed)
+> +{
+> +	u32 pscl, val;
+> +
+> +	/* standard prescaler values: 1,2,4,6,...,30 */
+> +	pscl = DIV_ROUND_UP(clk_get_rate(p->clk), speed);
+> +	pscl = roundup(pscl, 2);
+> +
+> +	debug("%s: clk = %lu, speed = %u, pscl = %d\n",
+> +		__func__, clk_get_rate(p->clk), speed, pscl);
+
+Please use dev_dbg and friends in drivers.
+
+> +	int ret = 0;
+> +
+> +	match = of_match_node(mvebu_spi_dt_ids, dev->device_node);
+> +	if (!match)
+> +		return -EINVAL;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +	priv->base = dev_request_mem_region(dev, 0);
+
+Please check priv->base for validity. I know, most other drivers also
+don't do it, but at least new drivers should.
 
 Sascha
 
