@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UsxjA-0001W5-AS
- for barebox@lists.infradead.org; Sat, 29 Jun 2013 16:10:21 +0000
-Date: Sat, 29 Jun 2013 18:09:57 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130629160957.GR516@pengutronix.de>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372152047-28134-8-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130629142857.GC10414@pengutronix.de>
- <20130629143146.GD10414@pengutronix.de>
- <51CF0560.2050902@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <51CF0560.2050902@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UtOqd-0002Z8-H8
+ for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:07:52 +0000
+Received: from tellur.localdomain (p54832945.dip0.t-ipconnect.de
+ [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id 14B8618B4267
+ for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:53 +0200 (CEST)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Sun, 30 Jun 2013 23:08:46 +0200
+Message-Id: <1372626529-23443-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
+References: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +19,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/9] OF: remove device and resource pointer from struct
- device_node
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 4/7] clk: allow to instanciate clk mux without registering
+ it
+To: barebox@lists.infradead.org
 
-On Sat, Jun 29, 2013 at 06:03:44PM +0200, Sebastian Hesselbarth wrote:
-> On 06/29/2013 04:31 PM, Sascha Hauer wrote:
-> >On Sat, Jun 29, 2013 at 04:28:57PM +0200, Sascha Hauer wrote:
-> >>On Tue, Jun 25, 2013 at 11:20:45AM +0200, Sebastian Hesselbarth wrote:
-> >>>diff --git a/drivers/of/gpio.c b/drivers/of/gpio.c
-> >>>index 41e91ec..7f6d99c 100644
-> >>>--- a/drivers/of/gpio.c
-> >>>+++ b/drivers/of/gpio.c
-> >>>@@ -10,6 +10,10 @@ int of_get_named_gpio(struct device_node *np,
-> >>>  {
-> >>>  	int ret;
-> >>>  	struct of_phandle_args out_args;
-> >>>+	struct device_d *dev = of_find_device_by_node(np);
-> >>>+
-> >>>+	if (!dev)
-> >>>+		return -EINVAL;
-> >>>
-> >>>  	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
-> >>>  					index,&out_args);
-> >>>@@ -18,7 +22,7 @@ int of_get_named_gpio(struct device_node *np,
-> >>>  		return -EINVAL;
-> >>>  	}
-> >>>
-> >>>-	ret = gpio_get_num(out_args.np->device, out_args.args[0]);
-> >>>+	ret = gpio_get_num(dev, out_args.args[0]);
-> >>
-> >>This doesn't work. What gpio_get_num needs is the device pointer from
-> >>the gpio device, not from the device from the node we pass to this
-> >>function. You would have to use of_find_device_by_node(out_args.np) here
-> >>I guess.
-> >
-> >Apart from this of_find_device_by_node() only works on platform_devices,
-> >so this will break calling of_get_named_gpio on i2c gpio expanders.
-> 
-> Ok, to work on this I would have to have something to test with. MVEBU
-> DT is still at a very early stage. So for now, I guess removing the
-> device pointer is a bit early?
+Allows to reuse clk mux code within other clocks.
 
-Probably, yes. I think the solution would be to adjust gpio_get_num() so
-that it takes a device_node as argument instead of a device.
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/clk/clk-mux.c | 29 ++++++++++++++++++++++++-----
+ include/linux/clk.h   |  4 ++++
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-> I will also have to have a close look
-> into i2c core what makes those devices special here.
-
-I may be wrong here. In the kernel of_find_device_by_node() works only
-for platform_devices, but since you do for_each_device(), it should work
-for i2c devices in barebox aswell.
-
-Sascha
-
+diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
+index cb5f1a1..47efe12 100644
+--- a/drivers/clk/clk-mux.c
++++ b/drivers/clk/clk-mux.c
+@@ -27,6 +27,8 @@ struct clk_mux {
+ 	int width;
+ };
+ 
++#define to_clk_mux(_clk) container_of(_clk, struct clk_mux, clk)
++
+ static int clk_mux_get_parent(struct clk *clk)
+ {
+ 	struct clk_mux *m = container_of(clk, struct clk_mux, clk);
+@@ -53,11 +55,10 @@ struct clk_ops clk_mux_ops = {
+ 	.set_parent = clk_mux_set_parent,
+ };
+ 
+-struct clk *clk_mux(const char *name, void __iomem *reg,
++struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
+ 		u8 shift, u8 width, const char **parents, u8 num_parents)
+ {
+ 	struct clk_mux *m = xzalloc(sizeof(*m));
+-	int ret;
+ 
+ 	m->reg = reg;
+ 	m->shift = shift;
+@@ -67,11 +68,29 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
+ 	m->clk.parent_names = parents;
+ 	m->clk.num_parents = num_parents;
+ 
+-	ret = clk_register(&m->clk);
++	return &m->clk;
++}
++
++void clk_mux_free(struct clk *clk_mux)
++{
++	struct clk_mux *m = to_clk_mux(clk_mux);
++
++	free(m);
++}
++
++struct clk *clk_mux(const char *name, void __iomem *reg,
++		u8 shift, u8 width, const char **parents, u8 num_parents)
++{
++	struct clk *m;
++	int ret;
++
++	m = clk_mux_alloc(name, reg, shift, width, parents, num_parents);
++
++	ret = clk_register(m);
+ 	if (ret) {
+-		free(m);
++		free(to_clk_mux(m));
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	return &m->clk;
++	return m;
+ }
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index cc4f114..0a565ef 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -212,6 +212,10 @@ struct clk *clk_divider_table(const char *name,
+ 		const struct clk_div_table *table);
+ struct clk *clk_fixed_factor(const char *name,
+ 		const char *parent, unsigned int mult, unsigned int div);
++
++struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
++		u8 shift, u8 width, const char **parents, u8 num_parents);
++void clk_mux_free(struct clk *clk_mux);
+ struct clk *clk_mux(const char *name, void __iomem *reg,
+ 		u8 shift, u8 width, const char **parents, u8 num_parents);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.3.1
+
 
 _______________________________________________
 barebox mailing list
