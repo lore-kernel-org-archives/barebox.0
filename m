@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UtOqd-0002Z8-H8
+ id 1UtOqd-0002Z5-HI
  for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:07:52 +0000
 Received: from tellur.localdomain (p54832945.dip0.t-ipconnect.de
- [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id 14B8618B4267
- for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:53 +0200 (CEST)
+ [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id A724418B4265
+ for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:52 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 30 Jun 2013 23:08:46 +0200
-Message-Id: <1372626529-23443-4-git-send-email-dev@lynxeye.de>
+Date: Sun, 30 Jun 2013 23:08:44 +0200
+Message-Id: <1372626529-23443-2-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
 References: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,92 +24,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/7] clk: allow to instanciate clk mux without registering
- it
+Subject: [PATCH v2 2/7] tegra: change clocksource driver to be more lowlevel
 To: barebox@lists.infradead.org
 
-Allows to reuse clk mux code within other clocks.
+In order to properly bring up the system PLLs we need a reliable
+clocksource. To break the circular dependency between the clocksource
+and the CAR driver, get the OSC frequency with a lowlevel function.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/clk-mux.c | 29 ++++++++++++++++++++++++-----
- include/linux/clk.h   |  4 ++++
- 2 files changed, 28 insertions(+), 5 deletions(-)
+ arch/arm/mach-tegra/include/mach/lowlevel.h | 23 +++++++++++++++++++++++
+ arch/arm/mach-tegra/tegra20-timer.c         | 16 +++-------------
+ 2 files changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
-index cb5f1a1..47efe12 100644
---- a/drivers/clk/clk-mux.c
-+++ b/drivers/clk/clk-mux.c
-@@ -27,6 +27,8 @@ struct clk_mux {
- 	int width;
- };
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index b7c01c0..071416f 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -142,5 +142,28 @@ static inline long tegra20_get_debuguart_base(void)
+ 	return uart_id_to_base[id];
+ }
  
-+#define to_clk_mux(_clk) container_of(_clk, struct clk_mux, clk)
++#define CRC_OSC_CTRL			0x050
++#define CRC_OSC_CTRL_OSC_FREQ_SHIFT	30
++#define CRC_OSC_CTRL_OSC_FREQ_MASK	(0x3 << CRC_OSC_CTRL_OSC_FREQ_SHIFT)
 +
- static int clk_mux_get_parent(struct clk *clk)
- {
- 	struct clk_mux *m = container_of(clk, struct clk_mux, clk);
-@@ -53,11 +55,10 @@ struct clk_ops clk_mux_ops = {
- 	.set_parent = clk_mux_set_parent,
- };
- 
--struct clk *clk_mux(const char *name, void __iomem *reg,
-+struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents)
- {
- 	struct clk_mux *m = xzalloc(sizeof(*m));
--	int ret;
- 
- 	m->reg = reg;
- 	m->shift = shift;
-@@ -67,11 +68,29 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
- 	m->clk.parent_names = parents;
- 	m->clk.num_parents = num_parents;
- 
--	ret = clk_register(&m->clk);
-+	return &m->clk;
++static inline unsigned int tegra_get_osc_clock(void)
++{
++	u32 osc_ctrl = readl(TEGRA_CLK_RESET_BASE + CRC_OSC_CTRL);
++
++	switch ((osc_ctrl & CRC_OSC_CTRL_OSC_FREQ_MASK) >>
++		CRC_OSC_CTRL_OSC_FREQ_SHIFT) {
++	case 0:
++		return 13000000;
++	case 1:
++		return 19200000;
++	case 2:
++		return 12000000;
++	case 3:
++		return 26000000;
++	default:
++		return 0;
++	}
 +}
 +
-+void clk_mux_free(struct clk *clk_mux)
-+{
-+	struct clk_mux *m = to_clk_mux(clk_mux);
-+
-+	free(m);
-+}
-+
-+struct clk *clk_mux(const char *name, void __iomem *reg,
-+		u8 shift, u8 width, const char **parents, u8 num_parents)
-+{
-+	struct clk *m;
-+	int ret;
-+
-+	m = clk_mux_alloc(name, reg, shift, width, parents, num_parents);
-+
-+	ret = clk_register(m);
- 	if (ret) {
--		free(m);
-+		free(to_clk_mux(m));
- 		return ERR_PTR(ret);
+ /* reset vector for the main CPU complex */
+ void tegra_maincomplex_entry(void);
+diff --git a/arch/arm/mach-tegra/tegra20-timer.c b/arch/arm/mach-tegra/tegra20-timer.c
+index aafbfd4..2b32647 100644
+--- a/arch/arm/mach-tegra/tegra20-timer.c
++++ b/arch/arm/mach-tegra/tegra20-timer.c
+@@ -24,6 +24,7 @@
+ #include <init.h>
+ #include <io.h>
+ #include <linux/clk.h>
++#include <mach/lowlevel.h>
+ 
+ /* register definitions */
+ #define TIMERUS_CNTR_1US	0x10
+@@ -43,8 +44,6 @@ static struct clocksource cs = {
+ 
+ static int tegra20_timer_probe(struct device_d *dev)
+ {
+-	struct clk *timer_clk;
+-	unsigned long rate;
+ 	u32 reg;
+ 
+ 	/* use only one timer */
+@@ -57,22 +56,13 @@ static int tegra20_timer_probe(struct device_d *dev)
+ 		return -ENODEV;
  	}
  
--	return &m->clk;
-+	return m;
+-	timer_clk = clk_get(dev, NULL);
+-	if (!timer_clk) {
+-		dev_err(dev, "could not get clock\n");
+-		return -ENODEV;
+-	}
+-
+-	clk_enable(timer_clk);
+-
+ 	/*
+ 	 * calibrate timer to run at 1MHz
+ 	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
+ 	 * representing the divisor and bits [8:15] representing the dividend
+ 	 * each in n+1 form.
+ 	 */
+-	rate = clk_get_rate(timer_clk);
+-	switch (rate) {
++	switch (tegra_get_osc_clock()) {
+ 	case 12000000:
+ 		reg = 0x000b;
+ 		break;
+@@ -116,4 +106,4 @@ static int tegra20_timer_init(void)
+ {
+ 	return platform_driver_register(&tegra20_timer_driver);
  }
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index cc4f114..0a565ef 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -212,6 +212,10 @@ struct clk *clk_divider_table(const char *name,
- 		const struct clk_div_table *table);
- struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div);
-+
-+struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
-+		u8 shift, u8 width, const char **parents, u8 num_parents);
-+void clk_mux_free(struct clk *clk_mux);
- struct clk *clk_mux(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents);
- 
+-coredevice_initcall(tegra20_timer_init);
++core_initcall(tegra20_timer_init);
 -- 
 1.8.3.1
 
