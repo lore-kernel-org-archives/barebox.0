@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UtOqd-0002Z4-Gh
- for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:07:55 +0000
+ id 1UtOrT-0002dD-EP
+ for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:08:45 +0000
 Received: from tellur.localdomain (p54832945.dip0.t-ipconnect.de
- [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id 0654918B424F
- for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:51 +0200 (CEST)
+ [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id 4AE8218B424F
+ for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:57 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 30 Jun 2013 23:08:43 +0200
-Message-Id: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
+Date: Sun, 30 Jun 2013 23:08:49 +0200
+Message-Id: <1372626529-23443-7-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
+References: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,295 +24,388 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/7] clk: add clock lookup from devicetree
+Subject: [PATCH v2 7/7] tegra: add peripheral clocks
 To: barebox@lists.infradead.org
 
-Taken from the Linuxkernel with some small adjustments for barebox.
+Only UART clocks are included for now, but the code should cover
+other peripherals needs, too.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-v2: introduce new Kconfig symbol COMMON_CLK_OF_PROVIDER to avoid
-    increased binary size for systems not using OF clk.
----
- drivers/clk/Kconfig  |  5 +++
- drivers/clk/clk.c    | 97 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/clk/clkdev.c | 74 +++++++++++++++++++++++++++++++++++++++
- include/linux/clk.h  | 33 ++++++++++++++++++
- 4 files changed, 209 insertions(+)
+ arch/arm/mach-tegra/include/mach/tegra20-car.h |  49 ++++++
+ drivers/clk/tegra/Makefile                     |   1 +
+ drivers/clk/tegra/clk-periph.c                 | 202 +++++++++++++++++++++++++
+ drivers/clk/tegra/clk-tegra20.c                |  28 ++++
+ drivers/clk/tegra/clk.h                        |  23 +++
+ 5 files changed, 303 insertions(+)
+ create mode 100644 drivers/clk/tegra/clk-periph.c
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 4589128..a00e539 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -4,3 +4,8 @@ config CLKDEV_LOOKUP
+diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+index b770ae3..d4cb238 100644
+--- a/arch/arm/mach-tegra/include/mach/tegra20-car.h
++++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+@@ -146,6 +146,55 @@
+ #define CRC_PLLE_BASE			0x0e8
+ #define CRC_PLLE_MISC			0x0ec
  
- config COMMON_CLK
- 	bool
++#define CRC_CLK_SOURCE_I2S1		0x100
++#define CRC_CLK_SOURCE_I2S2		0x104
++#define CRC_CLK_SOURCE_SPDIF_OUT	0x108
++#define CRC_CLK_SOURCE_SPDIF_IN		0x10c
++#define CRC_CLK_SOURCE_PWM		0x110
++#define CRC_CLK_SOURCE_SPI		0x114
++#define CRC_CLK_SOURCE_SBC1		0x134
++#define CRC_CLK_SOURCE_SBC2		0x118
++#define CRC_CLK_SOURCE_SBC3		0x11c
++#define CRC_CLK_SOURCE_SBC4		0x1b4
++#define CRC_CLK_SOURCE_XIO		0x120
++#define CRC_CLK_SOURCE_TWC		0x12c
++#define CRC_CLK_SOURCE_IDE		0x144
++#define CRC_CLK_SOURCE_NDFLASH		0x160
++#define CRC_CLK_SOURCE_VFIR		0x168
++#define CRC_CLK_SOURCE_SDMMC1		0x150
++#define CRC_CLK_SOURCE_SDMMC2		0x154
++#define CRC_CLK_SOURCE_SDMMC3		0x1bc
++#define CRC_CLK_SOURCE_SDMMC4		0x164
++#define CRC_CLK_SOURCE_CVE		0x140
++#define CRC_CLK_SOURCE_TVO		0x188
++#define CRC_CLK_SOURCE_TVDAC		0x194
++#define CRC_CLK_SOURCE_HDMI		0x18c
++#define CRC_CLK_SOURCE_DISP1		0x138
++#define CRC_CLK_SOURCE_DISP2		0x13c
++#define CRC_CLK_SOURCE_CSITE		0x1d4
++#define CRC_CLK_SOURCE_LA		0x1f8
++#define CRC_CLK_SOURCE_OWR		0x1cc
++#define CRC_CLK_SOURCE_NOR		0x1d0
++#define CRC_CLK_SOURCE_MIPI		0x174
++#define CRC_CLK_SOURCE_I2C1		0x124
++#define CRC_CLK_SOURCE_I2C2		0x198
++#define CRC_CLK_SOURCE_I2C3		0x1b8
++#define CRC_CLK_SOURCE_DVC		0x128
++#define CRC_CLK_SOURCE_UARTA		0x178
++#define CRC_CLK_SOURCE_UARTB		0x17c
++#define CRC_CLK_SOURCE_UARTC		0x1a0
++#define CRC_CLK_SOURCE_UARTD		0x1c0
++#define CRC_CLK_SOURCE_UARTE		0x1c4
++#define CRC_CLK_SOURCE_3D		0x158
++#define CRC_CLK_SOURCE_2D		0x15c
++#define CRC_CLK_SOURCE_MPE		0x170
++#define CRC_CLK_SOURCE_EPP		0x16c
++#define CRC_CLK_SOURCE_HOST1X		0x180
++#define CRC_CLK_SOURCE_VDE		0x1c8
++#define CRC_CLK_SOURCE_VI		0x148
++#define CRC_CLK_SOURCE_VI_SENSOR	0x1a8
++#define CRC_CLK_SOURCE_EMC		0x19c
 +
-+config COMMON_CLK_OF_PROVIDER
-+	bool
-+	help
-+	 Clock driver provides OF-Tree based clock lookup.
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 690a0c6..7ec3d93 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -16,6 +16,7 @@
-  */
- #include <common.h>
- #include <errno.h>
+ #define CRC_RST_DEV_L_SET		0x300
+ #define CRC_RST_DEV_L_CACHE2		(1 << 31)
+ #define CRC_RST_DEV_L_VCP		(1 << 29)
+diff --git a/drivers/clk/tegra/Makefile b/drivers/clk/tegra/Makefile
+index be58c20..e614722 100644
+--- a/drivers/clk/tegra/Makefile
++++ b/drivers/clk/tegra/Makefile
+@@ -1,5 +1,6 @@
+ obj-y	+= clk.o
+ obj-y	+= clk-divider.o
++obj-y	+= clk-periph.o
+ obj-y	+= clk-pll.o
+ obj-y	+= clk-pll-out.o
+ 
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+new file mode 100644
+index 0000000..e969495
+--- /dev/null
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -0,0 +1,202 @@
++/*
++ * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * Based on the Linux Tegra clock code
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <common.h>
++#include <io.h>
 +#include <malloc.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- 
-@@ -253,6 +254,102 @@ int clk_is_enabled_always(struct clk *clk)
- 	return 1;
- }
- 
-+#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
-+/**
-+ * struct of_clk_provider - Clock provider registration structure
-+ * @link: Entry in global list of clock providers
-+ * @node: Pointer to device tree node of clock provider
-+ * @get: Get clock callback.  Returns NULL or a struct clk for the
-+ *       given clock specifier
-+ * @data: context pointer to be passed into @get callback
-+ */
-+struct of_clk_provider {
-+	struct list_head link;
++#include <linux/clk.h>
++#include <linux/err.h>
 +
-+	struct device_node *node;
-+	struct clk *(*get)(struct of_phandle_args *clkspec, void *data);
-+	void *data;
-+};
++#include "clk.h"
 +
-+static LIST_HEAD(of_clk_providers);
++#define to_clk_periph(_hw) container_of(_hw, struct tegra_clk_periph, hw)
 +
-+struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
++static int clk_periph_get_parent(struct clk *hw)
 +{
-+	struct clk_onecell_data *clk_data = data;
-+	unsigned int idx = clkspec->args[0];
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
 +
-+	if (idx >= clk_data->clk_num) {
-+		pr_err("%s: invalid clock index %d\n", __func__, idx);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	return clk_data->clks[idx];
++	return periph->mux->ops->get_parent(periph->mux);
 +}
-+EXPORT_SYMBOL_GPL(of_clk_src_onecell_get);
 +
-+/**
-+ * of_clk_add_provider() - Register a clock provider for a node
-+ * @np: Device node pointer associated with clock provider
-+ * @clk_src_get: callback for decoding clock
-+ * @data: context pointer for @clk_src_get callback.
-+ */
-+int of_clk_add_provider(struct device_node *np,
-+			struct clk *(*clk_src_get)(struct of_phandle_args *clkspec,
-+						   void *data),
-+			void *data)
++static int clk_periph_set_parent(struct clk *hw, u8 index)
 +{
-+	struct of_clk_provider *cp;
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
 +
-+	cp = kzalloc(sizeof(struct of_clk_provider), GFP_KERNEL);
-+	if (!cp)
-+		return -ENOMEM;
++	return periph->mux->ops->set_parent(periph->mux, index);
++}
 +
-+	cp->node = np;
-+	cp->data = data;
-+	cp->get = clk_src_get;
++static unsigned long clk_periph_recalc_rate(struct clk *hw,
++					    unsigned long parent_rate)
++{
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
 +
-+	list_add(&cp->link, &of_clk_providers);
-+	pr_debug("Added clock from %s\n", np->full_name);
++	return periph->div->ops->recalc_rate(periph->div, parent_rate);
++}
++
++static long clk_periph_round_rate(struct clk *hw, unsigned long rate,
++				  unsigned long *prate)
++{
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
++
++	return periph->div->ops->round_rate(periph->div, rate, prate);
++}
++
++static int clk_periph_set_rate(struct clk *hw, unsigned long rate,
++			       unsigned long parent_rate)
++{
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
++
++	return periph->div->ops->set_rate(periph->div, rate, parent_rate);
++}
++
++static int clk_periph_is_enabled(struct clk *hw)
++{
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
++
++	return periph->gate->ops->is_enabled(periph->gate);
++}
++
++static int clk_periph_enable(struct clk *hw)
++{
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
++	u32 reg;
++
++	reg = readl(periph->rst_reg);
++	reg |= (1 << periph->rst_shift);
++	writel(reg, periph->rst_reg);
++
++	periph->gate->ops->enable(periph->gate);
++
++	udelay(2);
++
++	reg = readl(periph->rst_reg);
++	reg &= ~(1 << periph->rst_shift);
++	writel(reg, periph->rst_reg);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(of_clk_add_provider);
 +
-+/**
-+ * of_clk_del_provider() - Remove a previously registered clock provider
-+ * @np: Device node pointer associated with clock provider
-+ */
-+void of_clk_del_provider(struct device_node *np)
++static void clk_periph_disable(struct clk *hw)
 +{
-+	struct of_clk_provider *cp;
++	struct tegra_clk_periph *periph = to_clk_periph(hw);
++	u32 reg;
 +
-+	list_for_each_entry(cp, &of_clk_providers, link) {
-+		if (cp->node == np) {
-+			list_del(&cp->link);
-+			kfree(cp);
-+			break;
-+		}
-+	}
++	reg = readl(periph->rst_reg);
++	reg |= (1 << periph->rst_shift);
++	writel(reg, periph->rst_reg);
++
++	udelay(2);
++
++	periph->gate->ops->disable(periph->gate);
 +}
-+EXPORT_SYMBOL_GPL(of_clk_del_provider);
 +
-+struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
-+{
-+	struct of_clk_provider *provider;
-+	struct clk *clk = ERR_PTR(-ENOENT);
-+
-+	/* Check if we have such a provider in our array */
-+	list_for_each_entry(provider, &of_clk_providers, link) {
-+		if (provider->node == clkspec->np)
-+			clk = provider->get(clkspec, provider->data);
-+		if (!IS_ERR(clk))
-+			break;
-+	}
-+
-+	return clk;
-+}
-+#endif
-+
- static void dump_one(struct clk *clk, int verbose, int indent)
- {
- 	struct clk *c;
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index 256927e..66cd832 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -19,10 +19,80 @@
- #include <linux/clkdev.h>
- #include <init.h>
- #include <malloc.h>
-+#include <of.h>
- #include <stdio.h>
- 
- static LIST_HEAD(clocks);
- 
-+#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
-+struct clk *of_clk_get(struct device_node *np, int index)
-+{
-+	struct of_phandle_args clkspec;
-+	struct clk *clk;
-+	int rc;
-+
-+	if (index < 0)
-+		return ERR_PTR(-EINVAL);
-+
-+	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
-+					&clkspec);
-+	if (rc)
-+		return ERR_PTR(rc);
-+
-+	clk = of_clk_get_from_provider(&clkspec);
-+	return clk;
-+}
-+EXPORT_SYMBOL(of_clk_get);
-+
-+/**
-+ * of_clk_get_by_name() - Parse and lookup a clock referenced by a device node
-+ * @np: pointer to clock consumer node
-+ * @name: name of consumer's clock input, or NULL for the first clock reference
-+ *
-+ * This function parses the clocks and clock-names properties,
-+ * and uses them to look up the struct clk from the registered list of clock
-+ * providers.
-+ */
-+struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
-+{
-+	struct clk *clk = ERR_PTR(-ENOENT);
-+
-+	/* Walk up the tree of devices looking for a clock that matches */
-+	while (np) {
-+		int index = 0;
-+
-+		/*
-+		 * For named clocks, first look up the name in the
-+		 * "clock-names" property.  If it cannot be found, then
-+		 * index will be an error code, and of_clk_get() will fail.
-+		 */
-+		if (name)
-+			index = of_property_match_string(np, "clock-names",
-+							 name);
-+		clk = of_clk_get(np, index);
-+		if (!IS_ERR(clk))
-+			break;
-+		else if (name && index >= 0) {
-+			pr_err("ERROR: could not get clock %s:%s(%i)\n",
-+				np->full_name, name ? name : "", index);
-+			return clk;
-+		}
-+
-+		/*
-+		 * No matching clock found on this node.  If the parent node
-+		 * has a "clock-ranges" property, then we can try one of its
-+		 * clocks.
-+		 */
-+		np = np->parent;
-+		if (np && !of_get_property(np, "clock-ranges", NULL))
-+			break;
-+	}
-+
-+	return clk;
-+}
-+EXPORT_SYMBOL(of_clk_get_by_name);
-+#endif
-+
- /*
-  * Find the correct struct clk for the device and connection ID.
-  * We do slightly fuzzy matching here:
-@@ -109,6 +179,10 @@ struct clk *clk_get(struct device_d *dev, const char *con_id)
- 	if (!IS_ERR(clk))
- 		return clk;
- 
-+	clk = of_clk_get_by_name(dev->device_node, con_id);
-+		if (!IS_ERR(clk))
-+			return clk;
-+
- 	return clk_get_sys(dev_id, con_id);
- }
- EXPORT_SYMBOL(clk_get);
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 38832ba..1cb661e 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -11,6 +11,8 @@
- #ifndef __LINUX_CLK_H
- #define __LINUX_CLK_H
- 
-+#include <linux/err.h>
-+
- struct device_d;
- 
- /*
-@@ -228,4 +230,35 @@ void clk_dump(int verbose);
- 
- #endif
- 
-+struct device_node;
-+struct of_phandle_args;
-+
-+#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
-+int of_clk_add_provider(struct device_node *np,
-+			struct clk *(*clk_src_get)(struct of_phandle_args *args,
-+						   void *data),
-+			void *data);
-+void of_clk_del_provider(struct device_node *np);
-+
-+struct clk_onecell_data {
-+	struct clk **clks;
-+	unsigned int clk_num;
++const struct clk_ops tegra_clk_periph_ops = {
++	.get_parent = clk_periph_get_parent,
++	.set_parent = clk_periph_set_parent,
++	.recalc_rate = clk_periph_recalc_rate,
++	.round_rate = clk_periph_round_rate,
++	.set_rate = clk_periph_set_rate,
++	.is_enabled = clk_periph_is_enabled,
++	.enable = clk_periph_enable,
++	.disable = clk_periph_disable,
 +};
-+struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data);
 +
-+struct clk *of_clk_get(struct device_node *np, int index);
-+struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
-+struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
-+#else
-+static inline struct clk *of_clk_get(struct device_node *np, int index)
-+{
-+	return ERR_PTR(-ENOENT);
-+}
-+static inline struct clk *of_clk_get_by_name(struct device_node *np,
-+					     const char *name)
-+{
-+	return ERR_PTR(-ENOENT);
-+}
-+#endif
++const struct clk_ops tegra_clk_periph_nodiv_ops = {
++	.get_parent = clk_periph_get_parent,
++	.set_parent = clk_periph_set_parent,
++	.is_enabled = clk_periph_is_enabled,
++	.enable = clk_periph_enable,
++	.disable = clk_periph_disable,
++};
 +
- #endif
++struct clk *_tegra_clk_register_periph(const char *name,
++		const char **parent_names, int num_parents,
++		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags,
++		bool has_div)
++{
++	struct tegra_clk_periph *periph;
++	int ret;
++
++	periph = kzalloc(sizeof(*periph), GFP_KERNEL);
++	if (!periph) {
++		pr_err("%s: could not allocate peripheral clk\n",
++		       __func__);
++		goto out_periph;
++	}
++
++	periph->mux = clk_mux_alloc(NULL, clk_base + reg_offset, 30, 2,
++				    parent_names, num_parents);
++	if (!periph->mux)
++		goto out_mux;
++
++	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + 0x10 +
++				      ((id >> 3) & 0xc), id & 0x1f);
++	if (!periph->gate)
++		goto out_gate;
++
++	if (has_div) {
++		periph->div = tegra_clk_divider_alloc(NULL, NULL, clk_base +
++				reg_offset, 0, TEGRA_DIVIDER_ROUND_UP, 0, 8, 1);
++		if (!periph->div)
++			goto out_div;
++	}
++
++	periph->hw.name = name;
++	periph->hw.ops = has_div ? &tegra_clk_periph_ops :
++				   &tegra_clk_periph_nodiv_ops;
++	periph->hw.parent_names = parent_names;
++	periph->hw.num_parents = num_parents;
++	periph->flags = flags;
++	periph->rst_reg = clk_base + 0x4 + ((id >> 3) & 0xc);
++	periph->rst_shift = id & 0x1f;
++
++	ret = clk_register(&periph->hw);
++	if (ret)
++		goto out_register;
++
++	return &periph->hw;
++
++out_register:
++	tegra_clk_divider_free(periph->div);
++out_div:
++	clk_gate_free(periph->gate);
++out_gate:
++	clk_mux_free(periph->mux);
++out_mux:
++	kfree(periph);
++out_periph:
++	return NULL;
++}
++
++struct clk *tegra_clk_register_periph_nodiv(const char *name,
++		const char **parent_names, int num_parents,
++		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags)
++{
++	return _tegra_clk_register_periph(name, parent_names, num_parents,
++					  clk_base, reg_offset, id, flags,
++					  false);
++}
++
++struct clk *tegra_clk_register_periph(const char *name,
++		const char **parent_names, int num_parents,
++		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags)
++{
++	return _tegra_clk_register_periph(name, parent_names, num_parents,
++					  clk_base, reg_offset, id, flags,
++					  true);
++}
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index 5f668cb..e70f99a 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -275,6 +275,28 @@ static void tegra20_pll_init(void)
+ 			TEGRA_PLL_HAS_CPCON, pll_u_freq_table);
+ }
+ 
++static const char *mux_pllpcm_clkm[] = {"pll_p", "pll_c", "pll_m", "clk_m"};
++
++static void tegra20_periph_init(void)
++{
++	/* peripheral clocks without a divider */
++	clks[uarta] = tegra_clk_register_periph_nodiv("uarta", mux_pllpcm_clkm,
++			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTA, uarta, TEGRA_PERIPH_ON_APB);
++	clks[uartb] = tegra_clk_register_periph_nodiv("uartb", mux_pllpcm_clkm,
++			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTB, uartb, TEGRA_PERIPH_ON_APB);
++	clks[uartc] = tegra_clk_register_periph_nodiv("uartc", mux_pllpcm_clkm,
++			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTC, uartc, TEGRA_PERIPH_ON_APB);
++	clks[uartd] = tegra_clk_register_periph_nodiv("uartd", mux_pllpcm_clkm,
++			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTD, uartd, TEGRA_PERIPH_ON_APB);
++	clks[uarte] = tegra_clk_register_periph_nodiv("uarte", mux_pllpcm_clkm,
++			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTE, uarte, TEGRA_PERIPH_ON_APB);
++}
++
+ static struct tegra_clk_init_table init_table[] = {
+ 	{pll_p,		clk_max,	216000000,	1},
+ 	{pll_p_out1,	clk_max,	28800000,	1},
+@@ -283,6 +305,11 @@ static struct tegra_clk_init_table init_table[] = {
+ 	{pll_p_out4,	clk_max,	24000000,	1},
+ 	{pll_c,		clk_max,	600000000,	1},
+ 	{pll_c_out1,	clk_max,	120000000,	1},
++	{uarta,		pll_p,		0,		1},
++	{uartb,		pll_p,		0,		1},
++	{uartc,		pll_p,		0,		1},
++	{uartd,		pll_p,		0,		1},
++	{uarte,		pll_p,		0,		1},
+ 	{clk_max,	clk_max,	0,		0}, /* sentinel */
+ };
+ 
+@@ -294,6 +321,7 @@ static int tegra20_car_probe(struct device_d *dev)
+ 
+ 	tegra20_osc_clk_init();
+ 	tegra20_pll_init();
++	tegra20_periph_init();
+ 
+ 	tegra_init_from_table(init_table, clks, clk_max);
+ 
+diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
+index 2bc3698..9bb8f1c 100644
+--- a/drivers/clk/tegra/clk.h
++++ b/drivers/clk/tegra/clk.h
+@@ -115,6 +115,29 @@ struct clk *tegra_clk_register_pll_out(const char *name,
+ 		const char *parent_name, void __iomem *reg, u8 shift,
+ 		u8 divider_flags);
+ 
++/* struct clk-periph - peripheral clock */
++struct tegra_clk_periph {
++	struct clk	hw;
++	struct clk	*gate;
++	struct clk	*mux;
++	struct clk	*div;
++	u8 		flags;
++	u8		rst_shift;
++	void __iomem	*rst_reg;
++};
++
++#define TEGRA_PERIPH_NO_RESET BIT(0)
++#define TEGRA_PERIPH_MANUAL_RESET BIT(1)
++#define TEGRA_PERIPH_ON_APB BIT(2)
++
++struct clk *tegra_clk_register_periph_nodiv(const char *name,
++		const char **parent_names, int num_parents,
++		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags);
++
++struct clk *tegra_clk_register_periph(const char *name,
++		const char **parent_names, int num_parents,
++		void __iomem *clk_base, u32 reg_offset, u8 id, u8 flags);
++
+ /* struct clk_init_table - clock initialization table */
+ struct tegra_clk_init_table {
+ 	unsigned int	clk_id;
 -- 
 1.8.3.1
 
