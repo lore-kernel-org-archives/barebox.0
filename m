@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UtOqd-0002Z7-Gk
- for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:07:54 +0000
+ id 1UtOqd-0002Z4-Gh
+ for barebox@lists.infradead.org; Sun, 30 Jun 2013 21:07:55 +0000
 Received: from tellur.localdomain (p54832945.dip0.t-ipconnect.de
- [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id A723D18B4268
- for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:54 +0200 (CEST)
+ [84.131.41.69]) by lynxeye.de (Postfix) with ESMTPA id 0654918B424F
+ for <barebox@lists.infradead.org>; Sun, 30 Jun 2013 23:06:51 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 30 Jun 2013 23:08:47 +0200
-Message-Id: <1372626529-23443-5-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
-References: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
+Date: Sun, 30 Jun 2013 23:08:43 +0200
+Message-Id: <1372626529-23443-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,148 +22,295 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/7] tegra: deduplicate clk defines
+Subject: [PATCH v2 1/7] clk: add clock lookup from devicetree
 To: barebox@lists.infradead.org
+
+Taken from the Linuxkernel with some small adjustments for barebox.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/tegra20-car.h | 90 +++++++++-----------------
- arch/arm/mach-tegra/tegra_avp_init.c           |  6 +-
- 2 files changed, 33 insertions(+), 63 deletions(-)
+v2: introduce new Kconfig symbol COMMON_CLK_OF_PROVIDER to avoid
+    increased binary size for systems not using OF clk.
+---
+ drivers/clk/Kconfig  |  5 +++
+ drivers/clk/clk.c    | 97 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/clk/clkdev.c | 74 +++++++++++++++++++++++++++++++++++++++
+ include/linux/clk.h  | 33 ++++++++++++++++++
+ 4 files changed, 209 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-index 5669732..54c74c7 100644
---- a/arch/arm/mach-tegra/include/mach/tegra20-car.h
-+++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-@@ -111,68 +111,38 @@
- #define CRC_PLLX_MISC_VCOCON_MASK	(0xf << CRC_PLLX_MISC_VCOCON_SHIFT)
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 4589128..a00e539 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -4,3 +4,8 @@ config CLKDEV_LOOKUP
  
- #define CRC_RST_DEV_L_SET		0x300
--#define CRC_RST_DEV_L_SET_CACHE2	(1 << 31)
--#define CRC_RST_DEV_L_SET_VCP		(1 << 29)
--#define CRC_RST_DEV_L_SET_HOST1X	(1 << 28)
--#define CRC_RST_DEV_L_SET_DISP1		(1 << 27)
--#define CRC_RST_DEV_L_SET_DISP2		(1 << 26)
--#define CRC_RST_DEV_L_SET_IDE		(1 << 25)
--#define CRC_RST_DEV_L_SET_3D		(1 << 24)
--#define CRC_RST_DEV_L_SET_ISP		(1 << 23)
--#define CRC_RST_DEV_L_SET_USBD		(1 << 22)
--#define CRC_RST_DEV_L_SET_2D		(1 << 21)
--#define CRC_RST_DEV_L_SET_VI		(1 << 20)
--#define CRC_RST_DEV_L_SET_EPP		(1 << 19)
--#define CRC_RST_DEV_L_SET_I2S2		(1 << 18)
--#define CRC_RST_DEV_L_SET_PWM		(1 << 17)
--#define CRC_RST_DEV_L_SET_TWC		(1 << 16)
--#define CRC_RST_DEV_L_SET_SDMMC4	(1 << 15)
--#define CRC_RST_DEV_L_SET_SDMMC1	(1 << 14)
--#define CRC_RST_DEV_L_SET_NDFLASH	(1 << 13)
--#define CRC_RST_DEV_L_SET_I2C1		(1 << 12)
--#define CRC_RST_DEV_L_SET_I2S1		(1 << 11)
--#define CRC_RST_DEV_L_SET_SPDIF		(1 << 10)
--#define CRC_RST_DEV_L_SET_SDMMC2	(1 << 9)
--#define CRC_RST_DEV_L_SET_GPIO		(1 << 8)
--#define CRC_RST_DEV_L_SET_UART2		(1 << 7)
--#define CRC_RST_DEV_L_SET_UART1		(1 << 6)
--#define CRC_RST_DEV_L_SET_TMR		(1 << 5)
--#define CRC_RST_DEV_L_SET_AC97		(1 << 3)
--#define CRC_RST_DEV_L_SET_SYS		(1 << 2)
--#define CRC_RST_DEV_L_SET_COP		(1 << 1)
--#define CRC_RST_DEV_L_SET_CPU		(1 << 0)
-+#define CRC_RST_DEV_L_CACHE2		(1 << 31)
-+#define CRC_RST_DEV_L_VCP		(1 << 29)
-+#define CRC_RST_DEV_L_HOST1X		(1 << 28)
-+#define CRC_RST_DEV_L_DISP1		(1 << 27)
-+#define CRC_RST_DEV_L_DISP2		(1 << 26)
-+#define CRC_RST_DEV_L_IDE		(1 << 25)
-+#define CRC_RST_DEV_L_3D		(1 << 24)
-+#define CRC_RST_DEV_L_ISP		(1 << 23)
-+#define CRC_RST_DEV_L_USBD		(1 << 22)
-+#define CRC_RST_DEV_L_2D		(1 << 21)
-+#define CRC_RST_DEV_L_VI		(1 << 20)
-+#define CRC_RST_DEV_L_EPP		(1 << 19)
-+#define CRC_RST_DEV_L_I2S2		(1 << 18)
-+#define CRC_RST_DEV_L_PWM		(1 << 17)
-+#define CRC_RST_DEV_L_TWC		(1 << 16)
-+#define CRC_RST_DEV_L_SDMMC4		(1 << 15)
-+#define CRC_RST_DEV_L_SDMMC1		(1 << 14)
-+#define CRC_RST_DEV_L_NDFLASH		(1 << 13)
-+#define CRC_RST_DEV_L_I2C1		(1 << 12)
-+#define CRC_RST_DEV_L_I2S1		(1 << 11)
-+#define CRC_RST_DEV_L_SPDIF		(1 << 10)
-+#define CRC_RST_DEV_L_SDMMC2		(1 << 9)
-+#define CRC_RST_DEV_L_GPIO		(1 << 8)
-+#define CRC_RST_DEV_L_UART2		(1 << 7)
-+#define CRC_RST_DEV_L_UART1		(1 << 6)
-+#define CRC_RST_DEV_L_TMR		(1 << 5)
-+#define CRC_RST_DEV_L_AC97		(1 << 3)
-+#define CRC_RST_DEV_L_SYS		(1 << 2)
-+#define CRC_RST_DEV_L_COP		(1 << 1)
-+#define CRC_RST_DEV_L_CPU		(1 << 0)
+ config COMMON_CLK
+ 	bool
++
++config COMMON_CLK_OF_PROVIDER
++	bool
++	help
++	 Clock driver provides OF-Tree based clock lookup.
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 690a0c6..7ec3d93 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -16,6 +16,7 @@
+  */
+ #include <common.h>
+ #include <errno.h>
++#include <malloc.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
  
- #define CRC_RST_DEV_L_CLR		0x304
--#define CRC_RST_DEV_L_CLR_CACHE2	(1 << 31)
--#define CRC_RST_DEV_L_CLR_VCP		(1 << 29)
--#define CRC_RST_DEV_L_CLR_HOST1X	(1 << 28)
--#define CRC_RST_DEV_L_CLR_DISP1		(1 << 27)
--#define CRC_RST_DEV_L_CLR_DISP2		(1 << 26)
--#define CRC_RST_DEV_L_CLR_IDE		(1 << 25)
--#define CRC_RST_DEV_L_CLR_3D		(1 << 24)
--#define CRC_RST_DEV_L_CLR_ISP		(1 << 23)
--#define CRC_RST_DEV_L_CLR_USBD		(1 << 22)
--#define CRC_RST_DEV_L_CLR_2D		(1 << 21)
--#define CRC_RST_DEV_L_CLR_VI		(1 << 20)
--#define CRC_RST_DEV_L_CLR_EPP		(1 << 19)
--#define CRC_RST_DEV_L_CLR_I2S2		(1 << 18)
--#define CRC_RST_DEV_L_CLR_PWM		(1 << 17)
--#define CRC_RST_DEV_L_CLR_TWC		(1 << 16)
--#define CRC_RST_DEV_L_CLR_SDMMC4	(1 << 15)
--#define CRC_RST_DEV_L_CLR_SDMMC1	(1 << 14)
--#define CRC_RST_DEV_L_CLR_NDFLASH	(1 << 13)
--#define CRC_RST_DEV_L_CLR_I2C1		(1 << 12)
--#define CRC_RST_DEV_L_CLR_I2S1		(1 << 11)
--#define CRC_RST_DEV_L_CLR_SPDIF		(1 << 10)
--#define CRC_RST_DEV_L_CLR_SDMMC2	(1 << 9)
--#define CRC_RST_DEV_L_CLR_GPIO		(1 << 8)
--#define CRC_RST_DEV_L_CLR_UART2		(1 << 7)
--#define CRC_RST_DEV_L_CLR_UART1		(1 << 6)
--#define CRC_RST_DEV_L_CLR_TMR		(1 << 5)
--#define CRC_RST_DEV_L_CLR_AC97		(1 << 3)
--#define CRC_RST_DEV_L_CLR_SYS		(1 << 2)
--#define CRC_RST_DEV_L_CLR_COP		(1 << 1)
--#define CRC_RST_DEV_L_CLR_CPU		(1 << 0)
- 
- #define CRC_RST_CPU_CMPLX_SET		0x340
- 
-diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
-index 4823733..5099e91 100644
---- a/arch/arm/mach-tegra/tegra_avp_init.c
-+++ b/arch/arm/mach-tegra/tegra_avp_init.c
-@@ -54,14 +54,14 @@ static void assert_maincomplex_reset(int num_cores)
- 		mask |= 0x1111 << i;
- 
- 	writel(mask, TEGRA_CLK_RESET_BASE + CRC_RST_CPU_CMPLX_SET);
--	writel(CRC_RST_DEV_L_SET_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
-+	writel(CRC_RST_DEV_L_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
+@@ -253,6 +254,102 @@ int clk_is_enabled_always(struct clk *clk)
+ 	return 1;
  }
  
- /* release reset state of the first core of the main CPU complex */
- static void deassert_cpu0_reset(void)
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++/**
++ * struct of_clk_provider - Clock provider registration structure
++ * @link: Entry in global list of clock providers
++ * @node: Pointer to device tree node of clock provider
++ * @get: Get clock callback.  Returns NULL or a struct clk for the
++ *       given clock specifier
++ * @data: context pointer to be passed into @get callback
++ */
++struct of_clk_provider {
++	struct list_head link;
++
++	struct device_node *node;
++	struct clk *(*get)(struct of_phandle_args *clkspec, void *data);
++	void *data;
++};
++
++static LIST_HEAD(of_clk_providers);
++
++struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
++{
++	struct clk_onecell_data *clk_data = data;
++	unsigned int idx = clkspec->args[0];
++
++	if (idx >= clk_data->clk_num) {
++		pr_err("%s: invalid clock index %d\n", __func__, idx);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return clk_data->clks[idx];
++}
++EXPORT_SYMBOL_GPL(of_clk_src_onecell_get);
++
++/**
++ * of_clk_add_provider() - Register a clock provider for a node
++ * @np: Device node pointer associated with clock provider
++ * @clk_src_get: callback for decoding clock
++ * @data: context pointer for @clk_src_get callback.
++ */
++int of_clk_add_provider(struct device_node *np,
++			struct clk *(*clk_src_get)(struct of_phandle_args *clkspec,
++						   void *data),
++			void *data)
++{
++	struct of_clk_provider *cp;
++
++	cp = kzalloc(sizeof(struct of_clk_provider), GFP_KERNEL);
++	if (!cp)
++		return -ENOMEM;
++
++	cp->node = np;
++	cp->data = data;
++	cp->get = clk_src_get;
++
++	list_add(&cp->link, &of_clk_providers);
++	pr_debug("Added clock from %s\n", np->full_name);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(of_clk_add_provider);
++
++/**
++ * of_clk_del_provider() - Remove a previously registered clock provider
++ * @np: Device node pointer associated with clock provider
++ */
++void of_clk_del_provider(struct device_node *np)
++{
++	struct of_clk_provider *cp;
++
++	list_for_each_entry(cp, &of_clk_providers, link) {
++		if (cp->node == np) {
++			list_del(&cp->link);
++			kfree(cp);
++			break;
++		}
++	}
++}
++EXPORT_SYMBOL_GPL(of_clk_del_provider);
++
++struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
++{
++	struct of_clk_provider *provider;
++	struct clk *clk = ERR_PTR(-ENOENT);
++
++	/* Check if we have such a provider in our array */
++	list_for_each_entry(provider, &of_clk_providers, link) {
++		if (provider->node == clkspec->np)
++			clk = provider->get(clkspec, provider->data);
++		if (!IS_ERR(clk))
++			break;
++	}
++
++	return clk;
++}
++#endif
++
+ static void dump_one(struct clk *clk, int verbose, int indent)
  {
- 	writel(0x1111, TEGRA_CLK_RESET_BASE + CRC_RST_CPU_CMPLX_CLR);
--	writel(CRC_RST_DEV_L_CLR_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_CLR);
-+	writel(CRC_RST_DEV_L_CPU, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_CLR);
+ 	struct clk *c;
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index 256927e..66cd832 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
+@@ -19,10 +19,80 @@
+ #include <linux/clkdev.h>
+ #include <init.h>
+ #include <malloc.h>
++#include <of.h>
+ #include <stdio.h>
+ 
+ static LIST_HEAD(clocks);
+ 
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++struct clk *of_clk_get(struct device_node *np, int index)
++{
++	struct of_phandle_args clkspec;
++	struct clk *clk;
++	int rc;
++
++	if (index < 0)
++		return ERR_PTR(-EINVAL);
++
++	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
++					&clkspec);
++	if (rc)
++		return ERR_PTR(rc);
++
++	clk = of_clk_get_from_provider(&clkspec);
++	return clk;
++}
++EXPORT_SYMBOL(of_clk_get);
++
++/**
++ * of_clk_get_by_name() - Parse and lookup a clock referenced by a device node
++ * @np: pointer to clock consumer node
++ * @name: name of consumer's clock input, or NULL for the first clock reference
++ *
++ * This function parses the clocks and clock-names properties,
++ * and uses them to look up the struct clk from the registered list of clock
++ * providers.
++ */
++struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
++{
++	struct clk *clk = ERR_PTR(-ENOENT);
++
++	/* Walk up the tree of devices looking for a clock that matches */
++	while (np) {
++		int index = 0;
++
++		/*
++		 * For named clocks, first look up the name in the
++		 * "clock-names" property.  If it cannot be found, then
++		 * index will be an error code, and of_clk_get() will fail.
++		 */
++		if (name)
++			index = of_property_match_string(np, "clock-names",
++							 name);
++		clk = of_clk_get(np, index);
++		if (!IS_ERR(clk))
++			break;
++		else if (name && index >= 0) {
++			pr_err("ERROR: could not get clock %s:%s(%i)\n",
++				np->full_name, name ? name : "", index);
++			return clk;
++		}
++
++		/*
++		 * No matching clock found on this node.  If the parent node
++		 * has a "clock-ranges" property, then we can try one of its
++		 * clocks.
++		 */
++		np = np->parent;
++		if (np && !of_get_property(np, "clock-ranges", NULL))
++			break;
++	}
++
++	return clk;
++}
++EXPORT_SYMBOL(of_clk_get_by_name);
++#endif
++
+ /*
+  * Find the correct struct clk for the device and connection ID.
+  * We do slightly fuzzy matching here:
+@@ -109,6 +179,10 @@ struct clk *clk_get(struct device_d *dev, const char *con_id)
+ 	if (!IS_ERR(clk))
+ 		return clk;
+ 
++	clk = of_clk_get_by_name(dev->device_node, con_id);
++		if (!IS_ERR(clk))
++			return clk;
++
+ 	return clk_get_sys(dev_id, con_id);
  }
+ EXPORT_SYMBOL(clk_get);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 38832ba..1cb661e 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -11,6 +11,8 @@
+ #ifndef __LINUX_CLK_H
+ #define __LINUX_CLK_H
  
- /* stop all internal and external clocks to the main CPU complex */
-@@ -220,7 +220,7 @@ void barebox_arm_reset_vector(void)
- 	deassert_cpu0_reset();
++#include <linux/err.h>
++
+ struct device_d;
  
- 	/* assert AVP reset to stop execution here */
--	writel(CRC_RST_DEV_L_SET_COP, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
-+	writel(CRC_RST_DEV_L_COP, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_L_SET);
+ /*
+@@ -228,4 +230,35 @@ void clk_dump(int verbose);
  
- 	unreachable();
- }
+ #endif
+ 
++struct device_node;
++struct of_phandle_args;
++
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++int of_clk_add_provider(struct device_node *np,
++			struct clk *(*clk_src_get)(struct of_phandle_args *args,
++						   void *data),
++			void *data);
++void of_clk_del_provider(struct device_node *np);
++
++struct clk_onecell_data {
++	struct clk **clks;
++	unsigned int clk_num;
++};
++struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data);
++
++struct clk *of_clk_get(struct device_node *np, int index);
++struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
++struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
++#else
++static inline struct clk *of_clk_get(struct device_node *np, int index)
++{
++	return ERR_PTR(-ENOENT);
++}
++static inline struct clk *of_clk_get_by_name(struct device_node *np,
++					     const char *name)
++{
++	return ERR_PTR(-ENOENT);
++}
++#endif
++
+ #endif
 -- 
 1.8.3.1
 
