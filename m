@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
+Received: from mail-bk0-x234.google.com ([2a00:1450:4008:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uu56b-0005a6-0Z
- for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:15:12 +0000
-Received: by mail-bk0-f46.google.com with SMTP id na10so2487806bkb.19
- for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 11:14:47 -0700 (PDT)
+ id 1Uu56e-0005aE-97
+ for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:15:20 +0000
+Received: by mail-bk0-f52.google.com with SMTP id d7so2509468bkh.25
+ for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 11:14:50 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue,  2 Jul 2013 20:14:30 +0200
-Message-Id: <1372788879-11028-2-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue,  2 Jul 2013 20:14:39 +0200
+Message-Id: <1372788879-11028-11-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,544 +23,178 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 01/10] OF: import address related functions from Linux OF
- API
+Subject: [PATCH v3 10/10] OF: base: rename of_free to of_delete_node
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This imports drivers/of/address.c from Linux with some minor modifications.
-of_translate_address is not yet enabled and PCI and ISA related bus translations
-have not been imported. Also, a corresponding include header is created with
-prototypes and non-OF function stubs.
+of_free is misleading about the actual purpose of the function. There is
+already a of_create_node counterpart, so rename of_free to of_create_node
+and update all users accordingly.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
 ---
- drivers/of/Makefile  |    2 +-
- drivers/of/address.c |  431 ++++++++++++++++++++++++++++++++++++++++++++++++++
- include/of_address.h |   64 ++++++++
- 3 files changed, 496 insertions(+), 1 deletions(-)
- create mode 100644 drivers/of/address.c
- create mode 100644 include/of_address.h
+ commands/of_node.c |    2 +-
+ commands/oftree.c  |    4 +-
+ drivers/of/base.c  |   65 +++++++++++++++++++++++++--------------------------
+ drivers/of/fdt.c   |    2 +-
+ include/of.h       |    4 +-
+ 5 files changed, 38 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index c81bbec..b8add0b 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,4 +1,4 @@
--obj-y += base.o fdt.o
-+obj-y += address.o base.o fdt.o
- obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
- obj-$(CONFIG_GPIOLIB) += gpio.o
- obj-y += partition.o
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-new file mode 100644
-index 0000000..3e5387a
---- /dev/null
-+++ b/drivers/of/address.c
-@@ -0,0 +1,431 @@
-+/*
-+ * address.c - address related devicetree functions
-+ *
-+ * Copyright (c) 2012 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * based on Linux devicetree support
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <of.h>
-+#include <of_address.h>
-+
-+/* Max address size we deal with */
-+#define OF_MAX_ADDR_CELLS	4
-+#define OF_CHECK_ADDR_COUNT(na)	((na) > 0 && (na) <= OF_MAX_ADDR_CELLS)
-+#define OF_CHECK_COUNTS(na, ns)	(OF_CHECK_ADDR_COUNT(na) && (ns) > 0)
-+
-+/* Debug utility */
-+#ifdef DEBUG
-+static void of_dump_addr(const char *s, const __be32 *addr, int na)
+diff --git a/commands/of_node.c b/commands/of_node.c
+index e60ef66..b1894b1 100644
+--- a/commands/of_node.c
++++ b/commands/of_node.c
+@@ -87,7 +87,7 @@ static int do_of_node(int argc, char *argv[])
+ 			return -ENOENT;
+ 		}
+ 
+-		of_free(node);
++		of_delete_node(node);
+ 	}
+ 
+ 	return 0;
+diff --git a/commands/oftree.c b/commands/oftree.c
+index 9149517..00e54dc 100644
+--- a/commands/oftree.c
++++ b/commands/oftree.c
+@@ -86,7 +86,7 @@ static int do_oftree(int argc, char *argv[])
+ 		struct device_node *root = of_get_root_node();
+ 
+ 		if (root)
+-			of_free(root);
++			of_delete_node(root);
+ 
+ 		return 0;
+ 	}
+@@ -162,7 +162,7 @@ static int do_oftree(int argc, char *argv[])
+ 				goto out;
+ 			}
+ 			of_print_nodes(root, 0);
+-			of_free(root);
++			of_delete_node(root);
+ 		} else {
+ 			struct device_node *n = of_find_node_by_path(node);
+ 			if (!n) {
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 1cf7a5f..e9f1f79 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1549,39 +1549,6 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	return 0;
+ }
+ 
+-void of_free(struct device_node *node)
+-{
+-	struct device_node *n, *nt;
+-	struct property *p, *pt;
+-	struct device_d *dev;
+-
+-	if (!node)
+-		return;
+-
+-	list_for_each_entry_safe(p, pt, &node->properties, list)
+-		of_delete_property(p);
+-
+-	list_for_each_entry_safe(n, nt, &node->children, parent_list) {
+-		of_free(n);
+-	}
+-
+-	if (node->parent) {
+-		list_del(&node->parent_list);
+-		list_del(&node->list);
+-	}
+-
+-	dev = of_find_device_by_node(node);
+-	if (dev)
+-		dev->device_node = NULL;
+-
+-	free(node->name);
+-	free(node->full_name);
+-	free(node);
+-
+-	if (node == root_node)
+-		of_set_root_node(NULL);
+-}
+-
+ static void __of_parse_phandles(struct device_node *node)
+ {
+ 	struct device_node *n;
+@@ -1679,6 +1646,38 @@ out:
+ 	return dn;
+ }
+ 
++void of_delete_node(struct device_node *node)
 +{
-+	printk(KERN_DEBUG "%s", s);
-+	while (na--)
-+		printk(" %08x", be32_to_cpu(*(addr++)));
-+	printk("\n");
-+}
-+#else
-+static void of_dump_addr(const char *s, const __be32 *addr, int na) { }
-+#endif
++	struct device_node *n, *nt;
++	struct property *p, *pt;
++	struct device_d *dev;
 +
-+/* Callbacks for bus specific translators */
-+struct of_bus {
-+	const char	*name;
-+	const char	*addresses;
-+	int		(*match)(struct device_node *parent);
-+	void		(*count_cells)(struct device_node *child,
-+				       int *addrc, int *sizec);
-+	u64		(*map)(__be32 *addr, const __be32 *range,
-+				int na, int ns, int pna);
-+	int		(*translate)(__be32 *addr, u64 offset, int na);
-+	unsigned int	(*get_flags)(const __be32 *addr);
-+};
++	if (!node)
++		return;
 +
-+/*
-+ * Default translator (generic bus)
-+ */
++	list_for_each_entry_safe(p, pt, &node->properties, list)
++		of_delete_property(p);
 +
-+static void of_bus_default_count_cells(struct device_node *dev,
-+				       int *addrc, int *sizec)
-+{
-+	if (addrc)
-+		*addrc = of_n_addr_cells(dev);
-+	if (sizec)
-+		*sizec = of_n_size_cells(dev);
-+}
++	list_for_each_entry_safe(n, nt, &node->children, parent_list)
++		of_delete_node(n);
 +
-+static u64 of_bus_default_map(__be32 *addr, const __be32 *range,
-+		int na, int ns, int pna)
-+{
-+	u64 cp, s, da;
-+
-+	cp = of_read_number(range, na);
-+	s  = of_read_number(range + na + pna, ns);
-+	da = of_read_number(addr, na);
-+
-+	pr_debug("OF: default map, cp=%llx, s=%llx, da=%llx\n",
-+		 (unsigned long long)cp, (unsigned long long)s,
-+		 (unsigned long long)da);
-+
-+	/*
-+	 * If the number of address cells is larger than 2 we assume the
-+	 * mapping doesn't specify a physical address. Rather, the address
-+	 * specifies an identifier that must match exactly.
-+	 */
-+	if (na > 2 && memcmp(range, addr, na * 4) != 0)
-+		return OF_BAD_ADDR;
-+
-+	if (da < cp || da >= (cp + s))
-+		return OF_BAD_ADDR;
-+	return da - cp;
-+}
-+
-+static int of_bus_default_translate(__be32 *addr, u64 offset, int na)
-+{
-+	u64 a = of_read_number(addr, na);
-+	memset(addr, 0, na * 4);
-+	a += offset;
-+	if (na > 1)
-+		addr[na - 2] = cpu_to_be32(a >> 32);
-+	addr[na - 1] = cpu_to_be32(a & 0xffffffffu);
-+
-+	return 0;
-+}
-+
-+static unsigned int of_bus_default_get_flags(const __be32 *addr)
-+{
-+	return IORESOURCE_MEM;
-+}
-+
-+/*
-+ * Array of bus specific translators
-+ */
-+
-+static struct of_bus of_busses[] = {
-+	/* Default */
-+	{
-+		.name = "default",
-+		.addresses = "reg",
-+		.match = NULL,
-+		.count_cells = of_bus_default_count_cells,
-+		.map = of_bus_default_map,
-+		.translate = of_bus_default_translate,
-+		.get_flags = of_bus_default_get_flags,
-+	},
-+};
-+
-+static struct of_bus *of_match_bus(struct device_node *np)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(of_busses); i++)
-+		if (!of_busses[i].match || of_busses[i].match(np))
-+			return &of_busses[i];
-+	BUG();
-+	return NULL;
-+}
-+
-+static int of_translate_one(struct device_node *parent, struct of_bus *bus,
-+			    struct of_bus *pbus, __be32 *addr,
-+			    int na, int ns, int pna, const char *rprop)
-+{
-+	const __be32 *ranges;
-+	unsigned int rlen;
-+	int rone;
-+	u64 offset = OF_BAD_ADDR;
-+
-+	/* Normally, an absence of a "ranges" property means we are
-+	 * crossing a non-translatable boundary, and thus the addresses
-+	 * below the current not cannot be converted to CPU physical ones.
-+	 * Unfortunately, while this is very clear in the spec, it's not
-+	 * what Apple understood, and they do have things like /uni-n or
-+	 * /ht nodes with no "ranges" property and a lot of perfectly
-+	 * useable mapped devices below them. Thus we treat the absence of
-+	 * "ranges" as equivalent to an empty "ranges" property which means
-+	 * a 1:1 translation at that level. It's up to the caller not to try
-+	 * to translate addresses that aren't supposed to be translated in
-+	 * the first place. --BenH.
-+	 *
-+	 * As far as we know, this damage only exists on Apple machines, so
-+	 * This code is only enabled on powerpc. --gcl
-+	 */
-+	ranges = of_get_property(parent, rprop, &rlen);
-+#if !defined(CONFIG_PPC)
-+	if (ranges == NULL) {
-+		pr_err("OF: no ranges; cannot translate\n");
-+		return 1;
-+	}
-+#endif /* !defined(CONFIG_PPC) */
-+	if (ranges == NULL || rlen == 0) {
-+		offset = of_read_number(addr, na);
-+		memset(addr, 0, pna * 4);
-+		pr_debug("OF: empty ranges; 1:1 translation\n");
-+		goto finish;
++	if (node->parent) {
++		list_del(&node->parent_list);
++		list_del(&node->list);
 +	}
 +
-+	pr_debug("OF: walking ranges...\n");
++	dev = of_find_device_by_node(node);
++	if (dev)
++		dev->device_node = NULL;
 +
-+	/* Now walk through the ranges */
-+	rlen /= 4;
-+	rone = na + pna + ns;
-+	for (; rlen >= rone; rlen -= rone, ranges += rone) {
-+		offset = bus->map(addr, ranges, na, ns, pna);
-+		if (offset != OF_BAD_ADDR)
-+			break;
-+	}
-+	if (offset == OF_BAD_ADDR) {
-+		pr_debug("OF: not found !\n");
-+		return 1;
-+	}
-+	memcpy(addr, ranges + na, 4 * pna);
++	free(node->name);
++	free(node->full_name);
++	free(node);
 +
-+ finish:
-+	of_dump_addr("OF: parent translation for:", addr, pna);
-+	pr_debug("OF: with offset: %llx\n", (unsigned long long)offset);
-+
-+	/* Translate it into parent bus space */
-+	return pbus->translate(addr, offset, pna);
++	if (node == root_node)
++		of_set_root_node(NULL);
 +}
 +
-+/*
-+ * Translate an address from the device-tree into a CPU physical address,
-+ * this walks up the tree and applies the various bus mappings on the
-+ * way.
-+ *
-+ * Note: We consider that crossing any level with #size-cells == 0 to mean
-+ * that translation is impossible (that is we are not dealing with a value
-+ * that can be mapped to a cpu physical address). This is not really specified
-+ * that way, but this is traditionally the way IBM at least do things
-+ */
-+static u64 __of_translate_address(struct device_node *dev,
-+				  const __be32 *in_addr, const char *rprop)
-+{
-+	struct device_node *parent = NULL;
-+	struct of_bus *bus, *pbus;
-+	__be32 addr[OF_MAX_ADDR_CELLS];
-+	int na, ns, pna, pns;
-+	u64 result = OF_BAD_ADDR;
-+
-+	pr_debug("OF: ** translation for device %s **\n", dev->full_name);
-+
-+	/* Get parent & match bus type */
-+	parent = of_get_parent(dev);
-+	if (parent == NULL)
-+		return OF_BAD_ADDR;
-+	bus = of_match_bus(parent);
-+
-+	/* Count address cells & copy address locally */
-+	bus->count_cells(dev, &na, &ns);
-+	if (!OF_CHECK_COUNTS(na, ns)) {
-+		printk(KERN_ERR "prom_parse: Bad cell count for %s\n",
-+		       dev->full_name);
-+		return OF_BAD_ADDR;
-+	}
-+	memcpy(addr, in_addr, na * 4);
-+
-+	pr_debug("OF: bus is %s (na=%d, ns=%d) on %s\n",
-+	    bus->name, na, ns, parent->full_name);
-+	of_dump_addr("OF: translating address:", addr, na);
-+
-+	/* Translate */
-+	for (;;) {
-+		/* Switch to parent bus */
-+		dev = parent;
-+		parent = of_get_parent(dev);
-+
-+		/* If root, we have finished */
-+		if (parent == NULL) {
-+			pr_debug("OF: reached root node\n");
-+			result = of_read_number(addr, na);
-+			break;
-+		}
-+
-+		/* Get new parent bus and counts */
-+		pbus = of_match_bus(parent);
-+		pbus->count_cells(dev, &pna, &pns);
-+		if (!OF_CHECK_COUNTS(pna, pns)) {
-+			printk(KERN_ERR "prom_parse: Bad cell count for %s\n",
-+			       dev->full_name);
-+			break;
-+		}
-+
-+		pr_debug("OF: parent bus is %s (na=%d, ns=%d) on %s\n",
-+		    pbus->name, pna, pns, parent->full_name);
-+
-+		/* Apply bus translation */
-+		if (of_translate_one(dev, bus, pbus, addr, na, ns, pna, rprop))
-+			break;
-+
-+		/* Complete the move up one level */
-+		na = pna;
-+		ns = pns;
-+		bus = pbus;
-+
-+		of_dump_addr("OF: one level translation:", addr, na);
-+	}
-+
-+	return result;
-+}
-+
-+u64 of_translate_dma_address(struct device_node *dev, const __be32 *in_addr)
-+{
-+	return __of_translate_address(dev, in_addr, "dma-ranges");
-+}
-+EXPORT_SYMBOL(of_translate_dma_address);
-+
-+bool of_can_translate_address(struct device_node *dev)
-+{
-+	struct device_node *parent;
-+	struct of_bus *bus;
-+	int na, ns;
-+
-+	parent = of_get_parent(dev);
-+	if (parent == NULL)
-+		return false;
-+
-+	bus = of_match_bus(parent);
-+	bus->count_cells(dev, &na, &ns);
-+
-+	return OF_CHECK_COUNTS(na, ns);
-+}
-+EXPORT_SYMBOL(of_can_translate_address);
-+
-+const __be32 *of_get_address(struct device_node *dev, int index, u64 *size,
-+		    unsigned int *flags)
-+{
-+	const __be32 *prop;
-+	unsigned int psize;
-+	struct device_node *parent;
-+	struct of_bus *bus;
-+	int onesize, i, na, ns;
-+
-+	/* Get parent & match bus type */
-+	parent = of_get_parent(dev);
-+	if (parent == NULL)
-+		return NULL;
-+	bus = of_match_bus(parent);
-+	bus->count_cells(dev, &na, &ns);
-+	if (!OF_CHECK_ADDR_COUNT(na))
-+		return NULL;
-+
-+	/* Get "reg" or "assigned-addresses" property */
-+	prop = of_get_property(dev, bus->addresses, &psize);
-+	if (prop == NULL)
-+		return NULL;
-+	psize /= 4;
-+
-+	onesize = na + ns;
-+	for (i = 0; psize >= onesize; psize -= onesize, prop += onesize, i++)
-+		if (i == index) {
-+			if (size)
-+				*size = of_read_number(prop + na, ns);
-+			if (flags)
-+				*flags = bus->get_flags(prop);
-+			return prop;
-+		}
-+	return NULL;
-+}
-+EXPORT_SYMBOL(of_get_address);
-+
-+static int __of_address_to_resource(struct device_node *dev,
-+		const __be32 *addrp, u64 size, unsigned int flags,
-+		const char *name, struct resource *r)
-+{
-+	u64 taddr;
-+
-+	if ((flags & (IORESOURCE_IO | IORESOURCE_MEM)) == 0)
-+		return -EINVAL;
-+	taddr = of_translate_address(dev, addrp);
-+	if (taddr == OF_BAD_ADDR)
-+		return -EINVAL;
-+	memset(r, 0, sizeof(struct resource));
-+	if (flags & IORESOURCE_IO) {
-+		unsigned long port;
-+		port = pci_address_to_pio(taddr);
-+		if (port == (unsigned long)-1)
-+			return -EINVAL;
-+		r->start = port;
-+		r->end = port + size - 1;
-+	} else {
-+		r->start = taddr;
-+		r->end = taddr + size - 1;
-+	}
-+	r->flags = flags;
-+	r->name = name ? name : dev->full_name;
-+
-+	return 0;
-+}
-+
-+/**
-+ * of_address_to_resource - Translate device tree address and return as resource
-+ *
-+ * Note that if your address is a PIO address, the conversion will fail if
-+ * the physical address can't be internally converted to an IO token with
-+ * pci_address_to_pio(), that is because it's either called to early or it
-+ * can't be matched to any host bridge IO space
-+ */
-+int of_address_to_resource(struct device_node *dev, int index,
-+			   struct resource *r)
-+{
-+	const __be32	*addrp;
-+	u64		size;
-+	unsigned int	flags;
-+	const char	*name = NULL;
-+
-+	addrp = of_get_address(dev, index, &size, &flags);
-+	if (addrp == NULL)
-+		return -EINVAL;
-+
-+	/* Get optional "reg-names" property to add a name to a resource */
-+	of_property_read_string_index(dev, "reg-names",	index, &name);
-+
-+	return __of_address_to_resource(dev, addrp, size, flags, name, r);
-+}
-+EXPORT_SYMBOL_GPL(of_address_to_resource);
-+
-+struct device_node *of_find_matching_node_by_address(struct device_node *from,
-+					const struct of_device_id *matches,
-+					u64 base_address)
-+{
-+	struct device_node *dn = of_find_matching_node(from, matches);
-+	struct resource res;
-+
-+	while (dn) {
-+		if (of_address_to_resource(dn, 0, &res))
-+			continue;
-+		if (res.start == base_address)
-+			return dn;
-+		dn = of_find_matching_node(dn, matches);
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * of_iomap - Maps the memory mapped IO for a given device_node
-+ * @device:	the device whose io range will be mapped
-+ * @index:	index of the io range
-+ *
-+ * Returns a pointer to the mapped memory
-+ */
-+void __iomem *of_iomap(struct device_node *np, int index)
-+{
-+	struct resource res;
-+
-+	if (of_address_to_resource(np, index, &res))
-+		return NULL;
-+
-+	return IOMEM(res.start);
-+}
-+EXPORT_SYMBOL(of_iomap);
-diff --git a/include/of_address.h b/include/of_address.h
-new file mode 100644
-index 0000000..a82e2e5
---- /dev/null
-+++ b/include/of_address.h
-@@ -0,0 +1,64 @@
-+#ifndef __OF_ADDRESS_H
-+#define __OF_ADDRESS_H
-+
-+#include <common.h>
-+#include <of.h>
-+
-+#ifndef pci_address_to_pio
-+static inline unsigned long pci_address_to_pio(phys_addr_t addr) { return -1; }
-+#endif
-+
-+#ifdef CONFIG_OFTREE
-+
-+extern u64 of_translate_dma_address(struct device_node *dev,
-+				const __be32 *in_addr);
-+extern bool of_can_translate_address(struct device_node *dev);
-+extern const __be32 *of_get_address(struct device_node *dev, int index,
-+				u64 *size, unsigned int *flags);
-+extern int of_address_to_resource(struct device_node *dev, int index,
-+				struct resource *r);
-+extern struct device_node *of_find_matching_node_by_address(
-+	struct device_node *from, const struct of_device_id *matches,
-+	u64 base_address);
-+extern void __iomem *of_iomap(struct device_node *np, int index);
-+
-+#else /* CONFIG_OFTREE */
-+
-+static inline u64 of_translate_dma_address(struct device_node *dev,
-+				const __be32 *in_addr)
-+{
-+	return OF_BAD_ADDR;
-+}
-+
-+static inline bool of_can_translate_address(struct device_node *dev)
-+{
-+	return false;
-+}
-+
-+static inline const __be32 *of_get_address(struct device_node *dev, int index,
-+				u64 *size, unsigned int *flags)
-+{
-+	return 0;
-+}
-+
-+static inline int of_address_to_resource(struct device_node *dev, int index,
-+				struct resource *r)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline struct device_node *of_find_matching_node_by_address(
-+	struct device_node *from, const struct of_device_id *matches,
-+	u64 base_address)
-+{
-+	return NULL;
-+}
-+
-+static inline void __iomem *of_iomap(struct device_node *np, int index)
-+{
-+	return NULL;
-+}
-+
-+#endif /* CONFIG_OFTREE */
-+
-+#endif /* __OF_ADDRESS_H */
+ int of_device_is_stdout_path(struct device_d *dev)
+ {
+ 	struct device_node *dn;
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index afaa4e0..76d6bb1 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -211,7 +211,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 		}
+ 	}
+ err:
+-	of_free(root);
++	of_delete_node(root);
+ 
+ 	return ERR_PTR(ret);
+ }
+diff --git a/include/of.h b/include/of.h
+index f01d854..ebe8e39 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -139,7 +139,7 @@ extern struct device_node *of_new_node(struct device_node *parent,
+ 				const char *name);
+ extern struct device_node *of_create_node(struct device_node *root,
+ 					const char *path);
+-extern void of_free(struct device_node *node);
++extern void of_delete_node(struct device_node *node);
+ 
+ extern int of_machine_is_compatible(const char *compat);
+ extern int of_device_is_compatible(const struct device_node *device,
+@@ -508,7 +508,7 @@ static inline struct device_node *of_create_node(struct device_node *root,
+ 	return NULL;
+ }
+ 
+-static inline void of_free(struct device_node *node)
++static inline void of_delete_node(struct device_node *node)
+ {
+ }
+ 
 -- 
 1.7.2.5
 
