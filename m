@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Utvvp-0001PK-Cq
- for barebox@lists.infradead.org; Tue, 02 Jul 2013 08:27:27 +0000
-Date: Tue, 2 Jul 2013 10:26:56 +0200
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20130702102656.17592ec6@e6520eb>
-In-Reply-To: <20130702081413.GE516@pengutronix.de>
-References: <20130701181234.15305e43@e6520eb>
- <20130702081413.GE516@pengutronix.de>
-Mime-Version: 1.0
+Received: from mail-ea0-x235.google.com ([2a00:1450:4013:c01::235])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UtzLn-0006Hz-Ew
+ for barebox@lists.infradead.org; Tue, 02 Jul 2013 12:06:29 +0000
+Received: by mail-ea0-f181.google.com with SMTP id a15so2715670eae.26
+ for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 05:06:05 -0700 (PDT)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Tue,  2 Jul 2013 14:09:28 +0200
+Message-Id: <1372766968-13103-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: iMX nand BBT problem
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Makefile: fix mixed implicit and normal rules
+To: barebox@lists.infradead.org
 
-SGkgU2FzY2hhLAoKTGUgVHVlLCAyIEp1bCAyMDEzIDEwOjE0OjEzICswMjAwLApTYXNjaGEgSGF1
-ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+IGEgw6ljcml0IDoKPiBPbiBNb24sIEp1bCAwMSwg
-MjAxMyBhdCAwNjoxMjozNFBNICswMjAwLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4gPiBIaSwKPiA+
-IAo+ID4gd2hlbiB1cGdyYWRpbmcgZnJvbSAyMDEzLjA1LjEgdG8gMjAxMy4wNiBvbiBhbiBpLk1Y
-MzUgSSBnZXQgdGhlCj4gPiBmb2xsb3dpbmcgbG9nIDoKPiA+IAo+ID4gLSBpbml0aWFsIGxvZyA6
-Cj4gPiBiYXJlYm94IDIwMTMuMDUuMS0wMDAwMS1nYThlODc4NSAjMjUgTW9uIEp1bCAxIDE3OjEy
-OjE0IENFU1QgMjAxMwo+ID4gQm9hcmQ6IEV1a3JlYSBDUFVJTVgzNQo+ID4gZGV0ZWN0ZWQgaS5N
-WDM1IHJldmlzaW9uIDIuMQo+ID4gbmV0Y29uc29sZTogcmVnaXN0ZXJlZCBhcyBjczEKPiA+IG5h
-bmQ6IE1hbnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkYSAoTWljcm9uIE5BTkQgMjU2
-TWlCIDMsM1YKPiA+IDgtYml0KSwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKPiA+IG1k
-aW9fYnVzOiBtaWlidXMwOiBwcm9iZWQKPiA+IGlteC1pcHUtZmIgaW14LWlwdS1mYjogaS5NWCBG
-cmFtZWJ1ZmZlciBkcml2ZXIKPiA+IGlteC1lc2RoYyBpbXgtZXNkaGMwOiByZWdpc3RlcmVkIGFz
-IGlteC1lc2RoYzAKPiA+IGVoY2kgZWhjaTA6IFVTQiBFSENJIDEuMDAKPiA+IG1hbGxvYyBzcGFj
-ZTogMHg4NzcwMDAwMCAtPiAweDg3ZWZmZmZmIChzaXplIDggTWlCKQo+ID4gcnVubmluZyAvZW52
-L2Jpbi9pbml0Li4uCj4gPiAKPiA+IC0tPiB1cGdyYWRlIGJhcmVib3ggOgo+ID4gYmFyZWJveCAy
-MDEzLjA2LjAtMDAwMDEtZ2YzNTVjZjQgIzI2IE1vbiBKdWwgMSAxNzo1Nzo1MiBDRVNUIDIwMTMK
-PiA+IEJvYXJkOiBFdWtyZWEgQ1BVSU1YMzUKPiA+IGRldGVjdGVkIGkuTVgzNSByZXZpc2lvbiAy
-LjEKPiA+IG5ldGNvbnNvbGU6IHJlZ2lzdGVyZWQgYXMgY3MxCj4gPiBuYW5kOiBNYW51ZmFjdHVy
-ZXIgSUQ6IDB4MmMsIENoaXAgSUQ6IDB4ZGEgKE1pY3JvbiBOQU5EIDI1Nk1pQiAzLDNWCj4gPiA4
-LWJpdCksIHBhZ2Ugc2l6ZTogMjA0OCwgT09CIHNpemU6IDY0IAo+ID4gbmFuZDogQmFkIGJsb2Nr
-IHRhYmxlIG5vdCBmb3VuZCBmb3IgY2hpcCAwCj4gPiBuYW5kOiBCYWQgYmxvY2sgdGFibGUgbm90
-IGZvdW5kIGZvciBjaGlwIDAgCj4gPiBpbXhfbmFuZCBpbXhfbmFuZDogbm8gQkJUIGZvdW5kLiBj
-cmVhdGUgb25lIHVzaW5nIHRoZSBpbXhfbmFuZF9iYm0KPiA+IGNvbW1hbmQKPiA+IG1kaW9fYnVz
-OiBtaWlidXMwOiBwcm9iZWQKPiA+IGlteC1pcHUtZmIgaW14LWlwdS1mYjogaS5NWCBGcmFtZWJ1
-ZmZlciBkcml2ZXIKPiA+IGlteC1lc2RoYyBpbXgtZXNkaGMwOiByZWdpc3RlcmVkIGFzIGlteC1l
-c2RoYzAKPiA+IGVoY2kgZWhjaTA6IFVTQiBFSENJIDEuMDAKPiA+IG1hbGxvYyBzcGFjZTogMHg4
-NzcwMDAwMCAtPiAweDg3ZWZmZmZmIChzaXplIDggTWlCKQo+ID4gZW52ZnM6IHdyb25nIG1hZ2lj
-IG9uIC9kZXYvZW52MAo+ID4gbm8gdmFsaWQgZW52aXJvbm1lbnQgZm91bmQgb24gL2Rldi9lbnYw
-LiBVc2luZyBkZWZhdWx0IGVudmlyb25tZW50Cj4gPiBydW5uaW5nIC9lbnYvYmluL2luaXQuLi4K
-PiA+IG5vIE1BQyBhZGRyZXNzIHNldCBmb3IgZXRoMC4gcGxlYXNlIGVudGVyIHRoZSBvbmUgZm91
-bmQgb24geW91ciBib2FyZDoKPiA+IDAwOjEyOjM0OjU2Ojc4OjkwIHNhdmluZyBlbnZpcm9ubWVu
-dAo+ID4gCj4gPiBPbmNlIEkgcmVzZXQgdGhlIGJvYXJkIEkgY2FuIHNlZSB0aGF0IHRoZSBlbnYg
-d2FzIG5vdCBzYXZlZCBhbmQgSSBnZXQKPiA+IHByb21wdGVkIGFnYWluIGZvciB0aGUgTUFDIGFk
-ZHJlc3MuCj4gPiAKPiA+IEFueSBpZGVhIG9mIHdoYXQgY2FuIGJlIHdyb25nIHRoZXJlID8KPiA+
-IAo+ID4gVGhpcyBib2FyZCBpcyBjb25maWd1cmVkIGluIGV4dGVybmFsIGJvb3QgZnJvbSBhIDJr
-IE5BTkQgKGFuZCB3YXMKPiA+IGFscmVhZHkgdXNpbmcgZmxhc2ggQkJUKSwgYW5kIHRoZSBrZXJu
-ZWwgYW5kIHJvb3RmcyBzdGlsbCBydW4gd2l0aG91dAo+ID4gYW55IHZpc2libGUgcHJvYmxlbS4K
-PiAKPiBBcmUgeW91IHN1cmUgdGhpcyBoYXBwZW5zIGJldHdlZW4gMjAxMy4wNS4xIGFuZCAyMDEz
-LjA2LjA/IFRoZSBvbmx5Cj4gY2hhbmdlcyBpbiB0aGUgbXRkIHN0dWZmIGFyZToKPiAKPiBhZTZm
-NzUxIG5hbmRfYmFzZTogc3luYyBmbGFzaCBkZXRlY3Rpb24gZnVuY3Rpb25zIHdpdGggbGludXgg
-My45J3MgY29kZQo+IGM4YWYwMzUgTWVyZ2UgYnJhbmNoICdmb3ItbmV4dC9taXNjJwo+IDdjMTVm
-ZDEgTkFORDogaW14OiBGaXggbWVtb3J5IGxlYWsKPiBkOGVlNTRmIG10ZDogTmFuZDogVXNlIGRl
-dl9hZGRfcGFyYW1fYm9vbCBmb3IgZXJhc2ViYWQgcGFyYW1ldGVyCj4gN2M2YzYxZiB0cmVld2lk
-ZTogVXNlIGRldl9hZGRfcGFyYW1faW50X3JvIHdoZXJlIHBvc3NpYmxlCj4gOTczMTc2ZCBtdGQ6
-IHVwZGF0ZSBOQU5EIG1hbnVmYWN0dXJlciBuYW1lcyBmcm9tIHRoZSBrZXJuZWwKPiA0YzJiZGM4
-IG5hbmRfYmFzZTogZGV0ZWN0IG1vcmUgT05GSSBmbGFzaAo+IAo+IFNvIHRoZSBvbmx5IHBhdGNo
-ZXMgd2hpY2ggc2VlbSB0byBjaGFuZ2Ugc29tZXRoaW5nIGFyZSBmcm9tIHlvdSA7KQo+IApJIGtu
-b3cgYW5kIEkgZmVhcmVkIEkgYnJva2Ugc29tZXRoaW5nIDotKCBidXQgSSBkb24ndCBzZWUgd2hl
-cmUgYXQgdGhlCm1vbWVudC4KSSdsbCBzcGVuZCBtb3JlIHRpbWUgb24gdGhpcyBhbmQgcHJvdmlk
-ZSBtb3JlIGRldGFpbHMgc2hvcnRseS4KCkVyaWMKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+Getting "Makefile:484: *** mixed implicit and normal rules.  Stop."
+with make version "GNU Make 3.82".
+
+This patch will fix this issue.
+
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index d82e795..4b250dd 100644
+--- a/Makefile
++++ b/Makefile
+@@ -481,7 +481,7 @@ export KBUILD_BINARY ?= barebox.bin
+ barebox-flash-image: $(KBUILD_IMAGE) FORCE
+ 	$(call if_changed,ln)
+ 
+-images images/%.s: barebox.bin FORCE
++images/%.s: barebox.bin FORCE
+ 	$(Q)$(MAKE) $(build)=images $@
+ 
+ ifdef CONFIG_PBL_MULTI_IMAGES
+-- 
+1.8.3.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
