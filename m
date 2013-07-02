@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uu56d-0005a9-70
- for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:15:15 +0000
-Received: by mail-bk0-f48.google.com with SMTP id jf17so2471350bkc.21
- for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 11:14:46 -0700 (PDT)
+ id 1Uu56d-0005aB-Dc
+ for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:15:14 +0000
+Received: by mail-bk0-f41.google.com with SMTP id jc3so2511237bkc.14
+ for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 11:14:49 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue,  2 Jul 2013 20:14:29 +0200
-Message-Id: <1372788879-11028-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue,  2 Jul 2013 20:14:37 +0200
+Message-Id: <1372788879-11028-9-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,65 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 00/10] OF: address and device related sync and cleanup
+Subject: [PATCH v3 08/10] OF: remove device and resource pointer from struct
+ device_node
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This patch set comprises a quite unsorted bunch of patches to further
-improve and cleanup OF API. With address and device related functions,
-two more API sets of Linux OF API are imported and modified to match
-barebox driver core.
+struct device_node has its own resources and a pointer to associated
+device_d. With recent platform related OF code, we can convert the
+only user of it and remove those pointers from struct device_node.
 
-With above API improvements, device and resource pointer are removed
-from struct device_node. Futher, of_translate_address, of_probe, and
-of_add_memory are converted to recently introduced OF API.
-
-At last, of_free is renamed to of_delete_node, which gives a better
-impression of what the function is doing.
-
-v3 of this patch set includes fixes introduced with v2 that have been
-sent as separate patches. Also patch 5 is inserted to not break OF
-gpio parsing with subsequent patches.
-
-This time I have tested the OF gpio patches on Marvell Dove; side
-effect: Orion GPIO driver that I will post as part of the MVEBU DT
-improvement patches.
-
-Sebastian Hesselbarth (10):
-  OF: import address related functions from Linux OF API
-  OF: convert of_translate_address to new API
-  OF: base: move OF_ROOT_NODE_ defines to local OF code
-  OF: import bus/device related functions from Linux OF API
-  OF: gpio: convert DT based gpio handling to new OF API
-  OF: base: use of_platform_populate for probing
-  OF: base: remove dead device related functions
-  OF: remove device and resource pointer from struct device_node
-  OF: base: convert of_add_memory to OF API
-  OF: base: rename of_free to of_delete_node
-
- commands/of_node.c    |    2 +-
- commands/oftree.c     |    4 +-
- drivers/of/Makefile   |    4 +-
- drivers/of/address.c  |  437 +++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/of/base.c     |  339 +++++---------------------------------
- drivers/of/fdt.c      |    2 +-
- drivers/of/gpio.c     |   26 ---
- drivers/of/of_gpio.c  |   52 ++++++
- drivers/of/platform.c |  321 ++++++++++++++++++++++++++++++++++++
- drivers/spi/imx_spi.c |    1 +
- include/of.h          |   33 +++--
- include/of_address.h  |   72 ++++++++
- include/of_gpio.h     |   44 +++++
- 13 files changed, 999 insertions(+), 338 deletions(-)
- create mode 100644 drivers/of/address.c
- delete mode 100644 drivers/of/gpio.c
- create mode 100644 drivers/of/of_gpio.c
- create mode 100644 drivers/of/platform.c
- create mode 100644 include/of_address.h
- create mode 100644 include/of_gpio.h
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
+Changelog:
+v3:
+- remove gpio related changes as there is now a separate patch
+
 Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c |    8 ++++----
+ include/of.h      |    3 ---
+ 2 files changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 9d63127..0244281 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1594,6 +1594,7 @@ void of_free(struct device_node *node)
+ {
+ 	struct device_node *n, *nt;
+ 	struct property *p, *pt;
++	struct device_d *dev;
+ 
+ 	if (!node)
+ 		return;
+@@ -1610,10 +1611,9 @@ void of_free(struct device_node *node)
+ 		list_del(&node->list);
+ 	}
+ 
+-	if (node->device)
+-		node->device->device_node = NULL;
+-	else
+-		free(node->resource);
++	dev = of_find_device_by_node(node);
++	if (dev)
++		dev->device_node = NULL;
+ 
+ 	free(node->name);
+ 	free(node->full_name);
+diff --git a/include/of.h b/include/of.h
+index f33ed20..f01d854 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -30,9 +30,6 @@ struct device_node {
+ 	struct list_head children;
+ 	struct list_head parent_list;
+ 	struct list_head list;
+-	struct resource *resource;
+-	int num_resource;
+-	struct device_d *device;
+ 	struct list_head phandles;
+ 	phandle phandle;
+ };
 -- 
 1.7.2.5
 
