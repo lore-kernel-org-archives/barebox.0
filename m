@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uu5MK-0000QW-8Z
- for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:31:25 +0000
-Received: by mail-bk0-f45.google.com with SMTP id je9so2507883bkc.32
+Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uu5MN-0003Rm-Tx
+ for barebox@lists.infradead.org; Tue, 02 Jul 2013 18:31:30 +0000
+Received: by mail-bk0-f53.google.com with SMTP id e11so2479339bkh.40
  for <barebox@lists.infradead.org>; Tue, 02 Jul 2013 11:31:01 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Tue,  2 Jul 2013 20:30:48 +0200
-Message-Id: <1372789849-12194-10-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Tue,  2 Jul 2013 20:30:47 +0200
+Message-Id: <1372789849-12194-9-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,113 +23,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 09/10] ARM: mvebu: add more options to SolidRun CuBox
- defconfig
+Subject: [PATCH v2 08/10] LED: add support for device tree parsing of gpio-leds
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-This patch updates SolidRun CuBox defconfig to more commands also valueable
-for debug. Also, all future driver subsystems are enabled to ease driver
-development.
+This adds a driver option to probe GPIO LEDs from device tree compatible
+with "gpio-leds" device tree nodes.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
-Changelog:
-v1->v2:
-- add CONFIG_CONSOLE_ACTIVATE_NONE (Suggested by Sascha Hauer)
-
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: barebox@lists.infradead.org
 ---
- arch/arm/configs/solidrun_cubox_defconfig |   72 +++++++++++++++++++++++++++++
- 1 files changed, 72 insertions(+), 0 deletions(-)
+ drivers/led/Kconfig    |    4 ++++
+ drivers/led/led-gpio.c |   45 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/configs/solidrun_cubox_defconfig b/arch/arm/configs/solidrun_cubox_defconfig
-index 1a27d81..61195ae 100644
---- a/arch/arm/configs/solidrun_cubox_defconfig
-+++ b/arch/arm/configs/solidrun_cubox_defconfig
-@@ -1,9 +1,81 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="dove-cubox"
- CONFIG_ARCH_MVEBU=y
- CONFIG_ARCH_DOVE=y
- CONFIG_AEABI=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
- CONFIG_DEBUG_LL=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_GLOBAL=y
-+CONFIG_CMD_AUTOMOUNT=y
-+CONFIG_CMD_BASENAME=y
-+CONFIG_CMD_DIRNAME=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_READLINK=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_ECHO_E=y
- CONFIG_CMD_LOADY=y
- CONFIG_CMD_LOADS=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_SHA224SUM=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
- CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_WD=y
-+CONFIG_OFDEVICE=y
- CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SPI_MVEBU=y
-+CONFIG_I2C=y
-+CONFIG_MTD=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_DISK_AHCI=y
-+CONFIG_USB=y
-+CONFIG_USB_EHCI=y
-+CONFIG_USB_STORAGE=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_LED=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_WATCHDOG=y
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-+CONFIG_BZLIB=y
-+CONFIG_LZO_DECOMPRESS=y
+diff --git a/drivers/led/Kconfig b/drivers/led/Kconfig
+index 8ca6ab8..3ead82e 100644
+--- a/drivers/led/Kconfig
++++ b/drivers/led/Kconfig
+@@ -7,6 +7,10 @@ config LED_GPIO
+ 	bool "gpio LED support"
+ 	depends on GENERIC_GPIO
+ 
++config LED_GPIO_OF
++	bool "support parsing gpio LEDs from device tree"
++	depends on LED_GPIO && OFTREE
++
+ config LED_GPIO_RGB
+ 	bool "gpio rgb LED support"
+ 	depends on LED_GPIO
+diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+index 08dc9ba..54f9264 100644
+--- a/drivers/led/led-gpio.c
++++ b/drivers/led/led-gpio.c
+@@ -18,8 +18,10 @@
+  *
+  */
+ #include <common.h>
++#include <init.h>
+ #include <led.h>
+ #include <gpio.h>
++#include <of_gpio.h>
+ 
+ static void led_gpio_set(struct led *led, unsigned int value)
+ {
+@@ -194,3 +196,46 @@ void led_gpio_rgb_unregister(struct gpio_led *led)
+ 	led_unregister(&led->led);
+ }
+ #endif /* CONFIG_LED_GPIO_RGB */
++
++#ifdef CONFIG_LED_GPIO_OF
++
++static int led_gpio_of_probe(struct device_d *dev)
++{
++	struct device_node *child;
++
++	for_each_child_of_node(dev->device_node, child) {
++		struct gpio_led *gled;
++		enum of_gpio_flags flags;
++		int gpio;
++
++		gpio = of_get_named_gpio_flags(child, "gpios", 0, &flags);
++		if (gpio < 0)
++			continue;
++
++		gled = xzalloc(sizeof(*gled));
++		gled->led.name = xstrdup(child->name);
++		gled->gpio = gpio;
++		gled->active_low = (flags & OF_GPIO_ACTIVE_LOW) ? 1 : 0;
++
++		dev_dbg(dev, "register led %s on gpio%d, active_low = %d\n",
++			gled->led.name, gled->gpio, gled->active_low);
++
++		led_gpio_register(gled);
++	}
++
++	return 0;
++}
++
++static struct of_device_id led_gpio_of_ids[] = {
++	{ .compatible = "gpio-leds", },
++	{ }
++};
++
++static struct driver_d led_gpio_of_driver = {
++	.name  = "gpio-leds",
++	.probe = led_gpio_of_probe,
++	.of_compatible = DRV_OF_COMPAT(led_gpio_of_ids),
++};
++device_platform_driver(led_gpio_of_driver);
++
++#endif /* CONFIG LED_GPIO_OF */
 -- 
 1.7.2.5
 
