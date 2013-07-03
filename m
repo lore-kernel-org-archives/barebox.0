@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uu5rT-0006eq-TT
- for barebox@lists.infradead.org; Tue, 02 Jul 2013 19:03:37 +0000
-Date: Tue, 2 Jul 2013 21:03:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130702190313.GH516@pengutronix.de>
-References: <1372667121-12240-1-git-send-email-j.weitzel@phytec.de>
+Received: from lvps83-169-36-49.dedicated.hosteurope.de ([83.169.36.49]
+ helo=knowtrek.com)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UuOsd-0003Ah-VQ
+ for barebox@lists.infradead.org; Wed, 03 Jul 2013 15:22:05 +0000
+Received: from [192.168.10.59] (p4FC11430.dip0.t-ipconnect.de [79.193.20.48])
+ by knowtrek.com (Postfix) with ESMTPSA id 4B63AC170007
+ for <barebox@lists.infradead.org>; Wed,  3 Jul 2013 17:21:38 +0200 (CEST)
+Message-ID: <51D44181.6090503@knowtrek.com>
+Date: Wed, 03 Jul 2013 17:21:37 +0200
+From: Adam Furmanczuk <afurmanczuk@knowtrek.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1372667121-12240-1-git-send-email-j.weitzel@phytec.de>
+References: <51B0B2D6.3030407@knowtrek.com>
+In-Reply-To: <51B0B2D6.3030407@knowtrek.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +25,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] pcm049: Add platformcode for omap4 framebuffer
-To: Jan Weitzel <j.weitzel@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: set root variable for uImage?
+To: barebox@lists.infradead.org
 
-On Mon, Jul 01, 2013 at 10:25:21AM +0200, Jan Weitzel wrote:
-> From: Christoph Fritz <chf.fritz@googlemail.com>
-> 
-> For splashscreen support on pcm049, this patch adds omap4 framebuffer
-> platform data and configures display pd050vl1, g104x1, pm070wl4, pd104slf,
-> edt_etm0350G0dh6, edt_etm0430G0dh6, edt_etmv570G2dhu and edt_etm0700G0dh6
-> 
-> Also add extra  muxing and defconfig
-> 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-Applied, thanks
+Hi,
 
-Sascha
+I restate this question from my previous thread "how to flash and set
+root variable". Thanks very much to Sascha and Alexander for
+introducing into barebox building and flashing.
+
+I have a basic scenario. Want to boot uImage and then hand over to the
+root partition. With u-Boot this was very easy:
+
+setenv bootargs "console=tty0 console=ttymxc0,115200n8
+root=/dev/mmcblk0p3 rootfstype=ext4 rootwait ro"
+
+With barebox however, when I boot the uImage, it complains about not
+setting correct "root=".:
+
+[ 1.718527] VFS: Cannot open root device "(null)" or
+unknown-block(0,0): error -6
+[ 1.726226] Please append a correct "root=" boot option; here are the
+available partitions:
+
+Now what i do in Barbox is the following;
+
+(hint enter to go into console)
+barebox@myhost:/ mkdir /media2
+barebox@myhost:/ mount /dev/disk0.1 fat /media2
+barebox@myhost:/ bootm /media2/uImage root=/dev/mmcblk0p3 rootfstype=ext4
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I get the error with block (0,0). How can I change this? Thank you
+very much for help.
+
+
+Adam
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iEYEARECAAYFAlHUQYEACgkQefEEI87R1DeRcgCfWcfsNWtj9vEjM+sTmoY/IafD
+hssAnRnylX3HQAuvPM/T1TduYZlrz2W2
+=Wn6A
+-----END PGP SIGNATURE-----
 
 _______________________________________________
 barebox mailing list
