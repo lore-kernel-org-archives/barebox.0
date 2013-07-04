@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uue2M-0000bY-Fo
- for barebox@lists.infradead.org; Thu, 04 Jul 2013 07:33:07 +0000
-Date: Thu, 4 Jul 2013 09:32:40 +0200
+ id 1Uue5u-0000fF-Nv
+ for barebox@lists.infradead.org; Thu, 04 Jul 2013 07:36:47 +0000
+Date: Thu, 4 Jul 2013 09:36:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130704073240.GT516@pengutronix.de>
+Message-ID: <20130704073624.GU516@pengutronix.de>
 References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372789849-12194-11-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372789849-12194-7-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372789849-12194-11-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372789849-12194-7-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,33 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 10/10] ARM: mvebu: import DT files for Dove SoC and
- SolidRun CuBox
+Subject: Re: [PATCH v2 06/10] spi: add Marvell MVEBU SoC SPI driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Tue, Jul 02, 2013 at 08:30:49PM +0200, Sebastian Hesselbarth wrote:
-> This imports dove.dtsi and dove-cubox.dts from Linux kernel with timer
-> node added.
+On Tue, Jul 02, 2013 at 08:30:45PM +0200, Sebastian Hesselbarth wrote:
+> This adds support for the SPI controller found on Marvell MVEBU SoCs
+> (Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
+> is DT only. Compatible strings are provided for Orion (common denominator),
+> Armada 370/XP and Dove SoCs.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> +#if defined(ARCH_ARMADA_370) || defined(ARCH_ARMADA_XP)
 
-Applied with two small changes
+These have to be CONFIG_*. Also elsewhere in this patch.
 
-First I added dove-cubox.dtb to the Makefile
-
-> diff --git a/arch/arm/dts/dove-cubox.dts b/arch/arm/dts/dove-cubox.dts
+> +static int mvebu_spi_probe(struct device_d *dev)
+> +{
+> +	struct spi_master *master;
+> +	struct mvebu_spi *priv;
+> +	const struct of_device_id *match;
+> +	int ret = 0;
 > +
-> +	chosen {
-> +		bootargs = "console=ttyS0,115200n8 earlyprintk";
-> +		linux,stdoutpath = "/soc@f1000000/serial@12000";
-> +	};
+> +	match = of_match_node(mvebu_spi_dt_ids, dev->device_node);
+> +	if (!match)
+> +		return -EINVAL;
+> +
+> +	priv = xzalloc(sizeof(*priv));
+> +	priv->base = dev_request_mem_region(dev, 0);
+> +	if (!priv->base) {
+> +		ret = -EINVAL;
+> +		goto err_free;
+> +	}
+> +	priv->set_baudrate = (void *)match->data;
+> +	priv->clk = clk_lookup("tclk");
 
-Then I learned something about dtc. The above can be written as
-
-	linux,stdoutpath = &uart0;
-
-Which expands to the nodes full path.
+still clk_lookup?
 
 Sascha
 
