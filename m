@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-x236.google.com ([2a00:1450:4008:c01::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uue8M-0000i6-NG
- for barebox@lists.infradead.org; Thu, 04 Jul 2013 07:39:19 +0000
-Date: Thu, 4 Jul 2013 09:38:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130704073856.GW516@pengutronix.de>
-References: <1372878167-19034-1-git-send-email-philipp.zabel@gmail.com>
+ id 1Uue9R-0000ji-OW
+ for barebox@lists.infradead.org; Thu, 04 Jul 2013 07:40:26 +0000
+Received: by mail-bk0-f54.google.com with SMTP id it16so451782bkc.27
+ for <barebox@lists.infradead.org>; Thu, 04 Jul 2013 00:40:02 -0700 (PDT)
+Message-ID: <51D526CC.2010206@gmail.com>
+Date: Thu, 04 Jul 2013 09:39:56 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1372878167-19034-1-git-send-email-philipp.zabel@gmail.com>
+References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372789849-12194-7-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130704073624.GU516@pengutronix.de>
+In-Reply-To: <20130704073624.GU516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: i.MX6: Fix usbmisc label in devicetree
-To: Philipp Zabel <philipp.zabel@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 06/10] spi: add Marvell MVEBU SoC SPI driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Wed, Jul 03, 2013 at 09:02:47PM +0200, Philipp Zabel wrote:
-> Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
+On 07/04/13 09:36, Sascha Hauer wrote:
+> On Tue, Jul 02, 2013 at 08:30:45PM +0200, Sebastian Hesselbarth wrote:
+>> This adds support for the SPI controller found on Marvell MVEBU SoCs
+>> (Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
+>> is DT only. Compatible strings are provided for Orion (common denominator),
+>> Armada 370/XP and Dove SoCs.
+>>
+>> +#if defined(ARCH_ARMADA_370) || defined(ARCH_ARMADA_XP)
+>
+> These have to be CONFIG_*. Also elsewhere in this patch.
 
-Applied, thanks
+Ok will update and resend.
 
-Sascha
+>> +static int mvebu_spi_probe(struct device_d *dev)
+>> +{
+>> +	struct spi_master *master;
+>> +	struct mvebu_spi *priv;
+>> +	const struct of_device_id *match;
+>> +	int ret = 0;
+>> +
+>> +	match = of_match_node(mvebu_spi_dt_ids, dev->device_node);
+>> +	if (!match)
+>> +		return -EINVAL;
+>> +
+>> +	priv = xzalloc(sizeof(*priv));
+>> +	priv->base = dev_request_mem_region(dev, 0);
+>> +	if (!priv->base) {
+>> +		ret = -EINVAL;
+>> +		goto err_free;
+>> +	}
+>> +	priv->set_baudrate = (void *)match->data;
+>> +	priv->clk = clk_lookup("tclk");
+>
+> still clk_lookup?
 
-> ---
->  arch/arm/dts/imx6qdl.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-> index 8b5b3b7..34535a7 100644
-> --- a/arch/arm/dts/imx6qdl.dtsi
-> +++ b/arch/arm/dts/imx6qdl.dtsi
-> @@ -645,7 +645,7 @@
->  				status = "disabled";
->  			};
->  
-> -			usbmisc: usbmisc: usbmisc@02184800 {
-> +			usbmisc: usbmisc@02184800 {
->  				#index-cells = <1>;
->  				compatible = "fsl,imx6q-usbmisc";
->  				reg = <0x02184800 0x200>;
-> -- 
-> 1.8.3.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+That was in drivers/clocksource/{orion,mvebu}.c. This slipped through.
+Will be fixed in v3.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sebastian
+
 
 _______________________________________________
 barebox mailing list
