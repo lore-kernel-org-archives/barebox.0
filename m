@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
+Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uuhnd-0005LL-5h
- for barebox@lists.infradead.org; Thu, 04 Jul 2013 11:34:11 +0000
-Received: by mail-bk0-f45.google.com with SMTP id je9so586198bkc.32
- for <barebox@lists.infradead.org>; Thu, 04 Jul 2013 04:33:42 -0700 (PDT)
+ id 1UuhuA-0005S2-8f
+ for barebox@lists.infradead.org; Thu, 04 Jul 2013 11:40:55 +0000
+Received: by mail-bk0-f46.google.com with SMTP id na10so586579bkb.5
+ for <barebox@lists.infradead.org>; Thu, 04 Jul 2013 04:40:28 -0700 (PDT)
+Message-ID: <51D55F28.8080801@gmail.com>
+Date: Thu, 04 Jul 2013 13:40:24 +0200
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Thu,  4 Jul 2013 13:33:35 +0200
-Message-Id: <1372937615-3017-1-git-send-email-sebastian.hesselbarth@gmail.com>
-In-Reply-To: <1372936808-728-2-git-send-email-sebastian.hesselbarth@gmail.com>
-References: <1372936808-728-2-git-send-email-sebastian.hesselbarth@gmail.com>
+MIME-Version: 1.0
+References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372789849-12194-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130704073706.GV516@pengutronix.de>
+In-Reply-To: <20130704073706.GV516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,460 +21,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v4] spi: add Marvell MVEBU SoC SPI driver
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH v2 00/10] ARM: mvebu: DT support, SPI, GPIO driver, and
+ Dove DT
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-This adds support for the SPI controller found on Marvell MVEBU SoCs
-(Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
-is DT only. Compatible strings are provided for Orion (common denominator),
-Armada 370/XP and Dove SoCs.
+On 07/04/13 09:37, Sascha Hauer wrote:
+> On Tue, Jul 02, 2013 at 08:30:39PM +0200, Sebastian Hesselbarth wrote:
+>> This patch set is a first attempt to bring full DT support to Marvell
+>> MVEBU SoCs. It also introduces a driver for the SPI controller found
+>> on these SoCs with special treatment of additional functions for Dove
+>> and Armada 370/XP SoCs. Also a GPIO driver is added that I have written
+>> during OF patches.
+>>
+>> First, current soc_init is moved from postcore initcall to core initcall,
+>> to allow clocks to be accessed early. Clock lookup for timers is converted
+>> to physbase instead of name-based lookup. Then DT support is added for both
+>> clocksource drivers found on Orion and Armada 370/XP SoCs, respectively.
+>>
+>> Also, a DT-only SPI driver is added to allow access to SPI devices found
+>> on boards comprising Marvell SoCs. Then a DT-only GPIO driver compatible
+>> with MVEBU SoCs and device tree parsing for gpio-leds is added.
+>>
+>> The last two patches extend SolidRun CuBox defconfig with a bunch of
+>> options for future drivers and debug commands and import DTS files from
+>> Linux with an additional node for the timer.
+>>
+>> Sebastian Hesselbarth (10):
+>>    ARM: mvebu: move soc_init to core_initcall
+>>    clocksource: orion: lookup clock by physbase
+>>    clocksource: orion: add DT support
+>>    clocksource: mvebu: lookup clock by physbase
+>>    clocksource: mvebu: add DT support
+>>    spi: add Marvell MVEBU SoC SPI driver
+>>    GPIO: add Marvell Orion/MVEBU SoC GPIO driver
+>>    LED: add support for device tree parsing of gpio-leds
+>>    ARM: mvebu: add more options to SolidRun CuBox defconfig
+>>    ARM: mvebu: import DT files for Dove SoC and SolidRun CuBox
+>
+> Applied this series except for the SPI driver.
 
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
----
-Changelog:
-v1->v2:
-- use dev_dbg instead of debug (Suggested by Sascha Hauer)
-- check for valid reg base (Suggested by Sascha Hauer)
-- whitespace fixes (Reported by Sascha Hauer)
+Sascha,
 
-v2->v3:
-- use clk_get instead of clk_lookup (Reported by Sascha Hauer)
+currently mvebu on next is broken because of missing
+"OF: address and device related sync and cleanup" patch set.
 
-v3->v4:
-- fix missing CONFIG_ prefixes (Reported by Sascha Hauer)
+I should have stated clearly that this patch set depends on
+the former set.
 
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Cc: barebox@lists.infradead.org
----
- drivers/spi/Kconfig     |    4 +
- drivers/spi/Makefile    |    1 +
- drivers/spi/mvebu_spi.c |  382 +++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 387 insertions(+), 0 deletions(-)
- create mode 100644 drivers/spi/mvebu_spi.c
+Can you re-test the OF address/device patches and check if
+they still break SPI chip select gpio on efikasb?
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index c279c21..422693c 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -38,6 +38,10 @@ config DRIVER_SPI_MXS
- 	depends on ARCH_IMX23 || ARCH_IMX28
- 	depends on SPI
- 
-+config DRIVER_SPI_MVEBU
-+	bool "Marvell MVEBU SoC SPI master driver"
-+	depends on ARCH_ARMADA_370 || ARCH_ARMADA_XP || ARCH_DOVE || ARCH_KIRKWOOD
-+
- config DRIVER_SPI_OMAP3
- 	bool "OMAP3 McSPI Master driver"
- 	depends on ARCH_OMAP3 || ARCH_AM33XX
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 642b7ec..1036f8f 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -1,5 +1,6 @@
- obj-$(CONFIG_SPI) += spi.o
- obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
-+obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
- obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
- obj-$(CONFIG_DRIVER_SPI_ALTERA) += altera_spi.o
- obj-$(CONFIG_DRIVER_SPI_ATMEL) += atmel_spi.o
-diff --git a/drivers/spi/mvebu_spi.c b/drivers/spi/mvebu_spi.c
-new file mode 100644
-index 0000000..7aaa9fe
---- /dev/null
-+++ b/drivers/spi/mvebu_spi.c
-@@ -0,0 +1,382 @@
-+/*
-+ * Marvell MVEBU SoC SPI controller
-+ *  compatible with Dove, Kirkwood, MV78x00, Armada 370/XP
-+ *
-+ * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <init.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <spi/spi.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+
-+#define SPI_IF_CTRL		0x00
-+#define  IF_CS_NUM(x)		((x) << 2)
-+#define  IF_CS_NUM_MASK		IF_CS_NUM(7)
-+#define  IF_READ_READY		BIT(1)
-+#define  IF_CS_ENABLE		BIT(0)
-+#define SPI_IF_CONFIG		0x04
-+#define  IF_CLK_DIV(x)		((x) << 11)
-+#define  IF_CLK_DIV_MASK	(0x7 << 11)
-+#define  IF_FAST_READ		BIT(10)
-+#define  IF_ADDRESS_LEN_4BYTE	(3 << 8)
-+#define  IF_ADDRESS_LEN_3BYTE	(2 << 8)
-+#define  IF_ADDRESS_LEN_2BYTE	(1 << 8)
-+#define  IF_ADDRESS_LEN_1BYTE	(0 << 8)
-+#define  IF_CLK_PRESCALE_POW8	BIT(7)
-+#define  IF_CLK_PRESCALE_POW4	BIT(6)
-+#define  IF_TRANSFER_2BYTE	BIT(5)
-+#define  IF_CLK_PRESCALE_POW2	BIT(4)
-+#define  IF_CLK_PRESCALE(x)	((x) & 0x0f)
-+#define  IF_CLK_PRE_PRESCALE(x)	(((((x) & 0xc) << 1) | ((x) & 0x1)) << 4)
-+#define  IF_CLK_PRESCALE_MASK	(IF_CLK_PRESCALE(7) | IF_CLK_PRE_PRESCALE(7))
-+#define SPI_DATA_OUT		0x08
-+#define SPI_DATA_IN		0x0c
-+#define SPI_INT_CAUSE		0x10
-+#define SPI_INT_MASK		0x14
-+#define  INT_READ_READY		BIT(0)
-+
-+#define SPI_SPI_MAX_CS	8
-+
-+struct mvebu_spi {
-+	struct spi_master master;
-+	void __iomem *base;
-+	struct clk *clk;
-+	bool data16;
-+	int (*set_baudrate)(struct mvebu_spi *p, u32 speed);
-+};
-+
-+#define priv_from_spi_device(s)	\
-+	container_of(s->master, struct mvebu_spi, master);
-+
-+static inline int mvebu_spi_set_cs(struct mvebu_spi *p, u8 cs, u8 mode, bool en)
-+{
-+	u32 val;
-+
-+	/*
-+	 * Only Armada 370/XP support up to 8 CS signals, for the
-+	 * others this register bits are read-only
-+	 */
-+	if (cs > SPI_SPI_MAX_CS)
-+		return -EINVAL;
-+
-+	if (mode & SPI_CS_HIGH)
-+		en = !en;
-+
-+	val = IF_CS_NUM(cs);
-+	if (en)
-+		val |= IF_CS_ENABLE;
-+
-+	writel(val, p->base + SPI_IF_CTRL);
-+
-+	return 0;
-+}
-+
-+static int mvebu_spi_set_transfer_size(struct mvebu_spi *p, int size)
-+{
-+	u32 val;
-+
-+	if (size != 8 && size != 16)
-+		return -EINVAL;
-+
-+	p->data16 = (size == 16);
-+
-+	val = readl(p->base + SPI_IF_CONFIG) & ~IF_TRANSFER_2BYTE;
-+	if (p->data16)
-+		val |= IF_TRANSFER_2BYTE;
-+	writel(val, p->base + SPI_IF_CONFIG);
-+
-+	return 0;
-+}
-+
-+static int mvebu_spi_set_baudrate(struct mvebu_spi *p, u32 speed)
-+{
-+	u32 pscl, val;
-+
-+	/* standard prescaler values: 1,2,4,6,...,30 */
-+	pscl = DIV_ROUND_UP(clk_get_rate(p->clk), speed);
-+	pscl = roundup(pscl, 2);
-+
-+	dev_dbg(p->master.dev, "%s: clk = %lu, speed = %u, pscl = %d\n",
-+		__func__, clk_get_rate(p->clk), speed, pscl);
-+
-+	if (pscl > 30)
-+		return -EINVAL;
-+
-+	val = readl(p->base + SPI_IF_CONFIG) & ~(IF_CLK_PRESCALE_MASK);
-+	val |= IF_CLK_PRESCALE_POW2 | IF_CLK_PRESCALE(pscl/2);
-+	writel(val, p->base + SPI_IF_CONFIG);
-+
-+	return 0;
-+}
-+
-+#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
-+static int armada_370_xp_spi_set_baudrate(struct mvebu_spi *p, u32 speed)
-+{
-+	u32 pscl, pdiv, rate, val;
-+
-+	/* prescaler values: 1,2,3,...,15 */
-+	pscl = DIV_ROUND_UP(clk_get_rate(p->clk), speed);
-+
-+	/* additional prescaler divider: 1, 2, 4, 8, 16, 32, 64, 128 */
-+	pdiv = 0; rate = pscl;
-+	while (rate > 15 && pdiv <= 7) {
-+		rate /= 2;
-+		pdiv++;
-+	}
-+
-+	dev_dbg(p->master.dev, "%s: clk = %lu, speed = %u, pscl = %d, pdiv = %d\n",
-+		__func__, clk_get_rate(p->clk), speed, pscl, pdiv);
-+
-+	if (rate > 15 || pdiv > 7)
-+		return -EINVAL;
-+
-+	val = readl(p->base + SPI_IF_CONFIG) & ~(IF_CLK_PRESCALE_MASK);
-+	val |= IF_CLK_PRE_PRESCALE(pdiv) | IF_CLK_PRESCALE(pscl);
-+	writel(val, p->base + SPI_IF_CONFIG);
-+
-+	return 0;
-+}
-+#endif
-+
-+#if defined(CONFIG_ARCH_DOVE)
-+static int dove_spi_set_baudrate(struct mvebu_spi *p, u32 speed)
-+{
-+	u32 pscl, sdiv, rate, val;
-+
-+	/* prescaler values: 1,2,3,...,15 and 1,2,4,6,...,30 */
-+	pscl = DIV_ROUND_UP(clk_get_rate(p->clk), speed);
-+	if (pscl > 15)
-+		pscl = roundup(pscl, 2);
-+
-+	/* additional sclk divider: 1, 2, 4, 8, 16 */
-+	sdiv = 0; rate = pscl;
-+	while (rate > 30 && sdiv <= 4) {
-+		rate /= 2;
-+		sdiv++;
-+	}
-+
-+	dev_dbg(p->master.dev, "%s: clk = %lu, speed = %u, pscl = %d, sdiv = %d\n",
-+		__func__, clk_get_rate(p->clk), speed, pscl, sdiv);
-+
-+	if (rate > 30 || sdiv > 4)
-+		return -EINVAL;
-+
-+	val = readl(p->base + SPI_IF_CONFIG) &
-+		~(IF_CLK_DIV_MASK | IF_CLK_PRESCALE_MASK);
-+
-+	val |= IF_CLK_DIV(sdiv);
-+	if (pscl > 15)
-+		val |= IF_CLK_PRESCALE_POW2 | IF_CLK_PRESCALE(pscl/2);
-+	else
-+		val |= IF_CLK_PRESCALE(pscl);
-+	writel(val, p->base + SPI_IF_CONFIG);
-+
-+	return 0;
-+}
-+#endif
-+
-+static int mvebu_spi_set_mode(struct mvebu_spi *p, u8 mode)
-+{
-+	/*
-+	 * From public datasheets of Orion SoCs, it is unclear
-+	 * if the SPI controller supports setting CPOL/CPHA.
-+	 * Dove has an SCK_INV but as with the other SoCs, it
-+	 * is tagged with "Must be 1".
-+	 *
-+	 * For now, we just bail out if device requests any
-+	 * other mode than SPI_MODE0.
-+	 */
-+
-+	if ((mode & (SPI_CPOL|SPI_CPHA)) == SPI_MODE_0)
-+		return 0;
-+
-+	pr_err("%s: unsupported SPI mode %02x\n", __func__, mode);
-+
-+	return -EINVAL;
-+}
-+
-+static int mvebu_spi_setup(struct spi_device *spi)
-+{
-+	int ret;
-+	struct mvebu_spi *priv = priv_from_spi_device(spi);
-+
-+	dev_dbg(&spi->dev, "%s: mode %02x, bits_per_word = %d, speed = %d\n",
-+		__func__, spi->mode, spi->bits_per_word, spi->max_speed_hz);
-+
-+	ret = mvebu_spi_set_cs(priv, spi->chip_select, spi->mode, false);
-+	if (ret)
-+		return ret;
-+	ret = mvebu_spi_set_mode(priv, spi->mode);
-+	if (ret)
-+		return ret;
-+	ret = mvebu_spi_set_transfer_size(priv, spi->bits_per_word);
-+	if (ret)
-+		return ret;
-+
-+	return priv->set_baudrate(priv, spi->max_speed_hz);
-+}
-+
-+static inline int mvebu_spi_wait_for_read_ready(struct mvebu_spi *p)
-+{
-+	int timeout = 100;
-+	while ((readl(p->base + SPI_IF_CTRL) & IF_READ_READY) == 0 &&
-+		timeout--)
-+		udelay(1);
-+	if (timeout < 0)
-+		return -EIO;
-+	return 0;
-+}
-+
-+static int mvebu_spi_do_transfer(struct spi_device *spi,
-+				 struct spi_transfer *t)
-+{
-+	const u8 *txdata = t->tx_buf;
-+	u8 *rxdata = t->rx_buf;
-+	int ret = 0, n, inc;
-+	struct mvebu_spi *priv = priv_from_spi_device(spi);
-+
-+	if (t->bits_per_word)
-+		ret = mvebu_spi_set_transfer_size(priv, spi->bits_per_word);
-+	if (ret)
-+		return ret;
-+
-+	if (t->speed_hz)
-+		ret = priv->set_baudrate(priv, t->speed_hz);
-+	if (ret)
-+		return ret;
-+
-+	inc = (priv->data16) ? 2 : 1;
-+	for (n = 0; n < t->len; n += inc) {
-+		u32 data = 0;
-+
-+		if (txdata)
-+			data = *txdata++;
-+		if (txdata && priv->data16)
-+			data |= (*txdata++ << 8);
-+
-+		writel(data, priv->base + SPI_DATA_OUT);
-+
-+		ret = mvebu_spi_wait_for_read_ready(priv);
-+		if (ret) {
-+			dev_err(&spi->dev, "timeout reading from device %s\n",
-+				dev_name(&spi->dev));
-+			return ret;
-+		}
-+
-+		data = readl(priv->base + SPI_DATA_IN);
-+
-+		if (rxdata)
-+			*rxdata++ = (data & 0xff);
-+		if (rxdata && priv->data16)
-+			*rxdata++ = (data >> 8) & 0xff;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mvebu_spi_transfer(struct spi_device *spi, struct spi_message *msg)
-+{
-+	struct spi_transfer *t;
-+	int ret;
-+	struct mvebu_spi *priv = priv_from_spi_device(spi);
-+
-+	ret = mvebu_spi_set_cs(priv, spi->chip_select, spi->mode, true);
-+	if (ret)
-+		return ret;
-+
-+	msg->actual_length = 0;
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		ret = mvebu_spi_do_transfer(spi, t);
-+		if (ret)
-+			break;
-+		msg->actual_length += t->len;
-+	}
-+
-+	ret = mvebu_spi_set_cs(priv, spi->chip_select, spi->mode, false);
-+	if (ret)
-+		return ret;
-+
-+	return ret;
-+}
-+
-+static struct of_device_id mvebu_spi_dt_ids[] = {
-+	{ .compatible = "marvell,orion-spi",
-+	  .data = (unsigned long)&mvebu_spi_set_baudrate },
-+#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
-+	{ .compatible = "marvell,armada-370-xp-spi",
-+	  .data = (unsigned long)&armada_370_xp_spi_set_baudrate },
-+#endif
-+#if defined(CONFIG_ARCH_DOVE)
-+	{ .compatible = "marvell,dove-spi",
-+	  .data = (unsigned long)&dove_spi_set_baudrate },
-+#endif
-+	{ }
-+};
-+
-+static int mvebu_spi_probe(struct device_d *dev)
-+{
-+	struct spi_master *master;
-+	struct mvebu_spi *priv;
-+	const struct of_device_id *match;
-+	int ret = 0;
-+
-+	match = of_match_node(mvebu_spi_dt_ids, dev->device_node);
-+	if (!match)
-+		return -EINVAL;
-+
-+	priv = xzalloc(sizeof(*priv));
-+	priv->base = dev_request_mem_region(dev, 0);
-+	if (!priv->base) {
-+		ret = -EINVAL;
-+		goto err_free;
-+	}
-+	priv->set_baudrate = (void *)match->data;
-+	priv->clk = clk_get(dev, NULL);
-+	if (IS_ERR(priv->clk)) {
-+		ret = PTR_ERR(priv->clk);
-+		goto err_free;
-+	}
-+
-+	master = &priv->master;
-+	master->dev = dev;
-+	master->bus_num = dev->id;
-+	master->setup = mvebu_spi_setup;
-+	master->transfer = mvebu_spi_transfer;
-+	master->num_chipselect = 1;
-+
-+	if (dev->device_node)
-+		spi_of_register_slaves(master, dev->device_node);
-+
-+	ret = spi_register_master(master);
-+	if (!ret)
-+		return 0;
-+
-+err_free:
-+	free(priv);
-+
-+	return ret;
-+}
-+
-+static struct driver_d mvebu_spi_driver = {
-+	.name  = "mvebu-spi",
-+	.probe = mvebu_spi_probe,
-+	.of_compatible = DRV_OF_COMPAT(mvebu_spi_dt_ids),
-+};
-+device_platform_driver(mvebu_spi_driver);
--- 
-1.7.2.5
-
+Sebastian
 
 _______________________________________________
 barebox mailing list
