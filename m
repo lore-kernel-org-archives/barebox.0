@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
+Received: from mail-ea0-f174.google.com ([209.85.215.174])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uv2W3-0003RO-W2
- for barebox@lists.infradead.org; Fri, 05 Jul 2013 09:41:25 +0000
-Received: by mail-ea0-f170.google.com with SMTP id h10so1384334eaj.1
- for <barebox@lists.infradead.org>; Fri, 05 Jul 2013 02:41:02 -0700 (PDT)
-Message-ID: <51D694AA.8070405@gmail.com>
-Date: Fri, 05 Jul 2013 11:40:58 +0200
+ id 1UvDQT-0006Rk-MX
+ for barebox@lists.infradead.org; Fri, 05 Jul 2013 21:20:22 +0000
+Received: by mail-ea0-f174.google.com with SMTP id o10so1698662eaj.33
+ for <barebox@lists.infradead.org>; Fri, 05 Jul 2013 14:19:55 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372789849-12194-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130704073706.GV516@pengutronix.de> <51D55F28.8080801@gmail.com>
- <20130705065738.GI516@pengutronix.de>
-In-Reply-To: <20130705065738.GI516@pengutronix.de>
+Date: Fri,  5 Jul 2013 23:19:43 +0200
+Message-Id: <1373059183-20229-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <20130705065043.GG516@pengutronix.de>
+References: <20130705065043.GG516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +18,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/10] ARM: mvebu: DT support, SPI, GPIO driver, and
- Dove DT
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH] OF: base: initalize from node in of_find_node_with_property
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On 07/05/13 08:57, Sascha Hauer wrote:
-> On Thu, Jul 04, 2013 at 01:40:24PM +0200, Sebastian Hesselbarth wrote:
->> currently mvebu on next is broken because of missing
->> "OF: address and device related sync and cleanup" patch set.
->>
->> I should have stated clearly that this patch set depends on
->> the former set.
->>
->> Can you re-test the OF address/device patches and check if
->> they still break SPI chip select gpio on efikasb?
->
-> I applied the series and based the Marvell patches ontop of it. I
-> haven't tested on EfiksSB but on another board with a SPI controller, so
-> I assume this issue is fixed now.
+This adds initialization of from device node with root_node if NULL
+is passed. This corresponds to the behavior of all other node iterators.
 
-Ok, I explicitly tested of_get_named_gpio with lcd-gpio driver on Dove.
-If there are more issues on the now applied set, please do not hesitate
-to mention it and request fixes.
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+@Sascha: this is the last remaining iterator fix we talked about.
 
-> Please note that your of address cleanup series adds about 1.8k to the
-> binary size. This doesn't sound too much, but such stuff really sums up
-> over time. I agree that we can't do without proper address translation
-> in the future, so I applied it. Just be aware in the future that we
-> still need a good compromise between binary size and sophisticated code.
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-True. Now that I can start improving DT only mach-mvebu, I will have an
-extra eye on what of the existing and imported functions can be
-converted or simplified. If it leads to a significant binary size
-reduction, I will send patches.
-
-I will also prepare the last remaining node looping fix for
-of_find_node_with_property later.
-
-Thanks for the reviews!
-
-Sebastian
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 5440f40..7bee912 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -364,6 +364,9 @@ struct device_node *of_find_node_with_property(struct device_node *from,
+ {
+ 	struct device_node *np;
+ 
++	if (!from)
++		from = root_node;
++
+ 	of_tree_for_each_node_from(np, from) {
+ 		struct property *pp = of_find_property(np, prop_name, NULL);
+ 		if (pp)
+-- 
+1.7.10.4
 
 
 _______________________________________________
