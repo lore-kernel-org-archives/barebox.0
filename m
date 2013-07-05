@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uuzs8-0000Lh-5Z
- for barebox@lists.infradead.org; Fri, 05 Jul 2013 06:52:00 +0000
-Date: Fri, 5 Jul 2013 08:51:37 +0200
+ id 1Uuzly-0007cV-5j
+ for barebox@lists.infradead.org; Fri, 05 Jul 2013 06:45:41 +0000
+Date: Fri, 5 Jul 2013 08:45:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130705065137.GH516@pengutronix.de>
-References: <1372936808-728-2-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372937615-3017-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130705064513.GF516@pengutronix.de>
+References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372788879-11028-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372937615-3017-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1372788879-11028-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +23,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v4] spi: add Marvell MVEBU SoC SPI driver
+Subject: Re: [PATCH v3 00/10] OF: address and device related sync and cleanup
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Cc: barebox@lists.infradead.org
 
-On Thu, Jul 04, 2013 at 01:33:35PM +0200, Sebastian Hesselbarth wrote:
-> This adds support for the SPI controller found on Marvell MVEBU SoCs
-> (Dove, Kirkwood, Discovery Innovation, and Armada 370/XP). Current driver
-> is DT only. Compatible strings are provided for Orion (common denominator),
-> Armada 370/XP and Dove SoCs.
+On Tue, Jul 02, 2013 at 08:14:29PM +0200, Sebastian Hesselbarth wrote:
+> This patch set comprises a quite unsorted bunch of patches to further
+> improve and cleanup OF API. With address and device related functions,
+> two more API sets of Linux OF API are imported and modified to match
+> barebox driver core.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> With above API improvements, device and resource pointer are removed
+> from struct device_node. Futher, of_translate_address, of_probe, and
+> of_add_memory are converted to recently introduced OF API.
+> 
+> At last, of_free is renamed to of_delete_node, which gives a better
+> impression of what the function is doing.
+> 
+> v3 of this patch set includes fixes introduced with v2 that have been
+> sent as separate patches. Also patch 5 is inserted to not break OF
+> gpio parsing with subsequent patches.
+> 
+> This time I have tested the OF gpio patches on Marvell Dove; side
+> effect: Orion GPIO driver that I will post as part of the MVEBU DT
+> improvement patches.
+> 
+> Sebastian Hesselbarth (10):
+>   OF: import address related functions from Linux OF API
+>   OF: convert of_translate_address to new API
+>   OF: base: move OF_ROOT_NODE_ defines to local OF code
+>   OF: import bus/device related functions from Linux OF API
+>   OF: gpio: convert DT based gpio handling to new OF API
+>   OF: base: use of_platform_populate for probing
+>   OF: base: remove dead device related functions
+>   OF: remove device and resource pointer from struct device_node
+>   OF: base: convert of_add_memory to OF API
+>   OF: base: rename of_free to of_delete_node
 
 Applied, thanks
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
