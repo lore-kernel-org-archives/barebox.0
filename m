@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uuzly-0007cV-5j
- for barebox@lists.infradead.org; Fri, 05 Jul 2013 06:45:41 +0000
-Date: Fri, 5 Jul 2013 08:45:13 +0200
+ id 1Uuzxw-0000Q9-BG
+ for barebox@lists.infradead.org; Fri, 05 Jul 2013 06:58:01 +0000
+Date: Fri, 5 Jul 2013 08:57:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130705064513.GF516@pengutronix.de>
-References: <1372152047-28134-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1372788879-11028-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130705065738.GI516@pengutronix.de>
+References: <1372443947-12599-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1372789849-12194-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130704073706.GV516@pengutronix.de> <51D55F28.8080801@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1372788879-11028-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <51D55F28.8080801@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +24,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3 00/10] OF: address and device related sync and cleanup
+Subject: Re: [PATCH v2 00/10] ARM: mvebu: DT support, SPI, GPIO driver, and
+ Dove DT
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Tue, Jul 02, 2013 at 08:14:29PM +0200, Sebastian Hesselbarth wrote:
-> This patch set comprises a quite unsorted bunch of patches to further
-> improve and cleanup OF API. With address and device related functions,
-> two more API sets of Linux OF API are imported and modified to match
-> barebox driver core.
+On Thu, Jul 04, 2013 at 01:40:24PM +0200, Sebastian Hesselbarth wrote:
+> On 07/04/13 09:37, Sascha Hauer wrote:
+> >On Tue, Jul 02, 2013 at 08:30:39PM +0200, Sebastian Hesselbarth wrote:
+> >>This patch set is a first attempt to bring full DT support to Marvell
+> >>MVEBU SoCs. It also introduces a driver for the SPI controller found
+> >>on these SoCs with special treatment of additional functions for Dove
+> >>and Armada 370/XP SoCs. Also a GPIO driver is added that I have written
+> >>during OF patches.
+> >>
+> >>First, current soc_init is moved from postcore initcall to core initcall,
+> >>to allow clocks to be accessed early. Clock lookup for timers is converted
+> >>to physbase instead of name-based lookup. Then DT support is added for both
+> >>clocksource drivers found on Orion and Armada 370/XP SoCs, respectively.
+> >>
+> >>Also, a DT-only SPI driver is added to allow access to SPI devices found
+> >>on boards comprising Marvell SoCs. Then a DT-only GPIO driver compatible
+> >>with MVEBU SoCs and device tree parsing for gpio-leds is added.
+> >>
+> >>The last two patches extend SolidRun CuBox defconfig with a bunch of
+> >>options for future drivers and debug commands and import DTS files from
+> >>Linux with an additional node for the timer.
+> >>
+> >>Sebastian Hesselbarth (10):
+> >>   ARM: mvebu: move soc_init to core_initcall
+> >>   clocksource: orion: lookup clock by physbase
+> >>   clocksource: orion: add DT support
+> >>   clocksource: mvebu: lookup clock by physbase
+> >>   clocksource: mvebu: add DT support
+> >>   spi: add Marvell MVEBU SoC SPI driver
+> >>   GPIO: add Marvell Orion/MVEBU SoC GPIO driver
+> >>   LED: add support for device tree parsing of gpio-leds
+> >>   ARM: mvebu: add more options to SolidRun CuBox defconfig
+> >>   ARM: mvebu: import DT files for Dove SoC and SolidRun CuBox
+> >
+> >Applied this series except for the SPI driver.
 > 
-> With above API improvements, device and resource pointer are removed
-> from struct device_node. Futher, of_translate_address, of_probe, and
-> of_add_memory are converted to recently introduced OF API.
+> Sascha,
 > 
-> At last, of_free is renamed to of_delete_node, which gives a better
-> impression of what the function is doing.
+> currently mvebu on next is broken because of missing
+> "OF: address and device related sync and cleanup" patch set.
 > 
-> v3 of this patch set includes fixes introduced with v2 that have been
-> sent as separate patches. Also patch 5 is inserted to not break OF
-> gpio parsing with subsequent patches.
+> I should have stated clearly that this patch set depends on
+> the former set.
 > 
-> This time I have tested the OF gpio patches on Marvell Dove; side
-> effect: Orion GPIO driver that I will post as part of the MVEBU DT
-> improvement patches.
-> 
-> Sebastian Hesselbarth (10):
->   OF: import address related functions from Linux OF API
->   OF: convert of_translate_address to new API
->   OF: base: move OF_ROOT_NODE_ defines to local OF code
->   OF: import bus/device related functions from Linux OF API
->   OF: gpio: convert DT based gpio handling to new OF API
->   OF: base: use of_platform_populate for probing
->   OF: base: remove dead device related functions
->   OF: remove device and resource pointer from struct device_node
->   OF: base: convert of_add_memory to OF API
->   OF: base: rename of_free to of_delete_node
+> Can you re-test the OF address/device patches and check if
+> they still break SPI chip select gpio on efikasb?
 
-Applied, thanks
+I applied the series and based the Marvell patches ontop of it. I
+haven't tested on EfiksSB but on another board with a SPI controller, so
+I assume this issue is fixed now.
+
+Please note that your of address cleanup series adds about 1.8k to the
+binary size. This doesn't sound too much, but such stuff really sums up
+over time. I agree that we can't do without proper address translation
+in the future, so I applied it. Just be aware in the future that we
+still need a good compromise between binary size and sophisticated code.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
