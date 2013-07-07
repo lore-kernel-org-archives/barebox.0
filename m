@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from smtp29.i.mail.ru ([94.100.177.89])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UvK6P-0000Qs-Ka
- for barebox@lists.infradead.org; Sat, 06 Jul 2013 04:28:06 +0000
-Received: by mail-la0-f46.google.com with SMTP id eg20so2558691lab.33
- for <barebox@lists.infradead.org>; Fri, 05 Jul 2013 21:27:37 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat,  6 Jul 2013 08:25:55 +0400
-Message-Id: <1373084755-16398-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Uvo4L-00068t-4c
+ for barebox@lists.infradead.org; Sun, 07 Jul 2013 12:27:58 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  7 Jul 2013 16:27:16 +0400
+Message-Id: <1373200037-4008-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
+References: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,50 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] MIPS: rzx50: add nmon support
+Subject: [PATCH 2/3] commands: nandtest: Fix incorrect size for memset in
+ do_nandtest
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/Kconfig                                      | 1 +
- arch/mips/boards/rzx50/include/board/board_pbl_start.h | 3 +++
- 2 files changed, 4 insertions(+)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b2452c7..ca240d2 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -72,6 +72,7 @@ config MACH_MIPS_XBURST
- 	select HAS_DEBUG_LL
- 	select HAVE_PBL_IMAGE
- 	select HAVE_IMAGE_COMPRESSION
-+	select HAS_NMON
- endchoice
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ commands/nandtest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/commands/nandtest.c b/commands/nandtest.c
+index ba15ecf..f6e8f99 100644
+--- a/commands/nandtest.c
++++ b/commands/nandtest.c
+@@ -181,7 +181,7 @@ static int do_nandtest(int argc, char *argv[])
+ 	markbad = 0;
+ 	fd = -1;
  
- source arch/mips/mach-malta/Kconfig
-diff --git a/arch/mips/boards/rzx50/include/board/board_pbl_start.h b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-index f71641a..fb914d9 100644
---- a/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-+++ b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-@@ -19,6 +19,7 @@
+-	memset(ecc_stats, 0, MAX_ECC_BITS);
++	memset(ecc_stats, 0, sizeof(*ecc_stats));
  
- #include <asm/pbl_macros.h>
- #include <mach/debug_ll.h>
-+#include <asm/pbl_nmon.h>
- 
- 	.macro	board_pbl_start
- 	.set	push
-@@ -34,6 +35,8 @@
- 	debug_ll_ns16550_outc '.'
- 	debug_ll_ns16550_outnl
- 
-+	mips_nmon
-+
- 	copy_to_link_location	pbl_start
- 
- 	.set	pop
+ 	while ((opt = getopt(argc, argv, "ms:i:o:l:t")) > 0) {
+ 		switch (opt) {
 -- 
-1.8.3.1
+1.8.1.5
 
 
 _______________________________________________
