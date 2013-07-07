@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp29.i.mail.ru ([94.100.177.89])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uvo4L-00068v-4d
- for barebox@lists.infradead.org; Sun, 07 Jul 2013 12:27:59 +0000
+ id 1Uvo4L-00068s-4e
+ for barebox@lists.infradead.org; Sun, 07 Jul 2013 12:27:58 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun,  7 Jul 2013 16:27:17 +0400
-Message-Id: <1373200037-4008-3-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
-References: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
+Date: Sun,  7 Jul 2013 16:27:15 +0400
+Message-Id: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,58 +19,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] common: console: Fix possible null pointer dereference
+Subject: [PATCH 1/3] blackfin: Remove unneeded assignment
 To: barebox@lists.infradead.org
 
+Assignment of function parameter has no effect outside the function.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- common/console.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ arch/blackfin/lib/bf533_string.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/console.c b/common/console.c
-index a0a06f6..fc7b9ba 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -62,23 +62,23 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	char active[4];
- 	unsigned int flag = 0, i = 0;
+diff --git a/arch/blackfin/lib/bf533_string.c b/arch/blackfin/lib/bf533_string.c
+index ff9410f..860ee92 100644
+--- a/arch/blackfin/lib/bf533_string.c
++++ b/arch/blackfin/lib/bf533_string.c
+@@ -176,6 +176,6 @@ void *dma_memcpy(void * dest,const void *src,size_t count)
+ 		*pMDMA_D0_IRQ_STATUS |= (DMA_DONE | DMA_ERR);
  
--	if (!val)
--		dev_param_set_generic(dev, param, NULL);
--
--	if (strchr(val, 'i') && cdev->f_caps & CONSOLE_STDIN) {
--		active[i++] = 'i';
--		flag |= CONSOLE_STDIN;
--	}
-+	if (val) {
-+		if (strchr(val, 'i') && cdev->f_caps & CONSOLE_STDIN) {
-+			active[i++] = 'i';
-+			flag |= CONSOLE_STDIN;
-+		}
- 
--	if (strchr(val, 'o') && cdev->f_caps & CONSOLE_STDOUT) {
--		active[i++] = 'o';
--		flag |= CONSOLE_STDOUT;
--	}
-+		if (strchr(val, 'o') && cdev->f_caps & CONSOLE_STDOUT) {
-+			active[i++] = 'o';
-+			flag |= CONSOLE_STDOUT;
-+		}
- 
--	if (strchr(val, 'e') && cdev->f_caps & CONSOLE_STDERR) {
--		active[i++] = 'e';
--		flag |= CONSOLE_STDERR;
--	}
-+		if (strchr(val, 'e') && cdev->f_caps & CONSOLE_STDERR) {
-+			active[i++] = 'e';
-+			flag |= CONSOLE_STDERR;
-+		}
-+	} else
-+		dev_param_set_generic(dev, param, NULL);
- 
- 	active[i] = 0;
- 	cdev->f_active = flag;
+ 		dest += count;
+-		src  += count;
++
+ 		return dest;
+ }
 -- 
 1.8.1.5
 
