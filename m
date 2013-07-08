@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp29.i.mail.ru ([94.100.177.89])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uvo4L-00068s-4e
- for barebox@lists.infradead.org; Sun, 07 Jul 2013 12:27:58 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun,  7 Jul 2013 16:27:15 +0400
-Message-Id: <1373200037-4008-1-git-send-email-shc_work@mail.ru>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwBJw-0008N2-6t
+ for barebox@lists.infradead.org; Mon, 08 Jul 2013 13:17:37 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id B661EBF0ED
+ for <barebox@lists.infradead.org>; Mon,  8 Jul 2013 15:11:23 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Mon, 8 Jul 2013 15:17:05 +0200
+Message-Id: <1373289430-6965-7-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1373289430-6965-1-git-send-email-t.gamez@phytec.de>
+References: <1373289430-6965-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +20,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] blackfin: Remove unneeded assignment
+Subject: [PATCH 07/12] ARM: AM33xx: Enable clock for all GPIO banks
 To: barebox@lists.infradead.org
 
-Assignment of function parameter has no effect outside the function.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/blackfin/lib/bf533_string.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/blackfin/lib/bf533_string.c b/arch/blackfin/lib/bf533_string.c
-index ff9410f..860ee92 100644
---- a/arch/blackfin/lib/bf533_string.c
-+++ b/arch/blackfin/lib/bf533_string.c
-@@ -176,6 +176,6 @@ void *dma_memcpy(void * dest,const void *src,size_t count)
- 		*pMDMA_D0_IRQ_STATUS |= (DMA_DONE | DMA_ERR);
- 
- 		dest += count;
--		src  += count;
-+
- 		return dest;
- }
--- 
-1.8.1.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJj
+aC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9jbG9jay5jIHwgICAxMiArKysrKysrKysrKysKIDEgZmls
+ZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2Nsb2NrLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAv
+YW0zM3h4X2Nsb2NrLmMKaW5kZXggNDQ1MWQ2Mi4uZTRkOWQ3NyAxMDA2NDQKLS0tIGEvYXJjaC9h
+cm0vbWFjaC1vbWFwL2FtMzN4eF9jbG9jay5jCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9hbTMz
+eHhfY2xvY2suYwpAQCAtNTMsNiArNTMsMTggQEAgc3RhdGljIHZvaWQgaW50ZXJmYWNlX2Nsb2Nr
+c19lbmFibGUodm9pZCkKIAkvKiBHUElPMCAqLwogCV9fcmF3X3dyaXRlbChQUkNNX01PRF9FTiwg
+Q01fV0tVUF9HUElPMF9DTEtDVFJMKTsKIAl3aGlsZSAoX19yYXdfcmVhZGwoQ01fV0tVUF9HUElP
+MF9DTEtDVFJMKSAhPSBQUkNNX01PRF9FTik7CisKKwkvKiBHUElPMSAqLworCV9fcmF3X3dyaXRl
+bChQUkNNX01PRF9FTiwgQ01fUEVSX0dQSU8xX0NMS0NUUkwpOworCXdoaWxlIChfX3Jhd19yZWFk
+bChDTV9QRVJfR1BJTzFfQ0xLQ1RSTCkgIT0gUFJDTV9NT0RfRU4pOworCisJLyogR1BJTzIgKi8K
+KwlfX3Jhd193cml0ZWwoUFJDTV9NT0RfRU4sIENNX1BFUl9HUElPMl9DTEtDVFJMKTsKKwl3aGls
+ZSAoX19yYXdfcmVhZGwoQ01fUEVSX0dQSU8yX0NMS0NUUkwpICE9IFBSQ01fTU9EX0VOKTsKKwor
+CS8qIEdQSU8zICovCisJX19yYXdfd3JpdGVsKFBSQ01fTU9EX0VOLCBDTV9QRVJfR1BJTzNfQ0xL
+Q1RSTCk7CisJd2hpbGUgKF9fcmF3X3JlYWRsKENNX1BFUl9HUElPM19DTEtDVFJMKSAhPSBQUkNN
+X01PRF9FTik7CiB9CiAKIHN0YXRpYyB2b2lkIHBvd2VyX2RvbWFpbl90cmFuc2l0aW9uX2VuYWJs
+ZSh2b2lkKQotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
