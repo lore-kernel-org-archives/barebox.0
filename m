@@ -1,22 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwCde-0001sE-AH
- for barebox@lists.infradead.org; Mon, 08 Jul 2013 14:42:02 +0000
-Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1UwCdI-0000dl-VE
- for barebox@lists.infradead.org; Mon, 08 Jul 2013 16:41:40 +0200
-Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jlu@pengutronix.de>) id 1UwCda-0002Sf-FZ
- for barebox@lists.infradead.org; Mon, 08 Jul 2013 16:41:58 +0200
-Message-ID: <1373294518.4284.5.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Mon, 08 Jul 2013 16:41:58 +0200
-In-Reply-To: <1373289430-6965-9-git-send-email-t.gamez@phytec.de>
-References: <1373289430-6965-1-git-send-email-t.gamez@phytec.de>
- <1373289430-6965-9-git-send-email-t.gamez@phytec.de>
-Mime-Version: 1.0
+Received: from relay4.ptmail.sapo.pt ([212.55.154.24] helo=sapo.pt)
+ by merlin.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwJDD-0000kA-OF
+ for barebox@lists.infradead.org; Mon, 08 Jul 2013 21:43:12 +0000
+Received: from unknown (HELO n56v.localnet) (microcris@sapo.pt@[78.130.20.136])
+ (envelope-sender <microcris@aeiou.pt>)
+ by mta-auth01 (qmail-ptmail-1.0.0) with AES256-SHA encrypted SMTP
+ for <barebox@lists.infradead.org>; 8 Jul 2013 21:42:46 -0000
+From: Cristiano Rodrigues <microcris@aeiou.pt>
+Date: Mon, 08 Jul 2013 22:42:43 +0100
+Message-ID: <2655265.6QViDogYJX@n56v>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,30 +19,148 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 09/12] ARM: AM33xx: Make mpu pll configurable by
- lowlevel board code
+Subject: mini2440 (256MB NAND)
 To: barebox@lists.infradead.org
 
-T24gTW9uLCAyMDEzLTA3LTA4IGF0IDE1OjE3ICswMjAwLCBUZXJlc2EgR8OhbWV6IHdyb3RlOgo+
-IGRpZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2Nsb2NrLmMgYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvYW0zM3h4X2Nsb2NrLmMKPiBpbmRleCBlNGQ5ZDc3Li45OTI4ZTlmIDEwMDY0
-NAo+IC0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfY2xvY2suYwo+ICsrKyBiL2FyY2gv
-YXJtL21hY2gtb21hcC9hbTMzeHhfY2xvY2suYwo+IEBAIC0yOTQsOSArMjk0LDkgQEAgdm9pZCBl
-bmFibGVfZGRyX2Nsb2Nrcyh2b2lkKQo+ICAvKgo+ICAgKiBDb25maWd1cmUgdGhlIFBMTC9QUkNN
-IGZvciBuZWNlc3NhcnkgcGVyaXBoZXJhbHMKPiAgICovCj4gLXZvaWQgcGxsX2luaXQoKQo+ICt2
-b2lkIHBsbF9pbml0KGludCBtcHVwbGxfTSkKPiAgewo+IC0JbXB1X3BsbF9jb25maWcoTVBVUExM
-X01fNTAwKTsKPiArCW1wdV9wbGxfY29uZmlnKG1wdXBsbF9NKTsKPiAgCWNvcmVfcGxsX2NvbmZp
-ZygpOwo+ICAJcGVyX3BsbF9jb25maWcoKTsKPiAgCWRkcl9wbGxfY29uZmlnKCk7CgpUaGFua3Ms
-IGdvb2QgaWRlYS4gOikKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNv
-bHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQ
-ZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUx
-MjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAg
-ICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
-bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2JhcmVib3gK
+Hi there :)
+ 
+I'm trying to run the barebox (trunk version or any other recent version) in 
+my mini2440 board but until now, I can't boot from nand.
+ 
+I'm able to run it from RAM but I'm unable to boot it from NAND
+ 
+Here it is what I did:
+********************************
+Compiling the barebox:
+ 
+made some changes in the arch/arm/boards/friendlyarm-mini2440/env/config file
+ 
+make friendlyarm_mini2440_defconfig
+ 
+make menuconfig
+ 
+make
+*******************************
+Lodad the barebox.bin to the mini2440:
+ 
+put the S2 connector in NOR position
+RESET
+pushed the "x" option on vivi
+ 
+Enter your selection: x
+Found block size = 0x00020000
+Erasing...    ... done
+Writing...    ... done
+Written 49152 bytes
+Saved vivi private data
+ 
+ 
+RESET again
+pushed the "q" option on vivi
+ 
+Supervivi> load ram 0x32000000 206420 u
+USB host is connected. Waiting a download.
+ 
+Now, Downloading [ADDRESS:32000000h,TOTAL:206430]
+RECEIVED FILE SIZE:  206430 (201KB/S, 1S)
+Downloaded file at 0x32000000, size = 206420 bytes
+ 
+Supervivi> go 0x32000000
+go to 0x32000000
+  argument 0 = 0x00000000
+  argument 1 = 0x00000000
+  argument 2 = 0x00000000
+  argument 3 = 0x00000000
+ 
+barebox 2013.07.0-00228-gf457f68-dirty #13 Mon Jul 8 12:19:15 WEST 2013
+ 
+Board: Mini 2440
+ 
+nand: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB 3,3V
+8-bit), page size: 2048, OOB size: 64
+nand: Bad block table not found for chip 0
+nand: Bad block table not found for chip 0
+nand: Scanning device for bad blocks
+nand: Bad eraseblock 205 at 0x019a0000
+nand: Bad eraseblock 570 at 0x04740000
+nand: Bad eraseblock 2013 at 0x0fba0000
+dm9000 dm90000: Found DM9000E at i/o: 0x20000300
+mdio_bus: miibus0: probed
+s3c_mci s3c_mci0: registered as s3c_mci0
+malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
+refclk:    12000 kHz
+mpll:     405000 kHz
+upll:      48000 kHz
+fclk:     405000 kHz
+hclk:     101250 kHz
+pclk:      50625 kHz
+SDRAM1:   CL4@101MHz
+SDRAM2:   CL4@101MHz
+envfs: wrong magic on /dev/env0
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
+set parameter: Invalid argument
+Hit any key to stop autoboot:  2
+mini2440:/ 
+mini2440:/ saveenv
+saving environment
+mini2440:/ update -t barebox -d nand
+set parameter: Invalid argument
+warning: No MAC address set. Using random address F2:14:71:AE:1E:F0
+100Mbps full duplex link detected
+DHCP client bound to address 10.42.0.73
+host 10.42.0.1 is alive
+ 
+erasing partition /dev/nand0.barebox.bb
+ 
+flashing barebox.bin to /dev/nand0.barebox.bb
+  [                                                                 ]
+  [#################################################################
+mini2440:/ 
+mini2440:/ nand_boot_test 0x31000000 0x40000
+mini2440:/ go 0x31000000
+## Starting application at 0x31000000 ...
+ 
+barebox 2013.07.0-00228-gf457f68-dirty #13 Mon Jul 8 12:19:15 WEST 2013
+ 
+Board: Mini 2440
+ 
+nand: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB 3,3V
+8-bit), page size: 2048, OOB size: 64
+dm9000 dm90000: Found DM9000E at i/o: 0x20000300
+mdio_bus: miibus0: probed
+s3c_mci s3c_mci0: registered as s3c_mci0
+malloc space: 0x31bf8000 -> 0x31ff7fff (size 4 MiB)
+refclk:    12000 kHz
+mpll:     405000 kHz
+upll:      48000 kHz
+fclk:     405000 kHz
+hclk:     101250 kHz
+pclk:      50625 kHz
+SDRAM1:   CL4@101MHz
+SDRAM2:   CL4@101MHz
+running /env/bin/init...
+set parameter: Invalid argument
+Hit any key to stop autoboot:  2
+mini2440:/ 
+ 
+that step 
+mini2440:/ nand_boot_test 0x31000000 0x40000
+mini2440:/ go 0x31000000
+is to check if the downloaded image is alright... and as we can see,
+it is alright.
+ 
+Now, I put the S2 in NAND position, RESET and nothing happens :(
+ 
+What am I doing wrong?
+ 
+Thank you for any help that you can provide.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
