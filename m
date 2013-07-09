@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwU9Y-0002xo-AI
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 09:24:08 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 91FCBBF0FA
- for <barebox@lists.infradead.org>; Tue,  9 Jul 2013 11:17:33 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Tue, 9 Jul 2013 11:23:17 +0200
-Message-Id: <1373361802-31080-7-git-send-email-t.gamez@phytec.de>
-In-Reply-To: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
-References: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwUdV-0003i1-Da
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 09:55:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue,  9 Jul 2013 11:54:37 +0200
+Message-Id: <1373363682-24449-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1373363682-24449-1-git-send-email-s.hauer@pengutronix.de>
+References: <1373363682-24449-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +16,80 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 07/12] ARM: AM33xx: Enable clock for all GPIO banks
+Subject: [PATCH 1/6] Revert "ARM: i.MX27 pcm038: switch to multi image"
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJj
-aC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9jbG9jay5jIHwgICAxMiArKysrKysrKysrKysKIDEgZmls
-ZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
-YS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2Nsb2NrLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAv
-YW0zM3h4X2Nsb2NrLmMKaW5kZXggNDQ1MWQ2Mi4uZTRkOWQ3NyAxMDA2NDQKLS0tIGEvYXJjaC9h
-cm0vbWFjaC1vbWFwL2FtMzN4eF9jbG9jay5jCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9hbTMz
-eHhfY2xvY2suYwpAQCAtNTMsNiArNTMsMTggQEAgc3RhdGljIHZvaWQgaW50ZXJmYWNlX2Nsb2Nr
-c19lbmFibGUodm9pZCkKIAkvKiBHUElPMCAqLwogCV9fcmF3X3dyaXRlbChQUkNNX01PRF9FTiwg
-Q01fV0tVUF9HUElPMF9DTEtDVFJMKTsKIAl3aGlsZSAoX19yYXdfcmVhZGwoQ01fV0tVUF9HUElP
-MF9DTEtDVFJMKSAhPSBQUkNNX01PRF9FTik7CisKKwkvKiBHUElPMSAqLworCV9fcmF3X3dyaXRl
-bChQUkNNX01PRF9FTiwgQ01fUEVSX0dQSU8xX0NMS0NUUkwpOworCXdoaWxlIChfX3Jhd19yZWFk
-bChDTV9QRVJfR1BJTzFfQ0xLQ1RSTCkgIT0gUFJDTV9NT0RfRU4pOworCisJLyogR1BJTzIgKi8K
-KwlfX3Jhd193cml0ZWwoUFJDTV9NT0RfRU4sIENNX1BFUl9HUElPMl9DTEtDVFJMKTsKKwl3aGls
-ZSAoX19yYXdfcmVhZGwoQ01fUEVSX0dQSU8yX0NMS0NUUkwpICE9IFBSQ01fTU9EX0VOKTsKKwor
-CS8qIEdQSU8zICovCisJX19yYXdfd3JpdGVsKFBSQ01fTU9EX0VOLCBDTV9QRVJfR1BJTzNfQ0xL
-Q1RSTCk7CisJd2hpbGUgKF9fcmF3X3JlYWRsKENNX1BFUl9HUElPM19DTEtDVFJMKSAhPSBQUkNN
-X01PRF9FTik7CiB9CiAKIHN0YXRpYyB2b2lkIHBvd2VyX2RvbWFpbl90cmFuc2l0aW9uX2VuYWJs
-ZSh2b2lkKQotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
-Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This reverts commit 08c0e206b3614eeecc1c3cee63665077360212e5.
+
+The external NAND boot code currently uses the _text linker variable
+to determine a place for the image. This doesn't work with multi image
+support which will link the binary at 0x0. Revert multi image support
+for the pcm038 for now until a solution is found.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/pcm038/lowlevel.c | 4 +---
+ arch/arm/mach-imx/Kconfig         | 1 -
+ images/Makefile.imx               | 5 -----
+ 3 files changed, 1 insertion(+), 9 deletions(-)
+
+diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
+index a3b2d13..0ea2939 100644
+--- a/arch/arm/boards/pcm038/lowlevel.c
++++ b/arch/arm/boards/pcm038/lowlevel.c
+@@ -33,13 +33,11 @@
+ 
+ #define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
+ 
+-ENTRY_FUNCTION(start_imx27_pcm038)(void)
++void __bare_init __naked barebox_arm_reset_vector(void)
+ {
+ 	uint32_t r;
+ 	int i;
+ 
+-	__barebox_arm_head();
+-
+ 	arm_cpu_lowlevel_init();
+ 
+ 	/* ahb lite ip interface */
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 9297a21..aedefe2 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -335,7 +335,6 @@ config MACH_PCM038
+ 	select DRIVER_SPI_IMX
+ 	select MFD_MC13XXX
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select HAVE_PBL_MULTI_IMAGES
+ 	help
+ 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
+ 	  with a Freescale i.MX27 Processor
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 788800e..e54be06 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -9,11 +9,6 @@ $(obj)/%.imximg: $(obj)/% FORCE
+ 
+ board = $(srctree)/arch/$(ARCH)/boards
+ 
+-# ----------------------- i.MX27 based boards ---------------------------
+-pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
+-FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
+-image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
+-
+ # ----------------------- i.MX51 based boards ---------------------------
+ pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
+ CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-pdk/flash-header-imx51-babbage.imxcfg
+-- 
+1.8.3.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
