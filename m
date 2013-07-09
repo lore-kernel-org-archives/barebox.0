@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwRpo-0007rj-4a
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 06:55:36 +0000
-Date: Tue, 9 Jul 2013 08:55:14 +0200
+ id 1UwRqs-0007sk-Tn
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 06:56:44 +0000
+Date: Tue, 9 Jul 2013 08:56:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130709065514.GN516@pengutronix.de>
-References: <20130705065043.GG516@pengutronix.de>
- <1373059183-20229-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130709065620.GO516@pengutronix.de>
+References: <20130705065137.GH516@pengutronix.de>
+ <1373059305-20443-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1373059183-20229-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1373059305-20443-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] OF: base: initalize from node in
- of_find_node_with_property
+Subject: Re: [PATCH RESEND] ARM: mvebu: add clock aliases for spi0/spi1 on Dove
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Fri, Jul 05, 2013 at 11:19:43PM +0200, Sebastian Hesselbarth wrote:
-> This adds initialization of from device node with root_node if NULL
-> is passed. This corresponds to the behavior of all other node iterators.
+On Fri, Jul 05, 2013 at 11:21:45PM +0200, Sebastian Hesselbarth wrote:
+> This adds clock aliases for spi controllers found on Dove to allow
+> spi driver to get tclk frequency.
 > 
 > Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 > ---
-> @Sascha: this is the last remaining iterator fix we talked about.
+> @Sascha: I forgot to update MVEBU SPI v4 patch numbering to indicate
+> that this patch is also required for the SPI driver to find its clock
+> with clk_get instead of clk_fixup.
+> 
+> As stated in the original patch for SPI clock aliases, I am not planing
+> to add any more clk aliases like this but prefer to work on DT clk
+> provider first.
+> 
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Cc: barebox@lists.infradead.org
 
 Applied, thanks
 
 Sascha
 
-> 
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: barebox@lists.infradead.org
 > ---
->  drivers/of/base.c |    3 +++
->  1 file changed, 3 insertions(+)
+>  arch/arm/mach-mvebu/dove.c                   |    2 ++
+>  arch/arm/mach-mvebu/include/mach/dove-regs.h |    3 +++
+>  2 files changed, 5 insertions(+)
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 5440f40..7bee912 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -364,6 +364,9 @@ struct device_node *of_find_node_with_property(struct device_node *from,
->  {
->  	struct device_node *np;
+> diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+> index 3909bf4..16ee116 100644
+> --- a/arch/arm/mach-mvebu/dove.c
+> +++ b/arch/arm/mach-mvebu/dove.c
+> @@ -124,6 +124,8 @@ static int dove_init_soc(void)
+>  	dove_remap_mc_regs();
+>  	dove_init_clocks();
+>  	clkdev_add_physbase(tclk, (unsigned int)DOVE_TIMER_BASE, NULL);
+> +	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI0_BASE, NULL);
+> +	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI1_BASE, NULL);
+>  	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
+>  			   (unsigned int)DOVE_TIMER_BASE, 0x30,
+>  			   IORESOURCE_MEM, NULL);
+> diff --git a/arch/arm/mach-mvebu/include/mach/dove-regs.h b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+> index 519457e..8b4319b 100644
+> --- a/arch/arm/mach-mvebu/include/mach/dove-regs.h
+> +++ b/arch/arm/mach-mvebu/include/mach/dove-regs.h
+> @@ -33,6 +33,9 @@
+>  #define DOVE_UART_BASE		(DOVE_INT_REGS_BASE + 0x12000)
+>  #define DOVE_UARTn_BASE(n)	(DOVE_UART_BASE + ((n) * 0x100))
 >  
-> +	if (!from)
-> +		from = root_node;
+> +#define DOVE_SPI0_BASE		(DOVE_INT_REGS_BASE + 0x10600)
+> +#define DOVE_SPI1_BASE		(DOVE_INT_REGS_BASE + 0x14600)
 > +
->  	of_tree_for_each_node_from(np, from) {
->  		struct property *pp = of_find_property(np, prop_name, NULL);
->  		if (pp)
+>  #define DOVE_BRIDGE_BASE	(DOVE_INT_REGS_BASE + 0x20000)
+>  #define  INT_REGS_BASE_MAP	0x080
+>  #define  BRIDGE_RSTOUT_MASK	0x108
 > -- 
 > 1.7.10.4
 > 
