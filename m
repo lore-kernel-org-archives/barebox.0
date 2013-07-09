@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwZqN-000359-Hq
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 15:28:44 +0000
-Received: by mail-la0-f51.google.com with SMTP id fq12so4893635lab.10
- for <barebox@lists.infradead.org>; Tue, 09 Jul 2013 08:28:21 -0700 (PDT)
-From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Tue,  9 Jul 2013 21:22:10 +0600
-Message-Id: <1373383330-13126-1-git-send-email-agalakhov@gmail.com>
+ id 1UwZy7-0003DY-Uw
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 15:36:45 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Tue,  9 Jul 2013 17:36:32 +0200
+Message-Id: <1373384192-2912-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +19,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Force set console baudrate
+Subject: [PATCH] nand_base: add missing newline
 To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-Most serial drivers require setbrg() to be called at least once. Call them
-just after the device has been added.
-
-Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- common/console.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/nand_base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/common/console.c b/common/console.c
-index a0a06f6..abf5322 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -147,6 +147,7 @@ int console_register(struct console_device *newcdev)
- 		newcdev->baudrate = CONFIG_BAUDRATE;
- 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
- 			NULL, &newcdev->baudrate, "%u", newcdev);
-+		newcdev->setbrg(newcdev, newcdev->baudrate);
- 	}
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 1969aff..829ab42 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -1126,7 +1126,7 @@ static int nand_flash_detect_onfi(struct mtd_info *mtd, struct nand_chip *chip,
+ 	chip->options &= ~NAND_CHIPOPTIONS_MSK;
+ 	chip->options |= NAND_NO_READRDY & NAND_CHIPOPTIONS_MSK;
  
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+-	pr_info("ONFI flash detected ... ");
++	pr_info("ONFI flash detected ...\n");
+ 	return 1;
+ }
+ 
 -- 
 1.7.10.4
 
