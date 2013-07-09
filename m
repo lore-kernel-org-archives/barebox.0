@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwRqs-0007sk-Tn
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 06:56:44 +0000
-Date: Tue, 9 Jul 2013 08:56:20 +0200
+ id 1UwRrX-0007tU-D8
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 06:57:23 +0000
+Date: Tue, 9 Jul 2013 08:57:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130709065620.GO516@pengutronix.de>
-References: <20130705065137.GH516@pengutronix.de>
- <1373059305-20443-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Message-ID: <20130709065701.GP516@pengutronix.de>
+References: <1373084755-16398-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1373059305-20443-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1373084755-16398-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,67 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RESEND] ARM: mvebu: add clock aliases for spi0/spi1 on Dove
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: Re: [PATCH] MIPS: rzx50: add nmon support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jul 05, 2013 at 11:21:45PM +0200, Sebastian Hesselbarth wrote:
-> This adds clock aliases for spi controllers found on Dove to allow
-> spi driver to get tclk frequency.
-> 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> ---
-> @Sascha: I forgot to update MVEBU SPI v4 patch numbering to indicate
-> that this patch is also required for the SPI driver to find its clock
-> with clk_get instead of clk_fixup.
-> 
-> As stated in the original patch for SPI clock aliases, I am not planing
-> to add any more clk aliases like this but prefer to work on DT clk
-> provider first.
-> 
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-> Cc: barebox@lists.infradead.org
+On Sat, Jul 06, 2013 at 08:25:55AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/mach-mvebu/dove.c                   |    2 ++
->  arch/arm/mach-mvebu/include/mach/dove-regs.h |    3 +++
->  2 files changed, 5 insertions(+)
+>  arch/mips/Kconfig                                      | 1 +
+>  arch/mips/boards/rzx50/include/board/board_pbl_start.h | 3 +++
+>  2 files changed, 4 insertions(+)
 > 
-> diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-> index 3909bf4..16ee116 100644
-> --- a/arch/arm/mach-mvebu/dove.c
-> +++ b/arch/arm/mach-mvebu/dove.c
-> @@ -124,6 +124,8 @@ static int dove_init_soc(void)
->  	dove_remap_mc_regs();
->  	dove_init_clocks();
->  	clkdev_add_physbase(tclk, (unsigned int)DOVE_TIMER_BASE, NULL);
-> +	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI0_BASE, NULL);
-> +	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI1_BASE, NULL);
->  	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
->  			   (unsigned int)DOVE_TIMER_BASE, 0x30,
->  			   IORESOURCE_MEM, NULL);
-> diff --git a/arch/arm/mach-mvebu/include/mach/dove-regs.h b/arch/arm/mach-mvebu/include/mach/dove-regs.h
-> index 519457e..8b4319b 100644
-> --- a/arch/arm/mach-mvebu/include/mach/dove-regs.h
-> +++ b/arch/arm/mach-mvebu/include/mach/dove-regs.h
-> @@ -33,6 +33,9 @@
->  #define DOVE_UART_BASE		(DOVE_INT_REGS_BASE + 0x12000)
->  #define DOVE_UARTn_BASE(n)	(DOVE_UART_BASE + ((n) * 0x100))
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index b2452c7..ca240d2 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -72,6 +72,7 @@ config MACH_MIPS_XBURST
+>  	select HAS_DEBUG_LL
+>  	select HAVE_PBL_IMAGE
+>  	select HAVE_IMAGE_COMPRESSION
+> +	select HAS_NMON
+>  endchoice
 >  
-> +#define DOVE_SPI0_BASE		(DOVE_INT_REGS_BASE + 0x10600)
-> +#define DOVE_SPI1_BASE		(DOVE_INT_REGS_BASE + 0x14600)
+>  source arch/mips/mach-malta/Kconfig
+> diff --git a/arch/mips/boards/rzx50/include/board/board_pbl_start.h b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
+> index f71641a..fb914d9 100644
+> --- a/arch/mips/boards/rzx50/include/board/board_pbl_start.h
+> +++ b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
+> @@ -19,6 +19,7 @@
+>  
+>  #include <asm/pbl_macros.h>
+>  #include <mach/debug_ll.h>
+> +#include <asm/pbl_nmon.h>
+>  
+>  	.macro	board_pbl_start
+>  	.set	push
+> @@ -34,6 +35,8 @@
+>  	debug_ll_ns16550_outc '.'
+>  	debug_ll_ns16550_outnl
+>  
+> +	mips_nmon
 > +
->  #define DOVE_BRIDGE_BASE	(DOVE_INT_REGS_BASE + 0x20000)
->  #define  INT_REGS_BASE_MAP	0x080
->  #define  BRIDGE_RSTOUT_MASK	0x108
+>  	copy_to_link_location	pbl_start
+>  
+>  	.set	pop
 > -- 
-> 1.7.10.4
+> 1.8.3.1
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
