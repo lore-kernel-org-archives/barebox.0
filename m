@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwbDK-0005SH-NY
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 16:56:31 +0000
-Date: Tue, 9 Jul 2013 18:56:08 +0200
+ id 1Uwbi0-0006CH-Ci
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 17:28:13 +0000
+Date: Tue, 9 Jul 2013 19:27:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130709165608.GT516@pengutronix.de>
-References: <1373366629-2818-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130709172750.GU516@pengutronix.de>
+References: <20130709104659.GA19197@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1373366629-2818-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130709104659.GA19197@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] ARM: at91: animeo IP: fix partition table
+Subject: Re: [PATCH 0/3] ARM: AT91: drop config.h when possible
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Jul 09, 2013 at 12:43:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> we now use a UBI Volume instead of user_block, kernel and root
-> the bootloader size is 320KiB not 256KiB
+On Tue, Jul 09, 2013 at 12:46:59PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 	This serie remove the config.h on all the at91 execpt the rm9200 where
+> 	some work need to be done at init level
+> 	where sam9 are already converted to C struct
+> 
+> Jean-Christophe PLAGNIOL-VILLARD (3):
+>       ARM: at91: move main clock define to C
+>       ARM: at91 boards: remove empty config.h files
+>       ARM: AT91: Turn most board directories into regular build directories
 
 Applied, thanks
 
 Sascha
 
-> ---
->  arch/arm/boards/animeo_ip/env/config | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm/boards/animeo_ip/env/config b/arch/arm/boards/animeo_ip/env/config
-> index a0537b8..7526fcf 100644
-> --- a/arch/arm/boards/animeo_ip/env/config
-> +++ b/arch/arm/boards/animeo_ip/env/config
-> @@ -28,8 +28,8 @@ kernelimage=zImage
->  #kernelimage=Image.lzo
->  
->  nand_device=atmel_nand
-> -nand_parts="32k(at91bootstrap),256k(barebox)ro,32k(bareboxenv),704k(user_block),1728k(kernel),-(root)"
-> -rootfs_mtdblock_nand=5
-> +nand_parts="32k(at91bootstrap),320k(barebox)ro,32k(bareboxenv),-(ubi)"
-> +rootfs_mtdblock_nand=3
->  
->  autoboot_timeout=3
->  
-> -- 
-> 1.8.3.2
+>  arch/arm/Makefile                         | 25 -------------------------
+>  arch/arm/boards/Makefile                  | 25 +++++++++++++++++++++++++
+>  arch/arm/boards/animeo_ip/config.h        |  6 ------
+>  arch/arm/boards/animeo_ip/init.c          |  7 +++++++
+>  arch/arm/boards/at91rm9200ek/config.h     |  2 --
+>  arch/arm/boards/at91rm9200ek/init.c       |  7 +++++++
+>  arch/arm/boards/at91sam9260ek/config.h    |  6 ------
+>  arch/arm/boards/at91sam9260ek/init.c      |  7 +++++++
+>  arch/arm/boards/at91sam9261ek/config.h    |  6 ------
+>  arch/arm/boards/at91sam9261ek/init.c      |  7 +++++++
+>  arch/arm/boards/at91sam9263ek/config.h    |  6 ------
+>  arch/arm/boards/at91sam9263ek/init.c      |  7 +++++++
+>  arch/arm/boards/at91sam9m10g45ek/config.h |  6 ------
+>  arch/arm/boards/at91sam9m10g45ek/init.c   |  7 +++++++
+>  arch/arm/boards/at91sam9m10ihd/config.h   |  6 ------
+>  arch/arm/boards/at91sam9m10ihd/init.c     |  7 +++++++
+>  arch/arm/boards/at91sam9n12ek/config.h    |  6 ------
+>  arch/arm/boards/at91sam9n12ek/init.c      |  7 +++++++
+>  arch/arm/boards/at91sam9x5ek/config.h     |  6 ------
+>  arch/arm/boards/at91sam9x5ek/init.c       |  7 +++++++
+>  arch/arm/boards/dss11/config.h            |  6 ------
+>  arch/arm/boards/dss11/init.c              |  7 +++++++
+>  arch/arm/boards/mmccpu/config.h           |  6 ------
+>  arch/arm/boards/mmccpu/init.c             |  7 +++++++
+>  arch/arm/boards/pm9261/config.h           |  6 ------
+>  arch/arm/boards/pm9261/init.c             |  7 +++++++
+>  arch/arm/boards/pm9263/config.h           |  6 ------
+>  arch/arm/boards/pm9263/init.c             |  7 +++++++
+>  arch/arm/boards/pm9g45/config.h           |  6 ------
+>  arch/arm/boards/pm9g45/init.c             |  7 +++++++
+>  arch/arm/boards/qil-a926x/config.h        |  6 ------
+>  arch/arm/boards/qil-a926x/init.c          |  7 +++++++
+>  arch/arm/boards/sama5d3xek/config.h       |  6 ------
+>  arch/arm/boards/sama5d3xek/init.c         |  7 +++++++
+>  arch/arm/boards/telit-evk-pro3/config.h   |  6 ------
+>  arch/arm/boards/telit-evk-pro3/init.c     |  7 +++++++
+>  arch/arm/boards/tny-a926x/config.h        |  6 ------
+>  arch/arm/boards/tny-a926x/init.c          |  7 +++++++
+>  arch/arm/boards/usb-a926x/config.h        |  6 ------
+>  arch/arm/boards/usb-a926x/init.c          |  7 +++++++
+>  arch/arm/mach-at91/at91rm9200.c           |  3 ---
+>  arch/arm/mach-at91/at91sam9260.c          |  3 ---
+>  arch/arm/mach-at91/at91sam9261.c          |  3 ---
+>  arch/arm/mach-at91/at91sam9263.c          |  3 ---
+>  arch/arm/mach-at91/at91sam9g45.c          |  3 ---
+>  arch/arm/mach-at91/at91sam9n12.c          |  3 ---
+>  arch/arm/mach-at91/at91sam9x5.c           |  3 ---
+>  arch/arm/mach-at91/clock.c                | 11 +++++++++--
+>  arch/arm/mach-at91/generic.h              |  2 +-
+>  arch/arm/mach-at91/include/mach/board.h   |  2 ++
+>  arch/arm/mach-at91/sama5d3.c              |  3 ---
+>  arch/arm/mach-at91/setup.c                |  4 ++++
+>  52 files changed, 174 insertions(+), 162 deletions(-)
+>  delete mode 100644 arch/arm/boards/animeo_ip/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9260ek/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9261ek/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9263ek/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9m10g45ek/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9m10ihd/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9n12ek/config.h
+>  delete mode 100644 arch/arm/boards/at91sam9x5ek/config.h
+>  delete mode 100644 arch/arm/boards/dss11/config.h
+>  delete mode 100644 arch/arm/boards/mmccpu/config.h
+>  delete mode 100644 arch/arm/boards/pm9261/config.h
+>  delete mode 100644 arch/arm/boards/pm9263/config.h
+>  delete mode 100644 arch/arm/boards/pm9g45/config.h
+>  delete mode 100644 arch/arm/boards/qil-a926x/config.h
+>  delete mode 100644 arch/arm/boards/sama5d3xek/config.h
+>  delete mode 100644 arch/arm/boards/telit-evk-pro3/config.h
+>  delete mode 100644 arch/arm/boards/tny-a926x/config.h
+>  delete mode 100644 arch/arm/boards/usb-a926x/config.h
 > 
+> Best Regards,
+> J.
 > 
 > _______________________________________________
 > barebox mailing list
