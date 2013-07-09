@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwUdV-0003i1-Da
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 09:55:07 +0000
+ id 1UwUdV-0003i0-Dc
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 09:55:06 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1UwUd9-0008NX-2C
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 11:54:43 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1UwUd9-0004Lq-11
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 11:54:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  9 Jul 2013 11:54:37 +0200
-Message-Id: <1373363682-24449-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1373363682-24449-1-git-send-email-s.hauer@pengutronix.de>
-References: <1373363682-24449-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  9 Jul 2013 11:54:36 +0200
+Message-Id: <1373363682-24449-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +26,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] Revert "ARM: i.MX27 pcm038: switch to multi image"
+Subject: [PATCH] i.MX external nand boot
 To: barebox@lists.infradead.org
 
-This reverts commit 08c0e206b3614eeecc1c3cee63665077360212e5.
 
-The external NAND boot code currently uses the _text linker variable
-to determine a place for the image. This doesn't work with multi image
-support which will link the binary at 0x0. Revert multi image support
-for the pcm038 for now until a solution is found.
+The following gets rid of several ifdefs in the i.MX external
+nand boot code. Also we have to revert the pcm038 conversion
+to multiimage support for now as it turned out to be incompatible
+with external nand boot mode. This is fixable, but for now to
+get the master branch working revert it.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/pcm038/lowlevel.c | 4 +---
- arch/arm/mach-imx/Kconfig         | 1 -
- images/Makefile.imx               | 5 -----
- 3 files changed, 1 insertion(+), 9 deletions(-)
+Sascha
 
-diff --git a/arch/arm/boards/pcm038/lowlevel.c b/arch/arm/boards/pcm038/lowlevel.c
-index a3b2d13..0ea2939 100644
---- a/arch/arm/boards/pcm038/lowlevel.c
-+++ b/arch/arm/boards/pcm038/lowlevel.c
-@@ -33,13 +33,11 @@
- 
- #define ESDCTL0_VAL (ESDCTL0_SDE | ESDCTL0_ROW13 | ESDCTL0_COL10)
- 
--ENTRY_FUNCTION(start_imx27_pcm038)(void)
-+void __bare_init __naked barebox_arm_reset_vector(void)
- {
- 	uint32_t r;
- 	int i;
- 
--	__barebox_arm_head();
--
- 	arm_cpu_lowlevel_init();
- 
- 	/* ahb lite ip interface */
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 9297a21..aedefe2 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -335,7 +335,6 @@ config MACH_PCM038
- 	select DRIVER_SPI_IMX
- 	select MFD_MC13XXX
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
--	select HAVE_PBL_MULTI_IMAGES
- 	help
- 	  Say Y here if you are using Phytec's phyCORE-i.MX27 (pcm038) equipped
- 	  with a Freescale i.MX27 Processor
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index 788800e..e54be06 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -9,11 +9,6 @@ $(obj)/%.imximg: $(obj)/% FORCE
- 
- board = $(srctree)/arch/$(ARCH)/boards
- 
--# ----------------------- i.MX27 based boards ---------------------------
--pblx-$(CONFIG_MACH_PCM038) += start_imx27_pcm038
--FILE_barebox-phytec-phycore-imx27.img = start_imx27_pcm038.pblx
--image-$(CONFIG_MACH_PCM038) += barebox-phytec-phycore-imx27.img
--
- # ----------------------- i.MX51 based boards ---------------------------
- pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
- CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-pdk/flash-header-imx51-babbage.imxcfg
--- 
-1.8.3.2
+----------------------------------------------------------------
+Sascha Hauer (6):
+      Revert "ARM: i.MX27 pcm038: switch to multi image"
+      ARM: i.MX: External Nand boot: make 2k support nonoptional
+      ARM: i.MX: External Nand boot: move pagesize detection into SoC specific code
+      ARM: i.MX: External Nand boot: remove debug command
+      ARM: i.MX: External Nand boot: remove ifdefs
+      ARM: i.MX: External Nand boot: remove ifdefs around SoC functions
 
+ arch/arm/boards/pcm038/lowlevel.c      |   4 +-
+ arch/arm/mach-imx/Kconfig              |  17 ----
+ arch/arm/mach-imx/external-nand-boot.c | 171 ++++++++++++---------------------
+ images/Makefile.imx                    |   5 -
+ 4 files changed, 61 insertions(+), 136 deletions(-)
 
 _______________________________________________
 barebox mailing list
