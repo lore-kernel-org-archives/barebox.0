@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwRrX-0007tU-D8
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 06:57:23 +0000
-Date: Tue, 9 Jul 2013 08:57:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130709065701.GP516@pengutronix.de>
-References: <1373084755-16398-1-git-send-email-antonynpavlov@gmail.com>
+Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwU9C-0002va-Gj
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 09:23:47 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 6F261BF0F6
+ for <barebox@lists.infradead.org>; Tue,  9 Jul 2013 11:17:33 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 9 Jul 2013 11:23:13 +0200
+Message-Id: <1373361802-31080-3-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
+References: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1373084755-16398-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +20,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: rzx50: add nmon support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCHv2 03/12] ARM: AM33xx: Add gpio support
+To: barebox@lists.infradead.org
 
-On Sat, Jul 06, 2013 at 08:25:55AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-
-Applied, thanks
-
-Sascha
-
-> ---
->  arch/mips/Kconfig                                      | 1 +
->  arch/mips/boards/rzx50/include/board/board_pbl_start.h | 3 +++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index b2452c7..ca240d2 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -72,6 +72,7 @@ config MACH_MIPS_XBURST
->  	select HAS_DEBUG_LL
->  	select HAVE_PBL_IMAGE
->  	select HAVE_IMAGE_COMPRESSION
-> +	select HAS_NMON
->  endchoice
->  
->  source arch/mips/mach-malta/Kconfig
-> diff --git a/arch/mips/boards/rzx50/include/board/board_pbl_start.h b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-> index f71641a..fb914d9 100644
-> --- a/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-> +++ b/arch/mips/boards/rzx50/include/board/board_pbl_start.h
-> @@ -19,6 +19,7 @@
->  
->  #include <asm/pbl_macros.h>
->  #include <mach/debug_ll.h>
-> +#include <asm/pbl_nmon.h>
->  
->  	.macro	board_pbl_start
->  	.set	push
-> @@ -34,6 +35,8 @@
->  	debug_ll_ns16550_outc '.'
->  	debug_ll_ns16550_outnl
->  
-> +	mips_nmon
-> +
->  	copy_to_link_location	pbl_start
->  
->  	.set	pop
-> -- 
-> 1.8.3.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+UmVnaXN0ZXIgR1BJTyBiYW5rcyBmb3IgQU0zM3h4IGJvYXJkcy4KClNpZ25lZC1vZmYtYnk6IFRl
+cmVzYSBHw6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL21hY2gtb21hcC9h
+bTMzeHhfZ2VuZXJpYy5jIHwgICAxNCArKysrKysrKysrKysrKwogMSBmaWxlcyBjaGFuZ2VkLCAx
+NCBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21h
+Y2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5l
+cmljLmMKaW5kZXggOTgwNmZiZS4uYWM5OTAzNSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1v
+bWFwL2FtMzN4eF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5l
+cmljLmMKQEAgLTE0MSwzICsxNDEsMTcgQEAgY29uc3Qgc3RydWN0IGdwbWNfY29uZmlnIGFtMzN4
+eF9uYW5kX2NmZyA9IHsKIAkuYmFzZSA9IDB4MDgwMDAwMDAsCiAJLnNpemUgPSBHUE1DX1NJWkVf
+MTZNLAogfTsKKworc3RhdGljIGludCBhbTMzeHhfZ3Bpb19pbml0KHZvaWQpCit7CisJYWRkX2dl
+bmVyaWNfZGV2aWNlKCJvbWFwLWdwaW8iLCAwLCBOVUxMLCBBTTMzWFhfR1BJTzBfQkFTRSwKKwkJ
+CQkweGYwMCwgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOworCWFkZF9nZW5lcmljX2RldmljZSgib21h
+cC1ncGlvIiwgMSwgTlVMTCwgQU0zM1hYX0dQSU8xX0JBU0UsCisJCQkJMHhmMDAsIElPUkVTT1VS
+Q0VfTUVNLCBOVUxMKTsKKwlhZGRfZ2VuZXJpY19kZXZpY2UoIm9tYXAtZ3BpbyIsIDIsIE5VTEws
+IEFNMzNYWF9HUElPMl9CQVNFLAorCQkJCTB4ZjAwLCBJT1JFU09VUkNFX01FTSwgTlVMTCk7CisJ
+YWRkX2dlbmVyaWNfZGV2aWNlKCJvbWFwLWdwaW8iLCAzLCBOVUxMLCBBTTMzWFhfR1BJTzNfQkFT
+RSwKKwkJCQkweGYwMCwgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOworCXJldHVybiAwOworfQorY29y
+ZWRldmljZV9pbml0Y2FsbChhbTMzeHhfZ3Bpb19pbml0KTsKLS0gCjEuNy4wLjQKCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcg
+bGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
