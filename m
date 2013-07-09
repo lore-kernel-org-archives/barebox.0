@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwcOI-00078y-JN
- for barebox@lists.infradead.org; Tue, 09 Jul 2013 18:11:55 +0000
-Date: Tue, 9 Jul 2013 20:11:31 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130709181131.GC516@pengutronix.de>
-References: <1373374600-13856-1-git-send-email-shc_work@mail.ru>
- <20130709175433.GB516@pengutronix.de>
- <1373392840.824667706@f353.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1373392840.824667706@f353.mail.ru>
+Received: from mo1.mail-out.ovh.net ([178.32.228.1])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uwd7C-0007tb-1X
+ for barebox@lists.infradead.org; Tue, 09 Jul 2013 18:58:19 +0000
+Received: from mail605.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 715D7FFAB5A
+ for <barebox@lists.infradead.org>; Tue,  9 Jul 2013 20:57:56 +0200 (CEST)
+Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <20130709174333.GY516@pengutronix.de>
+Date: Wed, 10 Jul 2013 02:57:51 +0800
+Message-Id: <5C73F356-67C8-4D18-B0B8-3D0BE89794A7@jcrosoft.com>
+References: <1373383330-13126-1-git-send-email-agalakhov@gmail.com>
+ <20130709174333.GY516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,77 +25,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: Use armlinux_bootparams address for DTB
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Force set console baudrate
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Alexey Galakhov <agalakhov@gmail.com>
 
-On Tue, Jul 09, 2013 at 10:00:41PM +0400, Alexander Shiyan wrote:
-> > On Tue, Jul 09, 2013 at 04:56:40PM +0400, Alexander Shiyan wrote:
-> > > In some cases, the address of the devicetree, which is obtained
-> > > dynamically, may be located in the kernel text area, which leads
-> > > to malfunction of the devicetree. The patch uses the address of
-> > > the devicetree, designed for the board, if it possible.
-> > > 
-> > > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > > ---
-> > >  arch/arm/lib/armlinux.c | 20 ++++++++++++--------
-> > >  1 file changed, 12 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-> > > index 40a63ea..12fb06d 100644
-> > > --- a/arch/arm/lib/armlinux.c
-> > > +++ b/arch/arm/lib/armlinux.c
-> > > @@ -261,16 +261,20 @@ void start_linux(void *adr, int swap, unsigned long initrd_address,
-> > >  		unsigned long initrd_size, void *oftree)
-> > >  {
-> > >  	void (*kernel)(int zero, int arch, void *params) = adr;
-> > > -	void *params = NULL;
-> > >  	int architecture;
-> > >  
-> > >  	if (oftree) {
-> > > -		printf("booting Linux kernel with devicetree\n");
-> > 
-> > This is a useful information that gets removed here. Could you keep it?
+
+On Jul 10, 2013, at 1:43 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+
+> On Tue, Jul 09, 2013 at 09:22:10PM +0600, Alexey Galakhov wrote:
+>> Most serial drivers require setbrg() to be called at least once. Call them
+>> just after the device has been added.
+>> 
+>> Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+
+This is wrong if you do this at boot which means you force the same baudrate
+on all the console
+
+We must do this only is enable by default of via shell
+
+and some console may not need the setbrg call back (keyboard or fbdev as example)
+
+Also if we want to use a rs232 for controlling a mcu the baud rate may not be the
+CONFIG_BAUDRATE
+
+so force it at register is wrong
+
+Best Regards,
+J.
 > 
-> Yes, but I think this is duplicate previous message "using internal devicetree".
-
-Not really a duplicate since the 'internal devicetree' message will only
-come if we are using an internal devicetree (i.e. no devicetree
-specified on the commandline).
-We could move the message to common/bootm.c instead of removing it.
-
+> Applied, thanks.
 > 
-> > > -		params = oftree;
-> > > -	} else {
-> > > +		if (armlinux_bootparams) {
-> > > +			struct fdt_header *header = oftree;
-> > > +
-> > > +			printf("Relocate DTB to 0x%p\n", armlinux_bootparams);
-> > 
-> > This is more useful for verbose mode, but I think not for the normal
-> > case.
+> Sascha
 > 
-> This is note about address, since barebox reports us address of devicetree
-> before and it different than armlinux_params. Remove anyway?
+>> ---
+>> common/console.c |    1 +
+>> 1 file changed, 1 insertion(+)
+>> 
+>> diff --git a/common/console.c b/common/console.c
+>> index a0a06f6..abf5322 100644
+>> --- a/common/console.c
+>> +++ b/common/console.c
+>> @@ -147,6 +147,7 @@ int console_register(struct console_device *newcdev)
+>> 		newcdev->baudrate = CONFIG_BAUDRATE;
+>> 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
+>> 			NULL, &newcdev->baudrate, "%u", newcdev);
+>> +		newcdev->setbrg(newcdev, newcdev->baudrate);
+>> 	}
+>> 
+>> 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+>> -- 
+>> 1.7.10.4
+>> 
+>> 
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>> 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-My idea was not to remove them but encapsulate it in bootm_verbose().
-That's not so easy though since this code is called from non bootm code.
-
-We could add an additional verbose argument to this function.
-
-Often the boot code is critical. During normal boot you don't want to
-see many messages because they add to the boot time, but when something
-doesn't work one is happy about every line that comes out, so I think
-it's worth it to pass a verbose parameter around.
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
