@@ -1,13 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uwt4X-0001lf-3K
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:00:40 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 14:00:00 +0200
-Message-Id: <1373457601-7225-11-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
-References: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
+ id 1UwttD-0003hT-6z
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:53:00 +0000
+Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
+ ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mol@pengutronix.de>) id 1Uwtsq-0005j3-9L
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 14:52:36 +0200
+Received: from mol by ptx.hi.pengutronix.de with local (Exim 4.72)
+ (envelope-from <mol@pengutronix.de>) id 1Uwtsq-0004PL-7i
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 14:52:36 +0200
+Date: Wed, 10 Jul 2013 14:52:36 +0200
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Message-ID: <20130710125236.GE29932@pengutronix.de>
+References: <1373439641-18852-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1373439641-18852-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,126 +25,149 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] ARM: mxs: Add convenience wrapper to register mxs_nand
- device
+Subject: Re: [PATCH 1/3] ARM: Add "verbose" parameter for start_linux procedure
 To: barebox@lists.infradead.org
 
-The convenience wrapper also contains the bch resources to
-get rid of the hardcoded base in the driver in the next step.
+On Wed, Jul 10, 2013 at 11:00:39AM +0400, Alexander Shiyan wrote:
+> This patch will make a normal booting more silent.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/freescale-mx28-evk/mx28-evk.c |  4 +--
- arch/arm/boards/karo-tx28/tx28.c              |  4 +--
- arch/arm/mach-mxs/include/mach/devices.h      | 47 +++++++++++++++++++++++++++
- 3 files changed, 51 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/mach-mxs/include/mach/devices.h
+Why? Booting the kernel is the most important task for barebox. Why
+shouldn't we see a few lines about what is actually happening here by
+default.
 
-diff --git a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-index 687d3f7..dfb1878 100644
---- a/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-+++ b/arch/arm/boards/freescale-mx28-evk/mx28-evk.c
-@@ -30,6 +30,7 @@
- #include <mach/mci.h>
- #include <mach/fb.h>
- #include <mach/ocotp.h>
-+#include <mach/devices.h>
- #include <spi/spi.h>
- 
- #include <asm/armlinux.h>
-@@ -270,8 +271,7 @@ static int mx28_evk_devices_init(void)
- 	add_generic_device("imx28-fec", 0, NULL, IMX_FEC0_BASE, 0x4000,
- 			   IORESOURCE_MEM, &fec_info);
- 
--	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
--			   IORESOURCE_MEM, NULL);
-+	imx28_add_nand();
- 
- 	spi_register_board_info(mx28evk_spi_board_info,
- 			ARRAY_SIZE(mx28evk_spi_board_info));
-diff --git a/arch/arm/boards/karo-tx28/tx28.c b/arch/arm/boards/karo-tx28/tx28.c
-index 6e8da15..4cacca3 100644
---- a/arch/arm/boards/karo-tx28/tx28.c
-+++ b/arch/arm/boards/karo-tx28/tx28.c
-@@ -21,6 +21,7 @@
- #include <io.h>
- #include <generated/mach-types.h>
- #include <mach/imx-regs.h>
-+#include <mach/devices.h>
- #include <asm/mmu.h>
- 
- /* setup the CPU card internal signals */
-@@ -92,8 +93,7 @@ static int tx28_devices_init(void)
- 
- 	base_board_init();
- 
--	add_generic_device("mxs_nand", 0, NULL, MXS_GPMI_BASE, 0x2000,
--			   IORESOURCE_MEM, NULL);
-+	imx28_add_nand();
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-mxs/include/mach/devices.h b/arch/arm/mach-mxs/include/mach/devices.h
-new file mode 100644
-index 0000000..012bfc4
---- /dev/null
-+++ b/arch/arm/mach-mxs/include/mach/devices.h
-@@ -0,0 +1,47 @@
-+#ifndef __MACH_MXS_DEVICES_H
-+#define __MACH_MXS_DEVICES_H
-+
-+#include <common.h>
-+#include <sizes.h>
-+#include <xfuncs.h>
-+#include <driver.h>
-+#include <mach/imx-regs.h>
-+
-+static inline struct device_d *mxs_add_nand(unsigned long gpmi_base, unsigned long bch_base)
-+{
-+	struct resource res[] = {
-+		{
-+			.start = gpmi_base,
-+			.end = gpmi_base + SZ_8K - 1,
-+			.flags = IORESOURCE_MEM,
-+		}, {
-+			.start = bch_base,
-+			.end = bch_base + SZ_8K - 1,
-+			.flags = IORESOURCE_MEM,
-+		},
-+	};
-+
-+	struct device_d *dev = xzalloc(sizeof(*dev));
-+
-+	dev->resource = xzalloc(sizeof(struct resource) * ARRAY_SIZE(res));
-+	memcpy(dev->resource, res, sizeof(struct resource) * ARRAY_SIZE(res));
-+	dev->num_resources = ARRAY_SIZE(res);
-+	strcpy(dev->name, "mxs_nand");
-+	dev->id = DEVICE_ID_DYNAMIC;
-+
-+	platform_device_register(dev);
-+
-+	return dev;
-+};
-+
-+static inline struct device_d *imx23_add_nand(void)
-+{
-+	return mxs_add_nand(MXS_GPMI_BASE, MXS_BCH_BASE);
-+}
-+
-+static inline struct device_d *imx28_add_nand(void)
-+{
-+	return mxs_add_nand(MXS_GPMI_BASE, MXS_BCH_BASE);
-+}
-+
-+#endif /* __MACH_MXS_DEVICES_H */
+If you really want no output then introduce a 'quiet' option.
+
+Michael
+
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/include/asm/armlinux.h |  2 +-
+>  arch/arm/lib/armlinux.c         | 16 +++++++++-------
+>  arch/arm/lib/bootm.c            |  3 ++-
+>  arch/arm/lib/bootu.c            |  2 +-
+>  arch/arm/lib/bootz.c            |  2 +-
+>  5 files changed, 14 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+> index 07479fb..15cae14 100644
+> --- a/arch/arm/include/asm/armlinux.h
+> +++ b/arch/arm/include/asm/armlinux.h
+> @@ -38,6 +38,6 @@ static inline void armlinux_set_atag_appender(struct tag *(*func)(struct tag *))
+>  struct image_data;
+>  
+>  void start_linux(void *adr, int swap, unsigned long initrd_address,
+> -		unsigned long initrd_size, void *oftree);
+> +		unsigned long initrd_size, void *oftree, int verbose);
+>  
+>  #endif /* __ARCH_ARMLINUX_H */
+> diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
+> index 40a63ea..84372af 100644
+> --- a/arch/arm/lib/armlinux.c
+> +++ b/arch/arm/lib/armlinux.c
+> @@ -227,8 +227,8 @@ static void setup_end_tag (void)
+>  	params->hdr.size = 0;
+>  }
+>  
+> -static void setup_tags(unsigned long initrd_address,
+> -		unsigned long initrd_size, int swap)
+> +static void setup_tags(unsigned long initrd_address, unsigned long initrd_size,
+> +		       int swap, int verbose)
+>  {
+>  	const char *commandline = linux_bootargs_get();
+>  
+> @@ -247,8 +247,9 @@ static void setup_tags(unsigned long initrd_address,
+>  #endif
+>  	setup_end_tag();
+>  
+> -	printf("commandline: %s\n"
+> -	       "arch_number: %d\n", commandline, armlinux_get_architecture());
+> +	if (verbose)
+> +		printf("commandline: %s\narch_number: %d\n",
+> +		       commandline, armlinux_get_architecture());
+>  
+>  }
+>  
+> @@ -258,17 +259,18 @@ void armlinux_set_bootparams(void *params)
+>  }
+>  
+>  void start_linux(void *adr, int swap, unsigned long initrd_address,
+> -		unsigned long initrd_size, void *oftree)
+> +		unsigned long initrd_size, void *oftree, int verbose)
+>  {
+>  	void (*kernel)(int zero, int arch, void *params) = adr;
+>  	void *params = NULL;
+>  	int architecture;
+>  
+>  	if (oftree) {
+> -		printf("booting Linux kernel with devicetree\n");
+> +		if (verbose)
+> +			printf("booting Linux kernel with devicetree\n");
+>  		params = oftree;
+>  	} else {
+> -		setup_tags(initrd_address, initrd_size, swap);
+> +		setup_tags(initrd_address, initrd_size, swap, verbose);
+>  		params = armlinux_bootparams;
+>  	}
+>  	architecture = armlinux_get_architecture();
+> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+> index 0786e22..c5ac0d8 100644
+> --- a/arch/arm/lib/bootm.c
+> +++ b/arch/arm/lib/bootm.c
+> @@ -106,7 +106,8 @@ static int __do_bootm_linux(struct image_data *data, int swap)
+>  		printf("...\n");
+>  	}
+>  
+> -	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree);
+> +	start_linux((void *)kernel, swap, initrd_start, initrd_size,
+> +		    data->oftree, bootm_verbose(data));
+>  
+>  	reset_cpu(0);
+>  
+> diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
+> index fdb0362..c394f5e 100644
+> --- a/arch/arm/lib/bootu.c
+> +++ b/arch/arm/lib/bootu.c
+> @@ -26,7 +26,7 @@ static int do_bootu(int argc, char *argv[])
+>  	oftree = of_get_fixed_tree(NULL);
+>  #endif
+>  
+> -	start_linux(kernel, 0, 0, 0, oftree);
+> +	start_linux(kernel, 0, 0, 0, oftree, 1);
+>  
+>  	return 1;
+>  }
+> diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
+> index e32a77b..b402fce 100644
+> --- a/arch/arm/lib/bootz.c
+> +++ b/arch/arm/lib/bootz.c
+> @@ -112,7 +112,7 @@ static int do_bootz(int argc, char *argv[])
+>  	oftree = of_get_fixed_tree(NULL);
+>  #endif
+>  
+> -	start_linux(zimage, swap, 0, 0, oftree);
+> +	start_linux(zimage, swap, 0, 0, oftree, 1);
+>  
+>  	return 0;
+>  
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.3.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
