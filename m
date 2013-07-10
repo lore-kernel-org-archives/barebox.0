@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwqpK-0006ec-DR
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 09:36:47 +0000
-Received: by mail-lb0-f173.google.com with SMTP id v1so5510054lbd.4
- for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 02:36:22 -0700 (PDT)
-Message-ID: <51DD2B12.3060106@gmail.com>
-Date: Wed, 10 Jul 2013 15:36:18 +0600
+ id 1UwrRA-0007gQ-9k
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:15:52 +0000
+Received: by mail-lb0-f178.google.com with SMTP id y6so5474819lbh.37
+ for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 03:15:30 -0700 (PDT)
 From: Alexey Galakhov <agalakhov@gmail.com>
-MIME-Version: 1.0
-References: <1373383330-13126-1-git-send-email-agalakhov@gmail.com>
- <20130709174333.GY516@pengutronix.de>
- <5C73F356-67C8-4D18-B0B8-3D0BE89794A7@jcrosoft.com>
- <51DC6E0E.2090806@gmail.com>
- <FEE56E32-09DD-4D07-BFFD-D986FAEA78F9@jcrosoft.com>
- <51DD1D11.1010103@gmail.com> <20130710090131.GE516@pengutronix.de>
+Date: Wed, 10 Jul 2013 16:15:10 +0600
+Message-Id: <1373451310-8131-2-git-send-email-agalakhov@gmail.com>
+In-Reply-To: <1373451310-8131-1-git-send-email-agalakhov@gmail.com>
+References: <20130710090131.GE516@pengutronix.de>
+ <1373451310-8131-1-git-send-email-agalakhov@gmail.com>
 In-Reply-To: <20130710090131.GE516@pengutronix.de>
+References: <20130710090131.GE516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +21,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Force set console baudrate
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] Force set console baudrate at enable time
+To: barebox@lists.infradead.org
+Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-On 07/10/2013 03:01 PM, Sascha Hauer wrote:
+Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
+---
+ common/console.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> Anyway, maybe Jean-Christophe is right and we should do this in
-> console_std_set by adding:
-> 
-> 	if(flag && cdev->setbrg)
-> 		cdev->setbrg(cdev, cdev->baudrate);
-> 
-> This makes sure the hardware is only ever touched when the console is
-> actually used.
-> 
-> Sascha
-> 
+diff --git a/common/console.c b/common/console.c
+index a0a06f6..28941d6 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -80,6 +80,12 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
+ 		flag |= CONSOLE_STDERR;
+ 	}
+ 
++	if (flag && !cdev->f_active) {
++		/* The device is being activated, set its baudrate */
++		if (cdev->setbrg)
++			cdev->setbrg(cdev, cdev->baudrate);
++	}
++
+ 	active[i] = 0;
+ 	cdev->f_active = flag;
+ 
+@@ -104,6 +110,8 @@ static int console_baudrate_set(struct param_d *param, void *priv)
+ 	struct console_device *cdev = priv;
+ 	unsigned char c;
+ 
++	/* If the device is already active, change its baudrate.
++	The baudrate of an inactive device will be set at activation time. */
+ 	if (cdev->f_active) {
+ 		printf("## Switch baudrate to %d bps and press ENTER ...\n",
+ 			cdev->baudrate);
+@@ -113,8 +121,7 @@ static int console_baudrate_set(struct param_d *param, void *priv)
+ 		do {
+ 			c = getc();
+ 		} while (c != '\r' && c != '\n');
+-	} else
+-		cdev->setbrg(cdev, cdev->baudrate);
++	}
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
 
-Hi,
-
-Agree. The only reason not do to so was that I saw the existing code,
-especially the else clause in console_baudrate_set().
-
-I just made v2 of the patch. I'm testing it right now. If it's Ok, I'll
-submit it.
-
-I did almost exactly this. The difference is that I do not call setbrg()
-again if the device is already active. I also removed setbrg() call for
-inactive devices from console_baudrate_set() as this would be duplicate
-call now.
-
-Regards,
-Alex
 
 _______________________________________________
 barebox mailing list
