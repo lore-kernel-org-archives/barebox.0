@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uws0h-0000L4-Tv
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:39 +0000
+ id 1Uws0h-0000L3-Tv
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 12:52:08 +0200
-Message-Id: <1373453528-3723-10-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 12:52:04 +0200
+Message-Id: <1373453528-3723-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] ARM: i.MX Datamodul edmqx6: configure environment from
- devicetree
+Subject: [PATCH 5/9] cdev: allow to open a struct cdev
 To: barebox@lists.infradead.org
 
-This drops support for storing the environment in the eMMC,
-but the standard bootsource is the SPI NOR flash.
+cdev_open() opens a cdev by name. This introduces cdev_do_open which
+allows to open a cdev when the cdev is already found by other means.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/dmo-mx6-realq7/board.c | 16 ----------------
- arch/arm/configs/dmo-realq7_defconfig  |  1 +
- arch/arm/dts/imx6q-dmo-realq7.dts      | 24 ++++++++++++++++++++++++
- 3 files changed, 25 insertions(+), 16 deletions(-)
+ fs/devfs-core.c  | 16 +++++++++++-----
+ include/driver.h |  1 +
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boards/dmo-mx6-realq7/board.c b/arch/arm/boards/dmo-mx6-realq7/board.c
-index 9cf6c31..95371e7 100644
---- a/arch/arm/boards/dmo-mx6-realq7/board.c
-+++ b/arch/arm/boards/dmo-mx6-realq7/board.c
-@@ -114,22 +114,6 @@ static int realq7_env_init(void)
- 		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x00907000);
- 	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.barebox",
- 		0, NULL, 0, 0x00907000);
--
--	switch (bootsource_get()) {
--	case BOOTSOURCE_MMC:
--		device_detect_by_name("mmc3");
--		devfs_add_partition("mmc3", 0, SZ_1M, DEVFS_PARTITION_FIXED, "mmc3.barebox");
--		devfs_add_partition("mmc3", SZ_1M, SZ_1M, DEVFS_PARTITION_FIXED, "mmc3.bareboxenv");
--		default_environment_path = "/dev/mmc3.bareboxenv";
--		break;
--	default:
--	case BOOTSOURCE_SPI:
--		devfs_add_partition("m25p0", 0, SZ_256K, DEVFS_PARTITION_FIXED, "m25p0.barebox");
--		devfs_add_partition("m25p0", SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "m25p0.bareboxenv");
--		default_environment_path = "/dev/m25p0.bareboxenv";
--		break;
--	}
--
- 	return 0;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index a2bea93..816f244 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -70,6 +70,14 @@ int cdev_find_free_index(const char *basename)
+ 	return -EBUSY;	/* all indexes are used */
  }
- late_initcall(realq7_env_init);
-diff --git a/arch/arm/configs/dmo-realq7_defconfig b/arch/arm/configs/dmo-realq7_defconfig
-index ab8aa43..501a182 100644
---- a/arch/arm/configs/dmo-realq7_defconfig
-+++ b/arch/arm/configs/dmo-realq7_defconfig
-@@ -71,6 +71,7 @@ CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
- CONFIG_NET_RESOLV=y
- CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_NET_FEC_IMX=y
- CONFIG_DRIVER_SPI_IMX=y
- CONFIG_I2C=y
-diff --git a/arch/arm/dts/imx6q-dmo-realq7.dts b/arch/arm/dts/imx6q-dmo-realq7.dts
-index a33a700..d8675e5 100644
---- a/arch/arm/dts/imx6q-dmo-realq7.dts
-+++ b/arch/arm/dts/imx6q-dmo-realq7.dts
-@@ -19,6 +19,30 @@
  
- 	chosen {
- 		linux,stdout-path = "/soc/aips-bus@02100000/serial@021e8000";
++int cdev_do_open(struct cdev *cdev, unsigned long flags)
++{
++	if (cdev->ops->open)
++		return cdev->ops->open(cdev, flags);
 +
-+		barebox {
-+			environment@0 {
-+				compatible = "barebox,environment";
-+				device-path = &flash, "partname:barebox-environment";
-+			};
++	return 0;
++}
 +
-+			nor-partitions {
-+				compatible = "barebox,partition";
-+				device-path = &flash;
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				partition@0 {
-+					label = "barebox";
-+					reg = <0x0 0x80000>;
-+				};
-+
-+				partition@1 {
-+					label = "barebox-environment";
-+					reg = <0x80000 0x20000>;
-+				};
-+			};
-+		};
- 	};
+ struct cdev *cdev_open(const char *name, unsigned long flags)
+ {
+ 	struct cdev *cdev = cdev_by_name(name);
+@@ -78,11 +86,9 @@ struct cdev *cdev_open(const char *name, unsigned long flags)
+ 	if (!cdev)
+ 		return NULL;
  
- 	aliases {
+-	if (cdev->ops->open) {
+-		ret = cdev->ops->open(cdev, flags);
+-		if (ret)
+-			return NULL;
+-	}
++	ret = cdev_do_open(cdev, flags);
++	if (ret)
++		return NULL;
+ 
+ 	return cdev;
+ }
+diff --git a/include/driver.h b/include/driver.h
+index 353af3a..7ac2eef 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -460,6 +460,7 @@ int devfs_remove(struct cdev *);
+ int cdev_find_free_index(const char *);
+ struct cdev *cdev_by_name(const char *filename);
+ struct cdev *cdev_open(const char *name, unsigned long flags);
++int cdev_do_open(struct cdev *, unsigned long flags);
+ void cdev_close(struct cdev *cdev);
+ int cdev_flush(struct cdev *cdev);
+ ssize_t cdev_read(struct cdev *cdev, void *buf, size_t count, loff_t offset, ulong flags);
 -- 
 1.8.3.2
 
