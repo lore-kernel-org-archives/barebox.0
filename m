@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uws0d-0000Kj-3b
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:35 +0000
+ id 1Uws0d-0000Kh-3a
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 12:52:02 +0200
-Message-Id: <1373453528-3723-4-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 12:52:00 +0200
+Message-Id: <1373453528-3723-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,112 +21,228 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] of: partitions: factor out function to parse a single
- partition
+Subject: [PATCH 1/9] devfs: let devfs_add_partition return the new partition
 To: barebox@lists.infradead.org
 
-To make it usable for other code.
+Useful for unregistering later or for adding addional flags.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/partition.c | 58 ++++++++++++++++++++++++++++----------------------
- include/of.h           |  1 +
- 2 files changed, 34 insertions(+), 25 deletions(-)
+ arch/x86/boards/x86_generic/generic_pc.c |  6 ++++--
+ commands/partition.c                     | 11 ++++++++---
+ common/environment.c                     | 10 ++++++++--
+ common/partitions.c                      | 12 ++++++++----
+ fs/devfs-core.c                          | 12 ++++++------
+ include/driver.h                         |  2 +-
+ 6 files changed, 35 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index e4b7d1e..d69251e 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -23,44 +23,52 @@
- #include <linux/mtd/mtd.h>
- #include <nand.h>
+diff --git a/arch/x86/boards/x86_generic/generic_pc.c b/arch/x86/boards/x86_generic/generic_pc.c
+index e49354b..9d37069 100644
+--- a/arch/x86/boards/x86_generic/generic_pc.c
++++ b/arch/x86/boards/x86_generic/generic_pc.c
+@@ -25,6 +25,7 @@
+ #include <init.h>
+ #include <asm/syslib.h>
+ #include <ns16550.h>
++#include <linux/err.h>
  
--int of_parse_partitions(struct cdev *cdev, struct device_node *node)
-+struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ /*
+  * These datas are from the MBR, created by the linker and filled by the
+@@ -43,6 +44,7 @@ extern uint8_t pers_env_drive;
+ static int devices_init(void)
  {
--	struct device_node *n;
- 	const char *partname;
- 	char *filename;
-+	struct cdev *new;
-+	const __be32 *reg;
-+	unsigned long offset, size;
-+	const char *name;
-+	int len;
-+	unsigned long flags = 0;
+ 	int rc;
++	struct cdev *cdev;
  
--	for_each_child_of_node(node, n) {
--		const __be32 *reg;
--		unsigned long offset, size;
--		const char *name;
--		int len;
--		unsigned long flags = 0;
-+	reg = of_get_property(node, "reg", &len);
-+	if (!reg)
-+		return NULL;
+ 	/* extended memory only */
+ 	add_mem_device("ram0", 0x0, bios_get_memsize() << 10,
+@@ -51,11 +53,11 @@ static int devices_init(void)
+ 			NULL);
+ 
+ 	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
+-		rc = devfs_add_partition("biosdisk0",
++		cdev = devfs_add_partition("biosdisk0",
+ 				pers_env_storage * 512,
+ 				(unsigned)pers_env_size * 512,
+ 				DEVFS_PARTITION_FIXED, "env0");
+-		printf("Partition: %d\n", rc);
++		printf("Partition: %d\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
+ 	} else
+ 		printf("No persistent storage defined\n");
+ 
+diff --git a/commands/partition.c b/commands/partition.c
+index 6f8d634..6d37471 100644
+--- a/commands/partition.c
++++ b/commands/partition.c
+@@ -35,6 +35,7 @@
+ #include <linux/stat.h>
+ #include <libgen.h>
+ #include <getopt.h>
++#include <linux/err.h>
+ 
+ #define SIZE_REMAINING ((ulong)-1)
+ 
+@@ -48,7 +49,8 @@ static int mtd_part_do_parse_one(char *devname, const char *partstr,
+ 	char *end;
+ 	char buf[PATH_MAX] = {};
+ 	unsigned long flags = 0;
+-	int ret;
++	int ret = 0;
++	struct cdev *cdev;
+ 
+ 	memset(buf, 0, PATH_MAX);
+ 
+@@ -99,9 +101,12 @@ static int mtd_part_do_parse_one(char *devname, const char *partstr,
+ 
+ 	*retsize = size;
+ 
+-	ret = devfs_add_partition(devname, *offset, size, flags, buf);
+-	if (ret)
++	cdev = devfs_add_partition(devname, *offset, size, flags, buf);
++	if (IS_ERR(cdev)) {
++		ret = PTR_ERR(cdev);
+ 		printf("cannot create %s: %s\n", buf, strerror(-ret));
++	}
 +
-+	offset = be32_to_cpu(reg[0]);
-+	size = be32_to_cpu(reg[1]);
-+
-+	partname = of_get_property(node, "label", &len);
-+	if (!partname)
-+		partname = of_get_property(node, "name", &len);
-+	name = (char *)partname;
+ 	return ret;
+ }
  
--		reg = of_get_property(n, "reg", &len);
--		if (!reg)
--			continue;
-+	debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdev->name, partname, offset, size);
+diff --git a/common/environment.c b/common/environment.c
+index 78cd45c..2448777 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -379,7 +379,7 @@ out:
  
--		offset = be32_to_cpu(reg[0]);
--		size = be32_to_cpu(reg[1]);
-+	if (of_get_property(node, "read-only", &len))
-+		flags = DEVFS_PARTITION_READONLY;
+ int envfs_register_partition(const char *devname, unsigned int partnr)
+ {
+-	struct cdev *cdev;
++	struct cdev *cdev, *part;
+ 	char *partname;
  
--		partname = of_get_property(n, "label", &len);
--		if (!partname)
--			partname = of_get_property(n, "name", &len);
--		name = (char *)partname;
-+	filename = asprintf("%s.%s", cdev->name, partname);
- 
--		debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdev->name, partname, offset, size);
-+	new = devfs_add_partition(cdev->name, offset, size, flags, filename);
- 
--		if (of_get_property(n, "read-only", &len))
--			flags = DEVFS_PARTITION_READONLY;
-+	if (cdev->mtd && cdev->mtd->type == MTD_NANDFLASH)
-+		dev_add_bb_dev(filename, NULL);
- 
--		filename = asprintf("%s.%s", cdev->name, partname);
-+	free(filename);
- 
--		devfs_add_partition(cdev->name, offset, size, flags, filename);
-+	return new;
-+}
- 
--		if (cdev->mtd && cdev->mtd->type == MTD_NANDFLASH)
--			dev_add_bb_dev(filename, NULL);
-+int of_parse_partitions(struct cdev *cdev, struct device_node *node)
-+{
-+	struct device_node *n;
- 
--		free(filename);
-+	for_each_child_of_node(node, n) {
-+		of_parse_partition(cdev, n);
+ 	if (!devname)
+@@ -398,8 +398,14 @@ int envfs_register_partition(const char *devname, unsigned int partnr)
+ 		return -ENODEV;
  	}
  
- 	return 0;
-diff --git a/include/of.h b/include/of.h
-index 0d8f6b3..710383c 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -221,6 +221,7 @@ extern int of_platform_populate(struct device_node *root,
- 				struct device_d *parent);
- extern struct device_d *of_find_device_by_node(struct device_node *np);
+-	return devfs_add_partition(partname, 0, cdev->size,
++	part = devfs_add_partition(partname, 0, cdev->size,
+ 						DEVFS_PARTITION_FIXED, "env0");
++	if (part)
++		return 0;
++
++	free(partname);
++
++	return -EINVAL;
+ }
+ EXPORT_SYMBOL(envfs_register_partition);
+ #endif
+diff --git a/common/partitions.c b/common/partitions.c
+index 35a604c..38032a3 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -29,6 +29,7 @@
+ #include <disks.h>
+ #include <filetype.h>
+ #include <dma.h>
++#include <linux/err.h>
  
-+struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_device_is_stdout_path(struct device_d *dev);
- const char *of_get_model(void);
+ #include "partitions/parser.h"
+ 
+@@ -48,16 +49,19 @@ static int register_one_partition(struct block_device *blk,
+ 	int ret;
+ 	uint64_t start = part->first_sec * SECTOR_SIZE;
+ 	uint64_t size = part->size * SECTOR_SIZE;
++	struct cdev *cdev;
+ 
+ 	partition_name = asprintf("%s.%d", blk->cdev.name, no);
+ 	if (!partition_name)
+ 		return -ENOMEM;
+ 	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+ 				partition_name, blk->cdev.name);
+-	ret = devfs_add_partition(blk->cdev.name,
++	cdev = devfs_add_partition(blk->cdev.name,
+ 				start, size, 0, partition_name);
+-	if (ret)
++	if (IS_ERR(cdev)) {
++		ret = PTR_ERR(cdev);
+ 		goto out;
++	}
+ 
+ 	free(partition_name);
+ 
+@@ -70,10 +74,10 @@ static int register_one_partition(struct block_device *blk,
+ 
+ 	dev_dbg(blk->dev, "Registering partition %s on drive %s\n",
+ 				partition_name, blk->cdev.name);
+-	ret = devfs_add_partition(blk->cdev.name,
++	cdev = devfs_add_partition(blk->cdev.name,
+ 				start, size, 0, partition_name);
+ 
+-	if (ret)
++	if (IS_ERR(cdev))
+ 		dev_warn(blk->dev, "Registering partition %s on drive %s failed\n",
+ 				partition_name, blk->cdev.name);
+ 
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 262e0a2..a16866e 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -226,21 +226,21 @@ int devfs_remove(struct cdev *cdev)
+ 	return 0;
+ }
+ 
+-int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
++struct cdev *devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		int flags, const char *name)
+ {
+ 	struct cdev *cdev, *new;
+ 
+ 	cdev = cdev_by_name(name);
+ 	if (cdev)
+-		return -EEXIST;
++		return ERR_PTR(-EEXIST);
+ 
+ 	cdev = cdev_by_name(devname);
+ 	if (!cdev)
+-		return -ENOENT;
++		return ERR_PTR(-ENOENT);
+ 
+ 	if (offset + size > cdev->size)
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
+ 
+ 	new = xzalloc(sizeof (*new));
+ 	new->name = strdup(name);
+@@ -257,14 +257,14 @@ int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		if (IS_ERR(new->mtd)) {
+ 			int ret = PTR_ERR(new->mtd);
+ 			free(new);
+-			return ret;
++			return ERR_PTR(ret);
+ 		}
+ 	}
+ #endif
+ 
+ 	devfs_create(new);
+ 
+-	return 0;
++	return new;
+ }
+ 
+ int devfs_del_partition(const char *name)
+diff --git a/include/driver.h b/include/driver.h
+index b18318f..9f114ff 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -469,7 +469,7 @@ int cdev_erase(struct cdev *cdev, size_t count, loff_t offset);
+ #define DEVFS_IS_PARTITION		(1 << 2)
+ #define DEVFS_IS_CHARACTER_DEV		(1 << 3)
+ 
+-int devfs_add_partition(const char *devname, loff_t offset, loff_t size,
++struct cdev *devfs_add_partition(const char *devname, loff_t offset, loff_t size,
+ 		int flags, const char *name);
+ int devfs_del_partition(const char *name);
+ 
 -- 
 1.8.3.2
 
