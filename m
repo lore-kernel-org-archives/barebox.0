@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp31.i.mail.ru ([94.100.177.91])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwoOw-00040f-7A
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 07:01:24 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 10 Jul 2013 11:00:39 +0400
-Message-Id: <1373439641-18852-1-git-send-email-shc_work@mail.ru>
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwoiU-0004Fi-6e
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 07:21:35 +0000
+Message-ID: <51DD0B5C.3010002@phytec.de>
+Date: Wed, 10 Jul 2013 09:21:00 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
+MIME-Version: 1.0
+References: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
+ <1373361802-31080-8-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1373361802-31080-8-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,131 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: Add "verbose" parameter for start_linux procedure
-To: barebox@lists.infradead.org
+Subject: Re: [PATCHv2 08/12] PCM051: Add first stage support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This patch will make a normal booting more silent.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/include/asm/armlinux.h |  2 +-
- arch/arm/lib/armlinux.c         | 16 +++++++++-------
- arch/arm/lib/bootm.c            |  3 ++-
- arch/arm/lib/bootu.c            |  2 +-
- arch/arm/lib/bootz.c            |  2 +-
- 5 files changed, 14 insertions(+), 11 deletions(-)
-
-diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
-index 07479fb..15cae14 100644
---- a/arch/arm/include/asm/armlinux.h
-+++ b/arch/arm/include/asm/armlinux.h
-@@ -38,6 +38,6 @@ static inline void armlinux_set_atag_appender(struct tag *(*func)(struct tag *))
- struct image_data;
- 
- void start_linux(void *adr, int swap, unsigned long initrd_address,
--		unsigned long initrd_size, void *oftree);
-+		unsigned long initrd_size, void *oftree, int verbose);
- 
- #endif /* __ARCH_ARMLINUX_H */
-diff --git a/arch/arm/lib/armlinux.c b/arch/arm/lib/armlinux.c
-index 40a63ea..84372af 100644
---- a/arch/arm/lib/armlinux.c
-+++ b/arch/arm/lib/armlinux.c
-@@ -227,8 +227,8 @@ static void setup_end_tag (void)
- 	params->hdr.size = 0;
- }
- 
--static void setup_tags(unsigned long initrd_address,
--		unsigned long initrd_size, int swap)
-+static void setup_tags(unsigned long initrd_address, unsigned long initrd_size,
-+		       int swap, int verbose)
- {
- 	const char *commandline = linux_bootargs_get();
- 
-@@ -247,8 +247,9 @@ static void setup_tags(unsigned long initrd_address,
- #endif
- 	setup_end_tag();
- 
--	printf("commandline: %s\n"
--	       "arch_number: %d\n", commandline, armlinux_get_architecture());
-+	if (verbose)
-+		printf("commandline: %s\narch_number: %d\n",
-+		       commandline, armlinux_get_architecture());
- 
- }
- 
-@@ -258,17 +259,18 @@ void armlinux_set_bootparams(void *params)
- }
- 
- void start_linux(void *adr, int swap, unsigned long initrd_address,
--		unsigned long initrd_size, void *oftree)
-+		unsigned long initrd_size, void *oftree, int verbose)
- {
- 	void (*kernel)(int zero, int arch, void *params) = adr;
- 	void *params = NULL;
- 	int architecture;
- 
- 	if (oftree) {
--		printf("booting Linux kernel with devicetree\n");
-+		if (verbose)
-+			printf("booting Linux kernel with devicetree\n");
- 		params = oftree;
- 	} else {
--		setup_tags(initrd_address, initrd_size, swap);
-+		setup_tags(initrd_address, initrd_size, swap, verbose);
- 		params = armlinux_bootparams;
- 	}
- 	architecture = armlinux_get_architecture();
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 0786e22..c5ac0d8 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -106,7 +106,8 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 		printf("...\n");
- 	}
- 
--	start_linux((void *)kernel, swap, initrd_start, initrd_size, data->oftree);
-+	start_linux((void *)kernel, swap, initrd_start, initrd_size,
-+		    data->oftree, bootm_verbose(data));
- 
- 	reset_cpu(0);
- 
-diff --git a/arch/arm/lib/bootu.c b/arch/arm/lib/bootu.c
-index fdb0362..c394f5e 100644
---- a/arch/arm/lib/bootu.c
-+++ b/arch/arm/lib/bootu.c
-@@ -26,7 +26,7 @@ static int do_bootu(int argc, char *argv[])
- 	oftree = of_get_fixed_tree(NULL);
- #endif
- 
--	start_linux(kernel, 0, 0, 0, oftree);
-+	start_linux(kernel, 0, 0, 0, oftree, 1);
- 
- 	return 1;
- }
-diff --git a/arch/arm/lib/bootz.c b/arch/arm/lib/bootz.c
-index e32a77b..b402fce 100644
---- a/arch/arm/lib/bootz.c
-+++ b/arch/arm/lib/bootz.c
-@@ -112,7 +112,7 @@ static int do_bootz(int argc, char *argv[])
- 	oftree = of_get_fixed_tree(NULL);
- #endif
- 
--	start_linux(zimage, swap, 0, 0, oftree);
-+	start_linux(zimage, swap, 0, 0, oftree, 1);
- 
- 	return 0;
- 
--- 
-1.8.1.5
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gMDkuMDcuMjAxMyAxMToyMywgc2NocmllYiBUZXJlc2EgR8OhbWV6OgoKSGVsbG8gU2FzY2hh
+LAoKPiBGcm9tOiBTaHJhdmFuIGt1bWFyIDxzaHJhdmFuLmtAcGh5dGVjLmluPgo+Cj4gVGhpcyBw
+YXRjaCBhZGRzIGZpcnN0IHN0YWdlIHN1cHBvcnQgZm9yIFBDTTA1MS4KPgo+IFNpZ25lZC1vZmYt
+Ynk6IFNocmF2YW4ga3VtYXIgPHNocmF2YW4ua0BwaHl0ZWMuaW4+Cj4gU2lnbmVkLW9mZi1ieTog
+VGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Cj4gLS0tCj4gQ2hhbmdlcyBpbiB2MjoK
+PiAtIGZpeGVkIGFsaWdtZW50IGFuZCByZWdpc3RlciBhZHJlc3MKPiAgICBvcmRlciBpbiBtYWNo
+L2FtMzN4eC1zaWxpY29uLmgKPgo+ICAgYXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9ib2FyZC5jICAg
+ICAgICAgICAgICAgICAgIHwgICAgMSArCj4gICBhcmNoL2FybS9ib2FyZHMvcGNtMDUxL2Vudi9i
+b290L3NkICAgICAgICAgICAgICAgfCAgICAyICstCj4gICBhcmNoL2FybS9ib2FyZHMvcGNtMDUx
+L2xvd2xldmVsLmMgICAgICAgICAgICAgICAgfCAgMjA2ICsrKysrKysrKysrKysrKysrKysrKysK
+PiAgIGFyY2gvYXJtL2NvbmZpZ3MvcGNtMDUxX21sb19kZWZjb25maWcgICAgICAgICAgICB8ICAg
+MzMgKysrKwo+ICAgYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNv
+bi5oIHwgICAxMyArKwo+ICAgc2NyaXB0cy9tay1hbTM1eHgtc3BpLWltYWdlLmMgICAgICAgICAg
+ICAgICAgICAgIHwgICAgMiArLQo+ICAgNiBmaWxlcyBjaGFuZ2VkLCAyNTUgaW5zZXJ0aW9ucygr
+KSwgMiBkZWxldGlvbnMoLSkKPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdz
+L3BjbTA1MV9tbG9fZGVmY29uZmlnCj4KPgo+ICAgCj4gICAvKiBFdGhlcm5ldCBNQUMgSUQgZnJv
+bSBFRnVzZSAqLwo+IGRpZmYgLS1naXQgYS9zY3JpcHRzL21rLWFtMzV4eC1zcGktaW1hZ2UuYyBi
+L3NjcmlwdHMvbWstYW0zNXh4LXNwaS1pbWFnZS5jCj4gaW5kZXggNzRlNzlkYi4uYjEzNTY4YSAx
+MDA2NDQKPiAtLS0gYS9zY3JpcHRzL21rLWFtMzV4eC1zcGktaW1hZ2UuYwo+ICsrKyBiL3Njcmlw
+dHMvbWstYW0zNXh4LXNwaS1pbWFnZS5jCj4gQEAgLTYzLDcgKzYzLDcgQEAgaW50IG1haW4oaW50
+IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPiAgIAlpbnQgb3B0Owo+ICAgCW9mZl90IHBvczsKPiAgIAlz
+aXplX3Qgc2l6ZTsKPiAtCXVpbnQzMl90IGFkZHIgPSAweDQwMjAwMDAwOwo+ICsJdWludDMyX3Qg
+YWRkciA9IDB4NDAyRjA0MDA7Cj4gICAJdWludDMyX3QgdGVtcDsKPiAgIAo+ICAgCXdoaWxlKChv
+cHQgPSBnZXRvcHQoYXJnYywgYXJndiwgImE6IikpICE9IC0xKSB7CgpUaGlzIGxhc3QgaHVuayBo
+YXMgYWNjaWRlbnRhbGx5IHNsaXBwZWQgaW4gaGVyZS4KQ291bGQgeW91IHJlbW92ZSBpdD8KClRo
+YW5rcwpUZXJlc2EKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
