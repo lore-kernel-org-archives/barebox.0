@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uws0d-0000Kf-3Y
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:35 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Uws0H-0007zB-0p
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:52:09 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1Uws0G-0007Ab-W2
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:52:08 +0200
+ id 1Uws0h-0000L4-Tv
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:39 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 12:51:59 +0200
-Message-Id: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 12:52:08 +0200
+Message-Id: <1373453528-3723-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
+References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,64 +21,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Allow configuration from the devicetree
+Subject: [PATCH 9/9] ARM: i.MX Datamodul edmqx6: configure environment from
+ devicetree
 To: barebox@lists.infradead.org
 
-Currently even the devicetree enabled boards need C code to
-configure where to store the environment. The following series
-makes this configurable via devicetree to further reduce the
-need of C code for boards.
+This drops support for storing the environment in the eMMC,
+but the standard bootsource is the SPI NOR flash.
 
-As I often point out that the devicetree is for hardware description
-rather than for configuration, the configuration is done in the
-node explicitly intended for configuration: /chosen.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/dmo-mx6-realq7/board.c | 16 ----------------
+ arch/arm/configs/dmo-realq7_defconfig  |  1 +
+ arch/arm/dts/imx6q-dmo-realq7.dts      | 24 ++++++++++++++++++++++++
+ 3 files changed, 25 insertions(+), 16 deletions(-)
 
-We add a hierarchy /chosen/barebox/ in the devicetree on which
-of_platform_populate is called. This allows us to do the configuration
-as regular drivers and to reuse a lot of infrastructure. Implementing
-this as drivers also has the advantage that the known mechanisms can
-be used to consistently change the behaviour of different boards
-without breaking old boards.
+diff --git a/arch/arm/boards/dmo-mx6-realq7/board.c b/arch/arm/boards/dmo-mx6-realq7/board.c
+index 9cf6c31..95371e7 100644
+--- a/arch/arm/boards/dmo-mx6-realq7/board.c
++++ b/arch/arm/boards/dmo-mx6-realq7/board.c
+@@ -114,22 +114,6 @@ static int realq7_env_init(void)
+ 		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x00907000);
+ 	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.barebox",
+ 		0, NULL, 0, 0x00907000);
+-
+-	switch (bootsource_get()) {
+-	case BOOTSOURCE_MMC:
+-		device_detect_by_name("mmc3");
+-		devfs_add_partition("mmc3", 0, SZ_1M, DEVFS_PARTITION_FIXED, "mmc3.barebox");
+-		devfs_add_partition("mmc3", SZ_1M, SZ_1M, DEVFS_PARTITION_FIXED, "mmc3.bareboxenv");
+-		default_environment_path = "/dev/mmc3.bareboxenv";
+-		break;
+-	default:
+-	case BOOTSOURCE_SPI:
+-		devfs_add_partition("m25p0", 0, SZ_256K, DEVFS_PARTITION_FIXED, "m25p0.barebox");
+-		devfs_add_partition("m25p0", SZ_256K, SZ_256K, DEVFS_PARTITION_FIXED, "m25p0.bareboxenv");
+-		default_environment_path = "/dev/m25p0.bareboxenv";
+-		break;
+-	}
+-
+ 	return 0;
+ }
+ late_initcall(realq7_env_init);
+diff --git a/arch/arm/configs/dmo-realq7_defconfig b/arch/arm/configs/dmo-realq7_defconfig
+index ab8aa43..501a182 100644
+--- a/arch/arm/configs/dmo-realq7_defconfig
++++ b/arch/arm/configs/dmo-realq7_defconfig
+@@ -71,6 +71,7 @@ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_DRIVER_SPI_IMX=y
+ CONFIG_I2C=y
+diff --git a/arch/arm/dts/imx6q-dmo-realq7.dts b/arch/arm/dts/imx6q-dmo-realq7.dts
+index a33a700..d8675e5 100644
+--- a/arch/arm/dts/imx6q-dmo-realq7.dts
++++ b/arch/arm/dts/imx6q-dmo-realq7.dts
+@@ -19,6 +19,30 @@
+ 
+ 	chosen {
+ 		linux,stdout-path = "/soc/aips-bus@02100000/serial@021e8000";
++
++		barebox {
++			environment@0 {
++				compatible = "barebox,environment";
++				device-path = &flash, "partname:barebox-environment";
++			};
++
++			nor-partitions {
++				compatible = "barebox,partition";
++				device-path = &flash;
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				partition@0 {
++					label = "barebox";
++					reg = <0x0 0x80000>;
++				};
++
++				partition@1 {
++					label = "barebox-environment";
++					reg = <0x80000 0x20000>;
++				};
++			};
++		};
+ 	};
+ 
+ 	aliases {
+-- 
+1.8.3.2
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (9):
-      devfs: let devfs_add_partition return the new partition
-      of: export of_default_bus_match_table
-      of: partitions: factor out function to parse a single partition
-      cdev: introduce partition names
-      cdev: allow to open a struct cdev
-      cdev: add device_find_partition
-      mci: set partnames of eMMC boot partitions
-      Add configurability via devicetree
-      ARM: i.MX Datamodul edmqx6: configure environment from devicetree
-
- Documentation/devicetree/bindings/barebox.txt      |  10 ++
- .../bindings/barebox/barebox,environment.txt       |  24 +++
- .../bindings/barebox/barebox,partition.txt         |  42 +++++
- arch/arm/boards/dmo-mx6-realq7/board.c             |  16 --
- arch/arm/configs/dmo-realq7_defconfig              |   1 +
- arch/arm/dts/imx6q-dmo-realq7.dts                  |  24 +++
- arch/x86/boards/x86_generic/generic_pc.c           |   6 +-
- commands/partition.c                               |  11 +-
- common/environment.c                               |  10 +-
- common/partitions.c                                |  12 +-
- drivers/mci/mci-core.c                             |  12 +-
- drivers/of/Kconfig                                 |   9 +
- drivers/of/Makefile                                |   1 +
- drivers/of/barebox.c                               | 191 +++++++++++++++++++++
- drivers/of/of_path.c                               | 155 +++++++++++++++++
- drivers/of/partition.c                             |  58 ++++---
- fs/devfs-core.c                                    |  60 +++++--
- include/driver.h                                   |  14 +-
- include/of.h                                       |  14 ++
- 19 files changed, 600 insertions(+), 70 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/barebox.txt
- create mode 100644 Documentation/devicetree/bindings/barebox/barebox,environment.txt
- create mode 100644 Documentation/devicetree/bindings/barebox/barebox,partition.txt
- create mode 100644 drivers/of/barebox.c
- create mode 100644 drivers/of/of_path.c
 
 _______________________________________________
 barebox mailing list
