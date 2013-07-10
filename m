@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwrXW-0007qU-EI
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:22:29 +0000
+ id 1Uws0d-0000Kl-3V
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 12:22:03 +0200
-Message-Id: <1373451723-13575-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 12:52:03 +0200
+Message-Id: <1373453528-3723-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
+References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: generate imx dcd.S files as *.dcd.S
+Subject: [PATCH 4/9] cdev: introduce partition names
 To: barebox@lists.infradead.org
 
-The compiled in dcd images generate an intermediate assembly file. Instead
-of generating them as *.S generate them as *.dcd.S to better identify them
-as generated files. These are then added to .gitignore.
+currently most partition cdevs have the name <devname>.<partname>
+This makes it hard to find a partition by <partname>. This introduces
+a partname field in struct cdev so that.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- .gitignore                                   | 2 ++
- arch/arm/boards/efika-mx-smartbook/Makefile  | 4 ++--
- arch/arm/boards/freescale-mx51-pdk/Makefile  | 4 ++--
- arch/arm/boards/freescale-mx53-loco/Makefile | 4 ++--
- scripts/Makefile.lib                         | 2 +-
- 5 files changed, 9 insertions(+), 7 deletions(-)
+ fs/devfs-core.c  | 3 +++
+ include/driver.h | 5 ++++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/.gitignore b/.gitignore
-index a08c6c1..1dec248 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -20,6 +20,8 @@
- *.elf
- *.mcp
- *.orig
-+*.dcd
-+*.dcd.S
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index a16866e..a2bea93 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -244,6 +244,8 @@ struct cdev *devfs_add_partition(const char *devname, loff_t offset, loff_t size
  
- #
- # Top-level generic files
-diff --git a/arch/arm/boards/efika-mx-smartbook/Makefile b/arch/arm/boards/efika-mx-smartbook/Makefile
-index a022d6d..0ac4693 100644
---- a/arch/arm/boards/efika-mx-smartbook/Makefile
-+++ b/arch/arm/boards/efika-mx-smartbook/Makefile
-@@ -1,4 +1,4 @@
--obj-y += board.o flash-header-imx51-genesi-efikasb.o
-+obj-y += board.o flash-header-imx51-genesi-efikasb.dcd.o
- lwl-y += lowlevel.o
--extra-y += flash-header-imx51-genesi-efikasb.S
-+extra-y += flash-header-imx51-genesi-efikasb.dcd.S
- extra-y += flash-header-imx51-genesi-efikasb.dcd
-diff --git a/arch/arm/boards/freescale-mx51-pdk/Makefile b/arch/arm/boards/freescale-mx51-pdk/Makefile
-index 0c06778..6252c88 100644
---- a/arch/arm/boards/freescale-mx51-pdk/Makefile
-+++ b/arch/arm/boards/freescale-mx51-pdk/Makefile
-@@ -1,3 +1,3 @@
--obj-y += board.o flash-header-imx51-babbage.o
--extra-y += flash-header-imx51-babbage.S flash-header-imx51-babbage.dcd
-+obj-y += board.o flash-header-imx51-babbage.dcd.o
-+extra-y += flash-header-imx51-babbage.dcd.S flash-header-imx51-babbage.dcd
- lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/freescale-mx53-loco/Makefile b/arch/arm/boards/freescale-mx53-loco/Makefile
-index 68fbe3a..bcaa974 100644
---- a/arch/arm/boards/freescale-mx53-loco/Makefile
-+++ b/arch/arm/boards/freescale-mx53-loco/Makefile
-@@ -1,3 +1,3 @@
--obj-y += board.o flash-header-imx53-loco.o
--extra-y += flash-header-imx53-loco.S flash-header-imx53-loco.dcd
-+obj-y += board.o flash-header-imx53-loco.dcd.o
-+extra-y += flash-header-imx53-loco.dcd.S flash-header-imx53-loco.dcd
- lwl-y += lowlevel.o
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 307412f..ab12a38 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -325,7 +325,7 @@ quiet_cmd_dcd = DCD     $@
- $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
- 	$(call if_changed,dcd)
+ 	new = xzalloc(sizeof (*new));
+ 	new->name = strdup(name);
++	if (!strncmp(devname, name, strlen(devname)))
++		new->partname = xstrdup(name + strlen(devname) + 1);
+ 	new->ops = cdev->ops;
+ 	new->priv = cdev->priv;
+ 	new->size = size;
+@@ -291,6 +293,7 @@ int devfs_del_partition(const char *name)
+ 		return ret;
  
--$(obj)/%.S: $(obj)/%.dcd
-+$(obj)/%.dcd.S: $(obj)/%.dcd
- 	$(call cmd,imximage_S_dcd)
+ 	free(cdev->name);
++	free(cdev->partname);
+ 	free(cdev);
  
- quiet_cmd_imx_image = IMX-IMG $@
+ 	return 0;
+diff --git a/include/driver.h b/include/driver.h
+index 9f114ff..353af3a 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -444,7 +444,10 @@ struct cdev {
+ 	struct device_d *dev;
+ 	struct list_head list;
+ 	struct list_head devices_list;
+-	char *name;
++	char *name; /* filename under /dev/ */
++	char *partname; /* the partition name, usually the above without the
++			 * device part, i.e. name = "nand0.barebox" -> partname = "barebox"
++			 */
+ 	loff_t offset;
+ 	loff_t size;
+ 	unsigned int flags;
 -- 
 1.8.3.2
 
