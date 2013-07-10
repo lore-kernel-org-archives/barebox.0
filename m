@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwrR9-0007gI-9B
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:15:51 +0000
-Received: by mail-la0-f52.google.com with SMTP id fo12so5496300lab.25
- for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 03:15:29 -0700 (PDT)
-From: Alexey Galakhov <agalakhov@gmail.com>
-Date: Wed, 10 Jul 2013 16:15:09 +0600
-Message-Id: <1373451310-8131-1-git-send-email-agalakhov@gmail.com>
-In-Reply-To: <20130710090131.GE516@pengutronix.de>
-References: <20130710090131.GE516@pengutronix.de>
-In-Reply-To: <20130710090131.GE516@pengutronix.de>
-References: <20130710090131.GE516@pengutronix.de>
+ id 1UwrXW-0007qU-EI
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:22:29 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 12:22:03 +0200
+Message-Id: <1373451723-13575-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,29 +19,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] Revert "Force set console baudrate"
+Subject: [PATCH] ARM: generate imx dcd.S files as *.dcd.S
 To: barebox@lists.infradead.org
-Cc: Alexey Galakhov <agalakhov@gmail.com>
 
-This reverts commit 564414b6db90fabb2c1f529454f153badd75d5d5.
+The compiled in dcd images generate an intermediate assembly file. Instead
+of generating them as *.S generate them as *.dcd.S to better identify them
+as generated files. These are then added to .gitignore.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c |    1 -
- 1 file changed, 1 deletion(-)
+ .gitignore                                   | 2 ++
+ arch/arm/boards/efika-mx-smartbook/Makefile  | 4 ++--
+ arch/arm/boards/freescale-mx51-pdk/Makefile  | 4 ++--
+ arch/arm/boards/freescale-mx53-loco/Makefile | 4 ++--
+ scripts/Makefile.lib                         | 2 +-
+ 5 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index abf5322..a0a06f6 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -147,7 +147,6 @@ int console_register(struct console_device *newcdev)
- 		newcdev->baudrate = CONFIG_BAUDRATE;
- 		dev_add_param_int(dev, "baudrate", console_baudrate_set,
- 			NULL, &newcdev->baudrate, "%u", newcdev);
--		newcdev->setbrg(newcdev, newcdev->baudrate);
- 	}
+diff --git a/.gitignore b/.gitignore
+index a08c6c1..1dec248 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -20,6 +20,8 @@
+ *.elf
+ *.mcp
+ *.orig
++*.dcd
++*.dcd.S
  
- 	dev_add_param(dev, "active", console_std_set, NULL, 0);
+ #
+ # Top-level generic files
+diff --git a/arch/arm/boards/efika-mx-smartbook/Makefile b/arch/arm/boards/efika-mx-smartbook/Makefile
+index a022d6d..0ac4693 100644
+--- a/arch/arm/boards/efika-mx-smartbook/Makefile
++++ b/arch/arm/boards/efika-mx-smartbook/Makefile
+@@ -1,4 +1,4 @@
+-obj-y += board.o flash-header-imx51-genesi-efikasb.o
++obj-y += board.o flash-header-imx51-genesi-efikasb.dcd.o
+ lwl-y += lowlevel.o
+-extra-y += flash-header-imx51-genesi-efikasb.S
++extra-y += flash-header-imx51-genesi-efikasb.dcd.S
+ extra-y += flash-header-imx51-genesi-efikasb.dcd
+diff --git a/arch/arm/boards/freescale-mx51-pdk/Makefile b/arch/arm/boards/freescale-mx51-pdk/Makefile
+index 0c06778..6252c88 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/Makefile
++++ b/arch/arm/boards/freescale-mx51-pdk/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += board.o flash-header-imx51-babbage.o
+-extra-y += flash-header-imx51-babbage.S flash-header-imx51-babbage.dcd
++obj-y += board.o flash-header-imx51-babbage.dcd.o
++extra-y += flash-header-imx51-babbage.dcd.S flash-header-imx51-babbage.dcd
+ lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/freescale-mx53-loco/Makefile b/arch/arm/boards/freescale-mx53-loco/Makefile
+index 68fbe3a..bcaa974 100644
+--- a/arch/arm/boards/freescale-mx53-loco/Makefile
++++ b/arch/arm/boards/freescale-mx53-loco/Makefile
+@@ -1,3 +1,3 @@
+-obj-y += board.o flash-header-imx53-loco.o
+-extra-y += flash-header-imx53-loco.S flash-header-imx53-loco.dcd
++obj-y += board.o flash-header-imx53-loco.dcd.o
++extra-y += flash-header-imx53-loco.dcd.S flash-header-imx53-loco.dcd
+ lwl-y += lowlevel.o
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 307412f..ab12a38 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -325,7 +325,7 @@ quiet_cmd_dcd = DCD     $@
+ $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
+ 	$(call if_changed,dcd)
+ 
+-$(obj)/%.S: $(obj)/%.dcd
++$(obj)/%.dcd.S: $(obj)/%.dcd
+ 	$(call cmd,imximage_S_dcd)
+ 
+ quiet_cmd_imx_image = IMX-IMG $@
 -- 
-1.7.10.4
+1.8.3.2
 
 
 _______________________________________________
