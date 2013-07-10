@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ux1zE-0007sU-Gi
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 21:31:45 +0000
-Date: Wed, 10 Jul 2013 23:31:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130710213122.GB14452@pengutronix.de>
-References: <1373361802-31080-1-git-send-email-t.gamez@phytec.de>
- <1373361802-31080-8-git-send-email-t.gamez@phytec.de>
- <51DD0B5C.3010002@phytec.de>
+ id 1Ux3Ey-00013n-0u
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 22:52:04 +0000
+Received: by mail-ee0-f42.google.com with SMTP id c4so5146523eek.29
+ for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 15:51:38 -0700 (PDT)
+Message-ID: <51DDE56B.8090701@gmail.com>
+Date: Thu, 11 Jul 2013 00:51:23 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <51DD0B5C.3010002@phytec.de>
+References: <1373059339-20513-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20130709173806.GW516@pengutronix.de>
+In-Reply-To: <20130709173806.GW516@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,74 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCHv2 08/12] PCM051: Add first stage support
-To: Teresa Gamez <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [RFC 0/2] mci: Dove SDHCI driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-Hi Teresa,
+On 07/09/2013 07:38 PM, Sascha Hauer wrote:
+> On Fri, Jul 05, 2013 at 11:22:17PM +0200, Sebastian Hesselbarth wrote:
+>> This RFC presents a working SDHCI driver for the IP found on Marvell
+>> Dove SoCs.
+>>
+>> @Sascha: We talked about refactoring common SDHCI code and I just want
+>> to show what I came up with for Dove. After thinking about existing barebox
+>> SDHCI, I had the impression that I should reimplement Dove SDHCI with writel
+>> as it is already made in other SDHCI drivers.
+>
+> Yes, common register accessors would make it possible to share code.
+> Maybe we can start with some sdhc_write[bwl]/read[bwl] functions which
+> are static inline wrappers around regular writel/readl. This would make
+> it possible to add an indirection there should we have to.
 
-On Wed, Jul 10, 2013 at 09:21:00AM +0200, Teresa Gamez wrote:
-> Am 09.07.2013 11:23, schrieb Teresa G=E1mez:
-> =
+Sascha,
 
-> Hello Sascha,
-> =
+a quick look at the SDHCI spec showed that the "native" word width is
+16b. At least Dove allows you to read registers at any width, but there
+may be other controllers with limited word width capabilities. Anyway,
+I guess we should try to have the common code and the defines use those
+16b reg width.
 
-> >From: Shravan kumar <shravan.k@phytec.in>
-> >
-> >This patch adds first stage support for PCM051.
-> >
-> >Signed-off-by: Shravan kumar <shravan.k@phytec.in>
-> >Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-> >---
-> >Changes in v2:
-> >- fixed aligment and register adress
-> >   order in mach/am33xx-silicon.h
-> >
-> >  arch/arm/boards/pcm051/board.c                   |    1 +
-> >  arch/arm/boards/pcm051/env/boot/sd               |    2 +-
-> >  arch/arm/boards/pcm051/lowlevel.c                |  206 ++++++++++++++=
-++++++++
-> >  arch/arm/configs/pcm051_mlo_defconfig            |   33 ++++
-> >  arch/arm/mach-omap/include/mach/am33xx-silicon.h |   13 ++
-> >  scripts/mk-am35xx-spi-image.c                    |    2 +-
-> >  6 files changed, 255 insertions(+), 2 deletions(-)
-> >  create mode 100644 arch/arm/configs/pcm051_mlo_defconfig
-> >
-> >
-> >  /* Ethernet MAC ID from EFuse */
-> >diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am35xx-spi-image=
-.c
-> >index 74e79db..b13568a 100644
-> >--- a/scripts/mk-am35xx-spi-image.c
-> >+++ b/scripts/mk-am35xx-spi-image.c
-> >@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
-> >  	int opt;
-> >  	off_t pos;
-> >  	size_t size;
-> >-	uint32_t addr =3D 0x40200000;
-> >+	uint32_t addr =3D 0x402F0400;
-> >  	uint32_t temp;
-> >  	while((opt =3D getopt(argc, argv, "a:")) !=3D -1) {
-> =
+>> I will be not checking mails regularily nor working on Barebox for the next
+>> two weeks, so feel free to simply ignore the RFC. But I thought it will be
+>> a good way to discuss your plans for common SDHCI code.
+>
+> I think the driver looks mostly good. It should be a good base to factor
+> out common code in the future.
 
-> This last hunk has accidentally slipped in here.
-> Could you remove it?
+Ok, when I get back to this, I will prepare a real patch for it.
 
-No problem, I removed it.
+Sebastian
 
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
