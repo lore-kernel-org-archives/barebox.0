@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo1.mail-out.ovh.net ([178.33.45.107]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UwpRM-0004yo-IP
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 08:07:58 +0000
-Received: from mail605.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id D2859FFBF68
- for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 10:07:32 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <51DC6E0E.2090806@gmail.com>
-Date: Wed, 10 Jul 2013 16:07:19 +0800
-Message-Id: <FEE56E32-09DD-4D07-BFFD-D986FAEA78F9@jcrosoft.com>
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UwptV-0005V5-7Z
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 08:37:02 +0000
+Received: by mail-lb0-f176.google.com with SMTP id z5so5327867lbh.7
+ for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 01:36:37 -0700 (PDT)
+Message-ID: <51DD1D11.1010103@gmail.com>
+Date: Wed, 10 Jul 2013 14:36:33 +0600
+From: Alexey Galakhov <agalakhov@gmail.com>
+MIME-Version: 1.0
 References: <1373383330-13126-1-git-send-email-agalakhov@gmail.com>
  <20130709174333.GY516@pengutronix.de>
  <5C73F356-67C8-4D18-B0B8-3D0BE89794A7@jcrosoft.com>
  <51DC6E0E.2090806@gmail.com>
+ <FEE56E32-09DD-4D07-BFFD-D986FAEA78F9@jcrosoft.com>
+In-Reply-To: <FEE56E32-09DD-4D07-BFFD-D986FAEA78F9@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,74 +28,70 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] Force set console baudrate
-To: Alexey Galakhov <agalakhov@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
+On 07/10/2013 02:07 PM, Jean-Christophe PLAGNIOL-VILLARD wrote:
 
-On Jul 10, 2013, at 4:09 AM, Alexey Galakhov <agalakhov@gmail.com> wrote:
+> This does force the same baud rate on ALL console device at register time => wrong
 
-> Hi,
-> 
-> On 07/10/2013 12:57 AM, Jean-Christophe PLAGNIOL-VILLARD wrote:
->> 
->> On Jul 10, 2013, at 1:43 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> 
->>> On Tue, Jul 09, 2013 at 09:22:10PM +0600, Alexey Galakhov wrote:
->>>> Most serial drivers require setbrg() to be called at least once. Call them
->>>> just after the device has been added.
->>>> 
->>>> Signed-off-by: Alexey Galakhov <agalakhov@gmail.com>
->> 
->> This is wrong if you do this at boot which means you force the same baudrate
->> on all the console
-> 
-> This does NOT force the same baudrate. It just ensures that the default
-> baudrate will not be ignored. There is no problem setting another
-> baudrate later if desired by using "baudrate" parameter from the shell
-> or something.
+I think it is correct, and I'll explain why.
 
-This does force the same baud rate on ALL console device at register time => wrong
+If the baudrate for the device is set explicitly via "baudrate"
+parameter, it WILL override any register time setting, so the register
+time setting does not matter at all.
 
-> 
->> We must do this only is enable by default of via shell
-> 
-> There is "chicken and egg" problem. barebox_banner() requires valid
-> baudrate setting and may deadlock without it. (It WILL deadlock on most
-> serial drivers and really deadlocks on S3C one).
+If the baudrate for the device is not set, CONFIG_BAUDRATE is
+applicable. If the "baudrate" property is read, it even returns
+CONFIG_BAUDRATE value. The device is expected to work at CONFIG_BAUDRATE
+if "baudrate" is not set.
 
-so do is at enable time not register time
+Calling setbrg() at registration time just ensures that the "baudrate"
+formal parameter matches actual device settings.
 
+>> There is "chicken and egg" problem. barebox_banner() requires valid
+>> baudrate setting and may deadlock without it. (It WILL deadlock on most
+>> serial drivers and really deadlocks on S3C one).
 > 
->> and some console may not need the setbrg call back (keyboard or fbdev as example)
-> 
-> If the device does not have setbrg() function defined, nothing will be
-> called. This all is under if (newcdev->setbrg) anyway.
+> so do is at enable time not register time
 
-this will result is a call of a NULL pointer -> crash
-> 
->> Also if we want to use a rs232 for controlling a mcu the baud rate may not be the
->> CONFIG_BAUDRATE
-> 
-> No problem, there is a parameter. Just set it before activating the device.
-> 
->> so force it at register is wrong
-> 
-> Not setting it is much worse. It will result in deadlock at the first
-> attempt to write to the console since setbrg() will not be called at all.
-> 
-> The idea is, if there IS a function to set a baudrate and there IS a
-> default setting, the baudrate SHOULD be initialized before doing
-> anything else.  Changing the baudrate on an inactive device multiple
-> times is (or at least should be) harmless. Trying to activate the device
-> with baudrate unset is not.
-> 
+Maybe, but why then we have if (cdev->f_active) ... else
+cdev->setbrg(...) in console_baudrate_set()? Doesn't this mean that
+setbrg() is meant to be called BEFORE enable time?
 
-If the console is not enable there no need to do anything
-you need to set the baud rate ONLY if the device is enable
+>> If the device does not have setbrg() function defined, nothing will be
+>> called. This all is under if (newcdev->setbrg) anyway.
+> 
+> this will result is a call of a NULL pointer -> crash
 
-> Regards,
-> Alex
+No, it won't of course! The pointer IS checked before setbrg() call by
+an existing if(newcdev->setbrg), so no NULL-pointer reference will be
+called.
 
+Please look at the code one more time:
+
+// If the device being registered has setbrg function defined...
+if (newcdev->setbrg) {
+        // ... then set its default baudrate...
+        newcdev->baudrate = CONFIG_BAUDRATE;
+        // ... add "baudrate" parameter to allow this to be changed...
+        dev_add_param_int(dev, "baudrate", console_baudrate_set,
+                NULL, &newcdev->baudrate, "%u", newcdev);
+        // ... and MY ADDITION - actually activate this parameter.
+        newcdev->setbrg(newcdev, newcdev->baudrate);
+}
+NULL-pointer dereference is guaranteed not to happen here.
+
+> If the console is not enable there no need to do anything
+> you need to set the baud rate ONLY if the device is enable
+
+To be more precice: if the device that was previously disabled is
+enabled. Correct. This is better than the current approach. Calling
+setbrg() in the else clause of console_baudrate_set() is incorrect as
+well so it should be removed (to be more precise, moved to init time).
+
+Regards,
+Alex
 
 _______________________________________________
 barebox mailing list
