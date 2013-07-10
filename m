@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uwt4N-0001jj-BU
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:00:28 +0000
+ id 1Uwt4N-0001jl-BR
+ for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:00:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 13:59:57 +0200
-Message-Id: <1373457601-7225-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 13:59:56 +0200
+Message-Id: <1373457601-7225-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
 References: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] dma: apbh: cleanup includes
+Subject: [PATCH 06/11] dma: apbh: add devicetree probe support
 To: barebox@lists.infradead.org
-
-Several includes are unused, remove them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/dma/apbh_dma.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/dma/apbh_dma.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
-index 89948bc..665d394 100644
+index fa4dd34..89948bc 100644
 --- a/drivers/dma/apbh_dma.c
 +++ b/drivers/dma/apbh_dma.c
-@@ -15,19 +15,17 @@
-  * (at your option) any later version.
-  */
+@@ -649,9 +649,22 @@ static struct platform_device_id apbh_ids[] = {
+         },
+ };
  
-+#include <dma/apbh-dma.h>
-+#include <stmp-device.h>
- #include <linux/list.h>
--
- #include <common.h>
- #include <driver.h>
--#include <init.h>
- #include <malloc.h>
- #include <errno.h>
--#include <dma/apbh-dma.h>
--#include <stmp-device.h>
-+#include <init.h>
-+#include <io.h>
++static __maybe_unused struct of_device_id apbh_dt_ids[] = {
++	{
++		.compatible = "fsl,imx23-dma-apbh",
++		.data = (unsigned long)IMX23_DMA,
++	}, {
++		.compatible = "fsl,imx28-dma-apbh",
++		.data = (unsigned long)IMX28_DMA,
++	}, {
++		/* sentinel */
++	}
++};
 +
- #include <asm/mmu.h>
--#include <asm/io.h>
--#include <mach/clock.h>
--#include <mach/imx-regs.h>
- 
- #define HW_APBHX_CTRL0				0x000
- #define BM_APBH_CTRL0_APB_BURST8_EN		(1 << 29)
+ static struct driver_d apbh_dma_driver = {
+ 	.name  = "dma-apbh",
+ 	.id_table = apbh_ids,
++	.of_compatible = DRV_OF_COMPAT(apbh_dt_ids),
+ 	.probe = apbh_dma_probe,
+ };
+ coredevice_platform_driver(apbh_dma_driver);
 -- 
 1.8.3.2
 
