@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uwt4N-0001ji-BS
+ id 1Uwt4N-0001jj-BU
  for barebox@lists.infradead.org; Wed, 10 Jul 2013 12:00:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 13:59:54 +0200
-Message-Id: <1373457601-7225-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 10 Jul 2013 13:59:57 +0200
+Message-Id: <1373457601-7225-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
 References: <1373457601-7225-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] dma: apbh: remove CONFIG_ARCH_DMA_PIO_WORDS
+Subject: [PATCH 07/11] dma: apbh: cleanup includes
 To: barebox@lists.infradead.org
 
-This define allows to overwrite DMA_PIO_WORDS with an architecture
-specific value. Since this is unused and not clean anyway remove
-it.
+Several includes are unused, remove them.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/dma/apbh-dma.h | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/dma/apbh_dma.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/include/dma/apbh-dma.h b/include/dma/apbh-dma.h
-index 52747e2..f10bb6f 100644
---- a/include/dma/apbh-dma.h
-+++ b/include/dma/apbh-dma.h
-@@ -28,12 +28,6 @@
+diff --git a/drivers/dma/apbh_dma.c b/drivers/dma/apbh_dma.c
+index 89948bc..665d394 100644
+--- a/drivers/dma/apbh_dma.c
++++ b/drivers/dma/apbh_dma.c
+@@ -15,19 +15,17 @@
+  * (at your option) any later version.
+  */
  
++#include <dma/apbh-dma.h>
++#include <stmp-device.h>
  #include <linux/list.h>
- 
--#ifndef	CONFIG_ARCH_DMA_PIO_WORDS
--#define	DMA_PIO_WORDS		15
--#else
--#define	DMA_PIO_WORDS		CONFIG_ARCH_DMA_PIO_WORDS
--#endif
 -
- #define MXS_DMA_ALIGNMENT	32
+ #include <common.h>
+ #include <driver.h>
+-#include <init.h>
+ #include <malloc.h>
+ #include <errno.h>
+-#include <dma/apbh-dma.h>
+-#include <stmp-device.h>
++#include <init.h>
++#include <io.h>
++
+ #include <asm/mmu.h>
+-#include <asm/io.h>
+-#include <mach/clock.h>
+-#include <mach/imx-regs.h>
  
- /*
-@@ -90,7 +84,8 @@ struct mxs_dma_cmd {
- 		dma_addr_t	address;
- 		unsigned long	alternate;
- 	};
--	unsigned long		pio_words[DMA_PIO_WORDS];
-+#define	APBH_DMA_PIO_WORDS		15
-+	unsigned long		pio_words[APBH_DMA_PIO_WORDS];
- };
- 
- /*
+ #define HW_APBHX_CTRL0				0x000
+ #define BM_APBH_CTRL0_APB_BURST8_EN		(1 << 29)
 -- 
 1.8.3.2
 
