@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ux3Ey-00013n-0u
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 22:52:04 +0000
-Received: by mail-ee0-f42.google.com with SMTP id c4so5146523eek.29
- for <barebox@lists.infradead.org>; Wed, 10 Jul 2013 15:51:38 -0700 (PDT)
-Message-ID: <51DDE56B.8090701@gmail.com>
-Date: Thu, 11 Jul 2013 00:51:23 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1373059339-20513-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20130709173806.GW516@pengutronix.de>
-In-Reply-To: <20130709173806.GW516@pengutronix.de>
+ id 1Ux9ok-0006dL-EF
+ for barebox@lists.infradead.org; Thu, 11 Jul 2013 05:53:28 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 11 Jul 2013 07:52:58 +0200
+Message-Id: <1373521979-7719-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,47 +14,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/2] mci: Dove SDHCI driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: mxs: implement debug_ll support
+To: barebox@lists.infradead.org
 
-On 07/09/2013 07:38 PM, Sascha Hauer wrote:
-> On Fri, Jul 05, 2013 at 11:22:17PM +0200, Sebastian Hesselbarth wrote:
->> This RFC presents a working SDHCI driver for the IP found on Marvell
->> Dove SoCs.
->>
->> @Sascha: We talked about refactoring common SDHCI code and I just want
->> to show what I came up with for Dove. After thinking about existing barebox
->> SDHCI, I had the impression that I should reimplement Dove SDHCI with writel
->> as it is already made in other SDHCI drivers.
->
-> Yes, common register accessors would make it possible to share code.
-> Maybe we can start with some sdhc_write[bwl]/read[bwl] functions which
-> are static inline wrappers around regular writel/readl. This would make
-> it possible to add an indirection there should we have to.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Kconfig                          |  1 +
+ arch/arm/mach-mxs/include/mach/debug_ll.h | 22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
+ create mode 100644 arch/arm/mach-mxs/include/mach/debug_ll.h
 
-Sascha,
-
-a quick look at the SDHCI spec showed that the "native" word width is
-16b. At least Dove allows you to read registers at any width, but there
-may be other controllers with limited word width capabilities. Anyway,
-I guess we should try to have the common code and the defines use those
-16b reg width.
-
->> I will be not checking mails regularily nor working on Barebox for the next
->> two weeks, so feel free to simply ignore the RFC. But I thought it will be
->> a good way to discuss your plans for common SDHCI code.
->
-> I think the driver looks mostly good. It should be a good base to factor
-> out common code in the future.
-
-Ok, when I get back to this, I will prepare a real patch for it.
-
-Sebastian
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e7d8cdd..8b95696 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -90,6 +90,7 @@ config ARCH_MXS
+ 	select GENERIC_GPIO
+ 	select COMMON_CLK
+ 	select CLKDEV_LOOKUP
++	select HAS_DEBUG_LL
+ 
+ config ARCH_NETX
+ 	bool "Hilscher NetX based"
+diff --git a/arch/arm/mach-mxs/include/mach/debug_ll.h b/arch/arm/mach-mxs/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..9e3ce1c
+--- /dev/null
++++ b/arch/arm/mach-mxs/include/mach/debug_ll.h
+@@ -0,0 +1,22 @@
++#ifndef __MACH_DEBUG_LL_H__
++#define __MACH_DEBUG_LL_H__
++
++#include <io.h>
++#include <mach/imx-regs.h>
++
++#define UARTDBGDR 0x00
++#define UARTDBGFR 0x18
++# define TXFE (1 << 7)
++# define TXFF (1 << 5)
++
++static inline void PUTC_LL(int c)
++{
++	void __iomem *base = (void *)IMX_DBGUART_BASE;
++
++	/* Wait for room in TX FIFO */
++	while (!(readl(base + UARTDBGFR) & TXFE));
++
++	writel(c, base + UARTDBGDR);
++}
++
++#endif /* __MACH_DEBUG_LL_H__ */
+-- 
+1.8.3.2
 
 
 _______________________________________________
