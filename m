@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo1.mail-out.ovh.net ([178.32.127.22]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UxZZH-00056z-4o
- for barebox@lists.infradead.org; Fri, 12 Jul 2013 09:23:13 +0000
-Received: from mail194.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id CF284FFA44A
- for <barebox@lists.infradead.org>; Fri, 12 Jul 2013 11:22:48 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 12 Jul 2013 11:22:39 +0200
-Message-Id: <1373620959-20431-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1373620959-20431-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130712091455.GD19197@ns203013.ovh.net>
- <1373620959-20431-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UxgGV-000422-Gb
+ for barebox@lists.infradead.org; Fri, 12 Jul 2013 16:32:16 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Fri, 12 Jul 2013 18:32:05 +0200
+Message-Id: <1373646725-7258-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,131 +19,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] pbl: add lz4 support
+Subject: [PATCH] OF: base: call of_parse_phandles() from of_unflatten_dtb()
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/pbl/Makefile     | 3 ++-
- arch/arm/pbl/piggy.lz4.S  | 6 ++++++
- arch/mips/pbl/Makefile    | 3 ++-
- arch/mips/pbl/piggy.lz4.S | 6 ++++++
- images/Makefile           | 1 +
- pbl/Kconfig               | 3 +++
- pbl/decomp.c              | 4 ++++
- 7 files changed, 24 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/pbl/piggy.lz4.S
- create mode 100644 arch/mips/pbl/piggy.lz4.S
+This allows using node->phandle before a call to of_probe().
 
-diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
-index 8923a70..dd3e946 100644
---- a/arch/arm/pbl/Makefile
-+++ b/arch/arm/pbl/Makefile
-@@ -1,6 +1,7 @@
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ drivers/of/base.c |    6 ++----
+ drivers/of/fdt.c  |    1 +
+ include/of.h      |    1 +
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 7bee912..075eed9 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1562,7 +1562,7 @@ int of_add_memory(struct device_node *node, bool dump)
+ 	return 0;
+ }
  
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
-+suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
- suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
+-static void __of_parse_phandles(struct device_node *node)
++void of_parse_phandles(struct device_node *node)
+ {
+ 	struct device_node *n;
+ 	phandle phandle;
+@@ -1575,7 +1575,7 @@ static void __of_parse_phandles(struct device_node *node)
+ 	}
  
- OBJCOPYFLAGS_zbarebox.bin = -O binary
-@@ -10,7 +11,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
- 	   $(piggy_o) piggy.$(suffix_y)
+ 	list_for_each_entry(n, &node->children, parent_list)
+-		__of_parse_phandles(n);
++		of_parse_phandles(n);
+ }
  
- # Make sure files are removed during clean
--extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
-+extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
+ struct device_node *of_chosen;
+@@ -1604,8 +1604,6 @@ int of_probe(void)
+ 	of_chosen = of_find_node_by_path("/chosen");
+ 	of_property_read_string(root_node, "model", &of_model);
  
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
-diff --git a/arch/arm/pbl/piggy.lz4.S b/arch/arm/pbl/piggy.lz4.S
-new file mode 100644
-index 0000000..fa9b246
---- /dev/null
-+++ b/arch/arm/pbl/piggy.lz4.S
-@@ -0,0 +1,6 @@
-+	.section .piggydata,#alloc
-+	.globl	input_data
-+input_data:
-+	.incbin	"arch/arm/pbl/piggy.lz4"
-+	.globl	input_data_end
-+input_data_end:
-diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
-index 6eeee73..fea1f24 100644
---- a/arch/mips/pbl/Makefile
-+++ b/arch/mips/pbl/Makefile
-@@ -1,6 +1,7 @@
+-	__of_parse_phandles(root_node);
+-
+ 	memory = of_find_node_by_path("/memory");
+ 	if (memory)
+ 		of_add_memory(memory, false);
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 76d6bb1..1cccd3d 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -202,6 +202,7 @@ struct device_node *of_unflatten_dtb(struct device_node *root, void *infdt)
+ 			break;
  
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
-+suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
- suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
+ 		case FDT_END:
++			of_parse_phandles(root);
+ 			return root;
  
- OBJCOPYFLAGS_zbarebox.bin = -O binary
-@@ -10,7 +11,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
- 	   $(piggy_o) piggy.$(suffix_y)
+ 		default:
+diff --git a/include/of.h b/include/of.h
+index ebe8e39..9055625 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -199,6 +199,7 @@ extern int of_property_write_u64_array(struct device_node *np,
+ 				const char *propname, const u64 *values,
+ 				size_t sz);
  
- # Make sure files are removed during clean
--extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
-+extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
- 
- $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
- 	$(call if_changed,objcopy)
-diff --git a/arch/mips/pbl/piggy.lz4.S b/arch/mips/pbl/piggy.lz4.S
-new file mode 100644
-index 0000000..6f1af1f
---- /dev/null
-+++ b/arch/mips/pbl/piggy.lz4.S
-@@ -0,0 +1,6 @@
-+#include <asm/asm.h>
-+
-+	.section .data
-+EXPORT(input_data)
-+	.incbin	"arch/mips/pbl/piggy.lzo"
-+EXPORT(input_data_end)
-diff --git a/images/Makefile b/images/Makefile
-index 925a987..65c533a 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -81,6 +81,7 @@ $(obj)/%.s: $(obj)/% FORCE
- 
- suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
- suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)  = lzo
-+suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
- suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = shipped
- 
- # barebox.z - compressed barebox binary
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index a37c976..836060e 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -54,6 +54,9 @@ if IMAGE_COMPRESSION
- choice
- 	prompt "Compression"
- 
-+config IMAGE_COMPRESSION_LZ4
-+	bool "lz4"
-+
- config IMAGE_COMPRESSION_LZO
- 	bool "lzo"
- 
-diff --git a/pbl/decomp.c b/pbl/decomp.c
-index aa6a31e..ca0df64 100644
---- a/pbl/decomp.c
-+++ b/pbl/decomp.c
-@@ -10,6 +10,10 @@
- 
- #define STATIC static
- 
-+#ifdef CONFIG_IMAGE_COMPRESSION_LZ4
-+#include "../../../lib/decompress_unlz4.c"
-+#endif
-+
- #ifdef CONFIG_IMAGE_COMPRESSION_LZO
- #include "../../../lib/decompress_unlzo.c"
- #endif
++extern void of_parse_phandles(struct device_node *node);
+ extern struct device_node *of_parse_phandle(const struct device_node *np,
+ 					    const char *phandle_name,
+ 					    int index);
 -- 
-1.8.3.2
+1.7.10.4
 
 
 _______________________________________________
