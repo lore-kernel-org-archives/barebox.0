@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
+Received: from 16.mo1.mail-out.ovh.net ([178.33.104.224]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UxNV8-00014O-1I
- for barebox@lists.infradead.org; Thu, 11 Jul 2013 20:30:07 +0000
-Received: from mail636.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 400E5DC74BF
- for <barebox@lists.infradead.org>; Thu, 11 Jul 2013 22:29:43 +0200 (CEST)
+ id 1UxZRa-0004wM-3B
+ for barebox@lists.infradead.org; Fri, 12 Jul 2013 09:15:15 +0000
+Received: from mail194.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id E42A7FFA5CC
+ for <barebox@lists.infradead.org>; Fri, 12 Jul 2013 11:14:50 +0200 (CEST)
+Date: Fri, 12 Jul 2013 11:14:55 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 11 Jul 2013 22:29:40 +0200
-Message-Id: <1373574580-11324-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130712091455.GD19197@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] ARM: at91: fix debug_ll typo on CONFIG_HAVE_AT91_DBGU0
+Subject: [PATCH 0/3] pbl: add lz4 compression support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/mach-at91/include/mach/debug_ll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi,
 
-diff --git a/arch/arm/mach-at91/include/mach/debug_ll.h b/arch/arm/mach-at91/include/mach/debug_ll.h
-index 1a85ae4..42728a4 100644
---- a/arch/arm/mach-at91/include/mach/debug_ll.h
-+++ b/arch/arm/mach-at91/include/mach/debug_ll.h
-@@ -11,7 +11,7 @@
- #include <asm/io.h>
- #include <mach/hardware.h>
- 
--#ifdef COFNIG_HAVE_AT91_DBGU0
-+#ifdef CONFIG_HAVE_AT91_DBGU0
- #define UART_BASE	AT91_BASE_DBGU0
- #else
- #define UART_BASE	AT91_BASE_DBGU1
--- 
-1.8.3.2
+	The following patch serie add the lz4 support to the pbl
 
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      pbl: add lz4 support
+
+Kyungsik Lee (2):
+      decompressor: Add LZ4 decompressor module
+      lib: Add support for LZ4-compressed kernel
+
+ arch/arm/pbl/Makefile            |   3 +-
+ arch/arm/pbl/piggy.lz4.S         |   6 ++++
+ arch/mips/pbl/Makefile           |   3 +-
+ arch/mips/pbl/piggy.lz4.S        |   6 ++++
+ common/filetype.c                |   4 +++
+ images/Makefile                  |   1 +
+ include/filetype.h               |   1 +
+ include/linux/decompress/unlz4.h |  10 ++++++
+ include/linux/lz4.h              |  87 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig                      |   4 +++
+ lib/Makefile                     |   2 ++
+ lib/decompress_unlz4.c           | 188 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/lz4/Makefile                 |   1 +
+ lib/lz4/lz4_decompress.c         | 327 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/lz4/lz4defs.h                | 156 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/uncompress.c                 |   6 ++++
+ pbl/Kconfig                      |   3 ++
+ pbl/decomp.c                     |   4 +++
+ scripts/Makefile.lib             |   5 +++
+ 19 files changed, 815 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/pbl/piggy.lz4.S
+ create mode 100644 arch/mips/pbl/piggy.lz4.S
+ create mode 100644 include/linux/decompress/unlz4.h
+ create mode 100644 include/linux/lz4.h
+ create mode 100644 lib/decompress_unlz4.c
+ create mode 100644 lib/lz4/Makefile
+ create mode 100644 lib/lz4/lz4_decompress.c
+ create mode 100644 lib/lz4/lz4defs.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
