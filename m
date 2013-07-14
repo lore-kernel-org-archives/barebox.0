@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp42.i.mail.ru ([94.100.177.102])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UxsRD-0003lW-Eq
- for barebox@lists.infradead.org; Sat, 13 Jul 2013 05:32:08 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 13 Jul 2013 09:31:40 +0400
-Message-Id: <1373693500-28123-1-git-send-email-shc_work@mail.ru>
+ id 1UyMex-0002xP-Rc
+ for barebox@lists.infradead.org; Sun, 14 Jul 2013 13:48:21 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Sun, 14 Jul 2013 15:47:42 +0200
+Message-Id: <1373809662-31482-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,59 +19,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: spi: Fix spi read procedure
+Subject: [PATCH] arm: cpuinfo: display the core name and version
 To: barebox@lists.infradead.org
 
-Buffer for RX is set incorrectly.
-
-barebox@Phytec phyCORE-i.MX27:/  spi -r 128 -v
-device config
-    bus_num       = 0
-    max_speed_hz  = 1000000
-    chip_select   = 0
-    mode          = 0x0
-    bits_per_word = 8
-
-wrote 0 bytes
-00000000:
-read 128 bytes
-00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-unable to handle paging request at address 0x4dffd3d0
-pc : [<a7f05ec4>]    lr : [<a7f05ebc>]
-sp : a7fff890  ip : a7fff860  fp : a7f68820
-r10: a6ffe9bc  r9 : 00000000  r8 : 00000001
-r7 : a6ffe9ec  r6 : a6f00000  r5 : a6ffe9ec  r4 : a6ffe9e4
-r3 : a6ffe9e4  r2 : a6ffe9e5  r1 : a6ffe9e4  r0 : 4dffd3cc
-Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-...
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 ---
- commands/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/cpu/cpuinfo.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/commands/spi.c b/commands/spi.c
-index 2f6b430..79fc539 100644
---- a/commands/spi.c
-+++ b/commands/spi.c
-@@ -81,7 +81,7 @@ static int do_spi(int argc, char *argv[])
- 	}
+diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
+index 8aea4b4..260d47b 100644
+--- a/arch/arm/cpu/cpuinfo.c
++++ b/arch/arm/cpu/cpuinfo.c
+@@ -31,6 +31,12 @@
+ #define CPU_ARCH_ARMv6		8
+ #define CPU_ARCH_ARMv7		9
  
- 	tx_buf = xmalloc(count);
--	rx_buf = xmalloc(count);
-+	rx_buf = xmalloc(read);
++#define ARM_CPU_PART_CORTEX_A5      0xC050
++#define ARM_CPU_PART_CORTEX_A7      0xC070
++#define ARM_CPU_PART_CORTEX_A8      0xC080
++#define ARM_CPU_PART_CORTEX_A9      0xC090
++#define ARM_CPU_PART_CORTEX_A15     0xC0F0
++
+ static void decode_cache(unsigned long size)
+ {
+ 	int linelen = 1 << ((size & 0x3) + 3);
+@@ -154,6 +160,33 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	printf("implementer: %s\narchitecture: %s\n",
+ 			implementer, architecture);
  
- 	for (i = 0; i < count; i++)
- 		tx_buf[i] = (u8) simple_strtol(argv[optind + i], NULL, 16);
++	if (cpu_arch == CPU_ARCH_ARMv7) {
++		unsigned int major, minor;
++		char *part;
++		major = (mainid >> 20) & 0xf;
++		minor = mainid & 0xf;
++		switch (mainid & 0xfff0) {
++		case ARM_CPU_PART_CORTEX_A5:
++			part = "Cortex-A5";
++			break;
++		case ARM_CPU_PART_CORTEX_A7:
++			part = "Cortex-A7";
++			break;
++		case ARM_CPU_PART_CORTEX_A8:
++			part = "Cortex-A8";
++			break;
++		case ARM_CPU_PART_CORTEX_A9:
++			part = "Cortex-A9";
++			break;
++		case ARM_CPU_PART_CORTEX_A15:
++			part = "Cortex-A15";
++			break;
++		default:
++			part = "unknown";
++		}
++		printf("core: %s r%up%u\n", part, major, minor);
++	}
++
+ 	if (cache & (1 << 24)) {
+ 		/* separate I/D cache */
+ 		printf("I-cache: ");
 -- 
-1.8.1.5
+1.8.3.2
 
 
 _______________________________________________
