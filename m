@@ -1,22 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
+Received: from 9.mo4.mail-out.ovh.net ([46.105.40.176]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UyfiO-0007nU-FV
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:09:09 +0000
+ id 1UyfjR-0007sY-8x
+ for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:10:13 +0000
 Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 141EA104FAF3
- for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:08:47 +0200 (CEST)
-Date: Mon, 15 Jul 2013 12:08:54 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 682CE104FC1C
+ for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:09:50 +0200 (CEST)
+Date: Mon, 15 Jul 2013 12:09:58 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130715100854.GF19197@ns203013.ovh.net>
-References: <20130712091455.GD19197@ns203013.ovh.net>
- <1373620959-20431-1-git-send-email-plagnioj@jcrosoft.com>
- <1373620959-20431-3-git-send-email-plagnioj@jcrosoft.com>
- <20130715090044.GQ14452@pengutronix.de>
+Message-ID: <20130715100958.GG19197@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130715090044.GQ14452@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,39 +24,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] pbl: add lz4 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3 v2] pbl: add lz4 compression support
+To: barebox@lists.infradead.org
 
-On 11:00 Mon 15 Jul     , Sascha Hauer wrote:
-> On Fri, Jul 12, 2013 at 11:22:39AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > @@ -54,6 +54,9 @@ if IMAGE_COMPRESSION
-> >  choice
-> >  	prompt "Compression"
-> >  
-> > +config IMAGE_COMPRESSION_LZ4
-> > +	bool "lz4"
-> > +
-> >  config IMAGE_COMPRESSION_LZO
-> >  	bool "lzo"
-> 
-> Can we add this in a way that it doesn't get the default for all configs
-> currently using lzo? Either put it at the end of the choice or add a
-> 'default IMAGE_COMPRESSION_LZO'?
-yeah this default will do the tric
+Hi,
 
-I plan to update the LZO too as we can get 10 to 20% decompression speed up
+	v2:
+	keep lzo as default
+
+	The following patch serie add the lz4 support to the pbl
+
+Jean-Christophe PLAGNIOL-VILLARD (1):
+      pbl: add lz4 support
+
+Kyungsik Lee (2):
+      decompressor: Add LZ4 decompressor module
+      lib: Add support for LZ4-compressed kernel
+
+ arch/arm/pbl/Makefile            |   3 +-
+ arch/arm/pbl/piggy.lz4.S         |   6 ++++
+ arch/mips/pbl/Makefile           |   3 +-
+ arch/mips/pbl/piggy.lz4.S        |   6 ++++
+ common/filetype.c                |   4 +++
+ images/Makefile                  |   1 +
+ include/filetype.h               |   1 +
+ include/linux/decompress/unlz4.h |  10 ++++++
+ include/linux/lz4.h              |  87 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/Kconfig                      |   4 +++
+ lib/Makefile                     |   2 ++
+ lib/decompress_unlz4.c           | 188 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/lz4/Makefile                 |   1 +
+ lib/lz4/lz4_decompress.c         | 327 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/lz4/lz4defs.h                | 156 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/uncompress.c                 |   6 ++++
+ pbl/Kconfig                      |   4 ++
+ pbl/decomp.c                     |   4 +++
+ scripts/Makefile.lib             |   5 +++
+ 19 files changed, 815 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/pbl/piggy.lz4.S
+ create mode 100644 arch/mips/pbl/piggy.lz4.S
+ create mode 100644 include/linux/decompress/unlz4.h
+ create mode 100644 include/linux/lz4.h
+ create mode 100644 lib/decompress_unlz4.c
+ create mode 100644 lib/lz4/Makefile
+ create mode 100644 lib/lz4/lz4_decompress.c
+ create mode 100644 lib/lz4/lz4defs.h
 
 Best Regards,
 J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
