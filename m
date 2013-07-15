@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uyosy-00070y-3p
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 19:56:41 +0000
+ id 1UyotM-000721-V7
+ for barebox@lists.infradead.org; Mon, 15 Jul 2013 19:57:05 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 15 Jul 2013 21:56:00 +0200
-Message-Id: <1373918160-20718-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 15 Jul 2013 21:56:45 +0200
+Message-Id: <1373918206-9978-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,141 +19,245 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: add mtd of helpers
+Subject: [PATCH] bus: Add imx-weim support
 To: barebox@lists.infradead.org
 
-Directly taken from the kernel
+Mostly taken from the kernel with support for other SoCs from
+Alexander Shiyan.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/of/Makefile |  1 +
- drivers/of/of_mtd.c | 82 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/of_mtd.h    | 18 ++++++++++++
- 3 files changed, 101 insertions(+)
- create mode 100644 drivers/of/of_mtd.c
- create mode 100644 include/of_mtd.h
+ drivers/Kconfig        |   1 +
+ drivers/Makefile       |   1 +
+ drivers/bus/Kconfig    |   7 ++
+ drivers/bus/Makefile   |   1 +
+ drivers/bus/imx-weim.c | 174 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 184 insertions(+)
+ create mode 100644 drivers/bus/Kconfig
+ create mode 100644 drivers/bus/Makefile
+ create mode 100644 drivers/bus/imx-weim.c
 
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index e7d0733..058afc2 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -3,3 +3,4 @@ obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
- obj-$(CONFIG_GPIOLIB) += of_gpio.o
- obj-y += partition.o
- obj-y += of_net.o
-+obj-$(CONFIG_MTD) += of_mtd.o
-diff --git a/drivers/of/of_mtd.c b/drivers/of/of_mtd.c
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 3a95e51..d34d2c7 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -24,5 +24,6 @@ source "drivers/dma/Kconfig"
+ source "drivers/gpio/Kconfig"
+ source "drivers/w1/Kconfig"
+ source "drivers/pinctrl/Kconfig"
++source "drivers/bus/Kconfig"
+ 
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index daf821c..ba1dc6d 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -23,3 +23,4 @@ obj-y	+= gpio/
+ obj-$(CONFIG_OFTREE) += of/
+ obj-$(CONFIG_W1) += w1/
+ obj-y += pinctrl/
++obj-y += bus/
+diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
 new file mode 100644
-index 0000000..239f1f9
+index 0000000..5938d3f
 --- /dev/null
-+++ b/drivers/of/of_mtd.c
-@@ -0,0 +1,82 @@
++++ b/drivers/bus/Kconfig
+@@ -0,0 +1,7 @@
++menu "Bus devices"
++
++config IMX_WEIM
++	depends on ARCH_IMX
++	bool "i.MX WEIM driver"
++
++endmenu
+diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
+new file mode 100644
+index 0000000..42a8d49
+--- /dev/null
++++ b/drivers/bus/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_IMX_WEIM) += imx-weim.o
+diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+new file mode 100644
+index 0000000..8771887
+--- /dev/null
++++ b/drivers/bus/imx-weim.c
+@@ -0,0 +1,174 @@
 +/*
-+ * Copyright 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ * EIM driver for Freescale's i.MX chips
 + *
-+ * OF helpers for mtd.
++ * Copyright (C) 2013 Freescale Semiconductor, Inc.
 + *
-+ * This file is released under the GPLv2
-+ *
++ * This file is licensed under the terms of the GNU General Public
++ * License version 2. This program is licensed "as is" without any
++ * warranty of any kind, whether express or implied.
 + */
 +#include <common.h>
-+#include <of_mtd.h>
-+#include <linux/mtd/nand.h>
-+
-+/**
-+ * It maps 'enum nand_ecc_modes_t' found in include/linux/mtd/nand.h
-+ * into the device tree binding of 'nand-ecc', so that MTD
-+ * device driver can get nand ecc from device tree.
-+ */
-+static const char *nand_ecc_modes[] = {
-+	[NAND_ECC_NONE]		= "none",
-+	[NAND_ECC_SOFT]		= "soft",
-+	[NAND_ECC_HW]		= "hw",
-+	[NAND_ECC_HW_SYNDROME]	= "hw_syndrome",
-+};
-+
-+/**
-+ * of_get_nand_ecc_mode - Get nand ecc mode for given device_node
-+ * @np:	Pointer to the given device_node
-+ *
-+ * The function gets ecc mode string from property 'nand-ecc-mode',
-+ * and return its index in nand_ecc_modes table, or errno in error case.
-+ */
-+int of_get_nand_ecc_mode(struct device_node *np)
-+{
-+	const char *pm;
-+	int err, i;
-+
-+	err = of_property_read_string(np, "nand-ecc-mode", &pm);
-+	if (err < 0)
-+		return err;
-+
-+	for (i = 0; i < ARRAY_SIZE(nand_ecc_modes); i++)
-+		if (!strcasecmp(pm, nand_ecc_modes[i]))
-+			return i;
-+
-+	return -ENODEV;
-+}
-+EXPORT_SYMBOL_GPL(of_get_nand_ecc_mode);
-+
-+/**
-+ * of_get_nand_bus_width - Get nand bus witdh for given device_node
-+ * @np:	Pointer to the given device_node
-+ *
-+ * return bus width option, or errno in error case.
-+ */
-+int of_get_nand_bus_width(struct device_node *np)
-+{
-+	u32 val;
-+
-+	if (of_property_read_u32(np, "nand-bus-width", &val))
-+		return 8;
-+
-+	switch(val) {
-+	case 8:
-+	case 16:
-+		return val;
-+	default:
-+		return -EIO;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(of_get_nand_bus_width);
-+
-+/**
-+ * of_get_nand_on_flash_bbt - Get nand on flash bbt for given device_node
-+ * @np:	Pointer to the given device_node
-+ *
-+ * return true if present false other wise
-+ */
-+bool of_get_nand_on_flash_bbt(struct device_node *np)
-+{
-+	return of_property_read_bool(np, "nand-on-flash-bbt");
-+}
-+EXPORT_SYMBOL_GPL(of_get_nand_on_flash_bbt);
-diff --git a/include/of_mtd.h b/include/of_mtd.h
-new file mode 100644
-index 0000000..a5a8f20
---- /dev/null
-+++ b/include/of_mtd.h
-@@ -0,0 +1,18 @@
-+/*
-+ * Copyright 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * OF helpers for mtd.
-+ *
-+ * This file is released under the GPLv2
-+ */
-+
-+#ifndef __LINUX_OF_MTD_H
-+#define __LINUX_OF_MTD_H
-+
++#include <driver.h>
++#include <init.h>
++#include <io.h>
 +#include <of.h>
 +
-+int of_get_nand_ecc_mode(struct device_node *np);
-+int of_get_nand_bus_width(struct device_node *np);
-+bool of_get_nand_on_flash_bbt(struct device_node *np);
++struct imx_weim_devtype {
++	unsigned int	cs_count;
++	unsigned int	cs_regs_count;
++	unsigned int	cs_stride;
++};
 +
-+#endif /* __LINUX_OF_MTD_H */
++static const struct imx_weim_devtype imx1_weim_devtype = {
++	.cs_count	= 6,
++	.cs_regs_count	= 2,
++	.cs_stride	= 0x08,
++};
++
++static const struct imx_weim_devtype imx27_weim_devtype = {
++	.cs_count	= 6,
++	.cs_regs_count	= 3,
++	.cs_stride	= 0x10,
++};
++
++static const struct imx_weim_devtype imx50_weim_devtype = {
++	.cs_count	= 4,
++	.cs_regs_count	= 6,
++	.cs_stride	= 0x18,
++};
++
++static const struct imx_weim_devtype imx51_weim_devtype = {
++	.cs_count	= 6,
++	.cs_regs_count	= 6,
++	.cs_stride	= 0x18,
++};
++
++static struct of_device_id weim_id_table[] = {
++	{
++		/* i.MX1/21 */
++		.compatible = "fsl,imx1-weim",
++		.data = (unsigned long)&imx1_weim_devtype,
++	}, {
++		/* i.MX25/27/31/35 */
++		.compatible = "fsl,imx27-weim",
++		.data = (unsigned long)&imx27_weim_devtype,
++	}, {
++		/* i.MX50/53/6Q */
++		.compatible = "fsl,imx50-weim",
++		.data = (unsigned long)&imx50_weim_devtype,
++	}, {
++		/* i.MX51 */
++		.compatible = "fsl,imx51-weim",
++		.data = (unsigned long)&imx51_weim_devtype,
++	}, {
++		.compatible = "fsl,imx6q-weim",
++		.data = (unsigned long)&imx50_weim_devtype,
++	}, {
++	}
++};
++
++struct imx_weim {
++	struct device_d *dev;
++	void __iomem *base;
++	struct imx_weim_devtype *devtype;
++};
++
++#define CS_TIMING_LEN 6
++#define CS_REG_RANGE  0x18
++
++/* Parse and set the timing for this device. */
++static int
++weim_timing_setup(struct imx_weim *weim, struct device_node *np)
++{
++	struct imx_weim_devtype *devtype = weim->devtype;
++	u32 cs_idx, value[devtype->cs_regs_count];
++	int i, ret;
++
++	/* get the CS index from this child node's "reg" property. */
++	ret = of_property_read_u32(np, "reg", &cs_idx);
++	if (ret)
++		return ret;
++
++	if (cs_idx >= devtype->cs_count)
++		return -EINVAL;
++
++	ret = of_property_read_u32_array(np, "fsl,weim-cs-timing",
++			value, devtype->cs_regs_count);
++	if (ret)
++		return ret;
++
++	dev_dbg(weim->dev, "setting up cs for %s\n", np->name);
++
++	/* set the timing for WEIM */
++	for (i = 0; i < devtype->cs_regs_count; i++)
++		writel(value[i], weim->base + cs_idx * devtype->cs_stride + i * 4);
++
++	return 0;
++}
++
++static int weim_parse_dt(struct imx_weim *weim)
++{
++	struct device_node *child;
++	int ret;
++
++	for_each_child_of_node(weim->dev->device_node, child) {
++		if (!child->name)
++			continue;
++
++		ret = weim_timing_setup(weim, child);
++		if (ret) {
++			dev_err(weim->dev, "%s set timing failed.\n",
++				child->full_name);
++			return ret;
++		}
++	}
++
++	ret = of_platform_populate(weim->dev->device_node, NULL, weim->dev);
++	if (ret)
++		dev_err(weim->dev, "%s fail to create devices.\n",
++			weim->dev->device_node->full_name);
++	return ret;
++}
++
++static int weim_probe(struct device_d *dev)
++{
++	struct imx_weim_devtype *devtype;
++	struct imx_weim *weim;
++	int ret;
++
++	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
++	if (ret)
++		return ret;
++
++	weim = xzalloc(sizeof(*weim));
++
++	weim->dev = dev;
++	weim->devtype = devtype;
++
++	/* get the resource */
++	weim->base = dev_request_mem_region(dev, 0);
++	if (!weim->base) {
++		ret = -EBUSY;
++		goto weim_err;
++	}
++
++	/* parse the device node */
++	ret = weim_parse_dt(weim);
++	if (ret) {
++		goto weim_err;
++	}
++
++	dev_info(dev, "WEIM driver registered.\n");
++
++	return 0;
++
++weim_err:
++	return ret;
++}
++
++static struct driver_d weim_driver = {
++	.name = "imx-weim",
++	.of_compatible = DRV_OF_COMPAT(weim_id_table),
++	.probe   = weim_probe,
++};
++device_platform_driver(weim_driver);
 -- 
 1.8.3.2
 
