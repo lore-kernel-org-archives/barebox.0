@@ -1,26 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
+Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uyfki-0007v2-FQ
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:11:33 +0000
+ id 1Uyfu9-00083g-IN
+ for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:21:18 +0000
 Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 4944C104F4A4
- for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:11:11 +0200 (CEST)
-Date: Mon, 15 Jul 2013 12:11:19 +0200
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 3EF96104F54D
+ for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:20:56 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130715101119.GH19197@ns203013.ovh.net>
-References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
- <1373453528-3723-9-git-send-email-s.hauer@pengutronix.de>
- <14050E29-1044-43D1-B240-2AE619C18CA6@jcrosoft.com>
- <20130710133424.GG516@pengutronix.de>
- <20130710143349.GB19197@ns203013.ovh.net>
- <20130710144240.GH516@pengutronix.de>
- <20130710155028.GC19197@ns203013.ovh.net>
- <20130710201713.GJ516@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130710201713.GJ516@pengutronix.de>
+Date: Mon, 15 Jul 2013 12:20:53 +0200
+Message-Id: <1373883653-11236-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1373883653-11236-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130715100958.GG19197@ns203013.ovh.net>
+ <1373883653-11236-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,44 +21,138 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/9] Add configurability via devicetree
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/3] pbl: add lz4 support
+To: barebox@lists.infradead.org
 
-On 22:17 Wed 10 Jul     , Sascha Hauer wrote:
-> On Wed, Jul 10, 2013 at 05:50:28PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > It's the same binding, yes.
-> > > > 
-> > > > I do not like to duplicate the information can de avoid this
-> > > 
-> > > Which information? The Documentation?
-> > 
-> > no the fact we need to describe the nor-partitions twice, for barebox and for
-> > linux in the DTB
-> 
-> No, barebox should copy (or move) the partition nodes to where Linux
-> finds them before starting the kernel. This is not yet implemented
-> though.
-> 
-> Another option of course is to do the obvious and put the partitions
-> under the mtd device in the first place. I decided against this since
-> I have the strong feeling that the hardware description should be
-> separated from clearly board (or project or usecase) specific partition
-> descriptions.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/pbl/Makefile     | 3 ++-
+ arch/arm/pbl/piggy.lz4.S  | 6 ++++++
+ arch/mips/pbl/Makefile    | 3 ++-
+ arch/mips/pbl/piggy.lz4.S | 6 ++++++
+ images/Makefile           | 1 +
+ pbl/Kconfig               | 4 ++++
+ pbl/decomp.c              | 4 ++++
+ 7 files changed, 25 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/pbl/piggy.lz4.S
+ create mode 100644 arch/mips/pbl/piggy.lz4.S
 
-here we need to be more generic as it's booloader specific not really barebox
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+index 8923a70..dd3e946 100644
+--- a/arch/arm/pbl/Makefile
++++ b/arch/arm/pbl/Makefile
+@@ -1,6 +1,7 @@
+ 
+ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+ suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
++suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
+ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
+ 
+ OBJCOPYFLAGS_zbarebox.bin = -O binary
+@@ -10,7 +11,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
+ 	   $(piggy_o) piggy.$(suffix_y)
+ 
+ # Make sure files are removed during clean
+-extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
++extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
+ 
+ $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
+ 	$(call if_changed,objcopy)
+diff --git a/arch/arm/pbl/piggy.lz4.S b/arch/arm/pbl/piggy.lz4.S
+new file mode 100644
+index 0000000..fa9b246
+--- /dev/null
++++ b/arch/arm/pbl/piggy.lz4.S
+@@ -0,0 +1,6 @@
++	.section .piggydata,#alloc
++	.globl	input_data
++input_data:
++	.incbin	"arch/arm/pbl/piggy.lz4"
++	.globl	input_data_end
++input_data_end:
+diff --git a/arch/mips/pbl/Makefile b/arch/mips/pbl/Makefile
+index 6eeee73..fea1f24 100644
+--- a/arch/mips/pbl/Makefile
++++ b/arch/mips/pbl/Makefile
+@@ -1,6 +1,7 @@
+ 
+ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+ suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)	= lzo
++suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
+ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE)	= shipped
+ 
+ OBJCOPYFLAGS_zbarebox.bin = -O binary
+@@ -10,7 +11,7 @@ targets := zbarebox.lds zbarebox zbarebox.bin zbarebox.S \
+ 	   $(piggy_o) piggy.$(suffix_y)
+ 
+ # Make sure files are removed during clean
+-extra-y       += piggy.gzip piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
++extra-y       += piggy.gzip piggy.lz4 piggy.lzo piggy.lzma piggy.xzkern piggy.shipped zbarebox.map
+ 
+ $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
+ 	$(call if_changed,objcopy)
+diff --git a/arch/mips/pbl/piggy.lz4.S b/arch/mips/pbl/piggy.lz4.S
+new file mode 100644
+index 0000000..be9425b
+--- /dev/null
++++ b/arch/mips/pbl/piggy.lz4.S
+@@ -0,0 +1,6 @@
++#include <asm/asm.h>
++
++	.section .data
++EXPORT(input_data)
++	.incbin	"arch/mips/pbl/piggy.lz4"
++EXPORT(input_data_end)
+diff --git a/images/Makefile b/images/Makefile
+index 925a987..65c533a 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -81,6 +81,7 @@ $(obj)/%.s: $(obj)/% FORCE
+ 
+ suffix_$(CONFIG_IMAGE_COMPRESSION_GZIP) = gzip
+ suffix_$(CONFIG_IMAGE_COMPRESSION_LZO)  = lzo
++suffix_$(CONFIG_IMAGE_COMPRESSION_LZ4)	= lz4
+ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = shipped
+ 
+ # barebox.z - compressed barebox binary
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index a37c976..dc31357 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -53,6 +53,10 @@ if IMAGE_COMPRESSION
+ 
+ choice
+ 	prompt "Compression"
++	default IMAGE_COMPRESSION_LZO
++
++config IMAGE_COMPRESSION_LZ4
++	bool "lz4"
+ 
+ config IMAGE_COMPRESSION_LZO
+ 	bool "lzo"
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index aa6a31e..ca0df64 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -10,6 +10,10 @@
+ 
+ #define STATIC static
+ 
++#ifdef CONFIG_IMAGE_COMPRESSION_LZ4
++#include "../../../lib/decompress_unlz4.c"
++#endif
++
+ #ifdef CONFIG_IMAGE_COMPRESSION_LZO
+ #include "../../../lib/decompress_unlzo.c"
+ #endif
+-- 
+1.8.3.2
+
 
 _______________________________________________
 barebox mailing list
