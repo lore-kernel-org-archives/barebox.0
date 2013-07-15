@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UyejS-0006ds-El
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 09:06:11 +0000
-Date: Mon, 15 Jul 2013 11:05:48 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130715090548.GR14452@pengutronix.de>
-References: <1373693500-28123-1-git-send-email-shc_work@mail.ru>
+Received: from 20.mo4.mail-out.ovh.net ([46.105.33.73]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1UyfiO-0007nU-FV
+ for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:09:09 +0000
+Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 141EA104FAF3
+ for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:08:47 +0200 (CEST)
+Date: Mon, 15 Jul 2013 12:08:54 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130715100854.GF19197@ns203013.ovh.net>
+References: <20130712091455.GD19197@ns203013.ovh.net>
+ <1373620959-20431-1-git-send-email-plagnioj@jcrosoft.com>
+ <1373620959-20431-3-git-send-email-plagnioj@jcrosoft.com>
+ <20130715090044.GQ14452@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1373693500-28123-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <20130715090044.GQ14452@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +29,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: spi: Fix spi read procedure
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 3/3] pbl: add lz4 support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jul 13, 2013 at 09:31:40AM +0400, Alexander Shiyan wrote:
-> Buffer for RX is set incorrectly.
+On 11:00 Mon 15 Jul     , Sascha Hauer wrote:
+> On Fri, Jul 12, 2013 at 11:22:39AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > @@ -54,6 +54,9 @@ if IMAGE_COMPRESSION
+> >  choice
+> >  	prompt "Compression"
+> >  
+> > +config IMAGE_COMPRESSION_LZ4
+> > +	bool "lz4"
+> > +
+> >  config IMAGE_COMPRESSION_LZO
+> >  	bool "lzo"
 > 
-> barebox@Phytec phyCORE-i.MX27:/  spi -r 128 -v
-> device config
->     bus_num       = 0
->     max_speed_hz  = 1000000
->     chip_select   = 0
->     mode          = 0x0
->     bits_per_word = 8
+> Can we add this in a way that it doesn't get the default for all configs
+> currently using lzo? Either put it at the end of the choice or add a
+> 'default IMAGE_COMPRESSION_LZO'?
+yeah this default will do the tric
+
+I plan to update the LZO too as we can get 10 to 20% decompression speed up
+
+Best Regards,
+J.
 > 
-> wrote 0 bytes
-> 00000000:
-> read 128 bytes
-> 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> 00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
-> unable to handle paging request at address 0x4dffd3d0
-> pc : [<a7f05ec4>]    lr : [<a7f05ebc>]
-> sp : a7fff890  ip : a7fff860  fp : a7f68820
-> r10: a6ffe9bc  r9 : 00000000  r8 : 00000001
-> r7 : a6ffe9ec  r6 : a6f00000  r5 : a6ffe9ec  r4 : a6ffe9e4
-> r3 : a6ffe9e4  r2 : a6ffe9e5  r1 : a6ffe9e4  r0 : 4dffd3cc
-> Flags: nZCv  IRQs off  FIQs off  Mode SVC_32
-> ...
+> Sascha
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-
-Applied, thanks
-
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
