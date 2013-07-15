@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo4.mail-out.ovh.net ([178.33.248.196]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uyfu9-00083f-IN
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 10:21:19 +0000
-Received: from mail618.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 12C9D104F4E2
- for <barebox@lists.infradead.org>; Mon, 15 Jul 2013 12:20:56 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 15 Jul 2013 12:20:52 +0200
-Message-Id: <1373883653-11236-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1373883653-11236-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130715100958.GG19197@ns203013.ovh.net>
- <1373883653-11236-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Uyot7-00071D-Up
+ for barebox@lists.infradead.org; Mon, 15 Jul 2013 19:56:50 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 15 Jul 2013 21:56:31 +0200
+Message-Id: <1373918191-3334-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,373 +19,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] lib: Add support for LZ4-compressed kernel
+Subject: [PATCH] mtd: nand_imx: Add devicetree probe support
 To: barebox@lists.infradead.org
-Cc: Kyungsik Lee <kyungsik.lee@lge.com>
 
-From: Kyungsik Lee <kyungsik.lee@lge.com>
-
-This patch adds support for extracting LZ4-compressed kernel images,
-as well as LZ4-compressed ramdisk images in the kernel boot process.
-
-This depends on the patch below
-decompressor: Add LZ4 decompressor module
-
-Signed-off-by: Kyungsik Lee <kyungsik.lee@lge.com>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/filetype.c                |   4 +
- include/filetype.h               |   1 +
- include/linux/decompress/unlz4.h |  10 +++
- lib/Kconfig                      |   4 +
- lib/Makefile                     |   2 +
- lib/decompress_unlz4.c           | 188 +++++++++++++++++++++++++++++++++++++++
- lib/lz4/Makefile                 |   1 +
- lib/lz4/lz4_decompress.c         |   3 +-
- lib/uncompress.c                 |   6 ++
- scripts/Makefile.lib             |   5 ++
- 10 files changed, 223 insertions(+), 1 deletion(-)
- create mode 100644 include/linux/decompress/unlz4.h
- create mode 100644 lib/decompress_unlz4.c
- create mode 100644 lib/lz4/Makefile
+ drivers/mtd/nand/nand_imx.c | 75 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 67 insertions(+), 8 deletions(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 1ff3dd2..13c7994 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -33,6 +33,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_unknown] = { "unknown", "unkown" },
- 	[filetype_arm_zimage] = { "arm Linux zImage", "arm-zimage" },
- 	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
-+	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
- 	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
- 	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
- 	[filetype_ubi] = { "UBI image", "ubi" },
-@@ -195,6 +196,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (buf8[0] == 0x89 && buf8[1] == 0x4c && buf8[2] == 0x5a &&
- 			buf8[3] == 0x4f)
- 		return filetype_lzo_compressed;
-+	if (buf8[0] == 0x02 && buf8[1] == 0x21 && buf8[2] == 0x4c &&
-+			buf8[3] == 0x18)
-+		return filetype_lz4_compressed;
- 	if (buf[0] == be32_to_cpu(0x27051956))
- 		return filetype_uimage;
- 	if (buf[0] == 0x23494255)
-diff --git a/include/filetype.h b/include/filetype.h
-index c73c64a..1b90805 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -10,6 +10,7 @@ enum filetype {
- 	filetype_unknown,
- 	filetype_arm_zimage,
- 	filetype_lzo_compressed,
-+	filetype_lz4_compressed,
- 	filetype_arm_barebox,
- 	filetype_uimage,
- 	filetype_ubi,
-diff --git a/include/linux/decompress/unlz4.h b/include/linux/decompress/unlz4.h
-new file mode 100644
-index 0000000..7aaafc2
---- /dev/null
-+++ b/include/linux/decompress/unlz4.h
-@@ -0,0 +1,10 @@
-+#ifndef DECOMPRESS_UNLZ4_H
-+#define DECOMPRESS_UNLZ4_H
-+
-+int decompress_unlz4(unsigned char *inbuf, int len,
-+	int(*fill)(void*, unsigned int),
-+	int(*flush)(void*, unsigned int),
-+	unsigned char *output,
-+	int *pos,
-+	void(*error)(char *x));
-+#endif
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 646fdb7..b5ac22a 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -14,6 +14,10 @@ config BZLIB
- 	bool "include bzip2 uncompression support"
- 	select UNCOMPRESS
- 
-+config LZ4_DECOMPRESS
-+	bool "include lz4 uncompression support"
-+	select UNCOMPRESS
-+
- config GENERIC_FIND_NEXT_BIT
- 	def_bool n
- 
-diff --git a/lib/Makefile b/lib/Makefile
-index 7c42537..61f1e63 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -28,8 +28,10 @@ obj-y			+= notifier.o
- obj-y			+= copy_file.o
- obj-y			+= random.o
- obj-y			+= lzo/
-+obj-$(CONFIG_LZ4_DECOMPRESS) += lz4/
- obj-y			+= show_progress.o
- obj-$(CONFIG_LZO_DECOMPRESS)		+= decompress_unlzo.o
-+obj-$(CONFIG_LZ4_DECOMPRESS) += decompress_unlz4.o
- obj-$(CONFIG_PROCESS_ESCAPE_SEQUENCE)	+= process_escape_sequence.o
- obj-$(CONFIG_UNCOMPRESS)	+= uncompress.o
- obj-$(CONFIG_BCH)	+= bch.o
-diff --git a/lib/decompress_unlz4.c b/lib/decompress_unlz4.c
-new file mode 100644
-index 0000000..894cc37
---- /dev/null
-+++ b/lib/decompress_unlz4.c
-@@ -0,0 +1,188 @@
-+/*
-+ * Wrapper for decompressing LZ4-compressed kernel, initramfs, and initrd
-+ *
-+ * Copyright (C) 2013, LG Electronics, Kyungsik Lee <kyungsik.lee@lge.com>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+#ifdef STATIC
-+#define PREBOOT
-+#include <linux/decompress/mm.h>
-+#include "lz4/lz4_decompress.c"
-+#else
-+#include <linux/decompress/unlz4.h>
-+#include <malloc.h>
-+#endif
-+#include <linux/types.h>
-+#include <linux/lz4.h>
-+#include <linux/decompress/mm.h>
-+#include <linux/compiler.h>
-+
-+#include <asm/unaligned.h>
-+
-+/*
-+ * Note: Uncompressed chunk size is used in the compressor side
-+ * (userspace side for compression).
-+ * It is hardcoded because there is not proper way to extract it
-+ * from the binary stream which is generated by the preliminary
-+ * version of LZ4 tool so far.
-+ */
-+#define LZ4_DEFAULT_UNCOMPRESSED_CHUNK_SIZE (8 << 20)
-+#define ARCHIVE_MAGICNUMBER 0x184C2102
-+
-+static inline int unlz4(u8 *input, int in_len,
-+				int (*fill) (void *, unsigned int),
-+				int (*flush) (void *, unsigned int),
-+				u8 *output, int *posp,
-+				void (*error) (char *x))
-+{
-+	int ret = -1;
-+	size_t chunksize = 0;
-+	size_t uncomp_chunksize = LZ4_DEFAULT_UNCOMPRESSED_CHUNK_SIZE;
-+	u8 *inp;
-+	u8 *inp_start;
-+	u8 *outp;
-+	int size = in_len;
-+#ifdef PREBOOT
-+	size_t out_len = get_unaligned_le32(input + in_len);
-+#endif
-+	size_t dest_len;
-+
-+
-+	if (output) {
-+		outp = output;
-+	} else if (!flush) {
-+		error("NULL output pointer and no flush function provided");
-+		goto exit_0;
-+	} else {
-+		outp = malloc(uncomp_chunksize);
-+		if (!outp) {
-+			error("Could not allocate output buffer");
-+			goto exit_0;
-+		}
-+	}
-+
-+	if (input && fill) {
-+		error("Both input pointer and fill function provided,");
-+		goto exit_1;
-+	} else if (input) {
-+		inp = input;
-+	} else if (!fill) {
-+		error("NULL input pointer and missing fill function");
-+		goto exit_1;
-+	} else {
-+		inp = malloc(lz4_compressbound(uncomp_chunksize));
-+		if (!inp) {
-+			error("Could not allocate input buffer");
-+			goto exit_1;
-+		}
-+	}
-+	inp_start = inp;
-+
-+	if (posp)
-+		*posp = 0;
-+
-+	if (fill)
-+		fill(inp, 4);
-+
-+	chunksize = get_unaligned_le32(inp);
-+	if (chunksize == ARCHIVE_MAGICNUMBER) {
-+		inp += 4;
-+		size -= 4;
-+	} else {
-+		error("invalid header");
-+		goto exit_2;
-+	}
-+
-+	if (posp)
-+		*posp += 4;
-+
-+	for (;;) {
-+
-+		if (fill)
-+			fill(inp, 4);
-+
-+		chunksize = get_unaligned_le32(inp);
-+		if (chunksize == ARCHIVE_MAGICNUMBER) {
-+			inp += 4;
-+			size -= 4;
-+			if (posp)
-+				*posp += 4;
-+			continue;
-+		}
-+		inp += 4;
-+		size -= 4;
-+
-+		if (posp)
-+			*posp += 4;
-+
-+		if (fill) {
-+			if (chunksize > lz4_compressbound(uncomp_chunksize)) {
-+				error("chunk length is longer than allocated");
-+				goto exit_2;
-+			}
-+			fill(inp, chunksize);
-+		}
-+#ifdef PREBOOT
-+		if (out_len >= uncomp_chunksize) {
-+			dest_len = uncomp_chunksize;
-+			out_len -= dest_len;
-+		} else
-+			dest_len = out_len;
-+		ret = lz4_decompress(inp, &chunksize, outp, dest_len);
-+#else
-+		dest_len = uncomp_chunksize;
-+		ret = lz4_decompress_unknownoutputsize(inp, chunksize, outp,
-+				&dest_len);
-+#endif
-+		if (ret < 0) {
-+			error("Decoding failed");
-+			goto exit_2;
-+		}
-+
-+		if (flush && flush(outp, dest_len) != dest_len)
-+			goto exit_2;
-+		if (output)
-+			outp += dest_len;
-+		if (posp)
-+			*posp += chunksize;
-+
-+		size -= chunksize;
-+
-+		if (size == 0)
-+			break;
-+		else if (size < 0) {
-+			error("data corrupted");
-+			goto exit_2;
-+		}
-+
-+		inp += chunksize;
-+		if (fill)
-+			inp = inp_start;
-+	}
-+
-+	ret = 0;
-+exit_2:
-+	if (!input)
-+		free(inp_start);
-+exit_1:
-+	if (!output)
-+		free(outp);
-+exit_0:
-+	return ret;
-+}
-+
-+int decompress_unlz4(unsigned char *buf, int in_len,
-+			      int(*fill)(void*, unsigned int),
-+			      int(*flush)(void*, unsigned int),
-+			      unsigned char *output,
-+			      int *posp,
-+			      void(*error)(char *x)
-+	)
-+{
-+	return unlz4(buf, in_len - 4, fill, flush, output, posp, error);
-+}
-+#define decompress decompress_unlz4
-diff --git a/lib/lz4/Makefile b/lib/lz4/Makefile
-new file mode 100644
-index 0000000..7f548c6
---- /dev/null
-+++ b/lib/lz4/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_LZ4_DECOMPRESS) += lz4_decompress.o
-diff --git a/lib/lz4/lz4_decompress.c b/lib/lz4/lz4_decompress.c
-index d3414ea..8e64ce6 100644
---- a/lib/lz4/lz4_decompress.c
-+++ b/lib/lz4/lz4_decompress.c
-@@ -38,10 +38,11 @@
-  */
- 
- #ifndef STATIC
--#include <linux/module.h>
-+#include <module.h>
- #include <linux/kernel.h>
- #endif
- #include <linux/lz4.h>
-+#include <linux/string.h>
- 
- #include <asm/unaligned.h>
- 
-diff --git a/lib/uncompress.c b/lib/uncompress.c
-index e0a69df..a4225aa 100644
---- a/lib/uncompress.c
-+++ b/lib/uncompress.c
-@@ -21,6 +21,7 @@
- #include <bunzip2.h>
- #include <gunzip.h>
- #include <lzo.h>
-+#include <linux/decompress/unlz4.h>
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 75aefd6..426ee2e 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -27,6 +27,7 @@
+ #include <mach/generic.h>
+ #include <mach/imx-nand.h>
+ #include <io.h>
++#include <of_mtd.h>
  #include <errno.h>
- #include <filetype.h>
- #include <malloc.h>
-@@ -112,6 +113,11 @@ int uncompress(unsigned char *inbuf, int len,
- 		compfn = decompress_unlzo;
- 		break;
- #endif
-+#ifdef CONFIG_LZ4_DECOMPRESS
-+	case filetype_lz4_compressed:
-+		compfn = decompress_unlz4;
-+		break;
-+#endif
- 	default:
- 		err = asprintf("cannot handle filetype %s", file_type_to_string(ft));
- 		error_fn(err);
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 307412f..722b410 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -289,6 +289,11 @@ cmd_xzmisc = (cat $(filter-out FORCE,$^) | \
- 	xz --check=crc32 --lzma2=dict=1MiB) > $@ || \
- 	(rm -f $@ ; false)
  
-+quiet_cmd_lz4 = LZ4     $@
-+cmd_lz4 = (cat $(filter-out FORCE,$^) | \
-+	lz4c -l -c1 stdin stdout && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
-+	(rm -f $@ ; false)
+ #define NFC_V3_FLASH_CMD		(host->regs_axi + 0x00)
+@@ -100,6 +101,10 @@ struct imx_nand_host {
+ 	int			spare_len;
+ 	int			eccsize;
+ 
++	int			hw_ecc;
++	int			data_width;
++	int			flash_bbt;
 +
- quiet_cmd_disasm = DISASM  $@
- cmd_disasm = $(OBJDUMP) -d $< > $@
+ 	void			(*preset)(struct mtd_info *);
+ 	void			(*send_cmd)(struct imx_nand_host *, uint16_t);
+ 	void			(*send_addr)(struct imx_nand_host *, uint16_t);
+@@ -1087,6 +1092,28 @@ static struct nand_bbt_descr bbt_mirror_descr = {
+ 	.pattern = mirror_pattern,
+ };
+ 
++static int __init mxcnd_probe_dt(struct imx_nand_host *host)
++{
++	struct device_node *np = host->dev->device_node;
++	int buswidth;
++
++	if (!np)
++		return 1;
++
++	if (of_get_nand_ecc_mode(np) == NAND_ECC_HW)
++		host->hw_ecc = 1;
++
++	host->flash_bbt = of_get_nand_on_flash_bbt(np);
++
++	buswidth = of_get_nand_bus_width(np);
++	if (buswidth < 0)
++		return buswidth;
++
++	host->data_width = buswidth / 8;
++
++	return 0;
++}
++
+ /*
+  * This function is called during the driver binding process.
+  *
+@@ -1101,7 +1128,6 @@ static int __init imxnd_probe(struct device_d *dev)
+ {
+ 	struct nand_chip *this;
+ 	struct mtd_info *mtd;
+-	struct imx_nand_platform_data *pdata = dev->platform_data;
+ 	struct imx_nand_host *host;
+ 	struct nand_ecclayout *oob_smallpage, *oob_largepage, *oob_4kpage;
+ 	int err = 0;
+@@ -1112,6 +1138,23 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	if (!host)
+ 		return -ENOMEM;
+ 
++	host->dev = dev;
++
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		err = mxcnd_probe_dt(host);
++		if (err < 0)
++			goto escan;
++
++		if (err > 0) {
++			struct imx_nand_platform_data *pdata;
++
++			pdata = dev->platform_data;
++			host->flash_bbt = pdata->flash_bbt;
++			host->data_width = pdata->width;
++			host->hw_ecc = pdata->hw_ecc;
++		}
++	}
++
+ 	host->data_buf = (uint8_t *)(host + 1);
+ 
+ 	if (nfc_is_v1() || nfc_is_v21()) {
+@@ -1173,7 +1216,6 @@ static int __init imxnd_probe(struct device_d *dev)
+ 		goto escan;
+ 	}
+ 
+-	host->dev = dev;
+ 	/* structures must be linked */
+ 	this = &host->nand;
+ 	mtd = &host->mtd;
+@@ -1194,7 +1236,7 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	this->read_buf = imx_nand_read_buf;
+ 	this->verify_buf = imx_nand_verify_buf;
+ 
+-	if (pdata->hw_ecc) {
++	if (host->hw_ecc) {
+ 		this->ecc.calculate = imx_nand_calculate_ecc;
+ 		this->ecc.hwctl = imx_nand_enable_hwecc;
+ 		if (nfc_is_v1())
+@@ -1211,13 +1253,13 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	this->ecc.layout = oob_smallpage;
+ 
+ 	/* NAND bus width determines access functions used by upper layer */
+-	if (pdata->width == 2) {
++	if (host->data_width == 2) {
+ 		this->options |= NAND_BUSWIDTH_16;
+ 		this->ecc.layout = &nandv1_hw_eccoob_smallpage;
+ 		imx_nand_set_layout(0, 16);
+ 	}
+ 
+-	if (pdata->flash_bbt) {
++	if (host->flash_bbt) {
+ 		this->bbt_td = &bbt_main_descr;
+ 		this->bbt_md = &bbt_mirror_descr;
+ 		/* update flash based bbt */
+@@ -1233,10 +1275,10 @@ static int __init imxnd_probe(struct device_d *dev)
+ 	/* Call preset again, with correct writesize this time */
+ 	host->preset(mtd);
+ 
+-	imx_nand_set_layout(mtd->writesize, pdata->width == 2 ? 16 : 8);
++	imx_nand_set_layout(mtd->writesize, host->data_width == 2 ? 16 : 8);
+ 
+ 	if (mtd->writesize >= 2048) {
+-		if (!pdata->flash_bbt)
++		if (!host->flash_bbt)
+ 			dev_warn(dev, "2k or 4k flash detected without flash_bbt. "
+ 					"You will loose factory bad block markers!\n");
+ 
+@@ -1261,7 +1303,7 @@ static int __init imxnd_probe(struct device_d *dev)
+ 		goto escan;
+ 	}
+ 
+-	if (pdata->flash_bbt && this->bbt_td->pages[0] == -1 && this->bbt_md->pages[0] == -1) {
++	if (host->flash_bbt && this->bbt_td->pages[0] == -1 && this->bbt_md->pages[0] == -1) {
+ 		dev_warn(dev, "no BBT found. create one using the imx_nand_bbm command\n");
+ 	} else {
+ 		bbt_main_descr.options |= NAND_BBT_WRITE | NAND_BBT_CREATE;
+@@ -1281,9 +1323,26 @@ escan:
+ 
+ }
+ 
++static __maybe_unused struct of_device_id imx_nand_compatible[] = {
++	{
++		.compatible = "fsl,imx21-nand",
++	}, {
++		.compatible = "fsl,imx25-nand",
++	}, {
++		.compatible = "fsl,imx27-nand",
++	}, {
++		.compatible = "fsl,imx51-nand",
++	}, {
++		.compatible = "fsl,imx53-nand",
++	}, {
++		/* sentinel */
++	}
++};
++
+ static struct driver_d imx_nand_driver = {
+ 	.name  = "imx_nand",
+ 	.probe = imxnd_probe,
++	.of_compatible = DRV_OF_COMPAT(imx_nand_compatible),
+ };
+ device_platform_driver(imx_nand_driver);
  
 -- 
 1.8.3.2
