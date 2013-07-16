@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay1.ptmail.sapo.pt ([212.55.154.21] helo=sapo.pt)
+Received: from relay2.ptmail.sapo.pt ([212.55.154.22] helo=sapo.pt)
  by merlin.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uz2KP-0007Xd-Vz
- for barebox@lists.infradead.org; Tue, 16 Jul 2013 10:17:55 +0000
+ id 1Uz2Mb-0007ak-MW
+ for barebox@lists.infradead.org; Tue, 16 Jul 2013 10:20:10 +0000
 Received: from unknown (HELO probook.localnet)
  (as3038625@sapo.pt@[83.240.187.138])
- (envelope-sender <microcris@sapo.pt>)
+ (envelope-sender <microcris@aeiou.pt>)
  by mta-auth01 (qmail-ptmail-1.0.0) with SMTP
- for <barebox@lists.infradead.org>; 16 Jul 2013 10:17:21 -0000
-From: Cristiano Rodrigues <microcris@sapo.pt>
-Date: Tue, 16 Jul 2013 11:17:21 +0100
-Message-ID: <1694203.mQekMZlKEB@probook>
+ for <barebox@lists.infradead.org>; 16 Jul 2013 10:19:36 -0000
+From: Cristiano Rodrigues <microcris@aeiou.pt>
+Date: Tue, 16 Jul 2013 11:19:36 +0100
+Message-ID: <9960508.My00bIQGLy@probook>
 In-Reply-To: <2655265.6QViDogYJX@n56v>
 References: <2655265.6QViDogYJX@n56v>
 MIME-Version: 1.0
