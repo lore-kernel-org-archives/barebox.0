@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uz5tg-0005gs-Uf
+ id 1Uz5tg-0005gy-VL
  for barebox@lists.infradead.org; Tue, 16 Jul 2013 14:06:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 16 Jul 2013 16:05:57 +0200
-Message-Id: <1373983566-27721-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 16 Jul 2013 16:06:06 +0200
+Message-Id: <1373983566-27721-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1373983566-27721-1-git-send-email-s.hauer@pengutronix.de>
 References: <1373983566-27721-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,41 +21,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] of: partition: check for valid node
+Subject: [PATCH 10/10] ARM: i.MX6 tqma6x: configure environment from devicetree
 To: barebox@lists.infradead.org
-
-So that users can call the of partition parsers without checking
-if they are probed from the devicetree.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/partition.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boards/tqma6x/board.c | 4 ----
+ arch/arm/dts/imx6dl-mba6x.dts  | 5 +++++
+ arch/arm/dts/imx6q-mba6x.dts   | 5 +++++
+ 3 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index d69251e..7199eff 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -34,6 +34,9 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
- 	int len;
- 	unsigned long flags = 0;
+diff --git a/arch/arm/boards/tqma6x/board.c b/arch/arm/boards/tqma6x/board.c
+index 9e81a1d..7878cc6 100644
+--- a/arch/arm/boards/tqma6x/board.c
++++ b/arch/arm/boards/tqma6x/board.c
+@@ -134,10 +134,6 @@ static int tqma6x_env_init(void)
+ 	imx6_bbu_internal_mmc_register_handler("emmc", "/dev/mmc2.boot0",
+ 		0, (void *)flash_header_start, flash_header_end - flash_header_start, 0);
  
-+	if (!node)
-+		return NULL;
-+
- 	reg = of_get_property(node, "reg", &len);
- 	if (!reg)
- 		return NULL;
-@@ -67,6 +70,9 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
- {
- 	struct device_node *n;
+-	device_detect_by_name("mmc2");
+-
+-	default_environment_path = "/dev/mmc2.boot1";
+-
+ 	return 0;
+ }
+ late_initcall(tqma6x_env_init);
+diff --git a/arch/arm/dts/imx6dl-mba6x.dts b/arch/arm/dts/imx6dl-mba6x.dts
+index 7840f06..9e4b95f 100644
+--- a/arch/arm/dts/imx6dl-mba6x.dts
++++ b/arch/arm/dts/imx6dl-mba6x.dts
+@@ -19,6 +19,11 @@
  
-+	if (!node)
-+		return -EINVAL;
+ 	chosen {
+ 		linux,stdout-path = &uart2;
 +
- 	for_each_child_of_node(node, n) {
- 		of_parse_partition(cdev, n);
- 	}
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:boot1";
++		};
+ 	};
+ 
+ 	memory {
+diff --git a/arch/arm/dts/imx6q-mba6x.dts b/arch/arm/dts/imx6q-mba6x.dts
+index f2ca177..5bf1405 100644
+--- a/arch/arm/dts/imx6q-mba6x.dts
++++ b/arch/arm/dts/imx6q-mba6x.dts
+@@ -19,6 +19,11 @@
+ 
+ 	chosen {
+ 		linux,stdout-path = &uart2;
++
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:boot1";
++		};
+ 	};
+ 
+ 	memory {
 -- 
 1.8.3.2
 
