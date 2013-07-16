@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f323.mail.ru ([128.140.169.186] helo=f323.i.mail.ru)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uyrqx-00030v-JF
- for barebox@lists.infradead.org; Mon, 15 Jul 2013 23:06:48 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Tue, 16 Jul 2013 03:06:22 +0400
-Message-ID: <1373929582.540362958@f323.i.mail.ru>
-In-Reply-To: <1373918206-9978-1-git-send-email-s.hauer@pengutronix.de>
-References: <1373918206-9978-1-git-send-email-s.hauer@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1Uyyhu-0001hA-On
+ for barebox@lists.infradead.org; Tue, 16 Jul 2013 06:25:55 +0000
+Date: Tue, 16 Jul 2013 08:25:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130716062532.GV14452@pengutronix.de>
+References: <20130715100958.GG19197@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130715100958.GG19197@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gYnVzOiBBZGQgaW14LXdlaW0gc3VwcG9ydA==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 0/3 v2] pbl: add lz4 compression support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-> Mostly taken from the kernel with support for other SoCs from
-> Alexander Shiyan.
+On Mon, Jul 15, 2013 at 12:09:58PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Alexander Shiyan <shc_work@mail.ru>
-> ---
-...
-> +struct imx_weim {
-> +	struct device_d *dev;
-> +	void __iomem *base;
-> +	struct imx_weim_devtype *devtype;
-> +};
-> +
-> +#define CS_TIMING_LEN 6
-> +#define CS_REG_RANGE  0x18
+> 	v2:
+> 	keep lzo as default
+> 
+> 	The following patch serie add the lz4 support to the pbl
+> 
+> Jean-Christophe PLAGNIOL-VILLARD (1):
+>       pbl: add lz4 support
+> 
+> Kyungsik Lee (2):
+>       decompressor: Add LZ4 decompressor module
+>       lib: Add support for LZ4-compressed kernel
 
-???
+Applied, thanks
 
----
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
