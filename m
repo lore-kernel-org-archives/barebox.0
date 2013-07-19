@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og116.obsmtp.com ([64.18.0.147])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1UzlKd-0006gl-6R
- for barebox@lists.infradead.org; Thu, 18 Jul 2013 10:21:08 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 18 Jul 2013 11:16:51 +0100
-Message-Id: <1374142611-10384-1-git-send-email-renaud.barbier@ge.com>
+Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V0Aww-0008RC-H0
+ for barebox@lists.infradead.org; Fri, 19 Jul 2013 13:42:23 +0000
+Received: by mail-ee0-f43.google.com with SMTP id l10so2379930eei.2
+ for <barebox@lists.infradead.org>; Fri, 19 Jul 2013 06:41:59 -0700 (PDT)
+From: Hubert Feurstein <h.feurstein@gmail.com>
+Date: Fri, 19 Jul 2013 15:41:41 +0200
+Message-Id: <1374241301-21277-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,29 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ppc ddr-8xxx: misplaced parenthesis
+Subject: [PATCH] include/printk: fix level of pr_err and pr_warning
 To: barebox@lists.infradead.org
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/ddr-8xxx/ctrl_regs.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+The level of pr_err and pr_warning were interchanged.
 
-diff --git a/arch/ppc/ddr-8xxx/ctrl_regs.c b/arch/ppc/ddr-8xxx/ctrl_regs.c
-index 3f8ecf7..1abc826 100644
---- a/arch/ppc/ddr-8xxx/ctrl_regs.c
-+++ b/arch/ppc/ddr-8xxx/ctrl_regs.c
-@@ -314,7 +314,7 @@ static void set_ddr_sdram_mode(struct fsl_ddr_cfg_regs_s *ddr,
- 		   | ((rtt & 0x1) << 2));
- 
- 	/* Write recovery */
--	wr = (dimm->tWR_ps + mclk_ps - 1) / (mclk_ps - 1);
-+	wr = ((dimm->tWR_ps + mclk_ps - 1) / mclk_ps) - 1;
- 
- 	switch (popts->burst_length) {
- 	case DDR_BL4:
+Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+---
+ include/printk.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/printk.h b/include/printk.h
+index 3cd7335..86bf208 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -56,8 +56,8 @@ int dev_printf(const struct device_d *dev, const char *format, ...)
+ #define pr_emerg(fmt, arg...)	__pr_printk(0, pr_fmt(fmt), ##arg)
+ #define pr_alert(fmt, arg...)	__pr_printk(1, pr_fmt(fmt), ##arg)
+ #define pr_crit(fmt, arg...)	__pr_printk(2, pr_fmt(fmt), ##arg)
+-#define pr_warning(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
+-#define pr_err(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
++#define pr_err(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
++#define pr_warning(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
+ #define pr_notice(fmt, arg...)	__pr_printk(5, pr_fmt(fmt), ##arg)
+ #define pr_info(fmt, arg...)	__pr_printk(6, pr_fmt(fmt), ##arg)
+ #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
 -- 
-1.7.1
+1.7.9.5
 
 
 _______________________________________________
