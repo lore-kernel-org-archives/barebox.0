@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1AdU-0008Dl-Rj
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:34:25 +0000
-Date: Mon, 22 Jul 2013 09:34:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130722073401.GF9434@pengutronix.de>
-References: <1374241301-21277-1-git-send-email-h.feurstein@gmail.com>
+ id 1V1B1F-0000Te-TE
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:58:58 +0000
+From: =?iso-8859-15?q?J=FCrgen_Beisert?= <jbe@pengutronix.de>
+Date: Mon, 22 Jul 2013 09:59:23 +0200
+References: <2655265.6QViDogYJX@n56v> <20130709174049.GX516@pengutronix.de>
+In-Reply-To: <20130709174049.GX516@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1374241301-21277-1-git-send-email-h.feurstein@gmail.com>
+Message-Id: <201307220959.23884.jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] include/printk: fix level of pr_err and pr_warning
-To: Hubert Feurstein <h.feurstein@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: mini2440 (256MB NAND)
+To: barebox@lists.infradead.org
 
-On Fri, Jul 19, 2013 at 03:41:41PM +0200, Hubert Feurstein wrote:
-> The level of pr_err and pr_warning were interchanged.
-> 
-> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
+Hi Cristiano,
 
-Applied, thanks
+On Tuesday 09 July 2013 19:40:49 Sascha Hauer wrote:
+> On Mon, Jul 08, 2013 at 10:42:43PM +0100, Cristiano Rodrigues wrote:
+> > I'm trying to run the barebox (trunk version or any other recent versio=
+n)
+> > in my mini2440 board but until now, I can't boot from nand.
+>
+> Sorry, I can't help you with friendlyarm. Probably J=FCrgen has an idea,
+> but he is on holiday at the moment. Maybe he can help you once he's
+> back.
 
-Sascha
+I'm back now ;)
+AFAIK there was some change in the generic bootstrap code. I guess the base =
 
-> ---
->  include/printk.h |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/printk.h b/include/printk.h
-> index 3cd7335..86bf208 100644
-> --- a/include/printk.h
-> +++ b/include/printk.h
-> @@ -56,8 +56,8 @@ int dev_printf(const struct device_d *dev, const char *format, ...)
->  #define pr_emerg(fmt, arg...)	__pr_printk(0, pr_fmt(fmt), ##arg)
->  #define pr_alert(fmt, arg...)	__pr_printk(1, pr_fmt(fmt), ##arg)
->  #define pr_crit(fmt, arg...)	__pr_printk(2, pr_fmt(fmt), ##arg)
-> -#define pr_warning(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
-> -#define pr_err(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
-> +#define pr_err(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
-> +#define pr_warning(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
->  #define pr_notice(fmt, arg...)	__pr_printk(5, pr_fmt(fmt), ##arg)
->  #define pr_info(fmt, arg...)	__pr_printk(6, pr_fmt(fmt), ##arg)
->  #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+code in the stepping stone RAM skipps the DRAM initialization by accident d=
+ue =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+to this change. That's why it works when the DRAM is already up and running =
+
+and it fails if not.
+
+Juergen
+
+-- =
+
+Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
+=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
+Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-5121-20691=
+7-5128 |
+Peiner Str. 6-8, 31137 Hildesheim, Germany =A0 =A0| Fax: =A0 +49-5121-20691=
+7-5555 |
+Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://www.pe=
+ngutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
