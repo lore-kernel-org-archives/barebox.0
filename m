@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V19oH-0007J4-HR
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 06:41:30 +0000
-Date: Mon, 22 Jul 2013 08:41:07 +0200
+ id 1V1AOs-00080K-Jp
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:19:19 +0000
+Date: Mon, 22 Jul 2013 09:18:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130722064107.GB9434@pengutronix.de>
-References: <1374142611-10384-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20130722071855.GC9434@pengutronix.de>
+References: <20130715100958.GG19197@ns203013.ovh.net>
+ <20130716062532.GV14452@pengutronix.de>
+ <20130716193936.49949f12c31c8145965c1c74@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1374142611-10384-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <20130716193936.49949f12c31c8145965c1c74@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ppc ddr-8xxx: misplaced parenthesis
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH 0/3 v2] pbl: add lz4 compression support
+To: "antonynpavlov@gmail.com" <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jul 18, 2013 at 11:16:51AM +0100, Renaud Barbier wrote:
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
-> ---
+On Tue, Jul 16, 2013 at 07:39:36PM +0400, antonynpavlov@gmail.com wrote:
+> On Tue, 16 Jul 2013 08:25:32 +0200
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > On Mon, Jul 15, 2013 at 12:09:58PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Hi,
+> > > 
+> > > 	v2:
+> > > 	keep lzo as default
+> > > 
+> > > 	The following patch serie add the lz4 support to the pbl
+> > > 
+> > > Jean-Christophe PLAGNIOL-VILLARD (1):
+> > >       pbl: add lz4 support
+> > > 
+> > > Kyungsik Lee (2):
+> > >       decompressor: Add LZ4 decompressor module
+> > >       lib: Add support for LZ4-compressed kernel
+> > 
+> > Applied, thanks
+> > 
+> > Sascha
+> 
+> LZ4 decompressor work fine on MIPS but I have got a warning:
+> 
+> ...
+> rm arch/mips/dts/qemu-malta.dtb.S arch/mips/dts/qemu-malta.dtb
+>    LD      pbl/built-in.o
+>    PBLCC   pbl/pbl-decomp.o
+>  In file included from pbl/decomp.c:14:
+>  /home/antony/barebox.git.rebased.isp/arch/mips/include/../../../lib/dec ompress_unlz4.c:185: warning: no previous prototype for 'decompress_unl z4'
 
-Applied, thanks
+I fixed this. It should work without warning now.
 
 Sascha
 
->  arch/ppc/ddr-8xxx/ctrl_regs.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/ppc/ddr-8xxx/ctrl_regs.c b/arch/ppc/ddr-8xxx/ctrl_regs.c
-> index 3f8ecf7..1abc826 100644
-> --- a/arch/ppc/ddr-8xxx/ctrl_regs.c
-> +++ b/arch/ppc/ddr-8xxx/ctrl_regs.c
-> @@ -314,7 +314,7 @@ static void set_ddr_sdram_mode(struct fsl_ddr_cfg_regs_s *ddr,
->  		   | ((rtt & 0x1) << 2));
->  
->  	/* Write recovery */
-> -	wr = (dimm->tWR_ps + mclk_ps - 1) / (mclk_ps - 1);
-> +	wr = ((dimm->tWR_ps + mclk_ps - 1) / mclk_ps) - 1;
->  
->  	switch (popts->burst_length) {
->  	case DDR_BL4:
-> -- 
-> 1.7.1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
