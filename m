@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1Cyo-0003pu-F9
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 10:04:38 +0000
+ id 1V1GlA-0003gx-1d
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 14:06:48 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jul 2013 12:04:03 +0200
-Message-Id: <1374487450-13800-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1374487450-13800-1-git-send-email-s.hauer@pengutronix.de>
-References: <1374487450-13800-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2013 16:06:19 +0200
+Message-Id: <1374501981-27403-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
+References: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,156 +21,191 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] mtd: nand: write BBM to OOB even with flash-based BBT
+Subject: [PATCH 4/6] ARM: i.MX6: Add ocotp driver
 To: barebox@lists.infradead.org
 
-This is based on Linux:
-
-commit e2414f4c20bd4dc62186fbfd7bdec50bce6d2ead
-Author: Brian Norris <computersforpeace@gmail.com>
-Date:   Mon Feb 6 13:44:00 2012 -0800
-
-Currently, the flash-based BBT implementation writes bad block data only
-to its flash-based table and not to the OOB marker area. Then, as new bad
-blocks are marked over time, the OOB markers become incomplete and the
-flash-based table becomes the only source of current bad block
-information. This becomes an obvious problem when, for example:
-
- * code accessing the flash cannot read the flash-based BBT format
- * BBT is corrupted and the flash must be rescanned for bad
-   blocks; we want to remember bad blocks that were marked from Linux
-
-So to keep the bad block markers in sync with the flash-based BBT, this
-patch changes the default so that we write bad block markers to the proper
-OOB area on each block in addition to flash-based BBT. Comments are
-updated, expanded, and/or relocated as necessary.
-
-The new flash-based BBT procedure for marking bad blocks:
- (1) erase the affected block, to allow OOB marker to be written cleanly
- (2) update in-memory BBT
- (3) write bad block marker to OOB area of affected block
- (4) update flash-based BBT
-Note that we retain the first error encountered in (3) or (4), finish the
-procedures, and dump the error in the end.
-
-This should handle power cuts gracefully enough. (1) and (2) are mostly
-harmless (note that (1) will not erase an already-recognized bad block).
-The OOB and BBT may be "out of sync" if we experience power loss bewteen
-(3) and (4), but we can reasonably expect that on next boot, subsequent
-I/O operations will discover that the block should be marked bad again,
-thus re-syncing the OOB and BBT.
-
-Note that this is a change from the previous default flash-based BBT
-behavior.
+The only functionality at the moment is to register a MAC Address for
+an ethernet device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_write.c | 79 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 60 insertions(+), 19 deletions(-)
+ .../devicetree/bindings/misc/fsl,imx-ocotp.txt     |  20 ++++
+ arch/arm/mach-imx/Kconfig                          |   9 ++
+ arch/arm/mach-imx/Makefile                         |   1 +
+ arch/arm/mach-imx/ocotp.c                          | 105 +++++++++++++++++++++
+ 4 files changed, 135 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
+ create mode 100644 arch/arm/mach-imx/ocotp.c
 
-diff --git a/drivers/mtd/nand/nand_write.c b/drivers/mtd/nand/nand_write.c
-index 61b52ba..bb963f9 100644
---- a/drivers/mtd/nand/nand_write.c
-+++ b/drivers/mtd/nand/nand_write.c
-@@ -56,38 +56,79 @@ void nand_write_buf16(struct mtd_info *mtd, const uint8_t *buf, int len)
+diff --git a/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt b/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
+new file mode 100644
+index 0000000..b7a3ee5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
+@@ -0,0 +1,20 @@
++Freescale i.MX OCOTP (On-Chip OTP)
++
++Required properties:
++
++- compatible: fsl,imx6q-ocotp
++- reg: physical register base and size
++
++Optional properties:
++
++- barebox,provide-mac-address: Provide MAC addresses for ethernet devices. This
++  can be multiple entries in the form <&phandle regofs> to specify a MAC
++  address to a ethernet device.
++
++Example:
++
++ocotp1: ocotp@021bc000 {
++	compatible = "fsl,imx6q-ocotp";
++	reg = <0x021bc000 0x4000>;
++	barebox,provide-mac-address = <&fec 0x620>;
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 282b94e..72fa922 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -613,6 +613,15 @@ config IMX_IIM_FUSE_BLOW
+ 	  enable it:
+ 	    imx_iim0.permanent_write_enable=1
  
- /**
-  * nand_default_block_markbad - [DEFAULT] mark a block bad
-- * @mtd:	MTD device structure
-- * @ofs:	offset from device start
-+ * @mtd: MTD device structure
-+ * @ofs: offset from device start
-  *
-- * This is the default implementation, which can be overridden by
-- * a hardware specific driver.
-- */
-+ * This is the default implementation, which can be overridden by a hardware
-+ * specific driver. We try operations in the following order, according to our
-+ * bbt_options (NAND_BBT_NO_OOB_BBM and NAND_BBT_USE_FLASH):
-+ *  (1) erase the affected block, to allow OOB marker to be written cleanly
-+ *  (2) update in-memory BBT
-+ *  (3) write bad block marker to OOB area of affected block
-+ *  (4) update flash-based BBT
-+ * Note that we retain the first error encountered in (3) or (4), finish the
-+ * procedures, and dump the error in the end.
-+*/
- int nand_default_block_markbad(struct mtd_info *mtd, loff_t ofs)
- {
- 	struct nand_chip *chip = mtd->priv;
- 	uint8_t buf[2] = { 0, 0 };
--	int block, ret;
-+	int block, res, ret = 0, i = 0;
-+	int write_oob = 1; /* Currently we do not have NAND_BBT_NO_OOB_BBM */
++config IMX_OCOTP
++	tristate "i.MX6 On Chip OTP controller"
++	depends on ARCH_IMX6
++	depends on OFDEVICE
++	help
++	  This adds support for the i.MX6 On-Chip OTP controller. Currently the
++	  only supported functionality is reading the MAC address and assigning
++	  it to an ethernet device.
 +
-+	if (write_oob) {
-+		struct erase_info einfo;
+ endmenu
+ 
+ endif
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index db74d4e..b3f00f9 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -12,6 +12,7 @@ pbl-$(CONFIG_ARCH_IMX53) += imx53.o imx5.o esdctl-v4.o
+ obj-$(CONFIG_ARCH_IMX6) += imx6.o usb-imx6.o clk-imx6.o
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_IMX_IIM)	+= iim.o
++obj-$(CONFIG_IMX_OCOTP)	+= ocotp.o
+ obj-$(CONFIG_NAND_IMX) += nand.o
+ lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
+ obj-$(CONFIG_COMMON_CLK) += clk-pllv1.o clk-pllv2.o clk-pllv3.o clk-pfd.o
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+new file mode 100644
+index 0000000..04feb84
+--- /dev/null
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -0,0 +1,105 @@
++/*
++ * ocotp.c - i.MX6 ocotp fusebox driver
++ *
++ * Provide an interface for programming and sensing the information that are
++ * stored in on-chip fuse elements. This functionality is part of the IC
++ * Identification Module (IIM), which is present on some i.MX CPUs.
++ *
++ * Copyright (c) 2010 Baruch Siach <baruch@tkos.co.il>,
++ * 	Orex Computed Radiography
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
 +
-+		/* Attempt erase before marking OOB */
-+		memset(&einfo, 0, sizeof(einfo));
-+		einfo.mtd = mtd;
-+		einfo.addr = ofs;
-+		einfo.len = 1 << chip->phys_erase_shift;
-+		nand_erase_nand(mtd, &einfo, 0);
++#include <common.h>
++#include <driver.h>
++#include <malloc.h>
++#include <xfuncs.h>
++#include <errno.h>
++#include <init.h>
++#include <net.h>
++#include <io.h>
++
++/*
++ * a single MAC address reference has the form
++ * <&phandle regoffset>
++ */
++#define MAC_ADDRESS_PROPLEN	(2 * sizeof(__be32))
++
++static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
++{
++	char mac[6];
++	const __be32 *prop;
++	struct device_node *node = dev->device_node;
++	int len;
++
++	if (!node)
++		return;
++
++	prop = of_get_property(node, "barebox,provide-mac-address", &len);
++	if (!prop)
++		return;
++
++	while (len >= MAC_ADDRESS_PROPLEN) {
++		struct device_node *rnode;
++		uint32_t phandle, offset, value;
++
++		phandle = be32_to_cpup(prop++);
++
++		rnode = of_find_node_by_phandle(phandle);
++		offset = be32_to_cpup(prop++);
++
++		value = readl(base + offset + 0x10);
++		mac[0] = (value >> 8);
++		mac[1] = value;
++		value = readl(base + offset);
++		mac[2] = value >> 24;
++		mac[3] = value >> 16;
++		mac[4] = value >> 8;
++		mac[5] = value;
++
++		of_eth_register_ethaddr(rnode, mac);
++
++		len -= MAC_ADDRESS_PROPLEN;
 +	}
- 
- 	/* Get block number */
- 	block = (int)(ofs >> chip->bbt_erase_shift);
-+	/* Mark block bad in memory-based BBT */
- 	if (chip->bbt)
- 		chip->bbt[block >> 2] |= 0x01 << ((block & 0x03) << 1);
- 
--	/* Do we have a flash based bad block table ? */
--	if (IS_ENABLED(CONFIG_NAND_BBT) && chip->bbt_options & NAND_BBT_USE_FLASH)
--		ret = nand_update_bbt(mtd, ofs);
--	else {
--		/* We write two bytes, so we dont have to mess with 16 bit
--		 * access
--		 */
--		ofs += mtd->oobsize;
--		chip->ops.len = chip->ops.ooblen = 2;
--		chip->ops.datbuf = NULL;
--		chip->ops.oobbuf = buf;
--		chip->ops.ooboffs = chip->badblockpos & ~0x01;
-+	/* Write bad block marker to OOB */
-+	if (write_oob) {
-+		struct mtd_oob_ops ops;
-+		loff_t wr_ofs = ofs;
++}
 +
-+		ops.datbuf = NULL;
-+		ops.oobbuf = buf;
-+		ops.ooboffs = chip->badblockpos;
-+		if (chip->options & NAND_BUSWIDTH_16) {
-+			ops.ooboffs &= ~0x01;
-+			ops.len = ops.ooblen = 2;
-+		} else {
-+			ops.len = ops.ooblen = 1;
-+		}
-+		ops.mode = MTD_OOB_PLACE;
++static int imx_ocotp_probe(struct device_d *dev)
++{
++	void __iomem *base;
 +
-+		/* Write to first/last page(s) if necessary */
-+		if (chip->options & NAND_BBT_LASTBLOCK)
-+			wr_ofs += mtd->erasesize - mtd->writesize;
-+		do {
-+			res = nand_do_write_oob(mtd, wr_ofs, &ops);
-+			if (!ret)
-+				ret = res;
++	base = dev_request_mem_region(dev, 0);
++	if (!base)
++		return -EBUSY;
 +
-+			i++;
-+			wr_ofs += mtd->writesize;
-+		} while ((chip->options & NAND_BBT_SCAN2NDPAGE) && i < 2);
++	imx_ocotp_init_dt(dev, base);
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id imx_ocotp_dt_ids[] = {
++	{
++		.compatible = "fsl,imx6q-ocotp",
++	}, {
++		/* sentinel */
 +	}
- 
--		ret = nand_do_write_oob(mtd, ofs, &chip->ops);
-+	/* Update flash-based bad block table */
-+	if (chip->options & NAND_BBT_USE_FLASH) {
-+		res = nand_update_bbt(mtd, ofs);
-+		if (!ret)
-+			ret = res;
- 	}
++};
 +
- 	if (!ret)
- 		mtd->ecc_stats.badblocks++;
- 
++static struct driver_d imx_ocotp_driver = {
++	.name	= "imx_ocotp",
++	.probe	= imx_ocotp_probe,
++	.of_compatible = DRV_OF_COMPAT(imx_ocotp_dt_ids),
++};
++
++static int imx_ocotp_init(void)
++{
++	platform_driver_register(&imx_ocotp_driver);
++
++	return 0;
++}
++coredevice_initcall(imx_ocotp_init);
 -- 
 1.8.3.2
 
