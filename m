@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1GlA-0003gv-1i
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 14:06:45 +0000
+ id 1V1GlA-0003gt-1h
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 14:06:47 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1V1Gko-0003mg-38
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 16:06:22 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1V1Gko-0008Qi-1v
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 16:06:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jul 2013 16:06:17 +0200
-Message-Id: <1374501981-27403-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
-References: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2013 16:06:15 +0200
+Message-Id: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,48 +26,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] scripts: run imxcfg files through cpp
+Subject: [PATCH] Phytec phyFLEX i.MX6 support
 To: barebox@lists.infradead.org
 
-To allow defines and includes.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- scripts/Makefile.lib | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+This adds Phytec phyFLEX i.MX6 board support and some preliminary patches
+to support multiple SDRAM settings per board. Also The FEC address can
+now be registered from the i.MX6 OCOTP.
 
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 8830652..4f34b54 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -324,8 +324,13 @@ cmd_imximage_S_dcd=						\
- 	echo '.balign STRUCT_ALIGNMENT';			\
- ) > $@
- 
-+imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp
-+
-+dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
-+
- quiet_cmd_dcd = DCD     $@
--      cmd_dcd = $(objtree)/scripts/imx/imx-image -d -o $@ -c $<
-+      cmd_dcd = $(CPP) $(imxcfg_cpp_flags) -o $(dcd-tmp) $< ; \
-+		$(objtree)/scripts/imx/imx-image -d -o $@ -c $(dcd-tmp)
- 
- $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
- 	$(call if_changed,dcd)
-@@ -333,5 +338,8 @@ $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
- $(obj)/%.dcd.S: $(obj)/%.dcd
- 	$(call cmd,imximage_S_dcd)
- 
-+imximg-tmp = $(subst $(comma),_,$(dot-target).imxcfg.tmp)
-+
- quiet_cmd_imx_image = IMX-IMG $@
--      cmd_imx_image = $(objtree)/scripts/imx/imx-image -b -c $(CFG_$(@F)) -f $< -o $@
-+      cmd_imx_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(CFG_$(@F)) ; \
-+		      $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $<
--- 
-1.8.3.2
+Sascha
 
+----------------------------------------------------------------
+Sascha Hauer (6):
+      scripts: imx-image: allow semicolon as command delimiter
+      scripts: run imxcfg files through cpp
+      ARM: dts: i.MX6: Add label for ocotp nodes
+      ARM: i.MX6: Add ocotp driver
+      ARM: i.MX6 sabre: register MAC address from dt
+      ARM: Add Phytec phyFLEX-i.MX6 board support
+
+ .../devicetree/bindings/misc/fsl,imx-ocotp.txt     |  20 ++++
+ arch/arm/boards/Makefile                           |   1 +
+ arch/arm/boards/freescale-mx6-sabrelite/board.c    |  23 -----
+ arch/arm/boards/freescale-mx6-sabresd/board.c      |  22 -----
+ arch/arm/boards/phytec-pfla02/Makefile             |   5 +
+ arch/arm/boards/phytec-pfla02/board.c              |  59 ++++++++++++
+ .../flash-header-phytec-pfla02-1gib.imxcfg         |   6 ++
+ .../flash-header-phytec-pfla02-2gib.imxcfg         |   6 ++
+ .../phytec-pfla02/flash-header-phytec-pfla02.h     |  99 +++++++++++++++++++
+ arch/arm/boards/phytec-pfla02/lowlevel.c           |  57 +++++++++++
+ arch/arm/configs/imx_v7_defconfig                  |   1 +
+ arch/arm/dts/Makefile                              |   4 +-
+ arch/arm/dts/imx6q-phytec-pbab01.dts               |  69 ++++++++++++++
+ arch/arm/dts/imx6q-phytec-pfla02.dtsi              |  96 +++++++++++++++++++
+ arch/arm/dts/imx6q-sabrelite.dts                   |   4 +
+ arch/arm/dts/imx6qdl-sabresd.dtsi                  |   4 +
+ arch/arm/dts/imx6qdl.dtsi                          |   4 +-
+ arch/arm/mach-imx/Kconfig                          |  14 +++
+ arch/arm/mach-imx/Makefile                         |   1 +
+ arch/arm/mach-imx/ocotp.c                          | 105 +++++++++++++++++++++
+ images/Makefile.imx                                |  12 +++
+ scripts/Makefile.lib                               |  12 ++-
+ scripts/imx/imx-image.c                            |  39 +++++++-
+ 23 files changed, 608 insertions(+), 55 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/misc/fsl,imx-ocotp.txt
+ create mode 100644 arch/arm/boards/phytec-pfla02/Makefile
+ create mode 100644 arch/arm/boards/phytec-pfla02/board.c
+ create mode 100644 arch/arm/boards/phytec-pfla02/flash-header-phytec-pfla02-1gib.imxcfg
+ create mode 100644 arch/arm/boards/phytec-pfla02/flash-header-phytec-pfla02-2gib.imxcfg
+ create mode 100644 arch/arm/boards/phytec-pfla02/flash-header-phytec-pfla02.h
+ create mode 100644 arch/arm/boards/phytec-pfla02/lowlevel.c
+ create mode 100644 arch/arm/dts/imx6q-phytec-pbab01.dts
+ create mode 100644 arch/arm/dts/imx6q-phytec-pfla02.dtsi
+ create mode 100644 arch/arm/mach-imx/ocotp.c
 
 _______________________________________________
 barebox mailing list
