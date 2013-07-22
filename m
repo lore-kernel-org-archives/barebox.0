@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1GlA-0003gu-1i
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 14:06:46 +0000
+ id 1V1GlA-0003gv-1i
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 14:06:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jul 2013 16:06:16 +0200
-Message-Id: <1374501981-27403-2-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2013 16:06:17 +0200
+Message-Id: <1374501981-27403-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
 References: <1374501981-27403-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,86 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] scripts: imx-image: allow semicolon as command delimiter
+Subject: [PATCH 2/6] scripts: run imxcfg files through cpp
 To: barebox@lists.infradead.org
 
-When we want to pass the imxcfg files through cpp we also want to
-allow defines which define multiple commands. For this to work we
-have to use an additional command delimiter as we can't pass '\n'
-though cpp. Use ';' for this.
+To allow defines and includes.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ scripts/Makefile.lib | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 2f52015..09fdc5f 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -492,12 +492,40 @@ struct command cmds[] = {
- 	},
- };
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 8830652..4f34b54 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -324,8 +324,13 @@ cmd_imximage_S_dcd=						\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ ) > $@
  
-+static char *readcmd(FILE *f)
-+{
-+	static char *buf;
-+	char *str;
-+	ssize_t ret;
++imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp
 +
-+	if (!buf) {
-+		buf = malloc(4096);
-+		if (!buf)
-+			return NULL;
-+	}
++dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
 +
-+	str = buf;
-+	*str = 0;
-+
-+	while (1) {
-+		ret = fread(str, 1, 1, f);
-+		if (!ret)
-+			return strlen(buf) ? buf : NULL;
-+
-+		if (*str == '\n' || *str == ';') {
-+			*str = 0;
-+			return buf;
-+		}
-+
-+		str++;
-+	}
-+}
-+
- static int parse_config(const char *filename)
- {
- 	FILE *f;
- 	int lineno = 0;
- 	char *line = NULL, *tmp;
--	size_t len;
- 	char *argv[MAXARGS];
- 	int nargs, i, ret;
+ quiet_cmd_dcd = DCD     $@
+-      cmd_dcd = $(objtree)/scripts/imx/imx-image -d -o $@ -c $<
++      cmd_dcd = $(CPP) $(imxcfg_cpp_flags) -o $(dcd-tmp) $< ; \
++		$(objtree)/scripts/imx/imx-image -d -o $@ -c $(dcd-tmp)
  
-@@ -507,15 +535,16 @@ static int parse_config(const char *filename)
- 		exit(1);
- 	}
+ $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
+ 	$(call if_changed,dcd)
+@@ -333,5 +338,8 @@ $(obj)/%.dcd: $(obj)/%.imxcfg FORCE
+ $(obj)/%.dcd.S: $(obj)/%.dcd
+ 	$(call cmd,imximage_S_dcd)
  
--	while ((getline(&line, &len, f)) > 0) {
-+	while (1) {
-+		line = readcmd(f);
-+		if (!line)
-+			break;
++imximg-tmp = $(subst $(comma),_,$(dot-target).imxcfg.tmp)
 +
- 		lineno++;
- 
- 		tmp = strchr(line, '#');
- 		if (tmp)
- 			*tmp = 0;
--		tmp = strrchr(line, '\n');
--		if (tmp)
--			*tmp = 0;
- 
- 		nargs = parse_line(line, argv);
- 		if (!nargs)
+ quiet_cmd_imx_image = IMX-IMG $@
+-      cmd_imx_image = $(objtree)/scripts/imx/imx-image -b -c $(CFG_$(@F)) -f $< -o $@
++      cmd_imx_image = $(CPP) $(imxcfg_cpp_flags) -o $(imximg-tmp) $(CFG_$(@F)) ; \
++		      $(objtree)/scripts/imx/imx-image -o $@ -b -c $(imximg-tmp) -f $<
 -- 
 1.8.3.2
 
