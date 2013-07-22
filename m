@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1Cyo-0003pw-F3
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 10:04:38 +0000
+ id 1V1Cyo-0003py-FB
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 10:04:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jul 2013 12:04:05 +0200
-Message-Id: <1374487450-13800-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2013 12:04:08 +0200
+Message-Id: <1374487450-13800-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1374487450-13800-1-git-send-email-s.hauer@pengutronix.de>
 References: <1374487450-13800-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,102 +16,237 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] mtd: sync bbm.h with Linux Kernel
+Subject: [PATCH 6/8] mtd: introduce ecc strength
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPgotLS0K
-IGluY2x1ZGUvbGludXgvbXRkL2JibS5oIHwgODMgKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDYxIGluc2VydGlvbnMoKyks
-IDIyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvbXRkL2JibS5oIGIv
-aW5jbHVkZS9saW51eC9tdGQvYmJtLmgKaW5kZXggNTBiYzRkOS4uODdlYzZhMyAxMDA2NDQKLS0t
-IGEvaW5jbHVkZS9saW51eC9tdGQvYmJtLmgKKysrIGIvaW5jbHVkZS9saW51eC9tdGQvYmJtLmgK
-QEAgLTQsMTYgKzQsMzMgQEAKICAqICBOQU5EIGZhbWlseSBCYWQgQmxvY2sgTWFuYWdlbWVudCAo
-QkJNKSBoZWFkZXIgZmlsZQogICogICAgLSBCYWQgQmxvY2sgVGFibGUgKEJCVCkgaW1wbGVtZW50
-YXRpb24KICAqCi0gKiAgQ29weXJpZ2h0IChjKSAyMDA1IFNhbXN1bmcgRWxlY3Ryb25pY3MKKyAq
-ICBDb3B5cmlnaHQgwqkgMjAwNSBTYW1zdW5nIEVsZWN0cm9uaWNzCiAgKiAgS3l1bmdtaW4gUGFy
-ayA8a3l1bmdtaW4ucGFya0BzYW1zdW5nLmNvbT4KICAqCi0gKiAgQ29weXJpZ2h0IChjKSAyMDAw
-LTIwMDUKKyAqICBDb3B5cmlnaHQgwqkgMjAwMC0yMDA1CiAgKiAgVGhvbWFzIEdsZWl4bmVyIDx0
-Z2x4QGxpbnV4dHJvbml4LmRlPgogICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBmcmVlIHNvZnR3YXJl
-OyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5CisgKiBpdCB1bmRlciB0aGUg
-dGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGFzIHB1Ymxpc2hlZCBieQor
-ICogdGhlIEZyZWUgU29mdHdhcmUgRm91bmRhdGlvbjsgZWl0aGVyIHZlcnNpb24gMiBvZiB0aGUg
-TGljZW5zZSwgb3IKKyAqIChhdCB5b3VyIG9wdGlvbikgYW55IGxhdGVyIHZlcnNpb24uCisgKgor
-ICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2lsbCBi
-ZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0aGUg
-aW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9SIEEg
-UEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExpY2Vu
-c2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKiBZb3Ugc2hvdWxkIGhhdmUgcmVjZWl2ZWQgYSBj
-b3B5IG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZQorICogYWxvbmcgd2l0aCB0aGlz
-IHByb2dyYW07IGlmIG5vdCwgd3JpdGUgdG8gdGhlIEZyZWUgU29mdHdhcmUKKyAqIEZvdW5kYXRp
-b24sIEluYy4sIDUxIEZyYW5rbGluIFN0LCBGaWZ0aCBGbG9vciwgQm9zdG9uLCBNQSAgMDIxMTAt
-MTMwMSAgVVNBCisgKgogICovCiAjaWZuZGVmIF9fTElOVVhfTVREX0JCTV9ICiAjZGVmaW5lIF9f
-TElOVVhfTVREX0JCTV9ICiAKKy8qIFRoZSBtYXhpbXVtIG51bWJlciBvZiBOQU5EIGNoaXBzIGlu
-IGFuIGFycmF5ICovCisjZGVmaW5lIE5BTkRfTUFYX0NISVBTCQk4CisKIC8qKgogICogc3RydWN0
-IG5hbmRfYmJ0X2Rlc2NyIC0gYmFkIGJsb2NrIHRhYmxlIGRlc2NyaXB0b3IKICAqIEBvcHRpb25z
-OglvcHRpb25zIGZvciB0aGlzIGRlc2NyaXB0b3IKQEAgLTM4LDE1ICs1NSwxNSBAQAogICogb2Yg
-dGhlIGZpcnN0IGJsb2NrLgogICovCiBzdHJ1Y3QgbmFuZF9iYnRfZGVzY3IgewotCWludAlvcHRp
-b25zOwotCWludAlwYWdlc1tOQU5EX01BWF9DSElQU107Ci0JaW50CW9mZnM7Ci0JaW50CXZlcm9m
-ZnM7Ci0JdWludDhfdAl2ZXJzaW9uW05BTkRfTUFYX0NISVBTXTsKLQlpbnQJbGVuOwotCWludAlt
-YXhibG9ja3M7Ci0JaW50CXJlc2VydmVkX2Jsb2NrX2NvZGU7Ci0JdWludDhfdAkqcGF0dGVybjsK
-KwlpbnQgb3B0aW9uczsKKwlpbnQgcGFnZXNbTkFORF9NQVhfQ0hJUFNdOworCWludCBvZmZzOwor
-CWludCB2ZXJvZmZzOworCXVpbnQ4X3QgdmVyc2lvbltOQU5EX01BWF9DSElQU107CisJaW50IGxl
-bjsKKwlpbnQgbWF4YmxvY2tzOworCWludCByZXNlcnZlZF9ibG9ja19jb2RlOworCXVpbnQ4X3Qg
-KnBhdHRlcm47CiB9OwogCiAvKiBPcHRpb25zIGZvciB0aGUgYmFkIGJsb2NrIHRhYmxlIGRlc2Ny
-aXB0b3JzICovCkBAIC01OCwyNyArNzUsMzIgQEAgc3RydWN0IG5hbmRfYmJ0X2Rlc2NyIHsKICNk
-ZWZpbmUgTkFORF9CQlRfNEJJVAkJMHgwMDAwMDAwNAogI2RlZmluZSBOQU5EX0JCVF84QklUCQkw
-eDAwMDAwMDA4CiAvKiBUaGUgYmFkIGJsb2NrIHRhYmxlIGlzIGluIHRoZSBsYXN0IGdvb2QgYmxv
-Y2sgb2YgdGhlIGRldmljZSAqLwotI2RlZmluZQlOQU5EX0JCVF9MQVNUQkxPQ0sJMHgwMDAwMDAx
-MAorI2RlZmluZSBOQU5EX0JCVF9MQVNUQkxPQ0sJMHgwMDAwMDAxMAogLyogVGhlIGJidCBpcyBh
-dCB0aGUgZ2l2ZW4gcGFnZSwgZWxzZSB3ZSBtdXN0IHNjYW4gZm9yIHRoZSBiYnQgKi8KICNkZWZp
-bmUgTkFORF9CQlRfQUJTUEFHRQkweDAwMDAwMDIwCi0vKiBUaGUgYmJ0IGlzIGF0IHRoZSBnaXZl
-biBwYWdlLCBlbHNlIHdlIG11c3Qgc2NhbiBmb3IgdGhlIGJidCAqLwotI2RlZmluZSBOQU5EX0JC
-VF9TRUFSQ0gJCTB4MDAwMDAwNDAKIC8qIGJidCBpcyBzdG9yZWQgcGVyIGNoaXAgb24gbXVsdGlj
-aGlwIGRldmljZXMgKi8KICNkZWZpbmUgTkFORF9CQlRfUEVSQ0hJUAkweDAwMDAwMDgwCiAvKiBi
-YnQgaGFzIGEgdmVyc2lvbiBjb3VudGVyIGF0IG9mZnNldCB2ZXJvZmZzICovCiAjZGVmaW5lIE5B
-TkRfQkJUX1ZFUlNJT04JMHgwMDAwMDEwMAotLyogQ3JlYXRlIGEgYmJ0IGlmIG5vbmUgYXhpc3Rz
-ICovCisvKiBDcmVhdGUgYSBiYnQgaWYgbm9uZSBleGlzdHMgKi8KICNkZWZpbmUgTkFORF9CQlRf
-Q1JFQVRFCQkweDAwMDAwMjAwCisvKgorICogQ3JlYXRlIGFuIGVtcHR5IEJCVCB3aXRoIG5vIHZl
-bmRvciBpbmZvcm1hdGlvbi4gVmVuZG9yJ3MgaW5mb3JtYXRpb24gbWF5IGJlCisgKiB1bmF2YWls
-YWJsZSwgZm9yIGV4YW1wbGUsIGlmIHRoZSBOQU5EIGNvbnRyb2xsZXIgaGFzIGEgZGlmZmVyZW50
-IGRhdGEgYW5kIE9PQgorICogbGF5b3V0IG9yIGlmIHRoaXMgaW5mb3JtYXRpb24gaXMgYWxyZWFk
-eSBwdXJnZWQuIE11c3QgYmUgdXNlZCBpbiBjb25qdW5jdGlvbgorICogd2l0aCBOQU5EX0JCVF9D
-UkVBVEUuCisgKi8KKyNkZWZpbmUgTkFORF9CQlRfQ1JFQVRFX0VNUFRZCTB4MDAwMDA0MDAKIC8q
-IFNlYXJjaCBnb29kIC8gYmFkIHBhdHRlcm4gdGhyb3VnaCBhbGwgcGFnZXMgb2YgYSBibG9jayAq
-LwotI2RlZmluZSBOQU5EX0JCVF9TQ0FOQUxMUEFHRVMJMHgwMDAwMDQwMAorI2RlZmluZSBOQU5E
-X0JCVF9TQ0FOQUxMUEFHRVMJMHgwMDAwMDgwMAogLyogU2NhbiBibG9jayBlbXB0eSBkdXJpbmcg
-Z29vZCAvIGJhZCBibG9jayBzY2FuICovCi0jZGVmaW5lIE5BTkRfQkJUX1NDQU5FTVBUWQkweDAw
-MDAwODAwCisjZGVmaW5lIE5BTkRfQkJUX1NDQU5FTVBUWQkweDAwMDAxMDAwCiAvKiBXcml0ZSBi
-YnQgaWYgbmVjY2VjYXJ5ICovCi0jZGVmaW5lIE5BTkRfQkJUX1dSSVRFCQkweDAwMDAxMDAwCisj
-ZGVmaW5lIE5BTkRfQkJUX1dSSVRFCQkweDAwMDAyMDAwCiAvKiBSZWFkIGFuZCB3cml0ZSBiYWNr
-IGJsb2NrIGNvbnRlbnRzIHdoZW4gd3JpdGluZyBiYnQgKi8KLSNkZWZpbmUgTkFORF9CQlRfU0FW
-RUNPTlRFTlQJMHgwMDAwMjAwMAorI2RlZmluZSBOQU5EX0JCVF9TQVZFQ09OVEVOVAkweDAwMDA0
-MDAwCiAvKiBTZWFyY2ggZ29vZCAvIGJhZCBwYXR0ZXJuIG9uIHRoZSBmaXJzdCBhbmQgdGhlIHNl
-Y29uZCBwYWdlICovCi0jZGVmaW5lIE5BTkRfQkJUX1NDQU4yTkRQQUdFCTB4MDAwMDQwMDAKKyNk
-ZWZpbmUgTkFORF9CQlRfU0NBTjJORFBBR0UJMHgwMDAwODAwMAogLyogU2VhcmNoIGdvb2QgLyBi
-YWQgcGF0dGVybiBvbiB0aGUgbGFzdCBwYWdlIG9mIHRoZSBlcmFzZWJsb2NrICovCiAjZGVmaW5l
-IE5BTkRfQkJUX1NDQU5MQVNUUEFHRQkweDAwMDEwMDAwCiAKQEAgLTg2LDkgKzEwOCwyNiBAQCBz
-dHJ1Y3QgbmFuZF9iYnRfZGVzY3IgewogICogVXNlIGEgZmxhc2ggYmFzZWQgYmFkIGJsb2NrIHRh
-YmxlLiBCeSBkZWZhdWx0LCBPT0IgaWRlbnRpZmllciBpcyBzYXZlZCBpbgogICogT09CIGFyZWEu
-IFRoaXMgb3B0aW9uIGlzIHBhc3NlZCB0byB0aGUgZGVmYXVsdCBiYWQgYmxvY2sgdGFibGUgZnVu
-Y3Rpb24uCiAgKi8KLSNkZWZpbmUgTkFORF9CQlRfVVNFX0ZMQVNIICAgICAgMHgwMDAyMDAwMAor
-I2RlZmluZSBOQU5EX0JCVF9VU0VfRkxBU0gJMHgwMDAyMDAwMAorLyoKKyAqIERvIG5vdCBzdG9y
-ZSBmbGFzaCBiYXNlZCBiYWQgYmxvY2sgdGFibGUgbWFya2VyIGluIHRoZSBPT0IgYXJlYTsgc3Rv
-cmUgaXQKKyAqIGluLWJhbmQuCisgKi8KKyNkZWZpbmUgTkFORF9CQlRfTk9fT09CCQkweDAwMDQw
-MDAwCisvKgorICogRG8gbm90IHdyaXRlIG5ldyBiYWQgYmxvY2sgbWFya2VycyB0byBPT0I7IHVz
-ZWZ1bCwgZS5nLiwgd2hlbiBFQ0MgY292ZXJzCisgKiBlbnRpcmUgc3BhcmUgYXJlYS4gTXVzdCBi
-ZSB1c2VkIHdpdGggTkFORF9CQlRfVVNFX0ZMQVNILgorICovCisjZGVmaW5lIE5BTkRfQkJUX05P
-X09PQl9CQk0JMHgwMDA4MDAwMAorCisvKgorICogRmxhZyBzZXQgYnkgbmFuZF9jcmVhdGVfZGVm
-YXVsdF9iYnRfZGVzY3IoKSwgbWFya2luZyB0aGF0IHRoZSBuYW5kX2JidF9kZXNjcgorICogd2Fz
-IGFsbG9jYXRlZCBkeW5hbWljYWx5IGFuZCBtdXN0IGJlIGZyZWVkIGluIG5hbmRfcmVsZWFzZSgp
-LiBIYXMgbm8gbWVhbmluZworICogaW4gbmFuZF9jaGlwLmJidF9vcHRpb25zLgorICovCisjZGVm
-aW5lIE5BTkRfQkJUX0RZTkFNSUNTVFJVQ1QJMHg4MDAwMDAwMAogCiAvKiBUaGUgbWF4aW11bSBu
-dW1iZXIgb2YgYmxvY2tzIHRvIHNjYW4gZm9yIGEgYmJ0ICovCiAjZGVmaW5lIE5BTkRfQkJUX1ND
-QU5fTUFYQkxPQ0tTCTQKIAotI2VuZGlmIC8qIF9fTElOVVhfTVREX0JCTV9IICovCisjZW5kaWYJ
-LyogX19MSU5VWF9NVERfQkJNX0ggKi8KLS0gCjEuOC4zLjIKCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+This introduces the ecc stength fields in the structures and fills
+them in, but leaves them unused right now.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_base.c      |  2 ++
+ drivers/mtd/nand/nand_imx.c       |  3 +++
+ drivers/mtd/nand/nand_mxs.c       |  1 +
+ drivers/mtd/nand/nand_omap_gpmc.c |  8 ++++++++
+ drivers/mtd/nand/nand_s3c24xx.c   |  2 ++
+ drivers/mtd/nand/nand_swecc.c     |  1 +
+ drivers/mtd/nand/nomadik_nand.c   |  1 +
+ include/linux/mtd/mtd.h           | 24 ++++++++++++++++++++++++
+ include/linux/mtd/nand.h          |  2 ++
+ 9 files changed, 44 insertions(+)
+
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 6a81f41..cc7a3db 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -1686,6 +1686,7 @@ int nand_scan_tail(struct mtd_info *mtd)
+ 		chip->ecc.read_oob = nand_read_oob_std;
+ 		chip->ecc.size = mtd->writesize;
+ 		chip->ecc.bytes = 0;
++		chip->ecc.strength = 0;
+ 		break;
+ #endif
+ 	default:
+@@ -1762,6 +1763,7 @@ int nand_scan_tail(struct mtd_info *mtd)
+ #endif
+ 	/* propagate ecc.layout to mtd_info */
+ 	mtd->ecclayout = chip->ecc.layout;
++	mtd->ecc_strength = chip->ecc.strength;
+ 
+ 	/* Check, if we should skip the bad block table scan */
+ 	if (chip->options & NAND_SKIP_BBTSCAN)
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 1d7d3e8..91ee494 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1298,6 +1298,9 @@ static int __init imxnd_probe(struct device_d *dev)
+ 			writew(NFC_V2_SPAS_SPARESIZE(16), host->regs + NFC_V2_SPAS);
+ 	}
+ 
++	if (this->ecc.mode == NAND_ECC_HW)
++		this->ecc.strength = host->eccsize;
++
+ 	/* second phase scan */
+ 	if (nand_scan_tail(mtd)) {
+ 		err = -ENXIO;
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index 6ecfe04..5d3a488 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -1242,6 +1242,7 @@ static int mxs_nand_probe(struct device_d *dev)
+ 	nand->ecc.mode		= NAND_ECC_HW;
+ 	nand->ecc.bytes		= 9;
+ 	nand->ecc.size		= 512;
++	nand->ecc.strength	= 8;
+ 
+ 	/* first scan to find the device and get the page size */
+ 	err = nand_scan_ident(mtd, 1);
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index d448251..9c1f3d7 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -85,6 +85,9 @@
+ #define GPMC_ECC_SIZE_CONFIG_ECCSIZE0(x)	((x) << 12)
+ #define GPMC_ECC_SIZE_CONFIG_ECCSIZE1(x)	((x) << 22)
+ 
++#define BCH8_MAX_ERROR	8	/* upto 8 bit correctable */
++#define BCH4_MAX_ERROR	4	/* upto 4 bit correctable */
++
+ int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_loc);
+ 
+ static char *ecc_mode_strings[] = {
+@@ -785,6 +788,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	case OMAP_ECC_HAMMING_CODE_HW_ROMCODE:
+ 		oinfo->nand.ecc.bytes    = 3;
+ 		oinfo->nand.ecc.size     = 512;
++		oinfo->nand.ecc.strength = 1;
+ 		oinfo->ecc_parity_pairs  = 12;
+ 		if (oinfo->nand.options & NAND_BUSWIDTH_16) {
+ 			offset = 2;
+@@ -802,6 +806,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	case OMAP_ECC_BCH4_CODE_HW:
+ 		oinfo->nand.ecc.bytes    = 4 * 7;
+ 		oinfo->nand.ecc.size     = 4 * 512;
++		oinfo->nand.ecc.strength = BCH4_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+ 					offset - omap_oobinfo.eccbytes;
+@@ -812,6 +817,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	case OMAP_ECC_BCH8_CODE_HW:
+ 		oinfo->nand.ecc.bytes    = 4 * 13;
+ 		oinfo->nand.ecc.size     = 4 * 512;
++		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		omap_oobinfo.oobfree->offset = offset;
+ 		omap_oobinfo.oobfree->length = minfo->oobsize -
+ 					offset - omap_oobinfo.eccbytes;
+@@ -822,6 +828,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	case OMAP_ECC_BCH8_CODE_HW_ROMCODE:
+ 		oinfo->nand.ecc.bytes    = 4 * 13;
+ 		oinfo->nand.ecc.size     = 4 * 512;
++		oinfo->nand.ecc.strength = BCH8_MAX_ERROR;
+ 		nand->ecc.read_page = omap_gpmc_read_page_bch_rom_mode;
+ 		omap_oobinfo.oobfree->length = 0;
+ 		j = 0;
+@@ -837,6 +844,7 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	case OMAP_ECC_SOFT:
+ 		nand->ecc.layout = NULL;
+ 		nand->ecc.mode = NAND_ECC_SOFT;
++		oinfo->nand.ecc.strength = 1;
+ 		break;
+ 	default:
+ 		return -EINVAL;
+diff --git a/drivers/mtd/nand/nand_s3c24xx.c b/drivers/mtd/nand/nand_s3c24xx.c
+index a3f947a..4406352 100644
+--- a/drivers/mtd/nand/nand_s3c24xx.c
++++ b/drivers/mtd/nand/nand_s3c24xx.c
+@@ -456,6 +456,8 @@ static int s3c24x0_nand_probe(struct device_d *dev)
+ 	 */
+ 	chip->ecc.mode = NAND_ECC_HW;
+ 	chip->ecc.bytes = 3;	/* always 24 bit ECC per turn */
++	chip->ecc.strength  = 1;
++
+ #ifdef CONFIG_CPU_S3C2440
+ 	if (readl(host->base) & 0x8) {
+ 		/* large page (2048 bytes per page) */
+diff --git a/drivers/mtd/nand/nand_swecc.c b/drivers/mtd/nand/nand_swecc.c
+index 95dfbd8..35f8469 100644
+--- a/drivers/mtd/nand/nand_swecc.c
++++ b/drivers/mtd/nand/nand_swecc.c
+@@ -91,4 +91,5 @@ void nand_init_ecc_soft(struct nand_chip *chip)
+ #endif
+ 	chip->ecc.size = 256;
+ 	chip->ecc.bytes = 3;
++	chip->ecc.strength = 1;
+ }
+diff --git a/drivers/mtd/nand/nomadik_nand.c b/drivers/mtd/nand/nomadik_nand.c
+index afdbef1..fbd8ecd 100644
+--- a/drivers/mtd/nand/nomadik_nand.c
++++ b/drivers/mtd/nand/nomadik_nand.c
+@@ -209,6 +209,7 @@ static int nomadik_nand_probe(struct device_d *dev)
+ 	nand->ecc.hwctl = nomadik_ecc_control;
+ 	nand->ecc.size = 512;
+ 	nand->ecc.bytes = 3;
++	nand->ecc.strength = 1;
+ 
+ 	nand->options = pdata->options;
+ 
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 51348b9..da96483 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -104,6 +104,15 @@ struct mtd_info {
+ 	u_int32_t oobsize;   // Amount of OOB data per block (e.g. 16)
+ 	u_int32_t oobavail;  // Available OOB bytes per block
+ 
++	/*
++	 * read ops return -EUCLEAN if max number of bitflips corrected on any
++	 * one region comprising an ecc step equals or exceeds this value.
++	 * Settable by driver, else defaults to ecc_strength.  User can override
++	 * in sysfs.  N.B. The meaning of the -EUCLEAN return code has changed;
++	 * see Documentation/ABI/testing/sysfs-class-mtd for more detail.
++	 */
++	unsigned int bitflip_threshold;
++
+ 	// Kernel-only stuff starts here.
+ 	char *name;
+ 	int index;
+@@ -111,6 +120,9 @@ struct mtd_info {
+ 	/* ecc layout structure pointer - read only ! */
+ 	struct nand_ecclayout *ecclayout;
+ 
++	/* max number of correctible bit errors per ecc step */
++	unsigned int ecc_strength;
++
+ 	/* Data for variable erase regions. If numeraseregions is zero,
+ 	 * it means that the whole device has erasesize as given above.
+ 	 */
+@@ -273,4 +285,16 @@ int mtd_all_ff(const void *buf, unsigned int len);
+ 
+ #endif /* DOXYGEN_SHOULD_SKIP_THIS */
+ 
++static inline int mtd_is_bitflip(int err) {
++	return err == -EUCLEAN;
++}
++
++static inline int mtd_is_eccerr(int err) {
++	return err == -EBADMSG;
++}
++
++static inline int mtd_is_bitflip_or_eccerr(int err) {
++	return mtd_is_bitflip(err) || mtd_is_eccerr(err);
++}
++
+ #endif /* __MTD_MTD_H__ */
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index 25bae63..e5cfed9 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -300,6 +300,7 @@ struct nand_hw_control {
+  * @steps:	number of ecc steps per page
+  * @size:	data bytes per ecc step
+  * @bytes:	ecc bytes per step
++ * @strength:	max number of correctible bits per ECC step
+  * @total:	total number of ecc bytes per page
+  * @prepad:	padding information for syndrome based ecc generators
+  * @postpad:	padding information for syndrome based ecc generators
+@@ -321,6 +322,7 @@ struct nand_ecc_ctrl {
+ 	int			size;
+ 	int			bytes;
+ 	int			total;
++	int			strength;
+ 	int			prepad;
+ 	int			postpad;
+ 	struct nand_ecclayout	*layout;
+-- 
+1.8.3.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
