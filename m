@@ -1,25 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]
- helo=mho-01-ewr.mailhop.org)
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V0BKj-0000vO-DU
- for barebox@lists.infradead.org; Fri, 19 Jul 2013 14:06:57 +0000
-Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162]
- helo=titan)
- by mho-01-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
- (Exim 4.72) (envelope-from <jason@lakedaemon.net>)
- id 1V0BKO-000GMd-Ha
- for barebox@lists.infradead.org; Fri, 19 Jul 2013 14:06:36 +0000
-Received: from titan.lakedaemon.net (localhost [127.0.0.1])
- by titan (Postfix) with ESMTP id 482ED46BFF4
- for <barebox@lists.infradead.org>; Fri, 19 Jul 2013 10:06:35 -0400 (EDT)
-Date: Fri, 19 Jul 2013 10:06:35 -0400
-From: Jason Cooper <jason@lakedaemon.net>
-Message-ID: <20130719140635.GB19736@titan.lakedaemon.net>
-References: <1374241457-8565-1-git-send-email-jason@lakedaemon.net>
+ id 1V19no-0007HM-H1
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 06:41:01 +0000
+Date: Mon, 22 Jul 2013 08:40:35 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130722064035.GA9434@pengutronix.de>
+References: <1374130666-4271-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1374241457-8565-1-git-send-email-jason@lakedaemon.net>
+In-Reply-To: <1374130666-4271-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,35 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mvebu: add board USI Topkick
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] create directory for dir/file.o
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Cc: barebox@lists.infradead.org
 
-On Fri, Jul 19, 2013 at 01:44:17PM +0000, Jason Cooper wrote:
-> Successfully boots to console via kwboot.  No other functionality yet.
-> 
-> Signed-off-by: Jason Cooper <jason@lakedaemon.net>
-> ---
-
-Forgot to mention, this is based against v2013.07.0.  I tried against
-origin/master a few days ago and had some build problems (had to specify
-BOARD manually).
-
-For those interested, you can pull from here:
-
-  git://git.infradead.org/users/jcooper/barebox.git topkick
-
-If the branch isn't there yet, please wait an hour or so.  I'm currently
-push master up there for the first time and it's going a bit _s_l_o_w_.
-
-thx,
-
-Jason.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBKdWwgMTgsIDIwMTMgYXQgMDI6NTc6NDZQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+IHRoaXMgcGF0Y2ggY29tZSBmcm9tIGtlcm5lbCBjb21taXQ6Cj4gICAgIDRkNDdkZGU0N2Y3
+ZGQ5NTA0MmZhNTYyODNkOTQ4ZjUwZGQ0YjUwOWMKPiAKPiBTaWduZWQtb2ZmLWJ5OiDlvKDlv6Dl
+sbEgPHp6czIxM0AxMjYuY29tPgoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gLS0tCj4gIHNj
+cmlwdHMvTWFrZWZpbGUubGliIHwgICAgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
+b24oKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9NYWtlZmlsZS5s
+aWIgYi9zY3JpcHRzL01ha2VmaWxlLmxpYgo+IGluZGV4IDBiNTZkY2MuLmU5ZTdlN2UgMTAwNjQ0
+Cj4gLS0tIGEvc2NyaXB0cy9NYWtlZmlsZS5saWIKPiArKysgYi9zY3JpcHRzL01ha2VmaWxlLmxp
+Ygo+IEBAIC03MCw3ICs3MCw3IEBAIHN1YmRpci1vYmoteSA6PSAkKGZpbHRlciAlL2J1aWx0LWlu
+Lm8sICQob2JqLXkpKQo+ICBzdWJkaXItb2JqLXkgKz0gJChfX3N1YmRpci1vYmoteSkKPiAgCj4g
+ICMgJChvYmotZGlycykgaXMgYSBsaXN0IG9mIGRpcmVjdG9yaWVzIHRoYXQgY29udGFpbiBvYmpl
+Y3QgZmlsZXMKPiAtb2JqLWRpcnMgOj0gJChkaXIgJChtdWx0aS1vYmpzKSAkKHN1YmRpci1vYmot
+eSkpCj4gK29iai1kaXJzIDo9ICQoZGlyICQobXVsdGktb2JqcykgJChvYmoteSkgJChwYmwteSkp
+Cj4gIAo+ICAjIFJlcGxhY2UgbXVsdGktcGFydCBvYmplY3RzIGJ5IHRoZWlyIGluZGl2aWR1YWwg
+cGFydHMsIGxvb2sgYXQgbG9jYWwgZGlyIG9ubHkKPiAgcmVhbC1vYmpzLXkgOj0gJChmb3JlYWNo
+IG0sICQoZmlsdGVyLW91dCAkKHN1YmRpci1vYmoteSksICQob2JqLXkpKSwgJChpZiAkKHN0cmlw
+ICQoJChtOi5vPS1vYmpzKSkgJCgkKG06Lm89LXkpKSksJCgkKG06Lm89LW9ianMpKSAkKCQobTou
+bz0teSkpLCQobSkpKSAkKGV4dHJhLXkpCj4gLS0gCj4gMS43LjkuNQo+IAo+IAo+IAo+IF9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWls
+aW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRyb25peCBlLksu
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
+cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
+ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
+YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
