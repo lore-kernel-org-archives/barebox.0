@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1ATk-00085H-Fj
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:24:21 +0000
-Date: Mon, 22 Jul 2013 09:23:58 +0200
+ id 1V1AdU-0008Dl-Rj
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:34:25 +0000
+Date: Mon, 22 Jul 2013 09:34:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130722072358.GD9434@pengutronix.de>
-References: <1374241457-8565-1-git-send-email-jason@lakedaemon.net>
+Message-ID: <20130722073401.GF9434@pengutronix.de>
+References: <1374241301-21277-1-git-send-email-h.feurstein@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1374241457-8565-1-git-send-email-jason@lakedaemon.net>
+In-Reply-To: <1374241301-21277-1-git-send-email-h.feurstein@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] arm: mvebu: add board USI Topkick
-To: Jason Cooper <jason@lakedaemon.net>
+Subject: Re: [PATCH] include/printk: fix level of pr_err and pr_warning
+To: Hubert Feurstein <h.feurstein@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Jason,
-
-On Fri, Jul 19, 2013 at 01:44:17PM +0000, Jason Cooper wrote:
-> Successfully boots to console via kwboot.  No other functionality yet.
+On Fri, Jul 19, 2013 at 03:41:41PM +0200, Hubert Feurstein wrote:
+> The level of pr_err and pr_warning were interchanged.
 > 
-> Signed-off-by: Jason Cooper <jason@lakedaemon.net>
-> ---
->  arch/arm/Makefile                        |  1 +
->  arch/arm/boards/usi-topkick/Makefile     |  1 +
->  arch/arm/boards/usi-topkick/board.c      | 17 ++++++++++++++++
->  arch/arm/boards/usi-topkick/kwbimage.cfg | 35 ++++++++++++++++++++++++++++++++
->  arch/arm/mach-mvebu/Kconfig              |  5 +++++
->  5 files changed, 59 insertions(+)
->  create mode 100644 arch/arm/boards/usi-topkick/Makefile
->  create mode 100644 arch/arm/boards/usi-topkick/board.c
->  create mode 100644 arch/arm/boards/usi-topkick/kwbimage.cfg
-> 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 32bdd65..96c9a67 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -170,6 +170,7 @@ board-$(CONFIG_MACH_TX53)			+= karo-tx53
->  board-$(CONFIG_MACH_USB_A9260)			+= usb-a926x
->  board-$(CONFIG_MACH_USB_A9263)			+= usb-a926x
->  board-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x
-> +board-$(CONFIG_MACH_USI_TOPKICK)		+= usi-topkick
+> Signed-off-by: Hubert Feurstein <h.feurstein@gmail.com>
 
-Please do not add items to this list. Use arch/arm/boards/Makefile
-instead. I fixed this while applying.
+Applied, thanks
 
 Sascha
 
+> ---
+>  include/printk.h |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/printk.h b/include/printk.h
+> index 3cd7335..86bf208 100644
+> --- a/include/printk.h
+> +++ b/include/printk.h
+> @@ -56,8 +56,8 @@ int dev_printf(const struct device_d *dev, const char *format, ...)
+>  #define pr_emerg(fmt, arg...)	__pr_printk(0, pr_fmt(fmt), ##arg)
+>  #define pr_alert(fmt, arg...)	__pr_printk(1, pr_fmt(fmt), ##arg)
+>  #define pr_crit(fmt, arg...)	__pr_printk(2, pr_fmt(fmt), ##arg)
+> -#define pr_warning(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
+> -#define pr_err(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
+> +#define pr_err(fmt, arg...)	__pr_printk(3, pr_fmt(fmt), ##arg)
+> +#define pr_warning(fmt, arg...)	__pr_printk(4, pr_fmt(fmt), ##arg)
+>  #define pr_notice(fmt, arg...)	__pr_printk(5, pr_fmt(fmt), ##arg)
+>  #define pr_info(fmt, arg...)	__pr_printk(6, pr_fmt(fmt), ##arg)
+>  #define pr_debug(fmt, arg...)	__pr_printk(7, pr_fmt(fmt), ##arg)
+> -- 
+> 1.7.9.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
