@@ -1,11 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pd0-x229.google.com ([2607:f8b0:400e:c02::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1DAr-0004IB-Rx
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 10:17:02 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 22 Jul 2013 12:16:35 +0200
-Message-Id: <1374488195-2318-1-git-send-email-s.hauer@pengutronix.de>
+ id 1V1Crj-0003XR-CR
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 09:57:16 +0000
+Received: by mail-pd0-f169.google.com with SMTP id y10so6712876pdj.28
+ for <barebox@lists.infradead.org>; Mon, 22 Jul 2013 02:56:51 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20130722071855.GC9434@pengutronix.de>
+References: <20130715100958.GG19197@ns203013.ovh.net>
+ <20130716062532.GV14452@pengutronix.de>
+ <20130716193936.49949f12c31c8145965c1c74@gmail.com>
+ <20130722071855.GC9434@pengutronix.de>
+Date: Mon, 22 Jul 2013 13:56:50 +0400
+Message-ID: <CAA4bVAHx3Z7pTsM882MN6h0-9B3irzm0G-KJ1d2mDCsv7B=VaQ@mail.gmail.com>
+From: Antony Pavlov <antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,52 +22,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] memory_display: Change address pointer to type const void *
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3 v2] pbl: add lz4 compression support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-No need to force a width of the pointer, so use void *. Also it's
-not modified in memory_display, so also add a const.
+On 22/07/2013, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Tue, Jul 16, 2013 at 07:39:36PM +0400, antonynpavlov@gmail.com wrote:
+>> On Tue, 16 Jul 2013 08:25:32 +0200
+>> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>
+>> > On Mon, Jul 15, 2013 at 12:09:58PM +0200, Jean-Christophe
+>> > PLAGNIOL-VILLARD wrote:
+>> > > Hi,
+>> > >
+>> > > 	v2:
+>> > > 	keep lzo as default
+>> > >
+>> > > 	The following patch serie add the lz4 support to the pbl
+>> > >
+>> > > Jean-Christophe PLAGNIOL-VILLARD (1):
+>> > >       pbl: add lz4 support
+>> > >
+>> > > Kyungsik Lee (2):
+>> > >       decompressor: Add LZ4 decompressor module
+>> > >       lib: Add support for LZ4-compressed kernel
+>> >
+>> > Applied, thanks
+>> >
+>> > Sascha
+>>
+>> LZ4 decompressor work fine on MIPS but I have got a warning:
+>>
+>> ...
+>> rm arch/mips/dts/qemu-malta.dtb.S arch/mips/dts/qemu-malta.dtb
+>>    LD      pbl/built-in.o
+>>    PBLCC   pbl/pbl-decomp.o
+>>  In file included from pbl/decomp.c:14:
+>>  /home/antony/barebox.git.rebased.isp/arch/mips/include/../../../lib/dec
+>> ompress_unlz4.c:185: warning: no previous prototype for 'decompress_unl
+>> z4'
+>
+> I fixed this. It should work without warning now.
+>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/memory_display.c | 2 +-
- include/common.h        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+I have just checked the 'next' branch. The warning has gone away!
+Thanks, Sascha!
 
-diff --git a/common/memory_display.c b/common/memory_display.c
-index eb188e1..7e4f4da 100644
---- a/common/memory_display.c
-+++ b/common/memory_display.c
-@@ -2,7 +2,7 @@
- 
- #define DISP_LINE_LEN	16
- 
--int memory_display(char *addr, loff_t offs, unsigned nbytes, int size, int swab)
-+int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int swab)
- {
- 	ulong linebytes, i;
- 	u_char	*cp;
-diff --git a/include/common.h b/include/common.h
-index 744b19e..e813726 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -220,7 +220,7 @@ int run_shell(void);
- #define PAGE_ALIGN(s) (((s) + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1))
- #define PAGE_ALIGN_DOWN(x) ((x) & ~(PAGE_SIZE - 1))
- 
--int memory_display(char *addr, loff_t offs, unsigned nbytes, int size, int swab);
-+int memory_display(const void *addr, loff_t offs, unsigned nbytes, int size, int swab);
- 
- int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
- 		char **sourcefile, char **destfile, int *swab);
 -- 
-1.8.3.2
-
+Best regards,
+  Antony Pavlov
 
 _______________________________________________
 barebox mailing list
