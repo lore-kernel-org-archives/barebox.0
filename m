@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V19no-0007HM-H1
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 06:41:01 +0000
-Date: Mon, 22 Jul 2013 08:40:35 +0200
+ id 1V19oH-0007J4-HR
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 06:41:30 +0000
+Date: Mon, 22 Jul 2013 08:41:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130722064035.GA9434@pengutronix.de>
-References: <1374130666-4271-1-git-send-email-zzs213@126.com>
+Message-ID: <20130722064107.GB9434@pengutronix.de>
+References: <1374142611-10384-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1374130666-4271-1-git-send-email-zzs213@126.com>
+In-Reply-To: <1374142611-10384-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +18,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] create directory for dir/file.o
-To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Subject: Re: [PATCH] ppc ddr-8xxx: misplaced parenthesis
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-T24gVGh1LCBKdWwgMTgsIDIwMTMgYXQgMDI6NTc6NDZQTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
-Ogo+IHRoaXMgcGF0Y2ggY29tZSBmcm9tIGtlcm5lbCBjb21taXQ6Cj4gICAgIDRkNDdkZGU0N2Y3
-ZGQ5NTA0MmZhNTYyODNkOTQ4ZjUwZGQ0YjUwOWMKPiAKPiBTaWduZWQtb2ZmLWJ5OiDlvKDlv6Dl
-sbEgPHp6czIxM0AxMjYuY29tPgoKQXBwbGllZCwgdGhhbmtzCgpTYXNjaGEKCj4gLS0tCj4gIHNj
-cmlwdHMvTWFrZWZpbGUubGliIHwgICAgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRp
-b24oKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvc2NyaXB0cy9NYWtlZmlsZS5s
-aWIgYi9zY3JpcHRzL01ha2VmaWxlLmxpYgo+IGluZGV4IDBiNTZkY2MuLmU5ZTdlN2UgMTAwNjQ0
-Cj4gLS0tIGEvc2NyaXB0cy9NYWtlZmlsZS5saWIKPiArKysgYi9zY3JpcHRzL01ha2VmaWxlLmxp
-Ygo+IEBAIC03MCw3ICs3MCw3IEBAIHN1YmRpci1vYmoteSA6PSAkKGZpbHRlciAlL2J1aWx0LWlu
-Lm8sICQob2JqLXkpKQo+ICBzdWJkaXItb2JqLXkgKz0gJChfX3N1YmRpci1vYmoteSkKPiAgCj4g
-ICMgJChvYmotZGlycykgaXMgYSBsaXN0IG9mIGRpcmVjdG9yaWVzIHRoYXQgY29udGFpbiBvYmpl
-Y3QgZmlsZXMKPiAtb2JqLWRpcnMgOj0gJChkaXIgJChtdWx0aS1vYmpzKSAkKHN1YmRpci1vYmot
-eSkpCj4gK29iai1kaXJzIDo9ICQoZGlyICQobXVsdGktb2JqcykgJChvYmoteSkgJChwYmwteSkp
-Cj4gIAo+ICAjIFJlcGxhY2UgbXVsdGktcGFydCBvYmplY3RzIGJ5IHRoZWlyIGluZGl2aWR1YWwg
-cGFydHMsIGxvb2sgYXQgbG9jYWwgZGlyIG9ubHkKPiAgcmVhbC1vYmpzLXkgOj0gJChmb3JlYWNo
-IG0sICQoZmlsdGVyLW91dCAkKHN1YmRpci1vYmoteSksICQob2JqLXkpKSwgJChpZiAkKHN0cmlw
-ICQoJChtOi5vPS1vYmpzKSkgJCgkKG06Lm89LXkpKSksJCgkKG06Lm89LW9ianMpKSAkKCQobTou
-bz0teSkpLCQobSkpKSAkKGV4dHJhLXkpCj4gLS0gCj4gMS43LjkuNQo+IAo+IAo+IAo+IF9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gYmFyZWJveCBtYWls
-aW5nIGxpc3QKPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKPiBodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gKCi0tIApQZW5ndXRyb25peCBlLksu
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdl
-cm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNo
-ZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBt
-YWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
-YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Jul 18, 2013 at 11:16:51AM +0100, Renaud Barbier wrote:
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+
+Applied, thanks
+
+Sascha
+
+>  arch/ppc/ddr-8xxx/ctrl_regs.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/ppc/ddr-8xxx/ctrl_regs.c b/arch/ppc/ddr-8xxx/ctrl_regs.c
+> index 3f8ecf7..1abc826 100644
+> --- a/arch/ppc/ddr-8xxx/ctrl_regs.c
+> +++ b/arch/ppc/ddr-8xxx/ctrl_regs.c
+> @@ -314,7 +314,7 @@ static void set_ddr_sdram_mode(struct fsl_ddr_cfg_regs_s *ddr,
+>  		   | ((rtt & 0x1) << 2));
+>  
+>  	/* Write recovery */
+> -	wr = (dimm->tWR_ps + mclk_ps - 1) / (mclk_ps - 1);
+> +	wr = ((dimm->tWR_ps + mclk_ps - 1) / mclk_ps) - 1;
+>  
+>  	switch (popts->burst_length) {
+>  	case DDR_BL4:
+> -- 
+> 1.7.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
