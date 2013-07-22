@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1B1F-0000Te-TE
- for barebox@lists.infradead.org; Mon, 22 Jul 2013 07:58:58 +0000
-From: =?iso-8859-15?q?J=FCrgen_Beisert?= <jbe@pengutronix.de>
-Date: Mon, 22 Jul 2013 09:59:23 +0200
-References: <2655265.6QViDogYJX@n56v> <20130709174049.GX516@pengutronix.de>
-In-Reply-To: <20130709174049.GX516@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201307220959.23884.jbe@pengutronix.de>
+ id 1V1CrQ-0003X2-Cu
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 09:56:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1V1Cr1-0004pC-7m
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 11:56:31 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1V1Cr1-0002Km-6N
+ for barebox@lists.infradead.org; Mon, 22 Jul 2013 11:56:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2013 11:56:19 +0200
+Message-Id: <1374486983-5263-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +21,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: mini2440 (256MB NAND)
+Subject: [PATCH] some minor image size decrease
 To: barebox@lists.infradead.org
 
-Hi Cristiano,
 
-On Tuesday 09 July 2013 19:40:49 Sascha Hauer wrote:
-> On Mon, Jul 08, 2013 at 10:42:43PM +0100, Cristiano Rodrigues wrote:
-> > I'm trying to run the barebox (trunk version or any other recent versio=
-n)
-> > in my mini2440 board but until now, I can't boot from nand.
->
-> Sorry, I can't help you with friendlyarm. Probably J=FCrgen has an idea,
-> but he is on holiday at the moment. Maybe he can help you once he's
-> back.
+The following decreases the image size a bit, mainly to make the pcm049 xload
+image fit into SRAM when the mtd updates I'm about to post are merged.
 
-I'm back now ;)
-AFAIK there was some change in the generic bootstrap code. I guess the base =
+Sascha
 
-code in the stepping stone RAM skipps the DRAM initialization by accident d=
-ue =
+----------------------------------------------------------------
+Sascha Hauer (4):
+      mtd: nand: omap: do not set write callback if mtd write is disabled
+      block: shortcut writebuffer_flush if writing is disabled
+      ARM: omap4: Use writel where appropriate
+      ARM: omap4: pcm049: register devices only when support is enabled
 
-to this change. That's why it works when the DRAM is already up and running =
+ arch/arm/boards/pcm049/board.c    |   6 +-
+ arch/arm/mach-omap/omap4_clock.c  | 176 +++++++++++++++++++-------------------
+ common/block.c                    |   3 +
+ drivers/mtd/nand/nand_omap_gpmc.c |   3 +-
+ include/printk.h                  |   4 +-
+ 5 files changed, 99 insertions(+), 93 deletions(-)
 
-and it fails if not.
-
-Juergen
-
--- =
-
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
-Linux Solutions for Science and Industry =A0 =A0 =A0| Phone: +49-5121-20691=
-7-5128 |
-Peiner Str. 6-8, 31137 Hildesheim, Germany =A0 =A0| Fax: =A0 +49-5121-20691=
-7-5555 |
-Amtsgericht Hildesheim, HRA 2686 =A0 =A0 =A0 =A0 =A0 =A0 =A0| http://www.pe=
-ngutronix.de/ =A0|
 
 _______________________________________________
 barebox mailing list
