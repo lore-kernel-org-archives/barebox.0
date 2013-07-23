@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1WGv-0008GA-K7
+ id 1V1WGv-0008GC-K9
  for barebox@lists.infradead.org; Tue, 23 Jul 2013 06:40:37 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 23 Jul 2013 08:40:05 +0200
-Message-Id: <1374561610-686-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 23 Jul 2013 08:40:07 +0200
+Message-Id: <1374561610-686-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1374561610-686-1-git-send-email-s.hauer@pengutronix.de>
 References: <1374561610-686-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,125 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] clk: provide static inline wrappers
+Subject: [PATCH 3/6] serial: ns16550: introduce private struct
 To: barebox@lists.infradead.org
-
-So that drivers can use clk_* functions without having to ifdef
-them away.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig    |  3 +++
- drivers/clk/Kconfig |  3 +++
- include/linux/clk.h | 39 ++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 44 insertions(+), 1 deletion(-)
+ drivers/serial/serial_ns16550.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e7d8cdd..3a74837 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -34,6 +34,7 @@ config ARCH_AT91
- 	select CLKDEV_LOOKUP
- 	select HAS_DEBUG_LL
- 	select HAVE_MACH_ARM_HEAD
-+	select HAVE_CLK
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index b792ba5..f9a17f4 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -42,6 +42,17 @@
+ #include "serial_ns16550.h"
+ #include <ns16550.h>
  
- config ARCH_BCM2835
- 	bool "Broadcom BCM2835 boards"
-@@ -99,6 +100,7 @@ config ARCH_NOMADIK
- 	bool "STMicroelectronics Nomadik"
- 	select CPU_ARM926T
- 	select CLOCKSOURCE_NOMADIK
-+	select HAVE_CLK
- 	help
- 	  Support for the Nomadik platform by ST-Ericsson
- 
-@@ -133,6 +135,7 @@ config ARCH_VERSATILE
- 	bool "ARM Versatile boards (ARM926EJ-S)"
- 	select CPU_ARM926T
- 	select GPIOLIB
-+	select HAVE_CLK
- 
- config ARCH_VEXPRESS
- 	bool "ARM Vexpres boards"
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index a00e539..daf778a 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -1,8 +1,11 @@
-+config HAVE_CLK
-+	bool
- 
- config CLKDEV_LOOKUP
- 	bool
- 
- config COMMON_CLK
-+	select HAVE_CLK
- 	bool
- 
- config COMMON_CLK_OF_PROVIDER
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 0a565ef..6aed1de 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -19,12 +19,13 @@ struct device_d;
-  * The base API.
-  */
- 
--
- /*
-  * struct clk - an machine class defined object / cookie.
-  */
- struct clk;
- 
-+#ifdef CONFIG_HAVE_CLK
++struct ns16550_priv {
++	struct console_device cdev;
++	struct NS16550_plat plat;
++	int access_width;
++};
++
++static inline struct ns16550_priv *to_ns16550_priv(struct console_device *cdev)
++{
++	return container_of(cdev, struct ns16550_priv, cdev);
++}
 +
  /**
-  * clk_get - lookup and obtain a reference to a clock producer.
-  * @dev: device for clock "consumer"
-@@ -157,6 +158,42 @@ struct clk *clk_get_sys(const char *dev_id, const char *con_id);
- int clk_add_alias(const char *alias, const char *alias_dev_name, char *id,
- 			struct device_d *dev);
+  * @brief read register
+  *
+@@ -52,9 +63,10 @@
+  */
+ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+ {
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 	struct device_d *dev = cdev->dev;
+-	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+-	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
++	struct NS16550_plat *plat = &priv->plat;
++	int width = priv->access_width;
  
-+#else
+ 	off <<= plat->shift;
+ 
+@@ -82,9 +94,10 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+ static void ns16550_write(struct console_device *cdev, uint32_t val,
+ 			  uint32_t off)
+ {
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+ 	struct device_d *dev = cdev->dev;
+-	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+-	int width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
++	struct NS16550_plat *plat = &priv->plat;
++	int width = priv->access_width;
+ 
+ 	off <<= plat->shift;
+ 
+@@ -117,8 +130,8 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
+ static inline unsigned int ns16550_calc_divisor(struct console_device *cdev,
+ 					 unsigned int baudrate)
+ {
+-	struct NS16550_plat *plat = (struct NS16550_plat *)
+-	    cdev->dev->platform_data;
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
++	struct NS16550_plat *plat = &priv->plat;
+ 	unsigned int clk = plat->clock;
+ 
+ 	return (clk / MODE_X_DIV / baudrate);
+@@ -136,8 +149,8 @@ static inline unsigned int ns16550_calc_divisor(struct console_device *cdev,
+ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
+ {
+ 	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
+-	struct NS16550_plat *plat = (struct NS16550_plat *)
+-	    cdev->dev->platform_data;
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
++	struct NS16550_plat *plat = &priv->plat;
+ 
+ 	ns16550_write(cdev, LCR_BKSE, lcr);
+ 	ns16550_write(cdev, baud_divisor & 0xff, dll);
+@@ -227,6 +240,7 @@ static int ns16550_tstc(struct console_device *cdev)
+  */
+ static int ns16550_probe(struct device_d *dev)
+ {
++	struct ns16550_priv *priv;
+ 	struct console_device *cdev;
+ 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+ 
+@@ -235,7 +249,12 @@ static int ns16550_probe(struct device_d *dev)
+ 		return -EINVAL;
+ 	dev->priv = dev_request_mem_region(dev, 0);
+ 
+-	cdev = xzalloc(sizeof(*cdev));
++	priv = xzalloc(sizeof(*priv));
 +
-+static inline struct clk *clk_get(struct device_d *dev, const char *id)
-+{
-+	return NULL;
-+}
++	cdev = &priv->cdev;
++	priv->plat = *plat;
 +
-+static inline int clk_enable(struct clk *clk)
-+{
-+	return 0;
-+}
-+
-+static inline void clk_disable(struct clk *clk)
-+{
-+}
-+
-+static inline unsigned long clk_get_rate(struct clk *clk)
-+{
-+	return 0;
-+}
-+
-+static inline void clk_put(struct clk *clk)
-+{
-+}
-+
-+static inline long clk_round_rate(struct clk *clk, unsigned long rate)
-+{
-+	return 0;
-+}
-+
-+static inline int clk_set_rate(struct clk *clk, unsigned long rate)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_COMMON_CLK
- struct clk_ops {
- 	int		(*enable)(struct clk *clk);
++	priv->access_width = dev->resource[0].flags & IORESOURCE_MEM_TYPE_MASK;
+ 
+ 	cdev->dev = dev;
+ 	if (plat->f_caps)
 -- 
 1.8.3.2
 
