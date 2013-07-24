@@ -1,18 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from moh1-ve1.go2.pl ([193.17.41.131])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V1tdu-0003NA-FJ
- for barebox@lists.infradead.org; Wed, 24 Jul 2013 07:37:51 +0000
-Received: from moh1-ve1.go2.pl (unknown [10.0.0.131])
- by moh1-ve1.go2.pl (Postfix) with ESMTP id 15B0A91C7DC
- for <barebox@lists.infradead.org>; Wed, 24 Jul 2013 09:37:22 +0200 (CEST)
-Received: from o2.pl (unknown [10.0.0.67])
- by moh1-ve1.go2.pl (Postfix) with SMTP
- for <barebox@lists.infradead.org>; Wed, 24 Jul 2013 09:37:22 +0200 (CEST)
-From: =?UTF-8?Q?dariusz.s93?= <dariusz.s93@o2.pl>
-Mime-Version: 1.0
-Message-ID: <12f34395.6beeefcd.51ef8432.9ec3@o2.pl>
-Date: Wed, 24 Jul 2013 09:37:22 +0200
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V20Al-0005dD-Qu
+ for barebox@lists.infradead.org; Wed, 24 Jul 2013 14:36:12 +0000
+Date: Wed, 24 Jul 2013 10:35:42 -0400
+From: Jason Cooper <jason@lakedaemon.net>
+Message-ID: <20130724143542.GE19736@titan.lakedaemon.net>
+References: <1374241457-8565-1-git-send-email-jason@lakedaemon.net>
+ <20130722072358.GD9434@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130722072358.GD9434@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,51 +23,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?Q?Raspberry_pi_barebox_boot?=
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] arm: mvebu: add board USI Topkick
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello!
+Sascha,
 
-I find this thread while googling today:
-http://comments.gmane.org/gmane.comp.boot-loaders.barebox/4051
+On Mon, Jul 22, 2013 at 09:23:58AM +0200, Sascha Hauer wrote:
+> On Fri, Jul 19, 2013 at 01:44:17PM +0000, Jason Cooper wrote:
+> > Successfully boots to console via kwboot.  No other functionality yet.
+> > 
+> > Signed-off-by: Jason Cooper <jason@lakedaemon.net>
+> > ---
+> >  arch/arm/Makefile                        |  1 +
+> >  arch/arm/boards/usi-topkick/Makefile     |  1 +
+> >  arch/arm/boards/usi-topkick/board.c      | 17 ++++++++++++++++
+> >  arch/arm/boards/usi-topkick/kwbimage.cfg | 35 ++++++++++++++++++++++++++++++++
+> >  arch/arm/mach-mvebu/Kconfig              |  5 +++++
+> >  5 files changed, 59 insertions(+)
+> >  create mode 100644 arch/arm/boards/usi-topkick/Makefile
+> >  create mode 100644 arch/arm/boards/usi-topkick/board.c
+> >  create mode 100644 arch/arm/boards/usi-topkick/kwbimage.cfg
+> > 
+> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> > index 32bdd65..96c9a67 100644
+> > --- a/arch/arm/Makefile
+> > +++ b/arch/arm/Makefile
+> > @@ -170,6 +170,7 @@ board-$(CONFIG_MACH_TX53)			+= karo-tx53
+> >  board-$(CONFIG_MACH_USB_A9260)			+= usb-a926x
+> >  board-$(CONFIG_MACH_USB_A9263)			+= usb-a926x
+> >  board-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x
+> > +board-$(CONFIG_MACH_USI_TOPKICK)		+= usi-topkick
+> 
+> Please do not add items to this list. Use arch/arm/boards/Makefile
+> instead. I fixed this while applying.
 
-I downloaded barebox package from official site and some cross-compilers
-from github/raspberry
-I configured barebox for ARM architecture and turned on menuconfig. Then I
-type make and press enter - and I noticed some new files in barebox
-directory same as those from this thread:
-http://www.raspberrypi.org/phpBB3/viewtopic.php?t=25087&p=230000
+Yes, that was how I originally had it when I was based off of
+origin/master.  However, I encountered the error where I needed to add
+BOARD=... to the make command in order to build properly.  Realizing
+that one should always base off of a tag, I then rebased off of
+v2013.07.0, which doesn't contain
 
-I formated sd card with fat32 and copy on it 3 files same way like man from
-this post
-http://comments.gmane.org/gmane.comp.boot-loaders.barebox/4051
-I downloaded loader.bin file and start.elf file from history (setp. 2012)
-version of raspberry firmware from github.
+  6bbb24c ARM: Turn most board directories into regular build directories
 
-Then i booted PI - but nothing happens - there was only rainbow on the
-screen all time.
+In the future, just let me know if you want me to rebase off of a
+branch.  No need to hand edit things on your side.
 
-What should i do?
+thx,
 
-Let me recall - all my knowledge how to boot RPI with Barebox comes from
-this post
-
-  Yes, it works for me.
-  You need an sd card with a single partition fat32 with inside 
-  bootcode.bin, loader.bin and start.elf (you can find the files here 
-  https://github.com/raspberrypi/firmware/tree/master/boot)
-  Then just copy barebox.bin on the card and rename it kernel.img.
-
-  Please, let me know if you have any problem.
-
-  Thank you,
-
-  --
-  Carlo Caione
-<<<
-
-Sorry for my english.
-Darek
+Jason.
 
 _______________________________________________
 barebox mailing list
