@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V2Gx6-0002CG-OQ
- for barebox@lists.infradead.org; Thu, 25 Jul 2013 08:31:13 +0000
-Received: by mail-lb0-f176.google.com with SMTP id z5so1295801lbh.35
- for <barebox@lists.infradead.org>; Thu, 25 Jul 2013 01:30:49 -0700 (PDT)
-Date: Thu, 25 Jul 2013 12:28:51 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20130725122851.21230bc159c293a28acaa7b6@gmail.com>
-In-Reply-To: <20130724165421.GS9434@pengutronix.de>
-References: <1374593282-3320-1-git-send-email-antonynpavlov@gmail.com>
- <20130724165421.GS9434@pengutronix.de>
-Mime-Version: 1.0
+ id 1V2HAc-0002aq-88
+ for barebox@lists.infradead.org; Thu, 25 Jul 2013 08:45:10 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 25 Jul 2013 10:44:44 +0200
+Message-Id: <1374741884-25011-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/2] serial: ns16550: small dt support improvements
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: Turn 'bad block at' message into pr_debug
+To: barebox@lists.infradead.org
 
-On Wed, 24 Jul 2013 18:54:21 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+As bad blocks get more and more on modern nand flashes this message
+starts getting annoying.
 
-> On Tue, Jul 23, 2013 at 07:28:00PM +0400, Antony Pavlov wrote:
-> > [RFC 1/2] serial: ns16550: get clock-frequency from dt
-> > [RFC 2/2] serial: ns16550: fill cdev just-in-time
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/nand_bbt.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-> Applied, thanks.
-> =
+diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/nand_bbt.c
+index 11f7a8b..b0548a3 100644
+--- a/drivers/mtd/nand/nand_bbt.c
++++ b/drivers/mtd/nand/nand_bbt.c
+@@ -218,11 +218,7 @@ static int read_bbt(struct mtd_info *mtd, uint8_t *buf, int page, int num,
+ 					mtd->ecc_stats.bbtblocks++;
+ 					continue;
+ 				}
+-				/*
+-				 * Leave it for now, if it's matured we can
+-				 * move this message to pr_debug.
+-				 */
+-				pr_info("nand_read_bbt: bad block at 0x%012llx\n",
++				pr_debug("nand_read_bbt: bad block at 0x%012llx\n",
+ 					 (loff_t)((offs << 2) + (act >> 1)) << this->bbt_erase_shift);
+ 				/* Factory marked bad or worn out? */
+ 				if (tmp == 0)
+-- 
+1.8.3.2
 
-> I assume the second one is only cosmetic, right?
-
-Yes, it's mostly cosmetic: the main goal of the second patch
-is making code more "easy-to-understand".
-
-As a bonus you get a tiny insignificant optimisation: if there is any error
-during probe then there is no need in cdev and cdev can
-be keeped unitialized (tut IMHO a smart compiler can make itself
-a reposition like this :).
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
