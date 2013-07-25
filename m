@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V2Gte-00027n-WF
- for barebox@lists.infradead.org; Thu, 25 Jul 2013 08:27:39 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 25 Jul 2013 10:27:16 +0200
-Message-Id: <1374740836-8139-1-git-send-email-s.hauer@pengutronix.de>
+ id 1V2Gx6-0002CG-OQ
+ for barebox@lists.infradead.org; Thu, 25 Jul 2013 08:31:13 +0000
+Received: by mail-lb0-f176.google.com with SMTP id z5so1295801lbh.35
+ for <barebox@lists.infradead.org>; Thu, 25 Jul 2013 01:30:49 -0700 (PDT)
+Date: Thu, 25 Jul 2013 12:28:51 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20130725122851.21230bc159c293a28acaa7b6@gmail.com>
+In-Reply-To: <20130724165421.GS9434@pengutronix.de>
+References: <1374593282-3320-1-git-send-email-antonynpavlov@gmail.com>
+ <20130724165421.GS9434@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,37 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: imx_v7_defconfig: remove board specific part from
- environment
-To: barebox@lists.infradead.org
+Subject: Re: [RFC 0/2] serial: ns16550: small dt support improvements
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This makes no sense for a generic defconfig.
+On Wed, 24 Jul 2013 18:54:21 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/imx_v7_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+> On Tue, Jul 23, 2013 at 07:28:00PM +0400, Antony Pavlov wrote:
+> > [RFC 1/2] serial: ns16550: get clock-frequency from dt
+> > [RFC 2/2] serial: ns16550: fill cdev just-in-time
+> =
 
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index e088c2c..1f0b0f6 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -24,7 +24,6 @@ CONFIG_MENU=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_PARTITION_DISK_EFI=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/freescale-mx51-pdk/env/"
- CONFIG_RESET_SOURCE=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
--- 
-1.8.3.2
+> Applied, thanks.
+> =
 
+> I assume the second one is only cosmetic, right?
+
+Yes, it's mostly cosmetic: the main goal of the second patch
+is making code more "easy-to-understand".
+
+As a bonus you get a tiny insignificant optimisation: if there is any error
+during probe then there is no need in cdev and cdev can
+be keeped unitialized (tut IMHO a smart compiler can make itself
+a reposition like this :).
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
