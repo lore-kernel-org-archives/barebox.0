@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V2zvp-00021e-Gi
+ id 1V2zvp-00021d-Gf
  for barebox@lists.infradead.org; Sat, 27 Jul 2013 08:32:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 27 Jul 2013 10:32:21 +0200
-Message-Id: <1374913941-17529-5-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 27 Jul 2013 10:32:20 +0200
+Message-Id: <1374913941-17529-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1374913941-17529-1-git-send-email-s.hauer@pengutronix.de>
 References: <1374913941-17529-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: bootm: Print Kernel commandline unconditionally
+Subject: [PATCH 3/4] of: Use dts syntax when printing devicetrees
 To: barebox@lists.infradead.org
 
-The Kernel commandline is an important debugging aid when people
-ask why their Kernel won't start, so print it unconditionally.
-This is done in !dt mode anyway, so also do it with dt.
+Our devicetree printing is close to correct dts syntax, so fix
+some remaining differences:
+
+- Use an equal sign instead of a colon to separate a poperty name and
+  a value
+- Add a semicolon at the end of properties
+- Make sure we do not print a separator for empty properties
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/of/base.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 0786e22..599b09a 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -91,8 +91,7 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 			of_add_reserve_entry(initrd_start, initrd_end);
- 		data->oftree = of_get_fixed_tree(data->of_root_node);
- 		fdt_add_reserve_map(data->oftree);
--		if (bootm_verbose(data))
--			of_print_cmdline(data->of_root_node);
-+		of_print_cmdline(data->of_root_node);
- 		if (bootm_verbose(data) > 1)
- 			of_print_nodes(data->of_root_node, 0);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 769b642..881ac3b 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1475,9 +1475,12 @@ void of_print_nodes(struct device_node *node, int indent)
+ 	list_for_each_entry(p, &node->properties, list) {
+ 		for (i = 0; i < indent + 1; i++)
+ 			printf("\t");
+-		printf("%s: ", p->name);
+-		of_print_property(p->value, p->length);
+-		printf("\n");
++		printf("%s", p->name);
++		if (p->length) {
++			printf(" = ");
++			of_print_property(p->value, p->length);
++		}
++		printf(";\n");
  	}
+ 
+ 	list_for_each_entry(n, &node->children, parent_list) {
 -- 
 1.8.3.2
 
