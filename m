@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V2zvp-00021d-Gf
- for barebox@lists.infradead.org; Sat, 27 Jul 2013 08:32:55 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 27 Jul 2013 10:32:20 +0200
-Message-Id: <1374913941-17529-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1374913941-17529-1-git-send-email-s.hauer@pengutronix.de>
-References: <1374913941-17529-1-git-send-email-s.hauer@pengutronix.de>
+Received: from exprod5og105.obsmtp.com ([64.18.0.180])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V4Swm-0000pd-DJ
+ for barebox@lists.infradead.org; Wed, 31 Jul 2013 09:43:57 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed, 31 Jul 2013 10:43:13 +0100
+Message-Id: <1375263795-5348-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] of: Use dts syntax when printing devicetrees
+Subject: [PATCH 0/2] ppc 85xx: remove early local bus initialisation
 To: barebox@lists.infradead.org
 
-Our devicetree printing is close to correct dts syntax, so fix
-some remaining differences:
+The local bus initialisation is moved from the cpu early
+initialisation to the board specific code to avoid dependencies
+on board definitions.
 
-- Use an equal sign instead of a colon to separate a poperty name and
-  a value
-- Add a semicolon at the end of properties
-- Make sure we do not print a separator for empty properties
+Renaud Barbier (2):
+  mpc85xx: remove local bus initialisation
+  P2020RDB: map boot flash.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/of/base.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 769b642..881ac3b 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1475,9 +1475,12 @@ void of_print_nodes(struct device_node *node, int indent)
- 	list_for_each_entry(p, &node->properties, list) {
- 		for (i = 0; i < indent + 1; i++)
- 			printf("\t");
--		printf("%s: ", p->name);
--		of_print_property(p->value, p->length);
--		printf("\n");
-+		printf("%s", p->name);
-+		if (p->length) {
-+			printf(" = ");
-+			of_print_property(p->value, p->length);
-+		}
-+		printf(";\n");
- 	}
- 
- 	list_for_each_entry(n, &node->children, parent_list) {
--- 
-1.8.3.2
+ arch/ppc/boards/freescale-p2020rdb/config.h   |    4 ----
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c |    4 ++++
+ arch/ppc/cpu-85xx/start.S                     |    1 -
+ arch/ppc/include/asm/fsl_lbc.h                |    2 --
+ arch/ppc/mach-mpc85xx/Makefile                |    1 -
+ arch/ppc/mach-mpc85xx/cpu_init.c              |    5 +++--
+ arch/ppc/mach-mpc85xx/fsl_lbc.c               |   17 -----------------
+ 7 files changed, 7 insertions(+), 27 deletions(-)
+ delete mode 100644 arch/ppc/mach-mpc85xx/fsl_lbc.c
 
 
 _______________________________________________
