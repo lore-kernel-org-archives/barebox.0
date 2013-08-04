@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V5tzV-0005lA-Bc
- for barebox@lists.infradead.org; Sun, 04 Aug 2013 08:48:42 +0000
-Received: by mail-la0-f52.google.com with SMTP id fq13so1342155lab.25
- for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 01:48:21 -0700 (PDT)
+ id 1V5xwg-0000JM-Lv
+ for barebox@lists.infradead.org; Sun, 04 Aug 2013 13:02:03 +0000
+Received: by mail-lb0-f177.google.com with SMTP id r11so1444800lbv.36
+ for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 06:01:38 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun,  4 Aug 2013 12:46:02 +0400
-Message-Id: <1375605962-4683-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1375605962-4683-1-git-send-email-antonynpavlov@gmail.com>
-References: <1375605962-4683-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun,  4 Aug 2013 16:59:27 +0400
+Message-Id: <1375621167-625-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] CONFIG_PANIC_HANG: replace #ifdef with IS_ENABLED()
+Subject: [PATCH] pbl: add generated file piggy.lz4 to .gitignore
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- lib/vsprintf.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/pbl/.gitignore  | 1 +
+ arch/mips/pbl/.gitignore | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index d931340..c73db73 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -630,11 +630,11 @@ void __noreturn panic(const char *fmt, ...)
- 
- 	led_trigger(LED_TRIGGER_PANIC, TRIGGER_ENABLE);
- 
--#if defined (CONFIG_PANIC_HANG)
--	hang();
--#else
--	udelay(100000);	/* allow messages to go out */
--	reset_cpu(0);
--#endif
-+	if (IS_ENABLED(CONFIG_PANIC_HANG)) {
-+		hang();
-+	} else {
-+		udelay(100000);	/* allow messages to go out */
-+		reset_cpu(0);
-+	}
- }
- EXPORT_SYMBOL(panic);
+diff --git a/arch/arm/pbl/.gitignore b/arch/arm/pbl/.gitignore
+index d71bb7c..1b7f618 100644
+--- a/arch/arm/pbl/.gitignore
++++ b/arch/arm/pbl/.gitignore
+@@ -1,5 +1,6 @@
+ piggy.gzip
+ piggy.lzo
++piggy.lz4
+ zbarebox
+ zbarebox.bin
+ zbarebox.lds
+diff --git a/arch/mips/pbl/.gitignore b/arch/mips/pbl/.gitignore
+index d71bb7c..1b7f618 100644
+--- a/arch/mips/pbl/.gitignore
++++ b/arch/mips/pbl/.gitignore
+@@ -1,5 +1,6 @@
+ piggy.gzip
+ piggy.lzo
++piggy.lz4
+ zbarebox
+ zbarebox.bin
+ zbarebox.lds
 -- 
 1.8.3.1
 
