@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Uws0r-0000LG-Tr
- for barebox@lists.infradead.org; Wed, 10 Jul 2013 10:52:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jul 2013 12:52:06 +0200
-Message-Id: <1373453528-3723-8-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
-References: <1373453528-3723-1-git-send-email-s.hauer@pengutronix.de>
+ id 1V5tzV-0005l9-Be
+ for barebox@lists.infradead.org; Sun, 04 Aug 2013 08:48:42 +0000
+Received: by mail-la0-f52.google.com with SMTP id fq13so1370111lab.39
+ for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 01:48:16 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sun,  4 Aug 2013 12:46:01 +0400
+Message-Id: <1375605962-4683-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1375605962-4683-1-git-send-email-antonynpavlov@gmail.com>
+References: <1375605962-4683-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +23,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] mci: set partnames of eMMC boot partitions
+Subject: [PATCH 1/2] resurrect CONFIG_PANIC_HANG option
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+The CONFIG_PANIC_HANG a part of the U-Boot heritage.
+It is used in the barebox code, but there is no mention
+of this option in Kconfig files.
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 67668d5..02e6216 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -406,7 +406,7 @@ static int mci_calc_blk_cnt(uint64_t cap, unsigned shift)
- }
+Sometimes this option is very helpful, so
+let's resurrect it.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/Kconfig | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/common/Kconfig b/common/Kconfig
+index 88bc677..6322d9d 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -256,6 +256,17 @@ config RELOCATABLE
+ 	  allowing it to relocate to the end of the available RAM. This
+ 	  way you have the whole memory in a single piece.
  
- static void mci_part_add(struct mci *mci, uint64_t size,
--                        unsigned int part_cfg, char *name, int idx, bool ro,
-+                        unsigned int part_cfg, char *name, char *partname, int idx, bool ro,
-                         int area_type)
- {
- 	struct mci_part *part = &mci->part[mci->nr_parts];
-@@ -414,6 +414,7 @@ static void mci_part_add(struct mci *mci, uint64_t size,
- 	part->mci = mci;
- 	part->size = size;
- 	part->blk.cdev.name = name;
-+	part->blk.cdev.partname = partname;
- 	part->blk.blockbits = SECTOR_SHIFT;
- 	part->blk.num_blocks = mci_calc_blk_cnt(size, part->blk.blockbits);
- 	part->area_type = area_type;
-@@ -482,13 +483,14 @@ static int mmc_change_freq(struct mci *mci)
- 		unsigned int part_size;
- 
- 		for (idx = 0; idx < MMC_NUM_BOOT_PARTITION; idx++) {
--			char *name;
-+			char *name, *partname;
- 			part_size = mci->ext_csd[EXT_CSD_BOOT_MULT] << 17;
- 
--			name = asprintf("%s.boot%d", mci->cdevname, idx);
-+			partname = asprintf("boot%d", idx);
-+			name = asprintf("%s.%s", mci->cdevname, partname);
- 			mci_part_add(mci, part_size,
- 					EXT_CSD_PART_CONFIG_ACC_BOOT0 + idx,
--					name, idx, true,
-+					name, partname, idx, true,
- 					MMC_BLK_DATA_AREA_BOOT);
- 		}
- 
-@@ -1104,7 +1106,7 @@ static int mci_startup(struct mci *mci)
- 	err = mci_set_blocklen(mci, mci->read_bl_len);
- 
- 	mci_part_add(mci, mci->capacity, 0,
--			mci->cdevname, 0, true,
-+			mci->cdevname, NULL, 0, true,
- 			MMC_BLK_DATA_AREA_MAIN);
- 
- 	return err;
++config PANIC_HANG
++	bool "hang the system in case of a fatal error"
++	help
++	  This option enables stop of the system in case of a
++	  fatal error, so that you have to reset it manually.
++	  This is probably NOT a good idea for an embedded
++	  system where you want the system to reboot
++	  automatically as fast as possible, but it may be
++	  useful during development since you can try to debug
++	  the conditions that lead to the situation.
++
+ config PROMPT
+ 	string
+ 	prompt "barebox command prompt"
 -- 
-1.8.3.2
+1.8.3.1
 
 
 _______________________________________________
