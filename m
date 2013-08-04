@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f54.google.com ([209.85.215.54])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V64uJ-00079N-I0
- for barebox@lists.infradead.org; Sun, 04 Aug 2013 20:28:06 +0000
-Received: by mail-la0-f54.google.com with SMTP id ea20so1535670lab.41
- for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 13:27:38 -0700 (PDT)
-Received: from localhost.localdomain ([83.149.8.89])
- by mx.google.com with ESMTPSA id am8sm7940216lac.1.2013.08.04.13.27.35
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sun, 04 Aug 2013 13:27:37 -0700 (PDT)
+ id 1V6503-0007Kb-Fu
+ for barebox@lists.infradead.org; Sun, 04 Aug 2013 20:34:00 +0000
+Received: by mail-lb0-f175.google.com with SMTP id 13so1580585lba.20
+ for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 13:33:36 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  5 Aug 2013 00:25:22 +0400
-Message-Id: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  5 Aug 2013 00:25:23 +0400
+Message-Id: <1375647927-30627-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
+References: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,174 +23,170 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 0/5] JUST-FOR-FUN: run barebox on Canon digital camera
+Subject: [RFC 1/5] ARM: add very initial support for Canon DIGIC chips
 To: barebox@lists.infradead.org
 
-Please don't commit the patches!
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/Kconfig                            |  8 +++++
+ arch/arm/Makefile                           |  1 +
+ arch/arm/mach-digic/Kconfig                 |  8 +++++
+ arch/arm/mach-digic/Makefile                |  1 +
+ arch/arm/mach-digic/core.c                  | 25 +++++++++++++++
+ arch/arm/mach-digic/include/mach/debug_ll.h | 48 +++++++++++++++++++++++++++++
+ 6 files changed, 91 insertions(+)
+ create mode 100644 arch/arm/mach-digic/Kconfig
+ create mode 100644 arch/arm/mach-digic/Makefile
+ create mode 100644 arch/arm/mach-digic/core.c
+ create mode 100644 arch/arm/mach-digic/include/mach/debug_ll.h
 
-This patch series introduce minimal support
-for Canon DIGIC4-based cameras.
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e4db8da..377f667 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -54,6 +54,13 @@ config ARCH_CLPS711X
+ 	select GPIOLIB
+ 	select MFD_SYSCON
+ 
++config ARCH_DIGIC
++	bool "Canon DIGIC-based cameras"
++	select CPU_32v5
++	select HAS_DEBUG_LL
++	help
++	  Support for Canon's digital cameras that use the DIGIC4 ASIC.
++
+ config ARCH_EP93XX
+ 	bool "Cirrus Logic EP93xx"
+ 	select CPU_ARM920T
+@@ -171,6 +178,7 @@ source arch/arm/cpu/Kconfig
+ source arch/arm/mach-at91/Kconfig
+ source arch/arm/mach-bcm2835/Kconfig
+ source arch/arm/mach-clps711x/Kconfig
++source arch/arm/mach-digic/Kconfig
+ source arch/arm/mach-ep93xx/Kconfig
+ source arch/arm/mach-highbank/Kconfig
+ source arch/arm/mach-imx/Kconfig
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index d80c12c..1b3040e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -54,6 +54,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
+ machine-$(CONFIG_ARCH_AT91)		:= at91
+ machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
+ machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
++machine-$(CONFIG_ARCH_DIGIC)		:= digic
+ machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
+ machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
+ machine-$(CONFIG_ARCH_IMX)		:= imx
+diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
+new file mode 100644
+index 0000000..49ce44a
+--- /dev/null
++++ b/arch/arm/mach-digic/Kconfig
+@@ -0,0 +1,8 @@
++if ARCH_DIGIC
++
++choice
++	prompt "camera type"
++
++endchoice
++
++endif
+diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
+new file mode 100644
+index 0000000..820eb10
+--- /dev/null
++++ b/arch/arm/mach-digic/Makefile
+@@ -0,0 +1 @@
++obj-y += core.o
+diff --git a/arch/arm/mach-digic/core.c b/arch/arm/mach-digic/core.c
+new file mode 100644
+index 0000000..f222c5b
+--- /dev/null
++++ b/arch/arm/mach-digic/core.c
+@@ -0,0 +1,25 @@
++/*
++ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++
++void __noreturn reset_cpu(unsigned long ignored)
++{
++	while (1)
++		;
++}
++EXPORT_SYMBOL(reset_cpu);
+diff --git a/arch/arm/mach-digic/include/mach/debug_ll.h b/arch/arm/mach-digic/include/mach/debug_ll.h
+new file mode 100644
+index 0000000..23e5966
+--- /dev/null
++++ b/arch/arm/mach-digic/include/mach/debug_ll.h
+@@ -0,0 +1,48 @@
++/*
++ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#ifndef __MACH_DEBUG_LL_H__
++#define __MACH_DEBUG_LL_H__
++
++#include <io.h>
++
++/* _sleep(0x400000); -> 3 seconds on Canon EOS 600D */
++static inline void _sleep(int delay)
++{
++	int i;
++
++	for (i = 0; i < delay; i++) {
++		asm ("nop\n");
++		asm ("nop\n");
++	}
++}
++
++/* Serial interface registers */
++#define UART_BASE       0xC0800000
++#define UART_TX         (UART_BASE + 0x0)
++#define UART_RX         (UART_BASE + 0x4)
++#define UART_ST         (UART_BASE + 0x14)
++
++static inline void PUTC_LL(char ch)
++{
++	/* FIXME! need check UART status first */
++
++	writeb(ch, UART_TX);
++	_sleep(0x1000);
++}
++
++#endif
+-- 
+1.8.3.1
 
-Supported cameras:
-
- * Canon PowerShot A1100;
- * Canon EOS 600D;
- * Canon EOS Magic Lantern qemu-based emulator.
-
-After booting barebox starts compiled-in script
-that use 'mw' command to blink camera's LED.
-
-Just now barebox for Canon cameras is a demo
-but after some improvements it can become very
-handy tool for CHDK and Magic Lantern development.
-
-Very short Instruction
-======================
-
-***************************************************
-*                                                 *
-* THIS IS DANGEROUS AND MIGHT DAMAGE YOUR CAMERA. *
-*  NO WARRANTIES.  NO GUARANTEES.  DO NOT TAUNT.  *
-*                                                 *
-***************************************************
-
-1. Canon EOS 600D DSLR
-----------------------
-
-1.1 Install Magic Lantern firmware on SD-card
- (see http://magiclantern.wikia.com/wiki/Unified/Install#First-time_installation)
-
-1.2 Download and build barebox
-    $ git clone -b next.digic https://github.com/frantony/barebox barebox.digic
-    $ cd barebox.digic
-    $ export ARCH=arm
-    $ export CROSS_COMPILE=<your_ARM_toolchain_prefix>
-    $ make canon-600d_defconfig
-    $ make
-
-You will get the 'arch/arm/pbl/zbarebox.bin' file.
-
-1.3 Overwrite Magic Lantern boot file on your 600D SD-card with the 'zbarebox.bin' file.
-E.g., if your SD-card is mounted to the '/mnt/sd' dir, then
-
-    $ sudo cp arch/arm/pbl/zbarebox.bin /mnt/sd/autoexec.bin
-
-1.4 Insert SD-card into your camere.
-
-1.5 Close your camera's SD-card slot.
-
-1.6 Just after SD-card slot closing the barebox will start.
-If all going well the SD-card led start blink.
-
-1.7 Uninstall barebox
-Remove battery from your camera and erase the 'autoexec.bin'
-file from your SD-card.
-
-2. Canon EOS emulator
----------------------
-
-2.1 Download Magic Lantern sources
-
-$ hg clone https://bitbucket.org/hudson/magic-lantern
-$ cd magic-lantern
-
-2.2 Setup your build environment
-
-E.g., for Debian Linux:
-
-$ cat > Makefile.user
-RST2LATEX=rst2latex
-PYTHON=python
-
-GCC_VERSION=
-CROSS_COMPILE=<your toolchain path>
-<ctrl-d>
-$
-
-2.3 Buld Magic Lantern for 600D
-
-$ make 600D
-
-If all going well you can try qemu.
-
-2.4 Bulding qemu
-
- $ cd contrib/qemu
- $ ./install.sh
-
- ...
-
- Use install.sh prompt:
-  1) Compile QEMU
-  2) Grab a copy of the Canon firmware
-  3) Enable CONFIG_QEMU=y in your Makefile.user
-
-2.5 Build barebox image (see paragraph 1.2 Download and build barebox)
-
-Don't forget to edit arch/arm/boards/canon-600d/env/bin/init
-__before__ build: comment the 'while true; do' and
-the 'done' strings.
-
-2.6 Copy zbarebox.bin to autoexec.bin in your qemu dir.
-
-2.7 Go to your qemu dir and start emulation with ./run_ml_600D.sh
-
-3. Canon PowerShot A1100 IS
----------------------------
-Installing to the A1100 camera is a bit tricky as you need
-"encrypt" barebox image.
-
-3.1 Install CHDK firmware on SD-card
- (see http://chdk.wikia.com/wiki/CHDK_For_Newbies_-_How_To_Install
- and http://chdk.wikia.com/wiki/A1100).
-
-3.2 Make your SD-card bootable
- (see http://chdk.wikia.com/wiki/Prepare_your_SD_card)
-
-3.3 Download and build barebox
-    $ git clone -b next.digic https://github.com/frantony/barebox barebox.digic
-    $ cd barebox.digic
-    $ export ARCH=arm
-    $ export CROSS_COMPILE=<your_ARM_toolchain_prefix>
-    $ make canon-a1100_defconfig
-    $ make
-
-You will get the 'arch/arm/pbl/zbarebox.bin' file.
-
-3.4 Download CHDK sources
-
-    $ git clone https://github.com/c10ud/CHDK.git
-    $ cd CHDK
-
-3.5 Build the 'dancingbits' encoder
-    $ cd tools
-    $ cc -o dancingbits dancingbits.c
-
-3.6 encode your barebox image
-
-Go to your barebox dir
-
-3.6.1 Make zbarebox.bin > 128K; camera don't like small binaries :)
-
-    $ dd if=/dev/zero bs=1k count=128 >> arch/arm/pbl/zbarebox.bin
-
-3.6.2 encode
-
-    $ <path-to-dancingbits> arch/arm/pbl/zbarebox.bin DISKBOOT.BIN 2
-
-3.7 Overwrite CHDK boot file on your SD-card with the 'DISKBOOT.BIN' file.
-
-3.9 Lock your SD-card (use small switch on the card).
-
-3.10 Insert SD-card into your camera.
-Close your camera's SD-card slot.
-
-3.11 Turn your camera on.
-If all going well the 'direct print' led start blink.
-
-3.12 Uninstall barebox
-Remove battery from your camera and erase the 'DISKBOOT.BIN'
-file from your SD-card.
 
 _______________________________________________
 barebox mailing list
