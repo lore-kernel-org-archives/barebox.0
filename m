@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6503-0007Kb-Fu
- for barebox@lists.infradead.org; Sun, 04 Aug 2013 20:34:00 +0000
-Received: by mail-lb0-f175.google.com with SMTP id 13so1580585lba.20
- for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 13:33:36 -0700 (PDT)
+ id 1V64uR-00079S-AQ
+ for barebox@lists.infradead.org; Sun, 04 Aug 2013 20:28:12 +0000
+Received: by mail-la0-f52.google.com with SMTP id fq13so1565984lab.39
+ for <barebox@lists.infradead.org>; Sun, 04 Aug 2013 13:27:49 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  5 Aug 2013 00:25:23 +0400
-Message-Id: <1375647927-30627-2-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  5 Aug 2013 00:25:27 +0400
+Message-Id: <1375647927-30627-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
 References: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,167 +23,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/5] ARM: add very initial support for Canon DIGIC chips
+Subject: [RFC 5/5] ARM: DIGIC: add canon-a1100_defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig                            |  8 +++++
- arch/arm/Makefile                           |  1 +
- arch/arm/mach-digic/Kconfig                 |  8 +++++
- arch/arm/mach-digic/Makefile                |  1 +
- arch/arm/mach-digic/core.c                  | 25 +++++++++++++++
- arch/arm/mach-digic/include/mach/debug_ll.h | 48 +++++++++++++++++++++++++++++
- 6 files changed, 91 insertions(+)
- create mode 100644 arch/arm/mach-digic/Kconfig
- create mode 100644 arch/arm/mach-digic/Makefile
- create mode 100644 arch/arm/mach-digic/core.c
- create mode 100644 arch/arm/mach-digic/include/mach/debug_ll.h
+ arch/arm/configs/canon-a1100_defconfig | 40 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+ create mode 100644 arch/arm/configs/canon-a1100_defconfig
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e4db8da..377f667 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -54,6 +54,13 @@ config ARCH_CLPS711X
- 	select GPIOLIB
- 	select MFD_SYSCON
- 
-+config ARCH_DIGIC
-+	bool "Canon DIGIC-based cameras"
-+	select CPU_32v5
-+	select HAS_DEBUG_LL
-+	help
-+	  Support for Canon's digital cameras that use the DIGIC4 ASIC.
-+
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
- 	select CPU_ARM920T
-@@ -171,6 +178,7 @@ source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
- source arch/arm/mach-bcm2835/Kconfig
- source arch/arm/mach-clps711x/Kconfig
-+source arch/arm/mach-digic/Kconfig
- source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-highbank/Kconfig
- source arch/arm/mach-imx/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index d80c12c..1b3040e 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -54,6 +54,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- machine-$(CONFIG_ARCH_AT91)		:= at91
- machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
- machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
-+machine-$(CONFIG_ARCH_DIGIC)		:= digic
- machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
- machine-$(CONFIG_ARCH_IMX)		:= imx
-diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
+diff --git a/arch/arm/configs/canon-a1100_defconfig b/arch/arm/configs/canon-a1100_defconfig
 new file mode 100644
-index 0000000..49ce44a
+index 0000000..6fad0c6
 --- /dev/null
-+++ b/arch/arm/mach-digic/Kconfig
-@@ -0,0 +1,8 @@
-+if ARCH_DIGIC
-+
-+choice
-+	prompt "camera type"
-+
-+endchoice
-+
-+endif
-diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
-new file mode 100644
-index 0000000..820eb10
---- /dev/null
-+++ b/arch/arm/mach-digic/Makefile
-@@ -0,0 +1 @@
-+obj-y += core.o
-diff --git a/arch/arm/mach-digic/core.c b/arch/arm/mach-digic/core.c
-new file mode 100644
-index 0000000..f222c5b
---- /dev/null
-+++ b/arch/arm/mach-digic/core.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+
-+void __noreturn reset_cpu(unsigned long ignored)
-+{
-+	while (1)
-+		;
-+}
-+EXPORT_SYMBOL(reset_cpu);
-diff --git a/arch/arm/mach-digic/include/mach/debug_ll.h b/arch/arm/mach-digic/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..23e5966
---- /dev/null
-+++ b/arch/arm/mach-digic/include/mach/debug_ll.h
-@@ -0,0 +1,48 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __MACH_DEBUG_LL_H__
-+#define __MACH_DEBUG_LL_H__
-+
-+#include <io.h>
-+
-+/* _sleep(0x400000); -> 3 seconds on Canon EOS 600D */
-+static inline void _sleep(int delay)
-+{
-+	int i;
-+
-+	for (i = 0; i < delay; i++) {
-+		asm ("nop\n");
-+		asm ("nop\n");
-+	}
-+}
-+
-+/* Serial interface registers */
-+#define UART_BASE       0xC0800000
-+#define UART_TX         (UART_BASE + 0x0)
-+#define UART_RX         (UART_BASE + 0x4)
-+#define UART_ST         (UART_BASE + 0x14)
-+
-+static inline void PUTC_LL(char ch)
-+{
-+	/* FIXME! need check UART status first */
-+
-+	writeb(ch, UART_TX);
-+	_sleep(0x1000);
-+}
-+
-+#endif
++++ b/arch/arm/configs/canon-a1100_defconfig
+@@ -0,0 +1,40 @@
++CONFIG_ARCH_DIGIC=y
++CONFIG_MACH_CANON_A1100=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_PBL_RELOCATABLE=y
++CONFIG_IMAGE_COMPRESSION_LZ4=y
++CONFIG_TEXT_BASE=0x00300000
++CONFIG_MALLOC_SIZE=0x200000
++CONFIG_PANIC_HANG=y
++CONFIG_PROMPT="canon> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_HUSH_GETOPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/canon-a1100/env"
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_GLOBAL=y
++# CONFIG_CMD_RM is not set
++# CONFIG_CMD_MKDIR is not set
++# CONFIG_CMD_RMDIR is not set
++# CONFIG_CMD_PWD is not set
++# CONFIG_CMD_MOUNT is not set
++# CONFIG_CMD_UMOUNT is not set
++# CONFIG_CMD_CLEAR is not set
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_IOMEM=y
++# CONFIG_CMD_MEMCMP is not set
++# CONFIG_CMD_MEMCPY is not set
++# CONFIG_CMD_MEMSET is not set
++# CONFIG_CMD_BOOTM is not set
++# CONFIG_CMD_BOOTU is not set
++# CONFIG_CMD_TEST is not set
++# CONFIG_CMD_VERSION is not set
++# CONFIG_CMD_HELP is not set
++# CONFIG_CMD_DEVINFO is not set
++# CONFIG_SPI is not set
++CONFIG_ZLIB=y
 -- 
 1.8.3.1
 
