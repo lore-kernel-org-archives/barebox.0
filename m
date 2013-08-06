@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f289.i.mail.ru ([217.69.138.189])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6etN-0001zT-Rc
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 10:53:31 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Tue, 06 Aug 2013 14:53:04 +0400
-Message-ID: <1375786384.974905160@f289.i.mail.ru>
-In-Reply-To: <20130806103133.GB26614@pengutronix.de>
-References: <20130806064229.GY26614@pengutronix.de>
- <1375783954.988213993@f361.mail.ru>
- <20130806103133.GB26614@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1V6fn4-0003P3-NR
+ for barebox@lists.infradead.org; Tue, 06 Aug 2013 11:51:04 +0000
+Date: Tue, 6 Aug 2013 13:50:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130806115040.GD26614@pengutronix.de>
+References: <20130806114945.065bda07@skate>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130806114945.065bda07@skate>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,62 +22,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IHYyMDEzLjA4LjA=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: Commit "ARM: Turn most board directories into regular build
+ directories" break kwb images
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-> On Tue, Aug 06, 2013 at 02:12:35PM +0400, Alexander Shiyan wrote:
-> > > Finally we have an August release!
-> > > 
-> > > Here are the patches that went in between this and the last release:
-> > 
-> > Here is a first result of compile:
-> > 
-> > drivers/built-in.o: In function `ubi_volume_notify':
-> > :(.text.ubi_volume_notify+0x14): undefined reference to `ubi_do_get_device_info'
-> > :(.text.ubi_volume_notify+0x24): undefined reference to `ubi_do_get_volume_info'
-> > make: *** [barebox] Error 1
-> 
-> Fortunately this is in current master and not the release. The following
-> should fix this. It the patch adding ubi_volume_notify depended on
-> another patch which I have locally and I didn't notice that.
+Hi Thomas,
 
-The patch is works as expected. Thanks.
+On Tue, Aug 06, 2013 at 11:49:45AM +0200, Thomas Petazzoni wrote:
+> Hello Sascha,
+> 
+> Your commit 6bbb24cf8d0b0a060c57d9c07610210cdf2dcc96 ('ARM: Turn most
+> board directories into regular build directories') apparently breaks
+> the build of kwbimage for Marvell EBU platforms.
+> 
+> The kwbimage is built as follows:
+> 
+> KWBIMAGE_OPTS = \
+>         -c -i $(srctree)/$(BOARD)/kwbimage.cfg -d $(TEXT_BASE) -e $(TEXT_BASE)
+> 
+> quiet_cmd_kwbimage = KWB     $@
+>       cmd_kwbimage = scripts/kwbimage -p $< $(KWBIMAGE_OPTS) -o $@ || \
+>         echo "WARNING: Couldn't create KWB image due to previous errors."
+> 
+> quiet_cmd_kwbimage_uart = KWBUART $@
+>       cmd_kwbimage_uart = scripts/kwbimage -m uart -p $< $(KWBIMAGE_OPTS) -o $@ || \
+>         echo "WARNING Couldn't create KWB image due to previous errors."
+> 
+> so we rely on the $(BOARD) variable to contain
+> arch/arm/boards/<theboard>/. Unfortunately, with your commit, this is
+> no longer the case.
+> 
+> Your commit made the assumption that only those boards that have a
+> config.h should stay in board-y, but the Marvell EBU boards should also
+> stay in board-y, or another solution needs to be found.
+> 
+> I've temporarily worked around the problem by re-adding:
+> 
+> +board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)      += globalscale-guruplug
+> 
+> into arch/arm/Makefile.
+> 
+> Since I haven't yet grasped the entire philosophy of the Barebox build
+> system, I'm not sure what the correct fix is.
 
-> From 68c50d4cabaf2d8fa2fc6d450c36150c8f07998c Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Tue, 6 Aug 2013 12:28:45 +0200
-> Subject: [PATCH] mtd: ubi: remove calls to nonexisting functions
-> 
-> We do not have ubi_do_get_volume_info and ubi_do_get_device_info
-> and do not need them yet, so remove calls to these functions to fix
-> compilation.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/mtd/ubi/build.c | 5 -----
->  1 file changed, 5 deletions(-)
-> 
-> diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-> index c4bffae..202b046 100644
-> --- a/drivers/mtd/ubi/build.c
-> +++ b/drivers/mtd/ubi/build.c
-> @@ -75,11 +75,6 @@ struct ubi_device *ubi_devices[UBI_MAX_DEVICES];
->   */
->  int ubi_volume_notify(struct ubi_device *ubi, struct ubi_volume *vol, int ntype)
->  {
-> -	struct ubi_notification nt;
-> -
-> -	ubi_do_get_device_info(ubi, &nt.di);
-> -	ubi_do_get_volume_info(ubi, vol, &nt.vi);
-> -
->  #ifdef CONFIG_MTD_UBI_FASTMAP
->  	switch (ntype) {
->  	case UBI_VOLUME_ADDED:
-> -- 
-> 1.8.4.rc1
+The best fix for this would be to switch the mvebu boards over to
+multiboard support. I already created an initial patch for the cubox,
+but got distracted somewhere in between.
 
----
+However, I think for now we should just partly revert 6bbb24cf8d0b0a06
+for mvebu.
+
+Sascha
+
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
