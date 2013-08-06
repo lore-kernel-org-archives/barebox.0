@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6gz9-0005cF-1m
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 13:07:39 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1V6gyk-0004Jc-0j
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 15:07:10 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1V6gyj-0002m5-Vf
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 15:07:09 +0200
+ id 1V6gz9-0005cI-1k
+ for barebox@lists.infradead.org; Tue, 06 Aug 2013 13:07:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  6 Aug 2013 15:07:00 +0200
-Message-Id: <1375794428-29577-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  6 Aug 2013 15:07:02 +0200
+Message-Id: <1375794428-29577-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1375794428-29577-1-git-send-email-s.hauer@pengutronix.de>
+References: <1375794428-29577-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,90 +21,106 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] UBIFS support
+Subject: [PATCH 2/8] mtd: ubi: add ubi info functions
 To: barebox@lists.infradead.org
 
-The following adds UBIFS support to barebox. The code has been taken from
-U-Boot rather than the Kernel since it was easier to adopt.
+Needed for ubifs.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/ubi/kapi.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-----------------------------------------------------------------
-Sascha Hauer (7):
-      mtd: ubi: add ubi info functions
-      filetype: Add ubifs detection
-      mtd: ubi: Add support for opening a volume by cdev
-      move print_hex_dump function to include/common.h
-      extend barebox wrapper header
-      Add deflate_decompress function
-      fs: Add ubifs support
+diff --git a/drivers/mtd/ubi/kapi.c b/drivers/mtd/ubi/kapi.c
+index fca8cc9..23ac234 100644
+--- a/drivers/mtd/ubi/kapi.c
++++ b/drivers/mtd/ubi/kapi.c
+@@ -25,6 +25,82 @@
+ #include "ubi.h"
+ 
+ /**
++ * ubi_do_get_device_info - get information about UBI device.
++ * @ubi: UBI device description object
++ * @di: the information is stored here
++ *
++ * This function is the same as 'ubi_get_device_info()', but it assumes the UBI
++ * device is locked and cannot disappear.
++ */
++void ubi_do_get_device_info(struct ubi_device *ubi, struct ubi_device_info *di)
++{
++	di->ubi_num = ubi->ubi_num;
++	di->leb_size = ubi->leb_size;
++	di->leb_start = ubi->leb_start;
++	di->min_io_size = ubi->min_io_size;
++	di->max_write_size = ubi->max_write_size;
++	di->ro_mode = ubi->ro_mode;
++}
++EXPORT_SYMBOL_GPL(ubi_do_get_device_info);
++
++/**
++ * ubi_get_device_info - get information about UBI device.
++ * @ubi_num: UBI device number
++ * @di: the information is stored here
++ *
++ * This function returns %0 in case of success, %-EINVAL if the UBI device
++ * number is invalid, and %-ENODEV if there is no such UBI device.
++ */
++int ubi_get_device_info(int ubi_num, struct ubi_device_info *di)
++{
++	struct ubi_device *ubi;
++
++	if (ubi_num < 0 || ubi_num >= UBI_MAX_DEVICES)
++		return -EINVAL;
++	ubi = ubi_get_device(ubi_num);
++	if (!ubi)
++		return -ENODEV;
++	ubi_do_get_device_info(ubi, di);
++	ubi_put_device(ubi);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(ubi_get_device_info);
++
++/**
++ * ubi_do_get_volume_info - get information about UBI volume.
++ * @ubi: UBI device description object
++ * @vol: volume description object
++ * @vi: the information is stored here
++ */
++void ubi_do_get_volume_info(struct ubi_device *ubi, struct ubi_volume *vol,
++			    struct ubi_volume_info *vi)
++{
++	vi->vol_id = vol->vol_id;
++	vi->ubi_num = ubi->ubi_num;
++	vi->size = vol->reserved_pebs;
++	vi->used_bytes = vol->used_bytes;
++	vi->vol_type = vol->vol_type;
++	vi->corrupted = vol->corrupted;
++	vi->upd_marker = vol->upd_marker;
++	vi->alignment = vol->alignment;
++	vi->usable_leb_size = vol->usable_leb_size;
++	vi->name_len = vol->name_len;
++	vi->name = vol->name;
++}
++
++/**
++ * ubi_get_volume_info - get information about UBI volume.
++ * @desc: volume descriptor
++ * @vi: the information is stored here
++ */
++void ubi_get_volume_info(struct ubi_volume_desc *desc,
++			 struct ubi_volume_info *vi)
++{
++	ubi_do_get_volume_info(desc->vol->ubi, desc->vol, vi);
++}
++EXPORT_SYMBOL_GPL(ubi_get_volume_info);
++
++/**
+  * ubi_open_volume - open UBI volume.
+  * @ubi_num: UBI device number
+  * @vol_id: volume ID
+-- 
+1.8.4.rc1
 
- common/filetype.c               |    2 +
- drivers/mtd/ubi/cdev.c          |    6 +
- drivers/mtd/ubi/kapi.c          |   93 ++
- drivers/mtd/ubi/ubi-barebox.h   |    8 -
- drivers/mtd/ubi/ubi.h           |    2 +
- fs/Kconfig                      |    1 +
- fs/Makefile                     |    1 +
- fs/ubifs/Kconfig                |   17 +
- fs/ubifs/Makefile               |    4 +
- fs/ubifs/budget.c               |  113 ++
- fs/ubifs/crc16.c                |   60 +
- fs/ubifs/crc16.h                |   29 +
- fs/ubifs/debug.c                |  156 +++
- fs/ubifs/debug.h                |  392 ++++++
- fs/ubifs/io.c                   |  316 +++++
- fs/ubifs/key.h                  |  557 ++++++++
- fs/ubifs/log.c                  |  104 ++
- fs/ubifs/lprops.c               |  842 ++++++++++++
- fs/ubifs/lpt.c                  | 1105 ++++++++++++++++
- fs/ubifs/lpt_commit.c           |  171 +++
- fs/ubifs/master.c               |  341 +++++
- fs/ubifs/misc.h                 |  311 +++++
- fs/ubifs/orphan.c               |  318 +++++
- fs/ubifs/recovery.c             | 1225 +++++++++++++++++
- fs/ubifs/replay.c               | 1070 +++++++++++++++
- fs/ubifs/sb.c                   |  346 +++++
- fs/ubifs/scan.c                 |  362 +++++
- fs/ubifs/super.c                |  907 +++++++++++++
- fs/ubifs/tnc.c                  | 2767 +++++++++++++++++++++++++++++++++++++++
- fs/ubifs/tnc_misc.c             |  435 ++++++
- fs/ubifs/ubifs-media.h          |  775 +++++++++++
- fs/ubifs/ubifs.c                |  654 +++++++++
- fs/ubifs/ubifs.h                | 2151 ++++++++++++++++++++++++++++++
- include/common.h                |    8 +
- include/filetype.h              |    1 +
- include/linux/barebox-wrapper.h |   32 +
- include/linux/mtd/ubi.h         |    1 +
- include/linux/zlib.h            |    4 +
- lib/decompress_inflate.c        |   39 +
- 39 files changed, 15718 insertions(+), 8 deletions(-)
- create mode 100644 fs/ubifs/Kconfig
- create mode 100644 fs/ubifs/Makefile
- create mode 100644 fs/ubifs/budget.c
- create mode 100644 fs/ubifs/crc16.c
- create mode 100644 fs/ubifs/crc16.h
- create mode 100644 fs/ubifs/debug.c
- create mode 100644 fs/ubifs/debug.h
- create mode 100644 fs/ubifs/io.c
- create mode 100644 fs/ubifs/key.h
- create mode 100644 fs/ubifs/log.c
- create mode 100644 fs/ubifs/lprops.c
- create mode 100644 fs/ubifs/lpt.c
- create mode 100644 fs/ubifs/lpt_commit.c
- create mode 100644 fs/ubifs/master.c
- create mode 100644 fs/ubifs/misc.h
- create mode 100644 fs/ubifs/orphan.c
- create mode 100644 fs/ubifs/recovery.c
- create mode 100644 fs/ubifs/replay.c
- create mode 100644 fs/ubifs/sb.c
- create mode 100644 fs/ubifs/scan.c
- create mode 100644 fs/ubifs/super.c
- create mode 100644 fs/ubifs/tnc.c
- create mode 100644 fs/ubifs/tnc_misc.c
- create mode 100644 fs/ubifs/ubifs-media.h
- create mode 100644 fs/ubifs/ubifs.c
- create mode 100644 fs/ubifs/ubifs.h
 
 _______________________________________________
 barebox mailing list
