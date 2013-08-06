@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x233.google.com ([2a00:1450:400c:c05::233])
+Received: from mail-we0-x22b.google.com ([2a00:1450:400c:c03::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6opp-0002TV-ES
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 21:30:30 +0000
-Received: by mail-wi0-f179.google.com with SMTP id hr7so957339wib.0
- for <barebox@lists.infradead.org>; Tue, 06 Aug 2013 14:30:06 -0700 (PDT)
+ id 1V6qyX-0005d9-On
+ for barebox@lists.infradead.org; Tue, 06 Aug 2013 23:47:38 +0000
+Received: by mail-we0-f171.google.com with SMTP id q55so949417wes.2
+ for <barebox@lists.infradead.org>; Tue, 06 Aug 2013 16:47:15 -0700 (PDT)
+Date: Wed, 7 Aug 2013 01:50:58 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20130806235057.GA2391@x61s.8.8.8.8>
+References: <1375794428-29577-1-git-send-email-s.hauer@pengutronix.de>
+ <1375794428-29577-9-git-send-email-s.hauer@pengutronix.de>
+ <20130806181614.GA30507@x61s.8.8.8.8>
+ <20130806195010.GE26614@pengutronix.de>
 MIME-Version: 1.0
-Date: Tue, 6 Aug 2013 23:30:06 +0200
-Message-ID: <CACbe1ruo=co1qZAJqaBYG7R6MXcL2V9NYHT6BsKyidLg9i+xHg@mail.gmail.com>
-From: Pawel Suchanecki <pawel.suchanecki@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20130806195010.GE26614@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +27,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox-2013.07.0 / barebox-2013.08.0 splash, bmp, png problems
- on Mini2440 -- SOLVED
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 8/8] fs: Add ubifs support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-2013/8/6 Pawel Suchanecki <pawel.suchanecki@gmail.com>:
-> What am I doing wrong?
+Hi,
 
-Hello again,
+On Tue, Aug 06, 2013 at 09:50:10PM +0200, Sascha Hauer wrote:
+> Hi Alex,
+> 
+> On Tue, Aug 06, 2013 at 08:16:16PM +0200, Alexander Aring wrote:
+> > Hi Sascha,
+> > 
+> > I take only a fast first look, it's a nice pretty huge patch :-)
+> > 
+> 
+> Yes, it's huge. Unfortunately not only in source code size, but also in
+> binary size...
+> 
+Yea, I meant it not in a negative way.
 
-I found the solution, it was only due to my mistake, as I selected the
-wrong LCD type.
+> > >  obj-$(CONFIG_FS_NFS)	+= nfs.o
+> > > diff --git a/fs/ubifs/Kconfig b/fs/ubifs/Kconfig
+> > > new file mode 100644
+> > > index 0000000..76612fd
+> > > --- /dev/null
+> > > +++ b/fs/ubifs/Kconfig
+> > > @@ -0,0 +1,17 @@
+> > > +menuconfig FS_UBIFS
+> > > +	bool
+> > 
+> > select UBI here?
+> > We use sometimes the ubi_read function.
+> 
+> Yes, right. I'll add a depends on CONFIG_MTD_UBI instead. selecting it
+> is not good since UBI needs mtd which would introduce indirect
+> dependencies.
+> 
+Oh yes, you already explained me the bad select and good depends on
+thing a year ago.
 
-When changed to support A70:
+> > > +	bool
+> > > +	select LZO_DECOMPRESS
+> > > +	prompt "LZO compression support"
+> > > +
+> > > +config FS_UBIFS_COMPRESSION_ZLIB
+> > > +	bool
+> > > +	select ZLIB
+> > > +	prompt "ZLIB compression support"
+> > > +
+> > > +endif
+> > 
+> > Is this for a full compressed ubi volume? I know that in ubifs exists
+> > some extended attributes to enable compression for a special file. How
+> > barebox deal with that? I think barebox hasn't a support for xattr yet. :(
+> 
+> The compression in UBIFS comes from UBIFS, not from UBI. See mkfs.ubifs -h,
+> you can specify different compression types.
+> 
+Yea, I meant here a support for reading a file which is compressed by
+ubifs. Under Linux you can set extended attributed for the file(also for
+compression). I don't know how barebox will dealing with that.
 
-[ ] Support N35 display (240x320)
-[*] Support A70 display (800x480)
+The question is what happens when I set the compression xattr for a file
+under linux and then read it under barebox... Maybe I should try it and
+then send patches if necessary :-).
 
-my 7" LCD shows the barebox logo just fine!
-
-Sorry for bothering with ... stupid question.
-
-Thanks,
-Pawel
+- Alex
 
 _______________________________________________
 barebox mailing list
