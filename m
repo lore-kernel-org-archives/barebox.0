@@ -1,16 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6dom-00009r-Nc
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 09:44:41 +0000
-Received: by mail-lb0-f176.google.com with SMTP id w10so303162lbi.7
- for <barebox@lists.infradead.org>; Tue, 06 Aug 2013 02:44:16 -0700 (PDT)
-Date: Tue, 6 Aug 2013 13:42:08 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20130806134208.03ab93928d53b987226adb1d@gmail.com>
-In-Reply-To: <20130806071353.GZ26614@pengutronix.de>
-References: <1375647927-30627-1-git-send-email-antonynpavlov@gmail.com>
- <20130806071353.GZ26614@pengutronix.de>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V6du5-0000Hi-RH
+ for barebox@lists.infradead.org; Tue, 06 Aug 2013 09:50:10 +0000
+Date: Tue, 6 Aug 2013 11:49:45 +0200
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20130806114945.065bda07@skate>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -20,78 +16,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 0/5] JUST-FOR-FUN: run barebox on Canon digital camera
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Commit "ARM: Turn most board directories into regular build
+ directories" break kwb images
+To: barebox@lists.infradead.org
 
-On Tue, 6 Aug 2013 09:13:53 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hello Sascha,
 
-> On Mon, Aug 05, 2013 at 12:25:22AM +0400, Antony Pavlov wrote:
-> > Please don't commit the patches!
-> > =
+Your commit 6bbb24cf8d0b0a060c57d9c07610210cdf2dcc96 ('ARM: Turn most
+board directories into regular build directories') apparently breaks
+the build of kwbimage for Marvell EBU platforms.
 
-> > This patch series introduce minimal support
-> > for Canon DIGIC4-based cameras.
-> > =
+The kwbimage is built as follows:
 
-> > Supported cameras:
-> > =
+KWBIMAGE_OPTS = \
+        -c -i $(srctree)/$(BOARD)/kwbimage.cfg -d $(TEXT_BASE) -e $(TEXT_BASE)
 
-> >  * Canon PowerShot A1100;
-> >  * Canon EOS 600D;
-> >  * Canon EOS Magic Lantern qemu-based emulator.
-> > =
+quiet_cmd_kwbimage = KWB     $@
+      cmd_kwbimage = scripts/kwbimage -p $< $(KWBIMAGE_OPTS) -o $@ || \
+        echo "WARNING: Couldn't create KWB image due to previous errors."
 
-> > After booting barebox starts compiled-in script
-> > that use 'mw' command to blink camera's LED.
-> > =
+quiet_cmd_kwbimage_uart = KWBUART $@
+      cmd_kwbimage_uart = scripts/kwbimage -m uart -p $< $(KWBIMAGE_OPTS) -o $@ || \
+        echo "WARNING Couldn't create KWB image due to previous errors."
 
-> > Just now barebox for Canon cameras is a demo
-> > but after some improvements it can become very
-> > handy tool for CHDK and Magic Lantern development.
-> =
+so we rely on the $(BOARD) variable to contain
+arch/arm/boards/<theboard>/. Unfortunately, with your commit, this is
+no longer the case.
 
-> Very cool stuff.
-> =
+Your commit made the assumption that only those boards that have a
+config.h should stay in board-y, but the Marvell EBU boards should also
+stay in board-y, or another solution needs to be found.
 
-> I'll have to have a look what model my wifes camera is ;)
+I've temporarily worked around the problem by re-adding:
 
-To tell the truth there is no big difference in Canon cameras
-for barebox developer. You can see, that there are no differences
-in a1100 and 600d code in barebox (just memory size, but it can
-be moved into device tree file). Moreover AFAIR there are no significant
-software model differences between the chips in the DIGIC family.
++board-$(CONFIG_MACH_GLOBALSCALE_GURUPLUG)      += globalscale-guruplug
 
-To blink the LED of your PowerShot camera you only need to know =
+into arch/arm/Makefile.
 
-the led-related GPIO address and canon binary file encode algorithm.
-Both of this things can be obtained in the CHDK sources.
+Since I haven't yet grasped the entire philosophy of the Barebox build
+system, I'm not sure what the correct fix is.
 
-For DSRL cameras the situation is even less difficult.
-
-> I'd be amazed if barebox could be used to help the magic lantern
-> project.
-
-If you want to help the Magic Lantern project please briefly describe
-your mode of operation with incoming patches. AFAIR you have some
-scripts to check all boards build after every single commit.
-The Magic Lantern developers have some problems as they use
-very different mode of operation:
- 1. commit the change to the repo;
- 2. fix build or functional error some time later.
-
-I have adapted MAKEALL script from barebox for Magic Lantern,
-but I have not not yet finished the script to check every new
-mercurial commit (as Magic Lantern developers use mercurial).
-
---=A0
 Best regards,
-=A0 Antony Pavlov
+
+Thomas
+-- 
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
