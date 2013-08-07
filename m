@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22b.google.com ([2a00:1450:400c:c03::22b])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6qyX-0005d9-On
- for barebox@lists.infradead.org; Tue, 06 Aug 2013 23:47:38 +0000
-Received: by mail-we0-f171.google.com with SMTP id q55so949417wes.2
- for <barebox@lists.infradead.org>; Tue, 06 Aug 2013 16:47:15 -0700 (PDT)
-Date: Wed, 7 Aug 2013 01:50:58 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130806235057.GA2391@x61s.8.8.8.8>
-References: <1375794428-29577-1-git-send-email-s.hauer@pengutronix.de>
- <1375794428-29577-9-git-send-email-s.hauer@pengutronix.de>
- <20130806181614.GA30507@x61s.8.8.8.8>
- <20130806195010.GE26614@pengutronix.de>
+ id 1V6xWD-0005VP-R5
+ for barebox@lists.infradead.org; Wed, 07 Aug 2013 06:46:51 +0000
+Date: Wed, 7 Aug 2013 08:46:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130807064626.GF26614@pengutronix.de>
+References: <1375782787-494-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130806195010.GE26614@pengutronix.de>
+In-Reply-To: <1375782787-494-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +18,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 8/8] fs: Add ubifs support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/4] ARM: OMAP: Pass TEXT_BASE address to
+ mk-am35xx-spi-image
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Tue, Aug 06, 2013 at 11:53:04AM +0200, Teresa G=E1mez wrote:
+> Pass the TEXT_BASE to the mk-am35xx-spi-image as the
+> default address does not fit for AM33xx.
+> =
 
-On Tue, Aug 06, 2013 at 09:50:10PM +0200, Sascha Hauer wrote:
-> Hi Alex,
-> 
-> On Tue, Aug 06, 2013 at 08:16:16PM +0200, Alexander Aring wrote:
-> > Hi Sascha,
-> > 
-> > I take only a fast first look, it's a nice pretty huge patch :-)
-> > 
-> 
-> Yes, it's huge. Unfortunately not only in source code size, but also in
-> binary size...
-> 
-Yea, I meant it not in a negative way.
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-> > >  obj-$(CONFIG_FS_NFS)	+= nfs.o
-> > > diff --git a/fs/ubifs/Kconfig b/fs/ubifs/Kconfig
-> > > new file mode 100644
-> > > index 0000000..76612fd
-> > > --- /dev/null
-> > > +++ b/fs/ubifs/Kconfig
-> > > @@ -0,0 +1,17 @@
-> > > +menuconfig FS_UBIFS
-> > > +	bool
-> > 
-> > select UBI here?
-> > We use sometimes the ubi_read function.
-> 
-> Yes, right. I'll add a depends on CONFIG_MTD_UBI instead. selecting it
-> is not good since UBI needs mtd which would introduce indirect
-> dependencies.
-> 
-Oh yes, you already explained me the bad select and good depends on
-thing a year ago.
+Applied this series.
 
-> > > +	bool
-> > > +	select LZO_DECOMPRESS
-> > > +	prompt "LZO compression support"
-> > > +
-> > > +config FS_UBIFS_COMPRESSION_ZLIB
-> > > +	bool
-> > > +	select ZLIB
-> > > +	prompt "ZLIB compression support"
-> > > +
-> > > +endif
-> > 
-> > Is this for a full compressed ubi volume? I know that in ubifs exists
-> > some extended attributes to enable compression for a special file. How
-> > barebox deal with that? I think barebox hasn't a support for xattr yet. :(
-> 
-> The compression in UBIFS comes from UBIFS, not from UBI. See mkfs.ubifs -h,
-> you can specify different compression types.
-> 
-Yea, I meant here a support for reading a file which is compressed by
-ubifs. Under Linux you can set extended attributed for the file(also for
-compression). I don't know how barebox will dealing with that.
+Thanks,
+ Sascha
 
-The question is what happens when I set the compression xattr for a file
-under linux and then read it under barebox... Maybe I should try it and
-then send patches if necessary :-).
+> ---
+>  arch/arm/Makefile |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> =
 
-- Alex
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index d80c12c..4eced78 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -160,7 +160,7 @@ KBUILD_IMAGE :=3D barebox.ubl
+>  endif
+>  =
+
+>  quiet_cmd_am35xx_spi_image =3D SPI-IMG $@
+> -      cmd_am35xx_spi_image =3D scripts/mk-am35xx-spi-image $< > $@
+> +      cmd_am35xx_spi_image =3D scripts/mk-am35xx-spi-image -a $(TEXT_BAS=
+E) $< > $@
+>  =
+
+>  barebox.spi: $(KBUILD_BINARY) FORCE
+>  	$(call if_changed,am35xx_spi_image)
+> -- =
+
+> 1.7.0.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
