@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V6xWD-0005VP-R5
- for barebox@lists.infradead.org; Wed, 07 Aug 2013 06:46:51 +0000
-Date: Wed, 7 Aug 2013 08:46:26 +0200
+ id 1V6xXL-0005Wa-K6
+ for barebox@lists.infradead.org; Wed, 07 Aug 2013 06:48:00 +0000
+Date: Wed, 7 Aug 2013 08:47:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130807064626.GF26614@pengutronix.de>
-References: <1375782787-494-1-git-send-email-t.gamez@phytec.de>
+Message-ID: <20130807064736.GG26614@pengutronix.de>
+References: <CACbe1ruo=co1qZAJqaBYG7R6MXcL2V9NYHT6BsKyidLg9i+xHg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1375782787-494-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <CACbe1ruo=co1qZAJqaBYG7R6MXcL2V9NYHT6BsKyidLg9i+xHg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,62 +18,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] ARM: OMAP: Pass TEXT_BASE address to
- mk-am35xx-spi-image
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: barebox-2013.07.0 / barebox-2013.08.0 splash, bmp, png
+ problems on Mini2440 -- SOLVED
+To: Pawel Suchanecki <pawel.suchanecki@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Aug 06, 2013 at 11:53:04AM +0200, Teresa G=E1mez wrote:
-> Pass the TEXT_BASE to the mk-am35xx-spi-image as the
-> default address does not fit for AM33xx.
-> =
+On Tue, Aug 06, 2013 at 11:30:06PM +0200, Pawel Suchanecki wrote:
+> 2013/8/6 Pawel Suchanecki <pawel.suchanecki@gmail.com>:
+> > What am I doing wrong?
+> 
+> Hello again,
+> 
+> I found the solution, it was only due to my mistake, as I selected the
+> wrong LCD type.
+> 
+> When changed to support A70:
+> 
+> [ ] Support N35 display (240x320)
+> [*] Support A70 display (800x480)
+> 
+> my 7" LCD shows the barebox logo just fine!
 
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+Nice. I was afraid I broke this.
 
-Applied this series.
+> 
+> Sorry for bothering with ... stupid question.
 
-Thanks,
- Sascha
+No problem
 
-> ---
->  arch/arm/Makefile |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> =
+Sascha
 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index d80c12c..4eced78 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -160,7 +160,7 @@ KBUILD_IMAGE :=3D barebox.ubl
->  endif
->  =
-
->  quiet_cmd_am35xx_spi_image =3D SPI-IMG $@
-> -      cmd_am35xx_spi_image =3D scripts/mk-am35xx-spi-image $< > $@
-> +      cmd_am35xx_spi_image =3D scripts/mk-am35xx-spi-image -a $(TEXT_BAS=
-E) $< > $@
->  =
-
->  barebox.spi: $(KBUILD_BINARY) FORCE
->  	$(call if_changed,am35xx_spi_image)
-> -- =
-
-> 1.7.0.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
