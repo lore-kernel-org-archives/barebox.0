@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f304.i.mail.ru ([128.140.169.168])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V7JgK-0007as-7x
- for barebox@lists.infradead.org; Thu, 08 Aug 2013 06:26:45 +0000
-Date: Thu, 8 Aug 2013 08:26:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130808062620.GR26614@pengutronix.de>
-References: <20130806064229.GY26614@pengutronix.de>
- <20130806103133.GB26614@pengutronix.de>
- <1375786384.974905160@f289.i.mail.ru>
- <1375942999.492608031@f421.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1375942999.492608031@f421.i.mail.ru>
+ id 1V7KTm-0000IU-Md
+ for barebox@lists.infradead.org; Thu, 08 Aug 2013 07:17:51 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Thu, 08 Aug 2013 11:17:28 +0400
+Message-ID: <1375946248.679028165@f304.i.mail.ru>
+In-Reply-To: <1375871688.726256777@f18.i.mail.ru>
+References: <1375868734-32357-1-git-send-email-s.hauer@pengutronix.de>
+ <20130807101159.GK26614@pengutronix.de>
+ <1375871688.726256777@f18.i.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,42 +24,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: v2013.08.0
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gUmV2ZXJ0ICJBUk06IFVzZSBhcm1saW51eF9ib290cGFy?=
+ =?UTF-8?B?YW1zIGFkZHJlc3MgZm9yIERUQiI=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 08, 2013 at 10:23:19AM +0400, Alexander Shiyan wrote:
-> > > On Tue, Aug 06, 2013 at 02:12:35PM +0400, Alexander Shiyan wrote:
-> > > > > Finally we have an August release!
-> > > > > 
-> > > > > Here are the patches that went in between this and the last release:
+> > On Wed, Aug 07, 2013 at 01:55:42PM +0400, Alexander Shiyan wrote:
+> > > > This patch placed the flattened devicetree to armlinux_bootparams.
+> > > > armlinux_bootparams normally is at SDRAM_START + 0x100. The kernels
+> > > > initial page tables are normally at SDRAM_START + 0x4000, so the
+> > > > flattened devicetree gets overwritten once it exceeds 0x3f00 bytes
+> > > > which is quite common.
 > > > > 
-> > > > Here is a first result of compile:
-> > > > 
-> > > > drivers/built-in.o: In function `ubi_volume_notify':
-> > > > :(.text.ubi_volume_notify+0x14): undefined reference to `ubi_do_get_device_info'
-> > > > :(.text.ubi_volume_notify+0x24): undefined reference to `ubi_do_get_volume_info'
-> > > > make: *** [barebox] Error 1
+> > > > Revert this patch for now once a better solution can be found
 > > > 
-> > > Fortunately this is in current master and not the release. The following
-> > > should fix this. It the patch adding ubi_volume_notify depended on
-> > > another patch which I have locally and I didn't notice that.
+> > > In such a case, tree may be placed immediately after the kernel?
+> > > It can also serve as an automatic option "ARM_APPENDED_DTB".
 > > 
-> > The patch is works as expected. Thanks.
+> > Did you actually stumbled over this problem? Normally the dtb is
+> > allocated using malloc. The malloc region normally shouldn't overlap
+> > with the kernels text region unless you are really tight of memory.
+> > Was this on a clps711x?
 > 
-> Additional warning on ubi_volume_notify:
+> I described it here:
+> http://www.spinics.net/lists/u-boot-v2/msg15612.html
 
-This should be fixed already in master.
+Seems this issue can be resolved by decrease MALLOC_SIZE.
 
-Sascha
+...
+    0xc0380000 - 0xc077ffff (size 0x00400000) malloc space
+...
 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
