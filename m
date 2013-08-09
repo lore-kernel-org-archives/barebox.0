@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V7hBz-0004oz-Fi
- for barebox@lists.infradead.org; Fri, 09 Aug 2013 07:33:00 +0000
-Date: Fri, 9 Aug 2013 09:32:37 +0200
+ id 1V7hf5-0005RT-Uy
+ for barebox@lists.infradead.org; Fri, 09 Aug 2013 08:03:05 +0000
+Date: Fri, 9 Aug 2013 10:02:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130809073237.GA26614@pengutronix.de>
-References: <ce9d0dc069aa93694635e8bd5ac2fbd94bd2fa24.1376020752.git.baruch@tkos.co.il>
+Message-ID: <20130809080239.GB26614@pengutronix.de>
+References: <1375868734-32357-1-git-send-email-s.hauer@pengutronix.de>
+ <1375946248.679028165@f304.i.mail.ru>
+ <20130809065817.GY26614@pengutronix.de>
+ <1376031746.511086137@f361.i.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ce9d0dc069aa93694635e8bd5ac2fbd94bd2fa24.1376020752.git.baruch@tkos.co.il>
+In-Reply-To: <1376031746.511086137@f361.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +25,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: fix checksum verification
-To: Baruch Siach <baruch@tkos.co.il>
+Subject: Re: [PATCH] Revert "ARM: Use armlinux_bootparams address for DTB"
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Fri, Aug 09, 2013 at 07:01:24AM +0300, Baruch Siach wrote:
-> Checksum verification on data including its own checksum (as is the case with
-> IP headers) should give zero. Current code works well for the correct checksum
-> case, but fails to identify (most) errors.
+On Fri, Aug 09, 2013 at 11:02:26AM +0400, Alexander Shiyan wrote:
+> > > > > On Wed, Aug 07, 2013 at 01:55:42PM +0400, Alexander Shiyan wrote:
+> > > > > > > This patch placed the flattened devicetree to armlinux_bootparams.
+> > > > > > > armlinux_bootparams normally is at SDRAM_START + 0x100. The kernels
+> > > > > > > initial page tables are normally at SDRAM_START + 0x4000, so the
+> > > > > > > flattened devicetree gets overwritten once it exceeds 0x3f00 bytes
+> > > > > > > which is quite common.
+> > > > > > > 
+> > > > > > > Revert this patch for now once a better solution can be found
+> > > > > > 
+> > > > > > In such a case, tree may be placed immediately after the kernel?
+> > > > > > It can also serve as an automatic option "ARM_APPENDED_DTB".
+> > > > > 
+> > > > > Did you actually stumbled over this problem? Normally the dtb is
+> > > > > allocated using malloc. The malloc region normally shouldn't overlap
+> > > > > with the kernels text region unless you are really tight of memory.
+> > > > > Was this on a clps711x?
+> > > > 
+> > > > I described it here:
+> > > > http://www.spinics.net/lists/u-boot-v2/msg15612.html
+> > > 
+> > > Seems this issue can be resolved by decrease MALLOC_SIZE.
+> > > 
+> > > ...
+> > >     0xc0380000 - 0xc077ffff (size 0x00400000) malloc space
+> > > ...
+> > 
+> > Does this mean you are fine with reverting the patch?
 > 
-> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> ---
-> 
-> Untested. From code inspection only.
-> 
->  net/net.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/net.c b/net/net.c
-> index 0bd9084..bd7a578 100644
-> --- a/net/net.c
-> +++ b/net/net.c
-> @@ -41,7 +41,7 @@ static unsigned int net_ip_id;
->  
->  int net_checksum_ok(unsigned char *ptr, int len)
->  {
-> -	return net_checksum(ptr, len) + 1;
-> +	return net_checksum(ptr, len) == 0;
+> Unfortunately I cannot test this now.
+> In any case if this breaks other builds, yes, we should revert this.
 
-D'oh. There's a bug indeed. For a good packet net_checksum returns
-0xffff (all ones in an u16). So the check should be:
-
-	return net_checksum(ptr, len) == 0xffff;
-
-U-Boot has this instead:
-
-	return !((net_checksum(ptr, len) + 1) & 0xfffe);
-
-From what I see both above should be equivalent so I wonder why U-Boot
-has such a complicated code here. Some compiler optimization or is this
-something I don't see?
+Ok, thanks. Just did that.
 
 Sascha
 
