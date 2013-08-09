@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from relay2.ptmail.sapo.pt ([212.55.154.22] helo=sapo.pt)
- by merlin.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V7VUJ-0006u3-8x
- for barebox@lists.infradead.org; Thu, 08 Aug 2013 19:03:08 +0000
-From: Cristiano Rodrigues <microcris@aeiou.pt>
-Date: Thu, 08 Aug 2013 19:02:40 +0100
-Message-ID: <3411064.hDDiBpcdpa@probook>
-In-Reply-To: <201307220959.23884.jbe@pengutronix.de>
-References: <2655265.6QViDogYJX@n56v> <20130709174049.GX516@pengutronix.de>
- <201307220959.23884.jbe@pengutronix.de>
-MIME-Version: 1.0
+Received: from tango.tkos.co.il ([62.219.50.35])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V7duO-0001hQ-Bl
+ for barebox@lists.infradead.org; Fri, 09 Aug 2013 04:02:39 +0000
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri,  9 Aug 2013 07:01:24 +0300
+Message-Id: <ce9d0dc069aa93694635e8bd5ac2fbd94bd2fa24.1376020752.git.baruch@tkos.co.il>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,45 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: mini2440 (256MB NAND)
-To: =?ISO-8859-1?Q?J=FCrgen?= Beisert <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] net: fix checksum verification
+To: barebox@lists.infradead.org
 
-Hi Juergen!
+Checksum verification on data including its own checksum (as is the case with
+IP headers) should give zero. Current code works well for the correct checksum
+case, but fails to identify (most) errors.
 
-I don't know if it was you or not but the problem seem to be solved :)
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
 
-thanks for answering :)
+Untested. From code inspection only.
 
-On Monday 22 July 2013 09:59:23 you wrote:
-> Hi Cristiano,
-> =
+ net/net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On Tuesday 09 July 2013 19:40:49 Sascha Hauer wrote:
-> > On Mon, Jul 08, 2013 at 10:42:43PM +0100, Cristiano Rodrigues wrote:
-> > > I'm trying to run the barebox (trunk version or any other recent
-> > > version)
-> > > in my mini2440 board but until now, I can't boot from nand.
-> > =
+diff --git a/net/net.c b/net/net.c
+index 0bd9084..bd7a578 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -41,7 +41,7 @@ static unsigned int net_ip_id;
+ 
+ int net_checksum_ok(unsigned char *ptr, int len)
+ {
+-	return net_checksum(ptr, len) + 1;
++	return net_checksum(ptr, len) == 0;
+ }
+ 
+ uint16_t net_checksum(unsigned char *ptr, int len)
+-- 
+1.8.4.rc1
 
-> > Sorry, I can't help you with friendlyarm. Probably J=FCrgen has an idea,
-> > but he is on holiday at the moment. Maybe he can help you once he's
-> > back.
-> =
-
-> I'm back now ;)
-> AFAIK there was some change in the generic bootstrap code. I guess the ba=
-se
-> code in the stepping stone RAM skipps the DRAM initialization by accident
-> due to this change. That's why it works when the DRAM is already up and
-> running and it fails if not.
-> =
-
-> Juergen
 
 _______________________________________________
 barebox mailing list
