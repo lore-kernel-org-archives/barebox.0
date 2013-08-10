@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from guitar.tcltek.co.il ([192.115.133.116] helo=sivan.tkos.co.il)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V7jkz-0000eB-Lq
- for barebox@lists.infradead.org; Fri, 09 Aug 2013 10:17:20 +0000
-Date: Fri, 9 Aug 2013 13:16:49 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20130809101649.GA3703@tarshish>
-References: <ce9d0dc069aa93694635e8bd5ac2fbd94bd2fa24.1376020752.git.baruch@tkos.co.il>
- <20130809073237.GA26614@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130809073237.GA26614@pengutronix.de>
+Received: from f319.i.mail.ru ([128.140.169.183])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1V80WN-0007LT-U5
+ for barebox@lists.infradead.org; Sat, 10 Aug 2013 04:11:24 +0000
+Received: from mail by f319.i.mail.ru with local (envelope-from
+ <shc_work@mail.ru>) id 1V80Vy-0001mp-16
+ for barebox@lists.infradead.org; Sat, 10 Aug 2013 08:10:54 +0400
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Sat, 10 Aug 2013 08:10:53 +0400
+Message-ID: <1376107853.217410060@f319.i.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,57 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: fix checksum verification
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UENNMDM4IFVTQiBpcyBicm9rZW4gYWdhaW4=?=
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Hello.
 
-On Fri, Aug 09, 2013 at 09:32:37AM +0200, Sascha Hauer wrote:
-> On Fri, Aug 09, 2013 at 07:01:24AM +0300, Baruch Siach wrote:
-> > Checksum verification on data including its own checksum (as is the case with
-> > IP headers) should give zero. Current code works well for the correct checksum
-> > case, but fails to identify (most) errors.
-> > 
-> > Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-> > ---
-> > 
-> > Untested. From code inspection only.
-> > 
-> >  net/net.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/net/net.c b/net/net.c
-> > index 0bd9084..bd7a578 100644
-> > --- a/net/net.c
-> > +++ b/net/net.c
-> > @@ -41,7 +41,7 @@ static unsigned int net_ip_id;
-> >  
-> >  int net_checksum_ok(unsigned char *ptr, int len)
-> >  {
-> > -	return net_checksum(ptr, len) + 1;
-> > +	return net_checksum(ptr, len) == 0;
-> 
-> D'oh. There's a bug indeed. For a good packet net_checksum returns
-> 0xffff (all ones in an u16). So the check should be:
-> 
-> 	return net_checksum(ptr, len) == 0xffff;
+USB functionality on PCM038 (PCM970) is broken again due
+patch "Revert usb: chipidea-imx: Fix usb initialization".
 
-You're right, of course. I was just blindly copying the kernel that has this 
-in ip_rcv():
+Board: Phytec phyCORE-i.MX27
+detected i.MX27 revision 2.1
+netconsole: registered as cs1
+mc13xxx-spi mc137830: Found MC13783 ID: 0x00009b [Rev: 3.1]
+cfi_flash cfi_flash0: found cfi flash at c0000000, size 33554432
+nand: NAND device: Manufacturer ID: 0x20, Chip ID: 0x36 (ST Micro NAND 64MiB 1,8V 8-bit), 64MiB, page size: 512, OOB size: 16
+Bad block table found at page 131040, version 0x01
+Bad block table found at page 131008, version 0x01
+imxfb imxfb: i.MX Framebuffer driver
+mdio_bus: miibus0: probed
+No ULPI found. vid: 0x0000 pid: 0x0000
+pcm038: Using environment in NOR Flash
+No ULPI found. vid: 0x0000 pid: 0x0000
+imx-usb imx-usb2: USB EHCI 1.00
+imx-mmc imx-mmc1: registered as imx-mmc1
+running /env/bin/init...
 
-    if (unlikely(ip_fast_csum((u8 *)iph, iph->ihl)))
-        goto csum_error;
+After remove this patch, all works fine.
 
-But I still don't understand the logic here.
+Board: Phytec phyCORE-i.MX27
+detected i.MX27 revision 2.1
+netconsole: registered as cs1
+mc13xxx-spi mc137830: Found MC13783 ID: 0x00009b [Rev: 3.1]
+cfi_flash cfi_flash0: found cfi flash at c0000000, size 33554432
+nand: NAND device: Manufacturer ID: 0x20, Chip ID: 0x36 (ST Micro NAND 64MiB 1,8V 8-bit), 64MiB, page size: 512, OOB size: 16
+Bad block table found at page 131040, version 0x01
+Bad block table found at page 131008, version 0x01
+imxfb imxfb: i.MX Framebuffer driver
+mdio_bus: miibus0: probed
+Found NXP ISP150x ULPI transceiver (0x04cc:0x1504).
+pcm038: Using environment in NOR Flash
+Found NXP ISP150x ULPI transceiver (0x04cc:0x1504).
+imx-usb imx-usb2: USB EHCI 1.00
+imx-mmc imx-mmc1: registered as imx-mmc1
+running /env/bin/init...
 
-baruch
-
--- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
