@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V8yMi-0004lj-3L
- for barebox@lists.infradead.org; Mon, 12 Aug 2013 20:05:21 +0000
-Date: Mon, 12 Aug 2013 22:04:57 +0200
+ id 1V8yOT-0004pM-Qf
+ for barebox@lists.infradead.org; Mon, 12 Aug 2013 20:07:10 +0000
+Date: Mon, 12 Aug 2013 22:06:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130812200457.GN26614@pengutronix.de>
-References: <1376302163-32509-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130812200648.GO26614@pengutronix.de>
+References: <1375867551-20318-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1376302163-32509-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1375867551-20318-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,49 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] uimage: fix: always support multi image support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] mfd: syscon: Replace dev_info with dev_dbg
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Aug 12, 2013 at 12:09:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> drop ifdef CONFIG_UIMAGE_MULTI as the Kconfig option is not present anyway
+On Wed, Aug 07, 2013 at 01:25:51PM +0400, Alexander Shiyan wrote:
+> There is no reason to print used region each time.
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Applied both
+Applied, thanks
 
-Thanks
- Sascha
-
+Sascha
 
 > ---
->  common/uimage.c | 7 -------
->  1 file changed, 7 deletions(-)
+>  drivers/mfd/syscon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/common/uimage.c b/common/uimage.c
-> index 1ac0b7d..ed93a4b 100644
-> --- a/common/uimage.c
-> +++ b/common/uimage.c
-> @@ -29,17 +29,10 @@
->  #include <filetype.h>
->  #include <memory.h>
+> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+> index b628ab7..52cb433 100644
+> --- a/drivers/mfd/syscon.c
+> +++ b/drivers/mfd/syscon.c
+> @@ -65,7 +65,7 @@ static int syscon_probe(struct device_d *dev)
+>  	syscon->base = (void __iomem *)res->start;
+>  	dev->priv = syscon;
 >  
-> -#ifdef CONFIG_UIMAGE_MULTI
->  static inline int uimage_is_multi_image(struct uimage_handle *handle)
->  {
->  	return (handle->header.ih_type == IH_TYPE_MULTI) ? 1 : 0;
+> -	dev_info(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
+> +	dev_dbg(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
+>  
+>  	return 0;
 >  }
-> -#else
-> -static inline int uimage_is_multi_image(struct uimage_handle *handle)
-> -{
-> -	return 0;
-> -}
-> -#endif
->  
->  void uimage_print_contents(struct uimage_handle *handle)
->  {
 > -- 
-> 1.8.4.rc1
+> 1.8.1.5
 > 
 > 
 > _______________________________________________
