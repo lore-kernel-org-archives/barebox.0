@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V8yOT-0004pM-Qf
- for barebox@lists.infradead.org; Mon, 12 Aug 2013 20:07:10 +0000
-Date: Mon, 12 Aug 2013 22:06:48 +0200
+ id 1V983s-0006pj-0y
+ for barebox@lists.infradead.org; Tue, 13 Aug 2013 06:26:33 +0000
+Date: Tue, 13 Aug 2013 08:26:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130812200648.GO26614@pengutronix.de>
-References: <1375867551-20318-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20130813062607.GQ26614@pengutronix.de>
+References: <1376107853.217410060@f319.i.mail.ru>
+ <20130812070759.GL26614@pengutronix.de>
+ <1376305016.963613355@f136.i.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1375867551-20318-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1376305016.963613355@f136.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,45 +24,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mfd: syscon: Replace dev_info with dev_dbg
+Subject: Re: PCM038 USB is broken again
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, Aug 07, 2013 at 01:25:51PM +0400, Alexander Shiyan wrote:
-> There is no reason to print used region each time.
+On Mon, Aug 12, 2013 at 02:56:56PM +0400, Alexander Shiyan wrote:
+> ...
+> And yes, this works after "usb" command:
+> barebox@ConnectCore i.MX51:/ usb
+> USB: scanning bus for devices...
+> Found NXP ISP150x ULPI transceiver (0x04cc:0x1504).
+> Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> 1 USB Device(s) found
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> So, you consider this is not a bug?
 
-Applied, thanks
+Doing the initialization twice is not nice and wasn't intended, so
+indeed this is something worth fixing.
 
 Sascha
-
-> ---
->  drivers/mfd/syscon.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-> index b628ab7..52cb433 100644
-> --- a/drivers/mfd/syscon.c
-> +++ b/drivers/mfd/syscon.c
-> @@ -65,7 +65,7 @@ static int syscon_probe(struct device_d *dev)
->  	syscon->base = (void __iomem *)res->start;
->  	dev->priv = syscon;
->  
-> -	dev_info(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
-> +	dev_dbg(dev, "map 0x%x-0x%x registered\n", res->start, res->end);
->  
->  	return 0;
->  }
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
