@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-f193.google.com ([209.85.128.193])
+Received: from smtp53.i.mail.ru ([94.100.177.113])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VA2kp-0006XQ-P7
- for barebox@lists.infradead.org; Thu, 15 Aug 2013 18:58:40 +0000
-Received: by mail-ve0-f193.google.com with SMTP id ox1so300136veb.0
- for <barebox@lists.infradead.org>; Thu, 15 Aug 2013 11:58:15 -0700 (PDT)
-MIME-Version: 1.0
-Date: Thu, 15 Aug 2013 14:58:15 -0400
-Message-ID: <CAJyuEedwD--ZJX0j5vBnb4s495FX=TK2fRkx9fMKWNKh3AVShw@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+ id 1VA3ID-0007Ds-WB
+ for barebox@lists.infradead.org; Thu, 15 Aug 2013 19:33:11 +0000
+Date: Thu, 15 Aug 2013 23:32:41 +0400
+From: Alexander Shiyan <shc_work@mail.ru>
+Message-Id: <20130815233241.67b6727ce65114b59807f8ea@mail.ru>
+In-Reply-To: <20130813062607.GQ26614@pengutronix.de>
+References: <1376107853.217410060@f319.i.mail.ru>
+ <20130812070759.GL26614@pengutronix.de>
+ <1376305016.963613355@f136.i.mail.ru>
+ <20130813062607.GQ26614@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting BareBox to Variscite iMX6 SOM
-To: barebox@lists.infradead.org
+Subject: Re: PCM038 USB is broken again
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-I figured I'd throw this question out to everyone (Sascha has already
-been very helpful,
-but I don't want to pester him too much!).
+On Tue, 13 Aug 2013 08:26:07 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-I have currently been attempting to port BareBox over to a Variscite
-SOM with an iMX6Q
-on it.
+> On Mon, Aug 12, 2013 at 02:56:56PM +0400, Alexander Shiyan wrote:
+> > ...
+> > And yes, this works after "usb" command:
+> > barebox@ConnectCore i.MX51:/ usb
+> > USB: scanning bus for devices...
+> > Found NXP ISP150x ULPI transceiver (0x04cc:0x1504).
+> > Bus 001 Device 001: ID 0000:0000 EHCI Host Controller
+> > 1 USB Device(s) found
+> > 
+> > So, you consider this is not a bug?
+> 
+> Doing the initialization twice is not nice and wasn't intended, so
+> indeed this is something worth fixing.
 
-Steps followed so far:
+Datasheet MCIMX51RM.pdf says:
+60.3.8 ULPI/Serial MUX
+Host1, Host2, and OTG cores can be configured by software for ULPI or Serial PHY operation. The
+ULPI/Serial mux selects between ULPI interface signals and Serial PHY interface signals. The mux is
+controlled by the PHY Select signals from the USB core and is switched when the software selects the
+interface mode.
+The default configuration for the mux is Serial mode. Switching to ULPI mode is done by writing the
+Parallel Transceiver Select (PTS) bits in the PORTSC register with 0b10.
 
-1) Started from current 8.2013 BareBox
-2) Started from ARM2 iMX6 version which is a fairly clean/uncluttered version.
-3) Migrated the DCD registers from Variscite's known working u-Boot
-BSP into flash_header.c
-4) (Hopefully) properly verified the flash header information
-5) Verified the arm_entry and size in lowlevel.c
-6) Updated board.c with a set of reasonable IOMUX settings, etc.
-7) Added a few simple commands at the start of xxx_devices_init() to
-toggle a GPIO LED
-8) Compiled BareBox on Ubuntu 12 w/Linaro tool chain
-9) copied image to SD card with dd if=barebox.bin of=/dev/sdb bs=512
-seek=2 skip=2 conv=fsync
-10) attempted to boot the image from SD with the appropriate GPIO
-strappings on BOOT_CFG pins.
+So, we need to setup PORTSC to ULPI mode first.
 
-The end result is, as far as I can tell, nothing happens. It attempts
-to boot the code but never
-succeeds in starting BareBox (my LED never changes state).
-
-If I do the exact same operations but with the Variscite version of
-u-Boot (with my LED toggle code
-added) then everything works as expected.
-
-Does anyone have any suggestions on what to try next or any thing I
-may have overlooked?
-
-Has anyone else out there attempted to port BareBox to the Variscite SOM's?
-
-Any and all help would be greatly appreciated!
-
-Thanks,
-Michael Burkey
+-- 
+Alexander Shiyan <shc_work@mail.ru>
 
 _______________________________________________
 barebox mailing list
