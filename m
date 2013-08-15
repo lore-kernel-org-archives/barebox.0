@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22c.google.com ([2a00:1450:4008:c01::22c])
+Received: from mail-bk0-x233.google.com ([2a00:1450:4008:c01::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V9xXn-00061p-AM
- for barebox@lists.infradead.org; Thu, 15 Aug 2013 13:24:54 +0000
-Received: by mail-bk0-f44.google.com with SMTP id mz10so229144bkb.3
- for <barebox@lists.infradead.org>; Thu, 15 Aug 2013 06:24:26 -0700 (PDT)
+ id 1V9xXm-00061o-Jk
+ for barebox@lists.infradead.org; Thu, 15 Aug 2013 13:24:52 +0000
+Received: by mail-bk0-f51.google.com with SMTP id mx10so219568bkb.24
+ for <barebox@lists.infradead.org>; Thu, 15 Aug 2013 06:24:27 -0700 (PDT)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Thu, 15 Aug 2013 15:24:16 +0200
-Message-Id: <1376573059-15055-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Thu, 15 Aug 2013 15:24:19 +0200
+Message-Id: <1376573059-15055-4-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1376573059-15055-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1376573059-15055-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +23,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] Marvell MVEBU OF clock providers
+Subject: [PATCH 3/3] ARM: dove: remove temporary clock and non-DT device
+ probing
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-This patch set adds OF clock providers for core clocks and clock gates found
-on Marvell MVEBU SoCs (Armada 370, Armada XP, Dove, and Kirkwood). The code
-has been adopted for Barebox from Linux clock providers.
+With OF clock providers, we can now remove temporary clocks and clock
+aliases. Also, non-DT device probing for timer and serial is removed.
 
-Patch 1 adds a missing clocks property to the timer node of Dove DT.
-Patch 2 adds OF clock providers for the four SoCs above.
-Patch 3 coverts Dove SoC init to DT probed devices only.
-
-The patches have been tested on SolidRun CuBox for Dove. Other SoCs are
-compile tested only as they have not been ported to DT, yet (Armada 370
-has, but shares SoC init with Armada XP which has not).
-
-Sebastian Hesselbarth (3):
-  ARM: dove: add missing clocks property to timer node
-  clk: mvebu: add OF clock providers for Marvell MVEBU SoCs
-  ARM: dove: remove temporary clock and non-DT device probing
-
- arch/arm/Kconfig               |    1 +
- arch/arm/dts/dove.dtsi         |    3 +-
- arch/arm/mach-mvebu/dove.c     |   58 ----------
- drivers/clk/Makefile           |    1 +
- drivers/clk/mvebu/Makefile     |    5 +
- drivers/clk/mvebu/armada-370.c |  160 ++++++++++++++++++++++++++++
- drivers/clk/mvebu/armada-xp.c  |  194 ++++++++++++++++++++++++++++++++++
- drivers/clk/mvebu/common.c     |  208 +++++++++++++++++++++++++++++++++++++
- drivers/clk/mvebu/common.h     |   70 +++++++++++++
- drivers/clk/mvebu/dove.c       |  179 ++++++++++++++++++++++++++++++++
- drivers/clk/mvebu/kirkwood.c   |  224 ++++++++++++++++++++++++++++++++++++++++
- 11 files changed, 1044 insertions(+), 59 deletions(-)
- create mode 100644 drivers/clk/mvebu/Makefile
- create mode 100644 drivers/clk/mvebu/armada-370.c
- create mode 100644 drivers/clk/mvebu/armada-xp.c
- create mode 100644 drivers/clk/mvebu/common.c
- create mode 100644 drivers/clk/mvebu/common.h
- create mode 100644 drivers/clk/mvebu/dove.c
- create mode 100644 drivers/clk/mvebu/kirkwood.c
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 Cc: barebox@lists.infradead.org
+---
+ arch/arm/mach-mvebu/dove.c |   58 --------------------------------------------
+ 1 files changed, 0 insertions(+), 58 deletions(-)
+
+diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
+index 16ee116..f081e50 100644
+--- a/arch/arm/mach-mvebu/dove.c
++++ b/arch/arm/mach-mvebu/dove.c
+@@ -17,16 +17,9 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
+-#include <ns16550.h>
+-#include <linux/clk.h>
+-#include <linux/clkdev.h>
+ #include <asm/memory.h>
+ #include <mach/dove-regs.h>
+ 
+-#define CONSOLE_UART_BASE	DOVE_UARTn_BASE(CONFIG_MVEBU_CONSOLE_UART)
+-
+-static struct clk *tclk;
+-
+ static inline void dove_remap_mc_regs(void)
+ {
+ 	void __iomem *mcboot = IOMEM(DOVE_BOOTUP_MC_REGS);
+@@ -74,64 +67,13 @@ static inline void dove_memory_find(unsigned long *phys_base,
+ 	}
+ }
+ 
+-static struct NS16550_plat uart_plat = {
+-	.shift = 2,
+-};
+-
+-static int dove_add_uart(void)
+-{
+-	uart_plat.clock = clk_get_rate(tclk);
+-	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
+-				(unsigned int)CONSOLE_UART_BASE, 32,
+-				IORESOURCE_MEM_32BIT, &uart_plat))
+-		return -ENODEV;
+-	return 0;
+-}
+-
+-/*
+- * Dove TCLK sample-at-reset configuation
+- *
+- * SAR0[24:23] : TCLK frequency
+- *		 0 = 166 MHz
+- *		 1 = 125 MHz
+- *		 others reserved.
+- */
+-static int dove_init_clocks(void)
+-{
+-	uint32_t strap, sar = readl(DOVE_SAR_BASE + SAR0);
+-	unsigned int rate;
+-
+-	strap = (sar & TCLK_FREQ_MASK) >> TCLK_FREQ_SHIFT;
+-	switch (strap) {
+-	case 0:
+-		rate = 166666667;
+-		break;
+-	case 1:
+-		rate = 125000000;
+-		break;
+-	default:
+-		panic("Unknown TCLK strapping %d\n", strap);
+-	}
+-
+-	tclk = clk_fixed("tclk", rate);
+-	return 0;
+-}
+-
+ static int dove_init_soc(void)
+ {
+ 	unsigned long phys_base, phys_size;
+ 
+ 	dove_remap_mc_regs();
+-	dove_init_clocks();
+-	clkdev_add_physbase(tclk, (unsigned int)DOVE_TIMER_BASE, NULL);
+-	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI0_BASE, NULL);
+-	clkdev_add_physbase(tclk, (unsigned int)DOVE_SPI1_BASE, NULL);
+-	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
+-			   (unsigned int)DOVE_TIMER_BASE, 0x30,
+-			   IORESOURCE_MEM, NULL);
+ 	dove_memory_find(&phys_base, &phys_size);
+ 	arm_add_mem_device("ram0", phys_base, phys_size);
+-	dove_add_uart();
+ 
+ 	return 0;
+ }
 -- 
 1.7.2.5
 
