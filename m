@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V9x2m-0007gv-O9
- for barebox@lists.infradead.org; Thu, 15 Aug 2013 12:52:50 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 Aug 2013 14:52:23 +0200
-Message-Id: <1376571143-10936-1-git-send-email-s.hauer@pengutronix.de>
+ id 1V9xXm-00061m-DX
+ for barebox@lists.infradead.org; Thu, 15 Aug 2013 13:24:51 +0000
+Received: by mail-bk0-f49.google.com with SMTP id r7so218247bkg.8
+ for <barebox@lists.infradead.org>; Thu, 15 Aug 2013 06:24:27 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Thu, 15 Aug 2013 15:24:17 +0200
+Message-Id: <1376573059-15055-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1376573059-15055-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1376573059-15055-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,57 +23,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx-image: Align image size
-To: barebox@lists.infradead.org
+Subject: [PATCH 1/3] ARM: dove: add missing clocks property to timer node
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
 
-Several boot modes on i.MX can't cope with partial pages or
-non word aligned image lengths, so align the size to 4k.
+Timer node was missing a clocks property to core_clk 0 (tclk). Add it
+and while at it, also fix a whitespace issue.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
- scripts/imx/imx-image.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Cc: Ezequiel Garcia <ezequiel.garcia@free-electrons.com>
+Cc: barebox@lists.infradead.org
+---
+ arch/arm/dts/dove.dtsi |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 09fdc5f..ec571eb 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -632,7 +632,7 @@ int main(int argc, char *argv[])
- 	char *imagename = NULL;
- 	char *outfile = NULL;
- 	void *buf;
--	size_t image_size = 0;
-+	size_t image_size = 0, load_size;
- 	struct stat s;
- 	int infd, outfd;
- 	int dcd_only = 0;
-@@ -714,12 +714,22 @@ int main(int argc, char *argv[])
- 		exit (0);
- 	}
+diff --git a/arch/arm/dts/dove.dtsi b/arch/arm/dts/dove.dtsi
+index 4ee8db0..32fbf28 100644
+--- a/arch/arm/dts/dove.dtsi
++++ b/arch/arm/dts/dove.dtsi
+@@ -34,7 +34,8 @@
  
-+	/*
-+	 * Add 0x1000 to the image size for the DCD.
-+	 * Align up to a 4k boundary, because:
-+	 * - at least i.MX5 NAND boot only reads full NAND pages and misses the
-+	 *   last partial NAND page.
-+	 * - i.MX6 SPI NOR boot corrupts the last few bytes of an image loaded
-+	 *   in ver funy ways when the image size is not 4 byte aligned
-+	 */
-+	load_size = ((image_size + 0x1000) + 0xfff) & ~0xfff;
-+
- 	switch (header_version) {
- 	case 1:
--		add_header_v1(buf, image_dcd_offset, image_load_addr, image_size + 0x1000);
-+		add_header_v1(buf, image_dcd_offset, image_load_addr, load_size);
- 		break;
- 	case 2:
--		add_header_v2(buf, image_dcd_offset, image_load_addr, image_size + 0x1000);
-+		add_header_v2(buf, image_dcd_offset, image_load_addr, load_size);
- 		break;
- 	default:
- 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
+ 		timer: timer@20300 {
+ 			compatible = "marvell,orion-timer";
+-                        reg = <0x20300 0x30>;
++			reg = <0x20300 0x30>;
++			clocks = <&core_clk 0>;
+ 		};
+ 
+ 		intc: interrupt-controller@20204 {
 -- 
-1.8.4.rc2
+1.7.2.5
 
 
 _______________________________________________
