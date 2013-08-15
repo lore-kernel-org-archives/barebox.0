@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V9tir-00030v-0w
- for barebox@lists.infradead.org; Thu, 15 Aug 2013 09:20:02 +0000
-Received: by mail-bk0-f50.google.com with SMTP id mz11so149239bkb.9
- for <barebox@lists.infradead.org>; Thu, 15 Aug 2013 02:19:39 -0700 (PDT)
-Message-ID: <520C9D27.8020801@gmail.com>
-Date: Thu, 15 Aug 2013 11:19:35 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-References: <1376551741-16438-1-git-send-email-s.hauer@pengutronix.de>
- <1376551741-16438-8-git-send-email-s.hauer@pengutronix.de>
- <520C9A63.3050706@gmail.com> <20130815091326.GG26614@pengutronix.de>
-In-Reply-To: <20130815091326.GG26614@pengutronix.de>
+ id 1V9x2r-0007gw-60
+ for barebox@lists.infradead.org; Thu, 15 Aug 2013 12:52:53 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 15 Aug 2013 14:52:28 +0200
+Message-Id: <1376571148-11290-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,77 +14,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/8] Set model and hostname at boardlevel
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
+Subject: [PATCH] ARM: i.MX6 phyflex: Enable lowlevel UART
+To: barebox@lists.infradead.org
 
-On 08/15/13 11:13, Sascha Hauer wrote:
-> On Thu, Aug 15, 2013 at 11:07:47AM +0200, Sebastian Hesselbarth wrote:
->> On 08/15/13 09:29, Sascha Hauer wrote:
->>> With multiboard support the compiletime generated BOARDINFO string
->>> gets more and more meaningless. This removes it from Kconfig and
->>> replaces it with a variable that can be set at boardlevel.
->>>
->>> Also many boards have a standard setting for the hostname in the
->>> environment. This patch also moves the standard to C code by calling
->>> barebox_set_hostname().
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> [...]
->>> diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
->>> index 24720d5..b1d148d 100644
->>> --- a/arch/arm/mach-mvebu/armada-370-xp.c
->>> +++ b/arch/arm/mach-mvebu/armada-370-xp.c
->>> @@ -100,6 +100,9 @@ static int armada_370_xp_init_soc(void)
->>>   {
->>>   	unsigned long phys_base, phys_size;
->>>
->>> +	barebox_set_model("Marvell Armada");
->>
->> Marvell Armada SoC family comprises more than just 370 and XP. I suggest
->> to name it "Marvell Armada 370/XP" instead. More Armada SoCs may add to
->> this init, but right now it's only those two.
->
-> Normally this should be a boardname, but the corresponding code where I
-> could add it does not exist. Once the name comes from the devicetree
-> this will be solved since the name will come from there then.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/phytec-pfla02/lowlevel.c | 35 ++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-Ok, I see.
-
-> So I can change it to "Marvell Armada 370/XP" for now and hope that the
-> boards will be converted to devicetree when more SoCs are added.
-
-We are going for DT-only anyway, but just squash it in. I guess Thomas
-will find some time to work on it soon.
-
-[...]
->>> +	barebox_set_model("Marvell kirkwood");
->>
->> typo s/kirk/Kirk/
->
-> Ok, will change.
->
->>
->>> +	barebox_set_hostname("kirkwood");
->>> +
->>>   	kirkwood_init_clocks();
->>>   	clkdev_add_physbase(tclk, (unsigned int)KIRKWOOD_TIMER_BASE, NULL);
->>>   	add_generic_device("orion-timer", DEVICE_ID_SINGLE, NULL,
->>
->> Also, corresponding changes for Dove are missing (diff below).
->
-> The one Dove board we currently have (Cubox) is converted over to
-> devicetree, so the boardname will come from there. I could add it for
-> now and remove it in the merge of the devicetree conversion and this
-> series.
-
-Ok, then drop the diff.
-
-Sebastian
+diff --git a/arch/arm/boards/phytec-pfla02/lowlevel.c b/arch/arm/boards/phytec-pfla02/lowlevel.c
+index 104c25f..10929b5 100644
+--- a/arch/arm/boards/phytec-pfla02/lowlevel.c
++++ b/arch/arm/boards/phytec-pfla02/lowlevel.c
+@@ -24,6 +24,35 @@
+ #include <mach/imx6-mmdc.h>
+ #include <mach/imx6.h>
+ 
++static inline void setup_uart(void)
++{
++	void __iomem *ccmbase = (void *)MX6_CCM_BASE_ADDR;
++	void __iomem *uartbase = (void *)MX6_UART4_BASE_ADDR;
++	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
++
++	writel(0x4, iomuxbase + 0x01f8);
++
++	writel(0xffffffff, ccmbase + 0x68);
++	writel(0xffffffff, ccmbase + 0x6c);
++	writel(0xffffffff, ccmbase + 0x70);
++	writel(0xffffffff, ccmbase + 0x74);
++	writel(0xffffffff, ccmbase + 0x78);
++	writel(0xffffffff, ccmbase + 0x7c);
++	writel(0xffffffff, ccmbase + 0x80);
++
++	writel(0x00000000, uartbase + 0x80);
++	writel(0x00004027, uartbase + 0x84);
++	writel(0x00000704, uartbase + 0x88);
++	writel(0x00000a81, uartbase + 0x90);
++	writel(0x0000002b, uartbase + 0x9c);
++	writel(0x00013880, uartbase + 0xb0);
++	writel(0x0000047f, uartbase + 0xa4);
++	writel(0x0000c34f, uartbase + 0xa8);
++	writel(0x00000001, uartbase + 0x80);
++
++	PUTC_LL('>');
++}
++
+ extern char __dtb_imx6q_phytec_pbab01_start[];
+ 
+ ENTRY_FUNCTION(start_phytec_pbab01_1gib)(void)
+@@ -36,6 +65,9 @@ ENTRY_FUNCTION(start_phytec_pbab01_1gib)(void)
+ 
+ 	arm_setup_stack(0x00920000 - 8);
+ 
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
+ 	fdt = (uint32_t)__dtb_imx6q_phytec_pbab01_start - get_runtime_offset();
+ 
+ 	barebox_arm_entry(0x10000000, SZ_1G, fdt);
+@@ -51,6 +83,9 @@ ENTRY_FUNCTION(start_phytec_pbab01_2gib)(void)
+ 
+ 	arm_setup_stack(0x00920000 - 8);
+ 
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
+ 	fdt = (uint32_t)__dtb_imx6q_phytec_pbab01_start - get_runtime_offset();
+ 
+ 	barebox_arm_entry(0x10000000, SZ_2G, fdt);
+-- 
+1.8.4.rc2
 
 
 _______________________________________________
