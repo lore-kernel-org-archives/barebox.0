@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1V9aRU-0007tI-HY
- for barebox@lists.infradead.org; Wed, 14 Aug 2013 12:44:50 +0000
-Date: Wed, 14 Aug 2013 14:44:25 +0200
+ id 1V9rzp-0000A9-Gz
+ for barebox@lists.infradead.org; Thu, 15 Aug 2013 07:29:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130814124425.GZ26614@pengutronix.de>
-References: <1376476736-15172-1-git-send-email-david@protonic.nl>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1376476736-15172-1-git-send-email-david@protonic.nl>
+Date: Thu, 15 Aug 2013 09:28:58 +0200
+Message-Id: <1376551741-16438-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1376551741-16438-1-git-send-email-s.hauer@pengutronix.de>
+References: <1376551741-16438-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +16,100 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] of: base.c: Use correct device-tree in of_add_initrd()
-To: David Jander <david@protonic.nl>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/8] introduce barebox_set_model
+To: barebox@lists.infradead.org
 
-Hi David,
+Instead of calling of_get_model() in barebox_get_model() add a
+barebox_set_model() and use it to set the boardinfo once it's
+available from the devicetree.
 
-On Wed, Aug 14, 2013 at 12:38:56PM +0200, David Jander wrote:
-> Otherwise only the internal DT is modified, not necessarily the one passed
-> to the kernel.
-> 
-> Signed-off-by: David Jander <david@protonic.nl>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/misc.c     | 23 +++++++++++++++--------
+ drivers/of/base.c |  3 +++
+ include/common.h  |  1 +
+ 3 files changed, 19 insertions(+), 8 deletions(-)
 
-Thanks. Applied to master and stable/v2013.08
-
-Sascha
-
-> ---
->  drivers/of/base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 34a06c2..ce474be 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1732,7 +1732,7 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
->  	struct device_node *chosen;
->  	__be32 buf[2];
->  
-> -	chosen = of_find_node_by_path("/chosen");
-> +	chosen = of_find_node_by_path_from(root, "/chosen");
->  	if (!chosen)
->  		return -EINVAL;
->  
-> -- 
-> 1.8.1.2
-> 
-> 
-
+diff --git a/common/misc.c b/common/misc.c
+index 14c3304..bb7d447 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -18,6 +18,7 @@
+ 
+ #include <common.h>
+ #include <errno.h>
++#include <malloc.h>
+ 
+ int errno;
+ EXPORT_SYMBOL(errno);
+@@ -126,19 +127,25 @@ EXPORT_SYMBOL(perror);
+ void (*do_execute)(void *func, int argc, char *argv[]);
+ EXPORT_SYMBOL(do_execute);
+ 
+-static const char *model;
++static char *model;
++
++/*
++ * The model is the verbose name of a board. It can contain
++ * whitespaces, uppercase/lowcer letters, digits, ',', '.'
++ * '-', '_'
++ */
++void barebox_set_model(const char *__model)
++{
++	free(model);
++	model = xstrdup(__model);
++}
++EXPORT_SYMBOL(barebox_set_model);
+ 
+ const char *barebox_get_model(void)
+ {
+ 	if (model)
+ 		return model;
+ 
+-	model = of_get_model();
+-	if (model)
+-		model = xstrdup(model);
+-	else
+-		model = CONFIG_BOARDINFO;
+-
+-	return model;
++	return CONFIG_BOARDINFO;
+ }
+ EXPORT_SYMBOL(barebox_get_model);
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 4770421..8af51d4 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1610,6 +1610,9 @@ int of_probe(void)
+ 	of_chosen = of_find_node_by_path("/chosen");
+ 	of_property_read_string(root_node, "model", &of_model);
+ 
++	if (of_model)
++		barebox_set_model(of_model);
++
+ 	__of_parse_phandles(root_node);
+ 
+ 	memory = of_find_node_by_path("/memory");
+diff --git a/include/common.h b/include/common.h
+index 09b8c39..7d05d8b 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -235,6 +235,7 @@ static inline void barebox_banner(void) {}
+ #endif
+ 
+ const char *barebox_get_model(void);
++void barebox_set_model(const char *);
+ 
+ #define IOMEM(addr)	((void __force __iomem *)(addr))
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.4.rc2
+
 
 _______________________________________________
 barebox mailing list
