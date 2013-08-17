@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VAclo-0003FJ-Dk
- for barebox@lists.infradead.org; Sat, 17 Aug 2013 09:26:06 +0000
+ id 1VAclo-0003FM-E1
+ for barebox@lists.infradead.org; Sat, 17 Aug 2013 09:26:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 17 Aug 2013 11:25:32 +0200
-Message-Id: <1376731537-12102-4-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 17 Aug 2013 11:25:36 +0200
+Message-Id: <1376731537-12102-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1376731537-12102-1-git-send-email-s.hauer@pengutronix.de>
 References: <1376731537-12102-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: i.MX23: Fix double include protection
+Subject: [PATCH 7/8] ARM: i.MX: move iomux definitions to iomux.h
 To: barebox@lists.infradead.org
 
-Using __ASM_MACH_IOMUX_H will break once we introduce a
-iomux.h which uses exactly this string as double include
-protection. Use a SoC specific string instead.
+mach/gpio.h is for the gpio API, so move unrelated stuff
+away.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-mxs/include/mach/iomux-imx23.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mach-imx/include/mach/gpio.h     | 2 --
+ arch/arm/mach-imx/include/mach/iomux-v1.h | 1 +
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-mxs/include/mach/iomux-imx23.h b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
-index ebe0ac4..39d6981 100644
---- a/arch/arm/mach-mxs/include/mach/iomux-imx23.h
-+++ b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
-@@ -27,8 +27,8 @@
-  *            ^_____________________ initial output value if enabled as GPIO and configured as output
-  *           ^______________________ Bit keeper present
-  */
--#ifndef __ASM_MACH_IOMUX_H
--#define __ASM_MACH_IOMUX_H
-+#ifndef __ASM_MACH_IOMUX_MX23_H
-+#define __ASM_MACH_IOMUX_MX23_H
+diff --git a/arch/arm/mach-imx/include/mach/gpio.h b/arch/arm/mach-imx/include/mach/gpio.h
+index 489ae2c..fee693e 100644
+--- a/arch/arm/mach-imx/include/mach/gpio.h
++++ b/arch/arm/mach-imx/include/mach/gpio.h
+@@ -3,6 +3,4 @@
  
- /* control pad's function */
- #define FBIT_SHIFT (3)
-@@ -422,4 +422,4 @@
- #define EMI_DQM0		(FUNC(0) | PORTF(7, 0) | SE | VE | PE)
- #define EMI_DQM0_DISABLED	(FUNC(3) | PORTF(7, 0) | SE | VE | PE)
+ #include <asm-generic/gpio.h>
  
--#endif /* __ASM_MACH_IOMUX_H */
-+#endif /* __ASM_MACH_IOMUX_MX23_H */
+-void imx_gpio_mode(int gpio_mode);
+-
+ #endif /* __ASM_ARCH_GPIO_H */
+diff --git a/arch/arm/mach-imx/include/mach/iomux-v1.h b/arch/arm/mach-imx/include/mach/iomux-v1.h
+index 49dcecd..e822905 100644
+--- a/arch/arm/mach-imx/include/mach/iomux-v1.h
++++ b/arch/arm/mach-imx/include/mach/iomux-v1.h
+@@ -46,5 +46,6 @@
+ #define GPIO_GIUS      (1 << 16)
+ 
+ void imx_iomuxv1_init(void __iomem *base);
++void imx_gpio_mode(int gpio_mode);
+ 
+ #endif /* __MACH_IOMUX_V1_H__ */
 -- 
 1.8.4.rc2
 
