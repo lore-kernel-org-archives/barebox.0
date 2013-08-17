@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VAclo-0003FH-E5
- for barebox@lists.infradead.org; Sat, 17 Aug 2013 09:26:05 +0000
+ id 1VAclo-0003FJ-Dk
+ for barebox@lists.infradead.org; Sat, 17 Aug 2013 09:26:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sat, 17 Aug 2013 11:25:30 +0200
-Message-Id: <1376731537-12102-2-git-send-email-s.hauer@pengutronix.de>
+Date: Sat, 17 Aug 2013 11:25:32 +0200
+Message-Id: <1376731537-12102-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1376731537-12102-1-git-send-email-s.hauer@pengutronix.de>
 References: <1376731537-12102-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/8] ARM: AT91: Add missing include
+Subject: [PATCH 3/8] ARM: i.MX23: Fix double include protection
 To: barebox@lists.infradead.org
 
-mach/io.h uses AT91_BASE_SYS, hence it needs mach/hardware.h.
+Using __ASM_MACH_IOMUX_H will break once we introduce a
+iomux.h which uses exactly this string as double include
+protection. Use a SoC specific string instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-at91/include/mach/io.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-mxs/include/mach/iomux-imx23.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-at91/include/mach/io.h b/arch/arm/mach-at91/include/mach/io.h
-index bffa8f2..a1d970f 100644
---- a/arch/arm/mach-at91/include/mach/io.h
-+++ b/arch/arm/mach-at91/include/mach/io.h
-@@ -19,6 +19,7 @@
- #define __ASM_ARCH_IO_H
+diff --git a/arch/arm/mach-mxs/include/mach/iomux-imx23.h b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
+index ebe0ac4..39d6981 100644
+--- a/arch/arm/mach-mxs/include/mach/iomux-imx23.h
++++ b/arch/arm/mach-mxs/include/mach/iomux-imx23.h
+@@ -27,8 +27,8 @@
+  *            ^_____________________ initial output value if enabled as GPIO and configured as output
+  *           ^______________________ Bit keeper present
+  */
+-#ifndef __ASM_MACH_IOMUX_H
+-#define __ASM_MACH_IOMUX_H
++#ifndef __ASM_MACH_IOMUX_MX23_H
++#define __ASM_MACH_IOMUX_MX23_H
  
- #include <io.h>
-+#include <mach/hardware.h>
+ /* control pad's function */
+ #define FBIT_SHIFT (3)
+@@ -422,4 +422,4 @@
+ #define EMI_DQM0		(FUNC(0) | PORTF(7, 0) | SE | VE | PE)
+ #define EMI_DQM0_DISABLED	(FUNC(3) | PORTF(7, 0) | SE | VE | PE)
  
- static inline unsigned int at91_sys_read(unsigned int reg_offset)
- {
+-#endif /* __ASM_MACH_IOMUX_H */
++#endif /* __ASM_MACH_IOMUX_MX23_H */
 -- 
 1.8.4.rc2
 
