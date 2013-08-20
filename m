@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VBhub-0006R1-7F
- for barebox@lists.infradead.org; Tue, 20 Aug 2013 09:07:38 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 20 Aug 2013 11:07:13 +0200
-Message-Id: <1376989634-13909-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VBkld-0002Of-W3
+ for barebox@lists.infradead.org; Tue, 20 Aug 2013 12:10:35 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 326B2BF0EC
+ for <barebox@lists.infradead.org>; Tue, 20 Aug 2013 14:01:52 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Tue, 20 Aug 2013 14:10:04 +0200
+Message-Id: <1377000604-26071-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,177 +18,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: move esdctl device registration to soc_init
+Subject: [PATCH] AM33xx: Make OSC frequency board depended
 To: barebox@lists.infradead.org
 
-The esdctl devices are currently not in the devicetrees. this means
-they are not registered when booting from the devicetree. Move the
-device registration from soc_devices_init to soc_init which is called
-even with devicetree support so that we get esdctl devices.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/imx1.c  | 2 +-
- arch/arm/mach-imx/imx25.c | 2 +-
- arch/arm/mach-imx/imx27.c | 4 ++--
- arch/arm/mach-imx/imx31.c | 2 +-
- arch/arm/mach-imx/imx35.c | 2 +-
- arch/arm/mach-imx/imx51.c | 2 +-
- arch/arm/mach-imx/imx53.c | 2 +-
- 7 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/arch/arm/mach-imx/imx1.c b/arch/arm/mach-imx/imx1.c
-index ecd71b8..78a0242 100644
---- a/arch/arm/mach-imx/imx1.c
-+++ b/arch/arm/mach-imx/imx1.c
-@@ -55,6 +55,7 @@ void imx1_setup_eimcs(size_t cs, unsigned upper, unsigned lower)
- int imx1_init(void)
- {
- 	imx1_detect_reset_source();
-+	add_generic_device("imx1-sdramc", 0, NULL, MX1_SDRAMC_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -70,7 +71,6 @@ int imx1_devices_init(void)
- 	add_generic_device("imx1-gpio", 2, NULL, MX1_GPIO3_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 3, NULL, MX1_GPIO4_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-wdt", 0, NULL, MX1_WDT_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
--	add_generic_device("imx1-sdramc", 0, NULL, MX1_SDRAMC_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/imx25.c b/arch/arm/mach-imx/imx25.c
-index 1d94419..1f87787 100644
---- a/arch/arm/mach-imx/imx25.c
-+++ b/arch/arm/mach-imx/imx25.c
-@@ -56,6 +56,7 @@ u64 imx_uid(void)
- int imx25_init(void)
- {
- 	imx25_boot_save_loc((void *)MX25_CCM_BASE_ADDR);
-+	add_generic_device("imx25-esdctl", 0, NULL, MX25_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -73,7 +74,6 @@ int imx25_devices_init(void)
- 	add_generic_device("imx31-gpio", 2, NULL, MX25_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpio", 3, NULL, MX25_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX25_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx25-esdctl", 0, NULL, MX25_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/imx27.c b/arch/arm/mach-imx/imx27.c
-index e0f4765..d3eaa87 100644
---- a/arch/arm/mach-imx/imx27.c
-+++ b/arch/arm/mach-imx/imx27.c
-@@ -101,6 +101,8 @@ int imx27_init(void)
- {
- 	imx27_silicon_revision();
- 	imx27_boot_save_loc((void *)MX27_SYSCTRL_BASE_ADDR);
-+	add_generic_device("imx27-esdctl", DEVICE_ID_SINGLE, NULL,
-+			   MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -124,8 +126,6 @@ int imx27_devices_init(void)
- 	add_generic_device("imx1-gpio", 4, NULL, MX27_GPIO5_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx1-gpio", 5, NULL, MX27_GPIO6_BASE_ADDR, 0x100, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX27_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx27-esdctl", DEVICE_ID_SINGLE, NULL,
--			   MX27_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx27-usb-misc", 0, NULL, MX27_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/imx31.c b/arch/arm/mach-imx/imx31.c
-index eb0c415..3013f02 100644
---- a/arch/arm/mach-imx/imx31.c
-+++ b/arch/arm/mach-imx/imx31.c
-@@ -29,6 +29,7 @@ void imx31_setup_weimcs(size_t cs, unsigned upper, unsigned lower,
- 
- int imx31_init(void)
- {
-+	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	return 0;
- }
- 
-@@ -44,7 +45,6 @@ int imx31_devices_init(void)
- 	add_generic_device("imx31-gpio", 1, NULL, MX31_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpio", 2, NULL, MX31_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX31_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx31-esdctl", 0, NULL, MX31_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-usb-misc", 0, NULL, MX31_USB_OTG_BASE_ADDR + 0x600, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/imx35.c b/arch/arm/mach-imx/imx35.c
-index 14ddba3..40f5770 100644
---- a/arch/arm/mach-imx/imx35.c
-+++ b/arch/arm/mach-imx/imx35.c
-@@ -56,6 +56,7 @@ int imx35_init(void)
- 	imx35_silicon_revision();
- 
- 	imx35_boot_save_loc((void *)MX35_CCM_BASE_ADDR);
-+	add_generic_device("imx35-esdctl", 0, NULL, MX35_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -72,7 +73,6 @@ int imx35_devices_init(void)
- 	add_generic_device("imx31-gpio", 1, NULL, MX35_GPIO2_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpio", 2, NULL, MX35_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX35_WDOG_BASE_ADDR, 0x4000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx35-esdctl", 0, NULL, MX35_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-diff --git a/arch/arm/mach-imx/imx51.c b/arch/arm/mach-imx/imx51.c
-index bcb3a76..a0b627f 100644
---- a/arch/arm/mach-imx/imx51.c
-+++ b/arch/arm/mach-imx/imx51.c
-@@ -45,6 +45,7 @@ int imx51_init(void)
- {
- 	imx_set_silicon_revision("i.MX51", imx51_silicon_revision());
- 	imx51_boot_save_loc((void *)MX51_SRC_BASE_ADDR);
-+	add_generic_device("imx51-esdctl", 0, NULL, MX51_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -62,7 +63,6 @@ int imx51_devices_init(void)
- 	add_generic_device("imx31-gpio", 2, NULL, MX51_GPIO3_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpio", 3, NULL, MX51_GPIO4_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX51_WDOG_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx51-esdctl", 0, NULL, MX51_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx51-usb-misc", 0, NULL, MX51_OTG_BASE_ADDR + 0x800, 0x100, IORESOURCE_MEM, NULL);
- 
- 	return 0;
-diff --git a/arch/arm/mach-imx/imx53.c b/arch/arm/mach-imx/imx53.c
-index 3e1b7fc..62e65e0 100644
---- a/arch/arm/mach-imx/imx53.c
-+++ b/arch/arm/mach-imx/imx53.c
-@@ -54,6 +54,7 @@ int imx53_init(void)
- {
- 	imx53_silicon_revision();
- 	imx53_boot_save_loc((void *)MX53_SRC_BASE_ADDR);
-+	add_generic_device("imx53-esdctl", 0, NULL, MX53_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
-@@ -74,7 +75,6 @@ int imx53_devices_init(void)
- 	add_generic_device("imx31-gpio", 5, NULL, MX53_GPIO6_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx31-gpio", 6, NULL, MX53_GPIO7_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 	add_generic_device("imx21-wdt", 0, NULL, MX53_WDOG1_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
--	add_generic_device("imx53-esdctl", 0, NULL, MX53_ESDCTL_BASE_ADDR, 0x1000, IORESOURCE_MEM, NULL);
- 
- 	return 0;
- }
--- 
-1.8.4.rc3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIG9zY2lsbGF0b3IgZnJlcXVlbmN5IHZhcmllcyBvbiBkaWZmZXJlbnQgQU0zM3h4IGJvYXJk
+cy4KUGFzcyB0aGUgb3NjIGZyZXF1ZW5jeSBmcm9tIGxvd2xldmVsIGJvYXJkIGNvZGUKdG8gc2V0
+IHRoZSBjb3JyZWN0IG9uZSBvbiBldmVyeSBib2FyZC4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBH
+w6FtZXogPHQuZ2FtZXpAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25l
+L2xvd2xldmVsLmMgICAgICAgICAgfCAgICAyICstCiBhcmNoL2FybS9ib2FyZHMvcGNtMDUxL2xv
+d2xldmVsLmMgICAgICAgICAgICAgIHwgICAgMiArLQogYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4
+eF9jbG9jay5jICAgICAgICAgICAgICB8ICAgMjYgKysrKysrKysrKysrLS0tLS0tLS0tLS0tCiBh
+cmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1jbG9jay5oIHwgICAgOCArLS0t
+LS0tCiA0IGZpbGVzIGNoYW5nZWQsIDE2IGluc2VydGlvbnMoKyksIDIyIGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMgYi9hcmNo
+L2FybS9ib2FyZHMvYmVhZ2xlYm9uZS9sb3dsZXZlbC5jCmluZGV4IGQ4NzFjYTEuLjJmM2IzZGYg
+MTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9iZWFnbGVib25lL2xvd2xldmVsLmMKKysrIGIv
+YXJjaC9hcm0vYm9hcmRzL2JlYWdsZWJvbmUvbG93bGV2ZWwuYwpAQCAtMTk4LDcgKzE5OCw3IEBA
+IHZvaWQgYmVhZ2xlYm9uZV9zcmFtX2luaXQodm9pZCkKIAl1MzIgcmVnVmFsLCB1YXJ0X2Jhc2U7
+CiAKIAkvKiBTZXR1cCB0aGUgUExMcyBhbmQgdGhlIGNsb2NrcyBmb3IgdGhlIHBlcmlwaGVyYWxz
+ICovCi0JcGxsX2luaXQoTVBVUExMX01fNTAwKTsKKwlwbGxfaW5pdChNUFVQTExfTV81MDAsIDI0
+KTsKIAogCWJlYWdsZWJvbmVfY29uZmlnX2RkcigpOwogCmRpZmYgLS1naXQgYS9hcmNoL2FybS9i
+b2FyZHMvcGNtMDUxL2xvd2xldmVsLmMgYi9hcmNoL2FybS9ib2FyZHMvcGNtMDUxL2xvd2xldmVs
+LmMKaW5kZXggZjRhMTc0Mi4uZGQwNmM2YSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL3Bj
+bTA1MS9sb3dsZXZlbC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvbG93bGV2ZWwuYwpA
+QCAtMTU5LDcgKzE1OSw3IEBAIHZvaWQgcGNtMDUxX3NyYW1faW5pdCh2b2lkKQogCXUzMiByZWdW
+YWwsIHVhcnRfYmFzZTsKIAogCS8qIFNldHVwIHRoZSBQTExzIGFuZCB0aGUgY2xvY2tzIGZvciB0
+aGUgcGVyaXBoZXJhbHMgKi8KLQlwbGxfaW5pdChNUFVQTExfTV82MDApOworCXBsbF9pbml0KE1Q
+VVBMTF9NXzYwMCwgMjUpOwogCiAJcGNtMDUxX2NvbmZpZ19kZHIoKTsKIApkaWZmIC0tZ2l0IGEv
+YXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9jbG9jay5jIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2Ft
+MzN4eF9jbG9jay5jCmluZGV4IDk5MjhlOWYuLmM2Y2FlNDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJt
+L21hY2gtb21hcC9hbTMzeHhfY2xvY2suYworKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4
+X2Nsb2NrLmMKQEAgLTE1Niw3ICsxNTYsNyBAQCBzdGF0aWMgdm9pZCBwZXJfY2xvY2tzX2VuYWJs
+ZSh2b2lkKQogCXdoaWxlIChfX3Jhd19yZWFkbChDTV9QRVJfU1BJMV9DTEtDVFJMKSAhPSBQUkNN
+X01PRF9FTik7CiB9CiAKLXN0YXRpYyB2b2lkIG1wdV9wbGxfY29uZmlnKGludCBtcHVwbGxfTSkK
+K3N0YXRpYyB2b2lkIG1wdV9wbGxfY29uZmlnKGludCBtcHVwbGxfTSwgaW50IG9zYykKIHsKIAl1
+MzIgY2xrbW9kZSwgY2xrc2VsLCBkaXZfbTI7CiAKQEAgLTE3MCw3ICsxNzAsNyBAQCBzdGF0aWMg
+dm9pZCBtcHVfcGxsX2NvbmZpZyhpbnQgbXB1cGxsX00pCiAJd2hpbGUoX19yYXdfcmVhZGwoQ01f
+SURMRVNUX0RQTExfTVBVKSAhPSAweDAwMDAwMTAwKTsKIAogCWNsa3NlbCA9IGNsa3NlbCAmICh+
+MHg3ZmZmZik7Ci0JY2xrc2VsID0gY2xrc2VsIHwgKChtcHVwbGxfTSA8PCAweDgpIHwgTVBVUExM
+X04pOworCWNsa3NlbCA9IGNsa3NlbCB8ICgobXB1cGxsX00gPDwgMHg4KSB8IChvc2MgLSAxKSk7
+CiAJX19yYXdfd3JpdGVsKGNsa3NlbCwgQ01fQ0xLU0VMX0RQTExfTVBVKTsKIAogCWRpdl9tMiA9
+IGRpdl9tMiAmIH4weDFmOwpAQCAtMTgzLDcgKzE4Myw3IEBAIHN0YXRpYyB2b2lkIG1wdV9wbGxf
+Y29uZmlnKGludCBtcHVwbGxfTSkKIAl3aGlsZShfX3Jhd19yZWFkbChDTV9JRExFU1RfRFBMTF9N
+UFUpICE9IDB4MSk7CiB9CiAKLXN0YXRpYyB2b2lkIGNvcmVfcGxsX2NvbmZpZyh2b2lkKQorc3Rh
+dGljIHZvaWQgY29yZV9wbGxfY29uZmlnKGludCBvc2MpCiB7CiAJdTMyIGNsa21vZGUsIGNsa3Nl
+bCwgZGl2X200LCBkaXZfbTUsIGRpdl9tNjsKIApAQCAtMTk5LDcgKzE5OSw3IEBAIHN0YXRpYyB2
+b2lkIGNvcmVfcGxsX2NvbmZpZyh2b2lkKQogCXdoaWxlKF9fcmF3X3JlYWRsKENNX0lETEVTVF9E
+UExMX0NPUkUpICE9IDB4MDAwMDAxMDApOwogCiAJY2xrc2VsID0gY2xrc2VsICYgKH4weDdmZmZm
+KTsKLQljbGtzZWwgPSBjbGtzZWwgfCAoKENPUkVQTExfTSA8PCAweDgpIHwgQ09SRVBMTF9OKTsK
+KwljbGtzZWwgPSBjbGtzZWwgfCAoKENPUkVQTExfTSA8PCAweDgpIHwgKG9zYyAtIDEpKTsKIAlf
+X3Jhd193cml0ZWwoY2xrc2VsLCBDTV9DTEtTRUxfRFBMTF9DT1JFKTsKIAogCWRpdl9tNCA9IGRp
+dl9tNCAmIH4weDFmOwpAQCAtMjIxLDcgKzIyMSw3IEBAIHN0YXRpYyB2b2lkIGNvcmVfcGxsX2Nv
+bmZpZyh2b2lkKQogCXdoaWxlKF9fcmF3X3JlYWRsKENNX0lETEVTVF9EUExMX0NPUkUpICE9IDB4
+MSk7CiB9CiAKLXN0YXRpYyB2b2lkIHBlcl9wbGxfY29uZmlnKHZvaWQpCitzdGF0aWMgdm9pZCBw
+ZXJfcGxsX2NvbmZpZyhpbnQgb3NjKQogewogCXUzMiBjbGttb2RlLCBjbGtzZWwsIGRpdl9tMjsK
+IApAQCAtMjM1LDcgKzIzNSw3IEBAIHN0YXRpYyB2b2lkIHBlcl9wbGxfY29uZmlnKHZvaWQpCiAJ
+d2hpbGUoX19yYXdfcmVhZGwoQ01fSURMRVNUX0RQTExfUEVSKSAhPSAweDAwMDAwMTAwKTsKIAog
+CWNsa3NlbCA9IGNsa3NlbCAmICh+MHg3ZmZmZik7Ci0JY2xrc2VsID0gY2xrc2VsIHwgKChQRVJQ
+TExfTSA8PCAweDgpIHwgUEVSUExMX04pOworCWNsa3NlbCA9IGNsa3NlbCB8ICgoUEVSUExMX00g
+PDwgMHg4KSB8IChvc2MgLSAxKSk7CiAJX19yYXdfd3JpdGVsKGNsa3NlbCwgQ01fQ0xLU0VMX0RQ
+TExfUEVSKTsKIAogCWRpdl9tMiA9IGRpdl9tMiAmIH4weDdmOwpAQCAtMjQ4LDcgKzI0OCw3IEBA
+IHN0YXRpYyB2b2lkIHBlcl9wbGxfY29uZmlnKHZvaWQpCiAJd2hpbGUoX19yYXdfcmVhZGwoQ01f
+SURMRVNUX0RQTExfUEVSKSAhPSAweDEpOwogfQogCi1zdGF0aWMgdm9pZCBkZHJfcGxsX2NvbmZp
+Zyh2b2lkKQorc3RhdGljIHZvaWQgZGRyX3BsbF9jb25maWcoaW50IG9zYykKIHsKIAl1MzIgY2xr
+bW9kZSwgY2xrc2VsLCBkaXZfbTI7CiAKQEAgLTI2Myw3ICsyNjMsNyBAQCBzdGF0aWMgdm9pZCBk
+ZHJfcGxsX2NvbmZpZyh2b2lkKQogCXdoaWxlICgoX19yYXdfcmVhZGwoQ01fSURMRVNUX0RQTExf
+RERSKSAmIDB4MDAwMDAxMDApICE9IDB4MDAwMDAxMDApOwogCiAJY2xrc2VsID0gY2xrc2VsICYg
+KH4weDdmZmZmKTsKLQljbGtzZWwgPSBjbGtzZWwgfCAoKEREUlBMTF9NIDw8IDB4OCkgfCBERFJQ
+TExfTik7CisJY2xrc2VsID0gY2xrc2VsIHwgKChERFJQTExfTSA8PCAweDgpIHwgKG9zYyAtIDEp
+KTsKIAlfX3Jhd193cml0ZWwoY2xrc2VsLCBDTV9DTEtTRUxfRFBMTF9ERFIpOwogCiAJZGl2X20y
+ID0gZGl2X20yICYgMHhGRkZGRkZFMDsKQEAgLTI5NCwxMiArMjk0LDEyIEBAIHZvaWQgZW5hYmxl
+X2Rkcl9jbG9ja3Modm9pZCkKIC8qCiAgKiBDb25maWd1cmUgdGhlIFBMTC9QUkNNIGZvciBuZWNl
+c3NhcnkgcGVyaXBoZXJhbHMKICAqLwotdm9pZCBwbGxfaW5pdChpbnQgbXB1cGxsX00pCit2b2lk
+IHBsbF9pbml0KGludCBtcHVwbGxfTSwgaW50IG9zYykKIHsKLQltcHVfcGxsX2NvbmZpZyhtcHVw
+bGxfTSk7Ci0JY29yZV9wbGxfY29uZmlnKCk7Ci0JcGVyX3BsbF9jb25maWcoKTsKLQlkZHJfcGxs
+X2NvbmZpZygpOworCW1wdV9wbGxfY29uZmlnKG1wdXBsbF9NLCBvc2MpOworCWNvcmVfcGxsX2Nv
+bmZpZyhvc2MpOworCXBlcl9wbGxfY29uZmlnKG9zYyk7CisJZGRyX3BsbF9jb25maWcob3NjKTsK
+IAkvKiBFbmFibGUgdGhlIHJlcXVpcmVkIGludGVyY29ubmVjdCBjbG9ja3MgKi8KIAlpbnRlcmZh
+Y2VfY2xvY2tzX2VuYWJsZSgpOwogCS8qIEVuYWJsZSBwb3dlciBkb21haW4gdHJhbnNpdGlvbiAq
+LwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtY2xv
+Y2suaCBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWNsb2NrLmgKaW5k
+ZXggOTY4NTA5ZS4uNjAzNWRhNiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1
+ZGUvbWFjaC9hbTMzeHgtY2xvY2suaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9t
+YWNoL2FtMzN4eC1jbG9jay5oCkBAIC0yMywyMCArMjMsMTYgQEAKIAogLyogUHV0IHRoZSBwbGwg
+Y29uZmlnIHZhbHVlcyBvdmVyIGhlcmUgKi8KIAotI2RlZmluZSBPU0MJMjQKLQogLyogTUFJTiBQ
+TEwgRmRsbCA9IDEgR0haLCAqLwogI2RlZmluZSBNUFVQTExfTV81MDAJNTAwCS8qIDEyNSAqIG4g
+Ki8KICNkZWZpbmUgTVBVUExMX01fNTUwCTU1MAkvKiAxMjUgKiBuICovCiAjZGVmaW5lIE1QVVBM
+TF9NXzYwMAk2MDAJLyogMTI1ICogbiAqLwogI2RlZmluZSBNUFVQTExfTV83MjAJNzIwCS8qIDEy
+NSAqIG4gKi8KIAotI2RlZmluZSBNUFVQTExfTgkoT1NDIC0gMSkKICNkZWZpbmUgTVBVUExMX00y
+CTEKIAogLyogQ29yZSBQTEwgRmRsbCA9IDEgR0haLCAqLwogI2RlZmluZSBDT1JFUExMX00JMTAw
+MAkvKiAxMjUgKiBuICovCi0jZGVmaW5lIENPUkVQTExfTgkoT1NDIC0gMSkKIAogI2RlZmluZSBD
+T1JFUExMX000CTEwCS8qIENPUkVfQ0xLT1VUTTQgPSAyMDAgTUhaICovCiAjZGVmaW5lIENPUkVQ
+TExfTTUJOAkvKiBDT1JFX0NMS09VVE01ID0gMjUwIE1IWiAqLwpAQCAtNDgsMTMgKzQ0LDExIEBA
+CiAgKiBGb3IgY2xrb3V0ID0gMTkyIE1IWiwgRmRsbCA9IDk2MCBNSFosIGRpdmlkZXIgdmFsdWVz
+IGFyZSBnaXZlbiBiZWxvdwogICovCiAjZGVmaW5lIFBFUlBMTF9NCTk2MAotI2RlZmluZSBQRVJQ
+TExfTgkoT1NDIC0gMSkKICNkZWZpbmUgUEVSUExMX00yCTUKIAogLyogRERSIEZyZXEgaXMgMjY2
+IE1IWiBmb3Igbm93Ki8KIC8qIFNldCBGZGxsID0gNDAwIE1IWiAsIEZkbGwgPSBNICogMiAqIENM
+S0lOUC8gTiArIDE7IGNsa291dCA9IEZkbGwgLygyICogTTIpICovCiAjZGVmaW5lIEREUlBMTF9N
+CTI2NgotI2RlZmluZSBERFJQTExfTgkoT1NDIC0gMSkKICNkZWZpbmUgRERSUExMX00yCTEKIAog
+LyogUFJDTSAqLwpAQCAtMTg3LDcgKzE4MSw3IEBACiAKICNkZWZpbmUgQ01fQUxXT05fR1BNQ19D
+TEtDVFJMICAgICAgICAgICBDTV9QRVJfR1BNQ19DTEtDVFJMCiAKLWV4dGVybiB2b2lkIHBsbF9p
+bml0KGludCBtcHVwbGxfTSk7CitleHRlcm4gdm9pZCBwbGxfaW5pdChpbnQgbXB1cGxsX00sIGlu
+dCBvc2MpOwogZXh0ZXJuIHZvaWQgZW5hYmxlX2Rkcl9jbG9ja3Modm9pZCk7CiAKICNlbmRpZiAg
+LyogZW5kaWYgX0FNMzNYWF9DTE9DS1NfSF8gKi8KLS0gCjEuNy4wLjQKCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
