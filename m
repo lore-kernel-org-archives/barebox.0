@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VC3mn-0003FK-3K
- for barebox@lists.infradead.org; Wed, 21 Aug 2013 08:29:02 +0000
-Date: Wed, 21 Aug 2013 10:28:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130821082838.GO31036@pengutronix.de>
-References: <CAJyuEef9RA1PnNX3XPKecAbkBiftXydjaOzT0sOphp4A4arRLw@mail.gmail.com>
+ id 1VC7Yj-00013K-HA
+ for barebox@lists.infradead.org; Wed, 21 Aug 2013 12:30:46 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Wed, 21 Aug 2013 14:30:17 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ED087407D@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAJyuEef9RA1PnNX3XPKecAbkBiftXydjaOzT0sOphp4A4arRLw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +20,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting BareBox to Variscite iMX6 SOM
-To: Michael Burkey <mdburkey@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: uImage doesn't boot
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Michael,
+Hello
 
-On Tue, Aug 20, 2013 at 02:12:20PM -0400, Michael Burkey wrote:
-> Thank you Sascha for the additional information in your earlier post!
-> 
-> Your comments on the imx-image method got me looking at the menuconfig
-> options and I located a simple mistake I had made when changing other
-> options (while manually editing some files, I had somehow managed to
-> inadvertently disable the "support internal boot" option).
-> 
-> After fixing this, everything now works as I would expect.
-> 
-> So, I now have the Variscite iMX6 SOM booted directly from SD to the
-> BareBox shell on UART1.
+Before, I was working with Barebox 2013.05, which worked fine. Now I updated my sources to barebox 2013.07, but my kernel doesn't boot anymore. Barebox itself works as expected. When I do:
+bootm -v /mnt/tftp/uImage
+   Image Name:   Linux-2.6.35.3-01169-gbc81590-di
+   Created:      2013-06-03  13:29:30 UTC
+   OS:           Linux
+   Architecture: ARM
+   Type:         Kernel Image
+   Compression:  uncompressed
+   Data Size:    2834488 Bytes = 2.7 MiB
+   Load Address: 70008000
+   Entry Point:  70008000
 
-Nice. That's good to hear ;)
+Loading OS U-Boot uImage '/mnt/tftp/uImage'
+OS image is at 0x70008000-0x702bc037
+Passing control to ARM Linux uImage handler
 
-> 
-> Now I just have to start pulling in all the other devices and getting
-> them configured properly!
-
-When doing so please start with a devicetree based board to copy-paste
-from. The imx6q-phytec-pbab01 should be a pretty good example.
-
-Sascha
+Starting kernel at 0x70008000...
+commandline: console=ttymxc4,115200   mtdparts=mxc_nand:3M(nand0.systemkernel),-(nand0.root);m25p0:384k(m25p0.barebox)ro,128k(m25p0.bareboxenv),3M(m25p0.recoverykernel)ro,512k(m25p0.storage)
+arch_number: 3297
 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+And that's it, it doesn't do anything after it. Althought this works with the previous barebox. What can cause this?
+
+Grtz,
+Wouter
 
 _______________________________________________
 barebox mailing list
