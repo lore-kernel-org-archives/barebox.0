@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x236.google.com ([2607:f8b0:400c:c01::236])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCDQV-0002Xg-Fo
- for barebox@lists.infradead.org; Wed, 21 Aug 2013 18:46:40 +0000
-Received: by mail-ve0-f182.google.com with SMTP id m1so718685ves.27
- for <barebox@lists.infradead.org>; Wed, 21 Aug 2013 11:46:18 -0700 (PDT)
+ id 1VCOfg-0006X6-6j
+ for barebox@lists.infradead.org; Thu, 22 Aug 2013 06:47:05 +0000
+Date: Thu, 22 Aug 2013 08:46:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130822064640.GT31036@pengutronix.de>
+References: <E78BBE677EB9144B8F0A0A29674CD5338ED087407D@SRV-VS06.TELEVIC.COM>
 MIME-Version: 1.0
-Date: Wed, 21 Aug 2013 14:46:17 -0400
-Message-ID: <CAJyuEedsHb0h84AKDq_Mttxu_ZG1u+gG94BpzioHyO=JdHiD=A@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD5338ED087407D@SRV-VS06.TELEVIC.COM>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +22,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting BareBox to Variscite iMX6 SOM
-To: barebox@lists.infradead.org
+Subject: Re: uImage doesn't boot
+To: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Sascha,
+Hi Wouter,
 
-You can ignore part of my last post -- I found the
-"imx6q-phytec-pbab01" on github (it looks like a lot of the things I
-am needing and working on are right on the edge of development where
-you are working as well).
+On Wed, Aug 21, 2013 at 02:30:17PM +0200, Vanhauwaert Wouter wrote:
+> Hello
+> 
+> Before, I was working with Barebox 2013.05, which worked fine. Now I updated my sources to barebox 2013.07, but my kernel doesn't boot anymore. Barebox itself works as expected. When I do:
+> bootm -v /mnt/tftp/uImage
+>    Image Name:   Linux-2.6.35.3-01169-gbc81590-di
+>    Created:      2013-06-03  13:29:30 UTC
+>    OS:           Linux
+>    Architecture: ARM
+>    Type:         Kernel Image
+>    Compression:  uncompressed
+>    Data Size:    2834488 Bytes = 2.7 MiB
+>    Load Address: 70008000
+>    Entry Point:  70008000
+> 
+> Loading OS U-Boot uImage '/mnt/tftp/uImage'
+> OS image is at 0x70008000-0x702bc037
+> Passing control to ARM Linux uImage handler
+> 
+> Starting kernel at 0x70008000...
+> commandline: console=ttymxc4,115200   mtdparts=mxc_nand:3M(nand0.systemkernel),-(nand0.root);m25p0:384k(m25p0.barebox)ro,128k(m25p0.bareboxenv),3M(m25p0.recoverykernel)ro,512k(m25p0.storage)
+> arch_number: 3297
 
-I also noticed some posts in the mailing list that you made last month
-regarding adding gpmi-nand support for iMX6 (or at least some wrappers
-for it). Has the actual gpmi-nand support been completed and
-integrated (or will the existing mxs-nand driver from the i.MX23/28
-work as-is)?
+Your arch_number suggests you are working on a Garz & Fricke Vincell
+board. Is this correct?
 
+> 
+> 
+> And that's it, it doesn't do anything after it. Althought this works
+> with the previous barebox. What can cause this?
 
-I've also been doing a lot of reading on devicetree and what it
-entails to migrate in that direction (everything I had been doing
-previously had been iMX35 based and started from the older Phytec
-BSP's, so I hadn't really looked at how devicetree worked). I may have
-some more questions on this going forward.
+I have no quick idea. What you can always do is bisecting the problem,
+but what I would do before is enabling earlyprintk in the kernel and
+passing 'earlyprintk' to the kernel commandline. Often this gives a good
+hint what's wrong.
 
-Thanks again,
-Michael Burkey
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
