@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCbdH-0001vx-RC
+ id 1VCbdH-0001vs-QK
  for barebox@lists.infradead.org; Thu, 22 Aug 2013 20:37:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 Aug 2013 22:36:56 +0200
-Message-Id: <1377203819-23074-6-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
-References: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
+Date: Thu, 22 Aug 2013 22:36:51 +0200
+Message-Id: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,82 +14,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] ARM: am33xx: implement cpu revision decoding
+Subject: [PATCH] OMAP fixes and beaglebone black support
 To: barebox@lists.infradead.org
 
-RnJvbTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1ieTogSmFu
-IEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIg
-PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9n
-ZW5lcmljLmMgICAgICAgICAgICAgIHwgMzQgKysrKysrKysrKysrKysrKysrKysrKystCiBhcmNo
-L2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5lcmljLmggfCAgMiArKwogYXJj
-aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oIHwgIDEgKwogYXJj
-aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5oICAgICAgIHwgMTAgKysrKyst
-LQogNCBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0v
-bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKaW5kZXggYTY1M2VmNy4uNTU4ZDA2OSAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0v
-bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKQEAgLTEsNiArMSw2IEBACiAvKgogICogKEMpIENv
-cHlyaWdodCAyMDEyIFRlcmVzYSBHw6FtZXosIFBoeXRlYyBNZXNzdGVjaG5payBHbWJICi0gKiAo
-QykgQ29weXJpZ2h0IDIwMTIgSmFuIEx1ZWJiZSA8ai5sdWViYmVAcGVuZ3V0cm9uaXguZGU+Cisg
-KiAoQykgQ29weXJpZ2h0IDIwMTItMjAxMyBKYW4gTHVlYmJlIDxqLmx1ZWJiZUBwZW5ndXRyb25p
-eC5kZT4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
-c3RyaWJ1dGUgaXQgYW5kL29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
-TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwpAQCAtMzgsNiArMzgsMzggQEAgdm9pZCBfX25v
-cmV0dXJuIHJlc2V0X2NwdSh1bnNpZ25lZCBsb25nIGFkZHIpCiB9CiAKIC8qKgorICogQGJyaWVm
-IEV4dHJhY3QgdGhlIEFNMzN4eCBFUyByZXZpc2lvbgorICoKKyAqIFRoZSBzaWduaWZpY2FuY2Ug
-b2YgdGhlIENQVSByZXZpc2lvbiBkZXBlbmRzIHVwb24gdGhlIGNwdSB0eXBlLgorICogTGF0ZXN0
-IGtub3duIHJldmlzaW9uIGlzIGNvbnNpZGVyZWQgZGVmYXVsdC4KKyAqCisgKiBAcmV0dXJuIHNp
-bGljb24gdmVyc2lvbgorICovCit1MzIgYW0zM3h4X2dldF9jcHVfcmV2KHZvaWQpCit7CisJdTMy
-IHZlcnNpb24sIHJldHZhbDsKKworCXZlcnNpb24gPSAocmVhZGwoQU0zM1hYX0lEQ09ERV9SRUcp
-ID4+IDI4KSAmIDB4RjsKKworCXN3aXRjaCAodmVyc2lvbikgeworCWNhc2UgMDoKKwkJcmV0dmFs
-ID0gQU0zMzVYX0VTMV8wOworCQlicmVhazsKKwljYXNlIDE6CisJCXJldHZhbCA9IEFNMzM1WF9F
-UzJfMDsKKwkJYnJlYWs7CisJY2FzZSAyOgorCQkvKgorCQkgKiBGYWxsIHRocm91Z2ggdGhlIGRl
-ZmF1bHQgY2FzZS4KKwkJICovCisJZGVmYXVsdDoKKwkJcmV0dmFsID0gQU0zMzVYX0VTMl8xOwor
-CX0KKworCXJldHVybiByZXR2YWw7Cit9CisKKy8qKgogICogQGJyaWVmIEdldCB0aGUgdXBwZXIg
-YWRkcmVzcyBvZiBjdXJyZW50IGV4ZWN1dGlvbgogICoKICAqIHdlIGNhbiB1c2UgdGhpcyB0byBm
-aWd1cmUgb3V0IGlmIHdlIGFyZSBydW5uaW5nIGluIFNSQU0gLwpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oIGIvYXJjaC9hcm0vbWFj
-aC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oCmluZGV4IGQ5ZDJlZmIuLmVjMjJh
-ZDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWdl
-bmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5l
-cmljLmgKQEAgLTYsNiArNiw4IEBACiAKIGludCBhbTMzeHhfcmVnaXN0ZXJfZXRoYWRkcihpbnQg
-ZXRoX2lkLCBpbnQgbWFjX2lkKTsKIAordTMyIGFtMzN4eF9nZXRfY3B1X3Jldih2b2lkKTsKKwog
-c3RhdGljIGlubGluZSB2b2lkIGFtMzN4eF9zYXZlX2Jvb3RpbmZvKHVpbnQzMl90ICppbmZvKQog
-ewogCXVuc2lnbmVkIGxvbmcgaSA9ICh1bnNpZ25lZCBsb25nKWluZm87CmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKaW5kZXggZjE5OGE5YS4u
-OTMyOGNjOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMz
-eHgtc2lsaWNvbi5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4
-LXNpbGljb24uaApAQCAtNzEsNiArNzEsNyBAQAogCiAvKiBDVFJMICovCiAjZGVmaW5lIEFNMzNY
-WF9DVFJMX0JBU0UJCShBTTMzWFhfTDRfV0tVUF9CQVNFICsgMHgyMTAwMDApCisjZGVmaW5lIEFN
-MzNYWF9JRENPREVfUkVHCQkoQU0zM1hYX0NUUkxfQkFTRSArIDB4NjAwKQogCiAvKiBXYXRjaGRv
-ZyBUaW1lciAqLwogI2RlZmluZSBBTTMzWFhfV0RUX0JBU0UJCQkweDQ0RTM1MDAwCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmggYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmgKaW5kZXggNGQ5YjEzOC4uZmNlNTg5
-NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5o
-CisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvc3lzX2luZm8uaApAQCAtNDAs
-NiArNDAsNyBAQAogI2RlZmluZSBDUFVfMTcxMAkweDE3MTAKICNkZWZpbmUgQ1BVXzI0MjAJMHgy
-NDIwCiAjZGVmaW5lIENQVV8yNDMwCTB4MjQzMAorI2RlZmluZSBDUFVfMzM1MAkweDMzNTAKICNk
-ZWZpbmUgQ1BVXzM0MzAJMHgzNDMwCiAjZGVmaW5lIENQVV8zNjMwCTB4MzYzMAogCkBAIC01NCw2
-ICs1NSwxMCBAQAogI2RlZmluZSBPTUFQMzRYWF9FUzMJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwg
-MykKICNkZWZpbmUgT01BUDM0WFhfRVMzXzEJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwgNCkKIAor
-I2RlZmluZSBBTTMzNVhfRVMxXzAJCWNwdV9yZXZpc2lvbihDUFVfMzM1MCwgMCkKKyNkZWZpbmUg
-QU0zMzVYX0VTMl8wCQljcHVfcmV2aXNpb24oQ1BVXzMzNTAsIDEpCisjZGVmaW5lIEFNMzM1WF9F
-UzJfMQkJY3B1X3JldmlzaW9uKENQVV8zMzUwLCAyKQorCiAjZGVmaW5lIE9NQVAzNlhYX0VTMQkJ
-Y3B1X3JldmlzaW9uKENQVV8zNjMwLCAwKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMQkJY3B1X3Jl
-dmlzaW9uKENQVV8zNjMwLCAxKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMgkJY3B1X3JldmlzaW9u
-KENQVV8zNjMwLCAyKQpAQCAtNzYsOCArODEsOSBAQAogLyoqCiAgKiBIYXdrZXllIGRlZmluaXRp
-b25zIHRvIGlkZW50aWZ5IHNpbGljb24gZmFtaWxpZXMKICAqLwotI2RlZmluZSBPTUFQX0hBV0tF
-WUVfMzRYWAkweEI3QUUKLSNkZWZpbmUgT01BUF9IQVdLRVlFXzM2WFgJMHhCODkxCisjZGVmaW5l
-IE9NQVBfSEFXS0VZRV8zNFhYCTB4QjdBRSAvKiBPTUFQMzR4eCAqLworI2RlZmluZSBPTUFQX0hB
-V0tFWUVfMzZYWAkweEI4OTEgLyogT01BUDM2eHggKi8KKyNkZWZpbmUgT01BUF9IQVdLRVlFXzMz
-NVgJMHhCOTQ0IC8qIEFNMzM1eCAqLwogCiAvKiogVGhlc2UgYXJlIGltcGxlbWVudGVkIGJ5IHRo
-ZSBTeXN0ZW0gc3BlY2lmaWMgY29kZSBpbiBvbWFwWC1nZW5lcmljLmMgKi8KIHUzMiBnZXRfY3B1
-X3R5cGUodm9pZCk7Ci0tIAoxLjguNC5yYzMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+The following are some fixes (1/8 - 3/8) For OMAP needed for
+making the OMAP boards boot 2nd stage again and fixing the
+beaglebone lowlevel init. These are for master.
+
+The remaining patches add beaglebone black support.
+
+Most of this stuff is from Jan, I only polished a bit.
+
+Sascha
+
+----------------------------------------------------------------
+Jan Luebbe (5):
+      ARM: cpuinfo: display the core name and version
+      ARM: am33xx: implement cpu revision decoding
+      ARM: am33xx: beaglebone: split out DDR2 init for BB White
+      ARM: am33xx: beaglebone: configure I2C EEPROM
+      ARM: am33xx: beaglebone: add support for beaglebone black with DDR3 RAM
+
+Sascha Hauer (3):
+      ARM: am33xx: Add SRAM0 address/size defines
+      ARM: omap: fix omap_save_bootinfo
+      ARM: am33xx: Make uart0 mux init callable during early init
+
+ arch/arm/boards/archosg9/lowlevel.c              |   3 +-
+ arch/arm/boards/beagle/lowlevel.c                |   3 +-
+ arch/arm/boards/beaglebone/Makefile              |   2 +-
+ arch/arm/boards/beaglebone/beaglebone.h          |   9 ++
+ arch/arm/boards/beaglebone/board.c               |  55 ++++++-
+ arch/arm/boards/beaglebone/ddr.h                 |   2 +
+ arch/arm/boards/beaglebone/ddr2.c                | 178 +++++++++++++++++++++
+ arch/arm/boards/beaglebone/ddr3.c                | 155 ++++++++++++++++++
+ arch/arm/boards/beaglebone/lowlevel.c            | 195 +++--------------------
+ arch/arm/boards/omap343xdsp/lowlevel.c           |   3 +-
+ arch/arm/boards/omap3evm/lowlevel.c              |   3 +-
+ arch/arm/boards/panda/lowlevel.c                 |   3 +-
+ arch/arm/boards/pcm049/lowlevel.c                |   3 +-
+ arch/arm/boards/pcm051/lowlevel.c                |   2 +-
+ arch/arm/boards/phycard-a-l1/lowlevel.c          |   3 +-
+ arch/arm/boards/phycard-a-xl2/lowlevel.c         |   3 +-
+ arch/arm/cpu/cpuinfo.c                           |  33 ++++
+ arch/arm/mach-omap/am33xx_clock.c                |   9 +-
+ arch/arm/mach-omap/am33xx_generic.c              |  34 +++-
+ arch/arm/mach-omap/am33xx_mux.c                  |  13 +-
+ arch/arm/mach-omap/include/mach/am33xx-clock.h   |   5 +-
+ arch/arm/mach-omap/include/mach/am33xx-devices.h |   6 +
+ arch/arm/mach-omap/include/mach/am33xx-generic.h |  19 +++
+ arch/arm/mach-omap/include/mach/am33xx-silicon.h |   8 +-
+ arch/arm/mach-omap/include/mach/generic.h        |   2 +-
+ arch/arm/mach-omap/include/mach/omap3-generic.h  |  21 +++
+ arch/arm/mach-omap/include/mach/omap4-generic.h  |  21 +++
+ arch/arm/mach-omap/include/mach/sys_info.h       |  10 +-
+ 28 files changed, 595 insertions(+), 208 deletions(-)
+ create mode 100644 arch/arm/boards/beaglebone/beaglebone.h
+ create mode 100644 arch/arm/boards/beaglebone/ddr.h
+ create mode 100644 arch/arm/boards/beaglebone/ddr2.c
+ create mode 100644 arch/arm/boards/beaglebone/ddr3.c
+ create mode 100644 arch/arm/mach-omap/include/mach/omap3-generic.h
+ create mode 100644 arch/arm/mach-omap/include/mach/omap4-generic.h
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
