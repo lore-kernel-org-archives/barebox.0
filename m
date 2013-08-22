@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCbdH-0001vy-QM
- for barebox@lists.infradead.org; Thu, 22 Aug 2013 20:37:45 +0000
+ id 1VCbdH-0001vx-RC
+ for barebox@lists.infradead.org; Thu, 22 Aug 2013 20:37:36 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 Aug 2013 22:36:57 +0200
-Message-Id: <1377203819-23074-7-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 22 Aug 2013 22:36:56 +0200
+Message-Id: <1377203819-23074-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,433 +17,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] ARM: am33xx: beaglebone: split out DDR2 init for BB White
+Subject: [PATCH 5/8] ARM: am33xx: implement cpu revision decoding
 To: barebox@lists.infradead.org
 
-From: Jan Luebbe <jlu@pengutronix.de>
-
-To make place for the DDR3 init for the BB black.
-
-Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/beaglebone/Makefile   |   2 +-
- arch/arm/boards/beaglebone/ddr.h      |   1 +
- arch/arm/boards/beaglebone/ddr2.c     | 178 ++++++++++++++++++++++++++++++++++
- arch/arm/boards/beaglebone/lowlevel.c | 175 +--------------------------------
- 4 files changed, 184 insertions(+), 172 deletions(-)
- create mode 100644 arch/arm/boards/beaglebone/ddr.h
- create mode 100644 arch/arm/boards/beaglebone/ddr2.c
-
-diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
-index 092c31d..7ec0c8b 100644
---- a/arch/arm/boards/beaglebone/Makefile
-+++ b/arch/arm/boards/beaglebone/Makefile
-@@ -1,2 +1,2 @@
--lwl-y += lowlevel.o
-+lwl-y += lowlevel.o ddr2.o
- obj-y += board.o
-diff --git a/arch/arm/boards/beaglebone/ddr.h b/arch/arm/boards/beaglebone/ddr.h
-new file mode 100644
-index 0000000..d2f0c95
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/ddr.h
-@@ -0,0 +1 @@
-+void beaglebone_config_ddr2(void);
-diff --git a/arch/arm/boards/beaglebone/ddr2.c b/arch/arm/boards/beaglebone/ddr2.c
-new file mode 100644
-index 0000000..42a099d
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/ddr2.c
-@@ -0,0 +1,178 @@
-+#include <init.h>
-+#include <sizes.h>
-+#include <io.h>
-+#include <asm/armlinux.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/am33xx-silicon.h>
-+#include <mach/am33xx-clock.h>
-+
-+/* AM335X EMIF Register values */
-+#define EMIF_SDMGT		0x80000000
-+#define EMIF_SDRAM		0x00004650
-+#define EMIF_PHYCFG		0x2
-+#define DDR_PHY_RESET		(0x1 << 10)
-+#define DDR_FUNCTIONAL_MODE_EN	0x1
-+#define DDR_PHY_READY		(0x1 << 2)
-+#define	VTP_CTRL_READY		(0x1 << 5)
-+#define VTP_CTRL_ENABLE		(0x1 << 6)
-+#define VTP_CTRL_LOCK_EN	(0x1 << 4)
-+#define VTP_CTRL_START_EN	(0x1)
-+#define DDR2_RATIO		0x80	/* for mDDR */
-+#define CMD_FORCE		0x00	/* common #def */
-+#define CMD_DELAY		0x00
-+
-+#define EMIF_READ_LATENCY	0x05
-+#define EMIF_TIM1		0x0666B3D6
-+#define EMIF_TIM2		0x143731DA
-+#define	EMIF_TIM3		0x00000347
-+#define EMIF_SDCFG		0x43805332
-+#define EMIF_SDREF		0x0000081a
-+#define DDR2_DLL_LOCK_DIFF	0x0
-+#define DDR2_RD_DQS		0x12
-+#define DDR2_PHY_FIFO_WE	0x80
-+
-+#define	DDR2_INVERT_CLKOUT	0x00
-+#define	DDR2_WR_DQS		0x00
-+#define	DDR2_PHY_WRLVL		0x00
-+#define	DDR2_PHY_GATELVL	0x00
-+#define	DDR2_PHY_WR_DATA	0x40
-+#define	PHY_RANK0_DELAY		0x01
-+#define PHY_DLL_LOCK_DIFF	0x0
-+#define DDR_IOCTRL_VALUE	0x18B
-+
-+static void beaglebone_data_macro_config_ddr2(int dataMacroNum)
-+{
-+	u32 BaseAddrOffset = 0x00;
-+
-+	if (dataMacroNum == 1)
-+		BaseAddrOffset = 0xA4;
-+
-+	__raw_writel(((DDR2_RD_DQS<<30)|(DDR2_RD_DQS<<20)
-+		|(DDR2_RD_DQS<<10)|(DDR2_RD_DQS<<0)),
-+		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_RD_DQS>>2,
-+		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(((DDR2_WR_DQS<<30)|(DDR2_WR_DQS<<20)
-+		|(DDR2_WR_DQS<<10)|(DDR2_WR_DQS<<0)),
-+		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_WR_DQS>>2,
-+		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(((DDR2_PHY_WRLVL<<30)|(DDR2_PHY_WRLVL<<20)
-+		|(DDR2_PHY_WRLVL<<10)|(DDR2_PHY_WRLVL<<0)),
-+		(AM33XX_DATA0_WRLVL_INIT_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_WRLVL>>2,
-+		(AM33XX_DATA0_WRLVL_INIT_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(((DDR2_PHY_GATELVL<<30)|(DDR2_PHY_GATELVL<<20)
-+		|(DDR2_PHY_GATELVL<<10)|(DDR2_PHY_GATELVL<<0)),
-+		(AM33XX_DATA0_GATELVL_INIT_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_GATELVL>>2,
-+		(AM33XX_DATA0_GATELVL_INIT_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(((DDR2_PHY_FIFO_WE<<30)|(DDR2_PHY_FIFO_WE<<20)
-+		|(DDR2_PHY_FIFO_WE<<10)|(DDR2_PHY_FIFO_WE<<0)),
-+		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_FIFO_WE>>2,
-+		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(((DDR2_PHY_WR_DATA<<30)|(DDR2_PHY_WR_DATA<<20)
-+		|(DDR2_PHY_WR_DATA<<10)|(DDR2_PHY_WR_DATA<<0)),
-+		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_WR_DATA>>2,
-+		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_1 + BaseAddrOffset));
-+	__raw_writel(PHY_DLL_LOCK_DIFF,
-+		(AM33XX_DATA0_DLL_LOCK_DIFF_0 + BaseAddrOffset));
-+}
-+
-+static void beaglebone_cmd_macro_config_ddr2(void)
-+{
-+	__raw_writel(DDR2_RATIO, AM33XX_CMD0_CTRL_SLAVE_RATIO_0);
-+	__raw_writel(CMD_FORCE, AM33XX_CMD0_CTRL_SLAVE_FORCE_0);
-+	__raw_writel(CMD_DELAY, AM33XX_CMD0_CTRL_SLAVE_DELAY_0);
-+	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD0_DLL_LOCK_DIFF_0);
-+	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD0_INVERT_CLKOUT_0);
-+
-+	__raw_writel(DDR2_RATIO, AM33XX_CMD1_CTRL_SLAVE_RATIO_0);
-+	__raw_writel(CMD_FORCE, AM33XX_CMD1_CTRL_SLAVE_FORCE_0);
-+	__raw_writel(CMD_DELAY, AM33XX_CMD1_CTRL_SLAVE_DELAY_0);
-+	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD1_DLL_LOCK_DIFF_0);
-+	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD1_INVERT_CLKOUT_0);
-+
-+	__raw_writel(DDR2_RATIO, AM33XX_CMD2_CTRL_SLAVE_RATIO_0);
-+	__raw_writel(CMD_FORCE, AM33XX_CMD2_CTRL_SLAVE_FORCE_0);
-+	__raw_writel(CMD_DELAY, AM33XX_CMD2_CTRL_SLAVE_DELAY_0);
-+	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD2_DLL_LOCK_DIFF_0);
-+	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD2_INVERT_CLKOUT_0);
-+}
-+
-+static void beaglebone_config_vtp_ddr2(void)
-+{
-+	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_ENABLE,
-+		AM33XX_VTP0_CTRL_REG);
-+	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) & (~VTP_CTRL_START_EN),
-+		AM33XX_VTP0_CTRL_REG);
-+	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_START_EN,
-+		AM33XX_VTP0_CTRL_REG);
-+
-+	/* Poll for READY */
-+	while ((__raw_readl(AM33XX_VTP0_CTRL_REG) & VTP_CTRL_READY) != VTP_CTRL_READY);
-+}
-+
-+static void beaglebone_config_emif_ddr2(void)
-+{
-+	u32 i;
-+
-+	/*Program EMIF0 CFG Registers*/
-+	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1));
-+	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1_SHADOW));
-+	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_2));
-+	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1));
-+	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1_SHADOW));
-+	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2));
-+	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2_SHADOW));
-+	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3));
-+	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3_SHADOW));
-+
-+	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
-+	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
-+
-+	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
-+	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
-+	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
-+	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
-+
-+	for (i = 0; i < 5000; i++) {
-+
-+	}
-+
-+	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
-+	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
-+	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
-+	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
-+
-+	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
-+	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
-+}
-+
-+void beaglebone_config_ddr2(void)
-+{
-+	enable_ddr_clocks();
-+
-+	beaglebone_config_vtp_ddr2();
-+
-+	beaglebone_cmd_macro_config_ddr2();
-+	beaglebone_data_macro_config_ddr2(0);
-+	beaglebone_data_macro_config_ddr2(1);
-+
-+	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA0_RANK0_DELAYS_0);
-+	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA1_RANK0_DELAYS_0);
-+
-+	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD0_IOCTRL);
-+	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD1_IOCTRL);
-+	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD2_IOCTRL);
-+	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA0_IOCTRL);
-+	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA1_IOCTRL);
-+
-+	__raw_writel(__raw_readl(AM33XX_DDR_IO_CTRL) & 0xefffffff, AM33XX_DDR_IO_CTRL);
-+	__raw_writel(__raw_readl(AM33XX_DDR_CKE_CTRL) | 0x00000001, AM33XX_DDR_CKE_CTRL);
-+
-+	beaglebone_config_emif_ddr2();
-+}
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index e6c490a..e869a7b 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -13,6 +13,8 @@
- #include <mach/am33xx-generic.h>
- #include <mach/wdt.h>
- 
-+#include "ddr.h"
-+
- /* UART Defines */
- #define UART_SYSCFG_OFFSET  (0x54)
- #define UART_SYSSTS_OFFSET  (0x58)
-@@ -21,176 +23,6 @@
- #define UART_CLK_RUNNING_MASK   0x1
- #define UART_SMART_IDLE_EN  (0x1 << 0x3)
- 
--/* AM335X EMIF Register values */
--#define EMIF_SDMGT		0x80000000
--#define EMIF_SDRAM		0x00004650
--#define EMIF_PHYCFG		0x2
--#define DDR_PHY_RESET		(0x1 << 10)
--#define DDR_FUNCTIONAL_MODE_EN	0x1
--#define DDR_PHY_READY		(0x1 << 2)
--#define	VTP_CTRL_READY		(0x1 << 5)
--#define VTP_CTRL_ENABLE		(0x1 << 6)
--#define VTP_CTRL_LOCK_EN	(0x1 << 4)
--#define VTP_CTRL_START_EN	(0x1)
--#define DDR2_RATIO		0x80	/* for mDDR */
--#define CMD_FORCE		0x00	/* common #def */
--#define CMD_DELAY		0x00
--
--#define EMIF_READ_LATENCY	0x05
--#define EMIF_TIM1		0x0666B3D6
--#define EMIF_TIM2		0x143731DA
--#define	EMIF_TIM3		0x00000347
--#define EMIF_SDCFG		0x43805332
--#define EMIF_SDREF		0x0000081a
--#define DDR2_DLL_LOCK_DIFF	0x0
--#define DDR2_RD_DQS		0x12
--#define DDR2_PHY_FIFO_WE	0x80
--
--#define	DDR2_INVERT_CLKOUT	0x00
--#define	DDR2_WR_DQS		0x00
--#define	DDR2_PHY_WRLVL		0x00
--#define	DDR2_PHY_GATELVL	0x00
--#define	DDR2_PHY_WR_DATA	0x40
--#define	PHY_RANK0_DELAY		0x01
--#define PHY_DLL_LOCK_DIFF	0x0
--#define DDR_IOCTRL_VALUE	0x18B
--
--static void beaglebone_data_macro_config(int dataMacroNum)
--{
--	u32 BaseAddrOffset = 0x00;
--
--	if (dataMacroNum == 1)
--		BaseAddrOffset = 0xA4;
--
--	__raw_writel(((DDR2_RD_DQS<<30)|(DDR2_RD_DQS<<20)
--		|(DDR2_RD_DQS<<10)|(DDR2_RD_DQS<<0)),
--		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_RD_DQS>>2,
--		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
--	__raw_writel(((DDR2_WR_DQS<<30)|(DDR2_WR_DQS<<20)
--		|(DDR2_WR_DQS<<10)|(DDR2_WR_DQS<<0)),
--		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_WR_DQS>>2,
--		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
--	__raw_writel(((DDR2_PHY_WRLVL<<30)|(DDR2_PHY_WRLVL<<20)
--		|(DDR2_PHY_WRLVL<<10)|(DDR2_PHY_WRLVL<<0)),
--		(AM33XX_DATA0_WRLVL_INIT_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_PHY_WRLVL>>2,
--		(AM33XX_DATA0_WRLVL_INIT_RATIO_1 + BaseAddrOffset));
--	__raw_writel(((DDR2_PHY_GATELVL<<30)|(DDR2_PHY_GATELVL<<20)
--		|(DDR2_PHY_GATELVL<<10)|(DDR2_PHY_GATELVL<<0)),
--		(AM33XX_DATA0_GATELVL_INIT_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_PHY_GATELVL>>2,
--		(AM33XX_DATA0_GATELVL_INIT_RATIO_1 + BaseAddrOffset));
--	__raw_writel(((DDR2_PHY_FIFO_WE<<30)|(DDR2_PHY_FIFO_WE<<20)
--		|(DDR2_PHY_FIFO_WE<<10)|(DDR2_PHY_FIFO_WE<<0)),
--		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_PHY_FIFO_WE>>2,
--		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_1 + BaseAddrOffset));
--	__raw_writel(((DDR2_PHY_WR_DATA<<30)|(DDR2_PHY_WR_DATA<<20)
--		|(DDR2_PHY_WR_DATA<<10)|(DDR2_PHY_WR_DATA<<0)),
--		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_0 + BaseAddrOffset));
--	__raw_writel(DDR2_PHY_WR_DATA>>2,
--		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_1 + BaseAddrOffset));
--	__raw_writel(PHY_DLL_LOCK_DIFF,
--		(AM33XX_DATA0_DLL_LOCK_DIFF_0 + BaseAddrOffset));
--}
--
--static void beaglebone_cmd_macro_config(void)
--{
--	__raw_writel(DDR2_RATIO, AM33XX_CMD0_CTRL_SLAVE_RATIO_0);
--	__raw_writel(CMD_FORCE, AM33XX_CMD0_CTRL_SLAVE_FORCE_0);
--	__raw_writel(CMD_DELAY, AM33XX_CMD0_CTRL_SLAVE_DELAY_0);
--	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD0_DLL_LOCK_DIFF_0);
--	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD0_INVERT_CLKOUT_0);
--
--	__raw_writel(DDR2_RATIO, AM33XX_CMD1_CTRL_SLAVE_RATIO_0);
--	__raw_writel(CMD_FORCE, AM33XX_CMD1_CTRL_SLAVE_FORCE_0);
--	__raw_writel(CMD_DELAY, AM33XX_CMD1_CTRL_SLAVE_DELAY_0);
--	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD1_DLL_LOCK_DIFF_0);
--	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD1_INVERT_CLKOUT_0);
--
--	__raw_writel(DDR2_RATIO, AM33XX_CMD2_CTRL_SLAVE_RATIO_0);
--	__raw_writel(CMD_FORCE, AM33XX_CMD2_CTRL_SLAVE_FORCE_0);
--	__raw_writel(CMD_DELAY, AM33XX_CMD2_CTRL_SLAVE_DELAY_0);
--	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD2_DLL_LOCK_DIFF_0);
--	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD2_INVERT_CLKOUT_0);
--}
--
--static void beaglebone_config_vtp(void)
--{
--	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_ENABLE,
--		AM33XX_VTP0_CTRL_REG);
--	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) & (~VTP_CTRL_START_EN),
--		AM33XX_VTP0_CTRL_REG);
--	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_START_EN,
--		AM33XX_VTP0_CTRL_REG);
--
--	/* Poll for READY */
--	while ((__raw_readl(AM33XX_VTP0_CTRL_REG) & VTP_CTRL_READY) != VTP_CTRL_READY);
--}
--
--static void beaglebone_config_emif_ddr2(void)
--{
--	u32 i;
--
--	/*Program EMIF0 CFG Registers*/
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1));
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1_SHADOW));
--	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_2));
--	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1));
--	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1_SHADOW));
--	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2));
--	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2_SHADOW));
--	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3));
--	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3_SHADOW));
--
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
--
--	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
--	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
--	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
--
--	for (i = 0; i < 5000; i++) {
--
--	}
--
--	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
--	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
--	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
--	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
--
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
--	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
--}
--
--static void beaglebone_config_ddr(void)
--{
--	enable_ddr_clocks();
--
--	beaglebone_config_vtp();
--
--	beaglebone_cmd_macro_config();
--	beaglebone_data_macro_config(0);
--	beaglebone_data_macro_config(1);
--
--	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA0_RANK0_DELAYS_0);
--	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA1_RANK0_DELAYS_0);
--
--	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD0_IOCTRL);
--	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD1_IOCTRL);
--	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD2_IOCTRL);
--	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA0_IOCTRL);
--	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA1_IOCTRL);
--
--	__raw_writel(__raw_readl(AM33XX_DDR_IO_CTRL) & 0xefffffff, AM33XX_DDR_IO_CTRL);
--	__raw_writel(__raw_readl(AM33XX_DDR_CKE_CTRL) | 0x00000001, AM33XX_DDR_CKE_CTRL);
--
--	beaglebone_config_emif_ddr2();
--}
--
- /*
-  * early system init of muxing and clocks.
-  */
-@@ -201,7 +33,8 @@ void beaglebone_sram_init(void)
- 	/* Setup the PLLs and the clocks for the peripherals */
- 	pll_init(MPUPLL_M_500);
- 
--	beaglebone_config_ddr();
-+	if (get_cpu_rev() == AM335X_ES1_0)
-+		beaglebone_config_ddr2();
- 
- 	/* UART softreset */
- 	uart_base = AM33XX_UART0_BASE;
--- 
-1.8.4.rc3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1ieTogSmFu
+IEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIg
+PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9n
+ZW5lcmljLmMgICAgICAgICAgICAgIHwgMzQgKysrKysrKysrKysrKysrKysrKysrKystCiBhcmNo
+L2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5lcmljLmggfCAgMiArKwogYXJj
+aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oIHwgIDEgKwogYXJj
+aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5oICAgICAgIHwgMTAgKysrKyst
+LQogNCBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlm
+ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0v
+bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKaW5kZXggYTY1M2VmNy4uNTU4ZDA2OSAxMDA2NDQK
+LS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0v
+bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKQEAgLTEsNiArMSw2IEBACiAvKgogICogKEMpIENv
+cHlyaWdodCAyMDEyIFRlcmVzYSBHw6FtZXosIFBoeXRlYyBNZXNzdGVjaG5payBHbWJICi0gKiAo
+QykgQ29weXJpZ2h0IDIwMTIgSmFuIEx1ZWJiZSA8ai5sdWViYmVAcGVuZ3V0cm9uaXguZGU+Cisg
+KiAoQykgQ29weXJpZ2h0IDIwMTItMjAxMyBKYW4gTHVlYmJlIDxqLmx1ZWJiZUBwZW5ndXRyb25p
+eC5kZT4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
+c3RyaWJ1dGUgaXQgYW5kL29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
+TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwpAQCAtMzgsNiArMzgsMzggQEAgdm9pZCBfX25v
+cmV0dXJuIHJlc2V0X2NwdSh1bnNpZ25lZCBsb25nIGFkZHIpCiB9CiAKIC8qKgorICogQGJyaWVm
+IEV4dHJhY3QgdGhlIEFNMzN4eCBFUyByZXZpc2lvbgorICoKKyAqIFRoZSBzaWduaWZpY2FuY2Ug
+b2YgdGhlIENQVSByZXZpc2lvbiBkZXBlbmRzIHVwb24gdGhlIGNwdSB0eXBlLgorICogTGF0ZXN0
+IGtub3duIHJldmlzaW9uIGlzIGNvbnNpZGVyZWQgZGVmYXVsdC4KKyAqCisgKiBAcmV0dXJuIHNp
+bGljb24gdmVyc2lvbgorICovCit1MzIgYW0zM3h4X2dldF9jcHVfcmV2KHZvaWQpCit7CisJdTMy
+IHZlcnNpb24sIHJldHZhbDsKKworCXZlcnNpb24gPSAocmVhZGwoQU0zM1hYX0lEQ09ERV9SRUcp
+ID4+IDI4KSAmIDB4RjsKKworCXN3aXRjaCAodmVyc2lvbikgeworCWNhc2UgMDoKKwkJcmV0dmFs
+ID0gQU0zMzVYX0VTMV8wOworCQlicmVhazsKKwljYXNlIDE6CisJCXJldHZhbCA9IEFNMzM1WF9F
+UzJfMDsKKwkJYnJlYWs7CisJY2FzZSAyOgorCQkvKgorCQkgKiBGYWxsIHRocm91Z2ggdGhlIGRl
+ZmF1bHQgY2FzZS4KKwkJICovCisJZGVmYXVsdDoKKwkJcmV0dmFsID0gQU0zMzVYX0VTMl8xOwor
+CX0KKworCXJldHVybiByZXR2YWw7Cit9CisKKy8qKgogICogQGJyaWVmIEdldCB0aGUgdXBwZXIg
+YWRkcmVzcyBvZiBjdXJyZW50IGV4ZWN1dGlvbgogICoKICAqIHdlIGNhbiB1c2UgdGhpcyB0byBm
+aWd1cmUgb3V0IGlmIHdlIGFyZSBydW5uaW5nIGluIFNSQU0gLwpkaWZmIC0tZ2l0IGEvYXJjaC9h
+cm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oIGIvYXJjaC9hcm0vbWFj
+aC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oCmluZGV4IGQ5ZDJlZmIuLmVjMjJh
+ZDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWdl
+bmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5l
+cmljLmgKQEAgLTYsNiArNiw4IEBACiAKIGludCBhbTMzeHhfcmVnaXN0ZXJfZXRoYWRkcihpbnQg
+ZXRoX2lkLCBpbnQgbWFjX2lkKTsKIAordTMyIGFtMzN4eF9nZXRfY3B1X3Jldih2b2lkKTsKKwog
+c3RhdGljIGlubGluZSB2b2lkIGFtMzN4eF9zYXZlX2Jvb3RpbmZvKHVpbnQzMl90ICppbmZvKQog
+ewogCXVuc2lnbmVkIGxvbmcgaSA9ICh1bnNpZ25lZCBsb25nKWluZm87CmRpZmYgLS1naXQgYS9h
+cmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggYi9hcmNoL2Fy
+bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKaW5kZXggZjE5OGE5YS4u
+OTMyOGNjOSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMz
+eHgtc2lsaWNvbi5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4
+LXNpbGljb24uaApAQCAtNzEsNiArNzEsNyBAQAogCiAvKiBDVFJMICovCiAjZGVmaW5lIEFNMzNY
+WF9DVFJMX0JBU0UJCShBTTMzWFhfTDRfV0tVUF9CQVNFICsgMHgyMTAwMDApCisjZGVmaW5lIEFN
+MzNYWF9JRENPREVfUkVHCQkoQU0zM1hYX0NUUkxfQkFTRSArIDB4NjAwKQogCiAvKiBXYXRjaGRv
+ZyBUaW1lciAqLwogI2RlZmluZSBBTTMzWFhfV0RUX0JBU0UJCQkweDQ0RTM1MDAwCmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmggYi9hcmNoL2Fy
+bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmgKaW5kZXggNGQ5YjEzOC4uZmNlNTg5
+NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5o
+CisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvc3lzX2luZm8uaApAQCAtNDAs
+NiArNDAsNyBAQAogI2RlZmluZSBDUFVfMTcxMAkweDE3MTAKICNkZWZpbmUgQ1BVXzI0MjAJMHgy
+NDIwCiAjZGVmaW5lIENQVV8yNDMwCTB4MjQzMAorI2RlZmluZSBDUFVfMzM1MAkweDMzNTAKICNk
+ZWZpbmUgQ1BVXzM0MzAJMHgzNDMwCiAjZGVmaW5lIENQVV8zNjMwCTB4MzYzMAogCkBAIC01NCw2
+ICs1NSwxMCBAQAogI2RlZmluZSBPTUFQMzRYWF9FUzMJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwg
+MykKICNkZWZpbmUgT01BUDM0WFhfRVMzXzEJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwgNCkKIAor
+I2RlZmluZSBBTTMzNVhfRVMxXzAJCWNwdV9yZXZpc2lvbihDUFVfMzM1MCwgMCkKKyNkZWZpbmUg
+QU0zMzVYX0VTMl8wCQljcHVfcmV2aXNpb24oQ1BVXzMzNTAsIDEpCisjZGVmaW5lIEFNMzM1WF9F
+UzJfMQkJY3B1X3JldmlzaW9uKENQVV8zMzUwLCAyKQorCiAjZGVmaW5lIE9NQVAzNlhYX0VTMQkJ
+Y3B1X3JldmlzaW9uKENQVV8zNjMwLCAwKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMQkJY3B1X3Jl
+dmlzaW9uKENQVV8zNjMwLCAxKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMgkJY3B1X3JldmlzaW9u
+KENQVV8zNjMwLCAyKQpAQCAtNzYsOCArODEsOSBAQAogLyoqCiAgKiBIYXdrZXllIGRlZmluaXRp
+b25zIHRvIGlkZW50aWZ5IHNpbGljb24gZmFtaWxpZXMKICAqLwotI2RlZmluZSBPTUFQX0hBV0tF
+WUVfMzRYWAkweEI3QUUKLSNkZWZpbmUgT01BUF9IQVdLRVlFXzM2WFgJMHhCODkxCisjZGVmaW5l
+IE9NQVBfSEFXS0VZRV8zNFhYCTB4QjdBRSAvKiBPTUFQMzR4eCAqLworI2RlZmluZSBPTUFQX0hB
+V0tFWUVfMzZYWAkweEI4OTEgLyogT01BUDM2eHggKi8KKyNkZWZpbmUgT01BUF9IQVdLRVlFXzMz
+NVgJMHhCOTQ0IC8qIEFNMzM1eCAqLwogCiAvKiogVGhlc2UgYXJlIGltcGxlbWVudGVkIGJ5IHRo
+ZSBTeXN0ZW0gc3BlY2lmaWMgY29kZSBpbiBvbWFwWC1nZW5lcmljLmMgKi8KIHUzMiBnZXRfY3B1
+X3R5cGUodm9pZCk7Ci0tIAoxLjguNC5yYzMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
