@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x229.google.com ([2607:f8b0:400c:c01::229])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCaOz-0008MT-BH
- for barebox@lists.infradead.org; Thu, 22 Aug 2013 19:18:38 +0000
-Received: by mail-ve0-f169.google.com with SMTP id db10so1911467veb.14
- for <barebox@lists.infradead.org>; Thu, 22 Aug 2013 12:18:13 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20130822065552.GU31036@pengutronix.de>
-References: <CAJyuEedsHb0h84AKDq_Mttxu_ZG1u+gG94BpzioHyO=JdHiD=A@mail.gmail.com>
- <20130822065552.GU31036@pengutronix.de>
-Date: Thu, 22 Aug 2013 15:18:13 -0400
-Message-ID: <CAJyuEedyP-VXLieP5hZgTv5Tiihq9h8fecEpuGV4YdYur=Kq8g@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+ id 1VCbdH-0001vz-QI
+ for barebox@lists.infradead.org; Thu, 22 Aug 2013 20:37:30 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 22 Aug 2013 22:36:58 +0200
+Message-Id: <1377203819-23074-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
+References: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,38 +16,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting BareBox to Variscite iMX6 SOM
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 7/8] ARM: am33xx: beaglebone: configure I2C EEPROM
+To: barebox@lists.infradead.org
 
-Sascha,
+From: Jan Luebbe <jlu@pengutronix.de>
 
-Based on a fairly thorough perusal of the current HEAD from the git, I
-am thinking I will implement the Variscite SOM in the following file
-structure:
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beaglebone/board.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-(FYI - the Variscite development kit includes their own carrier board
-which is simply referred to in their published schematics as
-"MX6CustomBoard", so I am thinking of segmenting things by SOM and
-carrier board, much as you have the PhyFlex and its carrier board.)
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index b3f39ea..ccb7004 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -97,11 +97,20 @@ static void beaglebone_eth_init(void)
+ 	am33xx_add_cpsw(&cpsw_data);
+ }
+ 
++static struct i2c_board_info i2c0_devices[] = {
++	{
++		I2C_BOARD_INFO("24c256", 0x50)
++	},
++};
++
+ static int beaglebone_devices_init(void)
+ {
+ 	am33xx_add_mmc0(NULL);
+ 
+ 	am33xx_enable_i2c0_pin_mux();
++	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
++	am33xx_add_i2c0(NULL);
++
+ 	beaglebone_eth_init();
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
+-- 
+1.8.4.rc3
 
-/arch/arm/configs/variscite_mx6_custom_defconfig
-/arch/arm/boards/variscite-mx6-custom/board.c
-/arch/arm/boards/variscite-mx6-custom/flash-header.imxcfg
-/arch/arm/boards/variscite-mx6-custom/lowlevel.c
-/arch/arm/boards/variscite-mx6-custom/Makefile
-/arch/arm/boards/variscite-mx6-custom/env/(To Be Determined)
-/arch/arm/dts/imx6q-var-custom.dts
-/arch/arm/dts/imx6q-var-som.dtsi
-
-Does this fit into your current methodology pretty well?
-
-Thanks!
-Michael Burkey
 
 _______________________________________________
 barebox mailing list
