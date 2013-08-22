@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCc5g-0002al-B4
- for barebox@lists.infradead.org; Thu, 22 Aug 2013 21:06:49 +0000
-Date: Thu, 22 Aug 2013 23:06:26 +0200
+ id 1VCc8I-0002hH-Ic
+ for barebox@lists.infradead.org; Thu, 22 Aug 2013 21:09:31 +0000
+Date: Thu, 22 Aug 2013 23:09:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130822210626.GC31036@pengutronix.de>
+Message-ID: <20130822210908.GD31036@pengutronix.de>
 References: <CAJyuEedsHb0h84AKDq_Mttxu_ZG1u+gG94BpzioHyO=JdHiD=A@mail.gmail.com>
  <20130822065552.GU31036@pengutronix.de>
- <CAJyuEefSbOYnGut0SeXbhB_KV=0mWETE=UNPyMX94fCAGjA10w@mail.gmail.com>
+ <CAJyuEedyP-VXLieP5hZgTv5Tiihq9h8fecEpuGV4YdYur=Kq8g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJyuEefSbOYnGut0SeXbhB_KV=0mWETE=UNPyMX94fCAGjA10w@mail.gmail.com>
+In-Reply-To: <CAJyuEedyP-VXLieP5hZgTv5Tiihq9h8fecEpuGV4YdYur=Kq8g@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,44 +28,34 @@ Subject: Re: Porting BareBox to Variscite iMX6 SOM
 To: Michael Burkey <mdburkey@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 22, 2013 at 11:49:01AM -0400, Michael Burkey wrote:
-> I don't know why I said github -- the one at pengutronix is the one I
-> have been looking at. I think my brain must have been focused on lunch
-> when I was sending that!
-
-;)
-
+On Thu, Aug 22, 2013 at 03:18:13PM -0400, Michael Burkey wrote:
+> Sascha,
 > 
-> The PhyFlex and i.MX6 NAND support being in the next release was sort
-> of what I thought based on the comments in the mailing list and the
-> differences in the code on the git vs the actual release.
+> Based on a fairly thorough perusal of the current HEAD from the git, I
+> am thinking I will implement the Variscite SOM in the following file
+> structure:
 > 
-> Which brings me to my next question: what is the preferred way of
-> setting up a new platform at this point in time?
+> (FYI - the Variscite development kit includes their own carrier board
+> which is simply referred to in their published schematics as
+> "MX6CustomBoard", so I am thinking of segmenting things by SOM and
+> carrier board, much as you have the PhyFlex and its carrier board.)
 > 
-> Specifically, things seem to be in a lot of flux with the i.MX systems.
+> /arch/arm/configs/variscite_mx6_custom_defconfig
+> /arch/arm/boards/variscite-mx6-custom/board.c
+> /arch/arm/boards/variscite-mx6-custom/flash-header.imxcfg
+> /arch/arm/boards/variscite-mx6-custom/lowlevel.c
+> /arch/arm/boards/variscite-mx6-custom/Makefile
+> /arch/arm/boards/variscite-mx6-custom/env/(To Be Determined)
+> /arch/arm/dts/imx6q-var-custom.dts
+> /arch/arm/dts/imx6q-var-som.dtsi
 > 
-> So, right now, for new systems:
-> 1) The initial hardware setup should be in devicetree format under
-> arch/arm/dts, correct?
+> Does this fit into your current methodology pretty well?
 
-Yes, correct.
+Yes, this looks good.
 
-> 
-> 2) Where should the DCD config go? I am looking at multiple i.MX6
-> platforms with it in 4 different spots -- lowlevel.c, flash_header.c,
-> an imxcfg file, as a .h file included from the imxcfg file, etc.
-
-The imxcfg file is the way to go. Historically we assembled the flash
-header as struct types in C, but that turned out to be too inflexible.
-
-> (and
-> the dmo-mx6-realq7 has both a very basic .imxcfg file and then
-> manually configures everything else with writel's in lowlevel.c).
-
-Yeah, this is done because the dmo board needs the SDRAM calibration
-functions to setup SDRAM. You can ignore this if you do not have a
-good reason to setup the SDRAM in code.
+Note that i.MX6 boards often come in different quad/dual variants with
+slightly different devicetrees. Just to explain the mess we have with
+the i.MX6 devicetrees...
 
 Sascha
 
