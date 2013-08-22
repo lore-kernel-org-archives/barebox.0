@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCbdH-0001w0-RI
+ id 1VCbdH-0001vy-QM
  for barebox@lists.infradead.org; Thu, 22 Aug 2013 20:37:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 22 Aug 2013 22:36:59 +0200
-Message-Id: <1377203819-23074-9-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 22 Aug 2013 22:36:57 +0200
+Message-Id: <1377203819-23074-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377203819-23074-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,156 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/8] ARM: am33xx: beaglebone: add support for beaglebone black
- with DDR3 RAM
+Subject: [PATCH 6/8] ARM: am33xx: beaglebone: split out DDR2 init for BB White
 To: barebox@lists.infradead.org
 
 From: Jan Luebbe <jlu@pengutronix.de>
 
-Also allow configuration of the DDR PLL from board code
+To make place for the DDR3 init for the BB black.
 
 Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/beaglebone/Makefile              |   2 +-
- arch/arm/boards/beaglebone/beaglebone.h          |   9 ++
- arch/arm/boards/beaglebone/board.c               |  46 ++++++-
- arch/arm/boards/beaglebone/ddr.h                 |   1 +
- arch/arm/boards/beaglebone/ddr3.c                | 155 +++++++++++++++++++++++
- arch/arm/boards/beaglebone/lowlevel.c            |  19 ++-
- arch/arm/mach-omap/am33xx_clock.c                |   9 +-
- arch/arm/mach-omap/include/mach/am33xx-clock.h   |   5 +-
- arch/arm/mach-omap/include/mach/am33xx-devices.h |   6 +
- 9 files changed, 238 insertions(+), 14 deletions(-)
- create mode 100644 arch/arm/boards/beaglebone/beaglebone.h
- create mode 100644 arch/arm/boards/beaglebone/ddr3.c
+ arch/arm/boards/beaglebone/Makefile   |   2 +-
+ arch/arm/boards/beaglebone/ddr.h      |   1 +
+ arch/arm/boards/beaglebone/ddr2.c     | 178 ++++++++++++++++++++++++++++++++++
+ arch/arm/boards/beaglebone/lowlevel.c | 175 +--------------------------------
+ 4 files changed, 184 insertions(+), 172 deletions(-)
+ create mode 100644 arch/arm/boards/beaglebone/ddr.h
+ create mode 100644 arch/arm/boards/beaglebone/ddr2.c
 
 diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
-index 7ec0c8b..eb2ffec 100644
+index 092c31d..7ec0c8b 100644
 --- a/arch/arm/boards/beaglebone/Makefile
 +++ b/arch/arm/boards/beaglebone/Makefile
 @@ -1,2 +1,2 @@
--lwl-y += lowlevel.o ddr2.o
-+lwl-y += lowlevel.o ddr2.o ddr3.o
+-lwl-y += lowlevel.o
++lwl-y += lowlevel.o ddr2.o
  obj-y += board.o
-diff --git a/arch/arm/boards/beaglebone/beaglebone.h b/arch/arm/boards/beaglebone/beaglebone.h
-new file mode 100644
-index 0000000..25c5b0e
---- /dev/null
-+++ b/arch/arm/boards/beaglebone/beaglebone.h
-@@ -0,0 +1,9 @@
-+#ifndef __BOARD_BEAGLEBONE_H
-+#define __BOARD_BEAGLEBONE_H
-+
-+static inline int is_beaglebone_black(void)
-+{
-+	return am33xx_get_cpu_rev() != AM335X_ES1_0;
-+}
-+
-+#endif /* __BOARD_BEAGLEBONE_H */
-diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
-index ccb7004..dcaa573 100644
---- a/arch/arm/boards/beaglebone/board.c
-+++ b/arch/arm/boards/beaglebone/board.c
-@@ -26,6 +26,8 @@
- #include <init.h>
- #include <driver.h>
- #include <envfs.h>
-+#include <environment.h>
-+#include <globalvar.h>
- #include <sizes.h>
- #include <io.h>
- #include <ns16550.h>
-@@ -49,6 +51,8 @@
- #include <mach/am33xx-generic.h>
- #include <mach/cpsw.h>
- 
-+#include "beaglebone.h"
-+
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
- 
- /**
-@@ -68,7 +72,10 @@ console_initcall(beaglebone_console_init);
- 
- static int beaglebone_mem_init(void)
- {
--	omap_add_ram0(SZ_256M);
-+	if (is_beaglebone_black())
-+		omap_add_ram0(SZ_512M);
-+	else
-+		omap_add_ram0(SZ_256M);
- 
- 	return 0;
- }
-@@ -103,19 +110,54 @@ static struct i2c_board_info i2c0_devices[] = {
- 	},
- };
- 
-+static const __maybe_unused struct module_pin_mux mmc1_pin_mux[] = {
-+	{OFFSET(gpmc_ad0), (MODE(1) | RXACTIVE)},	/* MMC1_DAT0 */
-+	{OFFSET(gpmc_ad1), (MODE(1) | RXACTIVE)},	/* MMC1_DAT1 */
-+	{OFFSET(gpmc_ad2), (MODE(1) | RXACTIVE)},	/* MMC1_DAT2 */
-+	{OFFSET(gpmc_ad3), (MODE(1) | RXACTIVE)},	/* MMC1_DAT3 */
-+	{OFFSET(gpmc_ad4), (MODE(1) | RXACTIVE)},	/* MMC1_DAT4 */
-+	{OFFSET(gpmc_ad5), (MODE(1) | RXACTIVE)},	/* MMC1_DAT5 */
-+	{OFFSET(gpmc_ad6), (MODE(1) | RXACTIVE)},	/* MMC1_DAT6 */
-+	{OFFSET(gpmc_ad7), (MODE(1) | RXACTIVE)},	/* MMC1_DAT7 */
-+	{OFFSET(gpmc_csn1), (MODE(2) | RXACTIVE | PULLUP_EN)},	/* MMC1_CLK */
-+	{OFFSET(gpmc_csn2), (MODE(2) | RXACTIVE | PULLUP_EN)},	/* MMC1_CMD */
-+	{-1},
-+};
-+
- static int beaglebone_devices_init(void)
- {
-+	am33xx_enable_mmc0_pin_mux();
- 	am33xx_add_mmc0(NULL);
- 
-+	if (is_beaglebone_black()) {
-+		configure_module_pin_mux(mmc1_pin_mux);
-+		am33xx_add_mmc1(NULL);
-+	}
-+
- 	am33xx_enable_i2c0_pin_mux();
- 	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
- 	am33xx_add_i2c0(NULL);
- 
- 	beaglebone_eth_init();
- 
-+	return 0;
-+}
-+device_initcall(beaglebone_devices_init);
-+
-+static int beaglebone_env_init(void)
-+{
-+	int black = is_beaglebone_black();
-+
-+#if defined(CONFIG_GLOBALVAR)
-+	globalvar_add_simple("board.variant");
-+	setenv("global.board.variant", black ? "boneblack" : "bone");
-+#endif
-+
-+	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
-+
- 	armlinux_set_bootparams((void *)0x80000100);
- 	armlinux_set_architecture(MACH_TYPE_BEAGLEBONE);
- 
- 	return 0;
- }
--device_initcall(beaglebone_devices_init);
-+late_initcall(beaglebone_env_init);
 diff --git a/arch/arm/boards/beaglebone/ddr.h b/arch/arm/boards/beaglebone/ddr.h
-index d2f0c95..46c2504 100644
---- a/arch/arm/boards/beaglebone/ddr.h
-+++ b/arch/arm/boards/beaglebone/ddr.h
-@@ -1 +1,2 @@
- void beaglebone_config_ddr2(void);
-+void beaglebone_config_ddr3(void);
-diff --git a/arch/arm/boards/beaglebone/ddr3.c b/arch/arm/boards/beaglebone/ddr3.c
 new file mode 100644
-index 0000000..643a94d
+index 0000000..d2f0c95
 --- /dev/null
-+++ b/arch/arm/boards/beaglebone/ddr3.c
-@@ -0,0 +1,155 @@
++++ b/arch/arm/boards/beaglebone/ddr.h
+@@ -0,0 +1 @@
++void beaglebone_config_ddr2(void);
+diff --git a/arch/arm/boards/beaglebone/ddr2.c b/arch/arm/boards/beaglebone/ddr2.c
+new file mode 100644
+index 0000000..42a099d
+--- /dev/null
++++ b/arch/arm/boards/beaglebone/ddr2.c
+@@ -0,0 +1,178 @@
 +#include <init.h>
 +#include <sizes.h>
 +#include <io.h>
@@ -195,44 +84,67 @@ index 0000000..643a94d
 +#define CMD_FORCE		0x00	/* common #def */
 +#define CMD_DELAY		0x00
 +
-+#define EMIF_READ_LATENCY	0x100007
-+#define EMIF_TIM1		0x0AAAD4DB
-+#define EMIF_TIM2		0x266B7FDA
-+#define	EMIF_TIM3		0x501F867F
-+#define EMIF_SDCFG		0x61C05332
-+#define EMIF_SDREF		0xC30
-+#define ZQ_CFG			0x50074BE4
-+#define DDR2_DLL_LOCK_DIFF	0x1
-+#define DDR2_RD_DQS		0x38
-+#define	DDR2_WR_DQS		0x44
-+#define DDR2_PHY_FIFO_WE	0x94
-+#define	DDR2_PHY_WR_DATA	0x7D
++#define EMIF_READ_LATENCY	0x05
++#define EMIF_TIM1		0x0666B3D6
++#define EMIF_TIM2		0x143731DA
++#define	EMIF_TIM3		0x00000347
++#define EMIF_SDCFG		0x43805332
++#define EMIF_SDREF		0x0000081a
++#define DDR2_DLL_LOCK_DIFF	0x0
++#define DDR2_RD_DQS		0x12
++#define DDR2_PHY_FIFO_WE	0x80
 +
-+#define	DDR2_INVERT_CLKOUT	0x0
++#define	DDR2_INVERT_CLKOUT	0x00
++#define	DDR2_WR_DQS		0x00
++#define	DDR2_PHY_WRLVL		0x00
++#define	DDR2_PHY_GATELVL	0x00
++#define	DDR2_PHY_WR_DATA	0x40
 +#define	PHY_RANK0_DELAY		0x01
 +#define PHY_DLL_LOCK_DIFF	0x0
 +#define DDR_IOCTRL_VALUE	0x18B
 +
-+static void beaglebone_data_macro_config_ddr3(int dataMacroNum)
++static void beaglebone_data_macro_config_ddr2(int dataMacroNum)
 +{
 +	u32 BaseAddrOffset = 0x00;
 +
 +	if (dataMacroNum == 1)
 +		BaseAddrOffset = 0xA4;
 +
-+	__raw_writel(DDR2_RD_DQS,
++	__raw_writel(((DDR2_RD_DQS<<30)|(DDR2_RD_DQS<<20)
++		|(DDR2_RD_DQS<<10)|(DDR2_RD_DQS<<0)),
 +		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_WR_DQS,
++	__raw_writel(DDR2_RD_DQS>>2,
++		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
++	__raw_writel(((DDR2_WR_DQS<<30)|(DDR2_WR_DQS<<20)
++		|(DDR2_WR_DQS<<10)|(DDR2_WR_DQS<<0)),
 +		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_FIFO_WE,
++	__raw_writel(DDR2_WR_DQS>>2,
++		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
++	__raw_writel(((DDR2_PHY_WRLVL<<30)|(DDR2_PHY_WRLVL<<20)
++		|(DDR2_PHY_WRLVL<<10)|(DDR2_PHY_WRLVL<<0)),
++		(AM33XX_DATA0_WRLVL_INIT_RATIO_0 + BaseAddrOffset));
++	__raw_writel(DDR2_PHY_WRLVL>>2,
++		(AM33XX_DATA0_WRLVL_INIT_RATIO_1 + BaseAddrOffset));
++	__raw_writel(((DDR2_PHY_GATELVL<<30)|(DDR2_PHY_GATELVL<<20)
++		|(DDR2_PHY_GATELVL<<10)|(DDR2_PHY_GATELVL<<0)),
++		(AM33XX_DATA0_GATELVL_INIT_RATIO_0 + BaseAddrOffset));
++	__raw_writel(DDR2_PHY_GATELVL>>2,
++		(AM33XX_DATA0_GATELVL_INIT_RATIO_1 + BaseAddrOffset));
++	__raw_writel(((DDR2_PHY_FIFO_WE<<30)|(DDR2_PHY_FIFO_WE<<20)
++		|(DDR2_PHY_FIFO_WE<<10)|(DDR2_PHY_FIFO_WE<<0)),
 +		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_0 + BaseAddrOffset));
-+	__raw_writel(DDR2_PHY_WR_DATA,
++	__raw_writel(DDR2_PHY_FIFO_WE>>2,
++		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_1 + BaseAddrOffset));
++	__raw_writel(((DDR2_PHY_WR_DATA<<30)|(DDR2_PHY_WR_DATA<<20)
++		|(DDR2_PHY_WR_DATA<<10)|(DDR2_PHY_WR_DATA<<0)),
 +		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_0 + BaseAddrOffset));
++	__raw_writel(DDR2_PHY_WR_DATA>>2,
++		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_1 + BaseAddrOffset));
 +	__raw_writel(PHY_DLL_LOCK_DIFF,
 +		(AM33XX_DATA0_DLL_LOCK_DIFF_0 + BaseAddrOffset));
 +}
 +
-+static void beaglebone_cmd_macro_config_ddr3(void)
++static void beaglebone_cmd_macro_config_ddr2(void)
 +{
 +	__raw_writel(DDR2_RATIO, AM33XX_CMD0_CTRL_SLAVE_RATIO_0);
 +	__raw_writel(CMD_FORCE, AM33XX_CMD0_CTRL_SLAVE_FORCE_0);
@@ -253,7 +165,7 @@ index 0000000..643a94d
 +	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD2_INVERT_CLKOUT_0);
 +}
 +
-+static void beaglebone_config_vtp_ddr3(void)
++static void beaglebone_config_vtp_ddr2(void)
 +{
 +	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_ENABLE,
 +		AM33XX_VTP0_CTRL_REG);
@@ -266,7 +178,7 @@ index 0000000..643a94d
 +	while ((__raw_readl(AM33XX_VTP0_CTRL_REG) & VTP_CTRL_READY) != VTP_CTRL_READY);
 +}
 +
-+static void beaglebone_config_emif_ddr3(void)
++static void beaglebone_config_emif_ddr2(void)
 +{
 +	u32 i;
 +
@@ -286,8 +198,8 @@ index 0000000..643a94d
 +
 +	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
 +	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
-+	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
-+	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
++	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
++	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
 +
 +	for (i = 0; i < 5000; i++) {
 +
@@ -302,15 +214,15 @@ index 0000000..643a94d
 +	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
 +}
 +
-+void beaglebone_config_ddr3(void)
++void beaglebone_config_ddr2(void)
 +{
 +	enable_ddr_clocks();
 +
-+	beaglebone_config_vtp_ddr3();
++	beaglebone_config_vtp_ddr2();
 +
-+	beaglebone_cmd_macro_config_ddr3();
-+	beaglebone_data_macro_config_ddr3(0);
-+	beaglebone_data_macro_config_ddr3(1);
++	beaglebone_cmd_macro_config_ddr2();
++	beaglebone_data_macro_config_ddr2(0);
++	beaglebone_data_macro_config_ddr2(1);
 +
 +	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA0_RANK0_DELAYS_0);
 +	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA1_RANK0_DELAYS_0);
@@ -324,140 +236,208 @@ index 0000000..643a94d
 +	__raw_writel(__raw_readl(AM33XX_DDR_IO_CTRL) & 0xefffffff, AM33XX_DDR_IO_CTRL);
 +	__raw_writel(__raw_readl(AM33XX_DDR_CKE_CTRL) | 0x00000001, AM33XX_DDR_CKE_CTRL);
 +
-+	beaglebone_config_emif_ddr3();
++	beaglebone_config_emif_ddr2();
 +}
 diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index e869a7b..0cc9179 100644
+index e6c490a..e869a7b 100644
 --- a/arch/arm/boards/beaglebone/lowlevel.c
 +++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -14,6 +14,7 @@
+@@ -13,6 +13,8 @@
+ #include <mach/am33xx-generic.h>
  #include <mach/wdt.h>
  
- #include "ddr.h"
-+#include "beaglebone.h"
- 
++#include "ddr.h"
++
  /* UART Defines */
  #define UART_SYSCFG_OFFSET  (0x54)
-@@ -31,10 +32,13 @@ void beaglebone_sram_init(void)
- 	u32 regVal, uart_base;
+ #define UART_SYSSTS_OFFSET  (0x58)
+@@ -21,176 +23,6 @@
+ #define UART_CLK_RUNNING_MASK   0x1
+ #define UART_SMART_IDLE_EN  (0x1 << 0x3)
  
- 	/* Setup the PLLs and the clocks for the peripherals */
--	pll_init(MPUPLL_M_500);
+-/* AM335X EMIF Register values */
+-#define EMIF_SDMGT		0x80000000
+-#define EMIF_SDRAM		0x00004650
+-#define EMIF_PHYCFG		0x2
+-#define DDR_PHY_RESET		(0x1 << 10)
+-#define DDR_FUNCTIONAL_MODE_EN	0x1
+-#define DDR_PHY_READY		(0x1 << 2)
+-#define	VTP_CTRL_READY		(0x1 << 5)
+-#define VTP_CTRL_ENABLE		(0x1 << 6)
+-#define VTP_CTRL_LOCK_EN	(0x1 << 4)
+-#define VTP_CTRL_START_EN	(0x1)
+-#define DDR2_RATIO		0x80	/* for mDDR */
+-#define CMD_FORCE		0x00	/* common #def */
+-#define CMD_DELAY		0x00
 -
--	if (get_cpu_rev() == AM335X_ES1_0)
-+	if (is_beaglebone_black()) {
-+		pll_init(MPUPLL_M_500, DDRPLL_M_400);
-+		beaglebone_config_ddr3();
-+	} else {
-+		pll_init(MPUPLL_M_500, DDRPLL_M_266);
- 		beaglebone_config_ddr2();
-+	}
+-#define EMIF_READ_LATENCY	0x05
+-#define EMIF_TIM1		0x0666B3D6
+-#define EMIF_TIM2		0x143731DA
+-#define	EMIF_TIM3		0x00000347
+-#define EMIF_SDCFG		0x43805332
+-#define EMIF_SDREF		0x0000081a
+-#define DDR2_DLL_LOCK_DIFF	0x0
+-#define DDR2_RD_DQS		0x12
+-#define DDR2_PHY_FIFO_WE	0x80
+-
+-#define	DDR2_INVERT_CLKOUT	0x00
+-#define	DDR2_WR_DQS		0x00
+-#define	DDR2_PHY_WRLVL		0x00
+-#define	DDR2_PHY_GATELVL	0x00
+-#define	DDR2_PHY_WR_DATA	0x40
+-#define	PHY_RANK0_DELAY		0x01
+-#define PHY_DLL_LOCK_DIFF	0x0
+-#define DDR_IOCTRL_VALUE	0x18B
+-
+-static void beaglebone_data_macro_config(int dataMacroNum)
+-{
+-	u32 BaseAddrOffset = 0x00;
+-
+-	if (dataMacroNum == 1)
+-		BaseAddrOffset = 0xA4;
+-
+-	__raw_writel(((DDR2_RD_DQS<<30)|(DDR2_RD_DQS<<20)
+-		|(DDR2_RD_DQS<<10)|(DDR2_RD_DQS<<0)),
+-		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_RD_DQS>>2,
+-		(AM33XX_DATA0_RD_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(((DDR2_WR_DQS<<30)|(DDR2_WR_DQS<<20)
+-		|(DDR2_WR_DQS<<10)|(DDR2_WR_DQS<<0)),
+-		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_WR_DQS>>2,
+-		(AM33XX_DATA0_WR_DQS_SLAVE_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(((DDR2_PHY_WRLVL<<30)|(DDR2_PHY_WRLVL<<20)
+-		|(DDR2_PHY_WRLVL<<10)|(DDR2_PHY_WRLVL<<0)),
+-		(AM33XX_DATA0_WRLVL_INIT_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_PHY_WRLVL>>2,
+-		(AM33XX_DATA0_WRLVL_INIT_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(((DDR2_PHY_GATELVL<<30)|(DDR2_PHY_GATELVL<<20)
+-		|(DDR2_PHY_GATELVL<<10)|(DDR2_PHY_GATELVL<<0)),
+-		(AM33XX_DATA0_GATELVL_INIT_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_PHY_GATELVL>>2,
+-		(AM33XX_DATA0_GATELVL_INIT_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(((DDR2_PHY_FIFO_WE<<30)|(DDR2_PHY_FIFO_WE<<20)
+-		|(DDR2_PHY_FIFO_WE<<10)|(DDR2_PHY_FIFO_WE<<0)),
+-		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_PHY_FIFO_WE>>2,
+-		(AM33XX_DATA0_FIFO_WE_SLAVE_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(((DDR2_PHY_WR_DATA<<30)|(DDR2_PHY_WR_DATA<<20)
+-		|(DDR2_PHY_WR_DATA<<10)|(DDR2_PHY_WR_DATA<<0)),
+-		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_0 + BaseAddrOffset));
+-	__raw_writel(DDR2_PHY_WR_DATA>>2,
+-		(AM33XX_DATA0_WR_DATA_SLAVE_RATIO_1 + BaseAddrOffset));
+-	__raw_writel(PHY_DLL_LOCK_DIFF,
+-		(AM33XX_DATA0_DLL_LOCK_DIFF_0 + BaseAddrOffset));
+-}
+-
+-static void beaglebone_cmd_macro_config(void)
+-{
+-	__raw_writel(DDR2_RATIO, AM33XX_CMD0_CTRL_SLAVE_RATIO_0);
+-	__raw_writel(CMD_FORCE, AM33XX_CMD0_CTRL_SLAVE_FORCE_0);
+-	__raw_writel(CMD_DELAY, AM33XX_CMD0_CTRL_SLAVE_DELAY_0);
+-	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD0_DLL_LOCK_DIFF_0);
+-	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD0_INVERT_CLKOUT_0);
+-
+-	__raw_writel(DDR2_RATIO, AM33XX_CMD1_CTRL_SLAVE_RATIO_0);
+-	__raw_writel(CMD_FORCE, AM33XX_CMD1_CTRL_SLAVE_FORCE_0);
+-	__raw_writel(CMD_DELAY, AM33XX_CMD1_CTRL_SLAVE_DELAY_0);
+-	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD1_DLL_LOCK_DIFF_0);
+-	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD1_INVERT_CLKOUT_0);
+-
+-	__raw_writel(DDR2_RATIO, AM33XX_CMD2_CTRL_SLAVE_RATIO_0);
+-	__raw_writel(CMD_FORCE, AM33XX_CMD2_CTRL_SLAVE_FORCE_0);
+-	__raw_writel(CMD_DELAY, AM33XX_CMD2_CTRL_SLAVE_DELAY_0);
+-	__raw_writel(DDR2_DLL_LOCK_DIFF, AM33XX_CMD2_DLL_LOCK_DIFF_0);
+-	__raw_writel(DDR2_INVERT_CLKOUT, AM33XX_CMD2_INVERT_CLKOUT_0);
+-}
+-
+-static void beaglebone_config_vtp(void)
+-{
+-	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_ENABLE,
+-		AM33XX_VTP0_CTRL_REG);
+-	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) & (~VTP_CTRL_START_EN),
+-		AM33XX_VTP0_CTRL_REG);
+-	__raw_writel(__raw_readl(AM33XX_VTP0_CTRL_REG) | VTP_CTRL_START_EN,
+-		AM33XX_VTP0_CTRL_REG);
+-
+-	/* Poll for READY */
+-	while ((__raw_readl(AM33XX_VTP0_CTRL_REG) & VTP_CTRL_READY) != VTP_CTRL_READY);
+-}
+-
+-static void beaglebone_config_emif_ddr2(void)
+-{
+-	u32 i;
+-
+-	/*Program EMIF0 CFG Registers*/
+-	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1));
+-	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_1_SHADOW));
+-	__raw_writel(EMIF_READ_LATENCY, AM33XX_EMIF4_0_REG(DDR_PHY_CTRL_2));
+-	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1));
+-	__raw_writel(EMIF_TIM1, AM33XX_EMIF4_0_REG(SDRAM_TIM_1_SHADOW));
+-	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2));
+-	__raw_writel(EMIF_TIM2, AM33XX_EMIF4_0_REG(SDRAM_TIM_2_SHADOW));
+-	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3));
+-	__raw_writel(EMIF_TIM3, AM33XX_EMIF4_0_REG(SDRAM_TIM_3_SHADOW));
+-
+-	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
+-	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
+-
+-	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
+-	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
+-	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
+-	__raw_writel(0x00004650, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
+-
+-	for (i = 0; i < 5000; i++) {
+-
+-	}
+-
+-	/* __raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL);
+-	__raw_writel(EMIF_SDMGT, EMIF0_0_SDRAM_MGMT_CTRL_SHD); */
+-	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL));
+-	__raw_writel(EMIF_SDREF, AM33XX_EMIF4_0_REG(SDRAM_REF_CTRL_SHADOW));
+-
+-	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG));
+-	__raw_writel(EMIF_SDCFG, AM33XX_EMIF4_0_REG(SDRAM_CONFIG2));
+-}
+-
+-static void beaglebone_config_ddr(void)
+-{
+-	enable_ddr_clocks();
+-
+-	beaglebone_config_vtp();
+-
+-	beaglebone_cmd_macro_config();
+-	beaglebone_data_macro_config(0);
+-	beaglebone_data_macro_config(1);
+-
+-	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA0_RANK0_DELAYS_0);
+-	__raw_writel(PHY_RANK0_DELAY, AM33XX_DATA1_RANK0_DELAYS_0);
+-
+-	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD0_IOCTRL);
+-	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD1_IOCTRL);
+-	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_CMD2_IOCTRL);
+-	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA0_IOCTRL);
+-	__raw_writel(DDR_IOCTRL_VALUE, AM33XX_DDR_DATA1_IOCTRL);
+-
+-	__raw_writel(__raw_readl(AM33XX_DDR_IO_CTRL) & 0xefffffff, AM33XX_DDR_IO_CTRL);
+-	__raw_writel(__raw_readl(AM33XX_DDR_CKE_CTRL) | 0x00000001, AM33XX_DDR_CKE_CTRL);
+-
+-	beaglebone_config_emif_ddr2();
+-}
+-
+ /*
+  * early system init of muxing and clocks.
+  */
+@@ -201,7 +33,8 @@ void beaglebone_sram_init(void)
+ 	/* Setup the PLLs and the clocks for the peripherals */
+ 	pll_init(MPUPLL_M_500);
+ 
+-	beaglebone_config_ddr();
++	if (get_cpu_rev() == AM335X_ES1_0)
++		beaglebone_config_ddr2();
  
  	/* UART softreset */
  	uart_base = AM33XX_UART0_BASE;
-@@ -85,11 +89,18 @@ static int beaglebone_board_init(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
-+	unsigned sdram;
-+
- 	am33xx_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
- 	beaglebone_board_init();
- 
--	barebox_arm_entry(0x80000000, SZ_256M, 0);
-+	if (is_beaglebone_black())
-+		sdram = SZ_512M;
-+	else
-+		sdram = SZ_256M;
-+
-+	barebox_arm_entry(0x80000000, sdram, 0);
- }
-diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
-index 9928e9f..e0ba197 100644
---- a/arch/arm/mach-omap/am33xx_clock.c
-+++ b/arch/arm/mach-omap/am33xx_clock.c
-@@ -248,7 +248,7 @@ static void per_pll_config(void)
- 	while(__raw_readl(CM_IDLEST_DPLL_PER) != 0x1);
- }
- 
--static void ddr_pll_config(void)
-+static void ddr_pll_config(int ddrpll_M)
- {
- 	u32 clkmode, clksel, div_m2;
- 
-@@ -263,7 +263,7 @@ static void ddr_pll_config(void)
- 	while ((__raw_readl(CM_IDLEST_DPLL_DDR) & 0x00000100) != 0x00000100);
- 
- 	clksel = clksel & (~0x7ffff);
--	clksel = clksel | ((DDRPLL_M << 0x8) | DDRPLL_N);
-+	clksel = clksel | ((ddrpll_M << 0x8) | DDRPLL_N);
- 	__raw_writel(clksel, CM_CLKSEL_DPLL_DDR);
- 
- 	div_m2 = div_m2 & 0xFFFFFFE0;
-@@ -288,18 +288,17 @@ void enable_ddr_clocks(void)
- 		PRCM_L3_GCLK_ACTIVITY));
- 	/* Poll if module is functional */
- 	while ((__raw_readl(CM_PER_EMIF_CLKCTRL)) != PRCM_MOD_EN);
--
- }
- 
- /*
-  * Configure the PLL/PRCM for necessary peripherals
-  */
--void pll_init(int mpupll_M)
-+void pll_init(int mpupll_M, int ddrpll_M)
- {
- 	mpu_pll_config(mpupll_M);
- 	core_pll_config();
- 	per_pll_config();
--	ddr_pll_config();
-+	ddr_pll_config(ddrpll_M);
- 	/* Enable the required interconnect clocks */
- 	interface_clocks_enable();
- 	/* Enable power domain transition */
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-index 968509e..3f86d14 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
-@@ -53,7 +53,8 @@
- 
- /* DDR Freq is 266 MHZ for now*/
- /* Set Fdll = 400 MHZ , Fdll = M * 2 * CLKINP/ N + 1; clkout = Fdll /(2 * M2) */
--#define DDRPLL_M	266
-+#define DDRPLL_M_266	266
-+#define DDRPLL_M_400	400
- #define DDRPLL_N	(OSC - 1)
- #define DDRPLL_M2	1
- 
-@@ -187,7 +188,7 @@
- 
- #define CM_ALWON_GPMC_CLKCTRL           CM_PER_GPMC_CLKCTRL
- 
--extern void pll_init(int mpupll_M);
-+extern void pll_init(int mpupll_M, int ddrpll_M);
- extern void enable_ddr_clocks(void);
- 
- #endif  /* endif _AM33XX_CLOCKS_H_ */
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-devices.h b/arch/arm/mach-omap/include/mach/am33xx-devices.h
-index 6a4d901..6691980 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-devices.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-devices.h
-@@ -31,6 +31,12 @@ static inline struct device_d *am33xx_add_mmc0(struct omap_hsmmc_platform_data *
- 			AM33XX_MMCHS0_BASE, SZ_4K, IORESOURCE_MEM, pdata);
- }
- 
-+static inline struct device_d *am33xx_add_mmc1(struct omap_hsmmc_platform_data *pdata)
-+{
-+	return add_generic_device("omap4-hsmmc", 1, NULL,
-+			AM33XX_MMC1_BASE, SZ_4K, IORESOURCE_MEM, pdata);
-+}
-+
- static inline struct device_d *am33xx_add_cpsw(struct cpsw_platform_data *cpsw_data)
- {
- 	return add_generic_device("cpsw", 0, NULL,
 -- 
 1.8.4.rc3
 
