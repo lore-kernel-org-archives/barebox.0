@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCc8I-0002hH-Ic
- for barebox@lists.infradead.org; Thu, 22 Aug 2013 21:09:31 +0000
-Date: Thu, 22 Aug 2013 23:09:08 +0200
+ id 1VCl8j-00024c-BD
+ for barebox@lists.infradead.org; Fri, 23 Aug 2013 06:46:38 +0000
+Date: Fri, 23 Aug 2013 08:46:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130822210908.GD31036@pengutronix.de>
-References: <CAJyuEedsHb0h84AKDq_Mttxu_ZG1u+gG94BpzioHyO=JdHiD=A@mail.gmail.com>
- <20130822065552.GU31036@pengutronix.de>
- <CAJyuEedyP-VXLieP5hZgTv5Tiihq9h8fecEpuGV4YdYur=Kq8g@mail.gmail.com>
+Message-ID: <20130823064602.GG31036@pengutronix.de>
+References: <1377173137-27320-1-git-send-email-shravan.k@phytec.in>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAJyuEedyP-VXLieP5hZgTv5Tiihq9h8fecEpuGV4YdYur=Kq8g@mail.gmail.com>
+In-Reply-To: <1377173137-27320-1-git-send-email-shravan.k@phytec.in>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,38 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting BareBox to Variscite iMX6 SOM
-To: Michael Burkey <mdburkey@gmail.com>
+Subject: Re: [PATCH 1/2] ARM: omap: barebox update spi nor MLO handler
+To: Shravan Kumar <shravan.k@phytec.in>
 Cc: barebox@lists.infradead.org
 
-On Thu, Aug 22, 2013 at 03:18:13PM -0400, Michael Burkey wrote:
-> Sascha,
-> 
-> Based on a fairly thorough perusal of the current HEAD from the git, I
-> am thinking I will implement the Variscite SOM in the following file
-> structure:
-> 
-> (FYI - the Variscite development kit includes their own carrier board
-> which is simply referred to in their published schematics as
-> "MX6CustomBoard", so I am thinking of segmenting things by SOM and
-> carrier board, much as you have the PhyFlex and its carrier board.)
-> 
-> /arch/arm/configs/variscite_mx6_custom_defconfig
-> /arch/arm/boards/variscite-mx6-custom/board.c
-> /arch/arm/boards/variscite-mx6-custom/flash-header.imxcfg
-> /arch/arm/boards/variscite-mx6-custom/lowlevel.c
-> /arch/arm/boards/variscite-mx6-custom/Makefile
-> /arch/arm/boards/variscite-mx6-custom/env/(To Be Determined)
-> /arch/arm/dts/imx6q-var-custom.dts
-> /arch/arm/dts/imx6q-var-som.dtsi
-> 
-> Does this fit into your current methodology pretty well?
+Hi Shravan,
 
-Yes, this looks good.
+On Thu, Aug 22, 2013 at 02:05:36PM +0200, Shravan Kumar wrote:
+> From: shravan <shravan.k@phytec.in>
+> 
+> 	-Added mlo spi NOR copy handler
+> 	-This handler will convert the MLO to big endian
+> 	-Tested with pcm051 board
+> 
+> +/*
+> + * Register a omap MLO update handler for SPI NOR
+> + */
+> +int omap_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
+> +{
 
-Note that i.MX6 boards often come in different quad/dual variants with
-slightly different devicetrees. Just to explain the mess we have with
-the i.MX6 devicetrees...
+Does this work with "real" omaps? The comment in the header seems to
+imply that it only works for am33xx. If this is the case, the function
+should be named am33xx_bbu_spi_nor_mlo_register_handler.
+
+Otherwise this series looks fine.
 
 Sascha
 
