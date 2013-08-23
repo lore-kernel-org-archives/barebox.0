@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VCqEt-0001XD-KQ
+ id 1VCqEt-0001XB-KS
  for barebox@lists.infradead.org; Fri, 23 Aug 2013 12:13:18 +0000
 From: Shravan Kumar <shravan.k@phytec.in>
-Date: Fri, 23 Aug 2013 14:12:49 +0200
-Message-Id: <1377259969-10890-2-git-send-email-shravan.k@phytec.in>
-In-Reply-To: <1377259969-10890-1-git-send-email-shravan.k@phytec.in>
-References: <1377259969-10890-1-git-send-email-shravan.k@phytec.in>
+Date: Fri, 23 Aug 2013 14:12:48 +0200
+Message-Id: <1377259969-10890-1-git-send-email-shravan.k@phytec.in>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,53 +19,173 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/2] PCM051: Added barebox update SPI NOR MLO handler
+Subject: [PATCH v2 1/2] ARM: omap: barebox update spi nor MLO handler
 To: barebox@lists.infradead.org
 Cc: shravan <shravan.k@phytec.in>
 
 From: shravan <shravan.k@phytec.in>
 
+	-Added mlo spi NOR copy handler
+	-This handler will convert the MLO to big endian
+	-Tested with pcm051 board
+
 Signed-off-by: shravan <shravan.k@phytec.in>
 ---
 changes since v2:
-        -file and function names are rename from omap_ to am33xx_
+	-file and function names are rename from omap_ to am33xx_
 
- arch/arm/boards/pcm051/board.c    |    3 +++
- arch/arm/configs/pcm051_defconfig |    1 +
- 2 files changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
-index 35a3a25..7f6c4b9 100644
---- a/arch/arm/boards/pcm051/board.c
-+++ b/arch/arm/boards/pcm051/board.c
-@@ -39,6 +39,7 @@
- #include <spi/flash.h>
- #include <i2c/i2c.h>
- #include <i2c/at24.h>
-+#include <mach/bbu.h>
+ arch/arm/mach-omap/Kconfig              |    8 +++
+ arch/arm/mach-omap/Makefile             |    1 +
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c |   88 +++++++++++++++++++++++++++++++
+ arch/arm/mach-omap/include/mach/bbu.h   |   15 ++++++
+ 4 files changed, 112 insertions(+)
+ create mode 100644 arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+ create mode 100644 arch/arm/mach-omap/include/mach/bbu.h
+
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 3ec18f0..b95046b 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -90,6 +90,14 @@ config OMAP_BUILD_SPI
+ 	  Say Y here if you want to build an barebox.spi image as used
+ 	  on the AM35xx chips when booting from SPI NOR flash.
  
- #include "mux.h"
- 
-@@ -209,6 +210,8 @@ static int pcm051_devices_init(void)
- 	armlinux_set_bootparams((void *)(AM33XX_DRAM_ADDR_SPACE_START + 0x100));
- 	armlinux_set_architecture(MACH_TYPE_PCM051);
- 
-+	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
++config BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO
++	prompt "barebox update SPI NOR MLO handler"
++	bool
++	depends on BAREBOX_UPDATE
++	help
++          Say Y for barebox update SPI NOR MLO handler.
++          AM35xx, AM33xx chips use big endian MLO for SPI NOR flash.
 +
- 	return 0;
- }
- device_initcall(pcm051_devices_init);
-diff --git a/arch/arm/configs/pcm051_defconfig b/arch/arm/configs/pcm051_defconfig
-index 0bc7c90..97e0940 100644
---- a/arch/arm/configs/pcm051_defconfig
-+++ b/arch/arm/configs/pcm051_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_OMAP=y
- CONFIG_ARCH_AM33XX=y
-+CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
- CONFIG_MACH_PCM051=y
- CONFIG_OMAP_UART1=y
- CONFIG_AEABI=y
+ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x80e80000 if MACH_OMAP343xSDP
+diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
+index d42de48..89944a9 100644
+--- a/arch/arm/mach-omap/Makefile
++++ b/arch/arm/mach-omap/Makefile
+@@ -32,3 +32,4 @@ obj-$(CONFIG_MFD_TWL6030) += omap4_twl6030_mmc.o
+ obj-$(CONFIG_OMAP4_USBBOOT) += omap4_rom_usb.o
+ obj-$(CONFIG_CMD_BOOT_ORDER) += boot_order.o
+ obj-y += gpio.o
++obj-$(CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO) += am33xx_bbu_spi_mlo.o
+diff --git a/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+new file mode 100644
+index 0000000..ff9f8a6
+--- /dev/null
++++ b/arch/arm/mach-omap/am33xx_bbu_spi_mlo.c
+@@ -0,0 +1,88 @@
++/*
++ * am33xx_bbu_spi_mlo.c - am35xx and am33xx specific MLO
++ *	update handler for SPI NOR flash
++ *
++ * Copyright (c) 2013 Sharavn kumar <shravan.k@phytec.in>, Phytec
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <malloc.h>
++#include <bbu.h>
++#include <fs.h>
++#include <fcntl.h>
++
++/*
++ * AM35xx, AM33xx chips use big endian MLO for SPI NOR flash
++ * This handler converting MLO to big endian and write to SPI NOR
++ */
++static int spi_nor_mlo_handler(struct bbu_handler *handler,
++					struct bbu_data *data)
++{
++	int dstfd = 0;
++	int ret = 0;
++	uint32_t readbuf;
++	int size = data->len;
++	void *image = data->image;
++
++	dstfd = open(data->devicefile, O_WRONLY);
++	if (dstfd < 0) {
++		printf("could not open %s: %s", data->devicefile, errno_str());
++		ret = dstfd;
++		goto out;
++	}
++
++	ret = erase(dstfd, ~0, 0);
++	if (ret < 0) {
++		printf("could not erase %s: %s", data->devicefile, errno_str());
++		goto out1;
++	}
++
++	for (; size >= 0; size -= 4) {
++		memcpy((char *)&readbuf, image, 4);
++
++		readbuf = cpu_to_be32(readbuf);
++		ret = write(dstfd, &readbuf, 4);
++		if (ret < 0) {
++			perror("write");
++			goto out1;
++		}
++
++		image = image + 4;
++	}
++
++	ret = 0;
++out1:
++	close(dstfd);
++out:
++	return ret;
++}
++
++/*
++ * Register a am33xx MLO update handler for SPI NOR
++ */
++int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
++{
++	struct bbu_handler *handler;
++	int ret;
++
++	handler = xzalloc(sizeof(*handler));
++	handler->devicefile = devicefile;
++	handler->name = name;
++	handler->handler = spi_nor_mlo_handler;
++
++	ret = bbu_register_handler(handler);
++
++	if (ret)
++		free(handler);
++
++	return ret;
++}
+diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
+new file mode 100644
+index 0000000..6d4b70f
+--- /dev/null
++++ b/arch/arm/mach-omap/include/mach/bbu.h
+@@ -0,0 +1,15 @@
++#ifndef __MACH_BBU_H
++#define __MACH_BBU_H
++
++#include <bbu.h>
++
++#ifdef CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO
++int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile);
++#else
++int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
++{
++	return 0;
++}
++#endif
++
++#endif
 -- 
 1.7.9.5
 
