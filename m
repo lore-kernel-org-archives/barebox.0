@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDvTy-00057z-In
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 12:01:19 +0000
-Message-ID: <521B4376.90202@phytec.de>
-Date: Mon, 26 Aug 2013 14:00:54 +0200
+ id 1VDvlf-0005Zt-3Q
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 12:19:35 +0000
+Message-ID: <521B47C1.2040205@phytec.de>
+Date: Mon, 26 Aug 2013 14:19:13 +0200
 From: Teresa Gamez <t.gamez@phytec.de>
 MIME-Version: 1.0
-References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
- <1377500163-28962-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1377500163-28962-7-git-send-email-s.hauer@pengutronix.de>
+References: <1377241222-6908-1-git-send-email-t.gamez@phytec.de>
+ <20130826064941.GA30088@pengutronix.de>
+In-Reply-To: <20130826064941.GA30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,57 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-15"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/22] ARM: omap: fix omap_save_bootinfo
+Subject: Re: [PATCH 1/3 for next] AM33xx: Cleanup of lowlevel code
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello Sascha,
+Am 26.08.2013 08:49, schrieb Sascha Hauer:
+> Hi Teresa,
+>
+> On Fri, Aug 23, 2013 at 09:00:20AM +0200, Teresa G=E1mez wrote:
+>> There is a lot of duplicate lowlevel code between the
+>> am33xx boards. Move this code to am33xx_generic and
+>> create structs for sdram settings.
+> I'm mostly fine with this series. I made some small changes to it and
+> rebased my beaglebone black series ontop of it. I'm about to repost the
+> my series which includes your changed patches. It would be good if you
+> could have a look.
 
-Am 26.08.2013 08:55, schrieb Sascha Hauer:
+Beside of the missing inlcude everything looks fine.
 
->   
-> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-> index 07cc1d7..4f39600 100644
-> --- a/arch/arm/boards/pcm049/lowlevel.c
-> +++ b/arch/arm/boards/pcm049/lowlevel.c
-> @@ -23,6 +23,7 @@
->   #include <mach/generic.h>
->   #include <mach/omap4-mux.h>
->   #include <mach/omap4-silicon.h>
-> +#include <mach/omap4-generic.h>
->   #include <mach/omap4-clock.h>
->   #include <mach/syslib.h>
->   #include <asm/barebox-arm.h>
-> @@ -110,7 +111,7 @@ static void noinline pcm049_init_lowlevel(void)
->   
->   void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
->   {
-> -	omap_save_bootinfo();
-> +	omap4_save_bootinfo(data);
->   
->   	arm_cpu_lowlevel_init();
->   
-> diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
-> index dd06c6a..3a637cf 100644
-> --- a/arch/arm/boards/pcm051/lowlevel.c
-> +++ b/arch/arm/boards/pcm051/lowlevel.c
-> @@ -210,7 +210,7 @@ static int pcm051_board_init(void)
-
-the <mach/am33xx-generic.h> include is missing here.
+Thanks.
 
 Teresa
 
->   
->   void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
->   {
-> -	omap_save_bootinfo();
-> +	am33xx_save_bootinfo(data);
->   
->   	arm_cpu_lowlevel_init();
+
+>
+> Sascha
+>
+
 
 _______________________________________________
 barebox mailing list
