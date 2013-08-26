@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mho-03-ewr.mailhop.org ([204.13.248.66]
- helo=mho-01-ewr.mailhop.org)
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDwip-000741-1Q
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 13:20:44 +0000
-Date: Mon, 26 Aug 2013 09:20:18 -0400
+ id 1VDwqi-0007I2-Qp
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 13:28:53 +0000
+Date: Mon, 26 Aug 2013 09:28:29 -0400
 From: Jason Cooper <jason@lakedaemon.net>
-Message-ID: <20130826132018.GF13964@titan.lakedaemon.net>
+Message-ID: <20130826132829.GG13964@titan.lakedaemon.net>
 References: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
- <1377493037-2229-2-git-send-email-antonynpavlov@gmail.com>
+ <1377493037-2229-3-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1377493037-2229-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1377493037-2229-3-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,44 +23,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 1/8] ARM: add very initial support for Canon DIGIC chips
+Subject: Re: [RFC 2/8] serial: add driver for Canon DIGIC UART
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Antony,
-
-On Mon, Aug 26, 2013 at 08:57:10AM +0400, Antony Pavlov wrote:
-> TODO: the clocksource driver need improvement!
-> 
+On Mon, Aug 26, 2013 at 08:57:11AM +0400, Antony Pavlov wrote:
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/arm/Kconfig                            |  9 ++++
->  arch/arm/Makefile                           |  1 +
->  arch/arm/dts/digic4.dtsi                    | 24 +++++++++++
->  arch/arm/mach-digic/Kconfig                 | 11 +++++
->  arch/arm/mach-digic/Makefile                |  2 +
->  arch/arm/mach-digic/core.c                  | 24 +++++++++++
->  arch/arm/mach-digic/csrc-timer.c            | 67 +++++++++++++++++++++++++++++
->  arch/arm/mach-digic/include/mach/debug_ll.h | 40 +++++++++++++++++
->  arch/arm/mach-digic/include/mach/digic4.h   | 29 +++++++++++++
->  arch/arm/mach-digic/include/mach/gpio.h     |  1 +
->  10 files changed, 208 insertions(+)
->  create mode 100644 arch/arm/dts/digic4.dtsi
->  create mode 100644 arch/arm/mach-digic/Kconfig
->  create mode 100644 arch/arm/mach-digic/Makefile
->  create mode 100644 arch/arm/mach-digic/core.c
->  create mode 100644 arch/arm/mach-digic/csrc-timer.c
->  create mode 100644 arch/arm/mach-digic/include/mach/debug_ll.h
->  create mode 100644 arch/arm/mach-digic/include/mach/digic4.h
->  create mode 100644 arch/arm/mach-digic/include/mach/gpio.h
+>  drivers/serial/Kconfig        |   4 ++
+>  drivers/serial/Makefile       |   1 +
+>  drivers/serial/serial_digic.c | 131 ++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 136 insertions(+)
+>  create mode 100644 drivers/serial/serial_digic.c
 > 
-...
-> diff --git a/arch/arm/mach-digic/include/mach/debug_ll.h b/arch/arm/mach-digic/include/mach/debug_ll.h
+> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> index 11fc155..541350d 100644
+> --- a/drivers/serial/Kconfig
+> +++ b/drivers/serial/Kconfig
+> @@ -122,4 +122,8 @@ config DRIVER_SERIAL_CADENCE
+>  	help
+>  	  Say Y here if you have a Cadence serial IP core.
+>  
+> +config DRIVER_SERIAL_DIGIC
+> +	bool "Canon DIGIC serial driver"
+> +	depends on ARCH_DIGIC
+> +
+>  endmenu
+> diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
+> index 93790b5..485a3ef 100644
+> --- a/drivers/serial/Makefile
+> +++ b/drivers/serial/Makefile
+> @@ -17,3 +17,4 @@ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
+>  obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
+>  obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
+>  obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
+> +obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
+> diff --git a/drivers/serial/serial_digic.c b/drivers/serial/serial_digic.c
 > new file mode 100644
-> index 0000000..5f4579e
+> index 0000000..938172f
 > --- /dev/null
-> +++ b/arch/arm/mach-digic/include/mach/debug_ll.h
-> @@ -0,0 +1,40 @@
+> +++ b/drivers/serial/serial_digic.c
+> @@ -0,0 +1,131 @@
 > +/*
 > + * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
 > + *
@@ -74,40 +76,115 @@ On Mon, Aug 26, 2013 at 08:57:10AM +0400, Antony Pavlov wrote:
 > + *
 > + * This program is distributed in the hope that it will be useful,
 > + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 > + * GNU General Public License for more details.
 > + *
 > + */
 > +
-> +#ifndef __MACH_DEBUG_LL_H__
-> +#define __MACH_DEBUG_LL_H__
-> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <malloc.h>
 > +#include <io.h>
-> +#include <mach/digic4.h>
 > +
-> +#define DEBUG_LL_UART         DIGIC4_UART
-> +
-> +/* Serial interface registers */
-> +#define DEBUG_LL_UART_TX         (DEBUG_LL_UART + 0x0)
-> +#define DEBUG_LL_UART_ST         (DEBUG_LL_UART + 0x14)
+> +/* Serial interface registers offsets */
+> +#define UART_TX	0x0
+> +#define UART_RX	0x4
+> +#define UART_ST	0x14
+> + #define UART_ST_RX_RDY	1
 > + #define UART_ST_TX_RDY	2
 
-leading whitespace, and perhaps use BIT() here.
+leading whitespace, BIT().
 
 > +
-> +static inline void PUTC_LL(char ch)
+> +/*
+> + * This driver is based on the "Serial terminal" docs here:
+> + *  http://magiclantern.wikia.com/wiki/Register_Map#Misc_Registers
+> + *
+> + * See also disassembler output for Canon A1100IS firmware
+> + * (version a1100_100c):
+> + *   * a outc-like function can be found at address 0xffff18f0;
+> + *   * a getc-like function can be found at address 0xffff192c.
+> + */
+> +
+> +static inline uint32_t digic_serial_readl(struct console_device *cdev, uint32_t off)
 > +{
-> +	while (!(readl(DEBUG_LL_UART_ST) & UART_ST_TX_RDY))
-> +		; /* noop */
+> +	void *digic = cdev->dev->priv;
 > +
-> +	writel(0x06, DEBUG_LL_UART_ST);
-
-could you use a macro here for 0x06?
-
-> +	writel(ch, DEBUG_LL_UART_TX);
+> +	return readl(digic + off);
 > +}
 > +
-> +#endif
+> +static inline void digic_serial_writel(struct console_device *cdev, uint32_t val,
+> +			  uint32_t off)
+> +{
+> +	void *digic = cdev->dev->priv;
+> +
+> +	writel(val, digic + off);
+> +}
+> +
+
+> +static int digic_serial_setbaudrate(struct console_device *cdev, int baudrate)
+> +{
+> +	/* FIXME: empty */
+> +
+> +	return 0;
+> +}
+
+You don't need this, see below.
+
+> +
+> +static void digic_serial_putc(struct console_device *cdev, char c)
+> +{
+> +	while (!(digic_serial_readl(cdev, UART_ST) & UART_ST_TX_RDY))
+> +		; /* noop */
+> +
+> +	digic_serial_writel(cdev, 0x06, UART_ST);
+> +	digic_serial_writel(cdev, c, UART_TX);
+> +}
+> +
+> +static int digic_serial_getc(struct console_device *cdev)
+> +{
+> +	while (!(digic_serial_readl(cdev, UART_ST) & UART_ST_RX_RDY))
+> +		; /* noop */
+> +
+> +	digic_serial_writel(cdev, 0x01, UART_ST);
+> +
+> +	return digic_serial_readl(cdev, UART_RX);
+> +}
+> +
+> +static int digic_serial_tstc(struct console_device *cdev)
+> +{
+> +	return ((digic_serial_readl(cdev, UART_ST) & UART_ST_RX_RDY) != 0);
+> +
+> +	/*
+> +	 * Canon folks use additional check, something like this:
+> +	 *
+> +	 *		if (digic_serial_readl(cdev, UART_ST) & 0x38) {
+> +	 *			digic_serial_writel(cdev, 0x38, UART_ST);
+> +	 *			return 0;
+> +	 *		}
+> +	 *
+> +	 * But I know nothing about these magic bits in the status regster...
+> +	 *
+> +	*/
+> +}
+> +
+> +static int digic_serial_probe(struct device_d *dev)
+> +{
+> +	struct console_device *cdev;
+> +
+> +	cdev = xzalloc(sizeof(struct console_device));
+> +	dev->priv = dev_request_mem_region(dev, 0);
+> +	cdev->dev = dev;
+> +	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+> +	cdev->tstc = &digic_serial_tstc;
+> +	cdev->putc = &digic_serial_putc;
+> +	cdev->getc = &digic_serial_getc;
+
+
+> +	cdev->setbrg = &digic_serial_setbaudrate;
+
+It's probably better to set this to NULL, since you don't know how
+change the baud rate (and remove digic_serial_setbaudrate(), above).
 
 thx,
 
