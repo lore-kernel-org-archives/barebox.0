@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqqu-0006oB-Mh
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 07:04:41 +0000
-Date: Mon, 26 Aug 2013 09:04:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130826070418.GD30088@pengutronix.de>
-References: <1377382832-24868-1-git-send-email-s.trumtrar@pengutronix.de>
+Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VDvTy-00057z-In
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 12:01:19 +0000
+Message-ID: <521B4376.90202@phytec.de>
+Date: Mon, 26 Aug 2013 14:00:54 +0200
+From: Teresa Gamez <t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1377382832-24868-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
+ <1377500163-28962-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1377500163-28962-7-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: sdhci: fix IRQSTAT_DMAE bit shift
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH 06/22] ARM: omap: fix omap_save_bootinfo
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Aug 25, 2013 at 12:20:32AM +0200, Steffen Trumtrar wrote:
-> According to the SD Host Controller Specification Version 3.00, the ADMA error
-> status bit is on the wrong bit. Fix this.
-> 
-> While at it, add the missing standard error status bits.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Hello Sascha,
 
-Applied, thanks
+Am 26.08.2013 08:55, schrieb Sascha Hauer:
 
-Sascha
+>   
+> diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
+> index 07cc1d7..4f39600 100644
+> --- a/arch/arm/boards/pcm049/lowlevel.c
+> +++ b/arch/arm/boards/pcm049/lowlevel.c
+> @@ -23,6 +23,7 @@
+>   #include <mach/generic.h>
+>   #include <mach/omap4-mux.h>
+>   #include <mach/omap4-silicon.h>
+> +#include <mach/omap4-generic.h>
+>   #include <mach/omap4-clock.h>
+>   #include <mach/syslib.h>
+>   #include <asm/barebox-arm.h>
+> @@ -110,7 +111,7 @@ static void noinline pcm049_init_lowlevel(void)
+>   
+>   void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
+>   {
+> -	omap_save_bootinfo();
+> +	omap4_save_bootinfo(data);
+>   
+>   	arm_cpu_lowlevel_init();
+>   
+> diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
+> index dd06c6a..3a637cf 100644
+> --- a/arch/arm/boards/pcm051/lowlevel.c
+> +++ b/arch/arm/boards/pcm051/lowlevel.c
+> @@ -210,7 +210,7 @@ static int pcm051_board_init(void)
 
-> ---
->  drivers/mci/sdhci.h | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-> index b2d6779..2c8b6f5 100644
-> --- a/drivers/mci/sdhci.h
-> +++ b/drivers/mci/sdhci.h
-> @@ -37,8 +37,10 @@
->  #define TRANSFER_MODE_BCEN	0x00000002
->  #define TRANSFER_MODE_DMAEN	0x00000001
->  
-> -#define IRQSTAT_DMAE		0x10000000
-> +#define IRQSTAT_TE		0x04000000
-> +#define IRQSTAT_DMAE		0x02000000
->  #define IRQSTAT_AC12E		0x01000000
-> +#define IRQSTAT_CLE		0x00800000
->  #define IRQSTAT_DEBE		0x00400000
->  #define IRQSTAT_DCE		0x00200000
->  #define IRQSTAT_DTOE		0x00100000
-> -- 
-> 1.8.4.rc3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+the <mach/am33xx-generic.h> include is missing here.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Teresa
+
+>   
+>   void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
+>   {
+> -	omap_save_bootinfo();
+> +	am33xx_save_bootinfo(data);
+>   
+>   	arm_cpu_lowlevel_init();
 
 _______________________________________________
 barebox mailing list
