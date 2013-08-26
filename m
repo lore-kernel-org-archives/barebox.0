@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDouK-0004dn-2P
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 05:00:05 +0000
-Received: by mail-la0-f50.google.com with SMTP id es20so1877958lab.23
- for <barebox@lists.infradead.org>; Sun, 25 Aug 2013 21:59:41 -0700 (PDT)
+ id 1VDp1k-0004mH-8x
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 05:07:45 +0000
+Received: by mail-la0-f52.google.com with SMTP id ev20so1959313lab.39
+ for <barebox@lists.infradead.org>; Sun, 25 Aug 2013 22:07:20 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 26 Aug 2013 08:57:12 +0400
-Message-Id: <1377493037-2229-4-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 26 Aug 2013 08:57:17 +0400
+Message-Id: <1377493037-2229-9-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
 References: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,226 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 3/8] gpio: add driver for Canon DIGIC
+Subject: [RFC 8/8] ARM: DIGIC: add canon-600d_defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/gpio/Kconfig      |   4 ++
- drivers/gpio/Makefile     |   1 +
- drivers/gpio/gpio-digic.c | 176 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 181 insertions(+)
- create mode 100644 drivers/gpio/gpio-digic.c
+ arch/arm/configs/canon-600d_defconfig | 54 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 arch/arm/configs/canon-600d_defconfig
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index d5ac532..f112db8 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -9,6 +9,10 @@ menu "GPIO"
- config GPIO_GENERIC
- 	bool
- 
-+config GPIO_DIGIC
-+	bool "GPIO support for Canon DIGIC"
-+	depends on ARCH_DIGIC
-+
- config GPIO_BCM2835
- 	bool "GPIO support for BCM2835"
- 	depends on ARCH_BCM2835
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index adb668f..c5cf58a 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -2,6 +2,7 @@ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
- 
- obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
- obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
-+obj-$(CONFIG_GPIO_DIGIC)	+= gpio-digic.o
- obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
- obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
- obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
-diff --git a/drivers/gpio/gpio-digic.c b/drivers/gpio/gpio-digic.c
+diff --git a/arch/arm/configs/canon-600d_defconfig b/arch/arm/configs/canon-600d_defconfig
 new file mode 100644
-index 0000000..82eef12
+index 0000000..a8ff597
 --- /dev/null
-+++ b/drivers/gpio/gpio-digic.c
-@@ -0,0 +1,176 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <io.h>
-+#include <gpio.h>
-+#include <init.h>
-+
-+/*
-+ * See http://magiclantern.wikia.com/wiki/Register_Map#GPIO_Ports
-+ */
-+
-+#define DIGIC_GPIO_IN_LVL	1
-+#define DIGIC_GPIO_OUT_LVL	2
-+#define DIGIC_GPIO_DIR	4
-+#define DIGIC_GPIO_TRISTATE	8
-+
-+struct digic_gpio_chip {
-+	void __iomem		*base;
-+	struct gpio_chip	gc;
-+};
-+
-+static inline uint32_t digic_gpio_readl(struct digic_gpio_chip *chip, uint32_t offset)
-+{
-+	return readl(chip->base + 4 * offset);
-+}
-+
-+static inline void digic_gpio_writel(struct digic_gpio_chip *chip, uint32_t val,
-+			  uint32_t offset)
-+{
-+	writel(val, chip->base + 4 * offset);
-+}
-+
-+static int digic_gpio_get_value(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	return digic_gpio_readl(chip, offset) & DIGIC_GPIO_IN_LVL;
-+}
-+
-+static void digic_gpio_set_value(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
-+	uint32_t t;
-+
-+	if (offset >= gc->ngpio)
-+		return;
-+
-+	t = digic_gpio_readl(chip, offset);
-+	/* Port direction (1 = OUT, 0 = IN) */
-+	if (value) {
-+		t |= DIGIC_GPIO_OUT_LVL;
-+	} else {
-+		t &= ~(DIGIC_GPIO_OUT_LVL);
-+	}
-+	digic_gpio_writel(chip, t, offset);
-+}
-+
-+static int digic_gpio_direction_input(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
-+	uint32_t t;
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	t = digic_gpio_readl(chip, offset);
-+	/* Port direction (1 = OUT, 0 = IN) */
-+	t &= ~(DIGIC_GPIO_DIR);
-+	digic_gpio_writel(chip, t, offset);
-+
-+	return 0;
-+}
-+
-+static int digic_gpio_direction_output(struct gpio_chip *gc, unsigned offset,
-+		int value)
-+{
-+	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
-+	uint32_t t;
-+
-+	if (offset >= gc->ngpio)
-+		return -EINVAL;
-+
-+	t = digic_gpio_readl(chip, offset);
-+	/* Port direction (1 = OUT, 0 = IN) */
-+	t |= DIGIC_GPIO_DIR;
-+	digic_gpio_writel(chip, t, offset);
-+
-+	digic_gpio_set_value(gc, offset, value);
-+
-+	return 0;
-+}
-+
-+static struct gpio_ops digic_gpio_ops = {
-+	.direction_input = digic_gpio_direction_input,
-+	.direction_output = digic_gpio_direction_output,
-+	.get = digic_gpio_get_value,
-+	.set = digic_gpio_set_value,
-+};
-+
-+static int digic_gpio_probe(struct device_d *dev)
-+{
-+	struct digic_gpio_chip *chip;
-+	struct resource *res;
-+	resource_size_t rsize;
-+	int ret = -EINVAL;
-+
-+	chip = xzalloc(sizeof(*chip));
-+
-+	res = dev_get_resource(dev, 0);
-+	if (!res)
-+		goto err;
-+
-+	rsize = resource_size(res);
-+	chip->gc.ngpio = rsize / sizeof(int32_t);
-+
-+	chip->base = dev_request_mem_region(dev, 0);
-+	chip->gc.ops = &digic_gpio_ops;
-+	chip->gc.base = 0;
-+
-+	chip->gc.dev = dev;
-+
-+	ret = gpiochip_add(&chip->gc);
-+	if (ret) {
-+		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
-+		goto err;
-+	}
-+
-+	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, chip->gc.base);
-+
-+	return 0;
-+
-+err:
-+	kfree(chip);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id digic_gpio_dt_ids[] = {
-+	{
-+		.compatible = "canon,digic-gpio",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d digic_gpio_driver = {
-+	.name = "digic-gpio",
-+	.probe = digic_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(digic_gpio_dt_ids),
-+};
-+
-+static int __init digic_gpio_init(void)
-+{
-+	return platform_driver_register(&digic_gpio_driver);
-+}
-+coredevice_initcall(digic_gpio_init);
++++ b/arch/arm/configs/canon-600d_defconfig
+@@ -0,0 +1,54 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="canon-600d"
++CONFIG_ARCH_DIGIC=y
++CONFIG_MACH_CANON_600D=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_PBL_RELOCATABLE=y
++CONFIG_IMAGE_COMPRESSION_LZ4=y
++CONFIG_TEXT_BASE=0x00300000
++CONFIG_MALLOC_SIZE=0x200000
++CONFIG_PROMPT="canon> "
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_HUSH_GETOPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/canon-600d/env"
++CONFIG_DEBUG_LL=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_GLOBAL=y
++# CONFIG_CMD_RM is not set
++# CONFIG_CMD_MKDIR is not set
++# CONFIG_CMD_RMDIR is not set
++# CONFIG_CMD_PWD is not set
++# CONFIG_CMD_MOUNT is not set
++# CONFIG_CMD_UMOUNT is not set
++# CONFIG_CMD_CLEAR is not set
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MM=y
++# CONFIG_CMD_BOOTM is not set
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_DIGIC=y
++# CONFIG_SPI is not set
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_GPIO_DIGIC=y
++CONFIG_ZLIB=y
 -- 
 1.8.4.rc3
 
