@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDMCd-0005YN-JI
- for barebox@lists.infradead.org; Sat, 24 Aug 2013 22:21:04 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Sun, 25 Aug 2013 00:20:32 +0200
-Message-Id: <1377382832-24868-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1VDouF-0004df-3G
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 05:00:00 +0000
+Received: by mail-lb0-f171.google.com with SMTP id u14so1106921lbd.30
+ for <barebox@lists.infradead.org>; Sun, 25 Aug 2013 21:59:35 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon, 26 Aug 2013 08:57:09 +0400
+Message-Id: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +21,181 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: sdhci: fix IRQSTAT_DMAE bit shift
+Subject: [RFC 0/8] barebox on Canon cameras: serial console and dts support
 To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-According to the SD Host Controller Specification Version 3.00, the ADMA error
-status bit is on the wrong bit. Fix this.
+Please don't commit the patches!
 
-While at it, add the missing standard error status bits.
+This patch series introduce support
+for Canon DIGIC4-based cameras.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/mci/sdhci.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes since the previous (2013-08-04) version:
+ * serial console support! (tested on Canon PowerShot A1100 only)
+   * Y-Modem works!
+ * gpio driver;
+ * the serial and gpio driver have device tree support.
 
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index b2d6779..2c8b6f5 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -37,8 +37,10 @@
- #define TRANSFER_MODE_BCEN	0x00000002
- #define TRANSFER_MODE_DMAEN	0x00000001
- 
--#define IRQSTAT_DMAE		0x10000000
-+#define IRQSTAT_TE		0x04000000
-+#define IRQSTAT_DMAE		0x02000000
- #define IRQSTAT_AC12E		0x01000000
-+#define IRQSTAT_CLE		0x00800000
- #define IRQSTAT_DEBE		0x00400000
- #define IRQSTAT_DCE		0x00200000
- #define IRQSTAT_DTOE		0x00100000
--- 
-1.8.4.rc3
+With serial console support barebox is a handy tool
+for Canon DIGIC register map exploration.
 
+Supported cameras:
+
+ * Canon PowerShot A1100;
+ * Canon EOS 600D;
+ * Canon EOS Magic Lantern qemu-based emulator.
+
+Very short Instruction
+======================
+
+***************************************************
+*                                                 *
+* THIS IS DANGEROUS AND MIGHT DAMAGE YOUR CAMERA. *
+*  NO WARRANTIES.  NO GUARANTEES.  DO NOT TAUNT.  *
+*                                                 *
+***************************************************
+
+The recommended ARM toolchain for barebox and Magic Lantern
+build is 'gcc-arm-embedded'
+see https://launchpad.net/gcc-arm-embedded/4.7/4.7-2013-q2-update
+
+1. Canon EOS 600D DSLR
+----------------------
+
+1.1 Install Magic Lantern firmware on a SD-card
+ (see http://magiclantern.wikia.com/wiki/Unified/Install#First-time_installation)
+
+1.2 Download and build barebox
+    $ git clone -b next.digic.20130826 https://github.com/frantony/barebox barebox.digic
+    $ cd barebox.digic
+    $ export ARCH=arm
+    $ export CROSS_COMPILE=<your_ARM_toolchain_prefix>
+    $ make canon-600d_defconfig
+    $ make
+
+You will get the 'arch/arm/pbl/zbarebox.bin' file.
+
+1.3 Overwrite Magic Lantern boot file on your 600D SD-card with the 'zbarebox.bin' file.
+E.g., if your SD-card is mounted to the '/mnt/sd' dir, then
+
+    $ sudo cp arch/arm/pbl/zbarebox.bin /mnt/sd/autoexec.bin
+
+1.4 Insert SD-card into your camera.
+
+1.5 Close your camera's SD-card slot.
+
+1.6 Just after SD-card slot closing the barebox will start.
+If all going well the SD-card led start blink.
+
+1.7 Uninstall barebox
+Remove battery from your camera and erase the 'autoexec.bin'
+file from your SD-card.
+
+2. Canon EOS emulator
+---------------------
+
+2.1 Download Magic Lantern sources
+
+$ hg clone https://bitbucket.org/hudson/magic-lantern
+$ cd magic-lantern
+
+2.2 Setup your build environment
+
+E.g., for Debian Linux:
+
+$ cat > Makefile.user
+RST2LATEX=rst2latex
+PYTHON=python
+
+GCC_VERSION=
+CROSS_COMPILE=<your_ARM_toolchain_prefix>
+<ctrl-d>
+$
+
+2.3 Buld Magic Lantern for 600D
+
+$ make 600D
+
+If all going well you can try qemu.
+
+2.4 Bulding qemu
+
+ $ cd contrib/qemu
+ $ ./install.sh
+
+ ...
+
+ Use install.sh prompt:
+  1) Compile QEMU
+  2) Grab a copy of the Canon firmware
+  3) Enable CONFIG_QEMU=y in your Makefile.user
+
+2.5 Go to your qemu dir and start emulation with ./run_ml_600D.sh
+The script will build the 'autoexec.bin' and 'qemu-helper.bin'
+
+2.6 Build barebox image (see paragraph 1.2 Download and build barebox).
+
+2.7 Copy zbarebox.bin to autoexec.bin in your qemu dir.
+
+2.8 run qemu manually in qemu dir:
+
+  <path-to-the-eos-qemu>/qemu-system-arm -M ML-600D
+
+3. Canon PowerShot A1100 IS
+---------------------------
+Installing to the A1100 camera is a bit tricky as you need
+"encrypt" barebox image.
+
+3.1 Install CHDK firmware on SD-card
+ (see http://chdk.wikia.com/wiki/CHDK_For_Newbies_-_How_To_Install
+ and http://chdk.wikia.com/wiki/A1100).
+
+3.2 Make your SD-card bootable
+ (see http://chdk.wikia.com/wiki/Prepare_your_SD_card)
+
+3.3 Download and build barebox
+    $ git clone -b next.digic.20130826 https://github.com/frantony/barebox barebox.digic
+    $ cd barebox.digic
+    $ export ARCH=arm
+    $ export CROSS_COMPILE=<your_ARM_toolchain_prefix>
+    $ make canon-a1100_defconfig
+    $ make
+
+You will get the 'arch/arm/pbl/zbarebox.bin' file.
+
+3.4 Download CHDK sources
+
+    $ git clone https://github.com/c10ud/CHDK.git
+    $ cd CHDK
+
+3.5 Build the 'dancingbits' encoder
+    $ cd tools
+    $ cc -o dancingbits dancingbits.c
+
+3.6 encode your barebox image
+
+Go to your barebox dir
+
+3.6.1 Make zbarebox.bin > 128K; camera don't like small binaries :)
+
+    $ dd if=/dev/zero bs=1k count=128 >> arch/arm/pbl/zbarebox.bin
+
+3.6.2 encode
+
+    $ <path-to-dancingbits> arch/arm/pbl/zbarebox.bin DISKBOOT.BIN 2
+
+3.7 Overwrite CHDK boot file on your SD-card with the 'DISKBOOT.BIN' file.
+
+3.9 Lock your SD-card (use small switch on the card).
+
+3.10 Insert the SD-card into your camera.
+Close your camera's SD-card slot.
+
+3.11 Turn your camera on.
+If all going well the 'direct print' led start blink.
+
+3.12 Uninstall barebox
+Remove battery from your camera and erase the 'DISKBOOT.BIN'
+file from your SD-card.
 
 _______________________________________________
 barebox mailing list
