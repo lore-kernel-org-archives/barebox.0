@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqix-0006bx-1R
+ id 1VDqix-0006bv-1S
  for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:54 +0200
-Message-Id: <1377500163-28962-14-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:55:57 +0200
+Message-Id: <1377500163-28962-17-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,82 +16,123 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/22] ARM: am33xx: implement cpu revision decoding
+Subject: [PATCH 16/22] ARM: am33xx: make DDR PLL frequency configurable
 To: barebox@lists.infradead.org
 
-RnJvbTogSmFuIEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgoKU2lnbmVkLW9mZi1ieTogSmFu
-IEx1ZWJiZSA8amx1QHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIg
-PHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9n
-ZW5lcmljLmMgICAgICAgICAgICAgIHwgMzQgKysrKysrKysrKysrKysrKysrKysrKystCiBhcmNo
-L2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5lcmljLmggfCAgMiArKwogYXJj
-aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oIHwgIDEgKwogYXJj
-aC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5oICAgICAgIHwgMTAgKysrKyst
-LQogNCBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtb21hcC9hbTMzeHhfZ2VuZXJpYy5jIGIvYXJjaC9hcm0v
-bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKaW5kZXggNjdlNGE0NS4uMzY5MGNlMSAxMDA2NDQK
-LS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKKysrIGIvYXJjaC9hcm0v
-bWFjaC1vbWFwL2FtMzN4eF9nZW5lcmljLmMKQEAgLTEsNiArMSw2IEBACiAvKgogICogKEMpIENv
-cHlyaWdodCAyMDEyIFRlcmVzYSBHw6FtZXosIFBoeXRlYyBNZXNzdGVjaG5payBHbWJICi0gKiAo
-QykgQ29weXJpZ2h0IDIwMTIgSmFuIEx1ZWJiZSA8ai5sdWViYmVAcGVuZ3V0cm9uaXguZGU+Cisg
-KiAoQykgQ29weXJpZ2h0IDIwMTItMjAxMyBKYW4gTHVlYmJlIDxqLmx1ZWJiZUBwZW5ndXRyb25p
-eC5kZT4KICAqCiAgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2FyZTsgeW91IGNhbiByZWRp
-c3RyaWJ1dGUgaXQgYW5kL29yCiAgKiBtb2RpZnkgaXQgdW5kZXIgdGhlIHRlcm1zIG9mIHRoZSBH
-TlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSBhcwpAQCAtMzgsNiArMzgsMzggQEAgdm9pZCBfX25v
-cmV0dXJuIHJlc2V0X2NwdSh1bnNpZ25lZCBsb25nIGFkZHIpCiB9CiAKIC8qKgorICogQGJyaWVm
-IEV4dHJhY3QgdGhlIEFNMzN4eCBFUyByZXZpc2lvbgorICoKKyAqIFRoZSBzaWduaWZpY2FuY2Ug
-b2YgdGhlIENQVSByZXZpc2lvbiBkZXBlbmRzIHVwb24gdGhlIGNwdSB0eXBlLgorICogTGF0ZXN0
-IGtub3duIHJldmlzaW9uIGlzIGNvbnNpZGVyZWQgZGVmYXVsdC4KKyAqCisgKiBAcmV0dXJuIHNp
-bGljb24gdmVyc2lvbgorICovCit1MzIgYW0zM3h4X2dldF9jcHVfcmV2KHZvaWQpCit7CisJdTMy
-IHZlcnNpb24sIHJldHZhbDsKKworCXZlcnNpb24gPSAocmVhZGwoQU0zM1hYX0lEQ09ERV9SRUcp
-ID4+IDI4KSAmIDB4RjsKKworCXN3aXRjaCAodmVyc2lvbikgeworCWNhc2UgMDoKKwkJcmV0dmFs
-ID0gQU0zMzVYX0VTMV8wOworCQlicmVhazsKKwljYXNlIDE6CisJCXJldHZhbCA9IEFNMzM1WF9F
-UzJfMDsKKwkJYnJlYWs7CisJY2FzZSAyOgorCQkvKgorCQkgKiBGYWxsIHRocm91Z2ggdGhlIGRl
-ZmF1bHQgY2FzZS4KKwkJICovCisJZGVmYXVsdDoKKwkJcmV0dmFsID0gQU0zMzVYX0VTMl8xOwor
-CX0KKworCXJldHVybiByZXR2YWw7Cit9CisKKy8qKgogICogQGJyaWVmIEdldCB0aGUgdXBwZXIg
-YWRkcmVzcyBvZiBjdXJyZW50IGV4ZWN1dGlvbgogICoKICAqIHdlIGNhbiB1c2UgdGhpcyB0byBm
-aWd1cmUgb3V0IGlmIHdlIGFyZSBydW5uaW5nIGluIFNSQU0gLwpkaWZmIC0tZ2l0IGEvYXJjaC9h
-cm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oIGIvYXJjaC9hcm0vbWFj
-aC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtZ2VuZXJpYy5oCmluZGV4IGQ5ZDJlZmIuLmVjMjJh
-ZDIgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LWdl
-bmVyaWMuaAorKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1nZW5l
-cmljLmgKQEAgLTYsNiArNiw4IEBACiAKIGludCBhbTMzeHhfcmVnaXN0ZXJfZXRoYWRkcihpbnQg
-ZXRoX2lkLCBpbnQgbWFjX2lkKTsKIAordTMyIGFtMzN4eF9nZXRfY3B1X3Jldih2b2lkKTsKKwog
-c3RhdGljIGlubGluZSB2b2lkIGFtMzN4eF9zYXZlX2Jvb3RpbmZvKHVpbnQzMl90ICppbmZvKQog
-ewogCXVuc2lnbmVkIGxvbmcgaSA9ICh1bnNpZ25lZCBsb25nKWluZm87CmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmggYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgKaW5kZXggZTM0OWM0ZC4u
-MzBiNjA1YSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMz
-eHgtc2lsaWNvbi5oCisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvYW0zM3h4
-LXNpbGljb24uaApAQCAtNzEsNiArNzEsNyBAQAogCiAvKiBDVFJMICovCiAjZGVmaW5lIEFNMzNY
-WF9DVFJMX0JBU0UJCShBTTMzWFhfTDRfV0tVUF9CQVNFICsgMHgyMTAwMDApCisjZGVmaW5lIEFN
-MzNYWF9JRENPREVfUkVHCQkoQU0zM1hYX0NUUkxfQkFTRSArIDB4NjAwKQogCiAvKiBXYXRjaGRv
-ZyBUaW1lciAqLwogI2RlZmluZSBBTTMzWFhfV0RUX0JBU0UJCQkweDQ0RTM1MDAwCmRpZmYgLS1n
-aXQgYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmggYi9hcmNoL2Fy
-bS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL3N5c19pbmZvLmgKaW5kZXggNGQ5YjEzOC4uZmNlNTg5
-NSAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9zeXNfaW5mby5o
-CisrKyBiL2FyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21hY2gvc3lzX2luZm8uaApAQCAtNDAs
-NiArNDAsNyBAQAogI2RlZmluZSBDUFVfMTcxMAkweDE3MTAKICNkZWZpbmUgQ1BVXzI0MjAJMHgy
-NDIwCiAjZGVmaW5lIENQVV8yNDMwCTB4MjQzMAorI2RlZmluZSBDUFVfMzM1MAkweDMzNTAKICNk
-ZWZpbmUgQ1BVXzM0MzAJMHgzNDMwCiAjZGVmaW5lIENQVV8zNjMwCTB4MzYzMAogCkBAIC01NCw2
-ICs1NSwxMCBAQAogI2RlZmluZSBPTUFQMzRYWF9FUzMJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwg
-MykKICNkZWZpbmUgT01BUDM0WFhfRVMzXzEJCWNwdV9yZXZpc2lvbihDUFVfMzQzMCwgNCkKIAor
-I2RlZmluZSBBTTMzNVhfRVMxXzAJCWNwdV9yZXZpc2lvbihDUFVfMzM1MCwgMCkKKyNkZWZpbmUg
-QU0zMzVYX0VTMl8wCQljcHVfcmV2aXNpb24oQ1BVXzMzNTAsIDEpCisjZGVmaW5lIEFNMzM1WF9F
-UzJfMQkJY3B1X3JldmlzaW9uKENQVV8zMzUwLCAyKQorCiAjZGVmaW5lIE9NQVAzNlhYX0VTMQkJ
-Y3B1X3JldmlzaW9uKENQVV8zNjMwLCAwKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMQkJY3B1X3Jl
-dmlzaW9uKENQVV8zNjMwLCAxKQogI2RlZmluZSBPTUFQMzZYWF9FUzFfMgkJY3B1X3JldmlzaW9u
-KENQVV8zNjMwLCAyKQpAQCAtNzYsOCArODEsOSBAQAogLyoqCiAgKiBIYXdrZXllIGRlZmluaXRp
-b25zIHRvIGlkZW50aWZ5IHNpbGljb24gZmFtaWxpZXMKICAqLwotI2RlZmluZSBPTUFQX0hBV0tF
-WUVfMzRYWAkweEI3QUUKLSNkZWZpbmUgT01BUF9IQVdLRVlFXzM2WFgJMHhCODkxCisjZGVmaW5l
-IE9NQVBfSEFXS0VZRV8zNFhYCTB4QjdBRSAvKiBPTUFQMzR4eCAqLworI2RlZmluZSBPTUFQX0hB
-V0tFWUVfMzZYWAkweEI4OTEgLyogT01BUDM2eHggKi8KKyNkZWZpbmUgT01BUF9IQVdLRVlFXzMz
-NVgJMHhCOTQ0IC8qIEFNMzM1eCAqLwogCiAvKiogVGhlc2UgYXJlIGltcGxlbWVudGVkIGJ5IHRo
-ZSBTeXN0ZW0gc3BlY2lmaWMgY29kZSBpbiBvbWFwWC1nZW5lcmljLmMgKi8KIHUzMiBnZXRfY3B1
-X3R5cGUodm9pZCk7Ci0tIAoxLjguNC5yYzMKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+Needed for 400MHz DDR3.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beaglebone/lowlevel.c          |  2 +-
+ arch/arm/boards/pcm051/lowlevel.c              |  2 +-
+ arch/arm/mach-omap/am33xx_clock.c              | 10 +++++-----
+ arch/arm/mach-omap/include/mach/am33xx-clock.h |  6 ++++--
+ 4 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
+index febe714..0a32d3b 100644
+--- a/arch/arm/boards/beaglebone/lowlevel.c
++++ b/arch/arm/boards/beaglebone/lowlevel.c
+@@ -89,7 +89,7 @@ static int beaglebone_board_init(void)
+ 	if (running_in_sdram())
+ 		return 0;
+ 
+-	pll_init(MPUPLL_M_500, 24);
++	pll_init(MPUPLL_M_500, 24, DDRPLL_M_266);
+ 
+ 	am335x_sdram_init(0x18B, &ddr2_cmd_ctrl, &ddr2_regs, &ddr2_data);
+ 
+diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
+index 6ad170f..793d154 100644
+--- a/arch/arm/boards/pcm051/lowlevel.c
++++ b/arch/arm/boards/pcm051/lowlevel.c
+@@ -67,7 +67,7 @@ static int pcm051_board_init(void)
+ 	if (running_in_sdram())
+ 		return 0;
+ 
+-	pll_init(MPUPLL_M_600, 25);
++	pll_init(MPUPLL_M_600, 25, DDRPLL_M_266);
+ 
+ 	am335x_sdram_init(0x18B, &MT41J256M8HX15E_2x256M8_cmd,
+ 			&MT41J256M8HX15E_2x256M8_regs,
+diff --git a/arch/arm/mach-omap/am33xx_clock.c b/arch/arm/mach-omap/am33xx_clock.c
+index c6cae42..692b0ec 100644
+--- a/arch/arm/mach-omap/am33xx_clock.c
++++ b/arch/arm/mach-omap/am33xx_clock.c
+@@ -248,7 +248,7 @@ static void per_pll_config(int osc)
+ 	while(__raw_readl(CM_IDLEST_DPLL_PER) != 0x1);
+ }
+ 
+-static void ddr_pll_config(int osc)
++static void ddr_pll_config(int osc, int ddrpll_M)
+ {
+ 	u32 clkmode, clksel, div_m2;
+ 
+@@ -263,7 +263,7 @@ static void ddr_pll_config(int osc)
+ 	while ((__raw_readl(CM_IDLEST_DPLL_DDR) & 0x00000100) != 0x00000100);
+ 
+ 	clksel = clksel & (~0x7ffff);
+-	clksel = clksel | ((DDRPLL_M << 0x8) | (osc - 1));
++	clksel = clksel | ((ddrpll_M << 0x8) | (osc - 1));
+ 	__raw_writel(clksel, CM_CLKSEL_DPLL_DDR);
+ 
+ 	div_m2 = div_m2 & 0xFFFFFFE0;
+@@ -288,18 +288,18 @@ void enable_ddr_clocks(void)
+ 		PRCM_L3_GCLK_ACTIVITY));
+ 	/* Poll if module is functional */
+ 	while ((__raw_readl(CM_PER_EMIF_CLKCTRL)) != PRCM_MOD_EN);
+-
+ }
+ 
+ /*
+  * Configure the PLL/PRCM for necessary peripherals
+  */
+-void pll_init(int mpupll_M, int osc)
++void pll_init(int mpupll_M, int osc, int ddrpll_M)
+ {
+ 	mpu_pll_config(mpupll_M, osc);
+ 	core_pll_config(osc);
+ 	per_pll_config(osc);
+-	ddr_pll_config(osc);
++	ddr_pll_config(osc, ddrpll_M);
++
+ 	/* Enable the required interconnect clocks */
+ 	interface_clocks_enable();
+ 	/* Enable power domain transition */
+diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+index 6035da6..b3c7519 100644
+--- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
++++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+@@ -48,7 +48,9 @@
+ 
+ /* DDR Freq is 266 MHZ for now*/
+ /* Set Fdll = 400 MHZ , Fdll = M * 2 * CLKINP/ N + 1; clkout = Fdll /(2 * M2) */
+-#define DDRPLL_M	266
++#define DDRPLL_M_266	266
++#define DDRPLL_M_400	400
++#define DDRPLL_N	(OSC - 1)
+ #define DDRPLL_M2	1
+ 
+ /* PRCM */
+@@ -181,7 +183,7 @@
+ 
+ #define CM_ALWON_GPMC_CLKCTRL           CM_PER_GPMC_CLKCTRL
+ 
+-extern void pll_init(int mpupll_M, int osc);
++extern void pll_init(int mpupll_M, int osc, int ddrpll_M);
+ extern void enable_ddr_clocks(void);
+ 
+ #endif  /* endif _AM33XX_CLOCKS_H_ */
+-- 
+1.8.4.rc3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
