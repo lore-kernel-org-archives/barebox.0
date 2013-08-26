@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqix-0006bp-1A
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:28 +0000
+ id 1VDqix-0006bl-1I
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:48 +0200
-Message-Id: <1377500163-28962-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:55:44 +0200
+Message-Id: <1377500163-28962-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/22] ARM: omap: rename INIT_LL to omap_uart_lowlevel_init
+Subject: [PATCH 03/22] mci: omap: implement device detect callback
 To: barebox@lists.infradead.org
-
-Function should use lower case letters. Also give this function
-more namespace. While at it include io.h rather than asm/io.h.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/debug_ll.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mci/omap_hsmmc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
-index 38ca562..2917558 100644
---- a/arch/arm/mach-omap/include/mach/debug_ll.h
-+++ b/arch/arm/mach-omap/include/mach/debug_ll.h
-@@ -17,7 +17,7 @@
- #ifndef __MACH_DEBUG_LL_H__
- #define   __MACH_DEBUG_LL_H__
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index 014cb47..bb976e1 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -574,6 +574,13 @@ static void mmc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ 	writel(readl(&mmc_base->sysctl) | CEN_ENABLE, &mmc_base->sysctl);
+ }
  
--#include <asm/io.h>
-+#include <io.h>
- 
- #ifdef CONFIG_ARCH_OMAP3
- #include <mach/omap3-silicon.h>
-@@ -56,7 +56,7 @@
- #define MCR		(4 << 2)
- #define MDR		(8 << 2)
- 
--static inline void INIT_LL(void)
-+static inline void omap_uart_lowlevel_init(void)
++static int omap_mmc_detect(struct device_d *dev)
++{
++	struct omap_hsmmc *hsmmc = dev->priv;
++
++	return mci_detect_card(&hsmmc->mci);
++}
++
+ static int omap_mmc_probe(struct device_d *dev)
  {
- 	writeb(0x00, UART_BASE + LCR);
- 	writeb(0x00, UART_BASE + IER);
+ 	struct omap_hsmmc *hsmmc;
+@@ -609,6 +616,9 @@ static int omap_mmc_probe(struct device_d *dev)
+ 	else
+ 		hsmmc->mci.f_max = 52000000;
+ 
++	dev->priv = hsmmc;
++	dev->detect = omap_mmc_detect,
++
+ 	mci_register(&hsmmc->mci);
+ 
+ 	return 0;
 -- 
 1.8.4.rc3
 
