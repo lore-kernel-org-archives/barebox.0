@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqix-0006bl-1I
+ id 1VDqix-0006bt-1B
  for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:44 +0200
-Message-Id: <1377500163-28962-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:55:52 +0200
+Message-Id: <1377500163-28962-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,42 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/22] mci: omap: implement device detect callback
+Subject: [PATCH 11/22] ARM: am33xx: set bootsource instance correctly for MMC1
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/omap_hsmmc.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/mach-omap/am33xx_generic.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
-index 014cb47..bb976e1 100644
---- a/drivers/mci/omap_hsmmc.c
-+++ b/drivers/mci/omap_hsmmc.c
-@@ -574,6 +574,13 @@ static void mmc_set_ios(struct mci_host *mci, struct mci_ios *ios)
- 	writel(readl(&mmc_base->sysctl) | CEN_ENABLE, &mmc_base->sysctl);
- }
- 
-+static int omap_mmc_detect(struct device_d *dev)
-+{
-+	struct omap_hsmmc *hsmmc = dev->priv;
-+
-+	return mci_detect_card(&hsmmc->mci);
-+}
-+
- static int omap_mmc_probe(struct device_d *dev)
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index c1e63cd..67e4a45 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -100,6 +100,7 @@ u32 running_in_sdram(void)
+ static int am33xx_bootsource(void)
  {
- 	struct omap_hsmmc *hsmmc;
-@@ -609,6 +616,9 @@ static int omap_mmc_probe(struct device_d *dev)
- 	else
- 		hsmmc->mci.f_max = 52000000;
+ 	enum bootsource src;
++	int instance = 0;
  
-+	dev->priv = hsmmc;
-+	dev->detect = omap_mmc_detect,
-+
- 	mci_register(&hsmmc->mci);
- 
+ 	switch (omap_bootinfo[2] & 0xFF) {
+ 	case 0x05:
+@@ -107,6 +108,11 @@ static int am33xx_bootsource(void)
+ 		break;
+ 	case 0x08:
+ 		src = BOOTSOURCE_MMC;
++		instance = 0;
++		break;
++	case 0x09:
++		src = BOOTSOURCE_MMC;
++		instance = 1;
+ 		break;
+ 	case 0x0b:
+ 		src = BOOTSOURCE_SPI;
+@@ -115,7 +121,7 @@ static int am33xx_bootsource(void)
+ 		src = BOOTSOURCE_UNKNOWN;
+ 	}
+ 	bootsource_set(src);
+-	bootsource_set_instance(0);
++	bootsource_set_instance(instance);
  	return 0;
+ }
+ postcore_initcall(am33xx_bootsource);
 -- 
 1.8.4.rc3
 
