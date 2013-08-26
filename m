@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1VDqjA-0003D9-Gc
+ Linux)) id 1VDqj8-0003D8-WB
  for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:58 +0200
-Message-Id: <1377500163-28962-18-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:56:03 +0200
+Message-Id: <1377500163-28962-23-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,153 +21,86 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/22] rework debug_ll
+Subject: [PATCH 22/22] ARM: beaglebone: update defconfig
 To: barebox@lists.infradead.org
 
-Convert to static inline functions and use lower case letters for function
-names. Also, include mach/debug_ll.h when an architecture provides support
-for debug_ll, not only when it's actually enabled. This allows architecures
-to put some UART initialization code into mach/debug_ll.h which is compiled
-out when debug_ll is disabled.
+- compile in thumb2 mode for a smaller binary
+- increase TEXT_BASE to get more memory space
+- set malloc size to zero for autodetection
+- enable some more commands
+- disable MCI_STARTUP, it's no longer needed and saves some time
+  during boot
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/console.c        |  8 +++----
- common/console_simple.c |  2 +-
- include/debug_ll.h      | 61 ++++++++++++++++++++++++++++++++++---------------
- 3 files changed, 48 insertions(+), 23 deletions(-)
+ arch/arm/configs/am335x_beaglebone_defconfig | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index 1518ed8..6ca94e2 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -93,9 +93,9 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	if (initialized < CONSOLE_INIT_FULL) {
- 		char ch;
- 		initialized = CONSOLE_INIT_FULL;
--		PUTS_LL("Switch to console [");
--		PUTS_LL(dev_name(dev));
--		PUTS_LL("]\n");
-+		puts_ll("Switch to console [");
-+		puts_ll(dev_name(dev));
-+		puts_ll("]\n");
- 		barebox_banner();
- 		while (kfifo_getc(console_output_fifo, &ch) == 0)
- 			console_putc(CONSOLE_STDOUT, ch);
-@@ -286,7 +286,7 @@ void console_putc(unsigned int ch, char c)
- 
- 	case CONSOLE_INITIALIZED_BUFFER:
- 		kfifo_putc(console_output_fifo, c);
--		PUTC_LL(c);
-+		putc_ll(c);
- 		return;
- 
- 	case CONSOLE_INIT_FULL:
-diff --git a/common/console_simple.c b/common/console_simple.c
-index 1fe569e..101064b 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -28,7 +28,7 @@ EXPORT_SYMBOL(console_puts);
- void console_putc(unsigned int ch, char c)
- {
- 	if (!console) {
--		PUTC_LL(c);
-+		putc_ll(c);
- 		return;
- 	}
- 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index f0034ba..ffb7654 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -20,8 +20,7 @@
- #ifndef __INCLUDE_DEBUG_LL_H__
- #define   __INCLUDE_DEBUG_LL_H__
- 
--#if defined (CONFIG_DEBUG_LL)
--
-+#ifdef CONFIG_HAS_DEBUG_LL
- /*
-  * mach/debug_ll.h should implement PUTC_LL. This can be a macro or a static
-  * inline function. Note that several SoCs expect the UART to be initialized
-@@ -29,35 +28,61 @@
-  * this initialization. Depending on the PUTC_LL implementation the board might
-  * also hang in PUTC_LL without proper initialization.
-  */
--# include <mach/debug_ll.h>
-+#include <mach/debug_ll.h>
-+#endif
- 
--# define PUTHEX_LL(value)  ({ unsigned long v = (unsigned long) (value); \
--			     int i; unsigned char ch; \
--			     for (i = 8; i--; ) {\
--			     ch = ((v >> (i*4)) & 0xf);\
--			     ch += (ch >= 10) ? 'a' - 10 : '0';\
--			     PUTC_LL (ch); }})
-+#if defined (CONFIG_DEBUG_LL)
-+
-+static inline void putc_ll(unsigned char value)
-+{
-+	PUTC_LL(value);
-+}
-+
-+static inline void putxhex_ll(unsigned long value)
-+{
-+	int i; unsigned char ch;
-+
-+	for (i = 8; i--; ) {
-+		ch = ((value >> (i * 4)) & 0xf);
-+		ch += (ch >= 10) ? 'a' - 10 : '0';
-+		putc_ll(ch);
-+	}
-+}
- 
- /*
-- * Be careful with PUTS_LL, it only works if the binary is running at the
-+ * Be careful with puts_ll, it only works if the binary is running at the
-  * link address which often is not the case during early startup. If in doubt
-  * don't use it.
-  */
--static __inline__ void PUTS_LL(const char * str)
-+static inline void puts_ll(const char * str)
- {
- 	while (*str) {
--		if (*str == '\n') {
--			PUTC_LL('\r');
--		}
--		PUTC_LL(*str);
-+		if (*str == '\n')
-+			putc_ll('\r');
-+
-+		putc_ll(*str);
- 		str++;
- 	}
- }
- 
- #else
--# define PUTC_LL(c) do {} while (0)
--# define PUTHEX_LL(v) do {} while (0)
--# define PUTS_LL(c) do {} while (0)
-+
-+static inline void putc_ll(unsigned char value)
-+{
-+}
-+
-+static inline void putxhex_ll(unsigned long value)
-+{
-+}
-+
-+/*
-+ * Be careful with puts_ll, it only works if the binary is running at the
-+ * link address which often is not the case during early startup. If in doubt
-+ * don't use it.
-+ */
-+static inline void puts_ll(const char * str)
-+{
-+}
- 
- #endif
- 
+diff --git a/arch/arm/configs/am335x_beaglebone_defconfig b/arch/arm/configs/am335x_beaglebone_defconfig
+index 4e37e01..4bcee24 100644
+--- a/arch/arm/configs/am335x_beaglebone_defconfig
++++ b/arch/arm/configs/am335x_beaglebone_defconfig
+@@ -1,10 +1,13 @@
+ CONFIG_ARCH_OMAP=y
+ CONFIG_ARCH_AM33XX=y
+-CONFIG_AEABI=y
++CONFIG_THUMB2_BAREBOX=y
++CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x81000000
++CONFIG_TEXT_BASE=0x8f000000
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="barebox> "
+ CONFIG_LONGHELP=y
+@@ -25,14 +28,13 @@ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_TIME=y
+-CONFIG_CMD_DIRNAME=y
+ CONFIG_CMD_LN=y
+-CONFIG_CMD_READLINK=y
+ CONFIG_CMD_TFTP=y
+ CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MM=y
+ CONFIG_CMD_CRC=y
+ CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_MD5SUM=y
+@@ -45,13 +47,17 @@ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_I2C=y
+ CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_DETECT=y
+ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_PING=y
+@@ -61,8 +67,9 @@ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_CPSW=y
+ # CONFIG_SPI is not set
++CONFIG_I2C=y
++CONFIG_I2C_OMAP=y
+ CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_OMAP_HSMMC=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
 -- 
 1.8.4.rc3
 
