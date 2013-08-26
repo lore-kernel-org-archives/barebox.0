@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqix-0006bq-1C
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VDqj2-0004fz-0u
  for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:49 +0200
-Message-Id: <1377500163-28962-9-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:56:00 +0200
+Message-Id: <1377500163-28962-20-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,143 +16,225 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/22] ARM: am33xx: Cleanup of lowlevel code
+Subject: [PATCH 19/22] ARM: beaglebone: add support for beaglebone black with
+ DDR3 RAM
 To: barebox@lists.infradead.org
 
-RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpUaGVyZSBpcyBhIGxvdCBv
-ZiBkdXBsaWNhdGUgbG93bGV2ZWwgY29kZSBiZXR3ZWVuIHRoZQphbTMzeHggYm9hcmRzLiBNb3Zl
-IHRoaXMgY29kZSB0byBhbTMzeHhfZ2VuZXJpYyBhbmQKY3JlYXRlIHN0cnVjdHMgZm9yIHNkcmFt
-IHNldHRpbmdzLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMu
-ZGU+ClNpZ25lZC1vZmYtYnk6IFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4K
-LS0tCiBhcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYyAgICAgICAgICAgICAgfCAx
-NTcgKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL21hY2gtb21hcC9pbmNsdWRlL21h
-Y2gvYW0zM3h4LXNpbGljb24uaCB8ICA0NCArKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDIwMSBp
-bnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1vbWFwL2FtMzN4eF9nZW5l
-cmljLmMgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYwppbmRleCBhNjUzZWY3
-Li5jMWU2M2NkIDEwMDY0NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMu
-YworKysgYi9hcmNoL2FybS9tYWNoLW9tYXAvYW0zM3h4X2dlbmVyaWMuYwpAQCAtMTcxLDMgKzE3
-MSwxNjAgQEAgc3RhdGljIGludCBhbTMzeHhfZ3Bpb19pbml0KHZvaWQpCiAJcmV0dXJuIDA7CiB9
-CiBjb3JlZGV2aWNlX2luaXRjYWxsKGFtMzN4eF9ncGlvX2luaXQpOworCisvKiBVQVJUIERlZmlu
-ZXMgKi8KKyNkZWZpbmUgVUFSVF9TWVNDRkdfT0ZGU0VUCTB4NTQKKyNkZWZpbmUgVUFSVF9TWVNT
-VFNfT0ZGU0VUCTB4NTgKKworI2RlZmluZSBVQVJUX0NMS19SVU5OSU5HX01BU0sJMHgxCisjZGVm
-aW5lIFVBUlRfUkVTRVQJCSgweDEgPDwgMSkKKyNkZWZpbmUgVUFSVF9TTUFSVF9JRExFX0VOCSgw
-eDEgPDwgMHgzKQorCit2b2lkIGFtMzN4eF91YXJ0MF9zb2Z0X3Jlc2V0KHZvaWQpCit7CisJaW50
-IHJlZzsKKworCXJlZyA9IHJlYWRsKEFNMzNYWF9VQVJUMF9CQVNFICsgVUFSVF9TWVNDRkdfT0ZG
-U0VUKTsKKwlyZWcgfD0gVUFSVF9SRVNFVDsKKwl3cml0ZWwocmVnLCAoQU0zM1hYX1VBUlQwX0JB
-U0UgKyBVQVJUX1NZU0NGR19PRkZTRVQpKTsKKworCXdoaWxlICgocmVhZGwoQU0zM1hYX1VBUlQw
-X0JBU0UgKyBVQVJUX1NZU1NUU19PRkZTRVQpICYKKwkJVUFSVF9DTEtfUlVOTklOR19NQVNLKSAh
-PSBVQVJUX0NMS19SVU5OSU5HX01BU0spCisJCTsKKworCS8qIERpc2FibGUgc21hcnQgaWRsZSAq
-LworCXJlZyA9IHJlYWRsKChBTTMzWFhfVUFSVDBfQkFTRSArIFVBUlRfU1lTQ0ZHX09GRlNFVCkp
-OworCXJlZyB8PSBVQVJUX1NNQVJUX0lETEVfRU47CisJd3JpdGVsKHJlZywgKEFNMzNYWF9VQVJU
-MF9CQVNFICsgVUFSVF9TWVNDRkdfT0ZGU0VUKSk7Cit9CisKKworI2RlZmluZSBWVFBfQ1RSTF9S
-RUFEWQkJKDB4MSA8PCA1KQorI2RlZmluZSBWVFBfQ1RSTF9FTkFCTEUJCSgweDEgPDwgNikKKyNk
-ZWZpbmUgVlRQX0NUUkxfU1RBUlRfRU4JKDB4MSkKKwordm9pZCBhbTMzeHhfY29uZmlnX3Z0cCh2
-b2lkKQoreworCXVpbnQzMl90IHZhbDsKKworCXZhbCA9IHJlYWRsKEFNMzNYWF9WVFAwX0NUUkxf
-UkVHKTsKKwl2YWwgfD0gVlRQX0NUUkxfRU5BQkxFOworCXdyaXRlbCh2YWwsIEFNMzNYWF9WVFAw
-X0NUUkxfUkVHKTsKKworCXZhbCA9IHJlYWRsKEFNMzNYWF9WVFAwX0NUUkxfUkVHKTsKKwl2YWwg
-Jj0gflZUUF9DVFJMX1NUQVJUX0VOOworCXdyaXRlbCh2YWwsIEFNMzNYWF9WVFAwX0NUUkxfUkVH
-KTsKKworCXZhbCA9IHJlYWRsKEFNMzNYWF9WVFAwX0NUUkxfUkVHKTsKKwl2YWwgfD0gVlRQX0NU
-UkxfU1RBUlRfRU47CisJd3JpdGVsKHZhbCwgQU0zM1hYX1ZUUDBfQ1RSTF9SRUcpOworCisJLyog
-UG9sbCBmb3IgUkVBRFkgKi8KKwl3aGlsZSAoKHJlYWRsKEFNMzNYWF9WVFAwX0NUUkxfUkVHKSAm
-CisJCQkJVlRQX0NUUkxfUkVBRFkpICE9IFZUUF9DVFJMX1JFQURZKQorCQk7Cit9CisKK3ZvaWQg
-YW0zM3h4X2Rkcl9waHlkYXRhX2NtZF9tYWNybyhjb25zdCBzdHJ1Y3QgYW0zM3h4X2NtZF9jb250
-cm9sICpjbWRfY3RybCkKK3sKKwl3cml0ZWwoY21kX2N0cmwtPnNsYXZlX3JhdGlvMCwgQU0zM1hY
-X0NNRDBfQ1RSTF9TTEFWRV9SQVRJT18wKTsKKwl3cml0ZWwoY21kX2N0cmwtPmRsbF9sb2NrX2Rp
-ZmYwLCBBTTMzWFhfQ01EMF9ETExfTE9DS19ESUZGXzApOworCXdyaXRlbChjbWRfY3RybC0+aW52
-ZXJ0X2Nsa291dDAsIEFNMzNYWF9DTUQwX0lOVkVSVF9DTEtPVVRfMCk7CisKKwl3cml0ZWwoY21k
-X2N0cmwtPnNsYXZlX3JhdGlvMSwgQU0zM1hYX0NNRDFfQ1RSTF9TTEFWRV9SQVRJT18wKTsKKwl3
-cml0ZWwoY21kX2N0cmwtPmRsbF9sb2NrX2RpZmYxLCBBTTMzWFhfQ01EMV9ETExfTE9DS19ESUZG
-XzApOworCXdyaXRlbChjbWRfY3RybC0+aW52ZXJ0X2Nsa291dDEsIEFNMzNYWF9DTUQxX0lOVkVS
-VF9DTEtPVVRfMCk7CisKKwl3cml0ZWwoY21kX2N0cmwtPnNsYXZlX3JhdGlvMiwgQU0zM1hYX0NN
-RDJfQ1RSTF9TTEFWRV9SQVRJT18wKTsKKwl3cml0ZWwoY21kX2N0cmwtPmRsbF9sb2NrX2RpZmYy
-LCBBTTMzWFhfQ01EMl9ETExfTE9DS19ESUZGXzApOworCXdyaXRlbChjbWRfY3RybC0+aW52ZXJ0
-X2Nsa291dDIsIEFNMzNYWF9DTUQyX0lOVkVSVF9DTEtPVVRfMCk7Cit9CisKKyNkZWZpbmUgQ01f
-RU1JRl9TRFJBTV9DT05GSUcJKEFNMzNYWF9DVFJMX0JBU0UgKyAweDExMCkKKwordm9pZCBhbTMz
-eHhfY29uZmlnX3NkcmFtKGNvbnN0IHN0cnVjdCBhbTMzeHhfZW1pZl9yZWdzICpyZWdzKQorewor
-CXdyaXRlbChyZWdzLT5lbWlmX3JlYWRfbGF0ZW5jeSwgQU0zM1hYX0VNSUY0XzBfUkVHKEREUl9Q
-SFlfQ1RSTF8xKSk7CisJd3JpdGVsKHJlZ3MtPmVtaWZfcmVhZF9sYXRlbmN5LCBBTTMzWFhfRU1J
-RjRfMF9SRUcoRERSX1BIWV9DVFJMXzFfU0hBRE9XKSk7CisJd3JpdGVsKHJlZ3MtPmVtaWZfcmVh
-ZF9sYXRlbmN5LCBBTTMzWFhfRU1JRjRfMF9SRUcoRERSX1BIWV9DVFJMXzIpKTsKKwl3cml0ZWwo
-cmVncy0+ZW1pZl90aW0xLCBBTTMzWFhfRU1JRjRfMF9SRUcoU0RSQU1fVElNXzEpKTsKKwl3cml0
-ZWwocmVncy0+ZW1pZl90aW0xLCBBTTMzWFhfRU1JRjRfMF9SRUcoU0RSQU1fVElNXzFfU0hBRE9X
-KSk7CisJd3JpdGVsKHJlZ3MtPmVtaWZfdGltMiwgQU0zM1hYX0VNSUY0XzBfUkVHKFNEUkFNX1RJ
-TV8yKSk7CisJd3JpdGVsKHJlZ3MtPmVtaWZfdGltMiwgQU0zM1hYX0VNSUY0XzBfUkVHKFNEUkFN
-X1RJTV8yX1NIQURPVykpOworCXdyaXRlbChyZWdzLT5lbWlmX3RpbTMsIEFNMzNYWF9FTUlGNF8w
-X1JFRyhTRFJBTV9USU1fMykpOworCXdyaXRlbChyZWdzLT5lbWlmX3RpbTMsIEFNMzNYWF9FTUlG
-NF8wX1JFRyhTRFJBTV9USU1fM19TSEFET1cpKTsKKworCWlmIChyZWdzLT56cV9jb25maWcpIHsK
-KwkJLyoKKwkJICogQSB2YWx1ZSBvZiAweDI4MDAgZm9yIHRoZSBSRUYgQ1RSTCB3aWxsIGdpdmUg
-dXMKKwkJICogYWJvdXQgNTcwdXMgZm9yIGEgZGVsYXksIHdoaWNoIHdpbGwgYmUgbG9uZyBlbm91
-Z2gKKwkJICogdG8gY29uZmlndXJlIHRoaW5ncy4KKwkJICovCisJCXdyaXRlbCgweDI4MDAsIEFN
-MzNYWF9FTUlGNF8wX1JFRyhTRFJBTV9SRUZfQ1RSTCkpOworCQl3cml0ZWwocmVncy0+enFfY29u
-ZmlnLCBBTTMzWFhfRU1JRjRfMF9SRUcoWlFfQ09ORklHKSk7CisJCXdyaXRlbChyZWdzLT5zZHJh
-bV9jb25maWcsIENNX0VNSUZfU0RSQU1fQ09ORklHKTsKKwkJd3JpdGVsKHJlZ3MtPnNkcmFtX2Nv
-bmZpZywgQU0zM1hYX0VNSUY0XzBfUkVHKFNEUkFNX0NPTkZJRykpOworCQl3cml0ZWwocmVncy0+
-c2RyYW1fcmVmX2N0cmwsCisJCQkJQU0zM1hYX0VNSUY0XzBfUkVHKFNEUkFNX1JFRl9DVFJMKSk7
-CisJCXdyaXRlbChyZWdzLT5zZHJhbV9yZWZfY3RybCwKKwkJCUFNMzNYWF9FTUlGNF8wX1JFRyhT
-RFJBTV9SRUZfQ1RSTF9TSEFET1cpKTsKKworCX0KKworCXdyaXRlbChyZWdzLT5zZHJhbV9yZWZf
-Y3RybCwgQU0zM1hYX0VNSUY0XzBfUkVHKFNEUkFNX1JFRl9DVFJMKSk7CisJd3JpdGVsKHJlZ3Mt
-PnNkcmFtX3JlZl9jdHJsLCBBTTMzWFhfRU1JRjRfMF9SRUcoU0RSQU1fUkVGX0NUUkxfU0hBRE9X
-KSk7CisJd3JpdGVsKHJlZ3MtPnNkcmFtX2NvbmZpZywgQ01fRU1JRl9TRFJBTV9DT05GSUcpOwor
-fQorCit2b2lkIGFtMzN4eF9jb25maWdfaW9fY3RybChpbnQgaW9jdHJsKQoreworCXdyaXRlbChp
-b2N0cmwsIEFNMzNYWF9ERFJfQ01EMF9JT0NUUkwpOworCXdyaXRlbChpb2N0cmwsIEFNMzNYWF9E
-RFJfQ01EMV9JT0NUUkwpOworCXdyaXRlbChpb2N0cmwsIEFNMzNYWF9ERFJfQ01EMl9JT0NUUkwp
-OworCXdyaXRlbChpb2N0cmwsIEFNMzNYWF9ERFJfREFUQTBfSU9DVFJMKTsKKwl3cml0ZWwoaW9j
-dHJsLCBBTTMzWFhfRERSX0RBVEExX0lPQ1RSTCk7Cit9CisKK3ZvaWQgYW0zM3h4X2NvbmZpZ19k
-ZHJfZGF0YShjb25zdCBzdHJ1Y3QgYW0zM3h4X2Rkcl9kYXRhICpkYXRhLCBpbnQgbWFjcm9ucikK
-K3sKKwl1MzIgYmFzZSA9IDB4MDsKKworCWlmIChtYWNyb25yKQorCQliYXNlID0gMHhBNDsKKwor
-CXdyaXRlbChkYXRhLT5yZF9zbGF2ZV9yYXRpbzAsIEFNMzNYWF9EQVRBMF9SRF9EUVNfU0xBVkVf
-UkFUSU9fMCArIGJhc2UpOworCXdyaXRlbChkYXRhLT53cl9kcXNfc2xhdmVfcmF0aW8wLCBBTTMz
-WFhfREFUQTBfV1JfRFFTX1NMQVZFX1JBVElPXzAgKyBiYXNlKTsKKwl3cml0ZWwoZGF0YS0+d3Js
-dmxfaW5pdF9yYXRpbzAsIEFNMzNYWF9EQVRBMF9XUkxWTF9JTklUX1JBVElPXzAgKyBiYXNlKTsK
-Kwl3cml0ZWwoZGF0YS0+Z2F0ZWx2bF9pbml0X3JhdGlvMCwgQU0zM1hYX0RBVEEwX0dBVEVMVkxf
-SU5JVF9SQVRJT18wICsgYmFzZSk7CisJd3JpdGVsKGRhdGEtPmZpZm9fd2Vfc2xhdmVfcmF0aW8w
-LCBBTTMzWFhfREFUQTBfRklGT19XRV9TTEFWRV9SQVRJT18wICsgYmFzZSk7CisJd3JpdGVsKGRh
-dGEtPndyX3NsYXZlX3JhdGlvMCwgQU0zM1hYX0RBVEEwX1dSX0RBVEFfU0xBVkVfUkFUSU9fMCAr
-IGJhc2UpOworCXdyaXRlbChkYXRhLT51c2VfcmFuazBfZGVsYXksIEFNMzNYWF9EQVRBMF9SQU5L
-MF9ERUxBWVNfMCArIGJhc2UpOworCXdyaXRlbChkYXRhLT5kbGxfbG9ja19kaWZmMCwgQU0zM1hY
-X0RBVEEwX0RMTF9MT0NLX0RJRkZfMCArIGJhc2UpOworfQorCit2b2lkIGFtMzM1eF9zZHJhbV9p
-bml0KGludCBpb2N0cmwsIGNvbnN0IHN0cnVjdCBhbTMzeHhfY21kX2NvbnRyb2wgKmNtZF9jdHJs
-LAorCQljb25zdCBzdHJ1Y3QgYW0zM3h4X2VtaWZfcmVncyAqZW1pZl9yZWdzLAorCQljb25zdCBz
-dHJ1Y3QgYW0zM3h4X2Rkcl9kYXRhICpkZHJfZGF0YSkKK3sKKwl1aW50MzJfdCB2YWw7CisKKwll
-bmFibGVfZGRyX2Nsb2NrcygpOworCisJYW0zM3h4X2NvbmZpZ192dHAoKTsKKworCWFtMzN4eF9k
-ZHJfcGh5ZGF0YV9jbWRfbWFjcm8oY21kX2N0cmwpOworCWFtMzN4eF9jb25maWdfZGRyX2RhdGEo
-ZGRyX2RhdGEsIDApOworCWFtMzN4eF9jb25maWdfZGRyX2RhdGEoZGRyX2RhdGEsIDEpOworCisJ
-YW0zM3h4X2NvbmZpZ19pb19jdHJsKGlvY3RybCk7CisKKwl2YWwgPSByZWFkbChBTTMzWFhfRERS
-X0lPX0NUUkwpOworCXZhbCAmPSAweGVmZmZmZmZmOworCXdyaXRlbCh2YWwsIEFNMzNYWF9ERFJf
-SU9fQ1RSTCk7CisKKwl2YWwgPSByZWFkbChBTTMzWFhfRERSX0NLRV9DVFJMKTsKKwl2YWwgfD0g
-MHgwMDAwMDAwMTsKKwl3cml0ZWwodmFsLCBBTTMzWFhfRERSX0NLRV9DVFJMKTsKKworCWFtMzN4
-eF9jb25maWdfc2RyYW0oZW1pZl9yZWdzKTsKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gt
-b21hcC9pbmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24uaCBiL2FyY2gvYXJtL21hY2gtb21hcC9p
-bmNsdWRlL21hY2gvYW0zM3h4LXNpbGljb24uaAppbmRleCBlOGVjZDFlLi5lMzQ5YzRkIDEwMDY0
-NAotLS0gYS9hcmNoL2FybS9tYWNoLW9tYXAvaW5jbHVkZS9tYWNoL2FtMzN4eC1zaWxpY29uLmgK
-KysrIGIvYXJjaC9hcm0vbWFjaC1vbWFwL2luY2x1ZGUvbWFjaC9hbTMzeHgtc2lsaWNvbi5oCkBA
-IC0xOTIsNCArMTkyLDQ4IEBACiAjZGVmaW5lIEFNMzNYWF9NQUNfSUQxX0hJCShBTTMzWFhfQ1RS
-TF9CQVNFICsgMHg2M2MpCiAjZGVmaW5lIEFNMzNYWF9NQUNfTUlJX1NFTAkoQU0zM1hYX0NUUkxf
-QkFTRSArIDB4NjUwKQogCitzdHJ1Y3QgYW0zM3h4X2NtZF9jb250cm9sIHsKKwl1MzIgc2xhdmVf
-cmF0aW8wOworCXUzMiBkbGxfbG9ja19kaWZmMDsKKwl1MzIgaW52ZXJ0X2Nsa291dDA7CisJdTMy
-IHNsYXZlX3JhdGlvMTsKKwl1MzIgZGxsX2xvY2tfZGlmZjE7CisJdTMyIGludmVydF9jbGtvdXQx
-OworCXUzMiBzbGF2ZV9yYXRpbzI7CisJdTMyIGRsbF9sb2NrX2RpZmYyOworCXUzMiBpbnZlcnRf
-Y2xrb3V0MjsKK307CisKK3N0cnVjdCBhbTMzeHhfZW1pZl9yZWdzIHsKKwl1MzIgZW1pZl9yZWFk
-X2xhdGVuY3k7CisJdTMyIGVtaWZfdGltMTsKKwl1MzIgZW1pZl90aW0yOworCXUzMiBlbWlmX3Rp
-bTM7CisJdTMyIHNkcmFtX2NvbmZpZzsKKwl1MzIgc2RyYW1fY29uZmlnMjsKKwl1MzIgenFfY29u
-ZmlnOworCXUzMiBzZHJhbV9yZWZfY3RybDsKK307CisKK3N0cnVjdCBhbTMzeHhfZGRyX2RhdGEg
-eworCXUzMiByZF9zbGF2ZV9yYXRpbzA7CisJdTMyIHdyX2Rxc19zbGF2ZV9yYXRpbzA7CisJdTMy
-IHdybHZsX2luaXRfcmF0aW8wOworCXUzMiBnYXRlbHZsX2luaXRfcmF0aW8wOworCXUzMiBmaWZv
-X3dlX3NsYXZlX3JhdGlvMDsKKwl1MzIgd3Jfc2xhdmVfcmF0aW8wOworCXUzMiB1c2VfcmFuazBf
-ZGVsYXk7CisJdTMyIGRsbF9sb2NrX2RpZmYwOworfTsKKwordm9pZCBhbTMzeHhfdWFydDBfc29m
-dF9yZXNldCh2b2lkKTsKK3ZvaWQgYW0zM3h4X2NvbmZpZ192dHAodm9pZCk7Cit2b2lkIGFtMzN4
-eF9kZHJfcGh5ZGF0YV9jbWRfbWFjcm8oY29uc3Qgc3RydWN0IGFtMzN4eF9jbWRfY29udHJvbCAq
-Y21kX2N0cmwpOwordm9pZCBhbTMzeHhfY29uZmlnX2lvX2N0cmwoaW50IGlvY3RybCk7Cit2b2lk
-IGFtMzN4eF9jb25maWdfc2RyYW0oY29uc3Qgc3RydWN0IGFtMzN4eF9lbWlmX3JlZ3MgKnJlZ3Mp
-Owordm9pZCBhbTMzeHhfY29uZmlnX2Rkcl9kYXRhKGNvbnN0IHN0cnVjdCBhbTMzeHhfZGRyX2Rh
-dGEgKmRhdGEsIGludCBtYWNyb25yKTsKK3ZvaWQgYW0zMzV4X3NkcmFtX2luaXQoaW50IGlvY3Ry
-bCwgY29uc3Qgc3RydWN0IGFtMzN4eF9jbWRfY29udHJvbCAqY21kX2N0cmwsCisJCQljb25zdCBz
-dHJ1Y3QgYW0zM3h4X2VtaWZfcmVncyAqZW1pZl9yZWdzLAorCQkJY29uc3Qgc3RydWN0IGFtMzN4
-eF9kZHJfZGF0YSAqZGRyX2RhdGEpOworCiAjZW5kaWYKLS0gCjEuOC40LnJjMwoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBs
-aXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+From: Jan Luebbe <jlu@pengutronix.de>
+
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beaglebone/beaglebone.h |  9 ++++++
+ arch/arm/boards/beaglebone/board.c      | 43 +++++++++++++++++++++++--
+ arch/arm/boards/beaglebone/lowlevel.c   | 56 ++++++++++++++++++++++++++++++---
+ 3 files changed, 102 insertions(+), 6 deletions(-)
+ create mode 100644 arch/arm/boards/beaglebone/beaglebone.h
+
+diff --git a/arch/arm/boards/beaglebone/beaglebone.h b/arch/arm/boards/beaglebone/beaglebone.h
+new file mode 100644
+index 0000000..25c5b0e
+--- /dev/null
++++ b/arch/arm/boards/beaglebone/beaglebone.h
+@@ -0,0 +1,9 @@
++#ifndef __BOARD_BEAGLEBONE_H
++#define __BOARD_BEAGLEBONE_H
++
++static inline int is_beaglebone_black(void)
++{
++	return am33xx_get_cpu_rev() != AM335X_ES1_0;
++}
++
++#endif /* __BOARD_BEAGLEBONE_H */
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index e12c70b..9e87afc 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -26,6 +26,8 @@
+ #include <init.h>
+ #include <driver.h>
+ #include <envfs.h>
++#include <environment.h>
++#include <globalvar.h>
+ #include <sizes.h>
+ #include <io.h>
+ #include <ns16550.h>
+@@ -49,6 +51,8 @@
+ #include <mach/am33xx-generic.h>
+ #include <mach/cpsw.h>
+ 
++#include "beaglebone.h"
++
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ 
+ /**
+@@ -71,7 +75,10 @@ console_initcall(beaglebone_console_init);
+ 
+ static int beaglebone_mem_init(void)
+ {
+-	omap_add_ram0(SZ_256M);
++	if (is_beaglebone_black())
++		omap_add_ram0(SZ_512M);
++	else
++		omap_add_ram0(SZ_256M);
+ 
+ 	return 0;
+ }
+@@ -106,19 +113,51 @@ static struct i2c_board_info i2c0_devices[] = {
+ 	},
+ };
+ 
++static const __maybe_unused struct module_pin_mux mmc1_pin_mux[] = {
++	{OFFSET(gpmc_ad0), (MODE(1) | RXACTIVE)},	/* MMC1_DAT0 */
++	{OFFSET(gpmc_ad1), (MODE(1) | RXACTIVE)},	/* MMC1_DAT1 */
++	{OFFSET(gpmc_ad2), (MODE(1) | RXACTIVE)},	/* MMC1_DAT2 */
++	{OFFSET(gpmc_ad3), (MODE(1) | RXACTIVE)},	/* MMC1_DAT3 */
++	{OFFSET(gpmc_ad4), (MODE(1) | RXACTIVE)},	/* MMC1_DAT4 */
++	{OFFSET(gpmc_ad5), (MODE(1) | RXACTIVE)},	/* MMC1_DAT5 */
++	{OFFSET(gpmc_ad6), (MODE(1) | RXACTIVE)},	/* MMC1_DAT6 */
++	{OFFSET(gpmc_ad7), (MODE(1) | RXACTIVE)},	/* MMC1_DAT7 */
++	{OFFSET(gpmc_csn1), (MODE(2) | RXACTIVE | PULLUP_EN)},	/* MMC1_CLK */
++	{OFFSET(gpmc_csn2), (MODE(2) | RXACTIVE | PULLUP_EN)},	/* MMC1_CMD */
++	{-1},
++};
++
+ static int beaglebone_devices_init(void)
+ {
++	am33xx_enable_mmc0_pin_mux();
+ 	am33xx_add_mmc0(NULL);
+ 
++	if (is_beaglebone_black()) {
++		configure_module_pin_mux(mmc1_pin_mux);
++		am33xx_add_mmc1(NULL);
++	}
++
+ 	am33xx_enable_i2c0_pin_mux();
+ 	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
+ 	am33xx_add_i2c0(NULL);
+ 
+ 	beaglebone_eth_init();
+ 
++	return 0;
++}
++device_initcall(beaglebone_devices_init);
++
++static int beaglebone_env_init(void)
++{
++	int black = is_beaglebone_black();
++
++	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
++
++	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
++
+ 	armlinux_set_bootparams((void *)0x80000100);
+ 	armlinux_set_architecture(MACH_TYPE_BEAGLEBONE);
+ 
+ 	return 0;
+ }
+-device_initcall(beaglebone_devices_init);
++late_initcall(beaglebone_env_init);
+diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
+index c0152f3..2ff7c71 100644
+--- a/arch/arm/boards/beaglebone/lowlevel.c
++++ b/arch/arm/boards/beaglebone/lowlevel.c
+@@ -14,6 +14,8 @@
+ #include <mach/am33xx-generic.h>
+ #include <mach/wdt.h>
+ 
++#include "beaglebone.h"
++
+ #define DDR2_RD_DQS		0x12
+ #define DDR2_PHY_FIFO_WE	0x80
+ #define	DDR2_WR_DQS		0x00
+@@ -68,6 +70,38 @@ static const struct am33xx_ddr_data ddr2_data = {
+ 	.dll_lock_diff0		= 0x0,
+ };
+ 
++static const struct am33xx_ddr_data ddr3_data = {
++	.rd_slave_ratio0        = 0x38,
++	.wr_dqs_slave_ratio0    = 0x44,
++	.fifo_we_slave_ratio0	= 0x94,
++	.wr_slave_ratio0        = 0x7D,
++	.use_rank0_delay	= 0x01,
++	.dll_lock_diff0		= 0x0,
++};
++
++static const struct am33xx_cmd_control ddr3_cmd_ctrl = {
++	.slave_ratio0	= 0x80,
++	.dll_lock_diff0	= 0x1,
++	.invert_clkout0	= 0x0,
++	.slave_ratio1	= 0x80,
++	.dll_lock_diff1	= 0x1,
++	.invert_clkout1	= 0x0,
++	.slave_ratio2	= 0x80,
++	.dll_lock_diff2	= 0x1,
++	.invert_clkout2	= 0x0,
++};
++
++static const struct am33xx_emif_regs ddr3_regs = {
++	.emif_read_latency	= 0x100007,
++	.emif_tim1		= 0x0AAAD4DB,
++	.emif_tim2		= 0x266B7FDA,
++	.emif_tim3		= 0x501F867F,
++	.zq_config		= 0x50074BE4,
++	.sdram_config		= 0x61C05332,
++	.sdram_config2		= 0x0,
++	.sdram_ref_ctrl		= 0xC30,
++};
++
+ /**
+  * @brief The basic entry point for board initialization.
+  *
+@@ -90,9 +124,16 @@ static int beaglebone_board_init(void)
+ 	if (running_in_sdram())
+ 		return 0;
+ 
+-	pll_init(MPUPLL_M_500, 24, DDRPLL_M_266);
+-
+-	am335x_sdram_init(0x18B, &ddr2_cmd_ctrl, &ddr2_regs, &ddr2_data);
++	/* Setup the PLLs and the clocks for the peripherals */
++	if (is_beaglebone_black()) {
++		pll_init(MPUPLL_M_500, 24, DDRPLL_M_400);
++		am335x_sdram_init(0x18B, &ddr3_cmd_ctrl, &ddr3_regs,
++				&ddr3_data);
++	} else {
++		pll_init(MPUPLL_M_500, 24, DDRPLL_M_266);
++		am335x_sdram_init(0x18B, &ddr2_cmd_ctrl, &ddr2_regs,
++				&ddr2_data);
++	}
+ 
+ 	am33xx_uart0_soft_reset();
+ 	am33xx_enable_uart0_pin_mux();
+@@ -104,11 +145,18 @@ static int beaglebone_board_init(void)
+ 
+ void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
+ {
++	unsigned sdram;
++
+ 	am33xx_save_bootinfo(data);
+ 
+ 	arm_cpu_lowlevel_init();
+ 
+ 	beaglebone_board_init();
+ 
+-	barebox_arm_entry(0x80000000, SZ_256M, 0);
++	if (is_beaglebone_black())
++		sdram = SZ_512M;
++	else
++		sdram = SZ_256M;
++
++	barebox_arm_entry(0x80000000, sdram, 0);
+ }
+-- 
+1.8.4.rc3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
