@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqcp-0006VF-Pe
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:50:09 +0000
-Date: Mon, 26 Aug 2013 08:49:41 +0200
+ id 1VDqix-0006bp-1A
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130826064941.GA30088@pengutronix.de>
-References: <1377241222-6908-1-git-send-email-t.gamez@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1377241222-6908-1-git-send-email-t.gamez@phytec.de>
+Date: Mon, 26 Aug 2013 08:55:48 +0200
+Message-Id: <1377500163-28962-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
+References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,34 +16,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3 for next] AM33xx: Cleanup of lowlevel code
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 07/22] ARM: omap: rename INIT_LL to omap_uart_lowlevel_init
+To: barebox@lists.infradead.org
 
-Hi Teresa,
+Function should use lower case letters. Also give this function
+more namespace. While at it include io.h rather than asm/io.h.
 
-On Fri, Aug 23, 2013 at 09:00:20AM +0200, Teresa G=E1mez wrote:
-> There is a lot of duplicate lowlevel code between the
-> am33xx boards. Move this code to am33xx_generic and
-> create structs for sdram settings.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-omap/include/mach/debug_ll.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'm mostly fine with this series. I made some small changes to it and
-rebased my beaglebone black series ontop of it. I'm about to repost the
-my series which includes your changed patches. It would be good if you
-could have a look.
+diff --git a/arch/arm/mach-omap/include/mach/debug_ll.h b/arch/arm/mach-omap/include/mach/debug_ll.h
+index 38ca562..2917558 100644
+--- a/arch/arm/mach-omap/include/mach/debug_ll.h
++++ b/arch/arm/mach-omap/include/mach/debug_ll.h
+@@ -17,7 +17,7 @@
+ #ifndef __MACH_DEBUG_LL_H__
+ #define   __MACH_DEBUG_LL_H__
+ 
+-#include <asm/io.h>
++#include <io.h>
+ 
+ #ifdef CONFIG_ARCH_OMAP3
+ #include <mach/omap3-silicon.h>
+@@ -56,7 +56,7 @@
+ #define MCR		(4 << 2)
+ #define MDR		(8 << 2)
+ 
+-static inline void INIT_LL(void)
++static inline void omap_uart_lowlevel_init(void)
+ {
+ 	writeb(0x00, UART_BASE + LCR);
+ 	writeb(0x00, UART_BASE + IER);
+-- 
+1.8.4.rc3
 
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
