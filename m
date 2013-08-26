@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqix-0006bm-17
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VDqj2-0004g0-10
  for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:45 +0200
-Message-Id: <1377500163-28962-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:55:55 +0200
+Message-Id: <1377500163-28962-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,53 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/22] mci: omap: Allow to set mmc devname via platformdata
+Subject: [PATCH 14/22] ARM: am33xx: beaglebone: configure I2C EEPROM
 To: barebox@lists.infradead.org
 
-To be able to get persistent names for the sd/mmc devices.
+From: Jan Luebbe <jlu@pengutronix.de>
 
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/include/mach/omap_hsmmc.h |  1 +
- drivers/mci/omap_hsmmc.c                     | 14 ++++++++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ arch/arm/boards/beaglebone/board.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/mach-omap/include/mach/omap_hsmmc.h b/arch/arm/mach-omap/include/mach/omap_hsmmc.h
-index 2055ccc..19942df 100644
---- a/arch/arm/mach-omap/include/mach/omap_hsmmc.h
-+++ b/arch/arm/mach-omap/include/mach/omap_hsmmc.h
-@@ -21,5 +21,6 @@
- /** omapmmc platform data structure */
- struct omap_hsmmc_platform_data {
- 	unsigned f_max;         /* host interface upper limit */
-+	char *devname;		/* The mci device name, optional */
- };
- #endif /* __ASM_OMAP_HSMMC_H */
-diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
-index bb976e1..a2cd3fe 100644
---- a/drivers/mci/omap_hsmmc.c
-+++ b/drivers/mci/omap_hsmmc.c
-@@ -611,10 +611,16 @@ static int omap_mmc_probe(struct device_d *dev)
- 	hsmmc->mci.f_min = 400000;
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index 52b3ec8..e12c70b 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -100,11 +100,20 @@ static void beaglebone_eth_init(void)
+ 	am33xx_add_cpsw(&cpsw_data);
+ }
  
- 	pdata = (struct omap_hsmmc_platform_data *)dev->platform_data;
--	if (pdata && pdata->f_max)
--		hsmmc->mci.f_max = pdata->f_max;
--	else
--		hsmmc->mci.f_max = 52000000;
-+	if (pdata) {
-+		if (pdata->f_max)
-+			hsmmc->mci.f_max = pdata->f_max;
-+		else
-+			hsmmc->mci.f_max = 52000000;
++static struct i2c_board_info i2c0_devices[] = {
++	{
++		I2C_BOARD_INFO("24c256", 0x50)
++	},
++};
 +
-+		if (pdata->devname)
-+			hsmmc->mci.devname = pdata->devname;
-+	}
-+
+ static int beaglebone_devices_init(void)
+ {
+ 	am33xx_add_mmc0(NULL);
  
- 	dev->priv = hsmmc;
- 	dev->detect = omap_mmc_detect,
+ 	am33xx_enable_i2c0_pin_mux();
++	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
++	am33xx_add_i2c0(NULL);
++
+ 	beaglebone_eth_init();
+ 
+ 	armlinux_set_bootparams((void *)0x80000100);
 -- 
 1.8.4.rc3
 
