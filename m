@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22c.google.com ([2a00:1450:4010:c03::22c])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDouH-0004dl-Vn
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 05:00:04 +0000
-Received: by mail-la0-f44.google.com with SMTP id eo20so1975870lab.17
- for <barebox@lists.infradead.org>; Sun, 25 Aug 2013 21:59:39 -0700 (PDT)
+ id 1VDouK-0004dn-2P
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 05:00:05 +0000
+Received: by mail-la0-f50.google.com with SMTP id es20so1877958lab.23
+ for <barebox@lists.infradead.org>; Sun, 25 Aug 2013 21:59:41 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon, 26 Aug 2013 08:57:11 +0400
-Message-Id: <1377493037-2229-3-git-send-email-antonynpavlov@gmail.com>
+Date: Mon, 26 Aug 2013 08:57:12 +0400
+Message-Id: <1377493037-2229-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
 References: <1377493037-2229-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,45 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 2/8] serial: add driver for Canon DIGIC UART
+Subject: [RFC 3/8] gpio: add driver for Canon DIGIC
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/serial/Kconfig        |   4 ++
- drivers/serial/Makefile       |   1 +
- drivers/serial/serial_digic.c | 131 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 136 insertions(+)
- create mode 100644 drivers/serial/serial_digic.c
+ drivers/gpio/Kconfig      |   4 ++
+ drivers/gpio/Makefile     |   1 +
+ drivers/gpio/gpio-digic.c | 176 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 181 insertions(+)
+ create mode 100644 drivers/gpio/gpio-digic.c
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 11fc155..541350d 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -122,4 +122,8 @@ config DRIVER_SERIAL_CADENCE
- 	help
- 	  Say Y here if you have a Cadence serial IP core.
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index d5ac532..f112db8 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -9,6 +9,10 @@ menu "GPIO"
+ config GPIO_GENERIC
+ 	bool
  
-+config DRIVER_SERIAL_DIGIC
-+	bool "Canon DIGIC serial driver"
++config GPIO_DIGIC
++	bool "GPIO support for Canon DIGIC"
 +	depends on ARCH_DIGIC
 +
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 93790b5..485a3ef 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -17,3 +17,4 @@ obj-$(CONFIG_DRIVER_SERIAL_PXA)			+= serial_pxa.o
- obj-$(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)	+= serial_omap4_usbboot.o
- obj-$(CONFIG_DRIVER_SERIAL_AUART)		+= serial_auart.o
- obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
-+obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
-diff --git a/drivers/serial/serial_digic.c b/drivers/serial/serial_digic.c
+ config GPIO_BCM2835
+ 	bool "GPIO support for BCM2835"
+ 	depends on ARCH_BCM2835
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index adb668f..c5cf58a 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -2,6 +2,7 @@ obj-$(CONFIG_GPIOLIB)		+= gpiolib.o
+ 
+ obj-$(CONFIG_GPIO_BCM2835)	+= gpio-bcm2835.o
+ obj-$(CONFIG_GPIO_CLPS711X)	+= gpio-clps711x.o
++obj-$(CONFIG_GPIO_DIGIC)	+= gpio-digic.o
+ obj-$(CONFIG_GPIO_GENERIC)	+= gpio-generic.o
+ obj-$(CONFIG_GPIO_IMX)		+= gpio-imx.o
+ obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
+diff --git a/drivers/gpio/gpio-digic.c b/drivers/gpio/gpio-digic.c
 new file mode 100644
-index 0000000..938172f
+index 0000000..82eef12
 --- /dev/null
-+++ b/drivers/serial/serial_digic.c
-@@ -0,0 +1,131 @@
++++ b/drivers/gpio/gpio-digic.c
+@@ -0,0 +1,176 @@
 +/*
 + * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -74,125 +79,170 @@ index 0000000..938172f
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
 + *
 + */
 +
 +#include <common.h>
-+#include <init.h>
 +#include <malloc.h>
++#include <errno.h>
 +#include <io.h>
-+
-+/* Serial interface registers offsets */
-+#define UART_TX	0x0
-+#define UART_RX	0x4
-+#define UART_ST	0x14
-+ #define UART_ST_RX_RDY	1
-+ #define UART_ST_TX_RDY	2
++#include <gpio.h>
++#include <init.h>
 +
 +/*
-+ * This driver is based on the "Serial terminal" docs here:
-+ *  http://magiclantern.wikia.com/wiki/Register_Map#Misc_Registers
-+ *
-+ * See also disassembler output for Canon A1100IS firmware
-+ * (version a1100_100c):
-+ *   * a outc-like function can be found at address 0xffff18f0;
-+ *   * a getc-like function can be found at address 0xffff192c.
++ * See http://magiclantern.wikia.com/wiki/Register_Map#GPIO_Ports
 + */
 +
-+static inline uint32_t digic_serial_readl(struct console_device *cdev, uint32_t off)
-+{
-+	void *digic = cdev->dev->priv;
++#define DIGIC_GPIO_IN_LVL	1
++#define DIGIC_GPIO_OUT_LVL	2
++#define DIGIC_GPIO_DIR	4
++#define DIGIC_GPIO_TRISTATE	8
 +
-+	return readl(digic + off);
++struct digic_gpio_chip {
++	void __iomem		*base;
++	struct gpio_chip	gc;
++};
++
++static inline uint32_t digic_gpio_readl(struct digic_gpio_chip *chip, uint32_t offset)
++{
++	return readl(chip->base + 4 * offset);
 +}
 +
-+static inline void digic_serial_writel(struct console_device *cdev, uint32_t val,
-+			  uint32_t off)
++static inline void digic_gpio_writel(struct digic_gpio_chip *chip, uint32_t val,
++			  uint32_t offset)
 +{
-+	void *digic = cdev->dev->priv;
-+
-+	writel(val, digic + off);
++	writel(val, chip->base + 4 * offset);
 +}
 +
-+static int digic_serial_setbaudrate(struct console_device *cdev, int baudrate)
++static int digic_gpio_get_value(struct gpio_chip *gc, unsigned offset)
 +{
-+	/* FIXME: empty */
++	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
++
++	if (offset >= gc->ngpio)
++		return -EINVAL;
++
++	return digic_gpio_readl(chip, offset) & DIGIC_GPIO_IN_LVL;
++}
++
++static void digic_gpio_set_value(struct gpio_chip *gc, unsigned offset, int value)
++{
++	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
++	uint32_t t;
++
++	if (offset >= gc->ngpio)
++		return;
++
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	if (value) {
++		t |= DIGIC_GPIO_OUT_LVL;
++	} else {
++		t &= ~(DIGIC_GPIO_OUT_LVL);
++	}
++	digic_gpio_writel(chip, t, offset);
++}
++
++static int digic_gpio_direction_input(struct gpio_chip *gc, unsigned offset)
++{
++	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
++	uint32_t t;
++
++	if (offset >= gc->ngpio)
++		return -EINVAL;
++
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	t &= ~(DIGIC_GPIO_DIR);
++	digic_gpio_writel(chip, t, offset);
 +
 +	return 0;
 +}
 +
-+static void digic_serial_putc(struct console_device *cdev, char c)
++static int digic_gpio_direction_output(struct gpio_chip *gc, unsigned offset,
++		int value)
 +{
-+	while (!(digic_serial_readl(cdev, UART_ST) & UART_ST_TX_RDY))
-+		; /* noop */
++	struct digic_gpio_chip *chip = container_of(gc, struct digic_gpio_chip, gc);
++	uint32_t t;
 +
-+	digic_serial_writel(cdev, 0x06, UART_ST);
-+	digic_serial_writel(cdev, c, UART_TX);
-+}
++	if (offset >= gc->ngpio)
++		return -EINVAL;
 +
-+static int digic_serial_getc(struct console_device *cdev)
-+{
-+	while (!(digic_serial_readl(cdev, UART_ST) & UART_ST_RX_RDY))
-+		; /* noop */
++	t = digic_gpio_readl(chip, offset);
++	/* Port direction (1 = OUT, 0 = IN) */
++	t |= DIGIC_GPIO_DIR;
++	digic_gpio_writel(chip, t, offset);
 +
-+	digic_serial_writel(cdev, 0x01, UART_ST);
-+
-+	return digic_serial_readl(cdev, UART_RX);
-+}
-+
-+static int digic_serial_tstc(struct console_device *cdev)
-+{
-+	return ((digic_serial_readl(cdev, UART_ST) & UART_ST_RX_RDY) != 0);
-+
-+	/*
-+	 * Canon folks use additional check, something like this:
-+	 *
-+	 *		if (digic_serial_readl(cdev, UART_ST) & 0x38) {
-+	 *			digic_serial_writel(cdev, 0x38, UART_ST);
-+	 *			return 0;
-+	 *		}
-+	 *
-+	 * But I know nothing about these magic bits in the status regster...
-+	 *
-+	*/
-+}
-+
-+static int digic_serial_probe(struct device_d *dev)
-+{
-+	struct console_device *cdev;
-+
-+	cdev = xzalloc(sizeof(struct console_device));
-+	dev->priv = dev_request_mem_region(dev, 0);
-+	cdev->dev = dev;
-+	cdev->f_caps = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-+	cdev->tstc = &digic_serial_tstc;
-+	cdev->putc = &digic_serial_putc;
-+	cdev->getc = &digic_serial_getc;
-+	cdev->setbrg = &digic_serial_setbaudrate;
-+
-+	/* FIXME: need digic_init_port(cdev); */
-+
-+	console_register(cdev);
++	digic_gpio_set_value(gc, offset, value);
 +
 +	return 0;
 +}
 +
-+static __maybe_unused struct of_device_id digic_serial_dt_ids[] = {
++static struct gpio_ops digic_gpio_ops = {
++	.direction_input = digic_gpio_direction_input,
++	.direction_output = digic_gpio_direction_output,
++	.get = digic_gpio_get_value,
++	.set = digic_gpio_set_value,
++};
++
++static int digic_gpio_probe(struct device_d *dev)
++{
++	struct digic_gpio_chip *chip;
++	struct resource *res;
++	resource_size_t rsize;
++	int ret = -EINVAL;
++
++	chip = xzalloc(sizeof(*chip));
++
++	res = dev_get_resource(dev, 0);
++	if (!res)
++		goto err;
++
++	rsize = resource_size(res);
++	chip->gc.ngpio = rsize / sizeof(int32_t);
++
++	chip->base = dev_request_mem_region(dev, 0);
++	chip->gc.ops = &digic_gpio_ops;
++	chip->gc.base = 0;
++
++	chip->gc.dev = dev;
++
++	ret = gpiochip_add(&chip->gc);
++	if (ret) {
++		dev_err(dev, "couldn't add gpiochip, ret = %d\n", ret);
++		goto err;
++	}
++
++	dev_info(dev, "probed gpiochip%d with base %d\n", dev->id, chip->gc.base);
++
++	return 0;
++
++err:
++	kfree(chip);
++
++	return ret;
++}
++
++static __maybe_unused struct of_device_id digic_gpio_dt_ids[] = {
 +	{
-+		.compatible = "canon,digic-serial",
++		.compatible = "canon,digic-gpio",
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
-+static struct driver_d digic_serial_driver = {
-+	.name  = "digic-serial",
-+	.probe = digic_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(digic_serial_dt_ids),
++static struct driver_d digic_gpio_driver = {
++	.name = "digic-gpio",
++	.probe = digic_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(digic_gpio_dt_ids),
 +};
-+console_platform_driver(digic_serial_driver);
++
++static int __init digic_gpio_init(void)
++{
++	return platform_driver_register(&digic_gpio_driver);
++}
++coredevice_initcall(digic_gpio_init);
 -- 
 1.8.4.rc3
 
