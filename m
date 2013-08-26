@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VDqj3-0006bo-Mr
- for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:43 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1VDqjA-0003D9-Gc
+ for barebox@lists.infradead.org; Mon, 26 Aug 2013 06:56:42 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 26 Aug 2013 08:55:47 +0200
-Message-Id: <1377500163-28962-7-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 26 Aug 2013 08:55:58 +0200
+Message-Id: <1377500163-28962-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 References: <1377500163-28962-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,364 +21,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/22] ARM: omap: fix omap_save_bootinfo
+Subject: [PATCH 17/22] rework debug_ll
 To: barebox@lists.infradead.org
 
-omap_save_bootinfo derefences the argument passed to barebox without
-checking it for validity. This breaks 2nd stage booting where r0
-is undefined. The best we can do is to check whether the pointer is
-somewhere in SRAM and is word aligned. This at least makes sure that
-we do not oops. This introduces SoC specific xxx_save_bootinfo variants
-since the SRAM addresses/sizes differ between SoCs.
-
-Additionally fix the prototype for omap_save_bootinfo. It uses r0, so
-it must be passed this variable.
+Convert to static inline functions and use lower case letters for function
+names. Also, include mach/debug_ll.h when an architecture provides support
+for debug_ll, not only when it's actually enabled. This allows architecures
+to put some UART initialization code into mach/debug_ll.h which is compiled
+out when debug_ll is disabled.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/archosg9/lowlevel.c              |  3 ++-
- arch/arm/boards/beagle/lowlevel.c                |  3 ++-
- arch/arm/boards/beaglebone/lowlevel.c            |  3 ++-
- arch/arm/boards/omap343xdsp/lowlevel.c           |  3 ++-
- arch/arm/boards/omap3evm/lowlevel.c              |  3 ++-
- arch/arm/boards/panda/lowlevel.c                 |  3 ++-
- arch/arm/boards/pcm049/lowlevel.c                |  3 ++-
- arch/arm/boards/pcm051/lowlevel.c                |  2 +-
- arch/arm/boards/phycard-a-l1/lowlevel.c          |  3 ++-
- arch/arm/boards/phycard-a-xl2/lowlevel.c         |  3 ++-
- arch/arm/mach-omap/include/mach/am33xx-generic.h | 17 +++++++++++++++++
- arch/arm/mach-omap/include/mach/am33xx-silicon.h |  7 ++++---
- arch/arm/mach-omap/include/mach/generic.h        |  2 +-
- arch/arm/mach-omap/include/mach/omap3-generic.h  | 21 +++++++++++++++++++++
- arch/arm/mach-omap/include/mach/omap4-generic.h  | 21 +++++++++++++++++++++
- 15 files changed, 83 insertions(+), 14 deletions(-)
- create mode 100644 arch/arm/mach-omap/include/mach/omap3-generic.h
- create mode 100644 arch/arm/mach-omap/include/mach/omap4-generic.h
+ common/console.c        |  8 +++----
+ common/console_simple.c |  2 +-
+ include/debug_ll.h      | 61 ++++++++++++++++++++++++++++++++++---------------
+ 3 files changed, 48 insertions(+), 23 deletions(-)
 
-diff --git a/arch/arm/boards/archosg9/lowlevel.c b/arch/arm/boards/archosg9/lowlevel.c
-index 8be345b..6c93992 100644
---- a/arch/arm/boards/archosg9/lowlevel.c
-+++ b/arch/arm/boards/archosg9/lowlevel.c
-@@ -17,6 +17,7 @@
- #include <mach/generic.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
-+#include <mach/omap4-generic.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
- #include <asm/barebox-arm.h>
-@@ -67,7 +68,7 @@ static noinline void archosg9_init_lowlevel(void)
+diff --git a/common/console.c b/common/console.c
+index 1518ed8..6ca94e2 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -93,9 +93,9 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
+ 	if (initialized < CONSOLE_INIT_FULL) {
+ 		char ch;
+ 		initialized = CONSOLE_INIT_FULL;
+-		PUTS_LL("Switch to console [");
+-		PUTS_LL(dev_name(dev));
+-		PUTS_LL("]\n");
++		puts_ll("Switch to console [");
++		puts_ll(dev_name(dev));
++		puts_ll("]\n");
+ 		barebox_banner();
+ 		while (kfifo_getc(console_output_fifo, &ch) == 0)
+ 			console_putc(CONSOLE_STDOUT, ch);
+@@ -286,7 +286,7 @@ void console_putc(unsigned int ch, char c)
  
- void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
+ 	case CONSOLE_INITIALIZED_BUFFER:
+ 		kfifo_putc(console_output_fifo, c);
+-		PUTC_LL(c);
++		putc_ll(c);
+ 		return;
+ 
+ 	case CONSOLE_INIT_FULL:
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 1fe569e..101064b 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -28,7 +28,7 @@ EXPORT_SYMBOL(console_puts);
+ void console_putc(unsigned int ch, char c)
  {
--	omap_save_bootinfo();
-+	omap4_save_bootinfo(data);
+ 	if (!console) {
+-		PUTC_LL(c);
++		putc_ll(c);
+ 		return;
+ 	}
  
- 	arm_cpu_lowlevel_init();
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index f0034ba..ffb7654 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -20,8 +20,7 @@
+ #ifndef __INCLUDE_DEBUG_LL_H__
+ #define   __INCLUDE_DEBUG_LL_H__
  
-diff --git a/arch/arm/boards/beagle/lowlevel.c b/arch/arm/boards/beagle/lowlevel.c
-index ef7e3c0..ad46386 100644
---- a/arch/arm/boards/beagle/lowlevel.c
-+++ b/arch/arm/boards/beagle/lowlevel.c
-@@ -6,6 +6,7 @@
- #include <mach/control.h>
- #include <mach/generic.h>
- #include <mach/omap3-silicon.h>
-+#include <mach/omap3-generic.h>
- #include <mach/omap3-mux.h>
- #include <mach/sdrc.h>
- #include <mach/syslib.h>
-@@ -182,7 +183,7 @@ static int beagle_board_init(void)
+-#if defined (CONFIG_DEBUG_LL)
+-
++#ifdef CONFIG_HAS_DEBUG_LL
+ /*
+  * mach/debug_ll.h should implement PUTC_LL. This can be a macro or a static
+  * inline function. Note that several SoCs expect the UART to be initialized
+@@ -29,35 +28,61 @@
+  * this initialization. Depending on the PUTC_LL implementation the board might
+  * also hang in PUTC_LL without proper initialization.
+  */
+-# include <mach/debug_ll.h>
++#include <mach/debug_ll.h>
++#endif
  
- void __naked  __bare_init barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap3_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/beaglebone/lowlevel.c b/arch/arm/boards/beaglebone/lowlevel.c
-index 2f3b3df..be775a8 100644
---- a/arch/arm/boards/beaglebone/lowlevel.c
-+++ b/arch/arm/boards/beaglebone/lowlevel.c
-@@ -10,6 +10,7 @@
- #include <mach/sys_info.h>
- #include <mach/syslib.h>
- #include <mach/am33xx-mux.h>
-+#include <mach/am33xx-generic.h>
- #include <mach/wdt.h>
- 
- /* UART Defines */
-@@ -251,7 +252,7 @@ static int beaglebone_board_init(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	am33xx_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/omap343xdsp/lowlevel.c b/arch/arm/boards/omap343xdsp/lowlevel.c
-index 61b7f99..fcb9571 100644
---- a/arch/arm/boards/omap343xdsp/lowlevel.c
-+++ b/arch/arm/boards/omap343xdsp/lowlevel.c
-@@ -10,6 +10,7 @@
- #include <mach/control.h>
- #include <mach/syslib.h>
- #include <mach/omap3-silicon.h>
-+#include <mach/omap3-generic.h>
- #include <mach/sys_info.h>
- 
- /**
-@@ -549,7 +550,7 @@ static int sdp343x_board_init(void)
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap3_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/omap3evm/lowlevel.c b/arch/arm/boards/omap3evm/lowlevel.c
-index ea92835..98f1476 100644
---- a/arch/arm/boards/omap3evm/lowlevel.c
-+++ b/arch/arm/boards/omap3evm/lowlevel.c
-@@ -9,6 +9,7 @@
- #include <mach/control.h>
- #include <mach/syslib.h>
- #include <mach/omap3-silicon.h>
-+#include <mach/omap3-generic.h>
- #include <mach/sys_info.h>
- 
- 
-@@ -162,7 +163,7 @@ static int omap3_evm_board_init(void)
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap3_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/panda/lowlevel.c b/arch/arm/boards/panda/lowlevel.c
-index a21d559..205aaaf 100644
---- a/arch/arm/boards/panda/lowlevel.c
-+++ b/arch/arm/boards/panda/lowlevel.c
-@@ -23,6 +23,7 @@
- #include <mach/generic.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
-+#include <mach/omap4-generic.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
- #include <asm/barebox-arm.h>
-@@ -80,7 +81,7 @@ static void noinline panda_init_lowlevel(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap4_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/pcm049/lowlevel.c b/arch/arm/boards/pcm049/lowlevel.c
-index 07cc1d7..4f39600 100644
---- a/arch/arm/boards/pcm049/lowlevel.c
-+++ b/arch/arm/boards/pcm049/lowlevel.c
-@@ -23,6 +23,7 @@
- #include <mach/generic.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
-+#include <mach/omap4-generic.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
- #include <asm/barebox-arm.h>
-@@ -110,7 +111,7 @@ static void noinline pcm049_init_lowlevel(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap4_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
-index dd06c6a..3a637cf 100644
---- a/arch/arm/boards/pcm051/lowlevel.c
-+++ b/arch/arm/boards/pcm051/lowlevel.c
-@@ -210,7 +210,7 @@ static int pcm051_board_init(void)
- 
- void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	am33xx_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/phycard-a-l1/lowlevel.c b/arch/arm/boards/phycard-a-l1/lowlevel.c
-index 7855040..353b58f 100644
---- a/arch/arm/boards/phycard-a-l1/lowlevel.c
-+++ b/arch/arm/boards/phycard-a-l1/lowlevel.c
-@@ -10,6 +10,7 @@
- #include <mach/control.h>
- #include <mach/syslib.h>
- #include <mach/omap3-silicon.h>
-+#include <mach/omap3-generic.h>
- #include <mach/sys_info.h>
- 
- /* Slower full frequency range default timings for x32 operation */
-@@ -253,7 +254,7 @@ static int pcaal1_board_init(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap3_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/boards/phycard-a-xl2/lowlevel.c b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-index 9a794b7..1ddf8a0 100644
---- a/arch/arm/boards/phycard-a-xl2/lowlevel.c
-+++ b/arch/arm/boards/phycard-a-xl2/lowlevel.c
-@@ -23,6 +23,7 @@
- #include <mach/generic.h>
- #include <mach/omap4-mux.h>
- #include <mach/omap4-silicon.h>
-+#include <mach/omap4-generic.h>
- #include <mach/omap4-clock.h>
- #include <mach/syslib.h>
- #include <asm/barebox-arm.h>
-@@ -90,7 +91,7 @@ static noinline void pcaaxl2_init_lowlevel(void)
- 
- void __bare_init __naked barebox_arm_reset_vector(uint32_t *data)
- {
--	omap_save_bootinfo();
-+	omap4_save_bootinfo(data);
- 
- 	arm_cpu_lowlevel_init();
- 
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-index ba69caf..d9d2efb 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-@@ -1,6 +1,23 @@
- #ifndef __MACH_AM33XX_GENERIC_H
- #define __MACH_AM33XX_GENERIC_H
- 
-+#include <mach/generic.h>
-+#include <mach/am33xx-silicon.h>
+-# define PUTHEX_LL(value)  ({ unsigned long v = (unsigned long) (value); \
+-			     int i; unsigned char ch; \
+-			     for (i = 8; i--; ) {\
+-			     ch = ((v >> (i*4)) & 0xf);\
+-			     ch += (ch >= 10) ? 'a' - 10 : '0';\
+-			     PUTC_LL (ch); }})
++#if defined (CONFIG_DEBUG_LL)
 +
- int am33xx_register_ethaddr(int eth_id, int mac_id);
- 
-+static inline void am33xx_save_bootinfo(uint32_t *info)
++static inline void putc_ll(unsigned char value)
 +{
-+	unsigned long i = (unsigned long)info;
-+
-+	if (i & 0x3)
-+		return;
-+	if (i < AM33XX_SRAM0_START)
-+		return;
-+	if (i > AM33XX_SRAM0_START + AM33XX_SRAM0_SIZE)
-+		return;
-+
-+	omap_save_bootinfo(info);
++	PUTC_LL(value);
 +}
 +
- #endif /* __MACH_AM33XX_GENERIC_H */
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-index bd55da4..e8ecd1e 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-@@ -17,6 +17,8 @@
- #ifndef __ASM_ARCH_AM33XX_H
- #define __ASM_ARCH_AM33XX_H
- 
-+#include <sizes.h>
++static inline void putxhex_ll(unsigned long value)
++{
++	int i; unsigned char ch;
 +
- /** AM335x Internal Bus Base addresses */
- #define AM33XX_L4_WKUP_BASE		0x44C00000
- #define AM33XX_L4_PER_BASE		0x48000000
-@@ -115,11 +117,10 @@
- #define AM33XX_VTP1_CTRL_REG		0x48140E10
++	for (i = 8; i--; ) {
++		ch = ((value >> (i * 4)) & 0xf);
++		ch += (ch >= 10) ? 'a' - 10 : '0';
++		putc_ll(ch);
++	}
++}
  
- /* OCMC */
--#define AM33XX_SRAM0_SIZE			(0x1B400) /* 109 KB */
-+#define AM33XX_SRAM0_START			0x402f0400
-+#define AM33XX_SRAM0_SIZE			(SZ_128K - SZ_1K)
- #define AM33XX_SRAM_GPMC_STACK_SIZE		(0x40)
+ /*
+- * Be careful with PUTS_LL, it only works if the binary is running at the
++ * Be careful with puts_ll, it only works if the binary is running at the
+  * link address which often is not the case during early startup. If in doubt
+  * don't use it.
+  */
+-static __inline__ void PUTS_LL(const char * str)
++static inline void puts_ll(const char * str)
+ {
+ 	while (*str) {
+-		if (*str == '\n') {
+-			PUTC_LL('\r');
+-		}
+-		PUTC_LL(*str);
++		if (*str == '\n')
++			putc_ll('\r');
++
++		putc_ll(*str);
+ 		str++;
+ 	}
+ }
  
--#define AM33XX_LOW_LEVEL_SRAM_STACK		(AM33XX_SRAM0_START + AM33XX_SRAM0_SIZE - 4)
--
- /* DDR offsets */
- #define	AM33XX_DDR_PHY_BASE_ADDR		0x44E12000
- #define	AM33XX_DDR_IO_CTRL			0x44E10E04
-diff --git a/arch/arm/mach-omap/include/mach/generic.h b/arch/arm/mach-omap/include/mach/generic.h
-index ee711ee..ece8c2b 100644
---- a/arch/arm/mach-omap/include/mach/generic.h
-+++ b/arch/arm/mach-omap/include/mach/generic.h
-@@ -55,7 +55,7 @@ static inline int omap_set_mmc_dev(const char *mmcdev)
+ #else
+-# define PUTC_LL(c) do {} while (0)
+-# define PUTHEX_LL(v) do {} while (0)
+-# define PUTS_LL(c) do {} while (0)
++
++static inline void putc_ll(unsigned char value)
++{
++}
++
++static inline void putxhex_ll(unsigned long value)
++{
++}
++
++/*
++ * Be careful with puts_ll, it only works if the binary is running at the
++ * link address which often is not the case during early startup. If in doubt
++ * don't use it.
++ */
++static inline void puts_ll(const char * str)
++{
++}
+ 
  #endif
  
- extern uint32_t omap_bootinfo[3];
--void omap_save_bootinfo(void);
-+void omap_save_bootinfo(void *data);
- 
- void omap_set_bootmmc_devname(const char *devname);
- const char *omap_get_bootmmc_devname(void);
-diff --git a/arch/arm/mach-omap/include/mach/omap3-generic.h b/arch/arm/mach-omap/include/mach/omap3-generic.h
-new file mode 100644
-index 0000000..7f0da4e
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/omap3-generic.h
-@@ -0,0 +1,21 @@
-+#ifndef __MACH_OMAP3_GENERIC_H
-+#define __MACH_OMAP3_GENERIC_H
-+
-+#include <mach/generic.h>
-+#include <mach/omap3-silicon.h>
-+
-+static inline void omap3_save_bootinfo(uint32_t *info)
-+{
-+	unsigned long i = (unsigned long)info;
-+
-+	if (i & 0x3)
-+		return;
-+	if (i < OMAP3_SRAM_BASE)
-+		return;
-+	if (i > OMAP3_SRAM_BASE + SZ_64K)
-+		return;
-+
-+	omap_save_bootinfo(info);
-+}
-+
-+#endif /* __MACH_OMAP3_GENERIC_H */
-diff --git a/arch/arm/mach-omap/include/mach/omap4-generic.h b/arch/arm/mach-omap/include/mach/omap4-generic.h
-new file mode 100644
-index 0000000..44f5a12
---- /dev/null
-+++ b/arch/arm/mach-omap/include/mach/omap4-generic.h
-@@ -0,0 +1,21 @@
-+#ifndef __MACH_OMAP4_GENERIC_H
-+#define __MACH_OMAP4_GENERIC_H
-+
-+#include <mach/generic.h>
-+#include <mach/omap4-silicon.h>
-+
-+static inline void omap4_save_bootinfo(uint32_t *info)
-+{
-+	unsigned long i = (unsigned long)info;
-+
-+	if (i & 0x3)
-+		return;
-+	if (i < OMAP44XX_SRAM_BASE)
-+		return;
-+	if (i > OMAP44XX_SRAM_BASE + SZ_64K)
-+		return;
-+
-+	omap_save_bootinfo(info);
-+}
-+
-+#endif /* __MACH_OMAP4_GENERIC_H */
 -- 
 1.8.4.rc3
 
