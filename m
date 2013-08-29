@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VEbmW-00052x-OS
- for barebox@lists.infradead.org; Wed, 28 Aug 2013 09:11:18 +0000
-Date: Wed, 28 Aug 2013 11:10:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130828091047.GU30088@pengutronix.de>
-References: <1377632568-3767-1-git-send-email-eric@eukrea.com>
+ id 1VEyTU-0005JC-02
+ for barebox@lists.infradead.org; Thu, 29 Aug 2013 09:25:09 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Thu, 29 Aug 2013 11:24:41 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338ED41DC8EF@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1377632568-3767-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX53: add imx53_add_mmc3
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: bareboxenv on userspace - wrong crc on env
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Eric,
+Hello all, 
 
-On Tue, Aug 27, 2013 at 09:42:48PM +0200, Eric B=E9nard wrote:
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/mach-imx/include/mach/devices-imx53.h | 5 +++++
->  1 file changed, 5 insertions(+)
+I'm having issues accessing my barebox environment from within linux....
 
-Nice to see a patch from you again ;)
+My barebox and environment are located on a SPI NOR flash.
+This boots ok, and barebox is able to save its environment to it.
 
-Applied, thanks
+When I want to load it in userspace through:
 
-Sascha
+$ bareboxenv -l /mnt /dev/mtd1
+Or 
+$ dd if=/dev/mtd1 /tmp/barebox
+Or 
+$ dd if=/dev/mdtblock1 /tmp/barebox
 
-> =
+Result is:
+Wrong crc on env
 
-> diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/ma=
-ch-imx/include/mach/devices-imx53.h
-> index df14654..4621c53 100644
-> --- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-> +++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-> @@ -62,6 +62,11 @@ static inline struct device_d *imx53_add_mmc2(struct e=
-sdhc_platform_data *pdata)
->  	return imx_add_esdhc((void *)MX53_ESDHC3_BASE_ADDR, 2, pdata);
->  }
->  =
+However it's working fine in barebox itself
 
-> +static inline struct device_d *imx53_add_mmc3(struct esdhc_platform_data=
- *pdata)
-> +{
-> +	return imx_add_esdhc((void *)MX53_ESDHC4_BASE_ADDR, 3, pdata);
-> +}
-> +
->  static inline struct device_d *imx53_add_nand(struct imx_nand_platform_d=
-ata *pdata)
->  {
->  	struct resource res[] =3D {
-> -- =
-
-> 1.8.3.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+What can be wron?
 
 _______________________________________________
 barebox mailing list
