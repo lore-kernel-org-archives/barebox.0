@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
+Received: from exprod5og117.obsmtp.com ([64.18.0.149])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VFOqq-0007gC-SD
- for barebox@lists.infradead.org; Fri, 30 Aug 2013 13:35:02 +0000
+ id 1VFOrE-0007hJ-FO
+ for barebox@lists.infradead.org; Fri, 30 Aug 2013 13:35:25 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri, 30 Aug 2013 14:34:26 +0100
-Message-Id: <1377869669-27821-2-git-send-email-renaud.barbier@ge.com>
+Date: Fri, 30 Aug 2013 14:34:29 +0100
+Message-Id: <1377869669-27821-5-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
 References: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,100 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] of: base: import of_find_node_by_type
+Subject: [PATCH 4/4] ppc: P2020RDB configuration update
 To: barebox@lists.infradead.org
 
-Import of_find_node_by_type from Linux drivers/of/base.c -
-commit id d8dfad3.
-This function retrieves a node pointer based on the "device_type"
-property of the node.
+The P2020rdb defconfig has been updated to include
+device tree, environment and boot command support for
+booting Linux.
 
-This is used by device tree update functions in PPC support.
+Also the P2020RDB board support defines a flash area to
+store its environment for users to configure the boot process.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- drivers/of/base.c |   29 +++++++++++++++++++++++++++++
- include/of.h      |    2 ++
- 2 files changed, 31 insertions(+), 0 deletions(-)
+ arch/ppc/boards/freescale-p2020rdb/env/bin/init |    3 +++
+ arch/ppc/boards/freescale-p2020rdb/env/config   |    2 ++
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |    7 +++++++
+ arch/ppc/configs/p2020rdb_defconfig             |   13 ++++++++++++-
+ 4 files changed, 24 insertions(+), 1 deletions(-)
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 4770421..2f19ea5 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -319,6 +319,35 @@ struct device_node *of_find_node_by_name(struct device_node *from,
- EXPORT_SYMBOL(of_find_node_by_name);
+diff --git a/arch/ppc/boards/freescale-p2020rdb/env/bin/init b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+new file mode 100644
+index 0000000..6bd125c
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+@@ -0,0 +1,3 @@
++#!/bin/sh
++export PATH=/env/bin
++source /env/config
+diff --git a/arch/ppc/boards/freescale-p2020rdb/env/config b/arch/ppc/boards/freescale-p2020rdb/env/config
+new file mode 100644
+index 0000000..26b1a9a
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/env/config
+@@ -0,0 +1,2 @@
++#!/bin/sh
++export bootargs="root=/dev/nfs rw ip=bootp panic=10"
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index 537565d..3d3a80d 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -92,6 +92,13 @@ static int devices_init(void)
+ 	fsl_eth_init(2, &gfar_info[0]);
+ 	fsl_eth_init(3, &gfar_info[1]);
  
- /**
-+ *	of_find_node_by_type - Find a node by its "device_type" property
-+ *	@from:  The node to start searching from, or NULL to start searching
-+ *		the entire device tree. The node you pass will not be
-+ *		searched, only the next one will; typically, you pass
-+ *		what the previous call returned.
-+ *	@type:  The type string to match against.
-+ *
-+ *	Returns a pointer to the node found or NULL.
-+ */
-+struct device_node *of_find_node_by_type(struct device_node *from,
-+		const char *type)
-+{
-+	struct device_node *np;
-+	const char *device_type;
-+	int ret;
-+
-+	if (!from)
-+		from = root_node;
-+
-+	of_tree_for_each_node_from(np, from) {
-+		ret = of_property_read_string(np, "device_type", &device_type);
-+		if (!ret && !of_node_cmp(device_type, type))
-+			return np;
-+	}
-+	return NULL;
-+}
-+EXPORT_SYMBOL(of_find_node_by_type)
-+
-+/**
-  *	of_find_compatible_node - Find a node based on type and one of the
-  *                                tokens in its "compatible" property
-  *	@from:		The node to start searching from or NULL, the node
-diff --git a/include/of.h b/include/of.h
-index b99f0b2..a565190 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -124,6 +124,8 @@ extern struct device_node *of_find_node_by_path_from(struct device_node *from,
- 						const char *path);
- extern struct device_node *of_find_node_by_path(const char *path);
- extern struct device_node *of_find_node_by_phandle(phandle phandle);
-+extern struct device_node *of_find_node_by_type(struct device_node *from,
-+	const char *type);
- extern struct device_node *of_find_compatible_node(struct device_node *from,
- 	const char *type, const char *compat);
- extern const struct of_device_id *of_match_node(
++	/* The env0 offset 0x770000 is from the base address of the alternate
++	 * boot area where barebox boots from. Programming barebox in the
++	 * primary boot area in place of U-Boot may lead to loss of data when
++	 * saving the environment.
++	 */
++	devfs_add_partition("nor0", 0x770000, 0x10000, DEVFS_PARTITION_FIXED,
++			    "env0");
+ 	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+ 			    "self0");
+ 	return 0;
+diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+index 0f77903..35dd094 100644
+--- a/arch/ppc/configs/p2020rdb_defconfig
++++ b/arch/ppc/configs/p2020rdb_defconfig
+@@ -5,10 +5,18 @@ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=n
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/ppc/boards/freescale-p2020rdb/env"
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_EDIT=y
+ CONFIG_FSL_ELBC=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_DRIVER_CFI_AMD=y
+@@ -17,7 +25,7 @@ CONFIG_DRIVER_CFI_BANK_WIDTH_1=n
+ CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
+ CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
+ CONFIG_MTD=y
+-CONFIG_MALLOC_SIZE=0x200000
++CONFIG_MALLOC_SIZE=0x800000
+ CONFIG_BAUDRATE=115200
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_RELOCATABLE=y
+@@ -32,3 +40,6 @@ CONFIG_I2C=y
+ CONFIG_I2C_IMX=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MIITOOL=y
++CONFIG_OFTREE=y
++CONFIG_ZLIB=y
++CONFIG_CMD_OFTREE=y
 -- 
 1.7.1
 
