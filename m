@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VFOrF-0007hS-61
- for barebox@lists.infradead.org; Fri, 30 Aug 2013 13:35:26 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Fri, 30 Aug 2013 14:34:28 +0100
-Message-Id: <1377869669-27821-4-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
-References: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VFhz9-0002ja-9d
+ for barebox@lists.infradead.org; Sat, 31 Aug 2013 10:00:52 +0000
+Date: Sat, 31 Aug 2013 12:00:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130831100027.GH30088@pengutronix.de>
+References: <1377780855-23634-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1377780855-23634-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,122 +18,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ppc: bootm: relocate fdt to valid boot memory
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH for next] PCM051: Fixup DDRPLL
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-For the MPC85xx family of SOCs Linux expects any boot firmware
-information to be passed in the first 64MiB of memory. This adds support
-to ensure that the device tree is relocated to a valid location if it is
-outside that address range.
+On Thu, Aug 29, 2013 at 02:54:15PM +0200, Teresa G=E1mez wrote:
+> The correct DDRPLL for PCM051 is 303MHz.
+> =
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/include/asm/processor.h |    1 +
- arch/ppc/lib/ppclinux.c          |   49 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 49 insertions(+), 1 deletions(-)
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-index 04cfb60..6b9b7dd 100644
---- a/arch/ppc/include/asm/processor.h
-+++ b/arch/ppc/include/asm/processor.h
-@@ -966,6 +966,7 @@ struct cpu_type {
- struct cpu_type *identify_cpu(u32 ver);
- 
- #if defined(CONFIG_MPC85xx)
-+#define LINUX_TLB1_MAX_ADDR	((void *)(64 << 20))
- #define CPU_TYPE_ENTRY(n, v, nc) \
- 	{ .name = #n, .soc_ver = SVR_##v, .num_cores = (nc), }
- #endif
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index ef69ead..e6cdcad 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -4,12 +4,45 @@
- #include <command.h>
- #include <image.h>
- #include <init.h>
-+#include <malloc.h>
- #include <environment.h>
- #include <asm/bitops.h>
-+#include <asm/processor.h>
- #include <boot.h>
- #include <errno.h>
- #include <fs.h>
- 
-+static int bootm_relocate_fdt(void *addr, struct image_data *data)
-+{
-+	if (addr < LINUX_TLB1_MAX_ADDR) {
-+		/* The kernel is within  the boot TLB mapping.
-+		 * Put the DTB above if there is no space
-+		 * below.
-+		 */
-+		if (addr < (void *)data->oftree->totalsize) {
-+			addr = (void *)PAGE_ALIGN((phys_addr_t)addr +
-+					data->os->header.ih_size);
-+			addr += data->oftree->totalsize;
-+			if (addr < LINUX_TLB1_MAX_ADDR)
-+				addr = LINUX_TLB1_MAX_ADDR;
-+		}
-+	}
-+
-+	if (addr > LINUX_TLB1_MAX_ADDR) {
-+		pr_crit("Unable to relocate DTB to Linux TLB\n");
-+		return 1;
-+	}
-+
-+	addr = (void *)PAGE_ALIGN_DOWN((phys_addr_t)addr -
-+			data->oftree->totalsize);
-+	memcpy(addr, data->oftree, data->oftree->totalsize);
-+	free(data->oftree);
-+	data->oftree = addr;
-+
-+	pr_info("Relocating device tree to 0x%p\n", addr);
-+	return 0;
-+}
-+
- static int do_bootm_linux(struct image_data *data)
- {
- 	void	(*kernel)(void *, void *, unsigned long,
-@@ -24,6 +57,20 @@ static int do_bootm_linux(struct image_data *data)
- 		return -EINVAL;
- 	}
- 
-+	/* Relocate the device tree if outside the initial
-+	 * Linux mapped TLB.
-+	 */
-+	if (IS_ENABLED(CONFIG_MPC85xx)) {
-+		void *addr = data->oftree;
-+
-+		if ((addr + data->oftree->totalsize) > LINUX_TLB1_MAX_ADDR) {
-+			addr = (void *)data->os_address;
-+
-+			if (bootm_relocate_fdt(addr, data))
-+				goto error;
-+		}
-+	}
-+
- 	fdt_add_reserve_map(data->oftree);
- 
- 	kernel = (void *)(data->os_address + data->os_entry);
-@@ -37,9 +84,9 @@ static int do_bootm_linux(struct image_data *data)
- 	 *   r7: NULL
- 	 */
- 	kernel(data->oftree, kernel, 0, 0, 0);
--
- 	reset_cpu(0);
- 
-+error:
- 	/* not reached */
- 	return -1;
- }
--- 
-1.7.1
+Applied, thanks
 
+Sascha
+
+> ---
+>  As the board runs also fine with 266MHz. There
+>  is no need to fix it in master.
+> =
+
+>  arch/arm/boards/pcm051/lowlevel.c              |    2 +-
+>  arch/arm/mach-omap/include/mach/am33xx-clock.h |    1 +
+>  2 files changed, 2 insertions(+), 1 deletions(-)
+> =
+
+> diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/l=
+owlevel.c
+> index 078e83b..48578cd 100644
+> --- a/arch/arm/boards/pcm051/lowlevel.c
+> +++ b/arch/arm/boards/pcm051/lowlevel.c
+> @@ -68,7 +68,7 @@ static int pcm051_board_init(void)
+>  	if (running_in_sdram())
+>  		return 0;
+>  =
+
+> -	pll_init(MPUPLL_M_600, 25, DDRPLL_M_266);
+> +	pll_init(MPUPLL_M_600, 25, DDRPLL_M_303);
+>  =
+
+>  	am335x_sdram_init(0x18B, &MT41J256M8HX15E_2x256M8_cmd,
+>  			&MT41J256M8HX15E_2x256M8_regs,
+> diff --git a/arch/arm/mach-omap/include/mach/am33xx-clock.h b/arch/arm/ma=
+ch-omap/include/mach/am33xx-clock.h
+> index b3c7519..ecd90b2 100644
+> --- a/arch/arm/mach-omap/include/mach/am33xx-clock.h
+> +++ b/arch/arm/mach-omap/include/mach/am33xx-clock.h
+> @@ -49,6 +49,7 @@
+>  /* DDR Freq is 266 MHZ for now*/
+>  /* Set Fdll =3D 400 MHZ , Fdll =3D M * 2 * CLKINP/ N + 1; clkout =3D Fdl=
+l /(2 * M2) */
+>  #define DDRPLL_M_266	266
+> +#define DDRPLL_M_303	303
+>  #define DDRPLL_M_400	400
+>  #define DDRPLL_N	(OSC - 1)
+>  #define DDRPLL_M2	1
+> -- =
+
+> 1.7.0.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
