@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo1.mail-out.ovh.net ([178.32.119.250]
- helo=mo1.mail-out.ovh.net)
+Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VFnUt-0007MW-9t
- for barebox@lists.infradead.org; Sat, 31 Aug 2013 15:54:01 +0000
-Received: from mail94.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id B42BAFF9728
- for <barebox@lists.infradead.org>; Sat, 31 Aug 2013 17:53:32 +0200 (CEST)
+ id 1VG0lp-000777-Hz
+ for barebox@lists.infradead.org; Sun, 01 Sep 2013 06:04:22 +0000
+Received: from mail626.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 0CFE8DC3272
+ for <barebox@lists.infradead.org>; Sun,  1 Sep 2013 08:03:58 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 31 Aug 2013 17:54:22 +0200
-Message-Id: <1377964462-10387-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun,  1 Sep 2013 08:04:47 +0200
+Message-Id: <1378015487-26176-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,78 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] arm: mmu: catch NULL pointer dereferences
+Subject: [PATCH 1/1] bootm: add global bootm.{image/initrd}.loadaddr support
 To: barebox@lists.infradead.org
 
-For high vectors if memory start at 0x0. We have to
-live without being able to catch NULL pointer dereferences.
+To be able to pass the loadaddr of the image and the initrd.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/cpu/mmu.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ commands/bootm.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-index e3ea3b6..2e69b16 100644
---- a/arch/arm/cpu/mmu.c
-+++ b/arch/arm/cpu/mmu.c
-@@ -218,9 +218,9 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
- /*
-  * Map vectors and zero page
-  */
--static void vectors_init(void)
-+static void vectors_init(bool zero_valid_addr)
- {
--	u32 *exc, *zero = NULL;
-+	u32 *exc;
- 	void *vectors;
- 	u32 cr;
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 6ce2ca9..60c2ece 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -241,6 +241,19 @@ static char *bootm_image_name_and_no(const char *name, int *no)
+ #define BOOTM_OPTS BOOTM_OPTS_COMMON
+ #endif
  
-@@ -235,10 +235,19 @@ static void vectors_init(void)
- 		 * page table for the high vectors and zero page
- 		 */
- 		exc = arm_create_pte(0xfff00000);
--		zero = arm_create_pte(0x0);
- 
--		/* Set the zero page to faulting */
--		zero[0] = 0;
-+		/*
-+		 * Memory start at 0x0. We have to
-+		 * live without being able to catch NULL pointer dereferences
-+		 */
-+		if (!zero_valid_addr) {
-+			u32 *zero = NULL;
++unsigned long long getenv_loadaddr(const char *name)
++{
++	const char *valstr = getenv(name);
 +
-+			zero = arm_create_pte(0x0);
++	if (!valstr)
++		return UIMAGE_SOME_ADDRESS;
 +
-+			/* Set the zero page to faulting */
-+			zero[0] = 0;
-+		}
- 	} else {
- 		/*
- 		 * Otherwise map the vectors to the zero page. We have to
-@@ -267,6 +276,7 @@ static int mmu_init(void)
++	if (valstr[0] == '\0')
++		return UIMAGE_SOME_ADDRESS;
++
++	return simple_strtoull(valstr, NULL, 0);
++}
++
+ static int do_bootm(int argc, char *argv[])
  {
- 	struct memory_bank *bank;
- 	int i;
-+	bool is_start_zero = 0;
+ 	int opt;
+@@ -260,6 +273,8 @@ static int do_bootm(int argc, char *argv[])
  
- 	arm_set_cache_functions();
+ 	oftree = getenv("global.bootm.oftree");
+ 	os_file = getenv("global.bootm.image");
++	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
++	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+ 		initrd_file = getenv("global.bootm.initrd");
  
-@@ -303,7 +313,12 @@ static int mmu_init(void)
- 	create_sections(0, 0, PAGE_SIZE, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
- 			PMD_TYPE_SECT);
+@@ -436,9 +451,12 @@ static int bootm_init(void)
+ {
  
--	vectors_init();
-+	for_each_memory_bank(bank) {
-+		if (bank->start == 0x0)
-+			is_start_zero = 1;
+ 	globalvar_add_simple("bootm.image");
++	globalvar_add_simple("bootm.image.loadaddr");
+ 	globalvar_add_simple("bootm.oftree");
+-	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
++	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD)) {
+ 		globalvar_add_simple("bootm.initrd");
++		globalvar_add_simple("bootm.initrd.loadaddr");
 +	}
-+
-+	vectors_init(is_start_zero);
  
- 	/*
- 	 * First remap sdram cached using sections.
+ 	return 0;
+ }
+@@ -470,7 +488,9 @@ BAREBOX_CMD_END
+ 
+ BAREBOX_MAGICVAR(bootargs, "Linux Kernel parameters");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_image, global.bootm.image, "bootm default boot image");
++BAREBOX_MAGICVAR_NAMED(global_bootm_image_loadaddr, global.bootm.image.loadaddr, "bootm default boot image loadaddr");
+ BAREBOX_MAGICVAR_NAMED(global_bootm_initrd, global.bootm.initrd, "bootm default initrd");
++BAREBOX_MAGICVAR_NAMED(global_bootm_initrd_loadaddr, global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
+ 
+ static struct binfmt_hook binfmt_uimage_hook = {
+ 	.type = filetype_uimage,
 -- 
 1.8.4.rc1
 
