@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGPqS-0001n4-WA
- for barebox@lists.infradead.org; Mon, 02 Sep 2013 08:50:49 +0000
-Date: Mon, 2 Sep 2013 10:50:27 +0200
+ id 1VGQ4v-0002T5-SJ
+ for barebox@lists.infradead.org; Mon, 02 Sep 2013 09:05:46 +0000
+Date: Mon, 2 Sep 2013 11:05:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130902085027.GQ30088@pengutronix.de>
-References: <1378103909-5335-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20130902090523.GT30088@pengutronix.de>
+References: <1377964462-10387-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1378103909-5335-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <1377964462-10387-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +22,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: Fix memtest return value
-To: Christian Hemp <c.hemp@phytec.de>
+Subject: Re: [PATCH 1/1] arm: mmu: catch NULL pointer dereferences
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 02, 2013 at 08:38:29AM +0200, Christian Hemp wrote:
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+On Sat, Aug 31, 2013 at 05:54:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> For high vectors if memory start at 0x0. We have to
+> live without being able to catch NULL pointer dereferences.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  arch/arm/cpu/mmu.c | 27 +++++++++++++++++++++------
+>  1 file changed, 21 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
+> index e3ea3b6..2e69b16 100644
+> --- a/arch/arm/cpu/mmu.c
+> +++ b/arch/arm/cpu/mmu.c
+> @@ -218,9 +218,9 @@ static int arm_mmu_remap_sdram(struct memory_bank *bank)
+>  /*
+>   * Map vectors and zero page
+>   */
+> -static void vectors_init(void)
+> +static void vectors_init(bool zero_valid_addr)
+>  {
+> -	u32 *exc, *zero = NULL;
+> +	u32 *exc;
+>  	void *vectors;
+>  	u32 cr;
+>  
+> @@ -235,10 +235,19 @@ static void vectors_init(void)
+>  		 * page table for the high vectors and zero page
+>  		 */
+>  		exc = arm_create_pte(0xfff00000);
+> -		zero = arm_create_pte(0x0);
+>  
+> -		/* Set the zero page to faulting */
+> -		zero[0] = 0;
+> +		/*
+> +		 * Memory start at 0x0. We have to
+> +		 * live without being able to catch NULL pointer dereferences
+> +		 */
+> +		if (!zero_valid_addr) {
+> +			u32 *zero = NULL;
+> +
+> +			zero = arm_create_pte(0x0);
+> +
+> +			/* Set the zero page to faulting */
+> +			zero[0] = 0;
+> +		}
+>  	} else {
+>  		/*
+>  		 * Otherwise map the vectors to the zero page. We have to
+> @@ -267,6 +276,7 @@ static int mmu_init(void)
+>  {
+>  	struct memory_bank *bank;
+>  	int i;
+> +	bool is_start_zero = 0;
+>  
+>  	arm_set_cache_functions();
+>  
+> @@ -303,7 +313,12 @@ static int mmu_init(void)
+>  	create_sections(0, 0, PAGE_SIZE, PMD_SECT_AP_WRITE | PMD_SECT_AP_READ |
+>  			PMD_TYPE_SECT);
+>  
+> -	vectors_init();
+> +	for_each_memory_bank(bank) {
+> +		if (bank->start == 0x0)
+> +			is_start_zero = 1;
+> +	}
+> +
+> +	vectors_init(is_start_zero);
 
-Applied, thanks
+Why not add the check to vectors_init() instead of passing this as
+argument?
+
+I must say I'm not entirely happy with this approach. Being able to
+catch NULL pointer derefs is really a good thing. When exactly does the
+faulting zero SDRAM page become a problem for you? obviously something
+like
+
+cp /somehing /dev/ram0
+
+does not work. Some care must probably be taken when setting up the
+kernel parameters. Are these the problems or is there something else?
 
 Sascha
-
-> ---
->  commands/memtest.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/commands/memtest.c b/commands/memtest.c
-> index d2a1487..c82badc 100644
-> --- a/commands/memtest.c
-> +++ b/commands/memtest.c
-> @@ -236,7 +236,7 @@ out:
->  		return 1;
->  	} else {
->  		printf("Memtest successful.\n");
-> -		return 1;
-> +		return 0;
->  	}
->  }
->  
-> -- 
-> 1.7.0.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
