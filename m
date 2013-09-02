@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGUW2-0007pr-5O
- for barebox@lists.infradead.org; Mon, 02 Sep 2013 13:50:03 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B8186BF0E8
- for <barebox@lists.infradead.org>; Mon,  2 Sep 2013 15:40:40 +0200 (CEST)
-From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
-Date: Mon, 2 Sep 2013 15:49:37 +0200
-Message-Id: <1378129777-8117-1-git-send-email-t.gamez@phytec.de>
+Received: from exprod5og116.obsmtp.com ([64.18.0.147])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VGX5L-0003Ta-SU
+ for barebox@lists.infradead.org; Mon, 02 Sep 2013 16:34:40 +0000
+Message-ID: <5224BE03.40306@ge.com>
+Date: Mon, 02 Sep 2013 17:34:11 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
+References: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
+ <1377869669-27821-3-git-send-email-renaud.barbier@ge.com>
+ <20130902084912.GP30088@pengutronix.de>
+In-Reply-To: <20130902084912.GP30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,28 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] PCM051: Fix muxing of MMC0 CD
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/4] ppc: add mpc85xx device tree fixup functions
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Q2FyZCBkZXRlY3Qgc2hvdWxkIGJlIHJhdGhlciBtdXhlZCBhcyBncGlvIHRoZW4KbW1jMF9zZGNk
-LCBhcyBkcml2ZXIgZG9lcyBub3Qgc3VwcG9ydCB0aGlzLgoKU2lnbmVkLW9mZi1ieTogVGVyZXNh
-IEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+Ci0tLQogYXJjaC9hcm0vYm9hcmRzL3BjbTA1MS9t
-dXguYyB8ICAgIDIgKy0KIDEgZmlsZXMgY2hhbmdlZCwgMSBpbnNlcnRpb25zKCspLCAxIGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvbXV4LmMgYi9hcmNo
-L2FybS9ib2FyZHMvcGNtMDUxL211eC5jCmluZGV4IDZlZjVhZjEuLmI1NGYzZDUgMTAwNjQ0Ci0t
-LSBhL2FyY2gvYXJtL2JvYXJkcy9wY20wNTEvbXV4LmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3Bj
-bTA1MS9tdXguYwpAQCAtMTAsNyArMTAsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IG1vZHVsZV9w
-aW5fbXV4IG1tYzBfcGluX211eFtdID0gewogCXtPRkZTRVQobW1jMF9kYXQwKSwgKE1PREUoMCkg
-fCBSWEFDVElWRSB8IFBVTExVUF9FTil9LAkvKiBNTUMwX0RBVDAgKi8KIAl7T0ZGU0VUKG1tYzBf
-Y2xrKSwgKE1PREUoMCkgfCBSWEFDVElWRSB8IFBVTExVUF9FTil9LAkvKiBNTUMwX0NMSyAqLwog
-CXtPRkZTRVQobW1jMF9jbWQpLCAoTU9ERSgwKSB8IFJYQUNUSVZFIHwgUFVMTFVQX0VOKX0sCS8q
-IE1NQzBfQ01EICovCi0Je09GRlNFVChzcGkwX2NzMSksIChNT0RFKDUpIHwgUlhBQ1RJVkUgfCBQ
-VUxMVVBfRU4pfSwJLyogTU1DMF9DRCAqLworCXtPRkZTRVQoc3BpMF9jczEpLCAoTU9ERSg3KSB8
-IFJYQUNUSVZFIHwgUFVMTFVQX0VOKX0sCS8qIE1NQzBfQ0QgKi8KIAl7LTF9LAogfTsKIAotLSAK
-MS43LjAuNAoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
-bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 02/09/2013 09:49, Sascha Hauer wrote:
+> Hi Renaud,
+> 
+> On Fri, Aug 30, 2013 at 02:34:27PM +0100, Renaud Barbier wrote:
+>> > +/* These properties specify whether the hardware supports the stashing
+>> > + * of buffer descriptors in L2 cache.
+>> > + */
+>> > +static void fdt_add_enet_stashing(void *fdt)
+>> > +{
+>> > +	struct device_node *node;
+>> > +
+>> > +	node = of_find_compatible_node(fdt, NULL, "gianfar");
+>> > +	while (node) {
+>> > +		of_set_property(node, "bd-stash", NULL, 0, 1);
+>> > +		of_property_write_u32(node, "rx-stash-len", 96);
+>> > +		of_property_write_u32(node, "rx-stash-idx", 0);
+>> > +		node = of_find_compatible_node(node, NULL, "gianfar");
+>> > +	}
+>> > +}
+> Out of curiosity, why is this dynamically added and not part of the
+> static dts file?
+> 
+
+I will have to quote the original comment from U-Boot as I cannot find
+a reasonable explanation why it is done this way.
+
+
+Original U-boot commit:
+Date:   Tue Oct 7 08:09:50 2008 -0500
+Have u-boot pass stashing parameters into device tree
+
+Some cores don't support ethernet stashing at all, and some
+instances have errata.  Adds 3 properties to gianfar nodes
+which support stashing.  For now, just add this support to
+85xx SoCs.
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
