@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f181.google.com ([209.85.216.181])
+Received: from mail-qa0-f44.google.com ([209.85.216.44])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGgGe-0003rv-Rr
- for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:57 +0000
-Received: by mail-qc0-f181.google.com with SMTP id q4so534201qcx.40
- for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:35 -0700 (PDT)
+ id 1VGgGt-0003sz-W0
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:23:12 +0000
+Received: by mail-qa0-f44.google.com with SMTP id w8so1035436qac.3
+ for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:50 -0700 (PDT)
 From: Darren Garnier <dgarnier@reinrag.net>
-Message-Id: <7CB5E6E6-CC40-418F-ADB6-766DEC5D180A@reinrag.net>
-Date: Mon, 2 Sep 2013 22:22:34 -0400
+Message-Id: <0EC48711-FFBD-438E-A85A-1FB2A466A613@reinrag.net>
+Date: Mon, 2 Sep 2013 22:22:49 -0400
 Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,41 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] AT91: move have_intensity_bit into board setup
+Subject: [PATCH 3/4] small tweeks to build system for compatibility on MacOS X
 To: barebox@lists.infradead.org
 
 Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
 ---
-arch/arm/boards/at91sam9261ek/init.c     | 2 ++
-arch/arm/mach-at91/at91sam9261_devices.c | 2 --
-2 files changed, 2 insertions(+), 2 deletions(-)
+Makefile       | 6 +++---
+scripts/genenv | 3 ++-
+2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
-index 00fc745..b420a48 100644
---- a/arch/arm/boards/at91sam9261ek/init.c
-+++ b/arch/arm/boards/at91sam9261ek/init.c
-@@ -223,6 +223,8 @@ static void ek_add_device_lcdc(void)
+diff --git a/Makefile b/Makefile
+index 397c54a..ff17d8f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -577,7 +577,7 @@ define rule_barebox__
+	$(cmd_sysmap) $@ System.map;                                         \
+	if [ $$? -ne 0 ]; then                                               \
+		rm -f $@;                                                    \
+-		/bin/false;                                                  \
++		false;                                                       \
+	fi;
+endef
 
-	if (machine_is_at91sam9g10ek())
-		ek_lcdc_data.lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
-+	else
-+		ek_lcdc_data.has_intensity_bit = true;
+@@ -614,7 +614,7 @@ define verify_kallsyms
+	$(Q)cmp -s System.map .tmp_System.map ||                             \
+		(echo Inconsistent kallsyms data;                            \
+		 echo Try setting CONFIG_KALLSYMS_EXTRA_PASS;                \
+-		 rm .tmp_kallsyms* ; /bin/false )
++		 rm .tmp_kallsyms* ; false )
+endef
 
-	at91_add_device_lcdc(&ek_lcdc_data);
-}
-diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
-index b522afb..ba52e56 100644
---- a/arch/arm/mach-at91/at91sam9261_devices.c
-+++ b/arch/arm/mach-at91/at91sam9261_devices.c
-@@ -218,8 +218,6 @@ void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data)
-{
-	BUG_ON(!data);
+# Update barebox version before link
+@@ -782,7 +782,7 @@ ifneq ($(KBUILD_SRC),)
+	$(Q)if [ -f $(srctree)/.config -o -d $(srctree)/include/config ]; then \
+		echo "  $(srctree) is not clean, please run 'make mrproper'";\
+		echo "  in the '$(srctree)' directory.";\
+-		/bin/false; \
++		false; \
+	fi;
+	$(Q)if [ ! -d include2 ]; then mkdir -p include2; fi;
+	$(Q)if [ -e $(srctree)/include/asm-$(SRCARCH)/barebox.h ]; then  \
+diff --git a/scripts/genenv b/scripts/genenv
+index 374db6d..b3b6ec5 100755
+--- a/scripts/genenv
++++ b/scripts/genenv
+@@ -24,7 +24,8 @@ for i in $*; do
+done
+)
 
--	data->have_intensity_bit = true;
--
-#if defined(CONFIG_FB_ATMEL_STN)
-	at91_set_A_periph(AT91_PIN_PB0, 0);	/* LCDVSYNC */
-	at91_set_A_periph(AT91_PIN_PB1, 0);	/* LCDHSYNC */
+-find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
++#find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
++find $tempdir -name '.svn' -o -name '*~' -delete
+
+$objtree/scripts/bareboxenv -s $tempdir $target
+
 -- 
 1.8.3.1
 
