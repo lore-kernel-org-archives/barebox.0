@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qa0-f48.google.com ([209.85.216.48])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGtbU-0004SR-Ds
- for barebox@lists.infradead.org; Tue, 03 Sep 2013 16:37:22 +0000
-Received: by mail-qa0-f48.google.com with SMTP id hu16so1434417qab.0
- for <barebox@lists.infradead.org>; Tue, 03 Sep 2013 09:36:56 -0700 (PDT)
-Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
-From: Darren Garnier <dgarnier@reinrag.net>
-In-Reply-To: <20130903153148.GC22507@ns203013.ovh.net>
-Date: Tue, 3 Sep 2013 12:36:54 -0400
-Message-Id: <FFEDB8E9-EA6B-4CC9-AE62-7EB9D190017A@reinrag.net>
-References: <7CB5E6E6-CC40-418F-ADB6-766DEC5D180A@reinrag.net>
- <20130903113942.GA22507@ns203013.ovh.net>
- <1E234F4F-BB0B-4144-9D85-C7975D686F50@reinrag.net>
- <20130903153148.GC22507@ns203013.ovh.net>
+ id 1VGuux-0006C2-Q0
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 18:01:33 +0000
+Date: Tue, 3 Sep 2013 20:01:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130903180106.GC30088@pengutronix.de>
+References: <1378129777-8117-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1378129777-8117-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,100 +18,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] AT91: move have_intensity_bit into board setup
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] PCM051: Fix muxing of MMC0 CD
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
+On Mon, Sep 02, 2013 at 03:49:37PM +0200, Teresa G=E1mez wrote:
+> Card detect should be rather muxed as gpio then
+> mmc0_sdcd, as driver does not support this.
+> =
 
-On Sep 3, 2013, at 11:31 AM, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-> On 09:34 Tue 03 Sep     , Darren Garnier wrote:
->> 
->> On Sep 3, 2013, at 7:39 AM, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
->> 
->>> On 22:22 Mon 02 Sep     , Darren Garnier wrote:
->>>> Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
->>> \why this is soc specific
->> 
->> Yes, the option is probably soc specific, but in the 9261 soc, we actually have 2 cpus. Both the 9261 and 9g10.
->> One of the few differences between these pin compatible chips is the way the LCD peripheral is wired.
->> 
->> My board has 2 varieties out in the wild.. one with the 9261 and the other with the 9g10 and because of the
->> way they are wired, the "intensity bit" is only appropriate to the 9261 cpu board.  Since you can't change this setting easily after you pass it off
->> to at91_add_device_lcdc, it's important that it only be set in the board file.
->> 
-> 
-> I need to check the datasheet but I'm enarly sure this is not board specific
-> but SoC
-> 
+Applied, thanks
 
+Sascha
 
-I guess that depends on what you mean by SoC. It is CPU specific to the 9261.  The 9g10 part (same SoC), doesn't use it.  I don't know if this change also effected the 9263/9g20 change.
+> ---
+>  arch/arm/boards/pcm051/mux.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> =
 
-Actually, I didn't notice it till now, but my patch is broken for at91sam9261ek  (swapped "has" for "have").  And didn't take into consideration the problem of the 9263 SoC.
+> diff --git a/arch/arm/boards/pcm051/mux.c b/arch/arm/boards/pcm051/mux.c
+> index 6ef5af1..b54f3d5 100644
+> --- a/arch/arm/boards/pcm051/mux.c
+> +++ b/arch/arm/boards/pcm051/mux.c
+> @@ -10,7 +10,7 @@ static const struct module_pin_mux mmc0_pin_mux[] =3D {
+>  	{OFFSET(mmc0_dat0), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT0 */
+>  	{OFFSET(mmc0_clk), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CLK */
+>  	{OFFSET(mmc0_cmd), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CMD */
+> -	{OFFSET(spi0_cs1), (MODE(5) | RXACTIVE | PULLUP_EN)},	/* MMC0_CD */
+> +	{OFFSET(spi0_cs1), (MODE(7) | RXACTIVE | PULLUP_EN)},	/* MMC0_CD */
+>  	{-1},
+>  };
+>  =
 
-Personally, I think it the whole bit should be removed and just change to the .lcd_wiring_mode with new constants of:
+> -- =
 
-ATMEL_LCD_WIRING_BGR555
-ATMEL_LCD_WIRING_RGB555
+> 1.7.0.4
+> =
 
-but this probably effects more boards and I'm more of a minimalist when I go mucking about in other code.
+> =
 
-Anyway, this patch is necessary  in some form.. my 9g10 boards have funky colors with the .have_intensity_bit set.
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
-Let me know which option you prefer and I'll rework it.
+-- =
 
-
->> 
->>> 
->>> Best Regards,
->>> J.
->>>> ---
->>>> arch/arm/boards/at91sam9261ek/init.c     | 2 ++
->>>> arch/arm/mach-at91/at91sam9261_devices.c | 2 --
->>>> 2 files changed, 2 insertions(+), 2 deletions(-)
->>>> 
->>>> diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
->>>> index 00fc745..b420a48 100644
->>>> --- a/arch/arm/boards/at91sam9261ek/init.c
->>>> +++ b/arch/arm/boards/at91sam9261ek/init.c
->>>> @@ -223,6 +223,8 @@ static void ek_add_device_lcdc(void)
->>>> 
->>>> 	if (machine_is_at91sam9g10ek())
->>>> 		ek_lcdc_data.lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
->>>> +	else
->>>> +		ek_lcdc_data.has_intensity_bit = true;
->>>> 
->>>> 	at91_add_device_lcdc(&ek_lcdc_data);
->>>> }
->>>> diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
->>>> index b522afb..ba52e56 100644
->>>> --- a/arch/arm/mach-at91/at91sam9261_devices.c
->>>> +++ b/arch/arm/mach-at91/at91sam9261_devices.c
->>>> @@ -218,8 +218,6 @@ void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data)
->>>> {
->>>> 	BUG_ON(!data);
->>>> 
->>>> -	data->have_intensity_bit = true;
->>>> -
->>>> #if defined(CONFIG_FB_ATMEL_STN)
->>>> 	at91_set_A_periph(AT91_PIN_PB0, 0);	/* LCDVSYNC */
->>>> 	at91_set_A_periph(AT91_PIN_PB1, 0);	/* LCDHSYNC */
->>>> -- 
->>>> 1.8.3.1
->>>> 
->>>> 
->>>> 
->>>> _______________________________________________
->>>> barebox mailing list
->>>> barebox@lists.infradead.org
->>>> http://lists.infradead.org/mailman/listinfo/barebox
->> 
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
