@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f174.google.com ([209.85.216.174])
+Received: from mail-qc0-f176.google.com ([209.85.216.176])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGgGM-0003rU-QG
- for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:40 +0000
-Received: by mail-qc0-f174.google.com with SMTP id e9so1469717qcy.19
- for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:13 -0700 (PDT)
+ id 1VGgGQ-0003ri-Ld
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:43 +0000
+Received: by mail-qc0-f176.google.com with SMTP id u20so2300648qcx.21
+ for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:21 -0700 (PDT)
 From: Darren Garnier <dgarnier@reinrag.net>
-Message-Id: <66093911-C934-41E4-BEDD-5AE4B9AD934B@reinrag.net>
-Date: Mon, 2 Sep 2013 22:22:11 -0400
+Message-Id: <32D9025B-5882-4030-A3DA-0CC66CEBD93C@reinrag.net>
+Date: Mon, 2 Sep 2013 22:22:20 -0400
 Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,83 +21,107 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] ARM: support for CPODC2 board
+Subject: [PATCH 1/4] mtd: fix erasesize math for non power-of-2 devices
 To: barebox@lists.infradead.org
 
-I'm a little new to contributing upstream, so please bear with me.
+Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
+---
+drivers/mtd/core.c | 19 ++++++++++++-------
+fs/devfs-core.c    |  4 ++--
+2 files changed, 14 insertions(+), 9 deletions(-)
 
-These are patches against the "next" that allow for a beautifully functional build of barebox
-for the CPO Science DataCollector II device.  Kudos to the barebox team for a very functional 
-piece of software.
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 70036aa..ed9658b 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -25,6 +25,7 @@
+#include <ioctl.h>
+#include <nand.h>
+#include <errno.h>
++#include <linux/math64.h>
 
-In case you are wondering, the CPO DC2 is an at91sam9261 and at91sam9g10 based board used
-for taking scientific measurements in a middle school classroom setting.  Its similar to the Atmel ek
-board, except it has a co-processor MCU for the data taking (and backlight control.)
+#include "mtd.h"
 
-Besides adding the board support, I found a couple of places where changes in the tree were required.
+@@ -82,9 +83,6 @@ static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
+	return retlen;
+}
 
-First, MTD was assuming for eraseblocks that they are a power of two. This is not the case for Atmel DataFlash.
+-#define NOTALIGNED(x) (x & (mtd->writesize - 1)) != 0
+-#define MTDPGALG(x) ((x) & ~(mtd->writesize - 1))
+-
+#ifdef CONFIG_MTD_WRITE
+static ssize_t mtd_op_write(struct cdev* cdev, const void *buf, size_t _count,
+			  loff_t _offset, ulong flags)
+@@ -112,15 +110,22 @@ static struct mtd_erase_region_info *mtd_find_erase_region(struct mtd_info *mtd,
+	return NULL;
+}
 
-Second, for the at91sam9261 soc, not all have intensity bit... so this was taken out of the mach-at91 and 
-put into the board file where it belonged.
++#define ALIGNED_OFFSET(offset, bs) ((bs & (bs-1)) == 0) ? \
++									offset & ~(bs-1) : \
++									bs * div_u64(offset,bs)
++#define ALIGNED_COUNT(count, bs) ((bs & (bs-1)) == 0) ? \
++									ALIGN(count,bs) : \
++									bs * div_u64(count+(bs-1),bs)
++
+static int mtd_erase_align(struct mtd_info *mtd, size_t *count, loff_t *offset)
+{
+	struct mtd_erase_region_info *e;
+	loff_t ofs;
 
-The third patch are small changes to the build system that should be portable and allow it to run on MacOSX 10.8.
+	if (mtd->numeraseregions == 0) {
+-		ofs = *offset & ~(mtd->erasesize - 1);
++		ofs = ALIGNED_OFFSET(*offset, mtd->erasesize);
+		*count += (*offset - ofs);
+-		*count = ALIGN(*count, mtd->erasesize);
++		*count = ALIGNED_COUNT(*count, mtd->erasesize);
+		*offset = ofs;
+		return 0;
+	}
+@@ -129,14 +134,14 @@ static int mtd_erase_align(struct mtd_info *mtd, size_t *count, loff_t *offset)
+	if (!e)
+		return -EINVAL;
 
-Finally, the fourth patch is my board support.
+-	ofs = *offset & ~(e->erasesize - 1);
++	ofs = ALIGNED_OFFSET(*offset, mtd->erasesize);
+	*count += (*offset - ofs);
 
+	e = mtd_find_erase_region(mtd, *offset + *count);
+	if (!e)
+		return -EINVAL;
 
-Darren Garnier (4):
- mtd: fix erasesize math for non power-of-2 devices
- AT91: move have_intensity_bit into board setup
- small tweeks to build system for compatibility on MacOS X
- ARM: support for CPO Science DataCollector II
+-	*count = ALIGN(*count, e->erasesize);
++	*count = ALIGNED_COUNT(*count, e->erasesize);
+	*offset = ofs;
 
-Makefile                                  |   6 +-
-arch/arm/boards/Makefile                  |   1 +
-arch/arm/boards/at91sam9261ek/init.c      |   2 +
-arch/arm/boards/cpodc2/Makefile           |   4 +
-arch/arm/boards/cpodc2/env/boot/dataflash |  10 +
-arch/arm/boards/cpodc2/env/boot/net-usb   |  22 ++
-arch/arm/boards/cpodc2/env/config-board   |   6 +
-arch/arm/boards/cpodc2/env/dfu.png        | Bin 0 -> 1669 bytes
-arch/arm/boards/cpodc2/env/init/automount |  12 +
-arch/arm/boards/cpodc2/env/init/msp430    |  10 +
-arch/arm/boards/cpodc2/env/init/mtdparts  |  19 ++
-arch/arm/boards/cpodc2/env/init/splash    |   8 +
-arch/arm/boards/cpodc2/env/init/usb       |  55 ++++
-arch/arm/boards/cpodc2/env/splash.png     | Bin 0 -> 1356 bytes
-arch/arm/boards/cpodc2/env/usb.png        | Bin 0 -> 339 bytes
-arch/arm/boards/cpodc2/init.c             | 364 +++++++++++++++++++++
-arch/arm/boards/cpodc2/lowlevel_init.c    | 108 +++++++
-arch/arm/boards/cpodc2/msp430.c           | 513 ++++++++++++++++++++++++++++++
-arch/arm/boards/cpodc2/msp430.h           |  23 ++
-arch/arm/configs/cpodc2_defconfig         |  96 ++++++
-arch/arm/mach-at91/Kconfig                |  24 ++
-arch/arm/mach-at91/at91sam9261_devices.c  |   2 -
-drivers/mtd/core.c                        |  19 +-
-fs/devfs-core.c                           |   4 +-
-scripts/genenv                            |   3 +-
-25 files changed, 1296 insertions(+), 15 deletions(-)
-create mode 100644 arch/arm/boards/cpodc2/Makefile
-create mode 100755 arch/arm/boards/cpodc2/env/boot/dataflash
-create mode 100755 arch/arm/boards/cpodc2/env/boot/net-usb
-create mode 100755 arch/arm/boards/cpodc2/env/config-board
-create mode 100644 arch/arm/boards/cpodc2/env/dfu.png
-create mode 100755 arch/arm/boards/cpodc2/env/init/automount
-create mode 100644 arch/arm/boards/cpodc2/env/init/msp430
-create mode 100755 arch/arm/boards/cpodc2/env/init/mtdparts
-create mode 100755 arch/arm/boards/cpodc2/env/init/splash
-create mode 100755 arch/arm/boards/cpodc2/env/init/usb
-create mode 100644 arch/arm/boards/cpodc2/env/splash.png
-create mode 100644 arch/arm/boards/cpodc2/env/usb.png
-create mode 100644 arch/arm/boards/cpodc2/init.c
-create mode 100644 arch/arm/boards/cpodc2/lowlevel_init.c
-create mode 100644 arch/arm/boards/cpodc2/msp430.c
-create mode 100644 arch/arm/boards/cpodc2/msp430.h
-create mode 100644 arch/arm/configs/cpodc2_defconfig
+	return 0;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index a92d434..757c9b7 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -24,6 +24,7 @@
+#include <ioctl.h>
+#include <linux/err.h>
+#include <linux/mtd/mtd.h>
++#include <linux/math64.h>
 
+LIST_HEAD(cdev_list);
+
+@@ -197,11 +198,10 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+	case MEMGETREGIONINFO:
+		if (cdev->mtd) {
+			struct region_info_user *reg = buf;
+-			int erasesize_shift = ffs(cdev->mtd->erasesize) - 1;
+
+			reg->offset = cdev->offset;
+			reg->erasesize = cdev->mtd->erasesize;
+-			reg->numblocks = cdev->size >> erasesize_shift;
++			reg->numblocks = div_u64(cdev->size, cdev->mtd->erasesize);
+			reg->regionindex = cdev->mtd->index;
+		}
+	break;
 -- 
 1.8.3.1
+
 
 
 _______________________________________________
