@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og116.obsmtp.com ([64.18.0.147])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGX5L-0003Ta-SU
- for barebox@lists.infradead.org; Mon, 02 Sep 2013 16:34:40 +0000
-Message-ID: <5224BE03.40306@ge.com>
-Date: Mon, 02 Sep 2013 17:34:11 +0100
-From: Renaud Barbier <renaud.barbier@ge.com>
-MIME-Version: 1.0
-References: <1377869669-27821-1-git-send-email-renaud.barbier@ge.com>
- <1377869669-27821-3-git-send-email-renaud.barbier@ge.com>
- <20130902084912.GP30088@pengutronix.de>
-In-Reply-To: <20130902084912.GP30088@pengutronix.de>
+Received: from mail-qc0-f174.google.com ([209.85.216.174])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VGgGM-0003rU-QG
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:40 +0000
+Received: by mail-qc0-f174.google.com with SMTP id e9so1469717qcy.19
+ for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:13 -0700 (PDT)
+From: Darren Garnier <dgarnier@reinrag.net>
+Message-Id: <66093911-C934-41E4-BEDD-5AE4B9AD934B@reinrag.net>
+Date: Mon, 2 Sep 2013 22:22:11 -0400
+Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,46 +21,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ppc: add mpc85xx device tree fixup functions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/4] ARM: support for CPODC2 board
+To: barebox@lists.infradead.org
 
-On 02/09/2013 09:49, Sascha Hauer wrote:
-> Hi Renaud,
-> 
-> On Fri, Aug 30, 2013 at 02:34:27PM +0100, Renaud Barbier wrote:
->> > +/* These properties specify whether the hardware supports the stashing
->> > + * of buffer descriptors in L2 cache.
->> > + */
->> > +static void fdt_add_enet_stashing(void *fdt)
->> > +{
->> > +	struct device_node *node;
->> > +
->> > +	node = of_find_compatible_node(fdt, NULL, "gianfar");
->> > +	while (node) {
->> > +		of_set_property(node, "bd-stash", NULL, 0, 1);
->> > +		of_property_write_u32(node, "rx-stash-len", 96);
->> > +		of_property_write_u32(node, "rx-stash-idx", 0);
->> > +		node = of_find_compatible_node(node, NULL, "gianfar");
->> > +	}
->> > +}
-> Out of curiosity, why is this dynamically added and not part of the
-> static dts file?
-> 
+I'm a little new to contributing upstream, so please bear with me.
 
-I will have to quote the original comment from U-Boot as I cannot find
-a reasonable explanation why it is done this way.
+These are patches against the "next" that allow for a beautifully functional build of barebox
+for the CPO Science DataCollector II device.  Kudos to the barebox team for a very functional 
+piece of software.
+
+In case you are wondering, the CPO DC2 is an at91sam9261 and at91sam9g10 based board used
+for taking scientific measurements in a middle school classroom setting.  Its similar to the Atmel ek
+board, except it has a co-processor MCU for the data taking (and backlight control.)
+
+Besides adding the board support, I found a couple of places where changes in the tree were required.
+
+First, MTD was assuming for eraseblocks that they are a power of two. This is not the case for Atmel DataFlash.
+
+Second, for the at91sam9261 soc, not all have intensity bit... so this was taken out of the mach-at91 and 
+put into the board file where it belonged.
+
+The third patch are small changes to the build system that should be portable and allow it to run on MacOSX 10.8.
+
+Finally, the fourth patch is my board support.
 
 
-Original U-boot commit:
-Date:   Tue Oct 7 08:09:50 2008 -0500
-Have u-boot pass stashing parameters into device tree
+Darren Garnier (4):
+ mtd: fix erasesize math for non power-of-2 devices
+ AT91: move have_intensity_bit into board setup
+ small tweeks to build system for compatibility on MacOS X
+ ARM: support for CPO Science DataCollector II
 
-Some cores don't support ethernet stashing at all, and some
-instances have errata.  Adds 3 properties to gianfar nodes
-which support stashing.  For now, just add this support to
-85xx SoCs.
+Makefile                                  |   6 +-
+arch/arm/boards/Makefile                  |   1 +
+arch/arm/boards/at91sam9261ek/init.c      |   2 +
+arch/arm/boards/cpodc2/Makefile           |   4 +
+arch/arm/boards/cpodc2/env/boot/dataflash |  10 +
+arch/arm/boards/cpodc2/env/boot/net-usb   |  22 ++
+arch/arm/boards/cpodc2/env/config-board   |   6 +
+arch/arm/boards/cpodc2/env/dfu.png        | Bin 0 -> 1669 bytes
+arch/arm/boards/cpodc2/env/init/automount |  12 +
+arch/arm/boards/cpodc2/env/init/msp430    |  10 +
+arch/arm/boards/cpodc2/env/init/mtdparts  |  19 ++
+arch/arm/boards/cpodc2/env/init/splash    |   8 +
+arch/arm/boards/cpodc2/env/init/usb       |  55 ++++
+arch/arm/boards/cpodc2/env/splash.png     | Bin 0 -> 1356 bytes
+arch/arm/boards/cpodc2/env/usb.png        | Bin 0 -> 339 bytes
+arch/arm/boards/cpodc2/init.c             | 364 +++++++++++++++++++++
+arch/arm/boards/cpodc2/lowlevel_init.c    | 108 +++++++
+arch/arm/boards/cpodc2/msp430.c           | 513 ++++++++++++++++++++++++++++++
+arch/arm/boards/cpodc2/msp430.h           |  23 ++
+arch/arm/configs/cpodc2_defconfig         |  96 ++++++
+arch/arm/mach-at91/Kconfig                |  24 ++
+arch/arm/mach-at91/at91sam9261_devices.c  |   2 -
+drivers/mtd/core.c                        |  19 +-
+fs/devfs-core.c                           |   4 +-
+scripts/genenv                            |   3 +-
+25 files changed, 1296 insertions(+), 15 deletions(-)
+create mode 100644 arch/arm/boards/cpodc2/Makefile
+create mode 100755 arch/arm/boards/cpodc2/env/boot/dataflash
+create mode 100755 arch/arm/boards/cpodc2/env/boot/net-usb
+create mode 100755 arch/arm/boards/cpodc2/env/config-board
+create mode 100644 arch/arm/boards/cpodc2/env/dfu.png
+create mode 100755 arch/arm/boards/cpodc2/env/init/automount
+create mode 100644 arch/arm/boards/cpodc2/env/init/msp430
+create mode 100755 arch/arm/boards/cpodc2/env/init/mtdparts
+create mode 100755 arch/arm/boards/cpodc2/env/init/splash
+create mode 100755 arch/arm/boards/cpodc2/env/init/usb
+create mode 100644 arch/arm/boards/cpodc2/env/splash.png
+create mode 100644 arch/arm/boards/cpodc2/env/usb.png
+create mode 100644 arch/arm/boards/cpodc2/init.c
+create mode 100644 arch/arm/boards/cpodc2/lowlevel_init.c
+create mode 100644 arch/arm/boards/cpodc2/msp430.c
+create mode 100644 arch/arm/boards/cpodc2/msp430.h
+create mode 100644 arch/arm/configs/cpodc2_defconfig
 
+-- 
+1.8.3.1
 
 
 _______________________________________________
