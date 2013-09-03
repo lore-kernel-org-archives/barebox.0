@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qc0-f176.google.com ([209.85.216.176])
+Received: from mail-qc0-f181.google.com ([209.85.216.181])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGgGQ-0003ri-Ld
- for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:43 +0000
-Received: by mail-qc0-f176.google.com with SMTP id u20so2300648qcx.21
- for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:21 -0700 (PDT)
+ id 1VGgGe-0003rv-Rr
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 02:22:57 +0000
+Received: by mail-qc0-f181.google.com with SMTP id q4so534201qcx.40
+ for <barebox@lists.infradead.org>; Mon, 02 Sep 2013 19:22:35 -0700 (PDT)
 From: Darren Garnier <dgarnier@reinrag.net>
-Message-Id: <32D9025B-5882-4030-A3DA-0CC66CEBD93C@reinrag.net>
-Date: Mon, 2 Sep 2013 22:22:20 -0400
+Message-Id: <7CB5E6E6-CC40-418F-ADB6-766DEC5D180A@reinrag.net>
+Date: Mon, 2 Sep 2013 22:22:34 -0400
 Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,104 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] mtd: fix erasesize math for non power-of-2 devices
+Subject: [PATCH 2/4] AT91: move have_intensity_bit into board setup
 To: barebox@lists.infradead.org
 
 Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
 ---
-drivers/mtd/core.c | 19 ++++++++++++-------
-fs/devfs-core.c    |  4 ++--
-2 files changed, 14 insertions(+), 9 deletions(-)
+arch/arm/boards/at91sam9261ek/init.c     | 2 ++
+arch/arm/mach-at91/at91sam9261_devices.c | 2 --
+2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 70036aa..ed9658b 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -25,6 +25,7 @@
-#include <ioctl.h>
-#include <nand.h>
-#include <errno.h>
-+#include <linux/math64.h>
+diff --git a/arch/arm/boards/at91sam9261ek/init.c b/arch/arm/boards/at91sam9261ek/init.c
+index 00fc745..b420a48 100644
+--- a/arch/arm/boards/at91sam9261ek/init.c
++++ b/arch/arm/boards/at91sam9261ek/init.c
+@@ -223,6 +223,8 @@ static void ek_add_device_lcdc(void)
 
-#include "mtd.h"
+	if (machine_is_at91sam9g10ek())
+		ek_lcdc_data.lcd_wiring_mode = ATMEL_LCDC_WIRING_RGB;
++	else
++		ek_lcdc_data.has_intensity_bit = true;
 
-@@ -82,9 +83,6 @@ static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
-	return retlen;
+	at91_add_device_lcdc(&ek_lcdc_data);
 }
-
--#define NOTALIGNED(x) (x & (mtd->writesize - 1)) != 0
--#define MTDPGALG(x) ((x) & ~(mtd->writesize - 1))
--
-#ifdef CONFIG_MTD_WRITE
-static ssize_t mtd_op_write(struct cdev* cdev, const void *buf, size_t _count,
-			  loff_t _offset, ulong flags)
-@@ -112,15 +110,22 @@ static struct mtd_erase_region_info *mtd_find_erase_region(struct mtd_info *mtd,
-	return NULL;
-}
-
-+#define ALIGNED_OFFSET(offset, bs) ((bs & (bs-1)) == 0) ? \
-+									offset & ~(bs-1) : \
-+									bs * div_u64(offset,bs)
-+#define ALIGNED_COUNT(count, bs) ((bs & (bs-1)) == 0) ? \
-+									ALIGN(count,bs) : \
-+									bs * div_u64(count+(bs-1),bs)
-+
-static int mtd_erase_align(struct mtd_info *mtd, size_t *count, loff_t *offset)
+diff --git a/arch/arm/mach-at91/at91sam9261_devices.c b/arch/arm/mach-at91/at91sam9261_devices.c
+index b522afb..ba52e56 100644
+--- a/arch/arm/mach-at91/at91sam9261_devices.c
++++ b/arch/arm/mach-at91/at91sam9261_devices.c
+@@ -218,8 +218,6 @@ void __init at91_add_device_lcdc(struct atmel_lcdfb_platform_data *data)
 {
-	struct mtd_erase_region_info *e;
-	loff_t ofs;
+	BUG_ON(!data);
 
-	if (mtd->numeraseregions == 0) {
--		ofs = *offset & ~(mtd->erasesize - 1);
-+		ofs = ALIGNED_OFFSET(*offset, mtd->erasesize);
-		*count += (*offset - ofs);
--		*count = ALIGN(*count, mtd->erasesize);
-+		*count = ALIGNED_COUNT(*count, mtd->erasesize);
-		*offset = ofs;
-		return 0;
-	}
-@@ -129,14 +134,14 @@ static int mtd_erase_align(struct mtd_info *mtd, size_t *count, loff_t *offset)
-	if (!e)
-		return -EINVAL;
-
--	ofs = *offset & ~(e->erasesize - 1);
-+	ofs = ALIGNED_OFFSET(*offset, mtd->erasesize);
-	*count += (*offset - ofs);
-
-	e = mtd_find_erase_region(mtd, *offset + *count);
-	if (!e)
-		return -EINVAL;
-
--	*count = ALIGN(*count, e->erasesize);
-+	*count = ALIGNED_COUNT(*count, e->erasesize);
-	*offset = ofs;
-
-	return 0;
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index a92d434..757c9b7 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -24,6 +24,7 @@
-#include <ioctl.h>
-#include <linux/err.h>
-#include <linux/mtd/mtd.h>
-+#include <linux/math64.h>
-
-LIST_HEAD(cdev_list);
-
-@@ -197,11 +198,10 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
-	case MEMGETREGIONINFO:
-		if (cdev->mtd) {
-			struct region_info_user *reg = buf;
--			int erasesize_shift = ffs(cdev->mtd->erasesize) - 1;
-
-			reg->offset = cdev->offset;
-			reg->erasesize = cdev->mtd->erasesize;
--			reg->numblocks = cdev->size >> erasesize_shift;
-+			reg->numblocks = div_u64(cdev->size, cdev->mtd->erasesize);
-			reg->regionindex = cdev->mtd->index;
-		}
-	break;
+-	data->have_intensity_bit = true;
+-
+#if defined(CONFIG_FB_ATMEL_STN)
+	at91_set_A_periph(AT91_PIN_PB0, 0);	/* LCDVSYNC */
+	at91_set_A_periph(AT91_PIN_PB1, 0);	/* LCDHSYNC */
 -- 
 1.8.3.1
 
