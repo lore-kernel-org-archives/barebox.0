@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from exprod5og112.obsmtp.com ([64.18.0.24])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VGs0j-0001h9-QM
- for barebox@lists.infradead.org; Tue, 03 Sep 2013 14:55:18 +0000
+ id 1VGs15-0001ip-Q1
+ for barebox@lists.infradead.org; Tue, 03 Sep 2013 14:55:40 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue,  3 Sep 2013 15:54:26 +0100
-Message-Id: <1378220067-22296-4-git-send-email-renaud.barbier@ge.com>
+Date: Tue,  3 Sep 2013 15:54:27 +0100
+Message-Id: <1378220067-22296-5-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
 References: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,112 +21,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] ppc: bootm: relocate fdt to valid boot memory
+Subject: [PATCH 4/4] ppc: P2020RDB configuration update
 To: barebox@lists.infradead.org
 
-For the MPC85xx family of SOCs Linux expects any boot firmware
-information to be passed in the first 64MiB of memory. This adds support
-to ensure that the device tree is relocated to a valid location if it is
-outside that address range.
+The P2020rdb defconfig has been updated to include
+device tree, environment and boot command support for
+booting Linux.
+
+Also the P2020RDB board support defines a flash area to
+store its environment for users to configure the boot process.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/include/asm/processor.h |    1 +
- arch/ppc/lib/ppclinux.c          |   49 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 49 insertions(+), 1 deletions(-)
+ arch/ppc/boards/freescale-p2020rdb/env/bin/init |    3 +++
+ arch/ppc/boards/freescale-p2020rdb/env/config   |    2 ++
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |    7 +++++++
+ arch/ppc/configs/p2020rdb_defconfig             |   14 +++++++++++++-
+ 4 files changed, 25 insertions(+), 1 deletions(-)
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
+ create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
 
-diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-index 04cfb60..6b9b7dd 100644
---- a/arch/ppc/include/asm/processor.h
-+++ b/arch/ppc/include/asm/processor.h
-@@ -966,6 +966,7 @@ struct cpu_type {
- struct cpu_type *identify_cpu(u32 ver);
+diff --git a/arch/ppc/boards/freescale-p2020rdb/env/bin/init b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+new file mode 100644
+index 0000000..6bd125c
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+@@ -0,0 +1,3 @@
++#!/bin/sh
++export PATH=/env/bin
++source /env/config
+diff --git a/arch/ppc/boards/freescale-p2020rdb/env/config b/arch/ppc/boards/freescale-p2020rdb/env/config
+new file mode 100644
+index 0000000..26b1a9a
+--- /dev/null
++++ b/arch/ppc/boards/freescale-p2020rdb/env/config
+@@ -0,0 +1,2 @@
++#!/bin/sh
++export bootargs="root=/dev/nfs rw ip=bootp panic=10"
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index 4d2ff22..bc36b28 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -92,6 +92,13 @@ static int devices_init(void)
+ 	fsl_eth_init(2, &gfar_info[0]);
+ 	fsl_eth_init(3, &gfar_info[1]);
  
- #if defined(CONFIG_MPC85xx)
-+#define LINUX_TLB1_MAX_ADDR	((void *)(64 << 20))
- #define CPU_TYPE_ENTRY(n, v, nc) \
- 	{ .name = #n, .soc_ver = SVR_##v, .num_cores = (nc), }
- #endif
-diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-index ef69ead..7c30ac3 100644
---- a/arch/ppc/lib/ppclinux.c
-+++ b/arch/ppc/lib/ppclinux.c
-@@ -4,12 +4,45 @@
- #include <command.h>
- #include <image.h>
- #include <init.h>
-+#include <malloc.h>
- #include <environment.h>
- #include <asm/bitops.h>
-+#include <asm/processor.h>
- #include <boot.h>
- #include <errno.h>
- #include <fs.h>
- 
-+static int bootm_relocate_fdt(void *addr, struct image_data *data)
-+{
-+	if (addr < LINUX_TLB1_MAX_ADDR) {
-+		/* The kernel is within  the boot TLB mapping.
-+		 * Put the DTB above if there is no space
-+		 * below.
-+		 */
-+		if (addr < (void *)data->oftree->totalsize) {
-+			addr = (void *)PAGE_ALIGN((phys_addr_t)addr +
-+					data->os->header.ih_size);
-+			addr += data->oftree->totalsize;
-+			if (addr < LINUX_TLB1_MAX_ADDR)
-+				addr = LINUX_TLB1_MAX_ADDR;
-+		}
-+	}
-+
-+	if (addr > LINUX_TLB1_MAX_ADDR) {
-+		pr_crit("Unable to relocate DTB to Linux TLB\n");
-+		return 1;
-+	}
-+
-+	addr = (void *)PAGE_ALIGN_DOWN((phys_addr_t)addr -
-+			data->oftree->totalsize);
-+	memcpy(addr, data->oftree, data->oftree->totalsize);
-+	free(data->oftree);
-+	data->oftree = addr;
-+
-+	pr_info("Relocating device tree to 0x%p\n", addr);
-+	return 0;
-+}
-+
- static int do_bootm_linux(struct image_data *data)
- {
- 	void	(*kernel)(void *, void *, unsigned long,
-@@ -24,6 +57,20 @@ static int do_bootm_linux(struct image_data *data)
- 		return -EINVAL;
- 	}
- 
-+	/* Relocate the device tree if outside the initial
-+	 * Linux mapped TLB.
++	/* The env0 offset 0x770000 is from the base address of the alternate
++	 * boot area where barebox boots from. Programming barebox in the
++	 * primary boot area in place of U-Boot may lead to loss of data when
++	 * saving the environment.
 +	 */
-+	if (IS_ENABLED(CONFIG_MPC85xx)) {
-+		void *addr = data->oftree;
-+
-+		if ((addr + data->oftree->totalsize) > LINUX_TLB1_MAX_ADDR) {
-+			addr = (void *)data->os_address;
-+
-+			if (bootm_relocate_fdt(addr, data))
-+				goto error;
-+		}
-+	}
-+
- 	fdt_add_reserve_map(data->oftree);
- 
- 	kernel = (void *)(data->os_address + data->os_entry);
-@@ -40,7 +87,7 @@ static int do_bootm_linux(struct image_data *data)
- 
- 	reset_cpu(0);
- 
--	/* not reached */
-+error:
- 	return -1;
- }
- 
++	devfs_add_partition("nor0", 0x770000, 0x10000, DEVFS_PARTITION_FIXED,
++			    "env0");
+ 	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+ 			    "self0");
+ 	return 0;
+diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+index 0f77903..8907511 100644
+--- a/arch/ppc/configs/p2020rdb_defconfig
++++ b/arch/ppc/configs/p2020rdb_defconfig
+@@ -5,10 +5,18 @@ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
++CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC=n
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/ppc/boards/freescale-p2020rdb/env"
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_EDIT=y
+ CONFIG_FSL_ELBC=y
+ CONFIG_DRIVER_CFI=y
+ CONFIG_DRIVER_CFI_AMD=y
+@@ -17,7 +25,7 @@ CONFIG_DRIVER_CFI_BANK_WIDTH_1=n
+ CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
+ CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
+ CONFIG_MTD=y
+-CONFIG_MALLOC_SIZE=0x200000
++CONFIG_MALLOC_SIZE=0x800000
+ CONFIG_BAUDRATE=115200
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_RELOCATABLE=y
+@@ -32,3 +40,7 @@ CONFIG_I2C=y
+ CONFIG_I2C_IMX=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_MIITOOL=y
++CONFIG_ZLIB=y
++CONFIG_OFTREE=y
++CONFIG_CMD_OFTREE=y
++CONFIG_OFDEVICE=y
 -- 
 1.7.1
 
