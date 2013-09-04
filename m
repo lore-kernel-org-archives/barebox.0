@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo5.mail-out.ovh.net ([46.105.47.167]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VHA1t-0000gP-Lf
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 10:09:43 +0000
-Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 08A2810180CC
- for <barebox@lists.infradead.org>; Wed,  4 Sep 2013 12:09:22 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed,  4 Sep 2013 12:10:12 +0200
-Message-Id: <1378289412-28761-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1378289412-28761-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130904100113.GA21829@ns203013.ovh.net>
- <1378289412-28761-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VHJp3-0007oG-0K
+ for barebox@lists.infradead.org; Wed, 04 Sep 2013 20:37:06 +0000
+Date: Wed, 4 Sep 2013 22:36:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130904203639.GN30088@pengutronix.de>
+References: <1378182813-30776-1-git-send-email-antonynpavlov@gmail.com>
+ <20130903084123.60bf8561ef15b863013431e7@gmail.com>
+ <20130903112156.GL19197@ns203013.ovh.net>
+ <20130904063013.GF30088@pengutronix.de>
+ <20130904075919.GD22507@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130904075919.GD22507@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] defaultenv-2: add login support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] MIPS: qemu-malta: switch to devicetree
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-request password to login is a timeout is specified and /env/etc/passwd
-present
+On Wed, Sep 04, 2013 at 09:59:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> how about use the compatible property?
+> 
+> for me I'll just put
+> model = "toto toto toto" , "toto_toot_toto";
+> 
+> if no second string create a hotname on the fly by replace the forbidden char
+> by '_'
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- defaultenv-2/base/bin/init | 9 +++++++++
- 1 file changed, 9 insertions(+)
+That would be fine aswell. We should probably suggest something on the
+devicetree discuss list.
 
-diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-index ca02ba6..e696dce 100644
---- a/defaultenv-2/base/bin/init
-+++ b/defaultenv-2/base/bin/init
-@@ -16,11 +16,15 @@ global editcmd=sedit
- [ -e /env/config-board ] && /env/config-board
- /env/config
- 
-+# request password to login is a timeout is specified and /env/etc/passwd present
-+[ -n ${global.login.timeout} ] && login_cmd=login
-+
- # allow to stop the boot before execute the /env/init/*
- # but without waiting
- timeout -s -a -v key 0
- 
- if [ "${key}" = "q" ]; then
-+	${login_cmd}
- 	exit
- fi
- 
-@@ -38,6 +42,7 @@ timeout -a $global.autoboot_timeout -v key
- autoboot="$?"
- 
- if [ "${key}" = "q" ]; then
-+	${login_cmd}
- 	exit
- fi
- 
-@@ -48,7 +53,11 @@ fi
- if [ -e /env/menu ]; then
- 	if [ "${key}" != "m" ]; then
- 		echo -e "\ntype exit to get to the menu"
-+		${login_cmd}
- 		sh
- 	fi
-+	${login_cmd}
- 	/env/menu/mainmenu
- fi
-+
-+${login_cmd}
+BTW according to EPAPR the model property should be "vendor,model". Most
+ARM dts don't have this layout anyway. Maybe this increases the
+motivation to change something there.
+
+Sascha
+
 -- 
-1.8.4.rc1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
