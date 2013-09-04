@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VH6ro-0004Rj-HP
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 06:47:05 +0000
-Date: Wed, 4 Sep 2013 08:46:42 +0200
+ id 1VH7BY-0004mm-HO
+ for barebox@lists.infradead.org; Wed, 04 Sep 2013 07:07:29 +0000
+Date: Wed, 4 Sep 2013 09:07:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130904064642.GH30088@pengutronix.de>
-References: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20130904070704.GI30088@pengutronix.de>
+References: <1377964462-10387-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130902090523.GT30088@pengutronix.de>
+ <20130902102406.GK19197@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <20130902102406.GK19197@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +24,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/4] Update P2020RDB board support to allow NFS booting.
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH 1/1] arm: mmu: catch NULL pointer dereferences
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 03, 2013 at 03:54:23PM +0100, Renaud Barbier wrote:
-> This patchset addresses all the comments regarding the initial patch [2/4].
-> The comments in respect of the function fdt_stdout_setup have been addressed
-> by:
-> - Removing the check on the existence of the /chosen node.
-> - Returning an errno value instead of 1.
+On Mon, Sep 02, 2013 at 12:24:06PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:05 Mon 02 Sep     , Sascha Hauer wrote:
+> > On Sat, Aug 31, 2013 at 05:54:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > For high vectors if memory start at 0x0. We have to
+> > > live without being able to catch NULL pointer dereferences.
+> > > 
+> > Why not add the check to vectors_init() instead of passing this as
+> > argument?
+> > 
+> > I must say I'm not entirely happy with this approach. Being able to
+> > catch NULL pointer derefs is really a good thing. When exactly does the
+> > faulting zero SDRAM page become a problem for you? obviously something
+> > like
+> > 
+> > cp /somehing /dev/ram0
+> > 
+> > does not work. Some care must probably be taken when setting up the
+> > kernel parameters. Are these the problems or is there something else?
+> yes it's get issue with uImage that get data load there :(
 > 
-> The comments in respect of the MAC fixup function have been addressed by:
-> - Removing the fixup function from the initial patch.
-> - Updating eth_of_fixup to set the MAC address based on the Ethernet device
->   node alias.
+> as I can not control the load addr from uImage :(
 > 
-> Since eth_of_fixup is conditionally compiled, the P2020RDB configuration file
-> in patch [4/4] is updated to enable CONFIG_OFDEVICE.
-> 
-> Renaud Barbier (4):
->   of: base: import of_find_node_by_type
->   ppc: add and update device tree fixup functions
->   ppc: bootm: relocate fdt to valid boot memory
->   ppc: P2020RDB configuration update
+> and on ux5x0 and arm board I have ddr starting at 0x0
 
-Applied, thanks
+Maybe we should add some hook which dynamically enables/disables the
+zero page. The bootm code could then disable it.
 
-I splitted up 2/4 into two patches because then we have one patch for
-networking and one ppc specific patch.
+Anyway, for now we can also apply the current patch, but please move the
+is_start_zero test to vectors_init().
 
 Sascha
-
-> 
->  arch/ppc/boards/freescale-p2020rdb/env/bin/init |    3 +
->  arch/ppc/boards/freescale-p2020rdb/env/config   |    2 +
->  arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |    7 +
->  arch/ppc/configs/p2020rdb_defconfig             |   14 ++-
->  arch/ppc/include/asm/processor.h                |    2 +
->  arch/ppc/lib/ppclinux.c                         |   49 ++++++++-
->  arch/ppc/mach-mpc85xx/Makefile                  |    1 +
->  arch/ppc/mach-mpc85xx/fdt.c                     |  146 +++++++++++++++++++++++
->  drivers/of/base.c                               |   29 +++++
->  include/of.h                                    |    2 +
->  net/eth.c                                       |   20 ++--
->  11 files changed, 264 insertions(+), 11 deletions(-)
->  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
->  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
->  create mode 100644 arch/ppc/mach-mpc85xx/fdt.c
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
