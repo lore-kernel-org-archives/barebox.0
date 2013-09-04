@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VH7BY-0004mm-HO
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 07:07:29 +0000
-Date: Wed, 4 Sep 2013 09:07:04 +0200
+ id 1VH7H9-0004sX-Su
+ for barebox@lists.infradead.org; Wed, 04 Sep 2013 07:13:16 +0000
+Date: Wed, 4 Sep 2013 09:12:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130904070704.GI30088@pengutronix.de>
-References: <1377964462-10387-1-git-send-email-plagnioj@jcrosoft.com>
- <20130902090523.GT30088@pengutronix.de>
- <20130902102406.GK19197@ns203013.ovh.net>
+Message-ID: <20130904071253.GJ30088@pengutronix.de>
+References: <0EC48711-FFBD-438E-A85A-1FB2A466A613@reinrag.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130902102406.GK19197@ns203013.ovh.net>
+In-Reply-To: <0EC48711-FFBD-438E-A85A-1FB2A466A613@reinrag.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,41 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] arm: mmu: catch NULL pointer dereferences
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 3/4] small tweeks to build system for compatibility on
+ MacOS X
+To: Darren Garnier <dgarnier@reinrag.net>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 02, 2013 at 12:24:06PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:05 Mon 02 Sep     , Sascha Hauer wrote:
-> > On Sat, Aug 31, 2013 at 05:54:22PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > For high vectors if memory start at 0x0. We have to
-> > > live without being able to catch NULL pointer dereferences.
-> > > 
-> > Why not add the check to vectors_init() instead of passing this as
-> > argument?
-> > 
-> > I must say I'm not entirely happy with this approach. Being able to
-> > catch NULL pointer derefs is really a good thing. When exactly does the
-> > faulting zero SDRAM page become a problem for you? obviously something
-> > like
-> > 
-> > cp /somehing /dev/ram0
-> > 
-> > does not work. Some care must probably be taken when setting up the
-> > kernel parameters. Are these the problems or is there something else?
-> yes it's get issue with uImage that get data load there :(
-> 
-> as I can not control the load addr from uImage :(
-> 
-> and on ux5x0 and arm board I have ddr starting at 0x0
+Hi Darren,
 
-Maybe we should add some hook which dynamically enables/disables the
-zero page. The bootm code could then disable it.
+On Mon, Sep 02, 2013 at 10:22:49PM -0400, Darren Garnier wrote:
+> Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
+> ---
+> Makefile       | 6 +++---
+> scripts/genenv | 3 ++-
+> 2 files changed, 5 insertions(+), 4 deletions(-)
 
-Anyway, for now we can also apply the current patch, but please move the
-is_start_zero test to vectors_init().
+Applied, thanks.
+
+I had to hand edit this patch. Your mailer seems to remove leading
+spaces:
+
+
+diff --git a/Makefile b/Makefile
+index 397c54a..ff17d8f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -577,7 +577,7 @@ define rule_barebox__
+	$(cmd_sysmap) $@ System.map;                                         \
+	if [ $$? -ne 0 ]; then                                               \
+		rm -f $@;                                                    \
+-		/bin/false;                                                  \
++		false;                                                       \
+	fi;
+endef
+
+^^^
+
+There should be a space before 'endef'
+
+I won't be able to apply bigger patches this way. Consider using
+git-send-email, once configured to actually send something it will most
+likely send correct patches.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
