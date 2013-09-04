@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VH6ef-0004IL-90
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 06:33:30 +0000
-Date: Wed, 4 Sep 2013 08:33:07 +0200
+ id 1VH6ro-0004Rj-HP
+ for barebox@lists.infradead.org; Wed, 04 Sep 2013 06:47:05 +0000
+Date: Wed, 4 Sep 2013 08:46:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130904063307.GG30088@pengutronix.de>
-References: <1378182813-30776-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20130904064642.GH30088@pengutronix.de>
+References: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1378182813-30776-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,128 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: qemu-malta: switch to devicetree
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH v2 0/4] Update P2020RDB board support to allow NFS booting.
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 03, 2013 at 08:33:33AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Tue, Sep 03, 2013 at 03:54:23PM +0100, Renaud Barbier wrote:
+> This patchset addresses all the comments regarding the initial patch [2/4].
+> The comments in respect of the function fdt_stdout_setup have been addressed
+> by:
+> - Removing the check on the existence of the /chosen node.
+> - Returning an errno value instead of 1.
+> 
+> The comments in respect of the MAC fixup function have been addressed by:
+> - Removing the fixup function from the initial patch.
+> - Updating eth_of_fixup to set the MAC address based on the Ethernet device
+>   node alias.
+> 
+> Since eth_of_fixup is conditionally compiled, the P2020RDB configuration file
+> in patch [4/4] is updated to enable CONFIG_OFDEVICE.
+> 
+> Renaud Barbier (4):
+>   of: base: import of_find_node_by_type
+>   ppc: add and update device tree fixup functions
+>   ppc: bootm: relocate fdt to valid boot memory
+>   ppc: P2020RDB configuration update
 
 Applied, thanks
 
+I splitted up 2/4 into two patches because then we have one patch for
+networking and one ppc specific patch.
+
 Sascha
 
-> ---
->  arch/mips/boards/qemu-malta/init.c     | 31 ++-----------------------------
->  arch/mips/configs/qemu-malta_defconfig |  1 +
->  arch/mips/dts/qemu-malta.dts           | 33 +++++++++++++++++++++++++++++++++
->  3 files changed, 36 insertions(+), 29 deletions(-)
 > 
-> diff --git a/arch/mips/boards/qemu-malta/init.c b/arch/mips/boards/qemu-malta/init.c
-> index ddc90dc..4d12495 100644
-> --- a/arch/mips/boards/qemu-malta/init.c
-> +++ b/arch/mips/boards/qemu-malta/init.c
-> @@ -17,39 +17,12 @@
->   */
->  
->  #include <common.h>
-> -#include <types.h>
-> -#include <driver.h>
->  #include <init.h>
-> -#include <ns16550.h>
-> -#include <mach/hardware.h>
-> -#include <partition.h>
-> -#include <sizes.h>
->  
-> -static int malta_devices_init(void)
-> +static int malta_core_init(void)
->  {
-> -	add_cfi_flash_device(0, 0x1e000000, SZ_4M, 0);
-> -
-> -	devfs_add_partition("nor0", 0x0, SZ_512K, DEVFS_PARTITION_FIXED, "self");
-> -	devfs_add_partition("nor0", SZ_512K, SZ_64K, DEVFS_PARTITION_FIXED, "env0");
-> -
-> -	return 0;
-> -}
-> -device_initcall(malta_devices_init);
-> -
-> -static struct NS16550_plat serial_plat = {
-> -	.clock = 1843200, /* no matter for emulated port */
-> -	.shift = 0,
-> -};
-> -
-> -static int malta_console_init(void)
-> -{
-> -	barebox_set_model("qemu malta");
->  	barebox_set_hostname("malta");
->  
-> -	/* Register the serial port */
-> -	add_ns16550_device(DEVICE_ID_DYNAMIC, MALTA_PIIX4_UART0, 8,
-> -			IORESOURCE_MEM_8BIT, &serial_plat);
-> -
->  	return 0;
->  }
-> -console_initcall(malta_console_init);
-> +core_initcall(malta_core_init);
-> diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
-> index 18c840d..1b9ee9a 100644
-> --- a/arch/mips/configs/qemu-malta_defconfig
-> +++ b/arch/mips/configs/qemu-malta_defconfig
-> @@ -54,6 +54,7 @@ CONFIG_NET_PING=y
->  CONFIG_NET_NETCONSOLE=y
->  CONFIG_NET_RESOLV=y
->  CONFIG_OFDEVICE=y
-> +CONFIG_OF_BAREBOX_DRIVERS=y
->  # CONFIG_SPI is not set
->  CONFIG_MTD=y
->  CONFIG_DRIVER_CFI=y
-> diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
-> index c4dcf05..4057729 100644
-> --- a/arch/mips/dts/qemu-malta.dts
-> +++ b/arch/mips/dts/qemu-malta.dts
-> @@ -6,7 +6,40 @@
->  	model = "qemu malta";
->  	compatible = "qemu,malta";
->  
-> +	chosen {
-> +		environment@0 {
-> +			compatible = "barebox,environment";
-> +			device-path = &nor0, "partname:barebox-environment";
-> +		};
-> +	};
-> +
->  	memory {
->  		reg = <0x00000000 0x10000000>;
->  	};
-> +
-> +	uart0: serial@b00003f8 {
-> +		compatible = "ns16550a";
-> +		reg = <0xb00003f8 0x08>;
-> +		reg-shift = <0>;
-> +		/* no matter for emulated port */
-> +		clock-frequency = <1843200>;
-> +	};
-> +
-> +	nor0: flash@be000000 {
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		compatible = "cfi-flash";
-> +		reg = <0xbe000000 0x00400000>;
-> +
-> +		partition@0 {
-> +			label = "barebox";
-> +			reg = <0 0x80000>;
-> +			read-only;
-> +		};
-> +
-> +		partition@80000 {
-> +			label = "barebox-environment";
-> +			reg = <0x80000 0x10000>;
-> +		};
-> +	};
->  };
-> -- 
-> 1.8.4.rc3
+>  arch/ppc/boards/freescale-p2020rdb/env/bin/init |    3 +
+>  arch/ppc/boards/freescale-p2020rdb/env/config   |    2 +
+>  arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |    7 +
+>  arch/ppc/configs/p2020rdb_defconfig             |   14 ++-
+>  arch/ppc/include/asm/processor.h                |    2 +
+>  arch/ppc/lib/ppclinux.c                         |   49 ++++++++-
+>  arch/ppc/mach-mpc85xx/Makefile                  |    1 +
+>  arch/ppc/mach-mpc85xx/fdt.c                     |  146 +++++++++++++++++++++++
+>  drivers/of/base.c                               |   29 +++++
+>  include/of.h                                    |    2 +
+>  net/eth.c                                       |   20 ++--
+>  11 files changed, 264 insertions(+), 11 deletions(-)
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
+>  create mode 100644 arch/ppc/mach-mpc85xx/fdt.c
 > 
 > 
 > _______________________________________________
