@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VH6Wa-0004CX-9h
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 06:25:09 +0000
-Date: Wed, 4 Sep 2013 08:24:44 +0200
+ id 1VH6bs-0004GY-Dx
+ for barebox@lists.infradead.org; Wed, 04 Sep 2013 06:30:37 +0000
+Date: Wed, 4 Sep 2013 08:30:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130904062444.GE30088@pengutronix.de>
-References: <32D9025B-5882-4030-A3DA-0CC66CEBD93C@reinrag.net>
- <87ppspye5z.fsf@free.fr>
+Message-ID: <20130904063013.GF30088@pengutronix.de>
+References: <1378182813-30776-1-git-send-email-antonynpavlov@gmail.com>
+ <20130903084123.60bf8561ef15b863013431e7@gmail.com>
+ <20130903112156.GL19197@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87ppspye5z.fsf@free.fr>
+In-Reply-To: <20130903112156.GL19197@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +24,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] mtd: fix erasesize math for non power-of-2 devices
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH] MIPS: qemu-malta: switch to devicetree
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
+On Tue, Sep 03, 2013 at 01:21:56PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 08:41 Tue 03 Sep     , Antony Pavlov wrote:
+> > On Tue,  3 Sep 2013 08:33:33 +0400
+> > > -static struct NS16550_plat serial_plat = {
+> > > -	.clock = 1843200, /* no matter for emulated port */
+> > > -	.shift = 0,
+> > > -};
+> > > -
+> > > -static int malta_console_init(void)
+> > > -{
+> > > -	barebox_set_model("qemu malta");
+> > >  	barebox_set_hostname("malta");
+> > >
+> > 
+> > May be it is reasonable to add hostname support to dts?
+> > 
+> > The lonely barebox_set_hostname() in the malta board code looks very pathetically :)
+> 
+> we could use the model propertie for this
 
-On Tue, Sep 03, 2013 at 08:04:56PM +0200, Robert Jarzmik wrote:
-> Darren Garnier <dgarnier@reinrag.net> writes:
-> 
-> > Signed-off-by: Darren Garnier <dgarnier@reinrag.net>
-> 
-> Hi Darren,
-> 
-> First of all, do any device exist where erasesize is non power-of-2, and if so
-> which one do you have in mind ?
+The model property is already used for the verbose name of a board. I
+described it as:
 
-Atmel DataFlashes seem to have non power-of-2 erasesizes, Darren
-mentioned this is in the introduction message. But right, it should be
-mentioned in the commit log.
+/*
+ * The model is the verbose name of a board. It can contain
+ * whitespaces, uppercase/lowcer letters, digits, ',', '.'
+ * '-', '_'
+ */
+
+Whereas the hostname is without whitespaces, I described it as:
+
+/*
+ * The hostname is supposed to be the shortname of a board. It should
+ * contain only lowercase letters, numbers, '-', '_'. No whitespaces
+ * allowed.
+ */
+
+I think it is reasonable to add a hostname property to the devicetree.
+The last time I thought about this I couldn't really agree with myself
+how to name it.
 
 Sascha
 
