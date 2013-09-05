@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtprelay01.ispgateway.de ([80.67.29.23])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VHYZ1-00006R-LH
- for barebox@lists.infradead.org; Thu, 05 Sep 2013 12:21:32 +0000
-Date: Thu, 5 Sep 2013 14:21:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130905122108.GE30069@pengutronix.de>
-References: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
- <1378220067-22296-4-git-send-email-renaud.barbier@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1378220067-22296-4-git-send-email-renaud.barbier@ge.com>
+ id 1VHZZI-0001zF-S4
+ for barebox@lists.infradead.org; Thu, 05 Sep 2013 13:25:54 +0000
+From: Markus Niebel <list-09_barebox@tqsc.de>
+Date: Thu,  5 Sep 2013 15:31:20 +0200
+Message-Id: <1378387880-3844-1-git-send-email-list-09_barebox@tqsc.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,49 +14,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] ppc: bootm: relocate fdt to valid boot memory
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH / RFC] MCI: imx-esdhc: implement workaround for errata
+ ENGcm12360
+To: barebox@lists.infradead.org
+Cc: Markus Niebel <Markus.Niebel@tqs.de>
 
-Hi Renaud,
+From: Markus Niebel <Markus.Niebel@tqs.de>
 
-On Tue, Sep 03, 2013 at 03:54:26PM +0100, Renaud Barbier wrote:
-> For the MPC85xx family of SOCs Linux expects any boot firmware
-> information to be passed in the first 64MiB of memory. This adds support
-> to ensure that the device tree is relocated to a valid location if it is
-> outside that address range.
-> 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
-> ---
->  arch/ppc/include/asm/processor.h |    1 +
->  arch/ppc/lib/ppclinux.c          |   49 +++++++++++++++++++++++++++++++++++++-
->  2 files changed, 49 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-> index 04cfb60..6b9b7dd 100644
-> --- a/arch/ppc/include/asm/processor.h
-> +++ b/arch/ppc/include/asm/processor.h
-> @@ -966,6 +966,7 @@ struct cpu_type {
->  struct cpu_type *identify_cpu(u32 ver);
->  
->  #if defined(CONFIG_MPC85xx)
-> +#define LINUX_TLB1_MAX_ADDR	((void *)(64 << 20))
+Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
 
-I had to drop this patch as it breaks the pcm030 compilation. I have no
-idea what the correct value for LINUX_TLB1_MAX_ADDR on MPC5200 is. Can
-you send an updated patch?
+At least i.MX53 has errata ENGcm12360:
 
-Sascha
+Occurs when a pending command which issues busy is completed.
+For a command with R1b response, the proper software sequence
+is to poll the DLA for R1b commands to determine busy
+state completion. The DLA polling is not working properly for
+the ESDHC module. This is relevant for all eSDHC ports (eSDHC1-4 ports)
 
+DLA bit in PRSSTAT register cannot be
+polled to wait for busy state completion.
+
+Updated block guide to reflect that DLA is not applicable to detect
+busy state, instead, should poll bit 24 in PRSSTAT register (DLSL[0] bit)
+to check that wait busy state is over.
+---
+ drivers/mci/imx-esdhc.c |   21 +++++++++++++++++++++
+ drivers/mci/sdhci.h     |    1 +
+ 2 files changed, 22 insertions(+)
+
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 8cf3e64..902c654 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -266,6 +266,27 @@ esdhc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+ 	if (irqstat & IRQSTAT_CTOE)
+ 		return -ETIMEDOUT;
+ 
++	/* Workaround for ESDHC errata ENGcm03648 / ENGcm12360 */
++	if (!data && (cmd->resp_type & MMC_RSP_BUSY)) {
++		/* 
++		 * use high timeout value - we saw card failures here
++		 * using 250 msec in u-boot 2013.04 / i.MX6
++		 */
++		#define DAT0_POLL_TIME 2500
++
++		/* 
++		 * Poll on DATA0 line for cmd with busy signal for 
++		 * timout / 10 usec since DLA polling can be insecure
++		 */
++		ret = wait_on_timeout(DAT0_POLL_TIME * MSECOND,
++			(esdhc_read32(regs + SDHCI_PRESENT_STATE) & PRSSTAT_DAT0));
++
++		if (ret) {
++			dev_err(host->dev, "timeout PRSSTAT_DAT0\n");
++			return -ETIMEDOUT;
++		}
++	}
++
+ 	/* Copy the response to the response buffer */
+ 	if (cmd->resp_type & MMC_RSP_136) {
+ 		u32 cmdrsp3, cmdrsp2, cmdrsp1, cmdrsp0;
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index b2d6779..4302095 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -75,6 +75,7 @@
+ #define IRQSTATEN_TC		0x00000002
+ #define IRQSTATEN_CC		0x00000001
+ 
++#define PRSSTAT_DAT0		0x01000000
+ #define PRSSTAT_CLSL		0x00800000
+ #define PRSSTAT_WPSPL		0x00080000
+ #define PRSSTAT_CDPL		0x00040000
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 
 _______________________________________________
 barebox mailing list
