@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VHTLM-0000tM-8l
- for barebox@lists.infradead.org; Thu, 05 Sep 2013 06:47:05 +0000
-Date: Thu, 5 Sep 2013 08:46:39 +0200
+ id 1VHYZ1-00006R-LH
+ for barebox@lists.infradead.org; Thu, 05 Sep 2013 12:21:32 +0000
+Date: Thu, 5 Sep 2013 14:21:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130905064639.GO30088@pengutronix.de>
-References: <20130905010436.GP19598@titan.lakedaemon.net>
+Message-ID: <20130905122108.GE30069@pengutronix.de>
+References: <1378220067-22296-1-git-send-email-renaud.barbier@ge.com>
+ <1378220067-22296-4-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130905010436.GP19598@titan.lakedaemon.net>
+In-Reply-To: <1378220067-22296-4-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,44 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx-usb-image write to usb error
-To: Jason Cooper <barebox@lakedaemon.net>
+Subject: Re: [PATCH 3/4] ppc: bootm: relocate fdt to valid boot memory
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-Hi Jason,
+Hi Renaud,
 
-On Wed, Sep 04, 2013 at 09:04:36PM -0400, Jason Cooper wrote:
-> All,
+On Tue, Sep 03, 2013 at 03:54:26PM +0100, Renaud Barbier wrote:
+> For the MPC85xx family of SOCs Linux expects any boot firmware
+> information to be passed in the first 64MiB of memory. This adds support
+> to ensure that the device tree is relocated to a valid location if it is
+> outside that address range.
 > 
-> This is the first I've messed with i.MX, so I'm a little lost. :)
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  arch/ppc/include/asm/processor.h |    1 +
+>  arch/ppc/lib/ppclinux.c          |   49 +++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 49 insertions(+), 1 deletions(-)
 > 
-> I'm putting together a patch to add support for the SanDisk Connect
-> Wireless Media Drive [1], code dump from SanDisk is here [2].  It turns
-> out when you unplug the battery, it'll show up as the Freescale hid.
-> 
-> Here's what I get:
-> 
-> $ ./scripts/imx/imx-image -c \
-> arch/arm/boards/sandisk-connect-wmd/flash-header-lpddr1.imxcfg -f \
-> barebox.bin -o barebox.imx
-> $ sudo ./scripts/imx/imx-usb-loader -vvvvv ./barebox.imx 
-> found i.MX50 USB device [15a2:0052]
+> diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
+> index 04cfb60..6b9b7dd 100644
+> --- a/arch/ppc/include/asm/processor.h
+> +++ b/arch/ppc/include/asm/processor.h
+> @@ -966,6 +966,7 @@ struct cpu_type {
+>  struct cpu_type *identify_cpu(u32 ver);
+>  
+>  #if defined(CONFIG_MPC85xx)
+> +#define LINUX_TLB1_MAX_ADDR	((void *)(64 << 20))
 
-I never tested this on an i.MX50 due to lack of hardware. Have a look
-at scripts/imx/imx-usb-loader.c at imx_ids. i.MX50 is very similar to
-i.MX51. The i.MX51 has:
-
-	{
-		.vid = 0x15a2,
-		.pid = 0x0041,
-		.name = "i.MX51",
-		.header_type = HDR_MX51,
-		.mode = MODE_BULK,
-		.max_transfer = 64,
-	},
-
-The header_type, mode and max_transfer fields are missing for i.MX50. I
-assume that's the problem.
+I had to drop this patch as it breaks the pcm030 compilation. I have no
+idea what the correct value for LINUX_TLB1_MAX_ADDR on MPC5200 is. Can
+you send an updated patch?
 
 Sascha
 
