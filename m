@@ -1,19 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VHJp3-0007oG-0K
- for barebox@lists.infradead.org; Wed, 04 Sep 2013 20:37:06 +0000
-Date: Wed, 4 Sep 2013 22:36:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130904203639.GN30088@pengutronix.de>
-References: <1378182813-30776-1-git-send-email-antonynpavlov@gmail.com>
- <20130903084123.60bf8561ef15b863013431e7@gmail.com>
- <20130903112156.GL19197@ns203013.ovh.net>
- <20130904063013.GF30088@pengutronix.de>
- <20130904075919.GD22507@ns203013.ovh.net>
+ id 1VHO0N-0003hU-FE
+ for barebox@lists.infradead.org; Thu, 05 Sep 2013 01:05:04 +0000
+Received: from pool-72-84-113-162.nrflva.fios.verizon.net ([72.84.113.162]
+ helo=titan)
+ by mho-02-ewr.mailhop.org with esmtpsa (TLSv1:AES256-SHA:256)
+ (Exim 4.72) (envelope-from <barebox@lakedaemon.net>)
+ id 1VHO00-0003cZ-Vu
+ for barebox@lists.infradead.org; Thu, 05 Sep 2013 01:04:41 +0000
+Received: from titan.lakedaemon.net (localhost [127.0.0.1])
+ by titan (Postfix) with ESMTP id 72D664994A3
+ for <barebox@lists.infradead.org>; Wed,  4 Sep 2013 21:04:36 -0400 (EDT)
+Date: Wed, 4 Sep 2013 21:04:36 -0400
+From: Jason Cooper <barebox@lakedaemon.net>
+Message-ID: <20130905010436.GP19598@titan.lakedaemon.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130904075919.GD22507@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +29,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: qemu-malta: switch to devicetree
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: imx-usb-image write to usb error
+To: barebox@lists.infradead.org
 
-On Wed, Sep 04, 2013 at 09:59:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> how about use the compatible property?
-> 
-> for me I'll just put
-> model = "toto toto toto" , "toto_toot_toto";
-> 
-> if no second string create a hotname on the fly by replace the forbidden char
-> by '_'
+All,
 
-That would be fine aswell. We should probably suggest something on the
-devicetree discuss list.
+This is the first I've messed with i.MX, so I'm a little lost. :)
 
-BTW according to EPAPR the model property should be "vendor,model". Most
-ARM dts don't have this layout anyway. Maybe this increases the
-motivation to change something there.
+I'm putting together a patch to add support for the SanDisk Connect
+Wireless Media Drive [1], code dump from SanDisk is here [2].  It turns
+out when you unplug the battery, it'll show up as the Freescale hid.
 
-Sascha
+Here's what I get:
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+$ ./scripts/imx/imx-image -c \
+arch/arm/boards/sandisk-connect-wmd/flash-header-lpddr1.imxcfg -f \
+barebox.bin -o barebox.imx
+$ sudo ./scripts/imx/imx-usb-loader -vvvvv ./barebox.imx 
+found i.MX50 USB device [15a2:0052]
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=1
+report 1, wrote 0 bytes, err=0
+report=3
+report 3, read 0 bytes, err=-7
+read=00 00 00 00
+report=4
+4 in err=-7, last_trans=0  00 00 00 00
+status failed
+
+Looking at the code, it looks like transfer() is always returning 0
+bytes in last_trans.  Has anyone seen this before?  $searchengine came
+up blank.  What simple thing am I missing?
+
+thx,
+
+Jason.
+
+[1] http://www.sandisk.com/products/wireless/media-drive/
+[2] http://www.sandisk.com/products/connect/disclaimer/
 
 _______________________________________________
 barebox mailing list
