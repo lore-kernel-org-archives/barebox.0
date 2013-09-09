@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
+Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJ4L0-0003TA-61
- for barebox@lists.infradead.org; Mon, 09 Sep 2013 16:29:20 +0000
-Received: by mail-bk0-f41.google.com with SMTP id na10so2446742bkb.14
- for <barebox@lists.infradead.org>; Mon, 09 Sep 2013 09:28:51 -0700 (PDT)
-Message-ID: <522DF740.9050503@gmail.com>
-Date: Mon, 09 Sep 2013 18:28:48 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
+ id 1VJ5TA-0005Ho-4R
+ for barebox@lists.infradead.org; Mon, 09 Sep 2013 17:41:49 +0000
+Date: Mon, 9 Sep 2013 13:41:17 -0400
+From: Jason Cooper <barebox@lakedaemon.net>
+Message-ID: <20130909174117.GA12927@titan.lakedaemon.net>
+References: <20130905010436.GP19598@titan.lakedaemon.net>
+ <20130905064639.GO30088@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130905064639.GO30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,85 +19,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: Add designware gpio controller support
+Subject: Re: imx-usb-image write to usb error
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09/09/13 16:54, Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->   drivers/gpio/Kconfig   |   6 ++
->   drivers/gpio/Makefile  |   1 +
->   drivers/gpio/gpio-dw.c | 151 +++++++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 158 insertions(+)
->   create mode 100644 drivers/gpio/gpio-dw.c
->
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index d5ac532..18d3135 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -54,6 +54,12 @@ config GPIO_TEGRA
->   	help
->   	  Say yes here to include the driver for the GPIO controller found on the
->   	  Tegra line of SoCs.
-> +
-> +config GPIO_DESIGNWARE
-> +	tristate "Synopsys DesignWare GPIO driver"
+On Thu, Sep 05, 2013 at 08:46:39AM +0200, Sascha Hauer wrote:
+> Hi Jason,
+> 
+> On Wed, Sep 04, 2013 at 09:04:36PM -0400, Jason Cooper wrote:
+> > All,
+> > 
+> > This is the first I've messed with i.MX, so I'm a little lost. :)
+> > 
+> > I'm putting together a patch to add support for the SanDisk Connect
+> > Wireless Media Drive [1], code dump from SanDisk is here [2].  It turns
+> > out when you unplug the battery, it'll show up as the Freescale hid.
+> > 
+> > Here's what I get:
+> > 
+> > $ ./scripts/imx/imx-image -c \
+> > arch/arm/boards/sandisk-connect-wmd/flash-header-lpddr1.imxcfg -f \
+> > barebox.bin -o barebox.imx
+> > $ sudo ./scripts/imx/imx-usb-loader -vvvvv ./barebox.imx 
+> > found i.MX50 USB device [15a2:0052]
+> 
+> I never tested this on an i.MX50 due to lack of hardware. Have a look
+> at scripts/imx/imx-usb-loader.c at imx_ids. i.MX50 is very similar to
+> i.MX51. The i.MX51 has:
+> 
+> 	{
+> 		.vid = 0x15a2,
+> 		.pid = 0x0041,
+> 		.name = "i.MX51",
+> 		.header_type = HDR_MX51,
+> 		.mode = MODE_BULK,
+> 		.max_transfer = 64,
+> 	},
+> 
+> The header_type, mode and max_transfer fields are missing for i.MX50. I
+> assume that's the problem.
 
-Sascha,
+Well, it looks like it works, but I'm unable to get a barebox prompt on
+the tty.  (patches to come once I get a prompt).  So I decided to try
+tackling the problem from the other end for a bit.  Namely booting a
+mainline kernel from the installed u-boot.
 
-I know DW's GPIO is also used on Armada 1500 which I currently work on.
-Precisely, the IP is named dw-apb-gpio. Maybe the above should also
-reflect APB.
+Something is confusing me though.  The part number on the chip is
+MCIMX502CVK8B.  Which, iiuc, is an imx51.  The provided kernel spits out
+this:
 
-[...]
-> diff --git a/drivers/gpio/gpio-dw.c b/drivers/gpio/gpio-dw.c
-> new file mode 100644
-> index 0000000..54e7452
-> --- /dev/null
-> +++ b/drivers/gpio/gpio-dw.c
-> @@ -0,0 +1,151 @@
-[...]
-> +#include <common.h>
-> +#include <errno.h>
-> +#include <io.h>
-> +#include <gpio.h>
-> +#include <init.h>
-> +
-> +#define GPIO_INT_EN_REG_OFFSET 		0x30
-> +#define GPIO_INT_MASK_REG_OFFSET 	0x34
-> +#define GPIO_INT_TYPE_LEVEL_REG_OFFSET 	0x38
-> +#define GPIO_INT_POLARITY_REG_OFFSET 	0x3c
-> +#define GPIO_INT_STATUS_REG_OFFSET 	0x40
-> +#define GPIO_PORT_A_EOI_REG_OFFSET 	0x4c
+[    0.000000] MXC_Early serial console at MMIO 0x53fbc000 (options '115200')
 
-I have seen this driver and think it can be improved by exploiting
-its config1/2 registers where synthesis settings are stored. Please
-also look at [1] pp.1229; you can read out number of ports, port
-width, interrupt, and debounce features.
+However, the only imx SoCs using that address range are imx53 and imx25,
+according to arch/arm/boot/dts/ in Linux, at least.
 
-Unfortunately, I am not ready to run barebox on Armada 1500 and I
-don't have a socfpga to test. So if you are not eager to modify it now,
-I can add config reg based read-out later.
+In addition, the docs for the imx50 clearly state that it uses DCD v2
+(version = 0x40) [1] (Table 6-27, DCD Header), but the code in barebox's
+imx-image.c says imx51 uses DCD v1...
 
-[1] http://www.altera.com/literature/hb/arria-v/hps.pdf
+Anyone with more experience with Freescale SoCs care to fill in the
+blanks?  The first hint I'm on the wrong path is that I feel like I need
+to write a whole dtsi file from scratch. :-/
 
-[...]
-> +static __maybe_unused struct of_device_id dwgpio_match[] = {
-> +	{
-> +		.compatible = "snps,dw-gpio",
-> +	}, {
+thx,
 
-Please add "snps,dw-apb-gpio", that's what the linux driver
-will look for if make to pick it up for Armada 1500.
+Jason.
 
-Sebastian
-
+[1] http://cache.freescale.com/files/32bit/doc/ref_manual/IMX50RM.pdf
 
 _______________________________________________
 barebox mailing list
