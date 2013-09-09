@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJ35c-0000Nu-Aj
- for barebox@lists.infradead.org; Mon, 09 Sep 2013 15:09:21 +0000
-Date: Mon, 9 Sep 2013 17:08:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130909150858.GW30088@pengutronix.de>
-References: <20130905122108.GE30069@pengutronix.de>
- <1378464792-22035-1-git-send-email-renaud.barbier@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1378464792-22035-1-git-send-email-renaud.barbier@ge.com>
+ id 1VJ4L0-0003TA-61
+ for barebox@lists.infradead.org; Mon, 09 Sep 2013 16:29:20 +0000
+Received: by mail-bk0-f41.google.com with SMTP id na10so2446742bkb.14
+ for <barebox@lists.infradead.org>; Mon, 09 Sep 2013 09:28:51 -0700 (PDT)
+Message-ID: <522DF740.9050503@gmail.com>
+Date: Mon, 09 Sep 2013 18:28:48 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,146 +18,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] ppc: bootm: relocate fdt to valid boot memory
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [PATCH] gpio: Add designware gpio controller support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 06, 2013 at 11:53:12AM +0100, Renaud Barbier wrote:
-> For the MPC85xx family of SOCs Linux expects any boot firmware
-> information to be passed in the first 64MiB of memory. This adds support
-> to ensure that the device tree is relocated to a valid location if it is
-> outside that address range.
-> 
-> For the other SOC family currently present in the ppc architecture, the
-> default is not to relocate as at Linux startup the virtual address
-> equals the physical address.
-> 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
-
-Applied, thanks
-
-Sascha
-
+On 09/09/13 16:54, Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  arch/ppc/include/asm/processor.h |  3 +++
->  arch/ppc/lib/ppclinux.c          | 49 +++++++++++++++++++++++++++++++++++++++-
->  2 files changed, 51 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-> index 04cfb60..9145257 100644
-> --- a/arch/ppc/include/asm/processor.h
-> +++ b/arch/ppc/include/asm/processor.h
-> @@ -966,8 +966,11 @@ struct cpu_type {
->  struct cpu_type *identify_cpu(u32 ver);
->  
->  #if defined(CONFIG_MPC85xx)
-> +#define LINUX_TLB1_MAX_ADDR	((void *)(64 << 20))
->  #define CPU_TYPE_ENTRY(n, v, nc) \
->  	{ .name = #n, .soc_ver = SVR_##v, .num_cores = (nc), }
-> +#else
-> +#define LINUX_TLB1_MAX_ADDR	((void *)0xffffffff)
->  #endif
->  #ifndef CONFIG_MACH_SPECIFIC
->  extern int _machine;
-> diff --git a/arch/ppc/lib/ppclinux.c b/arch/ppc/lib/ppclinux.c
-> index ef69ead..7c30ac3 100644
-> --- a/arch/ppc/lib/ppclinux.c
-> +++ b/arch/ppc/lib/ppclinux.c
-> @@ -4,12 +4,45 @@
->  #include <command.h>
->  #include <image.h>
->  #include <init.h>
-> +#include <malloc.h>
->  #include <environment.h>
->  #include <asm/bitops.h>
-> +#include <asm/processor.h>
->  #include <boot.h>
->  #include <errno.h>
->  #include <fs.h>
->  
-> +static int bootm_relocate_fdt(void *addr, struct image_data *data)
-> +{
-> +	if (addr < LINUX_TLB1_MAX_ADDR) {
-> +		/* The kernel is within  the boot TLB mapping.
-> +		 * Put the DTB above if there is no space
-> +		 * below.
-> +		 */
-> +		if (addr < (void *)data->oftree->totalsize) {
-> +			addr = (void *)PAGE_ALIGN((phys_addr_t)addr +
-> +					data->os->header.ih_size);
-> +			addr += data->oftree->totalsize;
-> +			if (addr < LINUX_TLB1_MAX_ADDR)
-> +				addr = LINUX_TLB1_MAX_ADDR;
-> +		}
-> +	}
+>   drivers/gpio/Kconfig   |   6 ++
+>   drivers/gpio/Makefile  |   1 +
+>   drivers/gpio/gpio-dw.c | 151 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   3 files changed, 158 insertions(+)
+>   create mode 100644 drivers/gpio/gpio-dw.c
+>
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index d5ac532..18d3135 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -54,6 +54,12 @@ config GPIO_TEGRA
+>   	help
+>   	  Say yes here to include the driver for the GPIO controller found on the
+>   	  Tegra line of SoCs.
 > +
-> +	if (addr > LINUX_TLB1_MAX_ADDR) {
-> +		pr_crit("Unable to relocate DTB to Linux TLB\n");
-> +		return 1;
-> +	}
-> +
-> +	addr = (void *)PAGE_ALIGN_DOWN((phys_addr_t)addr -
-> +			data->oftree->totalsize);
-> +	memcpy(addr, data->oftree, data->oftree->totalsize);
-> +	free(data->oftree);
-> +	data->oftree = addr;
-> +
-> +	pr_info("Relocating device tree to 0x%p\n", addr);
-> +	return 0;
-> +}
-> +
->  static int do_bootm_linux(struct image_data *data)
->  {
->  	void	(*kernel)(void *, void *, unsigned long,
-> @@ -24,6 +57,20 @@ static int do_bootm_linux(struct image_data *data)
->  		return -EINVAL;
->  	}
->  
-> +	/* Relocate the device tree if outside the initial
-> +	 * Linux mapped TLB.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_MPC85xx)) {
-> +		void *addr = data->oftree;
-> +
-> +		if ((addr + data->oftree->totalsize) > LINUX_TLB1_MAX_ADDR) {
-> +			addr = (void *)data->os_address;
-> +
-> +			if (bootm_relocate_fdt(addr, data))
-> +				goto error;
-> +		}
-> +	}
-> +
->  	fdt_add_reserve_map(data->oftree);
->  
->  	kernel = (void *)(data->os_address + data->os_entry);
-> @@ -40,7 +87,7 @@ static int do_bootm_linux(struct image_data *data)
->  
->  	reset_cpu(0);
->  
-> -	/* not reached */
-> +error:
->  	return -1;
->  }
->  
-> -- 
-> 1.8.3.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +config GPIO_DESIGNWARE
+> +	tristate "Synopsys DesignWare GPIO driver"
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha,
+
+I know DW's GPIO is also used on Armada 1500 which I currently work on.
+Precisely, the IP is named dw-apb-gpio. Maybe the above should also
+reflect APB.
+
+[...]
+> diff --git a/drivers/gpio/gpio-dw.c b/drivers/gpio/gpio-dw.c
+> new file mode 100644
+> index 0000000..54e7452
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-dw.c
+> @@ -0,0 +1,151 @@
+[...]
+> +#include <common.h>
+> +#include <errno.h>
+> +#include <io.h>
+> +#include <gpio.h>
+> +#include <init.h>
+> +
+> +#define GPIO_INT_EN_REG_OFFSET 		0x30
+> +#define GPIO_INT_MASK_REG_OFFSET 	0x34
+> +#define GPIO_INT_TYPE_LEVEL_REG_OFFSET 	0x38
+> +#define GPIO_INT_POLARITY_REG_OFFSET 	0x3c
+> +#define GPIO_INT_STATUS_REG_OFFSET 	0x40
+> +#define GPIO_PORT_A_EOI_REG_OFFSET 	0x4c
+
+I have seen this driver and think it can be improved by exploiting
+its config1/2 registers where synthesis settings are stored. Please
+also look at [1] pp.1229; you can read out number of ports, port
+width, interrupt, and debounce features.
+
+Unfortunately, I am not ready to run barebox on Armada 1500 and I
+don't have a socfpga to test. So if you are not eager to modify it now,
+I can add config reg based read-out later.
+
+[1] http://www.altera.com/literature/hb/arria-v/hps.pdf
+
+[...]
+> +static __maybe_unused struct of_device_id dwgpio_match[] = {
+> +	{
+> +		.compatible = "snps,dw-gpio",
+> +	}, {
+
+Please add "snps,dw-apb-gpio", that's what the linux driver
+will look for if make to pick it up for Armada 1500.
+
+Sebastian
+
 
 _______________________________________________
 barebox mailing list
