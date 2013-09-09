@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJ2qd-0008Ks-SX
- for barebox@lists.infradead.org; Mon, 09 Sep 2013 14:53:54 +0000
+ id 1VJ2ro-0008Si-S0
+ for barebox@lists.infradead.org; Mon, 09 Sep 2013 14:55:06 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  9 Sep 2013 16:53:19 +0200
-Message-Id: <1378738401-723-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1378738401-723-1-git-send-email-s.hauer@pengutronix.de>
-References: <1378738401-723-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  9 Sep 2013 16:54:42 +0200
+Message-Id: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,244 +19,200 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] net: designware: make alt/enhanced descriptor runtime
- configurable
+Subject: [PATCH] gpio: Add designware gpio controller support
 To: barebox@lists.infradead.org
-
-Instead of hardcoding the alternate/enhanced descriptor layout make
-it configurable during runtime. This is based on the value of the
-enh_desc variable which is currently hardcoded to zero. This should
-be configurable via device_id in the future. Since currently we have
-no in tree user of this driver this currently doesn't hurt.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/Kconfig      |  5 ----
- drivers/net/designware.c | 64 +++++++++++++++++++++++++-----------------------
- drivers/net/designware.h | 62 +++++++++++++++++-----------------------------
- 3 files changed, 56 insertions(+), 75 deletions(-)
+ drivers/gpio/Kconfig   |   6 ++
+ drivers/gpio/Makefile  |   1 +
+ drivers/gpio/gpio-dw.c | 151 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 158 insertions(+)
+ create mode 100644 drivers/gpio/gpio-dw.c
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index bd04531..5d7d20f 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -134,11 +134,6 @@ config DRIVER_NET_DESIGNWARE
- 	  This option enables support for the Synopsys
- 	  Designware Core Univesal MAC 10M/100M/1G ethernet IP.
- 
--config DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR
--	bool
--	depends on DRIVER_NET_DESIGNWARE
--	default n
--
- config DRIVER_NET_GIANFAR
- 	bool "Gianfar Ethernet"
- 	depends on ARCH_MPC85XX
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index 33d7345..0b5390d 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -54,6 +54,7 @@ struct dw_eth_dev {
- 	struct eth_dma_regs *dma_regs_p;
- 	int phy_addr;
- 	phy_interface_t interface;
-+	int enh_desc;
- };
- 
- /* Speed specific definitions */
-@@ -149,19 +150,19 @@ static void tx_descs_init(struct eth_device *dev)
- 		desc_p->dmamac_addr = &txbuffs[idx * CONFIG_ETH_BUFSIZE];
- 		desc_p->dmamac_next = &desc_table_p[idx + 1];
- 
--#if defined(CONFIG_DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR)
--		desc_p->txrx_status &= ~(DESC_TXSTS_TXINT | DESC_TXSTS_TXLAST |
--				DESC_TXSTS_TXFIRST | DESC_TXSTS_TXCRCDIS | \
--				DESC_TXSTS_TXCHECKINSCTRL | \
--				DESC_TXSTS_TXRINGEND | DESC_TXSTS_TXPADDIS);
--
--		desc_p->txrx_status |= DESC_TXSTS_TXCHAIN;
--		desc_p->dmamac_cntl = 0;
--		desc_p->txrx_status &= ~(DESC_TXSTS_MSK | DESC_TXSTS_OWNBYDMA);
--#else
--		desc_p->dmamac_cntl = DESC_TXCTRL_TXCHAIN;
--		desc_p->txrx_status = 0;
--#endif
-+		if (priv->enh_desc) {
-+			desc_p->txrx_status &= ~(DESC_ENH_TXSTS_TXINT | DESC_ENH_TXSTS_TXLAST |
-+					DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXCRCDIS |
-+					DESC_ENH_TXSTS_TXCHECKINSCTRL |
-+					DESC_ENH_TXSTS_TXRINGEND | DESC_ENH_TXSTS_TXPADDIS);
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index d5ac532..18d3135 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -54,6 +54,12 @@ config GPIO_TEGRA
+ 	help
+ 	  Say yes here to include the driver for the GPIO controller found on the
+ 	  Tegra line of SoCs.
 +
-+			desc_p->txrx_status |= DESC_ENH_TXSTS_TXCHAIN;
-+			desc_p->dmamac_cntl = 0;
-+			desc_p->txrx_status &= ~(DESC_ENH_TXSTS_MSK | DESC_ENH_TXSTS_OWNBYDMA);
-+		} else {
-+			desc_p->dmamac_cntl = DESC_TXCTRL_TXCHAIN;
-+			desc_p->txrx_status = 0;
-+		}
- 	}
++config GPIO_DESIGNWARE
++	tristate "Synopsys DesignWare GPIO driver"
++	help
++	  Say Y or M here to build support for the Synopsys DesignWare APB
++	  GPIO block.
+ endmenu
  
- 	/* Correcting the last pointer of the chain */
-@@ -184,9 +185,11 @@ static void rx_descs_init(struct eth_device *dev)
- 		desc_p->dmamac_addr = &rxbuffs[idx * CONFIG_ETH_BUFSIZE];
- 		desc_p->dmamac_next = &desc_table_p[idx + 1];
- 
--		desc_p->dmamac_cntl =
--			(MAC_MAX_FRAME_SZ & DESC_RXCTRL_SIZE1MASK) | \
--				      DESC_RXCTRL_RXCHAIN;
-+		desc_p->dmamac_cntl = MAC_MAX_FRAME_SZ;
-+		if (priv->enh_desc)
-+			desc_p->dmamac_cntl |= DESC_ENH_RXCTRL_RXCHAIN;
-+		else
-+			desc_p->dmamac_cntl |= DESC_RXCTRL_RXCHAIN;
- 
- 		dma_inv_range((unsigned long)desc_p->dmamac_addr,
- 			      (unsigned long)desc_p->dmamac_addr + CONFIG_ETH_BUFSIZE);
-@@ -282,11 +285,12 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
- {
- 	struct dw_eth_dev *priv = dev->priv;
- 	struct eth_dma_regs *dma_p = priv->dma_regs_p;
--	u32 desc_num = priv->tx_currdescnum;
-+	u32 owndma, desc_num = priv->tx_currdescnum;
- 	struct dmamacdescr *desc_p = &priv->tx_mac_descrtable[desc_num];
- 
-+	owndma = priv->enh_desc ? DESC_ENH_TXSTS_OWNBYDMA : DESC_TXSTS_OWNBYDMA;
- 	/* Check if the descriptor is owned by CPU */
--	if (desc_p->txrx_status & DESC_TXSTS_OWNBYDMA) {
-+	if (desc_p->txrx_status & owndma) {
- 		dev_err(&dev->dev, "CPU not owner of tx frame\n");
- 		return -1;
- 	}
-@@ -295,20 +299,20 @@ static int dwc_ether_send(struct eth_device *dev, void *packet, int length)
- 	dma_flush_range((unsigned long)desc_p->dmamac_addr,
- 			(unsigned long)desc_p->dmamac_addr + length);
- 
--#if defined(CONFIG_DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR)
--	desc_p->txrx_status |= DESC_TXSTS_TXFIRST | DESC_TXSTS_TXLAST;
--	desc_p->dmamac_cntl |= (length << DESC_TXCTRL_SIZE1SHFT) & \
--			       DESC_TXCTRL_SIZE1MASK;
-+	if (priv->enh_desc) {
-+		desc_p->txrx_status |= DESC_ENH_TXSTS_TXFIRST | DESC_ENH_TXSTS_TXLAST;
-+		desc_p->dmamac_cntl |= (length << DESC_ENH_TXCTRL_SIZE1SHFT) &
-+				       DESC_ENH_TXCTRL_SIZE1MASK;
- 
--	desc_p->txrx_status &= ~(DESC_TXSTS_MSK);
--	desc_p->txrx_status |= DESC_TXSTS_OWNBYDMA;
--#else
--	desc_p->dmamac_cntl |= ((length << DESC_TXCTRL_SIZE1SHFT) & \
--			       DESC_TXCTRL_SIZE1MASK) | DESC_TXCTRL_TXLAST | \
--			       DESC_TXCTRL_TXFIRST;
-+		desc_p->txrx_status &= ~(DESC_ENH_TXSTS_MSK);
-+		desc_p->txrx_status |= DESC_ENH_TXSTS_OWNBYDMA;
+ endif
+diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+index adb668f..dc9fb13 100644
+--- a/drivers/gpio/Makefile
++++ b/drivers/gpio/Makefile
+@@ -8,3 +8,4 @@ obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
+ obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
+ obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
+ obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
++obj-$(CONFIG_GPIO_DESIGNWARE)	+= gpio-dw.o
+diff --git a/drivers/gpio/gpio-dw.c b/drivers/gpio/gpio-dw.c
+new file mode 100644
+index 0000000..54e7452
+--- /dev/null
++++ b/drivers/gpio/gpio-dw.c
+@@ -0,0 +1,151 @@
++/*
++ * Designware GPIO support functions
++ *
++ * Copyright (C) 2012 Altera
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <common.h>
++#include <errno.h>
++#include <io.h>
++#include <gpio.h>
++#include <init.h>
++
++#define GPIO_INT_EN_REG_OFFSET 		0x30
++#define GPIO_INT_MASK_REG_OFFSET 	0x34
++#define GPIO_INT_TYPE_LEVEL_REG_OFFSET 	0x38
++#define GPIO_INT_POLARITY_REG_OFFSET 	0x3c
++#define GPIO_INT_STATUS_REG_OFFSET 	0x40
++#define GPIO_PORT_A_EOI_REG_OFFSET 	0x4c
++
++#define GPIO_DDR_OFFSET_PORT	 	0x4
++#define DW_GPIO_EXT 			0x50
++#define DW_GPIO_DR 			0x0
++
++struct dw_gpio_instance {
++	struct gpio_chip chip;
++	u32 gpio_state;		/* GPIO state shadow register */
++	u32 gpio_dir;		/* GPIO direction shadow register */
++	void __iomem *regs;
++};
++
++static inline struct dw_gpio_instance *to_dw_gpio(struct gpio_chip *gc)
++{
++	return container_of(gc, struct dw_gpio_instance, chip);
++}
++
++static int dw_gpio_get(struct gpio_chip *gc, unsigned offset)
++{
++	struct dw_gpio_instance *chip = to_dw_gpio(gc);
++
++	return (readl(chip->regs + DW_GPIO_EXT) >> offset) & 1;
++}
++
++static void dw_gpio_set(struct gpio_chip *gc, unsigned offset, int value)
++{
++	struct dw_gpio_instance *chip = to_dw_gpio(gc);
++	u32 data_reg;
++
++	data_reg = readl(chip->regs + DW_GPIO_DR);
++	data_reg = (data_reg & ~(1<<offset)) | (value << offset);
++	writel(data_reg, chip->regs + DW_GPIO_DR);
++}
++
++static int dw_gpio_direction_input(struct gpio_chip *gc, unsigned offset)
++{
++	struct dw_gpio_instance *chip = to_dw_gpio(gc);
++	u32 gpio_ddr;
++
++	/* Set pin as input, assumes software controlled IP */
++	gpio_ddr = readl(chip->regs + GPIO_DDR_OFFSET_PORT);
++	gpio_ddr &= ~(1 << offset);
++	writel(gpio_ddr, chip->regs + GPIO_DDR_OFFSET_PORT);
++
++	return 0;
++}
++
++static int dw_gpio_direction_output(struct gpio_chip *gc,
++		unsigned offset, int value)
++{
++	struct dw_gpio_instance *chip = to_dw_gpio(gc);
++	u32 gpio_ddr;
++
++	dw_gpio_set(gc, offset, value);
++
++	/* Set pin as output, assumes software controlled IP */
++	gpio_ddr = readl(chip->regs + GPIO_DDR_OFFSET_PORT);
++	gpio_ddr |= (1 << offset);
++	writel(gpio_ddr, chip->regs + GPIO_DDR_OFFSET_PORT);
++
++	return 0;
++}
++
++static struct gpio_ops imx_gpio_ops = {
++	.direction_input = dw_gpio_direction_input,
++	.direction_output = dw_gpio_direction_output,
++	.get = dw_gpio_get,
++	.set = dw_gpio_set,
++};
++
++static int dw_gpio_probe(struct device_d *dev)
++{
++	struct dw_gpio_instance *chip;
++	int ret;
++
++	chip = xzalloc(sizeof(*chip));
++	chip->regs = dev_request_mem_region(dev, 0);
++	if (!chip->regs)
++		return -EBUSY;
++
++	chip->chip.ops = &imx_gpio_ops;
++	if (dev->id < 0) {
++		chip->chip.base = of_alias_get_id(dev->device_node, "gpio");
++		if (chip->chip.base < 0)
++			return chip->chip.base;
++		chip->chip.base *= 32;
 +	} else {
-+		desc_p->dmamac_cntl |= ((length << DESC_TXCTRL_SIZE1SHFT) &
-+				       DESC_TXCTRL_SIZE1MASK) | DESC_TXCTRL_TXLAST |
-+				       DESC_TXCTRL_TXFIRST;
- 
--	desc_p->txrx_status = DESC_TXSTS_OWNBYDMA;
--#endif
-+		desc_p->txrx_status = DESC_TXSTS_OWNBYDMA;
++		chip->chip.base = dev->id * 32;
 +	}
- 
- 	/* Test the wrap-around condition. */
- 	if (++desc_num >= CONFIG_TX_DESCR_NUM)
-diff --git a/drivers/net/designware.h b/drivers/net/designware.h
-index db2ead4..f7b14be 100644
---- a/drivers/net/designware.h
-+++ b/drivers/net/designware.h
-@@ -130,27 +130,21 @@ struct dmamacdescr {
-  */
- 
- /* tx status bits definitions */
--#if defined(CONFIG_DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR)
-+#define DESC_ENH_TXSTS_OWNBYDMA		(1 << 31)
-+#define DESC_ENH_TXSTS_TXINT		(1 << 30)
-+#define DESC_ENH_TXSTS_TXLAST		(1 << 29)
-+#define DESC_ENH_TXSTS_TXFIRST		(1 << 28)
-+#define DESC_ENH_TXSTS_TXCRCDIS		(1 << 27)
++	chip->chip.ngpio = 32;
++	chip->chip.dev = dev;
 +
-+#define DESC_ENH_TXSTS_TXPADDIS		(1 << 26)
-+#define DESC_ENH_TXSTS_TXCHECKINSCTRL	(3 << 22)
-+#define DESC_ENH_TXSTS_TXRINGEND		(1 << 21)
-+#define DESC_ENH_TXSTS_TXCHAIN		(1 << 20)
-+#define DESC_ENH_TXSTS_MSK			(0x1FFFF << 0)
- 
- #define DESC_TXSTS_OWNBYDMA		(1 << 31)
--#define DESC_TXSTS_TXINT		(1 << 30)
--#define DESC_TXSTS_TXLAST		(1 << 29)
--#define DESC_TXSTS_TXFIRST		(1 << 28)
--#define DESC_TXSTS_TXCRCDIS		(1 << 27)
--
--#define DESC_TXSTS_TXPADDIS		(1 << 26)
--#define DESC_TXSTS_TXCHECKINSCTRL	(3 << 22)
--#define DESC_TXSTS_TXRINGEND		(1 << 21)
--#define DESC_TXSTS_TXCHAIN		(1 << 20)
- #define DESC_TXSTS_MSK			(0x1FFFF << 0)
- 
--#else
--
--#define DESC_TXSTS_OWNBYDMA		(1 << 31)
--#define DESC_TXSTS_MSK			(0x1FFFF << 0)
--
--#endif
--
- /* rx status bits definitions */
- #define DESC_RXSTS_OWNBYDMA		(1 << 31)
- #define DESC_RXSTS_DAFILTERFAIL		(1 << 30)
-@@ -178,14 +172,10 @@ struct dmamacdescr {
-  */
- 
- /* tx control bits definitions */
--#if defined(CONFIG_DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR)
--
--#define DESC_TXCTRL_SIZE1MASK		(0x1FFF << 0)
--#define DESC_TXCTRL_SIZE1SHFT		(0)
--#define DESC_TXCTRL_SIZE2MASK		(0x1FFF << 16)
--#define DESC_TXCTRL_SIZE2SHFT		(16)
--
--#else
-+#define DESC_ENH_TXCTRL_SIZE1MASK		(0x1FFF << 0)
-+#define DESC_ENH_TXCTRL_SIZE1SHFT		(0)
-+#define DESC_ENH_TXCTRL_SIZE2MASK		(0x1FFF << 16)
-+#define DESC_ENH_TXCTRL_SIZE2SHFT		(16)
- 
- #define DESC_TXCTRL_TXINT		(1 << 31)
- #define DESC_TXCTRL_TXLAST		(1 << 30)
-@@ -200,21 +190,15 @@ struct dmamacdescr {
- #define DESC_TXCTRL_SIZE2MASK		(0x7FF << 11)
- #define DESC_TXCTRL_SIZE2SHFT		(11)
- 
--#endif
--
- /* rx control bits definitions */
--#if defined(CONFIG_DRIVER_NET_DESIGNWARE_ALTDESCRIPTOR)
--
--#define DESC_RXCTRL_RXINTDIS		(1 << 31)
--#define DESC_RXCTRL_RXRINGEND		(1 << 15)
--#define DESC_RXCTRL_RXCHAIN		(1 << 14)
-+#define DESC_ENH_RXCTRL_RXINTDIS		(1 << 31)
-+#define DESC_ENH_RXCTRL_RXRINGEND		(1 << 15)
-+#define DESC_ENH_RXCTRL_RXCHAIN		(1 << 14)
- 
--#define DESC_RXCTRL_SIZE1MASK		(0x1FFF << 0)
--#define DESC_RXCTRL_SIZE1SHFT		(0)
--#define DESC_RXCTRL_SIZE2MASK		(0x1FFF << 16)
--#define DESC_RXCTRL_SIZE2SHFT		(16)
--
--#else
-+#define DESC_ENH_RXCTRL_SIZE1MASK		(0x1FFF << 0)
-+#define DESC_ENH_RXCTRL_SIZE1SHFT		(0)
-+#define DESC_ENH_RXCTRL_SIZE2MASK		(0x1FFF << 16)
-+#define DESC_ENH_RXCTRL_SIZE2SHFT		(16)
- 
- #define DESC_RXCTRL_RXINTDIS		(1 << 31)
- #define DESC_RXCTRL_RXRINGEND		(1 << 25)
-@@ -226,5 +210,3 @@ struct dmamacdescr {
- #define DESC_RXCTRL_SIZE2SHFT		(11)
- 
- #endif
--
--#endif
++	ret = gpiochip_add(&chip->chip);
++	if (ret)
++		return ret;
++
++	dev_dbg(dev, "probed gpiochip%d with base %d\n", dev->id, chip->chip.base);
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id dwgpio_match[] = {
++	{
++		.compatible = "snps,dw-gpio",
++	}, {
++		/* sentinel */
++	},
++};
++
++static struct driver_d dwgpio_driver = {
++	.name = "dw-gpio",
++	.probe = dw_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(dwgpio_match),
++};
++
++static int __init dwgpio_init(void)
++{
++	return platform_driver_register(&dwgpio_driver);
++}
++core_initcall(dwgpio_init);
 -- 
 1.8.4.rc3
 
