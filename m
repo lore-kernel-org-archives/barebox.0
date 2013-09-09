@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mho-02-ewr.mailhop.org ([204.13.248.72])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJ5TA-0005Ho-4R
- for barebox@lists.infradead.org; Mon, 09 Sep 2013 17:41:49 +0000
-Date: Mon, 9 Sep 2013 13:41:17 -0400
-From: Jason Cooper <barebox@lakedaemon.net>
-Message-ID: <20130909174117.GA12927@titan.lakedaemon.net>
-References: <20130905010436.GP19598@titan.lakedaemon.net>
- <20130905064639.GO30088@pengutronix.de>
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VJ7dq-0000M4-TQ
+ for barebox@lists.infradead.org; Mon, 09 Sep 2013 20:01:01 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp3-g21.free.fr (Postfix) with ESMTP id 6CE6BA620F
+ for <barebox@lists.infradead.org>; Mon,  9 Sep 2013 22:00:29 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Mon,  9 Sep 2013 22:00:25 +0200
+Message-Id: <1378756826-18061-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130905064639.GO30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +18,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: imx-usb-image write to usb error
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] mxs_spi: fix compile error
+To: barebox@lists.infradead.org
 
-On Thu, Sep 05, 2013 at 08:46:39AM +0200, Sascha Hauer wrote:
-> Hi Jason,
-> 
-> On Wed, Sep 04, 2013 at 09:04:36PM -0400, Jason Cooper wrote:
-> > All,
-> > 
-> > This is the first I've messed with i.MX, so I'm a little lost. :)
-> > 
-> > I'm putting together a patch to add support for the SanDisk Connect
-> > Wireless Media Drive [1], code dump from SanDisk is here [2].  It turns
-> > out when you unplug the battery, it'll show up as the Freescale hid.
-> > 
-> > Here's what I get:
-> > 
-> > $ ./scripts/imx/imx-image -c \
-> > arch/arm/boards/sandisk-connect-wmd/flash-header-lpddr1.imxcfg -f \
-> > barebox.bin -o barebox.imx
-> > $ sudo ./scripts/imx/imx-usb-loader -vvvvv ./barebox.imx 
-> > found i.MX50 USB device [15a2:0052]
-> 
-> I never tested this on an i.MX50 due to lack of hardware. Have a look
-> at scripts/imx/imx-usb-loader.c at imx_ids. i.MX50 is very similar to
-> i.MX51. The i.MX51 has:
-> 
-> 	{
-> 		.vid = 0x15a2,
-> 		.pid = 0x0041,
-> 		.name = "i.MX51",
-> 		.header_type = HDR_MX51,
-> 		.mode = MODE_BULK,
-> 		.max_transfer = 64,
-> 	},
-> 
-> The header_type, mode and max_transfer fields are missing for i.MX50. I
-> assume that's the problem.
-
-Well, it looks like it works, but I'm unable to get a barebox prompt on
-the tty.  (patches to come once I get a prompt).  So I decided to try
-tackling the problem from the other end for a bit.  Namely booting a
-mainline kernel from the installed u-boot.
-
-Something is confusing me though.  The part number on the chip is
-MCIMX502CVK8B.  Which, iiuc, is an imx51.  The provided kernel spits out
-this:
-
-[    0.000000] MXC_Early serial console at MMIO 0x53fbc000 (options '115200')
-
-However, the only imx SoCs using that address range are imx53 and imx25,
-according to arch/arm/boot/dts/ in Linux, at least.
-
-In addition, the docs for the imx50 clearly state that it uses DCD v2
-(version = 0x40) [1] (Table 6-27, DCD Header), but the code in barebox's
-imx-image.c says imx51 uses DCD v1...
-
-Anyone with more experience with Freescale SoCs care to fill in the
-blanks?  The first hint I'm on the wrong path is that I feel like I need
-to write a whole dtsi file from scratch. :-/
-
-thx,
-
-Jason.
-
-[1] http://cache.freescale.com/files/32bit/doc/ref_manual/IMX50RM.pdf
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGhpcyBmaXggOgpkcml2ZXJzL3NwaS9teHNfc3BpLmM6Mjk6MjI6IGZhdGFsIGVycm9yOiBtYWNo
+L214cy5oOiBObyBzdWNoIGZpbGUgb3IgZGlyZWN0b3J5CmFuZApkcml2ZXJzL3NwaS9teHNfc3Bp
+LmM6IEluIGZ1bmN0aW9uICdteHNfc3BpX3NldHVwJzoKZHJpdmVycy9zcGkvbXhzX3NwaS5jOjEw
+MjoyOiBlcnJvcjogdG9vIGZldyBhcmd1bWVudHMgdG8gZnVuY3Rpb24gJ3N0bXBfcmVzZXRfYmxv
+Y2snCmluY2x1ZGUvc3RtcC1kZXZpY2UuaDoyMToxMjogbm90ZTogZGVjbGFyZWQgaGVyZQoKb25s
+eSBjb21waWxlIHRlc3RlZCBBVE0KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0Bl
+dWtyZWEuY29tPgotLS0KIGRyaXZlcnMvc3BpL214c19zcGkuYyB8IDMgKy0tCiAxIGZpbGUgY2hh
+bmdlZCwgMSBpbnNlcnRpb24oKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9zcGkvbXhzX3NwaS5jIGIvZHJpdmVycy9zcGkvbXhzX3NwaS5jCmluZGV4IDRlNTM5YmYuLmE4
+MDM2NTIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc3BpL214c19zcGkuYworKysgYi9kcml2ZXJzL3Nw
+aS9teHNfc3BpLmMKQEAgLTI2LDcgKzI2LDYgQEAKICNpbmNsdWRlIDxhc20vbW11Lmg+CiAjaW5j
+bHVkZSA8bWFjaC9nZW5lcmljLmg+CiAjaW5jbHVkZSA8bWFjaC9pbXgtcmVncy5oPgotI2luY2x1
+ZGUgPG1hY2gvbXhzLmg+CiAjaW5jbHVkZSA8bWFjaC9jbG9jay5oPgogI2luY2x1ZGUgPG1hY2gv
+c3NwLmg+CiAKQEAgLTEwMCw3ICs5OSw3IEBAIHN0YXRpYyBpbnQgbXhzX3NwaV9zZXR1cChzdHJ1
+Y3Qgc3BpX2RldmljZSAqc3BpKQogCQlyZXR1cm4gLUVJTlZBTDsKIAl9CiAKLQlzdG1wX3Jlc2V0
+X2Jsb2NrKG14cy0+cmVncyArIEhXX1NTUF9DVFJMMCk7CisJc3RtcF9yZXNldF9ibG9jayhteHMt
+PnJlZ3MgKyBIV19TU1BfQ1RSTDAsIDApOwogCiAJdmFsIHw9IFNTUF9DVFJMMF9TU1BfQVNTRVJU
+X09VVChzcGktPmNoaXBfc2VsZWN0KTsKIAl2YWwgfD0gU1NQX0NUUkwwX0JVU19XSURUSCgwKTsK
+LS0gCjEuOC4zLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
