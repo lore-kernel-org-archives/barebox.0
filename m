@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJHMi-0002Gj-8R
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 06:23:56 +0000
-Date: Tue, 10 Sep 2013 08:23:34 +0200
+ id 1VJHtd-0002ns-3A
+ for barebox@lists.infradead.org; Tue, 10 Sep 2013 06:57:57 +0000
+Date: Tue, 10 Sep 2013 08:57:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130910062334.GY30088@pengutronix.de>
-References: <1378761307-7785-1-git-send-email-eric@eukrea.com>
+Message-ID: <20130910065734.GB30088@pengutronix.de>
+References: <1378387880-3844-1-git-send-email-list-09_barebox@tqsc.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1378761307-7785-1-git-send-email-eric@eukrea.com>
+In-Reply-To: <1378387880-3844-1-git-send-email-list-09_barebox@tqsc.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfa10036: fix warning
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH / RFC] MCI: imx-esdhc: implement workaround for errata
+ ENGcm12360
+To: Markus Niebel <list-09_barebox@tqsc.de>
+Cc: barebox@lists.infradead.org, Markus Niebel <Markus.Niebel@tqs.de>
 
-On Mon, Sep 09, 2013 at 11:15:07PM +0200, Eric B=E9nard wrote:
-> this fix :
-> arch/arm/boards/crystalfontz-cfa10036/cfa10036.c: In function 'cfa10036_d=
-evices_init':
-> arch/arm/boards/crystalfontz-cfa10036/cfa10036.c:123:3: warning: implicit=
- declaration of function 'imx_gpio_mode' [-Wimplicit-function-declaration]c=
-fa10036: fix warning
-> =
+Hi Markus,
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+On Thu, Sep 05, 2013 at 03:31:20PM +0200, Markus Niebel wrote:
+> From: Markus Niebel <Markus.Niebel@tqs.de>
+> 
+> Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
+> 
+> At least i.MX53 has errata ENGcm12360:
+> 
+> Occurs when a pending command which issues busy is completed.
+> For a command with R1b response, the proper software sequence
+> is to poll the DLA for R1b commands to determine busy
+> state completion. The DLA polling is not working properly for
+> the ESDHC module. This is relevant for all eSDHC ports (eSDHC1-4 ports)
+> 
+> DLA bit in PRSSTAT register cannot be
+> polled to wait for busy state completion.
+> 
+> Updated block guide to reflect that DLA is not applicable to detect
+> busy state, instead, should poll bit 24 in PRSSTAT register (DLSL[0] bit)
+> to check that wait busy state is over.
 
-Applied, thanks
+I'll give it a try in the -next branch. The patch looks as if it is safe
+on other SoCs, but let's see.
 
 Sascha
 
-> ---
->  arch/arm/boards/crystalfontz-cfa10036/cfa10036.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
-
-> diff --git a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c b/arch/arm/=
-boards/crystalfontz-cfa10036/cfa10036.c
-> index c11bb2f..d1df7b8 100644
-> --- a/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> +++ b/arch/arm/boards/crystalfontz-cfa10036/cfa10036.c
-> @@ -33,7 +33,7 @@
->  =
-
->  #include <mach/clock.h>
->  #include <mach/imx-regs.h>
-> -#include <mach/iomux-imx28.h>
-> +#include <mach/iomux.h>
->  #include <mach/mci.h>
->  =
-
->  #include <asm/armlinux.h>
-> -- =
-
-> 1.8.3.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
