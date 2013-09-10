@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJJlE-00057m-4Y
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 08:57:24 +0000
-Received: by mail-bk0-f53.google.com with SMTP id d7so2720690bkh.40
- for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 01:56:56 -0700 (PDT)
-Message-ID: <522EDED4.700@gmail.com>
-Date: Tue, 10 Sep 2013 10:56:52 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
- <522DF740.9050503@gmail.com> <20130910074816.GE30088@pengutronix.de>
-In-Reply-To: <20130910074816.GE30088@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VJRVw-0003SX-F7
+ for barebox@lists.infradead.org; Tue, 10 Sep 2013 17:14:09 +0000
+Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id 6D6FB940224
+ for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 19:13:40 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 10 Sep 2013 19:13:31 +0200
+Message-Id: <1378833214-19808-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,58 +18,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: Add designware gpio controller support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] mxs_spi: unbreak driver
+To: barebox@lists.infradead.org
 
-On 09/10/2013 09:48 AM, Sascha Hauer wrote:
-> On Mon, Sep 09, 2013 at 06:28:48PM +0200, Sebastian Hesselbarth wrote:
->> I have seen this driver and think it can be improved by exploiting
->> its config1/2 registers where synthesis settings are stored. Please
->> also look at [1] pp.1229; you can read out number of ports, port
->> width, interrupt, and debounce features.
->
-> Ok, the port width feature is easy enough to implement. Will add it in
-> the next version.
->
-> I also added a check for multiple ports, but just ignore the additional
-> ports for now since I don't know the register offsets and also have no
-> hardware to actually test it (The SoCFPGA only has one port)
-
-Ok, fair enough. IIRC the Armada 1500 uses multiple instances instead
-of multiple ports, too.
-
->> Unfortunately, I am not ready to run barebox on Armada 1500 and I
->> don't have a socfpga to test. So if you are not eager to modify it now,
->> I can add config reg based read-out later.
->>
->> [1] http://www.altera.com/literature/hb/arria-v/hps.pdf
->>
->> [...]
->>> +static __maybe_unused struct of_device_id dwgpio_match[] = {
->>> +	{
->>> +		.compatible = "snps,dw-gpio",
->>> +	}, {
->>
->> Please add "snps,dw-apb-gpio", that's what the linux driver
->> will look for if make to pick it up for Armada 1500.
->
-> I'll better just change it to "snps,dw-apb-gpio". There already is a
-> dtsi file in the kernel which uses this binding (although it looks like
-> it hasn't been approved by anyone)
-
-The driver got Acks, but must have slipped through. I have seen your
-v2 but it still uses "snps,dw-gpio".
-
-Sebastian
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+c2luY2UgdGhlIHN3aXRjaCB0byBjb21tb24gY2xvY2ssIFNQSSBkcml2ZXIgcmVwb3J0cyA6Ck1Y
+UzogVGltZW91dCByZXNldHRpbmcgYmxvY2sgdmlhIHJlZ2lzdGVyIDB4ODAwMTQwMDAKbXhzX3Nw
+aSBteHNfc3BpMjogTVhTIFNQSTogVGltZW91dCB3YWl0aW5nIGZvciBzdGFydAoKVGhlIHJlYXNv
+biBpcyB0aGF0IHRoZSBjbG9jayBpcyBub3QgZW5hYmxlZCBhbnl3aGVyZSBpbgp0aGUgZHJpdmVy
+LgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogZHJp
+dmVycy9zcGkvbXhzX3NwaS5jIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykK
+CmRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9teHNfc3BpLmMgYi9kcml2ZXJzL3NwaS9teHNfc3Bp
+LmMKaW5kZXggYTgwMzY1Mi4uYTAwNzg0ZiAxMDA2NDQKLS0tIGEvZHJpdmVycy9zcGkvbXhzX3Nw
+aS5jCisrKyBiL2RyaXZlcnMvc3BpL214c19zcGkuYwpAQCAtMjcwLDYgKzI3MCw3IEBAIHN0YXRp
+YyBpbnQgbXhzX3NwaV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmRldikKIAlteHMtPmNsayA9IGNs
+a19nZXQoZGV2LCBOVUxMKTsKIAlpZiAoSVNfRVJSKG14cy0+Y2xrKSkKIAkJcmV0dXJuIFBUUl9F
+UlIobXhzLT5jbGspOworCWNsa19lbmFibGUobXhzLT5jbGspOwogCiAJc3BpX3JlZ2lzdGVyX21h
+c3RlcihtYXN0ZXIpOwogCi0tIAoxLjguMy4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
