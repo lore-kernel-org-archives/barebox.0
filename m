@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJJ78-0004Mf-Iu
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 08:16:00 +0000
-Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
- by smtp5-g21.free.fr (Postfix) with ESMTP id D1C8BD48102
- for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 10:15:32 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 10 Sep 2013 10:15:31 +0200
-Message-Id: <1378800931-23713-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from mail-bk0-x235.google.com ([2a00:1450:4008:c01::235])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VJJlE-00057m-4Y
+ for barebox@lists.infradead.org; Tue, 10 Sep 2013 08:57:24 +0000
+Received: by mail-bk0-f53.google.com with SMTP id d7so2720690bkh.40
+ for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 01:56:56 -0700 (PDT)
+Message-ID: <522EDED4.700@gmail.com>
+Date: Tue, 10 Sep 2013 10:56:52 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
+ <522DF740.9050503@gmail.com> <20130910074816.GE30088@pengutronix.de>
+In-Reply-To: <20130910074816.GE30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,47 +19,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] i.MX28: unbreak ethernet
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] gpio: Add designware gpio controller support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-c2luY2UgdGhlIHN3aXRjaCB0byBjb21tb24gY2xvY2ssIGV0aGVybmV0IGRyaXZlciBkb2Vzbid0
-IHdvcmtzIGFuZAphbmQgYWNjZXNzIHRvIHRoZSBuZXR3b3JrIGxlYWRzIHRvIDoKZXRoMDogUmVh
-ZCBNRElPIGZhaWxlZC4uLgp1bmFibGUgdG8gaGFuZGxlIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5j
-ZSBhdCBhZGRyZXNzIDB4MDAwMDAwYzcKClRoZSBwcm9ibGVtIGlzIHRoYXQgYml0IDMxIChTTEVF
-UCkgb2YgcmVnaXN0ZXIgSFdfQ0xLQ1RSTF9FTkVUIGlzIGtlcHQKdG8gaXRzIGRlZmF1bHQgdmFs
-dWUgKDEpIHdoaWNoIG1lYW5zIDogInB1dCBFdGhlcm5ldCBibG9jayBpbiBzbGVlcCBtb2RlLgpD
-TEtfSF9NQUMwKDEpLCBDTEtfSF9NQUMwKDEpX1MsIGFuZCBDTEtfRU5FVDAoMSlfVFggYXJlIGdh
-dGVkIG9mZi4KRXRoZXJuZXQgY2FuIGJlIHdha2V1cCByZW1vdGVseSBpbiBzbGVlcCBtb2RlIgpJ
-biB0aGF0IGNhc2UgdGhlIEZFQyBkb24ndCBnZXQgaXRzIGNsb2NrLgoKVGhpcyBwYXRjaCBmaXgg
-dGhlIHByb2JsZW0gYnkgdG9nZ2xpbmcgdGhpcyBiaXQgd2hlbiBGRUMncyBjbG9jayBpcwplbmFi
-bGVkLgoKVGVzdGVkIG9uIGkuTVgyOEVWSy4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8
-ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvY2xrL214cy9jbGstaW14MjguYyB8IDUgKysr
-LS0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9jbGsvbXhzL2Nsay1pbXgyOC5jIGIvZHJpdmVycy9jbGsvbXhzL2Ns
-ay1pbXgyOC5jCmluZGV4IGVkMzhkNGIuLjA1YjNjMmEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvY2xr
-L214cy9jbGstaW14MjguYworKysgYi9kcml2ZXJzL2Nsay9teHMvY2xrLWlteDI4LmMKQEAgLTY4
-LDcgKzY4LDcgQEAgZW51bSBpbXgyOF9jbGsgewogCWVtaV94dGFsLCBsY2RpZl9kaXYsIGV0bV9k
-aXYsIHB0cCwgc2FpZjBfZGl2LCBzYWlmMV9kaXYsCiAJY2xrMzJrX2RpdiwgcnRjLCBscmFkYywg
-c3BkaWZfZGl2LCBjbGszMmssIHB3bSwgdWFydCwgc3NwMCwKIAlzc3AxLCBzc3AyLCBzc3AzLCBn
-cG1pLCBzcGRpZiwgZW1pLCBzYWlmMCwgc2FpZjEsIGxjZGlmLCBldG0sCi0JZmVjLCBjYW4wLCBj
-YW4xLCB1c2IwLCB1c2IxLCB1c2IwX3BoeSwgdXNiMV9waHksIGVuZXRfb3V0LAorCWZlY19zbGVl
-cCwgZmVjLCBjYW4wLCBjYW4xLCB1c2IwLCB1c2IxLCB1c2IwX3BoeSwgdXNiMV9waHksIGVuZXRf
-b3V0LAogCWxjZGlmX2NvbXAsIGNsa19tYXgKIH07CiAKQEAgLTEyNCw3ICsxMjQsOCBAQCBpbnQg
-X19pbml0IG14MjhfY2xvY2tzX2luaXQodm9pZCBfX2lvbWVtICpyZWdzKQogCWNsa3NbZW1pXSA9
-IG14c19jbGtfZ2F0ZSgiZW1pIiwgImVtaV9zZWwiLCBFTUksIDMxKTsKIAljbGtzW2xjZGlmXSA9
-IG14c19jbGtfZ2F0ZSgibGNkaWYiLCAibGNkaWZfZGl2IiwgTENESUYsIDMxKTsKIAljbGtzW2V0
-bV0gPSBteHNfY2xrX2dhdGUoImV0bSIsICJldG1fZGl2IiwgRVRNLCAzMSk7Ci0JY2xrc1tmZWNd
-ID0gbXhzX2Nsa19nYXRlKCJmZWMiLCAiaGJ1cyIsIEVORVQsIDMwKTsKKwljbGtzW2ZlY19zbGVl
-cF0gPSBteHNfY2xrX2dhdGUoImZlY19zbGVlcCIsICJoYnVzIiwgRU5FVCwgMzEpOworCWNsa3Nb
-ZmVjXSA9IG14c19jbGtfZ2F0ZSgiZmVjIiwgImZlY19zbGVlcCIsIEVORVQsIDMwKTsKIAljbGtz
-W3VzYjBfcGh5XSA9IG14c19jbGtfZ2F0ZSgidXNiMF9waHkiLCAicGxsMCIsIFBMTDBDVFJMMCwg
-MTgpOwogCWNsa3NbdXNiMV9waHldID0gbXhzX2Nsa19nYXRlKCJ1c2IxX3BoeSIsICJwbGwxIiwg
-UExMMUNUUkwwLCAxOCk7CiAJY2xrc1tlbmV0X291dF0gPSBjbGtfZ2F0ZSgiZW5ldF9vdXQiLCAi
-cGxsMiIsIEVORVQsIDE4KTsKLS0gCjEuOC4zLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9iYXJlYm94Cg==
+On 09/10/2013 09:48 AM, Sascha Hauer wrote:
+> On Mon, Sep 09, 2013 at 06:28:48PM +0200, Sebastian Hesselbarth wrote:
+>> I have seen this driver and think it can be improved by exploiting
+>> its config1/2 registers where synthesis settings are stored. Please
+>> also look at [1] pp.1229; you can read out number of ports, port
+>> width, interrupt, and debounce features.
+>
+> Ok, the port width feature is easy enough to implement. Will add it in
+> the next version.
+>
+> I also added a check for multiple ports, but just ignore the additional
+> ports for now since I don't know the register offsets and also have no
+> hardware to actually test it (The SoCFPGA only has one port)
+
+Ok, fair enough. IIRC the Armada 1500 uses multiple instances instead
+of multiple ports, too.
+
+>> Unfortunately, I am not ready to run barebox on Armada 1500 and I
+>> don't have a socfpga to test. So if you are not eager to modify it now,
+>> I can add config reg based read-out later.
+>>
+>> [1] http://www.altera.com/literature/hb/arria-v/hps.pdf
+>>
+>> [...]
+>>> +static __maybe_unused struct of_device_id dwgpio_match[] = {
+>>> +	{
+>>> +		.compatible = "snps,dw-gpio",
+>>> +	}, {
+>>
+>> Please add "snps,dw-apb-gpio", that's what the linux driver
+>> will look for if make to pick it up for Armada 1500.
+>
+> I'll better just change it to "snps,dw-apb-gpio". There already is a
+> dtsi file in the kernel which uses this binding (although it looks like
+> it hasn't been approved by anyone)
+
+The driver got Acks, but must have slipped through. I have seen your
+v2 but it still uses "snps,dw-gpio".
+
+Sebastian
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
