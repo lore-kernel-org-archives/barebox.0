@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJJ2F-0004Dh-Tg
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 08:10:57 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 10 Sep 2013 10:10:30 +0200
-Message-Id: <1378800630-954-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VJJ78-0004Mf-Iu
+ for barebox@lists.infradead.org; Tue, 10 Sep 2013 08:16:00 +0000
+Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
+ by smtp5-g21.free.fr (Postfix) with ESMTP id D1C8BD48102
+ for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 10:15:32 +0200 (CEST)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Tue, 10 Sep 2013 10:15:31 +0200
+Message-Id: <1378800931-23713-1-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,223 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] gpio: Add designware gpio controller support
+Subject: [PATCH] i.MX28: unbreak ethernet
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
-
-changes since v1:
-
-- support config1/config2 regs to determine width/number of ports
-
- drivers/gpio/Kconfig   |   6 ++
- drivers/gpio/Makefile  |   1 +
- drivers/gpio/gpio-dw.c | 159 +++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 166 insertions(+)
- create mode 100644 drivers/gpio/gpio-dw.c
-
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index d5ac532..18d3135 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -54,6 +54,12 @@ config GPIO_TEGRA
- 	help
- 	  Say yes here to include the driver for the GPIO controller found on the
- 	  Tegra line of SoCs.
-+
-+config GPIO_DESIGNWARE
-+	tristate "Synopsys DesignWare GPIO driver"
-+	help
-+	  Say Y or M here to build support for the Synopsys DesignWare APB
-+	  GPIO block.
- endmenu
- 
- endif
-diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-index adb668f..dc9fb13 100644
---- a/drivers/gpio/Makefile
-+++ b/drivers/gpio/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_GPIO_ORION)	+= gpio-orion.o
- obj-$(CONFIG_GPIO_PL061)	+= gpio-pl061.o
- obj-$(CONFIG_GPIO_STMPE)	+= gpio-stmpe.o
- obj-$(CONFIG_GPIO_TEGRA)	+= gpio-tegra.o
-+obj-$(CONFIG_GPIO_DESIGNWARE)	+= gpio-dw.o
-diff --git a/drivers/gpio/gpio-dw.c b/drivers/gpio/gpio-dw.c
-new file mode 100644
-index 0000000..136868a
---- /dev/null
-+++ b/drivers/gpio/gpio-dw.c
-@@ -0,0 +1,159 @@
-+/*
-+ * Designware GPIO support functions
-+ *
-+ * Copyright (C) 2012 Altera
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+#include <common.h>
-+#include <errno.h>
-+#include <io.h>
-+#include <gpio.h>
-+#include <init.h>
-+
-+#define DW_GPIO_DR 		0x0
-+#define DW_GPIO_DDR		0x4
-+#define DW_GPIO_EXT 		0x50
-+#define DW_GPIO_CONFIG2		0x70
-+#define DW_GPIO_CONFIG1		0x74
-+
-+#define DW_GPIO_CONFIG2_WIDTH(val, port)	(((val) >> ((port) * 4) & 0x1f) + 1)
-+#define DW_GPIO_CONFIG1_NPORTS(val)		(((val) >> 2 & 0x3) + 1)
-+
-+struct dw_gpio_instance {
-+	struct gpio_chip chip;
-+	u32 gpio_state;		/* GPIO state shadow register */
-+	u32 gpio_dir;		/* GPIO direction shadow register */
-+	void __iomem *regs;
-+};
-+
-+static inline struct dw_gpio_instance *to_dw_gpio(struct gpio_chip *gc)
-+{
-+	return container_of(gc, struct dw_gpio_instance, chip);
-+}
-+
-+static int dw_gpio_get(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct dw_gpio_instance *chip = to_dw_gpio(gc);
-+
-+	return (readl(chip->regs + DW_GPIO_EXT) >> offset) & 1;
-+}
-+
-+static void dw_gpio_set(struct gpio_chip *gc, unsigned offset, int value)
-+{
-+	struct dw_gpio_instance *chip = to_dw_gpio(gc);
-+	u32 data_reg;
-+
-+	data_reg = readl(chip->regs + DW_GPIO_DR);
-+	data_reg = (data_reg & ~(1<<offset)) | (value << offset);
-+	writel(data_reg, chip->regs + DW_GPIO_DR);
-+}
-+
-+static int dw_gpio_direction_input(struct gpio_chip *gc, unsigned offset)
-+{
-+	struct dw_gpio_instance *chip = to_dw_gpio(gc);
-+	u32 gpio_ddr;
-+
-+	/* Set pin as input, assumes software controlled IP */
-+	gpio_ddr = readl(chip->regs + DW_GPIO_DDR);
-+	gpio_ddr &= ~(1 << offset);
-+	writel(gpio_ddr, chip->regs + DW_GPIO_DDR);
-+
-+	return 0;
-+}
-+
-+static int dw_gpio_direction_output(struct gpio_chip *gc,
-+		unsigned offset, int value)
-+{
-+	struct dw_gpio_instance *chip = to_dw_gpio(gc);
-+	u32 gpio_ddr;
-+
-+	dw_gpio_set(gc, offset, value);
-+
-+	/* Set pin as output, assumes software controlled IP */
-+	gpio_ddr = readl(chip->regs + DW_GPIO_DDR);
-+	gpio_ddr |= (1 << offset);
-+	writel(gpio_ddr, chip->regs + DW_GPIO_DDR);
-+
-+	return 0;
-+}
-+
-+static struct gpio_ops imx_gpio_ops = {
-+	.direction_input = dw_gpio_direction_input,
-+	.direction_output = dw_gpio_direction_output,
-+	.get = dw_gpio_get,
-+	.set = dw_gpio_set,
-+};
-+
-+static int dw_gpio_probe(struct device_d *dev)
-+{
-+	struct dw_gpio_instance *chip;
-+	uint32_t config1, config2;
-+	int ngpio, ret;
-+
-+	chip = xzalloc(sizeof(*chip));
-+	chip->regs = dev_request_mem_region(dev, 0);
-+	if (!chip->regs)
-+		return -EBUSY;
-+
-+	chip->chip.ops = &imx_gpio_ops;
-+	if (dev->id < 0) {
-+		chip->chip.base = of_alias_get_id(dev->device_node, "gpio");
-+		if (chip->chip.base < 0)
-+			return chip->chip.base;
-+		chip->chip.base *= 32;
-+	} else {
-+		chip->chip.base = dev->id * 32;
-+	}
-+
-+	config2 = readl(chip->regs + DW_GPIO_CONFIG2);
-+	config1 = readl(chip->regs + DW_GPIO_CONFIG1);
-+	ngpio = DW_GPIO_CONFIG2_WIDTH(config2, 0);
-+
-+	if (DW_GPIO_CONFIG1_NPORTS(config1) > 1)
-+		dev_info(dev, "ignoring ports B-D\n");
-+
-+	chip->chip.ngpio = ngpio;
-+	chip->chip.dev = dev;
-+
-+	ret = gpiochip_add(&chip->chip);
-+	if (ret)
-+		return ret;
-+
-+	dev_dbg(dev, "probed gpiochip with %d gpios, base %d\n",
-+			chip->chip.ngpio, chip->chip.base);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id dwgpio_match[] = {
-+	{
-+		.compatible = "snps,dw-gpio",
-+	}, {
-+		/* sentinel */
-+	},
-+};
-+
-+static struct driver_d dwgpio_driver = {
-+	.name = "dw-gpio",
-+	.probe = dw_gpio_probe,
-+	.of_compatible = DRV_OF_COMPAT(dwgpio_match),
-+};
-+
-+static int __init dwgpio_init(void)
-+{
-+	return platform_driver_register(&dwgpio_driver);
-+}
-+core_initcall(dwgpio_init);
--- 
-1.8.4.rc3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+c2luY2UgdGhlIHN3aXRjaCB0byBjb21tb24gY2xvY2ssIGV0aGVybmV0IGRyaXZlciBkb2Vzbid0
+IHdvcmtzIGFuZAphbmQgYWNjZXNzIHRvIHRoZSBuZXR3b3JrIGxlYWRzIHRvIDoKZXRoMDogUmVh
+ZCBNRElPIGZhaWxlZC4uLgp1bmFibGUgdG8gaGFuZGxlIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5j
+ZSBhdCBhZGRyZXNzIDB4MDAwMDAwYzcKClRoZSBwcm9ibGVtIGlzIHRoYXQgYml0IDMxIChTTEVF
+UCkgb2YgcmVnaXN0ZXIgSFdfQ0xLQ1RSTF9FTkVUIGlzIGtlcHQKdG8gaXRzIGRlZmF1bHQgdmFs
+dWUgKDEpIHdoaWNoIG1lYW5zIDogInB1dCBFdGhlcm5ldCBibG9jayBpbiBzbGVlcCBtb2RlLgpD
+TEtfSF9NQUMwKDEpLCBDTEtfSF9NQUMwKDEpX1MsIGFuZCBDTEtfRU5FVDAoMSlfVFggYXJlIGdh
+dGVkIG9mZi4KRXRoZXJuZXQgY2FuIGJlIHdha2V1cCByZW1vdGVseSBpbiBzbGVlcCBtb2RlIgpJ
+biB0aGF0IGNhc2UgdGhlIEZFQyBkb24ndCBnZXQgaXRzIGNsb2NrLgoKVGhpcyBwYXRjaCBmaXgg
+dGhlIHByb2JsZW0gYnkgdG9nZ2xpbmcgdGhpcyBiaXQgd2hlbiBGRUMncyBjbG9jayBpcwplbmFi
+bGVkLgoKVGVzdGVkIG9uIGkuTVgyOEVWSy4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8
+ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvY2xrL214cy9jbGstaW14MjguYyB8IDUgKysr
+LS0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9jbGsvbXhzL2Nsay1pbXgyOC5jIGIvZHJpdmVycy9jbGsvbXhzL2Ns
+ay1pbXgyOC5jCmluZGV4IGVkMzhkNGIuLjA1YjNjMmEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvY2xr
+L214cy9jbGstaW14MjguYworKysgYi9kcml2ZXJzL2Nsay9teHMvY2xrLWlteDI4LmMKQEAgLTY4
+LDcgKzY4LDcgQEAgZW51bSBpbXgyOF9jbGsgewogCWVtaV94dGFsLCBsY2RpZl9kaXYsIGV0bV9k
+aXYsIHB0cCwgc2FpZjBfZGl2LCBzYWlmMV9kaXYsCiAJY2xrMzJrX2RpdiwgcnRjLCBscmFkYywg
+c3BkaWZfZGl2LCBjbGszMmssIHB3bSwgdWFydCwgc3NwMCwKIAlzc3AxLCBzc3AyLCBzc3AzLCBn
+cG1pLCBzcGRpZiwgZW1pLCBzYWlmMCwgc2FpZjEsIGxjZGlmLCBldG0sCi0JZmVjLCBjYW4wLCBj
+YW4xLCB1c2IwLCB1c2IxLCB1c2IwX3BoeSwgdXNiMV9waHksIGVuZXRfb3V0LAorCWZlY19zbGVl
+cCwgZmVjLCBjYW4wLCBjYW4xLCB1c2IwLCB1c2IxLCB1c2IwX3BoeSwgdXNiMV9waHksIGVuZXRf
+b3V0LAogCWxjZGlmX2NvbXAsIGNsa19tYXgKIH07CiAKQEAgLTEyNCw3ICsxMjQsOCBAQCBpbnQg
+X19pbml0IG14MjhfY2xvY2tzX2luaXQodm9pZCBfX2lvbWVtICpyZWdzKQogCWNsa3NbZW1pXSA9
+IG14c19jbGtfZ2F0ZSgiZW1pIiwgImVtaV9zZWwiLCBFTUksIDMxKTsKIAljbGtzW2xjZGlmXSA9
+IG14c19jbGtfZ2F0ZSgibGNkaWYiLCAibGNkaWZfZGl2IiwgTENESUYsIDMxKTsKIAljbGtzW2V0
+bV0gPSBteHNfY2xrX2dhdGUoImV0bSIsICJldG1fZGl2IiwgRVRNLCAzMSk7Ci0JY2xrc1tmZWNd
+ID0gbXhzX2Nsa19nYXRlKCJmZWMiLCAiaGJ1cyIsIEVORVQsIDMwKTsKKwljbGtzW2ZlY19zbGVl
+cF0gPSBteHNfY2xrX2dhdGUoImZlY19zbGVlcCIsICJoYnVzIiwgRU5FVCwgMzEpOworCWNsa3Nb
+ZmVjXSA9IG14c19jbGtfZ2F0ZSgiZmVjIiwgImZlY19zbGVlcCIsIEVORVQsIDMwKTsKIAljbGtz
+W3VzYjBfcGh5XSA9IG14c19jbGtfZ2F0ZSgidXNiMF9waHkiLCAicGxsMCIsIFBMTDBDVFJMMCwg
+MTgpOwogCWNsa3NbdXNiMV9waHldID0gbXhzX2Nsa19nYXRlKCJ1c2IxX3BoeSIsICJwbGwxIiwg
+UExMMUNUUkwwLCAxOCk7CiAJY2xrc1tlbmV0X291dF0gPSBjbGtfZ2F0ZSgiZW5ldF9vdXQiLCAi
+cGxsMiIsIEVORVQsIDE4KTsKLS0gCjEuOC4zLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
