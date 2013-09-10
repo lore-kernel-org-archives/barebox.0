@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJRWB-0003TO-6l
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 17:14:24 +0000
+ id 1VJRW6-0003Sv-6r
+ for barebox@lists.infradead.org; Tue, 10 Sep 2013 17:14:19 +0000
 Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 6C74F94026D
- for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 19:13:59 +0200 (CEST)
+ by smtp1-g21.free.fr (Postfix) with ESMTP id 6974C940233
+ for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 19:13:53 +0200 (CEST)
 From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 10 Sep 2013 19:13:34 +0200
-Message-Id: <1378833214-19808-4-git-send-email-eric@eukrea.com>
+Date: Tue, 10 Sep 2013 19:13:33 +0200
+Message-Id: <1378833214-19808-3-git-send-email-eric@eukrea.com>
 In-Reply-To: <1378833214-19808-1-git-send-email-eric@eukrea.com>
 References: <1378833214-19808-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
@@ -24,24 +24,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] video/stm: enable clock to get the display working
+Subject: [PATCH 3/4] video/stm: don't fail when the pixel clock is properly set
 To: barebox@lists.infradead.org
 
-ZWxzZSB0aGUgY2xvY2sgaXMgbm90IGVuYWJsZWQgOgogICAgICAgIHJlZl9waXggKHJhdGUgMjcw
-MDAwMDAwLCBkaXNhYmxlZCkKICAgICAgICAgICAgbGNkaWZfc2VsIChyYXRlIDI3MDAwMDAwMCwg
-ZGlzYWJsZWQpCiAgICAgICAgICAgICAgICBsY2RpZl9kaXYgKHJhdGUgMzM3NTAwMDAsIGRpc2Fi
-bGVkKQogICAgICAgICAgICAgICAgICAgIGxjZGlmIChyYXRlIDMzNzUwMDAwLCBkaXNhYmxlZCkK
-ICAgICAgICAgICAgICAgICAgICAgICAgbGNkaWZfY29tcCAocmF0ZSAzMzc1MDAwMCwgZGlzYWJs
-ZWQpCgp0ZXN0ZWQgb24gaS5NWDI4RVZLLgoKU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxl
-cmljQGV1a3JlYS5jb20+Ci0tLQogZHJpdmVycy92aWRlby9zdG0uYyB8IDEgKwogMSBmaWxlIGNo
-YW5nZWQsIDEgaW5zZXJ0aW9uKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy92aWRlby9zdG0uYyBi
-L2RyaXZlcnMvdmlkZW8vc3RtLmMKaW5kZXggMjYwMzEyOS4uZmRlYWY5YyAxMDA2NDQKLS0tIGEv
-ZHJpdmVycy92aWRlby9zdG0uYworKysgYi9kcml2ZXJzL3ZpZGVvL3N0bS5jCkBAIC00OTYsNiAr
-NDk2LDcgQEAgc3RhdGljIGludCBzdG1mYl9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmh3X2RldikK
-IAlmYmkuY2xrID0gY2xrX2dldChod19kZXYsIE5VTEwpOwogCWlmIChJU19FUlIoZmJpLmNsaykp
-CiAJCXJldHVybiBQVFJfRVJSKGZiaS5jbGspOworCWNsa19lbmFibGUoZmJpLmNsayk7CiAKIAkv
-KiBhZGQgcnVudGltZSB2aWRlbyBpbmZvICovCiAJZmJpLmluZm8ubW9kZV9saXN0ID0gcGRhdGEt
-Pm1vZGVfbGlzdDsKLS0gCjEuOC4zLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJh
-ZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJl
-Ym94Cg==
+dGhlIGNoZWNrIGlzIHdyb25nIGFzIHdoZW4gdGhlIGNsb2NrIHJhdGUgaXMgY29ycmVjdGx5IHNl
+dAp0aGUgZnVuY3Rpb24gd2lsbCByZXR1cm4gMC4KClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFy
+ZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvdmlkZW8vc3RtLmMgfCAyICstCiAxIGZp
+bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9k
+cml2ZXJzL3ZpZGVvL3N0bS5jIGIvZHJpdmVycy92aWRlby9zdG0uYwppbmRleCAwODc1YzliLi4y
+NjAzMTI5IDEwMDY0NAotLS0gYS9kcml2ZXJzL3ZpZGVvL3N0bS5jCisrKyBiL2RyaXZlcnMvdmlk
+ZW8vc3RtLmMKQEAgLTMzMSw3ICszMzEsNyBAQCBzdGF0aWMgaW50IHN0bWZiX2FjdGl2YXRlX3Zh
+cihzdHJ1Y3QgZmJfaW5mbyAqZmJfaW5mbykKIAkvKiogQHRvZG8gZW5zdXJlIEhDTEsgaXMgYWN0
+aXZlIGF0IHRoaXMgcG9pbnQgb2YgdGltZSEgKi8KIAogCXNpemUgPSBjbGtfc2V0X3JhdGUoZmJp
+LT5jbGssIFBJQ09TMktIWihtb2RlLT5waXhjbG9jaykgKiAxMDAwKTsKLQlpZiAoc2l6ZSA9PSAw
+KSB7CisJaWYgKHNpemUgIT0gMCkgewogCQlkZXZfZGJnKGZiaS0+aHdfZGV2LCAiVW5hYmxlIHRv
+IHNldCBhIHZhbGlkIHBpeGVsIGNsb2NrXG4iKTsKIAkJcmV0dXJuIC1FSU5WQUw7CiAJfQotLSAK
+MS44LjMuMQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
