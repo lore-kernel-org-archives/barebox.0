@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJSCt-0004Lj-1c
- for barebox@lists.infradead.org; Tue, 10 Sep 2013 17:58:32 +0000
-Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
- by smtp5-g21.free.fr (Postfix) with ESMTP id 0DDD7D481E8
- for <barebox@lists.infradead.org>; Tue, 10 Sep 2013 19:58:07 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Tue, 10 Sep 2013 19:57:56 +0200
-Message-Id: <1378835876-29402-3-git-send-email-eric@eukrea.com>
-In-Reply-To: <1378835876-29402-1-git-send-email-eric@eukrea.com>
-References: <1378835876-29402-1-git-send-email-eric@eukrea.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VJe13-00047M-50
+ for barebox@lists.infradead.org; Wed, 11 Sep 2013 06:35:06 +0000
+Date: Wed, 11 Sep 2013 08:34:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130911063438.GG30088@pengutronix.de>
+References: <1378800931-23713-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1378800931-23713-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,49 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] mx28-evk: enable USB
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] i.MX28: unbreak ethernet
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-LSBVU0IxIGlzIGhvc3QgKHRlc3RlZCB3aXRoIGEgbWFzcyBzdG9yYWdlKQotIFVTQjAgaXMgZGV2
-aWNlIChxdWlja2x5IHRlc3RlZCB3aXRoIERGVSkKClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFy
-ZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgyOC1l
-dmsvbXgyOC1ldmsuYyB8IDIxICsrKysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQs
-IDIxIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxl
-LW14MjgtZXZrL214MjgtZXZrLmMgYi9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MjgtZXZr
-L214MjgtZXZrLmMKaW5kZXggOTJmMGE3NS4uZmE2MzFkZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0v
-Ym9hcmRzL2ZyZWVzY2FsZS1teDI4LWV2ay9teDI4LWV2ay5jCisrKyBiL2FyY2gvYXJtL2JvYXJk
-cy9mcmVlc2NhbGUtbXgyOC1ldmsvbXgyOC1ldmsuYwpAQCAtMzIsNiArMzIsOCBAQAogI2luY2x1
-ZGUgPG1hY2gvaW9tdXguaD4KICNpbmNsdWRlIDxtYWNoL29jb3RwLmg+CiAjaW5jbHVkZSA8bWFj
-aC9kZXZpY2VzLmg+CisjaW5jbHVkZSA8bWFjaC91c2IuaD4KKyNpbmNsdWRlIDx1c2IvZnNsX3Vz
-YjIuaD4KICNpbmNsdWRlIDxzcGkvc3BpLmg+CiAKICNpbmNsdWRlIDxhc20vYXJtbGludXguaD4K
-QEAgLTEzNSw2ICsxMzcsMTEgQEAgc3RhdGljIGNvbnN0IHVpbnQzMl90IG14MjhldmtfcGFkc1td
-ID0gewogCVNTUDJfRDMgfCBWRV8zXzNWIHwgUFVMTFVQKDEpIHwgU1RSRU5HVEgoUzhNQSksIC8q
-IFNTMCAhQ1MgKi8KIAlTU1AyX0NNRCB8IFZFXzNfM1YgfCBQVUxMVVAoMSkgfCBTVFJFTkdUSChT
-OE1BKSwgLyogTU9TSSBESU8gKi8KIAlTU1AyX1NDSyB8IFZFXzNfM1YgfCBQVUxMVVAoMSkgfCBT
-VFJFTkdUSChTOE1BKSwgLyogQ0xLICovCisKKwkvKiBVU0IgVkJVUzEgRU5BQkxFIC0gZGVmYXVs
-dCB0byBPTiAqLworCUFVQVJUMl9SWF9HUElPIHwgVkVfM18zViB8IFBVTExVUCgwKSB8IEdQSU9f
-T1VUIHwgR1BJT19WQUxVRSgxKSwKKwkvKiBVU0IgVkJVUzAgRU5BQkxFIC0gZGVmYXVsdCB0byBP
-RkYgKi8KKwlBVUFSVDJfVFhfR1BJTyB8IFZFXzNfM1YgfCBQVUxMVVAoMCkgfCBHUElPX09VVCB8
-IEdQSU9fVkFMVUUoMCksCiB9OwogCiBzdGF0aWMgc3RydWN0IG14c19tY2lfcGxhdGZvcm1fZGF0
-YSBtY2lfcGRhdGEgPSB7CkBAIC0yNDcsNiArMjU0LDEyIEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3Qg
-c3BpX2JvYXJkX2luZm8gbXgyOGV2a19zcGlfYm9hcmRfaW5mb1tdID0gewogCX0KIH07CiAKKyNp
-ZmRlZiBDT05GSUdfVVNCX0dBREdFVF9EUklWRVJfQVJDCitzdGF0aWMgc3RydWN0IGZzbF91c2Iy
-X3BsYXRmb3JtX2RhdGEgdXNiX3BkYXRhID0geworCS5vcGVyYXRpbmdfbW9kZQk9IEZTTF9VU0Iy
-X0RSX0RFVklDRSwKKwkucGh5X21vZGUJPSBGU0xfVVNCMl9QSFlfVVRNSSwKK307CisjZW5kaWYK
-IHN0YXRpYyBpbnQgbXgyOF9ldmtfZGV2aWNlc19pbml0KHZvaWQpCiB7CiAJaW50IGk7CkBAIC0y
-ODAsNiArMjkzLDE0IEBAIHN0YXRpYyBpbnQgbXgyOF9ldmtfZGV2aWNlc19pbml0KHZvaWQpCiAJ
-YWRkX2dlbmVyaWNfZGV2aWNlKCJteHNfc3BpIiwgMiwgTlVMTCwgSU1YX1NTUDJfQkFTRSwgMHgy
-MDAwLAogCQkJICAgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOwogCisjaWZkZWYgQ09ORklHX1VTQl9H
-QURHRVRfRFJJVkVSX0FSQworCWlteDI4X3VzYl9waHkwX2VuYWJsZSgpOworCWlteDI4X3VzYl9w
-aHkxX2VuYWJsZSgpOworCWFkZF9nZW5lcmljX3VzYl9laGNpX2RldmljZShERVZJQ0VfSURfRFlO
-QU1JQywgSU1YX1VTQjFfQkFTRSwgTlVMTCk7CisJYWRkX2dlbmVyaWNfZGV2aWNlKCJmc2wtdWRj
-IiwgREVWSUNFX0lEX0RZTkFNSUMsIE5VTEwsIElNWF9VU0IwX0JBU0UsCisJCQkgICAweDIwMCwg
-SU9SRVNPVVJDRV9NRU0sICZ1c2JfcGRhdGEpOworI2VuZGlmCisKIAlyZXR1cm4gMDsKIH0KIGRl
-dmljZV9pbml0Y2FsbChteDI4X2V2a19kZXZpY2VzX2luaXQpOwotLSAKMS44LjMuMQoKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
-ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi Eric,
+
+On Tue, Sep 10, 2013 at 10:15:31AM +0200, Eric B=E9nard wrote:
+> since the switch to common clock, ethernet driver doesn't works and
+> and access to the network leads to :
+> eth0: Read MDIO failed...
+> unable to handle NULL pointer dereference at address 0x000000c7
+
+Applied all fixes you sent. I'm a bit ashamed how many breakages there
+are due to the common clock conversion :/
+I should have tested this better.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
