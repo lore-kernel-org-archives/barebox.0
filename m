@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VJe1j-00048S-Tx
- for barebox@lists.infradead.org; Wed, 11 Sep 2013 06:35:48 +0000
-Date: Wed, 11 Sep 2013 08:35:26 +0200
+ id 1VJePa-0004Qo-Ou
+ for barebox@lists.infradead.org; Wed, 11 Sep 2013 07:00:27 +0000
+Date: Wed, 11 Sep 2013 09:00:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130911063526.GH30088@pengutronix.de>
-References: <1378738482-15488-1-git-send-email-s.hauer@pengutronix.de>
- <522DF740.9050503@gmail.com>
- <20130910074816.GE30088@pengutronix.de> <522EDED4.700@gmail.com>
+Message-ID: <20130911070004.GJ30088@pengutronix.de>
+References: <20130905010436.GP19598@titan.lakedaemon.net>
+ <20130905064639.GO30088@pengutronix.de>
+ <20130909174117.GA12927@titan.lakedaemon.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <522EDED4.700@gmail.com>
+In-Reply-To: <20130909174117.GA12927@titan.lakedaemon.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,51 +24,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] gpio: Add designware gpio controller support
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: imx-usb-image write to usb error
+To: Jason Cooper <barebox@lakedaemon.net>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 10, 2013 at 10:56:52AM +0200, Sebastian Hesselbarth wrote:
-> On 09/10/2013 09:48 AM, Sascha Hauer wrote:
-> >On Mon, Sep 09, 2013 at 06:28:48PM +0200, Sebastian Hesselbarth wrote:
-> >>I have seen this driver and think it can be improved by exploiting
-> >>its config1/2 registers where synthesis settings are stored. Please
-> >>also look at [1] pp.1229; you can read out number of ports, port
-> >>width, interrupt, and debounce features.
-> >
-> >Ok, the port width feature is easy enough to implement. Will add it in
-> >the next version.
-> >
-> >I also added a check for multiple ports, but just ignore the additional
-> >ports for now since I don't know the register offsets and also have no
-> >hardware to actually test it (The SoCFPGA only has one port)
+On Mon, Sep 09, 2013 at 01:41:17PM -0400, Jason Cooper wrote:
+> On Thu, Sep 05, 2013 at 08:46:39AM +0200, Sascha Hauer wrote:
+> > Hi Jason,
+> > 
+> > On Wed, Sep 04, 2013 at 09:04:36PM -0400, Jason Cooper wrote:
+> > > All,
+> > > 
+> > > This is the first I've messed with i.MX, so I'm a little lost. :)
+> > > 
+> > > I'm putting together a patch to add support for the SanDisk Connect
+> > > Wireless Media Drive [1], code dump from SanDisk is here [2].  It turns
+> > > out when you unplug the battery, it'll show up as the Freescale hid.
+> > > 
+> > > Here's what I get:
+> > > 
+> > > $ ./scripts/imx/imx-image -c \
+> > > arch/arm/boards/sandisk-connect-wmd/flash-header-lpddr1.imxcfg -f \
+> > > barebox.bin -o barebox.imx
+> > > $ sudo ./scripts/imx/imx-usb-loader -vvvvv ./barebox.imx 
+> > > found i.MX50 USB device [15a2:0052]
+> > 
+> > I never tested this on an i.MX50 due to lack of hardware. Have a look
+> > at scripts/imx/imx-usb-loader.c at imx_ids. i.MX50 is very similar to
+> > i.MX51. The i.MX51 has:
+> > 
+> > 	{
+> > 		.vid = 0x15a2,
+> > 		.pid = 0x0041,
+> > 		.name = "i.MX51",
+> > 		.header_type = HDR_MX51,
+> > 		.mode = MODE_BULK,
+> > 		.max_transfer = 64,
+> > 	},
+> > 
+> > The header_type, mode and max_transfer fields are missing for i.MX50. I
+> > assume that's the problem.
 > 
-> Ok, fair enough. IIRC the Armada 1500 uses multiple instances instead
-> of multiple ports, too.
+> Well, it looks like it works, but I'm unable to get a barebox prompt on
+> the tty.  (patches to come once I get a prompt).  So I decided to try
+> tackling the problem from the other end for a bit.  Namely booting a
+> mainline kernel from the installed u-boot.
 > 
-> >>Unfortunately, I am not ready to run barebox on Armada 1500 and I
-> >>don't have a socfpga to test. So if you are not eager to modify it now,
-> >>I can add config reg based read-out later.
-> >>
-> >>[1] http://www.altera.com/literature/hb/arria-v/hps.pdf
-> >>
-> >>[...]
-> >>>+static __maybe_unused struct of_device_id dwgpio_match[] = {
-> >>>+	{
-> >>>+		.compatible = "snps,dw-gpio",
-> >>>+	}, {
-> >>
-> >>Please add "snps,dw-apb-gpio", that's what the linux driver
-> >>will look for if make to pick it up for Armada 1500.
-> >
-> >I'll better just change it to "snps,dw-apb-gpio". There already is a
-> >dtsi file in the kernel which uses this binding (although it looks like
-> >it hasn't been approved by anyone)
+> Something is confusing me though.  The part number on the chip is
+> MCIMX502CVK8B.  Which, iiuc, is an imx51.  The provided kernel spits out
+> this:
 > 
-> The driver got Acks, but must have slipped through. I have seen your
-> v2 but it still uses "snps,dw-gpio".
+> [    0.000000] MXC_Early serial console at MMIO 0x53fbc000 (options '115200')
+> 
+> However, the only imx SoCs using that address range are imx53 and imx25,
+> according to arch/arm/boot/dts/ in Linux, at least.
+> 
+> In addition, the docs for the imx50 clearly state that it uses DCD v2
+> (version = 0x40) [1] (Table 6-27, DCD Header), but the code in barebox's
+> imx-image.c says imx51 uses DCD v1...
 
-Fixed this now for real.
+The i.MX53 is not much more than a moderately improved i.MX51. The i.MX50
+is somewhere in between. Maybe it already uses the v2 header format.
+Have you tried copying the values from the i.MX53?
+
+> 
+> Anyone with more experience with Freescale SoCs care to fill in the
+> blanks?  The first hint I'm on the wrong path is that I feel like I need
+> to write a whole dtsi file from scratch. :-/
+
+The i.MX51 and i.MX53 have a very similar memory map. Only the AIPS1/2
+base addresses are different to allow for bigger SDRAM on the i.MX53.
+The i.MX50 memory map seems to be a subset of the i.MX53.
+
+What I'm afraid is really different between i.MX50 and i.MX53 is the
+clock controller.
 
 Sascha
 
