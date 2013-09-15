@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLAWo-0004hZ-QM
- for barebox@lists.infradead.org; Sun, 15 Sep 2013 11:30:12 +0000
+ id 1VLAWo-0004hW-QX
+ for barebox@lists.infradead.org; Sun, 15 Sep 2013 11:30:11 +0000
 Received: from mail411.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id A5807DC5EA4
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 875A2DC5E9B
  for <barebox@lists.infradead.org>; Sun, 15 Sep 2013 13:29:49 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 15 Sep 2013 13:30:54 +0200
-Message-Id: <1379244654-30716-4-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1379244654-30716-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Sun, 15 Sep 2013 13:30:51 +0200
+Message-Id: <1379244654-30716-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130915112850.GC21829@ns203013.ovh.net>
 References: <20130915112850.GC21829@ns203013.ovh.net>
- <1379244654-30716-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,75 +25,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] defaultenv-2: add login support
+Subject: [PATCH 1/4] login: add globalvar timeout support
 To: barebox@lists.infradead.org
-
-request password to login is a timeout is specified and /env/etc/passwd
-present
-
-ensure we have not console access execpt when allowed
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- defaultenv-2/base/bin/init | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ commands/login.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/defaultenv-2/base/bin/init b/defaultenv-2/base/bin/init
-index ca02ba6..4b132bc 100644
---- a/defaultenv-2/base/bin/init
-+++ b/defaultenv-2/base/bin/init
-@@ -16,14 +16,22 @@ global editcmd=sedit
- [ -e /env/config-board ] && /env/config-board
- /env/config
+diff --git a/commands/login.c b/commands/login.c
+index fb6bb35..f5429bc 100644
+--- a/commands/login.c
++++ b/commands/login.c
+@@ -20,6 +20,10 @@
+ #include <complete.h>
+ #include <password.h>
+ #include <getopt.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <init.h>
  
-+# request password to login is a timeout is specified and /env/etc/passwd present
-+[ -n ${global.login.timeout} ] && login_cmd=login
-+# allow the input if not
-+[ -n ${global.console.input_allow} ] && global.console.input_allow=1
+ #define PASSWD_MAX_LENGTH	(128 + 1)
+ 
+@@ -31,6 +35,16 @@
+ #define LOGIN_MODE HIDE
+ #endif
+ 
++static void login_getenv_int(const char *name, int *i)
++{
++	const char* str = getenv(name);
 +
- # allow to stop the boot before execute the /env/init/*
- # but without waiting
- timeout -s -a -v key 0
- 
- if [ "${key}" = "q" ]; then
-+	${login_cmd}
- 	exit
- fi
- 
-+[ -n ${global.login.timeout} ] && global.console.input_allow=0
++	if (!str)
++		return;
 +
- for i in /env/init/*; do
- 	. $i
- done
-@@ -34,10 +42,15 @@ else
- 	echo -e -n "\nHit any key to stop autoboot: "
- fi
- 
-+[ -n ${global.login.timeout} ] && global.console.input_allow=1
++	*i = simple_strtoul(str, NULL, 10);
++}
 +
- timeout -a $global.autoboot_timeout -v key
- autoboot="$?"
+ static int do_login(int argc, char *argv[])
+ {
+ 	unsigned char passwd[PASSWD_MAX_LENGTH];
+@@ -38,6 +52,8 @@ static int do_login(int argc, char *argv[])
+ 	int timeout = 0;
+ 	char *timeout_cmd = "boot";
  
-+[ -n ${global.login.timeout} ] && global.console.input_allow=0
++	login_getenv_int("global.login.timeout", &timeout);
 +
- if [ "${key}" = "q" ]; then
-+	${login_cmd}
- 	exit
- fi
- 
-@@ -46,9 +59,12 @@ if [ "$autoboot" = 0 ]; then
- fi
- 
- if [ -e /env/menu ]; then
-+	${login_cmd}
- 	if [ "${key}" != "m" ]; then
- 		echo -e "\ntype exit to get to the menu"
- 		sh
- 	fi
- 	/env/menu/mainmenu
- fi
+ 	if (!is_passwd_enable()) {
+ 		puts("login: password not set\n");
+ 		return 0;
+@@ -80,3 +96,13 @@ BAREBOX_CMD_START(login)
+ 	BAREBOX_CMD_HELP(cmd_login_help)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
 +
-+${login_cmd}
++static int login_global_init(void)
++{
++	globalvar_add_simple("login.timeout");
++
++	return 0;
++}
++late_initcall(login_global_init);
++
++BAREBOX_MAGICVAR_NAMED(global_login_timeout, global.login.timeout, "timeout to type the password");
 -- 
 1.8.4.rc1
 
