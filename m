@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLUU8-0005Ot-8s
+ id 1VLUU8-0005Os-8m
  for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:48:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Sep 2013 10:48:12 +0200
-Message-Id: <1379321300-8085-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2013 10:48:11 +0200
+Message-Id: <1379321300-8085-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/11] of: partition: Check for valid partition name
+Subject: [PATCH 02/11] clk: of: introduce of_clk_src_simple_get
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/partition.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/clk.c   | 7 +++++++
+ include/linux/clk.h | 1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 7199eff..5ed44a8 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -47,6 +47,9 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
- 	partname = of_get_property(node, "label", &len);
- 	if (!partname)
- 		partname = of_get_property(node, "name", &len);
-+	if (!partname)
-+		return NULL;
-+
- 	name = (char *)partname;
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 7ec3d93..5942e29 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -273,6 +273,13 @@ struct of_clk_provider {
  
- 	debug("add partition: %s.%s 0x%08lx 0x%08lx\n", cdev->name, partname, offset, size);
+ static LIST_HEAD(of_clk_providers);
+ 
++struct clk *of_clk_src_simple_get(struct of_phandle_args *clkspec,
++		void *data)
++{
++	return data;
++}
++EXPORT_SYMBOL_GPL(of_clk_src_simple_get);
++
+ struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
+ {
+ 	struct clk_onecell_data *clk_data = data;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 6aed1de..4778400 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -290,6 +290,7 @@ struct clk_onecell_data {
+ 	unsigned int clk_num;
+ };
+ struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data);
++struct clk *of_clk_src_simple_get(struct of_phandle_args *clkspec, void *data);
+ 
+ struct clk *of_clk_get(struct device_node *np, int index);
+ struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
 -- 
 1.8.4.rc3
 
