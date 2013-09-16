@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLUUG-0005PS-Cw
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:49:13 +0000
+ id 1VLUUG-0005PR-9E
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:49:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Sep 2013 10:48:19 +0200
-Message-Id: <1379321300-8085-11-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2013 10:48:15 +0200
+Message-Id: <1379321300-8085-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,1228 +21,337 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] ARM: SoCFPGA: Add EBV SoCrates board support
+Subject: [PATCH 06/11] scripts: Add Altera SoCFPGA mkimage support
 To: barebox@lists.infradead.org
+
+The Altera SoCFPGAs expect a simple header for their first stage
+loaders. This adds a tool to generate images for the SoCFPGAs. The
+header is either embedded into the image or optionally prepended
+to the image. In this case code is added to jump over the image
+header.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/ebv-socrates/Makefile              |   2 +
- arch/arm/boards/ebv-socrates/board.c               |  37 ++++
- arch/arm/boards/ebv-socrates/config.h              |   1 +
- arch/arm/boards/ebv-socrates/lowlevel.c            |  99 ++++++++++
- arch/arm/boards/ebv-socrates/pinmux_config.c       | 210 +++++++++++++++++++++
- arch/arm/boards/ebv-socrates/pll_config.h          |  97 ++++++++++
- arch/arm/boards/ebv-socrates/sdram_config.h        |  73 +++++++
- arch/arm/boards/ebv-socrates/sequencer_auto.h      | 174 +++++++++++++++++
- .../boards/ebv-socrates/sequencer_auto_ac_init.c   |  40 ++++
- .../boards/ebv-socrates/sequencer_auto_inst_init.c | 132 +++++++++++++
- arch/arm/boards/ebv-socrates/sequencer_defines.h   | 118 ++++++++++++
- arch/arm/dts/Makefile                              |   4 +-
- arch/arm/dts/socfpga_cyclone5_socrates.dts         |  64 +++++++
- arch/arm/mach-socfpga/Kconfig                      |   4 +
- images/Makefile.socfpga                            |   8 +
- 16 files changed, 1063 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/ebv-socrates/Makefile
- create mode 100644 arch/arm/boards/ebv-socrates/board.c
- create mode 100644 arch/arm/boards/ebv-socrates/config.h
- create mode 100644 arch/arm/boards/ebv-socrates/lowlevel.c
- create mode 100644 arch/arm/boards/ebv-socrates/pinmux_config.c
- create mode 100644 arch/arm/boards/ebv-socrates/pll_config.h
- create mode 100644 arch/arm/boards/ebv-socrates/sdram_config.h
- create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto.h
- create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
- create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
- create mode 100644 arch/arm/boards/ebv-socrates/sequencer_defines.h
- create mode 100644 arch/arm/dts/socfpga_cyclone5_socrates.dts
+ scripts/.gitignore        |   1 +
+ scripts/Makefile          |   1 +
+ scripts/socfpga_mkimage.c | 287 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 289 insertions(+)
+ create mode 100644 scripts/socfpga_mkimage.c
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index a9bc15f..2210fd4 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -75,6 +75,7 @@ obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
- obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
- obj-$(CONFIG_MACH_SAMA5D3XEK)			+= sama5d3xek/
- obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
-+obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
- obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
- obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
- obj-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x/
-diff --git a/arch/arm/boards/ebv-socrates/Makefile b/arch/arm/boards/ebv-socrates/Makefile
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 6518c0f..516ea07 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -10,3 +10,4 @@ mkublheader
+ omap_signGP
+ omap4_usbboot
+ zynq_mkimage
++socfpga_mkimage
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 307dc3d..97a5dab 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -14,6 +14,7 @@ hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+ hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
+ hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
++hostprogs-$(CONFIG_ARCH_SOCFPGA) += socfpga_mkimage
+ subdir-$(CONFIG_ARCH_IMX)	 += imx
+ 
+ HOSTLOADLIBES_omap4_usbboot = -lpthread
+diff --git a/scripts/socfpga_mkimage.c b/scripts/socfpga_mkimage.c
 new file mode 100644
-index 0000000..8c927fe
+index 0000000..bab1b1a
 --- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/Makefile
-@@ -0,0 +1,2 @@
-+obj-y += lowlevel.o board.o
-+pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/ebv-socrates/board.c b/arch/arm/boards/ebv-socrates/board.c
-new file mode 100644
-index 0000000..b2f62dc
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/board.c
-@@ -0,0 +1,37 @@
-+#include <common.h>
-+#include <types.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <asm/armlinux.h>
-+#include <linux/micrel_phy.h>
-+#include <linux/phy.h>
-+#include <sizes.h>
++++ b/scripts/socfpga_mkimage.c
+@@ -0,0 +1,287 @@
++#include <stdio.h>
++#include <unistd.h>
++#include <getopt.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
 +#include <fcntl.h>
-+#include <fs.h>
-+#include <mach/socfpga-regs.h>
++#include <endian.h>
 +
-+static int phy_fixup(struct phy_device *dev)
++#define VALIDATION_WORD 0x31305341
++
++#define MAX_IMAGE_SIZE (60 * 1024 - 4)
++
++static int add_barebox_header;
++
++struct socfpga_header {
++	uint8_t validation_word[4];
++	uint8_t version;
++	uint8_t flags;
++	uint8_t program_length[2];
++	uint8_t spare[2];
++	uint8_t checksum[2];
++};
++
++static uint32_t bb_header[] = {
++	0xea00007e,	/* b 0x200  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0xeafffffe,	/* 1: b 1b  */
++	0x65726162,	/* 'bare'   */
++	0x00786f62,	/* 'box\0'  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* padding  */
++	0x00000000,	/* socfpga header */
++	0x00000000,	/* socfpga header */
++	0x00000000,	/* socfpga header */
++	0xea00006b,	/* entry. b 0x200  */
++};
++
++static int read_full(int fd, void *buf, size_t size)
 +{
-+	/* min rx data delay */
-+	phy_write(dev, 0x0b, 0x8105);
-+	phy_write(dev, 0x0c, 0x0000);
++	size_t insize = size;
++	int now;
++	int total = 0;
 +
-+	/* max rx/tx clock delay, min rx/tx control delay */
-+	phy_write(dev, 0x0b, 0x8104);
-+	phy_write(dev, 0x0c, 0xa0d0);
-+	phy_write(dev, 0x0b, 0x104);
++	while (size) {
++		now = read(fd, buf, size);
++		if (now == 0)
++			return total;
++		if (now < 0)
++			return now;
++		total += now;
++		size -= now;
++		buf += now;
++	}
++
++	return insize;
++}
++
++static int write_full(int fd, void *buf, size_t size)
++{
++	size_t insize = size;
++	int now;
++
++	while (size) {
++		now = write(fd, buf, size);
++		if (now <= 0)
++			return now;
++		size -= now;
++		buf += now;
++	}
++
++	return insize;
++}
++
++static uint32_t crc_table[256] = {
++	0x00000000, 0x04c11db7, 0x09823b6e, 0x0d4326d9, 0x130476dc, 0x17c56b6b,
++	0x1a864db2, 0x1e475005, 0x2608edb8, 0x22c9f00f, 0x2f8ad6d6, 0x2b4bcb61,
++	0x350c9b64, 0x31cd86d3, 0x3c8ea00a, 0x384fbdbd, 0x4c11db70, 0x48d0c6c7,
++	0x4593e01e, 0x4152fda9, 0x5f15adac, 0x5bd4b01b, 0x569796c2, 0x52568b75,
++	0x6a1936c8, 0x6ed82b7f, 0x639b0da6, 0x675a1011, 0x791d4014, 0x7ddc5da3,
++	0x709f7b7a, 0x745e66cd, 0x9823b6e0, 0x9ce2ab57, 0x91a18d8e, 0x95609039,
++	0x8b27c03c, 0x8fe6dd8b, 0x82a5fb52, 0x8664e6e5, 0xbe2b5b58, 0xbaea46ef,
++	0xb7a96036, 0xb3687d81, 0xad2f2d84, 0xa9ee3033, 0xa4ad16ea, 0xa06c0b5d,
++	0xd4326d90, 0xd0f37027, 0xddb056fe, 0xd9714b49, 0xc7361b4c, 0xc3f706fb,
++	0xceb42022, 0xca753d95, 0xf23a8028, 0xf6fb9d9f, 0xfbb8bb46, 0xff79a6f1,
++	0xe13ef6f4, 0xe5ffeb43, 0xe8bccd9a, 0xec7dd02d, 0x34867077, 0x30476dc0,
++	0x3d044b19, 0x39c556ae, 0x278206ab, 0x23431b1c, 0x2e003dc5, 0x2ac12072,
++	0x128e9dcf, 0x164f8078, 0x1b0ca6a1, 0x1fcdbb16, 0x018aeb13, 0x054bf6a4,
++	0x0808d07d, 0x0cc9cdca, 0x7897ab07, 0x7c56b6b0, 0x71159069, 0x75d48dde,
++	0x6b93dddb, 0x6f52c06c, 0x6211e6b5, 0x66d0fb02, 0x5e9f46bf, 0x5a5e5b08,
++	0x571d7dd1, 0x53dc6066, 0x4d9b3063, 0x495a2dd4, 0x44190b0d, 0x40d816ba,
++	0xaca5c697, 0xa864db20, 0xa527fdf9, 0xa1e6e04e, 0xbfa1b04b, 0xbb60adfc,
++	0xb6238b25, 0xb2e29692, 0x8aad2b2f, 0x8e6c3698, 0x832f1041, 0x87ee0df6,
++	0x99a95df3, 0x9d684044, 0x902b669d, 0x94ea7b2a, 0xe0b41de7, 0xe4750050,
++	0xe9362689, 0xedf73b3e, 0xf3b06b3b, 0xf771768c, 0xfa325055, 0xfef34de2,
++	0xc6bcf05f, 0xc27dede8, 0xcf3ecb31, 0xcbffd686, 0xd5b88683, 0xd1799b34,
++	0xdc3abded, 0xd8fba05a, 0x690ce0ee, 0x6dcdfd59, 0x608edb80, 0x644fc637,
++	0x7a089632, 0x7ec98b85, 0x738aad5c, 0x774bb0eb, 0x4f040d56, 0x4bc510e1,
++	0x46863638, 0x42472b8f, 0x5c007b8a, 0x58c1663d, 0x558240e4, 0x51435d53,
++	0x251d3b9e, 0x21dc2629, 0x2c9f00f0, 0x285e1d47, 0x36194d42, 0x32d850f5,
++	0x3f9b762c, 0x3b5a6b9b, 0x0315d626, 0x07d4cb91, 0x0a97ed48, 0x0e56f0ff,
++	0x1011a0fa, 0x14d0bd4d, 0x19939b94, 0x1d528623, 0xf12f560e, 0xf5ee4bb9,
++	0xf8ad6d60, 0xfc6c70d7, 0xe22b20d2, 0xe6ea3d65, 0xeba91bbc, 0xef68060b,
++	0xd727bbb6, 0xd3e6a601, 0xdea580d8, 0xda649d6f, 0xc423cd6a, 0xc0e2d0dd,
++	0xcda1f604, 0xc960ebb3, 0xbd3e8d7e, 0xb9ff90c9, 0xb4bcb610, 0xb07daba7,
++	0xae3afba2, 0xaafbe615, 0xa7b8c0cc, 0xa379dd7b, 0x9b3660c6, 0x9ff77d71,
++	0x92b45ba8, 0x9675461f, 0x8832161a, 0x8cf30bad, 0x81b02d74, 0x857130c3,
++	0x5d8a9099, 0x594b8d2e, 0x5408abf7, 0x50c9b640, 0x4e8ee645, 0x4a4ffbf2,
++	0x470cdd2b, 0x43cdc09c, 0x7b827d21, 0x7f436096, 0x7200464f, 0x76c15bf8,
++	0x68860bfd, 0x6c47164a, 0x61043093, 0x65c52d24, 0x119b4be9, 0x155a565e,
++	0x18197087, 0x1cd86d30, 0x029f3d35, 0x065e2082, 0x0b1d065b, 0x0fdc1bec,
++	0x3793a651, 0x3352bbe6, 0x3e119d3f, 0x3ad08088, 0x2497d08d, 0x2056cd3a,
++	0x2d15ebe3, 0x29d4f654, 0xc5a92679, 0xc1683bce, 0xcc2b1d17, 0xc8ea00a0,
++	0xd6ad50a5, 0xd26c4d12, 0xdf2f6bcb, 0xdbee767c, 0xe3a1cbc1, 0xe760d676,
++	0xea23f0af, 0xeee2ed18, 0xf0a5bd1d, 0xf464a0aa, 0xf9278673, 0xfde69bc4,
++	0x89b8fd09, 0x8d79e0be, 0x803ac667, 0x84fbdbd0, 0x9abc8bd5, 0x9e7d9662,
++	0x933eb0bb, 0x97ffad0c, 0xafb010b1, 0xab710d06, 0xa6322bdf, 0xa2f33668,
++	0xbcb4666d, 0xb8757bda, 0xb5365d03, 0xb1f740b4
++};
++
++uint32_t crc32(uint32_t crc, void *_buf, int length)
++{
++	uint8_t *buf = _buf;
++
++	while (length--)
++		crc = crc << 8 ^ crc_table[(crc >> 24 ^ *(buf++)) & 0xff];
++
++	return crc;
++}
++
++static int add_socfpga_header(void *buf, int size)
++{
++	struct socfpga_header *header = buf + 0x40;
++	uint8_t *buf_header = buf + 0x40;
++	uint32_t *crc;
++	unsigned checksum;
++	int length = size >> 2;
++	int i;
++
++	if (size & 0x3) {
++		fprintf(stderr, "%s: size must be multiple of 4\n", __func__);
++		return -EINVAL;
++	}
++
++	header->validation_word[0] = VALIDATION_WORD & 0xff;
++	header->validation_word[1] = (VALIDATION_WORD >> 8) & 0xff;
++	header->validation_word[2] = (VALIDATION_WORD >> 16) & 0xff;
++	header->validation_word[3] = (VALIDATION_WORD >> 24) & 0xff;
++	header->version = 0;
++	header->flags = 0;
++	header->program_length[0] = length & 0xff;
++	header->program_length[1] = (length >> 8) & 0xff;
++	header->spare[0] = 0;
++	header->spare[1] = 0;
++
++	checksum = 0;
++	for (i = 0; i < sizeof(*header) - 2; i++)
++		checksum += buf_header[i];
++
++	header->checksum[0] = checksum & 0xff;;
++	header->checksum[1] = (checksum >> 8) & 0xff;;
++
++	crc = buf + size - sizeof(uint32_t);
++
++	*crc = crc32(0xffffffff, buf, size - sizeof(uint32_t));
++	*crc ^= 0xffffffff;
 +
 +	return 0;
 +}
 +
-+static int socrates_init(void)
++static void usage(const char *prgname)
 +{
-+	if (!of_machine_is_compatible("ebv,socrates"))
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_PHYLIB))
-+		phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK, phy_fixup);
-+
-+	return 0;
-+}
-+postcore_initcall(socrates_init);
-diff --git a/arch/arm/boards/ebv-socrates/config.h b/arch/arm/boards/ebv-socrates/config.h
-new file mode 100644
-index 0000000..da84fa5
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/config.h
-@@ -0,0 +1 @@
-+/* nothing */
-diff --git a/arch/arm/boards/ebv-socrates/lowlevel.c b/arch/arm/boards/ebv-socrates/lowlevel.c
-new file mode 100644
-index 0000000..d2f02e0
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/lowlevel.c
-@@ -0,0 +1,99 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <io.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/cache.h>
-+#include <mach/generic.h>
-+#include <debug_ll.h>
-+#include "sdram_config.h"
-+#include <mach/sdram_config.h>
-+#include "pinmux_config.c"
-+#include "pll_config.h"
-+#include <mach/pll_config.h>
-+#include "sequencer_defines.h"
-+#include "sequencer_auto.h"
-+#include <mach/sequencer.c>
-+#include "sequencer_auto_inst_init.c"
-+#include "sequencer_auto_ac_init.c"
-+
-+static inline void ledon(void)
-+{
-+	u32 val;
-+
-+	val = readl(0xFF708000);
-+	val &= ~(1 << 28);
-+	writel(val, 0xFF708000);
-+
-+	val = readl(0xFF708004);
-+	val |= 1 << 28;
-+	writel(val, 0xFF708004);
++	fprintf(stderr, "usage: %s [OPTIONS] <infile>\n", prgname);
 +}
 +
-+static inline void ledoff(void)
++int main(int argc, char *argv[])
 +{
-+	u32 val;
++	int opt, ret;
++	const char *outfile = NULL, *infile;
++	struct stat s;
++	void *buf;
++	int fd;
++	int min_image_size = 80;
++	int max_image_size = MAX_IMAGE_SIZE;
++	int addsize = 0, pad;
 +
-+	val = readl(0xFF708000);
-+	val |= 1 << 28;
-+	writel(val, 0xFF708000);
++	while ((opt = getopt(argc, argv, "o:hb")) != -1) {
++		switch (opt) {
++		case 'b':
++			add_barebox_header = 1;
++			min_image_size = 0;
++			max_image_size = MAX_IMAGE_SIZE - 512;
++			addsize = 512;
++			break;
++		case 'h':
++			usage(argv[0]);
++			exit(0);
++		case 'o':
++			outfile = optarg;
++			break;
++		default:
++			exit(1);
++		}
++	}
 +
-+	val = readl(0xFF708004);
-+	val |= 1 << 28;
-+	writel(val, 0xFF708004);
-+}
++	if (optind == argc) {
++		usage(argv[0]);
++		exit(1);
++	}
 +
-+extern char __dtb_socfpga_cyclone5_socrates_start[];
++	infile = argv[optind];
 +
-+ENTRY_FUNCTION(start_socfpga_socrates)(void)
-+{
-+	uint32_t fdt;
++	ret = stat(infile, &s);
++	if (ret) {
++		perror("stat");
++		exit(1);
++	}
 +
-+	__barebox_arm_head();
++	if (s.st_size < min_image_size) {
++		fprintf(stderr, "input image too small. Minimum is 80 bytes\n");
++		exit(1);
++	}
 +
-+	arm_cpu_lowlevel_init();
++	if (s.st_size > max_image_size) {
++		fprintf(stderr, "input image too big. Maximum is %d bytes\n",
++				MAX_IMAGE_SIZE);
++		exit(1);
++	}
 +
-+	fdt = (uint32_t)__dtb_socfpga_cyclone5_socrates_start - get_runtime_offset();
++	fd = open(infile, O_RDONLY);
++	if (fd < 0) {
++		perror("open infile");
++		exit(1);
++	}
 +
-+	barebox_arm_entry(0x0, SZ_1G, fdt);
-+}
++	pad = s.st_size & 0x3;
++	if (pad)
++		pad = 4 - pad;
 +
-+static noinline void socrates_entry(void)
-+{
-+	int ret;
++	buf = calloc(s.st_size + 4 + addsize + pad, 1);
++	if (!buf) {
++		perror("malloc");
++		exit(1);
++	}
 +
-+	arm_early_mmu_cache_invalidate();
++	ret = read_full(fd, buf + addsize, s.st_size);
++	if (ret < 0) {
++		perror("read infile");
++		exit(1);
++	}
 +
-+	relocate_to_current_adr();
-+	setup_c();
++	close(fd);
 +
-+	socfpga_lowlevel_init(&cm_default_cfg,
-+			sys_mgr_init_table, ARRAY_SIZE(sys_mgr_init_table));
++	if (add_barebox_header) {
++		memcpy(buf, bb_header, sizeof(bb_header));
++	}
 +
-+	puts_ll("lowlevel init done\n");
-+	puts_ll("SDRAM setup...\n");
-+
-+	socfpga_sdram_mmr_init();
-+
-+	puts_ll("SDRAM calibration...\n");
-+
-+	ret = socfpga_sdram_calibration(inst_rom_init, inst_rom_init_size,
-+				ac_rom_init, ac_rom_init_size);
++	ret = add_socfpga_header(buf, s.st_size + 4 + addsize + pad);
 +	if (ret)
-+		hang();
++		exit(1);
 +
-+	puts_ll("done\n");
++	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
++	if (fd < 0) {
++		perror("open outfile");
++		exit(1);
++	}
 +
-+	barebox_arm_entry(0x0, SZ_1G, 0);
++	ret = write_full(fd, buf, s.st_size + 4 + addsize + pad);
++	if (ret < 0) {
++		perror("write outfile");
++		exit(1);
++	}
++
++	exit(0);
 +}
-+
-+ENTRY_FUNCTION(start_socfpga_socrates_xload)(void)
-+{
-+	__barebox_arm_head();
-+
-+	arm_cpu_lowlevel_init();
-+
-+	arm_setup_stack(0xffff0000 + SZ_64K - SZ_4K - 16);
-+
-+	socrates_entry();
-+}
-diff --git a/arch/arm/boards/ebv-socrates/pinmux_config.c b/arch/arm/boards/ebv-socrates/pinmux_config.c
-new file mode 100644
-index 0000000..e259078
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/pinmux_config.c
-@@ -0,0 +1,210 @@
-+/* pin MUX configuration data */
-+static unsigned long sys_mgr_init_table[] = {
-+	0, /* EMACIO0 */
-+	2, /* EMACIO1 */
-+	2, /* EMACIO2 */
-+	2, /* EMACIO3 */
-+	2, /* EMACIO4 */
-+	2, /* EMACIO5 */
-+	2, /* EMACIO6 */
-+	2, /* EMACIO7 */
-+	2, /* EMACIO8 */
-+	0, /* EMACIO9 */
-+	2, /* EMACIO10 */
-+	2, /* EMACIO11 */
-+	2, /* EMACIO12 */
-+	2, /* EMACIO13 */
-+	0, /* EMACIO14 */
-+	0, /* EMACIO15 */
-+	0, /* EMACIO16 */
-+	0, /* EMACIO17 */
-+	0, /* EMACIO18 */
-+	0, /* EMACIO19 */
-+	3, /* FLASHIO0 */
-+	0, /* FLASHIO1 */
-+	3, /* FLASHIO2 */
-+	3, /* FLASHIO3 */
-+	0, /* FLASHIO4 */
-+	0, /* FLASHIO5 */
-+	0, /* FLASHIO6 */
-+	0, /* FLASHIO7 */
-+	0, /* FLASHIO8 */
-+	3, /* FLASHIO9 */
-+	3, /* FLASHIO10 */
-+	3, /* FLASHIO11 */
-+	0, /* GENERALIO0 */
-+	1, /* GENERALIO1 */
-+	1, /* GENERALIO2 */
-+	1, /* GENERALIO3 */
-+	1, /* GENERALIO4 */
-+	0, /* GENERALIO5 */
-+	0, /* GENERALIO6 */
-+	1, /* GENERALIO7 */
-+	1, /* GENERALIO8 */
-+	3, /* GENERALIO9 */
-+	3, /* GENERALIO10 */
-+	3, /* GENERALIO11 */
-+	3, /* GENERALIO12 */
-+	2, /* GENERALIO13 */
-+	2, /* GENERALIO14 */
-+	1, /* GENERALIO15 */
-+	1, /* GENERALIO16 */
-+	1, /* GENERALIO17 */
-+	1, /* GENERALIO18 */
-+	0, /* GENERALIO19 */
-+	0, /* GENERALIO20 */
-+	0, /* GENERALIO21 */
-+	0, /* GENERALIO22 */
-+	0, /* GENERALIO23 */
-+	0, /* GENERALIO24 */
-+	0, /* GENERALIO25 */
-+	0, /* GENERALIO26 */
-+	0, /* GENERALIO27 */
-+	0, /* GENERALIO28 */
-+	0, /* GENERALIO29 */
-+	0, /* GENERALIO30 */
-+	0, /* GENERALIO31 */
-+	2, /* MIXED1IO0 */
-+	2, /* MIXED1IO1 */
-+	2, /* MIXED1IO2 */
-+	2, /* MIXED1IO3 */
-+	2, /* MIXED1IO4 */
-+	2, /* MIXED1IO5 */
-+	2, /* MIXED1IO6 */
-+	2, /* MIXED1IO7 */
-+	2, /* MIXED1IO8 */
-+	2, /* MIXED1IO9 */
-+	2, /* MIXED1IO10 */
-+	2, /* MIXED1IO11 */
-+	2, /* MIXED1IO12 */
-+	2, /* MIXED1IO13 */
-+	0, /* MIXED1IO14 */
-+	3, /* MIXED1IO15 */
-+	3, /* MIXED1IO16 */
-+	3, /* MIXED1IO17 */
-+	3, /* MIXED1IO18 */
-+	3, /* MIXED1IO19 */
-+	3, /* MIXED1IO20 */
-+	0, /* MIXED1IO21 */
-+	0, /* MIXED2IO0 */
-+	0, /* MIXED2IO1 */
-+	0, /* MIXED2IO2 */
-+	0, /* MIXED2IO3 */
-+	0, /* MIXED2IO4 */
-+	0, /* MIXED2IO5 */
-+	0, /* MIXED2IO6 */
-+	0, /* MIXED2IO7 */
-+	0, /* GPLINMUX48 */
-+	0, /* GPLINMUX49 */
-+	0, /* GPLINMUX50 */
-+	0, /* GPLINMUX51 */
-+	0, /* GPLINMUX52 */
-+	0, /* GPLINMUX53 */
-+	0, /* GPLINMUX54 */
-+	0, /* GPLINMUX55 */
-+	0, /* GPLINMUX56 */
-+	0, /* GPLINMUX57 */
-+	0, /* GPLINMUX58 */
-+	0, /* GPLINMUX59 */
-+	0, /* GPLINMUX60 */
-+	0, /* GPLINMUX61 */
-+	0, /* GPLINMUX62 */
-+	0, /* GPLINMUX63 */
-+	0, /* GPLINMUX64 */
-+	0, /* GPLINMUX65 */
-+	0, /* GPLINMUX66 */
-+	0, /* GPLINMUX67 */
-+	0, /* GPLINMUX68 */
-+	0, /* GPLINMUX69 */
-+	0, /* GPLINMUX70 */
-+	1, /* GPLMUX0 */
-+	1, /* GPLMUX1 */
-+	1, /* GPLMUX2 */
-+	1, /* GPLMUX3 */
-+	1, /* GPLMUX4 */
-+	1, /* GPLMUX5 */
-+	1, /* GPLMUX6 */
-+	1, /* GPLMUX7 */
-+	1, /* GPLMUX8 */
-+	1, /* GPLMUX9 */
-+	1, /* GPLMUX10 */
-+	1, /* GPLMUX11 */
-+	1, /* GPLMUX12 */
-+	1, /* GPLMUX13 */
-+	1, /* GPLMUX14 */
-+	1, /* GPLMUX15 */
-+	1, /* GPLMUX16 */
-+	1, /* GPLMUX17 */
-+	1, /* GPLMUX18 */
-+	1, /* GPLMUX19 */
-+	1, /* GPLMUX20 */
-+	1, /* GPLMUX21 */
-+	1, /* GPLMUX22 */
-+	1, /* GPLMUX23 */
-+	1, /* GPLMUX24 */
-+	1, /* GPLMUX25 */
-+	1, /* GPLMUX26 */
-+	1, /* GPLMUX27 */
-+	1, /* GPLMUX28 */
-+	1, /* GPLMUX29 */
-+	1, /* GPLMUX30 */
-+	1, /* GPLMUX31 */
-+	1, /* GPLMUX32 */
-+	1, /* GPLMUX33 */
-+	1, /* GPLMUX34 */
-+	1, /* GPLMUX35 */
-+	1, /* GPLMUX36 */
-+	1, /* GPLMUX37 */
-+	1, /* GPLMUX38 */
-+	1, /* GPLMUX39 */
-+	1, /* GPLMUX40 */
-+	1, /* GPLMUX41 */
-+	1, /* GPLMUX42 */
-+	1, /* GPLMUX43 */
-+	1, /* GPLMUX44 */
-+	1, /* GPLMUX45 */
-+	1, /* GPLMUX46 */
-+	1, /* GPLMUX47 */
-+	1, /* GPLMUX48 */
-+	1, /* GPLMUX49 */
-+	1, /* GPLMUX50 */
-+	1, /* GPLMUX51 */
-+	1, /* GPLMUX52 */
-+	1, /* GPLMUX53 */
-+	1, /* GPLMUX54 */
-+	1, /* GPLMUX55 */
-+	1, /* GPLMUX56 */
-+	1, /* GPLMUX57 */
-+	1, /* GPLMUX58 */
-+	1, /* GPLMUX59 */
-+	1, /* GPLMUX60 */
-+	1, /* GPLMUX61 */
-+	1, /* GPLMUX62 */
-+	1, /* GPLMUX63 */
-+	1, /* GPLMUX64 */
-+	1, /* GPLMUX65 */
-+	1, /* GPLMUX66 */
-+	1, /* GPLMUX67 */
-+	1, /* GPLMUX68 */
-+	1, /* GPLMUX69 */
-+	1, /* GPLMUX70 */
-+	0, /* NANDUSEFPGA */
-+	0, /* UART0USEFPGA */
-+	0, /* RGMII1USEFPGA */
-+	0, /* SPIS0USEFPGA */
-+	0, /* CAN0USEFPGA */
-+	0, /* I2C0USEFPGA */
-+	0, /* SDMMCUSEFPGA */
-+	0, /* QSPIUSEFPGA */
-+	0, /* SPIS1USEFPGA */
-+	0, /* RGMII0USEFPGA */
-+	0, /* UART1USEFPGA */
-+	0, /* CAN1USEFPGA */
-+	0, /* USB1USEFPGA */
-+	0, /* I2C3USEFPGA */
-+	0, /* I2C2USEFPGA */
-+	0, /* I2C1USEFPGA */
-+	0, /* SPIM1USEFPGA */
-+	0, /* USB0USEFPGA */
-+	0 /* SPIM0USEFPGA */
-+};
-diff --git a/arch/arm/boards/ebv-socrates/pll_config.h b/arch/arm/boards/ebv-socrates/pll_config.h
-new file mode 100644
-index 0000000..7682f63
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/pll_config.h
-@@ -0,0 +1,97 @@
-+#ifndef _PRELOADER_PLL_CONFIG_H_
-+#define _PRELOADER_PLL_CONFIG_H_
-+
-+/* PLL configuration data */
-+/* Main PLL */
-+#define CONFIG_HPS_MAINPLLGRP_VCO_DENOM			(0)
-+#define CONFIG_HPS_MAINPLLGRP_VCO_NUMER			(63)
-+#define CONFIG_HPS_MAINPLLGRP_MPUCLK_CNT		(0)
-+#define CONFIG_HPS_MAINPLLGRP_MAINCLK_CNT		(0)
-+#define CONFIG_HPS_MAINPLLGRP_DBGATCLK_CNT		(0)
-+#define CONFIG_HPS_MAINPLLGRP_MAINQSPICLK_CNT		(3)
-+#define CONFIG_HPS_MAINPLLGRP_MAINNANDSDMMCCLK_CNT	(3)
-+#define CONFIG_HPS_MAINPLLGRP_CFGS2FUSER0CLK_CNT	(15)
-+#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L3MPCLK		(1)
-+#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L3SPCLK		(1)
-+#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L4MPCLK		(1)
-+#define CONFIG_HPS_MAINPLLGRP_MAINDIV_L4SPCLK		(1)
-+#define CONFIG_HPS_MAINPLLGRP_DBGDIV_DBGATCLK		(0)
-+#define CONFIG_HPS_MAINPLLGRP_DBGDIV_DBGCLK		(1)
-+#define CONFIG_HPS_MAINPLLGRP_TRACEDIV_TRACECLK		(0)
-+/*
-+ * To tell where is the clock source:
-+ * 0 = MAINPLL
-+ * 1 = PERIPHPLL
-+ */
-+#define CONFIG_HPS_MAINPLLGRP_L4SRC_L4MP		(1)
-+#define CONFIG_HPS_MAINPLLGRP_L4SRC_L4SP		(1)
-+
-+/* Peripheral PLL */
-+#define CONFIG_HPS_PERPLLGRP_VCO_DENOM			(1)
-+#define CONFIG_HPS_PERPLLGRP_VCO_NUMER			(79)
-+/*
-+ * To tell where is the VCOs source:
-+ * 0 = EOSC1
-+ * 1 = EOSC2
-+ * 2 = F2S
-+ */
-+#define CONFIG_HPS_PERPLLGRP_VCO_PSRC			(0)
-+#define CONFIG_HPS_PERPLLGRP_EMAC0CLK_CNT		(3)
-+#define CONFIG_HPS_PERPLLGRP_EMAC1CLK_CNT		(3)
-+#define CONFIG_HPS_PERPLLGRP_PERQSPICLK_CNT		(1)
-+#define CONFIG_HPS_PERPLLGRP_PERNANDSDMMCCLK_CNT	(19)
-+#define CONFIG_HPS_PERPLLGRP_PERBASECLK_CNT		(4)
-+#define CONFIG_HPS_PERPLLGRP_S2FUSER1CLK_CNT		(9)
-+#define CONFIG_HPS_PERPLLGRP_DIV_USBCLK			(0)
-+#define CONFIG_HPS_PERPLLGRP_DIV_SPIMCLK		(0)
-+#define CONFIG_HPS_PERPLLGRP_DIV_CAN0CLK		(1)
-+#define CONFIG_HPS_PERPLLGRP_DIV_CAN1CLK		(1)
-+#define CONFIG_HPS_PERPLLGRP_GPIODIV_GPIODBCLK		(6249)
-+/*
-+ * To tell where is the clock source:
-+ * 0 = F2S_PERIPH_REF_CLK
-+ * 1 = MAIN_CLK
-+ * 2 = PERIPH_CLK
-+ */
-+#define CONFIG_HPS_PERPLLGRP_SRC_SDMMC			(1)
-+#define CONFIG_HPS_PERPLLGRP_SRC_NAND			(2)
-+#define CONFIG_HPS_PERPLLGRP_SRC_QSPI			(1)
-+
-+/* SDRAM PLL */
-+#define CONFIG_HPS_SDRPLLGRP_VCO_DENOM			(2)
-+#define CONFIG_HPS_SDRPLLGRP_VCO_NUMER			(79)
-+/*
-+ * To tell where is the VCOs source:
-+ * 0 = EOSC1
-+ * 1 = EOSC2
-+ * 2 = F2S
-+ */
-+#define CONFIG_HPS_SDRPLLGRP_VCO_SSRC			(0)
-+#define CONFIG_HPS_SDRPLLGRP_DDRDQSCLK_CNT		(1)
-+#define CONFIG_HPS_SDRPLLGRP_DDRDQSCLK_PHASE		(0)
-+#define CONFIG_HPS_SDRPLLGRP_DDR2XDQSCLK_CNT		(0)
-+#define CONFIG_HPS_SDRPLLGRP_DDR2XDQSCLK_PHASE		(0)
-+#define CONFIG_HPS_SDRPLLGRP_DDRDQCLK_CNT		(1)
-+#define CONFIG_HPS_SDRPLLGRP_DDRDQCLK_PHASE		(4)
-+#define CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_CNT		(5)
-+#define CONFIG_HPS_SDRPLLGRP_S2FUSER2CLK_PHASE		(0)
-+
-+/* Info for driver */
-+#define CONFIG_HPS_CLK_OSC1_HZ			(25000000)
-+#define CONFIG_HPS_CLK_MAINVCO_HZ		(1600000000)
-+#define CONFIG_HPS_CLK_PERVCO_HZ		(1000000000)
-+#define CONFIG_HPS_CLK_SDRVCO_HZ		(600000000)
-+#define CONFIG_HPS_CLK_EMAC0_HZ			(50000000)
-+#define CONFIG_HPS_CLK_EMAC1_HZ			(50000000)
-+#define CONFIG_HPS_CLK_USBCLK_HZ		(200000000)
-+#define CONFIG_HPS_CLK_NAND_HZ			(100000000)
-+#define CONFIG_HPS_CLK_SDMMC_HZ			(50000000)
-+#define CONFIG_HPS_CLK_QSPI_HZ			(400000000)
-+#define CONFIG_HPS_CLK_SPIM_HZ			(200000000)
-+#define CONFIG_HPS_CLK_CAN0_HZ			(100000000)
-+#define CONFIG_HPS_CLK_CAN1_HZ			(100000000)
-+#define CONFIG_HPS_CLK_GPIODB_HZ		(32000)
-+#define CONFIG_HPS_CLK_L4_MP_HZ			(100000000)
-+#define CONFIG_HPS_CLK_L4_SP_HZ			(100000000)
-+
-+#endif /* _PRELOADER_PLL_CONFIG_H_ */
-diff --git a/arch/arm/boards/ebv-socrates/sdram_config.h b/arch/arm/boards/ebv-socrates/sdram_config.h
-new file mode 100644
-index 0000000..94d1cbe
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/sdram_config.h
-@@ -0,0 +1,73 @@
-+#ifndef __SDRAM_CONFIG_H
-+#define __SDRAM_CONFIG_H
-+
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMTYPE			(2)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMBL			(8)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ADDRORDER		(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ECCEN			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ECCCORREN		(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_REORDEREN		(1)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_STARVELIMIT		(10)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_DQSTRKEN			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_NODMPINS			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCWL			(6)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_AL			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCL			(6)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRRD			(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TFAW			(14)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRFC			(117)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TREFI		(1300)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRCD		(5)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRP		(5)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWR		(5)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWTR		(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRTP			(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRAS			(12)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRC			(17)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TMRD			(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TCCD			(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING4_SELFRFSHEXIT		(200)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING4_PWRDOWNEXIT		(3)
-+#define CONFIG_HPS_SDR_CTRLCFG_LOWPWRTIMING_AUTOPDCYCLES	(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_COLBITS		(10)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_ROWBITS		(15)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_BANKBITS		(3)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMADDRW_CSBITS			(1)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMIFWIDTH_IFWIDTH		(32)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMDEVWIDTH_DEVWIDTH		(8)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMINTR_INTREN			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_STATICCFG_MEMBL			(2)
-+#define CONFIG_HPS_SDR_CTRLCFG_STATICCFG_USEECCASDATA		(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_CTRLWIDTH_CTRLWIDTH		(2)
-+#define CONFIG_HPS_SDR_CTRLCFG_PORTCFG_AUTOPCHEN		(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FIFOCFG_SYNCMODE			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FIFOCFG_INCSYNC			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPRIORITY_USERPRIORITY		(0x3FFD1088)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_0_STATICWEIGHT_31_0	(0x21084210)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_1_STATICWEIGHT_49_32	(0x1EF84)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_1_SUMOFWEIGHT_13_0	(0x2020)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_2_SUMOFWEIGHT_45_14	(0x0)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPWIEIGHT_3_SUMOFWEIGHT_63_46	(0xF800)
-+#define CONFIG_HPS_SDR_CTRLCFG_PHYCTRL_PHYCTRL_0		(0x200)
-+
-+#define CONFIG_HPS_SDR_CTRLCFG_CPORTWIDTH_CPORTWIDTH		(0x44555)
-+#define CONFIG_HPS_SDR_CTRLCFG_CPORTWMAP_CPORTWMAP		(0x2C011000)
-+#define CONFIG_HPS_SDR_CTRLCFG_CPORTRMAP_CPORTRMAP		(0xB00088)
-+#define CONFIG_HPS_SDR_CTRLCFG_RFIFOCMAP_RFIFOCMAP		(0x760210)
-+#define CONFIG_HPS_SDR_CTRLCFG_WFIFOCMAP_WFIFOCMAP		(0x980543)
-+#define CONFIG_HPS_SDR_CTRLCFG_CPORTRDWR_CPORTRDWR		(0x5A56A)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_0_THRESHOLD1_31_0	(0x20820820)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_1_THRESHOLD1_59_32	(0x8208208)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_1_THRESHOLD2_3_0	(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_2_THRESHOLD2_35_4	(0x41041041)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPPACING_3_THRESHOLD2_59_36	(0x410410)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_0_THRESHOLDRSTCYCLES_31_0 (0x80808080)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_1_THRESHOLDRSTCYCLES_63_32 (0x80808080)
-+#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_2_THRESHOLDRSTCYCLES_79_64 (0x8080)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_READ			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_WRITE			(1)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_READ_PORT_USED	(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_WRITE_PORT_USED	(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_COMMAND_PORT_USED	(0)
-+
-+#endif	/*#ifndef__SDRAM_CONFIG_H*/
-diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto.h b/arch/arm/boards/ebv-socrates/sequencer_auto.h
-new file mode 100644
-index 0000000..59aa9cf
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/sequencer_auto.h
-@@ -0,0 +1,174 @@
-+#define __RW_MGR_ac_mrs1 0x04
-+#define __RW_MGR_ac_mrs3 0x06
-+#define __RW_MGR_ac_write_bank_0_col_0_nodata_wl_1 0x1C
-+#define __RW_MGR_ac_act_1 0x11
-+#define __RW_MGR_ac_write_postdata 0x1A
-+#define __RW_MGR_ac_act_0 0x10
-+#define __RW_MGR_ac_des 0x0D
-+#define __RW_MGR_ac_init_reset_1_cke_0 0x01
-+#define __RW_MGR_ac_write_data 0x19
-+#define __RW_MGR_ac_init_reset_0_cke_0 0x00
-+#define __RW_MGR_ac_read_bank_0_1_norden 0x22
-+#define __RW_MGR_ac_pre_all 0x12
-+#define __RW_MGR_ac_mrs0_user 0x02
-+#define __RW_MGR_ac_mrs0_dll_reset 0x03
-+#define __RW_MGR_ac_read_bank_0_0 0x1D
-+#define __RW_MGR_ac_write_bank_0_col_1 0x16
-+#define __RW_MGR_ac_read_bank_0_1 0x1F
-+#define __RW_MGR_ac_write_bank_1_col_0 0x15
-+#define __RW_MGR_ac_write_bank_1_col_1 0x17
-+#define __RW_MGR_ac_write_bank_0_col_0 0x14
-+#define __RW_MGR_ac_read_bank_1_0 0x1E
-+#define __RW_MGR_ac_mrs1_mirr 0x0A
-+#define __RW_MGR_ac_read_bank_1_1 0x20
-+#define __RW_MGR_ac_des_odt_1 0x0E
-+#define __RW_MGR_ac_mrs0_dll_reset_mirr 0x09
-+#define __RW_MGR_ac_zqcl 0x07
-+#define __RW_MGR_ac_write_predata 0x18
-+#define __RW_MGR_ac_mrs0_user_mirr 0x08
-+#define __RW_MGR_ac_ref 0x13
-+#define __RW_MGR_ac_nop 0x0F
-+#define __RW_MGR_ac_rdimm 0x23
-+#define __RW_MGR_ac_mrs2_mirr 0x0B
-+#define __RW_MGR_ac_write_bank_0_col_0_nodata 0x1B
-+#define __RW_MGR_ac_read_en 0x21
-+#define __RW_MGR_ac_mrs3_mirr 0x0C
-+#define __RW_MGR_ac_mrs2 0x05
-+#define __RW_MGR_CONTENT_ac_mrs1 0x10090044
-+#define __RW_MGR_CONTENT_ac_mrs3 0x100B0000
-+#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata_wl_1 0x18980000
-+#define __RW_MGR_CONTENT_ac_act_1 0x106B0000
-+#define __RW_MGR_CONTENT_ac_write_postdata 0x38780000
-+#define __RW_MGR_CONTENT_ac_act_0 0x10680000
-+#define __RW_MGR_CONTENT_ac_des 0x30780000
-+#define __RW_MGR_CONTENT_ac_init_reset_1_cke_0 0x20780000
-+#define __RW_MGR_CONTENT_ac_write_data 0x3CF80000
-+#define __RW_MGR_CONTENT_ac_init_reset_0_cke_0 0x20700000
-+#define __RW_MGR_CONTENT_ac_read_bank_0_1_norden 0x10580008
-+#define __RW_MGR_CONTENT_ac_pre_all 0x10280400
-+#define __RW_MGR_CONTENT_ac_mrs0_user 0x10080221
-+#define __RW_MGR_CONTENT_ac_mrs0_dll_reset 0x10080320
-+#define __RW_MGR_CONTENT_ac_read_bank_0_0 0x13580000
-+#define __RW_MGR_CONTENT_ac_write_bank_0_col_1 0x1C980008
-+#define __RW_MGR_CONTENT_ac_read_bank_0_1 0x13580008
-+#define __RW_MGR_CONTENT_ac_write_bank_1_col_0 0x1C9B0000
-+#define __RW_MGR_CONTENT_ac_write_bank_1_col_1 0x1C9B0008
-+#define __RW_MGR_CONTENT_ac_write_bank_0_col_0 0x1C980000
-+#define __RW_MGR_CONTENT_ac_read_bank_1_0 0x135B0000
-+#define __RW_MGR_CONTENT_ac_mrs1_mirr 0x100A0024
-+#define __RW_MGR_CONTENT_ac_read_bank_1_1 0x135B0008
-+#define __RW_MGR_CONTENT_ac_des_odt_1 0x38780000
-+#define __RW_MGR_CONTENT_ac_mrs0_dll_reset_mirr 0x100802C0
-+#define __RW_MGR_CONTENT_ac_zqcl 0x10380400
-+#define __RW_MGR_CONTENT_ac_write_predata 0x38F80000
-+#define __RW_MGR_CONTENT_ac_mrs0_user_mirr 0x10080241
-+#define __RW_MGR_CONTENT_ac_ref 0x10480000
-+#define __RW_MGR_CONTENT_ac_nop 0x30780000
-+#define __RW_MGR_CONTENT_ac_rdimm 0x10780000
-+#define __RW_MGR_CONTENT_ac_mrs2_mirr 0x10090010
-+#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata 0x18180000
-+#define __RW_MGR_CONTENT_ac_read_en 0x33780000
-+#define __RW_MGR_CONTENT_ac_mrs3_mirr 0x100B0000
-+#define __RW_MGR_CONTENT_ac_mrs2 0x100A0008
-+
-+#define __RW_MGR_READ_B2B_WAIT2 0x6A
-+#define __RW_MGR_LFSR_WR_RD_BANK_0_WAIT 0x31
-+#define __RW_MGR_REFRESH_ALL 0x14
-+#define __RW_MGR_ZQCL 0x06
-+#define __RW_MGR_LFSR_WR_RD_BANK_0_NOP 0x22
-+#define __RW_MGR_LFSR_WR_RD_BANK_0_DQS 0x23
-+#define __RW_MGR_ACTIVATE_0_AND_1 0x0D
-+#define __RW_MGR_MRS2_MIRR 0x0A
-+#define __RW_MGR_INIT_RESET_0_CKE_0 0x6E
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_WAIT 0x45
-+#define __RW_MGR_ACTIVATE_1 0x0F
-+#define __RW_MGR_MRS2 0x04
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_WL_1 0x34
-+#define __RW_MGR_MRS1 0x03
-+#define __RW_MGR_IDLE_LOOP1 0x7C
-+#define __RW_MGR_GUARANTEED_WRITE_WAIT2 0x18
-+#define __RW_MGR_MRS3 0x05
-+#define __RW_MGR_IDLE_LOOP2 0x7B
-+#define __RW_MGR_GUARANTEED_WRITE_WAIT1 0x1E
-+#define __RW_MGR_LFSR_WR_RD_BANK_0_DATA 0x24
-+#define __RW_MGR_GUARANTEED_WRITE_WAIT3 0x1C
-+#define __RW_MGR_RDIMM_CMD 0x7A
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_NOP 0x36
-+#define __RW_MGR_GUARANTEED_WRITE_WAIT0 0x1A
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_DATA 0x38
-+#define __RW_MGR_GUARANTEED_READ_CONT 0x53
-+#define __RW_MGR_MRS3_MIRR 0x0B
-+#define __RW_MGR_IDLE 0x00
-+#define __RW_MGR_READ_B2B 0x58
-+#define __RW_MGR_INIT_RESET_0_CKE_0_inloop 0x6F
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0_DQS 0x37
-+#define __RW_MGR_GUARANTEED_WRITE 0x17
-+#define __RW_MGR_PRECHARGE_ALL 0x12
-+#define __RW_MGR_INIT_RESET_1_CKE_0_inloop_1 0x74
-+#define __RW_MGR_SGLE_READ 0x7E
-+#define __RW_MGR_MRS0_USER_MIRR 0x0C
-+#define __RW_MGR_RETURN 0x01
-+#define __RW_MGR_LFSR_WR_RD_DM_BANK_0 0x35
-+#define __RW_MGR_MRS0_USER 0x07
-+#define __RW_MGR_GUARANTEED_READ 0x4B
-+#define __RW_MGR_MRS0_DLL_RESET_MIRR 0x08
-+#define __RW_MGR_INIT_RESET_1_CKE_0 0x73
-+#define __RW_MGR_ACTIVATE_0_AND_1_WAIT2 0x10
-+#define __RW_MGR_LFSR_WR_RD_BANK_0_WL_1 0x20
-+#define __RW_MGR_MRS0_DLL_RESET 0x02
-+#define __RW_MGR_ACTIVATE_0_AND_1_WAIT1 0x0E
-+#define __RW_MGR_LFSR_WR_RD_BANK_0 0x21
-+#define __RW_MGR_CLEAR_DQS_ENABLE 0x48
-+#define __RW_MGR_MRS1_MIRR 0x09
-+#define __RW_MGR_READ_B2B_WAIT1 0x60
-+#define __RW_MGR_CONTENT_READ_B2B_WAIT2 0x00C680
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_WAIT 0x00A680
-+#define __RW_MGR_CONTENT_REFRESH_ALL 0x000980
-+#define __RW_MGR_CONTENT_ZQCL 0x008380
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_NOP 0x00E700
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_DQS 0x000C00
-+#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1 0x000800
-+#define __RW_MGR_CONTENT_MRS2_MIRR 0x008580
-+#define __RW_MGR_CONTENT_INIT_RESET_0_CKE_0 0x000000
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_WAIT 0x00A680
-+#define __RW_MGR_CONTENT_ACTIVATE_1 0x000880
-+#define __RW_MGR_CONTENT_MRS2 0x008280
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_WL_1 0x00CE00
-+#define __RW_MGR_CONTENT_MRS1 0x008200
-+#define __RW_MGR_CONTENT_IDLE_LOOP1 0x00A680
-+#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT2 0x00CCE8
-+#define __RW_MGR_CONTENT_MRS3 0x008300
-+#define __RW_MGR_CONTENT_IDLE_LOOP2 0x008680
-+#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT1 0x00AC88
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_DATA 0x020CE0
-+#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT3 0x00EC88
-+#define __RW_MGR_CONTENT_RDIMM_CMD 0x009180
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_NOP 0x00E700
-+#define __RW_MGR_CONTENT_GUARANTEED_WRITE_WAIT0 0x008CE8
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_DATA 0x030CE0
-+#define __RW_MGR_CONTENT_GUARANTEED_READ_CONT 0x001168
-+#define __RW_MGR_CONTENT_MRS3_MIRR 0x008600
-+#define __RW_MGR_CONTENT_IDLE 0x080000
-+#define __RW_MGR_CONTENT_READ_B2B 0x040E88
-+#define __RW_MGR_CONTENT_INIT_RESET_0_CKE_0_inloop 0x000000
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0_DQS 0x000C00
-+#define __RW_MGR_CONTENT_GUARANTEED_WRITE 0x000B68
-+#define __RW_MGR_CONTENT_PRECHARGE_ALL 0x000900
-+#define __RW_MGR_CONTENT_INIT_RESET_1_CKE_0_inloop_1 0x000080
-+#define __RW_MGR_CONTENT_SGLE_READ 0x040F08
-+#define __RW_MGR_CONTENT_MRS0_USER_MIRR 0x008400
-+#define __RW_MGR_CONTENT_RETURN 0x080680
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_DM_BANK_0 0x00CD80
-+#define __RW_MGR_CONTENT_MRS0_USER 0x008100
-+#define __RW_MGR_CONTENT_GUARANTEED_READ 0x001168
-+#define __RW_MGR_CONTENT_MRS0_DLL_RESET_MIRR 0x008480
-+#define __RW_MGR_CONTENT_INIT_RESET_1_CKE_0 0x000080
-+#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1_WAIT2 0x00A680
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0_WL_1 0x00CE00
-+#define __RW_MGR_CONTENT_MRS0_DLL_RESET 0x008180
-+#define __RW_MGR_CONTENT_ACTIVATE_0_AND_1_WAIT1 0x008680
-+#define __RW_MGR_CONTENT_LFSR_WR_RD_BANK_0 0x00CD80
-+#define __RW_MGR_CONTENT_CLEAR_DQS_ENABLE 0x001158
-+#define __RW_MGR_CONTENT_MRS1_MIRR 0x008500
-+#define __RW_MGR_CONTENT_READ_B2B_WAIT1 0x00A680
-+
-diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c b/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
-new file mode 100644
-index 0000000..5b5196a
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
-@@ -0,0 +1,40 @@
-+static const uint32_t ac_rom_init_size = 36;
-+static const uint32_t ac_rom_init[36] =
-+{
-+	0x20700000,
-+	0x20780000,
-+	0x10080221,
-+	0x10080320,
-+	0x10090044,
-+	0x100a0008,
-+	0x100b0000,
-+	0x10380400,
-+	0x10080241,
-+	0x100802c0,
-+	0x100a0024,
-+	0x10090010,
-+	0x100b0000,
-+	0x30780000,
-+	0x38780000,
-+	0x30780000,
-+	0x10680000,
-+	0x106b0000,
-+	0x10280400,
-+	0x10480000,
-+	0x1c980000,
-+	0x1c9b0000,
-+	0x1c980008,
-+	0x1c9b0008,
-+	0x38f80000,
-+	0x3cf80000,
-+	0x38780000,
-+	0x18180000,
-+	0x18980000,
-+	0x13580000,
-+	0x135b0000,
-+	0x13580008,
-+	0x135b0008,
-+	0x33780000,
-+	0x10580008,
-+	0x10780000
-+};
-diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c b/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
-new file mode 100644
-index 0000000..e261ecb
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
-@@ -0,0 +1,132 @@
-+static const uint32_t inst_rom_init_size = 128;
-+static const uint32_t inst_rom_init[128] =
-+{
-+	0x80000,
-+	0x80680,
-+	0x8180,
-+	0x8200,
-+	0x8280,
-+	0x8300,
-+	0x8380,
-+	0x8100,
-+	0x8480,
-+	0x8500,
-+	0x8580,
-+	0x8600,
-+	0x8400,
-+	0x800,
-+	0x8680,
-+	0x880,
-+	0xa680,
-+	0x80680,
-+	0x900,
-+	0x80680,
-+	0x980,
-+	0x8680,
-+	0x80680,
-+	0xb68,
-+	0xcce8,
-+	0xae8,
-+	0x8ce8,
-+	0xb88,
-+	0xec88,
-+	0xa08,
-+	0xac88,
-+	0x80680,
-+	0xce00,
-+	0xcd80,
-+	0xe700,
-+	0xc00,
-+	0x20ce0,
-+	0x20ce0,
-+	0x20ce0,
-+	0x20ce0,
-+	0xd00,
-+	0x680,
-+	0x680,
-+	0x680,
-+	0x680,
-+	0x60e80,
-+	0x61080,
-+	0x61080,
-+	0x61080,
-+	0xa680,
-+	0x8680,
-+	0x80680,
-+	0xce00,
-+	0xcd80,
-+	0xe700,
-+	0xc00,
-+	0x30ce0,
-+	0x30ce0,
-+	0x30ce0,
-+	0x30ce0,
-+	0xd00,
-+	0x680,
-+	0x680,
-+	0x680,
-+	0x680,
-+	0x70e80,
-+	0x71080,
-+	0x71080,
-+	0x71080,
-+	0xa680,
-+	0x8680,
-+	0x80680,
-+	0x1158,
-+	0x6d8,
-+	0x80680,
-+	0x1168,
-+	0x7e8,
-+	0x7e8,
-+	0x87e8,
-+	0x40fe8,
-+	0x410e8,
-+	0x410e8,
-+	0x410e8,
-+	0x1168,
-+	0x7e8,
-+	0x7e8,
-+	0xa7e8,
-+	0x80680,
-+	0x40e88,
-+	0x41088,
-+	0x41088,
-+	0x41088,
-+	0x40f68,
-+	0x410e8,
-+	0x410e8,
-+	0x410e8,
-+	0xa680,
-+	0x40fe8,
-+	0x410e8,
-+	0x410e8,
-+	0x410e8,
-+	0x41008,
-+	0x41088,
-+	0x41088,
-+	0x41088,
-+	0x1100,
-+	0xc680,
-+	0x8680,
-+	0xe680,
-+	0x80680,
-+	0x0,
-+	0x0,
-+	0xa000,
-+	0x8000,
-+	0x80000,
-+	0x80,
-+	0x80,
-+	0x80,
-+	0x80,
-+	0xa080,
-+	0x8080,
-+	0x80080,
-+	0x9180,
-+	0x8680,
-+	0xa680,
-+	0x80680,
-+	0x40f08,
-+	0x80680
-+};
-diff --git a/arch/arm/boards/ebv-socrates/sequencer_defines.h b/arch/arm/boards/ebv-socrates/sequencer_defines.h
-new file mode 100644
-index 0000000..1ebbc48
---- /dev/null
-+++ b/arch/arm/boards/ebv-socrates/sequencer_defines.h
-@@ -0,0 +1,118 @@
-+#ifndef _SEQUENCER_DEFINES_H_
-+#define _SEQUENCER_DEFINES_H_
-+
-+#define AC_ROM_MR1_MIRR 0000000100100
-+#define AC_ROM_MR1_OCD_ENABLE
-+#define AC_ROM_MR2_MIRR 0000000010000
-+#define AC_ROM_MR3_MIRR 0000000000000
-+#define AC_ROM_MR0_CALIB
-+#define AC_ROM_MR0_DLL_RESET_MIRR 0001011000000
-+#define AC_ROM_MR0_DLL_RESET 0001100100000
-+#define AC_ROM_MR0_MIRR 0001001000001
-+#define AC_ROM_MR0 0001000100001
-+#define AC_ROM_MR1 0000001000100
-+#define AC_ROM_MR2 0000000001000
-+#define AC_ROM_MR3 0000000000000
-+#define AFI_CLK_FREQ 334
-+#define AFI_RATE_RATIO 1
-+#define ARRIAVGZ 0
-+#define ARRIAV 0
-+#define AVL_CLK_FREQ 67
-+#define BFM_MODE 0
-+#define BURST2 0
-+#define CALIBRATE_BIT_SLIPS 0
-+#define CALIB_LFIFO_OFFSET 6
-+#define CALIB_VFIFO_OFFSET 4
-+#define CYCLONEV 1
-+#define DDR2 0
-+#define DDR3 1
-+#define DDRX 1
-+#define DM_PINS_ENABLED 1
-+#define ENABLE_ASSERT 0
-+#define ENABLE_BRINGUP_DEBUGGING 0
-+#define ENABLE_DQS_IN_CENTERING 1
-+#define ENABLE_DQS_OUT_CENTERING 0
-+#define ENABLE_EXPORT_SEQ_DEBUG_BRIDGE 0
-+#define ENABLE_INST_ROM_WRITE 1
-+#define ENABLE_MARGIN_REPORT_GEN 0
-+#define ENABLE_NON_DESTRUCTIVE_CALIB 0
-+#define ENABLE_SUPER_QUICK_CALIBRATION 0
-+#define ENABLE_TCL_DEBUG 0
-+#define FULL_RATE 1
-+#define GUARANTEED_READ_BRINGUP_TEST 0
-+#define HALF_RATE 0
-+#define HARD_PHY 1
-+#define HARD_VFIFO 1
-+#define HCX_COMPAT_MODE 0
-+#define HHP_HPS_SIMULATION 0
-+#define HHP_HPS_VERIFICATION 0
-+#define HHP_HPS 1
-+#define HPS_HW 1
-+#define HR_DDIO_OUT_HAS_THREE_REGS 0
-+#define IO_DELAY_PER_DCHAIN_TAP 25
-+#define IO_DELAY_PER_DQS_EN_DCHAIN_TAP 25
-+#define IO_DELAY_PER_OPA_TAP 375
-+#define IO_DLL_CHAIN_LENGTH 8
-+#define IO_DM_OUT_RESERVE 0
-+#define IO_DQDQS_OUT_PHASE_MAX 0
-+#define IO_DQS_EN_DELAY_MAX 31
-+#define IO_DQS_EN_DELAY_OFFSET 0
-+#define IO_DQS_EN_PHASE_MAX 7
-+#define IO_DQS_IN_DELAY_MAX 31
-+#define IO_DQS_IN_RESERVE 4
-+#define IO_DQS_OUT_RESERVE 4
-+#define IO_DQ_OUT_RESERVE 0
-+#define IO_IO_IN_DELAY_MAX 31
-+#define IO_IO_OUT1_DELAY_MAX 31
-+#define IO_IO_OUT2_DELAY_MAX 0
-+#define IO_SHIFT_DQS_EN_WHEN_SHIFT_DQS 0
-+#define LPDDR1 0
-+#define LPDDR2 0
-+#define LRDIMM 0
-+#define MARGIN_VARIATION_TEST 0
-+#define MAX_LATENCY_COUNT_WIDTH 5
-+#define MEM_ADDR_WIDTH 13
-+#define MULTIPLE_AFI_WLAT 0
-+#define NUM_SHADOW_REGS 1
-+#define QDRII 0
-+#define QUARTER_RATE 0
-+#define RDIMM 0
-+#define READ_AFTER_WRITE_CALIBRATION 1
-+#define READ_VALID_FIFO_SIZE 16
-+#define REG_FILE_INIT_SEQ_SIGNATURE 0x55550482
-+#define RLDRAM3 0
-+#define RLDRAMII 0
-+#define RLDRAMX 0
-+#define RUNTIME_CAL_REPORT 0
-+#define RW_MGR_MEM_ADDRESS_MIRRORING 0
-+#define RW_MGR_MEM_ADDRESS_WIDTH 15
-+#define RW_MGR_MEM_BANK_WIDTH 3
-+#define RW_MGR_MEM_CHIP_SELECT_WIDTH 1
-+#define RW_MGR_MEM_CLK_EN_WIDTH 1
-+#define RW_MGR_MEM_CONTROL_WIDTH 1
-+#define RW_MGR_MEM_DATA_MASK_WIDTH 4
-+#define RW_MGR_MEM_DATA_WIDTH 32
-+#define RW_MGR_MEM_DQ_PER_READ_DQS 8
-+#define RW_MGR_MEM_DQ_PER_WRITE_DQS 8
-+#define RW_MGR_MEM_IF_READ_DQS_WIDTH 4
-+#define RW_MGR_MEM_IF_WRITE_DQS_WIDTH 4
-+#define RW_MGR_MEM_NUMBER_OF_CS_PER_DIMM 1
-+#define RW_MGR_MEM_NUMBER_OF_RANKS 1
-+#define RW_MGR_MEM_ODT_WIDTH 1
-+#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_READ_DQS 1
-+#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_WRITE_DQS 1
-+#define RW_MGR_MR0_BL 1
-+#define RW_MGR_MR0_CAS_LATENCY 2
-+#define RW_MGR_TRUE_MEM_DATA_MASK_WIDTH 4
-+#define RW_MGR_WRITE_TO_DEBUG_READ 1.0
-+#define SKEW_CALIBRATION 0
-+#define STATIC_FULL_CALIBRATION 1
-+#define STATIC_SIM_FILESET 0
-+#define STATIC_SKIP_MEM_INIT 0
-+#define STRATIXV 0
-+#define TRACKING_ERROR_TEST 0
-+#define TRACKING_WATCH_TEST 0
-+#define USE_DQS_TRACKING 1
-+#define USE_SHADOW_REGS 0
-+
-+#endif /* _SEQUENCER_DEFINES_H_ */
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 7aaf61d..7782874 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -11,7 +11,8 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
- 	imx6q-mba6x.dtb \
- 	imx6q-phytec-pbab01.dtb
- dtb-$(CONFIG_ARCH_MVEBU) += dove-cubox.dtb
--dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb
-+dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb \
-+	socfpga_cyclone5_socrates.dtb
- 
- BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
- obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
-@@ -25,6 +26,7 @@ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
- pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox.dtb.o
- pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
- pbl-$(CONFIG_MACH_TQMA6X) += imx6dl-mba6x.dtb.o imx6q-mba6x.dtb.o
-+pbl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
- pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
- 
- .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
-diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-new file mode 100644
-index 0000000..7fa5e63
---- /dev/null
-+++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
-@@ -0,0 +1,64 @@
-+/*
-+ *  Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
-+
-+/include/ "socfpga_cyclone5.dtsi"
-+
-+/ {
-+	model = "EBV SoCrates";
-+	compatible = "ebv,socrates", "altr,socfpga";
-+
-+	chosen {
-+	};
-+
-+	memory {
-+		name = "memory";
-+		device_type = "memory";
-+		reg = <0x0 0x0>;
-+	};
-+
-+	leds: gpio-leds {
-+	};
-+};
-+
-+&leds {
-+	compatible = "gpio-leds";
-+
-+	led@0 {
-+		label = "0";
-+		gpios = <&gpio0 28 1>;
-+		linux,default-trigger = "heartbeat";
-+	};
-+
-+	led@1 {
-+		label = "1";
-+		gpios = <&gpio1 19 1>;
-+	};
-+
-+	led@2 {
-+		label = "2";
-+		gpios = <&gpio1 25 1>;
-+	};
-+};
-+
-+&gmac1 {
-+	phy-mode = "rgmii";
-+	status = "okay";
-+};
-+
-+&mmc {
-+	status = "okay";
-+};
-diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index 70d0a4d..18f434c 100644
---- a/arch/arm/mach-socfpga/Kconfig
-+++ b/arch/arm/mach-socfpga/Kconfig
-@@ -13,6 +13,10 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0x00100000 if MACH_SOCFPGA_CYCLONE5
- 
-+config MACH_SOCFPGA_EBV_SOCRATES
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	bool "EBV Socrates"
-+
- config MACH_SOCFPGA_TERASIC_SOCKIT
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	bool "Terasic SoCKit"
-diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
-index 66aec9d..5eed83c 100644
---- a/images/Makefile.socfpga
-+++ b/images/Makefile.socfpga
-@@ -19,6 +19,14 @@ pblx-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += start_socfpga_sockit
- FILE_barebox-socfpga-sockit.img = start_socfpga_sockit.pblx
- barebox-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += barebox-socfpga-sockit.img
- 
-+pblx-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += start_socfpga_socrates_xload
-+FILE_barebox-socfpga-socrates-xload.img = start_socfpga_socrates_xload.pblx.socfpgaimg
-+xload-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += barebox-socfpga-socrates-xload.img
-+
-+pblx-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += start_socfpga_socrates
-+FILE_barebox-socfpga-socrates.img = start_socfpga_socrates.pblx
-+barebox-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += barebox-socfpga-socrates.img
-+
- ifdef CONFIG_ARCH_SOCFPGA_XLOAD
- image-y += $(xload-y)
- else
 -- 
 1.8.4.rc3
 
