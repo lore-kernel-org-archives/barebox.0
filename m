@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLUU8-0005Ox-8j
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:49:09 +0000
+ id 1VLUUG-0005PS-Cw
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:49:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Sep 2013 10:48:18 +0200
-Message-Id: <1379321300-8085-10-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 16 Sep 2013 10:48:19 +0200
+Message-Id: <1379321300-8085-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] ARM: SoCFPGA: Add Terasic SoCkit board support
+Subject: [PATCH 10/11] ARM: SoCFPGA: Add EBV SoCrates board support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
  arch/arm/boards/Makefile                           |   1 +
- arch/arm/boards/terasic-sockit/Makefile            |   2 +
- arch/arm/boards/terasic-sockit/board.c             |  37 ++++
- arch/arm/boards/terasic-sockit/config.h            |   1 +
- arch/arm/boards/terasic-sockit/lowlevel.c          |  99 ++++++++++
- arch/arm/boards/terasic-sockit/pinmux_config.c     | 211 +++++++++++++++++++++
- arch/arm/boards/terasic-sockit/pll_config.h        |  98 ++++++++++
- arch/arm/boards/terasic-sockit/sdram_config.h      |  69 +++++++
- arch/arm/boards/terasic-sockit/sequencer_auto.h    | 173 +++++++++++++++++
- .../boards/terasic-sockit/sequencer_auto_ac_init.c |  40 ++++
- .../terasic-sockit/sequencer_auto_inst_init.c      | 134 +++++++++++++
- arch/arm/boards/terasic-sockit/sequencer_defines.h | 118 ++++++++++++
- arch/arm/dts/Makefile                              |   2 +
- arch/arm/dts/socfpga_cyclone5_sockit.dts           | 121 ++++++++++++
+ arch/arm/boards/ebv-socrates/Makefile              |   2 +
+ arch/arm/boards/ebv-socrates/board.c               |  37 ++++
+ arch/arm/boards/ebv-socrates/config.h              |   1 +
+ arch/arm/boards/ebv-socrates/lowlevel.c            |  99 ++++++++++
+ arch/arm/boards/ebv-socrates/pinmux_config.c       | 210 +++++++++++++++++++++
+ arch/arm/boards/ebv-socrates/pll_config.h          |  97 ++++++++++
+ arch/arm/boards/ebv-socrates/sdram_config.h        |  73 +++++++
+ arch/arm/boards/ebv-socrates/sequencer_auto.h      | 174 +++++++++++++++++
+ .../boards/ebv-socrates/sequencer_auto_ac_init.c   |  40 ++++
+ .../boards/ebv-socrates/sequencer_auto_inst_init.c | 132 +++++++++++++
+ arch/arm/boards/ebv-socrates/sequencer_defines.h   | 118 ++++++++++++
+ arch/arm/dts/Makefile                              |   4 +-
+ arch/arm/dts/socfpga_cyclone5_socrates.dts         |  64 +++++++
  arch/arm/mach-socfpga/Kconfig                      |   4 +
- images/Makefile.socfpga                            |   7 +
- 16 files changed, 1117 insertions(+)
- create mode 100644 arch/arm/boards/terasic-sockit/Makefile
- create mode 100644 arch/arm/boards/terasic-sockit/board.c
- create mode 100644 arch/arm/boards/terasic-sockit/config.h
- create mode 100644 arch/arm/boards/terasic-sockit/lowlevel.c
- create mode 100644 arch/arm/boards/terasic-sockit/pinmux_config.c
- create mode 100644 arch/arm/boards/terasic-sockit/pll_config.h
- create mode 100644 arch/arm/boards/terasic-sockit/sdram_config.h
- create mode 100644 arch/arm/boards/terasic-sockit/sequencer_auto.h
- create mode 100644 arch/arm/boards/terasic-sockit/sequencer_auto_ac_init.c
- create mode 100644 arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
- create mode 100644 arch/arm/boards/terasic-sockit/sequencer_defines.h
- create mode 100644 arch/arm/dts/socfpga_cyclone5_sockit.dts
+ images/Makefile.socfpga                            |   8 +
+ 16 files changed, 1063 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/ebv-socrates/Makefile
+ create mode 100644 arch/arm/boards/ebv-socrates/board.c
+ create mode 100644 arch/arm/boards/ebv-socrates/config.h
+ create mode 100644 arch/arm/boards/ebv-socrates/lowlevel.c
+ create mode 100644 arch/arm/boards/ebv-socrates/pinmux_config.c
+ create mode 100644 arch/arm/boards/ebv-socrates/pll_config.h
+ create mode 100644 arch/arm/boards/ebv-socrates/sdram_config.h
+ create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto.h
+ create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
+ create mode 100644 arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
+ create mode 100644 arch/arm/boards/ebv-socrates/sequencer_defines.h
+ create mode 100644 arch/arm/dts/socfpga_cyclone5_socrates.dts
 
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 38ef512..a9bc15f 100644
+index a9bc15f..2210fd4 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
 @@ -75,6 +75,7 @@ obj-$(CONFIG_MACH_SABRELITE)			+= freescale-mx6-sabrelite/
  obj-$(CONFIG_MACH_SABRESD)			+= freescale-mx6-sabresd/
  obj-$(CONFIG_MACH_SAMA5D3XEK)			+= sama5d3xek/
  obj-$(CONFIG_MACH_SCB9328)			+= scb9328/
-+obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
++obj-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES)		+= ebv-socrates/
+ obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)	+= terasic-sockit/
  obj-$(CONFIG_MACH_TNY_A9260)			+= tny-a926x/
  obj-$(CONFIG_MACH_TNY_A9263)			+= tny-a926x/
- obj-$(CONFIG_MACH_TNY_A9G20)			+= tny-a926x/
-diff --git a/arch/arm/boards/terasic-sockit/Makefile b/arch/arm/boards/terasic-sockit/Makefile
+diff --git a/arch/arm/boards/ebv-socrates/Makefile b/arch/arm/boards/ebv-socrates/Makefile
 new file mode 100644
 index 0000000..8c927fe
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/Makefile
++++ b/arch/arm/boards/ebv-socrates/Makefile
 @@ -0,0 +1,2 @@
 +obj-y += lowlevel.o board.o
 +pbl-y += lowlevel.o
-diff --git a/arch/arm/boards/terasic-sockit/board.c b/arch/arm/boards/terasic-sockit/board.c
+diff --git a/arch/arm/boards/ebv-socrates/board.c b/arch/arm/boards/ebv-socrates/board.c
 new file mode 100644
-index 0000000..fdff76f
+index 0000000..b2f62dc
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/board.c
++++ b/arch/arm/boards/ebv-socrates/board.c
 @@ -0,0 +1,37 @@
 +#include <common.h>
 +#include <types.h>
@@ -108,9 +108,9 @@ index 0000000..fdff76f
 +	return 0;
 +}
 +
-+static int socfpga_console_init(void)
++static int socrates_init(void)
 +{
-+	if (!of_machine_is_compatible("terasic,sockit"))
++	if (!of_machine_is_compatible("ebv,socrates"))
 +		return 0;
 +
 +	if (IS_ENABLED(CONFIG_PHYLIB))
@@ -118,28 +118,28 @@ index 0000000..fdff76f
 +
 +	return 0;
 +}
-+console_initcall(socfpga_console_init);
-diff --git a/arch/arm/boards/terasic-sockit/config.h b/arch/arm/boards/terasic-sockit/config.h
++postcore_initcall(socrates_init);
+diff --git a/arch/arm/boards/ebv-socrates/config.h b/arch/arm/boards/ebv-socrates/config.h
 new file mode 100644
 index 0000000..da84fa5
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/config.h
++++ b/arch/arm/boards/ebv-socrates/config.h
 @@ -0,0 +1 @@
 +/* nothing */
-diff --git a/arch/arm/boards/terasic-sockit/lowlevel.c b/arch/arm/boards/terasic-sockit/lowlevel.c
+diff --git a/arch/arm/boards/ebv-socrates/lowlevel.c b/arch/arm/boards/ebv-socrates/lowlevel.c
 new file mode 100644
-index 0000000..8a1e0ce
+index 0000000..d2f02e0
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/lowlevel.c
++++ b/arch/arm/boards/ebv-socrates/lowlevel.c
 @@ -0,0 +1,99 @@
 +#include <common.h>
 +#include <sizes.h>
 +#include <io.h>
 +#include <asm/barebox-arm-head.h>
 +#include <asm/barebox-arm.h>
++#include <asm/cache.h>
 +#include <mach/generic.h>
 +#include <debug_ll.h>
-+#include <asm/cache.h>
 +#include "sdram_config.h"
 +#include <mach/sdram_config.h>
 +#include "pinmux_config.c"
@@ -151,35 +151,35 @@ index 0000000..8a1e0ce
 +#include "sequencer_auto_inst_init.c"
 +#include "sequencer_auto_ac_init.c"
 +
-+static inline void ledon(int led)
++static inline void ledon(void)
 +{
 +	u32 val;
 +
-+	val = readl(0xFF709000);
-+	val |= 1 << (led + 24);
-+	writel(val, 0xFF709000);
++	val = readl(0xFF708000);
++	val &= ~(1 << 28);
++	writel(val, 0xFF708000);
 +
-+	val = readl(0xFF709004);
-+	val |= 1 << (led + 24);
-+	writel(val, 0xFF709004);
++	val = readl(0xFF708004);
++	val |= 1 << 28;
++	writel(val, 0xFF708004);
 +}
 +
-+static inline void ledoff(int led)
++static inline void ledoff(void)
 +{
 +	u32 val;
 +
-+	val = readl(0xFF709000);
-+	val &= ~(1 << (led + 24));
-+	writel(val, 0xFF709000);
++	val = readl(0xFF708000);
++	val |= 1 << 28;
++	writel(val, 0xFF708000);
 +
-+	val = readl(0xFF709004);
-+	val &= ~(1 << (led + 24));
-+	writel(val, 0xFF709004);
++	val = readl(0xFF708004);
++	val |= 1 << 28;
++	writel(val, 0xFF708004);
 +}
 +
-+extern char __dtb_socfpga_cyclone5_sockit_start[];
++extern char __dtb_socfpga_cyclone5_socrates_start[];
 +
-+ENTRY_FUNCTION(start_socfpga_sockit)(void)
++ENTRY_FUNCTION(start_socfpga_socrates)(void)
 +{
 +	uint32_t fdt;
 +
@@ -187,12 +187,12 @@ index 0000000..8a1e0ce
 +
 +	arm_cpu_lowlevel_init();
 +
-+	fdt = (uint32_t)__dtb_socfpga_cyclone5_sockit_start - get_runtime_offset();
++	fdt = (uint32_t)__dtb_socfpga_cyclone5_socrates_start - get_runtime_offset();
 +
 +	barebox_arm_entry(0x0, SZ_1G, fdt);
 +}
 +
-+static noinline void sockit_entry(void)
++static noinline void socrates_entry(void)
 +{
 +	int ret;
 +
@@ -221,7 +221,7 @@ index 0000000..8a1e0ce
 +	barebox_arm_entry(0x0, SZ_1G, 0);
 +}
 +
-+ENTRY_FUNCTION(start_socfpga_sockit_xload)(void)
++ENTRY_FUNCTION(start_socfpga_socrates_xload)(void)
 +{
 +	__barebox_arm_head();
 +
@@ -229,17 +229,16 @@ index 0000000..8a1e0ce
 +
 +	arm_setup_stack(0xffff0000 + SZ_64K - SZ_4K - 16);
 +
-+	sockit_entry();
++	socrates_entry();
 +}
-diff --git a/arch/arm/boards/terasic-sockit/pinmux_config.c b/arch/arm/boards/terasic-sockit/pinmux_config.c
+diff --git a/arch/arm/boards/ebv-socrates/pinmux_config.c b/arch/arm/boards/ebv-socrates/pinmux_config.c
 new file mode 100644
-index 0000000..554fbd8
+index 0000000..e259078
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/pinmux_config.c
-@@ -0,0 +1,211 @@
-+#include <common.h>
-+
-+unsigned long sys_mgr_init_table[] = {
++++ b/arch/arm/boards/ebv-socrates/pinmux_config.c
+@@ -0,0 +1,210 @@
++/* pin MUX configuration data */
++static unsigned long sys_mgr_init_table[] = {
 +	0, /* EMACIO0 */
 +	2, /* EMACIO1 */
 +	2, /* EMACIO2 */
@@ -279,14 +278,14 @@ index 0000000..554fbd8
 +	1, /* GENERALIO4 */
 +	0, /* GENERALIO5 */
 +	0, /* GENERALIO6 */
-+	0, /* GENERALIO7 */
-+	0, /* GENERALIO8 */
++	1, /* GENERALIO7 */
++	1, /* GENERALIO8 */
 +	3, /* GENERALIO9 */
 +	3, /* GENERALIO10 */
 +	3, /* GENERALIO11 */
 +	3, /* GENERALIO12 */
-+	0, /* GENERALIO13 */
-+	0, /* GENERALIO14 */
++	2, /* GENERALIO13 */
++	2, /* GENERALIO14 */
 +	1, /* GENERALIO15 */
 +	1, /* GENERALIO16 */
 +	1, /* GENERALIO17 */
@@ -448,13 +447,12 @@ index 0000000..554fbd8
 +	0, /* USB0USEFPGA */
 +	0 /* SPIM0USEFPGA */
 +};
-diff --git a/arch/arm/boards/terasic-sockit/pll_config.h b/arch/arm/boards/terasic-sockit/pll_config.h
+diff --git a/arch/arm/boards/ebv-socrates/pll_config.h b/arch/arm/boards/ebv-socrates/pll_config.h
 new file mode 100644
-index 0000000..732f241
+index 0000000..7682f63
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/pll_config.h
-@@ -0,0 +1,98 @@
-+
++++ b/arch/arm/boards/ebv-socrates/pll_config.h
+@@ -0,0 +1,97 @@
 +#ifndef _PRELOADER_PLL_CONFIG_H_
 +#define _PRELOADER_PLL_CONFIG_H_
 +
@@ -515,8 +513,8 @@ index 0000000..732f241
 +#define CONFIG_HPS_PERPLLGRP_SRC_QSPI			(1)
 +
 +/* SDRAM PLL */
-+#define CONFIG_HPS_SDRPLLGRP_VCO_DENOM			(0)
-+#define CONFIG_HPS_SDRPLLGRP_VCO_NUMER			(31)
++#define CONFIG_HPS_SDRPLLGRP_VCO_DENOM			(2)
++#define CONFIG_HPS_SDRPLLGRP_VCO_NUMER			(79)
 +/*
 + * To tell where is the VCOs source:
 + * 0 = EOSC1
@@ -552,12 +550,15 @@ index 0000000..732f241
 +#define CONFIG_HPS_CLK_L4_SP_HZ			(100000000)
 +
 +#endif /* _PRELOADER_PLL_CONFIG_H_ */
-diff --git a/arch/arm/boards/terasic-sockit/sdram_config.h b/arch/arm/boards/terasic-sockit/sdram_config.h
+diff --git a/arch/arm/boards/ebv-socrates/sdram_config.h b/arch/arm/boards/ebv-socrates/sdram_config.h
 new file mode 100644
-index 0000000..3d6f938
+index 0000000..94d1cbe
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/sdram_config.h
-@@ -0,0 +1,69 @@
++++ b/arch/arm/boards/ebv-socrates/sdram_config.h
+@@ -0,0 +1,73 @@
++#ifndef __SDRAM_CONFIG_H
++#define __SDRAM_CONFIG_H
++
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMTYPE			(2)
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_MEMBL			(8)
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_ADDRORDER		(0)
@@ -567,20 +568,20 @@ index 0000000..3d6f938
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_STARVELIMIT		(10)
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_DQSTRKEN			(0)
 +#define CONFIG_HPS_SDR_CTRLCFG_CTRLCFG_NODMPINS			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCWL			(8)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCWL			(6)
 +#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_AL			(0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCL			(11)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRRD			(3)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TFAW			(12)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRFC			(104)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TREFI		(3120)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRCD		(6)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRP		(6)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWR		(6)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TCL			(6)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRRD			(4)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TFAW			(14)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING1_TRFC			(117)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TREFI		(1300)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRCD		(5)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TRP		(5)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWR		(5)
 +#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING2_IF_TWTR		(4)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRTP			(3)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRAS			(14)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRC			(20)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRTP			(4)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRAS			(12)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TRC			(17)
 +#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TMRD			(4)
 +#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING3_TCCD			(4)
 +#define CONFIG_HPS_SDR_CTRLCFG_DRAMTIMING4_SELFRFSHEXIT		(200)
@@ -621,18 +622,19 @@ index 0000000..3d6f938
 +#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_0_THRESHOLDRSTCYCLES_31_0 (0x80808080)
 +#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_1_THRESHOLDRSTCYCLES_63_32 (0x80808080)
 +#define CONFIG_HPS_SDR_CTRLCFG_MPTHRESHOLDRST_2_THRESHOLDRSTCYCLES_79_64 (0x8080)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_READ			(0)
++#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_WRITE			(1)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_READ_PORT_USED	(0)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_WRITE_PORT_USED	(0)
++#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_COMMAND_PORT_USED	(0)
 +
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_READ                    (0)
-+#define CONFIG_HPS_SDR_CTRLCFG_DRAMODT_WRITE                   (1)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_READ_PORT_USED      (0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_WRITE_PORT_USED     (0)
-+#define CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST_COMMAND_PORT_USED   (0)
-diff --git a/arch/arm/boards/terasic-sockit/sequencer_auto.h b/arch/arm/boards/terasic-sockit/sequencer_auto.h
++#endif	/*#ifndef__SDRAM_CONFIG_H*/
+diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto.h b/arch/arm/boards/ebv-socrates/sequencer_auto.h
 new file mode 100644
-index 0000000..492706f
+index 0000000..59aa9cf
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/sequencer_auto.h
-@@ -0,0 +1,173 @@
++++ b/arch/arm/boards/ebv-socrates/sequencer_auto.h
+@@ -0,0 +1,174 @@
 +#define __RW_MGR_ac_mrs1 0x04
 +#define __RW_MGR_ac_mrs3 0x06
 +#define __RW_MGR_ac_write_bank_0_col_0_nodata_wl_1 0x1C
@@ -669,7 +671,7 @@ index 0000000..492706f
 +#define __RW_MGR_ac_read_en 0x21
 +#define __RW_MGR_ac_mrs3_mirr 0x0C
 +#define __RW_MGR_ac_mrs2 0x05
-+#define __RW_MGR_CONTENT_ac_mrs1 0x10090006
++#define __RW_MGR_CONTENT_ac_mrs1 0x10090044
 +#define __RW_MGR_CONTENT_ac_mrs3 0x100B0000
 +#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata_wl_1 0x18980000
 +#define __RW_MGR_CONTENT_ac_act_1 0x106B0000
@@ -681,8 +683,8 @@ index 0000000..492706f
 +#define __RW_MGR_CONTENT_ac_init_reset_0_cke_0 0x20700000
 +#define __RW_MGR_CONTENT_ac_read_bank_0_1_norden 0x10580008
 +#define __RW_MGR_CONTENT_ac_pre_all 0x10280400
-+#define __RW_MGR_CONTENT_ac_mrs0_user 0x10080471
-+#define __RW_MGR_CONTENT_ac_mrs0_dll_reset 0x10080570
++#define __RW_MGR_CONTENT_ac_mrs0_user 0x10080221
++#define __RW_MGR_CONTENT_ac_mrs0_dll_reset 0x10080320
 +#define __RW_MGR_CONTENT_ac_read_bank_0_0 0x13580000
 +#define __RW_MGR_CONTENT_ac_write_bank_0_col_1 0x1C980008
 +#define __RW_MGR_CONTENT_ac_read_bank_0_1 0x13580008
@@ -690,21 +692,21 @@ index 0000000..492706f
 +#define __RW_MGR_CONTENT_ac_write_bank_1_col_1 0x1C9B0008
 +#define __RW_MGR_CONTENT_ac_write_bank_0_col_0 0x1C980000
 +#define __RW_MGR_CONTENT_ac_read_bank_1_0 0x135B0000
-+#define __RW_MGR_CONTENT_ac_mrs1_mirr 0x100A0006
++#define __RW_MGR_CONTENT_ac_mrs1_mirr 0x100A0024
 +#define __RW_MGR_CONTENT_ac_read_bank_1_1 0x135B0008
 +#define __RW_MGR_CONTENT_ac_des_odt_1 0x38780000
-+#define __RW_MGR_CONTENT_ac_mrs0_dll_reset_mirr 0x100804E8
++#define __RW_MGR_CONTENT_ac_mrs0_dll_reset_mirr 0x100802C0
 +#define __RW_MGR_CONTENT_ac_zqcl 0x10380400
 +#define __RW_MGR_CONTENT_ac_write_predata 0x38F80000
-+#define __RW_MGR_CONTENT_ac_mrs0_user_mirr 0x10080469
++#define __RW_MGR_CONTENT_ac_mrs0_user_mirr 0x10080241
 +#define __RW_MGR_CONTENT_ac_ref 0x10480000
 +#define __RW_MGR_CONTENT_ac_nop 0x30780000
 +#define __RW_MGR_CONTENT_ac_rdimm 0x10780000
-+#define __RW_MGR_CONTENT_ac_mrs2_mirr 0x10090218
++#define __RW_MGR_CONTENT_ac_mrs2_mirr 0x10090010
 +#define __RW_MGR_CONTENT_ac_write_bank_0_col_0_nodata 0x18180000
 +#define __RW_MGR_CONTENT_ac_read_en 0x33780000
 +#define __RW_MGR_CONTENT_ac_mrs3_mirr 0x100B0000
-+#define __RW_MGR_CONTENT_ac_mrs2 0x100A0218
++#define __RW_MGR_CONTENT_ac_mrs2 0x100A0008
 +
 +#define __RW_MGR_READ_B2B_WAIT2 0x6A
 +#define __RW_MGR_LFSR_WR_RD_BANK_0_WAIT 0x31
@@ -806,27 +808,28 @@ index 0000000..492706f
 +#define __RW_MGR_CONTENT_CLEAR_DQS_ENABLE 0x001158
 +#define __RW_MGR_CONTENT_MRS1_MIRR 0x008500
 +#define __RW_MGR_CONTENT_READ_B2B_WAIT1 0x00A680
-diff --git a/arch/arm/boards/terasic-sockit/sequencer_auto_ac_init.c b/arch/arm/boards/terasic-sockit/sequencer_auto_ac_init.c
++
+diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c b/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
 new file mode 100644
-index 0000000..5b0c3f3
+index 0000000..5b5196a
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/sequencer_auto_ac_init.c
++++ b/arch/arm/boards/ebv-socrates/sequencer_auto_ac_init.c
 @@ -0,0 +1,40 @@
 +static const uint32_t ac_rom_init_size = 36;
 +static const uint32_t ac_rom_init[36] =
 +{
 +	0x20700000,
 +	0x20780000,
-+	0x10080471,
-+	0x10080570,
-+	0x10090006,
-+	0x100a0218,
++	0x10080221,
++	0x10080320,
++	0x10090044,
++	0x100a0008,
 +	0x100b0000,
 +	0x10380400,
-+	0x10080469,
-+	0x100804e8,
-+	0x100a0006,
-+	0x10090218,
++	0x10080241,
++	0x100802c0,
++	0x100a0024,
++	0x10090010,
 +	0x100b0000,
 +	0x30780000,
 +	0x38780000,
@@ -852,16 +855,14 @@ index 0000000..5b0c3f3
 +	0x10580008,
 +	0x10780000
 +};
-diff --git a/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
+diff --git a/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c b/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
 new file mode 100644
-index 0000000..7815faa
+index 0000000..e261ecb
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/sequencer_auto_inst_init.c
-@@ -0,0 +1,134 @@
-+#include <common.h>
-+
-+const uint32_t inst_rom_init_size = 128;
-+const uint32_t inst_rom_init[128] =
++++ b/arch/arm/boards/ebv-socrates/sequencer_auto_inst_init.c
+@@ -0,0 +1,132 @@
++static const uint32_t inst_rom_init_size = 128;
++static const uint32_t inst_rom_init[128] =
 +{
 +	0x80000,
 +	0x80680,
@@ -992,28 +993,28 @@ index 0000000..7815faa
 +	0x40f08,
 +	0x80680
 +};
-diff --git a/arch/arm/boards/terasic-sockit/sequencer_defines.h b/arch/arm/boards/terasic-sockit/sequencer_defines.h
+diff --git a/arch/arm/boards/ebv-socrates/sequencer_defines.h b/arch/arm/boards/ebv-socrates/sequencer_defines.h
 new file mode 100644
-index 0000000..a59eed2
+index 0000000..1ebbc48
 --- /dev/null
-+++ b/arch/arm/boards/terasic-sockit/sequencer_defines.h
++++ b/arch/arm/boards/ebv-socrates/sequencer_defines.h
 @@ -0,0 +1,118 @@
 +#ifndef _SEQUENCER_DEFINES_H_
 +#define _SEQUENCER_DEFINES_H_
 +
-+#define AC_ROM_MR1_MIRR 0000000000110
++#define AC_ROM_MR1_MIRR 0000000100100
 +#define AC_ROM_MR1_OCD_ENABLE
-+#define AC_ROM_MR2_MIRR 0001000011000
++#define AC_ROM_MR2_MIRR 0000000010000
 +#define AC_ROM_MR3_MIRR 0000000000000
 +#define AC_ROM_MR0_CALIB
-+#define AC_ROM_MR0_DLL_RESET_MIRR 0010011101000
-+#define AC_ROM_MR0_DLL_RESET 0010101110000
-+#define AC_ROM_MR0_MIRR 0010001101001
-+#define AC_ROM_MR0 0010001110001
-+#define AC_ROM_MR1 0000000000110
-+#define AC_ROM_MR2 0001000011000
++#define AC_ROM_MR0_DLL_RESET_MIRR 0001011000000
++#define AC_ROM_MR0_DLL_RESET 0001100100000
++#define AC_ROM_MR0_MIRR 0001001000001
++#define AC_ROM_MR0 0001000100001
++#define AC_ROM_MR1 0000001000100
++#define AC_ROM_MR2 0000000001000
 +#define AC_ROM_MR3 0000000000000
-+#define AFI_CLK_FREQ 401
++#define AFI_CLK_FREQ 334
 +#define AFI_RATE_RATIO 1
 +#define ARRIAVGZ 0
 +#define ARRIAV 0
@@ -1021,8 +1022,8 @@ index 0000000..a59eed2
 +#define BFM_MODE 0
 +#define BURST2 0
 +#define CALIBRATE_BIT_SLIPS 0
-+#define CALIB_LFIFO_OFFSET 11
-+#define CALIB_VFIFO_OFFSET 9
++#define CALIB_LFIFO_OFFSET 6
++#define CALIB_VFIFO_OFFSET 4
 +#define CYCLONEV 1
 +#define DDR2 0
 +#define DDR3 1
@@ -1051,7 +1052,7 @@ index 0000000..a59eed2
 +#define HR_DDIO_OUT_HAS_THREE_REGS 0
 +#define IO_DELAY_PER_DCHAIN_TAP 25
 +#define IO_DELAY_PER_DQS_EN_DCHAIN_TAP 25
-+#define IO_DELAY_PER_OPA_TAP 312
++#define IO_DELAY_PER_OPA_TAP 375
 +#define IO_DLL_CHAIN_LENGTH 8
 +#define IO_DM_OUT_RESERVE 0
 +#define IO_DQDQS_OUT_PHASE_MAX 0
@@ -1102,7 +1103,7 @@ index 0000000..a59eed2
 +#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_READ_DQS 1
 +#define RW_MGR_MEM_VIRTUAL_GROUPS_PER_WRITE_DQS 1
 +#define RW_MGR_MR0_BL 1
-+#define RW_MGR_MR0_CAS_LATENCY 7
++#define RW_MGR_MR0_CAS_LATENCY 2
 +#define RW_MGR_TRUE_MEM_DATA_MASK_WIDTH 4
 +#define RW_MGR_WRITE_TO_DEBUG_READ 1.0
 +#define SKEW_CALIBRATION 0
@@ -1117,31 +1118,33 @@ index 0000000..a59eed2
 +
 +#endif /* _SEQUENCER_DEFINES_H_ */
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index d57db0e..7aaf61d 100644
+index 7aaf61d..7782874 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -11,6 +11,7 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
+@@ -11,7 +11,8 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
  	imx6q-mba6x.dtb \
  	imx6q-phytec-pbab01.dtb
  dtb-$(CONFIG_ARCH_MVEBU) += dove-cubox.dtb
-+dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb
+-dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb
++dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb \
++	socfpga_cyclone5_socrates.dtb
  
  BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
  obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
-@@ -24,6 +25,7 @@ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
+@@ -25,6 +26,7 @@ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
  pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox.dtb.o
  pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
  pbl-$(CONFIG_MACH_TQMA6X) += imx6dl-mba6x.dtb.o imx6q-mba6x.dtb.o
-+pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
++pbl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
+ pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
  
  .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
- .SECONDARY: $(patsubst %,$(obj)/%.S,$(dtb-y))
-diff --git a/arch/arm/dts/socfpga_cyclone5_sockit.dts b/arch/arm/dts/socfpga_cyclone5_sockit.dts
+diff --git a/arch/arm/dts/socfpga_cyclone5_socrates.dts b/arch/arm/dts/socfpga_cyclone5_socrates.dts
 new file mode 100644
-index 0000000..e8e00ae
+index 0000000..7fa5e63
 --- /dev/null
-+++ b/arch/arm/dts/socfpga_cyclone5_sockit.dts
-@@ -0,0 +1,121 @@
++++ b/arch/arm/dts/socfpga_cyclone5_socrates.dts
+@@ -0,0 +1,64 @@
 +/*
 + *  Copyright (C) 2013 Steffen Trumtrar <s.trumtrar@pengutronix.de>
 + *
@@ -1162,8 +1165,8 @@ index 0000000..e8e00ae
 +/include/ "socfpga_cyclone5.dtsi"
 +
 +/ {
-+	model = "Terasic SoCkit";
-+	compatible = "terasic,sockit", "altr,socfpga";
++	model = "EBV SoCrates";
++	compatible = "ebv,socrates", "altr,socfpga";
 +
 +	chosen {
 +	};
@@ -1176,9 +1179,6 @@ index 0000000..e8e00ae
 +
 +	leds: gpio-leds {
 +	};
-+
-+	buttons: gpio-keys {
-+	};
 +};
 +
 +&leds {
@@ -1186,51 +1186,18 @@ index 0000000..e8e00ae
 +
 +	led@0 {
 +		label = "0";
-+		gpios = <&gpio1 24 0>;
++		gpios = <&gpio0 28 1>;
 +		linux,default-trigger = "heartbeat";
 +	};
 +
 +	led@1 {
 +		label = "1";
-+		gpios = <&gpio1 25 0>;
++		gpios = <&gpio1 19 1>;
 +	};
 +
 +	led@2 {
 +		label = "2";
-+		gpios = <&gpio1 26 0>;
-+	};
-+
-+	led@3 {
-+		label = "3";
-+		gpios = <&gpio1 27 0>;
-+	};
-+};
-+
-+&buttons {
-+	compatible = "gpio-keys";
-+
-+        key@0 {
-+		label = "F1";
-+		gpios = <&gpio2 21 0>;
-+		linux,code = <59>;
-+	};
-+
-+        key@1 {
-+		label = "F2";
-+		gpios = <&gpio2 22 0>;
-+		linux,code = <60>;
-+	};
-+
-+        key@2 {
-+		label = "F3";
-+		gpios = <&gpio2 23 0>;
-+		linux,code = <61>;
-+	};
-+
-+        key@3 {
-+		label = "F4";
-+		gpios = <&gpio2 24 0>;
-+		linux,code = <62>;
++		gpios = <&gpio1 25 1>;
 +	};
 +};
 +
@@ -1242,58 +1209,40 @@ index 0000000..e8e00ae
 +&mmc {
 +	status = "okay";
 +};
-+
-+&i2c0 {
-+	status = "disabled";
-+
-+	eeprom@51 {
-+		compatible = "atmel,24c32";
-+		reg = <0x51>;
-+		pagesize = <0x20>;
-+	};
-+};
-+
-+&i2c1 {
-+	status = "disabled";
-+
-+	adxl345@53 {
-+		compatible = "adi,adxl34x";
-+		reg = <0x53>;
-+		interrupt-parent = <0x2>;
-+		interrupts = <0x0 0xa6 0x4>;
-+	};
-+};
 diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index eb99ef7..70d0a4d 100644
+index 70d0a4d..18f434c 100644
 --- a/arch/arm/mach-socfpga/Kconfig
 +++ b/arch/arm/mach-socfpga/Kconfig
-@@ -13,4 +13,8 @@ config ARCH_TEXT_BASE
+@@ -13,6 +13,10 @@ config ARCH_TEXT_BASE
  	hex
  	default 0x00100000 if MACH_SOCFPGA_CYCLONE5
  
-+config MACH_SOCFPGA_TERASIC_SOCKIT
++config MACH_SOCFPGA_EBV_SOCRATES
 +	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	bool "Terasic SoCKit"
++	bool "EBV Socrates"
 +
- endif
+ config MACH_SOCFPGA_TERASIC_SOCKIT
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	bool "Terasic SoCKit"
 diff --git a/images/Makefile.socfpga b/images/Makefile.socfpga
-index ef1cc64..66aec9d 100644
+index 66aec9d..5eed83c 100644
 --- a/images/Makefile.socfpga
 +++ b/images/Makefile.socfpga
-@@ -11,6 +11,13 @@ $(obj)/%.socfpgaimg: $(obj)/% FORCE
- 	$(call if_changed,socfpga_image)
+@@ -19,6 +19,14 @@ pblx-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += start_socfpga_sockit
+ FILE_barebox-socfpga-sockit.img = start_socfpga_sockit.pblx
+ barebox-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += barebox-socfpga-sockit.img
  
- # ----------------------- Cyclone5 based boards ---------------------------
-+pblx-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += start_socfpga_sockit_xload
-+FILE_barebox-socfpga-sockit-xload.img = start_socfpga_sockit_xload.pblx.socfpgaimg
-+xload-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += barebox-socfpga-sockit-xload.img
++pblx-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += start_socfpga_socrates_xload
++FILE_barebox-socfpga-socrates-xload.img = start_socfpga_socrates_xload.pblx.socfpgaimg
++xload-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += barebox-socfpga-socrates-xload.img
 +
-+pblx-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += start_socfpga_sockit
-+FILE_barebox-socfpga-sockit.img = start_socfpga_sockit.pblx
-+barebox-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += barebox-socfpga-sockit.img
- 
++pblx-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += start_socfpga_socrates
++FILE_barebox-socfpga-socrates.img = start_socfpga_socrates.pblx
++barebox-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += barebox-socfpga-socrates.img
++
  ifdef CONFIG_ARCH_SOCFPGA_XLOAD
  image-y += $(xload-y)
+ else
 -- 
 1.8.4.rc3
 
