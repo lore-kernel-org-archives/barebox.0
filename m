@@ -1,18 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLXE2-0001k0-Cu
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 11:44:19 +0000
-Date: Mon, 16 Sep 2013 13:43:56 +0200
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20130916114356.GC16832@pengutronix.de>
-References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
- <1379321300-8085-9-git-send-email-s.hauer@pengutronix.de>
- <20130916104041.GB16832@pengutronix.de>
- <20130916110914.GZ30088@pengutronix.de>
+Received: from mo1.mail-out.ovh.net ([178.32.228.1])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VLZr4-000755-5L
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 14:32:47 +0000
+Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id F0B80FFAFB0
+ for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 16:32:20 +0200 (CEST)
+Date: Mon, 16 Sep 2013 16:33:28 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130916143328.GD21829@ns203013.ovh.net>
+References: <1379175785-6885-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130916075513.GU30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130916110914.GZ30088@pengutronix.de>
+In-Reply-To: <20130916075513.GU30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,53 +26,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/11] ARM: socfpga: Add FPGA programming command
+Subject: Re: [PATCH 1/1] genenv: ignore *.orig file too
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 16, 2013 at 01:09:14PM +0200, Sascha Hauer wrote:
-> Hi Steffen,
-> 
-> On Mon, Sep 16, 2013 at 12:40:41PM +0200, Steffen Trumtrar wrote:
-> > Hi!
+On 09:55 Mon 16 Sep     , Sascha Hauer wrote:
+> On Sat, Sep 14, 2013 at 06:23:05PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  scripts/genenv | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > On Mon, Sep 16, 2013 at 10:48:17AM +0200, Sascha Hauer wrote:
-> > > This adds a simple socfpga specific 'fpga' command to load a firmware
-> > > to the FPGA. For the moment this is enough, but should we get more
-> > > FPGA support it might be a good idea to introduce some generic framework
-> > > and command.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  arch/arm/mach-socfpga/Kconfig                     |   5 +
-> > >  arch/arm/mach-socfpga/Makefile                    |   1 +
-> > >  arch/arm/mach-socfpga/fpga.c                      | 422 ++++++++++++++++++++++
-> > >  arch/arm/mach-socfpga/include/mach/socfpga-regs.h |   2 +
-> > >  4 files changed, 430 insertions(+)
-> > >  create mode 100644 arch/arm/mach-socfpga/fpga.c
-> > > 
-> > 
-> > Why did you chose to have an extra command for fpga loading instead of having
-> > just a (block)device? Do you see any future advantage in that or is it just
-> > because of the port from u-boot? I know that they need an extra fpga command, but
-> > they also have an extra mmcload command and stuff.
+> > diff --git a/scripts/genenv b/scripts/genenv
+> > index 374db6d..02af767 100755
+> > --- a/scripts/genenv
+> > +++ b/scripts/genenv
+> > @@ -24,7 +24,7 @@ for i in $*; do
+> >  done
+> >  )
+> >  
+> > -find $tempdir -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
+> > +find $tempdir -name '*.orig' -o -name '.svn' -o -name '*~' | xargs --no-run-if-empty rm -r
 > 
-> Main reason was that I was unsure how good a block device will be when
-> we get a different firmware format to load (rbf vs. sof vs. something
-> else)
+> Should we ignore *.rej aswell?
+yes maybe .*
+
+Best Regards,
+J.
 > 
-
-Aha, okay. If we want/need to support different formats, than a special
-command might be necessary. At least when the format is not easy to
-autodetect, I guess.
-
-Steffen
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
