@@ -2,21 +2,20 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 15.mo1.mail-out.ovh.net ([188.165.38.232]
  helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLZuw-0007DH-59
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 14:36:46 +0000
+ id 1VLZwh-0007Ii-9I
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 14:38:35 +0000
 Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C579D10049DB
- for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 16:36:24 +0200 (CEST)
-Date: Mon, 16 Sep 2013 16:37:33 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C952F1004805
+ for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 16:38:14 +0200 (CEST)
+Date: Mon, 16 Sep 2013 16:39:24 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130916143733.GF21829@ns203013.ovh.net>
+Message-ID: <20130916143924.GG21829@ns203013.ovh.net>
 References: <20130915112850.GC21829@ns203013.ovh.net>
  <1379244654-30716-1-git-send-email-plagnioj@jcrosoft.com>
- <1379244654-30716-2-git-send-email-plagnioj@jcrosoft.com>
- <20130916083304.GW30088@pengutronix.de>
+ <20130916080202.GV30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130916083304.GW30088@pengutronix.de>
+In-Reply-To: <20130916080202.GV30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,105 +28,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] login: disable input console if password wrong
+Subject: Re: [PATCH 1/4] login: add globalvar timeout support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:33 Mon 16 Sep     , Sascha Hauer wrote:
-> On Sun, Sep 15, 2013 at 01:30:52PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > so we guarantee that barebox is secured again user interaction
+On 10:02 Mon 16 Sep     , Sascha Hauer wrote:
+> On Sun, Sep 15, 2013 at 01:30:51PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  commands/login.c | 26 ++++++++++++++++++++++++++
+> >  1 file changed, 26 insertions(+)
 > > 
-> > +static bool console_input_allow = false;
-> > +
-> > +static int console_input_allow_set(struct device_d *dev, struct param_d *p, const char *val)
+> > diff --git a/commands/login.c b/commands/login.c
+> > index fb6bb35..f5429bc 100644
+> > --- a/commands/login.c
+> > +++ b/commands/login.c
+> > @@ -20,6 +20,10 @@
+> >  #include <complete.h>
+> >  #include <password.h>
+> >  #include <getopt.h>
+> > +#include <environment.h>
+> > +#include <globalvar.h>
+> > +#include <magicvar.h>
+> > +#include <init.h>
+> >  
+> >  #define PASSWD_MAX_LENGTH	(128 + 1)
+> >  
+> > @@ -31,6 +35,16 @@
+> >  #define LOGIN_MODE HIDE
+> >  #endif
+> >  
+> > +static void login_getenv_int(const char *name, int *i)
 > > +{
-> > +	int ret = dev_param_set_generic(dev, p, val);
+> > +	const char* str = getenv(name);
 > > +
-> > +	if (val && simple_strtoul(val, NULL, 10))
-> > +		console_input_allow = true;
-> > +	else
-> > +		console_input_allow = false;
+> > +	if (!str)
+> > +		return;
 > > +
-> > +	return ret;
+> > +	*i = simple_strtoul(str, NULL, 10);
 > > +}
+> 
+> We already have getenv_ull. Should we use it here?
+
+if I switch to dev_add_param_int no
+> 
 > > +
-> > +static int console_global_init(void)
+> >  static int do_login(int argc, char *argv[])
+> >  {
+> >  	unsigned char passwd[PASSWD_MAX_LENGTH];
+> > @@ -38,6 +52,8 @@ static int do_login(int argc, char *argv[])
+> >  	int timeout = 0;
+> >  	char *timeout_cmd = "boot";
+> >  
+> > +	login_getenv_int("global.login.timeout", &timeout);
+> > +
+> >  	if (!is_passwd_enable()) {
+> >  		puts("login: password not set\n");
+> >  		return 0;
+> > @@ -80,3 +96,13 @@ BAREBOX_CMD_START(login)
+> >  	BAREBOX_CMD_HELP(cmd_login_help)
+> >  	BAREBOX_CMD_COMPLETE(empty_complete)
+> >  BAREBOX_CMD_END
+> > +
+> > +static int login_global_init(void)
 > > +{
-> > +	globalvar_add("console.input_allow", console_input_allow_set, NULL, 0);
-> > +
-> > +	if (IS_ENABLED(CONFIG_CMD_LOGIN) && is_passwd_enable())
-> > +		setenv("global.console.input_allow", "0");
-> > +	else
-> > +		setenv("global.console.input_allow", "1");
-> > +
-> > +	return 0;
-> > +}
-> > +late_initcall(console_global_init);
+> > +	globalvar_add_simple("login.timeout");
 > 
-> With the attached patch applied the above would go down to:
+> globalvar_add_simple now takes an initial value, like this:
 > 
-> static int console_input_allow;
-> 
-> static int console_global_init(void)
-> {
-> 	dev_add_param_bool(&global_device, "console.input_allow",
-> 		NULL, NULL, &console_input_allow, NULL);
+> int globalvar_add_simple(const char *name, const char *value)
 
-I'm not a fan to export the global_device but I like the dev_addxxx
-
-as if we decide to allocate it we need to fix up a lot of code :(
+ok did not see the change
 
 Best Regards,
 J.
-> 	return 0;
-> }
-> late_initcall(console_global_init);
 > 
-> 8<----------------------------------------------------------------------
-> 
-> From ae4a37fce8637280751fa75a58ea658b61c3a190 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Mon, 16 Sep 2013 10:17:26 +0200
-> Subject: [PATCH] globalvar: Make global_device global
-> 
-> This makes global_device accessible globally so that global variables
-> of a certain type can be added with dev_add_param_*
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/globalvar.c  | 2 +-
->  include/globalvar.h | 3 +++
->  2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index edb66dd..6ef4a6a 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -6,7 +6,7 @@
->  #include <magicvar.h>
->  #include <generated/utsrelease.h>
->  
-> -static struct device_d global_device = {
-> +struct device_d global_device = {
->  	.name = "global",
->  	.id = DEVICE_ID_SINGLE,
->  };
-> diff --git a/include/globalvar.h b/include/globalvar.h
-> index c2a13b3..a9d01d4 100644
-> --- a/include/globalvar.h
-> +++ b/include/globalvar.h
-> @@ -2,6 +2,9 @@
->  #define __GLOBALVAR_H
->  
->  #include <param.h>
-> +#include <driver.h>
-> +
-> +extern struct device_d global_device;
->  
->  #ifdef CONFIG_GLOBALVAR
->  int globalvar_add_simple(const char *name, const char *value);
-> -- 
-> 1.8.4.rc3
+> Sascha
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
