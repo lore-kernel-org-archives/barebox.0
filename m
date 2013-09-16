@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLcvD-0004Ou-Sk
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:20 +0000
+ id 1VLcvD-0004Ot-Sg
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:19 +0000
 Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id ADF5AFF8C96
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 8EC10FF8C92
  for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 19:48:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Sep 2013 19:49:59 +0200
-Message-Id: <1379353800-28237-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 16 Sep 2013 19:49:58 +0200
+Message-Id: <1379353800-28237-3-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130916174824.GH21829@ns203013.ovh.net>
  <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,302 +26,183 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] login/passwd: add default password support
+Subject: [PATCH 3/5] login: disable input console if password wrong
 To: barebox@lists.infradead.org
 
-even if the env is broken you will have a password
+so we guarantee that barebox is secured again user interaction
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/passwd.c  |  8 ++---
- common/Kconfig     |  5 +++
- common/Makefile    | 20 ++++++++++++
- common/password.c  | 94 ++++++++++++++++++++++++++++++++++++++++++++++--------
- include/password.h | 22 ++++++++++---
- 5 files changed, 127 insertions(+), 22 deletions(-)
+ commands/login.c        |  6 +++++-
+ common/console.c        |  6 ++++++
+ common/console_common.c | 33 +++++++++++++++++++++++++++++++++
+ common/console_simple.c |  9 ++++++++-
+ common/startup.c        |  2 ++
+ include/console.h       |  3 +++
+ 6 files changed, 57 insertions(+), 2 deletions(-)
 
-diff --git a/commands/passwd.c b/commands/passwd.c
-index baccfa6..368c401 100644
---- a/commands/passwd.c
-+++ b/commands/passwd.c
-@@ -63,7 +63,7 @@ static int do_passwd(int argc, char *argv[])
- 			goto err;
- 	}
+diff --git a/commands/login.c b/commands/login.c
+index 485def2..b616bf1 100644
+--- a/commands/login.c
++++ b/commands/login.c
+@@ -24,6 +24,7 @@
+ #include <globalvar.h>
+ #include <magicvar.h>
+ #include <init.h>
++#include <console.h>
  
--	ret = set_passwd(passwd1, passwd1_len);
-+	ret = set_env_passwd(passwd1, passwd1_len);
+ #define PASSWD_MAX_LENGTH	(128 + 1)
  
- 	if (ret < 0) {
- 		puts("Sorry, passwords write failed\n");
-@@ -78,15 +78,15 @@ err:
- 	return 1;
+@@ -44,6 +45,7 @@ static int do_login(int argc, char *argv[])
+ 	int timeout = login_timeout;
+ 	char *timeout_cmd = "boot";
  
- disable:
--	passwd_disable();
-+	passwd_env_disable();
- 	puts("passwd: password disabled\n");
- 	return ret;
++	console_allow_input(true);
+ 	if (!is_passwd_enable()) {
+ 		puts("login: password not set\n");
+ 		return 0;
+@@ -64,8 +66,10 @@ static int do_login(int argc, char *argv[])
+ 		puts("Password: ");
+ 		passwd_len = password(passwd, PASSWD_MAX_LENGTH, LOGIN_MODE, timeout);
+ 
+-		if (passwd_len < 0)
++		if (passwd_len < 0) {
++			console_allow_input(false);
+ 			run_command(timeout_cmd, 0);
++		}
+ 
+ 		if (check_passwd(passwd, passwd_len))
+ 			return 0;
+diff --git a/common/console.c b/common/console.c
+index 6ca94e2..4931829 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -236,6 +236,9 @@ int getc(void)
+ 	unsigned char ch;
+ 	uint64_t start;
+ 
++	if (unlikely(!console_is_input_allow()))
++		return -EPERM;
++
+ 	/*
+ 	 * For 100us we read the characters from the serial driver
+ 	 * into a kfifo. This helps us not to lose characters
+@@ -270,6 +273,9 @@ EXPORT_SYMBOL(fgetc);
+ 
+ int tstc(void)
+ {
++	if (unlikely(!console_is_input_allow()))
++		return 0;
++
+ 	return kfifo_len(console_input_fifo) || tstc_raw();
  }
+ EXPORT_SYMBOL(tstc);
+diff --git a/common/console_common.c b/common/console_common.c
+index d139d1a..d1b823e 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -21,9 +21,42 @@
+ #include <common.h>
+ #include <fs.h>
+ #include <errno.h>
++#include <console.h>
++#include <init.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <password.h>
  
- static const __maybe_unused char cmd_passwd_help[] =
- "Usage: passwd\n"
--"passwd allow you to specify a password\n"
--"to disable it put an empty password\n"
-+"passwd allow you to specify a password in the env\n"
-+"to disable it put an empty password will still use the default password if set\n"
- ;
+ #ifndef CONFIG_CONSOLE_NONE
  
- BAREBOX_CMD_START(passwd)
-diff --git a/common/Kconfig b/common/Kconfig
-index dd70578..5d92284 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -385,6 +385,11 @@ config PASSWORD
- 	help
- 	  allow you to have password protection framework
- 
-+config PASSWORD_DEFAULT
-+	string
-+	prompt "Password default"
-+	depends on PASSWORD
++static int console_input_allow;
 +
- if PASSWORD
- 
- choice
-diff --git a/common/Makefile b/common/Makefile
-index 64eacc3..9a9e3fe 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -114,6 +114,26 @@ cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment)
- $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
- 	$(call if_changed,env_h)
- 
-+quiet_cmd_pwd_h = PWDH    $@
-+ifneq ($(CONFIG_PASSWORD_DEFAULT),"")
-+PASSWD_FILE := $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -type f)
-+cmd_pwd_h = echo -n "const char default_passwd[] = \"" > $@; \
-+	cat $< | tr -d '\n' >> $@; \
-+	echo "\";" >> $@
-+
-+include/generated/passwd.h: $(PASSWD_FILE)
-+	$(call if_changed,pwd_h)
-+else
-+cmd_pwd_h = echo "const char default_passwd[] = \"\";" > $@
-+
-+include/generated/passwd.h: FORCE
-+	$(call if_changed,pwd_h)
-+endif
-+
-+targets += include/generated/passwd.h
-+
-+$(obj)/password.o: include/generated/passwd.h
-+
- # dependencies on generated files need to be listed explicitly
- $(obj)/version.o: include/generated/compile.h
- 
-diff --git a/common/password.c b/common/password.c
-index d157a11..9c1e54a 100644
---- a/common/password.c
-+++ b/common/password.c
-@@ -25,6 +25,7 @@
- #include <malloc.h>
- #include <xfuncs.h>
- #include <clock.h>
-+#include <generated/passwd.h>
- 
- #if defined(CONFIG_PASSWD_SUM_MD5)
- #define PASSWD_SUM "md5"
-@@ -97,7 +98,13 @@ int password(unsigned char *passwd, size_t length, int flags, int timeout)
- }
- EXPORT_SYMBOL(password);
- 
--int is_passwd_enable(void)
-+int is_passwd_default_enable(void)
++static int console_global_init(void)
 +{
-+	return strlen(default_passwd) > 0;
-+}
-+EXPORT_SYMBOL(is_passwd_default_enable);
-+
-+int is_passwd_env_enable(void)
- {
- 	int fd;
- 
-@@ -110,13 +117,13 @@ int is_passwd_enable(void)
- 
- 	return 1;
- }
--EXPORT_SYMBOL(is_passwd_enable);
-+EXPORT_SYMBOL(is_passwd_env_enable);
- 
--int passwd_disable(void)
-+int passwd_env_disable(void)
- {
- 	return unlink(PASSWD_FILE);
- }
--EXPORT_SYMBOL(passwd_disable);
-+EXPORT_SYMBOL(passwd_env_disable);
- 
- static unsigned char to_digit(unsigned char c)
- {
-@@ -140,6 +147,43 @@ static unsigned char to_hexa(unsigned char c)
- 
- int read_passwd(unsigned char *sum, size_t length)
- {
-+	if (is_passwd_env_enable())
-+		return read_env_passwd(sum, length);
-+	else if (is_passwd_default_enable())
-+		return read_default_passwd(sum, length);
++	if (IS_ENABLED(CONFIG_CMD_LOGIN) && is_passwd_enable())
++		console_input_allow = 0;
 +	else
-+		return -EINVAL;
-+}
++		console_input_allow = 1;
 +
-+int read_default_passwd(unsigned char *sum, size_t length)
-+{
-+	int i = 0;
-+	int len = strlen(default_passwd);
-+	unsigned char *buf = (unsigned char *)default_passwd;
-+	unsigned char c;
-+
-+	if (!sum || length < 1)
-+		return -EINVAL;
-+
-+	for (i = 0; i < len && length > 0; i++) {
-+		c = buf[i];
-+		i++;
-+
-+		*sum = to_digit(c) << 4;
-+
-+		c = buf[i];
-+
-+		*sum |= to_digit(c);
-+		sum++;
-+		length--;
-+	}
++	globalvar_add_simple_bool("console.input_allow", &console_input_allow);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL(read_default_passwd);
++late_initcall(console_global_init);
 +
-+int read_env_passwd(unsigned char *sum, size_t length)
++BAREBOX_MAGICVAR_NAMED(global_console_input_allow, global.console.input_allow, "console input allowed");
++
++bool console_is_input_allow(void)
 +{
- 	int fd;
- 	int ret = 0;
- 	unsigned char c;
-@@ -178,9 +222,9 @@ exit:
- 
- 	return ret;
- }
--EXPORT_SYMBOL(read_passwd);
-+EXPORT_SYMBOL(read_env_passwd);
- 
--int write_passwd(unsigned char *sum, size_t length)
-+int write_env_passwd(unsigned char *sum, size_t length)
++	return console_input_allow;
++}
++
++void console_allow_input(bool val)
++{
++	console_input_allow = val;
++}
++
+ int printf(const char *fmt, ...)
  {
- 	int fd;
- 	unsigned char c;
-@@ -227,9 +271,9 @@ exit:
+ 	va_list args;
+diff --git a/common/console_simple.c b/common/console_simple.c
+index 101064b..bf6491d 100644
+--- a/common/console_simple.c
++++ b/common/console_simple.c
+@@ -3,6 +3,7 @@
+ #include <fs.h>
+ #include <errno.h>
+ #include <debug_ll.h>
++#include <console.h>
  
- 	return ret;
- }
--EXPORT_SYMBOL(write_passwd);
-+EXPORT_SYMBOL(write_env_passwd);
+ LIST_HEAD(console_list);
+ EXPORT_SYMBOL(console_list);
+@@ -40,6 +41,9 @@ EXPORT_SYMBOL(console_putc);
  
--int check_passwd(unsigned char* passwd, size_t length)
-+static int __check_passwd(unsigned char* passwd, size_t length, int std)
+ int tstc(void)
  {
- 	struct digest *d;
- 	unsigned char *passwd1_sum;
-@@ -256,7 +300,10 @@ int check_passwd(unsigned char* passwd, size_t length)
- 
- 	d->final(d, passwd1_sum);
- 
--	ret = read_passwd(passwd2_sum, d->length);
-+	if (std)
-+		ret = read_env_passwd(passwd2_sum, d->length);
-+	else
-+		ret = read_default_passwd(passwd2_sum, d->length);
- 
- 	if (ret < 0)
- 		goto err2;
-@@ -271,9 +318,30 @@ err1:
- 
- 	return ret;
- }
--EXPORT_SYMBOL(check_passwd);
- 
--int set_passwd(unsigned char* passwd, size_t length)
-+int check_default_passwd(unsigned char* passwd, size_t length)
-+{
-+	return __check_passwd(passwd, length, 0);
-+}
-+EXPORT_SYMBOL(check_default_passwd);
++	if (unlikely(!console_is_input_allow()))
++		return 0;
 +
-+int check_env_passwd(unsigned char* passwd, size_t length)
-+{
-+	return __check_passwd(passwd, length, 1);
-+}
-+EXPORT_SYMBOL(check_env_passwd);
-+
-+int check_passwd(unsigned char* passwd, size_t length)
-+{
-+	if (is_passwd_env_enable())
-+		return check_env_passwd(passwd, length);
-+	else if (is_passwd_default_enable())
-+		return check_default_passwd(passwd, length);
-+	else
-+		return -EINVAL;
-+}
-+
-+int set_env_passwd(unsigned char* passwd, size_t length)
- {
- 	struct digest *d;
- 	unsigned char *passwd_sum;
-@@ -292,10 +360,10 @@ int set_passwd(unsigned char* passwd, size_t length)
+ 	if (!console)
+ 		return 0;
  
- 	d->final(d, passwd_sum);
+@@ -48,7 +52,10 @@ int tstc(void)
+ EXPORT_SYMBOL(tstc);
  
--	ret = write_passwd(passwd_sum, d->length);
-+	ret = write_env_passwd(passwd_sum, d->length);
- 
- 	free(passwd_sum);
- 
- 	return ret;
- }
--EXPORT_SYMBOL(set_passwd);
-+EXPORT_SYMBOL(set_env_passwd);
-diff --git a/include/password.h b/include/password.h
-index df03cd7..0dd1054 100644
---- a/include/password.h
-+++ b/include/password.h
-@@ -28,11 +28,23 @@
- int password(unsigned char *passwd, size_t length, int flags, int timeout);
- 
- int read_passwd(unsigned char *sum, size_t length);
--int write_passwd(unsigned char *sum, size_t length);
--
--int is_passwd_enable(void);
--int passwd_disable(void);
- int check_passwd(unsigned char* passwd, size_t length);
--int set_passwd(unsigned char* passwd, size_t length);
+ int getc(void)
+-{
 +
-+int read_env_passwd(unsigned char *sum, size_t length);
-+int write_env_passwd(unsigned char *sum, size_t length);
++	if (unlikely(!console_is_input_allow()))
++		return -EPERM;
 +
-+int read_default_passwd(unsigned char *sum, size_t length);
-+int is_passwd_default_enable(void);
-+int check_default_passwd(unsigned char* passwd, size_t length);
-+
-+int is_passwd_env_enable(void);
-+int passwd_env_disable(void);
-+int check_env_passwd(unsigned char* passwd, size_t length);
-+int set_env_passwd(unsigned char* passwd, size_t length);
-+
-+static inline int is_passwd_enable(void)
-+{
-+	return is_passwd_default_enable() || is_passwd_env_enable();
-+}
+ 	if (!console)
+ 		return -EINVAL;
+ 	return console->getc(console);
+diff --git a/common/startup.c b/common/startup.c
+index 9b33a92..0a36c07 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -138,6 +138,8 @@ void __noreturn start_barebox(void)
+ 			run_command("source /env/bin/init", 0);
+ 		} else {
+ 			pr_err("/env/bin/init not found\n");
++			if (IS_ENABLED(CONFIG_CMD_LOGIN))
++				while(run_command("login -t 0", 0));
+ 		}
+ 	}
  
- #endif /* __PASSWORD_H__ */
+diff --git a/include/console.h b/include/console.h
+index 72cf99f..e94c5ae 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -54,4 +54,7 @@ extern struct list_head console_list;
+ 
+ #define CFG_PBSIZE (CONFIG_CBSIZE+sizeof(CONFIG_PROMPT)+16)
+ 
++bool console_is_input_allow(void);
++void console_allow_input(bool val);
++
+ #endif
 -- 
 1.8.4.rc1
 
