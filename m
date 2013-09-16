@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo3.mail-out.ovh.net ([188.165.41.191]
+Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLcte-0004KC-Dw
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:47:39 +0000
+ id 1VLcvD-0004Os-Sh
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:16 +0000
 Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id EE7C5FF908D
- for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 19:47:14 +0200 (CEST)
-Date: Mon, 16 Sep 2013 19:48:24 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 75004FF8C83
+ for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 19:48:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130916174824.GH21829@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Mon, 16 Sep 2013 19:49:57 +0200
+Message-Id: <1379353800-28237-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130916174824.GH21829@ns203013.ovh.net>
+ <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +21,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5 v3] defaultenv-2: add login support
+Subject: [PATCH 2/5] login: add globalvar timeout support
 To: barebox@lists.infradead.org
 
-HI,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ commands/login.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-	v3:
-	use glabalvar type params
+diff --git a/commands/login.c b/commands/login.c
+index fb6bb35..485def2 100644
+--- a/commands/login.c
++++ b/commands/login.c
+@@ -20,6 +20,10 @@
+ #include <complete.h>
+ #include <password.h>
+ #include <getopt.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <init.h>
+ 
+ #define PASSWD_MAX_LENGTH	(128 + 1)
+ 
+@@ -31,11 +35,13 @@
+ #define LOGIN_MODE HIDE
+ #endif
+ 
++static int login_timeout = 0;
++
+ static int do_login(int argc, char *argv[])
+ {
+ 	unsigned char passwd[PASSWD_MAX_LENGTH];
+ 	int passwd_len, opt;
+-	int timeout = 0;
++	int timeout = login_timeout;
+ 	char *timeout_cmd = "boot";
+ 
+ 	if (!is_passwd_enable()) {
+@@ -80,3 +86,13 @@ BAREBOX_CMD_START(login)
+ 	BAREBOX_CMD_HELP(cmd_login_help)
+ 	BAREBOX_CMD_COMPLETE(empty_complete)
+ BAREBOX_CMD_END
++
++static int login_global_init(void)
++{
++	globalvar_add_simple_int("login.timeout", &login_timeout, "%d");
++
++	return 0;
++}
++late_initcall(login_global_init);
++
++BAREBOX_MAGICVAR_NAMED(global_login_timeout, global.login.timeout, "timeout to type the password");
+-- 
+1.8.4.rc1
 
-	this will allow to request password when try to interrupt barebox auto
-	boot
-
-	This will also allow to set a default password if none in the env
-	and if no /env/bin/init is present request a login
-
-The following changes since commit f0b68f0008f94606f6b927590d1fafb34b1abc55:
-
-  usb-imx28: fix enable (2013-09-10 21:03:59 +0200)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/login
-
-for you to fetch changes up to 8d1ab8f59cc9f3a22e191d389433ca78f74bbc57:
-
-  defaultenv-2: add login support (2013-09-17 01:01:08 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (5):
-      globalvar: add globalvar_add_simple_int/bool/enum/ip support
-      login: add globalvar timeout support
-      login: disable input console if password wrong
-      login/passwd: add default password support
-      defaultenv-2: add login support
-
- commands/login.c           | 24 ++++++++++++++++++++++--
- commands/passwd.c          |  8 ++++----
- common/Kconfig             |  5 +++++
- common/Makefile            | 20 ++++++++++++++++++++
- common/console.c           |  6 ++++++
- common/console_common.c    | 33 +++++++++++++++++++++++++++++++++
- common/console_simple.c    |  9 ++++++++-
- common/globalvar.c         |  2 +-
- common/password.c          | 94 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------
- common/startup.c           |  2 ++
- defaultenv-2/base/bin/init | 18 ++++++++++++++++++
- include/console.h          |  3 +++
- include/globalvar.h        | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/password.h         | 22 +++++++++++++++++-----
- 14 files changed, 303 insertions(+), 26 deletions(-)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
