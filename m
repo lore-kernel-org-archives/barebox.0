@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLcvD-0004Ot-Sg
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:19 +0000
+ id 1VLcvD-0004Or-Sj
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:18 +0000
 Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 8EC10FF8C92
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 62311FF8C77
  for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 19:48:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Sep 2013 19:49:58 +0200
-Message-Id: <1379353800-28237-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Mon, 16 Sep 2013 19:49:56 +0200
+Message-Id: <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130916174824.GH21829@ns203013.ovh.net>
 References: <20130916174824.GH21829@ns203013.ovh.net>
- <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,183 +25,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] login: disable input console if password wrong
+Subject: [PATCH 1/5] globalvar: add globalvar_add_simple_int/bool/enum/ip
+ support
 To: barebox@lists.infradead.org
 
-so we guarantee that barebox is secured again user interaction
+so we can types var
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/login.c        |  6 +++++-
- common/console.c        |  6 ++++++
- common/console_common.c | 33 +++++++++++++++++++++++++++++++++
- common/console_simple.c |  9 ++++++++-
- common/startup.c        |  2 ++
- include/console.h       |  3 +++
- 6 files changed, 57 insertions(+), 2 deletions(-)
+ common/globalvar.c  |  2 +-
+ include/globalvar.h | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 84 insertions(+), 1 deletion(-)
 
-diff --git a/commands/login.c b/commands/login.c
-index 485def2..b616bf1 100644
---- a/commands/login.c
-+++ b/commands/login.c
-@@ -24,6 +24,7 @@
- #include <globalvar.h>
+diff --git a/common/globalvar.c b/common/globalvar.c
+index edb66dd..6ef4a6a 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -6,7 +6,7 @@
  #include <magicvar.h>
- #include <init.h>
-+#include <console.h>
+ #include <generated/utsrelease.h>
  
- #define PASSWD_MAX_LENGTH	(128 + 1)
+-static struct device_d global_device = {
++struct device_d global_device = {
+ 	.name = "global",
+ 	.id = DEVICE_ID_SINGLE,
+ };
+diff --git a/include/globalvar.h b/include/globalvar.h
+index c2a13b3..298e8ef 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -2,6 +2,9 @@
+ #define __GLOBALVAR_H
  
-@@ -44,6 +45,7 @@ static int do_login(int argc, char *argv[])
- 	int timeout = login_timeout;
- 	char *timeout_cmd = "boot";
- 
-+	console_allow_input(true);
- 	if (!is_passwd_enable()) {
- 		puts("login: password not set\n");
- 		return 0;
-@@ -64,8 +66,10 @@ static int do_login(int argc, char *argv[])
- 		puts("Password: ");
- 		passwd_len = password(passwd, PASSWD_MAX_LENGTH, LOGIN_MODE, timeout);
- 
--		if (passwd_len < 0)
-+		if (passwd_len < 0) {
-+			console_allow_input(false);
- 			run_command(timeout_cmd, 0);
-+		}
- 
- 		if (check_passwd(passwd, passwd_len))
- 			return 0;
-diff --git a/common/console.c b/common/console.c
-index 6ca94e2..4931829 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -236,6 +236,9 @@ int getc(void)
- 	unsigned char ch;
- 	uint64_t start;
- 
-+	if (unlikely(!console_is_input_allow()))
-+		return -EPERM;
+ #include <param.h>
++#include <driver.h>
 +
- 	/*
- 	 * For 100us we read the characters from the serial driver
- 	 * into a kfifo. This helps us not to lose characters
-@@ -270,6 +273,9 @@ EXPORT_SYMBOL(fgetc);
++extern struct device_d global_device;
  
- int tstc(void)
- {
-+	if (unlikely(!console_is_input_allow()))
-+		return 0;
+ #ifdef CONFIG_GLOBALVAR
+ int globalvar_add_simple(const char *name, const char *value);
+@@ -12,12 +15,92 @@ int globalvar_add(const char *name,
+ 		unsigned long flags);
+ char *globalvar_get_match(const char *match, const char *separator);
+ void globalvar_set_match(const char *match, const char *val);
 +
- 	return kfifo_len(console_input_fifo) || tstc_raw();
- }
- EXPORT_SYMBOL(tstc);
-diff --git a/common/console_common.c b/common/console_common.c
-index d139d1a..d1b823e 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -21,9 +21,42 @@
- #include <common.h>
- #include <fs.h>
- #include <errno.h>
-+#include <console.h>
-+#include <init.h>
-+#include <environment.h>
-+#include <globalvar.h>
-+#include <magicvar.h>
-+#include <password.h>
- 
- #ifndef CONFIG_CONSOLE_NONE
- 
-+static int console_input_allow;
-+
-+static int console_global_init(void)
++static inline int globalvar_add_simple_int(const char *name,
++		int *value, const char *format)
 +{
-+	if (IS_ENABLED(CONFIG_CMD_LOGIN) && is_passwd_enable())
-+		console_input_allow = 0;
-+	else
-+		console_input_allow = 1;
++	struct param_d *p;
 +
-+	globalvar_add_simple_bool("console.input_allow", &console_input_allow);
++	p = dev_add_param_int(&global_device, name, NULL, NULL,
++		value, format, NULL);
++
++	if (IS_ERR(p))
++		return PTR_ERR(p);
 +
 +	return 0;
 +}
-+late_initcall(console_global_init);
 +
-+BAREBOX_MAGICVAR_NAMED(global_console_input_allow, global.console.input_allow, "console input allowed");
-+
-+bool console_is_input_allow(void)
++static inline int globalvar_add_simple_bool(const char *name,
++		int *value)
 +{
-+	return console_input_allow;
++	struct param_d *p;
++
++	p = dev_add_param_bool(&global_device, name, NULL, NULL,
++		value, NULL);
++
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	return 0;
 +}
 +
-+void console_allow_input(bool val)
++static inline int globalvar_add_simple_enum(const char *name,
++		int *value, const char **names, int max)
 +{
-+	console_input_allow = val;
++	struct param_d *p;
++
++	p = dev_add_param_enum(&global_device, name, NULL, NULL,
++		value, names, max, NULL);
++
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	return 0;
 +}
 +
- int printf(const char *fmt, ...)
++static inline int globalvar_add_simple_ip(const char *name,
++		IPaddr_t *ip)
++{
++	struct param_d *p;
++
++	p = dev_add_param_ip(&global_device, name, NULL, NULL,
++		ip, NULL);
++
++	if (IS_ERR(p))
++		return PTR_ERR(p);
++
++	return 0;
++}
+ #else
+ static inline int globalvar_add_simple(const char *name, const char *value)
  {
- 	va_list args;
-diff --git a/common/console_simple.c b/common/console_simple.c
-index 101064b..bf6491d 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -3,6 +3,7 @@
- #include <fs.h>
- #include <errno.h>
- #include <debug_ll.h>
-+#include <console.h>
+ 	return 0;
+ }
  
- LIST_HEAD(console_list);
- EXPORT_SYMBOL(console_list);
-@@ -40,6 +41,9 @@ EXPORT_SYMBOL(console_putc);
- 
- int tstc(void)
- {
-+	if (unlikely(!console_is_input_allow()))
-+		return 0;
++static inline int globalvar_add_simple_int(const char *name,
++		int *value, const char *format)
++{
++	return 0;
++}
 +
- 	if (!console)
- 		return 0;
- 
-@@ -48,7 +52,10 @@ int tstc(void)
- EXPORT_SYMBOL(tstc);
- 
- int getc(void)
--{
++static inline int globalvar_add_simple_bool(const char *name,
++		int *value)
++{
++	return 0;
++}
 +
-+	if (unlikely(!console_is_input_allow()))
-+		return -EPERM;
++static inline int globalvar_add_simple_enum(const char *name,
++		int *value, const char **names, int max)
++{
++	return 0;
++}
 +
- 	if (!console)
- 		return -EINVAL;
- 	return console->getc(console);
-diff --git a/common/startup.c b/common/startup.c
-index 9b33a92..0a36c07 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -138,6 +138,8 @@ void __noreturn start_barebox(void)
- 			run_command("source /env/bin/init", 0);
- 		} else {
- 			pr_err("/env/bin/init not found\n");
-+			if (IS_ENABLED(CONFIG_CMD_LOGIN))
-+				while(run_command("login -t 0", 0));
- 		}
- 	}
- 
-diff --git a/include/console.h b/include/console.h
-index 72cf99f..e94c5ae 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -54,4 +54,7 @@ extern struct list_head console_list;
- 
- #define CFG_PBSIZE (CONFIG_CBSIZE+sizeof(CONFIG_PROMPT)+16)
- 
-+bool console_is_input_allow(void);
-+void console_allow_input(bool val);
++static inline int globalvar_add_simple_ip(const char *name,
++		IPaddr_t *ip)
++{
++	return 0;
++}
 +
- #endif
+ static inline int globalvar_add(const char *name,
+ 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
+ 		const char *(*get)(struct device_d *, struct param_d *p),
 -- 
 1.8.4.rc1
 
