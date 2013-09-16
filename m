@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLUc4-0005hr-Hy
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 08:56:57 +0000
-Date: Mon, 16 Sep 2013 10:56:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130916085634.GX30088@pengutronix.de>
-References: <20130914120725.GB21829@ns203013.ovh.net>
+ id 1VLWEq-0000C6-3Q
+ for barebox@lists.infradead.org; Mon, 16 Sep 2013 10:41:04 +0000
+Date: Mon, 16 Sep 2013 12:40:41 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <20130916104041.GB16832@pengutronix.de>
+References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
+ <1379321300-8085-9-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130914120725.GB21829@ns203013.ovh.net>
+In-Reply-To: <1379321300-8085-9-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +23,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC] [PATCH 0/2] fix barebox size when using a relocated pbl
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 08/11] ARM: socfpga: Add FPGA programming command
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 14, 2013 at 02:07:25PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Hi,
-> 
-> 	today if we use a relocatable pbl we have 0 at 0x2c on ARM
-> 	as the linker script can not calculte the size correctly
-> 
-> 	so fix it post zbarebox.bin generation
-> 
-> Jean-Christophe PLAGNIOL-VILLARD (2):
->       add fix size tools
->       ARM: PBL: fix binary size
+Hi!
 
-Looks good. Should I apply?
+On Mon, Sep 16, 2013 at 10:48:17AM +0200, Sascha Hauer wrote:
+> This adds a simple socfpga specific 'fpga' command to load a firmware
+> to the FPGA. For the moment this is enough, but should we get more
+> FPGA support it might be a good idea to introduce some generic framework
+> and command.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/mach-socfpga/Kconfig                     |   5 +
+>  arch/arm/mach-socfpga/Makefile                    |   1 +
+>  arch/arm/mach-socfpga/fpga.c                      | 422 ++++++++++++++++++++++
+>  arch/arm/mach-socfpga/include/mach/socfpga-regs.h |   2 +
+>  4 files changed, 430 insertions(+)
+>  create mode 100644 arch/arm/mach-socfpga/fpga.c
+> 
 
-Sascha
+Why did you chose to have an extra command for fpga loading instead of having
+just a (block)device? Do you see any future advantage in that or is it just
+because of the port from u-boot? I know that they need an extra fpga command, but
+they also have an extra mmcload command and stuff.
+
+Regards,
+Steffen
 
 -- 
 Pengutronix e.K.                           |                             |
