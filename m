@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo3.mail-out.ovh.net ([178.33.46.10]
- helo=mo3.mail-out.ovh.net)
+Received: from 4.mo1.mail-out.ovh.net ([46.105.76.26]
+ helo=mo1.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLcvD-0004Or-Sj
- for barebox@lists.infradead.org; Mon, 16 Sep 2013 17:49:18 +0000
-Received: from mail402.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 62311FF8C77
- for <barebox@lists.infradead.org>; Mon, 16 Sep 2013 19:48:53 +0200 (CEST)
+ id 1VLnZM-0003Xp-PD
+ for barebox@lists.infradead.org; Tue, 17 Sep 2013 05:11:26 +0000
+Received: from mail610.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 072CA1004F0D
+ for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 07:11:03 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Mon, 16 Sep 2013 19:49:56 +0200
-Message-Id: <1379353800-28237-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130916174824.GH21829@ns203013.ovh.net>
-References: <20130916174824.GH21829@ns203013.ovh.net>
+Date: Tue, 17 Sep 2013 07:12:08 +0200
+Message-Id: <1379394728-30536-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,138 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] globalvar: add globalvar_add_simple_int/bool/enum/ip
- support
+Subject: [PATCH 1/1] command: ubiattach: add option to pass VID offset
 To: barebox@lists.infradead.org
 
-so we can types var
+use the same option as linux -O
+
+as example due to a bug in already deployed kernel we must for the VID offset
+at 512 even it should be at 256
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/globalvar.c  |  2 +-
- include/globalvar.h | 83 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+), 1 deletion(-)
+ commands/ubi.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index edb66dd..6ef4a6a 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -6,7 +6,7 @@
- #include <magicvar.h>
- #include <generated/utsrelease.h>
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 2041df3..57ae790 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -58,13 +58,25 @@ BAREBOX_CMD_END
  
--static struct device_d global_device = {
-+struct device_d global_device = {
- 	.name = "global",
- 	.id = DEVICE_ID_SINGLE,
- };
-diff --git a/include/globalvar.h b/include/globalvar.h
-index c2a13b3..298e8ef 100644
---- a/include/globalvar.h
-+++ b/include/globalvar.h
-@@ -2,6 +2,9 @@
- #define __GLOBALVAR_H
- 
- #include <param.h>
-+#include <driver.h>
-+
-+extern struct device_d global_device;
- 
- #ifdef CONFIG_GLOBALVAR
- int globalvar_add_simple(const char *name, const char *value);
-@@ -12,12 +15,92 @@ int globalvar_add(const char *name,
- 		unsigned long flags);
- char *globalvar_get_match(const char *match, const char *separator);
- void globalvar_set_match(const char *match, const char *val);
-+
-+static inline int globalvar_add_simple_int(const char *name,
-+		int *value, const char *format)
-+{
-+	struct param_d *p;
-+
-+	p = dev_add_param_int(&global_device, name, NULL, NULL,
-+		value, format, NULL);
-+
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_bool(const char *name,
-+		int *value)
-+{
-+	struct param_d *p;
-+
-+	p = dev_add_param_bool(&global_device, name, NULL, NULL,
-+		value, NULL);
-+
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_enum(const char *name,
-+		int *value, const char **names, int max)
-+{
-+	struct param_d *p;
-+
-+	p = dev_add_param_enum(&global_device, name, NULL, NULL,
-+		value, names, max, NULL);
-+
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_ip(const char *name,
-+		IPaddr_t *ip)
-+{
-+	struct param_d *p;
-+
-+	p = dev_add_param_ip(&global_device, name, NULL, NULL,
-+		ip, NULL);
-+
-+	if (IS_ERR(p))
-+		return PTR_ERR(p);
-+
-+	return 0;
-+}
- #else
- static inline int globalvar_add_simple(const char *name, const char *value)
+ static int do_ubiattach(int argc, char *argv[])
  {
- 	return 0;
++	int opt;
+ 	struct mtd_info_user user;
+ 	int fd, ret;
++	int vid_hdr_offset = 0;
++
++	while((opt = getopt(argc, argv, "O:")) > 0) {
++		switch(opt) {
++		case 'O':
++			vid_hdr_offset = simple_strtoul(optarg, NULL, 0);
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
+ 
+-	if (argc != 2)
++	if (optind == argc)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	fd = open(argv[1], O_RDWR);
++	fd = open(argv[optind], O_RDWR);
+ 	if (fd < 0) {
+ 		perror("open");
+ 		return 1;
+@@ -76,7 +88,7 @@ static int do_ubiattach(int argc, char *argv[])
+ 		goto err;
+ 	}
+ 
+-	ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, 0, 20);
++	ret = ubi_attach_mtd_dev(user.mtd, UBI_DEV_NUM_AUTO, vid_hdr_offset, 20);
+ 	if (ret < 0)
+ 		printf("failed to attach: %s\n", strerror(-ret));
+ 	else
+@@ -88,7 +100,7 @@ err:
  }
  
-+static inline int globalvar_add_simple_int(const char *name,
-+		int *value, const char *format)
-+{
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_bool(const char *name,
-+		int *value)
-+{
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_enum(const char *name,
-+		int *value, const char **names, int max)
-+{
-+	return 0;
-+}
-+
-+static inline int globalvar_add_simple_ip(const char *name,
-+		IPaddr_t *ip)
-+{
-+	return 0;
-+}
-+
- static inline int globalvar_add(const char *name,
- 		int (*set)(struct device_d *dev, struct param_d *p, const char *val),
- 		const char *(*get)(struct device_d *, struct param_d *p),
+ static const __maybe_unused char cmd_ubiattach_help[] =
+-"Usage: ubiattach <mtddev>\n"
++"Usage: ubiattach [-O vid-hdr-offset] <mtddev>\n"
+ "Attach <mtddev> to ubi\n";
+ 
+ BAREBOX_CMD_START(ubiattach)
 -- 
 1.8.4.rc1
 
