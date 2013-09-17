@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLq4L-0006A0-NM
- for barebox@lists.infradead.org; Tue, 17 Sep 2013 07:51:34 +0000
+ id 1VLqAf-0006Jf-QZ
+ for barebox@lists.infradead.org; Tue, 17 Sep 2013 07:58:06 +0000
 Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 59D9F1030211
- for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 09:51:11 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 6A39D10281A3
+ for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 09:57:44 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Sep 2013 09:52:18 +0200
-Message-Id: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Sep 2013 09:58:53 +0200
+Message-Id: <1379404733-7071-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,48 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] filetype: add arm u-boot support
+Subject: [PATCH 1/1] command: crc: add -V option to check the crc store in a
+ file
 To: barebox@lists.infradead.org
+
+the format is %08x
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/filetype.c  | 3 +++
- include/filetype.h | 1 +
- 2 files changed, 4 insertions(+)
+ commands/crc.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/common/filetype.c b/common/filetype.c
-index 7507d85..59ea25a 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
- 	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
- 	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
-+	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
- 	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
- 	[filetype_ubi] = { "UBI image", "ubi" },
- 	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
-@@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+diff --git a/commands/crc.c b/commands/crc.c
+index a0071b0..b7416e1 100644
+--- a/commands/crc.c
++++ b/commands/crc.c
+@@ -82,6 +82,19 @@ out:
+ 	return ret;
+ }
  
- 	if (is_barebox_arm_head(_buf))
- 		return filetype_arm_barebox;
-+	if (buf[15] == 0xdeadbeef)
-+		return filetype_arm_uboot;
- 	if (buf[9] == 0x016f2818 || buf[9] == 0x18286f01)
- 		return filetype_arm_zimage;
++static int crc_from_file(const char* file, ulong *crc)
++{
++	char * buf;
++
++	buf= read_file(file, NULL);
++
++	if (!buf)
++		return -ENOMEM;
++
++	*crc = simple_strtoul(buf, NULL, 16);
++	return 0;
++}
++
+ static int do_crc(int argc, char *argv[])
+ {
+ 	loff_t start = 0, size = ~0;
+@@ -92,7 +105,7 @@ static int do_crc(int argc, char *argv[])
+ #endif
+ 	int opt, err = 0, filegiven = 0, verify = 0;
  
-diff --git a/include/filetype.h b/include/filetype.h
-index 9a864da..b83b9be 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -12,6 +12,7 @@ enum filetype {
- 	filetype_lzo_compressed,
- 	filetype_lz4_compressed,
- 	filetype_arm_barebox,
-+	filetype_arm_uboot,
- 	filetype_uimage,
- 	filetype_ubi,
- 	filetype_jffs2,
+-	while((opt = getopt(argc, argv, "f:F:v:")) > 0) {
++	while((opt = getopt(argc, argv, "f:F:v:V:")) > 0) {
+ 		switch(opt) {
+ 		case 'f':
+ 			filename = optarg;
+@@ -108,6 +121,10 @@ static int do_crc(int argc, char *argv[])
+ 			verify = 1;
+ 			vcrc = simple_strtoul(optarg, NULL, 0);
+ 			break;
++		case 'V':
++			if (!crc_from_file(optarg, &vcrc))
++				verify = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -153,6 +170,7 @@ BAREBOX_CMD_HELP_OPT  ("-f <file>", "Use file instead of memory.\n")
+ BAREBOX_CMD_HELP_OPT  ("-F <file>", "Use file to compare.\n")
+ #endif
+ BAREBOX_CMD_HELP_OPT  ("-v <crc>",  "Verify\n")
++BAREBOX_CMD_HELP_OPT  ("-V <file>", "Verify\n")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(crc32)
 -- 
 1.8.4.rc1
 
