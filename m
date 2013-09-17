@@ -2,19 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLwc1-0007ac-KL
- for barebox@lists.infradead.org; Tue, 17 Sep 2013 14:50:46 +0000
+ id 1VLxpK-0001Kn-H2
+ for barebox@lists.infradead.org; Tue, 17 Sep 2013 16:08:35 +0000
 Received: from mail437.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 82641FF984C
- for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 16:50:23 +0200 (CEST)
-Date: Tue, 17 Sep 2013 16:51:33 +0200
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 794BBFF981B
+ for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 18:08:11 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130917145133.GC28390@ns203013.ovh.net>
-References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
- <1379321300-8085-9-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1379321300-8085-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 17 Sep 2013 18:09:15 +0200
+Message-Id: <1379434156-32055-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,24 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 08/11] ARM: socfpga: Add FPGA programming command
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] filetype: add Somfy BPK2 type
+To: barebox@lists.infradead.org
 
-On 10:48 Mon 16 Sep     , Sascha Hauer wrote:
-> This adds a simple socfpga specific 'fpga' command to load a firmware
-> to the FPGA. For the moment this is enough, but should we get more
-> FPGA support it might be a good idea to introduce some generic framework
-> and command.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ common/filetype.c  | 3 +++
+ include/filetype.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-I do not like command a devfs instead?
+diff --git a/common/filetype.c b/common/filetype.c
+index f986ea4..e07b65a 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -51,6 +51,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_png] = { "PNG image", "png" },
+ 	[filetype_ext] = { "ext filesystem", "ext" },
+ 	[filetype_gpt] = { "GUID Partition Table", "gpt" },
++	[filetype_somfy_bpk2] = { "Somfy BPK2", "somfy-bpk2" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -219,6 +220,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 		return filetype_png;
+ 	if (is_barebox_mips_head(_buf))
+ 		return filetype_mips_barebox;
++	if (buf[0] == be32_to_cpu(0x534F4659))
++		return filetype_somfy_bpk2;
+ 
+ 	if (bufsize < 64)
+ 		return filetype_unknown;
+diff --git a/include/filetype.h b/include/filetype.h
+index 3e9cea3..b97d860 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -28,6 +28,7 @@ enum filetype {
+ 	filetype_png,
+ 	filetype_ext,
+ 	filetype_gpt,
++	filetype_somfy_bpk2,
+ 	filetype_max,
+ };
+ 
+-- 
+1.8.4.rc1
 
-so we can use cp and co
-> 
 
 _______________________________________________
 barebox mailing list
