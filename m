@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 18.mo5.mail-out.ovh.net ([178.33.45.10]
+Received: from 17.mo5.mail-out.ovh.net ([46.105.56.132]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VLq2A-00066Y-6o
- for barebox@lists.infradead.org; Tue, 17 Sep 2013 07:49:19 +0000
+ id 1VLq2o-000682-Cp
+ for barebox@lists.infradead.org; Tue, 17 Sep 2013 07:49:58 +0000
 Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 4D349103808A
- for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 09:48:56 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 0D1241038139
+ for <barebox@lists.infradead.org>; Tue, 17 Sep 2013 09:49:37 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 17 Sep 2013 09:50:04 +0200
-Message-Id: <1379404204-6450-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Tue, 17 Sep 2013 09:50:45 +0200
+Message-Id: <1379404245-6533-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,105 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] process_escape_sequence: add support to \$?
+Subject: [PATCH 1/1] atmel_mci: add devname pdata support
 To: barebox@lists.infradead.org
+
+so we can specify the devname in the board
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/hush.c                 |  6 ++++++
- common/parser.c               |  9 +++++++++
- include/shell.h               | 12 ++++++++++++
- lib/process_escape_sequence.c |  7 +++++++
- 4 files changed, 34 insertions(+)
- create mode 100644 include/shell.h
+ arch/arm/mach-at91/include/mach/board.h | 1 +
+ drivers/mci/atmel_mci.c                 | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/common/hush.c b/common/hush.c
-index a3235ba..bf1d9e6 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -123,6 +123,7 @@
- #include <linux/list.h>
- #include <binfmt.h>
- #include <init.h>
-+#include <shell.h>
+diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91/include/mach/board.h
+index d695020..aa0fdae 100644
+--- a/arch/arm/mach-at91/include/mach/board.h
++++ b/arch/arm/mach-at91/include/mach/board.h
+@@ -150,6 +150,7 @@ struct atmel_mci_platform_data {
+ 	unsigned bus_width;
+ 	int detect_pin;
+ 	int wp_pin;
++	char *devname;
+ };
  
- /*cmd_boot.c*/
- extern int do_bootd(int flag, int argc, char *argv[]);      /* do_bootd */
-@@ -226,6 +227,11 @@ static char console_buffer[CONFIG_CBSIZE];		/* console I/O buffer	*/
-  * the first three support $?, $#, and $1 */
- static unsigned int last_return_code;
+ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data);
+diff --git a/drivers/mci/atmel_mci.c b/drivers/mci/atmel_mci.c
+index dca3813..36107a6 100644
+--- a/drivers/mci/atmel_mci.c
++++ b/drivers/mci/atmel_mci.c
+@@ -563,6 +563,7 @@ static int atmci_probe(struct device_d *hw_dev)
+ 	host->mci.init = atmci_reset;
+ 	host->mci.card_present = atmci_card_present;
+ 	host->mci.hw_dev = hw_dev;
++	host->mci.devname = pd->devname;
  
-+int shell_get_last_return_code(void)
-+{
-+	return last_return_code;
-+}
-+
- /* "globals" within this file */
- static uchar *ifs;
- static char map[256];
-diff --git a/common/parser.c b/common/parser.c
-index 4d993df..d390fb6 100644
---- a/common/parser.c
-+++ b/common/parser.c
-@@ -1,6 +1,15 @@
- #include <common.h>
- #include <command.h>
- #include <environment.h>
-+#include <shell.h>
-+
-+/*
-+ * not yet supported
-+ */
-+int shell_get_last_return_code(void)
-+{
-+	return 0;
-+}
- 
- static int parse_line (char *line, char *argv[])
- {
-diff --git a/include/shell.h b/include/shell.h
-new file mode 100644
-index 0000000..b98cac3
---- /dev/null
-+++ b/include/shell.h
-@@ -0,0 +1,12 @@
-+/*
-+ * (C) Copyright 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ */
-+
-+#ifndef __SHELL_H__
-+#define __SHELL_H__
-+
-+int shell_get_last_return_code(void);
-+
-+#endif /* __SHELL_H__ */
-diff --git a/lib/process_escape_sequence.c b/lib/process_escape_sequence.c
-index be77792..47a7e5c 100644
---- a/lib/process_escape_sequence.c
-+++ b/lib/process_escape_sequence.c
-@@ -19,6 +19,7 @@
- #include <common.h>
- #include <fs.h>
- #include <libbb.h>
-+#include <shell.h>
- 
- int process_escape_sequence(const char *source, char *dest, int destlen)
- {
-@@ -59,6 +60,12 @@ int process_escape_sequence(const char *source, char *dest, int destlen)
- 			case 'w':
- 				i += snprintf(dest + i, destlen - i, "%s", getcwd());
- 				break;
-+			case '$':
-+				if (*(source + 2) == '?') {
-+					i += snprintf(dest + i, destlen - i, "%d", shell_get_last_return_code());
-+					source++;
-+					break;
-+				}
- 			default:
- 				dest[i++] = '\\';
- 				dest[i++] = *(source + 1);
+ 	if (pd->bus_width >= 4)
+ 		host->mci.host_caps |= MMC_CAP_4_BIT_DATA;
 -- 
 1.8.4.rc1
 
