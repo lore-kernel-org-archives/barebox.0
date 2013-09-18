@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMBl9-0001J7-A1
- for barebox@lists.infradead.org; Wed, 18 Sep 2013 07:01:12 +0000
-Date: Wed, 18 Sep 2013 09:00:49 +0200
+ id 1VMBnw-0001Mi-0R
+ for barebox@lists.infradead.org; Wed, 18 Sep 2013 07:04:04 +0000
+Date: Wed, 18 Sep 2013 09:03:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130918070049.GK30088@pengutronix.de>
+Message-ID: <20130918070342.GL30088@pengutronix.de>
 References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+ <1379404339-6716-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379404339-6716-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
+Subject: Re: [PATCH 2/2] bootm: add u-boot support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+On Tue, Sep 17, 2013 at 09:52:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Simply do the same as barebox and hope for the best as u-boot does not handle
+> runtime address detection for boot quite often. It does only execpt you to
+> choose as compiling time.
+> 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  common/filetype.c  | 3 +++
->  include/filetype.h | 1 +
->  2 files changed, 4 insertions(+)
+>  arch/arm/lib/bootm.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 7507d85..59ea25a 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
->  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
->  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
->  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
-> +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
->  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
->  	[filetype_ubi] = { "UBI image", "ubi" },
->  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
-> @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+> diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+> index 599b09a..71200be 100644
+> --- a/arch/arm/lib/bootm.c
+> +++ b/arch/arm/lib/bootm.c
+> @@ -315,6 +315,12 @@ static struct image_handler barebox_handler = {
+>  	.filetype = filetype_arm_barebox,
+>  };
 >  
->  	if (is_barebox_arm_head(_buf))
->  		return filetype_arm_barebox;
-> +	if (buf[15] == 0xdeadbeef)
-> +		return filetype_arm_uboot;
+> +static struct image_handler uboot_handler = {
+> +	.name = "ARM u-boot",
+> +	.bootm = do_bootm_barebox,
+> +	.filetype = filetype_arm_uboot,
+> +};
+> +
 
-0xdeadbeef is such a widely used placeholder that we should use it for
-filetype detection. Also, I don't think that U-Boot ever specified
-0xdeadbeef at this offset as a fixed value. It could be changed without
-notice.
+Wolfgang always emphasizes that it's not possible to start U-Boot second
+stage. Most U-Boot images indeed do not support this without hacking the
+lowlevel code. We can't support this feature which happens to work on
+only some U-Boot images.
 
 Sascha
 
