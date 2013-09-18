@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMCDV-0001oa-Cx
- for barebox@lists.infradead.org; Wed, 18 Sep 2013 07:30:30 +0000
-Date: Wed, 18 Sep 2013 09:30:07 +0200
+ id 1VMCmh-0002Qd-Pb
+ for barebox@lists.infradead.org; Wed, 18 Sep 2013 08:06:52 +0000
+Date: Wed, 18 Sep 2013 10:06:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130918073007.GO30088@pengutronix.de>
-References: <1379404733-7071-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130918080628.GP30088@pengutronix.de>
+References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
+ <1379321300-8085-8-git-send-email-s.hauer@pengutronix.de>
+ <20130917144649.GA28390@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379404733-7071-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130917144649.GA28390@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +24,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] command: crc: add -V option to check the crc store
- in a file
+Subject: Re: [PATCH 07/11] ARM: Add Altera SoCFPGA support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Sep 17, 2013 at 09:58:53AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> the format is %08x
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  commands/crc.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/commands/crc.c b/commands/crc.c
-> index a0071b0..b7416e1 100644
-> --- a/commands/crc.c
-> +++ b/commands/crc.c
-> @@ -82,6 +82,19 @@ out:
->  	return ret;
->  }
->  
-> +static int crc_from_file(const char* file, ulong *crc)
-> +{
-> +	char * buf;
-> +
-> +	buf= read_file(file, NULL);
-> +
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	*crc = simple_strtoul(buf, NULL, 16);
-> +	return 0;
-> +}
-> +
->  static int do_crc(int argc, char *argv[])
->  {
->  	loff_t start = 0, size = ~0;
-> @@ -92,7 +105,7 @@ static int do_crc(int argc, char *argv[])
->  #endif
->  	int opt, err = 0, filegiven = 0, verify = 0;
->  
-> -	while((opt = getopt(argc, argv, "f:F:v:")) > 0) {
-> +	while((opt = getopt(argc, argv, "f:F:v:V:")) > 0) {
->  		switch(opt) {
->  		case 'f':
->  			filename = optarg;
-> @@ -108,6 +121,10 @@ static int do_crc(int argc, char *argv[])
->  			verify = 1;
->  			vcrc = simple_strtoul(optarg, NULL, 0);
->  			break;
-> +		case 'V':
-> +			if (!crc_from_file(optarg, &vcrc))
-> +				verify = 1;
-> +			break;
->  		default:
->  			return COMMAND_ERROR_USAGE;
->  		}
-> @@ -153,6 +170,7 @@ BAREBOX_CMD_HELP_OPT  ("-f <file>", "Use file instead of memory.\n")
->  BAREBOX_CMD_HELP_OPT  ("-F <file>", "Use file to compare.\n")
->  #endif
->  BAREBOX_CMD_HELP_OPT  ("-v <crc>",  "Verify\n")
-> +BAREBOX_CMD_HELP_OPT  ("-V <file>", "Verify\n")
+On Tue, Sep 17, 2013 at 04:46:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > +
+> > +	if (IS_ENABLED(CONFIG_OMAP_BUILD_IFT))
+> OMAP?
 
-Please increase verbosity a bit, like "Verify with crc read from <file>".
+Damn. Removed.
+
+> > +		default_environment_path = "/dev/defaultenv";
+> > +	else
+> > +		default_environment_path = "/boot/barebox.env";
+> > +
+> > +out_free:
+> > +	free(partname);
+> > +	return 0;
+> > +}
+> > +late_initcall(socfpga_env_init);
+> > +#endif
+> > diff --git a/arch/arm/mach-socfpga/include/mach/clkdev.h b/arch/arm/mach-socfpga/include/mach/clkdev.h
+> > new file mode 100644
+> > index 0000000..04b37a8
+> > --- /dev/null
+> > +++ b/arch/arm/mach-socfpga/include/mach/clkdev.h
+> > @@ -0,0 +1,7 @@
+> > +#ifndef __ASM_MACH_CLKDEV_H
+> > +#define __ASM_MACH_CLKDEV_H
+> > +
+> > +#define __clk_get(clk) ({ 1; })
+> > +#define __clk_put(clk) do { } while (0)
+> > +
+> do we still need this?
+
+Nope, removed.
+
+> > +#endif
+> > diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/clock-manager.h
+> > new file mode 100644
+> > index 0000000..a2b6975
+> > --- /dev/null
+> 
+> > +#if ARRIAV || CYCLONEV
+> > +		/* av/cv don't have out2 */
+> > +		scc_mgr_set_dqs_out1_delay(write_group, IO_DQS_OUT_RESERVE);
+> > +#else
+> > +		scc_mgr_set_dqs_out1_delay(write_group, 0);
+> > +		scc_mgr_set_dqs_out2_delay(write_group, IO_DQS_OUT_RESERVE);
+> > +#endif
+> really?
+
+What do you mean? I have no idea if the above code is correct, it's
+copied from Altera code.
+
+> > +	clks[timer] = clk_fixed("timer", 200000000);
+> > +	clkdev_add_physbase(clks[timer], CYCLONE5_SMP_TWD_ADDRESS, NULL);
+> > +	add_generic_device("smp_twd", 0, NULL, CYCLONE5_SMP_TWD_ADDRESS, 0x100,
+> > +			IORESOURCE_MEM, NULL);
+> > +}
+> > +
+> > +static void *socfpga_xload_mmc(void)
+> > +{
+> > +	int ret;
+> > +	void *buf;
+> > +	int len;
+> > +	const char *diskdev = "disk0.1";
+> > +
+> > +	pr_info("loading bootloader from SD/MMC\n");
+> > +
+> > +	ret = mount(diskdev, "fat", "/");
+> > +	if (ret) {
+> > +		printf("Unable to mount %s (%d)\n", diskdev, ret);
+> > +		return NULL;
+> > +	}
+> > +
+> > +	buf = read_file("/barebox.bin", &len);
+> > +	if (!buf) {
+> > +		printf("could not read barebox.bin from sd card\n");
+> > +		return NULL;
+> > +	}
+> > +
+> > +	return buf;
+> > +}
+> please use the generic bootstrap code
+
+Ok
 
 Sascha
 
