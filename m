@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMCmh-0002Qd-Pb
- for barebox@lists.infradead.org; Wed, 18 Sep 2013 08:06:52 +0000
-Date: Wed, 18 Sep 2013 10:06:28 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130918080628.GP30088@pengutronix.de>
-References: <1379321300-8085-1-git-send-email-s.hauer@pengutronix.de>
- <1379321300-8085-8-git-send-email-s.hauer@pengutronix.de>
- <20130917144649.GA28390@ns203013.ovh.net>
+ id 1VMPYJ-0007xo-Su
+ for barebox@lists.infradead.org; Wed, 18 Sep 2013 21:44:52 +0000
+Received: by mail-we0-f177.google.com with SMTP id t60so7050664wes.22
+ for <barebox@lists.infradead.org>; Wed, 18 Sep 2013 14:44:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130917144649.GA28390@ns203013.ovh.net>
+Date: Wed, 18 Sep 2013 16:44:29 -0500
+Message-ID: <CAO-21LPB36R6Gk1RiWah8-pinu3rsKEcN-DgeQZkT65VNCDiEA@mail.gmail.com>
+From: "Allen Kennedy Jr." <allen@kennedystuff.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,101 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/11] ARM: Add Altera SoCFPGA support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Porting to a new board
+To: barebox@lists.infradead.org
 
-On Tue, Sep 17, 2013 at 04:46:49PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > +
-> > +	if (IS_ENABLED(CONFIG_OMAP_BUILD_IFT))
-> OMAP?
+Hello,
+  I have read the documentation but I believe it to be out of date, as it
+does not match up with the source from the git tree.
 
-Damn. Removed.
+  To that end, I am trying to add a new board, and I can not figure out how
+to do so.  My board uses the mx27 processor, and so I am attempting to
+closely mimic one of the other mx27 boards, when following the steps here:
+http://barebox.org/documentation/barebox-2011.05.0/dev_board.html
 
-> > +		default_environment_path = "/dev/defaultenv";
-> > +	else
-> > +		default_environment_path = "/boot/barebox.env";
-> > +
-> > +out_free:
-> > +	free(partname);
-> > +	return 0;
-> > +}
-> > +late_initcall(socfpga_env_init);
-> > +#endif
-> > diff --git a/arch/arm/mach-socfpga/include/mach/clkdev.h b/arch/arm/mach-socfpga/include/mach/clkdev.h
-> > new file mode 100644
-> > index 0000000..04b37a8
-> > --- /dev/null
-> > +++ b/arch/arm/mach-socfpga/include/mach/clkdev.h
-> > @@ -0,0 +1,7 @@
-> > +#ifndef __ASM_MACH_CLKDEV_H
-> > +#define __ASM_MACH_CLKDEV_H
-> > +
-> > +#define __clk_get(clk) ({ 1; })
-> > +#define __clk_put(clk) do { } while (0)
-> > +
-> do we still need this?
+I find the following inconsistencies:
+1. include/configs/<boardname>.h  -
+the configs directory does not exist.
+2. modify arch/<architecture>/Kconfig
 
-Nope, removed.
+   - add your board (MACH_*) to the list
+   - add your default text base address for this architecture
+   (ARCH_TEXT_BASE)
+   - add BOARDINFO with valueable info for your board
 
-> > +#endif
-> > diff --git a/arch/arm/mach-socfpga/include/mach/clock-manager.h b/arch/arm/mach-socfpga/include/mach/clock-manager.h
-> > new file mode 100644
-> > index 0000000..a2b6975
-> > --- /dev/null
-> 
-> > +#if ARRIAV || CYCLONEV
-> > +		/* av/cv don't have out2 */
-> > +		scc_mgr_set_dqs_out1_delay(write_group, IO_DQS_OUT_RESERVE);
-> > +#else
-> > +		scc_mgr_set_dqs_out1_delay(write_group, 0);
-> > +		scc_mgr_set_dqs_out2_delay(write_group, IO_DQS_OUT_RESERVE);
-> > +#endif
-> really?
+None of this exists.
 
-What do you mean? I have no idea if the above code is correct, it's
-copied from Altera code.
+3. modify arch/<architecture>/Makefile:
 
-> > +	clks[timer] = clk_fixed("timer", 200000000);
-> > +	clkdev_add_physbase(clks[timer], CYCLONE5_SMP_TWD_ADDRESS, NULL);
-> > +	add_generic_device("smp_twd", 0, NULL, CYCLONE5_SMP_TWD_ADDRESS, 0x100,
-> > +			IORESOURCE_MEM, NULL);
-> > +}
-> > +
-> > +static void *socfpga_xload_mmc(void)
-> > +{
-> > +	int ret;
-> > +	void *buf;
-> > +	int len;
-> > +	const char *diskdev = "disk0.1";
-> > +
-> > +	pr_info("loading bootloader from SD/MMC\n");
-> > +
-> > +	ret = mount(diskdev, "fat", "/");
-> > +	if (ret) {
-> > +		printf("Unable to mount %s (%d)\n", diskdev, ret);
-> > +		return NULL;
-> > +	}
-> > +
-> > +	buf = read_file("/barebox.bin", &len);
-> > +	if (!buf) {
-> > +		printf("could not read barebox.bin from sd card\n");
-> > +		return NULL;
-> > +	}
-> > +
-> > +	return buf;
-> > +}
-> please use the generic bootstrap code
+   - add board-$(MACH_*) = <your board_dir>
 
-Ok
 
-Sascha
+This does not exist
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+And my board will not show up in the menu config.
+
+Also I am finding it difficult to locate where I set things like flash
+size, ram size, etc...  u-boot has a much simpler (if not less documented)
+layout when it came to boards.  Alas I can not use u-boot, because of the
+nand flash limitations, and thus why I am attempting to use barebox.
+
+And finally there seems to be some confusiton both in the code and the
+documentation about the difference between a board and a machine.  What is
+the difference?
+
+I'm sorry that there is a lot here, but I can not find the proper
+documentation to answer these questions.
+
+
+Also, for those that are curious, or can help me get around this issue.  I
+attempting to get this going on a board with an mx27 booted from NAND
+flash, so I believe I have to use the PBL option to setup and copy out of
+nand to do the real booting.  If there is any advice on this, I would
+appreciate it.  I have no other bootloader, only bare metal and a JTAG
+device.
+
+
+thank you.
 
 _______________________________________________
 barebox mailing list
