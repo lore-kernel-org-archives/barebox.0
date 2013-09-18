@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMBXf-00015d-Rn
- for barebox@lists.infradead.org; Wed, 18 Sep 2013 06:47:16 +0000
-Date: Wed, 18 Sep 2013 08:46:53 +0200
+ id 1VMBYR-00016p-WA
+ for barebox@lists.infradead.org; Wed, 18 Sep 2013 06:48:04 +0000
+Date: Wed, 18 Sep 2013 08:47:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130918064653.GF30088@pengutronix.de>
-References: <1379404064-6100-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130918064742.GG30088@pengutronix.de>
+References: <1379404152-6313-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379404064-6100-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379404152-6313-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,16 +22,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Fix lseek on fat filesystems.
+Subject: Re: [PATCH 1/1] animeo_ip: fix macb pin mux and set phy interface as
+ MII
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Fargier Sylvain <sylvain.fargier@somfy.com>
+Cc: barebox@lists.infradead.org
 
-On Tue, Sep 17, 2013 at 09:47:44AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> From: Fargier Sylvain <sylvain.fargier@somfy.com>
-> 
-> FILE object was not updated properly when seeking.
-> 
-> Signed-off-by: Fargier Sylvain <sylvain.fargier@somfy.com>
+On Tue, Sep 17, 2013 at 09:49:12AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
 Applied, thanks
@@ -39,21 +35,22 @@ Applied, thanks
 Sascha
 
 > ---
->  fs/fat/fat.c | 1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm/boards/animeo_ip/init.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-> index 871fe4b..15879c4 100644
-> --- a/fs/fat/fat.c
-> +++ b/fs/fat/fat.c
-> @@ -277,6 +277,7 @@ static loff_t fat_lseek(struct device_d *dev, FILE *f, loff_t pos)
->  	if (ret)
->  		return ret;
+> diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+> index 06d542e..56b8df2 100644
+> --- a/arch/arm/boards/animeo_ip/init.c
+> +++ b/arch/arm/boards/animeo_ip/init.c
+> @@ -123,6 +123,8 @@ static void animeo_ip_add_device_nand(void)
 >  
-> +	f->pos = pos;
->  	return pos;
->  }
+>  static struct macb_platform_data macb_pdata = {
+>  	.phy_addr = 0,
+> +	.phy_interface = PHY_INTERFACE_MODE_MII,
+> +	.flags = AT91SAM_ETX2_ETX3_ALTERNATIVE,
+>  };
 >  
+>  /*
 > -- 
 > 1.8.4.rc1
 > 
