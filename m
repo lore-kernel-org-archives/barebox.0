@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMe8w-0005vE-4o
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 13:19:38 +0000
+ id 1VMe8y-0005vZ-Hz
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 13:19:41 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E4349DC84B2
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 15:19:16 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 8D616DC8738
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 15:19:19 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Sep 2013 15:20:23 +0200
-Message-Id: <1379596826-5743-2-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu, 19 Sep 2013 15:20:25 +0200
+Message-Id: <1379596826-5743-4-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1379596826-5743-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130919131929.GA1137@ns203013.ovh.net>
  <1379596826-5743-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,50 +26,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] console: introduce console_get_by_dev
+Subject: [PATCH 4/5] atmel_serial: add rs485 support
 To: barebox@lists.infradead.org
-
-so we can get console by it's device
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- common/console_common.c | 13 +++++++++++++
- include/console.h       |  2 ++
- 2 files changed, 15 insertions(+)
+ drivers/serial/atmel.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/common/console_common.c b/common/console_common.c
-index d139d1a..24aa63e 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -108,3 +108,16 @@ int fputc(int fd, char c)
+diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
+index 89c141e..40945c9 100644
+--- a/drivers/serial/atmel.c
++++ b/drivers/serial/atmel.c
+@@ -362,6 +362,32 @@ static int atmel_serial_setbaudrate(struct console_device *cdev, int baudrate)
  	return 0;
  }
- EXPORT_SYMBOL(fputc);
-+
-+struct console_device *console_get_by_dev(struct device_d *dev)
+ 
++static int atmel_serial_set_mode(struct console_device *cdev, enum console_mode mode)
 +{
-+	struct console_device *cdev;
++	struct atmel_uart_port *uart = to_atmel_uart_port(cdev);
++	u32 mr;
++	u8 m;
 +
-+	for_each_console(cdev) {
-+		if (cdev->dev == dev)
-+			return cdev;
++	mr = readl(uart->base + USART3_MR);
++	mr &= ~0xf;
++
++	switch (mode) {
++	case CONSOLE_MODE_NORMAL:
++		m = USART3_USART_MODE_NORMAL;
++		break;
++	case CONSOLE_MODE_RS485:
++		m = USART3_USART_MODE_RS485;
++		break;
++	default:
++		return -EINVAL;
 +	}
 +
-+	return NULL;
-+}
-+EXPORT_SYMBOL(console_get_by_dev);
-diff --git a/include/console.h b/include/console.h
-index 72cf99f..355e259 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -49,6 +49,8 @@ struct console_device {
- int console_register(struct console_device *cdev);
- int console_unregister(struct console_device *cdev);
- 
-+struct console_device *console_get_by_dev(struct device_d *dev);
++	mr |= USART3_BF(USART_MODE, m);
++	writel(mr, uart->base + USART3_MR);
 +
- extern struct list_head console_list;
- #define for_each_console(console) list_for_each_entry(console, &console_list, list)
++	return 0;
++}
++
+ /*
+  * Initialise the serial port with the given baudrate. The settings
+  * are always 8 data bits, no parity, 1 stop bit, no start bits.
+@@ -404,6 +430,7 @@ static int atmel_serial_probe(struct device_d *dev)
+ 	cdev->putc = atmel_serial_putc;
+ 	cdev->getc = atmel_serial_getc;
+ 	cdev->setbrg = atmel_serial_setbaudrate;
++	cdev->set_mode = atmel_serial_set_mode;
+ 
+ 	atmel_serial_init_port(cdev);
  
 -- 
 1.8.4.rc1
