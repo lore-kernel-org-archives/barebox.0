@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo1.mail-out.ovh.net ([46.105.60.232]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMX7Q-0005OB-Pl
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 05:49:37 +0000
-Received: from mail640.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 97B2A10010DB
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 07:49:04 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Sep 2013 07:50:14 +0200
-Message-Id: <1379569815-14033-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from mail-lb0-f182.google.com ([209.85.217.182])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VMXoS-0005w7-Nz
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 06:34:05 +0000
+Received: by mail-lb0-f182.google.com with SMTP id c11so7432637lbj.41
+ for <barebox@lists.infradead.org>; Wed, 18 Sep 2013 23:33:26 -0700 (PDT)
+Date: Thu, 19 Sep 2013 10:30:52 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20130919103052.556af05778b3c5c8ca2ebc63@gmail.com>
+In-Reply-To: <1379481633-24534-1-git-send-email-dmitry.s.smagin@gmail.com>
+References: <1379481633-24534-1-git-send-email-dmitry.s.smagin@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,63 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] smc91111: add phy flags support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] Enable devicetree for Ritmix RZX-50 board
+To: Dmitry Smagin <dmitry.s.smagin@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/net/smc91111.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+On Wed, 18 Sep 2013 09:20:30 +0400
+Dmitry Smagin <dmitry.s.smagin@gmail.com> wrote:
 
-diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 48183dd..8c7a343 100644
---- a/drivers/net/smc91111.c
-+++ b/drivers/net/smc91111.c
-@@ -886,6 +886,7 @@ static void smc91c111_enable(struct eth_device *edev)
- static int smc91c111_eth_open(struct eth_device *edev)
- {
- 	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
-+	int ret;
- 
- 	/* Configure the Receive/Phy Control register */
- 	SMC_SELECT_BANK(priv, 0);
-@@ -893,8 +894,27 @@ static int smc91c111_eth_open(struct eth_device *edev)
- 
- 	smc91c111_enable(edev);
- 
--	return phy_device_connect(edev, &priv->miibus, 0, NULL,
-+	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
- 				 0, PHY_INTERFACE_MODE_NA);
-+
-+	if (ret)
-+		return ret;
-+
-+	if (edev->phydev->phy_id == 0x00000000) {
-+		struct phy_device *dev = edev->phydev;
-+
-+		dev->speed = SPEED_100;
-+		dev->duplex = DUPLEX_FULL;
-+		dev->autoneg = !AUTONEG_ENABLE;
-+		dev->force = 1;
-+		dev->link = 1;
-+
-+		dev_info(edev->parent, "phy with id 0x%08x detected this might be qemu\n",
-+			dev->phy_id);
-+		dev_info(edev->parent, "force link at 100Mpbs\n");
-+	}
-+
-+	return 0;
- }
- 
- static int smc91c111_eth_send(struct eth_device *edev, void *packet,
--- 
-1.8.4.rc1
+Acked-by: Antony Pavlov <antonynpavlov@gmail.com>
 
+>   This series of patches enables devicetree using for mips-based
+> Ritmix RZX-50 board. Besides that it fixes missing dependency
+> and linking error when enabling OF_BAREBOX_DRIVER which actually
+> needs ENV_HANDLING to be activated.
+> =
+
+> [PATCH 1/3] Add missing dependency ENV_HANDLING for OF_BAREBOX_DRIVER
+> [PATCH 2/3] MIPS: rxz50: add initial devicetree support
+> [PATCH 3/3] MIPS: rzx50_defconfig: enable devicetree
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
