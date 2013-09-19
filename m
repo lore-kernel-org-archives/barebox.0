@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMdeK-0004o4-7k
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 12:48:00 +0000
+ id 1VMe7z-0005tn-5R
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 13:18:39 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D7157DC8D85
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 14:47:38 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id F067ADC3721
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 15:18:16 +0200 (CEST)
+Date: Thu, 19 Sep 2013 15:19:29 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Sep 2013 14:48:47 +0200
-Message-Id: <1379594927-3859-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130919131929.GA1137@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] Animeo IP: add usb host support
+Subject: [PATCH 0/5] introduce basic rs485 support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/animeo_ip/init.c     | 16 ++++++++++++++++
- arch/arm/configs/animeo_ip_defconfig |  5 +++++
- 2 files changed, 21 insertions(+)
+HI,
 
-diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-index 56b8df2..5419ddb 100644
---- a/arch/arm/boards/animeo_ip/init.c
-+++ b/arch/arm/boards/animeo_ip/init.c
-@@ -146,6 +146,21 @@ static void animeo_ip_add_device_mci(void)
- static void animeo_ip_add_device_mci(void) {}
- #endif
- 
-+/*
-+ * USB Host port
-+ */
-+static struct at91_usbh_data __initdata animeo_ip_usbh_data = {
-+	.ports		= 2,
-+	.vbus_pin	= {AT91_PIN_PB15, -EINVAL},
-+	.vbus_pin_active_low	= {0, 0},
-+
-+};
-+
-+static void animeo_ip_add_device_usb(void)
-+{
-+	at91_add_device_usbh_ohci(&animeo_ip_usbh_data);
-+}
-+
- struct gpio_bicolor_led leds[] = {
- 	{
- 		.gpio_c0 = AT91_PIN_PC17,
-@@ -216,6 +231,7 @@ static int animeo_ip_devices_init(void)
- 	animeo_ip_power_control();
- 	animeo_ip_add_device_nand();
- 	at91_add_device_eth(0, &macb_pdata);
-+	animeo_ip_add_device_usb();
- 	animeo_ip_add_device_mci();
- 	animeo_ip_add_device_buttons();
- 	animeo_ip_add_device_led();
-diff --git a/arch/arm/configs/animeo_ip_defconfig b/arch/arm/configs/animeo_ip_defconfig
-index 23e7278..7f6961f 100644
---- a/arch/arm/configs/animeo_ip_defconfig
-+++ b/arch/arm/configs/animeo_ip_defconfig
-@@ -56,6 +56,8 @@ CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
- CONFIG_MICREL_PHY=y
- CONFIG_DRIVER_NET_MACB=y
-+CONFIG_NET_USB=y
-+CONFIG_NET_USB_ASIX=y
- # CONFIG_SPI is not set
- CONFIG_MTD=y
- # CONFIG_MTD_OOB_DEVICE is not set
-@@ -65,6 +67,9 @@ CONFIG_NAND=y
- # CONFIG_NAND_ECC_HW_NONE is not set
- CONFIG_NAND_ATMEL=y
- CONFIG_UBI=y
-+CONFIG_USB=y
-+CONFIG_USB_OHCI=y
-+CONFIG_USB_OHCI_AT91=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_ATMEL=y
--- 
-1.8.4.rc1
+	this patch serie introduce the basic rs485 support
 
+	This wil allow as example on Somfy Animeo-IP board to detect crossed
+	rs485 cable that is used to start the board in special mode
+
+The following changes since commit fe4117357f8f304a08b957eded8ede9db8dafdcf:
+
+  Add missing dependency ENV_HANDLING for OF_BAREBOX_DRIVER option (2013-09-18 10:24:29 +0200)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/rs485
+
+for you to fetch changes up to fdee185585717e2d2368252542083fd3516abc1a:
+
+  Animeo IP: add rs485 crossing detection support (2013-09-19 21:15:50 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (5):
+      shutdown: add board call back
+      console: introduce console_get_by_dev
+      console: introduce new callback set_mode
+      atmel_serial: add rs485 support
+      Animeo IP: add rs485 crossing detection support
+
+ arch/arm/boards/animeo_ip/init.c     | 88 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+ arch/arm/configs/animeo_ip_defconfig |  1 -
+ common/console_common.c              | 13 +++++++++++++
+ common/startup.c                     |  4 ++++
+ drivers/serial/atmel.c               | 27 +++++++++++++++++++++++++++
+ include/common.h                     |  1 +
+ include/console.h                    |  8 ++++++++
+ 7 files changed, 136 insertions(+), 6 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
