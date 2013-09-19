@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
- helo=mo2.mail-out.ovh.net)
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMcau-0003As-QC
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 11:40:25 +0000
+ id 1VMckO-0003K2-TB
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 11:50:15 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 26417DC839F
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 13:40:03 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 671C8DC8A8E
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 13:49:46 +0200 (CEST)
+Date: Thu, 19 Sep 2013 13:50:57 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 19 Sep 2013 13:41:13 +0200
-Message-Id: <1379590873-32588-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130919115057.GB24065@ns203013.ovh.net>
+References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+ <1379404339-6716-2-git-send-email-plagnioj@jcrosoft.com>
+ <20130918070342.GL30088@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130918070342.GL30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +23,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] smc91111: add fixup for qemu phy support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] bootm: add u-boot support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-as today qemu does not support phy, it will return always 0x0 to any read
-on the mii bus. So the phy_id is 0 and the link is donw.
+On 09:03 Wed 18 Sep     , Sascha Hauer wrote:
+> On Tue, Sep 17, 2013 at 09:52:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Simply do the same as barebox and hope for the best as u-boot does not handle
+> > runtime address detection for boot quite often. It does only execpt you to
+> > choose as compiling time.
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> >  arch/arm/lib/bootm.c | 13 +++++++++++++
+> >  1 file changed, 13 insertions(+)
+> > 
+> > diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
+> > index 599b09a..71200be 100644
+> > --- a/arch/arm/lib/bootm.c
+> > +++ b/arch/arm/lib/bootm.c
+> > @@ -315,6 +315,12 @@ static struct image_handler barebox_handler = {
+> >  	.filetype = filetype_arm_barebox,
+> >  };
+> >  
+> > +static struct image_handler uboot_handler = {
+> > +	.name = "ARM u-boot",
+> > +	.bootm = do_bootm_barebox,
+> > +	.filetype = filetype_arm_uboot,
+> > +};
+> > +
+> 
+> Wolfgang always emphasizes that it's not possible to start U-Boot second
+> stage. Most U-Boot images indeed do not support this without hacking the
+> lowlevel code.
+yeah they still does not understand that it's a hugely usefull feature
+> We can't support this feature which happens to work on
+> only some U-Boot images.
+that's why the comment "hope for the best"
 
-To have the norwork running on versatilpb & other qenu board for the link up
-at 100Mbps.
+but it's still possible on at91 and others as example
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/net/smc91111.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+so how can we run those bianry from barebox easely
 
-diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-index 48183dd..8c7a343 100644
---- a/drivers/net/smc91111.c
-+++ b/drivers/net/smc91111.c
-@@ -886,6 +886,7 @@ static void smc91c111_enable(struct eth_device *edev)
- static int smc91c111_eth_open(struct eth_device *edev)
- {
- 	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
-+	int ret;
- 
- 	/* Configure the Receive/Phy Control register */
- 	SMC_SELECT_BANK(priv, 0);
-@@ -893,8 +894,27 @@ static int smc91c111_eth_open(struct eth_device *edev)
- 
- 	smc91c111_enable(edev);
- 
--	return phy_device_connect(edev, &priv->miibus, 0, NULL,
-+	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
- 				 0, PHY_INTERFACE_MODE_NA);
-+
-+	if (ret)
-+		return ret;
-+
-+	if (edev->phydev->phy_id == 0x00000000) {
-+		struct phy_device *dev = edev->phydev;
-+
-+		dev->speed = SPEED_100;
-+		dev->duplex = DUPLEX_FULL;
-+		dev->autoneg = !AUTONEG_ENABLE;
-+		dev->force = 1;
-+		dev->link = 1;
-+
-+		dev_info(edev->parent, "phy with id 0x%08x detected this might be qemu\n",
-+			dev->phy_id);
-+		dev_info(edev->parent, "force link at 100Mpbs\n");
-+	}
-+
-+	return 0;
- }
- 
- static int smc91c111_eth_send(struct eth_device *edev, void *packet,
--- 
-1.8.4.rc1
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
