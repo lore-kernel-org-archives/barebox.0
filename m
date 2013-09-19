@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMPYJ-0007xo-Su
- for barebox@lists.infradead.org; Wed, 18 Sep 2013 21:44:52 +0000
-Received: by mail-we0-f177.google.com with SMTP id t60so7050664wes.22
- for <barebox@lists.infradead.org>; Wed, 18 Sep 2013 14:44:29 -0700 (PDT)
-MIME-Version: 1.0
-Date: Wed, 18 Sep 2013 16:44:29 -0500
-Message-ID: <CAO-21LPB36R6Gk1RiWah8-pinu3rsKEcN-DgeQZkT65VNCDiEA@mail.gmail.com>
-From: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Received: from 10.mo1.mail-out.ovh.net ([178.32.96.102]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VMX7Q-0005OA-Pn
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 05:49:37 +0000
+Received: from mail640.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id C84E110010D1
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 07:49:05 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 19 Sep 2013 07:50:15 +0200
+Message-Id: <1379569815-14033-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379569815-14033-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1379569815-14033-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,65 +20,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting to a new board
+Subject: [PATCH 2/2] versatilepb: force net a 100Mpps
 To: barebox@lists.infradead.org
 
-Hello,
-  I have read the documentation but I believe it to be out of date, as it
-does not match up with the source from the git tree.
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/versatile/versatilepb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-  To that end, I am trying to add a new board, and I can not figure out how
-to do so.  My board uses the mx27 processor, and so I am attempting to
-closely mimic one of the other mx27 boards, when following the steps here:
-http://barebox.org/documentation/barebox-2011.05.0/dev_board.html
+diff --git a/arch/arm/boards/versatile/versatilepb.c b/arch/arm/boards/versatile/versatilepb.c
+index 2eb7473..fa0585d 100644
+--- a/arch/arm/boards/versatile/versatilepb.c
++++ b/arch/arm/boards/versatile/versatilepb.c
+@@ -28,6 +28,7 @@
+ #include <environment.h>
+ #include <partition.h>
+ #include <sizes.h>
++#include <linux/phy.h>
+ 
+ static int vpb_console_init(void)
+ {
+@@ -44,6 +45,8 @@ static int vpb_mem_init(void)
+ }
+ mem_initcall(vpb_mem_init);
+ 
++static int phy_flags = PHYLIB_FORCE_100;
++
+ static int vpb_devices_init(void)
+ {
+ 	add_cfi_flash_device(DEVICE_ID_DYNAMIC, VERSATILE_FLASH_BASE, VERSATILE_FLASH_SIZE, 0);
+@@ -52,7 +55,7 @@ static int vpb_devices_init(void)
+ 	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
+ 
+ 	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL, VERSATILE_ETH_BASE,
+-			64 * 1024, IORESOURCE_MEM, NULL);
++			64 * 1024, IORESOURCE_MEM, &phy_flags);
+ 
+ 	armlinux_set_architecture(MACH_TYPE_VERSATILE_PB);
+ 	armlinux_set_bootparams((void *)(0x00000100));
+-- 
+1.8.4.rc1
 
-I find the following inconsistencies:
-1. include/configs/<boardname>.h  -
-the configs directory does not exist.
-2. modify arch/<architecture>/Kconfig
-
-   - add your board (MACH_*) to the list
-   - add your default text base address for this architecture
-   (ARCH_TEXT_BASE)
-   - add BOARDINFO with valueable info for your board
-
-None of this exists.
-
-3. modify arch/<architecture>/Makefile:
-
-   - add board-$(MACH_*) = <your board_dir>
-
-
-This does not exist
-
-And my board will not show up in the menu config.
-
-Also I am finding it difficult to locate where I set things like flash
-size, ram size, etc...  u-boot has a much simpler (if not less documented)
-layout when it came to boards.  Alas I can not use u-boot, because of the
-nand flash limitations, and thus why I am attempting to use barebox.
-
-And finally there seems to be some confusiton both in the code and the
-documentation about the difference between a board and a machine.  What is
-the difference?
-
-I'm sorry that there is a lot here, but I can not find the proper
-documentation to answer these questions.
-
-
-Also, for those that are curious, or can help me get around this issue.  I
-attempting to get this going on a board with an mx27 booted from NAND
-flash, so I believe I have to use the PBL option to setup and copy out of
-nand to do the real booting.  If there is any advice on this, I would
-appreciate it.  I have no other bootloader, only bare metal and a JTAG
-device.
-
-
-thank you.
 
 _______________________________________________
 barebox mailing list
