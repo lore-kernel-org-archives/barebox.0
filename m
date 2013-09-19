@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMcpm-0003RO-Pt
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 11:55:47 +0000
+ id 1VMdd1-0004mn-Ds
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 12:46:40 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 60B88DC8860
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 13:55:25 +0200 (CEST)
-Date: Thu, 19 Sep 2013 13:56:38 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 838A0DC8C94
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 14:46:16 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130919115638.GC24065@ns203013.ovh.net>
-References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
- <20130918070049.GK30088@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130918070049.GK30088@pengutronix.de>
+Date: Thu, 19 Sep 2013 14:47:24 +0200
+Message-Id: <1379594844-3701-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +18,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1 V2] command: crc: add -V option to check the crc store in
+ a file
+To: barebox@lists.infradead.org
 
-On 09:00 Wed 18 Sep     , Sascha Hauer wrote:
-> On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  common/filetype.c  | 3 +++
-> >  include/filetype.h | 1 +
-> >  2 files changed, 4 insertions(+)
-> > 
-> > diff --git a/common/filetype.c b/common/filetype.c
-> > index 7507d85..59ea25a 100644
-> > --- a/common/filetype.c
-> > +++ b/common/filetype.c
-> > @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
-> >  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
-> >  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
-> >  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
-> > +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
-> >  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
-> >  	[filetype_ubi] = { "UBI image", "ubi" },
-> >  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
-> > @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
-> >  
-> >  	if (is_barebox_arm_head(_buf))
-> >  		return filetype_arm_barebox;
-> > +	if (buf[15] == 0xdeadbeef)
-> > +		return filetype_arm_uboot;
-> 
-> 0xdeadbeef is such a widely used placeholder that we should use it for
-> filetype detection. Also, I don't think that U-Boot ever specified
-> 0xdeadbeef at this offset as a fixed value. It could be changed without
-> notice.
+the format is %08x
 
-on ARM it's keeped for years > 7 IIRC
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+v2:
+
+	improve help description
 
 Best Regards,
 J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ commands/crc.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/commands/crc.c b/commands/crc.c
+index a0071b0..ee8dacf 100644
+--- a/commands/crc.c
++++ b/commands/crc.c
+@@ -82,6 +82,19 @@ out:
+ 	return ret;
+ }
+ 
++static int crc_from_file(const char* file, ulong *crc)
++{
++	char * buf;
++
++	buf= read_file(file, NULL);
++
++	if (!buf)
++		return -ENOMEM;
++
++	*crc = simple_strtoul(buf, NULL, 16);
++	return 0;
++}
++
+ static int do_crc(int argc, char *argv[])
+ {
+ 	loff_t start = 0, size = ~0;
+@@ -92,7 +105,7 @@ static int do_crc(int argc, char *argv[])
+ #endif
+ 	int opt, err = 0, filegiven = 0, verify = 0;
+ 
+-	while((opt = getopt(argc, argv, "f:F:v:")) > 0) {
++	while((opt = getopt(argc, argv, "f:F:v:V:")) > 0) {
+ 		switch(opt) {
+ 		case 'f':
+ 			filename = optarg;
+@@ -108,6 +121,10 @@ static int do_crc(int argc, char *argv[])
+ 			verify = 1;
+ 			vcrc = simple_strtoul(optarg, NULL, 0);
+ 			break;
++		case 'V':
++			if (!crc_from_file(optarg, &vcrc))
++				verify = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -153,6 +170,7 @@ BAREBOX_CMD_HELP_OPT  ("-f <file>", "Use file instead of memory.\n")
+ BAREBOX_CMD_HELP_OPT  ("-F <file>", "Use file to compare.\n")
+ #endif
+ BAREBOX_CMD_HELP_OPT  ("-v <crc>",  "Verify\n")
++BAREBOX_CMD_HELP_OPT  ("-V <file>", "Verify with crc read from <file>\n")
+ BAREBOX_CMD_HELP_END
+ 
+ BAREBOX_CMD_START(crc32)
+-- 
+1.8.4.rc1
+
 
 _______________________________________________
 barebox mailing list
