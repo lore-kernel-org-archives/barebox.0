@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMckO-0003K2-TB
- for barebox@lists.infradead.org; Thu, 19 Sep 2013 11:50:15 +0000
+ id 1VMcpm-0003RO-Pt
+ for barebox@lists.infradead.org; Thu, 19 Sep 2013 11:55:47 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 671C8DC8A8E
- for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 13:49:46 +0200 (CEST)
-Date: Thu, 19 Sep 2013 13:50:57 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 60B88DC8860
+ for <barebox@lists.infradead.org>; Thu, 19 Sep 2013 13:55:25 +0200 (CEST)
+Date: Thu, 19 Sep 2013 13:56:38 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130919115057.GB24065@ns203013.ovh.net>
+Message-ID: <20130919115638.GC24065@ns203013.ovh.net>
 References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
- <1379404339-6716-2-git-send-email-plagnioj@jcrosoft.com>
- <20130918070342.GL30088@pengutronix.de>
+ <20130918070049.GK30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130918070342.GL30088@pengutronix.de>
+In-Reply-To: <20130918070049.GK30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,50 +27,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] bootm: add u-boot support
+Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:03 Wed 18 Sep     , Sascha Hauer wrote:
-> On Tue, Sep 17, 2013 at 09:52:19AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Simply do the same as barebox and hope for the best as u-boot does not handle
-> > runtime address detection for boot quite often. It does only execpt you to
-> > choose as compiling time.
-> > 
+On 09:00 Wed 18 Sep     , Sascha Hauer wrote:
+> On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  arch/arm/lib/bootm.c | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
+> >  common/filetype.c  | 3 +++
+> >  include/filetype.h | 1 +
+> >  2 files changed, 4 insertions(+)
 > > 
-> > diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-> > index 599b09a..71200be 100644
-> > --- a/arch/arm/lib/bootm.c
-> > +++ b/arch/arm/lib/bootm.c
-> > @@ -315,6 +315,12 @@ static struct image_handler barebox_handler = {
-> >  	.filetype = filetype_arm_barebox,
-> >  };
+> > diff --git a/common/filetype.c b/common/filetype.c
+> > index 7507d85..59ea25a 100644
+> > --- a/common/filetype.c
+> > +++ b/common/filetype.c
+> > @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
+> >  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
+> >  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
+> >  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
+> > +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
+> >  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
+> >  	[filetype_ubi] = { "UBI image", "ubi" },
+> >  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
+> > @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
 > >  
-> > +static struct image_handler uboot_handler = {
-> > +	.name = "ARM u-boot",
-> > +	.bootm = do_bootm_barebox,
-> > +	.filetype = filetype_arm_uboot,
-> > +};
-> > +
+> >  	if (is_barebox_arm_head(_buf))
+> >  		return filetype_arm_barebox;
+> > +	if (buf[15] == 0xdeadbeef)
+> > +		return filetype_arm_uboot;
 > 
-> Wolfgang always emphasizes that it's not possible to start U-Boot second
-> stage. Most U-Boot images indeed do not support this without hacking the
-> lowlevel code.
-yeah they still does not understand that it's a hugely usefull feature
-> We can't support this feature which happens to work on
-> only some U-Boot images.
-that's why the comment "hope for the best"
+> 0xdeadbeef is such a widely used placeholder that we should use it for
+> filetype detection. Also, I don't think that U-Boot ever specified
+> 0xdeadbeef at this offset as a fixed value. It could be changed without
+> notice.
 
-but it's still possible on at91 and others as example
-
-so how can we run those bianry from barebox easely
+on ARM it's keeped for years > 7 IIRC
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
