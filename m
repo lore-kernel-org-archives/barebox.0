@@ -1,20 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMvZr-0001oC-6T
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:56:36 +0000
+ id 1VMvdk-0001sU-Hh
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 08:00:37 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id AABCCDC99B5
- for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 09:56:13 +0200 (CEST)
-Date: Fri, 20 Sep 2013 09:57:25 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id EA185DC86C9
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 10:00:14 +0200 (CEST)
+Date: Fri, 20 Sep 2013 10:01:27 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130920075725.GF1137@ns203013.ovh.net>
-References: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
- <20130920070645.GE30088@pengutronix.de>
+Message-ID: <20130920080127.GG1137@ns203013.ovh.net>
+References: <20130920044518.GB1137@ns203013.ovh.net>
+ <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130920072313.GF30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130920070645.GE30088@pengutronix.de>
+In-Reply-To: <20130920072313.GF30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,107 +28,99 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] bootm: update os_entry from uimage
+Subject: Re: [PATCH 1/3] misc: add bootcount framework
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:06 Fri 20 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 20, 2013 at 07:06:24AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > if not uimage set 0 by default
-> 
-> Can you elaborate more what this patch does and in which situations it
-> helps?
-
-today we do not see the issue as the kernel entry point is the same as the
-load_addr but on other binary its not necessary the case
-
-as today we ignore the entry point set in the uimage and just assume it's the
-same as the load_addr
-> 
-> Sascha
-> 
-> > 
+On 09:23 Fri 20 Sep     , Sascha Hauer wrote:
+> On Fri, Sep 20, 2013 at 06:46:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > > ---
-> >  commands/bootm.c |  1 +
-> >  common/bootm.c   | 15 ++++++++++++++-
-> >  2 files changed, 15 insertions(+), 1 deletion(-)
+> >  drivers/misc/Kconfig     |  3 +++
+> >  drivers/misc/Makefile    |  1 +
+> >  drivers/misc/bootcount.c | 24 ++++++++++++++++++++++++
+> >  include/bootcount.h      | 21 +++++++++++++++++++++
+> >  4 files changed, 49 insertions(+)
+> >  create mode 100644 drivers/misc/bootcount.c
+> >  create mode 100644 include/bootcount.h
 > > 
-> > diff --git a/commands/bootm.c b/commands/bootm.c
-> > index a4004df..7acf341 100644
-> > --- a/commands/bootm.c
-> > +++ b/commands/bootm.c
-> > @@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
+> > diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> > index 606490b..a972ba4 100644
+> > --- a/drivers/misc/Kconfig
+> > +++ b/drivers/misc/Kconfig
+> > @@ -15,4 +15,7 @@ config JTAG
+> >  	help
+> >  	  Controls JTAG chains connected to I/O pins
 > >  
-> >  	data.initrd_address = UIMAGE_INVALID_ADDRESS;
-> >  	data.os_address = UIMAGE_SOME_ADDRESS;
-> > +	data.os_entry = UIMAGE_SOME_ADDRESS;
-> >  	data.verify = 0;
-> >  	data.verbose = 0;
-> >  
-> > diff --git a/common/bootm.c b/common/bootm.c
-> > index 1987a09..da2b85d 100644
-> > --- a/common/bootm.c
-> > +++ b/common/bootm.c
-> > @@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
-> >  static int bootm_open_os_uimage(struct image_data *data)
-> >  {
-> >  	int ret;
-> > +	int update_ep = 0;
-> >  
-> >  	data->os = uimage_open(data->os_file);
-> >  	if (!data->os)
-> > @@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> > +	if (data->os_address == UIMAGE_SOME_ADDRESS) {
-> >  		data->os_address = data->os->header.ih_load;
-> > +		update_ep = 1;
-> > +	}
-> >  
-> >  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
-> >  		data->os_res = uimage_load_to_sdram(data->os, 0,
-> > @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
-> >  			uimage_close(data->os);
-> >  			return -ENOMEM;
-> >  		}
+> > +config BOOTCOUNT
+> > +	bool
 > > +
-> > +	}
+> >  endif # MISC_DEVICES
+> > diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+> > index b085577..fa668c1 100644
+> > --- a/drivers/misc/Makefile
+> > +++ b/drivers/misc/Makefile
+> > @@ -3,3 +3,4 @@
+> >  #
+> >  
+> >  obj-$(CONFIG_JTAG)		+= jtag.o
+> > +obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
+> > diff --git a/drivers/misc/bootcount.c b/drivers/misc/bootcount.c
+> > new file mode 100644
+> > index 0000000..0205d00
+> > --- /dev/null
+> > +++ b/drivers/misc/bootcount.c
+> > @@ -0,0 +1,24 @@
+> > +/*
+> > + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > + *
+> > + * GPLv2 Only
+> > + */
 > > +
-> > +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
-> > +		data->os_entry = data->os->header.ih_ep;
-> > +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
-> > +			data->os_entry -= data->os_address;
-> >  	}
-> >  
-> >  	return 0;
-> > @@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
-> >  		}
-> >  	}
-> >  
-> > +	if (data.os_entry == UIMAGE_SOME_ADDRESS)
-> > +		data.os_entry = 0;
+> > +#include <common.h>
+> > +#include <init.h>
+> > +#include <bootcount.h>
 > > +
-> >  	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
-> >  
-> >  		initrd_type = file_name_detect_type(data->initrd_file);
-> > -- 
-> > 1.8.4.rc1
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> > 
+> > +static struct bootcount_driver *bd;
+> > +
+> > +void bootcount_register(struct bootcount_driver *drv)
+> > +{
+> > +	bd = drv;
+> > +}
+> > +
+> > +static int bootcount_inc(void)
+> > +{
+> > +	if (bd)
+> > +		bd->inc(bd);
+> > +	return 0;
+> > +}
+> > +late_initcall(bootcount_inc);
 > 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> This 'framework' in it's current state doesn't make much sense. It
+> doesn't even have support for reading the actual count back which I
+> would see as one of the minimum requirements for this.
+
+I let the driver handle this
+
+we can move this here if you want
+> 
+> Also it's not clear what exactly this boot counter counts. Is it the
+> number of boots since the beginning of time? Or is it the boot counter
+> since the last power cycle or since the RTC Backup battery was last
+> changed?
+
+the boot count is alway how many time the system start
+the number will depend on you system if you use an env it;s will be since
+ever. If you use a regsiter it will be since ever if register is a backup
+powered register or since power on
+
+the comportement will depend on the implementation and the hardware feature
+
+for somfy it's since ever as we use a backup register which is powered by a
+backup battery
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
