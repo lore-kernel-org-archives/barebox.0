@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMuny-0000tV-Ls
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:07:07 +0000
-Date: Fri, 20 Sep 2013 09:06:45 +0200
+ id 1VMv3v-0001EJ-LW
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:23:36 +0000
+Date: Fri, 20 Sep 2013 09:23:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130920070645.GE30088@pengutronix.de>
-References: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130920072313.GF30088@pengutronix.de>
+References: <20130920044518.GB1137@ns203013.ovh.net>
+ <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,94 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] bootm: update os_entry from uimage
+Subject: Re: [PATCH 1/3] misc: add bootcount framework
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 20, 2013 at 07:06:24AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> if not uimage set 0 by default
-
-Can you elaborate more what this patch does and in which situations it
-helps?
-
-Sascha
-
-> 
+On Fri, Sep 20, 2013 at 06:46:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  commands/bootm.c |  1 +
->  common/bootm.c   | 15 ++++++++++++++-
->  2 files changed, 15 insertions(+), 1 deletion(-)
+>  drivers/misc/Kconfig     |  3 +++
+>  drivers/misc/Makefile    |  1 +
+>  drivers/misc/bootcount.c | 24 ++++++++++++++++++++++++
+>  include/bootcount.h      | 21 +++++++++++++++++++++
+>  4 files changed, 49 insertions(+)
+>  create mode 100644 drivers/misc/bootcount.c
+>  create mode 100644 include/bootcount.h
 > 
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index a4004df..7acf341 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
+> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> index 606490b..a972ba4 100644
+> --- a/drivers/misc/Kconfig
+> +++ b/drivers/misc/Kconfig
+> @@ -15,4 +15,7 @@ config JTAG
+>  	help
+>  	  Controls JTAG chains connected to I/O pins
 >  
->  	data.initrd_address = UIMAGE_INVALID_ADDRESS;
->  	data.os_address = UIMAGE_SOME_ADDRESS;
-> +	data.os_entry = UIMAGE_SOME_ADDRESS;
->  	data.verify = 0;
->  	data.verbose = 0;
->  
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 1987a09..da2b85d 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
->  static int bootm_open_os_uimage(struct image_data *data)
->  {
->  	int ret;
-> +	int update_ep = 0;
->  
->  	data->os = uimage_open(data->os_file);
->  	if (!data->os)
-> @@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
->  		return -EINVAL;
->  	}
->  
-> -	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> +	if (data->os_address == UIMAGE_SOME_ADDRESS) {
->  		data->os_address = data->os->header.ih_load;
-> +		update_ep = 1;
-> +	}
->  
->  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
->  		data->os_res = uimage_load_to_sdram(data->os, 0,
-> @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
->  			uimage_close(data->os);
->  			return -ENOMEM;
->  		}
+> +config BOOTCOUNT
+> +	bool
 > +
-> +	}
+>  endif # MISC_DEVICES
+> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+> index b085577..fa668c1 100644
+> --- a/drivers/misc/Makefile
+> +++ b/drivers/misc/Makefile
+> @@ -3,3 +3,4 @@
+>  #
+>  
+>  obj-$(CONFIG_JTAG)		+= jtag.o
+> +obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
+> diff --git a/drivers/misc/bootcount.c b/drivers/misc/bootcount.c
+> new file mode 100644
+> index 0000000..0205d00
+> --- /dev/null
+> +++ b/drivers/misc/bootcount.c
+> @@ -0,0 +1,24 @@
+> +/*
+> + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> + *
+> + * GPLv2 Only
+> + */
 > +
-> +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
-> +		data->os_entry = data->os->header.ih_ep;
-> +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
-> +			data->os_entry -= data->os_address;
->  	}
->  
->  	return 0;
-> @@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
->  		}
->  	}
->  
-> +	if (data.os_entry == UIMAGE_SOME_ADDRESS)
-> +		data.os_entry = 0;
+> +#include <common.h>
+> +#include <init.h>
+> +#include <bootcount.h>
 > +
->  	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
->  
->  		initrd_type = file_name_detect_type(data->initrd_file);
-> -- 
-> 1.8.4.rc1
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +static struct bootcount_driver *bd;
+> +
+> +void bootcount_register(struct bootcount_driver *drv)
+> +{
+> +	bd = drv;
+> +}
+> +
+> +static int bootcount_inc(void)
+> +{
+> +	if (bd)
+> +		bd->inc(bd);
+> +	return 0;
+> +}
+> +late_initcall(bootcount_inc);
+
+This 'framework' in it's current state doesn't make much sense. It
+doesn't even have support for reading the actual count back which I
+would see as one of the minimum requirements for this.
+
+Also it's not clear what exactly this boot counter counts. Is it the
+number of boots since the beginning of time? Or is it the boot counter
+since the last power cycle or since the RTC Backup battery was last
+changed?
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
