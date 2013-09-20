@@ -1,21 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMvdk-0001sU-Hh
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 08:00:37 +0000
+ id 1VMvfB-0001vX-QX
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 08:02:06 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EA185DC86C9
- for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 10:00:14 +0200 (CEST)
-Date: Fri, 20 Sep 2013 10:01:27 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id CB2BFDC9A0E
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 10:01:44 +0200 (CEST)
+Date: Fri, 20 Sep 2013 10:02:57 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130920080127.GG1137@ns203013.ovh.net>
-References: <20130920044518.GB1137@ns203013.ovh.net>
- <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
- <20130920072313.GF30088@pengutronix.de>
+Message-ID: <20130920080257.GH1137@ns203013.ovh.net>
+References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130918070049.GK30088@pengutronix.de>
+ <20130919115638.GC24065@ns203013.ovh.net>
+ <20130920062927.GU30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130920072313.GF30088@pengutronix.de>
+In-Reply-To: <20130920062927.GU30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,99 +29,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] misc: add bootcount framework
+Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:23 Fri 20 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 20, 2013 at 06:46:15AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/misc/Kconfig     |  3 +++
-> >  drivers/misc/Makefile    |  1 +
-> >  drivers/misc/bootcount.c | 24 ++++++++++++++++++++++++
-> >  include/bootcount.h      | 21 +++++++++++++++++++++
-> >  4 files changed, 49 insertions(+)
-> >  create mode 100644 drivers/misc/bootcount.c
-> >  create mode 100644 include/bootcount.h
+On 08:29 Fri 20 Sep     , Sascha Hauer wrote:
+> On Thu, Sep 19, 2013 at 01:56:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 09:00 Wed 18 Sep     , Sascha Hauer wrote:
+> > > On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > ---
+> > > >  common/filetype.c  | 3 +++
+> > > >  include/filetype.h | 1 +
+> > > >  2 files changed, 4 insertions(+)
+> > > > 
+> > > > diff --git a/common/filetype.c b/common/filetype.c
+> > > > index 7507d85..59ea25a 100644
+> > > > --- a/common/filetype.c
+> > > > +++ b/common/filetype.c
+> > > > @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
+> > > >  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
+> > > >  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
+> > > >  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
+> > > > +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
+> > > >  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
+> > > >  	[filetype_ubi] = { "UBI image", "ubi" },
+> > > >  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
+> > > > @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+> > > >  
+> > > >  	if (is_barebox_arm_head(_buf))
+> > > >  		return filetype_arm_barebox;
+> > > > +	if (buf[15] == 0xdeadbeef)
+> > > > +		return filetype_arm_uboot;
+> > > 
+> > > 0xdeadbeef is such a widely used placeholder that we should use it for
+> > > filetype detection. Also, I don't think that U-Boot ever specified
+> > > 0xdeadbeef at this offset as a fixed value. It could be changed without
+> > > notice.
 > > 
-> > diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-> > index 606490b..a972ba4 100644
-> > --- a/drivers/misc/Kconfig
-> > +++ b/drivers/misc/Kconfig
-> > @@ -15,4 +15,7 @@ config JTAG
-> >  	help
-> >  	  Controls JTAG chains connected to I/O pins
-> >  
-> > +config BOOTCOUNT
-> > +	bool
-> > +
-> >  endif # MISC_DEVICES
-> > diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-> > index b085577..fa668c1 100644
-> > --- a/drivers/misc/Makefile
-> > +++ b/drivers/misc/Makefile
-> > @@ -3,3 +3,4 @@
-> >  #
-> >  
-> >  obj-$(CONFIG_JTAG)		+= jtag.o
-> > +obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
-> > diff --git a/drivers/misc/bootcount.c b/drivers/misc/bootcount.c
-> > new file mode 100644
-> > index 0000000..0205d00
-> > --- /dev/null
-> > +++ b/drivers/misc/bootcount.c
-> > @@ -0,0 +1,24 @@
-> > +/*
-> > + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > + *
-> > + * GPLv2 Only
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <init.h>
-> > +#include <bootcount.h>
-> > +
-> > +static struct bootcount_driver *bd;
-> > +
-> > +void bootcount_register(struct bootcount_driver *drv)
-> > +{
-> > +	bd = drv;
-> > +}
-> > +
-> > +static int bootcount_inc(void)
-> > +{
-> > +	if (bd)
-> > +		bd->inc(bd);
-> > +	return 0;
-> > +}
-> > +late_initcall(bootcount_inc);
+> > on ARM it's keeped for years > 7 IIRC
 > 
-> This 'framework' in it's current state doesn't make much sense. It
-> doesn't even have support for reading the actual count back which I
-> would see as one of the minimum requirements for this.
+> Yes, and there's no indication that it will change. Anyway, this was
+> never meant as an API and everybody uses 0xdeadbeef as placeholder.
 
-I let the driver handle this
-
-we can move this here if you want
-> 
-> Also it's not clear what exactly this boot counter counts. Is it the
-> number of boots since the beginning of time? Or is it the boot counter
-> since the last power cycle or since the RTC Backup battery was last
-> changed?
-
-the boot count is alway how many time the system start
-the number will depend on you system if you use an env it;s will be since
-ever. If you use a regsiter it will be since ever if register is a backup
-powered register or since power on
-
-the comportement will depend on the implementation and the hardware feature
-
-for somfy it's since ever as we use a backup register which is powered by a
-backup battery
+so the question remain how to boot a u-boot that can be a second stage
 
 Best Regards,
 J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
