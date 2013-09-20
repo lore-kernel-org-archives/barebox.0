@@ -2,16 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMtYN-0008Ju-BH
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 05:46:55 +0000
+ id 1VMtXI-0008Il-MR
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 05:45:49 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D6A76DC8B91
- for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 07:46:34 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 38490DC8A54
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 07:45:27 +0200 (CEST)
+Date: Fri, 20 Sep 2013 07:46:40 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 20 Sep 2013 07:47:43 +0200
-Message-Id: <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130920054640.GD1137@ns203013.ovh.net>
-References: <20130920054640.GD1137@ns203013.ovh.net>
+Message-ID: <20130920054640.GD1137@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,71 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] introduce helper to generate mac address with OUI
+Subject: [PATCH 0/3 v2] Animeo IP: macb support improvement
 To: barebox@lists.infradead.org
 
-use random mac address with fixed OUI provided
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- include/local_mac_address.h | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+	v2:
+
+	send right patch 3
+
+	the patch serie depend on usb support patch
+
+	The following patch series add
+	 - fix reset
+	 - retreive previously valid public macb's mac
+	 - set local mac to macb (if none) and asix with "smf" as OUI
+
+The following changes since commit 1877e0407fc38f3eba60a3e60b61a0982a6c006b:
+
+  Animeo IP: add usb host support (2013-09-20 13:42:21 +0800)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/animeo_ip_eth
+
+for you to fetch changes up to 994c17ca145407c6a0edae4caf096e4dcdde1535:
+
+  animeo_ip: retrieve the mac from the macb and set private mac to asix (2013-09-20 13:44:30 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      introduce helper to generate mac address with OUI
+      animeo_ip: ensure the phy is reset correctly
+      animeo_ip: retrieve the mac from the macb and set private mac to asix
+
+ arch/arm/boards/animeo_ip/init.c | 73 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ include/local_mac_address.h      | 40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 112 insertions(+), 1 deletion(-)
  create mode 100644 include/local_mac_address.h
 
-diff --git a/include/local_mac_address.h b/include/local_mac_address.h
-new file mode 100644
-index 0000000..3920334
---- /dev/null
-+++ b/include/local_mac_address.h
-@@ -0,0 +1,40 @@
-+/*
-+ * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-+ *
-+ * Under GPLv2 only
-+ */
-+
-+#ifndef __LOCAL_MAC_ADDRESS_H__
-+#define __LOCAL_MAC_ADDRESS_H__
-+
-+/**
-+ * local_mac_address_register - use random number with fix
-+ * OUI provided device to provide an Ethernet address
-+ * @ethid: ethernet device id
-+ * @oui: Ethernet OUI (3 bytes)
-+ *
-+ * Generate a local Ethernet address (MAC) that is not multicast using a 1-wire id.
-+ */
-+static inline int local_mac_address_register(int ethid, char * oui)
-+{
-+	char addr[6];
-+	int nb_oui = 3;
-+	int i;
-+
-+	if (!oui)
-+		return -EINVAL;
-+
-+	random_ether_addr(addr);
-+
-+	for (i = 0; i < nb_oui; i++)
-+		addr[i] = oui[i];
-+
-+	addr[0] &= 0xfe;	/* clear multicast bit */
-+	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
-+
-+	eth_register_ethaddr(ethid, addr);
-+
-+	return 0;
-+}
-+
-+#endif /* __LOCAL_MAC_ADDRESS_H__ */
--- 
-1.8.4.rc1
-
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
