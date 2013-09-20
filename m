@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMtQW-0008E6-Ts
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 05:38:49 +0000
+ id 1VMtRi-0008Es-2N
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 05:40:03 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 0125CDC67D2
- for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 07:38:27 +0200 (CEST)
-Date: Fri, 20 Sep 2013 07:39:40 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 2B1FADC85A9
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 07:39:41 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130920053940.GC1137@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Fri, 20 Sep 2013 07:40:50 +0200
+Message-Id: <1379655650-23221-3-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379655650-23221-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130920053940.GC1137@ns203013.ovh.net>
+ <1379655650-23221-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,45 +21,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] Animeo IP: macb support improvement
+Subject: [PATCH 3/3] animeo_ip: retrieve the mac from the macb and set private
+ mac to asix
 To: barebox@lists.infradead.org
 
-Hi,
+if the macb's mac is not a valid public mac set a private with "smf" as OUI
+as the mac address might be set by the previous bootloader
 
-	The following patch series add
-	 - fix reset
-	 - retreive previously valid public macb's mac
-	 - set local mac to macb (if none) and asix with "smf" as OUI
+set a private with "smf" as OUI for asix
 
-The following changes since commit 820e3d7d20da7d0258349ae6a152b13a3e0d0817:
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/animeo_ip/init.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-  animeo_ip: set uSD port devname to microsd (2013-09-20 13:31:06 +0800)
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index c98493f..b6cd996 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -27,6 +27,7 @@
+ #include <mach/io.h>
+ #include <mach/at91_pmc.h>
+ #include <mach/at91_rstc.h>
++#include <local_mac_address.h>
+ 
+ static bool animeo_ip_is_buco;
+ static bool animeo_ip_is_io;
+@@ -255,8 +256,40 @@ static void animeo_ip_phy_reset(void)
+ 	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
+ }
+ 
++#define MACB_SA1B	0x0098
++#define MACB_SA1T	0x009c
++
++static int animeo_ip_get_macb_ethaddr(u8 *addr)
++{
++	u32 top, bottom;
++	void __iomem *base = IOMEM(AT91SAM9260_BASE_EMAC);
++
++	bottom = readl(base + MACB_SA1B);
++	top = readl(base + MACB_SA1T);
++	addr[0] = bottom & 0xff;
++	addr[1] = (bottom >> 8) & 0xff;
++	addr[2] = (bottom >> 16) & 0xff;
++	addr[3] = (bottom >> 24) & 0xff;
++	addr[4] = top & 0xff;
++	addr[5] = (top >> 8) & 0xff;
++
++	/* valid and not private */
++	if (is_valid_ether_addr(addr) && !(addr[0] & 0x02))
++		return 0;
++
++	return -EINVAL;
++}
++
+ static void animeo_ip_add_device_eth(void)
+ {
++	if (!animeo_ip_get_macb_ethaddr(enetaddr))
++		eth_register_ethaddr(0, enetaddr);
++	else
++		local_mac_address_register(0, "smf");
++
++	/* for usb asix */
++	local_mac_address_register(1, "smf");
++
+ 	animeo_ip_phy_reset();
+ 	at91_add_device_eth(0, &macb_pdata);
+ }
+-- 
+1.8.4.rc1
 
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/animeo_ip_eth
-
-for you to fetch changes up to 3233e9497b5a1a911b3556549d99106b66757a7c:
-
-  animeo_ip: retrieve the mac from the macb and set private mac to asix (2013-09-20 13:31:14 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      introduce helper to generate mac address with OUI
-      animeo_ip: ensure the phy is reset correctly
-      animeo_ip: retrieve the mac from the macb and set private mac to asix
-
- arch/arm/boards/animeo_ip/init.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
- include/local_mac_address.h      | 40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 110 insertions(+), 1 deletion(-)
- create mode 100644 include/local_mac_address.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
