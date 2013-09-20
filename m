@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMsas-0007Vt-NY
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 04:45:28 +0000
+ id 1VMsuN-0007rm-9z
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 05:05:36 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id ABB0CDC8851
- for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 06:45:05 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id AB2BCDC885B
+ for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 07:05:13 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 20 Sep 2013 06:46:16 +0200
-Message-Id: <1379652377-20276-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130920044518.GB1137@ns203013.ovh.net>
- <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Fri, 20 Sep 2013 07:06:24 +0200
+Message-Id: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,195 +23,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] misc: add somfy bootcount support
+Subject: [PATCH 1/1] bootm: update os_entry from uimage
 To: barebox@lists.infradead.org
 
-we support different boot mode
- - normal
- - normal_forced
- - update
- - rescue
- - usb
- - network
- - test
-
-each of them need to be checked this will allow to decide what is the next
-boot mode during the boot sequence
+if not uimage set 0 by default
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/misc/Kconfig           |   4 ++
- drivers/misc/Makefile          |   1 +
- drivers/misc/somfy_bootcount.c | 138 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 143 insertions(+)
- create mode 100644 drivers/misc/somfy_bootcount.c
+ commands/bootm.c |  1 +
+ common/bootm.c   | 15 ++++++++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index a972ba4..44b7af0 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -18,4 +18,8 @@ config JTAG
- config BOOTCOUNT
- 	bool
+diff --git a/commands/bootm.c b/commands/bootm.c
+index a4004df..7acf341 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
  
-+config SOMFY_BOOTCOUNT
-+	tristate "Somfy Boot Count"
-+	select BOOTCOUNT
-+
- endif # MISC_DEVICES
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index fa668c1..4e2e6cc 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -4,3 +4,4 @@
+ 	data.initrd_address = UIMAGE_INVALID_ADDRESS;
+ 	data.os_address = UIMAGE_SOME_ADDRESS;
++	data.os_entry = UIMAGE_SOME_ADDRESS;
+ 	data.verify = 0;
+ 	data.verbose = 0;
  
- obj-$(CONFIG_JTAG)		+= jtag.o
- obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
-+obj-$(CONFIG_SOMFY_BOOTCOUNT)	+= somfy_bootcount.o
-diff --git a/drivers/misc/somfy_bootcount.c b/drivers/misc/somfy_bootcount.c
-new file mode 100644
-index 0000000..3771ab7
---- /dev/null
-+++ b/drivers/misc/somfy_bootcount.c
-@@ -0,0 +1,138 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 Only
-+ */
+diff --git a/common/bootm.c b/common/bootm.c
+index 1987a09..da2b85d 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+ static int bootm_open_os_uimage(struct image_data *data)
+ {
+ 	int ret;
++	int update_ep = 0;
+ 
+ 	data->os = uimage_open(data->os_file);
+ 	if (!data->os)
+@@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (data->os_address == UIMAGE_SOME_ADDRESS)
++	if (data->os_address == UIMAGE_SOME_ADDRESS) {
+ 		data->os_address = data->os->header.ih_load;
++		update_ep = 1;
++	}
+ 
+ 	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+ 		data->os_res = uimage_load_to_sdram(data->os, 0,
+@@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 			uimage_close(data->os);
+ 			return -ENOMEM;
+ 		}
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <io.h>
-+#include <errno.h>
-+#include <bootcount.h>
-+
-+#define SOMFY_BOOTCOUNT_UPDATE	(0x5550) << 16
-+#define SOMFY_BOOTCOUNT_RESCUE	(0x5245) << 16
-+#define SOMFY_BOOTCOUNT_USB	(0x5542) << 16
-+#define SOMFY_BOOTCOUNT_NETWORK	(0x4E54) << 16
-+#define SOMFY_BOOTCOUNT_TEST	(0x5445) << 16
-+#define SOMFY_BOOTCOUNT_NORMAL	(0xb001) << 16
-+#define SOMFY_BOOTCOUNT_NORMAL_FORCED	(0xb002) << 16
-+
-+static u32 somfy_boot_mode_mask[] = {
-+	SOMFY_BOOTCOUNT_NORMAL,
-+	SOMFY_BOOTCOUNT_NORMAL_FORCED,
-+	SOMFY_BOOTCOUNT_UPDATE,
-+	SOMFY_BOOTCOUNT_RESCUE,
-+	SOMFY_BOOTCOUNT_USB,
-+	SOMFY_BOOTCOUNT_NETWORK,
-+	SOMFY_BOOTCOUNT_TEST,
-+};
-+
-+static const char *somfy_boot_modes[] = {
-+	"normal",
-+	"normal_forced",
-+	"update",
-+	"rescue",
-+	"usb",
-+	"network",
-+	"test",
-+};
-+
-+struct somfy_bootcount {
-+	struct device_d *dev;
-+	int mode;
-+	int count;
-+	void __iomem *base;
-+	struct bootcount_driver drv;
-+};
-+
-+static void somfy_bootcount_set(struct somfy_bootcount *sb)
-+{
-+	u32 val;
-+
-+	val = somfy_boot_mode_mask[sb->mode] | (sb->count & 0xffff);
-+
-+	writel(val, sb->base);
-+}
-+
-+static int somfy_bootcount_mode_set(struct param_d *p, void *priv)
-+{
-+	struct somfy_bootcount *sb = priv;
-+
-+	sb->count = 0;
-+	somfy_bootcount_set(sb);
-+
-+	return 0;
-+}
-+
-+static int somfy_bootcount_count_set(struct param_d *p, void *priv)
-+{
-+	struct somfy_bootcount *sb = priv;
-+
-+	somfy_bootcount_set(sb);
-+
-+	return 0;
-+}
-+
-+static void somfy_bootcount_parse(struct somfy_bootcount *sb)
-+{
-+	u32 val;
-+	int i;
-+
-+	val = readl(sb->base);
-+
-+	for (i = 0; i < ARRAY_SIZE(somfy_boot_mode_mask); i++) {
-+		u32 mask = somfy_boot_mode_mask[i];
-+
-+		if ((val & 0xffff0000) == mask)
-+			goto found;
 +	}
 +
-+	return;
++	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
++		data->os_entry = data->os->header.ih_ep;
++		if (data->os_address != UIMAGE_INVALID_ADDRESS)
++			data->os_entry -= data->os_address;
+ 	}
+ 
+ 	return 0;
+@@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
+ 		}
+ 	}
+ 
++	if (data.os_entry == UIMAGE_SOME_ADDRESS)
++		data.os_entry = 0;
 +
-+found:
-+	sb->mode = i;
-+	sb->count = val & 0xffff;
-+}
-+
-+static void somfy_bootcount_inc(struct bootcount_driver *d)
-+{
-+	struct somfy_bootcount *sb = d->priv;
-+
-+	sb->count++;
-+	somfy_bootcount_set(sb);
-+}
-+
-+
-+static int somfy_bootcount_probe(struct device_d *dev)
-+{
-+	struct somfy_bootcount *sb;
-+
-+	sb = xzalloc(sizeof(*sb));
-+	sb->base = dev_request_mem_region(dev, 0);
-+	sb->dev = dev;
-+
-+	sb->drv.priv = sb;
-+	sb->drv.inc = somfy_bootcount_inc;
-+	bootcount_register(&sb->drv);
-+	somfy_bootcount_parse(sb);
-+
-+	dev_add_param_int(dev, "count", somfy_bootcount_count_set,
-+				NULL, &sb->count, "%d", sb);
-+	dev_add_param_enum(dev, "mode", somfy_bootcount_mode_set,
-+		NULL, &sb->mode, somfy_boot_modes, ARRAY_SIZE(somfy_boot_modes), sb);
-+
-+	return 0;
-+}
-+
-+static struct driver_d somfy_bootcount_driver = {
-+	.name = "somfy_bootcount",
-+	.probe = somfy_bootcount_probe,
-+};
-+
-+static int somfy_bootcount_init(void)
-+{
-+	return platform_driver_register(&somfy_bootcount_driver);
-+}
-+postcore_initcall(somfy_bootcount_init);
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
+ 
+ 		initrd_type = file_name_detect_type(data->initrd_file);
 -- 
 1.8.4.rc1
 
