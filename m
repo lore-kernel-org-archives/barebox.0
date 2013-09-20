@@ -2,16 +2,17 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 1.mo2.mail-out.ovh.net ([46.105.63.121]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMsas-0007Vs-NZ
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 04:45:27 +0000
+ id 1VMsas-0007Vt-NY
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 04:45:28 +0000
 Received: from mail406.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 9C398DC877E
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id ABB0CDC8851
  for <barebox@lists.infradead.org>; Fri, 20 Sep 2013 06:45:05 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 20 Sep 2013 06:46:15 +0200
-Message-Id: <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130920044518.GB1137@ns203013.ovh.net>
+Date: Fri, 20 Sep 2013 06:46:16 +0200
+Message-Id: <1379652377-20276-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20130920044518.GB1137@ns203013.ovh.net>
+ <1379652377-20276-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,46 +26,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] misc: add bootcount framework
+Subject: [PATCH 2/3] misc: add somfy bootcount support
 To: barebox@lists.infradead.org
+
+we support different boot mode
+ - normal
+ - normal_forced
+ - update
+ - rescue
+ - usb
+ - network
+ - test
+
+each of them need to be checked this will allow to decide what is the next
+boot mode during the boot sequence
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- drivers/misc/Kconfig     |  3 +++
- drivers/misc/Makefile    |  1 +
- drivers/misc/bootcount.c | 24 ++++++++++++++++++++++++
- include/bootcount.h      | 21 +++++++++++++++++++++
- 4 files changed, 49 insertions(+)
- create mode 100644 drivers/misc/bootcount.c
- create mode 100644 include/bootcount.h
+ drivers/misc/Kconfig           |   4 ++
+ drivers/misc/Makefile          |   1 +
+ drivers/misc/somfy_bootcount.c | 138 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 143 insertions(+)
+ create mode 100644 drivers/misc/somfy_bootcount.c
 
 diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 606490b..a972ba4 100644
+index a972ba4..44b7af0 100644
 --- a/drivers/misc/Kconfig
 +++ b/drivers/misc/Kconfig
-@@ -15,4 +15,7 @@ config JTAG
- 	help
- 	  Controls JTAG chains connected to I/O pins
+@@ -18,4 +18,8 @@ config JTAG
+ config BOOTCOUNT
+ 	bool
  
-+config BOOTCOUNT
-+	bool
++config SOMFY_BOOTCOUNT
++	tristate "Somfy Boot Count"
++	select BOOTCOUNT
 +
  endif # MISC_DEVICES
 diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index b085577..fa668c1 100644
+index fa668c1..4e2e6cc 100644
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
-@@ -3,3 +3,4 @@
- #
+@@ -4,3 +4,4 @@
  
  obj-$(CONFIG_JTAG)		+= jtag.o
-+obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
-diff --git a/drivers/misc/bootcount.c b/drivers/misc/bootcount.c
+ obj-$(CONFIG_BOOTCOUNT)		+= bootcount.o
++obj-$(CONFIG_SOMFY_BOOTCOUNT)	+= somfy_bootcount.o
+diff --git a/drivers/misc/somfy_bootcount.c b/drivers/misc/somfy_bootcount.c
 new file mode 100644
-index 0000000..0205d00
+index 0000000..3771ab7
 --- /dev/null
-+++ b/drivers/misc/bootcount.c
-@@ -0,0 +1,24 @@
++++ b/drivers/misc/somfy_bootcount.c
+@@ -0,0 +1,138 @@
 +/*
 + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
@@ -72,50 +84,137 @@ index 0000000..0205d00
 + */
 +
 +#include <common.h>
++#include <driver.h>
 +#include <init.h>
++#include <io.h>
++#include <errno.h>
 +#include <bootcount.h>
 +
-+static struct bootcount_driver *bd;
++#define SOMFY_BOOTCOUNT_UPDATE	(0x5550) << 16
++#define SOMFY_BOOTCOUNT_RESCUE	(0x5245) << 16
++#define SOMFY_BOOTCOUNT_USB	(0x5542) << 16
++#define SOMFY_BOOTCOUNT_NETWORK	(0x4E54) << 16
++#define SOMFY_BOOTCOUNT_TEST	(0x5445) << 16
++#define SOMFY_BOOTCOUNT_NORMAL	(0xb001) << 16
++#define SOMFY_BOOTCOUNT_NORMAL_FORCED	(0xb002) << 16
 +
-+void bootcount_register(struct bootcount_driver *drv)
-+{
-+	bd = drv;
-+}
-+
-+static int bootcount_inc(void)
-+{
-+	if (bd)
-+		bd->inc(bd);
-+	return 0;
-+}
-+late_initcall(bootcount_inc);
-diff --git a/include/bootcount.h b/include/bootcount.h
-new file mode 100644
-index 0000000..16e61c5
---- /dev/null
-+++ b/include/bootcount.h
-@@ -0,0 +1,21 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 Only
-+ */
-+
-+#ifndef __BOOTCOUNT_H__
-+#define __BOOTCOUNT_H__
-+
-+struct bootcount_driver {
-+	void (*inc)(struct bootcount_driver *d);
-+	void *priv;
++static u32 somfy_boot_mode_mask[] = {
++	SOMFY_BOOTCOUNT_NORMAL,
++	SOMFY_BOOTCOUNT_NORMAL_FORCED,
++	SOMFY_BOOTCOUNT_UPDATE,
++	SOMFY_BOOTCOUNT_RESCUE,
++	SOMFY_BOOTCOUNT_USB,
++	SOMFY_BOOTCOUNT_NETWORK,
++	SOMFY_BOOTCOUNT_TEST,
 +};
 +
-+#ifdef CONFIG_BOOTCOUNT
-+void bootcount_register(struct bootcount_driver *d);
-+#else
-+static inline void bootcount_register(struct bootcount_driver *d) {}
-+#endif
++static const char *somfy_boot_modes[] = {
++	"normal",
++	"normal_forced",
++	"update",
++	"rescue",
++	"usb",
++	"network",
++	"test",
++};
 +
-+#endif /* __BOOTCOUNT_H__ */
++struct somfy_bootcount {
++	struct device_d *dev;
++	int mode;
++	int count;
++	void __iomem *base;
++	struct bootcount_driver drv;
++};
++
++static void somfy_bootcount_set(struct somfy_bootcount *sb)
++{
++	u32 val;
++
++	val = somfy_boot_mode_mask[sb->mode] | (sb->count & 0xffff);
++
++	writel(val, sb->base);
++}
++
++static int somfy_bootcount_mode_set(struct param_d *p, void *priv)
++{
++	struct somfy_bootcount *sb = priv;
++
++	sb->count = 0;
++	somfy_bootcount_set(sb);
++
++	return 0;
++}
++
++static int somfy_bootcount_count_set(struct param_d *p, void *priv)
++{
++	struct somfy_bootcount *sb = priv;
++
++	somfy_bootcount_set(sb);
++
++	return 0;
++}
++
++static void somfy_bootcount_parse(struct somfy_bootcount *sb)
++{
++	u32 val;
++	int i;
++
++	val = readl(sb->base);
++
++	for (i = 0; i < ARRAY_SIZE(somfy_boot_mode_mask); i++) {
++		u32 mask = somfy_boot_mode_mask[i];
++
++		if ((val & 0xffff0000) == mask)
++			goto found;
++	}
++
++	return;
++
++found:
++	sb->mode = i;
++	sb->count = val & 0xffff;
++}
++
++static void somfy_bootcount_inc(struct bootcount_driver *d)
++{
++	struct somfy_bootcount *sb = d->priv;
++
++	sb->count++;
++	somfy_bootcount_set(sb);
++}
++
++
++static int somfy_bootcount_probe(struct device_d *dev)
++{
++	struct somfy_bootcount *sb;
++
++	sb = xzalloc(sizeof(*sb));
++	sb->base = dev_request_mem_region(dev, 0);
++	sb->dev = dev;
++
++	sb->drv.priv = sb;
++	sb->drv.inc = somfy_bootcount_inc;
++	bootcount_register(&sb->drv);
++	somfy_bootcount_parse(sb);
++
++	dev_add_param_int(dev, "count", somfy_bootcount_count_set,
++				NULL, &sb->count, "%d", sb);
++	dev_add_param_enum(dev, "mode", somfy_bootcount_mode_set,
++		NULL, &sb->mode, somfy_boot_modes, ARRAY_SIZE(somfy_boot_modes), sb);
++
++	return 0;
++}
++
++static struct driver_d somfy_bootcount_driver = {
++	.name = "somfy_bootcount",
++	.probe = somfy_bootcount_probe,
++};
++
++static int somfy_bootcount_init(void)
++{
++	return platform_driver_register(&somfy_bootcount_driver);
++}
++postcore_initcall(somfy_bootcount_init);
 -- 
 1.8.4.rc1
 
