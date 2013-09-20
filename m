@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMuii-0000ou-5j
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:01:40 +0000
-Date: Fri, 20 Sep 2013 09:01:18 +0200
+ id 1VMulv-0000qz-JF
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:05:00 +0000
+Date: Fri, 20 Sep 2013 09:04:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130920070118.GC30088@pengutronix.de>
-References: <1379569815-14033-1-git-send-email-plagnioj@jcrosoft.com>
- <1379569815-14033-2-git-send-email-plagnioj@jcrosoft.com>
- <20130919112107.GA24065@ns203013.ovh.net>
+Message-ID: <20130920070436.GD30088@pengutronix.de>
+References: <20130920054640.GD1137@ns203013.ovh.net>
+ <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130919112107.GA24065@ns203013.ovh.net>
+In-Reply-To: <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,66 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] versatilepb: force net a 100Mpps
+Subject: Re: [PATCH 1/3] introduce helper to generate mac address with OUI
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Sep 19, 2013 at 01:21:07PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 07:50 Thu 19 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+On Fri, Sep 20, 2013 at 07:47:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> use random mac address with fixed OUI provided
 > 
-> ignore this one it'a handle already at driver level
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  include/local_mac_address.h | 40 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 40 insertions(+)
+>  create mode 100644 include/local_mac_address.h
+> 
+> diff --git a/include/local_mac_address.h b/include/local_mac_address.h
+> new file mode 100644
+> index 0000000..3920334
+> --- /dev/null
+> +++ b/include/local_mac_address.h
+> @@ -0,0 +1,40 @@
+> +/*
+> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+> + *
+> + * Under GPLv2 only
+> + */
+> +
+> +#ifndef __LOCAL_MAC_ADDRESS_H__
+> +#define __LOCAL_MAC_ADDRESS_H__
+> +
+> +/**
+> + * local_mac_address_register - use random number with fix
+> + * OUI provided device to provide an Ethernet address
+> + * @ethid: ethernet device id
+> + * @oui: Ethernet OUI (3 bytes)
+> + *
+> + * Generate a local Ethernet address (MAC) that is not multicast using a 1-wire id.
+> + */
+> +static inline int local_mac_address_register(int ethid, char * oui)
+> +{
+> +	char addr[6];
+> +	int nb_oui = 3;
+> +	int i;
+> +
+> +	if (!oui)
+> +		return -EINVAL;
+> +
+> +	random_ether_addr(addr);
+> +
+> +	for (i = 0; i < nb_oui; i++)
+> +		addr[i] = oui[i];
 
-Ok, I assume I shall ignore the whole series.
+Shouldn't you rather use bytes 1-3 instead of 0-2?
+
+> +
+> +	addr[0] &= 0xfe;	/* clear multicast bit */
+> +	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
+
+Otherwise the 'smf' you pass in becomes 'qmf' here.
 
 Sascha
-
-> 
-> Best Regards,
-> J.
-> > ---
-> >  arch/arm/boards/versatile/versatilepb.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/boards/versatile/versatilepb.c b/arch/arm/boards/versatile/versatilepb.c
-> > index 2eb7473..fa0585d 100644
-> > --- a/arch/arm/boards/versatile/versatilepb.c
-> > +++ b/arch/arm/boards/versatile/versatilepb.c
-> > @@ -28,6 +28,7 @@
-> >  #include <environment.h>
-> >  #include <partition.h>
-> >  #include <sizes.h>
-> > +#include <linux/phy.h>
-> >  
-> >  static int vpb_console_init(void)
-> >  {
-> > @@ -44,6 +45,8 @@ static int vpb_mem_init(void)
-> >  }
-> >  mem_initcall(vpb_mem_init);
-> >  
-> > +static int phy_flags = PHYLIB_FORCE_100;
-> > +
-> >  static int vpb_devices_init(void)
-> >  {
-> >  	add_cfi_flash_device(DEVICE_ID_DYNAMIC, VERSATILE_FLASH_BASE, VERSATILE_FLASH_SIZE, 0);
-> > @@ -52,7 +55,7 @@ static int vpb_devices_init(void)
-> >  	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
-> >  
-> >  	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL, VERSATILE_ETH_BASE,
-> > -			64 * 1024, IORESOURCE_MEM, NULL);
-> > +			64 * 1024, IORESOURCE_MEM, &phy_flags);
-> >  
-> >  	armlinux_set_architecture(MACH_TYPE_VERSATILE_PB);
-> >  	armlinux_set_bootparams((void *)(0x00000100));
-> > -- 
-> > 1.8.4.rc1
-> > 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
