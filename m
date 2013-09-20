@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VMulv-0000qz-JF
- for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:05:00 +0000
-Date: Fri, 20 Sep 2013 09:04:36 +0200
+ id 1VMuny-0000tV-Ls
+ for barebox@lists.infradead.org; Fri, 20 Sep 2013 07:07:07 +0000
+Date: Fri, 20 Sep 2013 09:06:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130920070436.GD30088@pengutronix.de>
-References: <20130920054640.GD1137@ns203013.ovh.net>
- <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130920070645.GE30088@pengutronix.de>
+References: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379653584-21481-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,65 +22,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] introduce helper to generate mac address with OUI
+Subject: Re: [PATCH 1/1] bootm: update os_entry from uimage
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 20, 2013 at 07:47:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> use random mac address with fixed OUI provided
+On Fri, Sep 20, 2013 at 07:06:24AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> if not uimage set 0 by default
+
+Can you elaborate more what this patch does and in which situations it
+helps?
+
+Sascha
+
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 > ---
->  include/local_mac_address.h | 40 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
->  create mode 100644 include/local_mac_address.h
+>  commands/bootm.c |  1 +
+>  common/bootm.c   | 15 ++++++++++++++-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
 > 
-> diff --git a/include/local_mac_address.h b/include/local_mac_address.h
-> new file mode 100644
-> index 0000000..3920334
-> --- /dev/null
-> +++ b/include/local_mac_address.h
-> @@ -0,0 +1,40 @@
-> +/*
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2 only
-> + */
+> diff --git a/commands/bootm.c b/commands/bootm.c
+> index a4004df..7acf341 100644
+> --- a/commands/bootm.c
+> +++ b/commands/bootm.c
+> @@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
+>  
+>  	data.initrd_address = UIMAGE_INVALID_ADDRESS;
+>  	data.os_address = UIMAGE_SOME_ADDRESS;
+> +	data.os_entry = UIMAGE_SOME_ADDRESS;
+>  	data.verify = 0;
+>  	data.verbose = 0;
+>  
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 1987a09..da2b85d 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+>  static int bootm_open_os_uimage(struct image_data *data)
+>  {
+>  	int ret;
+> +	int update_ep = 0;
+>  
+>  	data->os = uimage_open(data->os_file);
+>  	if (!data->os)
+> @@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (data->os_address == UIMAGE_SOME_ADDRESS)
+> +	if (data->os_address == UIMAGE_SOME_ADDRESS) {
+>  		data->os_address = data->os->header.ih_load;
+> +		update_ep = 1;
+> +	}
+>  
+>  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+>  		data->os_res = uimage_load_to_sdram(data->os, 0,
+> @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  			uimage_close(data->os);
+>  			return -ENOMEM;
+>  		}
 > +
-> +#ifndef __LOCAL_MAC_ADDRESS_H__
-> +#define __LOCAL_MAC_ADDRESS_H__
+> +	}
 > +
-> +/**
-> + * local_mac_address_register - use random number with fix
-> + * OUI provided device to provide an Ethernet address
-> + * @ethid: ethernet device id
-> + * @oui: Ethernet OUI (3 bytes)
-> + *
-> + * Generate a local Ethernet address (MAC) that is not multicast using a 1-wire id.
-> + */
-> +static inline int local_mac_address_register(int ethid, char * oui)
-> +{
-> +	char addr[6];
-> +	int nb_oui = 3;
-> +	int i;
+> +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
+> +		data->os_entry = data->os->header.ih_ep;
+> +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
+> +			data->os_entry -= data->os_address;
+>  	}
+>  
+>  	return 0;
+> @@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
+>  		}
+>  	}
+>  
+> +	if (data.os_entry == UIMAGE_SOME_ADDRESS)
+> +		data.os_entry = 0;
 > +
-> +	if (!oui)
-> +		return -EINVAL;
-> +
-> +	random_ether_addr(addr);
-> +
-> +	for (i = 0; i < nb_oui; i++)
-> +		addr[i] = oui[i];
-
-Shouldn't you rather use bytes 1-3 instead of 0-2?
-
-> +
-> +	addr[0] &= 0xfe;	/* clear multicast bit */
-> +	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
-
-Otherwise the 'smf' you pass in becomes 'qmf' here.
-
-Sascha
+>  	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
+>  
+>  		initrd_type = file_name_detect_type(data->initrd_file);
+> -- 
+> 1.8.4.rc1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
