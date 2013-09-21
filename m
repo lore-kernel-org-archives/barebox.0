@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNIHA-00042M-50
- for barebox@lists.infradead.org; Sat, 21 Sep 2013 08:10:49 +0000
-Date: Sat, 21 Sep 2013 10:10:26 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130921081026.GK30088@pengutronix.de>
-References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
- <20130918070049.GK30088@pengutronix.de>
- <20130919115638.GC24065@ns203013.ovh.net>
- <20130920062927.GU30088@pengutronix.de>
- <20130920080257.GH1137@ns203013.ovh.net>
- <20130920115659.GG30088@pengutronix.de>
- <20130921065343.GJ1137@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130921065343.GJ1137@ns203013.ovh.net>
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VNK0j-0004xg-Qq
+ for barebox@lists.infradead.org; Sat, 21 Sep 2013 10:02:00 +0000
+Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 8A72FDC9633
+ for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 12:01:29 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sat, 21 Sep 2013 12:02:41 +0200
+Message-Id: <1379757761-14700-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,72 +18,1173 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] lzo: update to lzo-2013
+To: barebox@lists.infradead.org
 
-On Sat, Sep 21, 2013 at 08:53:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 13:56 Fri 20 Sep     , Sascha Hauer wrote:
-> > On Fri, Sep 20, 2013 at 10:02:57AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 08:29 Fri 20 Sep     , Sascha Hauer wrote:
-> > > > On Thu, Sep 19, 2013 at 01:56:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > On 09:00 Wed 18 Sep     , Sascha Hauer wrote:
-> > > > > > On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > > > > ---
-> > > > > > >  common/filetype.c  | 3 +++
-> > > > > > >  include/filetype.h | 1 +
-> > > > > > >  2 files changed, 4 insertions(+)
-> > > > > > > 
-> > > > > > > diff --git a/common/filetype.c b/common/filetype.c
-> > > > > > > index 7507d85..59ea25a 100644
-> > > > > > > --- a/common/filetype.c
-> > > > > > > +++ b/common/filetype.c
-> > > > > > > @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
-> > > > > > >  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
-> > > > > > >  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
-> > > > > > >  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
-> > > > > > > +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
-> > > > > > >  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
-> > > > > > >  	[filetype_ubi] = { "UBI image", "ubi" },
-> > > > > > >  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
-> > > > > > > @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
-> > > > > > >  
-> > > > > > >  	if (is_barebox_arm_head(_buf))
-> > > > > > >  		return filetype_arm_barebox;
-> > > > > > > +	if (buf[15] == 0xdeadbeef)
-> > > > > > > +		return filetype_arm_uboot;
-> > > > > > 
-> > > > > > 0xdeadbeef is such a widely used placeholder that we should use it for
-> > > > > > filetype detection. Also, I don't think that U-Boot ever specified
-> > > > > > 0xdeadbeef at this offset as a fixed value. It could be changed without
-> > > > > > notice.
-> > > > > 
-> > > > > on ARM it's keeped for years > 7 IIRC
-> > > > 
-> > > > Yes, and there's no indication that it will change. Anyway, this was
-> > > > never meant as an API and everybody uses 0xdeadbeef as placeholder.
-> > > 
-> > > so the question remain how to boot a u-boot that can be a second stage
-> > 
-> > 'go'? You could also embed it in an uImage if you really want to use the
-> > bootm command.
-> 
-> I really hate the go you need to load in ram and then do the go
+take from linux next-20130227
+same version as v3.11
 
-You could also use the -f option to bootm instead.
+before
 
-Sascha
+-rwxr-xr-x 1 root root 123001 Feb 28 01:04 build/highbank/arch/arm/pbl/zbarebox.bin
 
+after
+
+-rwxr-xr-x 1 root root 122226 Feb 28 01:02 build/highbank/arch/arm/pbl/zbarebox.bin
+
+smaller and faster
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ include/lzo.h                   |   9 +-
+ lib/decompress_unlzo.c          |   4 +-
+ lib/lzo/Makefile                |   2 +-
+ lib/lzo/lzo1x_compress.c        | 505 ++++++++++++++++++++++------------------
+ lib/lzo/lzo1x_decompress.c      | 247 --------------------
+ lib/lzo/lzo1x_decompress_safe.c | 230 ++++++++++++++++++
+ lib/lzo/lzodefs.h               |  38 ++-
+ 7 files changed, 544 insertions(+), 491 deletions(-)
+ rewrite lib/lzo/lzo1x_compress.c (68%)
+ delete mode 100644 lib/lzo/lzo1x_decompress.c
+ create mode 100644 lib/lzo/lzo1x_decompress_safe.c
+
+diff --git a/include/lzo.h b/include/lzo.h
+index ceacfba..6c34be1 100644
+--- a/include/lzo.h
++++ b/include/lzo.h
+@@ -4,18 +4,18 @@
+  *  LZO Public Kernel Interface
+  *  A mini subset of the LZO real-time data compression library
+  *
+- *  Copyright (C) 1996-2005 Markus F.X.J. Oberhumer <markus@oberhumer.com>
++ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
+  *
+  *  The full LZO package can be found at:
+  *  http://www.oberhumer.com/opensource/lzo/
+  *
+- *  Changed for kernel use by:
++ *  Changed for Linux kernel use by:
+  *  Nitin Gupta <nitingupta910@gmail.com>
+  *  Richard Purdie <rpurdie@openedhand.com>
+  */
+ 
+-#define LZO1X_MEM_COMPRESS	(16384 * sizeof(unsigned char *))
+-#define LZO1X_1_MEM_COMPRESS	LZO1X_MEM_COMPRESS
++#define LZO1X_1_MEM_COMPRESS	(8192 * sizeof(unsigned short))
++#define LZO1X_MEM_COMPRESS	LZO1X_1_MEM_COMPRESS
+ 
+ #define lzo1x_worst_compress(x) ((x) + ((x) / 16) + 64 + 3)
+ 
+@@ -44,6 +44,7 @@ STATIC int lzo1x_decompress_safe(const unsigned char *src, size_t src_len,
+ #define LZO_E_EOF_NOT_FOUND		(-7)
+ #define LZO_E_INPUT_NOT_CONSUMED	(-8)
+ #define LZO_E_NOT_YET_IMPLEMENTED	(-9)
++#define LZO_E_INVALID_ARGUMENT		(-10)
+ 
+ STATIC int decompress_unlzo(u8 *input, int in_len,
+ 		int (*fill) (void *, unsigned int),
+diff --git a/lib/decompress_unlzo.c b/lib/decompress_unlzo.c
+index 1b2dc9d..5ee3667 100644
+--- a/lib/decompress_unlzo.c
++++ b/lib/decompress_unlzo.c
+@@ -33,7 +33,7 @@
+ 
+ #ifdef STATIC
+ #include <linux/decompress/mm.h>
+-#include "lzo/lzo1x_decompress.c"
++#include "lzo/lzo1x_decompress_safe.c"
+ #else
+ #include <malloc.h>
+ #endif
+@@ -108,7 +108,7 @@ static inline int parse_header(u8 *input, int *skip, int in_len)
+ 	return 1;
+ }
+ 
+-STATIC int decompress_unlzo(u8 *input, int in_len,
++int decompress_unlzo(u8 *input, int in_len,
+ 				int (*fill) (void *, unsigned int),
+ 				int (*flush) (void *, unsigned int),
+ 				u8 *output, int *posp,
+diff --git a/lib/lzo/Makefile b/lib/lzo/Makefile
+index e1a97ae..f2191f4 100644
+--- a/lib/lzo/Makefile
++++ b/lib/lzo/Makefile
+@@ -1,4 +1,4 @@
+ 
+ obj-$(CONFIG_LZO_COMPRESS) += lzo1x_compress.o
+-obj-$(CONFIG_LZO_DECOMPRESS) += lzo1x_decompress.o
++obj-$(CONFIG_LZO_DECOMPRESS) += lzo1x_decompress_safe.o
+ 
+diff --git a/lib/lzo/lzo1x_compress.c b/lib/lzo/lzo1x_compress.c
+dissimilarity index 68%
+index a604099..236eb21 100644
+--- a/lib/lzo/lzo1x_compress.c
++++ b/lib/lzo/lzo1x_compress.c
+@@ -1,226 +1,279 @@
+-/*
+- *  LZO1X Compressor from MiniLZO
+- *
+- *  Copyright (C) 1996-2005 Markus F.X.J. Oberhumer <markus@oberhumer.com>
+- *
+- *  The full LZO package can be found at:
+- *  http://www.oberhumer.com/opensource/lzo/
+- *
+- *  Changed for kernel use by:
+- *  Nitin Gupta <nitingupta910@gmail.com>
+- *  Richard Purdie <rpurdie@openedhand.com>
+- */
+-
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/lzo.h>
+-#include <asm/unaligned.h>
+-#include "lzodefs.h"
+-
+-static noinline size_t
+-_lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
+-		unsigned char *out, size_t *out_len, void *wrkmem)
+-{
+-	const unsigned char * const in_end = in + in_len;
+-	const unsigned char * const ip_end = in + in_len - M2_MAX_LEN - 5;
+-	const unsigned char ** const dict = wrkmem;
+-	const unsigned char *ip = in, *ii = ip;
+-	const unsigned char *end, *m, *m_pos;
+-	size_t m_off, m_len, dindex;
+-	unsigned char *op = out;
+-
+-	ip += 4;
+-
+-	for (;;) {
+-		dindex = ((size_t)(0x21 * DX3(ip, 5, 5, 6)) >> 5) & D_MASK;
+-		m_pos = dict[dindex];
+-
+-		if (m_pos < in)
+-			goto literal;
+-
+-		if (ip == m_pos || ((size_t)(ip - m_pos) > M4_MAX_OFFSET))
+-			goto literal;
+-
+-		m_off = ip - m_pos;
+-		if (m_off <= M2_MAX_OFFSET || m_pos[3] == ip[3])
+-			goto try_match;
+-
+-		dindex = (dindex & (D_MASK & 0x7ff)) ^ (D_HIGH | 0x1f);
+-		m_pos = dict[dindex];
+-
+-		if (m_pos < in)
+-			goto literal;
+-
+-		if (ip == m_pos || ((size_t)(ip - m_pos) > M4_MAX_OFFSET))
+-			goto literal;
+-
+-		m_off = ip - m_pos;
+-		if (m_off <= M2_MAX_OFFSET || m_pos[3] == ip[3])
+-			goto try_match;
+-
+-		goto literal;
+-
+-try_match:
+-		if (get_unaligned((const unsigned short *)m_pos)
+-				== get_unaligned((const unsigned short *)ip)) {
+-			if (likely(m_pos[2] == ip[2]))
+-					goto match;
+-		}
+-
+-literal:
+-		dict[dindex] = ip;
+-		++ip;
+-		if (unlikely(ip >= ip_end))
+-			break;
+-		continue;
+-
+-match:
+-		dict[dindex] = ip;
+-		if (ip != ii) {
+-			size_t t = ip - ii;
+-
+-			if (t <= 3) {
+-				op[-2] |= t;
+-			} else if (t <= 18) {
+-				*op++ = (t - 3);
+-			} else {
+-				size_t tt = t - 18;
+-
+-				*op++ = 0;
+-				while (tt > 255) {
+-					tt -= 255;
+-					*op++ = 0;
+-				}
+-				*op++ = tt;
+-			}
+-			do {
+-				*op++ = *ii++;
+-			} while (--t > 0);
+-		}
+-
+-		ip += 3;
+-		if (m_pos[3] != *ip++ || m_pos[4] != *ip++
+-				|| m_pos[5] != *ip++ || m_pos[6] != *ip++
+-				|| m_pos[7] != *ip++ || m_pos[8] != *ip++) {
+-			--ip;
+-			m_len = ip - ii;
+-
+-			if (m_off <= M2_MAX_OFFSET) {
+-				m_off -= 1;
+-				*op++ = (((m_len - 1) << 5)
+-						| ((m_off & 7) << 2));
+-				*op++ = (m_off >> 3);
+-			} else if (m_off <= M3_MAX_OFFSET) {
+-				m_off -= 1;
+-				*op++ = (M3_MARKER | (m_len - 2));
+-				goto m3_m4_offset;
+-			} else {
+-				m_off -= 0x4000;
+-
+-				*op++ = (M4_MARKER | ((m_off & 0x4000) >> 11)
+-						| (m_len - 2));
+-				goto m3_m4_offset;
+-			}
+-		} else {
+-			end = in_end;
+-			m = m_pos + M2_MAX_LEN + 1;
+-
+-			while (ip < end && *m == *ip) {
+-				m++;
+-				ip++;
+-			}
+-			m_len = ip - ii;
+-
+-			if (m_off <= M3_MAX_OFFSET) {
+-				m_off -= 1;
+-				if (m_len <= 33) {
+-					*op++ = (M3_MARKER | (m_len - 2));
+-				} else {
+-					m_len -= 33;
+-					*op++ = M3_MARKER | 0;
+-					goto m3_m4_len;
+-				}
+-			} else {
+-				m_off -= 0x4000;
+-				if (m_len <= M4_MAX_LEN) {
+-					*op++ = (M4_MARKER
+-						| ((m_off & 0x4000) >> 11)
+-						| (m_len - 2));
+-				} else {
+-					m_len -= M4_MAX_LEN;
+-					*op++ = (M4_MARKER
+-						| ((m_off & 0x4000) >> 11));
+-m3_m4_len:
+-					while (m_len > 255) {
+-						m_len -= 255;
+-						*op++ = 0;
+-					}
+-
+-					*op++ = (m_len);
+-				}
+-			}
+-m3_m4_offset:
+-			*op++ = ((m_off & 63) << 2);
+-			*op++ = (m_off >> 6);
+-		}
+-
+-		ii = ip;
+-		if (unlikely(ip >= ip_end))
+-			break;
+-	}
+-
+-	*out_len = op - out;
+-	return in_end - ii;
+-}
+-
+-int lzo1x_1_compress(const unsigned char *in, size_t in_len, unsigned char *out,
+-			size_t *out_len, void *wrkmem)
+-{
+-	const unsigned char *ii;
+-	unsigned char *op = out;
+-	size_t t;
+-
+-	if (unlikely(in_len <= M2_MAX_LEN + 5)) {
+-		t = in_len;
+-	} else {
+-		t = _lzo1x_1_do_compress(in, in_len, op, out_len, wrkmem);
+-		op += *out_len;
+-	}
+-
+-	if (t > 0) {
+-		ii = in + in_len - t;
+-
+-		if (op == out && t <= 238) {
+-			*op++ = (17 + t);
+-		} else if (t <= 3) {
+-			op[-2] |= t;
+-		} else if (t <= 18) {
+-			*op++ = (t - 3);
+-		} else {
+-			size_t tt = t - 18;
+-
+-			*op++ = 0;
+-			while (tt > 255) {
+-				tt -= 255;
+-				*op++ = 0;
+-			}
+-
+-			*op++ = tt;
+-		}
+-		do {
+-			*op++ = *ii++;
+-		} while (--t > 0);
+-	}
+-
+-	*op++ = M4_MARKER | 1;
+-	*op++ = 0;
+-	*op++ = 0;
+-
+-	*out_len = op - out;
+-	return LZO_E_OK;
+-}
+-EXPORT_SYMBOL_GPL(lzo1x_1_compress);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("LZO1X-1 Compressor");
+-
++/*
++ *  LZO1X Compressor from LZO
++ *
++ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
++ *
++ *  The full LZO package can be found at:
++ *  http://www.oberhumer.com/opensource/lzo/
++ *
++ *  Changed for Linux kernel use by:
++ *  Nitin Gupta <nitingupta910@gmail.com>
++ *  Richard Purdie <rpurdie@openedhand.com>
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <asm/unaligned.h>
++#include <linux/lzo.h>
++#include "lzodefs.h"
++
++static noinline size_t
++lzo1x_1_do_compress(const unsigned char *in, size_t in_len,
++		    unsigned char *out, size_t *out_len,
++		    size_t ti, void *wrkmem)
++{
++	const unsigned char *ip;
++	unsigned char *op;
++	const unsigned char * const in_end = in + in_len;
++	const unsigned char * const ip_end = in + in_len - 20;
++	const unsigned char *ii;
++	lzo_dict_t * const dict = (lzo_dict_t *) wrkmem;
++
++	op = out;
++	ip = in;
++	ii = ip;
++	ip += ti < 4 ? 4 - ti : 0;
++
++	for (;;) {
++		const unsigned char *m_pos;
++		size_t t, m_len, m_off;
++		u32 dv;
++literal:
++		ip += 1 + ((ip - ii) >> 5);
++next:
++		if (unlikely(ip >= ip_end))
++			break;
++		dv = get_unaligned_le32(ip);
++		t = ((dv * 0x1824429d) >> (32 - D_BITS)) & D_MASK;
++		m_pos = in + dict[t];
++		dict[t] = (lzo_dict_t) (ip - in);
++		if (unlikely(dv != get_unaligned_le32(m_pos)))
++			goto literal;
++
++		ii -= ti;
++		ti = 0;
++		t = ip - ii;
++		if (t != 0) {
++			if (t <= 3) {
++				op[-2] |= t;
++				COPY4(op, ii);
++				op += t;
++			} else if (t <= 16) {
++				*op++ = (t - 3);
++				COPY8(op, ii);
++				COPY8(op + 8, ii + 8);
++				op += t;
++			} else {
++				if (t <= 18) {
++					*op++ = (t - 3);
++				} else {
++					size_t tt = t - 18;
++					*op++ = 0;
++					while (unlikely(tt > 255)) {
++						tt -= 255;
++						*op++ = 0;
++					}
++					*op++ = tt;
++				}
++				do {
++					COPY8(op, ii);
++					COPY8(op + 8, ii + 8);
++					op += 16;
++					ii += 16;
++					t -= 16;
++				} while (t >= 16);
++				if (t > 0) do {
++					*op++ = *ii++;
++				} while (--t > 0);
++			}
++		}
++
++		m_len = 4;
++		{
++#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && defined(LZO_USE_CTZ64)
++		u64 v;
++		v = get_unaligned((const u64 *) (ip + m_len)) ^
++		    get_unaligned((const u64 *) (m_pos + m_len));
++		if (unlikely(v == 0)) {
++			do {
++				m_len += 8;
++				v = get_unaligned((const u64 *) (ip + m_len)) ^
++				    get_unaligned((const u64 *) (m_pos + m_len));
++				if (unlikely(ip + m_len >= ip_end))
++					goto m_len_done;
++			} while (v == 0);
++		}
++#  if defined(__LITTLE_ENDIAN)
++		m_len += (unsigned) __builtin_ctzll(v) / 8;
++#  elif defined(__BIG_ENDIAN)
++		m_len += (unsigned) __builtin_clzll(v) / 8;
++#  else
++#    error "missing endian definition"
++#  endif
++#elif defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && defined(LZO_USE_CTZ32)
++		u32 v;
++		v = get_unaligned((const u32 *) (ip + m_len)) ^
++		    get_unaligned((const u32 *) (m_pos + m_len));
++		if (unlikely(v == 0)) {
++			do {
++				m_len += 4;
++				v = get_unaligned((const u32 *) (ip + m_len)) ^
++				    get_unaligned((const u32 *) (m_pos + m_len));
++				if (v != 0)
++					break;
++				m_len += 4;
++				v = get_unaligned((const u32 *) (ip + m_len)) ^
++				    get_unaligned((const u32 *) (m_pos + m_len));
++				if (unlikely(ip + m_len >= ip_end))
++					goto m_len_done;
++			} while (v == 0);
++		}
++#  if defined(__LITTLE_ENDIAN)
++		m_len += (unsigned) __builtin_ctz(v) / 8;
++#  elif defined(__BIG_ENDIAN)
++		m_len += (unsigned) __builtin_clz(v) / 8;
++#  else
++#    error "missing endian definition"
++#  endif
++#else
++		if (unlikely(ip[m_len] == m_pos[m_len])) {
++			do {
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (ip[m_len] != m_pos[m_len])
++					break;
++				m_len += 1;
++				if (unlikely(ip + m_len >= ip_end))
++					goto m_len_done;
++			} while (ip[m_len] == m_pos[m_len]);
++		}
++#endif
++		}
++m_len_done:
++
++		m_off = ip - m_pos;
++		ip += m_len;
++		ii = ip;
++		if (m_len <= M2_MAX_LEN && m_off <= M2_MAX_OFFSET) {
++			m_off -= 1;
++			*op++ = (((m_len - 1) << 5) | ((m_off & 7) << 2));
++			*op++ = (m_off >> 3);
++		} else if (m_off <= M3_MAX_OFFSET) {
++			m_off -= 1;
++			if (m_len <= M3_MAX_LEN)
++				*op++ = (M3_MARKER | (m_len - 2));
++			else {
++				m_len -= M3_MAX_LEN;
++				*op++ = M3_MARKER | 0;
++				while (unlikely(m_len > 255)) {
++					m_len -= 255;
++					*op++ = 0;
++				}
++				*op++ = (m_len);
++			}
++			*op++ = (m_off << 2);
++			*op++ = (m_off >> 6);
++		} else {
++			m_off -= 0x4000;
++			if (m_len <= M4_MAX_LEN)
++				*op++ = (M4_MARKER | ((m_off >> 11) & 8)
++						| (m_len - 2));
++			else {
++				m_len -= M4_MAX_LEN;
++				*op++ = (M4_MARKER | ((m_off >> 11) & 8));
++				while (unlikely(m_len > 255)) {
++					m_len -= 255;
++					*op++ = 0;
++				}
++				*op++ = (m_len);
++			}
++			*op++ = (m_off << 2);
++			*op++ = (m_off >> 6);
++		}
++		goto next;
++	}
++	*out_len = op - out;
++	return in_end - (ii - ti);
++}
++
++int lzo1x_1_compress(const unsigned char *in, size_t in_len,
++		     unsigned char *out, size_t *out_len,
++		     void *wrkmem)
++{
++	const unsigned char *ip = in;
++	unsigned char *op = out;
++	size_t l = in_len;
++	size_t t = 0;
++
++	while (l > 20) {
++		size_t ll = l <= (M4_MAX_OFFSET + 1) ? l : (M4_MAX_OFFSET + 1);
++		uintptr_t ll_end = (uintptr_t) ip + ll;
++		if ((ll_end + ((t + ll) >> 5)) <= ll_end)
++			break;
++		BUILD_BUG_ON(D_SIZE * sizeof(lzo_dict_t) > LZO1X_1_MEM_COMPRESS);
++		memset(wrkmem, 0, D_SIZE * sizeof(lzo_dict_t));
++		t = lzo1x_1_do_compress(ip, ll, op, out_len, t, wrkmem);
++		ip += ll;
++		op += *out_len;
++		l  -= ll;
++	}
++	t += l;
++
++	if (t > 0) {
++		const unsigned char *ii = in + in_len - t;
++
++		if (op == out && t <= 238) {
++			*op++ = (17 + t);
++		} else if (t <= 3) {
++			op[-2] |= t;
++		} else if (t <= 18) {
++			*op++ = (t - 3);
++		} else {
++			size_t tt = t - 18;
++			*op++ = 0;
++			while (tt > 255) {
++				tt -= 255;
++				*op++ = 0;
++			}
++			*op++ = tt;
++		}
++		if (t >= 16) do {
++			COPY8(op, ii);
++			COPY8(op + 8, ii + 8);
++			op += 16;
++			ii += 16;
++			t -= 16;
++		} while (t >= 16);
++		if (t > 0) do {
++			*op++ = *ii++;
++		} while (--t > 0);
++	}
++
++	*op++ = M4_MARKER | 1;
++	*op++ = 0;
++	*op++ = 0;
++
++	*out_len = op - out;
++	return LZO_E_OK;
++}
++EXPORT_SYMBOL_GPL(lzo1x_1_compress);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("LZO1X-1 Compressor");
+diff --git a/lib/lzo/lzo1x_decompress.c b/lib/lzo/lzo1x_decompress.c
+deleted file mode 100644
+index 7f1451f..0000000
+--- a/lib/lzo/lzo1x_decompress.c
++++ /dev/null
+@@ -1,247 +0,0 @@
+-/*
+- *  LZO1X Decompressor from MiniLZO
+- *
+- *  Copyright (C) 1996-2005 Markus F.X.J. Oberhumer <markus@oberhumer.com>
+- *
+- *  The full LZO package can be found at:
+- *  http://www.oberhumer.com/opensource/lzo/
+- *
+- *  Changed for kernel use by:
+- *  Nitin Gupta <nitingupta910@gmail.com>
+- *  Richard Purdie <rpurdie@openedhand.com>
+- */
+-
+-#include <asm/unaligned.h>
+-#include <common.h>
+-#include <lzo.h>
+-#include "lzodefs.h"
+-
+-#define HAVE_IP(x, ip_end, ip) ((size_t)(ip_end - ip) < (x))
+-#define HAVE_OP(x, op_end, op) ((size_t)(op_end - op) < (x))
+-#define HAVE_LB(m_pos, out, op) (m_pos < out || m_pos >= op)
+-
+-#define COPY4(dst, src)	\
+-		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
+-
+-STATIC int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
+-			unsigned char *out, size_t *out_len)
+-{
+-	const unsigned char * const ip_end = in + in_len;
+-	unsigned char * const op_end = out + *out_len;
+-	const unsigned char *ip = in, *m_pos;
+-	unsigned char *op = out;
+-	size_t t;
+-
+-	*out_len = 0;
+-
+-	if (*ip > 17) {
+-		t = *ip++ - 17;
+-		if (t < 4)
+-			goto match_next;
+-		if (HAVE_OP(t, op_end, op))
+-			goto output_overrun;
+-		if (HAVE_IP(t + 1, ip_end, ip))
+-			goto input_overrun;
+-		do {
+-			*op++ = *ip++;
+-		} while (--t > 0);
+-		goto first_literal_run;
+-	}
+-
+-	while ((ip < ip_end)) {
+-		t = *ip++;
+-		if (t >= 16)
+-			goto match;
+-		if (t == 0) {
+-			if (HAVE_IP(1, ip_end, ip))
+-				goto input_overrun;
+-			while (*ip == 0) {
+-				t += 255;
+-				ip++;
+-				if (HAVE_IP(1, ip_end, ip))
+-					goto input_overrun;
+-			}
+-			t += 15 + *ip++;
+-		}
+-		if (HAVE_OP(t + 3, op_end, op))
+-			goto output_overrun;
+-		if (HAVE_IP(t + 4, ip_end, ip))
+-			goto input_overrun;
+-
+-		COPY4(op, ip);
+-		op += 4;
+-		ip += 4;
+-		if (--t > 0) {
+-			if (t >= 4) {
+-				do {
+-					COPY4(op, ip);
+-					op += 4;
+-					ip += 4;
+-					t -= 4;
+-				} while (t >= 4);
+-				if (t > 0) {
+-					do {
+-						*op++ = *ip++;
+-					} while (--t > 0);
+-				}
+-			} else {
+-				do {
+-					*op++ = *ip++;
+-				} while (--t > 0);
+-			}
+-		}
+-
+-first_literal_run:
+-		t = *ip++;
+-		if (t >= 16)
+-			goto match;
+-		m_pos = op - (1 + M2_MAX_OFFSET);
+-		m_pos -= t >> 2;
+-		m_pos -= *ip++ << 2;
+-
+-		if (HAVE_LB(m_pos, out, op))
+-			goto lookbehind_overrun;
+-
+-		if (HAVE_OP(3, op_end, op))
+-			goto output_overrun;
+-		*op++ = *m_pos++;
+-		*op++ = *m_pos++;
+-		*op++ = *m_pos;
+-
+-		goto match_done;
+-
+-		do {
+-match:
+-			if (t >= 64) {
+-				m_pos = op - 1;
+-				m_pos -= (t >> 2) & 7;
+-				m_pos -= *ip++ << 3;
+-				t = (t >> 5) - 1;
+-				if (HAVE_LB(m_pos, out, op))
+-					goto lookbehind_overrun;
+-				if (HAVE_OP(t + 3 - 1, op_end, op))
+-					goto output_overrun;
+-				goto copy_match;
+-			} else if (t >= 32) {
+-				t &= 31;
+-				if (t == 0) {
+-					if (HAVE_IP(1, ip_end, ip))
+-						goto input_overrun;
+-					while (*ip == 0) {
+-						t += 255;
+-						ip++;
+-						if (HAVE_IP(1, ip_end, ip))
+-							goto input_overrun;
+-					}
+-					t += 31 + *ip++;
+-				}
+-				m_pos = op - 1;
+-				m_pos -= get_unaligned_le16(ip) >> 2;
+-				ip += 2;
+-			} else if (t >= 16) {
+-				m_pos = op;
+-				m_pos -= (t & 8) << 11;
+-
+-				t &= 7;
+-				if (t == 0) {
+-					if (HAVE_IP(1, ip_end, ip))
+-						goto input_overrun;
+-					while (*ip == 0) {
+-						t += 255;
+-						ip++;
+-						if (HAVE_IP(1, ip_end, ip))
+-							goto input_overrun;
+-					}
+-					t += 7 + *ip++;
+-				}
+-				m_pos -= get_unaligned_le16(ip) >> 2;
+-				ip += 2;
+-				if (m_pos == op)
+-					goto eof_found;
+-				m_pos -= 0x4000;
+-			} else {
+-				m_pos = op - 1;
+-				m_pos -= t >> 2;
+-				m_pos -= *ip++ << 2;
+-
+-				if (HAVE_LB(m_pos, out, op))
+-					goto lookbehind_overrun;
+-				if (HAVE_OP(2, op_end, op))
+-					goto output_overrun;
+-
+-				*op++ = *m_pos++;
+-				*op++ = *m_pos;
+-				goto match_done;
+-			}
+-
+-			if (HAVE_LB(m_pos, out, op))
+-				goto lookbehind_overrun;
+-			if (HAVE_OP(t + 3 - 1, op_end, op))
+-				goto output_overrun;
+-
+-			if (t >= 2 * 4 - (3 - 1) && (op - m_pos) >= 4) {
+-				COPY4(op, m_pos);
+-				op += 4;
+-				m_pos += 4;
+-				t -= 4 - (3 - 1);
+-				do {
+-					COPY4(op, m_pos);
+-					op += 4;
+-					m_pos += 4;
+-					t -= 4;
+-				} while (t >= 4);
+-				if (t > 0)
+-					do {
+-						*op++ = *m_pos++;
+-					} while (--t > 0);
+-			} else {
+-copy_match:
+-				*op++ = *m_pos++;
+-				*op++ = *m_pos++;
+-				do {
+-					*op++ = *m_pos++;
+-				} while (--t > 0);
+-			}
+-match_done:
+-			t = ip[-2] & 3;
+-			if (t == 0)
+-				break;
+-match_next:
+-			if (HAVE_OP(t, op_end, op))
+-				goto output_overrun;
+-			if (HAVE_IP(t + 1, ip_end, ip))
+-				goto input_overrun;
+-
+-			*op++ = *ip++;
+-			if (t > 1) {
+-				*op++ = *ip++;
+-				if (t > 2)
+-					*op++ = *ip++;
+-			}
+-
+-			t = *ip++;
+-		} while (ip < ip_end);
+-	}
+-
+-	*out_len = op - out;
+-	return LZO_E_EOF_NOT_FOUND;
+-
+-eof_found:
+-	*out_len = op - out;
+-	return (ip == ip_end ? LZO_E_OK :
+-		(ip < ip_end ? LZO_E_INPUT_NOT_CONSUMED : LZO_E_INPUT_OVERRUN));
+-input_overrun:
+-	*out_len = op - out;
+-	return LZO_E_INPUT_OVERRUN;
+-
+-output_overrun:
+-	*out_len = op - out;
+-	return LZO_E_OUTPUT_OVERRUN;
+-
+-lookbehind_overrun:
+-	*out_len = op - out;
+-	return LZO_E_LOOKBEHIND_OVERRUN;
+-}
+-
+-EXPORT_SYMBOL(lzo1x_decompress_safe);
+-
+diff --git a/lib/lzo/lzo1x_decompress_safe.c b/lib/lzo/lzo1x_decompress_safe.c
+new file mode 100644
+index 0000000..de795a3
+--- /dev/null
++++ b/lib/lzo/lzo1x_decompress_safe.c
+@@ -0,0 +1,230 @@
++/*
++ *  LZO1X Decompressor from LZO
++ *
++ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
++ *
++ *  The full LZO package can be found at:
++ *  http://www.oberhumer.com/opensource/lzo/
++ *
++ *  Changed for Linux kernel use by:
++ *  Nitin Gupta <nitingupta910@gmail.com>
++ *  Richard Purdie <rpurdie@openedhand.com>
++ */
++
++#include <asm/unaligned.h>
++#include <common.h>
++#include <lzo.h>
++#include "lzodefs.h"
++
++#define HAVE_IP(x)      ((size_t)(ip_end - ip) >= (size_t)(x))
++#define HAVE_OP(x)      ((size_t)(op_end - op) >= (size_t)(x))
++#define NEED_IP(x)      if (!HAVE_IP(x)) goto input_overrun
++#define NEED_OP(x)      if (!HAVE_OP(x)) goto output_overrun
++#define TEST_LB(m_pos)  if ((m_pos) < out) goto lookbehind_overrun
++
++int lzo1x_decompress_safe(const unsigned char *in, size_t in_len,
++			unsigned char *out, size_t *out_len)
++{
++	unsigned char *op;
++	const unsigned char *ip;
++	size_t t, next;
++	size_t state = 0;
++	const unsigned char *m_pos;
++	const unsigned char * const ip_end = in + in_len;
++	unsigned char * const op_end = out + *out_len;
++
++	op = out;
++	ip = in;
++
++	if (unlikely(in_len < 3))
++		goto input_overrun;
++	if (*ip > 17) {
++		t = *ip++ - 17;
++		if (t < 4) {
++			next = t;
++			goto match_next;
++		}
++		goto copy_literal_run;
++	}
++
++	for (;;) {
++		t = *ip++;
++		if (t < 16) {
++			if (likely(state == 0)) {
++				if (unlikely(t == 0)) {
++					while (unlikely(*ip == 0)) {
++						t += 255;
++						ip++;
++						NEED_IP(1);
++					}
++					t += 15 + *ip++;
++				}
++				t += 3;
++copy_literal_run:
++#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)
++				if (likely(HAVE_IP(t + 15) && HAVE_OP(t + 15))) {
++					const unsigned char *ie = ip + t;
++					unsigned char *oe = op + t;
++					do {
++						COPY8(op, ip);
++						op += 8;
++						ip += 8;
++						COPY8(op, ip);
++						op += 8;
++						ip += 8;
++					} while (ip < ie);
++					ip = ie;
++					op = oe;
++				} else
++#endif
++				{
++					NEED_OP(t);
++					NEED_IP(t + 3);
++					do {
++						*op++ = *ip++;
++					} while (--t > 0);
++				}
++				state = 4;
++				continue;
++			} else if (state != 4) {
++				next = t & 3;
++				m_pos = op - 1;
++				m_pos -= t >> 2;
++				m_pos -= *ip++ << 2;
++				TEST_LB(m_pos);
++				NEED_OP(2);
++				op[0] = m_pos[0];
++				op[1] = m_pos[1];
++				op += 2;
++				goto match_next;
++			} else {
++				next = t & 3;
++				m_pos = op - (1 + M2_MAX_OFFSET);
++				m_pos -= t >> 2;
++				m_pos -= *ip++ << 2;
++				t = 3;
++			}
++		} else if (t >= 64) {
++			next = t & 3;
++			m_pos = op - 1;
++			m_pos -= (t >> 2) & 7;
++			m_pos -= *ip++ << 3;
++			t = (t >> 5) - 1 + (3 - 1);
++		} else if (t >= 32) {
++			t = (t & 31) + (3 - 1);
++			if (unlikely(t == 2)) {
++				while (unlikely(*ip == 0)) {
++					t += 255;
++					ip++;
++					NEED_IP(1);
++				}
++				t += 31 + *ip++;
++				NEED_IP(2);
++			}
++			m_pos = op - 1;
++			next = get_unaligned_le16(ip);
++			ip += 2;
++			m_pos -= next >> 2;
++			next &= 3;
++		} else {
++			m_pos = op;
++			m_pos -= (t & 8) << 11;
++			t = (t & 7) + (3 - 1);
++			if (unlikely(t == 2)) {
++				while (unlikely(*ip == 0)) {
++					t += 255;
++					ip++;
++					NEED_IP(1);
++				}
++				t += 7 + *ip++;
++				NEED_IP(2);
++			}
++			next = get_unaligned_le16(ip);
++			ip += 2;
++			m_pos -= next >> 2;
++			next &= 3;
++			if (m_pos == op)
++				goto eof_found;
++			m_pos -= 0x4000;
++		}
++		TEST_LB(m_pos);
++#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)
++		if (op - m_pos >= 8) {
++			unsigned char *oe = op + t;
++			if (likely(HAVE_OP(t + 15))) {
++				do {
++					COPY8(op, m_pos);
++					op += 8;
++					m_pos += 8;
++					COPY8(op, m_pos);
++					op += 8;
++					m_pos += 8;
++				} while (op < oe);
++				op = oe;
++				if (HAVE_IP(6)) {
++					state = next;
++					COPY4(op, ip);
++					op += next;
++					ip += next;
++					continue;
++				}
++			} else {
++				NEED_OP(t);
++				do {
++					*op++ = *m_pos++;
++				} while (op < oe);
++			}
++		} else
++#endif
++		{
++			unsigned char *oe = op + t;
++			NEED_OP(t);
++			op[0] = m_pos[0];
++			op[1] = m_pos[1];
++			op += 2;
++			m_pos += 2;
++			do {
++				*op++ = *m_pos++;
++			} while (op < oe);
++		}
++match_next:
++		state = next;
++		t = next;
++#if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS)
++		if (likely(HAVE_IP(6) && HAVE_OP(4))) {
++			COPY4(op, ip);
++			op += t;
++			ip += t;
++		} else
++#endif
++		{
++			NEED_IP(t + 3);
++			NEED_OP(t);
++			while (t > 0) {
++				*op++ = *ip++;
++				t--;
++			}
++		}
++	}
++
++eof_found:
++	*out_len = op - out;
++	return (t != 3       ? LZO_E_ERROR :
++		ip == ip_end ? LZO_E_OK :
++		ip <  ip_end ? LZO_E_INPUT_NOT_CONSUMED : LZO_E_INPUT_OVERRUN);
++
++input_overrun:
++	*out_len = op - out;
++	return LZO_E_INPUT_OVERRUN;
++
++output_overrun:
++	*out_len = op - out;
++	return LZO_E_OUTPUT_OVERRUN;
++
++lookbehind_overrun:
++	*out_len = op - out;
++	return LZO_E_LOOKBEHIND_OVERRUN;
++}
++
++EXPORT_SYMBOL(lzo1x_decompress_safe);
++
+diff --git a/lib/lzo/lzodefs.h b/lib/lzo/lzodefs.h
+index b6d482c..6710b83 100644
+--- a/lib/lzo/lzodefs.h
++++ b/lib/lzo/lzodefs.h
+@@ -1,19 +1,37 @@
+ /*
+  *  lzodefs.h -- architecture, OS and compiler specific defines
+  *
+- *  Copyright (C) 1996-2005 Markus F.X.J. Oberhumer <markus@oberhumer.com>
++ *  Copyright (C) 1996-2012 Markus F.X.J. Oberhumer <markus@oberhumer.com>
+  *
+  *  The full LZO package can be found at:
+  *  http://www.oberhumer.com/opensource/lzo/
+  *
+- *  Changed for kernel use by:
++ *  Changed for Linux kernel use by:
+  *  Nitin Gupta <nitingupta910@gmail.com>
+  *  Richard Purdie <rpurdie@openedhand.com>
+  */
+ 
+-#define LZO_VERSION		0x2020
+-#define LZO_VERSION_STRING	"2.02"
+-#define LZO_VERSION_DATE	"Oct 17 2005"
++
++#define COPY4(dst, src)	\
++		put_unaligned(get_unaligned((const u32 *)(src)), (u32 *)(dst))
++#if defined(__x86_64__)
++#define COPY8(dst, src)	\
++		put_unaligned(get_unaligned((const u64 *)(src)), (u64 *)(dst))
++#else
++#define COPY8(dst, src)	\
++		COPY4(dst, src); COPY4((dst) + 4, (src) + 4)
++#endif
++
++#if defined(__BIG_ENDIAN) && defined(__LITTLE_ENDIAN)
++#error "conflicting endian definitions"
++#elif defined(__x86_64__)
++#define LZO_USE_CTZ64	1
++#define LZO_USE_CTZ32	1
++#elif defined(__i386__) || defined(__powerpc__)
++#define LZO_USE_CTZ32	1
++#elif defined(__arm__) && (__LINUX_ARM_ARCH__ >= 5)
++#define LZO_USE_CTZ32	1
++#endif
+ 
+ #define M1_MAX_OFFSET	0x0400
+ #define M2_MAX_OFFSET	0x0800
+@@ -34,10 +52,8 @@
+ #define M3_MARKER	32
+ #define M4_MARKER	16
+ 
+-#define D_BITS		14
+-#define D_MASK		((1u << D_BITS) - 1)
++#define lzo_dict_t      unsigned short
++#define D_BITS		13
++#define D_SIZE		(1u << D_BITS)
++#define D_MASK		(D_SIZE - 1)
+ #define D_HIGH		((D_MASK >> 1) + 1)
+-
+-#define DX2(p, s1, s2)	(((((size_t)((p)[2]) << (s2)) ^ (p)[1]) \
+-							<< (s1)) ^ (p)[0])
+-#define DX3(p, s1, s2, s3)	((DX2((p)+1, s2, s3) << (s1)) ^ (p)[0])
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
