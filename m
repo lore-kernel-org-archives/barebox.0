@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo1.mail-out.ovh.net ([178.32.228.1])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNGwO-0003AX-U4
- for barebox@lists.infradead.org; Sat, 21 Sep 2013 06:45:19 +0000
-Received: from mail440.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 5DC3D1010054
- for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 08:44:53 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 21 Sep 2013 08:46:04 +0200
-Message-Id: <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20130921064503.GI1137@ns203013.ovh.net>
-References: <20130921064503.GI1137@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VNHyC-0003rS-1M
+ for barebox@lists.infradead.org; Sat, 21 Sep 2013 07:51:13 +0000
+Date: Sat, 21 Sep 2013 09:50:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130921075047.GJ30088@pengutronix.de>
+References: <CAO-21LPB36R6Gk1RiWah8-pinu3rsKEcN-DgeQZkT65VNCDiEA@mail.gmail.com>
+ <20130919073520.GS30088@pengutronix.de>
+ <CAO-21LOxC24toR=vwTJFx1RrkKX0U-cgbZXjh8UOhznm08Rv0Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAO-21LOxC24toR=vwTJFx1RrkKX0U-cgbZXjh8UOhznm08Rv0Q@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,177 +20,83 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] misc: add bootcount framework
-To: barebox@lists.infradead.org
+Subject: Re: Porting to a new board
+To: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Cc: barebox@lists.infradead.org
 
-The bootcount is always how many time the system start.
-To determine since when, this will depend on the driver implementation
-and your hardware feature.
+On Fri, Sep 20, 2013 at 04:02:44PM -0500, Allen Kennedy Jr. wrote:
+> Thanks for the great idea to start with a loaded image in ram.
+> 
+> I was able to get it to run, but I can't get the Ethernet to work.
+> I'm not entirely sure where to begin looking.
+> 
+> I hit devinfo and get:
+> <snip>
+>      `---- imx27-fec
+>           `---- miibus0
+>           `---- eth0
+> <...>
+> drivers:
+> <...>
+> SMSC LAN83C185
+> SMSC LAN8187
+> SMSC LAN8700
+> SMSC LAN911x Internal PHY
+> SMSC LAN8710/LAN8720
+> fec_imx
+> Generic PHY
+> </snip>
+> 
+> This would seem to indicate to me that the drivers are loading. And
+> that the register happened.
+> But I'm not sure where to go from here.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/misc/Kconfig            |  2 ++
- drivers/misc/Makefile           |  1 +
- drivers/misc/bootcount/Kconfig  | 12 +++++++++
- drivers/misc/bootcount/Makefile |  1 +
- drivers/misc/bootcount/core.c   | 54 +++++++++++++++++++++++++++++++++++++++++
- include/bootcount.h             | 31 +++++++++++++++++++++++
- 6 files changed, 101 insertions(+)
- create mode 100644 drivers/misc/bootcount/Kconfig
- create mode 100644 drivers/misc/bootcount/Makefile
- create mode 100644 drivers/misc/bootcount/core.c
- create mode 100644 include/bootcount.h
+What's the output of some network command, like for example 'dhcp'?
 
-diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-index 606490b..2532444 100644
---- a/drivers/misc/Kconfig
-+++ b/drivers/misc/Kconfig
-@@ -15,4 +15,6 @@ config JTAG
- 	help
- 	  Controls JTAG chains connected to I/O pins
- 
-+source "drivers/misc/bootcount/Kconfig"
-+
- endif # MISC_DEVICES
-diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-index b085577..6d94db0 100644
---- a/drivers/misc/Makefile
-+++ b/drivers/misc/Makefile
-@@ -3,3 +3,4 @@
- #
- 
- obj-$(CONFIG_JTAG)		+= jtag.o
-+obj-$(CONFIG_BOOTCOUNT)		+= bootcount/
-diff --git a/drivers/misc/bootcount/Kconfig b/drivers/misc/bootcount/Kconfig
-new file mode 100644
-index 0000000..77a1140
---- /dev/null
-+++ b/drivers/misc/bootcount/Kconfig
-@@ -0,0 +1,12 @@
-+#
-+# Boot Count devices
-+#
-+
-+menuconfig BOOTCOUNT
-+	bool "Boot Count"
-+	help
-+	  Add support for boot count devices
-+
-+if BOOTCOUNT
-+
-+endif # BOOTCOUNT
-diff --git a/drivers/misc/bootcount/Makefile b/drivers/misc/bootcount/Makefile
-new file mode 100644
-index 0000000..3c02ba1
---- /dev/null
-+++ b/drivers/misc/bootcount/Makefile
-@@ -0,0 +1 @@
-+obj-y		+= core.o
-diff --git a/drivers/misc/bootcount/core.c b/drivers/misc/bootcount/core.c
-new file mode 100644
-index 0000000..91274b3
---- /dev/null
-+++ b/drivers/misc/bootcount/core.c
-@@ -0,0 +1,54 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 Only
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <bootcount.h>
-+
-+static struct bootcount_driver *bd;
-+
-+static struct device_d bootcount_device = {
-+	.name = "bootcount",
-+	.id = DEVICE_ID_SINGLE,
-+};
-+
-+static int bootcount_count_set(struct param_d *p, void *priv)
-+{
-+	struct bootcount_driver *bd = priv;
-+
-+	bd->set(bd);
-+
-+	return 0;
-+}
-+
-+int register_bootcount(struct bootcount_driver *drv)
-+{
-+	if (bd)
-+		return -EBUSY;
-+
-+	bootcount_device.parent = drv->parent;
-+	register_device(&bootcount_device);
-+
-+	bd = drv;
-+
-+	bd->dev = &bootcount_device;
-+	dev_add_param_int(bd->dev, "count", bootcount_count_set,
-+				NULL, &bd->count, "%d", bd);
-+
-+	return 0;
-+}
-+
-+static int bootcount_inc(void)
-+{
-+	if (!bd)
-+		return 0;
-+
-+	bd->count++;
-+	bd->set(bd);
-+
-+	return 0;
-+}
-+late_initcall(bootcount_inc);
-diff --git a/include/bootcount.h b/include/bootcount.h
-new file mode 100644
-index 0000000..2ef36b5
---- /dev/null
-+++ b/include/bootcount.h
-@@ -0,0 +1,31 @@
-+/*
-+ * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * GPLv2 Only
-+ */
-+
-+#ifndef __BOOTCOUNT_H__
-+#define __BOOTCOUNT_H__
-+
-+#include <driver.h>
-+
-+struct bootcount_driver {
-+	void (*set)(struct bootcount_driver *d);
-+	void *priv;
-+
-+	int count;
-+
-+	struct device_d *dev;
-+	struct device_d *parent;
-+};
-+
-+#ifdef CONFIG_BOOTCOUNT
-+int register_bootcount(struct bootcount_driver *d);
-+#else
-+static inline int register_bootcount(struct bootcount_driver *d)
-+{
-+	return 0
-+}
-+#endif
-+
-+#endif /* __BOOTCOUNT_H__ */
+What's the output of 'md -w -s /dev/phy0'?
+
+Problems with networking usually go down to problems with the phy.
+What's the content of the platform data for the FEC? It should look
+like:
+
+static struct fec_platform_data fec_info = {
+        .xcv_type = PHY_INTERFACE_MODE_MII,
+        .phy_addr = -1,
+};
+
+
+With xcv_type being MII (I think it's the only possibility on i.MX27)
+and phy_addr to either -1 for autodetecting the address or the correct
+address. Use -1 to be on the safe side.
+
+When 'md -w -s /dev/phy0' doesn't show any sensible register output then
+your pinmux may be wrong or you haven't brought your phy out of reset
+with some gpio.
+
+> 
+> In another thread... the advice was given to check the MII address,
+> although I'm not sure how to interpret the data sheet.
+> It looks as though the address is 31.  But I could be wrong.  When I
+> try 31, and do a DHCP the processor hangs.
+> So I tried 0, and the processor hangs.
+> 
+> Is there a "scan the bus mode" I can use in the fec driver?  I don't
+> see one, but I may be looking in the wrong spot.
+
+It's not in the FEC driver but in the generic MII support. As said, use
+-1 as phy id.
+
+Sascha
+
 -- 
-1.8.4.rc1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
