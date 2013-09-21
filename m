@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
- helo=mo1.mail-out.ovh.net)
+Received: from mo1.mail-out.ovh.net ([178.32.228.1])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNGvN-00039t-6A
- for barebox@lists.infradead.org; Sat, 21 Sep 2013 06:44:14 +0000
+ id 1VNGwO-0003Aa-U9
+ for barebox@lists.infradead.org; Sat, 21 Sep 2013 06:45:18 +0000
 Received: from mail440.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 69430101004F
- for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 08:43:49 +0200 (CEST)
-Date: Sat, 21 Sep 2013 08:45:03 +0200
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 952B7101005E
+ for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 08:44:53 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130921064503.GI1137@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 21 Sep 2013 08:46:07 +0200
+Message-Id: <1379745967-4575-4-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20130921064503.GI1137@ns203013.ovh.net>
+ <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,62 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4 v2] introduce bootcount support
+Subject: [PATCH 4/4] animeo_ip: add bootcount support
 To: barebox@lists.infradead.org
 
-Hi,
+As we use a backup register with a backup battery, the boot count is since
+ever.
 
-	v2:
-	move count params to framework
+when updating to defaultenv-2 we will use it to decide what to boot
 
-	add basic register driver
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/animeo_ip/init.c     | 2 ++
+ arch/arm/configs/animeo_ip_defconfig | 2 ++
+ 2 files changed, 4 insertions(+)
 
-	when you want to detect boot faillure you need to count the number of
-	boot and if the linux boot correctly it will clear it
+diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+index 56b8df2..08fef58 100644
+--- a/arch/arm/boards/animeo_ip/init.c
++++ b/arch/arm/boards/animeo_ip/init.c
+@@ -219,6 +219,8 @@ static int animeo_ip_devices_init(void)
+ 	animeo_ip_add_device_mci();
+ 	animeo_ip_add_device_buttons();
+ 	animeo_ip_add_device_led();
++	add_generic_device("somfy_bootcount", DEVICE_ID_SINGLE, NULL, AT91SAM9260_BASE_GPBR + 2 * 4,
++			4, IORESOURCE_MEM, NULL);
+ 
+ 	armlinux_set_bootparams((void *)(AT91_CHIPSELECT_1 + 0x100));
+ 	/*
+diff --git a/arch/arm/configs/animeo_ip_defconfig b/arch/arm/configs/animeo_ip_defconfig
+index 23e7278..f4463b7 100644
+--- a/arch/arm/configs/animeo_ip_defconfig
++++ b/arch/arm/configs/animeo_ip_defconfig
+@@ -68,6 +68,8 @@ CONFIG_UBI=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_ATMEL=y
++CONFIG_MISC_DEVICES=y
++CONFIG_SOMFY_BOOTCOUNT=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_BICOLOR=y
+-- 
+1.8.4.rc1
 
-The following changes since commit fe4117357f8f304a08b957eded8ede9db8dafdcf:
-
-  Add missing dependency ENV_HANDLING for OF_BAREBOX_DRIVER option (2013-09-18 10:24:29 +0200)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/bootcount
-
-for you to fetch changes up to aca14c8908c1e33aa9b3d7847765ebf04d963d54:
-
-  animeo_ip: add bootcount support (2013-09-21 14:38:41 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (4):
-      misc: add bootcount framework
-      bootcount: add simple register support
-      bootcount: add somfy bootcount support
-      animeo_ip: add bootcount support
-
- arch/arm/boards/animeo_ip/init.c     |   2 ++
- arch/arm/configs/animeo_ip_defconfig |   2 ++
- drivers/misc/Kconfig                 |   2 ++
- drivers/misc/Makefile                |   1 +
- drivers/misc/bootcount/Kconfig       |  22 +++++++++++++++++
- drivers/misc/bootcount/Makefile      |   3 +++
- drivers/misc/bootcount/core.c        |  54 +++++++++++++++++++++++++++++++++++++++++
- drivers/misc/bootcount/register.c    | 107 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/misc/bootcount/somfy.c       | 128 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/bootcount.h                  |  31 ++++++++++++++++++++++++
- 10 files changed, 352 insertions(+)
- create mode 100644 drivers/misc/bootcount/Kconfig
- create mode 100644 drivers/misc/bootcount/Makefile
- create mode 100644 drivers/misc/bootcount/core.c
- create mode 100644 drivers/misc/bootcount/register.c
- create mode 100644 drivers/misc/bootcount/somfy.c
- create mode 100644 include/bootcount.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
