@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNOy9-0001dc-Sa
- for barebox@lists.infradead.org; Sat, 21 Sep 2013 15:19:40 +0000
+ id 1VNPJZ-0001zo-U2
+ for barebox@lists.infradead.org; Sat, 21 Sep 2013 15:41:46 +0000
 Received: from mail614.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 4F7D6FFAD9B
- for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 17:19:16 +0200 (CEST)
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 5A65DFFA97B
+ for <barebox@lists.infradead.org>; Sat, 21 Sep 2013 17:41:24 +0200 (CEST)
+Date: Sat, 21 Sep 2013 17:42:39 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sat, 21 Sep 2013 17:20:29 +0200
-Message-Id: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130921154239.GA31585@ns203013.ovh.net>
+References: <1379569815-14033-1-git-send-email-plagnioj@jcrosoft.com>
+ <1379569815-14033-2-git-send-email-plagnioj@jcrosoft.com>
+ <20130919112107.GA24065@ns203013.ovh.net>
+ <20130920070118.GC30088@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130920070118.GC30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,91 +25,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] bootm: update os_entry from uimage
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] versatilepb: force net a 100Mpps
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-if not uimage set 0 by default
+On 09:01 Fri 20 Sep     , Sascha Hauer wrote:
+> On Thu, Sep 19, 2013 at 01:21:07PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 07:50 Thu 19 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > 
+> > ignore this one it'a handle already at driver level
+> 
+> Ok, I assume I shall ignore the whole series.
 
-today we do not see the issue as the kernel entry point is the same as the
-load_addr but on other binary its not necessary the case
+yes ignore it
 
-as today we ignore the entry point set in the uimage and just assume it's the
-same as the load_addr
-
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- commands/bootm.c |  1 +
- common/bootm.c   | 15 ++++++++++++++-
- 2 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/commands/bootm.c b/commands/bootm.c
-index a4004df..7acf341 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
- 
- 	data.initrd_address = UIMAGE_INVALID_ADDRESS;
- 	data.os_address = UIMAGE_SOME_ADDRESS;
-+	data.os_entry = UIMAGE_SOME_ADDRESS;
- 	data.verify = 0;
- 	data.verbose = 0;
- 
-diff --git a/common/bootm.c b/common/bootm.c
-index 1987a09..17c8082 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
- static int bootm_open_os_uimage(struct image_data *data)
- {
- 	int ret;
-+	int update_ep = 0;
- 
- 	data->os = uimage_open(data->os_file);
- 	if (!data->os)
-@@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
- 		return -EINVAL;
- 	}
- 
--	if (data->os_address == UIMAGE_SOME_ADDRESS)
-+	if (data->os_address == UIMAGE_SOME_ADDRESS) {
- 		data->os_address = data->os->header.ih_load;
-+		update_ep = 1;
-+	}
- 
- 	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
- 		data->os_res = uimage_load_to_sdram(data->os, 0,
-@@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
- 			uimage_close(data->os);
- 			return -ENOMEM;
- 		}
-+
-+	}
-+
-+	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
-+		data->os_entry = data->os->header.ih_ep;
-+		if (data->os_address != UIMAGE_INVALID_ADDRESS)
-+			data->os_entry -= data->os_address;
- 	}
- 
- 	return 0;
-@@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
- 		}
- 	}
- 
-+	if (data->os_entry == UIMAGE_SOME_ADDRESS)
-+		data->os_entry = 0;
-+
- 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
- 
- 		initrd_type = file_name_detect_type(data->initrd_file);
--- 
-1.8.4.rc3
-
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> > 
+> > Best Regards,
+> > J.
+> > > ---
+> > >  arch/arm/boards/versatile/versatilepb.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm/boards/versatile/versatilepb.c b/arch/arm/boards/versatile/versatilepb.c
+> > > index 2eb7473..fa0585d 100644
+> > > --- a/arch/arm/boards/versatile/versatilepb.c
+> > > +++ b/arch/arm/boards/versatile/versatilepb.c
+> > > @@ -28,6 +28,7 @@
+> > >  #include <environment.h>
+> > >  #include <partition.h>
+> > >  #include <sizes.h>
+> > > +#include <linux/phy.h>
+> > >  
+> > >  static int vpb_console_init(void)
+> > >  {
+> > > @@ -44,6 +45,8 @@ static int vpb_mem_init(void)
+> > >  }
+> > >  mem_initcall(vpb_mem_init);
+> > >  
+> > > +static int phy_flags = PHYLIB_FORCE_100;
+> > > +
+> > >  static int vpb_devices_init(void)
+> > >  {
+> > >  	add_cfi_flash_device(DEVICE_ID_DYNAMIC, VERSATILE_FLASH_BASE, VERSATILE_FLASH_SIZE, 0);
+> > > @@ -52,7 +55,7 @@ static int vpb_devices_init(void)
+> > >  	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
+> > >  
+> > >  	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL, VERSATILE_ETH_BASE,
+> > > -			64 * 1024, IORESOURCE_MEM, NULL);
+> > > +			64 * 1024, IORESOURCE_MEM, &phy_flags);
+> > >  
+> > >  	armlinux_set_architecture(MACH_TYPE_VERSATILE_PB);
+> > >  	armlinux_set_bootparams((void *)(0x00000100));
+> > > -- 
+> > > 1.8.4.rc1
+> > > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
