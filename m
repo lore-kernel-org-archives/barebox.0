@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNHyC-0003rS-1M
- for barebox@lists.infradead.org; Sat, 21 Sep 2013 07:51:13 +0000
-Date: Sat, 21 Sep 2013 09:50:47 +0200
+ id 1VNIHA-00042M-50
+ for barebox@lists.infradead.org; Sat, 21 Sep 2013 08:10:49 +0000
+Date: Sat, 21 Sep 2013 10:10:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130921075047.GJ30088@pengutronix.de>
-References: <CAO-21LPB36R6Gk1RiWah8-pinu3rsKEcN-DgeQZkT65VNCDiEA@mail.gmail.com>
- <20130919073520.GS30088@pengutronix.de>
- <CAO-21LOxC24toR=vwTJFx1RrkKX0U-cgbZXjh8UOhznm08Rv0Q@mail.gmail.com>
+Message-ID: <20130921081026.GK30088@pengutronix.de>
+References: <1379404339-6716-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130918070049.GK30088@pengutronix.de>
+ <20130919115638.GC24065@ns203013.ovh.net>
+ <20130920062927.GU30088@pengutronix.de>
+ <20130920080257.GH1137@ns203013.ovh.net>
+ <20130920115659.GG30088@pengutronix.de>
+ <20130921065343.GJ1137@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAO-21LOxC24toR=vwTJFx1RrkKX0U-cgbZXjh8UOhznm08Rv0Q@mail.gmail.com>
+In-Reply-To: <20130921065343.GJ1137@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,71 +28,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting to a new board
-To: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Subject: Re: [PATCH 1/2] filetype: add arm u-boot support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 20, 2013 at 04:02:44PM -0500, Allen Kennedy Jr. wrote:
-> Thanks for the great idea to start with a loaded image in ram.
+On Sat, Sep 21, 2013 at 08:53:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 13:56 Fri 20 Sep     , Sascha Hauer wrote:
+> > On Fri, Sep 20, 2013 at 10:02:57AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 08:29 Fri 20 Sep     , Sascha Hauer wrote:
+> > > > On Thu, Sep 19, 2013 at 01:56:38PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > On 09:00 Wed 18 Sep     , Sascha Hauer wrote:
+> > > > > > On Tue, Sep 17, 2013 at 09:52:18AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > > > > ---
+> > > > > > >  common/filetype.c  | 3 +++
+> > > > > > >  include/filetype.h | 1 +
+> > > > > > >  2 files changed, 4 insertions(+)
+> > > > > > > 
+> > > > > > > diff --git a/common/filetype.c b/common/filetype.c
+> > > > > > > index 7507d85..59ea25a 100644
+> > > > > > > --- a/common/filetype.c
+> > > > > > > +++ b/common/filetype.c
+> > > > > > > @@ -35,6 +35,7 @@ static const struct filetype_str filetype_str[] = {
+> > > > > > >  	[filetype_lzo_compressed] = { "lzo compressed", "lzo" },
+> > > > > > >  	[filetype_lz4_compressed] = { "lz4 compressed", "lz4" },
+> > > > > > >  	[filetype_arm_barebox] = { "arm barebox image", "arm-barebox" },
+> > > > > > > +	[filetype_arm_uboot] = { "arm u-boot image", "arm-u-boot" },
+> > > > > > >  	[filetype_uimage] = { "U-Boot uImage", "u-boot" },
+> > > > > > >  	[filetype_ubi] = { "UBI image", "ubi" },
+> > > > > > >  	[filetype_jffs2] = { "JFFS2 image", "jffs2" },
+> > > > > > > @@ -226,6 +227,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+> > > > > > >  
+> > > > > > >  	if (is_barebox_arm_head(_buf))
+> > > > > > >  		return filetype_arm_barebox;
+> > > > > > > +	if (buf[15] == 0xdeadbeef)
+> > > > > > > +		return filetype_arm_uboot;
+> > > > > > 
+> > > > > > 0xdeadbeef is such a widely used placeholder that we should use it for
+> > > > > > filetype detection. Also, I don't think that U-Boot ever specified
+> > > > > > 0xdeadbeef at this offset as a fixed value. It could be changed without
+> > > > > > notice.
+> > > > > 
+> > > > > on ARM it's keeped for years > 7 IIRC
+> > > > 
+> > > > Yes, and there's no indication that it will change. Anyway, this was
+> > > > never meant as an API and everybody uses 0xdeadbeef as placeholder.
+> > > 
+> > > so the question remain how to boot a u-boot that can be a second stage
+> > 
+> > 'go'? You could also embed it in an uImage if you really want to use the
+> > bootm command.
 > 
-> I was able to get it to run, but I can't get the Ethernet to work.
-> I'm not entirely sure where to begin looking.
-> 
-> I hit devinfo and get:
-> <snip>
->      `---- imx27-fec
->           `---- miibus0
->           `---- eth0
-> <...>
-> drivers:
-> <...>
-> SMSC LAN83C185
-> SMSC LAN8187
-> SMSC LAN8700
-> SMSC LAN911x Internal PHY
-> SMSC LAN8710/LAN8720
-> fec_imx
-> Generic PHY
-> </snip>
-> 
-> This would seem to indicate to me that the drivers are loading. And
-> that the register happened.
-> But I'm not sure where to go from here.
+> I really hate the go you need to load in ram and then do the go
 
-What's the output of some network command, like for example 'dhcp'?
-
-What's the output of 'md -w -s /dev/phy0'?
-
-Problems with networking usually go down to problems with the phy.
-What's the content of the platform data for the FEC? It should look
-like:
-
-static struct fec_platform_data fec_info = {
-        .xcv_type = PHY_INTERFACE_MODE_MII,
-        .phy_addr = -1,
-};
-
-
-With xcv_type being MII (I think it's the only possibility on i.MX27)
-and phy_addr to either -1 for autodetecting the address or the correct
-address. Use -1 to be on the safe side.
-
-When 'md -w -s /dev/phy0' doesn't show any sensible register output then
-your pinmux may be wrong or you haven't brought your phy out of reset
-with some gpio.
-
-> 
-> In another thread... the advice was given to check the MII address,
-> although I'm not sure how to interpret the data sheet.
-> It looks as though the address is 31.  But I could be wrong.  When I
-> try 31, and do a DHCP the processor hangs.
-> So I tried 0, and the processor hangs.
-> 
-> Is there a "scan the bus mode" I can use in the fec driver?  I don't
-> see one, but I may be looking in the wrong spot.
-
-It's not in the FEC driver but in the generic MII support. As said, use
--1 as phy id.
+You could also use the -f option to bootm instead.
 
 Sascha
 
