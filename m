@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNoP9-00053K-IC
- for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:29:12 +0000
-Date: Sun, 22 Sep 2013 20:28:50 +0200
+ id 1VNoPO-00053O-IE
+ for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:29:27 +0000
+Date: Sun, 22 Sep 2013 20:29:05 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130922182850.GO30088@pengutronix.de>
-References: <1379826744-7499-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130922182905.GP30088@pengutronix.de>
+References: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379826744-7499-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,18 +22,12 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v3] smc91111: add fixup for qemu phy support
+Subject: Re: [PATCH 1/2] console_simple: set baudrate at register
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Sep 22, 2013 at 07:12:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> as today qemu does not support phy, it will return always 0x0 to any read
-> on the mii bus. So the phy_id is 0 and the link is donw.
-> 
-> To have the norwork running on versatilpb & other qenu board for the link up
-> at 100Mbps.
-> 
-> Only enable if qemu_fixup is set.
+On Sun, Sep 22, 2013 at 08:39:55AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as the console is always enable
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
@@ -42,101 +36,25 @@ Applied, thanks
 Sascha
 
 > ---
->  drivers/net/smc91111.c | 30 +++++++++++++++++++++++++++++-
->  include/net/smc91111.h | 14 ++++++++++++++
->  2 files changed, 43 insertions(+), 1 deletion(-)
->  create mode 100644 include/net/smc91111.h
+>  common/console_simple.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
-> index b868cbf..ba81e24 100644
-> --- a/drivers/net/smc91111.c
-> +++ b/drivers/net/smc91111.c
-> @@ -66,6 +66,7 @@
->  #include <clock.h>
->  #include <io.h>
->  #include <linux/phy.h>
-> +#include <net/smc91111.h>
+> diff --git a/common/console_simple.c b/common/console_simple.c
+> index 5c80dcd..e1d4c85 100644
+> --- a/common/console_simple.c
+> +++ b/common/console_simple.c
+> @@ -89,6 +89,11 @@ int console_register(struct console_device *newcdev)
+>  	console_list.prev = console_list.next = &newcdev->list;
+>  	newcdev->list.prev = newcdev->list.next = &console_list;
 >  
->  /*---------------------------------------------------------------
->   .
-> @@ -446,6 +447,7 @@ struct smc91c111_priv {
->  	struct mii_bus miibus;
->  	struct accessors a;
->  	void __iomem *base;
-> +	int qemu_fixup;
->  };
->  
->  #if (SMC_DEBUG > 2 )
-> @@ -882,6 +884,7 @@ static void smc91c111_enable(struct eth_device *edev)
->  static int smc91c111_eth_open(struct eth_device *edev)
->  {
->  	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
-> +	int ret;
->  
->  	/* Configure the Receive/Phy Control register */
->  	SMC_SELECT_BANK(priv, 0);
-> @@ -889,8 +892,27 @@ static int smc91c111_eth_open(struct eth_device *edev)
->  
->  	smc91c111_enable(edev);
->  
-> -	return phy_device_connect(edev, &priv->miibus, 0, NULL,
-> +	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
->  				 0, PHY_INTERFACE_MODE_NA);
-> +
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (priv->qemu_fixup && edev->phydev->phy_id == 0x00000000) {
-> +		struct phy_device *dev = edev->phydev;
-> +
-> +		dev->speed = SPEED_100;
-> +		dev->duplex = DUPLEX_FULL;
-> +		dev->autoneg = !AUTONEG_ENABLE;
-> +		dev->force = 1;
-> +		dev->link = 1;
-> +
-> +		dev_info(edev->parent, "phy with id 0x%08x detected this might be qemu\n",
-> +			dev->phy_id);
-> +		dev_info(edev->parent, "force link at 100Mpbs\n");
+> +	if (newcdev->setbrg) {
+> +		newcdev->baudrate = CONFIG_BAUDRATE;
+> +		newcdev->setbrg(newcdev, newcdev->baudrate);
 > +	}
 > +
-> +	return 0;
->  }
+>  	barebox_banner();
 >  
->  static int smc91c111_eth_send(struct eth_device *edev, void *packet,
-> @@ -1286,6 +1308,12 @@ static int smc91c111_probe(struct device_d *dev)
->  
->  	priv = edev->priv;
->  
-> +	if (dev->platform_data) {
-> +		struct smc91c111_pdata *pdata = dev->platform_data;
-> +
-> +		priv->qemu_fixup = pdata->qemu_fixup;
-> +	}
-> +
->  	priv->a = access_via_32bit;
->  
->  	edev->init = smc91c111_init_dev;
-> diff --git a/include/net/smc91111.h b/include/net/smc91111.h
-> new file mode 100644
-> index 0000000..0b2d49b
-> --- /dev/null
-> +++ b/include/net/smc91111.h
-> @@ -0,0 +1,14 @@
-> +/*
-> + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
-> + *
-> + * Under GPLv2 only
-> + */
-> +
-> +#ifndef __SMC91111_H__
-> +#define __SMC91111_H__
-> +
-> +struct smc91c111_pdata {
-> +	int qemu_fixup;
-> +};
-> +
-> +#endif /* __SMC91111_H__ */
+>  	return 0;
 > -- 
 > 1.8.4.rc3
 > 
