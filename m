@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNoOh-00052g-8U
- for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:28:44 +0000
-Date: Sun, 22 Sep 2013 20:28:21 +0200
+ id 1VNoP9-00053K-IC
+ for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:29:12 +0000
+Date: Sun, 22 Sep 2013 20:28:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130922182821.GN30088@pengutronix.de>
-References: <20130920054640.GD1137@ns203013.ovh.net>
- <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130922182850.GO30088@pengutronix.de>
+References: <1379826744-7499-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379826744-7499-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,72 +22,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] introduce helper to generate mac address with OUI
+Subject: Re: [PATCH 1/2 v3] smc91111: add fixup for qemu phy support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 20, 2013 at 07:47:43AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> use random mac address with fixed OUI provided
+On Sun, Sep 22, 2013 at 07:12:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> as today qemu does not support phy, it will return always 0x0 to any read
+> on the mii bus. So the phy_id is 0 and the link is donw.
+> 
+> To have the norwork running on versatilpb & other qenu board for the link up
+> at 100Mbps.
+> 
+> Only enable if qemu_fixup is set.
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
+Applied, thanks
+
+Sascha
+
 > ---
->  include/local_mac_address.h | 40 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
->  create mode 100644 include/local_mac_address.h
+>  drivers/net/smc91111.c | 30 +++++++++++++++++++++++++++++-
+>  include/net/smc91111.h | 14 ++++++++++++++
+>  2 files changed, 43 insertions(+), 1 deletion(-)
+>  create mode 100644 include/net/smc91111.h
 > 
-> diff --git a/include/local_mac_address.h b/include/local_mac_address.h
+> diff --git a/drivers/net/smc91111.c b/drivers/net/smc91111.c
+> index b868cbf..ba81e24 100644
+> --- a/drivers/net/smc91111.c
+> +++ b/drivers/net/smc91111.c
+> @@ -66,6 +66,7 @@
+>  #include <clock.h>
+>  #include <io.h>
+>  #include <linux/phy.h>
+> +#include <net/smc91111.h>
+>  
+>  /*---------------------------------------------------------------
+>   .
+> @@ -446,6 +447,7 @@ struct smc91c111_priv {
+>  	struct mii_bus miibus;
+>  	struct accessors a;
+>  	void __iomem *base;
+> +	int qemu_fixup;
+>  };
+>  
+>  #if (SMC_DEBUG > 2 )
+> @@ -882,6 +884,7 @@ static void smc91c111_enable(struct eth_device *edev)
+>  static int smc91c111_eth_open(struct eth_device *edev)
+>  {
+>  	struct smc91c111_priv *priv = (struct smc91c111_priv *)edev->priv;
+> +	int ret;
+>  
+>  	/* Configure the Receive/Phy Control register */
+>  	SMC_SELECT_BANK(priv, 0);
+> @@ -889,8 +892,27 @@ static int smc91c111_eth_open(struct eth_device *edev)
+>  
+>  	smc91c111_enable(edev);
+>  
+> -	return phy_device_connect(edev, &priv->miibus, 0, NULL,
+> +	ret = phy_device_connect(edev, &priv->miibus, 0, NULL,
+>  				 0, PHY_INTERFACE_MODE_NA);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (priv->qemu_fixup && edev->phydev->phy_id == 0x00000000) {
+> +		struct phy_device *dev = edev->phydev;
+> +
+> +		dev->speed = SPEED_100;
+> +		dev->duplex = DUPLEX_FULL;
+> +		dev->autoneg = !AUTONEG_ENABLE;
+> +		dev->force = 1;
+> +		dev->link = 1;
+> +
+> +		dev_info(edev->parent, "phy with id 0x%08x detected this might be qemu\n",
+> +			dev->phy_id);
+> +		dev_info(edev->parent, "force link at 100Mpbs\n");
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static int smc91c111_eth_send(struct eth_device *edev, void *packet,
+> @@ -1286,6 +1308,12 @@ static int smc91c111_probe(struct device_d *dev)
+>  
+>  	priv = edev->priv;
+>  
+> +	if (dev->platform_data) {
+> +		struct smc91c111_pdata *pdata = dev->platform_data;
+> +
+> +		priv->qemu_fixup = pdata->qemu_fixup;
+> +	}
+> +
+>  	priv->a = access_via_32bit;
+>  
+>  	edev->init = smc91c111_init_dev;
+> diff --git a/include/net/smc91111.h b/include/net/smc91111.h
 > new file mode 100644
-> index 0000000..3920334
+> index 0000000..0b2d49b
 > --- /dev/null
-> +++ b/include/local_mac_address.h
-> @@ -0,0 +1,40 @@
+> +++ b/include/net/smc91111.h
+> @@ -0,0 +1,14 @@
 > +/*
-> + * Copyright (C) 2012 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+> + * Copyright (C) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 > + *
 > + * Under GPLv2 only
 > + */
 > +
-> +#ifndef __LOCAL_MAC_ADDRESS_H__
-> +#define __LOCAL_MAC_ADDRESS_H__
+> +#ifndef __SMC91111_H__
+> +#define __SMC91111_H__
 > +
-
-This file needs a include <net.h>. Added while applying.
-
-Sascha
-
-> +/**
-> + * local_mac_address_register - use random number with fix
-> + * OUI provided device to provide an Ethernet address
-> + * @ethid: ethernet device id
-> + * @oui: Ethernet OUI (3 bytes)
-> + *
-> + * Generate a local Ethernet address (MAC) that is not multicast using a 1-wire id.
-> + */
-> +static inline int local_mac_address_register(int ethid, char * oui)
-> +{
-> +	char addr[6];
-> +	int nb_oui = 3;
-> +	int i;
+> +struct smc91c111_pdata {
+> +	int qemu_fixup;
+> +};
 > +
-> +	if (!oui)
-> +		return -EINVAL;
-> +
-> +	random_ether_addr(addr);
-> +
-> +	for (i = 0; i < nb_oui; i++)
-> +		addr[i] = oui[i];
-> +
-> +	addr[0] &= 0xfe;	/* clear multicast bit */
-> +	addr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
-> +
-> +	eth_register_ethaddr(ethid, addr);
-> +
-> +	return 0;
-> +}
-> +
-> +#endif /* __LOCAL_MAC_ADDRESS_H__ */
+> +#endif /* __SMC91111_H__ */
 > -- 
-> 1.8.4.rc1
+> 1.8.4.rc3
 > 
 > 
 > _______________________________________________
