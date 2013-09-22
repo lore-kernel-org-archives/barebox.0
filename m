@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNdK2-0004hK-P9
- for barebox@lists.infradead.org; Sun, 22 Sep 2013 06:39:11 +0000
-Received: from mail630.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 726371004AE6
- for <barebox@lists.infradead.org>; Sun, 22 Sep 2013 08:38:49 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Sun, 22 Sep 2013 08:39:56 +0200
-Message-Id: <1379831996-11714-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
-References: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VNoEX-0004sc-L7
+ for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:18:15 +0000
+Date: Sun, 22 Sep 2013 20:17:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130922181748.GM30088@pengutronix.de>
+References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,108 +18,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] serial: do not set default baudrate at init
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] bootm: update os_entry from uimage
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-this will be done at activation
+On Sat, Sep 21, 2013 at 05:20:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> if not uimage set 0 by default
+> 
+> today we do not see the issue as the kernel entry point is the same as the
+> load_addr but on other binary its not necessary the case
+> 
+> as today we ignore the entry point set in the uimage and just assume it's the
+> same as the load_addr
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  			uimage_close(data->os);
+>  			return -ENOMEM;
+>  		}
+> +
+> +	}
+> +
+> +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
+> +		data->os_entry = data->os->header.ih_ep;
+> +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
+> +			data->os_entry -= data->os_address;
+>  	}
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+This is wrong. struct image_data stores the entry to the image relative
+to the image start, not as absolute address.
+
+The architecture support already handles this correctly:
+
+./arch/nios2/lib/bootm.c:43:    kernel = (void *)(idata->os_address + idata->os_entry);
+./arch/ppc/lib/ppclinux.c:76:   kernel = (void *)(data->os_address + data->os_entry);
+./arch/arm/lib/bootm.c:58:      kernel = data->os_res->start + data->os_entry;
+./arch/blackfin/lib/blackfin_linux.c:48:        appl = (void*)(idata->os_address + idata->os_entry);
+
+What's missing is that we have to set data->os_entry to the correct
+offset taken from the uImage.
+
+Sascha
+
+From 789bd923f6dd7b9de53f0df61ee749aaf53db83c Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 22 Sep 2013 19:51:53 +0200
+Subject: [PATCH] bootm: handle image entry point correctly
+
+The uImage format stores the entry point to the image in the ih_ep
+field. Honor this field.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/amba-pl011.c      | 4 ----
- drivers/serial/atmel.c           | 2 --
- drivers/serial/serial_auart.c    | 1 -
- drivers/serial/serial_clps711x.c | 3 ---
- drivers/serial/serial_imx.c      | 1 -
- drivers/serial/serial_ns16550.c  | 2 --
- 6 files changed, 13 deletions(-)
+ common/bootm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
-index 0f384e5..fc7723e 100644
---- a/drivers/serial/amba-pl011.c
-+++ b/drivers/serial/amba-pl011.c
-@@ -164,10 +164,6 @@ int pl011_init_port (struct console_device *cdev)
- 	uart->uartclk = clk_get_rate(uart->clk);
+diff --git a/common/bootm.c b/common/bootm.c
+index 1987a09..4e62006 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -73,6 +73,8 @@ static int bootm_open_os_uimage(struct image_data *data)
+ 	if (data->os_address == UIMAGE_SOME_ADDRESS)
+ 		data->os_address = data->os->header.ih_load;
  
- 	/*
--	 * set baud rate
--	 */
--	pl011_setbaudrate(cdev, 115200);
--	/*
- 	 ** Set the UART to be 8 bits, 1 stop bit, no parity, fifo enabled.
- 	 */
- 	pl011_rlcr(uart, UART01x_LCRH_WLEN_8 | UART01x_LCRH_FEN);
-diff --git a/drivers/serial/atmel.c b/drivers/serial/atmel.c
-index 6a20eab..c2a5d33 100644
---- a/drivers/serial/atmel.c
-+++ b/drivers/serial/atmel.c
-@@ -405,8 +405,6 @@ static int atmel_serial_init_port(struct console_device *cdev)
- 
- 	writel(USART3_BIT(RSTRX) | USART3_BIT(RSTTX), uart->base + USART3_CR);
- 
--	atmel_serial_setbaudrate(cdev, 115200);
--
- 	writel(USART3_BIT(RXEN) | USART3_BIT(TXEN), uart->base + USART3_CR);
- 	writel((USART3_BF(USART_MODE, USART3_USART_MODE_NORMAL)
- 			   | USART3_BF(USCLKS, USART3_USCLKS_MCK)
-diff --git a/drivers/serial/serial_auart.c b/drivers/serial/serial_auart.c
-index 60a701d..1980516 100644
---- a/drivers/serial/serial_auart.c
-+++ b/drivers/serial/serial_auart.c
-@@ -201,7 +201,6 @@ static int auart_serial_probe(struct device_d *dev)
- 		return PTR_ERR(priv->clk);
- 
- 	auart_serial_init_port(priv);
--	auart_serial_setbaudrate(cdev, CONFIG_BAUDRATE);
- 
- 	/* Disable RTS/CTS, enable Rx, Tx, UART */
- 	writel(BM_UARTAPP_CTRL2_RTSEN | BM_UARTAPP_CTRL2_CTSEN |
-diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
-index 17d4c2e..e43d141 100644
---- a/drivers/serial/serial_clps711x.c
-+++ b/drivers/serial/serial_clps711x.c
-@@ -58,9 +58,6 @@ static void clps711x_init_port(struct console_device *cdev)
- 	tmp |= UBRLCR_FIFOEN | UBRLCR_WRDLEN8; /* FIFO on, 8N1 mode */
- 	writel(tmp, s->UBRLCR);
- 
--	/* Set default baudrate on initialization */
--	clps711x_setbaudrate(cdev, CONFIG_BAUDRATE);
--
- 	/* Enable the UART */
- 	writel(readl(SYSCON(s)) | SYSCON_UARTEN, SYSCON(s));
- }
-diff --git a/drivers/serial/serial_imx.c b/drivers/serial/serial_imx.c
-index e99dde8..01c7cc7 100644
---- a/drivers/serial/serial_imx.c
-+++ b/drivers/serial/serial_imx.c
-@@ -337,7 +337,6 @@ static int imx_serial_probe(struct device_d *dev)
- 	cdev->setbrg = imx_serial_setbaudrate;
- 
- 	imx_serial_init_port(cdev);
--	imx_serial_setbaudrate(cdev, 115200);
- 
- 	/* Enable UART */
- 	val = readl(priv->regs + UCR1);
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 5ae2b76..59b509c 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -183,8 +183,6 @@ static void ns16550_serial_init_port(struct console_device *cdev)
- 	ns16550_write(cdev, 0x07, mdr1);	/* Disable */
- #endif
- 
--	ns16550_setbaudrate(cdev, CONFIG_BAUDRATE);
--
- #ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS
- 	ns16550_write(cdev, 0x00,  mdr1);
- #endif
++	data->os_entry = data->os->header.ih_ep - data->os->header.ih_load;
++
+ 	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+ 		data->os_res = uimage_load_to_sdram(data->os, 0,
+ 				data->os_address);
 -- 
 1.8.4.rc3
 
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
