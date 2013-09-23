@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNzwA-0005F6-Nx
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 06:48:03 +0000
-Date: Mon, 23 Sep 2013 08:47:40 +0200
+ id 1VO0en-00063q-Lp
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 07:34:10 +0000
+Date: Mon, 23 Sep 2013 09:33:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130923064740.GS30088@pengutronix.de>
-References: <1379757761-14700-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130923073346.GT30088@pengutronix.de>
+References: <20130921064503.GI1137@ns203013.ovh.net>
+ <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379757761-14700-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +23,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] lzo: update to lzo-2013
+Subject: Re: [PATCH 1/4] misc: add bootcount framework
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Sep 21, 2013 at 12:02:41PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> take from linux next-20130227
-> same version as v3.11
-> 
-> before
-> 
-> -rwxr-xr-x 1 root root 123001 Feb 28 01:04 build/highbank/arch/arm/pbl/zbarebox.bin
-> 
-> after
-> 
-> -rwxr-xr-x 1 root root 122226 Feb 28 01:02 build/highbank/arch/arm/pbl/zbarebox.bin
-> 
-> smaller and faster
+On Sat, Sep 21, 2013 at 08:46:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> The bootcount is always how many time the system start.
+> To determine since when, this will depend on the driver implementation
+> and your hardware feature.
 > 
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+>  drivers/misc/Kconfig            |  2 ++
+>  drivers/misc/Makefile           |  1 +
+>  drivers/misc/bootcount/Kconfig  | 12 +++++++++
+>  drivers/misc/bootcount/Makefile |  1 +
+>  drivers/misc/bootcount/core.c   | 54 +++++++++++++++++++++++++++++++++++++++++
+>  include/bootcount.h             | 31 +++++++++++++++++++++++
+>  6 files changed, 101 insertions(+)
+>  create mode 100644 drivers/misc/bootcount/Kconfig
+>  create mode 100644 drivers/misc/bootcount/Makefile
+>  create mode 100644 drivers/misc/bootcount/core.c
+>  create mode 100644 include/bootcount.h
 
-Applied, thanks
+This is getting worse. I don't get it why we need a 'framework' to
+abstract a single variable. With this series we now have three
+layers: a bootcount framework, a midlayer driver and a somfy specific
+driver.
+
+Can we please just do something like:
+
+common/bootcount.c:
+
+static int bootcount;
+
+/*
+ * Call this with your actual boot count, already increased by one
+ * for the current boot.
+ */
+int bootcount_set(int count)
+{
+	if (bootcount) {
+		pr_err("Bootcount already set\n");
+		return -EINVAL;
+	}
+
+	bootcount = count;
+
+	return 0;
+}
+
+static int bootcount_init(void)
+{
+	globalvar_add_simple_int_ro("bootcount", &bootcount, "%d");
+
+	return 0;
+}
+late_initcall(bootcount_init);
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
