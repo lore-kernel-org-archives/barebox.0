@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-we0-x22a.google.com ([2a00:1450:400c:c03::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VO7X6-0000xd-S0
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 14:54:41 +0000
-Date: Mon, 23 Sep 2013 16:54:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130923145419.GW30088@pengutronix.de>
-References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
- <20130923081600.GG31585@ns203013.ovh.net>
- <20130923091309.GB17135@pengutronix.de>
- <20130923143226.GH31585@ns203013.ovh.net>
+ id 1VODyo-0003no-68
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 21:47:43 +0000
+Received: by mail-we0-f170.google.com with SMTP id w62so3766321wes.1
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 14:47:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130923143226.GH31585@ns203013.ovh.net>
+Date: Mon, 23 Sep 2013 16:47:19 -0500
+Message-ID: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
+From: "Allen Kennedy Jr." <allen@kennedystuff.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,53 +21,140 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] bootm: update os_entry from uimage
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: Porting to a new board
+To: barebox@lists.infradead.org
 
-On Mon, Sep 23, 2013 at 04:32:26PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 11:13 Mon 23 Sep     , Sascha Hauer wrote:
-> > On Mon, Sep 23, 2013 at 10:16:00AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 17:20 Sat 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > if not uimage set 0 by default
-> > > > 
-> > > > today we do not see the issue as the kernel entry point is the same as the
-> > > > load_addr but on other binary its not necessary the case
-> > > > 
-> > > > as today we ignore the entry point set in the uimage and just assume it's the
-> > > > same as the load_addr
-> > > > 
-> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > > ---
-> > > 
-> > > this patch will also prepare to add a globalval and a getopt to overwrite the
-> > > os_entry
-> > 
-> > We already have a getopt to overwrite the os_entry: -e
-> > 
-> > > 
-> > > yours do not care about this preparation by not setting
-> > > data.os_entry = UIMAGE_SOME_ADDRESS;
-> > 
-> > Because UIMAGE_SOME_ADDRESS is not suitable for a relative offset to the
-> > image start.
-> 
-> I use this ti let known th e uimage code that the os_entry is not overwrite
-> and that it must not modify it
-> 
-> because if you specify  via getopt or global and do not set UIMAGE_SOME_ADDRESS
-> the uimage code will overwrite the provided value
+> What's the output of some network command, like for example 'dhcp'?
 
-So you have uImages which have the wrong entry point provided in the
-images? Why don't you fix the images instead?
+This hangs the chip.
 
-Sascha
+>
+> What's the output of 'md -w -s /dev/phy0'?
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Barebox:/ md -w -s /dev/phy0
+open: No such file or directory
+
+Indeed there is no phy0 device in the /dev directory.  It would appear
+this is where the trouble is.  Why would this be missing?
+
+> static struct fec_platform_data fec_info = {
+>         .xcv_type = PHY_INTERFACE_MODE_MII,
+>         .phy_addr = -1,
+> };
+
+It looks exactly like that.
+
+> When 'md -w -s /dev/phy0' doesn't show any sensible register output then
+> your pinmux may be wrong or you haven't brought your phy out of reset
+> with some gpio.
+
+I have verified that that the GPIO for the reset is outputting a high,
+as it should be for the chip to not be in reset.
+
+My pinmodes are set up thusly:
+   /* FEC */
+    PD0_AIN_FEC_TXD0 | GPIO_PUEN,
+    PD1_AIN_FEC_TXD1 | GPIO_PUEN,
+    PD2_AIN_FEC_TXD2 | GPIO_PUEN,
+    PD3_AIN_FEC_TXD3 | GPIO_PUEN,
+    PD4_AOUT_FEC_RX_ER | GPIO_PUEN,
+    PD5_AOUT_FEC_RXD1,
+    PD6_AOUT_FEC_RXD2 | GPIO_PUEN,
+    PD7_AOUT_FEC_RXD3 | GPIO_PUEN,
+    PD8_AF_FEC_MDIO | GPIO_PUEN,
+    PD9_AIN_FEC_MDC | GPIO_PUEN,
+    PD10_AOUT_FEC_CRS | GPIO_PUEN,
+    PD11_AOUT_FEC_TX_CLK | GPIO_PUEN,
+    PD12_AOUT_FEC_RXD0 | GPIO_PUEN,
+    PD13_AOUT_FEC_RX_DV | GPIO_PUEN,
+    PD14_AOUT_FEC_RX_CLK | GPIO_PUEN,
+    PD15_AOUT_FEC_COL | GPIO_PUEN,
+    PD16_AIN_FEC_TX_ER,
+    PF23_AIN_FEC_TX_EN,
+
+And a double check shows that this matches the schematic.
+I probed the reset line with a scope, and indeed it is goes to the
+correct state before the attempt to register the FEC device.
+
+thanks,
+-Allen
+
+
+On Sat, Sep 21, 2013 at 2:50 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Fri, Sep 20, 2013 at 04:02:44PM -0500, Allen Kennedy Jr. wrote:
+>> Thanks for the great idea to start with a loaded image in ram.
+>>
+>> I was able to get it to run, but I can't get the Ethernet to work.
+>> I'm not entirely sure where to begin looking.
+>>
+>> I hit devinfo and get:
+>> <snip>
+>>      `---- imx27-fec
+>>           `---- miibus0
+>>           `---- eth0
+>> <...>
+>> drivers:
+>> <...>
+>> SMSC LAN83C185
+>> SMSC LAN8187
+>> SMSC LAN8700
+>> SMSC LAN911x Internal PHY
+>> SMSC LAN8710/LAN8720
+>> fec_imx
+>> Generic PHY
+>> </snip>
+>>
+>> This would seem to indicate to me that the drivers are loading. And
+>> that the register happened.
+>> But I'm not sure where to go from here.
+>
+> What's the output of some network command, like for example 'dhcp'?
+>
+> What's the output of 'md -w -s /dev/phy0'?
+>
+> Problems with networking usually go down to problems with the phy.
+> What's the content of the platform data for the FEC? It should look
+> like:
+>
+> static struct fec_platform_data fec_info = {
+>         .xcv_type = PHY_INTERFACE_MODE_MII,
+>         .phy_addr = -1,
+> };
+>
+>
+> With xcv_type being MII (I think it's the only possibility on i.MX27)
+> and phy_addr to either -1 for autodetecting the address or the correct
+> address. Use -1 to be on the safe side.
+>
+> When 'md -w -s /dev/phy0' doesn't show any sensible register output then
+> your pinmux may be wrong or you haven't brought your phy out of reset
+> with some gpio.
+>
+>>
+>> In another thread... the advice was given to check the MII address,
+>> although I'm not sure how to interpret the data sheet.
+>> It looks as though the address is 31.  But I could be wrong.  When I
+>> try 31, and do a DHCP the processor hangs.
+>> So I tried 0, and the processor hangs.
+>>
+>> Is there a "scan the bus mode" I can use in the fec driver?  I don't
+>> see one, but I may be looking in the wrong spot.
+>
+> It's not in the FEC driver but in the generic MII support. As said, use
+> -1 as phy id.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
