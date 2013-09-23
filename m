@@ -1,20 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VO18R-0006gy-Ay
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:04:47 +0000
+ id 1VO19k-0006jq-Dy
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:06:09 +0000
 Received: from mail436.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id C5D47DC8475
- for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 10:04:24 +0200 (CEST)
-Date: Mon, 23 Sep 2013 10:05:40 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id CE6A7DC847D
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 10:05:45 +0200 (CEST)
+Date: Mon, 23 Sep 2013 10:07:01 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130923080540.GD31585@ns203013.ovh.net>
-References: <20130921064503.GI1137@ns203013.ovh.net>
- <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
- <20130923073346.GT30088@pengutronix.de>
+Message-ID: <20130923080701.GE31585@ns203013.ovh.net>
+References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130922181748.GM30088@pengutronix.de>
+ <20130923044025.GC31585@ns203013.ovh.net>
+ <20130923063344.GQ30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130923073346.GT30088@pengutronix.de>
+In-Reply-To: <20130923063344.GQ30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,79 +29,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] misc: add bootcount framework
+Subject: Re: [PATCH v2] bootm: update os_entry from uimage
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 09:33 Mon 23 Sep     , Sascha Hauer wrote:
-> On Sat, Sep 21, 2013 at 08:46:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > The bootcount is always how many time the system start.
-> > To determine since when, this will depend on the driver implementation
-> > and your hardware feature.
+On 08:33 Mon 23 Sep     , Sascha Hauer wrote:
+> On Mon, Sep 23, 2013 at 06:40:25AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 20:17 Sun 22 Sep     , Sascha Hauer wrote:
+> > >  common/bootm.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/common/bootm.c b/common/bootm.c
+> > > index 1987a09..4e62006 100644
+> > > --- a/common/bootm.c
+> > > +++ b/common/bootm.c
+> > > @@ -73,6 +73,8 @@ static int bootm_open_os_uimage(struct image_data *data)
+> > >  	if (data->os_address == UIMAGE_SOME_ADDRESS)
+> > >  		data->os_address = data->os->header.ih_load;
+> > >  
+> > > +	data->os_entry = data->os->header.ih_ep - data->os->header.ih_load;
+> > > +
+> > >  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+> > >  		data->os_res = uimage_load_to_sdram(data->os, 0,
+> > >  				data->os_address);
 > > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  drivers/misc/Kconfig            |  2 ++
-> >  drivers/misc/Makefile           |  1 +
-> >  drivers/misc/bootcount/Kconfig  | 12 +++++++++
-> >  drivers/misc/bootcount/Makefile |  1 +
-> >  drivers/misc/bootcount/core.c   | 54 +++++++++++++++++++++++++++++++++++++++++
-> >  include/bootcount.h             | 31 +++++++++++++++++++++++
-> >  6 files changed, 101 insertions(+)
-> >  create mode 100644 drivers/misc/bootcount/Kconfig
-> >  create mode 100644 drivers/misc/bootcount/Makefile
-> >  create mode 100644 drivers/misc/bootcount/core.c
-> >  create mode 100644 include/bootcount.h
+> > this does not work on INVALID_ADDRESS as this time teh ih_load is as
+> > 0xffffffff and the ih_ep is relative not absolute
 > 
-> This is getting worse. I don't get it why we need a 'framework' to
-> abstract a single variable. With this series we now have three
-> layers: a bootcount framework, a midlayer driver and a somfy specific
-> driver.
+> Right. How about this one then?
 > 
-> Can we please just do something like:
 > 
-> common/bootcount.c:
+> From da3192d5c763361ec08a51ebaa3cc2c3884c9827 Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Sun, 22 Sep 2013 19:51:53 +0200
+> Subject: [PATCH] bootm: handle image entry point correctly
 > 
-> static int bootcount;
+> This fixes starting of uImages which have an entry point other than
+> the load address.
 > 
-> /*
->  * Call this with your actual boot count, already increased by one
->  * for the current boot.
->  */
-> int bootcount_set(int count)
-> {
-> 	if (bootcount) {
-> 		pr_err("Bootcount already set\n");
-> 		return -EINVAL;
-> 	}
+> The uImage format stores the entry point to the image in the ih_ep
+> field. Normally it has the absolute address, so calculate the relative
+> offset to the image start address and put it into data->os_entry. In
+> case the uImage has a load address of 0xffffffff (UIMAGE_INVALID_ADDRESS)
+> the entry point is stored relative to the image start, so just transfer
+> it to data->os_address.
 > 
-> 	bootcount = count;
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/bootm.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> 	return 0;
-> }
-> 
-> static int bootcount_init(void)
-> {
-> 	globalvar_add_simple_int_ro("bootcount", &bootcount, "%d");
-> 
-> 	return 0;
-> }
-> late_initcall(bootcount_init);
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 1987a09..16d3416 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -73,7 +73,11 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  	if (data->os_address == UIMAGE_SOME_ADDRESS)
+>  		data->os_address = data->os->header.ih_load;
+>  
+> -	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+> +	if (data->os_address == UIMAGE_INVALID_ADDRESS) {
+> +		data->os_entry = data->os->header.ih_ep;
+> +	} else {
+> +		data->os_entry = data->os->header.ih_ep -
+> +			data->os->header.ih_load;
+>  		data->os_res = uimage_load_to_sdram(data->os, 0,
+>  				data->os_address);
+>  		if (!data->os_res) {
 
-no as the bootcount is way more complex for somfy
+same as my patch do
 
-we store the boot count in one register with the boot mode
-
-and the boot count can we reset by the shell
-
-so it's not a RO
-
-and I do not like to put everything on global
-
-Brest Regards,
+Best Regards,
 J.
-> 
-> Sascha
+> -- 
+> 1.8.4.rc3
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
