@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNzr9-0005C6-T9
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 06:42:52 +0000
-Date: Mon, 23 Sep 2013 08:42:30 +0200
+ id 1VNzwA-0005F6-Nx
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 06:48:03 +0000
+Date: Mon, 23 Sep 2013 08:47:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130923064230.GR30088@pengutronix.de>
-References: <20130920054640.GD1137@ns203013.ovh.net>
- <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
- <1379656065-23690-2-git-send-email-plagnioj@jcrosoft.com>
- <20130923043851.GB31585@ns203013.ovh.net>
+Message-ID: <20130923064740.GS30088@pengutronix.de>
+References: <1379757761-14700-1-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130923043851.GB31585@ns203013.ovh.net>
+In-Reply-To: <1379757761-14700-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,24 +22,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] animeo_ip: ensure the phy is reset correctly
+Subject: Re: [PATCH 1/1] lzo: update to lzo-2013
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 23, 2013 at 06:38:51AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 07:47 Fri 20 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> >  	animeo_ip_power_control();
-> >  	animeo_ip_add_device_nand();
-> > -	at91_add_device_eth(0, &macb_pdata);
+On Sat, Sep 21, 2013 at 12:02:41PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> take from linux next-20130227
+> same version as v3.11
 > 
-> when you merge it something go wrong this ligne remove was not applyed
+> before
 > 
-> can you check?
+> -rwxr-xr-x 1 root root 123001 Feb 28 01:04 build/highbank/arch/arm/pbl/zbarebox.bin
+> 
+> after
+> 
+> -rwxr-xr-x 1 root root 122226 Feb 28 01:02 build/highbank/arch/arm/pbl/zbarebox.bin
+> 
+> smaller and faster
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Ups. Should be fixed now.
+Applied, thanks
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
