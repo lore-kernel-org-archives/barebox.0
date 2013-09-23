@@ -1,15 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNoPO-00053O-IE
- for barebox@lists.infradead.org; Sun, 22 Sep 2013 18:29:27 +0000
-Date: Sun, 22 Sep 2013 20:29:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130922182905.GP30088@pengutronix.de>
-References: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VNxuK-0003ok-Jp
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 04:38:01 +0000
+Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id B7CE2DC7F0B
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 06:37:35 +0200 (CEST)
+Date: Mon, 23 Sep 2013 06:38:51 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130923043851.GB31585@ns203013.ovh.net>
+References: <20130920054640.GD1137@ns203013.ovh.net>
+ <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
+ <1379656065-23690-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379831996-11714-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1379656065-23690-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +28,93 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] console_simple: set baudrate at register
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] animeo_ip: ensure the phy is reset correctly
+To: barebox@lists.infradead.org
 
-On Sun, Sep 22, 2013 at 08:39:55AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> as the console is always enable
-> 
+On 07:47 Fri 20 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
 > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-
-Applied, thanks
-
-Sascha
-
 > ---
->  common/console_simple.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  arch/arm/boards/animeo_ip/init.c | 38 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 37 insertions(+), 1 deletion(-)
 > 
-> diff --git a/common/console_simple.c b/common/console_simple.c
-> index 5c80dcd..e1d4c85 100644
-> --- a/common/console_simple.c
-> +++ b/common/console_simple.c
-> @@ -89,6 +89,11 @@ int console_register(struct console_device *newcdev)
->  	console_list.prev = console_list.next = &newcdev->list;
->  	newcdev->list.prev = newcdev->list.next = &console_list;
+> diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
+> index 5419ddb..65fc0e6 100644
+> --- a/arch/arm/boards/animeo_ip/init.c
+> +++ b/arch/arm/boards/animeo_ip/init.c
+> @@ -19,6 +19,7 @@
+>  #include <nand.h>
+>  #include <sizes.h>
+>  #include <linux/mtd/nand.h>
+> +#include <linux/clk.h>
+>  #include <mach/board.h>
+>  #include <mach/at91sam9_smc.h>
+>  #include <gpio.h>
+> @@ -225,12 +226,45 @@ static void animeo_ip_power_control(void)
+>  	animeo_export_gpio_out(AT91_PIN_PC4, "power_save");
+>  }
 >  
-> +	if (newcdev->setbrg) {
-> +		newcdev->baudrate = CONFIG_BAUDRATE;
-> +		newcdev->setbrg(newcdev, newcdev->baudrate);
-> +	}
+> +static void animeo_ip_phy_reset(void)
+> +{
+> +	unsigned long rstc;
+> +	int i;
+> +	struct clk *clk = clk_get(NULL, "macb_clk");
 > +
->  	barebox_banner();
->  
->  	return 0;
-> -- 
-> 1.8.4.rc3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> +	clk_enable(clk);
+> +
+> +	for (i = AT91_PIN_PA12; i <= AT91_PIN_PA29; i++)
+> +		at91_set_gpio_input(i, 0);
+> +
+> +	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
+> +
+> +	/* Need to reset PHY -> 500ms reset */
+> +	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
+> +				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
+> +				     AT91_RSTC_URSTEN);
+> +
+> +	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
+> +
+> +	/* Wait for end hardware reset */
+> +	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
+> +		;
+> +
+> +	/* Restore NRST value */
+> +	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
+> +}
+> +
+> +static void animeo_ip_add_device_eth(void)
+> +{
+> +	animeo_ip_phy_reset();
+> +	at91_add_device_eth(0, &macb_pdata);
+> +}
+> +
+>  static int animeo_ip_devices_init(void)
+>  {
+>  	animeo_ip_detect_version();
+>  	animeo_ip_power_control();
+>  	animeo_ip_add_device_nand();
+> -	at91_add_device_eth(0, &macb_pdata);
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+when you merge it something go wrong this ligne remove was not applyed
+
+can you check?
+
+Best Regards,
+J.
+>  	animeo_ip_add_device_usb();
+>  	animeo_ip_add_device_mci();
+>  	animeo_ip_add_device_buttons();
+> @@ -250,6 +284,8 @@ static int animeo_ip_devices_init(void)
+>  	devfs_add_partition("nand0", SZ_256K + SZ_32K, SZ_32K, DEVFS_PARTITION_FIXED, "env_raw");
+>  	dev_add_bb_dev("env_raw", "env0");
+>  
+> +	animeo_ip_add_device_eth();
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 1.8.4.rc1
+> 
 
 _______________________________________________
 barebox mailing list
