@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VNxuK-0003ok-Jp
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 04:38:01 +0000
+ id 1VNxvn-0003qN-B2
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 04:39:32 +0000
 Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id B7CE2DC7F0B
- for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 06:37:35 +0200 (CEST)
-Date: Mon, 23 Sep 2013 06:38:51 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 12132DC7BC5
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 06:39:10 +0200 (CEST)
+Date: Mon, 23 Sep 2013 06:40:25 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130923043851.GB31585@ns203013.ovh.net>
-References: <20130920054640.GD1137@ns203013.ovh.net>
- <1379656065-23690-1-git-send-email-plagnioj@jcrosoft.com>
- <1379656065-23690-2-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130923044025.GC31585@ns203013.ovh.net>
+References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130922181748.GM30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379656065-23690-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130922181748.GM30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,93 +27,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] animeo_ip: ensure the phy is reset correctly
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2] bootm: update os_entry from uimage
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On 07:47 Fri 20 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/boards/animeo_ip/init.c | 38 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 37 insertions(+), 1 deletion(-)
+On 20:17 Sun 22 Sep     , Sascha Hauer wrote:
+> On Sat, Sep 21, 2013 at 05:20:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > if not uimage set 0 by default
+> > 
+> > today we do not see the issue as the kernel entry point is the same as the
+> > load_addr but on other binary its not necessary the case
+> > 
+> > as today we ignore the entry point set in the uimage and just assume it's the
+> > same as the load_addr
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> > @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
+> >  			uimage_close(data->os);
+> >  			return -ENOMEM;
+> >  		}
+> > +
+> > +	}
+> > +
+> > +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
+> > +		data->os_entry = data->os->header.ih_ep;
+> > +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
+> > +			data->os_entry -= data->os_address;
+> >  	}
 > 
-> diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-> index 5419ddb..65fc0e6 100644
-> --- a/arch/arm/boards/animeo_ip/init.c
-> +++ b/arch/arm/boards/animeo_ip/init.c
-> @@ -19,6 +19,7 @@
->  #include <nand.h>
->  #include <sizes.h>
->  #include <linux/mtd/nand.h>
-> +#include <linux/clk.h>
->  #include <mach/board.h>
->  #include <mach/at91sam9_smc.h>
->  #include <gpio.h>
-> @@ -225,12 +226,45 @@ static void animeo_ip_power_control(void)
->  	animeo_export_gpio_out(AT91_PIN_PC4, "power_save");
->  }
+> This is wrong. struct image_data stores the entry to the image relative
+> to the image start, not as absolute address.
+> 
+> The architecture support already handles this correctly:
+> 
+> ./arch/nios2/lib/bootm.c:43:    kernel = (void *)(idata->os_address + idata->os_entry);
+> ./arch/ppc/lib/ppclinux.c:76:   kernel = (void *)(data->os_address + data->os_entry);
+> ./arch/arm/lib/bootm.c:58:      kernel = data->os_res->start + data->os_entry;
+> ./arch/blackfin/lib/blackfin_linux.c:48:        appl = (void*)(idata->os_address + idata->os_entry);
+> 
+> What's missing is that we have to set data->os_entry to the correct
+> offset taken from the uImage.
+> 
+> Sascha
+> 
+> From 789bd923f6dd7b9de53f0df61ee749aaf53db83c Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Sun, 22 Sep 2013 19:51:53 +0200
+> Subject: [PATCH] bootm: handle image entry point correctly
+> 
+> The uImage format stores the entry point to the image in the ih_ep
+> field. Honor this field.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/bootm.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 1987a09..4e62006 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -73,6 +73,8 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  	if (data->os_address == UIMAGE_SOME_ADDRESS)
+>  		data->os_address = data->os->header.ih_load;
 >  
-> +static void animeo_ip_phy_reset(void)
-> +{
-> +	unsigned long rstc;
-> +	int i;
-> +	struct clk *clk = clk_get(NULL, "macb_clk");
+> +	data->os_entry = data->os->header.ih_ep - data->os->header.ih_load;
 > +
-> +	clk_enable(clk);
-> +
-> +	for (i = AT91_PIN_PA12; i <= AT91_PIN_PA29; i++)
-> +		at91_set_gpio_input(i, 0);
-> +
-> +	rstc = at91_sys_read(AT91_RSTC_MR) & AT91_RSTC_ERSTL;
-> +
-> +	/* Need to reset PHY -> 500ms reset */
-> +	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
-> +				     (AT91_RSTC_ERSTL & (0x0d << 8)) |
-> +				     AT91_RSTC_URSTEN);
-> +
-> +	at91_sys_write(AT91_RSTC_CR, AT91_RSTC_KEY | AT91_RSTC_EXTRST);
-> +
-> +	/* Wait for end hardware reset */
-> +	while (!(at91_sys_read(AT91_RSTC_SR) & AT91_RSTC_NRSTL))
-> +		;
-> +
-> +	/* Restore NRST value */
-> +	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN);
-> +}
-> +
-> +static void animeo_ip_add_device_eth(void)
-> +{
-> +	animeo_ip_phy_reset();
-> +	at91_add_device_eth(0, &macb_pdata);
-> +}
-> +
->  static int animeo_ip_devices_init(void)
->  {
->  	animeo_ip_detect_version();
->  	animeo_ip_power_control();
->  	animeo_ip_add_device_nand();
-> -	at91_add_device_eth(0, &macb_pdata);
+>  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+>  		data->os_res = uimage_load_to_sdram(data->os, 0,
+>  				data->os_address);
 
-when you merge it something go wrong this ligne remove was not applyed
-
-can you check?
+this does not work on INVALID_ADDRESS as this time teh ih_load is as
+0xffffffff and the ih_ep is relative not absolute
 
 Best Regards,
 J.
->  	animeo_ip_add_device_usb();
->  	animeo_ip_add_device_mci();
->  	animeo_ip_add_device_buttons();
-> @@ -250,6 +284,8 @@ static int animeo_ip_devices_init(void)
->  	devfs_add_partition("nand0", SZ_256K + SZ_32K, SZ_32K, DEVFS_PARTITION_FIXED, "env_raw");
->  	dev_add_bb_dev("env_raw", "env0");
->  
-> +	animeo_ip_add_device_eth();
-> +
->  	return 0;
->  }
->  
 > -- 
-> 1.8.4.rc1
+> 1.8.4.rc3
 > 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
