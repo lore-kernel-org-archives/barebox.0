@@ -1,23 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VO1FT-0006pe-6i
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:12:04 +0000
+ id 1VO1IP-0006sz-SV
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:15:07 +0000
 Received: from mail436.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id EDD76DC85FA
- for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 10:11:26 +0200 (CEST)
-Date: Mon, 23 Sep 2013 10:12:43 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id D8A30DC822C
+ for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 10:14:44 +0200 (CEST)
+Date: Mon, 23 Sep 2013 10:16:00 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130923081243.GF31585@ns203013.ovh.net>
+Message-ID: <20130923081600.GG31585@ns203013.ovh.net>
 References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
- <20130922181748.GM30088@pengutronix.de>
- <20130923044025.GC31585@ns203013.ovh.net>
- <20130923063344.GQ30088@pengutronix.de>
- <20130923080701.GE31585@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130923080701.GE31585@ns203013.ovh.net>
+In-Reply-To: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,81 +27,95 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2] bootm: update os_entry from uimage
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-On 10:07 Mon 23 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 08:33 Mon 23 Sep     , Sascha Hauer wrote:
-> > On Mon, Sep 23, 2013 at 06:40:25AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 20:17 Sun 22 Sep     , Sascha Hauer wrote:
-> > > >  common/bootm.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > > 
-> > > > diff --git a/common/bootm.c b/common/bootm.c
-> > > > index 1987a09..4e62006 100644
-> > > > --- a/common/bootm.c
-> > > > +++ b/common/bootm.c
-> > > > @@ -73,6 +73,8 @@ static int bootm_open_os_uimage(struct image_data *data)
-> > > >  	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> > > >  		data->os_address = data->os->header.ih_load;
-> > > >  
-> > > > +	data->os_entry = data->os->header.ih_ep - data->os->header.ih_load;
-> > > > +
-> > > >  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
-> > > >  		data->os_res = uimage_load_to_sdram(data->os, 0,
-> > > >  				data->os_address);
-> > > 
-> > > this does not work on INVALID_ADDRESS as this time teh ih_load is as
-> > > 0xffffffff and the ih_ep is relative not absolute
-> > 
-> > Right. How about this one then?
-> > 
-> > 
-> > From da3192d5c763361ec08a51ebaa3cc2c3884c9827 Mon Sep 17 00:00:00 2001
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Date: Sun, 22 Sep 2013 19:51:53 +0200
-> > Subject: [PATCH] bootm: handle image entry point correctly
-> > 
-> > This fixes starting of uImages which have an entry point other than
-> > the load address.
-> > 
-> > The uImage format stores the entry point to the image in the ih_ep
-> > field. Normally it has the absolute address, so calculate the relative
-> > offset to the image start address and put it into data->os_entry. In
-> > case the uImage has a load address of 0xffffffff (UIMAGE_INVALID_ADDRESS)
-> > the entry point is stored relative to the image start, so just transfer
-> > it to data->os_address.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  common/bootm.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/common/bootm.c b/common/bootm.c
-> > index 1987a09..16d3416 100644
-> > --- a/common/bootm.c
-> > +++ b/common/bootm.c
-> > @@ -73,7 +73,11 @@ static int bootm_open_os_uimage(struct image_data *data)
-> >  	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> >  		data->os_address = data->os->header.ih_load;
-> >  
-> > -	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
-> > +	if (data->os_address == UIMAGE_INVALID_ADDRESS) {
-> > +		data->os_entry = data->os->header.ih_ep;
-> > +	} else {
-> > +		data->os_entry = data->os->header.ih_ep -
-> > +			data->os->header.ih_load;
-> >  		data->os_res = uimage_load_to_sdram(data->os, 0,
-> >  				data->os_address);
-> >  		if (!data->os_res) {
+On 17:20 Sat 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
+> if not uimage set 0 by default
 > 
-> same as my patch do
+> today we do not see the issue as the kernel entry point is the same as the
+> load_addr but on other binary its not necessary the case
+> 
+> as today we ignore the entry point set in the uimage and just assume it's the
+> same as the load_addr
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
 
-except one point you forget to reset data->os_entry in the case of a non
-uimage
+this patch will also prepare to add a globalval and a getopt to overwrite the
+os_entry
+
+yours do not care about this preparation by not setting
+data.os_entry = UIMAGE_SOME_ADDRESS;
 
 Best Regards,
 J.
+>  commands/bootm.c |  1 +
+>  common/bootm.c   | 15 ++++++++++++++-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/commands/bootm.c b/commands/bootm.c
+> index a4004df..7acf341 100644
+> --- a/commands/bootm.c
+> +++ b/commands/bootm.c
+> @@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
+>  
+>  	data.initrd_address = UIMAGE_INVALID_ADDRESS;
+>  	data.os_address = UIMAGE_SOME_ADDRESS;
+> +	data.os_entry = UIMAGE_SOME_ADDRESS;
+>  	data.verify = 0;
+>  	data.verbose = 0;
+>  
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 1987a09..17c8082 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
+>  static int bootm_open_os_uimage(struct image_data *data)
+>  {
+>  	int ret;
+> +	int update_ep = 0;
+>  
+>  	data->os = uimage_open(data->os_file);
+>  	if (!data->os)
+> @@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (data->os_address == UIMAGE_SOME_ADDRESS)
+> +	if (data->os_address == UIMAGE_SOME_ADDRESS) {
+>  		data->os_address = data->os->header.ih_load;
+> +		update_ep = 1;
+> +	}
+>  
+>  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
+>  		data->os_res = uimage_load_to_sdram(data->os, 0,
+> @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
+>  			uimage_close(data->os);
+>  			return -ENOMEM;
+>  		}
+> +
+> +	}
+> +
+> +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
+> +		data->os_entry = data->os->header.ih_ep;
+> +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
+> +			data->os_entry -= data->os_address;
+>  	}
+>  
+>  	return 0;
+> @@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
+>  		}
+>  	}
+>  
+> +	if (data->os_entry == UIMAGE_SOME_ADDRESS)
+> +		data->os_entry = 0;
+> +
+>  	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
+>  
+>  		initrd_type = file_name_detect_type(data->initrd_file);
+> -- 
+> 1.8.4.rc3
+> 
 
 _______________________________________________
 barebox mailing list
