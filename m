@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VO1IP-0006sz-SV
- for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:15:07 +0000
-Received: from mail436.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id D8A30DC822C
- for <barebox@lists.infradead.org>; Mon, 23 Sep 2013 10:14:44 +0200 (CEST)
-Date: Mon, 23 Sep 2013 10:16:00 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130923081600.GG31585@ns203013.ovh.net>
-References: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VO1sW-0007xP-OP
+ for barebox@lists.infradead.org; Mon, 23 Sep 2013 08:52:25 +0000
+Date: Mon, 23 Sep 2013 10:52:02 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130923085202.GU30088@pengutronix.de>
+References: <20130921064503.GI1137@ns203013.ovh.net>
+ <1379745967-4575-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130923073346.GT30088@pengutronix.de>
+ <20130923080540.GD31585@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379776829-30964-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130923080540.GD31585@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,96 +25,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] bootm: update os_entry from uimage
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/4] misc: add bootcount framework
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 17:20 Sat 21 Sep     , Jean-Christophe PLAGNIOL-VILLARD wrote:
-> if not uimage set 0 by default
+On Mon, Sep 23, 2013 at 10:05:40AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 09:33 Mon 23 Sep     , Sascha Hauer wrote:
+> > On Sat, Sep 21, 2013 at 08:46:04AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > Can we please just do something like:
+> > 
+> > common/bootcount.c:
+> > 
+> > static int bootcount;
+> > 
+> > /*
+> >  * Call this with your actual boot count, already increased by one
+> >  * for the current boot.
+> >  */
+> > int bootcount_set(int count)
+> > {
+> > 	if (bootcount) {
+> > 		pr_err("Bootcount already set\n");
+> > 		return -EINVAL;
+> > 	}
+> > 
+> > 	bootcount = count;
+> > 
+> > 	return 0;
+> > }
+> > 
+> > static int bootcount_init(void)
+> > {
+> > 	globalvar_add_simple_int_ro("bootcount", &bootcount, "%d");
+> > 
+> > 	return 0;
+> > }
+> > late_initcall(bootcount_init);
 > 
-> today we do not see the issue as the kernel entry point is the same as the
-> load_addr but on other binary its not necessary the case
+> no as the bootcount is way more complex for somfy
 > 
-> as today we ignore the entry point set in the uimage and just assume it's the
-> same as the load_addr
+> we store the boot count in one register with the boot mode
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
+> and the boot count can we reset by the shell
+> 
+> so it's not a RO
 
-this patch will also prepare to add a globalval and a getopt to overwrite the
-os_entry
+Make it rw then.
 
-yours do not care about this preparation by not setting
-data.os_entry = UIMAGE_SOME_ADDRESS;
+Put whatever complexity you need into your somfy code, but all that's
+user visible is a single variable (visible to both C code and
+userspace). We don't need a framework for this.
 
-Best Regards,
-J.
->  commands/bootm.c |  1 +
->  common/bootm.c   | 15 ++++++++++++++-
->  2 files changed, 15 insertions(+), 1 deletion(-)
 > 
-> diff --git a/commands/bootm.c b/commands/bootm.c
-> index a4004df..7acf341 100644
-> --- a/commands/bootm.c
-> +++ b/commands/bootm.c
-> @@ -104,6 +104,7 @@ static int do_bootm(int argc, char *argv[])
->  
->  	data.initrd_address = UIMAGE_INVALID_ADDRESS;
->  	data.os_address = UIMAGE_SOME_ADDRESS;
-> +	data.os_entry = UIMAGE_SOME_ADDRESS;
->  	data.verify = 0;
->  	data.verbose = 0;
->  
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 1987a09..17c8082 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -46,6 +46,7 @@ static struct image_handler *bootm_find_handler(enum filetype filetype,
->  static int bootm_open_os_uimage(struct image_data *data)
->  {
->  	int ret;
-> +	int update_ep = 0;
->  
->  	data->os = uimage_open(data->os_file);
->  	if (!data->os)
-> @@ -70,8 +71,10 @@ static int bootm_open_os_uimage(struct image_data *data)
->  		return -EINVAL;
->  	}
->  
-> -	if (data->os_address == UIMAGE_SOME_ADDRESS)
-> +	if (data->os_address == UIMAGE_SOME_ADDRESS) {
->  		data->os_address = data->os->header.ih_load;
-> +		update_ep = 1;
-> +	}
->  
->  	if (data->os_address != UIMAGE_INVALID_ADDRESS) {
->  		data->os_res = uimage_load_to_sdram(data->os, 0,
-> @@ -80,6 +83,13 @@ static int bootm_open_os_uimage(struct image_data *data)
->  			uimage_close(data->os);
->  			return -ENOMEM;
->  		}
-> +
-> +	}
-> +
-> +	if (update_ep && data->os_entry == UIMAGE_SOME_ADDRESS) {
-> +		data->os_entry = data->os->header.ih_ep;
-> +		if (data->os_address != UIMAGE_INVALID_ADDRESS)
-> +			data->os_entry -= data->os_address;
->  	}
->  
->  	return 0;
-> @@ -232,6 +242,9 @@ int bootm_boot(struct image_data *data)
->  		}
->  	}
->  
-> +	if (data->os_entry == UIMAGE_SOME_ADDRESS)
-> +		data->os_entry = 0;
-> +
->  	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD) && data->initrd_file) {
->  
->  		initrd_type = file_name_detect_type(data->initrd_file);
-> -- 
-> 1.8.4.rc3
-> 
+> and I do not like to put everything on global
+
+And I do not like creating devices which serve only as a namespace
+provider for variables.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
