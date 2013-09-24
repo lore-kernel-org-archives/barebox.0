@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOMxx-0005Ow-Mr
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:23:26 +0000
-Date: Tue, 24 Sep 2013 09:23:04 +0200
+ id 1VOMxG-0005Mv-92
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:22:43 +0000
+Date: Tue, 24 Sep 2013 09:22:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130924072304.GZ30088@pengutronix.de>
-References: <1379923320-22018-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130924072219.GY30088@pengutronix.de>
+References: <20130919131929.GA1137@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379923320-22018-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20130919131929.GA1137@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,41 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] console_simple: fix: set f_active
+Subject: Re: [PATCH 0/5] introduce basic rs485 support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Sep 23, 2013 at 10:02:00AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> so generic code can check if the console is enabled
+On Thu, Sep 19, 2013 at 03:19:29PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> HI,
 > 
-> and now we can use loadb & loadxy
+> 	this patch serie introduce the basic rs485 support
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> 	This wil allow as example on Somfy Animeo-IP board to detect crossed
+> 	rs485 cable that is used to start the board in special mode
+> 
+> The following changes since commit fe4117357f8f304a08b957eded8ede9db8dafdcf:
+> 
+>   Add missing dependency ENV_HANDLING for OF_BAREBOX_DRIVER option (2013-09-18 10:24:29 +0200)
+> 
+> are available in the git repository at:
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/rs485
+> 
+> for you to fetch changes up to fdee185585717e2d2368252542083fd3516abc1a:
+> 
+>   Animeo IP: add rs485 crossing detection support (2013-09-19 21:15:50 +0800)
+>
 
 Applied, thanks
 
 Sascha
-
-> ---
->  common/console_simple.c | 2 ++
->  1 file changed, 2 insertions(+)
+ 
+> ----------------------------------------------------------------
+> Jean-Christophe PLAGNIOL-VILLARD (5):
+>       shutdown: add board call back
+>       console: introduce console_get_by_dev
+>       console: introduce new callback set_mode
+>       atmel_serial: add rs485 support
+>       Animeo IP: add rs485 crossing detection support
 > 
-> diff --git a/common/console_simple.c b/common/console_simple.c
-> index e82d9cb..0f83fa4 100644
-> --- a/common/console_simple.c
-> +++ b/common/console_simple.c
-> @@ -97,6 +97,8 @@ int console_register(struct console_device *newcdev)
->  		newcdev->setbrg(newcdev, newcdev->baudrate);
->  	}
->  
-> +	newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
-> +
->  	barebox_banner();
->  
->  	return 0;
-> -- 
-> 1.8.4.rc3
+>  arch/arm/boards/animeo_ip/init.c     | 88 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+>  arch/arm/configs/animeo_ip_defconfig |  1 -
+>  common/console_common.c              | 13 +++++++++++++
+>  common/startup.c                     |  4 ++++
+>  drivers/serial/atmel.c               | 27 +++++++++++++++++++++++++++
+>  include/common.h                     |  1 +
+>  include/console.h                    |  8 ++++++++
+>  7 files changed, 136 insertions(+), 6 deletions(-)
 > 
+> Best Regards,
+> J.
 > 
 > _______________________________________________
 > barebox mailing list
