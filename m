@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x229.google.com ([2a00:1450:400c:c00::229])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOW47-0006Q9-8O
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 17:06:24 +0000
-Received: by mail-wg0-f41.google.com with SMTP id l18so3761678wgh.4
- for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 10:06:01 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20130924163332.GN31585@ns203013.ovh.net>
-References: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
- <20130924073928.GC30088@pengutronix.de>
- <CAO-21LNPjMd_zeLfz+xf3oMecfxsPGpsnYvd3S45MG_bi1aNtQ@mail.gmail.com>
- <20130924163332.GN31585@ns203013.ovh.net>
-Date: Tue, 24 Sep 2013 12:06:01 -0500
-Message-ID: <CAO-21LN3S74ay+uOpLEfdAfnDmrn-0AS4MVJpNwHfMr=fc-DeA@mail.gmail.com>
-From: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VOXsn-0001v8-Im
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 19:02:51 +0000
+Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id B94C81004544
+ for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 21:02:25 +0200 (CEST)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Tue, 24 Sep 2013 21:03:43 +0200
+Message-Id: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,198 +18,676 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting to a new board
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] fs: add uimagefs
+To: barebox@lists.infradead.org
 
-The power is stable.  The garbled message happens whenever too many
-strings are printed out.  So I don't think that's anything to do with
-my specific setup.  You might be able to reproduce it.  Try this:
+this will provide the image data and information via file
 
-md 0xa0000000+2000
-<substitute the beginning of your ram range for 0xa0000000>
+ # ls -l /tmp/
+-rwxrwxrwx          3 arch
+-rwxrwxrwx         12 compression
+-rwxrwxrwx         16 name
+-rwxrwxrwx          5 os
+-rwxrwxrwx         24 time
+-rwxrwxrwx         12 type
+-rwxrwxrwx         10 load_addr
+-rwxrwxrwx         10 entry_point
+-rwxrwxrwx    2199875 data0
 
-On Tue, Sep 24, 2013 at 11:33 AM, Jean-Christophe PLAGNIOL-VILLARD
-<plagnioj@jcrosoft.com> wrote:
-> On 10:00 Tue 24 Sep     , Allen Kennedy Jr. wrote:
->> The dhcp command gives:
->> "warning: No MAC address set. Using random address 62:1C:8B:DF:6D:4D"
->> Then the device console hangs, Ctrl-C does nothing.  Breaking into it
->> via JTAG, I see
->> the PC and LR are off in the weeds and the stack and registers
->> contains nothing of
->> indication as to where it went awry.
->>
->> md 0x1002b000 does show the FEC registers:
->>  md 0x1002b000
->> 1002b000: 00000600 00000000 00000000 00000600                ................
->> 1002b010: 00000000 00000000 00000000 00000000                ................
->> 1002b020: 00000600 f0000000 00000600 00000600                ................
->> 1002b030: 00000600 00000600 00000600 00000600                ................
->> 1002b040: 6f86782d 00000018 00060006 00040006                -x.o............
->> 1002b050: 6f86782d 00000018 000a0006 00080006                -x.o............
->> 1002b060: 00000000 c0000000 fffffffd fffffffd                ................
->> 1002b070: fffffffd fffffffd fffffffd fffffffd                ................
->> 1002b080: 000b0000 05ee0004 19000000 84680868                ............h.h.
->> 1002b090: ffffffff 00000000 10008208 33428006                ..............B3
->> 1002b0a0: 00c40000 ffffffff ffffffff ffffffff                ................
->> 1002b0b0: ffffffff ffffffff ffffffff ffffffff                ................
->> 1002b0c0: 00000000 00000000 00000000 00000000                ................
->> 1002b0d0: 02b20000 91cc3d09 00000000 0180c200                .....=..........
->> 1002b0e0: 00010000 068f6c9e b50d8808 00010020                .....l...... ...
->> 1002b0f0: 00000000 00000000 00000000 00000000                ................
->>
->>
->> iomem output:
->>  iomem
->> 0x00000000 - 0xffffffff (size 0x00000000) iomem
->>   0x10002000 - 0x10002fff (size 0x00001000) imx21-wdt0
->>   0x10003000 - 0x100030ff (size 0x00000100) imx1-gpt0
->>   0x1000a000 - 0x1000afff (size 0x00001000) imx21-uart0
->>   0x10015000 - 0x100150ff (size 0x00000100) imx1-gpio0
->>   0x10015100 - 0x100151ff (size 0x00000100) imx1-gpio1
->>   0x10015200 - 0x100152ff (size 0x00000100) imx1-gpio2
->>   0x10015300 - 0x100153ff (size 0x00000100) imx1-gpio3
->>   0x10015400 - 0x100154ff (size 0x00000100) imx1-gpio4
->>   0x10015500 - 0x100155ff (size 0x00000100) imx1-gpio5
->>   0x10027000 - 0x10027fff (size 0x00001000) imx27-ccm
->>   0x10028000 - 0x10028fff (size 0x00001000) imx_iim
->>   0x1002b000 - 0x1002bfff (size 0x00001000) imx27-fec
->>   0xa0000000 - 0xa7ffffff (size 0x08000000) ram0
->>     0xa7a00000 - 0xa7dfffff (size 0x00400000) malloc space
->>     0xa7e00000 - 0xa7e1afdf (size 0x0001afe0) barebox
->>     0xa7e1afe0 - 0xa7e20aaf (size 0x00005ad0) barebox data
->>     0xa7e20ab0 - 0xa7e24f4b (size 0x0000449c) bss
->>     0xa7ff8000 - 0xa7ffffff (size 0x00008000) stack
->>   0xd8001000 - 0xd8001fff (size 0x00001000) imx27-esdctl
->>
->> This seems valid to me... does anyone see anything missing?
->>
->> As to putting in some debug statements in the FEC driver, I put an
->> enter and exit line in each function.  Startup gave me this:
->> fec_probe enter
->> fec_alloc_receive_packets enter
->> fec_alloc_receive_packets exit
->> fec_init enter
->> fec_init exit
->> mdio_bus: miibus0: probed
->> fec_probe exit 0
->>
->> So that looks good I would think.
->>
->> The DHCP command as follows:
->> dhcp<enter>
->> warning: No MAC address set. Using random address 12:D4:85:77:78:E4
->> fec_set_hwaddr enter
->> fec_set_hwaddr exit
->> fec_open enter
->> fec_miibus_read enter
->> fec_miibus_read exit
->> <... more reads ... >
->> fec_miibus_read enter
->> fec_miibus_read exit
->> fec_miibus_write enter
->> fec_miibus_write exit
->> fec_miibus_read enter
->> fec_miibus_read exit
->> fec_miibus_read enter
->> fec_miibus_read exit
->> fec_miibus_write enter
->> fec_miibus_write exit
->> fec_miibus_read enter
->> fec_miibus_read exit
->> fec_miibus_write enter
->> fec_miibus_write exit
->> fec_rbd_init enter
->> fec_rbd_init exit
->> fec_tbd_init enter
->> fec_tbd_init exit
->> fec_rx_task_enable enter
->> fec_rx_task_enable exit
->> fec_open exit
->> fec_miibus_read enter
->> fec_miibus_read exit
->>
->> this is followed by many more reads, until the output garbles:
->> fec_miibus_read exit
->> fec_miibus_read enter
->> fec_miibus_read exit
->
-> are you sure about the power of the board?
->
-> because it seems a clock change otherwise
->
-> Best Regards,
-> J.
->> miiear
->> miiea
->> iibad
->> iibad
->> fibud
->> fibud e
->> febus us_enfeus_exiecs_rntec_s_xitc__retec_m_reit_mireaer_miret
->> mieadr
->> miiea
->> iibad
->> iibad
->> ibud
->> fibud
->> febus euenfecusexiec_s_nteec_s_xitc__reterc__reit
->> _mreaer
->> _mreat
->> mieadr
->> miead
->> iibad
->>
->> and the chip ends up in the weeds.
->>
->> Any thoughts?
->>
->>
->> On Tue, Sep 24, 2013 at 2:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
->> > On Mon, Sep 23, 2013 at 04:47:19PM -0500, Allen Kennedy Jr. wrote:
->> >> > What's the output of some network command, like for example 'dhcp'?
->> >>
->> >> This hangs the chip.
->> >
->> > This shouldn't happen. No reaction from the board at all? Does ctrl-c
->> > work? You could add some debug messages to the FEC driver to see where
->> > it hangs.
->> >
->> > One situation where a board might hang is when the clock is disabled,
->> > but I don't see how this can happen since it's explicitly enabled in
->> > arch/arm/mach-imx/clk-imx27.c
->> >
->> > What's the output of 'md 0x1002b000'? Does it show the FEC registers
->> > or does it hang the board aswell? The output of 'iomem' might also
->> > help.
->> >
->> > Sascha
->> >
->> > --
->> > Pengutronix e.K.                           |                             |
->> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
->> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
->> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->> >
->> > _______________________________________________
->> > barebox mailing list
->> > barebox@lists.infradead.org
->> > http://lists.infradead.org/mailman/listinfo/barebox
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+if it's multi image
+
+ # ls -l /tmp-multi/
+-rwxrwxrwx          3 arch
+-rwxrwxrwx         12 compression
+-rwxrwxrwx         16 name
+-rwxrwxrwx          5 os
+-rwxrwxrwx         24 time
+-rwxrwxrwx         16 type
+-rwxrwxrwx         10 load_addr
+-rwxrwxrwx         10 entry_point
+-rwxrwxrwx       1292 data0
+-rwxrwxrwx        983 data1
+
+you can get the image header via an ioctl on any file
+UIMAGEFS_METADATA
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+Hi,
+	 Sascha take a look how to integrate it with bootm
+	 so as we discuss we can simplify the code
+
+Best Regards,
+J.
+ fs/Kconfig         |   4 +
+ fs/Makefile        |   1 +
+ fs/uimagefs.c      | 525 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/uimagefs.h |  52 ++++++
+ 4 files changed, 582 insertions(+)
+ create mode 100644 fs/uimagefs.c
+ create mode 100644 include/uimagefs.h
+
+diff --git a/fs/Kconfig b/fs/Kconfig
+index be4797f..d11431d 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -44,6 +44,10 @@ config FS_NFS
+ source fs/fat/Kconfig
+ source fs/ubifs/Kconfig
+ 
++config FS_UIMAGEFS
++	bool
++	prompt "uImage FS support"
++
+ config PARTITION_NEED_MTD
+ 	bool
+ 
+diff --git a/fs/Makefile b/fs/Makefile
+index bd02d94..0bc9116 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -9,3 +9,4 @@ obj-$(CONFIG_FS_UBIFS)	+= ubifs/
+ obj-$(CONFIG_FS_TFTP)	+= tftp.o
+ obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
+ obj-$(CONFIG_FS_NFS)	+= nfs.o
++obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
+diff --git a/fs/uimagefs.c b/fs/uimagefs.c
+new file mode 100644
+index 0000000..29d0baf
+--- /dev/null
++++ b/fs/uimagefs.c
+@@ -0,0 +1,525 @@
++/*
++ * Copyright (c) 2013 Jean-Chritstophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * under GPLv2 ONLY
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <fs.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <fs.h>
++#include <malloc.h>
++#include <init.h>
++#include <linux/stat.h>
++#include <linux/err.h>
++#include <uimagefs.h>
++#include <libbb.h>
++#include <rtc.h>
++
++static bool uimagefs_is_data_file(struct uimagefs_handle_data *d)
++{
++	return d->type == UIMAGEFS_DATA;
++}
++
++const char* uimagefs_type_to_str(enum uimagefs_type type)
++{
++	switch (type) {
++	case UIMAGEFS_DATA:
++		return "data";
++	case UIMAGEFS_NAME:
++		return "name";
++	case UIMAGEFS_TIME:
++		return "time";
++	case UIMAGEFS_LOAD:
++		return "load_addr";
++	case UIMAGEFS_EP:
++		return "entry_point";
++	case UIMAGEFS_OS:
++		return "os";
++	case UIMAGEFS_ARCH:
++		return "arch";
++	case UIMAGEFS_TYPE:
++		return "type";
++	case UIMAGEFS_COMP:
++		return "compression";
++	}
++
++	return "unknown";
++}
++
++static struct uimagefs_handle_data *uimagefs_get_by_name(
++	struct uimagefs_handle *handle, const char *name)
++{
++	struct uimagefs_handle_data *d;
++
++	if (!name)
++		return NULL;
++
++	list_for_each_entry(d, &handle->list, list) {
++		if (strcmp(d->name, name) == 0)
++			return d;
++	}
++
++	return NULL;
++}
++
++static int uimagefs_open(struct device_d *dev, FILE *file, const char *filename)
++{
++	struct uimagefs_handle *priv = dev->priv;
++	struct uimagefs_handle_data *d;
++
++	if (filename[0] == '/')
++		filename++;
++
++	d = uimagefs_get_by_name(priv, filename);
++	if (!d)
++		return -EINVAL;
++
++	if (uimagefs_is_data_file(d)) {
++		d->fd = open(priv->filename, O_RDONLY);
++		if (d->fd < 0)
++			return d->fd;
++
++		lseek(d->fd, d->offset, SEEK_SET);
++	}
++
++	file->size = d->size;
++	file->inode = d;
++
++	return 0;
++}
++
++static int uimagefs_close(struct device_d *dev, FILE *file)
++{
++	struct uimagefs_handle_data *d = file->inode;
++
++	close(d->fd);
++
++	return 0;
++}
++
++static int uimagefs_read(struct device_d *dev, FILE *file, void *buf, size_t insize)
++{
++	struct uimagefs_handle_data *d = file->inode;
++
++	if (!uimagefs_is_data_file(d)) {
++		memcpy(buf, &d->data[d->pos], insize);
++		return insize;
++	} else {
++		return read(d->fd, buf, insize);
++	}
++}
++
++static loff_t uimagefs_lseek(struct device_d *dev, FILE *file, loff_t pos)
++{
++	struct uimagefs_handle_data *d = file->inode;
++
++	if (uimagefs_is_data_file(d))
++		lseek(d->fd, d->offset + pos, SEEK_SET);
++
++	d->pos = pos;
++
++	return pos;
++}
++
++static DIR *uimagefs_opendir(struct device_d *dev, const char *pathname)
++{
++	struct uimagefs_handle *priv = dev->priv;
++	DIR *dir;
++
++	dir = xzalloc(sizeof(DIR));
++
++	if (list_empty(&priv->list))
++		return dir;
++
++	dir->priv = list_first_entry(&priv->list,
++					struct uimagefs_handle_data, list);
++	return dir;
++}
++
++static struct dirent *uimagefs_readdir(struct device_d *dev, DIR *dir)
++{
++	struct uimagefs_handle *priv = dev->priv;
++	struct uimagefs_handle_data *d = dir->priv;
++
++	if (!d || &d->list == &priv->list)
++		return NULL;
++
++	strcpy(dir->d.d_name, d->name);
++	dir->priv = list_entry(d->list.next, struct uimagefs_handle_data, list);
++	return &dir->d;
++}
++
++static int uimagefs_closedir(struct device_d *dev, DIR *dir)
++{
++	free(dir);
++	return 0;
++}
++
++static int uimagefs_stat(struct device_d *dev, const char *filename, struct stat *s)
++{
++	struct uimagefs_handle *priv = dev->priv;
++	struct uimagefs_handle_data *d;
++
++	if (filename[0] == '/')
++		filename++;
++
++	d = uimagefs_get_by_name(priv, filename);
++	if (!d)
++		return -EINVAL;
++
++	s->st_size = d->size;
++	s->st_mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
++
++	return 0;
++}
++
++static int uimagefs_ioctl(struct device_d *dev, FILE *f, int request, void *buf)
++{
++	struct uimagefs_handle *priv = dev->priv;
++
++	if (request != UIMAGEFS_METADATA)
++		return  -EINVAL;
++
++	memcpy(buf, &priv->header, sizeof(struct image_header));
++
++	return 0;
++}
++
++static void uimagefs_remove(struct device_d *dev)
++{
++	struct uimagefs_handle *priv = dev->priv;
++	struct uimagefs_handle_data *d, *tmp;
++	struct stat s;
++
++	list_for_each_entry_safe(d, tmp, &priv->list, list) {
++		free(d->name);
++		free(d->data);
++		free(d);
++	}
++
++	if (IS_BUILTIN(CONFIG_FS_TFTP) && !stat(priv->tmp, &s))
++		unlink(priv->tmp);
++
++	free(priv->tmp);
++	free(priv);
++}
++
++static inline int uimage_is_multi_image(struct uimagefs_handle *priv)
++{
++	return (priv->header.ih_type == IH_TYPE_MULTI) ? 1 : 0;
++}
++
++static int uimagefs_add_str(struct uimagefs_handle *priv, enum uimagefs_type type,
++				char *s)
++{
++	struct uimagefs_handle_data *d;
++
++	d = xzalloc(sizeof(*d));
++	d->type = type;
++	d->name = xstrdup(uimagefs_type_to_str(type));
++	d->data = s;
++	d->size = strlen(s);
++
++	list_add_tail(&d->list, &priv->list);
++
++	return 0;
++}
++
++static int uimagefs_add_name(struct uimagefs_handle *priv)
++{
++	char *name;
++	struct image_header *header = &priv->header;
++
++	if (header->ih_name[0]) {
++		name = xzalloc(IH_NMLEN + 1);
++		strncpy(name, header->ih_name, IH_NMLEN);
++	} else {
++		name = xstrdup(priv->filename);
++	}
++
++	return uimagefs_add_str(priv, UIMAGEFS_NAME, name);
++}
++
++static int uimagefs_add_hex(struct uimagefs_handle *priv, enum uimagefs_type type,
++			uint32_t data)
++{
++	char *val = asprintf("0x%x", data);
++
++	return uimagefs_add_str(priv, type, val);
++}
++
++static int uimagefs_add_data(struct uimagefs_handle *priv, size_t offset,
++				uint64_t size)
++{
++	struct uimagefs_handle_data *d;
++
++	d = xzalloc(sizeof(*d));
++	d->type = UIMAGEFS_DATA;
++	d->name = asprintf("%s%d", uimagefs_type_to_str(UIMAGEFS_DATA),
++				priv->nb_data_entries);
++
++	priv->nb_data_entries++;
++	d->offset = offset;
++	d->size = size;
++
++	list_add_tail(&d->list, &priv->list);
++
++	return 0;
++}
++
++#if defined(CONFIG_TIMESTAMP)
++static int uimagefs_add_time(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++	struct rtc_time tm;
++	char *val;
++
++	to_tm(header->ih_time, &tm);
++	val = asprintf("%4d-%02d-%02d  %2d:%02d:%02d UTC",
++			tm.tm_year, tm.tm_mon, tm.tm_mday,
++			tm.tm_hour, tm.tm_min, tm.tm_sec);
++
++	return uimagefs_add_str(priv, UIMAGEFS_TIME, val);
++}
++#else
++static int uimagefs_add_time(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++
++	return uimagefs_add_hex(priv, UIMAGEFS_TIME, header->ih_time);
++}
++#endif
++
++static int uimagefs_add_os(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++	char *val = xstrdup(image_get_os_name(header->ih_os));
++
++	return uimagefs_add_str(priv, UIMAGEFS_OS, val);
++}
++
++static int uimagefs_add_arch(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++	char *val = xstrdup(image_get_arch_name(header->ih_arch));
++
++	return uimagefs_add_str(priv, UIMAGEFS_ARCH, val);
++}
++
++static int uimagefs_add_type(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++	char *val = xstrdup(image_get_type_name(header->ih_type));
++
++	return uimagefs_add_str(priv, UIMAGEFS_TYPE, val);
++}
++
++static int uimagefs_add_comp(struct uimagefs_handle *priv)
++{
++	struct image_header *header = &priv->header;
++	char *val = xstrdup(image_get_comp_name(header->ih_comp));
++
++	return uimagefs_add_str(priv, UIMAGEFS_COMP, val);
++}
++
++/*
++ * open a uimage. This will check the header contents and
++ * return a handle to the uImage
++ */
++static int __uimage_open(struct uimagefs_handle *priv)
++{
++	int fd;
++	uint32_t checksum;
++	struct image_header *header;
++	int ret;
++	const char *filename = priv->filename;
++	size_t offset = 0;
++
++again:
++	fd = open(filename, O_RDONLY);
++	if (fd < 0) {
++		printf("could not open: %s\n", errno_str());
++		return fd;
++	}
++
++	/*
++	 * Hack around tftp fs. We need lseek for uImage support, but
++	 * this cannot be implemented in tftp fs, so we detect this
++	 * by doing a test lseek and copy the file to ram if it fails
++	 */
++	if (IS_BUILTIN(CONFIG_FS_TFTP) && lseek(fd, 0, SEEK_SET)) {
++		close(fd);
++		ret = copy_file(filename, priv->tmp, 0);
++		if (ret)
++			return ret;
++		filename = priv->tmp;
++		goto again;
++	}
++
++	header = &priv->header;
++
++	ret = read(fd, header, sizeof(*header));
++	if (ret < 0) {
++		printf("could not read: %s\n", errno_str());
++		goto err_out;
++	}
++	offset += sizeof(*header);
++
++	if (uimage_to_cpu(header->ih_magic) != IH_MAGIC) {
++		printf("Bad Magic Number\n");
++		ret = -EINVAL;
++		goto err_out;
++	}
++
++	checksum = uimage_to_cpu(header->ih_hcrc);
++	header->ih_hcrc = 0;
++
++	if (crc32(0, header, sizeof(*header)) != checksum) {
++		printf("Bad Header Checksum\n");
++		ret = -EIO;
++		goto err_out;
++	}
++
++	/* convert header to cpu native endianess */
++	header->ih_magic = uimage_to_cpu(header->ih_magic);
++	header->ih_hcrc = checksum;
++	header->ih_time = uimage_to_cpu(header->ih_time);
++	header->ih_size = uimage_to_cpu(header->ih_size);
++	header->ih_load = uimage_to_cpu(header->ih_load);
++	header->ih_ep = uimage_to_cpu(header->ih_ep);
++	header->ih_dcrc = uimage_to_cpu(header->ih_dcrc);
++
++	ret = uimagefs_add_arch(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_comp(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_name(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_os(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_time(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_type(priv);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_hex(priv, UIMAGEFS_LOAD, header->ih_load);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_hex(priv, UIMAGEFS_EP, header->ih_ep);
++	if (ret)
++		goto err_out;
++
++	if (uimage_is_multi_image(priv)) {
++		struct uimagefs_handle_data *d;
++
++		do {
++			u32 size;
++
++			ret = read(fd, &size, sizeof(size));
++			if (ret < 0)
++				goto err_out;
++
++			offset += sizeof(size);
++
++			if (!size)
++				break;
++
++			uimagefs_add_data(priv, 0, uimage_to_cpu(size));
++		} while(1);
++
++		/* offset of the first image in a multifile image */
++		list_for_each_entry(d, &priv->list, list) {
++			if (!uimagefs_is_data_file(d))
++				continue;
++			d->offset = offset;
++			offset += (d->size + 3) & ~3;
++		}
++	} else {
++		uimagefs_add_data(priv, offset, header->ih_size);
++	}
++
++	close(fd);
++
++	return 0;
++err_out:
++	return ret;
++}
++
++static int uimagefs_probe(struct device_d *dev)
++{
++	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct uimagefs_handle *priv;
++	int ret = 0;
++	int fd;
++
++	priv = xzalloc(sizeof(struct uimagefs_handle));
++	INIT_LIST_HEAD(&priv->list);
++	dev->priv = priv;
++
++	priv->filename = fsdev->backingstore;
++	dev_dbg(dev, "mount: %s\n", fsdev->backingstore);
++
++	if (IS_BUILTIN(CONFIG_FS_TFTP))
++		priv->tmp = asprintf("/.uImage_tmp_%08x",
++			crc32(0, fsdev->path, strlen(fsdev->path)));
++
++	fd = open(fsdev->backingstore, O_RDONLY);
++	if (fd < 0) {
++		ret = fd;
++		goto err;
++	}
++
++	ret = __uimage_open(priv);
++	if (ret)
++		goto err;
++
++	close(fd);
++
++	return 0;
++
++err:
++	close(fd);
++	uimagefs_remove(dev);
++
++	return ret;
++}
++
++static struct fs_driver_d uimagefs_driver = {
++	.open      = uimagefs_open,
++	.close     = uimagefs_close,
++	.read      = uimagefs_read,
++	.lseek     = uimagefs_lseek,
++	.opendir   = uimagefs_opendir,
++	.readdir   = uimagefs_readdir,
++	.closedir  = uimagefs_closedir,
++	.stat      = uimagefs_stat,
++	.ioctl	   = uimagefs_ioctl,
++	.flags     = 0,
++	.type = filetype_uimage,
++	.drv = {
++		.probe  = uimagefs_probe,
++		.remove = uimagefs_remove,
++		.name = "uimagefs",
++	}
++};
++
++static int uimagefs_init(void)
++{
++	return register_fs_driver(&uimagefs_driver);
++}
++coredevice_initcall(uimagefs_init);
+diff --git a/include/uimagefs.h b/include/uimagefs.h
+new file mode 100644
+index 0000000..af79c81
+--- /dev/null
++++ b/include/uimagefs.h
+@@ -0,0 +1,52 @@
++/*
++ * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
++ *
++ * under GPLv2 only
++ */
++
++#ifndef __UIMAGEFS_H__
++#define __UIMAGEFS_H__
++
++#include <linux/types.h>
++#include <linux/list.h>
++#include <image.h>
++#include <ioctl.h>
++
++#define UIMAGEFS_METADATA	_IOR('U', 100, struct image_header)
++
++enum uimagefs_type {
++	UIMAGEFS_DATA,
++	UIMAGEFS_NAME,
++	UIMAGEFS_TIME,
++	UIMAGEFS_LOAD,
++	UIMAGEFS_EP,
++	UIMAGEFS_OS,
++	UIMAGEFS_ARCH,
++	UIMAGEFS_TYPE,
++	UIMAGEFS_COMP,
++};
++
++struct uimagefs_handle_data {
++	char *name;
++	enum uimagefs_type type;
++	uint64_t size;
++
++	int fd;
++	size_t offset; /* offset in the image */
++	size_t pos; /* pos in the data */
++
++	char *data;
++
++	struct list_head list;
++};
++
++struct uimagefs_handle {
++	struct image_header header;
++	int nb_data_entries;
++	char *filename;
++	char *tmp;
++
++	struct list_head list;
++};
++
++#endif /* __UIMAGEFS_H__ */
+-- 
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
