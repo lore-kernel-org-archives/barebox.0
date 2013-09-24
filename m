@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VON99-0005k0-9n
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:35:00 +0000
-Date: Tue, 24 Sep 2013 09:34:37 +0200
+ id 1VONDr-0005wh-98
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:39:51 +0000
+Date: Tue, 24 Sep 2013 09:39:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130924073437.GB30088@pengutronix.de>
-References: <1379775256-29471-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130924073928.GC30088@pengutronix.de>
+References: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1379775256-29471-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2 v2] filetype: add Binary PacKage BPK type
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Fargier Sylvain <sylvain.fargier@somfy.com>
+Subject: Re: Porting to a new board
+To: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Cc: barebox@lists.infradead.org
 
-On Sat, Sep 21, 2013 at 04:54:15PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> Signed-off-by: Fargier Sylvain <sylvain.fargier@somfy.com>
-> ---
->  common/filetype.c  | 3 +++
->  include/filetype.h | 1 +
->  2 files changed, 4 insertions(+)
+On Mon, Sep 23, 2013 at 04:47:19PM -0500, Allen Kennedy Jr. wrote:
+> > What's the output of some network command, like for example 'dhcp'?
 > 
-> diff --git a/common/filetype.c b/common/filetype.c
-> index 59ea25a..ef4452d 100644
-> --- a/common/filetype.c
-> +++ b/common/filetype.c
-> @@ -51,6 +51,7 @@ static const struct filetype_str filetype_str[] = {
->  	[filetype_png] = { "PNG image", "png" },
->  	[filetype_ext] = { "ext filesystem", "ext" },
->  	[filetype_gpt] = { "GUID Partition Table", "gpt" },
-> +	[filetype_bpk] = { "Binary PacKage", "bpk" },
+> This hangs the chip.
 
-Can we have "Somfy Binary PacKage" here? As this file format is rather
-exoctic I want to make sure we still know what this is in a few years.
-Was the CamelCase 'PacKage' intended?
+This shouldn't happen. No reaction from the board at all? Does ctrl-c
+work? You could add some debug messages to the FEC driver to see where
+it hangs.
+
+One situation where a board might hang is when the clock is disabled,
+but I don't see how this can happen since it's explicitly enabled in
+arch/arm/mach-imx/clk-imx27.c
+
+What's the output of 'md 0x1002b000'? Does it show the FEC registers
+or does it hang the board aswell? The output of 'iomem' might also
+help.
 
 Sascha
 
