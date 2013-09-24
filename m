@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x231.google.com ([2a00:1450:400c:c05::231])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOU6f-0001dW-4I
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 15:00:55 +0000
-Received: by mail-wi0-f177.google.com with SMTP id cb5so4032781wib.4
- for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 08:00:31 -0700 (PDT)
+ id 1VOUXr-0002gc-9V
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 15:28:59 +0000
+Date: Tue, 24 Sep 2013 17:28:36 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130924152836.GF30088@pengutronix.de>
+References: <1379775256-29471-1-git-send-email-plagnioj@jcrosoft.com>
+ <1379775256-29471-2-git-send-email-plagnioj@jcrosoft.com>
+ <20130924073244.GA30088@pengutronix.de>
+ <20130924092450.GJ31585@ns203013.ovh.net>
+ <20130924093340.GD30088@pengutronix.de>
+ <20130924124442.GL31585@ns203013.ovh.net>
 MIME-Version: 1.0
-In-Reply-To: <20130924073928.GC30088@pengutronix.de>
-References: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
- <20130924073928.GC30088@pengutronix.de>
-Date: Tue, 24 Sep 2013 10:00:31 -0500
-Message-ID: <CAO-21LNPjMd_zeLfz+xf3oMecfxsPGpsnYvd3S45MG_bi1aNtQ@mail.gmail.com>
-From: "Allen Kennedy Jr." <allen@kennedystuff.com>
+Content-Disposition: inline
+In-Reply-To: <20130924124442.GL31585@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,167 +27,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting to a new board
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2 v2] fs: add BPKFS support
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Fargier Sylvain <sylvain.fargier@somfy.com>
 
-The dhcp command gives:
-"warning: No MAC address set. Using random address 62:1C:8B:DF:6D:4D"
-Then the device console hangs, Ctrl-C does nothing.  Breaking into it
-via JTAG, I see
-the PC and LR are off in the weeds and the stack and registers
-contains nothing of
-indication as to where it went awry.
+On Tue, Sep 24, 2013 at 02:44:42PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:33 Tue 24 Sep     , Sascha Hauer wrote:
+> > On Tue, Sep 24, 2013 at 11:24:50AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > On 09:32 Tue 24 Sep     , Sascha Hauer wrote:
+> > > > Some typos inside
+> > > > 
+> > > > On Sat, Sep 21, 2013 at 04:54:16PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > > Simple update file format developped for Somfy, tools and library are
+> > > > 
+> > > > s/developped/developed/
+> > > > 
+> > > > > +/*
+> > > > > + * Copyright (c) 2013 Jean-Chritstophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > 
+> > > > s/Jean-Chritstophe/Jean-Christophe/
+> > > 
+> > > a tyPo in my own name :(
+> > > > 
+> > > > Otherwise this looks good.
+> > > 
+> > > for some times I was thinking to do the same on uimage
+> > > 
+> > > so we do not need to extract struff from it
+> > 
+> > I have a patch that drops multifile uImage support. It really makes the
+> > bootm code more readable.
+> 
+> NO I does use it and in production board
+> 
+> we must have multifile uImage support
 
-md 0x1002b000 does show the FEC registers:
- md 0x1002b000
-1002b000: 00000600 00000000 00000000 00000600                ................
-1002b010: 00000000 00000000 00000000 00000000                ................
-1002b020: 00000600 f0000000 00000600 00000600                ................
-1002b030: 00000600 00000600 00000600 00000600                ................
-1002b040: 6f86782d 00000018 00060006 00040006                -x.o............
-1002b050: 6f86782d 00000018 000a0006 00080006                -x.o............
-1002b060: 00000000 c0000000 fffffffd fffffffd                ................
-1002b070: fffffffd fffffffd fffffffd fffffffd                ................
-1002b080: 000b0000 05ee0004 19000000 84680868                ............h.h.
-1002b090: ffffffff 00000000 10008208 33428006                ..............B3
-1002b0a0: 00c40000 ffffffff ffffffff ffffffff                ................
-1002b0b0: ffffffff ffffffff ffffffff ffffffff                ................
-1002b0c0: 00000000 00000000 00000000 00000000                ................
-1002b0d0: 02b20000 91cc3d09 00000000 0180c200                .....=..........
-1002b0e0: 00010000 068f6c9e b50d8808 00010020                .....l...... ...
-1002b0f0: 00000000 00000000 00000000 00000000                ................
+That was in response to "I was thinking to do the same on uimage" which
+I interpreted in the way that you thought about implementing uimage
+support as filesystem which would allow us to remove the multifile
+support from bootm without loosing the feature of handling multifile
+images.
 
+Sascha
 
-iomem output:
- iomem
-0x00000000 - 0xffffffff (size 0x00000000) iomem
-  0x10002000 - 0x10002fff (size 0x00001000) imx21-wdt0
-  0x10003000 - 0x100030ff (size 0x00000100) imx1-gpt0
-  0x1000a000 - 0x1000afff (size 0x00001000) imx21-uart0
-  0x10015000 - 0x100150ff (size 0x00000100) imx1-gpio0
-  0x10015100 - 0x100151ff (size 0x00000100) imx1-gpio1
-  0x10015200 - 0x100152ff (size 0x00000100) imx1-gpio2
-  0x10015300 - 0x100153ff (size 0x00000100) imx1-gpio3
-  0x10015400 - 0x100154ff (size 0x00000100) imx1-gpio4
-  0x10015500 - 0x100155ff (size 0x00000100) imx1-gpio5
-  0x10027000 - 0x10027fff (size 0x00001000) imx27-ccm
-  0x10028000 - 0x10028fff (size 0x00001000) imx_iim
-  0x1002b000 - 0x1002bfff (size 0x00001000) imx27-fec
-  0xa0000000 - 0xa7ffffff (size 0x08000000) ram0
-    0xa7a00000 - 0xa7dfffff (size 0x00400000) malloc space
-    0xa7e00000 - 0xa7e1afdf (size 0x0001afe0) barebox
-    0xa7e1afe0 - 0xa7e20aaf (size 0x00005ad0) barebox data
-    0xa7e20ab0 - 0xa7e24f4b (size 0x0000449c) bss
-    0xa7ff8000 - 0xa7ffffff (size 0x00008000) stack
-  0xd8001000 - 0xd8001fff (size 0x00001000) imx27-esdctl
-
-This seems valid to me... does anyone see anything missing?
-
-As to putting in some debug statements in the FEC driver, I put an
-enter and exit line in each function.  Startup gave me this:
-fec_probe enter
-fec_alloc_receive_packets enter
-fec_alloc_receive_packets exit
-fec_init enter
-fec_init exit
-mdio_bus: miibus0: probed
-fec_probe exit 0
-
-So that looks good I would think.
-
-The DHCP command as follows:
-dhcp<enter>
-warning: No MAC address set. Using random address 12:D4:85:77:78:E4
-fec_set_hwaddr enter
-fec_set_hwaddr exit
-fec_open enter
-fec_miibus_read enter
-fec_miibus_read exit
-<... more reads ... >
-fec_miibus_read enter
-fec_miibus_read exit
-fec_miibus_write enter
-fec_miibus_write exit
-fec_miibus_read enter
-fec_miibus_read exit
-fec_miibus_read enter
-fec_miibus_read exit
-fec_miibus_write enter
-fec_miibus_write exit
-fec_miibus_read enter
-fec_miibus_read exit
-fec_miibus_write enter
-fec_miibus_write exit
-fec_rbd_init enter
-fec_rbd_init exit
-fec_tbd_init enter
-fec_tbd_init exit
-fec_rx_task_enable enter
-fec_rx_task_enable exit
-fec_open exit
-fec_miibus_read enter
-fec_miibus_read exit
-
-this is followed by many more reads, until the output garbles:
-fec_miibus_read exit
-fec_miibus_read enter
-fec_miibus_read exit
-miiear
-miiea
-iibad
-iibad
-fibud
-fibud e
-febus us_enfeus_exiecs_rntec_s_xitc__retec_m_reit_mireaer_miret
-mieadr
-miiea
-iibad
-iibad
-ibud
-fibud
-febus euenfecusexiec_s_nteec_s_xitc__reterc__reit
-_mreaer
-_mreat
-mieadr
-miead
-iibad
-
-and the chip ends up in the weeds.
-
-Any thoughts?
-
-
-On Tue, Sep 24, 2013 at 2:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Mon, Sep 23, 2013 at 04:47:19PM -0500, Allen Kennedy Jr. wrote:
->> > What's the output of some network command, like for example 'dhcp'?
->>
->> This hangs the chip.
->
-> This shouldn't happen. No reaction from the board at all? Does ctrl-c
-> work? You could add some debug messages to the FEC driver to see where
-> it hangs.
->
-> One situation where a board might hang is when the clock is disabled,
-> but I don't see how this can happen since it's explicitly enabled in
-> arch/arm/mach-imx/clk-imx27.c
->
-> What's the output of 'md 0x1002b000'? Does it show the FEC registers
-> or does it hang the board aswell? The output of 'iomem' might also
-> help.
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
