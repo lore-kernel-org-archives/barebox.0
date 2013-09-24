@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOMkD-00050f-Mg
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:15 +0000
+ id 1VOMkD-00050e-NK
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:16 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 24 Sep 2013 09:08:40 +0200
-Message-Id: <1380006527-2599-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 24 Sep 2013 09:08:38 +0200
+Message-Id: <1380006527-2599-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/11] bootm: remove unused define
+Subject: [PATCH 02/11] bootm: fix memory leak
 To: barebox@lists.infradead.org
 
-OFTREE_SIZE_INCREASE isn't used anymore.
+data->of_root_node may be allocated from of of_unflatten_dtb.
+Free it in this case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c | 5 -----
- 1 file changed, 5 deletions(-)
+ common/bootm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index a4004df..8ce4867 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -46,11 +46,6 @@
- #include <magicvar.h>
- #include <asm-generic/memory_layout.h>
+diff --git a/common/bootm.c b/common/bootm.c
+index 1ddc6d2..14b4cff 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -299,6 +299,8 @@ err_out:
+ 		uimage_close(data->initrd);
+ 	if (data->os)
+ 		uimage_close(data->os);
++	if (data->of_root_node && data->of_root_node != of_get_root_node())
++		of_delete_node(data->of_root_node);
  
--/*
-- * Additional oftree size for the fixed tree
-- */
--#define OFTREE_SIZE_INCREASE	0x8000
--
- static char *bootm_image_name_and_no(const char *name, int *no)
- {
- 	char *at, *ret;
+ 	return ret;
+ }
 -- 
 1.8.4.rc3
 
