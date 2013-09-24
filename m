@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOMkD-00050g-NI
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:17 +0000
+ id 1VOMkD-00050k-M4
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 24 Sep 2013 09:08:41 +0200
-Message-Id: <1380006527-2599-6-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 24 Sep 2013 09:08:46 +0200
+Message-Id: <1380006527-2599-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/11] bootm: move getenv_loadaddr from command to common
+Subject: [PATCH 10/11] command: Let builtin command take precedence
 To: barebox@lists.infradead.org
 
-getenv_loadaddr may be used by other code, so move it
-from command/ to common/
+In theory we can overwrite a builtin command with a script. However,
+I don't know a single case where this has been done. Scripts are
+often more unflexible than commands so it's unlikely that a script
+can extend the functionality of a builtin command. Moreover, the
+internal command is no longer accessible once it's overwritten by
+a script.
+
+Invert this logic so that a builtin command can overwrite an existing
+script. This will help when the 'boot' script is converted to a
+builting command. Then with old environments the builtin command will
+be used instead of the script.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/bootm.c | 13 -------------
- common/bootm.c   | 13 +++++++++++++
- include/boot.h   |  2 ++
- 3 files changed, 15 insertions(+), 13 deletions(-)
+ common/binfmt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 8ce4867..c1d2ec4 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -75,19 +75,6 @@ static char *bootm_image_name_and_no(const char *name, int *no)
- #define BOOTM_OPTS BOOTM_OPTS_COMMON
- #endif
+diff --git a/common/binfmt.c b/common/binfmt.c
+index 7dcf5d7..f2ff624 100644
+--- a/common/binfmt.c
++++ b/common/binfmt.c
+@@ -60,6 +60,9 @@ int execute_binfmt(int argc, char **argv)
+ 	if (strchr(argv[0], '/'))
+ 		return binfmt_run(argv[0], argc, argv);
  
--unsigned long long getenv_loadaddr(const char *name)
--{
--	const char *valstr = getenv(name);
--
--	if (!valstr)
--		return UIMAGE_SOME_ADDRESS;
--
--	if (valstr[0] == '\0')
--		return UIMAGE_SOME_ADDRESS;
--
--	return simple_strtoull(valstr, NULL, 0);
--}
--
- static int do_bootm(int argc, char *argv[])
- {
- 	int opt;
-diff --git a/common/bootm.c b/common/bootm.c
-index f7e4f9a..6b2c2a6 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -26,6 +26,19 @@ int register_image_handler(struct image_handler *handler)
- 	return 0;
++	if (find_cmd(argv[0]))
++		return execute_command(argc, &argv[0]);
++
+ 	path = find_execable(argv[0]);
+ 	if (path) {
+ 		ret = binfmt_run(path, argc, argv);
+@@ -67,7 +70,7 @@ int execute_binfmt(int argc, char **argv)
+ 		return ret;
+ 	}
+ 
+-	return execute_command(argc, &argv[0]);
++	return -ENOENT;
  }
  
-+unsigned long long getenv_loadaddr(const char *name)
-+{
-+	const char *valstr = getenv(name);
-+
-+	if (!valstr)
-+		return UIMAGE_SOME_ADDRESS;
-+
-+	if (valstr[0] == '\0')
-+		return UIMAGE_SOME_ADDRESS;
-+
-+	return simple_strtoull(valstr, NULL, 0);
-+}
-+
- static struct image_handler *bootm_find_handler(enum filetype filetype,
- 		struct image_data *data)
- {
-diff --git a/include/boot.h b/include/boot.h
-index ccce8e1..8d42d39 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -96,4 +96,6 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
- 
- int bootm_boot(struct image_data *);
- 
-+unsigned long long getenv_loadaddr(const char *name);
-+
- #endif /* __BOOT_H */
+ int binfmt_register(struct binfmt_hook *b)
 -- 
 1.8.4.rc3
 
