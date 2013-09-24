@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOMkD-00050k-M4
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:22 +0000
+ id 1VOMxx-0005Ow-Mr
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:23:26 +0000
+Date: Tue, 24 Sep 2013 09:23:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 24 Sep 2013 09:08:46 +0200
-Message-Id: <1380006527-2599-11-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
-References: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130924072304.GZ30088@pengutronix.de>
+References: <1379923320-22018-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1379923320-22018-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,57 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/11] command: Let builtin command take precedence
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] console_simple: fix: set f_active
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-In theory we can overwrite a builtin command with a script. However,
-I don't know a single case where this has been done. Scripts are
-often more unflexible than commands so it's unlikely that a script
-can extend the functionality of a builtin command. Moreover, the
-internal command is no longer accessible once it's overwritten by
-a script.
+On Mon, Sep 23, 2013 at 10:02:00AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> so generic code can check if the console is enabled
+> 
+> and now we can use loadb & loadxy
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Invert this logic so that a builtin command can overwrite an existing
-script. This will help when the 'boot' script is converted to a
-builting command. Then with old environments the builtin command will
-be used instead of the script.
+Applied, thanks
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/binfmt.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Sascha
 
-diff --git a/common/binfmt.c b/common/binfmt.c
-index 7dcf5d7..f2ff624 100644
---- a/common/binfmt.c
-+++ b/common/binfmt.c
-@@ -60,6 +60,9 @@ int execute_binfmt(int argc, char **argv)
- 	if (strchr(argv[0], '/'))
- 		return binfmt_run(argv[0], argc, argv);
- 
-+	if (find_cmd(argv[0]))
-+		return execute_command(argc, &argv[0]);
-+
- 	path = find_execable(argv[0]);
- 	if (path) {
- 		ret = binfmt_run(path, argc, argv);
-@@ -67,7 +70,7 @@ int execute_binfmt(int argc, char **argv)
- 		return ret;
- 	}
- 
--	return execute_command(argc, &argv[0]);
-+	return -ENOENT;
- }
- 
- int binfmt_register(struct binfmt_hook *b)
+> ---
+>  common/console_simple.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/common/console_simple.c b/common/console_simple.c
+> index e82d9cb..0f83fa4 100644
+> --- a/common/console_simple.c
+> +++ b/common/console_simple.c
+> @@ -97,6 +97,8 @@ int console_register(struct console_device *newcdev)
+>  		newcdev->setbrg(newcdev, newcdev->baudrate);
+>  	}
+>  
+> +	newcdev->f_active = CONSOLE_STDIN | CONSOLE_STDOUT | CONSOLE_STDERR;
+> +
+>  	barebox_banner();
+>  
+>  	return 0;
+> -- 
+> 1.8.4.rc3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.4.rc3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
