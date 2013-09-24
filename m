@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOVwA-00063H-AZ
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 16:58:11 +0000
-Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 5D6B710203DC
- for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 18:32:14 +0200 (CEST)
-Date: Tue, 24 Sep 2013 18:33:32 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130924163332.GN31585@ns203013.ovh.net>
-References: <CAO-21LNqyD5-wMWC+Xy9grkxzb9bVRqw+pE7gnJJ_f0jog=izw@mail.gmail.com>
- <20130924073928.GC30088@pengutronix.de>
- <CAO-21LNPjMd_zeLfz+xf3oMecfxsPGpsnYvd3S45MG_bi1aNtQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAO-21LNPjMd_zeLfz+xf3oMecfxsPGpsnYvd3S45MG_bi1aNtQ@mail.gmail.com>
+Received: from mail-we0-x22f.google.com ([2a00:1450:400c:c03::22f])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VOW18-0006J8-1j
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 17:03:19 +0000
+Received: by mail-we0-f175.google.com with SMTP id q59so4838225wes.20
+ for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 10:02:53 -0700 (PDT)
+From: Bryan De Faria <bryan.defaria@gmail.com>
+Date: Tue, 24 Sep 2013 19:02:51 +0200
+Message-Id: <1380042171-3107-1-git-send-email-bryan.defaria@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,184 +16,364 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting to a new board
-To: "Allen Kennedy Jr." <allen@kennedystuff.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] arm omap4: fix arguments in writel
+To: barebox@lists.infradead.org
 
-On 10:00 Tue 24 Sep     , Allen Kennedy Jr. wrote:
-> The dhcp command gives:
-> "warning: No MAC address set. Using random address 62:1C:8B:DF:6D:4D"
-> Then the device console hangs, Ctrl-C does nothing.  Breaking into it
-> via JTAG, I see
-> the PC and LR are off in the weeds and the stack and registers
-> contains nothing of
-> indication as to where it went awry.
-> 
-> md 0x1002b000 does show the FEC registers:
->  md 0x1002b000
-> 1002b000: 00000600 00000000 00000000 00000600                ................
-> 1002b010: 00000000 00000000 00000000 00000000                ................
-> 1002b020: 00000600 f0000000 00000600 00000600                ................
-> 1002b030: 00000600 00000600 00000600 00000600                ................
-> 1002b040: 6f86782d 00000018 00060006 00040006                -x.o............
-> 1002b050: 6f86782d 00000018 000a0006 00080006                -x.o............
-> 1002b060: 00000000 c0000000 fffffffd fffffffd                ................
-> 1002b070: fffffffd fffffffd fffffffd fffffffd                ................
-> 1002b080: 000b0000 05ee0004 19000000 84680868                ............h.h.
-> 1002b090: ffffffff 00000000 10008208 33428006                ..............B3
-> 1002b0a0: 00c40000 ffffffff ffffffff ffffffff                ................
-> 1002b0b0: ffffffff ffffffff ffffffff ffffffff                ................
-> 1002b0c0: 00000000 00000000 00000000 00000000                ................
-> 1002b0d0: 02b20000 91cc3d09 00000000 0180c200                .....=..........
-> 1002b0e0: 00010000 068f6c9e b50d8808 00010020                .....l...... ...
-> 1002b0f0: 00000000 00000000 00000000 00000000                ................
-> 
-> 
-> iomem output:
->  iomem
-> 0x00000000 - 0xffffffff (size 0x00000000) iomem
->   0x10002000 - 0x10002fff (size 0x00001000) imx21-wdt0
->   0x10003000 - 0x100030ff (size 0x00000100) imx1-gpt0
->   0x1000a000 - 0x1000afff (size 0x00001000) imx21-uart0
->   0x10015000 - 0x100150ff (size 0x00000100) imx1-gpio0
->   0x10015100 - 0x100151ff (size 0x00000100) imx1-gpio1
->   0x10015200 - 0x100152ff (size 0x00000100) imx1-gpio2
->   0x10015300 - 0x100153ff (size 0x00000100) imx1-gpio3
->   0x10015400 - 0x100154ff (size 0x00000100) imx1-gpio4
->   0x10015500 - 0x100155ff (size 0x00000100) imx1-gpio5
->   0x10027000 - 0x10027fff (size 0x00001000) imx27-ccm
->   0x10028000 - 0x10028fff (size 0x00001000) imx_iim
->   0x1002b000 - 0x1002bfff (size 0x00001000) imx27-fec
->   0xa0000000 - 0xa7ffffff (size 0x08000000) ram0
->     0xa7a00000 - 0xa7dfffff (size 0x00400000) malloc space
->     0xa7e00000 - 0xa7e1afdf (size 0x0001afe0) barebox
->     0xa7e1afe0 - 0xa7e20aaf (size 0x00005ad0) barebox data
->     0xa7e20ab0 - 0xa7e24f4b (size 0x0000449c) bss
->     0xa7ff8000 - 0xa7ffffff (size 0x00008000) stack
->   0xd8001000 - 0xd8001fff (size 0x00001000) imx27-esdctl
-> 
-> This seems valid to me... does anyone see anything missing?
-> 
-> As to putting in some debug statements in the FEC driver, I put an
-> enter and exit line in each function.  Startup gave me this:
-> fec_probe enter
-> fec_alloc_receive_packets enter
-> fec_alloc_receive_packets exit
-> fec_init enter
-> fec_init exit
-> mdio_bus: miibus0: probed
-> fec_probe exit 0
-> 
-> So that looks good I would think.
-> 
-> The DHCP command as follows:
-> dhcp<enter>
-> warning: No MAC address set. Using random address 12:D4:85:77:78:E4
-> fec_set_hwaddr enter
-> fec_set_hwaddr exit
-> fec_open enter
-> fec_miibus_read enter
-> fec_miibus_read exit
-> <... more reads ... >
-> fec_miibus_read enter
-> fec_miibus_read exit
-> fec_miibus_write enter
-> fec_miibus_write exit
-> fec_miibus_read enter
-> fec_miibus_read exit
-> fec_miibus_read enter
-> fec_miibus_read exit
-> fec_miibus_write enter
-> fec_miibus_write exit
-> fec_miibus_read enter
-> fec_miibus_read exit
-> fec_miibus_write enter
-> fec_miibus_write exit
-> fec_rbd_init enter
-> fec_rbd_init exit
-> fec_tbd_init enter
-> fec_tbd_init exit
-> fec_rx_task_enable enter
-> fec_rx_task_enable exit
-> fec_open exit
-> fec_miibus_read enter
-> fec_miibus_read exit
-> 
-> this is followed by many more reads, until the output garbles:
-> fec_miibus_read exit
-> fec_miibus_read enter
-> fec_miibus_read exit
+In commit 72e561b5e825595507c32a6d53a241f58c2e2c13 arguments are reversed
+in writel.
 
-are you sure about the power of the board?
+Signed-off-by: Bryan De Faria <bryan.defaria@gmail.com>
+---
+ arch/arm/mach-omap/omap4_clock.c | 176 +++++++++++++++++++--------------------
+ 1 file changed, 88 insertions(+), 88 deletions(-)
 
-because it seems a clock change otherwise
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index 268f7c1..72f72a1 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -89,7 +89,7 @@ void omap4_configure_per_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ {
+ 	/* Select sys_clk as ref clk for ABE dpll */
+-	writel(CM_ABE_PLL_REF_CLKSEL, 0x0);
++	writel(0x0, CM_ABE_PLL_REF_CLKSEL);
+ 
+ 	/* Unlock the ABE dpll */
+ 	sr32(CM_CLKMODE_DPLL_ABE, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -102,11 +102,11 @@ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ 	sr32(CM_CLKSEL_DPLL_ABE, 0, 6, dpll_param->n);
+ 
+ 	/* Force DPLL CLKOUTHIF to stay enabled */
+-	writel(CM_DIV_M2_DPLL_ABE, 0x500);
++	writel(0x500, CM_DIV_M2_DPLL_ABE);
+ 	sr32(CM_DIV_M2_DPLL_ABE, 0, 5, dpll_param->m2);
+ 	sr32(CM_DIV_M2_DPLL_ABE, 8, 1, 0x1);
+ 	/* Force DPLL CLKOUTHIF to stay enabled */
+-	writel(CM_DIV_M3_DPLL_ABE, 0x100);
++	writel(0x100, CM_DIV_M3_DPLL_ABE);
+ 	sr32(CM_DIV_M3_DPLL_ABE, 0, 5, dpll_param->m3);
+ 	sr32(CM_DIV_M3_DPLL_ABE, 8, 1, 0x1);
+ 
+@@ -120,7 +120,7 @@ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ {
+ 	/* Select the 60Mhz clock 480/8 = 60*/
+-	writel(CM_CLKSEL_USB_60MHz, 0x1);
++	writel(0x1, CM_CLKSEL_USB_60MHz);
+ 
+ 	/* Unlock the USB dpll */
+ 	sr32(CM_CLKMODE_DPLL_USB, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -133,7 +133,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ 	sr32(CM_CLKSEL_DPLL_USB, 0, 6, dpll_param->n);
+ 
+ 	/* Force DPLL CLKOUT to stay active */
+-	writel(CM_DIV_M2_DPLL_USB, 0x100);
++	writel(0x100, CM_DIV_M2_DPLL_USB);
+ 	sr32(CM_DIV_M2_DPLL_USB, 0, 5, dpll_param->m2);
+ 	sr32(CM_DIV_M2_DPLL_USB, 8, 1, 0x1);
+ 	sr32(CM_CLKDCOLDO_DPLL_USB, 8, 1, 0x1);
+@@ -143,7 +143,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ 	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_USB, LDELAY);
+ 
+ 	/* force enable the CLKDCOLDO clock */
+-	writel(CM_CLKDCOLDO_DPLL_USB, 0x100);
++	writel(0x100, CM_CLKDCOLDO_DPLL_USB);
+ 
+ 	return;
+ }
+@@ -151,7 +151,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_core_dpll_no_lock(const struct dpll_param *param)
+ {
+ 	/* CORE_CLK=CORE_X2_CLK/2, L3_CLK=CORE_CLK/2, L4_CLK=L3_CLK/2 */
+-	writel(CM_CLKSEL_CORE, 0x110);
++	writel(0x110, CM_CLKSEL_CORE);
+ 
+ 	/* Unlock the CORE dpll */
+ 	sr32(CM_CLKMODE_DPLL_CORE, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -205,107 +205,107 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
+ 
+ void omap4_enable_gpio_clocks(void)
+ {
+-	writel(CM_L4PER_GPIO2_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO3_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO4_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO5_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO5_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO6_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO6_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
+ }
+ 
+ void omap4_enable_gpio1_wup_clocks(void)
+ {
+ 	/* WKUP clocks */
+-	writel(CM_WKUP_GPIO1_CLKCTRL, 0x1);
++	writel(0x1, CM_WKUP_GPIO1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
+ }
+ 
+ void omap4_enable_all_clocks(void)
+ {
+ 	/* Enable Ducati clocks */
+-	writel(CM_DUCATI_DUCATI_CLKCTRL, 0x1);
+-	writel(CM_DUCATI_CLKSTCTRL, 0x2);
++	writel(0x1, CM_DUCATI_DUCATI_CLKCTRL);
++	writel(0x2, CM_DUCATI_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), CM_DUCATI_CLKSTCTRL, LDELAY);
+ 
+ 	/* Enable ivahd and sl2 clocks */
+-	writel(IVAHD_IVAHD_CLKCTRL, 0x1);
+-	writel(IVAHD_SL2_CLKCTRL, 0x1);
+-	writel(IVAHD_CLKSTCTRL, 0x2);
++	writel(0x1, IVAHD_IVAHD_CLKCTRL);
++	writel(0x1, IVAHD_SL2_CLKCTRL);
++	writel(0x2, IVAHD_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), IVAHD_CLKSTCTRL, LDELAY);
+ 
+ 	/* Enable Tesla clocks */
+-	writel(DSP_DSP_CLKCTRL, 0x1);
+-	writel(DSP_CLKSTCTRL, 0x2);
++	writel(0x1, DSP_DSP_CLKCTRL);
++	writel(0x2, DSP_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), DSP_CLKSTCTRL, LDELAY);
+ 
+ 	/* wait for tesla to become accessible */
+ 
+ 	/* ABE clocks */
+-	writel(CM1_ABE_CLKSTCTRL, 0x3);
+-	writel(CM1_ABE_AESS_CLKCTRL, 0x2);
+-	writel(CM1_ABE_PDM_CLKCTRL, 0x2);
+-	writel(CM1_ABE_DMIC_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCASP_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP1_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP2_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP3_CLKCTRL, 0x2);
+-	writel(CM1_ABE_SLIMBUS_CLKCTRL, 0xf02);
+-	writel(CM1_ABE_TIMER5_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER6_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER7_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER8_CLKCTRL, 0x2);
+-	writel(CM1_ABE_WDT3_CLKCTRL, 0x2);
++	writel(0x3, CM1_ABE_CLKSTCTRL);
++	writel(0x2, CM1_ABE_AESS_CLKCTRL);
++	writel(0x2, CM1_ABE_PDM_CLKCTRL);
++	writel(0x2, CM1_ABE_DMIC_CLKCTRL);
++	writel(0x2, CM1_ABE_MCASP_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP1_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP2_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP3_CLKCTRL);
++	writel(0xf02, CM1_ABE_SLIMBUS_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER5_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER6_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER7_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER8_CLKCTRL);
++	writel(0x2, CM1_ABE_WDT3_CLKCTRL);
+ 	/* Disable sleep transitions */
+-	writel(CM1_ABE_CLKSTCTRL, 0x0);
++	writel(0x0, CM1_ABE_CLKSTCTRL);
+ 
+ 	/* L4PER clocks */
+-	writel(CM_L4PER_CLKSTCTRL, 0x2);
+-	writel(CM_L4PER_DMTIMER10_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_CLKSTCTRL);
++	writel(0x2, CM_L4PER_DMTIMER10_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER10_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER11_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER11_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER11_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER9_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER9_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
+ 
+ 	/* GPIO clocks */
+ 	omap4_enable_gpio_clocks();
+ 
+-	writel(CM_L4PER_HDQ1W_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_HDQ1W_CLKCTRL);
+ 
+ 	/* I2C clocks */
+-	writel(CM_L4PER_I2C1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C4_CLKCTRL, LDELAY);
+ 
+-	writel(CM_L4PER_MCBSP4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCBSP4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCBSP4_CLKCTRL, LDELAY);
+ 
+ 	/* MCSPI clocks */
+-	writel(CM_L4PER_MCSPI1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI4_CLKCTRL, LDELAY);
+ 
+ 	/* MMC clocks */
+@@ -313,86 +313,86 @@ void omap4_enable_all_clocks(void)
+ 	sr32(CM_L3INIT_HSMMC1_CLKCTRL, 24, 1, 0x1);
+ 	sr32(CM_L3INIT_HSMMC2_CLKCTRL, 0, 2, 0x2);
+ 	sr32(CM_L3INIT_HSMMC2_CLKCTRL, 24, 1, 0x1);
+-	writel(CM_L4PER_MMCSD3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD3_CLKCTRL);
+ 	wait_on_value((1 << 18)|(1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MMCSD4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD4_CLKCTRL);
+ 	wait_on_value((1 << 18)|(1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MMCSD5_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD5_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD5_CLKCTRL, LDELAY);
+ 
+ 	/* UART clocks */
+-	writel(CM_L4PER_UART1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
+ 
+ 	/* WKUP clocks */
+ 	omap4_enable_gpio1_wup_clocks();
+-	writel(CM_WKUP_TIMER1_CLKCTRL, 0x01000002);
++	writel(0x01000002, CM_WKUP_TIMER1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
+ 
+-	writel(CM_WKUP_KEYBOARD_CLKCTRL, 0x2);
++	writel(0x2, CM_WKUP_KEYBOARD_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_KEYBOARD_CLKCTRL, LDELAY);
+ 
+-	writel(CM_SDMA_CLKSTCTRL, 0x0);
+-	writel(CM_MEMIF_CLKSTCTRL, 0x3);
+-	writel(CM_MEMIF_EMIF_1_CLKCTRL, 0x1);
++	writel(0x0, CM_SDMA_CLKSTCTRL);
++	writel(0x3, CM_MEMIF_CLKSTCTRL);
++	writel(0x1, CM_MEMIF_EMIF_1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_MEMIF_EMIF_1_CLKCTRL, LDELAY);
+-	writel(CM_MEMIF_EMIF_2_CLKCTRL, 0x1);
++	writel(0x1, CM_MEMIF_EMIF_2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_MEMIF_EMIF_2_CLKCTRL, LDELAY);
+-	writel(CM_D2D_CLKSTCTRL, 0x3);
+-	writel(CM_L3_2_GPMC_CLKCTRL, 0x1);
++	writel(0x3, CM_D2D_CLKSTCTRL);
++	writel(0x1, CM_L3_2_GPMC_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3_2_GPMC_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_L3_3_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_L3_3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_L3_3_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_L3_INSTR_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_L3_INSTR_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_L3_INSTR_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_OCP_WP1_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_OCP_WP1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_OCP_WP1_CLKCTRL, LDELAY);
+ 
+ 	/* WDT clocks */
+-	writel(CM_WKUP_WDT2_CLKCTRL, 0x2);
++	writel(0x2, CM_WKUP_WDT2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_WDT2_CLKCTRL, LDELAY);
+ 
+ 	/* Enable Camera clocks */
+-	writel(CM_CAM_CLKSTCTRL, 0x3);
+-	writel(CM_CAM_ISS_CLKCTRL, 0x102);
+-	writel(CM_CAM_FDIF_CLKCTRL, 0x2);
+-	writel(CM_CAM_CLKSTCTRL, 0x0);
++	writel(0x3, CM_CAM_CLKSTCTRL);
++	writel(0x102, CM_CAM_ISS_CLKCTRL);
++	writel(0x2, CM_CAM_FDIF_CLKCTRL);
++	writel(0x0, CM_CAM_CLKSTCTRL);
+ 
+ 	/* Enable DSS clocks */
+ 	/* PM_DSS_PWRSTCTRL ON State and LogicState = 1 (Retention) */
+ 	__raw_writel(7, 0x4A307100); /* DSS_PRM */
+ 
+-	writel(CM_DSS_CLKSTCTRL, 0x2);
+-	writel(CM_DSS_DSS_CLKCTRL, 0xf02);
+-	writel(CM_DSS_DEISS_CLKCTRL, 0x2);
++	writel(0x2, CM_DSS_CLKSTCTRL);
++	writel(0xf02, CM_DSS_DSS_CLKCTRL);
++	writel(0x2, CM_DSS_DEISS_CLKCTRL);
+ 
+ 	/* Check for DSS Clocks */
+ 	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
+ 		;
+ 	/* Set HW_AUTO transition mode */
+-	writel(CM_DSS_CLKSTCTRL, 0x3);
++	writel(0x3, CM_DSS_CLKSTCTRL);
+ 
+ 	/* Enable SGX clocks */
+-	writel(CM_SGX_CLKSTCTRL, 0x2);
+-	writel(CM_SGX_SGX_CLKCTRL, 0x2);
++	writel(0x2, CM_SGX_CLKSTCTRL);
++	writel(0x2, CM_SGX_SGX_CLKCTRL);
+ 	/* Check for SGX FCLK and ICLK */
+ 	while (__raw_readl(0x4A009200) != 0x302)
+ 		;
+ 	/* Enable hsi/unipro/usb clocks */
+-	writel(CM_L3INIT_HSI_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_UNIPRO1_CLKCTRL, 0x2);
+-	writel(CM_L3INIT_HSUSBHOST_CLKCTRL, 0x2);
+-	writel(CM_L3INIT_HSUSBOTG_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_HSUSBTLL_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_FSUSB_CLKCTRL, 0x2);
++	writel(0x1, CM_L3INIT_HSI_CLKCTRL);
++	writel(0x2, CM_L3INIT_UNIPRO1_CLKCTRL);
++	writel(0x2, CM_L3INIT_HSUSBHOST_CLKCTRL);
++	writel(0x1, CM_L3INIT_HSUSBOTG_CLKCTRL);
++	writel(0x1, CM_L3INIT_HSUSBTLL_CLKCTRL);
++	writel(0x2, CM_L3INIT_FSUSB_CLKCTRL);
+ 	/* enable the 32K, 48M optional clocks and enable the module */
+-	writel(CM_L3INIT_USBPHY_CLKCTRL, 0x301);
++	writel(0x301, CM_L3INIT_USBPHY_CLKCTRL);
+ }
+ 
+ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+-- 
+1.8.4
 
-Best Regards,
-J.
-> miiear
-> miiea
-> iibad
-> iibad
-> fibud
-> fibud e
-> febus us_enfeus_exiecs_rntec_s_xitc__retec_m_reit_mireaer_miret
-> mieadr
-> miiea
-> iibad
-> iibad
-> ibud
-> fibud
-> febus euenfecusexiec_s_nteec_s_xitc__reterc__reit
-> _mreaer
-> _mreat
-> mieadr
-> miead
-> iibad
-> 
-> and the chip ends up in the weeds.
-> 
-> Any thoughts?
-> 
-> 
-> On Tue, Sep 24, 2013 at 2:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > On Mon, Sep 23, 2013 at 04:47:19PM -0500, Allen Kennedy Jr. wrote:
-> >> > What's the output of some network command, like for example 'dhcp'?
-> >>
-> >> This hangs the chip.
-> >
-> > This shouldn't happen. No reaction from the board at all? Does ctrl-c
-> > work? You could add some debug messages to the FEC driver to see where
-> > it hangs.
-> >
-> > One situation where a board might hang is when the clock is disabled,
-> > but I don't see how this can happen since it's explicitly enabled in
-> > arch/arm/mach-imx/clk-imx27.c
-> >
-> > What's the output of 'md 0x1002b000'? Does it show the FEC registers
-> > or does it hang the board aswell? The output of 'iomem' might also
-> > help.
-> >
-> > Sascha
-> >
-> > --
-> > Pengutronix e.K.                           |                             |
-> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
