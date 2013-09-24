@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOMkD-00050b-Me
+ id 1VOMkD-00050h-Mi
  for barebox@lists.infradead.org; Tue, 24 Sep 2013 07:09:19 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VOMjo-0003nn-IO
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 09:08:48 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1VOMjo-00021F-HC
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 09:08:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 24 Sep 2013 09:08:36 +0200
-Message-Id: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 24 Sep 2013 09:08:42 +0200
+Message-Id: <1380006527-2599-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380006527-2599-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,56 +21,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Bootm patches
+Subject: [PATCH 06/11] bootm: move globalvars from command to common
 To: barebox@lists.infradead.org
 
-The following contains some memory leak fixes and cleanups for bootm,
-but more important: The conversion of the current defenv-2 'boot' script
-to a command with the same semantics.
+The globalvars should be available even if the bootm command
+is not directly present.
 
-Motivation for doing this was that the current shell script(s) are already
-stretched to the limits we can handle with our limited shell. The C code
-instead looks rather simple and can be further extended. One of these
-extensions will come very soon in the form of the bootloader spec:
-http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-So this series is mainly a preparation for it.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/bootm.c | 14 --------------
+ common/bootm.c   | 16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
-Sascha
+diff --git a/commands/bootm.c b/commands/bootm.c
+index c1d2ec4..005d582 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -158,20 +158,6 @@ err_out:
+ 	return 1;
+ }
+ 
+-static int bootm_init(void)
+-{
+-	globalvar_add_simple("bootm.image", NULL);
+-	globalvar_add_simple("bootm.image.loadaddr", NULL);
+-	globalvar_add_simple("bootm.oftree", NULL);
+-	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD)) {
+-		globalvar_add_simple("bootm.initrd", NULL);
+-		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+-	}
+-
+-	return 0;
+-}
+-late_initcall(bootm_init);
+-
+ BAREBOX_CMD_HELP_START(bootm)
+ BAREBOX_CMD_HELP_USAGE("bootm [OPTIONS] image\n")
+ BAREBOX_CMD_HELP_SHORT("Boot an application image.\n")
+diff --git a/common/bootm.c b/common/bootm.c
+index 6b2c2a6..259feac 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -16,6 +16,8 @@
+ #include <fs.h>
+ #include <malloc.h>
+ #include <memory.h>
++#include <globalvar.h>
++#include <init.h>
+ 
+ static LIST_HEAD(handler_list);
+ 
+@@ -322,3 +324,17 @@ err_out:
+ 
+ 	return ret;
+ }
++
++static int bootm_init(void)
++{
++	globalvar_add_simple("bootm.image", NULL);
++	globalvar_add_simple("bootm.image.loadaddr", NULL);
++	globalvar_add_simple("bootm.oftree", NULL);
++	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD)) {
++		globalvar_add_simple("bootm.initrd", NULL);
++		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
++	}
++
++	return 0;
++}
++late_initcall(bootm_init);
+-- 
+1.8.4.rc3
 
-----------------------------------------------------------------
-Sascha Hauer (11):
-      bootm: fix possible memory leak
-      bootm: fix memory leak
-      bootm: check for os image file
-      bootm: remove unused define
-      bootm: move getenv_loadaddr from command to common
-      bootm: move globalvars from command to common
-      bootm: separate bootm input data and internal data
-      bootm: Add dryrun support
-      ARM: compile bootm code depending on CONFIG_BOOTM
-      command: Let builtin command take precedence
-      defenv-2: replace boot script with command
-
- arch/arm/Kconfig                 |   2 +-
- arch/arm/lib/Makefile            |   2 +-
- commands/Kconfig                 |  11 ++
- commands/Makefile                |   1 +
- commands/boot.c                  | 258 +++++++++++++++++++++++++++++++++++++++
- commands/bootm.c                 |  81 +++---------
- common/Kconfig                   |   1 +
- common/binfmt.c                  |   5 +-
- common/bootm.c                   |  87 ++++++++++++-
- defaultenv-2/base/bin/_boot      |  44 -------
- defaultenv-2/base/bin/_boot_help |  20 ---
- defaultenv-2/base/bin/_boot_list |   7 --
- defaultenv-2/base/bin/boot       |  65 ----------
- include/boot.h                   |  18 ++-
- 14 files changed, 395 insertions(+), 207 deletions(-)
- create mode 100644 commands/boot.c
- delete mode 100644 defaultenv-2/base/bin/_boot
- delete mode 100644 defaultenv-2/base/bin/_boot_help
- delete mode 100644 defaultenv-2/base/bin/_boot_list
- delete mode 100644 defaultenv-2/base/bin/boot
 
 _______________________________________________
 barebox mailing list
