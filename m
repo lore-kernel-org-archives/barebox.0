@@ -1,11 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOVe2-00051J-1L
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 16:39:26 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 24 Sep 2013 18:39:01 +0200
-Message-Id: <1380040741-23427-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VOVj4-00058U-Fy
+ for barebox@lists.infradead.org; Tue, 24 Sep 2013 16:44:39 +0000
+Received: from mail434.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id DD3C21020125
+ for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 18:37:34 +0200 (CEST)
+Date: Tue, 24 Sep 2013 18:38:52 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130924163852.GO31585@ns203013.ovh.net>
+References: <1379775256-29471-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130924073437.GB30088@pengutronix.de>
+ <20130924092323.GI31585@ns203013.ovh.net>
+ <20130924093718.GE30088@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20130924093718.GE30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,76 +25,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] usb: make usb devices children of the corresponding host
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2 v2] filetype: add Binary PacKage BPK type
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Fargier Sylvain <sylvain.fargier@somfy.com>
 
-To be able to find usb devices in the hardware tree.
+On 11:37 Tue 24 Sep     , Sascha Hauer wrote:
+> On Tue, Sep 24, 2013 at 11:23:23AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 09:34 Tue 24 Sep     , Sascha Hauer wrote:
+> > > On Sat, Sep 21, 2013 at 04:54:15PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > > Signed-off-by: Fargier Sylvain <sylvain.fargier@somfy.com>
+> > > > ---
+> > > >  common/filetype.c  | 3 +++
+> > > >  include/filetype.h | 1 +
+> > > >  2 files changed, 4 insertions(+)
+> > > > 
+> > > > diff --git a/common/filetype.c b/common/filetype.c
+> > > > index 59ea25a..ef4452d 100644
+> > > > --- a/common/filetype.c
+> > > > +++ b/common/filetype.c
+> > > > @@ -51,6 +51,7 @@ static const struct filetype_str filetype_str[] = {
+> > > >  	[filetype_png] = { "PNG image", "png" },
+> > > >  	[filetype_ext] = { "ext filesystem", "ext" },
+> > > >  	[filetype_gpt] = { "GUID Partition Table", "gpt" },
+> > > > +	[filetype_bpk] = { "Binary PacKage", "bpk" },
+> > > 
+> > > Can we have "Somfy Binary PacKage" here? As this file format is rather
+> > > exoctic I want to make sure we still know what this is in a few years.
+> > > Was the CamelCase 'PacKage' intended?
+> > We drop the Somfy to make it more generic and everyone can use it
+> > as everything is published
+> 
+> In this case it might be useful to have some pointers *why* someone
+> should use it. To me it looks like a custom cpio format. What's the
+> advantage of using this instead of cpio or even uImage?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/usb/core/usb.c      | 2 ++
- drivers/usb/host/ehci-hcd.c | 1 +
- drivers/usb/host/ohci-hcd.c | 1 +
- include/usb/usb.h           | 1 +
- 4 files changed, 5 insertions(+)
+cpio does not handle > 4GiV image and does not have any crc checksum
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 36fc736..a7dbe2a 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -440,6 +440,8 @@ static int usb_new_device(struct usb_device *dev)
- 
- 	dev->dev.id = DEVICE_ID_SINGLE;
- 
-+	if (dev->host->hw_dev)
-+		dev->dev.parent = dev->host->hw_dev;
- 	register_device(&dev->dev);
- 
- 	/* now prode if the device is a hub */
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index f44f836..cb6a592 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -883,6 +883,7 @@ int ehci_register(struct device_d *dev, struct ehci_data *data)
- 	ehci->qh_list = dma_alloc_coherent(sizeof(struct QH) * NUM_TD);
- 	ehci->td = dma_alloc_coherent(sizeof(struct qTD) * NUM_TD);
- 
-+	host->hw_dev = dev;
- 	host->init = ehci_init;
- 	host->submit_int_msg = submit_int_msg;
- 	host->submit_control_msg = submit_control_msg;
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index ad39bcf..8bf20d0 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1794,6 +1794,7 @@ static int ohci_probe(struct device_d *dev)
- 	ohci = xzalloc(sizeof(struct ohci));
- 	host = &ohci->host;
- 
-+	host->hw_dev = dev;
- 	host->init = ohci_init;
- 	host->submit_int_msg = submit_int_msg;
- 	host->submit_control_msg = submit_control_msg;
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 95fb6f3..821724e 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -210,6 +210,7 @@ struct usb_host {
- 
- 	struct list_head list;
- 
-+	struct device_d *hw_dev;
- 	int busnum;
- 	int scanned;
- };
--- 
-1.8.4.rc3
+the bpkfs provide a crc32 for the header and also one per binary stream
 
+so if you does not care of some data you are not force to check them
+
+uImage suffer the same issue as cpio only one crc
+
+and it's a messup to known what it's inside. It just allow you to havea bunch
+on binary stream without knowning what is what
+
+here with bpkfs you known exactly the binary stream type and for which hw to
+use it
+
+flexibility & boot time as we boot from bpkfs directly
+
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
