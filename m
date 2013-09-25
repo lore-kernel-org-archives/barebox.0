@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo1.mail-out.ovh.net ([188.165.45.168]
- helo=mo1.mail-out.ovh.net)
+Received: from 2.mo2.mail-out.ovh.net ([188.165.53.149]
+ helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOXsn-0001v8-Im
- for barebox@lists.infradead.org; Tue, 24 Sep 2013 19:02:51 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id B94C81004544
- for <barebox@lists.infradead.org>; Tue, 24 Sep 2013 21:02:25 +0200 (CEST)
+ id 1VOlm1-0002wX-Cs
+ for barebox@lists.infradead.org; Wed, 25 Sep 2013 09:52:47 +0000
+Received: from mail621.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id EA559E25870
+ for <barebox@lists.infradead.org>; Wed, 25 Sep 2013 07:30:04 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Tue, 24 Sep 2013 21:03:43 +0200
-Message-Id: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 25 Sep 2013 07:31:20 +0200
+Message-Id: <1380087080-29914-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
+References: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,7 +25,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] fs: add uimagefs
+Subject: [PATCH 1/1 v2] fs: add uimagefs
 To: barebox@lists.infradead.org
 
 this will provide the image data and information via file
@@ -38,6 +40,8 @@ this will provide the image data and information via file
 -rwxrwxrwx         10 load_addr
 -rwxrwxrwx         10 entry_point
 -rwxrwxrwx    2199875 data0
+-rwxrwxrwx    2199875 data
+-rwxrwxrwx         10 data.crc
 
 if it's multi image
 
@@ -52,23 +56,33 @@ if it's multi image
 -rwxrwxrwx         10 entry_point
 -rwxrwxrwx       1292 data0
 -rwxrwxrwx        983 data1
+-rwxrwxrwx       2287 data
+-rwxrwxrwx         10 data.crc
 
 you can get the image header via an ioctl on any file
 UIMAGEFS_METADATA
 
+if you want to check the crc do
+
+ # crc32 -f /tmp-multi/data -V /tmp-multi/data.crc
+CRC32 for /tmp-multi/data 0x00000000 ... 0x000008ee ==> 0x88d5a0db
+
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
-Hi,
-	 Sascha take a look how to integrate it with bootm
-	 so as we discuss we can simplify the code
+v2:
+
+	add data entry to expose the all data and it's crc as data.crc
+	this will allow to check the crc32 from the check
+
+	as we do not have mount option
 
 Best Regards,
 J.
  fs/Kconfig         |   4 +
  fs/Makefile        |   1 +
- fs/uimagefs.c      | 525 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/uimagefs.h |  52 ++++++
- 4 files changed, 582 insertions(+)
+ fs/uimagefs.c      | 554 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/uimagefs.h |  53 +++++
+ 4 files changed, 612 insertions(+)
  create mode 100644 fs/uimagefs.c
  create mode 100644 include/uimagefs.h
 
@@ -98,10 +112,10 @@ index bd02d94..0bc9116 100644
 +obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
 diff --git a/fs/uimagefs.c b/fs/uimagefs.c
 new file mode 100644
-index 0000000..29d0baf
+index 0000000..9ed3cd5
 --- /dev/null
 +++ b/fs/uimagefs.c
-@@ -0,0 +1,525 @@
+@@ -0,0 +1,554 @@
 +/*
 + * Copyright (c) 2013 Jean-Chritstophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
@@ -132,6 +146,8 @@ index 0000000..29d0baf
 +	switch (type) {
 +	case UIMAGEFS_DATA:
 +		return "data";
++	case UIMAGEFS_DATA_CRC:
++		return "data.crc";
 +	case UIMAGEFS_NAME:
 +		return "name";
 +	case UIMAGEFS_TIME:
@@ -176,7 +192,7 @@ index 0000000..29d0baf
 +
 +	if (filename[0] == '/')
 +		filename++;
-+
++	
 +	d = uimagefs_get_by_name(priv, filename);
 +	if (!d)
 +		return -EINVAL;
@@ -269,7 +285,7 @@ index 0000000..29d0baf
 +
 +	if (filename[0] == '/')
 +		filename++;
-+
++	
 +	d = uimagefs_get_by_name(priv, filename);
 +	if (!d)
 +		return -EINVAL;
@@ -320,7 +336,7 @@ index 0000000..29d0baf
 +				char *s)
 +{
 +	struct uimagefs_handle_data *d;
-+
++	
 +	d = xzalloc(sizeof(*d));
 +	d->type = type;
 +	d->name = xstrdup(uimagefs_type_to_str(type));
@@ -355,21 +371,43 @@ index 0000000..29d0baf
 +	return uimagefs_add_str(priv, type, val);
 +}
 +
-+static int uimagefs_add_data(struct uimagefs_handle *priv, size_t offset,
-+				uint64_t size)
++static int __uimagefs_add_data(struct uimagefs_handle *priv, size_t offset,
++				uint64_t size, int i)
 +{
 +	struct uimagefs_handle_data *d;
-+
++	const char *name = uimagefs_type_to_str(UIMAGEFS_DATA);
++	
 +	d = xzalloc(sizeof(*d));
 +	d->type = UIMAGEFS_DATA;
-+	d->name = asprintf("%s%d", uimagefs_type_to_str(UIMAGEFS_DATA),
-+				priv->nb_data_entries);
++	if (i < 0)
++		d->name = xstrdup(name);
++	else
++		d->name = asprintf("%s%d", name, i);
 +
-+	priv->nb_data_entries++;
 +	d->offset = offset;
 +	d->size = size;
 +
 +	list_add_tail(&d->list, &priv->list);
++
++	return 0;
++}
++
++static int uimagefs_add_data(struct uimagefs_handle *priv, size_t offset,
++				uint64_t size)
++{
++	return __uimagefs_add_data(priv, offset, size, -1);
++}
++
++static int uimagefs_add_data_entry(struct uimagefs_handle *priv, size_t offset,
++				uint64_t size)
++{
++	int ret;
++
++	ret = __uimagefs_add_data(priv, offset, size, priv->nb_data_entries);
++	if (ret)
++		return ret;
++
++	priv->nb_data_entries++;
 +
 +	return 0;
 +}
@@ -439,11 +477,11 @@ index 0000000..29d0baf
 +	uint32_t checksum;
 +	struct image_header *header;
 +	int ret;
-+	const char *filename = priv->filename;
 +	size_t offset = 0;
++	size_t data_offset = 0;
 +
 +again:
-+	fd = open(filename, O_RDONLY);
++	fd = open(priv->filename, O_RDONLY);
 +	if (fd < 0) {
 +		printf("could not open: %s\n", errno_str());
 +		return fd;
@@ -456,10 +494,10 @@ index 0000000..29d0baf
 +	 */
 +	if (IS_BUILTIN(CONFIG_FS_TFTP) && lseek(fd, 0, SEEK_SET)) {
 +		close(fd);
-+		ret = copy_file(filename, priv->tmp, 0);
++		ret = copy_file(priv->filename, priv->tmp, 0);
 +		if (ret)
 +			return ret;
-+		filename = priv->tmp;
++		priv->filename = priv->tmp;
 +		goto again;
 +	}
 +
@@ -528,6 +566,8 @@ index 0000000..29d0baf
 +	if (ret)
 +		goto err_out;
 +
++	data_offset = offset;
++
 +	if (uimage_is_multi_image(priv)) {
 +		struct uimagefs_handle_data *d;
 +
@@ -543,7 +583,9 @@ index 0000000..29d0baf
 +			if (!size)
 +				break;
 +
-+			uimagefs_add_data(priv, 0, uimage_to_cpu(size));
++			ret = uimagefs_add_data_entry(priv, 0, uimage_to_cpu(size));
++			if (ret)
++				goto err_out;
 +		} while(1);
 +
 +		/* offset of the first image in a multifile image */
@@ -554,13 +596,24 @@ index 0000000..29d0baf
 +			offset += (d->size + 3) & ~3;
 +		}
 +	} else {
-+		uimagefs_add_data(priv, offset, header->ih_size);
++		ret = uimagefs_add_data_entry(priv, offset, header->ih_size);
++		if (ret)
++			goto err_out;
 +	}
++
++	ret = uimagefs_add_data(priv, data_offset, header->ih_size);
++	if (ret)
++		goto err_out;
++
++	ret = uimagefs_add_hex(priv, UIMAGEFS_DATA_CRC, header->ih_dcrc);
++	if (ret)
++		goto err_out;
++
++	ret = 0;
++err_out:
 +
 +	close(fd);
 +
-+	return 0;
-+err_out:
 +	return ret;
 +}
 +
@@ -569,7 +622,6 @@ index 0000000..29d0baf
 +	struct fs_device_d *fsdev = dev_to_fs_device(dev);
 +	struct uimagefs_handle *priv;
 +	int ret = 0;
-+	int fd;
 +
 +	priv = xzalloc(sizeof(struct uimagefs_handle));
 +	INIT_LIST_HEAD(&priv->list);
@@ -577,27 +629,18 @@ index 0000000..29d0baf
 +
 +	priv->filename = fsdev->backingstore;
 +	dev_dbg(dev, "mount: %s\n", fsdev->backingstore);
-+
++	
 +	if (IS_BUILTIN(CONFIG_FS_TFTP))
 +		priv->tmp = asprintf("/.uImage_tmp_%08x",
 +			crc32(0, fsdev->path, strlen(fsdev->path)));
-+
-+	fd = open(fsdev->backingstore, O_RDONLY);
-+	if (fd < 0) {
-+		ret = fd;
-+		goto err;
-+	}
 +
 +	ret = __uimage_open(priv);
 +	if (ret)
 +		goto err;
 +
-+	close(fd);
-+
 +	return 0;
 +
 +err:
-+	close(fd);
 +	uimagefs_remove(dev);
 +
 +	return ret;
@@ -629,10 +672,10 @@ index 0000000..29d0baf
 +coredevice_initcall(uimagefs_init);
 diff --git a/include/uimagefs.h b/include/uimagefs.h
 new file mode 100644
-index 0000000..af79c81
+index 0000000..81b3231
 --- /dev/null
 +++ b/include/uimagefs.h
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,53 @@
 +/*
 + * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 + *
@@ -651,6 +694,7 @@ index 0000000..af79c81
 +
 +enum uimagefs_type {
 +	UIMAGEFS_DATA,
++	UIMAGEFS_DATA_CRC,
 +	UIMAGEFS_NAME,
 +	UIMAGEFS_TIME,
 +	UIMAGEFS_LOAD,
