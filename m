@@ -1,18 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x230.google.com ([2a00:1450:4013:c01::230])
+Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VOmff-0004i3-Qa
- for barebox@lists.infradead.org; Wed, 25 Sep 2013 10:50:16 +0000
-Received: by mail-ea0-f176.google.com with SMTP id q16so3090811ead.35
- for <barebox@lists.infradead.org>; Wed, 25 Sep 2013 03:49:53 -0700 (PDT)
-Date: Wed, 25 Sep 2013 12:49:44 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130925104935.GA11782@omega>
-References: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
- <1380087080-29914-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1VOrj8-00065Y-RW
+ for barebox@lists.infradead.org; Wed, 25 Sep 2013 16:14:15 +0000
+Received: by mail-wi0-f172.google.com with SMTP id hn9so5702640wib.5
+ for <barebox@lists.infradead.org>; Wed, 25 Sep 2013 09:13:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1380087080-29914-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 25 Sep 2013 11:13:47 -0500
+Message-ID: <CAO-21LPRAQ_xwi4Pup4uaPKv-ZSxDxt_7OsCjAmPfkeX6p8+_g@mail.gmail.com>
+From: "Allen Kennedy Jr." <allen@kennedystuff.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,110 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1 v2] fs: add uimagefs
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: how to copy barebox to flash?
+To: barebox@lists.infradead.org
 
-Hi Christophe,
+All,
+  How do I copy barebox to flash?
+I have a flash device setup:
+     `---- imx_nand
+          `---- nand0
+               `---- 0x00000000-0x0fffffff: /dev/nand0
+               `---- 0x00000000-0x0001ffff: /dev/bootstrapper
+               `---- 0x00020000-0x0005ffff: /dev/barebox
+               `---- 0x00060000-0x0009ffff: /dev/env_raw
+               `---- 0x00100000-0x005fffff: /dev/kernel
 
-On Wed, Sep 25, 2013 at 07:31:20AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> this will provide the image data and information via file
-> 
->  # ls -l /tmp/
-> -rwxrwxrwx          3 arch
-> -rwxrwxrwx         12 compression
-> -rwxrwxrwx         16 name
-> -rwxrwxrwx          5 os
-> -rwxrwxrwx         24 time
-> -rwxrwxrwx         12 type
-> -rwxrwxrwx         10 load_addr
-> -rwxrwxrwx         10 entry_point
-> -rwxrwxrwx    2199875 data0
-> -rwxrwxrwx    2199875 data
-> -rwxrwxrwx         10 data.crc
-> 
-> if it's multi image
-> 
->  # ls -l /tmp-multi/
-> -rwxrwxrwx          3 arch
-> -rwxrwxrwx         12 compression
-> -rwxrwxrwx         16 name
-> -rwxrwxrwx          5 os
-> -rwxrwxrwx         24 time
-> -rwxrwxrwx         16 type
-> -rwxrwxrwx         10 load_addr
-> -rwxrwxrwx         10 entry_point
-> -rwxrwxrwx       1292 data0
-> -rwxrwxrwx        983 data1
-> -rwxrwxrwx       2287 data
-> -rwxrwxrwx         10 data.crc
-> 
-> you can get the image header via an ioctl on any file
-> UIMAGEFS_METADATA
-> 
-> if you want to check the crc do
-> 
->  # crc32 -f /tmp-multi/data -V /tmp-multi/data.crc
-> CRC32 for /tmp-multi/data 0x00000000 ... 0x000008ee ==> 0x88d5a0db
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
-> v2:
-> 
-> 	add data entry to expose the all data and it's crc as data.crc
-> 	this will allow to check the crc32 from the check
-> 
-> 	as we do not have mount option
-> 
-> Best Regards,
-> J.
->  fs/Kconfig         |   4 +
->  fs/Makefile        |   1 +
->  fs/uimagefs.c      | 554 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  include/uimagefs.h |  53 +++++
->  4 files changed, 612 insertions(+)
->  create mode 100644 fs/uimagefs.c
->  create mode 100644 include/uimagefs.h
-> 
-> diff --git a/fs/Kconfig b/fs/Kconfig
-> index be4797f..d11431d 100644
-> --- a/fs/Kconfig
-> +++ b/fs/Kconfig
-> @@ -44,6 +44,10 @@ config FS_NFS
->  source fs/fat/Kconfig
->  source fs/ubifs/Kconfig
->  
-> +config FS_UIMAGEFS
-> +	bool
-> +	prompt "uImage FS support"
-> +
->  config PARTITION_NEED_MTD
->  	bool
->  
-> diff --git a/fs/Makefile b/fs/Makefile
-> index bd02d94..0bc9116 100644
-> --- a/fs/Makefile
-> +++ b/fs/Makefile
-> @@ -9,3 +9,4 @@ obj-$(CONFIG_FS_UBIFS)	+= ubifs/
->  obj-$(CONFIG_FS_TFTP)	+= tftp.o
->  obj-$(CONFIG_FS_OMAP4_USBBOOT)	+= omap4_usbbootfs.o
->  obj-$(CONFIG_FS_NFS)	+= nfs.o
-> +obj-$(CONFIG_FS_UIMAGEFS)	+= uimagefs.o
-> diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-> new file mode 100644
-> index 0000000..9ed3cd5
-> --- /dev/null
-> +++ b/fs/uimagefs.c
-> @@ -0,0 +1,554 @@
-> +/*
-> + * Copyright (c) 2013 Jean-Chritstophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> + *
+I used JTAG to load barebox into memory at 0xa0000000
 
-s/Jean-Chritstophe/Jean-Christophe/
+I just can't figure out how to copy it to flash... There is no DD command...
+I tried this:
+cp 0xa0000000 /dev/barebox 0x4000
+got :
+cp: target `0x4000' is not a directory
 
-same issue which Sascha already mentioned on the bpkfs patch.
+Seems barebox changed what 'cp' is from the old u-boot way.
+and the nand command only does bad block handling...
 
-- Alex
+barebox-update seems to be a candidate, but the docs don't make sense
+on how to use.
+Also I was thinking something like md > /dev/nand, but the output of
+MD is user readable.
 
 _______________________________________________
 barebox mailing list
