@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+Received: from mail.visioncatalog.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPSEz-0000jE-OT
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:13:30 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 69C5ADC1FC6
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 09:13:08 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Sep 2013 09:14:16 +0200
-Message-Id: <1380266058-18501-6-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130927071255.GB32444@ns203013.ovh.net>
- <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1VPSYc-0001EB-SZ
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:33:48 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id AA532BF0FC
+ for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 08:32:38 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Fri, 27 Sep 2013 09:33:21 +0200
+Message-Id: <1380267201-17783-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,59 +18,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] animeo_ip: update to use console_open/close for rs485
- crossed detection
+Subject: [PATCH] lib: Fix copy_file when filesize is FILESIZE_MAX
 To: barebox@lists.infradead.org
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/boards/animeo_ip/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-index 2fee1ff..e6d2745 100644
---- a/arch/arm/boards/animeo_ip/init.c
-+++ b/arch/arm/boards/animeo_ip/init.c
-@@ -343,8 +343,6 @@ static void animeo_ip_shutdown(void)
- 	 * and use it for decompress
- 	 */
- 	animeo_ip_shutdown_uart(IOMEM(AT91_DBGU + AT91_BASE_SYS));
--	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US0));
--	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US1));
- }
- 
- static int animeo_ip_console_init(void)
-@@ -397,8 +395,10 @@ static int animeo_ip_cross_detect_init(void)
- 		return -EINVAL;
- 
- 	at91_set_gpio_input(AT91_PIN_PC16, 0);
-+	console_open(cs0);
- 	cs0->set_mode(cs0, CONSOLE_MODE_RS485);
- 	cs0->setbrg(cs0, 38400);
-+	console_open(cs1);
- 	cs1->set_mode(cs1, CONSOLE_MODE_RS485);
- 	cs1->setbrg(cs1, 38400);
- 
-@@ -426,6 +426,9 @@ err:
- 
- 	pr_info("rs485 ports %scrossed\n", crossed ? "" : "not ");
- 
-+	console_close(cs0);
-+	console_close(cs1);
-+
- 	return 0;
- }
- late_initcall(animeo_ip_cross_detect_init);
--- 
-1.8.4.rc3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VXNpbmcgdGZ0cCBjb21tYW5kIGRvZXMgbm90IHdvcmsgcHJvcGVyIHdoZW4gZmlsZXMKaGF2ZSBG
+SUxFU0laRV9NQVgsIGFzIGNvcHlfZmlsZSBhbmQgc2hvd19wcm9ncmVzcwpjYW4gbm90IGhhbmRs
+ZSBpdC4gQ2hlY2sgdGhlIGZpbGUgc2l6ZSBmb3IgRklMRVNJWkVfTUFYCmFuZCBoYW5kbGUgaXQg
+YXMgZmlsZSBzaXplID0gMC4KClNpZ25lZC1vZmYtYnk6IFRlcmVzYSBHw6FtZXogPHQuZ2FtZXpA
+cGh5dGVjLmRlPgotLS0KIGxpYi9jb3B5X2ZpbGUuYyAgICAgfCAgICA4ICsrKysrKy0tCiBsaWIv
+c2hvd19wcm9ncmVzcy5jIHwgICAgNSArKystLQogMiBmaWxlcyBjaGFuZ2VkLCA5IGluc2VydGlv
+bnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2NvcHlfZmlsZS5jIGIvbGli
+L2NvcHlfZmlsZS5jCmluZGV4IGFiM2Q4NDUuLjU1ZGVlMzggMTAwNjQ0Ci0tLSBhL2xpYi9jb3B5
+X2ZpbGUuYworKysgYi9saWIvY29weV9maWxlLmMKQEAgLTYzLDggKzYzLDEyIEBAIGludCBjb3B5
+X2ZpbGUoY29uc3QgY2hhciAqc3JjLCBjb25zdCBjaGFyICpkc3QsIGludCB2ZXJib3NlKQogCQkJ
+dG90YWwgKz0gdzsKIAkJfQogCi0JCWlmICh2ZXJib3NlKQotCQkJc2hvd19wcm9ncmVzcyhzdGF0
+YnVmLnN0X3NpemUgPyB0b3RhbCA6IHRvdGFsIC8gMTYzODQpOworCQlpZiAodmVyYm9zZSkgewor
+CQkJaWYgKHN0YXRidWYuc3Rfc2l6ZSAmJiBzdGF0YnVmLnN0X3NpemUgIT0gRklMRVNJWkVfTUFY
+KQorCQkJCXNob3dfcHJvZ3Jlc3ModG90YWwpOworCQkJZWxzZQorCQkJCXNob3dfcHJvZ3Jlc3Mo
+dG90YWwgLyAxNjM4NCk7CisJCX0KIAl9CiAKIAlyZXQgPSAwOwpkaWZmIC0tZ2l0IGEvbGliL3No
+b3dfcHJvZ3Jlc3MuYyBiL2xpYi9zaG93X3Byb2dyZXNzLmMKaW5kZXggYmMwNjdlYS4uOThkYzg0
+OSAxMDA2NDQKLS0tIGEvbGliL3Nob3dfcHJvZ3Jlc3MuYworKysgYi9saWIvc2hvd19wcm9ncmVz
+cy5jCkBAIC0xOCw2ICsxOCw3IEBACiAgKi8KIAogI2luY2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1
+ZGUgPGZzLmg+CiAjaW5jbHVkZSA8cHJvZ3Jlc3MuaD4KICNpbmNsdWRlIDxhc20tZ2VuZXJpYy9k
+aXY2NC5oPgogI2luY2x1ZGUgPGxpbnV4L3N0cmluZ2lmeS5oPgpAQCAtMzcsNyArMzgsNyBAQCB2
+b2lkIHNob3dfcHJvZ3Jlc3MoaW50IG5vdykKIAkJcmV0dXJuOwogCX0KIAotCWlmIChwcm9ncmVz
+c19tYXgpIHsKKwlpZiAocHJvZ3Jlc3NfbWF4ICYmIHByb2dyZXNzX21heCAhPSBGSUxFU0laRV9N
+QVgpIHsKIAkJdWludDY0X3QgdG1wID0gKGludDY0X3Qpbm93ICogSEFTSEVTX1BFUl9MSU5FOwog
+CQlkb19kaXYodG1wLCBwcm9ncmVzc19tYXgpOwogCQlub3cgPSB0bXA7CkBAIC01Niw3ICs1Nyw3
+IEBAIHZvaWQgaW5pdF9wcm9ncmVzc2lvbl9iYXIoaW50IG1heCkKIAlwcmludGVkID0gMDsKIAlw
+cm9ncmVzc19tYXggPSBtYXg7CiAJc3BpbiA9IDA7Ci0JaWYgKHByb2dyZXNzX21heCkKKwlpZiAo
+cHJvZ3Jlc3NfbWF4ICYmIHByb2dyZXNzX21heCAhPSBGSUxFU0laRV9NQVgpCiAJCXByaW50Zigi
+XHRbJSJfX3N0cmluZ2lmeShIQVNIRVNfUEVSX0xJTkUpInNdXHJcdFsiLCAiIik7CiAJZWxzZQog
+CQlwcmludGYoIlx0Iik7Ci0tIAoxLjcuMC40CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
