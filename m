@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPSEy-0000iz-Ge
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:13:29 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 412F3DC2078
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 09:13:07 +0200 (CEST)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 27 Sep 2013 09:14:15 +0200
-Message-Id: <1380266058-18501-5-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20130927071255.GB32444@ns203013.ovh.net>
- <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VPSJc-0000sn-Cc
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:18:18 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 09:17:49 +0200
+Message-Id: <1380266272-931-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,87 +21,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] loadbxy: use console_open/close
+Subject: [PATCH 1/4] ARM: OMAP: Add missing include
 To: barebox@lists.infradead.org
 
-so we can use non startup console
+Include mach/generic.h where omap_set_bootmmc_devname is declared.
+Change the argument of omap_set_bootmmc_devname to const char *
+to fix the resulting conflicting prototypes.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadxy.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap/omap_generic.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/commands/loadxy.c b/commands/loadxy.c
-index fe1b5f5..33f923d 100644
---- a/commands/loadxy.c
-+++ b/commands/loadxy.c
-@@ -99,6 +99,13 @@ static int do_loady(int argc, char *argv[])
- 		return -ENODEV;
- 	}
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index e7ca821..f024de6 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -20,10 +20,11 @@
+ #include <fs.h>
+ #include <malloc.h>
+ #include <linux/stat.h>
++#include <mach/generic.h>
  
-+	rcode = console_open(cdev);
-+	if (rcode) {
-+		printf("%s: can not open console %s\n",
-+		       argv[0], cname ? cname : "default");
-+		return rcode;
-+	}
-+
- 	current_baudrate = console_change_speed(cdev, load_baudrate);
- 	printf("## Ready for binary (ymodem) download at %d bps...\n",
- 	       load_baudrate ? load_baudrate : current_baudrate);
-@@ -115,6 +122,8 @@ static int do_loady(int argc, char *argv[])
+-static char *omap_bootmmc_dev;
++const static char *omap_bootmmc_dev;
  
- 	console_change_speed(cdev, current_baudrate);
- 
-+	console_close(cdev);
-+
- 	return rcode;
+-void omap_set_bootmmc_devname(char *devname)
++void omap_set_bootmmc_devname(const char *devname)
+ {
+ 	omap_bootmmc_dev = devname;
  }
+@@ -37,7 +38,8 @@ const char *omap_get_bootmmc_devname(void)
+ static int omap_env_init(void)
+ {
+ 	struct stat s;
+-	char *diskdev, *partname;
++	char *partname;
++	const char *diskdev;
+ 	int ret;
  
-@@ -167,6 +176,13 @@ static int do_loadx(int argc, char *argv[])
- 		return -ENODEV;
- 	}
- 
-+	rcode = console_open(cdev);
-+	if (rcode) {
-+		printf("%s: can not open console %s\n",
-+		       argv[0], cname ? cname : "default");
-+		return rcode;
-+	}
-+
- 	/* Load Defaults */
- 	if (!output_file)
- 		output_file = DEF_FILE;
-@@ -175,7 +191,8 @@ static int do_loadx(int argc, char *argv[])
- 	ofd = open(output_file, open_mode);
- 	if (ofd < 0) {
- 		perror(argv[0]);
--		return 3;
-+		rcode = 3;
-+		goto err;
- 	}
- 	/* Seek to the right offset */
- 	if (offset) {
-@@ -184,7 +201,8 @@ static int do_loadx(int argc, char *argv[])
- 			close(ofd);
- 			ofd = 0;
- 			perror(argv[0]);
--			return 4;
-+			rcode = 4;
-+			goto err;
- 		}
- 	}
- 
-@@ -199,6 +217,9 @@ static int do_loadx(int argc, char *argv[])
- 	}
- 	console_change_speed(cdev, current_baudrate);
- 
-+err:
-+	console_close(cdev);
-+
- 	return rcode;
- }
- 
+ 	if (bootsource_get() != BOOTSOURCE_MMC)
 -- 
 1.8.4.rc3
 
