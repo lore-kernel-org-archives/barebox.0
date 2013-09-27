@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPYon-0005pL-Ir
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 14:14:54 +0000
+ id 1VPYue-0006B1-CL
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 14:20:57 +0000
+Date: Fri, 27 Sep 2013 16:20:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2013 16:14:26 +0200
-Message-Id: <1380291266-1261-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20130927142034.GV30088@pengutronix.de>
+References: <1380267201-17783-1-git-send-email-t.gamez@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1380267201-17783-1-git-send-email-t.gamez@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,131 +18,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] scripts/omap_signGP: add getopt
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] lib: Fix copy_file when filesize is FILESIZE_MAX
+To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Cc: barebox@lists.infradead.org
 
-Instead of using positional arguments add proper getopt support.
-This also adds a help text.
+On Fri, Sep 27, 2013 at 09:33:21AM +0200, Teresa G=E1mez wrote:
+> Using tftp command does not work proper when files
+> have FILESIZE_MAX, as copy_file and show_progress
+> can not handle it. Check the file size for FILESIZE_MAX
+> and handle it as file size =3D 0.
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Makefile     |  3 +--
- scripts/omap_signGP.c | 59 +++++++++++++++++++++++++++++++++++++--------------
- 2 files changed, 44 insertions(+), 18 deletions(-)
+> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 590a0d8..7787cfe 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -142,8 +142,7 @@ KBUILD_IMAGE := barebox.s5p
- endif
- 
- quiet_cmd_mlo ?= IFT     $@
--	cmd_mlo ?= scripts/omap_signGP $< $(TEXT_BASE) 1; \
--		     test -e $<.ift && mv $<.ift MLO
-+	cmd_mlo ?= scripts/omap_signGP -o MLO -l $(TEXT_BASE) -c $<
- 
- MLO: $(KBUILD_BINARY)
- 	$(call if_changed,mlo)
-diff --git a/scripts/omap_signGP.c b/scripts/omap_signGP.c
-index 633bcf5..482cfac 100644
---- a/scripts/omap_signGP.c
-+++ b/scripts/omap_signGP.c
-@@ -25,6 +25,7 @@
- #include <sys/stat.h>
- #include <string.h>
- #include <malloc.h>
-+#include <getopt.h>
- #include <linux/types.h>
- 
- #undef CH_WITH_CHRAM
-@@ -233,6 +234,18 @@ static struct ch_chsettings_nochram config_header
- };
- #endif
- 
-+static void usage(const char *prgname)
-+{
-+	fprintf(stderr,
-+"usage: %s [OPTIONS] <infile>\n"
-+"\n"
-+"Options:\n"
-+"-o <outfile>     output to <outfile>\n"
-+"-l <loadaddr>    specify load address\n"
-+"-c               Add config header\n"
-+"-h               This help\n"
-+	, prgname);
-+}
- 
- #define err(...) do { int save_errno = errno; \
-                       fprintf(stderr, __VA_ARGS__); \
-@@ -243,29 +256,43 @@ static struct ch_chsettings_nochram config_header
- int main(int argc, char *argv[])
- {
- 	int	i;
--	char	ifname[FILENAME_MAX], ofname[FILENAME_MAX], ch;
-+	char	*ifname, *ofname = NULL, ch;
- 	FILE	*ifile, *ofile;
--	unsigned long	loadaddr, len;
-+	unsigned long	loadaddr = ~0, len;
- 	struct stat	sinfo;
- 	int ch_add = 0;
-+	int opt;
- 
-+	while ((opt = getopt(argc, argv, "o:hl:c")) != -1) {
-+		switch (opt) {
-+		case 'h':
-+			usage(argv[0]);
-+			exit(0);
-+		case 'o':
-+			ofname = optarg;
-+			break;
-+		case 'l':
-+			loadaddr = strtoul(optarg, NULL, 0);
-+			break;
-+		case 'c':
-+			ch_add = 1;
-+			break;
-+		default:
-+			exit(1);
-+		}
-+	}
- 
--	/* Default to x-load.bin and 0x40200800. */
--	strcpy(ifname, "x-load.bin");
--	loadaddr = 0x40200800;
--
--	if ((argc == 2) || (argc == 3) || (argc == 4))
--		strcpy(ifname, argv[1]);
--
--	if ((argc == 3) || (argc == 4))
--		loadaddr = strtoul(argv[2], NULL, 16);
-+	if (loadaddr == ~0) {
-+		fprintf(stderr, "no loadaddr given\n");
-+		exit(1);
-+	}
- 
--	if (argc == 4)
--		ch_add = strtoul(argv[3], NULL, 16);
-+	if (optind == argc || !ofname) {
-+		usage(argv[0]);
-+		exit(1);
-+	}
- 
--	/* Form the output file name. */
--	strcpy(ofname, ifname);
--	strcat(ofname, ".ift");
-+	ifname = argv[optind];
- 
- 	/* Open the input file. */
- 	ifile = fopen(ifname, "rb");
--- 
-1.8.4.rc3
+Applied, thanks
 
+Sascha
+
+> ---
+>  lib/copy_file.c     |    8 ++++++--
+>  lib/show_progress.c |    5 +++--
+>  2 files changed, 9 insertions(+), 4 deletions(-)
+> =
+
+> diff --git a/lib/copy_file.c b/lib/copy_file.c
+> index ab3d845..55dee38 100644
+> --- a/lib/copy_file.c
+> +++ b/lib/copy_file.c
+> @@ -63,8 +63,12 @@ int copy_file(const char *src, const char *dst, int ve=
+rbose)
+>  			total +=3D w;
+>  		}
+>  =
+
+> -		if (verbose)
+> -			show_progress(statbuf.st_size ? total : total / 16384);
+> +		if (verbose) {
+> +			if (statbuf.st_size && statbuf.st_size !=3D FILESIZE_MAX)
+> +				show_progress(total);
+> +			else
+> +				show_progress(total / 16384);
+> +		}
+>  	}
+>  =
+
+>  	ret =3D 0;
+> diff --git a/lib/show_progress.c b/lib/show_progress.c
+> index bc067ea..98dc849 100644
+> --- a/lib/show_progress.c
+> +++ b/lib/show_progress.c
+> @@ -18,6 +18,7 @@
+>   */
+>  =
+
+>  #include <common.h>
+> +#include <fs.h>
+>  #include <progress.h>
+>  #include <asm-generic/div64.h>
+>  #include <linux/stringify.h>
+> @@ -37,7 +38,7 @@ void show_progress(int now)
+>  		return;
+>  	}
+>  =
+
+> -	if (progress_max) {
+> +	if (progress_max && progress_max !=3D FILESIZE_MAX) {
+>  		uint64_t tmp =3D (int64_t)now * HASHES_PER_LINE;
+>  		do_div(tmp, progress_max);
+>  		now =3D tmp;
+> @@ -56,7 +57,7 @@ void init_progression_bar(int max)
+>  	printed =3D 0;
+>  	progress_max =3D max;
+>  	spin =3D 0;
+> -	if (progress_max)
+> +	if (progress_max && progress_max !=3D FILESIZE_MAX)
+>  		printf("\t[%"__stringify(HASHES_PER_LINE)"s]\r\t[", "");
+>  	else
+>  		printf("\t");
+> -- =
+
+> 1.7.0.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
