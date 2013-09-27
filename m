@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPSJc-0000sp-CZ
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:18:17 +0000
+ id 1VPSJf-0000sq-Jx
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 07:18:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2013 09:17:52 +0200
-Message-Id: <1380266272-931-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 09:17:51 +0200
+Message-Id: <1380266272-931-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] i2c: omap: remove unncessary printf
+Subject: [PATCH 3/4] ARM: OMAP: unconditionally use /boot/barebox.env
 To: barebox@lists.infradead.org
 
-A printf in the driver should be dev_* and contain useful information.
-Both is not the case, remove it.
+The startup process falls back to /dev/defaultenv automatically,
+no need to decide here.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap/omap_generic.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index 2eb51334..52ffdbb 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -791,7 +791,7 @@ i2c_omap_probe(struct device_d *pdev)
+diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+index 595ecbe..517cc2c 100644
+--- a/arch/arm/mach-omap/omap_generic.c
++++ b/arch/arm/mach-omap/omap_generic.c
+@@ -122,10 +122,7 @@ static int omap_env_init(void)
+ 		return 0;
+ 	}
  
- 	i2c_omap->speed = speed;
- 	i2c_omap->base = dev_request_mem_region(pdev, 0);
--	printf ("I2C probe\n");
-+
- 	omap_i2c_unidle(i2c_omap);
+-	if (IS_ENABLED(CONFIG_OMAP_BUILD_IFT))
+-		default_environment_path = "/dev/defaultenv";
+-	else
+-		default_environment_path = "/boot/barebox.env";
++	default_environment_path = "/boot/barebox.env";
  
- 	i2c_omap->rev = omap_i2c_read_reg(i2c_omap, OMAP_I2C_REV_REG) & 0xff;
+ 	return 0;
+ }
 -- 
 1.8.4.rc3
 
