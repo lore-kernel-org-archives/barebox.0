@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPID8-0002ff-0s
- for barebox@lists.infradead.org; Thu, 26 Sep 2013 20:30:54 +0000
-Received: by mail-ee0-f50.google.com with SMTP id d51so802550eek.37
- for <barebox@lists.infradead.org>; Thu, 26 Sep 2013 13:30:32 -0700 (PDT)
-Message-ID: <1380227429.10759.1.camel@lolumad>
-From: Rostislav Lisovy <lisovy@gmail.com>
-Date: Thu, 26 Sep 2013 22:30:29 +0200
-Mime-Version: 1.0
+ id 1VPRZO-00088o-EG
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:30:31 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 08:30:02 +0200
+Message-Id: <1380263404-23104-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +16,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Wrong barebox_image_size value
+Subject: [PATCH 2/4] loads: use getenv_bool for 'loads_echo'
 To: barebox@lists.infradead.org
 
-Dear barebox developers and users;
-I am compiling barebox for freescale-imx53-smd board. My issue is,
-that the image does not contain the correct size record.
-The "bootloader size" needed by the flashing tool is initialized in
-freescale-mx53-smd/flash_header.c, in structure flash_header,
-field .boot_data.size.
-Formerly there used to be a hardcoded value 0x40000, nowadays we use
-DCD_BAREBOX_SIZE which expands into (barebox_image_size + 4095), where
-"barebox_image_size" has real size computed by the linker.
-When the value .boot_data.size is filled by hand (as 0x40000), correct
-value is stored in the barebox image.
-Proof: hexdump -s 0x24 -n 4 barebox-flash-image
-0000024 0000 0004
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/loads.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-however if .boot_data.size = DCD_BAREBOX_SIZE,
-$ hexdump -s 0x24 -n 4 barebox-flash-image
-0000024 0fff 0000
-where this 0xfff is the "+4095" added to round the value. (I am pretty
-sure the offset into the image used by hexdump is correct).
-
-The barebox version I am using most recent git, branch master.
-The compiler (maybe here is the point of failure) is
-arm-cortex_a8-linux-gnueabi-gcc (crosstool-NG hg+default-86a8d1d467c8)
-4.4.6.
-
-I will appreciate any help;
-Rostislav Lisovy
+diff --git a/commands/loads.c b/commands/loads.c
+index bfc465b..58cd24b 100644
+--- a/commands/loads.c
++++ b/commands/loads.c
+@@ -40,14 +40,9 @@ static int do_load_serial(int argc, char *argv[])
+ 	ulong offset = 0;
+ 	ulong addr;
+ 	int i;
+-	const char *env_echo;
+ 	int rcode = 0;
+ 
+-	if (((env_echo = getenv("loads_echo")) != NULL) && (*env_echo == '1')) {
+-		do_echo = 1;
+-	} else {
+-		do_echo = 0;
+-	}
++	getenv_bool("loads_echo", &do_echo);
+ 
+ 	if (argc == 2) {
+ 		offset = simple_strtoul(argv[1], NULL, 16);
+-- 
+1.8.4.rc3
 
 
 _______________________________________________
