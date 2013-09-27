@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPTYW-00038l-MB
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:37:46 +0000
-Date: Fri, 27 Sep 2013 10:37:22 +0200
+ id 1VPTbo-0003Ej-0a
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:41:08 +0000
+Date: Fri, 27 Sep 2013 10:40:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130927083722.GM30088@pengutronix.de>
-References: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
- <1380266272-931-3-git-send-email-s.hauer@pengutronix.de>
- <20130927082537.GD32444@ns203013.ovh.net>
+Message-ID: <20130927084045.GN30088@pengutronix.de>
+References: <1380049423-30477-1-git-send-email-plagnioj@jcrosoft.com>
+ <1380087080-29914-1-git-send-email-plagnioj@jcrosoft.com>
+ <20130925104935.GA11782@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130927082537.GD32444@ns203013.ovh.net>
+In-Reply-To: <20130925104935.GA11782@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,154 +24,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] ARM: OMAP: register OMAP specific barebox bootm
- handler
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 1/1 v2] fs: add uimagefs
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 27, 2013 at 10:25:37AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 09:17 Fri 27 Sep     , Sascha Hauer wrote:
-> > The OMAP ROM code passes the boot information via r0 to the
-> > bootloader. Add an OMAP specific barebox handler to pass this
-> > information to the next stage. This allows us to chainload
-> > bootloaders without loosing the information where we booted from.
+On Wed, Sep 25, 2013 at 12:49:44PM +0200, Alexander Aring wrote:
+> Hi Christophe,
+> > +/*
+> > + * Copyright (c) 2013 Jean-Chritstophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > + *
 > 
-> as you are working on the xload can test the patch I send to switch to the
-> generic bootstap  code
+> s/Jean-Chritstophe/Jean-Christophe/
+> 
+> same issue which Sascha already mentioned on the bpkfs patch.
 
-I could test them on the beaglebone, yes.
+Fixed that while applying.
 
 Sascha
 
-> 
-> Best Regards,
-> J.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/mach-omap/include/mach/generic.h |  1 +
-> >  arch/arm/mach-omap/omap_generic.c         | 52 +++++++++++++++++++++++++++++++
-> >  arch/arm/mach-omap/xload.c                | 10 ++----
-> >  3 files changed, 55 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/arch/arm/mach-omap/include/mach/generic.h b/arch/arm/mach-omap/include/mach/generic.h
-> > index ece8c2b..1cd7f04 100644
-> > --- a/arch/arm/mach-omap/include/mach/generic.h
-> > +++ b/arch/arm/mach-omap/include/mach/generic.h
-> > @@ -56,6 +56,7 @@ static inline int omap_set_mmc_dev(const char *mmcdev)
-> >  
-> >  extern uint32_t omap_bootinfo[3];
-> >  void omap_save_bootinfo(void *data);
-> > +void __noreturn omap_start_barebox(void *barebox);
-> >  
-> >  void omap_set_bootmmc_devname(const char *devname);
-> >  const char *omap_get_bootmmc_devname(void);
-> > diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-> > index f024de6..595ecbe 100644
-> > --- a/arch/arm/mach-omap/omap_generic.c
-> > +++ b/arch/arm/mach-omap/omap_generic.c
-> > @@ -15,12 +15,64 @@
-> >  #include <common.h>
-> >  #include <bootsource.h>
-> >  #include <envfs.h>
-> > +#include <boot.h>
-> >  #include <init.h>
-> >  #include <io.h>
-> >  #include <fs.h>
-> >  #include <malloc.h>
-> >  #include <linux/stat.h>
-> >  #include <mach/generic.h>
-> > +#include <mach/am33xx-silicon.h>
-> > +#include <mach/omap3-silicon.h>
-> > +#include <mach/omap4-silicon.h>
-> > +
-> > +static void *omap_sram_start(void)
-> > +{
-> > +	if (cpu_is_am33xx())
-> > +		return (void *)AM33XX_SRAM0_START;
-> > +	if (cpu_is_omap34xx())
-> > +		return (void *)OMAP3_SRAM_BASE;
-> > +	if (cpu_is_omap4xxx())
-> > +		return (void *)OMAP44XX_SRAM_BASE;
-> > +}
-> > +
-> > +void __noreturn omap_start_barebox(void *barebox)
-> > +{
-> > +	int (*func)(void *) = barebox;
-> > +	uint32_t *arg;
-> > +	void *sramadr = omap_sram_start();
-> > +
-> > +	arg = (uint32_t *)&omap_bootinfo;
-> > +
-> > +	memcpy(sramadr, &omap_bootinfo, sizeof(uint32_t) * 3);
-> > +
-> > +	shutdown_barebox();
-> > +	func(sramadr);
-> > +	hang();
-> > +}
-> > +
-> > +static int do_bootm_omap_barebox(struct image_data *data)
-> > +{
-> > +	void (*barebox)(uint32_t);
-> > +
-> > +	barebox = read_file(data->os_file, NULL);
-> > +	if (!barebox)
-> > +		return -EINVAL;
-> > +
-> > +	omap_start_barebox(barebox);
-> > +}
-> > +
-> > +static struct image_handler omap_barebox_handler = {
-> > +	.name = "OMAP barebox",
-> > +	.bootm = do_bootm_omap_barebox,
-> > +	.filetype = filetype_arm_barebox,
-> > +};
-> > +
-> > +static int omap_bootm_barebox(void)
-> > +{
-> > +	return register_image_handler(&omap_barebox_handler);
-> > +}
-> > +device_initcall(omap_bootm_barebox);
-> >  
-> >  const static char *omap_bootmmc_dev;
-> >  
-> > diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> > index b4d1b55..69e3e42 100644
-> > --- a/arch/arm/mach-omap/xload.c
-> > +++ b/arch/arm/mach-omap/xload.c
-> > @@ -188,8 +188,7 @@ static void *omap4_xload_boot_usb(void){
-> >   */
-> >  static __noreturn int omap_xload(void)
-> >  {
-> > -	int (*func)(void *) = NULL;
-> > -	uint32_t *arg;
-> > +	void *func;
-> >  
-> >  	if (!barebox_part)
-> >  		barebox_part = &default_part;
-> > @@ -230,12 +229,7 @@ static __noreturn int omap_xload(void)
-> >  		while (1);
-> >  	}
-> >  
-> > -	arg = (uint32_t *)&omap_bootinfo;
-> > -
-> > -	shutdown_barebox();
-> > -	func(arg);
-> > -
-> > -	while (1);
-> > +	omap_start_barebox(func);
-> >  }
-> >  
-> >  int omap_set_barebox_part(struct omap_barebox_part *part)
-> > -- 
-> > 1.8.4.rc3
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
