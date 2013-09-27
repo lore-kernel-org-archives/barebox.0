@@ -1,24 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 3.mo2.mail-out.ovh.net ([46.105.58.226]
- helo=mo2.mail-out.ovh.net)
+Received: from mail.phytec.de ([217.6.246.34] helo=root.phytec.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPUCc-0004Nc-DV
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 09:19:11 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id E276EDC10A6
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 11:18:48 +0200 (CEST)
-Date: Fri, 27 Sep 2013 11:20:04 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130927092004.GG32444@ns203013.ovh.net>
-References: <20130927071255.GB32444@ns203013.ovh.net>
- <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
- <1380266058-18501-4-git-send-email-plagnioj@jcrosoft.com>
- <20130927085509.GQ30088@pengutronix.de>
- <20130927090357.GF32444@ns203013.ovh.net>
- <20130927090906.GT30088@pengutronix.de>
+ id 1VPWvF-0000rj-6b
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 12:13:26 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 79CB7BF0FA
+ for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 13:12:18 +0200 (CEST)
+From: =?UTF-8?q?Teresa=20G=C3=A1mez?= <t.gamez@phytec.de>
+Date: Fri, 27 Sep 2013 14:13:00 +0200
+Message-Id: <1380283980-5759-1-git-send-email-t.gamez@phytec.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20130927090906.GT30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,66 +18,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/8] console: introduce startup and shutdown
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mci: omap: Fix default value of mci.f_max
+To: barebox@lists.infradead.org
 
-On 11:09 Fri 27 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 27, 2013 at 11:03:57AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 10:55 Fri 27 Sep     , Sascha Hauer wrote:
-> > > On Fri, Sep 27, 2013 at 09:14:14AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > > so enable the uart only if used
-> > > > so linux can detect the right one enable if it want
-> > > > +{
-> > > > +	int ret;
-> > > > +
-> > > > +	if (cdev->f_active)
-> > > > +		return 0;
-> > > > +
-> > > > +	if (cdev->startup) {
-> > > > +		ret = cdev->startup(cdev);
-> > > > +		if (ret)
-> > > > +			return ret;
-> > > > +	}
-> > > > +
-> > > > +	if (cdev->setbrg) {
-> > > > +		cdev->baudrate = CONFIG_BAUDRATE;
-> > > 
-> > > I believe cdev->baudrate should be set only once during initialization.
-> > > When I deactivate a console and activate it again I don't expect the
-> > > baudrate to be changed to it's default value.
-> > 
-> > maybe but if the device is not a console but rs485 you never set the baudrate
-> > today same if a device is never active
-> > 
-> > as example use a non active device for loadxy
-> > 
-> > so I'm think that the console_open is more like man 2 open + ioctl to use a
-> > cdev
-> 
-> Put a cdev->baudrate = CONFIG_BAUDRATE in console_register() instead of
-> console_open. This doesn't affect RS485 at all but fixes the behaviour i
-> moaned about.
-
-ok why not
-
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2V0IGRlZmF1bHQgdmFsdWUgb2YgbWNpLmZfbWF4IGV2ZW4gd2hlbiBubyBwZGF0YQppcyBhdmFp
+bGFibGUuCgpTaWduZWQtb2ZmLWJ5OiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5kZT4K
+LS0tCiBkcml2ZXJzL21jaS9vbWFwX2hzbW1jLmMgfCAgICA0ICsrLS0KIDEgZmlsZXMgY2hhbmdl
+ZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bWNpL29tYXBfaHNtbWMuYyBiL2RyaXZlcnMvbWNpL29tYXBfaHNtbWMuYwppbmRleCBhMmNkM2Zl
+Li5mNjM2OTdmIDEwMDY0NAotLS0gYS9kcml2ZXJzL21jaS9vbWFwX2hzbW1jLmMKKysrIGIvZHJp
+dmVycy9tY2kvb21hcF9oc21tYy5jCkBAIC02MTQsMTEgKzYxNCwxMSBAQCBzdGF0aWMgaW50IG9t
+YXBfbW1jX3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQogCWlmIChwZGF0YSkgewogCQlpZiAo
+cGRhdGEtPmZfbWF4KQogCQkJaHNtbWMtPm1jaS5mX21heCA9IHBkYXRhLT5mX21heDsKLQkJZWxz
+ZQotCQkJaHNtbWMtPm1jaS5mX21heCA9IDUyMDAwMDAwOwogCiAJCWlmIChwZGF0YS0+ZGV2bmFt
+ZSkKIAkJCWhzbW1jLT5tY2kuZGV2bmFtZSA9IHBkYXRhLT5kZXZuYW1lOworCX0gZWxzZSB7CisJ
+CWhzbW1jLT5tY2kuZl9tYXggPSA1MjAwMDAwMDsKIAl9CiAKIAotLSAKMS43LjAuNAoKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGlu
+ZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFk
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
