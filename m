@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPRZO-00088q-Eo
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:30:33 +0000
+ id 1VPRqQ-0000AD-0a
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:48:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2013 08:30:04 +0200
-Message-Id: <1380263404-23104-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
-References: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 08:47:39 +0200
+Message-Id: <1380264462-27614-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380264462-27614-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380264462-27614-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] dhcp: replace dhcp_getenv_int with getenv_uint
+Subject: [PATCH 08/11] scripts/Makefile: implement targetprogs-y
 To: barebox@lists.infradead.org
+
+using obj-y for targetprogs only works until only a single program
+is compiled. Adding the second one will end up in the linker trying
+to link both together.
+
+Add targetprogs-y to fix this.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- net/dhcp.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ scripts/Makefile | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/net/dhcp.c b/net/dhcp.c
-index ff54924..e0c231f 100644
---- a/net/dhcp.c
-+++ b/net/dhcp.c
-@@ -699,16 +699,6 @@ static int dhcp_global_init(void)
- }
- late_initcall(dhcp_global_init);
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 99a06b0..adc786e 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -32,9 +32,12 @@ subdir-	+= basic kconfig setupmbr
+ quiet_cmd_csingle	= CC      $@
+       cmd_csingle	= $(CC) -Wp,-MD,$(depfile) $(CFLAGS) -o $@ $<
  
--static void dhcp_getenv_int(const char *name, int *i)
--{
--	const char* str = getenv(name);
--
--	if (!str)
--		return;
--
--	*i = simple_strtoul(str, NULL, 10);
--}
--
- static int do_dhcp(int argc, char *argv[])
- {
- 	int ret, opt;
-@@ -716,7 +706,7 @@ static int do_dhcp(int argc, char *argv[])
+-obj-$(CONFIG_BAREBOXENV_TARGET)	+= bareboxenv-target
++__targetprogs	:= $(sort $(targetprogs-y) $(targetprogs-m))
++target-csingle	:= $(foreach m,$(__targetprogs),$(if $($(m)-objs),,$(m)))
++__targetprogs	:= $(addprefix $(obj)/,$(__targetprogs))
++target-csingle	:= $(addprefix $(obj)/,$(target-csingle))
  
- 	dhcp_reset_env();
+-scripts/bareboxenv-target: scripts/bareboxenv.c FORCE
+-	$(call if_changed_dep,csingle)
++always		:= $(hostprogs-y) $(hostprogs-m) $(targetprogs-y)
  
--	dhcp_getenv_int("global.dhcp.retries", &retries);
-+	getenv_uint("global.dhcp.retries", &retries);
- 
- 	while((opt = getopt(argc, argv, "H:v:c:u:U:r:")) > 0) {
- 		switch(opt) {
+-always		:= $(hostprogs-y) $(hostprogs-m)
++$(target-csingle): %-target: %.c FORCE
++	$(call if_changed_dep,csingle)
 -- 
 1.8.4.rc3
 
