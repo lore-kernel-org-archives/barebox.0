@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPYue-0006B1-CL
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 14:20:57 +0000
-Date: Fri, 27 Sep 2013 16:20:34 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130927142034.GV30088@pengutronix.de>
-References: <1380267201-17783-1-git-send-email-t.gamez@phytec.de>
+Received: from mo2.mail-out.ovh.net ([178.32.228.2])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VPZ9D-0006iT-Gk
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 14:36:01 +0000
+Received: from mail190.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 3C730DC20DE
+ for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 16:35:38 +0200 (CEST)
+Date: Fri, 27 Sep 2013 16:36:57 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130927143657.GJ32444@ns203013.ovh.net>
+References: <1380290764-8744-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1380267201-17783-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <1380290764-8744-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,105 +21,146 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: Fix copy_file when filesize is FILESIZE_MAX
-To: Teresa =?iso-8859-15?Q?G=E1mez?= <t.gamez@phytec.de>
+Subject: Re: [PATCH] introduce runtime loglevel
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 27, 2013 at 09:33:21AM +0200, Teresa G=E1mez wrote:
-> Using tftp command does not work proper when files
-> have FILESIZE_MAX, as copy_file and show_progress
-> can not handle it. Check the file size for FILESIZE_MAX
-> and handle it as file size =3D 0.
-> =
-
-> Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
-
-Applied, thanks
-
-Sascha
-
+On 16:06 Fri 27 Sep     , Sascha Hauer wrote:
+> With this the verbosity of barebox can be controlled during runtime
+> using the 'loglevel' globalvar.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  lib/copy_file.c     |    8 ++++++--
->  lib/show_progress.c |    5 +++--
->  2 files changed, 9 insertions(+), 4 deletions(-)
-> =
+>  common/console_common.c | 27 +++++++++++++++++++++++++++
+>  drivers/base/driver.c   |  6 +++++-
+>  include/console.h       |  2 ++
+>  include/printk.h        |  9 ++++++---
+>  4 files changed, 40 insertions(+), 4 deletions(-)
+> 
+> diff --git a/common/console_common.c b/common/console_common.c
+> index d139d1a..accb70e 100644
+> --- a/common/console_common.c
+> +++ b/common/console_common.c
+> @@ -24,6 +24,33 @@
+>  
+>  #ifndef CONFIG_CONSOLE_NONE
+>  
+> +int barebox_loglevel = 6;
+this should be define via Kconfig
 
-> diff --git a/lib/copy_file.c b/lib/copy_file.c
-> index ab3d845..55dee38 100644
-> --- a/lib/copy_file.c
-> +++ b/lib/copy_file.c
-> @@ -63,8 +63,12 @@ int copy_file(const char *src, const char *dst, int ve=
-rbose)
->  			total +=3D w;
->  		}
->  =
-
-> -		if (verbose)
-> -			show_progress(statbuf.st_size ? total : total / 16384);
-> +		if (verbose) {
-> +			if (statbuf.st_size && statbuf.st_size !=3D FILESIZE_MAX)
-> +				show_progress(total);
-> +			else
-> +				show_progress(total / 16384);
-> +		}
->  	}
->  =
-
->  	ret =3D 0;
-> diff --git a/lib/show_progress.c b/lib/show_progress.c
-> index bc067ea..98dc849 100644
-> --- a/lib/show_progress.c
-> +++ b/lib/show_progress.c
-> @@ -18,6 +18,7 @@
->   */
->  =
-
->  #include <common.h>
-> +#include <fs.h>
->  #include <progress.h>
->  #include <asm-generic/div64.h>
->  #include <linux/stringify.h>
-> @@ -37,7 +38,7 @@ void show_progress(int now)
->  		return;
->  	}
->  =
-
-> -	if (progress_max) {
-> +	if (progress_max && progress_max !=3D FILESIZE_MAX) {
->  		uint64_t tmp =3D (int64_t)now * HASHES_PER_LINE;
->  		do_div(tmp, progress_max);
->  		now =3D tmp;
-> @@ -56,7 +57,7 @@ void init_progression_bar(int max)
->  	printed =3D 0;
->  	progress_max =3D max;
->  	spin =3D 0;
-> -	if (progress_max)
-> +	if (progress_max && progress_max !=3D FILESIZE_MAX)
->  		printf("\t[%"__stringify(HASHES_PER_LINE)"s]\r\t[", "");
->  	else
->  		printf("\t");
-> -- =
-
-> 1.7.0.4
-> =
-
-> =
-
+Best Regards,
+J.
+> +
+> +int pr_print(int level, const char *fmt, ...)
+> +{
+> +	va_list args;
+> +	uint i;
+> +	char printbuffer[CFG_PBSIZE];
+> +
+> +	if (level > barebox_loglevel)
+> +		return 0;
+> +
+> +	va_start(args, fmt);
+> +	i = vsprintf(printbuffer, fmt, args);
+> +	va_end(args);
+> +
+> +	/* Print the string */
+> +	puts(printbuffer);
+> +
+> +	return i;
+> +}
+> +
+> +static int loglevel_init(void)
+> +{
+> +	return globalvar_add_simple_int("loglevel", &barebox_loglevel, "%d");
+> +}
+> +device_initcall(loglevel_init);
+> +
+>  int printf(const char *fmt, ...)
+>  {
+>  	va_list args;
+> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+> index 16b7f06..e587e3a 100644
+> --- a/drivers/base/driver.c
+> +++ b/drivers/base/driver.c
+> @@ -26,6 +26,7 @@
+>  #include <command.h>
+>  #include <driver.h>
+>  #include <malloc.h>
+> +#include <console.h>
+>  #include <linux/ctype.h>
+>  #include <errno.h>
+>  #include <fs.h>
+> @@ -370,11 +371,14 @@ const char *dev_id(const struct device_d *dev)
+>  	return buf;
+>  }
+>  
+> -int dev_printf(const struct device_d *dev, const char *format, ...)
+> +int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+>  {
+>  	va_list args;
+>  	int ret = 0;
+>  
+> +	if (level > barebox_loglevel)
+> +		return 0;
+> +
+>  	if (dev->driver && dev->driver->name)
+>  		ret += printf("%s ", dev->driver->name);
+>  
+> diff --git a/include/console.h b/include/console.h
+> index 72cf99f..9d74cc2 100644
+> --- a/include/console.h
+> +++ b/include/console.h
+> @@ -54,4 +54,6 @@ extern struct list_head console_list;
+>  
+>  #define CFG_PBSIZE (CONFIG_CBSIZE+sizeof(CONFIG_PROMPT)+16)
+>  
+> +extern int barebox_loglevel;
+> +
+>  #endif
+> diff --git a/include/printk.h b/include/printk.h
+> index 86bf208..f550f07 100644
+> --- a/include/printk.h
+> +++ b/include/printk.h
+> @@ -18,12 +18,15 @@
+>  
+>  /* debugging and troubleshooting/diagnostic helpers. */
+>  
+> -int dev_printf(const struct device_d *dev, const char *format, ...)
+> +int pr_print(int level, const char *format, ...)
+>  	__attribute__ ((format(__printf__, 2, 3)));
+>  
+> +int dev_printf(int level, const struct device_d *dev, const char *format, ...)
+> +	__attribute__ ((format(__printf__, 3, 4)));
+> +
+>  #define __dev_printf(level, dev, format, args...) \
+>  	({	\
+> -		(level) <= LOGLEVEL ? dev_printf((dev), (format), ##args) : 0; \
+> +		(level) <= LOGLEVEL ? dev_printf((level), (dev), (format), ##args) : 0; \
+>  	 })
+>  
+>  
+> @@ -46,7 +49,7 @@ int dev_printf(const struct device_d *dev, const char *format, ...)
+>  
+>  #define __pr_printk(level, format, args...) \
+>  	({	\
+> -		(level) <= LOGLEVEL ? printk((format), ##args) : 0; \
+> +		(level) <= LOGLEVEL ? pr_print((level), (format), ##args) : 0; \
+>  	 })
+>  
+>  #ifndef pr_fmt
+> -- 
+> 1.8.4.rc3
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
