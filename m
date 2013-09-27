@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22d.google.com ([2a00:1450:4013:c01::22d])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPX1Q-00016M-7C
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 12:19:48 +0000
-Received: by mail-ea0-f173.google.com with SMTP id g10so1178746eak.18
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 05:19:25 -0700 (PDT)
-Date: Fri, 27 Sep 2013 14:19:21 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20130927121920.GA526@omega>
+Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VPY66-0003ex-Sq
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 13:28:44 +0000
+Received: from mail190.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 6DCA0DC1C95
+ for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 15:28:21 +0200 (CEST)
+Date: Fri, 27 Sep 2013 15:29:40 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20130927132940.GH32444@ns203013.ovh.net>
 References: <1380283980-5759-1-git-send-email-t.gamez@phytec.de>
+ <20130927121920.GA526@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1380283980-5759-1-git-send-email-t.gamez@phytec.de>
+In-Reply-To: <20130927121920.GA526@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,29 +23,60 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH] mci: omap: Fix default value of mci.f_max
-To: Teresa =?utf-8?B?R8OhbWV6?= <t.gamez@phytec.de>
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-SGksCgpPbiBGcmksIFNlcCAyNywgMjAxMyBhdCAwMjoxMzowMFBNICswMjAwLCBUZXJlc2EgR8Oh
-bWV6IHdyb3RlOgo+IFNldCBkZWZhdWx0IHZhbHVlIG9mIG1jaS5mX21heCBldmVuIHdoZW4gbm8g
-cGRhdGEKPiBpcyBhdmFpbGFibGUuCj4gCj4gU2lnbmVkLW9mZi1ieTogVGVyZXNhIEfDoW1leiA8
-dC5nYW1lekBwaHl0ZWMuZGU+Cj4gLS0tCj4gIGRyaXZlcnMvbWNpL29tYXBfaHNtbWMuYyB8ICAg
-IDQgKystLQo+ICAxIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMo
-LSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvb21hcF9oc21tYy5jIGIvZHJpdmVycy9t
-Y2kvb21hcF9oc21tYy5jCj4gaW5kZXggYTJjZDNmZS4uZjYzNjk3ZiAxMDA2NDQKPiAtLS0gYS9k
-cml2ZXJzL21jaS9vbWFwX2hzbW1jLmMKPiArKysgYi9kcml2ZXJzL21jaS9vbWFwX2hzbW1jLmMK
-PiBAQCAtNjE0LDExICs2MTQsMTEgQEAgc3RhdGljIGludCBvbWFwX21tY19wcm9iZShzdHJ1Y3Qg
-ZGV2aWNlX2QgKmRldikKPiAgCWlmIChwZGF0YSkgewo+ICAJCWlmIChwZGF0YS0+Zl9tYXgpCj4g
-IAkJCWhzbW1jLT5tY2kuZl9tYXggPSBwZGF0YS0+Zl9tYXg7Cj4gLQkJZWxzZQo+IC0JCQloc21t
-Yy0+bWNpLmZfbWF4ID0gNTIwMDAwMDA7CgpJIHRoaW5rIHRoaXMgc2hvdWxkIHN0YXkgdGhlcmUg
-Zm9yIHRoZSBjYXNlIGlmIGZfbWF4IGlzIHplcm8uClNvIHNvbWVib2R5IHNldHMgYSBwZGF0YSB3
-aXRoIGRldm5hbWUgYW5kIG5vIGZfbWF4IHZhbHVlLgoKCk1heWJlIHlvdSBzaG91bGQgYWRkIGEg
-ZGVmYXVsdCBkZXZuYW1lIGlmIG5vIHBkYXRhIGlzIGdpdmVuLgoKLSBBbGV4CgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
-dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 14:19 Fri 27 Sep     , Alexander Aring wrote:
+> Hi,
+> =
+
+> On Fri, Sep 27, 2013 at 02:13:00PM +0200, Teresa G=E1mez wrote:
+> > Set default value of mci.f_max even when no pdata
+> > is available.
+> > =
+
+> > Signed-off-by: Teresa G=E1mez <t.gamez@phytec.de>
+> > ---
+> >  drivers/mci/omap_hsmmc.c |    4 ++--
+> >  1 files changed, 2 insertions(+), 2 deletions(-)
+> > =
+
+> > diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+> > index a2cd3fe..f63697f 100644
+> > --- a/drivers/mci/omap_hsmmc.c
+> > +++ b/drivers/mci/omap_hsmmc.c
+> > @@ -614,11 +614,11 @@ static int omap_mmc_probe(struct device_d *dev)
+> >  	if (pdata) {
+> >  		if (pdata->f_max)
+> >  			hsmmc->mci.f_max =3D pdata->f_max;
+> > -		else
+> > -			hsmmc->mci.f_max =3D 52000000;
+> =
+
+> I think this should stay there for the case if f_max is zero.
+> So somebody sets a pdata with devname and no f_max value.
+> =
+
+> =
+
+> Maybe you should add a default devname if no pdata is given.
+no there is a default devname disk.%d
+> =
+
+> - Alex
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
