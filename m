@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPRZO-00088o-EG
+ id 1VPRZO-00088m-ED
  for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:30:31 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1VPRZ0-00071Y-4X
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:30:06 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1VPRZ0-00063s-37
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:30:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2013 08:30:02 +0200
-Message-Id: <1380263404-23104-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
-References: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 08:30:00 +0200
+Message-Id: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +26,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] loads: use getenv_bool for 'loads_echo'
+Subject: getenv helpers
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/loads.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+This introduces some helpers for getting int values from enironment
+variables and uses them where appropriate.
 
-diff --git a/commands/loads.c b/commands/loads.c
-index bfc465b..58cd24b 100644
---- a/commands/loads.c
-+++ b/commands/loads.c
-@@ -40,14 +40,9 @@ static int do_load_serial(int argc, char *argv[])
- 	ulong offset = 0;
- 	ulong addr;
- 	int i;
--	const char *env_echo;
- 	int rcode = 0;
- 
--	if (((env_echo = getenv("loads_echo")) != NULL) && (*env_echo == '1')) {
--		do_echo = 1;
--	} else {
--		do_echo = 0;
--	}
-+	getenv_bool("loads_echo", &do_echo);
- 
- 	if (argc == 2) {
- 		offset = simple_strtoul(argv[1], NULL, 16);
--- 
-1.8.4.rc3
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (4):
+      environment variables: introduce new helpers
+      loads: use getenv_bool for 'loads_echo'
+      bootm: Replace getenv_loadaddr with getenv_ul
+      dhcp: replace dhcp_getenv_int with getenv_uint
+
+ arch/arm/lib/armlinux.c | 29 +++++---------------
+ commands/bootm.c        |  4 +--
+ commands/loads.c        |  7 +----
+ common/env.c            | 71 +++++++++++++++++++++++++++++++++++++++++++++----
+ include/environment.h   | 31 ++++++++++++++++++---
+ net/dhcp.c              | 12 +--------
+ 6 files changed, 104 insertions(+), 50 deletions(-)
 
 
 _______________________________________________
