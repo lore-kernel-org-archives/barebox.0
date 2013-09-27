@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPTHt-0002ag-4Q
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:20:34 +0000
+ id 1VPTLt-0002hl-Mx
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:24:42 +0000
 Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id CB4FCDC0527
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 10:20:10 +0200 (CEST)
-Date: Fri, 27 Sep 2013 10:21:22 +0200
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 0680ADC150A
+ for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 10:24:20 +0200 (CEST)
+Date: Fri, 27 Sep 2013 10:25:37 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130927082122.GC32444@ns203013.ovh.net>
-References: <1380174356-6399-1-git-send-email-plagnioj@jcrosoft.com>
- <20130927081555.GL30088@pengutronix.de>
+Message-ID: <20130927082537.GD32444@ns203013.ovh.net>
+References: <1380266272-931-1-git-send-email-s.hauer@pengutronix.de>
+ <1380266272-931-3-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130927081555.GL30088@pengutronix.de>
+In-Reply-To: <1380266272-931-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,131 +27,147 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] command: add read command
+Subject: Re: [PATCH 2/4] ARM: OMAP: register OMAP specific barebox bootm
+ handler
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 10:15 Fri 27 Sep     , Sascha Hauer wrote:
-> On Thu, Sep 26, 2013 at 07:45:56AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > +static int do_read(int argc, char *argv[])
-> > +{
-> > +	int opt;
-> > +	int cont = 0;
-> > +	int ret = -EINVAL;
-> > +	char *var;
-> > +	char *buf = xzalloc(2049);
-> > +	char *filename = NULL;
-> > +
-> > +	if (!argc)
-> > +		return COMMAND_ERROR_USAGE;
-> > +
-> > +	while((opt = getopt(argc, argv, "cf:")) > 0) {
-> > +		switch(opt) {
-> > +		case 'c':
-> > +			cont = 1;
-> > +			break;
-> 
-> Do you really need this continue mode? It makes this stuff look rather
-> flawy. For example one must know that this command is not reentrant. Not
-> that it's likely that someone parses a file while parsing another file,
-> but doing so would lead to strange results and is hard to fix.
-> 
-> BTW I had to do very similar stuff recently, see attached what I came up
-> with.
+On 09:17 Fri 27 Sep     , Sascha Hauer wrote:
+> The OMAP ROM code passes the boot information via r0 to the
+> bootloader. Add an OMAP specific barebox handler to pass this
+> information to the next stage. This allows us to chainload
+> bootloaders without loosing the information where we booted from.
 
-I agree on the issue but as we do not have the | on the shell and I do need to
-read multiple  line on a project. SO the only way would be to use a list of
-open files
+as you are working on the xload can test the patch I send to switch to the
+generic bootstap  code
 
 Best Regards,
 J.
 > 
-> Sascha
-> 
-> 
-> From 5d513270e46c5705262d79c66cc630e20d1a66d9 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Sun, 22 Sep 2013 23:40:04 +0200
-> Subject: [PATCH] add function to read single line files
-> 
-> Often small files are used to store the value of a variable. This
-> adds a function to easily read such a variable.
-> 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  include/libbb.h |  2 ++
->  lib/libbb.c     | 42 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 44 insertions(+)
+>  arch/arm/mach-omap/include/mach/generic.h |  1 +
+>  arch/arm/mach-omap/omap_generic.c         | 52 +++++++++++++++++++++++++++++++
+>  arch/arm/mach-omap/xload.c                | 10 ++----
+>  3 files changed, 55 insertions(+), 8 deletions(-)
 > 
-> diff --git a/include/libbb.h b/include/libbb.h
-> index 47b2e08..2fe710c 100644
-> --- a/include/libbb.h
-> +++ b/include/libbb.h
-> @@ -35,4 +35,6 @@ char *simple_itoa(unsigned int i);
->  int write_full(int fd, void *buf, size_t size);
->  int read_full(int fd, void *buf, size_t size);
+> diff --git a/arch/arm/mach-omap/include/mach/generic.h b/arch/arm/mach-omap/include/mach/generic.h
+> index ece8c2b..1cd7f04 100644
+> --- a/arch/arm/mach-omap/include/mach/generic.h
+> +++ b/arch/arm/mach-omap/include/mach/generic.h
+> @@ -56,6 +56,7 @@ static inline int omap_set_mmc_dev(const char *mmcdev)
 >  
-> +char *read_file_line(const char *fmt, ...);
+>  extern uint32_t omap_bootinfo[3];
+>  void omap_save_bootinfo(void *data);
+> +void __noreturn omap_start_barebox(void *barebox);
+>  
+>  void omap_set_bootmmc_devname(const char *devname);
+>  const char *omap_get_bootmmc_devname(void);
+> diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
+> index f024de6..595ecbe 100644
+> --- a/arch/arm/mach-omap/omap_generic.c
+> +++ b/arch/arm/mach-omap/omap_generic.c
+> @@ -15,12 +15,64 @@
+>  #include <common.h>
+>  #include <bootsource.h>
+>  #include <envfs.h>
+> +#include <boot.h>
+>  #include <init.h>
+>  #include <io.h>
+>  #include <fs.h>
+>  #include <malloc.h>
+>  #include <linux/stat.h>
+>  #include <mach/generic.h>
+> +#include <mach/am33xx-silicon.h>
+> +#include <mach/omap3-silicon.h>
+> +#include <mach/omap4-silicon.h>
 > +
->  #endif /* __LIBBB_H */
-> diff --git a/lib/libbb.c b/lib/libbb.c
-> index e0d7481..200629e 100644
-> --- a/lib/libbb.c
-> +++ b/lib/libbb.c
-> @@ -176,3 +176,45 @@ int read_full(int fd, void *buf, size_t size)
->  	return insize;
->  }
->  EXPORT_SYMBOL(read_full);
-> +
-> +/*
-> + * read_file_line - read a line from a file
-> + *
-> + * Used to compose a filename from a printf format and to read a line from this
-> + * file. All leading and trailing whitespaces (including line endings) are
-> + * removed. The returned buffer must be freed with free(). This function is
-> + * supposed for reading variable like content into a buffer, so files > 1024
-> + * bytes are ignored.
-> + */
-> +char *read_file_line(const char *fmt, ...)
+> +static void *omap_sram_start(void)
 > +{
-> +	va_list args;
-> +	char *filename;
-> +	char *buf, *line = NULL;
-> +	int size, ret;
-> +	struct stat s;
-> +
-> +	va_start(args, fmt);
-> +	filename = asprintf(fmt, args);
-> +	va_end(args);
-> +
-> +	ret = stat(filename, &s);
-> +	if (ret)
-> +		goto out;
-> +
-> +	if (s.st_size > 1024)
-> +		goto out;
-> +
-> +	buf = read_file(filename, &size);
-> +	if (!buf)
-> +		goto out;
-> +
-> +	line = strim(buf);
-> +
-> +	line = xstrdup(line);
-> +	free(buf);
-> +out:
-> +	free(filename);
-> +	return line;
+> +	if (cpu_is_am33xx())
+> +		return (void *)AM33XX_SRAM0_START;
+> +	if (cpu_is_omap34xx())
+> +		return (void *)OMAP3_SRAM_BASE;
+> +	if (cpu_is_omap4xxx())
+> +		return (void *)OMAP44XX_SRAM_BASE;
 > +}
-> +EXPORT_SYMBOL_GPL(read_file_line);
+> +
+> +void __noreturn omap_start_barebox(void *barebox)
+> +{
+> +	int (*func)(void *) = barebox;
+> +	uint32_t *arg;
+> +	void *sramadr = omap_sram_start();
+> +
+> +	arg = (uint32_t *)&omap_bootinfo;
+> +
+> +	memcpy(sramadr, &omap_bootinfo, sizeof(uint32_t) * 3);
+> +
+> +	shutdown_barebox();
+> +	func(sramadr);
+> +	hang();
+> +}
+> +
+> +static int do_bootm_omap_barebox(struct image_data *data)
+> +{
+> +	void (*barebox)(uint32_t);
+> +
+> +	barebox = read_file(data->os_file, NULL);
+> +	if (!barebox)
+> +		return -EINVAL;
+> +
+> +	omap_start_barebox(barebox);
+> +}
+> +
+> +static struct image_handler omap_barebox_handler = {
+> +	.name = "OMAP barebox",
+> +	.bootm = do_bootm_omap_barebox,
+> +	.filetype = filetype_arm_barebox,
+> +};
+> +
+> +static int omap_bootm_barebox(void)
+> +{
+> +	return register_image_handler(&omap_barebox_handler);
+> +}
+> +device_initcall(omap_bootm_barebox);
+>  
+>  const static char *omap_bootmmc_dev;
+>  
+> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
+> index b4d1b55..69e3e42 100644
+> --- a/arch/arm/mach-omap/xload.c
+> +++ b/arch/arm/mach-omap/xload.c
+> @@ -188,8 +188,7 @@ static void *omap4_xload_boot_usb(void){
+>   */
+>  static __noreturn int omap_xload(void)
+>  {
+> -	int (*func)(void *) = NULL;
+> -	uint32_t *arg;
+> +	void *func;
+>  
+>  	if (!barebox_part)
+>  		barebox_part = &default_part;
+> @@ -230,12 +229,7 @@ static __noreturn int omap_xload(void)
+>  		while (1);
+>  	}
+>  
+> -	arg = (uint32_t *)&omap_bootinfo;
+> -
+> -	shutdown_barebox();
+> -	func(arg);
+> -
+> -	while (1);
+> +	omap_start_barebox(func);
+>  }
+>  
+>  int omap_set_barebox_part(struct omap_barebox_part *part)
 > -- 
 > 1.8.4.rc3
 > 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
