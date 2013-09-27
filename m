@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPRZO-00088m-ED
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:30:31 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VPRZ0-00071Y-4X
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:30:06 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1VPRZ0-00063s-37
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 08:30:06 +0200
+ id 1VPRZO-00088p-EK
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 06:30:32 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 27 Sep 2013 08:30:00 +0200
-Message-Id: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 27 Sep 2013 08:30:03 +0200
+Message-Id: <1380263404-23104-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380263404-23104-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,28 +21,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: getenv helpers
+Subject: [PATCH 3/4] bootm: Replace getenv_loadaddr with getenv_ul
 To: barebox@lists.infradead.org
 
-This introduces some helpers for getting int values from enironment
-variables and uses them where appropriate.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/bootm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (4):
-      environment variables: introduce new helpers
-      loads: use getenv_bool for 'loads_echo'
-      bootm: Replace getenv_loadaddr with getenv_ul
-      dhcp: replace dhcp_getenv_int with getenv_uint
-
- arch/arm/lib/armlinux.c | 29 +++++---------------
- commands/bootm.c        |  4 +--
- commands/loads.c        |  7 +----
- common/env.c            | 71 +++++++++++++++++++++++++++++++++++++++++++++----
- include/environment.h   | 31 ++++++++++++++++++---
- net/dhcp.c              | 12 +--------
- 6 files changed, 104 insertions(+), 50 deletions(-)
+diff --git a/commands/bootm.c b/commands/bootm.c
+index a4004df..ae6b5f3 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -109,8 +109,8 @@ static int do_bootm(int argc, char *argv[])
+ 
+ 	oftree = getenv("global.bootm.oftree");
+ 	os_file = getenv("global.bootm.image");
+-	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
+-	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
++	getenv_ul("global.bootm.image.loadaddr", &data.os_address);
++	getenv_ul("global.bootm.initrd.loadaddr", &data.initrd_address);
+ 	if (IS_ENABLED(CONFIG_CMD_BOOTM_INITRD))
+ 		initrd_file = getenv("global.bootm.initrd");
+ 
+-- 
+1.8.4.rc3
 
 
 _______________________________________________
