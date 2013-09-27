@@ -1,21 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo2.mail-out.ovh.net ([178.32.228.2])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VPTx7-0003vc-J8
- for barebox@lists.infradead.org; Fri, 27 Sep 2013 09:03:10 +0000
-Received: from mail195.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 28F86DC224B
- for <barebox@lists.infradead.org>; Fri, 27 Sep 2013 11:02:45 +0200 (CEST)
-Date: Fri, 27 Sep 2013 11:03:57 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20130927090357.GF32444@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VPU0B-00045X-Bf
+ for barebox@lists.infradead.org; Fri, 27 Sep 2013 09:06:20 +0000
+Date: Fri, 27 Sep 2013 11:05:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20130927090556.GS30088@pengutronix.de>
 References: <20130927071255.GB32444@ns203013.ovh.net>
  <1380266058-18501-1-git-send-email-plagnioj@jcrosoft.com>
- <1380266058-18501-4-git-send-email-plagnioj@jcrosoft.com>
- <20130927085509.GQ30088@pengutronix.de>
+ <1380266058-18501-3-git-send-email-plagnioj@jcrosoft.com>
+ <20130927085056.GP30088@pengutronix.de>
+ <20130927085847.GE32444@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20130927085509.GQ30088@pengutronix.de>
+In-Reply-To: <20130927085847.GE32444@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,82 +26,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/8] console: introduce startup and shutdown
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 3/8] console: factorise function to get the console by name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 10:55 Fri 27 Sep     , Sascha Hauer wrote:
-> On Fri, Sep 27, 2013 at 09:14:14AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > so enable the uart only if used
-> > so linux can detect the right one enable if it want
+On Fri, Sep 27, 2013 at 10:58:47AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:50 Fri 27 Sep     , Sascha Hauer wrote:
+> > On Fri, Sep 27, 2013 at 09:14:13AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > rename it to console_get_by_name
+> > > 
+> > > +struct console_device *console_get_by_name(const char *cname)
+> > > +{
+> > > +	struct console_device *cdev;
+> > > +	const char *target;
+> > > +
+> > > +	for_each_console(cdev) {
+> > > +		target = dev_id(&cdev->class_dev);
+> > > +		if (strcmp(cname, target))
+> > > +			continue;
+> > > +		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
+> > > +			return cdev;
+> > > +		return NULL;
+> > > +	}
+> > > +	return NULL;
+> > > +}
+> > > +EXPORT_SYMBOL(console_get_by_name);
 > > 
-> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > ---
-> >  common/console.c        |  6 ++++++
-> >  common/console_common.c | 36 ++++++++++++++++++++++++++++++++++++
-> >  common/console_simple.c |  3 +++
-> >  include/console.h       |  4 ++++
-> >  4 files changed, 49 insertions(+)
+> > I know this patch doesn't change the current behaviour, but a common
+> > function console_get_by_name() should return return the console by name
+> > regardless of whether it's active or not.
+> 
+> I change it behaviour later as now this function will check the console
+> feature
+> 
+> as the current implemetation do it too but in the wrong way
 > > 
-> > diff --git a/common/console.c b/common/console.c
-> > index 56bc864..00fd2cf 100644
-> > --- a/common/console.c
-> > +++ b/common/console.c
-> > @@ -83,8 +83,14 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
-> >  
-> >  	if (flag && !cdev->f_active) {
-> >  		/* The device is being activated, set its baudrate */
-> > +		if (cdev->startup)
-> > +			cdev->startup(cdev);
-> >  		if (cdev->setbrg)
-> >  			cdev->setbrg(cdev, cdev->baudrate);
-> > +	} else if (!flag && cdev->f_active) {
-> > +		/* The device is being desactivated, shutdown it */
+> > For the loadx code this would be a net win aswell. I think this code
+> > should not depend on an active console but the other way round: It
+> > should clear the CONSOLE_STDIN/CONSOLE_STDOUT during loadx operation.
+> > This way we could easily make sure there are no printf message garbling
+> > the line during transfers and still we could have console messages on
+> > other consoles.
 > 
-> 		/* The device is being deactivated, shut it down */
-> 
-> > +
-> > +int console_open(struct console_device *cdev)
-> > +{
-> > +	int ret;
-> > +
-> > +	if (cdev->f_active)
-> > +		return 0;
-> > +
-> > +	if (cdev->startup) {
-> > +		ret = cdev->startup(cdev);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	if (cdev->setbrg) {
-> > +		cdev->baudrate = CONFIG_BAUDRATE;
-> 
-> I believe cdev->baudrate should be set only once during initialization.
-> When I deactivate a console and activate it again I don't expect the
-> baudrate to be changed to it's default value.
+> patch 8 finaly clean it
 
-maybe but if the device is not a console but rs485 you never set the baudrate
-today same if a device is never active
+?
 
-as example use a non active device for loadxy
+patch 8/8 is an atmel serial driver specific patch that changes nothing
+in this regard.
 
-so I'm think that the console_open is more like man 2 open + ioctl to use a
-cdev
+What I mean is that the loadx stuff should do a cdev->active = 0 so that
+during transfers printf is still possible without corrupting the
+transfers. This behaviour is not changed in this series.
 
-later we will switch to open + ioctl API
-for now on I prefer to just fix the big issues and prepare to switch easly
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
