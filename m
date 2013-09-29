@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQN7n-00023W-5J
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 19:57:52 +0000
+ id 1VQN6x-0001zT-Hy
+ for barebox@lists.infradead.org; Sun, 29 Sep 2013 19:57:02 +0000
 Received: from tellur.localdomain (p54831980.dip0.t-ipconnect.de
- [84.131.25.128]) by lynxeye.de (Postfix) with ESMTPA id 2DBEA26C2002
- for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 21:56:10 +0200 (CEST)
+ [84.131.25.128]) by lynxeye.de (Postfix) with ESMTPA id 5E38E26C2004
+ for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 21:56:07 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 29 Sep 2013 21:59:34 +0200
-Message-Id: <1380484776-32266-7-git-send-email-dev@lynxeye.de>
+Date: Sun, 29 Sep 2013 21:59:31 +0200
+Message-Id: <1380484776-32266-4-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1380484776-32266-1-git-send-email-dev@lynxeye.de>
 References: <1380484776-32266-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,71 +24,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] tegra: don't force to choose between Tegra arches
+Subject: [PATCH 3/8] tegra: start maincomplex execution at correct offset
 To: barebox@lists.infradead.org
-
-There is nothing technically preventing a single Tegra 20/30
-image to be built. Don't force this split in Kconfig.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/Kconfig | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ arch/arm/mach-tegra/tegra_avp_init.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index 4164f56..90c0c0f 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -5,15 +5,6 @@ config ARCH_TEXT_BASE
- 	default 0x0
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 5099e91..ba275ad 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -19,6 +19,7 @@
  
- choice
--	prompt "Tegra processor type"
+ #include <common.h>
+ #include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
+ #include <mach/lowlevel.h>
+ #include <mach/tegra20-car.h>
+ #include <mach/tegra20-pmc.h>
+@@ -194,13 +195,6 @@ void barebox_arm_reset_vector(void)
+ 	/* minimal initialization, OK for both ARMv4 and ARMv7 */
+ 	tegra_cpu_lowlevel_setup();
+ 
+-	/*
+-	 * If we are already running on the main CPU complex jump straight
+-	 * to the maincomplex entry point.
+-	 */
+-	if (tegra_cpu_is_maincomplex())
+-		tegra_maincomplex_entry();
 -
--config ARCH_TEGRA_2x_SOC
--	bool "Tegra 20"
--	select PINCTRL_TEGRA20
--
--endchoice
--
--choice
- 	prompt "Tegra debug UART"
- 	help
- 	  This is the first serial console that gets activated by barebox.
-@@ -48,18 +39,22 @@ endchoice
+ 	/* get the number of cores in the main CPU complex of the current SoC */
+ 	num_cores = tegra_get_num_cores();
+ 	if (!num_cores)
+@@ -212,7 +206,8 @@ void barebox_arm_reset_vector(void)
+ 	stop_maincomplex_clocks(num_cores);
  
- # ---------------------------------------------------------
+ 	/* set start address for the main CPU complex processors */
+-	writel(barebox_arm_head, TEGRA_EXCEPTION_VECTORS_BASE + 0x100);
++	writel(tegra_maincomplex_entry - get_runtime_offset(),
++	       TEGRA_EXCEPTION_VECTORS_BASE + 0x100);
  
--if ARCH_TEGRA_2x_SOC
-+config ARCH_TEGRA_2x_SOC
-+	bool
-+	select PINCTRL_TEGRA20
- 
- choice
--	prompt "Tegra 20 Board Type"
-+	prompt "select Tegra Board"
- 
- config MACH_TEGRA20_GENERIC
- 	bool "Generic DT based board"
-+	select ARCH_TEGRA_2x_SOC
- 	help
- 	  Say Y here if you are building for a generic DT based board.
- 
- config MACH_TOSHIBA_AC100
- 	bool "Toshiba AC100"
-+	select ARCH_TEGRA_2x_SOC
- 	help
- 	  Say Y here if you are using Toshiba AC100 smartbook.
- 
-@@ -71,8 +66,6 @@ endif #MACH_TEGRA20_GENERIC
- 
- source arch/arm/boards/toshiba-ac100/Kconfig
- 
--endif #ARCH_TEGRA_2x_SOC
--
- # ---------------------------------------------------------
- 
- endif
+ 	/* bring up main CPU complex */
+ 	start_cpu0_clocks();
 -- 
 1.8.3.1
 
