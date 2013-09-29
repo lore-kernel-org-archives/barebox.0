@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQDsX-0002ME-Ng
+ id 1VQDsU-0002MC-0A
  for barebox@lists.infradead.org; Sun, 29 Sep 2013 10:05:33 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 29 Sep 2013 12:05:00 +0200
-Message-Id: <1380449100-6295-10-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 29 Sep 2013 12:04:58 +0200
+Message-Id: <1380449100-6295-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,123 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 9/9] mount: use standard mountpath if path is ommitted
+Subject: [PATCH 7/9] fs: add cdev mount helpers
 To: barebox@lists.infradead.org
 
-With this a mount <devname> will mount the device to /mnt/<devname>. This
-directory is created automatically if it doesn't exist already.
+Introduce helpers to iterate over cdevs and mount them to a known
+path.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/mount.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ fs/fs.c      | 77 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/fs.h |  3 +++
+ 2 files changed, 80 insertions(+)
 
-diff --git a/commands/mount.c b/commands/mount.c
-index 96a4164..2e9d4be 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -27,6 +27,7 @@
- #include <fs.h>
- #include <errno.h>
- #include <getopt.h>
-+#include <linux/err.h>
+diff --git a/fs/fs.c b/fs/fs.c
+index 3434134..784eea4 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -32,6 +32,7 @@
+ #include <magicvar.h>
+ #include <environment.h>
+ #include <libgen.h>
++#include <block.h>
  
- static int do_mount(int argc, char *argv[])
+ void *read_file(const char *filename, size_t *size)
  {
-@@ -70,6 +71,28 @@ static int do_mount(int argc, char *argv[])
- 		return 0;
- 	}
- 
-+	if (argc == optind + 1) {
-+		struct cdev *cdev;
-+		const char *path, *devstr;
+@@ -1670,3 +1671,79 @@ ssize_t mem_write(struct cdev *cdev, const void *buf, size_t count, loff_t offse
+ 	return size;
+ }
+ EXPORT_SYMBOL(mem_write);
 +
-+		devstr = argv[optind];
++/*
++ * cdev_get_mount_path - return the path a cdev is mounted on
++ *
++ * If a cdev is mounted return the path it's mounted on, NULL
++ * otherwise.
++ */
++const char *cdev_get_mount_path(struct cdev *cdev)
++{
++	struct fs_device_d *fsdev;
 +
-+		if (!strncmp(devstr, "/dev/", 5))
-+			devstr += 5;
-+
-+		cdev = cdev_by_name(devstr);
-+		if (!cdev)
-+			return -ENOENT;
-+
-+		path = cdev_mount_default(cdev);
-+		if (IS_ERR(path))
-+			return PTR_ERR(path);
-+
-+		printf("mounted /dev/%s on %s\n", devstr, path);
-+
-+		return 0;
++	for_each_fs_device(fsdev) {
++		if (fsdev->cdev && fsdev->cdev == cdev)
++			return fsdev->path;
 +	}
 +
- 	if (argc < optind + 2)
- 		return COMMAND_ERROR_USAGE;
++	return NULL;
++}
++
++/*
++ * cdev_mount_default - mount a cdev to the default path
++ *
++ * If a cdev is already mounted return the path it's mounted on, otherwise
++ * mount it to /mnt/<cdevname> and return the path. Returns an error pointer
++ * on failure.
++ */
++const char *cdev_mount_default(struct cdev *cdev)
++{
++	const char *path;
++	char *newpath, *devpath;
++	int ret;
++
++	/*
++	 * If this cdev is already mounted somewhere use this path
++	 * instead of mounting it again to avoid corruption on the
++	 * filesystem.
++	 */
++	path = cdev_get_mount_path(cdev);
++	if (path)
++		return path;
++
++	newpath = asprintf("/mnt/%s", cdev->name);
++	make_directory(newpath);
++
++	devpath = asprintf("/dev/%s", cdev->name);
++
++	ret = mount(devpath, NULL, newpath);
++
++	free(devpath);
++
++	if (ret) {
++		free(newpath);
++		return ERR_PTR(ret);
++	}
++
++	return cdev_get_mount_path(cdev);
++}
++
++/*
++ * mount_all - iterate over block devices and mount all devices we are able to
++ */
++void mount_all(void)
++{
++	struct device_d *dev;
++	struct block_device *bdev;
++
++	for_each_device(dev)
++		device_detect(dev);
++
++	for_each_block_device(bdev) {
++		struct cdev *cdev = &bdev->cdev;
++
++		list_for_each_entry(cdev, &bdev->dev->cdevs, devices_list)
++			cdev_mount_default(cdev);
++	}
++}
+diff --git a/include/fs.h b/include/fs.h
+index 5b4ad6f..99f1689 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -194,5 +194,8 @@ void automount_print(void);
+ int unlink_recursive(const char *path, char **failedpath);
  
-@@ -93,7 +116,7 @@ static int do_mount(int argc, char *argv[])
- }
+ int fsdev_open_cdev(struct fs_device_d *fsdev);
++const char *cdev_get_mount_path(struct cdev *cdev);
++const char *cdev_mount_default(struct cdev *cdev);
++void mount_all(void);
  
- BAREBOX_CMD_HELP_START(mount)
--BAREBOX_CMD_HELP_USAGE("mount [[OPTIONS] <device> <mountpoint>]\n")
-+BAREBOX_CMD_HELP_USAGE("mount [[OPTIONS] <device> [mountpoint]]\n")
- BAREBOX_CMD_HELP_OPT("-t <type>", "specify filesystem type\n")
- BAREBOX_CMD_HELP_OPT("-a", "Mount all blockdevices.\n")
- BAREBOX_CMD_HELP_OPT("-v", "be more verbose\n")
-@@ -102,6 +125,8 @@ BAREBOX_CMD_HELP_SHORT("If no fstype is specified, try to detect it automaticall
- BAREBOX_CMD_HELP_SHORT("If no argument is given, list mounted filesystems.\n")
- BAREBOX_CMD_HELP_SHORT("With -a the mount command mounts all block devices whose filesystem\n")
- BAREBOX_CMD_HELP_SHORT("can be detected automatically to /mnt/<partname>\n")
-+BAREBOX_CMD_HELP_SHORT("If mountpoint is not given a standard mountpoint of /mnt/devname>\n")
-+BAREBOX_CMD_HELP_SHORT("is used. This directoy is created automatically if necessary.\n")
- BAREBOX_CMD_HELP_END
- 
- /**
+ #endif /* __FS_H */
 -- 
 1.8.4.rc3
 
