@@ -1,22 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQE5u-0002bb-14
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 10:19:19 +0000
-Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VQE5Y-00048j-8Q
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 12:18:56 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1VQE5Y-0006A4-6Q
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 12:18:56 +0200
-Date: Sun, 29 Sep 2013 12:18:56 +0200
+ id 1VQDsU-0002M6-0C
+ for barebox@lists.infradead.org; Sun, 29 Sep 2013 10:05:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130929101856.GW30088@pengutronix.de>
-References: <1380302397-20010-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1380302397-20010-1-git-send-email-s.hauer@pengutronix.de>
+Date: Sun, 29 Sep 2013 12:04:53 +0200
+Message-Id: <1380449100-6295-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,164 +16,281 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] introduce runtime loglevel
+Subject: [PATCH 2/9] fs: cleanup backingstore handling
 To: barebox@lists.infradead.org
 
-On Fri, Sep 27, 2013 at 07:19:57PM +0200, Sascha Hauer wrote:
-> With this the verbosity of barebox can be controlled during runtime
-> using the 'loglevel' globalvar.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> 
-> +config DEFAULT_LOGLEVEL
-> +	int "default loglevel"
-> +	default 6
+All filesystem drivers which need a backingstore device do the same
+ignoring of '/dev/' in the backingstore followed by a cdev_open. Add a
+helper function for it and let the core handle the cdev. As a side
+effect this makes sure that fsdev->cdev is also set when a device is
+mounted without the leading '/dev/' which was previously ignored
+by the mount code.
 
-Changed the default to '7'. Reason is that normally when we #define
-DEBUG in a file we see the debug messages. With a default loglevel of
-'6' we wouldn't see them even if DEBUG is defined.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/cramfs/cramfs.c    | 18 +++++++++++-------
+ fs/ext4/ext_barebox.c | 14 ++++----------
+ fs/fat/fat.c          | 17 ++++-------------
+ fs/fs.c               | 28 ++++++++++++++++++++--------
+ fs/ubifs/ubifs.c      | 16 ++++++----------
+ include/fs.h          |  2 ++
+ 6 files changed, 47 insertions(+), 48 deletions(-)
 
-Sascha
-
-> +	help
-> +	  This defines the default runtime loglevel. It can be changed using the
-> +	  global.loglevel variable. Available logelevels are:
-> +
-> +	  0    system is unusable (emerg)
-> +	  1    action must be taken immediately (alert)
-> +	  2    critical conditions (crit)
-> +	  3    error conditions (err)
-> +	  4    warning conditions (warn)
-> +	  5    normal but significant condition (notice)
-> +	  6    informational (info)
-> +	  7    debug-level messages (debug)
-> +
->  config DEBUG_INFO
->  	bool
->  	prompt "enable debug symbols"
-> diff --git a/common/console_common.c b/common/console_common.c
-> index d1b823e..18b7676 100644
-> --- a/common/console_common.c
-> +++ b/common/console_common.c
-> @@ -57,6 +57,33 @@ void console_allow_input(bool val)
->  	console_input_allow = val;
->  }
->  
-> +int barebox_loglevel = CONFIG_DEFAULT_LOGLEVEL;
-> +
-> +int pr_print(int level, const char *fmt, ...)
-> +{
-> +	va_list args;
-> +	uint i;
-> +	char printbuffer[CFG_PBSIZE];
-> +
-> +	if (level > barebox_loglevel)
-> +		return 0;
-> +
-> +	va_start(args, fmt);
-> +	i = vsprintf(printbuffer, fmt, args);
-> +	va_end(args);
-> +
-> +	/* Print the string */
-> +	puts(printbuffer);
-> +
-> +	return i;
-> +}
-> +
-> +static int loglevel_init(void)
-> +{
-> +	return globalvar_add_simple_int("loglevel", &barebox_loglevel, "%d");
-> +}
-> +device_initcall(loglevel_init);
-> +
->  int printf(const char *fmt, ...)
->  {
->  	va_list args;
-> diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-> index 16b7f06..e587e3a 100644
-> --- a/drivers/base/driver.c
-> +++ b/drivers/base/driver.c
-> @@ -26,6 +26,7 @@
->  #include <command.h>
->  #include <driver.h>
->  #include <malloc.h>
-> +#include <console.h>
->  #include <linux/ctype.h>
->  #include <errno.h>
->  #include <fs.h>
-> @@ -370,11 +371,14 @@ const char *dev_id(const struct device_d *dev)
->  	return buf;
->  }
->  
-> -int dev_printf(const struct device_d *dev, const char *format, ...)
-> +int dev_printf(int level, const struct device_d *dev, const char *format, ...)
->  {
->  	va_list args;
->  	int ret = 0;
->  
-> +	if (level > barebox_loglevel)
-> +		return 0;
-> +
->  	if (dev->driver && dev->driver->name)
->  		ret += printf("%s ", dev->driver->name);
->  
-> diff --git a/include/console.h b/include/console.h
-> index e94c5ae..393579b 100644
-> --- a/include/console.h
-> +++ b/include/console.h
-> @@ -57,4 +57,6 @@ extern struct list_head console_list;
->  bool console_is_input_allow(void);
->  void console_allow_input(bool val);
->  
-> +extern int barebox_loglevel;
-> +
->  #endif
-> diff --git a/include/printk.h b/include/printk.h
-> index 86bf208..f550f07 100644
-> --- a/include/printk.h
-> +++ b/include/printk.h
-> @@ -18,12 +18,15 @@
->  
->  /* debugging and troubleshooting/diagnostic helpers. */
->  
-> -int dev_printf(const struct device_d *dev, const char *format, ...)
-> +int pr_print(int level, const char *format, ...)
->  	__attribute__ ((format(__printf__, 2, 3)));
->  
-> +int dev_printf(int level, const struct device_d *dev, const char *format, ...)
-> +	__attribute__ ((format(__printf__, 3, 4)));
-> +
->  #define __dev_printf(level, dev, format, args...) \
->  	({	\
-> -		(level) <= LOGLEVEL ? dev_printf((dev), (format), ##args) : 0; \
-> +		(level) <= LOGLEVEL ? dev_printf((level), (dev), (format), ##args) : 0; \
->  	 })
->  
->  
-> @@ -46,7 +49,7 @@ int dev_printf(const struct device_d *dev, const char *format, ...)
->  
->  #define __pr_printk(level, format, args...) \
->  	({	\
-> -		(level) <= LOGLEVEL ? printk((format), ##args) : 0; \
-> +		(level) <= LOGLEVEL ? pr_print((level), (format), ##args) : 0; \
->  	 })
->  
->  #ifndef pr_fmt
-> -- 
-> 1.8.4.rc3
-> 
-> 
-
+diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
+index 99f6d49..8218fcf 100644
+--- a/fs/cramfs/cramfs.c
++++ b/fs/cramfs/cramfs.c
+@@ -422,29 +422,33 @@ static int cramfs_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev;
+ 	struct cramfs_priv *priv;
++	int ret;
+ 
+ 	fsdev = dev_to_fs_device(dev);
+ 
+ 	priv = xmalloc(sizeof(struct cramfs_priv));
+ 	dev->priv = priv;
+ 
+-	if (strncmp(fsdev->backingstore, "/dev/", 5))
+-		return -ENODEV;
++	ret = fsdev_open_cdev(fsdev);
++	if (ret)
++		goto err_out;
+ 
+-	priv->cdev = cdev_by_name(fsdev->backingstore + 5);
+-	if (!priv->cdev)
+-		return -ENODEV;
++	priv->cdev = fsdev->cdev;
+ 
+ 	if (cramfs_read_super(priv)) {
+ 		dev_info(dev, "no valid cramfs found\n");
+-		free(priv);
+-		return -EINVAL;
++		ret =  -EINVAL;
+ 	}
+ 
+ 	priv->curr_base = -1;
+ 
+ 	cramfs_uncompress_init ();
+ 	return 0;
++
++err_out:
++	free(priv);
++
++	return ret;
+ }
+ 
+ static void cramfs_remove(struct device_d *dev)
+diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
+index adc8f75..69a7723 100644
+--- a/fs/ext4/ext_barebox.c
++++ b/fs/ext4/ext_barebox.c
+@@ -225,7 +225,6 @@ static int ext_readlink(struct device_d *dev, const char *pathname,
+ static int ext_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+-	char *backingstore = fsdev->backingstore;
+ 	int ret;
+ 	struct ext_filesystem *fs;
+ 
+@@ -234,14 +233,11 @@ static int ext_probe(struct device_d *dev)
+ 	dev->priv = fs;
+ 	fs->dev = dev;
+ 
+-	if (!strncmp(backingstore , "/dev/", 5))
+-		backingstore += 5;
+-
+-	fs->cdev = cdev_open(backingstore, O_RDWR);
+-	if (!fs->cdev) {
+-		ret = -ENOENT;
++	ret = fsdev_open_cdev(fsdev);
++	if (ret)
+ 		goto err_open;
+-	}
++
++	fs->cdev = fsdev->cdev;
+ 
+ 	ret = ext4fs_mount(fs);
+ 	if (ret)
+@@ -250,7 +246,6 @@ static int ext_probe(struct device_d *dev)
+ 	return 0;
+ 
+ err_mount:
+-	cdev_close(fs->cdev);
+ err_open:
+ 	free(fs);
+ 
+@@ -262,7 +257,6 @@ static void ext_remove(struct device_d *dev)
+ 	struct ext_filesystem *fs = dev->priv;
+ 
+ 	ext4fs_umount(fs);
+-	cdev_close(fs->cdev);
+ 	free(fs);
+ }
+ 
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index 15879c4..e65ef58 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -373,19 +373,15 @@ static int fat_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+ 	struct fat_priv *priv = xzalloc(sizeof(struct fat_priv));
+-	char *backingstore = fsdev->backingstore;
+ 	int ret;
+ 
+ 	dev->priv = priv;
+ 
+-	if (!strncmp(backingstore , "/dev/", 5))
+-		backingstore += 5;
+-
+-	priv->cdev = cdev_open(backingstore, O_RDWR);
+-	if (!priv->cdev) {
+-		ret = -ENOENT;
++	ret = fsdev_open_cdev(fsdev);
++	if (ret)
+ 		goto err_open;
+-	}
++
++	priv->cdev = fsdev->cdev;
+ 
+ 	priv->fat.userdata = priv;
+ 	ret = f_mount(&priv->fat);
+@@ -395,7 +391,6 @@ static int fat_probe(struct device_d *dev)
+ 	return 0;
+ 
+ err_mount:
+-	cdev_close(priv->cdev);
+ err_open:
+ 	free(priv);
+ 
+@@ -404,10 +399,6 @@ err_open:
+ 
+ static void fat_remove(struct device_d *dev)
+ {
+-	struct fat_priv *priv = dev->priv;
+-
+-	cdev_close(priv->cdev);
+-
+ 	free(dev->priv);
+ }
+ 
+diff --git a/fs/fs.c b/fs/fs.c
+index d913a50..4618b4f 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1231,6 +1231,9 @@ static void fs_remove(struct device_d *dev)
+ 	if (fsdev == fs_dev_root)
+ 		fs_dev_root = NULL;
+ 
++	if (fsdev->cdev)
++		cdev_close(fsdev->cdev);
++
+ 	free(fsdev->backingstore);
+ 	free(fsdev);
+ }
+@@ -1279,6 +1282,23 @@ static const char *detect_fs(const char *filename)
+ 	return NULL;
+ }
+ 
++int fsdev_open_cdev(struct fs_device_d *fsdev)
++{
++	const char *backingstore = fsdev->backingstore;
++
++	if (!strncmp(backingstore , "/dev/", 5))
++		backingstore += 5;
++
++	fsdev->cdev = cdev_open(backingstore, O_RDWR);
++	if (!fsdev->cdev)
++		return -EINVAL;
++
++	fsdev->dev.parent = fsdev->cdev->dev;
++	fsdev->parent_device = fsdev->cdev->dev;
++
++	return 0;
++}
++
+ /*
+  * Mount a device to a directory.
+  * We do this by registering a new device on which the filesystem
+@@ -1323,14 +1343,6 @@ int mount(const char *device, const char *fsname, const char *_path)
+ 	fsdev->path = xstrdup(path);
+ 	fsdev->dev.bus = &fs_bus;
+ 
+-	if (!strncmp(device, "/dev/", 5))
+-		fsdev->cdev = cdev_by_name(device + 5);
+-
+-	if (fsdev->cdev) {
+-		fsdev->dev.parent = fsdev->cdev->dev;
+-		fsdev->parent_device = fsdev->cdev->dev;
+-	}
+-
+ 	ret = register_device(&fsdev->dev);
+ 	if (ret)
+ 		goto err_register;
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index 9df8dc5..dfa6107 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -553,25 +553,22 @@ static int ubifs_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+ 	struct ubifs_priv *priv = xzalloc(sizeof(struct ubifs_priv));
+-	char *backingstore = fsdev->backingstore;
+ 	int ret;
+ 
+ 	dev->priv = priv;
+ 
+-	if (!strncmp(backingstore , "/dev/", 5))
+-		backingstore += 5;
+-
+-	priv->cdev = cdev_open(backingstore, O_RDONLY);
+-	if (!priv->cdev) {
+-		ret = -ENOENT;
++	ret = fsdev_open_cdev(fsdev);
++	if (ret)
+ 		goto err_free;
+-	}
++
++	priv->cdev = fsdev->cdev;
+ 
+ 	priv->ubi = ubi_open_volume_cdev(priv->cdev, UBI_READONLY);
+ 	if (IS_ERR(priv->ubi)) {
+ 		dev_err(dev, "failed to open ubi volume: %s\n",
+ 				strerror(-PTR_ERR(priv->ubi)));
+-		return PTR_ERR(priv->ubi);
++		ret = PTR_ERR(priv->ubi);
++		goto err_free;
+ 	}
+ 
+ 	priv->sb = ubifs_get_super(priv->ubi, 0);
+@@ -596,7 +593,6 @@ static void ubifs_remove(struct device_d *dev)
+ 
+ 	ubifs_umount(c);
+ 	ubi_close_volume(priv->ubi);
+-	cdev_close(priv->cdev);
+ 
+ 	free(c);
+ 	free(sb);
+diff --git a/include/fs.h b/include/fs.h
+index 22c0746..c6c0f0e 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -193,4 +193,6 @@ void automount_print(void);
+ 
+ int unlink_recursive(const char *path, char **failedpath);
+ 
++int fsdev_open_cdev(struct fs_device_d *fsdev);
++
+ #endif /* __FS_H */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
