@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQN7n-00023X-5F
+ id 1VQN7n-00023V-5I
  for barebox@lists.infradead.org; Sun, 29 Sep 2013 19:57:51 +0000
 Received: from tellur.localdomain (p54831980.dip0.t-ipconnect.de
- [84.131.25.128]) by lynxeye.de (Postfix) with ESMTPA id 5DE6726C2004
- for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 21:56:11 +0200 (CEST)
+ [84.131.25.128]) by lynxeye.de (Postfix) with ESMTPA id 2D12C26C2004
+ for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 21:56:08 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 29 Sep 2013 21:59:35 +0200
-Message-Id: <1380484776-32266-8-git-send-email-dev@lynxeye.de>
+Date: Sun, 29 Sep 2013 21:59:33 +0200
+Message-Id: <1380484776-32266-6-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1380484776-32266-1-git-send-email-dev@lynxeye.de>
 References: <1380484776-32266-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,45 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] tegra: ac100: delete custom Kconfig
+Subject: [PATCH 5/8] tegra: mandate relocatable binary
 To: barebox@lists.infradead.org
 
-Now that tegra arch is both DT only and forced relocatable
-there is nothing interesting left in here.
+Allows us to drop some silly code workaround.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/toshiba-ac100/Kconfig | 7 -------
- arch/arm/mach-tegra/Kconfig           | 2 --
- 2 files changed, 9 deletions(-)
- delete mode 100644 arch/arm/boards/toshiba-ac100/Kconfig
+ arch/arm/Kconfig                             | 1 +
+ arch/arm/mach-tegra/Kconfig                  | 8 ++++----
+ arch/arm/mach-tegra/tegra_maincomplex_init.c | 8 +-------
+ 3 files changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/boards/toshiba-ac100/Kconfig b/arch/arm/boards/toshiba-ac100/Kconfig
-deleted file mode 100644
-index 1cc13f0..0000000
---- a/arch/arm/boards/toshiba-ac100/Kconfig
-+++ /dev/null
-@@ -1,7 +0,0 @@
--if MACH_TOSHIBA_AC100
--
--config ARCH_TEXT_BASE
--	hex
--	default 0x01000000
--
--endif
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 398bc90..2ad8f6a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -173,6 +173,7 @@ config ARCH_TEGRA
+ 	select GPIO_TEGRA
+ 	select OFDEVICE
+ 	select OFTREE
++	select RELOCATABLE
+ 
+ config ARCH_ZYNQ
+ 	bool "Xilinx Zynq-based boards"
 diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index 90c0c0f..4363bce 100644
+index e6d53bc..4164f56 100644
 --- a/arch/arm/mach-tegra/Kconfig
 +++ b/arch/arm/mach-tegra/Kconfig
-@@ -64,8 +64,6 @@ if MACH_TEGRA20_GENERIC
+@@ -1,5 +1,9 @@
+ if ARCH_TEGRA
  
- endif #MACH_TEGRA20_GENERIC
++config ARCH_TEXT_BASE
++	hex
++	default 0x0
++
+ choice
+ 	prompt "Tegra processor type"
  
--source arch/arm/boards/toshiba-ac100/Kconfig
+@@ -46,10 +50,6 @@ endchoice
+ 
+ if ARCH_TEGRA_2x_SOC
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x00108000
 -
- # ---------------------------------------------------------
+ choice
+ 	prompt "Tegra 20 Board Type"
  
- endif
+diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+index 343edd6..c485760 100644
+--- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
++++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+@@ -36,11 +36,5 @@ void tegra_maincomplex_entry(void)
+ 		unreachable();
+ 	}
+ 
+-	/*
+-	 * The standard load address for Tegra systems is 0x10800 which means
+-	 * the barebox binary will always be below the malloc area for all
+-	 * reasonable malloc area sizes. We offset the RAM base address by 8MB
+-	 * to pretend barebox is in another bank.
+-	 */
+-	barebox_arm_entry(rambase + SZ_8M, ramsize - SZ_8M, 0);
++	barebox_arm_entry(rambase, ramsize, 0);
+ }
 -- 
 1.8.3.1
 
