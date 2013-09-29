@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
+Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQG5P-0004PE-H0
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 12:26:56 +0000
-Received: by mail-ee0-f46.google.com with SMTP id c13so2084379eek.5
- for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 05:26:32 -0700 (PDT)
-Message-ID: <1380457589.30104.5.camel@lolumad>
+ id 1VQG9E-0004S7-Fc
+ for barebox@lists.infradead.org; Sun, 29 Sep 2013 12:30:53 +0000
+Received: by mail-ee0-f42.google.com with SMTP id b45so2109097eek.29
+ for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 05:30:28 -0700 (PDT)
+Message-ID: <1380457825.30104.8.camel@lolumad>
 From: Rostislav Lisovy <lisovy@gmail.com>
-Date: Sun, 29 Sep 2013 14:26:29 +0200
-In-Reply-To: <20130927065434.GA32444@ns203013.ovh.net>
+Date: Sun, 29 Sep 2013 14:30:25 +0200
+In-Reply-To: <20130927080557.GK30088@pengutronix.de>
 References: <1380227429.10759.1.camel@lolumad>
- <20130927065434.GA32444@ns203013.ovh.net>
+ <20130927080557.GK30088@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,23 +25,22 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Wrong barebox_image_size value
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Thank you for your help;
-The problem is really the relocatable binary.
-I did not use freescale_mx53_smd_defconfig because I wanted to do it
-"may way" (which is wrong in this case).
-If I unset config options RELOCATABLE and PBL_RELOCATABLE (or unset
-PBL_IMAGE), the proper size value is written to the image.
+Hello Sascha;
+You are right; The problem is I did not use the defconfig, thus building
+relocatable binary. After using freescale_mx53_smd_defconfig, proper
+size value is stored in the image.
+Thank you for the help;
 
-Best regards;
 Rostislav Lisovy
 
 
-On Fri, 2013-09-27 at 08:54 +0200, Jean-Christophe PLAGNIOL-VILLARD
-wrote: 
-> On 22:30 Thu 26 Sep     , Rostislav Lisovy wrote:
+On Fri, 2013-09-27 at 10:05 +0200, Sascha Hauer wrote: 
+> Hi Rostislav,
+> 
+> On Thu, Sep 26, 2013 at 10:30:29PM +0200, Rostislav Lisovy wrote:
 > > Dear barebox developers and users;
 > > I am compiling barebox for freescale-imx53-smd board. My issue is,
 > > that the image does not contain the correct size record.
@@ -61,30 +60,23 @@ wrote:
 > > 0000024 0fff 0000
 > > where this 0xfff is the "+4095" added to round the value. (I am pretty
 > > sure the offset into the image used by hexdump is correct).
+> 
+> Probably you are not building the defconfig, right? Compiling the
+> defconfig gives me the correct value and it's at offset 0x424 in the
+> image, not at 0x24.
+> Maybe you are compiling a relocatable image as Jean-Christophe
+> mentioned, then you would see this problem.
+> 
 > > 
 > > The barebox version I am using most recent git, branch master.
 > > The compiler (maybe here is the point of failure) is
 > > arm-cortex_a8-linux-gnueabi-gcc (crosstool-NG hg+default-86a8d1d467c8)
 > > 4.4.6.
 > 
-> do you compile a relocation binary?
+> That should be ok.
 > 
-> if yes the barebox size is 0 for the linker script
+> Sascha
 > 
-> I send a patch for the -next to start to fix the issue but I think we need
-> other fixup
-> 
-> Best Regards,
-> J.
-> > 
-> > I will appreciate any help;
-> > Rostislav Lisovy
-> > 
-> > 
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
 
 
 
