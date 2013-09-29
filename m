@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-f41.google.com ([209.85.160.41])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQDsU-0002M8-0G
- for barebox@lists.infradead.org; Sun, 29 Sep 2013 10:05:29 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 29 Sep 2013 12:04:55 +0200
-Message-Id: <1380449100-6295-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
-References: <1380449100-6295-1-git-send-email-s.hauer@pengutronix.de>
+ id 1VQFjz-000482-4Q
+ for barebox@lists.infradead.org; Sun, 29 Sep 2013 12:04:47 +0000
+Received: by mail-pb0-f41.google.com with SMTP id rp2so4420530pbb.14
+ for <barebox@lists.infradead.org>; Sun, 29 Sep 2013 05:04:21 -0700 (PDT)
+From: Yi Qingliang <niqingliang2003@gmail.com>
+Date: Sun, 29 Sep 2013 19:57:39 +0800
+Message-ID: <5705070.dCeIF7ZgD5@yiqingliang-pc>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,40 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/9] fs: use bus_for_each_driver
+Subject: strtoull_suffix
 To: barebox@lists.infradead.org
 
-Instead of using for_each_driver and testing for the bus type.
+the strtoull_suffix can't identify 'g' and 'm', but the 'memparse' in kernel 
+can, do we should follow the kernel? 
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fs.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+indeed, i have problem about parsing following kernel parameter: 
+nand_parts="512k(bl),512k(env),5m(mk),5m(sk),-(ubifs)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 4618b4f..3434134 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1269,10 +1269,7 @@ static const char *detect_fs(const char *filename)
- 	if (type == filetype_unknown)
- 		return NULL;
- 
--	for_each_driver(drv) {
--		if (drv->bus != &fs_bus)
--			continue;
--
-+	bus_for_each_driver(&fs_bus, drv) {
- 		fdrv = drv_to_fs_driver(drv);
- 
- 		if (type == fdrv->type)
+  37         switch (*end) {
+  38         case 'G':
+  39                 val *= 1024;
+  40         case 'M':
+  41                 val *= 1024;
+  42         case 'k':
+  43         case 'K':
+  44                 val *= 1024;
+  45                 end++;
+  46         default:
+  47                 break;
+  48         }
+
+
 -- 
-1.8.4.rc3
-
+Nanjing Jilong
+Yi Qingliang
+niqingliang2003@gmail.com
 
 _______________________________________________
 barebox mailing list
