@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQa0q-00063P-7c
- for barebox@lists.infradead.org; Mon, 30 Sep 2013 09:43:40 +0000
+ id 1VQa0q-00063Q-7Y
+ for barebox@lists.infradead.org; Mon, 30 Sep 2013 09:43:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 30 Sep 2013 11:43:07 +0200
-Message-Id: <1380534188-1734-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 30 Sep 2013 11:43:08 +0200
+Message-Id: <1380534188-1734-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380534188-1734-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380534188-1734-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,368 +21,112 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] Implement bootloader spec support for barebox
+Subject: [PATCH 4/4] add kernel-install tool for bootloader Spec
 To: barebox@lists.infradead.org
 
-The Bootloader Specification describes a way how kernels can
-be installed on devices and how they can be started by the bootloader.
-
-The bootloader spec is currently supported by (x86) gummiboot and
-by systemd which provides a kernel-install script. With the bootloader
-spec it's possible for the Operating system to install a new kernel
-without knowing about the bootloader and for the bootloader it's possible
-to discover and start Operating Systems on a media without being
-configured.
-
-For more details about the spec see:
-
-http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-
-This patch adds barebox support for the spec. It enhances the 'boot'
-command so that not only boot script names can be given, but also
-devices containing bootloader spec entries. With this it's possible
-to call the 'boot' command like: 'boot sd emmc net'. It would then
-first look for bootloader spec entries on the (removable) sd card,
-then, is nothing is found, on the internal emmc and if still
-unsuccessful would call the 'net' bootscript.
-
-The bootloader Spec currently doesn't specify which entry should be
-default if multiple entries are found on a single device. Therefore
-barebox currently has two extensions of the spec. The $BOOT diretory
-can contain a file named 'default'. If present, the content of the
-file is treated as a filename under $BOOT/loader/entries/ which is
-used as default. Similarly if a file named 'once' is present, the
-entry is started once and the file is removed afterwards. This is
-useful for testing if a newly installed kernel works before making
-it the default.
-
-As on ARM and other Architectures a devicetree has to be specified
-for the kernel, the 'devicetree' property is used to specify a
-devicetree. Like 'kernel' and 'initrd' this also contains a pth
-relative to $BOOT.
+This adds a tool for installing kernels according to the bootloader
+spec. systemd already has a similar tool, but it is limited to installing
+kernels on the currently running system. The barebox kernel-install
+tool instead can also be used to install kernels on removable media on a
+development host for cross development. It is compiled in two variants,
+as 'kernel-install' for the host and as 'kernel-install-target' using
+$CROSS_COMPILE.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/boot.c  | 172 ++++++++++++++++---
- common/Kconfig   |  14 ++
- common/Makefile  |   2 +
- common/blspec.c  | 516 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/blspec.h |  92 ++++++++++
- 5 files changed, 771 insertions(+), 25 deletions(-)
- create mode 100644 common/blspec.c
- create mode 100644 include/blspec.h
+ scripts/Makefile         |    2 +
+ scripts/kernel-install.c | 1399 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 1401 insertions(+)
+ create mode 100644 scripts/kernel-install.c
 
-diff --git a/commands/boot.c b/commands/boot.c
-index 93bf148..7850805 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -15,51 +15,155 @@
- #include <globalvar.h>
- #include <magicvar.h>
- #include <command.h>
-+#include <readkey.h>
- #include <common.h>
- #include <getopt.h>
-+#include <blspec.h>
- #include <libgen.h>
- #include <malloc.h>
- #include <boot.h>
-+#include <menu.h>
- #include <fs.h>
-+#include <complete.h>
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 2c43f66..a5cdf30 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -8,6 +8,7 @@ hostprogs-y                      += bin2c
+ hostprogs-y                      += mkimage
+ hostprogs-y                      += fix_size
+ hostprogs-y                      += bareboxenv
++hostprogs-y                      += kernel-install
+ hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+ hostprogs-$(CONFIG_ARCH_MVEBU)   += kwbimage kwboot
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+@@ -24,6 +25,7 @@ subdir-$(CONFIG_X86)		+= setupmbr
+ subdir-$(CONFIG_DTC)		+= dtc
  
- #include <linux/stat.h>
+ targetprogs-$(CONFIG_BAREBOXENV_TARGET) += bareboxenv-target
++targetprogs-y += kernel-install-target
  
-+static int boot_script(char *path);
-+
- static int verbose;
- static int dryrun;
- 
--static void bootsources_list(void)
-+static void bootsource_action(struct menu *m, struct menu_entry *me)
-+{
-+	struct blspec_entry *be = container_of(me, struct blspec_entry, me);
-+	int ret;
-+
-+	if (be->scriptpath) {
-+		ret = boot_script(be->scriptpath);
-+	} else {
-+		if (IS_ENABLED(CONFIG_BLSPEC))
-+			ret = blspec_boot(be, 0, 0);
-+		else
-+			ret = -ENOSYS;
-+	}
-+
-+	if (ret)
-+		printf("Booting failed with: %s\n", strerror(-ret));
-+
-+	printf("Press any key to continue\n");
-+
-+	read_key();
-+}
-+
-+static int bootsources_menu_env_entries(struct blspec *blspec)
- {
-+	const char *path = "/env/boot", *title;
- 	DIR *dir;
- 	struct dirent *d;
--	const char *path = "/env/boot";
-+	struct blspec_entry *be;
-+	char *cmd;
- 
- 	dir = opendir(path);
--	if (!dir) {
--		printf("cannot open %s: %s\n", path, strerror(-errno));
--		return;
--	}
--
--	printf("Bootsources: ");
-+	if (!dir)
-+		return -errno;
- 
- 	while ((d = readdir(dir))) {
-+
- 		if (*d->d_name == '.')
- 			continue;
- 
--		printf("%s ", d->d_name);
--	}
-+		be = blspec_entry_alloc(blspec);
-+		be->me.type = MENU_ENTRY_NORMAL;
-+		be->scriptpath = asprintf("/env/boot/%s", d->d_name);
-+
-+		cmd = asprintf(". %s menu", be->scriptpath);
-+		setenv("title", "");
-+		run_command(cmd, 0);
-+		free(cmd);
-+		title = getenv("title");
- 
--	printf("\n");
-+		if (title)
-+			be->me.display = xstrdup(title);
-+		else
-+			be->me.display = xstrdup(d->d_name);
-+	}
- 
- 	closedir(dir);
-+
-+	return 0;
- }
- 
--static const char *getenv_or_null(const char *var)
-+static struct blspec *bootentries_collect(void)
- {
--	const char *val = getenv(var);
-+	struct blspec *blspec;
-+
-+	blspec = blspec_alloc();
-+	blspec->menu->display = asprintf("boot");
-+	bootsources_menu_env_entries(blspec);
-+	if (IS_ENABLED(CONFIG_BLSPEC))
-+		blspec_scan_devices(blspec);
-+	return blspec;
-+}
- 
--	if (val && *val)
--		return val;
--	return NULL;
-+static void bootsources_menu(void)
-+{
-+	struct blspec *blspec = NULL;
-+	struct blspec_entry *entry;
-+	struct menu_entry *back_entry;
-+
-+	if (!IS_ENABLED(CONFIG_MENU)) {
-+		printf("no menu support available\n");
-+		return;
-+	}
-+
-+	blspec = bootentries_collect();
-+
-+	blspec_for_each_entry(blspec, entry) {
-+		entry->me.action = bootsource_action;
-+		menu_add_entry(blspec->menu, &entry->me);
-+	}
-+
-+	back_entry = xzalloc(sizeof(*back_entry));
-+	back_entry->display = "back";
-+	back_entry->type = MENU_ENTRY_NORMAL;
-+	back_entry->non_re_ent = 1;
-+	menu_add_entry(blspec->menu, back_entry);
-+
-+	menu_show(blspec->menu);
-+
-+	free(back_entry);
-+
-+	blspec_free(blspec);
-+}
-+
-+static void bootsources_list(void)
-+{
-+	struct blspec *blspec;
-+	struct blspec_entry *entry;
-+
-+	blspec = bootentries_collect();
-+
-+	printf("\nBootscripts:\n\n");
-+	printf("%-40s   %-20s\n", "name", "title");
-+	printf("%-40s   %-20s\n", "----", "-----");
-+
-+	blspec_for_each_entry(blspec, entry) {
-+		if (entry->scriptpath)
-+			printf("%-40s   %s\n", basename(entry->scriptpath), entry->me.display);
-+	}
-+
-+	if (!IS_ENABLED(CONFIG_BLSPEC))
-+		return;
-+
-+	printf("\nBootloader spec entries:\n\n");
-+	printf("%-20s %-20s  %s\n", "device", "hwdevice", "title");
-+	printf("%-20s %-20s  %s\n", "------", "--------", "-----");
-+
-+	blspec_for_each_entry(blspec, entry)
-+		if (!entry->scriptpath)
-+			printf("%s\n", entry->me.display);
-+
-+	blspec_free(blspec);
- }
- 
- /*
-@@ -67,8 +171,11 @@ static const char *getenv_or_null(const char *var)
-  */
- static int boot_script(char *path)
- {
--	struct bootm_data data = {};
- 	int ret;
-+	struct bootm_data data = {
-+		.os_address = UIMAGE_SOME_ADDRESS,
-+		.initrd_address = UIMAGE_SOME_ADDRESS,
-+	};
- 
- 	printf("booting %s...\n", basename(path));
- 
-@@ -83,11 +190,11 @@ static int boot_script(char *path)
- 
- 	data.initrd_address = UIMAGE_INVALID_ADDRESS;
- 	data.os_address = UIMAGE_SOME_ADDRESS;
--	data.oftree_file = getenv_or_null("global.bootm.oftree");
--	data.os_file = getenv_or_null("global.bootm.image");
--	data.os_address = getenv_loadaddr("global.bootm.image.loadaddr");
--	data.initrd_address = getenv_loadaddr("global.bootm.initrd.loadaddr");
--	data.initrd_file = getenv_or_null("global.bootm.initrd");
-+	data.oftree_file = getenv_nonempty("global.bootm.oftree");
-+	data.os_file = getenv_nonempty("global.bootm.image");
-+	getenv_ul("global.bootm.image.loadaddr", &data.os_address);
-+	getenv_ul("global.bootm.initrd.loadaddr", &data.initrd_address);
-+	data.initrd_file = getenv_nonempty("global.bootm.initrd");
- 	data.verbose = verbose;
- 	data.dryrun = dryrun;
- 
-@@ -118,7 +225,13 @@ static int boot(const char *name)
- 
- 	ret = stat(path, &s);
- 	if (ret) {
--		pr_err("%s: %s\n", path, strerror(-ret));
-+		if (!IS_ENABLED(CONFIG_BLSPEC)) {
-+			pr_err("%s: %s\n", path, strerror(-ret));
-+			goto out;
-+		}
-+
-+		ret = blspec_boot_hwdevice(name, verbose, dryrun);
-+		pr_err("%s: %s\n", name, strerror(-ret));
- 		goto out;
- 	}
- 
-@@ -173,12 +286,12 @@ static int do_boot(int argc, char *argv[])
- {
- 	const char *sources = NULL;
- 	char *source, *freep;
--	int opt, ret = 0, do_list = 0;
-+	int opt, ret = 0, do_list = 0, do_menu = 0;
- 
- 	verbose = 0;
- 	dryrun = 0;
- 
--	while ((opt = getopt(argc, argv, "vld")) > 0) {
-+	while ((opt = getopt(argc, argv, "vldm")) > 0) {
- 		switch (opt) {
- 		case 'v':
- 			verbose++;
-@@ -189,6 +302,9 @@ static int do_boot(int argc, char *argv[])
- 		case 'd':
- 			dryrun = 1;
- 			break;
-+		case 'm':
-+			do_menu = 1;
-+			break;
- 		}
- 	}
- 
-@@ -197,6 +313,11 @@ static int do_boot(int argc, char *argv[])
- 		return 0;
- 	}
- 
-+	if (do_menu) {
-+		bootsources_menu();
-+		return 0;
-+	}
-+
- 	if (optind < argc) {
- 		while (optind < argc) {
- 			source = argv[optind];
-@@ -247,6 +368,7 @@ BAREBOX_CMD_HELP_SHORT("\nOptions:\n")
- BAREBOX_CMD_HELP_OPT  ("-v","Increase verbosity\n")
- BAREBOX_CMD_HELP_OPT  ("-d","Dryrun. See what happens but do no actually boot\n")
- BAREBOX_CMD_HELP_OPT  ("-l","List available boot sources\n")
-+BAREBOX_CMD_HELP_OPT  ("-m","Show a menu with boot options\n")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(boot)
-diff --git a/common/Kconfig b/common/Kconfig
-index 13419dc..dd60ec9 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -437,6 +437,20 @@ config TIMESTAMP
- 	  commands like bootm or iminfo. This option is
- 	  automatically enabled when you select CFG_CMD_DATE .
- 
-+config BLSPEC
-+	depends on BLOCK
-+	select OFTREE
-+	select FLEXIBLE_BOOTARGS
-+	bool
-+	prompt "Support bootloader spec"
-+	help
-+	  Enable this to let barebox support the Freedesktop bootloader spec,
-+	  see: http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-+	  The bootloader spec is a standard interface between the bootloader
-+	  and the kernel. It allows the bootloader to discover boot options
-+	  on a device and it allows the Operating System to install / update
-+	  kernels.
-+
- choice
- 	prompt "console support"
- 	default CONSOLE_FULL
-diff --git a/common/Makefile b/common/Makefile
-index 9a9e3fe..c2d78aa 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -12,6 +12,8 @@ obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
- obj-$(CONFIG_CMD_LOADS)		+= s_record.o
- obj-$(CONFIG_OFTREE)		+= oftree.o
- 
-+obj-y += bootm.o
-+obj-$(CONFIG_BLSPEC) += blspec.o
- obj-y += memory.o
- obj-$(CONFIG_DDR_SPD)  += ddr_spd.o
- obj-y += memory_display.o
-diff --git a/common/blspec.c b/common/blspec.c
+ # Let clean descend into subdirs
+ subdir-	+= basic kconfig setupmbr
+diff --git a/scripts/kernel-install.c b/scripts/kernel-install.c
 new file mode 100644
-index 0000000..f306ada
+index 0000000..ed9f8bd
 --- /dev/null
-+++ b/common/blspec.c
-@@ -0,0 +1,516 @@
++++ b/scripts/kernel-install.c
+@@ -0,0 +1,1399 @@
 +/*
++ * kernel-install - install a kernel according to the bootloader spec:
++ * http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
++ *
++ * Copyright (C) 2013 Sascha Hauer, Pengutronix <s.hauer@pengutronix.de>
++ *
++ * This tool is useful for installing kernels in a bootloader spec
++ * conformant way. It can be used to install kernels for the currently
++ * running system, but also to install kernels for another system which
++ * is available as a removable media such as an SD card.
++ *
++ * Some examples:
++ *
++ * kernel-install --add --kernel-version=3.11 --kernel=/somewhere/zImage \
++ *		--title "Linux-3.11"
++ *
++ * This is the simplest example. It assumes we want to install a kernel for the
++ * currently running system. Usually the kernel should get some commandline
++ * options which can be passed using the -o option. Devicetree and initrd can be
++ * specified with --devicetree=<file> or --initrd=<file>.
++ *
++ * For preparing boot media from another host (or the same host, but another
++ * rootfs) things get slightly more complicated. Apart from the image files
++ * kernel-install generally needs a machine-id (which is, in native mode, read
++ * from /etc/machine-id) and access to /boot of newly installed entry.
++ * /boot can be specified in different ways:
++ *
++ * --boot=/boot             - specify the path where /boot is mounted
++ * --boot=/dev/sdd1         - specify the partition which contains /boot.
++ *                            It is mounted using pmount or mount
++ * --device=/dev/sdd        - If this option is given kernel-install tries
++ *                            to find /boot on this device using the mechanisms
++ *                            described in the bootloader spec.
++ *
++ * machine-id can be specified with:
++ * --machine-id=<machine-id>    - explicitly specify a machine-id
++ * --root=/root or
++ * --root=/dev/sdd2             - specify where the root of the installed system
++ *                                can be found. The machine id is then taken
++ *                                from /etc/machine-id from this filesystem/path
++ *
++ * Optionally kernel-install can automatically generate a root=PARTUUID= kernel
++ * parameter for the kernel to find its root filesystem. This is done with the
++ * --add-root-option parameter. Additionally the --device= parameter must be
++ * specified so that kernel-install can determine the UUID of the device.
++ *
++ * Now for an example using most of the available features:
++ *
++ * kernel-install --device=/dev/sdd --root=/dev/sdd2 --title="Linux-3.12" \
++ *	--kernel-version="3.12" --kernel=/some/zImage \
++ *	--devicetree=/some/devicetree --initrd=/some/initrd \
++ *	--add-root-option --options="console=ttyS0,115200"
++ *
++ * This would install a kernel on /dev/sdd. The /boot partition would be found
++ * automatically, the root partition has to be specified due to the usage of
++ * --add-root-option
++ *
++ * BUGS:
++ * - Currently only DOS partition tables are supported. There's no support
++ *   for GPT yet.
++ *
++ *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
 + * published by the Free Software Foundation; either version 2 of
@@ -394,76 +138,97 @@ index 0000000..f306ada
 + * GNU General Public License for more details.
 + *
 + */
-+#include <environment.h>
-+#include <globalvar.h>
-+#include <readkey.h>
-+#include <common.h>
-+#include <driver.h>
-+#include <blspec.h>
-+#include <malloc.h>
-+#include <block.h>
-+#include <fcntl.h>
-+#include <libbb.h>
-+#include <init.h>
-+#include <boot.h>
-+#include <fs.h>
-+#include <of.h>
-+#include <linux/stat.h>
-+#include <linux/err.h>
 +
-+/*
-+ * blspec_entry_var_set - set a variable to a value
-+ */
-+int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
-+		const char *val)
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <errno.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++#include <stdarg.h>
++#include <getopt.h>
++#include <fcntl.h>
++#include <stdint.h>
++#include <libgen.h>
++#include <ctype.h>
++#include <dirent.h>
++
++static int verbose;
++static int force;
++static int interactive = 1;
++static int remove_kernel_num = -1;
++static int set_default_num = -1;
++static int set_once_num = -1;
++
++static char *host_root_path, *kernel_image, *options, *device_path;
++static char *host_boot_path, *kernel_version, *title, *machine_id;
++static char *initrd_image, *devicetree_image;
++static char *host_mount_root_path, *host_mount_boot_path;
++
++static uint32_t nt_disk_signature;
++static int root_partition_num;
++
++struct loader_entry {
++	char *title;
++	char *machine_id;
++	char *options;
++	char *kernel;
++	char *devicetree;
++	char *initrd;
++	char *version;
++	char *host_path;
++	char *config_file;
++	int num;
++	struct loader_entry *next;
++};
++
++static struct loader_entry *loader_entries;
++
++static void loader_entry_var_set(struct loader_entry *e, const char *name, char *val)
 +{
-+	return of_set_property(entry->node, name, val,
-+			val ? strlen(val) + 1 : 0, 1);
++	if (!strcmp(name, "title"))
++		e->title = val;
++	else if (!strcmp(name, "machine-id"))
++		e->machine_id = val;
++	else if (!strcmp(name, "options"))
++		e->options = val;
++	else if (!strcmp(name, "linux"))
++		e->kernel = val;
++	else if (!strcmp(name, "devicetree"))
++		e->devicetree = val;
++	else if (!strcmp(name, "initrd"))
++		e->initrd = val;
++	else if (!strcmp(name, "version"))
++		e->version = val;
 +}
 +
-+/*
-+ * blspec_entry_var_get - get the value of a variable
-+ */
-+const char *blspec_entry_var_get(struct blspec_entry *entry, const char *name)
++static struct loader_entry *loader_entry_open(const char *path)
 +{
-+	const char *str;
++	FILE *f;
++	struct loader_entry *e;
 +	int ret;
 +
-+	ret = of_property_read_string(entry->node, name, &str);
++	f = fopen(path, "r");
++	if (!f)
++		return NULL;
 +
-+	return ret ? NULL : str;
-+}
++	e = calloc(sizeof(*e), 1);
 +
-+/*
-+ * blspec_entry_open - open an entry given a path
-+ */
-+static struct blspec_entry *blspec_entry_open(struct blspec *blspec,
-+		const char *abspath)
-+{
-+	struct blspec_entry *entry;
-+	char *end, *line, *next;
-+	char *buf;
++	e->host_path = strdup(path);
 +
-+	pr_debug("%s: %s\n", __func__, abspath);
++	while (1) {
++		char *line = NULL;
++		char *name, *val, *end;
++		size_t s;
 +
-+	buf = read_file(abspath, NULL);
-+	if (!buf)
-+		return ERR_PTR(-errno);
++		ret = getline(&line, &s, f);
++		if (ret < 0)
++			break;
 +
-+	entry = blspec_entry_alloc(blspec);
-+
-+	next = buf;
-+
-+	while (*next) {
-+		char *name, *val;
-+
-+		line = next;
-+
-+		next = strchr(line, '\n');
-+		if (next) {
-+			*next = 0;
-+			next++;
-+		}
++		if (line[strlen(line) - 1] == '\n')
++			line[strlen(line) - 1] = '\0';
 +
 +		name = line;
 +		end = name;
@@ -471,8 +236,13 @@ index 0000000..f306ada
 +		while (*end && (*end != ' ' && *end != '\t'))
 +			end++;
 +
++		if (*line == '#') {
++			free(line);
++			continue;
++		}
++
 +		if (!*end) {
-+			blspec_entry_var_set(entry, name, NULL);
++			loader_entry_var_set(e, name, NULL);
 +			continue;
 +		}
 +
@@ -484,518 +254,1216 @@ index 0000000..f306ada
 +			end++;
 +
 +		if (!*end) {
-+			blspec_entry_var_set(entry, name, NULL);
++			loader_entry_var_set(e, name, NULL);
 +			continue;
 +		}
 +
 +		val = end;
 +
-+		blspec_entry_var_set(entry, name, val);
++		loader_entry_var_set(e, name, val);
 +	}
 +
-+	free(buf);
++	fclose(f);
 +
-+	return entry;
++	return e;
 +}
 +
 +/*
-+ * blspec_have_entry - check if we already have an entry with
-+ *                     a certain path
++ * printf wrapper around 'system'
 + */
-+static int blspec_have_entry(struct blspec *blspec, const char *path)
++static int systemp(const char *fmt, ...)
 +{
-+	struct blspec_entry *e;
-+
-+	list_for_each_entry(e, &blspec->entries, list) {
-+		if (e->configpath && !strcmp(e->configpath, path))
-+			return 1;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * blspec_scan_directory - scan over a directory
-+ *
-+ * Given a root path collects all blspec entries found under /blspec/entries/.
-+ *
-+ * returns 0 if at least one entry could be successfully loaded, negative
-+ * error value otherwise.
-+ */
-+static int blspec_scan_directory(struct blspec *blspec, const char *root,
-+		struct cdev *cdev)
-+{
-+	struct blspec_entry *entry;
-+	DIR *dir;
-+	struct dirent *d;
-+	char *abspath;
-+	int ret, found = 0;
-+	const char *dirname = "loader/entries";
-+	char *entry_default = NULL, *entry_once = NULL;
-+
-+	pr_debug("%s: %s %s\n", __func__, root, dirname);
-+
-+	entry_default = read_file_line("%s/default", root);
-+	entry_once = read_file_line("%s/once", root);
-+
-+	abspath = asprintf("%s/%s", root, dirname);
-+
-+	dir = opendir(abspath);
-+	if (!dir) {
-+		pr_debug("%s: %s: %s\n", __func__, abspath, strerror(errno));
-+		ret = -errno;
-+		goto err_out;
-+	}
-+
-+	while ((d = readdir(dir))) {
-+		char *configname;
-+		struct stat s;
-+		char *dot;
-+		char *devname = NULL, *hwdevname = NULL;
-+
-+		if (*d->d_name == '.')
-+			continue;
-+
-+		configname = asprintf("%s/%s", abspath, d->d_name);
-+
-+		dot = strrchr(configname, '.');
-+		if (!dot) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		if (strcmp(dot, ".conf")) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		ret = stat(configname, &s);
-+		if (ret) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		if (!S_ISREG(s.st_mode)) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		if (blspec_have_entry(blspec, configname)) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		entry = blspec_entry_open(blspec, configname);
-+		if (IS_ERR(entry)) {
-+			free(configname);
-+			continue;
-+		}
-+
-+		found = 1;
-+
-+		entry->rootpath = xstrdup(root);
-+		entry->configpath = configname;
-+		entry->cdev = cdev;
-+
-+		if (entry_default && !strcmp(d->d_name, entry_default))
-+			entry->boot_default = true;
-+		if (entry_once && !strcmp(d->d_name, entry_once))
-+			entry->boot_once = true;
-+
-+		devname = xstrdup(dev_name(entry->cdev->dev));
-+		if (entry->cdev->dev->parent)
-+			hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
-+
-+		entry->me.display = asprintf("%-20s %-20s  %s", devname, hwdevname,
-+				blspec_entry_var_get(entry, "title"));
-+		free(devname);
-+		free(hwdevname);
-+
-+		entry->me.type = MENU_ENTRY_NORMAL;
-+	}
-+
-+	ret = found ? 0 : -ENOENT;
-+
-+	closedir(dir);
-+err_out:
-+	free(abspath);
-+	free(entry_default);
-+	free(entry_once);
-+
-+	return ret;
-+}
-+
-+/*
-+ * blspec_scan_cdev - scan over a cdev
-+ *
-+ * Given a cdev this function mounts the filesystem and collects all blspec
-+ * entries found under /blspec/entries/.
-+ *
-+ * returns 0 if at least one entry could be successfully loaded, negative
-+ * error value otherwise.
-+ */
-+static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
-+{
++	va_list args;
++	char *buf;
 +	int ret;
-+	void *buf = xzalloc(512);
-+	enum filetype type;
-+	const char *rootpath;
 +
-+	pr_debug("%s: %s\n", __func__, cdev->name);
++	va_start (args, fmt);
 +
-+	ret = cdev_read(cdev, buf, 512, 0, 0);
++	ret = vasprintf(&buf, fmt, args);
++
++	va_end (args);
++
 +	if (ret < 0) {
-+		free(buf);
-+		return ret;
++		fprintf(stderr, "out of memory\n");
++		exit(1);
 +	}
 +
-+	type = file_detect_partition_table(buf, 512);
++	if (verbose)
++		fprintf(stderr, "executing command: %s\n", buf);
++
++	ret = system(buf);
++
++	if (ret > 0)
++		ret = WEXITSTATUS(ret);
++
 +	free(buf);
-+
-+	if (type == filetype_mbr || type == filetype_gpt)
-+		return -EINVAL;
-+
-+	rootpath = cdev_mount_default(cdev);
-+	if (IS_ERR(rootpath))
-+		return PTR_ERR(rootpath);
-+
-+	ret = blspec_scan_directory(blspec, rootpath, cdev);
 +
 +	return ret;
 +}
 +
-+/*
-+ * blspec_scan_devices - scan all devices for child cdevs
-+ *
-+ * Iterate over all devices and collect child their cdevs.
-+ */
-+void blspec_scan_devices(struct blspec *blspec)
++static void *safe_asprintf(const char *fmt, ...)
 +{
-+	struct device_d *dev;
-+	struct block_device *bdev;
-+
-+	for_each_device(dev)
-+		device_detect(dev);
-+
-+	for_each_block_device(bdev) {
-+		struct cdev *cdev = &bdev->cdev;
-+
-+		list_for_each_entry(cdev, &bdev->dev->cdevs, devices_list)
-+			blspec_scan_cdev(blspec, cdev);
-+	}
-+}
-+
-+/*
-+ * blspec_scan_device - scan a device for child cdevs
-+ *
-+ * Given a device this functions scans over all child cdevs looking
-+ * for blspec entries.
-+ */
-+int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
-+{
-+	struct device_d *child;
-+	struct cdev *cdev;
++	va_list args;
++	char *buf = NULL;
 +	int ret;
 +
-+	pr_debug("%s: %s\n", __func__, dev_name(dev));
++	va_start (args, fmt);
 +
-+	list_for_each_entry(cdev, &dev->cdevs, devices_list) {
-+		/*
-+		 * If the OS is installed on a disk with MBR disk label, and a
-+		 * partition with the MBR type id of 0xEA already exists it
-+		 * should be used as $BOOT
-+		 */
-+		if (cdev->dos_partition_type == 0xea) {
-+			blspec_scan_cdev(blspec, cdev);
-+			return 0;
-+		}
++	ret = vasprintf(&buf, fmt, args);
 +
-+		/*
-+		 * If the OS is installed on a disk with GPT disk label, and a
-+		 * partition with the GPT type GUID of
-+		 * bc13c2ff-59e6-4262-a352-b275fd6f7172 already exists, it
-+		 * should be used as $BOOT.
-+		 *
-+		 * Not yet implemented
-+		 */
++	va_end (args);
++
++	if (ret < 0) {
++		fprintf(stderr, "out of memory\n");
++		exit(1);
 +	}
 +
-+	/* Try child devices */
-+	device_for_each_child(dev, child) {
-+		ret = blspec_scan_device(blspec, child);
-+		if (!ret)
-+			return 0;
-+	}
-+
-+	/*
-+	 * As a last resort try all cdevs (Not only the ones explicitly stated
-+	 * by the bootblspec spec).
-+	 */
-+	list_for_each_entry(cdev, &dev->cdevs, devices_list) {
-+		ret = blspec_scan_cdev(blspec, cdev);
-+		if (!ret)
-+			return 0;
-+	}
-+
-+	return -ENODEV;
++	return buf;
 +}
 +
-+/*
-+ * blspec_scan_hwdevice - scan a hardware device for child cdevs
-+ *
-+ * Given a name of a hardware device this functions scans over all child
-+ * cdevs looking for blspec entries.
-+ */
-+int blspec_scan_hwdevice(struct blspec *blspec, const char *devname)
++static void verbose_printf(const char *fmt, ...)
 +{
-+	struct device_d *dev;
++	va_list args;
 +
-+	pr_debug("%s: %s\n", __func__, devname);
++	if (!verbose)
++		return;
 +
-+	dev = get_device_by_name(devname);
-+	if (!dev)
-+		return -ENODEV;
++	va_start (args, fmt);
 +
-+	device_detect(dev);
++	vprintf(fmt, args);
 +
-+	blspec_scan_device(blspec, dev);
++	va_end (args);
++}
++
++static int make_directory(const char *dir)
++{
++	char *s = strdup(dir);
++	char *path = s;
++	char c;
++	int ret = 0;
++
++	do {
++		c = 0;
++
++		/* Bypass leading non-'/'s and then subsequent '/'s. */
++		while (*s) {
++			if (*s == '/') {
++				do {
++					++s;
++				} while (*s == '/');
++				c = *s;		/* Save the current char */
++				*s = 0;		/* and replace it with nul. */
++				break;
++			}
++			++s;
++		}
++
++		if (mkdir(path, 0777) < 0) {
++
++			/* If we failed for any other reason than the directory
++			 * already exists, output a diagnostic and return -1.*/
++			if (errno != EEXIST) {
++				ret = -errno;
++				break;
++			}
++		}
++		if (!c)
++			goto out;
++
++		/* Remove any inserted nul from the path (recursive mode). */
++		*s = c;
++
++	} while (1);
++
++out:
++	free(path);
++	if (ret)
++		errno = -ret;
++	return ret;
++}
++
++static int append_option(const char *fmt, ...)
++{
++	va_list args;
++	char *buf;
++	int ret;
++
++	va_start (args, fmt);
++
++	ret = vasprintf(&buf,  fmt, args);
++
++	va_end (args);
++
++	if (ret < 0) {
++		fprintf(stderr, "out of memory\n");
++		exit (1);
++	}
++
++	if (options) {
++		char *new_options = safe_asprintf("%s %s", options, buf);
++		free(options);
++		free(buf);
++		options = new_options;
++	} else {
++		options = buf;
++	}
 +
 +	return 0;
 +}
 +
-+/*
-+ * blspec_boot - boot an entry
-+ *
-+ * This boots an entry. On success this function does not return.
-+ * In case of an error the error code is returned. This function may
-+ * return 0 in case of a succesful dry run.
-+ */
-+int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun)
++char *get_mount_path(char *path)
 +{
++	FILE *f;
 +	int ret;
-+	const char *abspath, *devicetree, *options, *initrd, *linuximage;
-+	struct bootm_data data = {
-+		.initrd_address = UIMAGE_INVALID_ADDRESS,
-+		.os_address = UIMAGE_SOME_ADDRESS,
-+		.verbose = verbose,
-+		.dryrun = dryrun,
-+	};
++	char *out_path = NULL;
 +
-+	globalvar_set_match("linux.bootargs.dyn.", "");
-+	globalvar_set_match("bootm.", "");
++	f = fopen("/proc/mounts", "r");
++	if (!f) {
++		fprintf(stderr, "Cannot open /proc/mounts: %s\n", strerror(errno));
++		return NULL;
++	}
 +
-+	devicetree = blspec_entry_var_get(entry, "devicetree");
-+	initrd = blspec_entry_var_get(entry, "initrd");
-+	options = blspec_entry_var_get(entry, "options");
-+	linuximage = blspec_entry_var_get(entry, "linux");
++	while (1) {
++		char *line = NULL, *delim;
++		size_t insize;
 +
-+	if (entry->rootpath)
-+		abspath = entry->rootpath;
-+	else
-+		abspath = "";
++		ret = getline(&line, &insize, f);
++		if (ret < 0)
++			break;
 +
-+	data.os_file = asprintf("%s/%s", abspath, linuximage);
-+
-+	if (devicetree) {
-+		if (!strcmp(devicetree, "none")) {
-+			struct device_node *node = of_get_root_node();
-+			if (node)
-+				of_delete_node(node);
-+		} else {
-+			data.oftree_file = asprintf("%s/%s", abspath,
-+					devicetree);
++		delim = strchr(line, ' ');
++		if (!delim) {
++			free(line);
++			continue;
 +		}
++
++		*delim = 0;
++
++		if (strcmp(line, path)) {
++			free(line);
++			continue;
++		}
++
++		delim++;
++
++		out_path = delim;
++
++		delim = strchr(delim, ' ');
++		if (!delim) {
++			free(line);
++			out_path = NULL;
++			break;
++		}
++
++		*delim = 0;
++		break;
 +	}
 +
-+	if (initrd)
-+		data.initrd_file = asprintf("%s/%s", abspath, initrd);
++	fclose(f);
 +
-+	globalvar_add_simple("linux.bootargs.blspec", options);
-+
-+	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),
-+			dev_name(entry->cdev->dev));
-+
-+	if (entry->boot_once) {
-+		char *s = asprintf("%s/once", abspath);
-+
-+		ret = unlink(s);
-+		if (ret)
-+			pr_err("unable to unlink 'once': %s\n", strerror(-ret));
-+		else
-+			pr_info("removed 'once'\n");
-+
-+		free(s);
-+	}
-+
-+	ret = bootm_boot(&data);
-+	if (ret)
-+		pr_err("Booting failed\n");
-+
-+	free((char *)data.oftree_file);
-+	free((char *)data.initrd_file);
-+	free((char *)data.os_file);
-+
-+	return ret;
++	if (out_path)
++		return strdup(out_path);
++	else
++		return NULL;
 +}
 +
-+/*
-+ * blspec_entry_default - find the entry to load.
-+ *
-+ * return in the order of precendence:
-+ * - The entry specified in the 'once' file
-+ * - The entry specified in the 'default' file
-+ * - The first entry
-+ */
-+struct blspec_entry *blspec_entry_default(struct blspec *l)
++enum mount_type {
++	MOUNT_UNKNOWN,
++	MOUNT_PMOUNT,
++	MOUNT_MOUNT,
++	MOUNT_ERROR,
++};
++
++static enum mount_type get_mount_type(void)
 +{
-+	struct blspec_entry *entry_once = NULL;
-+	struct blspec_entry *entry_default = NULL;
-+	struct blspec_entry *entry_first = NULL;
-+	struct blspec_entry *e;
-+
-+	list_for_each_entry(e, &l->entries, list) {
-+		if (!entry_first)
-+			entry_first = e;
-+		if (e->boot_once)
-+			entry_once = e;
-+		if (e->boot_default)
-+			entry_default = e;
-+	}
-+
-+	if (entry_once)
-+		return entry_once;
-+	if (entry_default)
-+		return entry_default;
-+	return entry_first;
-+}
-+
-+/*
-+ * blspec_boot_hwdevice - scan hardware device for blspec entries and
-+ *                        start the best one.
-+ */
-+int blspec_boot_hwdevice(const char *devname, int verbose, int dryrun)
-+{
-+	struct blspec *blspec;
-+	struct blspec_entry *e;
++	static enum mount_type mount_type = MOUNT_UNKNOWN;
 +	int ret;
++	uid_t uid;
 +
-+	blspec = blspec_alloc();
++	if (mount_type != MOUNT_UNKNOWN)
++		return mount_type;
 +
-+	ret = blspec_scan_hwdevice(blspec, devname);
-+	if (ret)
-+		return ret;
-+
-+	e = blspec_entry_default(blspec);
-+	if (!e) {
-+		printf("Nothing found on %s\n", devname);
-+		ret = -ENOENT;
++	ret = systemp("which pmount");
++	if (!ret) {
++		mount_type = MOUNT_PMOUNT;
 +		goto out;
 +	}
 +
-+	ret = blspec_boot(e, verbose, dryrun);
-+out:
-+	blspec_free(blspec);
++	verbose_printf("pmount not found\n");
 +
++	uid = getuid();
++	if (uid == 0) {
++		mount_type = MOUNT_MOUNT;
++		goto out;
++	}
++
++	fprintf(stderr, "'pmount' not found and I am not root. Unable to mount\n");
++	mount_type = MOUNT_ERROR;
++out:
++	return mount_type;
++}
++
++static char *mount_path_pmount(char *in_path)
++{
++	char *out_path;
++	int ret;
++
++	ret = systemp("pmount %s", in_path);
++	if (ret) {
++		fprintf(stderr, "failed to pmount %s\n", in_path);
++		return NULL;
++	}
++
++	out_path = safe_asprintf("/media/%s", basename(in_path));
++
++	return out_path;
++}
++
++static char *mount_path_mount(char *in_path)
++{
++	char *out_path, *str;
++	int ret;
++
++	str = safe_asprintf("/tmp/kernel-install-%s-XXXXXX", basename(in_path));
++
++	out_path = mkdtemp(str);
++	if (!out_path) {
++		fprintf(stderr, "unable to create temporary directory: %s\n",
++				strerror(errno));
++		free(str);
++		return NULL;
++	}
++
++	ret = systemp("mount %s %s", in_path, out_path);
++	if (ret) {
++		fprintf(stderr, "failed to mount %s: %s\n", in_path,
++				strerror(errno));
++		rmdir(out_path);
++		free(out_path);
++		return NULL;
++	}
++
++	return out_path;
++}
++
++/*
++ * mount_path - make a device or directory available.
++ * @in_path:   the input device or directory
++ * @newmount:  if this function mounts a device, this variable is true
++ *             on exit.
++ *
++ * returns the path under which the device is available.
++ *
++ * We do our best to make a device or directory available. If the input
++ * path is a directory, just return it. If it is a block device and the
++ * device is already mounted according to /proc/mounts, return the path
++ * where it's mounted. If it's not mounted already try to mount it. We
++ * first try pmount if that's available. If not, see if we are root and
++ * can use regular 'mount'.
++ */
++char *mount_path(char *in_path, int *newmount)
++{
++	struct stat s;
++	int ret;
++	char *out_path;
++
++	*newmount = 0;
++
++	ret = stat(in_path, &s);
++	if (ret) {
++		fprintf(stderr, "Cannot mount %s: %s\n", in_path, strerror(errno));
++		return NULL;
++	}
++
++	if (S_ISDIR(s.st_mode))
++		return strdup(in_path);
++
++	if (!S_ISBLK(s.st_mode)) {
++		fprintf(stderr, "%s is not a directory and not a block device\n",
++				in_path);
++		return NULL;
++	}
++
++	out_path = get_mount_path(in_path);
++	if (out_path) {
++		verbose_printf("%s already mounted at %s\n", in_path, out_path);
++		return out_path;
++	}
++
++	switch (get_mount_type()) {
++	default:
++	case MOUNT_ERROR:
++		return NULL;
++	case MOUNT_PMOUNT:
++		out_path = mount_path_pmount(in_path);
++		if (out_path) {
++			*newmount = 1;
++			return out_path;
++		}
++		return NULL;
++	case MOUNT_MOUNT:
++		out_path = mount_path_mount(in_path);
++		if (out_path) {
++			*newmount = 1;
++			return out_path;
++		}
++		return NULL;
++	}
++
++
++	return NULL;
++}
++
++void detect_root_partition_num(char *device)
++{
++	struct stat s;
++	int ret;
++	char digit;
++
++	ret = stat(device, &s);
++	if (ret) {
++		fprintf(stderr, "%s: %s\n", device, strerror(errno));
++		return;
++	}
++
++	if (!S_ISBLK(s.st_mode))
++		return;
++
++	digit = device[strlen(device) - 1];
++	if (!isdigit(digit))
++		return;
++
++	root_partition_num = digit - '0';
++	printf("rootnum: %d\n", root_partition_num);
++}
++
++void umount_path(const char *path)
++{
++	switch (get_mount_type()) {
++	case MOUNT_PMOUNT:
++		systemp("pumount %s", path);
++		break;
++	case MOUNT_MOUNT:
++		systemp("umount %s", path);
++		break;
++	default:
++	case MOUNT_ERROR:
++		break;
++	}
++}
++
++int determine_root_boot_path(const char *device_path)
++{
++	unsigned char *buf;
++	int ret, fd, i;
++	char *partname;
++	struct stat s;
++
++	buf = malloc(512);
++	if (!buf)
++		return -ENOMEM;
++
++	fd = open(device_path, O_RDONLY);
++	if (fd < 0) {
++		perror("open");
++		return -errno;
++	}
++
++	ret = read(fd, buf, 512);
++	if (ret < 512)
++		perror("read");
++
++	close(fd);
++
++	if (ret < 512)
++		return -errno;
++
++	if (buf[510] != 0x55 || buf[511] != 0xaa) {
++		fprintf(stderr, "not a DOS bootsector\n");
++		return EINVAL;
++	}
++
++	nt_disk_signature = buf[440] | (buf[441] << 8) | (buf[442] << 16) | (buf[443] << 24);
++
++	for (i = 0; i < 4; i++) {
++		uint8_t type = buf[446 + 4 + i * 64];
++		if (type == 0xea) {
++			verbose_printf("using partition %d as /boot\n", i);
++			break;
++		}
++	}
++
++	if (i == 4 && !host_boot_path) {
++		fprintf(stderr, "cannot find a valid /boot partition on %s\n",
++				device_path);
++		return -EINVAL;
++	}
++
++	/* /dev/sdgx */
++	partname = safe_asprintf("%s%c", device_path, '1' + i);
++	ret = stat(partname, &s);
++	if (!ret) {
++		host_boot_path = partname;
++		return 0;
++	}
++
++	free(partname);
++
++	/* /dev/mmcblkxpy */
++	partname = safe_asprintf("%sp%c", device_path, '1' + i);
++	ret = stat(partname, &s);
++	if (!ret) {
++		host_boot_path = partname;
++		return 0;
++	}
++
++	free(partname);
++
++	/* /dev/disk/by-xxx/xxx-party */
++	partname = safe_asprintf("%s-part%c", device_path, '1' + i);
++	ret = stat(partname, &s);
++	if (!ret) {
++		host_boot_path = partname;
++		return 0;
++	}
++
++	free(partname);
++
++	return 0;
++}
++
++int determine_machine_id(void)
++{
++	char buf[512] = {};
++	int fd, ret;
++	char *path, *tmp;
++
++	if (machine_id)
++		return 0;
++
++	if (!host_root_path)
++		return -EINVAL;
++
++	path = safe_asprintf("%s/etc/machine-id", host_root_path);
++
++	fd = open(path, O_RDONLY);
++	if (fd < 0) {
++		perror("open");
++		return -errno;
++	}
++
++	ret = read(fd, buf, 512);
++	if (ret < 0) {
++		perror("read");
++		goto out;
++	}
++
++	if (ret == 512) {
++		fprintf(stderr, "machine-id file too big\n");
++		ret = -EINVAL;
++		goto out;
++	}
++
++	tmp = buf;
++	while (*tmp) {
++		if (!isalnum(*tmp)) {
++			*tmp = '\0';
++			break;
++		}
++		tmp++;
++	}
++
++	machine_id = strdup(buf);
++
++	ret = 0;
++out:
++	close(fd);
 +	return ret;
 +}
-diff --git a/include/blspec.h b/include/blspec.h
-new file mode 100644
-index 0000000..8422e5b
---- /dev/null
-+++ b/include/blspec.h
-@@ -0,0 +1,92 @@
-+#ifndef __LOADER_H__
-+#define __LOADER_H__
 +
-+#include <linux/list.h>
-+#include <menu.h>
++void cleanup(void)
++{
++	if (host_mount_root_path)
++		umount_path(host_mount_root_path);
++	if (host_mount_boot_path)
++		umount_path(host_mount_boot_path);
++}
 +
-+struct blspec {
-+	struct list_head entries;
-+	struct menu *menu;
++int yesno(const char *str)
++{
++	int ch;
++
++	if (force)
++		return 0;
++	if (!interactive)
++		return 1;
++	printf("%s", str);
++
++	ch = getchar();
++	if (ch == 'y')
++		return 0;
++	return 1;
++}
++
++static int do_add_kernel(void)
++{
++	char *conf_path, *conf_file, *conf_dir, *images_dir;
++	char *kernel_path, *host_images_dir, *host_kernel_path;
++	char *initrd_path, *host_initrd_path;
++	char *devicetree_path, *host_devicetree_path;
++	int ret, fd;
++	struct stat s;
++
++	ret = determine_machine_id();
++	if (ret) {
++		fprintf(stderr, "failed to determine machine-id\n");
++		return -EINVAL;
++	}
++
++	if (!machine_id) {
++		fprintf(stderr, "No machine-id given\n");
++		return -EINVAL;
++	}
++
++	if (!kernel_version) {
++		fprintf(stderr, "no Kernel version given\n");
++		return -EINVAL;
++	}
++
++	if (!kernel_image) {
++		fprintf(stderr, "No Linux image given\n");
++		return -EINVAL;
++	}
++
++	conf_dir = safe_asprintf("%s/loader/entries", host_boot_path);
++	conf_file = safe_asprintf("%s-%s.conf", machine_id, kernel_version);
++	conf_path = safe_asprintf("%s/%s", conf_dir, conf_file);
++	images_dir = safe_asprintf("%s/%s", machine_id, kernel_version);
++	host_images_dir = safe_asprintf("%s/%s", host_boot_path, images_dir);
++	kernel_path = safe_asprintf("%s/linux", images_dir);
++	host_kernel_path = safe_asprintf("%s/linux", host_images_dir);
++	initrd_path = safe_asprintf("%s/initrd", images_dir);
++	host_initrd_path = safe_asprintf("%s/initrd", host_images_dir);
++	devicetree_path = safe_asprintf("%s/devicetree", images_dir);
++	host_devicetree_path = safe_asprintf("%s/devicetree", host_images_dir);
++
++	ret = stat(conf_path, &s);
++	if (!ret) {
++		fprintf(stderr, "entry %s already exists.\n", conf_file);
++		ret = yesno("overwrite? (y/n) ");
++		if (ret)
++			return -EINVAL;
++	}
++
++	ret = make_directory(conf_dir);
++	if (ret)
++		return ret;
++
++	ret = make_directory(host_images_dir);
++	if (ret)
++		return ret;
++
++	fd = open(conf_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
++	if (fd < 0) {
++		fprintf(stderr, "failed to create %s: %s\n", conf_path, strerror(errno));
++		return -errno;
++	}
++
++	dprintf(fd, "title %s\n", title);
++	dprintf(fd, "version %s\n", kernel_version);
++	dprintf(fd, "machine-id %s\n", machine_id);
++	if (options)
++		dprintf(fd, "options %s\n", options);
++	dprintf(fd, "linux %s\n", kernel_path);
++	if (initrd_image)
++		dprintf(fd, "initrd %s\n", initrd_path);
++	if (devicetree_image)
++		dprintf(fd, "devicetree %s\n", devicetree_path);
++
++	ret = close(fd);
++	if (ret)
++		return ret;
++
++	ret = systemp("cp %s %s", kernel_image, host_kernel_path);
++	if (ret) {
++		fprintf(stderr, "unable to copy kernel image\n");
++		return ret;
++	}
++
++	if (initrd_image) {
++		ret = systemp("cp %s %s", initrd_image, host_initrd_path);
++		if (ret) {
++			fprintf(stderr, "unable to copy initrd image\n");
++			return ret;
++		}
++	}
++
++	if (devicetree_image) {
++		ret = systemp("cp %s %s", devicetree_image, host_devicetree_path);
++		if (ret) {
++			fprintf(stderr, "unable to copy devicetree image\n");
++			return ret;
++		}
++	}
++
++	printf("written config file: %s\n", conf_path);
++
++	return 0;
++}
++
++static int do_open_entries(void)
++{
++	DIR *dir;
++	char *entries, *entry_path;
++	struct loader_entry *e = NULL, *first = NULL;
++	int i = 0;
++
++	if (loader_entries)
++		return 0;
++
++	entries = safe_asprintf("%s/loader/entries", host_boot_path);
++
++	dir = opendir(entries);
++	if (!dir) {
++		fprintf(stderr, "cannot open %s\n", entries);
++		return -errno;
++	}
++
++	while (1) {
++		struct dirent *ent;
++		struct loader_entry *tmp;
++
++		ent = readdir(dir);
++		if (!ent)
++			break;
++		if (ent->d_name[0] == '.')
++			continue;
++		entry_path = safe_asprintf("%s/%s", entries, ent->d_name);
++
++		tmp = loader_entry_open(entry_path);
++		if (!tmp) {
++			fprintf(stderr, "cannot open %s\n", entry_path);
++			break;
++		}
++
++		tmp->config_file = strdup(ent->d_name);
++
++		tmp->num = i++;
++
++		if (first)
++			e->next = tmp;
++		else
++			first = tmp;
++
++		e = tmp;
++	}
++
++	closedir(dir);
++
++	loader_entries = first;
++
++	return 0;
++}
++
++static struct loader_entry *loader_entry_by_num(int num)
++{
++	struct loader_entry *e;
++
++	e = loader_entries;
++
++	while (e) {
++		if (e->num == num)
++			return e;
++		e = e->next;
++	}
++
++	return NULL;
++}
++
++static int do_list_entries(void)
++{
++	struct loader_entry *e;
++	int ret;
++
++	ret = do_open_entries();
++	if (ret)
++		return ret;
++
++	e = loader_entries;
++
++	while (e) {
++		printf("Entry %d:\n", e->num);
++
++		if (e->title)
++			printf("\ttitle:      %s\n", e->title);
++		if (e->version)
++			printf("\tversion:    %s\n", e->version);
++		if (e->machine_id)
++			printf("\tmachine_id: %s\n", e->machine_id);
++		if (e->options)
++			printf("\toptions:    %s\n", e->options);
++		if (e->kernel)
++			printf("\tlinux:      %s\n", e->kernel);
++		if (e->devicetree)
++			printf("\tdevicetree: %s\n", e->devicetree);
++		if (e->initrd)
++			printf("\tinitrd:     %s\n", e->initrd);
++		e = e->next;
++	}
++
++	return 0;
++}
++
++static int is_file_referenced(const char *filename)
++{
++	struct loader_entry *e = loader_entries;
++
++	while (e) {
++		if (e->kernel && !strcmp(e->kernel, filename))
++			return 1;
++		if (e->initrd && !strcmp(e->initrd, filename))
++			return 1;
++		if (e->devicetree && !strcmp(e->devicetree, filename))
++			return 1;
++		e = e->next;
++	}
++
++	return 0;
++}
++
++static int remove_if_unreferenced(const char *filename)
++{
++	char *path, *dir;
++	int ret;
++
++	if (!filename)
++		return -EINVAL;
++
++	if (is_file_referenced(filename))
++		return -EBUSY;
++
++	path = safe_asprintf("%s/%s", host_boot_path, filename);
++
++	verbose_printf("removing unrefenced %s\n", path);
++
++	ret = unlink(path);
++	if (ret) {
++		fprintf(stderr, "cannot remove %s: %s\n", path, strerror(errno));
++		return ret;
++	}
++
++	dir = dirname(path);
++	rmdir(dir);
++	dir = dirname(path);
++	rmdir(dir);
++
++	free(path);
++
++	return 0;
++}
++
++static int do_remove_kernel(void)
++{
++	char *input = NULL;
++	size_t insize;
++	int remove_num = -1;
++	struct loader_entry *e;
++	int ret;
++	char *kernel, *devicetree, *initrd;
++
++	do_open_entries();
++
++	if (!loader_entries) {
++		fprintf(stderr, "No entries to remove\n");
++		return -ENOENT;
++	}
++
++	if (remove_kernel_num >= 0)
++		remove_num = remove_kernel_num;
++
++	if (remove_num < 0 && interactive) {
++		do_list_entries();
++		printf("which kernel do you like to remove?\n");
++		ret = getline(&input, &insize, stdin);
++		if (ret)
++			return -errno;
++		if (!strlen(input))
++			return -EINVAL;
++		if (!isdigit(*input))
++			return -EINVAL;
++		remove_num = atoi(input);
++	}
++
++	if (remove_num < 0) {
++		fprintf(stderr, "no entry number given\n");
++		return -EINVAL;
++	}
++
++	e = loader_entry_by_num(remove_num);
++	if (!e) {
++		fprintf(stderr, "no entry with num %d\n", remove_num);
++		return -ENOENT;
++	}
++
++	verbose_printf("removing entry %s\n", e->host_path);
++
++	ret = unlink(e->host_path);
++	if (ret) {
++		fprintf(stderr, "cannot remove %s\n", e->host_path);
++		return -errno;
++	}
++
++	kernel = e->kernel;
++	devicetree = e->devicetree;
++	initrd = e->initrd;
++
++	e->kernel = NULL;
++	e->devicetree = NULL;
++	e->initrd = NULL;
++
++	remove_if_unreferenced(kernel);
++	remove_if_unreferenced(initrd);
++	remove_if_unreferenced(devicetree);
++
++	return 0;
++}
++
++static int do_set_once_default(const char *name, int entry)
++{
++	int fd, ret;
++	struct loader_entry *e;
++	char *host_default_path;
++
++	do_open_entries();
++
++	if (!loader_entries) {
++		fprintf(stderr, "No entries found\n");
++		return -ENOENT;
++	}
++
++	if (entry < 0 && interactive) {
++		char *input = NULL;
++		size_t insize;
++
++		do_list_entries();
++
++		printf("\nwhich entry shall be used?\n");
++		ret = getline(&input, &insize, stdin);
++		if (ret < 0)
++			return -errno;
++		if (!strlen(input))
++			return -EINVAL;
++		if (!isdigit(*input))
++			return -EINVAL;
++		entry = atoi(input);
++	}
++
++	if (entry < 0) {
++		fprintf(stderr, "no entry number given\n");
++		return -EINVAL;
++	}
++
++	e = loader_entry_by_num(entry);
++	if (!e) {
++		fprintf(stderr, "no entry with num %d\n", entry);
++		return -ENOENT;
++	}
++
++	host_default_path = safe_asprintf("%s/%s", host_boot_path, name);
++
++	fd = open(host_default_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
++	if (fd < 0) {
++		fprintf(stderr, "failed to create %s: %s\n", host_default_path, strerror(errno));
++		return -errno;
++	}
++
++	dprintf(fd, "loader/entries/%s\n", e->config_file);
++
++	ret = close(fd);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int do_set_default(void)
++{
++	return do_set_once_default("default", set_default_num);
++}
++
++static int do_set_once(void)
++{
++	return do_set_once_default("once", set_once_num);
++}
++
++enum opt {
++	OPT_KERNEL = 1,
++	OPT_INITRD,
++	OPT_DEVICETREE,
++	OPT_ONCE,
++	OPT_ROOT_PARTITION_NO,
++	OPT_DEVICE,
++	OPT_ADD_ROOT_ARGUMENT,
 +};
 +
-+struct blspec_entry {
-+	struct list_head list;
-+	struct device_node *node;
-+	struct cdev *cdev;
-+	char *rootpath;
-+	char *configpath;
-+	bool boot_default;
-+	bool boot_once;
-+
-+	struct menu_entry me;
-+
-+	char *scriptpath;
++static struct option long_options[] = {
++	{"add",		no_argument,		0,	'a' },
++	{"remove",	optional_argument,	0,	'r' },
++	{"list",	no_argument,		0,	'l' },
++	{"default",	optional_argument,	0,	'd' },
++	{"once",	optional_argument,	0,	OPT_ONCE },
++	{"device",	required_argument,	0,	OPT_DEVICE },
++	{"root",	required_argument,	0,	'R' },
++	{"boot",	required_argument,	0,	'b' },
++	{"kernel-version", required_argument,	0,	'k' },
++	{"title",	required_argument,	0,	't' },
++	{"machine-id",	required_argument,	0,	'm' },
++	{"kernel",	required_argument,	0,	OPT_KERNEL },
++	{"initrd",	required_argument,	0,	OPT_INITRD },
++	{"devicetree",	required_argument,	0,	OPT_DEVICETREE },
++	{"options",	required_argument,	0,	'o' },
++	{"verbose",	no_argument,		0,	'v' },
++	{"add-root-option", no_argument,	0,	OPT_ADD_ROOT_ARGUMENT },
++	{"num-root-part", required_argument,	0,	OPT_ROOT_PARTITION_NO },
++	{"help",	 no_argument,		0,	'h' },
++	{0,		0,			0,	0 }
 +};
 +
-+int blspec_entry_var_set(struct blspec_entry *entry, const char *name,
-+		const char *val);
-+const char *blspec_entry_var_get(struct blspec_entry *entry, const char *name);
-+
-+int blspec_entry_save(struct blspec_entry *entry, const char *path);
-+
-+int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun);
-+
-+int blspec_boot_hwdevice(const char *devname, int verbose, int dryrun);
-+
-+void blspec_scan_devices(struct blspec *blspec);
-+
-+struct blspec_entry *blspec_entry_default(struct blspec *l);
-+int blspec_scan_hwdevice(struct blspec *blspec, const char *devname);
-+
-+#define blspec_for_each_entry(blspec, entry) \
-+	list_for_each_entry(entry, &blspec->entries, list)
-+
-+static inline struct blspec_entry *blspec_entry_alloc(struct blspec *blspec)
++static void usage(char *name)
 +{
-+	struct blspec_entry *entry;
-+
-+	entry = xzalloc(sizeof(*entry));
-+
-+	entry->node = of_new_node(NULL, NULL);
-+
-+	list_add_tail(&entry->list, &blspec->entries);
-+
-+	return entry;
++	printf(
++"Usage: %s [OPTIONS]\n"
++"Install, uninstall and list kernels according to the bootloader spec\n"
++"\n"
++"command options, exactly one must be present:\n"
++"\n"
++"-a, --add                      Add a new boot entry\n"
++"-r, --remove[=num]             Remove a boot entry. If <num> is not present\n"
++"                               ask for it interactively\n"
++"-l, --list                     List all available entries\n"
++"-d, --default[=num]            Make an entry the default. If <num> is not\n"
++"                               present ask for it interactively\n"
++"--once[=num]                   start an entry once\n"
++"\n"
++"other options:\n"
++"\n"
++"--kernel-version=<version>     Specify kernel version, used for generating\n"
++"                               config filenames/directories. must be unique\n"
++"                               for each installed operating system\n"
++"--title=<name>                 Title for the entry. If unspecified defaults\n"
++"                               to \"Linux-<version>\"\n"
++"--machine-id=<id>              Specify machine id. Should be unique for each\n"
++"                               installation. Can be left unspecified when it\n"
++"                               can be read from <rootpath>/etc/machine-id.\n"
++"--kernel=<kernel>              Path to the kernel to install\n"
++"--initrd=<initrd>              Path to the initrd to install, optional\n"
++"--devicetree=<devicetree>      Path to the devicetree to install, optional\n"
++"-o, --options=<options>        Commandline options for the kernel, can be\n"
++"                               given multiple times\n"
++"-v, --verbose                  Be more verbose\n"
++"--add-root-option              If present, add a \"root=PARTUUID=xxxxxxxx-yy\"\n"
++"                               option to the kernel commandline. The partuuid\n"
++"                               is determined from the device given with the\n"
++"                               --device option and the partition number\n"
++"                               determined from either the device specified\n"
++"                               with --root or from the --num-root-part option.\n"
++"--num-root-part=<partnum>      Specify partition number for --add-root-option\n"
++"-h, --help                     This help\n"
++"\n"
++"Options for non-native mode:\n"
++"\n"
++"Each of the following options disables native mode. Useful for preparing\n"
++"boot media on another host.\n"
++"--device=<devicepath>          Specify device to work on\n"
++"--root=<path|device>           Specify path or device to use as '/', defaults to '/'\n"
++"--boot=<path|device>           Specify path or device to use as '/boot', defaults to '/boot'\n",
++	name);
 +}
 +
-+static inline void blspec_entry_free(struct blspec_entry *entry)
++int main(int argc, char *argv[])
 +{
-+	list_del(&entry->list);
-+	of_delete_node(entry->node);
-+	free(entry->me.display);
-+	free(entry->scriptpath);
-+	free(entry->configpath);
-+	free(entry->rootpath);
-+	free(entry);
++	int c;
++	char *root = NULL;
++	int option_index, add_kernel = 0, remove_kernel = 0, add_root_argument = 0;
++	int ret, list = 0, set_default = 0, newmount;
++	int native_mode = 1, set_once = 0;
++
++	while (1) {
++		c = getopt_long(argc, argv, "b:R:d:k:p:m:lo:aruvh", long_options, &option_index);
++		if (c < 0)
++			break;
++		switch (c) {
++		case 'h':
++			usage(argv[0]);
++			exit(0);
++		case 'b':
++			native_mode = 0;
++			host_boot_path = optarg;
++			break;
++		case 'R':
++			native_mode = 0;
++			root = optarg;
++			break;
++		case 'l':
++			list = 1;
++			break;
++		case 'd':
++			set_default = 1;
++			if (optarg)
++				set_default_num = atoi(optarg);
++			break;
++		case OPT_ONCE:
++			set_once = 1;
++			if (optarg)
++				set_once_num = atoi(optarg);
++			break;
++		case OPT_DEVICE:
++			native_mode = 0;
++			device_path = optarg;
++			break;
++		case 'k':
++			kernel_version = optarg;
++			break;
++		case 't':
++			title = optarg;
++			break;
++		case 'm':
++			machine_id = optarg;
++			break;
++		case OPT_KERNEL:
++			kernel_image = optarg;
++			break;
++		case 'o':
++			append_option("%s", optarg);
++			break;
++		case 'a':
++			add_kernel = 1;
++			break;
++		case 'r':
++			remove_kernel = 1;
++			if (optarg)
++				remove_kernel_num = atoi(optarg);
++			break;
++		case OPT_ADD_ROOT_ARGUMENT:
++			add_root_argument = 1;
++			break;
++		case OPT_ROOT_PARTITION_NO:
++			root_partition_num = atoi(optarg);
++			break;
++		case OPT_INITRD:
++			initrd_image = optarg;
++			break;
++		case OPT_DEVICETREE:
++			devicetree_image = optarg;
++			break;
++		case 'v':
++			verbose++;
++			break;
++		}
++	}
++
++	if (!list && !remove_kernel && !set_default && !add_kernel && !set_once) {
++		fprintf(stderr, "no command given\n");
++		exit (1);
++	}
++
++	if (native_mode) {
++		host_boot_path = "/boot";
++		host_root_path = "";
++	}
++
++	if (device_path) {
++		ret = determine_root_boot_path(device_path);
++		if (ret)
++			exit(1);
++	}
++
++	if (host_boot_path) {
++		verbose_printf("using partition %s for /boot as determined by device argument\n",
++				host_boot_path);
++	}
++
++	if (!host_boot_path) {
++		fprintf(stderr, "No partition or directory given for /boot\n");
++		goto out;
++	}
++
++	host_boot_path = mount_path(host_boot_path, &newmount);
++	if (!host_boot_path)
++		goto out;
++
++	if (newmount)
++		host_mount_boot_path = host_boot_path;
++
++	if (root) {
++		host_root_path = mount_path(root, &newmount);
++		if (!host_root_path)
++			goto out;
++		if (newmount)
++			host_mount_root_path = host_root_path;
++	}
++
++	if (!title)
++		title = safe_asprintf("Linux-%s", kernel_version);
++
++	if (add_root_argument) {
++		if (!nt_disk_signature) {
++			fprintf(stderr, "no nt disk signature found for root-uuid\n"
++					"Cannot add root argument\n");
++			goto out;
++		}
++
++		if (!root_partition_num) {
++			if (!root) {
++				fprintf(stderr, "no root partition number and no device for / given\n"
++						"Cannot add root argument\n");
++				goto out;
++			}
++
++			detect_root_partition_num(root);
++		}
++
++		if (!root_partition_num) {
++			fprintf(stderr, "no root partition number given\n"
++					"Cannot add root argument\n");
++
++			goto out;
++		}
++
++		append_option("root=PARTUUID=%08X-%02d", nt_disk_signature, root_partition_num);
++	}
++
++	if (list) {
++		ret = do_list_entries();
++		goto out;
++	}
++
++	if (remove_kernel) {
++		ret = do_remove_kernel();
++		goto out;
++	}
++
++	if (set_default) {
++		ret = do_set_default();
++		goto out;
++	}
++
++	if (set_once) {
++		ret = do_set_once();
++		goto out;
++	}
++
++	if (add_kernel) {
++		ret = do_add_kernel();
++		goto out;
++	}
++
++	ret = 0;
++
++out:
++	cleanup();
++	exit(ret == 0 ? 0 : 1);
 +}
-+
-+static inline struct blspec *blspec_alloc(void)
-+{
-+	struct blspec *blspec;
-+
-+	blspec = xzalloc(sizeof(*blspec));
-+	INIT_LIST_HEAD(&blspec->entries);
-+
-+	if (IS_ENABLED(CONFIG_MENU))
-+		blspec->menu = menu_alloc();
-+
-+	return blspec;
-+}
-+
-+static inline void blspec_free(struct blspec *blspec)
-+{
-+	struct blspec_entry *entry, *tmp;
-+
-+	list_for_each_entry_safe(entry, tmp, &blspec->entries, list)
-+		blspec_entry_free(entry);
-+	free(blspec->menu->display);
-+	free(blspec->menu);
-+	free(blspec);
-+}
-+
-+#endif /* __LOADER_H__ */
 -- 
 1.8.4.rc3
 
