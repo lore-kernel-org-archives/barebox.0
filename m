@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQYUs-0003ZB-DQ
- for barebox@lists.infradead.org; Mon, 30 Sep 2013 08:06:27 +0000
-Date: Mon, 30 Sep 2013 10:06:02 +0200
+ id 1VQYbt-0003m7-3T
+ for barebox@lists.infradead.org; Mon, 30 Sep 2013 08:13:41 +0000
+Date: Mon, 30 Sep 2013 10:13:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20130930080602.GX30088@pengutronix.de>
-References: <1380271641-23174-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20130930081318.GY30088@pengutronix.de>
+References: <5705070.dCeIF7ZgD5@yiqingliang-pc>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1380271641-23174-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <5705070.dCeIF7ZgD5@yiqingliang-pc>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,58 +22,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] omap: xload: switch to generic bootstrap
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: strtoull_suffix
+To: Yi Qingliang <niqingliang2003@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Sep 27, 2013 at 10:47:21AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-> dissimilarity index 76%
-> index 3cce3f2..74a5f00 100644
-> --- a/arch/arm/mach-omap/xload.c
-> +++ b/arch/arm/mach-omap/xload.c
+Hi,
 
-How is this patch generated? It's strange that this file is completely removed
-and added again.
+On Sun, Sep 29, 2013 at 07:57:39PM +0800, Yi Qingliang wrote:
+> the strtoull_suffix can't identify 'g' and 'm', but the 'memparse' in kernel 
+> can, do we should follow the kernel?
 
-> +/*
-> + * Replaces the default shell in xload configuration
-> + */
-> +static __noreturn int omap_xload(void)
-> +{
-> +	int (*func)(void) = NULL;
-> +
-> +	switch (bootsource_get()) {
-> +	case BOOTSOURCE_MMC:
-> +		printf("booting from MMC\n");
-> +		func = bootstrap_read_disk("disk0.0", "fat");
-> +		break;
-> +	case BOOTSOURCE_USB:
-> +		if (IS_ENABLED(CONFIG_FS_OMAP4_USBBOOT)) {
-> +			printf("booting from USB\n");
-> +			func = bootstrap_read_disk("omap4_usbboot", "omap4_usbbootfs");
-> +			break;
-> +		} else {
-> +			printf("booting from USB not enabled\n");
-> +		}
-> +	case BOOTSOURCE_NAND:
-> +		printf("booting from NAND\n");
-> +		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-> +		break;
-> +	case BOOTSOURCE_SPI:
-> +		printf("booting from SPI\n");
-> +		func = bootstrap_read_devfs("m25p0", false, SZ_128K, SZ_256K, SZ_1M);
-> +		break;
-> +	default:
-> +		printf("unknown boot source. Fall back to nand\n");
-> +		func = bootstrap_read_devfs("nand0", true, SZ_128K, SZ_256K, SZ_1M);
-> +		break;
-> +	}
-> +
-> +	bootstrap_boot(func, false);
-
-This won't work anymore since the omap barebox function now takes an
-argument which is currently not supported by the bootstrap code.
+Go ahead and send a patch. I remember the original reason I haven't
+supported 'm' was that it reminded me too much on 'milli'. I still
+haven't seen a millibyte though...
 
 Sascha
 
