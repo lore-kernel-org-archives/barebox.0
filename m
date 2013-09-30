@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-f50.google.com ([74.125.82.50])
+Received: from mail-we0-x22c.google.com ([2a00:1450:400c:c03::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQieB-0004qj-3p
- for barebox@lists.infradead.org; Mon, 30 Sep 2013 18:56:44 +0000
-Received: by mail-wg0-f50.google.com with SMTP id f12so6254775wgh.5
- for <barebox@lists.infradead.org>; Mon, 30 Sep 2013 11:56:17 -0700 (PDT)
+ id 1VQiyK-0005Lo-Ki
+ for barebox@lists.infradead.org; Mon, 30 Sep 2013 19:17:34 +0000
+Received: by mail-we0-f172.google.com with SMTP id w61so6100309wes.17
+ for <barebox@lists.infradead.org>; Mon, 30 Sep 2013 12:17:10 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20130930153846.GC30088@pengutronix.de>
-References: <CAO-21LP2aK6Zwphamv2Zj_-Y1YWt6xNX6GZSUVrHreALsaJQsg@mail.gmail.com>
- <20130930153846.GC30088@pengutronix.de>
-Date: Mon, 30 Sep 2013 13:56:16 -0500
-Message-ID: <CAO-21LNumyaH+gZDkyPnejnQ9nxESDF9DABh_65bA-7oOFPBNA@mail.gmail.com>
+Date: Mon, 30 Sep 2013 14:17:10 -0500
+Message-ID: <CAO-21LPAyz3UfYicmj2dDTOGvBYhBaXfoYCKj5v5J_XJ8bAhLA@mail.gmail.com>
 From: "Allen Kennedy Jr." <allen@kennedystuff.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,51 +21,209 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Is Relocation forced?
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [SOLVED] Re: Porting to a new board
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: Barebox Mailing list <barebox@lists.infradead.org>
 
-Sascha,
-  I figured out the issue.  'scp' was not copying my new version..
-and not indicating failure.
-Once i deleted the old bin and copied a new one, i see it is running
-without relocation.
+I think i finally figured out the issue.  I was compiling with
+arm-none-eabi bare-board compiler.  Which seemed to make sense to me
+since the bootloader is not running on top of an OS, but...
+when I recompiled using a arm-none-linux-gnueabi toolchain, the
+Ethernet driver jumped to life and started working.
 
-Sorry.
+thanks for all of your support with this one.
 
-On Mon, Sep 30, 2013 at 10:38 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> Hi Allen,
+Now if only i can figure out how to make it boot from flash.... but
+that's for another thread.
+
+-Allen
+
+On Tue, Sep 24, 2013 at 12:06 PM, Allen Kennedy Jr.
+<allen@kennedystuff.com> wrote:
+> The power is stable.  The garbled message happens whenever too many
+> strings are printed out.  So I don't think that's anything to do with
+> my specific setup.  You might be able to reproduce it.  Try this:
 >
-> On Mon, Sep 30, 2013 at 09:24:17AM -0500, Allen Kennedy Jr. wrote:
->> Hello,
->>   I have relocatable binary set to "n"  and I load barebox into ram
->> exactly where it is supposed to be, but it still runs the function
->> "relocate binary"
+> md 0xa0000000+2000
+> <substitute the beginning of your ram range for 0xa0000000>
+>
+> On Tue, Sep 24, 2013 at 11:33 AM, Jean-Christophe PLAGNIOL-VILLARD
+> <plagnioj@jcrosoft.com> wrote:
+>> On 10:00 Tue 24 Sep     , Allen Kennedy Jr. wrote:
+>>> The dhcp command gives:
+>>> "warning: No MAC address set. Using random address 62:1C:8B:DF:6D:4D"
+>>> Then the device console hangs, Ctrl-C does nothing.  Breaking into it
+>>> via JTAG, I see
+>>> the PC and LR are off in the weeds and the stack and registers
+>>> contains nothing of
+>>> indication as to where it went awry.
+>>>
+>>> md 0x1002b000 does show the FEC registers:
+>>>  md 0x1002b000
+>>> 1002b000: 00000600 00000000 00000000 00000600                ................
+>>> 1002b010: 00000000 00000000 00000000 00000000                ................
+>>> 1002b020: 00000600 f0000000 00000600 00000600                ................
+>>> 1002b030: 00000600 00000600 00000600 00000600                ................
+>>> 1002b040: 6f86782d 00000018 00060006 00040006                -x.o............
+>>> 1002b050: 6f86782d 00000018 000a0006 00080006                -x.o............
+>>> 1002b060: 00000000 c0000000 fffffffd fffffffd                ................
+>>> 1002b070: fffffffd fffffffd fffffffd fffffffd                ................
+>>> 1002b080: 000b0000 05ee0004 19000000 84680868                ............h.h.
+>>> 1002b090: ffffffff 00000000 10008208 33428006                ..............B3
+>>> 1002b0a0: 00c40000 ffffffff ffffffff ffffffff                ................
+>>> 1002b0b0: ffffffff ffffffff ffffffff ffffffff                ................
+>>> 1002b0c0: 00000000 00000000 00000000 00000000                ................
+>>> 1002b0d0: 02b20000 91cc3d09 00000000 0180c200                .....=..........
+>>> 1002b0e0: 00010000 068f6c9e b50d8808 00010020                .....l...... ...
+>>> 1002b0f0: 00000000 00000000 00000000 00000000                ................
+>>>
+>>>
+>>> iomem output:
+>>>  iomem
+>>> 0x00000000 - 0xffffffff (size 0x00000000) iomem
+>>>   0x10002000 - 0x10002fff (size 0x00001000) imx21-wdt0
+>>>   0x10003000 - 0x100030ff (size 0x00000100) imx1-gpt0
+>>>   0x1000a000 - 0x1000afff (size 0x00001000) imx21-uart0
+>>>   0x10015000 - 0x100150ff (size 0x00000100) imx1-gpio0
+>>>   0x10015100 - 0x100151ff (size 0x00000100) imx1-gpio1
+>>>   0x10015200 - 0x100152ff (size 0x00000100) imx1-gpio2
+>>>   0x10015300 - 0x100153ff (size 0x00000100) imx1-gpio3
+>>>   0x10015400 - 0x100154ff (size 0x00000100) imx1-gpio4
+>>>   0x10015500 - 0x100155ff (size 0x00000100) imx1-gpio5
+>>>   0x10027000 - 0x10027fff (size 0x00001000) imx27-ccm
+>>>   0x10028000 - 0x10028fff (size 0x00001000) imx_iim
+>>>   0x1002b000 - 0x1002bfff (size 0x00001000) imx27-fec
+>>>   0xa0000000 - 0xa7ffffff (size 0x08000000) ram0
+>>>     0xa7a00000 - 0xa7dfffff (size 0x00400000) malloc space
+>>>     0xa7e00000 - 0xa7e1afdf (size 0x0001afe0) barebox
+>>>     0xa7e1afe0 - 0xa7e20aaf (size 0x00005ad0) barebox data
+>>>     0xa7e20ab0 - 0xa7e24f4b (size 0x0000449c) bss
+>>>     0xa7ff8000 - 0xa7ffffff (size 0x00008000) stack
+>>>   0xd8001000 - 0xd8001fff (size 0x00001000) imx27-esdctl
+>>>
+>>> This seems valid to me... does anyone see anything missing?
+>>>
+>>> As to putting in some debug statements in the FEC driver, I put an
+>>> enter and exit line in each function.  Startup gave me this:
+>>> fec_probe enter
+>>> fec_alloc_receive_packets enter
+>>> fec_alloc_receive_packets exit
+>>> fec_init enter
+>>> fec_init exit
+>>> mdio_bus: miibus0: probed
+>>> fec_probe exit 0
+>>>
+>>> So that looks good I would think.
+>>>
+>>> The DHCP command as follows:
+>>> dhcp<enter>
+>>> warning: No MAC address set. Using random address 12:D4:85:77:78:E4
+>>> fec_set_hwaddr enter
+>>> fec_set_hwaddr exit
+>>> fec_open enter
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>> <... more reads ... >
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>> fec_miibus_write enter
+>>> fec_miibus_write exit
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>> fec_miibus_write enter
+>>> fec_miibus_write exit
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>> fec_miibus_write enter
+>>> fec_miibus_write exit
+>>> fec_rbd_init enter
+>>> fec_rbd_init exit
+>>> fec_tbd_init enter
+>>> fec_tbd_init exit
+>>> fec_rx_task_enable enter
+>>> fec_rx_task_enable exit
+>>> fec_open exit
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
+>>>
+>>> this is followed by many more reads, until the output garbles:
+>>> fec_miibus_read exit
+>>> fec_miibus_read enter
+>>> fec_miibus_read exit
 >>
->>   Is the option to not relocate barebox, not supported?
+>> are you sure about the power of the board?
 >>
->> Why would I want it not-relocated?  Because relocate_to_current_adr()
->> causes an exception every time, and barebox won't boot.  And I can't
->> figure out why the exception occurs.
->
-> Generally relocatable barebox is not enforced and barebox runs happily
-> without it. However, there are some combinations of PBL/TEXT_BASE which
-> really do need relocation support.
->
-> What SoC/board are you running? Could you post your .config file?
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+>> because it seems a clock change otherwise
+>>
+>> Best Regards,
+>> J.
+>>> miiear
+>>> miiea
+>>> iibad
+>>> iibad
+>>> fibud
+>>> fibud e
+>>> febus us_enfeus_exiecs_rntec_s_xitc__retec_m_reit_mireaer_miret
+>>> mieadr
+>>> miiea
+>>> iibad
+>>> iibad
+>>> ibud
+>>> fibud
+>>> febus euenfecusexiec_s_nteec_s_xitc__reterc__reit
+>>> _mreaer
+>>> _mreat
+>>> mieadr
+>>> miead
+>>> iibad
+>>>
+>>> and the chip ends up in the weeds.
+>>>
+>>> Any thoughts?
+>>>
+>>>
+>>> On Tue, Sep 24, 2013 at 2:39 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>>> > On Mon, Sep 23, 2013 at 04:47:19PM -0500, Allen Kennedy Jr. wrote:
+>>> >> > What's the output of some network command, like for example 'dhcp'?
+>>> >>
+>>> >> This hangs the chip.
+>>> >
+>>> > This shouldn't happen. No reaction from the board at all? Does ctrl-c
+>>> > work? You could add some debug messages to the FEC driver to see where
+>>> > it hangs.
+>>> >
+>>> > One situation where a board might hang is when the clock is disabled,
+>>> > but I don't see how this can happen since it's explicitly enabled in
+>>> > arch/arm/mach-imx/clk-imx27.c
+>>> >
+>>> > What's the output of 'md 0x1002b000'? Does it show the FEC registers
+>>> > or does it hang the board aswell? The output of 'iomem' might also
+>>> > help.
+>>> >
+>>> > Sascha
+>>> >
+>>> > --
+>>> > Pengutronix e.K.                           |                             |
+>>> > Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+>>> > Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+>>> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>> >
+>>> > _______________________________________________
+>>> > barebox mailing list
+>>> > barebox@lists.infradead.org
+>>> > http://lists.infradead.org/mailman/listinfo/barebox
+>>>
+>>> _______________________________________________
+>>> barebox mailing list
+>>> barebox@lists.infradead.org
+>>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
