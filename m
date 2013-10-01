@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRHoY-0000Tm-PX
- for barebox@lists.infradead.org; Wed, 02 Oct 2013 08:29:47 +0000
-Date: Wed, 2 Oct 2013 10:29:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131002082925.GI30088@pengutronix.de>
+Received: from 2.mo3.mail-out.ovh.net ([46.105.75.36]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VR001-0000u7-2K
+ for barebox@lists.infradead.org; Tue, 01 Oct 2013 13:28:26 +0000
+Received: from mail417.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 508F2FF9C96
+ for <barebox@lists.infradead.org>; Tue,  1 Oct 2013 15:21:26 +0200 (CEST)
+Date: Tue, 1 Oct 2013 15:22:50 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131001132250.GK32444@ns203013.ovh.net>
 References: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
- <1380608528-26999-4-git-send-email-s.hauer@pengutronix.de>
- <20131001074947.GI2548@pengutronix.de>
+ <1380608528-26999-6-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131001074947.GI2548@pengutronix.de>
+In-Reply-To: <1380608528-26999-6-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +23,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] ARM: mx23-evk: Fix result checking of
- devfs_add_partition
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 5/6] ARM: vexpress: Fix compiler warning
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 01, 2013 at 09:49:47AM +0200, Uwe Kleine-K=F6nig wrote:
-> Hello Sascha,
-> =
+On 08:22 Tue 01 Oct     , Sascha Hauer wrote:
+> Fixes:
+> 
+> arch/arm/boards/vexpress/init.c: In function 'vexpress_core_init':
+> arch/arm/boards/vexpress/init.c:139:22: warning: 'hostname' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/vexpress/init.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm/boards/vexpress/init.c b/arch/arm/boards/vexpress/init.c
+> index 48bc11e..5358be3 100644
+> --- a/arch/arm/boards/vexpress/init.c
+> +++ b/arch/arm/boards/vexpress/init.c
+> @@ -133,6 +133,8 @@ static int vexpress_core_init(void)
+>  			hostname = "vexpress-a9";
+>  		else if (cpu_is_cortex_a15())
+>  			hostname = "vexpress-a15";
+> +		else
+> +			hostname = "vexpress-unknown";
 
-> On Tue, Oct 01, 2013 at 08:22:05AM +0200, Sascha Hauer wrote:
-> > +	if (IS_ERR(cdev))
-> > +		return PTR_ERR(cdev);
-> > +	return 0;
-> In Linux you can use
-> =
-
-> 	return PTR_ERR_OR_ZERO(cdev)
-> =
-
-> instead. Didn't check if barebox already has that.
-
-I wasn't aware this exists. barebox currently doesn't have this, but it
-would be nice to introduce it.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+so set hostname by default not on else
+>  	}
+>  
+>  	barebox_set_model("ARM Vexpress");
+> -- 
+> 1.8.4.rc3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
