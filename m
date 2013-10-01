@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQtLt-0000SR-0q
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:36 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VQtLV-0000qz-JU
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 08:22:09 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1VQtLV-000739-IE
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 08:22:09 +0200
+ id 1VQtLx-0000Sx-91
+ for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:38 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  1 Oct 2013 08:22:02 +0200
-Message-Id: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  1 Oct 2013 08:22:08 +0200
+Message-Id: <1380608528-26999-7-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
+References: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,27 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Compiler warning fixes
+Subject: [PATCH 6/6] mips: bcm47xx: Fix compiler warning
 To: barebox@lists.infradead.org
 
-Some fixes for compiler warnings
+Fixes:
 
-----------------------------------------------------------------
-Sascha Hauer (6):
-      ARM: edb93xx: Add missing include
-      ARM: friendlyarm-tiny210: remove unused variable
-      ARM: mx23-evk: Fix result checking of devfs_add_partition
-      ARM: Ka-Ro TX28: Fix result checking of devfs_add_partition
-      ARM: vexpress: Fix compiler warning
-      mips: bcm47xx: Fix compiler warning
+arch/mips/mach-bcm47xx/include/mach/debug_ll.h: In function 'PUTC_LL':
+arch/mips/mach-bcm47xx/include/mach/debug_ll.h:33: warning: passing argument 1 of '__raw_readb' makes pointer from integer without a cast
+arch/mips/mach-bcm47xx/include/mach/debug_ll.h:34: warning: passing argument 2 of '__raw_writeb' makes pointer from integer without a cast
 
- arch/arm/boards/edb93xx/edb93xx.c              | 1 +
- arch/arm/boards/freescale-mx23-evk/mx23-evk.c  | 6 +++++-
- arch/arm/boards/friendlyarm-tiny210/lowlevel.c | 2 --
- arch/arm/boards/karo-tx28/tx28-stk5.c          | 6 +++++-
- arch/arm/boards/vexpress/init.c                | 2 ++
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
  arch/mips/mach-bcm47xx/include/mach/debug_ll.h | 6 ++++--
- 6 files changed, 17 insertions(+), 6 deletions(-)
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+index 0703bb0..9927b4d 100644
+--- a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
++++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
+@@ -30,8 +30,10 @@
+ 
+ static __inline__ void PUTC_LL(char ch)
+ {
+-	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
+-	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
++	void *base = (void *)DEBUG_LL_UART_ADDR;
++
++	while (!(__raw_readb(base + lsr) & LSR_THRE));
++	__raw_writeb(ch, base + rbr);
+ }
+ 
+ #endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+-- 
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
