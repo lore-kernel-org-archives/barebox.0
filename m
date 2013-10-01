@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQtLt-0000SS-0l
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:34 +0000
+ id 1VQtLt-0000SW-0q
+ for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  1 Oct 2013 08:22:03 +0200
-Message-Id: <1380608528-26999-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  1 Oct 2013 08:22:07 +0200
+Message-Id: <1380608528-26999-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/6] ARM: edb93xx: Add missing include
+Subject: [PATCH 5/6] ARM: vexpress: Fix compiler warning
 To: barebox@lists.infradead.org
 
 Fixes:
 
-arch/arm/boards/edb93xx/edb93xx.c: In function 'edb93xx_console_init':
-arch/arm/boards/edb93xx/edb93xx.c:123:2: warning: implicit declaration of function 'free' [-Wimplicit-function-declaration]
+arch/arm/boards/vexpress/init.c: In function 'vexpress_core_init':
+arch/arm/boards/vexpress/init.c:139:22: warning: 'hostname' may be used uninitialized in this function [-Wmaybe-uninitialized]
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/edb93xx/edb93xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boards/vexpress/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
-index 27ba90a..1388590 100644
---- a/arch/arm/boards/edb93xx/edb93xx.c
-+++ b/arch/arm/boards/edb93xx/edb93xx.c
-@@ -24,6 +24,7 @@
- #include <partition.h>
- #include <asm/armlinux.h>
- #include <io.h>
-+#include <malloc.h>
- #include <generated/mach-types.h>
- #include <mach/ep93xx-regs.h>
- #include "edb93xx.h"
+diff --git a/arch/arm/boards/vexpress/init.c b/arch/arm/boards/vexpress/init.c
+index 48bc11e..5358be3 100644
+--- a/arch/arm/boards/vexpress/init.c
++++ b/arch/arm/boards/vexpress/init.c
+@@ -133,6 +133,8 @@ static int vexpress_core_init(void)
+ 			hostname = "vexpress-a9";
+ 		else if (cpu_is_cortex_a15())
+ 			hostname = "vexpress-a15";
++		else
++			hostname = "vexpress-unknown";
+ 	}
+ 
+ 	barebox_set_model("ARM Vexpress");
 -- 
 1.8.4.rc3
 
