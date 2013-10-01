@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
+Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VR7c2-0006np-Dk
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 21:36:11 +0000
-Received: by mail-ea0-f174.google.com with SMTP id z15so3702944ead.5
- for <barebox@lists.infradead.org>; Tue, 01 Oct 2013 14:35:48 -0700 (PDT)
+ id 1VR7by-0006nT-JI
+ for barebox@lists.infradead.org; Tue, 01 Oct 2013 21:36:08 +0000
+Received: by mail-ea0-f170.google.com with SMTP id h14so3709253eak.15
+ for <barebox@lists.infradead.org>; Tue, 01 Oct 2013 14:35:44 -0700 (PDT)
 From: Rostislav Lisovy <lisovy@gmail.com>
-Date: Tue,  1 Oct 2013 23:35:21 +0200
-Message-Id: <1380663322-25733-4-git-send-email-lisovy@gmail.com>
-In-Reply-To: <1380663322-25733-1-git-send-email-lisovy@gmail.com>
-References: <1380663322-25733-1-git-send-email-lisovy@gmail.com>
+Date: Tue,  1 Oct 2013 23:35:18 +0200
+Message-Id: <1380663322-25733-1-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,66 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] i.mx53: voipac: Add barebox environment configuration file
+Subject: [PATCH 0/4] Add support for Voipac X53-DMM-668 module
 To: barebox@lists.infradead.org
 Cc: Rostislav Lisovy <lisovy@gmail.com>, pisa@cmp.felk.cvut.cz
 
-Signed-off-by: Rostislav Lisovy <lisovy@gmail.com>
----
- create mode 100644 arch/arm/boards/freescale-mx53-voipac/env/config
+This patchset adds support for Voipac X53-DMM-668 module equipped
+with i.mx53 CPU. More info about the module may be found at:
+http://www.voipac.com/#X53-DMM-668
 
-diff --git a/arch/arm/boards/freescale-mx53-voipac/env/config b/arch/arm/boards/freescale-mx53-voipac/env/config
-new file mode 100644
-index 0000000..59432d7
---- /dev/null
-+++ b/arch/arm/boards/freescale-mx53-voipac/env/config
-@@ -0,0 +1,46 @@
-+#!/bin/sh
-+
-+global.hostname=imx53-voipac
-+eth0.serverip=
-+user=
-+
-+# use 'dhcp' to do dhcp in barebox and in kernel
-+# use 'none' if you want to skip kernel ip autoconfiguration
-+ip=dhcp
-+
-+# or set your networking parameters here
-+#eth0.ipaddr=a.b.c.d
-+#eth0.netmask=a.b.c.d
-+#eth0.gateway=a.b.c.d
-+#eth0.serverip=a.b.c.d
-+
-+# can be either 'nfs', 'tftp', 'nor' or 'nand'
-+kernel_loc=tftp
-+# can be either 'net', 'nor', 'nand' or 'initrd'
-+rootfs_loc=net
-+
-+# can be either 'jffs2' or 'ubifs'
-+rootfs_type=ubifs
-+rootfsimage=root-${global.hostname}.$rootfs_type
-+
-+kernelimage=zImage-${global.hostname}
-+#kernelimage=uImage-${global.hostname}
-+#kernelimage=Image-${global.hostname}
-+#kernelimage=Image-${global.hostname}.lzo
-+
-+if [ -n $user ]; then
-+	kernelimage="$user"-"$kernelimage"
-+	nfsroot="$eth0.serverip:/home/$user/nfsroot/${global.hostname}"
-+	rootfsimage="$user"-"$rootfsimage"
-+else
-+	nfsroot="$eth0.serverip:/path/to/nfs/root"
-+fi
-+
-+autoboot_timeout=3
-+
-+bootargs="console=ttymxc0,115200"
-+
-+disk_parts="256k(barebox)ro,128k(bareboxenv),4M(kernel),-(root)"
-+
-+# set a fancy prompt (if support is compiled in)
-+PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
+The board specific code enables UART0, NAND flash, Ethernet.
+The flash_header.c containing DCD configuration data is almost
+the same (except for one line) as the one in freescale-mx53-smd.
+
+
+Rostislav Lisovy (4):
+  i.mx53: voipac: Change machine type identifier
+  i.mx53: voipac: Add board specific + flash header constructing code
+  i.mx53: voipac: Add barebox environment configuration file
+  i.mx53: voipac: Modify Make- and config-files to enable building of
+    mx53-voipac
+
+ arch/arm/boards/Makefile                           |    1 +
+ arch/arm/boards/freescale-mx53-voipac/Makefile     |    3 +
+ arch/arm/boards/freescale-mx53-voipac/board.c      |  168 ++++++++++++++++++++
+ arch/arm/boards/freescale-mx53-voipac/env/config   |   46 ++++++
+ .../boards/freescale-mx53-voipac/flash_header.c    |  102 ++++++++++++
+ arch/arm/boards/freescale-mx53-voipac/lowlevel.c   |    9 ++
+ arch/arm/mach-imx/Kconfig                          |   10 ++
+ arch/arm/tools/mach-types                          |    2 +-
+ 8 files changed, 340 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/freescale-mx53-voipac/Makefile
+ create mode 100644 arch/arm/boards/freescale-mx53-voipac/board.c
+ create mode 100644 arch/arm/boards/freescale-mx53-voipac/env/config
+ create mode 100644 arch/arm/boards/freescale-mx53-voipac/flash_header.c
+ create mode 100644 arch/arm/boards/freescale-mx53-voipac/lowlevel.c
+
 -- 
 1.7.10.4
 
