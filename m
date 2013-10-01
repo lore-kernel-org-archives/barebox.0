@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQtLt-0000SU-0n
+ id 1VQtLt-0000SV-0o
  for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  1 Oct 2013 08:22:06 +0200
-Message-Id: <1380608528-26999-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  1 Oct 2013 08:22:04 +0200
+Message-Id: <1380608528-26999-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
 References: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,43 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] ARM: Ka-Ro TX28: Fix result checking of
- devfs_add_partition
+Subject: [PATCH 2/6] ARM: friendlyarm-tiny210: remove unused variable
 To: barebox@lists.infradead.org
-
-devfs_add_partition was changed to return the cdev. Fix the result
-checking accordingly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx28/tx28-stk5.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/boards/friendlyarm-tiny210/lowlevel.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
-index 2984d10..57cb0c3 100644
---- a/arch/arm/boards/karo-tx28/tx28-stk5.c
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -23,6 +23,7 @@
- #include <io.h>
- #include <net.h>
- #include <asm/sections.h>
-+#include <linux/err.h>
- #include <mach/imx-regs.h>
- #include <mach/clock.h>
- #include <mach/mci.h>
-@@ -344,8 +345,11 @@ static int register_persistent_environment(void)
- 	}
+diff --git a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+index 9676094..d980957 100644
+--- a/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
++++ b/arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+@@ -84,8 +84,6 @@ static __bare_init bool load_stage2(void *dest, size_t size)
  
- 	/* use the full partition as our persistent environment storage */
--	return devfs_add_partition("disk0.1", 0, cdev->size,
-+	cdev = devfs_add_partition("disk0.1", 0, cdev->size,
- 					DEVFS_PARTITION_FIXED, "env0");
-+	if (IS_ERR(cdev))
-+		return PTR_ERR(cdev);
-+	return 0;
- }
+ void __bare_init barebox_arm_reset_vector(void)
+ {
+-	uint32_t r;
+-
+ 	arm_cpu_lowlevel_init();
  
- void tx28_get_ethaddr(void)
+ #ifdef CONFIG_S3C_PLL_INIT
 -- 
 1.8.4.rc3
 
