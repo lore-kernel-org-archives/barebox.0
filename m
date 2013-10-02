@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRSMu-00050C-EA
- for barebox@lists.infradead.org; Wed, 02 Oct 2013 19:45:57 +0000
-Message-ID: <1380743134.7042.4.camel@polaris.local>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 02 Oct 2013 21:45:34 +0200
-In-Reply-To: <20130930081642.GA30088@pengutronix.de>
-References: <1380195624-22891-1-git-send-email-j.weitzel@phytec.de>
- <20130930081642.GA30088@pengutronix.de>
-Mime-Version: 1.0
+ id 1VRS89-0004Yw-IK
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 19:30:44 +0000
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Wed,  2 Oct 2013 21:30:08 +0200
+Message-Id: <1380742211-2731-2-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
+References: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +16,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i2c-omap: Update driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/4] am33xx_generic: convert from switch to if/else
+To: barebox@lists.infradead.org
 
-On Mon, 2013-09-30 at 10:16 +0200, Sascha Hauer wrote: 
-> On Thu, Sep 26, 2013 at 01:40:24PM +0200, Jan Weitzel wrote:
-> > The driver didn't work well with at24 driver. NACKS are lost.
-> > Errors are lost in isr due to the local variable err. Also we didn't wait for
-> > bus free in omap_i2c_xfer_msg.
-> > 
-> > Fix issues and get other improvements from linux kernel
-> > 
-> > Tested on OMAP4 and AM335x
-> > 
-> > Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
-> 
-> Applied, thanks
+The function am33xx_get_cpu_rev may be called before barebox_arm_entry(),
+so we need to avoid switch statements. One example is the BeagleBone,
+where we use this function to differenciate between the white and black
+variants.
 
-When booting my BeagleBone with this, I see:
-i2c-omap i2c-am33xx0: bus 0 rev84148224.11 at 100 kHz
+Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+---
+ arch/arm/mach-omap/am33xx_generic.c |   31 +++++++++++--------------------
+ 1 file changed, 11 insertions(+), 20 deletions(-)
 
-The revision entry looks strange, but the at24 EEPROM continues to be
-accessible. I've not yet looked at it in detail. Jan, do you have an
-idea?
-
-Regards,
-Jan
+diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
+index 3690ce1..251c8d4 100644
+--- a/arch/arm/mach-omap/am33xx_generic.c
++++ b/arch/arm/mach-omap/am33xx_generic.c
+@@ -43,30 +43,21 @@ void __noreturn reset_cpu(unsigned long addr)
+  * The significance of the CPU revision depends upon the cpu type.
+  * Latest known revision is considered default.
+  *
++ * This function is called before barebox_arm_entry(), so avoid switch
++ * statements.
++ *
+  * @return silicon version
+  */
+ u32 am33xx_get_cpu_rev(void)
+ {
+-	u32 version, retval;
+-
+-	version = (readl(AM33XX_IDCODE_REG) >> 28) & 0xF;
+-
+-	switch (version) {
+-	case 0:
+-		retval = AM335X_ES1_0;
+-		break;
+-	case 1:
+-		retval = AM335X_ES2_0;
+-		break;
+-	case 2:
+-		/*
+-		 * Fall through the default case.
+-		 */
+-	default:
+-		retval = AM335X_ES2_1;
+-	}
+-
+-	return retval;
++	u32 version = (readl(AM33XX_IDCODE_REG) >> 28) & 0xF;
++
++	if (version == 0)
++		return AM335X_ES1_0;
++	else if (version == 1)
++		return AM335X_ES2_0;
++	else
++		return AM335X_ES2_1;
+ }
+ 
+ /**
+-- 
+1.7.10.4
 
 
 _______________________________________________
