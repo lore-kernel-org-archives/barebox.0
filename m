@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRSey-0005Li-SI
- for barebox@lists.infradead.org; Wed, 02 Oct 2013 20:04:37 +0000
-Message-ID: <1380744254.7042.6.camel@polaris.local>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Wed, 02 Oct 2013 22:04:14 +0200
-In-Reply-To: <1380743142.14068.2.camel@tellur>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VRSoF-0005YS-A2
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 20:14:11 +0000
+Message-ID: <1380745018.14068.7.camel@tellur>
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed, 02 Oct 2013 22:16:58 +0200
+In-Reply-To: <1380744254.7042.6.camel@polaris.local>
 References: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
  <1380742211-2731-2-git-send-email-jlu@pengutronix.de>
- <1380743142.14068.2.camel@tellur>
+ <1380743142.14068.2.camel@tellur> <1380744254.7042.6.camel@polaris.local>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,32 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/4] am33xx_generic: convert from switch to if/else
-To: Lucas Stach <dev@lynxeye.de>
+To: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, 2013-10-02 at 21:45 +0200, Lucas Stach wrote: 
-> Am Mittwoch, den 02.10.2013, 21:30 +0200 schrieb Jan Luebbe:
-> > The function am33xx_get_cpu_rev may be called before barebox_arm_entry(),
-> > so we need to avoid switch statements. 
-> 
-> Uhm, could you please be more verbose on _why_ we need to avoid switch
-> statements at this stage? I might be running into the same failure with
-> Tegra at some point if there's a real issue.
-
-I believe the problem is that the table is accessed using absolute
-addresses. Before the call to barebox_arm_entry() barebox may be running
-at a different address.
-
-Regards,
-Jan
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+QW0gTWl0dHdvY2gsIGRlbiAwMi4xMC4yMDEzLCAyMjowNCArMDIwMCBzY2hyaWViIEphbiBMw7xi
+YmU6Cj4gT24gV2VkLCAyMDEzLTEwLTAyIGF0IDIxOjQ1ICswMjAwLCBMdWNhcyBTdGFjaCB3cm90
+ZTogCj4gPiBBbSBNaXR0d29jaCwgZGVuIDAyLjEwLjIwMTMsIDIxOjMwICswMjAwIHNjaHJpZWIg
+SmFuIEx1ZWJiZToKPiA+ID4gVGhlIGZ1bmN0aW9uIGFtMzN4eF9nZXRfY3B1X3JldiBtYXkgYmUg
+Y2FsbGVkIGJlZm9yZSBiYXJlYm94X2FybV9lbnRyeSgpLAo+ID4gPiBzbyB3ZSBuZWVkIHRvIGF2
+b2lkIHN3aXRjaCBzdGF0ZW1lbnRzLiAKPiA+IAo+ID4gVWhtLCBjb3VsZCB5b3UgcGxlYXNlIGJl
+IG1vcmUgdmVyYm9zZSBvbiBfd2h5XyB3ZSBuZWVkIHRvIGF2b2lkIHN3aXRjaAo+ID4gc3RhdGVt
+ZW50cyBhdCB0aGlzIHN0YWdlPyBJIG1pZ2h0IGJlIHJ1bm5pbmcgaW50byB0aGUgc2FtZSBmYWls
+dXJlIHdpdGgKPiA+IFRlZ3JhIGF0IHNvbWUgcG9pbnQgaWYgdGhlcmUncyBhIHJlYWwgaXNzdWUu
+Cj4gCj4gSSBiZWxpZXZlIHRoZSBwcm9ibGVtIGlzIHRoYXQgdGhlIHRhYmxlIGlzIGFjY2Vzc2Vk
+IHVzaW5nIGFic29sdXRlCj4gYWRkcmVzc2VzLiBCZWZvcmUgdGhlIGNhbGwgdG8gYmFyZWJveF9h
+cm1fZW50cnkoKSBiYXJlYm94IG1heSBiZSBydW5uaW5nCj4gYXQgYSBkaWZmZXJlbnQgYWRkcmVz
+cy4KPiAKQWgsIHNvIGl0J3MgcHJvZHVjaW5nIGEganVtcCB0YWJsZSB3aXRoIGFic29sdXRlIG9m
+ZnNldHMgZXZlbiBmb3IgdGhpcwpyYXRoZXIgdHJpdmlhbCBzd2l0Y2ggc3RhdGVtZW50PyBJIGNh
+biBzZWUgaG93IHRoaXMgd291bGQgY2F1c2UgaXNzdWVzLgpIb3cgYWJvdXQgdXNpbmcgIi1mbm8t
+anVtcC10YWJsZXMiIGZvciB0aGUgb2JqZWN0cyB0aGF0IGFyZSByZWZlcmVuY2VkCmluIHRoZSBl
+YXJseSBzdGFydHVwIGNvZGU/IFRoaXMgbWF5IGFsbG93IHlvdSB0byBkcm9wIHRoaXMgY29kZQp3
+b3JrYXJvdW5kLgoKUmVnYXJkcywKTHVjYXMKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
+bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
+YmFyZWJveAo=
