@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22b.google.com ([2a00:1450:4013:c01::22b])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRN05-0001Go-5J
- for barebox@lists.infradead.org; Wed, 02 Oct 2013 14:02:02 +0000
-Received: by mail-ea0-f171.google.com with SMTP id n15so418538ead.30
- for <barebox@lists.infradead.org>; Wed, 02 Oct 2013 07:01:38 -0700 (PDT)
-Message-ID: <1380722505.10004.7.camel@umadbro>
-From: Rostislav Lisovy <lisovy@gmail.com>
-Date: Wed, 02 Oct 2013 16:01:45 +0200
-In-Reply-To: <20131002101526.16ce3e06c6960b8610eac846@gmail.com>
-References: <1380663322-25733-1-git-send-email-lisovy@gmail.com>
- <1380663322-25733-3-git-send-email-lisovy@gmail.com>
- <20131002101526.16ce3e06c6960b8610eac846@gmail.com>
-Mime-Version: 1.0
+ id 1VRS89-0004Yu-IC
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 19:30:42 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1VRS7j-0002QU-4x
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 21:30:15 +0200
+Received: from jlu by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1VRS7j-0000uR-3Y
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 21:30:15 +0200
+From: Jan Luebbe <jlu@pengutronix.de>
+Date: Wed,  2 Oct 2013 21:30:07 +0200
+Message-Id: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +21,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/4] i.mx53: voipac: Add board specific + flash header
- constructing code
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, pisa@cmp.felk.cvut.cz
+Subject: BeagleBone fixes & cleanup
+To: barebox@lists.infradead.org
 
-Hello Antony;
-OK -- I should probably add my name (even if I did not change
-almost anything).
+Hi,
 
-Regards;
-Rostislav
+I've tried the recent changes in next on both BeagleBones.
 
+These are actual fixes:
+[PATCH 1/4] am33xx_generic: convert from switch to if/else
+[PATCH 3/4] arm: omap: am33xx_generic: fix DDR setup for DDR2
 
-On Wed, 2013-10-02 at 10:15 +0400, Antony Pavlov wrote:
-> > diff --git a/arch/arm/boards/freescale-mx53-voipac/flash_header.c
-> b/arch/arm/boards/freescale-mx53-voipac/flash_header.c
-> > new file mode 100644
-> > index 0000000..c9ae06c
-> > --- /dev/null
-> > +++ b/arch/arm/boards/freescale-mx53-voipac/flash_header.c
-> > @@ -0,0 +1,102 @@
-> > +/*
-> > + * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> This file is rather like freescale-mx53-smd/flash_header.c,
-> but please change copyright header.
+These are more 'nice to have':
+[PATCH 2/4] arm: mmu: be more verbose if ttb setup fails
+[PATCH 4/4] beaglebone: use most recent timings for white variant
 
-
+Regards,
+Jan
 
 _______________________________________________
 barebox mailing list
