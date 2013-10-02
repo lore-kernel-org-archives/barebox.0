@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VQtLx-0000Sx-91
- for barebox@lists.infradead.org; Tue, 01 Oct 2013 06:22:38 +0000
+ id 1VRHoY-0000Tm-PX
+ for barebox@lists.infradead.org; Wed, 02 Oct 2013 08:29:47 +0000
+Date: Wed, 2 Oct 2013 10:29:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  1 Oct 2013 08:22:08 +0200
-Message-Id: <1380608528-26999-7-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20131002082925.GI30088@pengutronix.de>
 References: <1380608528-26999-1-git-send-email-s.hauer@pengutronix.de>
+ <1380608528-26999-4-git-send-email-s.hauer@pengutronix.de>
+ <20131001074947.GI2548@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20131001074947.GI2548@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,45 +20,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] mips: bcm47xx: Fix compiler warning
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/6] ARM: mx23-evk: Fix result checking of
+ devfs_add_partition
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Fixes:
+On Tue, Oct 01, 2013 at 09:49:47AM +0200, Uwe Kleine-K=F6nig wrote:
+> Hello Sascha,
+> =
 
-arch/mips/mach-bcm47xx/include/mach/debug_ll.h: In function 'PUTC_LL':
-arch/mips/mach-bcm47xx/include/mach/debug_ll.h:33: warning: passing argument 1 of '__raw_readb' makes pointer from integer without a cast
-arch/mips/mach-bcm47xx/include/mach/debug_ll.h:34: warning: passing argument 2 of '__raw_writeb' makes pointer from integer without a cast
+> On Tue, Oct 01, 2013 at 08:22:05AM +0200, Sascha Hauer wrote:
+> > +	if (IS_ERR(cdev))
+> > +		return PTR_ERR(cdev);
+> > +	return 0;
+> In Linux you can use
+> =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/mips/mach-bcm47xx/include/mach/debug_ll.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> 	return PTR_ERR_OR_ZERO(cdev)
+> =
 
-diff --git a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-index 0703bb0..9927b4d 100644
---- a/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-+++ b/arch/mips/mach-bcm47xx/include/mach/debug_ll.h
-@@ -30,8 +30,10 @@
- 
- static __inline__ void PUTC_LL(char ch)
- {
--	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE));
--	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
-+	void *base = (void *)DEBUG_LL_UART_ADDR;
-+
-+	while (!(__raw_readb(base + lsr) & LSR_THRE));
-+	__raw_writeb(ch, base + rbr);
- }
- 
- #endif  /* __INCLUDE_ARCH_DEBUG_LL_H__ */
--- 
-1.8.4.rc3
+> instead. Didn't check if barebox already has that.
 
+I wasn't aware this exists. barebox currently doesn't have this, but it
+would be nice to introduce it.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
