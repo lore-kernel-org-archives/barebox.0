@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
+Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRdDt-0002DJ-DZ
+ id 1VRdDs-0002DF-Ri
  for barebox@lists.infradead.org; Thu, 03 Oct 2013 07:21:24 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 50E9510550C2
- for <barebox@lists.infradead.org>; Thu,  3 Oct 2013 09:21:00 +0200 (CEST)
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 8364F10550A3
+ for <barebox@lists.infradead.org>; Thu,  3 Oct 2013 09:20:59 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  3 Oct 2013 09:21:58 +0200
-Message-Id: <1380784920-30890-6-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  3 Oct 2013 09:21:54 +0200
+Message-Id: <1380784920-30890-2-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20131003071723.GP32444@ns203013.ovh.net>
  <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,49 +26,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/8] animeo_ip: update to use console_open/close for rs485
- crossed detection
+Subject: [PATCH 2/8] console: factorise function to get the console by name
 To: barebox@lists.infradead.org
+
+rename it to console_get_by_name
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- arch/arm/boards/animeo_ip/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ commands/loadxy.c       | 26 ++------------------------
+ common/console_common.c | 17 +++++++++++++++++
+ include/console.h       |  1 +
+ 3 files changed, 20 insertions(+), 24 deletions(-)
 
-diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-index 2fee1ff..e6d2745 100644
---- a/arch/arm/boards/animeo_ip/init.c
-+++ b/arch/arm/boards/animeo_ip/init.c
-@@ -343,8 +343,6 @@ static void animeo_ip_shutdown(void)
- 	 * and use it for decompress
- 	 */
- 	animeo_ip_shutdown_uart(IOMEM(AT91_DBGU + AT91_BASE_SYS));
--	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US0));
--	animeo_ip_shutdown_uart(IOMEM(AT91SAM9260_BASE_US1));
+diff --git a/commands/loadxy.c b/commands/loadxy.c
+index 7a91286..b90d2fd 100644
+--- a/commands/loadxy.c
++++ b/commands/loadxy.c
+@@ -57,28 +57,6 @@ static int console_change_speed(struct console_device *cdev, int baudrate)
+ 	return current_baudrate;
  }
  
- static int animeo_ip_console_init(void)
-@@ -397,8 +395,10 @@ static int animeo_ip_cross_detect_init(void)
- 		return -EINVAL;
+-static struct console_device *get_named_console(const char *cname)
+-{
+-	struct console_device *cdev;
+-	const char *target;
+-
+-	/*
+-	 * Assumption to have BOTH CONSOLE_STDIN AND STDOUT in the
+-	 * same output console
+-	 */
+-	for_each_console(cdev) {
+-		target = dev_id(&cdev->class_dev);
+-		if (strlen(target) != strlen(cname))
+-			continue;
+-		printf("RJK: looking for %s in console name %s\n",
+-		       cname, target);
+-		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
+-		    && !strcmp(cname, target))
+-			return cdev;
+-	}
+-	return NULL;
+-}
+-
+ /**
+  * @brief provide the loady(Y-Modem or Y-Modem/G) support
+  *
+@@ -112,7 +90,7 @@ static int do_loady(int argc, char *argv[])
+ 	}
  
- 	at91_set_gpio_input(AT91_PIN_PC16, 0);
-+	console_open(cs0);
- 	cs0->set_mode(cs0, CONSOLE_MODE_RS485);
- 	cs0->setbrg(cs0, 38400);
-+	console_open(cs1);
- 	cs1->set_mode(cs1, CONSOLE_MODE_RS485);
- 	cs1->setbrg(cs1, 38400);
+ 	if (cname)
+-		cdev = get_named_console(cname);
++		cdev = console_get_by_name(cname);
+ 	else
+ 		cdev = console_get_first_active();
+ 	if (!cdev) {
+@@ -180,7 +158,7 @@ static int do_loadx(int argc, char *argv[])
+ 	}
  
-@@ -426,6 +426,9 @@ err:
- 
- 	pr_info("rs485 ports %scrossed\n", crossed ? "" : "not ");
- 
-+	console_close(cs0);
-+	console_close(cs1);
+ 	if (cname)
+-		cdev = get_named_console(cname);
++		cdev = console_get_by_name(cname);
+ 	else
+ 		cdev = console_get_first_active();
+ 	if (!cdev) {
+diff --git a/common/console_common.c b/common/console_common.c
+index c3a3053..b02f525 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -202,3 +202,20 @@ struct console_device *console_get_first_active(void)
+ 	return NULL;
+ }
+ EXPORT_SYMBOL(console_get_first_active);
 +
- 	return 0;
- }
- late_initcall(animeo_ip_cross_detect_init);
++struct console_device *console_get_by_name(const char *cname)
++{
++	struct console_device *cdev;
++	const char *target;
++
++	for_each_console(cdev) {
++		target = dev_id(&cdev->class_dev);
++		if (strcmp(cname, target))
++			continue;
++		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
++			return cdev;
++		return NULL;
++	}
++	return NULL;
++}
++EXPORT_SYMBOL(console_get_by_name);
+diff --git a/include/console.h b/include/console.h
+index 2bf791c..b8c3fc9 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -66,5 +66,6 @@ void console_allow_input(bool val);
+ 
+ extern int barebox_loglevel;
+ struct console_device *console_get_first_active(void);
++struct console_device *console_get_by_name(const char *cname);
+ 
+ #endif
 -- 
 1.8.4.rc3
 
