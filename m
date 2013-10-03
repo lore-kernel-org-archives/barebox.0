@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 5.mo2.mail-out.ovh.net ([87.98.181.248]
+Received: from 4.mo2.mail-out.ovh.net ([87.98.172.75]
  helo=mo2.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRfSP-00056W-RP
- for barebox@lists.infradead.org; Thu, 03 Oct 2013 09:44:30 +0000
+ id 1VRfgO-0005Yy-UA
+ for barebox@lists.infradead.org; Thu, 03 Oct 2013 09:58:57 +0000
 Received: from mail616.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 56DF4DC0AB2
- for <barebox@lists.infradead.org>; Thu,  3 Oct 2013 11:44:06 +0200 (CEST)
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 0A00CDC250B
+ for <barebox@lists.infradead.org>; Thu,  3 Oct 2013 11:58:32 +0200 (CEST)
+Date: Thu, 3 Oct 2013 11:59:57 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  3 Oct 2013 11:45:29 +0200
-Message-Id: <1380793529-6141-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20131003095957.GQ32444@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,60 +20,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] macb: add support to read the mac address from register
+Subject: [PATCH 0/2 v2] add bpkfs support
 To: barebox@lists.infradead.org
 
-check the 4 mac address register and return at the first valid
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/net/macb.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+	v2 update comment and fix comment typo
+	and rebase next
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index b1f544b..d8523ce 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -458,9 +458,31 @@ static int macb_phy_write(struct mii_bus *bus, int addr, int reg, u16 value)
- static int macb_get_ethaddr(struct eth_device *edev, unsigned char *adr)
- {
- 	struct macb_device *macb = edev->priv;
-+	u32 bottom;
-+	u16 top;
-+	u8 addr[6];
-+	int i;
- 
- 	dev_dbg(macb->dev, "%s\n", __func__);
- 
-+	/* Check all 4 address register for vaild address */
-+	for (i = 0; i < 4; i++) {
-+		bottom = macb_or_gem_readl(macb, SA1B + i * 8);
-+		top = macb_or_gem_readl(macb, SA1T + i * 8);
-+
-+		addr[0] = bottom & 0xff;
-+		addr[1] = (bottom >> 8) & 0xff;
-+		addr[2] = (bottom >> 16) & 0xff;
-+		addr[3] = (bottom >> 24) & 0xff;
-+		addr[4] = top & 0xff;
-+		addr[5] = (top >> 8) & 0xff;
-+
-+		if (is_valid_ether_addr(addr)) {
-+			memcpy(adr, addr, sizeof(addr));
-+			return 0;
-+		}
-+	}
-+
- 	return -1;
- }
- 
--- 
-1.8.4.rc3
+The following changes since commit 705dbd7c795bbdfb448e1d0ace89d98cbceaaec1:
 
+  Merge branch 'for-next/tegra' into next (2013-10-02 11:07:14 +0200)
+
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git delivery/bpkfs
+
+for you to fetch changes up to 6edfa631c4aafd71d0508b94c7cdea87695dd492:
+
+  fs: add BPKFS support (2013-10-03 17:54:27 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      filetype: add Binary PacKage BPK type
+      fs: add BPKFS support
+
+ common/filetype.c  |   3 +
+ fs/Kconfig         |   5 ++
+ fs/Makefile        |   1 +
+ fs/bpkfs.c         | 514 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/bpkfs.h    |  68 +++++++++++++++
+ include/filetype.h |   1 +
+ 6 files changed, 592 insertions(+)
+ create mode 100644 fs/bpkfs.c
+ create mode 100644 include/bpkfs.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
