@@ -2,14 +2,14 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 15.mo4.mail-out.ovh.net ([91.121.62.11]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VRdDt-0002DH-DS
+ id 1VRdDt-0002DK-DW
  for barebox@lists.infradead.org; Thu, 03 Oct 2013 07:21:25 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 105AF10550D1
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 9C84210550D3
  for <barebox@lists.infradead.org>; Thu,  3 Oct 2013 09:21:00 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu,  3 Oct 2013 09:21:56 +0200
-Message-Id: <1380784920-30890-4-git-send-email-plagnioj@jcrosoft.com>
+Date: Thu,  3 Oct 2013 09:21:59 +0200
+Message-Id: <1380784920-30890-7-git-send-email-plagnioj@jcrosoft.com>
 In-Reply-To: <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
 References: <20131003071723.GP32444@ns203013.ovh.net>
  <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
@@ -26,86 +26,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] loadxy: use console_open/close
+Subject: [PATCH 7/8] serial: amba-pl011: add start and shutdown support
 To: barebox@lists.infradead.org
-
-so we can use non startup console
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/loadxy.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/serial/amba-pl011.c | 39 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 9 deletions(-)
 
-diff --git a/commands/loadxy.c b/commands/loadxy.c
-index b90d2fd..7cefba4 100644
---- a/commands/loadxy.c
-+++ b/commands/loadxy.c
-@@ -99,6 +99,13 @@ static int do_loady(int argc, char *argv[])
- 		return -ENODEV;
+diff --git a/drivers/serial/amba-pl011.c b/drivers/serial/amba-pl011.c
+index fc7723e..b7e01dd 100644
+--- a/drivers/serial/amba-pl011.c
++++ b/drivers/serial/amba-pl011.c
+@@ -147,22 +147,24 @@ static void pl011_rlcr(struct amba_uart_port *uart, u32 lcr)
  	}
- 
-+	rcode = console_open(cdev);
-+	if (rcode) {
-+		printf("%s: can not open console %s\n",
-+		       argv[0], cname ? cname : "default");
-+		return rcode;
-+	}
-+
- 	current_baudrate = console_change_speed(cdev, load_baudrate);
- 	printf("## Ready for binary (ymodem) download at %d bps...\n",
- 	       load_baudrate ? load_baudrate : current_baudrate);
-@@ -115,6 +122,8 @@ static int do_loady(int argc, char *argv[])
- 
- 	console_change_speed(cdev, current_baudrate);
- 
-+	console_close(cdev);
-+
- 	return rcode;
  }
  
-@@ -167,6 +176,13 @@ static int do_loadx(int argc, char *argv[])
- 		return -ENODEV;
- 	}
+-int pl011_init_port (struct console_device *cdev)
++static void pl011_shutdown(struct console_device *cdev)
+ {
+ 	struct amba_uart_port *uart = to_amba_uart_port(cdev);
  
-+	rcode = console_open(cdev);
-+	if (rcode) {
-+		printf("%s: can not open console %s\n",
-+		       argv[0], cname ? cname : "default");
-+		return rcode;
-+	}
+-	/*
+-	 ** First, disable everything.
+-	 */
+ 	writel(0x0, uart->base + UART011_CR);
+ 
++	clk_disable(uart->clk);
++}
 +
- 	/* Load Defaults */
- 	if (!output_file)
- 		output_file = DEF_FILE;
-@@ -175,7 +191,8 @@ static int do_loadx(int argc, char *argv[])
- 	ofd = open(output_file, open_mode);
- 	if (ofd < 0) {
- 		perror(argv[0]);
--		return 3;
-+		rcode = 3;
-+		goto err;
- 	}
- 	/* Seek to the right offset */
- 	if (offset) {
-@@ -184,7 +201,8 @@ static int do_loadx(int argc, char *argv[])
- 			close(ofd);
- 			ofd = 0;
- 			perror(argv[0]);
--			return 4;
-+			rcode = 4;
-+			goto err;
- 		}
- 	}
- 
-@@ -199,6 +217,9 @@ static int do_loadx(int argc, char *argv[])
- 	}
- 	console_change_speed(cdev, current_baudrate);
- 
-+err:
-+	console_close(cdev);
++static int pl011_startup(struct console_device *cdev)
++{
++	struct amba_uart_port *uart = to_amba_uart_port(cdev);
 +
- 	return rcode;
+ 	/*
+ 	 * Try to enable the clock producer.
+ 	 */
+ 	clk_enable(uart->clk);
+ 
+-	uart->uartclk = clk_get_rate(uart->clk);
+-
+ 	/*
+ 	 ** Set the UART to be 8 bits, 1 stop bit, no parity, fifo enabled.
+ 	 */
+@@ -177,6 +179,25 @@ int pl011_init_port (struct console_device *cdev)
+ 	return 0;
  }
+ 
++static void pl011_port_init(struct console_device *cdev)
++{
++	struct amba_uart_port *uart = to_amba_uart_port(cdev);
++
++	/*
++	 ** First, disable everything.
++	 */
++	pl011_shutdown(cdev);
++
++	/*
++	 * Try to enable the clock producer.
++	 */
++	clk_enable(uart->clk);
++
++	uart->uartclk = clk_get_rate(uart->clk);
++
++	clk_disable(uart->clk);
++}
++
+ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ {
+ 	struct amba_uart_port *uart;
+@@ -192,14 +213,14 @@ static int pl011_probe(struct amba_device *dev, const struct amba_id *id)
+ 
+ 	cdev = &uart->uart;
+ 	cdev->dev = &dev->dev;
++	cdev->startup = pl011_startup;
++	cdev->shutdown = pl011_shutdown;
+ 	cdev->tstc = pl011_tstc;
+ 	cdev->putc = pl011_putc;
+ 	cdev->getc = pl011_getc;
+ 	cdev->setbrg = pl011_setbaudrate;
+ 
+-	pl011_init_port(cdev);
+-
+-	/* Enable UART */
++	pl011_port_init(cdev);
+ 
+ 	console_register(cdev);
  
 -- 
 1.8.4.rc3
