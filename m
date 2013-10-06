@@ -1,15 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VSmdi-00061j-Kn
- for barebox@lists.infradead.org; Sun, 06 Oct 2013 11:36:47 +0000
-Date: Sun, 6 Oct 2013 13:36:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131006113625.GQ30088@pengutronix.de>
-References: <1380793529-6141-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VStDE-000224-Jr
+ for barebox@lists.infradead.org; Sun, 06 Oct 2013 18:37:53 +0000
+Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 75272DC2027
+ for <barebox@lists.infradead.org>; Sun,  6 Oct 2013 20:37:27 +0200 (CEST)
+Date: Sun, 6 Oct 2013 20:38:56 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131006183856.GS32444@ns203013.ovh.net>
+References: <20131003071723.GP32444@ns203013.ovh.net>
+ <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
+ <1380784920-30890-2-git-send-email-plagnioj@jcrosoft.com>
+ <20131006112454.GO30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1380793529-6141-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20131006112454.GO30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,75 +29,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] macb: add support to read the mac address from
- register
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/8] console: factorise function to get the console by name
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 03, 2013 at 11:45:29AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> check the 4 mac address register and return at the first valid
+On 13:24 Sun 06 Oct     , Sascha Hauer wrote:
+> On Thu, Oct 03, 2013 at 09:21:54AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > rename it to console_get_by_name
+> > 
+> > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > ---
+> > +struct console_device *console_get_by_name(const char *cname)
+> > +{
+> > +	struct console_device *cdev;
+> > +	const char *target;
+> > +
+> > +	for_each_console(cdev) {
+> > +		target = dev_id(&cdev->class_dev);
+> > +		if (strcmp(cname, target))
+> > +			continue;
+> > +		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
+> > +			return cdev;
+> > +		return NULL;
+> > +	}
+> > +	return NULL;
+> > +}
+> > +EXPORT_SYMBOL(console_get_by_name);
 > 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> I think this function should return the console regardless of whether
+> it's active or not. This makes the console_get_by_name_flags you
+> introduce later unnecessary. Also the loadxyz code shouldn't care if
+> it's activated but instead just activate the console if necessary.
 
-Applied, thanks
+agreed that's why I change this in patch 5
+as now the loadxyz just check if the cdev support input and output
+and not if active or not
 
-Sascha
+but first I factorise it in this patch to do not 2 stuff at a time
+I hate doing 2 stuff in the same patch impossible to bisect
 
-> ---
->  drivers/net/macb.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+Best Regards,
+J.
 > 
-> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-> index b1f544b..d8523ce 100644
-> --- a/drivers/net/macb.c
-> +++ b/drivers/net/macb.c
-> @@ -458,9 +458,31 @@ static int macb_phy_write(struct mii_bus *bus, int addr, int reg, u16 value)
->  static int macb_get_ethaddr(struct eth_device *edev, unsigned char *adr)
->  {
->  	struct macb_device *macb = edev->priv;
-> +	u32 bottom;
-> +	u16 top;
-> +	u8 addr[6];
-> +	int i;
->  
->  	dev_dbg(macb->dev, "%s\n", __func__);
->  
-> +	/* Check all 4 address register for vaild address */
-> +	for (i = 0; i < 4; i++) {
-> +		bottom = macb_or_gem_readl(macb, SA1B + i * 8);
-> +		top = macb_or_gem_readl(macb, SA1T + i * 8);
-> +
-> +		addr[0] = bottom & 0xff;
-> +		addr[1] = (bottom >> 8) & 0xff;
-> +		addr[2] = (bottom >> 16) & 0xff;
-> +		addr[3] = (bottom >> 24) & 0xff;
-> +		addr[4] = top & 0xff;
-> +		addr[5] = (top >> 8) & 0xff;
-> +
-> +		if (is_valid_ether_addr(addr)) {
-> +			memcpy(adr, addr, sizeof(addr));
-> +			return 0;
-> +		}
-> +	}
-> +
->  	return -1;
->  }
->  
+> Sascha
+> 
 > -- 
-> 1.8.4.rc3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
