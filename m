@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VSmJK-0005mp-9s
- for barebox@lists.infradead.org; Sun, 06 Oct 2013 11:15:42 +0000
-Date: Sun, 6 Oct 2013 13:15:20 +0200
+ id 1VSmSa-0005ut-HV
+ for barebox@lists.infradead.org; Sun, 06 Oct 2013 11:25:17 +0000
+Date: Sun, 6 Oct 2013 13:24:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131006111520.GN30088@pengutronix.de>
-References: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
+Message-ID: <20131006112454.GO30088@pengutronix.de>
+References: <20131003071723.GP32444@ns203013.ovh.net>
+ <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
+ <1380784920-30890-2-git-send-email-plagnioj@jcrosoft.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1380742211-2731-1-git-send-email-jlu@pengutronix.de>
+In-Reply-To: <1380784920-30890-2-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,25 +24,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: BeagleBone fixes & cleanup
-To: Jan Luebbe <jlu@pengutronix.de>
+Subject: Re: [PATCH 2/8] console: factorise function to get the console by name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Oct 02, 2013 at 09:30:07PM +0200, Jan Luebbe wrote:
-> Hi,
+On Thu, Oct 03, 2013 at 09:21:54AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> rename it to console_get_by_name
 > 
-> I've tried the recent changes in next on both BeagleBones.
-> 
-> These are actual fixes:
-> [PATCH 1/4] am33xx_generic: convert from switch to if/else
-> [PATCH 3/4] arm: omap: am33xx_generic: fix DDR setup for DDR2
-> 
-> These are more 'nice to have':
-> [PATCH 2/4] arm: mmu: be more verbose if ttb setup fails
-> [PATCH 4/4] beaglebone: use most recent timings for white variant
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> ---
+> +struct console_device *console_get_by_name(const char *cname)
+> +{
+> +	struct console_device *cdev;
+> +	const char *target;
+> +
+> +	for_each_console(cdev) {
+> +		target = dev_id(&cdev->class_dev);
+> +		if (strcmp(cname, target))
+> +			continue;
+> +		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
+> +			return cdev;
+> +		return NULL;
+> +	}
+> +	return NULL;
+> +}
+> +EXPORT_SYMBOL(console_get_by_name);
 
-I applied all for master now. Anyway, Jan, could you give the
--fno-jump-labels thingy a test? Maybe we want to switch to this later.
+I think this function should return the console regardless of whether
+it's active or not. This makes the console_get_by_name_flags you
+introduce later unnecessary. Also the loadxyz code shouldn't care if
+it's activated but instead just activate the console if necessary.
 
 Sascha
 
