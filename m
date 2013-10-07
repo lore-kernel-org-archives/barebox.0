@@ -1,22 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VStEk-00024c-AC
- for barebox@lists.infradead.org; Sun, 06 Oct 2013 18:39:26 +0000
-Received: from mail416.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id DCD92DC0B62
- for <barebox@lists.infradead.org>; Sun,  6 Oct 2013 20:39:05 +0200 (CEST)
-Date: Sun, 6 Oct 2013 20:40:37 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131006184037.GT32444@ns203013.ovh.net>
-References: <20131003171726.096b0daa@archvile>
- <20131003192349.GR32444@ns203013.ovh.net>
- <20131004091739.4debe909@archvile>
- <20131006103949.GL30088@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VT4E6-0001Sm-UM
+ for barebox@lists.infradead.org; Mon, 07 Oct 2013 06:23:32 +0000
+Date: Mon, 7 Oct 2013 08:23:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131007062304.GR30088@pengutronix.de>
+References: <20131003071723.GP32444@ns203013.ovh.net>
+ <1380784920-30890-1-git-send-email-plagnioj@jcrosoft.com>
+ <1380784920-30890-2-git-send-email-plagnioj@jcrosoft.com>
+ <20131006112454.GO30088@pengutronix.de>
+ <20131006183856.GS32444@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131006103949.GL30088@pengutronix.de>
+In-Reply-To: <20131006183856.GS32444@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,95 +26,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: /dev/disk0 vs /dev/mmc0
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, David Jander <david.jander@protonic.nl>
+Subject: Re: [PATCH 2/8] console: factorise function to get the console by name
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 12:39 Sun 06 Oct     , Sascha Hauer wrote:
-> On Fri, Oct 04, 2013 at 09:17:39AM +0200, David Jander wrote:
-> > 
-> > Hi Jean-Christophe,
-> > 
-> > On Thu, 3 Oct 2013 21:23:49 +0200
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
-> > 
-> > > On 17:17 Thu 03 Oct     , David Jander wrote:
-> > > > 
-> > > > Hi all,
-> > > > 
-> > > > I am following barebox git closely and noticed a change recently: Device
-> > > > names for MMC (MCI) and USB mass-storage devices have changed to the
-> > > > generic "/dev/diskX". Earlier an MMC device was named "/dev/mmc0".
-> > > > Unfortunately this change breaks my /env/bin/init script and I don't know
-> > > > how to fix it. I relied on the existence of certain devices to distinguish
-> > > > between USB mass-storage device presence and/or SD-card presence. How can
-> > > > I do this with this new device naming convention?
-> > > > 
-> > > > I used to have these kind of checks in /env/bin/init:
-> > > > 
-> > > > # Mount MMC (first partition) if available
-> > > > if [ -e "/dev/mmc0.0" ]; then
-> > > >         mkdir /mmc
-> > > >         mount /dev/mmc0.0 /mmc
-> > > >         if [ -e "/mmc/uImage" ]; then
-> > > >                 boot_target="mmc"
-> > > >         fi
-> > > > fi
-> > > > 
-> > > > Booting like this is only allowed from MMC and not from USB, and now it
-> > > > seems impossible to distinguish between them anymore.
-> > > > 
-> > > > Btw, why was this changed in the first place?
+On Sun, Oct 06, 2013 at 08:38:56PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 13:24 Sun 06 Oct     , Sascha Hauer wrote:
+> > On Thu, Oct 03, 2013 at 09:21:54AM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > > rename it to console_get_by_name
 > > > 
-> > > now you an use devname parameter to specify a specifc name for mmc
+> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> > > ---
+> > > +struct console_device *console_get_by_name(const char *cname)
+> > > +{
+> > > +	struct console_device *cdev;
+> > > +	const char *target;
+> > > +
+> > > +	for_each_console(cdev) {
+> > > +		target = dev_id(&cdev->class_dev);
+> > > +		if (strcmp(cname, target))
+> > > +			continue;
+> > > +		if ((cdev->f_active & (CONSOLE_STDIN | CONSOLE_STDOUT))
+> > > +			return cdev;
+> > > +		return NULL;
+> > > +	}
+> > > +	return NULL;
+> > > +}
+> > > +EXPORT_SYMBOL(console_get_by_name);
 > > 
-> > My board is fully device-tree based, but your suggestion pointed me in the
-> > right direction: the "alias" section seems to have a whole new meaning now ;-)
-> > I hope this won't interfere with Linux, since I intend to use a single DT for
-> > both Barebox _and_ Linux.
+> > I think this function should return the console regardless of whether
+> > it's active or not. This makes the console_get_by_name_flags you
+> > introduce later unnecessary. Also the loadxyz code shouldn't care if
+> > it's activated but instead just activate the console if necessary.
 > 
-> It doesn't interfere with the kernel. The kernel currently ignores this
-> aliases. There are patches floating to let the kernel honor this
-> aliases, but then they should simply have the same effect as they have
-> in barebox.
-> 
-> > 
-> > > not all the drivers have the platform_data update to support but it will be
-> > > easy enough to add it
-> > > 
-> > > I recently add this to atmel_mci and animeo_ip board
-> > 
-> > Didn't find that one... probably not in mainline yet? Never mind.
-> > 
-> > > and I recomment you to switch to defaultenv-2 for this
-> > > 
-> > > and use boot sequence this will simplify your env hugely
-> > 
-> > Although I agree defaultenv-2 looks pretty cool and will add a lot of
-> > convenience and flexibility for complex systems, IMHO it will not simplify the
-> > env of this board the least bit :-)
-> > In fact, on a simple embedded system that has to have a strictly predefined
-> > boot-behavior with a few simple rules, it is overly complex and if an
-> > "outsider" ever needs to understand how it works, that can be a bit of a
-> > problem (the default boot path probably going through some 5 different
-> > scripts with lots of compound config-variables).
-> 
-> At least I recently replaced the boot script with a command (not yet
-> mainline), so there are fewer scripts involved.
+> agreed that's why I change this in patch 5
+> as now the loadxyz just check if the cdev support input and output
+> and not if active or not
 
-and I hope we can kill the old defaultenv soon
-for my board I just need to resend the bootp support
+Ok, I somewhat misread the patch. I still think though that a function
 
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+struct console_device *console_get_by_name(const char *cname, int flags);
+
+is a bit unclear. This function should either return the cdev by name
+*or* check the flags, but not both,
+
+The loadxy code now ends up with:
+
+	if (cname)
+		cdev = console_get_by_name(cname, CONSOLE_STDIN & CONSOLE_STDOUT);
+	else
+		cdev = console_get_first_active();
+
+So if cname is given you explicitly ask for a console capable of input
+*and* output. If not, you ask for the first actve console, that is the
+first console which has input *or* output activated.
+
+The loadxy code should rather look like:
+
+	if (cname)
+		cdev = console_get_by_name(cname);
+	else
+		cdev = console_get_first_active();
+
+	if (!cdev)
+		barf_and_bail_out;
+
+	if (!console_can_do_input(cdev) || !console_can_do_output())
+		barf_and_bail_out;
+
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
