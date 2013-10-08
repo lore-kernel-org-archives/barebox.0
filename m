@@ -1,25 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x22f.google.com ([2a00:1450:4013:c01::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VTYnn-0002DA-D4
- for barebox@lists.infradead.org; Tue, 08 Oct 2013 15:02:23 +0000
-Message-ID: <1381244289.4093.120.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Tue, 08 Oct 2013 16:58:09 +0200
-In-Reply-To: <20131008164958.56ce43b4@archvile>
-References: <20131003171726.096b0daa@archvile>
- <20131003192349.GR32444@ns203013.ovh.net>
- <20131004091739.4debe909@archvile> <20131006103949.GL30088@pengutronix.de>
- <20131007083203.7aa17d5b@archvile> <20131007064111.GT30088@pengutronix.de>
- <20131007115735.7301cc65@archvile> <20131007201936.GW30088@pengutronix.de>
- <20131008090229.051cd853@archvile>
- <1381218305.4093.54.camel@weser.hi.pengutronix.de>
- <20131008111327.681f1149@archvile>
- <1381225164.4093.77.camel@weser.hi.pengutronix.de>
- <20131008154748.7d9d6752@archvile>
- <1381241476.4093.114.camel@weser.hi.pengutronix.de>
- <20131008164958.56ce43b4@archvile>
-Mime-Version: 1.0
+ id 1VTfO0-0007fY-RQ
+ for barebox@lists.infradead.org; Tue, 08 Oct 2013 22:04:13 +0000
+Received: by mail-ea0-f175.google.com with SMTP id m14so4243289eaj.6
+ for <barebox@lists.infradead.org>; Tue, 08 Oct 2013 15:03:49 -0700 (PDT)
+From: Rostislav Lisovy <lisovy@gmail.com>
+Date: Wed,  9 Oct 2013 00:03:35 +0200
+Message-Id: <1381269816-12830-1-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,44 +16,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: /dev/disk0 vs /dev/mmc0
-To: David Jander <david.jander@protonic.nl>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2] Add support for Voipac X53-DMM-668 module
+To: barebox@lists.infradead.org
+Cc: Rostislav Lisovy <lisovy@gmail.com>, pisa@cmp.felk.cvut.cz
 
-Am Dienstag, den 08.10.2013, 16:49 +0200 schrieb David Jander:
-[...]
-> 
-> For DRAM clock scaling, only the clock divider or PLL should ever be
-> changed. Any other parameters should stay the same. If this has really been
-> done, I'd like to see it...
-> DRAM calibration settings have to do with signal propagation on the PCB. That
-> has nothing to do with clock speeds or -settings.
-> 
-Take a look at the Tegra20 Colibri in the mainline kernel. The DT there
-contains optimized timing register settings for every DRAM clock
-frequency. Those are loaded into a shadow registerset in the
-memory-controller that latches the settings into the live registers at
-the same moment the clock divider is changed.
+This patchset adds support for Voipac X53-DMM-668 module equipped
+with i.mx53 CPU. More info about the module may be found at:
+http://www.voipac.com/#X53-DMM-668
 
-My understanding of the docs says a similar thing thing is possible on
-i.MX6, although no one has done such a thing there up until now.
+The board specific code enables UART0, NAND flash, Ethernet.
 
-> Ok, now can we both please go back to work?
+Changes since v1:
+  Use gpio_request()
+  Use already defined VMX53 MACH_TYPE
+  A bit of code refactoring
 
-Absolutely.
+Rostislav Lisovy (1):
+  i.MX53: vmx53: Add support for Voipac X53-DMM-668 (aka vmx53) module
 
-Regards,
-Lucas
+ arch/arm/boards/Makefile                           |    1 +
+ arch/arm/boards/freescale-mx53-vmx53/Makefile      |    3 +
+ arch/arm/boards/freescale-mx53-vmx53/board.c       |  183 ++++++++++++++++++++
+ arch/arm/boards/freescale-mx53-vmx53/env/config    |   46 +++++
+ .../arm/boards/freescale-mx53-vmx53/flash_header.c |  103 +++++++++++
+ arch/arm/boards/freescale-mx53-vmx53/lowlevel.c    |    9 +
+ arch/arm/mach-imx/Kconfig                          |    9 +
+ 7 files changed, 354 insertions(+)
+ create mode 100644 arch/arm/boards/freescale-mx53-vmx53/Makefile
+ create mode 100644 arch/arm/boards/freescale-mx53-vmx53/board.c
+ create mode 100644 arch/arm/boards/freescale-mx53-vmx53/env/config
+ create mode 100644 arch/arm/boards/freescale-mx53-vmx53/flash_header.c
+ create mode 100644 arch/arm/boards/freescale-mx53-vmx53/lowlevel.c
 
 -- 
-Pengutronix e.K.                           | Lucas Stach                 |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
 
 
 _______________________________________________
