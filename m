@@ -1,26 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from protonic.xs4all.nl ([213.84.116.84])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VTYcC-0001qT-1y
- for barebox@lists.infradead.org; Tue, 08 Oct 2013 14:50:25 +0000
-Date: Tue, 8 Oct 2013 16:49:58 +0200
-From: David Jander <david.jander@protonic.nl>
-Message-ID: <20131008164958.56ce43b4@archvile>
-In-Reply-To: <1381241476.4093.114.camel@weser.hi.pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VTYnn-0002DA-D4
+ for barebox@lists.infradead.org; Tue, 08 Oct 2013 15:02:23 +0000
+Message-ID: <1381244289.4093.120.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Tue, 08 Oct 2013 16:58:09 +0200
+In-Reply-To: <20131008164958.56ce43b4@archvile>
 References: <20131003171726.096b0daa@archvile>
  <20131003192349.GR32444@ns203013.ovh.net>
- <20131004091739.4debe909@archvile>
- <20131006103949.GL30088@pengutronix.de>
- <20131007083203.7aa17d5b@archvile>
- <20131007064111.GT30088@pengutronix.de>
- <20131007115735.7301cc65@archvile>
- <20131007201936.GW30088@pengutronix.de>
+ <20131004091739.4debe909@archvile> <20131006103949.GL30088@pengutronix.de>
+ <20131007083203.7aa17d5b@archvile> <20131007064111.GT30088@pengutronix.de>
+ <20131007115735.7301cc65@archvile> <20131007201936.GW30088@pengutronix.de>
  <20131008090229.051cd853@archvile>
  <1381218305.4093.54.camel@weser.hi.pengutronix.de>
  <20131008111327.681f1149@archvile>
  <1381225164.4093.77.camel@weser.hi.pengutronix.de>
  <20131008154748.7d9d6752@archvile>
  <1381241476.4093.114.camel@weser.hi.pengutronix.de>
+ <20131008164958.56ce43b4@archvile>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -35,233 +33,40 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: /dev/disk0 vs /dev/mmc0
-To: Lucas Stach <l.stach@pengutronix.de>
+To: David Jander <david.jander@protonic.nl>
 Cc: barebox@lists.infradead.org
 
-On Tue, 08 Oct 2013 16:11:16 +0200
-Lucas Stach <l.stach@pengutronix.de> wrote:
-
-> Am Dienstag, den 08.10.2013, 15:47 +0200 schrieb David Jander:
-> > Dear Lucas,
-> > 
-> > On Tue, 08 Oct 2013 11:39:24 +0200
-> > Lucas Stach <l.stach@pengutronix.de> wrote:
-> > 
-> > > Am Dienstag, den 08.10.2013, 11:13 +0200 schrieb David Jander:
-> > > [...]
-> > > > > > You are right. Sorry for the confusion. There were aliases in
-> > > > > > barebox's version of imx53.dtsi which went missing somehow in my
-> > > > > > tree. I have been merging stuff from mainline Linux....
-> > > > > > That leads me to the question: What is the intended relationship
-> > > > > > between barebox and Linux kernel DTS files? Which one is supposed
-> > > > > > to be the "master" or "upstream" version? Aren't they supposed to
-> > > > > > be kept in sync somehow? At least the basic SoC-specific .dtsi
-> > > > > > files?
-> > > > > > 
-> > > > > Missing other options we regard the Linux DTs as the upstream.
-> > > > > Ideally DTs should be stored in a separate repo, so they don't get
-> > > > > broken unnecessarily.
-> > > > > 
-> > > > > We will try to keep the Barebox DTs in sync with Linux as much as
-> > > > > possible. But even then there is no guarantee that Barebox and Linux
-> > > > > DTs don't drift away from each other over time.
-> > > > > If a binding gets broken (let's hope that everyone gets their act
-> > > > > together and don't do this anymore), it will require code changes and
-> > > > > maintenance work to get things in sync again.
-> > > > > 
-> > > > > Another real-life use-case where you might end up with different DTs
-> > > > > is if you update your Linux kernel more regularly than the Barebox
-> > > > > on your device. So please if ever possible don't boot the Linux
-> > > > > kernel with the builtin Barebox DT, but design your boot concept in
-> > > > > a way that you always deliver a DTB fitting your kernel.
-> > > > 
-> > > > Our boot-scheme checks for a DTB on the boot-medium. If it finds one
-> > > > matching the board, it is used, otherwise it boots with barebox's
-> > > > built-in DTB, and that should be the default situation, unless it
-> > > > becomes necessary to overrule the internal DTB for whatever
-> > > > regrettable reason.
-> > > > 
-> > > Yeah that's the conclusion you may be inclined to take if you try to
-> > > live in an ideal world. (Including a dot-shaped earth in a vacuum.)
-> > 
-> > Aren't we living on a dot-shaped earth in a vacuum?
-> > 
-> > > Experience with the device tree shows that there are a lot more of those
-> > > regrettable reasons than one might imagine. So in order to get around
-> > > all those real world problems always boot your kernel with a devicetree
-> > > matching exactly that kernel version. Take this as a well-meaning advise
-> > > from someone who hit the hard wall of the real-world device tree more
-> > > than one.
-> > 
-> > Don't get me wrong, I have had enough cases of device-trees changing and
-> > kernels being incompatible with them. I have hit the hard wall enough times
-> > already, but that doesn't mean it hasn't always been for pretty regrettable
-> > reasons. Open Firmware and Device-Trees are both good ideas and we are not
-> > using them (yet) as they are supposed to be used. Saying that we shouldn't
-> > just because we haven't been able to make it work as intended sounds more
-> > like an excuse to me than a hard fact.... ;-)
-> > Make the problem be the exception, not the rule.
+Am Dienstag, den 08.10.2013, 16:49 +0200 schrieb David Jander:
+[...]
 > 
-> Without doubt we all should always treat DTs the way we would like them
-> to be used in the ideal case, but don't depend on those assumptions for
-> your real products.
+> For DRAM clock scaling, only the clock divider or PLL should ever be
+> changed. Any other parameters should stay the same. If this has really been
+> done, I'd like to see it...
+> DRAM calibration settings have to do with signal propagation on the PCB. That
+> has nothing to do with clock speeds or -settings.
 > 
-> Using the builtin DTB normally, but having a way to override it when
-> needed sounds like a reasonable compromise to make.
+Take a look at the Tegra20 Colibri in the mainline kernel. The DT there
+contains optimized timing register settings for every DRAM clock
+frequency. Those are loaded into a shadow registerset in the
+memory-controller that latches the settings into the live registers at
+the same moment the clock divider is changed.
 
-Thanks.
+My understanding of the docs says a similar thing thing is possible on
+i.MX6, although no one has done such a thing there up until now.
 
-> > > > I have had strong discussions (almost flame-war) long time ago on alkml
-> > > > about the issue of hardware initialization. IMNSHO, hardware
-> > > > initialization that has to do with the electrical layout of the board
-> > > > (PAD settings, drive-strength, etc...) must always be done in the
-> > > > boot-loader. Back in the time where there was no DT for ARM, Linux
-> > > > kernel board support code was a bloody mess with this sort of HW
-> > > > initialization everywhere, and everywhere done differently. Only the
-> > > > hardware designer know what drive-strength and other PAD settings need
-> > > > to be chosen for each PAD. That is where your design is based on.
-> > > > Kernel (-developers) do not know, and should not need to care. Now
-> > > > there is this "invention" of putting all this information in the DT.
-> > > > This actually seems like a good compromise between what I said above
-> > > > and the fact that the kernel sometimes needs to reconfigure PADs due
-> > > > to PM, pluggable devices and such. But still the knowledge about PAD
-> > > > settings (and what hardware the board happens to have for that matter)
-> > > > belongs to the boot-loader. Having more than one source for this is
-> > > > dangerous.
-> > > > 
-> > > No, that is utterly wrong. Linux should always know everything about
-> > > your hardware and _not_ expect anything to be set up by the bootloader.
-> > 
-> > Huh? AFAIK, it has never been like that. PC's have BIOS (or UEFI firmware
-> > for that matter) that takes care of signal integrity setup of the PC's
-> > chipset, motherboard, CPU and RAM. Next, do you want to leave DDR timing
-> > setup to the Linux kernel?? You are kidding, right?
-> > 
-> And those BIOS settings are so regularly wrong that the kernel has to
-> ship a lot of cludge just to work around or correct that bootloader
-> setup.
+> Ok, now can we both please go back to work?
 
-I don't think a BIOS has ever been wrong about chipset drive-strength and
-slew-rate settings in a way the Linux kernel could do anything about it....
+Absolutely.
 
-> I agree that the bootloader should set up things needed for the boot,
-> but in many cases the kernel needs the same knowledge anyway. Your DDR
-> timing is a pretty prime example for this. The bootloader has to set it
-> up initially, but the Linux kernel has to change timings dynamically
-> (including calibration in some situations) when doing dynamic memory
-> clock scaling.
-
-For DRAM clock scaling, only the clock divider or PLL should ever be
-changed. Any other parameters should stay the same. If this has really been
-done, I'd like to see it...
-DRAM calibration settings have to do with signal propagation on the PCB. That
-has nothing to do with clock speeds or -settings.
-
-> CPU bringup is the same matter, Linux needs to know how to do it anyway
-> as we need it for CPU hotplug when saving power.
-
-(Un)fortunately we don't have ACPI on ARM ;-)
-But then again, CPU bringup is still very different from PAD settings.
-
-> Just because there is a real small amount of static setup that could be
-> done exclusively in the bootloader, doesn't mean we should always force
-> it down into the bootloader and tell Linux to depend on it.
-
-Yes we should! This "real small" amount as you call it is something you can't
-understand even if you had all the documentation of the chips placed on the
-board, because it is part of the total hardware design, including the board
-layout. And sometimes a crucial part of it I might add. The most ugly thing is
-that other settings might even work correctly 95% of the time, so it can be
-potentially very hard to find a bug related to "thinking I know what I am
-doing by defining some seemingly arbitrary drive-strength settings for this
-PAD", or even copying settings from a complete other hardware design based on
-the same chip.
-
-Things like this in a dtsi file like imx53.dtsi:
-
-	pinctrl_fec_1: fecgrp-1 {
-		fsl,pins = <
-			MX53_PAD_FEC_MDC__FEC_MDC	 0x80000000
-			MX53_PAD_FEC_MDIO__FEC_MDIO	 0x80000000
-			MX53_PAD_FEC_REF_CLK__FEC_TX_CLK 0x80000000
-			MX53_PAD_FEC_RX_ER__FEC_RX_ER    0x80000000
-			MX53_PAD_FEC_CRS_DV__FEC_RX_DV   0x80000000
-			MX53_PAD_FEC_RXD1__FEC_RDATA_1   0x80000000
-			MX53_PAD_FEC_RXD0__FEC_RDATA_0   0x80000000
-			MX53_PAD_FEC_TX_EN__FEC_TX_EN    0x80000000
-			MX53_PAD_FEC_TXD1__FEC_TDATA_1   0x80000000
-			MX53_PAD_FEC_TXD0__FEC_TDATA_0   0x80000000
-		>;
-	};
-
-... are conceptually wrong. They suggest one can universally apply
-pinctrl_fec_1 if the FEC happens to be connected to the MX53_PAD_FEC_... pads.
-Wrong! Because these settings also sneakily overrule the PAD settings for
-drive-strength, slew-rate, pull-/keepers, etc....
-There is nothing wrong with having this option, but it may apply only to one
-hardware design, and be mostly useless to the rest. Ok, maybe I exaggerate a
-little, but I assume you understand what I mean by "conceptually wrong".
-
-The only semantically correct solution I have been able to come up with for
-this, is to actually generate this DT in the boot-loader.
-
-> > > There are some corner cases like chip errata fixes here, but generally
-> > > don't assume the bootloader to set things up for you.
-> > 
-> > Another case of making the problem the rule instead of the exception....
-> > The fact that board manufacturers don't get their act together to make
-> > decent firmware (bootloader) is no excuse for saying it shouldn't be done
-> > like that.
-> > 
-> > > The bootloader
-> > > should only do the minimal needed init for loading the kernel and
-> > > booting. The kernel is your hardware abstraction for your running
-> > > system, not the bootloader.
-> > 
-> > That is ok. What I am saying is that settings that have strictly to do with
-> > _hardware_ constraints should never be bothered by the Linux kernel.
-> > Otherwise you would need to recompile the kernel (or change the
-> > device-tree) for potentially every single hardware revision of one board
-> > model. If I place other RAM chips on the board for instance, or if there
-> > is a layout revision, or a peripheral chip that has had a die revision
-> > requiring different drive-strength and such changes.... that information
-> > should be taken care of by the boot-loader.
-> > 
-> > Configuring peripherals, setting MUX registers and such is a different
-> > story. That should (and many times must) be done in the kernel.
-> > 
-> > > Ideally both the bootloader and kernel would source their needed
-> > > information from a shared DT that's decoupled from kernel development
-> > > and stable, once again reality strikes in here. I agree with you that
-> > > not a kernel developer, but board designer should write the DT and we
-> > > might actually get this separation in a clean way, if we manage to split
-> > > out the DTs from the kernel some day.
-> > 
-> > Well, I am a board designer, and I am trying to do just that. Pardon me for
-> > being an idealist sometimes ;-)
-> > 
-> We can all do our share to better the overall situation by being
-> idealist, but avoid basing your decision for real-world products on
-> assumptions that are only true for an ideal world. :)
-
-I don't do that of course. But with 99% of all ARM boards having broken
-firmware we shouldn't loose our horizon while developing either Barebox or the
-Linux kernel :-)
-
-> > Funny enough, some of my gripes about the state of ARM-Linux initially were
-> > echoed years later by Linus himself in his famous e-mail about the mess
-> > that was ARM-Linux board support before DT came along. Back then, when I
-> > asked why ARM wouldn't benefit from OF-device-trees just like PowerPC and
-> > Sparc did, I was being laughed at. Unfortunately a few conceptual things
-> > have been implemented the wrong way (like PAD setup), but hey! Not bad ;-)
-
-Ok, now can we both please go back to work?
-
-Best regards,
+Regards,
+Lucas
 
 -- 
-David Jander
-Protonic Holland.
+Pengutronix e.K.                           | Lucas Stach                 |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
