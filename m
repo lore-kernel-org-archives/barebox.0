@@ -1,17 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx8-out.webonline.biz ([41.86.105.118]
- helo=assp01.webonline.biz)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VU5YL-0007HZ-S7
- for barebox@lists.infradead.org; Thu, 10 Oct 2013 02:00:38 +0000
-Received: from ASSP.nospam (localhost.localdomain [127.0.0.1])
- by assp01.webonline.biz (Postfix) with ESMTP id 39DD46A6CF
- for <barebox@lists.infradead.org>; Thu, 10 Oct 2013 04:00:08 +0200 (SAST)
-Date: Wed, 09 Oct 2013 18:59:54 -0700
-From: Ivor Kruger <ivor@veriline.co.za>
-Message-ID: <CE7B57F6.8D31%ivor@veriline.co.za>
-In-Reply-To: <CE7B48EC.8D30%ivor@veriline.co.za>
-Mime-version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VUArn-0004JJ-LU
+ for barebox@lists.infradead.org; Thu, 10 Oct 2013 07:41:04 +0000
+Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <jlu@pengutronix.de>) id 1VUArP-0001zd-U8
+ for barebox@lists.infradead.org; Thu, 10 Oct 2013 09:40:39 +0200
+Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <jlu@pengutronix.de>) id 1VUAt3-0002Rg-69
+ for barebox@lists.infradead.org; Thu, 10 Oct 2013 09:42:21 +0200
+Message-ID: <1381390941.11504.41.camel@coredoba.hi.pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+Date: Thu, 10 Oct 2013 09:42:21 +0200
+In-Reply-To: <CE7B57F6.8D31%ivor@veriline.co.za>
+References: <CE7B57F6.8D31%ivor@veriline.co.za>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,28 +28,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: FW: Writing to I2C device during Barebox boot 
+Subject: Re: FW: Writing to I2C device during Barebox boot
 To: barebox@lists.infradead.org
 
-I can hardly believe it myself but I have succeeded (i think) in writing a
-new driver for a I2C chip I use.
-I probe the driver/device during boot and all seems well.
-The device shows up in the device tree.
-So before the init process for the board ends, I would like to write a few
-values to the device (it controls the PSU, thus the reason for doing it in
-barebox).
+On Wed, 2013-10-09 at 18:59 -0700, Ivor Kruger wrote:
+> But this is where my linux knowledge is letting me down.
+> 
+> How do I get a "handle" to the device in order to call the write_reg
+> function?
+> 
+> Your pointers and help is much appreciated.
 
-I want to do this in the board.c file at the end of the
-pcm049_devices_init function. Is this the right place?
+Could you show us your code? That would make helping you much easier.
+Please see 'man git-send-email' on how to send patches with git.
 
-But this is where my linux knowledge is letting me down.
-
-How do I get a "handle" to the device in order to call the write_reg
-function?
-
-Your pointers and help is much appreciated.
-
-
+Regards,
+Jan
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 _______________________________________________
