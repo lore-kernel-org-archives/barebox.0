@@ -1,21 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VUArn-0004JJ-LU
- for barebox@lists.infradead.org; Thu, 10 Oct 2013 07:41:04 +0000
-Received: from coredoba.hi.pengutronix.de ([2001:6f8:1178:2:219:99ff:fe56:8d7])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jlu@pengutronix.de>) id 1VUArP-0001zd-U8
- for barebox@lists.infradead.org; Thu, 10 Oct 2013 09:40:39 +0200
-Received: from jlu by coredoba.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jlu@pengutronix.de>) id 1VUAt3-0002Rg-69
- for barebox@lists.infradead.org; Thu, 10 Oct 2013 09:42:21 +0200
-Message-ID: <1381390941.11504.41.camel@coredoba.hi.pengutronix.de>
-From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
-Date: Thu, 10 Oct 2013 09:42:21 +0200
-In-Reply-To: <CE7B57F6.8D31%ivor@veriline.co.za>
-References: <CE7B57F6.8D31%ivor@veriline.co.za>
-Mime-Version: 1.0
+Received: from mx8-out.webonline.biz ([41.86.105.118]
+ helo=assp01.webonline.biz)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VUG1p-0004vj-Kd
+ for barebox@lists.infradead.org; Thu, 10 Oct 2013 13:11:47 +0000
+Received: from ASSP.nospam (localhost.localdomain [127.0.0.1])
+ by assp01.webonline.biz (Postfix) with ESMTP id 2728F3A09F
+ for <barebox@lists.infradead.org>; Thu, 10 Oct 2013 15:10:55 +0200 (SAST)
+Date: Thu, 10 Oct 2013 06:10:42 -0700
+From: Ivor Kruger <ivor@veriline.co.za>
+Message-ID: <CE7BF428.8D50%ivor@veriline.co.za>
+In-Reply-To: <1381390941.11504.41.camel@coredoba.hi.pengutronix.de>
+Mime-version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,31 +20,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FW: Writing to I2C device during Barebox boot
+Subject: Re: Writing to I2C device during Barebox boot
 To: barebox@lists.infradead.org
 
-On Wed, 2013-10-09 at 18:59 -0700, Ivor Kruger wrote:
-> But this is where my linux knowledge is letting me down.
-> 
-> How do I get a "handle" to the device in order to call the write_reg
-> function?
-> 
-> Your pointers and help is much appreciated.
+Jan, thanks for the reply, I will look into using git-send-email a bit
+later since I am going to travel this morning fro a few hours.
 
-Could you show us your code? That would make helping you much easier.
-Please see 'man git-send-email' on how to send patches with git.
+My question was however a little bit more generic. Take for example the
+PCM049 board.c file. One of the I2C components it loads is the TWL6030. If
+I wish to write to a register on this device, how would I go about it.
 
-Regards,
-Jan
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+By the way, I am using PHYTEC_PD13_Linux from pengutronix. It includes
+barebox-2013-06.0
+
+Thanks for your help.
+Ivor
+
+On 2013/10/10 12:42 AM, "Jan L=FCbbe" <jlu@pengutronix.de> wrote:
+
+>On Wed, 2013-10-09 at 18:59 -0700, Ivor Kruger wrote:
+>> But this is where my linux knowledge is letting me down.
+>> =
+
+>> How do I get a "handle" to the device in order to call the write_reg
+>> function?
+>> =
+
+>> Your pointers and help is much appreciated.
+>
+>Could you show us your code? That would make helping you much easier.
+>Please see 'man git-send-email' on how to send patches with git.
+>
+>Regards,
+>Jan
+>-- =
+
+>Pengutronix e.K.                           |                             |
+>Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+>Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+>Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+>
+>_______________________________________________
+>barebox mailing list
+>barebox@lists.infradead.org
+>http://lists.infradead.org/mailman/listinfo/barebox
+
 
 
 _______________________________________________
