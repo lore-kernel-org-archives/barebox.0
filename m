@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VUcIT-0008HG-Oo
- for barebox@lists.infradead.org; Fri, 11 Oct 2013 12:58:26 +0000
+ id 1VUdOU-0001cd-I4
+ for barebox@lists.infradead.org; Fri, 11 Oct 2013 14:08:43 +0000
 From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Fri, 11 Oct 2013 14:57:59 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338F2D4435F4@SRV-VS06.TELEVIC.COM>
+Date: Fri, 11 Oct 2013 16:08:15 +0200
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338F2D4436DC@SRV-VS06.TELEVIC.COM>
+References: <E78BBE677EB9144B8F0A0A29674CD5338ED41DC8EF@SRV-VS06.TELEVIC.COM>
+ <20130829184422.GB30088@pengutronix.de>
+In-Reply-To: <20130829184422.GB30088@pengutronix.de>
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -20,19 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: bareboxenv-target and spi nor flash crc problem
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: RE: bareboxenv on userspace - wrong crc on env
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi, I want to use bareboxenv-target on my operating system
-My environment settings are stored on a m25p32 spi nor flash.
-I can load them perfectly by issueing command:
-bareboxenv-target -l /tmp/barebox /dev/mtd1 
-I change something and afterwards I do: bareboxenv-target -s /tmp/barebox /dev/mtd1
-No problems so far
-However
-If I reboot, I get a wrong crc on env superblock and default environment is loaded
-My barebox is latest v2013.10.0 and my kernel is 2.6.35.3 (freescale git maintain version)
-As a sidenote, I also still have problems with nand flash written with barebox, which is corrupt in linux and vica versa...
+> -----Original Message-----
+> From: Sascha Hauer [mailto:s.hauer@pengutronix.de]
+> Sent: donderdag 29 augustus 2013 20:44
+> To: Vanhauwaert Wouter
+> Cc: barebox@lists.infradead.org
+> Subject: Re: bareboxenv on userspace - wrong crc on env
+> 
+> On Thu, Aug 29, 2013 at 11:24:41AM +0200, Vanhauwaert Wouter wrote:
+> > Hello all,
+> >
+> > I'm having issues accessing my barebox environment from within linux....
+> >
+> > My barebox and environment are located on a SPI NOR flash.
+> > This boots ok, and barebox is able to save its environment to it.
+> >
+> > When I want to load it in userspace through:
+> >
+> > $ bareboxenv -l /mnt /dev/mtd1
+> > Or
+> > $ dd if=/dev/mtd1 /tmp/barebox
+> > Or
+> > $ dd if=/dev/mdtblock1 /tmp/barebox
+> >
+> > Result is:
+> > Wrong crc on env
+> >
+> > However it's working fine in barebox itself
+> >
+> > What can be wron?
+> 
+> The only idea I have is that /dev/mtd1 might not be the place where barebox
+> stores it's environment, maybe because of different probe order in the kernel or
+> different partition layout. Could you send a hexdump of the first 256 bytes or so
+> of /dev/mtd1?
+> 
+> Sascha
+
+I had general issues reading and writing spi nor flash in userspace (without being aware of it). Now it works, I can read / write from nor flash from within linux.
+I can copy the barebox bootloader and uImage to it through dd and this works fine. I can also load my barebox environment, change things and write it back and read it back out.
+However, when I restart my board afterwards, I get an invalid crc on superblock.
+
+(Sorry, some kind of double post with my new topic today)
 
 _______________________________________________
 barebox mailing list
