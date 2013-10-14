@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ip2.televic.com ([81.82.194.222])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VUeFN-0003II-QE
- for barebox@lists.infradead.org; Fri, 11 Oct 2013 15:03:22 +0000
-From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
-Date: Fri, 11 Oct 2013 17:02:58 +0200
-Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338F2D443784@SRV-VS06.TELEVIC.COM>
-Content-Language: en-US
+ id 1VVdUr-00073H-5N
+ for barebox@lists.infradead.org; Mon, 14 Oct 2013 08:27:25 +0000
+Date: Mon, 14 Oct 2013 10:27:01 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131014082701.GX30088@pengutronix.de>
+References: <1381390941.11504.41.camel@coredoba.hi.pengutronix.de>
+ <CE7BF428.8D50%ivor@veriline.co.za>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CE7BF428.8D50%ivor@veriline.co.za>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,30 +23,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: bareboxenv-target and spi nor flash crc problem
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: Writing to I2C device during Barebox boot
+To: Ivor Kruger <ivor@veriline.co.za>
+Cc: barebox@lists.infradead.org
 
-> -----Original Message-----
-> From: Vanhauwaert Wouter
-> Sent: vrijdag 11 oktober 2013 14:58
-> To: barebox@lists.infradead.org
-> Subject: bareboxenv-target and spi nor flash crc problem
+Hi Ivor,
+
+On Thu, Oct 10, 2013 at 06:10:42AM -0700, Ivor Kruger wrote:
+> Jan, thanks for the reply, I will look into using git-send-email a bit
+> later since I am going to travel this morning fro a few hours.
 > 
-> Hi, I want to use bareboxenv-target on my operating system My environment
-> settings are stored on a m25p32 spi nor flash.
-> I can load them perfectly by issueing command:
-> bareboxenv-target -l /tmp/barebox /dev/mtd1 I change something and
-> afterwards I do: bareboxenv-target -s /tmp/barebox /dev/mtd1 No problems so
-> far However If I reboot, I get a wrong crc on env superblock and default
-> environment is loaded My barebox is latest v2013.10.0 and my kernel is 2.6.35.3
-> (freescale git maintain version) As a sidenote, I also still have problems with
-> nand flash written with barebox, which is corrupt in linux and vica versa...
+> My question was however a little bit more generic. Take for example the
+> PCM049 board.c file. One of the I2C components it loads is the TWL6030. If
+> I wish to write to a register on this device, how would I go about it.
 
-I think I figured it out. I need to erase the spi nor flash first. I assumed the bareboxenv-target application did that for me...
-Am I correct?
+When the driver is probed you should see a /dev/twl6030. You can read
+the registers doing:
 
-Grtz,
-Wouter
+md -s /dev/twl6030
+
+And you can write registers like this:
+
+mw -d /dev/twl6030 <offset> <value>
+
+If you wish to read/write registers from code grep the code for
+twl6030_get.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
