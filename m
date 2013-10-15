@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VVyGh-0006X2-Mw
- for barebox@lists.infradead.org; Tue, 15 Oct 2013 06:38:12 +0000
-Date: Tue, 15 Oct 2013 08:37:50 +0200
+ id 1VW0V1-0001D1-CK
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 09:01:07 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1VW0Uc-0002hw-Tq
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 11:00:42 +0200
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1VW0Uc-0006je-SW
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 11:00:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131015063750.GF30088@pengutronix.de>
-References: <1381767340-23992-1-git-send-email-jlu@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1381767340-23992-1-git-send-email-jlu@pengutronix.de>
+Date: Tue, 15 Oct 2013 11:00:38 +0200
+Message-Id: <1381827640-4042-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,53 +21,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] at91: fix typo in Kconfig description
-To: Jan Luebbe <jlu@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Raspberry Pi updates
+To: barebox@lists.infradead.org
 
-On Mon, Oct 14, 2013 at 06:15:40PM +0200, Jan Luebbe wrote:
-> Signed-off-by: Jan Luebbe <jlu@pengutronix.de>
+This updates the defconfig for the RPi to provide a useful feature
+set.
 
-Applied, thanks
+----------------------------------------------------------------
+Sascha Hauer (2):
+      mci: bcm2835: Add detect callback support for hardware device
+      ARM: rpi: Update defconfig
 
-Sascha
-
-> ---
->  arch/arm/mach-at91/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index 5fb3ead..6ab374e 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -549,7 +549,7 @@ config AT91_BOOTSTRAP
->  	select BOOTSTRAP
->  
->  config AT91_LOAD_BAREBOX_SRAM
-> -	bool "at91 laad barebox in sram"
-> +	bool "at91 load barebox in sram"
->  	depends on SHELL_NONE || HAVE_AT91_LOAD_BAREBOX_SRAM
->  	default y if SHELL_NONE
->  
-> -- 
-> 1.8.4.rc3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+ arch/arm/configs/rpi_defconfig | 45 ++++++++++++++++++++++++++++++++----------
+ drivers/mci/mci-bcm2835.c      | 10 ++++++++++
+ 2 files changed, 45 insertions(+), 10 deletions(-)
 
 _______________________________________________
 barebox mailing list
