@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
+Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VW8a8-0007bg-4i
- for barebox@lists.infradead.org; Tue, 15 Oct 2013 17:38:57 +0000
-Received: by mail-ee0-f46.google.com with SMTP id c13so4110945eek.5
- for <barebox@lists.infradead.org>; Tue, 15 Oct 2013 10:38:34 -0700 (PDT)
+ id 1VW8d0-0007jF-IM
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 17:41:55 +0000
+Received: by mail-ea0-f170.google.com with SMTP id h14so4158623eak.15
+ for <barebox@lists.infradead.org>; Tue, 15 Oct 2013 10:41:32 -0700 (PDT)
+Date: Tue, 15 Oct 2013 19:41:26 +0200
 From: Andre Heider <a.heider@gmail.com>
-Date: Tue, 15 Oct 2013 19:38:23 +0200
-Message-Id: <1381858703-27993-2-git-send-email-a.heider@gmail.com>
+Message-ID: <20131015174126.GA51758@gmail.com>
+References: <1381827640-4042-1-git-send-email-s.hauer@pengutronix.de>
+ <1381827640-4042-3-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1381827640-4042-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,63 +21,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: rpi: fix reading of the EMMC clock for CONFIG_MMU
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] ARM: rpi: Update defconfig
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Add explicit flushing to prevent the 50MHz fallback.
+On Tue, Oct 15, 2013 at 11:00:40AM +0200, Sascha Hauer wrote:
+> Enable MMU, stack dumps and a lot of other features
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/configs/rpi_defconfig | 45 ++++++++++++++++++++++++++++++++----------
+>  1 file changed, 35 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+> index 014e28c..76029d0 100644
+> --- a/arch/arm/configs/rpi_defconfig
+> +++ b/arch/arm/configs/rpi_defconfig
+> @@ -1,41 +1,66 @@
+>  CONFIG_ARCH_BCM2835=y
+> -CONFIG_GPIO_BCM2835=y
+> +CONFIG_AEABI=y
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+> +CONFIG_ARM_UNWIND=y
+> +CONFIG_MMU=y
 
-Signed-off-by: Andre Heider <a.heider@gmail.com>
----
- drivers/mci/mci-bcm2835.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+This breaks bcm2835_mci_get_emmc_clock() and gives the warning:
+Failed getting emmc clock, lets go anyway with 50MHz
 
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index a0c364d..2ffdeec 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -28,6 +28,7 @@
-  * Author: Wilhelm Lundgren <wilhelm.lundgren@cybercom.com>
-  */
- 
-+#include <asm/mmu.h>
- #include <common.h>
- #include <init.h>
- #include <mci.h>
-@@ -471,7 +472,7 @@ int bcm2835_mci_reset(struct mci_host *mci, struct device_d *mci_dev)
- static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
- {
- 	u32 val;
--	struct bcm2835_mbox_regs *regs =
-+	struct bcm2835_mbox_regs __iomem *regs =
- 			(struct bcm2835_mbox_regs *) BCM2835_MBOX_PHYSADDR;
- 
- 	/*Read out old msg*/
-@@ -489,6 +490,7 @@ static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
- 			break;
- 	}
- 	val = BCM2835_MBOX_PROP_CHAN + ((u32) &clk_data->hdr);
-+	dma_flush_range((u32)clk_data, (u32)clk_data + sizeof(*clk_data));
- 	writel(val, &regs->write);
- 
- 	while (true) {
-@@ -504,6 +506,9 @@ static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
- 		if ((val & 0x0F) == BCM2835_MBOX_PROP_CHAN)
- 			break;
- 	}
-+
-+	dma_inv_range((u32)clk_data, (u32)clk_data + sizeof(*clk_data));
-+
- 	if ((val & ~0x0F) == ((u32) &clk_data->hdr))
- 		if (clk_data->get_clock_rate.tag_hdr.val_len
- 				& BCM2835_MBOX_TAG_VAL_LEN_RESPONSE)
--- 
-1.8.3.2
+I just sent a patch to fix that, but didn't dig deeper if other spots
+are affected.
 
+Regards,
+Andre
 
 _______________________________________________
 barebox mailing list
