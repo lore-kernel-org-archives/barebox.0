@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x234.google.com ([2a00:1450:4013:c00::234])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VW3Dg-0005TF-Va
- for barebox@lists.infradead.org; Tue, 15 Oct 2013 11:55:26 +0000
-Received: by mail-ee0-f52.google.com with SMTP id c41so3844765eek.25
- for <barebox@lists.infradead.org>; Tue, 15 Oct 2013 04:55:02 -0700 (PDT)
-Date: Tue, 15 Oct 2013 13:54:50 +0200
-From: Andre Heider <a.heider@gmail.com>
-Message-ID: <20131015115448.GA41386@gmail.com>
-References: <1381834214-12603-1-git-send-email-s.hauer@pengutronix.de>
+ id 1VW3fH-0006Pk-IG
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 12:23:56 +0000
+Date: Tue, 15 Oct 2013 14:23:32 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131015122332.GI30088@pengutronix.de>
+References: <20131015115116.GC2839@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1381834214-12603-1-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20131015115116.GC2839@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,77 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: rpi: add SD card environment support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: raspberry pi mmc issue
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
-
-On Tue, Oct 15, 2013 at 12:50:14PM +0200, Sascha Hauer wrote:
-> Similar to the OMAP boards mount the SD card to /boot and expect
-> the environment as /boot/barebox.env
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/boards/raspberry-pi/rpi.c | 33 +++++++++++++++++++++++++++++++--
->  1 file changed, 31 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
-> index d4912cc..971a603 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi.c
-> @@ -15,6 +15,9 @@
->  
->  #include <common.h>
->  #include <init.h>
-> +#include <fs.h>
-> +#include <linux/stat.h>
-> +#include <envfs.h>
->  #include <asm/armlinux.h>
->  #include <generated/mach-types.h>
->  
-> @@ -37,11 +40,37 @@ static int rpi_console_init(void)
->  }
->  console_initcall(rpi_console_init);
->  
-> +static int rpi_env_init(void)
-> +{
-> +	struct stat s;
-> +	const char *diskdev = "/dev/disk0.0";
-> +	int ret;
-> +
-> +	device_detect_by_name("mci0");
-> +
-> +	ret = stat(diskdev, &s);
-> +	if (ret) {
-> +		printf("no %s. using default env\n", diskdev);
-> +		return 0;
-> +	}
-> +
-> +	mkdir("/boot", 0666);
-> +	ret = mount(diskdev, "fat", "/boot");
-> +	if (ret) {
-> +		printf("failed to mount %s\n", diskdev);
-> +		return 0;
-> +	}
-> +
-> +	default_environment_path = "/boot/barebox.env";
-> +
-> +	return 0;
-> +}
-
-I was solving the same thing just yesterday ;)
-
-What I did was to create a env/init/automount script, what's the advantage of this approach?
-
-Regards,
-Andre
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVHVlLCBPY3QgMTUsIDIwMTMgYXQgMDE6NTE6MTdQTSArMDIwMCwgQWxleGFuZGVyIEFyaW5n
+IHdyb3RlOgo+IEhpIGFsbCwKPiAKPiBJIHVzaW5nIGEgbm90IG1haW5saW5lZCByYXNwYmVycnkg
+cGkgcWVtdSBpbXBsZW1lbnRhdGlvbiBbMV0gYW5kIHRyaWVkIHRvCj4gcnVuIGJhcmVib3ggb24g
+aXQuIEFsbCBzZWVtcyB0byB3b3JraW5nIGJ1dCBpZiBJIHByb2JlIHRoZSBtbWMgd2l0aAo+IG1j
+aTAucHJvYmU9MSBxZW11IHdpbGwgY3Jhc2ggb24gYSBhc3NlcnQgb24gNCBieXRlIGFzc2VydCBb
+Ml0uCj4gCj4gSSBkaWcgYSBsaXR0bGUgYml0IGludG8gdGhlIERhdGFzaGVldCBvZiBiY20yODM1
+IFszXSB3aGljaCBzYXlzOgo+IAo+ICJDb250cmFyeSB0byBBcmFzYW7ihKLigJlzIGRvY3VtZW50
+YXRpb24gdGhlIEVNTUMgbW9kdWxlIHJlZ2lzdGVycyBjYW4gb25seQo+IGJlIGFjY2Vzc2VkIGFz
+IDMyIGJpdCByZWdpc3RlcnMsIGkuZS4gdGhlIHR3byBMU0JzIG9mIHRoZSBhZGRyZXNzIGFyZQo+
+IGFsd2F5cyB6ZXJvLiIKPiAKPiBUaGVuIEkgZGlnIGludG8gdGhlIGJhcmVib3ggYmNtMjgzNV9t
+Y2kgaW1wbGVtZW50YXRpb24gYW5kIGZvdW5kCj4gc29tZXRoaW5nIFs0XS4gV2UgdXNlIHRoZXJl
+IGEgcmVhZGIgb24gU0RIQ0lfUkVTUE9OU0VfMCB3aGljaCBpcyBub3QgYQo+IDMyIGJpdCBhY2Nl
+c3MuIEkganVzdCBjb21tZW50ZWQgdGhlIGlmIGJyYW5jaCBhbmQgaXQgd29ya3MuCj4gCj4gTWF5
+YmUgdGhpcyBjYW4gbWFrZSBzb21lIGVycm9ycyBvbiBhIHJlYWwgcmFzcGJlcnJ5LCB0b28uCj4g
+Cj4gTWF5YmUgc29tZWJvZHkga25vd3MgYSBsaXR0bGUgYml0IG1vcmUgYWJvdXQgbWNpIGFuZCBj
+YW4gaGVscCBtZSB0byBmaW5kCj4gYSBwcm9wZXIgc29sdXRpb24/IFBlcmhhcHMganVzdCBtYWtl
+IGEgMzIgYml0IGFjY2VzcyBhbmQgZG8gc29tZSBiaXQKPiBtYWdpYyB3aXRoIG1hc2tzIGFuZCBz
+aGlmdHM/CgpIZXJlIHRoZSBTRCBjYXJkIHdvcmtzIChib3RoIHJlYWQgYW5kIHdyaXRlKS4gSSBj
+YW4gc3VyZWx5IHRlc3QgYSBwYXRjaApjb252ZXJ0aW5nIHRoaXMgYWNjZXNzIGludG8gYSAzMmJp
+dCBhY2Nlc3MuCgpUaGUgb25seSB0aGluZyBJIHJlYWxpemUgaGVyZSBpcyB0aGF0IG15IDMuNi40
+IGtlcm5lbCBmYWlscyB0byBhY2Nlc3MKdGhlIFNEIGNhcmQgd2hlbiBiYXJlYm94IGhhcyBhY2Nl
+c3NlZCBpdCBiZWZvcmU6CgpbICAgIDMuNjIzODYxXSBtbWMwOiBTRCBTdGF0dXM6IEludmFsaWQg
+QWxsb2NhdGlvbiBVbml0IHNpemUuClsgICAgMy42MzU1ODZdIG1tYzA6IGVycm9yIC0xMTAgd2hp
+bHN0IGluaXRpYWxpc2luZyBTRCBjYXJkClsgICAgMy43MjQ3NDNdIG1tYzA6IFNEIFN0YXR1czog
+SW52YWxpZCBBbGxvY2F0aW9uIFVuaXQgc2l6ZS4KWyAgICAzLjczOTA3M10gbW1jMDogZXJyb3Ig
+LTExMCB3aGlsc3QgaW5pdGlhbGlzaW5nIFNEIGNhcmQKWyAgICAzLjgzNjM0MV0gbW1jMDogU0Qg
+U3RhdHVzOiBJbnZhbGlkIEFsbG9jYXRpb24gVW5pdCBzaXplLgpbICAgIDMuODQ3NzA4XSBtbWMw
+OiBlcnJvciAtMTEwIHdoaWxzdCBpbml0aWFsaXNpbmcgU0QgY2FyZApbICAgIDMuOTY1NDQ3XSBt
+bWMwOiByZWFkIFNEIFN0YXR1cyByZWdpc3RlciAoU1NSKSBhZnRlciAzIGF0dGVtcHRzClsgICAg
+My45NzE0ODNdIG1tYzA6IFNEIFN0YXR1czogSW52YWxpZCBBbGxvY2F0aW9uIFVuaXQgc2l6ZS4K
+ClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25z
+ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBT
+dHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5
+MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
+eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
+ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
+YXJlYm94Cg==
