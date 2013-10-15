@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
+Received: from mail-ee0-x236.google.com ([2a00:1450:4013:c00::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VW8d0-0007jF-IM
- for barebox@lists.infradead.org; Tue, 15 Oct 2013 17:41:55 +0000
-Received: by mail-ea0-f170.google.com with SMTP id h14so4158623eak.15
- for <barebox@lists.infradead.org>; Tue, 15 Oct 2013 10:41:32 -0700 (PDT)
-Date: Tue, 15 Oct 2013 19:41:26 +0200
-From: Andre Heider <a.heider@gmail.com>
-Message-ID: <20131015174126.GA51758@gmail.com>
-References: <1381827640-4042-1-git-send-email-s.hauer@pengutronix.de>
- <1381827640-4042-3-git-send-email-s.hauer@pengutronix.de>
+ id 1VW9PA-0000xK-02
+ for barebox@lists.infradead.org; Tue, 15 Oct 2013 18:31:40 +0000
+Received: by mail-ee0-f54.google.com with SMTP id e53so4206097eek.13
+ for <barebox@lists.infradead.org>; Tue, 15 Oct 2013 11:31:17 -0700 (PDT)
+Date: Tue, 15 Oct 2013 20:31:11 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131015183110.GA20967@omega>
+References: <20131015115116.GC2839@omega>
+ <20131015122332.GI30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1381827640-4042-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20131015122332.GI30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,44 +21,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: rpi: Update defconfig
+Subject: Re: raspberry pi mmc issue
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 15, 2013 at 11:00:40AM +0200, Sascha Hauer wrote:
-> Enable MMU, stack dumps and a lot of other features
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/configs/rpi_defconfig | 45 ++++++++++++++++++++++++++++++++----------
->  1 file changed, 35 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
-> index 014e28c..76029d0 100644
-> --- a/arch/arm/configs/rpi_defconfig
-> +++ b/arch/arm/configs/rpi_defconfig
-> @@ -1,41 +1,66 @@
->  CONFIG_ARCH_BCM2835=y
-> -CONFIG_GPIO_BCM2835=y
-> +CONFIG_AEABI=y
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-> +CONFIG_ARM_UNWIND=y
-> +CONFIG_MMU=y
-
-This breaks bcm2835_mci_get_emmc_clock() and gives the warning:
-Failed getting emmc clock, lets go anyway with 50MHz
-
-I just sent a patch to fix that, but didn't dig deeper if other spots
-are affected.
-
-Regards,
-Andre
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGkgU2FzY2hhLAoKT24gVHVlLCBPY3QgMTUsIDIwMTMgYXQgMDI6MjM6MzJQTSArMDIwMCwgU2Fz
+Y2hhIEhhdWVyIHdyb3RlOgo+IE9uIFR1ZSwgT2N0IDE1LCAyMDEzIGF0IDAxOjUxOjE3UE0gKzAy
+MDAsIEFsZXhhbmRlciBBcmluZyB3cm90ZToKPiA+IEhpIGFsbCwKPiA+IAo+ID4gSSB1c2luZyBh
+IG5vdCBtYWlubGluZWQgcmFzcGJlcnJ5IHBpIHFlbXUgaW1wbGVtZW50YXRpb24gWzFdIGFuZCB0
+cmllZCB0bwo+ID4gcnVuIGJhcmVib3ggb24gaXQuIEFsbCBzZWVtcyB0byB3b3JraW5nIGJ1dCBp
+ZiBJIHByb2JlIHRoZSBtbWMgd2l0aAo+ID4gbWNpMC5wcm9iZT0xIHFlbXUgd2lsbCBjcmFzaCBv
+biBhIGFzc2VydCBvbiA0IGJ5dGUgYXNzZXJ0IFsyXS4KPiA+IAo+ID4gSSBkaWcgYSBsaXR0bGUg
+Yml0IGludG8gdGhlIERhdGFzaGVldCBvZiBiY20yODM1IFszXSB3aGljaCBzYXlzOgo+ID4gCj4g
+PiAiQ29udHJhcnkgdG8gQXJhc2Fu4oSi4oCZcyBkb2N1bWVudGF0aW9uIHRoZSBFTU1DIG1vZHVs
+ZSByZWdpc3RlcnMgY2FuIG9ubHkKPiA+IGJlIGFjY2Vzc2VkIGFzIDMyIGJpdCByZWdpc3RlcnMs
+IGkuZS4gdGhlIHR3byBMU0JzIG9mIHRoZSBhZGRyZXNzIGFyZQo+ID4gYWx3YXlzIHplcm8uIgo+
+ID4gCj4gPiBUaGVuIEkgZGlnIGludG8gdGhlIGJhcmVib3ggYmNtMjgzNV9tY2kgaW1wbGVtZW50
+YXRpb24gYW5kIGZvdW5kCj4gPiBzb21ldGhpbmcgWzRdLiBXZSB1c2UgdGhlcmUgYSByZWFkYiBv
+biBTREhDSV9SRVNQT05TRV8wIHdoaWNoIGlzIG5vdCBhCj4gPiAzMiBiaXQgYWNjZXNzLiBJIGp1
+c3QgY29tbWVudGVkIHRoZSBpZiBicmFuY2ggYW5kIGl0IHdvcmtzLgo+ID4gCj4gPiBNYXliZSB0
+aGlzIGNhbiBtYWtlIHNvbWUgZXJyb3JzIG9uIGEgcmVhbCByYXNwYmVycnksIHRvby4KPiA+IAo+
+ID4gTWF5YmUgc29tZWJvZHkga25vd3MgYSBsaXR0bGUgYml0IG1vcmUgYWJvdXQgbWNpIGFuZCBj
+YW4gaGVscCBtZSB0byBmaW5kCj4gPiBhIHByb3BlciBzb2x1dGlvbj8gUGVyaGFwcyBqdXN0IG1h
+a2UgYSAzMiBiaXQgYWNjZXNzIGFuZCBkbyBzb21lIGJpdAo+ID4gbWFnaWMgd2l0aCBtYXNrcyBh
+bmQgc2hpZnRzPwo+IAo+IEhlcmUgdGhlIFNEIGNhcmQgd29ya3MgKGJvdGggcmVhZCBhbmQgd3Jp
+dGUpLiBJIGNhbiBzdXJlbHkgdGVzdCBhIHBhdGNoCj4gY29udmVydGluZyB0aGlzIGFjY2VzcyBp
+bnRvIGEgMzJiaXQgYWNjZXNzLgo+IApvayBJIHdpbGwgc2VuZCBhIHBhdGNoIHdoaWNoIGRvOgoK
+Y21kLT5yZXNwb25zZVtpXSB8PQoJYmNtMjgzNV9tY2lfcmVhZCgKCWhvc3QsCglTREhDSV9SRVNQ
+T05TRV8wICsKCSgzIC0gaSkgKiA0IC0gMSkgJiAweEZGOwoKd2hpY2ggd29ya3MgZm9yIHFlbXUu
+IE15IHdvcmthcm91bmQgKGp1c3QgY29tbWVudCB0aGUgaSAhPSAzIGJyYW5jaCkgaGFkCnNvbWUg
+dHJvdWJsZSB0byByZWFkIHBhcnRpdGlvbiB0YWJsZS4gQnV0IHdpdGggdGhpcyBzb2x1dGlvbiBh
+bGwgd29ya3MgZmluZS4KCkJ1dCBJIHdvbmRlciBteXNlbGYgd2h5IHRoaXMgd29ya3Mgbm93LiBX
+ZSByZWFkZWQgYSBieXRlIGZyb20gdGhpcyBwb3N0aW9uCmJ1dCBub3cgd2UgcmVhZCA0IGJ5dGVz
+IGZyb20gdGhpcyBwb3NpdGlvbiBhbmQgdXNlIHRoZSBsYXN0ZXN0IGJ5dGVzLiBUaGUKY29ycmVj
+dCB3YXkgc2hvdWxkIGJlIHRvIG1ha2UgYSAyNCBzaGlmdCB0byByaWdodC4gU29tZXRoaW5nIGxp
+a2U6CgpjbWQtPnJlc3BvbnNlW2ldIHw9CgliY20yODM1X21jaV9yZWFkKAoJaG9zdCwKCVNESENJ
+X1JFU1BPTlNFXzAgKwoJKDMgLSBpKSAqIDQgLSAxKSA+PiAyNDsKClRvIG1ha2UgYSAzMiBiaXQg
+YWNjZXNzIHRvIGJ5dGUgYWNjZXNzLi4KCkkgZG9uJ3QgcmVhbGx5IHVuZGVyc3RhbmQgd2hhdCB0
+aGUgY29kZSBpcyBkb2luZyBoZXJlIHJpZ2h0IG5vdywgbmVlZApzb21lIG1vcmUgdGltZSB0byBk
+aWcgaW50byB0aGlzLiBNYXliZSB0aGUgcmVhZCBvdmVybGFwcyBtb3JlIHRoYW4gb25lCnJlZ2lz
+dGVyIG5vdyB3aGljaCBpc24ndCB3ZWxsLCB0b28uCgpBbm90aGVyIHBvaW50IGlzIHRoYXQgdGhl
+IGZvciBsb29wICh3aXRoIGkgIT0gMykgYW5kIGVycm9yIGhhbmRsaW5nIChldmVyeQpjaGVjayBv
+biByZXQgIT0gLTEpIGxvb2tzIGEgbGl0dGxlIGJpdCBjcmF6eSBmb3IgbWUuIE5ldmVydGhlbGVz
+cyBJIHdpbGwgc2VuZAphIHBhdGNoIHNvb24uCgo+IFRoZSBvbmx5IHRoaW5nIEkgcmVhbGl6ZSBo
+ZXJlIGlzIHRoYXQgbXkgMy42LjQga2VybmVsIGZhaWxzIHRvIGFjY2Vzcwo+IHRoZSBTRCBjYXJk
+IHdoZW4gYmFyZWJveCBoYXMgYWNjZXNzZWQgaXQgYmVmb3JlOgo+IAo+IFsgICAgMy42MjM4NjFd
+IG1tYzA6IFNEIFN0YXR1czogSW52YWxpZCBBbGxvY2F0aW9uIFVuaXQgc2l6ZS4KPiBbICAgIDMu
+NjM1NTg2XSBtbWMwOiBlcnJvciAtMTEwIHdoaWxzdCBpbml0aWFsaXNpbmcgU0QgY2FyZAo+IFsg
+ICAgMy43MjQ3NDNdIG1tYzA6IFNEIFN0YXR1czogSW52YWxpZCBBbGxvY2F0aW9uIFVuaXQgc2l6
+ZS4KPiBbICAgIDMuNzM5MDczXSBtbWMwOiBlcnJvciAtMTEwIHdoaWxzdCBpbml0aWFsaXNpbmcg
+U0QgY2FyZAo+IFsgICAgMy44MzYzNDFdIG1tYzA6IFNEIFN0YXR1czogSW52YWxpZCBBbGxvY2F0
+aW9uIFVuaXQgc2l6ZS4KPiBbICAgIDMuODQ3NzA4XSBtbWMwOiBlcnJvciAtMTEwIHdoaWxzdCBp
+bml0aWFsaXNpbmcgU0QgY2FyZAo+IFsgICAgMy45NjU0NDddIG1tYzA6IHJlYWQgU0QgU3RhdHVz
+IHJlZ2lzdGVyIChTU1IpIGFmdGVyIDMgYXR0ZW1wdHMKPiBbICAgIDMuOTcxNDgzXSBtbWMwOiBT
+RCBTdGF0dXM6IEludmFsaWQgQWxsb2NhdGlvbiBVbml0IHNpemUuCgpNaGgsIEkgdGhpbmsgbXkg
+cGF0Y2ggd291bGQgbm90IGZpeCB5b3VyIHByb2JsZW0uIEkgc3VjY2Vzc2Z1bCBhY2Nlc3MKdGhl
+IHNkY2FyZCBhZnRlciBib290aW5nIGxpbnV4LCBidXQgdGhpcyB3YXMgb24gcWVtdS4uLgoKLSBB
+bGV4CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
