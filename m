@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VWLSH-00005b-3d
- for barebox@lists.infradead.org; Wed, 16 Oct 2013 07:23:41 +0000
-Date: Wed, 16 Oct 2013 09:23:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131016072319.GL30088@pengutronix.de>
-References: <20131015115116.GC2839@omega>
- <20131015122332.GI30088@pengutronix.de>
- <20131015183110.GA20967@omega> <20131015183927.GB51758@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20131015183927.GB51758@gmail.com>
+ id 1VWLek-0000OF-He
+ for barebox@lists.infradead.org; Wed, 16 Oct 2013 07:36:35 +0000
+Message-ID: <1381908729.4093.12.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 16 Oct 2013 09:32:09 +0200
+In-Reply-To: <1381858703-27993-2-git-send-email-a.heider@gmail.com>
+References: <1381858703-27993-2-git-send-email-a.heider@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,43 +21,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: raspberry pi mmc issue
+Subject: Re: [PATCH] ARM: rpi: fix reading of the EMMC clock for CONFIG_MMU
 To: Andre Heider <a.heider@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 15, 2013 at 08:39:27PM +0200, Andre Heider wrote:
-> Hi,
+Am Dienstag, den 15.10.2013, 19:38 +0200 schrieb Andre Heider:
+> Add explicit flushing to prevent the 50MHz fallback.
 > 
-> On Tue, Oct 15, 2013 at 08:31:11PM +0200, Alexander Aring wrote:
-> > Hi Sascha,
-> > 
-> > On Tue, Oct 15, 2013 at 02:23:32PM +0200, Sascha Hauer wrote:
-> > > The only thing I realize here is that my 3.6.4 kernel fails to access
-> > > the SD card when barebox has accessed it before:
-> > > 
-> > > [    3.623861] mmc0: SD Status: Invalid Allocation Unit size.
-> > > [    3.635586] mmc0: error -110 whilst initialising SD card
-> > > [    3.724743] mmc0: SD Status: Invalid Allocation Unit size.
-> > > [    3.739073] mmc0: error -110 whilst initialising SD card
-> > > [    3.836341] mmc0: SD Status: Invalid Allocation Unit size.
-> > > [    3.847708] mmc0: error -110 whilst initialising SD card
-> > > [    3.965447] mmc0: read SD Status register (SSR) after 3 attempts
-> > > [    3.971483] mmc0: SD Status: Invalid Allocation Unit size.
-> > 
-> > Mhh, I think my patch would not fix your problem. I successful access
-> > the sdcard after booting linux, but this was on qemu...
+Uh, this is pretty ugly. We certainly don't want all those explicit
+invalidates/flushes in the driver code. Isn't it possible to push this
+into some helper functions, that do the right thing when communicating
+with the mailboxes?
+
+> Signed-off-by: Andre Heider <a.heider@gmail.com>
+> ---
+>  drivers/mci/mci-bcm2835.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> I'm not seeing the issue here either (using Linus' master).
-
-Oh, great. Then I'll probably just have to update my kernel.
-
-Sascha
+> diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+> index a0c364d..2ffdeec 100644
+> --- a/drivers/mci/mci-bcm2835.c
+> +++ b/drivers/mci/mci-bcm2835.c
+> @@ -28,6 +28,7 @@
+>   * Author: Wilhelm Lundgren <wilhelm.lundgren@cybercom.com>
+>   */
+>  
+> +#include <asm/mmu.h>
+>  #include <common.h>
+>  #include <init.h>
+>  #include <mci.h>
+> @@ -471,7 +472,7 @@ int bcm2835_mci_reset(struct mci_host *mci, struct device_d *mci_dev)
+>  static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
+>  {
+>  	u32 val;
+> -	struct bcm2835_mbox_regs *regs =
+> +	struct bcm2835_mbox_regs __iomem *regs =
+>  			(struct bcm2835_mbox_regs *) BCM2835_MBOX_PHYSADDR;
+>  
+>  	/*Read out old msg*/
+> @@ -489,6 +490,7 @@ static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
+>  			break;
+>  	}
+>  	val = BCM2835_MBOX_PROP_CHAN + ((u32) &clk_data->hdr);
+> +	dma_flush_range((u32)clk_data, (u32)clk_data + sizeof(*clk_data));
+>  	writel(val, &regs->write);
+>  
+>  	while (true) {
+> @@ -504,6 +506,9 @@ static u32 bcm2835_mci_get_emmc_clock(struct msg_get_clock_rate *clk_data)
+>  		if ((val & 0x0F) == BCM2835_MBOX_PROP_CHAN)
+>  			break;
+>  	}
+> +
+> +	dma_inv_range((u32)clk_data, (u32)clk_data + sizeof(*clk_data));
+> +
+>  	if ((val & ~0x0F) == ((u32) &clk_data->hdr))
+>  		if (clk_data->get_clock_rate.tag_hdr.val_len
+>  				& BCM2835_MBOX_TAG_VAL_LEN_RESPONSE)
 
 -- 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Lucas Stach                 |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
