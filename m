@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 14.mo3.mail-out.ovh.net ([188.165.43.98]
- helo=mo3.mail-out.ovh.net)
+Received: from mo4.mail-out.ovh.net ([178.32.228.4])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VX9zd-0002iM-E2
- for barebox@lists.infradead.org; Fri, 18 Oct 2013 13:21:30 +0000
-Received: from mail247.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id F0084FFB1A1
- for <barebox@lists.infradead.org>; Fri, 18 Oct 2013 15:21:22 +0200 (CEST)
+ id 1VXCwb-00018X-4y
+ for barebox@lists.infradead.org; Fri, 18 Oct 2013 16:30:34 +0000
+Received: from mail629.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 3987FFFB199
+ for <barebox@lists.infradead.org>; Fri, 18 Oct 2013 18:30:34 +0200 (CEST)
+Date: Fri, 18 Oct 2013 18:31:47 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 18 Oct 2013 15:22:44 +0200
-Message-Id: <1382102564-31486-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20131018163147.GZ32444@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,99 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] fs: bpkfs: add missing include
+Subject: [PATCH 0/3] devfs: add symlink support
 To: barebox@lists.infradead.org
 
-was not include when applying bpkfs patch
+Hi,
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- include/bpkfs.h | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
- create mode 100644 include/bpkfs.h
+The following changes since commit 8f23a17f9bac836e4a2f4883ca8f886f535449a8:
 
-diff --git a/include/bpkfs.h b/include/bpkfs.h
-new file mode 100644
-index 0000000..ccb56c1
---- /dev/null
-+++ b/include/bpkfs.h
-@@ -0,0 +1,68 @@
-+/*
-+ * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-+ *
-+ * under GPLv2 only
-+ */
-+
-+#ifndef __BPKFS_H__
-+#define __BPKFS_H__
-+
-+#include <linux/types.h>
-+#include <linux/list.h>
-+
-+#define BPKFS_TYPE_BL	0x50424c00
-+#define BPKFS_TYPE_BLV	0x50424c56
-+#define BPKFS_TYPE_DSC	0x44456343
-+#define BPKFS_TYPE_KER	0x504b4552
-+#define BPKFS_TYPE_RFS	0x50524653
-+#define BPKFS_TYPE_FMV	0x46575600
-+
-+struct bpkfs_header {
-+	uint32_t magic;
-+	uint32_t version;
-+	uint64_t size;
-+	uint32_t crc;
-+	uint64_t spare;
-+} __attribute__ ((packed)) ;
-+
-+struct bpkfs_data_header {
-+	uint32_t type;
-+	uint64_t size;
-+	uint32_t crc;
-+	uint32_t hw_id;
-+	uint32_t spare;
-+} __attribute__ ((packed)) ;
-+
-+struct bpkfs_handle_hw {
-+	char *name;
-+	uint32_t hw_id;
-+
-+	struct list_head list_data;
-+	struct list_head list_hw_id;
-+};
-+
-+struct bpkfs_handle_data {
-+	char *name;
-+	uint32_t type;
-+	uint32_t hw_id;
-+	uint64_t size;
-+
-+	int fd;
-+	size_t offset; /* offset in the image */
-+	size_t pos; /* pos in the data */
-+	uint32_t crc;
-+
-+	char data[8];
-+
-+	struct list_head list;
-+};
-+
-+struct bpkfs_handle {
-+	struct bpkfs_header header;
-+	int nb_data_entries;
-+	char *filename;
-+
-+	struct list_head list;
-+};
-+
-+#endif /* __BPKFS_H__ */
--- 
-1.8.4.rc3
+  Merge branch 'pu/bootloader-spec' (2013-10-14 15:46:10 +0200)
 
+are available in the git repository at:
+
+
+  git://git.jcrosoft.org/barebox.git delivery/devfs_symlink
+
+for you to fetch changes up to 249a2883ed1d72cf735b68b5f7a0671e6de3ed14:
+
+  USB: storage: register disks as usbdiskx symlink (2013-10-16 03:59:34 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      devfs: add symlink support
+      partition: use symlink for named partition
+
+Sascha Hauer (1):
+      USB: storage: register disks as usbdiskx symlink
+
+ common/partitions.c       |  3 +--
+ drivers/usb/storage/usb.c |  8 ++++++++
+ fs/devfs-core.c           | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ fs/devfs.c                | 42 ++++++++++++++++++++++++++++++++++++++++--
+ include/driver.h          |  4 ++++
+ 5 files changed, 97 insertions(+), 5 deletions(-)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
