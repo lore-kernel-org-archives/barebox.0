@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22c.google.com ([2a00:1450:4013:c00::22c])
+Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXVX1-0002ne-R1
- for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:24 +0000
-Received: by mail-ee0-f44.google.com with SMTP id b47so2645922eek.17
- for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:02 -0700 (PDT)
+ id 1VXVX3-0002nf-Ps
+ for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:26 +0000
+Received: by mail-ea0-f182.google.com with SMTP id o10so2584349eaj.13
+ for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:03 -0700 (PDT)
 Received: from mamamia.internal (a89-182-1-5.net-htp.de. [89.182.1.5])
- by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.21.00
+ by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.21.02
  for <barebox@lists.infradead.org>
  (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sat, 19 Oct 2013 05:21:01 -0700 (PDT)
+ Sat, 19 Oct 2013 05:21:02 -0700 (PDT)
 From: Andre Heider <a.heider@gmail.com>
-Date: Sat, 19 Oct 2013 14:20:48 +0200
-Message-Id: <1382185254-29183-2-git-send-email-a.heider@gmail.com>
+Date: Sat, 19 Oct 2013 14:20:49 +0200
+Message-Id: <1382185254-29183-3-git-send-email-a.heider@gmail.com>
 In-Reply-To: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
 References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,42 +28,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/10] common: add a macro to align an array on the stack
+Subject: [PATCH 04/10] ARM: bcm2835: cleanup clock registering
 To: barebox@lists.infradead.org
 
-The macro can be used for temporary stack buffers which need to meet
-a minimum alignment requirement.
-
-This will be used by bcm2835 mailbox users, where all buffers need to
-be aligned.
+Sync exposed names while at it.
 
 Signed-off-by: Andre Heider <a.heider@gmail.com>
 ---
- include/common.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/mach-bcm2835/core.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
-diff --git a/include/common.h b/include/common.h
-index 0f0ba08..00f1642 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -192,6 +192,17 @@ int run_shell(void);
- #define ARRAY_SIZE(arr)		(sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
- #define ARRAY_AND_SIZE(x)	(x), ARRAY_SIZE(x)
+diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm2835/core.c
+index 906e434..6835960 100644
+--- a/arch/arm/mach-bcm2835/core.c
++++ b/arch/arm/mach-bcm2835/core.c
+@@ -32,37 +32,20 @@
+ #include <mach/core.h>
+ #include <linux/amba/bus.h>
  
-+/*
-+ * The STACK_ALIGN_ARRAY macro is used to allocate a buffer on the stack that
-+ * meets a minimum alignment requirement.
-+ *
-+ * Note that the size parameter is the number of array elements to allocate,
-+ * not the number of bytes.
-+ */
-+#define STACK_ALIGN_ARRAY(type, name, size, align)		\
-+	char __##name[sizeof(type) * (size) + (align) - 1];	\
-+	type *name = (type *)ALIGN((uintptr_t)__##name, align)
-+
- /**
-  * container_of - cast a member of a structure out to the containing structure
-  * @ptr:	the pointer to the member.
+-enum brcm_clks {
+-	dummy, clk_ref_3, clk_ref_1, clks_max
+-};
+-
+-static struct clk *clks[clks_max];
+-
+ static int bcm2835_clk_init(void)
+ {
+-	int ret;
+-
+-	clks[dummy] = clk_fixed("dummy", 0);
+-	clks[clk_ref_3] = clk_fixed("ref3", 3 * 1000 * 1000);
+-	clks[clk_ref_1] = clk_fixed("ref1", 1 * 1000 * 1000);
++	struct clk *clk;
+ 
+-	ret = clk_register_clkdev(clks[dummy], "apb_pclk", NULL);
+-	if (ret)
+-		goto clk_err;
++	clk = clk_fixed("apb_pclk", 0);
++	clk_register_clkdev(clk, "apb_pclk", NULL);
+ 
+-	ret = clk_register_clkdev(clks[clk_ref_3], NULL, "uart0-pl0110");
+-	if (ret)
+-		goto clk_err;
++	clk = clk_fixed("uart0-pl0110", 3 * 1000 * 1000);
++	clk_register_clkdev(clk, NULL, "uart0-pl0110");
+ 
+-	ret = clk_register_clkdev(clks[clk_ref_1], NULL, "bcm2835-cs");
+-	if (ret)
+-		goto clk_err;
++	clk = clk_fixed("bcm2835-cs", 1 * 1000 * 1000);
++	clk_register_clkdev(clk, NULL, "bcm2835-cs");
+ 
+ 	return 0;
+-
+-clk_err:
+-	return ret;
+-
+ }
+ postcore_initcall(bcm2835_clk_init);
+ 
 -- 
 1.8.3.2
 
