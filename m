@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x233.google.com ([2a00:1450:4013:c01::233])
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXVV1-0002kn-2q
- for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:19:19 +0000
-Received: by mail-ea0-f179.google.com with SMTP id b10so2576235eae.10
- for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:18:57 -0700 (PDT)
+ id 1VXVX1-0002nd-0Y
+ for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:23 +0000
+Received: by mail-ee0-f45.google.com with SMTP id c50so2659348eek.32
+ for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:00 -0700 (PDT)
 Received: from mamamia.internal (a89-182-1-5.net-htp.de. [89.182.1.5])
- by mx.google.com with ESMTPSA id i1sm17216948eeg.0.2013.10.19.05.18.55
+ by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.20.58
  for <barebox@lists.infradead.org>
  (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sat, 19 Oct 2013 05:18:56 -0700 (PDT)
+ Sat, 19 Oct 2013 05:20:59 -0700 (PDT)
 From: Andre Heider <a.heider@gmail.com>
-Date: Sat, 19 Oct 2013 14:18:41 +0200
-Message-Id: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+Date: Sat, 19 Oct 2013 14:20:47 +0200
+Message-Id: <1382185254-29183-1-git-send-email-a.heider@gmail.com>
+In-Reply-To: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,65 +28,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/10] RPi mailbox support
+Subject: [PATCH 02/10] ARM: cache: do not crash when the MMU isn't yet setup
 To: barebox@lists.infradead.org
 
-This adds a bcm2835 mailbox driver for the RPi to talk to the on-SoC
-VideoCore. See [1] for a description.
+Drivers currently cannot implement explicit cache handling and rely on
+running the same code before and after mmu_initcall() without crashing.
 
-This patchset uses it to get two properties, the eMMC clock and the
-memory size.
+Depending on the chosen config options, the cache functions are not yet
+setup and using them early on ends in a null pointer dereference.
 
-The RPi backend needs to use this driver early on, namely before the
-MMU setup. We also want to use the driver in the future after the MMU setup,
-like setting up simplefb for the kernel. Patch 1 and 2 lay the groundwork
-for that.
+The RPi's mailbox driver is such a case; it requires cache handling once
+the MMU is fully set up and yet the RPi setup needs to use the driver to
+get the memory size before mem_initcall() and hence mmu_initcall().
 
-The mailbox driver also needs to handle timouts, so patch 5 and 6 are
-making the clocksource accessible earlier.
+Fix this by checking the cache_fns pointer before dereferencing it.
 
-Patch 7 is the driver itself, providing a helper macro for users based on
-a new common macro from patch 3.
+Signed-off-by: Andre Heider <a.heider@gmail.com>
+---
+ arch/arm/cpu/cache.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-Patch 8 and 9 switch the bc2835_mci driver from a local mailbox
-implementation to the new driver.
-
-Patch 10 uses the driver to get the proper memory size.
-
-Patch 4 is just a cleanup.
-
-Thanks,
-Andre
-
-[1] https://github.com/raspberrypi/firmware/wiki/Mailboxes
-
-Andre Heider (10):
-  ARM: cache: restore cache functions from the PBL
-  ARM: cache: do not crash when the MMU isn't yet setup
-  common: add a macro to align an array on the stack
-  ARM: bcm2835: cleanup clock registering
-  ARM: bcm2835: register the clocksource driver earlier
-  ARM: bcm2835: register the clocksource device earlier
-  ARM: bcm2835: add a mailbox driver for VideoCore
-  ARM: rpi: register a clkdev for the eMMC clock
-  mci: bcm2835: use the registered device clkdev
-  ARM: rpi: use the proper ARM memory size
-
- arch/arm/boards/raspberry-pi/rpi.c        |  75 +++++-
- arch/arm/cpu/cache.c                      |  18 +-
- arch/arm/cpu/start.c                      |   4 +-
- arch/arm/mach-bcm2835/Makefile            |   2 +-
- arch/arm/mach-bcm2835/core.c              |  32 +--
- arch/arm/mach-bcm2835/include/mach/mbox.h | 420 ++++++++++++++++++++++++++++++
- arch/arm/mach-bcm2835/mbox.c              | 152 +++++++++++
- drivers/clocksource/bcm2835.c             |   2 +-
- drivers/mci/mci-bcm2835.c                 |  93 ++-----
- drivers/mci/mci-bcm2835.h                 |  48 ----
- include/common.h                          |  11 +
- 11 files changed, 700 insertions(+), 157 deletions(-)
- create mode 100644 arch/arm/mach-bcm2835/include/mach/mbox.h
- create mode 100644 arch/arm/mach-bcm2835/mbox.c
-
+diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
+index 7aab55b..223e308 100644
+--- a/arch/arm/cpu/cache.c
++++ b/arch/arm/cpu/cache.c
+@@ -41,32 +41,38 @@ DEFINE_CPU_FNS(v7)
+ 
+ void __dma_clean_range(unsigned long start, unsigned long end)
+ {
+-	cache_fns->dma_clean_range(start, end);
++	if (cache_fns)
++		cache_fns->dma_clean_range(start, end);
+ }
+ 
+ void __dma_flush_range(unsigned long start, unsigned long end)
+ {
+-	cache_fns->dma_flush_range(start, end);
++	if (cache_fns)
++		cache_fns->dma_flush_range(start, end);
+ }
+ 
+ void __dma_inv_range(unsigned long start, unsigned long end)
+ {
+-	cache_fns->dma_inv_range(start, end);
++	if (cache_fns)
++		cache_fns->dma_inv_range(start, end);
+ }
+ 
+ void __mmu_cache_on(void)
+ {
+-	cache_fns->mmu_cache_on();
++	if (cache_fns)
++		cache_fns->mmu_cache_on();
+ }
+ 
+ void __mmu_cache_off(void)
+ {
+-	cache_fns->mmu_cache_off();
++	if (cache_fns)
++		cache_fns->mmu_cache_off();
+ }
+ 
+ void __mmu_cache_flush(void)
+ {
+-	cache_fns->mmu_cache_flush();
++	if (cache_fns)
++		cache_fns->mmu_cache_flush();
+ }
+ 
+ int arm_set_cache_functions(void)
 -- 
 1.8.3.2
 
