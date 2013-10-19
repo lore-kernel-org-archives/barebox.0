@@ -1,18 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo4.mail-out.ovh.net ([87.98.179.66]
- helo=mo4.mail-out.ovh.net)
+Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+ helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXCxy-0001C2-Ip
- for barebox@lists.infradead.org; Fri, 18 Oct 2013 16:31:59 +0000
-Received: from mail629.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 82B4FFFAB21
- for <barebox@lists.infradead.org>; Fri, 18 Oct 2013 18:32:05 +0200 (CEST)
+ id 1VXSkE-0000sf-7Z
+ for barebox@lists.infradead.org; Sat, 19 Oct 2013 09:22:51 +0000
+Received: from mail31.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 8509AFF8CE6
+ for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 11:22:41 +0200 (CEST)
+Date: Sat, 19 Oct 2013 11:24:06 +0200
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Fri, 18 Oct 2013 18:33:12 +0200
-Message-Id: <1382113992-9082-3-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1382113992-9082-1-git-send-email-plagnioj@jcrosoft.com>
-References: <20131018163147.GZ32444@ns203013.ovh.net>
- <1382113992-9082-1-git-send-email-plagnioj@jcrosoft.com>
+Message-ID: <20131019092406.GA32444@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +20,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] USB: storage: register disks as usbdiskx symlink
+Subject: [PATCH 0/3] add ARM MMCI support
 To: barebox@lists.infradead.org
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+Hi,
 
-To better identify them as USB storage devices. Also make the
-info message look nicer.
+	to support the ARM AMBA MMCI support we need update the mci support
+	to only request data length that the controler can handle
 
-We keep the old disk%d to do not brake backword compatibility for env.
+The following changes since commit 8f23a17f9bac836e4a2f4883ca8f886f535449a8:
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- drivers/usb/storage/usb.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+  Merge branch 'pu/bootloader-spec' (2013-10-14 15:46:10 +0200)
 
-diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index e4b08b9..6833983 100644
---- a/drivers/usb/storage/usb.c
-+++ b/drivers/usb/storage/usb.c
-@@ -25,6 +25,7 @@
- #include <scsi.h>
- #include <usb/usb.h>
- #include <usb/usb_defs.h>
-+#include <linux/err.h>
- 
- #undef USB_STOR_DEBUG
- 
-@@ -376,6 +377,7 @@ static int usb_stor_add_blkdev(struct us_data *us, struct device_d *dev,
- 							unsigned char lun)
- {
- 	struct us_blk_dev *pblk_dev;
-+	struct cdev *cdev;
- 	int result;
- 
- 	/* allocate a new USB block device */
-@@ -406,6 +408,12 @@ static int usb_stor_add_blkdev(struct us_data *us, struct device_d *dev,
- 		goto BadDevice;
- 	}
- 
-+	cdev = devfs_add_symlink_index("usbdisk", &pblk_dev->blk.cdev);
-+	if (IS_ERR(cdev))
-+		dev_warn(dev, "Cannot create symlink usbdisk\n");
-+	else
-+		dev_info(dev, "registered /dev/%s\n", cdev->name);
-+
- 	/* create partitions on demand */
- 	result = parse_partition_table(&pblk_dev->blk);
- 	if (result != 0)
--- 
-1.8.4.rc3
+are available in the git repository at:
 
+
+  git://git.jcrosoft.org/barebox.git delivery/vexpress_mmci
+
+for you to fetch changes up to 5de3f3e9a857c7c06322cac70ab5d452267f74ca:
+
+  vexpress: mmc support (2013-10-16 13:28:45 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (3):
+      mci: add max_req_size support
+      add: mmci drivers
+      vexpress: mmc support
+
+ arch/arm/boards/vexpress/init.c               |   9 +-
+ arch/arm/mach-vexpress/devices.c              |  12 ++-
+ arch/arm/mach-vexpress/include/mach/devices.h |   5 +
+ arch/arm/mach-vexpress/v2m.c                  |   1 +
+ drivers/mci/Kconfig                           |   6 ++
+ drivers/mci/Makefile                          |   1 +
+ drivers/mci/mci-core.c                        |  32 ++++--
+ drivers/mci/mmci.c                            | 690 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/mci/mmci.h                            | 167 ++++++++++++++++++++++++++++++
+ include/linux/amba/mmci.h                     |  42 ++++++++
+ include/mci.h                                 |   1 +
+ 11 files changed, 956 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/mci/mmci.c
+ create mode 100644 drivers/mci/mmci.h
+ create mode 100644 include/linux/amba/mmci.h
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
