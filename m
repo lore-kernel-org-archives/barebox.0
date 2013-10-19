@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
+Received: from mail-ee0-x22c.google.com ([2a00:1450:4013:c00::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXVX1-0002nd-0Y
- for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:23 +0000
-Received: by mail-ee0-f45.google.com with SMTP id c50so2659348eek.32
- for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:00 -0700 (PDT)
+ id 1VXVX1-0002ne-R1
+ for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:24 +0000
+Received: by mail-ee0-f44.google.com with SMTP id b47so2645922eek.17
+ for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:02 -0700 (PDT)
 Received: from mamamia.internal (a89-182-1-5.net-htp.de. [89.182.1.5])
- by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.20.58
+ by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.21.00
  for <barebox@lists.infradead.org>
  (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sat, 19 Oct 2013 05:20:59 -0700 (PDT)
+ Sat, 19 Oct 2013 05:21:01 -0700 (PDT)
 From: Andre Heider <a.heider@gmail.com>
-Date: Sat, 19 Oct 2013 14:20:47 +0200
-Message-Id: <1382185254-29183-1-git-send-email-a.heider@gmail.com>
+Date: Sat, 19 Oct 2013 14:20:48 +0200
+Message-Id: <1382185254-29183-2-git-send-email-a.heider@gmail.com>
 In-Reply-To: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
 References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -28,75 +28,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/10] ARM: cache: do not crash when the MMU isn't yet setup
+Subject: [PATCH 03/10] common: add a macro to align an array on the stack
 To: barebox@lists.infradead.org
 
-Drivers currently cannot implement explicit cache handling and rely on
-running the same code before and after mmu_initcall() without crashing.
+The macro can be used for temporary stack buffers which need to meet
+a minimum alignment requirement.
 
-Depending on the chosen config options, the cache functions are not yet
-setup and using them early on ends in a null pointer dereference.
-
-The RPi's mailbox driver is such a case; it requires cache handling once
-the MMU is fully set up and yet the RPi setup needs to use the driver to
-get the memory size before mem_initcall() and hence mmu_initcall().
-
-Fix this by checking the cache_fns pointer before dereferencing it.
+This will be used by bcm2835 mailbox users, where all buffers need to
+be aligned.
 
 Signed-off-by: Andre Heider <a.heider@gmail.com>
 ---
- arch/arm/cpu/cache.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ include/common.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
-index 7aab55b..223e308 100644
---- a/arch/arm/cpu/cache.c
-+++ b/arch/arm/cpu/cache.c
-@@ -41,32 +41,38 @@ DEFINE_CPU_FNS(v7)
+diff --git a/include/common.h b/include/common.h
+index 0f0ba08..00f1642 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -192,6 +192,17 @@ int run_shell(void);
+ #define ARRAY_SIZE(arr)		(sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+ #define ARRAY_AND_SIZE(x)	(x), ARRAY_SIZE(x)
  
- void __dma_clean_range(unsigned long start, unsigned long end)
- {
--	cache_fns->dma_clean_range(start, end);
-+	if (cache_fns)
-+		cache_fns->dma_clean_range(start, end);
- }
- 
- void __dma_flush_range(unsigned long start, unsigned long end)
- {
--	cache_fns->dma_flush_range(start, end);
-+	if (cache_fns)
-+		cache_fns->dma_flush_range(start, end);
- }
- 
- void __dma_inv_range(unsigned long start, unsigned long end)
- {
--	cache_fns->dma_inv_range(start, end);
-+	if (cache_fns)
-+		cache_fns->dma_inv_range(start, end);
- }
- 
- void __mmu_cache_on(void)
- {
--	cache_fns->mmu_cache_on();
-+	if (cache_fns)
-+		cache_fns->mmu_cache_on();
- }
- 
- void __mmu_cache_off(void)
- {
--	cache_fns->mmu_cache_off();
-+	if (cache_fns)
-+		cache_fns->mmu_cache_off();
- }
- 
- void __mmu_cache_flush(void)
- {
--	cache_fns->mmu_cache_flush();
-+	if (cache_fns)
-+		cache_fns->mmu_cache_flush();
- }
- 
- int arm_set_cache_functions(void)
++/*
++ * The STACK_ALIGN_ARRAY macro is used to allocate a buffer on the stack that
++ * meets a minimum alignment requirement.
++ *
++ * Note that the size parameter is the number of array elements to allocate,
++ * not the number of bytes.
++ */
++#define STACK_ALIGN_ARRAY(type, name, size, align)		\
++	char __##name[sizeof(type) * (size) + (align) - 1];	\
++	type *name = (type *)ALIGN((uintptr_t)__##name, align)
++
+ /**
+  * container_of - cast a member of a structure out to the containing structure
+  * @ptr:	the pointer to the member.
 -- 
 1.8.3.2
 
