@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo5.mail-out.ovh.net ([46.105.39.65]
+Received: from 4.mo5.mail-out.ovh.net ([178.33.111.247]
  helo=mo5.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXSkE-0000sf-7Z
- for barebox@lists.infradead.org; Sat, 19 Oct 2013 09:22:51 +0000
+ id 1VXSlD-0000tc-3H
+ for barebox@lists.infradead.org; Sat, 19 Oct 2013 09:23:52 +0000
 Received: from mail31.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 8509AFF8CE6
- for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 11:22:41 +0200 (CEST)
-Date: Sat, 19 Oct 2013 11:24:06 +0200
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id BE157FF86A5
+ for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 11:23:44 +0200 (CEST)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131019092406.GA32444@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Sat, 19 Oct 2013 11:25:07 +0200
+Message-Id: <1382174709-26633-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20131019092406.GA32444@ns203013.ovh.net>
+References: <20131019092406.GA32444@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +20,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] add ARM MMCI support
+Subject: [PATCH 1/3] mci: add max_req_size support
 To: barebox@lists.infradead.org
 
-Hi,
+Some controller such as the ARM AMBA pl181 can not handle more than 16bits
+data length request.
 
-	to support the ARM AMBA MMCI support we need update the mci support
-	to only request data length that the controler can handle
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ drivers/mci/mci-core.c | 32 ++++++++++++++++++++++++--------
+ include/mci.h          |  1 +
+ 2 files changed, 25 insertions(+), 8 deletions(-)
 
-The following changes since commit 8f23a17f9bac836e4a2f4883ca8f886f535449a8:
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 66ddb5b..3d040d7 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1199,6 +1199,8 @@ static int __maybe_unused mci_sd_write(struct block_device *blk,
+ 	struct mci *mci = part->mci;
+ 	struct mci_host *host = mci->host;
+ 	int rc;
++	unsigned max_req_block = mci->host->max_req_size / mci->read_bl_len;
++	int write_block;
+ 
+ 	mci_blk_part_switch(part);
+ 
+@@ -1222,10 +1224,16 @@ static int __maybe_unused mci_sd_write(struct block_device *blk,
+ 		return -EINVAL;
+ 	}
+ 
+-	rc = mci_block_write(mci, buffer, block, num_blocks);
+-	if (rc != 0) {
+-		dev_dbg(&mci->dev, "Writing block %d failed with %d\n", block, rc);
+-		return rc;
++	while (num_blocks) {
++		write_block = min_t(int, num_blocks, max_req_block);
++		rc = mci_block_write(mci, buffer, block, write_block);
++		if (rc != 0) {
++			dev_dbg(&mci->dev, "Writing block %d failed with %d\n", block, rc);
++			return rc;
++		}
++		num_blocks -= write_block;
++		block += write_block;
++		buffer += write_block * mci->write_bl_len;
+ 	}
+ 
+ 	return 0;
+@@ -1246,6 +1254,8 @@ static int mci_sd_read(struct block_device *blk, void *buffer, int block,
+ {
+ 	struct mci_part *part = container_of(blk, struct mci_part, blk);
+ 	struct mci *mci = part->mci;
++	unsigned max_req_block = mci->host->max_req_size / mci->read_bl_len;
++	int read_block;
+ 	int rc;
+ 
+ 	mci_blk_part_switch(part);
+@@ -1264,10 +1274,16 @@ static int mci_sd_read(struct block_device *blk, void *buffer, int block,
+ 		return -EINVAL;
+ 	}
+ 
+-	rc = mci_read_block(mci, buffer, block, num_blocks);
+-	if (rc != 0) {
+-		dev_dbg(&mci->dev, "Reading block %d failed with %d\n", block, rc);
+-		return rc;
++	while (num_blocks) {
++		read_block = min_t(int, num_blocks, max_req_block);
++		rc = mci_read_block(mci, buffer, block, read_block);
++		if (rc != 0) {
++			dev_dbg(&mci->dev, "Reading block %d failed with %d\n", block, rc);
++			return rc;
++		}
++		num_blocks -= read_block;
++		block += read_block;
++		buffer += read_block * mci->read_bl_len;
+ 	}
+ 
+ 	return 0;
+diff --git a/include/mci.h b/include/mci.h
+index 1ca00c7..07ac273 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -293,6 +293,7 @@ struct mci_host {
+ 	unsigned f_max;		/**< host interface upper limit */
+ 	unsigned clock;		/**< Current clock used to talk to the card */
+ 	unsigned bus_width;	/**< used data bus width to the card */
++	unsigned max_req_size;
+ 
+ 	/** init the host interface */
+ 	int (*init)(struct mci_host*, struct device_d*);
+-- 
+1.8.4.rc3
 
-  Merge branch 'pu/bootloader-spec' (2013-10-14 15:46:10 +0200)
-
-are available in the git repository at:
-
-
-  git://git.jcrosoft.org/barebox.git delivery/vexpress_mmci
-
-for you to fetch changes up to 5de3f3e9a857c7c06322cac70ab5d452267f74ca:
-
-  vexpress: mmc support (2013-10-16 13:28:45 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      mci: add max_req_size support
-      add: mmci drivers
-      vexpress: mmc support
-
- arch/arm/boards/vexpress/init.c               |   9 +-
- arch/arm/mach-vexpress/devices.c              |  12 ++-
- arch/arm/mach-vexpress/include/mach/devices.h |   5 +
- arch/arm/mach-vexpress/v2m.c                  |   1 +
- drivers/mci/Kconfig                           |   6 ++
- drivers/mci/Makefile                          |   1 +
- drivers/mci/mci-core.c                        |  32 ++++--
- drivers/mci/mmci.c                            | 690 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mci/mmci.h                            | 167 ++++++++++++++++++++++++++++++
- include/linux/amba/mmci.h                     |  42 ++++++++
- include/mci.h                                 |   1 +
- 11 files changed, 956 insertions(+), 10 deletions(-)
- create mode 100644 drivers/mci/mmci.c
- create mode 100644 drivers/mci/mmci.h
- create mode 100644 include/linux/amba/mmci.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
