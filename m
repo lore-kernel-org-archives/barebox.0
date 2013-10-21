@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VXVX3-0002ng-Ps
- for barebox@lists.infradead.org; Sat, 19 Oct 2013 12:21:26 +0000
-Received: by mail-ea0-f182.google.com with SMTP id o10so2542781eaj.41
- for <barebox@lists.infradead.org>; Sat, 19 Oct 2013 05:21:05 -0700 (PDT)
-Received: from mamamia.internal (a89-182-1-5.net-htp.de. [89.182.1.5])
- by mx.google.com with ESMTPSA id b42sm17147502eem.9.2013.10.19.05.21.03
- for <barebox@lists.infradead.org>
- (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Sat, 19 Oct 2013 05:21:04 -0700 (PDT)
-From: Andre Heider <a.heider@gmail.com>
-Date: Sat, 19 Oct 2013 14:20:50 +0200
-Message-Id: <1382185254-29183-4-git-send-email-a.heider@gmail.com>
-In-Reply-To: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
-References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+ id 1VY9h8-0003DL-8q
+ for barebox@lists.infradead.org; Mon, 21 Oct 2013 07:14:31 +0000
+Date: Mon, 21 Oct 2013 09:14:07 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131021071407.GZ30088@pengutronix.de>
+References: <1382102564-31486-1-git-send-email-plagnioj@jcrosoft.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1382102564-31486-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +18,117 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/10] ARM: bcm2835: register the clocksource driver earlier
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] fs: bpkfs: add missing include
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-RPi's mailbox driver is used early and it needs clock functions to
-handle timeouts.
+On Fri, Oct 18, 2013 at 03:22:44PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> was not include when applying bpkfs patch
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 
-Promote to a core_initcall().
+Applied, thanks
 
-Signed-off-by: Andre Heider <a.heider@gmail.com>
----
- drivers/clocksource/bcm2835.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/drivers/clocksource/bcm2835.c b/drivers/clocksource/bcm2835.c
-index d5fe0f0..d1df3d2 100644
---- a/drivers/clocksource/bcm2835.c
-+++ b/drivers/clocksource/bcm2835.c
-@@ -87,4 +87,4 @@ static int bcm2835_cs_init(void)
- {
- 	return platform_driver_register(&bcm2835_cs_driver);
- }
--coredevice_initcall(bcm2835_cs_init);
-+core_initcall(bcm2835_cs_init);
+> ---
+>  include/bpkfs.h | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 68 insertions(+)
+>  create mode 100644 include/bpkfs.h
+> 
+> diff --git a/include/bpkfs.h b/include/bpkfs.h
+> new file mode 100644
+> index 0000000..ccb56c1
+> --- /dev/null
+> +++ b/include/bpkfs.h
+> @@ -0,0 +1,68 @@
+> +/*
+> + * Copyright (c) 2013 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+> + *
+> + * under GPLv2 only
+> + */
+> +
+> +#ifndef __BPKFS_H__
+> +#define __BPKFS_H__
+> +
+> +#include <linux/types.h>
+> +#include <linux/list.h>
+> +
+> +#define BPKFS_TYPE_BL	0x50424c00
+> +#define BPKFS_TYPE_BLV	0x50424c56
+> +#define BPKFS_TYPE_DSC	0x44456343
+> +#define BPKFS_TYPE_KER	0x504b4552
+> +#define BPKFS_TYPE_RFS	0x50524653
+> +#define BPKFS_TYPE_FMV	0x46575600
+> +
+> +struct bpkfs_header {
+> +	uint32_t magic;
+> +	uint32_t version;
+> +	uint64_t size;
+> +	uint32_t crc;
+> +	uint64_t spare;
+> +} __attribute__ ((packed)) ;
+> +
+> +struct bpkfs_data_header {
+> +	uint32_t type;
+> +	uint64_t size;
+> +	uint32_t crc;
+> +	uint32_t hw_id;
+> +	uint32_t spare;
+> +} __attribute__ ((packed)) ;
+> +
+> +struct bpkfs_handle_hw {
+> +	char *name;
+> +	uint32_t hw_id;
+> +
+> +	struct list_head list_data;
+> +	struct list_head list_hw_id;
+> +};
+> +
+> +struct bpkfs_handle_data {
+> +	char *name;
+> +	uint32_t type;
+> +	uint32_t hw_id;
+> +	uint64_t size;
+> +
+> +	int fd;
+> +	size_t offset; /* offset in the image */
+> +	size_t pos; /* pos in the data */
+> +	uint32_t crc;
+> +
+> +	char data[8];
+> +
+> +	struct list_head list;
+> +};
+> +
+> +struct bpkfs_handle {
+> +	struct bpkfs_header header;
+> +	int nb_data_entries;
+> +	char *filename;
+> +
+> +	struct list_head list;
+> +};
+> +
+> +#endif /* __BPKFS_H__ */
+> -- 
+> 1.8.4.rc3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.3.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
