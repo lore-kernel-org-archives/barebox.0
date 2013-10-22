@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VYd7m-00052R-LF
- for barebox@lists.infradead.org; Tue, 22 Oct 2013 14:40:00 +0000
-Date: Tue, 22 Oct 2013 16:39:36 +0200
-From: Markus Pargmann <mpa@pengutronix.de>
-Message-ID: <20131022143936.GA27073@pengutronix.de>
-References: <1382438777-15920-1-git-send-email-mpa@pengutronix.de>
- <20131022142633.GA26639@ns203013.ovh.net>
+ id 1VYdKG-0005Ls-3I
+ for barebox@lists.infradead.org; Tue, 22 Oct 2013 14:52:53 +0000
+Date: Tue, 22 Oct 2013 16:52:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131022145228.GN30088@pengutronix.de>
+References: <20131022143339.GC26639@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131022142633.GA26639@ns203013.ovh.net>
+In-Reply-To: <20131022143339.GC26639@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,61 +22,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net: phy: Add micrel KSZ8031
+Subject: Re: [PATCH 0/3 V2] add ARM MMCI support
 To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Oct 22, 2013 at 04:26:33PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 12:46 Tue 22 Oct     , Markus Pargmann wrote:
-> > KSZ8031 is similar to KSZ8021. It can use the same functions.
-> > 
-> > Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
-> > ---
-> >  drivers/net/phy/micrel.c   | 9 +++++++++
-> >  include/linux/micrel_phy.h | 1 +
-> >  2 files changed, 10 insertions(+)
-> > 
-> > diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> > index c0bcdd1..3cba2c4 100644
-> > --- a/drivers/net/phy/micrel.c
-> > +++ b/drivers/net/phy/micrel.c
-> > @@ -122,6 +122,15 @@ static struct phy_driver ksphy_driver[] = {
-> >  	.config_aneg	= genphy_config_aneg,
-> >  	.read_status	= genphy_read_status,
-> >  }, {
-> > +	.phy_id		= PHY_ID_KSZ8031,
-> > +	.phy_id_mask	= 0x00ffffff,
-> > +	.drv.name	= "Micrel KSZ8031",
-> > +	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
-> > +			   SUPPORTED_Asym_Pause),
-> > +	.config_init	= ksz8021_config_init,
-> > +	.config_aneg	= genphy_config_aneg,
-> > +	.read_status	= genphy_read_status,
-> > +}, {
-> >  	.phy_id		= PHY_ID_KSZ8041,
-> >  	.phy_id_mask	= 0x00fffff0,
-> >  	.drv.name	= "Micrel KSZ8041",
-> > diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-> > index 9dbb41a..8752dbb 100644
-> > --- a/include/linux/micrel_phy.h
-> > +++ b/include/linux/micrel_phy.h
-> > @@ -19,6 +19,7 @@
-> >  #define PHY_ID_KSZ9021		0x00221610
-> >  #define PHY_ID_KS8737		0x00221720
-> >  #define PHY_ID_KSZ8021		0x00221555
-> > +#define PHY_ID_KSZ8031		0x00221556
-> you really need this?
+On Tue, Oct 22, 2013 at 04:33:39PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
 > 
-> because if you use a phy_id_mask of 0x00fffff0 you can use the entry as 
-> PHY_ID_KSZ8021
+> 	v2: use max_req_size only if set
+> 
+> 	to support the ARM AMBA MMCI support we need update the mci support
+> 	to only request data length that the controler can handle
+> 
+> 
+> The following changes since commit 8f23a17f9bac836e4a2f4883ca8f886f535449a8:
+> 
+>   Merge branch 'pu/bootloader-spec' (2013-10-14 15:46:10 +0200)
+> 
+> are available in the git repository at:
+> 
+> 
+>   git://git.jcrosoft.org/barebox.git delivery/vexpress_mmci
 
-Yes, it is necessary, the mask you suggest is already in use for
+Switched to this series.
 
-#define PHY_ID_KSZ8051		0x00221550
-
-Regards,
-
-Markus Pargmann
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
