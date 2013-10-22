@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp20.mail.ru ([94.100.176.173])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VYJbF-0000jO-03
- for barebox@lists.infradead.org; Mon, 21 Oct 2013 17:49:06 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 21 Oct 2013 21:48:24 +0400
-Message-Id: <1382377705-15040-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1382377705-15040-1-git-send-email-shc_work@mail.ru>
+ id 1VYVpR-0003mf-Nh
+ for barebox@lists.infradead.org; Tue, 22 Oct 2013 06:52:34 +0000
+Date: Tue, 22 Oct 2013 08:52:11 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131022065210.GH30088@pengutronix.de>
 References: <1382377705-15040-1-git-send-email-shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1382377705-15040-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,46 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] gadget: at91: Fix uninitialized variable
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/3] calloc: Fix possible memory leak
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Variable udc is used unitialized for DBG(xxx).
+On Mon, Oct 21, 2013 at 09:48:23PM +0400, Alexander Shiyan wrote:
+> 
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/usb/gadget/at91_udc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied all, thanks
 
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index a11379c..acd9e44 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -414,6 +414,8 @@ static int at91_ep_queue(struct usb_ep *_ep,
- 	req = container_of(_req, struct at91_request, req);
- 	ep = container_of(_ep, struct at91_ep, ep);
- 
-+	udc = ep->udc;
-+
- 	if (!_req || !_req->complete
- 			|| !_req->buf || !list_empty(&req->queue)) {
- 		DBG(udc, "invalid request\n");
-@@ -425,8 +427,6 @@ static int at91_ep_queue(struct usb_ep *_ep,
- 		return -EINVAL;
- 	}
- 
--	udc = ep->udc;
--
- 	if (!udc || !udc->driver || udc->gadget.speed == USB_SPEED_UNKNOWN) {
- 		DBG(udc, "invalid device\n");
- 		return -EINVAL;
+Sascha
+
+> ---
+>  common/dlmalloc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/common/dlmalloc.c b/common/dlmalloc.c
+> index 7ad368e..b4341fe 100644
+> --- a/common/dlmalloc.c
+> +++ b/common/dlmalloc.c
+> @@ -1750,11 +1750,11 @@ void *calloc(size_t n, size_t elem_size)
+>  	mchunkptr oldtop = top;
+>  	INTERNAL_SIZE_T oldtopsize = chunksize(top);
+>  
+> -	void *mem = malloc(sz);
+> -
+>  	if ((long)n < 0)
+>  		return NULL;
+>  
+> +	void *mem = malloc(sz);
+> +
+>  	if (!mem)
+>  		return NULL;
+>  	else {
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.1.5
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
