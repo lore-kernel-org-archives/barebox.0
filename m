@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x229.google.com ([2a00:1450:4013:c00::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VZPnt-00027M-8s
- for barebox@lists.infradead.org; Thu, 24 Oct 2013 18:38:41 +0000
-Date: Thu, 24 Oct 2013 20:38:19 +0200
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20131024183819.GB3512@pengutronix.de>
-References: <20131023164800.GD26639@ns203013.ovh.net>
- <20131024073002.GT30088@pengutronix.de>
+ id 1VYfHK-000097-N0
+ for barebox@lists.infradead.org; Tue, 22 Oct 2013 16:57:59 +0000
+Received: by mail-ee0-f41.google.com with SMTP id d49so1267217eek.14
+ for <barebox@lists.infradead.org>; Tue, 22 Oct 2013 09:57:36 -0700 (PDT)
+Date: Tue, 22 Oct 2013 18:57:29 +0200
+From: Andre Heider <a.heider@gmail.com>
+Message-ID: <20131022165729.GA7150@gmail.com>
+References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+ <20131022133405.GM30088@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131024073002.GT30088@pengutronix.de>
+In-Reply-To: <20131022133405.GM30088@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +21,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [BUG] phycard a l1 on lowlevel
+Subject: Re: [PATCH 00/10] RPi mailbox support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 24, 2013 at 09:30:02AM +0200, Sascha Hauer wrote:
-> Hi J,
-> =
+On Tue, Oct 22, 2013 at 03:34:05PM +0200, Sascha Hauer wrote:
+> On Sat, Oct 19, 2013 at 02:18:41PM +0200, Andre Heider wrote:
+> > This adds a bcm2835 mailbox driver for the RPi to talk to the on-SoC
+> > VideoCore. See [1] for a description.
+> > 
+> > This patchset uses it to get two properties, the eMMC clock and the
+> > memory size.
+> > 
+> > The RPi backend needs to use this driver early on, namely before the
+> > MMU setup. We also want to use the driver in the future after the MMU setup,
+> > like setting up simplefb for the kernel. Patch 1 and 2 lay the groundwork
+> > for that.
+> > 
+> > The mailbox driver also needs to handle timouts, so patch 5 and 6 are
+> > making the clocksource accessible earlier.
+> > 
+> > Patch 7 is the driver itself, providing a helper macro for users based on
+> > a new common macro from patch 3.
+> > 
+> > Patch 8 and 9 switch the bc2835_mci driver from a local mailbox
+> > implementation to the new driver.
+> > 
+> > Patch 10 uses the driver to get the proper memory size.
+> > 
+> > Patch 4 is just a cleanup.
+> 
+> Applied, thanks. I'll probably have a closer look at the caching bits
+> later, but looks good for now.
 
-> On Wed, Oct 23, 2013 at 06:48:00PM +0200, Jean-Christophe PLAGNIOL-VILLAR=
-D wrote:
-> > Hi Sasha,
-> > =
+Thanks Sascha!
+Any particular concerns about the caching bits?
 
-> > 	I get this when compiling this board
-> > =
-
-> > Building arm phycard_a_l1_defconfig
-> > Configure: OK
-> > /opt/work/barebox/arch/arm/boards/phycard-a-l1/lowlevel.c: In function =
-'barebox_arm_reset_vector':
-> > /opt/work/barebox/arch/arm/boards/phycard-a-l1/lowlevel.c:122:3: warnin=
-g: array subscript is above array bounds
-> =
-
-> I don't see this here. You probably have a different gcc version.
-This is from
-
-	sdrc_config[(uchar) cfg]
-
-where cfg is set to -1 a few lines above.
-
-(BTW, the function hint is wrong, this is in pcaal1_sdrc_init().)
-
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Regards,
+Andre
 
 _______________________________________________
 barebox mailing list
