@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VYc6N-0003DQ-KK
- for barebox@lists.infradead.org; Tue, 22 Oct 2013 13:34:28 +0000
-Date: Tue, 22 Oct 2013 15:34:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131022133405.GM30088@pengutronix.de>
-References: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+Received: from 2.mo6.mail-out.ovh.net ([46.105.76.65]
+ helo=mo6.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VYctZ-0004S0-4H
+ for barebox@lists.infradead.org; Tue, 22 Oct 2013 14:25:18 +0000
+Received: from mail630.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id D64C2FFA41A
+ for <barebox@lists.infradead.org>; Tue, 22 Oct 2013 16:25:10 +0200 (CEST)
+Date: Tue, 22 Oct 2013 16:26:33 +0200
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131022142633.GA26639@ns203013.ovh.net>
+References: <1382438777-15920-1-git-send-email-mpa@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1382185130-28995-1-git-send-email-a.heider@gmail.com>
+In-Reply-To: <1382438777-15920-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +26,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/10] RPi mailbox support
-To: Andre Heider <a.heider@gmail.com>
+Subject: Re: [PATCH] net: phy: Add micrel KSZ8031
+To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Oct 19, 2013 at 02:18:41PM +0200, Andre Heider wrote:
-> This adds a bcm2835 mailbox driver for the RPi to talk to the on-SoC
-> VideoCore. See [1] for a description.
+On 12:46 Tue 22 Oct     , Markus Pargmann wrote:
+> KSZ8031 is similar to KSZ8021. It can use the same functions.
 > 
-> This patchset uses it to get two properties, the eMMC clock and the
-> memory size.
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
+> ---
+>  drivers/net/phy/micrel.c   | 9 +++++++++
+>  include/linux/micrel_phy.h | 1 +
+>  2 files changed, 10 insertions(+)
 > 
-> The RPi backend needs to use this driver early on, namely before the
-> MMU setup. We also want to use the driver in the future after the MMU setup,
-> like setting up simplefb for the kernel. Patch 1 and 2 lay the groundwork
-> for that.
-> 
-> The mailbox driver also needs to handle timouts, so patch 5 and 6 are
-> making the clocksource accessible earlier.
-> 
-> Patch 7 is the driver itself, providing a helper macro for users based on
-> a new common macro from patch 3.
-> 
-> Patch 8 and 9 switch the bc2835_mci driver from a local mailbox
-> implementation to the new driver.
-> 
-> Patch 10 uses the driver to get the proper memory size.
-> 
-> Patch 4 is just a cleanup.
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index c0bcdd1..3cba2c4 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -122,6 +122,15 @@ static struct phy_driver ksphy_driver[] = {
+>  	.config_aneg	= genphy_config_aneg,
+>  	.read_status	= genphy_read_status,
+>  }, {
+> +	.phy_id		= PHY_ID_KSZ8031,
+> +	.phy_id_mask	= 0x00ffffff,
+> +	.drv.name	= "Micrel KSZ8031",
+> +	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
+> +			   SUPPORTED_Asym_Pause),
+> +	.config_init	= ksz8021_config_init,
+> +	.config_aneg	= genphy_config_aneg,
+> +	.read_status	= genphy_read_status,
+> +}, {
+>  	.phy_id		= PHY_ID_KSZ8041,
+>  	.phy_id_mask	= 0x00fffff0,
+>  	.drv.name	= "Micrel KSZ8041",
+> diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+> index 9dbb41a..8752dbb 100644
+> --- a/include/linux/micrel_phy.h
+> +++ b/include/linux/micrel_phy.h
+> @@ -19,6 +19,7 @@
+>  #define PHY_ID_KSZ9021		0x00221610
+>  #define PHY_ID_KS8737		0x00221720
+>  #define PHY_ID_KSZ8021		0x00221555
+> +#define PHY_ID_KSZ8031		0x00221556
+you really need this?
 
-Applied, thanks. I'll probably have a closer look at the caching bits
-later, but looks good for now.
+because if you use a phy_id_mask of 0x00fffff0 you can use the entry as 
+PHY_ID_KSZ8021
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+J.
+>  #define PHY_ID_KSZ8041		0x00221510
+>  #define PHY_ID_KSZ8051		0x00221550
+>  /* same id: ks8001 Rev. A/B, and ks8721 Rev 3. */
+> -- 
+> 1.8.4.rc3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
