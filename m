@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VYVqm-0003ok-Tu
- for barebox@lists.infradead.org; Tue, 22 Oct 2013 06:53:57 +0000
-Date: Tue, 22 Oct 2013 08:53:35 +0200
+ id 1VYVzK-0003zT-OQ
+ for barebox@lists.infradead.org; Tue, 22 Oct 2013 07:02:47 +0000
+Date: Tue, 22 Oct 2013 09:02:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131022065335.GI30088@pengutronix.de>
-References: <1382343862-18098-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20131022070224.GJ30088@pengutronix.de>
+References: <1382353671-22937-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1382343862-18098-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1382353671-22937-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,72 +22,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] USB: Check init/post_init errors
+Subject: Re: [PATCH] ARM: i.MX51: Update DTS template
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Oct 21, 2013 at 12:24:22PM +0400, Alexander Shiyan wrote:
-> Host with inoperable ULPI able to bring the system into an
-> infinite loop. The patch adds error checking during initialization
-> to avoid this.
+On Mon, Oct 21, 2013 at 03:07:51PM +0400, Alexander Shiyan wrote:
+> Update i.MX51 DT template from kernel.
 > 
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  arch/arm/dts/imx51.dtsi | 715 ++++++++++++++++++++++++++----------------------
+>  1 file changed, 393 insertions(+), 322 deletions(-)
+> 
+> diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
+> index 1a71ec9..f4dcff3 100644
+> --- a/arch/arm/dts/imx51.dtsi
+> +++ b/arch/arm/dts/imx51.dtsi
+> @@ -15,18 +15,18 @@
+>  
+>  / {
+>  	aliases {
+> -		serial0 = &uart1;
+> -		serial1 = &uart2;
+> -		serial2 = &uart3;
+>  		gpio0 = &gpio1;
+>  		gpio1 = &gpio2;
+>  		gpio2 = &gpio3;
+>  		gpio3 = &gpio4;
+> -		mmc0 = &esdhc1;
+> -		mmc1 = &esdhc2;
+> -		mmc2 = &esdhc3;
+> -		mmc3 = &esdhc4;
+> -		pata0 = &pata;
+
+I kept these. We need them for persistent device names.
 
 Applied, thanks
 
 Sascha
-
-> ---
->  drivers/usb/host/ehci-hcd.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index cb6a592..2da3edd 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -748,6 +748,7 @@ static int ehci_init(struct usb_host *host)
->  	struct ehci_priv *ehci = to_ehci(host);
->  	uint32_t reg;
->  	uint32_t cmd;
-> +	int ret = 0;
->  
->  	ehci_halt(ehci);
->  
-> @@ -755,8 +756,11 @@ static int ehci_init(struct usb_host *host)
->  	if (ehci_reset(ehci) != 0)
->  		return -1;
->  
-> -	if (ehci->init)
-> -		ehci->init(ehci->drvdata);
-> +	if (ehci->init) {
-> +		ret = ehci->init(ehci->drvdata);
-> +		if (ret)
-> +			return ret;
-> +	}
->  
->  	ehci->qh_list->qh_link = cpu_to_hc32((uint32_t)ehci->qh_list | QH_LINK_TYPE_QH);
->  	ehci->qh_list->qh_endpt1 = cpu_to_hc32((1 << 15) | (USB_SPEED_HIGH << 12));
-> @@ -799,9 +803,9 @@ static int ehci_init(struct usb_host *host)
->  	ehci->rootdev = 0;
->  
->  	if (ehci->post_init)
-> -		ehci->post_init(ehci->drvdata);
-> +		ret = ehci->post_init(ehci->drvdata);
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static int
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
