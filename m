@@ -1,15 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VZKwa-0000di-Jl
- for barebox@lists.infradead.org; Thu, 24 Oct 2013 13:27:21 +0000
-Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 0F67994035E
- for <barebox@lists.infradead.org>; Thu, 24 Oct 2013 15:26:53 +0200 (CEST)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Thu, 24 Oct 2013 15:26:52 +0200
-Message-Id: <1382621212-28611-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from mail-ea0-x22c.google.com ([2a00:1450:4013:c01::22c])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VZRS9-0004BB-Di
+ for barebox@lists.infradead.org; Thu, 24 Oct 2013 20:24:22 +0000
+Received: by mail-ea0-f172.google.com with SMTP id r16so21718ead.31
+ for <barebox@lists.infradead.org>; Thu, 24 Oct 2013 13:23:59 -0700 (PDT)
+Received: from mamamia.internal (a89-182-11-81.net-htp.de. [89.182.11.81])
+ by mx.google.com with ESMTPSA id bn13sm8547646eeb.11.2013.10.24.13.23.57
+ for <barebox@lists.infradead.org>
+ (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Thu, 24 Oct 2013 13:23:58 -0700 (PDT)
+From: Andre Heider <a.heider@gmail.com>
+Date: Thu, 24 Oct 2013 22:23:41 +0200
+Message-Id: <1382646226-24871-2-git-send-email-a.heider@gmail.com>
+In-Reply-To: <1382646226-24871-1-git-send-email-a.heider@gmail.com>
+References: <1382646226-24871-1-git-send-email-a.heider@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,35 +23,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bcb: fix compilation
+Subject: [PATCH 1/6] fb: add a stride value to struct fb_info
 To: barebox@lists.infradead.org
 
-dGhpcyBmaXggOgphcmNoL2FybS9tYWNoLW14cy9iY2IuYzoyNjg6IGVycm9yOiB0b28gZmV3IGFy
-Z3VtZW50cyB0byBmdW5jdGlvbiAnY2hpcC0+ZWNjLnJlYWRfcGFnZV9yYXcnCmFyY2gvYXJtL21h
-Y2gtbXhzL2JjYi5jOjMwOTogZXJyb3I6IHRvbyBmZXcgYXJndW1lbnRzIHRvIGZ1bmN0aW9uICdj
-aGlwLT53cml0ZV9wYWdlJwoKY2F1dGlvbiA6IHRoaXMgaXMgTk9UIHJ1bnRpbWUgdGVzdGVkLgoK
-U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
-cm0vbWFjaC1teHMvYmNiLmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
-KyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1teHMvYmNiLmMg
-Yi9hcmNoL2FybS9tYWNoLW14cy9iY2IuYwppbmRleCBhZjUxZDI0Li5iNWQ3OTNlIDEwMDY0NAot
-LS0gYS9hcmNoL2FybS9tYWNoLW14cy9iY2IuYworKysgYi9hcmNoL2FybS9tYWNoLW14cy9iY2Iu
-YwpAQCAtMjY1LDcgKzI2NSw3IEBAIHN0YXRpYyBpbnQgZmluZF9mY2Ioc3RydWN0IG10ZF9pbmZv
-ICptdGQsIHZvaWQgKnJlZiwgaW50IHBhZ2UpCiAKIAljaGlwLT5zZWxlY3RfY2hpcChtdGQsIDAp
-OwogCWNoaXAtPmNtZGZ1bmMobXRkLCBOQU5EX0NNRF9SRUFEMCwgMHgwMCwgcGFnZSk7Ci0JcmV0
-ID0gY2hpcC0+ZWNjLnJlYWRfcGFnZV9yYXcobXRkLCBjaGlwLCBidWYpOworCXJldCA9IGNoaXAt
-PmVjYy5yZWFkX3BhZ2VfcmF3KG10ZCwgY2hpcCwgYnVmLCAxLCBwYWdlKTsKIAlpZiAocmV0KSB7
-CiAJCXByaW50ZigiRmFpbGVkIHRvIHJlYWQgRkNCIGZyb20gcGFnZSAldTogJWRcbiIsIHBhZ2Us
-IHJldCk7CiAJCXJldHVybiByZXQ7CkBAIC0zMDYsNyArMzA2LDcgQEAgc3RhdGljIGludCB3cml0
-ZV9mY2Ioc3RydWN0IG10ZF9pbmZvICptdGQsIHZvaWQgKmJ1ZiwgaW50IGJsb2NrKQogCiAJcHJp
-bnRmKCJXcml0aW5nIEZDQiB0byBibG9jayAlMDh4XG4iLCBibG9jayk7CiAJY2hpcC0+c2VsZWN0
-X2NoaXAobXRkLCAwKTsKLQlyZXQgPSBjaGlwLT53cml0ZV9wYWdlKG10ZCwgY2hpcCwgYnVmLCBw
-YWdlLCAwLCAxKTsKKwlyZXQgPSBjaGlwLT53cml0ZV9wYWdlKG10ZCwgY2hpcCwgMCwgbXRkLT5l
-cmFzZXNpemUsIGJ1ZiwgMSwgcGFnZSwgMCwgMSk7CiAJaWYgKHJldCkgewogCQlwcmludGYoIkZh
-aWxlZCB0byB3cml0ZSBGQ0IgdG8gYmxvY2sgJTA4eDogJWRcbiIsIGJsb2NrLCByZXQpOwogCX0K
-LS0gCjEuOC4zLjEKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Add support for framebuffers with noncontiguous horizontal lines.
+
+Video drivers can set this value if the hardware requires it.
+In case a driver does not set it, the current value of
+xres * (bpp / 8) is used instead.
+
+Signed-off-by: Andre Heider <a.heider@gmail.com>
+---
+ drivers/video/fb.c | 11 +++++++++--
+ include/fb.h       |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 420e4e3..e80fab9 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -72,12 +72,16 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+ 
+ 	info->xres = info->mode->xres;
+ 	info->yres = info->mode->yres;
++	info->stride = 0;
+ 
+ 	ret = info->fbops->fb_activate_var(info);
+ 
++	if (!info->stride)
++		info->stride = info->xres * (info->bits_per_pixel >> 3);
++
+ 	if (!ret) {
+ 		dev->resource[0].start = (resource_size_t)info->screen_base;
+-		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
++		info->cdev.size = info->stride * info->yres;
+ 		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
+ 		dev_param_set_generic(dev, param, val);
+ 	} else
+@@ -122,9 +126,12 @@ int register_framebuffer(struct fb_info *info)
+ 
+ 	dev = &info->dev;
+ 
++	if (!info->stride)
++		info->stride = info->xres * (info->bits_per_pixel >> 3);
++
+ 	info->cdev.ops = &fb_ops;
+ 	info->cdev.name = asprintf("fb%d", id);
+-	info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
++	info->cdev.size = info->stride * info->yres;
+ 	info->cdev.dev = dev;
+ 	info->cdev.priv = info;
+ 	dev->resource = xzalloc(sizeof(struct resource));
+diff --git a/include/fb.h b/include/fb.h
+index df4ba8e..ba46954 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -94,6 +94,7 @@ struct fb_info {
+ 	u32 xres;			/* visible resolution		*/
+ 	u32 yres;
+ 	u32 bits_per_pixel;		/* guess what			*/
++	u32 stride;			/* number of bytes in each line	*/
+ 
+ 	u32 grayscale;			/* != 0 Graylevels instead of colors */
+ 
+-- 
+1.8.3.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
