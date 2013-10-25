@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VZf4g-0000s1-6M
- for barebox@lists.infradead.org; Fri, 25 Oct 2013 10:57:03 +0000
-Received: from mail614.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id 12350FFAED8
- for <barebox@lists.infradead.org>; Fri, 25 Oct 2013 12:57:30 +0200 (CEST)
-Date: Fri, 25 Oct 2013 12:58:27 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131025105827.GE26639@ns203013.ovh.net>
+Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VZfvS-0002Zc-Dd
+ for barebox@lists.infradead.org; Fri, 25 Oct 2013 11:51:35 +0000
+Received: by mail-ea0-f180.google.com with SMTP id l9so451433eaj.11
+ for <barebox@lists.infradead.org>; Fri, 25 Oct 2013 04:51:12 -0700 (PDT)
+Date: Fri, 25 Oct 2013 13:51:03 +0200
+From: Andre Heider <a.heider@gmail.com>
+Message-ID: <20131025115103.GA87777@deflower.internal>
 References: <1382646226-24871-1-git-send-email-a.heider@gmail.com>
  <1382646226-24871-2-git-send-email-a.heider@gmail.com>
+ <20131025105827.GE26639@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1382646226-24871-2-git-send-email-a.heider@gmail.com>
+In-Reply-To: <20131025105827.GE26639@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,85 +27,30 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/6] fb: add a stride value to struct fb_info
-To: Andre Heider <a.heider@gmail.com>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 22:23 Thu 24 Oct     , Andre Heider wrote:
-> Add support for framebuffers with noncontiguous horizontal lines.
+On Fri, Oct 25, 2013 at 12:58:27PM +0200, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 22:23 Thu 24 Oct     , Andre Heider wrote:
+> > Add support for framebuffers with noncontiguous horizontal lines.
+> > 
+> > Video drivers can set this value if the hardware requires it.
+> > In case a driver does not set it, the current value of
+> > xres * (bpp / 8) is used instead.
 > 
-> Video drivers can set this value if the hardware requires it.
-> In case a driver does not set it, the current value of
-> xres * (bpp / 8) is used instead.
+> we never use this in linux ever
+> 
+> so do not do this in barebox either
 
-we never use this in linux ever
+I assume you mean the provided fallback value?
+And consequently converting all drivers to set the introduced stride
+value themselves?
 
-so do not do this in barebox either
+In that case, I considered doing that. I just don't have the hardware to
+test all the drivers that's going to touch.
 
-Best Regards,
-J.
-> 
-> Signed-off-by: Andre Heider <a.heider@gmail.com>
-> ---
->  drivers/video/fb.c | 11 +++++++++--
->  include/fb.h       |  1 +
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-> index 420e4e3..e80fab9 100644
-> --- a/drivers/video/fb.c
-> +++ b/drivers/video/fb.c
-> @@ -72,12 +72,16 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
->  
->  	info->xres = info->mode->xres;
->  	info->yres = info->mode->yres;
-> +	info->stride = 0;
->  
->  	ret = info->fbops->fb_activate_var(info);
->  
-> +	if (!info->stride)
-> +		info->stride = info->xres * (info->bits_per_pixel >> 3);
-> +
->  	if (!ret) {
->  		dev->resource[0].start = (resource_size_t)info->screen_base;
-> -		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
-> +		info->cdev.size = info->stride * info->yres;
->  		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
->  		dev_param_set_generic(dev, param, val);
->  	} else
-> @@ -122,9 +126,12 @@ int register_framebuffer(struct fb_info *info)
->  
->  	dev = &info->dev;
->  
-> +	if (!info->stride)
-> +		info->stride = info->xres * (info->bits_per_pixel >> 3);
-> +
->  	info->cdev.ops = &fb_ops;
->  	info->cdev.name = asprintf("fb%d", id);
-> -	info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
-> +	info->cdev.size = info->stride * info->yres;
->  	info->cdev.dev = dev;
->  	info->cdev.priv = info;
->  	dev->resource = xzalloc(sizeof(struct resource));
-> diff --git a/include/fb.h b/include/fb.h
-> index df4ba8e..ba46954 100644
-> --- a/include/fb.h
-> +++ b/include/fb.h
-> @@ -94,6 +94,7 @@ struct fb_info {
->  	u32 xres;			/* visible resolution		*/
->  	u32 yres;
->  	u32 bits_per_pixel;		/* guess what			*/
-> +	u32 stride;			/* number of bytes in each line	*/
->  
->  	u32 grayscale;			/* != 0 Graylevels instead of colors */
->  
-> -- 
-> 1.8.3.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+Thanks,
+Andre
 
 _______________________________________________
 barebox mailing list
