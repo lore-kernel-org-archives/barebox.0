@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f414.i.mail.ru ([185.5.136.85])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VZuho-0001pP-32
- for barebox@lists.infradead.org; Sat, 26 Oct 2013 03:38:29 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sat, 26 Oct 2013 07:38:01 +0400
-Message-ID: <1382758681.49092736@f414.i.mail.ru>
-In-Reply-To: <20131025235741.GE30088@pengutronix.de>
-References: <1382714628-27038-1-git-send-email-shc_work@mail.ru>
- <20131025235741.GE30088@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1VZyzA-0004Wk-3c
+ for barebox@lists.infradead.org; Sat, 26 Oct 2013 08:12:41 +0000
+Date: Sat, 26 Oct 2013 10:12:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131026081216.GF30088@pengutronix.de>
+References: <1382438777-15920-1-git-send-email-mpa@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1382438777-15920-1-git-send-email-mpa@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +22,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gY29uc29sZTogT2JleSAibGludXgsIHN0ZG91dC1wYXRo?=
- =?UTF-8?B?IiBwYXJhbWV0ZXIgcmVnYXJkbGVzcyBvZiBDT05TT0xFX0FDVElWQVRFX1hY?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] net: phy: Add micrel KSZ8031
+To: Markus Pargmann <mpa@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-> On Fri, Oct 25, 2013 at 07:23:48PM +0400, Alexander Shiyan wrote:
-> > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> > ---
-> >  common/console.c  |  4 ++--
-> >  drivers/of/base.c | 13 ++++---------
-> >  include/of.h      |  2 +-
-> >  3 files changed, 7 insertions(+), 12 deletions(-)
-...
-> Can you elaborate why you need this patch? Normally on devicetree based
-> boards I set CONSOLE_ACTIVATE_NONE. In this case I think your patch
-> changes nothing. If you set CONSOLE_ACTIVATE_ALL or
-> CONSOLE_ACTIVATE_FIRST your patch seems to overwrite the Kconfig setting
-> with the devicetree setting. Why don't you set CONSOLE_ACTIVATE_NONE in
-> the first place?
+On Tue, Oct 22, 2013 at 12:46:17PM +0200, Markus Pargmann wrote:
+> KSZ8031 is similar to KSZ8021. It can use the same functions.
+> 
+> Signed-off-by: Markus Pargmann <mpa@pengutronix.de>
 
-You are right. Lets forget this patch.
+Applied, thanks
 
----
+Sascha
+
+> ---
+>  drivers/net/phy/micrel.c   | 9 +++++++++
+>  include/linux/micrel_phy.h | 1 +
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> index c0bcdd1..3cba2c4 100644
+> --- a/drivers/net/phy/micrel.c
+> +++ b/drivers/net/phy/micrel.c
+> @@ -122,6 +122,15 @@ static struct phy_driver ksphy_driver[] = {
+>  	.config_aneg	= genphy_config_aneg,
+>  	.read_status	= genphy_read_status,
+>  }, {
+> +	.phy_id		= PHY_ID_KSZ8031,
+> +	.phy_id_mask	= 0x00ffffff,
+> +	.drv.name	= "Micrel KSZ8031",
+> +	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause |
+> +			   SUPPORTED_Asym_Pause),
+> +	.config_init	= ksz8021_config_init,
+> +	.config_aneg	= genphy_config_aneg,
+> +	.read_status	= genphy_read_status,
+> +}, {
+>  	.phy_id		= PHY_ID_KSZ8041,
+>  	.phy_id_mask	= 0x00fffff0,
+>  	.drv.name	= "Micrel KSZ8041",
+> diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+> index 9dbb41a..8752dbb 100644
+> --- a/include/linux/micrel_phy.h
+> +++ b/include/linux/micrel_phy.h
+> @@ -19,6 +19,7 @@
+>  #define PHY_ID_KSZ9021		0x00221610
+>  #define PHY_ID_KS8737		0x00221720
+>  #define PHY_ID_KSZ8021		0x00221555
+> +#define PHY_ID_KSZ8031		0x00221556
+>  #define PHY_ID_KSZ8041		0x00221510
+>  #define PHY_ID_KSZ8051		0x00221550
+>  /* same id: ks8001 Rev. A/B, and ks8721 Rev 3. */
+> -- 
+> 1.8.4.rc3
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
