@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VamCP-0004Jv-7P
- for barebox@lists.infradead.org; Mon, 28 Oct 2013 12:45:38 +0000
-Date: Mon, 28 Oct 2013 13:45:14 +0100
+ id 1VamkZ-00057x-BE
+ for barebox@lists.infradead.org; Mon, 28 Oct 2013 13:20:56 +0000
+Date: Mon, 28 Oct 2013 14:20:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131028124514.GL30088@pengutronix.de>
-References: <1382948810-10374-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20131028132029.GM30088@pengutronix.de>
+References: <1382621212-28611-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1382948810-10374-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1382621212-28611-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,70 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] SPI: i.MX: Fix incorrect bus number in case of DT probe.
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] bcb: fix compilation
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi Alexander,
+On Thu, Oct 24, 2013 at 03:26:52PM +0200, Eric B=E9nard wrote:
+> this fix :
+> arch/arm/mach-mxs/bcb.c:268: error: too few arguments to function 'chip->=
+ecc.read_page_raw'
+> arch/arm/mach-mxs/bcb.c:309: error: too few arguments to function 'chip->=
+write_page'
+> =
 
-On Mon, Oct 28, 2013 at 12:26:50PM +0400, Alexander Shiyan wrote:
-> The SPI bus number is not assigned in DT case, so the device can
-> be attached to the wrong SPI bus.
+> caution : this is NOT runtime tested.
+> =
 
-I stumbled upon the same problem just this morning. I fixed it by doing
-what you did, but in the SPI core to make it available to all drivers.
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+
+Applied, thanks
 
 Sascha
 
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 > ---
->  drivers/spi/imx_spi.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 6f942bf..5975dd6 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -534,17 +534,20 @@ static int imx_spi_probe(struct device_d *dev)
->  
->  	master = &imx->master;
->  	master->dev = dev;
-> -	master->bus_num = dev->id;
->  
->  	master->setup = imx_spi_setup;
->  	master->transfer = imx_spi_transfer;
->  
->  	if (pdata) {
-> +		master->bus_num = dev->id;
->  		master->num_chipselect = pdata->num_chipselect;
->  		imx->cs_array = pdata->chipselect;
->  	} else {
-> -		if (IS_ENABLED(CONFIG_OFDEVICE))
-> -			imx_spi_dt_probe(imx);
-> +		ret = of_alias_get_id(dev->device_node, "spi");
-> +		if (ret < 0)
-> +			goto err_free;
-> +		master->bus_num = ret;
-> +		imx_spi_dt_probe(imx);
+>  arch/arm/mach-mxs/bcb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/arch/arm/mach-mxs/bcb.c b/arch/arm/mach-mxs/bcb.c
+> index af51d24..b5d793e 100644
+> --- a/arch/arm/mach-mxs/bcb.c
+> +++ b/arch/arm/mach-mxs/bcb.c
+> @@ -265,7 +265,7 @@ static int find_fcb(struct mtd_info *mtd, void *ref, =
+int page)
+>  =
+
+>  	chip->select_chip(mtd, 0);
+>  	chip->cmdfunc(mtd, NAND_CMD_READ0, 0x00, page);
+> -	ret =3D chip->ecc.read_page_raw(mtd, chip, buf);
+> +	ret =3D chip->ecc.read_page_raw(mtd, chip, buf, 1, page);
+>  	if (ret) {
+>  		printf("Failed to read FCB from page %u: %d\n", page, ret);
+>  		return ret;
+> @@ -306,7 +306,7 @@ static int write_fcb(struct mtd_info *mtd, void *buf,=
+ int block)
+>  =
+
+>  	printf("Writing FCB to block %08x\n", block);
+>  	chip->select_chip(mtd, 0);
+> -	ret =3D chip->write_page(mtd, chip, buf, page, 0, 1);
+> +	ret =3D chip->write_page(mtd, chip, 0, mtd->erasesize, buf, 1, page, 0,=
+ 1);
+>  	if (ret) {
+>  		printf("Failed to write FCB to block %08x: %d\n", block, ret);
 >  	}
->  
->  	imx->clk = clk_get(dev, NULL);
-> -- 
-> 1.8.1.5
-> 
-> 
+> -- =
+
+> 1.8.3.1
+> =
+
+> =
+
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
 > http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
--- 
+-- =
+
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
