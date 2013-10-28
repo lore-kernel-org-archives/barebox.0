@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp27.mail.ru ([94.100.176.180])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VahmX-0005mj-ET
- for barebox@lists.infradead.org; Mon, 28 Oct 2013 08:02:38 +0000
-Date: Mon, 28 Oct 2013 09:02:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131028080215.GK30088@pengutronix.de>
-References: <1382778907-13328-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1382778907-13328-1-git-send-email-antonynpavlov@gmail.com>
+ id 1VaiAS-0006EO-7p
+ for barebox@lists.infradead.org; Mon, 28 Oct 2013 08:27:21 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Mon, 28 Oct 2013 12:26:50 +0400
+Message-Id: <1382948810-10374-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] misc qemu-malta patches
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] SPI: i.MX: Fix incorrect bus number in case of DT probe.
+To: barebox@lists.infradead.org
 
-On Sat, Oct 26, 2013 at 01:15:02PM +0400, Antony Pavlov wrote:
-> [PATCH 1/5] MIPS: qemu-malta: doc: drop broken mips.com link
-> [PATCH 2/5] MIPS: qemu-malta: don't use BoardID address for
-> [PATCH 3/5] MIPS: qemu-malta: update qemu-malta.dox
-> [PATCH 4/5] MIPS: qemu-malta: use YAMON-style GT64120 memory map
-> [PATCH 5/5] MIPS: qemu-malta: doc: add gxemul documentation
+The SPI bus number is not assigned in DT case, so the device can
+be attached to the wrong SPI bus.
 
-Applied, thanks
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/spi/imx_spi.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Sascha
-
-
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 6f942bf..5975dd6 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -534,17 +534,20 @@ static int imx_spi_probe(struct device_d *dev)
+ 
+ 	master = &imx->master;
+ 	master->dev = dev;
+-	master->bus_num = dev->id;
+ 
+ 	master->setup = imx_spi_setup;
+ 	master->transfer = imx_spi_transfer;
+ 
+ 	if (pdata) {
++		master->bus_num = dev->id;
+ 		master->num_chipselect = pdata->num_chipselect;
+ 		imx->cs_array = pdata->chipselect;
+ 	} else {
+-		if (IS_ENABLED(CONFIG_OFDEVICE))
+-			imx_spi_dt_probe(imx);
++		ret = of_alias_get_id(dev->device_node, "spi");
++		if (ret < 0)
++			goto err_free;
++		master->bus_num = ret;
++		imx_spi_dt_probe(imx);
+ 	}
+ 
+ 	imx->clk = clk_get(dev, NULL);
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.1.5
+
 
 _______________________________________________
 barebox mailing list
