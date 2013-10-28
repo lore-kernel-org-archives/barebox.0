@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ValWG-0003ZL-Tg
- for barebox@lists.infradead.org; Mon, 28 Oct 2013 12:02:08 +0000
+ id 1ValWG-0003ZI-Tg
+ for barebox@lists.infradead.org; Mon, 28 Oct 2013 12:02:09 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Oct 2013 13:01:38 +0100
-Message-Id: <1382961700-8833-6-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Oct 2013 13:01:34 +0100
+Message-Id: <1382961700-8833-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1382961700-8833-1-git-send-email-s.hauer@pengutronix.de>
 References: <1382961700-8833-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,72 +21,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] mtd: raw: rename raw device
+Subject: [PATCH 1/7] spi: Call spi_of_register_slaves from core
 To: barebox@lists.infradead.org
 Cc: jbe@pengutronix.de
 
-The name of the raw device is mtdraw<num> which is inconsistent to other
-mtd devices which are named mtd<num>.<partname>. Rename it to mtd<num>.raw.
+Makes individual handling of OF spi slaves unnecessary in the bus drivers.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/mioa701/env/bin/barebox_update | 8 ++++----
- arch/arm/boards/mioa701/env/bin/dps1_update    | 6 +++---
- drivers/mtd/mtdraw.c                           | 2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/spi/imx_spi.c   | 2 --
+ drivers/spi/mvebu_spi.c | 3 ---
+ drivers/spi/spi.c       | 8 +++++++-
+ include/spi/spi.h       | 2 --
+ 4 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/mioa701/env/bin/barebox_update b/arch/arm/boards/mioa701/env/bin/barebox_update
-index b544563..1023770 100644
---- a/arch/arm/boards/mioa701/env/bin/barebox_update
-+++ b/arch/arm/boards/mioa701/env/bin/barebox_update
-@@ -1,10 +1,10 @@
- #!/bin/sh
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 6f942bf..1c6b684 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -517,8 +517,6 @@ static int imx_spi_dt_probe(struct imx_spi *imx)
+ 		imx->cs_array[i] = cs_gpio;
+ 	}
  
- # Page+OOB specific partitions
--addpart /dev/mtdraw0 1081344@3649536(msipl)
--addpart /dev/mtdraw0 270336@3649536(barebox)
-+addpart /dev/mtd0.raw 1081344@3649536(msipl)
-+addpart /dev/mtd0.raw 270336@3649536(barebox)
+-	spi_of_register_slaves(&imx->master, node);
+-
+ 	return 0;
+ }
  
- if [ -r /barebox.BIP0 ]; then
--	erase /dev/mtdraw0.barebox
--	cp -v /barebox.BIP0 /dev/mtdraw0.barebox
-+	erase /dev/mtd0.raw.barebox
-+	cp -v /barebox.BIP0 /dev/mtd0.raw.barebox
- fi
-diff --git a/arch/arm/boards/mioa701/env/bin/dps1_update b/arch/arm/boards/mioa701/env/bin/dps1_update
-index a9d72da..e6535ed 100644
---- a/arch/arm/boards/mioa701/env/bin/dps1_update
-+++ b/arch/arm/boards/mioa701/env/bin/dps1_update
-@@ -1,12 +1,12 @@
- #!/bin/sh
+diff --git a/drivers/spi/mvebu_spi.c b/drivers/spi/mvebu_spi.c
+index 7aaa9fe..4a6d96f 100644
+--- a/drivers/spi/mvebu_spi.c
++++ b/drivers/spi/mvebu_spi.c
+@@ -361,9 +361,6 @@ static int mvebu_spi_probe(struct device_d *dev)
+ 	master->transfer = mvebu_spi_transfer;
+ 	master->num_chipselect = 1;
  
- # Page+OOB specific partitions
--addpart /dev/mtdraw0 67584@202752(dps1)
-+addpart /dev/mtd0.raw 67584@202752(dps1)
- uncompress /env/data/dps1.raw.gz /dps1.raw
+-	if (dev->device_node)
+-		spi_of_register_slaves(master, dev->device_node);
+-
+ 	ret = spi_register_master(master);
+ 	if (!ret)
+ 		return 0;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 55bebe0..d273050 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -101,11 +101,15 @@ fail:
+ EXPORT_SYMBOL(spi_new_device);
  
- if [ -r /dps1.raw ]; then
- 	dps1_unlock
--	erase /dev/mtdraw0.dps1
--	cp -v /dps1.raw /dev/mtdraw0.dps1
-+	erase /dev/mtd0.raw.dps1
-+	cp -v /dps1.raw /dev/mtd0.raw.dps1
- 	dps1_unlock
- fi
-diff --git a/drivers/mtd/mtdraw.c b/drivers/mtd/mtdraw.c
-index 1a4711e..2acd51f 100644
---- a/drivers/mtd/mtdraw.c
-+++ b/drivers/mtd/mtdraw.c
-@@ -293,7 +293,7 @@ static int add_mtdraw_device(struct mtd_info *mtd, char *devname, void **priv)
- 	mtdraw->cdev.ops = (struct file_operations *)&mtd_raw_fops;
- 	mtdraw->cdev.size = mtd->size / mtd->writesize *
- 		(mtd->writesize + mtd->oobsize);
--	mtdraw->cdev.name = asprintf("%sraw%d", devname, mtd->class_dev.id);
-+	mtdraw->cdev.name = asprintf("%s.raw", mtd->cdev.name);
- 	mtdraw->cdev.priv = mtdraw;
- 	mtdraw->cdev.dev = &mtd->class_dev;
- 	mtdraw->cdev.mtd = mtd;
+ #ifdef CONFIG_OFDEVICE
+-void spi_of_register_slaves(struct spi_master *master, struct device_node *node)
++static void spi_of_register_slaves(struct spi_master *master)
+ {
+ 	struct device_node *n;
+ 	struct spi_board_info chip;
+ 	struct property *reg;
++	struct device_node *node = master->dev->device_node;
++
++	if (!node)
++		return;
+ 
+ 	for_each_child_of_node(node, n) {
+ 		memset(&chip, 0, sizeof(chip));
+@@ -222,6 +226,8 @@ int spi_register_master(struct spi_master *master)
+ 
+ 	list_add_tail(&master->list, &spi_master_list);
+ 
++	spi_of_register_slaves(master);
++
+ 	/* populate children from any spi device tables */
+ 	scan_boardinfo(master);
+ 	status = 0;
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index 45fd22c..b4358a8 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -446,6 +446,4 @@ static inline int spi_driver_register(struct driver_d *drv)
+ #define device_spi_driver(drv)	\
+ 	register_driver_macro(device,spi,drv)
+ 
+-void spi_of_register_slaves(struct spi_master *master, struct device_node *node);
+-
+ #endif /* __INCLUDE_SPI_H */
 -- 
 1.8.4.rc3
 
