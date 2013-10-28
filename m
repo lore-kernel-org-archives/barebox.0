@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp27.mail.ru ([94.100.176.180])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VaiAS-0006EO-7p
- for barebox@lists.infradead.org; Mon, 28 Oct 2013 08:27:21 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon, 28 Oct 2013 12:26:50 +0400
-Message-Id: <1382948810-10374-1-git-send-email-shc_work@mail.ru>
+ id 1ValWG-0003ZK-TY
+ for barebox@lists.infradead.org; Mon, 28 Oct 2013 12:02:06 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 28 Oct 2013 13:01:37 +0100
+Message-Id: <1382961700-8833-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1382961700-8833-1-git-send-email-s.hauer@pengutronix.de>
+References: <1382961700-8833-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] SPI: i.MX: Fix incorrect bus number in case of DT probe.
+Subject: [PATCH 4/7] ARM: i.MX6: Add spi aliases to devicetree
 To: barebox@lists.infradead.org
+Cc: jbe@pengutronix.de
 
-The SPI bus number is not assigned in DT case, so the device can
-be attached to the wrong SPI bus.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/spi/imx_spi.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm/dts/imx6q.dtsi   | 4 ++++
+ arch/arm/dts/imx6qdl.dtsi | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 6f942bf..5975dd6 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -534,17 +534,20 @@ static int imx_spi_probe(struct device_d *dev)
+diff --git a/arch/arm/dts/imx6q.dtsi b/arch/arm/dts/imx6q.dtsi
+index beb8946..0377cce 100644
+--- a/arch/arm/dts/imx6q.dtsi
++++ b/arch/arm/dts/imx6q.dtsi
+@@ -12,6 +12,10 @@
+ #include "imx6qdl.dtsi"
  
- 	master = &imx->master;
- 	master->dev = dev;
--	master->bus_num = dev->id;
+ / {
++	aliases {
++		spi4 = &ecspi5;
++	};
++
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index d9bacfa..a574958 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -30,6 +30,10 @@
+ 		mmc1 = &usdhc2;
+ 		mmc2 = &usdhc3;
+ 		mmc3 = &usdhc4;
++		spi0 = &ecspi1;
++		spi1 = &ecspi2;
++		spi2 = &ecspi3;
++		spi3 = &ecspi4;
+ 	};
  
- 	master->setup = imx_spi_setup;
- 	master->transfer = imx_spi_transfer;
- 
- 	if (pdata) {
-+		master->bus_num = dev->id;
- 		master->num_chipselect = pdata->num_chipselect;
- 		imx->cs_array = pdata->chipselect;
- 	} else {
--		if (IS_ENABLED(CONFIG_OFDEVICE))
--			imx_spi_dt_probe(imx);
-+		ret = of_alias_get_id(dev->device_node, "spi");
-+		if (ret < 0)
-+			goto err_free;
-+		master->bus_num = ret;
-+		imx_spi_dt_probe(imx);
- 	}
- 
- 	imx->clk = clk_get(dev, NULL);
+ 	intc: interrupt-controller@00a01000 {
 -- 
-1.8.1.5
+1.8.4.rc3
 
 
 _______________________________________________
