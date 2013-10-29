@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
+Received: from exprod5og117.obsmtp.com ([64.18.0.149])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vb7Qz-0000Ui-8u
- for barebox@lists.infradead.org; Tue, 29 Oct 2013 11:26:06 +0000
+ id 1Vb7Qa-0000RW-UH
+ for barebox@lists.infradead.org; Tue, 29 Oct 2013 11:25:42 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Tue, 29 Oct 2013 11:24:34 +0000
-Message-Id: <1383045874-7641-7-git-send-email-renaud.barbier@ge.com>
+Date: Tue, 29 Oct 2013 11:24:30 +0000
+Message-Id: <1383045874-7641-3-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1383045874-7641-1-git-send-email-renaud.barbier@ge.com>
 References: <1383045874-7641-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,105 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ppc: mpc85xx: build directives
+Subject: [PATCH 2/6] ppc: mpc85xx: define Ethernet port count
 To: barebox@lists.infradead.org
 
-Add the Kconfig and Makefile directives to build barebox
-for the GEIP DA923RC board.
+Because the port count is different between the MPC8544 and
+existing CPU support, the Ethernet port count is defined on
+a per CPU basis.
+Accordingly, the TBI PHY initialisation code is updated.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/Makefile              |  1 +
- arch/ppc/mach-mpc85xx/Kconfig  | 32 +++++++++++++++++++++++++-------
- arch/ppc/mach-mpc85xx/Makefile |  1 +
- 3 files changed, 27 insertions(+), 7 deletions(-)
+ arch/ppc/mach-mpc85xx/eth-devices.c                 | 2 +-
+ arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
-index f0322a2..aa00c96 100644
---- a/arch/ppc/Makefile
-+++ b/arch/ppc/Makefile
-@@ -13,6 +13,7 @@ endif
+diff --git a/arch/ppc/mach-mpc85xx/eth-devices.c b/arch/ppc/mach-mpc85xx/eth-devices.c
+index 611a578..efebe11 100644
+--- a/arch/ppc/mach-mpc85xx/eth-devices.c
++++ b/arch/ppc/mach-mpc85xx/eth-devices.c
+@@ -40,7 +40,7 @@ static int fsl_phy_init(void)
+ 	add_generic_device("gfar-mdio", 0, NULL, MDIO_BASE_ADDR,
+ 			0x1000, IORESOURCE_MEM, NULL);
  
- board-$(CONFIG_MACH_PHYCORE_MPC5200B_TINY)	:= pcm030
- board-$(CONFIG_P2020RDB)			:= freescale-p2020rdb
-+board-$(CONFIG_DA923RC)				:= geip-da923rc
+-	for (i = 1; i < 3; i++) {
++	for (i = 1; i < FSL_NUM_TSEC; i++) {
+ 		out_be32(base + (i * 0x1000), GFAR_TBIPA_END - i);
+ 		/* Use "gfar-tbiphy" devices to access internal PHY. */
+ 		add_generic_device("gfar-tbiphy", i, NULL,
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
+index 7cdb37f..7d606d1 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
+@@ -28,10 +28,12 @@
+ #define MAX_CPUS	2
+ #define FSL_NUM_LAWS	12
+ #define FSL_SEC_COMPAT	2
++#define FSL_NUM_TSEC	3
  
- machine-$(CONFIG_ARCH_MPC5200)			:= mpc5xxx
- machine-$(CONFIG_ARCH_MPC85XX)			:= mpc85xx
-diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
-index 9af4af4..80cb0d9 100644
---- a/arch/ppc/mach-mpc85xx/Kconfig
-+++ b/arch/ppc/mach-mpc85xx/Kconfig
-@@ -3,10 +3,19 @@ if ARCH_MPC85XX
- config TEXT_BASE
- 	hex
- 	default 0xeff80000 if P2020RDB
-+	default 0xfff80000 if DA923RC
+ #elif defined(CONFIG_MPC8544)
+ #define MAX_CPUS	1
+ #define FSL_NUM_LAWS	10
++#define FSL_NUM_TSEC	2
  
- config MPC85xx
- 	bool
--	default y if P2020RDB
-+	default y
-+
-+config BOOKE
-+	bool
-+	default y
-+
-+config E500
-+	bool
-+	default y
- 
- choice
- 	prompt "Select your board"
-@@ -16,8 +25,11 @@ config P2020RDB
- 	help
- 	  Say Y here if you are using the Freescale P2020RDB
- 
-+config DA923RC
-+	bool "DA923RC"
-+	help
-+	Say Y here if you are using the GE Intelligent Platforms DA923RC
- endchoice
--
- endif
- 
- if P2020RDB
-@@ -25,15 +37,21 @@ config P2020
- 	bool
- 	default y
- 
--config BOOKE
-+config FSL_ELBC
- 	bool
- 	default y
-+endif
- 
--config E500
-+if DA923RC
-+config MPC8544
- 	bool
- 	default y
- 
--config FSL_ELBC
--	bool
--	default y
-+config DDR_SPD
-+    bool
-+    default y
-+
-+config FSL_DDR2
-+    bool
-+    default y
- endif
-diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
-index b484d40..2051b57 100644
---- a/arch/ppc/mach-mpc85xx/Makefile
-+++ b/arch/ppc/mach-mpc85xx/Makefile
-@@ -8,3 +8,4 @@ obj-$(CONFIG_MP)	+= mp.o
- obj-$(CONFIG_OFTREE)	+= fdt.o
- obj-$(CONFIG_I2C_IMX)	+= fsl_i2c.o
- obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
-+obj-$(CONFIG_DDR_SPD)	+= ../ddr-8xxx/
+ #else
+ #error Processor type not defined for this platform
 -- 
 1.8.3.4
 
