@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp40.i.mail.ru ([94.100.177.100])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vb65Z-0005RC-7d
- for barebox@lists.infradead.org; Tue, 29 Oct 2013 09:59:55 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue, 29 Oct 2013 13:59:17 +0400
-Message-Id: <1383040758-9696-1-git-send-email-shc_work@mail.ru>
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vb7QV-0000RN-VP
+ for barebox@lists.infradead.org; Tue, 29 Oct 2013 11:25:37 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Tue, 29 Oct 2013 11:24:28 +0000
+Message-Id: <1383045874-7641-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,134 +19,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] USB: i.MX: Make DT dr_mode & phy_type parameters kernel
- compatible
+Subject: [PATCH 0/6] GEIP DA923RC board support
 To: barebox@lists.infradead.org
 
-Since the mainline kernel now has its own dr_mode and phy_type DT-options
-for setting modes of USB ports, do these kernel parameters compatible by
-removing "barebox" prefix.
+This patch set adds support for the GEIP DA923RC board.
+It extends SOC support to the MPC8544 and enables the
+DDR driver. The gianfar driver support is updated
+so that the board MAC address can be passed to the driver.
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- arch/arm/dts/imx6q-gk802.dts            | 6 ++----
- arch/arm/dts/imx6q-tqma6x.dts           | 3 +--
- arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi | 8 ++++----
- arch/arm/dts/imx6qdl-mba6x.dtsi         | 5 ++---
- drivers/usb/core/of.c                   | 4 ++--
- 5 files changed, 11 insertions(+), 15 deletions(-)
+Renaud Barbier (6):
+  ppc: mpc85xx: mpc8544 support
+  ppc: mpc85xx: define Ethernet port count
+  drivers: gianfar: MAC address
+  ppc: mpc85xx: enable DDR driver
+  ppc: DA923RC: add board support
+  ppc: mpc85xx: build directives
 
-diff --git a/arch/arm/dts/imx6q-gk802.dts b/arch/arm/dts/imx6q-gk802.dts
-index 16c0bad..b34a491 100644
---- a/arch/arm/dts/imx6q-gk802.dts
-+++ b/arch/arm/dts/imx6q-gk802.dts
-@@ -113,18 +113,16 @@
- 
- /* External USB-A port (USBOTG) */
- &usbotg {
--	phy-mode = "utmi";
-+	phy_type = "utmi";
- 	dr_mode = "host";
--	barebox,phy_type = "utmi";
- 	disable-over-current;
- 	status = "okay";
- };
- 
- /* Internal USB port (USBH1), connected to RTL8192CU */
- &usbh1 {
--	phy-mode = "utmi";
-+	phy_type = "utmi";
- 	dr_mode = "host";
--	barebox,phy_type = "utmi";
- 	disable-over-current;
- 	status = "okay";
- };
-diff --git a/arch/arm/dts/imx6q-tqma6x.dts b/arch/arm/dts/imx6q-tqma6x.dts
-index 639c181..597388e 100644
---- a/arch/arm/dts/imx6q-tqma6x.dts
-+++ b/arch/arm/dts/imx6q-tqma6x.dts
-@@ -294,8 +294,7 @@
- &usbotg {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usbotg_1>;
--	barebox,phy_type = "utmi";
--	barebox,dr_mode = "peripheral";
-+	phy_type = "utmi";
- 	dr_mode = "host";
- 	disable-over-current;
- 	otg_id_pin_select_change;
-diff --git a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-index c5c9a48..04bb213 100644
---- a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-+++ b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-@@ -79,8 +79,8 @@
- };
- 
- &usbh1 {
--	barebox,phy_type = "utmi";
--	barebox,dr_mode = "host";
-+	phy_type = "utmi";
-+	dr_mode = "host";
- 	status = "okay";
- };
- 
-@@ -89,8 +89,8 @@
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usbotg_2>;
- 	disable-over-current;
--	barebox,phy_type = "utmi";
--	barebox,dr_mode = "host";
-+	phy_type = "utmi";
-+	dr_mode = "host";
- 	status = "okay";
- };
- 
-diff --git a/arch/arm/dts/imx6qdl-mba6x.dtsi b/arch/arm/dts/imx6qdl-mba6x.dtsi
-index 4621112..ec002c6 100644
---- a/arch/arm/dts/imx6qdl-mba6x.dtsi
-+++ b/arch/arm/dts/imx6qdl-mba6x.dtsi
-@@ -166,15 +166,14 @@
- 
- &usbh1 {
- 	status = "okay";
--	barebox,phy_type = "utmi";
-+	phy_type = "utmi";
- 	disable-over-current;
- };
- 
- &usbotg {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_usbotg_1>;
--	barebox,phy_type = "utmi";
--	barebox,dr_mode = "peripheral";
-+	phy_type = "utmi";
- 	dr_mode = "host";
- 	disable-over-current;
- 	otg_id_pin_select_change;
-diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
-index 222b760..1ddbdaa 100644
---- a/drivers/usb/core/of.c
-+++ b/drivers/usb/core/of.c
-@@ -39,7 +39,7 @@ enum usb_dr_mode of_usb_get_dr_mode(struct device_node *np,
- 	int err, i;
- 
- 	if (!propname)
--		propname = "barebox,dr_mode";
-+		propname = "dr_mode";
- 
- 	err = of_property_read_string(np, propname, &dr_mode);
- 	if (err < 0)
-@@ -76,7 +76,7 @@ enum usb_phy_interface of_usb_get_phy_mode(struct device_node *np,
- 	int err, i;
- 
- 	if (!propname)
--		propname = "barebox,phy_type";
-+		propname = "phy_type";
- 
- 	err = of_property_read_string(np, propname, &phy_type);
- 	if (err < 0)
--- 
-1.8.1.5
+ arch/ppc/Makefile                                  |   1 +
+ arch/ppc/boards/geip-da923rc/Makefile              |   7 +
+ arch/ppc/boards/geip-da923rc/barebox.lds.S         | 159 ++++++++++++
+ arch/ppc/boards/geip-da923rc/config.h              |  49 ++++
+ arch/ppc/boards/geip-da923rc/da923rc.c             | 286 +++++++++++++++++++++
+ arch/ppc/boards/geip-da923rc/ddr.c                 | 110 ++++++++
+ arch/ppc/boards/geip-da923rc/env/bin/init          |   4 +
+ arch/ppc/boards/geip-da923rc/env/config            |   4 +
+ arch/ppc/boards/geip-da923rc/law.c                 |  24 ++
+ arch/ppc/boards/geip-da923rc/nand.c                |  93 +++++++
+ arch/ppc/boards/geip-da923rc/product_data.c        |  64 +++++
+ arch/ppc/boards/geip-da923rc/product_data.h        |  56 ++++
+ arch/ppc/boards/geip-da923rc/tlb.c                 |  69 +++++
+ arch/ppc/configs/da923rc_defconfig                 |  58 +++++
+ arch/ppc/ddr-8xxx/Makefile                         |   2 +
+ arch/ppc/include/asm/fsl_lbc.h                     |  12 +
+ arch/ppc/include/asm/processor.h                   |   2 +
+ arch/ppc/mach-mpc85xx/Kconfig                      |  32 ++-
+ arch/ppc/mach-mpc85xx/Makefile                     |   2 +
+ arch/ppc/mach-mpc85xx/cpu.c                        |   6 +-
+ arch/ppc/mach-mpc85xx/cpuid.c                      |   2 +
+ arch/ppc/mach-mpc85xx/eth-devices.c                |   2 +-
+ arch/ppc/mach-mpc85xx/include/mach/clock.h         |   1 +
+ .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |   7 +
+ arch/ppc/mach-mpc85xx/include/mach/gianfar.h       |   2 +
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |  23 ++
+ arch/ppc/mach-mpc85xx/speed.c                      |  18 ++
+ drivers/net/gianfar.c                              |  10 +-
+ drivers/net/gianfar.h                              |   2 +
+ 29 files changed, 1096 insertions(+), 11 deletions(-)
+ create mode 100644 arch/ppc/boards/geip-da923rc/Makefile
+ create mode 100644 arch/ppc/boards/geip-da923rc/barebox.lds.S
+ create mode 100644 arch/ppc/boards/geip-da923rc/config.h
+ create mode 100644 arch/ppc/boards/geip-da923rc/da923rc.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/ddr.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/env/bin/init
+ create mode 100644 arch/ppc/boards/geip-da923rc/env/config
+ create mode 100644 arch/ppc/boards/geip-da923rc/law.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/nand.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/product_data.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/product_data.h
+ create mode 100644 arch/ppc/boards/geip-da923rc/tlb.c
+ create mode 100644 arch/ppc/configs/da923rc_defconfig
+ create mode 100644 arch/ppc/ddr-8xxx/Makefile
+
+--
+1.8.3.4
 
 
 _______________________________________________
