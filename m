@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og105.obsmtp.com ([64.18.0.180])
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VbSvr-0004ff-Qf
- for barebox@lists.infradead.org; Wed, 30 Oct 2013 10:23:25 +0000
+ id 1VbSvp-0004fT-KU
+ for barebox@lists.infradead.org; Wed, 30 Oct 2013 10:23:22 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 30 Oct 2013 10:22:47 +0000
-Message-Id: <1383128571-8250-2-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
-References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 30 Oct 2013 10:22:46 +0000
+Message-Id: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,89 +19,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ppc: mpc85xx: mpc8544 support
+Subject: [PATCH v2 0/5] GEIP DA923RC board support
 To: barebox@lists.infradead.org
 
-Definitions are added to support the mpc8544 CPU.
+This patch set v2 addresses the comment about registering a MAC address
+for an Ethernet port. The consequence is that there are now only five
+patches.
 
-The function returning the I2C bus frequency is updated
-to take into account the mpc8544 specific clock ratio.
+This patch set adds support for the GEIP DA923RC board.
+It extends SOC support to the MPC8544 and enables the DDR driver.
+The gianfar driver support is updated so that the board MAC address
+can be passed to the driver.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/include/asm/processor.h                   |    2 ++
- arch/ppc/mach-mpc85xx/cpuid.c                      |    2 ++
- .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |    5 +++++
- arch/ppc/mach-mpc85xx/speed.c                      |    9 +++++++++
- 4 files changed, 18 insertions(+), 0 deletions(-)
+Renaud Barbier (5):
+  ppc: mpc85xx: mpc8544 support
+  ppc: mpc85xx: define Ethernet port count
+  ppc: mpc85xx: enable DDR driver
+  ppc: DA923RC: add board support
+  ppc: mpc85xx: build directives
 
-diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-index 9145257..19530b0 100644
---- a/arch/ppc/include/asm/processor.h
-+++ b/arch/ppc/include/asm/processor.h
-@@ -858,6 +858,8 @@
- #define SVR_8548	0x8031
- #define SVR_8548_E	0x8039
- #define SVR_8641	0x8090
-+#define SVR_8544	0x803401
-+#define SVR_8544_E	0x803C01
- #define SVR_P2020	0x80E200
- #define SVR_P2020_E	0x80EA00
- 
-diff --git a/arch/ppc/mach-mpc85xx/cpuid.c b/arch/ppc/mach-mpc85xx/cpuid.c
-index de56d37..8094978 100644
---- a/arch/ppc/mach-mpc85xx/cpuid.c
-+++ b/arch/ppc/mach-mpc85xx/cpuid.c
-@@ -27,6 +27,8 @@
- #include <mach/immap_85xx.h>
- 
- struct cpu_type cpu_type_list[] = {
-+	CPU_TYPE_ENTRY(8544, 8544, 1),
-+	CPU_TYPE_ENTRY(8544, 8544_E, 1),
- 	CPU_TYPE_ENTRY(P2020, P2020, 2),
- 	CPU_TYPE_ENTRY(P2020, P2020_E, 2),
- };
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-index 9a5598f..7cdb37f 100644
---- a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-+++ b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-@@ -28,6 +28,11 @@
- #define MAX_CPUS	2
- #define FSL_NUM_LAWS	12
- #define FSL_SEC_COMPAT	2
-+
-+#elif defined(CONFIG_MPC8544)
-+#define MAX_CPUS	1
-+#define FSL_NUM_LAWS	10
-+
- #else
- #error Processor type not defined for this platform
- #endif
-diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
-index 8b447ea..64c10f9 100644
---- a/arch/ppc/mach-mpc85xx/speed.c
-+++ b/arch/ppc/mach-mpc85xx/speed.c
-@@ -101,9 +101,18 @@ unsigned long fsl_get_timebase_clock(void)
- 
- unsigned long fsl_get_i2c_freq(void)
- {
-+	uint svr;
- 	struct sys_info sysinfo;
-+	void __iomem *gur = IOMEM(MPC85xx_GUTS_ADDR);
- 
- 	fsl_get_sys_info(&sysinfo);
- 
-+	svr = get_svr();
-+	if ((svr == SVR_8544) || (svr == SVR_8544_E)) {
-+		if (in_be32(gur + MPC85xx_GUTS_PORDEVSR2_OFFSET) &
-+				MPC85xx_PORDEVSR2_SEC_CFG)
-+			return sysinfo.freqSystemBus / 3;
-+	}
-+
- 	return sysinfo.freqSystemBus / 2;
- }
--- 
-1.7.1
+ arch/ppc/Makefile                                  |    1 +
+ arch/ppc/boards/geip-da923rc/Makefile              |    7 +
+ arch/ppc/boards/geip-da923rc/barebox.lds.S         |  159 ++++++++++++
+ arch/ppc/boards/geip-da923rc/config.h              |   48 ++++
+ arch/ppc/boards/geip-da923rc/da923rc.c             |  270 ++++++++++++++++++++
+ arch/ppc/boards/geip-da923rc/ddr.c                 |  110 ++++++++
+ arch/ppc/boards/geip-da923rc/env/bin/init          |    4 +
+ arch/ppc/boards/geip-da923rc/env/config            |    4 +
+ arch/ppc/boards/geip-da923rc/law.c                 |   24 ++
+ arch/ppc/boards/geip-da923rc/nand.c                |   94 +++++++
+ arch/ppc/boards/geip-da923rc/product_data.c        |   64 +++++
+ arch/ppc/boards/geip-da923rc/product_data.h        |   56 ++++
+ arch/ppc/boards/geip-da923rc/tlb.c                 |   69 +++++
+ arch/ppc/configs/da923rc_defconfig                 |   58 +++++
+ arch/ppc/ddr-8xxx/Makefile                         |    2 +
+ arch/ppc/include/asm/fsl_lbc.h                     |   12 +
+ arch/ppc/include/asm/processor.h                   |    2 +
+ arch/ppc/mach-mpc85xx/Kconfig                      |   32 ++-
+ arch/ppc/mach-mpc85xx/Makefile                     |    2 +
+ arch/ppc/mach-mpc85xx/cpu.c                        |    6 +-
+ arch/ppc/mach-mpc85xx/cpuid.c                      |    2 +
+ arch/ppc/mach-mpc85xx/eth-devices.c                |    2 +-
+ arch/ppc/mach-mpc85xx/include/mach/clock.h         |    1 +
+ .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |    7 +
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    |   23 ++
+ arch/ppc/mach-mpc85xx/speed.c                      |   18 ++
+ 26 files changed, 1067 insertions(+), 10 deletions(-)
+ create mode 100644 arch/ppc/boards/geip-da923rc/Makefile
+ create mode 100644 arch/ppc/boards/geip-da923rc/barebox.lds.S
+ create mode 100644 arch/ppc/boards/geip-da923rc/config.h
+ create mode 100644 arch/ppc/boards/geip-da923rc/da923rc.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/ddr.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/env/bin/init
+ create mode 100644 arch/ppc/boards/geip-da923rc/env/config
+ create mode 100644 arch/ppc/boards/geip-da923rc/law.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/nand.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/product_data.c
+ create mode 100644 arch/ppc/boards/geip-da923rc/product_data.h
+ create mode 100644 arch/ppc/boards/geip-da923rc/tlb.c
+ create mode 100644 arch/ppc/configs/da923rc_defconfig
+ create mode 100644 arch/ppc/ddr-8xxx/Makefile
 
 
 _______________________________________________
