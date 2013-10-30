@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og119.obsmtp.com ([64.18.0.189])
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VbSvv-0004g8-2V
- for barebox@lists.infradead.org; Wed, 30 Oct 2013 10:23:27 +0000
+ id 1VbSwB-0004gs-SO
+ for barebox@lists.infradead.org; Wed, 30 Oct 2013 10:23:44 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 30 Oct 2013 10:22:48 +0000
-Message-Id: <1383128571-8250-3-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 30 Oct 2013 10:22:49 +0000
+Message-Id: <1383128571-8250-4-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
 References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ppc: mpc85xx: define Ethernet port count
+Subject: [PATCH 3/5] ppc: mpc85xx: enable DDR driver
 To: barebox@lists.infradead.org
 
-Because the port count is different between the MPC8544 and
-existing CPU support, the Ethernet port count is defined on
-a per CPU basis.
-Accordingly, the TBI PHY initialisation code is updated.
+The use of the DDR driver as well as early I2C support is
+enabled for board initialising their memory through SPD EEPROM
+data.
+
+A SOC specific function returning the DDR bus frequency
+is added for the DDR driver to translate DDR timings to
+register values.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/mach-mpc85xx/eth-devices.c                |    2 +-
- .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |    2 ++
- 2 files changed, 3 insertions(+), 1 deletions(-)
+ arch/ppc/ddr-8xxx/Makefile                 |    2 ++
+ arch/ppc/mach-mpc85xx/Makefile             |    1 +
+ arch/ppc/mach-mpc85xx/cpu.c                |    6 ++++--
+ arch/ppc/mach-mpc85xx/include/mach/clock.h |    1 +
+ arch/ppc/mach-mpc85xx/speed.c              |    9 +++++++++
+ 5 files changed, 17 insertions(+), 2 deletions(-)
+ create mode 100644 arch/ppc/ddr-8xxx/Makefile
 
-diff --git a/arch/ppc/mach-mpc85xx/eth-devices.c b/arch/ppc/mach-mpc85xx/eth-devices.c
-index 611a578..efebe11 100644
---- a/arch/ppc/mach-mpc85xx/eth-devices.c
-+++ b/arch/ppc/mach-mpc85xx/eth-devices.c
-@@ -40,7 +40,7 @@ static int fsl_phy_init(void)
- 	add_generic_device("gfar-mdio", 0, NULL, MDIO_BASE_ADDR,
- 			0x1000, IORESOURCE_MEM, NULL);
+diff --git a/arch/ppc/ddr-8xxx/Makefile b/arch/ppc/ddr-8xxx/Makefile
+new file mode 100644
+index 0000000..54cb7ce
+--- /dev/null
++++ b/arch/ppc/ddr-8xxx/Makefile
+@@ -0,0 +1,2 @@
++obj-y	+=  	main.o util.o ctrl_regs.o options.o lc_common_dimm_params.o
++obj-$(CONFIG_FSL_DDR2)	+= ddr2_dimm_params.o ddr2_setctrl.o
+diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
+index 81d6853..b484d40 100644
+--- a/arch/ppc/mach-mpc85xx/Makefile
++++ b/arch/ppc/mach-mpc85xx/Makefile
+@@ -6,4 +6,5 @@ obj-y			+= speed.o
+ obj-y			+=time.o
+ obj-$(CONFIG_MP)	+= mp.o
+ obj-$(CONFIG_OFTREE)	+= fdt.o
++obj-$(CONFIG_I2C_IMX)	+= fsl_i2c.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
+diff --git a/arch/ppc/mach-mpc85xx/cpu.c b/arch/ppc/mach-mpc85xx/cpu.c
+index 39343ff..17a1c4c 100644
+--- a/arch/ppc/mach-mpc85xx/cpu.c
++++ b/arch/ppc/mach-mpc85xx/cpu.c
+@@ -44,8 +44,10 @@ long int initdram(int board_type)
+ {
+ 	phys_size_t dram_size = 0;
  
--	for (i = 1; i < 3; i++) {
-+	for (i = 1; i < FSL_NUM_TSEC; i++) {
- 		out_be32(base + (i * 0x1000), GFAR_TBIPA_END - i);
- 		/* Use "gfar-tbiphy" devices to access internal PHY. */
- 		add_generic_device("gfar-tbiphy", i, NULL,
-diff --git a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-index 7cdb37f..7d606d1 100644
---- a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-+++ b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
-@@ -28,10 +28,12 @@
- #define MAX_CPUS	2
- #define FSL_NUM_LAWS	12
- #define FSL_SEC_COMPAT	2
-+#define FSL_NUM_TSEC	3
+-	dram_size = fixed_sdram();
+-
++	if (IS_ENABLED(CONFIG_DDR_SPD))
++		dram_size = fsl_ddr_sdram();
++	else
++		dram_size = fixed_sdram();
+ 	dram_size = e500_setup_ddr_tlbs(dram_size / 0x100000);
+ 	dram_size *= 0x100000;
  
- #elif defined(CONFIG_MPC8544)
- #define MAX_CPUS	1
- #define FSL_NUM_LAWS	10
-+#define FSL_NUM_TSEC	2
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/clock.h b/arch/ppc/mach-mpc85xx/include/mach/clock.h
+index e20d685..0e68cf6 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/clock.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/clock.h
+@@ -11,6 +11,7 @@ struct sys_info {
+ };
  
- #else
- #error Processor type not defined for this platform
+ unsigned long fsl_get_bus_freq(ulong dummy);
++unsigned long fsl_get_ddr_freq(ulong dummy);
+ unsigned long fsl_get_timebase_clock(void);
+ unsigned long fsl_get_i2c_freq(void);
+ void fsl_get_sys_info(struct sys_info *sysInfo);
+diff --git a/arch/ppc/mach-mpc85xx/speed.c b/arch/ppc/mach-mpc85xx/speed.c
+index 64c10f9..eb9d725 100644
+--- a/arch/ppc/mach-mpc85xx/speed.c
++++ b/arch/ppc/mach-mpc85xx/speed.c
+@@ -90,6 +90,15 @@ unsigned long fsl_get_bus_freq(ulong dummy)
+ 	return sys_info.freqSystemBus;
+ }
+ 
++unsigned long fsl_get_ddr_freq(ulong dummy)
++{
++	struct sys_info sys_info;
++
++	fsl_get_sys_info(&sys_info);
++
++	return sys_info.freqDDRBus;
++}
++
+ unsigned long fsl_get_timebase_clock(void)
+ {
+ 	struct sys_info sysinfo;
 -- 
 1.7.1
 
