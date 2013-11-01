@@ -1,18 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VcDNl-0005b5-I9
- for barebox@lists.infradead.org; Fri, 01 Nov 2013 11:59:18 +0000
-Date: Fri, 1 Nov 2013 12:58:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131101115852.GL24559@pengutronix.de>
+Received: from exprod5og102.obsmtp.com ([64.18.0.143])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VcEHm-0006gt-6j
+ for barebox@lists.infradead.org; Fri, 01 Nov 2013 12:57:10 +0000
+Received: from [3.26.68.194] (corgarff.edi.geip.ge.com [3.26.68.194])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id 4B1DFE088A
+ for <barebox@lists.infradead.org>; Fri,  1 Nov 2013 12:56:45 +0000 (GMT)
+Message-ID: <5273A50B.1010700@ge.com>
+Date: Fri, 01 Nov 2013 12:56:43 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+MIME-Version: 1.0
 References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
  <1383128571-8250-5-git-send-email-renaud.barbier@ge.com>
  <20131030113452.GG26639@ns203013.ovh.net>
  <20131031074833.GI24559@pengutronix.de> <5272B934.7080508@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5272B934.7080508@ge.com>
+ <20131101115852.GL24559@pengutronix.de>
+In-Reply-To: <20131101115852.GL24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,40 +29,45 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 4/5] ppc: DA923RC: add board support
-To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Oct 31, 2013 at 08:10:28PM +0000, Renaud Barbier wrote:
-> On 31/10/2013 07:48, Sascha Hauer wrote:
-> >>> +
-> >>> > > +	fsl_i2c_init(0, 400000, 0x7f);
-> >>> > > +	/* Read board id from offset 0. */
-> >>> > > +	ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
-> >>> > > +	fsl_i2c_stop(i2c);
-> >>> > > +
-> >>> > > +	if (ret == -1) {
-> >>> > > +		/* Enable I2C bus on GBX460. */
-> >>> > > +		out_be16(IOMEM(0xfc010020), 0);
-> >>> > > +		ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
-> >>> > > +		fsl_i2c_stop(i2c);
-> >> > why you do not simly use the standdard i2c AP?
-> > I think because the machine is still running from SRAM or flash here and
-> > I2C is needed to read out the SPD EEPROM for setting up SDRAM.
-> > 
+On 01/11/2013 11:58, Sascha Hauer wrote:
+> On Thu, Oct 31, 2013 at 08:10:28PM +0000, Renaud Barbier wrote:
+>> On 31/10/2013 07:48, Sascha Hauer wrote:
+>>>>> +
+>>>>>>> +	fsl_i2c_init(0, 400000, 0x7f);
+>>>>>>> +	/* Read board id from offset 0. */
+>>>>>>> +	ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
+>>>>>>> +	fsl_i2c_stop(i2c);
+>>>>>>> +
+>>>>>>> +	if (ret == -1) {
+>>>>>>> +		/* Enable I2C bus on GBX460. */
+>>>>>>> +		out_be16(IOMEM(0xfc010020), 0);
+>>>>>>> +		ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
+>>>>>>> +		fsl_i2c_stop(i2c);
+>>>>> why you do not simly use the standdard i2c AP?
+>>> I think because the machine is still running from SRAM or flash here and
+>>> I2C is needed to read out the SPD EEPROM for setting up SDRAM.
+>>>
+>>
+>> In order to use the I2C API would I not need to register my i2c bus
+>> first? This only happens later in the initcall list with device-initcall.
 > 
-> In order to use the I2C API would I not need to register my i2c bus
-> first? This only happens later in the initcall list with device-initcall.
+> Yes, You would have to have your i2c bus registered. Can't you move the
+> above to late_initcall?
+> 
+> Sascha
+> 
 
-Yes, You would have to have your i2c bus registered. Can't you move the
-above to late_initcall?
+I just did the following experiment:
+Move the code to device_initcall after the I2C registration and use the
+I2C API. Using the I2C API worked. However, when booting the board model
+is a NULL strings.
 
-Sascha
+So next I will check whether I can register the I2C device either in the
+postcore_initcall or when doing the console_initcall.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Renaud.
 
 _______________________________________________
 barebox mailing list
