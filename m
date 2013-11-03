@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VcLLO-0000Q0-6Q
- for barebox@lists.infradead.org; Fri, 01 Nov 2013 20:29:23 +0000
-Date: Fri, 1 Nov 2013 21:28:59 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131101202859.GM24559@pengutronix.de>
-References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
- <1383128571-8250-5-git-send-email-renaud.barbier@ge.com>
- <20131030113452.GG26639@ns203013.ovh.net>
- <20131031074833.GI24559@pengutronix.de> <5272B934.7080508@ge.com>
- <20131101115852.GL24559@pengutronix.de> <5273A50B.1010700@ge.com>
- <5273A65E.6090300@ge.com> <5273C2CE.3010602@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5273C2CE.3010602@ge.com>
+Received: from 3.mo6.mail-out.ovh.net ([178.33.253.26]
+ helo=mo6.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vcrkj-0000B0-7K
+ for barebox@lists.infradead.org; Sun, 03 Nov 2013 07:05:42 +0000
+Received: from mail425.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo6.mail-out.ovh.net (Postfix) with SMTP id 38174FFA655
+ for <barebox@lists.infradead.org>; Sun,  3 Nov 2013 08:06:00 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Sun,  3 Nov 2013 08:07:08 +0100
+Message-Id: <1383462428-19259-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,55 +18,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ppc: DA923RC: add board support
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/1] bcm2835: move mci register at board level
+To: barebox@lists.infradead.org
 
-On Fri, Nov 01, 2013 at 03:03:42PM +0000, Renaud Barbier wrote:
-> On 01/11/2013 13:02, Renaud Barbier wrote:
-> >>> Yes, You would have to have your i2c bus registered. Can't you move the
-> >>> >> above to late_initcall?
-> >>> >>
-> >>> >> Sascha
-> >>> >>
-> >> > 
-> >> > I just did the following experiment:
-> >> > Move the code to device_initcall after the I2C registration and use the
-> >> > I2C API. Using the I2C API worked. However, when booting the board model
-> >> > is a NULL strings.
-> >> > 
-> >> > So next I will check whether I can register the I2C device either in the
-> >> > postcore_initcall or when doing the console_initcall.
-> >> > 
-> >> > Renaud.
-> 
-> 
-> I found a way to do it. This implies to:
-> - register the i2c-imx driver at the postcore initcall level.
-> - register the board i2c bus at the postcore initcall level
->   and perform the rest of the board initialization.
-> 
-> 
-> The i2c-imx driver is shared between architectures. If you do not
-> foresee any side-effects on the ARM architecture and this is acceptable
-> to you, I would like to submit a patch including this solution.
+not all board have a SD coard
 
-Could you set the model to a superset of both possible boards initially,
-something like DA923RC/GBX460? Then set the correct board type in a
-late_initcall. The only thing affected is the printing of the board type
-in the banner, right?
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/boards/raspberry-pi/rpi.c        | 1 +
+ arch/arm/mach-bcm2835/core.c              | 1 -
+ arch/arm/mach-bcm2835/include/mach/core.h | 8 ++++++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-Sascha
-
+diff --git a/arch/arm/boards/raspberry-pi/rpi.c b/arch/arm/boards/raspberry-pi/rpi.c
+index d4912cc..a3ff746 100644
+--- a/arch/arm/boards/raspberry-pi/rpi.c
++++ b/arch/arm/boards/raspberry-pi/rpi.c
+@@ -39,6 +39,7 @@ console_initcall(rpi_console_init);
+ 
+ static int rpi_devices_init(void)
+ {
++	bcm2835_register_mci();
+ 	armlinux_set_architecture(MACH_TYPE_BCM2708);
+ 	armlinux_set_bootparams((void *)(0x00000100));
+ 	return 0;
+diff --git a/arch/arm/mach-bcm2835/core.c b/arch/arm/mach-bcm2835/core.c
+index 906e434..f44ecd5 100644
+--- a/arch/arm/mach-bcm2835/core.c
++++ b/arch/arm/mach-bcm2835/core.c
+@@ -70,7 +70,6 @@ static int bcm2835_dev_init(void)
+ {
+ 	add_generic_device("bcm2835-gpio", 0, NULL, BCM2835_GPIO_BASE, 0xB0, IORESOURCE_MEM, NULL);
+ 	add_generic_device("bcm2835-cs", DEVICE_ID_SINGLE, NULL, BCM2835_ST_BASE, 0x1C, IORESOURCE_MEM, NULL);
+-	add_generic_device("bcm2835_mci", 0, NULL, BCM2835_EMMC_BASE, 0xFC, IORESOURCE_MEM, NULL);
+ 	return 0;
+ }
+ coredevice_initcall(bcm2835_dev_init);
+diff --git a/arch/arm/mach-bcm2835/include/mach/core.h b/arch/arm/mach-bcm2835/include/mach/core.h
+index 9379af2..a095db8 100644
+--- a/arch/arm/mach-bcm2835/include/mach/core.h
++++ b/arch/arm/mach-bcm2835/include/mach/core.h
+@@ -16,7 +16,15 @@
+ #ifndef __BCM2835_CORE_H__
+ #define __BCM2835_CORE_H__
+ 
++#include <mach/platform.h>
++
+ void bcm2835_register_uart(void);
+ void bcm2835_add_device_sdram(u32 size);
+ 
++static void inline bcm2835_register_mci(void)
++{
++	add_generic_device("bcm2835_mci", 0, NULL, BCM2835_EMMC_BASE, 0xFC,
++			IORESOURCE_MEM, NULL);
++}
++
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
