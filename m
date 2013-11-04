@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x232.google.com ([2a00:1450:4013:c01::232])
+Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdT9L-0000pY-Uv
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 23:01:36 +0000
-Received: by mail-ea0-f178.google.com with SMTP id a10so863211eae.37
- for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 15:01:14 -0800 (PST)
+ id 1VdT9L-0000pX-8M
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 23:01:35 +0000
+Received: by mail-ee0-f42.google.com with SMTP id c1so1042057eek.15
+ for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 15:01:12 -0800 (PST)
 Received: from mamamia.internal (a89-182-17-100.net-htp.de. [89.182.17.100])
- by mx.google.com with ESMTPSA id s3sm52362808eeo.3.2013.11.04.15.01.12
+ by mx.google.com with ESMTPSA id s3sm52362808eeo.3.2013.11.04.15.01.10
  for <barebox@lists.infradead.org>
  (version=TLSv1.1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Mon, 04 Nov 2013 15:01:13 -0800 (PST)
+ Mon, 04 Nov 2013 15:01:11 -0800 (PST)
 From: Andre Heider <a.heider@gmail.com>
-Date: Tue,  5 Nov 2013 00:00:59 +0100
-Message-Id: <1383606064-30494-2-git-send-email-a.heider@gmail.com>
-In-Reply-To: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
-References: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
+Date: Tue,  5 Nov 2013 00:00:58 +0100
+Message-Id: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,69 +26,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/6] fb: add a line_length value to struct fb_info
+Subject: [PATCH v2 0/6] BCM2835 / simple framebuffer support
 To: barebox@lists.infradead.org
 
-Add support for framebuffers with noncontiguous horizontal lines.
+This is v2 of my patch set posted on 10/24.
+It adds framebuffer support for the RPi and provides an additional config
+knob to set up the kernel's simplefb driver. The active barebox framebuffer
+is basis for that feature, so that other platforms can make use of it.
 
-Video drivers can set this value if the hardware requires it.
-In case a driver does not set it, the current value of
-xres * (bpp / 8) is used instead.
+This simplefb option depends on the bcm2835 fb driver since drivers need
+to be aware of simplefb: framebuffers need to stay configured and cannot be
+teared down.
 
-Signed-off-by: Andre Heider <a.heider@gmail.com>
----
- drivers/video/fb.c | 11 +++++++++--
- include/fb.h       |  1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+The RPi case is rather simple in this regard. The allocated framebuffer lies
+within the memory range of the VideoCore of the ARM/VC memory split. Hence,
+there is no memory range that needs to be reserved as far as the ARM side
+of things is concerned.
+This likely needs to be added once other fb driver want to use simplefb.
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index 420e4e3..0159994 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -72,12 +72,16 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
- 
- 	info->xres = info->mode->xres;
- 	info->yres = info->mode->yres;
-+	info->line_length = 0;
- 
- 	ret = info->fbops->fb_activate_var(info);
- 
-+	if (!info->line_length)
-+		info->line_length = info->xres * (info->bits_per_pixel >> 3);
-+
- 	if (!ret) {
- 		dev->resource[0].start = (resource_size_t)info->screen_base;
--		info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
-+		info->cdev.size = info->line_length * info->yres;
- 		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
- 		dev_param_set_generic(dev, param, val);
- 	} else
-@@ -122,9 +126,12 @@ int register_framebuffer(struct fb_info *info)
- 
- 	dev = &info->dev;
- 
-+	if (!info->line_length)
-+		info->line_length = info->xres * (info->bits_per_pixel >> 3);
-+
- 	info->cdev.ops = &fb_ops;
- 	info->cdev.name = asprintf("fb%d", id);
--	info->cdev.size = info->xres * info->yres * (info->bits_per_pixel >> 3);
-+	info->cdev.size = info->line_length * info->yres;
- 	info->cdev.dev = dev;
- 	info->cdev.priv = info;
- 	dev->resource = xzalloc(sizeof(struct resource));
-diff --git a/include/fb.h b/include/fb.h
-index df4ba8e..cf9ffa0 100644
---- a/include/fb.h
-+++ b/include/fb.h
-@@ -94,6 +94,7 @@ struct fb_info {
- 	u32 xres;			/* visible resolution		*/
- 	u32 yres;
- 	u32 bits_per_pixel;		/* guess what			*/
-+	u32 line_length;		/* length of a line in bytes	*/
- 
- 	u32 grayscale;			/* != 0 Graylevels instead of colors */
- 
+Changes since v1:
+* renamed "pitch" to "line_length" to match the kernel
+* the bcm2835 framebuffer driver is now standalone
+* configuring simplefb for the kernel is based on the active barebox
+  framebuffer
+
+
+Andre Heider (6):
+  fb: add a line_length value to struct fb_info
+  gui: convert graphic utils to respect line_length
+  gui: convert the bmp renderer to respect line_length
+  ARM: bcm2835: add missing mbox overscan response field
+  video: add a BCM2835 framebuffer driver
+  video: set up the kernel's simple framebuffer driver
+
+ arch/arm/boards/raspberry-pi/rpi.c        |   1 +
+ arch/arm/mach-bcm2835/include/mach/core.h |   5 +
+ arch/arm/mach-bcm2835/include/mach/mbox.h |   1 +
+ drivers/video/Kconfig                     |  14 +++
+ drivers/video/Makefile                    |   2 +
+ drivers/video/bcm2835.c                   | 136 ++++++++++++++++++++++++
+ drivers/video/fb.c                        |  11 +-
+ drivers/video/simplefb.c                  | 171 ++++++++++++++++++++++++++++++
+ include/fb.h                              |   1 +
+ lib/gui/bmp.c                             |   8 +-
+ lib/gui/graphic_utils.c                   |  10 +-
+ 11 files changed, 349 insertions(+), 11 deletions(-)
+ create mode 100644 drivers/video/bcm2835.c
+ create mode 100644 drivers/video/simplefb.c
+
 -- 
 1.8.3.2
 
