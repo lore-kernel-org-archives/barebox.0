@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdKou-0004bn-R9
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:07:57 +0000
-Date: Mon, 4 Nov 2013 15:07:34 +0100
+ id 1VdKm1-0004Pr-RO
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:05:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131104140734.GV24559@pengutronix.de>
-References: <1383040758-9696-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1383040758-9696-1-git-send-email-shc_work@mail.ru>
+Date: Mon,  4 Nov 2013 15:04:27 +0100
+Message-Id: <1383573870-11325-9-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
+References: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,160 +16,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] USB: i.MX: Make DT dr_mode & phy_type parameters
- kernel compatible
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 08/11] boot: Print boot entries in the order they are
+To: barebox@lists.infradead.org
 
-On Tue, Oct 29, 2013 at 01:59:17PM +0400, Alexander Shiyan wrote:
-> Since the mainline kernel now has its own dr_mode and phy_type DT-options
-> for setting modes of USB ports, do these kernel parameters compatible by
-> removing "barebox" prefix.
-> 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Instead of first printing the traditional entries and the bootloader
+spec entries afterwards.
 
-Applied these two btw.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/boot.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
-I still haven't tested 2/2 on my efikasb, but will do this this evening.
-
-Sascha
-
-> ---
->  arch/arm/dts/imx6q-gk802.dts            | 6 ++----
->  arch/arm/dts/imx6q-tqma6x.dts           | 3 +--
->  arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi | 8 ++++----
->  arch/arm/dts/imx6qdl-mba6x.dtsi         | 5 ++---
->  drivers/usb/core/of.c                   | 4 ++--
->  5 files changed, 11 insertions(+), 15 deletions(-)
-> 
-> diff --git a/arch/arm/dts/imx6q-gk802.dts b/arch/arm/dts/imx6q-gk802.dts
-> index 16c0bad..b34a491 100644
-> --- a/arch/arm/dts/imx6q-gk802.dts
-> +++ b/arch/arm/dts/imx6q-gk802.dts
-> @@ -113,18 +113,16 @@
->  
->  /* External USB-A port (USBOTG) */
->  &usbotg {
-> -	phy-mode = "utmi";
-> +	phy_type = "utmi";
->  	dr_mode = "host";
-> -	barebox,phy_type = "utmi";
->  	disable-over-current;
->  	status = "okay";
->  };
->  
->  /* Internal USB port (USBH1), connected to RTL8192CU */
->  &usbh1 {
-> -	phy-mode = "utmi";
-> +	phy_type = "utmi";
->  	dr_mode = "host";
-> -	barebox,phy_type = "utmi";
->  	disable-over-current;
->  	status = "okay";
->  };
-> diff --git a/arch/arm/dts/imx6q-tqma6x.dts b/arch/arm/dts/imx6q-tqma6x.dts
-> index 639c181..597388e 100644
-> --- a/arch/arm/dts/imx6q-tqma6x.dts
-> +++ b/arch/arm/dts/imx6q-tqma6x.dts
-> @@ -294,8 +294,7 @@
->  &usbotg {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_usbotg_1>;
-> -	barebox,phy_type = "utmi";
-> -	barebox,dr_mode = "peripheral";
-> +	phy_type = "utmi";
->  	dr_mode = "host";
->  	disable-over-current;
->  	otg_id_pin_select_change;
-> diff --git a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-> index c5c9a48..04bb213 100644
-> --- a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-> +++ b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
-> @@ -79,8 +79,8 @@
->  };
->  
->  &usbh1 {
-> -	barebox,phy_type = "utmi";
-> -	barebox,dr_mode = "host";
-> +	phy_type = "utmi";
-> +	dr_mode = "host";
->  	status = "okay";
->  };
->  
-> @@ -89,8 +89,8 @@
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_usbotg_2>;
->  	disable-over-current;
-> -	barebox,phy_type = "utmi";
-> -	barebox,dr_mode = "host";
-> +	phy_type = "utmi";
-> +	dr_mode = "host";
->  	status = "okay";
->  };
->  
-> diff --git a/arch/arm/dts/imx6qdl-mba6x.dtsi b/arch/arm/dts/imx6qdl-mba6x.dtsi
-> index 4621112..ec002c6 100644
-> --- a/arch/arm/dts/imx6qdl-mba6x.dtsi
-> +++ b/arch/arm/dts/imx6qdl-mba6x.dtsi
-> @@ -166,15 +166,14 @@
->  
->  &usbh1 {
->  	status = "okay";
-> -	barebox,phy_type = "utmi";
-> +	phy_type = "utmi";
->  	disable-over-current;
->  };
->  
->  &usbotg {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_usbotg_1>;
-> -	barebox,phy_type = "utmi";
-> -	barebox,dr_mode = "peripheral";
-> +	phy_type = "utmi";
->  	dr_mode = "host";
->  	disable-over-current;
->  	otg_id_pin_select_change;
-> diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
-> index 222b760..1ddbdaa 100644
-> --- a/drivers/usb/core/of.c
-> +++ b/drivers/usb/core/of.c
-> @@ -39,7 +39,7 @@ enum usb_dr_mode of_usb_get_dr_mode(struct device_node *np,
->  	int err, i;
->  
->  	if (!propname)
-> -		propname = "barebox,dr_mode";
-> +		propname = "dr_mode";
->  
->  	err = of_property_read_string(np, propname, &dr_mode);
->  	if (err < 0)
-> @@ -76,7 +76,7 @@ enum usb_phy_interface of_usb_get_phy_mode(struct device_node *np,
->  	int err, i;
->  
->  	if (!propname)
-> -		propname = "barebox,phy_type";
-> +		propname = "phy_type";
->  
->  	err = of_property_read_string(np, propname, &phy_type);
->  	if (err < 0)
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/commands/boot.c b/commands/boot.c
+index f2d9836..2162365 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -132,25 +132,15 @@ static void bootsources_list(void)
+ 
+ 	blspec = bootentries_collect();
+ 
+-	printf("\nBootscripts:\n\n");
+-	printf("%-40s   %-20s\n", "name", "title");
+-	printf("%-40s   %-20s\n", "----", "-----");
++	printf("%-20s %-20s  %s\n", "device", "hwdevice", "title");
++	printf("%-20s %-20s  %s\n", "------", "--------", "-----");
+ 
+ 	blspec_for_each_entry(blspec, entry) {
+ 		if (entry->scriptpath)
+ 			printf("%-40s   %s\n", basename(entry->scriptpath), entry->me.display);
+-	}
+-
+-	if (!IS_ENABLED(CONFIG_BLSPEC))
+-		return;
+-
+-	printf("\nBootloader spec entries:\n\n");
+-	printf("%-20s %-20s  %s\n", "device", "hwdevice", "title");
+-	printf("%-20s %-20s  %s\n", "------", "--------", "-----");
+-
+-	blspec_for_each_entry(blspec, entry)
+-		if (!entry->scriptpath)
++		else
+ 			printf("%s\n", entry->me.display);
++	}
+ 
+ 	blspec_free(blspec);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.4.rc3
+
 
 _______________________________________________
 barebox mailing list
