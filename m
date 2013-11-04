@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-bk0-f42.google.com ([209.85.214.42])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdFXr-0004gK-BR
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 08:30:00 +0000
-Date: Mon, 4 Nov 2013 09:29:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131104082935.GQ24559@pengutronix.de>
-References: <1383536209-30382-1-git-send-email-zzs213@126.com>
+ id 1VdIso-0000vm-LW
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 12:03:51 +0000
+Received: by mail-bk0-f42.google.com with SMTP id w16so507614bkz.29
+ for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 04:03:26 -0800 (PST)
+Received: from [192.168.120.57] ([193.158.112.210])
+ by mx.google.com with ESMTPSA id zl3sm14688035bkb.4.2013.11.04.03.57.01
+ for <barebox@lists.infradead.org>
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Mon, 04 Nov 2013 03:57:03 -0800 (PST)
+Message-ID: <52778B89.3000208@kiwigrid.com>
+Date: Mon, 04 Nov 2013 12:56:57 +0100
+From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1383536209-30382-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +22,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] don't scan bbt if CONFIG_NAND_BBT not set
-To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
-Cc: barebox@lists.infradead.org, =?utf-8?B?5byg5b+g5bGx?= <zzs0213@gmail.com>
+Subject: barebox on i.MX53 in serial downloader boot mode
+To: barebox@lists.infradead.org
 
-T24gTW9uLCBOb3YgMDQsIDIwMTMgYXQgMTE6MzY6NDlBTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
-Ogo+IEZyb206IOW8oOW/oOWxsSA8enpzMDIxM0BnbWFpbC5jb20+Cj4gCj4gd2hlbiBDT05GSUdf
-TkFORF9CQlQgbm90IHNldCwgY2hpcC0+c2Nhbl9iYnQgaXMgTlVMTCBhbmQKPiBOQU5EX1NLSVBf
-QkJUU0NBTiBub3Qgc2V0LiBTbyBiYXJlYm94IGNyYXNoZWQsIHRoaXMgaXMgdGhlIG1lc3NhZ2UK
-PiAKPiAgICAgLi4uLi4uCj4gCj4gICAgIG5hbmQ6IE9ORkkgcGFyYW0gcGFnZSAwIHZhbGlkCj4g
-ICAgIG5hbmQ6IE9ORkkgZmxhc2ggZGV0ZWN0ZWQKPiAgICAgbmFuZDogTkFORCBkZXZpY2U6IE1h
-bnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkYSAoTWljcm9uIE1UMjlGMkcwOEFBRCks
-IDI1Nk1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKPiAgICAgcHJlZmV0Y2ggYWJv
-cnQKPiAgICAgcGMgOiBbPDAwMDAwMDA0Pl0gICAgbHIgOiBbPDIzZjBiOGQwPl0KPiAgICAgc3Ag
-OiAyM2ZmZmYwOCAgaXAgOiA3ZmZmZmZmZiAgZnAgOiAwMDAwMDAwMAo+ICAgICByMTA6IDA0MDAw
-MDAwICByOSA6IDAwMDAwMDAwICByOCA6IDAwMDAwMDAxCj4gICAgIHI3IDogMjNiNjM3ZjggIHI2
-IDogMDAwMDAwMDAgIHI1IDogMjNiNjNhZDQgIHI0IDogMjNiNjM4YjQKPiAgICAgcjMgOiAwMDAw
-MDAwMCAgcjIgOiBmZmZmZjIwMCAgcjEgOiAwMDAwMDAwYSAgcjAgOiAyM2I2M2FkNAo+ICAgICBG
-bGFnczogblpDdiAgSVJRcyBvZmYgIEZJUXMgb2ZmICBNb2RlIFNWQ18zMgo+IAo+IG1heSBiZSB0
-aGUgYmVzdCBzb2x1dGlvbiBpcyBzZXQgTkFORF9TS0lQX0JCVFNDQU4gc29tZXdoZXJlIHdoZW4K
-PiBDT05GSUdfTkFORF9CQlQgbm90IHNlbGVjdGVkLCBidXQgSSBkb24ndCBrbm93biB3aGVyZSBp
-cyB0aGUgYmVzdAo+IHBvc2l0aW9uLgoKSSB0aGluayBpdCdzIG9rIGxpa2UgeW91IGRpZC4KCj4g
-Cj4gU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMwMjEzQGdtYWlsLmNvbT4KPiAtLS0KPiAg
-ZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYyB8ICAgIDQgKysrKwo+ICAxIGZpbGUgY2hhbmdl
-ZCwgNCBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvbmFu
-ZF9iYXNlLmMgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCj4gaW5kZXggZDI0OTU2NS4u
-MWRiZDViZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCj4gKysr
-IGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYwo+IEBAIC0zNTk3LDggKzM1OTcsMTIgQEAg
-aW50IG5hbmRfc2Nhbl90YWlsKHN0cnVjdCBtdGRfaW5mbyAqbXRkKQo+ICAJaWYgKGNoaXAtPm9w
-dGlvbnMgJiBOQU5EX1NLSVBfQkJUU0NBTikKPiAgCQlyZXR1cm4gMDsKPiAgCj4gKyNpZmRlZiBD
-T05GSUdfTkFORF9CQlQKPiAgCS8qIEJ1aWxkIGJhZCBibG9jayB0YWJsZSAqLwo+ICAJcmV0dXJu
-IGNoaXAtPnNjYW5fYmJ0KG10ZCk7Cj4gKyNlbHNlCj4gKwlyZXR1cm4gMDsKPiArI2VuZGlmCgpJ
-IGFwcGxpZWQgdGhpcyB3aXRoOgoKCWlmICghSVNfRU5BQkxFRChDT05GSUdfTkFORF9CQlQpKQoJ
-CXJldHVybiAwOwoKUGxlYXNlIHVzZSBJU19FTkFCTEVEKCkgd2hlcmUgYXBwcm9wcmlhdGUgaW4g
-ZnV0dXJlIHNpbmNlIGl0J3MgZWFzaWVyIHRvCnJlYWQgYW5kIGxlYWRzIHRvIGJldHRlciBjb21w
-aWxlIGNvdmVyYWdlLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBM
-aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
-ZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
-ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
-ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Hi,
+
+has anyone tried to start barebox on i.MX53 in 11 boot mode (serial 
+downloader)? I've tried on Freescale Loco board with pmic da9053, but 
+without success. In 00 boot mode (internal boot) works perfectly. U-Boot 
+works in both modes. DCD in u-boot and in barebox is the same. Even I 
+can turn on LEDs with DCD in 11 boot mode on Loco.
+
+Regards,
+Wjatscheslaw Stoljarski
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
