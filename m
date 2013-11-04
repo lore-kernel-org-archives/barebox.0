@@ -1,17 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x236.google.com ([2a00:1450:4013:c00::236])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VcsHU-0000K7-Mk
- for barebox@lists.infradead.org; Sun, 03 Nov 2013 07:39:33 +0000
-Received: by mail-ee0-f54.google.com with SMTP id c50so509397eek.13
- for <barebox@lists.infradead.org>; Sun, 03 Nov 2013 00:39:04 -0700 (PDT)
-Date: Sun, 3 Nov 2013 08:30:44 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131103073043.GA916@omega>
-References: <1383462428-19259-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from m15-114.126.com ([220.181.15.114])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VdAzE-0001XN-W2
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 03:38:01 +0000
+From: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>
+Date: Mon,  4 Nov 2013 11:36:49 +0800
+Message-Id: <1383536209-30382-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1383462428-19259-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,22 +15,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] bcm2835: move mci register at board level
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] don't scan bbt if CONFIG_NAND_BBT not set
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs0213@gmail.com>
 
-On Sun, Nov 03, 2013 at 08:07:08AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> not all board have a SD coard
-> 
-s/coard/card
-
-- Alex
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTog5byg5b+g5bGxIDx6enMwMjEzQGdtYWlsLmNvbT4KCndoZW4gQ09ORklHX05BTkRfQkJU
+IG5vdCBzZXQsIGNoaXAtPnNjYW5fYmJ0IGlzIE5VTEwgYW5kCk5BTkRfU0tJUF9CQlRTQ0FOIG5v
+dCBzZXQuIFNvIGJhcmVib3ggY3Jhc2hlZCwgdGhpcyBpcyB0aGUgbWVzc2FnZQoKICAgIC4uLi4u
+LgoKICAgIG5hbmQ6IE9ORkkgcGFyYW0gcGFnZSAwIHZhbGlkCiAgICBuYW5kOiBPTkZJIGZsYXNo
+IGRldGVjdGVkCiAgICBuYW5kOiBOQU5EIGRldmljZTogTWFudWZhY3R1cmVyIElEOiAweDJjLCBD
+aGlwIElEOiAweGRhIChNaWNyb24gTVQyOUYyRzA4QUFEKSwgMjU2TWlCLCBwYWdlIHNpemU6IDIw
+NDgsIE9PQiBzaXplOiA2NAogICAgcHJlZmV0Y2ggYWJvcnQKICAgIHBjIDogWzwwMDAwMDAwND5d
+ICAgIGxyIDogWzwyM2YwYjhkMD5dCiAgICBzcCA6IDIzZmZmZjA4ICBpcCA6IDdmZmZmZmZmICBm
+cCA6IDAwMDAwMDAwCiAgICByMTA6IDA0MDAwMDAwICByOSA6IDAwMDAwMDAwICByOCA6IDAwMDAw
+MDAxCiAgICByNyA6IDIzYjYzN2Y4ICByNiA6IDAwMDAwMDAwICByNSA6IDIzYjYzYWQ0ICByNCA6
+IDIzYjYzOGI0CiAgICByMyA6IDAwMDAwMDAwICByMiA6IGZmZmZmMjAwICByMSA6IDAwMDAwMDBh
+ICByMCA6IDIzYjYzYWQ0CiAgICBGbGFnczogblpDdiAgSVJRcyBvZmYgIEZJUXMgb2ZmICBNb2Rl
+IFNWQ18zMgoKbWF5IGJlIHRoZSBiZXN0IHNvbHV0aW9uIGlzIHNldCBOQU5EX1NLSVBfQkJUU0NB
+TiBzb21ld2hlcmUgd2hlbgpDT05GSUdfTkFORF9CQlQgbm90IHNlbGVjdGVkLCBidXQgSSBkb24n
+dCBrbm93biB3aGVyZSBpcyB0aGUgYmVzdApwb3NpdGlvbi4KClNpZ25lZC1vZmYtYnk6IOW8oOW/
+oOWxsSA8enpzMDIxM0BnbWFpbC5jb20+Ci0tLQogZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2Uu
+YyB8ICAgIDQgKysrKwogMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9iYXNlLmMgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRf
+YmFzZS5jCmluZGV4IGQyNDk1NjUuLjFkYmQ1YmYgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbXRkL25h
+bmQvbmFuZF9iYXNlLmMKKysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYwpAQCAtMzU5
+Nyw4ICszNTk3LDEyIEBAIGludCBuYW5kX3NjYW5fdGFpbChzdHJ1Y3QgbXRkX2luZm8gKm10ZCkK
+IAlpZiAoY2hpcC0+b3B0aW9ucyAmIE5BTkRfU0tJUF9CQlRTQ0FOKQogCQlyZXR1cm4gMDsKIAor
+I2lmZGVmIENPTkZJR19OQU5EX0JCVAogCS8qIEJ1aWxkIGJhZCBibG9jayB0YWJsZSAqLwogCXJl
+dHVybiBjaGlwLT5zY2FuX2JidChtdGQpOworI2Vsc2UKKwlyZXR1cm4gMDsKKyNlbmRpZgogfQog
+RVhQT1JUX1NZTUJPTChuYW5kX3NjYW5fdGFpbCk7CiAKLS0gCjEuNy45LjUKCgoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
