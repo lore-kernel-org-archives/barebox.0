@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f42.google.com ([209.85.214.42])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdIso-0000vm-LW
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 12:03:51 +0000
-Received: by mail-bk0-f42.google.com with SMTP id w16so507614bkz.29
- for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 04:03:26 -0800 (PST)
-Received: from [192.168.120.57] ([193.158.112.210])
- by mx.google.com with ESMTPSA id zl3sm14688035bkb.4.2013.11.04.03.57.01
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Mon, 04 Nov 2013 03:57:03 -0800 (PST)
-Message-ID: <52778B89.3000208@kiwigrid.com>
-Date: Mon, 04 Nov 2013 12:56:57 +0100
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-MIME-Version: 1.0
+Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VdJao-0001z8-LT
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 12:49:19 +0000
+Date: Mon, 4 Nov 2013 13:48:47 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20131104134847.6d9a5e8c@e6520eb>
+In-Reply-To: <52778B89.3000208@kiwigrid.com>
+References: <52778B89.3000208@kiwigrid.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,23 +17,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox on i.MX53 in serial downloader boot mode
-To: barebox@lists.infradead.org
+Subject: Re: barebox on i.MX53 in serial downloader boot mode
+To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
+Cc: barebox@lists.infradead.org
 
 Hi,
 
-has anyone tried to start barebox on i.MX53 in 11 boot mode (serial 
-downloader)? I've tried on Freescale Loco board with pmic da9053, but 
-without success. In 00 boot mode (internal boot) works perfectly. U-Boot 
-works in both modes. DCD in u-boot and in barebox is the same. Even I 
-can turn on LEDs with DCD in 11 boot mode on Loco.
+Le Mon, 04 Nov 2013 12:56:57 +0100,
+"Wjatscheslaw Stoljarski (Slawa)"
+<wjatscheslaw.stoljarski@kiwigrid.com> a =E9crit :
+> has anyone tried to start barebox on i.MX53 in 11 boot mode (serial =
 
-Regards,
-Wjatscheslaw Stoljarski
+> downloader)? I've tried on Freescale Loco board with pmic da9053, but =
+
+> without success. In 00 boot mode (internal boot) works perfectly. U-Boot =
+
+> works in both modes. DCD in u-boot and in barebox is the same. Even I =
+
+> can turn on LEDs with DCD in 11 boot mode on Loco.
+> =
+
+works fine here, what are you using to download barebox ?
+
+Eric
 
 _______________________________________________
 barebox mailing list
