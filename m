@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdKlx-0004P8-0I
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:04:53 +0000
+ id 1VdKlx-0004P7-0C
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:04:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Nov 2013 15:04:25 +0100
-Message-Id: <1383573870-11325-7-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Nov 2013 15:04:22 +0100
+Message-Id: <1383573870-11325-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 References: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] fs: Add function to get cdev by mountpath
+Subject: [PATCH 03/11] blspec: rename _hwdevice functions to _devicename
 To: barebox@lists.infradead.org
 
-This is useful to know for the bootloader spec implementation.
+Since it's not necessarily the hardware device this seems to
+be a more appropriate name.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/fs.c      | 13 +++++++++++++
- include/fs.h |  2 ++
- 2 files changed, 15 insertions(+)
+ commands/boot.c  |  2 +-
+ common/blspec.c  | 10 +++++-----
+ include/blspec.h |  4 ++--
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 7d558e9..4563a81 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -283,6 +283,19 @@ static struct fs_device_d *get_fsdevice_by_path(const char *path)
- 	return fs_dev_root;
+diff --git a/commands/boot.c b/commands/boot.c
+index 8105889..f2d9836 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -219,7 +219,7 @@ static int boot(const char *name)
+ 			goto out;
+ 		}
+ 
+-		ret = blspec_boot_hwdevice(name, verbose, dryrun);
++		ret = blspec_boot_devicename(name, verbose, dryrun);
+ 		pr_err("%s: %s\n", name, strerror(-ret));
+ 		goto out;
+ 	}
+diff --git a/common/blspec.c b/common/blspec.c
+index dd8ec4b..8ae09a2 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -361,12 +361,12 @@ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
  }
  
-+/*
-+ * get_cdev_by_mountpath - return the cdev the given path
-+ *                         is mounted on
-+ */
-+struct cdev *get_cdev_by_mountpath(const char *path)
-+{
-+	struct fs_device_d *fsdev;
-+
-+	fsdev = get_fsdevice_by_path(path);
-+
-+	return fsdev->cdev;
-+}
-+
- char *get_mounted_path(const char *path)
+ /*
+- * blspec_scan_hwdevice - scan a hardware device for child cdevs
++ * blspec_scan_devicename - scan a hardware device for child cdevs
+  *
+  * Given a name of a hardware device this functions scans over all child
+  * cdevs looking for blspec entries.
+  */
+-int blspec_scan_hwdevice(struct blspec *blspec, const char *devname)
++int blspec_scan_devicename(struct blspec *blspec, const char *devname)
  {
- 	struct fs_device_d *fdev;
-diff --git a/include/fs.h b/include/fs.h
-index 99f1689..856e00a 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -184,6 +184,8 @@ char *normalise_link(const char *pathname, const char* symlink);
+ 	struct device_d *dev;
  
- char *get_mounted_path(const char *path);
+@@ -488,10 +488,10 @@ struct blspec_entry *blspec_entry_default(struct blspec *l)
+ }
  
-+struct cdev *get_cdev_by_mountpath(const char *path);
-+
- /* Register a new filesystem driver */
- int register_fs_driver(struct fs_driver_d *fsdrv);
+ /*
+- * blspec_boot_hwdevice - scan hardware device for blspec entries and
++ * blspec_boot_devicename - scan hardware device for blspec entries and
+  *                        start the best one.
+  */
+-int blspec_boot_hwdevice(const char *devname, int verbose, int dryrun)
++int blspec_boot_devicename(const char *devname, int verbose, int dryrun)
+ {
+ 	struct blspec *blspec;
+ 	struct blspec_entry *e;
+@@ -499,7 +499,7 @@ int blspec_boot_hwdevice(const char *devname, int verbose, int dryrun)
  
+ 	blspec = blspec_alloc();
+ 
+-	ret = blspec_scan_hwdevice(blspec, devname);
++	ret = blspec_scan_devicename(blspec, devname);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/include/blspec.h b/include/blspec.h
+index aa836e6..a7b189a 100644
+--- a/include/blspec.h
++++ b/include/blspec.h
+@@ -31,12 +31,12 @@ int blspec_entry_save(struct blspec_entry *entry, const char *path);
+ 
+ int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun);
+ 
+-int blspec_boot_hwdevice(const char *devname, int verbose, int dryrun);
++int blspec_boot_devicename(const char *devname, int verbose, int dryrun);
+ 
+ void blspec_scan_devices(struct blspec *blspec);
+ 
+ struct blspec_entry *blspec_entry_default(struct blspec *l);
+-int blspec_scan_hwdevice(struct blspec *blspec, const char *devname);
++int blspec_scan_devicename(struct blspec *blspec, const char *devname);
+ 
+ #define blspec_for_each_entry(blspec, entry) \
+ 	list_for_each_entry(entry, &blspec->entries, list)
 -- 
 1.8.4.rc3
 
