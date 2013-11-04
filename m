@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdKm1-0004Pq-RF
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:05:00 +0000
+ id 1VdKlx-0004P9-0I
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:04:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Nov 2013 15:04:26 +0100
-Message-Id: <1383573870-11325-8-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Nov 2013 15:04:24 +0100
+Message-Id: <1383573870-11325-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 References: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,95 +21,183 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/11] blspec: make cdev optional
+Subject: [PATCH 05/11] blspec: Let scan functions return the number of entries
+ found
 To: barebox@lists.infradead.org
 
-the cdev for a given directory can be determined by get_cdev_by_mountpath().
-Use this function and remove the cdev argument from blspec_scan_directory().
-Also, export the function to make code possible which boots the bootloader
-spec entries found in directories.
+So that callers can detect whether entries are found or not.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/blspec.c  | 22 +++++++++++++---------
- include/blspec.h |  1 +
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ common/blspec.c  | 53 +++++++++++++++++++++++++++++++++--------------------
+ include/blspec.h |  2 +-
+ 2 files changed, 34 insertions(+), 21 deletions(-)
 
 diff --git a/common/blspec.c b/common/blspec.c
-index 20af235..cfefd26 100644
+index bf833da..20af235 100644
 --- a/common/blspec.c
 +++ b/common/blspec.c
-@@ -138,8 +138,7 @@ static int blspec_have_entry(struct blspec *blspec, const char *path)
-  * returns 0 if at least one entry could be successfully loaded, negative
-  * error value otherwise.
-  */
--static int blspec_scan_directory(struct blspec *blspec, const char *root,
--		struct cdev *cdev)
-+int blspec_scan_directory(struct blspec *blspec, const char *root)
- {
- 	struct blspec_entry *entry;
- 	DIR *dir;
-@@ -211,7 +210,7 @@ static int blspec_scan_directory(struct blspec *blspec, const char *root,
+@@ -207,7 +207,7 @@ static int blspec_scan_directory(struct blspec *blspec, const char *root,
+ 			continue;
+ 		}
+ 
+-		found = 1;
++		found++;
  
  		entry->rootpath = xstrdup(root);
  		entry->configpath = configname;
--		entry->cdev = cdev;
-+		entry->cdev = get_cdev_by_mountpath(root);
+@@ -232,7 +232,7 @@ static int blspec_scan_directory(struct blspec *blspec, const char *root,
+ 		entry->me.type = MENU_ENTRY_NORMAL;
+ 	}
  
- 		name = asprintf("%s/%s", dirname, d->d_name);
- 		if (entry_default && !strcmp(name, entry_default))
-@@ -220,12 +219,17 @@ static int blspec_scan_directory(struct blspec *blspec, const char *root,
- 			entry->boot_once = true;
- 		free(name);
+-	ret = found ? 0 : -ENOENT;
++	ret = found;
  
--		devname = xstrdup(dev_name(entry->cdev->dev));
--		if (entry->cdev->dev->parent)
--			hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
-+		if (entry->cdev) {
-+			devname = xstrdup(dev_name(entry->cdev->dev));
-+			if (entry->cdev->dev->parent)
-+				hwdevname = xstrdup(dev_name(entry->cdev->dev->parent));
+ 	closedir(dir);
+ err_out:
+@@ -249,8 +249,8 @@ err_out:
+  * Given a cdev this function mounts the filesystem and collects all blspec
+  * entries found under /blspec/entries/.
+  *
+- * returns 0 if at least one entry could be successfully loaded, negative
+- * error value otherwise.
++ * returns the number of entries found or a negative error code if some unexpected
++ * error occured.
+  */
+ static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
+ {
+@@ -286,11 +286,14 @@ static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
+  * blspec_scan_devices - scan all devices for child cdevs
+  *
+  * Iterate over all devices and collect child their cdevs.
++ * Returns the number of entries found or a negative error code if some unexpected
++ * error occured.
+  */
+-void blspec_scan_devices(struct blspec *blspec)
++int blspec_scan_devices(struct blspec *blspec)
+ {
+ 	struct device_d *dev;
+ 	struct block_device *bdev;
++	int ret, found = 0;
+ 
+ 	for_each_device(dev)
+ 		device_detect(dev);
+@@ -298,9 +301,14 @@ void blspec_scan_devices(struct blspec *blspec)
+ 	for_each_block_device(bdev) {
+ 		struct cdev *cdev = &bdev->cdev;
+ 
+-		list_for_each_entry(cdev, &bdev->dev->cdevs, devices_list)
+-			blspec_scan_cdev(blspec, cdev);
++		list_for_each_entry(cdev, &bdev->dev->cdevs, devices_list) {
++			ret = blspec_scan_cdev(blspec, cdev);
++			if (ret > 0)
++				found += ret;
 +		}
- 
--		entry->me.display = asprintf("%-20s %-20s  %s", devname, hwdevname,
-+		entry->me.display = asprintf("%-20s %-20s  %s",
-+				devname ? devname : "",
-+				hwdevname ? hwdevname : "",
- 				blspec_entry_var_get(entry, "title"));
+ 	}
 +
- 		free(devname);
- 		free(hwdevname);
- 
-@@ -277,7 +281,7 @@ static int blspec_scan_cdev(struct blspec *blspec, struct cdev *cdev)
- 	if (IS_ERR(rootpath))
- 		return PTR_ERR(rootpath);
- 
--	ret = blspec_scan_directory(blspec, rootpath, cdev);
-+	ret = blspec_scan_directory(blspec, rootpath);
- 
- 	return ret;
++	return found;
  }
-@@ -461,7 +465,7 @@ int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun)
- 	globalvar_add_simple("linux.bootargs.blspec", options);
  
- 	pr_info("booting %s from %s\n", blspec_entry_var_get(entry, "title"),
--			dev_name(entry->cdev->dev));
-+			entry->cdev ? dev_name(entry->cdev->dev) : "none");
+ /*
+@@ -308,12 +316,14 @@ void blspec_scan_devices(struct blspec *blspec)
+  *
+  * Given a device this functions scans over all child cdevs looking
+  * for blspec entries.
++ * Returns the number of entries found or a negative error code if some unexpected
++ * error occured.
+  */
+ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
+ {
+ 	struct device_d *child;
+ 	struct cdev *cdev;
+-	int ret;
++	int ret, found = 0;
  
- 	if (entry->boot_once) {
- 		char *s = asprintf("%s/once", abspath);
+ 	pr_debug("%s: %s\n", __func__, dev_name(dev));
+ 
+@@ -326,8 +336,11 @@ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
+ 		 * should be used as $BOOT
+ 		 */
+ 		if (cdev->dos_partition_type == 0xea) {
+-			blspec_scan_cdev(blspec, cdev);
+-			return 0;
++			ret = blspec_scan_cdev(blspec, cdev);
++			if (ret == 0)
++				ret = -ENOENT;
++
++			return ret;
+ 		}
+ 
+ 		/*
+@@ -343,8 +356,8 @@ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
+ 	/* Try child devices */
+ 	device_for_each_child(dev, child) {
+ 		ret = blspec_scan_device(blspec, child);
+-		if (!ret)
+-			return 0;
++		if (ret > 0)
++			return ret;
+ 	}
+ 
+ 	/*
+@@ -353,11 +366,11 @@ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
+ 	 */
+ 	list_for_each_entry(cdev, &dev->cdevs, devices_list) {
+ 		ret = blspec_scan_cdev(blspec, cdev);
+-		if (!ret)
+-			return 0;
++		if (ret > 0)
++			found += ret;
+ 	}
+ 
+-	return -ENODEV;
++	return found;
+ }
+ 
+ /*
+@@ -365,6 +378,8 @@ int blspec_scan_device(struct blspec *blspec, struct device_d *dev)
+  *
+  * Given a name of a hardware device this functions scans over all child
+  * cdevs looking for blspec entries.
++ * Returns the number of entries found or a negative error code if some unexpected
++ * error occured.
+  */
+ int blspec_scan_devicename(struct blspec *blspec, const char *devname)
+ {
+@@ -385,17 +400,15 @@ int blspec_scan_devicename(struct blspec *blspec, const char *devname)
+ 	cdev = cdev_by_name(devname);
+ 	if (cdev) {
+ 		int ret = blspec_scan_cdev(blspec, cdev);
+-		if (!ret)
+-			return 0;
++		if (ret > 0)
++			return ret;
+ 	}
+ 
+ 	dev = get_device_by_name(devname);
+ 	if (!dev)
+ 		return -ENODEV;
+ 
+-	blspec_scan_device(blspec, dev);
+-
+-	return 0;
++	return blspec_scan_device(blspec, dev);
+ }
+ 
+ /*
 diff --git a/include/blspec.h b/include/blspec.h
-index 7b483d3..66d2e84 100644
+index a7b189a..7b483d3 100644
 --- a/include/blspec.h
 +++ b/include/blspec.h
-@@ -37,6 +37,7 @@ int blspec_scan_devices(struct blspec *blspec);
+@@ -33,7 +33,7 @@ int blspec_boot(struct blspec_entry *entry, int verbose, int dryrun);
+ 
+ int blspec_boot_devicename(const char *devname, int verbose, int dryrun);
+ 
+-void blspec_scan_devices(struct blspec *blspec);
++int blspec_scan_devices(struct blspec *blspec);
  
  struct blspec_entry *blspec_entry_default(struct blspec *l);
  int blspec_scan_devicename(struct blspec *blspec, const char *devname);
-+int blspec_scan_directory(struct blspec *blspec, const char *root);
- 
- #define blspec_for_each_entry(blspec, entry) \
- 	list_for_each_entry(entry, &blspec->entries, list)
 -- 
 1.8.4.rc3
 
