@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdKlx-0004P5-0E
+ id 1VdKlx-0004P4-0I
  for barebox@lists.infradead.org; Mon, 04 Nov 2013 14:04:57 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1VdKlb-0000cQ-1j
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 15:04:31 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1VdKlb-0007kk-0f
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 15:04:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  4 Nov 2013 15:04:20 +0100
-Message-Id: <1383573870-11325-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
-References: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon,  4 Nov 2013 15:04:19 +0100
+Message-Id: <1383573870-11325-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +26,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/11] kernel-install: Add missing error messages
+Subject: bootspec work
 To: barebox@lists.infradead.org
 
-In some cases kernel-install can fail without printing anything. Add
-error messages for these cases.
+The bootloader spec defines a single /boot per device. This is very
+good for the general purpose distribution usecase. This extension
+is mostly useful for embedded systems (for which barebox was written).
+On embdedded systems we often have images which contain both a kernel
+and a rootfilesystem. These images are sometimes written to a device
+multiple times for redundancy reasons. With this series no longer a
+single /boot is required, but instead bootspec entries can be on
+every partition of a device. So now we can not only 'boot emmc0', but
+also 'boot emmc0.1' for booting a partition on am emmc device.
+Also now a path containing bootspec entries can be given which will
+be useful for NFS boot for example.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- scripts/kernel-install.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/scripts/kernel-install.c b/scripts/kernel-install.c
-index 6086357..459b45d 100644
---- a/scripts/kernel-install.c
-+++ b/scripts/kernel-install.c
-@@ -533,6 +533,7 @@ static char *mount_path(char *in_path, int *newmount)
- 			*newmount = 1;
- 			return out_path;
- 		}
-+		fprintf(stderr, "cannot mount %s\n", in_path);
- 		return NULL;
- 	case MOUNT_MOUNT:
- 		out_path = mount_path_mount(in_path);
-@@ -540,6 +541,7 @@ static char *mount_path(char *in_path, int *newmount)
- 			*newmount = 1;
- 			return out_path;
- 		}
-+		fprintf(stderr, "cannot mount %s\n", in_path);
- 		return NULL;
- 	}
- 
-@@ -789,12 +791,18 @@ static int do_add_kernel(void)
- 	}
- 
- 	ret = make_directory(conf_dir);
--	if (ret)
-+	if (ret) {
-+		fprintf(stderr, "failed to create directory %s: %s\n",
-+				conf_dir, strerror(errno));
- 		return ret;
-+	}
- 
- 	ret = make_directory(host_images_dir);
--	if (ret)
-+	if (ret) {
-+		fprintf(stderr, "failed to create directory %s: %s\n",
-+				host_images_dir, strerror(errno));
- 		return ret;
-+	}
- 
- 	fd = open(conf_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
- 	if (fd < 0) {
--- 
-1.8.4.rc3
+----------------------------------------------------------------
+Sascha Hauer (11):
+      kernel-install: Add missing error messages
+      blspec: Push device_detect into blspec_scan_device
+      blspec: rename _hwdevice functions to _devicename
+      blspec: Allow to boot partitions
+      blspec: Let scan functions return the number of entries found
+      fs: Add function to get cdev by mountpath
+      blspec: make cdev optional
+      boot: Print boot entries in the order they are
+      boot command: make more flexible
+      blspec: Make error message more clear
+      boot command: Add timeout support for menu
 
+ commands/boot.c          | 351 ++++++++++++++++++++++++++++-------------------
+ common/blspec.c          | 104 +++++++++-----
+ fs/fs.c                  |  13 ++
+ include/blspec.h         |   7 +-
+ include/fs.h             |   2 +
+ scripts/kernel-install.c |  12 +-
+ 6 files changed, 307 insertions(+), 182 deletions(-)
 
 _______________________________________________
 barebox mailing list
