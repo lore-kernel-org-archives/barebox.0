@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdFSA-0004b1-Vy
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 08:24:07 +0000
-Date: Mon, 4 Nov 2013 09:23:43 +0100
+ id 1VdFXr-0004gK-BR
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 08:30:00 +0000
+Date: Mon, 4 Nov 2013 09:29:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131104082343.GP24559@pengutronix.de>
-References: <1383462428-19259-1-git-send-email-plagnioj@jcrosoft.com>
- <20131103073043.GA916@omega>
+Message-ID: <20131104082935.GQ24559@pengutronix.de>
+References: <1383536209-30382-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131103073043.GA916@omega>
+In-Reply-To: <1383536209-30382-1-git-send-email-zzs213@126.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] bcm2835: move mci register at board level
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] don't scan bbt if CONFIG_NAND_BBT not set
+To: =?utf-8?B?5byg5b+g5bGx?= <zzs213@126.com>
+Cc: barebox@lists.infradead.org, =?utf-8?B?5byg5b+g5bGx?= <zzs0213@gmail.com>
 
-On Sun, Nov 03, 2013 at 08:30:44AM +0100, Alexander Aring wrote:
-> On Sun, Nov 03, 2013 at 08:07:08AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > not all board have a SD coard
-> > 
-> s/coard/card
-
-Applied and fixed typo.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBOb3YgMDQsIDIwMTMgYXQgMTE6MzY6NDlBTSArMDgwMCwg5byg5b+g5bGxIHdyb3Rl
+Ogo+IEZyb206IOW8oOW/oOWxsSA8enpzMDIxM0BnbWFpbC5jb20+Cj4gCj4gd2hlbiBDT05GSUdf
+TkFORF9CQlQgbm90IHNldCwgY2hpcC0+c2Nhbl9iYnQgaXMgTlVMTCBhbmQKPiBOQU5EX1NLSVBf
+QkJUU0NBTiBub3Qgc2V0LiBTbyBiYXJlYm94IGNyYXNoZWQsIHRoaXMgaXMgdGhlIG1lc3NhZ2UK
+PiAKPiAgICAgLi4uLi4uCj4gCj4gICAgIG5hbmQ6IE9ORkkgcGFyYW0gcGFnZSAwIHZhbGlkCj4g
+ICAgIG5hbmQ6IE9ORkkgZmxhc2ggZGV0ZWN0ZWQKPiAgICAgbmFuZDogTkFORCBkZXZpY2U6IE1h
+bnVmYWN0dXJlciBJRDogMHgyYywgQ2hpcCBJRDogMHhkYSAoTWljcm9uIE1UMjlGMkcwOEFBRCks
+IDI1Nk1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKPiAgICAgcHJlZmV0Y2ggYWJv
+cnQKPiAgICAgcGMgOiBbPDAwMDAwMDA0Pl0gICAgbHIgOiBbPDIzZjBiOGQwPl0KPiAgICAgc3Ag
+OiAyM2ZmZmYwOCAgaXAgOiA3ZmZmZmZmZiAgZnAgOiAwMDAwMDAwMAo+ICAgICByMTA6IDA0MDAw
+MDAwICByOSA6IDAwMDAwMDAwICByOCA6IDAwMDAwMDAxCj4gICAgIHI3IDogMjNiNjM3ZjggIHI2
+IDogMDAwMDAwMDAgIHI1IDogMjNiNjNhZDQgIHI0IDogMjNiNjM4YjQKPiAgICAgcjMgOiAwMDAw
+MDAwMCAgcjIgOiBmZmZmZjIwMCAgcjEgOiAwMDAwMDAwYSAgcjAgOiAyM2I2M2FkNAo+ICAgICBG
+bGFnczogblpDdiAgSVJRcyBvZmYgIEZJUXMgb2ZmICBNb2RlIFNWQ18zMgo+IAo+IG1heSBiZSB0
+aGUgYmVzdCBzb2x1dGlvbiBpcyBzZXQgTkFORF9TS0lQX0JCVFNDQU4gc29tZXdoZXJlIHdoZW4K
+PiBDT05GSUdfTkFORF9CQlQgbm90IHNlbGVjdGVkLCBidXQgSSBkb24ndCBrbm93biB3aGVyZSBp
+cyB0aGUgYmVzdAo+IHBvc2l0aW9uLgoKSSB0aGluayBpdCdzIG9rIGxpa2UgeW91IGRpZC4KCj4g
+Cj4gU2lnbmVkLW9mZi1ieTog5byg5b+g5bGxIDx6enMwMjEzQGdtYWlsLmNvbT4KPiAtLS0KPiAg
+ZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYyB8ICAgIDQgKysrKwo+ICAxIGZpbGUgY2hhbmdl
+ZCwgNCBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbXRkL25hbmQvbmFu
+ZF9iYXNlLmMgYi9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCj4gaW5kZXggZDI0OTU2NS4u
+MWRiZDViZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfYmFzZS5jCj4gKysr
+IGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2Jhc2UuYwo+IEBAIC0zNTk3LDggKzM1OTcsMTIgQEAg
+aW50IG5hbmRfc2Nhbl90YWlsKHN0cnVjdCBtdGRfaW5mbyAqbXRkKQo+ICAJaWYgKGNoaXAtPm9w
+dGlvbnMgJiBOQU5EX1NLSVBfQkJUU0NBTikKPiAgCQlyZXR1cm4gMDsKPiAgCj4gKyNpZmRlZiBD
+T05GSUdfTkFORF9CQlQKPiAgCS8qIEJ1aWxkIGJhZCBibG9jayB0YWJsZSAqLwo+ICAJcmV0dXJu
+IGNoaXAtPnNjYW5fYmJ0KG10ZCk7Cj4gKyNlbHNlCj4gKwlyZXR1cm4gMDsKPiArI2VuZGlmCgpJ
+IGFwcGxpZWQgdGhpcyB3aXRoOgoKCWlmICghSVNfRU5BQkxFRChDT05GSUdfTkFORF9CQlQpKQoJ
+CXJldHVybiAwOwoKUGxlYXNlIHVzZSBJU19FTkFCTEVEKCkgd2hlcmUgYXBwcm9wcmlhdGUgaW4g
+ZnV0dXJlIHNpbmNlIGl0J3MgZWFzaWVyIHRvCnJlYWQgYW5kIGxlYWRzIHRvIGJldHRlciBjb21w
+aWxlIGNvdmVyYWdlLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBM
+aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
+ZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
+ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
+ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
