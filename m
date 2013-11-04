@@ -1,17 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f41.google.com ([209.85.214.41])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdMpt-0007ds-LI
- for barebox@lists.infradead.org; Mon, 04 Nov 2013 16:17:06 +0000
-Received: by mail-bk0-f41.google.com with SMTP id na10so3019698bkb.14
- for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 08:16:42 -0800 (PST)
-Message-ID: <5277C868.9030504@kiwigrid.com>
-Date: Mon, 04 Nov 2013 17:16:40 +0100
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from exprod5og117.obsmtp.com ([64.18.0.149])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VdOYG-0002Cx-N7
+ for barebox@lists.infradead.org; Mon, 04 Nov 2013 18:07:01 +0000
+Message-ID: <5277E225.6030501@ge.com>
+Date: Mon, 04 Nov 2013 18:06:29 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-References: <52778B89.3000208@kiwigrid.com>	<20131104134847.6d9a5e8c@e6520eb>	<5277B6A1.3010106@kiwigrid.com>	<20131104160755.6fbae688@e6520eb>	<5277C59E.6050006@kiwigrid.com>
- <20131104170609.3ab396b5@e6520eb>
-In-Reply-To: <20131104170609.3ab396b5@e6520eb>
+References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
+ <1383128571-8250-5-git-send-email-renaud.barbier@ge.com>
+ <20131030113452.GG26639@ns203013.ovh.net>
+ <20131031074833.GI24559@pengutronix.de> <5272B934.7080508@ge.com>
+ <20131101115852.GL24559@pengutronix.de> <5273A50B.1010700@ge.com>
+ <5273A65E.6090300@ge.com> <5273C2CE.3010602@ge.com>
+ <20131101202859.GM24559@pengutronix.de>
+In-Reply-To: <20131101202859.GM24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,67 +23,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox on i.MX53 in serial downloader boot mode
-To: =?ISO-8859-1?Q?Eric_B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH 4/5] ppc: DA923RC: add board support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 11/04/2013 05:06 PM, Eric B=E9nard wrote:
-> Le Mon, 04 Nov 2013 17:04:46 +0100,
-> "Wjatscheslaw Stoljarski (Slawa)"
-> <wjatscheslaw.stoljarski@kiwigrid.com> a =E9crit :
->
->> On 11/04/2013 04:07 PM, Eric B=E9nard wrote:
->>> Hi Wjatscheslaw,
->>>
->>> Le Mon, 04 Nov 2013 16:00:49 +0100,
->>> "Wjatscheslaw Stoljarski (Slawa)"
->>> <wjatscheslaw.stoljarski@kiwigrid.com> a =E9crit :
->>>
->>>> On 11/04/2013 01:48 PM, Eric B=E9nard wrote:
->>>>> Hi,
->>>>>> has anyone tried to start barebox on i.MX53 in 11 boot mode (serial
->>>>>> downloader)? I've tried on Freescale Loco board with pmic da9053, but
->>>>>> without success. In 00 boot mode (internal boot) works perfectly. U-=
-Boot
->>>>>> works in both modes. DCD in u-boot and in barebox is the same. Even I
->>>>>> can turn on LEDs with DCD in 11 boot mode on Loco.
->>>>>>
->>>>> works fine here, what are you using to download barebox ?
->>>> I'm using imx-usb-loader. But I've tried MfgTool from Freescale too wi=
-th
->>>> the same result.
->>>>
->>> ok sorry it's working here (on a custom board) in 11 boot mode but using
->>> serial port to load it. IIRC USB was only tested in 00 as a fallback
->>> when NAND flash is blank.
->>>
->>> Eric
->> Sorry, I forget to mention that I'm using serial downloader via USB.
+On 01/11/2013 20:28, Sascha Hauer wrote:
+
 >>
->> Hm... I've just tried to boot u-boot image in 11 mode, and from u-boot
->> start barebox. And it's works. Why then can I not boot barebox directly?
+>> I found a way to do it. This implies to:
+>> - register the i2c-imx driver at the postcore initcall level.
+>> - register the board i2c bus at the postcore initcall level
+>>   and perform the rest of the board initialization.
 >>
-> maybe a clock which is left unitialized (or an IOMUX).
->
-> Eric
-I've already tried to turn on all clocks
+>>
+>> The i2c-imx driver is shared between architectures. If you do not
+>> foresee any side-effects on the ARM architecture and this is acceptable
+>> to you, I would like to submit a patch including this solution.
+> 
+> Could you set the model to a superset of both possible boards initially,
+> something like DA923RC/GBX460? Then set the correct board type in a
+> late_initcall. The only thing affected is the printing of the board type
+> in the banner, right?
 
-mww 32 0x53FD4068 0xffffffff
-mww 32 0x53FD406c 0xffffffff
-mww 32 0x53FD4070 0xffffffff
-mww 32 0x53FD4074 0xffffffff
-mww 32 0x53FD4078 0xffffffff
-mww 32 0x53FD407c 0xffffffff
-mww 32 0x53FD4080 0xffffffff
-mww 32 0x53FD4084 0xffffffff
+Indeed, in this particular example, the only thing affected is the
+printing of the board name.
+However, reading the I2C early is not just for the board name.
+We have other variants of the board coming that may require minor
+adjustment (for instance DDR timing tuning) or early configuration.
 
-but without success.
-
-Wjatscheslaw
+Renaud.
 
 _______________________________________________
 barebox mailing list
