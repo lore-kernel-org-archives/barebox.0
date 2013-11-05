@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VdUAb-0002A2-0O
- for barebox@lists.infradead.org; Tue, 05 Nov 2013 00:06:57 +0000
-Received: by mail-ee0-f42.google.com with SMTP id c1so1080733eek.1
- for <barebox@lists.infradead.org>; Mon, 04 Nov 2013 16:06:35 -0800 (PST)
-Date: Tue, 5 Nov 2013 01:06:22 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131105000615.GA27728@omega>
-References: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
- <1383606064-30494-2-git-send-email-a.heider@gmail.com>
+ id 1VdbB2-0000z3-2Y
+ for barebox@lists.infradead.org; Tue, 05 Nov 2013 07:35:52 +0000
+Date: Tue, 5 Nov 2013 08:35:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131105073529.GY24559@pengutronix.de>
+References: <1383128571-8250-5-git-send-email-renaud.barbier@ge.com>
+ <20131030113452.GG26639@ns203013.ovh.net>
+ <20131031074833.GI24559@pengutronix.de> <5272B934.7080508@ge.com>
+ <20131101115852.GL24559@pengutronix.de> <5273A50B.1010700@ge.com>
+ <5273A65E.6090300@ge.com> <5273C2CE.3010602@ge.com>
+ <20131101202859.GM24559@pengutronix.de> <5277E225.6030501@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1383606064-30494-2-git-send-email-a.heider@gmail.com>
+In-Reply-To: <5277E225.6030501@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,44 +27,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/6] fb: add a line_length value to struct fb_info
-To: Andre Heider <a.heider@gmail.com>
+Subject: Re: [PATCH 4/5] ppc: DA923RC: add board support
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Nov 05, 2013 at 12:00:59AM +0100, Andre Heider wrote:
-> Add support for framebuffers with noncontiguous horizontal lines.
+On Mon, Nov 04, 2013 at 06:06:29PM +0000, Renaud Barbier wrote:
+> On 01/11/2013 20:28, Sascha Hauer wrote:
 > 
-> Video drivers can set this value if the hardware requires it.
-> In case a driver does not set it, the current value of
-> xres * (bpp / 8) is used instead.
+> >>
+> >> I found a way to do it. This implies to:
+> >> - register the i2c-imx driver at the postcore initcall level.
+> >> - register the board i2c bus at the postcore initcall level
+> >>   and perform the rest of the board initialization.
+> >>
+> >>
+> >> The i2c-imx driver is shared between architectures. If you do not
+> >> foresee any side-effects on the ARM architecture and this is acceptable
+> >> to you, I would like to submit a patch including this solution.
+> > 
+> > Could you set the model to a superset of both possible boards initially,
+> > something like DA923RC/GBX460? Then set the correct board type in a
+> > late_initcall. The only thing affected is the printing of the board type
+> > in the banner, right?
 > 
-> Signed-off-by: Andre Heider <a.heider@gmail.com>
-> ---
->  drivers/video/fb.c | 11 +++++++++--
->  include/fb.h       |  1 +
->  2 files changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-> index 420e4e3..0159994 100644
-> --- a/drivers/video/fb.c
-> +++ b/drivers/video/fb.c
-> @@ -72,12 +72,16 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
->  
->  	info->xres = info->mode->xres;
->  	info->yres = info->mode->yres;
-> +	info->line_length = 0;
->  
->  	ret = info->fbops->fb_activate_var(info);
->  
-> +	if (!info->line_length)
-> +		info->line_length = info->xres * (info->bits_per_pixel >> 3);
-> +
-Isn't this already set from the register_framebuffer function?
-You wanna see that somebody changed this value in info->fbops->fb_activate_var(info)?
+> Indeed, in this particular example, the only thing affected is the
+> printing of the board name.
+> However, reading the I2C early is not just for the board name.
+> We have other variants of the board coming that may require minor
+> adjustment (for instance DDR timing tuning) or early configuration.
 
-Then I would do nothing here.
+I assume the timing has to be adjusted before the DDR can be used,
+right? If so, then you have no other choice but to use some early i2c
+stuff. Make sure though that it is only used as little as possible.
 
-- Alex
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
