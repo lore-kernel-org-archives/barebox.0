@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ve42e-0001QW-Jw
- for barebox@lists.infradead.org; Wed, 06 Nov 2013 14:25:09 +0000
+ id 1Ve42e-0001QZ-Jy
+ for barebox@lists.infradead.org; Wed, 06 Nov 2013 14:25:10 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1Ve42H-0008LJ-8R
+ (envelope-from <jbe@pengutronix.de>) id 1Ve42H-0008LL-9W
  for barebox@lists.infradead.org; Wed, 06 Nov 2013 15:24:45 +0100
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <jbe@pengutronix.de>) id 1Ve42H-0002Iq-6o
+ (envelope-from <jbe@pengutronix.de>) id 1Ve42H-0002Iy-7t
  for barebox@lists.infradead.org; Wed, 06 Nov 2013 15:24:45 +0100
 From: Juergen Beisert <jbe@pengutronix.de>
-Date: Wed,  6 Nov 2013 15:24:38 +0100
-Message-Id: <1383747881-15698-1-git-send-email-jbe@pengutronix.de>
+Date: Wed,  6 Nov 2013 15:24:40 +0100
+Message-Id: <1383747881-15698-3-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1383747881-15698-1-git-send-email-jbe@pengutronix.de>
+References: <1383747881-15698-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +28,174 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] FPGA: add a simple framework for firmware programming
+Subject: [PATCH 2/3] FPGA: add a programming command
 To: barebox@lists.infradead.org
 
-This is just a simple API to be used within C programs or via a shell command
-to be able to program firmware into an attached FPGA. To hide the details how
-to deal with the specific FPGA a handler register itself which does the real
-work.
-All users of this API just have to provide a handler identifier and the
-firmware file.
-As an example I added a firmware handler for an ALTERA FPGA connected via SPI
-as its programming interface.
+This command is a simple frontend to the FPGA programming handler manager.
 
-Comments are welcome.
+Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+---
+ commands/Kconfig    |  10 +++++
+ commands/Makefile   |   1 +
+ commands/fpgaload.c | 117 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 128 insertions(+)
+ create mode 100644 commands/fpgaload.c
 
-Juergen
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9738ec4..bb4ccaf 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -605,6 +605,16 @@ config CMD_BAREBOX_UPDATE
+ 	select BAREBOX_UPDATE
+ 	prompt "barebox-update"
+ 
++config CMD_FPGALOAD
++	bool
++	select FPGAMANAGER
++	prompt "fpgaload"
++	help
++	  Provides the "fpgaload" command which deals with FPGA firmware to
++	  download it into an FPGA device. This command uses the FPGA manager
++	  framework to hide the details about how program a specific FPGA
++	  device.
++
+ config CMD_TIMEOUT
+ 	tristate
+ 	prompt "timeout"
+diff --git a/commands/Makefile b/commands/Makefile
+index 58d27fa..864ca0c 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -93,3 +93,4 @@ obj-$(CONFIG_CMD_MIITOOL)	+= miitool.o
+ obj-$(CONFIG_CMD_DETECT)	+= detect.o
+ obj-$(CONFIG_CMD_BOOT)		+= boot.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
++obj-$(CONFIG_CMD_FPGALOAD)	+= fpgaload.o
+diff --git a/commands/fpgaload.c b/commands/fpgaload.c
+new file mode 100644
+index 0000000..677ff73
+--- /dev/null
++++ b/commands/fpgaload.c
+@@ -0,0 +1,117 @@
++/*
++ * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutronix
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <command.h>
++#include <getopt.h>
++#include <fpgamgr.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <linux/stat.h>
++
++static int fpgaload_write_data(struct fpga_mgr *mgr, const char *firmware)
++{
++	int fd, ret;
++	struct stat s;
++	size_t sz;
++	unsigned char buffer[256]; /* must always be a multiple of 8 bytes! */
++
++	ret = stat(firmware, &s);
++	if (ret != 0) {
++		printf("Unable to access file '%s'\n", firmware);
++		return -EINVAL;
++	}
++
++	fd = open(firmware, O_RDONLY);
++	if (fd < 0)
++		return fd;
++
++	do {
++		sz = read(fd, buffer, sizeof(buffer));
++		if (sz == 0)
++			break;
++		ret = fpgamgr_prog_fpga(mgr, buffer, sz);
++		if (ret < 0)
++			break;
++	} while (1);
++
++	close(fd);
++	return 0;
++}
++
++static int do_fpgaload(int argc, char *argv[])
++{
++	int ret, opt, index = -1;
++	const char *name = NULL, *firmware;
++	struct fpga_mgr *mgr;
++
++	while ((opt = getopt(argc, argv, "t:i:l")) > 0) {
++		switch (opt) {
++		case 't':
++			name = optarg;
++			break;
++		case 'i':
++			index = simple_strtoul(optarg, NULL, 0);
++			break;
++		case 'l':
++			printf("registered programming handlers:\n");
++			fpgamgr_handlers_list();
++			return 0;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++
++	if (!(argc - optind))
++		return COMMAND_ERROR_USAGE;
++
++	firmware = argv[optind];
++
++	mgr = fpgamgr_find_handler(name, index);
++	if (mgr == NULL) {
++		printf("No such programming handler found\n");
++		return 1;
++	}
++
++	ret = fpgamgr_open_fpga(mgr);
++	if (ret == -ENOSYS) {
++		/* this might be a bug... */
++		pr_debug("No programming initiater function defined\n");
++	}
++
++	ret = fpgaload_write_data(mgr, firmware);
++	if (ret != 0)
++		return 1;
++
++	ret = fpgamgr_close_fpga(mgr);
++	if (ret == -ENOSYS) {
++		/* this might be a bug... */
++		pr_debug("No programming finisher function defined\n");
++	}
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(fpgaload)
++BAREBOX_CMD_HELP_USAGE("fpgaload [OPTIONS] <firmware>\n")
++BAREBOX_CMD_HELP_SHORT("Program a firmware file content into an FPGA\n")
++BAREBOX_CMD_HELP_OPT("-t <target>", "define the FPGA handler by name\n")
++BAREBOX_CMD_HELP_OPT("-i <index>", "define the FPGA handler by index\n")
++BAREBOX_CMD_HELP_OPT("-l\t", "list registered FPGAs\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(fpgaload)
++	.cmd = do_fpgaload,
++	.usage = "program an FPGA",
++	BAREBOX_CMD_HELP(cmd_fpgaload_help)
++BAREBOX_CMD_END
+-- 
+1.8.4.rc3
 
 
 _______________________________________________
