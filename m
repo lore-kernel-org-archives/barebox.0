@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vdzrx-0001Vc-Tx
- for barebox@lists.infradead.org; Wed, 06 Nov 2013 09:57:50 +0000
-Date: Wed, 6 Nov 2013 10:57:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131106095727.GJ24559@pengutronix.de>
-References: <1383728519.178149099@f98.i.mail.ru>
+ id 1Vdzri-0001V6-58
+ for barebox@lists.infradead.org; Wed, 06 Nov 2013 09:57:34 +0000
+Received: by mail-ee0-f47.google.com with SMTP id c13so2379886eek.20
+ for <barebox@lists.infradead.org>; Wed, 06 Nov 2013 01:57:10 -0800 (PST)
+Date: Wed, 6 Nov 2013 11:04:02 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131106100401.GA15254@x61s.campuswlan.hs-rm.de>
+References: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
+ <20131106094628.GH24559@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1383728519.178149099@f98.i.mail.ru>
+In-Reply-To: <20131106094628.GH24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: dt-bindings status
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: Re: [PATCH v2 0/6] BCM2835 / simple framebuffer support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Alexander,
+Hi Sascha,
 
-On Wed, Nov 06, 2013 at 01:01:59PM +0400, Alexander Shiyan wrote:
-> Hello.
-> 
-> DTS files from the current kernel require "include/dt-bindings".
-> Are there plans to add these parts of the kernel tree in the barebox?
-> Thanks.
+On Wed, Nov 06, 2013 at 10:46:28AM +0100, Sascha Hauer wrote:
+> Hi Andre,
+> @@ -163,6 +163,13 @@ int register_framebuffer(struct fb_info *info)
+>  	if (ret)
+>  		goto err_unregister;
+>  
+> +	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_SIMPLEFB)) {
+> +		ret = fb_register_simplefb(info);
+> +		if (ret)
+> +			dev_err(&info->dev, "failed to register simplefb: %s\n",
+> +					strerror(-ret));
+maybe we should return ret here?
 
-We should add this for barebox aswell once we need it. Right now I
-haven't missed it. If you need it feel free to add it.
+> +	}
+> +
+>  	return 0;
+>  
+>  err_unregister:
+> diff --git a/drivers/video/simplefb.c b/drivers/video/simplefb.c
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+- Alex
 
 _______________________________________________
 barebox mailing list
