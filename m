@@ -1,12 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeNBR-0003yc-9f
- for barebox@lists.infradead.org; Thu, 07 Nov 2013 10:51:30 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  7 Nov 2013 11:51:02 +0100
-Message-Id: <1383821462-29348-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1VeNSu-0004Q7-Bh
+ for barebox@lists.infradead.org; Thu, 07 Nov 2013 11:09:33 +0000
+Date: Thu, 7 Nov 2013 12:09:09 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131107110909.GR24559@pengutronix.de>
+References: <1383747881-15698-1-git-send-email-jbe@pengutronix.de>
+ <1383747881-15698-3-git-send-email-jbe@pengutronix.de>
+ <20131107100456.GJ26639@ns203013.ovh.net>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20131107100456.GJ26639@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,51 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mci: mxs: support overwriting the device name via platform
- data
-To: barebox@lists.infradead.org
+Subject: Re: [SPAM] [PATCH 2/3] FPGA: add a programming command
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-VGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24gb2YgdGhlIGJvb3Rsb2FkZXIgc3BlY2lmaWNhdGlv
-biBkZXBlbmRzIG9uIHRoZQpoYXJkd2FyZSBuYW1lIGFuZCB0aGUgbmFtZSBvZiB0aGUgZGV2aWNl
-IGluIC9kZXYgdG8gbWF0Y2guIEFzIHRoZSBkZWZhdWx0CmhhcmR3YXJlIG5hbWUgaXMgbWNpWCBh
-bmQgdGhlIGRldmljZSBuYW1lIGlzIGRpc2tZIHRoZSBib290bG9hZGVyIHNwZWMKY2Fubm90IGJl
-IHVzZWQgYXMgaXMuCgpUaGlzIHBhdGNoIGltcGxlbWVudHMgYSB3YXkgdG8gb3ZlcndyaXRlIHRo
-ZSBkZXZpY2UgbmFtZSBzaW1pbGFyIHRvIHdoYXQgaXMKcG9zc2libGUgZm9yIHRoZSBpbXgtZXNk
-aGMgZHJpdmVyLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
-ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCiBhcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gv
-bWNpLmggfCAxICsKIGRyaXZlcnMvbWNpL214cy5jICAgICAgICAgICAgICAgICAgICB8IDMgKysr
-CiBpbmNsdWRlL21jaS5oICAgICAgICAgICAgICAgICAgICAgICAgfCAyICstCiAzIGZpbGVzIGNo
-YW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9tY2kuaCBiL2FyY2gvYXJtL21hY2gtbXhzL2luY2x1
-ZGUvbWFjaC9tY2kuaAppbmRleCA0ZmFhYjM3Li5jNDdjMjRjIDEwMDY0NAotLS0gYS9hcmNoL2Fy
-bS9tYWNoLW14cy9pbmNsdWRlL21hY2gvbWNpLmgKKysrIGIvYXJjaC9hcm0vbWFjaC1teHMvaW5j
-bHVkZS9tYWNoL21jaS5oCkBAIC0xNSw2ICsxNSw3IEBACiAjZGVmaW5lIF9fTUFDSF9NTUNfSAog
-CiBzdHJ1Y3QgbXhzX21jaV9wbGF0Zm9ybV9kYXRhIHsKKwljb25zdCBjaGFyICpkZXZuYW1lOwog
-CXVuc2lnbmVkIGNhcHM7CS8qKjwgc3VwcG9ydGVkIG9wZXJhdGluZyBtb2RlcyAoTU1DX01PREVf
-KikgKi8KIAl1bnNpZ25lZCB2b2x0YWdlczsgLyoqPCBzdXBwb3J0ZWQgdm9sdGFnZSByYW5nZSAo
-TU1DX1ZERF8qKSAqLwogCXVuc2lnbmVkIGZfbWluOwkvKio8IG1pbiBvcGVyYXRpbmcgZnJlcXVl
-bmN5IGluIEh6ICgwIC0+IG5vIGxpbWl0KSAqLwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvbXhz
-LmMgYi9kcml2ZXJzL21jaS9teHMuYwppbmRleCAxYjkzNWY3Li41MmQwNjU2IDEwMDY0NAotLS0g
-YS9kcml2ZXJzL21jaS9teHMuYworKysgYi9kcml2ZXJzL21jaS9teHMuYwpAQCAtNTcxLDYgKzU3
-MSw5IEBAIHN0YXRpYyBpbnQgbXhzX21jaV9wcm9iZShzdHJ1Y3QgZGV2aWNlX2QgKmh3X2RldikK
-IAlob3N0LT52b2x0YWdlcyA9IHBkLT52b2x0YWdlczsKIAlob3N0LT5ob3N0X2NhcHMgPSBwZC0+
-Y2FwczsKIAorCWlmIChwZC0+ZGV2bmFtZSkKKwkJaG9zdC0+ZGV2bmFtZSA9IHBkLT5kZXZuYW1l
-OworCiAJbXhzX21jaS0+Y2xrID0gY2xrX2dldChod19kZXYsIE5VTEwpOwogCWlmIChJU19FUlIo
-bXhzX21jaS0+Y2xrKSkKIAkJcmV0dXJuIFBUUl9FUlIobXhzX21jaS0+Y2xrKTsKZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvbWNpLmggYi9pbmNsdWRlL21jaS5oCmluZGV4IDFjYTAwYzcuLjcyNzI5YjYg
-MTAwNjQ0Ci0tLSBhL2luY2x1ZGUvbWNpLmgKKysrIGIvaW5jbHVkZS9tY2kuaApAQCAtMjg2LDcg
-KzI4Niw3IEBAIHN0cnVjdCBtY2k7CiBzdHJ1Y3QgbWNpX2hvc3QgewogCXN0cnVjdCBkZXZpY2Vf
-ZCAqaHdfZGV2OwkvKio8IHRoZSBob3N0IE1DSSBoYXJkd2FyZSBkZXZpY2UgKi8KIAlzdHJ1Y3Qg
-bWNpICptY2k7Ci0JY2hhciAqZGV2bmFtZTsJCQkvKio8IHRoZSBkZXZpY2VuYW1lIGZvciB0aGUg
-Y2FyZCwgZGVmYXVsdHMgdG8gZGlzayVkICovCisJY29uc3QgY2hhciAqZGV2bmFtZTsJCS8qKjwg
-dGhlIGRldmljZW5hbWUgZm9yIHRoZSBjYXJkLCBkZWZhdWx0cyB0byBkaXNrJWQgKi8KIAl1bnNp
-Z25lZCB2b2x0YWdlczsKIAl1bnNpZ25lZCBob3N0X2NhcHM7CS8qKjwgSG9zdCdzIGludGVyZmFj
-ZSBjYXBhYmlsaXRpZXMsIHJlZmVyIE1NQ19WRERfKiAqLwogCXVuc2lnbmVkIGZfbWluOwkJLyoq
-PCBob3N0IGludGVyZmFjZSBsb3dlciBsaW1pdCAqLwotLSAKMS44LjQucmMzCgoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Thu, Nov 07, 2013 at 11:04:56AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> Hi,
+> 
+> 	I really do not like it
+> 
+> 	we need to have an API to load firmware same a Linux
+
+The firmware loading mechanism in Linux is driven by the driver
+requesting a firmware. This is appropriate for WiFi drivers which can't
+continue without a firmware. For FPGAs which can be loaded, unloaded, or
+even partially loaded, it's the user that should trigger firmware
+loading, not the driver.
+
+Also, in barebox a user should decide if and when a firmware is loaded.
+We have cases where a single board requires different Firmwares
+depending on bootstrapping. In this case You don't want to have fixed
+firmware names.
+
+So no, the Linux Firmware model is not suitable for barebox (it sucks
+for Linux aswell in many cases).
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
