@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x232.google.com ([2a00:1450:4013:c01::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vej4p-0007tB-O5
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 10:14:08 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  8 Nov 2013 11:13:41 +0100
-Message-Id: <1383905621-29034-1-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20131108005153.GA14892@pengutronix.de>
-References: <20131108005153.GA14892@pengutronix.de>
-MIME-Version: 1.0
+ id 1VelYX-00036t-TY
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 12:52:58 +0000
+Received: by mail-ea0-f178.google.com with SMTP id a10so894525eae.9
+ for <barebox@lists.infradead.org>; Fri, 08 Nov 2013 04:52:33 -0800 (PST)
+Message-ID: <527CDE8B.8000003@gmail.com>
+Date: Fri, 08 Nov 2013 13:52:27 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1383728519.178149099@f98.i.mail.ru>
+ <20131106095727.GJ24559@pengutronix.de>
+In-Reply-To: <20131106095727.GJ24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,80 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] partitions: dos: parse extended partition
-To: barebox@lists.infradead.org
+Subject: Re: dt-bindings status
+To: Sascha Hauer <s.hauer@pengutronix.de>, Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox <barebox@lists.infradead.org>
 
-RE9TIE1CUnMgbWlnaHQgY29udGFpbiBhbiBleHRlbmRlZCBwYXJ0aXRpb24gdGhhdCBob2xkcyBz
-ZXZlcmFsIGxvZ2ljYWwKcGFydGl0aW9ucy4gQWRkIHRoZXNlIHRvIHRoZSBwYXJ0aXRpb25zIG9m
-IHRoZSBibG9jayBkZXZpY2UuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9wYXJ0aXRpb25zL2Rvcy5j
-IHwgNzYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQog
-MSBmaWxlIGNoYW5nZWQsIDc1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
-aXQgYS9jb21tb24vcGFydGl0aW9ucy9kb3MuYyBiL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCmlu
-ZGV4IDY0MzE0YTguLjM3YWRkZmQgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5j
-CisrKyBiL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCkBAIC0xMTYsMTIgKzExNiw2NCBAQCBzdGF0
-aWMgaW50IGRvc19nZXRfZGlza19zaWduYXR1cmUoc3RydWN0IHBhcmFtX2QgKnAsIHZvaWQgKl9w
-cml2KQogCXJldHVybiAwOwogfQogCitzdGF0aWMgdm9pZCBkb3NfZXh0ZW5kZWRfcGFydGl0aW9u
-KHN0cnVjdCBibG9ja19kZXZpY2UgKmJsaywgc3RydWN0IHBhcnRpdGlvbl9kZXNjICpwZCwKKwkJ
-c3RydWN0IHBhcnRpdGlvbiAqcGFydGl0aW9uKQoreworCXVpbnQ4X3QgKmJ1ZiA9IGRtYV9hbGxv
-YyhTRUNUT1JfU0laRSk7CisJdWludDMyX3QgZWJyX3NlY3RvciA9IHBhcnRpdGlvbi0+Zmlyc3Rf
-c2VjOworCXN0cnVjdCBwYXJ0aXRpb25fZW50cnkgKnRhYmxlID0gKHN0cnVjdCBwYXJ0aXRpb25f
-ZW50cnkgKikmYnVmWzB4MWJlXTsKKworCXdoaWxlIChwZC0+dXNlZF9lbnRyaWVzIDwgQVJSQVlf
-U0laRShwZC0+cGFydHMpKSB7CisJCWludCByYywgaTsKKwkJaW50IG4gPSBwZC0+dXNlZF9lbnRy
-aWVzOworCisJCWRldl9kYmcoYmxrLT5kZXYsICJleHBlY3QgRUJSIGluIHNlY3RvciAleFxuIiwg
-ZWJyX3NlY3Rvcik7CisKKwkJcmMgPSBibG9ja19yZWFkKGJsaywgYnVmLCBlYnJfc2VjdG9yLCAx
-KTsKKwkJaWYgKHJjICE9IDApIHsKKwkJCWRldl9lcnIoYmxrLT5kZXYsICJDYW5ub3QgcmVhZCBF
-QlIgcGFydGl0aW9uIHRhYmxlXG4iKTsKKwkJCWdvdG8gb3V0OworCQl9CisKKwkJLyogc2FuaXR5
-IGNoZWNrcyAqLworCQlpZiAoYnVmWzB4MWZlXSAhPSAweDU1IHx8IGJ1ZlsweDFmZl0gIT0gMHhh
-YSkgeworCQkJZGV2X2VycihibGstPmRldiwgInNlY3RvciAleCBkb2Vzbid0IGNvbnRhaW4gYW4g
-RUJSIHNpZ25hdHVyZVxuIiwgZWJyX3NlY3Rvcik7CisJCQlnb3RvIG91dDsKKwkJfQorCisJCWZv
-ciAoaSA9IDB4MWRlOyBpIDwgMHgxZmU7ICsraSkKKwkJCWlmIChidWZbaV0pIHsKKwkJCQlkZXZf
-ZXJyKGJsay0+ZGV2LCAiRUJSJ3MgdGhpcmQgb3IgZm91cnRoIHBhcnRpdGlvbiBub24tZW1wdHlc
-biIpOworCQkJCWdvdG8gb3V0OworCQkJfQorCQkvKiAvc2FuaXR5IGNoZWNrcyAqLworCisJCS8q
-IHRoZSBmaXJzdCBlbnRyeSBkZWZpbmVzIHRoZSBleHRlbmRlZCBwYXJ0aXRpb24gKi8KKwkJcGQt
-PnBhcnRzW25dLmZpcnN0X3NlYyA9IGVicl9zZWN0b3IgKworCQkJZ2V0X3VuYWxpZ25lZF9sZTMy
-KCZ0YWJsZVswXS5wYXJ0aXRpb25fc3RhcnQpOworCQlwZC0+cGFydHNbbl0uc2l6ZSA9IGdldF91
-bmFsaWduZWRfbGUzMigmdGFibGVbMF0ucGFydGl0aW9uX3NpemUpOworCQlwZC0+cGFydHNbbl0u
-ZG9zX3BhcnRpdGlvbl90eXBlID0gdGFibGVbMF0udHlwZTsKKwkJcGQtPnVzZWRfZW50cmllcysr
-OworCisJCS8qIHRoZSBzZWNvbmQgZW50cnkgZGVmaW5lcyB0aGUgc3RhcnQgb2YgdGhlIG5leHQg
-ZWJyIGlmICE9IDAgKi8KKwkJaWYgKGdldF91bmFsaWduZWRfbGUzMigmdGFibGVbMV0ucGFydGl0
-aW9uX3N0YXJ0KSkKKwkJCWVicl9zZWN0b3IgPSBwYXJ0aXRpb24tPmZpcnN0X3NlYyArCisJCQkJ
-Z2V0X3VuYWxpZ25lZF9sZTMyKCZ0YWJsZVsxXS5wYXJ0aXRpb25fc3RhcnQpOworCQllbHNlCisJ
-CQlicmVhazsKKwl9CisKK291dDoKKwlkbWFfZnJlZShidWYpOworCXJldHVybjsKK30KKwogLyoq
-CiAgKiBDaGVjayBpZiBhIERPUyBsaWtlIHBhcnRpdGlvbiBkZXNjcmliZXMgdGhpcyBibG9jayBk
-ZXZpY2UKICAqIEBwYXJhbSBibGsgQmxvY2sgZGV2aWNlIHRvIHJlZ2lzdGVyIHRvCiAgKiBAcGFy
-YW0gcGQgV2hlcmUgdG8gc3RvcmUgdGhlIHBhcnRpdGlvbiBpbmZvcm1hdGlvbgogICoKLSAqIEl0
-IHNlZW1zIGF0IGxlYXN0IG9uIEFSTSB0aGlzIHJvdXRpbmUgY2Fub3QgdXNlIHRlbXAuIHN0YWNr
-IHNwYWNlIGZvciB0aGUKKyAqIEl0IHNlZW1zIGF0IGxlYXN0IG9uIEFSTSB0aGlzIHJvdXRpbmUg
-Y2Fubm90IHVzZSB0ZW1wLiBzdGFjayBzcGFjZSBmb3IgdGhlCiAgKiBzZWN0b3IuIFNvLCBrZWVw
-IHRoZSBtYWxsb2MvZnJlZS4KICAqLwogc3RhdGljIHZvaWQgZG9zX3BhcnRpdGlvbih2b2lkICpi
-dWYsIHN0cnVjdCBibG9ja19kZXZpY2UgKmJsaywKQEAgLTEyOSw2ICsxODEsNyBAQCBzdGF0aWMg
-dm9pZCBkb3NfcGFydGl0aW9uKHZvaWQgKmJ1Ziwgc3RydWN0IGJsb2NrX2RldmljZSAqYmxrLAog
-ewogCXN0cnVjdCBwYXJ0aXRpb25fZW50cnkgKnRhYmxlOwogCXN0cnVjdCBwYXJ0aXRpb24gcGVu
-dHJ5OworCXN0cnVjdCBwYXJ0aXRpb24gKmV4dGVuZGVkX3BhcnRpdGlvbiA9IE5VTEw7CiAJdWlu
-dDhfdCAqYnVmZmVyID0gYnVmOwogCWludCBpOwogCXN0cnVjdCBkaXNrX3NpZ25hdHVyZV9wcml2
-ICpkc3A7CkBAIC0xNTAsMTEgKzIwMywzMiBAQCBzdGF0aWMgdm9pZCBkb3NfcGFydGl0aW9uKHZv
-aWQgKmJ1Ziwgc3RydWN0IGJsb2NrX2RldmljZSAqYmxrLAogCQkJcGQtPnBhcnRzW25dLnNpemUg
-PSBwZW50cnkuc2l6ZTsKIAkJCXBkLT5wYXJ0c1tuXS5kb3NfcGFydGl0aW9uX3R5cGUgPSBwZW50
-cnkuZG9zX3BhcnRpdGlvbl90eXBlOwogCQkJcGQtPnVzZWRfZW50cmllcysrOworCQkJLyoKKwkJ
-CSAqIFBhcnRpdGlvbnMgb2YgdHlwZSAweDA1IGFuZCAweDBmIChhbmQgc29tZSBtb3JlKQorCQkJ
-ICogY29udGFpbiBleHRlbmRlZCBwYXJ0aXRpb25zLiBPbmx5IGNoZWNrIGZvciB0eXBlIDB4MGYK
-KwkJCSAqIGhlcmUgYXMgdGhpcyBpcyB0aGUgZWFzaWVzdCB0byBwYXJzZSBhbmQgY29tbW9uCisJ
-CQkgKiBlbm91Z2guCisJCQkgKi8KKwkJCWlmIChwZW50cnkuZG9zX3BhcnRpdGlvbl90eXBlID09
-IDB4MGYpIHsKKwkJCQlpZiAoIWV4dGVuZGVkX3BhcnRpdGlvbikKKwkJCQkJZXh0ZW5kZWRfcGFy
-dGl0aW9uID0gJnBkLT5wYXJ0c1tuXTsKKwkJCQllbHNlCisJCQkJCS8qCisJCQkJCSAqIEFuIERP
-UyBNQlIgbXVzdCBvbmx5IGNvbnRhaW4gYSBzaW5nbGUKKwkJCQkJICogZXh0ZW5kZWQgcGFydGl0
-aW9uLiBKdXN0IGlnbm9yZSBhbGwKKwkJCQkJICogYnV0IHRoZSBmaXJzdC4KKwkJCQkJICovCisJ
-CQkJCWRldl93YXJuKGJsay0+ZGV2LCAiU2tpcHBpbmcgYWRkaXRpb25hbCBleHRlbmRlZCBwYXJ0
-aXRpb25cbiIpOworCQkJfQorCiAJCX0gZWxzZSB7CiAJCQlkZXZfZGJnKGJsay0+ZGV2LCAiU2tp
-cHBpbmcgZW1wdHkgcGFydGl0aW9uICVkXG4iLCBpKTsKIAkJfQogCX0KIAorCWlmIChleHRlbmRl
-ZF9wYXJ0aXRpb24pCisJCWRvc19leHRlbmRlZF9wYXJ0aXRpb24oYmxrLCBwZCwgZXh0ZW5kZWRf
-cGFydGl0aW9uKTsKKwogCWRzcCA9IHh6YWxsb2Moc2l6ZW9mKCpkc3ApKTsKIAlkc3AtPmJsayA9
-IGJsazsKIAotLSAKMS44LjQucmMzCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
-YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
-eAo=
+On 11/06/13 10:57, Sascha Hauer wrote:
+> On Wed, Nov 06, 2013 at 01:01:59PM +0400, Alexander Shiyan wrote:
+>> Hello.
+>>
+>> DTS files from the current kernel require "include/dt-bindings".
+>> Are there plans to add these parts of the kernel tree in the barebox?
+>> Thanks.
+>
+> We should add this for barebox aswell once we need it. Right now I
+> haven't missed it. If you need it feel free to add it.
+
+I miss it! :)
+
+I haven't found a way to tell dtc's cpp that those includes are in
+include/dt-bindings, but I didn't look very hard.
+
+Currently, I have them in arch/arm/dts/dt-bindings which works but
+is not the right place, for sure.
+
+I'd be happy if Alexander comes up with a patch.
+
+Sebastian
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
