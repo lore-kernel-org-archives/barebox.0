@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeqYm-000249-1E
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:13:35 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Nov 2013 22:12:57 +0400
-Message-Id: <1383934379-27100-6-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
-References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Veqpo-0002Rk-IB
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:31:10 +0000
+Received: from localhost (AToulouse-651-1-90-186.w90-16.abo.wanadoo.fr
+ [90.16.209.186])
+ by mail.free-electrons.com (Postfix) with ESMTPSA id 74FAB7CA
+ for <barebox@lists.infradead.org>; Fri,  8 Nov 2013 19:30:39 +0100 (CET)
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri,  8 Nov 2013 19:30:37 +0100
+Message-Id: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/6] net: netx: Fix signed/unsigned arguments for printf
+Subject: [PATCH 0/2] x86 minor fixes and questions
 To: barebox@lists.infradead.org
 
-"%d" in format string requires a signed integer.
+Hello,
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/net/netx_eth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Here are two minor fixes for the x86 support. The first patch avoids
+linking problems on recent gcc versions, and the second one fixes the
+documentation.
 
-diff --git a/drivers/net/netx_eth.c b/drivers/net/netx_eth.c
-index 9ca9bce..ee3ed23 100644
---- a/drivers/net/netx_eth.c
-+++ b/drivers/net/netx_eth.c
-@@ -86,7 +86,7 @@ static int netx_eth_send (struct eth_device *edev,
- #endif
- 	val = PFIFO_REG( PFIFO_BASE(CON_FIFO_PORT_LO(xcno)) );
- 	if((val & FIFO_PTR_ERROR_MASK) & 0x8)
--		printf("error sending frame: %d\n",val);
-+		printf("error sending frame: %u\n", val);
- 
- 	return 0;
- }
+Also, I've tested the x86 support under Qemu, it starts fine. Thanks
+to the bios disk driver, it detects one hard disk drive. However,
+since the driver doesn't set num_blocks, the disk size is zero, and no
+partition can be detected. Is this bios disk driver supposed to work
+to read the entire hard drive, access a filesystem and load the kernel
+image, or is the x86 support generally too limited for this at the
+moment?
+
+Thanks,
+
+Thomas
+
+Thomas Petazzoni (2):
+  scripts/setupmbr: fix documentation
+  arch/x86: fix link with recent gcc
+
+ arch/x86/Makefile           | 3 ++-
+ scripts/setupmbr/setupmbr.c | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
 -- 
-1.8.1.5
+1.8.1.2
 
 
 _______________________________________________
