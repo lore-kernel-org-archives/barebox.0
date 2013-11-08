@@ -1,12 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeZlu-0006om-5p
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:17:59 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  8 Nov 2013 01:17:26 +0100
-Message-Id: <1383869846-26033-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1VeaHr-0007Qi-5g
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:51:00 +0000
+Date: Fri, 8 Nov 2013 01:50:37 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20131108005037.GZ14892@pengutronix.de>
+References: <1383869791-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1383869791-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,80 +18,81 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] partitions: dos: parse extended partition
+Subject: Re: [PATCH] partitions: dos: improve guess of disk size
 To: barebox@lists.infradead.org
 Cc: jbe@pengutronix.de
 
-RE9TIE1CUnMgbWlnaHQgY29udGFpbiBhbiBleHRlbmRlZCBwYXJ0aXRpb24gdGhhdCBob2xkcyBz
-ZXZlcmFsIGxvZ2ljYWwKcGFydGl0aW9ucy4gQWRkIHRoZXNlIHRvIHRoZSBwYXJ0aXRpb25zIG9m
-IHRoZSBibG9jayBkZXZpY2UuCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGNvbW1vbi9wYXJ0aXRpb25zL2Rvcy5j
-IHwgNzYgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQog
-MSBmaWxlIGNoYW5nZWQsIDc1IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
-aXQgYS9jb21tb24vcGFydGl0aW9ucy9kb3MuYyBiL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCmlu
-ZGV4IDFkODIxM2IuLmY5MDdhYmMgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5j
-CisrKyBiL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCkBAIC0xMTYsMTIgKzExNiw2NCBAQCBzdGF0
-aWMgaW50IGRvc19nZXRfZGlza19zaWduYXR1cmUoc3RydWN0IHBhcmFtX2QgKnAsIHZvaWQgKl9w
-cml2KQogCXJldHVybiAwOwogfQogCitzdGF0aWMgdm9pZCBkb3NfZXh0ZW5kZWRfcGFydGl0aW9u
-KHN0cnVjdCBibG9ja19kZXZpY2UgKmJsaywgc3RydWN0IHBhcnRpdGlvbl9kZXNjICpwZCwKKwkJ
-c3RydWN0IHBhcnRpdGlvbiAqcGFydGl0aW9uKQoreworCXVpbnQ4X3QgKmJ1ZiA9IGRtYV9hbGxv
-YyhTRUNUT1JfU0laRSk7CisJdWludDMyX3QgZWJyX3NlY3RvciA9IHBhcnRpdGlvbi0+Zmlyc3Rf
-c2VjOworCXN0cnVjdCBwYXJ0aXRpb25fZW50cnkgKnRhYmxlID0gKHN0cnVjdCBwYXJ0aXRpb25f
-ZW50cnkgKikmYnVmWzB4MWJlXTsKKworCXdoaWxlIChwZC0+dXNlZF9lbnRyaWVzIDwgQVJSQVlf
-U0laRShwZC0+cGFydHMpKSB7CisJCWludCByYywgaTsKKwkJaW50IG4gPSBwZC0+dXNlZF9lbnRy
-aWVzOworCisJCWRldl9kYmcoYmxrLT5kZXYsICJleHBlY3QgRUJSIGluIHNlY3RvciAleFxuIiwg
-ZWJyX3NlY3Rvcik7CisKKwkJcmMgPSBibG9ja19yZWFkKGJsaywgYnVmLCBlYnJfc2VjdG9yLCAx
-KTsKKwkJaWYgKHJjICE9IDApIHsKKwkJCWRldl9lcnIoYmxrLT5kZXYsICJDYW5ub3QgcmVhZCBF
-QlIgcGFydGl0aW9uIHRhYmxlXG4iKTsKKwkJCWdvdG8gb3V0OworCQl9CisKKwkJLyogc2FuaXR5
-IGNoZWNrcyAqLworCQlpZiAoYnVmWzB4MWZlXSAhPSAweDU1IHx8IGJ1ZlsweDFmZl0gIT0gMHhh
-YSkgeworCQkJZGV2X2VycihibGstPmRldiwgInNlY3RvciAleCBkb2Vzbid0IGNvbnRhaW4gYW4g
-RUJSIHNpZ25hdHVyZVxuIik7CisJCQlnb3RvIG91dDsKKwkJfQorCisJCWZvciAoaSA9IDB4MWRl
-OyBpIDwgMHgxZmU7ICsraSkKKwkJCWlmIChidWZbaV0pIHsKKwkJCQlkZXZfZXJyKGJsay0+ZGV2
-LCAiRUJSJ3MgdGhpcmQgb3IgZm91cnRoIHBhcnRpdGlvbiBub24tZW1wdHlcbiIpOworCQkJCWdv
-dG8gb3V0OworCQkJfQorCQkvKiAvc2FuaXR5IGNoZWNrcyAqLworCisJCS8qIHRoZSBmaXJzdCBl
-bnRyeSBkZWZpbmVzIHRoZSBleHRlbmRlZCBwYXJ0aXRpb24gKi8KKwkJcGQtPnBhcnRzW25dLmZp
-cnN0X3NlYyA9IGVicl9zZWN0b3IgKworCQkJZ2V0X3VuYWxpZ25lZF9sZTMyKCZ0YWJsZVswXS5w
-YXJ0aXRpb25fc3RhcnQpOworCQlwZC0+cGFydHNbbl0uc2l6ZSA9IGdldF91bmFsaWduZWRfbGUz
-MigmdGFibGVbMF0ucGFydGl0aW9uX3NpemUpOworCQlwZC0+cGFydHNbbl0uZG9zX3BhcnRpdGlv
-bl90eXBlID0gdGFibGVbMF0udHlwZTsKKwkJcGQtPnVzZWRfZW50cmllcysrOworCisJCS8qIHRo
-ZSBzZWNvbmQgZW50cnkgZGVmaW5lcyB0aGUgc3RhcnQgb2YgdGhlIG5leHQgZWJyIGlmICE9IDAg
-Ki8KKwkJaWYgKGdldF91bmFsaWduZWRfbGUzMigmdGFibGVbMV0ucGFydGl0aW9uX3N0YXJ0KSkK
-KwkJCWVicl9zZWN0b3IgPSBwYXJ0aXRpb24tPmZpcnN0X3NlYyArCisJCQkJZ2V0X3VuYWxpZ25l
-ZF9sZTMyKCZ0YWJsZVsxXS5wYXJ0aXRpb25fc3RhcnQpOworCQllbHNlCisJCQlicmVhazsKKwl9
-CisKK291dDoKKwlkbWFfZnJlZShidWYpOworCXJldHVybjsKK30KKwogLyoqCiAgKiBDaGVjayBp
-ZiBhIERPUyBsaWtlIHBhcnRpdGlvbiBkZXNjcmliZXMgdGhpcyBibG9jayBkZXZpY2UKICAqIEBw
-YXJhbSBibGsgQmxvY2sgZGV2aWNlIHRvIHJlZ2lzdGVyIHRvCiAgKiBAcGFyYW0gcGQgV2hlcmUg
-dG8gc3RvcmUgdGhlIHBhcnRpdGlvbiBpbmZvcm1hdGlvbgogICoKLSAqIEl0IHNlZW1zIGF0IGxl
-YXN0IG9uIEFSTSB0aGlzIHJvdXRpbmUgY2Fub3QgdXNlIHRlbXAuIHN0YWNrIHNwYWNlIGZvciB0
-aGUKKyAqIEl0IHNlZW1zIGF0IGxlYXN0IG9uIEFSTSB0aGlzIHJvdXRpbmUgY2Fubm90IHVzZSB0
-ZW1wLiBzdGFjayBzcGFjZSBmb3IgdGhlCiAgKiBzZWN0b3IuIFNvLCBrZWVwIHRoZSBtYWxsb2Mv
-ZnJlZS4KICAqLwogc3RhdGljIHZvaWQgZG9zX3BhcnRpdGlvbih2b2lkICpidWYsIHN0cnVjdCBi
-bG9ja19kZXZpY2UgKmJsaywKQEAgLTEyOSw2ICsxODEsNyBAQCBzdGF0aWMgdm9pZCBkb3NfcGFy
-dGl0aW9uKHZvaWQgKmJ1Ziwgc3RydWN0IGJsb2NrX2RldmljZSAqYmxrLAogewogCXN0cnVjdCBw
-YXJ0aXRpb25fZW50cnkgKnRhYmxlOwogCXN0cnVjdCBwYXJ0aXRpb24gcGVudHJ5OworCXN0cnVj
-dCBwYXJ0aXRpb24gKmV4dGVuZGVkX3BhcnRpdGlvbiA9IE5VTEw7CiAJdWludDhfdCAqYnVmZmVy
-ID0gYnVmOwogCWludCBpOwogCXN0cnVjdCBkaXNrX3NpZ25hdHVyZV9wcml2ICpkc3A7CkBAIC0x
-NTAsMTEgKzIwMywzMiBAQCBzdGF0aWMgdm9pZCBkb3NfcGFydGl0aW9uKHZvaWQgKmJ1Ziwgc3Ry
-dWN0IGJsb2NrX2RldmljZSAqYmxrLAogCQkJcGQtPnBhcnRzW25dLnNpemUgPSBwZW50cnkuc2l6
-ZTsKIAkJCXBkLT5wYXJ0c1tuXS5kb3NfcGFydGl0aW9uX3R5cGUgPSBwZW50cnkuZG9zX3BhcnRp
-dGlvbl90eXBlOwogCQkJcGQtPnVzZWRfZW50cmllcysrOworCQkJLyoKKwkJCSAqIFBhcnRpdGlv
-bnMgb2YgdHlwZSAweDA1IGFuZCAweDBmIChhbmQgc29tZSBtb3JlKQorCQkJICogY29udGFpbiBl
-eHRlbmRlZCBwYXJ0aXRpb25zLiBPbmx5IGNoZWNrIGZvciB0eXBlIDB4MGYKKwkJCSAqIGhlcmUg
-YXMgdGhpcyBpcyB0aGUgZWFzaWVzdCB0byBwYXJzZSBhbmQgY29tbW9uCisJCQkgKiBlbm91Z2gu
-CisJCQkgKi8KKwkJCWlmIChwZW50cnkuZG9zX3BhcnRpdGlvbl90eXBlID09IDB4MGYpIHsKKwkJ
-CQlpZiAoIWV4dGVuZGVkX3BhcnRpdGlvbikKKwkJCQkJZXh0ZW5kZWRfcGFydGl0aW9uID0gJnBk
-LT5wYXJ0c1tuXTsKKwkJCQllbHNlCisJCQkJCS8qCisJCQkJCSAqIEFuIERPUyBNQlIgbXVzdCBv
-bmx5IGNvbnRhaW4gYSBzaW5nbGUKKwkJCQkJICogZXh0ZW5kZWQgcGFydGl0aW9uLiBKdXN0IGln
-bm9yZSBhbGwKKwkJCQkJICogYnV0IHRoZSBmaXJzdC4KKwkJCQkJICovCisJCQkJCWRldl93YXJu
-KGJsay0+ZGV2LCAiU2tpcHBpbmcgYWRkaXRpb25hbCBleHRlbmRlZCBwYXJ0aXRpb25cbiIpOwor
-CQkJfQorCiAJCX0gZWxzZSB7CiAJCQlkZXZfZGJnKGJsay0+ZGV2LCAiU2tpcHBpbmcgZW1wdHkg
-cGFydGl0aW9uICVkXG4iLCBpKTsKIAkJfQogCX0KIAorCWlmIChmaXJzdF9leHRlbmRlZF9wYXJ0
-aXRpb24pCisJCWRvc19leHRlbmRlZF9wYXJ0aXRpb24oYmxrLCBwZCwgZXh0ZW5kZWRfcGFydGl0
-aW9uKTsKKwogCWRzcCA9IHh6YWxsb2Moc2l6ZW9mKCpkc3ApKTsKIAlkc3AtPmJsayA9IGJsazsK
-IAotLSAKMS44LjQucmMzCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Fri, Nov 08, 2013 at 01:16:31AM +0100, Uwe Kleine-K=F6nig wrote:
+> The code used to ineffectively take the end of the last partition as guess
+> for the disk size. Better use the end of the partition that has its end
+> rearmost.
+> =
+
+> Also return an unsigned type instead of int as the result is always
+> non-negative.
+> =
+
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+> =
+
+> note this is only compile tested.
+... and the introduced warning ignored. I really shouldn't send patches
+out that late ...
+
+see below
+> --- a/common/partitions/dos.c
+> +++ b/common/partitions/dos.c
+> @@ -27,19 +27,23 @@
+>   * @param table partition table
+>   * @return sector count
+>   */
+> -static int disk_guess_size(struct device_d *dev, struct partition_entry =
+*table)
+> +static uint64_t disk_guess_size(struct device_d *dev,
+> +		struct partition_entry *table)
+>  {
+>  	uint64_t size =3D 0;
+>  	int i;
+>  =
+
+>  	for (i =3D 0; i < 4; i++) {
+> -		if (table[i].partition_start !=3D 0) {
+> -			size +=3D get_unaligned_le32(&table[i].partition_start) - size;
+> -			size +=3D get_unaligned_le32(&table[i].partition_size);
+> +		if (get_unaligned_le32(table[i].partition_start) !=3D 0) {
+There is an & missing before table.
+
+Best regards
+Uwe
+
+> +			uint64_t part_end =3D get_unaligned_le32(&table[i].partition_start) +
+> +				get_unaligned_le32(&table[i].partition_size);
+> +
+> +			if (size < part_end)
+> +				size =3D part_end;
+>  		}
+>  	}
+>  =
+
+> -	return (int)size;
+> +	return size;
+>  }
+>  =
+
+>  static void *read_mbr(struct block_device *blk)
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
