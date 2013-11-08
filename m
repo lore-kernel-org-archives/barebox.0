@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeZhg-0006ho-JZ
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:13:37 +0000
+ id 1VeZjL-0006km-0r
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:15:19 +0000
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  8 Nov 2013 01:13:12 +0100
-Message-Id: <1383869592-25268-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Date: Fri,  8 Nov 2013 01:14:55 +0100
+Message-Id: <1383869695-25566-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -19,22 +19,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] blspec: fix documention of blspec_scan_directory's return code
+Subject: [PATCH] partitions: dos: don't open code get_unaligned_le32
 To: barebox@lists.infradead.org
 
 U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBjb21tb24vYmxzcGVjLmMgfCAzICstLQogMSBmaWxlIGNoYW5nZWQsIDEg
-aW5zZXJ0aW9uKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2NvbW1vbi9ibHNwZWMu
-YyBiL2NvbW1vbi9ibHNwZWMuYwppbmRleCAwOTU4MDliLi4yMjQ0ZDVhIDEwMDY0NAotLS0gYS9j
-b21tb24vYmxzcGVjLmMKKysrIGIvY29tbW9uL2Jsc3BlYy5jCkBAIC0xMzUsOCArMTM1LDcgQEAg
-c3RhdGljIGludCBibHNwZWNfaGF2ZV9lbnRyeShzdHJ1Y3QgYmxzcGVjICpibHNwZWMsIGNvbnN0
-IGNoYXIgKnBhdGgpCiAgKgogICogR2l2ZW4gYSByb290IHBhdGggY29sbGVjdHMgYWxsIGJsc3Bl
-YyBlbnRyaWVzIGZvdW5kIHVuZGVyIC9ibHNwZWMvZW50cmllcy8uCiAgKgotICogcmV0dXJucyAw
-IGlmIGF0IGxlYXN0IG9uZSBlbnRyeSBjb3VsZCBiZSBzdWNjZXNzZnVsbHkgbG9hZGVkLCBuZWdh
-dGl2ZQotICogZXJyb3IgdmFsdWUgb3RoZXJ3aXNlLgorICogcmV0dXJucyB0aGUgbnVtYmVyIG9m
-IGVudHJpZXMgZm91bmQgb3IgYSBuZWdhdGl2ZSBlcnJvciB2YWx1ZSBvdGhlcndpc2UuCiAgKi8K
-IGludCBibHNwZWNfc2Nhbl9kaXJlY3Rvcnkoc3RydWN0IGJsc3BlYyAqYmxzcGVjLCBjb25zdCBj
-aGFyICpyb290KQogewotLSAKMS44LjQucmMzCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5p
-bmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8v
-YmFyZWJveAo=
+b25peC5kZT4KLS0tCkhlbGxvLAoKbm90ZSB0aGlzIGlzIG9ubHkgY29tcGlsZSB0ZXN0ZWQuCgpC
+ZXN0IHJlZ2FyZHMKVXdlCgogY29tbW9uL3BhcnRpdGlvbnMvZG9zLmMgfCAyICstCiAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9jb21t
+b24vcGFydGl0aW9ucy9kb3MuYyBiL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCmluZGV4IDMxYjFl
+ZDYuLjlhZmQxMjIgMTAwNjQ0Ci0tLSBhL2NvbW1vbi9wYXJ0aXRpb25zL2Rvcy5jCisrKyBiL2Nv
+bW1vbi9wYXJ0aXRpb25zL2Rvcy5jCkBAIC0xMDUsNyArMTA1LDcgQEAgc3RhdGljIGludCBkb3Nf
+Z2V0X2Rpc2tfc2lnbmF0dXJlKHN0cnVjdCBwYXJhbV9kICpwLCB2b2lkICpfcHJpdikKIAlpZiAo
+IWJ1ZikKIAkJcmV0dXJuIC1FSU87CiAKLQlwcml2LT5zaWduYXR1cmUgPSBsZTMyX3RvX2NwdXAo
+KF9fbGUzMiAqKShidWYgKyAweDFiOCkpOworCXByaXYtPnNpZ25hdHVyZSA9IGdldF91bmFsaWdu
+ZWRfbGUzMihidWYgKyAweDFiOCk7CiAKIAlmcmVlKGJ1Zik7CiAKLS0gCjEuOC40LnJjMwoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
