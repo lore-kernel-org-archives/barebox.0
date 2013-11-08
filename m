@@ -1,20 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og105.obsmtp.com ([64.18.0.180])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VbyZx-0001Rt-VA
- for barebox@lists.infradead.org; Thu, 31 Oct 2013 20:10:54 +0000
-Received: from [3.26.68.194] (corgarff.edi.geip.ge.com [3.26.68.194])
- by selma.edi.geip.ge.com (Postfix) with ESMTP id 4784EE1680
- for <barebox@lists.infradead.org>; Thu, 31 Oct 2013 20:10:28 +0000 (GMT)
-Message-ID: <5272B934.7080508@ge.com>
-Date: Thu, 31 Oct 2013 20:10:28 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
+Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vedhd-0002Up-2P
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 04:29:50 +0000
+Received: by mail-ea0-f180.google.com with SMTP id b11so786225eae.39
+ for <barebox@lists.infradead.org>; Thu, 07 Nov 2013 20:29:25 -0800 (PST)
+Date: Fri, 8 Nov 2013 05:36:19 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131108043618.GA5079@x61s.Speedport_W_921V_1_24_000>
+References: <1383869791-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20131108005037.GZ14892@pengutronix.de>
 MIME-Version: 1.0
-References: <1383128571-8250-1-git-send-email-renaud.barbier@ge.com>
- <1383128571-8250-5-git-send-email-renaud.barbier@ge.com>
- <20131030113452.GG26639@ns203013.ovh.net>
- <20131031074833.GI24559@pengutronix.de>
-In-Reply-To: <20131031074833.GI24559@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <20131108005037.GZ14892@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +21,26 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/5] ppc: DA923RC: add board support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] partitions: dos: improve guess of disk size
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org, jbe@pengutronix.de
 
-On 31/10/2013 07:48, Sascha Hauer wrote:
->>> +
->>> > > +	fsl_i2c_init(0, 400000, 0x7f);
->>> > > +	/* Read board id from offset 0. */
->>> > > +	ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
->>> > > +	fsl_i2c_stop(i2c);
->>> > > +
->>> > > +	if (ret == -1) {
->>> > > +		/* Enable I2C bus on GBX460. */
->>> > > +		out_be16(IOMEM(0xfc010020), 0);
->>> > > +		ret = fsl_i2c_read(i2c, 0x3b, 0, 1, &id, sizeof(uint8_t));
->>> > > +		fsl_i2c_stop(i2c);
->> > why you do not simly use the standdard i2c AP?
-> I think because the machine is still running from SRAM or flash here and
-> I2C is needed to read out the SPD EEPROM for setting up SDRAM.
-> 
-
-In order to use the I2C API would I not need to register my i2c bus
-first? This only happens later in the initcall list with device-initcall.
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBOb3YgMDgsIDIwMTMgYXQgMDE6NTA6MzdBTSArMDEwMCwgVXdlIEtsZWluZS1Lw7Zu
+aWcgd3JvdGU6Cj4gT24gRnJpLCBOb3YgMDgsIDIwMTMgYXQgMDE6MTY6MzFBTSArMDEwMCwgVXdl
+IEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gPiBUaGUgY29kZSB1c2VkIHRvIGluZWZmZWN0aXZlbHkg
+dGFrZSB0aGUgZW5kIG9mIHRoZSBsYXN0IHBhcnRpdGlvbiBhcyBndWVzcwo+ID4gZm9yIHRoZSBk
+aXNrIHNpemUuIEJldHRlciB1c2UgdGhlIGVuZCBvZiB0aGUgcGFydGl0aW9uIHRoYXQgaGFzIGl0
+cyBlbmQKPiA+IHJlYXJtb3N0Lgo+ID4gCj4gPiBBbHNvIHJldHVybiBhbiB1bnNpZ25lZCB0eXBl
+IGluc3RlYWQgb2YgaW50IGFzIHRoZSByZXN1bHQgaXMgYWx3YXlzCj4gPiBub24tbmVnYXRpdmUu
+Cj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1LmtsZWluZS1rb2Vu
+aWdAcGVuZ3V0cm9uaXguZGU+Cj4gPiAtLS0KPiA+IEhlbGxvLAo+ID4gCj4gPiBub3RlIHRoaXMg
+aXMgb25seSBjb21waWxlIHRlc3RlZC4KPiAuLi4gYW5kIHRoZSBpbnRyb2R1Y2VkIHdhcm5pbmcg
+aWdub3JlZC4gSSByZWFsbHkgc2hvdWxkbid0IHNlbmQgcGF0Y2hlcwo+IG91dCB0aGF0IGxhdGUg
+Li4uCj4gCmhlaGUsIEkga25vdyB3aGF0IHlvdSBtZWFuLiA6LSkKCi0gQWxleAoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
