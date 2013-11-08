@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeqYm-00024B-1C
+ id 1VeqYm-000247-1L
  for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:13:37 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Nov 2013 22:12:59 +0400
-Message-Id: <1383934379-27100-8-git-send-email-shc_work@mail.ru>
+Date: Fri,  8 Nov 2013 22:12:55 +0400
+Message-Id: <1383934379-27100-4-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,57 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] imx-usb-loader: Fix signed/unsigned arguments for printf
+Subject: [PATCH 2/6] ARM: mxs: Fix signed/unsigned arguments for printf
 To: barebox@lists.infradead.org
 
-"%i" in format string requires a signed integer.
 "%d" in format string requires a signed integer.
+"%u" in format string requires a unsigned integer.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- scripts/imx/imx-usb-loader.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-mxs/bcb.c       | 8 ++++----
+ arch/arm/mach-mxs/iomux-imx.c | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 7ccfc99..a2da579 100644
---- a/scripts/imx/imx-usb-loader.c
-+++ b/scripts/imx/imx-usb-loader.c
-@@ -319,7 +319,7 @@ static int transfer(struct libusb_device_handle *h, int report, unsigned char *p
- 						memcpy(p, &tmp[1], *last_trans);
- 					}
- 				} else {
--					printf("Unexpected report %i err=%i, cnt=%i, last_trans=%i, %02x %02x %02x %02x\n",
-+					printf("Unexpected report %i err=%i, cnt=%u, last_trans=%i, %02x %02x %02x %02x\n",
- 						tmp[0], err, cnt, *last_trans, tmp[0], tmp[1], tmp[2], tmp[3]);
- 					err = 0;
- 				}
-@@ -468,7 +468,7 @@ static int read_memory(struct libusb_device_handle *h, struct usb_id *p_id,
- 		tmp[0] = tmp[1] = tmp[2] = tmp[3] = 0;
- 		err = transfer(h, 4, tmp, 64, &last_trans, p_id);
- 		if (err) {
--			printf("r4 in err=%i, last_trans=%i  %02x %02x %02x %02x cnt=%d rem=%d\n",
-+			printf("r4 in err=%i, last_trans=%i  %02x %02x %02x %02x cnt=%u rem=%d\n",
- 					err, last_trans, tmp[0], tmp[1], tmp[2], tmp[3], cnt, rem);
- 			break;
+diff --git a/arch/arm/mach-mxs/bcb.c b/arch/arm/mach-mxs/bcb.c
+index b5d793e..a7f4ba9 100644
+--- a/arch/arm/mach-mxs/bcb.c
++++ b/arch/arm/mach-mxs/bcb.c
+@@ -179,7 +179,7 @@ static int calc_bb_offset(struct mtd_info *mtd, struct mx28_fcb *fcb)
+ 	bb_mark_chunk = bb_mark_offset / chunk_total_size;
+ 	bb_mark_chunk_offs = bb_mark_offset - (bb_mark_chunk * chunk_total_size);
+ 	if (bb_mark_chunk_offs > chunk_data_size) {
+-		printf("Unsupported ECC layout; BB mark resides in ECC data: %u\n",
++		printf("Unsupported ECC layout; BB mark resides in ECC data: %i\n",
+ 			bb_mark_chunk_offs);
+ 		return -EINVAL;
+ 	}
+@@ -267,12 +267,12 @@ static int find_fcb(struct mtd_info *mtd, void *ref, int page)
+ 	chip->cmdfunc(mtd, NAND_CMD_READ0, 0x00, page);
+ 	ret = chip->ecc.read_page_raw(mtd, chip, buf, 1, page);
+ 	if (ret) {
+-		printf("Failed to read FCB from page %u: %d\n", page, ret);
++		printf("Failed to read FCB from page %i: %d\n", page, ret);
+ 		return ret;
+ 	}
+ 	chip->select_chip(mtd, -1);
+ 	if (memcmp(buf, ref, mtd->writesize) == 0) {
+-		printf("%s: Found FCB in page %u (%08x)\n", __func__,
++		printf("%s: Found FCB in page %i (%08x)\n", __func__,
+ 			page, page * mtd->writesize);
+ 		ret = 1;
+ 	}
+@@ -376,7 +376,7 @@ int update_bcb(int argc, char *argv[])
+ 
+ 		ret = write_fcb(mtd, buf, block);
+ 		if (ret) {
+-			printf("Failed to write FCB to block %u\n", block);
++			printf("Failed to write FCB to block %i\n", block);
+ 			return ret;
  		}
-@@ -476,7 +476,7 @@ static int read_memory(struct libusb_device_handle *h, struct usb_id *p_id,
- 			if ((last_trans == 64) && (cnt == rem)) {
- 				/* Last transfer is expected to be too large for HID */
- 			} else {
--				printf("err: %02x %02x %02x %02x cnt=%d rem=%d last_trans=%i\n",
-+				printf("err: %02x %02x %02x %02x cnt=%u rem=%d last_trans=%i\n",
- 						tmp[0], tmp[1], tmp[2], tmp[3], cnt, rem, last_trans);
- 			}
- 			last_trans = rem;
-@@ -1240,7 +1240,7 @@ static int do_irom_download(struct libusb_device_handle *h, struct usb_id *p_id,
- 		}
+ 
+diff --git a/arch/arm/mach-mxs/iomux-imx.c b/arch/arm/mach-mxs/iomux-imx.c
+index b8b69b3..24295c5 100644
+--- a/arch/arm/mach-mxs/iomux-imx.c
++++ b/arch/arm/mach-mxs/iomux-imx.c
+@@ -99,7 +99,7 @@ void imx_gpio_mode(uint32_t m)
+ 
+ 	/* some pins are disabled when configured for GPIO */
+ 	if ((gpio_pin > MAX_GPIO_NO) && (GET_FUNC(m) == IS_GPIO)) {
+-		printf("Cannot configure pad %d to GPIO\n", gpio_pin);
++		printf("Cannot configure pad %u to GPIO\n", gpio_pin);
+ 		return;
  	}
  
--	printf("loading binary file(%s) to %08x, skip=0x%x, fsize=%d type=%d...\n",
-+	printf("loading binary file(%s) to %08x, skip=0x%x, fsize=%u type=%d...\n",
- 			curr->filename, dladdr, skip, fsize, type);
- 
- 	ret = load_file(h, p_id, p, cnt, buf, BUF_SIZE,
 -- 
 1.8.1.5
 
