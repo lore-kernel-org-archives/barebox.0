@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
+Received: from smtp41.i.mail.ru ([94.100.177.101])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeqYm-00024A-1J
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:13:34 +0000
+ id 1VesGs-0004R8-44
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 20:03:11 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Fri,  8 Nov 2013 22:12:58 +0400
-Message-Id: <1383934379-27100-7-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
-References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+Date: Sat,  9 Nov 2013 00:02:35 +0400
+Message-Id: <1383940956-30602-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] gui: Fix signed/unsigned arguments for printf
+Subject: [PATCH 1/2] scripts: Add fix_size & kernel-install to .gitignore
 To: barebox@lists.infradead.org
 
-"%u" in format string requires a unsigned integer.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- lib/gui/png_pico.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/.gitignore | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/gui/png_pico.c b/lib/gui/png_pico.c
-index 393a732..256db35 100644
---- a/lib/gui/png_pico.c
-+++ b/lib/gui/png_pico.c
-@@ -57,7 +57,7 @@ struct image *png_open(char *inbuf, int insize)
- 	png_info = PNG_decode(inbuf, insize);
- 
- 	if(PNG_error) {
--		printf("error %u:\n", PNG_error);
-+		printf("error %i:\n", PNG_error);
- 		ret = -EINVAL;
- 		goto err;
- 	}
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index b88f8d8..24f6cd9 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -1,7 +1,9 @@
+ bareboxenv
+ bin2c
++fix_size
+ gen_netx_image
+ kallsyms
++kernel-install
+ kwbimage
+ kwboot
+ mk-am35xx-spi-image
 -- 
 1.8.1.5
 
