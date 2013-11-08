@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo6.mail-out.ovh.net ([178.32.124.17]
- helo=mo6.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeS2d-0003X6-35
- for barebox@lists.infradead.org; Thu, 07 Nov 2013 16:02:43 +0000
-Received: from mail615.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 450C5FFA077
- for <barebox@lists.infradead.org>; Thu,  7 Nov 2013 17:03:11 +0100 (CET)
-Date: Thu, 7 Nov 2013 17:04:24 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131107160424.GL26639@ns203013.ovh.net>
-References: <1383821462-29348-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VeZgf-0006gk-DG
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:12:34 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  8 Nov 2013 01:11:57 +0100
+Message-Id: <1383869517-25032-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20131107160424.GL26639@ns203013.ovh.net>
+References: <20131107160424.GL26639@ns203013.ovh.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1383821462-29348-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,67 +17,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: mxs: support overwriting the device name via
- platform data
-To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mci: mxs: support overwriting the device name via platform
+ data
+To: barebox@lists.infradead.org
 
-On 11:51 Thu 07 Nov     , Uwe Kleine-K??nig wrote:
-> The current implementation of the bootloader specification depends on the
-> hardware name and the name of the device in /dev to match. As the default
-> hardware name is mciX and the device name is diskY the bootloader spec
-> cannot be used as is.
-> =
-
-> This patch implements a way to overwrite the device name similar to what =
-is
-> possible for the imx-esdhc driver.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
->  arch/arm/mach-mxs/include/mach/mci.h | 1 +
->  drivers/mci/mxs.c                    | 3 +++
->  include/mci.h                        | 2 +-
->  3 files changed, 5 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/arch/arm/mach-mxs/include/mach/mci.h b/arch/arm/mach-mxs/inc=
-lude/mach/mci.h
-> index 4faab37..c47c24c 100644
-> --- a/arch/arm/mach-mxs/include/mach/mci.h
-> +++ b/arch/arm/mach-mxs/include/mach/mci.h
-> @@ -15,6 +15,7 @@
->  #define __MACH_MMC_H
->  =
-
->  struct mxs_mci_platform_data {
-> +	const char *devname;
->  	unsigned caps;	/**< supported operating modes (MMC_MODE_*) */
->  	unsigned voltages; /**< supported voltage range (MMC_VDD_*) */
->  	unsigned f_min;	/**< min operating frequency in Hz (0 -> no limit) */
-> diff --git a/drivers/mci/mxs.c b/drivers/mci/mxs.c
-> index 1b935f7..52d0656 100644
-> --- a/drivers/mci/mxs.c
-> +++ b/drivers/mci/mxs.c
-> @@ -571,6 +571,9 @@ static int mxs_mci_probe(struct device_d *hw_dev)
->  	host->voltages =3D pd->voltages;
->  	host->host_caps =3D pd->caps;
->  =
-
-> +	if (pd->devname)
-> +		host->devname =3D pd->devname;
-
-why bother to test it?
-
-Best Regards,
-J.
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIGN1cnJlbnQgaW1wbGVtZW50YXRpb24gb2YgdGhlIGJvb3Rsb2FkZXIgc3BlY2lmaWNhdGlv
+biBkZXBlbmRzIG9uIHRoZQpoYXJkd2FyZSBuYW1lIGFuZCB0aGUgbmFtZSBvZiB0aGUgZGV2aWNl
+IGluIC9kZXYgdG8gbWF0Y2guIEFzIHRoZSBkZWZhdWx0CmhhcmR3YXJlIG5hbWUgaXMgbWNpWCBh
+bmQgdGhlIGRldmljZSBuYW1lIGlzIGRpc2tZIHRoZSBib290bG9hZGVyIHNwZWMKY2Fubm90IGJl
+IHVzZWQgYXMgaXMuCgpUaGlzIHBhdGNoIGltcGxlbWVudHMgYSB3YXkgdG8gb3ZlcndyaXRlIHRo
+ZSBkZXZpY2UgbmFtZSBzaW1pbGFyIHRvIHdoYXQgaXMKcG9zc2libGUgZm9yIHRoZSBpbXgtZXNk
+aGMgZHJpdmVyLgoKU2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtv
+ZW5pZ0BwZW5ndXRyb25peC5kZT4KLS0tCgpOb3RlczoKICAgIENoYW5nZXMgc2luY2UgKGltcGxp
+Y2l0KSB2MSwgc2VudCB3aXRoCiAgICBNZXNzYWdlLUlkOiAxMzgzODIxNDYyLTI5MzQ4LTEtZ2l0
+LXNlbmQtZW1haWwtdS5rbGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlOgogICAgCiAgICAgLSBk
+b24ndCBjaGVjayBmb3IgcGQtPmRldm5hbWUgYmVpbmcgbm9uLU5VTEwgYmVmb3JlIGFzc2lnbWVu
+dCBhcyBzdWdnZXN0ZWQKICAgICAgIGJ5IEplYW4tQ2hyaXN0b3BoZS4KCiBhcmNoL2FybS9tYWNo
+LW14cy9pbmNsdWRlL21hY2gvbWNpLmggfCAxICsKIGRyaXZlcnMvbWNpL214cy5jICAgICAgICAg
+ICAgICAgICAgICB8IDEgKwogaW5jbHVkZS9tY2kuaCAgICAgICAgICAgICAgICAgICAgICAgIHwg
+MiArLQogMyBmaWxlcyBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRp
+ZmYgLS1naXQgYS9hcmNoL2FybS9tYWNoLW14cy9pbmNsdWRlL21hY2gvbWNpLmggYi9hcmNoL2Fy
+bS9tYWNoLW14cy9pbmNsdWRlL21hY2gvbWNpLmgKaW5kZXggNGZhYWIzNy4uYzQ3YzI0YyAxMDA2
+NDQKLS0tIGEvYXJjaC9hcm0vbWFjaC1teHMvaW5jbHVkZS9tYWNoL21jaS5oCisrKyBiL2FyY2gv
+YXJtL21hY2gtbXhzL2luY2x1ZGUvbWFjaC9tY2kuaApAQCAtMTUsNiArMTUsNyBAQAogI2RlZmlu
+ZSBfX01BQ0hfTU1DX0gKIAogc3RydWN0IG14c19tY2lfcGxhdGZvcm1fZGF0YSB7CisJY29uc3Qg
+Y2hhciAqZGV2bmFtZTsKIAl1bnNpZ25lZCBjYXBzOwkvKio8IHN1cHBvcnRlZCBvcGVyYXRpbmcg
+bW9kZXMgKE1NQ19NT0RFXyopICovCiAJdW5zaWduZWQgdm9sdGFnZXM7IC8qKjwgc3VwcG9ydGVk
+IHZvbHRhZ2UgcmFuZ2UgKE1NQ19WRERfKikgKi8KIAl1bnNpZ25lZCBmX21pbjsJLyoqPCBtaW4g
+b3BlcmF0aW5nIGZyZXF1ZW5jeSBpbiBIeiAoMCAtPiBubyBsaW1pdCkgKi8KZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvbWNpL214cy5jIGIvZHJpdmVycy9tY2kvbXhzLmMKaW5kZXggMWI5MzVmNy4uYmY5
+MjhlOCAxMDA2NDQKLS0tIGEvZHJpdmVycy9tY2kvbXhzLmMKKysrIGIvZHJpdmVycy9tY2kvbXhz
+LmMKQEAgLTU3MCw2ICs1NzAsNyBAQCBzdGF0aWMgaW50IG14c19tY2lfcHJvYmUoc3RydWN0IGRl
+dmljZV9kICpod19kZXYpCiAJLyogZmVlZCBmb3J3YXJkIHRoZSBwbGF0Zm9ybSBzcGVjaWZpYyB2
+YWx1ZXMgKi8KIAlob3N0LT52b2x0YWdlcyA9IHBkLT52b2x0YWdlczsKIAlob3N0LT5ob3N0X2Nh
+cHMgPSBwZC0+Y2FwczsKKwlob3N0LT5kZXZuYW1lID0gcGQtPmRldm5hbWU7CiAKIAlteHNfbWNp
+LT5jbGsgPSBjbGtfZ2V0KGh3X2RldiwgTlVMTCk7CiAJaWYgKElTX0VSUihteHNfbWNpLT5jbGsp
+KQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9tY2kuaCBiL2luY2x1ZGUvbWNpLmgKaW5kZXggMDdhYzI3
+My4uMGYxMGU4YSAxMDA2NDQKLS0tIGEvaW5jbHVkZS9tY2kuaAorKysgYi9pbmNsdWRlL21jaS5o
+CkBAIC0yODYsNyArMjg2LDcgQEAgc3RydWN0IG1jaTsKIHN0cnVjdCBtY2lfaG9zdCB7CiAJc3Ry
+dWN0IGRldmljZV9kICpod19kZXY7CS8qKjwgdGhlIGhvc3QgTUNJIGhhcmR3YXJlIGRldmljZSAq
+LwogCXN0cnVjdCBtY2kgKm1jaTsKLQljaGFyICpkZXZuYW1lOwkJCS8qKjwgdGhlIGRldmljZW5h
+bWUgZm9yIHRoZSBjYXJkLCBkZWZhdWx0cyB0byBkaXNrJWQgKi8KKwljb25zdCBjaGFyICpkZXZu
+YW1lOwkJLyoqPCB0aGUgZGV2aWNlbmFtZSBmb3IgdGhlIGNhcmQsIGRlZmF1bHRzIHRvIGRpc2sl
+ZCAqLwogCXVuc2lnbmVkIHZvbHRhZ2VzOwogCXVuc2lnbmVkIGhvc3RfY2FwczsJLyoqPCBIb3N0
+J3MgaW50ZXJmYWNlIGNhcGFiaWxpdGllcywgcmVmZXIgTU1DX1ZERF8qICovCiAJdW5zaWduZWQg
+Zl9taW47CQkvKio8IGhvc3QgaW50ZXJmYWNlIGxvd2VyIGxpbWl0ICovCi0tIAoxLjguNC5yYzMK
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
