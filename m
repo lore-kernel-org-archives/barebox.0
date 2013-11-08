@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Ven1A-0004qw-Eq
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 14:26:37 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  8 Nov 2013 15:26:17 +0100
-Message-Id: <1383920777-19046-1-git-send-email-s.hauer@pengutronix.de>
+ id 1VeqYm-000246-1I
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:13:33 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri,  8 Nov 2013 22:12:54 +0400
+Message-Id: <1383934379-27100-3-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,38 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: Phytec pfla02: Add I2C EEPROM to devicetree
+Subject: [PATCH] net/Kconfig: Remove non-existent ARCH_DAVINCI
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx6q-phytec-pfla02.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
 
-diff --git a/arch/arm/dts/imx6q-phytec-pfla02.dtsi b/arch/arm/dts/imx6q-phytec-pfla02.dtsi
-index 9410065..d113f7f 100644
---- a/arch/arm/dts/imx6q-phytec-pfla02.dtsi
-+++ b/arch/arm/dts/imx6q-phytec-pfla02.dtsi
-@@ -34,6 +34,17 @@
- 	};
- };
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/net/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 5d7d20f..c626416 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -62,7 +62,7 @@ config DRIVER_NET_SMC91111
  
-+&i2c1 {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1_1>;
-+
-+	eeprom: m24c32@50 {
-+		compatible = "st,24c32", "at24";
-+		reg = <0x50>;
-+	};
-+};
-+
- &iomuxc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_hog>;
+ config DRIVER_NET_DAVINCI_EMAC
+ 	bool "TI Davinci/OMAP EMAC ethernet driver"
+-	depends on ARCH_DAVINCI || ARCH_OMAP3
++	depends on ARCH_OMAP3
+ 	select PHYLIB
+ 
+ config DRIVER_NET_DM9K
 -- 
-1.8.4.rc3
+1.8.1.5
 
 
 _______________________________________________
