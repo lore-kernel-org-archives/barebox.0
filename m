@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VeaHr-0007Qi-5g
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:51:00 +0000
-Date: Fri, 8 Nov 2013 01:50:37 +0100
+ id 1VeaJ5-0007Rt-G5
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 00:52:16 +0000
+Date: Fri, 8 Nov 2013 01:51:53 +0100
 From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20131108005037.GZ14892@pengutronix.de>
-References: <1383869791-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Message-ID: <20131108005153.GA14892@pengutronix.de>
+References: <1383869846-26033-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1383869791-25857-1-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1383869846-26033-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +22,53 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] partitions: dos: improve guess of disk size
+Subject: Re: [PATCH] partitions: dos: parse extended partition
 To: barebox@lists.infradead.org
 Cc: jbe@pengutronix.de
 
-On Fri, Nov 08, 2013 at 01:16:31AM +0100, Uwe Kleine-K=F6nig wrote:
-> The code used to ineffectively take the end of the last partition as guess
-> for the disk size. Better use the end of the partition that has its end
-> rearmost.
-> =
+Hello,
 
-> Also return an unsigned type instead of int as the result is always
-> non-negative.
+On Fri, Nov 08, 2013 at 01:17:26AM +0100, Uwe Kleine-K=F6nig wrote:
+> DOS MBRs might contain an extended partition that holds several logical
+> partitions. Add these to the partitions of the block device.
 > =
 
 > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 > ---
-> Hello,
-> =
+>  common/partitions/dos.c | 76 +++++++++++++++++++++++++++++++++++++++++++=
++++++-
+>  1 file changed, 75 insertions(+), 1 deletion(-)
+This even fails to build. See below.
 
-> note this is only compile tested.
-... and the introduced warning ignored. I really shouldn't send patches
-out that late ...
-
-see below
+> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+> index 1d8213b..f907abc 100644
 > --- a/common/partitions/dos.c
 > +++ b/common/partitions/dos.c
-> @@ -27,19 +27,23 @@
->   * @param table partition table
->   * @return sector count
->   */
-> -static int disk_guess_size(struct device_d *dev, struct partition_entry =
-*table)
-> +static uint64_t disk_guess_size(struct device_d *dev,
-> +		struct partition_entry *table)
->  {
->  	uint64_t size =3D 0;
->  	int i;
->  =
-
->  	for (i =3D 0; i < 4; i++) {
-> -		if (table[i].partition_start !=3D 0) {
-> -			size +=3D get_unaligned_le32(&table[i].partition_start) - size;
-> -			size +=3D get_unaligned_le32(&table[i].partition_size);
-> +		if (get_unaligned_le32(table[i].partition_start) !=3D 0) {
-There is an & missing before table.
-
-Best regards
-Uwe
-
-> +			uint64_t part_end =3D get_unaligned_le32(&table[i].partition_start) +
-> +				get_unaligned_le32(&table[i].partition_size);
+> [...]
+> @@ -129,6 +181,7 @@ static void dos_partition(void *buf, struct block_dev=
+ice *blk,
+> [...]
+> +					dev_warn(blk->dev, "Skipping additional extended partition\n");
+> +			}
 > +
-> +			if (size < part_end)
-> +				size =3D part_end;
+>  		} else {
+>  			dev_dbg(blk->dev, "Skipping empty partition %d\n", i);
 >  		}
 >  	}
 >  =
 
-> -	return (int)size;
-> +	return size;
->  }
+> +	if (first_extended_partition)
+s/first_//
+
+> +		dos_extended_partition(blk, pd, extended_partition);
+> +
+>  	dsp =3D xzalloc(sizeof(*dsp));
+>  	dsp->blk =3D blk;
 >  =
 
->  static void *read_mbr(struct block_device *blk)
+
+Best regards
+Uwe
 
 -- =
 
