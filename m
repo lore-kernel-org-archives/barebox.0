@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from top.free-electrons.com ([176.31.233.9]
- helo=mail.free-electrons.com)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Veqpo-0002Ri-Gm
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:31:09 +0000
-Received: from localhost (AToulouse-651-1-90-186.w90-16.abo.wanadoo.fr
- [90.16.209.186])
- by mail.free-electrons.com (Postfix) with ESMTPSA id 2AABC7CA
- for <barebox@lists.infradead.org>; Fri,  8 Nov 2013 19:30:40 +0100 (CET)
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Fri,  8 Nov 2013 19:30:38 +0100
-Message-Id: <1383935439-23623-2-git-send-email-thomas.petazzoni@free-electrons.com>
-In-Reply-To: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
-References: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
+Received: from smtp33.i.mail.ru ([94.100.177.93])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VeqYm-000248-1G
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 18:13:35 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Fri,  8 Nov 2013 22:12:56 +0400
+Message-Id: <1383934379-27100-5-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,42 +21,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] scripts/setupmbr: fix documentation
+Subject: [PATCH 3/6] commands: nandtest: Fix signed/unsigned arguments for
+ printf
 To: barebox@lists.infradead.org
 
-The documentation says setupmbr should be used with the image named
-'barebox', but it should instead be done with the 'barebox.bin'
-image. Attempting to use setupmbr on the ELF barebox image simply
-fails:
+"%d" in format string requires a signed integer.
 
-$ ./scripts/setupmbr/setupmbr -s 32 -m ./barebox -d disk.img
-No MBR signature found
-barebox image seems not valid: Bad MBR signature
-
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- scripts/setupmbr/setupmbr.c | 4 ++--
+ commands/nandtest.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/setupmbr/setupmbr.c b/scripts/setupmbr/setupmbr.c
-index 918fbe3..0060c2e 100644
---- a/scripts/setupmbr/setupmbr.c
-+++ b/scripts/setupmbr/setupmbr.c
-@@ -666,10 +666,10 @@ and populating the root filesystem for example) to make it useful.
- In the next step, @a barebox gets installed to this boot media:
+diff --git a/commands/nandtest.c b/commands/nandtest.c
+index f6e8f99..0da5444 100644
+--- a/commands/nandtest.c
++++ b/commands/nandtest.c
+@@ -163,8 +163,8 @@ static void print_stats(int nr_passes, int length)
+ 	for (i = 0; i < MAX_ECC_BITS; i++)
+ 		printf("ECC %d bit error(s)	: %d\n", i + 1, ecc_stats[i]);
  
- @verbatim
--[jb@host]~> scripts/setupmbr/setupmbr -s 32 -m ./barebox -d /dev/sda
-+[jb@host]~> scripts/setupmbr/setupmbr -s 32 -m ./barebox.bin -d /dev/sda
- @endverbatim
+-	printf("ECC >%d bit error(s)	: %d\n", MAX_ECC_BITS, ecc_stats_over);
+-	printf("ECC corrections failed	: %d\n", ecc_failed_cnt);
++	printf("ECC >%d bit error(s)	: %u\n", MAX_ECC_BITS, ecc_stats_over);
++	printf("ECC corrections failed	: %u\n", ecc_failed_cnt);
+ 	printf("-------------------------\n");
+ }
  
--This command writes the @a barebox image file './barebox' onto the device
-+This command writes the @a barebox image file './barebox.bin' onto the device
- @p /dev/sda.
- 
- The @p -s option will keep the persistant storage sectors free and untouched
 -- 
-1.8.1.2
+1.8.1.5
 
 
 _______________________________________________
