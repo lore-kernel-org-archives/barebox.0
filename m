@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VehLD-0005g7-8g
- for barebox@lists.infradead.org; Fri, 08 Nov 2013 08:22:56 +0000
-Date: Fri, 8 Nov 2013 09:22:31 +0100
+ id 1VeheI-0005wo-Uc
+ for barebox@lists.infradead.org; Fri, 08 Nov 2013 08:42:40 +0000
+Date: Fri, 8 Nov 2013 09:42:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131108082231.GS24559@pengutronix.de>
-References: <1383747881-15698-1-git-send-email-jbe@pengutronix.de>
- <1383747881-15698-3-git-send-email-jbe@pengutronix.de>
- <20131107100456.GJ26639@ns203013.ovh.net>
- <20131107110909.GR24559@pengutronix.de>
- <20131107143749.GK26639@ns203013.ovh.net>
- <1383835020.4120.2.camel@weser.hi.pengutronix.de>
- <572C7A49-B2B8-4DD1-B9A7-2FCE0444356B@jcrosoft.com>
+Message-ID: <20131108084215.GU24559@pengutronix.de>
+References: <1383662527-8538-1-git-send-email-lisovy@gmail.com>
+ <1383662527-8538-4-git-send-email-lisovy@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <572C7A49-B2B8-4DD1-B9A7-2FCE0444356B@jcrosoft.com>
+In-Reply-To: <1383662527-8538-4-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,94 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [SPAM] [PATCH 2/3] FPGA: add a programming command
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 3/3] ARM: i.mx53: Support for Voipac board. Device
+ definition is read from Devicetree
+To: Rostislav Lisovy <lisovy@gmail.com>
+Cc: barebox@lists.infradead.org, pisa@cmp.felk.cvut.cz
 
-On Thu, Nov 07, 2013 at 11:27:39PM +0800, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> =
+Hi Rostislav,
 
-> On Nov 7, 2013, at 10:37 PM, Lucas Stach <l.stach@pengutronix.de> wrote:
-> =
+On Tue, Nov 05, 2013 at 03:42:07PM +0100, Rostislav Lisovy wrote:
+> Signed-off-by: Rostislav Lisovy <lisovy@gmail.com>
+> 
+> diff --git a/arch/arm/boards/freescale-mx53-vmx53/env/config b/arch/arm/boards/freescale-mx53-vmx53/env/config
+> new file mode 100644
+> index 0000000..3d90172
+> --- /dev/null
+> +++ b/arch/arm/boards/freescale-mx53-vmx53/env/config
 
-> > Am Donnerstag, den 07.11.2013, 15:37 +0100 schrieb Jean-Christophe
-> > PLAGNIOL-VILLARD:
-> >> On 12:09 Thu 07 Nov     , Sascha Hauer wrote:
-> >>> On Thu, Nov 07, 2013 at 11:04:56AM +0100, Jean-Christophe PLAGNIOL-VI=
-LLARD wrote:
-> >>>> Hi,
-> >>>> =
+Why not use defenv-2?
 
-> >>>> 	I really do not like it
-> >>>> =
+> diff --git a/arch/arm/boards/freescale-mx53-vmx53/flash_header.c b/arch/arm/boards/freescale-mx53-vmx53/flash_header.c
+> new file mode 100644
+> index 0000000..a6864a6
+> --- /dev/null
+> +++ b/arch/arm/boards/freescale-mx53-vmx53/flash_header.c
 
-> >>>> 	we need to have an API to load firmware same a Linux
-> >>> =
-
-> >>> The firmware loading mechanism in Linux is driven by the driver
-> >>> requesting a firmware. This is appropriate for WiFi drivers which can=
-'t
-> >>> continue without a firmware. For FPGAs which can be loaded, unloaded,=
- or
-> >>> even partially loaded, it's the user that should trigger firmware
-> >>> loading, not the driver.
-> >>> =
-
-> >>> Also, in barebox a user should decide if and when a firmware is loade=
-d.
-> >>> We have cases where a single board requires different Firmwares
-> >>> depending on bootstrapping. In this case You don't want to have fixed
-> >>> firmware names.
-> >>> =
-
-> >>> So no, the Linux Firmware model is not suitable for barebox (it sucks
-> >>> for Linux aswell in many cases).
-> >> =
-
-> >> and command is horrible as you need to known the protocol which you do=
- not
-> >> care
-> >> =
-
-> >> you just need to known the fpga device and firmware you want to use
-> >> =
-
-> >> then the fpga driver will handle
-> >> =
-
-> > Did you take the time to read the patches?
-> > =
-
-> > From a user perspective you only specify which FPGA you want to program
-> > and tell the command which firmware file to use. The protocol and other
-> > lowlevel stuff is taken care of in the handler.
-> =
-
-> yes I did but the issue is that you need to use a command instead just si=
-mply
-> set a parameter to the fpga device
-> =
-
-> that why I hate the idea of command you use the device to set the firmwar=
-e you want
-
-I'm fine with a /dev/fpga.x interface to load firmware. However, I find
-a command still useful. A command can list all available FPGAs, can
-handle partitioned FPGAs and has better possibilities to react to
-unusual situations. Right now J=FCrgens interface to the FPGA driver has
-a open/write/close interface. Integrating a cdev into this should be
-simple. Then time can decide whether a /dev/ interface or a command or
-both is more useful.
+I'm currently generating the flash images for new boards using the
+imx-image tool and also generate multi board images. This is a very
+flexible, though maybe hard to understand mechanism. Is this the reason
+you haven't used it or were you not aware of it?
+I would rather see this board taking part in this new mechanism. Are you
+willing to port this over? Otherwise I could try and convert this patch,
+but I would depend on you testing the result.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
