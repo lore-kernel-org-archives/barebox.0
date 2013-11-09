@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x230.google.com ([2a00:1450:4013:c00::230])
+Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vf8Wx-0000gR-4Y
- for barebox@lists.infradead.org; Sat, 09 Nov 2013 13:24:55 +0000
-Received: by mail-ee0-f48.google.com with SMTP id d49so1511273eek.7
- for <barebox@lists.infradead.org>; Sat, 09 Nov 2013 05:24:29 -0800 (PST)
+ id 1Vf8Wy-0000gV-89
+ for barebox@lists.infradead.org; Sat, 09 Nov 2013 13:24:56 +0000
+Received: by mail-ea0-f174.google.com with SMTP id n15so1385571ead.19
+ for <barebox@lists.infradead.org>; Sat, 09 Nov 2013 05:24:30 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sat,  9 Nov 2013 14:24:16 +0100
-Message-Id: <1384003461-21039-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sat,  9 Nov 2013 14:24:20 +0100
+Message-Id: <1384003461-21039-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1384003461-21039-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1384003461-21039-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/5] OF: probe clock providers from DT
+Subject: [PATCH 4/5] OF: parse OF clock providers after populate
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This patch set brings automatic probing of DT clock providers to ARM
-barebox, similar to what we have in Linux kernel.
+This adds a call to of_clk_init right after platform devices have been
+populated.
 
-First, a new macro BAREBOX_CLK_TABLE for generic linker scripts is added,
-that will take all declared DT clock providers. That macro is then added
-to the ARM linker script.
-
-Then, barebox compatible versions of of_clk_init and CLK_OF_DECLARE are
-added, that allow to parse and probe declared clock providers. The of_clk_init
-call is then put right after of_platform_populate in of_probe.
-
-Finally, clk/fixed is declared as such a clock provider and can now be probed
-automatially for DT enabled ARM platforms.
-
-Sebastian Hesselbarth (5):
-  asm-generic: add macro for BAREBOX_CLK_TABLE
-  ARM: lib: add BAREBOX_CLK_TABLE to linker script
-  clk: add of_clk_init and CLK_OF_DECLARE macro
-  OF: parse OF clock providers after populate
-  clk: fixed: add DT init function
-
- arch/arm/lib/barebox.lds.S        |  2 ++
- drivers/clk/clk-fixed.c           | 23 +++++++++++++++++++++++
- drivers/clk/clk.c                 | 37 +++++++++++++++++++++++++++++++++++++
- drivers/of/base.c                 |  1 +
- include/asm-generic/barebox.lds.h |  9 ++++++++-
- include/linux/clk.h               | 14 ++++++++++++++
- 6 files changed, 85 insertions(+), 1 deletion(-)
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
+---
+ drivers/of/base.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ba929bc..ea2d879 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1734,6 +1734,7 @@ int of_probe(void)
+ 		of_add_memory(memory, false);
+ 
+ 	of_platform_populate(root_node, of_default_bus_match_table, NULL);
++	of_clk_init(root_node, NULL);
+ 
+ 	return 0;
+ }
 -- 
 1.8.4.rc3
 
