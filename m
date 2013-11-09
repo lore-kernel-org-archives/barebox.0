@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x231.google.com ([2a00:1450:4013:c01::231])
+Received: from mail-ea0-x234.google.com ([2a00:1450:4013:c01::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vf8Wp-0000gQ-W5
- for barebox@lists.infradead.org; Sat, 09 Nov 2013 13:24:45 +0000
-Received: by mail-ea0-f177.google.com with SMTP id f15so1663361eak.8
+ id 1Vf8Wp-0000gO-Le
+ for barebox@lists.infradead.org; Sat, 09 Nov 2013 13:24:44 +0000
+Received: by mail-ea0-f180.google.com with SMTP id b11so1709895eae.11
  for <barebox@lists.infradead.org>; Sat, 09 Nov 2013 05:24:19 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Sat,  9 Nov 2013 14:24:05 +0100
-Message-Id: <1384003450-21001-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Sat,  9 Nov 2013 14:24:09 +0100
+Message-Id: <1384003450-21001-5-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1384003450-21001-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1384003450-21001-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,36 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] gpiolib debug and led trigger fixes
+Subject: [PATCH 4/4] gpio: dw: add get_direction callback
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-This small set of patches first fixes led triggers, where the led
-should be disabled, before installing a trigger function. Otherwise,
-the led may stay enabled from previous bootloaders messing with it.
+This adds a callback function to read the current state of a GPIOs
+in/out direction.
 
-The second part of the patches impoves gpiolib command verbosity by
-first adding an (optional) callback to get_direction of a gpiochip
-pin. Based on that new callback, it adds some more printf information
-to reflect gpiochip/gpio pin relation and also print current pin
-direction and value, if the corresponding callbacks are available.
-Finally, the get_direction callback is added to the Synopsys DW gpio
-driver.
-
-Sebastian Hesselbarth (4):
-  led: trigger: disable LEDs with trigger before installing it
-  gpiolib: add get_direction callback
-  gpiolib: make gpiolib command more verbose
-  gpio: dw: add get_direction callback
-
- drivers/gpio/gpio-dw.c |  9 +++++++++
- drivers/gpio/gpiolib.c | 24 +++++++++++++++++++++---
- drivers/led/led-gpio.c |  4 +++-
- include/gpio.h         |  4 ++++
- 4 files changed, 37 insertions(+), 4 deletions(-)
-
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: barebox@lists.infradead.org
+---
+ drivers/gpio/gpio-dw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/gpio/gpio-dw.c b/drivers/gpio/gpio-dw.c
+index 791488a..6577042 100644
+--- a/drivers/gpio/gpio-dw.c
++++ b/drivers/gpio/gpio-dw.c
+@@ -90,9 +90,18 @@ static int dw_gpio_direction_output(struct gpio_chip *gc,
+ 	return 0;
+ }
+ 
++static int dw_gpio_get_direction(struct gpio_chip *gc, unsigned offset)
++{
++	struct dw_gpio_instance *chip = to_dw_gpio(gc);
++
++	return (readl(chip->regs + DW_GPIO_DDR) & (1 << offset)) ?
++		GPIO_DIR_OUT : GPIO_DIR_IN;
++}
++
+ static struct gpio_ops imx_gpio_ops = {
+ 	.direction_input = dw_gpio_direction_input,
+ 	.direction_output = dw_gpio_direction_output,
++	.get_direction = dw_gpio_get_direction,
+ 	.get = dw_gpio_get,
+ 	.set = dw_gpio_set,
+ };
 -- 
 1.8.4.rc3
 
