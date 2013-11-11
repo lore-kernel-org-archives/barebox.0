@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VfmIt-0007HS-9s
- for barebox@lists.infradead.org; Mon, 11 Nov 2013 07:52:59 +0000
-Date: Mon, 11 Nov 2013 08:52:36 +0100
+ id 1VfmNk-0007Px-SB
+ for barebox@lists.infradead.org; Mon, 11 Nov 2013 07:58:01 +0000
+Date: Mon, 11 Nov 2013 08:57:38 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131111075236.GA24559@pengutronix.de>
-References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20131111075738.GB24559@pengutronix.de>
+References: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/6] ARM: at91: Fix signed/unsigned arguments for printf
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 0/2] x86 minor fixes and questions
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 08, 2013 at 10:12:52PM +0400, Alexander Shiyan wrote:
-> "%d" in format string requires a signed integer.
+Hi Thomas,
+
+On Fri, Nov 08, 2013 at 07:30:37PM +0100, Thomas Petazzoni wrote:
+> Hello,
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> Here are two minor fixes for the x86 support. The first patch avoids
+> linking problems on recent gcc versions, and the second one fixes the
+> documentation.
+> 
+> Also, I've tested the x86 support under Qemu, it starts fine. Thanks
+> to the bios disk driver, it detects one hard disk drive. However,
+> since the driver doesn't set num_blocks, the disk size is zero, and no
+> partition can be detected. Is this bios disk driver supposed to work
+> to read the entire hard drive, access a filesystem and load the kernel
+> image, or is the x86 support generally too limited for this at the
+> moment?
 
-Applied, thanks.
+Does your disk contain a valid partition table? There's no way to
+properly detect the disk size, so barebox guesses the size based on the
+last partition on the disk. This fails of course on an unpartitioned
+device. See disk_guess_size().
 
-I like Cleanups ;)
+But indeed, the x86 support is quite limited.
+
+> Thomas Petazzoni (2):
+>   scripts/setupmbr: fix documentation
+>   arch/x86: fix link with recent gcc
+
+Applied, thanks
 
 Sascha
-
-> ---
->  arch/arm/mach-at91/gpio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/mach-at91/gpio.c b/arch/arm/mach-at91/gpio.c
-> index b111373..91de85d 100644
-> --- a/arch/arm/mach-at91/gpio.c
-> +++ b/arch/arm/mach-at91/gpio.c
-> @@ -438,7 +438,7 @@ static void at91mux_dump_pio_config(unsigned bank, unsigned pin)
->  	void __iomem *pio = at91_gpio->regbase;
->  	u32 div;
->  
-> -	printf("pio%c%d configuration\n\n", bank + 'A', pin);
-> +	printf("pio%c%u configuration\n\n", bank + 'A', pin);
->  
->  	at91mux_printf_mode(bank, pin);
->  	printf("\n");
-> @@ -499,7 +499,7 @@ static int do_at91mux(int argc, char *argv[])
->  	}
->  
->  	if (pin >= 32) {
-> -		printf("pin %d >= supported %d pins\n", pin, 32);
-> +		printf("pin %u >= supported %d pins\n", pin, 32);
->  		return 1;
->  	}
->  
-> -- 
-> 1.8.1.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
