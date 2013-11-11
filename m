@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VfgEC-0002T5-Ra
- for barebox@lists.infradead.org; Mon, 11 Nov 2013 01:23:45 +0000
-Received: by mail-ee0-f42.google.com with SMTP id e52so798661eek.1
- for <barebox@lists.infradead.org>; Sun, 10 Nov 2013 17:23:21 -0800 (PST)
-Date: Mon, 11 Nov 2013 02:30:20 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131111013019.GA16967@x61s.Speedport_W_921V_1_24_000>
-References: <1384003450-21001-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1384003450-21001-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ id 1VfmIt-0007HS-9s
+ for barebox@lists.infradead.org; Mon, 11 Nov 2013 07:52:59 +0000
+Date: Mon, 11 Nov 2013 08:52:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131111075236.GA24559@pengutronix.de>
+References: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1384003450-21001-4-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1383934379-27100-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,54 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] gpiolib: make gpiolib command more verbose
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 1/6] ARM: at91: Fix signed/unsigned arguments for printf
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Hi Sebastian,
-
-On Sat, Nov 09, 2013 at 02:24:08PM +0100, Sebastian Hesselbarth wrote:
-> This adds some more printf information to gpiolib command, like the
-> gpiochip handling a specific gpio. Also, current direction and value
-> of the gpio are printed, if the gpiochip provides the corresponding
-> callbacks.
+On Fri, Nov 08, 2013 at 10:12:52PM +0400, Alexander Shiyan wrote:
+> "%d" in format string requires a signed integer.
 > 
-> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+
+Applied, thanks.
+
+I like Cleanups ;)
+
+Sascha
+
 > ---
-> Cc: barebox@lists.infradead.org
-> ---
->  drivers/gpio/gpiolib.c | 24 +++++++++++++++++++++---
->  1 file changed, 21 insertions(+), 3 deletions(-)
+>  arch/arm/mach-at91/gpio.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index ca6e8ad..c12ebe6 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -228,16 +228,34 @@ static int do_gpiolib(int argc, char *argv[])
->  	int i;
+> diff --git a/arch/arm/mach-at91/gpio.c b/arch/arm/mach-at91/gpio.c
+> index b111373..91de85d 100644
+> --- a/arch/arm/mach-at91/gpio.c
+> +++ b/arch/arm/mach-at91/gpio.c
+> @@ -438,7 +438,7 @@ static void at91mux_dump_pio_config(unsigned bank, unsigned pin)
+>  	void __iomem *pio = at91_gpio->regbase;
+>  	u32 div;
 >  
->  	printf("gpiolib: gpio lists\n");
-> -	printf("%*crequested  label\n", 11, ' ');
+> -	printf("pio%c%d configuration\n\n", bank + 'A', pin);
+> +	printf("pio%c%u configuration\n\n", bank + 'A', pin);
 >  
->  	for (i = 0; i < ARCH_NR_GPIOS; i++) {
->  		struct gpio_info *gi = &gpio_desc[i];
-> +		int val = -1, dir = -1;
+>  	at91mux_printf_mode(bank, pin);
+>  	printf("\n");
+> @@ -499,7 +499,7 @@ static int do_at91mux(int argc, char *argv[])
+>  	}
 >  
->  		if (!gi->chip)
->  			continue;
+>  	if (pin >= 32) {
+> -		printf("pin %d >= supported %d pins\n", pin, 32);
+> +		printf("pin %u >= supported %d pins\n", pin, 32);
+>  		return 1;
+>  	}
 >  
-> -		printf("gpio %*d: %*s  %s\n", 4,
-> -			i, 9, gi->requested ? "true" : "false",
-> +		/* print chip information and header on first gpio */
-> +		if (gi->chip->base == i) {
-> +			printf("\ngpios %u-%u, chip %s:\n",
-> +				gi->chip->base,
-> +				gi->chip->base + gi->chip->ngpio,
+> -- 
+> 1.8.1.5
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-I think this should be "gi->chip->base + gi->chip->ngpio - 1", because
-we starting at zero on base.
-
-- Alex
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
