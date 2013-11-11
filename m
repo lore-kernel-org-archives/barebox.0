@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VfmtL-000883-Ak
- for barebox@lists.infradead.org; Mon, 11 Nov 2013 08:30:39 +0000
-Date: Mon, 11 Nov 2013 09:30:17 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131111083017.GE24559@pengutronix.de>
-References: <1384003461-21039-1-git-send-email-sebastian.hesselbarth@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1384003461-21039-1-git-send-email-sebastian.hesselbarth@gmail.com>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vfo9P-0002Hx-7j
+ for barebox@lists.infradead.org; Mon, 11 Nov 2013 09:51:19 +0000
+Date: Mon, 11 Nov 2013 10:50:42 +0100
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20131111105042.58fa88fa@skate>
+In-Reply-To: <20131111075738.GB24559@pengutronix.de>
+References: <1383935439-23623-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <20131111075738.GB24559@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,46 +23,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] OF: probe clock providers from DT
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 0/2] x86 minor fixes and questions
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sebastian,
+Dear Sascha Hauer,
 
-On Sat, Nov 09, 2013 at 02:24:16PM +0100, Sebastian Hesselbarth wrote:
-> This patch set brings automatic probing of DT clock providers to ARM
-> barebox, similar to what we have in Linux kernel.
+On Mon, 11 Nov 2013 08:57:38 +0100, Sascha Hauer wrote:
+
+> > Also, I've tested the x86 support under Qemu, it starts fine. Thanks
+> > to the bios disk driver, it detects one hard disk drive. However,
+> > since the driver doesn't set num_blocks, the disk size is zero, and no
+> > partition can be detected. Is this bios disk driver supposed to work
+> > to read the entire hard drive, access a filesystem and load the kernel
+> > image, or is the x86 support generally too limited for this at the
+> > moment?
 > 
-> First, a new macro BAREBOX_CLK_TABLE for generic linker scripts is added,
-> that will take all declared DT clock providers. That macro is then added
-> to the ARM linker script.
+> Does your disk contain a valid partition table? There's no way to
+> properly detect the disk size, so barebox guesses the size based on the
+> last partition on the disk. This fails of course on an unpartitioned
+> device. See disk_guess_size().
+
+Yes, my disk had a partition table. However, I see that
+disk_guess_size() is only called if you have a DOS partition table, and
+not a GPT type of partition table, and I don't remember which type I've
+used during my testing.
+
+I'll test again, and with the info that disk_guess_size() is the
+important part, I'll have a closer look.
+
+> But indeed, the x86 support is quite limited.
+
+Yeah, no problem. I'm not really planning on making any real use of it,
+was just curious to see whether it worked, and if yes, how :-)
+
+> > Thomas Petazzoni (2):
+> >   scripts/setupmbr: fix documentation
+> >   arch/x86: fix link with recent gcc
 > 
-> Then, barebox compatible versions of of_clk_init and CLK_OF_DECLARE are
-> added, that allow to parse and probe declared clock providers. The of_clk_init
-> call is then put right after of_platform_populate in of_probe.
-> 
-> Finally, clk/fixed is declared as such a clock provider and can now be probed
-> automatially for DT enabled ARM platforms.
-> 
-> Sebastian Hesselbarth (5):
->   asm-generic: add macro for BAREBOX_CLK_TABLE
->   ARM: lib: add BAREBOX_CLK_TABLE to linker script
->   clk: add of_clk_init and CLK_OF_DECLARE macro
->   OF: parse OF clock providers after populate
->   clk: fixed: add DT init function
+> Applied, thanks
 
-I gave this a test on i.MX by adding an additional dummy clk to my dts
-and it works as expected. Patches look good, so:
+Thanks!
 
-Applied, thanks
-
-Sascha
-
+Thomas
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
