@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgEOj-00061F-RG
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:54 +0000
+ id 1VgEOe-00061D-RE
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:50 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 14:52:10 +0100
-Message-Id: <1384264339-15986-2-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 12 Nov 2013 14:52:15 +0100
+Message-Id: <1384264339-15986-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 References: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,46 +21,102 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/10] hush: fix exit on syntax error behaviour
+Subject: [PATCH 06/10] hush: rename __promptme to interrupt
 To: barebox@lists.infradead.org
 
-input.__promptme is no valid indicator that run_shell should be left.
-It should be left on executing the 'exit' builtin which is indicated
-by a return code < 0 from parse_stream_outer(). Track this with an extra
-variable and use it as a condition to return from an interactive shell.
-
-This fixes the weird behaviour that hush exits (and the user finds itself
-in the menu) when a syntax error occured.
+the name '__promptme' does not make clear what the variable means. rename
+it to 'interrupt' which is set to true when the user has hit ctrl-c.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ common/hush.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/common/hush.c b/common/hush.c
-index bf1d9e6..5969127 100644
+index f0f2eda..95054b3 100644
 --- a/common/hush.c
 +++ b/common/hush.c
-@@ -1853,14 +1853,17 @@ int run_shell(void)
- 	int rcode;
- 	struct in_str input;
- 	struct p_context ctx;
-+	int exit = 0;
+@@ -254,7 +254,7 @@ typedef struct {
+  * available?  Where is it documented? */
+ struct in_str {
+ 	const char *p;
+-	int __promptme;
++	int interrupt;
+ 	int promptmode;
+ 	int (*get) (struct in_str *);
+ 	int (*peek) (struct in_str *);
+@@ -422,8 +422,6 @@ static void get_user_input(struct in_str *i)
+ 	static char the_command[CONFIG_CBSIZE];
+ 	char *prompt;
  
- 	do {
- 		setup_file_in_str(&input);
- 		rcode = parse_stream_outer(&ctx, &input, FLAG_PARSE_SEMICOLON);
--		if (rcode < -1)
-+		if (rcode < -1) {
-+			exit = 1;
- 			rcode = -rcode - 2;
-+		}
- 		release_context(&ctx);
--	} while (!input.__promptme);
-+	} while (!exit);
+-	i->__promptme = 1;
+-
+ 	if (i->promptmode == 1)
+ 		prompt = getprompt();
+ 	else
+@@ -431,7 +429,7 @@ static void get_user_input(struct in_str *i)
  
- 	return rcode;
+ 	n = readline(prompt, console_buffer, CONFIG_CBSIZE);
+ 	if (n == -1 ) {
+-		i->__promptme = 0;
++		i->interrupt = 1;
+ 		n = 0;
+ 	}
+ 
+@@ -456,7 +454,7 @@ static void get_user_input(struct in_str *i)
+ 		}
+ 	}
+ 
+-	if (i->__promptme == 0) {
++	if (i->interrupt) {
+ 		the_command[0] = '\n';
+ 		the_command[1] = '\0';
+ 	}
+@@ -503,7 +501,7 @@ static void setup_file_in_str(struct in_str *i)
+ {
+ 	i->peek = file_peek;
+ 	i->get = file_get;
+-	i->__promptme = 1;
++	i->interrupt = 0;
+ 	i->promptmode = 1;
+ 	i->p = NULL;
  }
+@@ -512,7 +510,7 @@ static void setup_string_in_str(struct in_str *i, const char *s)
+ {
+ 	i->peek = static_peek;
+ 	i->get = static_get;
+-	i->__promptme = 1;
++	i->interrupt = 0;
+ 	i->promptmode = 1;
+ 	i->p = s;
+ }
+@@ -1470,7 +1468,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
+ 
+ 	while ((ch = b_getch(input)) != EOF) {
+ 		m = map[ch];
+-		if (input->__promptme == 0)
++		if (input->interrupt)
+ 			return 1;
+ 		next = (ch == '\n') ? 0 : b_peek(input);
+ 
+@@ -1528,7 +1526,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
+ 			dest->nonnull = 1;
+ 			b_addchr(dest, '\'');
+ 			while (ch = b_getch(input), ch != EOF && ch != '\'') {
+-				if (input->__promptme == 0)
++				if (input->interrupt)
+ 					return 1;
+ 				b_addchr(dest,ch);
+ 			}
+@@ -1660,7 +1658,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
+ 				free(ctx->stack);
+ 				b_reset(&temp);
+ 			}
+-			if (inp->__promptme == 0)
++			if (inp->interrupt)
+ 				printf("<INTERRUPT>\n");
+ 			temp.nonnull = 0;
+ 			temp.quote = 0;
 -- 
 1.8.4.2
 
