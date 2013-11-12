@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgEOe-00061D-RE
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:50 +0000
+ id 1VgEOZ-00060z-W9
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 14:52:15 +0100
-Message-Id: <1384264339-15986-7-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 12 Nov 2013 14:52:14 +0100
+Message-Id: <1384264339-15986-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 References: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,102 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/10] hush: rename __promptme to interrupt
+Subject: [PATCH 05/10] hush: refactor file_get()
 To: barebox@lists.infradead.org
 
-the name '__promptme' does not make clear what the variable means. rename
-it to 'interrupt' which is set to true when the user has hit ctrl-c.
+Save indentation level by returning early.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ common/hush.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
 diff --git a/common/hush.c b/common/hush.c
-index f0f2eda..95054b3 100644
+index 7a077ba..f0f2eda 100644
 --- a/common/hush.c
 +++ b/common/hush.c
-@@ -254,7 +254,7 @@ typedef struct {
-  * available?  Where is it documented? */
- struct in_str {
- 	const char *p;
--	int __promptme;
-+	int interrupt;
- 	int promptmode;
- 	int (*get) (struct in_str *);
- 	int (*peek) (struct in_str *);
-@@ -422,8 +422,6 @@ static void get_user_input(struct in_str *i)
- 	static char the_command[CONFIG_CBSIZE];
- 	char *prompt;
+@@ -471,21 +471,23 @@ static int file_get(struct in_str *i)
+ 	int ch;
  
--	i->__promptme = 1;
--
- 	if (i->promptmode == 1)
- 		prompt = getprompt();
- 	else
-@@ -431,7 +429,7 @@ static void get_user_input(struct in_str *i)
- 
- 	n = readline(prompt, console_buffer, CONFIG_CBSIZE);
- 	if (n == -1 ) {
--		i->__promptme = 0;
-+		i->interrupt = 1;
- 		n = 0;
- 	}
- 
-@@ -456,7 +454,7 @@ static void get_user_input(struct in_str *i)
- 		}
- 	}
- 
--	if (i->__promptme == 0) {
-+	if (i->interrupt) {
- 		the_command[0] = '\n';
- 		the_command[1] = '\0';
- 	}
-@@ -503,7 +501,7 @@ static void setup_file_in_str(struct in_str *i)
- {
- 	i->peek = file_peek;
- 	i->get = file_get;
--	i->__promptme = 1;
-+	i->interrupt = 0;
- 	i->promptmode = 1;
- 	i->p = NULL;
+ 	ch = 0;
++
+ 	/* If there is data waiting, eat it up */
+-	if (i->p && *i->p) {
++	if (i->p && *i->p)
++		return *i->p++;
++
++	/* need to double check i->file because we might be doing something
++	 * more complicated by now, like sourcing or substituting. */
++	while (!i->p  || strlen(i->p) == 0 )
++		get_user_input(i);
++
++	i->promptmode = 2;
++
++	if (i->p && *i->p)
+ 		ch = *i->p++;
+-	} else {
+-		/* need to double check i->file because we might be doing something
+-		 * more complicated by now, like sourcing or substituting. */
+-			while (!i->p  || strlen(i->p) == 0 ) {
+-				get_user_input(i);
+-			}
+-			i->promptmode = 2;
+-			if (i->p && *i->p) {
+-				ch = *i->p++;
+-			}
+-		debug("%s: got a %d\n", __func__, ch);
+-	}
++
++	debug("%s: got a %d\n", __func__, ch);
++
+ 	return ch;
  }
-@@ -512,7 +510,7 @@ static void setup_string_in_str(struct in_str *i, const char *s)
- {
- 	i->peek = static_peek;
- 	i->get = static_get;
--	i->__promptme = 1;
-+	i->interrupt = 0;
- 	i->promptmode = 1;
- 	i->p = s;
- }
-@@ -1470,7 +1468,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
  
- 	while ((ch = b_getch(input)) != EOF) {
- 		m = map[ch];
--		if (input->__promptme == 0)
-+		if (input->interrupt)
- 			return 1;
- 		next = (ch == '\n') ? 0 : b_peek(input);
- 
-@@ -1528,7 +1526,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
- 			dest->nonnull = 1;
- 			b_addchr(dest, '\'');
- 			while (ch = b_getch(input), ch != EOF && ch != '\'') {
--				if (input->__promptme == 0)
-+				if (input->interrupt)
- 					return 1;
- 				b_addchr(dest,ch);
- 			}
-@@ -1660,7 +1658,7 @@ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int fla
- 				free(ctx->stack);
- 				b_reset(&temp);
- 			}
--			if (inp->__promptme == 0)
-+			if (inp->interrupt)
- 				printf("<INTERRUPT>\n");
- 			temp.nonnull = 0;
- 			temp.quote = 0;
 -- 
 1.8.4.2
 
