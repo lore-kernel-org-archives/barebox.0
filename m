@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from s17.web-servers.com.au ([118.127.39.117])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vg7OP-0003xL-Ae
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 06:24:07 +0000
-Received: from 220-244-174-13.static.tpgi.com.au ([220.244.174.13]:13540
- helo=dev2.cpdesign)
- by s17.web-servers.com.au with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
- (Exim 4.80.1) (envelope-from <marc@cpdesign.com.au>)
- id 1Vg7Nv-002ilg-9p
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 17:23:35 +1100
-From: Marc Reilly <marc@cpdesign.com.au>
-Date: Tue, 12 Nov 2013 17:07:35 +1100
-Message-ID: <3749329.nT9HWVKCSz@dev2.cpdesign>
+ id 1Vg9Li-0007P0-45
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 08:29:26 +0000
+Date: Tue, 12 Nov 2013 09:28:58 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131112082858.GJ24559@pengutronix.de>
+References: <3749329.nT9HWVKCSz@dev2.cpdesign>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <3749329.nT9HWVKCSz@dev2.cpdesign>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,32 +22,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: handling script/init errors
-To: barebox@lists.infradead.org
+Subject: Re: handling script/init errors
+To: Marc Reilly <marc@cpdesign.com.au>
+Cc: barebox@lists.infradead.org
 
-Hi,
+Hi Marc,
 
-Rarely, one of the commands (related to hardware access) in our startup 
-scripts fails, and the unit startup ends up bailing to a console prompt. 
-(Which is only on debug port, so no appropriate user feedback) 
-This would end up appearing to the user that nothing has happened, and will 
-either run until batteries are drained (or removed) or a special reset 
-sequence is done.
+On Tue, Nov 12, 2013 at 05:07:35PM +1100, Marc Reilly wrote:
+> Hi,
+> 
+> Rarely, one of the commands (related to hardware access) in our startup 
+> scripts fails, and the unit startup ends up bailing to a console prompt. 
+> (Which is only on debug port, so no appropriate user feedback) 
+> This would end up appearing to the user that nothing has happened, and will 
+> either run until batteries are drained (or removed) or a special reset 
+> sequence is done.
+> 
+> Is there a way to set up an error handler in the scripts? Ideally, a command 
+> or script that could be called if /bin/sh encounters an error.
 
-Is there a way to set up an error handler in the scripts? Ideally, a command 
-or script that could be called if /bin/sh encounters an error. 
+What would you consider an error? Is executing the 'false' command an
+error?
+Commands in scripts must be allowed to fail. You are supposed to catch
+this via
 
-I started looking through hush.c but soon thought it better to consult with 
-anyone who actually might know ... :)
+if [ $? != 0 ]; then
+	echo "something bad happened"
+	exit 1
+fi
 
-It's not an urgent problem, as all the troublesome units so far present 
-themselves before they're shipped out, but now a more urgent (thankfully 
-simple) problem has emerged, so now is a good time to try fix it.
+Of course error handling in shell is very cumbersome, even more in a
+restricted shell like hush. That's the reason I try to reduce the need
+of shell scripts in barebox. Most things that "really need to work" are
+better done in C.
 
-Note: we're using a version based of 2012.07
+Maybe you could implement a 'catch' command. It would execute a command
+given as argument to the command. Something like:
 
-Cheers,
-Marc
+CATCH_HANDLER=/env/bin/failure.sh
+...
+catch <command>
+
+Then whenever <command> fails $CATCH_HANDLER would be executed.
+
+Don't know if that makes sense, just an idea.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
