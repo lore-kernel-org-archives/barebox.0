@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgEOZ-000610-WC
+ id 1VgEOZ-00060y-W6
  for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 14:52:16 +0100
-Message-Id: <1384264339-15986-8-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 12 Nov 2013 14:52:12 +0100
+Message-Id: <1384264339-15986-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 References: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,55 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/10] consolidate syntax() and syntax_err()
+Subject: [PATCH 03/10] readline: remove unused variable
 To: barebox@lists.infradead.org
 
-syntax is defined as syntax_err. Drop syntax_err and call syntax instead.
+'rc' is never set to anything else than 0, so drop it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/hush.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ lib/readline.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/common/hush.c b/common/hush.c
-index 95054b3..3c4d244 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -132,7 +132,6 @@ extern int do_bootd(int flag, int argc, char *argv[]);      /* do_bootd */
+diff --git a/lib/readline.c b/lib/readline.c
+index 3fb620e..6afc491 100644
+--- a/lib/readline.c
++++ b/lib/readline.c
+@@ -191,7 +191,6 @@ int readline(const char *prompt, char *buf, int len)
+ 	unsigned wlen;
+ 	int ichar;
+ 	int insert = 1;
+-	int rc = 0;
+ #ifdef CONFIG_AUTO_COMPLETE
+ 	char tmp;
+ 	int reprint, i;
+@@ -351,5 +350,5 @@ int readline(const char *prompt, char *buf, int len)
+ 		cread_add_to_hist(buf);
+ 	hist_cur = hist_add_idx;
  
- #define EXIT_SUCCESS 0
- #define EOF -1
--#define syntax() syntax_err()
- #define xstrdup strdup
- #define error_msg printf
- 
-@@ -265,7 +264,7 @@ struct in_str {
- 
- #define final_printf debug
- 
--static void syntax_err(void) {
-+static void syntax(void) {
- 	 printf("syntax error\n");
+-	return rc < 0 ? rc : len;
++	return len;
  }
- 
-@@ -1551,7 +1550,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
- 				b_getch(input);
- 				done_pipe(ctx, PIPE_AND);
- 			} else {
--				syntax_err();
-+				syntax();
- 				return 1;
- 			}
- 			break;
-@@ -1564,7 +1563,7 @@ static int parse_stream(o_string *dest, struct p_context *ctx,
- 				/* we could pick up a file descriptor choice here
- 				 * with redirect_opt_num(), but bash doesn't do it.
- 				 * "echo foo 2| cat" yields "foo 2". */
--				syntax_err();
-+				syntax();
- 				return 1;
- 			}
- 			break;
 -- 
 1.8.4.2
 
