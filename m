@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x235.google.com ([2a00:1450:4013:c01::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgM2r-0004sz-Vs
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 22:02:50 +0000
-Date: Tue, 12 Nov 2013 23:02:27 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131112220227.GO24559@pengutronix.de>
-References: <1384266701-12608-1-git-send-email-s.hauer@pengutronix.de>
- <1384266701-12608-4-git-send-email-s.hauer@pengutronix.de>
- <C90E2E36-D168-4374-B420-38B2BB1914BD@codeaurora.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <C90E2E36-D168-4374-B420-38B2BB1914BD@codeaurora.org>
+ id 1VgMjk-000673-Px
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 22:47:09 +0000
+Received: by mail-ea0-f181.google.com with SMTP id q10so1317309ead.12
+ for <barebox@lists.infradead.org>; Tue, 12 Nov 2013 14:46:45 -0800 (PST)
+From: Rostislav Lisovy <lisovy@gmail.com>
+Date: Tue, 12 Nov 2013 23:46:34 +0100
+Message-Id: <1384296396-18841-2-git-send-email-lisovy@gmail.com>
+In-Reply-To: <1384296396-18841-1-git-send-email-lisovy@gmail.com>
+References: <1384296396-18841-1-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,44 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] DT: Add binding for Altera FPGAs in passive-serial
- mode
-To: Kumar Gala <galak@codeaurora.org>
-Cc: barebox@lists.infradead.org, jbe@pengutronix.de, devicetree@vger.kernel.org
+Subject: [PATCH 1/3] ARM: dts: i.mx53: Internal keyboard controller + i2c
+ pinmux
+To: barebox@lists.infradead.org
+Cc: Rostislav Lisovy <lisovy@gmail.com>, pisa@cmp.felk.cvut.cz
 
-T24gVHVlLCBOb3YgMTIsIDIwMTMgYXQgMTA6MjE6MDJBTSAtMDYwMCwgS3VtYXIgR2FsYSB3cm90
-ZToKPiAKPiBPbiBOb3YgMTIsIDIwMTMsIGF0IDg6MzEgQU0sIFNhc2NoYSBIYXVlciA8cy5oYXVl
-ckBwZW5ndXRyb25peC5kZT4gd3JvdGU6Cj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1
-ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiBDYzogZGV2aWNldHJlZUB2Z2VyLmtlcm5l
-bC5vcmcKPiA+IC0tLQo+ID4gLi4uL2RldmljZXRyZWUvYmluZGluZ3MvZmlybXdhcmUvYWx0cixw
-YXNzaXZlLXNlcmlhbC50eHQgICAgfCAxMyArKysrKysrKysrKysrCj4gPiAxIGZpbGUgY2hhbmdl
-ZCwgMTMgaW5zZXJ0aW9ucygrKQo+ID4gY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24v
-ZGV2aWNldHJlZS9iaW5kaW5ncy9maXJtd2FyZS9hbHRyLHBhc3NpdmUtc2VyaWFsLnR4dAo+ID4g
-Cj4gPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2Zpcm13
-YXJlL2FsdHIscGFzc2l2ZS1zZXJpYWwudHh0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2Jp
-bmRpbmdzL2Zpcm13YXJlL2FsdHIscGFzc2l2ZS1zZXJpYWwudHh0Cj4gPiBuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAo+ID4gaW5kZXggMDAwMDAwMC4uNmQ0MGM5MQo+ID4gLS0tIC9kZXYvbnVsbAo+ID4g
-KysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2Zpcm13YXJlL2FsdHIscGFz
-c2l2ZS1zZXJpYWwudHh0Cj4gPiBAQCAtMCwwICsxLDEzIEBACj4gPiArQWx0ZXJhIEZQR0FzIGlu
-IHBhc3NpdmUgc2VyaWFsIG1vZGUKPiA+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQo+ID4gKwo+ID4gK1RoaXMgYmluZGluZyBkZWZpbmVzIHRoZSBjb250cm9sIGludGVyZmFj
-ZSB0byBBbHRlcmEgRlBHQXMgaW4KPiA+ICtwYXNzaXZlIHNlcmlhbCBtb2RlLiBUaGlzIGlzIHVz
-ZWQgdG8gdXBsb2FkIHRoZSBmaXJtd2FyZSBhbmQKPiA+ICt0byBzdGFydCB0aGUgRlBHQS4KPiA+
-ICsKPiA+ICtSZXF1aXJlZCBwcm9wZXJ0aWVzOgo+ID4gKy0gY29tcGF0aWJsZTogc2hhbGwgYmUg
-ImFsdHIscGFzc2l2ZS1zZXJpYWzigJ0KPiAKPiBUaGlzIGRvZXNu4oCZdCBzZWVtIHF1aXRlIGRl
-c2NyaXB0aXZlIGVub3VnaCwgZWFzeSB0byBjb25mdXNlIHdpdGggYSBzZXJpYWwgcG9ydC4KCkhv
-dyBhYm91dCBhbHRyLGZwZ2EtcGFzc2l2ZS1zZXJpYWw/IE90aGVyIHN1Z2dlc3Rpb25zPwoKPiAK
-PiA+ICstIHJlZzogU1BJIGNoaXAgc2VsZWN0Cj4gCj4gSXMgdGhpcyBhIFNQSSBkZXZpY2UgdGhh
-bj8KClllcywgaXQgaXMuCgpTYXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlh
-bCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25p
-eC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhv
-bmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2
-ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0
-CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Rostislav Lisovy <lisovy@gmail.com>
+
+diff --git a/arch/arm/dts/imx53.dtsi b/arch/arm/dts/imx53.dtsi
+index 09c5772..678547c 100644
+--- a/arch/arm/dts/imx53.dtsi
++++ b/arch/arm/dts/imx53.dtsi
+@@ -269,6 +269,14 @@
+ 				#interrupt-cells = <2>;
+ 			};
+ 
++			kpp: kpp@53f94000 {
++				compatible = "fsl,imx53-kpp", "fsl,imx21-kpp";
++				reg = <0x53f94000 0x4000>;
++				interrupts = <60>;
++				clocks = <&clks 0>;
++				status = "disabled";
++			};
++
+ 			wdog1: wdog@53f98000 {
+ 				compatible = "fsl,imx53-wdt", "fsl,imx21-wdt";
+ 				reg = <0x53f98000 0x4000>;
+@@ -587,6 +595,13 @@
+ 							MX53_PAD_GPIO_5__I2C3_SCL 0xc0000000
+ 						>;
+ 					};
++
++					pinctrl_i2c3_2: i2c3grp-2 {
++						fsl,pins = <
++							MX53_PAD_GPIO_3__I2C3_SCL	0xc0000000
++							MX53_PAD_GPIO_6__I2C3_SDA	0xc0000000
++						>;
++					};
+ 				};
+ 
+ 				ipu_disp0 {
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
