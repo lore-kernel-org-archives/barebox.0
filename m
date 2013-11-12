@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgF0i-0007ez-Pr
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 14:32:16 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 15:31:39 +0100
-Message-Id: <1384266701-12608-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1384266701-12608-1-git-send-email-s.hauer@pengutronix.de>
+Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VgGWw-00035M-PP
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 16:09:32 +0000
+Received: from mail243.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id AE553FF9D7C
+ for <barebox@lists.infradead.org>; Tue, 12 Nov 2013 17:03:54 +0100 (CET)
+Date: Tue, 12 Nov 2013 17:03:59 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131112160359.GA7965@ns203013.ovh.net>
 References: <1384266701-12608-1-git-send-email-s.hauer@pengutronix.de>
+ <1384266701-12608-3-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1384266701-12608-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,184 +23,420 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] Firmware: provide a handler to program Altera FPGAs
-To: barebox@lists.infradead.org
-Cc: Juergen Beisert <jbe@pengutronix.de>
+Subject: Re: [PATCH 2/4] Firmware: provide a handler to program Altera FPGAs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, Juergen Beisert <jbe@pengutronix.de>
 
-RnJvbTogSnVlcmdlbiBCZWlzZXJ0IDxqYmVAcGVuZ3V0cm9uaXguZGU+CgpUaGlzIGhhbmRsZXIg
-dXNlcyBhIHJlZ3VsYXIgU1BJIG1hc3RlciBhbmQgYSBmZXcgR1BJT3MgdG8gcHJvZ3JhbSBhbgpB
-bHRlcmEgRlBHQSBpbiBzZXJpYWwgbW9kZS4KClNpZ25lZC1vZmYtYnk6IEp1ZXJnZW4gQmVpc2Vy
-dCA8amJlQHBlbmd1dHJvbml4LmRlPgpTaWduZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1
-ZXJAcGVuZ3V0cm9uaXguZGU+Ci0tLQogZHJpdmVycy9LY29uZmlnICAgICAgICAgICAgICAgICAg
-fCAgIDEgKwogZHJpdmVycy9NYWtlZmlsZSAgICAgICAgICAgICAgICAgfCAgIDEgKwogZHJpdmVy
-cy9maXJtd2FyZS9LY29uZmlnICAgICAgICAgfCAgMTEgKysKIGRyaXZlcnMvZmlybXdhcmUvTWFr
-ZWZpbGUgICAgICAgIHwgICAxICsKIGRyaXZlcnMvZmlybXdhcmUvYWx0ZXJhX3NlcmlhbC5jIHwg
-MzA3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogNSBmaWxlcyBjaGFu
-Z2VkLCAzMjEgaW5zZXJ0aW9ucygrKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvZmlybXdh
-cmUvS2NvbmZpZwogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvZmlybXdhcmUvTWFrZWZpbGUK
-IGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL2Zpcm13YXJlL2FsdGVyYV9zZXJpYWwuYwoKZGlm
-ZiAtLWdpdCBhL2RyaXZlcnMvS2NvbmZpZyBiL2RyaXZlcnMvS2NvbmZpZwppbmRleCBkMzRkMmM3
-Li43MWQ4NDBjIDEwMDY0NAotLS0gYS9kcml2ZXJzL0tjb25maWcKKysrIGIvZHJpdmVycy9LY29u
-ZmlnCkBAIC0yNSw1ICsyNSw2IEBAIHNvdXJjZSAiZHJpdmVycy9ncGlvL0tjb25maWciCiBzb3Vy
-Y2UgImRyaXZlcnMvdzEvS2NvbmZpZyIKIHNvdXJjZSAiZHJpdmVycy9waW5jdHJsL0tjb25maWci
-CiBzb3VyY2UgImRyaXZlcnMvYnVzL0tjb25maWciCitzb3VyY2UgImRyaXZlcnMvZmlybXdhcmUv
-S2NvbmZpZyIKIAogZW5kbWVudQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9NYWtlZmlsZSBiL2RyaXZl
-cnMvTWFrZWZpbGUKaW5kZXggYmExZGM2ZC4uYmYwM2Q1NCAxMDA2NDQKLS0tIGEvZHJpdmVycy9N
-YWtlZmlsZQorKysgYi9kcml2ZXJzL01ha2VmaWxlCkBAIC0yNCwzICsyNCw0IEBAIG9iai0kKENP
-TkZJR19PRlRSRUUpICs9IG9mLwogb2JqLSQoQ09ORklHX1cxKSArPSB3MS8KIG9iai15ICs9IHBp
-bmN0cmwvCiBvYmoteSArPSBidXMvCitvYmoteSArPSBmaXJtd2FyZS8KZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvZmlybXdhcmUvS2NvbmZpZyBiL2RyaXZlcnMvZmlybXdhcmUvS2NvbmZpZwpuZXcgZmls
-ZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi4yOGExNzNiCi0tLSAvZGV2L251bGwKKysrIGIv
-ZHJpdmVycy9maXJtd2FyZS9LY29uZmlnCkBAIC0wLDAgKzEsMTEgQEAKK21lbnUgIkZpcm13YXJl
-IERyaXZlcnMiCisKK2NvbmZpZyBGSVJNV0FSRV9BTFRFUkFfU0VSSUFMCisJYm9vbCAiQWx0ZXJh
-IFNQSSBwcm9ncmFtbWluZyIKKwlkZXBlbmRzIG9uIE9GREVWSUNFCisJc2VsZWN0IEZJUk1XQVJF
-CisJaGVscAorCSAgUHJvZ3JhbW1pbmcgYW4gQWx0ZXJhIEZQR0EgdmlhIGEgZmV3IEdQSU9zIGZv
-ciB0aGUgY29udHJvbCBsaW5lcyBhbmQKKwkgIE1PU0ksIE1JU08gYW5kIGNsb2NrIGZyb20gYW4g
-U1BJIGludGVyZmFjZSBmb3IgdGhlIGRhdGEgbGluZXMKKworZW5kbWVudQpkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9maXJtd2FyZS9NYWtlZmlsZSBiL2RyaXZlcnMvZmlybXdhcmUvTWFrZWZpbGUKbmV3
-IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uZWM2YTVhMQotLS0gL2Rldi9udWxsCisr
-KyBiL2RyaXZlcnMvZmlybXdhcmUvTWFrZWZpbGUKQEAgLTAsMCArMSBAQAorb2JqLSQoQ09ORklH
-X0ZJUk1XQVJFX0FMVEVSQV9TRVJJQUwpICs9IGFsdGVyYV9zZXJpYWwubwpkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMgYi9kcml2ZXJzL2Zpcm13YXJlL2FsdGVy
-YV9zZXJpYWwuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi4wNDdiNmJkCi0t
-LSAvZGV2L251bGwKKysrIGIvZHJpdmVycy9maXJtd2FyZS9hbHRlcmFfc2VyaWFsLmMKQEAgLTAs
-MCArMSwzMDcgQEAKKy8qCisgKiBDb3B5cmlnaHQgKGMpIDIwMTMgSnVlcmdlbiBCZWlzZXJ0IDxr
-ZXJuZWxAcGVuZ3V0cm9uaXguZGU+LCBQZW5ndXRyb25peAorICoKKyAqIFRoaXMgcHJvZ3JhbSBp
-cyBmcmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5Cisg
-KiBpdCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZl
-cnNpb24gMgorICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24u
-CisgKgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQg
-d2lsbCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZl
-biB0aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1Mg
-Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGlj
-IExpY2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqLworCisjaW5jbHVkZSA8Y29tbW9uLmg+Cisj
-aW5jbHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPGRyaXZlci5oPgorI2luY2x1ZGUgPGZpcm13YXJl
-Lmg+CisjaW5jbHVkZSA8b2ZfZ3Bpby5oPgorI2luY2x1ZGUgPHhmdW5jcy5oPgorI2luY2x1ZGUg
-PG1hbGxvYy5oPgorI2luY2x1ZGUgPGdwaW8uaD4KKyNpbmNsdWRlIDxjbG9jay5oPgorI2luY2x1
-ZGUgPHNwaS9zcGkuaD4KKworI2luY2x1ZGUgPGZjbnRsLmg+CisjaW5jbHVkZSA8ZnMuaD4KKwor
-LyoKKyAqIFBoeXNpY2FsIHJlcXVpcmVtZW50czoKKyAqIC0gdGhyZWUgZnJlZSBHUElPcyBmb3Ig
-dGhlIHNpZ25hbHMgbkNPTkZJRywgQ09ORklHVVJFX0RPTkUsIG5TVEFUVVMKKyAqIC0gMzIgYml0
-IHBlciB3b3JkLCBMU0IgZmlyc3QgY2FwYWJsZSBTUEkgbWFzdGVyIChNT1NJICsgY2xvY2spCisg
-KgorICogRXhhbXBsZSBob3cgdG8gY29uZmlndXJlIHRoaXMgZHJpdmVyIHZpYSBkZXZpY2UgdHJl
-ZQorICoKKyAqCWZwZ2FAMCB7CisgKgkJY29tcGF0aWJsZSA9ICJhbHRlcmFfc2VyaWFsIjsKKyAq
-CQluc3RhdC1ncGlvID0gPCZncGlvNCAxOCAwPjsKKyAqCQljb25mZC1ncGlvID0gPCZncGlvNCAx
-OSAwPjsKKyAqCQluY29uZmlnLWdwaW8gPSA8JmdwaW80IDIwIDA+OworICoJCXNwaS1tYXgtZnJl
-cXVlbmN5ID0gPDEwMDAwMDAwPjsKKyAqCQlyZWcgPSA8MD47CisgKgl9OworICovCisKK3N0cnVj
-dCBmcGdhX3NwaSB7CisJc3RydWN0IGZpcm13YXJlX2hhbmRsZXIgZmg7CisJaW50IG5zdGF0X2dw
-aW87IC8qIGlucHV0IEdQSU8gdG8gcmVhZCB0aGUgc3RhdHVzIGxpbmUgKi8KKwlpbnQgY29uZmRf
-Z3BpbzsgLyogaW5wdXQgR1BJTyB0byByZWFkIHRoZSBjb25maWcgZG9uZSBsaW5lICovCisJaW50
-IG5jb25maWdfZ3BpbzsgLyogb3V0cHV0IEdQSU8gdG8gc3RhcnQgdGhlIEZQR0EncyBjb25maWcg
-Ki8KKwlzdHJ1Y3QgZGV2aWNlX2QgKmRldjsKKwlzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpOworCWJv
-b2wgcGFkZGluZ19kb25lOworfTsKKworc3RhdGljIGludCBhbHRlcmFfc3BpX29wZW4oc3RydWN0
-IGZpcm13YXJlX2hhbmRsZXIgKmZoKQoreworCXN0cnVjdCBmcGdhX3NwaSAqdGhpcyA9IGNvbnRh
-aW5lcl9vZihmaCwgc3RydWN0IGZwZ2Ffc3BpLCBmaCk7CisJc3RydWN0IGRldmljZV9kICpkZXYg
-PSB0aGlzLT5kZXY7CisJaW50IHJldDsKKworCWRldl9kYmcoZGV2LCAiSW5pdGlhdGluZyBwcm9n
-cmFtbWluZ1xuIik7CisKKwkvKiBpbml0aWF0ZSBhbiBGUEdBIHByb2dyYW1taW5nICovCisJZ3Bp
-b19zZXRfdmFsdWUodGhpcy0+bmNvbmZpZ19ncGlvLCAwKTsKKworCS8qCisJICogYWZ0ZXIgYWJv
-dXQgMiDCtXMgdGhlIEZQR0EgbXVzdCBhY2tub3dsZWRnZSB3aXRoCisJICogU1RBVFVTIGFuZCBD
-T05GSUcgRE9ORSBsaW5lcyBhdCBsb3cgbGV2ZWwKKwkgKi8KKwlyZXQgPSB3YWl0X29uX3RpbWVv
-dXQoMiAqIDEwMDAsCisJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDAp
-ICYmCisJCQkJKGdwaW9fZ2V0X3ZhbHVlKHRoaXMtPmNvbmZkX2dwaW8pID09IDApKTsKKworCWlm
-IChyZXQgIT0gMCkgeworCQlkZXZfZXJyKGRldiwgIkZQR0EgZG9lcyBub3QgYWNrbm93bGVkZ2Ug
-dGhlIHByb2dyYW1taW5nIGluaXRpYXRpb25cbiIpOworCQlpZiAoZ3Bpb19nZXRfdmFsdWUodGhp
-cy0+bnN0YXRfZ3BpbykpCisJCQlkZXZfZXJyKGRldiwgIlNUQVRVUyBpcyBzdGlsbCBoaWdoIVxu
-Iik7CisJCWlmIChncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9ncGlvKSkKKwkJCWRldl9lcnIo
-ZGV2LCAiQ09ORklHIERPTkUgaXMgc3RpbGwgaGlnaCFcbiIpOworCQlyZXR1cm4gcmV0OworCX0K
-KworCS8qIGFybSB0aGUgRlBHQSB0byBhd2FpdCBpdHMgbmV3IGZpcm13YXJlICovCisJZ3Bpb19z
-ZXRfdmFsdWUodGhpcy0+bmNvbmZpZ19ncGlvLCAxKTsKKworCS8qIG9uY2UgYWdhaW4sIHdlIG1p
-Z2h0IG5lZWQgcGFkZGluZyB0aGUgZGF0YSAqLworCXRoaXMtPnBhZGRpbmdfZG9uZSA9IGZhbHNl
-OworCisJLyoKKwkgKiBhZnRlciBhYm91dCAxNTA2IMK1cyB0aGUgRlBHQSBtdXN0IGFja25vd2xl
-ZGdlIHRoaXMgc3RlcAorCSAqIHdpdGggdGhlIFNUQVRVUyBsaW5lIGF0IGhpZ2ggbGV2ZWwKKwkg
-Ki8KKwlyZXQgPSB3YWl0X29uX3RpbWVvdXQoMTYwMCAqIDEwMDAsCisJCQkJZ3Bpb19nZXRfdmFs
-dWUodGhpcy0+bnN0YXRfZ3BpbykgPT0gMSk7CisJaWYgKHJldCAhPSAwKSB7CisJCWRldl9lcnIo
-ZGV2LCAiRlBHQSBkb2VzIG5vdCBhY2tub3dsZWRnZSB0aGUgcHJvZ3JhbW1pbmcgc3RhcnRcbiIp
-OworCQlyZXR1cm4gcmV0OworCX0KKworCWRldl9kYmcoZGV2LCAiSW5pdGlhdGluZyBwYXNzZWRc
-biIpOworCS8qIGF0IHRoZSBlbmQsIHdhaXQgYXQgbGVhc3QgMiDCtXMgcHJpb3IgYmVnaW5uaW5n
-IHdyaXRpbmcgZGF0YSAqLworCW5kZWxheSgyICogMTAwMCk7CisKKwlyZXR1cm4gMDsKK30KKwor
-c3RhdGljIGludCBhbHRlcmFfc3BpX3dyaXRlKHN0cnVjdCBmaXJtd2FyZV9oYW5kbGVyICpmaCwg
-Y29uc3Qgdm9pZCAqYnVmLCBzaXplX3Qgc3opCit7CisJc3RydWN0IGZwZ2Ffc3BpICp0aGlzID0g
-Y29udGFpbmVyX29mKGZoLCBzdHJ1Y3QgZnBnYV9zcGksIGZoKTsKKwlzdHJ1Y3QgZGV2aWNlX2Qg
-KmRldiA9IHRoaXMtPmRldjsKKwlzdHJ1Y3Qgc3BpX3RyYW5zZmVyIHRbMl07CisJc3RydWN0IHNw
-aV9tZXNzYWdlIG07CisJdTMyIGR1bW15OworCWludCByZXQ7CisKKwlwcmludGYoIiVzOiAlZFxu
-IiwgX19mdW5jX18sIHN6KTsKKworCXNwaV9tZXNzYWdlX2luaXQoJm0pOworCisJaWYgKHN6IDwg
-c2l6ZW9mKHUzMikpIHsKKwkJLyogc2ltcGxlIHBhZGRpbmcgKi8KKwkJZHVtbXkgPSAwOworCQlt
-ZW1jcHkoJmR1bW15LCBidWYsIHN6KTsKKwkJYnVmID0gJmR1bW15OworCQlzeiA9IHNpemVvZih1
-MzIpOworCQl0aGlzLT5wYWRkaW5nX2RvbmUgPSB0cnVlOworCX0KKworCXRbMF0udHhfYnVmID0g
-YnVmOworCXRbMF0ucnhfYnVmID0gTlVMTDsKKwl0WzBdLmxlbiA9IHN6OworCXNwaV9tZXNzYWdl
-X2FkZF90YWlsKCZ0WzBdLCAmbSk7CisKKwlpZiAoc3ogJiAweDMpIHsgLyogcGFkZGluZyByZXF1
-aXJlZD8gKi8KKwkJdTMyICp3b3JkX2J1ZiA9ICh1MzIgKilidWY7CisJCWR1bW15ID0gMDsKKwkJ
-bWVtY3B5KCZkdW1teSwgJndvcmRfYnVmW3N6ID4+IDJdLCBzeiAmIDB4Myk7CisJCXRbMF0ubGVu
-ICY9IH4weDAzOworCQl0WzFdLnR4X2J1ZiA9ICZkdW1teTsKKwkJdFsxXS5yeF9idWYgPSBOVUxM
-OworCQl0WzFdLmxlbiA9IHNpemVvZih1MzIpOworCQlzcGlfbWVzc2FnZV9hZGRfdGFpbCgmdFsx
-XSwgJm0pOworCQl0aGlzLT5wYWRkaW5nX2RvbmUgPSB0cnVlOworCX0KKworCXJldCA9IHNwaV9z
-eW5jKHRoaXMtPnNwaSwgJm0pOworCWlmIChyZXQgIT0gMCkKKwkJZGV2X2VycihkZXYsICJwcm9n
-cmFtbWluZyBmYWlsdXJlXG4iKTsKKworCXJldHVybiByZXQ7Cit9CisKK3N0YXRpYyBpbnQgYWx0
-ZXJhX3NwaV9jbG9zZShzdHJ1Y3QgZmlybXdhcmVfaGFuZGxlciAqZmgpCit7CisJc3RydWN0IGZw
-Z2Ffc3BpICp0aGlzID0gY29udGFpbmVyX29mKGZoLCBzdHJ1Y3QgZnBnYV9zcGksIGZoKTsKKwlz
-dHJ1Y3QgZGV2aWNlX2QgKmRldiA9IHRoaXMtPmRldjsKKwlzdHJ1Y3Qgc3BpX3RyYW5zZmVyIHQ7
-CisJc3RydWN0IHNwaV9tZXNzYWdlIG07CisJdTMyIGR1bW15ID0gMDsKKwlpbnQgcmV0OworCisJ
-ZGV2X2RiZyhkZXYsICJGaW5hbGl6ZSBwcm9ncmFtbWluZ1xuIik7CisKKwlpZiAodGhpcy0+cGFk
-ZGluZ19kb25lID09IGZhbHNlKSB7CisJCXNwaV9tZXNzYWdlX2luaXQoJm0pOworCQl0LnR4X2J1
-ZiA9ICZkdW1teTsKKwkJdC5yeF9idWYgPSBOVUxMOworCQl0LmxlbiA9IHNpemVvZihkdW1teSk7
-CisJCXNwaV9tZXNzYWdlX2FkZF90YWlsKCZ0LCAmbSk7CisKKwkJcmV0ID0gc3BpX3N5bmModGhp
-cy0+c3BpLCAmbSk7CisJCWlmIChyZXQgIT0gMCkKKwkJCWRldl9lcnIoZGV2LCAicHJvZ3JhbW1p
-bmcgZmFpbHVyZVxuIik7CisJfQorCisJLyoKKwkgKiB3aGVuIHByb2dyYW1taW5nIHdhcyBzdWNj
-ZXNzZnVsbHksCisJICogYm90aCBzdGF0dXMgbGluZXMgc2hvdWxkIGJlIGF0IGhpZ2ggbGV2ZWwK
-KwkgKi8KKwlyZXQgPSB3YWl0X29uX3RpbWVvdXQoMTAgKiAxMDAwLAorCQkJCShncGlvX2dldF92
-YWx1ZSh0aGlzLT5uc3RhdF9ncGlvKSA9PSAxKSAmJgorCQkJCShncGlvX2dldF92YWx1ZSh0aGlz
-LT5jb25mZF9ncGlvKSA9PSAxKSk7CisJaWYgKHJldCA9PSAwKSB7CisJCWRldl9kYmcoZGV2LCAi
-UHJvZ3JhbW1pbmcgc3VjY2Vzc2Z1bGxcbiIpOworCQlyZXR1cm4gcmV0OworCX0KKworCWRldl9l
-cnIoZGV2LCAiUHJvZ3JhbW1pbmcgZmFpbGVkIGR1ZSB0byB0aW1lIG91dFxuIik7CisJaWYgKGdw
-aW9fZ2V0X3ZhbHVlKHRoaXMtPm5zdGF0X2dwaW8pID09IDApCisJCWRldl9lcnIoZGV2LCAiU1RB
-VFVTIGlzIHN0aWxsIGxvdyFcbiIpOworCWlmIChncGlvX2dldF92YWx1ZSh0aGlzLT5jb25mZF9n
-cGlvKSA9PSAwKQorCQlkZXZfZXJyKGRldiwgIkNPTkZJRyBET05FIGlzIHN0aWxsIGxvdyFcbiIp
-OworCisJcmV0dXJuIC1FSU87Cit9CisKK3N0YXRpYyBpbnQgYWx0ZXJhX3NwaV9vZihzdHJ1Y3Qg
-ZGV2aWNlX2QgKmRldiwgc3RydWN0IGZwZ2Ffc3BpICp0aGlzKQoreworCXN0cnVjdCBkZXZpY2Vf
-bm9kZSAqbiA9IGRldi0+ZGV2aWNlX25vZGU7CisJY29uc3QgY2hhciAqbmFtZTsKKwlpbnQgcmV0
-OworCisJbmFtZSA9ICJuc3RhdC1ncGlvIjsKKwl0aGlzLT5uc3RhdF9ncGlvID0gb2ZfZ2V0X25h
-bWVkX2dwaW8obiwgbmFtZSwgMCk7CisJaWYgKHRoaXMtPm5zdGF0X2dwaW8gPCAwKSB7CisJCXJl
-dCA9IHRoaXMtPm5zdGF0X2dwaW87CisJCWdvdG8gb3V0OworCX0KKworCW5hbWUgPSAiY29uZmQt
-Z3BpbyI7CisJdGhpcy0+Y29uZmRfZ3BpbyA9IG9mX2dldF9uYW1lZF9ncGlvKG4sIG5hbWUsIDAp
-OworCWlmICh0aGlzLT5jb25mZF9ncGlvIDwgMCkgeworCQlyZXQgPSB0aGlzLT5jb25mZF9ncGlv
-OworCQlnb3RvIG91dDsKKwl9CisKKwluYW1lID0gIm5jb25maWctZ3BpbyI7CisJdGhpcy0+bmNv
-bmZpZ19ncGlvID0gb2ZfZ2V0X25hbWVkX2dwaW8obiwgbmFtZSwgMCk7CisJaWYgKHRoaXMtPm5j
-b25maWdfZ3BpbyA8IDApIHsKKwkJcmV0ID0gdGhpcy0+bmNvbmZpZ19ncGlvOworCQlnb3RvIG91
-dDsKKwl9CisKKwkvKiBpbml0IHRvIHBhc3NpdmUgYW5kIHNhbmUgdmFsdWVzICovCisJZ3Bpb19k
-aXJlY3Rpb25fb3V0cHV0KHRoaXMtPm5jb25maWdfZ3BpbywgMSk7CisJZ3Bpb19kaXJlY3Rpb25f
-aW5wdXQodGhpcy0+bnN0YXRfZ3Bpbyk7CisJZ3Bpb19kaXJlY3Rpb25faW5wdXQodGhpcy0+Y29u
-ZmRfZ3Bpbyk7CisKKwlyZXR1cm4gMDsKKworb3V0OgorCWRldl9lcnIoZGV2LCAiQ2Fubm90IHJl
-cXVlc3QgXCIlc1wiIGdwaW86ICVzXG4iLCBuYW1lLCBzdHJlcnJvcigtcmV0KSk7CisKKwlyZXR1
-cm4gcmV0OworfQorCitzdGF0aWMgdm9pZCBhbHRlcmFfc3BpX2luaXRfbW9kZShzdHJ1Y3Qgc3Bp
-X2RldmljZSAqc3BpKQoreworCXNwaS0+Yml0c19wZXJfd29yZCA9IDMyOworCS8qCisJICogQ1BI
-QSA9IENQT0wgPSAwCisJICogdGhlIEZQR0EgZXhwZWN0cyBpdHMgZmlybXdhcmUgZGF0YSB3aXRo
-IExTQiBmaXJzdAorCSAqLworCXNwaS0+bW9kZSA9IFNQSV9NT0RFXzAgfCBTUElfTFNCX0ZJUlNU
-OworfQorCitzdGF0aWMgaW50IGFsdGVyYV9zcGlfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
-Cit7CisJaW50IHJjOworCXN0cnVjdCBmcGdhX3NwaSAqdGhpczsKKwlzdHJ1Y3QgZmlybXdhcmVf
-aGFuZGxlciAqZmg7CisJY29uc3QgY2hhciAqYWxpYXMgPSBvZl9hbGlhc19nZXQoZGV2LT5kZXZp
-Y2Vfbm9kZSk7CisJY29uc3QgY2hhciAqbW9kZWwgPSBOVUxMOworCisJZGV2X2RiZyhkZXYsICJQ
-cm9iaW5nIEZQR0EgZmlybXdhcmUgcHJvZ3JhbW1lclxuIik7CisKKwl0aGlzID0geHphbGxvYyhz
-aXplb2YoKnRoaXMpKTsKKwlmaCA9ICZ0aGlzLT5maDsKKworCXJjID0gYWx0ZXJhX3NwaV9vZihk
-ZXYsIHRoaXMpOworCWlmIChyYyAhPSAwKQorCQlnb3RvIG91dDsKKworCWlmIChhbGlhcykKKwkJ
-ZmgtPmlkID0geHN0cmR1cChhbGlhcyk7CisJZWxzZQorCQlmaC0+aWQgPSB4c3RyZHVwKCJhbHRl
-cmEtZnBnYSIpOworCisJZmgtPm9wZW4gPSBhbHRlcmFfc3BpX29wZW47CisJZmgtPndyaXRlID0g
-YWx0ZXJhX3NwaV93cml0ZTsKKwlmaC0+Y2xvc2UgPSBhbHRlcmFfc3BpX2Nsb3NlOworCW9mX3By
-b3BlcnR5X3JlYWRfc3RyaW5nKGRldi0+ZGV2aWNlX25vZGUsICJjb21wYXRpYmxlIiwgJm1vZGVs
-KTsKKwlpZiAobW9kZWwpCisJCWZoLT5tb2RlbCA9IHhzdHJkdXAobW9kZWwpOworCWZoLT5kZXYg
-PSBkZXY7CisKKwl0aGlzLT5zcGkgPSAoc3RydWN0IHNwaV9kZXZpY2UgKilkZXYtPnR5cGVfZGF0
-YTsKKwlhbHRlcmFfc3BpX2luaXRfbW9kZSh0aGlzLT5zcGkpOworCXRoaXMtPmRldiA9IGRldjsK
-KworCWRldl9kYmcoZGV2LCAiUmVnaXN0ZXJpbmcgRlBHQSBmaXJtd2FyZSBwcm9ncmFtbWVyXG4i
-KTsKKwlyYyA9IGZpcm13YXJlbWdyX3JlZ2lzdGVyKGZoKTsKKwlpZiAocmMgIT0gMCkgeworCQlm
-cmVlKHRoaXMpOworCQlnb3RvIG91dDsKKwl9CisKKwlyZXR1cm4gMDsKK291dDoKKwlmcmVlKGZo
-LT5pZCk7CisJZnJlZSh0aGlzKTsKKworCXJldHVybiByYzsKK30KKworc3RhdGljIHN0cnVjdCBv
-Zl9kZXZpY2VfaWQgYWx0ZXJhX3NwaV9pZF90YWJsZVtdID0geworCXsKKwkJLmNvbXBhdGlibGUg
-PSAiYWx0cixwYXNzaXZlLXNlcmlhbCIsCisJfSwKK307CisKK3N0YXRpYyBzdHJ1Y3QgZHJpdmVy
-X2QgYWx0ZXJhX3NwaV9kcml2ZXIgPSB7CisJLm5hbWUgPSAiYWx0ZXJhLWZwZ2EiLAorCS5vZl9j
-b21wYXRpYmxlID0gRFJWX09GX0NPTVBBVChhbHRlcmFfc3BpX2lkX3RhYmxlKSwKKwkucHJvYmUg
-PSBhbHRlcmFfc3BpX3Byb2JlLAorfTsKK2RldmljZV9zcGlfZHJpdmVyKGFsdGVyYV9zcGlfZHJp
-dmVyKTsKLS0gCjEuOC40LjIKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5v
-cmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On 15:31 Tue 12 Nov     , Sascha Hauer wrote:
+> From: Juergen Beisert <jbe@pengutronix.de>
+> =
+
+> This handler uses a regular SPI master and a few GPIOs to program an
+> Altera FPGA in serial mode.
+> =
+
+> Signed-off-by: Juergen Beisert <jbe@pengutronix.de>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/Kconfig                  |   1 +
+>  drivers/Makefile                 |   1 +
+>  drivers/firmware/Kconfig         |  11 ++
+>  drivers/firmware/Makefile        |   1 +
+>  drivers/firmware/altera_serial.c | 307 +++++++++++++++++++++++++++++++++=
+++++++
+>  5 files changed, 321 insertions(+)
+>  create mode 100644 drivers/firmware/Kconfig
+>  create mode 100644 drivers/firmware/Makefile
+>  create mode 100644 drivers/firmware/altera_serial.c
+> =
+
+> diff --git a/drivers/Kconfig b/drivers/Kconfig
+> index d34d2c7..71d840c 100644
+> --- a/drivers/Kconfig
+> +++ b/drivers/Kconfig
+> @@ -25,5 +25,6 @@ source "drivers/gpio/Kconfig"
+>  source "drivers/w1/Kconfig"
+>  source "drivers/pinctrl/Kconfig"
+>  source "drivers/bus/Kconfig"
+> +source "drivers/firmware/Kconfig"
+>  =
+
+>  endmenu
+> diff --git a/drivers/Makefile b/drivers/Makefile
+> index ba1dc6d..bf03d54 100644
+> --- a/drivers/Makefile
+> +++ b/drivers/Makefile
+> @@ -24,3 +24,4 @@ obj-$(CONFIG_OFTREE) +=3D of/
+>  obj-$(CONFIG_W1) +=3D w1/
+>  obj-y +=3D pinctrl/
+>  obj-y +=3D bus/
+> +obj-y +=3D firmware/
+> diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+> new file mode 100644
+> index 0000000..28a173b
+> --- /dev/null
+> +++ b/drivers/firmware/Kconfig
+> @@ -0,0 +1,11 @@
+> +menu "Firmware Drivers"
+> +
+> +config FIRMWARE_ALTERA_SERIAL
+> +	bool "Altera SPI programming"
+> +	depends on OFDEVICE
+> +	select FIRMWARE
+> +	help
+> +	  Programming an Altera FPGA via a few GPIOs for the control lines and
+> +	  MOSI, MISO and clock from an SPI interface for the data lines
+> +
+> +endmenu
+> diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
+> new file mode 100644
+> index 0000000..ec6a5a1
+> --- /dev/null
+> +++ b/drivers/firmware/Makefile
+> @@ -0,0 +1 @@
+> +obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) +=3D altera_serial.o
+> diff --git a/drivers/firmware/altera_serial.c b/drivers/firmware/altera_s=
+erial.c
+> new file mode 100644
+> index 0000000..047b6bd
+> --- /dev/null
+> +++ b/drivers/firmware/altera_serial.c
+> @@ -0,0 +1,307 @@
+> +/*
+> + * Copyright (c) 2013 Juergen Beisert <kernel@pengutronix.de>, Pengutron=
+ix
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2
+> + * as published by the Free Software Foundation.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <common.h>
+> +#include <init.h>
+> +#include <driver.h>
+> +#include <firmware.h>
+> +#include <of_gpio.h>
+> +#include <xfuncs.h>
+> +#include <malloc.h>
+> +#include <gpio.h>
+> +#include <clock.h>
+> +#include <spi/spi.h>
+> +
+> +#include <fcntl.h>
+> +#include <fs.h>
+> +
+> +/*
+> + * Physical requirements:
+> + * - three free GPIOs for the signals nCONFIG, CONFIGURE_DONE, nSTATUS
+> + * - 32 bit per word, LSB first capable SPI master (MOSI + clock)
+> + *
+> + * Example how to configure this driver via device tree
+> + *
+> + *	fpga@0 {
+> + *		compatible =3D "altera_serial";
+> + *		nstat-gpio =3D <&gpio4 18 0>;
+> + *		confd-gpio =3D <&gpio4 19 0>;
+> + *		nconfig-gpio =3D <&gpio4 20 0>;
+you are missing on 's' to gpio mandatory for all the gpios binding
+
+Best Regards,
+J.
+> + *		spi-max-frequency =3D <10000000>;
+> + *		reg =3D <0>;
+> + *	};
+> + */
+> +
+> +struct fpga_spi {
+> +	struct firmware_handler fh;
+> +	int nstat_gpio; /* input GPIO to read the status line */
+> +	int confd_gpio; /* input GPIO to read the config done line */
+> +	int nconfig_gpio; /* output GPIO to start the FPGA's config */
+> +	struct device_d *dev;
+> +	struct spi_device *spi;
+> +	bool padding_done;
+> +};
+> +
+> +static int altera_spi_open(struct firmware_handler *fh)
+> +{
+> +	struct fpga_spi *this =3D container_of(fh, struct fpga_spi, fh);
+> +	struct device_d *dev =3D this->dev;
+> +	int ret;
+> +
+> +	dev_dbg(dev, "Initiating programming\n");
+> +
+> +	/* initiate an FPGA programming */
+> +	gpio_set_value(this->nconfig_gpio, 0);
+> +
+> +	/*
+> +	 * after about 2 =B5s the FPGA must acknowledge with
+> +	 * STATUS and CONFIG DONE lines at low level
+> +	 */
+> +	ret =3D wait_on_timeout(2 * 1000,
+> +				(gpio_get_value(this->nstat_gpio) =3D=3D 0) &&
+> +				(gpio_get_value(this->confd_gpio) =3D=3D 0));
+> +
+> +	if (ret !=3D 0) {
+> +		dev_err(dev, "FPGA does not acknowledge the programming initiation\n");
+> +		if (gpio_get_value(this->nstat_gpio))
+> +			dev_err(dev, "STATUS is still high!\n");
+> +		if (gpio_get_value(this->confd_gpio))
+> +			dev_err(dev, "CONFIG DONE is still high!\n");
+> +		return ret;
+> +	}
+> +
+> +	/* arm the FPGA to await its new firmware */
+> +	gpio_set_value(this->nconfig_gpio, 1);
+no one check the return of gpio_set but we need to
+
+on a i2c-gpio it might fail
+> +
+> +	/* once again, we might need padding the data */
+> +	this->padding_done =3D false;
+> +
+> +	/*
+> +	 * after about 1506 =B5s the FPGA must acknowledge this step
+> +	 * with the STATUS line at high level
+> +	 */
+> +	ret =3D wait_on_timeout(1600 * 1000,
+> +				gpio_get_value(this->nstat_gpio) =3D=3D 1);
+> +	if (ret !=3D 0) {
+> +		dev_err(dev, "FPGA does not acknowledge the programming start\n");
+> +		return ret;
+> +	}
+> +
+> +	dev_dbg(dev, "Initiating passed\n");
+> +	/* at the end, wait at least 2 =B5s prior beginning writing data */
+> +	ndelay(2 * 1000);
+so udelay(2);
+> +
+> +	return 0;
+> +}
+> +
+> +static int altera_spi_write(struct firmware_handler *fh, const void *buf=
+, size_t sz)
+> +{
+> +	struct fpga_spi *this =3D container_of(fh, struct fpga_spi, fh);
+> +	struct device_d *dev =3D this->dev;
+> +	struct spi_transfer t[2];
+> +	struct spi_message m;
+> +	u32 dummy;
+> +	int ret;
+> +
+> +	printf("%s: %d\n", __func__, sz);
+> +
+> +	spi_message_init(&m);
+> +
+> +	if (sz < sizeof(u32)) {
+> +		/* simple padding */
+> +		dummy =3D 0;
+> +		memcpy(&dummy, buf, sz);
+> +		buf =3D &dummy;
+> +		sz =3D sizeof(u32);
+> +		this->padding_done =3D true;
+> +	}
+> +
+> +	t[0].tx_buf =3D buf;
+> +	t[0].rx_buf =3D NULL;
+> +	t[0].len =3D sz;
+> +	spi_message_add_tail(&t[0], &m);
+> +
+> +	if (sz & 0x3) { /* padding required? */
+> +		u32 *word_buf =3D (u32 *)buf;
+> +		dummy =3D 0;
+> +		memcpy(&dummy, &word_buf[sz >> 2], sz & 0x3);
+> +		t[0].len &=3D ~0x03;
+> +		t[1].tx_buf =3D &dummy;
+> +		t[1].rx_buf =3D NULL;
+> +		t[1].len =3D sizeof(u32);
+> +		spi_message_add_tail(&t[1], &m);
+> +		this->padding_done =3D true;
+> +	}
+> +
+> +	ret =3D spi_sync(this->spi, &m);
+> +	if (ret !=3D 0)
+> +		dev_err(dev, "programming failure\n");
+> +
+> +	return ret;
+> +}
+> +
+> +static int altera_spi_close(struct firmware_handler *fh)
+> +{
+> +	struct fpga_spi *this =3D container_of(fh, struct fpga_spi, fh);
+> +	struct device_d *dev =3D this->dev;
+> +	struct spi_transfer t;
+> +	struct spi_message m;
+> +	u32 dummy =3D 0;
+> +	int ret;
+> +
+> +	dev_dbg(dev, "Finalize programming\n");
+> +
+> +	if (this->padding_done =3D=3D false) {
+> +		spi_message_init(&m);
+> +		t.tx_buf =3D &dummy;
+> +		t.rx_buf =3D NULL;
+> +		t.len =3D sizeof(dummy);
+> +		spi_message_add_tail(&t, &m);
+> +
+> +		ret =3D spi_sync(this->spi, &m);
+> +		if (ret !=3D 0)
+> +			dev_err(dev, "programming failure\n");
+> +	}
+> +
+> +	/*
+> +	 * when programming was successfully,
+> +	 * both status lines should be at high level
+> +	 */
+> +	ret =3D wait_on_timeout(10 * 1000,
+> +				(gpio_get_value(this->nstat_gpio) =3D=3D 1) &&
+> +				(gpio_get_value(this->confd_gpio) =3D=3D 1));
+> +	if (ret =3D=3D 0) {
+> +		dev_dbg(dev, "Programming successfull\n");
+> +		return ret;
+> +	}
+> +
+> +	dev_err(dev, "Programming failed due to time out\n");
+> +	if (gpio_get_value(this->nstat_gpio) =3D=3D 0)
+> +		dev_err(dev, "STATUS is still low!\n");
+> +	if (gpio_get_value(this->confd_gpio) =3D=3D 0)
+> +		dev_err(dev, "CONFIG DONE is still low!\n");
+> +
+> +	return -EIO;
+> +}
+> +
+> +static int altera_spi_of(struct device_d *dev, struct fpga_spi *this)
+> +{
+> +	struct device_node *n =3D dev->device_node;
+> +	const char *name;
+> +	int ret;
+> +
+> +	name =3D "nstat-gpio";
+> +	this->nstat_gpio =3D of_get_named_gpio(n, name, 0);
+> +	if (this->nstat_gpio < 0) {
+> +		ret =3D this->nstat_gpio;
+> +		goto out;
+> +	}
+> +
+> +	name =3D "confd-gpio";
+> +	this->confd_gpio =3D of_get_named_gpio(n, name, 0);
+> +	if (this->confd_gpio < 0) {
+> +		ret =3D this->confd_gpio;
+> +		goto out;
+> +	}
+> +
+> +	name =3D "nconfig-gpio";
+> +	this->nconfig_gpio =3D of_get_named_gpio(n, name, 0);
+> +	if (this->nconfig_gpio < 0) {
+> +		ret =3D this->nconfig_gpio;
+> +		goto out;
+> +	}
+> +
+> +	/* init to passive and sane values */
+> +	gpio_direction_output(this->nconfig_gpio, 1);
+> +	gpio_direction_input(this->nstat_gpio);
+> +	gpio_direction_input(this->confd_gpio);
+we need to check the return and request the gpio correctly
+> +
+> +	return 0;
+> +
+> +out:
+> +	dev_err(dev, "Cannot request \"%s\" gpio: %s\n", name, strerror(-ret));
+> +
+> +	return ret;
+> +}
+> +
+> +static void altera_spi_init_mode(struct spi_device *spi)
+> +{
+> +	spi->bits_per_word =3D 32;
+> +	/*
+> +	 * CPHA =3D CPOL =3D 0
+> +	 * the FPGA expects its firmware data with LSB first
+> +	 */
+> +	spi->mode =3D SPI_MODE_0 | SPI_LSB_FIRST;
+> +}
+> +
+> +static int altera_spi_probe(struct device_d *dev)
+> +{
+> +	int rc;
+> +	struct fpga_spi *this;
+> +	struct firmware_handler *fh;
+> +	const char *alias =3D of_alias_get(dev->device_node);
+> +	const char *model =3D NULL;
+> +
+> +	dev_dbg(dev, "Probing FPGA firmware programmer\n");
+> +
+> +	this =3D xzalloc(sizeof(*this));
+> +	fh =3D &this->fh;
+> +
+> +	rc =3D altera_spi_of(dev, this);
+> +	if (rc !=3D 0)
+> +		goto out;
+> +
+> +	if (alias)
+> +		fh->id =3D xstrdup(alias);
+> +	else
+> +		fh->id =3D xstrdup("altera-fpga");
+> +
+> +	fh->open =3D altera_spi_open;
+> +	fh->write =3D altera_spi_write;
+> +	fh->close =3D altera_spi_close;
+> +	of_property_read_string(dev->device_node, "compatible", &model);
+> +	if (model)
+> +		fh->model =3D xstrdup(model);
+> +	fh->dev =3D dev;
+> +
+> +	this->spi =3D (struct spi_device *)dev->type_data;
+> +	altera_spi_init_mode(this->spi);
+> +	this->dev =3D dev;
+> +
+> +	dev_dbg(dev, "Registering FPGA firmware programmer\n");
+> +	rc =3D firmwaremgr_register(fh);
+> +	if (rc !=3D 0) {
+> +		free(this);
+> +		goto out;
+> +	}
+> +
+> +	return 0;
+> +out:
+> +	free(fh->id);
+> +	free(this);
+> +
+> +	return rc;
+> +}
+> +
+> +static struct of_device_id altera_spi_id_table[] =3D {
+> +	{
+> +		.compatible =3D "altr,passive-serial",
+> +	},
+> +};
+> +
+> +static struct driver_d altera_spi_driver =3D {
+> +	.name =3D "altera-fpga",
+> +	.of_compatible =3D DRV_OF_COMPAT(altera_spi_id_table),
+> +	.probe =3D altera_spi_probe,
+> +};
+> +device_spi_driver(altera_spi_driver);
+> -- =
+
+> 1.8.4.2
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
