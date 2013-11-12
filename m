@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp31.i.mail.ru ([94.100.177.91])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vg5r3-0002TQ-7I
+ id 1Vg5r3-0002TP-7J
  for barebox@lists.infradead.org; Tue, 12 Nov 2013 04:45:34 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Tue, 12 Nov 2013 08:45:02 +0400
-Message-Id: <1384231502-1101-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1384231502-1101-1-git-send-email-shc_work@mail.ru>
-References: <1384231502-1101-1-git-send-email-shc_work@mail.ru>
+Date: Tue, 12 Nov 2013 08:45:01 +0400
+Message-Id: <1384231502-1101-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,28 +19,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX boards: Remove duplicate dependency of
- ARCH_IMX21 for IMX_IIM
+Subject: [PATCH 1/2] ARM: i.MX boards: Remove useless select
 To: barebox@lists.infradead.org
+
+Symbols HAVE_DEFAULT_ENVIRONMENT_NEW & HAVE_PBL_MULTI_IMAGES
+are already selected by IMX_MULTI_BOARDS.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-imx/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/Kconfig | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 33108ac..e3fd6bd 100644
+index aa650f8..33108ac 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -562,7 +562,7 @@ config ARCH_IMX_USBLOADER
- 
- config IMX_IIM
- 	tristate "IIM fusebox device"
--	depends on !ARCH_IMX21 && !ARCH_IMX21
-+	depends on !ARCH_IMX21
+@@ -184,8 +184,6 @@ if IMX_MULTI_BOARDS
+ config MACH_EFIKA_MX_SMARTBOOK
+ 	bool "Efika MX smartbook"
+ 	select ARCH_IMX51
+-	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select HAVE_PBL_MULTI_IMAGES
  	help
- 	  Device driver for the IC Identification Module (IIM) fusebox. Use the
- 	  regular md/mw commands to program and read the fusebox.
+ 	  Choose this to compile barebox for the Efika MX Smartbook
+ 
+@@ -208,8 +206,6 @@ config MACH_DFI_FS700_M60
+ config MACH_REALQ7
+ 	bool "DataModul i.MX6Q Real Qseven Board"
+ 	select ARCH_IMX6
+-	select HAVE_DEFAULT_ENVIRONMENT_NEW
+-	select HAVE_PBL_MULTI_IMAGES
+ 
+ config MACH_GK802
+ 	bool "Zealz GK802 Mini PC"
 -- 
 1.8.3.2
 
