@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgEOZ-000611-WC
+ id 1VgEOZ-00061A-WA
  for barebox@lists.infradead.org; Tue, 12 Nov 2013 13:52:44 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1VgEOD-0003SU-FZ
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 14:52:21 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1VgEOD-000376-ES
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 14:52:21 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 14:52:17 +0100
-Message-Id: <1384264339-15986-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
-References: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 12 Nov 2013 14:52:09 +0100
+Message-Id: <1384264339-15986-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,63 +26,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/10] hush: Be more informative on syntax error
+Subject: hush patches
 To: barebox@lists.infradead.org
 
-Print the token that led to a syntax error, at least for the common
-case.
+This contains several hush cleanup patches I came across while trying
+to fix the weird behaviour that an interactive hush currently exits
+on a syntax error. This is fixed and also we now get a nice
+'syntax error: unexpected token `x'' in some cases. Hopefully no other
+functional changes introduced.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/hush.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+----------------------------------------------------------------
+Sascha Hauer (10):
+      hush: fix exit on syntax error behaviour
+      hush: refactor readline call
+      readline: remove unused variable
+      hush: refactor get_user_input()
+      hush: refactor file_get()
+      hush: rename __promptme to interrupt
+      consolidate syntax() and syntax_err()
+      hush: Be more informative on syntax error
+      hush: use standard ARRAY_SIZE
+      hush: refactor reserved_word()
 
-diff --git a/common/hush.c b/common/hush.c
-index 3c4d244..35c3c3c 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -264,8 +264,27 @@ struct in_str {
- 
- #define final_printf debug
- 
--static void syntax(void) {
--	 printf("syntax error\n");
-+static void syntax(void)
-+{
-+	printf("syntax error\n");
-+}
-+
-+static void syntaxf(const char *fmt, ...)
-+{
-+	va_list args;
-+
-+	printf("syntax error: ");
-+
-+	va_start(args, fmt);
-+
-+	vprintf(fmt, args);
-+
-+	va_end(args);
-+}
-+
-+static void syntax_unexpected_token(const char *token)
-+{
-+	syntaxf("unexpected token `%s'\n", token);
- }
- 
- /*   o_string manipulation: */
-@@ -1201,7 +1220,7 @@ static int reserved_word(o_string *dest, struct p_context *ctx)
- 				initialize_context(ctx);
- 				ctx->stack = new;
- 			} else if (ctx->w == RES_NONE || !(ctx->old_flag & (1 << r->code))) {
--				syntax();
-+				syntax_unexpected_token(r->literal);
- 				ctx->w = RES_SNTX;
- 				b_reset(dest);
- 				return 1;
--- 
-1.8.4.2
-
+ common/hush.c  | 188 ++++++++++++++++++++++++++++++++-------------------------
+ lib/readline.c |   3 +-
+ 2 files changed, 108 insertions(+), 83 deletions(-)
 
 _______________________________________________
 barebox mailing list
