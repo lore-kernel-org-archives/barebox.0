@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.codeaurora.org ([198.145.11.231])
+Received: from mail-ea0-x22d.google.com ([2a00:1450:4013:c01::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgGiZ-0003Wy-S9
- for barebox@lists.infradead.org; Tue, 12 Nov 2013 16:21:32 +0000
-Mime-Version: 1.0 (Mac OS X Mail 7.0 \(1822\))
-From: Kumar Gala <galak@codeaurora.org>
-In-Reply-To: <1384266701-12608-4-git-send-email-s.hauer@pengutronix.de>
-Date: Tue, 12 Nov 2013 10:21:02 -0600
-Message-Id: <C90E2E36-D168-4374-B420-38B2BB1914BD@codeaurora.org>
-References: <1384266701-12608-1-git-send-email-s.hauer@pengutronix.de>
- <1384266701-12608-4-git-send-email-s.hauer@pengutronix.de>
+ id 1VgL2h-000331-9z
+ for barebox@lists.infradead.org; Tue, 12 Nov 2013 20:58:36 +0000
+Received: by mail-ea0-f173.google.com with SMTP id g10so3855107eak.32
+ for <barebox@lists.infradead.org>; Tue, 12 Nov 2013 12:58:12 -0800 (PST)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Tue, 12 Nov 2013 21:58:04 +0100
+Message-Id: <1384289884-8832-2-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1384289884-8832-1-git-send-email-sebastian.hesselbarth@gmail.com>
+References: <1384289884-8832-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +18,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] DT: Add binding for Altera FPGAs in passive-serial
- mode
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, jbe@pengutronix.de, devicetree@vger.kernel.org
+Subject: [PATCH 2/2] scripts: kwbimage: fix mis-sized payload
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
+Image payload size should always be a multiple of 4 bytes. This fixes
+mis-sized image payload by allocating payload buffer as multiple of 4
+but load true filesize into the payload buffer.
 
-On Nov 12, 2013, at 8:31 AM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+Cc: barebox@lists.infradead.org
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ scripts/kwbimage.c |   16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: devicetree@vger.kernel.org
-> ---
-> .../devicetree/bindings/firmware/altr,passive-serial.txt    | 13 ++++++++=
-+++++
-> 1 file changed, 13 insertions(+)
-> create mode 100644 Documentation/devicetree/bindings/firmware/altr,passiv=
-e-serial.txt
-> =
-
-> diff --git a/Documentation/devicetree/bindings/firmware/altr,passive-seri=
-al.txt b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-> new file mode 100644
-> index 0000000..6d40c91
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/firmware/altr,passive-serial.txt
-> @@ -0,0 +1,13 @@
-> +Altera FPGAs in passive serial mode
-> +-----------------------------------
-> +
-> +This binding defines the control interface to Altera FPGAs in
-> +passive serial mode. This is used to upload the firmware and
-> +to start the FPGA.
-> +
-> +Required properties:
-> +- compatible: shall be "altr,passive-serial=94
-
-This doesn=92t seem quite descriptive enough, easy to confuse with a serial=
- port.
-
-> +- reg: SPI chip select
-
-Is this a SPI device than?
-
-> +- nstat-gpio: Specify GPIO for controlling the nstat pin
-> +- confd-gpio: Specify GPIO for controlling the confd pin
-> +- nconfig-gpio: Specify GPIO for controlling the nconfig pin
-> -- =
-
-> 1.8.4.2
-> =
-
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 4ebb07f..82cf21c 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -685,6 +685,7 @@ static int image_create_payload(void *payload_start, size_t payloadsz,
+ 				const char *payload_filename)
+ {
+ 	FILE *payload;
++	struct stat s;
+ 	uint32_t *payload_checksum =
+ 		(uint32_t *) (payload_start + payloadsz);
+ 	int ret;
+@@ -696,7 +697,14 @@ static int image_create_payload(void *payload_start, size_t payloadsz,
+ 		return -1;
+ 	}
+ 
+-	ret = fread(payload_start, payloadsz, 1, payload);
++	ret = stat(payload_filename, &s);
++	if (ret < 0) {
++		fprintf(stderr, "Cannot stat payload file %s\n",
++			payload_filename);
++		return ret;
++	}
++
++	ret = fread(payload_start, s.st_size, 1, payload);
+ 	if (ret != 1) {
+ 		fprintf(stderr, "Cannot read payload file %s\n",
+ 			payload_filename);
+@@ -747,7 +755,8 @@ static void *image_create_v0(struct image_cfg_element *image_cfg,
+ 			return NULL;
+ 		}
+ 
+-		payloadsz = s.st_size;
++		/* payload size must be multiple of 32b */
++		payloadsz = 4 * ((s.st_size + 3)/4);
+ 	}
+ 
+ 	/* Headers, payload and 32-bits checksum */
+@@ -875,7 +884,8 @@ static void *image_create_v1(struct image_cfg_element *image_cfg,
+ 			return NULL;
+ 		}
+ 
+-		payloadsz = s.st_size;
++		/* payload size must be multiple of 32b */
++		payloadsz = 4 * ((s.st_size + 3)/4);
+ 	}
+ 
+ 	/* The payload should be aligned on some reasonable
+-- 
+1.7.10.4
 
 
 _______________________________________________
