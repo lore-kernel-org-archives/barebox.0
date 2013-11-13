@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from s17.web-servers.com.au ([118.127.39.117])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgTfb-000552-SQ
- for barebox@lists.infradead.org; Wed, 13 Nov 2013 06:11:21 +0000
-Date: Wed, 13 Nov 2013 07:10:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131113061055.GQ24559@pengutronix.de>
-References: <1384296396-18841-1-git-send-email-lisovy@gmail.com>
- <1384297864.18882.19.camel@lolumad>
+ id 1VgUYJ-0006EF-Dl
+ for barebox@lists.infradead.org; Wed, 13 Nov 2013 07:07:53 +0000
+From: Marc Reilly <marc@cpdesign.com.au>
+Date: Wed, 13 Nov 2013 17:51:28 +1100
+Message-ID: <1416325.2LyG8l6dzG@dev2.cpdesign>
+In-Reply-To: <20131112101100.GK24559@pengutronix.de>
+References: <3749329.nT9HWVKCSz@dev2.cpdesign>
+ <1714314.nh9XxNhNES@dev2.cpdesign> <20131112101100.GK24559@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1384297864.18882.19.camel@lolumad>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,49 +22,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3 v2] Support for Voipac X53-DMM-668 module and Voipac
- Baseboard
-To: Rostislav Lisovy <lisovy@gmail.com>
-Cc: barebox@lists.infradead.org, pisa@cmp.felk.cvut.cz
+Subject: Re: handling script/init errors
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-On Wed, Nov 13, 2013 at 12:11:04AM +0100, Rostislav Lisovy wrote:
-> One small issue I am facing:
-> The board has a jumper to switch between 'internal boot' and 'serial
-> boot'. If I set it to 'serial boot' and then use imx-usb-loader to load
-> barebox to RAM, everything works just fine. When I then try to flash it
-> (flash controller support is missing in this patch-set), flashing is
-> successful, however I am not able to boot it later when switched to
-> 'internal boot' mode. If I try to flash some old version of the barebox
-> (from my version running in RAM -- thus the problem is probably not in
-> the flash support), it not only flashes successfully, this older version
-> is even able to boot in the 'internal boot' mode.
+Hi,
+
+ 
+> hush used to interpret return values from commands < 0 as 'exit'. This
 > 
-> I also noticed that when I am using CONFIG_IMX_MULTI_BOARDS the whole
-> set of CONFIG_ARCH_IMX_INTERNAL_BOOT_* disappears.
+> changed with this commit:
+> | commit 16edced39ecf4c316179b72c01af249f85b36218
+> | Author: Sascha Hauer <s.hauer@pengutronix.de>
+> | Date:   Fri Aug 10 12:40:01 2012 +0200
+> | 
+> |     hush: Make exit a shell builtin
+> |     
+> |     'exit' used to do its job by returning value < 0. This is a sign
+> |     for hush that 'exit' is executed. This has problems:
+> |     
+> |     - Often commands accidently return a negative value. This causes
+> |     
+> |       the shell to exit.
+> |     
+> |     - execute_binfmt returns a negative value when it does not find
+> |     
+> |       a binary to execute. This again causes the shell to exit.
+> |       Returning a negative error value seems to be the right thing
+> |       to do, but catching this in the shell would mean that the exit
+> |       command does not work anymore.
+> |     
+> |     - if called without arguments exit is supposed to return the code
+> |     
+> |       of the last command. As a command exit has no access to this code.
+> |     
+> |     This patch changes exit to be a builtin and also fixes the last return
+> |     code problem. While at it, update the help text.
+> |     
+> |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > 
-> Commands I am using to flash barebox:
-> erase /dev/nand0
-> addpart /dev/nand0 512k(barebox)ro,512k(bareboxenv),4M(kernel),-(rootfs)
-> nand -a /dev/nand0.*
-> erase /dev/nand0.barebox.bb
-> tftp /vmx53/barebox.bin /dev/nand0.barebox.bb
+> Probably the patch above introduced problems of its own fixed in later
+> commits, so if your device is in production you're better off looking
+> at i2c_write. I assume it returns a negative error value under some
+> circumstances. Let it return 1 instead.
 
-You should use the barebox_update infrastructure. See
-imx53_bbu_internal_nand_register_handler(). With this you would exeute
-on the commandline:
+Thanks!
 
-barebox_update /path/to/barebox.bin
+In commands/i2c.c: I changed all "return -ENODEV;" to "return COMMAND_ERROR" 
+and the scripts keep executing.
 
-As a bonus this command also creates a bad block table the imx53 ROM is
-able to read.
+This fixed it for our version, I'll check if its relevant to current version 
+and send in a patch soon.
 
-Sascha
+Cheers,
+Marc
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
 
 _______________________________________________
 barebox mailing list
