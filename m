@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x230.google.com ([2607:f8b0:400e:c02::230])
+Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VgvM0-0005dq-U4
- for barebox@lists.infradead.org; Thu, 14 Nov 2013 11:44:57 +0000
-Received: by mail-pd0-f176.google.com with SMTP id r10so1843322pdi.7
- for <barebox@lists.infradead.org>; Thu, 14 Nov 2013 03:44:33 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20131112141913.GL24559@pengutronix.de>
-References: <1383606064-30494-1-git-send-email-a.heider@gmail.com>
- <20131106094628.GH24559@pengutronix.de>
- <20131106174049.GA83992@localhost>
- <20131112121451.GB77248@localhost>
- <20131112141913.GL24559@pengutronix.de>
-Date: Thu, 14 Nov 2013 12:44:33 +0100
-Message-ID: <CAHsu+b8Vw8LafW_JSw02EGRev7W59YkrmVqAMJ8a7sFq85UHYg@mail.gmail.com>
-From: Andre Heider <a.heider@gmail.com>
+ id 1Vgx0H-00081a-0v
+ for barebox@lists.infradead.org; Thu, 14 Nov 2013 13:30:37 +0000
+Received: by mail-bk0-f41.google.com with SMTP id v15so1085846bkz.28
+ for <barebox@lists.infradead.org>; Thu, 14 Nov 2013 05:30:13 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Thu, 14 Nov 2013 14:30:08 +0100
+Message-Id: <1384435808-17524-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +16,140 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/6] BCM2835 / simple framebuffer support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] barebox: remove double semicolons
+To: barebox@lists.infradead.org
 
-On Tue, Nov 12, 2013 at 3:19 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Tue, Nov 12, 2013 at 01:14:51PM +0100, Andre Heider wrote:
->> Hi Sascha,
->>
->> On Wed, Nov 06, 2013 at 06:40:49PM +0100, Andre Heider wrote:
->> > And yes, it works if I set fb0.enable=1 and fb0.register_simplefb=1,
->> > both are 0 per default.
->> >
->> > Now I wonder who/where those are supposed to get set? Is that a job for
->> > the runtime environment?
->>
->> if possible I'd like to make the fb work out of the box. Setting these
->> two parameters to default to "1" feels wrong (and I didn't find other
->> drivers to do so). Any suggestions?
->
-> Normally the policy is that a framebuffer is not enabled during
-> registration. This makes sense because normally the framebuffer doesn't
-> contain a useful picture, so users should set a picture and enable the
-> framebuffer afterwards to avoid flickering.
->
-> In your case the situation is different though. The display hardware is
-> already enabled when you enter barebox, right?
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+I was bored during a lecture.
+Just did a grep for find them.
+This isn't compile tested.
 
-Right.
+ arch/arm/mach-imx/imx-bbu-internal.c | 3 ++-
+ drivers/ata/ahci.c                   | 2 +-
+ drivers/mci/mci-core.c               | 2 +-
+ drivers/net/altera_tse.c             | 2 +-
+ drivers/usb/gadget/dfu.c             | 2 +-
+ lib/gui/bmp.c                        | 4 ++--
+ net/dns.c                            | 2 +-
+ net/net.c                            | 2 +-
+ 8 files changed, 10 insertions(+), 9 deletions(-)
 
-> In this case I suggest
-> that you set info->p_enable to true before calling register_framebuffer
-> from the bcm2835 driver. This should be the right thing to do since it
-> only reflects the hardware status.
->
-> Also I think you can set info->register_simplefb to true aswell in the
-> bcm2835 driver since on that platform this is probably a sane default.
+diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
+index a96b110..9861c07 100644
+--- a/arch/arm/mach-imx/imx-bbu-internal.c
++++ b/arch/arm/mach-imx/imx-bbu-internal.c
+@@ -360,7 +360,8 @@ static void imx_bbu_internal_v2_init_flash_header(struct bbu_handler *handler, s
+ 	flash_header->self = imx_handler->app_dest + flash_header_offset;
+ 
+ 	flash_header->boot_data.start = imx_handler->app_dest;
+-	flash_header->boot_data.size = ALIGN(imx_pre_image_size + data->len, 4096);;
++	flash_header->boot_data.size = ALIGN(imx_pre_image_size +
++			data->len, 4096);
+ 
+ 	if (imx_handler->dcdsize) {
+ 		flash_header->dcd.header.tag = DCD_HEADER_TAG;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index f9cf2d1..74f247d 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -375,7 +375,7 @@ static int ahci_init_port(struct ahci_port *ahci_port)
+ 	ret = wait_on_timeout(WAIT_LINKUP,
+ 			(ahci_port_read(ahci_port, PORT_SCR_STAT) & 0xf) == 0x3);
+ 	if (ret) {
+-		ahci_port_info(ahci_port, "SATA link timeout\n");;
++		ahci_port_info(ahci_port, "SATA link timeout\n");
+ 		ret = -ETIMEDOUT;
+ 		goto err_init;
+ 	}
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index cfae91b..0c3cad9 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -831,7 +831,7 @@ static void mci_extract_card_capacity_from_csd(struct mci *mci)
+ 		mci->capacity = (csize + 1) << (cmult + 2);
+ 	}
+ 
+-	mci->capacity *= 1 << UNSTUFF_BITS(mci->csd, 80, 4);;
++	mci->capacity *= 1 << UNSTUFF_BITS(mci->csd, 80, 4);
+ 	dev_dbg(&mci->dev, "Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
+ }
+ 
+diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
+index 1a44278..6978e2a 100644
+--- a/drivers/net/altera_tse.c
++++ b/drivers/net/altera_tse.c
+@@ -376,7 +376,7 @@ static int tse_eth_send(struct eth_device *edev, void *packet, int length)
+ 
+ 	alt_sgdma_do_sync_transfer(tx_sgdma, tx_desc_cur);
+ 
+-	return 0;;
++	return 0;
+ }
+ 
+ static void tse_eth_halt(struct eth_device *edev)
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index e051879..e15fc41 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -61,7 +61,7 @@
+ #define DFU_TEMPFILE "/dfu_temp"
+ 
+ static int dfualt;
+-static int dfufd = -EINVAL;;
++static int dfufd = -EINVAL;
+ static struct usb_dfu_dev *dfu_devs;
+ static int dfu_num_alt;
+ static int dfudetach;
+diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
+index dcf3095..6943a1c 100644
+--- a/lib/gui/bmp.c
++++ b/lib/gui/bmp.c
+@@ -19,8 +19,8 @@ struct image *bmp_open(char *inbuf, int insize)
+ 	}
+ 
+ 	img->data = inbuf;
+-	img->height = le32_to_cpu(bmp->header.height);;
+-	img->width = le32_to_cpu(bmp->header.width);;
++	img->height = le32_to_cpu(bmp->header.height);
++	img->width = le32_to_cpu(bmp->header.width);
+ 	img->bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
+ 
+ 	pr_debug("bmp: %d x %d  x %d data@0x%p\n", img->width, img->height,
+diff --git a/net/dns.c b/net/dns.c
+index eb96c57..afd2663 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -127,7 +127,7 @@ static void dns_handler(void *ctx, char *packet, unsigned len)
+ 	debug("%s\n", __func__);
+ 
+ 	/* We sent 1 query. We want to see more that 1 answer. */
+-	header = (struct header *)net_eth_to_udp_payload(packet);;
++	header = (struct header *)net_eth_to_udp_payload(packet);
+ 	if (ntohs(header->nqueries) != 1)
+ 		return;
+ 
+diff --git a/net/net.c b/net/net.c
+index 058a4d3..9ef0784 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -433,7 +433,7 @@ void net_unregister(struct net_connection *con)
+ static int net_ip_send(struct net_connection *con, int len)
+ {
+ 	con->ip->tot_len = htons(sizeof(struct iphdr) + len);
+-	con->ip->id = htons(net_ip_id++);;
++	con->ip->id = htons(net_ip_id++);
+ 	con->ip->check = 0;
+ 	con->ip->check = ~net_checksum((unsigned char *)con->ip, sizeof(struct iphdr));
+ 
+-- 
+1.8.4.2
 
-Ok, easy enough ;)
-
-Thanks,
-Andre
 
 _______________________________________________
 barebox mailing list
