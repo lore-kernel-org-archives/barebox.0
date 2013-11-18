@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ViMfd-0007iK-2i
- for barebox@lists.infradead.org; Mon, 18 Nov 2013 11:07:10 +0000
+ id 1ViMfb-0007iL-V7
+ for barebox@lists.infradead.org; Mon, 18 Nov 2013 11:07:08 +0000
 From: Philipp Zabel <p.zabel@pengutronix.de>
-Date: Mon, 18 Nov 2013 12:06:36 +0100
-Message-Id: <1384772798-3297-5-git-send-email-p.zabel@pengutronix.de>
+Date: Mon, 18 Nov 2013 12:06:35 +0100
+Message-Id: <1384772798-3297-4-git-send-email-p.zabel@pengutronix.de>
 In-Reply-To: <1384772798-3297-1-git-send-email-p.zabel@pengutronix.de>
 References: <1384772798-3297-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,63 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] ARM i.MX6: sabrelite: move flash partitions into device
- tree
+Subject: [PATCH 4/6] ARM i.MX6: sabrelite: usb is probed from device tree
 To: barebox@lists.infradead.org
 Cc: Philipp Zabel <p.zabel@pengutronix.de>
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- arch/arm/boards/freescale-mx6-sabrelite/board.c |  2 --
- arch/arm/dts/imx6q-sabrelite.dts                | 17 +++++++++++++++++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ arch/arm/boards/freescale-mx6-sabrelite/board.c | 5 -----
+ arch/arm/dts/imx6q-sabrelite.dts                | 6 ++++++
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/arch/arm/boards/freescale-mx6-sabrelite/board.c b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-index 3584951..22be6f8 100644
+index a8fe7c0..3584951 100644
 --- a/arch/arm/boards/freescale-mx6-sabrelite/board.c
 +++ b/arch/arm/boards/freescale-mx6-sabrelite/board.c
-@@ -123,8 +123,6 @@ static int sabrelite_devices_init(void)
- 	armlinux_set_bootparams((void *)0x10000100);
- 	armlinux_set_architecture(3769);
+@@ -107,15 +107,10 @@ fs_initcall(sabrelite_ksz9021rn_setup);
  
--	devfs_add_partition("m25p0", 0, SZ_512K, DEVFS_PARTITION_FIXED, "self0");
--	devfs_add_partition("m25p0", SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, "env0");
- 
- 	return 0;
+ static void sabrelite_ehci_init(void)
+ {
+-	imx6_usb_phy2_disable_oc();
+-	imx6_usb_phy2_enable();
+-
+ 	/* hub reset */
+ 	gpio_direction_output(204, 0);
+ 	udelay(2000);
+ 	gpio_set_value(204, 1);
+-
+-	add_generic_usb_ehci_device(1, MX6_USBOH3_USB_BASE_ADDR + 0x200, NULL);
  }
+ 
+ static int sabrelite_devices_init(void)
 diff --git a/arch/arm/dts/imx6q-sabrelite.dts b/arch/arm/dts/imx6q-sabrelite.dts
-index 97372dd..0d05574 100644
+index 1368ef1..97372dd 100644
 --- a/arch/arm/dts/imx6q-sabrelite.dts
 +++ b/arch/arm/dts/imx6q-sabrelite.dts
-@@ -19,6 +19,11 @@
+@@ -117,10 +117,16 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_usbotg_1>;
+ 	disable-over-current;
++	phy-mode = "utmi";
++	barebox,phy_type = "utmi";
++	dr_mode = "host";
+ 	status = "okay";
+ };
  
- 	chosen {
- 		linux,stdout-path = &uart2;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &flash, "partname:barebox-environment";
-+		};
- 	};
- 
- 	memory {
-@@ -80,6 +85,18 @@
- 		compatible = "sst,sst25vf016b", "m25p80";
- 		spi-max-frequency = <20000000>;
- 		reg = <0>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "barebox";
-+			reg = <0x0 0x80000>;
-+		};
-+
-+		partition@1 {
-+			label = "barebox-environment";
-+			reg = <0x80000 0x80000>;
-+		};
- 	};
+ &usbh1 {
++	phy-mode = "utmi";
++	barebox,phy_type = "utmi";
++	dr_mode = "host";
+ 	status = "okay";
  };
  
 -- 
