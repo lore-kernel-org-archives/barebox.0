@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ViLUb-0006Je-JY
- for barebox@lists.infradead.org; Mon, 18 Nov 2013 09:51:42 +0000
-Date: Mon, 18 Nov 2013 10:51:19 +0100
+ id 1ViLX0-0006ME-VN
+ for barebox@lists.infradead.org; Mon, 18 Nov 2013 09:54:11 +0000
+Date: Mon, 18 Nov 2013 10:53:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131118095118.GA24559@pengutronix.de>
-References: <1384365934-7693-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20131118095348.GB24559@pengutronix.de>
+References: <1384289884-8832-1-git-send-email-sebastian.hesselbarth@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1384365934-7693-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1384289884-8832-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,29 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] DA923RC: add PCI support
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] scripts: kwboot: fix missing soh initialization
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org
 
-On Wed, Nov 13, 2013 at 06:05:32PM +0000, Renaud Barbier wrote:
-> This patch set adds the fsl,mpic node frequency property
-> needed by Linux version 3.x for the PCI driver to function.
-> Also it was noticed that the board device reset was held
-> low preventing full probing of the PCI bus.
+On Tue, Nov 12, 2013 at 09:58:03PM +0100, Sebastian Hesselbarth wrote:
+> Xmodem blocks should start with SOH but kwboot never sets the first
+> block byte. This fixes kwboot's Xmodem block initialization and sets
+> first block byte to SOH.
 > 
-> Renaud Barbier (2):
->   ppc: mpc85xx: add fsl,mpic node frequency property
->   ppc: DA923RC: update board initialisation
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 
 Applied, thanks
 
 Sascha
 
+> ---
+> Cc: barebox@lists.infradead.org
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> ---
+>  scripts/kwboot.c |    1 +
+>  1 file changed, 1 insertion(+)
 > 
->  arch/ppc/boards/geip-da923rc/da923rc.c          |    4 ++--
->  arch/ppc/mach-mpc85xx/fdt.c                     |    5 +++++
->  arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h |    3 +++
->  3 files changed, 10 insertions(+), 2 deletions(-)
+> diff --git a/scripts/kwboot.c b/scripts/kwboot.c
+> index 33c94b3..81da3e8 100644
+> --- a/scripts/kwboot.c
+> +++ b/scripts/kwboot.c
+> @@ -334,6 +334,7 @@ kwboot_xm_makeblock(struct kwboot_block *block, const void *data,
+>  	size_t n;
+>  	int i;
+>  
+> +	block->soh = SOH;
+>  	block->pnum = pnum;
+>  	block->_pnum = ~block->pnum;
+>  
+> -- 
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
