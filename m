@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ViKuX-0005Zp-75
- for barebox@lists.infradead.org; Mon, 18 Nov 2013 09:14:26 +0000
-Date: Mon, 18 Nov 2013 10:14:02 +0100
+ id 1ViLJi-00067S-EV
+ for barebox@lists.infradead.org; Mon, 18 Nov 2013 09:40:27 +0000
+Date: Mon, 18 Nov 2013 10:40:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131118091402.GX24559@pengutronix.de>
-References: <1384435808-17524-1-git-send-email-alex.aring@gmail.com>
+Message-ID: <20131118094001.GY24559@pengutronix.de>
+References: <3749329.nT9HWVKCSz@dev2.cpdesign>
+ <1714314.nh9XxNhNES@dev2.cpdesign>
+ <20131112101100.GK24559@pengutronix.de>
+ <1416325.2LyG8l6dzG@dev2.cpdesign>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1384435808-17524-1-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1416325.2LyG8l6dzG@dev2.cpdesign>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,149 +25,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox: remove double semicolons
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: handling script/init errors
+To: Marc Reilly <marc@cpdesign.com.au>
 Cc: barebox@lists.infradead.org
 
-Applied, thanks
+On Wed, Nov 13, 2013 at 05:51:28PM +1100, Marc Reilly wrote:
+> Hi,
+> 
+>  
+> > hush used to interpret return values from commands < 0 as 'exit'. This
+> > 
+> > changed with this commit:
+> > | commit 16edced39ecf4c316179b72c01af249f85b36218
+> > | Author: Sascha Hauer <s.hauer@pengutronix.de>
+> > | Date:   Fri Aug 10 12:40:01 2012 +0200
+> > | 
+> > |     hush: Make exit a shell builtin
+> > |     
+> > |     'exit' used to do its job by returning value < 0. This is a sign
+> > |     for hush that 'exit' is executed. This has problems:
+> > |     
+> > |     - Often commands accidently return a negative value. This causes
+> > |     
+> > |       the shell to exit.
+> > |     
+> > |     - execute_binfmt returns a negative value when it does not find
+> > |     
+> > |       a binary to execute. This again causes the shell to exit.
+> > |       Returning a negative error value seems to be the right thing
+> > |       to do, but catching this in the shell would mean that the exit
+> > |       command does not work anymore.
+> > |     
+> > |     - if called without arguments exit is supposed to return the code
+> > |     
+> > |       of the last command. As a command exit has no access to this code.
+> > |     
+> > |     This patch changes exit to be a builtin and also fixes the last return
+> > |     code problem. While at it, update the help text.
+> > |     
+> > |     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > 
+> > Probably the patch above introduced problems of its own fixed in later
+> > commits, so if your device is in production you're better off looking
+> > at i2c_write. I assume it returns a negative error value under some
+> > circumstances. Let it return 1 instead.
+> 
+> Thanks!
+> 
+> In commands/i2c.c: I changed all "return -ENODEV;" to "return COMMAND_ERROR" 
+> and the scripts keep executing.
+> 
+> This fixed it for our version, I'll check if its relevant to current version 
+> and send in a patch soon.
 
-No need to split this up further.
+This shouldn't be needed in current barebox. The commands now can return
+negative error values without causing the shell to exit.
 
 Sascha
-
-On Thu, Nov 14, 2013 at 02:30:08PM +0100, Alexander Aring wrote:
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> ---
-> I was bored during a lecture.
-> Just did a grep for find them.
-> This isn't compile tested.
-> 
->  arch/arm/mach-imx/imx-bbu-internal.c | 3 ++-
->  drivers/ata/ahci.c                   | 2 +-
->  drivers/mci/mci-core.c               | 2 +-
->  drivers/net/altera_tse.c             | 2 +-
->  drivers/usb/gadget/dfu.c             | 2 +-
->  lib/gui/bmp.c                        | 4 ++--
->  net/dns.c                            | 2 +-
->  net/net.c                            | 2 +-
->  8 files changed, 10 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-> index a96b110..9861c07 100644
-> --- a/arch/arm/mach-imx/imx-bbu-internal.c
-> +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-> @@ -360,7 +360,8 @@ static void imx_bbu_internal_v2_init_flash_header(struct bbu_handler *handler, s
->  	flash_header->self = imx_handler->app_dest + flash_header_offset;
->  
->  	flash_header->boot_data.start = imx_handler->app_dest;
-> -	flash_header->boot_data.size = ALIGN(imx_pre_image_size + data->len, 4096);;
-> +	flash_header->boot_data.size = ALIGN(imx_pre_image_size +
-> +			data->len, 4096);
->  
->  	if (imx_handler->dcdsize) {
->  		flash_header->dcd.header.tag = DCD_HEADER_TAG;
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index f9cf2d1..74f247d 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -375,7 +375,7 @@ static int ahci_init_port(struct ahci_port *ahci_port)
->  	ret = wait_on_timeout(WAIT_LINKUP,
->  			(ahci_port_read(ahci_port, PORT_SCR_STAT) & 0xf) == 0x3);
->  	if (ret) {
-> -		ahci_port_info(ahci_port, "SATA link timeout\n");;
-> +		ahci_port_info(ahci_port, "SATA link timeout\n");
->  		ret = -ETIMEDOUT;
->  		goto err_init;
->  	}
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index cfae91b..0c3cad9 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -831,7 +831,7 @@ static void mci_extract_card_capacity_from_csd(struct mci *mci)
->  		mci->capacity = (csize + 1) << (cmult + 2);
->  	}
->  
-> -	mci->capacity *= 1 << UNSTUFF_BITS(mci->csd, 80, 4);;
-> +	mci->capacity *= 1 << UNSTUFF_BITS(mci->csd, 80, 4);
->  	dev_dbg(&mci->dev, "Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
->  }
->  
-> diff --git a/drivers/net/altera_tse.c b/drivers/net/altera_tse.c
-> index 1a44278..6978e2a 100644
-> --- a/drivers/net/altera_tse.c
-> +++ b/drivers/net/altera_tse.c
-> @@ -376,7 +376,7 @@ static int tse_eth_send(struct eth_device *edev, void *packet, int length)
->  
->  	alt_sgdma_do_sync_transfer(tx_sgdma, tx_desc_cur);
->  
-> -	return 0;;
-> +	return 0;
->  }
->  
->  static void tse_eth_halt(struct eth_device *edev)
-> diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-> index e051879..e15fc41 100644
-> --- a/drivers/usb/gadget/dfu.c
-> +++ b/drivers/usb/gadget/dfu.c
-> @@ -61,7 +61,7 @@
->  #define DFU_TEMPFILE "/dfu_temp"
->  
->  static int dfualt;
-> -static int dfufd = -EINVAL;;
-> +static int dfufd = -EINVAL;
->  static struct usb_dfu_dev *dfu_devs;
->  static int dfu_num_alt;
->  static int dfudetach;
-> diff --git a/lib/gui/bmp.c b/lib/gui/bmp.c
-> index dcf3095..6943a1c 100644
-> --- a/lib/gui/bmp.c
-> +++ b/lib/gui/bmp.c
-> @@ -19,8 +19,8 @@ struct image *bmp_open(char *inbuf, int insize)
->  	}
->  
->  	img->data = inbuf;
-> -	img->height = le32_to_cpu(bmp->header.height);;
-> -	img->width = le32_to_cpu(bmp->header.width);;
-> +	img->height = le32_to_cpu(bmp->header.height);
-> +	img->width = le32_to_cpu(bmp->header.width);
->  	img->bits_per_pixel = le16_to_cpu(bmp->header.bit_count);
->  
->  	pr_debug("bmp: %d x %d  x %d data@0x%p\n", img->width, img->height,
-> diff --git a/net/dns.c b/net/dns.c
-> index eb96c57..afd2663 100644
-> --- a/net/dns.c
-> +++ b/net/dns.c
-> @@ -127,7 +127,7 @@ static void dns_handler(void *ctx, char *packet, unsigned len)
->  	debug("%s\n", __func__);
->  
->  	/* We sent 1 query. We want to see more that 1 answer. */
-> -	header = (struct header *)net_eth_to_udp_payload(packet);;
-> +	header = (struct header *)net_eth_to_udp_payload(packet);
->  	if (ntohs(header->nqueries) != 1)
->  		return;
->  
-> diff --git a/net/net.c b/net/net.c
-> index 058a4d3..9ef0784 100644
-> --- a/net/net.c
-> +++ b/net/net.c
-> @@ -433,7 +433,7 @@ void net_unregister(struct net_connection *con)
->  static int net_ip_send(struct net_connection *con, int len)
->  {
->  	con->ip->tot_len = htons(sizeof(struct iphdr) + len);
-> -	con->ip->id = htons(net_ip_id++);;
-> +	con->ip->id = htons(net_ip_id++);
->  	con->ip->check = 0;
->  	con->ip->check = ~net_checksum((unsigned char *)con->ip, sizeof(struct iphdr));
->  
-> -- 
-> 1.8.4.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
