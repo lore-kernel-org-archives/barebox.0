@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22c.google.com ([2a00:1450:4008:c01::22c])
+Received: from mail-bk0-x229.google.com ([2a00:1450:4008:c01::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1ViZo3-00039D-VM
+ id 1ViZo3-00039C-Gn
  for barebox@lists.infradead.org; Tue, 19 Nov 2013 01:08:44 +0000
-Received: by mail-bk0-f44.google.com with SMTP id d7so2807817bkh.17
+Received: by mail-bk0-f41.google.com with SMTP id v15so2888806bkz.0
  for <barebox@lists.infradead.org>; Mon, 18 Nov 2013 17:08:20 -0800 (PST)
 From: Alexander Aring <alex.aring@gmail.com>
-Date: Tue, 19 Nov 2013 02:08:12 +0100
-Message-Id: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
+Date: Tue, 19 Nov 2013 02:08:13 +0100
+Message-Id: <1384823293-11830-2-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
+References: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] scripts: fix kernel-install-target config
+Subject: [PATCH 2/2] common: add dependency !SANDBOX on target tools
 To: barebox@lists.infradead.org
+
+The build of target tools fails on sandbox architecture.
+We don't need any target tools in this case, so add a dependency.
 
 Signed-off-by: Alexander Aring <alex.aring@gmail.com>
 ---
-This confused me a little bit... commit id
-61cf2b51bccbf18c3df505a77db759454e8574ca looks different than the commit
-on barebox mailinglist [1]. What's happend there? :-)
+ common/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-[1] http://lists.infradead.org/pipermail/barebox/2013-September/016457.html
-
- scripts/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/Makefile b/scripts/Makefile
-index ce3fd53..2f78c4b 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -25,7 +25,7 @@ subdir-$(CONFIG_X86)		+= setupmbr
- subdir-$(CONFIG_DTC)		+= dtc
+diff --git a/common/Kconfig b/common/Kconfig
+index ccfbc80..06edbc2 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -453,6 +453,7 @@ config BLSPEC
  
- targetprogs-$(CONFIG_BAREBOXENV_TARGET) += bareboxenv-target
--targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += bareboxenv-target
-+targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += kernel-install-target
+ config KERNEL_INSTALL_TARGET
+ 	bool
++	depends on !SANDBOX
+ 	prompt "Build kernel-install utility for the target"
+ 	help
+ 	  Enable this to compile the kernel-install script using the cross
+@@ -610,6 +611,7 @@ config DEFAULT_ENVIRONMENT_PATH
  
- # Let clean descend into subdirs
- subdir-	+= basic kconfig setupmbr
+ config BAREBOXENV_TARGET
+ 	bool
++	depends on !SANDBOX
+ 	prompt "build bareboxenv tool for target"
+ 	help
+ 	  'bareboxenv' is a tool to access the barebox environment from a running Linux
 -- 
 1.8.4.2
 
