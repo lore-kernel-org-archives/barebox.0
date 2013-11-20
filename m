@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vj1Bm-0004Ua-8p
- for barebox@lists.infradead.org; Wed, 20 Nov 2013 06:23:02 +0000
-Date: Wed, 20 Nov 2013 07:22:40 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131120062240.GF24559@pengutronix.de>
-References: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
+Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vj6yl-0005w1-PA
+ for barebox@lists.infradead.org; Wed, 20 Nov 2013 12:34:00 +0000
+Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id A5078FF89E6
+ for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:23:42 +0100 (CET)
+Date: Wed, 20 Nov 2013 13:26:03 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131120122603.GD7965@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,56 +24,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] scripts: fix kernel-install-target config
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/2] fix net console support
+To: barebox@lists.infradead.org
 
-On Tue, Nov 19, 2013 at 02:08:12AM +0100, Alexander Aring wrote:
-> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
-> ---
-> This confused me a little bit... commit id
-> 61cf2b51bccbf18c3df505a77db759454e8574ca looks different than the commit
-> on barebox mailinglist [1]. What's happend there? :-)
+Hi,
 
-No idea, looks like copy-paste error. Stopped thinking about it and
-applied ;)
+	since 
 
-Sascha
+	commit e62d4255172540805a77fee1c58382103f43bb2f
+	Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+	Date:   Fri Sep 20 05:31:29 2013 +0200
 
-> 
-> [1] http://lists.infradead.org/pipermail/barebox/2013-September/016457.html
-> 
->  scripts/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/Makefile b/scripts/Makefile
-> index ce3fd53..2f78c4b 100644
-> --- a/scripts/Makefile
-> +++ b/scripts/Makefile
-> @@ -25,7 +25,7 @@ subdir-$(CONFIG_X86)		+= setupmbr
->  subdir-$(CONFIG_DTC)		+= dtc
->  
->  targetprogs-$(CONFIG_BAREBOXENV_TARGET) += bareboxenv-target
-> -targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += bareboxenv-target
-> +targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += kernel-install-target
->  
->  # Let clean descend into subdirs
->  subdir-	+= basic kconfig setupmbr
-> -- 
-> 1.8.4.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+	console: drop f_caps and check the function pointer getc/putc instead
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+	the net console is broken as the driver was using the f_caps to
+	specify when the drvier can enable or not.
+
+	Instead of tweking the API provide is_ready callback for this
+
+The following changes since commit 7c1091bd5895204b109c5a79996aa9367692a78a:
+
+  of: fdt: reorder fdt_header initialization (2013-11-08 15:42:55 +0100)
+
+are available in the git repository at:
+
+  git://git.jcrosoft.org/barebox.git delivery/net_console
+
+for you to fetch changes up to 18f198052d242f9ca388e6ce50fe448e08cdbdd8:
+
+  net: netconsole: add is_ready support (2013-11-20 20:21:58 +0800)
+
+----------------------------------------------------------------
+Jean-Christophe PLAGNIOL-VILLARD (2):
+      console: add is_ready callbback support
+      net: netconsole: add is_ready support
+
+ common/console.c  | 3 +++
+ include/console.h | 1 +
+ net/netconsole.c  | 9 +++++++++
+ 3 files changed, 13 insertions(+)
+
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
