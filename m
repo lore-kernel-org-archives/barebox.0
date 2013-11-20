@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vj19i-0004P6-6m
- for barebox@lists.infradead.org; Wed, 20 Nov 2013 06:20:55 +0000
-Date: Wed, 20 Nov 2013 07:20:30 +0100
+ id 1Vj1Bm-0004Ua-8p
+ for barebox@lists.infradead.org; Wed, 20 Nov 2013 06:23:02 +0000
+Date: Wed, 20 Nov 2013 07:22:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131120062030.GE24559@pengutronix.de>
-References: <1384772798-3297-1-git-send-email-p.zabel@pengutronix.de>
- <1384772798-3297-4-git-send-email-p.zabel@pengutronix.de>
- <1384773102.300130062@f403.i.mail.ru>
+Message-ID: <20131120062240.GF24559@pengutronix.de>
+References: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1384773102.300130062@f403.i.mail.ru>
+In-Reply-To: <1384823293-11830-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,49 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] ARM i.MX6: sabrelite: usb is probed from device tree
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 1/2] scripts: fix kernel-install-target config
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Nov 18, 2013 at 03:11:42PM +0400, Alexander Shiyan wrote:
-> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> > ---
-> >  arch/arm/boards/freescale-mx6-sabrelite/board.c | 5 -----
-> >  arch/arm/dts/imx6q-sabrelite.dts                | 6 ++++++
-> >  2 files changed, 6 insertions(+), 5 deletions(-)
-> ...
-> > diff --git a/arch/arm/dts/imx6q-sabrelite.dts b/arch/arm/dts/imx6q-sabrelite.dts
-> > index 1368ef1..97372dd 100644
-> > --- a/arch/arm/dts/imx6q-sabrelite.dts
-> > +++ b/arch/arm/dts/imx6q-sabrelite.dts
-> > @@ -117,10 +117,16 @@
-> >  	pinctrl-names = "default";
-> >  	pinctrl-0 = <&pinctrl_usbotg_1>;
-> >  	disable-over-current;
-> > +	phy-mode = "utmi";
-> > +	barebox,phy_type = "utmi";
-> 
-> No more need to define "barebox,phy_type".
+On Tue, Nov 19, 2013 at 02:08:12AM +0100, Alexander Aring wrote:
+> Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> ---
+> This confused me a little bit... commit id
+> 61cf2b51bccbf18c3df505a77db759454e8574ca looks different than the commit
+> on barebox mailinglist [1]. What's happend there? :-)
 
-Fixed this while applying
+No idea, looks like copy-paste error. Stopped thinking about it and
+applied ;)
 
 Sascha
 
 > 
-> > +	dr_mode = "host";
-> >  	status = "okay";
-> >  };
-> >  
-> >  &usbh1 {
-> > +	phy-mode = "utmi";
-> > +	barebox,phy_type = "utmi";
-> > +	dr_mode = "host";
-> >  	status = "okay";
-> >  };
-> >  
-> > -- 
+> [1] http://lists.infradead.org/pipermail/barebox/2013-September/016457.html
 > 
-> ---
+>  scripts/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/Makefile b/scripts/Makefile
+> index ce3fd53..2f78c4b 100644
+> --- a/scripts/Makefile
+> +++ b/scripts/Makefile
+> @@ -25,7 +25,7 @@ subdir-$(CONFIG_X86)		+= setupmbr
+>  subdir-$(CONFIG_DTC)		+= dtc
+>  
+>  targetprogs-$(CONFIG_BAREBOXENV_TARGET) += bareboxenv-target
+> -targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += bareboxenv-target
+> +targetprogs-$(CONFIG_KERNEL_INSTALL_TARGET) += kernel-install-target
+>  
+>  # Let clean descend into subdirs
+>  subdir-	+= basic kconfig setupmbr
+> -- 
+> 1.8.4.2
+> 
+> 
 > _______________________________________________
 > barebox mailing list
 > barebox@lists.infradead.org
