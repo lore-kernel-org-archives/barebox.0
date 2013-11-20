@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f47.google.com ([209.85.220.47])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vioc2-0004Mo-IK
- for barebox@lists.infradead.org; Tue, 19 Nov 2013 16:57:19 +0000
-Received: by mail-pa0-f47.google.com with SMTP id kq14so4011501pab.6
- for <barebox@lists.infradead.org>; Tue, 19 Nov 2013 08:56:52 -0800 (PST)
+ id 1Vj19i-0004P6-6m
+ for barebox@lists.infradead.org; Wed, 20 Nov 2013 06:20:55 +0000
+Date: Wed, 20 Nov 2013 07:20:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131120062030.GE24559@pengutronix.de>
+References: <1384772798-3297-1-git-send-email-p.zabel@pengutronix.de>
+ <1384772798-3297-4-git-send-email-p.zabel@pengutronix.de>
+ <1384773102.300130062@f403.i.mail.ru>
 MIME-Version: 1.0
-Date: Tue, 19 Nov 2013 16:48:25 +0000
-Message-ID: <CAFJTrDt+3KfH17ndSMvBVin9WzJHTWzG6n2uH+6Ed6_T4k32Uw@mail.gmail.com>
-From: Matthew Minter <matthew_minter@xyratex.com>
+Content-Disposition: inline
+In-Reply-To: <1384773102.300130062@f403.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,81 +24,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: kwboot Preamble only feature
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/6] ARM i.MX6: sabrelite: usb is probed from device tree
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Hi everyone,
+On Mon, Nov 18, 2013 at 03:11:42PM +0400, Alexander Shiyan wrote:
+> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> > ---
+> >  arch/arm/boards/freescale-mx6-sabrelite/board.c | 5 -----
+> >  arch/arm/dts/imx6q-sabrelite.dts                | 6 ++++++
+> >  2 files changed, 6 insertions(+), 5 deletions(-)
+> ...
+> > diff --git a/arch/arm/dts/imx6q-sabrelite.dts b/arch/arm/dts/imx6q-sabrelite.dts
+> > index 1368ef1..97372dd 100644
+> > --- a/arch/arm/dts/imx6q-sabrelite.dts
+> > +++ b/arch/arm/dts/imx6q-sabrelite.dts
+> > @@ -117,10 +117,16 @@
+> >  	pinctrl-names = "default";
+> >  	pinctrl-0 = <&pinctrl_usbotg_1>;
+> >  	disable-over-current;
+> > +	phy-mode = "utmi";
+> > +	barebox,phy_type = "utmi";
+> 
+> No more need to define "barebox,phy_type".
 
-I was not sure this is the correct list to send this to, however when
-using the included kwboot utility to bootstrap a Marvell Armada XP
-board I quickly noticed it was missing a useful feature, the ability
-to send the boot preamble without sending a boot image afterwards.
-This was useful to me as my configuration required an xmodem program
-with special features, not available in the useful but very light
-included one.
+Fixed this while applying
 
-As such I have written a patch which adds the -j option. This allows
-behaviour similar to the -b option except kwboot exits just before the
-actual xmodem transfer, allowing another xmodem program to take over
-and send the boot file.
+Sascha
 
-I think this may be of use to others bootstrapping Armada XP based
-systems so attach this patch to the end of my post.
-
-Many thanks,
-Matthew
-
---- barebox/scripts/kwboot.c.old    2013-11-19 16:37:04.717255752 +0000
-+++ barebox/scripts/kwboot.c    2013-11-19 16:38:36.573351680 +0000
-@@ -587,13 +587,15 @@
- kwboot_usage(FILE *stream, char *progname)
- {
-     fprintf(stream,
--        "Usage: %s [-d | -b <image> | -D <image> ] [ -t ] [-B <baud>
-] <TTY>\n",
-+        "Usage: %s [-d | -b <image> | -D <image> | -j ] [ -t ] [-B
-<baud> ] <TTY>\n",
-         progname);
-     fprintf(stream, "\n");
-     fprintf(stream,
-         "  -b <image>: boot <image> with preamble (Kirkwood, Armada
-370/XP)\n");
-     fprintf(stream,
-         "  -D <image>: boot <image> without preamble (Dove)\n");
-+        fprintf(stream,
-+                "  -j: just send the boot preamble but do not send
-any image\n");
-     fprintf(stream, "  -d: enter debug mode\n");
-     fprintf(stream, "\n");
-     fprintf(stream, "  -t: mini terminal\n");
-@@ -626,7 +628,7 @@
-     kwboot_verbose = isatty(STDOUT_FILENO);
-
-     do {
--        int c = getopt(argc, argv, "hb:dtB:D:");
-+        int c = getopt(argc, argv, "jhb:dtB:D:");
-         if (c < 0)
-             break;
-
-@@ -636,6 +638,10 @@
-             imgpath = optarg;
-             break;
-
-+        case 'j':
-+            bootmsg = kwboot_msg_boot;
-+            break;
-+
-         case 'D':
-             bootmsg = NULL;
-             imgpath = optarg;
+> 
+> > +	dr_mode = "host";
+> >  	status = "okay";
+> >  };
+> >  
+> >  &usbh1 {
+> > +	phy-mode = "utmi";
+> > +	barebox,phy_type = "utmi";
+> > +	dr_mode = "host";
+> >  	status = "okay";
+> >  };
+> >  
+> > -- 
+> 
+> ---
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
-
-
-------------------------------
-For additional information including the registered office and the treatment of Xyratex confidential information please visit www.xyratex.com
-
-------------------------------
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
