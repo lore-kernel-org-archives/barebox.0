@@ -2,17 +2,16 @@ Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vj722-00063A-1a
+ id 1Vj722-00063B-1Z
  for barebox@lists.infradead.org; Wed, 20 Nov 2013 12:37:22 +0000
 Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 7876EFFA1AB
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 651E4FFA111
  for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:36:55 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 20 Nov 2013 13:39:12 +0100
-Message-Id: <1384951152-2902-2-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
+Date: Wed, 20 Nov 2013 13:39:11 +0100
+Message-Id: <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <20131120122603.GD7965@ns203013.ovh.net>
 References: <20131120122603.GD7965@ns203013.ovh.net>
- <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,43 +25,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] net: netconsole: add is_ready support
+Subject: [PATCH 1/2] console: add is_ready callbback support
 To: barebox@lists.infradead.org
 
-So we can be sure the console is only available when IP & Port are set.
+Some console such as net console need some parameter to work (IP & Port).
+So we can not enable them if not present.
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- net/netconsole.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ common/console.c  | 3 +++
+ include/console.h | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/netconsole.c b/net/netconsole.c
-index 2ab19de..f6e9701 100644
---- a/net/netconsole.c
-+++ b/net/netconsole.c
-@@ -129,6 +129,14 @@ static int nc_port_set(struct param_d *p, void *_priv)
- 	return 0;
- }
+diff --git a/common/console.c b/common/console.c
+index 56bc864..32c5d38 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -62,6 +62,9 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
+ 	char active[4];
+ 	unsigned int flag = 0, i = 0;
  
-+static int nc_is_ready(struct console_device *cdev)
-+{
-+	struct nc_priv *priv = container_of(cdev,
-+					struct nc_priv, cdev);
++	if (cdev->is_ready && !cdev->is_ready(cdev))
++		return -EIO;
 +
-+	return priv->ip && priv->port;
-+}
-+
- static int netconsole_init(void)
- {
- 	struct nc_priv *priv;
-@@ -140,6 +148,7 @@ static int netconsole_init(void)
- 	cdev->tstc = nc_tstc;
- 	cdev->putc = nc_putc;
- 	cdev->getc = nc_getc;
-+	cdev->is_ready = nc_is_ready;
+ 	if (val) {
+ 		if (strchr(val, 'i') && cdev->getc) {
+ 			active[i++] = 'i';
+diff --git a/include/console.h b/include/console.h
+index 550b440..b4caf55 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -37,6 +37,7 @@ struct console_device {
+ 	struct device_d *dev;
+ 	struct device_d class_dev;
  
- 	g_priv = priv;
- 
++	int (*is_ready)(struct console_device *cdev);
+ 	int (*tstc)(struct console_device *cdev);
+ 	void (*putc)(struct console_device *cdev, char c);
+ 	int  (*getc)(struct console_device *cdev);
 -- 
 1.8.4.3
 
