@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vj6yl-0005w1-PA
- for barebox@lists.infradead.org; Wed, 20 Nov 2013 12:34:00 +0000
+ id 1Vj722-00063A-1a
+ for barebox@lists.infradead.org; Wed, 20 Nov 2013 12:37:22 +0000
 Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A5078FF89E6
- for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:23:42 +0100 (CET)
-Date: Wed, 20 Nov 2013 13:26:03 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 7876EFFA1AB
+ for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:36:55 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131120122603.GD7965@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Wed, 20 Nov 2013 13:39:12 +0100
+Message-Id: <1384951152-2902-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20131120122603.GD7965@ns203013.ovh.net>
+ <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,52 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/2] fix net console support
+Subject: [PATCH 2/2] net: netconsole: add is_ready support
 To: barebox@lists.infradead.org
 
-Hi,
+So we can be sure the console is only available when IP & Port are set.
 
-	since 
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ net/netconsole.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-	commit e62d4255172540805a77fee1c58382103f43bb2f
-	Author: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-	Date:   Fri Sep 20 05:31:29 2013 +0200
+diff --git a/net/netconsole.c b/net/netconsole.c
+index 2ab19de..f6e9701 100644
+--- a/net/netconsole.c
++++ b/net/netconsole.c
+@@ -129,6 +129,14 @@ static int nc_port_set(struct param_d *p, void *_priv)
+ 	return 0;
+ }
+ 
++static int nc_is_ready(struct console_device *cdev)
++{
++	struct nc_priv *priv = container_of(cdev,
++					struct nc_priv, cdev);
++
++	return priv->ip && priv->port;
++}
++
+ static int netconsole_init(void)
+ {
+ 	struct nc_priv *priv;
+@@ -140,6 +148,7 @@ static int netconsole_init(void)
+ 	cdev->tstc = nc_tstc;
+ 	cdev->putc = nc_putc;
+ 	cdev->getc = nc_getc;
++	cdev->is_ready = nc_is_ready;
+ 
+ 	g_priv = priv;
+ 
+-- 
+1.8.4.3
 
-	console: drop f_caps and check the function pointer getc/putc instead
-
-	the net console is broken as the driver was using the f_caps to
-	specify when the drvier can enable or not.
-
-	Instead of tweking the API provide is_ready callback for this
-
-The following changes since commit 7c1091bd5895204b109c5a79996aa9367692a78a:
-
-  of: fdt: reorder fdt_header initialization (2013-11-08 15:42:55 +0100)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/net_console
-
-for you to fetch changes up to 18f198052d242f9ca388e6ce50fe448e08cdbdd8:
-
-  net: netconsole: add is_ready support (2013-11-20 20:21:58 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (2):
-      console: add is_ready callbback support
-      net: netconsole: add is_ready support
-
- common/console.c  | 3 +++
- include/console.h | 1 +
- net/netconsole.c  | 9 +++++++++
- 3 files changed, 13 insertions(+)
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
