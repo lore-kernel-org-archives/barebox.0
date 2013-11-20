@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 17.mo3.mail-out.ovh.net ([87.98.178.58]
- helo=mo3.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vj722-00063B-1Z
- for barebox@lists.infradead.org; Wed, 20 Nov 2013 12:37:22 +0000
-Received: from mail438.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 651E4FFA111
- for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:36:55 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Wed, 20 Nov 2013 13:39:11 +0100
-Message-Id: <1384951152-2902-1-git-send-email-plagnioj@jcrosoft.com>
-In-Reply-To: <20131120122603.GD7965@ns203013.ovh.net>
-References: <20131120122603.GD7965@ns203013.ovh.net>
+Received: from mail-ee0-x22c.google.com ([2a00:1450:4013:c00::22c])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VjFEe-0007Xp-8M
+ for barebox@lists.infradead.org; Wed, 20 Nov 2013 21:22:57 +0000
+Received: by mail-ee0-f44.google.com with SMTP id d51so4348298eek.17
+ for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 13:22:37 -0800 (PST)
+From: Rostislav Lisovy <lisovy@gmail.com>
+Date: Wed, 20 Nov 2013 22:22:25 +0100
+Message-Id: <1384982546-9111-3-git-send-email-lisovy@gmail.com>
+In-Reply-To: <1384982546-9111-1-git-send-email-lisovy@gmail.com>
+References: <1384982546-9111-1-git-send-email-lisovy@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,46 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] console: add is_ready callbback support
+Subject: [PATCH 2/3] ARM: i.mx53: Parse Reset GPIO pin in FEC driver from
+ Devicetree
 To: barebox@lists.infradead.org
+Cc: Rostislav Lisovy <lisovy@gmail.com>, pisa@cmp.felk.cvut.cz
 
-Some console such as net console need some parameter to work (IP & Port).
-So we can not enable them if not present.
+Signed-off-by: Rostislav Lisovy <lisovy@gmail.com>
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- common/console.c  | 3 +++
- include/console.h | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/common/console.c b/common/console.c
-index 56bc864..32c5d38 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -62,6 +62,9 @@ static int console_std_set(struct device_d *dev, struct param_d *param,
- 	char active[4];
- 	unsigned int flag = 0, i = 0;
+diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
+index 2f31352..31fb2aa 100644
+--- a/drivers/net/fec_imx.c
++++ b/drivers/net/fec_imx.c
+@@ -27,6 +27,8 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <of_net.h>
++#include <of_gpio.h>
++#include <gpio.h>
  
-+	if (cdev->is_ready && !cdev->is_ready(cdev))
-+		return -EIO;
+ #include <asm/mmu.h>
+ 
+@@ -643,6 +645,7 @@ static int fec_probe(struct device_d *dev)
+ 	void *base;
+ 	int ret;
+ 	enum fec_type type;
++	int phy_reset;
+ 
+ 	ret = dev_get_drvdata(dev, (unsigned long *)&type);
+ 	if (ret)
+@@ -671,6 +674,22 @@ static int fec_probe(struct device_d *dev)
+ 
+ 	fec->regs = dev_request_mem_region(dev, 0);
+ 
++	phy_reset = of_get_named_gpio(dev->device_node, "phy-reset-gpios", 0);
++	if (!gpio_is_valid(phy_reset)) {
++		dev_info(dev, "'phy-reset' gpio is not valid\n");
++	} else {
++		ret = gpio_request(phy_reset, "phy-reset");
++		if (ret)
++			goto err_free;
 +
- 	if (val) {
- 		if (strchr(val, 'i') && cdev->getc) {
- 			active[i++] = 'i';
-diff --git a/include/console.h b/include/console.h
-index 550b440..b4caf55 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -37,6 +37,7 @@ struct console_device {
- 	struct device_d *dev;
- 	struct device_d class_dev;
- 
-+	int (*is_ready)(struct console_device *cdev);
- 	int (*tstc)(struct console_device *cdev);
- 	void (*putc)(struct console_device *cdev, char c);
- 	int  (*getc)(struct console_device *cdev);
++		ret = gpio_direction_output(phy_reset, 0);
++		if (ret)
++			goto err_free;
++
++		udelay(10);
++		gpio_set_value(phy_reset, 1);
++	}
++
+ 	/* Reset chip. */
+ 	writel(FEC_ECNTRL_RESET, fec->regs + FEC_ECNTRL);
+ 	while(readl(fec->regs + FEC_ECNTRL) & 1) {
 -- 
-1.8.4.3
+1.7.10.4
 
 
 _______________________________________________
