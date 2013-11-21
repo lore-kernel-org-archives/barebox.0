@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo4.mail-out.ovh.net ([178.33.104.253]
+Received: from 17.mo4.mail-out.ovh.net ([46.105.41.16]
  helo=mo4.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VjOP4-0002NN-80
- for barebox@lists.infradead.org; Thu, 21 Nov 2013 07:10:19 +0000
+ id 1VjOQj-0002PD-6E
+ for barebox@lists.infradead.org; Thu, 21 Nov 2013 07:12:01 +0000
 Received: from mail629.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id E6FB0FFA650
- for <barebox@lists.infradead.org>; Thu, 21 Nov 2013 08:12:09 +0100 (CET)
-Date: Thu, 21 Nov 2013 08:12:16 +0100
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id B925DFFA66E
+ for <barebox@lists.infradead.org>; Thu, 21 Nov 2013 08:13:53 +0100 (CET)
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131121071216.GE7965@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
+Date: Thu, 21 Nov 2013 08:13:54 +0100
+Message-Id: <1385018035-26300-2-git-send-email-plagnioj@jcrosoft.com>
+In-Reply-To: <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
+References: <20131121071216.GE7965@ns203013.ovh.net>
+ <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +21,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] [PATCH 0/3] ARM: machine struct support
+Subject: [PATCH 2/3] at91: detect SoC earlier
 To: barebox@lists.infradead.org
 
-Hi,
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/mach-at91/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	take from ARM Kernel
+diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
+index 65d0588..5e403a6 100644
+--- a/arch/arm/mach-at91/setup.c
++++ b/arch/arm/mach-at91/setup.c
+@@ -242,7 +242,7 @@ static int at91_detect(void)
+ 
+ 	return 0;
+ }
+-postcore_initcall(at91_detect);
++core_initcall(at91_detect);
+ 
+ static int at91_soc_device(void)
+ {
+-- 
+1.8.4.3
 
-	This patch serie start to add Machine struct description. The idea is
-	to do not call initall in boards and SoC but instead use this new
-	struct to allow multiple board and SoC support
-
-	This work on dt & non-dt
-
-	An other step will be to allow boot loader such as at91bootstrap to
-	pass the machine type on DT to barebox
-
-The following changes since commit 52ebed0283503b047b17c86b92db729f781b97ad:
-
-  at91sam9x5: only register device if the driver is enabled (2013-11-20 20:21:58 +0800)
-
-are available in the git repository at:
-
-  git://git.jcrosoft.org/barebox.git delivery/arm_mach_struct
-
-for you to fetch changes up to 9d2c7446f1f7798874b9c29bd2413676dad093e7:
-
-  AT91: usb-a926x: switch to machine description (2013-11-21 08:06:01 +0800)
-
-----------------------------------------------------------------
-Jean-Christophe PLAGNIOL-VILLARD (3):
-      ARM: introduce machine description
-      at91: detect SoC earlier
-      AT91: usb-a926x: switch to machine description
-
- arch/arm/boards/usb-a926x/init.c |  39 ++++++++++++++++++++++++++++++++-------
- arch/arm/cpu/Makefile            |   2 +-
- arch/arm/cpu/dtb.c               |   4 ++++
- arch/arm/cpu/machine.c           | 110 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/include/asm/mach/arch.h |  66 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- arch/arm/lib/barebox.lds.S       |   6 ++++++
- arch/arm/mach-at91/setup.c       |   2 +-
- 7 files changed, 220 insertions(+), 9 deletions(-)
- create mode 100644 arch/arm/cpu/machine.c
- create mode 100644 arch/arm/include/asm/mach/arch.h
-
-Best Regards,
-J.
 
 _______________________________________________
 barebox mailing list
