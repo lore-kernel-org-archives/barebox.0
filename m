@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x233.google.com ([2a00:1450:4013:c00::233])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VjP9O-0002vE-Iw
- for barebox@lists.infradead.org; Thu, 21 Nov 2013 07:58:11 +0000
-Received: by mail-ee0-f51.google.com with SMTP id d41so3797426eek.10
- for <barebox@lists.infradead.org>; Wed, 20 Nov 2013 23:57:47 -0800 (PST)
-Date: Thu, 21 Nov 2013 09:05:21 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131121080520.GA1465@x61s.campuswlan.hs-rm.de>
-References: <20131121071216.GE7965@ns203013.ovh.net>
- <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
+Received: from top.free-electrons.com ([176.31.233.9]
+ helo=mail.free-electrons.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VjUpR-0003kn-R1
+ for barebox@lists.infradead.org; Thu, 21 Nov 2013 14:01:58 +0000
+Date: Thu, 21 Nov 2013 15:01:26 +0100
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Message-ID: <20131121150126.3f294944@skate>
+In-Reply-To: <CAFJTrDt+3KfH17ndSMvBVin9WzJHTWzG6n2uH+6Ed6_T4k32Uw@mail.gmail.com>
+References: <CAFJTrDt+3KfH17ndSMvBVin9WzJHTWzG6n2uH+6Ed6_T4k32Uw@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,130 +22,94 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: introduce machine description
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: kwboot Preamble only feature
+To: Matthew Minter <matthew_minter@xyratex.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
+Dear Matthew Minter,
 
-On Thu, Nov 21, 2013 at 08:13:53AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> This will allow to do not check in each board which machine we are running
-> from. This work on DT & non-DT board.
-> 
-> If only one board is enable autoselect it
-> 
-> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> ---
->  arch/arm/cpu/Makefile            |   2 +-
->  arch/arm/cpu/dtb.c               |   4 ++
->  arch/arm/cpu/machine.c           | 110 +++++++++++++++++++++++++++++++++++++++
->  arch/arm/include/asm/mach/arch.h |  66 +++++++++++++++++++++++
->  arch/arm/lib/barebox.lds.S       |   6 +++
->  5 files changed, 187 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/cpu/machine.c
->  create mode 100644 arch/arm/include/asm/mach/arch.h
-> 
-> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> index aba201b..78532da 100644
-> --- a/arch/arm/cpu/Makefile
-> +++ b/arch/arm/cpu/Makefile
-> @@ -1,7 +1,7 @@
->  obj-y += cpu.o
->  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions.o
->  obj-$(CONFIG_ARM_EXCEPTIONS) += interrupts.o
-> -obj-y += start.o setupc.o
-> +obj-y += machine.o start.o setupc.o
->  
->  #
->  # Any variants can be called as start-armxyz.S
-> diff --git a/arch/arm/cpu/dtb.c b/arch/arm/cpu/dtb.c
-> index a5881dd..62a9860 100644
-> --- a/arch/arm/cpu/dtb.c
-> +++ b/arch/arm/cpu/dtb.c
-> @@ -48,6 +48,10 @@ static int of_arm_init(void)
->  	}
->  
->  	root = of_unflatten_dtb(NULL, fdt);
-> +
-> +	if (arm_set_dt_machine())
-> +		pr_debug("No compatible machine found\n");
-> +
->  	if (root) {
->  		of_set_root_node(root);
->  		if (IS_ENABLED(CONFIG_OFDEVICE))
-> diff --git a/arch/arm/cpu/machine.c b/arch/arm/cpu/machine.c
-> new file mode 100644
-> index 0000000..e17c5bb
-> --- /dev/null
-> +++ b/arch/arm/cpu/machine.c
-> @@ -0,0 +1,110 @@
-> +#include <asm/mach/arch.h>
-> +#include <init.h>
-> +#include <common.h>
-> +#include <string.h>
-> +#include <debug_ll.h>
-> +
-> +const struct machine_desc *machine_desc;
-> +unsigned int __machine_arch_type = 0xffffffff;
-> +
-> +int arm_set_machine(const unsigned int type)
-> +{
-> +	const struct machine_desc *m;
-> +
-> +	puts_ll("type ");
-> +	puthex_ll(type);
-> +	puts_ll("\n");
-> +
-> +	if (type == 0xffffffff)
-> +		return -ENOENT;
-> +
-> +	for_each_machine_desc(m) {
-> +		puts_ll("machine ");
-> +		if (m->name)
-> +			puts_ll(m->name);
-> +		puts_ll("\n");
-> +		if (m->nr == type) {
-> +			machine_desc = (const struct machine_desc *)m;
-> +			__machine_arch_type = type;
-> +			return 0;
-> +		}
-> +	}
-> +
-> +	return -ENOENT;
-> +}
-> +
-> +int arm_set_dt_machine(void)
-> +{
-> +	const struct machine_desc *m;
-> +
-> +	for_each_machine_desc(m) {
-> +		if (!m->dt_compat)
-> +			continue;
-> +
-> +		if (!of_machine_is_compatible((const char *)m->dt_compat))
-> +			continue;
-> +
-> +		machine_desc = (const struct machine_desc *)m;
-> +		return 0;
-> +	}
-> +
-> +	return -ENOENT;
-> +}
-> +
-> +static void arm_mach_only_one_machine(void)
-> +{
-> +	const struct machine_desc *m;
-> +	const struct machine_desc *tmp = NULL;
-> +
-> +	for_each_machine_desc(m) {
-> +		if (tmp)
-> +			return;
-> +	}
-> +
-Here is no tmp assign. Are there some sideffects to set tmp here?
-If not if (tmp) is always false.
+Cc'ing Sebastian Hesselbarth, who has also worked on kwboot.
 
-- Alex
+On Tue, 19 Nov 2013 16:48:25 +0000, Matthew Minter wrote:
+
+> I was not sure this is the correct list to send this to, however when
+> using the included kwboot utility to bootstrap a Marvell Armada XP
+> board I quickly noticed it was missing a useful feature, the ability
+> to send the boot preamble without sending a boot image afterwards.
+> This was useful to me as my configuration required an xmodem program
+> with special features, not available in the useful but very light
+> included one.
+> 
+> As such I have written a patch which adds the -j option. This allows
+> behaviour similar to the -b option except kwboot exits just before the
+> actual xmodem transfer, allowing another xmodem program to take over
+> and send the boot file.
+> 
+> I think this may be of use to others bootstrapping Armada XP based
+> systems so attach this patch to the end of my post.
+
+The feature looks ok to me. Can you submit a proper patch (i.e a git
+patch, with description and Signed-off-by line) ?
+
+Just curious, which features does your xmodem program provides that
+this light tool doesn't? It might be interesting to know that, just to
+see what use cases kwboot isn't covering.
+
+Thanks!
+
+Thomas
+
+> --- barebox/scripts/kwboot.c.old    2013-11-19 16:37:04.717255752
+> +0000 +++ barebox/scripts/kwboot.c    2013-11-19 16:38:36.573351680
+> +0000 @@ -587,13 +587,15 @@
+>  kwboot_usage(FILE *stream, char *progname)
+>  {
+>      fprintf(stream,
+> -        "Usage: %s [-d | -b <image> | -D <image> ] [ -t ] [-B <baud>
+> ] <TTY>\n",
+> +        "Usage: %s [-d | -b <image> | -D <image> | -j ] [ -t ] [-B
+> <baud> ] <TTY>\n",
+>          progname);
+>      fprintf(stream, "\n");
+>      fprintf(stream,
+>          "  -b <image>: boot <image> with preamble (Kirkwood, Armada
+> 370/XP)\n");
+>      fprintf(stream,
+>          "  -D <image>: boot <image> without preamble (Dove)\n");
+> +        fprintf(stream,
+> +                "  -j: just send the boot preamble but do not send
+> any image\n");
+>      fprintf(stream, "  -d: enter debug mode\n");
+>      fprintf(stream, "\n");
+>      fprintf(stream, "  -t: mini terminal\n");
+> @@ -626,7 +628,7 @@
+>      kwboot_verbose = isatty(STDOUT_FILENO);
+> 
+>      do {
+> -        int c = getopt(argc, argv, "hb:dtB:D:");
+> +        int c = getopt(argc, argv, "jhb:dtB:D:");
+>          if (c < 0)
+>              break;
+> 
+> @@ -636,6 +638,10 @@
+>              imgpath = optarg;
+>              break;
+> 
+> +        case 'j':
+> +            bootmsg = kwboot_msg_boot;
+> +            break;
+> +
+>          case 'D':
+>              bootmsg = NULL;
+>              imgpath = optarg;
+> 
+
+
+
+-- 
+Thomas Petazzoni, CTO, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
 _______________________________________________
 barebox mailing list
