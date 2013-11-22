@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vjs2v-0008Fu-4u
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:45 +0000
+ id 1Vjs2v-0008Fz-53
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Nov 2013 15:48:46 +0100
-Message-Id: <1385131741-28280-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Nov 2013 15:48:51 +0100
+Message-Id: <1385131741-28280-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,216 +21,162 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/17] pinctrl: Add pinctrl-single driver
+Subject: [PATCH 07/17] cpsw: Add devicetree probe support
 To: barebox@lists.infradead.org
-
-Based on the kernel pinctrl-single driver. This one is just enough
-to make OMAP/AM33xx work.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pinctrl/Kconfig          |   3 +
- drivers/pinctrl/Makefile         |   1 +
- drivers/pinctrl/pinctrl-single.c | 166 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 170 insertions(+)
- create mode 100644 drivers/pinctrl/pinctrl-single.c
+ drivers/net/cpsw.c | 88 +++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 81 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 58397a0..8257586 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -23,6 +23,9 @@ config PINCTRL_IMX_IOMUX_V3
- 	help
- 	  This iomux controller is found on i.MX25,35,51,53,6.
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 25ba3d9..f021f31 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -27,6 +27,8 @@
+ #include <linux/phy.h>
+ #include <errno.h>
+ #include <io.h>
++#include <of.h>
++#include <of_net.h>
+ #include <xfuncs.h>
+ #include <asm/mmu.h>
+ #include <asm/system.h>
+@@ -900,17 +902,23 @@ static int cpsw_recv(struct eth_device *dev)
+ 	return 0;
+ }
  
-+config PINCTRL_SINGLE
-+	bool "pinctrl single"
-+
- config PINCTRL_TEGRA20
- 	select PINCTRL
- 	bool
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index 169ed18..b3b0fa9 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -2,4 +2,5 @@ obj-$(CONFIG_PINCTRL)	+= pinctrl.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V1) += imx-iomux-v1.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
-+obj-$(CONFIG_PINCTRL_SINGLE) += pinctrl-single.o
- obj-$(CONFIG_PINCTRL_TEGRA20) += pinctrl-tegra20.o
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-new file mode 100644
-index 0000000..5c60c70
---- /dev/null
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -0,0 +1,166 @@
-+/*
-+ * pinctrl-single - Generic device tree based pinctrl driver for one
-+ *                  register per pin type pinmux controllers
-+ *
-+ * Copyright (c) 2013 Sascha Hauer <s.hauer@pengutronix.de>
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <pinctrl.h>
-+#include <malloc.h>
-+
-+struct pinctrl_single {
-+	void __iomem *base;
-+	struct pinctrl_device pinctrl;
-+	unsigned (*read)(void __iomem *reg);
-+	void (*write)(unsigned val, void __iomem *reg);
-+	unsigned width;
-+};
-+
-+static unsigned __maybe_unused pcs_readb(void __iomem *reg)
++static void cpsw_slave_init_data(struct cpsw_slave *slave, int slave_num,
++			    struct cpsw_priv *priv)
 +{
-+	return readb(reg);
++	struct cpsw_slave_data	*data = priv->data.slave_data + slave_num;
++
++	slave->phy_id	= data->phy_id;
++	slave->phy_if	= data->phy_if;
 +}
 +
-+static unsigned __maybe_unused pcs_readw(void __iomem *reg)
+ static void cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
+ 			    struct cpsw_priv *priv)
+ {
+ 	void			*regs = priv->regs;
+-	struct cpsw_slave_data	*data = priv->data.slave_data + slave_num;
+ 
+ 	dev_dbg(priv->dev, "* %s\n", __func__);
+ 
+ 	slave->slave_num = slave_num;
+-	slave->phy_id	= data->phy_id;
+-	slave->phy_if	= data->phy_if;
+ 	slave->regs	= regs + priv->slave_ofs + priv->slave_size * slave_num;
+ 	slave->sliver	= regs + priv->sliver_ofs + SLIVER_SIZE * slave_num;
+ }
+@@ -950,6 +958,54 @@ static struct cpsw_data cpsw2_data = {
+ 	.cppi_ram_ofs		= 0x2000,
+ };
+ 
++static int cpsw_phy_sel_init(struct cpsw_priv *priv, struct device_node *np)
 +{
-+	return readw(reg);
-+}
-+
-+static unsigned __maybe_unused pcs_readl(void __iomem *reg)
-+{
-+	return readl(reg);
-+}
-+
-+static void __maybe_unused pcs_writeb(unsigned val, void __iomem *reg)
-+{
-+	writeb(val, reg);
-+}
-+
-+static void __maybe_unused pcs_writew(unsigned val, void __iomem *reg)
-+{
-+	writew(val, reg);
-+}
-+
-+static void __maybe_unused pcs_writel(unsigned val, void __iomem *reg)
-+{
-+	writel(val, reg);
-+}
-+
-+static int pcs_set_state(struct pinctrl_device *pdev, struct device_node *np)
-+{
-+	struct pinctrl_single *pcs = container_of(pdev, struct pinctrl_single, pinctrl);
-+	unsigned size = 0, index = 0;
-+	const __be32 *mux;
-+
-+	dev_dbg(pcs->pinctrl.dev, "set state: %s\n", np->full_name);
-+
-+	mux = of_get_property(np, "pinctrl-single,pins", &size);
-+
-+	size /= sizeof(*mux);	/* Number of elements in array */
-+
-+	if (!mux || !size || (size & 1)) {
-+		dev_err(pcs->pinctrl.dev, "bad data for mux %s\n",
-+			np->full_name);
-+		return -EINVAL;
-+	}
-+
-+	while (index < size) {
-+		unsigned offset, val;
-+
-+		offset = be32_to_cpup(mux + index++);
-+		val = be32_to_cpup(mux + index++);
-+
-+		pcs->write(val, pcs->base + offset);
-+	}
-+
++	dev_info(priv->dev, "%s\n", __func__);
 +	return 0;
 +}
 +
-+static struct pinctrl_ops pcs_ops = {
-+	.set_state = pcs_set_state,
-+};
-+
-+static int pcs_probe(struct device_d *dev)
++static int cpsw_probe_dt(struct cpsw_priv *priv)
 +{
-+	struct pinctrl_single *pcs;
-+	struct device_node *np = dev->device_node;
-+	int ret = 0;
++	struct device_d *dev = priv->dev;
++	struct device_node *np = dev->device_node, *child;
++	int ret, i = 0;
 +
-+	pcs = xzalloc(sizeof(*pcs));
-+	pcs->base = dev_request_mem_region(dev, 0);
-+	pcs->pinctrl.dev = dev;
-+	pcs->pinctrl.ops = &pcs_ops;
-+
-+	ret = of_property_read_u32(np, "pinctrl-single,register-width",
-+				   &pcs->width);
-+	if (ret) {
-+		dev_dbg(dev, "no pinctrl-single,register-width property\n");
-+		goto out;
-+	}
-+
-+	switch (pcs->width) {
-+	case 8:
-+		pcs->read = pcs_readb;
-+		pcs->write = pcs_writeb;
-+		break;
-+	case 16:
-+		pcs->read = pcs_readw;
-+		pcs->write = pcs_writew;
-+		break;
-+	case 32:
-+		pcs->read = pcs_readl;
-+		pcs->write = pcs_writel;
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		dev_dbg(dev, "invalid register width: %d\n", pcs->width);
-+		goto out;
-+	}
-+
-+	ret = pinctrl_register(&pcs->pinctrl);
++	ret = of_property_read_u32(np, "slaves", &priv->num_slaves);
 +	if (ret)
-+		goto out;
++		return ret;
++
++	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
++
++	for_each_child_of_node(np, child) {
++		if (of_device_is_compatible(child, "ti,am3352-cpsw-phy-sel")) {
++			ret = cpsw_phy_sel_init(priv, child);
++			if (ret)
++				return ret;
++		}
++
++		if (!strncmp(child->name, "slave", 5)) {
++			struct cpsw_slave *slave = &priv->slaves[i];
++			uint32_t phy_id[2];
++
++			dev_info(dev, "found slave\n");
++
++			ret = of_property_read_u32_array(child, "phy_id", phy_id, 2);
++			if (ret)
++				return ret;
++
++			slave->phy_id = phy_id[1];
++			slave->phy_if = of_get_phy_mode(child);
++
++			i++;
++		}
++	}
++
++	/* Only one slave supported by this driver */
++	priv->num_slaves = 1;
 +
 +	return 0;
-+
-+out:
-+	free(pcs);
-+
-+	return ret;
 +}
 +
-+static __maybe_unused struct of_device_id pcs_dt_ids[] = {
+ int cpsw_probe(struct device_d *dev)
+ {
+ 	struct cpsw_platform_data *data = (struct cpsw_platform_data *)dev->platform_data;
+@@ -959,6 +1015,7 @@ int cpsw_probe(struct device_d *dev)
+ 	uint64_t start;
+ 	uint32_t phy_mask;
+ 	struct cpsw_data *cpsw_data;
++	int ret;
+ 
+ 	dev_dbg(dev, "* %s\n", __func__);
+ 
+@@ -966,14 +1023,22 @@ int cpsw_probe(struct device_d *dev)
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 	priv->dev = dev;
+-	priv->data = *data;
++
++	if (dev->device_node) {
++		ret = cpsw_probe_dt(priv);
++		if (ret)
++			return ret;
++	} else {
++		priv->data = *data;
++		priv->num_slaves = data->num_slaves;
++		priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
++		for_each_slave(priv, cpsw_slave_init_data, idx, priv);
++	}
++
+ 	priv->channels = 8;
+-	priv->num_slaves = data->num_slaves;
+ 	priv->ale_entries = 1024;
+ 	edev = &priv->edev;
+ 
+-	priv->slaves = xzalloc(sizeof(struct cpsw_slave) * priv->num_slaves);
+-
+ 	priv->host_port         = 0;
+ 	priv->regs		= regs;
+ 
+@@ -1059,8 +1124,17 @@ int cpsw_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
++static __maybe_unused struct of_device_id cpsw_dt_ids[] = {
 +	{
-+		.compatible = "pinctrl-single",
++		.compatible = "ti,cpsw",
 +	}, {
 +		/* sentinel */
 +	}
 +};
 +
-+static struct driver_d pcs_driver = {
-+	.name		= "pinctrl-single",
-+	.probe		= pcs_probe,
-+	.of_compatible	= DRV_OF_COMPAT(pcs_dt_ids),
-+};
-+
-+static int pcs_init(void)
-+{
-+	return platform_driver_register(&pcs_driver);
-+}
-+postcore_initcall(pcs_init);
+ static struct driver_d cpsw_driver = {
+ 	.name   = "cpsw",
+ 	.probe  = cpsw_probe,
++	.of_compatible = DRV_OF_COMPAT(cpsw_dt_ids),
+ };
+ device_platform_driver(cpsw_driver);
 -- 
 1.8.4.2
 
