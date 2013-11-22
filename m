@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from t111.niisi.ras.ru ([193.232.173.111])
+Received: from mail-ea0-x22c.google.com ([2a00:1450:4013:c01::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VjlTo-0000C9-Au
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 07:48:45 +0000
-Date: Fri, 22 Nov 2013 11:49:58 +0400
-From: "Antony N. Pavlov" <antony@niisi.msk.ru>
-Message-Id: <20131122114958.6d6ec0a93ec910d06216b845@niisi.msk.ru>
-In-Reply-To: <20131122072008.GI24559@pengutronix.de>
+ id 1VjlcT-0000KB-1m
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 07:57:41 +0000
+Received: by mail-ea0-f172.google.com with SMTP id q10so332045ead.17
+ for <barebox@lists.infradead.org>; Thu, 21 Nov 2013 23:57:18 -0800 (PST)
+Message-ID: <528F0E5B.8010903@gmail.com>
+Date: Fri, 22 Nov 2013 08:57:15 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1385064684-28363-1-git-send-email-antonynpavlov@gmail.com>
  <1385064684-28363-2-git-send-email-antonynpavlov@gmail.com>
  <20131122072008.GI24559@pengutronix.de>
-Mime-Version: 1.0
+ <20131122114958.6d6ec0a93ec910d06216b845@niisi.msk.ru>
+In-Reply-To: <20131122114958.6d6ec0a93ec910d06216b845@niisi.msk.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,56 +21,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] gpiolib: import gpio_request_array() from linux 3.7
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: "Antony N. Pavlov" <antony@niisi.msk.ru>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gRnJpLCAyMiBOb3YgMjAxMyAwODoyMDowOCArMDEwMApTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
-cGVuZ3V0cm9uaXguZGU+IHdyb3RlOgoKPiBIaSBBbnRvbnksCj4gCj4gT24gRnJpLCBOb3YgMjIs
-IDIwMTMgYXQgMTI6MTE6MjRBTSArMDQwMCwgQW50b255IFBhdmxvdiB3cm90ZToKPiA+IEFsc28g
-aW1wb3J0IHJlbGF0ZWQgZnVuY3Rpb25zIGdwaW9fcmVxdWVzdF9vbmUoKSBhbmQKPiA+IGdwaW9f
-ZnJlZV9hcnJheSgpLgo+ID4gCj4gPiBUaGlzIGNvbW1pdCBpbXBvcnRzIGNvZGUgZnJvbSBsaW51
-eCAzLjcgYXMKPiA+IHRoZSBtb3JlIHJlY2VudCBsaW51eCBrZXJuZWwgdmVyc2lvbnMgdXNlIGdw
-aW9saWIgZGVzY3JpcHRvcnMsCj4gPiBzZWUgdGhpcyBjb21taXQgZm9yIGRldGFpbHM6Cj4gPiAK
-PiA+ICAgY29tbWl0IDM3MmU3MjJlYTRkZDRjYTExYzNkMDQ4NDVlMTFjYmMxNWYzMjE0NGMKPiA+
-ICAgQXV0aG9yOiBBbGV4YW5kcmUgQ291cmJvdCA8YWNvdXJib3RAbnZpZGlhLmNvbT4KPiA+ICAg
-RGF0ZTogICBTdW4gRmViIDMgMDE6Mjk6MjkgMjAxMyArMDkwMAo+ID4gCj4gPiAgICAgICBncGlv
-bGliOiB1c2UgZGVzY3JpcHRvcnMgaW50ZXJuYWxseQo+ID4gCj4gPiAgICAgICBNYWtlIHN1cmUg
-Z3Bpb2xpYiB3b3JrcyBpbnRlcm5hbGx5IHdpdGggZGVzY3JpcHRvcnMgYW5kIChjaGlwLCBvZmZz
-ZXQpCj4gPiAgICAgICBwYWlycyBpbnN0ZWFkIG9mIHVzaW5nIHRoZSBnbG9iYWwgaW50ZWdlciBu
-YW1lc3BhY2UuIFRoaXMgcHJlcGFyZXMgdGhlCj4gPiAgICAgICBncm91bmQgZm9yIHRoZSByZW1v
-dmFsIG9mIHRoZSBnbG9iYWwgZ3Bpb19kZXNjW10gYXJyYXkgYW5kIHRoZQo+ID4gICAgICAgaW50
-cm9kdWN0aW9uIG9mIHRoZSBkZXNjcmlwdG9yLWJhc2VkIEdQSU8gQVBJLgo+ID4gCj4gPiBTaWdu
-ZWQtb2ZmLWJ5OiBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNvbT4KPiAKPiBX
-aGF0IGEgcGl0dHksIHdlIGR1cGxpY2F0ZWQgc29tZSB3b3JrLiBJIGNyZWF0ZWQgZXhhY3RseSB0
-aGUgc2FtZSBwYXRjaAo+IHJlY2VudGx5IGJ1dCBoYXZlbid0IHBvc3RlZCBpdCB5ZXQsIHNoYW1l
-IG9uIG1lLgoKSSBtdXN0IHNheSAiVGhhbmtzISIgdG8gU2ViYXN0aWFuIEhlc3NlbGJhcnRoLiBJ
-dCdzIGhpbSB3aG8gaW50cm9kdWNlZApnZXRfZGlyZWN0aW9uIGNhbGxiYWNrLiBIaXMgcGF0Y2gg
-Y29uZmxpY3RlZCB3aXRoIHBhdGNoIGluIG15IGxvY2FsIHJlcG8uClNvIEkgbWFkZSB0aGUgZGVj
-aXNpb24gdG8gcG9zdCBteSBwYXRjaCBhcyBzb29uIGFzIHBvc3NpYmxlLgoKCj4gPiArc3RhdGlj
-IGlubGluZSBpbnQgZ3Bpb19yZXF1ZXN0X29uZSh1bnNpZ25lZCBncGlvLAo+ID4gKwkJCQkJdW5z
-aWduZWQgbG9uZyBmbGFncywgY29uc3QgY2hhciAqbGFiZWwpCj4gPiArewo+ID4gKwlyZXR1cm4g
-MDsKPiA+ICt9Cj4gPiArCj4gPiArc3RhdGljIGlubGluZSBpbnQgZ3Bpb19yZXF1ZXN0X2FycmF5
-KGNvbnN0IHN0cnVjdCBncGlvICphcnJheSwgc2l6ZV90IG51bSkKPiA+ICt7Cj4gPiArCXJldHVy
-biAwOwo+ID4gK30KPiA+ICsKPiAKPiBUaGF0J3MgdGhlIG9ubHkgcGxhY2Ugb3VyIHBhdGNoZXMg
-ZGlmZmVyLiBJbiBteSB2ZXJzaW9uIEkgcmV0dXJuIC1FTk9TWVMKPiBzaW5jZSBncGlvX3JlcXVl
-c3Rfb25lKCkgYW5kIGdwaW9fcmVxdWVzdF9hcnJheSgpIG5vdCBvbmx5IHJlcXVlc3QgZ3Bpb3MK
-PiBidXQgYWxzbyBjb25maWd1cmUgdGhlbS4gV2UgY2FuJ3QgcmV0dXJuIHN1Y2Nlc3Mgd2l0aG91
-dCBjb25maWd1cmluZyB0aGUKPiBncGlvcy4gSSBhcHBsaWVkIHlvdXIgdmVyc2lvbiBidXQgd2l0
-aCAtRU5PU1lTIGhlcmUuCj4gCj4gU2FzY2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
-PiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
-LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
-R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGls
-ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
-IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
-IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgoKLS0gCtCh
-INGD0LLQsNC20LXQvdC40LXQvCwKICDQn9Cw0LLQu9C+0LIg0JDQvdGC0L7QvQoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
-c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
-L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On 11/22/2013 08:49 AM, Antony N. Pavlov wrote:
+> On Fri, 22 Nov 2013 08:20:08 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+>
+>> Hi Antony,
+>>
+>> On Fri, Nov 22, 2013 at 12:11:24AM +0400, Antony Pavlov wrote:
+>>> Also import related functions gpio_request_one() and
+>>> gpio_free_array().
+>>>
+>>> This commit imports code from linux 3.7 as
+>>> the more recent linux kernel versions use gpiolib descriptors,
+>>> see this commit for details:
+>>>
+>>>    commit 372e722ea4dd4ca11c3d04845e11cbc15f32144c
+>>>    Author: Alexandre Courbot <acourbot@nvidia.com>
+>>>    Date:   Sun Feb 3 01:29:29 2013 +0900
+>>>
+>>>        gpiolib: use descriptors internally
+>>>
+>>>        Make sure gpiolib works internally with descriptors and (chip, offset)
+>>>        pairs instead of using the global integer namespace. This prepares the
+>>>        ground for the removal of the global gpio_desc[] array and the
+>>>        introduction of the descriptor-based GPIO API.
+>>>
+>>> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+>>
+>> What a pitty, we duplicated some work. I created exactly the same patch
+>> recently but haven't posted it yet, shame on me.
+>
+> I must say "Thanks!" to Sebastian Hesselbarth. It's him who introduced
+> get_direction callback. His patch conflicted with patch in my local repo.
+> So I made the decision to post my patch as soon as possible.
+
+I added that callback because I needed it for working on Marvell Berlin
+support. Don't expect too fancy stuff, but as soon as I find some time
+to work out the Chipidea USB device driver, I'll be posting patches for
+Chromecast.
+
+The get_direction callback gives valuable information for unknown HW :P
+
+Sebastian
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
