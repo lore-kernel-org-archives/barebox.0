@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vjs35-0005xO-0d
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:35 +0000
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vjs2v-0008G6-KH
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Nov 2013 15:48:59 +0100
-Message-Id: <1385131741-28280-16-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Nov 2013 15:48:58 +0100
+Message-Id: <1385131741-28280-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,78 +21,89 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/17] mtd: omap gpmc: Use dev_add_param_enum
+Subject: [PATCH 14/17] gpio: omap: Add devicetree probe support
 To: barebox@lists.infradead.org
+
+This adds devicetree probe support for the OMAP gpio ports and
+also makes sure the corresponding platform_devices don't get
+registered when they are already present from devicetree.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/nand_omap_gpmc.c | 36 ++++++++++--------------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+ drivers/gpio/gpio-omap.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-index 448e7b9..3053a8e 100644
---- a/drivers/mtd/nand/nand_omap_gpmc.c
-+++ b/drivers/mtd/nand/nand_omap_gpmc.c
-@@ -90,7 +90,7 @@
+diff --git a/drivers/gpio/gpio-omap.c b/drivers/gpio/gpio-omap.c
+index 49ffbda..e66a614 100644
+--- a/drivers/gpio/gpio-omap.c
++++ b/drivers/gpio/gpio-omap.c
+@@ -48,6 +48,18 @@ struct omap_gpio_chip {
+ 	struct gpio_chip chip;
+ };
  
- int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_loc);
++struct omap_gpio_drvdata {
++	unsigned int regofs;
++};
++
++static struct omap_gpio_drvdata gpio_omap3_drvdata = {
++	.regofs = 0x0,
++};
++
++static struct omap_gpio_drvdata gpio_omap4_drvdata = {
++	.regofs = 0x100,
++};
++
+ static inline int omap_get_gpio_index(int gpio)
+ {
+ 	return gpio & 0x1f;
+@@ -129,11 +141,24 @@ static struct gpio_ops omap_gpio_ops = {
+ static int omap_gpio_probe(struct device_d *dev)
+ {
+ 	struct omap_gpio_chip *omapgpio;
++	struct omap_gpio_drvdata *drvdata = NULL;
++
++	dev_get_drvdata(dev, (unsigned long *)&drvdata);
  
--static char *ecc_mode_strings[] = {
-+static const char *ecc_mode_strings[] = {
- 	"software",
- 	"hamming_hw_romcode",
- 	"bch4_hw",
-@@ -861,29 +861,11 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
+ 	omapgpio = xzalloc(sizeof(*omapgpio));
+ 	omapgpio->base = dev_request_mem_region(dev, 0);
++	if (drvdata)
++		omapgpio->base += drvdata->regofs;
++
+ 	omapgpio->chip.ops = &omap_gpio_ops;
+-	omapgpio->chip.base = dev->id * 32;
++	if (dev->id < 0) {
++		omapgpio->chip.base = of_alias_get_id(dev->device_node, "gpio");
++		if (omapgpio->chip.base < 0)
++			return omapgpio->chip.base;
++		omapgpio->chip.base *= 32;
++	} else {
++		omapgpio->chip.base = dev->id * 32;
++	}
+ 	omapgpio->chip.ngpio = 32;
+ 	omapgpio->chip.dev = dev;
+ 	gpiochip_add(&omapgpio->chip);
+@@ -144,9 +169,21 @@ static int omap_gpio_probe(struct device_d *dev)
  	return 0;
  }
  
--static int omap_gpmc_eccmode_set(struct device_d *dev, struct param_d *param, const char *val)
-+static int omap_gpmc_eccmode_set(struct param_d *param, void *priv)
- {
--	struct gpmc_nand_info *oinfo = dev->priv;
--	int i;
--
--	if (!val)
--		return 0;
--
--	for (i = 0; i < ARRAY_SIZE(ecc_mode_strings); i++)
--		if (!strcmp(ecc_mode_strings[i], val))
--			break;
-+	struct gpmc_nand_info *oinfo = priv;
- 
--	if (i == ARRAY_SIZE(ecc_mode_strings)) {
--		dev_err(dev, "invalid ecc mode '%s'\n", val);
--		printf("valid modes:\n");
--		for (i = 0; i < ARRAY_SIZE(ecc_mode_strings); i++)
--			printf("%s\n", ecc_mode_strings[i]);
--		return -EINVAL;
--	}
--
--	dev_param_set_generic(dev, param, ecc_mode_strings[i]);
--
--	return omap_gpmc_eccmode(oinfo, i);
-+	return omap_gpmc_eccmode(oinfo, oinfo->ecc_mode);
- }
- 
- static int gpmc_set_buswidth(struct nand_chip *chip, int buswidth)
-@@ -1062,11 +1044,13 @@ static int gpmc_nand_probe(struct device_d *pdev)
- 
- 	nand->options |= NAND_SKIP_BBTSCAN;
- 
--	dev_add_param(pdev, "eccmode", omap_gpmc_eccmode_set, NULL, 0);
--	dev_set_param(pdev, "eccmode", ecc_mode_strings[pdata->ecc_mode]);
-+	oinfo->ecc_mode = pdata->ecc_mode;
++static __maybe_unused struct of_device_id omap_gpio_dt_ids[] = {
++	{
++		.compatible = "ti,omap4-gpio",
++		.data = (unsigned long)&gpio_omap4_drvdata,
++	}, {
++		.compatible = "ti,omap3-gpio",
++		.data = (unsigned long)&gpio_omap3_drvdata,
++	}, {
++	}
++};
 +
-+	dev_add_param_enum(pdev, "eccmode",
-+			omap_gpmc_eccmode_set, NULL, (int *)&oinfo->ecc_mode,
-+			ecc_mode_strings, ARRAY_SIZE(ecc_mode_strings), oinfo);
+ static struct driver_d omap_gpio_driver = {
+ 	.name = "omap-gpio",
+ 	.probe = omap_gpio_probe,
++	.of_compatible = DRV_OF_COMPAT(omap_gpio_dt_ids),
+ };
  
--	if (! IS_ENABLED(CONFIG_PARAMETER))
--		omap_gpmc_eccmode(oinfo, pdata->ecc_mode);
-+	omap_gpmc_eccmode(oinfo, oinfo->ecc_mode);
- 
- 	/* We are all set to register with the system now! */
- 	err = add_mtd_nand_device(minfo, "nand");
+ static int omap_gpio_add(void)
 -- 
 1.8.4.2
 
