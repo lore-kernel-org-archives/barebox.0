@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from t111.niisi.ras.ru ([193.232.173.111])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VjlON-0008Uh-Ix
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 07:43:08 +0000
-Date: Fri, 22 Nov 2013 08:42:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131122074245.GJ24559@pengutronix.de>
-References: <20131121071216.GE7965@ns203013.ovh.net>
- <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1VjlTo-0000C9-Au
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 07:48:45 +0000
+Date: Fri, 22 Nov 2013 11:49:58 +0400
+From: "Antony N. Pavlov" <antony@niisi.msk.ru>
+Message-Id: <20131122114958.6d6ec0a93ec910d06216b845@niisi.msk.ru>
+In-Reply-To: <20131122072008.GI24559@pengutronix.de>
+References: <1385064684-28363-1-git-send-email-antonynpavlov@gmail.com>
+ <1385064684-28363-2-git-send-email-antonynpavlov@gmail.com>
+ <20131122072008.GI24559@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,132 +19,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: introduce machine description
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH 2/2] gpiolib: import gpio_request_array() from linux 3.7
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Nov 21, 2013 at 08:13:53AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> +static int arm_mach_early_init(void)
-> +{
-> +	arm_mach_only_one_machine();
-> +
-> +	if (machine_desc && machine_desc->init_early)
-> +		machine_desc->init_early();
-> +	
-> +	return 0;
-> +}
-> +pure_initcall(arm_mach_early_init);
-
-Can we call of_arm_init() from here instead of a separate initcall?
-
-> +
-> +static int arm_mach_console_init(void)
-> +{
-> +	if (!machine_desc)
-> +		return 0;
-> +
-> +	if (machine_desc->name)
-> +		barebox_set_model(machine_desc->name);
-> +
-> +	if (machine_desc->init_console)
-> +		machine_desc->init_console();
-> +
-> +	return 0;
-> +}
-> +console_initcall(arm_mach_console_init);
-> +
-> +static int arm_mach_machine_init(void)
-> +{
-> +	if (machine_desc && machine_desc->init_machine)
-> +		machine_desc->init_machine();
-> +
-> +	return 0;
-> +}
-> +device_initcall(arm_mach_machine_init);
-> +
-> +static int arm_mach_late_init(void)
-> +{
-> +	if (machine_desc && machine_desc->init_late)
-> +		machine_desc->init_late();
-
-I think all these should return int. This way we could see if something
-goes wrong.
-
-> +
-> +	return 0;
-> +}
-> +late_initcall(arm_mach_late_init);
-> diff --git a/arch/arm/include/asm/mach/arch.h b/arch/arm/include/asm/mach/arch.h
-> new file mode 100644
-> index 0000000..4e0e771
-> --- /dev/null
-> +++ b/arch/arm/include/asm/mach/arch.h
-> @@ -0,0 +1,66 @@
-> +/*
-> + *  arch/arm/include/asm/mach/arch.h
-> + *
-> + *  Copyright (C) 2000 Russell King
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/types.h>
-> +#include <linux/stringify.h>
-> +
-> +#ifndef __ASM_MACH_ARCH_H__
-> +#define __ASM_MACH_ARCH_H__
-> +
-> +struct machine_desc {
-> +	unsigned int		nr;		/* architecture number	*/
-> +	const char		*name;		/* architecture name	*/
-> +	const char *const	*dt_compat;	/* array of device tree
-> +						 * 'compatible' strings	*/
-> +
-> +	void			(*init_early)(void);
-> +	void			(*init_console)(void);
-> +	void			(*init_time)(void);
-
-I think init_time doesn't make sense in the context of barebox. What I'd
-like to have though is a init_soc which the boards set to some SoC
-specific function so that later code knows which SoC we're on.
-
-Can we stick the naming more to the existing barebox initcall levels
-instead of the Linux machine desc names? Something like:
-
-soc_init
-pure_init
-core_init
-postcore_init
-console_init
-coredevice_init
-device_init
-late_init
-
-(Where soc_init would be called on pure_initcall level, but after the
-of/machine desc has been parsed)
-
-> +
-> +/*
-> + * Current machine - only accessible during boot.
-> + */
-
-Can you drop the comments that don't make sense for barebox?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCAyMiBOb3YgMjAxMyAwODoyMDowOCArMDEwMApTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJA
+cGVuZ3V0cm9uaXguZGU+IHdyb3RlOgoKPiBIaSBBbnRvbnksCj4gCj4gT24gRnJpLCBOb3YgMjIs
+IDIwMTMgYXQgMTI6MTE6MjRBTSArMDQwMCwgQW50b255IFBhdmxvdiB3cm90ZToKPiA+IEFsc28g
+aW1wb3J0IHJlbGF0ZWQgZnVuY3Rpb25zIGdwaW9fcmVxdWVzdF9vbmUoKSBhbmQKPiA+IGdwaW9f
+ZnJlZV9hcnJheSgpLgo+ID4gCj4gPiBUaGlzIGNvbW1pdCBpbXBvcnRzIGNvZGUgZnJvbSBsaW51
+eCAzLjcgYXMKPiA+IHRoZSBtb3JlIHJlY2VudCBsaW51eCBrZXJuZWwgdmVyc2lvbnMgdXNlIGdw
+aW9saWIgZGVzY3JpcHRvcnMsCj4gPiBzZWUgdGhpcyBjb21taXQgZm9yIGRldGFpbHM6Cj4gPiAK
+PiA+ICAgY29tbWl0IDM3MmU3MjJlYTRkZDRjYTExYzNkMDQ4NDVlMTFjYmMxNWYzMjE0NGMKPiA+
+ICAgQXV0aG9yOiBBbGV4YW5kcmUgQ291cmJvdCA8YWNvdXJib3RAbnZpZGlhLmNvbT4KPiA+ICAg
+RGF0ZTogICBTdW4gRmViIDMgMDE6Mjk6MjkgMjAxMyArMDkwMAo+ID4gCj4gPiAgICAgICBncGlv
+bGliOiB1c2UgZGVzY3JpcHRvcnMgaW50ZXJuYWxseQo+ID4gCj4gPiAgICAgICBNYWtlIHN1cmUg
+Z3Bpb2xpYiB3b3JrcyBpbnRlcm5hbGx5IHdpdGggZGVzY3JpcHRvcnMgYW5kIChjaGlwLCBvZmZz
+ZXQpCj4gPiAgICAgICBwYWlycyBpbnN0ZWFkIG9mIHVzaW5nIHRoZSBnbG9iYWwgaW50ZWdlciBu
+YW1lc3BhY2UuIFRoaXMgcHJlcGFyZXMgdGhlCj4gPiAgICAgICBncm91bmQgZm9yIHRoZSByZW1v
+dmFsIG9mIHRoZSBnbG9iYWwgZ3Bpb19kZXNjW10gYXJyYXkgYW5kIHRoZQo+ID4gICAgICAgaW50
+cm9kdWN0aW9uIG9mIHRoZSBkZXNjcmlwdG9yLWJhc2VkIEdQSU8gQVBJLgo+ID4gCj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNvbT4KPiAKPiBX
+aGF0IGEgcGl0dHksIHdlIGR1cGxpY2F0ZWQgc29tZSB3b3JrLiBJIGNyZWF0ZWQgZXhhY3RseSB0
+aGUgc2FtZSBwYXRjaAo+IHJlY2VudGx5IGJ1dCBoYXZlbid0IHBvc3RlZCBpdCB5ZXQsIHNoYW1l
+IG9uIG1lLgoKSSBtdXN0IHNheSAiVGhhbmtzISIgdG8gU2ViYXN0aWFuIEhlc3NlbGJhcnRoLiBJ
+dCdzIGhpbSB3aG8gaW50cm9kdWNlZApnZXRfZGlyZWN0aW9uIGNhbGxiYWNrLiBIaXMgcGF0Y2gg
+Y29uZmxpY3RlZCB3aXRoIHBhdGNoIGluIG15IGxvY2FsIHJlcG8uClNvIEkgbWFkZSB0aGUgZGVj
+aXNpb24gdG8gcG9zdCBteSBwYXRjaCBhcyBzb29uIGFzIHBvc3NpYmxlLgoKCj4gPiArc3RhdGlj
+IGlubGluZSBpbnQgZ3Bpb19yZXF1ZXN0X29uZSh1bnNpZ25lZCBncGlvLAo+ID4gKwkJCQkJdW5z
+aWduZWQgbG9uZyBmbGFncywgY29uc3QgY2hhciAqbGFiZWwpCj4gPiArewo+ID4gKwlyZXR1cm4g
+MDsKPiA+ICt9Cj4gPiArCj4gPiArc3RhdGljIGlubGluZSBpbnQgZ3Bpb19yZXF1ZXN0X2FycmF5
+KGNvbnN0IHN0cnVjdCBncGlvICphcnJheSwgc2l6ZV90IG51bSkKPiA+ICt7Cj4gPiArCXJldHVy
+biAwOwo+ID4gK30KPiA+ICsKPiAKPiBUaGF0J3MgdGhlIG9ubHkgcGxhY2Ugb3VyIHBhdGNoZXMg
+ZGlmZmVyLiBJbiBteSB2ZXJzaW9uIEkgcmV0dXJuIC1FTk9TWVMKPiBzaW5jZSBncGlvX3JlcXVl
+c3Rfb25lKCkgYW5kIGdwaW9fcmVxdWVzdF9hcnJheSgpIG5vdCBvbmx5IHJlcXVlc3QgZ3Bpb3MK
+PiBidXQgYWxzbyBjb25maWd1cmUgdGhlbS4gV2UgY2FuJ3QgcmV0dXJuIHN1Y2Nlc3Mgd2l0aG91
+dCBjb25maWd1cmluZyB0aGUKPiBncGlvcy4gSSBhcHBsaWVkIHlvdXIgdmVyc2lvbiBidXQgd2l0
+aCAtRU5PU1lTIGhlcmUuCj4gCj4gU2FzY2hhCj4gCj4gLS0gCj4gUGVuZ3V0cm9uaXggZS5LLiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwK
+PiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfAo+IFBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwg
+R2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8Cj4gQW10c2dlcmljaHQgSGls
+ZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1
+IHwKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+
+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCj4gaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgoKLS0gCtCh
+INGD0LLQsNC20LXQvdC40LXQvCwKICDQn9Cw0LLQu9C+0LIg0JDQvdGC0L7QvQoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxp
+c3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3Jn
+L21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
