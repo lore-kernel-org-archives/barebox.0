@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vjs92-0008RJ-Bd
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:55:45 +0000
+ id 1Vjs8s-0008Jv-Bf
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:55:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Nov 2013 15:55:22 +0100
-Message-Id: <1385132122-4725-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Nov 2013 15:55:15 +0100
+Message-Id: <1385132115-24179-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,71 +19,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] of: gpio: Add Kconfig variable to depend on
+Subject: [PATCH] net: phy: Fix get_phy_device return value
 To: barebox@lists.infradead.org
+
+A function should either return an ERR_PTR or NULL on failure, but not both.
+Let get_phy_device() return an ERR_PTR and fix the return checks in mdiobus_scan
+and phy_device_connect.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/of/Kconfig  | 5 +++++
- drivers/of/Makefile | 2 +-
- include/of_gpio.h   | 6 +++---
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/phy/mdio_bus.c | 2 +-
+ drivers/net/phy/phy.c      | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index 6b893d7..cdf7ac7 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -19,6 +19,11 @@ config OF_NET
- 	depends on NET
- 	def_bool y
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 6163a50..87072be 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -82,7 +82,7 @@ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
+ 		return bus->phy_map[addr];
  
-+config OF_GPIO
-+	depends on CONFIG_GPIOLIB
-+	depends on CONFIG_OFDEVICE
-+	def_bool y
-+
- config OF_BAREBOX_DRIVERS
- 	depends on OFDEVICE
- 	depends on ENV_HANDLING
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index a19a8af..c883e51 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -1,6 +1,6 @@
- obj-y += address.o base.o fdt.o platform.o
- obj-$(CONFIG_OFTREE_MEM_GENERIC) += mem_generic.o
--obj-$(CONFIG_GPIOLIB) += of_gpio.o
-+obj-$(CONFIG_OF_GPIO) += of_gpio.o
- obj-y += partition.o
- obj-y += of_net.o
- obj-$(CONFIG_MTD) += of_mtd.o
-diff --git a/include/of_gpio.h b/include/of_gpio.h
-index 50536a8..d42b18e 100644
---- a/include/of_gpio.h
-+++ b/include/of_gpio.h
-@@ -21,11 +21,11 @@ enum of_gpio_flags {
- 	OF_GPIO_ACTIVE_LOW = 0x1,
- };
+ 	phydev = get_phy_device(bus, addr);
+-	if (IS_ERR(phydev) || phydev == NULL)
++	if (IS_ERR(phydev))
+ 		return phydev;
  
--#ifdef CONFIG_OFTREE
-+#ifdef CONFIG_OF_GPIO
- extern int of_get_named_gpio_flags(struct device_node *np,
- 		const char *list_name, int index, enum of_gpio_flags *flags);
+ 	bus->phy_map[addr] = phydev;
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index db00e38..2a33054 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -217,7 +217,7 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr)
  
--#else /* CONFIG_OFTREE */
-+#else /* CONFIG_OF_GPIO */
+ 	/* If the phy_id is mostly Fs, there is no device there */
+ 	if ((phy_id & 0x1fffffff) == 0x1fffffff)
+-		return NULL;
++		return ERR_PTR(-ENODEV);
  
- static inline int of_get_named_gpio_flags(struct device_node *np,
- 		const char *list_name, int index, enum of_gpio_flags *flags)
-@@ -33,7 +33,7 @@ static inline int of_get_named_gpio_flags(struct device_node *np,
- 	return -ENOSYS;
- }
+ 	dev = phy_device_create(bus, addr, phy_id);
  
--#endif /* CONFIG_OFTREE */
-+#endif /* CONFIG_OF_GPIO */
+@@ -254,7 +254,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 	if (!edev->phydev) {
+ 		if (addr >= 0) {
+ 			dev = mdiobus_scan(bus, addr);
+-			if (!dev) {
++			if (IS_ERR(dev)) {
+ 				ret = -EIO;
+ 				goto fail;
+ 			}
+@@ -273,7 +273,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 					continue;
  
- static inline int of_get_named_gpio(struct device_node *np,
- 				const char *list_name, int index)
+ 				dev = mdiobus_scan(bus, i);
+-				if (!dev || dev->attached_dev)
++				if (IS_ERR(dev) || dev->attached_dev)
+ 					continue;
+ 
+ 				dev->attached_dev = edev;
+@@ -304,7 +304,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 	return 0;
+ 
+ fail:
+-	if (dev)
++	if (!IS_ERR(dev))
+ 		dev->attached_dev = NULL;
+ 	puts("Unable to find a PHY (unknown ID?)\n");
+ 	return ret;
 -- 
 1.8.4.2
 
