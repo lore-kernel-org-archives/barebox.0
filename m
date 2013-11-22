@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vjs2v-0008Fx-54
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:37 +0000
+ id 1Vjs2v-0008G5-KB
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:28 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Nov 2013 15:48:49 +0100
-Message-Id: <1385131741-28280-6-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Nov 2013 15:48:55 +0100
+Message-Id: <1385131741-28280-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,92 +21,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/17] i2c: omap: Add devicetree support
+Subject: [PATCH 11/17] net: cpsw: straighten error path
 To: barebox@lists.infradead.org
+
+This mainly has the effect of checking the return value of eth_register.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-omap.c | 28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/net/cpsw.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-omap.c b/drivers/i2c/busses/i2c-omap.c
-index c45af92..f7108c2 100644
---- a/drivers/i2c/busses/i2c-omap.c
-+++ b/drivers/i2c/busses/i2c-omap.c
-@@ -151,6 +151,7 @@ struct omap_i2c_struct {
- 	u8			reg_shift;
- 	struct omap_i2c_driver_data	*data;
- 	struct resource		*ioarea;
-+	u32			fclk_rate;
- 	u32			speed;		/* Speed of bus in Khz */
- 	u16			scheme;
- 	u16			cmd_err;
-@@ -271,6 +272,11 @@ static struct omap_i2c_driver_data am33xx_data = {
- 	.fclk_rate =	48000,
- };
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index a79859b..9f79bd9 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -904,7 +904,7 @@ static void cpsw_slave_init_data(struct cpsw_slave *slave, int slave_num,
+ 	slave->phy_if	= data->phy_if;
+ }
  
-+static struct omap_i2c_driver_data omap4_of_data = {
-+	.flags =	OMAP_I2C_FLAG_BUS_SHIFT_NONE,
-+	.fclk_rate =	0,
-+};
-+
- static inline void omap_i2c_write_reg(struct omap_i2c_struct *i2c_omap,
- 				      int reg, u16 val)
+-static void cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
++static int cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
+ 			    struct cpsw_priv *priv)
  {
-@@ -415,7 +421,7 @@ static int omap_i2c_init(struct omap_i2c_struct *i2c_omap)
- 		internal_clk = 4000;
+ 	void			*regs = priv->regs;
+@@ -927,7 +927,7 @@ static void cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
+ 	edev->set_ethaddr = cpsw_set_hwaddr;
+ 	edev->parent	= priv->dev;
  
- 	/* Compute prescaler divisor */
--	psc = i2c_data->fclk_rate / internal_clk;
-+	psc = i2c_omap->fclk_rate / internal_clk;
- 	psc = psc - 1;
+-	eth_register(edev);
++	return eth_register(edev);
+ }
  
- 	/* If configured for High Speed */
-@@ -1074,6 +1080,12 @@ i2c_omap_probe(struct device_d *pdev)
- 			i2c_omap->b_hw = 1; /* Enable hardware fixes */
+ struct cpsw_data {
+@@ -1033,7 +1033,7 @@ int cpsw_probe(struct device_d *dev)
+ 	if (dev->device_node) {
+ 		ret = cpsw_probe_dt(priv);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	} else {
+ 		priv->data = *data;
+ 		priv->num_slaves = data->num_slaves;
+@@ -1057,7 +1057,8 @@ int cpsw_probe(struct device_d *dev)
+ 		cpsw_data = &cpsw2_data;
+ 		break;
+ 	default:
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out;
  	}
  
-+	i2c_omap->fclk_rate = i2c_data->fclk_rate;
+ 	priv->descs		= regs + cpsw_data->cppi_ram_ofs;
+@@ -1112,9 +1113,16 @@ int cpsw_probe(struct device_d *dev)
+ 
+ 	mdiobus_register(&priv->miibus);
+ 
+-	cpsw_slave_setup(&priv->slaves[0], 0, priv);
++	ret = cpsw_slave_setup(&priv->slaves[0], 0, priv);
++	if (ret)
++		goto out;
+ 
+ 	return 0;
++out:
++	free(priv->slaves);
++	free(priv);
 +
-+	if (!i2c_omap->fclk_rate)
-+		of_property_read_u32(pdev->device_node, "clock-frequency",
-+				&i2c_omap->fclk_rate);
-+
- 	/* reset ASAP, clearing any IRQs */
- 	omap_i2c_init(i2c_omap);
++	return ret;
+ }
  
-@@ -1085,6 +1097,7 @@ i2c_omap_probe(struct device_d *pdev)
- 	i2c_omap->adapter.master_xfer = omap_i2c_xfer,
- 	i2c_omap->adapter.nr = pdev->id;
- 	i2c_omap->adapter.dev.parent = pdev;
-+	i2c_omap->adapter.dev.device_node = pdev->device_node;
- 
- 	/* i2c device drivers may be active on return from add_adapter() */
- 	r = i2c_add_numbered_adapter(&i2c_omap->adapter);
-@@ -1119,10 +1132,23 @@ static struct platform_device_id omap_i2c_ids[] = {
- 	},
- };
- 
-+static __maybe_unused struct of_device_id omap_spi_dt_ids[] = {
-+	{
-+		.compatible = "ti,omap3-i2c",
-+		.data = (unsigned long)&omap3_data,
-+	}, {
-+		.compatible = "ti,omap4-i2c",
-+		.data = (unsigned long)&omap4_of_data,
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
- static struct driver_d omap_i2c_driver = {
- 	.probe		= i2c_omap_probe,
- 	.name		= DRIVER_NAME,
- 	.id_table	= omap_i2c_ids,
-+	.of_compatible = DRV_OF_COMPAT(omap_spi_dt_ids),
- };
- device_platform_driver(omap_i2c_driver);
- 
+ static __maybe_unused struct of_device_id cpsw_dt_ids[] = {
 -- 
 1.8.4.2
 
