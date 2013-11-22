@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vjs2v-0008G1-55
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:37 +0000
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vjs35-0005xO-0d
+ for barebox@lists.infradead.org; Fri, 22 Nov 2013 14:49:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 22 Nov 2013 15:48:52 +0100
-Message-Id: <1385131741-28280-9-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 22 Nov 2013 15:48:59 +0100
+Message-Id: <1385131741-28280-16-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385131741-28280-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,115 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/17] net: cpsw: move eth_device into slave
+Subject: [PATCH 15/17] mtd: omap gpmc: Use dev_add_param_enum
 To: barebox@lists.infradead.org
-
-An ethernet device is per slave, not per cpsw.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/cpsw.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ drivers/mtd/nand/nand_omap_gpmc.c | 36 ++++++++++--------------------------
+ 1 file changed, 10 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index f021f31..d969654 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -179,6 +179,7 @@ struct cpsw_slave {
- 	u32				mac_control;
- 	int				phy_id;
- 	phy_interface_t			phy_if;
-+	struct eth_device		edev;
- };
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+index 448e7b9..3053a8e 100644
+--- a/drivers/mtd/nand/nand_omap_gpmc.c
++++ b/drivers/mtd/nand/nand_omap_gpmc.c
+@@ -90,7 +90,7 @@
  
- struct cpdma_desc {
-@@ -199,7 +200,6 @@ struct cpdma_chan {
+ int omap_gpmc_decode_bch(int select_4_8, unsigned char *ecc, unsigned int *err_loc);
  
- struct cpsw_priv {
- 	struct device_d			*dev;
--	struct eth_device		edev;
- 	struct mii_bus			miibus;
- 
- 	u32				version;
-@@ -575,7 +575,7 @@ static int cpsw_set_hwaddr(struct eth_device *edev, unsigned char *mac)
- static void cpsw_slave_update_link(struct cpsw_slave *slave,
- 				   struct cpsw_priv *priv, int *link)
- {
--	struct phy_device *phydev = priv->edev.phydev;
-+	struct phy_device *phydev = slave->edev.phydev;
- 	u32 mac_control = 0;
- 
- 	dev_dbg(priv->dev, "* %s\n", __func__);
-@@ -915,12 +915,25 @@ static void cpsw_slave_setup(struct cpsw_slave *slave, int slave_num,
- 			    struct cpsw_priv *priv)
- {
- 	void			*regs = priv->regs;
-+	struct eth_device	*edev = &slave->edev;
- 
- 	dev_dbg(priv->dev, "* %s\n", __func__);
- 
- 	slave->slave_num = slave_num;
- 	slave->regs	= regs + priv->slave_ofs + priv->slave_size * slave_num;
- 	slave->sliver	= regs + priv->sliver_ofs + SLIVER_SIZE * slave_num;
-+
-+	edev->priv	= priv;
-+	edev->init	= cpsw_init;
-+	edev->open	= cpsw_open;
-+	edev->halt	= cpsw_halt;
-+	edev->send	= cpsw_send;
-+	edev->recv	= cpsw_recv;
-+	edev->get_ethaddr = cpsw_get_hwaddr;
-+	edev->set_ethaddr = cpsw_set_hwaddr;
-+	edev->parent	= priv->dev;
-+
-+	eth_register(edev);
- }
- 
- struct cpsw_data {
-@@ -1011,7 +1024,6 @@ int cpsw_probe(struct device_d *dev)
- 	struct cpsw_platform_data *data = (struct cpsw_platform_data *)dev->platform_data;
- 	struct cpsw_priv	*priv;
- 	void __iomem		*regs;
--	struct eth_device	*edev;
- 	uint64_t start;
- 	uint32_t phy_mask;
- 	struct cpsw_data *cpsw_data;
-@@ -1037,7 +1049,6 @@ int cpsw_probe(struct device_d *dev)
- 
- 	priv->channels = 8;
- 	priv->ale_entries = 1024;
--	edev = &priv->edev;
- 
- 	priv->host_port         = 0;
- 	priv->regs		= regs;
-@@ -1066,18 +1077,6 @@ int cpsw_probe(struct device_d *dev)
- 	priv->slave_size	= cpsw_data->slave_size;
- 	priv->sliver_ofs	= cpsw_data->sliver_ofs;
- 
--	for_each_slave(priv, cpsw_slave_setup, idx, priv);
--
--	edev->priv	= priv;
--	edev->init	= cpsw_init;
--	edev->open	= cpsw_open;
--	edev->halt	= cpsw_halt;
--	edev->send	= cpsw_send;
--	edev->recv	= cpsw_recv;
--	edev->get_ethaddr = cpsw_get_hwaddr;
--	edev->set_ethaddr = cpsw_set_hwaddr;
--	edev->parent	= dev;
--
- 	priv->miibus.read = cpsw_mdio_read;
- 	priv->miibus.write = cpsw_mdio_write;
- 	priv->miibus.priv = priv;
-@@ -1119,7 +1118,7 @@ int cpsw_probe(struct device_d *dev)
- 
- 	mdiobus_register(&priv->miibus);
- 
--	eth_register(edev);
-+	for_each_slave(priv, cpsw_slave_setup, idx, priv);
- 
+-static char *ecc_mode_strings[] = {
++static const char *ecc_mode_strings[] = {
+ 	"software",
+ 	"hamming_hw_romcode",
+ 	"bch4_hw",
+@@ -861,29 +861,11 @@ static int omap_gpmc_eccmode(struct gpmc_nand_info *oinfo,
  	return 0;
  }
+ 
+-static int omap_gpmc_eccmode_set(struct device_d *dev, struct param_d *param, const char *val)
++static int omap_gpmc_eccmode_set(struct param_d *param, void *priv)
+ {
+-	struct gpmc_nand_info *oinfo = dev->priv;
+-	int i;
+-
+-	if (!val)
+-		return 0;
+-
+-	for (i = 0; i < ARRAY_SIZE(ecc_mode_strings); i++)
+-		if (!strcmp(ecc_mode_strings[i], val))
+-			break;
++	struct gpmc_nand_info *oinfo = priv;
+ 
+-	if (i == ARRAY_SIZE(ecc_mode_strings)) {
+-		dev_err(dev, "invalid ecc mode '%s'\n", val);
+-		printf("valid modes:\n");
+-		for (i = 0; i < ARRAY_SIZE(ecc_mode_strings); i++)
+-			printf("%s\n", ecc_mode_strings[i]);
+-		return -EINVAL;
+-	}
+-
+-	dev_param_set_generic(dev, param, ecc_mode_strings[i]);
+-
+-	return omap_gpmc_eccmode(oinfo, i);
++	return omap_gpmc_eccmode(oinfo, oinfo->ecc_mode);
+ }
+ 
+ static int gpmc_set_buswidth(struct nand_chip *chip, int buswidth)
+@@ -1062,11 +1044,13 @@ static int gpmc_nand_probe(struct device_d *pdev)
+ 
+ 	nand->options |= NAND_SKIP_BBTSCAN;
+ 
+-	dev_add_param(pdev, "eccmode", omap_gpmc_eccmode_set, NULL, 0);
+-	dev_set_param(pdev, "eccmode", ecc_mode_strings[pdata->ecc_mode]);
++	oinfo->ecc_mode = pdata->ecc_mode;
++
++	dev_add_param_enum(pdev, "eccmode",
++			omap_gpmc_eccmode_set, NULL, (int *)&oinfo->ecc_mode,
++			ecc_mode_strings, ARRAY_SIZE(ecc_mode_strings), oinfo);
+ 
+-	if (! IS_ENABLED(CONFIG_PARAMETER))
+-		omap_gpmc_eccmode(oinfo, pdata->ecc_mode);
++	omap_gpmc_eccmode(oinfo, oinfo->ecc_mode);
+ 
+ 	/* We are all set to register with the system now! */
+ 	err = add_mtd_nand_device(minfo, "nand");
 -- 
 1.8.4.2
 
