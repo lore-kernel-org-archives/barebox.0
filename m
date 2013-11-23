@@ -1,19 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-we0-x22e.google.com ([2a00:1450:400c:c03::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VjxNP-0001Ys-Qc
- for barebox@lists.infradead.org; Fri, 22 Nov 2013 20:30:56 +0000
-Date: Fri, 22 Nov 2013 21:30:32 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131122203031.GM24559@pengutronix.de>
-References: <1385132083-7484-1-git-send-email-s.hauer@pengutronix.de>
- <1385132083-7484-16-git-send-email-s.hauer@pengutronix.de>
- <20131122182346.GF7965@ns203013.ovh.net>
- <20131122183519.GL24559@pengutronix.de>
- <20131122184129.GA15482@omega>
+ id 1Vk6bV-0002OI-TR
+ for barebox@lists.infradead.org; Sat, 23 Nov 2013 06:22:06 +0000
+Received: by mail-we0-f174.google.com with SMTP id q58so1989767wes.33
+ for <barebox@lists.infradead.org>; Fri, 22 Nov 2013 22:21:43 -0800 (PST)
+Date: Sat, 23 Nov 2013 07:21:38 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131123062137.GA28327@omega>
+References: <1385132122-4725-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131122184129.GA15482@omega>
+In-Reply-To: <1385132122-4725-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,48 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [SPAM] [PATCH 15/16] ARM: am33xx: compile SoC files for pbl aswell
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH] of: gpio: Add Kconfig variable to depend on
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Nov 22, 2013 at 07:41:30PM +0100, Alexander Aring wrote:
-> On Fri, Nov 22, 2013 at 07:35:19PM +0100, Sascha Hauer wrote:
-> > On Fri, Nov 22, 2013 at 07:23:46PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > On 15:54 Fri 22 Nov     , Sascha Hauer wrote:
-> > > > This is necessary for successful pbl compilation on am33xx.
-> > > > 
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > ---
-> > > >  arch/arm/mach-omap/Makefile | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > > 
-> > > > diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-> > > > index cf2d5ee..ed44cb8 100644
-> > > > --- a/arch/arm/mach-omap/Makefile
-> > > > +++ b/arch/arm/mach-omap/Makefile
-> > > > @@ -24,6 +24,7 @@ pbl-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
-> > > >  obj-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
-> > > >  pbl-$(CONFIG_ARCH_OMAP4) += omap4_generic.o omap4_clock.o
-> > > >  obj-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o
-> > > > +pbl-$(CONFIG_ARCH_AM33XX) += am33xx_generic.o am33xx_clock.o am33xx_mux.o
-> > > so use lwl-
-> > 
-> > Some functions are just in the regular binary, others in pbl. It's
-> > really needed twice.
-> > 
-> Sorry for my question, but what exactly do "lwl-"?
+Hi Sascha,
+
+On Fri, Nov 22, 2013 at 03:55:22PM +0100, Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/of/Kconfig  | 5 +++++
+>  drivers/of/Makefile | 2 +-
+>  include/of_gpio.h   | 6 +++---
+>  3 files changed, 9 insertions(+), 4 deletions(-)
 > 
-> I suppose something with "lowlevel..."
+> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> index 6b893d7..cdf7ac7 100644
+> --- a/drivers/of/Kconfig
+> +++ b/drivers/of/Kconfig
+> @@ -19,6 +19,11 @@ config OF_NET
+>  	depends on NET
+>  	def_bool y
+>  
+> +config OF_GPIO
+> +	depends on CONFIG_GPIOLIB
+> +	depends on CONFIG_OFDEVICE
+> +	def_bool y
 
-lwl-y expands to pbl-y if pbl is enabled or to obj-y if it's disabled.
+On current next branch the "def_bool y" is missing, so I get:
 
-Sascha
+drivers/of/Kconfig:22:warning: config symbol defined without type
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I will send a patch soon...
+
+- Alex
 
 _______________________________________________
 barebox mailing list
