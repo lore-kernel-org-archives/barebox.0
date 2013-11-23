@@ -1,21 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 8.mo4.mail-out.ovh.net ([188.165.33.112]
- helo=mo4.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VkEgt-0005wB-Gd
- for barebox@lists.infradead.org; Sat, 23 Nov 2013 15:00:14 +0000
-Received: from mail173.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo4.mail-out.ovh.net (Postfix) with SMTP id E6069FF9D61
- for <barebox@lists.infradead.org>; Sat, 23 Nov 2013 16:02:08 +0100 (CET)
-Date: Sat, 23 Nov 2013 16:02:13 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131123150213.GA29652@ns203013.ovh.net>
-References: <20131121071216.GE7965@ns203013.ovh.net>
- <1385018035-26300-1-git-send-email-plagnioj@jcrosoft.com>
- <20131122074245.GJ24559@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20131122074245.GJ24559@pengutronix.de>
+Received: from mail-wg0-x231.google.com ([2a00:1450:400c:c00::231])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VkJM0-0008Vd-4k
+ for barebox@lists.infradead.org; Sat, 23 Nov 2013 19:58:57 +0000
+Received: by mail-wg0-f49.google.com with SMTP id x12so2361133wgg.28
+ for <barebox@lists.infradead.org>; Sat, 23 Nov 2013 11:58:33 -0800 (PST)
+From: Vicente Bergas <vicencb@gmail.com>
+Date: Sat, 23 Nov 2013 20:58:23 +0100
+Message-Id: <1385236704-2309-1-git-send-email-vicencb@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,156 +16,361 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: introduce machine description
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] OMAP4: fix writel data/address swap regression
+To: barebox@lists.infradead.org
+Cc: Vicente Bergas <vicencb@gmail.com>
 
-On 08:42 Fri 22 Nov     , Sascha Hauer wrote:
-> On Thu, Nov 21, 2013 at 08:13:53AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > +static int arm_mach_early_init(void)
-> > +{
-> > +	arm_mach_only_one_machine();
-> > +
-> > +	if (machine_desc && machine_desc->init_early)
-> > +		machine_desc->init_early();
-> > +	
-> > +	return 0;
-> > +}
-> > +pure_initcall(arm_mach_early_init);
-> 
-> Can we call of_arm_init() from here instead of a separate initcall?
+---
+ arch/arm/mach-omap/omap4_clock.c | 176 +++++++++++++++++++--------------------
+ 1 file changed, 88 insertions(+), 88 deletions(-)
 
-I do not have dt board to test as I've moving for few days
+diff --git a/arch/arm/mach-omap/omap4_clock.c b/arch/arm/mach-omap/omap4_clock.c
+index 268f7c1..72f72a1 100644
+--- a/arch/arm/mach-omap/omap4_clock.c
++++ b/arch/arm/mach-omap/omap4_clock.c
+@@ -89,7 +89,7 @@ void omap4_configure_per_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ {
+ 	/* Select sys_clk as ref clk for ABE dpll */
+-	writel(CM_ABE_PLL_REF_CLKSEL, 0x0);
++	writel(0x0, CM_ABE_PLL_REF_CLKSEL);
+ 
+ 	/* Unlock the ABE dpll */
+ 	sr32(CM_CLKMODE_DPLL_ABE, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -102,11 +102,11 @@ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ 	sr32(CM_CLKSEL_DPLL_ABE, 0, 6, dpll_param->n);
+ 
+ 	/* Force DPLL CLKOUTHIF to stay enabled */
+-	writel(CM_DIV_M2_DPLL_ABE, 0x500);
++	writel(0x500, CM_DIV_M2_DPLL_ABE);
+ 	sr32(CM_DIV_M2_DPLL_ABE, 0, 5, dpll_param->m2);
+ 	sr32(CM_DIV_M2_DPLL_ABE, 8, 1, 0x1);
+ 	/* Force DPLL CLKOUTHIF to stay enabled */
+-	writel(CM_DIV_M3_DPLL_ABE, 0x100);
++	writel(0x100, CM_DIV_M3_DPLL_ABE);
+ 	sr32(CM_DIV_M3_DPLL_ABE, 0, 5, dpll_param->m3);
+ 	sr32(CM_DIV_M3_DPLL_ABE, 8, 1, 0x1);
+ 
+@@ -120,7 +120,7 @@ void omap4_configure_abe_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ {
+ 	/* Select the 60Mhz clock 480/8 = 60*/
+-	writel(CM_CLKSEL_USB_60MHz, 0x1);
++	writel(0x1, CM_CLKSEL_USB_60MHz);
+ 
+ 	/* Unlock the USB dpll */
+ 	sr32(CM_CLKMODE_DPLL_USB, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -133,7 +133,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ 	sr32(CM_CLKSEL_DPLL_USB, 0, 6, dpll_param->n);
+ 
+ 	/* Force DPLL CLKOUT to stay active */
+-	writel(CM_DIV_M2_DPLL_USB, 0x100);
++	writel(0x100, CM_DIV_M2_DPLL_USB);
+ 	sr32(CM_DIV_M2_DPLL_USB, 0, 5, dpll_param->m2);
+ 	sr32(CM_DIV_M2_DPLL_USB, 8, 1, 0x1);
+ 	sr32(CM_CLKDCOLDO_DPLL_USB, 8, 1, 0x1);
+@@ -143,7 +143,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ 	wait_on_value((1 << 0), 1, CM_IDLEST_DPLL_USB, LDELAY);
+ 
+ 	/* force enable the CLKDCOLDO clock */
+-	writel(CM_CLKDCOLDO_DPLL_USB, 0x100);
++	writel(0x100, CM_CLKDCOLDO_DPLL_USB);
+ 
+ 	return;
+ }
+@@ -151,7 +151,7 @@ void omap4_configure_usb_dpll(const struct dpll_param *dpll_param)
+ void omap4_configure_core_dpll_no_lock(const struct dpll_param *param)
+ {
+ 	/* CORE_CLK=CORE_X2_CLK/2, L3_CLK=CORE_CLK/2, L4_CLK=L3_CLK/2 */
+-	writel(CM_CLKSEL_CORE, 0x110);
++	writel(0x110, CM_CLKSEL_CORE);
+ 
+ 	/* Unlock the CORE dpll */
+ 	sr32(CM_CLKMODE_DPLL_CORE, 0, 3, PLL_MN_POWER_BYPASS);
+@@ -205,107 +205,107 @@ void omap4_lock_core_dpll_shadow(const struct dpll_param *param)
+ 
+ void omap4_enable_gpio_clocks(void)
+ {
+-	writel(CM_L4PER_GPIO2_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO3_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO4_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO5_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO5_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO5_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_GPIO6_CLKCTRL, 0x1);
++	writel(0x1, CM_L4PER_GPIO6_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_GPIO6_CLKCTRL, LDELAY);
+ }
+ 
+ void omap4_enable_gpio1_wup_clocks(void)
+ {
+ 	/* WKUP clocks */
+-	writel(CM_WKUP_GPIO1_CLKCTRL, 0x1);
++	writel(0x1, CM_WKUP_GPIO1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_GPIO1_CLKCTRL, LDELAY);
+ }
+ 
+ void omap4_enable_all_clocks(void)
+ {
+ 	/* Enable Ducati clocks */
+-	writel(CM_DUCATI_DUCATI_CLKCTRL, 0x1);
+-	writel(CM_DUCATI_CLKSTCTRL, 0x2);
++	writel(0x1, CM_DUCATI_DUCATI_CLKCTRL);
++	writel(0x2, CM_DUCATI_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), CM_DUCATI_CLKSTCTRL, LDELAY);
+ 
+ 	/* Enable ivahd and sl2 clocks */
+-	writel(IVAHD_IVAHD_CLKCTRL, 0x1);
+-	writel(IVAHD_SL2_CLKCTRL, 0x1);
+-	writel(IVAHD_CLKSTCTRL, 0x2);
++	writel(0x1, IVAHD_IVAHD_CLKCTRL);
++	writel(0x1, IVAHD_SL2_CLKCTRL);
++	writel(0x2, IVAHD_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), IVAHD_CLKSTCTRL, LDELAY);
+ 
+ 	/* Enable Tesla clocks */
+-	writel(DSP_DSP_CLKCTRL, 0x1);
+-	writel(DSP_CLKSTCTRL, 0x2);
++	writel(0x1, DSP_DSP_CLKCTRL);
++	writel(0x2, DSP_CLKSTCTRL);
+ 
+ 	wait_on_value((1 << 8), (1 << 8), DSP_CLKSTCTRL, LDELAY);
+ 
+ 	/* wait for tesla to become accessible */
+ 
+ 	/* ABE clocks */
+-	writel(CM1_ABE_CLKSTCTRL, 0x3);
+-	writel(CM1_ABE_AESS_CLKCTRL, 0x2);
+-	writel(CM1_ABE_PDM_CLKCTRL, 0x2);
+-	writel(CM1_ABE_DMIC_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCASP_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP1_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP2_CLKCTRL, 0x2);
+-	writel(CM1_ABE_MCBSP3_CLKCTRL, 0x2);
+-	writel(CM1_ABE_SLIMBUS_CLKCTRL, 0xf02);
+-	writel(CM1_ABE_TIMER5_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER6_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER7_CLKCTRL, 0x2);
+-	writel(CM1_ABE_TIMER8_CLKCTRL, 0x2);
+-	writel(CM1_ABE_WDT3_CLKCTRL, 0x2);
++	writel(0x3, CM1_ABE_CLKSTCTRL);
++	writel(0x2, CM1_ABE_AESS_CLKCTRL);
++	writel(0x2, CM1_ABE_PDM_CLKCTRL);
++	writel(0x2, CM1_ABE_DMIC_CLKCTRL);
++	writel(0x2, CM1_ABE_MCASP_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP1_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP2_CLKCTRL);
++	writel(0x2, CM1_ABE_MCBSP3_CLKCTRL);
++	writel(0xf02, CM1_ABE_SLIMBUS_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER5_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER6_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER7_CLKCTRL);
++	writel(0x2, CM1_ABE_TIMER8_CLKCTRL);
++	writel(0x2, CM1_ABE_WDT3_CLKCTRL);
+ 	/* Disable sleep transitions */
+-	writel(CM1_ABE_CLKSTCTRL, 0x0);
++	writel(0x0, CM1_ABE_CLKSTCTRL);
+ 
+ 	/* L4PER clocks */
+-	writel(CM_L4PER_CLKSTCTRL, 0x2);
+-	writel(CM_L4PER_DMTIMER10_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_CLKSTCTRL);
++	writel(0x2, CM_L4PER_DMTIMER10_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER10_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER11_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER11_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER11_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_DMTIMER9_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_DMTIMER9_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_DMTIMER9_CLKCTRL, LDELAY);
+ 
+ 	/* GPIO clocks */
+ 	omap4_enable_gpio_clocks();
+ 
+-	writel(CM_L4PER_HDQ1W_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_HDQ1W_CLKCTRL);
+ 
+ 	/* I2C clocks */
+-	writel(CM_L4PER_I2C1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_I2C4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_I2C4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_I2C4_CLKCTRL, LDELAY);
+ 
+-	writel(CM_L4PER_MCBSP4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCBSP4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCBSP4_CLKCTRL, LDELAY);
+ 
+ 	/* MCSPI clocks */
+-	writel(CM_L4PER_MCSPI1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MCSPI4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MCSPI4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MCSPI4_CLKCTRL, LDELAY);
+ 
+ 	/* MMC clocks */
+@@ -313,86 +313,86 @@ void omap4_enable_all_clocks(void)
+ 	sr32(CM_L3INIT_HSMMC1_CLKCTRL, 24, 1, 0x1);
+ 	sr32(CM_L3INIT_HSMMC2_CLKCTRL, 0, 2, 0x2);
+ 	sr32(CM_L3INIT_HSMMC2_CLKCTRL, 24, 1, 0x1);
+-	writel(CM_L4PER_MMCSD3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD3_CLKCTRL);
+ 	wait_on_value((1 << 18)|(1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MMCSD4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD4_CLKCTRL);
+ 	wait_on_value((1 << 18)|(1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD4_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_MMCSD5_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_MMCSD5_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_MMCSD5_CLKCTRL, LDELAY);
+ 
+ 	/* UART clocks */
+-	writel(CM_L4PER_UART1_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART1_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART2_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART2_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART3_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART3_CLKCTRL, LDELAY);
+-	writel(CM_L4PER_UART4_CLKCTRL, 0x2);
++	writel(0x2, CM_L4PER_UART4_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L4PER_UART4_CLKCTRL, LDELAY);
+ 
+ 	/* WKUP clocks */
+ 	omap4_enable_gpio1_wup_clocks();
+-	writel(CM_WKUP_TIMER1_CLKCTRL, 0x01000002);
++	writel(0x01000002, CM_WKUP_TIMER1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_TIMER1_CLKCTRL, LDELAY);
+ 
+-	writel(CM_WKUP_KEYBOARD_CLKCTRL, 0x2);
++	writel(0x2, CM_WKUP_KEYBOARD_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_KEYBOARD_CLKCTRL, LDELAY);
+ 
+-	writel(CM_SDMA_CLKSTCTRL, 0x0);
+-	writel(CM_MEMIF_CLKSTCTRL, 0x3);
+-	writel(CM_MEMIF_EMIF_1_CLKCTRL, 0x1);
++	writel(0x0, CM_SDMA_CLKSTCTRL);
++	writel(0x3, CM_MEMIF_CLKSTCTRL);
++	writel(0x1, CM_MEMIF_EMIF_1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_MEMIF_EMIF_1_CLKCTRL, LDELAY);
+-	writel(CM_MEMIF_EMIF_2_CLKCTRL, 0x1);
++	writel(0x1, CM_MEMIF_EMIF_2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_MEMIF_EMIF_2_CLKCTRL, LDELAY);
+-	writel(CM_D2D_CLKSTCTRL, 0x3);
+-	writel(CM_L3_2_GPMC_CLKCTRL, 0x1);
++	writel(0x3, CM_D2D_CLKSTCTRL);
++	writel(0x1, CM_L3_2_GPMC_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3_2_GPMC_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_L3_3_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_L3_3_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_L3_3_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_L3_INSTR_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_L3_INSTR_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_L3_INSTR_CLKCTRL, LDELAY);
+-	writel(CM_L3INSTR_OCP_WP1_CLKCTRL, 0x1);
++	writel(0x1, CM_L3INSTR_OCP_WP1_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_L3INSTR_OCP_WP1_CLKCTRL, LDELAY);
+ 
+ 	/* WDT clocks */
+-	writel(CM_WKUP_WDT2_CLKCTRL, 0x2);
++	writel(0x2, CM_WKUP_WDT2_CLKCTRL);
+ 	wait_on_value((1 << 17)|(1 << 16), 0, CM_WKUP_WDT2_CLKCTRL, LDELAY);
+ 
+ 	/* Enable Camera clocks */
+-	writel(CM_CAM_CLKSTCTRL, 0x3);
+-	writel(CM_CAM_ISS_CLKCTRL, 0x102);
+-	writel(CM_CAM_FDIF_CLKCTRL, 0x2);
+-	writel(CM_CAM_CLKSTCTRL, 0x0);
++	writel(0x3, CM_CAM_CLKSTCTRL);
++	writel(0x102, CM_CAM_ISS_CLKCTRL);
++	writel(0x2, CM_CAM_FDIF_CLKCTRL);
++	writel(0x0, CM_CAM_CLKSTCTRL);
+ 
+ 	/* Enable DSS clocks */
+ 	/* PM_DSS_PWRSTCTRL ON State and LogicState = 1 (Retention) */
+ 	__raw_writel(7, 0x4A307100); /* DSS_PRM */
+ 
+-	writel(CM_DSS_CLKSTCTRL, 0x2);
+-	writel(CM_DSS_DSS_CLKCTRL, 0xf02);
+-	writel(CM_DSS_DEISS_CLKCTRL, 0x2);
++	writel(0x2, CM_DSS_CLKSTCTRL);
++	writel(0xf02, CM_DSS_DSS_CLKCTRL);
++	writel(0x2, CM_DSS_DEISS_CLKCTRL);
+ 
+ 	/* Check for DSS Clocks */
+ 	while ((__raw_readl(0x4A009100) & 0xF00) != 0xE00)
+ 		;
+ 	/* Set HW_AUTO transition mode */
+-	writel(CM_DSS_CLKSTCTRL, 0x3);
++	writel(0x3, CM_DSS_CLKSTCTRL);
+ 
+ 	/* Enable SGX clocks */
+-	writel(CM_SGX_CLKSTCTRL, 0x2);
+-	writel(CM_SGX_SGX_CLKCTRL, 0x2);
++	writel(0x2, CM_SGX_CLKSTCTRL);
++	writel(0x2, CM_SGX_SGX_CLKCTRL);
+ 	/* Check for SGX FCLK and ICLK */
+ 	while (__raw_readl(0x4A009200) != 0x302)
+ 		;
+ 	/* Enable hsi/unipro/usb clocks */
+-	writel(CM_L3INIT_HSI_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_UNIPRO1_CLKCTRL, 0x2);
+-	writel(CM_L3INIT_HSUSBHOST_CLKCTRL, 0x2);
+-	writel(CM_L3INIT_HSUSBOTG_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_HSUSBTLL_CLKCTRL, 0x1);
+-	writel(CM_L3INIT_FSUSB_CLKCTRL, 0x2);
++	writel(0x1, CM_L3INIT_HSI_CLKCTRL);
++	writel(0x2, CM_L3INIT_UNIPRO1_CLKCTRL);
++	writel(0x2, CM_L3INIT_HSUSBHOST_CLKCTRL);
++	writel(0x1, CM_L3INIT_HSUSBOTG_CLKCTRL);
++	writel(0x1, CM_L3INIT_HSUSBTLL_CLKCTRL);
++	writel(0x2, CM_L3INIT_FSUSB_CLKCTRL);
+ 	/* enable the 32K, 48M optional clocks and enable the module */
+-	writel(CM_L3INIT_USBPHY_CLKCTRL, 0x301);
++	writel(0x301, CM_L3INIT_USBPHY_CLKCTRL);
+ }
+ 
+ void omap4_do_scale_tps62361(u32 reg, u32 volt_mv)
+-- 
+1.8.4.2
 
-if you can test the v2 on this it will be nice
-
-I've test it on vexpress and at91 (I switch them all)
-
-I was also thinking also to pass the archid to barebox via r1 as done on the
-kernel
-
-as on at91bootstrap we are already passing it
-
-we could also use r2 to give dtb add if the first stage handle
-
-so barebox could boot as a linux kernel too
-> 
-> > +
-> > +static int arm_mach_console_init(void)
-> > +{
-> > +	if (!machine_desc)
-> > +		return 0;
-> > +
-> > +	if (machine_desc->name)
-> > +		barebox_set_model(machine_desc->name);
-> > +
-> > +	if (machine_desc->init_console)
-> > +		machine_desc->init_console();
-> > +
-> > +	return 0;
-> > +}
-> > +console_initcall(arm_mach_console_init);
-> > +
-> > +static int arm_mach_machine_init(void)
-> > +{
-> > +	if (machine_desc && machine_desc->init_machine)
-> > +		machine_desc->init_machine();
-> > +
-> > +	return 0;
-> > +}
-> > +device_initcall(arm_mach_machine_init);
-> > +
-> > +static int arm_mach_late_init(void)
-> > +{
-> > +	if (machine_desc && machine_desc->init_late)
-> > +		machine_desc->init_late();
-> 
-> I think all these should return int. This way we could see if something
-> goes wrong.
-ok
-> 
-> > +
-> > +	return 0;
-> > +}
-> > +late_initcall(arm_mach_late_init);
-> > diff --git a/arch/arm/include/asm/mach/arch.h b/arch/arm/include/asm/mach/arch.h
-> > new file mode 100644
-> > index 0000000..4e0e771
-> > --- /dev/null
-> > +++ b/arch/arm/include/asm/mach/arch.h
-> > @@ -0,0 +1,66 @@
-> > +/*
-> > + *  arch/arm/include/asm/mach/arch.h
-> > + *
-> > + *  Copyright (C) 2000 Russell King
-> > + *
-> > + * This program is free software; you can redistribute it and/or modify
-> > + * it under the terms of the GNU General Public License version 2 as
-> > + * published by the Free Software Foundation.
-> > + */
-> > +
-> > +#include <linux/types.h>
-> > +#include <linux/stringify.h>
-> > +
-> > +#ifndef __ASM_MACH_ARCH_H__
-> > +#define __ASM_MACH_ARCH_H__
-> > +
-> > +struct machine_desc {
-> > +	unsigned int		nr;		/* architecture number	*/
-> > +	const char		*name;		/* architecture name	*/
-> > +	const char *const	*dt_compat;	/* array of device tree
-> > +						 * 'compatible' strings	*/
-> > +
-> > +	void			(*init_early)(void);
-> > +	void			(*init_console)(void);
-> > +	void			(*init_time)(void);
-> 
-> I think init_time doesn't make sense in the context of barebox. What I'd
-> like to have though is a init_soc which the boards set to some SoC
-> specific function so that later code knows which SoC we're on.
-
-here I've an issue some SoC need late_init and other init
-
-so I was thinking to have soc_desc too
-> 
-> Can we stick the naming more to the existing barebox initcall levels
-> instead of the Linux machine desc names? Something like:
-> 
-> soc_init
-> pure_init
-> core_init
-> postcore_init
-> console_init
-> coredevice_init
-> device_init
-> late_init
-with mmu_init and mem_init yes
-> 
-> (Where soc_init would be called on pure_initcall level, but after the
-> of/machine desc has been parsed)
-> 
-> > +
-> > +/*
-> > + * Current machine - only accessible during boot.
-> > + */
-> 
-> Can you drop the comments that don't make sense for barebox?
-yeah
-
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
