@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VkrNs-0006qq-2E
- for barebox@lists.infradead.org; Mon, 25 Nov 2013 08:19:08 +0000
+ id 1VkrOZ-0006s4-La
+ for barebox@lists.infradead.org; Mon, 25 Nov 2013 08:19:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 25 Nov 2013 09:18:45 +0100
-Message-Id: <1385367525-15781-1-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 25 Nov 2013 09:19:29 +0100
+Message-Id: <1385367569-11932-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,30 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: am33xx: Add mmc aliases
+Subject: [PATCH] mmc: omap: name mmc device after devicetree alias
 To: barebox@lists.infradead.org
-
-barebox needs these for persistent mmc device names.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/am33xx.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mci/omap_hsmmc.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/dts/am33xx.dtsi b/arch/arm/dts/am33xx.dtsi
-index 1f1339f..08d6d87 100644
---- a/arch/arm/dts/am33xx.dtsi
-+++ b/arch/arm/dts/am33xx.dtsi
-@@ -25,6 +25,9 @@
- 		i2c0 = &i2c0;
- 		i2c1 = &i2c1;
- 		i2c2 = &i2c2;
-+		mmc0 = &mmc1;
-+		mmc1 = &mmc2;
-+		mmc2 = &mmc3;
- 		serial0 = &uart0;
- 		serial1 = &uart1;
- 		serial2 = &uart2;
+diff --git a/drivers/mci/omap_hsmmc.c b/drivers/mci/omap_hsmmc.c
+index 19db461..357d99a 100644
+--- a/drivers/mci/omap_hsmmc.c
++++ b/drivers/mci/omap_hsmmc.c
+@@ -620,6 +620,12 @@ static int omap_mmc_probe(struct device_d *dev)
+ 			hsmmc->mci.devname = pdata->devname;
+ 	}
+ 
++	if (dev->device_node) {
++		const char *alias = of_alias_get(dev->device_node);
++		if (alias)
++			hsmmc->mci.devname = xstrdup(alias);
++	}
++
+ 	dev->priv = hsmmc;
+ 	dev->detect = omap_mmc_detect,
+ 
 -- 
 1.8.4.2
 
