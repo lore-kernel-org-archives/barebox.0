@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlLmR-0000cc-85
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:52 +0000
+ id 1VlLmR-0000ch-87
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:54 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:45:54 +0100
-Message-Id: <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:45:58 +0100
+Message-Id: <1385484367-15366-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,410 +21,519 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/17] ARM: am335x phytec phyCORE: Switch to devicetree probe
- support
+Subject: [PATCH 08/17] ARM: dts: Add am33xx beaglebone(black) dts files
 To: barebox@lists.infradead.org
-
-This switches the am335x Phytec phyCORE to devicetree probe support.
-For now we use a linked in dtb.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/pcm051/Makefile       |   2 +-
- arch/arm/boards/pcm051/board.c        | 149 ++--------------------------------
- arch/arm/boards/pcm051/mux.c          |  65 ---------------
- arch/arm/boards/pcm051/mux.h          |   4 -
- arch/arm/configs/pcm051_defconfig     |  26 ++++--
- arch/arm/configs/pcm051_mlo_defconfig |   8 +-
- 6 files changed, 32 insertions(+), 222 deletions(-)
- delete mode 100644 arch/arm/boards/pcm051/mux.c
- delete mode 100644 arch/arm/boards/pcm051/mux.h
+ arch/arm/dts/Makefile                |   2 +
+ arch/arm/dts/am335x-bone-common.dtsi | 299 +++++++++++++++++++++++++++++++++++
+ arch/arm/dts/am335x-bone.dts         |  29 ++++
+ arch/arm/dts/am335x-boneblack.dts    |  78 +++++++++
+ arch/arm/dts/tps65217.dtsi           |  56 +++++++
+ 5 files changed, 464 insertions(+)
+ create mode 100644 arch/arm/dts/am335x-bone-common.dtsi
+ create mode 100644 arch/arm/dts/am335x-bone.dts
+ create mode 100644 arch/arm/dts/am335x-boneblack.dts
+ create mode 100644 arch/arm/dts/tps65217.dtsi
 
-diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
-index 69d48e1..092c31d 100644
---- a/arch/arm/boards/pcm051/Makefile
-+++ b/arch/arm/boards/pcm051/Makefile
-@@ -1,2 +1,2 @@
- lwl-y += lowlevel.o
--obj-y += board.o mux.o
-+obj-y += board.o
-diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
-index e7a7b79..4b76f4c 100644
---- a/arch/arm/boards/pcm051/board.c
-+++ b/arch/arm/boards/pcm051/board.c
-@@ -19,107 +19,17 @@
- 
- #include <bootsource.h>
- #include <common.h>
-+#include <nand.h>
- #include <init.h>
- #include <io.h>
--#include <nand.h>
- #include <sizes.h>
--#include <ns16550.h>
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
- #include <linux/phy.h>
--#include <mach/am33xx-devices.h>
- #include <mach/am33xx-generic.h>
--#include <mach/am33xx-mux.h>
- #include <mach/am33xx-silicon.h>
--#include <mach/cpsw.h>
--#include <mach/generic.h>
--#include <mach/gpmc.h>
--#include <mach/gpmc_nand.h>
--#include <spi/spi.h>
--#include <spi/flash.h>
--#include <i2c/i2c.h>
--#include <i2c/at24.h>
- #include <mach/bbu.h>
- 
--#include "mux.h"
--
--/**
-- * @brief UART serial port initialization
-- * arch
-- *
-- * @return result of device registration
-- */
--static int pcm051_console_init(void)
--{
--	barebox_set_model("Phytec phyCORE-AM335x");
--	barebox_set_hostname("phycore-am335x");
--
--	am33xx_enable_uart0_pin_mux();
--	/* Register the serial port */
--	am33xx_add_uart0();
--
--	return 0;
--}
--console_initcall(pcm051_console_init);
--
--static int pcm051_mem_init(void)
--{
--	omap_add_ram0(SZ_512M);
--
--	return 0;
--}
--mem_initcall(pcm051_mem_init);
--
--/*
--* SPI Flash works at 80Mhz however the SPI controller runs with 48MHz.
--* So setup Max speed to be less than the controller speed.
--*/
--static struct spi_board_info pcm051_spi_board_info[] = {
--	{
--		.name		= "m25p80",
--		.max_speed_hz	= 24000000,
--		.bus_num	= 0,
--		.chip_select	= 0,
--	},
--};
--
--static struct cpsw_slave_data cpsw_slaves[] = {
--	{
--		.phy_id		= 0,
--		.phy_if		= PHY_INTERFACE_MODE_RMII,
--	},
--};
--
--static struct cpsw_platform_data cpsw_data = {
--	.slave_data	= cpsw_slaves,
--	.num_slaves	= ARRAY_SIZE(cpsw_slaves),
--};
--
--static struct i2c_board_info i2c0_devices[] = {
--	{
--		I2C_BOARD_INFO("24c32", 0x52),
--	},
--};
--
--static struct gpmc_config pcm051_nand_cfg = {
--	.cfg = {
--		0x00000800,	/* CONF1 */
--		0x00030300,	/* CONF2 */
--		0x00030300,	/* CONF3 */
--		0x02000311,	/* CONF4 */
--		0x00030303,	/* CONF5 */
--		0x03000540,	/* CONF6 */
--	},
--	.base = 0x08000000,
--	.size = GPMC_SIZE_16M,
--};
--
--static struct gpmc_nand_platform_data nand_plat = {
--	.wait_mon_pin = 1,
--	.ecc_mode = OMAP_ECC_BCH8_CODE_HW,
--	.nand_cfg = &pcm051_nand_cfg,
--};
--
- static struct omap_barebox_part pcm051_barebox_part = {
- 	.nand_offset = SZ_512K,
- 	.nand_size = SZ_512K,
-@@ -127,59 +37,13 @@ static struct omap_barebox_part pcm051_barebox_part = {
- 	.nor_size = SZ_512K,
- };
- 
--static void pcm051_spi_init(void)
--{
--	int ret;
--
--	am33xx_enable_spi0_pin_mux();
--
--	ret = spi_register_board_info(pcm051_spi_board_info,
--					ARRAY_SIZE(pcm051_spi_board_info));
--	am33xx_add_spi0();
--}
--
--static void pcm051_eth_init(void)
--{
--	am33xx_register_ethaddr(0, 0);
--
--	writel(0x49, AM33XX_MAC_MII_SEL);
--
--	am33xx_enable_rmii1_pin_mux();
--
--	am33xx_add_cpsw(&cpsw_data);
--}
--
--static void pcm051_i2c_init(void)
--{
--	am33xx_enable_i2c0_pin_mux();
--
--	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
--
--	am33xx_add_i2c0(NULL);
--}
--
--static void pcm051_nand_init(void)
--{
--	pcm051_enable_nand_pin_mux();
--
--	gpmc_generic_init(0x12);
--
--	omap_add_gpmc_nand_device(&nand_plat);
--}
--
- static int pcm051_devices_init(void)
- {
--	pcm051_enable_mmc0_pin_mux();
--
--	am33xx_add_mmc0(NULL);
-+	if (!of_machine_is_compatible("phytec,phycore-am335x"))
-+		return 0;
- 
--	pcm051_spi_init();
--	pcm051_eth_init();
--	pcm051_i2c_init();
--	pcm051_nand_init();
--
--	pcm051_enable_user_led_pin_mux();
--	pcm051_enable_user_btn_pin_mux();
-+	am33xx_register_ethaddr(0, 0);
-+	writel(0x69, AM33XX_MAC_MII_SEL);
- 
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_SPI:
-@@ -190,6 +54,9 @@ static int pcm051_devices_init(void)
- 		devfs_add_partition("m25p0", SZ_128K + SZ_512K, SZ_128K,
- 					DEVFS_PARTITION_FIXED, "env0");
- 		break;
-+	case BOOTSOURCE_MMC:
-+		omap_set_bootmmc_devname("mmc0");
-+		break;
- 	default:
- 		devfs_add_partition("nand0", 0x00000, SZ_128K,
- 					DEVFS_PARTITION_FIXED, "xload_raw");
-diff --git a/arch/arm/boards/pcm051/mux.c b/arch/arm/boards/pcm051/mux.c
-deleted file mode 100644
-index e1127ac..0000000
---- a/arch/arm/boards/pcm051/mux.c
-+++ /dev/null
-@@ -1,65 +0,0 @@
--#include <common.h>
--#include <config.h>
--#include <asm/io.h>
--#include <mach/am33xx-mux.h>
--
--static const struct module_pin_mux mmc0_pin_mux[] = {
--	{OFFSET(mmc0_dat3), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT3 */
--	{OFFSET(mmc0_dat2), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT2 */
--	{OFFSET(mmc0_dat1), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT1 */
--	{OFFSET(mmc0_dat0), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT0 */
--	{OFFSET(mmc0_clk), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CLK */
--	{OFFSET(mmc0_cmd), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CMD */
--	{OFFSET(spi0_cs1), (MODE(7) | RXACTIVE | PULLUP_EN)},	/* MMC0_CD */
--	{-1},
--};
--
--static const struct module_pin_mux nand_pin_mux[] = {
--	{OFFSET(gpmc_ad0), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD0 */
--	{OFFSET(gpmc_ad1), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD1 */
--	{OFFSET(gpmc_ad2), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD2 */
--	{OFFSET(gpmc_ad3), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD3 */
--	{OFFSET(gpmc_ad4), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD4 */
--	{OFFSET(gpmc_ad5), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD5 */
--	{OFFSET(gpmc_ad6), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD6 */
--	{OFFSET(gpmc_ad7), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD7 */
--	{OFFSET(gpmc_wait0), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* NAND WAIT */
--	{OFFSET(gpmc_csn0), (MODE(0) | PULLUDEN)},	/* NAND_CS0 */
--	{OFFSET(gpmc_advn_ale), (MODE(0) | PULLUDEN)},	/* NAND_ADV_ALE */
--	{OFFSET(gpmc_oen_ren), (MODE(0) | PULLUDEN)},	/* NAND_OE */
--	{OFFSET(gpmc_wen), (MODE(0) | PULLUDEN)},	/* NAND_WEN */
--	{OFFSET(gpmc_be0n_cle), (MODE(0) | PULLUDEN)},	/* NAND_BE_CLE */
--	{-1},
--};
--
--static const struct module_pin_mux user_led_pin_mux[] = {
--	{OFFSET(gpmc_csn1), MODE(7) | PULLUDEN}, /* USER LED1 */
--	{OFFSET(gpmc_csn2), MODE(7) | PULLUDEN}, /* USER LED2 */
--	{-1},
--};
--
--static const struct module_pin_mux user_btn_pin_mux[] = {
--	{OFFSET(emu0), MODE(7) | RXACTIVE | PULLUP_EN},
--	{OFFSET(emu1), MODE(7) | RXACTIVE | PULLUP_EN},
--	{-1},
--};
--
--void pcm051_enable_mmc0_pin_mux(void)
--{
--	configure_module_pin_mux(mmc0_pin_mux);
--}
--
--void pcm051_enable_nand_pin_mux(void)
--{
--	configure_module_pin_mux(nand_pin_mux);
--}
--
--void pcm051_enable_user_led_pin_mux(void)
--{
--	configure_module_pin_mux(user_led_pin_mux);
--}
--
--void pcm051_enable_user_btn_pin_mux(void)
--{
--	configure_module_pin_mux(user_btn_pin_mux);
--}
-diff --git a/arch/arm/boards/pcm051/mux.h b/arch/arm/boards/pcm051/mux.h
-deleted file mode 100644
-index 5cdbe0c..0000000
---- a/arch/arm/boards/pcm051/mux.h
-+++ /dev/null
-@@ -1,4 +0,0 @@
--extern void pcm051_enable_mmc0_pin_mux(void);
--extern void pcm051_enable_nand_pin_mux(void);
--extern void pcm051_enable_user_led_pin_mux(void);
--extern void pcm051_enable_user_btn_pin_mux(void);
-diff --git a/arch/arm/configs/pcm051_defconfig b/arch/arm/configs/pcm051_defconfig
-index 97e0940..e55ac47 100644
---- a/arch/arm/configs/pcm051_defconfig
-+++ b/arch/arm/configs/pcm051_defconfig
-@@ -1,16 +1,21 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
- CONFIG_ARCH_OMAP=y
--CONFIG_ARCH_AM33XX=y
- CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
- CONFIG_MACH_PCM051=y
--CONFIG_OMAP_UART1=y
--CONFIG_AEABI=y
-+CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_BOARD_APPEND_ATAG=y
- CONFIG_CMD_ARM_MMUINFO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
-+CONFIG_PBL_IMAGE=y
-+CONFIG_PBL_RELOCATABLE=y
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x8f000000
--CONFIG_MALLOC_SIZE=0x2000000
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
- CONFIG_PROMPT="barebox@pcm051>"
- CONFIG_LONGHELP=y
- CONFIG_HUSH_FANCY_PROMPT=y
-@@ -21,9 +26,6 @@ CONFIG_MENU=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm051/env"
- CONFIG_DEBUG_INFO=y
--CONFIG_ENABLE_FLASH_NOISE=y
--CONFIG_ENABLE_PARTITION_NOISE=y
--CONFIG_ENABLE_DEVICE_NOISE=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
-@@ -44,6 +46,7 @@ CONFIG_CMD_UBIFORMAT=y
- CONFIG_CMD_BOOTM_SHOW_TYPE=y
- CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_BOOTZ=y
-+# CONFIG_CMD_BOOTU is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-@@ -57,6 +60,8 @@ CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_DRIVER_NET_CPSW=y
-@@ -67,13 +72,16 @@ CONFIG_MTD=y
- CONFIG_MTD_M25P80=y
- CONFIG_NAND=y
- CONFIG_NAND_OMAP_GPMC=y
--CONFIG_UBI=y
-+CONFIG_MTD_UBI=y
- CONFIG_USB=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
- CONFIG_EEPROM_AT24=y
- CONFIG_GPIO_GENERIC_PLATFORM=y
-+CONFIG_PINCTRL=y
-+CONFIG_PINCTRL_SINGLE=y
-+CONFIG_BUS_OMAP_GPMC=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
-diff --git a/arch/arm/configs/pcm051_mlo_defconfig b/arch/arm/configs/pcm051_mlo_defconfig
-index ea65979..4f6a7b1 100644
---- a/arch/arm/configs/pcm051_mlo_defconfig
-+++ b/arch/arm/configs/pcm051_mlo_defconfig
-@@ -1,8 +1,8 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
- CONFIG_ARCH_OMAP=y
--CONFIG_ARCH_AM33XX=y
- CONFIG_OMAP_BUILD_IFT=y
- CONFIG_MACH_PCM051=y
--CONFIG_OMAP_UART1=y
- CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
- # CONFIG_MEMINFO is not set
-@@ -17,6 +17,7 @@ CONFIG_SHELL_NONE=y
- # CONFIG_TIMESTAMP is not set
- CONFIG_CONSOLE_SIMPLE=y
- # CONFIG_DEFAULT_ENVIRONMENT is not set
-+CONFIG_OFDEVICE=y
- CONFIG_DRIVER_SERIAL_NS16550=y
- CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
- CONFIG_DRIVER_SPI_OMAP3=y
-@@ -27,6 +28,9 @@ CONFIG_NAND_OMAP_GPMC=y
- CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_PINCTRL=y
-+CONFIG_PINCTRL_SINGLE=y
-+CONFIG_BUS_OMAP_GPMC=y
- # CONFIG_FS_RAMFS is not set
- # CONFIG_FS_DEVFS is not set
- CONFIG_FS_FAT=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 6618660..cff294b 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -1,4 +1,6 @@
+ dtb-$(CONFIG_ARCH_AM33XX) += \
++	am335x-bone.dtb \
++	am335x-boneblack.dtb \
+ 	am335x-phytec-phycore.dtb
+ dtb-$(CONFIG_ARCH_IMX51) += imx51-babbage.dtb \
+ 	imx51-genesi-efika-sb.dtb
+diff --git a/arch/arm/dts/am335x-bone-common.dtsi b/arch/arm/dts/am335x-bone-common.dtsi
+new file mode 100644
+index 0000000..e3f27ec
+--- /dev/null
++++ b/arch/arm/dts/am335x-bone-common.dtsi
+@@ -0,0 +1,299 @@
++/*
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++/ {
++	model = "TI AM335x BeagleBone";
++	compatible = "ti,am335x-bone", "ti,am33xx";
++
++	cpus {
++		cpu@0 {
++			cpu0-supply = <&dcdc2_reg>;
++		};
++	};
++
++	memory {
++		device_type = "memory";
++		reg = <0x80000000 0x10000000>; /* 256 MB */
++	};
++
++	leds {
++		pinctrl-names = "default";
++		pinctrl-0 = <&user_leds_s0>;
++
++		compatible = "gpio-leds";
++
++		led@2 {
++			label = "beaglebone:green:heartbeat";
++			gpios = <&gpio1 21 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++			default-state = "off";
++		};
++
++		led@3 {
++			label = "beaglebone:green:mmc0";
++			gpios = <&gpio1 22 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "mmc0";
++			default-state = "off";
++		};
++
++		led@4 {
++			label = "beaglebone:green:usr2";
++			gpios = <&gpio1 23 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "cpu0";
++			default-state = "off";
++		};
++
++		led@5 {
++			label = "beaglebone:green:usr3";
++			gpios = <&gpio1 24 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "mmc1";
++			default-state = "off";
++		};
++	};
++
++	vmmcsd_fixed: fixedregulator@0 {
++		compatible = "regulator-fixed";
++		regulator-name = "vmmcsd_fixed";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
++};
++
++&am33xx_pinmux {
++	pinctrl-names = "default";
++	pinctrl-0 = <&clkout2_pin>;
++
++	user_leds_s0: user_leds_s0 {
++		pinctrl-single,pins = <
++			0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a5.gpio1_21 */
++			0x58 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a6.gpio1_22 */
++			0x5c (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a7.gpio1_23 */
++			0x60 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a8.gpio1_24 */
++		>;
++	};
++
++	i2c0_pins: pinmux_i2c0_pins {
++		pinctrl-single,pins = <
++			0x188 (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_sda.i2c0_sda */
++			0x18c (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_scl.i2c0_scl */
++		>;
++	};
++
++	uart0_pins: pinmux_uart0_pins {
++		pinctrl-single,pins = <
++			0x170 (PIN_INPUT_PULLUP | MUX_MODE0)	/* uart0_rxd.uart0_rxd */
++			0x174 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* uart0_txd.uart0_txd */
++		>;
++	};
++
++	clkout2_pin: pinmux_clkout2_pin {
++		pinctrl-single,pins = <
++			0x1b4 (PIN_OUTPUT_PULLDOWN | MUX_MODE3)	/* xdma_event_intr1.clkout2 */
++		>;
++	};
++
++	cpsw_default: cpsw_default {
++		pinctrl-single,pins = <
++			/* Slave 1 */
++			0x110 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxerr.mii1_rxerr */
++			0x114 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txen.mii1_txen */
++			0x118 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxdv.mii1_rxdv */
++			0x11c (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd3.mii1_txd3 */
++			0x120 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd2.mii1_txd2 */
++			0x124 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd1.mii1_txd1 */
++			0x128 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd0.mii1_txd0 */
++			0x12c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_txclk.mii1_txclk */
++			0x130 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxclk.mii1_rxclk */
++			0x134 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd3.mii1_rxd3 */
++			0x138 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd2.mii1_rxd2 */
++			0x13c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd1.mii1_rxd1 */
++			0x140 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd0.mii1_rxd0 */
++		>;
++	};
++
++	cpsw_sleep: cpsw_sleep {
++		pinctrl-single,pins = <
++			/* Slave 1 reset value */
++			0x110 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x114 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x118 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x11c (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x120 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x124 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x128 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x12c (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x130 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x134 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x138 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x13c (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x140 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++		>;
++	};
++
++	davinci_mdio_default: davinci_mdio_default {
++		pinctrl-single,pins = <
++			/* MDIO */
++			0x148 (PIN_INPUT_PULLUP | SLEWCTRL_FAST | MUX_MODE0)	/* mdio_data.mdio_data */
++			0x14c (PIN_OUTPUT_PULLUP | MUX_MODE0)			/* mdio_clk.mdio_clk */
++		>;
++	};
++
++	davinci_mdio_sleep: davinci_mdio_sleep {
++		pinctrl-single,pins = <
++			/* MDIO reset value */
++			0x148 (PIN_INPUT_PULLDOWN | MUX_MODE7)
++			0x14c (PIN_INPUT_PULLDOWN | MUX_MODE7)
++		>;
++	};
++
++	mmc1_pins: pinmux_mmc1_pins {
++		pinctrl-single,pins = <
++			0x160 (PIN_INPUT | MUX_MODE7) /* GPIO0_6 */
++		>;
++	};
++
++	emmc_pins: pinmux_emmc_pins {
++		pinctrl-single,pins = <
++			0x80 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn1.mmc1_clk */
++			0x84 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn2.mmc1_cmd */
++			0x00 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad0.mmc1_dat0 */
++			0x04 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad1.mmc1_dat1 */
++			0x08 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad2.mmc1_dat2 */
++			0x0c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad3.mmc1_dat3 */
++			0x10 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad4.mmc1_dat4 */
++			0x14 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad5.mmc1_dat5 */
++			0x18 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad6.mmc1_dat6 */
++			0x1c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad7.mmc1_dat7 */
++		>;
++	};
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0_pins>;
++
++	status = "okay";
++};
++
++&usb {
++	status = "okay";
++
++	control@44e10000 {
++		status = "okay";
++	};
++
++	usb-phy@47401300 {
++		status = "okay";
++	};
++
++	usb-phy@47401b00 {
++		status = "okay";
++	};
++
++	usb@47401000 {
++		status = "okay";
++	};
++
++	usb@47401800 {
++		status = "okay";
++		dr_mode = "host";
++	};
++
++	dma-controller@07402000  {
++		status = "okay";
++	};
++};
++
++&i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c0_pins>;
++
++	status = "okay";
++	clock-frequency = <400000>;
++
++	tps: tps@24 {
++		reg = <0x24>;
++	};
++
++};
++
++/include/ "tps65217.dtsi"
++
++&tps {
++	regulators {
++		dcdc1_reg: regulator@0 {
++			regulator-always-on;
++		};
++
++		dcdc2_reg: regulator@1 {
++			/* VDD_MPU voltage limits 0.95V - 1.26V with +/-4% tolerance */
++			regulator-name = "vdd_mpu";
++			regulator-min-microvolt = <925000>;
++			regulator-max-microvolt = <1325000>;
++			regulator-boot-on;
++			regulator-always-on;
++		};
++
++		dcdc3_reg: regulator@2 {
++			/* VDD_CORE voltage limits 0.95V - 1.1V with +/-4% tolerance */
++			regulator-name = "vdd_core";
++			regulator-min-microvolt = <925000>;
++			regulator-max-microvolt = <1150000>;
++			regulator-boot-on;
++			regulator-always-on;
++		};
++
++		ldo1_reg: regulator@3 {
++			regulator-always-on;
++		};
++
++		ldo2_reg: regulator@4 {
++			regulator-always-on;
++		};
++
++		ldo3_reg: regulator@5 {
++			regulator-always-on;
++		};
++
++		ldo4_reg: regulator@6 {
++			regulator-always-on;
++		};
++	};
++};
++
++&cpsw_emac0 {
++	phy_id = <&davinci_mdio>, <0>;
++	phy-mode = "mii";
++};
++
++&cpsw_emac1 {
++	phy_id = <&davinci_mdio>, <1>;
++	phy-mode = "mii";
++};
++
++&mac {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&cpsw_default>;
++	pinctrl-1 = <&cpsw_sleep>;
++
++};
++
++&davinci_mdio {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&davinci_mdio_default>;
++	pinctrl-1 = <&davinci_mdio_sleep>;
++};
++
++&mmc1 {
++	status = "okay";
++	bus-width = <0x4>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&mmc1_pins>;
++	cd-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
++	cd-inverted;
++};
+diff --git a/arch/arm/dts/am335x-bone.dts b/arch/arm/dts/am335x-bone.dts
+new file mode 100644
+index 0000000..94ee427
+--- /dev/null
++++ b/arch/arm/dts/am335x-bone.dts
+@@ -0,0 +1,29 @@
++/*
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++/dts-v1/;
++
++#include "am33xx.dtsi"
++#include "am335x-bone-common.dtsi"
++
++&ldo3_reg {
++	regulator-min-microvolt = <1800000>;
++	regulator-max-microvolt = <3300000>;
++	regulator-always-on;
++};
++
++&mmc1 {
++	vmmc-supply = <&ldo3_reg>;
++};
++
++&sham {
++	status = "okay";
++};
++
++&aes {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/am335x-boneblack.dts b/arch/arm/dts/am335x-boneblack.dts
+new file mode 100644
+index 0000000..6b71ad9
+--- /dev/null
++++ b/arch/arm/dts/am335x-boneblack.dts
+@@ -0,0 +1,78 @@
++/*
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++/dts-v1/;
++
++#include "am33xx.dtsi"
++#include "am335x-bone-common.dtsi"
++
++&ldo3_reg {
++	regulator-min-microvolt = <1800000>;
++	regulator-max-microvolt = <1800000>;
++	regulator-always-on;
++};
++
++&mmc1 {
++	vmmc-supply = <&vmmcsd_fixed>;
++};
++
++&mmc2 {
++	vmmc-supply = <&vmmcsd_fixed>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&emmc_pins>;
++	bus-width = <8>;
++	status = "okay";
++	ti,vcc-aux-disable-is-sleep;
++};
++
++&am33xx_pinmux {
++	nxp_hdmi_bonelt_pins: nxp_hdmi_bonelt_pins {
++		pinctrl-single,pins = <
++			0x1b0 0x03      /* xdma_event_intr0, OMAP_MUX_MODE3 | AM33XX_PIN_OUTPUT */
++			0xa0 0x08       /* lcd_data0.lcd_data0, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xa4 0x08       /* lcd_data1.lcd_data1, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xa8 0x08       /* lcd_data2.lcd_data2, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xac 0x08       /* lcd_data3.lcd_data3, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xb0 0x08       /* lcd_data4.lcd_data4, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xb4 0x08       /* lcd_data5.lcd_data5, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xb8 0x08       /* lcd_data6.lcd_data6, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xbc 0x08       /* lcd_data7.lcd_data7, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xc0 0x08       /* lcd_data8.lcd_data8, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xc4 0x08       /* lcd_data9.lcd_data9, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xc8 0x08       /* lcd_data10.lcd_data10, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xcc 0x08       /* lcd_data11.lcd_data11, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xd0 0x08       /* lcd_data12.lcd_data12, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xd4 0x08       /* lcd_data13.lcd_data13, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xd8 0x08       /* lcd_data14.lcd_data14, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xdc 0x08       /* lcd_data15.lcd_data15, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
++			0xe0 0x00       /* lcd_vsync.lcd_vsync, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
++			0xe4 0x00       /* lcd_hsync.lcd_hsync, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
++			0xe8 0x00       /* lcd_pclk.lcd_pclk, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
++			0xec 0x00       /* lcd_ac_bias_en.lcd_ac_bias_en, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
++		>;
++	};
++	nxp_hdmi_bonelt_off_pins: nxp_hdmi_bonelt_off_pins {
++		pinctrl-single,pins = <
++			0x1b0 0x03      /* xdma_event_intr0, OMAP_MUX_MODE3 | AM33XX_PIN_OUTPUT */
++		>;
++	};
++};
++
++&lcdc {
++	status = "okay";
++};
++
++/ {
++	hdmi {
++		compatible = "ti,tilcdc,slave";
++		i2c = <&i2c0>;
++		pinctrl-names = "default", "off";
++		pinctrl-0 = <&nxp_hdmi_bonelt_pins>;
++		pinctrl-1 = <&nxp_hdmi_bonelt_off_pins>;
++		status = "okay";
++	};
++};
+diff --git a/arch/arm/dts/tps65217.dtsi b/arch/arm/dts/tps65217.dtsi
+new file mode 100644
+index 0000000..a632724
+--- /dev/null
++++ b/arch/arm/dts/tps65217.dtsi
+@@ -0,0 +1,56 @@
++/*
++ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++/*
++ * Integrated Power Management Chip
++ * http://www.ti.com/lit/ds/symlink/tps65217.pdf
++ */
++
++&tps {
++	compatible = "ti,tps65217";
++
++	regulators {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		dcdc1_reg: regulator@0 {
++			reg = <0>;
++			regulator-compatible = "dcdc1";
++		};
++
++		dcdc2_reg: regulator@1 {
++			reg = <1>;
++			regulator-compatible = "dcdc2";
++		};
++
++		dcdc3_reg: regulator@2 {
++			reg = <2>;
++			regulator-compatible = "dcdc3";
++		};
++
++		ldo1_reg: regulator@3 {
++			reg = <3>;
++			regulator-compatible = "ldo1";
++		};
++
++		ldo2_reg: regulator@4 {
++			reg = <4>;
++			regulator-compatible = "ldo2";
++		};
++
++		ldo3_reg: regulator@5 {
++			reg = <5>;
++			regulator-compatible = "ldo3";
++		};
++
++		ldo4_reg: regulator@6 {
++			reg = <6>;
++			regulator-compatible = "ldo4";
++		};
++	};
++};
 -- 
 1.8.4.2
 
