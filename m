@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlLmR-0000ch-87
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:54 +0000
+ id 1VlLmZ-0000dX-Cr
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:45:58 +0100
-Message-Id: <1385484367-15366-9-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:46:04 +0100
+Message-Id: <1385484367-15366-15-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,519 +21,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/17] ARM: dts: Add am33xx beaglebone(black) dts files
+Subject: [PATCH 14/17] ARM: am335x Phytec phyCORE: configure environment from
+ devicetree
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/Makefile                |   2 +
- arch/arm/dts/am335x-bone-common.dtsi | 299 +++++++++++++++++++++++++++++++++++
- arch/arm/dts/am335x-bone.dts         |  29 ++++
- arch/arm/dts/am335x-boneblack.dts    |  78 +++++++++
- arch/arm/dts/tps65217.dtsi           |  56 +++++++
- 5 files changed, 464 insertions(+)
- create mode 100644 arch/arm/dts/am335x-bone-common.dtsi
- create mode 100644 arch/arm/dts/am335x-bone.dts
- create mode 100644 arch/arm/dts/am335x-boneblack.dts
- create mode 100644 arch/arm/dts/tps65217.dtsi
+ arch/arm/boards/pcm051/board.c         | 17 ++---------------
+ arch/arm/dts/am335x-phytec-phycore.dts | 18 +++++++++++++++++-
+ 2 files changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 6618660..cff294b 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -1,4 +1,6 @@
- dtb-$(CONFIG_ARCH_AM33XX) += \
-+	am335x-bone.dtb \
-+	am335x-boneblack.dtb \
- 	am335x-phytec-phycore.dtb
- dtb-$(CONFIG_ARCH_IMX51) += imx51-babbage.dtb \
- 	imx51-genesi-efika-sb.dtb
-diff --git a/arch/arm/dts/am335x-bone-common.dtsi b/arch/arm/dts/am335x-bone-common.dtsi
-new file mode 100644
-index 0000000..e3f27ec
---- /dev/null
-+++ b/arch/arm/dts/am335x-bone-common.dtsi
-@@ -0,0 +1,299 @@
-+/*
-+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
+diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
+index 4b76f4c..a64d219 100644
+--- a/arch/arm/boards/pcm051/board.c
++++ b/arch/arm/boards/pcm051/board.c
+@@ -47,26 +47,13 @@ static int pcm051_devices_init(void)
+ 
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_SPI:
+-		devfs_add_partition("m25p0", 0x00000, SZ_128K,
+-					DEVFS_PARTITION_FIXED, "xload");
+-		devfs_add_partition("m25p0", SZ_128K, SZ_512K,
+-					DEVFS_PARTITION_FIXED, "self0");
+-		devfs_add_partition("m25p0", SZ_128K + SZ_512K, SZ_128K,
+-					DEVFS_PARTITION_FIXED, "env0");
++		of_device_enable_path("/chosen/environment-spi");
+ 		break;
+ 	case BOOTSOURCE_MMC:
+ 		omap_set_bootmmc_devname("mmc0");
+ 		break;
+ 	default:
+-		devfs_add_partition("nand0", 0x00000, SZ_128K,
+-					DEVFS_PARTITION_FIXED, "xload_raw");
+-		dev_add_bb_dev("xload_raw", "xload");
+-		devfs_add_partition("nand0", SZ_512K, SZ_512K,
+-					DEVFS_PARTITION_FIXED, "self_raw");
+-		dev_add_bb_dev("self_raw", "self0");
+-		devfs_add_partition("nand0", SZ_512K + SZ_512K, SZ_128K,
+-					DEVFS_PARTITION_FIXED, "env_raw");
+-		dev_add_bb_dev("env_raw", "env0");
++		of_device_enable_path("/chosen/environment-nand");
+ 		break;
+ 	}
+ 
+diff --git a/arch/arm/dts/am335x-phytec-phycore.dts b/arch/arm/dts/am335x-phytec-phycore.dts
+index 8fbfae6..81c08fd 100644
+--- a/arch/arm/dts/am335x-phytec-phycore.dts
++++ b/arch/arm/dts/am335x-phytec-phycore.dts
+@@ -6,6 +6,22 @@
+ 	model = "Phytec phyCORE AM335x";
+ 	compatible = "phytec,phycore-am335x", "ti,am33xx";
+ 
++	chosen {
++		linux,stdout-path = &uart0;
 +
-+/ {
-+	model = "TI AM335x BeagleBone";
-+	compatible = "ti,am335x-bone", "ti,am33xx";
++		environment-spi {
++			compatible = "barebox,environment";
++			device-path = &flash, "partname:bareboxenv";
++			status = "disabled";
++		};
 +
-+	cpus {
-+		cpu@0 {
-+			cpu0-supply = <&dcdc2_reg>;
++		environment-nand {
++			compatible = "barebox,environment";
++			device-path = &nand, "partname:bareboxenv";
++			status = "disabled";
 +		};
 +	};
 +
-+	memory {
-+		device_type = "memory";
-+		reg = <0x80000000 0x10000000>; /* 256 MB */
-+	};
-+
-+	leds {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&user_leds_s0>;
-+
-+		compatible = "gpio-leds";
-+
-+		led@2 {
-+			label = "beaglebone:green:heartbeat";
-+			gpios = <&gpio1 21 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "heartbeat";
-+			default-state = "off";
-+		};
-+
-+		led@3 {
-+			label = "beaglebone:green:mmc0";
-+			gpios = <&gpio1 22 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "mmc0";
-+			default-state = "off";
-+		};
-+
-+		led@4 {
-+			label = "beaglebone:green:usr2";
-+			gpios = <&gpio1 23 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "cpu0";
-+			default-state = "off";
-+		};
-+
-+		led@5 {
-+			label = "beaglebone:green:usr3";
-+			gpios = <&gpio1 24 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "mmc1";
-+			default-state = "off";
-+		};
-+	};
-+
-+	vmmcsd_fixed: fixedregulator@0 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vmmcsd_fixed";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+};
-+
-+&am33xx_pinmux {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&clkout2_pin>;
-+
-+	user_leds_s0: user_leds_s0 {
-+		pinctrl-single,pins = <
-+			0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a5.gpio1_21 */
-+			0x58 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a6.gpio1_22 */
-+			0x5c (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a7.gpio1_23 */
-+			0x60 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a8.gpio1_24 */
-+		>;
-+	};
-+
-+	i2c0_pins: pinmux_i2c0_pins {
-+		pinctrl-single,pins = <
-+			0x188 (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_sda.i2c0_sda */
-+			0x18c (PIN_INPUT_PULLUP | MUX_MODE0)	/* i2c0_scl.i2c0_scl */
-+		>;
-+	};
-+
-+	uart0_pins: pinmux_uart0_pins {
-+		pinctrl-single,pins = <
-+			0x170 (PIN_INPUT_PULLUP | MUX_MODE0)	/* uart0_rxd.uart0_rxd */
-+			0x174 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* uart0_txd.uart0_txd */
-+		>;
-+	};
-+
-+	clkout2_pin: pinmux_clkout2_pin {
-+		pinctrl-single,pins = <
-+			0x1b4 (PIN_OUTPUT_PULLDOWN | MUX_MODE3)	/* xdma_event_intr1.clkout2 */
-+		>;
-+	};
-+
-+	cpsw_default: cpsw_default {
-+		pinctrl-single,pins = <
-+			/* Slave 1 */
-+			0x110 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxerr.mii1_rxerr */
-+			0x114 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txen.mii1_txen */
-+			0x118 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxdv.mii1_rxdv */
-+			0x11c (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd3.mii1_txd3 */
-+			0x120 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd2.mii1_txd2 */
-+			0x124 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd1.mii1_txd1 */
-+			0x128 (PIN_OUTPUT_PULLDOWN | MUX_MODE0)	/* mii1_txd0.mii1_txd0 */
-+			0x12c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_txclk.mii1_txclk */
-+			0x130 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxclk.mii1_rxclk */
-+			0x134 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd3.mii1_rxd3 */
-+			0x138 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd2.mii1_rxd2 */
-+			0x13c (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd1.mii1_rxd1 */
-+			0x140 (PIN_INPUT_PULLUP | MUX_MODE0)	/* mii1_rxd0.mii1_rxd0 */
-+		>;
-+	};
-+
-+	cpsw_sleep: cpsw_sleep {
-+		pinctrl-single,pins = <
-+			/* Slave 1 reset value */
-+			0x110 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x114 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x118 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x11c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x120 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x124 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x128 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x12c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x130 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x134 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x138 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x13c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x140 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+		>;
-+	};
-+
-+	davinci_mdio_default: davinci_mdio_default {
-+		pinctrl-single,pins = <
-+			/* MDIO */
-+			0x148 (PIN_INPUT_PULLUP | SLEWCTRL_FAST | MUX_MODE0)	/* mdio_data.mdio_data */
-+			0x14c (PIN_OUTPUT_PULLUP | MUX_MODE0)			/* mdio_clk.mdio_clk */
-+		>;
-+	};
-+
-+	davinci_mdio_sleep: davinci_mdio_sleep {
-+		pinctrl-single,pins = <
-+			/* MDIO reset value */
-+			0x148 (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+			0x14c (PIN_INPUT_PULLDOWN | MUX_MODE7)
-+		>;
-+	};
-+
-+	mmc1_pins: pinmux_mmc1_pins {
-+		pinctrl-single,pins = <
-+			0x160 (PIN_INPUT | MUX_MODE7) /* GPIO0_6 */
-+		>;
-+	};
-+
-+	emmc_pins: pinmux_emmc_pins {
-+		pinctrl-single,pins = <
-+			0x80 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn1.mmc1_clk */
-+			0x84 (PIN_INPUT_PULLUP | MUX_MODE2) /* gpmc_csn2.mmc1_cmd */
-+			0x00 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad0.mmc1_dat0 */
-+			0x04 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad1.mmc1_dat1 */
-+			0x08 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad2.mmc1_dat2 */
-+			0x0c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad3.mmc1_dat3 */
-+			0x10 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad4.mmc1_dat4 */
-+			0x14 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad5.mmc1_dat5 */
-+			0x18 (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad6.mmc1_dat6 */
-+			0x1c (PIN_INPUT_PULLUP | MUX_MODE1) /* gpmc_ad7.mmc1_dat7 */
-+		>;
-+	};
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins>;
-+
-+	status = "okay";
-+};
-+
-+&usb {
-+	status = "okay";
-+
-+	control@44e10000 {
-+		status = "okay";
-+	};
-+
-+	usb-phy@47401300 {
-+		status = "okay";
-+	};
-+
-+	usb-phy@47401b00 {
-+		status = "okay";
-+	};
-+
-+	usb@47401000 {
-+		status = "okay";
-+	};
-+
-+	usb@47401800 {
-+		status = "okay";
-+		dr_mode = "host";
-+	};
-+
-+	dma-controller@07402000  {
-+		status = "okay";
-+	};
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins>;
-+
-+	status = "okay";
-+	clock-frequency = <400000>;
-+
-+	tps: tps@24 {
-+		reg = <0x24>;
-+	};
-+
-+};
-+
-+/include/ "tps65217.dtsi"
-+
-+&tps {
-+	regulators {
-+		dcdc1_reg: regulator@0 {
-+			regulator-always-on;
-+		};
-+
-+		dcdc2_reg: regulator@1 {
-+			/* VDD_MPU voltage limits 0.95V - 1.26V with +/-4% tolerance */
-+			regulator-name = "vdd_mpu";
-+			regulator-min-microvolt = <925000>;
-+			regulator-max-microvolt = <1325000>;
-+			regulator-boot-on;
-+			regulator-always-on;
-+		};
-+
-+		dcdc3_reg: regulator@2 {
-+			/* VDD_CORE voltage limits 0.95V - 1.1V with +/-4% tolerance */
-+			regulator-name = "vdd_core";
-+			regulator-min-microvolt = <925000>;
-+			regulator-max-microvolt = <1150000>;
-+			regulator-boot-on;
-+			regulator-always-on;
-+		};
-+
-+		ldo1_reg: regulator@3 {
-+			regulator-always-on;
-+		};
-+
-+		ldo2_reg: regulator@4 {
-+			regulator-always-on;
-+		};
-+
-+		ldo3_reg: regulator@5 {
-+			regulator-always-on;
-+		};
-+
-+		ldo4_reg: regulator@6 {
-+			regulator-always-on;
-+		};
-+	};
-+};
-+
-+&cpsw_emac0 {
-+	phy_id = <&davinci_mdio>, <0>;
-+	phy-mode = "mii";
-+};
-+
-+&cpsw_emac1 {
-+	phy_id = <&davinci_mdio>, <1>;
-+	phy-mode = "mii";
-+};
-+
-+&mac {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&cpsw_default>;
-+	pinctrl-1 = <&cpsw_sleep>;
-+
-+};
-+
-+&davinci_mdio {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&davinci_mdio_default>;
-+	pinctrl-1 = <&davinci_mdio_sleep>;
-+};
-+
-+&mmc1 {
-+	status = "okay";
-+	bus-width = <0x4>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc1_pins>;
-+	cd-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
-+	cd-inverted;
-+};
-diff --git a/arch/arm/dts/am335x-bone.dts b/arch/arm/dts/am335x-bone.dts
-new file mode 100644
-index 0000000..94ee427
---- /dev/null
-+++ b/arch/arm/dts/am335x-bone.dts
-@@ -0,0 +1,29 @@
-+/*
-+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+/dts-v1/;
-+
-+#include "am33xx.dtsi"
-+#include "am335x-bone-common.dtsi"
-+
-+&ldo3_reg {
-+	regulator-min-microvolt = <1800000>;
-+	regulator-max-microvolt = <3300000>;
-+	regulator-always-on;
-+};
-+
-+&mmc1 {
-+	vmmc-supply = <&ldo3_reg>;
-+};
-+
-+&sham {
-+	status = "okay";
-+};
-+
-+&aes {
-+	status = "okay";
-+};
-diff --git a/arch/arm/dts/am335x-boneblack.dts b/arch/arm/dts/am335x-boneblack.dts
-new file mode 100644
-index 0000000..6b71ad9
---- /dev/null
-+++ b/arch/arm/dts/am335x-boneblack.dts
-@@ -0,0 +1,78 @@
-+/*
-+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+/dts-v1/;
-+
-+#include "am33xx.dtsi"
-+#include "am335x-bone-common.dtsi"
-+
-+&ldo3_reg {
-+	regulator-min-microvolt = <1800000>;
-+	regulator-max-microvolt = <1800000>;
-+	regulator-always-on;
-+};
-+
-+&mmc1 {
-+	vmmc-supply = <&vmmcsd_fixed>;
-+};
-+
-+&mmc2 {
-+	vmmc-supply = <&vmmcsd_fixed>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emmc_pins>;
-+	bus-width = <8>;
-+	status = "okay";
-+	ti,vcc-aux-disable-is-sleep;
-+};
-+
-+&am33xx_pinmux {
-+	nxp_hdmi_bonelt_pins: nxp_hdmi_bonelt_pins {
-+		pinctrl-single,pins = <
-+			0x1b0 0x03      /* xdma_event_intr0, OMAP_MUX_MODE3 | AM33XX_PIN_OUTPUT */
-+			0xa0 0x08       /* lcd_data0.lcd_data0, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xa4 0x08       /* lcd_data1.lcd_data1, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xa8 0x08       /* lcd_data2.lcd_data2, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xac 0x08       /* lcd_data3.lcd_data3, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xb0 0x08       /* lcd_data4.lcd_data4, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xb4 0x08       /* lcd_data5.lcd_data5, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xb8 0x08       /* lcd_data6.lcd_data6, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xbc 0x08       /* lcd_data7.lcd_data7, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xc0 0x08       /* lcd_data8.lcd_data8, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xc4 0x08       /* lcd_data9.lcd_data9, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xc8 0x08       /* lcd_data10.lcd_data10, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xcc 0x08       /* lcd_data11.lcd_data11, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xd0 0x08       /* lcd_data12.lcd_data12, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xd4 0x08       /* lcd_data13.lcd_data13, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xd8 0x08       /* lcd_data14.lcd_data14, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xdc 0x08       /* lcd_data15.lcd_data15, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT | AM33XX_PULL_DISA */
-+			0xe0 0x00       /* lcd_vsync.lcd_vsync, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
-+			0xe4 0x00       /* lcd_hsync.lcd_hsync, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
-+			0xe8 0x00       /* lcd_pclk.lcd_pclk, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
-+			0xec 0x00       /* lcd_ac_bias_en.lcd_ac_bias_en, OMAP_MUX_MODE0 | AM33XX_PIN_OUTPUT */
-+		>;
-+	};
-+	nxp_hdmi_bonelt_off_pins: nxp_hdmi_bonelt_off_pins {
-+		pinctrl-single,pins = <
-+			0x1b0 0x03      /* xdma_event_intr0, OMAP_MUX_MODE3 | AM33XX_PIN_OUTPUT */
-+		>;
-+	};
-+};
-+
-+&lcdc {
-+	status = "okay";
-+};
-+
-+/ {
-+	hdmi {
-+		compatible = "ti,tilcdc,slave";
-+		i2c = <&i2c0>;
-+		pinctrl-names = "default", "off";
-+		pinctrl-0 = <&nxp_hdmi_bonelt_pins>;
-+		pinctrl-1 = <&nxp_hdmi_bonelt_off_pins>;
-+		status = "okay";
-+	};
-+};
-diff --git a/arch/arm/dts/tps65217.dtsi b/arch/arm/dts/tps65217.dtsi
-new file mode 100644
-index 0000000..a632724
---- /dev/null
-+++ b/arch/arm/dts/tps65217.dtsi
-@@ -0,0 +1,56 @@
-+/*
-+ * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2 as
-+ * published by the Free Software Foundation.
-+ */
-+
-+/*
-+ * Integrated Power Management Chip
-+ * http://www.ti.com/lit/ds/symlink/tps65217.pdf
-+ */
-+
-+&tps {
-+	compatible = "ti,tps65217";
-+
-+	regulators {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		dcdc1_reg: regulator@0 {
-+			reg = <0>;
-+			regulator-compatible = "dcdc1";
-+		};
-+
-+		dcdc2_reg: regulator@1 {
-+			reg = <1>;
-+			regulator-compatible = "dcdc2";
-+		};
-+
-+		dcdc3_reg: regulator@2 {
-+			reg = <2>;
-+			regulator-compatible = "dcdc3";
-+		};
-+
-+		ldo1_reg: regulator@3 {
-+			reg = <3>;
-+			regulator-compatible = "ldo1";
-+		};
-+
-+		ldo2_reg: regulator@4 {
-+			reg = <4>;
-+			regulator-compatible = "ldo2";
-+		};
-+
-+		ldo3_reg: regulator@5 {
-+			reg = <5>;
-+			regulator-compatible = "ldo3";
-+		};
-+
-+		ldo4_reg: regulator@6 {
-+			reg = <6>;
-+			regulator-compatible = "ldo4";
-+		};
-+	};
-+};
+ 	memory {
+ 		device_type = "memory";
+ 		reg = <0x80000000 0x20000000>; /* 512 MB */
+@@ -211,7 +227,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&nandflash_pins_s0>;
+ 	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
+-	nand@0,0 {
++	nand: nand@0,0 {
+ 		reg = <0 0 0>; /* CS0, offset 0 */
+ 		nand-bus-width = <8>;
+ 		ti,nand-ecc-opt = "bch8-romcode";
 -- 
 1.8.4.2
 
