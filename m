@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlLmR-0000cd-84
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:48 +0000
+ id 1VlLmR-0000ce-89
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:45:53 +0100
-Message-Id: <1385484367-15366-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:45:56 +0100
+Message-Id: <1385484367-15366-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,265 +21,215 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/17] ARM: Add base am335x-phytec-phycore devicetree file
+Subject: [PATCH 06/17] ARM: am33xx Phytec phyCORE: Switch to multiimage support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/Makefile                  |   2 +
- arch/arm/dts/am335x-phytec-phycore.dts | 233 +++++++++++++++++++++++++++++++++
- 2 files changed, 235 insertions(+)
- create mode 100644 arch/arm/dts/am335x-phytec-phycore.dts
+ arch/arm/boards/pcm051/lowlevel.c     | 41 ++++++++++++++++++++++++++++-------
+ arch/arm/configs/pcm051_defconfig     |  4 ----
+ arch/arm/configs/pcm051_mlo_defconfig |  9 ++++----
+ arch/arm/dts/Makefile                 |  1 +
+ arch/arm/mach-omap/Kconfig            |  1 +
+ images/Makefile                       |  3 ++-
+ images/Makefile.am33xx                | 22 +++++++++++++++++++
+ 7 files changed, 63 insertions(+), 18 deletions(-)
+ create mode 100644 images/Makefile.am33xx
 
+diff --git a/arch/arm/boards/pcm051/lowlevel.c b/arch/arm/boards/pcm051/lowlevel.c
+index 08f36ec..d3cac68 100644
+--- a/arch/arm/boards/pcm051/lowlevel.c
++++ b/arch/arm/boards/pcm051/lowlevel.c
+@@ -46,6 +46,9 @@ static const struct am33xx_ddr_data MT41J256M8HX15E_2x256M8_data = {
+ 	.dll_lock_diff0		= 0x0,
+ };
+ 
++extern char __dtb_am335x_phytec_phycore_start[];
++extern char __dtb_am335x_phytec_phycore_end[];
++
+ /**
+  * @brief The basic entry point for board initialization.
+  *
+@@ -55,8 +58,10 @@ static const struct am33xx_ddr_data MT41J256M8HX15E_2x256M8_data = {
+  *
+  * @return void
+  */
+-static int pcm051_board_init(void)
++static noinline void pcm051_board_init(void)
+ {
++	unsigned long sdram = 0x80000000, fdt;
++
+ 	/* WDT1 is already running when the bootloader gets control
+ 	 * Disable it to avoid "random" resets
+ 	 */
+@@ -66,9 +71,6 @@ static int pcm051_board_init(void)
+ 	writel(WDT_DISABLE_CODE2, AM33XX_WDT_REG(WSPR));
+ 	while (readl(AM33XX_WDT_REG(WWPS)) != 0x0);
+ 
+-	if (am33xx_running_in_sdram())
+-		return 0;
+-
+ 	am33xx_pll_init(MPUPLL_M_600, 25, DDRPLL_M_303);
+ 
+ 	am335x_sdram_init(0x18B, &MT41J256M8HX15E_2x256M8_cmd,
+@@ -80,16 +82,39 @@ static int pcm051_board_init(void)
+ 	omap_uart_lowlevel_init((void *)AM33XX_UART0_BASE);
+ 	putc_ll('>');
+ 
+-	return 0;
++	/*
++	 * Copy the devicetree blob to sdram so that the barebox code finds it
++	 * inside valid SDRAM instead of SRAM.
++	 */
++	memcpy((void *)sdram, __dtb_am335x_phytec_phycore_start,
++			__dtb_am335x_phytec_phycore_end -
++			__dtb_am335x_phytec_phycore_start);
++	fdt = sdram;
++
++	barebox_arm_entry(sdram, SZ_512M, fdt);
+ }
+ 
+-void __naked __bare_init barebox_arm_reset_vector(uint32_t *data)
++ENTRY_FUNCTION(start_am33xx_phytec_phycore_sram, bootinfo, r1, r2)
+ {
+-	am33xx_save_bootinfo(data);
++	am33xx_save_bootinfo((void *)bootinfo);
+ 
+ 	arm_cpu_lowlevel_init();
+ 
++	/*
++	 * Setup C environment, the board init code uses global variables.
++	 * Stackpointer has already been initialized by the ROM code.
++	 */
++	relocate_to_current_adr();
++	setup_c();
++
+ 	pcm051_board_init();
++}
++
++ENTRY_FUNCTION(start_am33xx_phytec_phycore_sdram, r0, r1, r2)
++{
++	uint32_t fdt;
++
++	fdt = (uint32_t)__dtb_am335x_phytec_phycore_start - get_runtime_offset();
+ 
+-	barebox_arm_entry(0x80000000, SZ_512M, 0);
++	barebox_arm_entry(0x80000000, SZ_512M, fdt);
+ }
+diff --git a/arch/arm/configs/pcm051_defconfig b/arch/arm/configs/pcm051_defconfig
+index e55ac47..482329a 100644
+--- a/arch/arm/configs/pcm051_defconfig
++++ b/arch/arm/configs/pcm051_defconfig
+@@ -1,5 +1,3 @@
+-CONFIG_BUILTIN_DTB=y
+-CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
+ CONFIG_ARCH_OMAP=y
+ CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
+ CONFIG_MACH_PCM051=y
+@@ -8,8 +6,6 @@ CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+-CONFIG_PBL_IMAGE=y
+-CONFIG_PBL_RELOCATABLE=y
+ CONFIG_MMU=y
+ CONFIG_TEXT_BASE=0x0
+ CONFIG_MALLOC_SIZE=0x0
+diff --git a/arch/arm/configs/pcm051_mlo_defconfig b/arch/arm/configs/pcm051_mlo_defconfig
+index 4f6a7b1..dc4165a 100644
+--- a/arch/arm/configs/pcm051_mlo_defconfig
++++ b/arch/arm/configs/pcm051_mlo_defconfig
+@@ -1,5 +1,3 @@
+-CONFIG_BUILTIN_DTB=y
+-CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
+ CONFIG_ARCH_OMAP=y
+ CONFIG_OMAP_BUILD_IFT=y
+ CONFIG_MACH_PCM051=y
+@@ -8,9 +6,10 @@ CONFIG_THUMB2_BAREBOX=y
+ # CONFIG_MEMINFO is not set
+ CONFIG_ENVIRONMENT_VARIABLES=y
+ CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x402F0400
+-CONFIG_STACK_SIZE=0x1600
+-CONFIG_MALLOC_SIZE=0x1000000
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="MLO>"
+ CONFIG_SHELL_NONE=y
+ # CONFIG_ERRNO_MESSAGES is not set
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index e2ef0b3..9e85d5a 100644
+index 9e85d5a..6618660 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -1,3 +1,5 @@
-+dtb-$(CONFIG_ARCH_AM33XX) += \
-+	am335x-phytec-phycore.dtb
- dtb-$(CONFIG_ARCH_IMX51) += imx51-babbage.dtb \
- 	imx51-genesi-efika-sb.dtb
- dtb-$(CONFIG_ARCH_IMX53) += imx53-qsb.dtb \
-diff --git a/arch/arm/dts/am335x-phytec-phycore.dts b/arch/arm/dts/am335x-phytec-phycore.dts
+@@ -28,6 +28,7 @@ pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
+ pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
++pbl-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
+ pbl-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6q-phytec-pbab01.dtb.o
+ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
+ pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox.dtb.o
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 7cd7f89..1cfc22f 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -178,6 +178,7 @@ config MACH_PCM051
+ 	bool "Phytec phyCORE pcm051"
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	select ARCH_AM33XX
++	select HAVE_PBL_MULTI_IMAGES
+ 	help
+ 	  Say Y here if you are using Phytecs phyCORE pcm051 board
+ 
+diff --git a/images/Makefile b/images/Makefile
+index b080a8c..4ff0602 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -100,6 +100,7 @@ $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+ 	$(call if_changed,shipped)
+ 
++include $(srctree)/images/Makefile.am33xx
+ include $(srctree)/images/Makefile.imx
+ include $(srctree)/images/Makefile.mvebu
+ include $(srctree)/images/Makefile.socfpga
+@@ -119,5 +120,5 @@ images: $(addprefix $(obj)/, $(image-y)) FORCE
+ 	@for i in $(image-y); do echo $$i; done
+ 
+ clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+-	start_*.kwbuartimg *.socfpgaimg
++	start_*.kwbuartimg *.socfpgaimg *.mlo
+ clean-files += pbl.lds
+diff --git a/images/Makefile.am33xx b/images/Makefile.am33xx
 new file mode 100644
-index 0000000..3888c67
+index 0000000..8efef2a
 --- /dev/null
-+++ b/arch/arm/dts/am335x-phytec-phycore.dts
-@@ -0,0 +1,233 @@
-+/dts-v1/;
++++ b/images/Makefile.am33xx
+@@ -0,0 +1,22 @@
 +
-+#include "am33xx.dtsi"
++# %.mlo - convert into mlo image
++# ----------------------------------------------------------------
++quiet_cmd_mlo_image = MLO     $@
++      cmd_mlo_image = scripts/omap_signGP -o $@ -l 0x402f0400 -c $<
 +
-+/ {
-+	model = "Phytec phyCORE AM335x";
-+	compatible = "phytec,phycore-am335x", "ti,am33xx";
++$(obj)/%.mlo: $(obj)/% FORCE
++	$(call if_changed,mlo_image)
 +
-+	memory {
-+		device_type = "memory";
-+		reg = <0x80000000 0x20000000>; /* 512 MB */
-+	};
++pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sdram
++FILE_barebox-am33xx-phytec-phycore.img = start_am33xx_phytec_phycore_sdram.pblx
++am33xx-barebox-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore.img
 +
-+	gpio-leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pcm051_led_pins>;
++pblx-$(CONFIG_MACH_PCM051) += start_am33xx_phytec_phycore_sram
++FILE_barebox-am33xx-phytec-phycore-mlo.img = start_am33xx_phytec_phycore_sram.pblx.mlo
++am33xx-mlo-$(CONFIG_MACH_PCM051) += barebox-am33xx-phytec-phycore-mlo.img
 +
-+		led-green {
-+			label = "green";
-+			gpios = <&gpio1 30 0>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+
-+		led-amber {
-+			label = "amber";
-+			gpios = <&gpio1 31 1>;
-+		};
-+	};
-+};
-+
-+&am33xx_pinmux {
-+	i2c0_pins: pinmux_i2c0_pins {
-+			pinctrl-single,pins = <
-+			0x188 (PIN_INPUT_PULLUP | MUX_MODE0)    /* i2c0_sda.i2c0_sda */
-+			0x18c (PIN_INPUT_PULLUP | MUX_MODE0)    /* i2c0_scl.i2c0_scl */
-+		>;
-+	};
-+
-+	spi0_pins: pinmux_spi0_pins {
-+		pinctrl-single,pins = <
-+			0x150 (INPUT_EN | MUX_MODE0)
-+			0x154 (PULL_UP | INPUT_EN | MUX_MODE0)
-+			0x158 (INPUT_EN | MUX_MODE0)
-+			0x15c (PULL_UP | INPUT_EN | MUX_MODE0)
-+		>;
-+	};
-+
-+	uart0_pins: pinmux_uart0_pins {
-+		pinctrl-single,pins = <
-+			0x170 (PIN_INPUT_PULLUP | MUX_MODE0)    /* uart0_rxd.uart0_rxd */
-+			0x174 (PIN_OUTPUT_PULLDOWN | MUX_MODE0) /* uart0_txd.uart0_txd */
-+		>;
-+	};
-+
-+	mmc1_pins: pinmux_mmc1_pins {
-+		pinctrl-single,pins = <
-+			0xf0 (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_dat3.mmc0_dat3 */
-+			0xf4 (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_dat2.mmc0_dat2 */
-+			0xf8 (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_dat1.mmc0_dat1 */
-+			0xfc (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_dat0.mmc0_dat0 */
-+			0x100 (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_clk.mmc0_clk */
-+			0x104 (MUX_MODE0 | INPUT_EN | PULL_UP)	/* mmc0_cmd.mmc0_cmd */
-+			0x160 (MUX_MODE7 | INPUT_EN | PULL_UP)	/* spi0_cs1.??, card detect */
-+		>;
-+	};
-+
-+	emac_rmii1_pins: pinmux_emac_rmii1_pins {
-+		pinctrl-single,pins = <
-+			0x10c (INPUT_EN | MUX_MODE1)
-+			0x110 (INPUT_EN | MUX_MODE1)
-+			0x114 MUX_MODE1
-+			0x124 MUX_MODE1
-+			0x128 MUX_MODE1
-+			0x13c (INPUT_EN | MUX_MODE1)
-+			0x140 (INPUT_EN | MUX_MODE1)
-+			0x148 (PULL_UP | INPUT_EN | MUX_MODE0)
-+			0x14c (PULL_UP | MUX_MODE0)
-+			0x144 (INPUT_EN | MUX_MODE0)
-+
-+			/* Slave 2 */
-+			0x40 (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a0.rgmii2_tctl */
-+			0x44 (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a1.rgmii2_rctl */
-+			0x48 (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a2.rgmii2_td3 */
-+			0x4c (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a3.rgmii2_td2 */
-+			0x50 (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a4.rgmii2_td1 */
-+			0x54 (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a5.rgmii2_td0 */
-+			0x58 (PIN_OUTPUT_PULLDOWN | MUX_MODE2)  /* gpmc_a6.rgmii2_tclk */
-+			0x5c (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a7.rgmii2_rclk */
-+			0x60 (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a8.rgmii2_rd3 */
-+			0x64 (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a9.rgmii2_rd2 */
-+			0x68 (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a10.rgmii2_rd1 */
-+			0x6c (PIN_INPUT_PULLDOWN | MUX_MODE2)   /* gpmc_a11.rgmii2_rd0 */
-+		>;
-+	};
-+
-+	nandflash_pins_s0: nandflash_pins_s0 {
-+		pinctrl-single,pins = <
-+			0x0 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad0.gpmc_ad0 */
-+			0x4 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad1.gpmc_ad1 */
-+			0x8 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad2.gpmc_ad2 */
-+			0xc (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad3.gpmc_ad3 */
-+			0x10 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad4.gpmc_ad4 */
-+			0x14 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad5.gpmc_ad5 */
-+			0x18 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad6.gpmc_ad6 */
-+			0x1c (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_ad7.gpmc_ad7 */
-+			0x70 (PIN_INPUT_PULLUP | MUX_MODE0)	/* gpmc_wait0.gpmc_wait0 */
-+			0x74 (PIN_INPUT_PULLUP | MUX_MODE7)	/* gpmc_wpn.gpio0_30 */
-+			0x7c (PIN_OUTPUT | MUX_MODE0)		/* gpmc_csn0.gpmc_csn0  */
-+			0x90 (PIN_OUTPUT | MUX_MODE0)		/* gpmc_advn_ale.gpmc_advn_ale */
-+			0x94 (PIN_OUTPUT | MUX_MODE0)		/* gpmc_oen_ren.gpmc_oen_ren */
-+			0x98 (PIN_OUTPUT | MUX_MODE0)		/* gpmc_wen.gpmc_wen */
-+			0x9c (PIN_OUTPUT | MUX_MODE0)		/* gpmc_be0n_cle.gpmc_be0n_cle */
-+		>;
-+	};
-+
-+	pcm051_led_pins: pinmux_pcm051_led_pins {
-+		pinctrl-single,pins = <
-+			0x80 (MUX_MODE7)
-+			0x84 (MUX_MODE7)
-+		>;
-+	};
-+
-+	pcm051_user_pins: pinmux_pcm051_user_pins {
-+		pinctrl-single,pins = <
-+			0x1e4 (PULL_UP |INPUT_EN |MUX_MODE7)
-+			0x1e8 (PULL_UP |INPUT_EN |MUX_MODE7)
-+		>;
-+	};
-+};
-+
-+&i2c0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c0_pins>;
-+
-+	status = "okay";
-+	clock-frequency = <400000>;
-+
-+	eeprom: 24c32@52 {
-+		compatible = "atmel,24c32";
-+		reg = <0x52>;
-+	};
-+};
-+
-+&mmc1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&mmc1_pins>;
-+	status = "okay";
-+};
-+
-+&spi0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&spi0_pins>;
-+	status = "okay";
-+
-+	flash: m25p80 {
-+		compatible = "sst,sst25vf032b", "m25p80";
-+		spi-max-frequency = <15000000>;
-+		reg = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "barebox-environment";
-+			reg = <0x80000 0x80000>;
-+		};
-+	};
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins>;
-+	status = "okay";
-+};
-+
-+&cpsw_emac0 {
-+	phy_id = <&davinci_mdio>, <0>;
-+	phy-mode = "rmii";
-+	dual_emac_res_vlan = <1>;
-+};
-+
-+&cpsw_emac1 {
-+	phy_id = <&davinci_mdio>, <2>;
-+	phy-mode = "rgmii";
-+	dual_emac_res_vlan = <2>;
-+};
-+
-+&mac {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&emac_rmii1_pins>;
-+	dual_emac = <1>;
-+};
-+
-+&gpmc {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&nandflash_pins_s0>;
-+	ranges = <0 0 0x08000000 0x10000000>;	/* CS0: NAND */
-+	nand@0,0 {
-+		reg = <0 0 0>; /* CS0, offset 0 */
-+		nand-bus-width = <8>;
-+		ti,nand-ecc-opt = "bch8-romcode";
-+		gpmc,device-nand = "true";
-+		gpmc,device-width = <1>;
-+		gpmc,sync-clk-ps = <0>;
-+		gpmc,cs-on-ns = <0>;
-+		gpmc,cs-rd-off-ns = <30>;
-+		gpmc,cs-wr-off-ns = <30>;
-+		gpmc,adv-on-ns = <0>;
-+		gpmc,adv-rd-off-ns = <30>;
-+		gpmc,adv-wr-off-ns = <30>;
-+		gpmc,we-on-ns = <0>;
-+		gpmc,we-off-ns = <20>;
-+		gpmc,oe-on-ns = <10>;
-+		gpmc,oe-off-ns = <30>;
-+		gpmc,access-ns = <30>;
-+		gpmc,rd-cycle-ns = <30>;
-+		gpmc,wr-cycle-ns = <30>;
-+		gpmc,wait-pin = <1>;
-+		gpmc,wait-on-read = "true";
-+		gpmc,wait-on-write = "true";
-+		gpmc,bus-turnaround-ns = <0>;
-+		gpmc,cycle2cycle-delay-ns = <50>;
-+		gpmc,clk-activation-ns = <0>;
-+		gpmc,wait-monitoring-ns = <0>;
-+		gpmc,wr-access-ns = <0>;
-+		gpmc,wr-data-mux-bus-ns = <0>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		elm_id = <&elm>;
-+	};
-+};
++ifdef CONFIG_OMAP_BUILD_IFT
++image-y += $(am33xx-mlo-y)
++else
++image-y += $(am33xx-barebox-y)
++endif
 -- 
 1.8.4.2
 
