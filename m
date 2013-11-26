@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlHaM-0001el-0A
+ id 1VlHaM-0001ek-0D
  for barebox@lists.infradead.org; Tue, 26 Nov 2013 12:17:47 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 13:17:19 +0100
-Message-Id: <1385468240-3915-3-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 13:17:18 +0100
+Message-Id: <1385468240-3915-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385468240-3915-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385468240-3915-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,135 +21,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] device: Add functions to add resources
+Subject: [PATCH 1/3] string: Add (x)memdup
 To: barebox@lists.infradead.org
 
-We currently have functions to add a device based on function parameters.
-This adds the corresponding functions to add resources to a device without
-registering the device itself. This is useful to manipulate devices before
-registering them.
+It's a common task to duplicate some memory. Add (x)memdup functions.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/resource.c | 60 ++++++++++++++++++++++++++++++++++++++-----------
- include/driver.h        |  9 ++++++++
- 2 files changed, 56 insertions(+), 13 deletions(-)
+ include/string.h |  2 ++
+ include/xfuncs.h |  1 +
+ lib/string.c     | 14 ++++++++++++++
+ lib/xfuncs.c     | 10 ++++++++++
+ 4 files changed, 27 insertions(+)
 
-diff --git a/drivers/base/resource.c b/drivers/base/resource.c
-index 2985c78..71ae0fe 100644
---- a/drivers/base/resource.c
-+++ b/drivers/base/resource.c
-@@ -20,33 +20,67 @@
- #include <common.h>
- #include <driver.h>
- #include <xfuncs.h>
-+#include <malloc.h>
+diff --git a/include/string.h b/include/string.h
+index b906e15..a833da1 100644
+--- a/include/string.h
++++ b/include/string.h
+@@ -3,4 +3,6 @@
  
--static struct device_d *alloc_device(const char* devname, int id, void *pdata)
-+struct device_d *device_alloc(const char *devname, int id)
- {
- 	struct device_d *dev;
+ #include <linux/string.h>
  
- 	dev = xzalloc(sizeof(*dev));
- 	strcpy(dev->name, devname);
- 	dev->id = id;
--	dev->platform_data = pdata;
++void *memdup(const void *, size_t);
++
+ #endif /* __STRING_H */
+diff --git a/include/xfuncs.h b/include/xfuncs.h
+index 261aaa5..8efc99d 100644
+--- a/include/xfuncs.h
++++ b/include/xfuncs.h
+@@ -8,5 +8,6 @@ void *xrealloc(void *ptr, size_t size);
+ void *xzalloc(size_t size);
+ char *xstrdup(const char *s);
+ void* xmemalign(size_t alignment, size_t bytes);
++void* xmemdup(const void *orig, size_t size);
  
- 	return dev;
+ #endif /* __XFUNCS_H */
+diff --git a/lib/string.c b/lib/string.c
+index eeec137..ceced7f 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -725,3 +725,17 @@ void *memchr_inv(const void *start, int c, size_t bytes)
+ 	return check_bytes8(start, value, bytes % 8);
  }
- 
-+int device_add_data(struct device_d *dev, void *data, size_t size)
+ EXPORT_SYMBOL(memchr_inv);
++
++void *memdup(const void *orig, size_t size)
 +{
-+	free(dev->platform_data);
++	void *buf;
 +
-+	if (data)
-+		dev->platform_data = xmemdup(data, size);
-+	else
-+		dev->platform_data = NULL;
++	buf = malloc(size);
++	if (!buf)
++		return NULL;
 +
-+	return 0;
++	memcpy(buf, orig, size);
++
++	return buf;
 +}
-+
-+int device_add_resources(struct device_d *dev, const struct resource *res, int num)
-+{
-+	dev->resource = xmemdup(res, sizeof(*res) * num);
-+	dev->num_resources = num;
-+
-+	return 0;
-+}
-+
-+int device_add_resource(struct device_d *dev, const char *resname,
-+		resource_size_t start, resource_size_t size, unsigned int flags)
-+{
-+	struct resource res = {
-+		.start = start,
-+		.end = start + size - 1,
-+		.flags = flags,
-+	};
-+
-+	if (resname)
-+		res.name = xstrdup(resname);
-+
-+	return device_add_resources(dev, &res, 1);
-+}
-+
- struct device_d *add_generic_device(const char* devname, int id, const char *resname,
- 		resource_size_t start, resource_size_t size, unsigned int flags,
- 		void *pdata)
- {
--	struct resource *res;
-+	struct device_d *dev;
- 
--	res = xzalloc(sizeof(struct resource));
--	if (resname)
--		res[0].name = xstrdup(resname);
--	res[0].start = start;
--	res[0].end = start + size - 1;
--	res[0].flags = flags;
-+	dev = device_alloc(devname, id);
-+	dev->platform_data = pdata;
-+	device_add_resource(dev, resname, start, size, flags);
-+
-+	platform_device_register(dev);
- 
--	return add_generic_device_res(devname, id, res, 1, pdata);
-+	return dev;
++EXPORT_SYMBOL(memdup);
+diff --git a/lib/xfuncs.c b/lib/xfuncs.c
+index db85720..86d0013 100644
+--- a/lib/xfuncs.c
++++ b/lib/xfuncs.c
+@@ -75,3 +75,13 @@ void* xmemalign(size_t alignment, size_t bytes)
+ 	return p;
  }
- EXPORT_SYMBOL(add_generic_device);
- 
-@@ -55,9 +89,9 @@ struct device_d *add_generic_device_res(const char* devname, int id,
- {
- 	struct device_d *dev;
- 
--	dev = alloc_device(devname, id, pdata);
--	dev->resource = res;
--	dev->num_resources = nb;
-+	dev = device_alloc(devname, id);
-+	dev->platform_data = pdata;
-+	device_add_resources(dev, res, nb);
- 
- 	platform_device_register(dev);
- 
-diff --git a/include/driver.h b/include/driver.h
-index 7f0532e..bbe789b 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -229,6 +229,15 @@ void *dev_get_mem_region(struct device_d *dev, int num);
-  */
- void __iomem *dev_request_mem_region(struct device_d *dev, int num);
- 
-+struct device_d *device_alloc(const char *devname, int id);
+ EXPORT_SYMBOL(xmemalign);
 +
-+int device_add_resources(struct device_d *dev, const struct resource *res, int num);
++void *xmemdup(const void *orig, size_t size)
++{
++	void *buf = xmalloc(size);
 +
-+int device_add_resource(struct device_d *dev, const char *resname,
-+		resource_size_t start, resource_size_t size, unsigned int flags);
++	memcpy(buf, orig, size);
 +
-+int device_add_data(struct device_d *dev, void *data, size_t size);
-+
- /*
-  * register a generic device
-  * with only one resource
++	return buf;
++}
++EXPORT_SYMBOL(xmemdup);
 -- 
 1.8.4.2
 
