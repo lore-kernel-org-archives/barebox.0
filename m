@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlLmR-0000cj-HX
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:41 +0000
+ id 1VlLmR-0000cc-85
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:52 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:46:03 +0100
-Message-Id: <1385484367-15366-14-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:45:54 +0100
+Message-Id: <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,258 +21,410 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/17] ARM: OMAP: Safe boot info in fixed SRAM address
+Subject: [PATCH 04/17] ARM: am335x phytec phyCORE: Switch to devicetree probe
+ support
 To: barebox@lists.infradead.org
 
-Storing the boot information in the image itself and passing a pointer
-around between images is cumbersome and doesn't fit well with multiimage
-support where the pointer we pass around is already occupied by the
-devicetree.
-Do the same as U-Boot does and store the boot information at the bottom
-of the SRAM public stack.
-To maintain the compatibility between new xloaders and older barebox
-binaries we still pass the boot information to the next stage via pointer.
+This switches the am335x Phytec phyCORE to devicetree probe support.
+For now we use a linked in dtb.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/Makefile                      |  4 ++--
- arch/arm/mach-omap/am33xx_generic.c              |  3 ++-
- arch/arm/mach-omap/include/mach/am33xx-generic.h |  3 ++-
- arch/arm/mach-omap/include/mach/am33xx-silicon.h |  1 +
- arch/arm/mach-omap/include/mach/generic.h        |  2 --
- arch/arm/mach-omap/include/mach/omap3-generic.h  |  2 +-
- arch/arm/mach-omap/include/mach/omap3-silicon.h  |  1 +
- arch/arm/mach-omap/include/mach/omap4-generic.h  |  2 +-
- arch/arm/mach-omap/include/mach/omap4-silicon.h  |  3 +--
- arch/arm/mach-omap/omap3_generic.c               |  3 ++-
- arch/arm/mach-omap/omap4_generic.c               |  3 ++-
- arch/arm/mach-omap/omap_bootinfo.S               | 25 ------------------------
- arch/arm/mach-omap/omap_generic.c                | 17 ++++++++++++----
- 13 files changed, 28 insertions(+), 41 deletions(-)
- delete mode 100644 arch/arm/mach-omap/omap_bootinfo.S
+ arch/arm/boards/pcm051/Makefile       |   2 +-
+ arch/arm/boards/pcm051/board.c        | 149 ++--------------------------------
+ arch/arm/boards/pcm051/mux.c          |  65 ---------------
+ arch/arm/boards/pcm051/mux.h          |   4 -
+ arch/arm/configs/pcm051_defconfig     |  26 ++++--
+ arch/arm/configs/pcm051_mlo_defconfig |   8 +-
+ 6 files changed, 32 insertions(+), 222 deletions(-)
+ delete mode 100644 arch/arm/boards/pcm051/mux.c
+ delete mode 100644 arch/arm/boards/pcm051/mux.h
 
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index 0d5428d..81a771e 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -15,8 +15,8 @@
- # GNU General Public License for more details.
- #
- #
--obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o omap_generic.o omap_fb.o omap_bootinfo.o
--pbl-$(CONFIG_ARCH_OMAP) += syslib.o omap_bootinfo.o
-+obj-$(CONFIG_ARCH_OMAP) += syslib.o omap_devices.o omap_generic.o omap_fb.o
-+pbl-$(CONFIG_ARCH_OMAP) += syslib.o
- obj-$(CONFIG_OMAP_CLOCK_SOURCE_S32K) += s32k_clksource.o
- obj-$(CONFIG_OMAP_CLOCK_SOURCE_DMTIMER0) += dmtimer0.o
- obj-$(CONFIG_ARCH_OMAP3) += omap3_generic.o auxcr.o
-diff --git a/arch/arm/mach-omap/am33xx_generic.c b/arch/arm/mach-omap/am33xx_generic.c
-index 68dc933..c227918 100644
---- a/arch/arm/mach-omap/am33xx_generic.c
-+++ b/arch/arm/mach-omap/am33xx_generic.c
-@@ -124,8 +124,9 @@ static int am33xx_bootsource(void)
- {
- 	enum bootsource src;
- 	int instance = 0;
-+	uint32_t *am33xx_bootinfo = (void *)AM33XX_SRAM_SCRATCH_SPACE;
+diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
+index 69d48e1..092c31d 100644
+--- a/arch/arm/boards/pcm051/Makefile
++++ b/arch/arm/boards/pcm051/Makefile
+@@ -1,2 +1,2 @@
+ lwl-y += lowlevel.o
+-obj-y += board.o mux.o
++obj-y += board.o
+diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
+index e7a7b79..4b76f4c 100644
+--- a/arch/arm/boards/pcm051/board.c
++++ b/arch/arm/boards/pcm051/board.c
+@@ -19,107 +19,17 @@
  
--	switch (omap_bootinfo[2] & 0xFF) {
-+	switch (am33xx_bootinfo[2] & 0xFF) {
- 	case 0x05:
- 		src = BOOTSOURCE_NAND;
- 		break;
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-index e74a666..8472d07 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
-@@ -11,6 +11,7 @@ u32 am33xx_get_cpu_rev(void);
- static inline void am33xx_save_bootinfo(uint32_t *info)
- {
- 	unsigned long i = (unsigned long)info;
-+	uint32_t *scratch = (void *)AM33XX_SRAM_SCRATCH_SPACE;
+ #include <bootsource.h>
+ #include <common.h>
++#include <nand.h>
+ #include <init.h>
+ #include <io.h>
+-#include <nand.h>
+ #include <sizes.h>
+-#include <ns16550.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+ #include <linux/phy.h>
+-#include <mach/am33xx-devices.h>
+ #include <mach/am33xx-generic.h>
+-#include <mach/am33xx-mux.h>
+ #include <mach/am33xx-silicon.h>
+-#include <mach/cpsw.h>
+-#include <mach/generic.h>
+-#include <mach/gpmc.h>
+-#include <mach/gpmc_nand.h>
+-#include <spi/spi.h>
+-#include <spi/flash.h>
+-#include <i2c/i2c.h>
+-#include <i2c/at24.h>
+ #include <mach/bbu.h>
  
- 	if (i & 0x3)
- 		return;
-@@ -19,7 +20,7 @@ static inline void am33xx_save_bootinfo(uint32_t *info)
- 	if (i > AM33XX_SRAM0_START + AM33XX_SRAM0_SIZE)
- 		return;
- 
--	omap_save_bootinfo(info);
-+	memcpy(scratch, info, 3 * sizeof(uint32_t));
- }
- 
- u32 am33xx_running_in_flash(void);
-diff --git a/arch/arm/mach-omap/include/mach/am33xx-silicon.h b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-index 30b605a..16e665f 100644
---- a/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/am33xx-silicon.h
-@@ -120,6 +120,7 @@
- /* OCMC */
- #define AM33XX_SRAM0_START			0x402f0400
- #define AM33XX_SRAM0_SIZE			(SZ_128K - SZ_1K)
-+#define AM33XX_SRAM_SCRATCH_SPACE		0x4030b800 /* start of public stack */
- #define AM33XX_SRAM_GPMC_STACK_SIZE		(0x40)
- 
- /* DDR offsets */
-diff --git a/arch/arm/mach-omap/include/mach/generic.h b/arch/arm/mach-omap/include/mach/generic.h
-index f4e18f3..a2a48cc 100644
---- a/arch/arm/mach-omap/include/mach/generic.h
-+++ b/arch/arm/mach-omap/include/mach/generic.h
-@@ -73,8 +73,6 @@ static inline int omap_set_mmc_dev(const char *mmcdev)
- }
- #endif
- 
--extern uint32_t omap_bootinfo[3];
--void omap_save_bootinfo(void *data);
- void __noreturn omap_start_barebox(void *barebox);
- 
- void omap_set_bootmmc_devname(const char *devname);
-diff --git a/arch/arm/mach-omap/include/mach/omap3-generic.h b/arch/arm/mach-omap/include/mach/omap3-generic.h
-index 2210d87..5e29bac 100644
---- a/arch/arm/mach-omap/include/mach/omap3-generic.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-generic.h
-@@ -16,7 +16,7 @@ static inline void omap3_save_bootinfo(uint32_t *info)
- 	if (i > OMAP3_SRAM_BASE + SZ_64K)
- 		return;
- 
--	omap_save_bootinfo(info);
-+	memcpy((void *)OMAP3_SRAM_SCRATCH_SPACE, info, 3 * sizeof(uint32_t));
- }
- 
- u32 omap3_running_in_flash(void);
-diff --git a/arch/arm/mach-omap/include/mach/omap3-silicon.h b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-index 9138057..b4de045 100644
---- a/arch/arm/mach-omap/include/mach/omap3-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap3-silicon.h
-@@ -100,6 +100,7 @@
- 
- /** Interrupt Vector base address */
- #define OMAP3_SRAM_BASE		0x40200000
-+#define OMAP3_SRAM_SCRATCH_SPACE	0x4020f000 /* start of public stack */
- #define OMAP3_SRAM_INTVECT	0x4020F800
- #define OMAP3_SRAM_INTVECT_COPYSIZE	0x64
- 
-diff --git a/arch/arm/mach-omap/include/mach/omap4-generic.h b/arch/arm/mach-omap/include/mach/omap4-generic.h
-index 85c92e1..e246e36 100644
---- a/arch/arm/mach-omap/include/mach/omap4-generic.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-generic.h
-@@ -15,7 +15,7 @@ static inline void omap4_save_bootinfo(uint32_t *info)
- 	if (i > OMAP44XX_SRAM_BASE + SZ_64K)
- 		return;
- 
--	omap_save_bootinfo(info);
-+	memcpy((void *)OMAP44XX_SRAM_SCRATCH_SPACE, info, 3 * sizeof(uint32_t));
- }
- 
- void __noreturn omap4_reset_cpu(unsigned long addr);
-diff --git a/arch/arm/mach-omap/include/mach/omap4-silicon.h b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-index 336415c..202da93 100644
---- a/arch/arm/mach-omap/include/mach/omap4-silicon.h
-+++ b/arch/arm/mach-omap/include/mach/omap4-silicon.h
-@@ -40,8 +40,7 @@
- #define OMAP44XX_L4_PER_BASE		0x48000000
- 
- #define OMAP44XX_SRAM_BASE		0x40300000
+-#include "mux.h"
 -
--#define OMAP44XX_SRAM_BASE		0x40300000
-+#define OMAP44XX_SRAM_SCRATCH_SPACE	0x4030c000 /* start of public stack */
+-/**
+- * @brief UART serial port initialization
+- * arch
+- *
+- * @return result of device registration
+- */
+-static int pcm051_console_init(void)
+-{
+-	barebox_set_model("Phytec phyCORE-AM335x");
+-	barebox_set_hostname("phycore-am335x");
+-
+-	am33xx_enable_uart0_pin_mux();
+-	/* Register the serial port */
+-	am33xx_add_uart0();
+-
+-	return 0;
+-}
+-console_initcall(pcm051_console_init);
+-
+-static int pcm051_mem_init(void)
+-{
+-	omap_add_ram0(SZ_512M);
+-
+-	return 0;
+-}
+-mem_initcall(pcm051_mem_init);
+-
+-/*
+-* SPI Flash works at 80Mhz however the SPI controller runs with 48MHz.
+-* So setup Max speed to be less than the controller speed.
+-*/
+-static struct spi_board_info pcm051_spi_board_info[] = {
+-	{
+-		.name		= "m25p80",
+-		.max_speed_hz	= 24000000,
+-		.bus_num	= 0,
+-		.chip_select	= 0,
+-	},
+-};
+-
+-static struct cpsw_slave_data cpsw_slaves[] = {
+-	{
+-		.phy_id		= 0,
+-		.phy_if		= PHY_INTERFACE_MODE_RMII,
+-	},
+-};
+-
+-static struct cpsw_platform_data cpsw_data = {
+-	.slave_data	= cpsw_slaves,
+-	.num_slaves	= ARRAY_SIZE(cpsw_slaves),
+-};
+-
+-static struct i2c_board_info i2c0_devices[] = {
+-	{
+-		I2C_BOARD_INFO("24c32", 0x52),
+-	},
+-};
+-
+-static struct gpmc_config pcm051_nand_cfg = {
+-	.cfg = {
+-		0x00000800,	/* CONF1 */
+-		0x00030300,	/* CONF2 */
+-		0x00030300,	/* CONF3 */
+-		0x02000311,	/* CONF4 */
+-		0x00030303,	/* CONF5 */
+-		0x03000540,	/* CONF6 */
+-	},
+-	.base = 0x08000000,
+-	.size = GPMC_SIZE_16M,
+-};
+-
+-static struct gpmc_nand_platform_data nand_plat = {
+-	.wait_mon_pin = 1,
+-	.ecc_mode = OMAP_ECC_BCH8_CODE_HW,
+-	.nand_cfg = &pcm051_nand_cfg,
+-};
+-
+ static struct omap_barebox_part pcm051_barebox_part = {
+ 	.nand_offset = SZ_512K,
+ 	.nand_size = SZ_512K,
+@@ -127,59 +37,13 @@ static struct omap_barebox_part pcm051_barebox_part = {
+ 	.nor_size = SZ_512K,
+ };
  
- /* EMIF and DMM registers */
- #define OMAP44XX_EMIF1_BASE		0x4c000000
-diff --git a/arch/arm/mach-omap/omap3_generic.c b/arch/arm/mach-omap/omap3_generic.c
-index d36d63b..dbb0b5f 100644
---- a/arch/arm/mach-omap/omap3_generic.c
-+++ b/arch/arm/mach-omap/omap3_generic.c
-@@ -469,8 +469,9 @@ void omap3_core_init(void)
- static int omap3_bootsource(void)
+-static void pcm051_spi_init(void)
+-{
+-	int ret;
+-
+-	am33xx_enable_spi0_pin_mux();
+-
+-	ret = spi_register_board_info(pcm051_spi_board_info,
+-					ARRAY_SIZE(pcm051_spi_board_info));
+-	am33xx_add_spi0();
+-}
+-
+-static void pcm051_eth_init(void)
+-{
+-	am33xx_register_ethaddr(0, 0);
+-
+-	writel(0x49, AM33XX_MAC_MII_SEL);
+-
+-	am33xx_enable_rmii1_pin_mux();
+-
+-	am33xx_add_cpsw(&cpsw_data);
+-}
+-
+-static void pcm051_i2c_init(void)
+-{
+-	am33xx_enable_i2c0_pin_mux();
+-
+-	i2c_register_board_info(0, i2c0_devices, ARRAY_SIZE(i2c0_devices));
+-
+-	am33xx_add_i2c0(NULL);
+-}
+-
+-static void pcm051_nand_init(void)
+-{
+-	pcm051_enable_nand_pin_mux();
+-
+-	gpmc_generic_init(0x12);
+-
+-	omap_add_gpmc_nand_device(&nand_plat);
+-}
+-
+ static int pcm051_devices_init(void)
  {
- 	enum bootsource src = BOOTSOURCE_UNKNOWN;
-+	uint32_t *omap3_bootinfo = (void *)OMAP3_SRAM_SCRATCH_SPACE;
+-	pcm051_enable_mmc0_pin_mux();
+-
+-	am33xx_add_mmc0(NULL);
++	if (!of_machine_is_compatible("phytec,phycore-am335x"))
++		return 0;
  
--	switch (omap_bootinfo[1] & 0xFF) {
-+	switch (omap3_bootinfo[1] & 0xFF) {
- 	case 0x02:
- 		src = BOOTSOURCE_NAND;
- 		break;
-diff --git a/arch/arm/mach-omap/omap4_generic.c b/arch/arm/mach-omap/omap4_generic.c
-index 5dde51a..0b683da 100644
---- a/arch/arm/mach-omap/omap4_generic.c
-+++ b/arch/arm/mach-omap/omap4_generic.c
-@@ -505,8 +505,9 @@ static int omap_vector_init(void)
- static int omap4_bootsource(void)
- {
- 	enum bootsource src;
-+	uint32_t *omap4_bootinfo = (void *)OMAP44XX_SRAM_SCRATCH_SPACE;
+-	pcm051_spi_init();
+-	pcm051_eth_init();
+-	pcm051_i2c_init();
+-	pcm051_nand_init();
+-
+-	pcm051_enable_user_led_pin_mux();
+-	pcm051_enable_user_btn_pin_mux();
++	am33xx_register_ethaddr(0, 0);
++	writel(0x69, AM33XX_MAC_MII_SEL);
  
--	switch (omap_bootinfo[2] & 0xFF) {
-+	switch (omap4_bootinfo[2] & 0xFF) {
- 	case OMAP44XX_SAR_BOOT_NAND:
- 		src = BOOTSOURCE_NAND;
+ 	switch (bootsource_get()) {
+ 	case BOOTSOURCE_SPI:
+@@ -190,6 +54,9 @@ static int pcm051_devices_init(void)
+ 		devfs_add_partition("m25p0", SZ_128K + SZ_512K, SZ_128K,
+ 					DEVFS_PARTITION_FIXED, "env0");
  		break;
-diff --git a/arch/arm/mach-omap/omap_bootinfo.S b/arch/arm/mach-omap/omap_bootinfo.S
++	case BOOTSOURCE_MMC:
++		omap_set_bootmmc_devname("mmc0");
++		break;
+ 	default:
+ 		devfs_add_partition("nand0", 0x00000, SZ_128K,
+ 					DEVFS_PARTITION_FIXED, "xload_raw");
+diff --git a/arch/arm/boards/pcm051/mux.c b/arch/arm/boards/pcm051/mux.c
 deleted file mode 100644
-index ffd0a3d..0000000
---- a/arch/arm/mach-omap/omap_bootinfo.S
+index e1127ac..0000000
+--- a/arch/arm/boards/pcm051/mux.c
 +++ /dev/null
-@@ -1,25 +0,0 @@
+@@ -1,65 +0,0 @@
+-#include <common.h>
 -#include <config.h>
--#include <linux/linkage.h>
--#include <asm/assembler.h>
+-#include <asm/io.h>
+-#include <mach/am33xx-mux.h>
 -
--.section ".text_bare_init","ax"
--.globl omap_bootinfo
--omap_bootinfo:
--	.word 0x0
--	.word 0x0
--	.word 0x0
+-static const struct module_pin_mux mmc0_pin_mux[] = {
+-	{OFFSET(mmc0_dat3), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT3 */
+-	{OFFSET(mmc0_dat2), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT2 */
+-	{OFFSET(mmc0_dat1), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT1 */
+-	{OFFSET(mmc0_dat0), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_DAT0 */
+-	{OFFSET(mmc0_clk), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CLK */
+-	{OFFSET(mmc0_cmd), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* MMC0_CMD */
+-	{OFFSET(spi0_cs1), (MODE(7) | RXACTIVE | PULLUP_EN)},	/* MMC0_CD */
+-	{-1},
+-};
 -
--.section ".text_bare_init","ax"
--ENTRY(omap_save_bootinfo)
--	/*
--	* save data from rom boot loader
--	*/
--	adr     r2, omap_bootinfo
--	ldr     r1, [r0, #0x00]
--	str     r1, [r2, #0x00]
--	ldr     r1, [r0, #0x04]
--	str     r1, [r2, #0x04]
--	ldr     r1, [r0, #0x08]
--	str     r1, [r2, #0x08]
--	mov	pc, lr
--ENDPROC(omap_save_bootinfo)
-diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-index 47fa9ba..3d302f3 100644
---- a/arch/arm/mach-omap/omap_generic.c
-+++ b/arch/arm/mach-omap/omap_generic.c
-@@ -45,15 +45,24 @@ static void *omap_sram_start(void)
- 	return NULL;
- }
- 
-+static void *omap_scratch_space_start(void)
-+{
-+	if (cpu_is_am33xx())
-+		return (void *)AM33XX_SRAM_SCRATCH_SPACE;
-+	if (cpu_is_omap3())
-+		return (void *)OMAP3_SRAM_SCRATCH_SPACE;
-+	if (cpu_is_omap4())
-+		return (void *)OMAP44XX_SRAM_SCRATCH_SPACE;
-+	return NULL;
-+}
-+
- void __noreturn omap_start_barebox(void *barebox)
- {
- 	int (*func)(void *) = barebox;
--	uint32_t *arg;
- 	void *sramadr = omap_sram_start();
-+	void *scratch = omap_scratch_space_start();
- 
--	arg = (uint32_t *)&omap_bootinfo;
+-static const struct module_pin_mux nand_pin_mux[] = {
+-	{OFFSET(gpmc_ad0), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD0 */
+-	{OFFSET(gpmc_ad1), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD1 */
+-	{OFFSET(gpmc_ad2), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD2 */
+-	{OFFSET(gpmc_ad3), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD3 */
+-	{OFFSET(gpmc_ad4), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD4 */
+-	{OFFSET(gpmc_ad5), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD5 */
+-	{OFFSET(gpmc_ad6), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD6 */
+-	{OFFSET(gpmc_ad7), (MODE(0) | PULLUP_EN | RXACTIVE)},	/* NAND AD7 */
+-	{OFFSET(gpmc_wait0), (MODE(0) | RXACTIVE | PULLUP_EN)},	/* NAND WAIT */
+-	{OFFSET(gpmc_csn0), (MODE(0) | PULLUDEN)},	/* NAND_CS0 */
+-	{OFFSET(gpmc_advn_ale), (MODE(0) | PULLUDEN)},	/* NAND_ADV_ALE */
+-	{OFFSET(gpmc_oen_ren), (MODE(0) | PULLUDEN)},	/* NAND_OE */
+-	{OFFSET(gpmc_wen), (MODE(0) | PULLUDEN)},	/* NAND_WEN */
+-	{OFFSET(gpmc_be0n_cle), (MODE(0) | PULLUDEN)},	/* NAND_BE_CLE */
+-	{-1},
+-};
 -
--	memcpy(sramadr, &omap_bootinfo, sizeof(uint32_t) * 3);
-+	memcpy(sramadr, scratch, sizeof(uint32_t) * 3);
- 
- 	shutdown_barebox();
- 	func(sramadr);
+-static const struct module_pin_mux user_led_pin_mux[] = {
+-	{OFFSET(gpmc_csn1), MODE(7) | PULLUDEN}, /* USER LED1 */
+-	{OFFSET(gpmc_csn2), MODE(7) | PULLUDEN}, /* USER LED2 */
+-	{-1},
+-};
+-
+-static const struct module_pin_mux user_btn_pin_mux[] = {
+-	{OFFSET(emu0), MODE(7) | RXACTIVE | PULLUP_EN},
+-	{OFFSET(emu1), MODE(7) | RXACTIVE | PULLUP_EN},
+-	{-1},
+-};
+-
+-void pcm051_enable_mmc0_pin_mux(void)
+-{
+-	configure_module_pin_mux(mmc0_pin_mux);
+-}
+-
+-void pcm051_enable_nand_pin_mux(void)
+-{
+-	configure_module_pin_mux(nand_pin_mux);
+-}
+-
+-void pcm051_enable_user_led_pin_mux(void)
+-{
+-	configure_module_pin_mux(user_led_pin_mux);
+-}
+-
+-void pcm051_enable_user_btn_pin_mux(void)
+-{
+-	configure_module_pin_mux(user_btn_pin_mux);
+-}
+diff --git a/arch/arm/boards/pcm051/mux.h b/arch/arm/boards/pcm051/mux.h
+deleted file mode 100644
+index 5cdbe0c..0000000
+--- a/arch/arm/boards/pcm051/mux.h
++++ /dev/null
+@@ -1,4 +0,0 @@
+-extern void pcm051_enable_mmc0_pin_mux(void);
+-extern void pcm051_enable_nand_pin_mux(void);
+-extern void pcm051_enable_user_led_pin_mux(void);
+-extern void pcm051_enable_user_btn_pin_mux(void);
+diff --git a/arch/arm/configs/pcm051_defconfig b/arch/arm/configs/pcm051_defconfig
+index 97e0940..e55ac47 100644
+--- a/arch/arm/configs/pcm051_defconfig
++++ b/arch/arm/configs/pcm051_defconfig
+@@ -1,16 +1,21 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
+ CONFIG_ARCH_OMAP=y
+-CONFIG_ARCH_AM33XX=y
+ CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
+ CONFIG_MACH_PCM051=y
+-CONFIG_OMAP_UART1=y
+-CONFIG_AEABI=y
++CONFIG_THUMB2_BAREBOX=y
+ CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
++CONFIG_PBL_IMAGE=y
++CONFIG_PBL_RELOCATABLE=y
+ CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x8f000000
+-CONFIG_MALLOC_SIZE=0x2000000
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
+ CONFIG_PROMPT="barebox@pcm051>"
+ CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+@@ -21,9 +26,6 @@ CONFIG_MENU=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/pcm051/env"
+ CONFIG_DEBUG_INFO=y
+-CONFIG_ENABLE_FLASH_NOISE=y
+-CONFIG_ENABLE_PARTITION_NOISE=y
+-CONFIG_ENABLE_DEVICE_NOISE=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_SAVEENV=y
+@@ -44,6 +46,7 @@ CONFIG_CMD_UBIFORMAT=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_BOOTZ=y
++# CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_BAREBOX_UPDATE=y
+@@ -57,6 +60,8 @@ CONFIG_NET=y
+ CONFIG_NET_DHCP=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_PING=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_NET_CPSW=y
+@@ -67,13 +72,16 @@ CONFIG_MTD=y
+ CONFIG_MTD_M25P80=y
+ CONFIG_NAND=y
+ CONFIG_NAND_OMAP_GPMC=y
+-CONFIG_UBI=y
++CONFIG_MTD_UBI=y
+ CONFIG_USB=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_OMAP_HSMMC=y
+ CONFIG_EEPROM_AT24=y
+ CONFIG_GPIO_GENERIC_PLATFORM=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_SINGLE=y
++CONFIG_BUS_OMAP_GPMC=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
+ CONFIG_FS_FAT=y
+diff --git a/arch/arm/configs/pcm051_mlo_defconfig b/arch/arm/configs/pcm051_mlo_defconfig
+index ea65979..4f6a7b1 100644
+--- a/arch/arm/configs/pcm051_mlo_defconfig
++++ b/arch/arm/configs/pcm051_mlo_defconfig
+@@ -1,8 +1,8 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="am335x-phytec-phycore"
+ CONFIG_ARCH_OMAP=y
+-CONFIG_ARCH_AM33XX=y
+ CONFIG_OMAP_BUILD_IFT=y
+ CONFIG_MACH_PCM051=y
+-CONFIG_OMAP_UART1=y
+ CONFIG_THUMB2_BAREBOX=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ # CONFIG_MEMINFO is not set
+@@ -17,6 +17,7 @@ CONFIG_SHELL_NONE=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_SIMPLE=y
+ # CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_OFDEVICE=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+ CONFIG_DRIVER_SPI_OMAP3=y
+@@ -27,6 +28,9 @@ CONFIG_NAND_OMAP_GPMC=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_SINGLE=y
++CONFIG_BUS_OMAP_GPMC=y
+ # CONFIG_FS_RAMFS is not set
+ # CONFIG_FS_DEVFS is not set
+ CONFIG_FS_FAT=y
 -- 
 1.8.4.2
 
