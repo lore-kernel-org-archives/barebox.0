@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlLma-0004qf-Am
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1VlLmZ-0001vL-Ma
  for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:46:06 +0100
-Message-Id: <1385484367-15366-17-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:46:07 +0100
+Message-Id: <1385484367-15366-18-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,126 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 16/17] ARM: OMAP: introduce multiboard support and move am33xx
- boards to it
+Subject: [PATCH 17/17] ARM: OMAP: consolidate am335x mlo defconfigs
 To: barebox@lists.infradead.org
+
+The Beaglebone and the AM335x Phytec phyCORE can be compiled
+together, so merge the configs into a am335x_mlo_defconfig.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/am335x_beaglebone_defconfig     |  1 +
- arch/arm/configs/am335x_beaglebone_mlo_defconfig |  1 +
- arch/arm/configs/pcm051_defconfig                |  1 +
- arch/arm/configs/pcm051_mlo_defconfig            |  1 +
- arch/arm/mach-omap/Kconfig                       | 36 ++++++++++++++----------
- 5 files changed, 25 insertions(+), 15 deletions(-)
+ arch/arm/configs/am335x_beaglebone_mlo_defconfig | 33 ------------------
+ arch/arm/configs/am335x_mlo_defconfig            | 44 ++++++++++++++++++++++++
+ arch/arm/configs/pcm051_mlo_defconfig            | 37 --------------------
+ 3 files changed, 44 insertions(+), 70 deletions(-)
+ delete mode 100644 arch/arm/configs/am335x_beaglebone_mlo_defconfig
+ create mode 100644 arch/arm/configs/am335x_mlo_defconfig
+ delete mode 100644 arch/arm/configs/pcm051_mlo_defconfig
 
-diff --git a/arch/arm/configs/am335x_beaglebone_defconfig b/arch/arm/configs/am335x_beaglebone_defconfig
-index 38e19ef..857b89c 100644
---- a/arch/arm/configs/am335x_beaglebone_defconfig
-+++ b/arch/arm/configs/am335x_beaglebone_defconfig
-@@ -1,4 +1,5 @@
- CONFIG_ARCH_OMAP=y
-+CONFIG_OMAP_MULTI_BOARDS=y
- CONFIG_MACH_BEAGLEBONE=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_CMD_ARM_MMUINFO=y
 diff --git a/arch/arm/configs/am335x_beaglebone_mlo_defconfig b/arch/arm/configs/am335x_beaglebone_mlo_defconfig
-index ac682cc..905cc6d 100644
+deleted file mode 100644
+index 905cc6d..0000000
 --- a/arch/arm/configs/am335x_beaglebone_mlo_defconfig
-+++ b/arch/arm/configs/am335x_beaglebone_mlo_defconfig
-@@ -1,6 +1,7 @@
- CONFIG_ARCH_OMAP=y
- # CONFIG_OMAP_GPMC is not set
- CONFIG_OMAP_BUILD_IFT=y
++++ /dev/null
+@@ -1,33 +0,0 @@
+-CONFIG_ARCH_OMAP=y
+-# CONFIG_OMAP_GPMC is not set
+-CONFIG_OMAP_BUILD_IFT=y
+-CONFIG_OMAP_MULTI_BOARDS=y
+-CONFIG_MACH_BEAGLEBONE=y
+-CONFIG_THUMB2_BAREBOX=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
+-# CONFIG_BANNER is not set
+-# CONFIG_MEMINFO is not set
+-CONFIG_ENVIRONMENT_VARIABLES=y
+-CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x0
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_PROMPT="MLO>"
+-CONFIG_SHELL_NONE=y
+-# CONFIG_ERRNO_MESSAGES is not set
+-# CONFIG_TIMESTAMP is not set
+-# CONFIG_DEFAULT_ENVIRONMENT is not set
+-CONFIG_OFDEVICE=y
+-CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+-# CONFIG_SPI is not set
+-CONFIG_MCI=y
+-# CONFIG_MCI_WRITE is not set
+-CONFIG_MCI_OMAP_HSMMC=y
+-CONFIG_PINCTRL=y
+-CONFIG_PINCTRL_SINGLE=y
+-# CONFIG_FS_RAMFS is not set
+-# CONFIG_FS_DEVFS is not set
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_LFN=y
+diff --git a/arch/arm/configs/am335x_mlo_defconfig b/arch/arm/configs/am335x_mlo_defconfig
+new file mode 100644
+index 0000000..19f78d0
+--- /dev/null
++++ b/arch/arm/configs/am335x_mlo_defconfig
+@@ -0,0 +1,44 @@
++CONFIG_ARCH_OMAP=y
++CONFIG_OMAP_BUILD_IFT=y
 +CONFIG_OMAP_MULTI_BOARDS=y
- CONFIG_MACH_BEAGLEBONE=y
- CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
-diff --git a/arch/arm/configs/pcm051_defconfig b/arch/arm/configs/pcm051_defconfig
-index 949c82f..d7e510b 100644
---- a/arch/arm/configs/pcm051_defconfig
-+++ b/arch/arm/configs/pcm051_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_OMAP=y
- CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
-+CONFIG_OMAP_MULTI_BOARDS=y
- CONFIG_MACH_PCM051=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_ARM_BOARD_APPEND_ATAG=y
++CONFIG_MACH_BEAGLEBONE=y
++CONFIG_MACH_PCM051=y
++CONFIG_THUMB2_BAREBOX=y
++# CONFIG_CMD_ARM_CPUINFO is not set
++# CONFIG_MEMINFO is not set
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_RELOCATABLE=y
++CONFIG_PROMPT="MLO>"
++CONFIG_SHELL_NONE=y
++# CONFIG_ERRNO_MESSAGES is not set
++# CONFIG_TIMESTAMP is not set
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++# CONFIG_DEFAULT_ENVIRONMENT is not set
++CONFIG_OFDEVICE=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
++CONFIG_DRIVER_SPI_OMAP3=y
++CONFIG_MTD=y
++# CONFIG_MTD_WRITE is not set
++# CONFIG_MTD_OOB_DEVICE is not set
++CONFIG_MTD_M25P80=y
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_SOFT is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++# CONFIG_NAND_ECC_HW_NONE is not set
++# CONFIG_NAND_INFO is not set
++# CONFIG_NAND_BBT is not set
++CONFIG_NAND_OMAP_GPMC=y
++CONFIG_MCI=y
++# CONFIG_MCI_WRITE is not set
++CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_SINGLE=y
++CONFIG_BUS_OMAP_GPMC=y
++# CONFIG_FS_RAMFS is not set
++# CONFIG_FS_DEVFS is not set
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_LFN=y
 diff --git a/arch/arm/configs/pcm051_mlo_defconfig b/arch/arm/configs/pcm051_mlo_defconfig
-index dc4165a..ae5764b 100644
+deleted file mode 100644
+index ae5764b..0000000
 --- a/arch/arm/configs/pcm051_mlo_defconfig
-+++ b/arch/arm/configs/pcm051_mlo_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_OMAP=y
- CONFIG_OMAP_BUILD_IFT=y
-+CONFIG_OMAP_MULTI_BOARDS=y
- CONFIG_MACH_PCM051=y
- CONFIG_THUMB2_BAREBOX=y
- # CONFIG_CMD_ARM_CPUINFO is not set
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 3a53333..12b9c1f 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -114,8 +114,29 @@ config CMD_BOOT_ORDER
- 	help
- 	  A command to choose the next boot device on a warm reset.
- 
-+config OMAP_MULTI_BOARDS
-+	bool "Allow multiple boards to be selected"
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	select HAVE_PBL_MULTI_IMAGES
-+
-+if OMAP_MULTI_BOARDS
-+
-+config MACH_BEAGLEBONE
-+	bool "Texas Instrument's Beagle Bone"
-+	select ARCH_AM33XX
-+	help
-+	  Say Y here if you are using Beagle Bone
-+
-+config MACH_PCM051
-+	bool "Phytec phyCORE pcm051"
-+	select ARCH_AM33XX
-+	help
-+	  Say Y here if you are using Phytecs phyCORE pcm051 board
-+endif
-+
- choice
- 	prompt "Select OMAP board"
-+	depends on !OMAP_MULTI_BOARDS
- 
- config MACH_OMAP343xSDP
- 	bool "Texas Instrument's SDP343x"
-@@ -130,13 +151,6 @@ config MACH_BEAGLE
- 	help
- 	  Say Y here if you are using Beagle Board
- 
--config MACH_BEAGLEBONE
--	bool "Texas Instrument's Beagle Bone"
--	select ARCH_AM33XX
--	select HAVE_PBL_MULTI_IMAGES
--	help
--	  Say Y here if you are using Beagle Bone
--
- config MACH_OMAP3EVM
- 	bool "Texas Instrument's OMAP3 EVM"
- 	select ARCH_OMAP3
-@@ -175,14 +189,6 @@ config MACH_PCAAXL2
- 	help
- 	  Say Y here if you are using a phyCARD-A-XL1 PCA-A-XL1
- 
--config MACH_PCM051
--	bool "Phytec phyCORE pcm051"
--	select HAVE_DEFAULT_ENVIRONMENT_NEW
--	select ARCH_AM33XX
--	select HAVE_PBL_MULTI_IMAGES
--	help
--	  Say Y here if you are using Phytecs phyCORE pcm051 board
--
- endchoice
- 
- if ARCH_OMAP
++++ /dev/null
+@@ -1,37 +0,0 @@
+-CONFIG_ARCH_OMAP=y
+-CONFIG_OMAP_BUILD_IFT=y
+-CONFIG_OMAP_MULTI_BOARDS=y
+-CONFIG_MACH_PCM051=y
+-CONFIG_THUMB2_BAREBOX=y
+-# CONFIG_CMD_ARM_CPUINFO is not set
+-# CONFIG_MEMINFO is not set
+-CONFIG_ENVIRONMENT_VARIABLES=y
+-CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x0
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_RELOCATABLE=y
+-CONFIG_PROMPT="MLO>"
+-CONFIG_SHELL_NONE=y
+-# CONFIG_ERRNO_MESSAGES is not set
+-# CONFIG_TIMESTAMP is not set
+-CONFIG_CONSOLE_SIMPLE=y
+-# CONFIG_DEFAULT_ENVIRONMENT is not set
+-CONFIG_OFDEVICE=y
+-CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
+-CONFIG_DRIVER_SPI_OMAP3=y
+-CONFIG_MTD=y
+-CONFIG_MTD_M25P80=y
+-CONFIG_NAND=y
+-CONFIG_NAND_OMAP_GPMC=y
+-CONFIG_MCI=y
+-CONFIG_MCI_STARTUP=y
+-CONFIG_MCI_OMAP_HSMMC=y
+-CONFIG_PINCTRL=y
+-CONFIG_PINCTRL_SINGLE=y
+-CONFIG_BUS_OMAP_GPMC=y
+-# CONFIG_FS_RAMFS is not set
+-# CONFIG_FS_DEVFS is not set
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_LFN=y
 -- 
 1.8.4.2
 
