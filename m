@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vc0-x232.google.com ([2607:f8b0:400c:c03::232])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vl8qL-00072Q-Gq
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 02:57:41 +0000
-Received: by mail-vc0-f178.google.com with SMTP id lh4so3390136vcb.37
- for <barebox@lists.infradead.org>; Mon, 25 Nov 2013 18:57:20 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CANvTkNZJFP+SiHtm3GwJayNwv6zarRHnoCd3HjtaCL5MdQ2Q1A@mail.gmail.com>
-References: <CANvTkNZJFP+SiHtm3GwJayNwv6zarRHnoCd3HjtaCL5MdQ2Q1A@mail.gmail.com>
-Date: Tue, 26 Nov 2013 10:57:20 +0800
-Message-ID: <CANvTkNYY9DrfYfsp5CMoph=LdsoUvO0i4daEMgBHCvQdCGF+ug@mail.gmail.com>
-From: Kevin Du Huanpeng <u74147@gmail.com>
+Received: from mail.x-arc.de ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VlET2-0005Qh-M5
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 08:58:01 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id B604BBF0F0
+ for <barebox@lists.infradead.org>; Tue, 26 Nov 2013 08:58:04 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Tue, 26 Nov 2013 09:57:33 +0100
+Message-Id: <1385456253-5399-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,41 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mips start.S: using marco EXPORT(_start) result _start
- symbol can not be found in System.map
+Subject: [PATCH] commands: of_node fix descripion
 To: barebox@lists.infradead.org
 
-sorry, maybe my mistake.
-forget about this mail.
+Remove copy and paste error
 
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+---
+ commands/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-2013/11/26 Kevin Du Huanpeng <u74147@gmail.com>:
-> the _start symbol is not found in System.map if using EXPORT(_start) .
-> when TEXT_BASE changed, I can't see if the _start linked to the right
-> address in System.map.
->
-> - - -
-> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
-> index 7e2ae5e..75d7ac8 100644
-> --- a/arch/mips/boot/start.S
-> +++ b/arch/mips/boot/start.S
-> @@ -49,9 +49,8 @@ _pc:  addiu   \rd, ra, \label - _pc           #
-> label is assumed to be
->         .text
->         .section ".text_bare_init"
->         .align 4
-> -
-> -EXPORT(_start)
-> -
-> +       .globl _start
-> +_start:
->         b       __start
->          nop
-> - - -
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9738ec4..1e07b5b 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -559,7 +559,7 @@ config CMD_OF_NODE
+ 	select OFTREE
+ 	prompt "of_node"
+ 	help
+-	  The of_property command allows adding and removing devicetree nodes.
++	  The of_node command allows adding and removing devicetree nodes.
+ 
+ endmenu
+ 
+-- 
+1.7.0.4
+
 
 _______________________________________________
 barebox mailing list
