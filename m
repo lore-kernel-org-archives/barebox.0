@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlHaM-0001ej-0C
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 12:17:47 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VlHZx-0007rD-VH
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 13:17:21 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1VlHZx-00072X-Tp
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 13:17:21 +0100
+ id 1VlLJI-0008DS-W8
+ for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:16:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 13:17:17 +0100
-Message-Id: <1385468240-3915-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 26 Nov 2013 17:15:58 +0100
+Message-Id: <1385482559-6068-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] OMAP gpmc bus driver support
+Subject: [PATCH 1/2] common Kconfig: Add missing depends on
 To: barebox@lists.infradead.org
 
-This adds OMAP gpmc bus driver support. Unlike the last version
-this one sets the device_node of the registered nand device correctly
-so that the partitions can be populated from the devicetree.
+CONFIG_MAXARGS is only used with the simple console support, so add
+a 'depends on'. While at it, move it below the shell selection.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Kconfig | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (3):
-      string: Add (x)memdup
-      device: Add functions to add resources
-      bus: Add omap gpmc driver
+diff --git a/common/Kconfig b/common/Kconfig
+index ccfbc80..f47602e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -292,11 +292,6 @@ config CBSIZE
+ 	prompt "Buffer size for input from the Console"
+ 	default 1024
+ 
+-config MAXARGS
+-	int
+-	prompt "max. Number of arguments accepted for monitor commands"
+-	default 16
+-
+ choice
+ 	prompt "Select your shell"
+ 
+@@ -328,6 +323,12 @@ choice
+ 		  at the end of the barebox startup process.
+ endchoice
+ 
++config MAXARGS
++	int
++	depends on SHELL_SIMPLE
++	prompt "max. Number of arguments accepted for monitor commands"
++	default 16
++
+ config GLOB
+ 	bool
+ 	prompt "hush globbing support"
+-- 
+1.8.4.2
 
- arch/arm/mach-omap/include/mach/gpmc_nand.h |   3 +
- drivers/base/resource.c                     |  60 +++-
- drivers/bus/Kconfig                         |   6 +
- drivers/bus/Makefile                        |   1 +
- drivers/bus/omap-gpmc.c                     | 480 ++++++++++++++++++++++++++++
- include/driver.h                            |   9 +
- include/string.h                            |   2 +
- include/xfuncs.h                            |   1 +
- lib/string.c                                |  14 +
- lib/xfuncs.c                                |  10 +
- 10 files changed, 573 insertions(+), 13 deletions(-)
- create mode 100644 drivers/bus/omap-gpmc.c
 
 _______________________________________________
 barebox mailing list
