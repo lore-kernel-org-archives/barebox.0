@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from post.merula.co.uk ([217.146.97.9])
+Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vll3T-0008T2-64
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 19:45:48 +0000
-From: John Parker <John.Parker@lucyautomation.co.uk>
-Date: Wed, 27 Nov 2013 19:45:09 +0000
-Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34677B@AUTOSERVER1.auto.local>
+ id 1VllWm-0000ie-LJ
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 20:16:06 +0000
+Date: Wed, 27 Nov 2013 21:15:31 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20131127211531.49e08d7f@e6520eb>
+In-Reply-To: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34677B@AUTOSERVER1.auto.local>
 References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
- <20131127130236.GX24559@pengutronix.de> 
-Content-Language: en-US
-MIME-Version: 1.0
+ <20131127130236.GX24559@pengutronix.de>
+ <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34677B@AUTOSERVER1.auto.local>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,94 +19,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: FW: Barebox on Karo TX25
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Barebox on Karo TX25
+To: John Parker <John.Parker@lucyautomation.co.uk>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-
-Oh, and just notices that after a few moments barebox hangs, no longer responding to input!!
-
-Any ideas?
-
-Regards
-
-John
-
------Original Message-----
-From: John Parker 
-Sent: 27 November 2013 15:50
-To: 'Sascha Hauer'
-Cc: barebox@lists.infradead.org
-Subject: RE: FW: Barebox on Karo TX25
-
-Hi
-
-I have a barebox prompt running from RAM!!
-
-What next?
-
-Regards
-
-John
-
------Original Message-----
-From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-Sent: 27 November 2013 13:03
-To: John Parker
-Cc: barebox@lists.infradead.org
-Subject: Re: FW: Barebox on Karo TX25
 
 Hi John,
 
-On Wed, Nov 27, 2013 at 11:28:42AM +0000, John Parker wrote:
-> Hi all
-> 
-> I've spent a day trying to get barebox onto a Karo TX25. I've trawled the lists and documentation but seem to be missing something fundamental.
-> 
-> I need to replace Redboot with barebox and I know that barebox will need 512k (256k + 2 more blocks for env) rather than the 256k partition that Redboot has.
-> 
-> Redboot is version "Ka-Ro 2009-06-10" as supplied with the TX25.
-> 
-> The problem is that when I try to delete and recreate the Redboot partition, Redboot says no becays it is reserved, even though I'm running in ROMRAM mode.
-> 
-> I know the tx25 is a supported configuration because there is a defconfig for it.
-> 
-> Is it documented anywhere exactly how to replace redboot with barebox?
-> 
-> What magic am I missing?
+Le Wed, 27 Nov 2013 19:45:09 +0000,
+John Parker <John.Parker@lucyautomation.co.uk> a =E9crit :
 
-redboot is still a mystery to me and I try to avoid it. Let's try with USB boot instead which has the advantage that you can erase your NAND without risking to brick your board.
+> Oh, and just notices that after a few moments barebox hangs, no longer re=
+sponding to input!!
+> =
 
-Please apply the two patches I just sent as answer to your mail. You can
-then:
+> Any ideas?
+> =
 
-- make tx25stk5_defconfig
-- make menuconfig, enable CONFIG_ARCH_IMX_USBLOADER
-- make
-- generate a imx-image:
-  scripts/imx/imx-image -c \
-	arch/arm/boards/karo-tx25/flash-header-tx25.imxcfg -f \
-	barebox-flash-image -o barebox.imx
-- bring your board into USB boot mode (the baseboard should have a
-  jumper to do this)
-- connect to a host with a mini USB cable. 'lsusb' should show:
-  Bus 001 Device 014: ID 15a2:003a Freescale Semiconductor, Inc.
-- do: ./scripts/imx/imx-usb-loader barebox.imx
+IIRC watchdog is enabled when you are using the serial or USB boot.
 
-barebox should show up on the serial port.
-
-Next step would be to write barebox to nand, but we can talk about this once you've got barebox running.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Eric
 
 _______________________________________________
 barebox mailing list
