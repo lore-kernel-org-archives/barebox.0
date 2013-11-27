@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlVYZ-0007ly-NH
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 03:12:52 +0000
-Received: by mail-bk0-f45.google.com with SMTP id mx13so2937852bkb.18
- for <barebox@lists.infradead.org>; Tue, 26 Nov 2013 19:12:25 -0800 (PST)
-Date: Wed, 27 Nov 2013 04:20:11 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131127032010.GA3288@x61s.Speedport_W_921V_1_24_000>
-References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
- <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
+ id 1VlZjJ-0002mH-Bl
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 07:40:13 +0000
+Date: Wed, 27 Nov 2013 08:39:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131127073951.GQ24559@pengutronix.de>
+References: <1385456253-5399-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1385456253-5399-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,61 +22,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/17] ARM: am335x phytec phyCORE: Switch to devicetree
- probe support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] commands: of_node fix descripion
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-nice patchstack.
-
-On Tue, Nov 26, 2013 at 05:45:54PM +0100, Sascha Hauer wrote:
-> This switches the am335x Phytec phyCORE to devicetree probe support.
-> For now we use a linked in dtb.
+On Tue, Nov 26, 2013 at 09:57:33AM +0100, Jan Weitzel wrote:
+> Remove copy and paste error
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 > ---
->  arch/arm/boards/pcm051/Makefile       |   2 +-
->  arch/arm/boards/pcm051/board.c        | 149 ++--------------------------------
->  arch/arm/boards/pcm051/mux.c          |  65 ---------------
->  arch/arm/boards/pcm051/mux.h          |   4 -
->  arch/arm/configs/pcm051_defconfig     |  26 ++++--
->  arch/arm/configs/pcm051_mlo_defconfig |   8 +-
->  6 files changed, 32 insertions(+), 222 deletions(-)
->  delete mode 100644 arch/arm/boards/pcm051/mux.c
->  delete mode 100644 arch/arm/boards/pcm051/mux.h
+>  commands/Kconfig |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
 > 
-> diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
-> index 69d48e1..092c31d 100644
-> --- a/arch/arm/boards/pcm051/Makefile
-> +++ b/arch/arm/boards/pcm051/Makefile
-> @@ -1,2 +1,2 @@
->  lwl-y += lowlevel.o
-> -obj-y += board.o mux.o
-> +obj-y += board.o
-> diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
-...
-> -CONFIG_ARCH_AM33XX=y
->  CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
->  CONFIG_MACH_PCM051=y
-> -CONFIG_OMAP_UART1=y
-> -CONFIG_AEABI=y
-> +CONFIG_THUMB2_BAREBOX=y
->  CONFIG_ARM_BOARD_APPEND_ATAG=y
->  CONFIG_CMD_ARM_MMUINFO=y
->  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
->  CONFIG_ARM_UNWIND=y
-> +CONFIG_PBL_IMAGE=y
-> +CONFIG_PBL_RELOCATABLE=y
->  CONFIG_MMU=y
-> -CONFIG_TEXT_BASE=0x8f000000
-> -CONFIG_MALLOC_SIZE=0x2000000
-> +CONFIG_TEXT_BASE=0x0
-> +CONFIG_MALLOC_SIZE=0x0
-Why is this zero now? Are these things defined in the dts file?
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 9738ec4..1e07b5b 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -559,7 +559,7 @@ config CMD_OF_NODE
+>  	select OFTREE
+>  	prompt "of_node"
+>  	help
+> -	  The of_property command allows adding and removing devicetree nodes.
+> +	  The of_node command allows adding and removing devicetree nodes.
 
-- Alex
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
