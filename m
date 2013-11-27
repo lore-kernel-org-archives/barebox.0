@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from post.merula.co.uk ([217.146.97.9])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlhNW-0008Em-Gy
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 15:50:16 +0000
+ id 1Vll3T-0008T2-64
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 19:45:48 +0000
 From: John Parker <John.Parker@lucyautomation.co.uk>
-Date: Wed, 27 Nov 2013 15:49:49 +0000
-Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
+Date: Wed, 27 Nov 2013 19:45:09 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34677B@AUTOSERVER1.auto.local>
 References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
- <20131127130236.GX24559@pengutronix.de>
-In-Reply-To: <20131127130236.GX24559@pengutronix.de>
+ <20131127130236.GX24559@pengutronix.de> 
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -26,6 +25,21 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: RE: FW: Barebox on Karo TX25
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Oh, and just notices that after a few moments barebox hangs, no longer responding to input!!
+
+Any ideas?
+
+Regards
+
+John
+
+-----Original Message-----
+From: John Parker 
+Sent: 27 November 2013 15:50
+To: 'Sascha Hauer'
+Cc: barebox@lists.infradead.org
+Subject: RE: FW: Barebox on Karo TX25
 
 Hi
 
