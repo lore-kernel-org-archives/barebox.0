@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlcVO-0006wC-Re
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 10:38:04 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 Nov 2013 11:37:38 +0100
-Message-Id: <1385548658-13958-1-git-send-email-s.hauer@pengutronix.de>
+Received: from post.merula.co.uk ([217.146.97.9])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VldIr-0008JZ-2h
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 11:29:09 +0000
+Received: from remote.lucyautomation.co.uk (unknown [62.6.155.233])
+ by post.merula.co.uk (Postfix) with ESMTPSA id 2F39E84506
+ for <barebox@lists.infradead.org>; Wed, 27 Nov 2013 11:27:30 +0000 (GMT)
+From: John Parker <John.Parker@lucyautomation.co.uk>
+Date: Wed, 27 Nov 2013 11:28:42 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,42 +19,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Fix endless loop in automount code
-To: barebox@lists.infradead.org
-Cc: jbe@pengutronix.de
+Subject: FW: Barebox on Karo TX25
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-A chdir to a path registered as an automount path followed by a 'ls'
-results in an endless loop. This happens because the command the
-automounter executes results in another automount request.
-Fix this by running the automounter from the chdir code before
-the cwd is actually changed.
+Hi all
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- fs/fs.c | 2 ++
- 1 file changed, 2 insertions(+)
+I've spent a day trying to get barebox onto a Karo TX25. I've trawled the lists and documentation but seem to be missing something fundamental.
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 4563a81..32dba8c 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -579,6 +579,8 @@ int chdir(const char *pathname)
- 	if (ret)
- 		goto out;
- 
-+	automount_mount(p, 0);
-+
- 	strcpy(cwd, p);
- 
- out:
--- 
-1.8.4.3
+I need to replace Redboot with barebox and I know that barebox will need 512k (256k + 2 more blocks for env) rather than the 256k partition that Redboot has.
 
+Redboot is version "Ka-Ro 2009-06-10" as supplied with the TX25.
+
+The problem is that when I try to delete and recreate the Redboot partition, Redboot says no becays it is reserved, even though I'm running in ROMRAM mode.
+
+I know the tx25 is a supported configuration because there is a defconfig for it.
+
+Is it documented anywhere exactly how to replace redboot with barebox?
+
+What magic am I missing?
+
+Thanks
+
+John
 
 _______________________________________________
 barebox mailing list
