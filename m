@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VlZmi-0002sT-Re
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 07:43:45 +0000
-Date: Wed, 27 Nov 2013 08:43:22 +0100
+ id 1VlZwS-00032h-J7
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 07:53:49 +0000
+Date: Wed, 27 Nov 2013 08:53:26 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131127074322.GR24559@pengutronix.de>
-References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
- <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
- <20131127032010.GA3288@x61s.Speedport_W_921V_1_24_000>
+Message-ID: <20131127075326.GV24559@pengutronix.de>
+References: <1385132122-4725-1-git-send-email-s.hauer@pengutronix.de>
+ <20131123062137.GA28327@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131127032010.GA3288@x61s.Speedport_W_921V_1_24_000>
+In-Reply-To: <20131123062137.GA28327@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,64 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 04/17] ARM: am335x phytec phyCORE: Switch to devicetree
- probe support
+Subject: Re: [PATCH] of: gpio: Add Kconfig variable to depend on
 To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, Nov 27, 2013 at 04:20:11AM +0100, Alexander Aring wrote:
+On Sat, Nov 23, 2013 at 07:21:38AM +0100, Alexander Aring wrote:
 > Hi Sascha,
 > 
-> nice patchstack.
-> 
-> On Tue, Nov 26, 2013 at 05:45:54PM +0100, Sascha Hauer wrote:
-> > This switches the am335x Phytec phyCORE to devicetree probe support.
-> > For now we use a linked in dtb.
-> > 
+> On Fri, Nov 22, 2013 at 03:55:22PM +0100, Sascha Hauer wrote:
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  arch/arm/boards/pcm051/Makefile       |   2 +-
-> >  arch/arm/boards/pcm051/board.c        | 149 ++--------------------------------
-> >  arch/arm/boards/pcm051/mux.c          |  65 ---------------
-> >  arch/arm/boards/pcm051/mux.h          |   4 -
-> >  arch/arm/configs/pcm051_defconfig     |  26 ++++--
-> >  arch/arm/configs/pcm051_mlo_defconfig |   8 +-
-> >  6 files changed, 32 insertions(+), 222 deletions(-)
-> >  delete mode 100644 arch/arm/boards/pcm051/mux.c
-> >  delete mode 100644 arch/arm/boards/pcm051/mux.h
+> >  drivers/of/Kconfig  | 5 +++++
+> >  drivers/of/Makefile | 2 +-
+> >  include/of_gpio.h   | 6 +++---
+> >  3 files changed, 9 insertions(+), 4 deletions(-)
 > > 
-> > diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
-> > index 69d48e1..092c31d 100644
-> > --- a/arch/arm/boards/pcm051/Makefile
-> > +++ b/arch/arm/boards/pcm051/Makefile
-> > @@ -1,2 +1,2 @@
-> >  lwl-y += lowlevel.o
-> > -obj-y += board.o mux.o
-> > +obj-y += board.o
-> > diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
-> ...
-> > -CONFIG_ARCH_AM33XX=y
-> >  CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
-> >  CONFIG_MACH_PCM051=y
-> > -CONFIG_OMAP_UART1=y
-> > -CONFIG_AEABI=y
-> > +CONFIG_THUMB2_BAREBOX=y
-> >  CONFIG_ARM_BOARD_APPEND_ATAG=y
-> >  CONFIG_CMD_ARM_MMUINFO=y
-> >  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-> >  CONFIG_ARM_UNWIND=y
-> > +CONFIG_PBL_IMAGE=y
-> > +CONFIG_PBL_RELOCATABLE=y
-> >  CONFIG_MMU=y
-> > -CONFIG_TEXT_BASE=0x8f000000
-> > -CONFIG_MALLOC_SIZE=0x2000000
-> > +CONFIG_TEXT_BASE=0x0
-> > +CONFIG_MALLOC_SIZE=0x0
-> Why is this zero now? Are these things defined in the dts file?
+> > diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> > index 6b893d7..cdf7ac7 100644
+> > --- a/drivers/of/Kconfig
+> > +++ b/drivers/of/Kconfig
+> > @@ -19,6 +19,11 @@ config OF_NET
+> >  	depends on NET
+> >  	def_bool y
+> >  
+> > +config OF_GPIO
+> > +	depends on CONFIG_GPIOLIB
+> > +	depends on CONFIG_OFDEVICE
+> > +	def_bool y
+> 
+> On current next branch the "def_bool y" is missing, so I get:
+> 
+> drivers/of/Kconfig:22:warning: config symbol defined without type
+> 
+> I will send a patch soon...
 
-It's a relocatable binary which gets relocated during runtime. The
-address doesn't matter anymore, but setting it to zero helps translating
-the addresses from the objdump to the running binary.
+I fixed this by using the correct patch. The wrong one leaked in by
+accident.
 
 Sascha
 
