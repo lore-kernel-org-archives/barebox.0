@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1VlLmZ-0001vm-Mg
- for barebox@lists.infradead.org; Tue, 26 Nov 2013 16:46:41 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 26 Nov 2013 17:46:05 +0100
-Message-Id: <1385484367-15366-16-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-bk0-x22d.google.com ([2a00:1450:4008:c01::22d])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VlVYZ-0007ly-NH
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 03:12:52 +0000
+Received: by mail-bk0-f45.google.com with SMTP id mx13so2937852bkb.18
+ for <barebox@lists.infradead.org>; Tue, 26 Nov 2013 19:12:25 -0800 (PST)
+Date: Wed, 27 Nov 2013 04:20:11 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131127032010.GA3288@x61s.Speedport_W_921V_1_24_000>
 References: <1385484367-15366-1-git-send-email-s.hauer@pengutronix.de>
+ <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1385484367-15366-5-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,56 +21,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/17] ARM: beaglebone: configure console from devicetree
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 04/17] ARM: am335x phytec phyCORE: Switch to devicetree
+ probe support
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/am335x_beaglebone_defconfig | 2 +-
- arch/arm/dts/am335x-bone-common.dtsi         | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+Hi Sascha,
 
-diff --git a/arch/arm/configs/am335x_beaglebone_defconfig b/arch/arm/configs/am335x_beaglebone_defconfig
-index c80adc9..38e19ef 100644
---- a/arch/arm/configs/am335x_beaglebone_defconfig
-+++ b/arch/arm/configs/am335x_beaglebone_defconfig
-@@ -1,5 +1,4 @@
- CONFIG_ARCH_OMAP=y
--CONFIG_OMAP_MULTI_BOARDS=y
- CONFIG_MACH_BEAGLEBONE=y
- CONFIG_THUMB2_BAREBOX=y
- CONFIG_CMD_ARM_MMUINFO=y
-@@ -17,6 +16,7 @@ CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
- # CONFIG_TIMESTAMP is not set
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/beaglebone/env"
- CONFIG_CMD_EDIT=y
-diff --git a/arch/arm/dts/am335x-bone-common.dtsi b/arch/arm/dts/am335x-bone-common.dtsi
-index 1ecf0b3..00271c4 100644
---- a/arch/arm/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/dts/am335x-bone-common.dtsi
-@@ -7,6 +7,10 @@
-  */
- 
- / {
-+	chosen {
-+		linux,stdout-path = &uart0;
-+	};
-+
- 	cpus {
- 		cpu@0 {
- 			cpu0-supply = <&dcdc2_reg>;
--- 
-1.8.4.2
+nice patchstack.
 
+On Tue, Nov 26, 2013 at 05:45:54PM +0100, Sascha Hauer wrote:
+> This switches the am335x Phytec phyCORE to devicetree probe support.
+> For now we use a linked in dtb.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/boards/pcm051/Makefile       |   2 +-
+>  arch/arm/boards/pcm051/board.c        | 149 ++--------------------------------
+>  arch/arm/boards/pcm051/mux.c          |  65 ---------------
+>  arch/arm/boards/pcm051/mux.h          |   4 -
+>  arch/arm/configs/pcm051_defconfig     |  26 ++++--
+>  arch/arm/configs/pcm051_mlo_defconfig |   8 +-
+>  6 files changed, 32 insertions(+), 222 deletions(-)
+>  delete mode 100644 arch/arm/boards/pcm051/mux.c
+>  delete mode 100644 arch/arm/boards/pcm051/mux.h
+> 
+> diff --git a/arch/arm/boards/pcm051/Makefile b/arch/arm/boards/pcm051/Makefile
+> index 69d48e1..092c31d 100644
+> --- a/arch/arm/boards/pcm051/Makefile
+> +++ b/arch/arm/boards/pcm051/Makefile
+> @@ -1,2 +1,2 @@
+>  lwl-y += lowlevel.o
+> -obj-y += board.o mux.o
+> +obj-y += board.o
+> diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
+...
+> -CONFIG_ARCH_AM33XX=y
+>  CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
+>  CONFIG_MACH_PCM051=y
+> -CONFIG_OMAP_UART1=y
+> -CONFIG_AEABI=y
+> +CONFIG_THUMB2_BAREBOX=y
+>  CONFIG_ARM_BOARD_APPEND_ATAG=y
+>  CONFIG_CMD_ARM_MMUINFO=y
+>  CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+>  CONFIG_ARM_UNWIND=y
+> +CONFIG_PBL_IMAGE=y
+> +CONFIG_PBL_RELOCATABLE=y
+>  CONFIG_MMU=y
+> -CONFIG_TEXT_BASE=0x8f000000
+> -CONFIG_MALLOC_SIZE=0x2000000
+> +CONFIG_TEXT_BASE=0x0
+> +CONFIG_MALLOC_SIZE=0x0
+Why is this zero now? Are these things defined in the dts file?
+
+- Alex
 
 _______________________________________________
 barebox mailing list
