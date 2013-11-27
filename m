@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vlele-00029v-55
- for barebox@lists.infradead.org; Wed, 27 Nov 2013 13:02:59 +0000
-Date: Wed, 27 Nov 2013 14:02:36 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131127130236.GX24559@pengutronix.de>
+Received: from post.merula.co.uk ([217.146.97.9])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vlf1B-0002i7-Rs
+ for barebox@lists.infradead.org; Wed, 27 Nov 2013 13:19:03 +0000
+From: John Parker <John.Parker@lucyautomation.co.uk>
+Date: Wed, 27 Nov 2013 13:18:34 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34674A@AUTOSERVER1.auto.local>
 References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
+ <20131127130236.GX24559@pengutronix.de>
+In-Reply-To: <20131127130236.GX24559@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,9 +23,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FW: Barebox on Karo TX25
-To: John Parker <John.Parker@lucyautomation.co.uk>
+Subject: RE: FW: Barebox on Karo TX25
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Hi Sascha
+
+Great. Many thanks. I'll give it a go and will let you know.
+
+Regards
+
+John
+
+-----Original Message-----
+From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
+Sent: 27 November 2013 13:03
+To: John Parker
+Cc: barebox@lists.infradead.org
+Subject: Re: FW: Barebox on Karo TX25
 
 Hi John,
 
@@ -45,9 +61,7 @@ On Wed, Nov 27, 2013 at 11:28:42AM +0000, John Parker wrote:
 > 
 > What magic am I missing?
 
-redboot is still a mystery to me and I try to avoid it. Let's try with
-USB boot instead which has the advantage that you can erase your NAND
-without risking to brick your board.
+redboot is still a mystery to me and I try to avoid it. Let's try with USB boot instead which has the advantage that you can erase your NAND without risking to brick your board.
 
 Please apply the two patches I just sent as answer to your mail. You can
 then:
@@ -67,8 +81,7 @@ then:
 
 barebox should show up on the serial port.
 
-Next step would be to write barebox to nand, but we can talk about this
-once you've got barebox running.
+Next step would be to write barebox to nand, but we can talk about this once you've got barebox running.
 
 Sascha
 
