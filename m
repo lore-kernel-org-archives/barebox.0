@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
- helo=mo5.mail-out.ovh.net)
+Received: from post.merula.co.uk ([217.146.97.9])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vm2X3-0004Rx-Tj
- for barebox@lists.infradead.org; Thu, 28 Nov 2013 14:25:31 +0000
-Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 0D9B1FF8551
- for <barebox@lists.infradead.org>; Thu, 28 Nov 2013 15:16:55 +0100 (CET)
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Date: Thu, 28 Nov 2013 15:17:38 +0100
-Message-Id: <1385648258-24295-1-git-send-email-plagnioj@jcrosoft.com>
+ id 1Vm4G2-0006il-Oi
+ for barebox@lists.infradead.org; Thu, 28 Nov 2013 16:16:03 +0000
+From: John Parker <John.Parker@lucyautomation.co.uk>
+Date: Thu, 28 Nov 2013 16:13:34 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
+References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
+ <20131127130236.GX24559@pengutronix.de>
+ <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
+ <20131127210115.GZ24559@pengutronix.de>
+In-Reply-To: <20131127210115.GZ24559@pengutronix.de>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,69 +21,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] vexpress: fix smc911x in defconfig
-To: barebox@lists.infradead.org
+Subject: RE: FW: Barebox on Karo TX25
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-today we select smc91111
+Hi Sascha
 
-to make the net work under qemu you will have to fix the lan9118 driver
+I still have a problem with barebox freezing. 
 
-with this patch
+I've tried various things as you have suggested, but have not got any further.
 
-diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 2315f99..a48c32d 100644
---- a/hw/net/lan9118.c
-+++ b/hw/net/lan9118.c
-@@ -1030,6 +1030,8 @@ static void lan9118_writel(void *opaque, hwaddr offset,
-         s->int_en = val & ~RESERVED_INT;
-         s->int_sts |= val & SW_INT;
-         break;
-+    case CSR_BYTE_TEST:
-+        break;
-     case CSR_FIFO_INT:
-         DPRINTF("FIFO INT levels %08x\n", val);
-         s->fifo_int = val;
+Issuing wd 100, followed by wd repeated every few seconds seems to keep the system alive so it looks like the watchdog is to blame.
 
-Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
----
- arch/arm/configs/vexpress_ca9_defconfig | 2 +-
- arch/arm/configs/vexpress_defconfig     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+According to the mx25 reference manual the watchdog is disabled until it is enabled by setting the WDE bit.
 
-diff --git a/arch/arm/configs/vexpress_ca9_defconfig b/arch/arm/configs/vexpress_ca9_defconfig
-index f16a8ca..e8cf703 100644
---- a/arch/arm/configs/vexpress_ca9_defconfig
-+++ b/arch/arm/configs/vexpress_ca9_defconfig
-@@ -50,7 +50,7 @@ CONFIG_NET_PING=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_SERIAL_AMBA_PL011=y
--CONFIG_DRIVER_NET_SMC91111=y
-+CONFIG_DRIVER_NET_SMC911X=y
- # CONFIG_SPI is not set
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_AMD is not set
-diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
-index e166078..dafaf18 100644
---- a/arch/arm/configs/vexpress_defconfig
-+++ b/arch/arm/configs/vexpress_defconfig
-@@ -49,7 +49,7 @@ CONFIG_NET_PING=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_SERIAL_AMBA_PL011=y
--CONFIG_DRIVER_NET_SMC91111=y
-+CONFIG_DRIVER_NET_SMC911X=y
- # CONFIG_SPI is not set
- CONFIG_DRIVER_CFI=y
- # CONFIG_DRIVER_CFI_AMD is not set
+I can't find anything (yet) in the startup which enables the watchdog by default?
+
+Does the flash header you sent me include anything which enables the watchdog?
+
+Despite this I have been able to follow your instructions and have got as far as copying the bin file to nand but resetting the board (with the usbloader jumper off") does not produce any output.
+
+The barebox-flash-image link points to a zbarebox.bin which is what I've copied to nand. Was this right?
+
+Many thanks for all your efforts
+
+Regards
+
+John
+
+-----Original Message-----
+From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
+Sent: 27 November 2013 21:01
+To: John Parker
+Cc: barebox@lists.infradead.org
+Subject: Re: FW: Barebox on Karo TX25
+
+On Wed, Nov 27, 2013 at 03:49:49PM +0000, John Parker wrote:
+> Hi
+> 
+> I have a barebox prompt running from RAM!!
+> 
+> What next?
+
+Setup a tftp server, edit /env/network/eth0 to your liking using 'edit /env/network/eth0', do a 'saveenv' to safe your settings.
+Test your network with:
+
+cp /mnt/tftp/barebox.bin /barebox.bin
+
+If that works you can do:
+
+erase /dev/nand0.barebox.bb
+cp /barebox.bin /dev/nand0.barebox.bb
+
+(Note: you have to use barebox-flash-image as generated by the compilation, not the imx-image you generated for USB boot)
+
+That should be it. After a reset your board should come up with barebox.
+
+Sascha
+
 -- 
-1.8.4.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
