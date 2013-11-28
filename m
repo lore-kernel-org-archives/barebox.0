@@ -1,23 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22a.google.com ([2a00:1450:4013:c01::22a])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vlw3C-0003TO-Oz
- for barebox@lists.infradead.org; Thu, 28 Nov 2013 07:30:15 +0000
-Received: by mail-ea0-f170.google.com with SMTP id k10so5450775eaj.29
- for <barebox@lists.infradead.org>; Wed, 27 Nov 2013 23:29:50 -0800 (PST)
-Date: Thu, 28 Nov 2013 08:37:41 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131128073740.GA997@x61s.campuswlan.hs-rm.de>
-References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
- <20131127130236.GX24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D34677B@AUTOSERVER1.auto.local>
- <20131127211531.49e08d7f@e6520eb>
- <20131127205422.GY24559@pengutronix.de>
- <20131128041646.GA317@omega>
- <20131128072013.GA24559@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20131128072013.GA24559@pengutronix.de>
+Received: from 9.mo5.mail-out.ovh.net ([178.32.96.204]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vm2X3-0004Rx-Tj
+ for barebox@lists.infradead.org; Thu, 28 Nov 2013 14:25:31 +0000
+Received: from mail189.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 0D9B1FF8551
+ for <barebox@lists.infradead.org>; Thu, 28 Nov 2013 15:16:55 +0100 (CET)
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Date: Thu, 28 Nov 2013 15:17:38 +0100
+Message-Id: <1385648258-24295-1-git-send-email-plagnioj@jcrosoft.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,34 +18,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox on Karo TX25
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 1/1] vexpress: fix smc911x in defconfig
+To: barebox@lists.infradead.org
 
-T24gVGh1LCBOb3YgMjgsIDIwMTMgYXQgMDg6MjA6MTRBTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdy
-b3RlOgo+IE9uIFRodSwgTm92IDI4LCAyMDEzIGF0IDA1OjE2OjQ2QU0gKzAxMDAsIEFsZXhhbmRl
-ciBBcmluZyB3cm90ZToKPiA+IEhpIFNhc2NoYSwKPiA+IAo+ID4gT24gV2VkLCBOb3YgMjcsIDIw
-MTMgYXQgMDk6NTQ6MjJQTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdyb3RlOgo+ID4gPiBPbiBXZWQs
-IE5vdiAyNywgMjAxMyBhdCAwOToxNTozMVBNICswMTAwLCBFcmljIELDqW5hcmQgd3JvdGU6Cj4g
-PiA+ID4gSGkgSm9obiwKPiA+ID4gPiAKPiA+ID4gPiBMZSBXZWQsIDI3IE5vdiAyMDEzIDE5OjQ1
-OjA5ICswMDAwLAo+ID4gPiA+IEpvaG4gUGFya2VyIDxKb2huLlBhcmtlckBsdWN5YXV0b21hdGlv
-bi5jby51az4gYSDDqWNyaXQgOgo+ID4gPiA+IAo+ID4gPiA+ID4gT2gsIGFuZCBqdXN0IG5vdGlj
-ZXMgdGhhdCBhZnRlciBhIGZldyBtb21lbnRzIGJhcmVib3ggaGFuZ3MsIG5vIGxvbmdlciByZXNw
-b25kaW5nIHRvIGlucHV0ISEKPiA+ID4gPiA+IAo+ID4gPiA+ID4gQW55IGlkZWFzPwo+ID4gPiA+
-ID4gCj4gPiA+ID4gSUlSQyB3YXRjaGRvZyBpcyBlbmFibGVkIHdoZW4geW91IGFyZSB1c2luZyB0
-aGUgc2VyaWFsIG9yIFVTQiBib290Lgo+ID4gPiAKPiA+ID4gSW4gdGhpcyBjYXNlIGl0IHNob3Vs
-ZCBiZSBwb3NzaWJsZSB0byBlbmFibGUgdGhlIHdhdGNoZG9nIGNvbW1hbmQKPiA+ID4gYW5kIHRy
-aWdnZXIgaXQgcmVndWxhcmx5IHRvIGtlZXAgdGhlIGJvYXJkIGFsaXZlLiBBRkFJSyB0aGUgd2F0
-Y2hkb2cKPiA+IAo+ID4gaG93IHdvdWxkIHlvdSBkbyB0aGF0IGluIGJhcmVib3g/IFdlIGRvbid0
-IGhhdmUgaW50ZXJydXB0cy9wYXJhbGxlbAo+ID4gdGhpbmdzLiBJIG1lYW4gd2hlcmUgZG8geW91
-IHdhbnQgdG8gdHJpZ2dlciB0aGUgd2F0Y2hkb2cgY29tbWFuZCwgaW4KPiA+IHRoZSBtYWluIGxv
-b3AgKGZ1bmN0aW9uICJiYXJlYm94X21haW4iIGluIGNvbW1vbi9zdGFydHVwLmMpIG9mIGJhcmVi
-b3g/Cj4gCj4gSSBtZWFudCBmb3IgZGVidWdnaW5nIHdoZXRoZXIgaXQncyByZWFsbHkgdGhlIHdh
-dGNoZG9nIHRoYXQgaGFuZ3MgdGhlCj4gYm9hcmQuCj4gCmFoLCBvay4gVGhhbmtzIFNhc2NoYS4K
-Ci0gQWxleAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+today we select smc91111
+
+to make the net work under qemu you will have to fix the lan9118 driver
+
+with this patch
+
+diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
+index 2315f99..a48c32d 100644
+--- a/hw/net/lan9118.c
++++ b/hw/net/lan9118.c
+@@ -1030,6 +1030,8 @@ static void lan9118_writel(void *opaque, hwaddr offset,
+         s->int_en = val & ~RESERVED_INT;
+         s->int_sts |= val & SW_INT;
+         break;
++    case CSR_BYTE_TEST:
++        break;
+     case CSR_FIFO_INT:
+         DPRINTF("FIFO INT levels %08x\n", val);
+         s->fifo_int = val;
+
+Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+---
+ arch/arm/configs/vexpress_ca9_defconfig | 2 +-
+ arch/arm/configs/vexpress_defconfig     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/configs/vexpress_ca9_defconfig b/arch/arm/configs/vexpress_ca9_defconfig
+index f16a8ca..e8cf703 100644
+--- a/arch/arm/configs/vexpress_ca9_defconfig
++++ b/arch/arm/configs/vexpress_ca9_defconfig
+@@ -50,7 +50,7 @@ CONFIG_NET_PING=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_SERIAL_AMBA_PL011=y
+-CONFIG_DRIVER_NET_SMC91111=y
++CONFIG_DRIVER_NET_SMC911X=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_AMD is not set
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+index e166078..dafaf18 100644
+--- a/arch/arm/configs/vexpress_defconfig
++++ b/arch/arm/configs/vexpress_defconfig
+@@ -49,7 +49,7 @@ CONFIG_NET_PING=y
+ CONFIG_NET_NETCONSOLE=y
+ CONFIG_NET_RESOLV=y
+ CONFIG_SERIAL_AMBA_PL011=y
+-CONFIG_DRIVER_NET_SMC91111=y
++CONFIG_DRIVER_NET_SMC911X=y
+ # CONFIG_SPI is not set
+ CONFIG_DRIVER_CFI=y
+ # CONFIG_DRIVER_CFI_AMD is not set
+-- 
+1.8.4.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
