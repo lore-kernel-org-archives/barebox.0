@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from post.merula.co.uk ([217.146.97.9])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VmLIK-0003qs-Ke
- for barebox@lists.infradead.org; Fri, 29 Nov 2013 10:27:33 +0000
+ id 1VmLWD-00049k-PQ
+ for barebox@lists.infradead.org; Fri, 29 Nov 2013 10:41:54 +0000
 From: John Parker <John.Parker@lucyautomation.co.uk>
-Date: Fri, 29 Nov 2013 10:27:04 +0000
-Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346805@AUTOSERVER1.auto.local>
+Date: Fri, 29 Nov 2013 10:41:30 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346808@AUTOSERVER1.auto.local>
 References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
  <20131127130236.GX24559@pengutronix.de>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
@@ -13,8 +13,7 @@ References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
  <20131128162219.GT32436@tarshish>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
- <20131129094623.GB24559@pengutronix.de>
-In-Reply-To: <20131129094623.GB24559@pengutronix.de>
+ <20131129094623.GB24559@pengutronix.de> 
 Content-Language: en-US
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -32,6 +31,21 @@ Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: RE: FW: Barebox on Karo TX25
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Fantastic! That works!
+
+Many thanks
+
+Regards
+
+John
+
+-----Original Message-----
+From: John Parker 
+Sent: 29 November 2013 10:27
+To: 'Sascha Hauer'
+Cc: Baruch Siach; barebox@lists.infradead.org
+Subject: RE: FW: Barebox on Karo TX25
 
 Thank you Sascha, I'll give that a go and report back
 
