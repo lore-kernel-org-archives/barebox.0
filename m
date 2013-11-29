@@ -1,21 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22f.google.com ([2a00:1450:400c:c00::22f])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vm6yS-0001Kv-AI
- for barebox@lists.infradead.org; Thu, 28 Nov 2013 19:10:05 +0000
-Received: by mail-wg0-f47.google.com with SMTP id n12so7328838wgh.2
- for <barebox@lists.infradead.org>; Thu, 28 Nov 2013 11:09:42 -0800 (PST)
-Date: Thu, 28 Nov 2013 20:02:05 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131128190204.GA8808@omega>
-References: <20131128180526.GA27628@ns203013.ovh.net>
- <1385662007-13057-1-git-send-email-plagnioj@jcrosoft.com>
- <1385662007-13057-2-git-send-email-plagnioj@jcrosoft.com>
- <20131128181908.GA8179@omega>
- <20131128190043.GB27628@ns203013.ovh.net>
+Received: from post.merula.co.uk ([217.146.97.9])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VmJFp-0001EL-Un
+ for barebox@lists.infradead.org; Fri, 29 Nov 2013 08:16:51 +0000
+From: John Parker <John.Parker@lucyautomation.co.uk>
+Date: Fri, 29 Nov 2013 08:16:21 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
+References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
+ <20131127130236.GX24559@pengutronix.de>
+ <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
+ <20131127210115.GZ24559@pengutronix.de>
+ <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
+ <20131128162219.GT32436@tarshish>
+In-Reply-To: <20131128162219.GT32436@tarshish>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20131128190043.GB27628@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,53 +27,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/6] ARM: introduce machine description
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: RE: FW: Barebox on Karo TX25
+To: Baruch Siach <baruch@tkos.co.il>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Thu, Nov 28, 2013 at 08:00:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 19:19 Thu 28 Nov     , Alexander Aring wrote:
-> > Hi,
-> > 
-> > there are only some little nitpicks... maybe not important.
-> > 
-> > On Thu, Nov 28, 2013 at 07:06:43PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > > This will allow to do not check in each board which machine we are running
-> > > from. This work on DT & non-DT board.
-> > > 
-> > > If only one board is enable autoselect it
-> > > 
-> > > Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-> > > ---
-> > >  arch/arm/cpu/Makefile              |   2 +-
-> > >  arch/arm/cpu/dtb.c                 |   8 +-
-> > >  arch/arm/cpu/machine.c             | 188 +++++++++++++++++++++++++++++++++++++
-> > >  arch/arm/include/asm/barebox-arm.h |   8 ++
-> > >  arch/arm/include/asm/mach/arch.h   |  68 ++++++++++++++
-> > >  arch/arm/lib/barebox.lds.S         |   6 ++
-> > >  6 files changed, 277 insertions(+), 3 deletions(-)
-> > >  create mode 100644 arch/arm/cpu/machine.c
-> > >  create mode 100644 arch/arm/include/asm/mach/arch.h
-> > > 
-> > > diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> > > index aba201b..78532da 100644
-> > ...
-> > > +
-> > > +int is_dt_compatible(const struct machine_desc *m, const char* dt_compat)
-> > > +{
-> > > +	const char *const *dtc = m->dt_compat;
-> > const char *const *dtc? Looks like c ninja coding style :-D.
-> > 
-> > I think you mean:
-> > 
-> > const char **dtc = ...
-> > 
-> 
-> no I mean this one both pointer are const It's very specific
-> 
-ah, I understand. Thanks I will remember it.
+Hi Baruch
 
-- Alex
+Thank you for this. I've now found this info in the reference manual - not under the watchdog section but elsewhere - under the boot modes.
+
+So now I can concentrate on why the zbarebox.bin wont run!
+
+Regards
+
+John
+
+
+
+
+-----Original Message-----
+From: Baruch Siach [mailto:baruch@tkos.co.il] 
+Sent: 28 November 2013 16:22
+To: John Parker
+Cc: Sascha Hauer; barebox@lists.infradead.org
+Subject: Re: FW: Barebox on Karo TX25
+
+Hi John,
+
+On Thu, Nov 28, 2013 at 04:13:34PM +0000, John Parker wrote:
+> I still have a problem with barebox freezing. 
+> 
+> I've tried various things as you have suggested, but have not got any further.
+> 
+> Issuing wd 100, followed by wd repeated every few seconds seems to 
+> keep the system alive so it looks like the watchdog is to blame.
+> 
+> According to the mx25 reference manual the watchdog is disabled until 
+> it is enabled by setting the WDE bit.
+> 
+> I can't find anything (yet) in the startup which enables the watchdog 
+> by default?
+> 
+> Does the flash header you sent me include anything which enables the 
+> watchdog?
+
+When the i.MX25 boots using the serial protocol boot mode (either UART or USB) the watchdog gets enabled automatically. You can't disable it.
+
+baruch
+
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
