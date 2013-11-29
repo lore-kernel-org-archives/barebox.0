@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VmKex-00035z-0G
- for barebox@lists.infradead.org; Fri, 29 Nov 2013 09:46:52 +0000
-Date: Fri, 29 Nov 2013 10:46:23 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131129094623.GB24559@pengutronix.de>
+Received: from post.merula.co.uk ([217.146.97.9])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VmLIK-0003qs-Ke
+ for barebox@lists.infradead.org; Fri, 29 Nov 2013 10:27:33 +0000
+From: John Parker <John.Parker@lucyautomation.co.uk>
+Date: Fri, 29 Nov 2013 10:27:04 +0000
+Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346805@AUTOSERVER1.auto.local>
 References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
  <20131127130236.GX24559@pengutronix.de>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
@@ -13,9 +13,10 @@ References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
  <20131128162219.GT32436@tarshish>
  <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
+ <20131129094623.GB24559@pengutronix.de>
+In-Reply-To: <20131129094623.GB24559@pengutronix.de>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,9 +29,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FW: Barebox on Karo TX25
-To: John Parker <John.Parker@lucyautomation.co.uk>
+Subject: RE: FW: Barebox on Karo TX25
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+Thank you Sascha, I'll give that a go and report back
+
+Regards
+
+John
+
+-----Original Message-----
+From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
+Sent: 29 November 2013 09:46
+To: John Parker
+Cc: Baruch Siach; barebox@lists.infradead.org
+Subject: Re: FW: Barebox on Karo TX25
 
 On Fri, Nov 29, 2013 at 08:16:21AM +0000, John Parker wrote:
 > Hi Baruch
@@ -53,9 +67,7 @@ Date:   Thu Jan 24 17:09:00 2013 +0100
     
     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Unfortunately I haven't figured out yet how to fix this. For now you could
-go back before this commit by checking out cf4271ee12f8ce61598a~1. This
-should work.
+Unfortunately I haven't figured out yet how to fix this. For now you could go back before this commit by checking out cf4271ee12f8ce61598a~1. This should work.
 
 Sascha
 
