@@ -1,21 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from post.merula.co.uk ([217.146.97.9])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VnPbk-0007CT-O0
- for barebox@lists.infradead.org; Mon, 02 Dec 2013 09:16:01 +0000
-From: John Parker <John.Parker@lucyautomation.co.uk>
-Date: Mon, 2 Dec 2013 09:13:31 +0000
-Message-ID: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346830@AUTOSERVER1.auto.local>
-References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
- <20131127130236.GX24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
- <20131127210115.GZ24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
- <20131128162219.GT32436@tarshish>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
- <20131129094623.GB24559@pengutronix.de>  
-Content-Language: en-US
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VnPee-0007J0-25
+ for barebox@lists.infradead.org; Mon, 02 Dec 2013 09:19:00 +0000
+Message-ID: <1385975637.4086.0.camel@weser.hi.pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 02 Dec 2013 10:13:57 +0100
+In-Reply-To: <1385753667.115679915@f393.i.mail.ru>
+References: <1385753349-29390-1-git-send-email-l.stach@pengutronix.de>
+ <1385753667.115679915@f393.i.mail.ru>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,85 +22,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: FW: Barebox on Karo TX25
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: i.MX6: add initial support for SolidRun Cubox-i
+ Carrier-1
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Hi again
-
-So now my problem is that I really could do with the LED and UBIFS stuff that happened since February.
-
-Should I try to fix mx25 in the latest code, or undo the problematic commit?
-
-Regards
-
-John
-
------Original Message-----
-From: John Parker 
-Sent: 29 November 2013 10:42
-To: 'Sascha Hauer'
-Cc: 'Baruch Siach'; 'barebox@lists.infradead.org'
-Subject: RE: FW: Barebox on Karo TX25
-
-Fantastic! That works!
-
-Many thanks
-
-Regards
-
-John
-
------Original Message-----
-From: John Parker 
-Sent: 29 November 2013 10:27
-To: 'Sascha Hauer'
-Cc: Baruch Siach; barebox@lists.infradead.org
-Subject: RE: FW: Barebox on Karo TX25
-
-Thank you Sascha, I'll give that a go and report back
-
-Regards
-
-John
-
------Original Message-----
-From: Sascha Hauer [mailto:s.hauer@pengutronix.de] 
-Sent: 29 November 2013 09:46
-To: John Parker
-Cc: Baruch Siach; barebox@lists.infradead.org
-Subject: Re: FW: Barebox on Karo TX25
-
-On Fri, Nov 29, 2013 at 08:16:21AM +0000, John Parker wrote:
-> Hi Baruch
+Am Freitag, den 29.11.2013, 23:34 +0400 schrieb Alexander Shiyan:
+> > Needs some more work for things like ethernet, right now only
+> > MMC and USB are tested.
+> ...
+> > diff --git a/arch/arm/boards/solidrun-carrier-1/board.c b/arch/arm/boards/solidrun-carrier-1/board.c
+> ...
+>  +	devfs_add_partition(bootsource_name, 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, barebox_name);
+> > +	devfs_add_partition(bootsource_name, SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, default_environment_name);
+> > +	default_environment_path = "/dev/mmc1.bareboxenv";
 > 
-> Thank you for this. I've now found this info in the reference manual - not under the watchdog section but elsewhere - under the boot modes.
+> Why partitions cannot be moved into dts?
 > 
-> So now I can concentrate on why the zbarebox.bin wont run!
+No reason really, except me not thinking about it. Will fix in v2.
 
-Sorry, John. I can confirm the startup is broken since:
-
-commit cf4271ee12f8ce61598a327a72026226441dca72
-Author: Sascha Hauer <s.hauer@pengutronix.de>
-Date:   Thu Jan 24 17:09:00 2013 +0100
-
-    ARM i.MX: prepare external nand boot for SoC specific entry
-    
-    i.MX will get SoC specific entry points for barebox. To find the
-    correct one we have to call these from the SoC specific
-    imx*_barebox_boot_nand_external functions.
-    
-    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Unfortunately I haven't figured out yet how to fix this. For now you could go back before this commit by checking out cf4271ee12f8ce61598a~1. This should work.
-
-Sascha
+Thanks,
+Lucas
 
 -- 
-Pengutronix e.K.                           |                             |
+Pengutronix e.K.                           | Lucas Stach                 |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 _______________________________________________
 barebox mailing list
