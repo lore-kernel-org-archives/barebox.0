@@ -1,23 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VnmGC-0005fQ-JU
- for barebox@lists.infradead.org; Tue, 03 Dec 2013 09:27:17 +0000
-Date: Tue, 3 Dec 2013 10:26:54 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131203092654.GH24559@pengutronix.de>
-References: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346735@AUTOSERVER1.auto.local>
- <20131127130236.GX24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346765@AUTOSERVER1.auto.local>
- <20131127210115.GZ24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467EB@AUTOSERVER1.auto.local>
- <20131128162219.GT32436@tarshish>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D3467F8@AUTOSERVER1.auto.local>
- <20131129094623.GB24559@pengutronix.de>
- <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346830@AUTOSERVER1.auto.local>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <EAF1F21DA385DA4797F21C5DCAEF6BAC467D346830@AUTOSERVER1.auto.local>
+ id 1Vnn45-0007Nj-GK
+ for barebox@lists.infradead.org; Tue, 03 Dec 2013 10:18:50 +0000
+Received: by mail-la0-f46.google.com with SMTP id eh20so8935926lab.33
+ for <barebox@lists.infradead.org>; Tue, 03 Dec 2013 02:18:26 -0800 (PST)
+Date: Tue, 3 Dec 2013 14:25:46 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20131203142546.5bd4225f703a8a0dcca3f47d@gmail.com>
+In-Reply-To: <1386004666-8305-1-git-send-email-u74147@gmail.com>
+References: <1386004666-8305-1-git-send-email-u74147@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,76 +19,125 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: FW: Barebox on Karo TX25
-To: John Parker <John.Parker@lucyautomation.co.uk>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] make the code simpler
+To: u74147@gmail.com
+Cc: barebox@lists.infradead.org
 
-BTW Please don't top-post.
+On Mon,  2 Dec 2013 09:17:46 -0800
+u74147@gmail.com wrote:
 
-On Mon, Dec 02, 2013 at 09:13:31AM +0000, John Parker wrote:
-> Hi again
-> 
-> So now my problem is that I really could do with the LED and UBIFS stuff that happened since February.
-> 
-> Should I try to fix mx25 in the latest code, or undo the problematic commit?
+There are some issues on your patch:
 
-Well preferably you should fix the latest code and send a patch to make
-it work again ;) However, that could become tricky. For doing so the
-patch to enable the debug UART early may become useful. With this you
-can use putc_ll and puthex_ll in early code.
+1. the "make the code simpler" comment is not informative.
 
-I did some investigation. What happens here is really strange. First I
-added a missing instruction cache invalidation. That alone doesn't fix
-the problem. Inserting a nop fixes booting for me, see the attached
-patch. If I move the nop up in the code it still works. If I move it
-down, then the board does not work. I have no idea what's happening here
-:(
+Could you add the words "MIPS", "start.S", "ADR macro" etc?
 
-Sascha
+2. if you drop the ADR macro then you should drop Shinya Kuribayashi's
+copyright too as it's him who invented this macro.
+
+3. your patch contains some formatting errors.
+
+TIP: use ./scripts/checkpatch.pl
+
+4. as we have duplicated ADR macro definition in pbl =
+
+you can make start.S' code simpler just by
+* including arch/mips/include/asm/pbl_macros.h into start.S;
+* dropping ADR macro definition in start.S.
+
+> From: Du Huanpeng <u74147@gmail.com>
+> =
+
+> =
+
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+> ---
+>  arch/mips/boot/start.S |   26 +++-----------------------
+>  1 file changed, 3 insertions(+), 23 deletions(-)
+> =
+
+> diff --git a/arch/mips/boot/start.S b/arch/mips/boot/start.S
+> index 7e2ae5e..474407d 100644
+> --- a/arch/mips/boot/start.S
+> +++ b/arch/mips/boot/start.S
+> @@ -25,26 +25,6 @@
+>  #include <generated/compile.h>
+>  #include <generated/utsrelease.h>
+>  =
+
+> -	/*
+> -	 * ADR macro instruction (inspired by ARM)
+> -	 *
+> -	 * ARM architecture doesn't have PC-relative jump instruction
+> -	 * like MIPS' B/BAL insns.  When ARM makes PC-relative jumps,
+> -	 * it uses ADR insn.  ADR is used to get a destination address
+> -	 * of 'label' against current PC.  With this, ARM can safely
+> -	 * make PC-relative jumps.
+> -	 */
+> -	.macro	ADR rd label temp
+> -	.set	push
+> -	.set	noreorder
+> -	move	\temp, ra			# preserve ra beforehand
+> -	bal	_pc
+> -	 nop
+> -_pc:	addiu	\rd, ra, \label - _pc		# label is assumed to be
+> -	move	ra, \temp			# within pc +/- 32KB
+> -	.set	pop
+> -	.endm
+> -
+>  	.set noreorder
+>  	.text
+>  	.section ".text_bare_init"
+> @@ -52,8 +32,9 @@ _pc:	addiu	\rd, ra, \label - _pc		# label is assumed to=
+ be
+>  =
+
+>  EXPORT(_start)
+>  =
+
+> -	b	__start
+> +	bal	__start
+>  	 nop
+> +_ra: =
+
+>  =
+
+>  	.org	0x10
+>  	.ascii	"barebox " UTS_RELEASE " " UTS_VERSION
+> @@ -72,8 +53,7 @@ __start:
+>  	mtc0	k0, CP0_STATUS
+>  =
+
+>  	/* copy barebox to link location */
+> -	ADR	a0, _start, t1	/* a0 <- pc-relative position of _start */
+> -
+> +	addiu	a0, ra, (_start - _ra)	/*a0 <- pc-relative position of _start  */
+>  	la	a1, _start	/* link (RAM) _start address */
+>  =
+
+>  	beq	a0, a1, stack_setup
+> -- =
+
+> 1.7.9.5
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 
-From 1bf9ced65ffcfc452957a68060a0e3f56ef3f023 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 3 Dec 2013 10:22:07 +0100
-Subject: [PATCH] ARM: tx25: Make it boot by inserting a nop
+-- =
 
-SIGH!
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/karo-tx25/lowlevel.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm/boards/karo-tx25/lowlevel.c b/arch/arm/boards/karo-tx25/lowlevel.c
-index d010043..cf6295b 100644
---- a/arch/arm/boards/karo-tx25/lowlevel.c
-+++ b/arch/arm/boards/karo-tx25/lowlevel.c
-@@ -121,6 +121,8 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 	/* set to 3.3v SDRAM */
- 	writel(0x800, MX25_IOMUXC_BASE_ADDR + 0x454);
- 
-+	asm volatile ("nop;"::);
-+
- 	writel(ESDMISC_RST, MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC);
- 
- 	while (!(readl(MX25_ESDCTL_BASE_ADDR + IMX_ESDMISC) & (1 << 31)));
--- 
-1.8.4.3
-
--- 
-1.8.4.3
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
