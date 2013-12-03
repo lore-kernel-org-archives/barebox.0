@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VnnLX-00080n-Ht
- for barebox@lists.infradead.org; Tue, 03 Dec 2013 10:36:52 +0000
-Date: Tue, 3 Dec 2013 11:36:29 +0100
+ id 1Vno6j-0000gZ-Lm
+ for barebox@lists.infradead.org; Tue, 03 Dec 2013 11:25:38 +0000
+Date: Tue, 3 Dec 2013 12:25:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131203103629.GJ24559@pengutronix.de>
-References: <1386008480-10368-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20131203112515.GK24559@pengutronix.de>
+References: <CANvTkNaK9f0dviyowuSspx2yuKQem3tvwMo_2ig0rZ6s0Oq0Lw@mail.gmail.com>
+ <CANvTkNaxQS489FzWdyozrKnXHeACd5PnCB05GVgMqm82-jBGPg@mail.gmail.com>
+ <20131202091320.GF24559@pengutronix.de>
+ <CANvTkNa710tfGW0=xeLwg-Qrb3YccoKui7d6zWMnio5e4CSZGg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386008480-10368-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <CANvTkNa710tfGW0=xeLwg-Qrb3YccoKui7d6zWMnio5e4CSZGg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,187 +25,109 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 1/2] net/phy: add driver for atheros PHYs
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [Makefile bug] make barebox.s : dead loop
+To: Kevin Du Huanpeng <u74147@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 02, 2013 at 07:21:19PM +0100, Lucas Stach wrote:
-> Based on Linux kernel 3.12 driver.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Hi Kevin,
 
-Fixed some whitespaces and applied both
+On Mon, Dec 02, 2013 at 08:27:39PM +0800, Kevin Du Huanpeng wrote:
+> 
+>   LD      arch/x86/boot/built-in.o
+>   GEN     .version
+>   CHK     include/generated/compile.h
+>   UPD     include/generated/compile.h
+>   CC      common/version.o
+>   LD      common/built-in.o
+>   LD      barebox
+> ld: section .eh_frame loaded at [000000000001605c,000000000001f01b]
+> overlaps section .barebox_initcalls loaded at
+> [000000000001605c,00000000000160b7]
+> make: *** [barebox] Error 1
+> dev@bogon:~/wr720n/bug.dis/x86$
+
+Same here. Could you try the following patch? It resolves this for me
+and the resulting image works with qemu.
 
 Sascha
 
-> ---
->  drivers/net/phy/Kconfig  |   5 ++
->  drivers/net/phy/Makefile |   1 +
->  drivers/net/phy/at803x.c | 121 +++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 127 insertions(+)
->  create mode 100644 drivers/net/phy/at803x.c
-> 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index b6ac9ee75076..83966f997f27 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -8,6 +8,11 @@ if PHYLIB
->  
->  comment "MII PHY device drivers"
->  
-> +config AT803X_PHY
-> +	bool "Driver for Atheros AT803X PHYs"
-> +	---help---
-> +	  Currently supports the AT8030, AT8031 and AT8035 PHYs.
-> +
->  config MICREL_PHY
->  	bool "Driver for Micrel PHYs"
->  	---help---
-> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-> index 5f8191d8a7f5..47e2b423319f 100644
-> --- a/drivers/net/phy/Makefile
-> +++ b/drivers/net/phy/Makefile
-> @@ -1,3 +1,4 @@
->  obj-y += phy.o mdio_bus.o
-> +obj-$(CONFIG_AT803X_PHY)	+= at803x.o
->  obj-$(CONFIG_MICREL_PHY)	+= micrel.o
->  obj-$(CONFIG_SMSC_PHY)		+= smsc.o
-> diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-> new file mode 100644
-> index 000000000000..a244c87cbafa
-> --- /dev/null
-> +++ b/drivers/net/phy/at803x.c
-> @@ -0,0 +1,121 @@
-> +/*
-> + * drivers/net/phy/at803x.c
-> + *
-> + * Driver for Atheros 803x PHY
-> + *
-> + * Author: Matus Ujhelyi <ujhelyi.m@gmail.com>
-> + *
-> + * This program is free software; you can redistribute  it and/or modify it
-> + * under  the terms of  the GNU General  Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <linux/phy.h>
-> +#include <linux/string.h>
-> +
-> +#define AT803X_INTR_ENABLE			0x12
-> +#define AT803X_INTR_STATUS			0x13
-> +#define AT803X_WOL_ENABLE			0x01
-> +#define AT803X_DEVICE_ADDR			0x03
-> +#define AT803X_LOC_MAC_ADDR_0_15_OFFSET		0x804C
-> +#define AT803X_LOC_MAC_ADDR_16_31_OFFSET	0x804B
-> +#define AT803X_LOC_MAC_ADDR_32_47_OFFSET	0x804A
-> +#define AT803X_MMD_ACCESS_CONTROL		0x0D
-> +#define AT803X_MMD_ACCESS_CONTROL_DATA		0x0E
-> +#define AT803X_FUNC_DATA			0x4003
-> +#define AT803X_DEBUG_ADDR			0x1D
-> +#define AT803X_DEBUG_DATA			0x1E
-> +#define AT803X_DEBUG_SYSTEM_MODE_CTRL		0x05
-> +#define AT803X_DEBUG_RGMII_TX_CLK_DLY		(1 << 8)
-> +
-> +static int at803x_config_init(struct phy_device *phydev)
-> +{
-> +	int val;
-> +	int ret;
-> +	u32 features;
-> +
-> +	features = SUPPORTED_TP | SUPPORTED_MII | SUPPORTED_AUI |
-> +		   SUPPORTED_FIBRE | SUPPORTED_BNC;
-> +
-> +	val = phy_read(phydev, MII_BMSR);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	if (val & BMSR_ANEGCAPABLE)
-> +		features |= SUPPORTED_Autoneg;
-> +	if (val & BMSR_100FULL)
-> +		features |= SUPPORTED_100baseT_Full;
-> +	if (val & BMSR_100HALF)
-> +		features |= SUPPORTED_100baseT_Half;
-> +	if (val & BMSR_10FULL)
-> +		features |= SUPPORTED_10baseT_Full;
-> +	if (val & BMSR_10HALF)
-> +		features |= SUPPORTED_10baseT_Half;
-> +
-> +	if (val & BMSR_ESTATEN) {
-> +		val = phy_read(phydev, MII_ESTATUS);
-> +		if (val < 0)
-> +			return val;
-> +
-> +		if (val & ESTATUS_1000_TFULL)
-> +			features |= SUPPORTED_1000baseT_Full;
-> +		if (val & ESTATUS_1000_THALF)
-> +			features |= SUPPORTED_1000baseT_Half;
-> +	}
-> +
-> +	phydev->supported = features;
-> +	phydev->advertising = features;
-> +
-> +	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
-> +		ret = phy_write(phydev, AT803X_DEBUG_ADDR,
-> +				AT803X_DEBUG_SYSTEM_MODE_CTRL);
-> +		if (ret)
-> +			return ret;
-> +		ret = phy_write(phydev, AT803X_DEBUG_DATA,
-> +				AT803X_DEBUG_RGMII_TX_CLK_DLY);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static struct phy_driver at803x_driver[] = {
-> +{
-> +	/* ATHEROS 8035 */
-> +	.phy_id		= 0x004dd072,
-> +	.phy_id_mask	= 0xffffffef,
-> +	.drv.name	= "Atheros 8035 ethernet",
-> +	.config_init	= at803x_config_init,
-> +	.features	= PHY_GBIT_FEATURES,
-> +	.config_aneg	= &genphy_config_aneg,
-> +	.read_status	= &genphy_read_status,
-> +}, {
-> +	/* ATHEROS 8030 */
-> +	.phy_id		= 0x004dd076,
-> +	.phy_id_mask	= 0xffffffef,
-> +	.drv.name	= "Atheros 8030 ethernet",
-> +	.config_init	= at803x_config_init,
-> +	.features	= PHY_GBIT_FEATURES,
-> +	.config_aneg	= &genphy_config_aneg,
-> +	.read_status	= &genphy_read_status,
-> +}, {
-> +	/* ATHEROS 8031 */
-> +	.phy_id		= 0x004dd074,
-> +	.phy_id_mask	= 0xffffffef,
-> +	.drv.name	= "Atheros 8031 ethernet",
-> +	.config_init	= at803x_config_init,
-> +	.features	= PHY_GBIT_FEATURES,
-> +	.config_aneg	= &genphy_config_aneg,
-> +	.read_status	= &genphy_read_status,
-> +} };
-> +
-> +static int atheros_phy_init(void)
-> +{
-> +	return phy_drivers_register(at803x_driver,
-> +				    ARRAY_SIZE(at803x_driver));
-> +}
-> +fs_initcall(atheros_phy_init);
-> -- 
-> 1.8.4.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+8<-------------------------------------------------------
+
+From 5be365b6b36372466f88815b97d38bc203c6e183 Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 3 Dec 2013 12:20:56 +0100
+Subject: [PATCH] x86: Fix linker script
+
+Do not load sections to specific addresses. This fixes linking which otherwise
+fails with newer toolchains with:
+
+/opt/OSELAS.Toolchain-2012.12.1/i586-unknown-linux-gnu/gcc-4.7.2-glibc-2.16.0-binutils-2.22-kernel-3.6-sanitized/bin/i586-unknown-linux-gnu-ld: section .eh_frame loaded at [0000000000015fb4,000000000001b0bf] overlaps section .barebox_initcalls loaded at [0000000000015fb4,000000000001600f]
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/x86/lib/barebox.lds.S | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
+index 05d0f77..83e991c 100644
+--- a/arch/x86/lib/barebox.lds.S
++++ b/arch/x86/lib/barebox.lds.S
+@@ -137,7 +137,7 @@ SECTIONS
+ #endif
+ 
+ 	/* the main barebox part (32 bit) */
+-	.text : AT ( LOADADDR(.bootstrapping) + SIZEOF(.bootstrapping) ) {
++	.text :  {
+ 		/* do not align here! It may fails with the LOADADDR! */
+ 		_stext = .;
+ 		_text = .;
+@@ -154,38 +154,38 @@ SECTIONS
+ 	BAREBOX_BARE_INIT_SIZE
+ 
+ 	_sdata = .;
+-	.data : AT ( LOADADDR(.text) + SIZEOF(.text) ) {
++	.data :  {
+ 		*(.data*)
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+-	.got : AT ( LOADADDR(.data) + SIZEOF (.data) ) {
++	.got :  {
+ 		*(.got*)
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+-	.barebox_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
++	.barebox_cmd : {
+ 		__barebox_cmd_start = .;
+ 		BAREBOX_CMDS
+ 		__barebox_cmd_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+-	.barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
++	.barebox_magicvars : {
+ 		__barebox_magicvar_start = .;
+ 		BAREBOX_MAGICVARS
+ 		__barebox_magicvar_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+-	.barebox_initcalls : AT ( LOADADDR(.barebox_magicvars) + SIZEOF (.barebox_magicvars) ) {
++	.barebox_initcalls : {
+ 		__barebox_initcalls_start = .;
+ 		INITCALLS
+ 		__barebox_initcalls_end = .;
+ 		. = ALIGN(4);
+ 	} > barebox
+ 
+-	.__usymtab : AT ( LOADADDR(.barebox_initcalls) + SIZEOF (.barebox_initcalls) ) {
++	.__usymtab : {
+ 		__usymtab_start = .;
+ 		BAREBOX_SYMS
+ 		__usymtab_end = .;
+-- 
+1.8.4.3
 
 -- 
 Pengutronix e.K.                           |                             |
