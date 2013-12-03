@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vnw2p-00074r-Ux
- for barebox@lists.infradead.org; Tue, 03 Dec 2013 19:54:10 +0000
+ id 1Vnw1y-0006zm-F0
+ for barebox@lists.infradead.org; Tue, 03 Dec 2013 19:53:18 +0000
 Received: from tellur.localdomain (p54831992.dip0.t-ipconnect.de
- [84.131.25.146]) by lynxeye.de (Postfix) with ESMTPA id 5DE5A18B426A
- for <barebox@lists.infradead.org>; Tue,  3 Dec 2013 20:52:22 +0100 (CET)
+ [84.131.25.146]) by lynxeye.de (Postfix) with ESMTPA id 3D93518B4266
+ for <barebox@lists.infradead.org>; Tue,  3 Dec 2013 20:52:19 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Dec 2013 20:56:59 +0100
-Message-Id: <1386100622-8498-7-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
-References: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Dec 2013 20:56:53 +0100
+Message-Id: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +22,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/8] clk: tegra: add SDMMC clocks
+Subject: [PATCH 0/8] tegra-next
 To: barebox@lists.infradead.org
 
-Provide peripheral clocks for the SD controller.
+In an attempt to sneak those into -next before the .12 release,
+just a quick dump.
+For the first time barebox is now able to load and boot a
+Linux kernel from SDcard on Tegra. Makes it a lot more useful in
+the real world.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- drivers/clk/tegra/clk-tegra20.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+Lucas Stach (8):
+  tegra: fix fallout from relocatable code changes in PLLX init
+  tegra: speed up system bus
+  tegra: switch main CPU complex to PLLX early
+  gpio: tegra: remove leftover debug code
+  clk: tegra: add SDMMC clocks
+  tegra: add SDMMC controller driver
+  dts: tegra: add SDMMC nodes
+  dts: tegra: activate SDMMC on Colibri T20
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index b94b7bc..f68c811 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -295,6 +295,20 @@ static void tegra20_periph_init(void)
- 	clks[uarte] = tegra_clk_register_periph_nodiv("uarte", mux_pllpcm_clkm,
- 			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
- 			CRC_CLK_SOURCE_UARTE, uarte, TEGRA_PERIPH_ON_APB);
-+
-+	/* peripheral clocks with a divider */
-+	clks[sdmmc1] = tegra_clk_register_periph("sdmmc1", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC1, sdmmc1, 1);
-+	clks[sdmmc2] = tegra_clk_register_periph("sdmmc2", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC2, sdmmc2, 1);
-+	clks[sdmmc3] = tegra_clk_register_periph("sdmmc3", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC3, sdmmc3, 1);
-+	clks[sdmmc4] = tegra_clk_register_periph("sdmmc4", mux_pllpcm_clkm,
-+			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC4, sdmmc4, 1);
- }
- 
- static struct tegra_clk_init_table init_table[] = {
-@@ -310,6 +324,10 @@ static struct tegra_clk_init_table init_table[] = {
- 	{uartc,		pll_p,		0,		1},
- 	{uartd,		pll_p,		0,		1},
- 	{uarte,		pll_p,		0,		1},
-+	{sdmmc1,	pll_p,		48000000,	0},
-+	{sdmmc2,	pll_p,		48000000,	0},
-+	{sdmmc3,	pll_p,		48000000,	0},
-+	{sdmmc4,	pll_p,		48000000,	0},
- 	{clk_max,	clk_max,	0,		0}, /* sentinel */
- };
- 
+ arch/arm/dts/tegra20-colibri-iris.dts          |   5 +
+ arch/arm/dts/tegra20-colibri.dtsi              |   4 +
+ arch/arm/dts/tegra20.dtsi                      |  32 ++
+ arch/arm/mach-tegra/include/mach/tegra20-car.h |  44 +++
+ arch/arm/mach-tegra/tegra_avp_init.c           |   2 +
+ arch/arm/mach-tegra/tegra_maincomplex_init.c   |   9 +
+ drivers/clk/tegra/clk-tegra20.c                |  25 ++
+ drivers/gpio/gpio-tegra.c                      |   2 -
+ drivers/mci/Kconfig                            |   7 +
+ drivers/mci/Makefile                           |   1 +
+ drivers/mci/tegra-sdmmc.c                      | 465 +++++++++++++++++++++++++
+ 11 files changed, 594 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/mci/tegra-sdmmc.c
+
 -- 
 1.8.3.1
 
