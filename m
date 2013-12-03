@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vnw1y-0006zm-F0
- for barebox@lists.infradead.org; Tue, 03 Dec 2013 19:53:18 +0000
+ id 1Vnw1y-0006zn-D3
+ for barebox@lists.infradead.org; Tue, 03 Dec 2013 19:53:17 +0000
 Received: from tellur.localdomain (p54831992.dip0.t-ipconnect.de
- [84.131.25.146]) by lynxeye.de (Postfix) with ESMTPA id 3D93518B4266
+ [84.131.25.146]) by lynxeye.de (Postfix) with ESMTPA id A723E18B4268
  for <barebox@lists.infradead.org>; Tue,  3 Dec 2013 20:52:19 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Tue,  3 Dec 2013 20:56:53 +0100
-Message-Id: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
+Date: Tue,  3 Dec 2013 20:56:54 +0100
+Message-Id: <1386100622-8498-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
+References: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +24,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/8] tegra-next
+Subject: [PATCH] gpio: reduce noise when parsing DT
 To: barebox@lists.infradead.org
 
-In an attempt to sneak those into -next before the .12 release,
-just a quick dump.
-For the first time barebox is now able to load and boot a
-Linux kernel from SDcard on Tegra. Makes it a lot more useful in
-the real world.
+Some GPIOs are optional, so it might not be an error if we can not find
+a DT property. Do the same thing as the Linux kernel and only print a
+debug message not an error.
 
-Lucas Stach (8):
-  tegra: fix fallout from relocatable code changes in PLLX init
-  tegra: speed up system bus
-  tegra: switch main CPU complex to PLLX early
-  gpio: tegra: remove leftover debug code
-  clk: tegra: add SDMMC clocks
-  tegra: add SDMMC controller driver
-  dts: tegra: add SDMMC nodes
-  dts: tegra: activate SDMMC on Colibri T20
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/of/of_gpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/arm/dts/tegra20-colibri-iris.dts          |   5 +
- arch/arm/dts/tegra20-colibri.dtsi              |   4 +
- arch/arm/dts/tegra20.dtsi                      |  32 ++
- arch/arm/mach-tegra/include/mach/tegra20-car.h |  44 +++
- arch/arm/mach-tegra/tegra_avp_init.c           |   2 +
- arch/arm/mach-tegra/tegra_maincomplex_init.c   |   9 +
- drivers/clk/tegra/clk-tegra20.c                |  25 ++
- drivers/gpio/gpio-tegra.c                      |   2 -
- drivers/mci/Kconfig                            |   7 +
- drivers/mci/Makefile                           |   1 +
- drivers/mci/tegra-sdmmc.c                      | 465 +++++++++++++++++++++++++
- 11 files changed, 594 insertions(+), 2 deletions(-)
- create mode 100644 drivers/mci/tegra-sdmmc.c
-
+diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
+index 3afdf0d..1370d8f 100644
+--- a/drivers/of/of_gpio.c
++++ b/drivers/of/of_gpio.c
+@@ -25,7 +25,7 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
+ 	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
+ 					index, &out_args);
+ 	if (ret) {
+-		pr_err("%s: cannot parse %s property: %d\n",
++		pr_debug("%s: cannot parse %s property: %d\n",
+ 			__func__, propname, ret);
+ 		return ret;
+ 	}
 -- 
 1.8.3.1
 
