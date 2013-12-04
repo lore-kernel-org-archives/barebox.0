@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-vc0-f182.google.com ([209.85.220.182])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoBIO-0002Vk-6t
- for barebox@lists.infradead.org; Wed, 04 Dec 2013 12:11:13 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed,  4 Dec 2013 13:10:39 +0100
-Message-Id: <1386159040-22431-2-git-send-email-s.trumtrar@pengutronix.de>
-In-Reply-To: <1386159040-22431-1-git-send-email-s.trumtrar@pengutronix.de>
-References: <1386159040-22431-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1VoDGl-00058H-UH
+ for barebox@lists.infradead.org; Wed, 04 Dec 2013 14:17:40 +0000
+Received: by mail-vc0-f182.google.com with SMTP id lc6so11691402vcb.27
+ for <barebox@lists.infradead.org>; Wed, 04 Dec 2013 06:17:13 -0800 (PST)
+MIME-Version: 1.0
+In-Reply-To: <20131203112515.GK24559@pengutronix.de>
+References: <CANvTkNaK9f0dviyowuSspx2yuKQem3tvwMo_2ig0rZ6s0Oq0Lw@mail.gmail.com>
+ <CANvTkNaxQS489FzWdyozrKnXHeACd5PnCB05GVgMqm82-jBGPg@mail.gmail.com>
+ <20131202091320.GF24559@pengutronix.de>
+ <CANvTkNa710tfGW0=xeLwg-Qrb3YccoKui7d6zWMnio5e4CSZGg@mail.gmail.com>
+ <20131203112515.GK24559@pengutronix.de>
+Date: Wed, 4 Dec 2013 22:17:13 +0800
+Message-ID: <CANvTkNbJJPEhWdx+Pc1ufk+8rQc4Xzq5pBb02E3axtFLCRnhSA@mail.gmail.com>
+From: Kevin Du Huanpeng <u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,140 +23,156 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: socfgpa: update sequencer
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [Makefile bug] make barebox.s : dead loop
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Quartus II v13.1 generates updated sequencer.[ch] files.
-Integrate the changes into the current driver.
+Hi, I tested it. works.
+1. save the patch to file named x86.patch
+2. git apply x86.patch
+3. export ARCH=x86
+4. make generic_defconfig
+5. make
+[ no error]
+6. make barebox.s
+7. endless loop again.
+- - - - - -
+  CHK     include/generated/compile.h
+  CHK     include/generated/version.h
+  CHK     include/generated/utsrelease.h
+  CHK     include/generated/compile.h
+^Cmake[23]: *** [barebox.s] Interrupt
+make[22]: *** [barebox.s] Interrupt
+make[21]: *** [barebox.s] Interrupt
+make[20]: *** [barebox.s] Interrupt
+make[19]: *** [barebox.s] Interrupt
+make[18]: *** [barebox.s] Interrupt
+make[17]: *** [barebox.s] Interrupt
+make[16]: *** [barebox.s] Interrupt
+make[15]: *** [barebox.s] Interrupt
+make[14]: *** [barebox.s] Interrupt
+make[13]: *** [barebox.s] Interrupt
+make[12]: *** [barebox.s] Interrupt
+make[11]: *** [barebox.s] Interrupt
+make[10]: *** [barebox.s] Interrupt
+- - - -
+8. edit Makefile
+ifdef CONFIG_X86
+-barebox.S : barebox
++barebox.S barebox.s: barebox
+ifdef CONFIG_X86_HDBOOT
+9. [no error]
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- arch/arm/mach-socfpga/include/mach/sequencer.c | 59 ++++++++++++++++++--------
- 1 file changed, 41 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm/mach-socfpga/include/mach/sequencer.c b/arch/arm/mach-socfpga/include/mach/sequencer.c
-index 1124dee..fa955ce 100644
---- a/arch/arm/mach-socfpga/include/mach/sequencer.c
-+++ b/arch/arm/mach-socfpga/include/mach/sequencer.c
-@@ -632,6 +632,22 @@ static void scc_mgr_set_dm_in_delay(uint32_t write_group,
- 	WRITE_SCC_DM_IO_IN_DELAY(dm, delay);
- }
- 
-+static void scc_mgr_load_dqs_for_write_group (uint32_t write_group)
-+{
-+	uint32_t read_group;
-+
-+	/*
-+	 * Although OCT affects only write data, the OCT delay is controlled
-+	 * by the DQS logic block which is instantiated once per read group.
-+	 * For protocols where a write group consists of multiple read groups,
-+	 * the setting must be scanned multiple times.
-+	 */
-+	for (read_group = write_group * RW_MGR_NUM_DQS_PER_WRITE_GROUP;
-+		read_group < (write_group + 1) * RW_MGR_NUM_DQS_PER_WRITE_GROUP;
-+		++read_group)
-+		IOWR_32DIRECT(SCC_MGR_DQS_ENA, 0, read_group);
-+}
-+
- /*
-  * USER Zero all DQS config
-  * TODO: maybe rename to scc_mgr_zero_dqs_config (or something)
-@@ -741,14 +757,26 @@ static void scc_mgr_zero_group (uint32_t write_group, uint32_t test_begin,
- #if ARRIAV || CYCLONEV
- 		/* av/cv don't have out2 */
- 		scc_mgr_set_dqs_out1_delay(write_group, IO_DQS_OUT_RESERVE);
-+		scc_mgr_set_oct_out1_delay(write_group, IO_DQS_OUT_RESERVE);
-+		scc_mgr_load_dqs_for_write_group(write_group);
- #else
- 		scc_mgr_set_dqs_out1_delay(write_group, 0);
- 		scc_mgr_set_dqs_out2_delay(write_group, IO_DQS_OUT_RESERVE);
-+		scc_mgr_set_oct_out1_delay(write_group, 0);
-+		scc_mgr_set_oct_out2_delay(write_group, IO_DQS_OUT_RESERVE);
-+		scc_mgr_load_dqs_for_write_group(write_group);
- #endif
- 
- 		/* multicast to all DQS IO enables (only 1) */
- 		IOWR_32DIRECT(SCC_MGR_DQS_IO_ENA, 0, 0);
- 
-+#if USE_SHADOW_REGS
-+		/*
-+		 * in shadow-register mode, SCC_UPDATE is done on a per-group basis
-+		 * unless we explicitly ask for a multicast via the group counter
-+		 */
-+		IOWR_32DIRECT(SCC_MGR_UPD, 0, 0);
-+#endif
- 		/* hit update to zero everything */
- 		IOWR_32DIRECT(SCC_MGR_UPD, 0, 0);
- 	}
-@@ -761,23 +789,6 @@ static void scc_mgr_load_dqs (uint32_t dqs)
- 	IOWR_32DIRECT(SCC_MGR_DQS_ENA, 0, dqs);
- }
- 
--static void scc_mgr_load_dqs_for_write_group (uint32_t write_group)
--{
--	uint32_t read_group;
--
--	/*
--	 * Although OCT affects only write data, the OCT delay is controlled
--	 * by the DQS logic block which is instantiated once per read group.
--	 * For protocols where a write group consists of multiple read groups,
--	 * the setting must be scanned multiple times.
--	 */
--	for (read_group = write_group * RW_MGR_NUM_DQS_PER_WRITE_GROUP;
--		read_group < (write_group + 1) * RW_MGR_NUM_DQS_PER_WRITE_GROUP;
--		++read_group)
--		IOWR_32DIRECT(SCC_MGR_DQS_ENA, 0, read_group);
--}
--
--
- /* load up dqs io config settings */
- 
- static void scc_mgr_load_dqs_io (void)
-@@ -3807,6 +3818,14 @@ static void mem_config (void)
- 	wlat += IORD_32DIRECT (DATA_MGR_MEM_T_ADD, 0);
- 	/* WL for hard phy does not include additive latency */
- 
-+	/*
-+	 * YYONG: add addtional write latency to offset the address/command extra clock cycle
-+	 * YYONG: We change the AC mux setting causing AC to be delayed by one mem clock cycle
-+	 * YYONG: only do this for DDR3
-+	 */
-+#if DDR3 || DDR2
-+	wlat += 1;
-+#endif
- 	rlat = IORD_32DIRECT (MEM_T_RL_ADD, 0);
- 
- 	if (QUARTER_RATE_MODE) {
-@@ -4129,7 +4148,11 @@ static void initialize_hps_phy(void)
- 	count in 16 LSB. */
- 
- 	reg = 0;
-+#if DDR3 || DDR2
-+	reg |= SDR_CTRLGRP_PHYCTRL_PHYCTRL_0_ACDELAYEN_SET(2);
-+#else
- 	reg |= SDR_CTRLGRP_PHYCTRL_PHYCTRL_0_ACDELAYEN_SET(1);
-+#endif
- 	reg |= SDR_CTRLGRP_PHYCTRL_PHYCTRL_0_DQDELAYEN_SET(1);
- 	reg |= SDR_CTRLGRP_PHYCTRL_PHYCTRL_0_DQSDELAYEN_SET(1);
- 	reg |= SDR_CTRLGRP_PHYCTRL_PHYCTRL_0_DQSLOGICDELAYEN_SET(1);
-@@ -4195,7 +4218,7 @@ static void initialize_tracking(void)
- 	concatenated_delays = concatenated_delays ^ 14;
- 		/* trcd, worst case */
- 	concatenated_delays = concatenated_delays << 8;
--	concatenated_delays = concatenated_delays ^ 5;
-+	concatenated_delays = concatenated_delays ^ 10;
- 		/* vfifo wait */
- 	concatenated_delays = concatenated_delays << 8;
- 	concatenated_delays = concatenated_delays ^ 4;
--- 
-1.8.4.3
-
+2013/12/3 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Kevin,
+>
+> On Mon, Dec 02, 2013 at 08:27:39PM +0800, Kevin Du Huanpeng wrote:
+>>
+>>   LD      arch/x86/boot/built-in.o
+>>   GEN     .version
+>>   CHK     include/generated/compile.h
+>>   UPD     include/generated/compile.h
+>>   CC      common/version.o
+>>   LD      common/built-in.o
+>>   LD      barebox
+>> ld: section .eh_frame loaded at [000000000001605c,000000000001f01b]
+>> overlaps section .barebox_initcalls loaded at
+>> [000000000001605c,00000000000160b7]
+>> make: *** [barebox] Error 1
+>> dev@bogon:~/wr720n/bug.dis/x86$
+>
+> Same here. Could you try the following patch? It resolves this for me
+> and the resulting image works with qemu.
+>
+> Sascha
+>
+> 8<-------------------------------------------------------
+>
+> From 5be365b6b36372466f88815b97d38bc203c6e183 Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Tue, 3 Dec 2013 12:20:56 +0100
+> Subject: [PATCH] x86: Fix linker script
+>
+> Do not load sections to specific addresses. This fixes linking which otherwise
+> fails with newer toolchains with:
+>
+> /opt/OSELAS.Toolchain-2012.12.1/i586-unknown-linux-gnu/gcc-4.7.2-glibc-2.16.0-binutils-2.22-kernel-3.6-sanitized/bin/i586-unknown-linux-gnu-ld: section .eh_frame loaded at [0000000000015fb4,000000000001b0bf] overlaps section .barebox_initcalls loaded at [0000000000015fb4,000000000001600f]
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/x86/lib/barebox.lds.S | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/x86/lib/barebox.lds.S b/arch/x86/lib/barebox.lds.S
+> index 05d0f77..83e991c 100644
+> --- a/arch/x86/lib/barebox.lds.S
+> +++ b/arch/x86/lib/barebox.lds.S
+> @@ -137,7 +137,7 @@ SECTIONS
+>  #endif
+>
+>         /* the main barebox part (32 bit) */
+> -       .text : AT ( LOADADDR(.bootstrapping) + SIZEOF(.bootstrapping) ) {
+> +       .text :  {
+>                 /* do not align here! It may fails with the LOADADDR! */
+>                 _stext = .;
+>                 _text = .;
+> @@ -154,38 +154,38 @@ SECTIONS
+>         BAREBOX_BARE_INIT_SIZE
+>
+>         _sdata = .;
+> -       .data : AT ( LOADADDR(.text) + SIZEOF(.text) ) {
+> +       .data :  {
+>                 *(.data*)
+>                 . = ALIGN(4);
+>         } > barebox
+>
+> -       .got : AT ( LOADADDR(.data) + SIZEOF (.data) ) {
+> +       .got :  {
+>                 *(.got*)
+>                 . = ALIGN(4);
+>         } > barebox
+>
+> -       .barebox_cmd : AT ( LOADADDR(.got) + SIZEOF (.got) ) {
+> +       .barebox_cmd : {
+>                 __barebox_cmd_start = .;
+>                 BAREBOX_CMDS
+>                 __barebox_cmd_end = .;
+>                 . = ALIGN(4);
+>         } > barebox
+>
+> -       .barebox_magicvars : AT ( LOADADDR(.barebox_cmd) + SIZEOF (.barebox_cmd) ) {
+> +       .barebox_magicvars : {
+>                 __barebox_magicvar_start = .;
+>                 BAREBOX_MAGICVARS
+>                 __barebox_magicvar_end = .;
+>                 . = ALIGN(4);
+>         } > barebox
+>
+> -       .barebox_initcalls : AT ( LOADADDR(.barebox_magicvars) + SIZEOF (.barebox_magicvars) ) {
+> +       .barebox_initcalls : {
+>                 __barebox_initcalls_start = .;
+>                 INITCALLS
+>                 __barebox_initcalls_end = .;
+>                 . = ALIGN(4);
+>         } > barebox
+>
+> -       .__usymtab : AT ( LOADADDR(.barebox_initcalls) + SIZEOF (.barebox_initcalls) ) {
+> +       .__usymtab : {
+>                 __usymtab_start = .;
+>                 BAREBOX_SYMS
+>                 __usymtab_end = .;
+> --
+> 1.8.4.3
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
