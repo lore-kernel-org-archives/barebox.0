@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoIbo-0007Q9-4z
- for barebox@lists.infradead.org; Wed, 04 Dec 2013 19:59:45 +0000
-Received: by mail-lb0-f181.google.com with SMTP id q8so9368880lbi.26
- for <barebox@lists.infradead.org>; Wed, 04 Dec 2013 11:59:17 -0800 (PST)
-Date: Thu, 5 Dec 2013 00:06:38 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20131205000638.52aec8398efbc37faf1bb3c8@gmail.com>
-Mime-Version: 1.0
+Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VoK0Q-0001fD-5W
+ for barebox@lists.infradead.org; Wed, 04 Dec 2013 21:29:16 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+References: <1385997765-19218-1-git-send-email-s.hauer@pengutronix.de>
+ <87vbz57fr6.fsf@free.fr> <20131204163251.GQ24559@pengutronix.de>
+Date: Wed, 04 Dec 2013 22:28:43 +0100
+In-Reply-To: <20131204163251.GQ24559@pengutronix.de> (Sascha Hauer's message
+ of "Wed, 4 Dec 2013 17:32:51 +0100")
+Message-ID: <87r49s71bo.fsf@free.fr>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,32 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox logo
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH] mtd: mtdraw: drop ioctl callback for mtdraw device
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello!
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-Jean-Christophe !
-Just now the 'barebox' articles in Wikipedia don't contain any barebox logo.
-I have uploaded a logo to Wikimedia Commons as
- you have encouraged users "to use the logo for the purpose of advertising
- support for Barebox". But wikicommons folks removed the logo because of
-"Copyright violation" (see http://commons.wikimedia.org/w/index.php?title=
-=3DFile:Barebox_logo_800x640_white.png&action=3Dedit&redlink=3D1)
+> On Tue, Dec 03, 2013 at 11:04:45PM +0100, Robert Jarzmik wrote:
+> For MEMGETINFO we can directly call into _mtd_ioctl(), but for
+> MEM[SG]ETBADBLOCK the offsets would have to be corrected first. Is this
+> worth the effort? Otherwise we could do something like:
+>
+> int mtdraw_ioctl(struct cdev *cdev, int request, void *buf)
+> {
+> 	struct mtd_info *mtd = to_mtd(cdev);
+>
+> 	switch (request) {
+> 	case MEMGETINFO:
+> 		return mtd_memgetinfo(mtd, buf);
+> 	default:
+> 		return -EINVAL;
+> 	}
+> }
 
-Could you upload barebox logo to Wikimedia Commons by yourself please?
+Yes, that looks like the right thing to do.
+I don't think MEM[GS]ETBADBLOCK are used anywhere at this time for raw
+devices. And I'm not convinced it is worth the effort just as you.
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+And let's be pragmatic : is somebody needs the badblock ioctls, he'll add them
+:) By now, I'm happy with your patch.
 
-P.S. Imho we need some logo cropping as square logo from repo has too much
-empty space in the bottom.
+Cheers.
+
+-- 
+Robert
 
 _______________________________________________
 barebox mailing list
