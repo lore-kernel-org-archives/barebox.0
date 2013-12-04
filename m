@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoEuA-0000cU-GQ
- for barebox@lists.infradead.org; Wed, 04 Dec 2013 16:02:27 +0000
-Date: Wed, 4 Dec 2013 17:02:08 +0100
+ id 1VoEtw-0000cC-RA
+ for barebox@lists.infradead.org; Wed, 04 Dec 2013 16:02:14 +0000
+Date: Wed, 4 Dec 2013 17:01:49 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131204160208.GN24559@pengutronix.de>
-References: <1386103735-30029-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20131204160149.GM24559@pengutronix.de>
+References: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386103735-30029-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1386100622-8498-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,22 +22,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] MIPS: import exception stuff from linux kernel
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH 0/8] tegra-next
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Dec 04, 2013 at 12:48:53AM +0400, Antony Pavlov wrote:
-> This patch series imports registers saving code from linux kernel.
-> Just now it makes possible to dump registers state on exception;
-> this dump is very valuable for debugging purposes.
-> 
-> [PATCH 1/2] MIPS: add asm-offsets.h generation
-> [PATCH 2/2] MIPS: import exception registers saving from linux kernel
+On Tue, Dec 03, 2013 at 08:56:53PM +0100, Lucas Stach wrote:
+> In an attempt to sneak those into -next before the .12 release,
+> just a quick dump.
+> For the first time barebox is now able to load and boot a
+> Linux kernel from SDcard on Tegra. Makes it a lot more useful in
+> the real world.
+
+Indeed ;)
 
 Applied, thanks
 
 Sascha
 
+> 
+> Lucas Stach (8):
+>   tegra: fix fallout from relocatable code changes in PLLX init
+>   tegra: speed up system bus
+>   tegra: switch main CPU complex to PLLX early
+>   gpio: tegra: remove leftover debug code
+>   clk: tegra: add SDMMC clocks
+>   tegra: add SDMMC controller driver
+>   dts: tegra: add SDMMC nodes
+>   dts: tegra: activate SDMMC on Colibri T20
+> 
+>  arch/arm/dts/tegra20-colibri-iris.dts          |   5 +
+>  arch/arm/dts/tegra20-colibri.dtsi              |   4 +
+>  arch/arm/dts/tegra20.dtsi                      |  32 ++
+>  arch/arm/mach-tegra/include/mach/tegra20-car.h |  44 +++
+>  arch/arm/mach-tegra/tegra_avp_init.c           |   2 +
+>  arch/arm/mach-tegra/tegra_maincomplex_init.c   |   9 +
+>  drivers/clk/tegra/clk-tegra20.c                |  25 ++
+>  drivers/gpio/gpio-tegra.c                      |   2 -
+>  drivers/mci/Kconfig                            |   7 +
+>  drivers/mci/Makefile                           |   1 +
+>  drivers/mci/tegra-sdmmc.c                      | 465 +++++++++++++++++++++++++
+>  11 files changed, 594 insertions(+), 2 deletions(-)
+>  create mode 100644 drivers/mci/tegra-sdmmc.c
+> 
+> -- 
+> 1.8.3.1
+> 
 > 
 > _______________________________________________
 > barebox mailing list
