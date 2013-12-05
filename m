@@ -1,19 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x230.google.com ([2a00:1450:400c:c00::230])
+Received: from mail-wi0-x233.google.com ([2a00:1450:400c:c05::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VodY1-0001E7-1w
- for barebox@lists.infradead.org; Thu, 05 Dec 2013 18:21:13 +0000
-Received: by mail-wg0-f48.google.com with SMTP id z12so16709918wgg.3
- for <barebox@lists.infradead.org>; Thu, 05 Dec 2013 10:20:49 -0800 (PST)
-Date: Thu, 5 Dec 2013 19:20:44 +0100
+ id 1VodYY-0001FE-Pa
+ for barebox@lists.infradead.org; Thu, 05 Dec 2013 18:21:47 +0000
+Received: by mail-wi0-f179.google.com with SMTP id z2so85910wiv.0
+ for <barebox@lists.infradead.org>; Thu, 05 Dec 2013 10:21:24 -0800 (PST)
+Date: Thu, 5 Dec 2013 19:21:22 +0100
 From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131205182043.GA11159@omega>
+Message-ID: <20131205182122.GB11159@omega>
 References: <20131205004834.GA5620@omega>
  <20131205153956.GU24559@pengutronix.de>
- <CANvTkNby96mKLpMKL47NAKb6q8GyHV2xFrCYDZ3Dh=ixtz=vOQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CANvTkNby96mKLpMKL47NAKb6q8GyHV2xFrCYDZ3Dh=ixtz=vOQ@mail.gmail.com>
+In-Reply-To: <20131205153956.GU24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,15 +26,29 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: ipv6 support in barebox?
-To: Kevin Du Huanpeng <u74147@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 06, 2013 at 12:13:51AM +0800, Kevin Du Huanpeng wrote:
-> How about support fastboot?
+On Thu, Dec 05, 2013 at 04:39:57PM +0100, Sascha Hauer wrote:
+> On Thu, Dec 05, 2013 at 01:48:35AM +0100, Alexander Aring wrote:
+> > Hi,
+> > 
+> > I need a new challenge in my free time. :-)
+> > 
+> > So maybe I could try to implement a ipv6 stack for barebox. Are there
+> > some interest to apply a ipv6 stack into barebox?
+> > 
+> > I don't need to begin any work if there are no interest to add a ipv6
+> > support.
+> > 
+> > ... and yes I know that's maybe a really big project, but I like to get
+> > some new experience.
+> 
+> Sooner or later I think we will need ipv6 support, but now I think it's
+> up to you if you have enough interest in it to implement it ;)
+> 
 
-What do you mean with fastboot?
-
-barebox already contains a fastboot feature out of the box. :-)
+ok, thanks for your reply.
 
 - Alex
 
