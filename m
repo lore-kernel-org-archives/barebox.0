@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
+Received: from mail-oa0-x230.google.com ([2607:f8b0:4003:c02::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoQxc-0000q8-1t
- for barebox@lists.infradead.org; Thu, 05 Dec 2013 04:54:49 +0000
-Received: by mail-bk0-f50.google.com with SMTP id e11so7034773bkh.9
- for <barebox@lists.infradead.org>; Wed, 04 Dec 2013 20:54:25 -0800 (PST)
-Date: Thu, 5 Dec 2013 06:02:35 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131205050234.GA7811@x61s.Speedport_W_921V_1_24_000>
+ id 1VoTrW-0002Sr-Mw
+ for barebox@lists.infradead.org; Thu, 05 Dec 2013 08:00:43 +0000
+Received: by mail-oa0-f48.google.com with SMTP id l6so17954789oag.35
+ for <barebox@lists.infradead.org>; Thu, 05 Dec 2013 00:00:20 -0800 (PST)
+From: "Kevin Du Huanpeng" <u74147@gmail.com>
 References: <000b01cef16b$84517a50$8cf46ef0$@gmail.com>
+ <20131205050234.GA7811@x61s.Speedport_W_921V_1_24_000>
+In-Reply-To: <20131205050234.GA7811@x61s.Speedport_W_921V_1_24_000>
+Date: Thu, 5 Dec 2013 16:00:05 +0800
+Message-ID: <000601cef190$05dfc9e0$119f5da0$@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <000b01cef16b$84517a50$8cf46ef0$@gmail.com>
+Content-Language: zh-cn
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,32 +21,29 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [.gitignore] please add generated file to .gitignore
-To: Kevin Du Huanpeng <u74147@gmail.com>
+Subject: RE: [.gitignore] please add generated file to .gitignore
+To: 'Alexander Aring' <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 05, 2013 at 11:38:46AM +0800, Kevin Du Huanpeng wrote:
-> I clone the code yesterday, maybe today for you.
-> git clone git://git.pengutronix.de/git/barebox.git
-> When I invoke
->  git cherry-pick 2bd891b0ae266bd7cac58805092fc3f4ae67e55e
-> I can see  `fix_size kernel-install ` in script/.gitignore.
-> Maybe it still not merged to master now yet.
-> 
-
-exactly, but that's okay Sascha isn't superman and I don't want to rush
-him to merge it into master.
-
-And me... I am just a linux guru with no special force to bring this
-patch into master.
-
-- Alex
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2lsbCBiZSBmaW5lIGluIHRoZSBmdXR1cmUuLi4KCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0t
+CkZyb206IEFsZXhhbmRlciBBcmluZyBbbWFpbHRvOmFsZXguYXJpbmdAZ21haWwuY29tXSAKU2Vu
+dDogMjAxM+W5tDEy5pyINeaXpSAxMzowMwpUbzogS2V2aW4gRHUgSHVhbnBlbmcKQ2M6IGJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpTdWJqZWN0OiBSZTogWy5naXRpZ25vcmVdIHBsZWFzZSBh
+ZGQgZ2VuZXJhdGVkIGZpbGUgdG8gLmdpdGlnbm9yZQoKT24gVGh1LCBEZWMgMDUsIDIwMTMgYXQg
+MTE6Mzg6NDZBTSArMDgwMCwgS2V2aW4gRHUgSHVhbnBlbmcgd3JvdGU6Cj4gSSBjbG9uZSB0aGUg
+Y29kZSB5ZXN0ZXJkYXksIG1heWJlIHRvZGF5IGZvciB5b3UuCj4gZ2l0IGNsb25lIGdpdDovL2dp
+dC5wZW5ndXRyb25peC5kZS9naXQvYmFyZWJveC5naXQKPiBXaGVuIEkgaW52b2tlCj4gIGdpdCBj
+aGVycnktcGljayAyYmQ4OTFiMGFlMjY2YmQ3Y2FjNTg4MDUwOTJmYzNmNGFlNjdlNTVlCj4gSSBj
+YW4gc2VlICBgZml4X3NpemUga2VybmVsLWluc3RhbGwgYCBpbiBzY3JpcHQvLmdpdGlnbm9yZS4K
+PiBNYXliZSBpdCBzdGlsbCBub3QgbWVyZ2VkIHRvIG1hc3RlciBub3cgeWV0Lgo+IAoKZXhhY3Rs
+eSwgYnV0IHRoYXQncyBva2F5IFNhc2NoYSBpc24ndCBzdXBlcm1hbiBhbmQgSSBkb24ndCB3YW50
+IHRvIHJ1c2ggaGltIHRvIG1lcmdlIGl0IGludG8gbWFzdGVyLgoKQW5kIG1lLi4uIEkgYW0ganVz
+dCBhIGxpbnV4IGd1cnUgd2l0aCBubyBzcGVjaWFsIGZvcmNlIHRvIGJyaW5nIHRoaXMgcGF0Y2gg
+aW50byBtYXN0ZXIuCgotIEFsZXgKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
