@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-x22b.google.com ([2607:f8b0:4001:c03::22b])
+Received: from f428.i.mail.ru ([185.5.136.99])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoxXg-00017c-C9
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 15:42:12 +0000
-Received: by mail-ie0-f171.google.com with SMTP id ar20so1497546iec.2
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 07:41:51 -0800 (PST)
-Received: from clean ([192.241.72.48])
- by mx.google.com with ESMTPSA id k6sm4119347igx.8.2013.12.06.07.41.49
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Fri, 06 Dec 2013 07:41:50 -0800 (PST)
-From: "Kevin Du Huanpeng" <u74147@gmail.com>
-Date: Fri, 6 Dec 2013 23:41:37 +0800
-Message-ID: <002001cef299$a8f06d10$fad14730$@gmail.com>
-MIME-Version: 1.0
-Content-Language: zh-cn
+ id 1Voxc1-0001Ch-5j
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 15:46:42 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 06 Dec 2013 19:46:16 +0400
+Message-ID: <1386344776.713139290@f428.i.mail.ru>
+In-Reply-To: <002001cef299$a8f06d10$fad14730$@gmail.com>
+References: <002001cef299$a8f06d10$fad14730$@gmail.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,22 +22,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: How much ram is needed to run barebox by default config?
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IEhvdyBtdWNoIHJhbSBpcyBuZWVkZWQgdG8gcnVuIGJhcmVib3ggYnkg?=
+ =?UTF-8?B?ZGVmYXVsdCBjb25maWc/?=
+To: =?UTF-8?B?S2V2aW4gRHUgSHVhbnBlbmc=?= <u74147@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi, barebox as a bootloader,
-I wanna know how much ram is needed?
-By default configure.
-Stack size, malloc area size, etc.
+> Hi, barebox as a bootloader,
+> I wanna know how much ram is needed?
+> By default configure.
+> Stack size, malloc area size, etc.
 
-.
-Du Huanpeng
+All of this is configurable. Primary this should be kernel
+requirements, not barebox. What a arch you want to boot?
 
-
-
-
-
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
