@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x230.google.com ([2a00:1450:400c:c03::230])
+Received: from mail-wi0-x22e.google.com ([2a00:1450:400c:c05::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VouNb-0003KR-Fd
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 12:19:36 +0000
-Received: by mail-we0-f176.google.com with SMTP id w62so556655wes.21
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 04:19:13 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
+ id 1VouPl-0003N9-5z
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 12:21:49 +0000
+Received: by mail-wi0-f174.google.com with SMTP id z2so766531wiv.1
+ for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 04:21:27 -0800 (PST)
+Date: Fri, 6 Dec 2013 13:21:22 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131206122121.GA22571@omega>
 References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
  <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
  <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
-From: Atilla Filiz <atilla.filiz@gmail.com>
-Date: Fri, 6 Dec 2013 13:18:52 +0100
-Message-ID: <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
+ <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,54 +28,29 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: How to debug Ethernet connectivity
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Atilla Filiz <atilla.filiz@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Sorry, figured it out. Just most verbose output is funny as well:
-:/ miitool -vvv /dev/mc13xxx
-10 Mbit, half duplex, no link
-  registers for MII PHY:
-    0000 0000 0000 0000 0000 0000 0000 0000
-    0000 0000 0000 0000 0000 0000 0000 0000
-    0000 0000 0000 0000 0000 0000 0000 0000
-    0000 0000 0000 0000 0000 0000 0000 0000
-  product info: vendor 00:00:00, model 0 rev 0
-  basic mode:   10 Mbit, half duplex
-  basic status: no link
-  capabilities:
-  advertising:
-
-On Fri, Dec 6, 2013 at 1:17 PM, Atilla Filiz <atilla.filiz@gmail.com> wrote:
-> On Fri, Dec 6, 2013 at 11:52 AM, Antony Pavlov <antonynpavlov@gmail.com> wrote:
->> There is miitool command to view MII status / registers.
->
->
-> How do I use it?
-> barebox@Terminal:/ miitool -v /dev/mc13xxx
+On Fri, Dec 06, 2013 at 01:18:52PM +0100, Atilla Filiz wrote:
+> Sorry, figured it out. Just most verbose output is funny as well:
+> :/ miitool -vvv /dev/mc13xxx
 > 10 Mbit, half duplex, no link
+>   registers for MII PHY:
+>     0000 0000 0000 0000 0000 0000 0000 0000
+>     0000 0000 0000 0000 0000 0000 0000 0000
+>     0000 0000 0000 0000 0000 0000 0000 0000
+>     0000 0000 0000 0000 0000 0000 0000 0000
 >   product info: vendor 00:00:00, model 0 rev 0
 >   basic mode:   10 Mbit, half duplex
 >   basic status: no link
 >   capabilities:
 >   advertising:
-> barebox@Terminal:/ dhcp
-> T DHCP client bound to address 10.3.4.161
-> barebox@Terminal:/ miitool -v /dev/mc13xxx
-> 10 Mbit, half duplex, no link
->   product info: vendor 00:00:00, model 0 rev 0
->   basic mode:   10 Mbit, half duplex
->   basic status: no link
->   capabilities:
->   advertising:
->
-> But there is link, obviously.
-> --
-> Atilla Filiz
+> 
 
+In my opinion you reading only zeros from bus. Maybe check your muxing
+which Sascha already mentioned.
 
-
--- 
-Atilla Filiz
+- Alex
 
 _______________________________________________
 barebox mailing list
