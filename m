@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f177.google.com ([209.85.223.177])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Voy8R-0001ws-7D
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 16:20:12 +0000
-Received: by mail-ie0-f177.google.com with SMTP id tp5so1581454ieb.22
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 08:19:46 -0800 (PST)
-From: "Kevin Du Huanpeng" <u74147@gmail.com>
-References: <002001cef299$a8f06d10$fad14730$@gmail.com>
- <1386344776.713139290@f428.i.mail.ru>
-In-Reply-To: <1386344776.713139290@f428.i.mail.ru>
-Date: Sat, 7 Dec 2013 00:19:31 +0800
-Message-ID: <002501cef29e$f44aa410$dcdfec30$@gmail.com>
+Received: from 14.mo4.mail-out.ovh.net ([46.105.40.29]
+ helo=mo4.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Voyt9-0003OE-1F
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 17:08:28 +0000
+Received: from mail634.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo4.mail-out.ovh.net (Postfix) with SMTP id 41A0AFFBC85
+ for <barebox@lists.infradead.org>; Fri,  6 Dec 2013 18:10:47 +0100 (CET)
+Date: Fri, 6 Dec 2013 18:08:03 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131206170803.GF27628@ns203013.ovh.net>
+References: <20131205004834.GA5620@omega>
+ <20131205153956.GU24559@pengutronix.de>
 MIME-Version: 1.0
-Content-Language: zh-cn
+Content-Disposition: inline
+In-Reply-To: <20131205153956.GU24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,29 +23,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: How much ram is needed to run barebox by default config?
-To: 'Alexander Shiyan' <shc_work@mail.ru>
+Subject: Re: ipv6 support in barebox?
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SSBhbSBwb3J0aW5nIGJhcmVib3ggdG8gbXkgcm91dGVyLCBhcjkzMzEgTUlQUyAyNGtjIDQwME1I
-eiwgMzJNQiBSQU0sIDRNQiBGbGFzaC4KSSBkb24ndCBrbm93IHdoYXQgaXMgdGhlIHByb3BlciBz
-aXplIHRvIHNldCB0aGUgc3RhY2sgYW5kIG1hbGxvYy4KLSAtIC0KaW5pdGNhbGwtPiAweDgwMDY4
-MTY4CklOSVRDQUxMLT4KaW5pdGNhbGwtPiAweDgwMDYzZjBjCm1hbGxvYyBzcGFjZTogMHg4MDAy
-MDAwMCAtPiAweDgwMDVmZmZmIChzaXplIDIxNDc4NzY4NjQuMTM0MjE3NzE4IEVpQikKSU5JVENB
-TEwtPgppbml0Y2FsbC0+IDB4ODAwNjQwZDgKSU5JVENBTEwtPgotIC0gLQpMb29rIGF0IHRoZSBM
-SU5FIDQsIGl0J3Mgc3RyYW5nZS4KCgrigKYKRHUgSHVhbnBlbmcKCgoKCi0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tCkZyb206IEFsZXhhbmRlciBTaGl5YW4gW21haWx0bzpzaGNfd29ya0BtYWls
-LnJ1XSAKU2VudDogMjAxM+W5tDEy5pyINuaXpSAyMzo0NgpUbzogS2V2aW4gRHUgSHVhbnBlbmcK
-Q2M6IGJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpTdWJqZWN0OiBSZTogSG93IG11Y2ggcmFt
-IGlzIG5lZWRlZCB0byBydW4gYmFyZWJveCBieSBkZWZhdWx0IGNvbmZpZz8KCj4gSGksIGJhcmVi
-b3ggYXMgYSBib290bG9hZGVyLAo+IEkgd2FubmEga25vdyBob3cgbXVjaCByYW0gaXMgbmVlZGVk
-Pwo+IEJ5IGRlZmF1bHQgY29uZmlndXJlLgo+IFN0YWNrIHNpemUsIG1hbGxvYyBhcmVhIHNpemUs
-IGV0Yy4KCkFsbCBvZiB0aGlzIGlzIGNvbmZpZ3VyYWJsZS4gUHJpbWFyeSB0aGlzIHNob3VsZCBi
-ZSBrZXJuZWwgcmVxdWlyZW1lbnRzLCBub3QgYmFyZWJveC4gV2hhdCBhIGFyY2ggeW91IHdhbnQg
-dG8gYm9vdD8KCi0tLQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 16:39 Thu 05 Dec     , Sascha Hauer wrote:
+> On Thu, Dec 05, 2013 at 01:48:35AM +0100, Alexander Aring wrote:
+> > Hi,
+> > 
+> > I need a new challenge in my free time. :-)
+> > 
+> > So maybe I could try to implement a ipv6 stack for barebox. Are there
+> > some interest to apply a ipv6 stack into barebox?
+> > 
+> > I don't need to begin any work if there are no interest to add a ipv6
+> > support.
+> > 
+> > ... and yes I know that's maybe a really big project, but I like to get
+> > some new experience.
+> 
+> Sooner or later I think we will need ipv6 support, but now I think it's
+> up to you if you have enough interest in it to implement it ;)
+
+I've evaluate it  and I does not want to support a custom implementation
+
+I was thinking simply integration uIP stack so we can have ip/tcp v4/v6 stack
+
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
