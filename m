@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vosuu-0001am-BE
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 10:45:53 +0000
-Received: by mail-lb0-f182.google.com with SMTP id u14so201064lbd.13
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 02:45:29 -0800 (PST)
-Date: Fri, 6 Dec 2013 14:52:50 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
-In-Reply-To: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
-References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
-Mime-Version: 1.0
+ id 1Vou51-0002te-6T
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 12:00:23 +0000
+Received: by mail-wi0-f175.google.com with SMTP id hi5so735480wib.8
+ for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 04:00:01 -0800 (PST)
+Date: Fri, 6 Dec 2013 12:59:56 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131206115955.GA21997@omega>
+References: <1386199691-12032-1-git-send-email-alex.aring@gmail.com>
+ <20131206090732.GA28174@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20131206090732.GA28174@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,71 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to debug Ethernet connectivity
-To: Atilla Filiz <atilla.filiz@gmail.com>
+Subject: Re: [PATCH] serial: add missing depends on ARCH_ZYNQ
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, 6 Dec 2013 11:21:25 +0100
-Atilla Filiz <atilla.filiz@gmail.com> wrote:
+Hi Steffen,
 
-> Hello
-> =
+On Fri, Dec 06, 2013 at 10:07:32AM +0100, Steffen Trumtrar wrote:
+> Hi!
+> 
+> On Thu, Dec 05, 2013 at 12:28:11AM +0100, Alexander Aring wrote:
+> > The cadence serial driver is some ARCH_ZYNQ specific driver.
+> > Add a depends on ARCH_ZYNQ for this driver.
+> > 
+> > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> > ---
+> >  drivers/serial/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+> > index 11fc155..d520dda 100644
+> > --- a/drivers/serial/Kconfig
+> > +++ b/drivers/serial/Kconfig
+> > @@ -119,6 +119,7 @@ config DRIVER_SERIAL_OMAP4_USBBOOT
+> >  
+> >  config DRIVER_SERIAL_CADENCE
+> >  	bool "Cadence UART driver"
+> > +	depends on ARCH_ZYNQ
+> >  	help
+> >  	  Say Y here if you have a Cadence serial IP core.
+> >  
+> > -- 
+> > 1.8.4.2
+> > 
+> > 
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> > 
+> 
+> Does is not compile with other archs?
+> This is intended to be a generic driver; Zynq just happens to be the only user.
+> -> It should not depend on ARCH_ZYNQ.
 
-> I have been tasked to debug a port of Barebox to our custom board. It
-> has one Ethernet interface. All network related(dhcp, ping ...) tasks
-> fail with "Network is down" error, although the link lights on my
-> switch are on. So I did this on 2013.06:
-> =
+oh, I first figure out a depends on COMMON_CLK was missing and though
+that this driver is a platform specific driver.
 
-> --- barebox-2013.06.0.orig/net/
-> eth.c    2013-06-02 12:24:06.000000000 +0200
-> +++ barebox-2013.06.0/net/eth.c    2013-12-03 16:52:40.428089000 +0100
-> @@ -142,12 +142,16 @@
-> =
+When it's a generic driver we should add a "depends on COMMON_CLK"
+because there are some generic clock api calls.
 
->      if (force || is_timeout(last_link_check, 5 * SECOND) ||
->              !eth_current->phydev->link) {
->          ret =3D phy_update_status(eth_current->phydev);
->          if (ret)
->              return ret;
->          last_link_check =3D get_time_ns();
->      }
-> =
-
-> +    return 0;
->      return eth_current->phydev->link ? 0 : -ENETDOWN;
->  }
-> =
-
-> This bypasses link detection and assumes the link is always up. This
-> way, I got dhcp, ping and tftp working.
-> =
-
-> How can I debug this further to hunt down the Ethernet problem?
-> Something seems wrong with my PHY settings. This is an iMX27 based
-> board. Which files/functions/structures do I need to check?
-
-There is miitool command to view MII status / registers.
-
-> --
-> Atilla Filiz
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+- Alex
 
 _______________________________________________
 barebox mailing list
