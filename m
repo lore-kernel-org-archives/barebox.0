@@ -1,21 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22f.google.com ([2a00:1450:400c:c05::22f])
+Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VoulA-0003g6-Sm
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 12:43:57 +0000
-Received: by mail-wi0-f175.google.com with SMTP id hi5so787130wib.14
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 04:43:32 -0800 (PST)
-Date: Fri, 6 Dec 2013 13:43:28 +0100
+ id 1VowYK-0007yL-SD
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 14:39:14 +0000
+Received: by mail-we0-f177.google.com with SMTP id u56so719486wes.8
+ for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 06:38:26 -0800 (PST)
+Date: Fri, 6 Dec 2013 15:38:21 +0100
 From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131206124327.GA22853@omega>
-References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
- <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
- <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
- <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
- <20131206123925.GD24559@pengutronix.de>
+Message-ID: <20131206143820.GA23004@omega>
+References: <1386322981-30721-1-git-send-email-s.hauer@pengutronix.de>
+ <1386322981-30721-2-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131206123925.GD24559@pengutronix.de>
+In-Reply-To: <1386322981-30721-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,21 +25,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to debug Ethernet connectivity
+Subject: Re: [PATCH 1/3] ARM: start kernel: find a valid address for the
+ atags list automatically
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Dec 06, 2013 at 01:39:25PM +0100, Sascha Hauer wrote:
-> On Fri, Dec 06, 2013 at 01:18:52PM +0100, Atilla Filiz wrote:
-> > Sorry, figured it out. Just most verbose output is funny as well:
-> > :/ miitool -vvv /dev/mc13xxx
-> 
-> Don't know what miitool does in this case, but mc13xxx is not your phy,
-> it's your PMIC.
-> 
+Hi Sascha,
 
-oh, doesn't realize that :D. So reading zeros can make sense in some
-offset. :-)
+On Fri, Dec 06, 2013 at 10:42:59AM +0100, Sascha Hauer wrote:
+> If a board does not specify a place for the atags list default to
+> SDRAM start + 0x100. The vast majority of boards uses this place
+> anyway, so the call to armlinux_set_bootparams() can be removed
+> fo most boards.
+s/fo/for/
 
 - Alex
 
