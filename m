@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
+Received: from mail-ie0-x22b.google.com ([2607:f8b0:4001:c03::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VowYK-0007yL-SD
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 14:39:14 +0000
-Received: by mail-we0-f177.google.com with SMTP id u56so719486wes.8
- for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 06:38:26 -0800 (PST)
-Date: Fri, 6 Dec 2013 15:38:21 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20131206143820.GA23004@omega>
-References: <1386322981-30721-1-git-send-email-s.hauer@pengutronix.de>
- <1386322981-30721-2-git-send-email-s.hauer@pengutronix.de>
+ id 1VoxXg-00017c-C9
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 15:42:12 +0000
+Received: by mail-ie0-f171.google.com with SMTP id ar20so1497546iec.2
+ for <barebox@lists.infradead.org>; Fri, 06 Dec 2013 07:41:51 -0800 (PST)
+Received: from clean ([192.241.72.48])
+ by mx.google.com with ESMTPSA id k6sm4119347igx.8.2013.12.06.07.41.49
+ for <barebox@lists.infradead.org>
+ (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+ Fri, 06 Dec 2013 07:41:50 -0800 (PST)
+From: "Kevin Du Huanpeng" <u74147@gmail.com>
+Date: Fri, 6 Dec 2013 23:41:37 +0800
+Message-ID: <002001cef299$a8f06d10$fad14730$@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1386322981-30721-2-git-send-email-s.hauer@pengutronix.de>
+Content-Language: zh-cn
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,21 +27,21 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: start kernel: find a valid address for the
- atags list automatically
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: How much ram is needed to run barebox by default config?
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi, barebox as a bootloader,
+I wanna know how much ram is needed?
+By default configure.
+Stack size, malloc area size, etc.
 
-On Fri, Dec 06, 2013 at 10:42:59AM +0100, Sascha Hauer wrote:
-> If a board does not specify a place for the atags list default to
-> SDRAM start + 0x100. The vast majority of boards uses this place
-> anyway, so the call to armlinux_set_bootparams() can be removed
-> fo most boards.
-s/fo/for/
+.
+Du Huanpeng
 
-- Alex
+
+
+
+
 
 _______________________________________________
 barebox mailing list
