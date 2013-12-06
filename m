@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vp0wD-0007F3-KE
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 19:19:47 +0000
-Received: from gallifrey.ext.pengutronix.de
- ([2001:6f8:1178:4:5054:ff:fe8d:eefb] helo=localhost)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <rsc@pengutronix.de>) id 1Vp0vo-000190-Bx
- for barebox@lists.infradead.org; Fri, 06 Dec 2013 20:19:20 +0100
+ id 1Vp0wD-0007F4-JV
+ for barebox@lists.infradead.org; Fri, 06 Dec 2013 19:19:46 +0000
 From: Robert Schwebel <r.schwebel@pengutronix.de>
-Date: Fri,  6 Dec 2013 20:17:45 +0100
-Message-Id: <1386357468-26892-1-git-send-email-r.schwebel@pengutronix.de>
+Date: Fri,  6 Dec 2013 20:17:46 +0100
+Message-Id: <1386357468-26892-2-git-send-email-r.schwebel@pengutronix.de>
+In-Reply-To: <1386357468-26892-1-git-send-email-r.schwebel@pengutronix.de>
+References: <1386357468-26892-1-git-send-email-r.schwebel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,14 +21,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: DTS patches
+Subject: [PATCH 1/3] ARM: i.MX6: tqma6x: dts: move FEC enablement to baseboard
 To: barebox@lists.infradead.org
 
-Hi,
+The definition if the FEC is used is made by the baseboard (MBa6x), not
+by the module (TQMa6x). Move it there.
 
-here are some patches for TQMa boards.
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+---
+ arch/arm/dts/imx6q-mba6x.dts  | 4 ++++
+ arch/arm/dts/imx6q-tqma6x.dts | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-rsc
+diff --git a/arch/arm/dts/imx6q-mba6x.dts b/arch/arm/dts/imx6q-mba6x.dts
+index 69d46b4..e057fc4 100644
+--- a/arch/arm/dts/imx6q-mba6x.dts
++++ b/arch/arm/dts/imx6q-mba6x.dts
+@@ -26,6 +26,10 @@
+ 	};
+ };
+ 
++&fec {
++	status = "okay";
++};
++
+ &iomuxc {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_hog>;
+diff --git a/arch/arm/dts/imx6q-tqma6x.dts b/arch/arm/dts/imx6q-tqma6x.dts
+index 597388e..f556381 100644
+--- a/arch/arm/dts/imx6q-tqma6x.dts
++++ b/arch/arm/dts/imx6q-tqma6x.dts
+@@ -81,7 +81,7 @@
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet_1>;
+ 	phy-mode = "rgmii";
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &hdmi {
+-- 
+1.8.4.3
 
 
 _______________________________________________
