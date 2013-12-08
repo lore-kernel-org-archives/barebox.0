@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VpEKL-0004qh-Ri
- for barebox@lists.infradead.org; Sat, 07 Dec 2013 09:37:35 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp5-g21.free.fr (Postfix) with ESMTP id 5D36ED4816A
- for <barebox@lists.infradead.org>; Sat,  7 Dec 2013 10:37:12 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Sat,  7 Dec 2013 10:36:57 +0100
-Message-Id: <1386409020-11914-4-git-send-email-eric@eukrea.com>
-In-Reply-To: <1386409020-11914-1-git-send-email-eric@eukrea.com>
-References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from mail-we0-x22e.google.com ([2a00:1450:400c:c03::22e])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vpikh-0005IO-9k
+ for barebox@lists.infradead.org; Sun, 08 Dec 2013 18:06:47 +0000
+Received: by mail-we0-f174.google.com with SMTP id q58so2504833wes.5
+ for <barebox@lists.infradead.org>; Sun, 08 Dec 2013 10:06:23 -0800 (PST)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Sun,  8 Dec 2013 19:06:14 +0100
+Message-Id: <1386525974-15352-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,54 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] sama5d3xek: update nand timings
+Subject: [PATCH] scripts: add kernel-install-target to gitignore
 To: barebox@lists.infradead.org
 
-VGhpcyB1cGRhdGVzIG5hbmQgdGltaW5ncyB0byBhdDkxYm9vdHN0cmFwJ3Mgb25lcyAoYnJhbmNo
-IDMuNS54KQpXaXRoIHRoaXMgc2V0dGluZyBuYW5kIGZsYXNoIGlzIHByb3Blcmx5IGRldGVjdGVk
-IHdoZW4gd2UgYm9vdCBmcm9tIFNQSQpOT1IgZmxhc2guCgpXaGVuIGJvb3Rpbmcgb24gU1BJIE5P
-UiwgbG9nIGlzIG5vdyA6Cm5hbmQ6IE9ORkkgcGFyYW0gcGFnZSAwIHZhbGlkCm5hbmQ6IE9ORkkg
-Zmxhc2ggZGV0ZWN0ZWQKbmFuZDogTkFORCBkZXZpY2U6IE1hbnVmYWN0dXJlciBJRDogMHgyYywg
-Q2hpcCBJRDogMHhkYSAoTWljcm9uIE1UMjlGMkcwOEFCQUVBV1ApLCAyNTZNaUIsIHBhZ2Ugc2l6
-ZTogMjA0OCwgT09CIHNpemU6IDY0CmF0bWVsX25hbmQgYXRtZWxfbmFuZDA6IEluaXRpYWxpemUg
-UE1FQ0MgcGFyYW1zLCBjYXA6IDQsIHNlY3RvcjogNTEyCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELD
-qW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9p
-bml0LmMgfCAzNCArKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hh
-bmdlZCwgMjEgaW5zZXJ0aW9ucygrKSwgMTMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJj
-aC9hcm0vYm9hcmRzL3NhbWE1ZDN4ZWsvaW5pdC5jIGIvYXJjaC9hcm0vYm9hcmRzL3NhbWE1ZDN4
-ZWsvaW5pdC5jCmluZGV4IDQ4MmM3NGEuLmZmNjI1NTAgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2Jv
-YXJkcy9zYW1hNWQzeGVrL2luaXQuYworKysgYi9hcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9p
-bml0LmMKQEAgLTI5LDggKzI5LDcgQEAKICNpbmNsdWRlIDxzaXplcy5oPgogI2luY2x1ZGUgPGxp
-bnV4L210ZC9uYW5kLmg+CiAjaW5jbHVkZSA8bWFjaC9ib2FyZC5oPgotI2luY2x1ZGUgPG1hY2gv
-YXQ5MXNhbTlfc21jLmg+Ci0jaW5jbHVkZSA8bWFjaC9hdDkxc2FtOV9zbWMuaD4KKyNpbmNsdWRl
-IDxtYWNoL3NhbWE1X3NtYy5oPgogI2luY2x1ZGUgPGdwaW8uaD4KICNpbmNsdWRlIDxtYWNoL2lv
-Lmg+CiAjaW5jbHVkZSA8bWFjaC9pb211eC5oPgpAQCAtNzEsMTkgKzcwLDI4IEBAIHN0YXRpYyBz
-dHJ1Y3QgYXRtZWxfbmFuZF9kYXRhIG5hbmRfcGRhdGEgPSB7CiAJLm9uX2ZsYXNoX2JidAk9IDEs
-CiB9OwogCi1zdGF0aWMgc3RydWN0IHNhbTlfc21jX2NvbmZpZyBjbV9uYW5kX3NtY19jb25maWcg
-PSB7Ci0JLm5jc19yZWFkX3NldHVwCQk9IDAsCi0JLm5yZF9zZXR1cAkJPSAxLAotCS5uY3Nfd3Jp
-dGVfc2V0dXAJPSAwLAorc3RhdGljIHN0cnVjdCBzYW1hNV9zbWNfY29uZmlnIGNtX25hbmRfc21j
-X2NvbmZpZyA9IHsKKwkubmNzX3JlYWRfc2V0dXAJCT0gMSwKKwkubnJkX3NldHVwCQk9IDIsCisJ
-Lm5jc193cml0ZV9zZXR1cAk9IDEsCiAJLm53ZV9zZXR1cAkJPSAxLAogCi0JLm5jc19yZWFkX3B1
-bHNlCQk9IDYsCi0JLm5yZF9wdWxzZQkJPSA0LAotCS5uY3Nfd3JpdGVfcHVsc2UJPSA1LAotCS5u
-d2VfcHVsc2UJCT0gMywKKwkubmNzX3JlYWRfcHVsc2UJCT0gNywKKwkubnJkX3B1bHNlCQk9IDUs
-CisJLm5jc193cml0ZV9wdWxzZQk9IDcsCisJLm53ZV9wdWxzZQkJPSA1LAogCi0JLnJlYWRfY3lj
-bGUJCT0gNiwKLQkud3JpdGVfY3ljbGUJCT0gNSwKKwkucmVhZF9jeWNsZQkJPSA5LAorCS53cml0
-ZV9jeWNsZQkJPSA4LAorCisJLmNsZV90b19yZW5fbG93X2RlbGF5CT0gMywKKwkuYWxlX3RvX2Rh
-dGFfc3RhcnQJPSAxMCwKKwkuYWxlX3RvX3Jlbl9sb3dfZGVsYXkJPSAzLAorCS5vZmZfY2hpcF9t
-ZW1vcnlfc2NyYW1ibGluZ19lbmFibGUgPSAwLAorCS5yZWFkeV90b19yZW5fbG93X2RlbGF5ID0g
-NCwKKwkud2VuX2hpZ2hfdG9fcmVuX3RvX2J1c3kgPSA1LAorCS5yZWFkeV9idXN5X2xpbmVfc2Vs
-ZWN0aW9uID0gMywKKwkubmFuZF9mbGFzaF9zZWxlY3Rpb24JPSAxLAogCiAJLm1vZGUJCQk9IEFU
-OTFfU01DX1JFQURNT0RFIHwgQVQ5MV9TTUNfV1JJVEVNT0RFIHwgQVQ5MV9TTUNfRVhOV01PREVf
-RElTQUJMRSwKIAkudGRmX2N5Y2xlcwkJPSAxLApAQCAtMTAyLDcgKzExMCw3IEBAIHN0YXRpYyB2
-b2lkIGVrX2FkZF9kZXZpY2VfbmFuZCh2b2lkKQogCQljbV9uYW5kX3NtY19jb25maWcubW9kZSB8
-PSBBVDkxX1NNQ19EQldfODsKIAogCS8qIGNvbmZpZ3VyZSBjaGlwLXNlbGVjdCAzIChOQU5EKSAq
-LwotCXNhbTlfc21jX2NvbmZpZ3VyZSgwLCAzLCAmY21fbmFuZF9zbWNfY29uZmlnKTsKKwlzYW1h
-NV9zbWNfY29uZmlndXJlKDAsIDMsICZjbV9uYW5kX3NtY19jb25maWcpOwogCiAJYXQ5MV9hZGRf
-ZGV2aWNlX25hbmQoJm5hbmRfcGRhdGEpOwogfQotLSAKMS44LjMuMQoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ scripts/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 3cb3a0b..fddc04b 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -4,6 +4,7 @@ fix_size
+ gen_netx_image
+ kallsyms
+ kernel-install
++kernel-install-target
+ kwbimage
+ kwboot
+ mk-am35xx-spi-image
+-- 
+1.8.5.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
