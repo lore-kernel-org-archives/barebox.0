@@ -1,20 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
+Received: from 15.mo3.mail-out.ovh.net ([87.98.150.177]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq0wO-0005Yl-KD
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:32:05 +0000
+ id 1Vq0z4-0005d9-3S
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:34:50 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 105D6FFA560
- for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:31:43 +0100 (CET)
-Date: Mon, 9 Dec 2013 14:31:50 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 70EE7FF9E2C
+ for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:34:28 +0100 (CET)
+Date: Mon, 9 Dec 2013 14:34:36 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131209133150.GK27628@ns203013.ovh.net>
+Message-ID: <20131209133436.GL27628@ns203013.ovh.net>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
- <20131209083657.GM24559@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131209083657.GM24559@pengutronix.de>
+In-Reply-To: <1386409020-11914-1-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,79 +27,62 @@ Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 1/7] atmel_nand: check gpio validity before using it
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Eric B??nard <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On 09:36 Mon 09 Dec     , Sascha Hauer wrote:
+On 10:36 Sat 07 Dec     , Eric B??nard wrote:
+> else we get : "invalid GPIO -22"
+> (as enable_pin is EINVAL)
 > =
 
-> The series looks fine for me. Jean-Christophe?
+> tested on SAMA5D35
 
-small issues
+Acked-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+
 > =
 
-> Sascha
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  drivers/mtd/nand/atmel_nand.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > =
 
-> On Sat, Dec 07, 2013 at 10:36:54AM +0100, Eric B=E9nard wrote:
-> > else we get : "invalid GPIO -22"
-> > (as enable_pin is EINVAL)
-> > =
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index a0f0966..658ae52 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -107,7 +107,7 @@ static struct nand_ecclayout atmel_pmecc_oobinfo;
+>   */
+>  static void atmel_nand_enable(struct atmel_nand_host *host)
+>  {
+> -	if (host->board->enable_pin)
+> +	if (gpio_is_valid(host->board->enable_pin))
+>  		gpio_set_value(host->board->enable_pin, 0);
+>  }
+>  =
 
-> > tested on SAMA5D35
-> > =
-
-> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> > ---
-> >  drivers/mtd/nand/atmel_nand.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > =
-
-> > diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nan=
-d.c
-> > index a0f0966..658ae52 100644
-> > --- a/drivers/mtd/nand/atmel_nand.c
-> > +++ b/drivers/mtd/nand/atmel_nand.c
-> > @@ -107,7 +107,7 @@ static struct nand_ecclayout atmel_pmecc_oobinfo;
-> >   */
-> >  static void atmel_nand_enable(struct atmel_nand_host *host)
-> >  {
-> > -	if (host->board->enable_pin)
-> > +	if (gpio_is_valid(host->board->enable_pin))
-> >  		gpio_set_value(host->board->enable_pin, 0);
-> >  }
-> >  =
-
-> > @@ -116,7 +116,7 @@ static void atmel_nand_enable(struct atmel_nand_hos=
-t *host)
-> >   */
-> >  static void atmel_nand_disable(struct atmel_nand_host *host)
-> >  {
-> > -	if (host->board->enable_pin)
-> > +	if (gpio_is_valid(host->board->enable_pin))
-> >  		gpio_set_value(host->board->enable_pin, 1);
-> >  }
-> >  =
-
-> > -- =
-
-> > 1.8.3.1
-> > =
-
-> > =
-
-> > _______________________________________________
-> > barebox mailing list
-> > barebox@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/barebox
-> =
+> @@ -116,7 +116,7 @@ static void atmel_nand_enable(struct atmel_nand_host =
+*host)
+>   */
+>  static void atmel_nand_disable(struct atmel_nand_host *host)
+>  {
+> -	if (host->board->enable_pin)
+> +	if (gpio_is_valid(host->board->enable_pin))
+>  		gpio_set_value(host->board->enable_pin, 1);
+>  }
+>  =
 
 > -- =
 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.8.3.1
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
