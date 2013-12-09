@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pd0-x22e.google.com ([2607:f8b0:400e:c02::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VpwLA-00075m-LZ
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 08:37:21 +0000
-Date: Mon, 9 Dec 2013 09:36:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131209083657.GM24559@pengutronix.de>
-References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1386409020-11914-1-git-send-email-eric@eukrea.com>
+ id 1VpxJK-0000Dg-TJ
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 09:39:31 +0000
+Received: by mail-pd0-f174.google.com with SMTP id y13so4933044pdi.33
+ for <barebox@lists.infradead.org>; Mon, 09 Dec 2013 01:39:07 -0800 (PST)
+From: Du Huanpeng <u74147@gmail.com>
+Date: Mon,  9 Dec 2013 01:38:58 -0800
+Message-Id: <1386581938-9663-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,76 +16,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/7] atmel_nand: check gpio validity before using it
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] scripts: add arch/x86/lib/barebox.lds to gitignore
+To: barebox@lists.infradead.org
 
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
+---
+ arch/x86/lib/.gitignore |    2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 arch/x86/lib/.gitignore
 
-The series looks fine for me. Jean-Christophe?
+diff --git a/arch/x86/lib/.gitignore b/arch/x86/lib/.gitignore
+new file mode 100644
+index 0000000..542522e
+--- /dev/null
++++ b/arch/x86/lib/.gitignore
+@@ -0,0 +1,2 @@
++barebox.lds
++
+-- 
+1.7.9.5
 
-Sascha
-
-On Sat, Dec 07, 2013 at 10:36:54AM +0100, Eric B=E9nard wrote:
-> else we get : "invalid GPIO -22"
-> (as enable_pin is EINVAL)
-> =
-
-> tested on SAMA5D35
-> =
-
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  drivers/mtd/nand/atmel_nand.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> =
-
-> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> index a0f0966..658ae52 100644
-> --- a/drivers/mtd/nand/atmel_nand.c
-> +++ b/drivers/mtd/nand/atmel_nand.c
-> @@ -107,7 +107,7 @@ static struct nand_ecclayout atmel_pmecc_oobinfo;
->   */
->  static void atmel_nand_enable(struct atmel_nand_host *host)
->  {
-> -	if (host->board->enable_pin)
-> +	if (gpio_is_valid(host->board->enable_pin))
->  		gpio_set_value(host->board->enable_pin, 0);
->  }
->  =
-
-> @@ -116,7 +116,7 @@ static void atmel_nand_enable(struct atmel_nand_host =
-*host)
->   */
->  static void atmel_nand_disable(struct atmel_nand_host *host)
->  {
-> -	if (host->board->enable_pin)
-> +	if (gpio_is_valid(host->board->enable_pin))
->  		gpio_set_value(host->board->enable_pin, 1);
->  }
->  =
-
-> -- =
-
-> 1.8.3.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
