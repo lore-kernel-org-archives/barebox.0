@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo5.mail-out.ovh.net ([46.105.35.78]
- helo=mo5.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq3mZ-0002GC-6K
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 16:34:07 +0000
-Received: from mail31.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id 39D6CFF853F
- for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 17:35:35 +0100 (CET)
-Date: Mon, 9 Dec 2013 17:33:53 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131209163353.GO27628@ns203013.ovh.net>
+Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vq413-0002vh-VJ
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 16:49:06 +0000
+Received: by mail-wg0-f51.google.com with SMTP id b13so3627248wgh.18
+ for <barebox@lists.infradead.org>; Mon, 09 Dec 2013 08:48:44 -0800 (PST)
+Date: Mon, 9 Dec 2013 17:48:38 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20131209164837.GA30284@omega>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
  <1386409020-11914-7-git-send-email-eric@eukrea.com>
  <20131209133125.GJ27628@ns203013.ovh.net>
@@ -25,85 +23,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 7/7] samsa5d3xek: update defconfig
-To: Eric B??nard <eric@eukrea.com>
+To: Eric =?utf-8?Q?B=C3=A9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-On 15:53 Mon 09 Dec     , Eric B??nard wrote:
-> Hi Jean-Christophe,
-> =
-
-> Le Mon, 9 Dec 2013 14:31:25 +0100,
-> Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> =
-
-> > more comment here
-> > On 10:37 Sat 07 Dec     , Eric B??nard wrote:
-> > > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> > > ---
-> > >  arch/arm/configs/sama5d3xek_defconfig | 9 ++++++---
-> > >  1 file changed, 6 insertions(+), 3 deletions(-)
-> > > =
-
-> > > diff --git a/arch/arm/configs/sama5d3xek_defconfig b/arch/arm/configs=
-/sama5d3xek_defconfig
-> > > index 970ded5..bd331c3 100644
-> > > --- a/arch/arm/configs/sama5d3xek_defconfig
-> > > +++ b/arch/arm/configs/sama5d3xek_defconfig
-> > > @@ -41,8 +41,7 @@ CONFIG_CMD_UIMAGE=3Dy
-> > >  CONFIG_CMD_RESET=3Dy
-> > >  CONFIG_CMD_GO=3Dy
-> > >  CONFIG_CMD_OFTREE=3Dy
-> > > -CONFIG_CMD_MTEST=3Dy
-> > > -CONFIG_CMD_MTEST_ALTERNATIVE=3Dy
-> > > +CONFIG_CMD_MEMTEST=3Dy
-> > why?
-> =
-
-> because MTEST became MEMTEST so as you initialy enabled it, I updated
-> the defconfig to keep the same functionnality.
-> mtest was removed in :
-> 47f9da43801d7a345569a35d23cd49eb355a891a
-> memtest was added in :
-> 842308e29774c577291cae09a8a71ecc3b708b92
-
-so put this in the commit messasge
-
-Best Regards,
-J.
-> =
-
-> > >  CONFIG_CMD_SPLASH=3Dy
-> > >  CONFIG_CMD_TIMEOUT=3Dy
-> > >  CONFIG_CMD_PARTITION=3Dy
-> > > @@ -65,13 +64,17 @@ CONFIG_I2C_GPIO=3Dy
-> > >  CONFIG_MTD=3Dy
-> > >  # CONFIG_MTD_OOB_DEVICE is not set
-> > >  CONFIG_MTD_M25P80=3Dy
-> > > +CONFIG_DRIVER_CFI=3Dy
-> > > +# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
-> > > +# CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
-> > > +CONFIG_CFI_BUFFER_WRITE=3Dy
-> > >  CONFIG_NAND=3Dy
-> > >  # CONFIG_NAND_ECC_SOFT is not set
-> > >  # CONFIG_NAND_ECC_HW_SYNDROME is not set
-> > >  # CONFIG_NAND_ECC_HW_NONE is not set
-> > >  CONFIG_NAND_ATMEL=3Dy
-> > >  CONFIG_NAND_ATMEL_PMECC=3Dy
-> > > -CONFIG_UBI=3Dy
-> > > +CONFIG_MTD_UBI=3Dy
-> =
-
-> same thing here.
-> =
-
-> Eric
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBEZWMgMDksIDIwMTMgYXQgMDM6NTM6NTFQTSArMDEwMCwgRXJpYyBCw6luYXJkIHdy
+b3RlOgo+IEhpIEplYW4tQ2hyaXN0b3BoZSwKPiAKPiBMZSBNb24sIDkgRGVjIDIwMTMgMTQ6MzE6
+MjUgKzAxMDAsCj4gSmVhbi1DaHJpc3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9qQGpj
+cm9zb2Z0LmNvbT4gYSDDqWNyaXQgOgo+IAo+ID4gbW9yZSBjb21tZW50IGhlcmUKPiA+IE9uIDEw
+OjM3IFNhdCAwNyBEZWMgICAgICwgRXJpYyBCPz9uYXJkIHdyb3RlOgo+ID4gPiBTaWduZWQtb2Zm
+LWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiA+ID4gLS0tCj4gPiA+ICBhcmNo
+L2FybS9jb25maWdzL3NhbWE1ZDN4ZWtfZGVmY29uZmlnIHwgOSArKysrKystLS0KPiA+ID4gIDEg
+ZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gPiA+IAo+ID4g
+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vY29uZmlncy9zYW1hNWQzeGVrX2RlZmNvbmZpZyBiL2Fy
+Y2gvYXJtL2NvbmZpZ3Mvc2FtYTVkM3hla19kZWZjb25maWcKPiA+ID4gaW5kZXggOTcwZGVkNS4u
+YmQzMzFjMyAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm0vY29uZmlncy9zYW1hNWQzeGVrX2Rl
+ZmNvbmZpZwo+ID4gPiArKysgYi9hcmNoL2FybS9jb25maWdzL3NhbWE1ZDN4ZWtfZGVmY29uZmln
+Cj4gPiA+IEBAIC00MSw4ICs0MSw3IEBAIENPTkZJR19DTURfVUlNQUdFPXkKPiA+ID4gIENPTkZJ
+R19DTURfUkVTRVQ9eQo+ID4gPiAgQ09ORklHX0NNRF9HTz15Cj4gPiA+ICBDT05GSUdfQ01EX09G
+VFJFRT15Cj4gPiA+IC1DT05GSUdfQ01EX01URVNUPXkKPiA+ID4gLUNPTkZJR19DTURfTVRFU1Rf
+QUxURVJOQVRJVkU9eQo+ID4gPiArQ09ORklHX0NNRF9NRU1URVNUPXkKPiA+IHdoeT8KPiAKPiBi
+ZWNhdXNlIE1URVNUIGJlY2FtZSBNRU1URVNUIHNvIGFzIHlvdSBpbml0aWFseSBlbmFibGVkIGl0
+LCBJIHVwZGF0ZWQKPiB0aGUgZGVmY29uZmlnIHRvIGtlZXAgdGhlIHNhbWUgZnVuY3Rpb25uYWxp
+dHkuCj4gbXRlc3Qgd2FzIHJlbW92ZWQgaW4gOgo+IDQ3ZjlkYTQzODAxZDdhMzQ1NTY5YTM1ZDIz
+Y2Q0OWViMzU1YTg5MWEKPiBtZW10ZXN0IHdhcyBhZGRlZCBpbiA6Cj4gODQyMzA4ZTI5Nzc0YzU3
+NzI5MWNhZTA5YThhNzFlY2MzYjcwOGI5Mgo+IApvaCBkYW1uLCBhbmQgSSB0aG91Z2ggdGhlIGl0
+J3MgYmVjYXVzZSB0aGUgbmV3IG1lbXRlc3QgY29tbWFuZCBpcwpqdXN0IGEgY29vbCBjb21tYW5k
+IHdoaWNoIGV2ZXJ5Ym9keSBuZWVkcy4gOi0pCgotIEFsZXgKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hA
+bGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2JhcmVib3gK
