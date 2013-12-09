@@ -1,13 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x230.google.com ([2a00:1450:400c:c05::230])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VpzrQ-000435-AW
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 12:22:53 +0000
-Received: by mail-wi0-f176.google.com with SMTP id hq4so3659914wib.3
- for <barebox@lists.infradead.org>; Mon, 09 Dec 2013 04:22:29 -0800 (PST)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Mon,  9 Dec 2013 13:15:13 +0100
-Message-Id: <1386591313-15913-1-git-send-email-alex.aring@gmail.com>
+Received: from 16.mo3.mail-out.ovh.net ([188.165.56.217]
+ helo=mo3.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vq0s7-0005Sr-Q8
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:27:40 +0000
+Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 8620EFFA96C
+ for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:27:14 +0100 (CET)
+Date: Mon, 9 Dec 2013 14:27:21 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20131209132721.GG27628@ns203013.ovh.net>
+References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
+ <1386409020-11914-2-git-send-email-eric@eukrea.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1386409020-11914-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,38 +23,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] memtest: add missing newline at usagestring
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] at91: introduce sama5d3's SMC support
+To: Eric B??nard <eric@eukrea.com>
+Cc: barebox@lists.infradead.org
 
-All other commands have a newline at the end of usagestring. Add this
-for memtest as well.
+On 10:36 Sat 07 Dec     , Eric B??nard wrote:
+> there is a new register (timings) vs SAM9 and thus a new mapping
+> =
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- commands/memtest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  arch/arm/mach-at91/generic.h                |   7 ++
+>  arch/arm/mach-at91/include/mach/sama5_smc.h | 124 +++++++++++++++++++++
+>  arch/arm/mach-at91/sama5_smc.c              | 161 ++++++++++++++++++++++=
+++++++
+>  3 files changed, 292 insertions(+)
+>  create mode 100644 arch/arm/mach-at91/include/mach/sama5_smc.h
+>  create mode 100644 arch/arm/mach-at91/sama5_smc.c
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index c82badc..e988132 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -244,7 +244,7 @@ static const __maybe_unused char cmd_memtest_help[] =
- "Usage: memtest [OPTION]...\n"
- "memtest related commands\n"
- "	-i	<iterations>	iterations [default=1, endless=0].\n"
--"	-b			perform only a test on buslines.";
-+"	-b			perform only a test on buslines.\n";
- 
- BAREBOX_CMD_START(memtest)
- 	.cmd		= do_memtest,
--- 
-1.8.5.1
+nack the sama5 smc share part of the same IP as the sam9 do not duplicate c=
+ode
+share it
 
+Best Regards,
+J.
 
 _______________________________________________
 barebox mailing list
