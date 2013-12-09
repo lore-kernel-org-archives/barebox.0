@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq6ap-0007tX-8j
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 19:34:12 +0000
-Date: Mon, 9 Dec 2013 17:57:34 +0100
+ id 1Vq8X8-0002tE-Kl
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 21:38:32 +0000
+Date: Mon, 9 Dec 2013 18:15:49 +0100
 From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20131209175734.4a64df36@e6520eb>
+Message-ID: <20131209181549.55c9abc6@e6520eb>
 In-Reply-To: <20131209163252.GN27628@ns203013.ovh.net>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
  <1386409020-11914-5-git-send-email-eric@eukrea.com>
@@ -50,7 +50,8 @@ Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
 > so this part is useless
 > =
 
-why ?
+I think it's useful to tell the default value used by the other
+reference bootloader.
 
 Eric
 
