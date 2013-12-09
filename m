@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 19.mo3.mail-out.ovh.net ([178.32.98.231]
+Received: from 9.mo3.mail-out.ovh.net ([87.98.184.141]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq0t3-0005V8-A5
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:28:37 +0000
+ id 1Vq0uc-0005We-4V
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:30:14 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id A3ECDFFA9E7
- for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:28:15 +0100 (CET)
-Date: Mon, 9 Dec 2013 14:28:22 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 9CEE0FF8CE8
+ for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:29:52 +0100 (CET)
+Date: Mon, 9 Dec 2013 14:30:01 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131209132822.GH27628@ns203013.ovh.net>
+Message-ID: <20131209133001.GI27628@ns203013.ovh.net>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
- <1386409020-11914-3-git-send-email-eric@eukrea.com>
+ <1386409020-11914-5-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386409020-11914-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1386409020-11914-5-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,61 +27,56 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/7] at91: sama5d3: use the sama5 smc instead of the sam9
- one
+Subject: Re: [PATCH 5/7] atmel_nand: make chip_delay configurable
 To: Eric B??nard <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
 On 10:36 Sat 07 Dec     , Eric B??nard wrote:
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/mach-at91/Kconfig   | 1 -
->  arch/arm/mach-at91/Makefile  | 2 +-
->  arch/arm/mach-at91/sama5d3.c | 2 +-
->  3 files changed, 2 insertions(+), 3 deletions(-)
+> this is usefull for custom boards with different NAND flashs
+> (for informations u-boot defaults chip_delay to 75)
+drop this comment on u-boot as in barebox we use the kernel driver
 > =
 
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index 6ab374e..d411edc 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -24,7 +24,6 @@ config SOC_AT91SAM9
->  config SOC_SAMA5
->  	bool
->  	select CPU_V7
-> -	select AT91SAM9_SMC
-select here I do not want to hack it again when having a new smc
-or a new SoC
->  	select AT91SAM9_TIMER
+> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> ---
+>  arch/arm/mach-at91/include/mach/board.h | 1 +
+>  drivers/mtd/nand/atmel_nand.c           | 5 ++++-
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> =
+
+> diff --git a/arch/arm/mach-at91/include/mach/board.h b/arch/arm/mach-at91=
+/include/mach/board.h
+> index aa0fdae..4e6fa8b 100644
+> --- a/arch/arm/mach-at91/include/mach/board.h
+> +++ b/arch/arm/mach-at91/include/mach/board.h
+> @@ -64,6 +64,7 @@ struct atmel_nand_data {
+>  	u8		ecc_mode;	/* NAND_ECC_* */
+>  	u8		on_flash_bbt;	/* Use flash based bbt */
+>  	u8		bus_on_d0;
+> +	int		chip_delay;
 >  =
 
->  config ARCH_TEXT_BASE
-> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-> index ab80e5f..18d156c 100644
-> --- a/arch/arm/mach-at91/Makefile
-> +++ b/arch/arm/mach-at91/Makefile
-> @@ -30,4 +30,4 @@ obj-$(CONFIG_ARCH_AT91SAM9G20) +=3D at91sam9260.o at91s=
-am9260_devices.o
->  obj-$(CONFIG_ARCH_AT91SAM9G45) +=3D at91sam9g45.o at91sam9g45_devices.o
->  obj-$(CONFIG_ARCH_AT91SAM9X5)	+=3D at91sam9x5.o at91sam9x5_devices.o
->  obj-$(CONFIG_ARCH_AT91SAM9N12)	+=3D at91sam9n12.o at91sam9n12_devices.o
-> -obj-$(CONFIG_ARCH_SAMA5D3)	+=3D sama5d3.o sama5d3_devices.o
-> +obj-$(CONFIG_ARCH_SAMA5D3)	+=3D sama5d3.o sama5d3_devices.o sama5_smc.o
-> diff --git a/arch/arm/mach-at91/sama5d3.c b/arch/arm/mach-at91/sama5d3.c
-> index aa681aa..acbf018 100644
-> --- a/arch/arm/mach-at91/sama5d3.c
-> +++ b/arch/arm/mach-at91/sama5d3.c
-> @@ -386,7 +386,7 @@ static void sama5d3_initialize(void)
->  	at91_add_sam9x5_gpio(4, SAMA5D3_BASE_PIOE);
+>  	u8		pmecc_corr_cap;
+>  	u16		pmecc_sector_size;
+> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
+> index 658ae52..2ff7427 100644
+> --- a/drivers/mtd/nand/atmel_nand.c
+> +++ b/drivers/mtd/nand/atmel_nand.c
+> @@ -1161,7 +1161,10 @@ static int __init atmel_nand_probe(struct device_d=
+ *dev)
+>  		nand_chip->ecc.mode =3D NAND_ECC_HW;
+>  	}
 >  =
 
->  	at91_add_pit(SAMA5D3_BASE_PIT);
-> -	at91_add_sam9_smc(DEVICE_ID_SINGLE, SAMA5D3_BASE_HSMC + 0x600, 0xa0);
-> +	at91_add_sama5_smc(DEVICE_ID_SINGLE, SAMA5D3_BASE_HSMC + 0x600, 0xa0);
->  }
+> -	nand_chip->chip_delay =3D 20;		/* 20us command delay time */
+> +	if (host->board->chip_delay > 0)
+> +		nand_chip->chip_delay =3D host->board->chip_delay;
+> +	else
+> +		nand_chip->chip_delay =3D 20;		/* 20us command delay time */
 >  =
 
->  AT91_SOC_START(sama5d3)
+>  	if (host->board->bus_width_16) {	/* 16-bit bus width */
+>  		nand_chip->options |=3D NAND_BUSWIDTH_16;
 > -- =
 
 > 1.8.3.1
