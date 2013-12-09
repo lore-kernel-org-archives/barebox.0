@@ -1,20 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 20.mo3.mail-out.ovh.net ([178.33.47.94]
+Received: from 6.mo3.mail-out.ovh.net ([188.165.43.173]
  helo=mo3.mail-out.ovh.net)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq0vz-0005YD-Ut
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:31:41 +0000
+ id 1Vq0wO-0005Yl-KD
+ for barebox@lists.infradead.org; Mon, 09 Dec 2013 13:32:05 +0000
 Received: from mail187.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 1E497FFA470
- for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:31:18 +0100 (CET)
-Date: Mon, 9 Dec 2013 14:31:25 +0100
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 105D6FFA560
+ for <barebox@lists.infradead.org>; Mon,  9 Dec 2013 14:31:43 +0100 (CET)
+Date: Mon, 9 Dec 2013 14:31:50 +0100
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20131209133125.GJ27628@ns203013.ovh.net>
+Message-ID: <20131209133150.GK27628@ns203013.ovh.net>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
- <1386409020-11914-7-git-send-email-eric@eukrea.com>
+ <20131209083657.GM24559@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386409020-11914-7-git-send-email-eric@eukrea.com>
+In-Reply-To: <20131209083657.GM24559@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,64 +27,80 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 7/7] samsa5d3xek: update defconfig
-To: Eric B??nard <eric@eukrea.com>
+Subject: Re: [PATCH 1/7] atmel_nand: check gpio validity before using it
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-more comment here
-On 10:37 Sat 07 Dec     , Eric B??nard wrote:
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> ---
->  arch/arm/configs/sama5d3xek_defconfig | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
+On 09:36 Mon 09 Dec     , Sascha Hauer wrote:
 > =
 
-> diff --git a/arch/arm/configs/sama5d3xek_defconfig b/arch/arm/configs/sam=
-a5d3xek_defconfig
-> index 970ded5..bd331c3 100644
-> --- a/arch/arm/configs/sama5d3xek_defconfig
-> +++ b/arch/arm/configs/sama5d3xek_defconfig
-> @@ -41,8 +41,7 @@ CONFIG_CMD_UIMAGE=3Dy
->  CONFIG_CMD_RESET=3Dy
->  CONFIG_CMD_GO=3Dy
->  CONFIG_CMD_OFTREE=3Dy
-> -CONFIG_CMD_MTEST=3Dy
-> -CONFIG_CMD_MTEST_ALTERNATIVE=3Dy
-> +CONFIG_CMD_MEMTEST=3Dy
-why?
->  CONFIG_CMD_SPLASH=3Dy
->  CONFIG_CMD_TIMEOUT=3Dy
->  CONFIG_CMD_PARTITION=3Dy
-> @@ -65,13 +64,17 @@ CONFIG_I2C_GPIO=3Dy
->  CONFIG_MTD=3Dy
->  # CONFIG_MTD_OOB_DEVICE is not set
->  CONFIG_MTD_M25P80=3Dy
-> +CONFIG_DRIVER_CFI=3Dy
-> +# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
-> +# CONFIG_DRIVER_CFI_BANK_WIDTH_4 is not set
-> +CONFIG_CFI_BUFFER_WRITE=3Dy
->  CONFIG_NAND=3Dy
->  # CONFIG_NAND_ECC_SOFT is not set
->  # CONFIG_NAND_ECC_HW_SYNDROME is not set
->  # CONFIG_NAND_ECC_HW_NONE is not set
->  CONFIG_NAND_ATMEL=3Dy
->  CONFIG_NAND_ATMEL_PMECC=3Dy
-> -CONFIG_UBI=3Dy
-> +CONFIG_MTD_UBI=3Dy
->  CONFIG_VIDEO=3Dy
->  CONFIG_DRIVER_VIDEO_ATMEL_HLCD=3Dy
->  CONFIG_MCI=3Dy
+> The series looks fine for me. Jean-Christophe?
+
+small issues
+> =
+
+> Sascha
+> =
+
+> On Sat, Dec 07, 2013 at 10:36:54AM +0100, Eric B=E9nard wrote:
+> > else we get : "invalid GPIO -22"
+> > (as enable_pin is EINVAL)
+> > =
+
+> > tested on SAMA5D35
+> > =
+
+> > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> > ---
+> >  drivers/mtd/nand/atmel_nand.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > =
+
+> > diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nan=
+d.c
+> > index a0f0966..658ae52 100644
+> > --- a/drivers/mtd/nand/atmel_nand.c
+> > +++ b/drivers/mtd/nand/atmel_nand.c
+> > @@ -107,7 +107,7 @@ static struct nand_ecclayout atmel_pmecc_oobinfo;
+> >   */
+> >  static void atmel_nand_enable(struct atmel_nand_host *host)
+> >  {
+> > -	if (host->board->enable_pin)
+> > +	if (gpio_is_valid(host->board->enable_pin))
+> >  		gpio_set_value(host->board->enable_pin, 0);
+> >  }
+> >  =
+
+> > @@ -116,7 +116,7 @@ static void atmel_nand_enable(struct atmel_nand_hos=
+t *host)
+> >   */
+> >  static void atmel_nand_disable(struct atmel_nand_host *host)
+> >  {
+> > -	if (host->board->enable_pin)
+> > +	if (gpio_is_valid(host->board->enable_pin))
+> >  		gpio_set_value(host->board->enable_pin, 1);
+> >  }
+> >  =
+
+> > -- =
+
+> > 1.8.3.1
+> > =
+
+> > =
+
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
 > -- =
 
-> 1.8.3.1
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
