@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqHwK-0005UD-Cq
- for barebox@lists.infradead.org; Tue, 10 Dec 2013 07:41:09 +0000
-Date: Tue, 10 Dec 2013 08:40:46 +0100
+ id 1VqHyB-0005X5-1w
+ for barebox@lists.infradead.org; Tue, 10 Dec 2013 07:43:03 +0000
+Date: Tue, 10 Dec 2013 08:42:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131210074046.GS24559@pengutronix.de>
-References: <1386581938-9663-1-git-send-email-u74147@gmail.com>
+Message-ID: <20131210074240.GT24559@pengutronix.de>
+References: <1386598214-9489-1-git-send-email-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386581938-9663-1-git-send-email-u74147@gmail.com>
+In-Reply-To: <1386598214-9489-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,32 +22,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] scripts: add arch/x86/lib/barebox.lds to gitignore
-To: Du Huanpeng <u74147@gmail.com>
+Subject: Re: [PATCH 0/3] Socfpga: update preloader files - The missing link
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Dec 09, 2013 at 01:38:58AM -0800, Du Huanpeng wrote:
-> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+On Mon, Dec 09, 2013 at 03:10:11PM +0100, Steffen Trumtrar wrote:
+> Hi!
+> 
+> This is an addon to the series
+> 
+> 	SOCFPGA: update to v13.1 preloader files
+> 
+> The last series was actually missing a rather important update to the
+> iocsr setup.
+> The current barebox version produces a (memory?)setup, that leads to
+> an unstable linux kernel. Namely: page alloc errors, kmemleaks and
+> NULL pointer dereferences on the Terasic SoCkit. The EBV Socrates didn't
+> show these errors.
+> 
+> Something in those magic numbers in patch 2/3 seems to fix this,
+> as these problems haven't been seen as of yet with this new setup.
+> 
+> Regards,
+> Steffen
+> 
+> Steffen Trumtrar (3):
+>   ARM: socfpga: sockit: update sdram config
+>   ARM: socfpga: update iocsr config
+>   ARM: socfpga: sockit: reconfigure src for sdmmc
 
 Applied, thanks
 
 Sascha
 
-> ---
->  arch/x86/lib/.gitignore |    2 ++
->  1 file changed, 2 insertions(+)
->  create mode 100644 arch/x86/lib/.gitignore
 > 
-> diff --git a/arch/x86/lib/.gitignore b/arch/x86/lib/.gitignore
-> new file mode 100644
-> index 0000000..542522e
-> --- /dev/null
-> +++ b/arch/x86/lib/.gitignore
-> @@ -0,0 +1,2 @@
-> +barebox.lds
-> +
+>  arch/arm/boards/terasic-sockit/pll_config.h   |   2 +-
+>  arch/arm/boards/terasic-sockit/sdram_config.h |  21 +-
+>  arch/arm/mach-socfpga/iocsr-config-cyclone5.c | 418 +++++++++++++-------------
+>  3 files changed, 223 insertions(+), 218 deletions(-)
+> 
 > -- 
-> 1.7.9.5
+> 1.8.4.3
 > 
 > 
 > _______________________________________________
