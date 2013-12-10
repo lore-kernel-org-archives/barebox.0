@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp2-g21.free.fr ([2a01:e0c:1:1599::11])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vq8X8-0002tE-Kl
- for barebox@lists.infradead.org; Mon, 09 Dec 2013 21:38:32 +0000
-Date: Mon, 9 Dec 2013 18:15:49 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20131209181549.55c9abc6@e6520eb>
-In-Reply-To: <20131209163252.GN27628@ns203013.ovh.net>
-References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
- <1386409020-11914-5-git-send-email-eric@eukrea.com>
- <20131209133001.GI27628@ns203013.ovh.net>
- <20131209155441.031ab16f@e6520eb>
- <20131209163252.GN27628@ns203013.ovh.net>
-Mime-Version: 1.0
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VqFUF-0003ar-9p
+ for barebox@lists.infradead.org; Tue, 10 Dec 2013 05:04:00 +0000
+Received: by mail-la0-f47.google.com with SMTP id ep20so2247258lab.6
+ for <barebox@lists.infradead.org>; Mon, 09 Dec 2013 21:03:36 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 10 Dec 2013 09:10:55 +0400
+Message-Id: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,39 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 5/7] atmel_nand: make chip_delay configurable
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
+To: barebox@lists.infradead.org
 
-Le Mon, 9 Dec 2013 17:32:52 +0100,
-Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/lib/csrc-r4k.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> On 15:54 Mon 09 Dec     , Eric B??nard wrote:
-> > Le Mon, 9 Dec 2013 14:30:01 +0100,
-> > Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> a =E9crit :
-> > =
+diff --git a/arch/mips/lib/csrc-r4k.c b/arch/mips/lib/csrc-r4k.c
+index 2978fcf..c699f2b 100644
+--- a/arch/mips/lib/csrc-r4k.c
++++ b/arch/mips/lib/csrc-r4k.c
+@@ -32,7 +32,7 @@ static uint64_t c0_hpt_read(void)
+ 
+ static struct clocksource cs = {
+ 	.read	= c0_hpt_read,
+-	.mask	= 0xffffffff,
++	.mask	= CLOCKSOURCE_MASK(32),
+ };
+ 
+ static int clocksource_init(void)
+-- 
+1.8.5
 
-> > > On 10:36 Sat 07 Dec     , Eric B??nard wrote:
-> > > > this is usefull for custom boards with different NAND flashs
-> > > > (for informations u-boot defaults chip_delay to 75)
-> > > drop this comment on u-boot as in barebox we use the kernel driver
-> > =
-
-> > that's an information which can be usefull for other users on custom
-> > boards. Sorry if you don't like to read the word "u-boot" ;-)
-> =
-
-> so this part is useless
-> =
-
-I think it's useful to tell the default value used by the other
-reference bootloader.
-
-Eric
 
 _______________________________________________
 barebox mailing list
