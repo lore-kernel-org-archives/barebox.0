@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqOKV-0000aq-D0
- for barebox@lists.infradead.org; Tue, 10 Dec 2013 14:30:33 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id B0A82BF0F8
- for <barebox@lists.infradead.org>; Tue, 10 Dec 2013 14:30:58 +0100 (CET)
-From: y@numalfix.phytec.de
-Date: Tue, 10 Dec 2013 15:30:09 +0100
-Message-Id: <1386685809-21530-3-git-send-email-y>
-In-Reply-To: <1386685809-21530-1-git-send-email-y>
-References: <1386685809-21530-1-git-send-email-y>
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VqP4G-0002gO-GQ
+ for barebox@lists.infradead.org; Tue, 10 Dec 2013 15:17:49 +0000
+Received: by mail-la0-f41.google.com with SMTP id eo20so2803152lab.0
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2013 07:17:26 -0800 (PST)
+Date: Tue, 10 Dec 2013 19:24:40 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20131210192440.cbffc0bed7dd71d3f0e36f79@gmail.com>
+In-Reply-To: <CACTZKX6kectn-z1NUJFjb=ycM9NTFuVUKmb8xU80k4wbp6DKqA@mail.gmail.com>
+References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
+ <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
+ <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
+ <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
+ <20131206123925.GD24559@pengutronix.de>
+ <20131206124327.GA22853@omega>
+ <CACTZKX6kectn-z1NUJFjb=ycM9NTFuVUKmb8xU80k4wbp6DKqA@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,89 +25,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: OMAP: early call am33xx_register_ethaddr
-To: barebox@lists.infradead.org
+Subject: Re: How to debug Ethernet connectivity
+To: Atilla Filiz <atilla.filiz@gmail.com>
+Cc: barebox@lists.infradead.org
 
-From: Jan Weitzel <j.weitzel@phytec.de>
+On Tue, 10 Dec 2013 14:31:23 +0100
+Atilla Filiz <atilla.filiz@gmail.com> wrote:
 
-am33xx_register_ethaddr must be called before cpsw driver start.
-Move it from devices_initcall to coredevice_initcall.
+> Ok, then my problem is slightly more clear, that /dev/phy0 does not exist.
+> I do define a struct fec_platform_data with
+> xcv_type=3DPHY_INTERFACE_MODE_MII and register it via imx27_add_fec().
+> =
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
----
- arch/arm/boards/beaglebone/board.c |   12 ++++++++++--
- arch/arm/boards/pcm051/board.c     |   13 +++++++++++--
- 2 files changed, 21 insertions(+), 4 deletions(-)
+> Now I need to find out why it fails to register the device.
 
-diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
-index 439c4c2..6445d81 100644
---- a/arch/arm/boards/beaglebone/board.c
-+++ b/arch/arm/boards/beaglebone/board.c
-@@ -40,6 +40,16 @@
- 
- #include "beaglebone.h"
- 
-+static int beaglebone_coredevice_init(void)
-+{
-+	if (!of_machine_is_compatible("ti,am335x-bone"))
-+		return 0;
-+
-+	am33xx_register_ethaddr(0, 0);
-+	return 0;
-+}
-+coredevice_initcall(beaglebone_coredevice_init);
-+
- static int beaglebone_devices_init(void)
- {
- 	int black;
-@@ -54,8 +64,6 @@ static int beaglebone_devices_init(void)
- 			omap_set_bootmmc_devname("mmc1");
- 	}
- 
--	am33xx_register_ethaddr(0, 0);
--
- 	black = is_beaglebone_black();
- 
- 	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
-diff --git a/arch/arm/boards/pcm051/board.c b/arch/arm/boards/pcm051/board.c
-index 91e8208..60f00bb 100644
---- a/arch/arm/boards/pcm051/board.c
-+++ b/arch/arm/boards/pcm051/board.c
-@@ -30,6 +30,17 @@
- #include <mach/am33xx-silicon.h>
- #include <mach/bbu.h>
- 
-+
-+static int pcm051_coredevice_init(void)
-+{
-+	if (!of_machine_is_compatible("phytec,pcm051"))
-+		return 0;
-+
-+	am33xx_register_ethaddr(0, 0);
-+	return 0;
-+}
-+coredevice_initcall(pcm051_coredevice_init);
-+
- static struct omap_barebox_part pcm051_barebox_part = {
- 	.nand_offset = SZ_512K,
- 	.nand_size = SZ_512K,
-@@ -42,8 +53,6 @@ static int pcm051_devices_init(void)
- 	if (!of_machine_is_compatible("phytec,pcm051"))
- 		return 0;
- 
--	am33xx_register_ethaddr(0, 0);
--
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_SPI:
- 		of_device_enable_path("/chosen/environment-spi");
--- 
-1.7.0.4
+There is issue with current barebox.
 
+The /dev/phy0 device is unavailable till you use network.
+You can use this (ugly!) way
+  So just after boot type 'dhcp', next type 'ctrl-c' to interrupt dhcp and =
+check /dev/phy0 presence.
+
+> On Fri, Dec 6, 2013 at 1:43 PM, Alexander Aring <alex.aring@gmail.com> wr=
+ote:
+> > On Fri, Dec 06, 2013 at 01:39:25PM +0100, Sascha Hauer wrote:
+> >> On Fri, Dec 06, 2013 at 01:18:52PM +0100, Atilla Filiz wrote:
+> >> > Sorry, figured it out. Just most verbose output is funny as well:
+> >> > :/ miitool -vvv /dev/mc13xxx
+> >>
+> >> Don't know what miitool does in this case, but mc13xxx is not your phy,
+> >> it's your PMIC.
+> >>
+> >
+> > oh, doesn't realize that :D. So reading zeros can make sense in some
+> > offset. :-)
+> >
+> > - Alex
+> =
+
+> =
+
+> =
+
+> -- =
+
+> Atilla Filiz
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
