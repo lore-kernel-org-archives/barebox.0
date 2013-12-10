@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqP4G-0002gO-GQ
- for barebox@lists.infradead.org; Tue, 10 Dec 2013 15:17:49 +0000
-Received: by mail-la0-f41.google.com with SMTP id eo20so2803152lab.0
- for <barebox@lists.infradead.org>; Tue, 10 Dec 2013 07:17:26 -0800 (PST)
-Date: Tue, 10 Dec 2013 19:24:40 +0400
+ id 1VqP9h-0002yo-93
+ for barebox@lists.infradead.org; Tue, 10 Dec 2013 15:23:26 +0000
+Received: by mail-la0-f49.google.com with SMTP id er20so2789970lab.36
+ for <barebox@lists.infradead.org>; Tue, 10 Dec 2013 07:23:03 -0800 (PST)
+Date: Tue, 10 Dec 2013 19:30:29 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20131210192440.cbffc0bed7dd71d3f0e36f79@gmail.com>
+Message-Id: <20131210193029.a3c2a0f833beeb35dee5ccfc@gmail.com>
 In-Reply-To: <CACTZKX6kectn-z1NUJFjb=ycM9NTFuVUKmb8xU80k4wbp6DKqA@mail.gmail.com>
 References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
  <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
@@ -43,12 +43,19 @@ Atilla Filiz <atilla.filiz@gmail.com> wrote:
 
 > Now I need to find out why it fails to register the device.
 
-There is issue with current barebox.
+There is an issue with current barebox.
 
-The /dev/phy0 device is unavailable till you use network.
-You can use this (ugly!) way
-  So just after boot type 'dhcp', next type 'ctrl-c' to interrupt dhcp and =
-check /dev/phy0 presence.
+The /dev/phy0 device not present just after boot. You need somehow to use n=
+etwork
+to make it appeared.
+
+Use this [ugly!] method:
+  Run barebox on your board. Just after boot /dev/phy0 is absent.
+  So run 'dhcp' command. In a few seconds press "ctrl-c" to interrupt it.
+  Check /dev/phy0 presence.
+
+ =
+
 
 > On Fri, Dec 6, 2013 at 1:43 PM, Alexander Aring <alex.aring@gmail.com> wr=
 ote:
