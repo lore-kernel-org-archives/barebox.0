@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqiAf-0000hI-PK
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 11:41:49 +0000
+ id 1VqiAf-0000hN-PS
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 11:41:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Dec 2013 12:41:09 +0100
-Message-Id: <1386762077-23205-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 11 Dec 2013 12:41:14 +0100
+Message-Id: <1386762077-23205-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
 References: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,99 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] net: phy: cleanup attached device handling
+Subject: [PATCH 6/9] net: phy: move phy_init_hw to phy_device_connect
 To: barebox@lists.infradead.org
 
-phy_register_device() currently requires an attached ethernet device.
-This is not needed, a phy device can equally well be registered as
-a standalone device without an ethernet device. Remove the need
-for an attached ethernet device in phy_register_device. Also, make
-the edev <-> phy connection on a registered device which simplifies
-the code.
+This is needed when a phy gets registered outsize of phy_device_connect
+but has to be attached to an ethernet device later.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c |  4 ----
- drivers/net/phy/phy.c      | 14 +++-----------
- 2 files changed, 3 insertions(+), 15 deletions(-)
+ drivers/net/phy/mdio_bus.c | 8 --------
+ drivers/net/phy/phy.c      | 9 +++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 87072be..b0fbf2d 100644
+index b0fbf2d..84c05ad 100644
 --- a/drivers/net/phy/mdio_bus.c
 +++ b/drivers/net/phy/mdio_bus.c
-@@ -153,8 +153,6 @@ static int mdio_bus_probe(struct device_d *_dev)
+@@ -181,14 +181,6 @@ static int mdio_bus_probe(struct device_d *_dev)
+ 	dev->supported = drv->features;
+ 	dev->advertising = drv->features;
  
- 	int ret;
- 
--	dev->attached_dev->phydev = dev;
+-	ret = phy_init_hw(dev);
+-	if (ret)
+-		goto err;
 -
- 	if (drv->probe) {
- 		ret = drv->probe(dev);
- 		if (ret)
-@@ -204,8 +202,6 @@ static int mdio_bus_probe(struct device_d *_dev)
- 	return 0;
- 
- err:
--	dev->attached_dev->phydev = NULL;
--	dev->attached_dev = NULL;
- 	return ret;
- }
+-	/* Sanitize settings based on PHY capabilities */
+-	if ((dev->supported & SUPPORTED_Autoneg) == 0)
+-		dev->autoneg = AUTONEG_DISABLE;
+-
+ 	dev_add_param_int_ro(&dev->dev, "phy_addr", dev->addr, "%d");
+ 	dev_add_param_int_ro(&dev->dev, "phy_id", dev->phy_id, "0x%08x");
  
 diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 2a33054..d8966cd 100644
+index 74ef3d9..b05a313 100644
 --- a/drivers/net/phy/phy.c
 +++ b/drivers/net/phy/phy.c
-@@ -228,7 +228,7 @@ static int phy_register_device(struct phy_device* dev)
- {
- 	int ret;
+@@ -306,6 +306,15 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
  
--	dev->dev.parent = &dev->attached_dev->dev;
-+	dev->dev.parent = &dev->bus->dev;
+ 	edev->phydev = dev;
+ 	dev->attached_dev = edev;
++
++	ret = phy_init_hw(dev);
++	if (ret)
++		goto fail;
++
++	/* Sanitize settings based on PHY capabilities */
++	if ((dev->supported & SUPPORTED_Autoneg) == 0)
++		dev->autoneg = AUTONEG_DISABLE;
++
+ 	phy_config_aneg(edev->phydev);
  
- 	ret = register_device(&dev->dev);
- 	if (ret)
-@@ -259,7 +259,6 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 				goto fail;
- 			}
- 
--			dev->attached_dev = edev;
- 			dev->interface = interface;
- 			dev->dev_flags = flags;
- 
-@@ -276,7 +275,6 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 				if (IS_ERR(dev) || dev->attached_dev)
- 					continue;
- 
--				dev->attached_dev = edev;
- 				dev->interface = interface;
- 				dev->dev_flags = flags;
- 
-@@ -287,14 +285,10 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 				break;
- 			}
- 		}
--
--		if (!edev->phydev) {
--			ret = -EIO;
--			goto fail;
--		}
- 	}
- 
--	dev = edev->phydev;
-+	edev->phydev = dev;
-+	dev->attached_dev = edev;
- 	drv = to_phy_driver(dev->dev.driver);
- 
- 	drv->config_aneg(dev);
-@@ -304,8 +298,6 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 	return 0;
- 
- fail:
--	if (!IS_ERR(dev))
--		dev->attached_dev = NULL;
- 	puts("Unable to find a PHY (unknown ID?)\n");
- 	return ret;
- }
+ 	dev->adjust_link = adjust_link;
 -- 
 1.8.5.1
 
