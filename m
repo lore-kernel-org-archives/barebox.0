@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqgzP-00068W-QD
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 10:26:00 +0000
-Date: Wed, 11 Dec 2013 11:25:34 +0100
+ id 1Vqh2K-0006F0-K3
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 10:29:01 +0000
+Date: Wed, 11 Dec 2013 11:28:37 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131211102534.GB24559@pengutronix.de>
+Message-ID: <20131211102837.GC24559@pengutronix.de>
 References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
  <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
  <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
@@ -13,10 +13,12 @@ References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
  <20131206123925.GD24559@pengutronix.de>
  <20131206124327.GA22853@omega>
  <CACTZKX6kectn-z1NUJFjb=ycM9NTFuVUKmb8xU80k4wbp6DKqA@mail.gmail.com>
- <20131210193029.a3c2a0f833beeb35dee5ccfc@gmail.com>
+ <20131210192440.cbffc0bed7dd71d3f0e36f79@gmail.com>
+ <20131210174536.GA7305@omega>
+ <CACTZKX7=ycyAhZxHsJ7k6K23HmMOsuYUVFYV8JFFmhr5=g8vyg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20131210193029.a3c2a0f833beeb35dee5ccfc@gmail.com>
+In-Reply-To: <CACTZKX7=ycyAhZxHsJ7k6K23HmMOsuYUVFYV8JFFmhr5=g8vyg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,34 +32,27 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: How to debug Ethernet connectivity
-To: Antony Pavlov <antonynpavlov@gmail.com>
+To: Atilla Filiz <atilla.filiz@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 10, 2013 at 07:30:29PM +0400, Antony Pavlov wrote:
-> On Tue, 10 Dec 2013 14:31:23 +0100
-> Atilla Filiz <atilla.filiz@gmail.com> wrote:
+On Wed, Dec 11, 2013 at 10:39:17AM +0100, Atilla Filiz wrote:
+> My problem is, /dev/phy0 never appears when I give the correct phy address.
 > 
-> > Ok, then my problem is slightly more clear, that /dev/phy0 does not exist.
-> > I do define a struct fec_platform_data with
-> > xcv_type=PHY_INTERFACE_MODE_MII and register it via imx27_add_fec().
-> > 
-> > Now I need to find out why it fails to register the device.
+> Unable to find a PHY (unknown ID?)
+> dhcp failed: I/O error
+> dhcp: I/O error
 > 
-> There is an issue with current barebox.
-> 
-> The /dev/phy0 device not present just after boot. You need somehow to use network
-> to make it appeared.
-> 
-> Use this [ugly!] method:
->   Run barebox on your board. Just after boot /dev/phy0 is absent.
->   So run 'dhcp' command. In a few seconds press "ctrl-c" to interrupt it.
->   Check /dev/phy0 presence.
+> Also, fec_probe function for fec_imx driver never gets called.
 
-This is really annoying and something which I'd like to have fixed for longer.
-I'm currently working my way through the phy layer to fix that.
+If that's the case...
+
+> Ironically, I do not get an I/O error when I give the wrong phy
+> address. Still nothing gets detected and no device node appears, but
+> ethernet works(by forcing the line detect functions to return 0).
+
+...your ethernet can't possibly work.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
