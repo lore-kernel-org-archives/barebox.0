@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from [2a01:e0c:1:1599:215:17ff:fe31:f1c] (helo=smtp1-g21.free.fr)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqoT2-00049n-F4
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 18:25:06 +0000
-Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
- by smtp1-g21.free.fr (Postfix) with ESMTP id 78B8A940058
- for <barebox@lists.infradead.org>; Wed, 11 Dec 2013 19:24:32 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Wed, 11 Dec 2013 19:24:27 +0100
-Message-Id: <1386786267-6462-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VqrFC-0000xZ-93
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 21:22:58 +0000
+Received: by mail-la0-f45.google.com with SMTP id eh20so4264603lab.32
+ for <barebox@lists.infradead.org>; Wed, 11 Dec 2013 13:22:33 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Thu, 12 Dec 2013 01:29:55 +0400
+Message-Id: <1386797395-28878-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +16,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] nand_imx: fix read ONFI param on NFC v21
+Subject: [PATCH] of: gpio: Fix Kconfig variables to depend on
 To: barebox@lists.infradead.org
 
-dGVzdGVkIG9uIGFuIGkuTVgyNSB3aGVyZSB3ZSBub3cgZ2V0IDoKbmFuZDogT05GSSBwYXJhbSBw
-YWdlIDAgdmFsaWQKbmFuZDogT05GSSBmbGFzaCBkZXRlY3RlZApuYW5kOiBOQU5EIGRldmljZTog
-TWFudWZhY3R1cmVyIElEOiAweDJjLCBDaGlwIElEOiAweGRhIChNaWNyb24gTVQyOUYyRzA4QUJB
-RUFXUCksIDI1Nk1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKClNpZ25lZC1vZmYt
-Ynk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvbXRkL25hbmQv
-bmFuZF9pbXguYyB8IDI1ICsrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
-LCA5IGluc2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-bXRkL25hbmQvbmFuZF9pbXguYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwppbmRleCA5
-NjViNDFlLi5mZDU3YjRkIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfaW14LmMK
-KysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteC5jCkBAIC00MDMsMTIgKzQwMywxNSBAQCBz
-dGF0aWMgdm9pZCBzZW5kX3JlYWRfaWRfdjFfdjIoc3RydWN0IGlteF9uYW5kX2hvc3QgKmhvc3Qp
-CiAJbWVtY3B5MzIoaG9zdC0+ZGF0YV9idWYsIGhvc3QtPm1haW5fYXJlYTAsIDE2KTsKIH0KIAot
-LyogRklYTUUgOiB0byBjaGVjayBvbiByZWFsIEhXICovCiBzdGF0aWMgdm9pZCBzZW5kX3JlYWRf
-cGFyYW1fdjFfdjIoc3RydWN0IGlteF9uYW5kX2hvc3QgKmhvc3QpCiB7CiAJc3RydWN0IG5hbmRf
-Y2hpcCAqdGhpcyA9ICZob3N0LT5uYW5kOworCXUzMiBiYWNrdXAgPSByZWFkdyhob3N0LT5yZWdz
-ICsgTkZDX1YxX1YyX0NPTkZJRzEpOwogCi0JLyogTkFOREZDIGJ1ZmZlciAwIGlzIHVzZWQgZm9y
-IGRldmljZSBJRCBvdXRwdXQgKi8KKwkvKiBUZW1wb3JhcnkgZGlzYWJsZSBFQ0MgdG8gYmUgYWJs
-ZSB0byByZWFkIHBhcmFtIHBhZ2UgKi8KKwl3cml0ZXcoYmFja3VwICYgfk5GQ19WMV9WMl9DT05G
-SUcxX0VDQ19FTiwgaG9zdC0+cmVncyArIE5GQ19WMV9WMl9DT05GSUcxKTsKKworCS8qIE5BTkRG
-QyBidWZmZXIgMCBpcyB1c2VkIGZvciBwYXJhbSBvdXRwdXQgKi8KIAl3cml0ZXcoMHgwLCBob3N0
-LT5yZWdzICsgTkZDX1YxX1YyX0JVRl9BRERSKTsKIAogCXdyaXRldyhORkNfT1VUUFVULCBob3N0
-LT5yZWdzICsgTkZDX1YxX1YyX0NPTkZJRzIpOwpAQCAtNDE2LDIwICs0MTksMTAgQEAgc3RhdGlj
-IHZvaWQgc2VuZF9yZWFkX3BhcmFtX3YxX3YyKHN0cnVjdCBpbXhfbmFuZF9ob3N0ICpob3N0KQog
-CS8qIFdhaXQgZm9yIG9wZXJhdGlvbiB0byBjb21wbGV0ZSAqLwogCXdhaXRfb3BfZG9uZShob3N0
-KTsKIAotCWlmICh0aGlzLT5vcHRpb25zICYgTkFORF9CVVNXSURUSF8xNikgewotCQl2b2xhdGls
-ZSB1MTYgKm1haW5idWYgPSBob3N0LT5tYWluX2FyZWEwOwotCi0JCS8qCi0JCSAqIFBhY2sgdGhl
-IGV2ZXJ5LW90aGVyLWJ5dGUgcmVzdWx0IGZvciAxNi1iaXQgSUQgcmVhZHMKLQkJICogaW50byBl
-dmVyeS1ieXRlIGFzIHRoZSBnZW5lcmljIGNvZGUgZXhwZWN0cyBhbmQgdmFyaW91cwotCQkgKiBj
-aGlwcyBpbXBsZW1lbnQuCi0JCSAqLwotCi0JCW1haW5idWZbMF0gPSAobWFpbmJ1ZlswXSAmIDB4
-ZmYpIHwgKChtYWluYnVmWzFdICYgMHhmZikgPDwgOCk7Ci0JCW1haW5idWZbMV0gPSAobWFpbmJ1
-ZlsyXSAmIDB4ZmYpIHwgKChtYWluYnVmWzNdICYgMHhmZikgPDwgOCk7Ci0JCW1haW5idWZbMl0g
-PSAobWFpbmJ1Zls0XSAmIDB4ZmYpIHwgKChtYWluYnVmWzVdICYgMHhmZikgPDwgOCk7Ci0JfQog
-CW1lbWNweTMyKGhvc3QtPmRhdGFfYnVmLCBob3N0LT5tYWluX2FyZWEwLCAxMDI0KTsKKworCS8q
-IFJlc3RvcmUgb3JpZ2luYWwgQ09ORklHMSB2YWx1ZSAqLworCXdyaXRldyhiYWNrdXAsIGhvc3Qt
-PnJlZ3MgKyBORkNfVjFfVjJfQ09ORklHMSk7CiB9CiAvKgogICogVGhpcyBmdW5jdGlvbiByZXF1
-ZXN0cyB0aGUgTkFOREZDIHRvIHBlcmZvcm0gYSByZWFkIG9mIHRoZQpAQCAtMTE0Nyw3ICsxMTQw
-LDcgQEAgc3RhdGljIGludCBfX2luaXQgaW14bmRfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
-CiAJCWhvc3QtPnNlbmRfYWRkciA9IHNlbmRfYWRkcl92MV92MjsKIAkJaG9zdC0+c2VuZF9wYWdl
-ID0gc2VuZF9wYWdlX3YxX3YyOwogCQlob3N0LT5zZW5kX3JlYWRfaWQgPSBzZW5kX3JlYWRfaWRf
-djFfdjI7Ci0JCWhvc3QtPnNlbmRfcmVhZF9wYXJhbSA9IHNlbmRfcmVhZF9wYXJhbV92MV92Mjsg
-LyogRklYTUUgOiB0byBjaGVjayAqLworCQlob3N0LT5zZW5kX3JlYWRfcGFyYW0gPSBzZW5kX3Jl
-YWRfcGFyYW1fdjFfdjI7CiAJCWhvc3QtPmdldF9kZXZfc3RhdHVzID0gZ2V0X2Rldl9zdGF0dXNf
-djFfdjI7CiAJCWhvc3QtPmNoZWNrX2ludCA9IGNoZWNrX2ludF92MV92MjsKIAl9Ci0tIAoxLjgu
-My4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
-ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
-cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/of/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index cdf7ac7..c4525cb 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -20,8 +20,8 @@ config OF_NET
+ 	def_bool y
+ 
+ config OF_GPIO
+-	depends on CONFIG_GPIOLIB
+-	depends on CONFIG_OFDEVICE
++	depends on GPIOLIB
++	depends on OFDEVICE
+ 	def_bool y
+ 
+ config OF_BAREBOX_DRIVERS
+-- 
+1.8.5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
