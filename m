@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqiAk-0000hS-Ck
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 11:41:49 +0000
+ id 1VqiAf-0000hM-PT
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 11:41:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 11 Dec 2013 12:41:15 +0100
-Message-Id: <1386762077-23205-8-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 11 Dec 2013 12:41:13 +0100
+Message-Id: <1386762077-23205-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
 References: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,73 +21,82 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/9] net: phy: Track mii buses on a list
+Subject: [PATCH 5/9] net: phy: track registered state of a phy device
 To: barebox@lists.infradead.org
 
-To be able to iterate over registered mii buses
+With this phy_device_connect only registers a phy device if it wasn't
+registered already. This allows us to register phy devices outside
+of ethernet drivers. phy_device_connect will now pick up an already
+registered phy given that it's not attached to another ethernet device.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 6 ++++++
- include/linux/phy.h        | 7 +++++++
- 2 files changed, 13 insertions(+)
+ drivers/net/phy/phy.c | 21 +++++++++++++++++----
+ include/linux/phy.h   |  2 ++
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index 84c05ad..56cb9b2 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -25,6 +25,8 @@
- #include <linux/phy.h>
- #include <linux/err.h>
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 37f6647..74ef3d9 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -236,17 +236,28 @@ static int phy_register_device(struct phy_device* dev)
+ {
+ 	int ret;
  
-+LIST_HEAD(mii_bus_list);
++	if (dev->registered)
++		return -EBUSY;
 +
- /**
-  * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
-  * @bus: target mii_bus
-@@ -57,6 +59,8 @@ int mdiobus_register(struct mii_bus *bus)
- 	if (bus->reset)
- 		bus->reset(bus);
+ 	dev->dev.parent = &dev->bus->dev;
  
-+	list_add_tail(&bus->list, &mii_bus_list);
+ 	ret = register_device(&dev->dev);
+ 	if (ret)
+ 		return ret;
+ 
++	dev->registered = 1;
 +
- 	pr_info("%s: probed\n", dev_name(&bus->dev));
- 	return 0;
+ 	if (dev->dev.driver)
+ 		return 0;
+ 
+ 	dev->dev.driver = &genphy_driver.drv;
+-	return device_probe(&dev->dev);
++	ret = device_probe(&dev->dev);
++	if (ret) {
++		unregister_device(&dev->dev);
++		dev->registered = 0;
++	}
++
++	return ret;
  }
-@@ -71,6 +75,8 @@ void mdiobus_unregister(struct mii_bus *bus)
- 			unregister_device(&bus->phy_map[i]->dev);
- 		bus->phy_map[i] = NULL;
- 	}
-+
-+	list_del(&bus->list);
- }
- EXPORT_SYMBOL(mdiobus_unregister);
  
+ /* Automatically gets and returns the PHY device */
+@@ -287,9 +298,11 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
+ 	dev->interface = interface;
+ 	dev->dev_flags = flags;
+ 
+-	ret = phy_register_device(dev);
+-	if (ret)
+-		goto fail;
++	if (!dev->registered) {
++		ret = phy_register_device(dev);
++		if (ret)
++			goto fail;
++	}
+ 
+ 	edev->phydev = dev;
+ 	dev->attached_dev = edev;
 diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 19e4d20..5f3b33f 100644
+index a1c629e..19e4d20 100644
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -85,6 +85,8 @@ struct mii_bus {
+@@ -161,6 +161,8 @@ struct phy_device {
+ 	int autoneg;
+ 	int force;
  
- 	/* PHY addresses to be ignored when probing */
- 	u32 phy_mask;
++	int registered;
 +
-+	struct list_head list;
- };
- #define to_mii_bus(d) container_of(d, struct mii_bus, dev)
- 
-@@ -92,6 +94,11 @@ int mdiobus_register(struct mii_bus *bus);
- void mdiobus_unregister(struct mii_bus *bus);
- struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
- 
-+extern struct list_head mii_bus_list;
-+
-+#define for_each_mii_bus(mii) \
-+	list_for_each_entry(mii, &mii_bus_list, list)
-+
- /**
-  * mdiobus_read - Convenience function for reading a given MII mgmt register
-  * @bus: the mii_bus struct
+ 	/* private data pointer */
+ 	/* For use by PHYs to maintain extra state */
+ 	void *priv;
 -- 
 1.8.5.1
 
