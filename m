@@ -1,24 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vqh2K-0006F0-K3
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 10:29:01 +0000
-Date: Wed, 11 Dec 2013 11:28:37 +0100
+ id 1VqiAf-0000hP-PO
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 11:41:43 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131211102837.GC24559@pengutronix.de>
-References: <CACTZKX4PZ1NKB=4am7hik-w6V+CXApDHbEcAAmp6PakXGK5V0A@mail.gmail.com>
- <20131206145250.ea5fc95adf61aca114babf5b@gmail.com>
- <CACTZKX4Phn_pOkEK5SUAva=dAig9rX3eD=ckzadNM9Ht1bLC7Q@mail.gmail.com>
- <CACTZKX5mv6bjbUoWK81BioH3FEboMtN2jOaRQG3eRLbMg97FXA@mail.gmail.com>
- <20131206123925.GD24559@pengutronix.de>
- <20131206124327.GA22853@omega>
- <CACTZKX6kectn-z1NUJFjb=ycM9NTFuVUKmb8xU80k4wbp6DKqA@mail.gmail.com>
- <20131210192440.cbffc0bed7dd71d3f0e36f79@gmail.com>
- <20131210174536.GA7305@omega>
- <CACTZKX7=ycyAhZxHsJ7k6K23HmMOsuYUVFYV8JFFmhr5=g8vyg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CACTZKX7=ycyAhZxHsJ7k6K23HmMOsuYUVFYV8JFFmhr5=g8vyg@mail.gmail.com>
+Date: Wed, 11 Dec 2013 12:41:17 +0100
+Message-Id: <1386762077-23205-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
+References: <1386762077-23205-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,38 +16,71 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: How to debug Ethernet connectivity
-To: Atilla Filiz <atilla.filiz@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 9/9] miitool: Add option to scan mii buses
+To: barebox@lists.infradead.org
 
-On Wed, Dec 11, 2013 at 10:39:17AM +0100, Atilla Filiz wrote:
-> My problem is, /dev/phy0 never appears when I give the correct phy address.
-> 
-> Unable to find a PHY (unknown ID?)
-> dhcp failed: I/O error
-> dhcp: I/O error
-> 
-> Also, fec_probe function for fec_imx driver never gets called.
+With the -s option all mii buses can be scanned for devices so
+that they are available without doing network operations. Also,
+now *all* phy devices on a mii bus can be examined, not only
+the one attached to an ethernet device.
 
-If that's the case...
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/miitool.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-> Ironically, I do not get an I/O error when I give the wrong phy
-> address. Still nothing gets detected and no device node appears, but
-> ethernet works(by forcing the line detect functions to return 0).
-
-...your ethernet can't possibly work.
-
-Sascha
-
+diff --git a/commands/miitool.c b/commands/miitool.c
+index 3a9ac45..a00514d 100644
+--- a/commands/miitool.c
++++ b/commands/miitool.c
+@@ -37,6 +37,7 @@
+ #include <linux/stat.h>
+ #include <xfuncs.h>
+ #include <linux/mii.h>
++#include <linux/phy.h>
+ 
+ static u16 mdio_read(int fd, int offset)
+ {
+@@ -218,13 +219,17 @@ static int do_miitool(int argc, char *argv[])
+ 	int argc_min;
+ 	int fd;
+ 	int verbose;
++	int scan = 0;
+ 
+ 	verbose = 0;
+-	while ((opt = getopt(argc, argv, "v")) > 0) {
++	while ((opt = getopt(argc, argv, "vs")) > 0) {
+ 		switch (opt) {
+ 		case 'v':
+ 			verbose++;
+ 			break;
++		case 's':
++			scan = 1;
++			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -232,8 +237,11 @@ static int do_miitool(int argc, char *argv[])
+ 
+ 	argc_min = optind + 1;
+ 
++	if (scan)
++		mdiobus_detect_all();
++
+ 	if (argc < argc_min)
+-		return COMMAND_ERROR_USAGE;
++		return scan ? 0 : COMMAND_ERROR_USAGE;
+ 
+ 	filename = argv[optind];
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.5.1
+
 
 _______________________________________________
 barebox mailing list
