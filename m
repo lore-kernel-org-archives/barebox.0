@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x22f.google.com ([2607:f8b0:400c:c01::22f])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VqnGA-00020L-2C
- for barebox@lists.infradead.org; Wed, 11 Dec 2013 17:07:42 +0000
-Received: by mail-ve0-f175.google.com with SMTP id jx11so6088671veb.6
- for <barebox@lists.infradead.org>; Wed, 11 Dec 2013 09:07:17 -0800 (PST)
+Received: from [2a01:e0c:1:1599:215:17ff:fe31:f1c] (helo=smtp1-g21.free.fr)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VqoT2-00049n-F4
+ for barebox@lists.infradead.org; Wed, 11 Dec 2013 18:25:06 +0000
+Received: from e6520eb.local.eukrea.com (unknown [88.170.243.169])
+ by smtp1-g21.free.fr (Postfix) with ESMTP id 78B8A940058
+ for <barebox@lists.infradead.org>; Wed, 11 Dec 2013 19:24:32 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed, 11 Dec 2013 19:24:27 +0100
+Message-Id: <1386786267-6462-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Date: Wed, 11 Dec 2013 12:07:17 -0500
-Message-ID: <CAJyuEeeO5KpoZpmoSFj8AOOPJ+1o-iWjmQVBZS9FCj2Z7d38kA@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,62 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting barebox (devicetree) to Variscite iMX6 SOM
+Subject: [PATCH] nand_imx: fix read ONFI param on NFC v21
 To: barebox@lists.infradead.org
 
-I figured I'd just throw this out to everyone..
-
-Is there any really good source of information or directions on the
-correct steps involved in getting a devicetree based barebox image
-built and then correctly programmed onto an SD Card? I feel like I am
-missing something somewhere.
-
-I have been involved in getting barebox working on a Variscite i.MX6
-SOM with the intent to send it to Sascha, et al. for inclusion in the
-tree (once I get it actually working....).
-
-Back in August, I managed to get the Variscite board booting with an
-earlier version of barebox and my additions using the "old-style"
-methodology in the arch/arm/boards file and the older style DCD header
-info. Unfortunately, this version was prior to the inclusion of GPMI
-NAND support and other features we needed.
-
-So...I have now been attempting to migrate things to the most current
-barebox releases and transfer everything I have done into the newer
-style formats aimed at devicetree -- and I haven't been able to get it
-to work yet.
-
-So far, I started from the imx_v7_defconfig,  created what I think are
-appropriate dts/dtsi files that describe my baseboard and SOM, updated
-my board.c and lowlevel.c files (hopefully correctly -- there just
-isn't much code in these files anymore with devicetree), created a
-flash-header-variscite.imxcfg file using the DCD information I had
-already verified worked in the old format (based on the u-Boot DCD
-info from Variscite), updated the appropriate Makefiles to build the
-new modules, added the appropriate entry to images/Makefile.imx, etc.
-
-I then built it and programmed the resulting .img file into an SD Card
-but I get nothing apparent in terms of a response (no serial console,
-no blinking LED, etc).
-
-I do NOT have an env partition at the moment but have it set to build
-a default environment into barebox itself (which tends to be how we
-prefer to have it for our current SD card boot mechanism -- which is
-aimed primarily at recovery and upgrade anyway).
-
-Are there any steps I'm missing or anything major I'm doing wrong? Do
-I need to be manually specifying a dtb file to include?
-
-Any and all help would be greatly appreciated!
-
-Thanks again,
-Michael Burkey
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+dGVzdGVkIG9uIGFuIGkuTVgyNSB3aGVyZSB3ZSBub3cgZ2V0IDoKbmFuZDogT05GSSBwYXJhbSBw
+YWdlIDAgdmFsaWQKbmFuZDogT05GSSBmbGFzaCBkZXRlY3RlZApuYW5kOiBOQU5EIGRldmljZTog
+TWFudWZhY3R1cmVyIElEOiAweDJjLCBDaGlwIElEOiAweGRhIChNaWNyb24gTVQyOUYyRzA4QUJB
+RUFXUCksIDI1Nk1pQiwgcGFnZSBzaXplOiAyMDQ4LCBPT0Igc2l6ZTogNjQKClNpZ25lZC1vZmYt
+Ynk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPgotLS0KIGRyaXZlcnMvbXRkL25hbmQv
+bmFuZF9pbXguYyB8IDI1ICsrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
+LCA5IGluc2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bXRkL25hbmQvbmFuZF9pbXguYyBiL2RyaXZlcnMvbXRkL25hbmQvbmFuZF9pbXguYwppbmRleCA5
+NjViNDFlLi5mZDU3YjRkIDEwMDY0NAotLS0gYS9kcml2ZXJzL210ZC9uYW5kL25hbmRfaW14LmMK
+KysrIGIvZHJpdmVycy9tdGQvbmFuZC9uYW5kX2lteC5jCkBAIC00MDMsMTIgKzQwMywxNSBAQCBz
+dGF0aWMgdm9pZCBzZW5kX3JlYWRfaWRfdjFfdjIoc3RydWN0IGlteF9uYW5kX2hvc3QgKmhvc3Qp
+CiAJbWVtY3B5MzIoaG9zdC0+ZGF0YV9idWYsIGhvc3QtPm1haW5fYXJlYTAsIDE2KTsKIH0KIAot
+LyogRklYTUUgOiB0byBjaGVjayBvbiByZWFsIEhXICovCiBzdGF0aWMgdm9pZCBzZW5kX3JlYWRf
+cGFyYW1fdjFfdjIoc3RydWN0IGlteF9uYW5kX2hvc3QgKmhvc3QpCiB7CiAJc3RydWN0IG5hbmRf
+Y2hpcCAqdGhpcyA9ICZob3N0LT5uYW5kOworCXUzMiBiYWNrdXAgPSByZWFkdyhob3N0LT5yZWdz
+ICsgTkZDX1YxX1YyX0NPTkZJRzEpOwogCi0JLyogTkFOREZDIGJ1ZmZlciAwIGlzIHVzZWQgZm9y
+IGRldmljZSBJRCBvdXRwdXQgKi8KKwkvKiBUZW1wb3JhcnkgZGlzYWJsZSBFQ0MgdG8gYmUgYWJs
+ZSB0byByZWFkIHBhcmFtIHBhZ2UgKi8KKwl3cml0ZXcoYmFja3VwICYgfk5GQ19WMV9WMl9DT05G
+SUcxX0VDQ19FTiwgaG9zdC0+cmVncyArIE5GQ19WMV9WMl9DT05GSUcxKTsKKworCS8qIE5BTkRG
+QyBidWZmZXIgMCBpcyB1c2VkIGZvciBwYXJhbSBvdXRwdXQgKi8KIAl3cml0ZXcoMHgwLCBob3N0
+LT5yZWdzICsgTkZDX1YxX1YyX0JVRl9BRERSKTsKIAogCXdyaXRldyhORkNfT1VUUFVULCBob3N0
+LT5yZWdzICsgTkZDX1YxX1YyX0NPTkZJRzIpOwpAQCAtNDE2LDIwICs0MTksMTAgQEAgc3RhdGlj
+IHZvaWQgc2VuZF9yZWFkX3BhcmFtX3YxX3YyKHN0cnVjdCBpbXhfbmFuZF9ob3N0ICpob3N0KQog
+CS8qIFdhaXQgZm9yIG9wZXJhdGlvbiB0byBjb21wbGV0ZSAqLwogCXdhaXRfb3BfZG9uZShob3N0
+KTsKIAotCWlmICh0aGlzLT5vcHRpb25zICYgTkFORF9CVVNXSURUSF8xNikgewotCQl2b2xhdGls
+ZSB1MTYgKm1haW5idWYgPSBob3N0LT5tYWluX2FyZWEwOwotCi0JCS8qCi0JCSAqIFBhY2sgdGhl
+IGV2ZXJ5LW90aGVyLWJ5dGUgcmVzdWx0IGZvciAxNi1iaXQgSUQgcmVhZHMKLQkJICogaW50byBl
+dmVyeS1ieXRlIGFzIHRoZSBnZW5lcmljIGNvZGUgZXhwZWN0cyBhbmQgdmFyaW91cwotCQkgKiBj
+aGlwcyBpbXBsZW1lbnQuCi0JCSAqLwotCi0JCW1haW5idWZbMF0gPSAobWFpbmJ1ZlswXSAmIDB4
+ZmYpIHwgKChtYWluYnVmWzFdICYgMHhmZikgPDwgOCk7Ci0JCW1haW5idWZbMV0gPSAobWFpbmJ1
+ZlsyXSAmIDB4ZmYpIHwgKChtYWluYnVmWzNdICYgMHhmZikgPDwgOCk7Ci0JCW1haW5idWZbMl0g
+PSAobWFpbmJ1Zls0XSAmIDB4ZmYpIHwgKChtYWluYnVmWzVdICYgMHhmZikgPDwgOCk7Ci0JfQog
+CW1lbWNweTMyKGhvc3QtPmRhdGFfYnVmLCBob3N0LT5tYWluX2FyZWEwLCAxMDI0KTsKKworCS8q
+IFJlc3RvcmUgb3JpZ2luYWwgQ09ORklHMSB2YWx1ZSAqLworCXdyaXRldyhiYWNrdXAsIGhvc3Qt
+PnJlZ3MgKyBORkNfVjFfVjJfQ09ORklHMSk7CiB9CiAvKgogICogVGhpcyBmdW5jdGlvbiByZXF1
+ZXN0cyB0aGUgTkFOREZDIHRvIHBlcmZvcm0gYSByZWFkIG9mIHRoZQpAQCAtMTE0Nyw3ICsxMTQw
+LDcgQEAgc3RhdGljIGludCBfX2luaXQgaW14bmRfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
+CiAJCWhvc3QtPnNlbmRfYWRkciA9IHNlbmRfYWRkcl92MV92MjsKIAkJaG9zdC0+c2VuZF9wYWdl
+ID0gc2VuZF9wYWdlX3YxX3YyOwogCQlob3N0LT5zZW5kX3JlYWRfaWQgPSBzZW5kX3JlYWRfaWRf
+djFfdjI7Ci0JCWhvc3QtPnNlbmRfcmVhZF9wYXJhbSA9IHNlbmRfcmVhZF9wYXJhbV92MV92Mjsg
+LyogRklYTUUgOiB0byBjaGVjayAqLworCQlob3N0LT5zZW5kX3JlYWRfcGFyYW0gPSBzZW5kX3Jl
+YWRfcGFyYW1fdjFfdjI7CiAJCWhvc3QtPmdldF9kZXZfc3RhdHVzID0gZ2V0X2Rldl9zdGF0dXNf
+djFfdjI7CiAJCWhvc3QtPmNoZWNrX2ludCA9IGNoZWNrX2ludF92MV92MjsKIAl9Ci0tIAoxLjgu
+My4xCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
