@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vr2xT-00079f-4d
- for barebox@lists.infradead.org; Thu, 12 Dec 2013 09:53:29 +0000
-Date: Thu, 12 Dec 2013 10:52:55 +0100
+ id 1Vr2yP-0007Cj-Hp
+ for barebox@lists.infradead.org; Thu, 12 Dec 2013 09:54:27 +0000
+Date: Thu, 12 Dec 2013 10:53:56 +0100
 From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20131212105255.2a49d5bd@e6520eb>
-In-Reply-To: <20131212085745.GK24559@pengutronix.de>
+Message-ID: <20131212105356.7ec8641a@e6520eb>
+In-Reply-To: <20131212085121.GJ24559@pengutronix.de>
 References: <1386409020-11914-1-git-send-email-eric@eukrea.com>
- <1386409020-11914-6-git-send-email-eric@eukrea.com>
- <20131209133716.GM27628@ns203013.ovh.net>
- <20131212085745.GK24559@pengutronix.de>
+ <1386409020-11914-2-git-send-email-eric@eukrea.com>
+ <20131209132721.GG27628@ns203013.ovh.net>
+ <20131212085121.GJ24559@pengutronix.de>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -24,36 +24,45 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 6/7] sama5d3xek: add NOR CFI support
+Subject: Re: [PATCH 2/7] at91: introduce sama5d3's SMC support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
-
-Le Thu, 12 Dec 2013 09:57:45 +0100,
+Le Thu, 12 Dec 2013 09:51:21 +0100,
 Sascha Hauer <s.hauer@pengutronix.de> a =E9crit :
 
-> On Mon, Dec 09, 2013 at 02:37:16PM +0100, Jean-Christophe PLAGNIOL-VILLAR=
+> On Mon, Dec 09, 2013 at 02:27:21PM +0100, Jean-Christophe PLAGNIOL-VILLAR=
 D wrote:
-> > > +
-> > > +	clk_enable(clk);
-> > > +
-> > > +	/* configure chip-select 0 (NOR) */
-> > > +	sama5_smc_configure(0, 0, &cm_nor_smc_config);
-> > > +
-> > > +	add_cfi_flash_device(0, AT91_CHIPSELECT_0, 256 * 1024 * 1024, 0);
-> > no put the right size or 0 for auto detect not 256MiB
+> > On 10:36 Sat 07 Dec     , Eric B??nard wrote:
+> > > there is a new register (timings) vs SAM9 and thus a new mapping
+> > > =
+
+> > > Signed-off-by: Eric B=E9nard <eric@eukrea.com>
+> > > ---
+> > >  arch/arm/mach-at91/generic.h                |   7 ++
+> > >  arch/arm/mach-at91/include/mach/sama5_smc.h | 124 ++++++++++++++++++=
++++
+> > >  arch/arm/mach-at91/sama5_smc.c              | 161 ++++++++++++++++++=
+++++++++++
+> > >  3 files changed, 292 insertions(+)
+> > >  create mode 100644 arch/arm/mach-at91/include/mach/sama5_smc.h
+> > >  create mode 100644 arch/arm/mach-at91/sama5_smc.c
+> > =
+
+> > nack the sama5 smc share part of the same IP as the sam9 do not duplica=
+te code
+> > share it
 > =
 
-> '0' only works because the cfi flash driver completely ignores the
-> resource size. If 256MiB is the maximum flash size or the size of this
-> particular chipselect I see nothing wrong in assigning 256MiB to the
-> device.
+> Indeed the code looks very similar. We could use id_table to distinguish
+> between both.
 > =
 
-256MiB is the maximul size this chip select can address
+I was expecting this request ;-)
+I'll update the patch in the coming days.
 
 Eric
+it.
 
 _______________________________________________
 barebox mailing list
