@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vr1Lc-0004ti-6V
- for barebox@lists.infradead.org; Thu, 12 Dec 2013 08:10:16 +0000
-Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Vr1LG-0002bj-JJ
- for barebox@lists.infradead.org; Thu, 12 Dec 2013 09:09:54 +0100
-Date: Thu, 12 Dec 2013 09:09:54 +0100
+ id 1Vr1RH-0004zC-Bt
+ for barebox@lists.infradead.org; Thu, 12 Dec 2013 08:16:08 +0000
+Date: Thu, 12 Dec 2013 09:15:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20131212080954.GF24559@pengutronix.de>
-References: <1386685809-21530-1-git-send-email-y>
+Message-ID: <20131212081545.GH24559@pengutronix.de>
+References: <1386797395-28878-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1386685809-21530-1-git-send-email-y>
+In-Reply-To: <1386797395-28878-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,45 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net: cpsw: Fix gmii_sel config
-To: y@numalfix.phytec.de
+Subject: Re: [PATCH] of: gpio: Fix Kconfig variables to depend on
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Dec 10, 2013 at 03:30:07PM +0100, y@numalfix.phytec.de wrote:
-> From: Jan Weitzel <j.weitzel@phytec.de>
+On Thu, Dec 12, 2013 at 01:29:55AM +0400, Antony Pavlov wrote:
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/of/Kconfig | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Prober slave_num is needed by cpsw_gmii_sel_am335x to calc reg value.
-> 
-> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+> diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+> index cdf7ac7..c4525cb 100644
+> --- a/drivers/of/Kconfig
+> +++ b/drivers/of/Kconfig
+> @@ -20,8 +20,8 @@ config OF_NET
+>  	def_bool y
+>  
+>  config OF_GPIO
+> -	depends on CONFIG_GPIOLIB
+> -	depends on CONFIG_OFDEVICE
+> +	depends on GPIOLIB
+> +	depends on OFDEVICE
+
+D'oh!
 
 Applied, thanks
 
 Sascha
 
-> ---
->  drivers/net/cpsw.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-> index 5e68e1b..52adf50 100644
-> --- a/drivers/net/cpsw.c
-> +++ b/drivers/net/cpsw.c
-> @@ -1074,6 +1074,7 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+>  	def_bool y
 >  
->  			slave->phy_id = phy_id[1];
->  			slave->phy_if = of_get_phy_mode(child);
-> +			slave->slave_num = i;
->  
->  			i++;
->  		}
+>  config OF_BAREBOX_DRIVERS
 > -- 
-> 1.7.0.4
+> 1.8.5
 > 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
