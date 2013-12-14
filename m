@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x22b.google.com ([2607:f8b0:400c:c01::22b])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VrEzb-0004TY-2o
- for barebox@lists.infradead.org; Thu, 12 Dec 2013 22:44:27 +0000
-Received: by mail-ve0-f171.google.com with SMTP id pa12so830775veb.16
- for <barebox@lists.infradead.org>; Thu, 12 Dec 2013 14:44:05 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <20131212195806.GL24559@pengutronix.de>
-References: <CAJyuEeeO5KpoZpmoSFj8AOOPJ+1o-iWjmQVBZS9FCj2Z7d38kA@mail.gmail.com>
- <20131212080359.GE24559@pengutronix.de>
- <CAJyuEefmcqQVKKszuvmGZx4NqaK+j79+-g4gD-ruq9vMO85Wug@mail.gmail.com>
- <20131212195806.GL24559@pengutronix.de>
-Date: Thu, 12 Dec 2013 17:44:02 -0500
-Message-ID: <CAJyuEecPnTHU2rTgJzkvkv3p56f32jqaS1aQykn91TNGvcUawg@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+ id 1Vrnlo-0001JL-F2
+ for barebox@lists.infradead.org; Sat, 14 Dec 2013 11:52:33 +0000
+Received: by mail-la0-f43.google.com with SMTP id n7so2031805lam.16
+ for <barebox@lists.infradead.org>; Sat, 14 Dec 2013 03:52:09 -0800 (PST)
+Date: Sat, 14 Dec 2013 15:59:27 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20131214155927.9e879bd8c624562cd6318472@gmail.com>
+In-Reply-To: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
+References: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +19,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox (devicetree) to Variscite iMX6 SOM
+Subject: Re: [PATCH] MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Thanks for all the help!
+On Tue, 10 Dec 2013 09:10:55 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-I have now at least got it to the point of getting a barebox prompt
-via the serial port.
+Sascha, please apply this trivial patch.
 
-The final thing I had to change was that I realized that since we have
-our UART1 using a different set of pins than is the default, I needed
-to manually change the IOMUX settings for the early bring-up of the
-serial port that Sascha pointed me to earlier.
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/lib/csrc-r4k.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
 
-Basically:
+> diff --git a/arch/mips/lib/csrc-r4k.c b/arch/mips/lib/csrc-r4k.c
+> index 2978fcf..c699f2b 100644
+> --- a/arch/mips/lib/csrc-r4k.c
+> +++ b/arch/mips/lib/csrc-r4k.c
+> @@ -32,7 +32,7 @@ static uint64_t c0_hpt_read(void)
+>  =
 
-/arch/arm/boards/variscite-mx6/lowlevel.c
+>  static struct clocksource cs =3D {
+>  	.read	=3D c0_hpt_read,
+> -	.mask	=3D 0xffffffff,
+> +	.mask	=3D CLOCKSOURCE_MASK(32),
+>  };
+>  =
 
--writel(0x4, iomuxbase + 0x01f8);
-+writel(0x03, iomuxbase + 0x0280);
-+writel(0x03, iomuxbase + 0x0284);
-+writel(0x00, iomuxbase + 0x0920);
+>  static int clocksource_init(void)
+> -- =
 
-MANY THANKS!!!!
+> 1.8.5
+> =
 
-I'm sure I will have more issues, but this at least gets things
-booting up enough to where I can now make progress.
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
