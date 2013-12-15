@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VsD63-0006ia-In
- for barebox@lists.infradead.org; Sun, 15 Dec 2013 14:55:08 +0000
-Received: by mail-lb0-f169.google.com with SMTP id u14so470867lbd.14
- for <barebox@lists.infradead.org>; Sun, 15 Dec 2013 06:54:43 -0800 (PST)
+ id 1VsD62-0006iZ-J2
+ for barebox@lists.infradead.org; Sun, 15 Dec 2013 14:55:07 +0000
+Received: by mail-la0-f42.google.com with SMTP id ec20so2302626lab.15
+ for <barebox@lists.infradead.org>; Sun, 15 Dec 2013 06:54:41 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 15 Dec 2013 19:02:05 +0400
-Message-Id: <1387119725-6803-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
-References: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 15 Dec 2013 19:02:04 +0400
+Message-Id: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,108 +21,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [JUST RFC] ARM: DIGIC: add csrc-dummy
+Subject: [JUST RFC] add hardware independent clock source
 To: barebox@lists.infradead.org
 
-The clocksource csrc-timer driver that uses DIGIC
-hardware TIMER2 perfectrly works on Canon A1100,
-but does not works on Canon EOS 600D.
-IMHO we need additional timer initialisation.
+Then porting barebox to a new SoC/board it is possible
+a situation then clocksource is broken or not yet present.
+In the broken/absent clocksource situation serial barebox
+console can't work correctly. Working on barebox for a DIGIC
+chip I have faced this situation. To overcome the problem
+I introduced the software-only clocksource.
 
-This patch introduces a quick-and-dirty termporary
-solution for this situation: a clocksource driver that
-does not use any hardware at all.
+The sample of hardware independent clock source is
+in the following patch:
 
-Also this driver is very handy for running barebox
-on Magic Lantern EOS qemu-based emulator as
-the emulator does not realize timer counter register at all!
+[JUST RFC] ARM: DIGIC: add csrc-dummy
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/mach-digic/Kconfig      |  3 +++
- arch/arm/mach-digic/Makefile     |  1 +
- arch/arm/mach-digic/csrc-dummy.c | 49 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
- create mode 100644 arch/arm/mach-digic/csrc-dummy.c
-
-diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
-index 557cad4..d0524bc 100644
---- a/arch/arm/mach-digic/Kconfig
-+++ b/arch/arm/mach-digic/Kconfig
-@@ -16,4 +16,7 @@ config ARCH_TEXT_BASE
- config DIGIC_CSRC_TIMER
- 	bool
- 
-+config DIGIC_CSRC_DUMMY
-+	bool
-+
- endif
-diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
-index 1d7cb72..31e5ac1 100644
---- a/arch/arm/mach-digic/Makefile
-+++ b/arch/arm/mach-digic/Makefile
-@@ -1,2 +1,3 @@
- obj-y += core.o
- obj-$(CONFIG_DIGIC_CSRC_TIMER) += csrc-timer.o
-+obj-$(CONFIG_DIGIC_CSRC_DUMMY) += csrc-dummy.o
-diff --git a/arch/arm/mach-digic/csrc-dummy.c b/arch/arm/mach-digic/csrc-dummy.c
-new file mode 100644
-index 0000000..68c68a3
---- /dev/null
-+++ b/arch/arm/mach-digic/csrc-dummy.c
-@@ -0,0 +1,49 @@
-+/*
-+ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <init.h>
-+#include <clock.h>
-+
-+#include <stdio.h>
-+
-+static uint64_t dummy_counter;
-+
-+static uint64_t dummy_cs_read(void)
-+{
-+	dummy_counter += 2000;
-+	return dummy_counter;
-+}
-+
-+static struct clocksource dummy_cs = {
-+	.read	= dummy_cs_read,
-+	.mask   = CLOCKSOURCE_MASK(32),
-+};
-+
-+static int clocksource_init(void)
-+{
-+	dummy_counter = 0;
-+
-+	clocks_calc_mult_shift(&dummy_cs.mult, &dummy_cs.shift,
-+		100000000, NSEC_PER_SEC, 10);
-+
-+	printf("clocksource_init: mult=%08x, shift=%08x\n",
-+			dummy_cs.mult, dummy_cs.shift);
-+	init_clock(&dummy_cs);
-+
-+	return 0;
-+}
-+core_initcall(clocksource_init);
--- 
-1.8.5
-
+Please comment on this approach!
+May be there is some ready receipt for broken clocksource case?
 
 _______________________________________________
 barebox mailing list
