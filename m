@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vrnlo-0001JL-F2
- for barebox@lists.infradead.org; Sat, 14 Dec 2013 11:52:33 +0000
-Received: by mail-la0-f43.google.com with SMTP id n7so2031805lam.16
- for <barebox@lists.infradead.org>; Sat, 14 Dec 2013 03:52:09 -0800 (PST)
-Date: Sat, 14 Dec 2013 15:59:27 +0400
+ id 1VsD63-0006ia-In
+ for barebox@lists.infradead.org; Sun, 15 Dec 2013 14:55:08 +0000
+Received: by mail-lb0-f169.google.com with SMTP id u14so470867lbd.14
+ for <barebox@lists.infradead.org>; Sun, 15 Dec 2013 06:54:43 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20131214155927.9e879bd8c624562cd6318472@gmail.com>
-In-Reply-To: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
-References: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
-Mime-Version: 1.0
+Date: Sun, 15 Dec 2013 19:02:05 +0400
+Message-Id: <1387119725-6803-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
+References: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +18,113 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [JUST RFC] ARM: DIGIC: add csrc-dummy
+To: barebox@lists.infradead.org
 
-On Tue, 10 Dec 2013 09:10:55 +0400
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+The clocksource csrc-timer driver that uses DIGIC
+hardware TIMER2 perfectrly works on Canon A1100,
+but does not works on Canon EOS 600D.
+IMHO we need additional timer initialisation.
 
-Sascha, please apply this trivial patch.
+This patch introduces a quick-and-dirty termporary
+solution for this situation: a clocksource driver that
+does not use any hardware at all.
 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/mips/lib/csrc-r4k.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+Also this driver is very handy for running barebox
+on Magic Lantern EOS qemu-based emulator as
+the emulator does not realize timer counter register at all!
 
-> diff --git a/arch/mips/lib/csrc-r4k.c b/arch/mips/lib/csrc-r4k.c
-> index 2978fcf..c699f2b 100644
-> --- a/arch/mips/lib/csrc-r4k.c
-> +++ b/arch/mips/lib/csrc-r4k.c
-> @@ -32,7 +32,7 @@ static uint64_t c0_hpt_read(void)
->  =
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/mach-digic/Kconfig      |  3 +++
+ arch/arm/mach-digic/Makefile     |  1 +
+ arch/arm/mach-digic/csrc-dummy.c | 49 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 53 insertions(+)
+ create mode 100644 arch/arm/mach-digic/csrc-dummy.c
 
->  static struct clocksource cs =3D {
->  	.read	=3D c0_hpt_read,
-> -	.mask	=3D 0xffffffff,
-> +	.mask	=3D CLOCKSOURCE_MASK(32),
->  };
->  =
+diff --git a/arch/arm/mach-digic/Kconfig b/arch/arm/mach-digic/Kconfig
+index 557cad4..d0524bc 100644
+--- a/arch/arm/mach-digic/Kconfig
++++ b/arch/arm/mach-digic/Kconfig
+@@ -16,4 +16,7 @@ config ARCH_TEXT_BASE
+ config DIGIC_CSRC_TIMER
+ 	bool
+ 
++config DIGIC_CSRC_DUMMY
++	bool
++
+ endif
+diff --git a/arch/arm/mach-digic/Makefile b/arch/arm/mach-digic/Makefile
+index 1d7cb72..31e5ac1 100644
+--- a/arch/arm/mach-digic/Makefile
++++ b/arch/arm/mach-digic/Makefile
+@@ -1,2 +1,3 @@
+ obj-y += core.o
+ obj-$(CONFIG_DIGIC_CSRC_TIMER) += csrc-timer.o
++obj-$(CONFIG_DIGIC_CSRC_DUMMY) += csrc-dummy.o
+diff --git a/arch/arm/mach-digic/csrc-dummy.c b/arch/arm/mach-digic/csrc-dummy.c
+new file mode 100644
+index 0000000..68c68a3
+--- /dev/null
++++ b/arch/arm/mach-digic/csrc-dummy.c
+@@ -0,0 +1,49 @@
++/*
++ * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <init.h>
++#include <clock.h>
++
++#include <stdio.h>
++
++static uint64_t dummy_counter;
++
++static uint64_t dummy_cs_read(void)
++{
++	dummy_counter += 2000;
++	return dummy_counter;
++}
++
++static struct clocksource dummy_cs = {
++	.read	= dummy_cs_read,
++	.mask   = CLOCKSOURCE_MASK(32),
++};
++
++static int clocksource_init(void)
++{
++	dummy_counter = 0;
++
++	clocks_calc_mult_shift(&dummy_cs.mult, &dummy_cs.shift,
++		100000000, NSEC_PER_SEC, 10);
++
++	printf("clocksource_init: mult=%08x, shift=%08x\n",
++			dummy_cs.mult, dummy_cs.shift);
++	init_clock(&dummy_cs);
++
++	return 0;
++}
++core_initcall(clocksource_init);
+-- 
+1.8.5
 
->  static int clocksource_init(void)
-> -- =
-
-> 1.8.5
-> =
-
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
