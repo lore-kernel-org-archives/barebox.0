@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VsUEA-00049x-SI
- for barebox@lists.infradead.org; Mon, 16 Dec 2013 09:12:39 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 6B601BF0ED
- for <barebox@lists.infradead.org>; Mon, 16 Dec 2013 09:13:07 +0100 (CET)
-From: Jan Weitzel <j.weitzel@phytec.de>
-Date: Mon, 16 Dec 2013 10:12:10 +0100
-Message-Id: <1387185130-5325-1-git-send-email-j.weitzel@phytec.de>
+Received: from mail-pd0-x229.google.com ([2607:f8b0:400e:c02::229])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VsWeQ-0000VR-DD
+ for barebox@lists.infradead.org; Mon, 16 Dec 2013 11:47:55 +0000
+Received: by mail-pd0-f169.google.com with SMTP id v10so5229089pde.14
+ for <barebox@lists.infradead.org>; Mon, 16 Dec 2013 03:47:32 -0800 (PST)
+From: u74147@gmail.com
+Date: Mon, 16 Dec 2013 19:47:22 +0800
+Message-Id: <1387194442-2607-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,30 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] pinctrl: single: select CONFIG_PINCTRL
+Subject: [PATCH] Makefile: fix endless make when 'make barebox.s'
 To: barebox@lists.infradead.org
 
-pinctrl_register is used.
+From: Du Huanpeng <u74147@gmail.com>
 
-Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
+add the same target barebox.s (with a lowercase 's')
+to make both work with barebox.S and barebox.s.
+
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
 ---
- drivers/pinctrl/Kconfig |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 8257586..c6bb51c 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -24,6 +24,7 @@ config PINCTRL_IMX_IOMUX_V3
- 	  This iomux controller is found on i.MX25,35,51,53,6.
+diff --git a/Makefile b/Makefile
+index 5e17a49..d7b5d23 100644
+--- a/Makefile
++++ b/Makefile
+@@ -701,7 +701,7 @@ barebox.uimage: $(KBUILD_BINARY) FORCE
+ 	$(call if_changed,barebox_mkimage)
  
- config PINCTRL_SINGLE
-+	select PINCTRL
- 	bool "pinctrl single"
+ ifdef CONFIG_X86
+-barebox.S: barebox
++barebox.S barebox.s: barebox
+ ifdef CONFIG_X86_HDBOOT
+ 	@echo "-------------------------------------------------" > barebox.S
+ 	@echo " * MBR content" >> barebox.S
+@@ -723,7 +723,7 @@ endif
+ 	@echo " * Init Calls content" >> barebox.S
+ 	$(Q)$(OBJDUMP) -j .barebox_initcalls -d barebox >> barebox.S
+ else
+-barebox.S: barebox FORCE
++barebox.S barebox.s: barebox FORCE
+ 	$(call if_changed,disasm)
+ endif
  
- config PINCTRL_TEGRA20
 -- 
-1.7.0.4
+1.7.9.5
 
 
 _______________________________________________
