@@ -1,17 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f309.i.mail.ru ([128.140.169.173])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VsSvU-0002We-ER
- for barebox@lists.infradead.org; Mon, 16 Dec 2013 07:49:17 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 16 Dec 2013 11:48:52 +0400
-Message-ID: <1387180132.313029323@f309.i.mail.ru>
-In-Reply-To: <20131216074158.GP24559@pengutronix.de>
-References: <1387119725-6803-1-git-send-email-antonynpavlov@gmail.com>
- <1387119725-6803-2-git-send-email-antonynpavlov@gmail.com>
- <20131216074158.GP24559@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1VsUEA-00049x-SI
+ for barebox@lists.infradead.org; Mon, 16 Dec 2013 09:12:39 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 6B601BF0ED
+ for <barebox@lists.infradead.org>; Mon, 16 Dec 2013 09:13:07 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Mon, 16 Dec 2013 10:12:10 +0100
+Message-Id: <1387185130-5325-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +17,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtKVVNUIFJGQ10gQVJNOiBESUdJQzogYWRkIGNzcmMtZHVtbXk=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] pinctrl: single: select CONFIG_PINCTRL
+To: barebox@lists.infradead.org
 
-> On Sun, Dec 15, 2013 at 07:02:05PM +0400, Antony Pavlov wrote:
-> > The clocksource csrc-timer driver that uses DIGIC
-> > hardware TIMER2 perfectrly works on Canon A1100,
-> > but does not works on Canon EOS 600D.
-> > IMHO we need additional timer initialisation.
-> > 
-> > This patch introduces a quick-and-dirty termporary
-> > solution for this situation: a clocksource driver that
-> > does not use any hardware at all.
-> > 
-> > Also this driver is very handy for running barebox
-> > on Magic Lantern EOS qemu-based emulator as
-> > the emulator does not realize timer counter register at all!
-...
-> I also played with the same approach. In my case it was more a fallback
-> when the initialization order was wrong so that the time functions were
-> used before the real clocksource was initialized. Without it time never
-> advanced and every udelay() locked up the system (or it crashed because
-> we didn't check for the clocksource being NULL, can't remember).
-> 
-> Maybe it would be possible to add this clocksource unconditionally on
-> every build, but let a real clocksource take over.
-> 
-> To do this and not silently fall back to a dummy console I suggest a:
-> 
-> static uint64_t dummy_cs_read(void)
-> {
-> 	static int first;
-> 
-> 	if (!first) {
-> 		pr_warn("Warning: Using dummy clocksource\n");
-> 		first = 0;
+pinctrl_register is used.
 
-first =1;
-
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
+ drivers/pinctrl/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 8257586..c6bb51c 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -24,6 +24,7 @@ config PINCTRL_IMX_IOMUX_V3
+ 	  This iomux controller is found on i.MX25,35,51,53,6.
+ 
+ config PINCTRL_SINGLE
++	select PINCTRL
+ 	bool "pinctrl single"
+ 
+ config PINCTRL_TEGRA20
+-- 
+1.7.0.4
+
+
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
