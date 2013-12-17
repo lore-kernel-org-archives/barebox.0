@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pd0-x229.google.com ([2607:f8b0:400e:c02::229])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VsWeQ-0000VR-DD
- for barebox@lists.infradead.org; Mon, 16 Dec 2013 11:47:55 +0000
-Received: by mail-pd0-f169.google.com with SMTP id v10so5229089pde.14
- for <barebox@lists.infradead.org>; Mon, 16 Dec 2013 03:47:32 -0800 (PST)
-From: u74147@gmail.com
-Date: Mon, 16 Dec 2013 19:47:22 +0800
-Message-Id: <1387194442-2607-1-git-send-email-u74147@gmail.com>
+ id 1Vsp1b-0003OH-Gy
+ for barebox@lists.infradead.org; Tue, 17 Dec 2013 07:25:04 +0000
+Date: Tue, 17 Dec 2013 08:24:40 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20131217072440.GT24559@pengutronix.de>
+References: <1387127846-27477-1-git-send-email-b.galvani@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1387127846-27477-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,49 +18,32 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Makefile: fix endless make when 'make barebox.s'
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/2] net: add driver for OpenCores 10/100 Mbps ethernet MAC
+To: Beniamino Galvani <b.galvani@gmail.com>
+Cc: barebox@lists.infradead.org
 
-From: Du Huanpeng <u74147@gmail.com>
+Hi Beniamino,
 
-add the same target barebox.s (with a lowercase 's')
-to make both work with barebox.S and barebox.s.
+On Sun, Dec 15, 2013 at 06:17:25PM +0100, Beniamino Galvani wrote:
+> This patch introduces a driver for the OpenCores 10/100 Mbps ethernet
+> MAC core, ported from Linux kernel with small changes.
+> 
+> Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 
-Signed-off-by: Du Huanpeng <u74147@gmail.com>
----
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Both patches look good, so: Applied.
 
-diff --git a/Makefile b/Makefile
-index 5e17a49..d7b5d23 100644
---- a/Makefile
-+++ b/Makefile
-@@ -701,7 +701,7 @@ barebox.uimage: $(KBUILD_BINARY) FORCE
- 	$(call if_changed,barebox_mkimage)
- 
- ifdef CONFIG_X86
--barebox.S: barebox
-+barebox.S barebox.s: barebox
- ifdef CONFIG_X86_HDBOOT
- 	@echo "-------------------------------------------------" > barebox.S
- 	@echo " * MBR content" >> barebox.S
-@@ -723,7 +723,7 @@ endif
- 	@echo " * Init Calls content" >> barebox.S
- 	$(Q)$(OBJDUMP) -j .barebox_initcalls -d barebox >> barebox.S
- else
--barebox.S: barebox FORCE
-+barebox.S barebox.s: barebox FORCE
- 	$(call if_changed,disasm)
- endif
- 
+Sascha
+
+
 -- 
-1.7.9.5
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
