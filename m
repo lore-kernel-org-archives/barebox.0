@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VtJH7-0001RD-Ot
- for barebox@lists.infradead.org; Wed, 18 Dec 2013 15:43:09 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1VtJGl-0002e6-AY
- for barebox@lists.infradead.org; Wed, 18 Dec 2013 16:42:43 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1VtJGl-00036y-9Z
- for barebox@lists.infradead.org; Wed, 18 Dec 2013 16:42:43 +0100
+ id 1VtJHF-0001Rz-OK
+ for barebox@lists.infradead.org; Wed, 18 Dec 2013 15:43:15 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Dec 2013 16:42:32 +0100
-Message-Id: <1387381362-7780-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 18 Dec 2013 16:42:42 +0100
+Message-Id: <1387381362-7780-11-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1387381362-7780-1-git-send-email-s.hauer@pengutronix.de>
+References: <1387381362-7780-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: video / IPU patches
+Subject: [PATCH 10/10] video: simplefb: Add of reserve entry for framebuffer
+ memory
 To: barebox@lists.infradead.org
 
-The follwowing contains several fixes/approvements for the IPUv1 driver
-and some general fb patches.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/video/simplefb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Sascha
+diff --git a/drivers/video/simplefb.c b/drivers/video/simplefb.c
+index 834704b..fcd7517 100644
+--- a/drivers/video/simplefb.c
++++ b/drivers/video/simplefb.c
+@@ -126,6 +126,9 @@ static int simplefb_create_node(struct device_node *root,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	of_add_reserve_entry((u32)fbi->screen_base,
++			(u32)fbi->screen_base + fbi->screen_size);
++
+ 	return of_set_property(node, "status", okay, strlen(okay) + 1, 1);
+ }
+ 
+-- 
+1.8.5.1
 
-----------------------------------------------------------------
-Sascha Hauer (10):
-      video: ipufb: make disp_data_fmt configurable
-      video: ipufb: do not use bitfields
-      video: ipufb: calculate channel param fields from fb_bitfields
-      video: ipufb: Fix 24bit format and implement 32bit format
-      video: ipufb: Fix divider debug print
-      video: ipufb: Allow to disable fractional pixelclock divider
-      video: imx-ipu-fb: Do not modify pwm register
-      video: Add screen_size field
-      video: imx-ipu-fb: Allow to specify framebuffer memory size via platform_data
-      video: simplefb: Add of reserve entry for framebuffer memory
-
- arch/arm/mach-imx/include/mach/imx-ipu-fb.h |  22 ++
- drivers/video/fb.c                          |   2 +
- drivers/video/imx-ipu-fb.c                  | 385 +++++++++++++++-------------
- drivers/video/simplefb.c                    |   3 +
- include/fb.h                                |   1 +
- 5 files changed, 229 insertions(+), 184 deletions(-)
 
 _______________________________________________
 barebox mailing list
