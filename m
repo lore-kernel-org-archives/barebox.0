@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VtJH7-0001RG-Or
+ id 1VtJH7-0001RK-Om
  for barebox@lists.infradead.org; Wed, 18 Dec 2013 15:43:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Dec 2013 16:42:36 +0100
-Message-Id: <1387381362-7780-5-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 18 Dec 2013 16:42:41 +0100
+Message-Id: <1387381362-7780-10-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1387381362-7780-1-git-send-email-s.hauer@pengutronix.de>
 References: <1387381362-7780-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,54 +21,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/10] video: ipufb: Fix 24bit format and implement 32bit
- format
+Subject: [PATCH 09/10] video: imx-ipu-fb: Allow to specify framebuffer memory
+ size via platform_data
 To: barebox@lists.infradead.org
-
-When requested 32bit formats the IPU generated a 24bit format instead.
-Implement real 32bit format (xxrrggbb) and let the IPU generate a 24bit format
-when requested.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-fb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/imx-ipu-fb.h | 2 ++
+ drivers/video/imx-ipu-fb.c                  | 3 +++
+ 2 files changed, 5 insertions(+)
 
+diff --git a/arch/arm/mach-imx/include/mach/imx-ipu-fb.h b/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
+index ee1a9b5..73028d2 100644
+--- a/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
++++ b/arch/arm/mach-imx/include/mach/imx-ipu-fb.h
+@@ -44,7 +44,9 @@ struct imx_ipu_fb_platform_data {
+ 	u_int			num_modes;
+ 	enum disp_data_mapping	disp_data_fmt;
+ 	void __iomem		*framebuffer;
++	unsigned long		framebuffer_size;
+ 	void __iomem		*framebuffer_ovl;
++	unsigned long		framebuffer_ovl_size;
+ 	/** hook to enable backlight and stuff */
+ 	void			(*enable)(int enable);
+ 	/*
 diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 717fc71..858bde8 100644
+index 4b9aae7..b73d8d2 100644
 --- a/drivers/video/imx-ipu-fb.c
 +++ b/drivers/video/imx-ipu-fb.c
-@@ -91,6 +91,8 @@ enum pixel_fmt {
- 	IPU_PIX_FMT_BGR666,
- 	/* 3 bytes */
- 	IPU_PIX_FMT_RGB24,
-+	/* 3 bytes */
-+	IPU_PIX_FMT_RGB32,
- };
+@@ -964,6 +964,8 @@ static int sdc_fb_register_overlay(struct ipu_fb_info *fbi, void *fb)
+ 	if (!overlay->screen_base)
+ 		return -ENOMEM;
  
- struct di_mapping {
-@@ -560,6 +562,9 @@ static void ipu_ch_param_set_size(struct ipu_ch_param *p,
- 	case IPU_PIX_FMT_RGB24:
- 		ipu_cpmem_set_format_rgb(p, &def_rgb_24);
- 		break;
-+	case IPU_PIX_FMT_RGB32:
-+		ipu_cpmem_set_format_rgb(p, &def_rgb_32);
-+		break;
- 	default:
- 		break;
++	overlay->screen_size = pdata->framebuffer_ovl_size;
++
+ 	sdc_enable_channel(fbi, overlay->screen_base, IDMAC_SDC_1);
+ 
+ 	ret = register_framebuffer(&fbi->overlay);
+@@ -1021,6 +1023,7 @@ static int imxfb_probe(struct device_d *dev)
+ 					       (info->bits_per_pixel >> 3));
+ 		if (!fbi->info.screen_base)
+ 			return -ENOMEM;
++		fbi->info.screen_size = pdata->framebuffer_size;
  	}
-@@ -594,8 +599,10 @@ static u32 bpp_to_pixfmt(int bpp)
- 	switch (bpp) {
- 	case 16:
- 		return IPU_PIX_FMT_RGB565;
--	case 32:
-+	case 24:
- 		return IPU_PIX_FMT_RGB24;
-+	case 32:
-+		return IPU_PIX_FMT_RGB32;
- 	default:
- 		return 0;
- 	}
+ 
+ 	sdc_enable_channel(fbi, info->screen_base, IDMAC_SDC_0);
 -- 
 1.8.5.1
 
