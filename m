@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VtxOk-0006bF-NN
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 10:33:39 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2013 11:33:13 +0100
-Message-Id: <1387535593-28467-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail.microcatalog.org.uk ([217.6.246.34] helo=root.phytec.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Vu04p-0002aQ-9T
+ for barebox@lists.infradead.org; Fri, 20 Dec 2013 13:25:16 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 78546BF0E7
+ for <barebox@lists.infradead.org>; Fri, 20 Dec 2013 13:25:50 +0100 (CET)
+From: Jan Weitzel <j.weitzel@phytec.de>
+Date: Fri, 20 Dec 2013 14:24:48 +0100
+Message-Id: <1387545888-4380-1-git-send-email-j.weitzel@phytec.de>
+In-Reply-To: <1387442377-27773-1-git-send-email-j.weitzel@phytec.de>
+References: <1387442377-27773-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,45 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] video: ipufb: Use uncached memory for framebuffer
+Subject: [PATCH v2] of: find also nodes by mixture of alias and path
 To: barebox@lists.infradead.org
 
-Otherwise funny caching artifacts can occur on the screen.
+Let of_find_node_by_path_or_alias also find a node starting with an alias
+followed by a path like "i2c0/tps@24"
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 ---
- drivers/video/imx-ipu-fb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+v2: rename ret to node
 
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 18a7052..7276647 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -26,6 +26,7 @@
- #include <malloc.h>
- #include <errno.h>
- #include <asm-generic/div64.h>
-+#include <asm/mmu.h>
- #include <mach/imx-ipu-fb.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-@@ -1022,8 +1023,12 @@ static int imxfb_probe(struct device_d *dev)
- 	 * memory for screen usage
- 	 */
- 	fbi->info.screen_base = pdata->framebuffer;
--	if (fbi->info.screen_base == NULL) {
--		fbi->info.screen_base = malloc(fbi->info.screen_size);
-+	if (fbi->info.screen_base) {
-+		remap_range(fbi->info.screen_base,
-+			fbi->info.screen_size,
-+			mmu_get_pte_uncached_flags());
-+	} else {
-+		fbi->info.screen_base = dma_alloc_coherent(fbi->info.screen_size);
- 		if (!fbi->info.screen_base)
- 			return -ENOMEM;
- 	}
+ drivers/of/base.c |   22 +++++++++++++++++++++-
+ 1 files changed, 21 insertions(+), 1 deletions(-)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ea2d879..5b5272d 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1378,11 +1378,31 @@ EXPORT_SYMBOL(of_find_node_by_path);
+ struct device_node *of_find_node_by_path_or_alias(struct device_node *root,
+ 		const char *str)
+ {
++	struct device_node *node;
++	char *slash, *alias;
++	size_t len = 0;
++
+ 	if (*str ==  '/')
+ 		return of_find_node_by_path_from(root, str);
+-	else
++
++	slash = _strchr(str, '/');
++
++	if (!slash)
+ 		return of_find_node_by_alias(root, str);
+ 
++	len = slash - str + 1;
++	alias = xmalloc(len);
++	strlcpy(alias, str, len);
++
++	node = of_find_node_by_alias(root, alias);
++
++	if (!node)
++		goto out;
++
++	node = of_find_node_by_path_from(node, slash);
++out:
++	free(alias);
++	return node;
+ }
+ EXPORT_SYMBOL(of_find_node_by_path_or_alias);
+ 
 -- 
-1.8.5.1
+1.7.0.4
 
 
 _______________________________________________
