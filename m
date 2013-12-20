@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vu0mq-0004Ww-4G
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 14:10:44 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1Vu0mU-0002OK-BD
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 15:10:22 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1Vu0mU-0001tX-A4
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 15:10:22 +0100
+ id 1Vu0mq-0004Wx-4G
+ for barebox@lists.infradead.org; Fri, 20 Dec 2013 14:10:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2013 15:10:17 +0100
-Message-Id: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2013 15:10:18 +0100
+Message-Id: <1387548620-26893-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
+References: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,26 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: mtd/UBI fixes
+Subject: [PATCH 1/3] mtd: fix wrong return values in cdev read
 To: barebox@lists.infradead.org
 
-This fixes some confusion in the mtd layer. the mtd->read callback
-now can return positive numbers for the number of bitflips detected.
-We have to convert the callers to handle this correctly.
+mtd->read returns the number of bitflips as positive numbers.
+Instead of returning these numbers Return -EUCLEAN when the bitflip
+threshold has been reached, 0 otherwise.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/core.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-----------------------------------------------------------------
-Sascha Hauer (3):
-      mtd: fix wrong return values in cdev read
-      mtd: fix mtd_read return value
-      mtd: Add subpagesize to mtd_info_user
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index 33f900e..0abe667 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -75,12 +75,11 @@ static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
+ 			offset, count);
+ 
+ 	ret = mtd_read(mtd, offset, count, &retlen, buf);
+-
+-	if(ret) {
+-		printf("err %d\n", ret);
++	if (ret < 0)
+ 		return ret;
+-	}
+-	return retlen;
++	if (mtd->ecc_strength == 0)
++		return retlen;	/* device lacks ecc */
++	return ret >= mtd->bitflip_threshold ? -EUCLEAN : retlen;
+ }
+ 
+ #define NOTALIGNED(x) (x & (mtd->writesize - 1)) != 0
+-- 
+1.8.5.1
 
- drivers/mtd/core.c          | 25 +++++++++++++++++++------
- fs/devfs-core.c             |  1 +
- include/linux/mtd/mtd-abi.h |  1 +
- lib/libmtd.c                |  2 +-
- 4 files changed, 22 insertions(+), 7 deletions(-)
 
 _______________________________________________
 barebox mailing list
