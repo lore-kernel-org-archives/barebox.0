@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vu0mq-0004Wx-4G
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 14:10:45 +0000
+ id 1Vu0mq-0004Wy-49
+ for barebox@lists.infradead.org; Fri, 20 Dec 2013 14:10:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2013 15:10:18 +0100
-Message-Id: <1387548620-26893-2-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 20 Dec 2013 15:10:20 +0100
+Message-Id: <1387548620-26893-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
 References: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,78 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] mtd: fix wrong return values in cdev read
+Subject: [PATCH 3/3] mtd: Add subpagesize to mtd_info_user
 To: barebox@lists.infradead.org
 
-mtd->read returns the number of bitflips as positive numbers.
-Instead of returning these numbers Return -EUCLEAN when the bitflip
-threshold has been reached, 0 otherwise.
+ubiformat needs the subpagesize to work correctly. The kernel uses
+sysfs to pass the subpagesize, but in barebox we have the possibility
+to extend struct mtd_info_user. Add a corresponding field and use it
+in ubiformat.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/mtd/core.c          | 1 +
+ fs/devfs-core.c             | 1 +
+ include/linux/mtd/mtd-abi.h | 1 +
+ lib/libmtd.c                | 2 +-
+ 4 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 33f900e..0abe667 100644
+index fc2ac00..6db1c6d 100644
 --- a/drivers/mtd/core.c
 +++ b/drivers/mtd/core.c
-@@ -75,12 +75,11 @@ static ssize_t mtd_op_read(struct cdev *cdev, void* buf, size_t count,
- 			offset, count);
+@@ -236,6 +236,7 @@ int mtd_ioctl(struct cdev *cdev, int request, void *buf)
+ 		user->erasesize	= mtd->erasesize;
+ 		user->writesize	= mtd->writesize;
+ 		user->oobsize	= mtd->oobsize;
++		user->subpagesize = mtd->writesize >> mtd->subpage_sft;
+ 		user->mtd	= mtd;
+ 		/* The below fields are obsolete */
+ 		user->ecctype	= -1;
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index a92d434..44f0169 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -171,6 +171,7 @@ static int partition_ioctl(struct cdev *cdev, int request, void *buf)
+ 			user->erasesize	= cdev->mtd->erasesize;
+ 			user->writesize	= cdev->mtd->writesize;
+ 			user->oobsize	= cdev->mtd->oobsize;
++			user->subpagesize = cdev->mtd->writesize >> cdev->mtd->subpage_sft;
+ 			user->mtd	= cdev->mtd;
+ 			/* The below fields are obsolete */
+ 			user->ecctype	= -1;
+diff --git a/include/linux/mtd/mtd-abi.h b/include/linux/mtd/mtd-abi.h
+index fa8e36f..11d51e2 100644
+--- a/include/linux/mtd/mtd-abi.h
++++ b/include/linux/mtd/mtd-abi.h
+@@ -82,6 +82,7 @@ struct mtd_info_user {
+ 	uint32_t ecctype;
+ 	uint32_t eccsize;
+ 	struct mtd_info *mtd;
++	uint32_t subpagesize;
+ };
  
- 	ret = mtd_read(mtd, offset, count, &retlen, buf);
--
--	if(ret) {
--		printf("err %d\n", ret);
-+	if (ret < 0)
- 		return ret;
--	}
--	return retlen;
-+	if (mtd->ecc_strength == 0)
-+		return retlen;	/* device lacks ecc */
-+	return ret >= mtd->bitflip_threshold ? -EUCLEAN : retlen;
- }
+ struct region_info_user {
+diff --git a/lib/libmtd.c b/lib/libmtd.c
+index eecc760..1606b87 100644
+--- a/lib/libmtd.c
++++ b/lib/libmtd.c
+@@ -308,6 +308,7 @@ int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd)
+ 	mtd->eb_size = ui.erasesize;
+ 	mtd->min_io_size = ui.writesize;
+ 	mtd->oob_size = ui.oobsize;
++	mtd->subpage_size = ui.subpagesize;
  
- #define NOTALIGNED(x) (x & (mtd->writesize - 1)) != 0
+ 	if (mtd->min_io_size <= 0) {
+ 		errmsg("%s has insane min. I/O unit size %d",
+@@ -356,7 +357,6 @@ int mtd_get_dev_info(const char *node, struct mtd_dev_info *mtd)
+ 
+ 	if (ui.flags & MTD_WRITEABLE)
+ 		mtd->writable = 1;
+-	mtd->subpage_size = mtd->min_io_size;
+ 
+ 	close(fd);
+ 
 -- 
 1.8.5.1
 
