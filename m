@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vvj7V-0002Af-V6
- for barebox@lists.infradead.org; Wed, 25 Dec 2013 07:43:13 +0000
-Received: by mail-lb0-f169.google.com with SMTP id u14so3275143lbd.28
- for <barebox@lists.infradead.org>; Tue, 24 Dec 2013 23:42:49 -0800 (PST)
+ id 1Vvj7V-0002Ab-Uw
+ for barebox@lists.infradead.org; Wed, 25 Dec 2013 07:43:12 +0000
+Received: by mail-lb0-f176.google.com with SMTP id l4so3134605lbv.21
+ for <barebox@lists.infradead.org>; Tue, 24 Dec 2013 23:42:47 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 25 Dec 2013 11:50:02 +0400
-Message-Id: <1387957805-1532-3-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 25 Dec 2013 11:50:01 +0400
+Message-Id: <1387957805-1532-2-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1387957805-1532-1-git-send-email-antonynpavlov@gmail.com>
 References: <1387957805-1532-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,174 +23,210 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] miitool: add initial GbE support
+Subject: [PATCH 1/5] miitool: change behaviour closer to linux' mii-tool
 To: barebox@lists.infradead.org
 
-The GbE support based on the patch for generic 'mii-tool', see
- http://ftp.debian.org/debian/pool/main/n/net-tools/net-tools_1.60-24.2.diff.gz
-
-We need to note Jean-Christophe PLAGNIOL-VILLARD for his
-initial GbE support patch:
- http://lists.infradead.org/pipermail/barebox/2013-February/012634.html
-
-Generic 'mii-tool' GbE support patch has some disadvantages:
-1. 1000baseT-HD is prefered to 1000baseT-FD;
-2. show GbE-features for 10/100 only phys (e.g. Level One LXT971).
-This patch fixes this disadvantages.
+miitool without arguments will try to show status for all phys.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 ---
- commands/miitool.c | 72 ++++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 56 insertions(+), 16 deletions(-)
+ commands/miitool.c         | 86 +++++++++++++++++++++++++---------------------
+ drivers/net/phy/mdio_bus.c | 10 +-----
+ include/linux/phy.h        |  4 +--
+ 3 files changed, 49 insertions(+), 51 deletions(-)
 
 diff --git a/commands/miitool.c b/commands/miitool.c
-index 7666e8a..6e8ae80 100644
+index a00514d..7666e8a 100644
 --- a/commands/miitool.c
 +++ b/commands/miitool.c
-@@ -54,25 +54,45 @@ static const struct {
+@@ -36,24 +36,11 @@
+ #include <getopt.h>
+ #include <linux/stat.h>
+ #include <xfuncs.h>
++#include <net.h>
+ #include <linux/mii.h>
+ #include <linux/phy.h>
++#include <linux/err.h>
  
- const struct {
- 	char	*name;
--	u_short	value;
-+	u_short	value[2];
- } media[] = {
- 	/* The order through 100baseT4 matches bits in the BMSR */
--	{ "10baseT-HD",	ADVERTISE_10HALF },
--	{ "10baseT-FD",	ADVERTISE_10FULL },
--	{ "100baseTx-HD",	ADVERTISE_100HALF },
--	{ "100baseTx-FD",	ADVERTISE_100FULL },
--	{ "100baseT4",	LPA_100BASE4 },
--	{ "100baseTx",	ADVERTISE_100FULL | ADVERTISE_100HALF },
--	{ "10baseT",	ADVERTISE_10FULL | ADVERTISE_10HALF },
-+	{ "10baseT-HD",	{ADVERTISE_10HALF} },
-+	{ "10baseT-FD",	{ADVERTISE_10FULL} },
-+	{ "100baseTx-HD",	{ADVERTISE_100HALF} },
-+	{ "100baseTx-FD",	{ADVERTISE_100FULL} },
-+	{ "100baseT4",	{LPA_100BASE4} },
-+	{ "100baseTx",	{ADVERTISE_100FULL | ADVERTISE_100HALF} },
-+	{ "10baseT",	{ADVERTISE_10FULL | ADVERTISE_10HALF} },
-+	{ "1000baseT-HD",	{0, ADVERTISE_1000HALF} },
-+	{ "1000baseT-FD",	{0, ADVERTISE_1000FULL} },
-+	{ "1000baseT",	{0, ADVERTISE_1000HALF | ADVERTISE_1000FULL} },
- };
- #define NMEDIA (sizeof(media)/sizeof(media[0]))
+-static u16 mdio_read(int fd, int offset)
+-{
+-	int ret;
+-	u16 buf;
+-
+-	ret = lseek(fd, offset << 1, SEEK_SET);
+-	if (ret < 0)
+-		return 0;
+-
+-	ret = read(fd, &buf, sizeof(u16));
+-	if (ret < 0)
+-		return 0;
+-
+-	return buf;
+-}
  
--static char *media_list(int mask, int best)
-+static const char *media_list(unsigned mask, unsigned mask2, int best)
- {
- 	static char buf[100];
- 	int i;
+ /* Table of known MII's */
+ static const struct {
+@@ -102,7 +89,8 @@ static char *media_list(int mask, int best)
+ 	return buf;
+ }
  
- 	*buf = '\0';
-+
-+	if (mask & BMCR_SPEED1000) {
-+		if (mask2 & ADVERTISE_1000FULL) {
-+			strcat(buf, " ");
-+			strcat(buf, "1000baseT-FD");
-+			if (best)
-+				goto out;
-+		}
-+
-+		if (mask2 & ADVERTISE_1000HALF) {
-+			strcat(buf, " ");
-+			strcat(buf, "1000baseT-HD");
-+			if (best)
-+				goto out;
-+		}
-+	}
-+
- 	mask >>= 5;
- 	for (i = 4; i >= 0; i--) {
- 		if (mask & (1 << i)) {
-@@ -83,6 +103,7 @@ static char *media_list(int mask, int best)
- 		}
- 	}
- 
-+out:
- 	if (mask & (1 << 5))
- 		strcat(buf, " flow-control");
- 
-@@ -94,7 +115,9 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
+-static int show_basic_mii(int fd, int verbose)
++static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
++	int verbose)
  {
  	char buf[100];
  	int i, mii_val[32];
--	int bmcr, bmsr, advert, lkpar;
-+	unsigned bmcr, bmsr, advert, lkpar, bmcr2 = 0, lpa2 = 0;
-+	struct phy_driver *phydrv;
-+	int is_phy_gbit;
+@@ -110,15 +98,19 @@ static int show_basic_mii(int fd, int verbose)
  
  	/* Some bits in the BMSR are latched, but we can't rely on being
  	   the only reader, so only the current values are meaningful */
-@@ -103,7 +126,7 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 	for (i = 0; i < 32; i++)
- 		mii_val[i] = mii->read(mii, phydev->addr, i);
+-	mdio_read(fd, MII_BMSR);
+-	for (i = 0; i < ((verbose > 1) ? 32 : 8); i++)
+-		mii_val[i] = mdio_read(fd, i);
++	mii->read(mii, phydev->addr, MII_BMSR);
++
++	for (i = 0; i < 32; i++)
++		mii_val[i] = mii->read(mii, phydev->addr, i);
  
--	if (mii_val[MII_BMCR] == 0xffff) {
-+	if (mii_val[MII_BMCR] == 0xffff || mii_val[MII_BMSR] == 0x0000) {
+ 	if (mii_val[MII_BMCR] == 0xffff) {
  		fprintf(stderr, "  No MII transceiver present!.\n");
  		return -1;
  	}
-@@ -117,13 +140,23 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 	advert = mii_val[MII_ADVERTISE];
- 	lkpar = mii_val[MII_LPA];
  
-+	phydrv = to_phy_driver(phydev->dev.driver);
-+	is_phy_gbit = phydrv->features &
-+		(SUPPORTED_1000baseT_Half | SUPPORTED_1000baseT_Full);
++	printf("%s: %s%d: ", phydev->cdev.name,
++		mii->parent->name, mii->parent->id);
 +
-+	if (is_phy_gbit) {
-+		bmcr2 = mii_val[MII_CTRL1000];
-+		lpa2 = mii_val[MII_STAT1000];
+ 	/* Descriptive rename. */
+ 	bmcr = mii_val[MII_BMCR];
+ 	bmsr = mii_val[MII_BMSR];
+@@ -212,14 +204,39 @@ static int show_basic_mii(int fd, int verbose)
+ 	return 0;
+ }
+ 
++static void mdiobus_show(struct device_d *dev, char *phydevname, int verbose)
++{
++	struct mii_bus *mii = to_mii_bus(dev);
++	int i, ret;
++
++	for (i = 0; i < PHY_MAX_ADDR; i++) {
++		struct phy_device *phydev;
++
++		phydev = mdiobus_scan(mii, i);
++		if (IS_ERR(phydev))
++			continue;
++		if (phydev->registered) {
++
++			show_basic_mii(mii, phydev, verbose);
++
++			if (phydevname &&
++				!strcmp(phydev->cdev.name, phydevname)) {
++				return;
++			}
++		}
++
 +	}
 +
- 	*buf = '\0';
- 	if (bmcr & BMCR_ANENABLE) {
- 		if (bmsr & BMSR_ANEGCOMPLETE) {
- 			if (advert & lkpar) {
- 				sprintf(buf, "%s%s, ", (lkpar & LPA_LPACK) ?
- 					"negotiated" : "no autonegotiation,",
--					media_list(advert & lkpar, 1));
-+					media_list(advert & lkpar,
-+						bmcr2 & lpa2 >> 2, 1));
- 			} else {
- 				sprintf(buf, "autonegotiation failed, ");
- 			}
-@@ -131,8 +164,14 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 			sprintf(buf, "autonegotiation restarted, ");
- 		}
- 	} else {
-+		int speed1000;
++	return;
++}
 +
-+		speed1000 = ((bmcr2
-+				& (ADVERTISE_1000HALF
-+				| ADVERTISE_1000FULL)) & lpa2 >> 2);
- 		sprintf(buf, "%s Mbit, %s duplex, ",
--			(bmcr & BMCR_SPEED100) ? "100" : "10",
-+			speed1000 ? "1000"
-+			: (bmcr & BMCR_SPEED100) ? "100" : "10",
- 			(bmcr & BMCR_FULLDPLX) ? "full" : "half");
+ static int do_miitool(int argc, char *argv[])
+ {
+-	char *filename;
++	char *phydevname;
++	struct mii_bus *mii;
+ 	int opt;
+ 	int argc_min;
+-	int fd;
+ 	int verbose;
+-	int scan = 0;
+ 
+ 	verbose = 0;
+ 	while ((opt = getopt(argc, argv, "vs")) > 0) {
+@@ -227,9 +244,6 @@ static int do_miitool(int argc, char *argv[])
+ 		case 'v':
+ 			verbose++;
+ 			break;
+-		case 's':
+-			scan = 1;
+-			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+ 		}
+@@ -237,23 +251,15 @@ static int do_miitool(int argc, char *argv[])
+ 
+ 	argc_min = optind + 1;
+ 
+-	if (scan)
+-		mdiobus_detect_all();
+-
+-	if (argc < argc_min)
+-		return scan ? 0 : COMMAND_ERROR_USAGE;
+-
+-	filename = argv[optind];
+-
+-	fd = open(filename, O_RDONLY);
+-	if (fd < 0) {
+-		printf("unable to read %s\n", filename);
+-		return COMMAND_ERROR;
++	phydevname = NULL;
++	if (argc >= argc_min) {
++		phydevname = argv[optind];
  	}
  
-@@ -189,15 +228,16 @@ static int show_basic_mii(struct mii_bus *mii, struct phy_device *phydev,
- 		if (bmsr & BMSR_RFAULT)
- 			printf("remote fault, ");
- 		printf((bmsr & BMSR_LSTATUS) ? "link ok" : "no link");
--		printf("\n  capabilities:%s", media_list(bmsr >> 6, 0));
--		printf("\n  advertising: %s", media_list(advert, 0));
-+		printf("\n  capabilities:%s", media_list(bmsr >> 6, bmcr2, 0));
-+		printf("\n  advertising: %s", media_list(advert, lpa2 >> 2, 0));
+-	show_basic_mii(fd, verbose);
+-
+-	close(fd);
++	for_each_mii_bus(mii) {
++		mdiobus_detect(&mii->dev);
++		mdiobus_show(&mii->dev, phydevname, verbose);
++	}
  
- #define LPA_ABILITY_MASK	(LPA_10HALF | LPA_10FULL \
- 				| LPA_100HALF | LPA_100FULL \
- 				| LPA_100BASE4 | LPA_PAUSE_CAP)
+ 	return COMMAND_SUCCESS;
+ }
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index b29a980..895ead0 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -27,7 +27,7 @@
  
- 		if (lkpar & LPA_ABILITY_MASK)
--			printf("\n  link partner:%s", media_list(lkpar, 0));
-+			printf("\n  link partner:%s",
-+				media_list(lkpar, bmcr2, 0));
- 		printf("\n");
- 	}
+ LIST_HEAD(mii_bus_list);
+ 
+-static int mdiobus_detect(struct device_d *dev)
++int mdiobus_detect(struct device_d *dev)
+ {
+ 	struct mii_bus *mii = to_mii_bus(dev);
+ 	int i, ret;
+@@ -49,14 +49,6 @@ static int mdiobus_detect(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-void mdiobus_detect_all(void)
+-{
+-	struct mii_bus *mii;
+-
+-	for_each_mii_bus(mii)
+-		mdiobus_detect(&mii->dev);
+-}
+-
+ /**
+  * mdiobus_register - bring up all the PHYs on a given bus and attach them to bus
+  * @bus: target mii_bus
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 6c9d090..9994e11 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -94,10 +94,10 @@ int mdiobus_register(struct mii_bus *bus);
+ void mdiobus_unregister(struct mii_bus *bus);
+ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr);
+ 
+-void mdiobus_detect_all(void);
+-
+ extern struct list_head mii_bus_list;
+ 
++int mdiobus_detect(struct device_d *dev);
++
+ #define for_each_mii_bus(mii) \
+ 	list_for_each_entry(mii, &mii_bus_list, list)
  
 -- 
 1.8.5.2
