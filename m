@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Vu0mu-0004X4-W8
- for barebox@lists.infradead.org; Fri, 20 Dec 2013 14:10:50 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 20 Dec 2013 15:10:19 +0100
-Message-Id: <1387548620-26893-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
-References: <1387548620-26893-1-git-send-email-s.hauer@pengutronix.de>
+ id 1Vvj7V-0002Aa-V6
+ for barebox@lists.infradead.org; Wed, 25 Dec 2013 07:43:10 +0000
+Received: by mail-lb0-f169.google.com with SMTP id u14so3275130lbd.28
+ for <barebox@lists.infradead.org>; Tue, 24 Dec 2013 23:42:45 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed, 25 Dec 2013 11:50:00 +0400
+Message-Id: <1387957805-1532-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,46 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] mtd: fix mtd_read return value
+Subject: [PATCH 0/5] miitool patches
 To: barebox@lists.infradead.org
 
-mtd->read returns the number of bitflips as positive numbers.
-Instead of returning these numbers Return -EUCLEAN when the bitflip
-threshold has been reached, 0 otherwise.
+This patchseries adds GbE support for miitool, makes miitool
+more user-friendly (now you can run miitool without arguments
+for most cases) and removes dublication of MII PHY IDs
+information.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/core.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+Antony Pavlov (5):
+  miitool: change behaviour closer to linux' mii-tool
+  miitool: add initial GbE support
+  miitool: drop internal table of known MII, use phy drivers instead
+  net/phy: add driver for LXT PHYs
+  net/phy/phy.c: fix whitespace
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 0abe667..fc2ac00 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -313,7 +313,20 @@ int mtd_block_markbad(struct mtd_info *mtd, loff_t ofs)
- int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
- 		u_char *buf)
- {
--	return mtd->read(mtd, from, len, retlen, buf);
-+	int ret_code;
-+	*retlen = 0;
-+
-+	/*
-+	 * In the absence of an error, drivers return a non-negative integer
-+	 * representing the maximum number of bitflips that were corrected on
-+	 * any one ecc region (if applicable; zero otherwise).
-+	 */
-+	ret_code = mtd->read(mtd, from, len, retlen, buf);
-+	if (unlikely(ret_code < 0))
-+		return ret_code;
-+	if (mtd->ecc_strength == 0)
-+		return 0;	/* device lacks ecc */
-+	return ret_code >= mtd->bitflip_threshold ? -EUCLEAN : 0;
- }
- 
- int mtd_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
+ commands/miitool.c         | 188 ++++++++++++++++++++++++++-------------------
+ drivers/net/phy/Kconfig    |   5 ++
+ drivers/net/phy/Makefile   |   1 +
+ drivers/net/phy/lxt.c      |  31 ++++++++
+ drivers/net/phy/mdio_bus.c |  10 +--
+ drivers/net/phy/phy.c      |   2 +-
+ include/linux/phy.h        |   4 +-
+ 7 files changed, 148 insertions(+), 93 deletions(-)
+ create mode 100644 drivers/net/phy/lxt.c
+
 -- 
-1.8.5.1
+1.8.5.2
 
 
 _______________________________________________
