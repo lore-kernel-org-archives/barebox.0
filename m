@@ -1,20 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from f229.i.mail.ru ([217.69.138.229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VwVXo-0006bH-BU
- for barebox@lists.infradead.org; Fri, 27 Dec 2013 11:25:33 +0000
-Received: by mail-wg0-f45.google.com with SMTP id y10so8109911wgg.12
- for <barebox@lists.infradead.org>; Fri, 27 Dec 2013 03:25:06 -0800 (PST)
-Received: from [192.168.0.112] (21.Red-88-2-45.staticIP.rima-tde.net.
- [88.2.45.21])
- by mx.google.com with ESMTPSA id jw4sm18965516wjc.20.2013.12.27.03.25.02
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Fri, 27 Dec 2013 03:25:02 -0800 (PST)
-Message-ID: <52BD6397.8020104@gmail.com>
-Date: Fri, 27 Dec 2013 12:25:11 +0100
-From: G Rodriguez <guille.rodriguez@gmail.com>
-MIME-Version: 1.0
+ id 1VwVdR-0006dm-4j
+ for barebox@lists.infradead.org; Fri, 27 Dec 2013 11:31:22 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 27 Dec 2013 15:30:52 +0400
+Message-ID: <1388143852.637404403@f229.i.mail.ru>
+In-Reply-To: <52BD6397.8020104@gmail.com>
+References: <52BD6397.8020104@gmail.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,21 +22,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i2c driver for mini2440
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IGkyYyBkcml2ZXIgZm9yIG1pbmkyNDQw?=
+To: =?UTF-8?B?RyBSb2RyaWd1ZXo=?= <guille.rodriguez@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hello all,
+> Hello all,
+> 
+> I would like to add an i2c driver for the mini2440 board to barebox.
+> Before I dive into this I wanted to know if someone else has already done this.
+> 
+> Also I could not find much documentation on how to do this or where to get started.
+> Can anyone provide any pointers or suggestions?
 
-I would like to add an i2c driver for the mini2440 board to barebox.
-Before I dive into this I wanted to know if someone else has already done this.
+Naked driver does nothing.
+It would be better if you would tell where it will be used.
 
-Also I could not find much documentation on how to do this or where to get started.
-Can anyone provide any pointers or suggestions?
-
-Thank you,
-
-G Rodriguez
-
+---
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
