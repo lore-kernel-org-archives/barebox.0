@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x22d.google.com ([2a00:1450:400c:c00::22d])
+Received: from mail-pa0-x229.google.com ([2607:f8b0:400e:c03::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1VwW8U-00073F-Jo
- for barebox@lists.infradead.org; Fri, 27 Dec 2013 12:03:27 +0000
-Received: by mail-wg0-f45.google.com with SMTP id y10so7958255wgg.0
- for <barebox@lists.infradead.org>; Fri, 27 Dec 2013 04:03:03 -0800 (PST)
-Message-ID: <52BD6C80.9040602@gmail.com>
-Date: Fri, 27 Dec 2013 13:03:12 +0100
-From: Guillermo Rodriguez <guille.rodriguez@gmail.com>
-MIME-Version: 1.0
-References: <52BD6397.8020104@gmail.com> <1388143852.637404403@f229.i.mail.ru>
-In-Reply-To: <1388143852.637404403@f229.i.mail.ru>
+ id 1VxYF0-0002M3-52
+ for barebox@lists.infradead.org; Mon, 30 Dec 2013 08:30:26 +0000
+Received: by mail-pa0-f41.google.com with SMTP id lf10so11426957pab.14
+ for <barebox@lists.infradead.org>; Mon, 30 Dec 2013 00:30:04 -0800 (PST)
+From: u74147@gmail.com
+Date: Mon, 30 Dec 2013 16:29:53 +0800
+Message-Id: <1388392193-5411-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i2c driver for mini2440
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mips asm/types.h: add #ifndef to fix compile error
+To: barebox@lists.infradead.org
 
-SGkgQWxleGFuZGVyLAoKVGhhbmsgeW91IGZvciB5b3VyIHJlcGx5LgoKQSBuYWtlZCBkcml2ZXIg
-d291bGQgYWxyZWFkeSBiZSB1c2VmdWwgd2l0aCB0aGUgaTJjIGNvbW1hbmQsIHdoaWNoIGFsbG93
-cyB0bwpyZWFkIGFuZCB3cml0ZSBpMmMgZGF0YSBmcm9tIHRoZSBjb21tYW5kIGxpbmUgKHNlZSBj
-b21tYW5kcy9pMmMuYykKClRoZSBnb2FsIGlzIHRvIHJlYWQgY29uZmlndXJhdGlvbiBwYXJhbWV0
-ZXJzIGZyb20gYW4gaTJjIEVFUFJPTSBvbmJvYXJkLgoKQlIsCgpHdWlsbGVybW8gUm9kcmlndWV6
-CgpFbCAyNy8xMi8yMDEzIDEyOjMwLCBBbGV4YW5kZXIgU2hpeWFuIGVzY3JpYmnDszoKPj4gSGVs
-bG8gYWxsLAo+Pgo+PiBJIHdvdWxkIGxpa2UgdG8gYWRkIGFuIGkyYyBkcml2ZXIgZm9yIHRoZSBt
-aW5pMjQ0MCBib2FyZCB0byBiYXJlYm94Lgo+PiBCZWZvcmUgSSBkaXZlIGludG8gdGhpcyBJIHdh
-bnRlZCB0byBrbm93IGlmIHNvbWVvbmUgZWxzZSBoYXMgYWxyZWFkeSBkb25lIHRoaXMuCj4+Cj4+
-IEFsc28gSSBjb3VsZCBub3QgZmluZCBtdWNoIGRvY3VtZW50YXRpb24gb24gaG93IHRvIGRvIHRo
-aXMgb3Igd2hlcmUgdG8gZ2V0IHN0YXJ0ZWQuCj4+IENhbiBhbnlvbmUgcHJvdmlkZSBhbnkgcG9p
-bnRlcnMgb3Igc3VnZ2VzdGlvbnM/Cj4gCj4gTmFrZWQgZHJpdmVyIGRvZXMgbm90aGluZy4KPiBJ
-dCB3b3VsZCBiZSBiZXR0ZXIgaWYgeW91IHdvdWxkIHRlbGwgd2hlcmUgaXQgd2lsbCBiZSB1c2Vk
-Lgo+IAo+IC0tLQo+IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+From: Du Huanpeng <u74147@gmail.com>
+
+without "#ifndef __ASSEMBLY__ #endif", an assembly file
+including this file will break compilation.
+
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
+---
+ arch/mips/include/asm/types.h |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/mips/include/asm/types.h b/arch/mips/include/asm/types.h
+index f5373cc..0341e8b 100644
+--- a/arch/mips/include/asm/types.h
++++ b/arch/mips/include/asm/types.h
+@@ -13,6 +13,8 @@
+ 
+ #include <asm-generic/int-ll64.h>
+ 
++#ifndef __ASSEMBLY__
++
+ #if (defined(CONFIG_HIGHMEM) && defined(CONFIG_64BIT_PHYS_ADDR)) \
+     || defined(CONFIG_64BIT)
+ typedef u64 dma_addr_t;
+@@ -21,6 +23,8 @@ typedef u32 dma_addr_t;
+ #endif
+ typedef u64 dma64_addr_t;
+ 
++#endif
++
+ /*
+  * We don't use int-l64.h for the kernel anymore but still use it for
+  * userspace to avoid code changes.
+-- 
+1.7.9.5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
