@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pb0-x22a.google.com ([2607:f8b0:400e:c01::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W5WXK-00052H-70
- for barebox@lists.infradead.org; Tue, 21 Jan 2014 08:18:19 +0000
-Date: Tue, 21 Jan 2014 09:17:55 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140121081755.GV16215@pengutronix.de>
-References: <1390224236-11032-1-git-send-email-s.hauer@pengutronix.de>
- <1390224236-11032-3-git-send-email-s.hauer@pengutronix.de>
- <20140120182549.GA29762@omega>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140120182549.GA29762@omega>
+ id 1VyErh-0003J1-57
+ for barebox@lists.infradead.org; Wed, 01 Jan 2014 06:01:13 +0000
+Received: by mail-pb0-f42.google.com with SMTP id uo5so13352693pbc.29
+ for <barebox@lists.infradead.org>; Tue, 31 Dec 2013 22:00:49 -0800 (PST)
+From: u74147@gmail.com
+Date: Wed,  1 Jan 2014 14:00:40 +0800
+Message-Id: <1388556040-4208-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,55 +16,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: dts: i.MX53: tqma53: Add barebox specifics
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mips asm/types.h: add #ifndef to fix compile error
+To: barebox@lists.infradead.org
 
-On Mon, Jan 20, 2014 at 07:25:50PM +0100, Alexander Aring wrote:
-> Hi Sascha,
-> 
-> On Mon, Jan 20, 2014 at 02:23:55PM +0100, Sascha Hauer wrote:
-> > - add chosen node with
-> >   - environment
-> >   - linux,stdout-path
-> > - add dsr value to eMMC
-> > - add provide-mac-address property to iim node
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/dts/imx53-mba53.dts   | 17 +++++++++++++++++
-> >  arch/arm/dts/imx53-tqma53.dtsi | 15 ++++++++++++++-
-> >  2 files changed, 31 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/dts/imx53-mba53.dts b/arch/arm/dts/imx53-mba53.dts
-> > index a630902..43bb12c 100644
-> ...
-> > +
-> >  	memory {
-> > -		reg = <0x70000000 0x40000000>; /* Up to 1GiB */
-> > +		reg = <0x70000000 0x0>; /* Up to 1GiB */
-> 
-> Is this change correct? You don't mention it in commit-msg and it confusing
-> me a little bit to set this zero. :-)
+From: Du Huanpeng <u74147@gmail.com>
 
-The change is necessary. The tqma53 comes with 512MiB or 1GiB. During
-barebox startup the SDRAM first gets registered by the devicetree
-information, but this is wrong for the 512MiB boards. The correct
-SDRAM size is derived from the SDRAM controller settings later from
-arch/arm/mach-imx/esdctl.c. This only works as long as the devicetree
-parser hasn't registered conflicting SDRAM earlier.
+without "#ifndef __ASSEMBLY__ #endif", an assembly file
+including this file will break compilation.
 
-Sascha
+Signed-off-by: Du Huanpeng <u74147@gmail.com>
+---
+ arch/mips/include/asm/types.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/arch/mips/include/asm/types.h b/arch/mips/include/asm/types.h
+index f5373cc..b63687d 100644
+--- a/arch/mips/include/asm/types.h
++++ b/arch/mips/include/asm/types.h
+@@ -13,6 +13,8 @@
+ 
+ #include <asm-generic/int-ll64.h>
+ 
++#ifndef __ASSEMBLY__
++
+ #if (defined(CONFIG_HIGHMEM) && defined(CONFIG_64BIT_PHYS_ADDR)) \
+     || defined(CONFIG_64BIT)
+ typedef u64 dma_addr_t;
+@@ -21,6 +23,8 @@ typedef u32 dma_addr_t;
+ #endif
+ typedef u64 dma64_addr_t;
+ 
++#endif /* __ASSEMBLY__ */
++
+ /*
+  * We don't use int-l64.h for the kernel anymore but still use it for
+  * userspace to avoid code changes.
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.9.5
+
 
 _______________________________________________
 barebox mailing list
