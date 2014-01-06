@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W05Xf-0003Qp-P9
- for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:28:12 +0000
-Date: Mon, 6 Jan 2014 09:22:46 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140106082246.GB3677@pengutronix.de>
-References: <1388556040-4208-1-git-send-email-u74147@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1388556040-4208-1-git-send-email-u74147@gmail.com>
+ id 1W05VG-0003O8-Hc
+ for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:25:43 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Mon,  6 Jan 2014 09:25:10 +0100
+Message-Id: <1388996710-991-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,67 +14,52 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mips asm/types.h: add #ifndef to fix compile error
-To: u74147@gmail.com
+Subject: [PATCH] lib: libubigen math compile error fix
+To: w.sang@pengutronix.de
 Cc: barebox@lists.infradead.org
 
-On Wed, Jan 01, 2014 at 02:00:40PM +0800, u74147@gmail.com wrote:
-> From: Du Huanpeng <u74147@gmail.com>
-> 
-> without "#ifndef __ASSEMBLY__ #endif", an assembly file
-> including this file will break compilation.
-> 
-> Signed-off-by: Du Huanpeng <u74147@gmail.com>
+A compile error appears in libubigen on PXA architecture, because of a
+division of an long long by a int :
+/home/rj/mio_linux/barebox/lib/libubigen.c:105: undefined reference to
+`__aeabi_ldivmod' arm-linux-gnueabi-ld: BFD (GNU Binutils for Debian)
+2.20.1.20100303 assertion fail ../../bfd/elf32-arm.c:12497
 
-Applied, thanks
+Fix it by using div_u64 instead.
 
-Sascha
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ lib/libubigen.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> ---
->  arch/mips/include/asm/types.h |    4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/mips/include/asm/types.h b/arch/mips/include/asm/types.h
-> index f5373cc..b63687d 100644
-> --- a/arch/mips/include/asm/types.h
-> +++ b/arch/mips/include/asm/types.h
-> @@ -13,6 +13,8 @@
->  
->  #include <asm-generic/int-ll64.h>
->  
-> +#ifndef __ASSEMBLY__
-> +
->  #if (defined(CONFIG_HIGHMEM) && defined(CONFIG_64BIT_PHYS_ADDR)) \
->      || defined(CONFIG_64BIT)
->  typedef u64 dma_addr_t;
-> @@ -21,6 +23,8 @@ typedef u32 dma_addr_t;
->  #endif
->  typedef u64 dma64_addr_t;
->  
-> +#endif /* __ASSEMBLY__ */
-> +
->  /*
->   * We don't use int-l64.h for the kernel anymore but still use it for
->   * userspace to avoid code changes.
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/lib/libubigen.c b/lib/libubigen.c
+index 4026f1d..9006329 100644
+--- a/lib/libubigen.c
++++ b/lib/libubigen.c
+@@ -29,6 +29,7 @@
+ #include <errno.h>
+ #include <crc.h>
+ #include <fs.h>
++#include <linux/math64.h>
+ 
+ #include <mtd/utils.h>
+ #include <mtd/ubi-media.h>
+@@ -102,7 +103,7 @@ int ubigen_add_volume(const struct ubigen_info *ui,
+ 	}
+ 
+ 	memset(vtbl_rec, 0, sizeof(struct ubi_vtbl_record));
+-	tmp = (vi->bytes + ui->leb_size - 1) / ui->leb_size;
++	tmp = div_u64(vi->bytes + ui->leb_size - 1, ui->leb_size);
+ 	vtbl_rec->reserved_pebs = cpu_to_be32(tmp);
+ 	vtbl_rec->alignment = cpu_to_be32(vi->alignment);
+ 	vtbl_rec->vol_type = vi->type;
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
