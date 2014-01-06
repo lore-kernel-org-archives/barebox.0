@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W06xg-0005iQ-Lg
- for barebox@lists.infradead.org; Mon, 06 Jan 2014 09:59:09 +0000
-Date: Mon, 6 Jan 2014 10:58:26 +0100
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W07Ni-0006F7-OY
+ for barebox@lists.infradead.org; Mon, 06 Jan 2014 10:26:03 +0000
+Date: Mon, 6 Jan 2014 11:20:40 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140106095825.GC3677@pengutronix.de>
-References: <1388996710-991-1-git-send-email-robert.jarzmik@free.fr>
+Message-ID: <20140106102039.GD3677@pengutronix.de>
+References: <52CA7565.7060808@kosagi.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1388996710-991-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <52CA7565.7060808@kosagi.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,61 +22,81 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: libubigen math compile error fix
-To: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: barebox@lists.infradead.org, w.sang@pengutronix.de
+Subject: Re: Porting Barebox to i.MX6QDL "Novena"
+To: Sean Cross <xobs@kosagi.com>
+Cc: barebox@lists.infradead.org
 
-Hi Robert,
-
-On Mon, Jan 06, 2014 at 09:25:10AM +0100, Robert Jarzmik wrote:
-> A compile error appears in libubigen on PXA architecture, because of a
-> division of an long long by a int :
-> /home/rj/mio_linux/barebox/lib/libubigen.c:105: undefined reference to
-> `__aeabi_ldivmod' arm-linux-gnueabi-ld: BFD (GNU Binutils for Debian)
-> 2.20.1.20100303 assertion fail ../../bfd/elf32-arm.c:12497
+On Mon, Jan 06, 2014 at 05:20:37PM +0800, Sean Cross wrote:
+> Hi,
 > 
-> Fix it by using div_u64 instead.
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+> After talking with people at 30C3, I've decided to try moving from
+> U-Boot to Barebox.  I've got things building to the point where I have a
+> single ">" character being printed (after reading an earlier SOM porting
+> message),
 
-Applied, thanks.
+So the hardest part is already done ;)
+
+> but I'm starting to grasp at straws now when it comes to
+> bringing DDR up.
+> 
+> Novena has an SO-DIMM slot.  In U-Boot, we wrote a hook for setup_ddr()
+> that got the SO-DIMM's SPD via I2C, performed calibration, and returned
+> with DDR all configured.
+> 
+> In Barebox, I'm running into some trouble:
+> 
+>     1) How do I access I2C routines from lowlevel.c?  I need to be able
+> to query the EEPROM on the DDR module itself to get its timing parameters.
+
+There is no way to access the regular i2c functions that early. You are
+lucky that the mpc85xx has the same i2c controller and the same problem.
+See arch/ppc/mach-mpc85xx/fsl_i2c.c, it contains the lowlevel functions
+to access the i2c bus. We probably have some SPD EEPROM parsing code
+from U-Boot aswell.
+
+> 
+>     2) How much character printing can I get in lowlevel.c?  I notice
+> putc_ll() works, but puts_ll() doesn't, presumably because I have the
+> text offset incorrectly set.
+
+Yes right. only putc_ll and puthex_ll can be used.
+
+> 
+>     3) How much functionality can I have in ~96 KiB?  I believe that's
+> roughly the amount of space allowed in the OCRAM on an i.MX6DL once you
+> allow for code in ROM that's actually doing the loading.
+> 
+>     4) Failing that, is it possible to load some preboot code to set up
+> DDR?  I realize the traditional method is a hardcoded pokefile, but
+> since we support DDR3 modules, we can't rely on that.
+
+You have several options here. First option is to compile a small first
+stage barebox which runs from OCRAM. This first stage loader would need
+i2c support and support for loading the 2nd stage barebox from whatever
+medium you boot from. 96KiB should be enough to accomplish this. The good
+about this way is that it's relatively straight forward. Also you could
+directly start a kernel instead of the 2nd stage barebox which makes
+your boot process really fast. The downside is that you have two barebox
+binaries and configs to handle. Also the available binary space in the 1st
+stage loader probably won't be enough to contain code for bootstrapping
+from say MMC and NAND and SPI, so you need additional binaries for each
+boot source.
+Another option is to do what the phyCORE am335x does, see
+arch/arm/boards/pcm051/lowlevel.c. The ROM code loads the binary to
+internal SRAM. Then this board calls relocate_to_current_adr() and setup_c()
+right after startup. At this point you have a regular C environment and
+have everything in place to use fsl_i2c.c and gather information about
+your SDRAM. When done call barebox_arm_entry() with the amount of SDRAM
+you found. This will then uncompress the regular barebox to SDRAM and
+continue from there.
+
+I recommend using the second approch, although it's probably harder to
+understand what is going on there. Feel free to ask when you encounter
+problems.
 
 Sascha
 
-> ---
->  lib/libubigen.c |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/libubigen.c b/lib/libubigen.c
-> index 4026f1d..9006329 100644
-> --- a/lib/libubigen.c
-> +++ b/lib/libubigen.c
-> @@ -29,6 +29,7 @@
->  #include <errno.h>
->  #include <crc.h>
->  #include <fs.h>
-> +#include <linux/math64.h>
->  
->  #include <mtd/utils.h>
->  #include <mtd/ubi-media.h>
-> @@ -102,7 +103,7 @@ int ubigen_add_volume(const struct ubigen_info *ui,
->  	}
->  
->  	memset(vtbl_rec, 0, sizeof(struct ubi_vtbl_record));
-> -	tmp = (vi->bytes + ui->leb_size - 1) / ui->leb_size;
-> +	tmp = div_u64(vi->bytes + ui->leb_size - 1, ui->leb_size);
->  	vtbl_rec->reserved_pebs = cpu_to_be32(tmp);
->  	vtbl_rec->alignment = cpu_to_be32(vi->alignment);
->  	vtbl_rec->vol_type = vi->type;
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+
 
 -- 
 Pengutronix e.K.                           |                             |
