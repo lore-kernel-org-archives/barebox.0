@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.g1.pair.com ([66.39.3.162])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W09lT-0001MS-Fc
- for barebox@lists.infradead.org; Mon, 06 Jan 2014 12:58:44 +0000
-Message-ID: <52CAA869.5070600@kosagi.com>
-Date: Mon, 06 Jan 2014 20:58:17 +0800
-From: Sean Cross <xobs@kosagi.com>
-MIME-Version: 1.0
-References: <52CA7565.7060808@kosagi.com>
- <20140106102039.GD3677@pengutronix.de>
-In-Reply-To: <20140106102039.GD3677@pengutronix.de>
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W0Aiy-0002w9-SP
+ for barebox@lists.infradead.org; Mon, 06 Jan 2014 14:00:13 +0000
+Received: by mail-la0-f49.google.com with SMTP id er20so9793500lab.36
+ for <barebox@lists.infradead.org>; Mon, 06 Jan 2014 05:59:50 -0800 (PST)
+Date: Mon, 6 Jan 2014 18:07:47 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140106180747.b9e9fc1ad92b41d7b39b27fe@gmail.com>
+In-Reply-To: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
+References: <1386652255-31418-1-git-send-email-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,98 +19,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting Barebox to i.MX6QDL "Novena"
+Subject: Re: [PATCH] MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 6/1/14 6:20 PM, Sascha Hauer wrote:
-> On Mon, Jan 06, 2014 at 05:20:37PM +0800, Sean Cross wrote:
->> but I'm starting to grasp at straws now when it comes to
->> bringing DDR up.
->>
->> Novena has an SO-DIMM slot.  In U-Boot, we wrote a hook for setup_ddr()
->> that got the SO-DIMM's SPD via I2C, performed calibration, and returned
->> with DDR all configured.
->>
->> In Barebox, I'm running into some trouble:
->>
->>     1) How do I access I2C routines from lowlevel.c?  I need to be able
->> to query the EEPROM on the DDR module itself to get its timing parameters.
-> There is no way to access the regular i2c functions that early. You are
-> lucky that the mpc85xx has the same i2c controller and the same problem.
-> See arch/ppc/mach-mpc85xx/fsl_i2c.c, it contains the lowlevel functions
-> to access the i2c bus. We probably have some SPD EEPROM parsing code
-> from U-Boot aswell.
-Looks like there's some DDR2 code left over, but not much related to
-DDR3.  Can't win 'em all, but that's a lucky break on the FSL I2C stuff.
+On Tue, 10 Dec 2013 09:10:55 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
->>     2) How much character printing can I get in lowlevel.c?  I notice
->> putc_ll() works, but puts_ll() doesn't, presumably because I have the
->> text offset incorrectly set.
-> Yes right. only putc_ll and puthex_ll can be used.
-Noted.  putc_ll() it is.  No printf for me, in bringing up DDR3.
+Sascha, please apply this trivial patch.
 
->>     3) How much functionality can I have in ~96 KiB?  I believe that's
->> roughly the amount of space allowed in the OCRAM on an i.MX6DL once you
->> allow for code in ROM that's actually doing the loading.
->>
->>     4) Failing that, is it possible to load some preboot code to set up
->> DDR?  I realize the traditional method is a hardcoded pokefile, but
->> since we support DDR3 modules, we can't rely on that.
-> You have several options here. First option is to compile a small first
-> stage barebox which runs from OCRAM. This first stage loader would need
-> i2c support and support for loading the 2nd stage barebox from whatever
-> medium you boot from. 96KiB should be enough to accomplish this. The good
-> about this way is that it's relatively straight forward. Also you could
-> directly start a kernel instead of the 2nd stage barebox which makes
-> your boot process really fast. The downside is that you have two barebox
-> binaries and configs to handle. Also the available binary space in the 1st
-> stage loader probably won't be enough to contain code for bootstrapping
-> from say MMC and NAND and SPI, so you need additional binaries for each
-> boot source.
-> Another option is to do what the phyCORE am335x does, see
-> arch/arm/boards/pcm051/lowlevel.c. The ROM code loads the binary to
-> internal SRAM. Then this board calls relocate_to_current_adr() and setup_c()
-> right after startup. At this point you have a regular C environment and
-> have everything in place to use fsl_i2c.c and gather information about
-> your SDRAM. When done call barebox_arm_entry() with the amount of SDRAM
-> you found. This will then uncompress the regular barebox to SDRAM and
-> continue from there.
->
-> I recommend using the second approch, although it's probably harder to
-> understand what is going on there. Feel free to ask when you encounter
-> problems.
->
-Let me make sure I understand the mechanics of the two options.
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/lib/csrc-r4k.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
 
-For the first option -- a first-stage and a second-stage -- lowlevel.c
-would call barebox_arm_entry(), and the boot script would configure DDR,
-load a larger barebox off of MMC, and jump to it.  The TEXT_ADDR of the
-first stage would point to somewhere like 0x00908000 (near the top of SRAM).
+> diff --git a/arch/mips/lib/csrc-r4k.c b/arch/mips/lib/csrc-r4k.c
+> index 2978fcf..c699f2b 100644
+> --- a/arch/mips/lib/csrc-r4k.c
+> +++ b/arch/mips/lib/csrc-r4k.c
+> @@ -32,7 +32,7 @@ static uint64_t c0_hpt_read(void)
+>  =
 
-For the second option -- what the phyCORE am335x does -- it would run
-lowlevel.c with the stack in SRAM, which would set up DDR, then
-barebox_arm_entry would put the stack somewhere in SDRAM.
+>  static struct clocksource cs =3D {
+>  	.read	=3D c0_hpt_read,
+> -	.mask	=3D 0xffffffff,
+> +	.mask	=3D CLOCKSOURCE_MASK(32),
+>  };
+>  =
 
-The second does sound more attractive, as it would allow us to continue
-using USB boot for factory tests.  However, I'm having trouble getting
-barebox to be small enough.  I've disabled most commands, most drivers,
-networking, USB, MMC, autocompletion, enabled Thumb2, and am using the
-simplified shell, and the size of images/barebox-kosagi-novena-6dl.img
-is still 87k.  If this is the size of the stripped-down version, where
-would the regular barebox fit?
+>  static int clocksource_init(void)
+> -- =
 
-If I do go with the two-stage approach, is barebox.bin a binary that can
-simply be loaded into RAM and jumped to, assuming PIC is enabled?  I
-suppose I could reuse the DTB file in memory by passing it to the
-second-stage bootloader at this point...
+> 1.8.5
+> =
 
 
-Sean
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
