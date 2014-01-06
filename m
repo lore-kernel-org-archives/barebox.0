@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W05VG-0003O8-Hc
- for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:25:43 +0000
-From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Mon,  6 Jan 2014 09:25:10 +0100
-Message-Id: <1388996710-991-1-git-send-email-robert.jarzmik@free.fr>
+ id 1W060b-000450-AD
+ for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:58:06 +0000
+Date: Mon, 6 Jan 2014 09:52:43 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140106085242.GC24559@pengutronix.de>
+References: <1387957805-1532-1-git-send-email-antonynpavlov@gmail.com>
+ <1387957805-1532-2-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1387957805-1532-2-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,52 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: libubigen math compile error fix
-To: w.sang@pengutronix.de
+Subject: Re: [PATCH 1/5] miitool: change behaviour closer to linux' mii-tool
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-A compile error appears in libubigen on PXA architecture, because of a
-division of an long long by a int :
-/home/rj/mio_linux/barebox/lib/libubigen.c:105: undefined reference to
-`__aeabi_ldivmod' arm-linux-gnueabi-ld: BFD (GNU Binutils for Debian)
-2.20.1.20100303 assertion fail ../../bfd/elf32-arm.c:12497
+On Wed, Dec 25, 2013 at 11:50:01AM +0400, Antony Pavlov wrote:
+> miitool without arguments will try to show status for all phys.
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> +static void mdiobus_show(struct device_d *dev, char *phydevname, int verbose)
+> +{
+> +	struct mii_bus *mii = to_mii_bus(dev);
+> +	int i, ret;
 
-Fix it by using div_u64 instead.
+Applied this series with this unused variable removed...
 
-Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
----
- lib/libubigen.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> @@ -227,9 +244,6 @@ static int do_miitool(int argc, char *argv[])
+>  		case 'v':
+>  			verbose++;
+>  			break;
+> -		case 's':
+> -			scan = 1;
+> -			break;
 
-diff --git a/lib/libubigen.c b/lib/libubigen.c
-index 4026f1d..9006329 100644
---- a/lib/libubigen.c
-+++ b/lib/libubigen.c
-@@ -29,6 +29,7 @@
- #include <errno.h>
- #include <crc.h>
- #include <fs.h>
-+#include <linux/math64.h>
- 
- #include <mtd/utils.h>
- #include <mtd/ubi-media.h>
-@@ -102,7 +103,7 @@ int ubigen_add_volume(const struct ubigen_info *ui,
- 	}
- 
- 	memset(vtbl_rec, 0, sizeof(struct ubi_vtbl_record));
--	tmp = (vi->bytes + ui->leb_size - 1) / ui->leb_size;
-+	tmp = div_u64(vi->bytes + ui->leb_size - 1, ui->leb_size);
- 	vtbl_rec->reserved_pebs = cpu_to_be32(tmp);
- 	vtbl_rec->alignment = cpu_to_be32(vi->alignment);
- 	vtbl_rec->vol_type = vi->type;
+...and also removed 's' from the options string.
+
+This behaviour looks definitely better than what I did with the
+additional 's' option.
+
+Sascha
+
 -- 
-1.7.10.4
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
