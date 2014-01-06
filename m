@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W05ZO-0003Ub-VC
- for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:29:59 +0000
-Date: Mon, 6 Jan 2014 09:24:37 +0100
+ id 1W05Xf-0003Qp-P9
+ for barebox@lists.infradead.org; Mon, 06 Jan 2014 08:28:12 +0000
+Date: Mon, 6 Jan 2014 09:22:46 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140106082437.GB24559@pengutronix.de>
-References: <1388031849-21383-1-git-send-email-antonynpavlov@gmail.com>
+Message-ID: <20140106082246.GB3677@pengutronix.de>
+References: <1388556040-4208-1-git-send-email-u74147@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1388031849-21383-1-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1388556040-4208-1-git-send-email-u74147@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,97 +22,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] lib: fix whitespace, drop blank lines at EOF
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] mips asm/types.h: add #ifndef to fix compile error
+To: u74147@gmail.com
 Cc: barebox@lists.infradead.org
 
-On Thu, Dec 26, 2013 at 08:24:09AM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+On Wed, Jan 01, 2014 at 02:00:40PM +0800, u74147@gmail.com wrote:
+> From: Du Huanpeng <u74147@gmail.com>
+> 
+> without "#ifndef __ASSEMBLY__ #endif", an assembly file
+> including this file will break compilation.
+> 
+> Signed-off-by: Du Huanpeng <u74147@gmail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  include/notifier.h            | 1 -
->  lib/Makefile                  | 2 +-
->  lib/copy_file.c               | 1 -
->  lib/kfifo.c                   | 1 -
->  lib/notifier.c                | 1 -
->  lib/process_escape_sequence.c | 1 -
->  lib/show_progress.c           | 1 -
->  7 files changed, 1 insertion(+), 7 deletions(-)
+>  arch/mips/include/asm/types.h |    4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/include/notifier.h b/include/notifier.h
-> index c83e28b..e0df3e6 100644
-> --- a/include/notifier.h
-> +++ b/include/notifier.h
-> @@ -35,4 +35,3 @@ int clock_notifier_call_chain(void);
->  	};
+> diff --git a/arch/mips/include/asm/types.h b/arch/mips/include/asm/types.h
+> index f5373cc..b63687d 100644
+> --- a/arch/mips/include/asm/types.h
+> +++ b/arch/mips/include/asm/types.h
+> @@ -13,6 +13,8 @@
 >  
->  #endif /* __NOTIFIER_H */
-> -
-> diff --git a/lib/Makefile b/lib/Makefile
-> index e1db99b..e8769a9 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -9,7 +9,7 @@ obj-y			+= misc.o
->  obj-$(CONFIG_PARAMETER)	+= parameter.o
->  obj-y			+= xfuncs.o
->  obj-y			+= getopt.o
-> -obj-y 			+= readkey.o
-> +obj-y			+= readkey.o
->  obj-y			+= kfifo.o
->  obj-y			+= libbb.o
->  obj-y			+= libgen.o
-> diff --git a/lib/copy_file.c b/lib/copy_file.c
-> index 778cc00..fdd0cac 100644
-> --- a/lib/copy_file.c
-> +++ b/lib/copy_file.c
-> @@ -84,4 +84,3 @@ out:
+>  #include <asm-generic/int-ll64.h>
 >  
->  	return ret;
->  }
-> -
-> diff --git a/lib/kfifo.c b/lib/kfifo.c
-> index afd3894..307dae1 100644
-> --- a/lib/kfifo.c
-> +++ b/lib/kfifo.c
-> @@ -153,4 +153,3 @@ unsigned int kfifo_getc(struct kfifo *fifo, unsigned char *c)
+> +#ifndef __ASSEMBLY__
+> +
+>  #if (defined(CONFIG_HIGHMEM) && defined(CONFIG_64BIT_PHYS_ADDR)) \
+>      || defined(CONFIG_64BIT)
+>  typedef u64 dma_addr_t;
+> @@ -21,6 +23,8 @@ typedef u32 dma_addr_t;
+>  #endif
+>  typedef u64 dma64_addr_t;
 >  
->  	return 0;
->  }
-> -
-> diff --git a/lib/notifier.c b/lib/notifier.c
-> index a2aac53..9eb734e 100644
-> --- a/lib/notifier.c
-> +++ b/lib/notifier.c
-> @@ -56,4 +56,3 @@ int clock_notifier_call_chain(void)
->  {
->  	return notifier_call_chain(&clock_notifier_list, 0, NULL);
->  }
-> -
-> diff --git a/lib/process_escape_sequence.c b/lib/process_escape_sequence.c
-> index 47a7e5c..1bfd070 100644
-> --- a/lib/process_escape_sequence.c
-> +++ b/lib/process_escape_sequence.c
-> @@ -80,4 +80,3 @@ int process_escape_sequence(const char *source, char *dest, int destlen)
->  	dest[i] = 0;
->  	return 0;
->  }
-> -
-> diff --git a/lib/show_progress.c b/lib/show_progress.c
-> index 98dc849..f9aa1a9 100644
-> --- a/lib/show_progress.c
-> +++ b/lib/show_progress.c
-> @@ -62,4 +62,3 @@ void init_progression_bar(int max)
->  	else
->  		printf("\t");
->  }
-> -
+> +#endif /* __ASSEMBLY__ */
+> +
+>  /*
+>   * We don't use int-l64.h for the kernel anymore but still use it for
+>   * userspace to avoid code changes.
 > -- 
-> 1.8.5.2
+> 1.7.9.5
 > 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 > 
 
 -- 
