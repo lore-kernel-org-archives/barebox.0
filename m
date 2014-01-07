@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W0TkQ-0002dq-RM
- for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:19:03 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1W0Tk5-0003G1-JT
- for barebox@lists.infradead.org; Tue, 07 Jan 2014 11:18:37 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1W0Tk5-0002gX-IT
- for barebox@lists.infradead.org; Tue, 07 Jan 2014 11:18:37 +0100
+ id 1W0TkQ-0002ds-RI
+ for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:19:02 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Jan 2014 11:18:32 +0100
-Message-Id: <1389089916-2771-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2014 11:18:34 +0100
+Message-Id: <1389089916-2771-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1389089916-2771-1-git-send-email-s.hauer@pengutronix.de>
+References: <1389089916-2771-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +21,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: USB chipidea patches
+Subject: [PATCH 2/4] usb: chipidea i.MX: limit port init to HSIC mode
 To: barebox@lists.infradead.org
 
-These are some chipidea patches buried in my local repo.
+imx_chipidea_port_init() will be called during startup from
+the ehci driver. Calling it before setting up the PORTSC register
+is only necessary in HSIC mode.
 
-Sascha
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/usb/imx/chipidea-imx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      usb: chipidea i.MX: remove unused pdata->init hook
-      usb: chipidea i.MX: limit port init to HSIC mode
-      usb: chipidea i.MX: always print an error message when ULPI fails
-      usb: chipidea i.MX: add some delay after ulpi_setup
+diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
+index 2f290e1..c81c10d 100644
+--- a/drivers/usb/imx/chipidea-imx.c
++++ b/drivers/usb/imx/chipidea-imx.c
+@@ -161,7 +161,8 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 	ci->data.post_init = imx_chipidea_port_post_init;
+ 	ci->data.drvdata = ci;
+ 
+-	imx_chipidea_port_init(ci);
++	if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_HSIC)
++		imx_chipidea_port_init(ci);
+ 
+ 	portsc = readl(base + 0x184);
+ 	portsc &= ~MXC_EHCI_PORTSC_MASK;
+-- 
+1.8.5.2
 
- drivers/usb/imx/chipidea-imx.c | 12 ++++++------
- include/usb/chipidea-imx.h     |  1 -
- 2 files changed, 6 insertions(+), 7 deletions(-)
 
 _______________________________________________
 barebox mailing list
