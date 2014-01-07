@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W0TkQ-0002ds-RI
- for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:19:02 +0000
+ id 1W0TkQ-0002dr-RQ
+ for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:19:03 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Jan 2014 11:18:34 +0100
-Message-Id: <1389089916-2771-3-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2014 11:18:33 +0100
+Message-Id: <1389089916-2771-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1389089916-2771-1-git-send-email-s.hauer@pengutronix.de>
 References: <1389089916-2771-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,32 +21,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] usb: chipidea i.MX: limit port init to HSIC mode
+Subject: [PATCH 1/4] usb: chipidea i.MX: remove unused pdata->init hook
 To: barebox@lists.infradead.org
-
-imx_chipidea_port_init() will be called during startup from
-the ehci driver. Calling it before setting up the PORTSC register
-is only necessary in HSIC mode.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/imx/chipidea-imx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/imx/chipidea-imx.c | 5 -----
+ include/usb/chipidea-imx.h     | 1 -
+ 2 files changed, 6 deletions(-)
 
 diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 2f290e1..c81c10d 100644
+index d8209d1..2f290e1 100644
 --- a/drivers/usb/imx/chipidea-imx.c
 +++ b/drivers/usb/imx/chipidea-imx.c
-@@ -161,7 +161,8 @@ static int imx_chipidea_probe(struct device_d *dev)
- 	ci->data.post_init = imx_chipidea_port_post_init;
- 	ci->data.drvdata = ci;
+@@ -32,7 +32,6 @@ struct imx_chipidea {
+ 	struct ehci_data data;
+ 	unsigned long flags;
+ 	enum imx_usb_mode mode;
+-	int (*init)(int port);
+ 	int portno;
+ };
  
--	imx_chipidea_port_init(ci);
-+	if ((ci->flags & MXC_EHCI_PORTSC_MASK) == MXC_EHCI_MODE_HSIC)
-+		imx_chipidea_port_init(ci);
+@@ -58,9 +57,6 @@ static int imx_chipidea_port_init(void *drvdata)
+ 	if (ret)
+ 		dev_err(ci->dev, "misc init failed: %s\n", strerror(-ret));
  
- 	portsc = readl(base + 0x184);
- 	portsc &= ~MXC_EHCI_PORTSC_MASK;
+-	if (ci->init)
+-		ci->init(ci->portno);
+-
+ 	return ret;
+ }
+ 
+@@ -152,7 +148,6 @@ static int imx_chipidea_probe(struct device_d *dev)
+ 		}
+ 		ci->portno = dev->id;
+ 		ci->flags = pdata->flags;
+-		ci->init = pdata->init;
+ 		ci->mode = pdata->mode;
+ 	}
+ 
+diff --git a/include/usb/chipidea-imx.h b/include/usb/chipidea-imx.h
+index 5801cf1..487217c 100644
+--- a/include/usb/chipidea-imx.h
++++ b/include/usb/chipidea-imx.h
+@@ -42,7 +42,6 @@ enum imx_usb_mode {
+ struct imxusb_platformdata {
+ 	unsigned long flags;
+ 	enum imx_usb_mode mode;
+-	int (*init)(int port);
+ };
+ 
+ int imx_usbmisc_port_init(int port, unsigned flags);
 -- 
 1.8.5.2
 
