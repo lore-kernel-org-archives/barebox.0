@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([92.198.50.35])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W0TYH-0002JX-E3
- for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:06:26 +0000
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W0Tcj-0002PR-B9
+ for barebox@lists.infradead.org; Tue, 07 Jan 2014 10:11:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue,  7 Jan 2014 11:05:29 +0100
-Message-Id: <1389089135-29986-4-git-send-email-s.hauer@pengutronix.de>
+Date: Tue,  7 Jan 2014 11:05:27 +0100
+Message-Id: <1389089135-29986-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1389089135-29986-1-git-send-email-s.hauer@pengutronix.de>
 References: <1389089135-29986-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/9] UBI: fix refill_wl_user_pool()
+Subject: [PATCH 1/9] UBI: Fix PEB leak in wear_leveling_worker()
 To: barebox@lists.infradead.org
-Cc: Richard Weinberger <richard@nod.at>
+Cc: Richard Weinberger <richard@nod.at>, stable@vger.kernel.org
 
 From: Richard Weinberger <richard@nod.at>
 
-If no free PEBs are available refill_wl_user_pool() must not
-return with -ENOSPC immediately.
-It has to block till produce_free_peb() produced a free PEB.
+get_peb_for_wl() removes the PEB from the free list.
+If the WL subsystem detects that no wear leveling is needed
+it cancels the operation and drops the gained PEB.
+In this case we have to put the PEB back into the free list.
 
-Reported-and-Tested-by: Richard Genoud <richard.genoud@gmail.com>
+This issue was introduced with commit ed4b7021c
+(UBI: remove PEB from free tree in get_peb_for_wl()).
+
+Cc: <stable@vger.kernel.org> # 3.7.x
 Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 ---
- drivers/mtd/ubi/wl.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/mtd/ubi/wl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
-index 5a79e98..34e23b3 100644
+index d0d3c97..5a79e98 100644
 --- a/drivers/mtd/ubi/wl.c
 +++ b/drivers/mtd/ubi/wl.c
-@@ -572,10 +572,6 @@ static void refill_wl_user_pool(struct ubi_device *ubi)
- 	return_unused_pool_pebs(ubi, pool);
- 
- 	for (pool->size = 0; pool->size < pool->max_size; pool->size++) {
--		if (!ubi->free.rb_node ||
--		   (ubi->free_count - ubi->beb_rsvd_pebs < 1))
--			break;
--
- 		pool->pebs[pool->size] = __wl_get_peb(ubi);
- 		if (pool->pebs[pool->size] < 0)
- 			break;
+@@ -1020,6 +1020,9 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
+ 		if (!(e2->ec - e1->ec >= UBI_WL_THRESHOLD)) {
+ 			dbg_wl("no WL needed: min used EC %d, max free EC %d",
+ 			       e1->ec, e2->ec);
++
++			/* Give the unused PEB back */
++			wl_tree_add(e2, &ubi->free);
+ 			goto out_cancel;
+ 		}
+ 		self_check_in_wl_tree(ubi, e1, &ubi->used);
 -- 
 1.8.5.2
 
