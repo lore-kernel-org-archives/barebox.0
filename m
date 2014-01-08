@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f49.google.com ([209.85.160.49])
+Received: from smtp20.mail.ru ([94.100.176.173])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W0jA9-0001Z4-HK
- for barebox@lists.infradead.org; Wed, 08 Jan 2014 02:46:34 +0000
-Received: by mail-pb0-f49.google.com with SMTP id jt11so952270pbb.36
- for <barebox@lists.infradead.org>; Tue, 07 Jan 2014 18:46:11 -0800 (PST)
-Received: from san0.fossix.org ([122.167.98.3])
- by mx.google.com with ESMTPSA id sy10sm182380340pac.15.2014.01.07.18.45.50
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 07 Jan 2014 18:46:07 -0800 (PST)
-Date: Wed, 8 Jan 2014 08:15:39 +0530
-From: Santosh Sivaraj <santosh@fossix.org>
-Message-ID: <20140108024539.GA13274@san0.fossix.org>
-MIME-Version: 1.0
-Content-Disposition: inline
+ id 1W0lwh-0003YJ-Bh
+ for barebox@lists.infradead.org; Wed, 08 Jan 2014 05:44:53 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Wed,  8 Jan 2014 09:44:16 +0400
+Message-Id: <1389159856-13909-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1389159856-13909-1-git-send-email-shc_work@mail.ru>
+References: <1389159856-13909-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,52 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make number of GPT partitions a configurable option
+Subject: [PATCH 2/2] ARM: freescale-mx51-pdk: Remove FEC GPIO handling
 To: barebox@lists.infradead.org
 
-Theoritically there is no limit for the partitions that can be created
-based on EFI/GPT, so make the number of partitions that can be visible
-in barebox a configurable option.
+Reset GPIO now handled from DTS, no need to touch this in the board.
 
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- common/partitions/Kconfig  | 5 +++++
- common/partitions/parser.h | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boards/freescale-mx51-pdk/board.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/common/partitions/Kconfig b/common/partitions/Kconfig
-index 90238ad..f3353dd 100644
---- a/common/partitions/Kconfig
-+++ b/common/partitions/Kconfig
-@@ -31,3 +31,8 @@ config PARTITION_DISK_EFI_GPT_COMPARE
- 	depends on PARTITION_DISK_EFI
- 	default y
- 	bool "EFI: GPT: compare primary and Alternate GPT header for validity"
-+
-+config MAX_PARTITIONS
-+	depends on PARTITION_DISK_EFI
-+	int "Maximum of partitions needed to be supported on a GPT"
-+	default 8
-diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-index 8d39452..d1154d7 100644
---- a/common/partitions/parser.h
-+++ b/common/partitions/parser.h
-@@ -11,7 +11,7 @@
- #include <filetype.h>
- #include <linux/list.h>
+diff --git a/arch/arm/boards/freescale-mx51-pdk/board.c b/arch/arm/boards/freescale-mx51-pdk/board.c
+index 379313e..711172d 100644
+--- a/arch/arm/boards/freescale-mx51-pdk/board.c
++++ b/arch/arm/boards/freescale-mx51-pdk/board.c
+@@ -141,21 +141,14 @@ static void babbage_power_init(void)
+ 	/* Configure VGEN3 and VCAM regulators to use external PNP */
+ 	val = 0x208;
+ 	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+-	udelay(200);
+-#define GPIO_LAN8700_RESET	(1 * 32 + 14)
  
--#define MAX_PARTITION		8
-+#define MAX_PARTITION		CONFIG_MAX_PARTITIONS
- #define MAX_PARTITION_NAME	38
+-	/* Reset the ethernet controller over GPIO */
+-	gpio_direction_output(GPIO_LAN8700_RESET, 0);
++	udelay(200);
  
- struct partition {
+ 	/* Enable VGEN3, VCAM, VAUDIO, VVIDEO, VSD regulators */
+ 	val = 0x49249;
+ 	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+ 
+ 	udelay(200);
+-
+-	gpio_set_value(GPIO_LAN8700_RESET, 1);
+-
+-	mdelay(50);
+ }
+ 
+ extern char flash_header_imx51_babbage_start[];
 -- 
-1.8.4.2
- 
+1.8.3.2
+
 
 _______________________________________________
 barebox mailing list
