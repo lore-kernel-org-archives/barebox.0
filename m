@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Jl9-0004dt-1e
- for barebox@lists.infradead.org; Thu, 09 Jan 2014 17:51:11 +0000
-Received: by mail-la0-f47.google.com with SMTP id eh20so206490lab.6
- for <barebox@lists.infradead.org>; Thu, 09 Jan 2014 09:50:46 -0800 (PST)
+ id 1W1Jl9-0004dp-0p
+ for barebox@lists.infradead.org; Thu, 09 Jan 2014 17:51:12 +0000
+Received: by mail-la0-f45.google.com with SMTP id b8so699405lan.32
+ for <barebox@lists.infradead.org>; Thu, 09 Jan 2014 09:50:47 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2014 21:58:36 +0400
-Message-Id: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  9 Jan 2014 21:58:38 +0400
+Message-Id: <1389290319-28518-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
+References: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,14 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] gpiolib: add checks and error message
+Subject: [PATCH 2/3] gpiolib: gpio_free: clear gpio's "label" field too
 To: barebox@lists.infradead.org
 
-This patchseries adds additional trivial checks and error message.
+If an error occured during gpio_request_array() then we can
+get not requested gpio with nonempty garbage "label" field
+value. Afterward the "gpiolib" command can try to use this
+nonempty garbage value.
 
-[PATCH 1/3] gpiolib: gpio_request(): print message on error
-[PATCH 2/3] gpiolib: gpio_free: clear gpio's "label" field too
-[PATCH 3/3] gpiolib: gpiolib command: show label only for requested
+This patch prevents this error situation.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/gpio/gpiolib.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index b7430b0..5f13d5f 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -94,6 +94,7 @@ void gpio_free(unsigned gpio)
+ 
+ 	gi->requested = false;
+ 	free(gi->label);
++	gi->label = NULL;
+ }
+ 
+ /**
+-- 
+1.8.5.2
+
 
 _______________________________________________
 barebox mailing list
