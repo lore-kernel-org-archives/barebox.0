@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Jl9-0004do-13
- for barebox@lists.infradead.org; Thu, 09 Jan 2014 17:51:12 +0000
-Received: by mail-lb0-f176.google.com with SMTP id l4so2547111lbv.7
- for <barebox@lists.infradead.org>; Thu, 09 Jan 2014 09:50:45 -0800 (PST)
+ id 1W1Jl9-0004dt-1e
+ for barebox@lists.infradead.org; Thu, 09 Jan 2014 17:51:11 +0000
+Received: by mail-la0-f47.google.com with SMTP id eh20so206490lab.6
+ for <barebox@lists.infradead.org>; Thu, 09 Jan 2014 09:50:46 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Thu,  9 Jan 2014 21:58:37 +0400
-Message-Id: <1389290319-28518-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
-References: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
+Date: Thu,  9 Jan 2014 21:58:36 +0400
+Message-Id: <1389290319-28518-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,63 +21,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] gpiolib: gpio_request(): print message on error
+Subject: [PATCH 0/3] gpiolib: add checks and error message
 To: barebox@lists.infradead.org
 
-Just copy gpiod_request() function logic from linux-v3.13-rc7.
+This patchseries adds additional trivial checks and error message.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/gpio/gpiolib.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index cafef90..b7430b0 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -50,22 +50,33 @@ int gpio_request(unsigned gpio, const char *label)
- 	struct gpio_info *gi = gpio_to_desc(gpio);
- 	int ret;
- 
--	if (!gi)
--		return -ENODEV;
-+	if (!gi) {
-+		ret = -ENODEV;
-+		goto done;
-+	}
- 
--	if (gi->requested)
--		return -EBUSY;
-+	if (gi->requested) {
-+		ret = -EBUSY;
-+		goto done;
-+	}
-+
-+	ret = 0;
- 
- 	if (gi->chip->ops->request) {
- 		ret = gi->chip->ops->request(gi->chip, gpio - gi->chip->base);
- 		if (ret)
--			return ret;
-+			goto done;
- 	}
- 
- 	gi->requested = true;
- 	gi->label = xstrdup(label);
- 
--	return 0;
-+done:
-+	if (ret)
-+		pr_err("_gpio_request: gpio-%d (%s) status %d\n",
-+			 gpio, label ? : "?", ret);
-+
-+	return ret;
- }
- 
- void gpio_free(unsigned gpio)
--- 
-1.8.5.2
-
+[PATCH 1/3] gpiolib: gpio_request(): print message on error
+[PATCH 2/3] gpiolib: gpio_free: clear gpio's "label" field too
+[PATCH 3/3] gpiolib: gpiolib command: show label only for requested
 
 _______________________________________________
 barebox mailing list
