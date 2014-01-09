@@ -1,23 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ve0-x233.google.com ([2607:f8b0:400c:c01::233])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W19vG-0003jd-54
- for barebox@lists.infradead.org; Thu, 09 Jan 2014 07:20:58 +0000
-Received: by mail-ve0-f179.google.com with SMTP id jw12so2105028veb.38
- for <barebox@lists.infradead.org>; Wed, 08 Jan 2014 23:20:35 -0800 (PST)
+Received: from 3.mo5.mail-out.ovh.net ([46.105.40.108]
+ helo=mo5.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W1A9s-0003uS-RN
+ for barebox@lists.infradead.org; Thu, 09 Jan 2014 07:36:06 +0000
+Received: from mail26.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo5.mail-out.ovh.net (Postfix) with SMTP id 001B5FF89F6
+ for <barebox@lists.infradead.org>; Thu,  9 Jan 2014 08:31:21 +0100 (CET)
+Date: Thu, 9 Jan 2014 08:29:14 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140109072914.GA21626@ns203013.ovh.net>
+References: <20140108024539.GA13274@san0.fossix.org>
+ <20140108140748.GL6750@pengutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <20131219080917.GW24559@pengutronix.de>
-References: <CAJyuEeeO5KpoZpmoSFj8AOOPJ+1o-iWjmQVBZS9FCj2Z7d38kA@mail.gmail.com>
- <20131212080359.GE24559@pengutronix.de>
- <CAJyuEefmcqQVKKszuvmGZx4NqaK+j79+-g4gD-ruq9vMO85Wug@mail.gmail.com>
- <20131212195806.GL24559@pengutronix.de>
- <CAJyuEecPnTHU2rTgJzkvkv3p56f32jqaS1aQykn91TNGvcUawg@mail.gmail.com>
- <CAJyuEeejqixPzCez0EZU9hhQkO3f8yvpARLGLwPgQUfGBASZug@mail.gmail.com>
- <CAJyuEee+jyV6DTs3ZGYTercny4FNnxjj_PwWxNmjAEhe2eqeBg@mail.gmail.com>
- <20131219080917.GW24559@pengutronix.de>
-Date: Thu, 9 Jan 2014 02:20:33 -0500
-Message-ID: <CAJyuEedJxNN9mPJzAvE6d6kNHCaEqcF-BED0L+r2VCv7e6=T6A@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20140108140748.GL6750@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,63 +27,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox (devicetree) to Variscite iMX6 SOM
+Subject: Re: [PATCH] Make number of GPT partitions a configurable option
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-A few more comments & questions regarding getting the Variscite SOM up
-and working (and it's pretty close to fully working at this point):
+On 15:07 Wed 08 Jan     , Sascha Hauer wrote:
+> Hi Santosh,
+> 
+> On Wed, Jan 08, 2014 at 08:15:39AM +0530, Santosh Sivaraj wrote:
+> > Theoritically there is no limit for the partitions that can be created
+> > based on EFI/GPT, so make the number of partitions that can be visible
+> > in barebox a configurable option.
+> > 
+> > Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> > ---
+> >  common/partitions/Kconfig  | 5 +++++
+> >  common/partitions/parser.h | 2 +-
+> >  2 files changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/common/partitions/Kconfig b/common/partitions/Kconfig
+> > index 90238ad..f3353dd 100644
+> > --- a/common/partitions/Kconfig
+> > +++ b/common/partitions/Kconfig
+> > @@ -31,3 +31,8 @@ config PARTITION_DISK_EFI_GPT_COMPARE
+> >  	depends on PARTITION_DISK_EFI
+> >  	default y
+> >  	bool "EFI: GPT: compare primary and Alternate GPT header for validity"
+> > +
+> > +config MAX_PARTITIONS
+> > +	depends on PARTITION_DISK_EFI
+> > +	int "Maximum of partitions needed to be supported on a GPT"
+> > +	default 8
+> 
+> Can we instead allocate the partitions dynamically? This limitation to
+> eight partitions we currently have is not nice, but making it
+> configurable is not a proper fix.
 
-First off, what works:
+agreed but a limit will be good too
 
-1) Booting from NAND, SD, etc to barebox
-2) Nand programming under barebox
-3) GPIO
-4) I2C
-5) USB
-6) RS232
-etc.
-
-Basically, things are working pretty well....up to the point of
-starting the Linux Kernel.
-
-Whenever I try to do a "bootm" of pretty much any image type, I run
-into issues. I *think* I have everything setup properly on the Linux
-command line in the way of bootargs (but I'm still checking a couple
-of things). It doesn't matter whether I am launching the kernel from a
-partition (NAND), USB, memory, etc. The result is the same regardless.
-It *does* decode the kernel header properly, display the version, the
-correct load address, etc -- so that's not the issue.
-
-One thing is that I am using an older kernel that is not setup for
-devicetree -- which is hopefully not a major problem. Basically,
-everything is specified "the old way" in the kernel platform/board
-files (and it works fine from u-boot). And, at least for now, moving
-to a newer kernel isn't an option.
-
-Under barebox, I either get a "launching kernel with devicetree" and
-then it hangs, or, if I do an "oftree -f" and then do a bootm, I get
-an "unable to dereference NULL pointer" and a restart.
-
-Any quick guesses, suggestions as to what I may be doing wrong?
-Is there a proper way to tell barebox (when started with devicetree)
-to NOT try to send the devicetree on to the kernel?
-
-Also, for the moment, I am using Kobs-NG under Linux to actually
-program barebox itself into NAND. Once there, it works fine and I can
-use barebox itself to program the other NAND partitions. Is adding
-support for writing out the FCB/DBBT to the first NAND blocks anywhere
-in the current (near-term) to do list for barebox? I noticed that it
-looked like you had something similar to this already in barebox for a
-couple of the other, earlier iMX cores.
-
-
-Lastly, once I do get this semi-final issue fixed, what is the best
-way to submit the code for the Variscite SOM to the main barebox tree
-for everyone else to have access to?
-
-Thanks again!
-Michael Burkey
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
