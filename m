@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Zuw-0006iR-VP
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 11:06:26 +0000
+ id 1W1Zuw-0006iT-VO
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 11:06:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Jan 2014 12:05:54 +0100
-Message-Id: <1389351959-20448-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 10 Jan 2014 12:05:57 +0100
+Message-Id: <1389351959-20448-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1389351959-20448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1389351959-20448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,75 +21,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: bootm: move os loading to do_bootm_linux
+Subject: [PATCH 6/8] ARM: bootm: locate zImage higher into RAM
 To: barebox@lists.infradead.org
 
-__do_bootm_linux is called from the uImage, zImage and raw handlers.
-In case of the zImage handler the kernel will already be loaded and
-the kernel load code in __do_bootm_linux will do nothing. Move the
-loading code to do_bootm_linux so that __do_bootm_linux will always
-be called with the kernel already loaded.
+The zImage should be placed where it won't be overwritten by the
+uncompressed image, otherwise the kernel decompressing code has
+to relocate the zImage before decompression. As Kernels tend to
+become bigger put it into 32MiB into RAM if we have enough RAM
+available.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c | 37 +++++++++++++++++++------------------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ arch/arm/lib/bootm.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 7401f2f..6f84cb3 100644
+index 3604df0..11ff98c 100644
 --- a/arch/arm/lib/bootm.c
 +++ b/arch/arm/lib/bootm.c
-@@ -26,24 +26,6 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- {
- 	unsigned long kernel;
- 	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
--	struct memory_bank *bank;
--	unsigned long load_address;
--	int ret;
--
--	if (data->os_address == UIMAGE_INVALID_ADDRESS) {
--		bank = list_first_entry(&memory_banks,
--				struct memory_bank, list);
--		load_address = bank->start + SZ_32K;
--		if (bootm_verbose(data))
--			printf("no os load address, defaulting to 0x%08lx\n",
--				load_address);
--	} else {
--		load_address = data->os_address;
--	}
--
--	ret = bootm_load_os(data, load_address);
--	if (ret)
--		return ret;
- 
- 	kernel = data->os_res->start + data->os_entry;
- 
-@@ -104,6 +86,25 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 
- static int do_bootm_linux(struct image_data *data)
- {
-+	struct memory_bank *bank;
-+	unsigned long load_address;
-+	int ret;
+@@ -195,7 +195,17 @@ static int do_bootz_linux(struct image_data *data)
+ 	if (load_address == UIMAGE_INVALID_ADDRESS) {
+ 		struct memory_bank *bank = list_first_entry(&memory_banks,
+ 				struct memory_bank, list);
+-		data->os_address = bank->start + SZ_8M;
 +
-+	load_address = data->os_address;
++		/*
++		 * The kernel should stay in the first 128MiB of RAM, recommended
++		 * is 32MiB into RAM so that relocation prior to decompression
++		 * can be avoided.
++		 */
++		if (mem_size > SZ_64M)
++			data->os_address = bank->start + SZ_32M;
++		else
++			data->os_address = bank->start + SZ_8M;
 +
-+	if (load_address == UIMAGE_INVALID_ADDRESS) {
-+		bank = list_first_entry(&memory_banks,
-+				struct memory_bank, list);
-+		load_address = bank->start + SZ_32K;
-+		if (bootm_verbose(data))
-+			printf("no os load address, defaulting to 0x%08lx\n",
-+				load_address);
-+	}
-+
-+	ret = bootm_load_os(data, load_address);
-+	if (ret)
-+		return ret;
-+
- 	return __do_bootm_linux(data, 0);
- }
- 
+ 		load_address = data->os_address;
+ 		if (bootm_verbose(data))
+ 			printf("no os load address, defaulting to 0x%08lx\n",
 -- 
 1.8.5.2
 
