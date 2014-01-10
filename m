@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Zuw-0006iS-VQ
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 11:06:27 +0000
+ id 1W1Zv1-0006iv-Hf
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 11:06:29 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Jan 2014 12:05:55 +0100
-Message-Id: <1389351959-20448-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 10 Jan 2014 12:05:56 +0100
+Message-Id: <1389351959-20448-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1389351959-20448-1-git-send-email-s.hauer@pengutronix.de>
 References: <1389351959-20448-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,94 +21,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] bootm: introduce bootm_load_initrd helper
+Subject: [PATCH 5/8] bootm: introduce bootm_load_devicetree helper
 To: barebox@lists.infradead.org
-
-Make the bootm handlers simpler by factoring out an initrd load
-function.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/lib/bootm.c | 15 ++++-----------
- common/bootm.c       | 38 ++++++++++++++++++++++++++++++++++++++
- include/boot.h       |  1 +
- 3 files changed, 43 insertions(+), 11 deletions(-)
+ common/bootm.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/boot.h |  2 ++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index 6f84cb3..3604df0 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -31,7 +31,7 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 
- 	initrd_start = data->initrd_address;
- 
--	if (data->initrd_file && initrd_start == UIMAGE_INVALID_ADDRESS) {
-+	if (initrd_start == UIMAGE_INVALID_ADDRESS) {
- 		initrd_start = data->os_res->start + SZ_8M;
- 
- 		if (bootm_verbose(data)) {
-@@ -40,16 +40,9 @@ static int __do_bootm_linux(struct image_data *data, int swap)
- 		}
- 	}
- 
--	if (data->initrd) {
--		data->initrd_res = uimage_load_to_sdram(data->initrd,
--			data->initrd_num, initrd_start);
--		if (!data->initrd_res)
--			return -ENOMEM;
--	} else if (data->initrd_file) {
--		data->initrd_res = file_to_sdram(data->initrd_file, initrd_start);
--		if (!data->initrd_res)
--			return -ENOMEM;
--	}
-+	ret = bootm_load_initrd(data, initrd_start);
-+	if (ret)
-+		return ret;
- 
- 	if (data->initrd_res) {
- 		initrd_start = data->initrd_res->start;
 diff --git a/common/bootm.c b/common/bootm.c
-index 5ad10d9..9ccbe8f 100644
+index 9ccbe8f..d62d011 100644
 --- a/common/bootm.c
 +++ b/common/bootm.c
-@@ -85,6 +85,44 @@ int bootm_load_os(struct image_data *data, unsigned long load_address)
- 	return -EINVAL;
+@@ -123,6 +123,67 @@ int bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 	return 0;
  }
  
 +/*
-+ * bootm_load_initrd() - load initrd to RAM
++ * bootm_load_devicetree() - load devicetree
 + *
 + * @data:		image data context
-+ * @load_address:	The address where the initrd should be loaded to
++ * @load_address:	The address where the devicetree should be loaded to
 + *
-+ * This loads the initrd to a RAM location. load_address must be a valid
-+ * address. If the image_data doesn't have a initrd specified this function
-+ * still returns successful as an initrd is optional. Check data->initrd_res
-+ * to see if an initrd has been loaded.
++ * This loads the devicetree to a RAM location. load_address must be a valid
++ * address. The resulting devicetree will be found at data->oftree.
 + *
 + * Return: 0 on success, negative error code otherwise
 + */
-+int bootm_load_initrd(struct image_data *data, unsigned long load_address)
++int bootm_load_devicetree(struct image_data *data, unsigned long load_address)
 +{
-+	if (data->initrd_res)
++	int fdt_size;
++	struct fdt_header *oftree;
++
++	if (data->oftree)
 +		return 0;
 +
-+	if (data->initrd) {
-+		data->initrd_res = uimage_load_to_sdram(data->initrd,
-+			data->initrd_num, load_address);
-+		if (!data->initrd_res)
-+			return -ENOMEM;
-+
++	if (!IS_ENABLED(CONFIG_OFTREE))
 +		return 0;
++
++	if (!data->of_root_node)
++		return 0;
++
++	if (data->initrd_res) {
++		of_add_initrd(data->of_root_node, data->initrd_res->start,
++				data->initrd_res->end);
++		of_add_reserve_entry(data->initrd_res->start, data->initrd_res->end);
 +	}
 +
-+	if (data->initrd_file) {
-+		data->initrd_res = file_to_sdram(data->initrd_file, load_address);
-+		if (!data->initrd_res)
-+			return -ENOMEM;
++	oftree = of_get_fixed_tree(data->of_root_node);
++	if (!oftree)
++		return -EINVAL;
 +
-+		return 0;
++	fdt_size = be32_to_cpu(oftree->totalsize);
++
++	data->oftree_res = request_sdram_region("oftree", load_address,
++			fdt_size);
++	if (!data->oftree_res) {
++		free(oftree);
++		return -ENOMEM;
 +	}
++
++	memcpy((void *)data->oftree_res->start, oftree, fdt_size);
++
++	free(oftree);
++
++	oftree = (void *)data->oftree_res->start;
++
++	fdt_add_reserve_map(oftree);
++
++	of_print_cmdline(data->of_root_node);
++	if (bootm_verbose(data) > 1)
++		of_print_nodes(data->of_root_node, 0);
++
++	data->oftree = oftree;
 +
 +	return 0;
 +}
@@ -116,15 +102,32 @@ index 5ad10d9..9ccbe8f 100644
  static int bootm_open_os_uimage(struct image_data *data)
  {
  	int ret;
+@@ -412,6 +473,8 @@ err_out:
+ 		release_sdram_region(data->os_res);
+ 	if (data->initrd_res)
+ 		release_sdram_region(data->initrd_res);
++	if (data->oftree_res)
++		release_sdram_region(data->oftree_res);
+ 	if (data->initrd && data->initrd != data->os)
+ 		uimage_close(data->initrd);
+ 	if (data->os)
 diff --git a/include/boot.h b/include/boot.h
-index 61ab5d0..0cb2949 100644
+index 0cb2949..bdd5477 100644
 --- a/include/boot.h
 +++ b/include/boot.h
-@@ -109,6 +109,7 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
- #endif
+@@ -61,6 +61,7 @@ struct image_data {
+ 
+ 	struct device_node *of_root_node;
+ 	struct fdt_header *oftree;
++	struct resource *oftree_res;
+ 
+ 	int verify;
+ 	int verbose;
+@@ -110,6 +111,7 @@ static inline int linux_bootargs_overwrite(const char *bootargs)
  
  int bootm_load_os(struct image_data *data, unsigned long load_address);
-+int bootm_load_initrd(struct image_data *data, unsigned long load_address);
+ int bootm_load_initrd(struct image_data *data, unsigned long load_address);
++int bootm_load_devicetree(struct image_data *data, unsigned long load_address);
  
  #define UIMAGE_SOME_ADDRESS (UIMAGE_INVALID_ADDRESS - 1)
  
