@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay01.ispgateway.de ([80.67.31.24])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Z7v-0005Ra-Fc
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:15:44 +0000
-Message-ID: <52CFCA3C.8090802@tqsc.de>
-Date: Fri, 10 Jan 2014 11:23:56 +0100
-From: Markus Niebel <list-09_barebox@tqsc.de>
-MIME-Version: 1.0
-References: <1389346191-15851-1-git-send-email-list-09_barebox@tqsc.de>
- <1389346191-15851-3-git-send-email-list-09_barebox@tqsc.de>
- <1389345940.570404331@f9.i.mail.ru>
-In-Reply-To: <1389345940.570404331@f9.i.mail.ru>
+ id 1W1Z5f-0005LZ-JE
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:13:26 +0000
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 10 Jan 2014 11:12:55 +0100
+Message-Id: <1389348776-6136-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +14,502 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] mci: imx-esdhc: add DSR support
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org, Markus Niebel <Markus.Niebel@tqs.de>
+Subject: [PATCH v2 1/2] ARM: i.MX53: dts: move QSB pmic to own file
+To: barebox@lists.infradead.org
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-SGVsbG8sCj4gSGVsbG8uCj4gCj4g0J/Rj9GC0L3QuNGG0LAsIDEwINGP0L3QstCw0YDRjyAyMDE0
-LCAxMDoyOSArMDE6MDAg0L7RgiBNYXJrdXMgTmllYmVsIDxsaXN0LTA5X2JhcmVib3hAdHFzYy5k
-ZT46Cj4+IEZyb206IE1hcmt1cyBOaWViZWwgPE1hcmt1cy5OaWViZWxAdHFzLmRlPgo+Pgo+PiBo
-YXZpbmcgRFNSIHN1cHBvcnQgaW4gbWNpLWNvcmUgd2UgbmVlZCBhIHdheSB0bwo+PiBmb3J3YXJk
-IHRoZSBEU1IgdmFsdWUgdG8gdGhlIGRyaXZlci4gQWRkIGl0IHRvCj4+IHBsYXRmb3JtIGRhdGEg
-Zm9yIGlteC1lc2RoYwo+IC4uLgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvaW14LWVzZGhj
-LmMgYi9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+PiBpbmRleCA3NjY0ZTdiLi5kZWI0NGIwIDEw
-MDY0NAo+PiAtLS0gYS9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+PiArKysgYi9kcml2ZXJzL21j
-aS9pbXgtZXNkaGMuYwo+PiBAQCAtNTgyLDYgKzU4Miw4IEBAIHN0YXRpYyBpbnQgZnNsX2VzZGhj
-X3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+PiAgCWlmIChob3N0LT5tY2kuZl9taW4gPCAy
-MDAwMDApCj4+ICAJCWhvc3QtPm1jaS5mX21pbiA9IDIwMDAwMDsKPj4gIAlob3N0LT5tY2kuZl9t
-YXggPSByYXRlOwo+PiArCWhvc3QtPm1jaS51c2VfZHNyID0gcGRhdGEtPnVzZV9kc3I7Cj4+ICsJ
-aG9zdC0+bWNpLmRzcl92YWwgPSBwZGF0YS0+ZHNyX3ZhbDsKPiAKPiBXaGF0IGhhcHBlbiBpZiBk
-ZXZpY2UgaXMgcHJvYmVkIGZyb20gZGV2aWNldHJlZT8KVGhhbmtzIGZvciBwb2ludGluZyB0aGlz
-IG91dC4gCgpBcyB0aGUgY292ZXIgc2F5cyAtIGp1c3QgYSBSRkMuIFdlIGhhdmUgd29ya2luZyBj
-b2RlIGZvciBkZXZpY2UgdHJlZSB1bmRlciBsaW51eCBoZXJlLgpNeSBwcm9wb3NhbCBpcyB0byBw
-YXNzIHRoZSBEU1IgdmFsdWUgYXMgYW4gb3B0aW9uYWwgcHJvcGVydHkgdG8gdGhlIGhvc3QgY29u
-dHJvbGxlciAtIAp0aGVuIGl0IGNvdWxkIGJlIHBhcnNlZCBieSBtY2lfb2ZfcGFyc2UgLSBidXQg
-dGhpcyBuZWVkcyB0byBiZSBpbiBzeW5jIHdpdGggdGhlIGtlcm5lbC4KWWVzIGFuZCB0aGUgc2V0
-dGluZyBmcm9tIHBkYXRhIHNob3VsZCBiZSBvcHRpb25hbCAtIHNpbmNlIHBkYXRhIGlzIE5VTEwg
-aW4gY2FzZSBvZiBkZXZpY2UgdHJlZS4KCldpbGwgY29sbGVjdCBjb21tZW50cyBhbmQgcHJlcGFy
-ZSBhIHNlY29uZCByb3VuZC4KCk1hcmt1cwo+IAo+IC0tLQo+IAoKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+There are two versions of the i.MX53 LOCO:
+	- the MCIMX53-START board
+	- the MCIMX53-START-R board
+
+The MCIMX53-START-R has a mc34708 pmic and is otherwise the similar to the
+MCIMX53-START. To prepare for the START-R, move all common nodes to a new
+	imx53-qsb-common.dtsi
+and remove everything but the board name and pmic from the imx53-qsb.dts.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+Changes in V2:
+
+	- move dts-v1 from imx53-qsb-common.dtsi to imx53-qsb.dts
+
+ arch/arm/dts/imx53-qsb-common.dtsi | 224 +++++++++++++++++++++++++++++++++++++
+ arch/arm/dts/imx53-qsb.dts         | 210 +---------------------------------
+ 2 files changed, 226 insertions(+), 208 deletions(-)
+ create mode 100644 arch/arm/dts/imx53-qsb-common.dtsi
+
+diff --git a/arch/arm/dts/imx53-qsb-common.dtsi b/arch/arm/dts/imx53-qsb-common.dtsi
+new file mode 100644
+index 0000000..f2f912b
+--- /dev/null
++++ b/arch/arm/dts/imx53-qsb-common.dtsi
+@@ -0,0 +1,224 @@
++/*
++ * Copyright 2011 Freescale Semiconductor, Inc.
++ * Copyright 2011 Linaro Ltd.
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++#include "imx53.dtsi"
++
++/ {
++	chosen {
++		linux,stdout-path = "/soc/aips@50000000/serial@53fbc000";
++
++		environment@0 {
++			compatible = "barebox,environment";
++			device-path = &esdhc1, "partname:barebox-environment";
++		};
++	};
++
++	display@di0 {
++		compatible = "fsl,imx-parallel-display";
++		crtcs = <&ipu 0>;
++		interface-pix-fmt = "rgb565";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_ipu_disp0_1>;
++		status = "disabled";
++		display-timings {
++			claawvga {
++				native-mode;
++				clock-frequency = <27000000>;
++				hactive = <800>;
++				vactive = <480>;
++				hback-porch = <40>;
++				hfront-porch = <60>;
++				vback-porch = <10>;
++				vfront-porch = <10>;
++				hsync-len = <20>;
++				vsync-len = <10>;
++				hsync-active = <0>;
++				vsync-active = <0>;
++				de-active = <1>;
++				pixelclk-active = <0>;
++			};
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		power {
++			label = "Power Button";
++			gpios = <&gpio1 8 0>;
++			linux,code = <116>; /* KEY_POWER */
++			gpio-key,wakeup;
++		};
++
++		volume-up {
++			label = "Volume Up";
++			gpios = <&gpio2 14 0>;
++			linux,code = <115>; /* KEY_VOLUMEUP */
++		};
++
++		volume-down {
++			label = "Volume Down";
++			gpios = <&gpio2 15 0>;
++			linux,code = <114>; /* KEY_VOLUMEDOWN */
++		};
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&led_pin_gpio7_7>;
++
++		user {
++			label = "Heartbeat";
++			gpios = <&gpio7 7 0>;
++			linux,default-trigger = "heartbeat";
++		};
++	};
++
++	regulators {
++		compatible = "simple-bus";
++
++		reg_3p2v: 3p2v {
++			compatible = "regulator-fixed";
++			regulator-name = "3P2V";
++			regulator-min-microvolt = <3200000>;
++			regulator-max-microvolt = <3200000>;
++			regulator-always-on;
++		};
++	};
++
++	sound {
++		compatible = "fsl,imx53-qsb-sgtl5000",
++			     "fsl,imx-audio-sgtl5000";
++		model = "imx53-qsb-sgtl5000";
++		ssi-controller = <&ssi2>;
++		audio-codec = <&sgtl5000>;
++		audio-routing =
++			"MIC_IN", "Mic Jack",
++			"Mic Jack", "Mic Bias",
++			"Headphone Jack", "HP_OUT";
++		mux-int-port = <2>;
++		mux-ext-port = <5>;
++	};
++};
++
++&esdhc1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_esdhc1_1>;
++	cd-gpios = <&gpio3 13 0>;
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox-environment";
++		reg = <0x80000 0x20000>;
++	};
++};
++
++&ssi2 {
++	fsl,mode = "i2s-slave";
++	status = "okay";
++};
++
++&esdhc3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_esdhc3_1>;
++	cd-gpios = <&gpio3 11 0>;
++	wp-gpios = <&gpio3 12 0>;
++	status = "okay";
++};
++
++&iim {
++	barebox,provide-mac-address = <&fec 1 9>;
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
++	hog {
++		pinctrl_hog: hoggrp {
++			fsl,pins = <
++				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000
++				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
++				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
++				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
++				MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
++				MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
++				MX53_PAD_EIM_DA13__GPIO3_13       0x80000000
++				MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
++				MX53_PAD_GPIO_16__GPIO7_11        0x80000000
++			>;
++		};
++
++		led_pin_gpio7_7: led_gpio7_7@0 {
++			fsl,pins = <
++				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
++			>;
++		};
++	};
++
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1_1>;
++	status = "okay";
++};
++
++&i2c2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c2_1>;
++	status = "okay";
++
++	sgtl5000: codec@0a {
++		compatible = "fsl,sgtl5000";
++		reg = <0x0a>;
++		VDDA-supply = <&reg_3p2v>;
++		VDDIO-supply = <&reg_3p2v>;
++		clocks = <&clks 150>;
++	};
++};
++
++&i2c1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c1_1>;
++	status = "okay";
++
++	accelerometer: mma8450@1c {
++		compatible = "fsl,mma8450";
++		reg = <0x1c>;
++	};
++};
++
++&audmux {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_audmux_1>;
++	status = "okay";
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec_1>;
++	phy-mode = "rmii";
++	phy-reset-gpios = <&gpio7 6 0>;
++	status = "okay";
++};
++
++&usbh1 {
++       status = "okay";
++};
++
++&usbotg {
++       status = "okay";
++};
+diff --git a/arch/arm/dts/imx53-qsb.dts b/arch/arm/dts/imx53-qsb.dts
+index f988ca9..3ceb3b8 100644
+--- a/arch/arm/dts/imx53-qsb.dts
++++ b/arch/arm/dts/imx53-qsb.dts
+@@ -11,199 +11,15 @@
+  */
+ 
+ /dts-v1/;
+-#include "imx53.dtsi"
++
++#include "imx53-qsb-common.dtsi"
+ 
+ / {
+ 	model = "Freescale i.MX53 Quick Start Board";
+ 	compatible = "fsl,imx53-qsb", "fsl,imx53";
+-
+-	chosen {
+-		linux,stdout-path = "/soc/aips@50000000/serial@53fbc000";
+-
+-		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &esdhc1, "partname:barebox-environment";
+-		};
+-	};
+-
+-	display@di0 {
+-		compatible = "fsl,imx-parallel-display";
+-		crtcs = <&ipu 0>;
+-		interface-pix-fmt = "rgb565";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_ipu_disp0_1>;
+-		status = "disabled";
+-		display-timings {
+-			claawvga {
+-				native-mode;
+-				clock-frequency = <27000000>;
+-				hactive = <800>;
+-				vactive = <480>;
+-				hback-porch = <40>;
+-				hfront-porch = <60>;
+-				vback-porch = <10>;
+-				vfront-porch = <10>;
+-				hsync-len = <20>;
+-				vsync-len = <10>;
+-				hsync-active = <0>;
+-				vsync-active = <0>;
+-				de-active = <1>;
+-				pixelclk-active = <0>;
+-			};
+-		};
+-	};
+-
+-	gpio-keys {
+-		compatible = "gpio-keys";
+-
+-		power {
+-			label = "Power Button";
+-			gpios = <&gpio1 8 0>;
+-			linux,code = <116>; /* KEY_POWER */
+-			gpio-key,wakeup;
+-		};
+-
+-		volume-up {
+-			label = "Volume Up";
+-			gpios = <&gpio2 14 0>;
+-			linux,code = <115>; /* KEY_VOLUMEUP */
+-		};
+-
+-		volume-down {
+-			label = "Volume Down";
+-			gpios = <&gpio2 15 0>;
+-			linux,code = <114>; /* KEY_VOLUMEDOWN */
+-		};
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&led_pin_gpio7_7>;
+-
+-		user {
+-			label = "Heartbeat";
+-			gpios = <&gpio7 7 0>;
+-			linux,default-trigger = "heartbeat";
+-		};
+-	};
+-
+-	regulators {
+-		compatible = "simple-bus";
+-
+-		reg_3p2v: 3p2v {
+-			compatible = "regulator-fixed";
+-			regulator-name = "3P2V";
+-			regulator-min-microvolt = <3200000>;
+-			regulator-max-microvolt = <3200000>;
+-			regulator-always-on;
+-		};
+-	};
+-
+-	sound {
+-		compatible = "fsl,imx53-qsb-sgtl5000",
+-			     "fsl,imx-audio-sgtl5000";
+-		model = "imx53-qsb-sgtl5000";
+-		ssi-controller = <&ssi2>;
+-		audio-codec = <&sgtl5000>;
+-		audio-routing =
+-			"MIC_IN", "Mic Jack",
+-			"Mic Jack", "Mic Bias",
+-			"Headphone Jack", "HP_OUT";
+-		mux-int-port = <2>;
+-		mux-ext-port = <5>;
+-	};
+-};
+-
+-&esdhc1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_esdhc1_1>;
+-	cd-gpios = <&gpio3 13 0>;
+-	status = "okay";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
+-
+-	partition@0 {
+-		label = "barebox-environment";
+-		reg = <0x80000 0x20000>;
+-	};
+-};
+-
+-&ssi2 {
+-	fsl,mode = "i2s-slave";
+-	status = "okay";
+-};
+-
+-&esdhc3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_esdhc3_1>;
+-	cd-gpios = <&gpio3 11 0>;
+-	wp-gpios = <&gpio3 12 0>;
+-	status = "okay";
+-};
+-
+-&iim {
+-	barebox,provide-mac-address = <&fec 1 9>;
+-};
+-
+-&iomuxc {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_hog>;
+-
+-	hog {
+-		pinctrl_hog: hoggrp {
+-			fsl,pins = <
+-				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000
+-				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
+-				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
+-				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
+-				MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
+-				MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
+-				MX53_PAD_EIM_DA13__GPIO3_13       0x80000000
+-				MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
+-				MX53_PAD_GPIO_16__GPIO7_11        0x80000000
+-			>;
+-		};
+-
+-		led_pin_gpio7_7: led_gpio7_7@0 {
+-			fsl,pins = <
+-				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
+-			>;
+-		};
+-	};
+-
+-};
+-
+-&uart1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart1_1>;
+-	status = "okay";
+-};
+-
+-&i2c2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c2_1>;
+-	status = "okay";
+-
+-	sgtl5000: codec@0a {
+-		compatible = "fsl,sgtl5000";
+-		reg = <0x0a>;
+-		VDDA-supply = <&reg_3p2v>;
+-		VDDIO-supply = <&reg_3p2v>;
+-		clocks = <&clks 150>;
+-	};
+ };
+ 
+ &i2c1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c1_1>;
+-	status = "okay";
+-
+-	accelerometer: mma8450@1c {
+-		compatible = "fsl,mma8450";
+-		reg = <0x1c>;
+-	};
+-
+ 	pmic: dialog@48 {
+ 		compatible = "dlg,da9053-aa", "dlg,da9052";
+ 		reg = <0x48>;
+@@ -298,25 +114,3 @@
+ 		};
+ 	};
+ };
+-
+-&audmux {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_audmux_1>;
+-	status = "okay";
+-};
+-
+-&fec {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_fec_1>;
+-	phy-mode = "rmii";
+-	phy-reset-gpios = <&gpio7 6 0>;
+-	status = "okay";
+-};
+-
+-&usbh1 {
+-       status = "okay";
+-};
+-
+-&usbotg {
+-       status = "okay";
+-};
+-- 
+1.8.5.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
