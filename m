@@ -1,11 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtprelay01.ispgateway.de ([80.67.29.23])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1YHf-00044q-0o
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 09:21:43 +0000
-From: Markus Niebel <list-09_barebox@tqsc.de>
-Date: Fri, 10 Jan 2014 10:29:48 +0100
-Message-Id: <1389346191-15851-1-git-send-email-list-09_barebox@tqsc.de>
+ id 1W1YWk-0004TI-Sh
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 09:37:19 +0000
+Date: Fri, 10 Jan 2014 10:36:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140110093656.GC6750@pengutronix.de>
+References: <1389278408-13112-1-git-send-email-s.trumtrar@pengutronix.de>
+ <1389278408-13112-2-git-send-email-s.trumtrar@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1389278408-13112-2-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,24 +19,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC] mci: add DSR support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/2] ARM: i.MX53: dts: add support for MCIMX53-START-R
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-This is an example to add DSR support to barebox. Why this feature is
-considered as useful is described in the first patch. Second patch shows
-how to pass values and third patch shows how this can be supported for
-a board.
+On Thu, Jan 09, 2014 at 03:40:08PM +0100, Steffen Trumtrar wrote:
+> The start-r QSB has a different pmic than the older start QSB.
+> Add a new dts for the QSRB and let barebox generate two images when
+> LOCO is selected.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  arch/arm/boards/freescale-mx53-loco/lowlevel.c |  13 +++
+>  arch/arm/dts/Makefile                          |   3 +-
+>  arch/arm/dts/imx53-qsrb.dts                    | 141 +++++++++++++++++++++++++
+>  images/Makefile.imx                            |   5 +
+>  4 files changed, 161 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/dts/imx53-qsrb.dts
+> 
+> diff --git a/arch/arm/boards/freescale-mx53-loco/lowlevel.c b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+> index 7556a2e..c9e057a 100644
+> --- a/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+> +++ b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+> @@ -15,3 +15,16 @@ ENTRY_FUNCTION(start_imx53_loco, r0, r1, r2)
+>  
+>  	imx53_barebox_entry(fdt);
+>  }
+> +
+> +extern char __dtb_imx53_qsrb_start[];
+> +
+> +ENTRY_FUNCTION(start_imx53_loco_r, r0, r1, r2)
+> +{
+> +	uint32_t fdt;
+> +
+> +	arm_cpu_lowlevel_init();
+> +
+> +	fdt = (uint32_t)__dtb_imx53_qsrb_start - get_runtime_offset();
+> +
+> +	imx53_barebox_entry(fdt);
+> +}
 
-Tested with TQMa53 and a 4.41 Micron eMMC with DSR support.
+For the record: This introduces a new image for the r board. Should we
+want to later we could use the code from arch/ppc/mach-mpc85xx/fsl_i2c.c
+to detect the board version and merge both images into one again.
 
-[PATCH 1/3] mci: add DSR support
-[PATCH 2/3] mci: imx-esdhc: add DSR support
-[PATCH 3/3] boards: tqma53: add DSR support for eMMC
+> +	pmic: ripley@8 {
+> +		compatible = "fsl,mc34708";
+> +		reg = <0x08>;
+> +		interrupt-parent = <&gpio5>;
+> +		interrupts = <23 0x8>;
+> +		regulators {
+> +			mc34708__sw1a {
+> +				regulator-name = "SW1";
+> +				regulator-min-microvolt = <650000>;
+> +				regulator-max-microvolt = <1437500>;
+> +				regulator-boot-on;
+> +				regulator-always-on;
+> +			};
+> +			mc34708__sw1b {
+
+There should be a blank line between the end of a node and the beginning
+of a new one.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
