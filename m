@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1Z5f-0005LZ-JE
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:13:26 +0000
+ id 1W1Z5f-0005La-JE
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:13:25 +0000
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 10 Jan 2014 11:12:55 +0100
-Message-Id: <1389348776-6136-1-git-send-email-s.trumtrar@pengutronix.de>
+Date: Fri, 10 Jan 2014 11:12:56 +0100
+Message-Id: <1389348776-6136-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1389348776-6136-1-git-send-email-s.trumtrar@pengutronix.de>
+References: <1389348776-6136-1-git-send-email-s.trumtrar@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,36 +21,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/2] ARM: i.MX53: dts: move QSB pmic to own file
+Subject: [PATCH v2 2/2] ARM: i.MX53: dts: add support for MCIMX53-START-R
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-There are two versions of the i.MX53 LOCO:
-	- the MCIMX53-START board
-	- the MCIMX53-START-R board
-
-The MCIMX53-START-R has a mc34708 pmic and is otherwise the similar to the
-MCIMX53-START. To prepare for the START-R, move all common nodes to a new
-	imx53-qsb-common.dtsi
-and remove everything but the board name and pmic from the imx53-qsb.dts.
+The start-r QSB has a different pmic than the older start QSB.
+Add a new dts for the QSRB and let barebox generate two images when
+LOCO is selected.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
 Changes in V2:
 
-	- move dts-v1 from imx53-qsb-common.dtsi to imx53-qsb.dts
+	- add newlines after every DT-node
+	- add phandle names to pmic-nodes
 
- arch/arm/dts/imx53-qsb-common.dtsi | 224 +++++++++++++++++++++++++++++++++++++
- arch/arm/dts/imx53-qsb.dts         | 210 +---------------------------------
- 2 files changed, 226 insertions(+), 208 deletions(-)
- create mode 100644 arch/arm/dts/imx53-qsb-common.dtsi
+ arch/arm/boards/freescale-mx53-loco/lowlevel.c |  13 ++
+ arch/arm/dts/Makefile                          |   3 +-
+ arch/arm/dts/imx53-qsrb.dts                    | 157 +++++++++++++++++++++++++
+ images/Makefile.imx                            |   5 +
+ 4 files changed, 177 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/dts/imx53-qsrb.dts
 
-diff --git a/arch/arm/dts/imx53-qsb-common.dtsi b/arch/arm/dts/imx53-qsb-common.dtsi
+diff --git a/arch/arm/boards/freescale-mx53-loco/lowlevel.c b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+index 7556a2e..c9e057a 100644
+--- a/arch/arm/boards/freescale-mx53-loco/lowlevel.c
++++ b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
+@@ -15,3 +15,16 @@ ENTRY_FUNCTION(start_imx53_loco, r0, r1, r2)
+ 
+ 	imx53_barebox_entry(fdt);
+ }
++
++extern char __dtb_imx53_qsrb_start[];
++
++ENTRY_FUNCTION(start_imx53_loco_r, r0, r1, r2)
++{
++	uint32_t fdt;
++
++	arm_cpu_lowlevel_init();
++
++	fdt = (uint32_t)__dtb_imx53_qsrb_start - get_runtime_offset();
++
++	imx53_barebox_entry(fdt);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index bc314e9..ec46c4f 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -5,6 +5,7 @@ dtb-$(CONFIG_ARCH_AM33XX) += \
+ dtb-$(CONFIG_ARCH_IMX51) += imx51-babbage.dtb \
+ 	imx51-genesi-efika-sb.dtb
+ dtb-$(CONFIG_ARCH_IMX53) += imx53-qsb.dtb \
++	imx53-qsrb.dtb \
+ 	imx53-voipac-bsb.dtb
+ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
+ 	imx6dl-dfi-fs700-m60-6s.dtb \
+@@ -29,7 +30,7 @@ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+ pbl-$(CONFIG_MACH_BEAGLEBONE) += am335x-bone.dtb.o am335x-boneblack.dtb.o
+ pbl-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK) += imx51-genesi-efika-sb.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
+-pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o
++pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
+ pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
+ pbl-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
+diff --git a/arch/arm/dts/imx53-qsrb.dts b/arch/arm/dts/imx53-qsrb.dts
 new file mode 100644
-index 0000000..f2f912b
+index 0000000..aed9862
 --- /dev/null
-+++ b/arch/arm/dts/imx53-qsb-common.dtsi
-@@ -0,0 +1,224 @@
++++ b/arch/arm/dts/imx53-qsrb.dts
+@@ -0,0 +1,157 @@
 +/*
 + * Copyright 2011 Freescale Semiconductor, Inc.
 + * Copyright 2011 Linaro Ltd.
@@ -61,450 +103,167 @@ index 0000000..f2f912b
 + * http://www.gnu.org/copyleft/gpl.html
 + */
 +
-+#include "imx53.dtsi"
++/dts-v1/;
++
++#include "imx53-qsb-common.dtsi"
 +
 +/ {
-+	chosen {
-+		linux,stdout-path = "/soc/aips@50000000/serial@53fbc000";
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &esdhc1, "partname:barebox-environment";
-+		};
-+	};
-+
-+	display@di0 {
-+		compatible = "fsl,imx-parallel-display";
-+		crtcs = <&ipu 0>;
-+		interface-pix-fmt = "rgb565";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_ipu_disp0_1>;
-+		status = "disabled";
-+		display-timings {
-+			claawvga {
-+				native-mode;
-+				clock-frequency = <27000000>;
-+				hactive = <800>;
-+				vactive = <480>;
-+				hback-porch = <40>;
-+				hfront-porch = <60>;
-+				vback-porch = <10>;
-+				vfront-porch = <10>;
-+				hsync-len = <20>;
-+				vsync-len = <10>;
-+				hsync-active = <0>;
-+				vsync-active = <0>;
-+				de-active = <1>;
-+				pixelclk-active = <0>;
-+			};
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		power {
-+			label = "Power Button";
-+			gpios = <&gpio1 8 0>;
-+			linux,code = <116>; /* KEY_POWER */
-+			gpio-key,wakeup;
-+		};
-+
-+		volume-up {
-+			label = "Volume Up";
-+			gpios = <&gpio2 14 0>;
-+			linux,code = <115>; /* KEY_VOLUMEUP */
-+		};
-+
-+		volume-down {
-+			label = "Volume Down";
-+			gpios = <&gpio2 15 0>;
-+			linux,code = <114>; /* KEY_VOLUMEDOWN */
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&led_pin_gpio7_7>;
-+
-+		user {
-+			label = "Heartbeat";
-+			gpios = <&gpio7 7 0>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+	};
-+
-+	regulators {
-+		compatible = "simple-bus";
-+
-+		reg_3p2v: 3p2v {
-+			compatible = "regulator-fixed";
-+			regulator-name = "3P2V";
-+			regulator-min-microvolt = <3200000>;
-+			regulator-max-microvolt = <3200000>;
-+			regulator-always-on;
-+		};
-+	};
-+
-+	sound {
-+		compatible = "fsl,imx53-qsb-sgtl5000",
-+			     "fsl,imx-audio-sgtl5000";
-+		model = "imx53-qsb-sgtl5000";
-+		ssi-controller = <&ssi2>;
-+		audio-codec = <&sgtl5000>;
-+		audio-routing =
-+			"MIC_IN", "Mic Jack",
-+			"Mic Jack", "Mic Bias",
-+			"Headphone Jack", "HP_OUT";
-+		mux-int-port = <2>;
-+		mux-ext-port = <5>;
-+	};
-+};
-+
-+&esdhc1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_esdhc1_1>;
-+	cd-gpios = <&gpio3 13 0>;
-+	status = "okay";
-+	#address-cells = <1>;
-+	#size-cells = <1>;
-+
-+	partition@0 {
-+		label = "barebox-environment";
-+		reg = <0x80000 0x20000>;
-+	};
-+};
-+
-+&ssi2 {
-+	fsl,mode = "i2s-slave";
-+	status = "okay";
-+};
-+
-+&esdhc3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_esdhc3_1>;
-+	cd-gpios = <&gpio3 11 0>;
-+	wp-gpios = <&gpio3 12 0>;
-+	status = "okay";
-+};
-+
-+&iim {
-+	barebox,provide-mac-address = <&fec 1 9>;
++	model = "Freescale i.MX53 Quick Start-R Board";
++	compatible = "fsl,imx53-qsb", "fsl,imx53";
 +};
 +
 +&iomuxc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hog>;
-+
-+	hog {
-+		pinctrl_hog: hoggrp {
++	i2c1 {
++		/* open drain */
++		pinctrl_i2c1_qsrb: i2c1grp-1 {
 +			fsl,pins = <
-+				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000
-+				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
-+				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
-+				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
-+				MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
-+				MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
-+				MX53_PAD_EIM_DA13__GPIO3_13       0x80000000
-+				MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
-+				MX53_PAD_GPIO_16__GPIO7_11        0x80000000
++				MX53_PAD_CSI0_DAT8__I2C1_SDA      0x400001ec
++				MX53_PAD_CSI0_DAT9__I2C1_SCL      0x400001ec
 +			>;
 +		};
-+
-+		led_pin_gpio7_7: led_gpio7_7@0 {
-+			fsl,pins = <
-+				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
-+			>;
-+		};
-+	};
-+
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1_1>;
-+	status = "okay";
-+};
-+
-+&i2c2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2_1>;
-+	status = "okay";
-+
-+	sgtl5000: codec@0a {
-+		compatible = "fsl,sgtl5000";
-+		reg = <0x0a>;
-+		VDDA-supply = <&reg_3p2v>;
-+		VDDIO-supply = <&reg_3p2v>;
-+		clocks = <&clks 150>;
 +	};
 +};
 +
 +&i2c1 {
 +	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1_1>;
-+	status = "okay";
++	pinctrl-0 = <&pinctrl_i2c1_qsrb>;
 +
-+	accelerometer: mma8450@1c {
-+		compatible = "fsl,mma8450";
-+		reg = <0x1c>;
++	pmic: ripley@8 {
++		compatible = "fsl,mc34708";
++		reg = <0x08>;
++		interrupt-parent = <&gpio5>;
++		interrupts = <23 0x8>;
++		regulators {
++			sw1_reg: sw1a {
++				regulator-name = "SW1";
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <1437500>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			sw1b_reg: sw1b {
++				regulator-name = "SW1B";
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <1437500>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			sw2_reg: sw2 {
++				regulator-name = "SW2";
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <1437500>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			sw3_reg: sw3 {
++				regulator-name = "SW3";
++				regulator-min-microvolt = <650000>;
++				regulator-max-microvolt = <1425000>;
++				regulator-boot-on;
++			};
++
++			sw4a_reg: sw4a {
++				regulator-name = "SW4A";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			sw4b_reg: sw4b {
++				regulator-name = "SW4B";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			sw5_reg: sw5 {
++				regulator-name = "SW5";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1975000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			swbst_reg: swbst {
++				regulator-name = "SWBST";
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vpll_reg: vpll {
++				regulator-name = "VPLL";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++			};
++
++			vrefddr_reg: vrefddr {
++				regulator-name = "VREFDDR";
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vusb_reg: vusb {
++				regulator-name = "VUSB";
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vusb2_reg: vusb2 {
++				regulator-name = "VUSB2";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <3000000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vdac_reg: vdac {
++				regulator-name = "VDAC";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <2775000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vgen1_reg: vgen1 {
++				regulator-name = "VGEN1";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1550000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			vgen2_reg: vgen2 {
++				regulator-name = "VGEN2";
++				regulator-min-microvolt = <2500000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
 +	};
 +};
-+
-+&audmux {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_audmux_1>;
-+	status = "okay";
-+};
-+
-+&fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec_1>;
-+	phy-mode = "rmii";
-+	phy-reset-gpios = <&gpio7 6 0>;
-+	status = "okay";
-+};
-+
-+&usbh1 {
-+       status = "okay";
-+};
-+
-+&usbotg {
-+       status = "okay";
-+};
-diff --git a/arch/arm/dts/imx53-qsb.dts b/arch/arm/dts/imx53-qsb.dts
-index f988ca9..3ceb3b8 100644
---- a/arch/arm/dts/imx53-qsb.dts
-+++ b/arch/arm/dts/imx53-qsb.dts
-@@ -11,199 +11,15 @@
-  */
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 49c7e3e..4995514 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -26,6 +26,11 @@ CFG_start_imx53_loco.pblx.imximg = $(board)/freescale-mx53-loco/flash-header-imx
+ FILE_barebox-freescale-imx53-loco.img = start_imx53_loco.pblx.imximg
+ image-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += barebox-freescale-imx53-loco.img
  
- /dts-v1/;
--#include "imx53.dtsi"
++pblx-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += start_imx53_loco_r
++CFG_start_imx53_loco_r.pblx.imximg = $(board)/freescale-mx53-loco/flash-header-imx53-loco.imxcfg
++FILE_barebox-freescale-imx53-loco-r.img = start_imx53_loco_r.pblx.imximg
++image-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += barebox-freescale-imx53-loco-r.img
 +
-+#include "imx53-qsb-common.dtsi"
- 
- / {
- 	model = "Freescale i.MX53 Quick Start Board";
- 	compatible = "fsl,imx53-qsb", "fsl,imx53";
--
--	chosen {
--		linux,stdout-path = "/soc/aips@50000000/serial@53fbc000";
--
--		environment@0 {
--			compatible = "barebox,environment";
--			device-path = &esdhc1, "partname:barebox-environment";
--		};
--	};
--
--	display@di0 {
--		compatible = "fsl,imx-parallel-display";
--		crtcs = <&ipu 0>;
--		interface-pix-fmt = "rgb565";
--		pinctrl-names = "default";
--		pinctrl-0 = <&pinctrl_ipu_disp0_1>;
--		status = "disabled";
--		display-timings {
--			claawvga {
--				native-mode;
--				clock-frequency = <27000000>;
--				hactive = <800>;
--				vactive = <480>;
--				hback-porch = <40>;
--				hfront-porch = <60>;
--				vback-porch = <10>;
--				vfront-porch = <10>;
--				hsync-len = <20>;
--				vsync-len = <10>;
--				hsync-active = <0>;
--				vsync-active = <0>;
--				de-active = <1>;
--				pixelclk-active = <0>;
--			};
--		};
--	};
--
--	gpio-keys {
--		compatible = "gpio-keys";
--
--		power {
--			label = "Power Button";
--			gpios = <&gpio1 8 0>;
--			linux,code = <116>; /* KEY_POWER */
--			gpio-key,wakeup;
--		};
--
--		volume-up {
--			label = "Volume Up";
--			gpios = <&gpio2 14 0>;
--			linux,code = <115>; /* KEY_VOLUMEUP */
--		};
--
--		volume-down {
--			label = "Volume Down";
--			gpios = <&gpio2 15 0>;
--			linux,code = <114>; /* KEY_VOLUMEDOWN */
--		};
--	};
--
--	leds {
--		compatible = "gpio-leds";
--		pinctrl-names = "default";
--		pinctrl-0 = <&led_pin_gpio7_7>;
--
--		user {
--			label = "Heartbeat";
--			gpios = <&gpio7 7 0>;
--			linux,default-trigger = "heartbeat";
--		};
--	};
--
--	regulators {
--		compatible = "simple-bus";
--
--		reg_3p2v: 3p2v {
--			compatible = "regulator-fixed";
--			regulator-name = "3P2V";
--			regulator-min-microvolt = <3200000>;
--			regulator-max-microvolt = <3200000>;
--			regulator-always-on;
--		};
--	};
--
--	sound {
--		compatible = "fsl,imx53-qsb-sgtl5000",
--			     "fsl,imx-audio-sgtl5000";
--		model = "imx53-qsb-sgtl5000";
--		ssi-controller = <&ssi2>;
--		audio-codec = <&sgtl5000>;
--		audio-routing =
--			"MIC_IN", "Mic Jack",
--			"Mic Jack", "Mic Bias",
--			"Headphone Jack", "HP_OUT";
--		mux-int-port = <2>;
--		mux-ext-port = <5>;
--	};
--};
--
--&esdhc1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_esdhc1_1>;
--	cd-gpios = <&gpio3 13 0>;
--	status = "okay";
--	#address-cells = <1>;
--	#size-cells = <1>;
--
--	partition@0 {
--		label = "barebox-environment";
--		reg = <0x80000 0x20000>;
--	};
--};
--
--&ssi2 {
--	fsl,mode = "i2s-slave";
--	status = "okay";
--};
--
--&esdhc3 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_esdhc3_1>;
--	cd-gpios = <&gpio3 11 0>;
--	wp-gpios = <&gpio3 12 0>;
--	status = "okay";
--};
--
--&iim {
--	barebox,provide-mac-address = <&fec 1 9>;
--};
--
--&iomuxc {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_hog>;
--
--	hog {
--		pinctrl_hog: hoggrp {
--			fsl,pins = <
--				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000
--				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
--				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
--				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
--				MX53_PAD_EIM_DA11__GPIO3_11       0x80000000
--				MX53_PAD_EIM_DA12__GPIO3_12       0x80000000
--				MX53_PAD_EIM_DA13__GPIO3_13       0x80000000
--				MX53_PAD_PATA_DA_0__GPIO7_6       0x80000000
--				MX53_PAD_GPIO_16__GPIO7_11        0x80000000
--			>;
--		};
--
--		led_pin_gpio7_7: led_gpio7_7@0 {
--			fsl,pins = <
--				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
--			>;
--		};
--	};
--
--};
--
--&uart1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_uart1_1>;
--	status = "okay";
--};
--
--&i2c2 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c2_1>;
--	status = "okay";
--
--	sgtl5000: codec@0a {
--		compatible = "fsl,sgtl5000";
--		reg = <0x0a>;
--		VDDA-supply = <&reg_3p2v>;
--		VDDIO-supply = <&reg_3p2v>;
--		clocks = <&clks 150>;
--	};
- };
- 
- &i2c1 {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_i2c1_1>;
--	status = "okay";
--
--	accelerometer: mma8450@1c {
--		compatible = "fsl,mma8450";
--		reg = <0x1c>;
--	};
--
- 	pmic: dialog@48 {
- 		compatible = "dlg,da9053-aa", "dlg,da9052";
- 		reg = <0x48>;
-@@ -298,25 +114,3 @@
- 		};
- 	};
- };
--
--&audmux {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_audmux_1>;
--	status = "okay";
--};
--
--&fec {
--	pinctrl-names = "default";
--	pinctrl-0 = <&pinctrl_fec_1>;
--	phy-mode = "rmii";
--	phy-reset-gpios = <&gpio7 6 0>;
--	status = "okay";
--};
--
--&usbh1 {
--       status = "okay";
--};
--
--&usbotg {
--       status = "okay";
--};
+ pblx-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += start_imx53_vmx53
+ CFG_start_imx53_vmx53.pblx.imximg = $(board)/freescale-mx53-vmx53/flash-header-imx53-vmx53.imxcfg
+ FILE_barebox-freescale-imx53-vmx53.img = start_imx53_vmx53.pblx.imximg
 -- 
 1.8.5.2
 
