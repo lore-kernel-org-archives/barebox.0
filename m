@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtprelay01.ispgateway.de ([80.67.31.24])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1YtF-00050f-1M
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:00:34 +0000
-Date: Fri, 10 Jan 2014 11:00:10 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Message-ID: <20140110100010.GC371@pengutronix.de>
-References: <1389278408-13112-1-git-send-email-s.trumtrar@pengutronix.de>
- <1389278408-13112-2-git-send-email-s.trumtrar@pengutronix.de>
- <20140110093656.GC6750@pengutronix.de>
+ id 1W1Z7v-0005Ra-Fc
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 10:15:44 +0000
+Message-ID: <52CFCA3C.8090802@tqsc.de>
+Date: Fri, 10 Jan 2014 11:23:56 +0100
+From: Markus Niebel <list-09_barebox@tqsc.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140110093656.GC6750@pengutronix.de>
+References: <1389346191-15851-1-git-send-email-list-09_barebox@tqsc.de>
+ <1389346191-15851-3-git-send-email-list-09_barebox@tqsc.de>
+ <1389345940.570404331@f9.i.mail.ru>
+In-Reply-To: <1389345940.570404331@f9.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,86 +19,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX53: dts: add support for MCIMX53-START-R
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] mci: imx-esdhc: add DSR support
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org, Markus Niebel <Markus.Niebel@tqs.de>
 
-On Fri, Jan 10, 2014 at 10:36:56AM +0100, Sascha Hauer wrote:
-> On Thu, Jan 09, 2014 at 03:40:08PM +0100, Steffen Trumtrar wrote:
-> > The start-r QSB has a different pmic than the older start QSB.
-> > Add a new dts for the QSRB and let barebox generate two images when
-> > LOCO is selected.
-> > 
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  arch/arm/boards/freescale-mx53-loco/lowlevel.c |  13 +++
-> >  arch/arm/dts/Makefile                          |   3 +-
-> >  arch/arm/dts/imx53-qsrb.dts                    | 141 +++++++++++++++++++++++++
-> >  images/Makefile.imx                            |   5 +
-> >  4 files changed, 161 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/arm/dts/imx53-qsrb.dts
-> > 
-> > diff --git a/arch/arm/boards/freescale-mx53-loco/lowlevel.c b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> > index 7556a2e..c9e057a 100644
-> > --- a/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> > +++ b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> > @@ -15,3 +15,16 @@ ENTRY_FUNCTION(start_imx53_loco, r0, r1, r2)
-> >  
-> >  	imx53_barebox_entry(fdt);
-> >  }
-> > +
-> > +extern char __dtb_imx53_qsrb_start[];
-> > +
-> > +ENTRY_FUNCTION(start_imx53_loco_r, r0, r1, r2)
-> > +{
-> > +	uint32_t fdt;
-> > +
-> > +	arm_cpu_lowlevel_init();
-> > +
-> > +	fdt = (uint32_t)__dtb_imx53_qsrb_start - get_runtime_offset();
-> > +
-> > +	imx53_barebox_entry(fdt);
-> > +}
-> 
-> For the record: This introduces a new image for the r board. Should we
-> want to later we could use the code from arch/ppc/mach-mpc85xx/fsl_i2c.c
-> to detect the board version and merge both images into one again.
-> 
-> > +	pmic: ripley@8 {
-> > +		compatible = "fsl,mc34708";
-> > +		reg = <0x08>;
-> > +		interrupt-parent = <&gpio5>;
-> > +		interrupts = <23 0x8>;
-> > +		regulators {
-> > +			mc34708__sw1a {
-> > +				regulator-name = "SW1";
-> > +				regulator-min-microvolt = <650000>;
-> > +				regulator-max-microvolt = <1437500>;
-> > +				regulator-boot-on;
-> > +				regulator-always-on;
-> > +			};
-> > +			mc34708__sw1b {
-> 
-> There should be a blank line between the end of a node and the beginning
-> of a new one.
-> 
-
-Oops...you are right :-(
-Will fix.
-
-str
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sCj4gSGVsbG8uCj4gCj4g0J/Rj9GC0L3QuNGG0LAsIDEwINGP0L3QstCw0YDRjyAyMDE0
+LCAxMDoyOSArMDE6MDAg0L7RgiBNYXJrdXMgTmllYmVsIDxsaXN0LTA5X2JhcmVib3hAdHFzYy5k
+ZT46Cj4+IEZyb206IE1hcmt1cyBOaWViZWwgPE1hcmt1cy5OaWViZWxAdHFzLmRlPgo+Pgo+PiBo
+YXZpbmcgRFNSIHN1cHBvcnQgaW4gbWNpLWNvcmUgd2UgbmVlZCBhIHdheSB0bwo+PiBmb3J3YXJk
+IHRoZSBEU1IgdmFsdWUgdG8gdGhlIGRyaXZlci4gQWRkIGl0IHRvCj4+IHBsYXRmb3JtIGRhdGEg
+Zm9yIGlteC1lc2RoYwo+IC4uLgo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tY2kvaW14LWVzZGhj
+LmMgYi9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+PiBpbmRleCA3NjY0ZTdiLi5kZWI0NGIwIDEw
+MDY0NAo+PiAtLS0gYS9kcml2ZXJzL21jaS9pbXgtZXNkaGMuYwo+PiArKysgYi9kcml2ZXJzL21j
+aS9pbXgtZXNkaGMuYwo+PiBAQCAtNTgyLDYgKzU4Miw4IEBAIHN0YXRpYyBpbnQgZnNsX2VzZGhj
+X3Byb2JlKHN0cnVjdCBkZXZpY2VfZCAqZGV2KQo+PiAgCWlmIChob3N0LT5tY2kuZl9taW4gPCAy
+MDAwMDApCj4+ICAJCWhvc3QtPm1jaS5mX21pbiA9IDIwMDAwMDsKPj4gIAlob3N0LT5tY2kuZl9t
+YXggPSByYXRlOwo+PiArCWhvc3QtPm1jaS51c2VfZHNyID0gcGRhdGEtPnVzZV9kc3I7Cj4+ICsJ
+aG9zdC0+bWNpLmRzcl92YWwgPSBwZGF0YS0+ZHNyX3ZhbDsKPiAKPiBXaGF0IGhhcHBlbiBpZiBk
+ZXZpY2UgaXMgcHJvYmVkIGZyb20gZGV2aWNldHJlZT8KVGhhbmtzIGZvciBwb2ludGluZyB0aGlz
+IG91dC4gCgpBcyB0aGUgY292ZXIgc2F5cyAtIGp1c3QgYSBSRkMuIFdlIGhhdmUgd29ya2luZyBj
+b2RlIGZvciBkZXZpY2UgdHJlZSB1bmRlciBsaW51eCBoZXJlLgpNeSBwcm9wb3NhbCBpcyB0byBw
+YXNzIHRoZSBEU1IgdmFsdWUgYXMgYW4gb3B0aW9uYWwgcHJvcGVydHkgdG8gdGhlIGhvc3QgY29u
+dHJvbGxlciAtIAp0aGVuIGl0IGNvdWxkIGJlIHBhcnNlZCBieSBtY2lfb2ZfcGFyc2UgLSBidXQg
+dGhpcyBuZWVkcyB0byBiZSBpbiBzeW5jIHdpdGggdGhlIGtlcm5lbC4KWWVzIGFuZCB0aGUgc2V0
+dGluZyBmcm9tIHBkYXRhIHNob3VsZCBiZSBvcHRpb25hbCAtIHNpbmNlIHBkYXRhIGlzIE5VTEwg
+aW4gY2FzZSBvZiBkZXZpY2UgdHJlZS4KCldpbGwgY29sbGVjdCBjb21tZW50cyBhbmQgcHJlcGFy
+ZSBhIHNlY29uZCByb3VuZC4KCk1hcmt1cwo+IAo+IC0tLQo+IAoKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
