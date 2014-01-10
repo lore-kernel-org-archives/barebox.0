@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1YWk-0004TI-Sh
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 09:37:19 +0000
-Date: Fri, 10 Jan 2014 10:36:56 +0100
+ id 1W1Ya4-0004ZK-5e
+ for barebox@lists.infradead.org; Fri, 10 Jan 2014 09:40:45 +0000
+Date: Fri, 10 Jan 2014 10:40:22 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140110093656.GC6750@pengutronix.de>
-References: <1389278408-13112-1-git-send-email-s.trumtrar@pengutronix.de>
- <1389278408-13112-2-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20140110094021.GD6750@pengutronix.de>
+References: <20140106105052.GE3677@pengutronix.de>
+ <1389012343-20503-1-git-send-email-j.weitzel@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1389278408-13112-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1389012343-20503-1-git-send-email-j.weitzel@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,69 +23,73 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: i.MX53: dts: add support for MCIMX53-START-R
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH v3] of: find also nodes by mixture of alias and path
+To: Jan Weitzel <j.weitzel@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Jan 09, 2014 at 03:40:08PM +0100, Steffen Trumtrar wrote:
-> The start-r QSB has a different pmic than the older start QSB.
-> Add a new dts for the QSRB and let barebox generate two images when
-> LOCO is selected.
+On Mon, Jan 06, 2014 at 01:45:43PM +0100, Jan Weitzel wrote:
+> Let of_find_node_by_path_or_alias also find a node starting with an alias
+> followed by a path like "i2c0/tps@24"
 > 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  arch/arm/boards/freescale-mx53-loco/lowlevel.c |  13 +++
->  arch/arm/dts/Makefile                          |   3 +-
->  arch/arm/dts/imx53-qsrb.dts                    | 141 +++++++++++++++++++++++++
->  images/Makefile.imx                            |   5 +
->  4 files changed, 161 insertions(+), 1 deletion(-)
->  create mode 100644 arch/arm/dts/imx53-qsrb.dts
-> 
-> diff --git a/arch/arm/boards/freescale-mx53-loco/lowlevel.c b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> index 7556a2e..c9e057a 100644
-> --- a/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> +++ b/arch/arm/boards/freescale-mx53-loco/lowlevel.c
-> @@ -15,3 +15,16 @@ ENTRY_FUNCTION(start_imx53_loco, r0, r1, r2)
->  
->  	imx53_barebox_entry(fdt);
->  }
-> +
-> +extern char __dtb_imx53_qsrb_start[];
-> +
-> +ENTRY_FUNCTION(start_imx53_loco_r, r0, r1, r2)
-> +{
-> +	uint32_t fdt;
-> +
-> +	arm_cpu_lowlevel_init();
-> +
-> +	fdt = (uint32_t)__dtb_imx53_qsrb_start - get_runtime_offset();
-> +
-> +	imx53_barebox_entry(fdt);
-> +}
+> Signed-off-by: Jan Weitzel <j.weitzel@phytec.de>
 
-For the record: This introduces a new image for the r board. Should we
-want to later we could use the code from arch/ppc/mach-mpc85xx/fsl_i2c.c
-to detect the board version and merge both images into one again.
-
-> +	pmic: ripley@8 {
-> +		compatible = "fsl,mc34708";
-> +		reg = <0x08>;
-> +		interrupt-parent = <&gpio5>;
-> +		interrupts = <23 0x8>;
-> +		regulators {
-> +			mc34708__sw1a {
-> +				regulator-name = "SW1";
-> +				regulator-min-microvolt = <650000>;
-> +				regulator-max-microvolt = <1437500>;
-> +				regulator-boot-on;
-> +				regulator-always-on;
-> +			};
-> +			mc34708__sw1b {
-
-There should be a blank line between the end of a node and the beginning
-of a new one.
+Applied, thanks
 
 Sascha
+
+> ---
+> v2: rename ret to node
+> v3: use strchr
+>  drivers/of/base.c |   23 ++++++++++++++++++++++-
+>  1 files changed, 22 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index ea2d879..6e5e7d6 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -1378,11 +1378,32 @@ EXPORT_SYMBOL(of_find_node_by_path);
+>  struct device_node *of_find_node_by_path_or_alias(struct device_node *root,
+>  		const char *str)
+>  {
+> +	struct device_node *node;
+> +	const char *slash;
+> +	char *alias;
+> +	size_t len = 0;
+> +
+>  	if (*str ==  '/')
+>  		return of_find_node_by_path_from(root, str);
+> -	else
+> +
+> +	slash = strchr(str, '/');
+> +
+> +	if (!slash)
+>  		return of_find_node_by_alias(root, str);
+>  
+> +	len = slash - str + 1;
+> +	alias = xmalloc(len);
+> +	strlcpy(alias, str, len);
+> +
+> +	node = of_find_node_by_alias(root, alias);
+> +
+> +	if (!node)
+> +		goto out;
+> +
+> +	node = of_find_node_by_path_from(node, slash);
+> +out:
+> +	free(alias);
+> +	return node;
+>  }
+>  EXPORT_SYMBOL(of_find_node_by_path_or_alias);
+>  
+> -- 
+> 1.7.0.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
