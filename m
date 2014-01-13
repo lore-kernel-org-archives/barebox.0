@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W2VEW-00014w-EQ
- for barebox@lists.infradead.org; Mon, 13 Jan 2014 00:18:32 +0000
+ id 1W2VEW-00014x-EU
+ for barebox@lists.infradead.org; Mon, 13 Jan 2014 00:18:33 +0000
 Received: from tellur.localdomain (p57B5EF0F.dip0.t-ipconnect.de
- [87.181.239.15]) by lynxeye.de (Postfix) with ESMTPA id 1C2F818B4268
- for <barebox@lists.infradead.org>; Mon, 13 Jan 2014 01:16:39 +0100 (CET)
+ [87.181.239.15]) by lynxeye.de (Postfix) with ESMTPA id D7F6818B4265
+ for <barebox@lists.infradead.org>; Mon, 13 Jan 2014 01:16:37 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 13 Jan 2014 01:17:29 +0100
-Message-Id: <1389572250-1482-8-git-send-email-dev@lynxeye.de>
+Date: Mon, 13 Jan 2014 01:17:26 +0100
+Message-Id: <1389572250-1482-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
 References: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,832 +24,1072 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 8/9] ARM: imx6: add initial support for Nitrogen6X boards
+Subject: [PATCH 5/9] ARM: imx6: update base DTs
 To: barebox@lists.infradead.org
 
-Only the 1GB variant is supported for now, as I don't
-have anything other to test with.
+Upgrade to linux-next version.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/Makefile                           |   1 +
- .../arm/boards/boundarydevices-nitrogen6x/Makefile |   3 +
- arch/arm/boards/boundarydevices-nitrogen6x/board.c |  77 ++++
- .../boundarydevices-nitrogen6x/env/config-board    |   6 +
- .../flash-header-nitrogen6x-1g.imxcfg              | 106 ++++++
- .../boards/boundarydevices-nitrogen6x/lowlevel.c   |  30 ++
- arch/arm/dts/Makefile                              |   5 +-
- arch/arm/dts/imx6dl-nitrogen6x.dts                 |  21 ++
- arch/arm/dts/imx6q-nitrogen6x.dts                  |  25 ++
- arch/arm/dts/imx6qdl-nitrogen6x.dtsi               | 412 +++++++++++++++++++++
- arch/arm/mach-imx/Kconfig                          |   4 +
- images/Makefile.imx                                |  10 +
- 12 files changed, 699 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/Makefile
- create mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/board.c
- create mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/env/config-board
- create mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
- create mode 100644 arch/arm/boards/boundarydevices-nitrogen6x/lowlevel.c
- create mode 100644 arch/arm/dts/imx6dl-nitrogen6x.dts
- create mode 100644 arch/arm/dts/imx6q-nitrogen6x.dts
- create mode 100644 arch/arm/dts/imx6qdl-nitrogen6x.dtsi
+ arch/arm/dts/imx6dl.dtsi                |  35 +++-
+ arch/arm/dts/imx6q-phytec-pfla02.dtsi   |   2 +-
+ arch/arm/dts/imx6q.dtsi                 |  70 +++++++-
+ arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi |   2 +-
+ arch/arm/dts/imx6qdl-sabresd.dtsi       |   2 +-
+ arch/arm/dts/imx6qdl-tqma6x.dtsi        |   2 +-
+ arch/arm/dts/imx6qdl.dtsi               | 283 ++++++++++++++++++++------------
+ 7 files changed, 280 insertions(+), 116 deletions(-)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index bb26941..7f56359 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_MACH_AT91SAM9N12EK)		+= at91sam9n12ek/
- obj-$(CONFIG_MACH_AT91SAM9X5EK)			+= at91sam9x5ek/
- obj-$(CONFIG_MACH_BEAGLE)			+= beagle/
- obj-$(CONFIG_MACH_BEAGLEBONE)			+= beaglebone/
-+obj-$(CONFIG_MACH_NITROGEN6X)			+= boundarydevices-nitrogen6x/
- obj-$(CONFIG_MACH_CCMX51)			+= ccxmx51/
- obj-$(CONFIG_MACH_CFA10036)			+= crystalfontz-cfa10036/
- obj-$(CONFIG_MACH_CHUMBY)			+= chumby_falconwing/
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/Makefile b/arch/arm/boards/boundarydevices-nitrogen6x/Makefile
-new file mode 100644
-index 0000000..177c5d8
---- /dev/null
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/Makefile
-@@ -0,0 +1,3 @@
-+obj-y += board.o flash-header-nitrogen6x-1g.dcd.o
-+extra-y += flash-header-nitrogen6x-1g.dcd.S flash-header-nitrogen6x-1g.dcd
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/board.c b/arch/arm/boards/boundarydevices-nitrogen6x/board.c
-new file mode 100644
-index 0000000..1c4b495
---- /dev/null
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/board.c
-@@ -0,0 +1,77 @@
-+/*
-+ * Copyright (C) 2014 Lucas Stach, Pengutronix
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <environment.h>
-+#include <mach/bbu.h>
-+#include <linux/phy.h>
-+#include <linux/micrel_phy.h>
-+#include <mach/imx6.h>
-+
-+static int nitrogen6x_devices_init(void)
-+{
-+	if (!of_machine_is_compatible("fsl,imx6dl-nitrogen6x") &&
-+	    !of_machine_is_compatible("fsl,imx6q-nitrogen6x"))
-+		return 0;
-+
-+	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
-+			BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0);
-+
-+	return 0;
-+}
-+device_initcall(nitrogen6x_devices_init);
-+
-+static int ksz9021rn_phy_fixup(struct phy_device *dev)
-+{
-+	phy_write(dev, 0x09, 0x0f00);
-+
-+	/* do same as linux kernel */
-+	/* min rx data delay */
-+	phy_write(dev, 0x0b, 0x8105);
-+	phy_write(dev, 0x0c, 0x0000);
-+
-+	/* max rx/tx clock delay, min rx/tx control delay */
-+	phy_write(dev, 0x0b, 0x8104);
-+	phy_write(dev, 0x0c, 0xf0f0);
-+	phy_write(dev, 0x0b, 0x104);
-+
-+	return 0;
-+}
-+
-+static int nitrogen6x_coredevices_init(void)
-+{
-+	if (!of_machine_is_compatible("fsl,imx6dl-nitrogen6x") &&
-+	    !of_machine_is_compatible("fsl,imx6q-nitrogen6x"))
-+		return 0;
-+
-+	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
-+					   ksz9021rn_phy_fixup);
-+	return 0;
-+}
-+coredevice_initcall(nitrogen6x_coredevices_init);
-+
-+static int nitrogen6x_postcore_init(void)
-+{
-+	if (!of_machine_is_compatible("fsl,imx6dl-nitrogen6x") &&
-+	    !of_machine_is_compatible("fsl,imx6q-nitrogen6x"))
-+		return 0;
-+
-+	imx6_init_lowlevel();
-+
-+	barebox_set_hostname("nitrogen6x");
-+
-+	return 0;
-+}
-+postcore_initcall(nitrogen6x_postcore_init);
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/env/config-board b/arch/arm/boards/boundarydevices-nitrogen6x/env/config-board
-new file mode 100644
-index 0000000..4cabac6
---- /dev/null
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/env/config-board
-@@ -0,0 +1,6 @@
-+#!/bin/sh
-+
-+# board defaults, do not change in running system. Change /env/config
-+# instead
-+
-+global.linux.bootargs.base="console=ttymxc1,115200"
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-new file mode 100644
-index 0000000..60a39fe
---- /dev/null
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-@@ -0,0 +1,106 @@
-+soc imx6
-+loadaddr 0x20000000
-+dcdofs 0x400
-+
-+wm 32 0x020e05a8 0x00000030
-+wm 32 0x020e05b0 0x00000030
-+wm 32 0x020e0524 0x00000030
-+wm 32 0x020e051c 0x00000030
-+wm 32 0x020e0518 0x00000030
-+wm 32 0x020e050c 0x00000030
-+wm 32 0x020e05b8 0x00000030
-+wm 32 0x020e05c0 0x00000030
-+wm 32 0x020e05ac 0x00020030
-+wm 32 0x020e05b4 0x00020030
-+wm 32 0x020e0528 0x00020030
-+wm 32 0x020e0520 0x00020030
-+wm 32 0x020e0514 0x00020030
-+wm 32 0x020e0510 0x00020030
-+wm 32 0x020e05bc 0x00020030
-+wm 32 0x020e05c4 0x00020030
-+wm 32 0x020e056c 0x00020030
-+wm 32 0x020e0578 0x00020030
-+wm 32 0x020e0588 0x00020030
-+wm 32 0x020e0594 0x00020030
-+wm 32 0x020e057c 0x00020030
-+wm 32 0x020e0590 0x00003000
-+wm 32 0x020e0598 0x00003000
-+wm 32 0x020e058c 0x00000000
-+wm 32 0x020e059c 0x00003030
-+wm 32 0x020e05a0 0x00003030
-+wm 32 0x020e0784 0x00000030
-+wm 32 0x020e0788 0x00000030
-+wm 32 0x020e0794 0x00000030
-+wm 32 0x020e079c 0x00000030
-+wm 32 0x020e07a0 0x00000030
-+wm 32 0x020e07a4 0x00000030
-+wm 32 0x020e07a8 0x00000030
-+wm 32 0x020e0748 0x00000030
-+wm 32 0x020e074c 0x00000030
-+wm 32 0x020e0750 0x00020000
-+wm 32 0x020e0758 0x00000000
-+wm 32 0x020e0774 0x00020000
-+wm 32 0x020e078c 0x00000030
-+wm 32 0x020e0798 0x000c0000
-+wm 32 0x021b081c 0x33333333
-+wm 32 0x021b0820 0x33333333
-+wm 32 0x021b0824 0x33333333
-+wm 32 0x021b0828 0x33333333
-+wm 32 0x021b481c 0x33333333
-+wm 32 0x021b4820 0x33333333
-+wm 32 0x021b4824 0x33333333
-+wm 32 0x021b4828 0x33333333
-+wm 32 0x021b0018 0x00081740
-+wm 32 0x021b001c 0x00008000
-+wm 32 0x021b000c 0x555a7975
-+wm 32 0x021b0010 0xff538e64
-+wm 32 0x021b0014 0x01ff00db
-+wm 32 0x021b002c 0x000026d2
-+wm 32 0x021b0030 0x005b0e21
-+wm 32 0x021b0008 0x09444040
-+wm 32 0x021b0004 0x00025576
-+wm 32 0x021b0040 0x00000027
-+wm 32 0x021b0000 0x831a0000
-+wm 32 0x021b001c 0x04088032
-+wm 32 0x021b001c 0x0408803a
-+wm 32 0x021b001c 0x00008033
-+wm 32 0x021b001c 0x0000803b
-+wm 32 0x021b001c 0x00428031
-+wm 32 0x021b001c 0x00428039
-+wm 32 0x021b001c 0x09408030
-+wm 32 0x021b001c 0x09408038
-+wm 32 0x021b001c 0x04008040
-+wm 32 0x021b001c 0x04008048
-+wm 32 0x021b0800 0xa1380003
-+wm 32 0x021b4800 0xa1380003
-+wm 32 0x021b0020 0x00005800
-+wm 32 0x021b0818 0x00022227
-+wm 32 0x021b4818 0x00022227
-+wm 32 0x021b083c 0x434b0350
-+wm 32 0x021b0840 0x034c0359
-+wm 32 0x021b483c 0x434b0350
-+wm 32 0x021b4840 0x03650348
-+wm 32 0x021b0848 0x4436383b
-+wm 32 0x021b4848 0x39393341
-+wm 32 0x021b0850 0x35373933
-+wm 32 0x021b4850 0x48254A36
-+wm 32 0x021b080c 0x001f001f
-+wm 32 0x021b0810 0x001f001f
-+wm 32 0x021b480c 0x00440044
-+wm 32 0x021b4810 0x00440044
-+wm 32 0x021b08b8 0x00000800
-+wm 32 0x021b48b8 0x00000800
-+wm 32 0x021b001c 0x00000000
-+wm 32 0x021b0404 0x00011006
-+wm 32 0x020c4068 0x00c03f3f
-+wm 32 0x020c406c 0x0030fc03
-+wm 32 0x020c4070 0x0fffc000
-+wm 32 0x020c4074 0x3ff00000
-+wm 32 0x020c4078 0x00fff300
-+wm 32 0x020c407c 0x0f0000c3
-+wm 32 0x020c4080 0x000003ff
-+/* enable AXI cache for VDOA/VPU/IPU */
-+wm 32 0x020e0010 0xf00000cf
-+/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7 */
-+wm 32 0x020e0018 0x007f007f
-+wm 32 0x020e001c 0x007f007f
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/lowlevel.c b/arch/arm/boards/boundarydevices-nitrogen6x/lowlevel.c
-new file mode 100644
-index 0000000..5b11084
---- /dev/null
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/lowlevel.c
-@@ -0,0 +1,30 @@
-+#include <common.h>
-+#include <sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+
-+extern char __dtb_imx6q_nitrogen6x_start[];
-+
-+ENTRY_FUNCTION(start_imx6q_nitrogen6x_1g, r0, r1, r2)
-+{
-+	uint32_t fdt;
-+
-+	arm_cpu_lowlevel_init();
-+
-+	fdt = (uint32_t)__dtb_imx6q_nitrogen6x_start - get_runtime_offset();
-+
-+	barebox_arm_entry(0x10000000, SZ_1G, fdt);
-+}
-+
-+extern char __dtb_imx6dl_nitrogen6x_start[];
-+
-+ENTRY_FUNCTION(start_imx6dl_nitrogen6x_1g, r0, r1, r2)
-+{
-+	uint32_t fdt;
-+
-+	arm_cpu_lowlevel_init();
-+
-+	fdt = (uint32_t)__dtb_imx6dl_nitrogen6x_start - get_runtime_offset();
-+
-+	barebox_arm_entry(0x10000000, SZ_1G, fdt);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 90ac28d..e89eb2f 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -16,7 +16,9 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
- 	imx6dl-mba6x.dtb \
- 	imx6q-mba6x.dtb \
- 	imx6q-phytec-pbab01.dtb \
--	imx6dl-cubox-i-carrier-1.dtb
-+	imx6dl-cubox-i-carrier-1.dtb \
-+	imx6q-nitrogen6x.dtb \
-+	imx6dl-nitrogen6x.dtb
- dtb-$(CONFIG_ARCH_MVEBU) += dove-cubox.dtb
- dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb \
- 	socfpga_cyclone5_socrates.dtb
-@@ -45,6 +47,7 @@ pbl-$(CONFIG_MACH_SOCFPGA_EBV_SOCRATES) += socfpga_cyclone5_socrates.dtb.o
- pbl-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT) += socfpga_cyclone5_sockit.dtb.o
- pbl-$(CONFIG_MACH_SOLIDRUN_CARRIER1) += imx6dl-cubox-i-carrier-1.dtb.o
- pbl-$(CONFIG_MACH_SABRELITE) += imx6q-sabrelite.dtb.o imx6dl-sabrelite.dtb.o
-+pbl-$(CONFIG_MACH_NITROGEN6X) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o
+diff --git a/arch/arm/dts/imx6dl.dtsi b/arch/arm/dts/imx6dl.dtsi
+index cdf31c7..e2ec0fb 100644
+--- a/arch/arm/dts/imx6dl.dtsi
++++ b/arch/arm/dts/imx6dl.dtsi
+@@ -8,6 +8,7 @@
+  *
+  */
  
- .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
- .SECONDARY: $(patsubst %,$(obj)/%.S,$(dtb-y))
-diff --git a/arch/arm/dts/imx6dl-nitrogen6x.dts b/arch/arm/dts/imx6dl-nitrogen6x.dts
-new file mode 100644
-index 0000000..5f4d33c
---- /dev/null
-+++ b/arch/arm/dts/imx6dl-nitrogen6x.dts
-@@ -0,0 +1,21 @@
-+/*
-+ * Copyright 2013 Boundary Devices, Inc.
-+ * Copyright 2012 Freescale Semiconductor, Inc.
-+ * Copyright 2011 Linaro Ltd.
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+/dts-v1/;
-+#include "imx6dl.dtsi"
-+#include "imx6qdl-nitrogen6x.dtsi"
-+
-+/ {
-+	model = "Freescale i.MX6 DualLite Nitrogen6x Board";
-+	compatible = "fsl,imx6dl-nitrogen6x", "fsl,imx6dl";
-+};
-diff --git a/arch/arm/dts/imx6q-nitrogen6x.dts b/arch/arm/dts/imx6q-nitrogen6x.dts
-new file mode 100644
-index 0000000..a57866b
---- /dev/null
-+++ b/arch/arm/dts/imx6q-nitrogen6x.dts
-@@ -0,0 +1,25 @@
-+/*
-+ * Copyright 2013 Boundary Devices, Inc.
-+ * Copyright 2012 Freescale Semiconductor, Inc.
-+ * Copyright 2011 Linaro Ltd.
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+
-+/dts-v1/;
-+#include "imx6q.dtsi"
-+#include "imx6qdl-nitrogen6x.dtsi"
-+
-+/ {
-+	model = "Freescale i.MX6 Quad Nitrogen6x Board";
-+	compatible = "fsl,imx6q-nitrogen6x", "fsl,imx6q";
-+};
-+
-+&sata {
-+	status = "okay";
-+};
-diff --git a/arch/arm/dts/imx6qdl-nitrogen6x.dtsi b/arch/arm/dts/imx6qdl-nitrogen6x.dtsi
-new file mode 100644
-index 0000000..07452f9
---- /dev/null
-+++ b/arch/arm/dts/imx6qdl-nitrogen6x.dtsi
-@@ -0,0 +1,412 @@
-+/*
-+ * Copyright 2013 Boundary Devices, Inc.
-+ * Copyright 2011 Freescale Semiconductor, Inc.
-+ * Copyright 2011 Linaro Ltd.
-+ *
-+ * The code contained herein is licensed under the GNU General Public
-+ * License. You may obtain a copy of the GNU General Public License
-+ * Version 2 or later at the following locations:
-+ *
-+ * http://www.opensource.org/licenses/gpl-license.html
-+ * http://www.gnu.org/copyleft/gpl.html
-+ */
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+
-+/ {
-+	chosen {
-+		linux,stdout-path = &uart2;
-+
-+		environment@0 {
-+			compatible = "barebox,environment";
-+			device-path = &flash, "partname:barebox-environment";
-+		};
-+	};
-+
-+	memory {
-+		reg = <0x10000000 0x40000000>;
-+	};
-+
-+	regulators {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		reg_2p5v: regulator@0 {
-+			compatible = "regulator-fixed";
-+			reg = <0>;
-+			regulator-name = "2P5V";
-+			regulator-min-microvolt = <2500000>;
-+			regulator-max-microvolt = <2500000>;
-+			regulator-always-on;
-+		};
-+
-+		reg_3p3v: regulator@1 {
-+			compatible = "regulator-fixed";
-+			reg = <1>;
-+			regulator-name = "3P3V";
-+			regulator-min-microvolt = <3300000>;
-+			regulator-max-microvolt = <3300000>;
-+			regulator-always-on;
-+		};
-+
-+		reg_usb_otg_vbus: regulator@2 {
-+			compatible = "regulator-fixed";
-+			reg = <2>;
-+			regulator-name = "usb_otg_vbus";
-+			regulator-min-microvolt = <5000000>;
-+			regulator-max-microvolt = <5000000>;
-+			gpio = <&gpio3 22 0>;
-+			enable-active-high;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_gpio_keys>;
-+
-+		power {
-+			label = "Power Button";
-+			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_POWER>;
-+			gpio-key,wakeup;
-+		};
-+
-+		menu {
-+			label = "Menu";
-+			gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_MENU>;
-+		};
-+
-+		home {
-+			label = "Home";
-+			gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_HOME>;
-+		};
-+
-+		back {
-+			label = "Back";
-+			gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_BACK>;
-+		};
-+
-+		volume-up {
-+			label = "Volume Up";
-+			gpios = <&gpio7 13 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+
-+		volume-down {
-+			label = "Volume Down";
-+			gpios = <&gpio4 5 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEDOWN>;
-+		};
-+	};
-+
-+	sound {
-+		compatible = "fsl,imx6q-nitrogen6x-sgtl5000",
-+			     "fsl,imx-audio-sgtl5000";
-+		model = "imx6q-nitrogen6x-sgtl5000";
-+		ssi-controller = <&ssi1>;
-+		audio-codec = <&codec>;
-+		audio-routing =
-+			"MIC_IN", "Mic Jack",
-+			"Mic Jack", "Mic Bias",
-+			"Headphone Jack", "HP_OUT";
-+		mux-int-port = <1>;
-+		mux-ext-port = <3>;
-+	};
-+
-+	backlight_lcd {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm1 0 5000000>;
-+		brightness-levels = <0 4 8 16 32 64 128 255>;
-+		default-brightness-level = <7>;
-+		power-supply = <&reg_3p3v>;
-+		status = "okay";
-+	};
-+
-+	backlight_lvds {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm4 0 5000000>;
-+		brightness-levels = <0 4 8 16 32 64 128 255>;
-+		default-brightness-level = <7>;
-+		power-supply = <&reg_3p3v>;
-+		status = "okay";
-+	};
-+};
-+
-+&audmux {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_audmux>;
-+	status = "okay";
-+};
-+
-+&ecspi1 {
-+	fsl,spi-num-chipselects = <1>;
-+	cs-gpios = <&gpio3 19 0>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	status = "okay";
-+
-+	flash: m25p80@0 {
-+		compatible = "sst,sst25vf016b", "m25p80";
-+		spi-max-frequency = <20000000>;
-+		reg = <0>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+
-+		partition@0 {
-+			label = "barebox";
-+			reg = <0x0 0x80000>;
-+		};
-+
-+		partition@1 {
-+			label = "barebox-environment";
-+			reg = <0x80000 0x80000>;
-+		};
-+	};
-+};
-+
-+&fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_enet>;
-+	phy-mode = "rgmii";
-+	phy-reset-gpios = <&gpio1 27 0>;
-+	txen-skew-ps = <0>;
-+	txc-skew-ps = <3000>;
-+	rxdv-skew-ps = <0>;
-+	rxc-skew-ps = <3000>;
-+	rxd0-skew-ps = <0>;
-+	rxd1-skew-ps = <0>;
-+	rxd2-skew-ps = <0>;
-+	rxd3-skew-ps = <0>;
-+	txd0-skew-ps = <0>;
-+	txd1-skew-ps = <0>;
-+	txd2-skew-ps = <0>;
-+	txd3-skew-ps = <0>;
-+	interrupts-extended = <&gpio1 6 IRQ_TYPE_LEVEL_HIGH>,
-+			      <&intc 0 119 IRQ_TYPE_LEVEL_HIGH>;
-+	status = "okay";
-+};
-+
-+&i2c1 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "okay";
-+
-+	codec: sgtl5000@0a {
-+		compatible = "fsl,sgtl5000";
-+		reg = <0x0a>;
-+		clocks = <&clks 201>;
-+		VDDA-supply = <&reg_2p5v>;
-+		VDDIO-supply = <&reg_3p3v>;
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_hog>;
-+
-+	imx6q-nitrogen6x {
-+		pinctrl_hog: hoggrp {
-+			fsl,pins = <
-+				/* SGTL5000 sys_mclk */
-+				MX6QDL_PAD_GPIO_0__CCM_CLKO1    0x030b0
++#include <dt-bindings/interrupt-controller/irq.h>
+ #include "imx6dl-pinfunc.h"
+ #include "imx6qdl-pingrp.h"
+ #include "imx6qdl.dtsi"
+@@ -22,6 +23,26 @@
+ 			device_type = "cpu";
+ 			reg = <0>;
+ 			next-level-cache = <&L2>;
++			operating-points = <
++				/* kHz    uV */
++				996000  1275000
++				792000  1175000
++				396000  1075000
 +			>;
-+		};
-+
-+		pinctrl_audmux: audmuxgrp {
-+			fsl,pins = <MX6QDL_AUDMUX_PINGRP2>;
-+		};
-+
-+		pinctrl_ecspi1: ecspi1grp {
-+			fsl,pins = <
-+				MX6QDL_ECSPI1_PINGRP1
-+				MX6QDL_PAD_EIM_D19__GPIO3_IO19  0x000b1	/* CS */
++			fsl,soc-operating-points = <
++				/* ARM kHz  SOC-PU uV */
++				996000	1175000
++				792000	1175000
++				396000	1175000
 +			>;
++			clock-latency = <61036>; /* two CLK32 periods */
++			clocks = <&clks 104>, <&clks 6>, <&clks 16>,
++				 <&clks 17>, <&clks 170>;
++			clock-names = "arm", "pll2_pfd2_396m", "step",
++				      "pll1_sw", "pll1_sys";
++			arm-supply = <&reg_arm>;
++			pu-supply = <&reg_pu>;
++			soc-supply = <&reg_soc>;
+ 		};
+ 
+ 		cpu@1 {
+@@ -33,6 +54,12 @@
+ 	};
+ 
+ 	soc {
++		ocram: sram@00900000 {
++			compatible = "mmio-sram";
++			reg = <0x00900000 0x20000>;
++			clocks = <&clks 142>;
 +		};
 +
-+		pinctrl_enet: enetgrp {
-+			fsl,pins = <
-+				MX6QDL_ENET_PINGRP_RGMII_MD(0x1b0b0, 0x100b0)
-+				/* Phy reset */
-+				MX6QDL_PAD_ENET_RXD0__GPIO1_IO27	0x000b0
-+				MX6QDL_PAD_GPIO_6__ENET_IRQ		0x000b1
-+			>;
-+		};
-+
-+		pinctrl_gpio_keys: gpio_keysgrp {
-+			fsl,pins = <
-+				/* Power Button */
-+				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x1b0b0
-+				/* Menu Button */
-+				MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x1b0b0
-+				/* Home Button */
-+				MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x1b0b0
-+				/* Back Button */
-+				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x1b0b0
-+				/* Volume Up Button */
-+				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x1b0b0
-+				/* Volume Down Button */
-+				MX6QDL_PAD_GPIO_19__GPIO4_IO05		0x1b0b0
-+			>;
-+		};
-+
-+		pinctrl_i2c1: i2c1grp {
-+			fsl,pins = <MX6QDL_I2C1_PINGRP1>;
-+		};
-+
-+		pinctrl_pwm1: pwm1grp {
-+			fsl,pins = <
-+				MX6QDL_PAD_SD1_DAT3__PWM1_OUT 0x1b0b1
-+			>;
-+		};
-+
-+		pinctrl_pwm3: pwm3grp {
-+			fsl,pins = <
-+				MX6QDL_PAD_SD1_DAT1__PWM3_OUT 0x1b0b1
-+			>;
-+		};
-+
-+		pinctrl_pwm4: pwm4grp {
-+			fsl,pins = <
-+				MX6QDL_PAD_SD1_CMD__PWM4_OUT 0x1b0b1
-+			>;
-+		};
-+
-+		pinctrl_uart1: uart1grp {
-+			fsl,pins = <MX6QDL_UART1_PINGRP2>;
-+		};
-+
-+		pinctrl_uart2: uart2grp {
-+			fsl,pins = <MX6QDL_UART2_PINGRP1>;
-+		};
-+
-+		pinctrl_usbotg: usbotggrp {
-+			fsl,pins = <
-+				MX6QDL_PAD_GPIO_1__USB_OTG_ID	0x17059
-+				MX6QDL_PAD_KEY_COL4__USB_OTG_OC	0x1b0b0
-+				/* power enable, high active */
-+				MX6QDL_PAD_EIM_D22__GPIO3_IO22  0x000b0
-+			>;
-+		};
-+
-+		pinctrl_usdhc3: usdhc3grp {
-+			fsl,pins = <
-+				MX6QDL_USDHC3_PINGRP_D4
-+				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00 0x1b0b0	/* CD */
-+			>;
-+		};
-+
-+		pinctrl_usdhc4: usdhc4grp {
-+			fsl,pins = <
-+				MX6QDL_USDHC4_PINGRP_D4
-+				MX6QDL_PAD_NANDF_D6__GPIO2_IO06 0x1b0b0	/* CD */
-+			>;
-+		};
-+	};
-+};
-+
-+&ldb {
-+	status = "okay";
-+
-+	lvds-channel@0 {
-+		fsl,data-mapping = "spwg";
-+		fsl,data-width = <18>;
-+		status = "okay";
-+
-+		display-timings {
-+			native-mode = <&timing0>;
-+			timing0: hsd100pxn1 {
-+				clock-frequency = <65000000>;
-+				hactive = <1024>;
-+				vactive = <768>;
-+				hback-porch = <220>;
-+				hfront-porch = <40>;
-+				vback-porch = <21>;
-+				vfront-porch = <7>;
-+				hsync-len = <60>;
-+				vsync-len = <10>;
-+			};
-+		};
-+	};
-+};
-+
+ 		aips1: aips-bus@02000000 {
+ 			iomuxc: iomuxc@020e0000 {
+ 				compatible = "fsl,imx6dl-iomuxc";
+@@ -40,17 +67,17 @@
+ 
+ 			pxp: pxp@020f0000 {
+ 				reg = <0x020f0000 0x4000>;
+-				interrupts = <0 98 0x04>;
++				interrupts = <0 98 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			epdc: epdc@020f4000 {
+ 				reg = <0x020f4000 0x4000>;
+-				interrupts = <0 97 0x04>;
++				interrupts = <0 97 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			lcdif: lcdif@020f8000 {
+ 				reg = <0x020f8000 0x4000>;
+-				interrupts = <0 39 0x04>;
++				interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 		};
+ 
+@@ -60,7 +87,7 @@
+ 				#size-cells = <0>;
+ 				compatible = "fsl,imx1-i2c";
+ 				reg = <0x021f8000 0x4000>;
+-				interrupts = <0 35 0x04>;
++				interrupts = <0 35 IRQ_TYPE_LEVEL_HIGH>;
+ 				status = "disabled";
+ 			};
+ 		};
+diff --git a/arch/arm/dts/imx6q-phytec-pfla02.dtsi b/arch/arm/dts/imx6q-phytec-pfla02.dtsi
+index b615491..402eee8 100644
+--- a/arch/arm/dts/imx6q-phytec-pfla02.dtsi
++++ b/arch/arm/dts/imx6q-phytec-pfla02.dtsi
+@@ -216,7 +216,7 @@
+ 	};
+ };
+ 
+-&ocotp1 {
 +&ocotp {
-+	barebox,provide-mac-address = <&fec 0x620>;
-+};
-+
-+&pcie {
-+	status = "okay";
-+};
-+
-+&pwm1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm1>;
-+	status = "okay";
-+};
-+
-+&pwm3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm3>;
-+	status = "okay";
-+};
-+
-+&pwm4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pwm4>;
-+	status = "okay";
-+};
-+
-+&ssi1 {
-+	fsl,mode = "i2s-slave";
-+	status = "okay";
-+};
-+
-+&uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	status = "okay";
-+};
-+
-+&usbh1 {
-+	phy_type = "utmi";
-+	dr_mode = "host";
-+	status = "okay";
-+};
-+
-+&usbotg {
-+	vbus-supply = <&reg_usb_otg_vbus>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usbotg>;
-+	phy_type = "utmi";
-+	dr_mode = "host";
-+	disable-over-current;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	cd-gpios = <&gpio7 0 0>;
-+	vmmc-supply = <&reg_3p3v>;
-+	status = "okay";
-+};
-+
-+&usdhc4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usdhc4>;
-+	cd-gpios = <&gpio2 6 0>;
-+	vmmc-supply = <&reg_3p3v>;
-+	status = "okay";
-+};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 3a1089f..7587e15 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -228,6 +228,10 @@ config MACH_SABRELITE
- 	select ARCH_IMX6
- 	select HAVE_DEFAULT_ENVIRONMENT_NEW
- 	select HAVE_PBL_MULTI_IMAGES
-+	
-+config MACH_NITROGEN6X
-+	bool "BoundaryDevices Nitrogen6x"
-+	select ARCH_IMX6
+ 	barebox,provide-mac-address = <&fec 0x620>;
+ };
  
- config MACH_SOLIDRUN_CARRIER1
- 	bool "SolidRun CuBox-i Carrier-1"
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index e98204f..ecaa582 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -86,3 +86,13 @@ pblx-$(CONFIG_MACH_SOLIDRUN_CARRIER1) += start_imx6dl_cubox_i_carrier_1
- CFG_start_imx6dl_cubox_i_carrier_1.pblx.imximg = $(board)/solidrun-carrier-1/flash-header-solidrun-carrier-1.imxcfg
- FILE_barebox-cubox-i-carrier-1.img = start_imx6dl_cubox_i_carrier_1.pblx.imximg
- image-$(CONFIG_MACH_SOLIDRUN_CARRIER1) += barebox-cubox-i-carrier-1.img
+diff --git a/arch/arm/dts/imx6q.dtsi b/arch/arm/dts/imx6q.dtsi
+index 84ed89e..021e0cb 100644
+--- a/arch/arm/dts/imx6q.dtsi
++++ b/arch/arm/dts/imx6q.dtsi
+@@ -8,15 +8,12 @@
+  *
+  */
+ 
++#include <dt-bindings/interrupt-controller/irq.h>
+ #include "imx6q-pinfunc.h"
+ #include "imx6qdl-pingrp.h"
+ #include "imx6qdl.dtsi"
+ 
+ / {
+-	aliases {
+-		spi4 = &ecspi5;
+-	};
+-
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+@@ -31,7 +28,14 @@
+ 				1200000 1275000
+ 				996000  1250000
+ 				792000  1150000
+-				396000  950000
++				396000  975000
++			>;
++			fsl,soc-operating-points = <
++				/* ARM kHz  SOC-PU uV */
++				1200000 1275000
++				996000	1250000
++				792000	1175000
++				396000	1175000
+ 			>;
+ 			clock-latency = <61036>; /* two CLK32 periods */
+ 			clocks = <&clks 104>, <&clks 6>, <&clks 16>,
+@@ -66,6 +70,12 @@
+ 	};
+ 
+ 	soc {
++		ocram: sram@00900000 {
++			compatible = "mmio-sram";
++			reg = <0x00900000 0x40000>;
++			clocks = <&clks 142>;
++		};
 +
-+pblx-$(CONFIG_MACH_NITROGEN6X) += start_imx6q_nitrogen6x_1g
-+CFG_start_imx6q_nitrogen6x_1g.pblx.imximg = $(board)/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-+FILE_barebox-boundarydevices-imx6q-nitrogen6x-1g.img = start_imx6q_nitrogen6x_1g.pblx.imximg
-+image-$(CONFIG_MACH_NITROGEN6X) += barebox-boundarydevices-imx6q-nitrogen6x-1g.img
+ 		aips-bus@02000000 { /* AIPS1 */
+ 			spba-bus@02000000 {
+ 				ecspi5: ecspi@02018000 {
+@@ -73,7 +83,7 @@
+ 					#size-cells = <0>;
+ 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
+ 					reg = <0x02018000 0x4000>;
+-					interrupts = <0 35 0x04>;
++					interrupts = <0 35 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 116>, <&clks 116>;
+ 					clock-names = "ipg", "per";
+ 					status = "disabled";
+@@ -82,14 +92,60 @@
+ 
+ 			iomuxc: iomuxc@020e0000 {
+ 				compatible = "fsl,imx6q-iomuxc";
 +
-+pblx-$(CONFIG_MACH_NITROGEN6X) += start_imx6dl_nitrogen6x_1g
-+CFG_start_imx6dl_nitrogen6x_1g.pblx.imximg = $(board)/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-+FILE_barebox-boundarydevices-imx6dl-nitrogen6x-1g.img = start_imx6dl_nitrogen6x_1g.pblx.imximg
-+image-$(CONFIG_MACH_NITROGEN6X) += barebox-boundarydevices-imx6dl-nitrogen6x-1g.img
++				ipu2 {
++					pinctrl_ipu2_1: ipu2grp-1 {
++						fsl,pins = <
++							MX6QDL_PAD_DI0_DISP_CLK__IPU2_DI0_DISP_CLK 0x10
++							MX6QDL_PAD_DI0_PIN15__IPU2_DI0_PIN15       0x10
++							MX6QDL_PAD_DI0_PIN2__IPU2_DI0_PIN02        0x10
++							MX6QDL_PAD_DI0_PIN3__IPU2_DI0_PIN03        0x10
++							MX6QDL_PAD_DI0_PIN4__IPU2_DI0_PIN04        0x80000000
++							MX6QDL_PAD_DISP0_DAT0__IPU2_DISP0_DATA00   0x10
++							MX6QDL_PAD_DISP0_DAT1__IPU2_DISP0_DATA01   0x10
++							MX6QDL_PAD_DISP0_DAT2__IPU2_DISP0_DATA02   0x10
++							MX6QDL_PAD_DISP0_DAT3__IPU2_DISP0_DATA03   0x10
++							MX6QDL_PAD_DISP0_DAT4__IPU2_DISP0_DATA04   0x10
++							MX6QDL_PAD_DISP0_DAT5__IPU2_DISP0_DATA05   0x10
++							MX6QDL_PAD_DISP0_DAT6__IPU2_DISP0_DATA06   0x10
++							MX6QDL_PAD_DISP0_DAT7__IPU2_DISP0_DATA07   0x10
++							MX6QDL_PAD_DISP0_DAT8__IPU2_DISP0_DATA08   0x10
++							MX6QDL_PAD_DISP0_DAT9__IPU2_DISP0_DATA09   0x10
++							MX6QDL_PAD_DISP0_DAT10__IPU2_DISP0_DATA10  0x10
++							MX6QDL_PAD_DISP0_DAT11__IPU2_DISP0_DATA11  0x10
++							MX6QDL_PAD_DISP0_DAT12__IPU2_DISP0_DATA12  0x10
++							MX6QDL_PAD_DISP0_DAT13__IPU2_DISP0_DATA13  0x10
++							MX6QDL_PAD_DISP0_DAT14__IPU2_DISP0_DATA14  0x10
++							MX6QDL_PAD_DISP0_DAT15__IPU2_DISP0_DATA15  0x10
++							MX6QDL_PAD_DISP0_DAT16__IPU2_DISP0_DATA16  0x10
++							MX6QDL_PAD_DISP0_DAT17__IPU2_DISP0_DATA17  0x10
++							MX6QDL_PAD_DISP0_DAT18__IPU2_DISP0_DATA18  0x10
++							MX6QDL_PAD_DISP0_DAT19__IPU2_DISP0_DATA19  0x10
++							MX6QDL_PAD_DISP0_DAT20__IPU2_DISP0_DATA20  0x10
++							MX6QDL_PAD_DISP0_DAT21__IPU2_DISP0_DATA21  0x10
++							MX6QDL_PAD_DISP0_DAT22__IPU2_DISP0_DATA22  0x10
++							MX6QDL_PAD_DISP0_DAT23__IPU2_DISP0_DATA23  0x10
++						>;
++					};
++				};
+ 			};
+ 		};
+ 
++		sata: sata@02200000 {
++			compatible = "fsl,imx6q-ahci";
++			reg = <0x02200000 0x4000>;
++			interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
++			clocks =  <&clks 154>, <&clks 187>, <&clks 105>;
++			clock-names = "sata", "sata_ref", "ahb";
++			status = "disabled";
++		};
++
+ 		ipu2: ipu@02800000 {
+ 			#crtc-cells = <1>;
+ 			compatible = "fsl,imx6q-ipu";
+ 			reg = <0x02800000 0x400000>;
+-			interrupts = <0 8 0x4 0 7 0x4>;
++			interrupts = <0 8 IRQ_TYPE_LEVEL_HIGH>,
++				     <0 7 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&clks 133>, <&clks 134>, <&clks 137>;
+ 			clock-names = "bus", "di0", "di1";
+ 			resets = <&src 4>;
+diff --git a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
+index 5744147..3d5d8bb 100644
+--- a/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
++++ b/arch/arm/dts/imx6qdl-dfi-fs700-m60.dtsi
+@@ -96,7 +96,7 @@
+ 	};
+ };
+ 
+-&ocotp1 {
++&ocotp {
+ 	barebox,provide-mac-address = <&fec 0x620>;
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl-sabresd.dtsi b/arch/arm/dts/imx6qdl-sabresd.dtsi
+index b64611c..346e32a 100644
+--- a/arch/arm/dts/imx6qdl-sabresd.dtsi
++++ b/arch/arm/dts/imx6qdl-sabresd.dtsi
+@@ -257,7 +257,7 @@
+ 	};
+ };
+ 
+-&ocotp1 {
++&ocotp {
+ 	barebox,provide-mac-address = <&fec 0x620>;
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl-tqma6x.dtsi b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+index e3d18d4..55f0525 100644
+--- a/arch/arm/dts/imx6qdl-tqma6x.dtsi
++++ b/arch/arm/dts/imx6qdl-tqma6x.dtsi
+@@ -29,7 +29,7 @@
+ 	phy-mode = "rgmii";
+ };
+ 
+-&ocotp1 {
++&ocotp {
+ 	barebox,provide-mac-address = <&fec 0x620>;
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 9e0276c..8948016 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -14,11 +14,8 @@
+ 
+ / {
+ 	aliases {
+-		serial0 = &uart1;
+-		serial1 = &uart2;
+-		serial2 = &uart3;
+-		serial3 = &uart4;
+-		serial4 = &uart5;
++		can0 = &can1;
++		can1 = &can2;
+ 		gpio0 = &gpio1;
+ 		gpio1 = &gpio2;
+ 		gpio2 = &gpio3;
+@@ -26,14 +23,20 @@
+ 		gpio4 = &gpio5;
+ 		gpio5 = &gpio6;
+ 		gpio6 = &gpio7;
+-		mmc0 = &usdhc1;
+-		mmc1 = &usdhc2;
+-		mmc2 = &usdhc3;
+-		mmc3 = &usdhc4;
++		i2c0 = &i2c1;
++		i2c1 = &i2c2;
++		i2c2 = &i2c3;
++		serial0 = &uart1;
++		serial1 = &uart2;
++		serial2 = &uart3;
++		serial3 = &uart4;
++		serial4 = &uart5;
+ 		spi0 = &ecspi1;
+ 		spi1 = &ecspi2;
+ 		spi2 = &ecspi3;
+ 		spi3 = &ecspi4;
++		usbphy0 = &usbphy1;
++		usbphy1 = &usbphy2;
+ 	};
+ 
+ 	intc: interrupt-controller@00a01000 {
+@@ -76,7 +79,10 @@
+ 		dma_apbh: dma-apbh@00110000 {
+ 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
+ 			reg = <0x00110000 0x2000>;
+-			interrupts = <0 13 0x04>, <0 13 0x04>, <0 13 0x04>, <0 13 0x04>;
++			interrupts = <0 13 IRQ_TYPE_LEVEL_HIGH>,
++				     <0 13 IRQ_TYPE_LEVEL_HIGH>,
++				     <0 13 IRQ_TYPE_LEVEL_HIGH>,
++				     <0 13 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "gpmi0", "gpmi1", "gpmi2", "gpmi3";
+ 			#dma-cells = <1>;
+ 			dma-channels = <4>;
+@@ -89,15 +95,14 @@
+ 			#size-cells = <1>;
+ 			reg = <0x00112000 0x2000>, <0x00114000 0x2000>;
+ 			reg-names = "gpmi-nand", "bch";
+-			interrupts = <0 13 0x04>, <0 15 0x04>;
+-			interrupt-names = "gpmi-dma", "bch";
++			interrupts = <0 15 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "bch";
+ 			clocks = <&clks 152>, <&clks 153>, <&clks 151>,
+ 				 <&clks 150>, <&clks 149>;
+ 			clock-names = "gpmi_io", "gpmi_apb", "gpmi_bch",
+ 				      "gpmi_bch_apb", "per1_bch";
+ 			dmas = <&dma_apbh 0>;
+ 			dma-names = "rx-tx";
+-			fsl,gpmi-dma-channel = <0>;
+ 			status = "disabled";
+ 		};
+ 
+@@ -111,14 +116,32 @@
+ 		L2: l2-cache@00a02000 {
+ 			compatible = "arm,pl310-cache";
+ 			reg = <0x00a02000 0x1000>;
+-			interrupts = <0 92 0x04>;
++			interrupts = <0 92 IRQ_TYPE_LEVEL_HIGH>;
+ 			cache-unified;
+ 			cache-level = <2>;
++			arm,tag-latency = <4 2 3>;
++			arm,data-latency = <4 2 3>;
++		};
++
++		pcie: pcie@0x01000000 {
++			compatible = "fsl,imx6q-pcie", "snps,dw-pcie";
++			reg = <0x01ffc000 0x4000>; /* DBI */
++			#address-cells = <3>;
++			#size-cells = <2>;
++			device_type = "pci";
++			ranges = <0x00000800 0 0x01f00000 0x01f00000 0 0x00080000 /* configuration space */
++				  0x81000000 0 0          0x01f80000 0 0x00010000 /* downstream I/O */
++				  0x82000000 0 0x01000000 0x01000000 0 0x00f00000>; /* non-prefetchable memory */
++			num-lanes = <1>;
++			interrupts = <0 123 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clks 189>, <&clks 187>, <&clks 206>, <&clks 144>;
++			clock-names = "pcie_ref_125m", "sata_ref_100m", "lvds_gate", "pcie_axi";
++			status = "disabled";
+ 		};
+ 
+ 		pmu {
+ 			compatible = "arm,cortex-a9-pmu";
+-			interrupts = <0 94 0x04>;
++			interrupts = <0 94 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 
+ 		aips-bus@02000000 { /* AIPS1 */
+@@ -136,8 +159,23 @@
+ 				ranges;
+ 
+ 				spdif: spdif@02004000 {
++					compatible = "fsl,imx35-spdif";
+ 					reg = <0x02004000 0x4000>;
+-					interrupts = <0 52 0x04>;
++					interrupts = <0 52 IRQ_TYPE_LEVEL_HIGH>;
++					dmas = <&sdma 14 18 0>,
++					       <&sdma 15 18 0>;
++					dma-names = "rx", "tx";
++					clocks = <&clks 197>, <&clks 3>,
++						 <&clks 197>, <&clks 107>,
++						 <&clks 0>,   <&clks 118>,
++						 <&clks 0>,  <&clks 139>,
++						 <&clks 0>;
++					clock-names = "core",  "rxtx0",
++						      "rxtx1", "rxtx2",
++						      "rxtx3", "rxtx4",
++						      "rxtx5", "rxtx6",
++						      "rxtx7";
++					status = "disabled";
+ 				};
+ 
+ 				ecspi1: ecspi@02008000 {
+@@ -145,7 +183,7 @@
+ 					#size-cells = <0>;
+ 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
+ 					reg = <0x02008000 0x4000>;
+-					interrupts = <0 31 0x04>;
++					interrupts = <0 31 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 112>, <&clks 112>;
+ 					clock-names = "ipg", "per";
+ 					status = "disabled";
+@@ -156,7 +194,7 @@
+ 					#size-cells = <0>;
+ 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
+ 					reg = <0x0200c000 0x4000>;
+-					interrupts = <0 32 0x04>;
++					interrupts = <0 32 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 113>, <&clks 113>;
+ 					clock-names = "ipg", "per";
+ 					status = "disabled";
+@@ -167,7 +205,7 @@
+ 					#size-cells = <0>;
+ 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
+ 					reg = <0x02010000 0x4000>;
+-					interrupts = <0 33 0x04>;
++					interrupts = <0 33 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 114>, <&clks 114>;
+ 					clock-names = "ipg", "per";
+ 					status = "disabled";
+@@ -178,7 +216,7 @@
+ 					#size-cells = <0>;
+ 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
+ 					reg = <0x02014000 0x4000>;
+-					interrupts = <0 34 0x04>;
++					interrupts = <0 34 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 115>, <&clks 115>;
+ 					clock-names = "ipg", "per";
+ 					status = "disabled";
+@@ -187,22 +225,27 @@
+ 				uart1: serial@02020000 {
+ 					compatible = "fsl,imx6q-uart", "fsl,imx21-uart";
+ 					reg = <0x02020000 0x4000>;
+-					interrupts = <0 26 0x04>;
++					interrupts = <0 26 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 160>, <&clks 161>;
+ 					clock-names = "ipg", "per";
++					dmas = <&sdma 25 4 0>, <&sdma 26 4 0>;
++					dma-names = "rx", "tx";
+ 					status = "disabled";
+ 				};
+ 
+ 				esai: esai@02024000 {
+ 					reg = <0x02024000 0x4000>;
+-					interrupts = <0 51 0x04>;
++					interrupts = <0 51 IRQ_TYPE_LEVEL_HIGH>;
+ 				};
+ 
+ 				ssi1: ssi@02028000 {
+ 					compatible = "fsl,imx6q-ssi","fsl,imx21-ssi";
+ 					reg = <0x02028000 0x4000>;
+-					interrupts = <0 46 0x04>;
++					interrupts = <0 46 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 178>;
++					dmas = <&sdma 37 1 0>,
++					       <&sdma 38 1 0>;
++					dma-names = "rx", "tx";
+ 					fsl,fifo-depth = <15>;
+ 					fsl,ssi-dma-events = <38 37>;
+ 					status = "disabled";
+@@ -211,8 +254,11 @@
+ 				ssi2: ssi@0202c000 {
+ 					compatible = "fsl,imx6q-ssi","fsl,imx21-ssi";
+ 					reg = <0x0202c000 0x4000>;
+-					interrupts = <0 47 0x04>;
++					interrupts = <0 47 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 179>;
++					dmas = <&sdma 41 1 0>,
++					       <&sdma 42 1 0>;
++					dma-names = "rx", "tx";
+ 					fsl,fifo-depth = <15>;
+ 					fsl,ssi-dma-events = <42 41>;
+ 					status = "disabled";
+@@ -221,8 +267,11 @@
+ 				ssi3: ssi@02030000 {
+ 					compatible = "fsl,imx6q-ssi","fsl,imx21-ssi";
+ 					reg = <0x02030000 0x4000>;
+-					interrupts = <0 48 0x04>;
++					interrupts = <0 48 IRQ_TYPE_LEVEL_HIGH>;
+ 					clocks = <&clks 180>;
++					dmas = <&sdma 45 1 0>,
++					       <&sdma 46 1 0>;
++					dma-names = "rx", "tx";
+ 					fsl,fifo-depth = <15>;
+ 					fsl,ssi-dma-events = <46 45>;
+ 					status = "disabled";
+@@ -230,7 +279,7 @@
+ 
+ 				asrc: asrc@02034000 {
+ 					reg = <0x02034000 0x4000>;
+-					interrupts = <0 50 0x04>;
++					interrupts = <0 50 IRQ_TYPE_LEVEL_HIGH>;
+ 				};
+ 
+ 				spba@0203c000 {
+@@ -240,7 +289,8 @@
+ 
+ 			vpu: vpu@02040000 {
+ 				reg = <0x02040000 0x3c000>;
+-				interrupts = <0 3 0x04 0 12 0x04>;
++				interrupts = <0 3 IRQ_TYPE_LEVEL_HIGH>,
++				             <0 12 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			aipstz@0207c000 { /* AIPSTZ1 */
+@@ -251,7 +301,7 @@
+ 				#pwm-cells = <2>;
+ 				compatible = "fsl,imx6q-pwm", "fsl,imx27-pwm";
+ 				reg = <0x02080000 0x4000>;
+-				interrupts = <0 83 0x04>;
++				interrupts = <0 83 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 62>, <&clks 145>;
+ 				clock-names = "ipg", "per";
+ 			};
+@@ -260,7 +310,7 @@
+ 				#pwm-cells = <2>;
+ 				compatible = "fsl,imx6q-pwm", "fsl,imx27-pwm";
+ 				reg = <0x02084000 0x4000>;
+-				interrupts = <0 84 0x04>;
++				interrupts = <0 84 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 62>, <&clks 146>;
+ 				clock-names = "ipg", "per";
+ 			};
+@@ -269,7 +319,7 @@
+ 				#pwm-cells = <2>;
+ 				compatible = "fsl,imx6q-pwm", "fsl,imx27-pwm";
+ 				reg = <0x02088000 0x4000>;
+-				interrupts = <0 85 0x04>;
++				interrupts = <0 85 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 62>, <&clks 147>;
+ 				clock-names = "ipg", "per";
+ 			};
+@@ -278,25 +328,33 @@
+ 				#pwm-cells = <2>;
+ 				compatible = "fsl,imx6q-pwm", "fsl,imx27-pwm";
+ 				reg = <0x0208c000 0x4000>;
+-				interrupts = <0 86 0x04>;
++				interrupts = <0 86 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 62>, <&clks 148>;
+ 				clock-names = "ipg", "per";
+ 			};
+ 
+ 			can1: flexcan@02090000 {
++				compatible = "fsl,imx6q-flexcan";
+ 				reg = <0x02090000 0x4000>;
+-				interrupts = <0 110 0x04>;
++				interrupts = <0 110 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clks 108>, <&clks 109>;
++				clock-names = "ipg", "per";
++				status = "disabled";
+ 			};
+ 
+ 			can2: flexcan@02094000 {
++				compatible = "fsl,imx6q-flexcan";
+ 				reg = <0x02094000 0x4000>;
+-				interrupts = <0 111 0x04>;
++				interrupts = <0 111 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clks 110>, <&clks 111>;
++				clock-names = "ipg", "per";
++				status = "disabled";
+ 			};
+ 
+ 			gpt: gpt@02098000 {
+ 				compatible = "fsl,imx6q-gpt", "fsl,imx31-gpt";
+ 				reg = <0x02098000 0x4000>;
+-				interrupts = <0 55 0x04>;
++				interrupts = <0 55 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 119>, <&clks 120>;
+ 				clock-names = "ipg", "per";
+ 			};
+@@ -304,7 +362,8 @@
+ 			gpio1: gpio@0209c000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x0209c000 0x4000>;
+-				interrupts = <0 66 0x04 0 67 0x04>;
++				interrupts = <0 66 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 67 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -314,7 +373,8 @@
+ 			gpio2: gpio@020a0000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020a0000 0x4000>;
+-				interrupts = <0 68 0x04 0 69 0x04>;
++				interrupts = <0 68 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 69 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -324,7 +384,8 @@
+ 			gpio3: gpio@020a4000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020a4000 0x4000>;
+-				interrupts = <0 70 0x04 0 71 0x04>;
++				interrupts = <0 70 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 71 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -334,7 +395,8 @@
+ 			gpio4: gpio@020a8000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020a8000 0x4000>;
+-				interrupts = <0 72 0x04 0 73 0x04>;
++				interrupts = <0 72 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 73 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -344,7 +406,8 @@
+ 			gpio5: gpio@020ac000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020ac000 0x4000>;
+-				interrupts = <0 74 0x04 0 75 0x04>;
++				interrupts = <0 74 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 75 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -354,7 +417,8 @@
+ 			gpio6: gpio@020b0000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020b0000 0x4000>;
+-				interrupts = <0 76 0x04 0 77 0x04>;
++				interrupts = <0 76 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 77 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -364,7 +428,8 @@
+ 			gpio7: gpio@020b4000 {
+ 				compatible = "fsl,imx6q-gpio", "fsl,imx35-gpio";
+ 				reg = <0x020b4000 0x4000>;
+-				interrupts = <0 78 0x04 0 79 0x04>;
++				interrupts = <0 78 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 79 IRQ_TYPE_LEVEL_HIGH>;
+ 				gpio-controller;
+ 				#gpio-cells = <2>;
+ 				interrupt-controller;
+@@ -373,20 +438,20 @@
+ 
+ 			kpp: kpp@020b8000 {
+ 				reg = <0x020b8000 0x4000>;
+-				interrupts = <0 82 0x04>;
++				interrupts = <0 82 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			wdog1: wdog@020bc000 {
+ 				compatible = "fsl,imx6q-wdt", "fsl,imx21-wdt";
+ 				reg = <0x020bc000 0x4000>;
+-				interrupts = <0 80 0x04>;
++				interrupts = <0 80 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 0>;
+ 			};
+ 
+ 			wdog2: wdog@020c0000 {
+ 				compatible = "fsl,imx6q-wdt", "fsl,imx21-wdt";
+ 				reg = <0x020c0000 0x4000>;
+-				interrupts = <0 81 0x04>;
++				interrupts = <0 81 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 0>;
+ 				status = "disabled";
+ 			};
+@@ -394,14 +459,17 @@
+ 			clks: ccm@020c4000 {
+ 				compatible = "fsl,imx6q-ccm";
+ 				reg = <0x020c4000 0x4000>;
+-				interrupts = <0 87 0x04 0 88 0x04>;
++				interrupts = <0 87 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 88 IRQ_TYPE_LEVEL_HIGH>;
+ 				#clock-cells = <1>;
+ 			};
+ 
+ 			anatop: anatop@020c8000 {
+ 				compatible = "fsl,imx6q-anatop", "syscon", "simple-bus";
+ 				reg = <0x020c8000 0x1000>;
+-				interrupts = <0 49 0x04 0 54 0x04 0 127 0x04>;
++				interrupts = <0 49 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 54 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 127 IRQ_TYPE_LEVEL_HIGH>;
+ 
+ 				regulator-1p1@110 {
+ 					compatible = "fsl,anatop-regulator";
+@@ -447,7 +515,7 @@
+ 
+ 				reg_arm: regulator-vddcore@140 {
+ 					compatible = "fsl,anatop-regulator";
+-					regulator-name = "cpu";
++					regulator-name = "vddarm";
+ 					regulator-min-microvolt = <725000>;
+ 					regulator-max-microvolt = <1450000>;
+ 					regulator-always-on;
+@@ -497,18 +565,28 @@
+ 				};
+ 			};
+ 
++			tempmon: tempmon {
++				compatible = "fsl,imx6q-tempmon";
++				interrupts = <0 49 IRQ_TYPE_LEVEL_HIGH>;
++				fsl,tempmon = <&anatop>;
++				fsl,tempmon-data = <&ocotp>;
++				clocks = <&clks 172>;
++			};
++
+ 			usbphy1: usbphy@020c9000 {
+ 				compatible = "fsl,imx6q-usbphy", "fsl,imx23-usbphy";
+ 				reg = <0x020c9000 0x1000>;
+-				interrupts = <0 44 0x04>;
++				interrupts = <0 44 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 182>;
++				fsl,anatop = <&anatop>;
+ 			};
+ 
+ 			usbphy2: usbphy@020ca000 {
+ 				compatible = "fsl,imx6q-usbphy", "fsl,imx23-usbphy";
+ 				reg = <0x020ca000 0x1000>;
+-				interrupts = <0 45 0x04>;
++				interrupts = <0 45 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 183>;
++				fsl,anatop = <&anatop>;
+ 			};
+ 
+ 			snvs@020cc000 {
+@@ -520,31 +598,34 @@
+ 				snvs-rtc-lp@34 {
+ 					compatible = "fsl,sec-v4.0-mon-rtc-lp";
+ 					reg = <0x34 0x58>;
+-					interrupts = <0 19 0x04 0 20 0x04>;
++					interrupts = <0 19 IRQ_TYPE_LEVEL_HIGH>,
++						     <0 20 IRQ_TYPE_LEVEL_HIGH>;
+ 				};
+ 			};
+ 
+ 			epit1: epit@020d0000 { /* EPIT1 */
+ 				reg = <0x020d0000 0x4000>;
+-				interrupts = <0 56 0x04>;
++				interrupts = <0 56 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			epit2: epit@020d4000 { /* EPIT2 */
+ 				reg = <0x020d4000 0x4000>;
+-				interrupts = <0 57 0x04>;
++				interrupts = <0 57 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			src: src@020d8000 {
+ 				compatible = "fsl,imx6q-src", "fsl,imx51-src";
+ 				reg = <0x020d8000 0x4000>;
+-				interrupts = <0 91 0x04 0 96 0x04>;
++				interrupts = <0 91 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 96 IRQ_TYPE_LEVEL_HIGH>;
+ 				#reset-cells = <1>;
+ 			};
+ 
+ 			gpc: gpc@020dc000 {
+ 				compatible = "fsl,imx6q-gpc";
+ 				reg = <0x020dc000 0x4000>;
+-				interrupts = <0 89 0x04 0 90 0x04>;
++				interrupts = <0 89 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 90 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			gpr: iomuxc-gpr@020e0000 {
+@@ -566,33 +647,32 @@
+ 
+ 				lvds-channel@0 {
+ 					reg = <0>;
+-					crtcs = <&ipu1 0>;
+ 					status = "disabled";
+ 				};
+ 
+ 				lvds-channel@1 {
+ 					reg = <1>;
+-					crtcs = <&ipu1 1>;
+ 					status = "disabled";
+ 				};
+ 			};
+ 
+ 			dcic1: dcic@020e4000 {
+ 				reg = <0x020e4000 0x4000>;
+-				interrupts = <0 124 0x04>;
++				interrupts = <0 124 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			dcic2: dcic@020e8000 {
+ 				reg = <0x020e8000 0x4000>;
+-				interrupts = <0 125 0x04>;
++				interrupts = <0 125 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			sdma: sdma@020ec000 {
+ 				compatible = "fsl,imx6q-sdma", "fsl,imx35-sdma";
+ 				reg = <0x020ec000 0x4000>;
+-				interrupts = <0 2 0x04>;
++				interrupts = <0 2 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 155>, <&clks 155>;
+ 				clock-names = "ipg", "ahb";
++				#dma-cells = <3>;
+ 				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx6q.bin";
+ 			};
+ 		};
+@@ -606,7 +686,8 @@
+ 
+ 			caam@02100000 {
+ 				reg = <0x02100000 0x40000>;
+-				interrupts = <0 105 0x04 0 106 0x04>;
++				interrupts = <0 105 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 106 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			aipstz@0217c000 { /* AIPSTZ2 */
+@@ -616,7 +697,7 @@
+ 			usbotg: usb@02184000 {
+ 				compatible = "fsl,imx6q-usb", "fsl,imx27-usb";
+ 				reg = <0x02184000 0x200>;
+-				interrupts = <0 43 0x04>;
++				interrupts = <0 43 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 162>;
+ 				fsl,usbphy = <&usbphy1>;
+ 				fsl,usbmisc = <&usbmisc 0>;
+@@ -626,7 +707,7 @@
+ 			usbh1: usb@02184200 {
+ 				compatible = "fsl,imx6q-usb", "fsl,imx27-usb";
+ 				reg = <0x02184200 0x200>;
+-				interrupts = <0 40 0x04>;
++				interrupts = <0 40 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 162>;
+ 				fsl,usbphy = <&usbphy2>;
+ 				fsl,usbmisc = <&usbmisc 1>;
+@@ -636,7 +717,7 @@
+ 			usbh2: usb@02184400 {
+ 				compatible = "fsl,imx6q-usb", "fsl,imx27-usb";
+ 				reg = <0x02184400 0x200>;
+-				interrupts = <0 41 0x04>;
++				interrupts = <0 41 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 162>;
+ 				fsl,usbmisc = <&usbmisc 2>;
+ 				status = "disabled";
+@@ -645,7 +726,7 @@
+ 			usbh3: usb@02184600 {
+ 				compatible = "fsl,imx6q-usb", "fsl,imx27-usb";
+ 				reg = <0x02184600 0x200>;
+-				interrupts = <0 42 0x04>;
++				interrupts = <0 42 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 162>;
+ 				fsl,usbmisc = <&usbmisc 3>;
+ 				status = "disabled";
+@@ -661,7 +742,9 @@
+ 			fec: ethernet@02188000 {
+ 				compatible = "fsl,imx6q-fec";
+ 				reg = <0x02188000 0x4000>;
+-				interrupts = <0 118 0x04 0 119 0x04>;
++				interrupts-extended =
++					<&intc 0 118 IRQ_TYPE_LEVEL_HIGH>,
++					<&intc 0 119 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 117>, <&clks 117>, <&clks 190>;
+ 				clock-names = "ipg", "ahb", "ptp";
+ 				status = "disabled";
+@@ -669,13 +752,15 @@
+ 
+ 			mlb@0218c000 {
+ 				reg = <0x0218c000 0x4000>;
+-				interrupts = <0 53 0x04 0 117 0x04 0 126 0x04>;
++				interrupts = <0 53 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 117 IRQ_TYPE_LEVEL_HIGH>,
++					     <0 126 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			usdhc1: usdhc@02190000 {
+ 				compatible = "fsl,imx6q-usdhc";
+ 				reg = <0x02190000 0x4000>;
+-				interrupts = <0 22 0x04>;
++				interrupts = <0 22 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 163>, <&clks 163>, <&clks 163>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
+@@ -685,7 +770,7 @@
+ 			usdhc2: usdhc@02194000 {
+ 				compatible = "fsl,imx6q-usdhc";
+ 				reg = <0x02194000 0x4000>;
+-				interrupts = <0 23 0x04>;
++				interrupts = <0 23 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 164>, <&clks 164>, <&clks 164>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
+@@ -695,7 +780,7 @@
+ 			usdhc3: usdhc@02198000 {
+ 				compatible = "fsl,imx6q-usdhc";
+ 				reg = <0x02198000 0x4000>;
+-				interrupts = <0 24 0x04>;
++				interrupts = <0 24 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 165>, <&clks 165>, <&clks 165>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
+@@ -705,7 +790,7 @@
+ 			usdhc4: usdhc@0219c000 {
+ 				compatible = "fsl,imx6q-usdhc";
+ 				reg = <0x0219c000 0x4000>;
+-				interrupts = <0 25 0x04>;
++				interrupts = <0 25 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 166>, <&clks 166>, <&clks 166>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
+@@ -717,7 +802,7 @@
+ 				#size-cells = <0>;
+ 				compatible = "fsl,imx6q-i2c", "fsl,imx21-i2c";
+ 				reg = <0x021a0000 0x4000>;
+-				interrupts = <0 36 0x04>;
++				interrupts = <0 36 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 125>;
+ 				status = "disabled";
+ 			};
+@@ -727,7 +812,7 @@
+ 				#size-cells = <0>;
+ 				compatible = "fsl,imx6q-i2c", "fsl,imx21-i2c";
+ 				reg = <0x021a4000 0x4000>;
+-				interrupts = <0 37 0x04>;
++				interrupts = <0 37 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 126>;
+ 				status = "disabled";
+ 			};
+@@ -737,7 +822,7 @@
+ 				#size-cells = <0>;
+ 				compatible = "fsl,imx6q-i2c", "fsl,imx21-i2c";
+ 				reg = <0x021a8000 0x4000>;
+-				interrupts = <0 38 0x04>;
++				interrupts = <0 38 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 127>;
+ 				status = "disabled";
+ 			};
+@@ -755,29 +840,26 @@
+ 				reg = <0x021b4000 0x4000>;
+ 			};
+ 
+-			weim@021b8000 {
++			weim: weim@021b8000 {
++				compatible = "fsl,imx6q-weim";
+ 				reg = <0x021b8000 0x4000>;
+-				interrupts = <0 14 0x04>;
++				interrupts = <0 14 IRQ_TYPE_LEVEL_HIGH>;
++				clocks = <&clks 196>;
+ 			};
+ 
+-			ocotp1: ocotp@021bc000 {
+-				compatible = "fsl,imx6q-ocotp";
++			ocotp: ocotp@021bc000 {
++				compatible = "fsl,imx6q-ocotp", "syscon";
+ 				reg = <0x021bc000 0x4000>;
+ 			};
+ 
+-			ocotp2: ocotp@021c0000 {
+-				reg = <0x021c0000 0x4000>;
+-				interrupts = <0 21 0x04>;
+-			};
+-
+ 			tzasc@021d0000 { /* TZASC1 */
+ 				reg = <0x021d0000 0x4000>;
+-				interrupts = <0 108 0x04>;
++				interrupts = <0 108 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			tzasc@021d4000 { /* TZASC2 */
+ 				reg = <0x021d4000 0x4000>;
+-				interrupts = <0 109 0x04>;
++				interrupts = <0 109 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			audmux: audmux@021d8000 {
+@@ -786,7 +868,7 @@
+ 				status = "disabled";
+ 			};
+ 
+-			mipi@021dc000 { /* MIPI-CSI */
++			mipi_csi: mipi@021dc000 {
+ 				reg = <0x021dc000 0x4000>;
+ 			};
+ 
+@@ -796,61 +878,60 @@
+ 
+ 			vdoa@021e4000 {
+ 				reg = <0x021e4000 0x4000>;
+-				interrupts = <0 18 0x04>;
++				interrupts = <0 18 IRQ_TYPE_LEVEL_HIGH>;
+ 			};
+ 
+ 			uart2: serial@021e8000 {
+ 				compatible = "fsl,imx6q-uart", "fsl,imx21-uart";
+ 				reg = <0x021e8000 0x4000>;
+-				interrupts = <0 27 0x04>;
++				interrupts = <0 27 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 160>, <&clks 161>;
+ 				clock-names = "ipg", "per";
++				dmas = <&sdma 27 4 0>, <&sdma 28 4 0>;
++				dma-names = "rx", "tx";
+ 				status = "disabled";
+ 			};
+ 
+ 			uart3: serial@021ec000 {
+ 				compatible = "fsl,imx6q-uart", "fsl,imx21-uart";
+ 				reg = <0x021ec000 0x4000>;
+-				interrupts = <0 28 0x04>;
++				interrupts = <0 28 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 160>, <&clks 161>;
+ 				clock-names = "ipg", "per";
++				dmas = <&sdma 29 4 0>, <&sdma 30 4 0>;
++				dma-names = "rx", "tx";
+ 				status = "disabled";
+ 			};
+ 
+ 			uart4: serial@021f0000 {
+ 				compatible = "fsl,imx6q-uart", "fsl,imx21-uart";
+ 				reg = <0x021f0000 0x4000>;
+-				interrupts = <0 29 0x04>;
++				interrupts = <0 29 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 160>, <&clks 161>;
+ 				clock-names = "ipg", "per";
++				dmas = <&sdma 31 4 0>, <&sdma 32 4 0>;
++				dma-names = "rx", "tx";
+ 				status = "disabled";
+ 			};
+ 
+ 			uart5: serial@021f4000 {
+ 				compatible = "fsl,imx6q-uart", "fsl,imx21-uart";
+ 				reg = <0x021f4000 0x4000>;
+-				interrupts = <0 30 0x04>;
++				interrupts = <0 30 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks 160>, <&clks 161>;
+ 				clock-names = "ipg", "per";
++				dmas = <&sdma 33 4 0>, <&sdma 34 4 0>;
++				dma-names = "rx", "tx";
+ 				status = "disabled";
+ 			};
+ 		};
+ 
+-		sata: sata@02200000 {
+-			compatible = "fsl,imx6q-ahci";
+-			reg = <0x02200000 0x4000>;
+-			interrupts = <0 39 0x04>;
+-			clocks = <&clks 154 &clks 105 &clks 187>;
+-			clock-names = "ipg", "ahb", "per";
+-			gprreg = <&gpr>;
+-			status = "disabled";
+-		};
+-
+ 		ipu1: ipu@02400000 {
+ 			#crtc-cells = <1>;
+ 			compatible = "fsl,imx6q-ipu";
+ 			reg = <0x02400000 0x400000>;
+-			interrupts = <0 6 0x4 0 5 0x4>;
++			interrupts = <0 6 IRQ_TYPE_LEVEL_HIGH>,
++				     <0 5 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&clks 130>, <&clks 131>, <&clks 132>;
+ 			clock-names = "bus", "di0", "di1";
+ 			resets = <&src 2>;
 -- 
 1.8.4.2
 
