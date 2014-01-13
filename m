@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W2VDg-00011Y-Qe
- for barebox@lists.infradead.org; Mon, 13 Jan 2014 00:17:33 +0000
+ id 1W2VDk-00011c-1U
+ for barebox@lists.infradead.org; Mon, 13 Jan 2014 00:17:40 +0000
 Received: from tellur.localdomain (p57B5EF0F.dip0.t-ipconnect.de
- [87.181.239.15]) by lynxeye.de (Postfix) with ESMTPA id 548ED18B425E
- for <barebox@lists.infradead.org>; Mon, 13 Jan 2014 01:16:36 +0100 (CET)
+ [87.181.239.15]) by lynxeye.de (Postfix) with ESMTPA id 764E518B4266
+ for <barebox@lists.infradead.org>; Mon, 13 Jan 2014 01:16:38 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 13 Jan 2014 01:17:22 +0100
-Message-Id: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
+Date: Mon, 13 Jan 2014 01:17:27 +0100
+Message-Id: <1389572250-1482-6-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
+References: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,31 +24,696 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/9] ARM: imx53: guard voipac vmx53 init function
+Subject: [PATCH 6/9] ARM: imx6: split sabrelite DT
 To: barebox@lists.infradead.org
 
-Otherwise we end up doing the VMX53 board init for
-unrelated boards when using a multiimage build.
+Split out common QDL parts into shared include file.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/freescale-mx53-vmx53/board.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/dts/imx6q-sabrelite.dts    | 242 +--------------------
+ arch/arm/dts/imx6qdl-sabrelite.dtsi | 413 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 414 insertions(+), 241 deletions(-)
+ create mode 100644 arch/arm/dts/imx6qdl-sabrelite.dtsi
 
-diff --git a/arch/arm/boards/freescale-mx53-vmx53/board.c b/arch/arm/boards/freescale-mx53-vmx53/board.c
-index b38db71..d0cc495 100644
---- a/arch/arm/boards/freescale-mx53-vmx53/board.c
-+++ b/arch/arm/boards/freescale-mx53-vmx53/board.c
-@@ -30,6 +30,9 @@ extern char flash_header_imx53_vmx53_end[];
+diff --git a/arch/arm/dts/imx6q-sabrelite.dts b/arch/arm/dts/imx6q-sabrelite.dts
+index 5ef994d..96e4688 100644
+--- a/arch/arm/dts/imx6q-sabrelite.dts
++++ b/arch/arm/dts/imx6q-sabrelite.dts
+@@ -12,253 +12,13 @@
  
- static int vmx53_late_init(void)
- {
-+	if (!of_machine_is_compatible("voipac,imx53-dmm-668"))
-+			return 0;
+ /dts-v1/;
+ #include "imx6q.dtsi"
++#include "imx6qdl-sabrelite.dtsi"
+ 
+ / {
+ 	model = "Freescale i.MX6 Quad SABRE Lite Board";
+ 	compatible = "fsl,imx6q-sabrelite", "fsl,imx6q";
+-
+-	chosen {
+-		linux,stdout-path = &uart2;
+-
+-		environment@0 {
+-			compatible = "barebox,environment";
+-			device-path = &flash, "partname:barebox-environment";
+-		};
+-	};
+-
+-	memory {
+-		reg = <0x10000000 0x40000000>;
+-	};
+-
+-	regulators {
+-		compatible = "simple-bus";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		reg_2p5v: regulator@0 {
+-			compatible = "regulator-fixed";
+-			reg = <0>;
+-			regulator-name = "2P5V";
+-			regulator-min-microvolt = <2500000>;
+-			regulator-max-microvolt = <2500000>;
+-			regulator-always-on;
+-		};
+-
+-		reg_3p3v: regulator@1 {
+-			compatible = "regulator-fixed";
+-			reg = <1>;
+-			regulator-name = "3P3V";
+-			regulator-min-microvolt = <3300000>;
+-			regulator-max-microvolt = <3300000>;
+-			regulator-always-on;
+-		};
+-
+-		reg_usb_otg_vbus: regulator@2 {
+-			compatible = "regulator-fixed";
+-			reg = <2>;
+-			regulator-name = "usb_otg_vbus";
+-			regulator-min-microvolt = <5000000>;
+-			regulator-max-microvolt = <5000000>;
+-			gpio = <&gpio3 22 0>;
+-			enable-active-high;
+-		};
+-	};
+-
+-	sound {
+-		compatible = "fsl,imx6q-sabrelite-sgtl5000",
+-			     "fsl,imx-audio-sgtl5000";
+-		model = "imx6q-sabrelite-sgtl5000";
+-		ssi-controller = <&ssi1>;
+-		audio-codec = <&codec>;
+-		audio-routing =
+-			"MIC_IN", "Mic Jack",
+-			"Mic Jack", "Mic Bias",
+-			"Headphone Jack", "HP_OUT";
+-		mux-int-port = <1>;
+-		mux-ext-port = <4>;
+-	};
+-};
+-
+-&audmux {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_audmux>;
+-	status = "okay";
+-};
+-
+-&ecspi1 {
+-	fsl,spi-num-chipselects = <1>;
+-	cs-gpios = <&gpio3 19 0>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_ecspi1>;
+-	status = "okay";
+-
+-	flash: m25p80@0 {
+-		compatible = "sst,sst25vf016b", "m25p80";
+-		spi-max-frequency = <20000000>;
+-		reg = <0>;
+-		
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+-		partition@0 {
+-			label = "barebox";
+-			reg = <0x0 0x80000>;
+-		};
+-
+-		partition@1 {
+-			label = "barebox-environment";
+-			reg = <0x80000 0x80000>;
+-		};
+-	};
+-};
+-
+-&fec {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_enet>;
+-	phy-mode = "rgmii";
+-	phy-reset-gpios = <&gpio3 23 0>;
+-	status = "okay";
+-};
+-
+-&i2c1 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c1>;
+-	status = "okay";
+-
+-	codec: sgtl5000@0a {
+-		compatible = "fsl,sgtl5000";
+-		reg = <0x0a>;
+-		clocks = <&clks 201>;
+-		VDDA-supply = <&reg_2p5v>;
+-		VDDIO-supply = <&reg_3p3v>;
+-	};
+-};
+-
+-&iomuxc {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_hog>;
+-
+-	imx6q-sabrelite {
+-		pinctrl_hog: hoggrp {
+-			fsl,pins = <
+-				MX6QDL_PAD_NANDF_D6__GPIO2_IO06 0x80000000
+-				MX6QDL_PAD_NANDF_D7__GPIO2_IO07 0x80000000
+-				MX6QDL_PAD_EIM_D19__GPIO3_IO19  0x80000000
+-				MX6QDL_PAD_EIM_D22__GPIO3_IO22  0x80000000
+-				MX6QDL_PAD_EIM_D23__GPIO3_IO23  0x80000000
+-				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00 0x80000000
+-				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01 0x1f0b0
+-				MX6QDL_PAD_GPIO_0__CCM_CLKO1    0x80000000
+-			>;
+-		};
+-
+-		pinctrl_audmux: audmuxgrp {
+-			fsl,pins = <MX6QDL_AUDMUX_PINGRP1>;
+-		};
+-
+-		pinctrl_ecspi1: ecspi1grp {
+-			fsl,pins = <MX6QDL_ECSPI1_PINGRP1>;
+-		};
+-
+-		pinctrl_enet: enetgrp {
+-			fsl,pins = <MX6QDL_ENET_PINGRP1>;
+-		};
+-
+-		pinctrl_i2c1: i2c1grp {
+-			fsl,pins = <MX6QDL_I2C1_PINGRP1>;
+-		};
+-
+-		pinctrl_uart2: uart2grp {
+-			fsl,pins = <MX6QDL_UART2_PINGRP1>;
+-		};
+-
+-		pinctrl_usbotg: usbotggrp {
+-			fsl,pins = <MX6QDL_USBOTG_PINGRP1>;
+-		};
+-
+-		pinctrl_usdhc3: usdhc3grp {
+-			fsl,pins = <MX6QDL_USDHC3_PINGRP_D4>;
+-		};
+-
+-		pinctrl_usdhc4: usdhc4grp {
+-			fsl,pins = <MX6QDL_USDHC4_PINGRP_D4>;
+-		};
+-	};
+-};
+-
+-&ldb {
+-	status = "okay";
+-
+-	lvds-channel@0 {
+-		fsl,data-mapping = "spwg";
+-		fsl,data-width = <18>;
+-		status = "okay";
+-
+-		display-timings {
+-			native-mode = <&timing0>;
+-			timing0: hsd100pxn1 {
+-				clock-frequency = <65000000>;
+-				hactive = <1024>;
+-				vactive = <768>;
+-				hback-porch = <220>;
+-				hfront-porch = <40>;
+-				vback-porch = <21>;
+-				vfront-porch = <7>;
+-				hsync-len = <60>;
+-				vsync-len = <10>;
+-			};
+-		};
+-	};
+-};
+-
+-&ocotp1 {
+-	barebox,provide-mac-address = <&fec 0x620>;
+ };
+ 
+ &sata {
+ 	status = "okay";
+ };
+-
+-&ssi1 {
+-	fsl,mode = "i2s-slave";
+-	status = "okay";
+-};
+-
+-&uart2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart2>;
+-	status = "okay";
+-};
+-
+-&usbh1 {
+-	phy-mode = "utmi";
+-	dr_mode = "host";
+-	status = "okay";
+-};
+-
+-&usbotg {
+-	vbus-supply = <&reg_usb_otg_vbus>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usbotg>;
+-	disable-over-current;
+-	status = "okay";
+-};
+-
+-&usdhc3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usdhc3>;
+-	cd-gpios = <&gpio7 0 0>;
+-	wp-gpios = <&gpio7 1 0>;
+-	vmmc-supply = <&reg_3p3v>;
+-	status = "okay";
+-};
+-
+-&usdhc4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_usdhc4>;
+-	cd-gpios = <&gpio2 6 0>;
+-	wp-gpios = <&gpio2 7 0>;
+-	vmmc-supply = <&reg_3p3v>;
+-	status = "okay";
+-};
+diff --git a/arch/arm/dts/imx6qdl-sabrelite.dtsi b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+new file mode 100644
+index 0000000..61485d1
+--- /dev/null
++++ b/arch/arm/dts/imx6qdl-sabrelite.dtsi
+@@ -0,0 +1,413 @@
++/*
++ * Copyright 2011 Freescale Semiconductor, Inc.
++ * Copyright 2011 Linaro Ltd.
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
 +
- 	armlinux_set_architecture(MACH_TYPE_VMX53);
- 
- 	barebox_set_model("Voipac VMX53");
++/ {
++
++	chosen {
++		linux,stdout-path = &uart2;
++
++		environment@0 {
++			compatible = "barebox,environment";
++			device-path = &flash, "partname:barebox-environment";
++		};
++	};
++	memory {
++		reg = <0x10000000 0x40000000>;
++	};
++
++	regulators {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		reg_2p5v: regulator@0 {
++			compatible = "regulator-fixed";
++			reg = <0>;
++			regulator-name = "2P5V";
++			regulator-min-microvolt = <2500000>;
++			regulator-max-microvolt = <2500000>;
++			regulator-always-on;
++		};
++
++		reg_3p3v: regulator@1 {
++			compatible = "regulator-fixed";
++			reg = <1>;
++			regulator-name = "3P3V";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++		};
++
++		reg_usb_otg_vbus: regulator@2 {
++			compatible = "regulator-fixed";
++			reg = <2>;
++			regulator-name = "usb_otg_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			gpio = <&gpio3 22 0>;
++			enable-active-high;
++		};
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_gpio_keys>;
++
++		power {
++			label = "Power Button";
++			gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_POWER>;
++			gpio-key,wakeup;
++		};
++
++		menu {
++			label = "Menu";
++			gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_MENU>;
++		};
++
++		home {
++			label = "Home";
++			gpios = <&gpio2 4 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_HOME>;
++		};
++
++		back {
++			label = "Back";
++			gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_BACK>;
++		};
++
++		volume-up {
++			label = "Volume Up";
++			gpios = <&gpio7 13 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEUP>;
++		};
++
++		volume-down {
++			label = "Volume Down";
++			gpios = <&gpio4 5 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEDOWN>;
++		};
++	};
++
++	sound {
++		compatible = "fsl,imx6q-sabrelite-sgtl5000",
++			     "fsl,imx-audio-sgtl5000";
++		model = "imx6q-sabrelite-sgtl5000";
++		ssi-controller = <&ssi1>;
++		audio-codec = <&codec>;
++		audio-routing =
++			"MIC_IN", "Mic Jack",
++			"Mic Jack", "Mic Bias",
++			"Headphone Jack", "HP_OUT";
++		mux-int-port = <1>;
++		mux-ext-port = <4>;
++	};
++
++	backlight_lcd {
++		compatible = "pwm-backlight";
++		pwms = <&pwm1 0 5000000>;
++		brightness-levels = <0 4 8 16 32 64 128 255>;
++		default-brightness-level = <7>;
++		power-supply = <&reg_3p3v>;
++		status = "okay";
++	};
++
++	backlight_lvds {
++		compatible = "pwm-backlight";
++		pwms = <&pwm4 0 5000000>;
++		brightness-levels = <0 4 8 16 32 64 128 255>;
++		default-brightness-level = <7>;
++		power-supply = <&reg_3p3v>;
++		status = "okay";
++	};
++};
++
++&audmux {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_audmux>;
++	status = "okay";
++};
++
++&ecspi1 {
++	fsl,spi-num-chipselects = <1>;
++	cs-gpios = <&gpio3 19 0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_ecspi1>;
++	status = "okay";
++
++	flash: m25p80@0 {
++		compatible = "sst,sst25vf016b", "m25p80";
++		spi-max-frequency = <20000000>;
++		reg = <0>;
++
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0x80000>;
++		};
++
++		partition@1 {
++			label = "barebox-environment";
++			reg = <0x80000 0x80000>;
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet>;
++	phy-mode = "rgmii";
++	phy-reset-gpios = <&gpio3 23 GPIO_ACTIVE_LOW>;
++	txen-skew-ps = <0>;
++	txc-skew-ps = <3000>;
++	rxdv-skew-ps = <0>;
++	rxc-skew-ps = <3000>;
++	rxd0-skew-ps = <0>;
++	rxd1-skew-ps = <0>;
++	rxd2-skew-ps = <0>;
++	rxd3-skew-ps = <0>;
++	txd0-skew-ps = <0>;
++	txd1-skew-ps = <0>;
++	txd2-skew-ps = <0>;
++	txd3-skew-ps = <0>;
++	interrupts-extended = <&gpio1 6 IRQ_TYPE_LEVEL_HIGH>,
++			      <&intc 0 119 IRQ_TYPE_LEVEL_HIGH>;
++	status = "okay";
++};
++
++&i2c1 {
++	clock-frequency = <100000>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c1>;
++	status = "okay";
++
++	codec: sgtl5000@0a {
++		compatible = "fsl,sgtl5000";
++		reg = <0x0a>;
++		clocks = <&clks 201>;
++		VDDA-supply = <&reg_2p5v>;
++		VDDIO-supply = <&reg_3p3v>;
++	};
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
++	imx6q-sabrelite {
++		pinctrl_hog: hoggrp {
++			fsl,pins = <
++				/* SGTL5000 sys_mclk */
++				MX6QDL_PAD_GPIO_0__CCM_CLKO1    0x030b0
++			>;
++		};
++
++		pinctrl_audmux: audmuxgrp {
++			fsl,pins = <MX6QDL_AUDMUX_PINGRP1>;
++		};
++
++		pinctrl_ecspi1: ecspi1grp {
++			fsl,pins = <
++				MX6QDL_ECSPI1_PINGRP1
++				MX6QDL_PAD_EIM_D19__GPIO3_IO19  0x000b1	/* CS */
++			>;
++		};
++
++		pinctrl_enet: enetgrp {
++			fsl,pins = <
++				MX6QDL_ENET_PINGRP_RGMII_MD(0x1b0b0, 0x100b0)
++				/* Phy reset */
++				MX6QDL_PAD_EIM_D23__GPIO3_IO23		0x000b0
++				MX6QDL_PAD_GPIO_6__ENET_IRQ		0x000b1
++			>;
++		};
++
++		pinctrl_gpio_keys: gpio_keysgrp {
++			fsl,pins = <
++				/* Power Button */
++				MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x1b0b0
++				/* Menu Button */
++				MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x1b0b0
++				/* Home Button */
++				MX6QDL_PAD_NANDF_D4__GPIO2_IO04		0x1b0b0
++				/* Back Button */
++				MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x1b0b0
++				/* Volume Up Button */
++				MX6QDL_PAD_GPIO_18__GPIO7_IO13		0x1b0b0
++				/* Volume Down Button */
++				MX6QDL_PAD_GPIO_19__GPIO4_IO05		0x1b0b0
++			>;
++		};
++
++		pinctrl_i2c1: i2c1grp {
++			fsl,pins = <MX6QDL_I2C1_PINGRP1>;
++		};
++
++		pinctrl_pwm1: pwm1grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD1_DAT3__PWM1_OUT 0x1b0b1
++			>;
++		};
++
++		pinctrl_pwm3: pwm3grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD1_DAT1__PWM3_OUT 0x1b0b1
++			>;
++		};
++
++		pinctrl_pwm4: pwm4grp {
++			fsl,pins = <
++				MX6QDL_PAD_SD1_CMD__PWM4_OUT 0x1b0b1
++			>;
++		};
++
++		pinctrl_uart1: uart1grp {
++			fsl,pins = <MX6QDL_UART1_PINGRP2>;
++		};
++
++		pinctrl_uart2: uart2grp {
++			fsl,pins = <MX6QDL_UART2_PINGRP1>;
++		};
++
++		pinctrl_usbotg: usbotggrp {
++			fsl,pins = <
++				MX6QDL_PAD_GPIO_1__USB_OTG_ID	0x17059
++				MX6QDL_PAD_KEY_COL4__USB_OTG_OC	0x1b0b0
++				/* power enable, high active */
++				MX6QDL_PAD_EIM_D22__GPIO3_IO22  0x000b0
++			>;
++		};
++
++		pinctrl_usdhc3: usdhc3grp {
++			fsl,pins = <
++				MX6QDL_USDHC3_PINGRP_D4
++				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00 0x1b0b0	/* CD */
++				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01 0x1f0b0	/* WP */
++			>;
++		};
++
++		pinctrl_usdhc4: usdhc4grp {
++			fsl,pins = <
++				MX6QDL_USDHC4_PINGRP_D4
++				MX6QDL_PAD_NANDF_D6__GPIO2_IO06 0x1b0b0	/* CD */
++			>;
++		};
++	};
++};
++
++&ldb {
++	status = "okay";
++
++	lvds-channel@0 {
++		fsl,data-mapping = "spwg";
++		fsl,data-width = <18>;
++		status = "okay";
++
++		display-timings {
++			native-mode = <&timing0>;
++			timing0: hsd100pxn1 {
++				clock-frequency = <65000000>;
++				hactive = <1024>;
++				vactive = <768>;
++				hback-porch = <220>;
++				hfront-porch = <40>;
++				vback-porch = <21>;
++				vfront-porch = <7>;
++				hsync-len = <60>;
++				vsync-len = <10>;
++			};
++		};
++	};
++};
++
++&ocotp {
++	barebox,provide-mac-address = <&fec 0x620>;
++};
++
++&pcie {
++	status = "okay";
++};
++
++&pwm1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm1>;
++	status = "okay";
++};
++
++&pwm3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm3>;
++	status = "okay";
++};
++
++&pwm4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_pwm4>;
++	status = "okay";
++};
++
++&ssi1 {
++	fsl,mode = "i2s-slave";
++	status = "okay";
++};
++
++&uart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&uart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	status = "okay";
++};
++
++&usbh1 {
++	phy_type = "utmi";
++	dr_mode = "host";
++	status = "okay";
++};
++
++&usbotg {
++	vbus-supply = <&reg_usb_otg_vbus>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usbotg>;
++	phy_type = "utmi";
++	dr_mode = "host";
++	disable-over-current;
++	status = "okay";
++};
++
++&usdhc3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	cd-gpios = <&gpio7 0 0>;
++	wp-gpios = <&gpio7 1 0>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
++
++&usdhc4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_usdhc4>;
++	cd-gpios = <&gpio2 6 0>;
++	vmmc-supply = <&reg_3p3v>;
++	status = "okay";
++};
 -- 
 1.8.4.2
 
