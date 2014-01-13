@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W2eJM-0001Df-NZ
- for barebox@lists.infradead.org; Mon, 13 Jan 2014 10:00:02 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 13 Jan 2014 10:59:36 +0100
-Message-Id: <1389607176-18335-1-git-send-email-s.hauer@pengutronix.de>
+ id 1W2gEw-000564-Qq
+ for barebox@lists.infradead.org; Mon, 13 Jan 2014 12:03:35 +0000
+Received: from dude.hi.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1W2gEY-0001wn-W7
+ for barebox@lists.infradead.org; Mon, 13 Jan 2014 13:03:11 +0100
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Mon, 13 Jan 2014 13:03:10 +0100
+Message-Id: <1389614590-23510-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,90 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fs ubifs: Use pr_* for printing messages
+Subject: [PATCH] hummingboard: fix entryfunction for real
 To: barebox@lists.infradead.org
 
-Unline the printk(KERN_* the pr_* functions cooperate with the
-barebox loglevel.
+The entry function wasn't changed properly when the
+prototype changed.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 ---
- fs/ubifs/debug.h | 10 +++++-----
- fs/ubifs/ubifs.h |  6 +++---
- 2 files changed, 8 insertions(+), 8 deletions(-)
+The issue existed before the rename, but feel free to squash this fix
+into "ARM: imx6: rename Carrier-1 to Hummingboard".
+---
+ arch/arm/boards/solidrun-hummingboard/lowlevel.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/ubifs/debug.h b/fs/ubifs/debug.h
-index 62617b6..dbc7f18 100644
---- a/fs/ubifs/debug.h
-+++ b/fs/ubifs/debug.h
-@@ -85,7 +85,7 @@ struct ubifs_debug_info {
+diff --git a/arch/arm/boards/solidrun-hummingboard/lowlevel.c b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
+index c101f06fedd3..049a8a41be00 100644
+--- a/arch/arm/boards/solidrun-hummingboard/lowlevel.c
++++ b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
+@@ -9,8 +9,6 @@ ENTRY_FUNCTION(start_imx6dl_hummingboard, r0, r1, r2)
+ {
+ 	uint32_t fdt;
  
- #define ubifs_assert(expr) do {                                                \
- 	if (unlikely(!(expr))) {                                               \
--		printk(KERN_CRIT "UBIFS assert failed in %s at %u (pid %d)\n", \
-+		pr_crit("UBIFS assert failed in %s at %u (pid %d)\n", \
- 		       __func__, __LINE__, 0);                      \
- 		dbg_dump_stack();                                              \
- 	}                                                                      \
-@@ -94,7 +94,7 @@ struct ubifs_debug_info {
- #define ubifs_assert_cmt_locked(c) do {                                        \
- 	if (unlikely(down_write_trylock(&(c)->commit_sem))) {                  \
- 		up_write(&(c)->commit_sem);                                    \
--		printk(KERN_CRIT "commit lock is not locked!\n");              \
-+		pr_crit("commit lock is not locked!\n");		      \
- 		ubifs_assert(0);                                               \
- 	}                                                                      \
- } while (0)
-@@ -107,7 +107,7 @@ struct ubifs_debug_info {
- /* Generic debugging messages */
- #define dbg_msg(fmt, ...) do {                                                 \
- 	spin_lock(&dbg_lock);                                                  \
--	printk(KERN_DEBUG "UBIFS DBG (pid %d): %s: " fmt "\n", 0,   \
-+	pr_debug("UBIFS DBG (pid %d): %s: " fmt "\n", 0,   \
- 	       __func__, ##__VA_ARGS__);                                       \
- 	spin_unlock(&dbg_lock);                                                \
- } while (0)
-@@ -310,7 +310,7 @@ void ubifs_debugging_exit(struct ubifs_info *c);
- /* Use "if (0)" to make compiler check arguments even if debugging is off */
- #define ubifs_assert(expr)  do {                                               \
- 	if (0 && (expr))                                                       \
--		printk(KERN_CRIT "UBIFS assert failed in %s at %u (pid %d)\n", \
-+		pr_crit("UBIFS assert failed in %s at %u (pid %d)\n", \
- 		       __func__, __LINE__, 0);                      \
- } while (0)
+-	__barebox_arm_head();
+-
+ 	arm_cpu_lowlevel_init();
  
-@@ -321,7 +321,7 @@ void ubifs_debugging_exit(struct ubifs_info *c);
- 
- #define dbg_msg(fmt, ...) do {                                                 \
- 	if (0)                                                                 \
--		printk(KERN_DEBUG "UBIFS DBG (pid %d): %s: " fmt "\n",         \
-+		pr_debug("UBIFS DBG (pid %d): %s: " fmt "\n",         \
- 		       0, __func__, ##__VA_ARGS__);                 \
- } while (0)
- 
-diff --git a/fs/ubifs/ubifs.h b/fs/ubifs/ubifs.h
-index 1e6c0f5..fea1584 100644
---- a/fs/ubifs/ubifs.h
-+++ b/fs/ubifs/ubifs.h
-@@ -474,15 +474,15 @@ static inline ino_t parent_ino(struct dentry *dentry)
- #define ubifs_msg(fmt, ...)
- #else
- #define ubifs_msg(fmt, ...) \
--		printk(KERN_NOTICE "UBIFS: " fmt "\n", ##__VA_ARGS__)
-+		pr_notice("UBIFS: " fmt "\n", ##__VA_ARGS__)
- #endif
- /* UBIFS error messages */
- #define ubifs_err(fmt, ...)                                                  \
--	printk(KERN_ERR "UBIFS error (pid %d): %s: " fmt "\n", 0, \
-+	pr_err("UBIFS error (pid %d): %s: " fmt "\n", 0, \
- 	       __func__, ##__VA_ARGS__)
- /* UBIFS warning messages */
- #define ubifs_warn(fmt, ...)                                         \
--	printk(KERN_WARNING "UBIFS warning (pid %d): %s: " fmt "\n", \
-+	pr_warn("UBIFS warning (pid %d): %s: " fmt "\n", \
- 	       0, __func__, ##__VA_ARGS__)
- 
- /* UBIFS file system VFS magic number */
+ 	fdt = (uint32_t)__dtb_imx6dl_hummingboard_start - get_runtime_offset();
 -- 
 1.8.5.2
 
