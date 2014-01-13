@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W1d85-0002Wm-EG
- for barebox@lists.infradead.org; Fri, 10 Jan 2014 14:32:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 10 Jan 2014 15:31:39 +0100
-Message-Id: <1389364300-8742-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1389364300-8742-1-git-send-email-s.hauer@pengutronix.de>
-References: <1389364300-8742-1-git-send-email-s.hauer@pengutronix.de>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W2VDg-00011Z-RJ
+ for barebox@lists.infradead.org; Mon, 13 Jan 2014 00:17:33 +0000
+Received: from tellur.localdomain (p57B5EF0F.dip0.t-ipconnect.de
+ [87.181.239.15]) by lynxeye.de (Postfix) with ESMTPA id 2D12E18B4263
+ for <barebox@lists.infradead.org>; Mon, 13 Jan 2014 01:16:37 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon, 13 Jan 2014 01:17:24 +0100
+Message-Id: <1389572250-1482-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
+References: <1389572250-1482-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] ARM: i.MX DFI FS700-M60: Add SPI NOR flash update handler
+Subject: [PATCH 3/9] dt-bindings: import irq.h
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Straight copy from the Linux kernel.
 
-Conflicts:
-	arch/arm/boards/dfi-fs700-m60/board.c
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/dfi-fs700-m60/board.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ include/dt-bindings/interrupt-controller/irq.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+ create mode 100644 include/dt-bindings/interrupt-controller/irq.h
 
-diff --git a/arch/arm/boards/dfi-fs700-m60/board.c b/arch/arm/boards/dfi-fs700-m60/board.c
-index 96f1b0e..7544ec1 100644
---- a/arch/arm/boards/dfi-fs700-m60/board.c
-+++ b/arch/arm/boards/dfi-fs700-m60/board.c
-@@ -19,6 +19,9 @@
- #define pr_fmt(fmt)  "dfi-fs700-m60: " fmt
- 
- #include <generated/mach-types.h>
-+#include <environment.h>
-+#include <bootsource.h>
-+#include <globalvar.h>
- #include <common.h>
- #include <sizes.h>
- #include <envfs.h>
-@@ -64,13 +67,22 @@ static int ar8031_phy_fixup(struct phy_device *dev)
- 
- static int dfi_fs700_m60_init(void)
- {
-+	unsigned flag_spi = 0, flag_mmc = 0;
+diff --git a/include/dt-bindings/interrupt-controller/irq.h b/include/dt-bindings/interrupt-controller/irq.h
+new file mode 100644
+index 0000000..33a1003
+--- /dev/null
++++ b/include/dt-bindings/interrupt-controller/irq.h
+@@ -0,0 +1,19 @@
++/*
++ * This header provides constants for most IRQ bindings.
++ *
++ * Most IRQ bindings include a flags cell as part of the IRQ specifier.
++ * In most cases, the format of the flags cell uses the standard values
++ * defined in this header.
++ */
 +
- 	if (!of_machine_is_compatible("dfi,fs700-m60"))
- 		return 0;
- 
- 	phy_register_fixup_for_uid(PHY_ID_AR8031, AR_PHY_ID_MASK, ar8031_phy_fixup);
- 
-+	if (bootsource_get() == BOOTSOURCE_SPI)
-+		flag_spi |= BBU_HANDLER_FLAG_DEFAULT;
-+	else
-+		flag_mmc |= BBU_HANDLER_FLAG_DEFAULT;
++#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_IRQ_H
++#define _DT_BINDINGS_INTERRUPT_CONTROLLER_IRQ_H
 +
- 	imx6_bbu_internal_mmc_register_handler("mmc", "/dev/mmc3.boot0",
--		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0);
-+		flag_mmc, NULL, 0, 0);
-+	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0",
-+		flag_spi, NULL, 0, 0);
- 
- 	armlinux_set_architecture(MACH_TYPE_MX6Q_SABRESD);
- 
++#define IRQ_TYPE_NONE		0
++#define IRQ_TYPE_EDGE_RISING	1
++#define IRQ_TYPE_EDGE_FALLING	2
++#define IRQ_TYPE_EDGE_BOTH	(IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_EDGE_RISING)
++#define IRQ_TYPE_LEVEL_HIGH	4
++#define IRQ_TYPE_LEVEL_LOW	8
++
++#endif
 -- 
-1.8.5.2
+1.8.4.2
 
 
 _______________________________________________
