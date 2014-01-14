@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtprelay01.ispgateway.de ([80.67.31.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W2z9h-0003qX-Gj
+ id 1W2z9i-0003qe-6a
  for barebox@lists.infradead.org; Tue, 14 Jan 2014 08:15:27 +0000
 From: Markus Niebel <list-09_barebox@tqsc.de>
-Date: Tue, 14 Jan 2014 09:23:34 +0100
-Message-Id: <1389687817-30882-2-git-send-email-list-09_barebox@tqsc.de>
+Date: Tue, 14 Jan 2014 09:23:36 +0100
+Message-Id: <1389687817-30882-4-git-send-email-list-09_barebox@tqsc.de>
 In-Reply-To: <1389687817-30882-1-git-send-email-list-09_barebox@tqsc.de>
 References: <1389687817-30882-1-git-send-email-list-09_barebox@tqsc.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,109 +21,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] mci: add DSR support
+Subject: [PATCH 3/4] mci: imx-esdhc: add DSR support
 To: barebox@lists.infradead.org
 Cc: Markus Niebel <Markus.Niebel@tqs.de>
 
 From: Markus Niebel <Markus.Niebel@tqs.de>
 
-The eMMC and the SD-Card specifications describe the optional SET_DSR command.
-During measurements at our lab we found that some cards implementing this feature
-having really strong driver strengts per default. This can lead to voltage peaks
-above the specification of the host on signal edges for data sent from a card to
-the host.
+having DSR support in mci-core we need a way to
+forward the DSR value to the driver. Add it to
+platform data for imx-esdhc
 
-Since availability of a given card type may be shorter than the time a certain
-hardware will be produced it is useful to have support for this command (Alternative
-would be changing termination resistors and adapting the driver strength of the
-host to the used card.)
+TODO: implement the same for other host controller
+drivers
 
 Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
 ---
- drivers/mci/mci-core.c |   27 +++++++++++++++++++++++++++
- include/mci.h          |    3 +++
- 2 files changed, 30 insertions(+)
+ arch/arm/mach-imx/include/mach/esdhc.h |    2 ++
+ drivers/mci/imx-esdhc.c                |    4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index a232679..2c91ff2 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -102,6 +102,20 @@ static void mci_setup_cmd(struct mci_cmd *p, unsigned cmd, unsigned arg, unsigne
- }
+diff --git a/arch/arm/mach-imx/include/mach/esdhc.h b/arch/arm/mach-imx/include/mach/esdhc.h
+index add1691..fb7380a 100644
+--- a/arch/arm/mach-imx/include/mach/esdhc.h
++++ b/arch/arm/mach-imx/include/mach/esdhc.h
+@@ -42,5 +42,7 @@ struct esdhc_platform_data {
+ 	enum cd_types cd_type;
+ 	unsigned caps;
+ 	char *devname;
++	unsigned dsr_val;
++	int use_dsr;
+ };
+ #endif /* __ASM_ARCH_IMX_ESDHC_H */
+diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
+index 7664e7b..4c7a45e 100644
+--- a/drivers/mci/imx-esdhc.c
++++ b/drivers/mci/imx-esdhc.c
+@@ -582,6 +582,10 @@ static int fsl_esdhc_probe(struct device_d *dev)
+ 	if (host->mci.f_min < 200000)
+ 		host->mci.f_min = 200000;
+ 	host->mci.f_max = rate;
++	if (pdata) {
++		host->mci.use_dsr = pdata->use_dsr;
++		host->mci.dsr_val = pdata->dsr_val;
++	}
  
- /**
-+ * configure optional DSR value
-+ * @param mci_dev MCI instance
-+ * @return Transaction status (0 on success)
-+ */
-+static int mci_set_dsr(struct mci *mci)
-+{
-+	struct mci_cmd cmd;
-+
-+	mci_setup_cmd(&cmd, MMC_CMD_SET_DSR,
-+			(mci->host->dsr_val >> 16) | 0xffff, MMC_RSP_NONE);
-+	return mci_send_cmd(mci, &cmd, NULL);
-+}
-+
-+/**
-  * Setup SD/MMC card's blocklength to be used for future transmitts
-  * @param mci_dev MCI instance
-  * @param len Blocklength in bytes
-@@ -836,6 +850,15 @@ static void mci_extract_card_capacity_from_csd(struct mci *mci)
- 	dev_dbg(&mci->dev, "Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
- }
+ 	mci_of_parse(&host->mci);
  
-+/**
-+ * Extract card's DSR implementation state from CSD
-+ * @param mci MCI instance
-+ */
-+static void mci_extract_card_dsr_imp_from_csd(struct mci *mci)
-+{
-+	mci->dsr_imp = UNSTUFF_BITS(mci->csd, 76, 1);
-+}
-+
- static int mmc_compare_ext_csds(struct mci *mci, unsigned bus_width)
- {
- 	u8 *bw_ext_csd;
-@@ -1058,6 +1081,7 @@ static int mci_startup(struct mci *mci)
- 	mci_detect_version_from_csd(mci);
- 	mci_extract_max_tran_speed_from_csd(mci);
- 	mci_extract_block_lengths_from_csd(mci);
-+	mci_extract_card_dsr_imp_from_csd(mci);
- 
- 	/* sanitiy? */
- 	if (mci->read_bl_len > SECTOR_SIZE) {
-@@ -1074,6 +1098,9 @@ static int mci_startup(struct mci *mci)
- 	dev_dbg(&mci->dev, "Read block length: %u, Write block length: %u\n",
- 		mci->read_bl_len, mci->write_bl_len);
- 
-+	if (mci->dsr_imp && mci->host->use_dsr)
-+		mci_set_dsr(mci);
-+
- 	if (!mmc_host_is_spi(host)) { /* cmd not supported in spi */
- 		dev_dbg(&mci->dev, "Select the card, and put it into Transfer Mode\n");
- 		/* Select the card, and put it into Transfer Mode */
-diff --git a/include/mci.h b/include/mci.h
-index 0f10e8a..d3a553e 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -294,6 +294,8 @@ struct mci_host {
- 	unsigned clock;		/**< Current clock used to talk to the card */
- 	unsigned bus_width;	/**< used data bus width to the card */
- 	unsigned max_req_size;
-+	unsigned dsr_val;	/**< optional dsr value */
-+	int use_dsr;		/**< optional dsr usage flag */
- 
- 	/** init the host interface */
- 	int (*init)(struct mci_host*, struct device_d*);
-@@ -344,6 +346,7 @@ struct mci {
- 	unsigned write_bl_len;
- 	uint64_t capacity;	/**< Card's data capacity in bytes */
- 	int ready_for_use;	/** true if already probed */
-+	int dsr_imp;		/**< DSR implementation state from CSD */
- 	char *ext_csd;
- 	int probe;
- 	struct param_d *param_probe;
 -- 
 1.7.9.5
 
