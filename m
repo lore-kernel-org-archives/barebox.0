@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtprelay01.ispgateway.de ([80.67.31.24])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W2gEw-000564-Qq
- for barebox@lists.infradead.org; Mon, 13 Jan 2014 12:03:35 +0000
-Received: from dude.hi.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de)
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <l.stach@pengutronix.de>) id 1W2gEY-0001wn-W7
- for barebox@lists.infradead.org; Mon, 13 Jan 2014 13:03:11 +0100
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Mon, 13 Jan 2014 13:03:10 +0100
-Message-Id: <1389614590-23510-1-git-send-email-l.stach@pengutronix.de>
+ id 1W2z9h-0003qf-HU
+ for barebox@lists.infradead.org; Tue, 14 Jan 2014 08:15:26 +0000
+From: Markus Niebel <list-09_barebox@tqsc.de>
+Date: Tue, 14 Jan 2014 09:23:37 +0100
+Message-Id: <1389687817-30882-5-git-send-email-list-09_barebox@tqsc.de>
+In-Reply-To: <1389687817-30882-1-git-send-email-list-09_barebox@tqsc.de>
+References: <1389687817-30882-1-git-send-email-list-09_barebox@tqsc.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,35 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] hummingboard: fix entryfunction for real
+Subject: [PATCH 4/4] boards: tqma53: add DSR support for eMMC
 To: barebox@lists.infradead.org
+Cc: Markus Niebel <Markus.Niebel@tqs.de>
 
-The entry function wasn't changed properly when the
-prototype changed.
+From: Markus Niebel <Markus.Niebel@tqs.de>
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+all eMMC cards with DSR support used on different
+revisions of TQMa53 needs the same DSR value.
+just apply it.
+
+Signed-off-by: Markus Niebel <Markus.Niebel@tqs.de>
 ---
-The issue existed before the rename, but feel free to squash this fix
-into "ARM: imx6: rename Carrier-1 to Hummingboard".
----
- arch/arm/boards/solidrun-hummingboard/lowlevel.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/boards/tqma53/board.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boards/solidrun-hummingboard/lowlevel.c b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
-index c101f06fedd3..049a8a41be00 100644
---- a/arch/arm/boards/solidrun-hummingboard/lowlevel.c
-+++ b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
-@@ -9,8 +9,6 @@ ENTRY_FUNCTION(start_imx6dl_hummingboard, r0, r1, r2)
- {
- 	uint32_t fdt;
+diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
+index 9069f7c..cc98de9 100644
+--- a/arch/arm/boards/tqma53/board.c
++++ b/arch/arm/boards/tqma53/board.c
+@@ -39,6 +39,8 @@
+ #include <mach/iim.h>
+ #include <mach/imx5.h>
  
--	__barebox_arm_head();
--
- 	arm_cpu_lowlevel_init();
++#define TQMA53_EMMC_DSR 0x0100u
++
+ static struct fec_platform_data fec_info = {
+ 	.xcv_type = PHY_INTERFACE_MODE_RMII,
+ };
+@@ -221,6 +223,8 @@ static struct esdhc_platform_data tqma53_sd3_data = {
+ 	.cd_type = ESDHC_CD_PERMANENT,
+ 	.wp_type = ESDHC_WP_NONE,
+ 	.caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA,
++	.use_dsr = 1,
++	.dsr_val = TQMA53_EMMC_DSR,
+ };
  
- 	fdt = (uint32_t)__dtb_imx6dl_hummingboard_start - get_runtime_offset();
+ static int tqma53_devices_init(void)
 -- 
-1.8.5.2
+1.7.9.5
 
 
 _______________________________________________
