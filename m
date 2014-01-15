@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W3OxC-0004cI-Vp
- for barebox@lists.infradead.org; Wed, 15 Jan 2014 11:48:15 +0000
+ id 1W3OxY-0004dJ-Bb
+ for barebox@lists.infradead.org; Wed, 15 Jan 2014 11:48:37 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 15 Jan 2014 11:47:40 +0000
-Message-Id: <1389786464-22085-2-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 15 Jan 2014 11:47:41 +0000
+Message-Id: <1389786464-22085-3-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1389786464-22085-1-git-send-email-renaud.barbier@ge.com>
 References: <1389786464-22085-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,163 +21,247 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ppc: cpu-85xx: upgrade MMU support to v2 pages sizes
+Subject: [PATCH 2/5] ppc: mpc85xx: use common linker script
 To: barebox@lists.infradead.org
 
-TLB support for the 85xx CPUs has been upgraded to support the MMUv2
-page size definitions. This has been imported from U-Boot version
-git-9407c3fc. This allows for future CPUs to make use of the new MMU
-support.
-
-Also the definition of MAX_MEM_MAPPED has been changed to avoid type
-casting with "min" macro.
+Updates to use a common linker script for all mpc85xx boards,
+avoiding duplication.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/cpu-85xx/tlb.c          | 30 +++++++++++++++++++-----------
- arch/ppc/include/asm/config.h    |  2 +-
- arch/ppc/include/asm/mmu.h       | 37 ++++++++++++++++++++++++-------------
- arch/ppc/include/asm/processor.h |  5 +++++
- 4 files changed, 49 insertions(+), 25 deletions(-)
+ arch/ppc/Makefile                                  |   4 +
+ arch/ppc/boards/freescale-p2020rdb/Makefile        |   1 -
+ arch/ppc/boards/freescale-p2020rdb/barebox.lds.S   | 141 ---------------------
+ arch/ppc/boards/geip-da923rc/Makefile              |   1 -
+ arch/ppc/mach-mpc85xx/Kconfig                      |   5 +
+ arch/ppc/mach-mpc85xx/Makefile                     |   1 +
+ .../geip-da923rc => mach-mpc85xx}/barebox.lds.S    |   4 +
+ 7 files changed, 14 insertions(+), 143 deletions(-)
+ delete mode 100644 arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+ rename arch/ppc/{boards/geip-da923rc => mach-mpc85xx}/barebox.lds.S (97%)
 
-diff --git a/arch/ppc/cpu-85xx/tlb.c b/arch/ppc/cpu-85xx/tlb.c
-index 3f56655..3ffcfff 100644
---- a/arch/ppc/cpu-85xx/tlb.c
-+++ b/arch/ppc/cpu-85xx/tlb.c
-@@ -123,21 +123,29 @@ static unsigned int e500_setup_ddr_tlbs_phys(phys_addr_t p_addr,
- 					unsigned int memsize_in_meg)
- {
- 	int i;
--	unsigned int tlb_size;
--	unsigned int wimge = 0;
-+	unsigned int tlb_size, max_cam, tsize_mask;
-+	unsigned int wimge = MAS2_M;
- 	unsigned int ram_tlb_address = (unsigned int)CFG_SDRAM_BASE;
--	unsigned int max_cam = (mfspr(SPRN_TLB1CFG) >> 16) & 0xf;
- 	u64 size, memsize = (u64)memsize_in_meg << 20;
+diff --git a/arch/ppc/Makefile b/arch/ppc/Makefile
+index aa00c96..87be193 100644
+--- a/arch/ppc/Makefile
++++ b/arch/ppc/Makefile
+@@ -63,4 +63,8 @@ endif
+ common-y += $(BOARD) $(CPU) $(MACH)
+ common-y += arch/ppc/lib/
  
--	size = min((u64)memsize, (u64)MAX_MEM_MAPPED);
++ifdef CONFIG_MPC85xx
++lds-y += $(MACH)/barebox.lds
++else
+ lds-y += $(BOARD)/barebox.lds
++endif
+diff --git a/arch/ppc/boards/freescale-p2020rdb/Makefile b/arch/ppc/boards/freescale-p2020rdb/Makefile
+index 141b680..dbd2af6 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/Makefile
++++ b/arch/ppc/boards/freescale-p2020rdb/Makefile
+@@ -1,4 +1,3 @@
+ obj-y	+= p2020rdb.o
+ obj-y	+= law.o
+ obj-y	+= tlb.o
+-extra-y += barebox.lds
+diff --git a/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S b/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+deleted file mode 100644
+index 85a864e..0000000
+--- a/arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
++++ /dev/null
+@@ -1,141 +0,0 @@
+-/*
+- * Copyright 2012 GE Intelligent Platforms, Inc.
+- * Copyright 2007-2009, 2011 Freescale Semiconductor, Inc.
+- *
+- * See file CREDITS for list of people who contributed to this
+- * project.
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
 -
--	/* Convert (4^max) kB to (2^max) bytes */
--	max_cam = (max_cam * 2) + 10;
-+	size = min(memsize, MAX_MEM_MAPPED);
-+	if ((mfspr(SPRN_MMUCFG) & MMUCFG_MAVN) == MMUCFG_MAVN_V1) {
-+		/* Convert (4^max) kB to (2^max) bytes */
-+		max_cam = ((mfspr(SPRN_TLB1CFG) >> 16) & 0xf) * 2 + 10;
-+		tsize_mask = ~1U;
-+	} else {
-+		/* Convert (2^max) kB to (2^max) bytes */
-+		max_cam = __ilog2(mfspr(SPRN_TLB1PS)) + 10;
-+		tsize_mask = ~0U;
-+	}
+-#include <asm-generic/barebox.lds.h>
+-
+-#define RESET_VECTOR_ADDRESS	0xeffffffc
+-
+-OUTPUT_ARCH("powerpc")
+-
+-PHDRS
+-{
+-  text PT_LOAD;
+-  bss PT_LOAD;
+-}
+-
+-SECTIONS
+-{
+-  /* Read-only sections, merged into text segment: */
+-  . = TEXT_BASE;
+-
+-  .text      :
+-  {
+-    *(.text*)
+-  } :text
+-
+-  _etext = .;
+-  PROVIDE (etext = .);
+-  _sdata = .;
+-
+-  .rodata    :
+-  {
+-    *(SORT_BY_ALIGNMENT(SORT_BY_NAME(.rodata*)))
+-  } :text
+-
+-  /* Read-write section, merged into data segment: */
+-  . = (. + 0x00FF) & 0xFFFFFF00;
+-
+-  _erotext = .;
+-  PROVIDE (erotext = .);
+-
+-  .reloc   :
+-  {
+-    _GOT2_TABLE_ = .;
+-    KEEP(*(.got2))
+-    KEEP(*(.got))
+-    PROVIDE(_GLOBAL_OFFSET_TABLE_ = . + 4);
+-    _FIXUP_TABLE_ = .;
+-    KEEP(*(.fixup))
+-  }
+-  __got2_entries = ((_GLOBAL_OFFSET_TABLE_ - _GOT2_TABLE_) >> 2) - 1;
+-  __fixup_entries = (. - _FIXUP_TABLE_) >> 2;
+-
+-  .data    :
+-  {
+-    *(.data*)
+-    *(.data1*)
+-    *(.sdata*)
+-    *(.sdata2*)
+-    *(.dynamic*)
+-    CONSTRUCTORS
+-  }
+-  _edata  =  .;
+-  PROVIDE (edata = .);
+-
+-  . = .;
+-  __barebox_cmd_start = .;
+-  .barebox_cmd : { BAREBOX_CMDS }
+-  __barebox_cmd_end = .;
+-
+-  __barebox_initcalls_start = .;
+-  .barebox_initcalls : { INITCALLS }
+-  __barebox_initcalls_end = .;
+-  __initcall_entries = (__barebox_initcalls_end - __barebox_initcalls_start)>>2;
+-
+-  __usymtab_start = .;
+-  __usymtab : { BAREBOX_SYMS }
+-  __usymtab_end = .;
+-
+-  __early_init_data_begin = .;
+-  .early_init_data : { *(.early_init_data) }
+-  __early_init_data_end = .;
+-
+-  . = .;
+-  __start___ex_table = .;
+-  __ex_table : { *(__ex_table) }
+-  __stop___ex_table = .;
+-
+-  . = ALIGN(256);
+-  __init_begin = .;
+-  .text.init : { *(.text.init) }
+-  .data.init : { *(.data.init) }
+-  . = ALIGN(256);
+-  __init_end = .;
+-
+-  __init_size = __init_end - _start;
+-
+-  .bootpg RESET_VECTOR_ADDRESS - 0xffc :
+-  {
+-    _text = .;
+-    _stext = .;
+-    arch/ppc/cpu-85xx/start.o	(.bootpg)
+-  } :text = 0xffff
+-
+-  .resetvec RESET_VECTOR_ADDRESS :
+-  {
+-    arch/ppc/cpu-85xx/resetvec.o	(.resetvec)
+-  } :text = 0xffff
+-
+-  . = RESET_VECTOR_ADDRESS + 0x4;
+-
+-  . = 0x10000;
+-  __bss_start = .;
+-  .bss        :
+-  {
+-    *(.sbss*) *(.scommon*)
+-    *(.dynbss*)
+-    *(.bss*)
+-    *(COMMON)
+-  } :bss
+-
+-  . = ALIGN(4);
+-  __bss_stop = .;
+-  _end = . ;
+-  PROVIDE (end = .);
+-}
+diff --git a/arch/ppc/boards/geip-da923rc/Makefile b/arch/ppc/boards/geip-da923rc/Makefile
+index 0c28a79..3abc6c6 100644
+--- a/arch/ppc/boards/geip-da923rc/Makefile
++++ b/arch/ppc/boards/geip-da923rc/Makefile
+@@ -4,4 +4,3 @@ obj-y += law.o
+ obj-y += ddr.o
+ obj-y += nand.o
+ obj-y += product_data.o
+-extra-y += barebox.lds
+diff --git a/arch/ppc/mach-mpc85xx/Kconfig b/arch/ppc/mach-mpc85xx/Kconfig
+index dc5708c..dc2d2b7 100644
+--- a/arch/ppc/mach-mpc85xx/Kconfig
++++ b/arch/ppc/mach-mpc85xx/Kconfig
+@@ -5,6 +5,11 @@ config TEXT_BASE
+ 	default 0xeff80000 if P2020RDB
+ 	default 0xfff80000 if DA923RC
  
--	for (i = 0; size && (i < 8); i++) {
-+	for (i = 0; size && i < 8; i++) {
- 		int ram_tlb_index = e500_find_free_tlbcam();
--		u32 camsize = __ilog2_u64(size) & ~1U;
--		u32 align = __ilog2(ram_tlb_address) & ~1U;
-+		u32 camsize = __ilog2_u64(size) & tsize_mask;
-+		u32 align = __ilog2(ram_tlb_address) & tsize_mask;
++config RESET_VECTOR_ADDRESS
++	hex
++	default 0xfffffffc if DA923RC
++	default 0xeffffffc if P2020RDB
 +
-+		if (ram_tlb_index == -1)
-+			break;
+ config MPC85xx
+ 	bool
+ 	default y
+diff --git a/arch/ppc/mach-mpc85xx/Makefile b/arch/ppc/mach-mpc85xx/Makefile
+index ce6c77a..3e64617 100644
+--- a/arch/ppc/mach-mpc85xx/Makefile
++++ b/arch/ppc/mach-mpc85xx/Makefile
+@@ -10,3 +10,4 @@ obj-$(CONFIG_MP)	+= mp.o
+ obj-$(CONFIG_OFTREE)	+= fdt.o
+ obj-$(CONFIG_DRIVER_NET_GIANFAR) += eth-devices.o
+ obj-$(CONFIG_DDR_SPD)	+= ../ddr-8xxx/
++extra-y += barebox.lds
+diff --git a/arch/ppc/boards/geip-da923rc/barebox.lds.S b/arch/ppc/mach-mpc85xx/barebox.lds.S
+similarity index 97%
+rename from arch/ppc/boards/geip-da923rc/barebox.lds.S
+rename to arch/ppc/mach-mpc85xx/barebox.lds.S
+index abf8016..4d156e8 100644
+--- a/arch/ppc/boards/geip-da923rc/barebox.lds.S
++++ b/arch/ppc/mach-mpc85xx/barebox.lds.S
+@@ -15,7 +15,11 @@
  
- 		if (align == -2)
- 			align = max_cam;
-@@ -147,7 +155,7 @@ static unsigned int e500_setup_ddr_tlbs_phys(phys_addr_t p_addr,
- 		if (camsize > max_cam)
- 			camsize = max_cam;
+ #include <asm-generic/barebox.lds.h>
  
--		tlb_size = (camsize - 10) / 2;
-+		tlb_size = camsize - 10;
++#ifdef CONFIG_RESET_VECTOR_ADDRESS
++#define RESET_VECTOR_ADDRESS    CONFIG_RESET_VECTOR_ADDRESS
++#else
+ #define RESET_VECTOR_ADDRESS    0xfffffffc
++#endif
+ #define BSS_START_ADDRESS       0x2000
  
- 		e500_set_tlb(1, ram_tlb_address, p_addr,
- 			MAS3_SX|MAS3_SW|MAS3_SR, wimge,
-diff --git a/arch/ppc/include/asm/config.h b/arch/ppc/include/asm/config.h
-index 64e87e5..ce6581a 100644
---- a/arch/ppc/include/asm/config.h
-+++ b/arch/ppc/include/asm/config.h
-@@ -23,7 +23,7 @@
- 
- #ifndef MAX_MEM_MAPPED
- #if defined(CONFIG_E500)
--#define MAX_MEM_MAPPED	((phys_size_t)(2 << 30))
-+#define MAX_MEM_MAPPED	(2ULL << 30)
- #endif
- #endif
- 
-diff --git a/arch/ppc/include/asm/mmu.h b/arch/ppc/include/asm/mmu.h
-index 179ec2b..c886d14 100644
---- a/arch/ppc/include/asm/mmu.h
-+++ b/arch/ppc/include/asm/mmu.h
-@@ -382,7 +382,7 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- #define MAS1_IPROT      0x40000000
- #define MAS1_TID(x)     (((x) << 16) & 0x3FFF0000)
- #define MAS1_TS         0x00001000
--#define MAS1_TSIZE(x)   (((x) << 8) & 0x00000F00)
-+#define MAS1_TSIZE(x)   (((x) << 7) & 0x00000F80)
- 
- #define MAS2_EPN        0xFFFFF000
- #define MAS2_SHAREN     0x00000200
-@@ -438,18 +438,29 @@ extern int write_bat(ppc_bat_t bat, unsigned long upper, unsigned long lower);
- #define FSL_BOOKE_MAS7(rpn) \
- 		(((u64)(rpn)) >> 32)
- 
--#define BOOKE_PAGESZ_1K         0
--#define BOOKE_PAGESZ_4K         1
--#define BOOKE_PAGESZ_16K        2
--#define BOOKE_PAGESZ_64K        3
--#define BOOKE_PAGESZ_256K       4
--#define BOOKE_PAGESZ_1M         5
--#define BOOKE_PAGESZ_4M         6
--#define BOOKE_PAGESZ_16M        7
--#define BOOKE_PAGESZ_64M        8
--#define BOOKE_PAGESZ_256M       9
--#define BOOKE_PAGESZ_1GB        10
--#define BOOKE_PAGESZ_4GB        11
-+#define BOOKE_PAGESZ_1K		0
-+#define BOOKE_PAGESZ_2K		1
-+#define BOOKE_PAGESZ_4K		2
-+#define BOOKE_PAGESZ_8K		3
-+#define BOOKE_PAGESZ_16K	4
-+#define BOOKE_PAGESZ_32K	5
-+#define BOOKE_PAGESZ_64K	6
-+#define BOOKE_PAGESZ_128K	7
-+#define BOOKE_PAGESZ_256K	8
-+#define BOOKE_PAGESZ_512K	9
-+#define BOOKE_PAGESZ_1M		10
-+#define BOOKE_PAGESZ_2M		11
-+#define BOOKE_PAGESZ_4M		12
-+#define BOOKE_PAGESZ_8M		13
-+#define BOOKE_PAGESZ_16M	14
-+#define BOOKE_PAGESZ_32M	15
-+#define BOOKE_PAGESZ_64M	16
-+#define BOOKE_PAGESZ_128M	17
-+#define BOOKE_PAGESZ_256M	18
-+#define BOOKE_PAGESZ_512M	19
-+#define BOOKE_PAGESZ_1G		20
-+#define BOOKE_PAGESZ_2G		21
-+#define BOOKE_PAGESZ_4G		22
- 
- #if defined(CONFIG_MPC86xx)
- #define LAWBAR_BASE_ADDR	0x00FFFFFF
-diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
-index 19530b0..059d33f 100644
---- a/arch/ppc/include/asm/processor.h
-+++ b/arch/ppc/include/asm/processor.h
-@@ -429,7 +429,12 @@
- 
- #define SPRN_TLB0CFG   0x2B0   /* TLB 0 Config Register */
- #define SPRN_TLB1CFG   0x2B1   /* TLB 1 Config Register */
-+#define SPRN_TLB1PS	0x159	/* TLB 1 Page Size Register */
- #define SPRN_MMUCSR0	0x3f4	/* MMU control and status register 0 */
-+#define SPRN_MMUCFG	0x3f7	/* MMU Configuration Register */
-+#define MMUCFG_MAVN	0x00000003	/* MMU Architecture Version Number */
-+#define MMUCFG_MAVN_V1	0x00000000	/* v1.0 */
-+#define MMUCFG_MAVN_V2	0x00000001	/* v2.0 */
- #define SPRN_MAS0       0x270   /* MMU Assist Register 0 */
- #define SPRN_MAS1       0x271   /* MMU Assist Register 1 */
- #define SPRN_MAS2       0x272   /* MMU Assist Register 2 */
+ OUTPUT_ARCH("powerpc")
 -- 
 1.8.4.2
 
