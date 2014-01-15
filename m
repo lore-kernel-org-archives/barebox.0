@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W36nG-0000sw-Oe
- for barebox@lists.infradead.org; Tue, 14 Jan 2014 16:24:47 +0000
-Date: Tue, 14 Jan 2014 17:24:25 +0100
+ id 1W3KsL-0005FS-QA
+ for barebox@lists.infradead.org; Wed, 15 Jan 2014 07:26:58 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140114162424.GO16215@pengutronix.de>
-References: <1389602399-11488-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1389602399-11488-1-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 15 Jan 2014 08:26:33 +0100
+Message-Id: <1389770794-20487-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,167 +14,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] net/phy: add driver for National Semiconductor DP83865 PHY
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: dts: rename imx6q-dmo-realq7.dts to
+ imx6q-dmo-edmqmx6.dts
+To: barebox@lists.infradead.org
 
-On Mon, Jan 13, 2014 at 12:39:59PM +0400, Antony Pavlov wrote:
-> Based on Linux kernel 3.12 driver.
-> 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+As this name is used in the Kernel.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/dts/Makefile                                        | 4 ++--
+ arch/arm/dts/{imx6q-dmo-realq7.dts => imx6q-dmo-edmqmx6.dts} | 0
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+ rename arch/arm/dts/{imx6q-dmo-realq7.dts => imx6q-dmo-edmqmx6.dts} (100%)
 
-Sascha
-
-> ---
->  drivers/net/phy/Kconfig    |  5 +++
->  drivers/net/phy/Makefile   |  1 +
->  drivers/net/phy/national.c | 95 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 101 insertions(+)
->  create mode 100644 drivers/net/phy/national.c
-> 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index 7ebdaa0..260774e 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -23,6 +23,11 @@ config MICREL_PHY
->  	---help---
->  	  Supports the KSZ9021, VSC8201, KS8001 PHYs.
->  
-> +config NATIONAL_PHY
-> +	bool "Driver for National Semiconductor PHYs"
-> +	---help---
-> +	  Currently supports the DP83865 PHY.
-> +
->  config SMSC_PHY
->  	bool "Drivers for SMSC PHYs"
->  	---help---
-> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-> index 451573e..a00cc76 100644
-> --- a/drivers/net/phy/Makefile
-> +++ b/drivers/net/phy/Makefile
-> @@ -2,4 +2,5 @@ obj-y += phy.o mdio_bus.o
->  obj-$(CONFIG_AT803X_PHY)	+= at803x.o
->  obj-$(CONFIG_LXT_PHY)		+= lxt.o
->  obj-$(CONFIG_MICREL_PHY)	+= micrel.o
-> +obj-$(CONFIG_NATIONAL_PHY)	+= national.o
->  obj-$(CONFIG_SMSC_PHY)		+= smsc.o
-> diff --git a/drivers/net/phy/national.c b/drivers/net/phy/national.c
-> new file mode 100644
-> index 0000000..e46d587
-> --- /dev/null
-> +++ b/drivers/net/phy/national.c
-> @@ -0,0 +1,95 @@
-> +/*
-> + * drivers/net/phy/national.c
-> + *
-> + * Driver for National Semiconductor PHYs
-> + *
-> + * based on Stuart Menefy's linux national.c driver
-> + *
-> + * This program is free software; you can redistribute  it and/or modify it
-> + * under  the terms of  the GNU General  Public License as published by the
-> + * Free Software Foundation;  either version 2 of the  License, or (at your
-> + * option) any later version.
-> + */
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <linux/phy.h>
-> +
-> +/* Advanced proprietary configuration */
-> +#define NS_EXP_MEM_CTL	0x16
-> +#define NS_EXP_MEM_DATA	0x1d
-> +#define NS_EXP_MEM_ADD	0x1e
-> +
-> +#define LED_CTRL_REG 0x13
-> +#define AN_FALLBACK_AN 0x0001
-> +#define AN_FALLBACK_CRC 0x0002
-> +#define AN_FALLBACK_IE 0x0004
-> +#define ALL_FALLBACK_ON (AN_FALLBACK_AN |  AN_FALLBACK_CRC | AN_FALLBACK_IE)
-> +
-> +enum hdx_loopback {
-> +	hdx_loopback_on = 0,
-> +	hdx_loopback_off = 1,
-> +};
-> +
-> +static u8 ns_exp_read(struct phy_device *phydev, u16 reg)
-> +{
-> +	phy_write(phydev, NS_EXP_MEM_ADD, reg);
-> +	return phy_read(phydev, NS_EXP_MEM_DATA);
-> +}
-> +
-> +static void ns_exp_write(struct phy_device *phydev, u16 reg, u8 data)
-> +{
-> +	phy_write(phydev, NS_EXP_MEM_ADD, reg);
-> +	phy_write(phydev, NS_EXP_MEM_DATA, data);
-> +}
-> +
-> +static void ns_giga_speed_fallback(struct phy_device *phydev, int mode)
-> +{
-> +	int bmcr = phy_read(phydev, MII_BMCR);
-> +
-> +	phy_write(phydev, MII_BMCR, (bmcr | BMCR_PDOWN));
-> +
-> +	/* Enable 8 bit expended memory read/write (no auto increment) */
-> +	phy_write(phydev, NS_EXP_MEM_CTL, 0);
-> +	phy_write(phydev, NS_EXP_MEM_ADD, 0x1C0);
-> +	phy_write(phydev, NS_EXP_MEM_DATA, 0x0008);
-> +	phy_write(phydev, MII_BMCR, (bmcr & ~BMCR_PDOWN));
-> +	phy_write(phydev, LED_CTRL_REG, mode);
-> +}
-> +
-> +static void ns_10_base_t_hdx_loopack(struct phy_device *phydev, int disable)
-> +{
-> +	if (disable)
-> +		ns_exp_write(phydev, 0x1c0, ns_exp_read(phydev, 0x1c0) | 1);
-> +	else
-> +		ns_exp_write(phydev, 0x1c0,
-> +			     ns_exp_read(phydev, 0x1c0) & 0xfffe);
-> +
-> +	pr_debug("10BASE-T HDX loopback %s\n",
-> +		 (ns_exp_read(phydev, 0x1c0) & 0x0001) ? "off" : "on");
-> +}
-> +
-> +static int ns_config_init(struct phy_device *phydev)
-> +{
-> +	ns_giga_speed_fallback(phydev, ALL_FALLBACK_ON);
-> +	/* In the latest MAC or switches design, the 10 Mbps loopback
-> +	   is desired to be turned off. */
-> +	ns_10_base_t_hdx_loopack(phydev, hdx_loopback_off);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct phy_driver dp83865_driver = {
-> +	.phy_id		= 0x20005c70,
-> +	.phy_id_mask	= 0xfffffff0,
-> +	.drv.name	= "NatSemi DP83865",
-> +	.features	= PHY_GBIT_FEATURES |
-> +			SUPPORTED_Pause | SUPPORTED_Asym_Pause,
-> +	.config_init    = ns_config_init,
-> +};
-> +
-> +static int ns_phy_init(void)
-> +{
-> +	return phy_driver_register(&dp83865_driver);
-> +}
-> +fs_initcall(ns_phy_init);
-> -- 
-> 1.8.5.2
-> 
-> 
-
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index add4dc0..67804ab 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -9,7 +9,7 @@ dtb-$(CONFIG_ARCH_IMX53) += imx53-qsb.dtb \
+ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
+ 	imx6dl-dfi-fs700-m60-6s.dtb \
+ 	imx6q-dfi-fs700-m60-6q.dtb \
+-	imx6q-dmo-realq7.dtb \
++	imx6q-dmo-edmqmx6.dtb \
+ 	imx6q-sabrelite.dtb \
+ 	imx6dl-sabrelite.dtb \
+ 	imx6q-sabresd.dtb \
+@@ -37,7 +37,7 @@ pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
+ pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
+ pbl-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
+ pbl-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6q-phytec-pbab01.dtb.o
+-pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-realq7.dtb.o
++pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
+ pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox.dtb.o
+ pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
+ pbl-$(CONFIG_MACH_TORADEX_COLIBRI_T20_IRIS) += tegra20-colibri-iris.dtb.o
+diff --git a/arch/arm/dts/imx6q-dmo-realq7.dts b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
+similarity index 100%
+rename from arch/arm/dts/imx6q-dmo-realq7.dts
+rename to arch/arm/dts/imx6q-dmo-edmqmx6.dts
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.5.2
+
 
 _______________________________________________
 barebox mailing list
