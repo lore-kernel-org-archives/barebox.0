@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x231.google.com ([2a00:1450:400c:c03::231])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W3MzQ-0000lU-UW
- for barebox@lists.infradead.org; Wed, 15 Jan 2014 09:42:25 +0000
-Received: by mail-we0-f177.google.com with SMTP id x55so1462711wes.8
- for <barebox@lists.infradead.org>; Wed, 15 Jan 2014 01:42:01 -0800 (PST)
-Date: Wed, 15 Jan 2014 10:41:56 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140115094154.GA12036@omega>
-References: <1389770794-20487-1-git-send-email-s.hauer@pengutronix.de>
- <20140115093607.GP16215@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140115093607.GP16215@pengutronix.de>
+Received: from exprod5og115.obsmtp.com ([64.18.0.246])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W3OxC-0004cH-6Q
+ for barebox@lists.infradead.org; Wed, 15 Jan 2014 11:48:14 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed, 15 Jan 2014 11:47:39 +0000
+Message-Id: <1389786464-22085-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +14,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: dts: rename imx6q-dmo-realq7.dts to
- imx6q-dmo-edmqmx6.dts
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] ppc: Import latest U-Boot code
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Upgrade the mpc85xx startup code to the latest U-Boot version and
+add MMUv2 page size definitions for future CPUs support.
 
-On Wed, Jan 15, 2014 at 10:36:07AM +0100, Sascha Hauer wrote:
-> On Wed, Jan 15, 2014 at 08:26:33AM +0100, Sascha Hauer wrote:
-> > As this name is used in the Kernel.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/dts/Makefile                                        | 4 ++--
-> >  arch/arm/dts/{imx6q-dmo-realq7.dts => imx6q-dmo-edmqmx6.dts} | 0
-> >  2 files changed, 2 insertions(+), 2 deletions(-)
-> >  rename arch/arm/dts/{imx6q-dmo-realq7.dts => imx6q-dmo-edmqmx6.dts} (100%)
-...
->  {
-> @@ -155,7 +155,7 @@ ENTRY_FUNCTION(start_imx6_realq7, r0, r1, r2)
+Re-factor the startup code relocation code so like U-Boot it
+uses the build-time bss section address from a unique linker
+script.
 
-then the name of ENTRY_FUNCTION too?
+Tested on ppc DA923RC and P2020RDB.
 
-- Alex
+Renaud Barbier (5):
+  ppc: cpu-85xx: upgrade MMU support to v2 pages sizes
+  ppc: mpc85xx: use common linker script
+  ppc: mpc85xx: change bss relocation
+  ppc: cpu-85xx: import U-Boot start-up code
+  cpu-85xx: start.S: clean up imported code
+
+ arch/ppc/Makefile                                  |   4 +
+ arch/ppc/boards/freescale-p2020rdb/Makefile        |   1 -
+ arch/ppc/boards/freescale-p2020rdb/barebox.lds.S   | 141 -------
+ arch/ppc/boards/geip-da923rc/Makefile              |   1 -
+ arch/ppc/cpu-85xx/start.S                          | 431 ++++++++++++++-------
+ arch/ppc/cpu-85xx/tlb.c                            |  30 +-
+ arch/ppc/include/asm/config.h                      |   2 +-
+ arch/ppc/include/asm/mmu.h                         |  40 +-
+ arch/ppc/include/asm/processor.h                   |   7 +
+ arch/ppc/mach-mpc85xx/Kconfig                      |   5 +
+ arch/ppc/mach-mpc85xx/Makefile                     |   1 +
+ .../geip-da923rc => mach-mpc85xx}/barebox.lds.S    |  11 +-
+ arch/ppc/mach-mpc85xx/cpu_init.c                   |   2 +-
+ .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |   4 +
+ 14 files changed, 359 insertions(+), 321 deletions(-)
+ delete mode 100644 arch/ppc/boards/freescale-p2020rdb/barebox.lds.S
+ rename arch/ppc/{boards/geip-da923rc => mach-mpc85xx}/barebox.lds.S (94%)
+
+--
+1.8.4.2
+
 
 _______________________________________________
 barebox mailing list
