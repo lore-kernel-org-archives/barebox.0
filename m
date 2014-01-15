@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-am1lp0013.outbound.protection.outlook.com
+ ([213.199.154.13] helo=emea01-am1-obe.outbound.protection.outlook.com)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W3KsL-0005FT-Q9
- for barebox@lists.infradead.org; Wed, 15 Jan 2014 07:26:59 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 15 Jan 2014 08:26:34 +0100
-Message-Id: <1389770794-20487-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1389770794-20487-1-git-send-email-s.hauer@pengutronix.de>
-References: <1389770794-20487-1-git-send-email-s.hauer@pengutronix.de>
+ id 1W3LMI-00063Z-PF
+ for barebox@lists.infradead.org; Wed, 15 Jan 2014 07:57:56 +0000
+From: Mathieu Anquetin <mathieu.anquetin@groupe-cahors.com>
+Date: Wed, 15 Jan 2014 08:57:18 +0100
+Message-ID: <1389772638-14689-1-git-send-email-mathieu.anquetin@groupe-cahors.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,71 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: dts: change dmo, imx6q-realq7 compatible to dmo,
- imx6q-edmqmx6
+Subject: [PATCH] ARM: SAMA5D3: Fix PLL registry mapping
 To: barebox@lists.infradead.org
 
-To use the same compatible as the kernel.
+The multiplier field inside the PLLA configuration register of Atmel
+SAMA5D3 MPU is only 7 bits long
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Mathieu Anquetin <mathieu.anquetin@groupe-cahors.com>
 ---
- arch/arm/boards/dmo-mx6-realq7/board.c | 6 +++---
- arch/arm/dts/imx6q-dmo-edmqmx6.dts     | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/mach-at91/clock.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/dmo-mx6-realq7/board.c b/arch/arm/boards/dmo-mx6-realq7/board.c
-index 1753bdd..8a49bee 100644
---- a/arch/arm/boards/dmo-mx6-realq7/board.c
-+++ b/arch/arm/boards/dmo-mx6-realq7/board.c
-@@ -74,7 +74,7 @@ static int ksz9031rn_phy_fixup(struct phy_device *dev)
+diff --git a/arch/arm/mach-at91/clock.c b/arch/arm/mach-at91/clock.c
+index a10d7f6..4ebf521 100644
+--- a/arch/arm/mach-at91/clock.c
++++ b/arch/arm/mach-at91/clock.c
+@@ -483,7 +483,7 @@ static u32 at91_pll_rate(struct clk *pll, u32 freq, u32 reg)
  
- static int realq7_enet_init(void)
- {
--	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
-+	if (!of_machine_is_compatible("dmo,imx6q-edmqmx6"))
- 		return 0;
- 
- 	mxc_iomux_v3_setup_multiple_pads(realq7_pads_gpio, ARRAY_SIZE(realq7_pads_gpio));
-@@ -100,7 +100,7 @@ fs_initcall(realq7_enet_init);
- 
- static int realq7_env_init(void)
- {
--	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
-+	if (!of_machine_is_compatible("dmo,imx6q-edmqmx6"))
- 		return 0;
- 
- 	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
-@@ -113,7 +113,7 @@ late_initcall(realq7_env_init);
- 
- static int realq7_console_init(void)
- {
--	if (!of_machine_is_compatible("dmo,imx6q-realq7"))
-+	if (!of_machine_is_compatible("dmo,imx6q-edmqmx6"))
- 		return 0;
- 
- 	barebox_set_hostname("eDM-QMX6");
-diff --git a/arch/arm/dts/imx6q-dmo-edmqmx6.dts b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-index 4701d79..9fe1284 100644
---- a/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-+++ b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-@@ -14,8 +14,8 @@
- #include "imx6q.dtsi"
- 
- / {
--	model = "Data Modul RealQ7 Board";
--	compatible = "dmo,imx6q-realq7", "fsl,imx6q";
-+	model = "Data Modul eDM-QMX6 Board";
-+	compatible = "dmo,imx6q-edmqmx6", "fsl,imx6q";
- 
- 	chosen {
- 		linux,stdout-path = "/soc/aips-bus@02100000/serial@021e8000";
+ 	div = reg & 0xff;
+ 	if (cpu_is_sama5d3())
+-		mul = (reg >> 18) & 0x7ff;
++		mul = (reg >> 18) & 0x7f;
+ 	else
+ 		mul = (reg >> 16) & 0x7ff;
+ 	if (div && mul) {
 -- 
-1.8.5.2
+1.7.10.4
 
 
 _______________________________________________
