@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4Axf-0003Ik-Jw
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:03:56 +0000
+ id 1W4Axf-0003Io-Jq
+ for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:04:01 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 17 Jan 2014 16:03:13 +0100
-Message-Id: <1389971012-22977-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 17 Jan 2014 16:03:18 +0100
+Message-Id: <1389971012-22977-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
 References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/22] ARM: phyCARD-i.MX27: register barebox update handler
+Subject: [PATCH 08/22] ARM: Fix image size calculation for
+ CONFIG_PBL_RELOCATABLE
 To: barebox@lists.infradead.org
 
-To update barebox with the barebox_update command.
+TEXT_BASE - SZ_2M is only used for non relocable pbl images.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phycard-i.MX27/pca100.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/lib/pbl.lds.S | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 7ac0bf6..69f9a3d 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -37,6 +37,7 @@
- #include <gpio.h>
- #include <asm/mmu.h>
- #include <usb/ulpi.h>
-+#include <mach/bbu.h>
- #include <mach/iomux-mx27.h>
- #include <mach/devices-imx27.h>
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index 1eae829..0954c89 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -24,15 +24,17 @@
+ #include <asm-generic/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
  
-@@ -294,6 +295,9 @@ static int pca100_devices_init(void)
- 	devfs_add_partition("nand0", SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- 
-+	imx_bbu_external_nand_register_handler("nand", "/dev/nand0.barebox",
-+			BBU_HANDLER_FLAG_DEFAULT);
++#ifdef CONFIG_PBL_RELOCATABLE
++#define BASE	0x0
++#else
++#define BASE	(TEXT_BASE - SZ_2M)
++#endif
 +
- 	armlinux_set_architecture(2149);
+ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+ OUTPUT_ARCH(arm)
+ SECTIONS
+ {
+-#ifdef CONFIG_PBL_RELOCATABLE
+-	. = 0x0;
+-#else
+-	. = TEXT_BASE - SZ_2M;
+-#endif
++	. = BASE;
  
- 	return 0;
+ 	PRE_IMAGE
+ 
+@@ -91,7 +93,6 @@ SECTIONS
+ 		KEEP(*(.image_end))
+ 	}
+ 	__image_end = .;
+-
+-	_barebox_image_size = __image_end - (TEXT_BASE - SZ_2M);
+-	_barebox_pbl_size = __bss_start - (TEXT_BASE - SZ_2M);
++	_barebox_image_size = __image_end - BASE;
++	_barebox_pbl_size = __bss_start - BASE;
+ }
 -- 
 1.8.5.2
 
