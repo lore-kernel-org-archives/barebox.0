@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4Axf-0003Ih-Jo
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:04:05 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1W4AxJ-0004st-UD
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 16:03:33 +0100
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1W4AxJ-00006o-T3
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 16:03:33 +0100
+ id 1W4Axf-0003Ip-Jk
+ for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:04:07 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 17 Jan 2014 16:03:10 +0100
-Message-Id: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 17 Jan 2014 16:03:19 +0100
+Message-Id: <1389971012-22977-10-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
+References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,84 +21,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: phyCARD-i.MX27 patches
+Subject: [PATCH 09/22] ARM: i.MX: external NAND boot: factor out a 2k pagesize
+ detection function
 To: barebox@lists.infradead.org
 
-The following converts the Phytec phyCARD-i.MX27 to devicetree
-probing and fixes several stuff along the way.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-imx/external-nand-boot.c | 65 +++++++++++++++++++++++-----------
+ 1 file changed, 45 insertions(+), 20 deletions(-)
 
-Sascha
+diff --git a/arch/arm/mach-imx/external-nand-boot.c b/arch/arm/mach-imx/external-nand-boot.c
+index 1af46b7..a1221c8 100644
+--- a/arch/arm/mach-imx/external-nand-boot.c
++++ b/arch/arm/mach-imx/external-nand-boot.c
+@@ -279,6 +279,46 @@ int __bare_init imx_barebox_boot_nand_external(unsigned long nfc_base)
+ 	return 1;
+ }
+ 
++static inline int imx21_pagesize_2k(void)
++{
++	if (readl(MX21_SYSCTRL_BASE_ADDR + 0x14) & (1 << 5))
++		return 1;
++	else
++		return 0;
++}
++
++static inline int imx25_pagesize_2k(void)
++{
++	if (readl(MX25_CCM_BASE_ADDR + MX25_CCM_RCSR) & (1 << 8))
++		return 1;
++	else
++		return 0;
++}
++
++static inline int imx27_pagesize_2k(void)
++{
++	if (readl(MX27_SYSCTRL_BASE_ADDR + 0x14) & (1 << 5))
++		return 1;
++	else
++		return 0;
++}
++
++static inline int imx31_pagesize_2k(void)
++{
++	if (readl(MX31_CCM_BASE_ADDR + MX31_CCM_RCSR) & MX31_RCSR_NFMS)
++		return 1;
++	else
++		return 0;
++}
++
++static inline int imx35_pagesize_2k(void)
++{
++	if (readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR) & (1 << 8))
++		return 1;
++	else
++		return 0;
++}
++
+ #define BARE_INIT_FUNCTION(name)  \
+ 	void __noreturn __section(.text_bare_init_##name) \
+ 		name
+@@ -298,10 +338,7 @@ BARE_INIT_FUNCTION(imx21_barebox_boot_nand_external)(void)
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+ 		jump_sdram(nfc_base - ld_var(_text));
+ 
+-		if (readl(MX21_SYSCTRL_BASE_ADDR + 0x14) & (1 << 5))
+-			pagesize_2k = 1;
+-		else
+-			pagesize_2k = 0;
++		pagesize_2k = imx21_pagesize_2k();
+ 
+ 		imx_nand_load_image((void *)ld_var(_text),
+ 				ld_var(barebox_image_size),
+@@ -321,10 +358,7 @@ BARE_INIT_FUNCTION(imx25_barebox_boot_nand_external)(void)
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+ 		jump_sdram(nfc_base - ld_var(_text));
+ 
+-		if (readl(MX25_CCM_BASE_ADDR + MX25_CCM_RCSR) & (1 << 8))
+-			pagesize_2k = 1;
+-		else
+-			pagesize_2k = 0;
++		pagesize_2k = imx25_pagesize_2k();
+ 
+ 		imx_nand_load_image((void *)ld_var(_text),
+ 				ld_var(_barebox_image_size),
+@@ -342,10 +376,7 @@ BARE_INIT_FUNCTION(imx27_barebox_boot_nand_external)(void)
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+ 		jump_sdram(nfc_base - ld_var(_text));
+ 
+-		if (readl(MX27_SYSCTRL_BASE_ADDR + 0x14) & (1 << 5))
+-			pagesize_2k = 1;
+-		else
+-			pagesize_2k = 0;
++		pagesize_2k = imx27_pagesize_2k();
+ 
+ 		imx_nand_load_image((void *)ld_var(_text),
+ 				ld_var(_barebox_image_size),
+@@ -363,10 +394,7 @@ BARE_INIT_FUNCTION(imx31_barebox_boot_nand_external)(void)
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+ 		jump_sdram(nfc_base - ld_var(_text));
+ 
+-		if (readl(MX31_CCM_BASE_ADDR + MX31_CCM_RCSR) & MX31_RCSR_NFMS)
+-			pagesize_2k = 1;
+-		else
+-			pagesize_2k = 0;
++		pagesize_2k = imx31_pagesize_2k();
+ 
+ 		imx_nand_load_image((void *)ld_var(_text),
+ 				ld_var(_barebox_image_size),
+@@ -384,10 +412,7 @@ BARE_INIT_FUNCTION(imx35_barebox_boot_nand_external)(void)
+ 	if (imx_barebox_boot_nand_external(nfc_base)) {
+ 		jump_sdram(nfc_base - ld_var(_text));
+ 
+-		if (readl(MX35_CCM_BASE_ADDR + MX35_CCM_RCSR) & (1 << 8))
+-			pagesize_2k = 1;
+-		else
+-			pagesize_2k = 0;
++		pagesize_2k = imx35_pagesize_2k();
+ 
+ 		imx_nand_load_image((void *)ld_var(_text),
+ 				ld_var(_barebox_image_size),
+-- 
+1.8.5.2
 
-----------------------------------------------------------------
-Sascha Hauer (22):
-      ARM: Karo TX25: register external NAND boot update handler
-      ARM: phyCARD-i.MX27: increase barebox partition
-      ARM: phyCARD-i.MX27: register barebox update handler
-      ARM: phyCARD-i.MX27: switch to new environment
-      ARM: phyCARD-i.MX27: convert lowlevel init to c code
-      ARM: i.MX27: Add missing MPLL clock sources
-      ARM: phyCARD-i.MX27: Update defconfig
-      ARM: Fix image size calculation for CONFIG_PBL_RELOCATABLE
-      ARM: i.MX: external NAND boot: factor out a 2k pagesize detection function
-      ARM: i.MX: external NAND boot: create function macro for different SoCs
-      ARM: i.MX: external NAND boot: make it work with relocatable PBL
-      ARM: dts: Add i.MX27 devicetree files
-      ARM: dts: Add Phytec phyCARD-i.MX27 devicetree files
-      ARM: i.MX: external NAND boot: pass boarddata
-      pinctrl: Add pinctrl driver for i.MX1/21/27
-      ARM: i.MX clocksource: return successful for multiple instances
-      ARM: phycard-i.MX27: Add NAND support to dts
-      ARM: phycard-i.MX27: Add stdout-path property
-      ARM: dts: phycard-i.MX27: Add environment and NAND partitioning
-      ARM: dts: phycard-i.MX27: Add sdhc2 pinctrl
-      mci: imx: Add devicetree probe support
-      ARM: phyCARD-i.MX27: Switch to devicetree probe support
-
- arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |   2 +-
- arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |   1 +
- arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |   2 +-
- .../boards/freescale-mx25-3-stack/lowlevel_init.S  |   1 +
- .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   1 +
- arch/arm/boards/guf-cupid/lowlevel.c               |   2 +-
- arch/arm/boards/guf-neso/lowlevel.c                |   2 +-
- arch/arm/boards/karo-tx25/board.c                  |   4 +
- arch/arm/boards/karo-tx25/env/init/mtdparts-nand   |   2 +-
- arch/arm/boards/karo-tx25/lowlevel.c               |   2 +-
- arch/arm/boards/pcm037/lowlevel.c                  |   2 +-
- arch/arm/boards/pcm038/lowlevel.c                  |   2 +-
- arch/arm/boards/pcm043/lowlevel.c                  |   2 +-
- arch/arm/boards/phycard-i.MX27/Makefile            |   2 +-
- arch/arm/boards/phycard-i.MX27/env/config          |  48 --
- arch/arm/boards/phycard-i.MX27/lowlevel.c          | 107 +++++
- arch/arm/boards/phycard-i.MX27/lowlevel_init.S     | 119 -----
- arch/arm/boards/phycard-i.MX27/pca100.c            | 175 +------
- arch/arm/configs/pca100_defconfig                  |  49 +-
- arch/arm/dts/Makefile                              |   2 +
- arch/arm/dts/imx27-phytec-phycard-s-rdk.dts        | 145 ++++++
- arch/arm/dts/imx27-phytec-phycard-s-som.dts        | 102 ++++
- arch/arm/dts/imx27-pinfunc.h                       | 526 +++++++++++++++++++++
- arch/arm/dts/imx27-pingrp.h                        | 151 ++++++
- arch/arm/dts/imx27.dtsi                            | 505 ++++++++++++++++++++
- arch/arm/lib/pbl.lds.S                             |  17 +-
- arch/arm/mach-imx/Kconfig                          |   1 +
- arch/arm/mach-imx/clk-imx27.c                      |  44 +-
- arch/arm/mach-imx/clocksource.c                    |   2 +-
- arch/arm/mach-imx/external-nand-boot.c             | 216 ++++-----
- arch/arm/mach-imx/include/mach/imx-nand.h          |  10 +-
- drivers/mci/imx.c                                  |   9 +
- drivers/pinctrl/Kconfig                            |   1 +
- drivers/pinctrl/imx-iomux-v1.c                     | 198 ++++++++
- include/dt-bindings/interrupt-controller/irq.h     |  19 +
- 35 files changed, 1976 insertions(+), 497 deletions(-)
- delete mode 100644 arch/arm/boards/phycard-i.MX27/env/config
- create mode 100644 arch/arm/boards/phycard-i.MX27/lowlevel.c
- delete mode 100644 arch/arm/boards/phycard-i.MX27/lowlevel_init.S
- create mode 100644 arch/arm/dts/imx27-phytec-phycard-s-rdk.dts
- create mode 100644 arch/arm/dts/imx27-phytec-phycard-s-som.dts
- create mode 100644 arch/arm/dts/imx27-pinfunc.h
- create mode 100644 arch/arm/dts/imx27-pingrp.h
- create mode 100644 arch/arm/dts/imx27.dtsi
- create mode 100644 include/dt-bindings/interrupt-controller/irq.h
 
 _______________________________________________
 barebox mailing list
