@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f385.i.mail.ru ([185.5.136.56])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4Axf-0003Ij-Ju
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:04:03 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 17 Jan 2014 16:03:12 +0100
-Message-Id: <1389971012-22977-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
+ id 1W4B7X-0003tG-TH
+ for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:14:09 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 17 Jan 2014 19:13:42 +0400
+Message-ID: <1389971622.151814838@f385.i.mail.ru>
+In-Reply-To: <1389971012-22977-16-git-send-email-s.hauer@pengutronix.de>
 References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
+ <1389971012-22977-16-git-send-email-s.hauer@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,65 +19,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/22] ARM: phyCARD-i.MX27: increase barebox partition
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxNS8yMl0gcGluY3RybDogQWRkIHBpbmN0cmwgZHJpdmVy?=
+ =?UTF-8?B?IGZvciBpLk1YMS8yMS8yNw==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-More place for barebox.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/phycard-i.MX27/env/config | 2 +-
- arch/arm/boards/phycard-i.MX27/pca100.c   | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/boards/phycard-i.MX27/env/config b/arch/arm/boards/phycard-i.MX27/env/config
-index 9596311..9f10e7d 100644
---- a/arch/arm/boards/phycard-i.MX27/env/config
-+++ b/arch/arm/boards/phycard-i.MX27/env/config
-@@ -39,7 +39,7 @@ autoboot_timeout=3
- 
- bootargs="console=ttymxc0,115200"
- 
--nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-+nand_parts="512k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
- rootfs_mtdblock_nand=7
- 
- # set a fancy prompt (if support is compiled in)
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 2ff1b79..7ac0bf6 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -21,6 +21,7 @@
- #include <mach/imx27-regs.h>
- #include <fec.h>
- #include <gpio.h>
-+#include <sizes.h>
- #include <asm/armlinux.h>
- #include <asm/sections.h>
- #include <generated/mach-types.h>
-@@ -287,10 +288,10 @@ static int pca100_devices_init(void)
- #endif
- 
- 	nand = get_device_by_name("nand0");
--	devfs_add_partition("nand0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
- 
--	devfs_add_partition("nand0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- 
- 	armlinux_set_architecture(2149);
--- 
-1.8.5.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+0J/Rj9GC0L3QuNGG0LAsIDE3INGP0L3QstCw0YDRjyAyMDE0LCAxNjowMyArMDE6MDAg0L7RgiBT
+YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+IFRoaXMgdHVybnMgdGhlIGxl
+Z2FjeSBpb211eC12MSBzdXBwb3J0IGludG8gYSBmdWxsIHBpbmN0cmwKPiBkcml2ZXIuCgpUaGUg
+bG9uZy1hd2FpdGVkIGNoYW5nZXMuIFVuZm9ydHVuYXRlbHkgSSBkbyBub3QgdXNlICJuZXh0IiwK
+c28gSSBjYW4gY2hlY2sgaXQgb3V0IG9ubHkgd2hlbiB0aGUgY2hhbmdlcyBnbyB0byB0aGUgbWFz
+dGVyCmJyYW5jaCBmb3IgaS5NWDI3IFBDTTAzOC85NzAuCgotLS0KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
+eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
+bGlzdGluZm8vYmFyZWJveAo=
