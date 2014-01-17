@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f385.i.mail.ru ([185.5.136.56])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4B7X-0003tG-TH
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:14:09 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 17 Jan 2014 19:13:42 +0400
-Message-ID: <1389971622.151814838@f385.i.mail.ru>
-In-Reply-To: <1389971012-22977-16-git-send-email-s.hauer@pengutronix.de>
-References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
- <1389971012-22977-16-git-send-email-s.hauer@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1W4B9G-0007Tl-Ne
+ for barebox@lists.infradead.org; Fri, 17 Jan 2014 15:15:55 +0000
+Date: Fri, 17 Jan 2014 16:15:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140117151532.GC16215@pengutronix.de>
+References: <1389614590-23510-1-git-send-email-l.stach@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1389614590-23510-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,21 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxNS8yMl0gcGluY3RybDogQWRkIHBpbmN0cmwgZHJpdmVy?=
- =?UTF-8?B?IGZvciBpLk1YMS8yMS8yNw==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] hummingboard: fix entryfunction for real
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-0J/Rj9GC0L3QuNGG0LAsIDE3INGP0L3QstCw0YDRjyAyMDE0LCAxNjowMyArMDE6MDAg0L7RgiBT
-YXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+IFRoaXMgdHVybnMgdGhlIGxl
-Z2FjeSBpb211eC12MSBzdXBwb3J0IGludG8gYSBmdWxsIHBpbmN0cmwKPiBkcml2ZXIuCgpUaGUg
-bG9uZy1hd2FpdGVkIGNoYW5nZXMuIFVuZm9ydHVuYXRlbHkgSSBkbyBub3QgdXNlICJuZXh0IiwK
-c28gSSBjYW4gY2hlY2sgaXQgb3V0IG9ubHkgd2hlbiB0aGUgY2hhbmdlcyBnbyB0byB0aGUgbWFz
-dGVyCmJyYW5jaCBmb3IgaS5NWDI3IFBDTTAzOC85NzAuCgotLS0KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJv
-eEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4v
-bGlzdGluZm8vYmFyZWJveAo=
+On Mon, Jan 13, 2014 at 01:03:10PM +0100, Lucas Stach wrote:
+> The entry function wasn't changed properly when the
+> prototype changed.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+
+Applied, thanks
+
+Sascha
+
+> ---
+> The issue existed before the rename, but feel free to squash this fix
+> into "ARM: imx6: rename Carrier-1 to Hummingboard".
+> ---
+>  arch/arm/boards/solidrun-hummingboard/lowlevel.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/arch/arm/boards/solidrun-hummingboard/lowlevel.c b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
+> index c101f06fedd3..049a8a41be00 100644
+> --- a/arch/arm/boards/solidrun-hummingboard/lowlevel.c
+> +++ b/arch/arm/boards/solidrun-hummingboard/lowlevel.c
+> @@ -9,8 +9,6 @@ ENTRY_FUNCTION(start_imx6dl_hummingboard, r0, r1, r2)
+>  {
+>  	uint32_t fdt;
+>  
+> -	__barebox_arm_head();
+> -
+>  	arm_cpu_lowlevel_init();
+>  
+>  	fdt = (uint32_t)__dtb_imx6dl_hummingboard_start - get_runtime_offset();
+> -- 
+> 1.8.5.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
