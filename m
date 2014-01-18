@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4DfH-00018B-24
- for barebox@lists.infradead.org; Fri, 17 Jan 2014 17:57:07 +0000
-Date: Fri, 17 Jan 2014 18:56:45 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140117175645.GF16215@pengutronix.de>
-References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
- <1389971012-22977-14-git-send-email-s.hauer@pengutronix.de>
- <1389975962.931801371@f343.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1389975962.931801371@f343.i.mail.ru>
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W4UOL-0003RK-LX
+ for barebox@lists.infradead.org; Sat, 18 Jan 2014 11:48:47 +0000
+From: Robert Jarzmik <robert.jarzmik@free.fr>
+Date: Sat, 18 Jan 2014 12:48:05 +0100
+Message-Id: <1390045689-23127-2-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
+References: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,29 +16,108 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 13/22] ARM: dts: Add Phytec phyCARD-i.MX27 devicetree files
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: pxa: add reset source detection
+To: barebox@lists.infradead.org
 
-T24gRnJpLCBKYW4gMTcsIDIwMTQgYXQgMDg6MjY6MDJQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiDQn9GP0YLQvdC40YbQsCwgMTcg0Y/QvdCy0LDRgNGPIDIwMTQsIDE2OjAzICsw
-MTowMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4gPiBTaWdu
-ZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gLi4uCj4g
-PiArJmNzcGkxIHsKPiA+ICsJZnNsLHNwaS1udW0tY2hpcHNlbGVjdHMgPSA8Mj47Cj4gPiArCWNz
-LWdwaW9zID0gPCZncGlvNCAyOCBHUElPX0FDVElWRV9ISUdIPiwKPiA+ICsJCSAgIDwmZ3BpbzQg
-MjcgR1BJT19BQ1RJVkVfSElHSD47Cj4gCj4gQm90aCBBQ1RJVkVfSElHSD8gUmVhbGx5PwoKUHJv
-YmFibHkgdGhpcyBpcyB3cm9uZy4gSSBjb3BpZWQgdGhlIGZpbGVzIGZyb20gdGhlIGtlcm5lbCwg
-aXQgbXVzdCBiZQp3cm9uZyB0aGVyZSBhc3dlbGwuIEknbGwgaGF2ZSBhIGxvb2sgYmVmb3JlIGFw
-cGx5aW5nIHRoZXNlLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBM
-aW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5k
-ZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6
-ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYg
-ICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Use PXA register RCSR to detect which is the reset cause.  When
+triggering a reset, clear the former reset source first.
+
+Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
+---
+ arch/arm/mach-pxa/Makefile       |    1 +
+ arch/arm/mach-pxa/common.c       |    4 ++++
+ arch/arm/mach-pxa/reset_source.c |   41 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 46 insertions(+)
+ create mode 100644 arch/arm/mach-pxa/reset_source.c
+
+diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
+index 6a02a54..ddc042e 100644
+--- a/arch/arm/mach-pxa/Makefile
++++ b/arch/arm/mach-pxa/Makefile
+@@ -5,3 +5,4 @@ obj-y += devices.o
+ 
+ obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o
+ obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
++obj-$(CONFIG_RESET_SOURCE) += reset_source.o
+diff --git a/arch/arm/mach-pxa/common.c b/arch/arm/mach-pxa/common.c
+index 82e81b7..69ec0a7 100644
+--- a/arch/arm/mach-pxa/common.c
++++ b/arch/arm/mach-pxa/common.c
+@@ -16,6 +16,7 @@
+  */
+ 
+ #include <common.h>
++#include <mach/pxa-regs.h>
+ #include <asm/io.h>
+ 
+ #define OSMR3	0x40A0000C
+@@ -28,6 +29,9 @@
+ 
+ void reset_cpu(ulong addr)
+ {
++	/* Clear last reset source */
++	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
++
+ 	/* Initialize the watchdog and let it fire */
+ 	writel(OWER_WME, OWER);
+ 	writel(OSSR_M3, OSSR);
+diff --git a/arch/arm/mach-pxa/reset_source.c b/arch/arm/mach-pxa/reset_source.c
+new file mode 100644
+index 0000000..2b650c6
+--- /dev/null
++++ b/arch/arm/mach-pxa/reset_source.c
+@@ -0,0 +1,41 @@
++/*
++ * (C) Copyright 2014 Robert Jarzmik <robert.jarzmik@free.fr>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <reset_source.h>
++#include <mach/pxa-regs.h>
++
++static int pxa_detect_reset_source(void)
++{
++	u32 reg = RCSR;
++
++	/*
++	 * Order is important, as many bits can be set together
++	 */
++	if (reg & RCSR_GPR)
++		set_reset_source(RESET_RST);
++	else if (reg & RCSR_WDR)
++		set_reset_source(RESET_WDG);
++	else if (reg & RCSR_HWR)
++		set_reset_source(RESET_POR);
++	else if (reg & RCSR_SMR)
++		set_reset_source(RESET_WKE);
++	else
++		set_reset_source(RESET_UKWN);
++
++	return 0;
++}
++
++device_initcall(pxa_detect_reset_source);
+-- 
+1.7.10.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
