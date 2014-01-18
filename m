@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from mail-wi0-x232.google.com ([2a00:1450:400c:c05::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4XaY-0006IN-5k
- for barebox@lists.infradead.org; Sat, 18 Jan 2014 15:13:34 +0000
-Received: by mail-la0-f52.google.com with SMTP id c6so4513607lan.11
- for <barebox@lists.infradead.org>; Sat, 18 Jan 2014 07:13:12 -0800 (PST)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 18 Jan 2014 19:12:52 +0400
-Message-Id: <1390057983-17921-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
-References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
+ id 1W4aLO-00018b-3l
+ for barebox@lists.infradead.org; Sat, 18 Jan 2014 18:10:06 +0000
+Received: by mail-wi0-f178.google.com with SMTP id cc10so1883200wib.5
+ for <barebox@lists.infradead.org>; Sat, 18 Jan 2014 10:09:43 -0800 (PST)
+Date: Sat, 18 Jan 2014 19:09:34 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140118180932.GA3624@omega>
+References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
+ <1389971012-22977-21-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1389971012-22977-21-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +21,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/13] MIPS: add initial Loongson-family documentation
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 20/22] ARM: dts: phycard-i.MX27: Add sdhc2 pinctrl
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/mach-loongson/mach-loongson.dox | 5 +++++
- arch/mips/mach-mips.dox                   | 4 ++++
- 2 files changed, 9 insertions(+)
- create mode 100644 arch/mips/mach-loongson/mach-loongson.dox
+Hi Sascha,
 
-diff --git a/arch/mips/mach-loongson/mach-loongson.dox b/arch/mips/mach-loongson/mach-loongson.dox
-new file mode 100644
-index 0000000..628ae78
---- /dev/null
-+++ b/arch/mips/mach-loongson/mach-loongson.dox
-@@ -0,0 +1,5 @@
-+/** @page dev_loongson_mach Loongson in barebox
-+
-+@section loongson_boards Loongson-based boards
-+
-+*/
-diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
-index 750a451..1002b16 100644
---- a/arch/mips/mach-mips.dox
-+++ b/arch/mips/mach-mips.dox
-@@ -59,6 +59,10 @@ ISBN-13: 978-0120884216
- 
- @li @subpage dev_bcm47xx_mach
- 
-+@subsection mach_loongson_info Loongson-based boards
-+
-+@li @subpage dev_loongson_mach
-+
- @subsection mach_xburst_info XBurst-based boards
- 
- @li @subpage dev_xburst_mach
--- 
-1.8.5.3
+On Fri, Jan 17, 2014 at 04:03:30PM +0100, Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/dts/imx27-phytec-phycard-s-rdk.dts | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/arm/dts/imx27-phytec-phycard-s-rdk.dts b/arch/arm/dts/imx27-phytec-phycard-s-rdk.dts
+> index 0d65023..789ce3f 100644
+> --- a/arch/arm/dts/imx27-phytec-phycard-s-rdk.dts
+> +++ b/arch/arm/dts/imx27-phytec-phycard-s-rdk.dts
+> @@ -83,6 +83,10 @@
+>  			fsl,pins = <MX27_OWIRE1_PINGRP1>;
+>  		};
+>  
+> +		pinctrl_sdhc2: sdhc3grp {
 
+don't know if this is a typo, but maybe we need a s/sdhc3grp/sdhc2grp/g
+here. I think it works anyway with my knowledge about devicetrees :-)
+
+- Alex
 
 _______________________________________________
 barebox mailing list
