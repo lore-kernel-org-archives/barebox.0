@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22d.google.com ([2a00:1450:4010:c04::22d])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4XaZ-0006IP-SN
- for barebox@lists.infradead.org; Sat, 18 Jan 2014 15:13:37 +0000
-Received: by mail-lb0-f173.google.com with SMTP id y6so3794181lbh.18
- for <barebox@lists.infradead.org>; Sat, 18 Jan 2014 07:13:13 -0800 (PST)
+ id 1W4XaY-0006IN-5k
+ for barebox@lists.infradead.org; Sat, 18 Jan 2014 15:13:34 +0000
+Received: by mail-la0-f52.google.com with SMTP id c6so4513607lan.11
+ for <barebox@lists.infradead.org>; Sat, 18 Jan 2014 07:13:12 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 18 Jan 2014 19:12:53 +0400
-Message-Id: <1390057983-17921-4-git-send-email-antonynpavlov@gmail.com>
+Date: Sat, 18 Jan 2014 19:12:52 +0400
+Message-Id: <1390057983-17921-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
 References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,64 +23,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/13] MIPS: add Loongson-1B CPU Kbuild stuff
+Subject: [PATCH 02/13] MIPS: add initial Loongson-family documentation
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/Kconfig  | 17 +++++++++++++++++
- arch/mips/Makefile |  3 +++
- 2 files changed, 20 insertions(+)
+ arch/mips/mach-loongson/mach-loongson.dox | 5 +++++
+ arch/mips/mach-mips.dox                   | 4 ++++
+ 2 files changed, 9 insertions(+)
+ create mode 100644 arch/mips/mach-loongson/mach-loongson.dox
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 8cea076..b819b49 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -118,6 +118,14 @@ choice
- 	prompt "CPU type"
- 	default CPU_MIPS32_R2
- 
-+config CPU_LOONGSON1B
-+	bool "Loongson 1B"
-+	depends on SYS_HAS_CPU_LOONGSON1B
-+	select CPU_LOONGSON1
-+	help
-+	  The Loongson 1B is a 32-bit SoC, which implements the MIPS32
-+	  release 2 instruction set.
+diff --git a/arch/mips/mach-loongson/mach-loongson.dox b/arch/mips/mach-loongson/mach-loongson.dox
+new file mode 100644
+index 0000000..628ae78
+--- /dev/null
++++ b/arch/mips/mach-loongson/mach-loongson.dox
+@@ -0,0 +1,5 @@
++/** @page dev_loongson_mach Loongson in barebox
 +
- config CPU_MIPS32_R1
- 	bool "MIPS32 Release 1"
- 	depends on SYS_HAS_CPU_MIPS32_R1
-@@ -174,6 +182,15 @@ config CPU_MIPS64_R2
- 
- endchoice
- 
-+config CPU_LOONGSON1
-+	bool
-+	select CPU_MIPS32
-+	select CPU_MIPSR2
-+	select CPU_SUPPORTS_32BIT_KERNEL
++@section loongson_boards Loongson-based boards
 +
-+config SYS_HAS_CPU_LOONGSON1B
-+	bool
++*/
+diff --git a/arch/mips/mach-mips.dox b/arch/mips/mach-mips.dox
+index 750a451..1002b16 100644
+--- a/arch/mips/mach-mips.dox
++++ b/arch/mips/mach-mips.dox
+@@ -59,6 +59,10 @@ ISBN-13: 978-0120884216
+ 
+ @li @subpage dev_bcm47xx_mach
+ 
++@subsection mach_loongson_info Loongson-based boards
 +
- config SYS_HAS_CPU_MIPS32_R1
- 	bool
++@li @subpage dev_loongson_mach
++
+ @subsection mach_xburst_info XBurst-based boards
  
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 7a6d6c0..b4c0e7a 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -49,6 +49,9 @@ cflags-$(CONFIG_CPU_MIPS32_R1) += $(call cc-option,-march=mips32,-mips32 -U_MIPS
- cflags-$(CONFIG_CPU_MIPS32_R2) += $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) -Wa,-mips32r2 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS64_R1) += $(call cc-option,-march=mips64,-mips64 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS64_R2) += $(call cc-option,-march=mips64r2,-mips64r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS64) -Wa,-mips64r2 -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON1)	+= \
-+	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-+	-Wa,-mips32r2 -Wa,--trap
- 
- CPPFLAGS += -DTEXT_BASE=$(CONFIG_TEXT_BASE)
- 
+ @li @subpage dev_xburst_mach
 -- 
 1.8.5.3
 
