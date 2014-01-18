@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W4UOP-0003RL-R0
+ id 1W4UOP-0003RM-RB
  for barebox@lists.infradead.org; Sat, 18 Jan 2014 11:48:51 +0000
 From: Robert Jarzmik <robert.jarzmik@free.fr>
-Date: Sat, 18 Jan 2014 12:48:06 +0100
-Message-Id: <1390045689-23127-3-git-send-email-robert.jarzmik@free.fr>
+Date: Sat, 18 Jan 2014 12:48:07 +0100
+Message-Id: <1390045689-23127-4-git-send-email-robert.jarzmik@free.fr>
 In-Reply-To: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
 References: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
 List-Id: <barebox.lists.infradead.org>
@@ -21,177 +21,132 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: pxa: add poweroff capability
+Subject: [PATCH] ARM: mioa701 defconfig update
 To: barebox@lists.infradead.org
 
-Add the capability for the PXA architecture to poweroff.
-
-As there is no true poweroff, ie. the power regulator is not available
-for shut off from the core, the poweroff puts the SoC into a deep sleep
-mode (mode 7), where almost no current is sunk.
+Update mioa701 board for new setup :
+ - double the barebox size to 524288 bytes
+ - add new commands
+ - add device tree support, for future PXA port to devicetree
+ - add reset source
 
 Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
 ---
- arch/arm/Kconfig                          |    1 +
- arch/arm/mach-pxa/Makefile                |    1 +
- arch/arm/mach-pxa/common.c                |   13 +++++
- arch/arm/mach-pxa/include/mach/hardware.h |    4 ++
- arch/arm/mach-pxa/sleep.S                 |   81 +++++++++++++++++++++++++++++
- 5 files changed, 100 insertions(+)
- create mode 100644 arch/arm/mach-pxa/sleep.S
+ arch/arm/configs/mioa701_defconfig |   49 +++++++++++++++++++++++++++++++++---
+ 1 file changed, 46 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 93619d5..243cfc8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -116,6 +116,7 @@ config ARCH_OMAP
- config ARCH_PXA
- 	bool "Intel/Marvell PXA based"
- 	select GENERIC_GPIO
-+	select HAS_POWEROFF
- 
- config ARCH_SOCFPGA
- 	bool "Altera SOCFPGA cyclone5"
-diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
-index ddc042e..6ddb6e5 100644
---- a/arch/arm/mach-pxa/Makefile
-+++ b/arch/arm/mach-pxa/Makefile
-@@ -2,6 +2,7 @@ obj-y += clocksource.o
- obj-y += common.o
- obj-y += gpio.o
- obj-y += devices.o
-+obj-y += sleep.o
- 
- obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o
- obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
-diff --git a/arch/arm/mach-pxa/common.c b/arch/arm/mach-pxa/common.c
-index 69ec0a7..0c114ed 100644
---- a/arch/arm/mach-pxa/common.c
-+++ b/arch/arm/mach-pxa/common.c
-@@ -27,6 +27,8 @@
- #define OWER_WME	(1 << 0)	/* Watch-dog Match Enable */
- #define OSSR_M3		(1 << 3)	/* Match status channel 3 */
- 
-+extern void pxa_suspend(int mode);
-+
- void reset_cpu(ulong addr)
- {
- 	/* Clear last reset source */
-@@ -39,3 +41,14 @@ void reset_cpu(ulong addr)
- 
- 	while (1);
- }
-+
-+void __noreturn poweroff()
-+{
-+	shutdown_barebox();
-+
-+	/* Clear last reset source */
-+	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
-+
-+	pxa_suspend(PWRMODE_DEEPSLEEP);
-+	unreachable();
-+}
-diff --git a/arch/arm/mach-pxa/include/mach/hardware.h b/arch/arm/mach-pxa/include/mach/hardware.h
-index e53085c..c5f40d7 100644
---- a/arch/arm/mach-pxa/include/mach/hardware.h
-+++ b/arch/arm/mach-pxa/include/mach/hardware.h
-@@ -28,4 +28,8 @@
- #define cpu_is_pxa27x()	(0)
- #endif
- 
-+#ifdef __ASSEMBLY__
-+#define __REG(x) (x)
-+#endif
-+
- #endif	/* !__MACH_HARDWARE_H */
-diff --git a/arch/arm/mach-pxa/sleep.S b/arch/arm/mach-pxa/sleep.S
-new file mode 100644
-index 0000000..881033d
---- /dev/null
-+++ b/arch/arm/mach-pxa/sleep.S
-@@ -0,0 +1,81 @@
-+/*
-+ * Low-level PXA250/210 sleep/wakeUp support
-+ *
-+ * Initial SA1110 code:
-+ * Copyright (c) 2001 Cliff Brake <cbrake@accelent.com>
-+ *
-+ * Adapted for PXA by Nicolas Pitre:
-+ * Copyright (c) 2002 Monta Vista Software, Inc.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License.
-+ */
-+
-+#include <linux/linkage.h>
-+#include <asm/assembler.h>
-+#include <mach/hardware.h>
-+#include <mach/pxa2xx-regs.h>
-+
-+#define MDREFR_KDIV	0x200a4000	// all banks
-+#define CCCR_SLEEP	0x00000107	// L=7 2N=2 A=0 PPDIS=0 CPDIS=0
-+#define UNCACHED_PHYS_0	0
-+		.text
-+
-+#ifdef CONFIG_ARCH_PXA27X
-+/*
-+ * pxa27x_finish_suspend()
-+ *
-+ * Forces CPU into sleep state.
-+ *
-+ * r0 = value for PWRMODE M field for desired sleep state
-+ */
-+ENTRY(pxa_suspend)
-+	@ Put the processor to sleep
-+	@ (also workaround for sighting 28071)
-+
-+	@ prepare value for sleep mode
-+	mov	r1, r0				@ sleep mode
-+
-+	@ Intel PXA270 Specification Update notes problems sleeping
-+	@ with core operating above 91 MHz
-+	@ (see Errata 50, ...processor does not exit from sleep...)
-+	ldr	r6, =CCCR
-+	ldr	r8, [r6]		@ keep original value for resume
-+
-+	ldr	r7, =CCCR_SLEEP		@ prepare CCCR sleep value
-+	mov	r0, #0x2		@ prepare value for CLKCFG
-+
-+	@ align execution to a cache line
-+	b	pxa_cpu_do_suspend
-+#endif
-+
-+
-+	.ltorg
-+	.align	5
-+pxa_cpu_do_suspend:
-+
-+	@ All needed values are now in registers.
-+	@ These last instructions should be in cache
-+
-+	@ initiate the frequency change...
-+	str	r7, [r6]
-+	mcr	p14, 0, r0, c6, c0, 0
-+
-+	@ restore the original cpu speed value for resume
-+	str	r8, [r6]
-+
-+	@ need 6 13-MHz cycles before changing PWRMODE
-+	@ just set frequency to 91-MHz... 6*91/13 = 42
-+
-+	mov	r0, #42
-+10:	subs	r0, r0, #1
-+	bne	10b
-+
-+	@ Do not reorder...
-+	@ Intel PXA270 Specification Update notes problems performing
-+	@ external accesses after SDRAM is put in self-refresh mode
-+	@ (see Errata 39 ...hangs when entering self-refresh mode)
-+
-+	@ enter sleep mode
-+	mcr	p14, 0, r1, c7, c0, 0		@ PWRMODE
-+20:	b	20b				@ loop waiting for sleep
+diff --git a/arch/arm/configs/mioa701_defconfig b/arch/arm/configs/mioa701_defconfig
+index 5f06b3c..841b9be 100644
+--- a/arch/arm/configs/mioa701_defconfig
++++ b/arch/arm/configs/mioa701_defconfig
+@@ -1,27 +1,46 @@
+ CONFIG_ARCH_PXA=y
++CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
+ CONFIG_AEABI=y
++CONFIG_ARM_BOARD_APPEND_ATAG=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+ # CONFIG_BANNER is not set
+-CONFIG_TEXT_BASE=0xa3f00000
+-CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x262144
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0xa3d00000
++CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
+ CONFIG_MALLOC_SIZE=0x1000000
+ CONFIG_EXPERIMENTAL=y
++CONFIG_MODULES=y
++CONFIG_KALLSYMS=y
+ CONFIG_LONGHELP=y
+ CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_HUSH_GETOPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+ CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/mioa701/env"
++CONFIG_RESET_SOURCE=y
+ CONFIG_DEBUG_INFO=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
++CONFIG_CMD_MSLEEP=y
+ CONFIG_CMD_SAVEENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_READLINE=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_TIME=y
++CONFIG_CMD_GLOBAL=y
++CONFIG_CMD_AUTOMOUNT=y
++CONFIG_CMD_BASENAME=y
++CONFIG_CMD_DIRNAME=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_READLINK=y
++CONFIG_CMD_FILETYPE=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_LOADB=y
+ CONFIG_CMD_LOADY=y
+@@ -29,24 +48,40 @@ CONFIG_CMD_LOADS=y
+ CONFIG_CMD_SAVES=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MM=y
+ CONFIG_CMD_CRC=y
+ CONFIG_CMD_CRC_CMP=y
+ CONFIG_CMD_FLASH=y
++CONFIG_CMD_UBIFORMAT=y
+ CONFIG_CMD_BOOTM_SHOW_TYPE=y
+ CONFIG_CMD_BOOTM_VERBOSE=y
+ CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_FLEXIBLE_BOOTARGS=y
++CONFIG_CMD_BOOT=y
+ CONFIG_CMD_RESET=y
++CONFIG_CMD_POWEROFF=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_SPLASH=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_SPLASH=y
++CONFIG_CMD_LSMOD=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_UNCOMPRESS=y
+ CONFIG_CMD_LED=y
++CONFIG_CMD_DETECT=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_PXA=y
+ # CONFIG_SPI is not set
+ CONFIG_MTD=y
+ CONFIG_MTD_RAW_DEVICE=y
+ CONFIG_MTD_DOCG3=y
++CONFIG_MTD_UBI=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_SERIAL=y
+ CONFIG_VIDEO=y
+@@ -55,8 +90,16 @@ CONFIG_MCI=y
+ CONFIG_MCI_PXA=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
++CONFIG_KEYBOARD_GPIO=y
+ CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UBIFS=y
++CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
+ CONFIG_BZLIB=y
++CONFIG_BMP=y
++CONFIG_PNG=y
++CONFIG_SHA256=y
 -- 
 1.7.10.4
 
