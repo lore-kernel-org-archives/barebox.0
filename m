@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W5GwS-0003jk-5u
- for barebox@lists.infradead.org; Mon, 20 Jan 2014 15:39:13 +0000
-Date: Mon, 20 Jan 2014 16:38:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140120153848.GR16215@pengutronix.de>
-References: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
+ id 1W5JYD-0008Ku-Ah
+ for barebox@lists.infradead.org; Mon, 20 Jan 2014 18:26:22 +0000
+Received: by mail-we0-f173.google.com with SMTP id t60so7197659wes.18
+ for <barebox@lists.infradead.org>; Mon, 20 Jan 2014 10:25:55 -0800 (PST)
+Date: Mon, 20 Jan 2014 19:25:50 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140120182549.GA29762@omega>
+References: <1390224236-11032-1-git-send-email-s.hauer@pengutronix.de>
+ <1390224236-11032-3-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1390045689-23127-1-git-send-email-robert.jarzmik@free.fr>
+In-Reply-To: <1390224236-11032-3-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,57 +25,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: mioa701: fix frequence speedup code
-To: Robert Jarzmik <robert.jarzmik@free.fr>
+Subject: Re: [PATCH 2/3] ARM: dts: i.MX53: tqma53: Add barebox specifics
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
+Hi Sascha,
 
-On Sat, Jan 18, 2014 at 12:48:04PM +0100, Robert Jarzmik wrote:
-> As barebox has become the true SPL of mioa701 board (no intermediate
-> SPL), a bug was uncovered in the init procedure, where the CPU voltage
-> was to be increased by commanding the I2C voltage regulator, while the
-> I2C was shut down.
+On Mon, Jan 20, 2014 at 02:23:55PM +0100, Sascha Hauer wrote:
+> - add chosen node with
+>   - environment
+>   - linux,stdout-path
+> - add dsr value to eMMC
+> - add provide-mac-address property to iim node
 > 
-> Fix it by unclock-gating the power I2C bus before using it.
-> 
-> Signed-off-by: Robert Jarzmik <robert.jarzmik@free.fr>
-
-Applied this series, thanks
-
-Sascha
-
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  arch/arm/boards/mioa701/board.c |    1 +
->  1 file changed, 1 insertion(+)
+>  arch/arm/dts/imx53-mba53.dts   | 17 +++++++++++++++++
+>  arch/arm/dts/imx53-tqma53.dtsi | 15 ++++++++++++++-
+>  2 files changed, 31 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm/boards/mioa701/board.c b/arch/arm/boards/mioa701/board.c
-> index c46b5da..7ee0be0 100644
-> --- a/arch/arm/boards/mioa701/board.c
-> +++ b/arch/arm/boards/mioa701/board.c
-> @@ -266,6 +266,7 @@ static int mioa701_coredevice_init(void)
->  	 * This requires to command the Maxim 1586 to upgrade core voltage to
->  	 * 1.475 V, on the power I2C bus (device 0x14).
->  	 */
-> +	CKEN |= CKEN_PWRI2C;
->  	CCCR = CCCR_A | 0x20290;
->  	PCFR = PCFR_GPR_EN | PCFR_FVC | PCFR_DC_EN | PCFR_PI2C_EN | PCFR_OPDE;
->  	PCMD(0) = PCMD_LC | 0x1f;
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+> diff --git a/arch/arm/dts/imx53-mba53.dts b/arch/arm/dts/imx53-mba53.dts
+> index a630902..43bb12c 100644
+...
+> +
+>  	memory {
+> -		reg = <0x70000000 0x40000000>; /* Up to 1GiB */
+> +		reg = <0x70000000 0x0>; /* Up to 1GiB */
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Is this change correct? You don't mention it in commit-msg and it confusing
+me a little bit to set this zero. :-)
+
+- Alex
 
 _______________________________________________
 barebox mailing list
