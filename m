@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W5BAP-0007TO-Jo
- for barebox@lists.infradead.org; Mon, 20 Jan 2014 09:29:14 +0000
-Date: Mon, 20 Jan 2014 10:28:50 +0100
+ id 1W5BVX-00081V-MK
+ for barebox@lists.infradead.org; Mon, 20 Jan 2014 09:51:05 +0000
+Date: Mon, 20 Jan 2014 10:50:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140120092850.GJ16215@pengutronix.de>
+Message-ID: <20140120095041.GK16215@pengutronix.de>
 References: <1389971012-22977-1-git-send-email-s.hauer@pengutronix.de>
- <1389971012-22977-3-git-send-email-s.hauer@pengutronix.de>
- <20140118191625.GB3624@omega>
+ <1389971012-22977-20-git-send-email-s.hauer@pengutronix.de>
+ <1389975633.343500808@f273.i.mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140118191625.GB3624@omega>
+In-Reply-To: <1389975633.343500808@f273.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,153 +20,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 02/22] ARM: phyCARD-i.MX27: increase barebox partition
-To: Alexander Aring <alex.aring@gmail.com>
+Subject: Re: [PATCH 19/22] ARM: dts: phycard-i.MX27: Add environment and NAND
+ partitioning
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sat, Jan 18, 2014 at 08:16:27PM +0100, Alexander Aring wrote:
-> Hi,
-> 
-> On Fri, Jan 17, 2014 at 04:03:12PM +0100, Sascha Hauer wrote:
-> > More place for barebox.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/boards/phycard-i.MX27/env/config | 2 +-
-> >  arch/arm/boards/phycard-i.MX27/pca100.c   | 5 +++--
-> >  2 files changed, 4 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/phycard-i.MX27/env/config b/arch/arm/boards/phycard-i.MX27/env/config
-> > index 9596311..9f10e7d 100644
-> > --- a/arch/arm/boards/phycard-i.MX27/env/config
-> > +++ b/arch/arm/boards/phycard-i.MX27/env/config
-> > @@ -39,7 +39,7 @@ autoboot_timeout=3
-> >  
-> >  bootargs="console=ttymxc0,115200"
-> >  
-> > -nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-> > +nand_parts="512k(barebox)ro,512k(bareboxenv),2M(kernel),-(root)"
-> 
-> First I through "2 MB for kernel?", but then I see you change this to 4MB
-> in another patch which introduce the new barebox env, so thats pretty cool.
-
-I changed this patch to increase both partitions now. It makes no sense
-to wreck the partition layout twice in a single series.
-
-> >  	nand = get_device_by_name("nand0");
-> 
-> I know, you don't make any change here but I though "What the hell do this
-> function here? Increase some reference count, because nand is never used
-> in this function?" Then I look a little bit deeper and it simple does
-> nothing... - Maybe we should remove this and the nand variable?
-
-Added a patch to remove the unused variable. Thanks for spotting this.
-
-Sascha
-
-----------------8<--------------------
-
-From a25dd5cd482c80e1c3be75568ee0a16df3b3d78d Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Jan 2014 10:18:48 +0100
-Subject: [PATCH 02/23] ARM: phyCARD-i.MX27: remove unused variable
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-reported-by: Alexander Aring <alex.aring@gmail.com>
----
- arch/arm/boards/phycard-i.MX27/pca100.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 2ff1b79..613a2ee 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -178,7 +178,6 @@ static void pca100_usb_init(void)
- static int pca100_devices_init(void)
- {
- 	int i;
--	struct device_d *nand;
- 
- 	unsigned int mode[] = {
- 		PD0_AIN_FEC_TXD0,
-@@ -286,7 +285,6 @@ static int pca100_devices_init(void)
- 	pca100_usb_register();
- #endif
- 
--	nand = get_device_by_name("nand0");
- 	devfs_add_partition("nand0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
- 
-
----------------------8<----------------
-
-
-From 955ac6de78aa8f09015f1d7829d66f7e982ecbf4 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 17 Jan 2014 08:48:54 +0100
-Subject: [PATCH 03/23] ARM: phyCARD-i.MX27: increase barebox and kernel
- partition
-
-More place for barebox and the kernel as both have the tendency to
-get bigger.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/phycard-i.MX27/env/config | 2 +-
- arch/arm/boards/phycard-i.MX27/pca100.c   | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm/boards/phycard-i.MX27/env/config b/arch/arm/boards/phycard-i.MX27/env/config
-index 9596311..160cbe7 100644
---- a/arch/arm/boards/phycard-i.MX27/env/config
-+++ b/arch/arm/boards/phycard-i.MX27/env/config
-@@ -39,7 +39,7 @@ autoboot_timeout=3
- 
- bootargs="console=ttymxc0,115200"
- 
--nand_parts="256k(barebox)ro,128k(bareboxenv),2M(kernel),-(root)"
-+nand_parts="512k(barebox)ro,512k(bareboxenv),4M(kernel),-(root)"
- rootfs_mtdblock_nand=7
- 
- # set a fancy prompt (if support is compiled in)
-diff --git a/arch/arm/boards/phycard-i.MX27/pca100.c b/arch/arm/boards/phycard-i.MX27/pca100.c
-index 613a2ee..3c6b727 100644
---- a/arch/arm/boards/phycard-i.MX27/pca100.c
-+++ b/arch/arm/boards/phycard-i.MX27/pca100.c
-@@ -21,6 +21,7 @@
- #include <mach/imx27-regs.h>
- #include <fec.h>
- #include <gpio.h>
-+#include <sizes.h>
- #include <asm/armlinux.h>
- #include <asm/sections.h>
- #include <generated/mach-types.h>
-@@ -285,10 +286,10 @@ static int pca100_devices_init(void)
- 	pca100_usb_register();
- #endif
- 
--	devfs_add_partition("nand0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self_raw");
-+	devfs_add_partition("nand0", 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, "self_raw");
- 	dev_add_bb_dev("self_raw", "self0");
- 
--	devfs_add_partition("nand0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env_raw");
-+	devfs_add_partition("nand0", SZ_512K, SZ_512K, DEVFS_PARTITION_FIXED, "env_raw");
- 	dev_add_bb_dev("env_raw", "env0");
- 
- 	armlinux_set_architecture(2149);
-
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBKYW4gMTcsIDIwMTQgYXQgMDg6MjA6MzNQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiDQn9GP0YLQvdC40YbQsCwgMTcg0Y/QvdCy0LDRgNGPIDIwMTQsIDE2OjAzICsw
+MTowMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiAtLS0K
+PiA+ICBhcmNoL2FybS9kdHMvaW14MjctcGh5dGVjLXBoeWNhcmQtcy1zb20uZHRzIHwgMjUgKysr
+KysrKysrKysrKysrKysrKysrKysrKwo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyNSBpbnNlcnRpb25z
+KCspCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvaW14MjctcGh5dGVjLXBoeWNh
+cmQtcy1zb20uZHRzIGIvYXJjaC9hcm0vZHRzL2lteDI3LXBoeXRlYy1waHljYXJkLXMtc29tLmR0
+cwo+ID4gaW5kZXggYzAzNDFkYS4uZWJhNjI0MCAxMDA2NDQKPiA+IC0tLSBhL2FyY2gvYXJtL2R0
+cy9pbXgyNy1waHl0ZWMtcGh5Y2FyZC1zLXNvbS5kdHMKPiA+ICsrKyBiL2FyY2gvYXJtL2R0cy9p
+bXgyNy1waHl0ZWMtcGh5Y2FyZC1zLXNvbS5kdHMKPiA+IEBAIC0xOSw2ICsxOSwxMSBAQAo+ID4g
+IAo+ID4gIAljaG9zZW4gewo+ID4gIAkJbGludXgsc3Rkb3V0LXBhdGggPSAmdWFydDE7Cj4gPiAr
+Cj4gPiArCQllbnZpcm9ubWVudEAwIHsKPiA+ICsJCQljb21wYXRpYmxlID0gImJhcmVib3gsZW52
+aXJvbm1lbnQiOwo+ID4gKwkJCWRldmljZS1wYXRoID0gJm5mYywgInBhcnRuYW1lOmJhcmVib3gt
+ZW52aXJvbm1lbnQiOwo+ID4gKwkJfTsKPiA+ICAJfTsKPiA+ICAKPiA+ICAJbWVtb3J5IHsKPiA+
+IEBAIC03NCw0ICs3OSwyNCBAQAo+ID4gIAluYW5kLWVjYy1tb2RlID0gImh3IjsKPiA+ICAJbmFu
+ZC1vbi1mbGFzaC1iYnQ7Cj4gPiAgCXN0YXR1cyA9ICJva2F5IjsKPiA+ICsKPiA+ICsJcGFydGl0
+aW9uQDAgewo+ID4gKwkJbGFiZWwgPSAiYmFyZWJveCI7Cj4gPiArCQlyZWcgPSA8MHgwIDB4ODAw
+MDA+Owo+ID4gKwl9Owo+ID4gKwo+ID4gKwlwYXJ0aXRpb25AMSB7Cj4gPiArCQlsYWJlbCA9ICJi
+YXJlYm94LWVudmlyb25tZW50IjsKPiA+ICsJCXJlZyA9IDwweDgwMDAwIDB4ODAwMDA+Owo+ID4g
+Kwl9Owo+IAo+IEkgd291bGQgc3VnZ2VzdCBuYW1lcyAiYm9vdCIgYW5kICJlbnYiLgo+IFRoaXMg
+d2lsbCBiZSB0cmFuc3BhcmVudCB0byBvdGhlciBib290bG9hZGVycyBhbmQgd2lsbAo+IG5vdCBj
+YXVzZSBjcml0aWNpc20gaWYgdGhlIGNoYW5nZSB3aWxsIGdvIGludG8gdGhlIGtlcm5lbC4KCk9r
+LCBnb29kIGlkZWEuCgpTYXNjaGEKCi0tIApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExp
+bnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRl
+LyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTog
+KzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAg
+ICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFy
+ZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vYmFyZWJveAo=
