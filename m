@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-we0-x22d.google.com ([2a00:1450:400c:c03::22d])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W5JYD-0008Ku-Ah
- for barebox@lists.infradead.org; Mon, 20 Jan 2014 18:26:22 +0000
-Received: by mail-we0-f173.google.com with SMTP id t60so7197659wes.18
- for <barebox@lists.infradead.org>; Mon, 20 Jan 2014 10:25:55 -0800 (PST)
-Date: Mon, 20 Jan 2014 19:25:50 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140120182549.GA29762@omega>
-References: <1390224236-11032-1-git-send-email-s.hauer@pengutronix.de>
- <1390224236-11032-3-git-send-email-s.hauer@pengutronix.de>
+ id 1W5VKI-0003oE-Cx
+ for barebox@lists.infradead.org; Tue, 21 Jan 2014 07:00:47 +0000
+Date: Tue, 21 Jan 2014 08:00:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140121070023.GS16215@pengutronix.de>
+References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1390224236-11032-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,37 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] ARM: dts: i.MX53: tqma53: Add barebox specifics
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 00/13] MIPS: add initial Loongson-based boards support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+Hi Antony,
 
-On Mon, Jan 20, 2014 at 02:23:55PM +0100, Sascha Hauer wrote:
-> - add chosen node with
->   - environment
->   - linux,stdout-path
-> - add dsr value to eMMC
-> - add provide-mac-address property to iim node
+On Sat, Jan 18, 2014 at 07:12:50PM +0400, Antony Pavlov wrote:
+> This patch series adds very initial Loongson CPU family support.
+> The only supported board is Loongson-1B-based LS1B development board.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/dts/imx53-mba53.dts   | 17 +++++++++++++++++
->  arch/arm/dts/imx53-tqma53.dtsi | 15 ++++++++++++++-
->  2 files changed, 31 insertions(+), 1 deletion(-)
+> The Loongson-1B SoC has good support in the mainline linux kernel,
+> so many things can be ported from linux in the future. 
 > 
-> diff --git a/arch/arm/dts/imx53-mba53.dts b/arch/arm/dts/imx53-mba53.dts
-> index a630902..43bb12c 100644
-...
-> +
->  	memory {
-> -		reg = <0x70000000 0x40000000>; /* Up to 1GiB */
-> +		reg = <0x70000000 0x0>; /* Up to 1GiB */
+> [PATCH 01/13] MIPS: add initial Loongson-based boards support
+> [PATCH 02/13] MIPS: add initial Loongson-family documentation
+> [PATCH 03/13] MIPS: add Loongson-1B CPU Kbuild stuff
+> [PATCH 04/13] MIPS: add initial Loongson-1X SoC stuff
+> [PATCH 05/13] MIPS: add Loongson-1B processor constants and CPU probe
+> [PATCH 06/13] MIPS: mach-loongson: add loongson-ls1b board
+> [PATCH 07/13] MIPS: mach-loongson: add DEBUG_LL support
+> [PATCH 08/13] MIPS: loongson-ls1b: add DEBUG_LL support
+> [PATCH 09/13] MIPS: loongson-ls1b: add ns16550-based console
+> [PATCH 10/13] MIPS: loongson-ls1b: add PBL support
+> [PATCH 11/13] MIPS: loongson-ls1b: add NMON support
+> [PATCH 12/13] MIPS: loongson-ls1b: add documentation
+> [PATCH 13/13] MIPS: add loongson-ls1b_defconfig
 
-Is this change correct? You don't mention it in commit-msg and it confusing
-me a little bit to set this zero. :-)
+All applied, thanks
 
-- Alex
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
