@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22e.google.com ([2a00:1450:4008:c01::22e])
+Received: from mail-bk0-x232.google.com ([2a00:1450:4008:c01::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W66o4-0007YA-6R
- for barebox@lists.infradead.org; Wed, 22 Jan 2014 23:02:01 +0000
-Received: by mail-bk0-f46.google.com with SMTP id r7so102407bkg.33
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2014 15:01:38 -0800 (PST)
+ id 1W66o3-0007Y9-SU
+ for barebox@lists.infradead.org; Wed, 22 Jan 2014 23:02:00 +0000
+Received: by mail-bk0-f50.google.com with SMTP id w16so101225bkz.23
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2014 15:01:37 -0800 (PST)
 From: Philipp Zabel <philipp.zabel@gmail.com>
-Date: Thu, 23 Jan 2014 00:01:31 +0100
-Message-Id: <1390431691-5090-3-git-send-email-philipp.zabel@gmail.com>
+Date: Thu, 23 Jan 2014 00:01:30 +0100
+Message-Id: <1390431691-5090-2-git-send-email-philipp.zabel@gmail.com>
 In-Reply-To: <1390431691-5090-1-git-send-email-philipp.zabel@gmail.com>
 References: <1390431691-5090-1-git-send-email-philipp.zabel@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,62 +23,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 2/2] commands: add bootmode command
+Subject: [RFC PATCH 1/2] ARM i.MX6: Add bootmode setting code
 To: barebox@lists.infradead.org
 Cc: Troy Kisky <troy.kisky@boundarydevices.com>
 
-On some SoCs the boot rom can be instructed to boot from a specific
-device, once, after the next reset. The bootmode command allows to
-list boot device candidates and to set up one of those devices as
-boot source after the next reset.
+This patch allows to set the bootmode parameters that the boot rom
+interprets to determine the boot source. This allows to set the
+bootsource for the next reboot. Only tested for mmc boot on GK802.
 
 Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
 ---
- commands/Kconfig    |   9 ++++
- commands/Makefile   |   1 +
- commands/bootmode.c | 143 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- common/Kconfig      |   3 ++
- common/Makefile     |   1 +
- 5 files changed, 157 insertions(+)
- create mode 100644 commands/bootmode.c
+ arch/arm/mach-imx/boot.c                 | 75 ++++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx6.c                 |  2 +
+ arch/arm/mach-imx/include/mach/generic.h |  6 +++
+ common/bootmode.c                        | 39 +++++++++++++++++
+ include/bootmode.h                       | 34 +++++++++++++++
+ 5 files changed, 156 insertions(+)
+ create mode 100644 common/bootmode.c
+ create mode 100644 include/bootmode.h
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 1e07b5b..851a14a 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -770,6 +770,15 @@ config CMD_WD_DEFAULT_TIMOUT
- 	  enabled and re-triggered with the default timeout value).
- endif
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 4d81fd4..7a46cd0 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -282,3 +282,78 @@ internal_boot:
  
-+config CMD_BOOTMODE
-+	bool
-+	depends on OFTREE
-+	prompt "bootmode command"
-+	select BOOTMODE
-+	help
-+	  The 'bootmode' command on some SoCs allows to instruct the boot rom
-+	  from which bootsource to boot, once, after the next reset.
+ 	return;
+ }
 +
- endmenu
++#define IMX6_SRC_GPR9	0x40
++#define IMX6_SRC_GPR10	0x44
++
++int imx6_bootmode_set(enum bootsource src, int instance,
++		      struct device_node *node, void *data)
++{
++	void __iomem *src_base = data;
++	int bus_width, chip_sel;
++	unsigned int gpr9;
++
++	switch (src) {
++	case BOOTSOURCE_SERIAL:
++		/* Reserved value, fallback to serial */
++		gpr9 = 0x00000001;
++		break;
++	case BOOTSOURCE_NOR:
++	case BOOTSOURCE_NAND:
++		/* TODO */
++		return -EINVAL;
++	case BOOTSOURCE_MMC:
++		gpr9 = 1 << 6;
++
++		if (instance < 0 || instance > 3)
++			return -EINVAL;
++		gpr9 |= instance << 11;
++
++		if (of_property_read_u32(node, "bus-width", &bus_width) < 0)
++			bus_width = 1;
++		switch (bus_width) {
++		case 1:
++			gpr9 |= 0 << 13;
++			break;
++		case 4:
++			gpr9 |= 1 << 13;
++			break;
++		case 8:
++			gpr9 |= 2 << 13;
++			gpr9 |= 1 << 5; /* eMMC */
++			break;
++		default:
++			return -EINVAL;
++		}
++		break;
++	case BOOTSOURCE_HD:
++		gpr9 = 2 << 4;
++		break;
++	case BOOTSOURCE_SPI:
++		gpr9 = 3 << 4;
++
++		if (instance < 0 || instance > 4)
++			return -EINVAL;
++		gpr9 |= instance << 24;
++
++		if (of_property_read_u32(node, "reg", &chip_sel) < 0)
++			return -EINVAL;
++		gpr9 |= chip_sel << 28;
++
++		gpr9 |= 1 << 27; /* 24-bit */
++		break;
++	case BOOTSOURCE_I2C:
++		gpr9 = 3 << 4;
++		if (instance < 0  || instance > 2)
++			return -EINVAL;
++		gpr9 |= (instance + 5) << 24;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	writel(gpr9, src_base + IMX6_SRC_GPR9);
++	writel(BIT(28), src_base + IMX6_SRC_GPR10);
++
++	return 0;
++}
+diff --git a/arch/arm/mach-imx/imx6.c b/arch/arm/mach-imx/imx6.c
+index 304b1c0..de5527a 100644
+--- a/arch/arm/mach-imx/imx6.c
++++ b/arch/arm/mach-imx/imx6.c
+@@ -12,6 +12,7 @@
+  */
  
- endif
-diff --git a/commands/Makefile b/commands/Makefile
-index 58d27fa..9e63e3f 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -93,3 +93,4 @@ obj-$(CONFIG_CMD_MIITOOL)	+= miitool.o
- obj-$(CONFIG_CMD_DETECT)	+= detect.o
- obj-$(CONFIG_CMD_BOOT)		+= boot.o
- obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
-+obj-$(CONFIG_CMD_BOOTMODE)	+= bootmode.o
-diff --git a/commands/bootmode.c b/commands/bootmode.c
+ #include <init.h>
++#include <bootmode.h>
+ #include <common.h>
+ #include <io.h>
+ #include <sizes.h>
+@@ -96,6 +97,7 @@ int imx6_init(void)
+ 	u32 mx6_silicon_revision;
+ 
+ 	imx6_boot_save_loc((void *)MX6_SRC_BASE_ADDR);
++	bootmode_register_handler(imx6_bootmode_set, (void *)MX6_SRC_BASE_ADDR);
+ 
+ 	rev = readl(MX6_ANATOP_BASE_ADDR + SI_REV);
+ 	switch (rev & 0xff) {
+diff --git a/arch/arm/mach-imx/include/mach/generic.h b/arch/arm/mach-imx/include/mach/generic.h
+index 506b1da..77a00fb 100644
+--- a/arch/arm/mach-imx/include/mach/generic.h
++++ b/arch/arm/mach-imx/include/mach/generic.h
+@@ -33,6 +33,12 @@ int imx51_devices_init(void);
+ int imx53_devices_init(void);
+ int imx6_devices_init(void);
+ 
++enum bootsource;
++struct device_node;
++
++int imx6_bootmode_set(enum bootsource src, int instance,
++		      struct device_node *node, void *data);
++
+ /* There's a off-by-one betweem the gpio bank number and the gpiochip */
+ /* range e.g. GPIO_1_5 is gpio 5 under linux */
+ #define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
+diff --git a/common/bootmode.c b/common/bootmode.c
 new file mode 100644
-index 0000000..ce2bdfd
+index 0000000..74809a6
 --- /dev/null
-+++ b/commands/bootmode.c
-@@ -0,0 +1,143 @@
++++ b/common/bootmode.c
+@@ -0,0 +1,39 @@
 +/*
-+ * bootmode.c - bootmode command
++ * Copyright (C) 2013 Philipp Zabel
 + *
 + * This program is free software; you can redistribute it and/or
 + * modify it under the terms of the GNU General Public License as
@@ -91,161 +182,71 @@ index 0000000..ce2bdfd
 + * GNU General Public License for more details.
 + *
 + */
-+#include <bootmode.h>
 +#include <bootsource.h>
 +#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <driver.h>
-+#include <getopt.h>
-+#include <linux/ctype.h>
 +
-+struct bootsource_name {
-+	enum bootsource source;
-+	char *name;
-+};
++static int (*bootmode_handler)(enum bootsource src, int instance,
++			       struct device_node *node, void *data);
++static void *bootmode_handler_data;
 +
-+static struct bootsource_name bootsources[] = {
-+	{ BOOTSOURCE_NAND,   "nand" },
-+	{ BOOTSOURCE_NOR,    "nor"  },
-+	{ BOOTSOURCE_MMC,    "mmc"  },
-+	{ BOOTSOURCE_I2C,    "i2c"  },
-+	{ BOOTSOURCE_SPI,    "m25p" },
-+	{ BOOTSOURCE_SERIAL, "cs"   },
-+	{ BOOTSOURCE_HD,     "ahci" },
-+};
-+
-+static enum bootsource get_bootsource(struct device_d *dev, int *instance)
++int bootmode_register_handler(int (*handler)(enum bootsource src, int instance,
++					     struct device_node *node,
++					     void *data), void *data)
 +{
-+	int len, i, id;
-+	const char *start, *end;
++	bootmode_handler = handler;
++	bootmode_handler_data = data;
 +
-+	start = dev_name(dev);
-+	end = start + strlen(start);
-+	if (!isdigit(*(end-1)))
-+		return BOOTSOURCE_UNKNOWN;
-+	while (isdigit(*(end-1)) && end > start)
-+		end--;
-+
-+	for (i = 0; i < ARRAY_SIZE(bootsources); i++) {
-+		len = strlen(bootsources[i].name);
-+		if (end - start > len)
-+			len = end - start;
-+		if (strncmp(bootsources[i].name, start, len) != 0)
-+			continue;
-+
-+		if (instance) {
-+			struct device_d *parent = dev->parent;
-+
-+			if (bootsources[i].source == BOOTSOURCE_SPI && parent)
-+				parent = parent->parent;
-+
-+			if (parent && parent->device_node) {
-+				const char *alias;
-+
-+				alias = of_alias_get(parent->device_node);
-+				if (alias) {
-+					start = alias;
-+					end = start + strlen(start);
-+					while (isdigit(*(end-1)) && end > start)
-+						end--;
-+				}
-+			}
-+			id = simple_strtol(end, 0, 10);
-+			if (id >= 0)
-+				*instance = id;
-+		}
-+		return bootsources[i].source;
-+	}
-+
-+	return BOOTSOURCE_UNKNOWN;
++	return 0;
 +}
 +
-+static int do_bootmode(int argc, char *argv[])
++int bootmode_set(enum bootsource src, int instance,
++		 struct device_node *node)
 +{
-+	struct device_d *dev;
-+	struct device_node *node = NULL;
-+	enum bootsource bootsource;
-+	int opt, instance = BOOTSOURCE_INSTANCE_UNKNOWN;
-+	int option_list = 0;
-+
-+	while ((opt = getopt(argc, argv, "l")) > 0) {
-+		switch (opt) {
-+		case 'l':
-+			option_list = 1;
-+			break;
-+		}
-+	}
-+
-+	if (option_list) {
-+		printf("possible boot devices:\n");
-+		for_each_device(dev) {
-+			bootsource = get_bootsource(dev, &instance);
-+			if (bootsource == BOOTSOURCE_UNKNOWN)
-+				continue;
-+			if (bootsource == bootsource_get() &&
-+			    instance == bootsource_get_instance())
-+				printf("* %s\n", dev_name(dev));
-+			else
-+				printf("  %s\n", dev_name(dev));
-+		}
-+		return 0;
-+	}
-+
-+	if (argc == optind)
-+		return COMMAND_ERROR_USAGE;
-+
-+	dev = get_device_by_name(argv[optind]);
-+	if (!dev)
++	if (!bootmode_handler)
 +		return -ENODEV;
 +
-+	bootsource = get_bootsource(dev, &instance);
-+	if (bootsource == BOOTSOURCE_UNKNOWN)
-+		return -EINVAL;
++	return bootmode_handler(src, instance, node, bootmode_handler_data);
++}
+diff --git a/include/bootmode.h b/include/bootmode.h
+new file mode 100644
+index 0000000..cbd4617
+--- /dev/null
++++ b/include/bootmode.h
+@@ -0,0 +1,34 @@
++#ifndef __INCLUDE_BOOTMODE_H
++#define __INCLUDE_BOOTMODE_H
 +
-+	if (dev->parent)
-+		node = dev->parent->device_node;
++#include <bootsource.h>
++#include <common.h>
 +
-+	return bootmode_set(bootsource, instance, node);
++#ifdef CONFIG_BOOTMODE
++
++int bootmode_register_handler(int (*handler)(enum bootsource src, int instance,
++					     struct device_node *node,
++					     void *data), void *data);
++
++int bootmode_set(enum bootsource src, int instance,
++		 struct device_node *node);
++
++#else
++
++static inline int bootmode_register_handler(int (*handler)(enum bootsource src,
++					    int instance,
++					    struct device_node *node,
++					    void *data), void *data)
++{
++	return -EINVAL;
 +}
 +
-+BAREBOX_CMD_HELP_START(bootmode)
-+BAREBOX_CMD_HELP_USAGE("bootmode [OPTIONS] [device]\n")
-+BAREBOX_CMD_HELP_OPT("-l",  "list boot devices\n")
-+BAREBOX_CMD_HELP_END
++int bootmode_set(enum bootsource src, int instance,
++		 struct device_node *node)
++{
++	return -ENODEV;
++}
 +
-+BAREBOX_CMD_START(bootmode)
-+	.cmd		= do_bootmode,
-+	.usage		= "bootmode device",
-+	BAREBOX_CMD_COMPLETE(device_complete)
-+	BAREBOX_CMD_HELP(cmd_bootmode_help)
-+BAREBOX_CMD_END
-diff --git a/common/Kconfig b/common/Kconfig
-index ce426f2..95f4756 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -62,6 +62,9 @@ config STDDEV
- config BAREBOX_UPDATE
- 	bool
- 
-+config BOOTMODE
-+	bool
++#endif
 +
- menu "General Settings"
- 
- config LOCALVERSION
-diff --git a/common/Makefile b/common/Makefile
-index 6f6e360..78b59bc 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -44,6 +44,7 @@ obj-$(CONFIG_PASSWORD) += password.o
- obj-$(CONFIG_MODULES) += module.o
- obj-$(CONFIG_FLEXIBLE_BOOTARGS) += bootargs.o
- obj-$(CONFIG_BAREBOX_UPDATE) += bbu.o
-+obj-$(CONFIG_BOOTMODE) += bootmode.o
- obj-y += bootsource.o
- obj-$(CONFIG_BOOTM) += bootm.o
- extra-$(CONFIG_MODULES) += module.lds
++#endif /* __INCLUDE_BOOTMODE_H */
 -- 
 1.8.5.3
 
