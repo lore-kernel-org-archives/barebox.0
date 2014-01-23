@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W6KL8-00014E-OY
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 13:29:04 +0000
+ id 1W6KL8-00014B-OW
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 13:29:03 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1W6KKl-00036k-9Z
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 14:28:39 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1W6KKl-0006aC-8I
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 14:28:39 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 23 Jan 2014 14:28:37 +0100
-Message-Id: <1390483717-7722-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1390483717-7722-1-git-send-email-s.hauer@pengutronix.de>
-References: <1390483717-7722-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 23 Jan 2014 14:28:34 +0100
+Message-Id: <1390483717-7722-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,51 +26,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net: phy: Add static inline wrapper for
- phy_register_fixup_for_uid
+Subject: compile fixes
 To: barebox@lists.infradead.org
 
-Boards register a fixup for a phy without checking if phy support
-is enabled. To fix compilation without phy support add a static
-inline wrapper for phy_register_fixup_for_uid.
+These are some fixes for linker errors due to wrong dependencies.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/linux/phy.h | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 9994e11..c8980b0 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -296,13 +296,22 @@ int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
- 		int (*run)(struct phy_device *));
- int phy_register_fixup_for_id(const char *bus_id,
- 		int (*run)(struct phy_device *));
--int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
--		int (*run)(struct phy_device *));
- int phy_scan_fixups(struct phy_device *phydev);
- 
- int phy_read_mmd_indirect(struct phy_device *phydev, int prtad, int devad);
- void phy_write_mmd_indirect(struct phy_device *phydev, int prtad, int devad,
- 				   u16 data);
- 
-+#ifdef CONFIG_PHYLIB
-+int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
-+		int (*run)(struct phy_device *));
-+#else
-+static inline int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
-+		int (*run)(struct phy_device *))
-+{
-+	return -ENOSYS;
-+}
-+#endif
-+
- extern struct bus_type mdio_bus_type;
- #endif /* __PHYDEV_H__ */
--- 
-1.8.5.2
+----------------------------------------------------------------
+Sascha Hauer (3):
+      environment: Use accessor functions for default environment path
+      environment: Fix wrong Kconfig dependency
+      net: phy: Add static inline wrapper for phy_register_fixup_for_uid
 
+ arch/arm/boards/gk802/board.c      |  4 ++--
+ arch/arm/boards/raspberry-pi/rpi.c |  2 +-
+ arch/arm/boards/tqma6x/board.c     |  2 +-
+ arch/arm/mach-omap/omap_generic.c  |  2 +-
+ arch/arm/mach-socfpga/generic.c    |  2 +-
+ commands/loadenv.c                 |  2 +-
+ commands/saveenv.c                 |  2 +-
+ common/Kconfig                     |  2 +-
+ common/environment.c               | 14 +++++++++++++-
+ common/startup.c                   |  1 +
+ drivers/of/barebox.c               |  2 +-
+ include/envfs.h                    | 13 ++++++++++++-
+ include/linux/phy.h                | 13 +++++++++++--
+ 13 files changed, 47 insertions(+), 14 deletions(-)
 
 _______________________________________________
 barebox mailing list
