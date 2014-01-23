@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp30.i.mail.ru ([94.100.177.90])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W6Nz8-0007DF-Nu
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 17:22:36 +0000
+ id 1W6Nz8-0007DG-Nv
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 17:22:37 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 23 Jan 2014 21:22:05 +0400
-Message-Id: <1390497727-1625-2-git-send-email-shc_work@mail.ru>
+Date: Thu, 23 Jan 2014 21:22:06 +0400
+Message-Id: <1390497727-1625-3-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1390497727-1625-1-git-send-email-shc_work@mail.ru>
 References: <1390497727-1625-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,76 +21,97 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] ARM: clps711x: Remove the special name for the syscon
- driver
+Subject: [PATCH 3/4] gpio: clps711x: Update driver
 To: barebox@lists.infradead.org
 
-No reason to make SYSCON driver name unique to that processor.
+This patch updates the CLPS711X GPIO driver.
+The update adds support for use with devicetree and
+optimizes "probe" a bit.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-clps711x/devices.c | 6 +++---
- drivers/mfd/syscon.c             | 3 ---
- drivers/serial/serial_clps711x.c | 4 ++--
- 3 files changed, 5 insertions(+), 8 deletions(-)
+ drivers/gpio/gpio-clps711x.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-index 9eeff5c..b5060ba 100644
---- a/arch/arm/mach-clps711x/devices.c
-+++ b/arch/arm/mach-clps711x/devices.c
-@@ -121,13 +121,13 @@ coredevice_initcall(clps711x_gpio_init);
- static __init int clps711x_syscon_init(void)
+diff --git a/drivers/gpio/gpio-clps711x.c b/drivers/gpio/gpio-clps711x.c
+index feead51..2f12439 100644
+--- a/drivers/gpio/gpio-clps711x.c
++++ b/drivers/gpio/gpio-clps711x.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2013 Alexander Shiyan <shc_work@mail.ru>
++ * Copyright (C) 2013-2014 Alexander Shiyan <shc_work@mail.ru>
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License as
+@@ -15,15 +15,18 @@
+ 
+ static int clps711x_gpio_probe(struct device_d *dev)
  {
- 	/* SYSCON1, SYSFLG1 */
--	add_generic_device("clps711x-syscon", 1, NULL, SYSCON1, SZ_128,
-+	add_generic_device("syscon", 1, NULL, SYSCON1, SZ_128,
- 			   IORESOURCE_MEM, NULL);
- 	/* SYSCON2, SYSFLG2 */
--	add_generic_device("clps711x-syscon", 2, NULL, SYSCON2, SZ_128,
-+	add_generic_device("syscon", 2, NULL, SYSCON2, SZ_128,
- 			   IORESOURCE_MEM, NULL);
- 	/* SYSCON3 */
--	add_generic_device("clps711x-syscon", 3, NULL, SYSCON3, SZ_64,
-+	add_generic_device("syscon", 3, NULL, SYSCON3, SZ_64,
- 			   IORESOURCE_MEM, NULL);
+-	int err;
++	int err, id = dev->id;
+ 	void __iomem *dat, *dir = NULL, *dir_inv = NULL;
+ 	struct bgpio_chip *bgc;
  
- 	return 0;
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 6437344..8fc84c3 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -92,9 +92,6 @@ static int syscon_probe(struct device_d *dev)
+-	if ((dev->id < 0) || (dev->id > 4))
++	if (dev->device_node)
++		id = of_alias_get_id(dev->device_node, "gpio");
++
++	if (id < 0 || id > 4)
+ 		return -ENODEV;
  
- static struct platform_device_id syscon_ids[] = {
- 	{ "syscon", },
--#ifdef CONFIG_ARCH_CLPS711X
--	{ "clps711x-syscon", },
--#endif
- 	{ }
+ 	dat = dev_request_mem_region(dev, 0);
+-	switch (dev->id) {
++	switch (id) {
+ 	case 3:
+ 		dir_inv = dev_request_mem_region(dev, 1);
+ 		break;
+@@ -40,27 +43,35 @@ static int clps711x_gpio_probe(struct device_d *dev)
+ 		return -ENOMEM;
+ 
+ 	err = bgpio_init(bgc, dev, 1, dat, NULL, NULL, dir, dir_inv, 0);
+-	if (err) {
+-		free(bgc);
+-		return err;
+-	}
++	if (err)
++		goto out_err;
+ 
+-	bgc->gc.base = dev->id * 8;
+-	switch (dev->id) {
++	bgc->gc.base = id * 8;
++	switch (id) {
+ 	case 4:
+ 		bgc->gc.ngpio = 3;
+ 		break;
+ 	default:
+-		bgc->gc.ngpio = 8;
+ 		break;
+ 	}
+ 
+-	return gpiochip_add(&bgc->gc);
++	err = gpiochip_add(&bgc->gc);
++
++out_err:
++	if (err)
++		free(bgc);
++
++	return err;
+ }
+ 
++static struct of_device_id __maybe_unused clps711x_gpio_dt_ids[] = {
++	{ .compatible = "cirrus,clps711x-gpio", },
++};
++
+ static struct driver_d clps711x_gpio_driver = {
+-	.name	= "clps711x-gpio",
+-	.probe	= clps711x_gpio_probe,
++	.name		= "clps711x-gpio",
++	.probe		= clps711x_gpio_probe,
++	.of_compatible	= DRV_OF_COMPAT(clps711x_gpio_dt_ids),
  };
  
-diff --git a/drivers/serial/serial_clps711x.c b/drivers/serial/serial_clps711x.c
-index e43d141..d8dec57 100644
---- a/drivers/serial/serial_clps711x.c
-+++ b/drivers/serial/serial_clps711x.c
-@@ -110,7 +110,7 @@ static void clps711x_flush(struct console_device *cdev)
- static int clps711x_probe(struct device_d *dev)
- {
- 	struct clps711x_uart *s;
--	char syscon_dev[18];
-+	char syscon_dev[8];
- 
- 	BUG_ON(dev->num_resources != 2);
- 	BUG_ON((dev->id != 0) && (dev->id != 1));
-@@ -122,7 +122,7 @@ static int clps711x_probe(struct device_d *dev)
- 	s->UBRLCR = dev_get_mem_region(dev, 0);
- 	s->UARTDR = dev_get_mem_region(dev, 1);
- 
--	sprintf(syscon_dev, "clps711x-syscon%i", dev->id + 1);
-+	sprintf(syscon_dev, "syscon%i", dev->id + 1);
- 	s->syscon = syscon_base_lookup_by_pdevname(syscon_dev);
- 	BUG_ON(IS_ERR(s->syscon));
- 
+ static __init int clps711x_gpio_register(void)
 -- 
 1.8.3.2
 
