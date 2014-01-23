@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W68sn-0002OP-Q9
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 01:15:02 +0000
-Received: by mail-ea0-f174.google.com with SMTP id b10so106979eae.5
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2014 17:14:36 -0800 (PST)
-From: Marek Vasut <marek.vasut@gmail.com>
-Date: Thu, 23 Jan 2014 02:14:35 +0100
-References: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
-In-Reply-To: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
+ id 1W6EJG-0007KC-Gx
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 07:02:43 +0000
+Date: Thu, 23 Jan 2014 08:02:19 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140123070218.GF16215@pengutronix.de>
+References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
+ <20140122111558.GA24917@pengutronix.de>
+ <20140123013529.b2e75ff11bcbe9492a743726@gmail.com>
 MIME-Version: 1.0
-Message-Id: <201401230214.35328.marek.vasut@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <20140123013529.b2e75ff11bcbe9492a743726@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,29 +24,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/4] Asix AX88772B support
-To: Philipp Zabel <philipp.zabel@gmail.com>
+Subject: Re: [PATCH 00/13] MIPS: add initial Loongson-based boards support
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wednesday, January 22, 2014 at 11:50:45 PM, Philipp Zabel wrote:
-> This patch series picks up some changes from the linux kernel
-> to make Asix AX88772B based USB Ethernet dongles work.
+On Thu, Jan 23, 2014 at 01:35:29AM +0400, Antony Pavlov wrote:
+> On Wed, 22 Jan 2014 12:15:58 +0100
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
 > 
-> Marek Vasut (2):
->   net usb asix: Simplify condition in rx_fixup()
->   net usb asix: Use only 11 bits of header for data size
+> > On Sat, Jan 18, 2014 at 07:12:50PM +0400, Antony Pavlov wrote:
+> > make: *** Waiting for unfinished jobs....
+> > arch/mips/boards/loongson-ls1b/serial.c:5:28: error: mach/loongson1.h: No such file or directory
+> > arch/mips/boards/loongson-ls1b/serial.c: In function 'console_init':
+> > arch/mips/boards/loongson-ls1b/serial.c:17: warning: implicit declaration of function 'KSEG1ADDR'
+> > arch/mips/boards/loongson-ls1b/serial.c:17: error: 'LS1X_UART2_BASE' undeclared (first use in this function)
+> > arch/mips/boards/loongson-ls1b/serial.c:17: error: (Each undeclared identifier is reported only once
+> > arch/mips/boards/loongson-ls1b/serial.c:17: error: for each function it appears in.)
+> > 
+> > arch/mips/mach-loongson/include/mach/loongson1.h and
+> > arch/mips/mach-loongson/Makefile seem to be missing. Could you respin with the missing files?
 > 
-> Philipp Zabel (2):
->   net usb asix: read MAC from EEPROM on AX88772B
->   net usb asix: add AX88772B USB ID
+> The missing files are from "[PATCH 04/13] MIPS: add initial Loongson-1X SoC stuff".
 > 
->  drivers/net/usb/asix.c | 36 +++++++++++++++++++++++++++++++-----
->  1 file changed, 31 insertions(+), 5 deletions(-)
+> The missed patch is registered in maillist: see http://lists.infradead.org/pipermail/barebox/2014-January/017521.html
 
-Oh wow, am I now an official barebox contributor ? :-D
+Indeed. For some reason I didn't receive that mail. I picked it from the
+ml archive now.
 
-Best regards,
-Marek Vasut
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
