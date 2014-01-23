@@ -1,20 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W6Psc-0002CC-A6
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 19:24:04 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1W6PsE-0005RS-9G
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 20:23:34 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <mgr@pengutronix.de>) id 1W6PsE-0004YZ-7l
- for barebox@lists.infradead.org; Thu, 23 Jan 2014 20:23:34 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 23 Jan 2014 20:23:28 +0100
-Message-Id: <1390505010-7546-2-git-send-email-m.grzeschik@pengutronix.de>
-In-Reply-To: <1390505010-7546-1-git-send-email-m.grzeschik@pengutronix.de>
+ id 1W6T81-0000mj-2U
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 22:52:05 +0000
+Received: by mail-ea0-f182.google.com with SMTP id r15so669837ead.27
+ for <barebox@lists.infradead.org>; Thu, 23 Jan 2014 14:51:43 -0800 (PST)
+Message-ID: <52E19CFB.1040908@gmail.com>
+Date: Thu, 23 Jan 2014 23:51:39 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1390505010-7546-1-git-send-email-m.grzeschik@pengutronix.de>
+ <1390505010-7546-3-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1390505010-7546-3-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,52 +20,81 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] ARM: mvebu: make dove_memory_find reachable for drivers
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/3] net: mv643xx: add driver support
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Some drivers need to setup data based on the available
-memory on the system. Make it possible for them to find
-the available memory.
+On 01/23/2014 08:23 PM, Michael Grzeschik wrote:
+> This patch adds basic support for the mv643xx gigabit
+> ethernet stack. It is found on several marvell orion SoCs.
+>
+> The code is based on the kirkwood_egiga driver from u-boot and was renamed. It
+> uses dma_alloc_coherent instead of xmalloc. The huge register representing
+> struct was changed to register offset defines. The write and read macros got
+> changed to direct writel and readl calls.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- arch/arm/mach-mvebu/dove.c                   | 4 ++--
- arch/arm/mach-mvebu/include/mach/dove-regs.h | 3 +++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Nice patches! Unfortunately, I have no time to review and test them
+today, but I do have some remarks right now.
 
-diff --git a/arch/arm/mach-mvebu/dove.c b/arch/arm/mach-mvebu/dove.c
-index f081e50..3fec7cf 100644
---- a/arch/arm/mach-mvebu/dove.c
-+++ b/arch/arm/mach-mvebu/dove.c
-@@ -41,8 +41,8 @@ static inline void dove_remap_mc_regs(void)
- 	writel(val, mcboot + SDRAM_REGS_BASE_DECODE);
- }
- 
--static inline void dove_memory_find(unsigned long *phys_base,
--				    unsigned long *phys_size)
-+void dove_memory_find(unsigned long *phys_base,
-+		    unsigned long *phys_size)
- {
- 	int n;
- 
-diff --git a/arch/arm/mach-mvebu/include/mach/dove-regs.h b/arch/arm/mach-mvebu/include/mach/dove-regs.h
-index 8b4319b..36a6808 100644
---- a/arch/arm/mach-mvebu/include/mach/dove-regs.h
-+++ b/arch/arm/mach-mvebu/include/mach/dove-regs.h
-@@ -62,4 +62,7 @@
- #define  SDRAM_ADDRESS_MASK	(0x1ff << 7)
- #define  SDRAM_MAP_VALID	BIT(0)
- 
-+void dove_memory_find(unsigned long *phys_base,
-+		    unsigned long *phys_size);
-+
- #endif /* __MACH_MVEBU_DOVE_REGS_H */
--- 
-1.8.5.2
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>   drivers/net/Kconfig   |   5 +
+>   drivers/net/Makefile  |   1 +
+>   drivers/net/mv643xx.c | 714 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>   drivers/net/mv643xx.h | 473 +++++++++++++++++++++++++++++++++
+
+We really all hate "mv643xx" because it is a pain to say and write it.
+I guess barebox will never be run on systems with mv64xxx controllers
+but only Marvell Orion SoC.
+
+I'd be *very* happy if you do s/mv643xx/orion/g
+
+[...]
+> diff --git a/drivers/net/mv643xx.c b/drivers/net/mv643xx.c
+> new file mode 100644
+> index 0000000..3d0bfdc
+> --- /dev/null
+> +++ b/drivers/net/mv643xx.c
+> @@ -0,0 +1,714 @@
+> +/*
+[...]
+> + */
+> +
+> +#include <common.h>
+> +#include <malloc.h>
+> +#include <net.h>
+> +#include <init.h>
+> +#include <driver.h>
+> +#include <io.h>
+> +#include <clock.h>
+> +#include <xfuncs.h>
+> +#include <linux/phy.h>
+> +#include <linux/clk.h>
+> +#include <linux/err.h>
+> +#include <of_net.h>
+> +#include <mach/dove-regs.h>
+
+Please don't. The same driver will be used on Kirkwood and possibly
+orion5x, mv78x00 if they get supported.
+
+Have every register offset defined in here or "mv643xx.h" and get
+rid of the above. If you need some callback for memory windows, let's
+get it on now and create it in a way it is compatible with using this
+driver on the other SoCs.
+
+Also, we really have no plans for Dove, Kirkwood or any other Marvell
+SoC with !CONFIG_OF, so feel free to remove any reference to non-DT
+usage.
+
+BTW, how about sorting the #includes alphabetically?
+
+For the rest, I'll give it a go on Dove ASAP.
+
+Sebastian
 
 
 _______________________________________________
