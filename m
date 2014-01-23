@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
+Received: from mail-ea0-x22e.google.com ([2a00:1450:4013:c01::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W66o3-0007Y7-2U
- for barebox@lists.infradead.org; Wed, 22 Jan 2014 23:01:59 +0000
-Received: by mail-bk0-f48.google.com with SMTP id ej10so102078bkb.35
- for <barebox@lists.infradead.org>; Wed, 22 Jan 2014 15:01:36 -0800 (PST)
-From: Philipp Zabel <philipp.zabel@gmail.com>
-Date: Thu, 23 Jan 2014 00:01:29 +0100
-Message-Id: <1390431691-5090-1-git-send-email-philipp.zabel@gmail.com>
+ id 1W68sn-0002OP-Q9
+ for barebox@lists.infradead.org; Thu, 23 Jan 2014 01:15:02 +0000
+Received: by mail-ea0-f174.google.com with SMTP id b10so106979eae.5
+ for <barebox@lists.infradead.org>; Wed, 22 Jan 2014 17:14:36 -0800 (PST)
+From: Marek Vasut <marek.vasut@gmail.com>
+Date: Thu, 23 Jan 2014 02:14:35 +0100
+References: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
+In-Reply-To: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
+MIME-Version: 1.0
+Message-Id: <201401230214.35328.marek.vasut@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,69 +19,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC PATCH 0/2] Bootmode override on i.MX6
-To: barebox@lists.infradead.org
-Cc: Troy Kisky <troy.kisky@boundarydevices.com>
+Subject: Re: [PATCH 0/4] Asix AX88772B support
+To: Philipp Zabel <philipp.zabel@gmail.com>
+Cc: barebox@lists.infradead.org
 
-The i.MX6 boot rom copies parts of the (persistent across reset) GPR9
-register into SMBR1 if the GPR10[28] bit is set.
-This allows to override the boot mode bits which are otherwise sampled
-from fuses or gpios, and can be used to temporarily (until the next
-power cycle) boot from a different device.
-This patchset adds a bootmode command that conveniently writes to the
-GPR9/10 registers to tell the boot rom from which device to boot.
+On Wednesday, January 22, 2014 at 11:50:45 PM, Philipp Zabel wrote:
+> This patch series picks up some changes from the linux kernel
+> to make Asix AX88772B based USB Ethernet dongles work.
+> 
+> Marek Vasut (2):
+>   net usb asix: Simplify condition in rx_fixup()
+>   net usb asix: Use only 11 bits of header for data size
+> 
+> Philipp Zabel (2):
+>   net usb asix: read MAC from EEPROM on AX88772B
+>   net usb asix: add AX88772B USB ID
+> 
+>  drivers/net/usb/asix.c | 36 +++++++++++++++++++++++++++++++-----
+>  1 file changed, 31 insertions(+), 5 deletions(-)
 
-Example:
-    <power-on reset, boot ROM loads barebox from mmc3 as fused>
-    # bootmode -l
-      mmc2
-    * mmc3
-    # barebox_update -t mmc2 /path/to/barebox.img
-    # bootmode mmc2
-    # reset
-    <boot ROM loads untested barebox from mmc2>
-    # barebox_update -t mmc3 /path/to/barebox.img
-    <either power cycle, or>
-    # bootmode mmc3 ; reset
-    <boot ROM loads tested barebox from mmc3>
+Oh wow, am I now an official barebox contributor ? :-D
 
-Philipp Zabel (2):
-  ARM i.MX6: Add bootmode setting code
-  commands: add bootmode command
-
- arch/arm/mach-imx/boot.c                 |  75 ++++++++++++++++
- arch/arm/mach-imx/imx6.c                 |   2 +
- arch/arm/mach-imx/include/mach/generic.h |   6 ++
- commands/Kconfig                         |   9 ++
- commands/Makefile                        |   1 +
- commands/bootmode.c                      | 143 +++++++++++++++++++++++++++++++
- common/Kconfig                           |   3 +
- common/Makefile                          |   1 +
- common/bootmode.c                        |  39 +++++++++
- include/bootmode.h                       |  34 ++++++++
- 10 files changed, 313 insertions(+)
- create mode 100644 commands/bootmode.c
- create mode 100644 common/bootmode.c
- create mode 100644 include/bootmode.h
-
-The SBMR1 override using GPR9/10 is based on the U-Boot rsmode
-patch by Troy Kisky:
-    http://lists.denx.de/pipermail/u-boot/2012-May/125283.html
-
-Tested on GK802 and BD-SL with mmc and spi nor flash.
-
-I chose to use device names as parameter to the bootmode command,
-but I'm unsure about that. Maybe reusing the bbu target name list
-would be better for consistency?
-
-regards
-Philipp
-
+Best regards,
+Marek Vasut
 
 _______________________________________________
 barebox mailing list
