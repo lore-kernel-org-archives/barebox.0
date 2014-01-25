@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W790M-0006z9-IU
- for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:00 +0000
+ id 1W790M-0006z1-IK
+ for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:03 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 25 Jan 2014 23:34:25 +0400
-Message-Id: <1390678468-28378-9-git-send-email-shc_work@mail.ru>
+Date: Sat, 25 Jan 2014 23:34:18 +0400
+Message-Id: <1390678468-28378-2-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
 References: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] ARM: at91: irq_fixup: Use __iomem specifier for memory
- pointer
+Subject: [PATCH 02/12] ARM: guf-cupid: Use __iomem specifier for memory pointer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-at91/irq_fixup.c | 2 +-
+ arch/arm/boards/guf-cupid/lowlevel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/irq_fixup.c b/arch/arm/mach-at91/irq_fixup.c
-index a9eebd7..9815ac2 100644
---- a/arch/arm/mach-at91/irq_fixup.c
-+++ b/arch/arm/mach-at91/irq_fixup.c
-@@ -15,7 +15,7 @@
-  */
- void at91_rtt_irq_fixup(void *base)
+diff --git a/arch/arm/boards/guf-cupid/lowlevel.c b/arch/arm/boards/guf-cupid/lowlevel.c
+index d5298c1..3264a26 100644
+--- a/arch/arm/boards/guf-cupid/lowlevel.c
++++ b/arch/arm/boards/guf-cupid/lowlevel.c
+@@ -45,7 +45,7 @@
+ static void __bare_init noinline setup_sdram(u32 memsize, u32 mode, u32 sdram_addr)
  {
--	void *reg = base + AT91_RTT_MR;
-+	void __iomem *reg = base + AT91_RTT_MR;
- 	u32 mr = readl(reg);
+ 	volatile int loop;
+-	void *r9 = (void *)MX35_CSD0_BASE_ADDR;
++	void __iomem *r9 = IOMEM(MX35_CSD0_BASE_ADDR);
+ 	u32 r11 = 0xda; /* dummy constant */
+ 	u32 r1, r0;
  
- 	writel(mr & ~(AT91_RTT_ALMIEN | AT91_RTT_RTTINCIEN), reg);
 -- 
 1.8.3.2
 
