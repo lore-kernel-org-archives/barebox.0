@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W790M-0006z3-IS
- for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:05 +0000
+ id 1W790M-0006z4-IQ
+ for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:01 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 25 Jan 2014 23:34:20 +0400
-Message-Id: <1390678468-28378-4-git-send-email-shc_work@mail.ru>
+Date: Sat, 25 Jan 2014 23:34:21 +0400
+Message-Id: <1390678468-28378-5-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
 References: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] ARM: uncompress: Remove unused variable
+Subject: [PATCH 05/12] ARM: PBL: Use __iomem specifier for memory pointer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/cpu/uncompress.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/arm/cpu/start-pbl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 6d3302a..7397c7d 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -46,7 +46,6 @@ static int __attribute__((__used__))
- static void __noreturn noinline uncompress_start_payload(uint32_t membase,
- 		uint32_t memsize, uint32_t boarddata)
- {
--	uint32_t offset;
- 	uint32_t pg_len;
- 	void __noreturn (*barebox)(uint32_t, uint32_t, uint32_t);
- 	uint32_t endmem = membase + memsize;
-@@ -61,9 +60,6 @@ static void __noreturn noinline uncompress_start_payload(uint32_t membase,
- 	if (IS_ENABLED(CONFIG_PBL_RELOCATABLE))
- 		relocate_to_current_adr();
+diff --git a/arch/arm/cpu/start-pbl.c b/arch/arm/cpu/start-pbl.c
+index 3ef0118..ef6bb9d 100644
+--- a/arch/arm/cpu/start-pbl.c
++++ b/arch/arm/cpu/start-pbl.c
+@@ -45,8 +45,8 @@ void __naked __section(.text_head_entry) pbl_start(void)
+ 	barebox_arm_head();
+ }
  
--	/* Get offset between linked address and runtime address */
--	offset = get_runtime_offset();
--
- 	if (IS_ENABLED(CONFIG_RELOCATABLE))
- 		barebox_base = arm_barebox_image_place(membase + memsize);
- 	else
+-extern void *input_data;
+-extern void *input_data_end;
++extern void __iomem *input_data;
++extern void __iomem *input_data_end;
+ 
+ static noinline __noreturn void __barebox_arm_entry(uint32_t membase,
+ 		uint32_t memsize, uint32_t boarddata)
 -- 
 1.8.3.2
 
