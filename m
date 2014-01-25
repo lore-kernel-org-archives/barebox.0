@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp35.i.mail.ru ([94.100.177.95])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W790M-0006z7-IJ
- for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:06 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 25 Jan 2014 23:34:23 +0400
-Message-Id: <1390678468-28378-7-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
-References: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W79dr-00082w-2r
+ for barebox@lists.infradead.org; Sat, 25 Jan 2014 20:15:47 +0000
+Received: from tellur.localdomain (p4FE65AE8.dip0.t-ipconnect.de
+ [79.230.90.232]) by lynxeye.de (Postfix) with ESMTPA id 1EB1918B425D
+ for <barebox@lists.infradead.org>; Sat, 25 Jan 2014 21:14:51 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Sat, 25 Jan 2014 21:15:55 +0100
+Message-Id: <1390680958-9991-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/12] lib: bootm: Use __iomem specifier for memory pointer
+Subject: [PATCH 1/4] dt-bindings: add ARM GIC
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/lib/bootm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/dt-bindings/interrupt-controller/arm-gic.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+ create mode 100644 include/dt-bindings/interrupt-controller/arm-gic.h
 
-diff --git a/arch/arm/lib/bootm.c b/arch/arm/lib/bootm.c
-index c0e4e15..87ee89d 100644
---- a/arch/arm/lib/bootm.c
-+++ b/arch/arm/lib/bootm.c
-@@ -142,7 +142,7 @@ struct zimage_header {
- static int do_bootz_linux_fdt(int fd, struct image_data *data)
- {
- 	struct fdt_header __header, *header;
--	void *oftree;
-+	void __iomem *oftree;
- 	int ret;
- 
- 	u32 end;
-@@ -204,7 +204,7 @@ static int do_bootz_linux(struct image_data *data)
- {
- 	int fd, ret, swap = 0;
- 	struct zimage_header __header, *header;
--	void *zimage;
-+	void __iomem *zimage;
- 	u32 end;
- 	unsigned long load_address = data->os_address;
- 
+diff --git a/include/dt-bindings/interrupt-controller/arm-gic.h b/include/dt-bindings/interrupt-controller/arm-gic.h
+new file mode 100644
+index 0000000..1ea1b70
+--- /dev/null
++++ b/include/dt-bindings/interrupt-controller/arm-gic.h
+@@ -0,0 +1,22 @@
++/*
++ * This header provides constants for the ARM GIC.
++ */
++
++#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_ARM_GIC_H
++#define _DT_BINDINGS_INTERRUPT_CONTROLLER_ARM_GIC_H
++
++#include <dt-bindings/interrupt-controller/irq.h>
++
++/* interrupt specific cell 0 */
++
++#define GIC_SPI 0
++#define GIC_PPI 1
++
++/*
++ * Interrupt specifier cell 2.
++ * The flaggs in irq.h are valid, plus those below.
++ */
++#define GIC_CPU_MASK_RAW(x) ((x) << 8)
++#define GIC_CPU_MASK_SIMPLE(num) GIC_CPU_MASK_RAW((1 << (num)) - 1)
++
++#endif
 -- 
-1.8.3.2
+1.8.4.2
 
 
 _______________________________________________
