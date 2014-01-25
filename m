@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp35.i.mail.ru ([94.100.177.95])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W790M-0006z0-IV
+ id 1W790M-0006z9-IU
  for barebox@lists.infradead.org; Sat, 25 Jan 2014 19:35:00 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 25 Jan 2014 23:34:17 +0400
-Message-Id: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
+Date: Sat, 25 Jan 2014 23:34:25 +0400
+Message-Id: <1390678468-28378-9-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
+References: <1390678468-28378-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] ARM: animeo_ip: Use __iomem specifier for memory pointer
+Subject: [PATCH 09/12] ARM: at91: irq_fixup: Use __iomem specifier for memory
+ pointer
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/boards/animeo_ip/init.c | 2 +-
+ arch/arm/mach-at91/irq_fixup.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/animeo_ip/init.c b/arch/arm/boards/animeo_ip/init.c
-index e684222..ca64d6d 100644
---- a/arch/arm/boards/animeo_ip/init.c
-+++ b/arch/arm/boards/animeo_ip/init.c
-@@ -328,7 +328,7 @@ device_initcall(animeo_ip_devices_init);
- 
- static struct device_d *usart0, *usart1;
- 
--static void animeo_ip_shutdown_uart(void *base)
-+static void animeo_ip_shutdown_uart(void __iomem *base)
+diff --git a/arch/arm/mach-at91/irq_fixup.c b/arch/arm/mach-at91/irq_fixup.c
+index a9eebd7..9815ac2 100644
+--- a/arch/arm/mach-at91/irq_fixup.c
++++ b/arch/arm/mach-at91/irq_fixup.c
+@@ -15,7 +15,7 @@
+  */
+ void at91_rtt_irq_fixup(void *base)
  {
- #define ATMEL_US_BRGR	0x0020
- 	writel(0, base + ATMEL_US_BRGR);
+-	void *reg = base + AT91_RTT_MR;
++	void __iomem *reg = base + AT91_RTT_MR;
+ 	u32 mr = readl(reg);
+ 
+ 	writel(mr & ~(AT91_RTT_ALMIEN | AT91_RTT_RTTINCIEN), reg);
 -- 
 1.8.3.2
 
