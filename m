@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W79dr-000831-1r
- for barebox@lists.infradead.org; Sat, 25 Jan 2014 20:15:48 +0000
-Received: from tellur.localdomain (p4FE65AE8.dip0.t-ipconnect.de
- [79.230.90.232]) by lynxeye.de (Postfix) with ESMTPA id 0AC8A18B425F
- for <barebox@lists.infradead.org>; Sat, 25 Jan 2014 21:14:52 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sat, 25 Jan 2014 21:15:56 +0100
-Message-Id: <1390680958-9991-2-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1390680958-9991-1-git-send-email-dev@lynxeye.de>
-References: <1390680958-9991-1-git-send-email-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W7T4j-00047p-9p
+ for barebox@lists.infradead.org; Sun, 26 Jan 2014 17:00:50 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <mgr@pengutronix.de>) id 1W7T4K-0000DC-EE
+ for barebox@lists.infradead.org; Sun, 26 Jan 2014 18:00:24 +0100
+Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <mgr@pengutronix.de>) id 1W7T4I-0005Bd-Be
+ for barebox@lists.infradead.org; Sun, 26 Jan 2014 18:00:22 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Date: Sun, 26 Jan 2014 18:00:20 +0100
+Message-Id: <1390755620-19590-1-git-send-email-m.grzeschik@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,73 +26,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] dt-bindings: add Tegra GPIO
+Subject: [PATCH] scripts: kwbimage: fix imagebuild on 32bit host system
 To: barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- include/dt-bindings/gpio/tegra-gpio.h | 50 +++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 include/dt-bindings/gpio/tegra-gpio.h
+We have to use strtoul to run the tool working on 32bit systems.
+Otherwise it will generate signed numbers for strings representing
+values with the 32nd bit set.
 
-diff --git a/include/dt-bindings/gpio/tegra-gpio.h b/include/dt-bindings/gpio/tegra-gpio.h
-new file mode 100644
-index 0000000..4d179c0
---- /dev/null
-+++ b/include/dt-bindings/gpio/tegra-gpio.h
-@@ -0,0 +1,50 @@
-+/*
-+ * This header provides constants for binding nvidia,tegra*-gpio.
-+ *
-+ * The first cell in Tegra's GPIO specifier is the GPIO ID. The macros below
-+ * provide names for this.
-+ *
-+ * The second cell contains standard flag values specified in gpio.h.
-+ */
-+
-+#ifndef _DT_BINDINGS_GPIO_TEGRA_GPIO_H
-+#define _DT_BINDINGS_GPIO_TEGRA_GPIO_H
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#define TEGRA_GPIO_BANK_ID_A 0
-+#define TEGRA_GPIO_BANK_ID_B 1
-+#define TEGRA_GPIO_BANK_ID_C 2
-+#define TEGRA_GPIO_BANK_ID_D 3
-+#define TEGRA_GPIO_BANK_ID_E 4
-+#define TEGRA_GPIO_BANK_ID_F 5
-+#define TEGRA_GPIO_BANK_ID_G 6
-+#define TEGRA_GPIO_BANK_ID_H 7
-+#define TEGRA_GPIO_BANK_ID_I 8
-+#define TEGRA_GPIO_BANK_ID_J 9
-+#define TEGRA_GPIO_BANK_ID_K 10
-+#define TEGRA_GPIO_BANK_ID_L 11
-+#define TEGRA_GPIO_BANK_ID_M 12
-+#define TEGRA_GPIO_BANK_ID_N 13
-+#define TEGRA_GPIO_BANK_ID_O 14
-+#define TEGRA_GPIO_BANK_ID_P 15
-+#define TEGRA_GPIO_BANK_ID_Q 16
-+#define TEGRA_GPIO_BANK_ID_R 17
-+#define TEGRA_GPIO_BANK_ID_S 18
-+#define TEGRA_GPIO_BANK_ID_T 19
-+#define TEGRA_GPIO_BANK_ID_U 20
-+#define TEGRA_GPIO_BANK_ID_V 21
-+#define TEGRA_GPIO_BANK_ID_W 22
-+#define TEGRA_GPIO_BANK_ID_X 23
-+#define TEGRA_GPIO_BANK_ID_Y 24
-+#define TEGRA_GPIO_BANK_ID_Z 25
-+#define TEGRA_GPIO_BANK_ID_AA 26
-+#define TEGRA_GPIO_BANK_ID_BB 27
-+#define TEGRA_GPIO_BANK_ID_CC 28
-+#define TEGRA_GPIO_BANK_ID_DD 29
-+#define TEGRA_GPIO_BANK_ID_EE 30
-+
-+#define TEGRA_GPIO(bank, offset) \
-+	((TEGRA_GPIO_BANK_ID_##bank * 8) + offset)
-+
-+#endif
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+---
+ scripts/kwbimage.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
+index 82cf21c..adfe0cd 100644
+--- a/scripts/kwbimage.c
++++ b/scripts/kwbimage.c
+@@ -1080,8 +1080,8 @@ static int image_create_config_parse_oneline(char *line,
+ 		}
+ 
+ 		el->type = IMAGE_CFG_DATA;
+-		el->regdata.raddr = strtol(value1, NULL, 16);
+-		el->regdata.rdata = strtol(value2, NULL, 16);
++		el->regdata.raddr = strtoul(value1, NULL, 16);
++		el->regdata.rdata = strtoul(value2, NULL, 16);
+ 	} else if (!strcmp(keyword, "PAYLOAD")) {
+ 		char *value = strtok_r(NULL, " ", &saveptr);
+ 		el->type = IMAGE_CFG_PAYLOAD;
 -- 
-1.8.4.2
+1.8.5.2
 
 
 _______________________________________________
