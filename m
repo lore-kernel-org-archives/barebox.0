@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W7hKp-0005Gy-9M
- for barebox@lists.infradead.org; Mon, 27 Jan 2014 08:14:24 +0000
-Date: Mon, 27 Jan 2014 09:13:58 +0100
+ id 1W7hSY-0005OY-Pi
+ for barebox@lists.infradead.org; Mon, 27 Jan 2014 08:22:23 +0000
+Date: Mon, 27 Jan 2014 09:22:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140127081358.GQ16215@pengutronix.de>
-References: <1390756341-21349-1-git-send-email-m.grzeschik@pengutronix.de>
+Message-ID: <20140127082200.GR16215@pengutronix.de>
+References: <1390680958-9991-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1390756341-21349-1-git-send-email-m.grzeschik@pengutronix.de>
+In-Reply-To: <1390680958-9991-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,85 +22,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] scripts: kwbimage: fix imagebuild on 32bit host system
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: Re: [PATCH 1/4] dt-bindings: add ARM GIC
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Jan 26, 2014 at 06:12:21PM +0100, Michael Grzeschik wrote:
-> We have to use strtoul to run the tool working on 32bit systems.
-> Otherwise it will generate signed numbers for strings representing
-> values with the 32nd bit set.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+On Sat, Jan 25, 2014 at 09:15:55PM +0100, Lucas Stach wrote:
+> Signed-off-by: Lucas Stach <dev@lynxeye.de>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  scripts/kwbimage.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+>  include/dt-bindings/interrupt-controller/arm-gic.h | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>  create mode 100644 include/dt-bindings/interrupt-controller/arm-gic.h
 > 
-> diff --git a/scripts/kwbimage.c b/scripts/kwbimage.c
-> index 82cf21c..cd87456 100644
-> --- a/scripts/kwbimage.c
-> +++ b/scripts/kwbimage.c
-> @@ -1024,20 +1024,20 @@ static int image_create_config_parse_oneline(char *line,
->  	} else if (!strcmp(keyword, "DESTADDR")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_DEST_ADDR;
-> -		el->dstaddr = strtol(value, NULL, 16);
-> +		el->dstaddr = strtoul(value, NULL, 16);
->  	} else if (!strcmp(keyword, "EXECADDR")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_EXEC_ADDR;
-> -		el->execaddr = strtol(value, NULL, 16);
-> +		el->execaddr = strtoul(value, NULL, 16);
->  	} else if (!strcmp(keyword, "NAND_BLKSZ")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_NAND_BLKSZ;
-> -		el->nandblksz = strtol(value, NULL, 16);
-> +		el->nandblksz = strtoul(value, NULL, 16);
->  	} else if (!strcmp(keyword, "NAND_BADBLK_LOCATION")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_NAND_BADBLK_LOCATION;
->  		el->nandbadblklocation =
-> -			strtol(value, NULL, 16);
-> +			strtoul(value, NULL, 16);
->  	} else if (!strcmp(keyword, "NAND_ECCMODE")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_NAND_ECC_MODE;
-> @@ -1050,7 +1050,7 @@ static int image_create_config_parse_oneline(char *line,
->  	} else if (!strcmp(keyword, "NAND_PAGESZ")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_NAND_PAGESZ;
-> -		el->nandpagesz = strtol(value, NULL, 16);
-> +		el->nandpagesz = strtoul(value, NULL, 16);
->  	} else if (!strcmp(keyword, "BINARY")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		int argi = 0;
-> @@ -1061,7 +1061,7 @@ static int image_create_config_parse_oneline(char *line,
->  			value = strtok_r(NULL, " ", &saveptr);
->  			if (!value)
->  				break;
-> -			el->binary.args[argi] = strtol(value, NULL, 16);
-> +			el->binary.args[argi] = strtoul(value, NULL, 16);
->  			argi++;
->  			if (argi >= BINARY_MAX_ARGS) {
->  				fprintf(stderr,
-> @@ -1080,8 +1080,8 @@ static int image_create_config_parse_oneline(char *line,
->  		}
->  
->  		el->type = IMAGE_CFG_DATA;
-> -		el->regdata.raddr = strtol(value1, NULL, 16);
-> -		el->regdata.rdata = strtol(value2, NULL, 16);
-> +		el->regdata.raddr = strtoul(value1, NULL, 16);
-> +		el->regdata.rdata = strtoul(value2, NULL, 16);
->  	} else if (!strcmp(keyword, "PAYLOAD")) {
->  		char *value = strtok_r(NULL, " ", &saveptr);
->  		el->type = IMAGE_CFG_PAYLOAD;
+> diff --git a/include/dt-bindings/interrupt-controller/arm-gic.h b/include/dt-bindings/interrupt-controller/arm-gic.h
+> new file mode 100644
+> index 0000000..1ea1b70
+> --- /dev/null
+> +++ b/include/dt-bindings/interrupt-controller/arm-gic.h
+> @@ -0,0 +1,22 @@
+> +/*
+> + * This header provides constants for the ARM GIC.
+> + */
+> +
+> +#ifndef _DT_BINDINGS_INTERRUPT_CONTROLLER_ARM_GIC_H
+> +#define _DT_BINDINGS_INTERRUPT_CONTROLLER_ARM_GIC_H
+> +
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +/* interrupt specific cell 0 */
+> +
+> +#define GIC_SPI 0
+> +#define GIC_PPI 1
+> +
+> +/*
+> + * Interrupt specifier cell 2.
+> + * The flaggs in irq.h are valid, plus those below.
+> + */
+> +#define GIC_CPU_MASK_RAW(x) ((x) << 8)
+> +#define GIC_CPU_MASK_SIMPLE(num) GIC_CPU_MASK_RAW((1 << (num)) - 1)
+> +
+> +#endif
 > -- 
-> 1.8.5.2
+> 1.8.4.2
 > 
 > 
 > _______________________________________________
