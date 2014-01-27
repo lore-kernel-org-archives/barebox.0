@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W7hUj-0005Tz-IC
- for barebox@lists.infradead.org; Mon, 27 Jan 2014 08:24:38 +0000
-Date: Mon, 27 Jan 2014 09:24:15 +0100
+ id 1W7heL-0005oI-92
+ for barebox@lists.infradead.org; Mon, 27 Jan 2014 08:34:33 +0000
+Date: Mon, 27 Jan 2014 09:34:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140127082415.GS16215@pengutronix.de>
-References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
- <20140122111558.GA24917@pengutronix.de>
- <20140123013529.b2e75ff11bcbe9492a743726@gmail.com>
- <20140123070218.GF16215@pengutronix.de>
- <20140123143301.56549abbc0544e29206cf327@gmail.com>
+Message-ID: <20140127083411.GT16215@pengutronix.de>
+References: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140123143301.56549abbc0544e29206cf327@gmail.com>
+In-Reply-To: <1390431049-4236-1-git-send-email-philipp.zabel@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,45 +22,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/13] MIPS: add initial Loongson-based boards support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/4] Asix AX88772B support
+To: Philipp Zabel <philipp.zabel@gmail.com>
+Cc: barebox@lists.infradead.org, Marek Vasut <marek.vasut@gmail.com>
 
-On Thu, Jan 23, 2014 at 02:33:01PM +0400, Antony Pavlov wrote:
-> On Thu, 23 Jan 2014 08:02:19 +0100
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+On Wed, Jan 22, 2014 at 11:50:45PM +0100, Philipp Zabel wrote:
+> This patch series picks up some changes from the linux kernel
+> to make Asix AX88772B based USB Ethernet dongles work.
 > 
-> > On Thu, Jan 23, 2014 at 01:35:29AM +0400, Antony Pavlov wrote:
-> > > On Wed, 22 Jan 2014 12:15:58 +0100
-> > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > > 
-> > > > On Sat, Jan 18, 2014 at 07:12:50PM +0400, Antony Pavlov wrote:
-> > > > make: *** Waiting for unfinished jobs....
-> > > > arch/mips/boards/loongson-ls1b/serial.c:5:28: error: mach/loongson1.h: No such file or directory
-> > > > arch/mips/boards/loongson-ls1b/serial.c: In function 'console_init':
-> > > > arch/mips/boards/loongson-ls1b/serial.c:17: warning: implicit declaration of function 'KSEG1ADDR'
-> > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: 'LS1X_UART2_BASE' undeclared (first use in this function)
-> > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: (Each undeclared identifier is reported only once
-> > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: for each function it appears in.)
-> > > > 
-> > > > arch/mips/mach-loongson/include/mach/loongson1.h and
-> > > > arch/mips/mach-loongson/Makefile seem to be missing. Could you respin with the missing files?
-> > > 
-> > > The missing files are from "[PATCH 04/13] MIPS: add initial Loongson-1X SoC stuff".
-> > > 
-> > > The missed patch is registered in maillist: see http://lists.infradead.org/pipermail/barebox/2014-January/017521.html
-> > 
-> > Indeed. For some reason I didn't receive that mail. I picked it from the
-> > ml archive now.
+> Marek Vasut (2):
+>   net usb asix: Simplify condition in rx_fixup()
+>   net usb asix: Use only 11 bits of header for data size
 > 
-> I have just fetched next branch from barebox.org.
-> 
-> Now the "MIPS: add initial Loongson-1X SoC stuff" patch is just after all loongson-related
-> patches save "add loongson-ls1b_defconfig".
-> 
-> Could you please put it before the "add loongson-ls1b board" patch?
+> Philipp Zabel (2):
+>   net usb asix: read MAC from EEPROM on AX88772B
 
-Ok. Just did that.
+Applied three patches. Could you resend this one? It didn't make it to
+the list.
 
 Sascha
 
