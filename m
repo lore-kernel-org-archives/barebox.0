@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8SzM-0006jm-L9
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:07:26 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 29 Jan 2014 11:06:49 +0000
-Message-Id: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W8Sxa-0006g0-Nk
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:05:35 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 29 Jan 2014 12:05:06 +0100
+Message-Id: <1390993508-10287-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +19,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] DA923RC: enable UBIFS support to allow firmware flash
- booting
+Subject: [PATCH 1/3] scripts: fix_size: check magic
 To: barebox@lists.infradead.org
 
-UBI/UBIFS are enabled for the DA923RC board to load and boot images from
-the NOR flash storage. As images may be loaded through a symlink, the
-readlink entry point is implemented in the UBIFS driver support.
+Instead of passing the offset to the fix_size tool check the image to
+fixup for a valid header so that only recognized files are fixed up.
+This makes the usage of this tool safer.
 
-ppc bit operations header files are updated as they are in conflict with
-main header files when UBIFS is enabled.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/pbl/Makefile |  2 +-
+ scripts/fix_size.c    | 32 +++++++++++++++++++++++++-------
+ 2 files changed, 26 insertions(+), 8 deletions(-)
 
-Renaud Barbier (3):
-  ppc: remove bit operation headers file conflict
-  UBIFS: implement readlink entry point
-  DA923RC: enable UBI/UBIFS configuration
-
- arch/ppc/boards/geip-da923rc/env/bin/init  |   12 +++++++
- arch/ppc/configs/da923rc_defconfig         |    6 ++++
- arch/ppc/cpu-85xx/tlb.c                    |    2 +-
- arch/ppc/include/asm/bitops.h              |   46 +--------------------------
- arch/ppc/mach-mpc85xx/fsl_law.c            |    1 +
- arch/ppc/mach-mpc85xx/include/mach/ffs64.h |   20 ++++++++++++
- fs/ubifs/ubifs.c                           |   38 +++++++++++++++++++++++
- 7 files changed, 80 insertions(+), 45 deletions(-)
- create mode 100644 arch/ppc/mach-mpc85xx/include/mach/ffs64.h
+diff --git a/arch/arm/pbl/Makefile b/arch/arm/pbl/Makefile
+index bfa73b9..5e90f3d 100644
+--- a/arch/arm/pbl/Makefile
++++ b/arch/arm/pbl/Makefile
+@@ -23,7 +23,7 @@ $(obj)/zbarebox.bin:	$(obj)/zbarebox FORCE
+ 	$(call if_changed,objcopy)
+ 	$(call cmd,check_file_size,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+ 	$(Q)$(kecho) '  Barebox: fix size'
+-	$(Q)$(objtree)/scripts/fix_size -f $(objtree)/$@ -o 0x2c $(FIX_SIZE)
++	$(Q)$(objtree)/scripts/fix_size -f $(objtree)/$@ $(FIX_SIZE)
+ 	$(Q)$(kecho) '  Barebox: $@ is ready'
+ 
+ $(obj)/zbarebox.S: $(obj)/zbarebox FORCE
+diff --git a/scripts/fix_size.c b/scripts/fix_size.c
+index 869ae7e..1daf5fc 100644
+--- a/scripts/fix_size.c
++++ b/scripts/fix_size.c
+@@ -2,6 +2,7 @@
+ #include <stdio.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <string.h>
+ #include <unistd.h>
+ #include <stdint.h>
+ #include <fcntl.h>
+@@ -15,20 +16,17 @@ int main(int argc, char**argv)
+ 	struct stat s;
+ 	int c;
+ 	int fd;
+-	uint64_t offset = 0;
+ 	uint32_t size = 0;
+ 	char *file = NULL;
+ 	int ret = 1;
+ 	int is_bigendian = 0;
++	char magic[8];
+ 
+-	while ((c = getopt (argc, argv, "hf:o:b")) != -1) {
++	while ((c = getopt (argc, argv, "hf:b")) != -1) {
+ 		switch (c) {
+ 		case 'f':
+ 			file = optarg;
+ 			break;
+-		case 'o':
+-			offset = strtoul(optarg, NULL, 16);
+-			break;
+ 		case 'b':
+ 			is_bigendian = 1;
+ 			break;
+@@ -45,13 +43,33 @@ int main(int argc, char**argv)
+ 		return 1;
+ 	}
+ 
+-	fd = open(file, O_WRONLY);
++	fd = open(file, O_RDWR);
+ 	if (fd < 0) {
+ 		perror("open");
+ 		return 1;
+ 	}
+ 
+-	ret = lseek(fd, offset, SEEK_SET);
++	ret = lseek(fd, 0x20, SEEK_SET);
++	if (ret < 0) {
++		perror("lseek");
++		ret = 1;
++		goto err;
++	}
++
++	ret = read(fd, magic, sizeof(magic));
++	if (ret < 0) {
++		perror("read");
++		ret = 1;
++		goto err;
++	}
++
++	if (strcmp(magic, "barebox")) {
++		fprintf(stderr, "invalid magic\n");
++		ret = 1;
++		goto err;
++	}
++
++	ret = lseek(fd, 0x2c, SEEK_SET);
+ 	if (ret < 0) {
+ 		perror("lseek");
+ 		ret = 1;
+-- 
+1.8.5.3
 
 
 _______________________________________________
