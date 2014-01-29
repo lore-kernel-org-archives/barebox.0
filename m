@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8ZmE-0005BB-6m
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 18:22:19 +0000
+ id 1W8ZmE-0005BA-6n
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 18:22:20 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 29 Jan 2014 22:21:48 +0400
-Message-Id: <1391019709-30606-3-git-send-email-shc_work@mail.ru>
+Date: Wed, 29 Jan 2014 22:21:47 +0400
+Message-Id: <1391019709-30606-2-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
 References: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,37 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] gadget: at91: Fix uninitialized variable
+Subject: [PATCH 2/4] ppc 8xxx: Fix logic
 To: barebox@lists.infradead.org
 
-Variable udc is used unitialized for DBG(xxx).
+Expression (pdimm->data_width >= 32) || (pdimm->data_width <= 40)
+always evaluates to true, so probably we need to use "&&" here.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/usb/gadget/at91_udc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/ppc/ddr-8xxx/options.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index acd9e44..6eeef7d 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -1417,7 +1417,7 @@ static struct poller_struct poller = {
- 
- static int __init at91udc_probe(struct device_d *dev)
- {
--	struct at91_udc	*udc;
-+	struct at91_udc	*udc = &controller;
- 	int		retval;
- 
- 	if (!dev->platform_data) {
-@@ -1427,7 +1427,6 @@ static int __init at91udc_probe(struct device_d *dev)
- 	}
- 
- 	/* init software state */
--	udc = &controller;
- 	udc->dev = dev;
- 	udc->board = *(struct at91_udc_data *) dev->platform_data;
- 	udc->enabled = 0;
+diff --git a/arch/ppc/ddr-8xxx/options.c b/arch/ppc/ddr-8xxx/options.c
+index 22b621f..9ce2bc1 100644
+--- a/arch/ppc/ddr-8xxx/options.c
++++ b/arch/ppc/ddr-8xxx/options.c
+@@ -48,7 +48,7 @@ uint32_t populate_memctl_options(int all_DIMMs_registered,
+ 	if (pdimm->n_ranks != 0) {
+ 		if ((pdimm->data_width >= 64) && (pdimm->data_width <= 72))
+ 			popts->data_bus_width = 0;
+-		else if ((pdimm->data_width >= 32) ||
++		else if ((pdimm->data_width >= 32) &&
+ 			(pdimm->data_width <= 40))
+ 			popts->data_bus_width = 1;
+ 		else
 -- 
 1.8.3.2
 
