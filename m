@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8RX5-0004GR-5T
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 09:34:08 +0000
+ id 1W8RTT-00046o-BQ
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 09:30:24 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 29 Jan 2014 10:33:39 +0100
-Message-Id: <1390988019-31405-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1390988019-31405-1-git-send-email-s.hauer@pengutronix.de>
-References: <1390988019-31405-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 29 Jan 2014 10:29:59 +0100
+Message-Id: <1390987800-18095-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,76 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] ARM: mode cpu_architecture() to common.c
+Subject: [PATCH 1/2] misc Kconfig: always ask for misc devices
 To: barebox@lists.infradead.org
 
-It might be needed in pbl code, so move it to a file which is
-compiled in pbl mode.
+The "Misc devices" menu does not enable anything by itself, so make it a
+regular menu rather than a menuconfig.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/common.c | 14 ++++++++++++++
- arch/arm/cpu/cpu.c    | 14 --------------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/misc/Kconfig | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 40f784f..d5f8929 100644
---- a/arch/arm/cpu/common.c
-+++ b/arch/arm/cpu/common.c
-@@ -18,6 +18,7 @@
- #include <common.h>
- #include <init.h>
- #include <sizes.h>
-+#include <asm/system_info.h>
- #include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <asm-generic/memory_layout.h>
-@@ -64,3 +65,16 @@ void relocate_to_current_adr(void)
- 	arm_early_mmu_cache_flush();
- 	flush_icache();
- }
-+
-+#ifdef ARM_MULTIARCH
-+
-+int __cpu_architecture;
-+
-+int __pure cpu_architecture(void)
-+{
-+	if(__cpu_architecture == CPU_ARCH_UNKNOWN)
-+		__cpu_architecture = arm_early_get_cpu_architecture();
-+
-+	return __cpu_architecture;
-+}
-+#endif
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index f2e698d..895e07e 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -29,7 +29,6 @@
- #include <asm/system.h>
- #include <asm/memory.h>
- #include <asm-generic/memory_layout.h>
--#include <asm/system_info.h>
- #include <asm/cputype.h>
- #include <asm/cache.h>
- #include <asm/ptrace.h>
-@@ -146,16 +145,3 @@ static int execute_init(void)
- }
- postcore_initcall(execute_init);
- #endif
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 606490b..e59c4f1 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -2,17 +2,11 @@
+ # Misc strange devices
+ #
+ 
+-menuconfig MISC_DEVICES
+-	bool "Misc devices"
+-	help
+-	  Add support for misc strange devices
 -
--#ifdef ARM_MULTIARCH
+-if MISC_DEVICES
++menu "Misc devices"
+ 
+ config JTAG
+ 	tristate "JTAG Bitbang driver"
+ 	depends on GENERIC_GPIO
+ 	help
+ 	  Controls JTAG chains connected to I/O pins
 -
--int __cpu_architecture;
--
--int __pure cpu_architecture(void)
--{
--	if(__cpu_architecture == CPU_ARCH_UNKNOWN)
--		__cpu_architecture = arm_early_get_cpu_architecture();
--
--	return __cpu_architecture;
--}
--#endif
+-endif # MISC_DEVICES
++endmenu
 -- 
 1.8.5.3
 
