@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og108.obsmtp.com ([64.18.0.186])
+Received: from exprod5og118.obsmtp.com ([64.18.0.160])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8SzP-0006jn-KD
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:07:28 +0000
+ id 1W8Szk-0006kg-5N
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:07:48 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Wed, 29 Jan 2014 11:06:52 +0000
-Message-Id: <1390993612-26246-4-git-send-email-renaud.barbier@ge.com>
+Date: Wed, 29 Jan 2014 11:06:51 +0000
+Message-Id: <1390993612-26246-3-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
 References: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,56 +21,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] DA923RC: enable UBI/UBIFS configuration
+Subject: [PATCH 2/3] UBIFS: implement readlink entry point
 To: barebox@lists.infradead.org
 
-The UBI/UBIFS support is enabled and a script is added to attach
-the UBI device and mount the UBIFS partition. This allows the loading
-of firmware images from the NOR flash.
+Implement the readlink entry point for future use by the DA923RC.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- arch/ppc/boards/geip-da923rc/env/bin/init |   12 ++++++++++++
- arch/ppc/configs/da923rc_defconfig        |    6 ++++++
- 2 files changed, 18 insertions(+), 0 deletions(-)
+ fs/ubifs/ubifs.c |   38 ++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 38 insertions(+), 0 deletions(-)
 
-diff --git a/arch/ppc/boards/geip-da923rc/env/bin/init b/arch/ppc/boards/geip-da923rc/env/bin/init
-index 6308999..330a435 100644
---- a/arch/ppc/boards/geip-da923rc/env/bin/init
-+++ b/arch/ppc/boards/geip-da923rc/env/bin/init
-@@ -2,3 +2,15 @@
- export PATH=/env/bin
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index dfa6107..e2f9593 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -24,6 +24,7 @@
+  */
  
- source /env/config
+ #include <common.h>
++#include <malloc.h>
+ #include <driver.h>
+ #include <init.h>
+ #include <malloc.h>
+@@ -549,6 +550,42 @@ static int ubifs_stat(struct device_d *dev, const char *filename, struct stat *s
+ 	return 0;
+ }
+ 
++static char *ubifs_symlink(struct inode *inode)
++{
++	struct ubifs_inode *ui;
++	char *symlink;
 +
-+#Define a 26MB partition in flash starting at offset 0x20000
-+addpart -n /dev/nor0 0x1a00000@0x20000(boot)
-+ubiattach /dev/boot
++	ui = ubifs_inode(inode);
++	symlink = malloc(ui->data_len + 1);
 +
-+if [ $? -ne 0 ]; then
-+	echo "Fail to attach UBI device"
-+	exit 1;
-+fi
++	memcpy(symlink, ui->data, ui->data_len);
++	symlink[ui->data_len] = '\0';
 +
-+mkdir /mnt
-+mount -t ubifs /dev/ubi0.boot /mnt
-diff --git a/arch/ppc/configs/da923rc_defconfig b/arch/ppc/configs/da923rc_defconfig
-index a9dc0df..da1b13a 100644
---- a/arch/ppc/configs/da923rc_defconfig
-+++ b/arch/ppc/configs/da923rc_defconfig
-@@ -42,6 +42,12 @@ CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
- CONFIG_CFI_BUFFER_WRITE=y
- CONFIG_MTD=y
- CONFIG_MTD_WRITE=y
-+CONFIG_MTD_UBI=y
-+CONFIG_CMD_UBI=y
-+CONFIG_FS_UBIFS=y
-+CONFIG_FS_UBIFS_COMPRESSION_LZO=y
-+CONFIG_CMD_UNLZO=y
-+CONFIG_LZO_DECOMPRESS=y
- CONFIG_MALLOC_SIZE=0x2800000
- CONFIG_PROMPT="GE> "
- CONFIG_BAUDRATE=9600
++	return symlink;
++}
++
++static int ubifs_readlink(struct device_d *dev, const char *pathname, char *buf,
++			size_t bufsz)
++{
++	struct ubifs_priv *priv = dev->priv;
++	struct inode *inode;
++	char *symlink;
++	int len;
++
++	inode = ubifs_findfile(priv->sb, pathname);
++
++	if (!inode)
++		return -ENOENT;
++
++	symlink = ubifs_symlink(inode);
++
++	len = min(bufsz, strlen(symlink));
++	memcpy(buf, symlink, len);
++	free(symlink);
++
++	return 0;
++}
++
+ static int ubifs_probe(struct device_d *dev)
+ {
+ 	struct fs_device_d *fsdev = dev_to_fs_device(dev);
+@@ -609,6 +646,7 @@ static struct fs_driver_d ubifs_driver = {
+ 	.readdir   = ubifs_readdir,
+ 	.closedir  = ubifs_closedir,
+ 	.stat      = ubifs_stat,
++	.readlink  = ubifs_readlink,
+ 	.type = filetype_ubifs,
+ 	.flags     = 0,
+ 	.drv = {
 -- 
 1.7.1
 
