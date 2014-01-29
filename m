@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp38.i.mail.ru ([94.100.177.98])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8ZmE-0005B9-6k
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 18:22:19 +0000
+ id 1W8ZmE-0005BC-6p
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 18:22:20 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Wed, 29 Jan 2014 22:21:46 +0400
-Message-Id: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
+Date: Wed, 29 Jan 2014 22:21:49 +0400
+Message-Id: <1391019709-30606-4-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
+References: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,27 +21,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] MIPS: mach-ar231x: Fix uninitialized variable
+Subject: [PATCH 4/4] scripts: imx-usb-loader: Fix memory leak
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/mips/mach-ar231x/board.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/imx/imx-usb-loader.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/mach-ar231x/board.c b/arch/mips/mach-ar231x/board.c
-index f1b876f..8bd1787 100644
---- a/arch/mips/mach-ar231x/board.c
-+++ b/arch/mips/mach-ar231x/board.c
-@@ -111,7 +111,7 @@ static u16
- ar231x_cksum16(u8 *data, int size)
- {
- 	int i;
--	u16 sum;
-+	u16 sum = 0;
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 12a89f5..475917b 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -1334,7 +1334,7 @@ static void usage(const char *prgname)
  
- 	for (i = 0; i < size; i++)
- 		sum += data[i];
+ int main(int argc, char *argv[])
+ {
+-	struct usb_id *p_id;
++	struct usb_id *p_id = NULL;
+ 	struct mach_id *mach;
+ 	libusb_device **devs;
+ 	libusb_device *dev;
+@@ -1432,6 +1432,9 @@ int main(int argc, char *argv[])
+ 
+ 	ret = 0;
+ out:
++	if (p_id)
++		free(p_id);
++
+ 	if (h)
+ 		libusb_close(h);
+ 
 -- 
 1.8.3.2
 
