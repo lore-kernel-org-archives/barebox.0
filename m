@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x231.google.com ([2a00:1450:4013:c01::231])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8GUy-0000ls-AV
- for barebox@lists.infradead.org; Tue, 28 Jan 2014 21:47:12 +0000
-Received: by mail-ea0-f177.google.com with SMTP id n15so516346ead.8
- for <barebox@lists.infradead.org>; Tue, 28 Jan 2014 13:46:49 -0800 (PST)
-From: Philipp Zabel <philipp.zabel@gmail.com>
-Date: Tue, 28 Jan 2014 22:46:46 +0100
-Message-Id: <1390945606-8619-1-git-send-email-philipp.zabel@gmail.com>
+ id 1W8RW7-0004FH-Uo
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 09:33:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 29 Jan 2014 10:32:45 +0100
+Message-Id: <1390987965-3236-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,52 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] net usb asix: read MAC from EEPROM on AX88772B
+Subject: [PATCH] images: remove unused command
 To: barebox@lists.infradead.org
 
-Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
----
- drivers/net/usb/asix.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+cmd_selfextract is unused. Remove it.
 
-diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-index 003ebba..085d728 100644
---- a/drivers/net/usb/asix.c
-+++ b/drivers/net/usb/asix.c
-@@ -132,6 +132,8 @@
- #define MARVELL_CTRL_TXDELAY	0x0002
- #define MARVELL_CTRL_RXDELAY	0x0080
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ images/Makefile | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/images/Makefile b/images/Makefile
+index 4ff0602..cfe3092 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -88,11 +88,6 @@ suffix_$(CONFIG_IMAGE_COMPRESSION_NONE) = shipped
+ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
+ 	$(call if_changed,$(suffix_y))
  
-+#define FLAG_EEPROM_MAC		(1UL << 0) /* init device MAC from eeprom */
-+
- /* This structure cannot exceed sizeof(unsigned long [5]) AKA 20 bytes */
- struct asix_data {
- 	u8 multi_filter[AX_MCAST_FILTER_SIZE];
-@@ -364,11 +366,21 @@ static int asix_write_gpio(struct usbnet *dev, u16 value, int sleep)
- static int asix_get_ethaddr(struct eth_device *edev, unsigned char *adr)
- {
- 	struct usbnet *udev = container_of(edev, struct usbnet, edev);
--	int ret;
-+	int i, ret;
- 
- 	/* Get the MAC address */
--	if ((ret = asix_read_cmd(udev, AX_CMD_READ_NODE_ID,
--				0, 0, 6, adr)) < 0) {
-+	if (udev->driver_info->data & FLAG_EEPROM_MAC) {
-+		for (i = 0; i < (6 >> 1); i++) {
-+			ret = asix_read_cmd(udev, AX_CMD_READ_EEPROM, 0x04 + i,
-+					0, 2, adr + i * 2);
-+			if (ret < 0)
-+				break;
-+		}
-+	} else {
-+		ret = asix_read_cmd(udev, AX_CMD_READ_NODE_ID, 0, 0, 6, adr);
-+	}
-+
-+	if (ret < 0) {
- 		debug("Failed to read MAC address: %d\n", ret);
- 		return -1;
- 	}
+-quiet_cmd_selfextract = COMP    $@
+-      cmd_selfextract = cat $(obj)/start_uncompress.pblb > $@; \
+-			$(call size_append, $<) >> $@; \
+-			cat $< >> $@
+-
+ # %.img - create a copy from another file
+ # ----------------------------------------------------------------
+ .SECONDEXPANSION:
 -- 
 1.8.5.3
 
