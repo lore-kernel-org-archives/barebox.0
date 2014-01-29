@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8RX5-0004GP-5V
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 09:34:07 +0000
+ id 1W8RXA-0004Gi-5Y
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 09:34:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 29 Jan 2014 10:33:36 +0100
-Message-Id: <1390988019-31405-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 29 Jan 2014 10:33:38 +0100
+Message-Id: <1390988019-31405-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1390988019-31405-1-git-send-email-s.hauer@pengutronix.de>
+References: <1390988019-31405-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,31 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] ARM: Make thumb2 compilation only visible on CPUs that
- support it
+Subject: [PATCH 3/4] ARM: Do not use BUG() in pbl code
 To: barebox@lists.infradead.org
 
-Thumb2 can't be used if one of CPU_32v4T, CPU_32v5 or CPU_32v6 is
-selected.
+BUG() uses printf which is not available in pbl, so do not use it here.
+This becomes necessary when multiple CPU architectures are compiled in.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig | 2 +-
+ arch/arm/cpu/cache.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 93619d5..ce8d3fd 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -216,7 +216,7 @@ config AEABI
- config THUMB2_BAREBOX
- 	select ARM_ASM_UNIFIED
- 	select AEABI
--	depends on CPU_V7
-+	depends on CPU_V7 && !CPU_32v4T && !CPU_32v5 && !CPU_32v6
- 	bool "Compile barebox in thumb-2 mode (read help)"
- 	help
- 	  This enables compilation of barebox in thumb-2 mode which generates
+diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
+index 223e308..34d3090 100644
+--- a/arch/arm/cpu/cache.c
++++ b/arch/arm/cpu/cache.c
+@@ -102,7 +102,7 @@ int arm_set_cache_functions(void)
+ 		break;
+ #endif
+ 	default:
+-		BUG();
++		while(1);
+ 	}
+ 
+ 	return 0;
 -- 
 1.8.5.3
 
