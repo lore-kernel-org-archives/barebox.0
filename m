@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8Sxa-0006g1-Oe
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:05:35 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 29 Jan 2014 12:05:07 +0100
-Message-Id: <1390993508-10287-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1390993508-10287-1-git-send-email-s.hauer@pengutronix.de>
-References: <1390993508-10287-1-git-send-email-s.hauer@pengutronix.de>
+Received: from exprod5og108.obsmtp.com ([64.18.0.186])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W8SzP-0006jn-KD
+ for barebox@lists.infradead.org; Wed, 29 Jan 2014 11:07:28 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Wed, 29 Jan 2014 11:06:52 +0000
+Message-Id: <1390993612-26246-4-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
+References: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,37 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] images: fix image size in pblx
+Subject: [PATCH 3/3] DA923RC: enable UBI/UBIFS configuration
 To: barebox@lists.infradead.org
 
-The pblx is a self extracting barebox binary. This doesn't have
-the size of the image correctly set because the linker doesn't
-generate it for relocatable binaries.
-This currently only works on ARM, but this is the only architecture
-supporting multi images anyway. TO make it work on other architectures
-fix_size would have to be extended to recognize other images.
+The UBI/UBIFS support is enabled and a script is added to attach
+the UBI device and mount the UBIFS partition. This allows the loading
+of firmware images from the NOR flash.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- images/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/ppc/boards/geip-da923rc/env/bin/init |   12 ++++++++++++
+ arch/ppc/configs/da923rc_defconfig        |    6 ++++++
+ 2 files changed, 18 insertions(+), 0 deletions(-)
 
-diff --git a/images/Makefile b/images/Makefile
-index 4ff0602..3e707e8 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -70,7 +70,8 @@ $(obj)/%.pblb: $(obj)/%.pbl FORCE
- quiet_cmd_pblx ?= PBLX    $@
-       cmd_pblx ?= cat $(obj)/$(patsubst %.pblx,%.pblb,$(2)) > $@; \
- 		  $(call size_append, $(obj)/barebox.z) >> $@; \
--		  cat $(obj)/barebox.z >> $@
-+		  cat $(obj)/barebox.z >> $@; \
-+		  $(objtree)/scripts/fix_size -f $@
+diff --git a/arch/ppc/boards/geip-da923rc/env/bin/init b/arch/ppc/boards/geip-da923rc/env/bin/init
+index 6308999..330a435 100644
+--- a/arch/ppc/boards/geip-da923rc/env/bin/init
++++ b/arch/ppc/boards/geip-da923rc/env/bin/init
+@@ -2,3 +2,15 @@
+ export PATH=/env/bin
  
- $(obj)/%.pblx: $(obj)/%.pblb $(obj)/barebox.z FORCE
- 	$(call if_changed,pblx,$(@F))
+ source /env/config
++
++#Define a 26MB partition in flash starting at offset 0x20000
++addpart -n /dev/nor0 0x1a00000@0x20000(boot)
++ubiattach /dev/boot
++
++if [ $? -ne 0 ]; then
++	echo "Fail to attach UBI device"
++	exit 1;
++fi
++
++mkdir /mnt
++mount -t ubifs /dev/ubi0.boot /mnt
+diff --git a/arch/ppc/configs/da923rc_defconfig b/arch/ppc/configs/da923rc_defconfig
+index a9dc0df..da1b13a 100644
+--- a/arch/ppc/configs/da923rc_defconfig
++++ b/arch/ppc/configs/da923rc_defconfig
+@@ -42,6 +42,12 @@ CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
+ CONFIG_CFI_BUFFER_WRITE=y
+ CONFIG_MTD=y
+ CONFIG_MTD_WRITE=y
++CONFIG_MTD_UBI=y
++CONFIG_CMD_UBI=y
++CONFIG_FS_UBIFS=y
++CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_CMD_UNLZO=y
++CONFIG_LZO_DECOMPRESS=y
+ CONFIG_MALLOC_SIZE=0x2800000
+ CONFIG_PROMPT="GE> "
+ CONFIG_BAUDRATE=9600
 -- 
-1.8.5.3
+1.7.1
 
 
 _______________________________________________
