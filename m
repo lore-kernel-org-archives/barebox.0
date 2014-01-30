@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8p6U-0000uz-JC
- for barebox@lists.infradead.org; Thu, 30 Jan 2014 10:44:15 +0000
-Received: by mail-lb0-f170.google.com with SMTP id u14so2417542lbd.29
- for <barebox@lists.infradead.org>; Thu, 30 Jan 2014 02:43:50 -0800 (PST)
-Date: Thu, 30 Jan 2014 14:52:15 +0400
+ id 1W8qyd-0004Og-JB
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 12:44:16 +0000
+Received: by mail-lb0-f181.google.com with SMTP id z5so2437497lbh.26
+ for <barebox@lists.infradead.org>; Thu, 30 Jan 2014 04:43:53 -0800 (PST)
+Date: Thu, 30 Jan 2014 16:52:18 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140130145215.904657d266e52fdae3ff5364@gmail.com>
+Message-Id: <20140130165218.a9e1b53bd5dd766449feb5ff@gmail.com>
 In-Reply-To: <20140130094541.GU16215@pengutronix.de>
 References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
  <20140122111558.GA24917@pengutronix.de>
@@ -72,34 +72,24 @@ PS: mach-loongson: add loongson-ls1b board".
 > =
 
 > Try again. Hopefully I got it right this time.
-
-I have just fetched last next branch.
-
-Sorry, Sascha, but 'git log --pretty=3Doneline arch/mips | cut -c 42- | hea=
-d -n 18'
-shows that the problem have not gone.
-
-Please see =
-
-http://git.pengutronix.de/?p=3Dbarebox.git;a=3Dcommit;h=3D2785363e21f7b4999=
-fd15c8c8eb3d50589eaf07f
-
-your git web says just the same: 'MIPS: mach-loongson: add loongson-ls1b bo=
-ard' is the parent for 'MIPS: add initial Loongson-1X SoC stuff'.
-
-
-> Sascha
 > =
 
-> -- =
+> Sascha
 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Now (Thu Jan 30 16:50:29 MSK 2014), the first loongson-board commit is
 
+commit 0208fdb15b83e4aaad12ee71695adb88229efab3
+Author: Antony Pavlov <antonynpavlov@gmail.com>
+Date:   Sat Jan 18 19:12:56 2014 +0400
 
--- =
+    MIPS: mach-loongson: add loongson-ls1b board
+    =
+
+    Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+It builds fine, thanks!
+
 
 --=A0
 Best regards,
