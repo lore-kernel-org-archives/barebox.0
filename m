@@ -1,13 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8o7C-0007oB-Ur
- for barebox@lists.infradead.org; Thu, 30 Jan 2014 09:40:55 +0000
+ id 1W8oCC-0007wU-2Y
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 09:46:04 +0000
+Date: Thu, 30 Jan 2014 10:45:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 30 Jan 2014 10:40:29 +0100
-Message-Id: <1391074829-25877-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1391074829-25877-1-git-send-email-s.hauer@pengutronix.de>
-References: <1391074829-25877-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140130094541.GU16215@pengutronix.de>
+References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
+ <20140122111558.GA24917@pengutronix.de>
+ <20140123013529.b2e75ff11bcbe9492a743726@gmail.com>
+ <20140123070218.GF16215@pengutronix.de>
+ <20140123143301.56549abbc0544e29206cf327@gmail.com>
+ <20140127082415.GS16215@pengutronix.de>
+ <20140130094236.d5399b714cb38ad0fd141926@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140130094236.d5399b714cb38ad0fd141926@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,57 +24,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] ARM: i.MX: edmqmx6: update defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/13] MIPS: add initial Loongson-based boards support
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-on the edmqmx6 barebox is loaded into SRAM, so it must not get
-too big. Disable some stuff to make the image fit into SRAM again.
+> I have just updated from git://git.pengutronix.de/git/barebox.git.
+> 
+> Here is a short log:
+> 
+> $ git log --pretty=oneline arch/mips | cut -c 42- | head -n 18
+> Merge branch 'for-next/mips' into next
+> MIPS: mach-ar231x: Fix uninitialized variable
+> MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
+> MIPS: add loongson-ls1b_defconfig
+> MIPS: loongson-ls1b: add documentation
+> MIPS: loongson-ls1b: add NMON support
+> MIPS: loongson-ls1b: add PBL support
+> MIPS: loongson-ls1b: add ns16550-based console
+> MIPS: loongson-ls1b: add DEBUG_LL support
+> MIPS: mach-loongson: add DEBUG_LL support
+> MIPS: add initial Loongson-1X SoC stuff
+> MIPS: mach-loongson: add loongson-ls1b board
+> MIPS: add Loongson-1B processor constants and CPU probe
+> MIPS: add Loongson-1B CPU Kbuild stuff
+> MIPS: add initial Loongson-family documentation
+> MIPS: add initial Loongson-based boards support
+> mips asm/types.h: add #ifndef to fix compile error
+> MIPS: import exception registers saving from linux kernel
+> 
+> You can see that "MIPS: add initial Loongson-1X SoC stuff" is AFTER "MIPS: mach-loongson: add loongson-ls1b board".
+> 
+> This breaks loongson-ls1b board build without "Loongson-1X SoC stuff":
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/dmo-realq7_defconfig | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Try again. Hopefully I got it right this time.
 
-diff --git a/arch/arm/configs/dmo-realq7_defconfig b/arch/arm/configs/dmo-realq7_defconfig
-index 501a182..131eddf 100644
---- a/arch/arm/configs/dmo-realq7_defconfig
-+++ b/arch/arm/configs/dmo-realq7_defconfig
-@@ -1,4 +1,5 @@
- CONFIG_ARCH_IMX=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x31000
- CONFIG_IMX_MULTI_BOARDS=y
- CONFIG_MACH_REALQ7=y
- CONFIG_IMX_IIM=y
-@@ -8,10 +9,10 @@ CONFIG_CMD_ARM_MMUINFO=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
- CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x8fc00000
--CONFIG_MALLOC_SIZE=0x40000000
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
- CONFIG_MALLOC_TLSF=y
--CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
- CONFIG_LONGHELP=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
-@@ -67,7 +68,6 @@ CONFIG_CMD_DETECT=y
- CONFIG_CMD_WD=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
--CONFIG_NET_NFS=y
- CONFIG_NET_PING=y
- CONFIG_NET_RESOLV=y
- CONFIG_OFDEVICE=y
+Sascha
+
 -- 
-1.8.5.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
