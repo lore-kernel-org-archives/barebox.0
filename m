@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8lOq-0003t9-IG
- for barebox@lists.infradead.org; Thu, 30 Jan 2014 06:46:57 +0000
-Received: from mail431.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id 08041FFC48E
- for <barebox@lists.infradead.org>; Thu, 30 Jan 2014 07:52:47 +0100 (CET)
-Date: Thu, 30 Jan 2014 07:47:42 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140130064742.GC9671@ns203013.ovh.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W8mFd-0004hg-QG
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 07:41:30 +0000
+Date: Thu, 30 Jan 2014 08:41:06 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140130074106.GO16215@pengutronix.de>
 References: <1390987800-18095-1-git-send-email-s.hauer@pengutronix.de>
  <1390987800-18095-2-git-send-email-s.hauer@pengutronix.de>
+ <20140130064742.GC9671@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1390987800-18095-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20140130064742.GC9671@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,137 +25,39 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/2] misc: Add devicetree SRAM driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On 10:30 Wed 29 Jan     , Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/misc/Kconfig  |  6 +++++
->  drivers/misc/Makefile |  1 +
->  drivers/misc/sram.c   | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
-
-on at91 we already use the sram
-
-and the sram could be used by any driver for dma (ethernet, framebuffer)
-
-how could handle this in the generic driver?
->  3 files changed, 82 insertions(+)
->  create mode 100644 drivers/misc/sram.c
+On Thu, Jan 30, 2014 at 07:47:42AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 10:30 Wed 29 Jan     , Sascha Hauer wrote:
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  drivers/misc/Kconfig  |  6 +++++
+> >  drivers/misc/Makefile |  1 +
+> >  drivers/misc/sram.c   | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
 > 
-> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-> index e59c4f1..c34a4af 100644
-> --- a/drivers/misc/Kconfig
-> +++ b/drivers/misc/Kconfig
-> @@ -9,4 +9,10 @@ config JTAG
->  	depends on GENERIC_GPIO
->  	help
->  	  Controls JTAG chains connected to I/O pins
-> +
-> +config SRAM
-> +	bool "Generic SRAM driver"
-> +	help
-> +	  This driver adds support for memory mapped SRAM.
-> +
->  endmenu
-> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-> index b085577..908c8cb 100644
-> --- a/drivers/misc/Makefile
-> +++ b/drivers/misc/Makefile
-> @@ -3,3 +3,4 @@
->  #
->  
->  obj-$(CONFIG_JTAG)		+= jtag.o
-> +obj-$(CONFIG_SRAM)		+= sram.o
-> diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
-> new file mode 100644
-> index 0000000..7ea23b7
-> --- /dev/null
-> +++ b/drivers/misc/sram.c
-> @@ -0,0 +1,75 @@
-> +/*
-> + * drivers/misc/sram.c - generic memory mapped SRAM driver
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + */
-> +
-> +#include <common.h>
-> +#include <errno.h>
-> +#include <driver.h>
-> +#include <malloc.h>
-> +#include <init.h>
-> +
-> +struct sram {
-> +	struct resource *res;
-> +	char *name;
-> +	struct cdev cdev;
-> +};
-> +
-> +static struct file_operations memops = {
-> +	.read  = mem_read,
-> +	.write = mem_write,
-> +	.memmap = generic_memmap_rw,
-> +	.lseek = dev_lseek_default,
-> +};
-> +
-> +static int sram_probe(struct device_d *dev)
-> +{
-> +	struct sram *sram;
-> +	struct resource *res;
-> +	void __iomem *base;
-> +	int ret;
-> +
-> +	base = dev_request_mem_region(dev, 0);
-> +	if (!base)
-> +		return -EBUSY;
-> +
-> +	sram = xzalloc(sizeof(*sram));
-> +
-> +	sram->cdev.name = asprintf("sram%d",
-> +			cdev_find_free_index("sram"));
-> +
-> +	res = dev_get_resource(dev, 0);
-> +
-> +	sram->cdev.size = (unsigned long)resource_size(res);
-> +	sram->cdev.ops = &memops;
-> +	sram->cdev.dev = dev;
-> +
-> +	ret = devfs_create(&sram->cdev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static __maybe_unused struct of_device_id sram_dt_ids[] = {
-> +	{
-> +		.compatible = "mmio-sram",
-> +	}, {
-> +	},
-> +};
-> +
-> +static struct driver_d sram_driver = {
-> +	.name = "mmio-sram",
-> +	.probe = sram_probe,
-> +	.of_compatible = sram_dt_ids,
-> +};
-> +device_platform_driver(sram_driver);
-> -- 
-> 1.8.5.3
+> on at91 we already use the sram
 > 
+> and the sram could be used by any driver for dma (ethernet, framebuffer)
 > 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> how could handle this in the generic driver?
+
+The generic driver only registers a cdev for accessing it, so you have
+to actively corrupt the SRAM on the commandline to break something.
+I don't know how AT91 does it, but the mmio-sram driver in the kernel
+registers an allocator on the SRAM. Consumers then have a phandle to the
+SRAM node and can allocate from the SRAM pool using the phandle. We
+could do something similar in barebox should we have to. It's debatable
+whether we should remove the cdev once the allocator is used, but let's
+see until we get there.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
