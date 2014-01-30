@@ -1,27 +1,21 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vb0-x233.google.com ([2607:f8b0:400c:c02::233])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8d50-0002IA-W1
- for barebox@lists.infradead.org; Wed, 29 Jan 2014 21:53:55 +0000
-Received: by mail-vb0-f51.google.com with SMTP id 11so1578730vbe.10
- for <barebox@lists.infradead.org>; Wed, 29 Jan 2014 13:53:33 -0800 (PST)
-MIME-Version: 1.0
-In-Reply-To: <CAJyuEed85u0AjntkoP9mEZ9BTgTKdWrm85ECE1MCOAAVERSGgA@mail.gmail.com>
-References: <20131212195806.GL24559@pengutronix.de>
- <CAJyuEecPnTHU2rTgJzkvkv3p56f32jqaS1aQykn91TNGvcUawg@mail.gmail.com>
- <CAJyuEeejqixPzCez0EZU9hhQkO3f8yvpARLGLwPgQUfGBASZug@mail.gmail.com>
- <CAJyuEee+jyV6DTs3ZGYTercny4FNnxjj_PwWxNmjAEhe2eqeBg@mail.gmail.com>
- <20131219080917.GW24559@pengutronix.de>
- <CAJyuEedJxNN9mPJzAvE6d6kNHCaEqcF-BED0L+r2VCv7e6=T6A@mail.gmail.com>
- <20140110081302.GV6750@pengutronix.de>
- <CAJyuEefMzkW4mCfe+iR7FfVv6jeQMS3XuoPFtO3E8zNomecKoA@mail.gmail.com>
- <20140116141322.GX16215@pengutronix.de>
- <CAJyuEecWCmz=gxzMrbGB+=MWqAC9WGooCgTQs-E47rdaQPUOSA@mail.gmail.com>
- <20140120080007.GG16215@pengutronix.de>
- <CAJyuEed85u0AjntkoP9mEZ9BTgTKdWrm85ECE1MCOAAVERSGgA@mail.gmail.com>
-Date: Wed, 29 Jan 2014 16:53:33 -0500
-Message-ID: <CAJyuEeddi_SL=W3NQPC7Ah+DWoXMsHhnN_kciQP2W8GtHTozqw@mail.gmail.com>
-From: Michael Burkey <mdburkey@gmail.com>
+ id 1W8kGn-0002OA-GZ
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 05:34:34 +0000
+Received: by mail-la0-f54.google.com with SMTP id y1so2241857lam.27
+ for <barebox@lists.infradead.org>; Wed, 29 Jan 2014 21:34:11 -0800 (PST)
+Date: Thu, 30 Jan 2014 09:42:36 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140130094236.d5399b714cb38ad0fd141926@gmail.com>
+In-Reply-To: <20140127082415.GS16215@pengutronix.de>
+References: <1390057983-17921-1-git-send-email-antonynpavlov@gmail.com>
+ <20140122111558.GA24917@pengutronix.de>
+ <20140123013529.b2e75ff11bcbe9492a743726@gmail.com>
+ <20140123070218.GF16215@pengutronix.de>
+ <20140123143301.56549abbc0544e29206cf327@gmail.com>
+ <20140127082415.GS16215@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,39 +24,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox (devicetree) to Variscite iMX6 SOM
+Subject: Re: [PATCH 00/13] MIPS: add initial Loongson-based boards support
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Sascha,
+On Mon, 27 Jan 2014 09:24:15 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-Part of my last post can be ignored -- specifically part of the stuff
-on the ethernet controller.
+> On Thu, Jan 23, 2014 at 02:33:01PM +0400, Antony Pavlov wrote:
+> > On Thu, 23 Jan 2014 08:02:19 +0100
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > =
 
-I just discovered that using either "detect -a" or "detect miibus0"
-works to properly detect and configure /dev/phy0.
+> > > On Thu, Jan 23, 2014 at 01:35:29AM +0400, Antony Pavlov wrote:
+> > > > On Wed, 22 Jan 2014 12:15:58 +0100
+> > > > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > > =
 
-Basically, the initial probe using devicetree fails, but once the
-PF0100 is set correctly and a simple manual reset is done (same code
-as you used on the pfla02), then the phy detects properly and I can
-access the network.
+> > > > > On Sat, Jan 18, 2014 at 07:12:50PM +0400, Antony Pavlov wrote:
+> > > > > make: *** Waiting for unfinished jobs....
+> > > > > arch/mips/boards/loongson-ls1b/serial.c:5:28: error: mach/loongso=
+n1.h: No such file or directory
+> > > > > arch/mips/boards/loongson-ls1b/serial.c: In function 'console_ini=
+t':
+> > > > > arch/mips/boards/loongson-ls1b/serial.c:17: warning: implicit dec=
+laration of function 'KSEG1ADDR'
+> > > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: 'LS1X_UART2_BA=
+SE' undeclared (first use in this function)
+> > > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: (Each undeclar=
+ed identifier is reported only once
+> > > > > arch/mips/boards/loongson-ls1b/serial.c:17: error: for each funct=
+ion it appears in.)
+> > > > > =
 
-So, is there an easy way to have it skip the initial probe that fails?
+> > > > > arch/mips/mach-loongson/include/mach/loongson1.h and
+> > > > > arch/mips/mach-loongson/Makefile seem to be missing. Could you re=
+spin with the missing files?
+> > > > =
 
-Was this possibly the idea behind why you have the fec disabled in the
-pfla02.dtsi and then enable it in the pbab01.dts?
+> > > > The missing files are from "[PATCH 04/13] MIPS: add initial Loongso=
+n-1X SoC stuff".
+> > > > =
 
-Basically, disable it for the first probe, then enable it in an
-overlay and reprobe?
+> > > > The missed patch is registered in maillist: see http://lists.infrad=
+ead.org/pipermail/barebox/2014-January/017521.html
+> > > =
 
-What I have now "works", but I prefer to do things the "right way" if possible.
+> > > Indeed. For some reason I didn't receive that mail. I picked it from =
+the
+> > > ml archive now.
+> > =
 
-Thanks!
-Michael Burkey
+> > I have just fetched next branch from barebox.org.
+> > =
+
+> > Now the "MIPS: add initial Loongson-1X SoC stuff" patch is just after a=
+ll loongson-related
+> > patches save "add loongson-ls1b_defconfig".
+> > =
+
+> > Could you please put it before the "add loongson-ls1b board" patch?
+> =
+
+> Ok. Just did that.
+
+I have just updated from git://git.pengutronix.de/git/barebox.git.
+
+Here is a short log:
+
+$ git log --pretty=3Doneline arch/mips | cut -c 42- | head -n 18
+Merge branch 'for-next/mips' into next
+MIPS: mach-ar231x: Fix uninitialized variable
+MIPS: csrc-r4k: use CLOCKSOURCE_MASK() macro
+MIPS: add loongson-ls1b_defconfig
+MIPS: loongson-ls1b: add documentation
+MIPS: loongson-ls1b: add NMON support
+MIPS: loongson-ls1b: add PBL support
+MIPS: loongson-ls1b: add ns16550-based console
+MIPS: loongson-ls1b: add DEBUG_LL support
+MIPS: mach-loongson: add DEBUG_LL support
+MIPS: add initial Loongson-1X SoC stuff
+MIPS: mach-loongson: add loongson-ls1b board
+MIPS: add Loongson-1B processor constants and CPU probe
+MIPS: add Loongson-1B CPU Kbuild stuff
+MIPS: add initial Loongson-family documentation
+MIPS: add initial Loongson-based boards support
+mips asm/types.h: add #ifndef to fix compile error
+MIPS: import exception registers saving from linux kernel
+
+You can see that "MIPS: add initial Loongson-1X SoC stuff" is AFTER "MIPS: =
+mach-loongson: add loongson-ls1b board".
+
+This breaks loongson-ls1b board build without "Loongson-1X SoC stuff":
+
+scripts/Makefile.build:41: /home/antony/barebox.git/arch/mips/mach-loongson=
+/Makefile: No such file or directory
+make[1]: *** No rule to make target `/home/antony/barebox.git/arch/mips/mac=
+h-loongson/Makefile'.  Stop.
+make: *** [arch/mips/mach-loongson] Error 2
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
