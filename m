@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8mHx-0004kT-PG
- for barebox@lists.infradead.org; Thu, 30 Jan 2014 07:43:54 +0000
-Date: Thu, 30 Jan 2014 08:43:30 +0100
+ id 1W8o7H-0007oR-LZ
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 09:41:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140130074330.GP16215@pengutronix.de>
-References: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1390993612-26246-1-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 30 Jan 2014 10:40:28 +0100
+Message-Id: <1391074829-25877-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,55 +14,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] DA923RC: enable UBIFS support to allow firmware
- flash booting
-To: Renaud Barbier <renaud.barbier@ge.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/2] ARM: i.MX: edmqmx6: Copy fdt to SDRAM
+To: barebox@lists.infradead.org
 
-On Wed, Jan 29, 2014 at 11:06:49AM +0000, Renaud Barbier wrote:
-> UBI/UBIFS are enabled for the DA923RC board to load and boot images from
-> the NOR flash storage. As images may be loaded through a symlink, the
-> readlink entry point is implemented in the UBIFS driver support.
-> 
-> ppc bit operations header files are updated as they are in conflict with
-> main header files when UBIFS is enabled.
-> 
-> Renaud Barbier (3):
->   ppc: remove bit operation headers file conflict
->   UBIFS: implement readlink entry point
->   DA923RC: enable UBI/UBIFS configuration
+barebox only recognizes boarddata as dtb if it is inside SDRAM, so
+copy the dtb there if necessary.
 
-Applied this series, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/dmo-mx6-realq7/lowlevel.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-Sascha
-
-> 
->  arch/ppc/boards/geip-da923rc/env/bin/init  |   12 +++++++
->  arch/ppc/configs/da923rc_defconfig         |    6 ++++
->  arch/ppc/cpu-85xx/tlb.c                    |    2 +-
->  arch/ppc/include/asm/bitops.h              |   46 +--------------------------
->  arch/ppc/mach-mpc85xx/fsl_law.c            |    1 +
->  arch/ppc/mach-mpc85xx/include/mach/ffs64.h |   20 ++++++++++++
->  fs/ubifs/ubifs.c                           |   38 +++++++++++++++++++++++
->  7 files changed, 80 insertions(+), 45 deletions(-)
->  create mode 100644 arch/ppc/mach-mpc85xx/include/mach/ffs64.h
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/arch/arm/boards/dmo-mx6-realq7/lowlevel.c b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+index f47575e..7f6168c 100644
+--- a/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
++++ b/arch/arm/boards/dmo-mx6-realq7/lowlevel.c
+@@ -15,6 +15,7 @@
+ #include <common.h>
+ #include <sizes.h>
+ #include <io.h>
++#include <debug_ll.h>
+ #include <asm/sections.h>
+ #include <asm/mmu.h>
+ #include <asm/barebox-arm-head.h>
+@@ -136,26 +137,37 @@ static void sdram_init(void)
+ 	writel(0x0000047f, 0x021e80a4);
+ 	writel(0x0000c34f, 0x021e80a8);
+ 	writel(0x00000001, 0x021e8080);
++	putc_ll('>');
+ }
+ 
+ extern char __dtb_imx6q_dmo_realq7_start[];
++extern char __dtb_imx6q_dmo_realq7_end[];
+ 
+ ENTRY_FUNCTION(start_imx6_realq7, r0, r1, r2)
+ {
+-	uint32_t fdt;
++	unsigned long fdt, sdram = 0x10000000;
+ 
+ 	arm_cpu_lowlevel_init();
+ 
+ 	arm_setup_stack(0x00940000 - 8);
+ 
++	fdt = (unsigned long)__dtb_imx6q_dmo_realq7_start - get_runtime_offset();
++
+ 	if (get_pc() < 0x10000000) {
+ 		sdram_init();
+ 
+ 		mmdc_do_write_level_calibration();
+ 		mmdc_do_dqs_calibration();
+-	}
+ 
+-	fdt = (uint32_t)__dtb_imx6q_dmo_realq7_start - get_runtime_offset();
++		/*
++		 * Copy the devicetree blob to sdram so that the barebox code finds it
++		 * inside valid SDRAM instead of SRAM.
++		 */
++		memcpy((void *)sdram, (void *)fdt,
++				__dtb_imx6q_dmo_realq7_end -
++				__dtb_imx6q_dmo_realq7_start);
++		fdt = sdram;
++	}
+ 
+-	barebox_arm_entry(0x10000000, SZ_2G, fdt);
++	barebox_arm_entry(sdram, SZ_2G, fdt);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.5.3
+
 
 _______________________________________________
 barebox mailing list
