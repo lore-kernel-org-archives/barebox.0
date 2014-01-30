@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f339.i.mail.ru ([217.69.140.235])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W8lHs-0003n6-Rj
- for barebox@lists.infradead.org; Thu, 30 Jan 2014 06:39:45 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Thu, 30 Jan 2014 10:39:23 +0400
-Message-ID: <1391063963.64372212@f339.i.mail.ru>
-In-Reply-To: <20140129203958.GM16215@pengutronix.de>
-References: <1391019709-30606-1-git-send-email-shc_work@mail.ru>
- <20140129203958.GM16215@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from 13.mo1.mail-out.ovh.net ([178.33.253.128]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1W8lOq-0003t9-IG
+ for barebox@lists.infradead.org; Thu, 30 Jan 2014 06:46:57 +0000
+Received: from mail431.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 08041FFC48E
+ for <barebox@lists.infradead.org>; Thu, 30 Jan 2014 07:52:47 +0100 (CET)
+Date: Thu, 30 Jan 2014 07:47:42 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140130064742.GC9671@ns203013.ovh.net>
+References: <1390987800-18095-1-git-send-email-s.hauer@pengutronix.de>
+ <1390987800-18095-2-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1390987800-18095-2-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,22 +23,144 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAxLzRdIE1JUFM6IG1hY2gtYXIyMzF4OiBGaXggdW5pbml0?=
- =?UTF-8?B?aWFsaXplZCB2YXJpYWJsZQ==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 2/2] misc: Add devicetree SRAM driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-0KHRgNC10LTQsCwgMjkg0Y/QvdCy0LDRgNGPIDIwMTQsIDIxOjM5ICswMTowMCDQvtGCIFNhc2No
-YSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4gT24gV2VkLCBKYW4gMjksIDIwMTQg
-YXQgMTA6MjE6NDZQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IFNpZ25lZC1v
-ZmYtYnk6IEFsZXhhbmRlciBTaGl5YW4gPHNoY193b3JrQG1haWwucnU+Cj4gCj4gQXBwbGllZCBh
-bGwsIHRoYW5rcy4KPiAKPiBBcmUgeW91IHJ1bm5pbmcgc3BhcnNlIG9yIGhvdyBkaWQgeW91IGZp
-bmQgYWxsIHRoZXNlPwoKSSB1c2Ugc2V2ZXJhbCB0b29scyBmb3IgdGhpcyBwdXJwb3NlLgpCYXNp
-YyB0b29scyBhcmU6IGNvY2NpbmVsbGUsIGNwcGNoZWNrIGFuZCBteSBvd24gc2NyaXB0LgoKLS0t
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 10:30 Wed 29 Jan     , Sascha Hauer wrote:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/misc/Kconfig  |  6 +++++
+>  drivers/misc/Makefile |  1 +
+>  drivers/misc/sram.c   | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++
+
+on at91 we already use the sram
+
+and the sram could be used by any driver for dma (ethernet, framebuffer)
+
+how could handle this in the generic driver?
+>  3 files changed, 82 insertions(+)
+>  create mode 100644 drivers/misc/sram.c
+> 
+> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> index e59c4f1..c34a4af 100644
+> --- a/drivers/misc/Kconfig
+> +++ b/drivers/misc/Kconfig
+> @@ -9,4 +9,10 @@ config JTAG
+>  	depends on GENERIC_GPIO
+>  	help
+>  	  Controls JTAG chains connected to I/O pins
+> +
+> +config SRAM
+> +	bool "Generic SRAM driver"
+> +	help
+> +	  This driver adds support for memory mapped SRAM.
+> +
+>  endmenu
+> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+> index b085577..908c8cb 100644
+> --- a/drivers/misc/Makefile
+> +++ b/drivers/misc/Makefile
+> @@ -3,3 +3,4 @@
+>  #
+>  
+>  obj-$(CONFIG_JTAG)		+= jtag.o
+> +obj-$(CONFIG_SRAM)		+= sram.o
+> diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
+> new file mode 100644
+> index 0000000..7ea23b7
+> --- /dev/null
+> +++ b/drivers/misc/sram.c
+> @@ -0,0 +1,75 @@
+> +/*
+> + * drivers/misc/sram.c - generic memory mapped SRAM driver
+> + *
+> + * This program is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License as published by
+> + * the Free Software Foundation; either version 2 of the License, or
+> + * (at your option) any later version.
+> + *
+> + * This program is distributed in the hope that it will be useful,
+> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + * GNU General Public License for more details.
+> + */
+> +
+> +#include <common.h>
+> +#include <errno.h>
+> +#include <driver.h>
+> +#include <malloc.h>
+> +#include <init.h>
+> +
+> +struct sram {
+> +	struct resource *res;
+> +	char *name;
+> +	struct cdev cdev;
+> +};
+> +
+> +static struct file_operations memops = {
+> +	.read  = mem_read,
+> +	.write = mem_write,
+> +	.memmap = generic_memmap_rw,
+> +	.lseek = dev_lseek_default,
+> +};
+> +
+> +static int sram_probe(struct device_d *dev)
+> +{
+> +	struct sram *sram;
+> +	struct resource *res;
+> +	void __iomem *base;
+> +	int ret;
+> +
+> +	base = dev_request_mem_region(dev, 0);
+> +	if (!base)
+> +		return -EBUSY;
+> +
+> +	sram = xzalloc(sizeof(*sram));
+> +
+> +	sram->cdev.name = asprintf("sram%d",
+> +			cdev_find_free_index("sram"));
+> +
+> +	res = dev_get_resource(dev, 0);
+> +
+> +	sram->cdev.size = (unsigned long)resource_size(res);
+> +	sram->cdev.ops = &memops;
+> +	sram->cdev.dev = dev;
+> +
+> +	ret = devfs_create(&sram->cdev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static __maybe_unused struct of_device_id sram_dt_ids[] = {
+> +	{
+> +		.compatible = "mmio-sram",
+> +	}, {
+> +	},
+> +};
+> +
+> +static struct driver_d sram_driver = {
+> +	.name = "mmio-sram",
+> +	.probe = sram_probe,
+> +	.of_compatible = sram_dt_ids,
+> +};
+> +device_platform_driver(sram_driver);
+> -- 
+> 1.8.5.3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
