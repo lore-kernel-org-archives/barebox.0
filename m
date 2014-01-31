@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W9F0W-0001GK-Tk
- for barebox@lists.infradead.org; Fri, 31 Jan 2014 14:23:54 +0000
+ id 1W9F0W-0001GE-Tf
+ for barebox@lists.infradead.org; Fri, 31 Jan 2014 14:23:56 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1W9F0A-0002lZ-0i
+ for barebox@lists.infradead.org; Fri, 31 Jan 2014 15:23:26 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1W9F09-0005Rj-Vo
+ for barebox@lists.infradead.org; Fri, 31 Jan 2014 15:23:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 31 Jan 2014 15:23:17 +0100
-Message-Id: <1391178204-20889-9-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1391178204-20889-1-git-send-email-s.hauer@pengutronix.de>
-References: <1391178204-20889-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 31 Jan 2014 15:23:09 +0100
+Message-Id: <1391178204-20889-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,91 +26,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/15] ARM: dts: Karo TX25: Add pinctrl nodes
+Subject: i.MX25 devicetree support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx25-karo-tx25.dts | 53 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+This series adds devicetree support for the i.MX25 and
+converts the Karo TX25 over to devicetree and multiboard
+support.
 
-diff --git a/arch/arm/dts/imx25-karo-tx25.dts b/arch/arm/dts/imx25-karo-tx25.dts
-index f8db366..aeb1fce 100644
---- a/arch/arm/dts/imx25-karo-tx25.dts
-+++ b/arch/arm/dts/imx25-karo-tx25.dts
-@@ -21,16 +21,69 @@
- 	};
- };
- 
-+&iomuxc {
-+	pinctrl_uart1: uart1grp {
-+		fsl,pins = <
-+			MX25_PAD_UART1_TXD__UART1_TXD 0x80000000
-+			MX25_PAD_UART1_RXD__UART1_RXD 0x80000000
-+			MX25_PAD_UART1_CTS__UART1_CTS 0x80000000
-+			MX25_PAD_UART1_RTS__UART1_RTS 0x80000000
-+		>;
-+	};
-+
-+	pinctrl_fec: fecgrp {
-+		fsl,pins = <
-+			MX25_PAD_D11__GPIO_4_9		0x80000000 /* FEC PHY power on pin */
-+			MX25_PAD_D13__GPIO_4_7		0x80000000 /* FEC reset */
-+			MX25_PAD_FEC_MDC__FEC_MDC	0x80000000
-+			MX25_PAD_FEC_MDIO__FEC_MDIO	0x80000000
-+			MX25_PAD_FEC_TDATA0__FEC_TDATA0	0x80000000
-+			MX25_PAD_FEC_TDATA1__FEC_TDATA1	0x80000000
-+			MX25_PAD_FEC_TX_EN__FEC_TX_EN	0x80000000
-+			MX25_PAD_FEC_RDATA0__FEC_RDATA0	0x80000000
-+			MX25_PAD_FEC_RDATA1__FEC_RDATA1	0x80000000
-+			MX25_PAD_FEC_RX_DV__FEC_RX_DV	0x80000000
-+			MX25_PAD_FEC_TX_CLK__FEC_TX_CLK	0x80000000
-+		>;
-+	};
-+
-+	pinctrl_nfc: nfcgrp {
-+		fsl,pins = <
-+			MX25_PAD_NF_CE0__NF_CE0		0x80000000
-+			MX25_PAD_NFWE_B__NFWE_B		0x80000000
-+			MX25_PAD_NFRE_B__NFRE_B		0x80000000
-+			MX25_PAD_NFALE__NFALE		0x80000000
-+			MX25_PAD_NFCLE__NFCLE		0x80000000
-+			MX25_PAD_NFWP_B__NFWP_B		0x80000000
-+			MX25_PAD_NFRB__NFRB		0x80000000
-+			MX25_PAD_D7__D7			0x80000000
-+			MX25_PAD_D6__D6			0x80000000
-+			MX25_PAD_D5__D5			0x80000000
-+			MX25_PAD_D4__D4			0x80000000
-+			MX25_PAD_D3__D3			0x80000000
-+			MX25_PAD_D2__D2			0x80000000
-+			MX25_PAD_D1__D1			0x80000000
-+			MX25_PAD_D0__D0			0x80000000
-+		>;
-+	};
-+};
-+
- &uart1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart1>;
- 	status = "okay";
- };
- 
- &fec {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec>;
- 	phy-mode = "rmii";
- 	status = "okay";
- };
- 
- &nfc {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_nfc>;
- 	nand-on-flash-bbt;
- 	status = "okay";
- };
--- 
-1.8.5.3
+Sascha
+----------------------------------------------------------------
+Sascha Hauer (15):
+      mci: imx-esdhc: Add i.MX25 compatible entry
+      ARM: dts: Add i.MX25 devicetree files
+      ARM: dts: i.MX25: Add mmc aliases
+      ARM: dts: i.MX25: remove disabled status of usbmisc unit
+      ARM: i.MX25: Add missing GPT clock lookups
+      ARM: dts: Add i.MX25 Karo TX25 dts
+      ARM: dts: i.MX25: Add iram to devicetree
+      ARM: dts: Karo TX25: Add pinctrl nodes
+      ARM: dts: Karo TX25: Add phy-reset-gpio
+      ARM: dts: Karo TX25: add missing nfc properties
+      ARM: dts: Karo TX25: add phy supply for fec
+      ARM: dts: Karo TX25: add barebox specifics
+      ARM: i.MX25: Karo TX25: Switch to devicetree support
+      ARM: i.MX: cleanup bootmode selection
+      ARM: i.MX: Karo TX25: Switch to multiboard support
 
+ arch/arm/boards/eukrea_cpuimx25/lowlevel.c         |  10 +-
+ arch/arm/boards/eukrea_cpuimx27/lowlevel_init.S    |   4 +-
+ arch/arm/boards/eukrea_cpuimx35/lowlevel.c         |  25 +-
+ .../boards/freescale-mx25-3-stack/lowlevel_init.S  |   5 +-
+ .../boards/freescale-mx35-3-stack/lowlevel_init.S  |   4 +-
+ arch/arm/boards/guf-cupid/lowlevel.c               |  21 +-
+ arch/arm/boards/guf-neso/lowlevel.c                |  11 +-
+ arch/arm/boards/imx21ads/lowlevel_init.S           |   5 +-
+ arch/arm/boards/karo-tx25/board.c                  | 132 ++---
+ arch/arm/boards/karo-tx25/lowlevel.c               |  23 +-
+ arch/arm/boards/pcm037/lowlevel.c                  |  14 +-
+ arch/arm/boards/pcm038/lowlevel.c                  |  10 +-
+ arch/arm/boards/pcm043/lowlevel.c                  |  25 +-
+ arch/arm/boards/phycard-i.MX27/lowlevel.c          |   4 -
+ arch/arm/configs/tx25stk5_defconfig                |  35 +-
+ arch/arm/dts/Makefile                              |   2 +
+ arch/arm/dts/imx25-karo-tx25.dts                   | 143 ++++++
+ arch/arm/dts/imx25-pinfunc.h                       | 494 ++++++++++++++++++
+ arch/arm/dts/imx25.dtsi                            | 558 +++++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          |  40 +-
+ arch/arm/mach-imx/clk-imx25.c                      |   3 +
+ arch/arm/mach-imx/include/mach/imx25-regs.h        |   3 +
+ drivers/mci/imx-esdhc.c                            |   2 +
+ images/Makefile.imx                                |   5 +
+ 24 files changed, 1371 insertions(+), 207 deletions(-)
+ create mode 100644 arch/arm/dts/imx25-karo-tx25.dts
+ create mode 100644 arch/arm/dts/imx25-pinfunc.h
+ create mode 100644 arch/arm/dts/imx25.dtsi
 
 _______________________________________________
 barebox mailing list
