@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp43.i.mail.ru ([94.100.177.103])
+Received: from metis.ext.pengutronix.de ([92.198.50.35])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1W9Vcl-0006on-Sy
- for barebox@lists.infradead.org; Sat, 01 Feb 2014 08:08:26 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat,  1 Feb 2014 12:07:48 +0400
-Message-Id: <1391242068-28637-1-git-send-email-shc_work@mail.ru>
+ id 1W9f7L-0005A9-SL
+ for barebox@lists.infradead.org; Sat, 01 Feb 2014 18:16:36 +0000
+Date: Sat, 1 Feb 2014 19:13:50 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140201181349.GB16215@pengutronix.de>
+References: <1391178204-20889-1-git-send-email-s.hauer@pengutronix.de>
+ <1391178204-20889-14-git-send-email-s.hauer@pengutronix.de>
+ <1391178936.715702010@f354.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1391178936.715702010@f354.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,77 +20,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Make generated variables static
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 13/15] ARM: i.MX25: Karo TX25: Switch to devicetree support
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- common/Makefile | 6 +++---
- scripts/bin2c.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/common/Makefile b/common/Makefile
-index 6f6e360..ee02e0e 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -110,7 +110,7 @@ targets += barebox_default_env.lzo barebox_default_env.bz2 barebox_default_env.g
- 
- quiet_cmd_env_h = ENVH    $@
- cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
--	echo "const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
-+	echo "static const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
- 
- $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
- 	$(call if_changed,env_h)
-@@ -119,14 +119,14 @@ quiet_cmd_pwd_h = PWDH    $@
- ifdef CONFIG_PASSWORD
- ifneq ($(CONFIG_PASSWORD_DEFAULT),"")
- PASSWD_FILE := $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -type f)
--cmd_pwd_h = echo -n "const char default_passwd[] = \"" > $@; \
-+cmd_pwd_h = echo -n "static const char default_passwd[] = \"" > $@; \
- 	cat $< | tr -d '\n' >> $@; \
- 	echo "\";" >> $@
- 
- include/generated/passwd.h: $(PASSWD_FILE)
- 	$(call if_changed,pwd_h)
- else
--cmd_pwd_h = echo "const char default_passwd[] = \"\";" > $@
-+cmd_pwd_h = echo "static const char default_passwd[] = \"\";" > $@
- 
- include/generated/passwd.h: FORCE
- 	$(call if_changed,pwd_h)
-diff --git a/scripts/bin2c.c b/scripts/bin2c.c
-index 96dd2bc..36c3c5e 100644
---- a/scripts/bin2c.c
-+++ b/scripts/bin2c.c
-@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
- 	int ch, total=0;
- 
- 	if (argc > 1)
--		printf("const char %s[] %s=\n",
-+		printf("static const char %s[] %s=\n",
- 			argv[1], argc > 2 ? argv[2] : "");
- 
- 	do {
-@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
- 	} while (ch != EOF);
- 
- 	if (argc > 1)
--		printf("\t;\n\nconst int %s_size = %d;\n", argv[1], total);
-+		printf("\t;\n\nstatic const int %s_size = %d;\n", argv[1], total);
- 
- 	return 0;
- }
--- 
-1.8.3.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gRnJpLCBKYW4gMzEsIDIwMTQgYXQgMDY6MzU6MzZQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiDQn9GP0YLQvdC40YbQsCwgMzEg0Y/QvdCy0LDRgNGPIDIwMTQsIDE1OjIzICsw
+MTowMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT46Cj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Cj4gPiAtLS0K
+PiA+IGFyY2gvYXJtL2JvYXJkcy9rYXJvLXR4MjUvYm9hcmQuYyAgIHwgMTMwICsrKysrKysrKyst
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+IC4uLgo+ID4gI2RlZmluZSBUWDI1X0ZFQ19QV1Jf
+R1BJTwlJTVhfR1BJT19OUig0LCA5KQo+ID4gI2RlZmluZSBUWDI1X0ZFQ19SU1RfR1BJTwlJTVhf
+R1BJT19OUig0LCA3KQo+ID4gCj4gPiArc3RhdGljIHN0cnVjdCBncGlvIGZlY19ncGlvc1tdID0g
+ewo+ID4gKwl7Cj4gPiArCQkuZ3BpbyA9IFRYMjVfRkVDX1BXUl9HUElPLAo+ID4gKwkJLmZsYWdz
+ID0gR1BJT0ZfT1VUX0lOSVRfTE9XLAo+ID4gKwkJLmxhYmVsID0gImZlYy1wd3IiLAo+ID4gKwl9
+LCB7Cj4gPiArCQkuZ3BpbyA9IFRYMjVfRkVDX1JTVF9HUElPLAo+ID4gKwkJLmZsYWdzID0gR1BJ
+T0ZfT1VUX0lOSVRfTE9XLAo+ID4gKwkJLmxhYmVsID0gImZlYy1yc3QiLAo+ID4gKwl9LAo+ID4g
+K307Cj4gCj4gWW91IGhhdmUgYWRkZWQgdGhlc2UgcGlucyB0byBEVFMgaW4gUEFUQ0ggMDgvMTUu
+Cj4gV2hhdCBhIHJlYXNvbiB0byBzZXR1cCBpdCB0d2ljZT8KCjA4LzE1IG9ubHkgYWRkcyB0aGUg
+cGluY3RybCBub2Rlcy4gVGhlIGNvZGUgaGVyZSBpcyB0byBwb3dlciBvbiB0aGUgcGh5CmFzIHdl
+IGRvIG5vdCBoYXZlIHJlZ3VsYXRvciBzdXBwb3J0IHlldC4gSG0gSSBqdXN0IHdvbmRlciBpZiB0
+aGlzIHdvcmtzCmFzIGV4cGVjdGVkLiBJIGRpZCB0aGUgcGh5IHBvd2VyIG9uIGJlZm9yZSB0aGUg
+ZmVjIGRyaXZlciBpbml0aWFsaXplcywKYnV0IHRoaXMgYWxzbyBtZWFucyB0aGF0IHRoZSBwaHkg
+cG93ZXIgb24gaXMgZG9uZSBiZWZvcmUgdGhlIHBpbmN0cmwgaXMKY29uZmlndXJlZC4KClNhc2No
+YQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAg
+ICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYt
+OCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAg
+ICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICAr
+NDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94
+Cg==
