@@ -1,23 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp43.i.mail.ru ([94.100.177.103])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBgg7-0006w7-4e
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:20:51 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <ukl@pengutronix.de>) id 1WBgfl-0000l0-Fq
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:20:29 +0100
-Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <ukl@pengutronix.de>) id 1WBgfl-0006Pz-En
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:20:29 +0100
-Date: Fri, 7 Feb 2014 09:20:29 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140207082029.GC17045@pengutronix.de>
-References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1391704854-3141-3-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1391704854-3141-3-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1W9Vcl-0006on-Sy
+ for barebox@lists.infradead.org; Sat, 01 Feb 2014 08:08:26 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sat,  1 Feb 2014 12:07:48 +0400
+Message-Id: <1391242068-28637-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,71 +14,75 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/9] nfs: skip over stale rpc packets
+Subject: [PATCH] Make generated variables static
 To: barebox@lists.infradead.org
 
-Hello,
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ common/Makefile | 6 +++---
+ scripts/bin2c.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-On Thu, Feb 06, 2014 at 05:40:47PM +0100, Uwe Kleine-K=F6nig wrote:
-> When a former transaction was aborted by hitting Ctrl-C the old reply mig=
-ht
-> still hang in the ethernet controller making all further transactions fai=
-l.
-> =
+diff --git a/common/Makefile b/common/Makefile
+index 6f6e360..ee02e0e 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -110,7 +110,7 @@ targets += barebox_default_env.lzo barebox_default_env.bz2 barebox_default_env.g
+ 
+ quiet_cmd_env_h = ENVH    $@
+ cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
+-	echo "const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
++	echo "static const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
+ 
+ $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
+ 	$(call if_changed,env_h)
+@@ -119,14 +119,14 @@ quiet_cmd_pwd_h = PWDH    $@
+ ifdef CONFIG_PASSWORD
+ ifneq ($(CONFIG_PASSWORD_DEFAULT),"")
+ PASSWD_FILE := $(shell cd $(srctree); find $(CONFIG_PASSWORD_DEFAULT) -type f)
+-cmd_pwd_h = echo -n "const char default_passwd[] = \"" > $@; \
++cmd_pwd_h = echo -n "static const char default_passwd[] = \"" > $@; \
+ 	cat $< | tr -d '\n' >> $@; \
+ 	echo "\";" >> $@
+ 
+ include/generated/passwd.h: $(PASSWD_FILE)
+ 	$(call if_changed,pwd_h)
+ else
+-cmd_pwd_h = echo "const char default_passwd[] = \"\";" > $@
++cmd_pwd_h = echo "static const char default_passwd[] = \"\";" > $@
+ 
+ include/generated/passwd.h: FORCE
+ 	$(call if_changed,pwd_h)
+diff --git a/scripts/bin2c.c b/scripts/bin2c.c
+index 96dd2bc..36c3c5e 100644
+--- a/scripts/bin2c.c
++++ b/scripts/bin2c.c
+@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
+ 	int ch, total=0;
+ 
+ 	if (argc > 1)
+-		printf("const char %s[] %s=\n",
++		printf("static const char %s[] %s=\n",
+ 			argv[1], argc > 2 ? argv[2] : "");
+ 
+ 	do {
+@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
+ 	} while (ch != EOF);
+ 
+ 	if (argc > 1)
+-		printf("\t;\n\nconst int %s_size = %d;\n", argv[1], total);
++		printf("\t;\n\nstatic const int %s_size = %d;\n", argv[1], total);
+ 
+ 	return 0;
+ }
+-- 
+1.8.3.2
 
-> So just skip over old replies.
-> =
-
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> An alternative would be to drain the ethernet queue before a new request =
-is
-> sent. Don't know how that works and I don't see much benefit, so I didn't
-> try to find out :-)
-> ---
->  fs/nfs.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> =
-
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 717326435189..e9a6eede06bd 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -275,8 +275,13 @@ static int rpc_check_reply(unsigned char *pkt, int r=
-pc_prog, unsigned long rpc_i
->  =
-
->  	memcpy(&rpc, pkt, sizeof(rpc));
->  =
-
-> -	if (ntohl(rpc.id) !=3D rpc_id)
-> +	if (ntohl(rpc.id) !=3D rpc_id) {
-> +		if (ntohl(rpc.id) < rpc_id)
-> +			/* stale packet, wait a bit longer */
-> +			return 0;
-> +
->  		return -EINVAL;
-> +	}
-I have thought about this once more. Just compare using < is very lax
-and fails when rpc_id overflows. I suggest to use
-
-	if (rpc_id - ntohl(rpc.id) =3D=3D 1)
-
-instead. (Or draining the eth queue.)
-
-Will fix accordingly in a v2 once I addressed all concerns.
-
-Uwe
- =
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
