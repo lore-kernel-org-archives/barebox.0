@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mailbox.openface.ca ([216.46.1.7])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WANBq-00028b-5R
- for barebox@lists.infradead.org; Mon, 03 Feb 2014 17:20:10 +0000
+ id 1WANoo-0003IP-Jc
+ for barebox@lists.infradead.org; Mon, 03 Feb 2014 18:00:26 +0000
 Received: from MSI-01-S01.MSI.Local (mail.morganschaffer.com [207.115.108.90])
- by mailbox.openface.ca (8.14.2/8.14.2) with ESMTP id s13HJnSC017084
+ by mailbox.openface.ca (8.14.2/8.14.2) with ESMTP id s13I04QJ014901
  for <barebox@lists.infradead.org>;
- Mon, 3 Feb 2014 12:19:49 -0500 (EST)
+ Mon, 3 Feb 2014 13:00:04 -0500 (EST)
 From: "Balasa, Bogdan" <BBalasa@Morganschaffer.com>
-Date: Mon, 3 Feb 2014 17:19:47 +0000
-Message-ID: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14A86@MSI0E01.MSI.Local>
+Date: Mon, 3 Feb 2014 18:00:02 +0000
+Message-ID: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14AD3@MSI0E01.MSI.Local>
+References: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14A86@MSI0E01.MSI.Local>
+In-Reply-To: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14A86@MSI0E01.MSI.Local>
 Content-Language: fr-FR
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
@@ -20,12 +22,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: barebox env userspace
+Subject: RE: barebox env userspace
 To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+
+I was modifying the '/init/general' file, the line:
+
+global.boot.default=3Dnand
+
+A second method (this one worked): changed the content of 'boot/nand' file.
+
+Bogdan
+
+-----Message d'origine-----
+De=A0: Balasa, Bogdan [mailto:BBalasa@Morganschaffer.com] =
+
+Envoy=E9=A0: February-03-14 12:20 PM
+=C0=A0: barebox@lists.infradead.org
+Objet=A0: barebox env userspace
 
 Hi,
 
@@ -43,10 +60,13 @@ flash_erase /dev/mtd1 0 0
 ./bareboxenv-target -s /mnt /dev/mtd1
 
 ----
-After reset I can see my modifications in the files within barebox but the changes are not taken into account by barebox.
-It's like they are not saved in the persistent storage "dev/env0".(it's like a saveenv is missing).
+After reset I can see my modifications in the files within barebox but the =
+changes are not taken into account by barebox.
+It's like they are not saved in the persistent storage "dev/env0".(it's lik=
+e a saveenv is missing).
 
-What am I missing such that the changes to be saved in the persistent storage 'dev/env0' from userspace?
+What am I missing such that the changes to be saved in the persistent stora=
+ge 'dev/env0' from userspace?
 
 ---
 Userspace:
@@ -64,6 +84,11 @@ mtd8: 389e0000 00020000 "nand0.data"
 
 Thank you,
 Bogdan
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
