@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WA3jH-0007qa-Lk
- for barebox@lists.infradead.org; Sun, 02 Feb 2014 20:33:25 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <mgr@pengutronix.de>) id 1WA3it-0008V6-47
- for barebox@lists.infradead.org; Sun, 02 Feb 2014 21:32:59 +0100
-Received: from mgr by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <mgr@pengutronix.de>) id 1WA3it-0001ug-31
- for barebox@lists.infradead.org; Sun, 02 Feb 2014 21:32:59 +0100
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Sun,  2 Feb 2014 21:32:48 +0100
-Message-Id: <1391373169-7304-1-git-send-email-m.grzeschik@pengutronix.de>
+ id 1WAEeB-00007v-7X
+ for barebox@lists.infradead.org; Mon, 03 Feb 2014 08:12:52 +0000
+Date: Mon, 3 Feb 2014 09:12:25 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140203081224.GE16215@pengutronix.de>
+References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,59 +18,120 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] sandbox: update defconfig to use new environment
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Load PBL into SRAM
+To: David Vincent <freesilicon@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- arch/sandbox/configs/sandbox_defconfig | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+On Fri, Jan 31, 2014 at 10:06:10AM +0100, David Vincent wrote:
+> This allows to load all the lowlevel init code, including the
+> uncompressor, inside SRAM and not just the bare init part. This is
+> useful when pbl is used as a first-stage bootloader but is loaded by an
+> external firmware.
 
-diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
-index 2ee7f782ede8..2ef8fa41ec51 100644
---- a/arch/sandbox/configs/sandbox_defconfig
-+++ b/arch/sandbox/configs/sandbox_defconfig
-@@ -1,18 +1,20 @@
--CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
- CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/sandbox/board/env"
- CONFIG_DEBUG_INFO=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TFTP=y
- CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_CRC=y
-+CONFIG_CMD_FLASH=y
- # CONFIG_CMD_BOOTM is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
-@@ -21,8 +23,7 @@ CONFIG_CMD_PARTITION=y
- CONFIG_NET=y
- CONFIG_NET_DHCP=y
- CONFIG_NET_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_FS_TFTP=y
- CONFIG_DRIVER_NET_TAP=y
- # CONFIG_SPI is not set
- CONFIG_FS_CRAMFS=y
-+CONFIG_FS_TFTP=y
+Just to make sure I understand this correctly: The patch does not make a
+code change, all it does is to check that the binary does not get too
+big, right?
+
+> +config BAREBOX_MAX_PBL_SIZE
+> +	depends on PBL_IMAGE && LOAD_PBL_SRAM
+> +	prompt "Maximum pre-bootloader size"
+> +	hex
+> +	default 0xffffffff
+> +	help
+> +	  Define the maximum size of pbl
+> +	  this will allow your pbl to fit in SRAM as example
+> +	  ARCH can overwrite it via ARCH_BAREBOX_MAX_PBL_SIZE
+
+I stumble upon this 'allow', maybe better something like:
+
+On some hardware the ROM code can load the pbl into SRAM, but not the
+whole image. This option specifies how big the pbl may get.
+
+What do you think?
+
+Sascha
+
+> +
+> +
+>  config BAREBOX_MAX_BARE_INIT_SIZE
+> -	prompt "Maximum bare_init size"
+> +	prompt "Maximum bare_init size" if !LOAD_PBL_SRAM
+>  	hex
+> +	range 0x0 BAREBOX_MAX_PBL_SIZE if LOAD_PBL_SRAM
+> +	default BAREBOX_MAX_PBL_SIZE if LOAD_PBL_SRAM
+>  	default 0xffffffff
+>  	help
+>  	  Define the maximum size of bare_init
+> -	  this will allow your bare_init will fit in SRAM as example
+> +	  this will allow your bare_init to fit in SRAM as example
+>  	  ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+>  
+>  config HAVE_CONFIGURABLE_MEMORY_LAYOUT
+> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+> index 6d3a69e..10b0885 100644
+> --- a/include/asm-generic/barebox.lds.h
+> +++ b/include/asm-generic/barebox.lds.h
+> @@ -60,10 +60,22 @@ CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
+>  #define MAX_BARE_INIT_SIZE CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
+>  #endif
+>  
+> +#if defined(CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE) && \
+> +CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE < CONFIG_BAREBOX_MAX_PBL_SIZE
+> +#define MAX_PBL_SIZE CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE
+> +#else
+> +#define MAX_PBL_SIZE CONFIG_BAREBOX_MAX_PBL_SIZE
+> +#endif
+> +
+>  #include <linux/stringify.h>
+>  /* use 2 ASSERT because ld can not accept '"size" "10"' format */
+>  #define BAREBOX_BARE_INIT_SIZE					\
+>  	_barebox_bare_init_size = __bare_init_end - _text;	\
+>  	ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, "Barebox bare_init size > ") \
+> -	ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE)) \
+> +	ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE))
+>  
+> +#define BAREBOX_PBL_SIZE					\
+> +	_barebox_pbl_size = __bss_start - _text;		\
+> +	ASSERT(MAX_BARE_INIT_SIZE <= MAX_PBL_SIZE, "bare_init cannot be bigger than pbl") \
+> +	ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, "Barebox pbl size > ") \
+> +	ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, __stringify(MAX_PBL_SIZE))
+> diff --git a/pbl/Kconfig b/pbl/Kconfig
+> index dc31357..1edc2d1 100644
+> --- a/pbl/Kconfig
+> +++ b/pbl/Kconfig
+> @@ -34,6 +34,13 @@ config PBL_FORCE_PIGGYDATA_COPY
+>  
+>  if PBL_IMAGE
+>  
+> +config LOAD_PBL_SRAM
+> +	bool "Load pbl in SRAM"
+> +	help
+> +	  Load the whole content of the pbl binary into SRAM. This is useful if you
+> +	  use the pbl as a first stage bootloader but cannot load the whole binary
+> +	  at the same time.
+> +
+>  config PBL_RELOCATABLE
+>  	depends on ARM
+>  	bool "relocatable pbl image"
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.8.5.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
