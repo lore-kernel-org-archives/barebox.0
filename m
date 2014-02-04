@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x22f.google.com ([2607:f8b0:4002:c07::22f])
+Received: from mail-yk0-x242.google.com ([2607:f8b0:4002:c07::242])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WAals-0006bt-BB
- for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:50:18 +0000
-Received: by mail-yk0-f175.google.com with SMTP id q200so45568963ykb.6
- for <barebox@lists.infradead.org>; Mon, 03 Feb 2014 23:49:55 -0800 (PST)
+ id 1WAanR-0006dQ-AH
+ for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:51:53 +0000
+Received: by mail-yk0-f194.google.com with SMTP id 9so4809673ykp.1
+ for <barebox@lists.infradead.org>; Mon, 03 Feb 2014 23:51:32 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20140204065745.GK16215@pengutronix.de>
+In-Reply-To: <20140204070537.GM16215@pengutronix.de>
 References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
- <20140204035625.GE9671@ns203013.ovh.net>
- <20140204065745.GK16215@pengutronix.de>
-Date: Tue, 4 Feb 2014 08:49:55 +0100
-Message-ID: <CAKRNOGwpasg7O4fW0uMJAcgOmG2re26-mk70YpHaQVyzsX_XuQ@mail.gmail.com>
+ <20140203081224.GE16215@pengutronix.de>
+ <CAKRNOGz68GEnwU_qEu28xJHBuDsaird4qnepB6rHv48EGdMBOw@mail.gmail.com>
+ <CAKRNOGzSYsEz-jKE19EjY3gw72usbDhBcMCB6k_Zn=zR_kwwqA@mail.gmail.com>
+ <20140204070537.GM16215@pengutronix.de>
+Date: Tue, 4 Feb 2014 08:51:32 +0100
+Message-ID: <CAKRNOGwzu-n0JqLEe5aJEnfgnUp8sVJLQ826jXhrgeudSuwScw@mail.gmail.com>
 From: David Vincent <freesilicon@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,64 +27,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Load PBL into SRAM
+Subject: Re: Fwd: [PATCH] Load PBL into SRAM
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
 2014-02-04 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Tue, Feb 04, 2014 at 04:56:25AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
->> On 10:06 Fri 31 Jan     , David Vincent wrote:
->> > This allows to load all the lowlevel init code, including the
->> > uncompressor, inside SRAM and not just the bare init part. This is
->> > useful when pbl is used as a first-stage bootloader but is loaded by an
->> > external firmware.
->> >
->> > Signed-off-by: David Vincent <freesilicon@gmail.com>
->> > ---
->> >  arch/arm/lib/pbl.lds.S            |    4 ++--
->> >  common/Kconfig                    |   16 ++++++++++++++--
->> >  include/asm-generic/barebox.lds.h |   14 +++++++++++++-
->> >  pbl/Kconfig                       |    7 +++++++
->> >  4 files changed, 36 insertions(+), 5 deletions(-)
->> >
->> > diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
->> > index 0954c89..34c0cb3 100644
->> > --- a/arch/arm/lib/pbl.lds.S
->> > +++ b/arch/arm/lib/pbl.lds.S
->> > @@ -50,11 +50,11 @@ SECTIONS
->> >             *(.text*)
->> >     }
->> >
->> > +   BAREBOX_PBL_SIZE
->> > +
->> >     /* Discard unwind if enable in barebox */
->> >     /DISCARD/ : { *(.ARM.ex*) }
->> >
->> > -   BAREBOX_BARE_INIT_SIZE
->> > -
+> On Mon, Feb 03, 2014 at 10:58:06AM +0100, David Vincent wrote:
+>> 2014-02-03 Sascha Hauer <s.hauer@pengutronix.de>:
 >>
->> nack you change the binary format you can add an information but can not
->> change the format
+>> > On Fri, Jan 31, 2014 at 10:06:10AM +0100, David Vincent wrote:
+>> > > This allows to load all the lowlevel init code, including the
+>> > > uncompressor, inside SRAM and not just the bare init part. This is
+>> > > useful when pbl is used as a first-stage bootloader but is loaded by an
+>> > > external firmware.
+>> >
+>> > Just to make sure I understand this correctly: The patch does not make a
+>> > code change, all it does is to check that the binary does not get too
+>> > big, right?
+>>
+>>
+>> Exactly, just like BAREBOX_MAX_BARE_INIT_SIZE but for the whole
+>> prebootlader code (lowlevel + uncompressor + caches (?) + etc...) not
+>> just functions marked as __bare_init.
+>>
+>> >
+>> > > +config BAREBOX_MAX_PBL_SIZE
+>> > > +     depends on PBL_IMAGE && LOAD_PBL_SRAM
+>> > > +     prompt "Maximum pre-bootloader size"
+>> > > +     hex
+>> > > +     default 0xffffffff
+>> > > +     help
+>> > > +       Define the maximum size of pbl
+>> > > +       this will allow your pbl to fit in SRAM as example
+>> > > +       ARCH can overwrite it via ARCH_BAREBOX_MAX_PBL_SIZE
+>> >
+>> > I stumble upon this 'allow', maybe better something like:
+>> >
+>> > On some hardware the ROM code can load the pbl into SRAM, but not the
+>> > whole image. This option specifies how big the pbl may get.
+>>
+>>
+>> I copied the definition from BAREBOX_MAX_BARE_INIT_SIZE as it shares
+>> the same goal, but if you find it clearer that way, I can resubmit the
+>> patch with that definition, it is up to you !
 >
-> I don't think the format is changed here. It shouldn't matter where the
-> /DISCARD/ is, right? Nevertheless the patch looks more obvious if just
-> the line is changed, not its position.
->
->> >  #include <linux/stringify.h>
->> >  /* use 2 ASSERT because ld can not accept '"size" "10"' format */
->> >  #define BAREBOX_BARE_INIT_SIZE                                     \
->> >     _barebox_bare_init_size = __bare_init_end - _text;      \
->> >     ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, "Barebox bare_init size > ") \
->> > -   ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE)) \
->> > +   ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE))
->> different patch
->
-> This just removes the trailing '\' which is necessary here.
+> Yes, I think it's clearer and we should use the definition.
 
-It isn't obvious for me why the trailing '\' is necessary but you know
-better than me so I will put it back and add one on the next
-definition.
+Done
 
+>
+> Sascha
+>
 >
 > --
 > Pengutronix e.K.                           |                             |
