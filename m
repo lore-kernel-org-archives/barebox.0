@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x242.google.com ([2607:f8b0:4002:c07::242])
+Received: from mail-yk0-x243.google.com ([2607:f8b0:4002:c07::243])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WAanR-0006dQ-AH
- for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:51:53 +0000
-Received: by mail-yk0-f194.google.com with SMTP id 9so4809673ykp.1
- for <barebox@lists.infradead.org>; Mon, 03 Feb 2014 23:51:32 -0800 (PST)
+ id 1WAanm-0006dl-5W
+ for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:52:14 +0000
+Received: by mail-yk0-f195.google.com with SMTP id 142so9417976ykq.2
+ for <barebox@lists.infradead.org>; Mon, 03 Feb 2014 23:51:53 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20140204070537.GM16215@pengutronix.de>
+In-Reply-To: <20140204035625.GE9671@ns203013.ovh.net>
 References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
- <20140203081224.GE16215@pengutronix.de>
- <CAKRNOGz68GEnwU_qEu28xJHBuDsaird4qnepB6rHv48EGdMBOw@mail.gmail.com>
- <CAKRNOGzSYsEz-jKE19EjY3gw72usbDhBcMCB6k_Zn=zR_kwwqA@mail.gmail.com>
- <20140204070537.GM16215@pengutronix.de>
-Date: Tue, 4 Feb 2014 08:51:32 +0100
-Message-ID: <CAKRNOGwzu-n0JqLEe5aJEnfgnUp8sVJLQ826jXhrgeudSuwScw@mail.gmail.com>
+ <20140204035625.GE9671@ns203013.ovh.net>
+Date: Tue, 4 Feb 2014 08:51:53 +0100
+Message-ID: <CAKRNOGzx-ZfrL_wKjvCFsb4uPaRBEhLoJ-3eX4tYevpxdFVnhQ@mail.gmail.com>
 From: David Vincent <freesilicon@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -27,63 +24,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fwd: [PATCH] Load PBL into SRAM
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] Load PBL into SRAM
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-2014-02-04 Sascha Hauer <s.hauer@pengutronix.de>:
-> On Mon, Feb 03, 2014 at 10:58:06AM +0100, David Vincent wrote:
->> 2014-02-03 Sascha Hauer <s.hauer@pengutronix.de>:
+2014-02-04 Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>:
+> On 10:06 Fri 31 Jan     , David Vincent wrote:
+>> This allows to load all the lowlevel init code, including the
+>> uncompressor, inside SRAM and not just the bare init part. This is
+>> useful when pbl is used as a first-stage bootloader but is loaded by an
+>> external firmware.
 >>
->> > On Fri, Jan 31, 2014 at 10:06:10AM +0100, David Vincent wrote:
->> > > This allows to load all the lowlevel init code, including the
->> > > uncompressor, inside SRAM and not just the bare init part. This is
->> > > useful when pbl is used as a first-stage bootloader but is loaded by an
->> > > external firmware.
->> >
->> > Just to make sure I understand this correctly: The patch does not make a
->> > code change, all it does is to check that the binary does not get too
->> > big, right?
+>> Signed-off-by: David Vincent <freesilicon@gmail.com>
+>> ---
+>>  arch/arm/lib/pbl.lds.S            |    4 ++--
+>>  common/Kconfig                    |   16 ++++++++++++++--
+>>  include/asm-generic/barebox.lds.h |   14 +++++++++++++-
+>>  pbl/Kconfig                       |    7 +++++++
+>>  4 files changed, 36 insertions(+), 5 deletions(-)
 >>
+>> diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+>> index 0954c89..34c0cb3 100644
+>> --- a/arch/arm/lib/pbl.lds.S
+>> +++ b/arch/arm/lib/pbl.lds.S
+>> @@ -50,11 +50,11 @@ SECTIONS
+>>               *(.text*)
+>>       }
 >>
->> Exactly, just like BAREBOX_MAX_BARE_INIT_SIZE but for the whole
->> prebootlader code (lowlevel + uncompressor + caches (?) + etc...) not
->> just functions marked as __bare_init.
+>> +     BAREBOX_PBL_SIZE
+>> +
+>>       /* Discard unwind if enable in barebox */
+>>       /DISCARD/ : { *(.ARM.ex*) }
 >>
->> >
->> > > +config BAREBOX_MAX_PBL_SIZE
->> > > +     depends on PBL_IMAGE && LOAD_PBL_SRAM
->> > > +     prompt "Maximum pre-bootloader size"
->> > > +     hex
->> > > +     default 0xffffffff
->> > > +     help
->> > > +       Define the maximum size of pbl
->> > > +       this will allow your pbl to fit in SRAM as example
->> > > +       ARCH can overwrite it via ARCH_BAREBOX_MAX_PBL_SIZE
->> >
->> > I stumble upon this 'allow', maybe better something like:
->> >
->> > On some hardware the ROM code can load the pbl into SRAM, but not the
->> > whole image. This option specifies how big the pbl may get.
->>
->>
->> I copied the definition from BAREBOX_MAX_BARE_INIT_SIZE as it shares
->> the same goal, but if you find it clearer that way, I can resubmit the
->> patch with that definition, it is up to you !
+>> -     BAREBOX_BARE_INIT_SIZE
+>> -
 >
-> Yes, I think it's clearer and we should use the definition.
+> nack you change the binary format you can add an information but can not
+> change the format
 
-Done
+My mistake for the /DISCARD/, I will change it in the next submit and
+put back the information about BARE_INIT_SIZE
 
->
-> Sascha
->
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>       . = ALIGN(4);
+>>       .rodata : { *(.rodata*) }
+>>
+>> diff --git a/common/Kconfig b/common/Kconfig
+>> index 8af7ec1..e067127 100644
+>> --- a/common/Kconfig
+>> +++ b/common/Kconfig
+>> @@ -145,13 +145,25 @@ config BAREBOX_MAX_IMAGE_SIZE
+>>       help
+>>         Define the maximum size of barebox
+>>
+>> +config BAREBOX_MAX_PBL_SIZE
+>> +     depends on PBL_IMAGE && LOAD_PBL_SRAM
+>> +     prompt "Maximum pre-bootloader size"
+>> +     hex
+>> +     default 0xffffffff
+>> +     help
+>> +       Define the maximum size of pbl
+>> +       this will allow your pbl to fit in SRAM as example
+>> +       ARCH can overwrite it via ARCH_BAREBOX_MAX_PBL_SIZE
+>> +
+>>  config BAREBOX_MAX_BARE_INIT_SIZE
+>> -     prompt "Maximum bare_init size"
+>> +     prompt "Maximum bare_init size" if !LOAD_PBL_SRAM
+> you can set it in all case
+
+BARE_INIT is included in PBL, but, alright, removing the condition doesn't hurt.
+
+>>       hex
+>> +     range 0x0 BAREBOX_MAX_PBL_SIZE if LOAD_PBL_SRAM
+>> +     default BAREBOX_MAX_PBL_SIZE if LOAD_PBL_SRAM
+>>       default 0xffffffff
+>>       help
+>>         Define the maximum size of bare_init
+>> -       this will allow your bare_init will fit in SRAM as example
+>> +       this will allow your bare_init to fit in SRAM as example
+> different patch
+
+Yes, my first submission was wrong.
+
+>>         ARCH can overwrite it via ARCH_BAREBOX_MAX_BARE_INIT_SIZE
+>>
+>>  config HAVE_CONFIGURABLE_MEMORY_LAYOUT
+>> diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+>> index 6d3a69e..10b0885 100644
+>> --- a/include/asm-generic/barebox.lds.h
+>> +++ b/include/asm-generic/barebox.lds.h
+>> @@ -60,10 +60,22 @@ CONFIG_ARCH_BAREBOX_MAX_BARE_INIT_SIZE < CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
+>>  #define MAX_BARE_INIT_SIZE CONFIG_BAREBOX_MAX_BARE_INIT_SIZE
+>>  #endif
+>>
+>> +#if defined(CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE) && \
+>> +CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE < CONFIG_BAREBOX_MAX_PBL_SIZE
+>> +#define MAX_PBL_SIZE CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE
+>> +#else
+>> +#define MAX_PBL_SIZE CONFIG_BAREBOX_MAX_PBL_SIZE
+>> +#endif
+>> +
+>>  #include <linux/stringify.h>
+>>  /* use 2 ASSERT because ld can not accept '"size" "10"' format */
+>>  #define BAREBOX_BARE_INIT_SIZE                                       \
+>>       _barebox_bare_init_size = __bare_init_end - _text;      \
+>>       ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, "Barebox bare_init size > ") \
+>> -     ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE)) \
+>> +     ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE))
+> different patch
+>>
+>> +#define BAREBOX_PBL_SIZE                                     \
+>> +     _barebox_pbl_size = __bss_start - _text;                \
+>> +     ASSERT(MAX_BARE_INIT_SIZE <= MAX_PBL_SIZE, "bare_init cannot be bigger than pbl") \
+>> +     ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, "Barebox pbl size > ") \
+>> +     ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, __stringify(MAX_PBL_SIZE))
+>> diff --git a/pbl/Kconfig b/pbl/Kconfig
+>> index dc31357..1edc2d1 100644
+>> --- a/pbl/Kconfig
+>> +++ b/pbl/Kconfig
+>> @@ -34,6 +34,13 @@ config PBL_FORCE_PIGGYDATA_COPY
+>>
+>>  if PBL_IMAGE
+>>
+>> +config LOAD_PBL_SRAM
+>> +     bool "Load pbl in SRAM"
+>> +     help
+>> +       Load the whole content of the pbl binary into SRAM. This is useful if you
+>> +       use the pbl as a first stage bootloader but cannot load the whole binary
+>> +       at the same time.
+>> +
+>>  config PBL_RELOCATABLE
+>>       depends on ARM
+>>       bool "relocatable pbl image"
+>> --
+>> 1.7.10.4
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
