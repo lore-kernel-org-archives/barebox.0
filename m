@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-yk0-x22f.google.com ([2607:f8b0:4002:c07::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WAaNu-00066w-Uo
- for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:25:31 +0000
-Date: Tue, 4 Feb 2014 08:25:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140204072508.GR16215@pengutronix.de>
-References: <BLU0-SMTP17431D5E93FD5424E6A8C41F7AB0@phx.gbl>
+ id 1WAals-0006bt-BB
+ for barebox@lists.infradead.org; Tue, 04 Feb 2014 07:50:18 +0000
+Received: by mail-yk0-f175.google.com with SMTP id q200so45568963ykb.6
+ for <barebox@lists.infradead.org>; Mon, 03 Feb 2014 23:49:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BLU0-SMTP17431D5E93FD5424E6A8C41F7AB0@phx.gbl>
+In-Reply-To: <20140204065745.GK16215@pengutronix.de>
+References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
+ <20140204035625.GE9671@ns203013.ovh.net>
+ <20140204065745.GK16215@pengutronix.de>
+Date: Tue, 4 Feb 2014 08:49:55 +0100
+Message-ID: <CAKRNOGwpasg7O4fW0uMJAcgOmG2re26-mk70YpHaQVyzsX_XuQ@mail.gmail.com>
+From: David Vincent <freesilicon@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,53 +25,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] cfi_flash.c: correct calculation of region erasesize and
- offset for multiple (size_ratio > 1) chips in parallel
-To: Cristiano De Alti <cristiano_dealti@hotmail.com>
+Subject: Re: [PATCH] Load PBL into SRAM
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 03, 2014 at 11:27:52PM +0100, Cristiano De Alti wrote:
-> Signed-off-by: Cristiano De Alti <cristiano_dealti@hotmail.com>
+2014-02-04 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Tue, Feb 04, 2014 at 04:56:25AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+>> On 10:06 Fri 31 Jan     , David Vincent wrote:
+>> > This allows to load all the lowlevel init code, including the
+>> > uncompressor, inside SRAM and not just the bare init part. This is
+>> > useful when pbl is used as a first-stage bootloader but is loaded by an
+>> > external firmware.
+>> >
+>> > Signed-off-by: David Vincent <freesilicon@gmail.com>
+>> > ---
+>> >  arch/arm/lib/pbl.lds.S            |    4 ++--
+>> >  common/Kconfig                    |   16 ++++++++++++++--
+>> >  include/asm-generic/barebox.lds.h |   14 +++++++++++++-
+>> >  pbl/Kconfig                       |    7 +++++++
+>> >  4 files changed, 36 insertions(+), 5 deletions(-)
+>> >
+>> > diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+>> > index 0954c89..34c0cb3 100644
+>> > --- a/arch/arm/lib/pbl.lds.S
+>> > +++ b/arch/arm/lib/pbl.lds.S
+>> > @@ -50,11 +50,11 @@ SECTIONS
+>> >             *(.text*)
+>> >     }
+>> >
+>> > +   BAREBOX_PBL_SIZE
+>> > +
+>> >     /* Discard unwind if enable in barebox */
+>> >     /DISCARD/ : { *(.ARM.ex*) }
+>> >
+>> > -   BAREBOX_BARE_INIT_SIZE
+>> > -
+>>
+>> nack you change the binary format you can add an information but can not
+>> change the format
+>
+> I don't think the format is changed here. It shouldn't matter where the
+> /DISCARD/ is, right? Nevertheless the patch looks more obvious if just
+> the line is changed, not its position.
+>
+>> >  #include <linux/stringify.h>
+>> >  /* use 2 ASSERT because ld can not accept '"size" "10"' format */
+>> >  #define BAREBOX_BARE_INIT_SIZE                                     \
+>> >     _barebox_bare_init_size = __bare_init_end - _text;      \
+>> >     ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, "Barebox bare_init size > ") \
+>> > -   ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE)) \
+>> > +   ASSERT(_barebox_bare_init_size < MAX_BARE_INIT_SIZE, __stringify(MAX_BARE_INIT_SIZE))
+>> different patch
+>
+> This just removes the trailing '\' which is necessary here.
 
-Applied, thanks.
+It isn't obvious for me why the trailing '\' is necessary but you know
+better than me so I will put it back and add one on the next
+definition.
 
-Sascha
-
-> ---
->  drivers/mtd/nor/cfi_flash.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/mtd/nor/cfi_flash.c b/drivers/mtd/nor/cfi_flash.c
-> index 71dd3c8..514eab5 100644
-> --- a/drivers/mtd/nor/cfi_flash.c
-> +++ b/drivers/mtd/nor/cfi_flash.c
-> @@ -404,9 +404,9 @@ static ulong flash_get_size (struct flash_info *info)
->  				erase_region_count, erase_region_size);
->  
->  			region->offset = cur_offset;
-> -			region->erasesize = erase_region_size;
-> +			region->erasesize = erase_region_size * size_ratio;
->  			region->numblocks = erase_region_count;
-> -			cur_offset += erase_region_size * erase_region_count;
-> +			cur_offset += erase_region_size * size_ratio * erase_region_count;
->  
->  			/* increase the space malloced for the sector start addresses */
->  			info->start = xrealloc(info->start, sizeof(ulong) * (erase_region_count + sect_cnt));
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
