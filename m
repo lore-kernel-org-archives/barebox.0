@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x234.google.com ([2a00:1450:4013:c00::234])
+Received: from mail-ee0-x235.google.com ([2a00:1450:4013:c00::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBB99-0004zX-Cx
+ id 1WBB9A-0004ze-7l
  for barebox@lists.infradead.org; Wed, 05 Feb 2014 22:40:53 +0000
-Received: by mail-ee0-f52.google.com with SMTP id e53so523482eek.39
- for <barebox@lists.infradead.org>; Wed, 05 Feb 2014 14:40:21 -0800 (PST)
+Received: by mail-ee0-f53.google.com with SMTP id t10so526848eei.40
+ for <barebox@lists.infradead.org>; Wed, 05 Feb 2014 14:40:20 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed,  5 Feb 2014 23:40:06 +0100
-Message-Id: <1391640009-3399-4-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed,  5 Feb 2014 23:40:09 +0100
+Message-Id: <1391640009-3399-7-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,888 +23,1027 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/6] bus: mvebu: add mbus driver
+Subject: [PATCH 6/6] ARM: dove: sync with DT files from Linux
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-This imports the Marvell mbus driver from Linux. The mbus is the
-main downstream bus found on all Marvell Orion SoCs. The driver
-deals with re-configurable address windows which are currently
-parsed from DT. Also enable the driver as default on all MVEBU
-SoCs. While at it, also reorder drivers/bus/{Kconfig,Makefile}
-alphabetically.
+This re-syncs Marvell Dove and Solidrun CuBox DT files with current
+files from Linux v3.14. Barebox-specific properties not yet backported,
+are kept, default led trigger is set to heartbeat.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Michael Grzeschik <mgr@pengutronix.de>
 Cc: barebox@lists.infradead.org
----
- arch/arm/Kconfig         |   1 +
- drivers/bus/Kconfig      |  15 +-
- drivers/bus/Makefile     |   5 +-
- drivers/bus/mvebu-mbus.c | 732 +++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/mbus.h     |  61 ++++
- 5 files changed, 808 insertions(+), 6 deletions(-)
- create mode 100644 drivers/bus/mvebu-mbus.c
- create mode 100644 include/linux/mbus.h
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 93619d5c0542..32878d4d3eac 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -87,6 +87,7 @@ config ARCH_MVEBU
- 	select CLKDEV_LOOKUP
- 	select GPIOLIB
- 	select HAS_DEBUG_LL
-+	select MVEBU_MBUS
- 	select OFTREE
+fixup dts
+
+Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+---
+ arch/arm/dts/dove-cubox.dts |  66 ++--
+ arch/arm/dts/dove.dtsi      | 806 +++++++++++++++++++++++++++++++-------------
+ 2 files changed, 598 insertions(+), 274 deletions(-)
+
+diff --git a/arch/arm/dts/dove-cubox.dts b/arch/arm/dts/dove-cubox.dts
+index 61f38fe5a2cb..0c2c54e6858b 100644
+--- a/arch/arm/dts/dove-cubox.dts
++++ b/arch/arm/dts/dove-cubox.dts
+@@ -1,14 +1,14 @@
+ /dts-v1/;
  
- config ARCH_MXS
-diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
-index b0d3c1fe9da3..202df59762e8 100644
---- a/drivers/bus/Kconfig
-+++ b/drivers/bus/Kconfig
-@@ -1,13 +1,20 @@
- menu "Bus devices"
+-/include/ "dove.dtsi"
++#include "dove.dtsi"
  
--config IMX_WEIM
--	depends on ARCH_IMX
--	bool "i.MX WEIM driver"
+ / {
+-	compatible = "solidrun,cubox", "marvell,dove";
+ 	model = "SolidRun CuBox";
++	compatible = "solidrun,cubox", "marvell,dove";
+ 
+ 	memory {
+ 		device_type = "memory";
+-		reg = <0x00000000 0x3f000000>;
++		reg = <0x00000000 0x40000000>;
+ 	};
+ 
+ 	chosen {
+@@ -24,7 +24,8 @@
+ 		power {
+ 			label = "Power";
+ 			gpios = <&gpio0 18 1>;
+-			linux,default-trigger = "default-on";
++			barebox,default-trigger = "heartbeat";
++			default-state = "keep";
+ 		};
+ 	};
+ 
+@@ -43,6 +44,8 @@
+ 			regulator-always-on;
+ 			regulator-boot-on;
+ 			gpio = <&gpio0 1 0>;
++			pinctrl-0 = <&pmx_gpio_1>;
++			pinctrl-names = "default";
+ 		};
+ 	};
+ 
+@@ -55,19 +58,22 @@
+ 		};
+ 	};
+ 
+-	video-card {
+-		compatible = "marvell,dove-video-card";
+-		reg = <0x3f000000 0x1000000>;
+-		marvell,external-encoder = <&tda19988>;
++	ir_recv: ir-receiver {
++		compatible = "gpio-ir-receiver";
++		gpios = <&gpio0 19 1>;
++		pinctrl-0 = <&pmx_gpio_19>;
++		pinctrl-names = "default";
+ 	};
+ };
+ 
+ &uart0 { status = "okay"; };
+ &sata0 { status = "okay"; };
++&mdio { status = "okay"; };
++&eth { status = "okay"; };
+ 
+-&lcd0 {
+-	status = "okay";
+-	clocks = <&si5351 0>;
++&ethphy {
++	compatible = "marvell,88e1310";
++	reg = <1>;
+ };
+ 
+ &i2c0 {
+@@ -95,25 +101,14 @@
+ 			silabs,pll-master;
+ 		};
+ 
+-		clkout1 {
+-			reg = <1>;
+-			silabs,drive-strength = <8>;
+-			silabs,multisynth-source = <1>;
+-			silabs,clock-source = <0>;
+-			silabs,pll-master;
+-		};
 -
- config BUS_OMAP_GPMC
- 	depends on ARCH_OMAP
- 	depends on OFDEVICE
- 	depends on OMAP_GPMC
- 	bool "TI OMAP/AM33xx GPMC support"
+ 		clkout2 {
+ 			reg = <2>;
++			silabs,drive-strength = <8>;
+ 			silabs,multisynth-source = <1>;
+ 			silabs,clock-source = <0>;
++			silabs,pll-master;
+ 		};
+ 	};
+-
+-	tda19988: hdmi-encoder@70 {
+-		compatible = "nxp,tda1998x";
+-		reg = <0x70>;
+-	};
+ };
  
-+config IMX_WEIM
-+	depends on ARCH_IMX
-+	bool "i.MX WEIM driver"
-+
-+config MVEBU_MBUS
-+	bool
-+	depends on ARCH_MVEBU
-+	help
-+	  Driver needed for the MBus configuration on Marvell EBU SoCs
-+	  (Kirkwood, Dove, Orion5x, MV78XX0 and Armada 370/XP).
-+
- endmenu
-diff --git a/drivers/bus/Makefile b/drivers/bus/Makefile
-index f1c5ac73ca42..4b7aa888aba8 100644
---- a/drivers/bus/Makefile
-+++ b/drivers/bus/Makefile
-@@ -1,2 +1,3 @@
--obj-$(CONFIG_IMX_WEIM) += imx-weim.o
--obj-$(CONFIG_BUS_OMAP_GPMC) += omap-gpmc.o
-+obj-$(CONFIG_BUS_OMAP_GPMC)	+= omap-gpmc.o
-+obj-$(CONFIG_IMX_WEIM)		+= imx-weim.o
-+obj-$(CONFIG_MVEBU_MBUS)	+= mvebu-mbus.o
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-new file mode 100644
-index 000000000000..fbbba51b8da2
---- /dev/null
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -0,0 +1,732 @@
-+/*
-+ * Address map functions for Marvell EBU SoCs (Kirkwood, Armada
-+ * 370/XP, Dove, Orion5x and MV78xx0)
-+ *
-+ * Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-+ *
-+ * based on mbus driver from Linux
-+ *   (C) Copyright 2008 Marvell Semiconductor
-+ *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
-+ *
-+ * The Marvell EBU SoCs have a configurable physical address space:
-+ * the physical address at which certain devices (PCIe, NOR, NAND,
-+ * etc.) sit can be configured. The configuration takes place through
-+ * two sets of registers:
-+ *
-+ * - One to configure the access of the CPU to the devices. Depending
-+ *   on the families, there are between 8 and 20 configurable windows,
-+ *   each can be use to create a physical memory window that maps to a
-+ *   specific device. Devices are identified by a tuple (target,
-+ *   attribute).
-+ *
-+ * - One to configure the access to the CPU to the SDRAM. There are
-+ *   either 2 (for Dove) or 4 (for other families) windows to map the
-+ *   SDRAM into the physical address space.
-+ *
-+ * This driver:
-+ *
-+ * - Reads out the SDRAM address decoding windows at initialization
-+ *   time, and fills the mbus_dram_info structure with these
-+ *   informations. The exported function mv_mbus_dram_info() allow
-+ *   device drivers to get those informations related to the SDRAM
-+ *   address decoding windows. This is because devices also have their
-+ *   own windows (configured through registers that are part of each
-+ *   device register space), and therefore the drivers for Marvell
-+ *   devices have to configure those device -> SDRAM windows to ensure
-+ *   that DMA works properly.
-+ *
-+ * - Provides an API for platform code or device drivers to
-+ *   dynamically add or remove address decoding windows for the CPU ->
-+ *   device accesses. This API is mvebu_mbus_add_window_by_id(),
-+ *   mvebu_mbus_add_window_remap_by_id() and
-+ *   mvebu_mbus_del_window().
-+ *
-+ * - Provides a debugfs interface in /sys/kernel/debug/mvebu-mbus/ to
-+ *   see the list of CPU -> SDRAM windows and their configuration
-+ *   (file 'sdram') and the list of CPU -> devices windows and their
-+ *   configuration (file 'devices').
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <of.h>
-+#include <of_address.h>
-+#include <linux/mbus.h>
-+
-+/* DDR target is the same on all platforms */
-+#define TARGET_DDR		0
-+
-+/* CPU Address Decode Windows registers */
-+#define WIN_CTRL_OFF		0x0000
-+#define   WIN_CTRL_ENABLE       BIT(0)
-+#define   WIN_CTRL_TGT_MASK     0xf0
-+#define   WIN_CTRL_TGT_SHIFT    4
-+#define   WIN_CTRL_ATTR_MASK    0xff00
-+#define   WIN_CTRL_ATTR_SHIFT   8
-+#define   WIN_CTRL_SIZE_MASK    0xffff0000
-+#define   WIN_CTRL_SIZE_SHIFT   16
-+#define WIN_BASE_OFF		0x0004
-+#define   WIN_BASE_LOW          0xffff0000
-+#define   WIN_BASE_HIGH         0xf
-+#define WIN_REMAP_LO_OFF	0x0008
-+#define   WIN_REMAP_LOW         0xffff0000
-+#define WIN_REMAP_HI_OFF	0x000c
-+
-+#define ATTR_HW_COHERENCY	(0x1 << 4)
-+
-+#define DDR_BASE_CS_OFF(n)	(0x0000 + ((n) << 3))
-+#define  DDR_BASE_CS_HIGH_MASK  0xf
-+#define  DDR_BASE_CS_LOW_MASK   0xff000000
-+#define DDR_SIZE_CS_OFF(n)	(0x0004 + ((n) << 3))
-+#define  DDR_SIZE_ENABLED       BIT(0)
-+#define  DDR_SIZE_CS_MASK       0x1c
-+#define  DDR_SIZE_CS_SHIFT      2
-+#define  DDR_SIZE_MASK          0xff000000
-+
-+#define DOVE_DDR_BASE_CS_OFF(n) ((n) << 4)
-+
-+struct mvebu_mbus_state;
-+
-+struct mvebu_mbus_soc_data {
-+	unsigned int num_wins;
-+	unsigned int num_remappable_wins;
-+	unsigned int (*win_cfg_offset)(const int win);
-+	void (*setup_cpu_target)(struct mvebu_mbus_state *s);
-+};
-+
-+struct mvebu_mbus_state {
-+	void __iomem *mbuswins_base;
-+	void __iomem *sdramwins_base;
-+	struct dentry *debugfs_root;
-+	struct dentry *debugfs_sdram;
-+	struct dentry *debugfs_devs;
-+	struct resource pcie_mem_aperture;
-+	struct resource pcie_io_aperture;
-+	const struct mvebu_mbus_soc_data *soc;
-+	int hw_io_coherency;
-+};
-+
-+static struct mvebu_mbus_state mbus_state;
-+static struct mbus_dram_target_info mbus_dram_info;
-+
-+/*
-+ * Functions to manipulate the address decoding windows
-+ */
-+
-+static void mvebu_mbus_read_window(struct mvebu_mbus_state *mbus,
-+				   int win, int *enabled, u64 *base,
-+				   u32 *size, u8 *target, u8 *attr,
-+				   u64 *remap)
-+{
-+	void __iomem *addr = mbus->mbuswins_base +
-+		mbus->soc->win_cfg_offset(win);
-+	u32 basereg = readl(addr + WIN_BASE_OFF);
-+	u32 ctrlreg = readl(addr + WIN_CTRL_OFF);
-+
-+	if (!(ctrlreg & WIN_CTRL_ENABLE)) {
-+		*enabled = 0;
-+		return;
-+	}
-+
-+	*enabled = 1;
-+	*base = ((u64)basereg & WIN_BASE_HIGH) << 32;
-+	*base |= (basereg & WIN_BASE_LOW);
-+	*size = (ctrlreg | ~WIN_CTRL_SIZE_MASK) + 1;
-+
-+	if (target)
-+		*target = (ctrlreg & WIN_CTRL_TGT_MASK) >> WIN_CTRL_TGT_SHIFT;
-+
-+	if (attr)
-+		*attr = (ctrlreg & WIN_CTRL_ATTR_MASK) >> WIN_CTRL_ATTR_SHIFT;
-+
-+	if (remap) {
-+		if (win < mbus->soc->num_remappable_wins) {
-+			u32 remap_low = readl(addr + WIN_REMAP_LO_OFF);
-+			u32 remap_hi  = readl(addr + WIN_REMAP_HI_OFF);
-+			*remap = ((u64)remap_hi << 32) | remap_low;
-+		} else
-+			*remap = 0;
-+	}
-+}
-+
-+static void mvebu_mbus_disable_window(struct mvebu_mbus_state *mbus,
-+				      int win)
-+{
-+	void __iomem *addr;
-+
-+	addr = mbus->mbuswins_base + mbus->soc->win_cfg_offset(win);
-+
-+	writel(0, addr + WIN_BASE_OFF);
-+	writel(0, addr + WIN_CTRL_OFF);
-+	if (win < mbus->soc->num_remappable_wins) {
-+		writel(0, addr + WIN_REMAP_LO_OFF);
-+		writel(0, addr + WIN_REMAP_HI_OFF);
-+	}
-+}
-+
-+/* Checks whether the given window number is available */
-+static int mvebu_mbus_window_is_free(struct mvebu_mbus_state *mbus,
-+				     const int win)
-+{
-+	void __iomem *addr = mbus->mbuswins_base +
-+		mbus->soc->win_cfg_offset(win);
-+	u32 ctrl = readl(addr + WIN_CTRL_OFF);
-+	return !(ctrl & WIN_CTRL_ENABLE);
-+}
-+
-+/*
-+ * Checks whether the given (base, base+size) area doesn't overlap an
-+ * existing region
-+ */
-+static int mvebu_mbus_window_conflicts(struct mvebu_mbus_state *mbus,
-+				       phys_addr_t base, size_t size,
-+				       u8 target, u8 attr)
-+{
-+	u64 end = (u64)base + size;
-+	int win;
-+
-+	for (win = 0; win < mbus->soc->num_wins; win++) {
-+		u64 wbase, wend;
-+		u32 wsize;
-+		u8 wtarget, wattr;
-+		int enabled;
-+
-+		mvebu_mbus_read_window(mbus, win,
-+				       &enabled, &wbase, &wsize,
-+				       &wtarget, &wattr, NULL);
-+
-+		if (!enabled)
-+			continue;
-+
-+		wend = wbase + wsize;
-+
-+		/*
-+		 * Check if the current window overlaps with the
-+		 * proposed physical range
-+		 */
-+		if ((u64)base < wend && end > wbase)
-+			return 0;
-+
-+		/*
-+		 * Check if target/attribute conflicts
-+		 */
-+		if (target == wtarget && attr == wattr)
-+			return 0;
-+	}
-+
-+	return 1;
-+}
-+
-+static int mvebu_mbus_find_window(struct mvebu_mbus_state *mbus,
-+				  phys_addr_t base, size_t size)
-+{
-+	int win;
-+
-+	for (win = 0; win < mbus->soc->num_wins; win++) {
-+		u64 wbase;
-+		u32 wsize;
-+		int enabled;
-+
-+		mvebu_mbus_read_window(mbus, win,
-+				       &enabled, &wbase, &wsize,
-+				       NULL, NULL, NULL);
-+
-+		if (!enabled)
-+			continue;
-+
-+		if (base == wbase && size == wsize)
-+			return win;
-+	}
-+
-+	return -ENODEV;
-+}
-+
-+static int mvebu_mbus_setup_window(struct mvebu_mbus_state *mbus,
-+				   int win, phys_addr_t base, size_t size,
-+				   phys_addr_t remap, u8 target,
-+				   u8 attr)
-+{
-+	void __iomem *addr = mbus->mbuswins_base +
-+		mbus->soc->win_cfg_offset(win);
-+	u32 ctrl, remap_addr;
-+
-+	ctrl = ((size - 1) & WIN_CTRL_SIZE_MASK) |
-+		(attr << WIN_CTRL_ATTR_SHIFT)    |
-+		(target << WIN_CTRL_TGT_SHIFT)   |
-+		WIN_CTRL_ENABLE;
-+
-+	writel(base & WIN_BASE_LOW, addr + WIN_BASE_OFF);
-+	writel(ctrl, addr + WIN_CTRL_OFF);
-+	if (win < mbus->soc->num_remappable_wins) {
-+		if (remap == MVEBU_MBUS_NO_REMAP)
-+			remap_addr = base;
-+		else
-+			remap_addr = remap;
-+		writel(remap_addr & WIN_REMAP_LOW, addr + WIN_REMAP_LO_OFF);
-+		writel(0, addr + WIN_REMAP_HI_OFF);
-+	}
-+
-+	return 0;
-+}
-+
-+static int mvebu_mbus_alloc_window(struct mvebu_mbus_state *mbus,
-+				   phys_addr_t base, size_t size,
-+				   phys_addr_t remap, u8 target,
-+				   u8 attr)
-+{
-+	int win;
-+
-+	if (remap == MVEBU_MBUS_NO_REMAP) {
-+		for (win = mbus->soc->num_remappable_wins;
-+		     win < mbus->soc->num_wins; win++)
-+			if (mvebu_mbus_window_is_free(mbus, win))
-+				return mvebu_mbus_setup_window(mbus, win, base,
-+							       size, remap,
-+							       target, attr);
-+	}
-+
-+
-+	for (win = 0; win < mbus->soc->num_wins; win++)
-+		if (mvebu_mbus_window_is_free(mbus, win))
-+			return mvebu_mbus_setup_window(mbus, win, base, size,
-+						       remap, target, attr);
-+
-+	return -ENOMEM;
-+}
-+
-+/*
-+ * SoC-specific functions and definitions
-+ */
-+
-+static unsigned int armada_370_xp_mbus_win_offset(int win)
-+{
-+	/* The register layout is a bit annoying and the below code
-+	 * tries to cope with it.
-+	 * - At offset 0x0, there are the registers for the first 8
-+	 *   windows, with 4 registers of 32 bits per window (ctrl,
-+	 *   base, remap low, remap high)
-+	 * - Then at offset 0x80, there is a hole of 0x10 bytes for
-+	 *   the internal registers base address and internal units
-+	 *   sync barrier register.
-+	 * - Then at offset 0x90, there the registers for 12
-+	 *   windows, with only 2 registers of 32 bits per window
-+	 *   (ctrl, base).
-+	 */
-+	if (win < 8)
-+		return win << 4;
-+	else
-+		return 0x90 + ((win - 8) << 3);
-+}
-+
-+static unsigned int orion5x_mbus_win_offset(int win)
-+{
-+	return win << 4;
-+}
-+
-+static unsigned int mv78xx0_mbus_win_offset(int win)
-+{
-+	if (win < 8)
-+		return win << 4;
-+	else
-+		return 0x900 + ((win - 8) << 4);
-+}
-+
-+static void mvebu_mbus_default_setup_cpu_target(struct mvebu_mbus_state *mbus)
-+{
-+	int i;
-+	int cs;
-+
-+	mbus_dram_info.mbus_dram_target_id = TARGET_DDR;
-+
-+	for (i = 0, cs = 0; i < 4; i++) {
-+		u32 base = readl(mbus->sdramwins_base + DDR_BASE_CS_OFF(i));
-+		u32 size = readl(mbus->sdramwins_base + DDR_SIZE_CS_OFF(i));
-+
-+		/*
-+		 * We only take care of entries for which the chip
-+		 * select is enabled, and that don't have high base
-+		 * address bits set (devices can only access the first
-+		 * 32 bits of the memory).
-+		 */
-+		if ((size & DDR_SIZE_ENABLED) &&
-+		    !(base & DDR_BASE_CS_HIGH_MASK)) {
-+			struct mbus_dram_window *w;
-+
-+			w = &mbus_dram_info.cs[cs++];
-+			w->cs_index = i;
-+			w->mbus_attr = 0xf & ~(1 << i);
-+			if (mbus->hw_io_coherency)
-+				w->mbus_attr |= ATTR_HW_COHERENCY;
-+			w->base = base & DDR_BASE_CS_LOW_MASK;
-+			w->size = (size | ~DDR_SIZE_MASK) + 1;
-+		}
-+	}
-+	mbus_dram_info.num_cs = cs;
-+}
-+
-+static void mvebu_mbus_dove_setup_cpu_target(struct mvebu_mbus_state *mbus)
-+{
-+	int i;
-+	int cs;
-+
-+	mbus_dram_info.mbus_dram_target_id = TARGET_DDR;
-+
-+	for (i = 0, cs = 0; i < 2; i++) {
-+		u32 map = readl(mbus->sdramwins_base + DOVE_DDR_BASE_CS_OFF(i));
-+
-+		/*
-+		 * Chip select enabled?
-+		 */
-+		if (map & 1) {
-+			struct mbus_dram_window *w;
-+
-+			w = &mbus_dram_info.cs[cs++];
-+			w->cs_index = i;
-+			w->mbus_attr = 0; /* CS address decoding done inside */
-+					  /* the DDR controller, no need to  */
-+					  /* provide attributes */
-+			w->base = map & 0xff800000;
-+			w->size = 0x100000 << (((map & 0x000f0000) >> 16) - 4);
-+		}
-+	}
-+
-+	mbus_dram_info.num_cs = cs;
-+}
-+
-+static const struct mvebu_mbus_soc_data armada_370_xp_mbus_data = {
-+	.num_wins            = 20,
-+	.num_remappable_wins = 8,
-+	.win_cfg_offset      = armada_370_xp_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
-+};
-+
-+static const struct mvebu_mbus_soc_data dove_mbus_data = {
-+	.num_wins            = 8,
-+	.num_remappable_wins = 4,
-+	.win_cfg_offset      = orion5x_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_dove_setup_cpu_target,
-+};
-+
-+static const struct mvebu_mbus_soc_data kirkwood_mbus_data = {
-+	.num_wins            = 8,
-+	.num_remappable_wins = 4,
-+	.win_cfg_offset      = orion5x_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
-+};
-+
-+/*
-+ * Some variants of Orion5x have 4 remappable windows, some other have
-+ * only two of them.
-+ */
-+static const struct mvebu_mbus_soc_data orion5x_4win_mbus_data = {
-+	.num_wins            = 8,
-+	.num_remappable_wins = 4,
-+	.win_cfg_offset      = orion5x_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
-+};
-+
-+static const struct mvebu_mbus_soc_data orion5x_2win_mbus_data = {
-+	.num_wins            = 8,
-+	.num_remappable_wins = 2,
-+	.win_cfg_offset      = orion5x_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
-+};
-+
-+static const struct mvebu_mbus_soc_data mv78xx0_mbus_data = {
-+	.num_wins            = 14,
-+	.num_remappable_wins = 8,
-+	.win_cfg_offset      = mv78xx0_mbus_win_offset,
-+	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
-+};
-+
-+static struct of_device_id mvebu_mbus_dt_ids[] = {
-+#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
-+	{ .compatible = "marvell,armada370-mbus",
-+	  .data = (u32)&armada_370_xp_mbus_data, },
-+	{ .compatible = "marvell,armadaxp-mbus",
-+	  .data = (u32)&armada_370_xp_mbus_data, },
-+#endif
-+#if defined(CONFIG_ARCH_DOVE)
-+	{ .compatible = "marvell,dove-mbus",
-+	  .data = (u32)&dove_mbus_data, },
-+#endif
-+#if defined(CONFIG_ARCH_KIRKWOOD)
-+	{ .compatible = "marvell,kirkwood-mbus",
-+	  .data = (u32)&kirkwood_mbus_data, },
-+#endif
-+#if defined(CONFIG_ARCH_ORION5X)
-+	{ .compatible = "marvell,orion5x-88f5281-mbus",
-+	  .data = (u32)&orion5x_4win_mbus_data, },
-+	{ .compatible = "marvell,orion5x-88f5182-mbus",
-+	  .data = (u32)&orion5x_2win_mbus_data, },
-+	{ .compatible = "marvell,orion5x-88f5181-mbus",
-+	  .data = (u32)&orion5x_2win_mbus_data, },
-+	{ .compatible = "marvell,orion5x-88f6183-mbus",
-+	  .data = (u32)&orion5x_4win_mbus_data, },
-+#endif
-+#if defined(CONFIG_ARCH_MV78XX0)
-+	{ .compatible = "marvell,mv78xx0-mbus",
-+	  .data = (u32)&mv78xx0_mbus_data, },
-+#endif
-+	{ },
-+};
-+
-+/*
-+ * Public API of the driver
-+ */
-+const struct mbus_dram_target_info *mvebu_mbus_dram_info(void)
-+{
-+	return &mbus_dram_info;
-+}
-+
-+int mvebu_mbus_add_window_remap_by_id(unsigned int target,
-+				      unsigned int attribute,
-+				      phys_addr_t base, size_t size,
-+				      phys_addr_t remap)
-+{
-+	struct mvebu_mbus_state *s = &mbus_state;
-+
-+	if (!mvebu_mbus_window_conflicts(s, base, size, target, attribute)) {
-+		pr_err("cannot add window '%x:%x', conflicts with another window\n",
-+		       target, attribute);
-+		return -EINVAL;
-+	}
-+
-+	return mvebu_mbus_alloc_window(s, base, size, remap, target, attribute);
-+}
-+
-+int mvebu_mbus_add_window_by_id(unsigned int target, unsigned int attribute,
-+				phys_addr_t base, size_t size)
-+{
-+	return mvebu_mbus_add_window_remap_by_id(target, attribute, base,
-+						 size, MVEBU_MBUS_NO_REMAP);
-+}
-+
-+int mvebu_mbus_del_window(phys_addr_t base, size_t size)
-+{
-+	int win;
-+
-+	win = mvebu_mbus_find_window(&mbus_state, base, size);
-+	if (win < 0)
-+		return win;
-+
-+	mvebu_mbus_disable_window(&mbus_state, win);
-+	return 0;
-+}
-+
-+void mvebu_mbus_get_pcie_mem_aperture(struct resource *res)
-+{
-+	if (!res)
-+		return;
-+	*res = mbus_state.pcie_mem_aperture;
-+}
-+
-+void mvebu_mbus_get_pcie_io_aperture(struct resource *res)
-+{
-+	if (!res)
-+		return;
-+	*res = mbus_state.pcie_io_aperture;
-+}
-+
-+/*
-+ * The window IDs in the ranges DT property have the following format:
-+ *  - bits 28 to 31: MBus custom field
-+ *  - bits 24 to 27: window target ID
-+ *  - bits 16 to 23: window attribute ID
-+ *  - bits  0 to 15: unused
-+ */
-+#define CUSTOM(id) (((id) & 0xF0000000) >> 24)
-+#define TARGET(id) (((id) & 0x0F000000) >> 24)
-+#define ATTR(id)   (((id) & 0x00FF0000) >> 16)
-+
-+static int mbus_dt_setup_win(struct mvebu_mbus_state *mbus,
-+			     u32 base, u32 size, u8 target, u8 attr)
-+{
-+	if (!mvebu_mbus_window_conflicts(mbus, base, size, target, attr)) {
-+		pr_err("cannot add window '%04x:%04x', conflicts with another window\n",
-+		       target, attr);
-+		return -EBUSY;
-+	}
-+
-+	if (mvebu_mbus_alloc_window(mbus, base, size, MVEBU_MBUS_NO_REMAP,
-+				    target, attr)) {
-+		pr_err("cannot add window '%04x:%04x', too many windows\n",
-+		       target, attr);
-+		return -ENOMEM;
-+	}
-+	return 0;
-+}
-+
-+static int mbus_parse_ranges(struct device_node *node, int *addr_cells,
-+			     int *c_addr_cells, int *c_size_cells,
-+			     int *cell_count, const __be32 **ranges_start,
-+			     const __be32 **ranges_end)
-+{
-+	const __be32 *prop;
-+	int ranges_len, tuple_len;
-+
-+	/* Allow a node with no 'ranges' property */
-+	*ranges_start = of_get_property(node, "ranges", &ranges_len);
-+	if (*ranges_start == NULL) {
-+		*addr_cells = *c_addr_cells = *c_size_cells = *cell_count = 0;
-+		*ranges_start = *ranges_end = NULL;
-+		return 0;
-+	}
-+	*ranges_end = *ranges_start + ranges_len / sizeof(__be32);
-+
-+	*addr_cells = of_n_addr_cells(node);
-+
-+	prop = of_get_property(node, "#address-cells", NULL);
-+	*c_addr_cells = be32_to_cpup(prop);
-+
-+	prop = of_get_property(node, "#size-cells", NULL);
-+	*c_size_cells = be32_to_cpup(prop);
-+
-+	*cell_count = *addr_cells + *c_addr_cells + *c_size_cells;
-+	tuple_len = (*cell_count) * sizeof(__be32);
-+
-+	if (ranges_len % tuple_len) {
-+		pr_warn("malformed ranges entry '%s'\n", node->name);
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+static int mbus_dt_setup(struct mvebu_mbus_state *mbus, struct device_node *np)
-+{
-+	int addr_cells, c_addr_cells, c_size_cells;
-+	int i, ret, cell_count;
-+	const __be32 *r, *ranges_start, *ranges_end;
-+
-+	ret = mbus_parse_ranges(np, &addr_cells, &c_addr_cells,
-+				&c_size_cells, &cell_count,
-+				&ranges_start, &ranges_end);
-+	if (ret < 0)
-+		return ret;
-+
-+	for (i = 0, r = ranges_start; r < ranges_end; r += cell_count, i++) {
-+		u32 windowid, base, size;
-+		u8 target, attr;
-+
-+		/*
-+		 * An entry with a non-zero custom field do not
-+		 * correspond to a static window, so skip it.
-+		 */
-+		windowid = of_read_number(r, 1);
-+		if (CUSTOM(windowid))
-+			continue;
-+
-+		target = TARGET(windowid);
-+		attr = ATTR(windowid);
-+
-+		base = of_read_number(r + c_addr_cells, addr_cells);
-+		size = of_read_number(r + c_addr_cells + addr_cells,
-+				      c_size_cells);
-+		ret = mbus_dt_setup_win(mbus, base, size, target, attr);
-+		if (ret < 0)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static void mvebu_mbus_get_pcie_resources(struct device_node *np,
-+			  struct resource *mem, struct resource *io)
-+{
-+	u32 reg[2];
-+	int ret;
-+
-+	/*
-+	 * These are optional, so we make sure that resource_size(x) will
-+	 * return 0.
-+	 */
-+	memset(mem, 0, sizeof(struct resource));
-+	mem->end = -1;
-+	memset(io, 0, sizeof(struct resource));
-+	io->end = -1;
-+
-+	ret = of_property_read_u32_array(np, "pcie-mem-aperture",
-+					 reg, ARRAY_SIZE(reg));
-+	if (!ret) {
-+		mem->start = reg[0];
-+		mem->end = mem->start + reg[1];
-+		mem->flags = IORESOURCE_MEM;
-+	}
-+
-+	ret = of_property_read_u32_array(np, "pcie-io-aperture",
-+					 reg, ARRAY_SIZE(reg));
-+	if (!ret) {
-+		io->start = reg[0];
-+		io->end = io->start + reg[1];
-+		io->flags = IORESOURCE_IO;
-+	}
-+}
-+
-+static int mvebu_mbus_probe(struct device_d *dev)
-+{
-+	struct device_node *np, *controller;
-+	const struct of_device_id *match;
-+	const __be32 *prop;
-+	int win;
-+
-+	np = of_find_matching_node_and_match(NULL, mvebu_mbus_dt_ids, &match);
-+	if (!np) {
-+		pr_err("could not find a matching SoC family\n");
-+		return -ENODEV;
-+	}
-+	mbus_state.soc = (struct mvebu_mbus_soc_data *)match->data;
-+
-+	prop = of_get_property(np, "controller", NULL);
-+	if (!prop) {
-+		pr_err("required 'controller' property missing\n");
-+		return -EINVAL;
-+	}
-+
-+	controller = of_find_node_by_phandle(be32_to_cpup(prop));
-+	if (!controller) {
-+		pr_err("could not find an 'mbus-controller' node\n");
-+		return -ENODEV;
-+	}
-+
-+	mbus_state.mbuswins_base = of_iomap(controller, 0);
-+	if (!mbus_state.mbuswins_base) {
-+		pr_err("cannot get MBUS register address\n");
-+		return -ENOMEM;
-+	}
-+
-+	mbus_state.sdramwins_base = of_iomap(controller, 1);
-+	if (!mbus_state.sdramwins_base) {
-+		pr_err("cannot get SDRAM register address\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* Get optional pcie-{mem,io}-aperture properties */
-+	mvebu_mbus_get_pcie_resources(np, &mbus_state.pcie_mem_aperture,
-+					  &mbus_state.pcie_io_aperture);
-+
-+	if (of_find_compatible_node(NULL, NULL, "marvell,coherency-fabric"))
-+		mbus_state.hw_io_coherency = 1;
-+
-+	for (win = 0; win < mbus_state.soc->num_wins; win++)
-+		mvebu_mbus_disable_window(&mbus_state, win);
-+
-+	mbus_state.soc->setup_cpu_target(&mbus_state);
-+
-+	/* Setup statically declared windows in the DT */
-+	return mbus_dt_setup(&mbus_state, np);
-+}
-+
-+static struct driver_d mvebu_mbus_driver = {
-+	.probe	= mvebu_mbus_probe,
-+	.name	= "mvebu-mbus",
-+	.of_compatible = DRV_OF_COMPAT(mvebu_mbus_dt_ids),
-+};
-+
-+static int mvebu_mbus_init(void)
-+{
-+	return platform_driver_register(&mvebu_mbus_driver);
-+}
-+postcore_initcall(mvebu_mbus_init);
-diff --git a/include/linux/mbus.h b/include/linux/mbus.h
-new file mode 100644
-index 000000000000..578ff331461c
---- /dev/null
-+++ b/include/linux/mbus.h
-@@ -0,0 +1,61 @@
-+/*
-+ * Marvell MBUS common definitions.
-+ *
-+ * Copyright (C) 2008 Marvell Semiconductor
-+ *
-+ * This file is licensed under the terms of the GNU General Public
-+ * License version 2.  This program is licensed "as is" without any
-+ * warranty of any kind, whether express or implied.
-+ */
-+
-+#ifndef __LINUX_MBUS_H
-+#define __LINUX_MBUS_H
-+
-+struct resource;
-+
-+struct mbus_dram_target_info {
-+	/*
-+	 * The 4-bit MBUS target ID of the DRAM controller.
-+	 */
-+	u8		mbus_dram_target_id;
-+
-+	/*
-+	 * The base address, size, and MBUS attribute ID for each
-+	 * of the possible DRAM chip selects.  Peripherals are
-+	 * required to support at least 4 decode windows.
-+	 */
-+	int		num_cs;
-+	struct mbus_dram_window {
-+		u8	cs_index;
-+		u8	mbus_attr;
-+		u32	base;
-+		u32	size;
-+	} cs[4];
-+};
-+
-+/* Flags for PCI/PCIe address decoding regions */
-+#define MVEBU_MBUS_PCI_IO  0x1
-+#define MVEBU_MBUS_PCI_MEM 0x2
-+#define MVEBU_MBUS_PCI_WA  0x3
-+
-+/*
-+ * Magic value that explicits that we don't need a remapping-capable
-+ * address decoding window.
-+ */
-+#define MVEBU_MBUS_NO_REMAP (0xffffffff)
-+
-+/* Maximum size of a mbus window name */
-+#define MVEBU_MBUS_MAX_WINNAME_SZ 32
-+
-+const struct mbus_dram_target_info *mvebu_mbus_dram_info(void);
-+void mvebu_mbus_get_pcie_mem_aperture(struct resource *res);
-+void mvebu_mbus_get_pcie_io_aperture(struct resource *res);
-+int mvebu_mbus_add_window_remap_by_id(unsigned int target,
-+				      unsigned int attribute,
-+				      phys_addr_t base, size_t size,
-+				      phys_addr_t remap);
-+int mvebu_mbus_add_window_by_id(unsigned int target, unsigned int attribute,
-+				phys_addr_t base, size_t size);
-+int mvebu_mbus_del_window(phys_addr_t base, size_t size);
-+
-+#endif /* __LINUX_MBUS_H */
+ &sdio0 {
+@@ -121,6 +116,7 @@
+ 	bus-width = <4>;
+ 	/* sdio0 card detect is connected to wrong pin on CuBox */
+ 	cd-gpios = <&gpio0 12 1>;
++	pinctrl-0 = <&pmx_sdio0 &pmx_gpio_12>;
+ };
+ 
+ &spi0 {
+@@ -134,22 +130,10 @@
+ 	};
+ };
+ 
+-&pinctrl {
+-	pinctrl-0 = <&pmx_gpio_1 &pmx_gpio_12>;
++&audio1 {
++	status = "okay";
++	clocks = <&gate_clk 13>, <&si5351 2>;
++	clock-names = "internal", "extclk";
++	pinctrl-0 = <&pmx_audio1_i2s1_spdifo &pmx_audio1_extclk>;
+ 	pinctrl-names = "default";
+-
+-	pmx_gpio_1: pmx-gpio-1 {
+-		marvell,pins = "mpp1";
+-		marvell,function = "gpio";
+-	};
+-
+-	pmx_gpio_12: pmx-gpio-12 {
+-		marvell,pins = "mpp12";
+-		marvell,function = "gpio";
+-	};
+-
+-	pmx_gpio_18: pmx-gpio-18 {
+-		marvell,pins = "mpp18";
+-		marvell,function = "gpio";
+-	};
+ };
+diff --git a/arch/arm/dts/dove.dtsi b/arch/arm/dts/dove.dtsi
+index 32fbf28dd987..2b76524f4aa7 100644
+--- a/arch/arm/dts/dove.dtsi
++++ b/arch/arm/dts/dove.dtsi
+@@ -1,10 +1,11 @@
+ /include/ "skeleton.dtsi"
+ 
++#define MBUS_ID(target,attributes) (((target) << 24) | ((attributes) << 16))
++
+ / {
+ 	compatible = "marvell,dove";
+ 	model = "Marvell Armada 88AP510 SoC";
+-	#address-cells = <1>;
+-	#size-cells = <1>;
++	interrupt-parent = <&intc>;
+ 
+ 	aliases {
+ 		gpio0 = &gpio0;
+@@ -12,275 +13,614 @@
+ 		gpio2 = &gpio2;
+ 	};
+ 
+-	soc@f1000000 {
+-		compatible = "simple-bus";
++	cpus {
+ 		#address-cells = <1>;
+-		#size-cells = <1>;
+-		interrupt-parent = <&intc>;
+-
+-		ranges = <0xc8000000 0xc8000000 0x0100000   /* CESA SRAM   1M */
+-		          0xe0000000 0xe0000000 0x8000000   /* PCIe0 Mem 128M */
+-		          0xe8000000 0xe8000000 0x8000000   /* PCIe1 Mem 128M */
+-		          0xf0000000 0xf0000000 0x0100000   /* ScratchPad  1M */
+-		          0x00000000 0xf1000000 0x1000000   /* SB/NB regs 16M */
+-		          0xf2000000 0xf2000000 0x0100000   /* PCIe0 I/O   1M */
+-		          0xf2100000 0xf2100000 0x0100000   /* PCIe0 I/O   1M */
+-		          0xf8000000 0xf8000000 0x8000000>; /* BootROM   128M */
+-
+-		l2: l2-cache {
+-			compatible = "marvell,tauros2-cache";
+-			marvell,tauros2-cache-features = <0>;
+-		};
++		#size-cells = <0>;
+ 
+-		timer: timer@20300 {
+-			compatible = "marvell,orion-timer";
+-			reg = <0x20300 0x30>;
+-			clocks = <&core_clk 0>;
++		cpu0: cpu@0 {
++			compatible = "marvell,pj4a", "marvell,sheeva-v7";
++			device_type = "cpu";
++			next-level-cache = <&l2>;
++			reg = <0>;
+ 		};
++	};
+ 
+-		intc: interrupt-controller@20204 {
+-			compatible = "marvell,orion-intc";
+-			interrupt-controller;
+-			#interrupt-cells = <1>;
+-			reg = <0x20204 0x04>, <0x20214 0x04>;
+-		};
++	l2: l2-cache {
++		compatible = "marvell,tauros2-cache";
++		marvell,tauros2-cache-features = <0>;
++	};
+ 
+-		core_clk: core-clocks@d0214 {
+-			compatible = "marvell,dove-core-clock";
+-			reg = <0xd0214 0x4>;
+-			#clock-cells = <1>;
+-		};
++	mbus {
++		compatible = "marvell,dove-mbus", "marvell,mbus", "simple-bus";
++		#address-cells = <2>;
++		#size-cells = <1>;
++		controller = <&mbusc>;
++		pcie-mem-aperture = <0xe0000000 0x10000000>; /* 256M MEM space */
++		pcie-io-aperture  = <0xf2000000 0x00200000>; /*   2M I/O space */
++
++		ranges = <MBUS_ID(0xf0, 0x01) 0 0xf1000000 0x0100000   /* MBUS regs  1M */
++			  MBUS_ID(0xf0, 0x02) 0 0xf1800000 0x1000000   /* AXI  regs 16M */
++			  MBUS_ID(0x01, 0xfd) 0 0xf8000000 0x8000000   /* BootROM  128M */
++			  MBUS_ID(0x03, 0x01) 0 0xc8000000 0x0100000   /* CESA SRAM  1M */
++			  MBUS_ID(0x0d, 0x00) 0 0xf0000000 0x0100000>; /* PMU  SRAM  1M */
++
++		pcie: pcie-controller {
++			compatible = "marvell,dove-pcie";
++			status = "disabled";
++			device_type = "pci";
++			#address-cells = <3>;
++			#size-cells = <2>;
++
++			msi-parent = <&intc>;
++			bus-range = <0x00 0xff>;
++
++			ranges = <0x82000000 0x0 0x40000 MBUS_ID(0xf0, 0x01) 0x40000 0 0x2000
++			          0x82000000 0x0 0x80000 MBUS_ID(0xf0, 0x01) 0x80000 0 0x2000
++				  0x82000000 0x1 0x0 MBUS_ID(0x04, 0xe8) 0 1 0   /* Port 0.0 Mem */
++				  0x81000000 0x1 0x0 MBUS_ID(0x04, 0xe0) 0 1 0   /* Port 0.0 I/O */
++				  0x82000000 0x2 0x0 MBUS_ID(0x08, 0xe8) 0 1 0   /* Port 1.0 Mem */
++				  0x81000000 0x2 0x0 MBUS_ID(0x08, 0xe0) 0 1 0>; /* Port 1.0 I/O */
++
++			pcie-port@0 {
++				device_type = "pci";
++				status = "disabled";
++				assigned-addresses = <0x82000800 0 0x40000 0 0x2000>;
++				reg = <0x0800 0 0 0 0>;
++				clocks = <&gate_clk 4>;
++				marvell,pcie-port = <0>;
++
++				#address-cells = <3>;
++				#size-cells = <2>;
++				ranges = <0x82000000 0 0 0x82000000 0x1 0 1 0
++				          0x81000000 0 0 0x81000000 0x1 0 1 0>;
++
++				#interrupt-cells = <1>;
++				interrupt-map-mask = <0 0 0 0>;
++				interrupt-map = <0 0 0 0 &intc 16>;
++			};
+ 
+-		gate_clk: clock-gating-control@d0038 {
+-			compatible = "marvell,dove-gating-clock";
+-			reg = <0xd0038 0x4>;
+-			clocks = <&core_clk 0>;
+-			#clock-cells = <1>;
++			pcie-port@1 {
++				device_type = "pci";
++				status = "disabled";
++				assigned-addresses = <0x82002800 0 0x80000 0 0x2000>;
++				reg = <0x1000 0 0 0 0>;
++				clocks = <&gate_clk 5>;
++				marvell,pcie-port = <1>;
++
++				#address-cells = <3>;
++				#size-cells = <2>;
++				ranges = <0x82000000 0 0 0x82000000 0x2 0 1 0
++				          0x81000000 0 0 0x81000000 0x2 0 1 0>;
++
++				#interrupt-cells = <1>;
++				interrupt-map-mask = <0 0 0 0>;
++				interrupt-map = <0 0 0 0 &intc 18>;
++			};
+ 		};
+ 
+-		thermal: thermal@d001c {
+-			compatible = "marvell,dove-thermal";
+-			reg = <0xd001c 0x0c>, <0xd005c 0x08>;
+-		};
++		internal-regs {
++			compatible = "simple-bus";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x00000000 MBUS_ID(0xf0, 0x01) 0 0x0100000   /* MBUS regs  1M */
++				  0x00800000 MBUS_ID(0xf0, 0x02) 0 0x1000000   /* AXI  regs 16M */
++				  0xffffe000 MBUS_ID(0x03, 0x01) 0 0x0000800   /* CESA SRAM  2k */
++				  0xfffff000 MBUS_ID(0x0d, 0x00) 0 0x0000800>; /* PMU  SRAM  2k */
++
++			spi0: spi-ctrl@10600 {
++				compatible = "marvell,orion-spi";
++				#address-cells = <1>;
++				#size-cells = <0>;
++				cell-index = <0>;
++				interrupts = <6>;
++				reg = <0x10600 0x28>;
++				clocks = <&core_clk 0>;
++				pinctrl-0 = <&pmx_spi0>;
++				pinctrl-names = "default";
++				status = "disabled";
++			};
+ 
+-		uart0: serial@12000 {
+-			compatible = "ns16550a";
+-			reg = <0x12000 0x20>;
+-			reg-shift = <2>;
+-			interrupts = <7>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			i2c0: i2c-ctrl@11000 {
++				compatible = "marvell,mv64xxx-i2c";
++				reg = <0x11000 0x20>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++				interrupts = <11>;
++				clock-frequency = <400000>;
++				timeout-ms = <1000>;
++				clocks = <&core_clk 0>;
++				status = "disabled";
++			};
+ 
+-		uart1: serial@12100 {
+-			compatible = "ns16550a";
+-			reg = <0x12100 0x20>;
+-			reg-shift = <2>;
+-			interrupts = <8>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			uart0: serial@12000 {
++				compatible = "ns16550a";
++				reg = <0x12000 0x100>;
++				reg-shift = <2>;
++				interrupts = <7>;
++				clocks = <&core_clk 0>;
++				status = "disabled";
++			};
+ 
+-		uart2: serial@12200 {
+-			compatible = "ns16550a";
+-			reg = <0x12000 0x20>;
+-			reg-shift = <2>;
+-			interrupts = <9>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			uart1: serial@12100 {
++				compatible = "ns16550a";
++				reg = <0x12100 0x100>;
++				reg-shift = <2>;
++				interrupts = <8>;
++				clocks = <&core_clk 0>;
++				pinctrl-0 = <&pmx_uart1>;
++				pinctrl-names = "default";
++				status = "disabled";
++			};
+ 
+-		uart3: serial@12300 {
+-			compatible = "ns16550a";
+-			reg = <0x12100 0x20>;
+-			reg-shift = <2>;
+-			interrupts = <10>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			uart2: serial@12200 {
++				compatible = "ns16550a";
++				reg = <0x12000 0x100>;
++				reg-shift = <2>;
++				interrupts = <9>;
++				clocks = <&core_clk 0>;
++				status = "disabled";
++			};
+ 
+-		gpio0: gpio@d0400 {
+-			compatible = "marvell,orion-gpio";
+-			#gpio-cells = <2>;
+-			gpio-controller;
+-			reg = <0xd0400 0x20>;
+-			ngpios = <32>;
+-			interrupt-controller;
+-			#interrupt-cells = <2>;
+-			interrupts = <12>, <13>, <14>, <60>;
+-		};
++			uart3: serial@12300 {
++				compatible = "ns16550a";
++				reg = <0x12100 0x100>;
++				reg-shift = <2>;
++				interrupts = <10>;
++				clocks = <&core_clk 0>;
++				status = "disabled";
++			};
+ 
+-		gpio1: gpio@d0420 {
+-			compatible = "marvell,orion-gpio";
+-			#gpio-cells = <2>;
+-			gpio-controller;
+-			reg = <0xd0420 0x20>;
+-			ngpios = <32>;
+-			interrupt-controller;
+-			#interrupt-cells = <2>;
+-			interrupts = <61>;
+-		};
++			spi1: spi-ctrl@14600 {
++				compatible = "marvell,orion-spi";
++				#address-cells = <1>;
++				#size-cells = <0>;
++				cell-index = <1>;
++				interrupts = <5>;
++				reg = <0x14600 0x28>;
++				clocks = <&core_clk 0>;
++				status = "disabled";
++			};
+ 
+-		gpio2: gpio@e8400 {
+-			compatible = "marvell,orion-gpio";
+-			#gpio-cells = <2>;
+-			gpio-controller;
+-			reg = <0xe8400 0x0c>;
+-			ngpios = <8>;
+-		};
++			mbusc: mbus-ctrl@20000 {
++				compatible = "marvell,mbus-controller";
++				reg = <0x20000 0x80>, <0x800100 0x8>;
++			};
+ 
+-		pinctrl: pinctrl@d0200 {
+-			compatible = "marvell,dove-pinctrl";
+-			reg = <0xd0200 0x10>;
+-			clocks = <&gate_clk 22>;
+-		};
++			bridge_intc: bridge-interrupt-ctrl@20110 {
++				compatible = "marvell,orion-bridge-intc";
++				interrupt-controller;
++				#interrupt-cells = <1>;
++				reg = <0x20110 0x8>;
++				interrupts = <0>;
++				marvell,#interrupts = <5>;
++			};
+ 
+-		spi0: spi@10600 {
+-			compatible = "marvell,orion-spi";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			cell-index = <0>;
+-			interrupts = <6>;
+-			reg = <0x10600 0x28>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			intc: main-interrupt-ctrl@20200 {
++				compatible = "marvell,orion-intc";
++				interrupt-controller;
++				#interrupt-cells = <1>;
++				reg = <0x20200 0x10>, <0x20210 0x10>;
++			};
+ 
+-		spi1: spi@14600 {
+-			compatible = "marvell,dove-spi";
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			cell-index = <1>;
+-			interrupts = <5>;
+-			reg = <0x14600 0x28>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			timer: timer@20300 {
++				compatible = "marvell,orion-timer";
++				reg = <0x20300 0x20>;
++				interrupt-parent = <&bridge_intc>;
++				interrupts = <1>, <2>;
++				clocks = <&core_clk 0>;
++			};
+ 
+-		i2c0: i2c@11000 {
+-			compatible = "marvell,mv64xxx-i2c";
+-			reg = <0x11000 0x20>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-			interrupts = <11>;
+-			clock-frequency = <400000>;
+-			timeout-ms = <1000>;
+-			clocks = <&core_clk 0>;
+-			status = "disabled";
+-		};
++			crypto: crypto-engine@30000 {
++				compatible = "marvell,orion-crypto";
++				reg = <0x30000 0x10000>,
++				      <0xffffe000 0x800>;
++				reg-names = "regs", "sram";
++				interrupts = <31>;
++				clocks = <&gate_clk 15>;
++				status = "okay";
++			};
+ 
+-		ehci0: usb-host@50000 {
+-			compatible = "marvell,orion-ehci";
+-			reg = <0x50000 0x1000>;
+-			interrupts = <24>;
+-			clocks = <&gate_clk 0>;
+-			status = "okay";
+-		};
++			ehci0: usb-host@50000 {
++				compatible = "marvell,orion-ehci";
++				reg = <0x50000 0x1000>;
++				interrupts = <24>;
++				clocks = <&gate_clk 0>;
++				status = "okay";
++			};
+ 
+-		ehci1: usb-host@51000 {
+-			compatible = "marvell,orion-ehci";
+-			reg = <0x51000 0x1000>;
+-			interrupts = <25>;
+-			clocks = <&gate_clk 1>;
+-			status = "okay";
+-		};
++			ehci1: usb-host@51000 {
++				compatible = "marvell,orion-ehci";
++				reg = <0x51000 0x1000>;
++				interrupts = <25>;
++				clocks = <&gate_clk 1>;
++				status = "okay";
++			};
+ 
+-		sdio0: sdio@92000 {
+-			compatible = "marvell,dove-sdhci";
+-			reg = <0x92000 0x100>;
+-			interrupts = <35>, <37>;
+-			clocks = <&gate_clk 8>;
+-			status = "disabled";
+-		};
++			xor0: dma-engine@60800 {
++				compatible = "marvell,orion-xor";
++				reg = <0x60800 0x100
++				       0x60a00 0x100>;
++				clocks = <&gate_clk 23>;
++				status = "okay";
++
++				channel0 {
++					interrupts = <39>;
++					dmacap,memcpy;
++					dmacap,xor;
++				};
++
++				channel1 {
++					interrupts = <40>;
++					dmacap,memcpy;
++					dmacap,xor;
++				};
++			};
+ 
+-		sdio1: sdio@90000 {
+-			compatible = "marvell,dove-sdhci";
+-			reg = <0x90000 0x100>;
+-			interrupts = <36>, <38>;
+-			clocks = <&gate_clk 9>;
+-			status = "disabled";
+-		};
++			xor1: dma-engine@60900 {
++				compatible = "marvell,orion-xor";
++				reg = <0x60900 0x100
++				       0x60b00 0x100>;
++				clocks = <&gate_clk 24>;
++				status = "okay";
++
++				channel0 {
++					interrupts = <42>;
++					dmacap,memcpy;
++					dmacap,xor;
++				};
++
++				channel1 {
++					interrupts = <43>;
++					dmacap,memcpy;
++					dmacap,xor;
++				};
++			};
+ 
+-		sata0: sata@a0000 {
+-			compatible = "marvell,orion-sata";
+-			reg = <0xa0000 0x2400>;
+-			interrupts = <62>;
+-			clocks = <&gate_clk 3>;
+-			nr-ports = <1>;
+-			status = "disabled";
+-		};
++			sdio1: sdio-host@90000 {
++				compatible = "marvell,dove-sdhci";
++				reg = <0x90000 0x100>;
++				interrupts = <36>, <38>;
++				clocks = <&gate_clk 9>;
++				pinctrl-0 = <&pmx_sdio1>;
++				pinctrl-names = "default";
++				status = "disabled";
++			};
+ 
+-		rtc@d8500 {
+-			compatible = "marvell,orion-rtc";
+-			reg = <0xd8500 0x20>;
+-		};
++			eth: ethernet-ctrl@72000 {
++				compatible = "marvell,orion-eth";
++				#address-cells = <1>;
++				#size-cells = <0>;
++				reg = <0x72000 0x4000>;
++				clocks = <&gate_clk 2>;
++				marvell,tx-checksum-limit = <1600>;
++				status = "disabled";
++
++				ethernet-port@0 {
++					compatible = "marvell,orion-eth-port";
++					reg = <0>;
++					interrupts = <29>;
++					/* overwrite MAC address in bootloader */
++					local-mac-address = [00 00 00 00 00 00];
++					phy-handle = <&ethphy>;
++				};
++			};
+ 
+-		crypto: crypto@30000 {
+-			compatible = "marvell,orion-crypto";
+-			reg = <0x30000 0x10000>,
+-			      <0xc8000000 0x800>;
+-			reg-names = "regs", "sram";
+-			interrupts = <31>;
+-			clocks = <&gate_clk 15>;
+-			status = "okay";
+-		};
++			mdio: mdio-bus@72004 {
++				compatible = "marvell,orion-mdio";
++				#address-cells = <1>;
++				#size-cells = <0>;
++				reg = <0x72004 0x84>;
++				interrupts = <30>;
++				clocks = <&gate_clk 2>;
++				status = "disabled";
++
++				ethphy: ethernet-phy {
++					/* set phy address in board file */
++				};
++			};
+ 
+-		xor0: dma-engine@60800 {
+-			compatible = "marvell,orion-xor";
+-			reg = <0x60800 0x100
+-			       0x60a00 0x100>;
+-			clocks = <&gate_clk 23>;
+-			status = "okay";
++			sdio0: sdio-host@92000 {
++				compatible = "marvell,dove-sdhci";
++				reg = <0x92000 0x100>;
++				interrupts = <35>, <37>;
++				clocks = <&gate_clk 8>;
++				pinctrl-0 = <&pmx_sdio0>;
++				pinctrl-names = "default";
++				status = "disabled";
++			};
+ 
+-			channel0 {
+-				interrupts = <39>;
+-				dmacap,memcpy;
+-				dmacap,xor;
++			sata0: sata-host@a0000 {
++				compatible = "marvell,orion-sata";
++				reg = <0xa0000 0x2400>;
++				interrupts = <62>;
++				clocks = <&gate_clk 3>;
++				phys = <&sata_phy0>;
++				phy-names = "port0";
++				nr-ports = <1>;
++				status = "disabled";
+ 			};
+ 
+-			channel1 {
+-				interrupts = <40>;
+-				dmacap,memset;
+-				dmacap,memcpy;
+-				dmacap,xor;
++			sata_phy0: sata-phy@a2000 {
++				compatible = "marvell,mvebu-sata-phy";
++				reg = <0xa2000 0x0334>;
++				clocks = <&gate_clk 3>;
++				clock-names = "sata";
++				#phy-cells = <0>;
++				status = "ok";
+ 			};
+-		};
+ 
+-		xor1: dma-engine@60900 {
+-			compatible = "marvell,orion-xor";
+-			reg = <0x60900 0x100
+-			       0x60b00 0x100>;
+-			clocks = <&gate_clk 24>;
+-			status = "okay";
++			audio0: audio-controller@b0000 {
++				compatible = "marvell,dove-audio";
++				reg = <0xb0000 0x2210>;
++				interrupts = <19>, <20>;
++				clocks = <&gate_clk 12>;
++				clock-names = "internal";
++				status = "disabled";
++			};
+ 
+-			channel0 {
+-				interrupts = <42>;
+-				dmacap,memcpy;
+-				dmacap,xor;
++			audio1: audio-controller@b4000 {
++				compatible = "marvell,dove-audio";
++				reg = <0xb4000 0x2210>;
++				interrupts = <21>, <22>;
++				clocks = <&gate_clk 13>;
++				clock-names = "internal";
++				status = "disabled";
+ 			};
+ 
+-			channel1 {
+-				interrupts = <43>;
+-				dmacap,memset;
+-				dmacap,memcpy;
+-				dmacap,xor;
++			thermal: thermal-diode@d001c {
++				compatible = "marvell,dove-thermal";
++				reg = <0xd001c 0x0c>, <0xd005c 0x08>;
+ 			};
+-		};
+ 
+-		lcd0: lcd-controller@820000 {
+-			compatible = "marvell,dove-lcd";
+-			reg = <0x820000 0x200>;
+-			interrupts = <47>;
+-			clocks = <0>;
+-			status = "disabled";
+-		};
++			gate_clk: clock-gating-ctrl@d0038 {
++				compatible = "marvell,dove-gating-clock";
++				reg = <0xd0038 0x4>;
++				clocks = <&core_clk 0>;
++				#clock-cells = <1>;
++			};
+ 
+-		lcd1: lcd-controller@810000 {
+-			compatible = "marvell,dove-lcd";
+-			reg = <0x810000 0x200>;
+-			interrupts = <46>;
+-			clocks = <0>;
+-			status = "disabled";
++			pmu_intc: pmu-interrupt-ctrl@d0050 {
++				compatible = "marvell,dove-pmu-intc";
++				interrupt-controller;
++				#interrupt-cells = <1>;
++				reg = <0xd0050 0x8>;
++				interrupts = <33>;
++				marvell,#interrupts = <7>;
++			};
++
++			pinctrl: pin-ctrl@d0200 {
++				compatible = "marvell,dove-pinctrl";
++				reg = <0xd0200 0x10>;
++				clocks = <&gate_clk 22>;
++
++				pmx_gpio_0: pmx-gpio-0 {
++					marvell,pins = "mpp0";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_1: pmx-gpio-1 {
++					marvell,pins = "mpp1";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_2: pmx-gpio-2 {
++					marvell,pins = "mpp2";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_3: pmx-gpio-3 {
++					marvell,pins = "mpp3";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_4: pmx-gpio-4 {
++					marvell,pins = "mpp4";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_5: pmx-gpio-5 {
++					marvell,pins = "mpp5";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_6: pmx-gpio-6 {
++					marvell,pins = "mpp6";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_7: pmx-gpio-7 {
++					marvell,pins = "mpp7";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_8: pmx-gpio-8 {
++					marvell,pins = "mpp8";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_9: pmx-gpio-9 {
++					marvell,pins = "mpp9";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_10: pmx-gpio-10 {
++					marvell,pins = "mpp10";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_11: pmx-gpio-11 {
++					marvell,pins = "mpp11";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_12: pmx-gpio-12 {
++					marvell,pins = "mpp12";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_13: pmx-gpio-13 {
++					marvell,pins = "mpp13";
++					marvell,function = "gpio";
++				};
++
++				pmx_audio1_extclk: pmx-audio1-extclk {
++					marvell,pins = "mpp13";
++					marvell,function = "audio1";
++				};
++
++				pmx_gpio_14: pmx-gpio-14 {
++					marvell,pins = "mpp14";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_15: pmx-gpio-15 {
++					marvell,pins = "mpp15";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_16: pmx-gpio-16 {
++					marvell,pins = "mpp16";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_17: pmx-gpio-17 {
++					marvell,pins = "mpp17";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_18: pmx-gpio-18 {
++					marvell,pins = "mpp18";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_19: pmx-gpio-19 {
++					marvell,pins = "mpp19";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_20: pmx-gpio-20 {
++					marvell,pins = "mpp20";
++					marvell,function = "gpio";
++				};
++
++				pmx_gpio_21: pmx-gpio-21 {
++					marvell,pins = "mpp21";
++					marvell,function = "gpio";
++				};
++
++				pmx_camera: pmx-camera {
++					marvell,pins = "mpp_camera";
++					marvell,function = "camera";
++				};
++
++				pmx_camera_gpio: pmx-camera-gpio {
++					marvell,pins = "mpp_camera";
++					marvell,function = "gpio";
++				};
++
++				pmx_sdio0: pmx-sdio0 {
++					marvell,pins = "mpp_sdio0";
++					marvell,function = "sdio0";
++				};
++
++				pmx_sdio0_gpio: pmx-sdio0-gpio {
++					marvell,pins = "mpp_sdio0";
++					marvell,function = "gpio";
++				};
++
++				pmx_sdio1: pmx-sdio1 {
++					marvell,pins = "mpp_sdio1";
++					marvell,function = "sdio1";
++				};
++
++				pmx_sdio1_gpio: pmx-sdio1-gpio {
++					marvell,pins = "mpp_sdio1";
++					marvell,function = "gpio";
++				};
++
++				pmx_audio1_gpio: pmx-audio1-gpio {
++					marvell,pins = "mpp_audio1";
++					marvell,function = "gpio";
++				};
++
++				pmx_audio1_i2s1_spdifo: pmx-audio1-i2s1-spdifo {
++					marvell,pins = "mpp_audio1";
++					marvell,function = "i2s1/spdifo";
++				};
++
++				pmx_spi0: pmx-spi0 {
++					marvell,pins = "mpp_spi0";
++					marvell,function = "spi0";
++				};
++
++				pmx_spi0_gpio: pmx-spi0-gpio {
++					marvell,pins = "mpp_spi0";
++					marvell,function = "gpio";
++				};
++
++				pmx_uart1: pmx-uart1 {
++					marvell,pins = "mpp_uart1";
++					marvell,function = "uart1";
++				};
++
++				pmx_uart1_gpio: pmx-uart1-gpio {
++					marvell,pins = "mpp_uart1";
++					marvell,function = "gpio";
++				};
++
++				pmx_nand: pmx-nand {
++					marvell,pins = "mpp_nand";
++					marvell,function = "nand";
++				};
++
++				pmx_nand_gpo: pmx-nand-gpo {
++					marvell,pins = "mpp_nand";
++					marvell,function = "gpo";
++				};
++			};
++
++			core_clk: core-clocks@d0214 {
++				compatible = "marvell,dove-core-clock";
++				reg = <0xd0214 0x4>;
++				#clock-cells = <1>;
++			};
++
++			gpio0: gpio-ctrl@d0400 {
++				compatible = "marvell,orion-gpio";
++				#gpio-cells = <2>;
++				gpio-controller;
++				reg = <0xd0400 0x20>;
++				ngpios = <32>;
++				interrupt-controller;
++				#interrupt-cells = <2>;
++				interrupts = <12>, <13>, <14>, <60>;
++			};
++
++			gpio1: gpio-ctrl@d0420 {
++				compatible = "marvell,orion-gpio";
++				#gpio-cells = <2>;
++				gpio-controller;
++				reg = <0xd0420 0x20>;
++				ngpios = <32>;
++				interrupt-controller;
++				#interrupt-cells = <2>;
++				interrupts = <61>;
++			};
++
++			rtc: real-time-clock@d8500 {
++				compatible = "marvell,orion-rtc";
++				reg = <0xd8500 0x20>;
++				interrupt-parent = <&pmu_intc>;
++				interrupts = <5>;
++			};
++
++			gpio2: gpio-ctrl@e8400 {
++				compatible = "marvell,orion-gpio";
++				#gpio-cells = <2>;
++				gpio-controller;
++				reg = <0xe8400 0x0c>;
++				ngpios = <8>;
++			};
+ 		};
+ 	};
+ };
 -- 
 1.8.5.3
 
