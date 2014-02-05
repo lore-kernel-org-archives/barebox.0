@@ -1,19 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mailbox.openface.ca ([216.46.1.7])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WB4ch-0007b6-4i
- for barebox@lists.infradead.org; Wed, 05 Feb 2014 15:42:47 +0000
-From: "Balasa, Bogdan" <BBalasa@Morganschaffer.com>
-Date: Wed, 5 Feb 2014 15:42:21 +0000
-Message-ID: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14E6B@MSI0E01.MSI.Local>
-References: <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14A86@MSI0E01.MSI.Local>
- <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14AD3@MSI0E01.MSI.Local>
- <20140204071748.GP16215@pengutronix.de>
- <4C598A31AEBE214FB619D7F2DC3BD8AB0127A14BF9@MSI0E01.MSI.Local>
- <20140205081859.GY16215@pengutronix.de>
-In-Reply-To: <20140205081859.GY16215@pengutronix.de>
-Content-Language: fr-FR
+ id 1WB4gC-0007hD-VT
+ for barebox@lists.infradead.org; Wed, 05 Feb 2014 15:46:25 +0000
+Date: Wed, 5 Feb 2014 16:45:59 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140205154559.GA16215@pengutronix.de>
+References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
+ <20140204035625.GE9671@ns203013.ovh.net>
+ <20140204065745.GK16215@pengutronix.de>
+ <CAKRNOGwpasg7O4fW0uMJAcgOmG2re26-mk70YpHaQVyzsX_XuQ@mail.gmail.com>
+ <20140205080001.GX16215@pengutronix.de>
+ <CAKRNOGz8aYN3yNzG=7wAF0=8ArUmn2h2qTAyGJ1UprWQUdHhsQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAKRNOGz8aYN3yNzG=7wAF0=8ArUmn2h2qTAyGJ1UprWQUdHhsQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +23,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: barebox env userspace
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] Load PBL into SRAM
+To: David Vincent <freesilicon@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Wed, Feb 05, 2014 at 01:48:45PM +0100, David Vincent wrote:
+> Due to the flow of answers, I'm a little lost... What is the status of
+> this submission, should I resend it, put more work into it or lose it
+> ?
 
-I modified '/env/config' instead of 'init/general' and deleted 'init/genera=
-l' and it works.
-
-Thank you,
-Bogdan
-
------Message d'origine-----
-De=A0: Sascha Hauer [mailto:s.hauer@pengutronix.de] =
-
-Envoy=E9=A0: February-05-14 3:19 AM
-=C0=A0: Balasa, Bogdan
-Cc=A0: barebox@lists.infradead.org
-Objet=A0: Re: barebox env userspace
-
-On Tue, Feb 04, 2014 at 02:14:17PM +0000, Balasa, Bogdan wrote:
-> Hi,
-> Is not working when modifying in userspace the '/init/general' file, the =
-line:
-> 'global.boot.default=3Dnand'
-> to: 'global.boot.default=3Dtwo'
-> =
-
-> and after reset barebox was not taking into account this change.
-> I needed to enter in barebox abd send a saveenv in barebox such that the =
-content of '/init/general'
-> to be saved in the persistent storage (I think dev/env0).
-
-I think the problem is that the variable is overwritten later, at least tha=
-t's what I rememember from the Phytec barebox. Try removing that file and m=
-odify /env/config instead.
+The latest version looks fine. I applied it now.
 
 Sascha
 
--- =
-
+-- 
 Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
