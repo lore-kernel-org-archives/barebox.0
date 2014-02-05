@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x235.google.com ([2a00:1450:4013:c00::235])
+Received: from mail-ee0-x231.google.com ([2a00:1450:4013:c00::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBB9A-0004ze-7l
+ id 1WBB99-0004zU-9L
  for barebox@lists.infradead.org; Wed, 05 Feb 2014 22:40:53 +0000
-Received: by mail-ee0-f53.google.com with SMTP id t10so526848eei.40
+Received: by mail-ee0-f49.google.com with SMTP id d17so526797eek.8
  for <barebox@lists.infradead.org>; Wed, 05 Feb 2014 14:40:20 -0800 (PST)
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Date: Wed,  5 Feb 2014 23:40:09 +0100
-Message-Id: <1391640009-3399-7-git-send-email-sebastian.hesselbarth@gmail.com>
+Date: Wed,  5 Feb 2014 23:40:08 +0100
+Message-Id: <1391640009-3399-6-git-send-email-sebastian.hesselbarth@gmail.com>
 In-Reply-To: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
 References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,1027 +23,847 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/6] ARM: dove: sync with DT files from Linux
+Subject: [PATCH 5/6] net: orion: add ethernet driver
 To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-This re-syncs Marvell Dove and Solidrun CuBox DT files with current
-files from Linux v3.14. Barebox-specific properties not yet backported,
-are kept, default led trigger is set to heartbeat.
+This adds a driver for the Ethernet ip found on Marvell Orion SoCs,
+which is derived from Marvell Discovery System Controllers (MV643xx).
+It is partially based on the corresponding u-boot driver.
 
 Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Signed-off-by: Michael Grzeschik <mgr@pengutronix.de>
 ---
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Cc: Michael Grzeschik <mgr@pengutronix.de>
 Cc: barebox@lists.infradead.org
-
-fixup dts
-
-Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 ---
- arch/arm/dts/dove-cubox.dts |  66 ++--
- arch/arm/dts/dove.dtsi      | 806 +++++++++++++++++++++++++++++++-------------
- 2 files changed, 598 insertions(+), 274 deletions(-)
+ drivers/net/Kconfig     |   6 +
+ drivers/net/Makefile    |   1 +
+ drivers/net/orion-gbe.c | 541 ++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/net/orion-gbe.h | 236 +++++++++++++++++++++
+ 4 files changed, 784 insertions(+)
+ create mode 100644 drivers/net/orion-gbe.c
+ create mode 100644 drivers/net/orion-gbe.h
 
-diff --git a/arch/arm/dts/dove-cubox.dts b/arch/arm/dts/dove-cubox.dts
-index 61f38fe5a2cb..0c2c54e6858b 100644
---- a/arch/arm/dts/dove-cubox.dts
-+++ b/arch/arm/dts/dove-cubox.dts
-@@ -1,14 +1,14 @@
- /dts-v1/;
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index a5216ec69082..fd9685988cb4 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -116,6 +116,12 @@ config DRIVER_NET_NETX
+ 	depends on HAS_NETX_ETHER
+ 	select PHYLIB
  
--/include/ "dove.dtsi"
-+#include "dove.dtsi"
- 
- / {
--	compatible = "solidrun,cubox", "marvell,dove";
- 	model = "SolidRun CuBox";
-+	compatible = "solidrun,cubox", "marvell,dove";
- 
- 	memory {
- 		device_type = "memory";
--		reg = <0x00000000 0x3f000000>;
-+		reg = <0x00000000 0x40000000>;
- 	};
- 
- 	chosen {
-@@ -24,7 +24,8 @@
- 		power {
- 			label = "Power";
- 			gpios = <&gpio0 18 1>;
--			linux,default-trigger = "default-on";
-+			barebox,default-trigger = "heartbeat";
-+			default-state = "keep";
- 		};
- 	};
- 
-@@ -43,6 +44,8 @@
- 			regulator-always-on;
- 			regulator-boot-on;
- 			gpio = <&gpio0 1 0>;
-+			pinctrl-0 = <&pmx_gpio_1>;
-+			pinctrl-names = "default";
- 		};
- 	};
- 
-@@ -55,19 +58,22 @@
- 		};
- 	};
- 
--	video-card {
--		compatible = "marvell,dove-video-card";
--		reg = <0x3f000000 0x1000000>;
--		marvell,external-encoder = <&tda19988>;
-+	ir_recv: ir-receiver {
-+		compatible = "gpio-ir-receiver";
-+		gpios = <&gpio0 19 1>;
-+		pinctrl-0 = <&pmx_gpio_19>;
-+		pinctrl-names = "default";
- 	};
- };
- 
- &uart0 { status = "okay"; };
- &sata0 { status = "okay"; };
-+&mdio { status = "okay"; };
-+&eth { status = "okay"; };
- 
--&lcd0 {
--	status = "okay";
--	clocks = <&si5351 0>;
-+&ethphy {
-+	compatible = "marvell,88e1310";
-+	reg = <1>;
- };
- 
- &i2c0 {
-@@ -95,25 +101,14 @@
- 			silabs,pll-master;
- 		};
- 
--		clkout1 {
--			reg = <1>;
--			silabs,drive-strength = <8>;
--			silabs,multisynth-source = <1>;
--			silabs,clock-source = <0>;
--			silabs,pll-master;
--		};
--
- 		clkout2 {
- 			reg = <2>;
-+			silabs,drive-strength = <8>;
- 			silabs,multisynth-source = <1>;
- 			silabs,clock-source = <0>;
-+			silabs,pll-master;
- 		};
- 	};
--
--	tda19988: hdmi-encoder@70 {
--		compatible = "nxp,tda1998x";
--		reg = <0x70>;
--	};
- };
- 
- &sdio0 {
-@@ -121,6 +116,7 @@
- 	bus-width = <4>;
- 	/* sdio0 card detect is connected to wrong pin on CuBox */
- 	cd-gpios = <&gpio0 12 1>;
-+	pinctrl-0 = <&pmx_sdio0 &pmx_gpio_12>;
- };
- 
- &spi0 {
-@@ -134,22 +130,10 @@
- 	};
- };
- 
--&pinctrl {
--	pinctrl-0 = <&pmx_gpio_1 &pmx_gpio_12>;
-+&audio1 {
-+	status = "okay";
-+	clocks = <&gate_clk 13>, <&si5351 2>;
-+	clock-names = "internal", "extclk";
-+	pinctrl-0 = <&pmx_audio1_i2s1_spdifo &pmx_audio1_extclk>;
- 	pinctrl-names = "default";
--
--	pmx_gpio_1: pmx-gpio-1 {
--		marvell,pins = "mpp1";
--		marvell,function = "gpio";
--	};
--
--	pmx_gpio_12: pmx-gpio-12 {
--		marvell,pins = "mpp12";
--		marvell,function = "gpio";
--	};
--
--	pmx_gpio_18: pmx-gpio-18 {
--		marvell,pins = "mpp18";
--		marvell,function = "gpio";
--	};
- };
-diff --git a/arch/arm/dts/dove.dtsi b/arch/arm/dts/dove.dtsi
-index 32fbf28dd987..2b76524f4aa7 100644
---- a/arch/arm/dts/dove.dtsi
-+++ b/arch/arm/dts/dove.dtsi
-@@ -1,10 +1,11 @@
- /include/ "skeleton.dtsi"
- 
-+#define MBUS_ID(target,attributes) (((target) << 24) | ((attributes) << 16))
++config DRIVER_NET_ORION
++	bool "Marvell Orion SoC Ethernet"
++	depends on ARCH_MVEBU
++	select PHYLIB
++	select MDIO_MVEBU
 +
- / {
- 	compatible = "marvell,dove";
- 	model = "Marvell Armada 88AP510 SoC";
--	#address-cells = <1>;
--	#size-cells = <1>;
-+	interrupt-parent = <&intc>;
- 
- 	aliases {
- 		gpio0 = &gpio0;
-@@ -12,275 +13,614 @@
- 		gpio2 = &gpio2;
- 	};
- 
--	soc@f1000000 {
--		compatible = "simple-bus";
-+	cpus {
- 		#address-cells = <1>;
--		#size-cells = <1>;
--		interrupt-parent = <&intc>;
--
--		ranges = <0xc8000000 0xc8000000 0x0100000   /* CESA SRAM   1M */
--		          0xe0000000 0xe0000000 0x8000000   /* PCIe0 Mem 128M */
--		          0xe8000000 0xe8000000 0x8000000   /* PCIe1 Mem 128M */
--		          0xf0000000 0xf0000000 0x0100000   /* ScratchPad  1M */
--		          0x00000000 0xf1000000 0x1000000   /* SB/NB regs 16M */
--		          0xf2000000 0xf2000000 0x0100000   /* PCIe0 I/O   1M */
--		          0xf2100000 0xf2100000 0x0100000   /* PCIe0 I/O   1M */
--		          0xf8000000 0xf8000000 0x8000000>; /* BootROM   128M */
--
--		l2: l2-cache {
--			compatible = "marvell,tauros2-cache";
--			marvell,tauros2-cache-features = <0>;
--		};
-+		#size-cells = <0>;
- 
--		timer: timer@20300 {
--			compatible = "marvell,orion-timer";
--			reg = <0x20300 0x30>;
--			clocks = <&core_clk 0>;
-+		cpu0: cpu@0 {
-+			compatible = "marvell,pj4a", "marvell,sheeva-v7";
-+			device_type = "cpu";
-+			next-level-cache = <&l2>;
-+			reg = <0>;
- 		};
-+	};
- 
--		intc: interrupt-controller@20204 {
--			compatible = "marvell,orion-intc";
--			interrupt-controller;
--			#interrupt-cells = <1>;
--			reg = <0x20204 0x04>, <0x20214 0x04>;
--		};
-+	l2: l2-cache {
-+		compatible = "marvell,tauros2-cache";
-+		marvell,tauros2-cache-features = <0>;
-+	};
- 
--		core_clk: core-clocks@d0214 {
--			compatible = "marvell,dove-core-clock";
--			reg = <0xd0214 0x4>;
--			#clock-cells = <1>;
--		};
-+	mbus {
-+		compatible = "marvell,dove-mbus", "marvell,mbus", "simple-bus";
-+		#address-cells = <2>;
-+		#size-cells = <1>;
-+		controller = <&mbusc>;
-+		pcie-mem-aperture = <0xe0000000 0x10000000>; /* 256M MEM space */
-+		pcie-io-aperture  = <0xf2000000 0x00200000>; /*   2M I/O space */
+ config DRIVER_NET_SMC911X
+ 	bool "smc911x ethernet driver"
+ 	select PHYLIB
+diff --git a/drivers/net/Makefile b/drivers/net/Makefile
+index c485716e9ace..c1c4559937ef 100644
+--- a/drivers/net/Makefile
++++ b/drivers/net/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_DRIVER_NET_MACB)		+= macb.o
+ obj-$(CONFIG_DRIVER_NET_MICREL)		+= ksz8864rmn.o
+ obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
+ obj-$(CONFIG_DRIVER_NET_NETX)		+= netx_eth.o
++obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
+ obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
+ obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
+ obj-$(CONFIG_DRIVER_NET_TAP)		+= tap.o
+diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
+new file mode 100644
+index 000000000000..00f5e543c13b
+--- /dev/null
++++ b/drivers/net/orion-gbe.c
+@@ -0,0 +1,541 @@
++/*
++ * (C) Copyright 2014
++ *   Pengutronix, Michael Grzeschik <mgr@pengutronix.de>
++ *   Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * based on kirkwood_egiga driver from u-boot
++ *   (C) Copyright 2009
++ *     Marvell Semiconductor <www.marvell.com>
++ *     Written-by: Prafulla Wadaskar <prafulla@marvell.com>
++ *
++ *     based on - Driver for MV64360X ethernet ports
++ *     Copyright (C) 2002 rabeeh@galileo.co.il
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
++ * MA 02110-1301 USA
++ */
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <net.h>
++#include <of_net.h>
++#include <sizes.h>
++#include <asm/mmu.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/mbus.h>
 +
-+		ranges = <MBUS_ID(0xf0, 0x01) 0 0xf1000000 0x0100000   /* MBUS regs  1M */
-+			  MBUS_ID(0xf0, 0x02) 0 0xf1800000 0x1000000   /* AXI  regs 16M */
-+			  MBUS_ID(0x01, 0xfd) 0 0xf8000000 0x8000000   /* BootROM  128M */
-+			  MBUS_ID(0x03, 0x01) 0 0xc8000000 0x0100000   /* CESA SRAM  1M */
-+			  MBUS_ID(0x0d, 0x00) 0 0xf0000000 0x0100000>; /* PMU  SRAM  1M */
++#include "orion-gbe.h"
 +
-+		pcie: pcie-controller {
-+			compatible = "marvell,dove-pcie";
-+			status = "disabled";
-+			device_type = "pci";
-+			#address-cells = <3>;
-+			#size-cells = <2>;
++struct rxdesc {
++	u32 cmd_sts;		/* Descriptor command status */
++	u16 buf_size;		/* Buffer size */
++	u16 byte_cnt;		/* Descriptor buffer byte count */
++	void *buf_ptr;		/* Descriptor buffer pointer */
++	struct rxdesc *nxtdesc;	/* Next descriptor pointer */
++};
 +
-+			msi-parent = <&intc>;
-+			bus-range = <0x00 0xff>;
++struct txdesc {
++	u32 cmd_sts;		/* Descriptor command status */
++	u16 l4i_chk;		/* CPU provided TCP Checksum */
++	u16 byte_cnt;		/* Descriptor buffer byte count */
++	void *buf_ptr;		/* Descriptor buffer ptr */
++	struct txdesc *nxtdesc;	/* Next descriptor ptr */
++};
 +
-+			ranges = <0x82000000 0x0 0x40000 MBUS_ID(0xf0, 0x01) 0x40000 0 0x2000
-+			          0x82000000 0x0 0x80000 MBUS_ID(0xf0, 0x01) 0x80000 0 0x2000
-+				  0x82000000 0x1 0x0 MBUS_ID(0x04, 0xe8) 0 1 0   /* Port 0.0 Mem */
-+				  0x81000000 0x1 0x0 MBUS_ID(0x04, 0xe0) 0 1 0   /* Port 0.0 I/O */
-+				  0x82000000 0x2 0x0 MBUS_ID(0x08, 0xe8) 0 1 0   /* Port 1.0 Mem */
-+				  0x81000000 0x2 0x0 MBUS_ID(0x08, 0xe0) 0 1 0>; /* Port 1.0 I/O */
++struct port_priv {
++	struct eth_device edev;
++	void __iomem *regs;
++	struct device_node *np;
++	int portno;
++	struct txdesc *txdesc;
++	struct rxdesc *rxdesc;
++	struct rxdesc *current_rxdesc;
++	u8 *rxbuf;
++};
 +
-+			pcie-port@0 {
-+				device_type = "pci";
-+				status = "disabled";
-+				assigned-addresses = <0x82000800 0 0x40000 0 0x2000>;
-+				reg = <0x0800 0 0 0 0>;
-+				clocks = <&gate_clk 4>;
-+				marvell,pcie-port = <0>;
++struct orion_gbe {
++	void __iomem *regs;
++	struct clk *clk;
++	struct port_priv *ports;
++	int num_ports;
++};
 +
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				ranges = <0x82000000 0 0 0x82000000 0x1 0 1 0
-+				          0x81000000 0 0 0x81000000 0x1 0 1 0>;
++#define UTXQ			0	/* Used Tx queue number */
++#define URXQ			0	/* Used Rx queue number */
++#define RX_RING_SIZE		4
++#define TRANSFER_TIMEOUT	(10 * MSECOND)
 +
-+				#interrupt-cells = <1>;
-+				interrupt-map-mask = <0 0 0 0>;
-+				interrupt-map = <0 0 0 0 &intc 16>;
-+			};
- 
--		gate_clk: clock-gating-control@d0038 {
--			compatible = "marvell,dove-gating-clock";
--			reg = <0xd0038 0x4>;
--			clocks = <&core_clk 0>;
--			#clock-cells = <1>;
-+			pcie-port@1 {
-+				device_type = "pci";
-+				status = "disabled";
-+				assigned-addresses = <0x82002800 0 0x80000 0 0x2000>;
-+				reg = <0x1000 0 0 0 0>;
-+				clocks = <&gate_clk 5>;
-+				marvell,pcie-port = <1>;
++#define NR_ADDR_WINS		6	/* number of address windows */
++#define NR_HIGH_ADDR_WINS	4	/* number of high address windows */
 +
-+				#address-cells = <3>;
-+				#size-cells = <2>;
-+				ranges = <0x82000000 0 0 0x82000000 0x2 0 1 0
-+				          0x81000000 0 0 0x81000000 0x2 0 1 0>;
++#define ACCEPT_MAC_ADDR		0
++#define REJECT_MAC_ADDR		1
 +
-+				#interrupt-cells = <1>;
-+				interrupt-map-mask = <0 0 0 0>;
-+				interrupt-map = <0 0 0 0 &intc 18>;
-+			};
- 		};
- 
--		thermal: thermal@d001c {
--			compatible = "marvell,dove-thermal";
--			reg = <0xd001c 0x0c>, <0xd005c 0x08>;
--		};
-+		internal-regs {
-+			compatible = "simple-bus";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0x00000000 MBUS_ID(0xf0, 0x01) 0 0x0100000   /* MBUS regs  1M */
-+				  0x00800000 MBUS_ID(0xf0, 0x02) 0 0x1000000   /* AXI  regs 16M */
-+				  0xffffe000 MBUS_ID(0x03, 0x01) 0 0x0000800   /* CESA SRAM  2k */
-+				  0xfffff000 MBUS_ID(0x0d, 0x00) 0 0x0000800>; /* PMU  SRAM  2k */
++/* setup DRAM access windows provided by mbus */
++static void eunit_set_dram_access(struct orion_gbe *gbe)
++{
++	const struct mbus_dram_target_info *dram = mvebu_mbus_dram_info();
++	u32 bare = ~0, epap = 0, reg;
++	int n;
 +
-+			spi0: spi-ctrl@10600 {
-+				compatible = "marvell,orion-spi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				cell-index = <0>;
-+				interrupts = <6>;
-+				reg = <0x10600 0x28>;
-+				clocks = <&core_clk 0>;
-+				pinctrl-0 = <&pmx_spi0>;
-+				pinctrl-names = "default";
-+				status = "disabled";
-+			};
- 
--		uart0: serial@12000 {
--			compatible = "ns16550a";
--			reg = <0x12000 0x20>;
--			reg-shift = <2>;
--			interrupts = <7>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			i2c0: i2c-ctrl@11000 {
-+				compatible = "marvell,mv64xxx-i2c";
-+				reg = <0x11000 0x20>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				interrupts = <11>;
-+				clock-frequency = <400000>;
-+				timeout-ms = <1000>;
-+				clocks = <&core_clk 0>;
-+				status = "disabled";
-+			};
- 
--		uart1: serial@12100 {
--			compatible = "ns16550a";
--			reg = <0x12100 0x20>;
--			reg-shift = <2>;
--			interrupts = <8>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			uart0: serial@12000 {
-+				compatible = "ns16550a";
-+				reg = <0x12000 0x100>;
-+				reg-shift = <2>;
-+				interrupts = <7>;
-+				clocks = <&core_clk 0>;
-+				status = "disabled";
-+			};
- 
--		uart2: serial@12200 {
--			compatible = "ns16550a";
--			reg = <0x12000 0x20>;
--			reg-shift = <2>;
--			interrupts = <9>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			uart1: serial@12100 {
-+				compatible = "ns16550a";
-+				reg = <0x12100 0x100>;
-+				reg-shift = <2>;
-+				interrupts = <8>;
-+				clocks = <&core_clk 0>;
-+				pinctrl-0 = <&pmx_uart1>;
-+				pinctrl-names = "default";
-+				status = "disabled";
-+			};
- 
--		uart3: serial@12300 {
--			compatible = "ns16550a";
--			reg = <0x12100 0x20>;
--			reg-shift = <2>;
--			interrupts = <10>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			uart2: serial@12200 {
-+				compatible = "ns16550a";
-+				reg = <0x12000 0x100>;
-+				reg-shift = <2>;
-+				interrupts = <9>;
-+				clocks = <&core_clk 0>;
-+				status = "disabled";
-+			};
- 
--		gpio0: gpio@d0400 {
--			compatible = "marvell,orion-gpio";
--			#gpio-cells = <2>;
--			gpio-controller;
--			reg = <0xd0400 0x20>;
--			ngpios = <32>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--			interrupts = <12>, <13>, <14>, <60>;
--		};
-+			uart3: serial@12300 {
-+				compatible = "ns16550a";
-+				reg = <0x12100 0x100>;
-+				reg-shift = <2>;
-+				interrupts = <10>;
-+				clocks = <&core_clk 0>;
-+				status = "disabled";
-+			};
- 
--		gpio1: gpio@d0420 {
--			compatible = "marvell,orion-gpio";
--			#gpio-cells = <2>;
--			gpio-controller;
--			reg = <0xd0420 0x20>;
--			ngpios = <32>;
--			interrupt-controller;
--			#interrupt-cells = <2>;
--			interrupts = <61>;
--		};
-+			spi1: spi-ctrl@14600 {
-+				compatible = "marvell,orion-spi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				cell-index = <1>;
-+				interrupts = <5>;
-+				reg = <0x14600 0x28>;
-+				clocks = <&core_clk 0>;
-+				status = "disabled";
-+			};
- 
--		gpio2: gpio@e8400 {
--			compatible = "marvell,orion-gpio";
--			#gpio-cells = <2>;
--			gpio-controller;
--			reg = <0xe8400 0x0c>;
--			ngpios = <8>;
--		};
-+			mbusc: mbus-ctrl@20000 {
-+				compatible = "marvell,mbus-controller";
-+				reg = <0x20000 0x80>, <0x800100 0x8>;
-+			};
- 
--		pinctrl: pinctrl@d0200 {
--			compatible = "marvell,dove-pinctrl";
--			reg = <0xd0200 0x10>;
--			clocks = <&gate_clk 22>;
--		};
-+			bridge_intc: bridge-interrupt-ctrl@20110 {
-+				compatible = "marvell,orion-bridge-intc";
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+				reg = <0x20110 0x8>;
-+				interrupts = <0>;
-+				marvell,#interrupts = <5>;
-+			};
- 
--		spi0: spi@10600 {
--			compatible = "marvell,orion-spi";
--			#address-cells = <1>;
--			#size-cells = <0>;
--			cell-index = <0>;
--			interrupts = <6>;
--			reg = <0x10600 0x28>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			intc: main-interrupt-ctrl@20200 {
-+				compatible = "marvell,orion-intc";
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+				reg = <0x20200 0x10>, <0x20210 0x10>;
-+			};
- 
--		spi1: spi@14600 {
--			compatible = "marvell,dove-spi";
--			#address-cells = <1>;
--			#size-cells = <0>;
--			cell-index = <1>;
--			interrupts = <5>;
--			reg = <0x14600 0x28>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			timer: timer@20300 {
-+				compatible = "marvell,orion-timer";
-+				reg = <0x20300 0x20>;
-+				interrupt-parent = <&bridge_intc>;
-+				interrupts = <1>, <2>;
-+				clocks = <&core_clk 0>;
-+			};
- 
--		i2c0: i2c@11000 {
--			compatible = "marvell,mv64xxx-i2c";
--			reg = <0x11000 0x20>;
--			#address-cells = <1>;
--			#size-cells = <0>;
--			interrupts = <11>;
--			clock-frequency = <400000>;
--			timeout-ms = <1000>;
--			clocks = <&core_clk 0>;
--			status = "disabled";
--		};
-+			crypto: crypto-engine@30000 {
-+				compatible = "marvell,orion-crypto";
-+				reg = <0x30000 0x10000>,
-+				      <0xffffe000 0x800>;
-+				reg-names = "regs", "sram";
-+				interrupts = <31>;
-+				clocks = <&gate_clk 15>;
-+				status = "okay";
-+			};
- 
--		ehci0: usb-host@50000 {
--			compatible = "marvell,orion-ehci";
--			reg = <0x50000 0x1000>;
--			interrupts = <24>;
--			clocks = <&gate_clk 0>;
--			status = "okay";
--		};
-+			ehci0: usb-host@50000 {
-+				compatible = "marvell,orion-ehci";
-+				reg = <0x50000 0x1000>;
-+				interrupts = <24>;
-+				clocks = <&gate_clk 0>;
-+				status = "okay";
-+			};
- 
--		ehci1: usb-host@51000 {
--			compatible = "marvell,orion-ehci";
--			reg = <0x51000 0x1000>;
--			interrupts = <25>;
--			clocks = <&gate_clk 1>;
--			status = "okay";
--		};
-+			ehci1: usb-host@51000 {
-+				compatible = "marvell,orion-ehci";
-+				reg = <0x51000 0x1000>;
-+				interrupts = <25>;
-+				clocks = <&gate_clk 1>;
-+				status = "okay";
-+			};
- 
--		sdio0: sdio@92000 {
--			compatible = "marvell,dove-sdhci";
--			reg = <0x92000 0x100>;
--			interrupts = <35>, <37>;
--			clocks = <&gate_clk 8>;
--			status = "disabled";
--		};
-+			xor0: dma-engine@60800 {
-+				compatible = "marvell,orion-xor";
-+				reg = <0x60800 0x100
-+				       0x60a00 0x100>;
-+				clocks = <&gate_clk 23>;
-+				status = "okay";
++	for (n = 0; n < NR_ADDR_WINS; n++) {
++		if (n >= dram->num_cs)
++			continue;
 +
-+				channel0 {
-+					interrupts = <39>;
-+					dmacap,memcpy;
-+					dmacap,xor;
-+				};
++		/* enable BAR */
++		bare &= ~BIT(n);
++		/* set port access protect to R/W */
++		epap |= ACCESS_FULL << (n * 2);
 +
-+				channel1 {
-+					interrupts = <40>;
-+					dmacap,memcpy;
-+					dmacap,xor;
-+				};
-+			};
- 
--		sdio1: sdio@90000 {
--			compatible = "marvell,dove-sdhci";
--			reg = <0x90000 0x100>;
--			interrupts = <36>, <38>;
--			clocks = <&gate_clk 9>;
--			status = "disabled";
--		};
-+			xor1: dma-engine@60900 {
-+				compatible = "marvell,orion-xor";
-+				reg = <0x60900 0x100
-+				       0x60b00 0x100>;
-+				clocks = <&gate_clk 24>;
-+				status = "okay";
++		/* configure Base Address and Size */
++		reg = ((dram->cs[n].size / SZ_64K) - 1) << 16;
++		writel(reg, gbe->regs + EUNIT_S(n));
 +
-+				channel0 {
-+					interrupts = <42>;
-+					dmacap,memcpy;
-+					dmacap,xor;
-+				};
++		reg = dram->cs[n].base & 0xffff0000;
++		reg |= dram->cs[n].mbus_attr << 8;
++		reg |= dram->mbus_dram_target_id;
++		writel(reg, gbe->regs + EUNIT_BA(n));
++		if (n < NR_HIGH_ADDR_WINS)
++			writel(0, gbe->regs + EUNIT_HA(n));
++	}
 +
-+				channel1 {
-+					interrupts = <43>;
-+					dmacap,memcpy;
-+					dmacap,xor;
-+				};
-+			};
- 
--		sata0: sata@a0000 {
--			compatible = "marvell,orion-sata";
--			reg = <0xa0000 0x2400>;
--			interrupts = <62>;
--			clocks = <&gate_clk 3>;
--			nr-ports = <1>;
--			status = "disabled";
--		};
-+			sdio1: sdio-host@90000 {
-+				compatible = "marvell,dove-sdhci";
-+				reg = <0x90000 0x100>;
-+				interrupts = <36>, <38>;
-+				clocks = <&gate_clk 9>;
-+				pinctrl-0 = <&pmx_sdio1>;
-+				pinctrl-names = "default";
-+				status = "disabled";
-+			};
- 
--		rtc@d8500 {
--			compatible = "marvell,orion-rtc";
--			reg = <0xd8500 0x20>;
--		};
-+			eth: ethernet-ctrl@72000 {
-+				compatible = "marvell,orion-eth";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x72000 0x4000>;
-+				clocks = <&gate_clk 2>;
-+				marvell,tx-checksum-limit = <1600>;
-+				status = "disabled";
++	writel(epap, gbe->regs + EUNIT_PAP);
++	writel(bare, gbe->regs + EUNIT_BARE);
++}
 +
-+				ethernet-port@0 {
-+					compatible = "marvell,orion-eth-port";
-+					reg = <0>;
-+					interrupts = <29>;
-+					/* overwrite MAC address in bootloader */
-+					local-mac-address = [00 00 00 00 00 00];
-+					phy-handle = <&ethphy>;
-+				};
-+			};
- 
--		crypto: crypto@30000 {
--			compatible = "marvell,orion-crypto";
--			reg = <0x30000 0x10000>,
--			      <0xc8000000 0x800>;
--			reg-names = "regs", "sram";
--			interrupts = <31>;
--			clocks = <&gate_clk 15>;
--			status = "okay";
--		};
-+			mdio: mdio-bus@72004 {
-+				compatible = "marvell,orion-mdio";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x72004 0x84>;
-+				interrupts = <30>;
-+				clocks = <&gate_clk 2>;
-+				status = "disabled";
++/* clear entries in unicast, special multicast, and other multicast tables */
++static void port_clear_mac_tables(struct port_priv *port)
++{
++	int n;
 +
-+				ethphy: ethernet-phy {
-+					/* set phy address in board file */
-+				};
-+			};
- 
--		xor0: dma-engine@60800 {
--			compatible = "marvell,orion-xor";
--			reg = <0x60800 0x100
--			       0x60a00 0x100>;
--			clocks = <&gate_clk 23>;
--			status = "okay";
-+			sdio0: sdio-host@92000 {
-+				compatible = "marvell,dove-sdhci";
-+				reg = <0x92000 0x100>;
-+				interrupts = <35>, <37>;
-+				clocks = <&gate_clk 8>;
-+				pinctrl-0 = <&pmx_sdio0>;
-+				pinctrl-names = "default";
-+				status = "disabled";
-+			};
- 
--			channel0 {
--				interrupts = <39>;
--				dmacap,memcpy;
--				dmacap,xor;
-+			sata0: sata-host@a0000 {
-+				compatible = "marvell,orion-sata";
-+				reg = <0xa0000 0x2400>;
-+				interrupts = <62>;
-+				clocks = <&gate_clk 3>;
-+				phys = <&sata_phy0>;
-+				phy-names = "port0";
-+				nr-ports = <1>;
-+				status = "disabled";
- 			};
- 
--			channel1 {
--				interrupts = <40>;
--				dmacap,memset;
--				dmacap,memcpy;
--				dmacap,xor;
-+			sata_phy0: sata-phy@a2000 {
-+				compatible = "marvell,mvebu-sata-phy";
-+				reg = <0xa2000 0x0334>;
-+				clocks = <&gate_clk 3>;
-+				clock-names = "sata";
-+				#phy-cells = <0>;
-+				status = "ok";
- 			};
--		};
- 
--		xor1: dma-engine@60900 {
--			compatible = "marvell,orion-xor";
--			reg = <0x60900 0x100
--			       0x60b00 0x100>;
--			clocks = <&gate_clk 24>;
--			status = "okay";
-+			audio0: audio-controller@b0000 {
-+				compatible = "marvell,dove-audio";
-+				reg = <0xb0000 0x2210>;
-+				interrupts = <19>, <20>;
-+				clocks = <&gate_clk 12>;
-+				clock-names = "internal";
-+				status = "disabled";
-+			};
- 
--			channel0 {
--				interrupts = <42>;
--				dmacap,memcpy;
--				dmacap,xor;
-+			audio1: audio-controller@b4000 {
-+				compatible = "marvell,dove-audio";
-+				reg = <0xb4000 0x2210>;
-+				interrupts = <21>, <22>;
-+				clocks = <&gate_clk 13>;
-+				clock-names = "internal";
-+				status = "disabled";
- 			};
- 
--			channel1 {
--				interrupts = <43>;
--				dmacap,memset;
--				dmacap,memcpy;
--				dmacap,xor;
-+			thermal: thermal-diode@d001c {
-+				compatible = "marvell,dove-thermal";
-+				reg = <0xd001c 0x0c>, <0xd005c 0x08>;
- 			};
--		};
- 
--		lcd0: lcd-controller@820000 {
--			compatible = "marvell,dove-lcd";
--			reg = <0x820000 0x200>;
--			interrupts = <47>;
--			clocks = <0>;
--			status = "disabled";
--		};
-+			gate_clk: clock-gating-ctrl@d0038 {
-+				compatible = "marvell,dove-gating-clock";
-+				reg = <0xd0038 0x4>;
-+				clocks = <&core_clk 0>;
-+				#clock-cells = <1>;
-+			};
- 
--		lcd1: lcd-controller@810000 {
--			compatible = "marvell,dove-lcd";
--			reg = <0x810000 0x200>;
--			interrupts = <46>;
--			clocks = <0>;
--			status = "disabled";
-+			pmu_intc: pmu-interrupt-ctrl@d0050 {
-+				compatible = "marvell,dove-pmu-intc";
-+				interrupt-controller;
-+				#interrupt-cells = <1>;
-+				reg = <0xd0050 0x8>;
-+				interrupts = <33>;
-+				marvell,#interrupts = <7>;
-+			};
++	/* clear unicast tables (DFUTn) */
++	for (n = 0; n < 4; n++)
++		writel(0, port->regs + PORT_DFUT(n));
 +
-+			pinctrl: pin-ctrl@d0200 {
-+				compatible = "marvell,dove-pinctrl";
-+				reg = <0xd0200 0x10>;
-+				clocks = <&gate_clk 22>;
++	/* clear special (DFSMTn) and other (DFOMTn) multicast tables */
++	for (n = 0; n < 64; n++) {
++		writel(0, port->regs + PORT_DFSMT(n));
++		writel(0, port->regs + PORT_DFOMT(n));
++	}
++}
 +
-+				pmx_gpio_0: pmx-gpio-0 {
-+					marvell,pins = "mpp0";
-+					marvell,function = "gpio";
-+				};
++/*
++ * set the port unicast address table
++ *
++ * This function adds/removes MAC addresses from the port unicast
++ * address table.
++ *
++ * Locate the proper entry in the Unicast table for the specified MAC
++ * nibble and set its properties according to function parameters.
++ *
++ * @nibble	Unicast MAC address, last nibble
++ * @reject      0 = Accept, 1 = Reject MAC address
++ */
++static void port_set_unicast_filter(struct port_priv *port,
++				    u8 nibble, int reject)
++{
++	u8 table, entry, shift;
++	u32 reg;
 +
-+				pmx_gpio_1: pmx-gpio-1 {
-+					marvell,pins = "mpp1";
-+					marvell,function = "gpio";
-+				};
++	/* Locate the Unicast table entry by nibble */
++	nibble &= 0xf;
++	table = nibble / 4;
++	entry = nibble % 4;
++	shift = (DFT_ENTRY_SIZE * entry);
 +
-+				pmx_gpio_2: pmx-gpio-2 {
-+					marvell,pins = "mpp2";
-+					marvell,function = "gpio";
-+				};
++	reg = readl(port->regs + PORT_DFUT(table));
++	reg &= DFT_ENTRY_MASK << shift;
++	if (!reject)
++		reg |= (DFT_PASS | (URXQ << DFT_QUEUE_SHIFT)) << shift;
++	writel(reg, port->regs + PORT_DFUT(table));
++}
 +
-+				pmx_gpio_3: pmx-gpio-3 {
-+					marvell,pins = "mpp3";
-+					marvell,function = "gpio";
-+				};
++/* initialize rx descriptor ring */
++static void port_init_rxdesc_ring(struct port_priv *port)
++{
++	struct rxdesc *rxdesc, *nxtdesc;
++	void *rxbuf;
++	int n;
 +
-+				pmx_gpio_4: pmx-gpio-4 {
-+					marvell,pins = "mpp4";
-+					marvell,function = "gpio";
-+				};
++	/* initialize aligned rx descriptor ring-buffer */
++	rxdesc = port->rxdesc;
++	rxbuf = port->rxbuf;
++	for (n = 0; n < RX_RING_SIZE; n++) {
++		nxtdesc = ((void *)rxdesc) + ALIGN(sizeof(*port->rxdesc), 16);
 +
-+				pmx_gpio_5: pmx-gpio-5 {
-+					marvell,pins = "mpp5";
-+					marvell,function = "gpio";
-+				};
++		rxdesc->cmd_sts = RXDESC_OWNED_BY_DMA;
++		rxdesc->buf_size = ALIGN(PKTSIZE, 8);
++		rxdesc->byte_cnt = 0;
++		rxdesc->buf_ptr = rxbuf;
++		if (n == RX_RING_SIZE-1)
++			rxdesc->nxtdesc = port->rxdesc;
++		else
++			rxdesc->nxtdesc = nxtdesc;
 +
-+				pmx_gpio_6: pmx-gpio-6 {
-+					marvell,pins = "mpp6";
-+					marvell,function = "gpio";
-+				};
++		rxbuf += ALIGN(PKTSIZE, 8);
 +
-+				pmx_gpio_7: pmx-gpio-7 {
-+					marvell,pins = "mpp7";
-+					marvell,function = "gpio";
-+				};
++		rxdesc = nxtdesc;
++	}
 +
-+				pmx_gpio_8: pmx-gpio-8 {
-+					marvell,pins = "mpp8";
-+					marvell,function = "gpio";
-+				};
++	port->current_rxdesc = port->rxdesc;
++}
 +
-+				pmx_gpio_9: pmx-gpio-9 {
-+					marvell,pins = "mpp9";
-+					marvell,function = "gpio";
-+				};
++/* stop a queue and check for termination */
++static void port_stop_queue(void __iomem *ctrl)
++{
++	u32 reg = readl(ctrl);
 +
-+				pmx_gpio_10: pmx-gpio-10 {
-+					marvell,pins = "mpp10";
-+					marvell,function = "gpio";
-+				};
++	if (!(reg & 0xff))
++		return;
 +
-+				pmx_gpio_11: pmx-gpio-11 {
-+					marvell,pins = "mpp11";
-+					marvell,function = "gpio";
-+				};
++	/* stop active channels only */
++	writel((reg << 8), ctrl);
++	/* wait for all queues to terminate */
++	while (readl(ctrl) & 0xff)
++		;
++}
 +
-+				pmx_gpio_12: pmx-gpio-12 {
-+					marvell,pins = "mpp12";
-+					marvell,function = "gpio";
-+				};
++static void port_stop(struct port_priv *port)
++{
++	/* stop all queues */
++	port_stop_queue(port->regs + PORT_TQC);
++	port_stop_queue(port->regs + PORT_RQC);
++	/* disable port, release reset */
++	writel(readl(port->regs + PORT_SC0) & ~PORT_ENABLE,
++	       port->regs + PORT_SC0);
++	writel(readl(port->regs + PORT_SC1) & ~PORT_RESET,
++	       port->regs + PORT_SC1);
++	/* clear and mask all interrupts */
++	writel(0, port->regs + PORT_IC);
++	writel(0, port->regs + PORT_IM);
++	writel(0, port->regs + PORT_EIC);
++	writel(0, port->regs + PORT_EIM);
++}
 +
-+				pmx_gpio_13: pmx-gpio-13 {
-+					marvell,pins = "mpp13";
-+					marvell,function = "gpio";
-+				};
++static void port_halt(struct eth_device *edev)
++{
++	struct port_priv *port = edev->priv;
 +
-+				pmx_audio1_extclk: pmx-audio1-extclk {
-+					marvell,pins = "mpp13";
-+					marvell,function = "audio1";
-+				};
++	port_stop(port);
++}
 +
-+				pmx_gpio_14: pmx-gpio-14 {
-+					marvell,pins = "mpp14";
-+					marvell,function = "gpio";
-+				};
++static int port_send(struct eth_device *edev, void *data, int len)
++{
++	struct port_priv *port = edev->priv;
++	struct txdesc *txdesc = port->txdesc;
++	u32 cmd_sts;
++	int ret;
 +
-+				pmx_gpio_15: pmx-gpio-15 {
-+					marvell,pins = "mpp15";
-+					marvell,function = "gpio";
-+				};
++	/* flush transmit data */
++	dma_flush_range((unsigned long)data, (unsigned long)data+len);
 +
-+				pmx_gpio_16: pmx-gpio-16 {
-+					marvell,pins = "mpp16";
-+					marvell,function = "gpio";
-+				};
++	txdesc->cmd_sts = TXDESC_OWNED_BY_DMA;
++	txdesc->cmd_sts |= TXDESC_FIRST | TXDESC_LAST;
++	txdesc->cmd_sts |= TXDESC_ZERO_PADDING | TXDESC_GEN_CRC;
++	txdesc->buf_ptr = data;
++	txdesc->byte_cnt = len;
 +
-+				pmx_gpio_17: pmx-gpio-17 {
-+					marvell,pins = "mpp17";
-+					marvell,function = "gpio";
-+				};
++	/* assign tx descriptor and issue send command */
++	writel((u32)txdesc, port->regs + PORT_TCQDP(UTXQ));
++	writel(BIT(UTXQ), port->regs + PORT_TQC);
 +
-+				pmx_gpio_18: pmx-gpio-18 {
-+					marvell,pins = "mpp18";
-+					marvell,function = "gpio";
-+				};
++	/* wait for packet transmit completion */
++	ret = wait_on_timeout(TRANSFER_TIMEOUT,
++		      (readl(&txdesc->cmd_sts) & TXDESC_OWNED_BY_DMA) == 0);
++	if (ret) {
++		dev_err(&edev->dev, "transmit timeout\n");
++		return ret;
++	}
 +
-+				pmx_gpio_19: pmx-gpio-19 {
-+					marvell,pins = "mpp19";
-+					marvell,function = "gpio";
-+				};
++	cmd_sts = readl(&txdesc->cmd_sts);
++	if ((cmd_sts & TXDESC_LAST) && (cmd_sts & TXDESC_ERROR)) {
++		dev_err(&edev->dev, "transmit error %d\n",
++			(cmd_sts & TXDESC_ERROR_MASK) >> TXDESC_ERROR_SHIFT);
++		return ret;
++	}
 +
-+				pmx_gpio_20: pmx-gpio-20 {
-+					marvell,pins = "mpp20";
-+					marvell,function = "gpio";
-+				};
++	return 0;
++}
 +
-+				pmx_gpio_21: pmx-gpio-21 {
-+					marvell,pins = "mpp21";
-+					marvell,function = "gpio";
-+				};
++static int port_recv(struct eth_device *edev)
++{
++	struct port_priv *port = edev->priv;
++	struct rxdesc *rxdesc = port->current_rxdesc;
++	u32 cmd_sts;
++	int ret = 0;
 +
-+				pmx_camera: pmx-camera {
-+					marvell,pins = "mpp_camera";
-+					marvell,function = "camera";
-+				};
++	/* wait for received packet */
++	if (readl(&rxdesc->cmd_sts) & RXDESC_OWNED_BY_DMA)
++		return 0;
 +
-+				pmx_camera_gpio: pmx-camera-gpio {
-+					marvell,pins = "mpp_camera";
-+					marvell,function = "gpio";
-+				};
++	/* drop malicious packets */
++	cmd_sts = readl(&rxdesc->cmd_sts);
++	if ((cmd_sts & (RXDESC_FIRST | RXDESC_LAST)) !=
++	    (RXDESC_FIRST | RXDESC_LAST)) {
++		dev_err(&edev->dev, "rx packet spread on multiple descriptors\n");
++		ret = -EIO;
++		goto recv_err;
++	}
 +
-+				pmx_sdio0: pmx-sdio0 {
-+					marvell,pins = "mpp_sdio0";
-+					marvell,function = "sdio0";
-+				};
++	if (cmd_sts & RXDESC_ERROR) {
++		dev_err(&edev->dev, "receive error %d\n",
++			(cmd_sts & RXDESC_ERROR_MASK) >> RXDESC_ERROR_SHIFT);
++		ret = -EIO;
++		goto recv_err;
++	}
 +
-+				pmx_sdio0_gpio: pmx-sdio0-gpio {
-+					marvell,pins = "mpp_sdio0";
-+					marvell,function = "gpio";
-+				};
++	/* invalidate current receive buffer */
++	dma_inv_range((unsigned long)rxdesc->buf_ptr,
++		      (unsigned long)rxdesc->buf_ptr +
++		      ALIGN(PKTSIZE, 8));
 +
-+				pmx_sdio1: pmx-sdio1 {
-+					marvell,pins = "mpp_sdio1";
-+					marvell,function = "sdio1";
-+				};
++	/* received packet is padded with two null bytes */
++	net_receive(rxdesc->buf_ptr + 0x2, rxdesc->byte_cnt - 0x2);
++	ret = 0;
 +
-+				pmx_sdio1_gpio: pmx-sdio1-gpio {
-+					marvell,pins = "mpp_sdio1";
-+					marvell,function = "gpio";
-+				};
++recv_err:
++	/* reset this and get next rx descriptor*/
++	rxdesc->byte_cnt = 0;
++	rxdesc->buf_size = ALIGN(PKTSIZE, 8);
++	rxdesc->cmd_sts = RXDESC_OWNED_BY_DMA;
++	writel((u32)rxdesc->nxtdesc, &port->current_rxdesc);
 +
-+				pmx_audio1_gpio: pmx-audio1-gpio {
-+					marvell,pins = "mpp_audio1";
-+					marvell,function = "gpio";
-+				};
++	return ret;
++}
 +
-+				pmx_audio1_i2s1_spdifo: pmx-audio1-i2s1-spdifo {
-+					marvell,pins = "mpp_audio1";
-+					marvell,function = "i2s1/spdifo";
-+				};
++static int port_set_ethaddr(struct eth_device *edev, unsigned char *mac)
++{
++	struct port_priv *port = edev->priv;
++	u32 mac_h = (mac[0] << 24) | (mac[1] << 16) | (mac[2] << 8) | mac[3];
++	u32 mac_l = (mac[4] << 8) | mac[5];
 +
-+				pmx_spi0: pmx-spi0 {
-+					marvell,pins = "mpp_spi0";
-+					marvell,function = "spi0";
-+				};
++	port_clear_mac_tables(port);
 +
-+				pmx_spi0_gpio: pmx-spi0-gpio {
-+					marvell,pins = "mpp_spi0";
-+					marvell,function = "gpio";
-+				};
++	writel(mac_l, port->regs + PORT_MACAL);
++	writel(mac_h, port->regs + PORT_MACAH);
 +
-+				pmx_uart1: pmx-uart1 {
-+					marvell,pins = "mpp_uart1";
-+					marvell,function = "uart1";
-+				};
++	/* accept frames for this address */
++	port_set_unicast_filter(port, mac[5], ACCEPT_MAC_ADDR);
 +
-+				pmx_uart1_gpio: pmx-uart1-gpio {
-+					marvell,pins = "mpp_uart1";
-+					marvell,function = "gpio";
-+				};
++	return 0;
++}
 +
-+				pmx_nand: pmx-nand {
-+					marvell,pins = "mpp_nand";
-+					marvell,function = "nand";
-+				};
++static int port_get_ethaddr(struct eth_device *edev, unsigned char *mac)
++{
++	struct port_priv *port = edev->priv;
++	u32 reg;
 +
-+				pmx_nand_gpo: pmx-nand-gpo {
-+					marvell,pins = "mpp_nand";
-+					marvell,function = "gpo";
-+				};
-+			};
++	reg = readl(port->regs + PORT_MACAH);
++	mac[0] = (u8)(reg >> 24) & 0xff;
++	mac[1] = (u8)(reg >> 16) & 0xff;
++	mac[2] = (u8)(reg >> 8) & 0xff;
++	mac[3] = (u8)reg & 0xff;
 +
-+			core_clk: core-clocks@d0214 {
-+				compatible = "marvell,dove-core-clock";
-+				reg = <0xd0214 0x4>;
-+				#clock-cells = <1>;
-+			};
++	reg = readl(port->regs + PORT_MACAL);
++	mac[4] = (u8)(reg >> 8) & 0xff;
++	mac[5] = (u8)reg & 0xff;
 +
-+			gpio0: gpio-ctrl@d0400 {
-+				compatible = "marvell,orion-gpio";
-+				#gpio-cells = <2>;
-+				gpio-controller;
-+				reg = <0xd0400 0x20>;
-+				ngpios = <32>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				interrupts = <12>, <13>, <14>, <60>;
-+			};
++	return 0;
++}
 +
-+			gpio1: gpio-ctrl@d0420 {
-+				compatible = "marvell,orion-gpio";
-+				#gpio-cells = <2>;
-+				gpio-controller;
-+				reg = <0xd0420 0x20>;
-+				ngpios = <32>;
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				interrupts = <61>;
-+			};
++static int port_open(struct eth_device *edev)
++{
++	struct port_priv *port = edev->priv;
 +
-+			rtc: real-time-clock@d8500 {
-+				compatible = "marvell,orion-rtc";
-+				reg = <0xd8500 0x20>;
-+				interrupt-parent = <&pmu_intc>;
-+				interrupts = <5>;
-+			};
++	/* enable receive queue */
++	writel(BIT(URXQ), port->regs + PORT_RQC);
 +
-+			gpio2: gpio-ctrl@e8400 {
-+				compatible = "marvell,orion-gpio";
-+				#gpio-cells = <2>;
-+				gpio-controller;
-+				reg = <0xe8400 0x0c>;
-+				ngpios = <8>;
-+			};
- 		};
- 	};
- };
++	return 0;
++}
++
++static void port_adjust_link(struct eth_device *edev)
++{
++	struct port_priv *port = edev->priv;
++	struct phy_device *phy = edev->phydev;
++	u32 reg;
++
++	/* disable port */
++	reg = readl(port->regs + PORT_SC0);
++	reg &= ~PORT_ENABLE;
++	writel(reg, port->regs + PORT_SC0);
++
++	/* setup and enable port */
++	reg &= ~(SET_SPEED_MASK | SET_FULL_DUPLEX | SET_FLOWCTRL_ENABLE);
++	if (phy->speed == SPEED_1000)
++		reg |= SET_SPEED_1000;
++	else if (phy->speed == SPEED_100)
++		reg |= SET_SPEED_100;
++	else if (phy->speed == SPEED_10)
++		reg |= SET_SPEED_10;
++	if (phy->duplex)
++		reg |= SET_FULL_DUPLEX;
++	if (phy->pause)
++		reg |= SET_FLOWCTRL_ENABLE;
++	reg |= FORCE_LINK_PASS | FORCE_NO_LINK_FAIL | PORT_ENABLE;
++
++	writel(reg, port->regs + PORT_SC0);
++}
++
++static int port_probe(struct device_d *parent, struct port_priv *port)
++{
++	struct device_node *phynp;
++	phy_interface_t intf = PHY_INTERFACE_MODE_RGMII;
++	u32 reg;
++	int ret;
++
++	/* assume port0 but warn on missing port reg property */
++	if (of_property_read_u32(port->np, "reg", &port->portno))
++		dev_warn(parent, "port node is missing reg property\n");
++
++	phynp = of_parse_phandle(port->np, "phy-handle", 0);
++	if (phynp) {
++		ret = of_get_phy_mode(port->np);
++		if (ret > 0)
++			intf = ret;
++	}
++
++	port->regs = dev_get_mem_region(parent, 0) + PORTn_REGS(port->portno);
++
++	/* allocate rx/tx descriptors and buffers */
++	port->txdesc = dma_alloc_coherent(ALIGN(sizeof(*port->txdesc), 16));
++	port->rxdesc = dma_alloc_coherent(RX_RING_SIZE *
++					  ALIGN(sizeof(*port->rxdesc), 16));
++	port->rxbuf = dma_alloc(RX_RING_SIZE * ALIGN(PKTSIZE, 8));
++
++	port_stop(port);
++	port_init_rxdesc_ring(port);
++
++	/* disable port bandwidth limitation */
++	writel(~0, port->regs + PORT_TQTBCNT(UTXQ));
++	writel(~0, port->regs + PORT_TQTBC(UTXQ));
++	writel(0, port->regs + PORT_MTU);
++	/* assign initial rx descriptor */
++	writel((u32)port->current_rxdesc, port->regs + PORT_CRDP(URXQ));
++	/* setup SDMA with maximum burst and no swap */
++	reg = RX_BURST_SIZE_16 | RX_BLM_NO_SWAP |
++		TX_BURST_SIZE_16 | TX_BLM_NO_SWAP;
++	writel(reg, port->regs + PORT_SDC);
++
++	/* port configuration */
++	reg = DEFAULT_RXQ(URXQ) | DEFAULT_ARPQ(URXQ);
++	writel(reg, port->regs + PORT_C);
++	writel(0, port->regs + PORT_CX);
++
++	reg = SC0_RESERVED | MRU_1518;
++	reg |= DISABLE_ANEG_DUPLEX | DISABLE_ANEG_FLOWCTRL | DISABLE_ANEG_SPEED;
++	writel(reg, port->regs + PORT_SC0);
++
++	reg = SC1_RESERVED;
++	reg |= DEFAULT_COL_LIMIT | COL_ON_BACKPRESS | INBAND_ANEG_BYPASS;
++	if (intf == PHY_INTERFACE_MODE_RGMII)
++		reg |= RGMII_ENABLE;
++	writel(reg, port->regs + PORT_SC1);
++
++	/* register eth device */
++	port->edev.priv = port;
++	port->edev.open = port_open;
++	port->edev.send = port_send;
++	port->edev.recv = port_recv;
++	port->edev.halt = port_halt;
++	port->edev.set_ethaddr = port_set_ethaddr;
++	port->edev.get_ethaddr = port_get_ethaddr;
++	port->edev.parent = parent;
++
++	ret = eth_register(&port->edev);
++	if (ret)
++		return ret;
++
++	/* attach phy device */
++	if (phynp) {
++		ret = of_phy_device_connect(&port->edev, phynp,
++					    port_adjust_link, 0, intf);
++		if (ret)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int orion_gbe_probe(struct device_d *dev)
++{
++	struct orion_gbe *gbe;
++	struct port_priv *ppriv;
++	struct device_node *pnp;
++	int ret;
++
++	gbe = xzalloc(sizeof(*gbe));
++	dev->priv = gbe;
++
++	gbe->regs = dev_get_mem_region(dev, 0);
++	gbe->clk = clk_get(dev, 0);
++	if (!IS_ERR(gbe->clk))
++		clk_enable(gbe->clk);
++
++	eunit_set_dram_access(gbe);
++
++	/*
++	 * Orion SoCs only have one port per controller, but the
++	 * IP itself supports more than one port per controller.
++	 * Although untested, the driver should also be able to
++	 * deal with multi-port controllers.
++	 */
++	for_each_child_of_node(dev->device_node, pnp)
++		gbe->num_ports++;
++
++	gbe->ports = xzalloc(gbe->num_ports * sizeof(*gbe->ports));
++
++	ppriv = gbe->ports;
++	for_each_child_of_node(dev->device_node, pnp) {
++		ppriv->np = pnp;
++
++		ret = port_probe(dev, ppriv);
++		if (ret)
++			return ret;
++
++		ppriv++;
++	}
++
++	return 0;
++}
++
++static void orion_gbe_remove(struct device_d *dev)
++{
++	struct orion_gbe *gbe = dev->priv;
++	int n;
++
++	for (n = 0; n < gbe->num_ports; n++)
++		port_halt(&gbe->ports[n].edev);
++
++	/* disable all address windows */
++	writel(~0, gbe->regs + EUNIT_BARE);
++
++	if (!IS_ERR(gbe->clk))
++		clk_disable(gbe->clk);
++}
++
++static struct of_device_id orion_gbe_dt_ids[] = {
++	{ .compatible = "marvell,orion-eth", },
++	{ .compatible = "marvell,kirkwood-eth", },
++	{ }
++};
++
++static struct driver_d orion_gbe_driver = {
++	.name   = "orion-gbe",
++	.probe  = orion_gbe_probe,
++	.remove = orion_gbe_remove,
++	.of_compatible = DRV_OF_COMPAT(orion_gbe_dt_ids),
++};
++device_platform_driver(orion_gbe_driver);
+diff --git a/drivers/net/orion-gbe.h b/drivers/net/orion-gbe.h
+new file mode 100644
+index 000000000000..e5b18b1eb3cf
+--- /dev/null
++++ b/drivers/net/orion-gbe.h
+@@ -0,0 +1,236 @@
++/*
++ * (C) Copyright 2014
++ *   Pengutronix, Michael Grzeschik <mgr@pengutronix.de>
++ *   Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
++ *
++ * based on kirkwood_egiga driver from u-boot
++ *   (C) Copyright 2009
++ *     Marvell Semiconductor <www.marvell.com>
++ *     Written-by: Prafulla Wadaskar <prafulla@marvell.com>
++ *
++ *     based on - Driver for MV64360X ethernet ports
++ *     Copyright (C) 2002 rabeeh@galileo.co.il
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
++ * MA 02110-1301 USA
++ */
++
++#ifndef __ORION_GBE_
++#define __ORION_GBE_
++
++/* Ethernet Unit Base Address */
++#define EUNIT_BA(x)		(0x200 + (x) * 0x8)
++/* Ethernet Unit Size */
++#define EUNIT_S(x)		(0x204 + (x) * 0x8)
++/* Ethernet Unit High Address */
++#define EUNIT_HA(x)		(0x280 + (x) * 0x4)
++/* Ethernet Unit Base Address Enable */
++#define EUNIT_BARE		0x290
++/* Ethernet Unit Port Access Protect */
++#define EUNIT_PAP		0x294
++#define NO_ACCESS		0
++#define ACCESS_READ_ONLY	1
++#define ACCESS_FULL		3
++
++/* Port Registers Offset */
++#define PORTn_REGS(x)		(0x400 + (x) * 0x400)
++/* Port Configuration */
++#define PORT_C			0x000
++#define  PROMISCUOUS_MODE	BIT(0)
++#define  DEFAULT_RXQ(x)		((x) << 1)
++#define  DEFAULT_ARPQ(x)	((x) << 4)
++#define  BCAST_OTHER_REJECT	BIT(7)
++#define  BCAST_IP_REJECT	BIT(8)
++#define  BCAST_ARP_REJECT	BIT(9)
++#define  AUTO_SET_NO_TX_ERR	BIT(12)
++#define  TCPQ_CAPTURE_ENABLE	BIT(14)
++#define  UDPQ_CAPTURE_ENABLE	BIT(15)
++#define  DEFAULT_TCPQ(x)	((x) << 16)
++#define  DEFAULT_UDPQ(x)	((x) << 19)
++#define  DEFAULT_BPDUQ(x)	((x) << 22)
++#define  RX_TCP_CHKSUM_HEADER	BIT(25)
++/* Port Configuration Extended */
++#define PORT_CX			0x004
++#define  TX_CRC_GEN_DISABLE	BIT(3)
++#define  BPDUQ_CAPTURE_ENABLE	BIT(0)
++/* Port MAC Address High */
++#define PORT_MACAL		0x014
++/* Port MAC Address Low */
++#define PORT_MACAH		0x018
++/* Port SDMA Configuration */
++#define PORT_SDC		0x01c
++#define  TX_BURST_SIZE_1	(0 << 22)
++#define  TX_BURST_SIZE_2	(1 << 22)
++#define  TX_BURST_SIZE_4	(2 << 22)
++#define  TX_BURST_SIZE_8	(3 << 22)
++#define  TX_BURST_SIZE_16	(4 << 22)
++#define  TX_BLM_SWAP		(0 << 5)
++#define  TX_BLM_NO_SWAP		(1 << 5)
++#define  RX_BLM_SWAP		(0 << 4)
++#define  RX_BLM_NO_SWAP		(1 << 4)
++#define  RX_BURST_SIZE_1	(0 << 1)
++#define  RX_BURST_SIZE_2	(1 << 1)
++#define  RX_BURST_SIZE_4	(2 << 1)
++#define  RX_BURST_SIZE_8	(3 << 1)
++#define  RX_BURST_SIZE_16	(4 << 1)
++/* Port Serial Control 0 */
++#define PORT_SC0		0x03c
++#define  SC0_RESERVED		BIT(9)
++#define  PORT_ENABLE		BIT(0)
++#define  FORCE_LINK_PASS	BIT(1)
++#define  DISABLE_ANEG_DUPLEX	BIT(2)
++#define  DISABLE_ANEG_FLOWCTRL	BIT(3)
++#define  ADVERTISE_PAUSE	BIT(4)
++#define  FORCE_FLOWCTRL_OFF	(0 << 5)
++#define  FORCE_FLOWCTRL_ON	(1 << 5)
++#define  FORCE_FLOWCTRL_MASK	(3 << 5)
++#define  FORCE_BACKPRESS_NO_JAM	(0 << 7)
++#define  FORCE_BACKPRESS_JAM	(1 << 7)
++#define  FORCE_BACKPRESS_MASK	(3 << 7)
++#define  FORCE_NO_LINK_FAIL	BIT(10)
++#define  DISABLE_ANEG_SPEED	BIT(13)
++#define  ADVERTISE_DTE		BIT(14)
++#define  MII_PHY_MODE		BIT(15)
++#define  MII_SRC_SYNCHRONOUS	BIT(16)
++#define  MRU_1518		(0 << 17)
++#define  MRU_1522		(1 << 17)
++#define  MRU_1552		(2 << 17)
++#define  MRU_9022		(3 << 17)
++#define  MRU_9192		(4 << 17)
++#define  MRU_9700		(5 << 17)
++#define  MRU_MASK		(7 << 17)
++#define  SET_FULL_DUPLEX	BIT(21)
++#define  SET_FLOWCTRL_ENABLE	BIT(22)
++#define  SET_SPEED_1000		(1 << 23)
++#define  SET_SPEED_10		(0 << 23)
++#define  SET_SPEED_100		(2 << 23)
++#define  SET_SPEED_MASK		(3 << 23)
++/* Port Status 0 */
++#define PORT_S0			0x044
++/* Port Trasmit Queue Command */
++#define PORT_TQC		0x048
++/* Port Serial Control 1 */
++#define PORT_SC1		0x04c
++#define  SC1_RESERVED		(0x2 << 9)
++#define  LOOPBACK_PCS		BIT(1)
++#define  RGMII_ENABLE		BIT(3)
++#define  PORT_RESET		BIT(4)
++#define  CLK125_BYPASS		BIT(5)
++#define  INBAND_ANEG		BIT(6)
++#define  INBAND_ANEG_BYPASS	BIT(7)
++#define  INBAND_ANEG_RESTART	BIT(8)
++#define  LIMIT_TO_1000BASEX	BIT(11)
++#define  COL_ON_BACKPRESS	BIT(15)
++#define  COL_LIMIT(x)		(((x) & 0xfff) << 16)
++#define  DEFAULT_COL_LIMIT	COL_LIMIT(0x23)
++#define  COL_ON_BACKPRESS	BIT(15)
++#define  EN_MII_ODD_PREAMBLE	BIT(22)
++/* Port Status 1 */
++#define PORT_S1			0x050
++/* Port Interrupt Cause */
++#define PORT_IC			0x060
++/* Port Interrupt Mask */
++#define PORT_IM			0x068
++#define  INT_SUM		BIT(31)
++#define  TX_END			BIT(19)
++#define  RXQ_ERR		(15 << 11)
++#define  RX_ERR			BIT(10)
++#define  TXQ_ERR		(15 << 2)
++#define  EXTENDED_INT		BIT(1)
++#define  RX_RETURN		BIT(0)
++/* Port Extended Interrupt Cause */
++#define PORT_EIC		0x064
++/* Port Extended Interrupt Mask */
++#define PORT_EIM		0x06c
++#define  EXTENDED_INT_SUM	BIT(31)
++#define  PRBS_ERR		BIT(25)
++#define  INTERNAL_ADDR_ERR	BIT(23)
++#define  LINK_CHANGE		BIT(20)
++#define  TX_UNDERRUN		BIT(19)
++#define  RX_OVERRUN		BIT(18)
++#define  PHY_CHANGE		BIT(16)
++#define  TX_ERR			BIT(8)
++#define  TX_RETURN		BIT(0)
++/* Port Maximum Transmit Unit */
++#define PORT_MTU		0x0e8
++/* Port Current Receive Descriptor Pointer */
++#define PORT_CRDP(x)		(0x20c + (x) * 0x10)
++/* Port Receive Queue Command */
++#define	PORT_RQC		0x280
++/* Port Transmit Current Queue Descriptor Pointer */
++#define	PORT_TCQDP(x)		(0x2c0 + (x) * 0x04)
++/* Port Transmit Queue Token Bucket Counter */
++#define	PORT_TQTBCNT(x)		(0x300 + (x) * 0x10)
++/* Port Transmit Queue Token Bucket Configuration */
++#define	PORT_TQTBC(x)		(0x304 + (x) * 0x10)
++
++#define	PORT_DFSMT(x)		(0x1000 + ((x) * 0x04))
++#define	PORT_DFOMT(x)		(0x1100 + ((x) * 0x04))
++#define	PORT_DFUT(x)		(0x1200 + ((x) * 0x04))
++
++#define DFT_ENTRY_MASK		0xff
++#define DFT_ENTRY_SIZE		8
++#define DFT_QUEUE_SHIFT		1
++#define DFT_PASS		BIT(0)
++
++#define RXDESC_ERROR		BIT(0)
++#define RXDESC_ERROR_CRC	(0 << 1)
++#define RXDESC_ERROR_OVERRUN	(1 << 1)
++#define RXDESC_ERROR_MAXLEN	(2 << 1)
++#define RXDESC_ERROR_RESOURCE	(3 << 1)
++#define RXDESC_ERROR_MASK	(3 << 1)
++#define RXDESC_ERROR_SHIFT	1
++#define RXDESC_L4_CHECKSUM(x)	(((x) & (0xffff << 3)) >> 3)
++#define RXDESC_VLAN_TAGGED	BIT(19)
++#define RXDESC_BDPU		BIT(20)
++#define RXDESC_FRAME_TCP	(0 << 21)
++#define RXDESC_FRAME_UDP	(1 << 21)
++#define RXDESC_FRAME_OTHER	(2 << 21)
++#define RXDESC_FRAME_MASK	(3 << 21)
++#define RXDESC_L2_IS_ETHERNET	BIT(23)
++#define RXDESC_L4_IS_IPV4	BIT(24)
++#define RXDESC_L4_HEADER_OK	BIT(25)
++#define RXDESC_LAST		BIT(26)
++#define RXDESC_FIRST		BIT(27)
++#define RXDESC_UNKNOWN_DEST	BIT(28)
++#define RXDESC_ENABLE_IRQ	BIT(29)
++#define RXDESC_L4_CHECKSUM_OK	BIT(30)
++#define RXDESC_OWNED_BY_DMA	BIT(31)
++
++#define RXDESC_BYTECOUNT_FRAG	BIT(2)
++
++#define TXDESC_ERROR			BIT(0)
++#define TXDESC_ERROR_LATE_COLL		(0 << 1)
++#define TXDESC_ERROR_UNDERRUN		(1 << 1)
++#define TXDESC_ERROR_RET_LIMIT		(2 << 1)
++#define TXDESC_ERROR_MASK		(3 << 1)
++#define TXDESC_ERROR_SHIFT		1
++#define TXDESC_LCC_SNAP			BIT(9)
++#define TXDESC_L4_CHK_FIRST		BIT(10)
++#define TXDESC_IPV4_HEADER_LEN(x)	(((x) & 0xf) << 11)
++#define TXDESC_VLAN_TAGGED		BIT(15)
++#define TXDESC_FRAME_TCP		(0 << 16)
++#define TXDESC_FRAME_UDP		(1 << 16)
++#define TXDESC_GEN_FRAME_CHECKSUM	BIT(17)
++#define TXDESC_GEN_IPV4_CHECKSUM	BIT(18)
++#define TXDESC_ZERO_PADDING		BIT(19)
++#define TXDESC_LAST			BIT(20)
++#define TXDESC_FIRST			BIT(21)
++#define TXDESC_GEN_CRC			BIT(22) /* Orion5x only */
++#define TXDESC_ENABLE_IRQ		BIT(23)
++#define TXDESC_NO_AUTO_RETURN		BIT(30)
++#define TXDESC_OWNED_BY_DMA		BIT(31)
++
++#endif
 -- 
 1.8.5.3
 
