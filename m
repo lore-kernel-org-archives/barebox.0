@@ -1,12 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-pd0-x230.google.com ([2607:f8b0:400e:c02::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBS15-0004gR-5S
- for barebox@lists.infradead.org; Thu, 06 Feb 2014 16:41:32 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu,  6 Feb 2014 17:40:45 +0100
-Message-Id: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1WBVr5-0002hF-5i
+ for barebox@lists.infradead.org; Thu, 06 Feb 2014 20:47:28 +0000
+Received: by mail-pd0-f176.google.com with SMTP id w10so2183906pde.35
+ for <barebox@lists.infradead.org>; Thu, 06 Feb 2014 12:47:04 -0800 (PST)
 MIME-Version: 1.0
+Date: Thu, 6 Feb 2014 15:47:03 -0500
+Message-ID: <CAO6XYUu7PyrjnT=c-t2RVZ51xZagtGXqQyFGYL9dpF2qLypt_w@mail.gmail.com>
+From: "Michael D. Burkey" <mdburkey@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,38 +17,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/9] nfs3 support
-To: barebox@lists.infradead.org
+Subject: re: net usb asix: read MAC from EEPROM on AX88772B
+To: philipp.zabel@gmail.com
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgp0aGlzIHNlcmllcyBzd2l0Y2hlcyBiYXJlYm94IGZyb20gdXNpbmcgbmZzMiB0byBu
-ZnMzLiBUaGUgYWRkZWQgYmVuZWZpdAooYXBhcnQgZnJvbSBuZnMzIGJlaW5nIG5ld2VyIGFuZCBw
-cm9iYWJseSBiZXR0ZXIgdGVzdGVkIG9uIHRoZSBzZXJ2ZXIKc2lkZSkgaXMgdGhhdCBpdCBub3cg
-YWxzbyB3b3JrcyB3aXRoIHVuZnMzIGltcGxlbWVudGluZyB0aGUgc2VydmVyIHNpZGUuCgpUaGUg
-Zmlyc3QgdHdvIHBhdGNoZXMgYXJlIGZpeGVzLCB1cCB0byB5b3UgaWYgeW91IHdhbnQgdG8gYXBw
-bHkgdGhlbQpiZWZvcmUgMjAxNC4wMy4wLgoKVXdlIEtsZWluZS1Lw7ZuaWcgKDkpOgogIG5ldDog
-bmV0X3JlYWRfdWludDMyOiBhc3NlcnQgdGhhdCBvbmx5IDMyIGJpdCBhcmUgcmVhZAogIG5mczog
-c2tpcCBvdmVyIHN0YWxlIHJwYyBwYWNrZXRzCiAgbmZzOiBzaG9ydGVuIGFuZCBzaW1wbGlmeSBy
-cGNfYWRkX2NyZWRlbnRpYWxzIGEgYml0CiAgbmZzOiBzaW1wbGlmeSBycGNfbG9va3VwX3JlcQog
-IG5mczogZHJvcCBhbiB1bm5lZWRlZCB2YXJpYWJsZSBmcm9tIG5mc19kb19vcGVuKCkKICBuZXQ6
-IG5ldyBmdW5jdGlvbiBuZXRfcmVhZF91aW50NjQKICBtb3VudDogc3VwcG9ydCBmaWxlc3lzdGVt
-IG9wdGlvbnMgcGFzc2VkIHZpYSAtbwogIG5mczogc3dpdGNoIHRvIG5mczMKICBuZnM6IHBhcnNl
-IG5mc3BvcnQgYW5kIG1vdW50IHBvcnQgZnJvbSBmaWxlIHN5c3RlbSBvcHRpb25zCgogYXJjaC9h
-cm0vYm9hcmRzL3Jhc3BiZXJyeS1waS9ycGkuYyB8ICAgMiArLQogYXJjaC9hcm0vbWFjaC1vbWFw
-L29tYXBfZ2VuZXJpYy5jICB8ICAgMiArLQogYXJjaC9hcm0vbWFjaC1vbWFwL3hsb2FkLmMgICAg
-ICAgICB8ICAgNCArLQogYXJjaC9hcm0vbWFjaC1zb2NmcGdhL2dlbmVyaWMuYyAgICB8ICAgMiAr
-LQogY29tbWFuZHMvbW91bnQuYyAgICAgICAgICAgICAgICAgICB8ICAxOSArLQogY29tbWFuZHMv
-dGZ0cC5jICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQogY29tbW9uL2Jsc3BlYy5jICAgICAg
-ICAgICAgICAgICAgICB8ICAgMiArLQogY29tbW9uL3N0YXJ0dXAuYyAgICAgICAgICAgICAgICAg
-ICB8ICAgNCArLQogZnMvZnMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxOSArLQog
-ZnMvbmZzLmMgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDk3MCArKysrKysrKysrKysrKysr
-KysrKysrKysrLS0tLS0tLS0tLS0tCiBpbmNsdWRlL2ZzLmggICAgICAgICAgICAgICAgICAgICAg
-IHwgICA2ICstCiBpbmNsdWRlL25ldC5oICAgICAgICAgICAgICAgICAgICAgIHwgIDE1ICstCiBs
-aWIvYm9vdHN0cmFwL2Rpc2suYyAgICAgICAgICAgICAgIHwgICAyICstCiAxMyBmaWxlcyBjaGFu
-Z2VkLCA3MjEgaW5zZXJ0aW9ucygrKSwgMzI4IGRlbGV0aW9ucygtKQoKLS0gCjEuOC41LjIKCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Philipp,
+
+I have just checked out the tip release of barebox and have been
+playing with your added code for the ASIX88772B (which I find a bit
+humorous, as I had just migrated almost EXACTLY the same code myself
+from the Linux sources two days ago, before I noticed yours -- I had
+even put the "read MAC from EE" code into the exact same function).
+
+The bad news is, your patches and mine both behave identically and
+neither works quite right.
+
+Specifically, while the network will connect and it will pull a DHCP
+address, it still gets tons of invalid lengths from asix_rx_fixup().
+It also doesn't seem to work for much else beyond that.
+
+Have you had any additional luck in getting it working "right" with the 88772B?
+
+Basically, since we are both obviously working on it, I figured it
+would make sense if we coordinated efforts a bit, so as to avoid
+duplicated effort.
+
+Thanks!
+Michael Burkey
+
+PS. the USB adapter I am using is a Sabrent NT-USBC from Newegg.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
