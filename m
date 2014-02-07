@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x231.google.com ([2a00:1450:4013:c01::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBiKf-0001ux-0Z
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 10:06:53 +0000
-Date: Fri, 7 Feb 2014 11:06:26 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140207100626.GH17045@pengutronix.de>
-References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1391704854-3141-10-git-send-email-u.kleine-koenig@pengutronix.de>
- <20140207065032.GG9671@ns203013.ovh.net>
- <20140207082221.GD17045@pengutronix.de>
- <20140207084510.GI9671@ns203013.ovh.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140207084510.GI9671@ns203013.ovh.net>
+ id 1WBheK-0000Mm-DI
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:23:05 +0000
+Received: by mail-ea0-f177.google.com with SMTP id n15so1419627ead.22
+ for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 01:22:40 -0800 (PST)
+Message-ID: <52F4A5DA.2040906@gmail.com>
+Date: Fri, 07 Feb 2014 10:22:34 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140207072134.GG16215@pengutronix.de>
+In-Reply-To: <20140207072134.GG16215@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,76 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 9/9] nfs: parse nfsport and mount port from file system
- options
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] Marvell MVEBU mbus and Orion GBE driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-Hello Jean-Christophe,
+On 02/07/2014 08:21 AM, Sascha Hauer wrote:
+> On Wed, Feb 05, 2014 at 11:40:03PM +0100, Sebastian Hesselbarth wrote:
+>> This patch set provides a common driver for the mbus found on all
+>> Marvell MVEBU SoCs and a ethernet driver for the IP found on Marvell
+>> Orion SoCs. Regards go to Michael Grzeschik who forced me to work on
+>> this by importing the borked mv643xx driver from u-boot.
+>>
+>> Compared to the former patches sent by Michael, this driver now
+>> separates mbus handling, mdio bus driver, and ethernet driver. The
+>> mbus handling can be reused on all MVEBU SoCs and is based on what
+>> we already have on Linux for it. The mdio bus driver can be reused
+>> by Armada 370/XP Neta Ethernet core.
+>>
+>> I have tested the driver on SolidRun CuBox (Dove) and also on
+>> Globalscale Guruplug (Kirkwood). Kirkwood still need some loving care
+>> before (88E1121 PHY init, pbl images, ...) so I decided to leave it
+>> out of the patch set for now.
+>>
+>> Patch 1 first reorders drivers/net/{Kconfig,Makefile} alphabetically.
+>>
+>> Patch 2 then introduces a of_phy_device_connect to allow to connect
+>> to a PHY without knowing the corresponding mdio bus.
+>>
+>> Patches 3, 4, 5 add drivers for the mbus, mdio bus, and Orion GBE
+>> respectively.
+>>
+>> Patch 6 finally re-syncs Dove's DT files with v3.14 Linux DT files.
+>>
+>> All patches are based on release v2014.02.0 and can also be found on
+>> https://github.com/shesselba/barebox-dove.git topic/orion-gbe-v1
+>>
+>> Sebastian Hesselbarth (6):
+>>    net: reorder Kconfig and Makefile alphabetically
+>>    net: phy: add of_phy_device_connect
+>>    bus: mvebu: add mbus driver
+>>    net: phy: add mvebu mdio bus driver
+>>    net: orion: add ethernet driver
+>>    ARM: dove: sync with DT files from Linux
+>
+> Looks fine to me except for the two small comments to the mbus driver.
 
-On Fri, Feb 07, 2014 at 09:45:10AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> On 09:22 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
-> > On Fri, Feb 07, 2014 at 07:50:32AM +0100, Jean-Christophe PLAGNIOL-VILL=
-ARD wrote:
-> > > > +static void parseopt_hu(const char *options, const char *opt,
-> > > > +		unsigned short *val)
-> > > > +{
-> > > > +	const char *start;
-> > > > +	size_t optlen =3D strlen(opt);
-> > > > +	ulong v;
-> > > > +	char *endp;
-> > > > +
-> > > > +again:
-> > > > +	start =3D strstr(options, opt);
-> > > > +
-> > > > +	if (!start)
-> > > > +		return;
-> > > > +
-> > > > +	if (start > options && start[-1] !=3D ',') {
-> > > > +		options =3D start;
-> > > > +		goto again;
-> > > > +	}
-> > > > +
-> > > > +	if (start[optlen] !=3D '=3D') {
-> > > > +		options =3D start;
-> > > > +		goto again;
-> > > > +	}
-> > > > +
-> > > > +	v =3D simple_strtoul(start + optlen + 1, &endp, 0);
-> > > > +	if (v > USHORT_MAX)
-> > > > +		return;
-> > > > +
-> > > > +	if (*endp =3D=3D ',' || *endp =3D=3D '\0')
-> > > > +		*val =3D v;
-> > > > +}
-> > > =
+Sascha,
 
-> > > this should be global
-> > Yeah, do you have a suggestion where to put it? fs/parseopt.c?
-> =
+actually I forgot to mention that using a separated mdio driver requires
+it to be probed before the eth driver. Right now, this is implicity
+done by reordering the Makefile accordingly.
 
-> why not
-> =
+This may be fine for now, but I guess there may be some issues in the
+future. Have you thought about deferred probing for barebox, too?
 
-> but IIRC the cmdline parser should be the same too
-"the cmdline parser"? AFAIK there is no cmdline parser for the kernel
-command line(?) in barebox. And if it were, the latter is ' '-separated
-while the mount options are ','-separated. This could be abstracted, but
-I think for now and until we need a linux kernel commandline parser it's
-fine to hardcode ',' and let it live in fs/.
+Sebastian
 
-Best regards
-Uwe
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
