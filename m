@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBh7e-0007rA-QD
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:49:19 +0000
-Received: from tellur.localdomain (p57B5E0F6.dip0.t-ipconnect.de
- [87.181.224.246]) by lynxeye.de (Postfix) with ESMTPA id B5D1418B4263
- for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 09:47:36 +0100 (CET)
+ id 1WBh9w-00084X-Mm
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:51:41 +0000
+Message-ID: <1391763137.1807.1.camel@tellur>
 From: Lucas Stach <dev@lynxeye.de>
-Date: Fri,  7 Feb 2014 09:48:49 +0100
-Message-Id: <1391762936-2747-8-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
-References: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
+Date: Fri, 07 Feb 2014 09:52:17 +0100
+In-Reply-To: <CAO6XYUu7PyrjnT=c-t2RVZ51xZagtGXqQyFGYL9dpF2qLypt_w@mail.gmail.com>
+References: <CAO6XYUu7PyrjnT=c-t2RVZ51xZagtGXqQyFGYL9dpF2qLypt_w@mail.gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +17,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 07/14] comamnds: uimage: actually print error message
-To: barebox@lists.infradead.org
+Subject: Re: net usb asix: read MAC from EEPROM on AX88772B
+To: "Michael D. Burkey" <mdburkey@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- commands/uimage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Michael,
 
-diff --git a/commands/uimage.c b/commands/uimage.c
-index 345e496..4b0ed4d 100644
---- a/commands/uimage.c
-+++ b/commands/uimage.c
-@@ -63,8 +63,8 @@ static int do_uimage(int argc, char *argv[])
- 		printf("verifying data crc... ");
- 		ret = uimage_verify(handle);
- 		if (ret) {
--			goto err;
- 			printf("Bad Data CRC\n");
-+			goto err;
- 		} else {
- 			printf("ok\n");
- 		}
--- 
-1.8.5.3
+Am Donnerstag, den 06.02.2014, 15:47 -0500 schrieb Michael D. Burkey:
+> Philipp,
+> 
+> I have just checked out the tip release of barebox and have been
+> playing with your added code for the ASIX88772B (which I find a bit
+> humorous, as I had just migrated almost EXACTLY the same code myself
+> from the Linux sources two days ago, before I noticed yours -- I had
+> even put the "read MAC from EE" code into the exact same function).
+> 
+> The bad news is, your patches and mine both behave identically and
+> neither works quite right.
+> 
+> Specifically, while the network will connect and it will pull a DHCP
+> address, it still gets tons of invalid lengths from asix_rx_fixup().
+> It also doesn't seem to work for much else beyond that.
+> 
+> Have you had any additional luck in getting it working "right" with the 88772B?
+> 
+> Basically, since we are both obviously working on it, I figured it
+> would make sense if we coordinated efforts a bit, so as to avoid
+> duplicated effort.
+> 
+
+If you want the AX88772B to work reliable, you will have to port over
+the Linux commit that allows the proper handling of AX Frames split
+between two USB URBs.
+
+Regards,
+Lucas
 
 
 _______________________________________________
