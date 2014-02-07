@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x231.google.com ([2a00:1450:4013:c01::231])
+Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBheK-0000Mm-DI
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:23:05 +0000
-Received: by mail-ea0-f177.google.com with SMTP id n15so1419627ead.22
- for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 01:22:40 -0800 (PST)
-Message-ID: <52F4A5DA.2040906@gmail.com>
-Date: Fri, 07 Feb 2014 10:22:34 +0100
+ id 1WBhp7-0000cL-Sm
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:34:14 +0000
+Received: by mail-ee0-f46.google.com with SMTP id c13so1400963eek.33
+ for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 01:33:51 -0800 (PST)
+Message-ID: <52F4A87B.3030008@gmail.com>
+Date: Fri, 07 Feb 2014 10:33:47 +0100
 From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140207072134.GG16215@pengutronix.de>
-In-Reply-To: <20140207072134.GG16215@pengutronix.de>
+ <1391640009-3399-7-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1391640009-3399-7-git-send-email-sebastian.hesselbarth@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,62 +24,39 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/6] Marvell MVEBU mbus and Orion GBE driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 6/6] ARM: dove: sync with DT files from Linux
 Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-On 02/07/2014 08:21 AM, Sascha Hauer wrote:
-> On Wed, Feb 05, 2014 at 11:40:03PM +0100, Sebastian Hesselbarth wrote:
->> This patch set provides a common driver for the mbus found on all
->> Marvell MVEBU SoCs and a ethernet driver for the IP found on Marvell
->> Orion SoCs. Regards go to Michael Grzeschik who forced me to work on
->> this by importing the borked mv643xx driver from u-boot.
->>
->> Compared to the former patches sent by Michael, this driver now
->> separates mbus handling, mdio bus driver, and ethernet driver. The
->> mbus handling can be reused on all MVEBU SoCs and is based on what
->> we already have on Linux for it. The mdio bus driver can be reused
->> by Armada 370/XP Neta Ethernet core.
->>
->> I have tested the driver on SolidRun CuBox (Dove) and also on
->> Globalscale Guruplug (Kirkwood). Kirkwood still need some loving care
->> before (88E1121 PHY init, pbl images, ...) so I decided to leave it
->> out of the patch set for now.
->>
->> Patch 1 first reorders drivers/net/{Kconfig,Makefile} alphabetically.
->>
->> Patch 2 then introduces a of_phy_device_connect to allow to connect
->> to a PHY without knowing the corresponding mdio bus.
->>
->> Patches 3, 4, 5 add drivers for the mbus, mdio bus, and Orion GBE
->> respectively.
->>
->> Patch 6 finally re-syncs Dove's DT files with v3.14 Linux DT files.
->>
->> All patches are based on release v2014.02.0 and can also be found on
->> https://github.com/shesselba/barebox-dove.git topic/orion-gbe-v1
->>
->> Sebastian Hesselbarth (6):
->>    net: reorder Kconfig and Makefile alphabetically
->>    net: phy: add of_phy_device_connect
->>    bus: mvebu: add mbus driver
->>    net: phy: add mvebu mdio bus driver
->>    net: orion: add ethernet driver
->>    ARM: dove: sync with DT files from Linux
+On 02/05/2014 11:40 PM, Sebastian Hesselbarth wrote:
+> This re-syncs Marvell Dove and Solidrun CuBox DT files with current
+> files from Linux v3.14. Barebox-specific properties not yet backported,
+> are kept, default led trigger is set to heartbeat.
 >
-> Looks fine to me except for the two small comments to the mbus driver.
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+> Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+> Cc: Michael Grzeschik <mgr@pengutronix.de>
+> Cc: barebox@lists.infradead.org
+>
+> fixup dts
 
-Sascha,
+Urgh ;)
 
-actually I forgot to mention that using a separated mdio driver requires
-it to be probed before the eth driver. Right now, this is implicity
-done by reordering the Makefile accordingly.
+> Signed-off-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+> ---
+>   arch/arm/dts/dove-cubox.dts |  66 ++--
+>   arch/arm/dts/dove.dtsi      | 806 +++++++++++++++++++++++++++++++-------------
+>   2 files changed, 598 insertions(+), 274 deletions(-)
+[...]
 
-This may be fine for now, but I guess there may be some issues in the
-future. Have you thought about deferred probing for barebox, too?
+I have just read the discussion about DT maintainance. You want me to
+rework this patch to separate the barebox specific modifiations to a
+new dts?
+
+Also, the match of_modaliases patches will render one modification
+redundant.
 
 Sebastian
-
 
 _______________________________________________
 barebox mailing list
