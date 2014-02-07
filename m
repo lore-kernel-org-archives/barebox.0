@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-f43.google.com ([209.85.160.43])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBc3y-0002Ol-Uf
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 03:25:12 +0000
-Received: by mail-pb0-f43.google.com with SMTP id md12so2653714pbc.16
- for <barebox@lists.infradead.org>; Thu, 06 Feb 2014 19:24:45 -0800 (PST)
+Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBfFr-0005KO-Lh
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 06:49:40 +0000
+Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 308B8FFB497
+ for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 07:55:57 +0100 (CET)
+Date: Fri, 7 Feb 2014 07:50:32 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140207065032.GG9671@ns203013.ovh.net>
+References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1391704854-3141-10-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Date: Thu, 6 Feb 2014 22:24:43 -0500
-Message-ID: <CAO6XYUtssrWFvmFZh8CUaaDwazt8apURKnyC04Rg4aRJF74_Bw@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1391704854-3141-10-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,75 +23,134 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting barebox (devicetree) to Variscite iMX6 SOM [USB FIX]
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 9/9] nfs: parse nfsport and mount port from file system
+ options
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Sascha,
+On 17:40 Thu 06 Feb     , Uwe Kleine-K??nig wrote:
+> This allows to use unfs3 on the server side which doesn't integrate into
+> portmap/rpcbind which results in the port not being impossible to lookup
+> via rpc calls to the portmap program.
+> =
 
-Well, a bit of good news -- I know what the problem is, and it is
-probably one that has actually caused headaches for other people over
-the years (probably in the Linux kernel as well).
+> Use it like:
+> =
 
-The problem is one that only shows up with a powered hub which uses
-external power switches to feed the ports. The hub reports back a
-PowerOn2PowerGood signal of 100ms. Unfortunately, standard MOSFET
-switches such as the MIC2076 add up to another 10ms of delay to the
-time it takes for the power lines to the ports to become stable.
+> 	mount -t nfs -o port=3D2703,mountport=3D2703 192.168.77.157:/root /mnt/n=
+fs
+> =
 
-This would also explain a few problems that I have seen people talking
-about online with BeagleBoards, etc under Linux where a USB device would
-work fine if hot-plugged later on, but would not work if it was plugged
-in at startup.
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  fs/nfs.c | 62 +++++++++++++++++++++++++++++++++++++++++++++++++++-------=
+----
+>  1 file changed, 51 insertions(+), 11 deletions(-)
+> =
 
-Also, looking at the more recent Linux kernels, they have hardcoded
-the value for the delay in usb_hub_power_on() to a minimum of 100ms,
-rather than just using the PwrOn2PwrGood value -- so it probably makes
-sense to do the same in barebox, except that we really should make the
-delay timing for both about 110ms or PwrOn2PwrGood+10ms.
+> diff --git a/fs/nfs.c b/fs/nfs.c
+> index 8eec63078dd3..50b3744b4551 100644
+> --- a/fs/nfs.c
+> +++ b/fs/nfs.c
+> @@ -1305,6 +1305,38 @@ static int nfs_stat(struct device_d *dev, const ch=
+ar *filename, struct stat *s)
+>  	}
+>  }
+>  =
 
-I've (finally) gotten all my Variscite patches rolled together and
-merged on my end with all the DTS changes that got checked into the
-mainline over the last few days (you've been WAY too busy!!!) and I
-can post a real patch file including the USB update shortly.
+> +static void parseopt_hu(const char *options, const char *opt,
+> +		unsigned short *val)
+> +{
+> +	const char *start;
+> +	size_t optlen =3D strlen(opt);
+> +	ulong v;
+> +	char *endp;
+> +
+> +again:
+> +	start =3D strstr(options, opt);
+> +
+> +	if (!start)
+> +		return;
+> +
+> +	if (start > options && start[-1] !=3D ',') {
+> +		options =3D start;
+> +		goto again;
+> +	}
+> +
+> +	if (start[optlen] !=3D '=3D') {
+> +		options =3D start;
+> +		goto again;
+> +	}
+> +
+> +	v =3D simple_strtoul(start + optlen + 1, &endp, 0);
+> +	if (v > USHORT_MAX)
+> +		return;
+> +
+> +	if (*endp =3D=3D ',' || *endp =3D=3D '\0')
+> +		*val =3D v;
+> +}
 
-That said, the change is to /drivers/usb/core/usb.c and the only
-function changed is:
+this should be global
+> +
+>  static int nfs_probe(struct device_d *dev)
+>  {
+>  	struct fs_device_d *fsdev =3D dev_to_fs_device(dev);
+> @@ -1340,19 +1372,27 @@ static int nfs_probe(struct device_d *dev)
+>  	/* Need a priviliged source port */
+>  	net_udp_bind(npriv->con, 1000);
+>  =
 
-static void usb_hub_power_on(struct usb_hub_device *hub)
-{
-        int i;
-        unsigned delay;
-        struct usb_device *dev;
+> -	ret =3D rpc_lookup_req(npriv, PROG_MOUNT, 1);
+> -	if (ret < 0) {
+> -		printf("lookup mount port failed with %d\n", ret);
+> -		goto err2;
+> +	parseopt_hu(fsdev->options, "mountport", &npriv->mount_port);
+> +	if (!npriv->mount_port) {
+> +		ret =3D rpc_lookup_req(npriv, PROG_MOUNT, 1);
+> +		if (ret < 0) {
+> +			printf("lookup mount port failed with %d\n", ret);
+> +			goto err2;
+> +		}
+> +		npriv->mount_port =3D ret;
+>  	}
+> -	npriv->mount_port =3D ret;
+> -
+> -	ret =3D rpc_lookup_req(npriv, PROG_NFS, 3);
+> -	if (ret < 0) {
+> -		printf("lookup nfs port failed with %d\n", ret);
+> -		goto err2;
+> +	debug("mount port: %hu\n", npriv->mount_port);
+> +
+> +	parseopt_hu(fsdev->options, "port", &npriv->nfs_port);
+> +	if (!npriv->nfs_port) {
+> +		ret =3D rpc_lookup_req(npriv, PROG_NFS, 3);
+> +		if (ret < 0) {
+> +			printf("lookup nfs port failed with %d\n", ret);
+> +			goto err2;
+> +		}
+> +		npriv->nfs_port =3D ret;
+>  	}
+> -	npriv->nfs_port =3D ret;
+> +	debug("nfs port: %d\n", npriv->nfs_port);
+>  =
 
-        dev = hub->pusb_dev;
-        /* Enable power to the ports */
-        USB_HUB_PRINTF("enabling power on all ports\n");
-        for (i = 0; i < dev->maxchild; i++) {
-                usb_set_port_feature(dev, i + 1, USB_PORT_FEAT_POWER);
-                USB_HUB_PRINTF("port %d returns %lX\n", i + 1, dev->status);
-        }
+>  	ret =3D nfs_mount_req(npriv);
+>  	if (ret) {
+> -- =
 
-        /* Wait at least 110 msec for power to become stable. */
-        /* PowerOn2PowerGood is encoded in 2ms increments -> times 2
-for the actual delay */
-        /* The additional 10ms is to allow for the turn-on/rise-time
-delay often induced  */
-        /* by MOSFET power distribution switches such as the Micrel
-MIC2076.              */
-        delay = max((unsigned)(hub->desc.bPwrOn2PwrGood*2), (unsigned) 100);
-        mdelay(delay+10);
-}
+> 1.8.5.2
+> =
 
+> =
 
-This gets USB detection working properly on the Variscite -- and
-probably helps a few other boards too!
-
-Thanks,
-Michael Burkey
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
 
 _______________________________________________
 barebox mailing list
