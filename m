@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f41.google.com ([74.125.83.41])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBhby-0000HP-6C
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:20:39 +0000
-Received: by mail-ee0-f41.google.com with SMTP id e51so1189339eek.0
- for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 01:19:41 -0800 (PST)
-Message-ID: <52F4A528.3020603@gmail.com>
-Date: Fri, 07 Feb 2014 10:19:36 +0100
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <1391640009-3399-4-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140207065811.GD16215@pengutronix.de>
-In-Reply-To: <20140207065811.GD16215@pengutronix.de>
+ id 1WBiKf-0001ux-0Z
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 10:06:53 +0000
+Date: Fri, 7 Feb 2014 11:06:26 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20140207100626.GH17045@pengutronix.de>
+References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1391704854-3141-10-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20140207065032.GG9671@ns203013.ovh.net>
+ <20140207082221.GD17045@pengutronix.de>
+ <20140207084510.GI9671@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140207084510.GI9671@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,86 +22,76 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/6] bus: mvebu: add mbus driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
+Subject: Re: [PATCH 9/9] nfs: parse nfsport and mount port from file system
+ options
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-On 02/07/2014 07:58 AM, Sascha Hauer wrote:
-> Hi Sebastian,
->
-> On Wed, Feb 05, 2014 at 11:40:06PM +0100, Sebastian Hesselbarth wrote:
->> + *   device accesses. This API is mvebu_mbus_add_window_by_id(),
->> + *   mvebu_mbus_add_window_remap_by_id() and
->> + *   mvebu_mbus_del_window().
->> + *
->> + * - Provides a debugfs interface in /sys/kernel/debug/mvebu-mbus/ to
->> + *   see the list of CPU -> SDRAM windows and their configuration
->> + *   (file 'sdram') and the list of CPU -> devices windows and their
->> + *   configuration (file 'devices').
->> + */
->
-> I'm inclined to say that you should use dev_* functions for debugging,
-> but I see the code is very close to the kernel and you don't have a
-> struct device_d pointer everywhere. Up to you to use dev_*, but if not
-> please add a #define pr_fmt here.
+Hello Jean-Christophe,
 
-Sascha,
+On Fri, Feb 07, 2014 at 09:45:10AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 09:22 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
+> > On Fri, Feb 07, 2014 at 07:50:32AM +0100, Jean-Christophe PLAGNIOL-VILL=
+ARD wrote:
+> > > > +static void parseopt_hu(const char *options, const char *opt,
+> > > > +		unsigned short *val)
+> > > > +{
+> > > > +	const char *start;
+> > > > +	size_t optlen =3D strlen(opt);
+> > > > +	ulong v;
+> > > > +	char *endp;
+> > > > +
+> > > > +again:
+> > > > +	start =3D strstr(options, opt);
+> > > > +
+> > > > +	if (!start)
+> > > > +		return;
+> > > > +
+> > > > +	if (start > options && start[-1] !=3D ',') {
+> > > > +		options =3D start;
+> > > > +		goto again;
+> > > > +	}
+> > > > +
+> > > > +	if (start[optlen] !=3D '=3D') {
+> > > > +		options =3D start;
+> > > > +		goto again;
+> > > > +	}
+> > > > +
+> > > > +	v =3D simple_strtoul(start + optlen + 1, &endp, 0);
+> > > > +	if (v > USHORT_MAX)
+> > > > +		return;
+> > > > +
+> > > > +	if (*endp =3D=3D ',' || *endp =3D=3D '\0')
+> > > > +		*val =3D v;
+> > > > +}
+> > > =
 
-uhh, you got me. I really just copied it over without looking at the
-code at all. I'll give the driver some closer look and will see where
-I can bareabox-ify it. I'll send a v2 of this very patch then.
+> > > this should be global
+> > Yeah, do you have a suggestion where to put it? fs/parseopt.c?
+> =
 
->> +
->> +#include <common.h>
->> +#include <init.h>
->> +#include <io.h>
->> +#include <of.h>
->> +#include <of_address.h>
->> +#include <linux/mbus.h>
->> +
->
-> [...]
->
->> +
->> +static const struct mvebu_mbus_soc_data orion5x_2win_mbus_data = {
->> +	.num_wins            = 8,
->> +	.num_remappable_wins = 2,
->> +	.win_cfg_offset      = orion5x_mbus_win_offset,
->> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
->> +};
->> +
->> +static const struct mvebu_mbus_soc_data mv78xx0_mbus_data = {
->> +	.num_wins            = 14,
->> +	.num_remappable_wins = 8,
->> +	.win_cfg_offset      = mv78xx0_mbus_win_offset,
->> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
->> +};
->
-> Don't you end up with unused variable warnings here if not all SoCs are
-> enabled? Maybe add some __maybe_unused here.
+> why not
+> =
 
-Ok.
+> but IIRC the cmdline parser should be the same too
+"the cmdline parser"? AFAIK there is no cmdline parser for the kernel
+command line(?) in barebox. And if it were, the latter is ' '-separated
+while the mount options are ','-separated. This could be abstracted, but
+I think for now and until we need a linux kernel commandline parser it's
+fine to hardcode ',' and let it live in fs/.
 
-Sebastian
+Best regards
+Uwe
 
->> +
->> +static struct of_device_id mvebu_mbus_dt_ids[] = {
->> +#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
->> +	{ .compatible = "marvell,armada370-mbus",
->> +	  .data = (u32)&armada_370_xp_mbus_data, },
->> +	{ .compatible = "marvell,armadaxp-mbus",
->> +	  .data = (u32)&armada_370_xp_mbus_data, },
->> +#endif
->> +#if defined(CONFIG_ARCH_DOVE)
->> +	{ .compatible = "marvell,dove-mbus",
->> +	  .data = (u32)&dove_mbus_data, },
->> +#endif
+-- =
 
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
