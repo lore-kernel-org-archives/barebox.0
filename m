@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-f41.google.com ([74.125.83.41])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBhWc-0000AD-JZ
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:15:07 +0000
-From: Juergen Beisert <jbe@pengutronix.de>
-Date: Fri, 7 Feb 2014 10:17:28 +0100
-References: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
- <1391762936-2747-15-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1391762936-2747-15-git-send-email-dev@lynxeye.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <201402071017.28531.jbe@pengutronix.de>
+ id 1WBhby-0000HP-6C
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:20:39 +0000
+Received: by mail-ee0-f41.google.com with SMTP id e51so1189339eek.0
+ for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 01:19:41 -0800 (PST)
+Message-ID: <52F4A528.3020603@gmail.com>
+Date: Fri, 07 Feb 2014 10:19:36 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1391640009-3399-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140207065811.GD16215@pengutronix.de>
+In-Reply-To: <20140207065811.GD16215@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +20,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 14/14] don't cast negative error codes to unsigned size_t
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/6] bus: mvebu: add mbus driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-On Friday 07 February 2014 09:48:56 Lucas Stach wrote:
-> The cast prevents us from doing proper error checking.
+On 02/07/2014 07:58 AM, Sascha Hauer wrote:
+> Hi Sebastian,
 >
-> Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> ---
->  common/uimage.c | 6 +++---
->  include/image.h | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
+> On Wed, Feb 05, 2014 at 11:40:06PM +0100, Sebastian Hesselbarth wrote:
+>> + *   device accesses. This API is mvebu_mbus_add_window_by_id(),
+>> + *   mvebu_mbus_add_window_remap_by_id() and
+>> + *   mvebu_mbus_del_window().
+>> + *
+>> + * - Provides a debugfs interface in /sys/kernel/debug/mvebu-mbus/ to
+>> + *   see the list of CPU -> SDRAM windows and their configuration
+>> + *   (file 'sdram') and the list of CPU -> devices windows and their
+>> + *   configuration (file 'devices').
+>> + */
 >
-> diff --git a/common/uimage.c b/common/uimage.c
-> index 7fbef86..4296359 100644
-> --- a/common/uimage.c
-> +++ b/common/uimage.c
-> @@ -74,7 +74,7 @@ void uimage_print_contents(struct uimage_handle *handle)
->  }
->  EXPORT_SYMBOL(uimage_print_contents);
+> I'm inclined to say that you should use dev_* functions for debugging,
+> but I see the code is very close to the kernel and you don't have a
+> struct device_d pointer everywhere. Up to you to use dev_*, but if not
+> please add a #define pr_fmt here.
+
+Sascha,
+
+uhh, you got me. I really just copied it over without looking at the
+code at all. I'll give the driver some closer look and will see where
+I can bareabox-ify it. I'll send a v2 of this very patch then.
+
+>> +
+>> +#include <common.h>
+>> +#include <init.h>
+>> +#include <io.h>
+>> +#include <of.h>
+>> +#include <of_address.h>
+>> +#include <linux/mbus.h>
+>> +
 >
-> -size_t uimage_get_size(struct uimage_handle *handle, unsigned int image_=
-no)
-> +int uimage_get_size(struct uimage_handle *handle, unsigned int image_no)
+> [...]
+>
+>> +
+>> +static const struct mvebu_mbus_soc_data orion5x_2win_mbus_data = {
+>> +	.num_wins            = 8,
+>> +	.num_remappable_wins = 2,
+>> +	.win_cfg_offset      = orion5x_mbus_win_offset,
+>> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
+>> +};
+>> +
+>> +static const struct mvebu_mbus_soc_data mv78xx0_mbus_data = {
+>> +	.num_wins            = 14,
+>> +	.num_remappable_wins = 8,
+>> +	.win_cfg_offset      = mv78xx0_mbus_win_offset,
+>> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
+>> +};
+>
+> Don't you end up with unused variable warnings here if not all SoCs are
+> enabled? Maybe add some __maybe_unused here.
 
-What about "ssize_t"?
+Ok.
 
-jbe
+Sebastian
 
--- =
+>> +
+>> +static struct of_device_id mvebu_mbus_dt_ids[] = {
+>> +#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
+>> +	{ .compatible = "marvell,armada370-mbus",
+>> +	  .data = (u32)&armada_370_xp_mbus_data, },
+>> +	{ .compatible = "marvell,armadaxp-mbus",
+>> +	  .data = (u32)&armada_370_xp_mbus_data, },
+>> +#endif
+>> +#if defined(CONFIG_ARCH_DOVE)
+>> +	{ .compatible = "marvell,dove-mbus",
+>> +	  .data = (u32)&dove_mbus_data, },
+>> +#endif
 
-Pengutronix e.K. =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0| Juergen Beisert =A0 =A0 =A0 =A0 =A0 =A0 |
-Linux Solutions for Science and Industry =A0 =A0 =A0| http://www.pengutroni=
-x.de/  |
 
 _______________________________________________
 barebox mailing list
