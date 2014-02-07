@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBh7e-0007rB-QI
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:49:22 +0000
-Received: from tellur.localdomain (p57B5E0F6.dip0.t-ipconnect.de
- [87.181.224.246]) by lynxeye.de (Postfix) with ESMTPA id 7E2C818B4263
- for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 09:47:38 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Fri,  7 Feb 2014 09:48:51 +0100
-Message-Id: <1391762936-2747-10-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
-References: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
+Received: from f56.i.mail.ru ([94.100.185.15])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBhKJ-0008IJ-FE
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:02:24 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 07 Feb 2014 13:01:55 +0400
+Message-ID: <1391763715.500886122@f56.i.mail.ru>
+In-Reply-To: <20140207084729.GI16215@pengutronix.de>
+References: <20140207071332.GE16215@pengutronix.de>
+ <1391758773.537781517@f309.i.mail.ru>
+ <20140207084729.GI16215@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,40 +20,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/14] usb: dfu: fix error path to avoid NULL ptr deref
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IERldmljZXRyZWUgTWFpbnRlbmFuY2UgaW4gYmFyZWJveA==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- drivers/usb/gadget/dfu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index e15fc41..4d4c347 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -597,8 +597,10 @@ static int dfu_bind_config(struct usb_configuration *c)
- 	func->disable = dfu_disable;
- 
- 	dfu->dnreq = usb_ep_alloc_request(c->cdev->gadget->ep0);
--	if (!dfu->dnreq)
-+	if (!dfu->dnreq) {
- 		printf("usb_ep_alloc_request failed\n");
-+		goto out;
-+	}
- 	dfu->dnreq->buf = dma_alloc(CONFIG_USBD_DFU_XFER_SIZE);
- 	dfu->dnreq->complete = dn_complete;
- 	dfu->dnreq->zero = 0;
--- 
-1.8.5.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+0J/Rj9GC0L3QuNGG0LAsICA3INGE0LXQstGA0LDQu9GPIDIwMTQsIDk6NDcgKzAxOjAwINC+0YIg
+U2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiBPbiBGcmksIEZlYiAwNywg
+MjAxNCBhdCAxMTozOTozM0FNICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gSGVs
+bG8uCj4gPiAKPiA+INCf0Y/RgtC90LjRhtCwLCAgNyDRhNC10LLRgNCw0LvRjyAyMDE0LCA4OjEz
+ICswMTowMCDQvtGCIFNhc2NoYSBIYXVlcgo+IDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+
+ID4gSGkgQWxsLAo+ID4gPiAKPiA+ID4gSXQncyBiZWNvbWluZyBtb3JlIG9idmlvdXMgdGhhdCBk
+ZXZpY2V0cmVlIG1haW50ZW5hbmNlIGlzIHBhaW5mdWwKPiA+ID4gYmVjYXVzZSB3ZSBoYXZlIHRv
+IHN5bmMgdGhlbSB0byB0aGUga2VybmVsIHJlZ3VsYXJseS4gTXkgaG9wZSB3YXMgdGhhdAo+ID4g
+PiB0aGlzIHdvdWxkIGdldCBzaW1wbGVyIG9uY2UgdGhlIGRldmljZXRyZWVzIGdldCB0aGVpciBv
+d24gcmVwb3NpdG9yeQo+ID4gPiBvdXRzaWRlIHRoZSBrZXJuZWwsIGJ1dCBpdCBzZWVtcyB0aGF0
+IHdvbid0IGhhcHBlbiBhbnl0aW1lIHNvb24uCj4gPiA+IAo+ID4gPiBTbyBteSBjdXJyZW50IGlk
+ZWEgdG8gY29udGludWUgd2l0aCBiYXJlYm94IGRldmljZXRyZWVzIGlzOgo+ID4gPiAKPiA+ID4g
+LSBNYWludGFpbiBhIGtlcm5lbCBicmFuY2ggd2hpY2ggaGFzIGFsbCBkZXZpY2V0cmVlIGNoYW5n
+ZXMgd2UgbmVlZCBpbgo+ID4gPiBiYXJlYm94IGluIGEgY2xlYW4gc3RlcC1ieS1zdGVwIHNlcmll
+cwo+ID4gPiAtIHJlYmFzZSB0aGlzIGJyYW5jaCByZWd1bGFybHkgb24gdGhlIG5ld2VyIGtlcm5l
+bAo+ID4gPiAtIENvcHkgdGhlIHJlc3VsdGluZyBkZXZpY2V0cmVlcyB0byBiYXJlYm94Cj4gPiA+
+IAo+ID4gPiBUaGUgdXBzaWRlIGlzIHRoYXQgd2UgaGF2ZSB1cCB0byBkYXRlIGRldmljZXRyZWVz
+IGluIGJhcmVib3ggd2l0aG91dAo+ID4gPiBoYXZpbmcgdG8gcmVzeW5jIHRoZW0gYnkgaGFuZCBv
+biBhIHBlciBTb0MgYmFzaXMuICBPZiBjb3Vyc2UgdGhpcyBhbHNvCj4gPiA+IG1lYW5zIHRoYXQg
+d2UgbG9zZSB0aGUgZGV2aWNldHJlZSBoaXN0b3J5IGFuZCBicmVha2FnZSBtYXkgYmUgaW50cm9k
+dWNlZAo+ID4gPiB3aXRoIHNvbWUgaHVnZSBjb21taXRzIHNheWluZyAiVXBkYXRlIGRldmljZXRy
+ZWVzIHRvIExpbnV4LTMueCIuCj4gPiA+IAo+ID4gPiBBbnkgYmV0dGVyIGlkZWFzPyBJIHRoaW5r
+IHdlIGhhdmUgdG8gZG8gc29tZXRoaW5nLgo+ID4gCj4gPiBBcyBmYXIgYXMgSSBrbm93LCBpbiB0
+aGUgY29tbXVuaXR5IGhhdmUgYW55IHRob3VnaHRzIG9uIHRoZSB0cmFuc2ZlciBvZiB0aGUKPiBE
+VCBkYXRhCj4gPiBpbiBhIHNlcGFyYXRlIHByb2plY3QsIGJ1dCBtb3N0IGxpa2VseSBpdCB3aWxs
+IG5vdCBiZSBzb29uIC4uLgo+IAo+IFllYWgsIEkgYWxzbyBkb24ndCB0aGluayB0aGlzIHdpbGwg
+aGFwcGVuIHNvb24uIEV2ZW4gaWYgaXQgZG9lcyBJIHRoaW5rCj4gdGhpcyB3b24ndCBzb2x2ZSBh
+bGwgcHJvYmxlbXMuIFdlIHdpbGwgc3RpbGwgbmVlZCBiYXJlYm94IHNwZWNpZmljCj4gYWRqdXN0
+bWVudHMuCj4gCj4gPiAKPiA+IEF0IHRoZSBtb21lbnQsIEkgd2FudCB0byBzdWdnZXN0IHRvIHVz
+ZSBvbmx5IG5vbi1tb2RpZmllZCBEVCBmaWxlcywgaS5lLgo+IGJhcmVib3gKPiA+IHNob3VsZCB1
+c2UgdG8gYnVpbGQgdGhlaXIgb3duIGZpbGVzLCB3aGljaCBpbmNsdWRlIHRoZSBvcmlnaW5hbCBk
+YXRhIGZyb20KPiB0aGUga2VybmVsLgo+ID4gCj4gPiBKdXN0IGZvciBleGFtcGxlOgo+ID4gIyBs
+cwo+ID4gYmJfPGJvYXJkLmR0cz4KPiA+IDxib2FyZC5kdHM+Cj4gPiAKPiA+ICMgY2F0IGJiXzxi
+b2FyZC5kdHM+Cj4gPiAKPiA+ICNpbmNsdWRlICI8Ym9hcmQuZHRzPiIKPiA+IC8qIEFsbCBvdmVy
+cmlkZXMgaGVyZSAqLwo+ID4gY2hvc2VuIHsKPiA+ICAgLi4uCj4gPiB9Owo+IAo+IEkgbGlrZSB0
+aGUgaWRlYS4gT25lIGRpc2FkdmFudGFnZSBtYXkgYmUgdGhhdCB0aGUgc3RydWN0dXJlIGluIHRo
+ZSBkdHMKPiBkaXJlY3RvcnkgZ2V0cyBtb3JlIHVuY2xlYXIsIGJ1dCBJIGd1ZXNzIHdlIGNhbid0
+IGhhdmUgZXZlcnl0aGluZy4KCldlIGNhbiBzdG9yZSBvdXIgKGJiLW9ubHkpIERUUyBjb250ZW50
+IGluIGEgc2VwYXJhdGUgcGxhY2UKYW5kIGtlZXAga2VybmVsIGR0cyBkaXJlY3RvcnkgY2xlYW4u
+CgotLS0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFy
+ZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0
+cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
