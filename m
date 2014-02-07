@@ -1,13 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBgse-0007KH-8n
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:33:49 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri,  7 Feb 2014 09:33:20 +0100
-Message-Id: <1391762000-19451-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1391762000-19451-1-git-send-email-s.hauer@pengutronix.de>
-References: <1391762000-19451-1-git-send-email-s.hauer@pengutronix.de>
+ id 1WBhBP-00089G-QG
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:53:12 +0000
+Date: Fri, 7 Feb 2014 09:52:50 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20140207085250.GE17045@pengutronix.de>
+References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1391704854-3141-9-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20140207064857.GF9671@ns203013.ovh.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140207064857.GF9671@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,94 +20,96 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] mtd: m25p80: set driver id_table
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 8/9] nfs: switch to nfs3
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-This sets the id_table in the driver correctly so that the driver
-can match to the various types of flashes, not only "m25p80".
+Hello Jean-Christophe,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mtd/devices/m25p80.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+On Fri, Feb 07, 2014 at 07:48:57AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 17:40 Thu 06 Feb     , Uwe Kleine-K??nig wrote:
+> > +#define ntohll(val)	__be64_to_cpu(val)
+> > +#define htonll(val)	__cpu_to_be64(val)
+> =
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 9594011..c36d240 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -73,11 +73,6 @@
- 
- #define SPI_NAME_SIZE   32
- 
--struct spi_device_id {
--	char name[SPI_NAME_SIZE];
--	unsigned long driver_data;
--};
--
- struct m25p {
- 	struct spi_device	*spi;
- 	struct mtd_info		mtd;
-@@ -618,7 +613,7 @@ struct flash_info {
-  * more flash chips.  This current list focusses on newer chips, which
-  * have been converging on command sets which including JEDEC ID.
-  */
--static const struct spi_device_id m25p_ids[] = {
-+static const struct platform_device_id m25p_ids[] = {
- 	/* Atmel -- some are (confusingly) marketed as "DataFlash" */
- 	{ "at25fs010",  INFO(0x1f6601, 0, 32 * 1024,   4, SECT_4K) },
- 	{ "at25fs040",  INFO(0x1f6604, 0, 64 * 1024,   8, SECT_4K) },
-@@ -755,7 +750,7 @@ static const struct spi_device_id m25p_ids[] = {
- 	{ },
- };
- 
--static const struct spi_device_id *jedec_probe(struct spi_device *spi)
-+static const struct platform_device_id *jedec_probe(struct spi_device *spi)
- {
- 	int			tmp;
- 	u8			code = OPCODE_RDID;
-@@ -803,7 +798,7 @@ static const struct spi_device_id *jedec_probe(struct spi_device *spi)
- static int m25p_probe(struct device_d *dev)
- {
- 	struct spi_device *spi = (struct spi_device *)dev->type_data;
--	const struct spi_device_id	*id = NULL;
-+	const struct platform_device_id	*id = NULL;
- 	struct flash_platform_data	*data;
- 	struct m25p			*flash;
- 	struct flash_info		*info = NULL;
-@@ -819,7 +814,7 @@ static int m25p_probe(struct device_d *dev)
- 	 */
- 	data = dev->platform_data;
- 	if (data && data->type) {
--		const struct spi_device_id *plat_id;
-+		const struct platform_device_id *plat_id;
- 
- 		for (i = 0; i < ARRAY_SIZE(m25p_ids) - 1; i++) {
- 			plat_id = &m25p_ids[i];
-@@ -840,7 +835,7 @@ static int m25p_probe(struct device_d *dev)
- 	}
- 
- 	if (do_jdec_probe) {
--		const struct spi_device_id *jid;
-+		const struct platform_device_id *jid;
- 
- 		jid = jedec_probe(spi);
- 		if (IS_ERR(jid)) {
-@@ -969,6 +964,7 @@ static struct driver_d m25p80_driver = {
- 	.name	= "m25p80",
- 	.probe	= m25p_probe,
- 	.of_compatible = DRV_OF_COMPAT(m25p80_dt_ids),
-+	.id_table = (struct platform_device_id *)m25p_ids,
- };
- device_spi_driver(m25p80_driver);
- 
--- 
-1.8.5.3
+> use the cpu_to and to_cpu directly
+> as if we have the standard define in any header later this will cause iss=
+ues
+htonll isn't that standard. I doesn't exist neither in Linux userspace
+nor in Linux kernel space. I would prefer to put the macro into a global
+place already now. Or still better, define {ntoh,hton}{16,32,64} which
+have a more intuitive naming scheme.
 
+> > -	printk("NFS: returned filename too long: %u\n", count);
+> > +	printf("%s: returned a too long filename: %u\n", __func__, count);
+> can we use dev_xx for message
+I will check where I can get my hands on a good struct device_d*.
+
+> > +static uint32_t *nfs_add_fh3(uint32_t *p, unsigned fh_len, const char =
+*fh)
+> > +{
+> > +	*p++ =3D htonl(fh_len);
+> > +
+> > +	/* zero padding */
+> > +	if (fh_len & 3)
+> > +		p[fh_len / 4] =3D 0;
+> > +
+> > +	memcpy(p, fh, fh_len);
+> > +	p +=3D DIV_ROUND_UP(fh_len, 4);
+> > +	return p;
+> > +}
+> > +
+> > +static uint32_t *nfs_add_filename(uint32_t *p,
+> > +		uint32_t filename_len, const char *filename)
+> > +{
+> > +	*p++ =3D htonl(filename_len);
+> > +
+> > +	/* zero padding */
+> > +	if (filename_len & 3)
+> > +		p[filename_len / 4] =3D 0;
+> > +
+> > +	memcpy(p, filename, filename_len);
+> > +	p +=3D DIV_ROUND_UP(filename_len, 4);
+> > +	return p;
+> > +}
+> > +
+> what is the difference with the function upper?
+The function and parameter names and the type of the 2nd argument.
+(OK, I guess that wasn't the answer you wanted to read. Yes, you're
+right, they could use the same function. Something like nfs_add_string.
+(Technically fh3 isn't a string<> but an opaque<NFS3_FHSIZE>, but that
+doesn't really matter here. I will think a bit about proper naming.))
+
+> > +	npriv->rootfh_len =3D ntohl(net_read_uint32(p++));
+> > +	if (npriv->rootfh_len > NFS3_FHSIZE) {
+> > +		printf("%s: file handle too big: %lu\n", __func__,
+> > +				(unsigned long)npriv->rootfh_len);
+> > +		return -EIO;
+> really EIO?
+That's a protocol error and -EIO is what is returned in other places for
+protocol errors, too. Still if you have a better suggestion ...
+
+> > -	ret =3D rpc_lookup_req(npriv, PROG_NFS, 2);
+> > +	ret =3D rpc_lookup_req(npriv, PROG_NFS, 3);
+> =
+
+> so we loose nfs2?
+Right. Do you consider it a loss? I don't think it worth to implement
+both side by side. =
+
+
+Best regards
+Uwe
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
