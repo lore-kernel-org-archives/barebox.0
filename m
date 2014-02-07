@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f309.i.mail.ru ([128.140.169.173])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBg2Z-0005yj-4k
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 07:40:00 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Fri, 07 Feb 2014 11:39:33 +0400
-Message-ID: <1391758773.537781517@f309.i.mail.ru>
-In-Reply-To: <20140207071332.GE16215@pengutronix.de>
+Received: from 6.mo1.mail-out.ovh.net ([46.105.43.205]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBgBL-00068q-3a
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 07:49:03 +0000
+Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 4CF99FF832D
+ for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 08:55:21 +0100 (CET)
+Date: Fri, 7 Feb 2014 08:49:55 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140207074955.GH9671@ns203013.ovh.net>
 References: <20140207071332.GE16215@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140207071332.GE16215@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +22,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IERldmljZXRyZWUgTWFpbnRlbmFuY2UgaW4gYmFyZWJveA==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: Devicetree Maintenance in barebox
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-SGVsbG8uCgrQn9GP0YLQvdC40YbQsCwgIDcg0YTQtdCy0YDQsNC70Y8gMjAxNCwgODoxMyArMDE6
-MDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+IEhpIEFsbCwK
-PiAKPiBJdCdzIGJlY29taW5nIG1vcmUgb2J2aW91cyB0aGF0IGRldmljZXRyZWUgbWFpbnRlbmFu
-Y2UgaXMgcGFpbmZ1bAo+IGJlY2F1c2Ugd2UgaGF2ZSB0byBzeW5jIHRoZW0gdG8gdGhlIGtlcm5l
-bCByZWd1bGFybHkuIE15IGhvcGUgd2FzIHRoYXQKPiB0aGlzIHdvdWxkIGdldCBzaW1wbGVyIG9u
-Y2UgdGhlIGRldmljZXRyZWVzIGdldCB0aGVpciBvd24gcmVwb3NpdG9yeQo+IG91dHNpZGUgdGhl
-IGtlcm5lbCwgYnV0IGl0IHNlZW1zIHRoYXQgd29uJ3QgaGFwcGVuIGFueXRpbWUgc29vbi4KPiAK
-PiBTbyBteSBjdXJyZW50IGlkZWEgdG8gY29udGludWUgd2l0aCBiYXJlYm94IGRldmljZXRyZWVz
-IGlzOgo+IAo+IC0gTWFpbnRhaW4gYSBrZXJuZWwgYnJhbmNoIHdoaWNoIGhhcyBhbGwgZGV2aWNl
-dHJlZSBjaGFuZ2VzIHdlIG5lZWQgaW4KPiBiYXJlYm94IGluIGEgY2xlYW4gc3RlcC1ieS1zdGVw
-IHNlcmllcwo+IC0gcmViYXNlIHRoaXMgYnJhbmNoIHJlZ3VsYXJseSBvbiB0aGUgbmV3ZXIga2Vy
-bmVsCj4gLSBDb3B5IHRoZSByZXN1bHRpbmcgZGV2aWNldHJlZXMgdG8gYmFyZWJveAo+IAo+IFRo
-ZSB1cHNpZGUgaXMgdGhhdCB3ZSBoYXZlIHVwIHRvIGRhdGUgZGV2aWNldHJlZXMgaW4gYmFyZWJv
-eCB3aXRob3V0Cj4gaGF2aW5nIHRvIHJlc3luYyB0aGVtIGJ5IGhhbmQgb24gYSBwZXIgU29DIGJh
-c2lzLiAgT2YgY291cnNlIHRoaXMgYWxzbwo+IG1lYW5zIHRoYXQgd2UgbG9zZSB0aGUgZGV2aWNl
-dHJlZSBoaXN0b3J5IGFuZCBicmVha2FnZSBtYXkgYmUgaW50cm9kdWNlZAo+IHdpdGggc29tZSBo
-dWdlIGNvbW1pdHMgc2F5aW5nICJVcGRhdGUgZGV2aWNldHJlZXMgdG8gTGludXgtMy54Ii4KPiAK
-PiBBbnkgYmV0dGVyIGlkZWFzPyBJIHRoaW5rIHdlIGhhdmUgdG8gZG8gc29tZXRoaW5nLgoKQXMg
-ZmFyIGFzIEkga25vdywgaW4gdGhlIGNvbW11bml0eSBoYXZlIGFueSB0aG91Z2h0cyBvbiB0aGUg
-dHJhbnNmZXIgb2YgdGhlIERUIGRhdGEKaW4gYSBzZXBhcmF0ZSBwcm9qZWN0LCBidXQgbW9zdCBs
-aWtlbHkgaXQgd2lsbCBub3QgYmUgc29vbiAuLi4KCkF0IHRoZSBtb21lbnQsIEkgd2FudCB0byBz
-dWdnZXN0IHRvIHVzZSBvbmx5IG5vbi1tb2RpZmllZCBEVCBmaWxlcywgaS5lLiBiYXJlYm94CnNo
-b3VsZCB1c2UgdG8gYnVpbGQgdGhlaXIgb3duIGZpbGVzLCB3aGljaCBpbmNsdWRlIHRoZSBvcmln
-aW5hbCBkYXRhIGZyb20gdGhlIGtlcm5lbC4KCkp1c3QgZm9yIGV4YW1wbGU6CiMgbHMKYmJfPGJv
-YXJkLmR0cz4KPGJvYXJkLmR0cz4KCiMgY2F0IGJiXzxib2FyZC5kdHM+CgojaW5jbHVkZSAiPGJv
-YXJkLmR0cz4iCi8qIEFsbCBvdmVycmlkZXMgaGVyZSAqLwpjaG9zZW4gewogIC4uLgp9OwoKLS0t
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On 08:13 Fri 07 Feb     , Sascha Hauer wrote:
+> Hi All,
+> 
+> It's becoming more obvious that devicetree maintenance is painful
+> because we have to sync them to the kernel regularly. My hope was that
+> this would get simpler once the devicetrees get their own repository
+> outside the kernel, but it seems that won't happen anytime soon.
+> 
+> So my current idea to continue with barebox devicetrees is:
+> 
+> - Maintain a kernel branch which has all devicetree changes we need in
+>   barebox in a clean step-by-step series
+> - rebase this branch regularly on the newer kernel
+> - Copy the resulting devicetrees to barebox
+> 
+> The upside is that we have up to date devicetrees in barebox without
+> having to resync them by hand on a per SoC basis.  Of course this also
+> means that we lose the devicetree history and breakage may be introduced
+> with some huge commits saying "Update devicetrees to Linux-3.x".
+> 
+> Any better ideas? I think we have to do something.
+
+push the kernel to split the tree as a sub module at least
+
+so other project can import it
+
+Best Regards,
+J.
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
