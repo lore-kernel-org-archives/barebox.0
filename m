@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBh6F-0007mm-Qt
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:47:52 +0000
-Date: Fri, 7 Feb 2014 09:47:29 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140207084729.GI16215@pengutronix.de>
-References: <20140207071332.GE16215@pengutronix.de>
- <1391758773.537781517@f309.i.mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1391758773.537781517@f309.i.mail.ru>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBh6p-0007nw-B0
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:48:28 +0000
+Received: from tellur.localdomain (p57B5E0F6.dip0.t-ipconnect.de
+ [87.181.224.246]) by lynxeye.de (Postfix) with ESMTPA id 3617618B4265
+ for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 09:47:33 +0100 (CET)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Fri,  7 Feb 2014 09:48:45 +0100
+Message-Id: <1391762936-2747-4-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
+References: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,53 +19,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Devicetree Maintenance in barebox
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 03/14] common: env: properly propagate error code
+To: barebox@lists.infradead.org
 
-T24gRnJpLCBGZWIgMDcsIDIwMTQgYXQgMTE6Mzk6MzNBTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiBIZWxsby4KPiAKPiDQn9GP0YLQvdC40YbQsCwgIDcg0YTQtdCy0YDQsNC70Y8g
-MjAxNCwgODoxMyArMDE6MDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+Ogo+ID4gSGkgQWxsLAo+ID4gCj4gPiBJdCdzIGJlY29taW5nIG1vcmUgb2J2aW91cyB0aGF0
-IGRldmljZXRyZWUgbWFpbnRlbmFuY2UgaXMgcGFpbmZ1bAo+ID4gYmVjYXVzZSB3ZSBoYXZlIHRv
-IHN5bmMgdGhlbSB0byB0aGUga2VybmVsIHJlZ3VsYXJseS4gTXkgaG9wZSB3YXMgdGhhdAo+ID4g
-dGhpcyB3b3VsZCBnZXQgc2ltcGxlciBvbmNlIHRoZSBkZXZpY2V0cmVlcyBnZXQgdGhlaXIgb3du
-IHJlcG9zaXRvcnkKPiA+IG91dHNpZGUgdGhlIGtlcm5lbCwgYnV0IGl0IHNlZW1zIHRoYXQgd29u
-J3QgaGFwcGVuIGFueXRpbWUgc29vbi4KPiA+IAo+ID4gU28gbXkgY3VycmVudCBpZGVhIHRvIGNv
-bnRpbnVlIHdpdGggYmFyZWJveCBkZXZpY2V0cmVlcyBpczoKPiA+IAo+ID4gLSBNYWludGFpbiBh
-IGtlcm5lbCBicmFuY2ggd2hpY2ggaGFzIGFsbCBkZXZpY2V0cmVlIGNoYW5nZXMgd2UgbmVlZCBp
-bgo+ID4gYmFyZWJveCBpbiBhIGNsZWFuIHN0ZXAtYnktc3RlcCBzZXJpZXMKPiA+IC0gcmViYXNl
-IHRoaXMgYnJhbmNoIHJlZ3VsYXJseSBvbiB0aGUgbmV3ZXIga2VybmVsCj4gPiAtIENvcHkgdGhl
-IHJlc3VsdGluZyBkZXZpY2V0cmVlcyB0byBiYXJlYm94Cj4gPiAKPiA+IFRoZSB1cHNpZGUgaXMg
-dGhhdCB3ZSBoYXZlIHVwIHRvIGRhdGUgZGV2aWNldHJlZXMgaW4gYmFyZWJveCB3aXRob3V0Cj4g
-PiBoYXZpbmcgdG8gcmVzeW5jIHRoZW0gYnkgaGFuZCBvbiBhIHBlciBTb0MgYmFzaXMuICBPZiBj
-b3Vyc2UgdGhpcyBhbHNvCj4gPiBtZWFucyB0aGF0IHdlIGxvc2UgdGhlIGRldmljZXRyZWUgaGlz
-dG9yeSBhbmQgYnJlYWthZ2UgbWF5IGJlIGludHJvZHVjZWQKPiA+IHdpdGggc29tZSBodWdlIGNv
-bW1pdHMgc2F5aW5nICJVcGRhdGUgZGV2aWNldHJlZXMgdG8gTGludXgtMy54Ii4KPiA+IAo+ID4g
-QW55IGJldHRlciBpZGVhcz8gSSB0aGluayB3ZSBoYXZlIHRvIGRvIHNvbWV0aGluZy4KPiAKPiBB
-cyBmYXIgYXMgSSBrbm93LCBpbiB0aGUgY29tbXVuaXR5IGhhdmUgYW55IHRob3VnaHRzIG9uIHRo
-ZSB0cmFuc2ZlciBvZiB0aGUgRFQgZGF0YQo+IGluIGEgc2VwYXJhdGUgcHJvamVjdCwgYnV0IG1v
-c3QgbGlrZWx5IGl0IHdpbGwgbm90IGJlIHNvb24gLi4uCgpZZWFoLCBJIGFsc28gZG9uJ3QgdGhp
-bmsgdGhpcyB3aWxsIGhhcHBlbiBzb29uLiBFdmVuIGlmIGl0IGRvZXMgSSB0aGluawp0aGlzIHdv
-bid0IHNvbHZlIGFsbCBwcm9ibGVtcy4gV2Ugd2lsbCBzdGlsbCBuZWVkIGJhcmVib3ggc3BlY2lm
-aWMKYWRqdXN0bWVudHMuCgo+IAo+IEF0IHRoZSBtb21lbnQsIEkgd2FudCB0byBzdWdnZXN0IHRv
-IHVzZSBvbmx5IG5vbi1tb2RpZmllZCBEVCBmaWxlcywgaS5lLiBiYXJlYm94Cj4gc2hvdWxkIHVz
-ZSB0byBidWlsZCB0aGVpciBvd24gZmlsZXMsIHdoaWNoIGluY2x1ZGUgdGhlIG9yaWdpbmFsIGRh
-dGEgZnJvbSB0aGUga2VybmVsLgo+IAo+IEp1c3QgZm9yIGV4YW1wbGU6Cj4gIyBscwo+IGJiXzxi
-b2FyZC5kdHM+Cj4gPGJvYXJkLmR0cz4KPiAKPiAjIGNhdCBiYl88Ym9hcmQuZHRzPgo+IAo+ICNp
-bmNsdWRlICI8Ym9hcmQuZHRzPiIKPiAvKiBBbGwgb3ZlcnJpZGVzIGhlcmUgKi8KPiBjaG9zZW4g
-ewo+ICAgLi4uCj4gfTsKCkkgbGlrZSB0aGUgaWRlYS4gT25lIGRpc2FkdmFudGFnZSBtYXkgYmUg
-dGhhdCB0aGUgc3RydWN0dXJlIGluIHRoZSBkdHMKZGlyZWN0b3J5IGdldHMgbW9yZSB1bmNsZWFy
-LCBidXQgSSBndWVzcyB3ZSBjYW4ndCBoYXZlIGV2ZXJ5dGhpbmcuCgpTYXNjaGEKCi0tIApQZW5n
-dXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAg
-fCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMxMTM3IEhp
-bGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApBbXRzZ2Vy
-aWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2
-OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
-Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ common/environment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/environment.c b/common/environment.c
+index ab82103..8b22edf 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -245,7 +245,7 @@ int envfs_load(const char *filename, char *dir, unsigned flags)
+ 	envfd = open(filename, O_RDONLY);
+ 	if (envfd < 0) {
+ 		printf("Open %s %s\n", filename, errno_str());
+-		return -1;
++		return envfd;
+ 	}
+ 
+ 	/* read superblock */
+-- 
+1.8.5.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
