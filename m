@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBghv-0006xt-GF
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:22:44 +0000
-Date: Fri, 7 Feb 2014 09:22:22 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140207082221.GD17045@pengutronix.de>
+Received: from 17.mo1.mail-out.ovh.net ([87.98.179.142]
+ helo=mo1.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBh2l-0007jD-PK
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 08:44:16 +0000
+Received: from mail170.ha.ovh.net (gw6.ovh.net [213.251.189.206])
+ by mo1.mail-out.ovh.net (Postfix) with SMTP id 7C2EDFF9278
+ for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 09:50:35 +0100 (CET)
+Date: Fri, 7 Feb 2014 09:45:10 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140207084510.GI9671@ns203013.ovh.net>
 References: <1391704854-3141-1-git-send-email-u.kleine-koenig@pengutronix.de>
  <1391704854-3141-10-git-send-email-u.kleine-koenig@pengutronix.de>
  <20140207065032.GG9671@ns203013.ovh.net>
+ <20140207082221.GD17045@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140207065032.GG9671@ns203013.ovh.net>
+In-Reply-To: <20140207082221.GD17045@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,55 +31,67 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 9/9] nfs: parse nfsport and mount port from file system
  options
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hello Jean-Christophe,
-
-On Fri, Feb 07, 2014 at 07:50:32AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> > +static void parseopt_hu(const char *options, const char *opt,
-> > +		unsigned short *val)
-> > +{
-> > +	const char *start;
-> > +	size_t optlen =3D strlen(opt);
-> > +	ulong v;
-> > +	char *endp;
-> > +
-> > +again:
-> > +	start =3D strstr(options, opt);
-> > +
-> > +	if (!start)
-> > +		return;
-> > +
-> > +	if (start > options && start[-1] !=3D ',') {
-> > +		options =3D start;
-> > +		goto again;
-> > +	}
-> > +
-> > +	if (start[optlen] !=3D '=3D') {
-> > +		options =3D start;
-> > +		goto again;
-> > +	}
-> > +
-> > +	v =3D simple_strtoul(start + optlen + 1, &endp, 0);
-> > +	if (v > USHORT_MAX)
-> > +		return;
-> > +
-> > +	if (*endp =3D=3D ',' || *endp =3D=3D '\0')
-> > +		*val =3D v;
-> > +}
+On 09:22 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
+> Hello Jean-Christophe,
 > =
 
-> this should be global
-Yeah, do you have a suggestion where to put it? fs/parseopt.c?
+> On Fri, Feb 07, 2014 at 07:50:32AM +0100, Jean-Christophe PLAGNIOL-VILLAR=
+D wrote:
+> > > +static void parseopt_hu(const char *options, const char *opt,
+> > > +		unsigned short *val)
+> > > +{
+> > > +	const char *start;
+> > > +	size_t optlen =3D strlen(opt);
+> > > +	ulong v;
+> > > +	char *endp;
+> > > +
+> > > +again:
+> > > +	start =3D strstr(options, opt);
+> > > +
+> > > +	if (!start)
+> > > +		return;
+> > > +
+> > > +	if (start > options && start[-1] !=3D ',') {
+> > > +		options =3D start;
+> > > +		goto again;
+> > > +	}
+> > > +
+> > > +	if (start[optlen] !=3D '=3D') {
+> > > +		options =3D start;
+> > > +		goto again;
+> > > +	}
+> > > +
+> > > +	v =3D simple_strtoul(start + optlen + 1, &endp, 0);
+> > > +	if (v > USHORT_MAX)
+> > > +		return;
+> > > +
+> > > +	if (*endp =3D=3D ',' || *endp =3D=3D '\0')
+> > > +		*val =3D v;
+> > > +}
+> > =
 
-Uwe
+> > this should be global
+> Yeah, do you have a suggestion where to put it? fs/parseopt.c?
 
--- =
+why not
 
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+but IIRC the cmdline parser should be the same too
+
+Best Regards,
+J.
+> =
+
+> Uwe
+> =
+
+> -- =
+
+> Pengutronix e.K.                           | Uwe Kleine-K=F6nig          =
+  |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
