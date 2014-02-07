@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from f309.i.mail.ru ([128.140.169.173])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBfnO-0005ow-Cl
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 07:24:19 +0000
-Date: Fri, 7 Feb 2014 08:23:56 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140207072356.GH16215@pengutronix.de>
-References: <1391701030-18395-1-git-send-email-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1391701030-18395-1-git-send-email-l.stach@pengutronix.de>
+ id 1WBg2Z-0005yj-4k
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 07:40:00 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Fri, 07 Feb 2014 11:39:33 +0400
+Message-ID: <1391758773.537781517@f309.i.mail.ru>
+In-Reply-To: <20140207071332.GE16215@pengutronix.de>
+References: <20140207071332.GE16215@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,82 +18,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] spi: imx5: allow CSPI to work
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: =?UTF-8?B?UmU6IERldmljZXRyZWUgTWFpbnRlbmFuY2UgaW4gYmFyZWJveA==?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Feb 06, 2014 at 04:37:07PM +0100, Lucas Stach wrote:
-> i.MX5 SoCs still have one old i.MX35-style SPI
-> controller. Allow this one to work side by side
-> with the new ECSPI controllers.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  drivers/spi/Kconfig   |  2 +-
->  drivers/spi/imx_spi.c | 13 +++++++++++++
->  2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 422693ccd5fe..b9f28da7983b 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -25,7 +25,7 @@ config DRIVER_SPI_IMX_0_0
->  
->  config DRIVER_SPI_IMX_0_7
->  	bool
-> -	depends on ARCH_IMX25 || ARCH_IMX35
-> +	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
->  	default y
->  
->  config DRIVER_SPI_IMX_2_3
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index c0c2ed7c49df..e43712e118b3 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -564,6 +564,10 @@ static int imx_spi_probe(struct device_d *dev)
->  	if (cpu_is_mx51() || cpu_is_mx53() || cpu_is_mx6())
->  		version = SPI_IMX_VER_2_3;
->  #endif
-> +	/* oftree knows best, so use it if it's there */
-> +	if (dev->of_id_entry)
-> +		version = dev->of_id_entry->data;
-> +
->  	imx->chipselect = spi_imx_devtype_data[version].chipselect;
->  	imx->xchg_single = spi_imx_devtype_data[version].xchg_single;
->  	imx->init = spi_imx_devtype_data[version].init;
-> @@ -584,10 +588,19 @@ err_free:
->  static __maybe_unused struct of_device_id imx_spi_dt_ids[] = {
->  	{
->  		.compatible = "fsl,imx27-cspi",
-> +#ifdef CONFIG_DRIVER_SPI_IMX_0_0
-> +		.data = SPI_IMX_VER_0_0,
-> +#endif
->  	}, {
->  		.compatible = "fsl,imx35-cspi",
-> +#ifdef CONFIG_DRIVER_SPI_IMX_0_7
-> +		.data = SPI_IMX_VER_0_7,
-> +#endif
->  	}, {
->  		.compatible = "fsl,imx51-ecspi",
-> +#ifdef CONFIG_DRIVER_SPI_IMX_2_3
-> +		.data = SPI_IMX_VER_2_3,
-> +#endif
-
-Are the ifdefs needed?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8uCgrQn9GP0YLQvdC40YbQsCwgIDcg0YTQtdCy0YDQsNC70Y8gMjAxNCwgODoxMyArMDE6
+MDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+IEhpIEFsbCwK
+PiAKPiBJdCdzIGJlY29taW5nIG1vcmUgb2J2aW91cyB0aGF0IGRldmljZXRyZWUgbWFpbnRlbmFu
+Y2UgaXMgcGFpbmZ1bAo+IGJlY2F1c2Ugd2UgaGF2ZSB0byBzeW5jIHRoZW0gdG8gdGhlIGtlcm5l
+bCByZWd1bGFybHkuIE15IGhvcGUgd2FzIHRoYXQKPiB0aGlzIHdvdWxkIGdldCBzaW1wbGVyIG9u
+Y2UgdGhlIGRldmljZXRyZWVzIGdldCB0aGVpciBvd24gcmVwb3NpdG9yeQo+IG91dHNpZGUgdGhl
+IGtlcm5lbCwgYnV0IGl0IHNlZW1zIHRoYXQgd29uJ3QgaGFwcGVuIGFueXRpbWUgc29vbi4KPiAK
+PiBTbyBteSBjdXJyZW50IGlkZWEgdG8gY29udGludWUgd2l0aCBiYXJlYm94IGRldmljZXRyZWVz
+IGlzOgo+IAo+IC0gTWFpbnRhaW4gYSBrZXJuZWwgYnJhbmNoIHdoaWNoIGhhcyBhbGwgZGV2aWNl
+dHJlZSBjaGFuZ2VzIHdlIG5lZWQgaW4KPiBiYXJlYm94IGluIGEgY2xlYW4gc3RlcC1ieS1zdGVw
+IHNlcmllcwo+IC0gcmViYXNlIHRoaXMgYnJhbmNoIHJlZ3VsYXJseSBvbiB0aGUgbmV3ZXIga2Vy
+bmVsCj4gLSBDb3B5IHRoZSByZXN1bHRpbmcgZGV2aWNldHJlZXMgdG8gYmFyZWJveAo+IAo+IFRo
+ZSB1cHNpZGUgaXMgdGhhdCB3ZSBoYXZlIHVwIHRvIGRhdGUgZGV2aWNldHJlZXMgaW4gYmFyZWJv
+eCB3aXRob3V0Cj4gaGF2aW5nIHRvIHJlc3luYyB0aGVtIGJ5IGhhbmQgb24gYSBwZXIgU29DIGJh
+c2lzLiAgT2YgY291cnNlIHRoaXMgYWxzbwo+IG1lYW5zIHRoYXQgd2UgbG9zZSB0aGUgZGV2aWNl
+dHJlZSBoaXN0b3J5IGFuZCBicmVha2FnZSBtYXkgYmUgaW50cm9kdWNlZAo+IHdpdGggc29tZSBo
+dWdlIGNvbW1pdHMgc2F5aW5nICJVcGRhdGUgZGV2aWNldHJlZXMgdG8gTGludXgtMy54Ii4KPiAK
+PiBBbnkgYmV0dGVyIGlkZWFzPyBJIHRoaW5rIHdlIGhhdmUgdG8gZG8gc29tZXRoaW5nLgoKQXMg
+ZmFyIGFzIEkga25vdywgaW4gdGhlIGNvbW11bml0eSBoYXZlIGFueSB0aG91Z2h0cyBvbiB0aGUg
+dHJhbnNmZXIgb2YgdGhlIERUIGRhdGEKaW4gYSBzZXBhcmF0ZSBwcm9qZWN0LCBidXQgbW9zdCBs
+aWtlbHkgaXQgd2lsbCBub3QgYmUgc29vbiAuLi4KCkF0IHRoZSBtb21lbnQsIEkgd2FudCB0byBz
+dWdnZXN0IHRvIHVzZSBvbmx5IG5vbi1tb2RpZmllZCBEVCBmaWxlcywgaS5lLiBiYXJlYm94CnNo
+b3VsZCB1c2UgdG8gYnVpbGQgdGhlaXIgb3duIGZpbGVzLCB3aGljaCBpbmNsdWRlIHRoZSBvcmln
+aW5hbCBkYXRhIGZyb20gdGhlIGtlcm5lbC4KCkp1c3QgZm9yIGV4YW1wbGU6CiMgbHMKYmJfPGJv
+YXJkLmR0cz4KPGJvYXJkLmR0cz4KCiMgY2F0IGJiXzxib2FyZC5kdHM+CgojaW5jbHVkZSAiPGJv
+YXJkLmR0cz4iCi8qIEFsbCBvdmVycmlkZXMgaGVyZSAqLwpjaG9zZW4gewogIC4uLgp9OwoKLS0t
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
