@@ -1,20 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 12.mo1.mail-out.ovh.net ([87.98.162.229]
- helo=mo1.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBpZE-0002jc-To
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 17:50:21 +0000
-Received: from mail421.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo1.mail-out.ovh.net (Postfix) with SMTP id C97C4FFC16C
- for <barebox@lists.infradead.org>; Fri,  7 Feb 2014 18:56:40 +0100 (CET)
-Date: Fri, 7 Feb 2014 18:51:14 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140207175114.GL9671@ns203013.ovh.net>
-References: <20140207071332.GE16215@pengutronix.de>
- <20140207141028.GT8533@titan.lakedaemon.net>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBsyZ-00004y-OA
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 21:28:45 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Fri,  7 Feb 2014 22:28:06 +0100
+Message-Id: <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140207141028.GT8533@titan.lakedaemon.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,79 +17,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Devicetree Maintenance in barebox
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, devicetree@vger.kernel.org, Ian Campbell <ijc@hellion.org.uk>
+Subject: [PATCH v2 04/11] nfs: shorten and simplify rpc_add_credentials a bit
+To: barebox@lists.infradead.org
 
-On 09:10 Fri 07 Feb     , Jason Cooper wrote:
-> Hi Sascha,
-> 
-> + Grant Likely, Ian Campbell, devicetree ML
-> 
-> This discussion started on the barebox bootloader mailinglist
-> 
-> On Fri, Feb 07, 2014 at 08:13:32AM +0100, Sascha Hauer wrote:
-> > It's becoming more obvious that devicetree maintenance is painful
-> > because we have to sync them to the kernel regularly. My hope was that
-> > this would get simpler once the devicetrees get their own repository
-> > outside the kernel, but it seems that won't happen anytime soon.
-> 
-> hmm.  Ian Campbell has a tree he is working on:
-> 
->   git://xenbits.xen.org/people/ianc/device-tree-rebasing.git
-> 
-> Also, In the DT meeting earlier this week, Grant Likely said he has the
-> request in to create a separate mailinglist for collaboration between
-> the different devicetree users (BSD, Linux, etc).
-> 
-> > So my current idea to continue with barebox devicetrees is:
-> > 
-> > - Maintain a kernel branch which has all devicetree changes we need in
-> >   barebox in a clean step-by-step series
-> > - rebase this branch regularly on the newer kernel
-> > - Copy the resulting devicetrees to barebox
-> > 
-> > The upside is that we have up to date devicetrees in barebox without
-> > having to resync them by hand on a per SoC basis.  Of course this also
-> > means that we lose the devicetree history and breakage may be introduced
-> > with some huge commits saying "Update devicetrees to Linux-3.x".
-> > 
-> > Any better ideas? I think we have to do something.
-> 
-> I think the proper solution will percolate out of the first
-> cross-project discussions on the new ML.
-> 
-> imho, the goal is to not have any project tied to a specific version of
-> the devicetree.  iow, we don't break backwards compatibility in the
-> devicetrees, and projects should revert to default behavior if new dt
-> parameters are missing.  This means Linux and BSD shouldn't need to keep
-> a current copy of the devicetree in their trees.  However, building the
-> bootloader is a different animal.  It needs to provide the dt blob...
-> 
-> Definitely fodder for the new ML.
-> 
-> Grant, can you please add Sascha to the list of folks to notify when the
-> new ML is ready?
-
-Yes we do need to split the DT ASAP
-
-Best Regards,
-J.
-> 
-> thx,
-> 
-> Jason.
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBmcy9uZnMuYyB8IDI2ICsrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAx
+IGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAyMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS9mcy9uZnMuYyBiL2ZzL25mcy5jCmluZGV4IDc2ZDhjMDU5NWRiNC4uNTRkZGEyNjFjMGIx
+IDEwMDY0NAotLS0gYS9mcy9uZnMuYworKysgYi9mcy9uZnMuYwpAQCAtMjI0LDM0ICsyMjQsMTgg
+QEAgb3V0X292ZXJmbG93OgogICovCiBzdGF0aWMgdWludDMyX3QgKnJwY19hZGRfY3JlZGVudGlh
+bHModWludDMyX3QgKnApCiB7Ci0JaW50IGhsOwotCWludCBob3N0bmFtZWxlbiA9IDA7Ci0KIAkv
+KgotCSAqIEhlcmUncyB0aGUgZXhlY3V0aXZlIHN1bW1hcnkgb24gYXV0aGVudGljYXRpb24gcmVx
+dWlyZW1lbnRzIG9mIHRoZQotCSAqIHZhcmlvdXMgTkZTIHNlcnZlciBpbXBsZW1lbnRhdGlvbnM6
+CUxpbnV4IGFjY2VwdHMgYm90aCBBVVRIX05PTkUKLQkgKiBhbmQgQVVUSF9VTklYIGF1dGhlbnRp
+Y2F0aW9uIChhbHNvIGFjY2VwdHMgYW4gZW1wdHkgaG9zdG5hbWUgZmllbGQKLQkgKiBpbiB0aGUg
+QVVUSF9VTklYIHNjaGVtZSkuICAqQlNEIHJlZnVzZXMgQVVUSF9OT05FLCBidXQgYWNjZXB0cwot
+CSAqIEFVVEhfVU5JWCAoYWxzbyBhY2NlcHRzIGFuIGVtcHR5IGhvc3RuYW1lIGZpZWxkIGluIHRo
+ZSBBVVRIX1VOSVgKLQkgKiBzY2hlbWUpLiAgVG8gYmUgc2FmZSwgdXNlIEFVVEhfVU5JWCBhbmQg
+cGFzcyB0aGUgaG9zdG5hbWUgaWYgd2UgaGF2ZQotCSAqIGl0IChpZiB0aGUgQk9PVFAvREhDUCBy
+ZXBseSBkaWRuJ3QgZ2l2ZSBvbmUsIGp1c3QgdXNlIGFuIGVtcHR5Ci0JICogaG9zdG5hbWUpLgor
+CSAqICpCU0QgcmVmdXNlcyBBVVRIX05PTkUsIHNvIHVzZSBBVVRIX1VOSVguIEFuIGVtcHR5IGhv
+c3RuYW1lIGlzIE9LIGZvcgorCSAqIGJvdGggTGludXggYW5kICpCU0QuCiAJICovCiAKLQlobCA9
+IChob3N0bmFtZWxlbiArIDMpICYgfjM7Ci0KIAkvKiBQcm92aWRlIGFuIEFVVEhfVU5JWCBjcmVk
+ZW50aWFsLiAgKi8KIAkqcCsrID0gaHRvbmwoMSk7CQkvKiBBVVRIX1VOSVggKi8KLQkqcCsrID0g
+aHRvbmwoaGwgKyAyMCk7CQkvKiBhdXRoIGxlbmd0aCAqLworCSpwKysgPSBodG9ubCgyMCk7CQkv
+KiBhdXRoIGxlbmd0aDogMjAgKyBzdHJsZW4oaG9zdG5hbWUpICovCiAJKnArKyA9IGh0b25sKDAp
+OwkJLyogc3RhbXAgKi8KLQkqcCsrID0gaHRvbmwoaG9zdG5hbWVsZW4pOwkvKiBob3N0bmFtZSBz
+dHJpbmcgKi8KLQotCWlmIChob3N0bmFtZWxlbiAmIDMpCi0JCSoocCArIGhvc3RuYW1lbGVuIC8g
+NCkgPSAwOyAvKiBhZGQgemVybyBwYWRkaW5nICovCi0KLQkvKiBtZW1jcHkocCwgaG9zdG5hbWUs
+IGhvc3RuYW1lbGVuKTsgKi8gLyogZW1wdHkgaG9zdG5hbWUgKi8KKwkqcCsrID0gaHRvbmwoMCk7
+CQkvKiBob3N0bmFtZSBzdHJpbmcgbGVuZ3RoICovCisJLyogbWVtY3B5KHAsICIiLCAwKTsgcCAr
+PSAwOyA8LSBlbXB0eSBob3N0IG5hbWUgKi8KIAotCXAgKz0gaGwgLyA0OwogCSpwKysgPSAwOwkJ
+CS8qIHVpZCAqLwogCSpwKysgPSAwOwkJCS8qIGdpZCAqLwogCSpwKysgPSAwOwkJCS8qIGF1eGls
+aWFyeSBnaWQgbGlzdCAqLwotLSAKMS44LjUuMgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
+aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2JhcmVib3gK
