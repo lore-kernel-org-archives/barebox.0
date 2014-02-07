@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBi5N-0001Hh-Bl
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:51:02 +0000
-Message-ID: <1391766624.5116.1.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 07 Feb 2014 10:50:24 +0100
-In-Reply-To: <20140207072356.GH16215@pengutronix.de>
-References: <1391701030-18395-1-git-send-email-l.stach@pengutronix.de>
- <20140207072356.GH16215@pengutronix.de>
-Mime-Version: 1.0
+ id 1WBi5o-0001L1-8X
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 09:51:29 +0000
+Date: Fri, 7 Feb 2014 10:51:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140207095105.GJ16215@pengutronix.de>
+References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140207072134.GG16215@pengutronix.de>
+ <52F4A5DA.2040906@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <52F4A5DA.2040906@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,83 +24,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] spi: imx5: allow CSPI to work
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/6] Marvell MVEBU mbus and Orion GBE driver
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-Am Freitag, den 07.02.2014, 08:23 +0100 schrieb Sascha Hauer:
-> On Thu, Feb 06, 2014 at 04:37:07PM +0100, Lucas Stach wrote:
-> > i.MX5 SoCs still have one old i.MX35-style SPI
-> > controller. Allow this one to work side by side
-> > with the new ECSPI controllers.
-> > 
-> > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> > ---
-> >  drivers/spi/Kconfig   |  2 +-
-> >  drivers/spi/imx_spi.c | 13 +++++++++++++
-> >  2 files changed, 14 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> > index 422693ccd5fe..b9f28da7983b 100644
-> > --- a/drivers/spi/Kconfig
-> > +++ b/drivers/spi/Kconfig
-> > @@ -25,7 +25,7 @@ config DRIVER_SPI_IMX_0_0
-> >  
-> >  config DRIVER_SPI_IMX_0_7
-> >  	bool
-> > -	depends on ARCH_IMX25 || ARCH_IMX35
-> > +	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX51 || ARCH_IMX53
-> >  	default y
-> >  
-> >  config DRIVER_SPI_IMX_2_3
-> > diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> > index c0c2ed7c49df..e43712e118b3 100644
-> > --- a/drivers/spi/imx_spi.c
-> > +++ b/drivers/spi/imx_spi.c
-> > @@ -564,6 +564,10 @@ static int imx_spi_probe(struct device_d *dev)
-> >  	if (cpu_is_mx51() || cpu_is_mx53() || cpu_is_mx6())
-> >  		version = SPI_IMX_VER_2_3;
-> >  #endif
-> > +	/* oftree knows best, so use it if it's there */
-> > +	if (dev->of_id_entry)
-> > +		version = dev->of_id_entry->data;
-> > +
-> >  	imx->chipselect = spi_imx_devtype_data[version].chipselect;
-> >  	imx->xchg_single = spi_imx_devtype_data[version].xchg_single;
-> >  	imx->init = spi_imx_devtype_data[version].init;
-> > @@ -584,10 +588,19 @@ err_free:
-> >  static __maybe_unused struct of_device_id imx_spi_dt_ids[] = {
-> >  	{
-> >  		.compatible = "fsl,imx27-cspi",
-> > +#ifdef CONFIG_DRIVER_SPI_IMX_0_0
-> > +		.data = SPI_IMX_VER_0_0,
-> > +#endif
-> >  	}, {
-> >  		.compatible = "fsl,imx35-cspi",
-> > +#ifdef CONFIG_DRIVER_SPI_IMX_0_7
-> > +		.data = SPI_IMX_VER_0_7,
-> > +#endif
-> >  	}, {
-> >  		.compatible = "fsl,imx51-ecspi",
-> > +#ifdef CONFIG_DRIVER_SPI_IMX_2_3
-> > +		.data = SPI_IMX_VER_2_3,
-> > +#endif
+On Fri, Feb 07, 2014 at 10:22:34AM +0100, Sebastian Hesselbarth wrote:
+> On 02/07/2014 08:21 AM, Sascha Hauer wrote:
+> >On Wed, Feb 05, 2014 at 11:40:03PM +0100, Sebastian Hesselbarth wrote:
+> >>This patch set provides a common driver for the mbus found on all
+> >>Marvell MVEBU SoCs and a ethernet driver for the IP found on Marvell
+> >>Orion SoCs. Regards go to Michael Grzeschik who forced me to work on
+> >>this by importing the borked mv643xx driver from u-boot.
+> >>
+> >>Compared to the former patches sent by Michael, this driver now
+> >>separates mbus handling, mdio bus driver, and ethernet driver. The
+> >>mbus handling can be reused on all MVEBU SoCs and is based on what
+> >>we already have on Linux for it. The mdio bus driver can be reused
+> >>by Armada 370/XP Neta Ethernet core.
+> >>
+> >>I have tested the driver on SolidRun CuBox (Dove) and also on
+> >>Globalscale Guruplug (Kirkwood). Kirkwood still need some loving care
+> >>before (88E1121 PHY init, pbl images, ...) so I decided to leave it
+> >>out of the patch set for now.
+> >>
+> >>Patch 1 first reorders drivers/net/{Kconfig,Makefile} alphabetically.
+> >>
+> >>Patch 2 then introduces a of_phy_device_connect to allow to connect
+> >>to a PHY without knowing the corresponding mdio bus.
+> >>
+> >>Patches 3, 4, 5 add drivers for the mbus, mdio bus, and Orion GBE
+> >>respectively.
+> >>
+> >>Patch 6 finally re-syncs Dove's DT files with v3.14 Linux DT files.
+> >>
+> >>All patches are based on release v2014.02.0 and can also be found on
+> >>https://github.com/shesselba/barebox-dove.git topic/orion-gbe-v1
+> >>
+> >>Sebastian Hesselbarth (6):
+> >>   net: reorder Kconfig and Makefile alphabetically
+> >>   net: phy: add of_phy_device_connect
+> >>   bus: mvebu: add mbus driver
+> >>   net: phy: add mvebu mdio bus driver
+> >>   net: orion: add ethernet driver
+> >>   ARM: dove: sync with DT files from Linux
+> >
+> >Looks fine to me except for the two small comments to the mbus driver.
 > 
-> Are the ifdefs needed?
+> Sascha,
+> 
+> actually I forgot to mention that using a separated mdio driver requires
+> it to be probed before the eth driver. Right now, this is implicity
+> done by reordering the Makefile accordingly.
+> 
+> This may be fine for now, but I guess there may be some issues in the
+> future. Have you thought about deferred probing for barebox, too?
 
-As long as we want to keep them in the rest of the driver, yes. If we
-are willing to trade a little code size we could just remove them from
-the whole driver.
+I thought deferred probing, but this requires some work. Right now most
+drivers do not release their resources in case of failure. This is fine,
+but becomes nasty with deferred probing. Next step would probably be to
+introduce devm_ functions to make the error pathes easier. I'm afraid
+that deferred probing might become a bottomless pit which makes the
+binaries bigger without much gain for most boards.
 
-Regards,
-Lucas
+Right now you're in good company with adjusting the init order, several
+other SoCs/boards to that aswell.
+
+Maybe sorting initcalls becomes painful enough that we introduce
+deferred probing in future. I still have the dream though that it's
+possible to invent some dependency mechanism so that drivers do not
+even get probed before all dependencies are there.
+
+Sascha
 
 -- 
-Pengutronix e.K.                           | Lucas Stach                 |
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 _______________________________________________
 barebox mailing list
