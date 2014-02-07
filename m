@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
- helo=mo2.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WC1kL-00007V-Bx
- for barebox@lists.infradead.org; Sat, 08 Feb 2014 06:50:38 +0000
-Received: from mail181.ha.ovh.net (b9.ovh.net [213.186.33.59])
- by mo2.mail-out.ovh.net (Postfix) with SMTP id 276FAFFBAB4
- for <barebox@lists.infradead.org>; Sat,  8 Feb 2014 07:50:12 +0100 (CET)
-Date: Sat, 8 Feb 2014 07:51:28 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140208065128.GM9671@ns203013.ovh.net>
-References: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail-ea0-x22b.google.com ([2a00:1450:4013:c01::22b])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WBl9S-0000ij-N5
+ for barebox@lists.infradead.org; Fri, 07 Feb 2014 13:07:27 +0000
+Received: by mail-ea0-f171.google.com with SMTP id f15so1551888eak.2
+ for <barebox@lists.infradead.org>; Fri, 07 Feb 2014 05:07:01 -0800 (PST)
+Message-ID: <52F4DA71.7070301@gmail.com>
+Date: Fri, 07 Feb 2014 14:06:57 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1391640009-3399-1-git-send-email-sebastian.hesselbarth@gmail.com>
+ <1391640009-3399-4-git-send-email-sebastian.hesselbarth@gmail.com>
+ <20140207065811.GD16215@pengutronix.de>
+In-Reply-To: <20140207065811.GD16215@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,77 +20,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 04/11] nfs: shorten and simplify rpc_add_credentials a
- bit
-To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/6] bus: mvebu: add mbus driver
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>, barebox@lists.infradead.org, Michael Grzeschik <mgr@pengutronix.de>
 
-On 22:28 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On 02/07/14 07:58, Sascha Hauer wrote:
+> [...]
+>
+>> +
+>> +static const struct mvebu_mbus_soc_data orion5x_2win_mbus_data = {
+>> +	.num_wins            = 8,
+>> +	.num_remappable_wins = 2,
+>> +	.win_cfg_offset      = orion5x_mbus_win_offset,
+>> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
+>> +};
+>> +
+>> +static const struct mvebu_mbus_soc_data mv78xx0_mbus_data = {
+>> +	.num_wins            = 14,
+>> +	.num_remappable_wins = 8,
+>> +	.win_cfg_offset      = mv78xx0_mbus_win_offset,
+>> +	.setup_cpu_target    = mvebu_mbus_default_setup_cpu_target,
+>> +};
+>
+> Don't you end up with unused variable warnings here if not all SoCs are
+> enabled? Maybe add some __maybe_unused here.
 
-keep the hostname I use it on nfs for export filter
+Hmm, neither V=1 nor W=1 makes gcc shout warnings here. Apparently, this
+may be a "bug" in gcc, not producing warnings for unused consts... but
+they are not variables strictly speaking.
 
-Best Regards,
-J.
-> ---
->  fs/nfs.c | 26 +++++---------------------
->  1 file changed, 5 insertions(+), 21 deletions(-)
-> =
+Removing the const above makes gcc shout, I'll add the __maybe_unused
+anyway.
 
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 76d8c0595db4..54dda261c0b1 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -224,34 +224,18 @@ out_overflow:
->   */
->  static uint32_t *rpc_add_credentials(uint32_t *p)
->  {
-> -	int hl;
-> -	int hostnamelen =3D 0;
-> -
->  	/*
-> -	 * Here's the executive summary on authentication requirements of the
-> -	 * various NFS server implementations:	Linux accepts both AUTH_NONE
-> -	 * and AUTH_UNIX authentication (also accepts an empty hostname field
-> -	 * in the AUTH_UNIX scheme).  *BSD refuses AUTH_NONE, but accepts
-> -	 * AUTH_UNIX (also accepts an empty hostname field in the AUTH_UNIX
-> -	 * scheme).  To be safe, use AUTH_UNIX and pass the hostname if we have
-> -	 * it (if the BOOTP/DHCP reply didn't give one, just use an empty
-> -	 * hostname).
-> +	 * *BSD refuses AUTH_NONE, so use AUTH_UNIX. An empty hostname is OK for
-> +	 * both Linux and *BSD.
->  	 */
->  =
+>> +static struct of_device_id mvebu_mbus_dt_ids[] = {
 
-> -	hl =3D (hostnamelen + 3) & ~3;
-> -
->  	/* Provide an AUTH_UNIX credential.  */
->  	*p++ =3D htonl(1);		/* AUTH_UNIX */
-> -	*p++ =3D htonl(hl + 20);		/* auth length */
-> +	*p++ =3D htonl(20);		/* auth length: 20 + strlen(hostname) */
->  	*p++ =3D htonl(0);		/* stamp */
-> -	*p++ =3D htonl(hostnamelen);	/* hostname string */
-> -
-> -	if (hostnamelen & 3)
-> -		*(p + hostnamelen / 4) =3D 0; /* add zero padding */
-> -
-> -	/* memcpy(p, hostname, hostnamelen); */ /* empty hostname */
-> +	*p++ =3D htonl(0);		/* hostname string length */
-> +	/* memcpy(p, "", 0); p +=3D 0; <- empty host name */
->  =
+And maybe constify this too.
 
-> -	p +=3D hl / 4;
->  	*p++ =3D 0;			/* uid */
->  	*p++ =3D 0;			/* gid */
->  	*p++ =3D 0;			/* auxiliary gid list */
-> -- =
+Sebastian
 
-> 1.8.5.2
-> =
+>> +#if defined(CONFIG_ARCH_ARMADA_370) || defined(CONFIG_ARCH_ARMADA_XP)
+>> +	{ .compatible = "marvell,armada370-mbus",
+>> +	  .data = (u32)&armada_370_xp_mbus_data, },
+>> +	{ .compatible = "marvell,armadaxp-mbus",
+>> +	  .data = (u32)&armada_370_xp_mbus_data, },
+>> +#endif
+>> +#if defined(CONFIG_ARCH_DOVE)
+>> +	{ .compatible = "marvell,dove-mbus",
+>> +	  .data = (u32)&dove_mbus_data, },
+>> +#endif
 
 
 _______________________________________________
