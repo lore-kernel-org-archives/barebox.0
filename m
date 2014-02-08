@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WC9ZQ-0005Pn-Ul
- for barebox@lists.infradead.org; Sat, 08 Feb 2014 15:11:54 +0000
-Date: Sat, 8 Feb 2014 16:11:19 +0100
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20140208151119.GL17045@pengutronix.de>
-References: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
- <20140208065128.GM9671@ns203013.ovh.net>
+ id 1WC3kC-0001YW-TE
+ for barebox@lists.infradead.org; Sat, 08 Feb 2014 08:58:38 +0000
+Date: Sat, 8 Feb 2014 09:58:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140208085811.GN16215@pengutronix.de>
+References: <CAO6XYUtssrWFvmFZh8CUaaDwazt8apURKnyC04Rg4aRJF74_Bw@mail.gmail.com>
+ <20140207110703.GM16215@pengutronix.de>
+ <CAO6XYUtcDAjq9sjORrzcJy53Ro7zdUucaSdO4i-UzoHe_R05Xw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140208065128.GM9671@ns203013.ovh.net>
+In-Reply-To: <CAO6XYUtcDAjq9sjORrzcJy53Ro7zdUucaSdO4i-UzoHe_R05Xw@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,95 +20,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 04/11] nfs: shorten and simplify rpc_add_credentials a
- bit
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: Porting barebox (devicetree) to Variscite iMX6 SOM [USB FIX]
+To: "Michael D. Burkey" <mdburkey@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sat, Feb 08, 2014 at 07:51:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
-wrote:
-> On 22:28 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> =
+Hi Michael,
 
-> keep the hostname I use it on nfs for export filter
-Which hostname? There is only one "used" in code that is commented out.
+On Fri, Feb 07, 2014 at 10:50:17AM -0500, Michael D. Burkey wrote:
+> Sascha,
+> 
+> I can probably shed a bit more light on this issue actually, now that
+> I understand it.
+> 
+> The current code you have in barebox SHOULD work with most properly
+> designed equipment -- key words being "properly designed".
+> 
+> In the case where you have a USB device tied straight to the iMX6 (or
+> whatever), then just using the PwrOn2PwrGood flag should be fine
+> (which, if memory serves is hardcoded at something like 20ms for EHCI
+> root hubs, I think).
+> 
+> Similarly, if you have a USB device being powered directly off the
+> pins on a USB hub, things should be fine if you use the PwrOn2PwrGood
+> flag from the hub itself.
+> 
+> The problem is when you have a secondary part like the 2076 MOSFET
+> hanging off the power lines coming out of a USB hub -- with it
+> providing the power to the actual device. It adds up to another 5-10ms
+> of delay, after the PwrOn2PwrGood delay, before the power to the
+> connected device is actually "good".
+> 
+> If the hubs in question were properly designed, they would have put an
+> I2C EEPROM on the config lines for the hub and then adjusted the
+> PwrOn2PwrGood delay appropriately -- i.e. they would have added the
+> 10ms already, so we would be reading the correct value. The problem is
+> that some of the hubs I have been looking at recently -- including the
+> design that Variscite incorporated into their own iMX6 SOM -- don't
+> bother to add an EEPROM, so problems like this show up. I'm betting
+> other designs out there may suffer from the same problem (i.e. the
+> designers didn't really understand that a config EE for the hub was
+> needed and tried to save money by leaving it out and just letting the
+> hub use it's built-in default values).
+> 
+> In typical use cases under Linux, the problem doesn't really show up
+> that often because the hub is initialized at boot up and the the
+> device probing typically happens a bit later (which would also explain
+> why I see comments online about devices hotplugged later working, but
+> not working when they were plugged in initially during boot).
+> 
+> So, I guess the question is whether it is worth adding 10ms to the hub
+> probe ALL the time, or simply adding a quirk for some boards like the
+> Variscite SOM. However, it would be almost impossible to add quirk for
+> the case of external powered USB hubs that show this behavior though
+> -- because, typically, the ones that have the problem will be the ones
+> that don't have config EEPROMS on them, so they won't have any unique
+> ID information stored either.
 
-Best regards
-Uwe
- =
+USB is slow in probing anyway, adding another 10ms doesn't really hurt.
+Let's just add them if it helps.
 
-> Best Regards,
-> J.
-> > ---
-> >  fs/nfs.c | 26 +++++---------------------
-> >  1 file changed, 5 insertions(+), 21 deletions(-)
-> > =
+> 
+> Don't you just love having to work around problems caused by the
+> hardware designers trying to pinch pennies?
 
-> > diff --git a/fs/nfs.c b/fs/nfs.c
-> > index 76d8c0595db4..54dda261c0b1 100644
-> > --- a/fs/nfs.c
-> > +++ b/fs/nfs.c
-> > @@ -224,34 +224,18 @@ out_overflow:
-> >   */
-> >  static uint32_t *rpc_add_credentials(uint32_t *p)
-> >  {
-> > -	int hl;
-> > -	int hostnamelen =3D 0;
-> > -
-> >  	/*
-> > -	 * Here's the executive summary on authentication requirements of the
-> > -	 * various NFS server implementations:	Linux accepts both AUTH_NONE
-> > -	 * and AUTH_UNIX authentication (also accepts an empty hostname field
-> > -	 * in the AUTH_UNIX scheme).  *BSD refuses AUTH_NONE, but accepts
-> > -	 * AUTH_UNIX (also accepts an empty hostname field in the AUTH_UNIX
-> > -	 * scheme).  To be safe, use AUTH_UNIX and pass the hostname if we ha=
-ve
-> > -	 * it (if the BOOTP/DHCP reply didn't give one, just use an empty
-> > -	 * hostname).
-> > +	 * *BSD refuses AUTH_NONE, so use AUTH_UNIX. An empty hostname is OK =
-for
-> > +	 * both Linux and *BSD.
-> >  	 */
-> >  =
+Yes, that's really great ;) I didn't know USB hubs need EEPROMS aswell.
+I only know this problem with network controllers for which you have to
+make up a MAC address because the designers saved some money. And yes,
+USB serial dongles have this aswell. Without EEPROMs they don't have
+serial numbers to uniquely iddentify them.
 
-> > -	hl =3D (hostnamelen + 3) & ~3;
-> > -
-> >  	/* Provide an AUTH_UNIX credential.  */
-> >  	*p++ =3D htonl(1);		/* AUTH_UNIX */
-> > -	*p++ =3D htonl(hl + 20);		/* auth length */
-> > +	*p++ =3D htonl(20);		/* auth length: 20 + strlen(hostname) */
-> >  	*p++ =3D htonl(0);		/* stamp */
-> > -	*p++ =3D htonl(hostnamelen);	/* hostname string */
-> > -
-> > -	if (hostnamelen & 3)
-> > -		*(p + hostnamelen / 4) =3D 0; /* add zero padding */
-> > -
-> > -	/* memcpy(p, hostname, hostnamelen); */ /* empty hostname */
-> > +	*p++ =3D htonl(0);		/* hostname string length */
-> > +	/* memcpy(p, "", 0); p +=3D 0; <- empty host name */
-> >  =
+Sascha
 
-> > -	p +=3D hl / 4;
-> >  	*p++ =3D 0;			/* uid */
-> >  	*p++ =3D 0;			/* gid */
-> >  	*p++ =3D 0;			/* auxiliary gid list */
-> > -- =
-
-> > 1.8.5.2
-> > =
-
-> =
-
-
--- =
-
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+-- 
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
