@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f192.i.mail.ru ([94.100.185.44])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WC8s8-0004ys-Hk
- for barebox@lists.infradead.org; Sat, 08 Feb 2014 14:27:09 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sat, 08 Feb 2014 18:26:41 +0400
-Message-ID: <1391869601.90335932@f192.i.mail.ru>
-In-Reply-To: <1391868972-31978-2-git-send-email-eric@eukrea.com>
+Received: from smtp5-g21.free.fr ([212.27.42.5])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WC8n8-0004rd-V2
+ for barebox@lists.infradead.org; Sat, 08 Feb 2014 14:21:59 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp5-g21.free.fr (Postfix) with ESMTP id 9F74FD480CF
+ for <barebox@lists.infradead.org>; Sat,  8 Feb 2014 15:16:34 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Sat,  8 Feb 2014 15:16:10 +0100
+Message-Id: <1391868972-31978-5-git-send-email-eric@eukrea.com>
+In-Reply-To: <1391868972-31978-1-git-send-email-eric@eukrea.com>
 References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
- <1391868972-31978-2-git-send-email-eric@eukrea.com>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,25 +24,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzddIEFSTTogaS5NWDUzOiBBZGQgc2F0YSB0byBkZXZp?=
- =?UTF-8?B?Y2V0cmVl?=
-To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>, =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 5/7] ARM: mx53-qsrb: enable USB OTG in host mode
+To: barebox@lists.infradead.org
 
-0KHRg9Cx0LHQvtGC0LAsICA4INGE0LXQstGA0LDQu9GPIDIwMTQsIDE1OjE2ICswMTowMCDQvtGC
-IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPjoKPiBTaWduZWQtb2ZmLWJ5OiBFcmljIELD
-qW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiAtLS0KPiBhcmNoL2FybS9kdHMvaW14NTMuZHRzaSB8
-IDkgKysrKysrKysrCj4gMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYg
-LS1naXQgYS9hcmNoL2FybS9kdHMvaW14NTMuZHRzaSBiL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNp
-Cj4gaW5kZXggNjc4NTQ3Yy4uOTE2NTliOCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMvaW14
-NTMuZHRzaQo+ICsrKyBiL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNpCj4gQEAgLTc1LDYgKzc1LDE1
-IEBACj4gaW50ZXJydXB0LXBhcmVudCA9IDwmdHppYz47Cj4gcmFuZ2VzOwo+IAo+ICsJCXNhdGE6
-IHNhdGFAMTAwMDAwMDAgewo+ICsJCQljb21wYXRpYmxlID0gImZzbCxpbXg1My1haGNpIjsKPiAr
-CQkJcmVnID0gPDB4MTAwMDAwMDAgMHgxMDAwPjsKPiArCQkJaW50ZXJydXB0cyA9IDwyOD47Cj4g
-KwkJCWNsb2NrcyA9IDwmY2xrcyAxNzM+LCA8JmNsa3MgNT4sIDwmY2xrcyAxODg+Owo+ICsJCQlj
-bG9jay1uYW1lcyA9ICJzYXRhIiwgImFoYiIsICJwZXIiOwo+ICsJCQlzdGF0dXMgPSAiZGlzYWJs
-ZWQiOwo+ICsJCX07CgpTYXNjaGEsIHdlIHN0b3AgY2hhbmdpbmcgRFRTIG9mIHRoZSBrZXJuZWwg
-b3Igbm90PwpXaGF0IGlzIHRoZSB1bHRpbWF0ZSBzb2x1dGlvbj8KCi0tLQpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
-YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+dGVzdGVkIG9uIGkuTVg1MyBTVEFSVC1SIDoKYmFyZWJveEBGcmVlc2NhbGUgaS5NWDUzIFF1aWNr
+IFN0YXJ0LVIgQm9hcmQ6LyB1c2IgLWYKVVNCOiBzY2FubmluZyBidXMgZm9yIGRldmljZXMuLi4K
+VXNpbmcgaW5kZXggMCBmb3IgdGhlIG5ldyBkaXNrCkJ1cyAwMDEgRGV2aWNlIDAwMjogSUQgMDk1
+MToxNjU0IERUIFI1MDAKQnVzIDAwMSBEZXZpY2UgMDAxOiBJRCAwMDAwOjAwMDAgRUhDSSBIb3N0
+IENvbnRyb2xsZXIKQnVzIDAwMiBEZXZpY2UgMDAzOiBJRCAwMDAwOjAwMDAgRUhDSSBIb3N0IENv
+bnRyb2xsZXIKMyBVU0IgRGV2aWNlKHMpIGZvdW5kCgpTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5h
+cmQgPGVyaWNAZXVrcmVhLmNvbT4KLS0tCiBhcmNoL2FybS9kdHMvaW14NTMtcXNiLWNvbW1vbi5k
+dHNpIHwgNCArKystCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL2lteDUzLXFzYi1jb21tb24uZHRzaSBiL2Fy
+Y2gvYXJtL2R0cy9pbXg1My1xc2ItY29tbW9uLmR0c2kKaW5kZXggNGFlMWY0OS4uMDEyZDc0YyAx
+MDA2NDQKLS0tIGEvYXJjaC9hcm0vZHRzL2lteDUzLXFzYi1jb21tb24uZHRzaQorKysgYi9hcmNo
+L2FybS9kdHMvaW14NTMtcXNiLWNvbW1vbi5kdHNpCkBAIC0yMjMsNiArMjIzLDggQEAKIH07CiAK
+ICZ1c2JvdGcgewotICAgICAgIHN0YXR1cyA9ICJva2F5IjsKKwlwaHlfdHlwZSA9ICJ1dG1pIjsK
+Kwlkcl9tb2RlID0gImhvc3QiOworCXN0YXR1cyA9ICJva2F5IjsKIH07CiAKLS0gCjEuOC4zLjEK
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94
+IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmlu
+ZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
