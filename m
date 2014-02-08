@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBjzO-0006T6-VJ
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 11:52:59 +0000
-Message-ID: <1391773939.5116.6.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 07 Feb 2014 12:52:19 +0100
-In-Reply-To: <1391762000-19451-1-git-send-email-s.hauer@pengutronix.de>
-References: <1391762000-19451-1-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+Received: from 6.mo2.mail-out.ovh.net ([87.98.165.38]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WC1kL-00007V-Bx
+ for barebox@lists.infradead.org; Sat, 08 Feb 2014 06:50:38 +0000
+Received: from mail181.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 276FAFFBAB4
+ for <barebox@lists.infradead.org>; Sat,  8 Feb 2014 07:50:12 +0100 (CET)
+Date: Sat, 8 Feb 2014 07:51:28 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140208065128.GM9671@ns203013.ovh.net>
+References: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,90 +23,77 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: match of_modaliases
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 04/11] nfs: shorten and simplify rpc_add_credentials a
+ bit
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Am Freitag, den 07.02.2014, 09:33 +0100 schrieb Sascha Hauer:
-> Right now barebox does not match the "vendor,device" compatible entries
-> in the devicetree. Implement this and also let the m25p80 driver match
-> to the different flash types, not only "m25p80".
-> 
-This needs the attached minor tweak in the m25p80 driver to actually
-work for the non-jedec compatible devices.
+On 22:28 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
 
-Otherwise
-Tested-by: Lucas Stach <l.stach@pengutronix.de>
+keep the hostname I use it on nfs for export filter
 
-This removes the need for "spi: m25p80: detect non-jedec chips by using
-DT compatible"
+Best Regards,
+J.
+> ---
+>  fs/nfs.c | 26 +++++---------------------
+>  1 file changed, 5 insertions(+), 21 deletions(-)
+> =
 
---------------------------------->8---------------------------------
-From 53121d1eae60dbef3515f36c15a415cf736480d7 Mon Sep 17 00:00:00 2001
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 7 Feb 2014 12:45:21 +0100
-Subject: [PATCH] spi: m25p80: make DT probing work
+> diff --git a/fs/nfs.c b/fs/nfs.c
+> index 76d8c0595db4..54dda261c0b1 100644
+> --- a/fs/nfs.c
+> +++ b/fs/nfs.c
+> @@ -224,34 +224,18 @@ out_overflow:
+>   */
+>  static uint32_t *rpc_add_credentials(uint32_t *p)
+>  {
+> -	int hl;
+> -	int hostnamelen =3D 0;
+> -
+>  	/*
+> -	 * Here's the executive summary on authentication requirements of the
+> -	 * various NFS server implementations:	Linux accepts both AUTH_NONE
+> -	 * and AUTH_UNIX authentication (also accepts an empty hostname field
+> -	 * in the AUTH_UNIX scheme).  *BSD refuses AUTH_NONE, but accepts
+> -	 * AUTH_UNIX (also accepts an empty hostname field in the AUTH_UNIX
+> -	 * scheme).  To be safe, use AUTH_UNIX and pass the hostname if we have
+> -	 * it (if the BOOTP/DHCP reply didn't give one, just use an empty
+> -	 * hostname).
+> +	 * *BSD refuses AUTH_NONE, so use AUTH_UNIX. An empty hostname is OK for
+> +	 * both Linux and *BSD.
+>  	 */
+>  =
 
-Just use the previously matched id_entry.
+> -	hl =3D (hostnamelen + 3) & ~3;
+> -
+>  	/* Provide an AUTH_UNIX credential.  */
+>  	*p++ =3D htonl(1);		/* AUTH_UNIX */
+> -	*p++ =3D htonl(hl + 20);		/* auth length */
+> +	*p++ =3D htonl(20);		/* auth length: 20 + strlen(hostname) */
+>  	*p++ =3D htonl(0);		/* stamp */
+> -	*p++ =3D htonl(hostnamelen);	/* hostname string */
+> -
+> -	if (hostnamelen & 3)
+> -		*(p + hostnamelen / 4) =3D 0; /* add zero padding */
+> -
+> -	/* memcpy(p, hostname, hostnamelen); */ /* empty hostname */
+> +	*p++ =3D htonl(0);		/* hostname string length */
+> +	/* memcpy(p, "", 0); p +=3D 0; <- empty host name */
+>  =
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- drivers/mtd/devices/m25p80.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+> -	p +=3D hl / 4;
+>  	*p++ =3D 0;			/* uid */
+>  	*p++ =3D 0;			/* gid */
+>  	*p++ =3D 0;			/* auxiliary gid list */
+> -- =
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index e6d8c05e904b..3efdd359a824 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -825,6 +825,7 @@ static int m25p_probe(struct device_d *dev)
- 	unsigned			i;
- 	unsigned			do_jdec_probe = 1;
- 	char				*flashname = NULL;
-+	const char			*typename = NULL;
- 	int				device_id;
- 
- 	/* Platform data helps sort out which chip type we have, as
-@@ -833,12 +834,17 @@ static int m25p_probe(struct device_d *dev)
- 	 * newer chips, even if we don't recognize the particular chip.
- 	 */
- 	data = dev->platform_data;
--	if (data && data->type) {
-+	if (data && data->type)
-+		typename = data->type;
-+	else if (dev->id_entry)
-+		typename = dev->id_entry->name;
-+
-+	if (typename) {
- 		const struct platform_device_id *plat_id;
- 
- 		for (i = 0; i < ARRAY_SIZE(m25p_ids) - 1; i++) {
- 			plat_id = &m25p_ids[i];
--			if (strcmp(data->type, plat_id->name))
-+			if (strcmp(typename, plat_id->name))
- 				continue;
- 			break;
- 		}
-@@ -851,7 +857,7 @@ static int m25p_probe(struct device_d *dev)
- 			if (!info->jedec_id)
- 				do_jdec_probe = 0;
- 		} else
--			dev_warn(&spi->dev, "unrecognized id %s\n", data->type);
-+			dev_warn(&spi->dev, "unrecognized id %s\n", typename);
- 	}
- 
- 	if (do_jdec_probe) {
--- 
-1.8.5.3
-
--- 
-Pengutronix e.K.                           | Lucas Stach                 |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 1.8.5.2
+> =
 
 
 _______________________________________________
