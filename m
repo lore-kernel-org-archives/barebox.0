@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WC8kC-0004mn-4G
- for barebox@lists.infradead.org; Sat, 08 Feb 2014 14:18:57 +0000
-Received: from localhost.localdomain (unknown [82.233.81.124])
- by smtp5-g21.free.fr (Postfix) with ESMTP id 38306D4808C
- for <barebox@lists.infradead.org>; Sat,  8 Feb 2014 15:16:30 +0100 (CET)
-From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
-Date: Sat,  8 Feb 2014 15:16:09 +0100
-Message-Id: <1391868972-31978-4-git-send-email-eric@eukrea.com>
-In-Reply-To: <1391868972-31978-1-git-send-email-eric@eukrea.com>
+Received: from f192.i.mail.ru ([94.100.185.44])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WC8s8-0004ys-Hk
+ for barebox@lists.infradead.org; Sat, 08 Feb 2014 14:27:09 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Sat, 08 Feb 2014 18:26:41 +0400
+Message-ID: <1391869601.90335932@f192.i.mail.ru>
+In-Reply-To: <1391868972-31978-2-git-send-email-eric@eukrea.com>
 References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
+ <1391868972-31978-2-git-send-email-eric@eukrea.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,30 +23,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/7] ARM: mx53-qsrb: enable USB host
-To: barebox@lists.infradead.org
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzddIEFSTTogaS5NWDUzOiBBZGQgc2F0YSB0byBkZXZp?=
+ =?UTF-8?B?Y2V0cmVl?=
+To: =?UTF-8?B?RXJpYyBCw6luYXJk?= <eric@eukrea.com>, =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-LSBkZWNsYXJlIHRoZSByaWd0aCBtdXggZm9yIHRoZSBHUElPIHVzZWQgdG8gZW5hYmxlIHRoZSBV
-U0IncyA1VgotIGVuYWJsZSBVU0IgaG9zdCBjb250cm9sbGVyCgp0ZXN0ZWQgb24gaS5NWDUzIFNU
-QVJULVIgOgpiYXJlYm94QEZyZWVzY2FsZSBpLk1YNTMgUXVpY2sgU3RhcnQtUiBCb2FyZDovIHVz
-YiAtZgpVU0I6IHNjYW5uaW5nIGJ1cyBmb3IgZGV2aWNlcy4uLgpCdXMgMDAxIERldmljZSAwMDE6
-IElEIDAwMDA6MDAwMCBFSENJIEhvc3QgQ29udHJvbGxlcgpVc2luZyBpbmRleCAwIGZvciB0aGUg
-bmV3IGRpc2sKQnVzIDAwMiBEZXZpY2UgMDAzOiBJRCAwOTUxOjE2NTQgRFQgUjUwMApCdXMgMDAy
-IERldmljZSAwMDI6IElEIDAwMDA6MDAwMCBFSENJIEhvc3QgQ29udHJvbGxlcgozIFVTQiBEZXZp
-Y2UocykgZm91bmQKClNpZ25lZC1vZmYtYnk6IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29t
-PgotLS0KIGFyY2gvYXJtL2R0cy9pbXg1My1xc2ItY29tbW9uLmR0c2kgfCA2ICsrKysrLQogMSBm
-aWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBh
-L2FyY2gvYXJtL2R0cy9pbXg1My1xc2ItY29tbW9uLmR0c2kgYi9hcmNoL2FybS9kdHMvaW14NTMt
-cXNiLWNvbW1vbi5kdHNpCmluZGV4IGYyZjkxMmIuLjRhZTFmNDkgMTAwNjQ0Ci0tLSBhL2FyY2gv
-YXJtL2R0cy9pbXg1My1xc2ItY29tbW9uLmR0c2kKKysrIGIvYXJjaC9hcm0vZHRzL2lteDUzLXFz
-Yi1jb21tb24uZHRzaQpAQCAtMTU4LDYgKzE1OCw3IEBACiAJCQkJTVg1M19QQURfRUlNX0RBMTNf
-X0dQSU8zXzEzICAgICAgIDB4ODAwMDAwMDAKIAkJCQlNWDUzX1BBRF9QQVRBX0RBXzBfX0dQSU83
-XzYgICAgICAgMHg4MDAwMDAwMAogCQkJCU1YNTNfUEFEX0dQSU9fMTZfX0dQSU83XzExICAgICAg
-ICAweDgwMDAwMDAwCisJCQkJTVg1M19QQURfUEFUQV9EQV8yX19HUElPN184ICAgICAgIDB4ODAw
-MDAwMDAKIAkJCT47CiAJCX07CiAKQEAgLTIxNiw5ICsyMTcsMTIgQEAKIH07CiAKICZ1c2JoMSB7
-Ci0gICAgICAgc3RhdHVzID0gIm9rYXkiOworCXBoeV90eXBlID0gInV0bWkiOworCWRyX21vZGUg
-PSAiaG9zdCI7CisJc3RhdHVzID0gIm9rYXkiOwogfTsKIAogJnVzYm90ZyB7CiAgICAgICAgc3Rh
-dHVzID0gIm9rYXkiOwogfTsKKwotLSAKMS44LjMuMQoKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
-dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2JhcmVib3gK
+0KHRg9Cx0LHQvtGC0LAsICA4INGE0LXQstGA0LDQu9GPIDIwMTQsIDE1OjE2ICswMTowMCDQvtGC
+IEVyaWMgQsOpbmFyZCA8ZXJpY0BldWtyZWEuY29tPjoKPiBTaWduZWQtb2ZmLWJ5OiBFcmljIELD
+qW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiAtLS0KPiBhcmNoL2FybS9kdHMvaW14NTMuZHRzaSB8
+IDkgKysrKysrKysrCj4gMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYg
+LS1naXQgYS9hcmNoL2FybS9kdHMvaW14NTMuZHRzaSBiL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNp
+Cj4gaW5kZXggNjc4NTQ3Yy4uOTE2NTliOCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMvaW14
+NTMuZHRzaQo+ICsrKyBiL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNpCj4gQEAgLTc1LDYgKzc1LDE1
+IEBACj4gaW50ZXJydXB0LXBhcmVudCA9IDwmdHppYz47Cj4gcmFuZ2VzOwo+IAo+ICsJCXNhdGE6
+IHNhdGFAMTAwMDAwMDAgewo+ICsJCQljb21wYXRpYmxlID0gImZzbCxpbXg1My1haGNpIjsKPiAr
+CQkJcmVnID0gPDB4MTAwMDAwMDAgMHgxMDAwPjsKPiArCQkJaW50ZXJydXB0cyA9IDwyOD47Cj4g
+KwkJCWNsb2NrcyA9IDwmY2xrcyAxNzM+LCA8JmNsa3MgNT4sIDwmY2xrcyAxODg+Owo+ICsJCQlj
+bG9jay1uYW1lcyA9ICJzYXRhIiwgImFoYiIsICJwZXIiOwo+ICsJCQlzdGF0dXMgPSAiZGlzYWJs
+ZWQiOwo+ICsJCX07CgpTYXNjaGEsIHdlIHN0b3AgY2hhbmdpbmcgRFRTIG9mIHRoZSBrZXJuZWwg
+b3Igbm90PwpXaGF0IGlzIHRoZSB1bHRpbWF0ZSBzb2x1dGlvbj8KCi0tLQpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
