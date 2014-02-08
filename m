@@ -1,14 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WBsyZ-000050-O7
- for barebox@lists.infradead.org; Fri, 07 Feb 2014 21:28:46 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Fri,  7 Feb 2014 22:28:07 +0100
-Message-Id: <1391808493-27328-5-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1WC9ZQ-0005Pn-Ul
+ for barebox@lists.infradead.org; Sat, 08 Feb 2014 15:11:54 +0000
+Date: Sat, 8 Feb 2014 16:11:19 +0100
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20140208151119.GL17045@pengutronix.de>
 References: <1391808493-27328-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1391808493-27328-4-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20140208065128.GM9671@ns203013.ovh.net>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140208065128.GM9671@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,39 +20,97 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/11] nfs: simplify rpc_lookup_req
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 04/11] nfs: shorten and simplify rpc_add_credentials a
+ bit
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-SW5zdGVhZCBvZiBsZXR0aW5nIHJwY19sb29rdXBfcmVxIHNldCBtb3VudF9wb3J0IGFuZCBuZnNf
-cG9ydCwgbGV0IGl0CnJldHVybiB0aGUgcG9ydCBmb3VuZCBhbmQgbGV0IHRoZSBjYWxsZXIgdXNl
-IHRoYXQgaW5mb3JtYXRpb24uCgpTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5pZyA8dS5r
-bGVpbmUta29lbmlnQHBlbmd1dHJvbml4LmRlPgotLS0KIGZzL25mcy5jIHwgMjQgKysrKysrLS0t
-LS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCAxOCBkZWxl
-dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9mcy9uZnMuYyBiL2ZzL25mcy5jCmluZGV4IDU0ZGRhMjYx
-YzBiMS4uNzYxYmZkNjI2NzE2IDEwMDY0NAotLS0gYS9mcy9uZnMuYworKysgYi9mcy9uZnMuYwpA
-QCAtMzc0LDIyICszNzQsOCBAQCBzdGF0aWMgaW50IHJwY19sb29rdXBfcmVxKHN0cnVjdCBuZnNf
-cHJpdiAqbnByaXYsIGludCBwcm9nLCBpbnQgdmVyKQogCWlmIChyZXQpCiAJCXJldHVybiByZXQ7
-CiAKLQlwb3J0ID0gbmV0X3JlYWRfdWludDMyKCh1aW50MzJfdCAqKShuZnNfcGFja2V0ICsgc2l6
-ZW9mKHN0cnVjdCBycGNfcmVwbHkpKSk7Ci0KLQlzd2l0Y2ggKHByb2cpIHsKLQljYXNlIFBST0df
-TU9VTlQ6Ci0JCW5wcml2LT5tb3VudF9wb3J0ID0gbnRvaGwocG9ydCk7Ci0JCWRlYnVnKCJtb3Vu
-dCBwb3J0OiAlZFxuIiwgbnByaXYtPm1vdW50X3BvcnQpOwotCQlicmVhazsKLQljYXNlIFBST0df
-TkZTOgotCQlucHJpdi0+bmZzX3BvcnQgPSBudG9obChwb3J0KTsKLQkJZGVidWcoIm5mcyBwb3J0
-OiAlZFxuIiwgbnByaXYtPm5mc19wb3J0KTsKLQkJYnJlYWs7Ci0JZGVmYXVsdDoKLQkJcmV0dXJu
-IC1FSU5WQUw7Ci0JfQotCi0JcmV0dXJuIDA7CisJcG9ydCA9IG50b2hsKG5ldF9yZWFkX3VpbnQz
-MihuZnNfcGFja2V0ICsgc2l6ZW9mKHN0cnVjdCBycGNfcmVwbHkpKSk7CisJcmV0dXJuIHBvcnQ7
-CiB9CiAKIC8qCkBAIC0xMDAwLDE2ICs5ODYsMTggQEAgc3RhdGljIGludCBuZnNfcHJvYmUoc3Ry
-dWN0IGRldmljZV9kICpkZXYpCiAJbmV0X3VkcF9iaW5kKG5wcml2LT5jb24sIDEwMDApOwogCiAJ
-cmV0ID0gcnBjX2xvb2t1cF9yZXEobnByaXYsIFBST0dfTU9VTlQsIDIpOwotCWlmIChyZXQpIHsK
-KwlpZiAocmV0IDwgMCkgewogCQlwcmludGYoImxvb2t1cCBtb3VudCBwb3J0IGZhaWxlZCB3aXRo
-ICVkXG4iLCByZXQpOwogCQlnb3RvIGVycjI7CiAJfQorCW5wcml2LT5tb3VudF9wb3J0ID0gcmV0
-OwogCiAJcmV0ID0gcnBjX2xvb2t1cF9yZXEobnByaXYsIFBST0dfTkZTLCAyKTsKLQlpZiAocmV0
-KSB7CisJaWYgKHJldCA8IDApIHsKIAkJcHJpbnRmKCJsb29rdXAgbmZzIHBvcnQgZmFpbGVkIHdp
-dGggJWRcbiIsIHJldCk7CiAJCWdvdG8gZXJyMjsKIAl9CisJbnByaXYtPm5mc19wb3J0ID0gcmV0
-OwogCiAJcmV0ID0gbmZzX21vdW50X3JlcShucHJpdik7CiAJaWYgKHJldCkgewotLSAKMS44LjUu
-MgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Sat, Feb 08, 2014 at 07:51:28AM +0100, Jean-Christophe PLAGNIOL-VILLARD =
+wrote:
+> On 22:28 Fri 07 Feb     , Uwe Kleine-K??nig wrote:
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> =
+
+> keep the hostname I use it on nfs for export filter
+Which hostname? There is only one "used" in code that is commented out.
+
+Best regards
+Uwe
+ =
+
+> Best Regards,
+> J.
+> > ---
+> >  fs/nfs.c | 26 +++++---------------------
+> >  1 file changed, 5 insertions(+), 21 deletions(-)
+> > =
+
+> > diff --git a/fs/nfs.c b/fs/nfs.c
+> > index 76d8c0595db4..54dda261c0b1 100644
+> > --- a/fs/nfs.c
+> > +++ b/fs/nfs.c
+> > @@ -224,34 +224,18 @@ out_overflow:
+> >   */
+> >  static uint32_t *rpc_add_credentials(uint32_t *p)
+> >  {
+> > -	int hl;
+> > -	int hostnamelen =3D 0;
+> > -
+> >  	/*
+> > -	 * Here's the executive summary on authentication requirements of the
+> > -	 * various NFS server implementations:	Linux accepts both AUTH_NONE
+> > -	 * and AUTH_UNIX authentication (also accepts an empty hostname field
+> > -	 * in the AUTH_UNIX scheme).  *BSD refuses AUTH_NONE, but accepts
+> > -	 * AUTH_UNIX (also accepts an empty hostname field in the AUTH_UNIX
+> > -	 * scheme).  To be safe, use AUTH_UNIX and pass the hostname if we ha=
+ve
+> > -	 * it (if the BOOTP/DHCP reply didn't give one, just use an empty
+> > -	 * hostname).
+> > +	 * *BSD refuses AUTH_NONE, so use AUTH_UNIX. An empty hostname is OK =
+for
+> > +	 * both Linux and *BSD.
+> >  	 */
+> >  =
+
+> > -	hl =3D (hostnamelen + 3) & ~3;
+> > -
+> >  	/* Provide an AUTH_UNIX credential.  */
+> >  	*p++ =3D htonl(1);		/* AUTH_UNIX */
+> > -	*p++ =3D htonl(hl + 20);		/* auth length */
+> > +	*p++ =3D htonl(20);		/* auth length: 20 + strlen(hostname) */
+> >  	*p++ =3D htonl(0);		/* stamp */
+> > -	*p++ =3D htonl(hostnamelen);	/* hostname string */
+> > -
+> > -	if (hostnamelen & 3)
+> > -		*(p + hostnamelen / 4) =3D 0; /* add zero padding */
+> > -
+> > -	/* memcpy(p, hostname, hostnamelen); */ /* empty hostname */
+> > +	*p++ =3D htonl(0);		/* hostname string length */
+> > +	/* memcpy(p, "", 0); p +=3D 0; <- empty host name */
+> >  =
+
+> > -	p +=3D hl / 4;
+> >  	*p++ =3D 0;			/* uid */
+> >  	*p++ =3D 0;			/* gid */
+> >  	*p++ =3D 0;			/* auxiliary gid list */
+> > -- =
+
+> > 1.8.5.2
+> > =
+
+> =
+
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
