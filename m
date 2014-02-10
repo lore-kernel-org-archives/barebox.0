@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from benson.vm.bytemark.co.uk ([212.110.190.137])
+Received: from mho-03-ewr.mailhop.org ([204.13.248.66]
+ helo=mho-01-ewr.mailhop.org)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCpCR-0000V9-La
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 11:38:56 +0000
-Message-ID: <1392032312.5117.49.camel@kazak.uk.xensource.com>
-From: Ian Campbell <ijc@hellion.org.uk>
-Date: Mon, 10 Feb 2014 11:38:32 +0000
-In-Reply-To: <20140207141028.GT8533@titan.lakedaemon.net>
+ id 1WCsRr-0006u9-Pw
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 15:07:04 +0000
+Date: Mon, 10 Feb 2014 10:06:34 -0500
+From: Jason Cooper <jason@lakedaemon.net>
+Message-ID: <20140210150634.GM8533@titan.lakedaemon.net>
 References: <20140207071332.GE16215@pengutronix.de>
  <20140207141028.GT8533@titan.lakedaemon.net>
-Mime-Version: 1.0
+ <E1WCYdq-0004eu-Gr@jdl.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <E1WCYdq-0004eu-Gr@jdl.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,40 +26,88 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Devicetree Maintenance in barebox
-To: Jason Cooper <jason@lakedaemon.net>
-Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, devicetree@vger.kernel.org
+To: Jon Loeliger <jdl@jdl.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, devicetree@vger.kernel.org, Ian Campbell <ijc@hellion.org.uk>
 
-On Fri, 2014-02-07 at 09:10 -0500, Jason Cooper wrote:
-> Hi Sascha,
+On Sun, Feb 09, 2014 at 11:58:06AM -0600, Jon Loeliger wrote:
+> > Hi Sascha,
+> > 
+> > + Grant Likely, Ian Campbell, devicetree ML
+> > 
+> > Also, In the DT meeting earlier this week, Grant Likely said he has the
+> > request in to create a separate mailinglist for collaboration between
+> > the different devicetree users (BSD, Linux, etc).
 > 
-> + Grant Likely, Ian Campbell, devicetree ML
+> ...
 > 
-> This discussion started on the barebox bootloader mailinglist
+> > I think the proper solution will percolate out of the first
+> > cross-project discussions on the new ML.
 > 
-> On Fri, Feb 07, 2014 at 08:13:32AM +0100, Sascha Hauer wrote:
-> > It's becoming more obvious that devicetree maintenance is painful
-> > because we have to sync them to the kernel regularly. My hope was that
-> > this would get simpler once the devicetrees get their own repository
-> > outside the kernel, but it seems that won't happen anytime soon.
+> ...
 > 
-> hmm.  Ian Campbell has a tree he is working on:
+> > Definitely fodder for the new ML.
+> > 
+> > Grant, can you please add Sascha to the list of folks to notify when
+> > the new ML is ready?
 > 
->   git://xenbits.xen.org/people/ianc/device-tree-rebasing.git
+> I don't think there needs to be a different mailing list
+> in order to combine or discuss other OS's use of the device
+> tree compiler.  The  DTC is OS and Use-agnostic.  Discussions
+> of DTC needs for FreeBSD can happen right here as the orginal
+> purpose of this list was DTC discussion.
 
-This is automatically extracted out of the linux git tree (using
-git-filter-branch), maintaining all the history etc. I intend to keep
-this running until such a time as the DTS files are migrated out of
-Linux.
+Sorry, I wasn't clear.  I was referring to the devicetree bindings
+currently being created in the linux tree, and the dts files for the
+boards Linux supports.
 
-For the time being though patches to this tree need to go through the
-Linux tree in the normal way.
+And by 'here', I presume you me devicetree@vger.kernel.org...
 
-(also, as the name states it is potentially rebasing, although there
-hasn't been an actual need since the early days when I was still getting
-things working)
+> Are you, and Grant(?), suggesting that a separate list
+> should be created for FreeBSD use of DTS-file contents?
+> Or that DTS-file-content related discussions should be
+> separated from DTC discussions?
 
-Ian.
+As Ian mentioned, the separate list is to engage other consumers of
+devicetree bindings/dts files/dtc use without the firehose of Linux
+patches.
 
+> > imho, the goal is to not have any project tied to a specific version
+> > of the devicetree.
+> >
+> > iow, we don't break backwards compatibility in the
+> > devicetrees, and projects should revert to default behavior if new dt
+> > parameters are missing.  This means Linux and BSD shouldn't need to keep
+> > a current copy of the devicetree in their trees.  However, building the
+> > bootloader is a different animal.  It needs to provide the dt blob...
+> 
+> The devicetree source file format hasn't changed in years.
+> Yes, it is enhanced, but compatibly.  Or do you mean the
+> contents of the DTB for some specific platform?
+
+I was referring specifically to dt bindings for new IP blocks, and new
+versions of the same.
+
+One problem we occasionally run into with kirkwood/dove/mvebu is that
+it is very convenient having the dts tree in the linux tree.  It's
+tempting to keep tying the dtb to the linux kernel version.  Which makes
+it a lot harder to maintain backwards compatibility.
+
+That gets a lot easier once the bindings and the dts files have their
+own tree with their own release cycle.  Then, patch submitters would be
+forced to consider how changing a binding affects the driver and vice
+versa.  The concept of 'deployed dtbs' without the new whizbang bindings
+would have to be considered and properly handled.
+
+Don't get me wrong, all of us are trying very hard to do this now.  But
+I think it's more like running it in qemu vice running on real hardware.
+We're simulating in our heads what we think the problems will be, as
+opposed to experiencing them and avoiding them.
+
+imho, the sooner we have a separate tree for dts/bindings, the better.
+
+thx,
+
+Jason.
 
 _______________________________________________
 barebox mailing list
