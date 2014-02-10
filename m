@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCmde-0003vk-8f
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 08:54:51 +0000
-Date: Mon, 10 Feb 2014 09:54:18 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20140210095418.1b36b791@e6520eb>
-In-Reply-To: <20140210085235.GJ17250@pengutronix.de>
-References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
- <1391869601.90335932@f192.i.mail.ru>
- <20140210083358.GH17250@pengutronix.de>
- <1392021644.417588038@f387.i.mail.ru>
- <20140210094819.5a1a2d28@e6520eb>
- <20140210085235.GJ17250@pengutronix.de>
-MIME-Version: 1.0
+Received: from benson.vm.bytemark.co.uk ([212.110.190.137])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WCp9N-0000QD-A9
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 11:35:46 +0000
+Message-ID: <1392032117.5117.46.camel@kazak.uk.xensource.com>
+From: Ian Campbell <ijc@hellion.org.uk>
+Date: Mon, 10 Feb 2014 11:35:17 +0000
+In-Reply-To: <E1WCYdq-0004eu-Gr@jdl.com>
+References: <20140207071332.GE16215@pengutronix.de>
+ <20140207141028.GT8533@titan.lakedaemon.net> <E1WCYdq-0004eu-Gr@jdl.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,63 +18,72 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/7] ARM: i.MX53: Add sata to devicetree
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Devicetree Maintenance in barebox
+To: Jon Loeliger <jdl@jdl.com>
+Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, devicetree@vger.kernel.org
 
-TGUgTW9uLCAxMCBGZWIgMjAxNCAwOTo1MjozNSArMDEwMCwKU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPiBhIMOpY3JpdCA6Cgo+IE9uIE1vbiwgRmViIDEwLCAyMDE0IGF0IDA5
-OjQ4OjE5QU0gKzAxMDAsIEVyaWMgQsOpbmFyZCB3cm90ZToKPiA+IExlIE1vbiwgMTAgRmViIDIw
-MTQgMTI6NDA6NDQgKzA0MDAsCj4gPiBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1
-PiBhIMOpY3JpdCA6Cj4gPiAKPiA+ID4g0J/QvtC90LXQtNC10LvRjNC90LjQuiwgMTAg0YTQtdCy
-0YDQsNC70Y8gMjAxNCwgOTozMyArMDE6MDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVu
-Z3V0cm9uaXguZGU+Ogo+ID4gPiA+IE9uIFNhdCwgRmViIDA4LCAyMDE0IGF0IDA2OjI2OjQxUE0g
-KzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiA+ID4gPiDQodGD0LHQsdC+0YLQsCwg
-IDgg0YTQtdCy0YDQsNC70Y8gMjAxNCwgMTU6MTYgKzAxOjAwINC+0YIgRXJpYyBCw6luYXJkIDxl
-cmljQGV1a3JlYS5jb20+Ogo+ID4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQg
-PGVyaWNAZXVrcmVhLmNvbT4KPiA+ID4gPiA+ID4gLS0tCj4gPiA+ID4gPiA+IGFyY2gvYXJtL2R0
-cy9pbXg1My5kdHNpIHwgOSArKysrKysrKysKPiA+ID4gPiA+ID4gMSBmaWxlIGNoYW5nZWQsIDkg
-aW5zZXJ0aW9ucygrKQo+ID4gPiA+ID4gPiAKPiA+ID4gPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gv
-YXJtL2R0cy9pbXg1My5kdHNpIGIvYXJjaC9hcm0vZHRzL2lteDUzLmR0c2kKPiA+ID4gPiA+ID4g
-aW5kZXggNjc4NTQ3Yy4uOTE2NTliOCAxMDA2NDQKPiA+ID4gPiA+ID4gLS0tIGEvYXJjaC9hcm0v
-ZHRzL2lteDUzLmR0c2kKPiA+ID4gPiA+ID4gKysrIGIvYXJjaC9hcm0vZHRzL2lteDUzLmR0c2kK
-PiA+ID4gPiA+ID4gQEAgLTc1LDYgKzc1LDE1IEBACj4gPiA+ID4gPiA+IGludGVycnVwdC1wYXJl
-bnQgPSA8JnR6aWM+Owo+ID4gPiA+ID4gPiByYW5nZXM7Cj4gPiA+ID4gPiA+IAo+ID4gPiA+ID4g
-PiArCQlzYXRhOiBzYXRhQDEwMDAwMDAwIHsKPiA+ID4gPiA+ID4gKwkJCWNvbXBhdGlibGUgPSAi
-ZnNsLGlteDUzLWFoY2kiOwo+ID4gPiA+ID4gPiArCQkJcmVnID0gPDB4MTAwMDAwMDAgMHgxMDAw
-PjsKPiA+ID4gPiA+ID4gKwkJCWludGVycnVwdHMgPSA8Mjg+Owo+ID4gPiA+ID4gPiArCQkJY2xv
-Y2tzID0gPCZjbGtzIDE3Mz4sIDwmY2xrcyA1PiwgPCZjbGtzIDE4OD47Cj4gPiA+ID4gPiA+ICsJ
-CQljbG9jay1uYW1lcyA9ICJzYXRhIiwgImFoYiIsICJwZXIiOwo+ID4gPiA+ID4gPiArCQkJc3Rh
-dHVzID0gImRpc2FibGVkIjsKPiA+ID4gPiA+ID4gKwkJfTsKPiA+ID4gPiA+IAo+ID4gPiA+ID4g
-U2FzY2hhLCB3ZSBzdG9wIGNoYW5naW5nIERUUyBvZiB0aGUga2VybmVsIG9yIG5vdD8KPiA+ID4g
-PiA+IFdoYXQgaXMgdGhlIHVsdGltYXRlIHNvbHV0aW9uPwo+ID4gPiA+IAo+ID4gPiA+IFdoYXQg
-ZG8geW91IHN1Z2dlc3QgZm9yIHRoZSBjYXNlIGFib3ZlPyBBIGlteDUzLWJiLmR0c2kgaW5jbHVk
-ZWQgZnJvbQo+ID4gPiA+IGlteDUzLmR0c2k/IEkgdGhpbmsgZGlzYWxsb3dpbmcgYWhjaSBzdXBw
-b3J0IGZvciBiYXJlYm94IGlmIGl0J3Mgbm90Cj4gPiA+ID4gdXBzdHJlYW0gaW4gTGludXggaXMg
-bm90IGEgZ29vZCBvcHRpb24uCj4gPiA+IAo+ID4gPiBJIHN1Z2dlc3QganVzdCBzeW5jIGlteDUz
-LmR0c2kgZnJvbSB0aGUgbGludXgtbmV4dCwgYXMgYSByZXN1bHQgd2Ugd2lsbCBoYXZlCj4gPiA+
-IG5vbi1tb2RpZmllZCB2ZXJzaW9uIG9mIGtlcm5lbCB0ZW1wbGF0ZXMuCj4gPiA+IENoYW5nZSBh
-cyBhYm92ZSwgbWFrZXMgaW14NTMuZHRzaSBkaWZmZXJlbnQgZm9yIGtlcm5lbCBhbmQgYmFyZWJv
-eC4KPiA+ID4gVGhpcyBpcyBwYXJ0IG9mIHNhdGEgbm9kZSBmcm9tIHRoZSBrZXJuZWw6Cj4gPiA+
-IAkJc2F0YTogc2F0YUAxMDAwMDAwMCB7Cj4gPiA+IAkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDUz
-LWFoY2kiOwo+ID4gPiAJCQlyZWcgPSA8MHgxMDAwMDAwMCAweDEwMDA+Owo+ID4gPiAJCQlpbnRl
-cnJ1cHRzID0gPDI4PjsKPiA+ID4gCQkJY2xvY2tzID0gPCZjbGtzIElNWDVfQ0xLX1NBVEFfR0FU
-RT4sCj4gPiA+IAkJCQkgPCZjbGtzIElNWDVfQ0xLX1NBVEFfUkVGPiwKPiA+ID4gCQkJCSA8JmNs
-a3MgSU1YNV9DTEtfQUhCPjsKPiA+ID4gCQkJY2xvY2stbmFtZXMgPSAic2F0YV9nYXRlIiwgInNh
-dGFfcmVmIiwgImFoYiI7Cj4gPiA+IAkJCXN0YXR1cyA9ICJkaXNhYmxlZCI7Cj4gPiA+IAkJfTsK
-PiA+ID4gCj4gPiB0aGF0J3MgcG9zc2libGUsIEkgZG9uJ3Qga25vdyB3aHkgdGhlIGNsb2NrIGFy
-ZSBjaGFuZ2VkIGluIGJhcmVib3ggdnMKPiA+IGxpbnV4IGFuZCBkb24ndCBrbm93IGlmIHRoYXQn
-cyBuZWVkZWQgKEkgZ290IGluc3BpcmF0aW9uIGZyb20gb3RoZXIKPiA+IG5vZGVzKQo+IAo+IFRo
-ZXkgYXJlIGlkZW50aWNhbCwgaXQncyBvbmx5IHRoYXQgQWxleGFuZGVyIGludHJvZHVjZWQgZGVm
-aW5lcyBmb3IgdGhlCj4gY2xvY2tzIGluIExpbnV4IHdoZXJlYXMgaW4gYmFyZWJveCB3ZSBoYXZl
-IHRoZSBvbGRlciB2ZXJzaW9ucyB3aXRoCj4gcGxhaW4gbnVtYmVycy4KPiAKY2xvY2stbmFtZXMg
-YXJlIGFsc28gY2hhbmdlZCBhcyB3ZWxsIGFzIHRoZSBvcmRlciAodGFrZW4gZnJvbSBvdGhlcgpu
-b2RlcykuCmlmIHRoYXQncyBub3QgYSBwcm9ibGVtIGluIGJhcmVib3gsIHdlIGNhbiB1c2UgbGlu
-dXgtbmV4dCdzIGR0c2kuCgpFcmljICh2ZXJ5IGxpdHRsZSBiYWNrZ3JvdW5kIHdpdGggZHRzIEFU
-TSkKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Sun, 2014-02-09 at 11:58 -0600, Jon Loeliger wrote:
+> > Hi Sascha,
+> > 
+> > + Grant Likely, Ian Campbell, devicetree ML
+> > 
+> > Also, In the DT meeting earlier this week, Grant Likely said he has the
+> > request in to create a separate mailinglist for collaboration between
+> > the different devicetree users (BSD, Linux, etc).
+> 
+> ...
+> 
+> > I think the proper solution will percolate out of the first
+> > cross-project discussions on the new ML.
+> 
+> ...
+> 
+> > Definitely fodder for the new ML.
+> > 
+> > Grant, can you please add Sascha to the list of folks to notify when
+> > the new ML is ready?
+> 
+> I don't think there needs to be a different mailing list
+> in order to combine or discuss other OS's use of the device
+> tree compiler.  The  DTC is OS and Use-agnostic.  Discussions
+> of DTC needs for FreeBSD can happen right here as the orginal
+> purpose of this list was DTC discussion.
+> 
+> Are you, and Grant(?), suggesting that a separate list
+> should be created for FreeBSD use of DTS-file contents?
+> Or that DTS-file-content related discussions should be
+> separated from DTC discussions?
+
+The latter. See http://www.spinics.net/lists/devicetree/msg19209.html .
+The issue is the enormous volume of Linux specific stuff which is too
+much of a firehose to sensibly suggest non-Linux people to subscribe
+too.
+
+> 
+> > imho, the goal is to not have any project tied to a specific version
+> > of the devicetree.
+> >
+> > iow, we don't break backwards compatibility in the
+> > devicetrees, and projects should revert to default behavior if new dt
+> > parameters are missing.  This means Linux and BSD shouldn't need to keep
+> > a current copy of the devicetree in their trees.  However, building the
+> > bootloader is a different animal.  It needs to provide the dt blob...
+> 
+> The devicetree source file format hasn't changed in years.
+> Yes, it is enhanced, but compatibly.  Or do you mean the
+> contents of the DTB for some specific platform?
+> 
+> Thanks,
+> jdl
+> 
+
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
