@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from benson.vm.bytemark.co.uk ([212.110.190.137])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCp9N-0000QD-A9
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 11:35:46 +0000
-Message-ID: <1392032117.5117.46.camel@kazak.uk.xensource.com>
+ id 1WCpCR-0000V9-La
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 11:38:56 +0000
+Message-ID: <1392032312.5117.49.camel@kazak.uk.xensource.com>
 From: Ian Campbell <ijc@hellion.org.uk>
-Date: Mon, 10 Feb 2014 11:35:17 +0000
-In-Reply-To: <E1WCYdq-0004eu-Gr@jdl.com>
+Date: Mon, 10 Feb 2014 11:38:32 +0000
+In-Reply-To: <20140207141028.GT8533@titan.lakedaemon.net>
 References: <20140207071332.GE16215@pengutronix.de>
- <20140207141028.GT8533@titan.lakedaemon.net> <E1WCYdq-0004eu-Gr@jdl.com>
+ <20140207141028.GT8533@titan.lakedaemon.net>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,64 +23,39 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Devicetree Maintenance in barebox
-To: Jon Loeliger <jdl@jdl.com>
-Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, Jason Cooper <jason@lakedaemon.net>, devicetree@vger.kernel.org
+To: Jason Cooper <jason@lakedaemon.net>
+Cc: Grant Likely <grant.likely@secretlab.ca>, barebox@lists.infradead.org, devicetree@vger.kernel.org
 
-On Sun, 2014-02-09 at 11:58 -0600, Jon Loeliger wrote:
-> > Hi Sascha,
-> > 
-> > + Grant Likely, Ian Campbell, devicetree ML
-> > 
-> > Also, In the DT meeting earlier this week, Grant Likely said he has the
-> > request in to create a separate mailinglist for collaboration between
-> > the different devicetree users (BSD, Linux, etc).
+On Fri, 2014-02-07 at 09:10 -0500, Jason Cooper wrote:
+> Hi Sascha,
 > 
-> ...
+> + Grant Likely, Ian Campbell, devicetree ML
 > 
-> > I think the proper solution will percolate out of the first
-> > cross-project discussions on the new ML.
+> This discussion started on the barebox bootloader mailinglist
 > 
-> ...
+> On Fri, Feb 07, 2014 at 08:13:32AM +0100, Sascha Hauer wrote:
+> > It's becoming more obvious that devicetree maintenance is painful
+> > because we have to sync them to the kernel regularly. My hope was that
+> > this would get simpler once the devicetrees get their own repository
+> > outside the kernel, but it seems that won't happen anytime soon.
 > 
-> > Definitely fodder for the new ML.
-> > 
-> > Grant, can you please add Sascha to the list of folks to notify when
-> > the new ML is ready?
+> hmm.  Ian Campbell has a tree he is working on:
 > 
-> I don't think there needs to be a different mailing list
-> in order to combine or discuss other OS's use of the device
-> tree compiler.  The  DTC is OS and Use-agnostic.  Discussions
-> of DTC needs for FreeBSD can happen right here as the orginal
-> purpose of this list was DTC discussion.
-> 
-> Are you, and Grant(?), suggesting that a separate list
-> should be created for FreeBSD use of DTS-file contents?
-> Or that DTS-file-content related discussions should be
-> separated from DTC discussions?
+>   git://xenbits.xen.org/people/ianc/device-tree-rebasing.git
 
-The latter. See http://www.spinics.net/lists/devicetree/msg19209.html .
-The issue is the enormous volume of Linux specific stuff which is too
-much of a firehose to sensibly suggest non-Linux people to subscribe
-too.
+This is automatically extracted out of the linux git tree (using
+git-filter-branch), maintaining all the history etc. I intend to keep
+this running until such a time as the DTS files are migrated out of
+Linux.
 
-> 
-> > imho, the goal is to not have any project tied to a specific version
-> > of the devicetree.
-> >
-> > iow, we don't break backwards compatibility in the
-> > devicetrees, and projects should revert to default behavior if new dt
-> > parameters are missing.  This means Linux and BSD shouldn't need to keep
-> > a current copy of the devicetree in their trees.  However, building the
-> > bootloader is a different animal.  It needs to provide the dt blob...
-> 
-> The devicetree source file format hasn't changed in years.
-> Yes, it is enhanced, but compatibly.  Or do you mean the
-> contents of the DTB for some specific platform?
-> 
-> Thanks,
-> jdl
-> 
+For the time being though patches to this tree need to go through the
+Linux tree in the normal way.
 
+(also, as the name states it is potentially rebasing, although there
+hasn't been an actual need since the early days when I was still getting
+things working)
+
+Ian.
 
 
 _______________________________________________
