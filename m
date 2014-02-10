@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCby8-00025r-1S
- for barebox@lists.infradead.org; Sun, 09 Feb 2014 21:31:18 +0000
-Date: Sun, 9 Feb 2014 22:30:46 +0100
+ id 1WCleE-0001yx-26
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 07:51:22 +0000
+Date: Mon, 10 Feb 2014 08:51:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140209213046.GB17250@pengutronix.de>
-References: <1391866056-13133-1-git-send-email-sebastian.hesselbarth@gmail.com>
- <20140209083614.GA17250@pengutronix.de>
- <52F758F1.3060706@gmail.com>
+Message-ID: <20140210075059.GC17250@pengutronix.de>
+References: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <52F758F1.3060706@gmail.com>
+In-Reply-To: <1391762936-2747-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,88 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RFC] ARM: dove: build multiple pbl images for DT based
- boards
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Subject: Re: [PATCH 00/14] Smatch warning fixups
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-On Sun, Feb 09, 2014 at 11:31:13AM +0100, Sebastian Hesselbarth wrote:
-> On 02/09/2014 09:36 AM, Sascha Hauer wrote:
-> >On Sat, Feb 08, 2014 at 02:27:36PM +0100, Sebastian Hesselbarth wrote:
-> [...]
-> >>What I want to achieve is to have a common pbl entry function for all
-> >>DT based boards of one SoC. For now, let's just talk about Marvell Dove
-> >>here, but on the long run, I'd like to have it also for the other MVEBU
-> >>SoCs. Right now, I guess, each SoC will still have its own "DT board"
-> >>but it could also end up in one board for all MVEBU SoCs..
-> [...]
-> >>Now, for having one board file for a set of selectable dtbs, you would
-> >>need a single entry function name and also a single symbol to access
-> >>the linked dtb at runtime. In the example for Dove below, I have chosen
-> >>start_dove_dt for the entry function and __linked_dtb_start for the
-> >>required dtb.
-> >
-> >It's not quite clear to me what you want to archieve or maybe better why
-> >you want to archieve it. Right now there are board specific entry
-> >functions, with 'board' meaning everything that you can't detect during
-> >runtime. So if want to support multiple boards and can detect during
-> >runtime on which one you are on then you can use a single entry
-> >function, detect the board and pass the correct dtb to
-> >barebox_arm_entry. If you can't detect the board then you need different
-> >images, one per board. An image is defined by its entry function. Why do
-> >you want to make the entry function common per SoC? I mean if there's
-> >some SoC specific setup that every board of a SoC type needs, then you
-> >can factor it out to a common function and call mvebu_setup_something()
-> >in each entry function or make a mvebu_barebox_entry like we already
-> >have.
-> >I think the entry functions are short and easy enough to duplicate them
-> >per board. Also it gives you the chance to do board specific quirks very
-> >early without having to #ifdef common code.
+On Fri, Feb 07, 2014 at 09:48:42AM +0100, Lucas Stach wrote:
+> I've run smatch over a imx_v7_defconfig build
+> and fixed the resulting warnings.
 > 
-> Well, the idea was clearly driven from me being too lazy to copy the
-> board code for every supported board we have. For example, there are
-> three different CuBox revisions around, ES, Production 1GB, and 2GB.
-> You can detect the 2GB version at runtime from the mem region registers,
-> but you cannot tell ES and 1GB apart.
+> Some of them are just minor issues with no
+> real impact, but some of them are real potential
+> problems or even real bugs.
 > 
-> Also, currently you cannot really select a different dtb for e.g. the
-> CuBox because the board code depends on __dtb_dove_cubox_start.
-> Choosing a different dtb e.g. dove-cubox-1gb.dts will break the board
-> code because of the missing symbol.
+> Lucas Stach (14):
+>   remove redundant NULL check on free
+>   commands: edit: properly propagate error code
+>   common: env: properly propagate error code
+>   clk: imx: unsigned mfn is never less than zero
+>   lib: math: fix return path (numstack may be NULL)
+>   lib: libbb: f should never be NULL
+>   comamnds: uimage: actually print error message
+>   usb: ulpi: fix logic-op
+>   usb: dfu: fix error path to avoid NULL ptr deref
+>   net: usb: smsc95xx: fix wrong phy reset condition
+>   net: usb: asix: properly propagate error code
+>   mtd: core: avoid possible NULL ptr deref
+>   clk: avoid possible NULL ptr deref
+>   don't cast negative error codes to unsigned size_t
 
-The idea is to copy the start_solidrun_cubox function to another,
-start_solidrun_cubox_myversion function, pass in another dtb and you're
-done. No need to select a dtb then, just build images for all versions
-and pick the correct one later.
-
-> 
-> With one single board code and selectable dtbs, you would link only
-> one dtb at link time and get another layer of differentiation for free
-> without bloating the code with multiple dtbs. I admit, "real" board
-> specific quirks would have to be dealt with somehow.
-
-What do you mean with bloat? The linker will throw away all unused dtbs
-in images. If you build in support for different boards each image will
-only contain the dtbs it needs.
-If you choose for common entry functions then I guess the "real" board
-specific quirks like different RAM configurations would mean ifdeffing
-it. Each time we ifdef something, maybe based on Kconfig variables, we
-duplicate the defconfig files which means much more duplication than
-the few lines of board code.
-
-> 
-> Maybe the idea is non-sense, but I though giving the user a list of
-> currently supported boards from which he can select from and get
-> boot images for every board selected would be nicer than spreading
-> the same board code over and over again in arm/boards/.
-
-Actually selecting (one or many) from a list of supported boards is the
-idea behind the multi image support. Try building the imx_v7_defconfig.
-It builds images for a dozen boards in different configurations. Some
-of these boards are also used in customer projects with a different dtb.
-What I do in this case is to duplicate the boards ENTRY_FUNCTION with
-another dtb. That's a few lines of duplicated code but I get images
-for all board/dtb combinations at once.
+Applied all except 07/14 and 14/14
 
 Sascha
 
