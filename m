@@ -1,17 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCmqP-0004N1-7h
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 09:08:01 +0000
-Date: Mon, 10 Feb 2014 10:07:35 +0100
+ id 1WCmuU-0004QY-EX
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 09:12:15 +0000
+Date: Mon, 10 Feb 2014 10:11:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140210090735.GL17250@pengutronix.de>
+Message-ID: <20140210091152.GM17250@pengutronix.de>
 References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
- <1391868972-31978-2-git-send-email-eric@eukrea.com>
  <1391869601.90335932@f192.i.mail.ru>
+ <20140210083358.GH17250@pengutronix.de>
+ <1392021644.417588038@f387.i.mail.ru>
+ <20140210094819.5a1a2d28@e6520eb>
+ <20140210085235.GJ17250@pengutronix.de>
+ <20140210095418.1b36b791@e6520eb>
+ <20140210090347.GK17250@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1391869601.90335932@f192.i.mail.ru>
+In-Reply-To: <20140210090347.GK17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,42 +25,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/7] ARM: i.MX53: Add sata to devicetree
-To: Alexander Shiyan <shc_work@mail.ru>
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-T24gU2F0LCBGZWIgMDgsIDIwMTQgYXQgMDY6MjY6NDFQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiDQodGD0LHQsdC+0YLQsCwgIDgg0YTQtdCy0YDQsNC70Y8gMjAxNCwgMTU6MTYg
-KzAxOjAwINC+0YIgRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ogo+ID4gU2lnbmVkLW9m
-Zi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Cj4gPiAtLS0KPiA+IGFyY2gvYXJt
-L2R0cy9pbXg1My5kdHNpIHwgOSArKysrKysrKysKPiA+IDEgZmlsZSBjaGFuZ2VkLCA5IGluc2Vy
-dGlvbnMoKykKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNpIGIv
-YXJjaC9hcm0vZHRzL2lteDUzLmR0c2kKPiA+IGluZGV4IDY3ODU0N2MuLjkxNjU5YjggMTAwNjQ0
-Cj4gPiAtLS0gYS9hcmNoL2FybS9kdHMvaW14NTMuZHRzaQo+ID4gKysrIGIvYXJjaC9hcm0vZHRz
-L2lteDUzLmR0c2kKPiA+IEBAIC03NSw2ICs3NSwxNSBAQAo+ID4gaW50ZXJydXB0LXBhcmVudCA9
-IDwmdHppYz47Cj4gPiByYW5nZXM7Cj4gPiAKPiA+ICsJCXNhdGE6IHNhdGFAMTAwMDAwMDAgewo+
-ID4gKwkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDUzLWFoY2kiOwo+ID4gKwkJCXJlZyA9IDwweDEw
-MDAwMDAwIDB4MTAwMD47Cj4gPiArCQkJaW50ZXJydXB0cyA9IDwyOD47Cj4gPiArCQkJY2xvY2tz
-ID0gPCZjbGtzIDE3Mz4sIDwmY2xrcyA1PiwgPCZjbGtzIDE4OD47Cj4gPiArCQkJY2xvY2stbmFt
-ZXMgPSAic2F0YSIsICJhaGIiLCAicGVyIjsKPiA+ICsJCQlzdGF0dXMgPSAiZGlzYWJsZWQiOwo+
-ID4gKwkJfTsKPiAKPiBTYXNjaGEsIHdlIHN0b3AgY2hhbmdpbmcgRFRTIG9mIHRoZSBrZXJuZWwg
-b3Igbm90Pwo+IFdoYXQgaXMgdGhlIHVsdGltYXRlIHNvbHV0aW9uPwoKSSBkb24ndCB3YW50IHRv
-IGdpdmUgb3V0IHRoZSBydWxlICJPbmx5IHVzZSB1bm1vZGlmaWVkIGR0cyBpbiBiYXJlYm94Igph
-bmQgdGhlbiB1c2UgZHRzIGZpbGVzIGZyb20gTGludXgtbmV4dC4gSWYgd2Ugb25seSB3YW50IHRv
-IHVzZQp1bm1vZGlmaWVkIGR0cyBmaWxlcyB3ZSBoYXZlIHRvIHVzZSB0aGUgb25lcyBmcm9tIExp
-bnV4IG1haW5saW5lLgpPdGhlcndpc2Ugd2UgYXJlIGRvb21lZCB3aGVuIGEgcHVsbCByZXF1ZXN0
-IGRvZXNuJ3QgbWFrZSBpdCBpbiB0aGUKS2VybmVsIGFuZCB0aGVuIHRoZSBkdHMgZmlsZXMgYXJl
-IGNoYW5nZWQgc2lnbmlmaWNhbnRseSBiZWZvcmUgdGhlCm5leHQgbWVyZ2Ugd2luZG93LCBhcyBq
-dXN0IGhhcHBlbnMgd2l0aCBTaGF3bnMgZHRzIGNoYW5nZXMgZm9yIDMuMTQuCgpTYXNjaGEKCi0t
-IApQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfApJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAg
-ICAgICAgfCBodHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlLyAgfApQZWluZXIgU3RyLiA2LTgsIDMx
-MTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfApB
-bXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUx
-MjEtMjA2OTE3LTU1NTUgfAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
-Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Feb 10, 2014 at 10:03:47AM +0100, Sascha Hauer wrote:
+> > > > > I suggest just sync imx53.dtsi from the linux-next, as a result we will have
+> > > > > non-modified version of kernel templates.
+> > > > > Change as above, makes imx53.dtsi different for kernel and barebox.
+> > > > > This is part of sata node from the kernel:
+> > > > > 		sata: sata@10000000 {
+> > > > > 			compatible = "fsl,imx53-ahci";
+> > > > > 			reg = <0x10000000 0x1000>;
+> > > > > 			interrupts = <28>;
+> > > > > 			clocks = <&clks IMX5_CLK_SATA_GATE>,
+> > > > > 				 <&clks IMX5_CLK_SATA_REF>,
+> > > > > 				 <&clks IMX5_CLK_AHB>;
+> > > > > 			clock-names = "sata_gate", "sata_ref", "ahb";
+> > > > > 			status = "disabled";
+> > > > > 		};
+> > > > > 
+> > > > that's possible, I don't know why the clock are changed in barebox vs
+> > > > linux and don't know if that's needed (I got inspiration from other
+> > > > nodes)
+> > > 
+> > > They are identical, it's only that Alexander introduced defines for the
+> > > clocks in Linux whereas in barebox we have the older versions with
+> > > plain numbers.
+> > > 
+> > clock-names are also changed as well as the order (taken from other
+> > nodes).
+> 
+> Oh, you are right. The order doesn't matter, but the names should be
+> identical. We should use the same names in barebox as in the kernel, be
+> it with defines or with numbers.
+
+So, Eric, to sort that out for now:
+
+- Please update the SATA entry to be compatible with the kernel, but do
+  not use the Linux-next dts. This means use plain numbers, but the
+  correct clock names.
+- Remove the dr_mode = "host" line
+
+With these changes this series should be fine for merging.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
