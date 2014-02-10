@@ -1,11 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WClVY-0001e9-GO
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 07:42:27 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Feb 2014 08:41:57 +0100
-Message-Id: <1392018119-20774-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtp1-g21.free.fr ([2a01:e0c:1:1599::10])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WCmPM-0003JY-6f
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 08:40:05 +0000
+Date: Mon, 10 Feb 2014 09:39:34 +0100
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20140210093934.3d7dbeb7@e6520eb>
+In-Reply-To: <20140210083358.GH17250@pengutronix.de>
+References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
+ <1391868972-31978-2-git-send-email-eric@eukrea.com>
+ <1391869601.90335932@f192.i.mail.ru>
+ <20140210083358.GH17250@pengutronix.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,143 +20,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] spi: imx: drop use of enum
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/7] ARM: i.MX53: Add sata to devicetree
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-enum imx_spi_devtype is used as index into an array of controller types.
-This makes the controller type handling unnecessarily complicated. Just
-drop the enum and instead of an array use different statically initialized
-structs and referene them by name.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/spi/imx_spi.c | 69 ++++++++++++++++++---------------------------------
- 1 file changed, 24 insertions(+), 45 deletions(-)
-
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index c0c2ed7..80655a7 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -107,27 +107,6 @@
- #define CSPI_2_3_STAT		0x18
- #define CSPI_2_3_STAT_RR		(1 <<  3)
- 
--enum imx_spi_devtype {
--#ifdef CONFIG_DRIVER_SPI_IMX1
--	SPI_IMX_VER_IMX1,
--#endif
--#ifdef CONFIG_DRIVER_SPI_IMX_0_0
--	SPI_IMX_VER_0_0,
--#endif
--#ifdef CONFIG_DRIVER_SPI_IMX_0_4
--	SPI_IMX_VER_0_4,
--#endif
--#ifdef CONFIG_DRIVER_SPI_IMX_0_5
--	SPI_IMX_VER_0_5,
--#endif
--#ifdef CONFIG_DRIVER_SPI_IMX_0_7
--	SPI_IMX_VER_0_7,
--#endif
--#ifdef CONFIG_DRIVER_SPI_IMX_2_3
--	SPI_IMX_VER_2_3,
--#endif
--};
--
- struct imx_spi {
- 	struct spi_master	master;
- 	int			*cs_array;
-@@ -473,29 +452,29 @@ static int imx_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
- 	return 0;
- }
- 
--static struct spi_imx_devtype_data spi_imx_devtype_data[] = {
- #ifdef CONFIG_DRIVER_SPI_IMX_0_0
--	[SPI_IMX_VER_0_0] = {
--		.chipselect = cspi_0_0_chipselect,
--		.xchg_single = cspi_0_0_xchg_single,
--		.init = cspi_0_0_init,
--	},
-+static struct spi_imx_devtype_data spi_imx_devtype_data_0_0 = {
-+	.chipselect = cspi_0_0_chipselect,
-+	.xchg_single = cspi_0_0_xchg_single,
-+	.init = cspi_0_0_init,
-+};
- #endif
-+
- #ifdef CONFIG_DRIVER_SPI_IMX_0_7
--	[SPI_IMX_VER_0_7] = {
--		.chipselect = cspi_0_7_chipselect,
--		.xchg_single = cspi_0_7_xchg_single,
--		.init = cspi_0_7_init,
--	},
-+static struct spi_imx_devtype_data spi_imx_devtype_data_0_7 = {
-+	.chipselect = cspi_0_7_chipselect,
-+	.xchg_single = cspi_0_7_xchg_single,
-+	.init = cspi_0_7_init,
-+};
- #endif
-+
- #ifdef CONFIG_DRIVER_SPI_IMX_2_3
--	[SPI_IMX_VER_2_3] = {
--		.chipselect = cspi_2_3_chipselect,
--		.xchg_single = cspi_2_3_xchg_single,
--		.init = cspi_2_3_init,
--	},
--#endif
-+static struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
-+	.chipselect = cspi_2_3_chipselect,
-+	.xchg_single = cspi_2_3_xchg_single,
-+	.init = cspi_2_3_init,
- };
-+#endif
- 
- static int imx_spi_dt_probe(struct imx_spi *imx)
- {
-@@ -526,7 +505,7 @@ static int imx_spi_probe(struct device_d *dev)
- 	struct spi_master *master;
- 	struct imx_spi *imx;
- 	struct spi_imx_master *pdata = dev->platform_data;
--	enum imx_spi_devtype version;
-+	struct spi_imx_devtype_data *devdata;
- 	int ret;
- 
- 	imx = xzalloc(sizeof(*imx));
-@@ -554,19 +533,19 @@ static int imx_spi_probe(struct device_d *dev)
- 
- #ifdef CONFIG_DRIVER_SPI_IMX_0_0
- 	if (cpu_is_mx27())
--		version = SPI_IMX_VER_0_0;
-+		devdata = &spi_imx_devtype_data_0_0;
- #endif
- #ifdef CONFIG_DRIVER_SPI_IMX_0_7
- 	if (cpu_is_mx25() || cpu_is_mx35())
--		version = SPI_IMX_VER_0_7;
-+		devdata = &spi_imx_devtype_data_0_7;
- #endif
- #ifdef CONFIG_DRIVER_SPI_IMX_2_3
- 	if (cpu_is_mx51() || cpu_is_mx53() || cpu_is_mx6())
--		version = SPI_IMX_VER_2_3;
-+		devdata = &spi_imx_devtype_data_2_3;
- #endif
--	imx->chipselect = spi_imx_devtype_data[version].chipselect;
--	imx->xchg_single = spi_imx_devtype_data[version].xchg_single;
--	imx->init = spi_imx_devtype_data[version].init;
-+	imx->chipselect = devdata->chipselect;
-+	imx->xchg_single = devdata->xchg_single;
-+	imx->init = devdata->init;
- 	imx->regs = dev_request_mem_region(dev, 0);
- 
- 	imx->init(imx);
--- 
-1.8.5.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TGUgTW9uLCAxMCBGZWIgMjAxNCAwOTozMzo1OCArMDEwMCwKU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPiBhIMOpY3JpdCA6Cgo+IE9uIFNhdCwgRmViIDA4LCAyMDE0IGF0IDA2
+OjI2OjQxUE0gKzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiDQodGD0LHQsdC+0YLQ
+sCwgIDgg0YTQtdCy0YDQsNC70Y8gMjAxNCwgMTU6MTYgKzAxOjAwINC+0YIgRXJpYyBCw6luYXJk
+IDxlcmljQGV1a3JlYS5jb20+Ogo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVy
+aWNAZXVrcmVhLmNvbT4KPiA+ID4gLS0tCj4gPiA+IGFyY2gvYXJtL2R0cy9pbXg1My5kdHNpIHwg
+OSArKysrKysrKysKPiA+ID4gMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQo+ID4gPiAK
+PiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9pbXg1My5kdHNpIGIvYXJjaC9hcm0vZHRz
+L2lteDUzLmR0c2kKPiA+ID4gaW5kZXggNjc4NTQ3Yy4uOTE2NTliOCAxMDA2NDQKPiA+ID4gLS0t
+IGEvYXJjaC9hcm0vZHRzL2lteDUzLmR0c2kKPiA+ID4gKysrIGIvYXJjaC9hcm0vZHRzL2lteDUz
+LmR0c2kKPiA+ID4gQEAgLTc1LDYgKzc1LDE1IEBACj4gPiA+IGludGVycnVwdC1wYXJlbnQgPSA8
+JnR6aWM+Owo+ID4gPiByYW5nZXM7Cj4gPiA+IAo+ID4gPiArCQlzYXRhOiBzYXRhQDEwMDAwMDAw
+IHsKPiA+ID4gKwkJCWNvbXBhdGlibGUgPSAiZnNsLGlteDUzLWFoY2kiOwo+ID4gPiArCQkJcmVn
+ID0gPDB4MTAwMDAwMDAgMHgxMDAwPjsKPiA+ID4gKwkJCWludGVycnVwdHMgPSA8Mjg+Owo+ID4g
+PiArCQkJY2xvY2tzID0gPCZjbGtzIDE3Mz4sIDwmY2xrcyA1PiwgPCZjbGtzIDE4OD47Cj4gPiA+
+ICsJCQljbG9jay1uYW1lcyA9ICJzYXRhIiwgImFoYiIsICJwZXIiOwo+ID4gPiArCQkJc3RhdHVz
+ID0gImRpc2FibGVkIjsKPiA+ID4gKwkJfTsKPiA+IAo+ID4gU2FzY2hhLCB3ZSBzdG9wIGNoYW5n
+aW5nIERUUyBvZiB0aGUga2VybmVsIG9yIG5vdD8KPiA+IFdoYXQgaXMgdGhlIHVsdGltYXRlIHNv
+bHV0aW9uPwo+IAo+IFdoYXQgZG8geW91IHN1Z2dlc3QgZm9yIHRoZSBjYXNlIGFib3ZlPyBBIGlt
+eDUzLWJiLmR0c2kgaW5jbHVkZWQgZnJvbQo+IGlteDUzLmR0c2k/IEkgdGhpbmsgZGlzYWxsb3dp
+bmcgYWhjaSBzdXBwb3J0IGZvciBiYXJlYm94IGlmIGl0J3Mgbm90Cj4gdXBzdHJlYW0gaW4gTGlu
+dXggaXMgbm90IGEgZ29vZCBvcHRpb24uCj4gCml0J3MgaW4gbGludXgtbmV4dCA6Cmh0dHA6Ly9n
+aXQua2VybmVsLm9yZy9jZ2l0L2xpbnV4L2tlcm5lbC9naXQvbmV4dC9saW51eC1uZXh0LmdpdC90
+cmVlL2FyY2gvYXJtL2Jvb3QvZHRzL2lteDUzLmR0c2kjbjk0CgpFcmljCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
