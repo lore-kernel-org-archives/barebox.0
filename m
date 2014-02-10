@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCmuU-0004QY-EX
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 09:12:15 +0000
-Date: Mon, 10 Feb 2014 10:11:52 +0100
+ id 1WCmy3-0004V7-8U
+ for barebox@lists.infradead.org; Mon, 10 Feb 2014 09:15:56 +0000
+Date: Mon, 10 Feb 2014 10:15:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140210091152.GM17250@pengutronix.de>
+Message-ID: <20140210091533.GN17250@pengutronix.de>
 References: <1391868972-31978-1-git-send-email-eric@eukrea.com>
+ <1391868972-31978-2-git-send-email-eric@eukrea.com>
  <1391869601.90335932@f192.i.mail.ru>
- <20140210083358.GH17250@pengutronix.de>
- <1392021644.417588038@f387.i.mail.ru>
- <20140210094819.5a1a2d28@e6520eb>
- <20140210085235.GJ17250@pengutronix.de>
- <20140210095418.1b36b791@e6520eb>
- <20140210090347.GK17250@pengutronix.de>
+ <20140210090735.GL17250@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140210090347.GK17250@pengutronix.de>
+In-Reply-To: <20140210090735.GL17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,63 +21,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/7] ARM: i.MX53: Add sata to devicetree
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Feb 10, 2014 at 10:03:47AM +0100, Sascha Hauer wrote:
-> > > > > I suggest just sync imx53.dtsi from the linux-next, as a result we will have
-> > > > > non-modified version of kernel templates.
-> > > > > Change as above, makes imx53.dtsi different for kernel and barebox.
-> > > > > This is part of sata node from the kernel:
-> > > > > 		sata: sata@10000000 {
-> > > > > 			compatible = "fsl,imx53-ahci";
-> > > > > 			reg = <0x10000000 0x1000>;
-> > > > > 			interrupts = <28>;
-> > > > > 			clocks = <&clks IMX5_CLK_SATA_GATE>,
-> > > > > 				 <&clks IMX5_CLK_SATA_REF>,
-> > > > > 				 <&clks IMX5_CLK_AHB>;
-> > > > > 			clock-names = "sata_gate", "sata_ref", "ahb";
-> > > > > 			status = "disabled";
-> > > > > 		};
-> > > > > 
-> > > > that's possible, I don't know why the clock are changed in barebox vs
-> > > > linux and don't know if that's needed (I got inspiration from other
-> > > > nodes)
-> > > 
-> > > They are identical, it's only that Alexander introduced defines for the
-> > > clocks in Linux whereas in barebox we have the older versions with
-> > > plain numbers.
-> > > 
-> > clock-names are also changed as well as the order (taken from other
-> > nodes).
-> 
-> Oh, you are right. The order doesn't matter, but the names should be
-> identical. We should use the same names in barebox as in the kernel, be
-> it with defines or with numbers.
-
-So, Eric, to sort that out for now:
-
-- Please update the SATA entry to be compatible with the kernel, but do
-  not use the Linux-next dts. This means use plain numbers, but the
-  correct clock names.
-- Remove the dr_mode = "host" line
-
-With these changes this series should be fine for merging.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBGZWIgMTAsIDIwMTQgYXQgMTA6MDc6MzVBTSArMDEwMCwgU2FzY2hhIEhhdWVyIHdy
+b3RlOgo+IE9uIFNhdCwgRmViIDA4LCAyMDE0IGF0IDA2OjI2OjQxUE0gKzA0MDAsIEFsZXhhbmRl
+ciBTaGl5YW4gd3JvdGU6Cj4gPiDQodGD0LHQsdC+0YLQsCwgIDgg0YTQtdCy0YDQsNC70Y8gMjAx
+NCwgMTU6MTYgKzAxOjAwINC+0YIgRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ogo+ID4g
+PiBTaWduZWQtb2ZmLWJ5OiBFcmljIELDqW5hcmQgPGVyaWNAZXVrcmVhLmNvbT4KPiA+ID4gLS0t
+Cj4gPiA+IGFyY2gvYXJtL2R0cy9pbXg1My5kdHNpIHwgOSArKysrKysrKysKPiA+ID4gMSBmaWxl
+IGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKQo+ID4gPiAKPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtL2R0cy9pbXg1My5kdHNpIGIvYXJjaC9hcm0vZHRzL2lteDUzLmR0c2kKPiA+ID4gaW5kZXgg
+Njc4NTQ3Yy4uOTE2NTliOCAxMDA2NDQKPiA+ID4gLS0tIGEvYXJjaC9hcm0vZHRzL2lteDUzLmR0
+c2kKPiA+ID4gKysrIGIvYXJjaC9hcm0vZHRzL2lteDUzLmR0c2kKPiA+ID4gQEAgLTc1LDYgKzc1
+LDE1IEBACj4gPiA+IGludGVycnVwdC1wYXJlbnQgPSA8JnR6aWM+Owo+ID4gPiByYW5nZXM7Cj4g
+PiA+IAo+ID4gPiArCQlzYXRhOiBzYXRhQDEwMDAwMDAwIHsKPiA+ID4gKwkJCWNvbXBhdGlibGUg
+PSAiZnNsLGlteDUzLWFoY2kiOwo+ID4gPiArCQkJcmVnID0gPDB4MTAwMDAwMDAgMHgxMDAwPjsK
+PiA+ID4gKwkJCWludGVycnVwdHMgPSA8Mjg+Owo+ID4gPiArCQkJY2xvY2tzID0gPCZjbGtzIDE3
+Mz4sIDwmY2xrcyA1PiwgPCZjbGtzIDE4OD47Cj4gPiA+ICsJCQljbG9jay1uYW1lcyA9ICJzYXRh
+IiwgImFoYiIsICJwZXIiOwo+ID4gPiArCQkJc3RhdHVzID0gImRpc2FibGVkIjsKPiA+ID4gKwkJ
+fTsKPiA+IAo+ID4gU2FzY2hhLCB3ZSBzdG9wIGNoYW5naW5nIERUUyBvZiB0aGUga2VybmVsIG9y
+IG5vdD8KPiA+IFdoYXQgaXMgdGhlIHVsdGltYXRlIHNvbHV0aW9uPwo+IAo+IEkgZG9uJ3Qgd2Fu
+dCB0byBnaXZlIG91dCB0aGUgcnVsZSAiT25seSB1c2UgdW5tb2RpZmllZCBkdHMgaW4gYmFyZWJv
+eCIKPiBhbmQgdGhlbiB1c2UgZHRzIGZpbGVzIGZyb20gTGludXgtbmV4dC4gSWYgd2Ugb25seSB3
+YW50IHRvIHVzZQo+IHVubW9kaWZpZWQgZHRzIGZpbGVzIHdlIGhhdmUgdG8gdXNlIHRoZSBvbmVz
+IGZyb20gTGludXggbWFpbmxpbmUuCj4gT3RoZXJ3aXNlIHdlIGFyZSBkb29tZWQgd2hlbiBhIHB1
+bGwgcmVxdWVzdCBkb2Vzbid0IG1ha2UgaXQgaW4gdGhlCj4gS2VybmVsIGFuZCB0aGVuIHRoZSBk
+dHMgZmlsZXMgYXJlIGNoYW5nZWQgc2lnbmlmaWNhbnRseSBiZWZvcmUgdGhlCj4gbmV4dCBtZXJn
+ZSB3aW5kb3csIGFzIGp1c3QgaGFwcGVucyB3aXRoIFNoYXducyBkdHMgY2hhbmdlcyBmb3IgMy4x
+NC4KClNvIHdoYXQgSSBzdWdnZXN0IGZvciBub3cgaXM6CgotIEkgd2VsY29tZSBhbGwgcGF0Y2hl
+cyBtb3ZpbmcgdGhlIGNsZWFybHkgYmFyZWJveCBzcGVjaWZpYyBzdHVmZiB0bwogIHNlcGFyYXRl
+IGZpbGVzLCBsaWtlIFNlYmFzdGlhbiBhbHJlYWR5IHN0YXJ0ZWQuCi0gVXNlIHBsYWluIExpbnV4
+IEtlcm5lbCBkdHMgZmlsZXMgd2hlcmUgcG9zc2libGUuIEkgd2lsbCB0cnkgYW5kIGRlbnkKICBh
+bGwgY2hhbmdlcyB0byB0aGVzZSBmaWxlcyBleGNlcHQgInN5bmMgdG8gTGludXgteC55IgotIExl
+YXZlIHRoZSBpLk1YIGR0cyBmaWxlcyBob3cgdGhleSBhcmUgdW50aWwgdGhlIGNoYW5nZXMgY3Vy
+cmVudGx5CiAgcXVldWVkIGluIExpbnV4LW5leHQgaGl0IG1haW5saW5lLgoKU2FzY2hhCgotLSAK
+UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAg
+ICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEz
+NyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKQW10
+c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIx
+LTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
