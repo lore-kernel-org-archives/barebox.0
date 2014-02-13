@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDtUV-0001IP-UV
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:26:00 +0000
+ id 1WDtUa-0001J3-KD
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:26:08 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 11:25:30 +0100
-Message-Id: <1392287135-445-3-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:25:32 +0100
+Message-Id: <1392287135-445-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,45 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] device: remove parameters when unregistering a device
+Subject: [PATCH 5/8] mtd: Only call of_parse_partitions when the mtd has a
+ parent
 To: barebox@lists.infradead.org
 
-Otherwise we loose memory on each device_unregister. The ethernet
-code used to do this before calling unregister_device. This can
-now be removed.
+mtd->parent is optional so we can't derefence mtd->parent->device_node
+without checking mtd->parent.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/driver.c | 2 ++
- net/eth.c             | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index b5fe346..37560fd 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -182,6 +182,8 @@ int unregister_device(struct device_d *old_dev)
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index e4def2a..ecdd6c7 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -407,7 +407,9 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
+ 	}
  
- 	dev_dbg(old_dev, "unregister\n");
- 
-+	dev_remove_parameters(old_dev);
+ 	devfs_create(&mtd->cdev);
+-	of_parse_partitions(&mtd->cdev, mtd->parent->device_node);
 +
- 	if (old_dev->driver)
- 		old_dev->bus->remove(old_dev);
++	if (mtd->parent)
++		of_parse_partitions(&mtd->cdev, mtd->parent->device_node);
  
-diff --git a/net/eth.c b/net/eth.c
-index 37dd9e0..8c4798c 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -380,8 +380,6 @@ void eth_unregister(struct eth_device *edev)
- 	if (edev == eth_current)
- 		eth_current = NULL;
- 
--	dev_remove_parameters(&edev->dev);
--
- 	if (IS_ENABLED(CONFIG_OFDEVICE) && edev->nodepath)
- 		free(edev->nodepath);
- 
+ 	list_for_each_entry(hook, &mtd_register_hooks, hook)
+ 		if (hook->add_mtd_device)
 -- 
 1.8.5.3
 
