@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x236.google.com ([2a00:1450:4013:c01::236])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDtzX-0002XI-44
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:58:04 +0000
-Received: by mail-ea0-f182.google.com with SMTP id r15so5038704ead.27
- for <barebox@lists.infradead.org>; Thu, 13 Feb 2014 02:57:39 -0800 (PST)
-Date: Thu, 13 Feb 2014 12:08:58 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140213110856.GA8468@x61s.campuswlan.hs-rm.de>
-References: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
+ id 1WDtkt-0001ux-MC
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:42:57 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:42:25 +0100
+Message-Id: <1392288152-14821-8-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1392288152-14821-1-git-send-email-s.hauer@pengutronix.de>
+References: <1392288152-14821-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,117 +16,103 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/8] mtd: Simplify partitions
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 07/14] ARM: i.MX51 vincell: Switch to imximage
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile                               |  1 +
+ arch/arm/boards/guf-vincell/Makefile            |  2 +-
+ arch/arm/boards/guf-vincell/flash-header.imxcfg |  3 ++
+ arch/arm/boards/guf-vincell/flash_header.c      | 41 -------------------------
+ 4 files changed, 5 insertions(+), 42 deletions(-)
+ create mode 100644 arch/arm/boards/guf-vincell/flash-header.imxcfg
+ delete mode 100644 arch/arm/boards/guf-vincell/flash_header.c
 
-only some small nitpicks.
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index a6ed295..56d29fe 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -214,6 +214,7 @@ imxcfg-$(CONFIG_MACH_SABRESD) += $(boarddir)/freescale-mx6-sabresd/flash-header.
+ imxcfg-$(CONFIG_MACH_MX6Q_ARM2) += $(boarddir)/freescale-mx6-arm2/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_CCMX51) += $(boarddir)/ccxmx51/flash-header.imxcfg
+ imxcfg-$(CONFIG_MACH_TX51) += $(boarddir)/karo-tx51/flash-header-karo-tx51.imxcfg
++imxcfg-$(CONFIG_MACH_GUF_VINCELL) += $(boarddir)/guf-vincell/flash-header.imxcfg
+ ifneq ($(imxcfg-y),)
+ CFG_barebox.imximg := $(imxcfg-y)
+ KBUILD_IMAGE  := barebox.imximg
+diff --git a/arch/arm/boards/guf-vincell/Makefile b/arch/arm/boards/guf-vincell/Makefile
+index aa30b7f..01c7a25 100644
+--- a/arch/arm/boards/guf-vincell/Makefile
++++ b/arch/arm/boards/guf-vincell/Makefile
+@@ -1,2 +1,2 @@
+ obj-y += board.o
+-lwl-y += flash_header.o lowlevel.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/guf-vincell/flash-header.imxcfg b/arch/arm/boards/guf-vincell/flash-header.imxcfg
+new file mode 100644
+index 0000000..bb0c318
+--- /dev/null
++++ b/arch/arm/boards/guf-vincell/flash-header.imxcfg
+@@ -0,0 +1,3 @@
++soc imx53
++loadaddr 0xf8020000
++dcdofs 0x400
+diff --git a/arch/arm/boards/guf-vincell/flash_header.c b/arch/arm/boards/guf-vincell/flash_header.c
+deleted file mode 100644
+index df480d2..0000000
+--- a/arch/arm/boards/guf-vincell/flash_header.c
++++ /dev/null
+@@ -1,41 +0,0 @@
+-/*
+- * Copyright (C) 2011 Marc Kleine-Budde <mkl@pengutronix.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <sizes.h>
+-#include <asm/byteorder.h>
+-#include <asm/barebox-arm-head.h>
+-#include <mach/imx-flash-header.h>
+-
+-void __naked __flash_header_start go(void)
+-{
+-	barebox_arm_head();
+-}
+-
+-#define APP_DEST	0xf8020000
+-
+-struct imx_flash_header_v2 __flash_header_section flash_header = {
+-	.header.tag		= IVT_HEADER_TAG,
+-	.header.length		= cpu_to_be16(32),
+-	.header.version		= IVT_VERSION,
+-
+-	.entry			= APP_DEST + 0x1000,
+-	.dcd_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, dcd),
+-	.boot_data_ptr		= APP_DEST + 0x400 + offsetof(struct imx_flash_header_v2, boot_data),
+-	.self			= APP_DEST + 0x400,
+-
+-	.boot_data.start	= APP_DEST,
+-	.boot_data.size		= DCD_BAREBOX_SIZE,
+-};
+-- 
+1.8.5.3
 
-On Thu, Feb 13, 2014 at 11:25:28AM +0100, Sascha Hauer wrote:
-> Embed the partition information in struct mtd_info. This makes the
-> mtd partition code simpler.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/mtd/partition.c | 75 ++++++++++++++++++++-----------------------------
->  include/linux/mtd/mtd.h |  5 +++-
->  2 files changed, 34 insertions(+), 46 deletions(-)
-> 
-> diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-> index 85f486d..7431fc1 100644
-> --- a/drivers/mtd/partition.c
-> +++ b/drivers/mtd/partition.c
-> @@ -4,29 +4,19 @@
->  #include <linux/err.h>
->  #include <linux/mtd/mtd.h>
->  
-...
-> +	struct mtd_info *part;
->  	int start = 0, end = 0, i;
->  
-> -	slave = xzalloc(sizeof(*slave));
-> -	slave_mtd = &slave->mtd;
-> +	part = xzalloc(sizeof(*part));
->  
-> -	memcpy(slave_mtd, mtd, sizeof(*slave));
-> +	memcpy(part, mtd, sizeof(*part));
-
-Maybe we should fixup this commit with patch:
-
-[PATCH 6/8] mtd: partition: only copy selected fields to partition
->  
->  	/*
->  	 * find the number of eraseregions the partition includes.
-> @@ -118,26 +101,28 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset, size_t si
->  			end = i;
->  	}
->  
-> -	slave_mtd->numeraseregions = end - start;
-> +	part->numeraseregions = end - start;
->  
-> -	slave_mtd->read = mtd_part_read;
-> -	slave_mtd->write = mtd_part_write;
-> -	slave_mtd->erase = mtd_part_erase;
-> -	slave_mtd->block_isbad = mtd->block_isbad ? mtd_part_block_isbad : NULL;
-> -	slave_mtd->block_markbad = mtd->block_markbad ? mtd_part_block_markbad : NULL;
-> -	slave_mtd->size = size;
-> -	slave_mtd->name = strdup(name);
-> +	part->read = mtd_part_read;
-> +	part->write = mtd_part_write;
-> +	part->erase = mtd_part_erase;
-> +	part->block_isbad = mtd->block_isbad ? mtd_part_block_isbad : NULL;
-> +	part->block_markbad = mtd->block_markbad ? mtd_part_block_markbad : NULL;
-> +	part->size = size;
-> +	part->name = strdup(name);
->  
-> -	slave->offset = offset;
-> -	slave->master = mtd;
-> +	part->master_offset = offset;
-> +	part->master = mtd;
->  
-> -	return slave_mtd;
-> +	return part;
->  }
->  
-> -void mtd_del_partition(struct mtd_info *mtd)
-> +int mtd_del_partition(struct mtd_info *part)
->  {
-> -	struct mtd_part *part = PART(mtd);
-> +	if (!part->master)
-> +		return -EINVAL;
->  
-> -	free(mtd->name);
-I think this should be free(part->name);
-
-...
-Yea I know it's only a bootloader but I can't stop to say something to
-this. :-(
-
->  	free(part);
-> +
-> +	return 0;
->  }
-> diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-> index 402e497..347443b 100644
-> --- a/include/linux/mtd/mtd.h
-> +++ b/include/linux/mtd/mtd.h
-> @@ -217,6 +217,9 @@ struct mtd_info {
->  	/* If true erasing bad blocks is allowed, this is set via a device parameter */
->  	bool allow_erasebad;
->  	int p_allow_erasebad;
-> +
-> +	struct mtd_info *master;
-> +	uint64_t master_offset;
-Currently we have only u_int32_t like for total mtd size. Do you
-plan a support for mtd devices which a greater than 4GB? :-)
-
-- Alex
 
 _______________________________________________
 barebox mailing list
