@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WE4pF-0006kj-1v
+ id 1WE4pF-0006kk-1x
  for barebox@lists.infradead.org; Thu, 13 Feb 2014 22:32:09 +0000
 Received: from tellur.localdomain (p57B5F67D.dip0.t-ipconnect.de
- [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 2521B18B425E
+ [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 1214618B425F
  for <barebox@lists.infradead.org>; Thu, 13 Feb 2014 23:31:17 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 13 Feb 2014 23:32:44 +0100
-Message-Id: <1392330771-21671-1-git-send-email-dev@lynxeye.de>
+Date: Thu, 13 Feb 2014 23:32:45 +0100
+Message-Id: <1392330771-21671-2-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1392330771-21671-1-git-send-email-dev@lynxeye.de>
+References: <1392330771-21671-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/7] Lowlevel Tegra3 support
+Subject: [PATCH 1/7] tegra: add -fno-jump-tables to lowlevel code
 To: barebox@lists.infradead.org
 
-This is the very basic Tegra3 support. All highlevel things
-like pinmux and other drivers still missing.
+Lowlevel code runs when not relocated yet, so we have to make extra sure
+not to emit jump-tables with absolute adresses when evaluating switch
+statements.
 
-Allows to start the high performance CPU cluster on Tegra3
-and start executing code there.
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/mach-tegra/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Lucas Stach (7):
-  tegra: add -fno-jump-tables to lowlevel code
-  tegra: add break to switch statements
-  tegra: add lowlevel delay function
-  tegra: add Tegra3 to relevant lowlevel functions
-  tegra: add lowlevel DVC
-  tegra: set AHB clock rate early
-  tegra: add Tegra3 startup
-
- arch/arm/mach-tegra/Makefile                    |  4 +-
- arch/arm/mach-tegra/include/mach/lowlevel-dvc.h | 71 +++++++++++++++++++++++++
- arch/arm/mach-tegra/include/mach/lowlevel.h     | 68 ++++++++++++++++++++++-
- arch/arm/mach-tegra/include/mach/tegra20-car.h  | 12 +++++
- arch/arm/mach-tegra/include/mach/tegra30-car.h  | 31 +++++++++++
- arch/arm/mach-tegra/include/mach/tegra30-flow.h | 23 ++++++++
- arch/arm/mach-tegra/tegra_avp_init.c            | 46 +++++++++++++++-
- 7 files changed, 251 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/mach-tegra/include/mach/lowlevel-dvc.h
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra30-car.h
- create mode 100644 arch/arm/mach-tegra/include/mach/tegra30-flow.h
-
+diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
+index 0fa8430..791d5d4 100644
+--- a/arch/arm/mach-tegra/Makefile
++++ b/arch/arm/mach-tegra/Makefile
+@@ -1,5 +1,5 @@
+-CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
+-CFLAGS_pbl-tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t
++CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t -fno-jump-tables
++CFLAGS_pbl-tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t -fno-jump-tables
+ lwl-y += tegra_avp_init.o
+ lwl-y += tegra_maincomplex_init.o
+ obj-y += tegra20.o
 -- 
 1.8.5.3
 
