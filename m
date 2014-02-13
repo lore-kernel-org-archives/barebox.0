@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDt6J-0000Ry-C8
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:00:59 +0000
+ id 1WDt6O-0000TE-By
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:01:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 11:00:20 +0100
-Message-Id: <1392285621-17485-5-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:00:19 +0100
+Message-Id: <1392285621-17485-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392285621-17485-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392285621-17485-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,29 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: dts: i.MX6: Add pwm aliases
+Subject: [PATCH 3/5] ARM: i.MX6: Add PWM clk lookups
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6qdl.dtsi | 4 ++++
+ arch/arm/mach-imx/clk-imx6.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-index 735569f..70424d2 100644
---- a/arch/arm/dts/imx6qdl.dtsi
-+++ b/arch/arm/dts/imx6qdl.dtsi
-@@ -30,6 +30,10 @@
- 		mmc1 = &usdhc2;
- 		mmc2 = &usdhc3;
- 		mmc3 = &usdhc4;
-+		pwm0 = &pwm1;
-+		pwm1 = &pwm2;
-+		pwm2 = &pwm3;
-+		pwm3 = &pwm4;
- 		serial0 = &uart1;
- 		serial1 = &uart2;
- 		serial2 = &uart3;
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index c32b6cc..d4de737 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -305,6 +305,10 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[usbphy1], MX6_USBPHY1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[usbphy2], MX6_USBPHY2_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[enfc_podf], MX6_GPMI_BASE_ADDR, NULL);
++	clkdev_add_physbase(clks[ipg_per], MX6_PWM1_BASE_ADDR, "per");
++	clkdev_add_physbase(clks[ipg_per], MX6_PWM2_BASE_ADDR, "per");
++	clkdev_add_physbase(clks[ipg_per], MX6_PWM3_BASE_ADDR, "per");
++	clkdev_add_physbase(clks[ipg_per], MX6_PWM4_BASE_ADDR, "per");
+ 
+ 	writel(0xffffffff, ccm_base + CCGR0);
+ 	writel(0xffffffff, ccm_base + CCGR1);
 -- 
 1.8.5.3
 
