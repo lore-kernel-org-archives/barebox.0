@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDspG-0008T9-E2
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 09:43:23 +0000
+ id 1WDspB-0008Su-Ig
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 09:43:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 10:42:52 +0100
-Message-Id: <1392284573-22410-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 10:42:53 +0100
+Message-Id: <1392284573-22410-5-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392284573-22410-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392284573-22410-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,31 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] USB gadget: fsl: Bail out if no udc exists
+Subject: [PATCH 4/4] USB gadget: dfu: propagate error from usb_gadget_poll
 To: barebox@lists.infradead.org
 
-When there is no udc registered bail out in usb_gadget_poll
-instead of crashing the system.
+So that the dfu command can bail out with an error when usb_gadget_poll
+fails.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/fsl_udc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/gadget/dfu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/fsl_udc.c b/drivers/usb/gadget/fsl_udc.c
-index 993c7eb..50bae78 100644
---- a/drivers/usb/gadget/fsl_udc.c
-+++ b/drivers/usb/gadget/fsl_udc.c
-@@ -1938,6 +1938,9 @@ int usb_gadget_poll(void)
- 	u32 irq_src;
- 	int status = 0;
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index e15fc41..5d6d400 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -682,6 +682,8 @@ static struct usb_composite_driver dfu_driver = {
  
-+	if (!udc)
-+		return -ENODEV;
+ int usb_dfu_register(struct usb_dfu_pdata *pdata)
+ {
++	int ret;
 +
- 	/* Disable ISR for OTG host mode */
- 	if (udc->stopped)
- 		return -EIO;
+ 	dfu_devs = pdata->alts;
+ 	dfu_num_alt = pdata->num_alts;
+ 	dfu_dev_descriptor.idVendor = pdata->idVendor;
+@@ -692,7 +694,10 @@ int usb_dfu_register(struct usb_dfu_pdata *pdata)
+ 	usb_composite_register(&dfu_driver);
+ 
+ 	while (1) {
+-		usb_gadget_poll();
++		ret = usb_gadget_poll();
++		if (ret < 0)
++			return ret;
++
+ 		if (ctrlc() || dfudetach)
+ 			goto out;
+ 	}
 -- 
 1.8.5.3
 
