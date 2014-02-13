@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDtku-0001v1-9f
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:43:09 +0000
+ id 1WDtUz-0001N5-Jv
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:26:30 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 11:42:28 +0100
-Message-Id: <1392288152-14821-11-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392288152-14821-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392288152-14821-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:25:33 +0100
+Message-Id: <1392287135-445-6-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
+References: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,100 +21,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] ARM: i.MX53: TQ tqma53: Switch to imx-image
+Subject: [PATCH 6/8] mtd: partition: only copy selected fields to partition
 To: barebox@lists.infradead.org
+
+struct mtd_info contains members which should not be copied
+to the new partition, like for example the class_dev, so
+only copy selected members of struct mtd_info to the partition.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Makefile                          |  1 +
- arch/arm/boards/tqma53/flash-header.imxcfg | 66 ++++++++++++++++++++++++++++++
- 2 files changed, 67 insertions(+)
- create mode 100644 arch/arm/boards/tqma53/flash-header.imxcfg
+ drivers/mtd/partition.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 6be1bd4..d6744a6 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -217,6 +217,7 @@ imxcfg-$(CONFIG_MACH_TX51) += $(boarddir)/karo-tx51/flash-header-karo-tx51.imxcf
- imxcfg-$(CONFIG_MACH_GUF_VINCELL) += $(boarddir)/guf-vincell/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_EUKREA_CPUIMX51SD) += $(boarddir)/eukrea_cpuimx51/flash-header.imxcfg
- imxcfg-$(CONFIG_MACH_FREESCALE_MX25_3STACK) += $(boarddir)/freescale-mx25-3-stack/flash-header.imxcfg
-+imxcfg-$(CONFIG_MACH_TQMA53) += $(boarddir)/tqma53/flash-header.imxcfg
- ifneq ($(imxcfg-y),)
- CFG_barebox.imximg := $(imxcfg-y)
- KBUILD_IMAGE  := barebox.imximg
-diff --git a/arch/arm/boards/tqma53/flash-header.imxcfg b/arch/arm/boards/tqma53/flash-header.imxcfg
-new file mode 100644
-index 0000000..e161a35
---- /dev/null
-+++ b/arch/arm/boards/tqma53/flash-header.imxcfg
-@@ -0,0 +1,66 @@
-+soc imx53
-+loadaddr 0x70000000
-+dcdofs 0x400
-+
-+/* IOMUX */
-+wm 32 0x53fa8554 cpu_to_be32(0x00300000
-+wm 32 0x53fa8558 cpu_to_be32(0x00300040
-+wm 32 0x53fa8560 cpu_to_be32(0x00300000
-+wm 32 0x53fa8564 cpu_to_be32(0x00300040
-+wm 32 0x53fa8568 cpu_to_be32(0x00300040
-+wm 32 0x53fa8570 cpu_to_be32(0x00300000
-+wm 32 0x53fa8574 cpu_to_be32(0x00300000
-+wm 32 0x53fa8578 cpu_to_be32(0x00300000
-+wm 32 0x53fa857c cpu_to_be32(0x00300040
-+wm 32 0x53fa8580 cpu_to_be32(0x00300040
-+wm 32 0x53fa8584 cpu_to_be32(0x00300000
-+wm 32 0x53fa8588 cpu_to_be32(0x00300000
-+wm 32 0x53fa8590 cpu_to_be32(0x00300040
-+wm 32 0x53fa8594 cpu_to_be32(0x00300000
-+wm 32 0x53fa86f0 cpu_to_be32(0x00300000
-+wm 32 0x53fa86f4 cpu_to_be32(0x00000000
-+wm 32 0x53fa86fc cpu_to_be32(0x00000000
-+wm 32 0x53fa8714 cpu_to_be32(0x00000000
-+wm 32 0x53fa8718 cpu_to_be32(0x00300000
-+wm 32 0x53fa871c cpu_to_be32(0x00300000
-+wm 32 0x53fa8720 cpu_to_be32(0x00300000
-+wm 32 0x53fa8724 cpu_to_be32(0x04000000
-+wm 32 0x53fa8728 cpu_to_be32(0x00300000
-+wm 32 0x53fa872c cpu_to_be32(0x00300000
-+/* ESDCTL */
-+wm 32 0x63fd9088 cpu_to_be32(0x35343535
-+wm 32 0x63fd9090 cpu_to_be32(0x4d444c44
-+wm 32 0x63fd907c cpu_to_be32(0x01370138
-+wm 32 0x63fd9080 cpu_to_be32(0x013b013c
-+wm 32 0x63fd90f8 cpu_to_be32(0x00000800
-+#ifdef CONFIG_MACH_TQMA53_1GB_RAM
-+/* sync with u-boot: add WALAT for 4 chip variant */
-+wm 32 0x63fd9018 cpu_to_be32(0x00011740
-+wm 32 0x63fd9000 cpu_to_be32(0xc3190000
-+#else
-+wm 32 0x63fd9018 cpu_to_be32(0x00101740
-+wm 32 0x63fd9000 cpu_to_be32(0x83190000
-+#endif
-+wm 32 0x63fd900c cpu_to_be32(0x9f5152e3
-+wm 32 0x63fd9010 cpu_to_be32(0xb68e8a63
-+wm 32 0x63fd9014 cpu_to_be32(0x01ff00db
-+wm 32 0x63fd902c cpu_to_be32(0x000026d2
-+/* Engcm12377 / errata sheet 03/2013 */
-+wm 32 0x63fd9030 cpu_to_be32(0x009f0e23
-+wm 32 0x63fd9008 cpu_to_be32(0x12273030
-+wm 32 0x63fd9004 cpu_to_be32(0x0002002d
-+wm 32 0x63fd901c cpu_to_be32(0x00008032
-+wm 32 0x63fd901c cpu_to_be32(0x00008033
-+wm 32 0x63fd901c cpu_to_be32(0x00028031
-+wm 32 0x63fd901c cpu_to_be32(0x052080b0
-+wm 32 0x63fd901c cpu_to_be32(0x04008040
-+wm 32 0x63fd901c cpu_to_be32(0x0000803a
-+wm 32 0x63fd901c cpu_to_be32(0x0000803b
-+wm 32 0x63fd901c cpu_to_be32(0x00028039
-+wm 32 0x63fd901c cpu_to_be32(0x05208138
-+wm 32 0x63fd901c cpu_to_be32(0x04008048
-+wm 32 0x63fd9020 cpu_to_be32(0x00005800
-+/* prevent reserved value, use default TZQ_CS */
-+wm 32 0x63fd9040 cpu_to_be32(0x05380003
-+wm 32 0x63fd9058 cpu_to_be32(0x00022227
-+wm 32 0x63fd901C cpu_to_be32(0x00000000
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index 7431fc1..450f281 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -83,7 +83,18 @@ struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset, size_t si
+ 
+ 	part = xzalloc(sizeof(*part));
+ 
+-	memcpy(part, mtd, sizeof(*part));
++	part->type = mtd->type;
++	part->flags = mtd->flags;
++	part->parent = mtd->parent;
++	part->erasesize = mtd->erasesize;
++	part->writesize = mtd->writesize;
++	part->writebufsize = mtd->writebufsize;
++	part->oobsize = mtd->oobsize;
++	part->oobavail = mtd->oobavail;
++	part->bitflip_threshold = mtd->bitflip_threshold;
++	part->ecclayout = mtd->ecclayout;
++	part->ecc_strength = mtd->ecc_strength;
++	part->subpage_sft = mtd->subpage_sft;
+ 
+ 	/*
+ 	 * find the number of eraseregions the partition includes.
 -- 
 1.8.5.3
 
