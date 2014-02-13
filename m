@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WCtOX-0001Fl-4y
- for barebox@lists.infradead.org; Mon, 10 Feb 2014 16:07:41 +0000
+ id 1WDsMA-0007cD-8a
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 09:13:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 10 Feb 2014 17:07:13 +0100
-Message-Id: <1392048433-22749-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392048433-22749-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392048433-22749-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 10:12:53 +0100
+Message-Id: <1392282773-7314-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,57 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] video: imx: Add a name to perclk
+Subject: [PATCH] read_file: Use read_full
 To: barebox@lists.infradead.org
 
-perclk should be named 'per' to make sure we get the correct clock.
+At least NFS does not fulfill read requests > 1024 bytes at once.
+Use read_full in read_file as read doesn't guarantee that the
+whole request can be read at once.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/clk-imx21.c | 2 +-
- arch/arm/mach-imx/clk-imx27.c | 2 +-
- drivers/video/imx.c           | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ fs/fs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/clk-imx21.c b/arch/arm/mach-imx/clk-imx21.c
-index 295ef3a..be9c466 100644
---- a/arch/arm/mach-imx/clk-imx21.c
-+++ b/arch/arm/mach-imx/clk-imx21.c
-@@ -164,7 +164,7 @@ static int imx21_ccm_probe(struct device_d *dev)
- 	clkdev_add_physbase(clks[ipg], MX21_I2C_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[ipg], MX21_SDHC1_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[ipg], MX21_SDHC2_BASE_ADDR, NULL);
--	clkdev_add_physbase(clks[lcdc_per_gate], MX21_LCDC_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[lcdc_per_gate], MX21_LCDC_BASE_ADDR, "per");
- 	clkdev_add_physbase(clks[lcdc_ahb_gate], MX21_LCDC_BASE_ADDR, "ahb");
- 	clkdev_add_physbase(clks[lcdc_ipg_gate], MX21_LCDC_BASE_ADDR, "ipg");
+diff --git a/fs/fs.c b/fs/fs.c
+index 7a57bc0..eed0fce 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -60,7 +60,8 @@ again:
+ 	if (fd < 0)
+ 		goto err_out;
  
-diff --git a/arch/arm/mach-imx/clk-imx27.c b/arch/arm/mach-imx/clk-imx27.c
-index c792261..2423627 100644
---- a/arch/arm/mach-imx/clk-imx27.c
-+++ b/arch/arm/mach-imx/clk-imx27.c
-@@ -237,7 +237,7 @@ static int imx27_ccm_probe(struct device_d *dev)
- 	clkdev_add_physbase(clks[per2_div], MX27_SDHC1_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per2_div], MX27_SDHC2_BASE_ADDR, NULL);
- 	clkdev_add_physbase(clks[per2_div], MX27_SDHC3_BASE_ADDR, NULL);
--	clkdev_add_physbase(clks[per3_gate], MX27_LCDC_BASE_ADDR, NULL);
-+	clkdev_add_physbase(clks[per3_gate], MX27_LCDC_BASE_ADDR, "per");
- 	clkdev_add_physbase(clks[lcdc_ahb_gate], MX27_LCDC_BASE_ADDR, "ahb");
- 	clkdev_add_physbase(clks[lcdc_ipg_gate], MX27_LCDC_BASE_ADDR, "ipg");
- 	clkdev_add_physbase(clks[ipg], MX27_FEC_BASE_ADDR, NULL);
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 6e2d8d6..05c6105 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -530,7 +530,7 @@ static int imxfb_probe(struct device_d *dev)
- 	fbi = xzalloc(sizeof(*fbi));
- 	info = &fbi->info;
+-	if (read(fd, buf, s.st_size) < s.st_size)
++	ret = read_full(fd, buf, s.st_size);
++	if (ret < 0)
+ 		goto err_out1;
  
--	fbi->per_clk = clk_get(dev, NULL);
-+	fbi->per_clk = clk_get(dev, "per");
- 	if (IS_ERR(fbi->per_clk))
- 		return PTR_ERR(fbi->per_clk);
- 
+ 	close(fd);
 -- 
 1.8.5.3
 
