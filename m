@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDtUV-0001IQ-UU
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:26:01 +0000
+ id 1WDtUV-0001IP-UV
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:26:00 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 11:25:31 +0100
-Message-Id: <1392287135-445-4-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:25:30 +0100
+Message-Id: <1392287135-445-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392287135-445-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,66 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] mtd: erase_info may be modified in mtd_erase
+Subject: [PATCH 3/8] device: remove parameters when unregistering a device
 To: barebox@lists.infradead.org
 
-erase_info may be modified by the mtd partition code, so
-set the address each time we call mtd_erase.
+Otherwise we loose memory on each device_unregister. The ethernet
+code used to do this before calling unregister_device. This can
+now be removed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/core.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/base/driver.c | 2 ++
+ net/eth.c             | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 6db1c6d..e4def2a 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -146,6 +146,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- {
- 	struct mtd_info *mtd = cdev->priv;
- 	struct erase_info erase;
-+	uint32_t addr;
- 	int ret;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index b5fe346..37560fd 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -182,6 +182,8 @@ int unregister_device(struct device_d *old_dev)
  
- 	ret = mtd_erase_align(mtd, &count, &offset);
-@@ -154,7 +155,7 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
+ 	dev_dbg(old_dev, "unregister\n");
  
- 	memset(&erase, 0, sizeof(erase));
- 	erase.mtd = mtd;
--	erase.addr = offset;
-+	addr = offset;
- 
- 	if (!mtd->block_isbad) {
- 		erase.len = count;
-@@ -164,22 +165,24 @@ static int mtd_op_erase(struct cdev *cdev, size_t count, loff_t offset)
- 	erase.len = mtd->erasesize;
- 
- 	while (count > 0) {
--		dev_dbg(cdev->dev, "erase %d %d\n", erase.addr, erase.len);
-+		dev_dbg(cdev->dev, "erase %d %d\n", addr, erase.len);
- 
- 		if (!mtd->allow_erasebad)
--			ret = mtd_block_isbad(mtd, erase.addr);
-+			ret = mtd_block_isbad(mtd, addr);
- 		else
- 			ret = 0;
- 
-+		erase.addr = addr;
++	dev_remove_parameters(old_dev);
 +
- 		if (ret > 0) {
--			printf("Skipping bad block at 0x%08x\n", erase.addr);
-+			printf("Skipping bad block at 0x%08x\n", addr);
- 		} else {
- 			ret = mtd_erase(mtd, &erase);
- 			if (ret)
- 				return ret;
- 		}
+ 	if (old_dev->driver)
+ 		old_dev->bus->remove(old_dev);
  
--		erase.addr += mtd->erasesize;
-+		addr += mtd->erasesize;
- 		count -= count > mtd->erasesize ? mtd->erasesize : count;
- 	}
+diff --git a/net/eth.c b/net/eth.c
+index 37dd9e0..8c4798c 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -380,8 +380,6 @@ void eth_unregister(struct eth_device *edev)
+ 	if (edev == eth_current)
+ 		eth_current = NULL;
+ 
+-	dev_remove_parameters(&edev->dev);
+-
+ 	if (IS_ENABLED(CONFIG_OFDEVICE) && edev->nodepath)
+ 		free(edev->nodepath);
  
 -- 
 1.8.5.3
