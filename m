@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDspB-0008Ss-Ij
+ id 1WDspB-0008Sr-Ii
  for barebox@lists.infradead.org; Thu, 13 Feb 2014 09:43:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WDsop-0006RS-L3
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:42:55 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1WDsop-0005qI-K3
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:42:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 10:42:50 +0100
-Message-Id: <1392284573-22410-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392284573-22410-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392284573-22410-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 10:42:49 +0100
+Message-Id: <1392284573-22410-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,33 +26,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] USB gadget: at91: return error when no udc is registered
+Subject: USB gadget / dfu fixes
 To: barebox@lists.infradead.org
 
-When no udc is registered it is clearly an error when usb_gadget_poll
-is called. Let the upper layers know that.
+This cleans up the error pathes in the USB gadget and dfu layer.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
+----------------------------------------------------------------
+Sascha Hauer (4):
+      USB gadget: at91: return error when no udc is registered
+      dfu command: check return values
+      USB gadget: fsl: Bail out if no udc exists
+      USB gadget: dfu: propagate error from usb_gadget_poll
+
+ commands/dfu.c                | 9 ++++++---
  drivers/usb/gadget/at91_udc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/usb/gadget/at91_udc.c b/drivers/usb/gadget/at91_udc.c
-index 6eeef7d..8ef1ad0 100644
---- a/drivers/usb/gadget/at91_udc.c
-+++ b/drivers/usb/gadget/at91_udc.c
-@@ -1327,7 +1327,7 @@ int usb_gadget_poll(void)
- 	u32 value;
- 
- 	if (!udc->udp_baseaddr)
--		return 0;
-+		return -ENODEV;
- 
- 	value = gpio_get_value(udc->board.vbus_pin);
- 	value ^= udc->board.vbus_active_low;
--- 
-1.8.5.3
-
+ drivers/usb/gadget/dfu.c      | 7 ++++++-
+ drivers/usb/gadget/fsl_udc.c  | 3 +++
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
 _______________________________________________
 barebox mailing list
