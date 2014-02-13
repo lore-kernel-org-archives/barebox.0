@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WDsqB-000059-CU
- for barebox@lists.infradead.org; Thu, 13 Feb 2014 09:44:19 +0000
+ id 1WDt64-0000RX-Gi
+ for barebox@lists.infradead.org; Thu, 13 Feb 2014 10:00:45 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 13 Feb 2014 10:43:57 +0100
-Message-Id: <1392284637-30475-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 13 Feb 2014 11:00:16 +0100
+Message-Id: <1392285621-17485-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bootm: Return error when devicetree file is not a dtb
+Subject: PWM patches
 To: barebox@lists.infradead.org
 
-We check whether the file passed as devicetree actually is a devicetree,
-but we missed to return an error if it's not. Fix this.
+This adds a logical device to the pwm chip so that users no longer
+interact with the hardware device. Also adds an i.MX PWM driver.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/bootm.c | 1 +
- 1 file changed, 1 insertion(+)
+Sascha
 
-diff --git a/common/bootm.c b/common/bootm.c
-index d62d011..12d3ee0 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -294,6 +294,7 @@ static int bootm_open_oftree(struct image_data *data, const char *oftree, int nu
- 	if (ft != filetype_oftree) {
- 		printf("%s is not an oftree but %s\n", oftree,
- 				file_type_to_string(ft));
-+		return -EINVAL;
- 	}
- 
- 	data->of_root_node = of_unflatten_dtb(NULL, fdt);
--- 
-1.8.5.3
+----------------------------------------------------------------
+Sascha Hauer (5):
+      PWM: Use a separate device for PWMs
+      PWM: pxa: use pwmx as devname
+      ARM: i.MX6: Add PWM clk lookups
+      ARM: dts: i.MX6: Add pwm aliases
+      PWM: Add i.MX PWM driver
 
+ arch/arm/dts/imx6qdl.dtsi    |   4 +
+ arch/arm/mach-imx/clk-imx6.c |   4 +
+ drivers/pwm/Kconfig          |   6 +
+ drivers/pwm/Makefile         |   3 +-
+ drivers/pwm/core.c           |  20 +++-
+ drivers/pwm/pwm-imx.c        | 269 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/pwm/pxa_pwm.c        |   2 +-
+ 7 files changed, 301 insertions(+), 7 deletions(-)
+ create mode 100644 drivers/pwm/pwm-imx.c
 
 _______________________________________________
 barebox mailing list
