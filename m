@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEFUq-0003j9-PJ
- for barebox@lists.infradead.org; Fri, 14 Feb 2014 09:55:50 +0000
-Message-ID: <1392371706.6153.8.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 14 Feb 2014 10:55:06 +0100
-In-Reply-To: <1392367839-15671-1-git-send-email-poggi.raph@gmail.com>
-References: <1392367839-15671-1-git-send-email-poggi.raph@gmail.com>
-Mime-Version: 1.0
+ id 1WEKjf-0004Ji-8T
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:31:28 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 14 Feb 2014 16:31:03 +0100
+Message-Id: <1392391863-27454-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,101 +14,121 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: add minimal support for the Freescale Quad UDOO Board
-To: =?ISO-8859-1?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mci: Fix version handling
+To: barebox@lists.infradead.org
 
-SGkgUmFwaGHDq2wsCgpBbSBGcmVpdGFnLCBkZW4gMTQuMDIuMjAxNCwgMDk6NTAgKzAxMDAgc2No
-cmllYiBSYXBoYcOrbCBQb2dnaToKPiBGcm9tOiBSYXBoYWVsIFBvZ2dpIDxwb2dnaS5yYXBoQGdt
-YWlsLmNvbT4KPiAKPiBBZGRpbmcgbWluaW1hbCBzdXBwb3J0IGZvciB0aGUgVURPTyBib2FyZC4K
-PiAKPiBGb3IgbW9yZSBpbmZvcm1hdGlvbiBhYm91dCB0aGUgYm9hcmQ6IGh0dHA6Ly93d3cudWRv
-by5vcmcvCj4gCj4gU2lnbmVkLW9mZi1ieTogUmFwaGFlbCBQb2dnaSA8cG9nZ2kucmFwaEBnbWFp
-bC5jb20+Cj4gLS0tCj4gIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCAgICAxICsKPiAgYXJjaC9hcm0vYm9hcmRzL3Vkb28vTWFrZWZpbGUgICAgICAg
-ICAgICAgICAgICAgICB8ICAgIDMgKwo+ICBhcmNoL2FybS9ib2FyZHMvdWRvby9ib2FyZC5jICAg
-ICAgICAgICAgICAgICAgICAgIHwgIDIxNCArKysrKysrKysrKysrKysrKysrKysKPiAgYXJjaC9h
-cm0vYm9hcmRzL3Vkb28vZW52L2NvbmZpZy1ib2FyZCAgICAgICAgICAgICB8ICAgIDYgKwo+ICBh
-cmNoL2FybS9ib2FyZHMvdWRvby9mbGFzaC1oZWFkZXItbXg2LXVkb28uaW14Y2ZnIHwgIDEwNCAr
-KysrKysrKysrCj4gIGFyY2gvYXJtL2JvYXJkcy91ZG9vL2xvd2xldmVsLmMgICAgICAgICAgICAg
-ICAgICAgfCAgIDE3ICsrCj4gIGFyY2gvYXJtL2NvbmZpZ3MvdWRvb19xdWFkX2RlZmNvbmZpZyAg
-ICAgICAgICAgICAgfCAgIDg2ICsrKysrKysrKwo+ICBhcmNoL2FybS9kdHMvTWFrZWZpbGUgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgNCArLQo+ICBhcmNoL2FybS9kdHMvaW14NnEt
-dWRvby5kdHMgICAgICAgICAgICAgICAgICAgICAgIHwgICAyMyArKysKPiAgYXJjaC9hcm0vZHRz
-L2lteDZxZGwtdWRvby5kdHNpICAgICAgICAgICAgICAgICAgICB8ICAxMDggKysrKysrKysrKysK
-PiAgYXJjaC9hcm0vbWFjaC1pbXgvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-IDUgKwo+ICBhcmNoL2FybS90b29scy9tYWNoLXR5cGVzICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAgMSArCj4gIGltYWdlcy9NYWtlZmlsZS5pbXggICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgICA1ICsKPiAgMTMgZmlsZXMgY2hhbmdlZCwgNTc2IGluc2VydGlvbnMoKyksIDEg
-ZGVsZXRpb24oLSkKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy91ZG9vL01h
-a2VmaWxlCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdWRvby9ib2FyZC5j
-Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdWRvby9lbnYvY29uZmlnLWJv
-YXJkCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvdWRvby9mbGFzaC1oZWFk
-ZXItbXg2LXVkb28uaW14Y2ZnCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMv
-dWRvby9sb3dsZXZlbC5jCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL3Vk
-b29fcXVhZF9kZWZjb25maWcKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2R0cy9pbXg2
-cS11ZG9vLmR0cwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2lteDZxZGwtdWRv
-by5kdHNpCj4gClsuLi5dCj4gKwo+ICtzdGF0aWMgaW50IHVkb29fbWVtX2luaXQodm9pZCkKPiAr
-ewo+ICsJYXJtX2FkZF9tZW1fZGV2aWNlKCJyYW0wIiwgMHgxMDAwMDAwMCwgU1pfMUcpOwo+ICsK
-PiArCXJldHVybiAwOwo+ICt9Cj4gK21lbV9pbml0Y2FsbCh1ZG9vX21lbV9pbml0KTsKPiArCkRv
-IHlvdSBuZWVkIHRoaXM/IEJhcmVib3ggc2hvdWxkIGJlIGFibGUgdG8gZmlndXJlIHRoaXMgb3V0
-IGZyb20gdGhlCmRldmljZSB0cmVlLgoKPiArc3RhdGljIGludCBrc3o5MDIxcm5fcGh5X2ZpeHVw
-KHN0cnVjdCBwaHlfZGV2aWNlICpkZXYpCj4gK3sKPiArCj4gKwlwaHlfd3JpdGUoIGRldiAsIDB4
-MDkgLCAweDFjMDAgKTsKPiArCXBoeV93cml0ZSggZGV2ICwgMHg0ICwgMHgwMDAwICk7Cj4gKwlw
-aHlfd3JpdGUoIGRldiAsIDB4NSAsIDB4MDAwMCApOwo+ICsJcGh5X3dyaXRlKCBkZXYgLCAweDYg
-LCAweDAwMDAgKTsKPiArCXBoeV93cml0ZSggZGV2ICwgMHg4ICwgMHgwM2ZmICk7Cj4gKwpXaGl0
-ZXNwYWNlIGlzIGxvb2tpbmcgd2VpcmQgaGVyZS4KCj4gKwo+ICsJLyogZG8gc2FtZSBhcyBsaW51
-eCBrZXJuZWwgKi8KPiArCS8qIG1pbiByeCBkYXRhIGRlbGF5ICovCj4gKwlwaHlfd3JpdGUoZGV2
-LCAweDBiLCAweDgxMDUpOwo+ICsJcGh5X3dyaXRlKGRldiwgMHgwYywgMHgwMDAwKTsKPiArCj4g
-KwkvKiBtYXggcngvdHggY2xvY2sgZGVsYXksIG1pbiByeC90eCBjb250cm9sIGRlbGF5ICovCj4g
-KwlwaHlfd3JpdGUoZGV2LCAweDBiLCAweDgxMDQpOwo+ICsJcGh5X3dyaXRlKGRldiwgMHgwYywg
-MHhmMGYwKTsKPiArCXBoeV93cml0ZShkZXYsIDB4MGIsIDB4MTA0KTsKPiArCj4gKwlyZXR1cm4g
-MDsKPiArfQo+ICsKPiArc3RhdGljIGludCB1ZG9vX2tzejkwMjFybl9zZXR1cCh2b2lkKQo+ICt7
-Cj4gKwlteGNfaW9tdXhfdjNfc2V0dXBfbXVsdGlwbGVfcGFkcyh1ZG9vX2VuZXRfZ3Bpb19wYWRz
-XzEsCj4gKwkJCUFSUkFZX1NJWkUodWRvb19lbmV0X2dwaW9fcGFkc18xKSk7Cj4gKwo+ICsJZ3Bp
-b19kaXJlY3Rpb25fb3V0cHV0KCBJTVhfR1BJT19OUiggMiAsIDMxICkgLCAxICk7IC8qIFBvd2Vy
-IG9uIGVuZXQgKi8KPiArCj4gKwkvKiBNT0RFIHN0cmFwLWluIHBpbnM6IGFkdmVydGlzZSBhbGwg
-Y2FwYWJpbGl0aWVzICovCj4gKwlncGlvX2RpcmVjdGlvbl9vdXRwdXQoMTg1LCAxKTsgLyogR1BJ
-TyA2LTI1ICovCj4gKwlncGlvX2RpcmVjdGlvbl9vdXRwdXQoMTg3LCAxKTsgLyogR1BJTyA2LTI3
-ICovCj4gKwlncGlvX2RpcmVjdGlvbl9vdXRwdXQoMTg4LCAxKTsgLyogR1BJTyA2LTI4Ki8KPiAr
-CWdwaW9fZGlyZWN0aW9uX291dHB1dCgxODksIDEpOyAvKiBHUElPIDYtMjkgKi8KPiArCj4gKwkv
-KiBFbmFibGUgMTI1IE1IeiBjbG9jayBvdXRwdXQgKi8KPiArICAgIGdwaW9fZGlyZWN0aW9uX291
-dHB1dCgxODQsIDEpOyAvKiBHUElPIDYtMjQgKi8KPiArCj4gKwltZGVsYXkoMTApOwo+ICsKPiAr
-CW1kZWxheSggMTAwICk7Cj4gKwpXaHkgdGhlIGRvdWJsZSBkZWxheT8gSXMgaXQgbmVlZGVkPyBJ
-ZiB5ZXMsIHBsZWFzZSBjb2FsZXNjZSBpbnRvIG9uZQpzdGF0ZW1lbnQuCgo+ICsJZ3Bpb19mcmVl
-KElNWF9HUElPX05SKDYsIDI0KSk7Cj4gKwlncGlvX2ZyZWUoSU1YX0dQSU9fTlIoNiwgMjUpKTsK
-PiArCWdwaW9fZnJlZShJTVhfR1BJT19OUig2LCAyNykpOwo+ICsJZ3Bpb19mcmVlKElNWF9HUElP
-X05SKDYsIDI4KSk7Cj4gKwlncGlvX2ZyZWUoSU1YX0dQSU9fTlIoNiwgMjkpKTsKPiArCj4gKwlt
-eGNfaW9tdXhfdjNfc2V0dXBfbXVsdGlwbGVfcGFkcyh1ZG9vX2VuZXRfZ3Bpb19wYWRzXzIsIEFS
-UkFZX1NJWkUodWRvb19lbmV0X2dwaW9fcGFkc18yKSk7Cj4gKwo+ICsJcmV0dXJuIDA7Cj4gK30K
-Wy4uLl0KPiArCj4gK3N0YXRpYyB2b2lkIHVkb29fZXBpdF9pbml0KCB2b2lkICkKPiArewo+ICsK
-PiArCXdyaXRlbCggMHgwMDAwMDAwICwgMHgyMEQwMDAwICk7Cj4gKwl3cml0ZWwoIDB4MTQyMDAw
-RiAsIDB4MjBEMDAwMCApOwo+ICsJd3JpdGVsKCAweDEwMDAwICwgMHgyMEQwMDA4ICk7Cj4gKwl3
-cml0ZWwoIDB4MCAsIDB4MjBEMDAwQyApOwo+ICt9CldoaXRlc3BhY2UuCj4gKwo+ICtzdGF0aWMg
-aW50IHVkb29fZGV2aWNlc19pbml0KHZvaWQpCj4gK3sKPiArCWlmICghb2ZfbWFjaGluZV9pc19j
-b21wYXRpYmxlKCJmc2wsaW14NnEtdWRvbyIpKQo+ICsJCXJldHVybiAwOwo+ICsKPiArCXNldHVw
-X2lvbXV4X3dkb2coKTsKPiArCXVkb29fZWhjaV9pbml0KCk7Cj4gKwl1ZG9vX2VwaXRfaW5pdCgp
-Owo+ICsKPiArCWFybWxpbnV4X3NldF9ib290cGFyYW1zKCh2b2lkICopMHgxMDAwMDEwMCk7Cj4g
-Kwlhcm1saW51eF9zZXRfYXJjaGl0ZWN0dXJlKDQ3NzIpOwo+ICsKVGhpcyBtYWNoaW5lIElEIGlz
-IHJlZ2lzdGVyZWQgYXMgImkubXg2IENsb3VzIi4gSSBkb24ndCB0aGluayB0aGlzIGlzCmVxdWFs
-IHRvIHRoZSBib2FyZCB5b3UgYXJlIGFkZGluZyBoZXJlLgpEbyB5b3UgZXZlbiBuZWVkIHRoZSBt
-YWNoaW5lIElELCBvciBpcyB5b3VyIGJvYXJkIERUIGVuYWJsZWQgaW4gdGhlCmxpbnV4IGtlcm5l
-bC4gSWYgc28sIHBsZWFzZSByZW1vdmUgdGhpcyBjb2RlLgoKWy4uLl0KPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9hcm0vY29uZmlncy91ZG9vX3F1YWRfZGVmY29uZmlnIGIvYXJjaC9hcm0vY29uZmlncy91
-ZG9vX3F1YWRfZGVmY29uZmlnCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAw
-Li44ODAzMThmCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvdWRvb19x
-dWFkX2RlZmNvbmZpZwo+IEBAIC0wLDAgKzEsODYgQEAKCllvdSBhcmUgYWRkaW5nIGEgbXVsdGkt
-aW1hZ2UgYm9hcmQsIHBsZWFzZSBkb24ndCBhZGQgYSBzZXBhcmF0ZQpkZWZjb25maWcsIGJ1dCBp
-bnN0ZWFkIGFkZCB0aGUgYm9hcmQgYW5kIG1heWJlIHJlcXVpcmVkIG9wdGlvbnMgdG8gdGhlCmlt
-eF92N19kZWZjb25maWcuCgpSZWdhcmRzLApMdWNhcwotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgTHVjYXMgU3RhY2ggICAgICAgICAgICAgICAgIHwKSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy01MDc2IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Currently the version defines reflect the digits in the version
+number. MMC_VERSION_4_41 is defined as 0x441 and MMC_VERSION_4_5
+is defined as 0x405. This results in MMC_VERSION_4_5 < MMC_VERSION_4_41
+becoming true which was surely not intended. Fix this by
+redefining the versions as 0x<major><minor><micro>. This makes the
+string generation more complicated but makes versions comparable
+again.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 28 +++++++++++++++++++---------
+ include/mci.h          | 18 +++++++++---------
+ 2 files changed, 28 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index cf38a88..a18b555 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -939,6 +939,21 @@ out:
+ 	return err;
+ }
+ 
++static char *mci_version_string(struct mci *mci)
++{
++	static char version[sizeof("x.xx")];
++	unsigned major, minor, micro;
++
++	major = (mci->version >> 8) & 0xf;
++	minor = (mci->version >> 4) & 0xf;
++	micro = mci->version & 0xf;
++
++	sprintf(version, "%u.%u", major,
++			micro ? (minor << 4) | micro : minor);
++
++	return version;
++}
++
+ static int mci_startup_sd(struct mci *mci)
+ {
+ 	struct mci_cmd cmd;
+@@ -1140,8 +1155,8 @@ static int mci_startup(struct mci *mci)
+ 		return err;
+ 
+ 	mci_correct_version_from_ext_csd(mci);
+-	printf("detected %s card version %d.%d\n", IS_SD(mci) ? "SD" : "MMC",
+-		(mci->version >> 8) & 0xf, mci->version & 0xff);
++	dev_info(&mci->dev, "detected %s card version %s\n", IS_SD(mci) ? "SD" : "MMC",
++		mci_version_string(mci));
+ 	mci_extract_card_capacity_from_csd(mci);
+ 
+ 	if (IS_SD(mci))
+@@ -1477,13 +1492,8 @@ static void mci_info(struct device_d *dev)
+ 	mci_print_caps(host->host_caps);
+ 
+ 	printf("Card information:\n");
+-	if (mci->version < SD_VERSION_SD) {
+-		printf("  Attached is a MultiMediaCard (Version: %u.%u)\n",
+-			(mci->version >> 4) & 0xf, mci->version & 0xf);
+-	} else {
+-		printf("  Attached is an SD Card (Version: %u.%u)\n",
+-			(mci->version >> 8) & 0xf, mci->version & 0xff);
+-	}
++	printf("  Attached is a %s card\n", IS_SD(mci) ? "SD" : "MMC");
++	printf("  Version: %s\n", mci_version_string(mci));
+ 	printf("  Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
+ 
+ 	if (mci->high_capacity)
+diff --git a/include/mci.h b/include/mci.h
+index 40a712b..cd3e2c2 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -33,21 +33,21 @@
+ #define SD_VERSION_SD		0x20000
+ #define SD_VERSION_2		(SD_VERSION_SD | 0x200)
+ #define SD_VERSION_1_0		(SD_VERSION_SD | 0x100)
+-#define SD_VERSION_1_10		(SD_VERSION_SD | 0x10a)
++#define SD_VERSION_1_10		(SD_VERSION_SD | 0x1a0)
+ 
+ /* Firmware revisions for MMC cards */
+ #define MMC_VERSION_MMC		0x10000
+ #define MMC_VERSION_UNKNOWN	(MMC_VERSION_MMC)
+-#define MMC_VERSION_1_2		(MMC_VERSION_MMC | 0x102)
+-#define MMC_VERSION_1_4		(MMC_VERSION_MMC | 0x104)
+-#define MMC_VERSION_2_2		(MMC_VERSION_MMC | 0x202)
++#define MMC_VERSION_1_2		(MMC_VERSION_MMC | 0x120)
++#define MMC_VERSION_1_4		(MMC_VERSION_MMC | 0x140)
++#define MMC_VERSION_2_2		(MMC_VERSION_MMC | 0x220)
+ #define MMC_VERSION_3		(MMC_VERSION_MMC | 0x300)
+ #define MMC_VERSION_4		(MMC_VERSION_MMC | 0x400)
+-#define MMC_VERSION_4_1		(MMC_VERSION_MMC | 0x401)
+-#define MMC_VERSION_4_2		(MMC_VERSION_MMC | 0x402)
+-#define MMC_VERSION_4_3		(MMC_VERSION_MMC | 0x403)
+-#define MMC_VERSION_4_41	(MMC_VERSION_MMC | 0x429)
+-#define MMC_VERSION_4_5		(MMC_VERSION_MMC | 0x405)
++#define MMC_VERSION_4_1		(MMC_VERSION_MMC | 0x410)
++#define MMC_VERSION_4_2		(MMC_VERSION_MMC | 0x420)
++#define MMC_VERSION_4_3		(MMC_VERSION_MMC | 0x430)
++#define MMC_VERSION_4_41	(MMC_VERSION_MMC | 0x441)
++#define MMC_VERSION_4_5		(MMC_VERSION_MMC | 0x450)
+ 
+ #define MMC_CAP_SPI			(1 << 0)
+ #define MMC_CAP_4_BIT_DATA		(1 << 1)
+-- 
+1.8.5.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
