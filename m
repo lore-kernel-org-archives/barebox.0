@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEKmE-0004OA-7U
- for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:34:06 +0000
+ id 1WEKrG-0004Vn-Em
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:39:18 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WEKqt-00052k-DO
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 16:38:55 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1WEKqt-0006P1-CA
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 16:38:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Feb 2014 16:33:43 +0100
-Message-Id: <1392392023-9902-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Feb 2014 16:38:50 +0100
+Message-Id: <1392392334-20254-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,43 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] USB: dfu: Use barebox product id
+Subject: Add devicetree support to gpio-keys driver
 To: barebox@lists.infradead.org
 
-We obtained a USB Product ID from Openmoko for barebox running
-in DFU mode. Use it as default for the dfu command. Now we can
-make the USB VID/PID arguments optional.
+This adds devicetree support for the gpio-keys driver and the necessary
+prerequisites.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/dfu.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Sascha
 
-diff --git a/commands/dfu.c b/commands/dfu.c
-index ec1197a..998c868 100644
---- a/commands/dfu.c
-+++ b/commands/dfu.c
-@@ -125,9 +125,14 @@ static int do_dfu(int argc, char *argv[])
- 
- 	argstr = argv[optind];
- 
--	if (!idProduct || !idVendor) {
--		printf("productid or vendorid not given\n");
--		return 1;
-+	if (!idProduct && !idVendor) {
-+		idVendor = 0x1d50; /* Openmoko, Inc */
-+		idProduct = 0x60a2; /* barebox bootloader USB DFU Mode */
-+	}
-+
-+	if ((idProduct && !idVendor) || (!idProduct && idVendor)) {
-+		printf("Only one of vendor id or product id given\n");
-+		return -EINVAL;
- 	}
- 
- 	for (n = 0; *argstr; n++) {
--- 
-1.8.5.3
+----------------------------------------------------------------
+Sascha Hauer (4):
+      input: Add BB_ prefix to KEY_ defines
+      input: gpio-keys: separate internal data from platform_data
+      input: Add keycode to barebox key translation table
+      input: gpio-keys: Add devicetree probe support
 
+ arch/arm/boards/archosg9/board.c        |   6 +-
+ arch/arm/boards/at91sam9261ek/init.c    |   6 +-
+ arch/arm/boards/at91sam9m10g45ek/init.c |  14 +--
+ arch/arm/boards/at91sam9m10ihd/init.c   |   2 +-
+ arch/arm/boards/usb-a926x/init.c        |   8 +-
+ commands/edit.c                         |  18 ++--
+ common/menu.c                           |  18 ++--
+ drivers/input/Makefile                  |   1 +
+ drivers/input/gpio_keys.c               | 156 ++++++++++++++++++++++++++------
+ drivers/input/keymap.c                  | 136 ++++++++++++++++++++++++++++
+ drivers/input/qt1070.c                  |   4 +-
+ include/gpio_keys.h                     |   7 --
+ include/input/keyboard.h                |  10 ++
+ include/readkey.h                       |  34 +++----
+ lib/readkey.c                           |  36 ++++----
+ lib/readline.c                          |  26 +++---
+ 16 files changed, 360 insertions(+), 122 deletions(-)
+ create mode 100644 drivers/input/keymap.c
+ create mode 100644 include/input/keyboard.h
 
 _______________________________________________
 barebox mailing list
