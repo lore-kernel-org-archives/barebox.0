@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEKrL-0004W9-Ab
- for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:39:25 +0000
+ id 1WEKrG-0004Vp-En
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:39:20 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Feb 2014 16:38:52 +0100
-Message-Id: <1392392334-20254-3-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Feb 2014 16:38:53 +0100
+Message-Id: <1392392334-20254-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392392334-20254-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392392334-20254-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,197 +21,189 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] input: gpio-keys: separate internal data from
- platform_data
+Subject: [PATCH 3/4] input: Add keycode to barebox key translation table
 To: barebox@lists.infradead.org
 
-Do not abuse platform data for internal driver data, instead
-use a separate struct for that.
+Devicetrees specify the keyboard codes for the gpio-keys
+driver, so add a table to translate them into something
+barebox can use.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/gpio_keys.c | 80 +++++++++++++++++++++++++++++++++--------------
- include/gpio_keys.h       |  7 -----
- 2 files changed, 57 insertions(+), 30 deletions(-)
+ drivers/input/Makefile   |   1 +
+ drivers/input/keymap.c   | 136 +++++++++++++++++++++++++++++++++++++++++++++++
+ include/input/keyboard.h |  10 ++++
+ 3 files changed, 147 insertions(+)
+ create mode 100644 drivers/input/keymap.c
+ create mode 100644 include/input/keyboard.h
 
-diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
-index 18a29f0..418158f 100644
---- a/drivers/input/gpio_keys.c
-+++ b/drivers/input/gpio_keys.c
-@@ -12,31 +12,52 @@
- #include <poller.h>
- #include <gpio.h>
- 
--static inline struct gpio_keys_platform_data *
-+struct gpio_key {
-+	int code;
+diff --git a/drivers/input/Makefile b/drivers/input/Makefile
+index b9bcc82..2143336 100644
+--- a/drivers/input/Makefile
++++ b/drivers/input/Makefile
+@@ -2,3 +2,4 @@ obj-$(CONFIG_KEYBOARD_GPIO) += gpio_keys.o
+ obj-$(CONFIG_KEYBOARD_TWL6030) += twl6030_pwrbtn.o
+ obj-$(CONFIG_KEYBOARD_IMX_KEYPAD) += imx_keypad.o
+ obj-$(CONFIG_KEYBOARD_QT1070) += qt1070.o
++obj-y += keymap.o
+diff --git a/drivers/input/keymap.c b/drivers/input/keymap.c
+new file mode 100644
+index 0000000..b9fd6a2
+--- /dev/null
++++ b/drivers/input/keymap.c
+@@ -0,0 +1,136 @@
++#include <linux/types.h>
++#include <input/keyboard.h>
 +
-+	int gpio;
-+	int active_low;
++#include <dt-bindings/input/input.h>
++#include <readkey.h>
 +
-+	int previous_state;
++uint8_t keycode_bb_keys[NR_KEYS] = {
++	[KEY_RESERVED] =	0xff,
++	[KEY_ESC] =		0x1b,
++	[KEY_1] =		'1',
++	[KEY_2] =		'2',
++	[KEY_3] =		'3',
++	[KEY_4] =		'4',
++	[KEY_5] =		'5',
++	[KEY_6] =		'6',
++	[KEY_7] =		'7',
++	[KEY_8] =		'8',
++	[KEY_9] =		'9',
++	[KEY_0] =		'0',
++	[KEY_MINUS] =		'-',
++	[KEY_EQUAL] =		'=',
++	[KEY_BACKSPACE] =	0xff,
++	[KEY_TAB] =		'\t',
++	[KEY_Q] =		'q',
++	[KEY_W] =		'w',
++	[KEY_E] =		'e',
++	[KEY_R] =		'r',
++	[KEY_T] =		't',
++	[KEY_Y] =		'y',
++	[KEY_U] =		'u',
++	[KEY_I] =		'i',
++	[KEY_O] =		'o',
++	[KEY_P] =		'p',
++	[KEY_LEFTBRACE] =	'(',
++	[KEY_RIGHTBRACE] =	')',
++	[KEY_ENTER] =		'\n',
++	[KEY_LEFTCTRL] =	0xff,
++	[KEY_A] =		'a',
++	[KEY_S] =		's',
++	[KEY_D] =		'd',
++	[KEY_F] =		'f',
++	[KEY_G] =		'g',
++	[KEY_H] =		'h',
++	[KEY_J] =		'j',
++	[KEY_K] =		'k',
++	[KEY_L] =		'l',
++	[KEY_SEMICOLON] =	';',
++	[KEY_APOSTROPHE] =	0xff,
++	[KEY_GRAVE] =		'^',
++	[KEY_LEFTSHIFT] =	0xff,
++	[KEY_BACKSLASH] =	0xff,
++	[KEY_Z] =		'z',
++	[KEY_X] =		'x',
++	[KEY_C] =		'c',
++	[KEY_V] =		'v',
++	[KEY_B] =		'b',
++	[KEY_N] =		'n',
++	[KEY_M] =		'm',
++	[KEY_COMMA] =		',',
++	[KEY_DOT] =		'.',
++	[KEY_SLASH] =		'/',
++	[KEY_RIGHTSHIFT] =	0xff,
++	[KEY_KPASTERISK] =	0xff,
++	[KEY_LEFTALT] =		0xff,
++	[KEY_SPACE] =		' ',
++	[KEY_CAPSLOCK] =	0xff,
++	[KEY_F1] =		0xff,
++	[KEY_F2] =		0xff,
++	[KEY_F3] =		0xff,
++	[KEY_F4] =		0xff,
++	[KEY_F5] =		0xff,
++	[KEY_F6] =		0xff,
++	[KEY_F7] =		0xff,
++	[KEY_F8] =		0xff,
++	[KEY_F9] =		0xff,
++	[KEY_F10] =		0xff,
++	[KEY_NUMLOCK] =		0xff,
++	[KEY_SCROLLLOCK] =	0xff,
++	[KEY_KP7] =		0xff,
++	[KEY_KP8] =		0xff,
++	[KEY_KP9] =		0xff,
++	[KEY_KPMINUS] =		0xff,
++	[KEY_KP4] =		0xff,
++	[KEY_KP5] =		0xff,
++	[KEY_KP6] =		0xff,
++	[KEY_KPPLUS] =		0xff,
++	[KEY_KP1] =		0xff,
++	[KEY_KP2] =		0xff,
++	[KEY_KP3] =		0xff,
++	[KEY_KP0] =		0xff,
++	[KEY_KPDOT] =		0xff,
++	[KEY_ZENKAKUHANKAKU] =	0xff,
++	[KEY_102ND] =		0xff,
++	[KEY_F11] =		0xff,
++	[KEY_F12] =		0xff,
++	[KEY_RO] =		0xff,
++	[KEY_KATAKANA] =	0xff,
++	[KEY_HIRAGANA] =	0xff,
++	[KEY_HENKAN] =		0xff,
++	[KEY_KATAKANAHIRAGANA] =0xff,
++	[KEY_MUHENKAN] =	0xff,
++	[KEY_KPJPCOMMA] =	0xff,
++	[KEY_KPENTER] =		0xff,
++	[KEY_RIGHTCTRL] =	0xff,
++	[KEY_KPSLASH] =		0xff,
++	[KEY_SYSRQ] =		0xff,
++	[KEY_RIGHTALT] =	0xff,
++	[KEY_LINEFEED] =	0xff,
++	[KEY_HOME] =		0xff,
++	[KEY_UP] =		BB_KEY_UP,
++	[KEY_PAGEUP] =		BB_KEY_PAGEUP,
++	[KEY_LEFT] =		BB_KEY_LEFT,
++	[KEY_RIGHT] =		BB_KEY_RIGHT,
++	[KEY_END] =		BB_KEY_END,
++	[KEY_DOWN] =		BB_KEY_DOWN,
++	[KEY_PAGEDOWN] =	BB_KEY_PAGEDOWN,
++	[KEY_INSERT] =		BB_KEY_INSERT,
++	[KEY_DELETE] =		BB_KEY_DEL7,
++	[KEY_MACRO] =		0xff,
++	[KEY_MUTE] =		0xff,
++	[KEY_VOLUMEDOWN] =	0xff,
++	[KEY_VOLUMEUP] =	0xff,
++	[KEY_POWER] =		0xff,
++	[KEY_KPEQUAL] =		0xff,
++	[KEY_KPPLUSMINUS] =	0xff,
++	[KEY_PAUSE] =		0xff,
++	[KEY_SCALE] =		0xff,
++	[KEY_KPCOMMA] =		0xff,
++	[KEY_HANGEUL] =		0xff,
++	[KEY_HANGUEL] =		KEY_HANGEUL,
++	[KEY_HANJA] =		0xff,
++	[KEY_YEN] =		0xff,
++	[KEY_LEFTMETA] =	0xff,
++	[KEY_RIGHTMETA] =	0xff,
++	[KEY_COMPOSE] =		0xff,
 +};
+diff --git a/include/input/keyboard.h b/include/input/keyboard.h
+new file mode 100644
+index 0000000..dd04690
+--- /dev/null
++++ b/include/input/keyboard.h
+@@ -0,0 +1,10 @@
++#ifndef __INPUT_KEYBOARD_H
++#define __INPUT_KEYBOARD_H
 +
-+struct gpio_keys {
-+	struct gpio_key *buttons;
-+	int nbuttons;
++#include <linux/types.h>
 +
-+	/* optional */
-+	int fifo_size;
++#define NR_KEYS	256
 +
-+	struct kfifo *recv_fifo;
-+	struct poller_struct poller;
-+	struct console_device cdev;
-+};
++extern uint8_t keycode_bb_keys[NR_KEYS];
 +
-+static inline struct gpio_keys *
- poller_to_gk_pdata(struct poller_struct *poller)
- {
--	return container_of(poller, struct gpio_keys_platform_data, poller);
-+	return container_of(poller, struct gpio_keys, poller);
- }
- 
--static inline struct gpio_keys_platform_data *
-+static inline struct gpio_keys *
- cdev_to_gk_pdata(struct console_device *cdev)
- {
--	return container_of(cdev, struct gpio_keys_platform_data, cdev);
-+	return container_of(cdev, struct gpio_keys, cdev);
- }
- 
- static void gpio_key_poller(struct poller_struct *poller)
- {
--	struct gpio_keys_platform_data *pdata = poller_to_gk_pdata(poller);
--	struct gpio_keys_button *gb;
-+	struct gpio_keys *gk = poller_to_gk_pdata(poller);
-+	struct gpio_key *gb;
- 	int i, val;
- 
--	for (i = 0; i < pdata->nbuttons; i++) {
-+	for (i = 0; i < gk->nbuttons; i++) {
- 
--		gb = &pdata->buttons[i];
-+		gb = &gk->buttons[i];
- 		val = gpio_get_value(gb->gpio);
- 
- 		if (val != gb->previous_state && val != gb->active_low) {
--			kfifo_put(pdata->recv_fifo, (u_char*)&gb->code, sizeof(int));
-+			kfifo_put(gk->recv_fifo, (u_char*)&gb->code, sizeof(int));
- 			debug("pressed gpio(%d) as %d\n", gb->gpio, gb->code);
- 		}
- 		gb->previous_state = val;
-@@ -45,17 +66,17 @@ static void gpio_key_poller(struct poller_struct *poller)
- 
- static int gpio_keys_tstc(struct console_device *cdev)
- {
--	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
-+	struct gpio_keys *gk = cdev_to_gk_pdata(cdev);
- 
--	return (kfifo_len(pdata->recv_fifo) == 0) ? 0 : 1;
-+	return (kfifo_len(gk->recv_fifo) == 0) ? 0 : 1;
- }
- 
- static int gpio_keys_getc(struct console_device *cdev)
- {
- 	int code = 0;
--	struct gpio_keys_platform_data *pdata = cdev_to_gk_pdata(cdev);
-+	struct gpio_keys *gk = cdev_to_gk_pdata(cdev);
- 
--	kfifo_get(pdata->recv_fifo, (u_char*)&code, sizeof(int));
-+	kfifo_get(gk->recv_fifo, (u_char*)&code, sizeof(int));
- 	return code;
- }
- 
-@@ -64,6 +85,7 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 	int ret, i, gpio;
- 	struct gpio_keys_platform_data *pdata;
- 	struct console_device *cdev;
-+	struct gpio_keys *gk;
- 
- 	pdata = dev->platform_data;
- 
-@@ -73,34 +95,46 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 		return -ENODEV;
- 	}
- 
--	if (!pdata->fifo_size)
--		pdata->fifo_size = 50;
-+	gk = xzalloc(sizeof(*gk));
-+
-+	gk->fifo_size = 50;
-+
-+	if (pdata->fifo_size)
-+		gk->fifo_size = pdata->fifo_size;
- 
--	pdata->recv_fifo = kfifo_alloc(pdata->fifo_size);
-+	gk->recv_fifo = kfifo_alloc(pdata->fifo_size);
-+
-+	gk->buttons = xzalloc(pdata->nbuttons * sizeof(*gk->buttons));
-+	gk->nbuttons = pdata->nbuttons;
-+
-+	for (i = 0; i < gk->nbuttons; i++) {
-+		gk->buttons[i].gpio = pdata->buttons[i].gpio;
-+		gk->buttons[i].code = pdata->buttons[i].code;
-+		gk->buttons[i].active_low = pdata->buttons[i].active_low;
-+	}
- 
- 	for (i = 0; i < pdata->nbuttons; i++) {
--		gpio = pdata->buttons[i].gpio;
-+		gpio = gk->buttons[i].gpio;
- 		ret = gpio_request(gpio, "gpio_keys");
- 		if (ret) {
- 			pr_err("gpio_keys: (%d) can not be requested\n", gpio);
- 			return ret;
- 		}
- 		gpio_direction_input(gpio);
--		pdata->buttons[i].previous_state =
--			pdata->buttons[i].active_low;
-+		gk->buttons[i].previous_state = gk->buttons[i].active_low;
- 	}
- 
--	pdata->poller.func = gpio_key_poller;
-+	gk->poller.func = gpio_key_poller;
- 
--	cdev = &pdata->cdev;
-+	cdev = &gk->cdev;
- 	dev->type_data = cdev;
- 	cdev->dev = dev;
- 	cdev->tstc = gpio_keys_tstc;
- 	cdev->getc = gpio_keys_getc;
- 
--	console_register(&pdata->cdev);
-+	console_register(&gk->cdev);
- 
--	return poller_register(&pdata->poller);
-+	return poller_register(&gk->poller);
- }
- 
- static struct driver_d gpio_keys_driver = {
-diff --git a/include/gpio_keys.h b/include/gpio_keys.h
-index fc548fa..f4a22e1 100644
---- a/include/gpio_keys.h
-+++ b/include/gpio_keys.h
-@@ -10,9 +10,6 @@ struct gpio_keys_button {
- 
- 	int gpio;
- 	int active_low;
--
--	/* internal */
--	int previous_state;
- };
- 
- struct gpio_keys_platform_data {
-@@ -21,10 +18,6 @@ struct gpio_keys_platform_data {
- 
- 	/* optional */
- 	int fifo_size;
--
--	struct kfifo *recv_fifo;
--	struct poller_struct poller;
--	struct console_device cdev;
- };
- 
- #endif
++#endif
 -- 
 1.8.5.3
 
