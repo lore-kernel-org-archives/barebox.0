@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEKrG-0004Vq-Ek
- for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:39:19 +0000
+ id 1WEKsZ-0004ay-Pq
+ for barebox@lists.infradead.org; Fri, 14 Feb 2014 15:40:40 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Feb 2014 16:38:54 +0100
-Message-Id: <1392392334-20254-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392392334-20254-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392392334-20254-1-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Feb 2014 16:40:17 +0100
+Message-Id: <1392392417-27338-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,160 +19,116 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] input: gpio-keys: Add devicetree probe support
+Subject: [PATCH] Add readf command
 To: barebox@lists.infradead.org
+
+The readf command is useful to read the content of a file into
+a shell variable. It should be used for ascii content and thus
+stops reading at all nonprintable characters including newline.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/input/gpio_keys.c | 90 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 77 insertions(+), 13 deletions(-)
+ commands/Kconfig  |  6 ++++++
+ commands/Makefile |  1 +
+ commands/readf.c  | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 70 insertions(+)
+ create mode 100644 commands/readf.c
 
-diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
-index 418158f..9486b9a 100644
---- a/drivers/input/gpio_keys.c
-+++ b/drivers/input/gpio_keys.c
-@@ -11,6 +11,8 @@
- #include <gpio_keys.h>
- #include <poller.h>
- #include <gpio.h>
-+#include <of_gpio.h>
-+#include <input/keyboard.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 1e07b5b..352e8bf 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -57,6 +57,12 @@ config CMD_READLINE
+ 	tristate
+ 	prompt "readline"
  
- struct gpio_key {
- 	int code;
-@@ -31,6 +33,8 @@ struct gpio_keys {
- 	struct kfifo *recv_fifo;
- 	struct poller_struct poller;
- 	struct console_device cdev;
++config CMD_READF
++	tristate
++	prompt "readf"
++	help
++	  The readf command is used to read a files content into a shell variable.
 +
-+	int use_keycodes;
- };
- 
- static inline struct gpio_keys *
-@@ -77,33 +81,29 @@ static int gpio_keys_getc(struct console_device *cdev)
- 	struct gpio_keys *gk = cdev_to_gk_pdata(cdev);
- 
- 	kfifo_get(gk->recv_fifo, (u_char*)&code, sizeof(int));
--	return code;
+ config CMD_LET
+ 	tristate
+ 	prompt "let"
+diff --git a/commands/Makefile b/commands/Makefile
+index 58d27fa..91ec0e9 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -93,3 +93,4 @@ obj-$(CONFIG_CMD_MIITOOL)	+= miitool.o
+ obj-$(CONFIG_CMD_DETECT)	+= detect.o
+ obj-$(CONFIG_CMD_BOOT)		+= boot.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
++obj-$(CONFIG_CMD_READF)		+= readf.o
+diff --git a/commands/readf.c b/commands/readf.c
+new file mode 100644
+index 0000000..6314c7e
+--- /dev/null
++++ b/commands/readf.c
+@@ -0,0 +1,63 @@
++#include <common.h>
++#include <command.h>
++#include <fs.h>
++#include <malloc.h>
++#include <linux/stat.h>
++#include <linux/ctype.h>
++#include <environment.h>
 +
-+	if (IS_ENABLED(CONFIG_OFDEVICE) && gk->use_keycodes)
-+		return keycode_bb_keys[code];
-+	else
-+		return code;
- }
- 
--static int __init gpio_keys_probe(struct device_d *dev)
-+static int gpio_keys_probe_pdata(struct gpio_keys *gk, struct device_d *dev)
- {
--	int ret, i, gpio;
- 	struct gpio_keys_platform_data *pdata;
--	struct console_device *cdev;
--	struct gpio_keys *gk;
-+	int i;
- 
- 	pdata = dev->platform_data;
- 
- 	if (!pdata) {
- 		/* small (so we copy it) but critical! */
--		pr_err("missing platform_data\n");
-+		dev_err(dev, "missing platform_data\n");
- 		return -ENODEV;
- 	}
- 
--	gk = xzalloc(sizeof(*gk));
--
--	gk->fifo_size = 50;
--
- 	if (pdata->fifo_size)
- 		gk->fifo_size = pdata->fifo_size;
- 
--	gk->recv_fifo = kfifo_alloc(pdata->fifo_size);
--
- 	gk->buttons = xzalloc(pdata->nbuttons * sizeof(*gk->buttons));
- 	gk->nbuttons = pdata->nbuttons;
- 
-@@ -113,7 +113,65 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 		gk->buttons[i].active_low = pdata->buttons[i].active_low;
- 	}
- 
--	for (i = 0; i < pdata->nbuttons; i++) {
-+	return 0;
-+}
-+
-+static int gpio_keys_probe_dt(struct gpio_keys *gk, struct device_d *dev)
++static int do_readf(int argc, char *argv[])
 +{
-+	struct device_node *npkey, *np = dev->device_node;
-+	int i = 0, ret;
++	unsigned char *buf = NULL, *val;
++	char *variable, *filename;
++	struct stat s;
++	size_t size;
++	int ret, i;
 +
-+	if (!IS_ENABLED(CONFIG_OFDEVICE))
-+		return -ENODEV;
++	if (argc != 3)
++		return COMMAND_ERROR_USAGE;
 +
-+	gk->nbuttons = of_get_child_count(np);
-+	gk->buttons = xzalloc(gk->nbuttons * sizeof(*gk->buttons));
++	filename = argv[1];
++	variable = argv[2];
 +
-+	for_each_child_of_node(np, npkey) {
-+		enum of_gpio_flags gpioflags;
-+		uint32_t keycode;
++	ret = stat(filename, &s);
++	if (ret)
++		goto out;
 +
-+		gk->buttons[i].gpio = of_get_named_gpio_flags(npkey, "gpios", 0, &gpioflags);
-+		if (gk->buttons[i].gpio < 0)
-+			return gk->buttons[i].gpio;
-+
-+		if (gpioflags & OF_GPIO_ACTIVE_LOW)
-+			gk->buttons[i].active_low = 1;
-+
-+		ret = of_property_read_u32(npkey, "linux,code", &keycode);
-+		if (ret)
-+			return ret;
-+
-+		gk->buttons[i].code = keycode;
-+
-+		i++;
++	if (s.st_size > 1024) {
++		ret = -EFBIG;
++		goto out;
 +	}
 +
-+	gk->use_keycodes = 1;
++	buf = read_file(filename, &size);
++	if (!buf)
++		goto out;
 +
-+	return 0;
++	for (i = 0; i < size; i++) {
++		if (!isprint(buf[i])) {
++			buf[i] = '\0';
++			break;
++		}
++	}
++
++	val = strim(buf);
++
++	ret = setenv(variable, val);
++out:
++	free(buf);
++
++	return ret;
 +}
 +
-+static int __init gpio_keys_probe(struct device_d *dev)
-+{
-+	int ret, i, gpio;
-+	struct console_device *cdev;
-+	struct gpio_keys *gk;
++BAREBOX_CMD_HELP_START(readf)
++BAREBOX_CMD_HELP_USAGE("readf <file> <variable>\n")
++BAREBOX_CMD_HELP_SHORT("Read a single line of a file into a shell variable. Leading and trailing whitespaces\n")
++BAREBOX_CMD_HELP_SHORT("are removed, nonvisible characters are stripped. Input is limited to 1024\n")
++BAREBOX_CMD_HELP_SHORT("characters.\n")
++BAREBOX_CMD_HELP_END
 +
-+	gk = xzalloc(sizeof(*gk));
-+	gk->fifo_size = 50;
-+
-+	if (dev->device_node)
-+		ret = gpio_keys_probe_dt(gk, dev);
-+	else
-+		ret = gpio_keys_probe_pdata(gk, dev);
-+
-+	if (ret)
-+		return ret;
-+
-+	gk->recv_fifo = kfifo_alloc(gk->fifo_size);
-+
-+	for (i = 0; i < gk->nbuttons; i++) {
- 		gpio = gk->buttons[i].gpio;
- 		ret = gpio_request(gpio, "gpio_keys");
- 		if (ret) {
-@@ -137,8 +195,14 @@ static int __init gpio_keys_probe(struct device_d *dev)
- 	return poller_register(&gk->poller);
- }
- 
-+static struct of_device_id key_gpio_of_ids[] = {
-+	{ .compatible = "gpio-keys", },
-+	{ }
-+};
-+
- static struct driver_d gpio_keys_driver = {
- 	.name	= "gpio_keys",
- 	.probe	= gpio_keys_probe,
-+	.of_compatible = DRV_OF_COMPAT(key_gpio_of_ids),
- };
- device_platform_driver(gpio_keys_driver);
++BAREBOX_CMD_START(readf)
++	.cmd		= do_readf,
++	.usage		= "read file into variable",
++	BAREBOX_CMD_HELP(cmd_readf_help)
++BAREBOX_CMD_END
 -- 
 1.8.5.3
 
