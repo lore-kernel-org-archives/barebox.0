@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp33.i.mail.ru ([94.100.177.93])
+Received: from smtp14.mail.ru ([94.100.176.91])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEtXa-0004bC-M5
- for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:22 +0000
+ id 1WEw6G-0005xx-Tx
+ for barebox@lists.infradead.org; Sun, 16 Feb 2014 07:25:18 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 16 Feb 2014 08:40:50 +0400
-Message-Id: <1392525650-5551-7-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
-References: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 16 Feb 2014 11:24:30 +0400
+Message-Id: <1392535477-21275-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,26 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/7] scripts/kwboot: Remove redundant assignment
+Subject: [PATCH 1/8] common/kallsyms.c: Fix sparse warning
 To: barebox@lists.infradead.org
+
+CHECK   common/kallsyms.c
+common/kallsyms.c:170:12: warning: symbol 'kallsyms_lookup' was not declared. Should it be static?
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- scripts/kwboot.c | 1 -
- 1 file changed, 1 deletion(-)
+ common/kallsyms.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/kwboot.c b/scripts/kwboot.c
-index 81da3e8..e068660 100644
---- a/scripts/kwboot.c
-+++ b/scripts/kwboot.c
-@@ -552,7 +552,6 @@ kwboot_mmap_image(const char *path, size_t *size, int prot)
- 	void *img;
- 
- 	rc = -1;
--	fd = -1;
- 	img = NULL;
- 
- 	fd = open(path, O_RDONLY);
+diff --git a/common/kallsyms.c b/common/kallsyms.c
+index 94dfcdc..121b77c 100644
+--- a/common/kallsyms.c
++++ b/common/kallsyms.c
+@@ -167,10 +167,10 @@ static unsigned long get_symbol_pos(unsigned long addr,
+  *   It resides in a module.
+  * - We also guarantee that modname will be valid until rescheduled.
+  */
+-const char *kallsyms_lookup(unsigned long addr,
+-			    unsigned long *symbolsize,
+-			    unsigned long *offset,
+-			    char **modname, char *namebuf)
++static const char *kallsyms_lookup(unsigned long addr,
++				   unsigned long *symbolsize,
++				   unsigned long *offset,
++				   char **modname, char *namebuf)
+ {
+ 	namebuf[KSYM_NAME_LEN - 1] = 0;
+ 	namebuf[0] = 0;
 -- 
 1.8.3.2
 
