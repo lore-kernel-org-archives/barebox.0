@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEtXa-0004bA-M9
- for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:22 +0000
+ id 1WEtXa-0004bB-M8
+ for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:23 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 16 Feb 2014 08:40:48 +0400
-Message-Id: <1392525650-5551-5-git-send-email-shc_work@mail.ru>
+Date: Sun, 16 Feb 2014 08:40:49 +0400
+Message-Id: <1392525650-5551-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
 References: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,71 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] USB gadget: Remove redundant assignment
+Subject: [PATCH 6/7] lib/math.c: Fix possible crash
 To: barebox@lists.infradead.org
+
+Crash can be caused if xzalloc() for "numstack" fails.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/usb/gadget/composite.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/math.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 9af115e..11b6c18 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -204,7 +204,7 @@ int __init usb_interface_id(struct usb_configuration *config,
- static int config_buf(struct usb_configuration *config,
- 		enum usb_device_speed speed, void *buf, u8 type)
- {
--	struct usb_config_descriptor	*c = buf;
-+	struct usb_config_descriptor	*c;
- 	void				*next = buf + USB_DT_CONFIG_SIZE;
- 	int				len = USB_BUFSIZ - USB_DT_CONFIG_SIZE;
- 	struct usb_function		*f;
+diff --git a/lib/math.c b/lib/math.c
+index a4731ed..1e3ee85 100644
+--- a/lib/math.c
++++ b/lib/math.c
+@@ -543,11 +543,11 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
+ 	/* Stack of operator tokens */
+ 	operator *const stack = xzalloc(expr_len * sizeof(stack[0]));
+ 	operator *stackptr = stack;
+-	arith_t result;
++	arith_t result = -1;
+ 
+ 	if (numstack == NULL || stack == NULL) {
+ 		errmsg = "out of memory";
+-		goto err_with_custom_msg;
++		goto ret;
+ 	}
+ 
+ 	/* Start with a left paren */
+@@ -565,7 +565,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
+ 		if (arithval == '\0') {
+ 			if (expr == start_expr) {
+ 				/* Null expression */
+-				numstack->val = 0;
++				result = numstack->val;
+ 				goto ret;
+ 			}
+ 
+@@ -596,6 +596,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
+ 				free(numstack->var);
+ 				numstack->var = NULL;
+ 			}
++			result = numstack->val;
+ 			goto ret;
+ 		}
+ 
+@@ -733,7 +734,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
+ 				}
+ 				errmsg = arith_apply(math_state, prev_op, numstack, &numstackptr);
+ 				if (errmsg)
+-					goto err_with_custom_msg;
++					goto ret;
+ 			}
+ 			if (op == TOK_RPAREN)
+ 				goto err;
+@@ -746,10 +747,7 @@ next: ;
+ 
+ err:
+ 	errmsg = "arithmetic syntax error";
+-err_with_custom_msg:
+-	result = -1;
+ ret:
+-	result = numstack->val;
+ 	free(stack);
+ 	free(numstack);
+ 	math_state->errmsg = errmsg;
 -- 
 1.8.3.2
 
