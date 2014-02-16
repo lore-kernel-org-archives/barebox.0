@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEtXa-0004bB-M8
- for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:23 +0000
+ id 1WEtXa-0004b7-M6
+ for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:20 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 16 Feb 2014 08:40:49 +0400
-Message-Id: <1392525650-5551-6-git-send-email-shc_work@mail.ru>
+Date: Sun, 16 Feb 2014 08:40:45 +0400
+Message-Id: <1392525650-5551-2-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
 References: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,71 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 6/7] lib/math.c: Fix possible crash
+Subject: [PATCH 2/7] boot command: Remove redundant assignment
 To: barebox@lists.infradead.org
-
-Crash can be caused if xzalloc() for "numstack" fails.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- lib/math.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ commands/boot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/math.c b/lib/math.c
-index a4731ed..1e3ee85 100644
---- a/lib/math.c
-+++ b/lib/math.c
-@@ -543,11 +543,11 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
- 	/* Stack of operator tokens */
- 	operator *const stack = xzalloc(expr_len * sizeof(stack[0]));
- 	operator *stackptr = stack;
--	arith_t result;
-+	arith_t result = -1;
+diff --git a/commands/boot.c b/commands/boot.c
+index c4b49a9..ccf5827 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -308,7 +308,7 @@ static int boot(const char *name)
+ {
+ 	struct blspec *blspec;
+ 	struct blspec_entry *entry;
+-	int ret = -ENOENT;
++	int ret;
  
- 	if (numstack == NULL || stack == NULL) {
- 		errmsg = "out of memory";
--		goto err_with_custom_msg;
-+		goto ret;
- 	}
- 
- 	/* Start with a left paren */
-@@ -565,7 +565,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
- 		if (arithval == '\0') {
- 			if (expr == start_expr) {
- 				/* Null expression */
--				numstack->val = 0;
-+				result = numstack->val;
- 				goto ret;
- 			}
- 
-@@ -596,6 +596,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
- 				free(numstack->var);
- 				numstack->var = NULL;
- 			}
-+			result = numstack->val;
- 			goto ret;
- 		}
- 
-@@ -733,7 +734,7 @@ static arith_t evaluate_string(arith_state_t *math_state, const char *expr)
- 				}
- 				errmsg = arith_apply(math_state, prev_op, numstack, &numstackptr);
- 				if (errmsg)
--					goto err_with_custom_msg;
-+					goto ret;
- 			}
- 			if (op == TOK_RPAREN)
- 				goto err;
-@@ -746,10 +747,7 @@ next: ;
- 
- err:
- 	errmsg = "arithmetic syntax error";
--err_with_custom_msg:
--	result = -1;
- ret:
--	result = numstack->val;
- 	free(stack);
- 	free(numstack);
- 	math_state->errmsg = errmsg;
+ 	blspec = blspec_alloc();
+ 	ret = bootentry_parse_one(blspec, name);
 -- 
 1.8.3.2
 
