@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp33.i.mail.ru ([94.100.177.93])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WEtXa-0004b6-MC
- for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:20 +0000
+ id 1WEtXa-0004bA-M9
+ for barebox@lists.infradead.org; Sun, 16 Feb 2014 04:41:22 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 16 Feb 2014 08:40:44 +0400
-Message-Id: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 16 Feb 2014 08:40:48 +0400
+Message-Id: <1392525650-5551-5-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
+References: <1392525650-5551-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,26 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] ARM: socfgpa: Remove redundant assignment
+Subject: [PATCH 5/7] USB gadget: Remove redundant assignment
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/mach-socfpga/include/mach/sequencer.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/gadget/composite.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-socfpga/include/mach/sequencer.c b/arch/arm/mach-socfpga/include/mach/sequencer.c
-index fa955ce..6e69d1b 100644
---- a/arch/arm/mach-socfpga/include/mach/sequencer.c
-+++ b/arch/arm/mach-socfpga/include/mach/sequencer.c
-@@ -3151,7 +3151,6 @@ static uint32_t rw_mgr_mem_calibrate_wlevel (uint32_t g, uint32_t test_bgn)
- 		tmp_delay += IO_DELAY_PER_DCHAIN_TAP;
- 	}
- 	dtaps_per_ptap--;
--	tmp_delay = 0;
- #endif
- 
- 	/* starting phases */
+diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+index 9af115e..11b6c18 100644
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -204,7 +204,7 @@ int __init usb_interface_id(struct usb_configuration *config,
+ static int config_buf(struct usb_configuration *config,
+ 		enum usb_device_speed speed, void *buf, u8 type)
+ {
+-	struct usb_config_descriptor	*c = buf;
++	struct usb_config_descriptor	*c;
+ 	void				*next = buf + USB_DT_CONFIG_SIZE;
+ 	int				len = USB_BUFSIZ - USB_DT_CONFIG_SIZE;
+ 	struct usb_function		*f;
 -- 
 1.8.3.2
 
