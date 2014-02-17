@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFUmH-0003Ml-0J
- for barebox@lists.infradead.org; Mon, 17 Feb 2014 20:26:59 +0000
-Received: from tellur.localdomain (p57B5F67D.dip0.t-ipconnect.de
- [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 4EA6218B4265
- for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 21:26:04 +0100 (CET)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 17 Feb 2014 21:27:37 +0100
-Message-Id: <1392668861-10915-5-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
-References: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
+Received: from mail-wg0-x243.google.com ([2a00:1450:400c:c00::243])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WFWJ1-0006nC-HG
+ for barebox@lists.infradead.org; Mon, 17 Feb 2014 22:04:52 +0000
+Received: by mail-wg0-f67.google.com with SMTP id n12so1282346wgh.10
+ for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 14:04:26 -0800 (PST)
+From: =?UTF-8?q?Rapha=C3=ABl=20POGGI?= <poggi.raph@gmail.com>
+Date: Mon, 17 Feb 2014 14:04:13 -0800
+Message-Id: <1392674653-26759-2-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <1392674653-26759-1-git-send-email-poggi.raph@gmail.com>
+References: <1392674653-26759-1-git-send-email-poggi.raph@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,106 +23,92 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 4/8] tegra: add lowlevel delay function
+Subject: [PATCH 2/2] ARM: Rework device tree of UDOO Board to be more flexible.
 To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?Rapha=C3=ABl=20POGGI?= <poggi.raph@gmail.com>
 
-For proper startup we need to give clocks and IO signals some time to
-stabilize. Tegra2 got away without them, but Tegra3 seems to be a bit
-pickier.
+Device tree of UDOO Board have to be more flexible.
+There are a dual imx6 and a quad imx6 boards, with this patch
+we can have a same device tree file as a base: arch/arm/dts/imx6qdl-udoo.dtsi
+and an other device tree file for specific configuration depending of the board.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h | 44 +++++++++++++++++++++++++++++
- arch/arm/mach-tegra/tegra_avp_init.c        |  5 ++++
- 2 files changed, 49 insertions(+)
+ arch/arm/boards/udoo/board.c   | 6 +++---
+ arch/arm/dts/imx6q-udoo.dts    | 3 ++-
+ arch/arm/dts/imx6qdl-udoo.dtsi | 5 +++--
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index 20de1b2..85ab7ef 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -183,6 +183,49 @@ int tegra_get_osc_clock(void)
- 	}
- }
+diff --git a/arch/arm/boards/udoo/board.c b/arch/arm/boards/udoo/board.c
+index 5853f36..3cbc0f5 100644
+--- a/arch/arm/boards/udoo/board.c
++++ b/arch/arm/boards/udoo/board.c
+@@ -166,7 +166,7 @@ static void udoo_epit_init(void)
  
-+#define TIMER_CNTR_1US	0x00
-+#define TIMER_USEC_CFG	0x04
-+
-+static __always_inline
-+void tegra_ll_delay_setup(void)
-+{
-+	u32 reg;
-+
-+	/*
-+	 * calibrate timer to run at 1MHz
-+	 * TIMERUS_USEC_CFG selects the scale down factor with bits [0:7]
-+	 * representing the divisor and bits [8:15] representing the dividend
-+	 * each in n+1 form.
-+	 */
-+	switch (tegra_get_osc_clock()) {
-+	case 12000000:
-+		reg = 0x000b;
-+		break;
-+	case 13000000:
-+		reg = 0x000c;
-+		break;
-+	case 19200000:
-+		reg = 0x045f;
-+		break;
-+	case 26000000:
-+		reg = 0x0019;
-+		break;
-+	default:
-+		reg = 0;
-+		break;
-+	}
-+
-+	writel(reg, TEGRA_TMRUS_BASE + TIMER_USEC_CFG);
-+}
-+
-+static __always_inline
-+void tegra_ll_delay_usec(int delay)
-+{
-+	int timeout = (int)readl(TEGRA_TMRUS_BASE + TIMER_CNTR_1US) + delay;
-+
-+	while ((int)readl(TEGRA_TMRUS_BASE + TIMER_CNTR_1US) - timeout < 0);
-+}
-+
- static __always_inline
- void tegra_cpu_lowlevel_setup(void)
+ static int udoo_devices_init(void)
  {
-@@ -193,6 +236,7 @@ void tegra_cpu_lowlevel_setup(void)
- 	r &= ~0x1f;
- 	r |= 0xd3;
- 	__asm__ __volatile__("msr cpsr, %0" : : "r"(r));
-+	tegra_ll_delay_setup();
- }
+-	if (!of_machine_is_compatible("fsl,imx6q-udoo"))
++	if (!of_machine_is_compatible("udoo,imx6qdl-udoo"))
+ 		   return 0;
  
- /* reset vector for the AVP, to be called from board reset vector */
-diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
-index 2c2d6fc..9f8ccf3 100644
---- a/arch/arm/mach-tegra/tegra_avp_init.c
-+++ b/arch/arm/mach-tegra/tegra_avp_init.c
-@@ -158,6 +158,9 @@ static void start_cpu0_clocks(void)
- 	reg = readl(TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_L);
- 	reg |= CRC_CLK_OUT_ENB_L_CPU;
- 	writel(reg, TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_L);
-+
-+	/* give clocks some time to settle */
-+	tegra_ll_delay_usec(300);
- }
+ 	setup_iomux_wdog();
+@@ -181,7 +181,7 @@ device_initcall(udoo_devices_init);
  
- static void maincomplex_powerup(void)
-@@ -175,6 +178,8 @@ static void maincomplex_powerup(void)
- 		reg = readl(TEGRA_PMC_BASE + PMC_REMOVE_CLAMPING_CMD);
- 		reg |= PMC_REMOVE_CLAMPING_CMD_CPU;
- 		writel(reg, TEGRA_PMC_BASE + PMC_REMOVE_CLAMPING_CMD);
+ static int udoo_coredevices_init(void)
+ {
+-	if (!of_machine_is_compatible("fsl,imx6q-udoo"))
++	if (!of_machine_is_compatible("udoo,imx6qdl-udoo"))
+ 		   return 0;
+ 
+ 	phy_register_fixup_for_uid(PHY_ID_KSZ9021, MICREL_PHY_ID_MASK,
+@@ -192,7 +192,7 @@ coredevice_initcall(udoo_coredevices_init);
+ 
+ static int udoo_postcore_init(void)
+ {
+-	if (!of_machine_is_compatible("fsl,imx6q-udoo"))
++	if (!of_machine_is_compatible("udoo,imx6qdl-udoo"))
+ 		   return 0;
+ 
+ 	imx6_init_lowlevel();
+diff --git a/arch/arm/dts/imx6q-udoo.dts b/arch/arm/dts/imx6q-udoo.dts
+index 2e95978..106a0be 100644
+--- a/arch/arm/dts/imx6q-udoo.dts
++++ b/arch/arm/dts/imx6q-udoo.dts
+@@ -13,10 +13,11 @@
+ 
+ /dts-v1/;
+ 
++#include "imx6q.dtsi"
+ #include "imx6qdl-udoo.dtsi"
+ 
+ / {
+        model = "Freescale i.MX6 Quad UDOO Board";
+-       compatible = "fsl,imx6q-udoo", "fsl,imx6q";
++       compatible = "udoo,imx6q-udoo", "udoo,imx6qdl-udoo", "fsl,imx6q";
+ };
+ 
+diff --git a/arch/arm/dts/imx6qdl-udoo.dtsi b/arch/arm/dts/imx6qdl-udoo.dtsi
+index 6220751..4cb6572 100644
+--- a/arch/arm/dts/imx6qdl-udoo.dtsi
++++ b/arch/arm/dts/imx6qdl-udoo.dtsi
+@@ -11,12 +11,13 @@
+  * http://www.gnu.org/copyleft/gpl.html
+  */
+ 
+-#include "imx6q.dtsi"
+-
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/input/input.h>
+ 
+ / {
++       model = "Freescale i.MX6 UDOO Board";
++       compatible = "udoo,imx6qdl-udoo", "fsl,imx6q";
 +
-+		tegra_ll_delay_usec(1000);
- 	}
- }
- void tegra_avp_reset_vector(uint32_t boarddata)
+        chosen {
+                linux,stdout-path = &uart2;
+ 
 -- 
-1.8.5.3
+1.8.3.2
 
 
 _______________________________________________
