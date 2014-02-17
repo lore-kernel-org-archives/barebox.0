@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFUmG-0003Mk-W6
+ id 1WFUmG-0003Mj-WB
  for barebox@lists.infradead.org; Mon, 17 Feb 2014 20:26:58 +0000
 Received: from tellur.localdomain (p57B5F67D.dip0.t-ipconnect.de
- [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id E0E6118B4263
+ [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 8E3BC18B4261
  for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 21:26:03 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 17 Feb 2014 21:27:36 +0100
-Message-Id: <1392668861-10915-4-git-send-email-dev@lynxeye.de>
+Date: Mon, 17 Feb 2014 21:27:35 +0100
+Message-Id: <1392668861-10915-3-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 References: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,66 +24,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/8] tegra: add break to switch statements
+Subject: [PATCH v2 2/8] tegra: lowlevel: switch to __always_inline macro
 To: barebox@lists.infradead.org
-
-Avoids a possible miscompilation.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/mach-tegra/include/mach/lowlevel.h | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index fb06e4f..20de1b2 100644
+index 472348a..fb06e4f 100644
 --- a/arch/arm/mach-tegra/include/mach/lowlevel.h
 +++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -74,8 +74,10 @@ enum tegra_chiptype tegra_get_chiptype(void)
- 	switch ((hidrev & HIDREV_CHIPID_MASK) >> HIDREV_CHIPID_SHIFT) {
- 	case 0x20:
- 		return TEGRA20;
-+		break;
- 	default:
- 		return TEGRA_UNK_REV;
-+		break;
+@@ -21,6 +21,7 @@
+  * be used by both the main CPU complex (ARMv7) and the AVP (ARMv4).
+  */
+ 
++#include <linux/compiler.h>
+ #include <sizes.h>
+ #include <io.h>
+ #include <mach/iomap.h>
+@@ -40,7 +41,7 @@
+ #define T20_ODMDATA_UARTID_SHIFT	15
+ #define T20_ODMDATA_UARTID_MASK		(7 << T20_ODMDATA_UARTID_SHIFT)
+ 
+-static inline __attribute__((always_inline))
++static __always_inline
+ u32 tegra_get_odmdata(void)
+ {
+ 	u32 bctsize, bctptr, odmdata;
+@@ -63,7 +64,7 @@ enum tegra_chiptype {
+ 	TEGRA20 = 0,
+ };
+ 
+-static inline __attribute__((always_inline))
++static __always_inline
+ enum tegra_chiptype tegra_get_chiptype(void)
+ {
+ 	u32 hidrev;
+@@ -78,7 +79,7 @@ enum tegra_chiptype tegra_get_chiptype(void)
  	}
  }
  
-@@ -110,11 +112,14 @@ uint32_t tegra20_get_ramsize(void)
- 		T20_ODMDATA_RAMSIZE_SHIFT) {
- 	case 1:
- 		return SZ_256M;
-+		break;
- 	default:
- 	case 2:
- 		return SZ_512M;
-+		break;
- 	case 3:
- 		return SZ_1G;
-+		break;
+-static inline __attribute__((always_inline))
++static __always_inline
+ int tegra_get_num_cores(void)
+ {
+ 	switch (tegra_get_chiptype()) {
+@@ -92,7 +93,7 @@ int tegra_get_num_cores(void)
+ }
+ 
+ /* Runtime data */
+-static inline __attribute__((always_inline))
++static __always_inline
+ int tegra_cpu_is_maincomplex(void)
+ {
+ 	u32 tag0;
+@@ -102,7 +103,7 @@ int tegra_cpu_is_maincomplex(void)
+ 	return (tag0 & 0xff) == 0x55;
+ }
+ 
+-static inline __attribute__((always_inline))
++static __always_inline
+ uint32_t tegra20_get_ramsize(void)
+ {
+ 	switch ((tegra_get_odmdata() & T20_ODMDATA_RAMSIZE_MASK) >>
+@@ -125,7 +126,7 @@ static long uart_id_to_base[] = {
+ 	TEGRA_UARTE_BASE,
+ };
+ 
+-static inline __attribute__((always_inline))
++static __always_inline
+ long tegra20_get_debuguart_base(void)
+ {
+ 	u32 odmdata;
+@@ -152,7 +153,7 @@ long tegra20_get_debuguart_base(void)
+ #define CRC_OSC_CTRL_OSC_FREQ_SHIFT	30
+ #define CRC_OSC_CTRL_OSC_FREQ_MASK	(0x3 << CRC_OSC_CTRL_OSC_FREQ_SHIFT)
+ 
+-static inline unsigned __attribute__((always_inline))
++static __always_inline
+ int tegra_get_osc_clock(void)
+ {
+ 	u32 osc_ctrl = readl(TEGRA_CLK_RESET_BASE + CRC_OSC_CTRL);
+@@ -172,7 +173,7 @@ int tegra_get_osc_clock(void)
  	}
  }
  
-@@ -162,14 +167,19 @@ int tegra_get_osc_clock(void)
- 		CRC_OSC_CTRL_OSC_FREQ_SHIFT) {
- 	case 0:
- 		return 13000000;
-+		break;
- 	case 1:
- 		return 19200000;
-+		break;
- 	case 2:
- 		return 12000000;
-+		break;
- 	case 3:
- 		return 26000000;
-+		break;
- 	default:
- 		return 0;
-+		break;
- 	}
- }
- 
+-static inline __attribute__((always_inline))
++static __always_inline
+ void tegra_cpu_lowlevel_setup(void)
+ {
+ 	uint32_t r;
 -- 
 1.8.5.3
 
