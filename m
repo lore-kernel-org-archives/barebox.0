@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFUn6-0003QE-Dn
+ id 1WFUn6-0003QD-Dq
  for barebox@lists.infradead.org; Mon, 17 Feb 2014 20:27:49 +0000
 Received: from tellur.localdomain (p57B5F67D.dip0.t-ipconnect.de
- [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id AFEC018B4268
- for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 21:26:04 +0100 (CET)
+ [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 66E7118B4266
+ for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 21:26:05 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 17 Feb 2014 21:27:38 +0100
-Message-Id: <1392668861-10915-6-git-send-email-dev@lynxeye.de>
+Date: Mon, 17 Feb 2014 21:27:40 +0100
+Message-Id: <1392668861-10915-8-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 References: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,46 +24,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 5/8] tegra: add Tegra3 to relevant lowlevel functions
+Subject: [PATCH v2 7/8] tegra: set AHB clock rate early
 To: barebox@lists.infradead.org
+
+Avoids glitches in later starup phases.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/mach-tegra/include/mach/tegra20-car.h | 4 ++++
+ arch/arm/mach-tegra/tegra_avp_init.c           | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index 85ab7ef..b39e30e 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -62,6 +62,7 @@ u32 tegra_get_odmdata(void)
- enum tegra_chiptype {
- 	TEGRA_UNK_REV = -1,
- 	TEGRA20 = 0,
-+	TEGRA30 = 1,
- };
+diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+index a5441de..161e3d8 100644
+--- a/arch/arm/mach-tegra/include/mach/tegra20-car.h
++++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
+@@ -112,6 +112,10 @@
+ #define CRC_SUPER_SDIV_DIVISOR_SHIFT	0
+ #define CRC_SUPER_SDIV_DIVISOR_MASK	(0xff << CRC_SUPER_SDIV_DIVISOR_SHIFT)
  
- static __always_inline
-@@ -75,6 +76,9 @@ enum tegra_chiptype tegra_get_chiptype(void)
- 	case 0x20:
- 		return TEGRA20;
- 		break;
-+	case 0x30:
-+		return TEGRA30;
-+		break;
- 	default:
- 		return TEGRA_UNK_REV;
- 		break;
-@@ -88,6 +92,9 @@ int tegra_get_num_cores(void)
- 	case TEGRA20:
- 		return 2;
- 		break;
-+	case TEGRA30:
-+		return 4;
-+		break;
- 	default:
- 		return 0;
- 		break;
++#define CRC_CLK_SYSTEM_RATE		0x030
++#define CRC_CLK_SYSTEM_RATE_AHB_SHIFT	4
++#define CRC_CLK_SYSTEM_RATE_APB_SHIFT	0
++
+ #define CRC_CLK_CPU_CMPLX		0x04c
+ #define CRC_CLK_CPU_CMPLX_CPU3_CLK_STP	(1 << 11)
+ #define CRC_CLK_CPU_CMPLX_CPU2_CLK_STP	(1 << 10)
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 9f8ccf3..4dd1330 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
+@@ -149,6 +149,9 @@ static void start_cpu0_clocks(void)
+ 	       TEGRA_CLK_RESET_BASE + CRC_SCLK_BURST_POLICY);
+ 	writel(CRC_SUPER_SDIV_ENB, TEGRA_CLK_RESET_BASE + CRC_SUPER_SCLK_DIV);
+ 
++	writel(1 << CRC_CLK_SYSTEM_RATE_AHB_SHIFT,
++	       TEGRA_CLK_RESET_BASE + CRC_CLK_SYSTEM_RATE);
++
+ 	/* deassert clock stop for cpu 0 */
+ 	reg = readl(TEGRA_CLK_RESET_BASE + CRC_CLK_CPU_CMPLX);
+ 	reg &= ~CRC_CLK_CPU_CMPLX_CPU0_CLK_STP;
 -- 
 1.8.5.3
 
