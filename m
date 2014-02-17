@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFUn6-0003QF-Dm
- for barebox@lists.infradead.org; Mon, 17 Feb 2014 20:27:52 +0000
+ id 1WFUn6-0003QG-Dj
+ for barebox@lists.infradead.org; Mon, 17 Feb 2014 20:27:53 +0000
 Received: from tellur.localdomain (p57B5F67D.dip0.t-ipconnect.de
- [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id 1428918B425F
+ [87.181.246.125]) by lynxeye.de (Postfix) with ESMTPA id D778118B426D
  for <barebox@lists.infradead.org>; Mon, 17 Feb 2014 21:26:05 +0100 (CET)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 17 Feb 2014 21:27:39 +0100
-Message-Id: <1392668861-10915-7-git-send-email-dev@lynxeye.de>
+Date: Mon, 17 Feb 2014 21:27:41 +0100
+Message-Id: <1392668861-10915-9-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 References: <1392668861-10915-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,25 +24,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/8] tegra: add lowlevel DVC
+Subject: [PATCH v2 8/8] tegra: add Tegra3 startup
 To: barebox@lists.infradead.org
 
-Allows to talk to external PMIC devices to bring up CPU rail.
+Sets up MSELECT to let main CPUs talk to peripheral devices and starts
+high performance A9 CPU cluster.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel-dvc.h | 72 +++++++++++++++++++++++++
- arch/arm/mach-tegra/include/mach/lowlevel.h     |  7 ++-
- arch/arm/mach-tegra/include/mach/tegra20-car.h  |  8 +++
- 3 files changed, 86 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-tegra/include/mach/lowlevel-dvc.h
+ arch/arm/mach-tegra/include/mach/tegra30-car.h  | 31 ++++++++++++++++++++
+ arch/arm/mach-tegra/include/mach/tegra30-flow.h | 23 +++++++++++++++
+ arch/arm/mach-tegra/tegra_avp_init.c            | 38 ++++++++++++++++++++++++-
+ 3 files changed, 91 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/mach-tegra/include/mach/tegra30-car.h
+ create mode 100644 arch/arm/mach-tegra/include/mach/tegra30-flow.h
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel-dvc.h b/arch/arm/mach-tegra/include/mach/lowlevel-dvc.h
+diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
 new file mode 100644
-index 0000000..f7f6328
+index 0000000..ce11060
 --- /dev/null
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel-dvc.h
-@@ -0,0 +1,72 @@
++++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+@@ -0,0 +1,31 @@
 +/*
 + * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
 + *
@@ -59,115 +61,129 @@ index 0000000..f7f6328
 + * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
-+#include <linux/compiler.h>
-+#include "mach/tegra20-car.h"
-+#include "mach/lowlevel.h"
++/* Register definitions */
++#define CRC_CLK_OUT_ENB_V		0x360
++#define CRC_CLK_OUT_ENB_V_MSELECT	(1 << 3)
 +
-+static __always_inline
-+void tegra_dvc_init(void)
-+{
-+	int div;
-+	u32 reg;
++#define CRC_CLK_SOURCE_MSEL		0x3b4
++#define CRC_CLK_SOURCE_MSEL_SRC_SHIFT	30
++#define CRC_CLK_SOURCE_MSEL_SRC_PLLP	0
++#define CRC_CLK_SOURCE_MSEL_SRC_PLLC	1
++#define CRC_CLK_SOURCE_MSEL_SRC_PLLM	2
++#define CRC_CLK_SOURCE_MSEL_SRC_CLKM	3
 +
-+	/* reset DVC controller and enable clock */
-+	writel(CRC_RST_DEV_H_DVC, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_H_SET);
-+	reg = readl(TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_H);
-+	reg |= CRC_CLK_OUT_ENB_H_DVC;
-+	writel(reg, TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_H);
++#define CRC_RST_DEV_V_SET		0x430
++#define CRC_RST_DEV_V_MSELECT		(1 << 3)
 +
-+	/* set DVC I2C clock source to CLK_M and aim for 100kHz I2C clock */
-+	div = ((tegra_get_osc_clock() * 3) >> 22) - 1;
-+	writel((div) | (3 << 30),
-+	       TEGRA_CLK_RESET_BASE + CRC_CLK_SOURCE_DVC);
++#define CRC_RST_DEV_V_CLR		0x434
+diff --git a/arch/arm/mach-tegra/include/mach/tegra30-flow.h b/arch/arm/mach-tegra/include/mach/tegra30-flow.h
+new file mode 100644
+index 0000000..50a3030
+--- /dev/null
++++ b/arch/arm/mach-tegra/include/mach/tegra30-flow.h
+@@ -0,0 +1,23 @@
++/*
++ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+	/* clear DVC reset */
-+	tegra_ll_delay_usec(3);
-+	writel(CRC_RST_DEV_H_DVC, TEGRA_CLK_RESET_BASE + CRC_RST_DEV_H_CLR);
-+}
++#define FLOW_HALT_CPU_EVENTS		0x000
++#define FLOW_MODE_NONE			0
++#define FLOW_MODE_STOP			2
 +
-+#define TEGRA_I2C_CNFG		0x00
-+#define TEGRA_I2C_CMD_ADDR0	0x04
-+#define TEGRA_I2C_CMD_DATA1	0x0c
-+#define TEGRA_I2C_SEND_2_BYTES	0x0a02
-+
-+static __always_inline
-+void tegra_dvc_write_addr(u32 addr, u32 config)
-+{
-+	writel(addr, TEGRA_DVC_BASE + TEGRA_I2C_CMD_ADDR0);
-+	writel(config, TEGRA_DVC_BASE + TEGRA_I2C_CNFG);
-+}
-+
-+static __always_inline
-+void tegra_dvc_write_data(u32 data, u32 config)
-+{
-+	writel(data, TEGRA_DVC_BASE + TEGRA_I2C_CMD_DATA1);
-+	writel(config, TEGRA_DVC_BASE + TEGRA_I2C_CNFG);
-+}
-+
-+static inline __attribute__((always_inline))
-+void tegra30_tps65911_cpu_rail_enable(void)
-+{
-+	tegra_dvc_write_addr(0x5a, 2);
-+	/* reg 28, 600mV + (35-3) * 12,5mV = 1,0V */
-+	tegra_dvc_write_data(0x2328, TEGRA_I2C_SEND_2_BYTES);
-+	tegra_ll_delay_usec(1000);
-+	/* reg 27, VDDctrl enable */
-+	tegra_dvc_write_data(0x0127, TEGRA_I2C_SEND_2_BYTES);
-+	tegra_ll_delay_usec(10 * 1000);
-+}
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index b39e30e..0fad195 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
++#define FLOW_CLUSTER_CONTROL		0x02c
++#define FLOW_CLUSTER_CONTROL_ACTIVE_G	(0 << 0)
++#define FLOW_CLUSTER_CONTROL_ACTIVE_LP	(1 << 0)
+diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
+index 4dd1330..3314db4 100644
+--- a/arch/arm/mach-tegra/tegra_avp_init.c
++++ b/arch/arm/mach-tegra/tegra_avp_init.c
 @@ -1,5 +1,5 @@
  /*
 - * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
 + * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
   *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms and conditions of the GNU General Public License,
-@@ -21,6 +21,9 @@
-  * be used by both the main CPU complex (ARMv7) and the AVP (ARMv4).
-  */
+  * Partly based on code (C) Copyright 2010-2011
+  * NVIDIA Corporation <www.nvidia.com>
+@@ -23,6 +23,8 @@
+ #include <mach/lowlevel.h>
+ #include <mach/tegra20-car.h>
+ #include <mach/tegra20-pmc.h>
++#include <mach/tegra30-car.h>
++#include <mach/tegra30-flow.h>
  
-+#ifndef __TEGRA_LOWLEVEL_H
-+#define __TEGRA_LOWLEVEL_H
+ /* instruct the PMIC to enable the CPU power rail */
+ static void enable_maincomplex_powerrail(void)
+@@ -84,6 +86,12 @@ static struct pll_config pllx_config_table[][4] = {
+ 		{1000, 12, 0, 12},	/* OSC 12.0 MHz */
+ 		{1000, 26, 0, 12},	/* OSC 26.0 MHz */
+ 	}, /* TEGRA 20 */
++	{
++		{862, 8,  0, 8},
++		{583, 8,  0, 4},
++		{700, 6,  0, 8},
++		{700, 13, 0, 8},
++	}, /* TEGRA 30 */
+ };
+ 
+ static void init_pllx(void)
+@@ -152,6 +160,20 @@ static void start_cpu0_clocks(void)
+ 	writel(1 << CRC_CLK_SYSTEM_RATE_AHB_SHIFT,
+ 	       TEGRA_CLK_RESET_BASE + CRC_CLK_SYSTEM_RATE);
+ 
++	if (tegra_get_chiptype() >= TEGRA30) {
++		/* init MSELECT */
++		writel(CRC_RST_DEV_V_MSELECT,
++		       TEGRA_CLK_RESET_BASE + CRC_RST_DEV_V_SET);
++		writel((CRC_CLK_SOURCE_MSEL_SRC_PLLP <<
++		       CRC_CLK_SOURCE_MSEL_SRC_SHIFT) | 2,
++		       TEGRA_CLK_RESET_BASE + CRC_CLK_SOURCE_MSEL);
++		writel(CRC_CLK_OUT_ENB_V_MSELECT,
++		       TEGRA_CLK_RESET_BASE + CRC_CLK_OUT_ENB_V);
++		tegra_ll_delay_usec(3);
++		writel(CRC_RST_DEV_V_MSELECT,
++		       TEGRA_CLK_RESET_BASE + CRC_RST_DEV_V_CLR);
++	}
 +
- #include <linux/compiler.h>
- #include <sizes.h>
- #include <io.h>
-@@ -251,3 +254,5 @@ void tegra_avp_reset_vector(uint32_t boarddata);
- 
- /* reset vector for the main CPU complex */
- void tegra_maincomplex_entry(void);
+ 	/* deassert clock stop for cpu 0 */
+ 	reg = readl(TEGRA_CLK_RESET_BASE + CRC_CLK_CPU_CMPLX);
+ 	reg &= ~CRC_CLK_CPU_CMPLX_CPU0_CLK_STP;
+@@ -185,10 +207,24 @@ static void maincomplex_powerup(void)
+ 		tegra_ll_delay_usec(1000);
+ 	}
+ }
 +
-+#endif /* __TEGRA_LOWLEVEL_H */
-diff --git a/arch/arm/mach-tegra/include/mach/tegra20-car.h b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-index 64873d7..a5441de 100644
---- a/arch/arm/mach-tegra/include/mach/tegra20-car.h
-+++ b/arch/arm/mach-tegra/include/mach/tegra20-car.h
-@@ -46,6 +46,9 @@
- #define CRC_CLK_OUT_ENB_L_AC97		(1 << 3)
- #define CRC_CLK_OUT_ENB_L_CPU		(1 << 0)
- 
-+#define CRC_CLK_OUT_ENB_H		0x014
-+#define CRC_CLK_OUT_ENB_H_DVC		(1 << 15)
++static void tegra_cluster_switch_hp(void)
++{
++	u32 reg;
 +
- #define CRC_CCLK_BURST_POLICY		0x020
- #define CRC_CCLK_BURST_POLICY_SYS_STATE_SHIFT	28
- #define CRC_CCLK_BURST_POLICY_SYS_STATE_FIQ	8
-@@ -273,6 +276,11 @@
- 
- #define CRC_RST_DEV_L_CLR		0x304
- 
-+#define CRC_RST_DEV_H_SET		0x308
-+#define CRC_RST_DEV_H_DVC		(1 << 15)
++	reg = readl(TEGRA_FLOW_CTRL_BASE + FLOW_CLUSTER_CONTROL);
++	reg &= ~FLOW_CLUSTER_CONTROL_ACTIVE_LP;
++	writel(reg, TEGRA_FLOW_CTRL_BASE + FLOW_CLUSTER_CONTROL);
++}
 +
-+#define CRC_RST_DEV_H_CLR		0x30c
-+
- #define CRC_RST_CPU_CMPLX_SET		0x340
+ void tegra_avp_reset_vector(uint32_t boarddata)
+ {
+ 	int num_cores;
  
- #define CRC_RST_CPU_CMPLX_CLR		0x344
++	/* we want to bring up the high performance CPU complex */
++	if (tegra_get_chiptype() == TEGRA30)
++		tegra_cluster_switch_hp();
++
+ 	/* get the number of cores in the main CPU complex of the current SoC */
+ 	num_cores = tegra_get_num_cores();
+ 
 -- 
 1.8.5.3
 
