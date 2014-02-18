@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFi2p-00059V-Pa
- for barebox@lists.infradead.org; Tue, 18 Feb 2014 10:36:56 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 18 Feb 2014 11:36:13 +0100
-Message-Id: <1392719775-16886-4-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1392719775-16886-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1392719775-16886-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1WFih7-0006M1-HT
+ for barebox@lists.infradead.org; Tue, 18 Feb 2014 11:18:34 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 18 Feb 2014 12:18:08 +0100
+Message-Id: <1392722288-9428-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,41 +14,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: a9m2410: convert to devfs_append_partition
+Subject: [PATCH] ARM: i.MX: Karo-tx25: build image for internal boot
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvYTltMjQxMC9hOW0yNDEwLmMgfCAyNCArKysr
-KysrKysrKysrKysrKy0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCA3
-IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJkcy9hOW0yNDEwL2E5bTI0
-MTAuYyBiL2FyY2gvYXJtL2JvYXJkcy9hOW0yNDEwL2E5bTI0MTAuYwppbmRleCBiMmI2Yzg3MTE3
-YTMuLjg2OGEyN2E1ZTViZiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9hcmRzL2E5bTI0MTAvYTlt
-MjQxMC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9hOW0yNDEwL2E5bTI0MTAuYwpAQCAtODIsNiAr
-ODIsMjIgQEAgc3RhdGljIGludCBhOW0yNDEwX21lbV9pbml0KHZvaWQpCiB9CiBtZW1faW5pdGNh
-bGwoYTltMjQxMF9tZW1faW5pdCk7CiAKK3N0YXRpYyB2b2lkIGE5bTI0MTBfbmFuZF9wYXJ0aXRp
-b25zKHZvaWQpCit7CisjaWZkZWYgQ09ORklHX05BTkQKKwlsb2ZmX3Qgb2Zmc2V0ID0gMDsKKwor
-CS8qIC0tLS0tLS0tLS0tIGFkZCBzb21lIHZpdGFsIHBhcnRpdGlvbnMgLS0tLS0tLS0gKi8KKwlk
-ZXZmc19hcHBlbmRfcGFydGl0aW9uKCJuYW5kMCIsICZvZmZzZXQsIDB4NDAwMDAsCisJCQlERVZG
-U19QQVJUSVRJT05fRklYRUQsICJzZWxmX3JhdyIpOworCWRldl9hZGRfYmJfZGV2KCJzZWxmX3Jh
-dyIsICJzZWxmMCIpOworCisJZGV2ZnNfYXBwZW5kX3BhcnRpdGlvbigibmFuZDAiLCAmb2Zmc2V0
-LCAweDIwMDAwLAorCQkJREVWRlNfUEFSVElUSU9OX0ZJWEVELCAiZW52X3JhdyIpOworCWRldl9h
-ZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKKyNlbmRpZgorfQorCiBzdGF0aWMgaW50IGE5
-bTI0MTBfZGV2aWNlc19pbml0KHZvaWQpCiB7CiAJdWludDMyX3QgcmVnOwpAQCAtMTE2LDE0ICsx
-MzIsOCBAQCBzdGF0aWMgaW50IGE5bTI0MTBfZGV2aWNlc19pbml0KHZvaWQpCiAJYWRkX2dlbmVy
-aWNfZGV2aWNlKCJzbWM5MWMxMTEiLCBERVZJQ0VfSURfRFlOQU1JQywgTlVMTCwgUzNDX0NTMV9C
-QVNFICsgMHgzMDAsCiAJCQkxNiwgSU9SRVNPVVJDRV9NRU0sIE5VTEwpOwogCi0jaWZkZWYgQ09O
-RklHX05BTkQKLQkvKiAtLS0tLS0tLS0tLSBhZGQgc29tZSB2aXRhbCBwYXJ0aXRpb25zIC0tLS0t
-LS0tICovCi0JZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFuZDAiLCAweDAwMDAwLCAweDQwMDAwLCBE
-RVZGU19QQVJUSVRJT05fRklYRUQsICJzZWxmX3JhdyIpOwotCWRldl9hZGRfYmJfZGV2KCJzZWxm
-X3JhdyIsICJzZWxmMCIpOworCWE5bTI0MTBfbmFuZF9wYXJ0aXRpb25zKCk7CiAKLQlkZXZmc19h
-ZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4NDAwMDAsIDB4MjAwMDAsIERFVkZTX1BBUlRJVElPTl9G
-SVhFRCwgImVudl9yYXciKTsKLQlkZXZfYWRkX2JiX2RldigiZW52X3JhdyIsICJlbnYwIik7Ci0j
-ZW5kaWYKIAlhcm1saW51eF9zZXRfYXJjaGl0ZWN0dXJlKE1BQ0hfVFlQRV9BOU0yNDEwKTsKIAog
-CXJldHVybiAwOwotLSAKMS44LjUuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVi
-b3gK
+This adds an image for the TX25 in internal boot mode. This can
+be used for USB booting.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ images/Makefile.imx | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index e3b27b7..d44c63c 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -14,6 +14,11 @@ pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
+ FILE_barebox-karo-tx25.img = start_imx25_karo_tx25.pblx
+ image-$(CONFIG_MACH_TX25) += barebox-karo-tx25.img
+ 
++pblx-$(CONFIG_MACH_TX25) += start_imx25_karo_tx25
++CFG_start_imx25_karo_tx25.pblx.imximg = $(board)/karo-tx25/flash-header-tx25.imxcfg
++FILE_barebox-karo-tx25-internal.img = start_imx25_karo_tx25.pblx.imximg
++image-$(CONFIG_MACH_TX25) += barebox-karo-tx25-internal.img
++
+ # ----------------------- i.MX51 based boards ---------------------------
+ pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
+ CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
+-- 
+1.8.5.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
