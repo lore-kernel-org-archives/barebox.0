@@ -1,14 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WFi2z-00059X-PS
- for barebox@lists.infradead.org; Tue, 18 Feb 2014 10:37:06 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Tue, 18 Feb 2014 11:36:14 +0100
-Message-Id: <1392719775-16886-5-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1392719775-16886-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from 8.mo2.mail-out.ovh.net ([188.165.52.147]
+ helo=mo2.mail-out.ovh.net)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WFiIi-0005fg-NV
+ for barebox@lists.infradead.org; Tue, 18 Feb 2014 10:53:21 +0000
+Received: from mail403.ha.ovh.net (b9.ovh.net [213.186.33.59])
+ by mo2.mail-out.ovh.net (Postfix) with SMTP id 3AD7CFFBBF0
+ for <barebox@lists.infradead.org>; Tue, 18 Feb 2014 11:42:20 +0100 (CET)
+Date: Tue, 18 Feb 2014 11:43:46 +0100
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Message-ID: <20140218104346.GN9671@ns203013.ovh.net>
 References: <1392719775-16886-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1392719775-16886-3-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1392719775-16886-3-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,44 +23,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: freescale-mx35-3-stack: convert to
- devfs_append_partition
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] ARM: sama5d3xek: convert to devfs_append_partition
+To: Uwe Kleine-K??nig <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MzUtMy1zdGFjay8zc3Rh
-Y2suYyB8IDEzICsrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyks
-IDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1t
-eDM1LTMtc3RhY2svM3N0YWNrLmMgYi9hcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MzUtMy1z
-dGFjay8zc3RhY2suYwppbmRleCBkYmQxYzdhZGNiMTAuLmVjNGE5NWEwOGU1MCAxMDA2NDQKLS0t
-IGEvYXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2svM3N0YWNrLmMKKysrIGIv
-YXJjaC9hcm0vYm9hcmRzL2ZyZWVzY2FsZS1teDM1LTMtc3RhY2svM3N0YWNrLmMKQEAgLTEzMiw2
-ICsxMzIsNyBAQCBzdGF0aWMgdm9pZCBzZXRfYm9hcmRfcmV2KGludCByZXYpCiBzdGF0aWMgaW50
-IGYzc19kZXZpY2VzX2luaXQodm9pZCkKIHsKIAl1aW50MzJfdCByZWc7CisJbG9mZl90IG9mZnNl
-dCA9IDA7CiAKIAkvKiBDUzA6IE5vciBGbGFzaCAqLwogCWlteDM1X3NldHVwX3dlaW1jcygwLCAw
-eDAwMDBjZjAzLCAweDEwMDAwZDAzLCAweDAwNzIwOTAwKTsKQEAgLTE1MSwxNSArMTUyLDE5IEBA
-IHN0YXRpYyBpbnQgZjNzX2RldmljZXNfaW5pdCh2b2lkKQogCiAJc3dpdGNoICgocmVnID4+IDI1
-KSAmIDB4MykgewogCWNhc2UgMHgwMToJCS8qIE5BTkQgaXMgdGhlIHNvdXJjZSAqLwotCQlkZXZm
-c19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAsIERFVkZTX1BBUlRJVElP
-Tl9GSVhFRCwgInNlbGZfcmF3Iik7CisJCWRldmZzX2FwcGVuZF9wYXJ0aXRpb24oIm5hbmQwIiwg
-Jm9mZnNldCwgMHg0MDAwMCwKKwkJCQlERVZGU19QQVJUSVRJT05fRklYRUQsICJzZWxmX3JhdyIp
-OwogCQlkZXZfYWRkX2JiX2Rldigic2VsZl9yYXciLCAic2VsZjAiKTsKLQkJZGV2ZnNfYWRkX3Bh
-cnRpdGlvbigibmFuZDAiLCAweDQwMDAwLCAweDgwMDAwLCBERVZGU19QQVJUSVRJT05fRklYRUQs
-ICJlbnZfcmF3Iik7CisJCWRldmZzX2FwcGVuZF9wYXJ0aXRpb24oIm5hbmQwIiwgJm9mZnNldCwg
-MHg4MDAwMCwKKwkJCQlERVZGU19QQVJUSVRJT05fRklYRUQsICJlbnZfcmF3Iik7CiAJCWRldl9h
-ZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKIAkJYnJlYWs7CiAKIAljYXNlIDB4MDA6CQkv
-KiBOT1IgaXMgdGhlIHNvdXJjZSAqLwotCQlkZXZmc19hZGRfcGFydGl0aW9uKCJub3IwIiwgMHgw
-MDAwMCwgMHg0MDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAic2VsZjAiKTsKLQkJZGV2ZnNf
-YWRkX3BhcnRpdGlvbigibm9yMCIsIDB4NDAwMDAsIDB4ODAwMDAsIERFVkZTX1BBUlRJVElPTl9G
-SVhFRCwgImVudjAiKTsKKwkJZGV2ZnNfYXBwZW5kX3BhcnRpdGlvbigibm9yMCIsICZvZmZzZXQs
-IDB4NDAwMDAsCisJCQkJREVWRlNfUEFSVElUSU9OX0ZJWEVELCAic2VsZjAiKTsKKwkJZGV2ZnNf
-YXBwZW5kX3BhcnRpdGlvbigibm9yMCIsICZvZmZzZXQsIDB4ODAwMDAsCisJCQkJREVWRlNfUEFS
-VElUSU9OX0ZJWEVELCAiZW52MCIpOwogCQlwcm90ZWN0X2ZpbGUoIi9kZXYvZW52MCIsIDEpOwog
-CQlicmVhazsKIAl9Ci0tIAoxLjguNS4zCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZy
-YWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFy
-ZWJveAo=
+On 11:36 Tue 18 Feb     , Uwe Kleine-K??nig wrote:
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+I like it and not
+
+can we simply use an struct now
+
+like in linux
+> ---
+>  arch/arm/boards/sama5d3xek/init.c | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
+> =
+
+> diff --git a/arch/arm/boards/sama5d3xek/init.c b/arch/arm/boards/sama5d3x=
+ek/init.c
+> index 4f866aa6f85d..ba5f90c7063c 100644
+> --- a/arch/arm/boards/sama5d3xek/init.c
+> +++ b/arch/arm/boards/sama5d3xek/init.c
+> @@ -402,6 +402,8 @@ static void ek_add_device_hdmi(void)
+>  =
+
+>  static int at91sama5d3xek_devices_init(void)
+>  {
+> +	loff_t offset =3D 0x0;
+> +
+>  	ek_add_device_w1();
+>  	ek_add_device_hdmi();
+>  	ek_add_device_nand();
+> @@ -411,13 +413,21 @@ static int at91sama5d3xek_devices_init(void)
+>  	ek_add_device_mci();
+>  	ek_add_device_lcdc();
+>  =
+
+> -	devfs_add_partition("nand0", 0x00000, SZ_256K, DEVFS_PARTITION_FIXED, "=
+at91bootstrap_raw");
+> +	devfs_append_partition("nand0", &offset, SZ_256K,
+> +			DEVFS_PARTITION_FIXED, "at91bootstrap_raw");
+>  	dev_add_bb_dev("at91bootstrap_raw", "at91bootstrap");
+> -	devfs_add_partition("nand0", SZ_256K, SZ_256K + SZ_128K, DEVFS_PARTITIO=
+N_FIXED, "self_raw");
+> +	devfs_append_partition("nand0", &offset, SZ_256K + SZ_128K,
+> +			DEVFS_PARTITION_FIXED, "self_raw");
+>  	dev_add_bb_dev("self_raw", "self0");
+> -	devfs_add_partition("nand0", SZ_512K + SZ_256K, SZ_256K, DEVFS_PARTITIO=
+N_FIXED, "env_raw");
+> +
+> +	/* there is a hole in the partition layout of 128K */
+> +	offset =3D SZ_512K + SZ_256K;
+> +
+> +	devfs_append_partition("nand0", &offset, SZ_256K,
+> +			DEVFS_PARTITION_FIXED, "env_raw");
+>  	dev_add_bb_dev("env_raw", "env0");
+> -	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED, "en=
+v_raw1");
+> +	devfs_append_partition("nand0", &offset, SZ_256K,
+> +			DEVFS_PARTITION_FIXED, "env_raw1");
+>  	dev_add_bb_dev("env_raw1", "env1");
+>  =
+
+>  	return 0;
+> -- =
+
+> 1.8.5.3
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
