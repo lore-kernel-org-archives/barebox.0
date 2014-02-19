@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WG4kF-0003WE-Hf
- for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:51:18 +0000
+ id 1WG4kA-0003VW-MJ
+ for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:51:16 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WG4jo-00084c-O1
+ for barebox@lists.infradead.org; Wed, 19 Feb 2014 11:50:48 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1WG4jo-0001Gr-Mi
+ for barebox@lists.infradead.org; Wed, 19 Feb 2014 11:50:48 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Feb 2014 11:50:46 +0100
-Message-Id: <1392807047-32080-5-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 19 Feb 2014 11:50:42 +0100
+Message-Id: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,41 +26,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] defaultenv: use wildcard compression rules
+Subject: Cleanup environment dependencies and compressed file generation
 To: barebox@lists.infradead.org
 
-Now that we have wildcard rules for compresed files use them.
+This changes the way how we track whether the default environment has
+to be regenerated. Instead of trying to push this into make rules we
+now always regenerate it, but only if the result differs from the last
+run we copy it over to the target. This way make only sees a change when
+something has changed (and only then rebuilds the barebox binary).
+Also we introduce wildcard rules for generating compressed files which
+further cleans up generating the default environment files.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Makefile | 11 -----------
- 1 file changed, 11 deletions(-)
+Sascha
 
-diff --git a/common/Makefile b/common/Makefile
-index 0429336..60b0356 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -87,17 +87,6 @@ ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO),y)
- barebox_default_env_comp = .lzo
- endif
- 
--$(obj)/barebox_default_env.gz: $(obj)/barebox_default_env FORCE
--	$(call if_changed,gzip)
--
--$(obj)/barebox_default_env.bz2: $(obj)/barebox_default_env FORCE
--	$(call if_changed,bzip2)
--
--$(obj)/barebox_default_env.lzo: $(obj)/barebox_default_env FORCE
--	$(call if_changed,lzo)
--
--targets += barebox_default_env.lzo barebox_default_env.bz2 barebox_default_env.gz
--
- quiet_cmd_env_h = ENVH    $@
- cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
- 	echo "static const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
--- 
-1.8.5.3
+----------------------------------------------------------------
+Sascha Hauer (5):
+      common/Makefile: reorder targets
+      defaultenv: simplify env dependencies
+      make: Add wildcard rules for compressed files
+      defaultenv: use wildcard compression rules
+      Kconfig: Select default compression type
 
+ Makefile             |  17 +++++++
+ common/Kconfig       |  39 ++++++++--------
+ common/Makefile      | 126 +++++++++++++++++++--------------------------------
+ common/startup.c     |   2 +-
+ scripts/Makefile.lib |  18 ++++++++
+ scripts/genenv       |  12 ++++-
+ 6 files changed, 114 insertions(+), 100 deletions(-)
 
 _______________________________________________
 barebox mailing list
