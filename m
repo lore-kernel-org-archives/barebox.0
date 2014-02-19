@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WG4Te-0002xs-WC
- for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:34:08 +0000
-Date: Wed, 19 Feb 2014 11:33:46 +0100
+ id 1WG4kA-0003Vd-MM
+ for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:51:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140219103346.GY17250@pengutronix.de>
-References: <1392638652-27364-1-git-send-email-l.stach@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1392638652-27364-1-git-send-email-l.stach@pengutronix.de>
+Date: Wed, 19 Feb 2014 11:50:45 +0100
+Message-Id: <1392807047-32080-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
+References: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,62 +16,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] ARM: i.MX6: saresd: set USB PHY and DR mode
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 3/5] make: Add wildcard rules for compressed files
+To: barebox@lists.infradead.org
 
-On Mon, Feb 17, 2014 at 01:04:11PM +0100, Lucas Stach wrote:
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/dts/imx6qdl-sabresd.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+To simplify generating compressed files.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ scripts/Makefile.lib | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/arch/arm/dts/imx6qdl-sabresd.dtsi b/arch/arm/dts/imx6qdl-sabresd.dtsi
-> index 346e32a22c56..78c9fd54ebd3 100644
-> --- a/arch/arm/dts/imx6qdl-sabresd.dtsi
-> +++ b/arch/arm/dts/imx6qdl-sabresd.dtsi
-> @@ -280,6 +280,8 @@
->  
->  &usbh1 {
->  	vbus-supply = <&reg_usb_h1_vbus>;
-> +	phy_type = "utmi";
-> +	dr_mode = "host";
->  	status = "okay";
->  };
->  
-> @@ -287,6 +289,8 @@
->  	vbus-supply = <&reg_usb_otg_vbus>;
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_usbotg>;
-> +	phy_type = "utmi";
-> +	dr_mode = "host";
->  	disable-over-current;
->  	status = "okay";
->  };
-> -- 
-> 1.8.5.3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 73a433d..e87e401 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -193,6 +193,9 @@ quiet_cmd_gzip = GZIP    $@
+ cmd_gzip = (cat $(filter-out FORCE,$^) | gzip -n -f -9 > $@) || \
+ 	(rm -f $@ ; false)
+ 
++%.gz: %
++	$(call if_changed,gzip)
++
+ # DTC
+ # ---------------------------------------------------------------------------
+ 
+@@ -251,6 +254,9 @@ cmd_bzip2 = (cat $(filter-out FORCE,$^) | \
+ 	bzip2 -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+ 	(rm -f $@ ; false)
+ 
++%.bz2: %
++	$(call if_changed,bzip2)
++
+ # Lzma
+ # ---------------------------------------------------------------------------
+ 
+@@ -259,11 +265,17 @@ cmd_lzma = (cat $(filter-out FORCE,$^) | \
+ 	lzma -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+ 	(rm -f $@ ; false)
+ 
++%.lzma: %
++	$(call if_changed,lzma)
++
+ quiet_cmd_lzo = LZO     $@
+ cmd_lzo = (cat $(filter-out FORCE,$^) | \
+ 	lzop -9 && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+ 	(rm -f $@ ; false)
+ 
++%.lzo: %
++	$(call if_changed,lzo)
++
+ # XZ
+ # ---------------------------------------------------------------------------
+ # Use xzkern to compress the kernel image and xzmisc to compress other things.
+@@ -292,11 +304,17 @@ cmd_xzmisc = (cat $(filter-out FORCE,$^) | \
+ 	xz --check=crc32 --lzma2=dict=1MiB) > $@ || \
+ 	(rm -f $@ ; false)
+ 
++# lz4
++# ---------------------------------------------------------------------------
++
+ quiet_cmd_lz4 = LZ4     $@
+ cmd_lz4 = (cat $(filter-out FORCE,$^) | \
+ 	lz4c -l -c1 stdin stdout && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
+ 	(rm -f $@ ; false)
+ 
++%.lz4: %
++	$(call if_changed,lz4)
++
+ quiet_cmd_disasm = DISASM  $@
+ cmd_disasm = $(OBJDUMP) -d $< > $@
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.5.3
+
 
 _______________________________________________
 barebox mailing list
