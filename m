@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WG4kA-0003Vb-MK
- for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:51:17 +0000
+ id 1WG4kA-0003Ve-MN
+ for barebox@lists.infradead.org; Wed, 19 Feb 2014 10:51:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Feb 2014 11:50:43 +0100
-Message-Id: <1392807047-32080-2-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 19 Feb 2014 11:50:47 +0100
+Message-Id: <1392807047-32080-6-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
 References: <1392807047-32080-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,117 +21,153 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] common/Makefile: reorder targets
+Subject: [PATCH 5/5] Kconfig: Select default compression type
 To: barebox@lists.infradead.org
 
-Reorder targets alphabetically to make the file look nicer, no
-functional change.
+Instead of asking explicitly for the default environment compression
+type ask for the in-barebox default compression type. This also adds
+a DEFAULT_COMPRESSION_SUFFIX make variable which can be used together
+with the wildcard rules for compressed files to generate compressed
+files without explicitly support each compression type.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Makefile | 87 ++++++++++++++++++++++++++++-----------------------------
- 1 file changed, 42 insertions(+), 45 deletions(-)
+ Makefile         | 17 +++++++++++++++++
+ common/Kconfig   | 39 +++++++++++++++++++++------------------
+ common/Makefile  | 13 +------------
+ common/startup.c |  2 +-
+ 4 files changed, 40 insertions(+), 31 deletions(-)
 
+diff --git a/Makefile b/Makefile
+index 640e589..b48240a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -504,6 +504,23 @@ barebox-alldirs	:= $(sort $(barebox-dirs) $(patsubst %/,%,$(filter %/, \
+ pbl-common-y	:= $(patsubst %/, %/built-in-pbl.o, $(common-y))
+ common-y	:= $(patsubst %/, %/built-in.o, $(common-y))
+ 
++ifeq ($(CONFIG_DEFAULT_COMPRESSION_GZIP),y)
++DEFAULT_COMPRESSION_SUFFIX := .gz
++endif
++ifeq ($(CONFIG_DEFAULT_COMPRESSED_BZIP2),y)
++DEFAULT_COMPRESSION_SUFFIX := .bz2
++endif
++ifeq ($(CONFIG_DEFAULT_COMPRESSION_LZO),y)
++DEFAULT_COMPRESSION_SUFFIX := .lzo
++endif
++ifeq ($(CONFIG_DEFAULT_COMPRESSION_LZ4),y)
++DEFAULT_COMPRESSION_SUFFIX := .lz4
++endif
++ifeq ($(CONFIG_DEFAULT_COMPRESSION_NONE),y)
++DEFAULT_COMPRESSION_SUFFIX :=
++endif
++export DEFAULT_COMPRESSION_SUFFIX
++
+ # Build barebox
+ # ---------------------------------------------------------------------------
+ # barebox is built from the objects selected by $(barebox-init) and
+diff --git a/common/Kconfig b/common/Kconfig
+index 8af7ec1..d6cda8c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -535,35 +535,38 @@ config DEFAULT_ENVIRONMENT
+ 	  Enabling this option will give you a default environment when
+ 	  the environment found in the environment sector is invalid
+ 
+-config DEFAULT_ENVIRONMENT_COMPRESSED
+-	bool
+-	depends on DEFAULT_ENVIRONMENT
+-	depends on !IMAGE_COMPRESSION_LZO
+-	depends on !IMAGE_COMPRESSION_GZIP
+-	default y if ZLIB
+-	default y if BZLIB
+-	default y if LZO_DECOMPRESS
+-
+-if DEFAULT_ENVIRONMENT_COMPRESSED
+-
+ choice
+-	prompt "compression"
+-
+-config DEFAULT_ENVIRONMENT_COMPRESSED_GZIP
++	prompt "default compression for in-barebox binaries"
++	default DEFAULT_COMPRESSION_NONE if PBL_IMAGE
++	default DEFAULT_COMPRESSION_LZO if LZO_DECOMPRESS
++	default DEFAULT_COMPRESSION_GZIP if ZLIB
++	default DEFAULT_COMPRESSION_LZ4 if LZ4_DECOMPRESS
++	default DEFAULT_COMPRESSION_BZIP2 if BZLIB
++	help
++	  Select the default compression for in-barebox binary files. Files
++	  compiled into barebox like for example the default environment will
++	  be compressed with this compression type.
++
++config DEFAULT_COMPRESSION_GZIP
+ 	bool "gzip"
+ 	depends on ZLIB
+ 
+-config DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2
++config DEFAULT_COMPRESSION_BZIP2
+ 	bool "bzip2"
+ 	depends on BZLIB
+ 
+-config DEFAULT_ENVIRONMENT_COMPRESSED_LZO
++config DEFAULT_COMPRESSION_LZO
+ 	bool "lzo"
+ 	depends on LZO_DECOMPRESS
+ 
+-endchoice
++config DEFAULT_COMPRESSION_LZ4
++	bool "lz4"
++	depends on LZ4_DECOMPRESS
+ 
+-endif
++config DEFAULT_COMPRESSION_NONE
++	bool "no compression"
++
++endchoice
+ 
+ config HAVE_DEFAULT_ENVIRONMENT_NEW
+ 	bool
 diff --git a/common/Makefile b/common/Makefile
-index ee02e0e..ce34d98 100644
+index 60b0356..3cfaae2 100644
 --- a/common/Makefile
 +++ b/common/Makefile
-@@ -1,53 +1,50 @@
--obj-$(CONFIG_BINFMT)		+= binfmt.o
--obj-$(CONFIG_SHELL_HUSH)	+= hush.o
--obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
--obj-$(CONFIG_GREGORIAN_CALENDER) += date.o
--obj-$(CONFIG_KALLSYMS)		+= kallsyms.o
--obj-$(CONFIG_ENV_HANDLING)	+= environment.o
-+obj-y				+= memory.o
-+obj-y				+= memory_display.o
-+obj-y				+= clock.o
-+obj-y				+= console_common.o
-+obj-y				+= startup.o
-+obj-y				+= misc.o
-+obj-y				+= memsize.o
-+obj-y				+= resource.o
-+obj-y				+= bootsource.o
-+extra-y				+= barebox_default_env barebox_default_env.h
- obj-$(CONFIG_AUTO_COMPLETE)	+= complete.o
--obj-$(CONFIG_POLLER)		+= poller.o
-+obj-$(CONFIG_BANNER)		+= version.o
-+obj-$(CONFIG_BAREBOX_UPDATE)	+= bbu.o
-+obj-$(CONFIG_BINFMT)		+= binfmt.o
- obj-$(CONFIG_BLOCK)		+= block.o
--obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
+@@ -76,22 +76,11 @@ cmd_envs = ($(srctree)/scripts/genenv $(srctree) $(objtree) $@ $(DEFAULT_ENVIRON
+ $(obj)/barebox_default_env: FORCE
+ 	$(call cmd,envs)
+ 
+-barebox_default_env_comp =
+-ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_GZIP),y)
+-barebox_default_env_comp = .gz
+-endif
+-ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_BZIP2),y)
+-barebox_default_env_comp = .bz2
+-endif
+-ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED_LZO),y)
+-barebox_default_env_comp = .lzo
+-endif
 -
-+obj-$(CONFIG_BLSPEC)		+= blspec.o
-+obj-$(CONFIG_BOOTM)		+= bootm.o
- obj-$(CONFIG_CMD_LOADS)		+= s_record.o
-+obj-$(CONFIG_CMD_MEMTEST)	+= memtest.o
-+obj-$(CONFIG_COMMAND_SUPPORT)	+= command.o
-+obj-$(CONFIG_CONSOLE_FULL)	+= console.o
-+obj-$(CONFIG_CONSOLE_SIMPLE)	+= console_simple.o
-+obj-$(CONFIG_DIGEST)		+= digest.o
-+obj-$(CONFIG_DDR_SPD)		+= ddr_spd.o
-+obj-$(CONFIG_ENV_HANDLING)	+= environment.o
-+obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
-+obj-$(CONFIG_FILETYPE)		+= filetype.o
-+obj-$(CONFIG_FLEXIBLE_BOOTARGS)	+= bootargs.o
-+obj-$(CONFIG_GLOBALVAR)		+= globalvar.o
-+obj-$(CONFIG_GREGORIAN_CALENDER) += date.o
-+obj-$(CONFIG_KALLSYMS)		+= kallsyms.o
-+obj-$(CONFIG_MALLOC_DLMALLOC)	+= dlmalloc.o
-+obj-$(CONFIG_MALLOC_TLSF)	+= tlsf_malloc.o tlsf.o
-+obj-$(CONFIG_MALLOC_DUMMY)	+= dummy_malloc.o
-+obj-$(CONFIG_MEMINFO)		+= meminfo.o
-+obj-$(CONFIG_MENU)		+= menu.o
-+obj-$(CONFIG_MODULES)		+= module.o
-+extra-$(CONFIG_MODULES)		+= module.lds
- obj-$(CONFIG_OFTREE)		+= oftree.o
-+obj-$(CONFIG_PARTITION_DISK)	+= partitions.o partitions/
-+obj-$(CONFIG_PASSWORD)		+= password.o
-+obj-$(CONFIG_POLLER)		+= poller.o
-+obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
-+obj-$(CONFIG_SHELL_HUSH)	+= hush.o
-+obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
-+obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
+ quiet_cmd_env_h = ENVH    $@
+ cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
+ 	echo "static const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
  
--obj-$(CONFIG_BLSPEC) += blspec.o
--obj-y += memory.o
--obj-$(CONFIG_DDR_SPD)  += ddr_spd.o
--obj-y += memory_display.o
--obj-$(CONFIG_MALLOC_DLMALLOC) += dlmalloc.o
--obj-$(CONFIG_MALLOC_TLSF) += tlsf_malloc.o
--obj-$(CONFIG_MALLOC_TLSF) += tlsf.o
--obj-$(CONFIG_MALLOC_DUMMY) += dummy_malloc.o
--obj-$(CONFIG_CMD_MEMTEST) += memtest.o
--obj-y += clock.o
--obj-$(CONFIG_BANNER) += version.o
--obj-$(CONFIG_MEMINFO) += meminfo.o
--obj-$(CONFIG_COMMAND_SUPPORT) += command.o
--obj-$(CONFIG_CONSOLE_FULL) += console.o
--obj-$(CONFIG_CONSOLE_SIMPLE) += console_simple.o
--obj-y += console_common.o
--obj-$(CONFIG_DIGEST) += digest.o
--obj-$(CONFIG_ENVIRONMENT_VARIABLES) += env.o
--obj-$(CONFIG_UIMAGE) += image.o
--obj-$(CONFIG_UIMAGE) += uimage.o
--obj-y += startup.o
--obj-y += misc.o
--obj-y += memsize.o
--obj-$(CONFIG_GLOBALVAR) += globalvar.o
--obj-$(CONFIG_RESET_SOURCE) += reset_source.o
--obj-$(CONFIG_FILETYPE) += filetype.o
--obj-y += resource.o
--obj-$(CONFIG_MENU) += menu.o
--obj-$(CONFIG_PASSWORD) += password.o
--obj-$(CONFIG_MODULES) += module.o
--obj-$(CONFIG_FLEXIBLE_BOOTARGS) += bootargs.o
--obj-$(CONFIG_BAREBOX_UPDATE) += bbu.o
--obj-y += bootsource.o
--obj-$(CONFIG_BOOTM) += bootm.o
--extra-$(CONFIG_MODULES) += module.lds
--extra-y += barebox_default_env barebox_default_env.h
+-$(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(barebox_default_env_comp) FORCE
++$(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) FORCE
+ 	$(call if_changed,env_h)
  
- ifdef CONFIG_DEFAULT_ENVIRONMENT
- $(obj)/startup.o: $(obj)/barebox_default_env.h
+ quiet_cmd_pwd_h = PWDH    $@
+diff --git a/common/startup.c b/common/startup.c
+index e8b9ea0..4bc5628 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -52,7 +52,7 @@ static int register_default_env(void)
+ 	int ret;
+ 	void *defaultenv;
+ 
+-	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_COMPRESSED)) {
++	if (!IS_ENABLED(CONFIG_DEFAULT_COMPRESSION_NONE)) {
+ 		void *tmp = malloc(default_environment_size);
+ 
+ 		if (!tmp)
 -- 
 1.8.5.3
 
