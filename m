@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WGU0h-0007Ri-Q1
- for barebox@lists.infradead.org; Thu, 20 Feb 2014 13:49:57 +0000
+ id 1WGU0h-0007Rf-Q3
+ for barebox@lists.infradead.org; Thu, 20 Feb 2014 13:49:56 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 20 Feb 2014 14:49:29 +0100
-Message-Id: <1392904169-786-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1392904169-786-1-git-send-email-s.hauer@pengutronix.de>
-References: <1392904169-786-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 20 Feb 2014 14:49:26 +0100
+Message-Id: <1392904169-786-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,61 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] defaultenv: Align defaultenv array
+Subject: [PATCH 1/4] filetype: Add detection for barebox environment
 To: barebox@lists.infradead.org
-
-The default environment buffer is an unsigned char array and thus
-may be unaligned. Some decompression algorithms expect the buffer
-to be sufficiently aligned for u32 accesses. We make this sure by
-copying the default env to a temporary buffer. Instead of doing this
-just add a __aligned(4) to the default environment.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Makefile  |  2 +-
- common/startup.c | 11 +----------
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ common/filetype.c  | 4 ++++
+ include/filetype.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/common/Makefile b/common/Makefile
-index 3cfaae2..a52e96b 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -77,7 +77,7 @@ $(obj)/barebox_default_env: FORCE
- 	$(call cmd,envs)
+diff --git a/common/filetype.c b/common/filetype.c
+index 8cdf827..0b5da30 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -23,6 +23,7 @@
+ #include <fs.h>
+ #include <malloc.h>
+ #include <errno.h>
++#include <envfs.h>
  
- quiet_cmd_env_h = ENVH    $@
--cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c default_environment) > $@; \
-+cmd_env_h = cat $< | (cd $(obj) && $(objtree)/scripts/bin2c "__aligned(4) default_environment") > $@; \
- 	echo "static const int default_environment_uncompress_size=`stat -c%s $(obj)/barebox_default_env`;" >> $@
+ struct filetype_str {
+ 	const char *name;	/* human readable filetype */
+@@ -51,6 +52,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_ext] = { "ext filesystem", "ext" },
+ 	[filetype_gpt] = { "GUID Partition Table", "gpt" },
+ 	[filetype_bpk] = { "Binary PacKage", "bpk" },
++	[filetype_barebox_env] = { "barebox environment file", "bbenv" },
+ };
  
- $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(DEFAULT_COMPRESSION_SUFFIX) FORCE
-diff --git a/common/startup.c b/common/startup.c
-index 4bc5628..6847b61 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -53,21 +53,12 @@ static int register_default_env(void)
- 	void *defaultenv;
+ const char *file_type_to_string(enum filetype f)
+@@ -188,6 +190,8 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
  
- 	if (!IS_ENABLED(CONFIG_DEFAULT_COMPRESSION_NONE)) {
--		void *tmp = malloc(default_environment_size);
--
--		if (!tmp)
--			return -ENOMEM;
--
--		memcpy(tmp, default_environment, default_environment_size);
+ 	if (strncmp(buf8, "#!/bin/sh", 9) == 0)
+ 		return filetype_sh;
++	if (buf[0] == ENVFS_32(ENVFS_MAGIC))
++		return filetype_barebox_env;
  
- 		defaultenv = xzalloc(default_environment_uncompress_size);
+ 	if (bufsize < 32)
+ 		return filetype_unknown;
+diff --git a/include/filetype.h b/include/filetype.h
+index ffefe1c..c20a4f9 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -29,6 +29,7 @@ enum filetype {
+ 	filetype_gpt,
+ 	filetype_ubifs,
+ 	filetype_bpk,
++	filetype_barebox_env,
+ 	filetype_max,
+ };
  
--		ret = uncompress(tmp, default_environment_size,
-+		ret = uncompress(default_environment, default_environment_size,
- 				NULL, NULL,
- 				defaultenv, NULL, uncompress_err_stdout);
--
--		free(tmp);
--
- 		if (ret) {
- 			free(defaultenv);
- 			return ret;
 -- 
 1.8.5.3
 
