@@ -1,18 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x22b.google.com ([2a00:1450:4008:c01::22b])
+Received: from mail-yh0-f43.google.com ([209.85.213.43])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WGVGv-0001Zl-Rc
- for barebox@lists.infradead.org; Thu, 20 Feb 2014 15:10:46 +0000
-Received: by mail-bk0-f43.google.com with SMTP id mx12so658633bkb.16
- for <barebox@lists.infradead.org>; Thu, 20 Feb 2014 07:10:23 -0800 (PST)
-Date: Thu, 20 Feb 2014 16:16:05 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140220151601.GA1171@x61s.Speedport_W_921V_1_24_000>
-References: <1392904169-786-1-git-send-email-s.hauer@pengutronix.de>
- <1392904169-786-3-git-send-email-s.hauer@pengutronix.de>
+ id 1WGWYI-0004gx-9P
+ for barebox@lists.infradead.org; Thu, 20 Feb 2014 16:32:46 +0000
+Received: by mail-yh0-f43.google.com with SMTP id z6so904846yhz.16
+ for <barebox@lists.infradead.org>; Thu, 20 Feb 2014 08:32:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1392904169-786-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <20140205154559.GA16215@pengutronix.de>
+References: <1391159170-17686-1-git-send-email-freesilicon@gmail.com>
+ <20140204035625.GE9671@ns203013.ovh.net>
+ <20140204065745.GK16215@pengutronix.de>
+ <CAKRNOGwpasg7O4fW0uMJAcgOmG2re26-mk70YpHaQVyzsX_XuQ@mail.gmail.com>
+ <20140205080001.GX16215@pengutronix.de>
+ <CAKRNOGz8aYN3yNzG=7wAF0=8ArUmn2h2qTAyGJ1UprWQUdHhsQ@mail.gmail.com>
+ <20140205154559.GA16215@pengutronix.de>
+Date: Thu, 20 Feb 2014 17:32:21 +0100
+Message-ID: <CAKRNOGxBVe1eRpoOabj3sz5LjFqpEtVNqWsaDAopVEewZt=ATQ@mail.gmail.com>
+From: David Vincent <freesilicon@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,74 +29,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] environment: Add function to load envfs from buffer
+Subject: Re: [PATCH] Load PBL into SRAM
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Sascha,
+Sorry to come back on this subject, but I just synced with the
+mainline and I noticed that the patch was not fully applied. It was
+missing the part
 
-some little (maybe interesting) note, but all patches in this series
-looks fine for me. :-)
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index dc31357..1edc2d1 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -34,6 +34,13 @@ config PBL_FORCE_PIGGYDATA_COPY
 
-On Thu, Feb 20, 2014 at 02:49:28PM +0100, Sascha Hauer wrote:
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/environment.c | 181 +++++++++++++++++++++++++++++++++------------------
->  include/envfs.h      |   1 +
->  2 files changed, 117 insertions(+), 65 deletions(-)
-> 
-> diff --git a/common/environment.c b/common/environment.c
-> index 695baf7..19fb027 100644
-> --- a/common/environment.c
-> +++ b/common/environment.c
-> @@ -218,78 +218,52 @@ out1:
->  }
->  EXPORT_SYMBOL(envfs_save);
->  
-> -/**
-> - * Restore the last environment into the current one
-> - * @param[in] filename from where to restore
-> - * @param[in] dir where to store the last content
-> - * @return 0 on success, anything else in case of failure
-> - *
-> - * Note: This function will also be used on the host! See note in the header
-> - * of this file.
-> - */
-> -int envfs_load(const char *filename, const char *dir, unsigned flags)
-> +static int envfs_check_super(struct envfs_super *super, size_t *size)
->  {
-> -	struct envfs_super super;
-> -	void *buf = NULL, *buf_free = NULL;
-> -	int envfd;
-> -	int fd, ret = 0;
-> -	char *str, *tmp;
-> -	int headerlen_full;
-> -	unsigned long size;
-> -	/* for envfs < 1.0 */
-> -	struct envfs_inode_end inode_end_dummy;
-> -
-> -	inode_end_dummy.mode = ENVFS_32(S_IRWXU | S_IRWXG | S_IRWXO);
-> -	inode_end_dummy.magic = ENVFS_32(ENVFS_INODE_END_MAGIC);
-> -
-> -	envfd = open(filename, O_RDONLY);
-> -	if (envfd < 0) {
-> -		printf("Open %s %s\n", filename, errno_str());
-> -		return -1;
-> +	if (ENVFS_32(super->magic) != ENVFS_MAGIC) {
-> +		printf("envfs: wrong magic\n");
-> +		return -EIO;
+ if PBL_IMAGE
 
-In this case only on big endians machines:
-if (super->magic != ENVFS_32(ENVFS_MAGIC))
++config LOAD_PBL_SRAM
++       bool "Load pbl in SRAM"
++       help
++         Load the whole content of the pbl binary into SRAM. This is
+useful if you
++         use the pbl as a first stage bootloader but cannot load the
+whole binary
++         at the same time.
++
+ config PBL_RELOCATABLE
+        depends on ARM
+        bool "relocatable pbl image"
 
-is faster than:
-if (ENVFS_32(super->magic) != ENVFS_MAGIC)
+which is needed to make everything work. So should I provide a new
+patch containing only this correction on the mainline ?
 
-It's save (I suppose) ca. 4 instruktions... so it doesn't matter
-to change it.
+Best regards,
+David
 
-Regards
-Alex
+2014-02-05 16:45 GMT+01:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> On Wed, Feb 05, 2014 at 01:48:45PM +0100, David Vincent wrote:
+>> Due to the flow of answers, I'm a little lost... What is the status of
+>> this submission, should I resend it, put more work into it or lose it
+>> ?
+>
+> The latest version looks fine. I applied it now.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
