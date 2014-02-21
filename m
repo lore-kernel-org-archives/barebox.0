@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-x22a.google.com ([2607:f8b0:4002:c01::22a])
+Received: from smtp.eu2.fugro.com ([46.34.88.152])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WGraQ-00069a-L8
- for barebox@lists.infradead.org; Fri, 21 Feb 2014 15:00:23 +0000
-Received: by mail-yh0-f42.google.com with SMTP id a41so2403134yho.15
- for <barebox@lists.infradead.org>; Fri, 21 Feb 2014 06:59:59 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 21 Feb 2014 11:59:48 -0300
-Message-Id: <1392994788-10551-1-git-send-email-festevam@gmail.com>
+ id 1WGrwr-0006qQ-Q9
+ for barebox@lists.infradead.org; Fri, 21 Feb 2014 15:23:34 +0000
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Date: Fri, 21 Feb 2014 16:23:07 +0100
+Message-ID: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
+From: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,42 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] lib: math: Return NULL pointer
-To: s.hauer@pengutronix.de
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: Do not automatically set SUBPAGE_READ flag
+To: barebox@lists.infradead.org
 
-From: Fabio Estevam <fabio.estevam@freescale.com>
+The default nand_read_subpage implementation returns -ENOSUPP, so if you
+use a large nand chip without a specific read_subpage implementation the
+read operations will always fail.
 
-Fix the following sparse warning:
+This functionaliy can be restored when a proper nand_read_subpage is
+implemented for the default driver.
 
-lib/math.c:309:16: warning: Using plain integer as NULL pointer
-
-Signed-off-by: Fabio Estevam <fabio.estevam@freescale.com>
+Signed-off-by: Tjalling Hattink <t.hattink@fugro.nl>
 ---
- lib/math.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/nand_base.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/lib/math.c b/lib/math.c
-index 2e53b09..19c8f08 100644
---- a/lib/math.c
-+++ b/lib/math.c
-@@ -306,7 +306,7 @@ static const char *arith_lookup_val(arith_state_t *math_state, var_or_num_t *t)
- 		/* treat undefined var as 0 */
- 		t->val = 0;
- 	}
--	return 0;
-+	return NULL;
- }
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+index 54d8ba3..bfd695b 100644
+--- a/drivers/mtd/nand/nand_base.c
++++ b/drivers/mtd/nand/nand_base.c
+@@ -3562,10 +3562,6 @@ int nand_scan_tail(struct mtd_info *mtd)
+        /* Invalidate the pagebuffer reference */
+        chip->pagebuf = -1;
  
- /* "Applying" a token means performing it on the top elements on the integer
+-       /* Large page NAND with SOFT_ECC should support subpage reads */
+-       if ((chip->ecc.mode == NAND_ECC_SOFT) && (chip->page_shift > 9))
+-               chip->options |= NAND_SUBPAGE_READ;
+-
+        /* Fill in remaining MTD driver data */
+        mtd->type = MTD_NANDFLASH;
+        mtd->flags = (chip->options & NAND_ROM) ? MTD_CAP_ROM :
 -- 
-1.8.1.2
-
+1.8.3.2
 
 _______________________________________________
 barebox mailing list
