@@ -1,16 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp6-g21.free.fr ([2a01:e0c:1:1599::15])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WGssB-0000W7-LR
- for barebox@lists.infradead.org; Fri, 21 Feb 2014 16:22:48 +0000
-Received: from e6520eb (unknown [88.170.243.169])
- (Authenticated sender: eukrea)
- by smtp6-g21.free.fr (Postfix) with ESMTPSA id 02CE282313
- for <barebox@lists.infradead.org>; Fri, 21 Feb 2014 17:22:10 +0100 (CET)
-Date: Fri, 21 Feb 2014 17:22:09 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20140221172209.41962f85@e6520eb>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WGu3I-0003BB-NM
+ for barebox@lists.infradead.org; Fri, 21 Feb 2014 17:38:22 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Fri, 21 Feb 2014 18:37:57 +0100
+Message-Id: <1393004277-9417-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,52 +14,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX25 : Ethernet link detection blocking console
+Subject: [PATCH] ARM i.MX6: Gate clocks to graphics processing units
 To: barebox@lists.infradead.org
 
-Hi,
+This patch gates the clocks to GPU, IPU, and VPU units by default,
+significantly reducing the VDDSOC power draw while barebox is running.
 
-while testing 2014.02 on eukrea-cpuimx25 board, I meet this problem :
-- I get "Hit any key to stop autoboot:  1"
-- whatever I press on the keyboard, the autoboot continues
-- if I send characters through the serial port before barebox reach
-  the autoboot line, then I'll get the command line but only when the
-  link detection will have finished (check log below).
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+---
+ arch/arm/mach-imx/clk-imx6.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Any idea what could be wrong here ?
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index c32b6cc..ac86074 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -307,12 +307,12 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[enfc_podf], MX6_GPMI_BASE_ADDR, NULL);
+ 
+ 	writel(0xffffffff, ccm_base + CCGR0);
+-	writel(0xffffffff, ccm_base + CCGR1);
++	writel(0xf0ffffff, ccm_base + CCGR1); /* gate GPU3D, GPU2D */
+ 	writel(0xffffffff, ccm_base + CCGR2);
+-	writel(0xffffffff, ccm_base + CCGR3);
++	writel(0x3fff0000, ccm_base + CCGR3); /* gate OpenVG, LDB, IPU1, IPU2 */
+ 	writel(0xffffffff, ccm_base + CCGR4);
+ 	writel(0xffffffff, ccm_base + CCGR5);
+-	writel(0xffffffff, ccm_base + CCGR6);
++	writel(0xffff3fff, ccm_base + CCGR6); /* gate VPU */
+ 	writel(0xffffffff, ccm_base + CCGR7);
+ 
+ 	clk_enable(clks[pll6_enet]);
+-- 
+1.9.0.rc3
 
-Thanks
-Eric
-
-barebox 2014.02.0-dirty #5 Fri Feb 21 16:52:37 CET 2014
-
-
-Board: Eukrea CPUIMX25
-netconsole: registered as cs1
-mdio_bus: miibus0: probed
-nand: ONFI param page 0 valid
-nand: ONFI flash detected
-nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0x38 (Micron
-MT29F8G08ABABAWP), 1024MiB, page size: 4096, OOB size: 224
-Bad block table found at page 262016, version 0x01
-Bad block table found at page 261888, version 0x01
-imxfb imxfb: i.MX Framebuffer driver
-imx-esdhc imx-esdhc0: registered as imx-esdhc0
-ehci ehci0: USB EHCI 1.00
-malloc space: 0x83700000 -> 0x83efffff (size 8 MiB)
-running /env/bin/init...
-
-Hit any key to stop autoboot:  1100Mbps full duplex link detected
-                                ^ it waits here until the link is
-                                detected then I get the prompt (only if
-                                the key was pressed before reaching the
-                                autoboot line)
-
-barebox@Eukrea CPUIMX25:/ <INTERRUPT>
 
 _______________________________________________
 barebox mailing list
