@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WHqxC-0003A2-F0
- for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:31:59 +0000
-Date: Mon, 24 Feb 2014 09:31:36 +0100
+ id 1WHrIS-000415-8t
+ for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:53:57 +0000
+Date: Mon, 24 Feb 2014 09:53:33 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140224083136.GS17250@pengutronix.de>
-References: <1393004277-9417-1-git-send-email-p.zabel@pengutronix.de>
+Message-ID: <20140224085333.GU17250@pengutronix.de>
+References: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1393004277-9417-1-git-send-email-p.zabel@pengutronix.de>
+In-Reply-To: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,54 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM i.MX6: Gate clocks to graphics processing units
-To: Philipp Zabel <p.zabel@pengutronix.de>
+Subject: Re: [PATCH] mtd: nand: Do not automatically set SUBPAGE_READ flag
+To: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 21, 2014 at 06:37:57PM +0100, Philipp Zabel wrote:
-> This patch gates the clocks to GPU, IPU, and VPU units by default,
-> significantly reducing the VDDSOC power draw while barebox is running.
-> 
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Hi Tjalling,
 
-Ok. I hope we remember to revert this change when we add the 3d driver
-to barebox ;)
+On Fri, Feb 21, 2014 at 04:23:07PM +0100, Hattink, Tjalling [FINT] wrote:
+> The default nand_read_subpage implementation returns -ENOSUPP, so if you
+> use a large nand chip without a specific read_subpage implementation the
+> read operations will always fail.
+> 
+> This functionaliy can be restored when a proper nand_read_subpage is
+> implemented for the default driver.
+> 
+> Signed-off-by: Tjalling Hattink <t.hattink@fugro.nl>
+> ---
+>  drivers/mtd/nand/nand_base.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
+> index 54d8ba3..bfd695b 100644
+> --- a/drivers/mtd/nand/nand_base.c
+> +++ b/drivers/mtd/nand/nand_base.c
+> @@ -3562,10 +3562,6 @@ int nand_scan_tail(struct mtd_info *mtd)
+>         /* Invalidate the pagebuffer reference */
+>         chip->pagebuf = -1;
+>  
+> -       /* Large page NAND with SOFT_ECC should support subpage reads */
+> -       if ((chip->ecc.mode == NAND_ECC_SOFT) && (chip->page_shift > 9))
+> -               chip->options |= NAND_SUBPAGE_READ;
+> -
+
+Only barebox nand_read_subpage returns -ENOSUPP. The kernel has a
+default implementation. Wouldn't it be possible (and better) to just
+remove the return -ENOSUPP from nand_read_subpage and use the code which
+we already have?
 
 Sascha
 
-> ---
->  arch/arm/mach-imx/clk-imx6.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-> index c32b6cc..ac86074 100644
-> --- a/arch/arm/mach-imx/clk-imx6.c
-> +++ b/arch/arm/mach-imx/clk-imx6.c
-> @@ -307,12 +307,12 @@ static int imx6_ccm_probe(struct device_d *dev)
->  	clkdev_add_physbase(clks[enfc_podf], MX6_GPMI_BASE_ADDR, NULL);
->  
->  	writel(0xffffffff, ccm_base + CCGR0);
-> -	writel(0xffffffff, ccm_base + CCGR1);
-> +	writel(0xf0ffffff, ccm_base + CCGR1); /* gate GPU3D, GPU2D */
->  	writel(0xffffffff, ccm_base + CCGR2);
-> -	writel(0xffffffff, ccm_base + CCGR3);
-> +	writel(0x3fff0000, ccm_base + CCGR3); /* gate OpenVG, LDB, IPU1, IPU2 */
->  	writel(0xffffffff, ccm_base + CCGR4);
->  	writel(0xffffffff, ccm_base + CCGR5);
-> -	writel(0xffffffff, ccm_base + CCGR6);
-> +	writel(0xffff3fff, ccm_base + CCGR6); /* gate VPU */
->  	writel(0xffffffff, ccm_base + CCGR7);
->  
->  	clk_enable(clks[pll6_enet]);
-> -- 
-> 1.9.0.rc3
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
