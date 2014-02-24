@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WHqad-0002XK-0F
- for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:08:39 +0000
-Date: Mon, 24 Feb 2014 09:08:17 +0100
+ id 1WHqt2-00033J-Vn
+ for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:27:41 +0000
+Date: Mon, 24 Feb 2014 09:27:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140224080817.GP17250@pengutronix.de>
-References: <1392935821-14783-1-git-send-email-poggi.raph@gmail.com>
+Message-ID: <20140224082718.GQ17250@pengutronix.de>
+References: <20140221172209.41962f85@e6520eb>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1392935821-14783-1-git-send-email-poggi.raph@gmail.com>
+In-Reply-To: <20140221172209.41962f85@e6520eb>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,80 +22,71 @@ Content-Type: text/plain; charset="iso-8859-15"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] ARM: i.MX6: UDOO: rename watchdog function
-To: =?iso-8859-15?Q?Rapha=EBl?= Poggi <poggi.raph@gmail.com>
+Subject: Re: i.MX25 : Ethernet link detection blocking console
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-Hi Rapha=EBl,
+Hi Eric,
 
-On Thu, Feb 20, 2014 at 02:36:59PM -0800, Rapha=EBl Poggi wrote:
-> Rename the watchdog function to fit others functions names.
+On Fri, Feb 21, 2014 at 05:22:09PM +0100, Eric B=E9nard wrote:
+> Hi,
 > =
 
-> Signed-off-by: Raphael Poggi <poggi.raph@gmail.com>
-> ---
->  arch/arm/boards/udoo/board.c | 13 ++++++-------
->  1 file changed, 6 insertions(+), 7 deletions(-)
+> while testing 2014.02 on eukrea-cpuimx25 board, I meet this problem :
+> - I get "Hit any key to stop autoboot:  1"
+> - whatever I press on the keyboard, the autoboot continues
+> - if I send characters through the serial port before barebox reach
+>   the autoboot line, then I'll get the command line but only when the
+>   link detection will have finished (check log below).
 > =
 
-> diff --git a/arch/arm/boards/udoo/board.c b/arch/arm/boards/udoo/board.c
-> index 9027eb1..0a056fb 100644
-> --- a/arch/arm/boards/udoo/board.c
-> +++ b/arch/arm/boards/udoo/board.c
-> @@ -147,7 +147,7 @@ static iomux_v3_cfg_t const wdog_pads[] =3D {
->  =
+> Any idea what could be wrong here ?
 
->  #define WDT_EN      IMX_GPIO_NR(5, 4)
->  #define WDT_TRG     IMX_GPIO_NR(3, 19)
-> -static void setup_iomux_wdog(void)
-> +static void udoo_wdog_init(void)
->  {
->  	mxc_iomux_v3_setup_multiple_pads(wdog_pads, ARRAY_SIZE(wdog_pads));
->  	gpio_direction_output(WDT_TRG, 0);
-> @@ -157,11 +157,10 @@ static void setup_iomux_wdog(void)
->  =
+I have no idea. Does this happen with the defconfig currently in the
+repository?
 
->  static void udoo_epit_init(void)
->  {
-> -
-> -	writel(0x0000000, 0x20D0000);
-> -	writel(0x142000F, 0x20D0000);
-> -	writel(0x10000, 0x20D0008);
-> -	writel(0x0, 0x20D000C);
-> +	writel(0x0000000, MX6_EPIT1_BASE_ADDR);
-> +	writel(0x142000F, MX6_EPIT1_BASE_ADDR);
-> +	writel(0x30000, MX6_EPIT1_BASE_ADDR + 0x8);
-> +	writel(0x0, MX6_EPIT1_BASE_ADDR + 0xC);
->  }
-
-This is an unrelated change which shouldn't be in this patch. I squashed
-this series in the original commit adding udoo support anyway. so it
-doesn't matter in this case.
-BTW what does this EPIT initialization do and what do you need it for?
-It's quite unusual to initialize the EPIT since it's not used by
-barebox.
+The only thing I could think of is that some kind of automount triggers,
+but the cpuimx25 doesn't use automounts. Another possibility might be
+the network console, but this should normally not even start without
+being configured. Could you disable netconsole?
 
 Sascha
 
->  =
-
->  static int udoo_devices_init(void)
-> @@ -169,7 +168,7 @@ static int udoo_devices_init(void)
->  	if (!of_machine_is_compatible("udoo,imx6qdl-udoo"))
->  		return 0;
->  =
-
-> -	setup_iomux_wdog();
-> +	udoo_wdog_init();
->  	udoo_ehci_init();
->  	udoo_epit_init();
->  =
-
-> -- =
-
-> 1.8.3.2
 > =
 
+> Thanks
+> Eric
+> =
+
+> barebox 2014.02.0-dirty #5 Fri Feb 21 16:52:37 CET 2014
+> =
+
+> =
+
+> Board: Eukrea CPUIMX25
+> netconsole: registered as cs1
+> mdio_bus: miibus0: probed
+> nand: ONFI param page 0 valid
+> nand: ONFI flash detected
+> nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0x38 (Micron
+> MT29F8G08ABABAWP), 1024MiB, page size: 4096, OOB size: 224
+> Bad block table found at page 262016, version 0x01
+> Bad block table found at page 261888, version 0x01
+> imxfb imxfb: i.MX Framebuffer driver
+> imx-esdhc imx-esdhc0: registered as imx-esdhc0
+> ehci ehci0: USB EHCI 1.00
+> malloc space: 0x83700000 -> 0x83efffff (size 8 MiB)
+> running /env/bin/init...
+> =
+
+> Hit any key to stop autoboot:  1100Mbps full duplex link detected
+>                                 ^ it waits here until the link is
+>                                 detected then I get the prompt (only if
+>                                 the key was pressed before reaching the
+>                                 autoboot line)
+> =
+
+> barebox@Eukrea CPUIMX25:/ <INTERRUPT>
 > =
 
 > _______________________________________________
