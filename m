@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from smtp.eu2.fugro.com ([46.34.88.152])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WHrIS-000415-8t
- for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:53:57 +0000
-Date: Mon, 24 Feb 2014 09:53:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140224085333.GU17250@pengutronix.de>
-References: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
+ id 1WHri9-0004he-3Y
+ for barebox@lists.infradead.org; Mon, 24 Feb 2014 09:20:29 +0000
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
+Date: Mon, 24 Feb 2014 10:20:05 +0100
+Message-ID: <C89EFD3CD56F64468D3D206D683A8D2203041BFE@ldam-msx2.fugro-nl.local>
+In-Reply-To: <20140224085333.GU17250@pengutronix.de>
+References: <C89EFD3CD56F64468D3D206D683A8D2203041AF3@ldam-msx2.fugro-nl.local>
+ <20140224085333.GU17250@pengutronix.de>
+From: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,51 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mtd: nand: Do not automatically set SUBPAGE_READ flag
-To: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
+Subject: RE: [PATCH] mtd: nand: Do not automatically set SUBPAGE_READ flag
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Tjalling,
-
-On Fri, Feb 21, 2014 at 04:23:07PM +0100, Hattink, Tjalling [FINT] wrote:
-> The default nand_read_subpage implementation returns -ENOSUPP, so if you
-> use a large nand chip without a specific read_subpage implementation the
-> read operations will always fail.
+> > The default nand_read_subpage implementation returns -ENOSUPP, so if
+> > you use a large nand chip without a specific read_subpage
+> > implementation the read operations will always fail.
+> >
+> > This functionaliy can be restored when a proper nand_read_subpage is
+> > implemented for the default driver.
+> >
+> > Signed-off-by: Tjalling Hattink <t.hattink@fugro.nl>
+> > ---
+> >  drivers/mtd/nand/nand_base.c | 4 ----
+> >  1 file changed, 4 deletions(-)
+> >
+> > diff --git a/drivers/mtd/nand/nand_base.c
+> > b/drivers/mtd/nand/nand_base.c index 54d8ba3..bfd695b 100644
+> > --- a/drivers/mtd/nand/nand_base.c
+> > +++ b/drivers/mtd/nand/nand_base.c
+> > @@ -3562,10 +3562,6 @@ int nand_scan_tail(struct mtd_info *mtd)
+> >         /* Invalidate the pagebuffer reference */
+> >         chip->pagebuf = -1;
+> >
+> > -       /* Large page NAND with SOFT_ECC should support subpage
+reads
+> */
+> > -       if ((chip->ecc.mode == NAND_ECC_SOFT) && (chip->page_shift >
+> 9))
+> > -               chip->options |= NAND_SUBPAGE_READ;
+> > -
 > 
-> This functionaliy can be restored when a proper nand_read_subpage is
-> implemented for the default driver.
+> Only barebox nand_read_subpage returns -ENOSUPP. The kernel has a
+> default implementation. Wouldn't it be possible (and better) to just
+> remove the return -ENOSUPP from nand_read_subpage and use the code
+> which we already have?
 > 
-> Signed-off-by: Tjalling Hattink <t.hattink@fugro.nl>
-> ---
->  drivers/mtd/nand/nand_base.c | 4 ----
->  1 file changed, 4 deletions(-)
+> Sascha
 > 
-> diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-> index 54d8ba3..bfd695b 100644
-> --- a/drivers/mtd/nand/nand_base.c
-> +++ b/drivers/mtd/nand/nand_base.c
-> @@ -3562,10 +3562,6 @@ int nand_scan_tail(struct mtd_info *mtd)
->         /* Invalidate the pagebuffer reference */
->         chip->pagebuf = -1;
->  
-> -       /* Large page NAND with SOFT_ECC should support subpage reads */
-> -       if ((chip->ecc.mode == NAND_ECC_SOFT) && (chip->page_shift > 9))
-> -               chip->options |= NAND_SUBPAGE_READ;
-> -
 
-Only barebox nand_read_subpage returns -ENOSUPP. The kernel has a
-default implementation. Wouldn't it be possible (and better) to just
-remove the return -ENOSUPP from nand_read_subpage and use the code which
-we already have?
+Hi Sascha,
 
-Sascha
+I will remove the ENOSUPP return code and compare the code with the
+kernel and test it. I'll publish a new patch if I have results (which is
+probably upcoming Friday).
 
+I still wonder though why this -ENOSUPP return is added in the first
+place. The motivation written above it is somewhat unclear to me:
+"Currently we have no users in barebox, so disable this for now"
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Kind regards,
+
+Tjalling Hattink
 
 _______________________________________________
 barebox mailing list
