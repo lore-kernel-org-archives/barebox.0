@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WHquk-00035Z-Tw
- for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:29:27 +0000
-Date: Mon, 24 Feb 2014 09:29:05 +0100
+ id 1WHqxC-0003A2-F0
+ for barebox@lists.infradead.org; Mon, 24 Feb 2014 08:31:59 +0000
+Date: Mon, 24 Feb 2014 09:31:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140224082905.GR17250@pengutronix.de>
-References: <1393054969-25221-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20140224083136.GS17250@pengutronix.de>
+References: <1393004277-9417-1-git-send-email-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1393054969-25221-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1393004277-9417-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,34 +22,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: clps711x: Remove SYSCON3 handling
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] ARM i.MX6: Gate clocks to graphics processing units
+To: Philipp Zabel <p.zabel@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Sat, Feb 22, 2014 at 11:42:49AM +0400, Alexander Shiyan wrote:
-> SYSCON3 register is not used in the barebox, so remove driver for
-> this register entirely.
+On Fri, Feb 21, 2014 at 06:37:57PM +0100, Philipp Zabel wrote:
+> This patch gates the clocks to GPU, IPU, and VPU units by default,
+> significantly reducing the VDDSOC power draw while barebox is running.
 > 
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  arch/arm/mach-clps711x/devices.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-> index c7a2fbd..e27476d 100644
-> --- a/arch/arm/mach-clps711x/devices.c
-> +++ b/arch/arm/mach-clps711x/devices.c
-> @@ -124,9 +124,6 @@ static __init int clps711x_syscon_init(void)
->  	/* SYSCON2, SYSFLG2 */
->  	add_generic_device("syscon", 2, NULL, SYSCON2, SZ_128,
->  			   IORESOURCE_MEM, NULL);
-> -	/* SYSCON3 */
-> -	add_generic_device("syscon", 3, NULL, SYSCON3, SZ_64,
-> -			   IORESOURCE_MEM, NULL);
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-Applied, thanks
+Ok. I hope we remember to revert this change when we add the 3d driver
+to barebox ;)
 
 Sascha
+
+> ---
+>  arch/arm/mach-imx/clk-imx6.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+> index c32b6cc..ac86074 100644
+> --- a/arch/arm/mach-imx/clk-imx6.c
+> +++ b/arch/arm/mach-imx/clk-imx6.c
+> @@ -307,12 +307,12 @@ static int imx6_ccm_probe(struct device_d *dev)
+>  	clkdev_add_physbase(clks[enfc_podf], MX6_GPMI_BASE_ADDR, NULL);
+>  
+>  	writel(0xffffffff, ccm_base + CCGR0);
+> -	writel(0xffffffff, ccm_base + CCGR1);
+> +	writel(0xf0ffffff, ccm_base + CCGR1); /* gate GPU3D, GPU2D */
+>  	writel(0xffffffff, ccm_base + CCGR2);
+> -	writel(0xffffffff, ccm_base + CCGR3);
+> +	writel(0x3fff0000, ccm_base + CCGR3); /* gate OpenVG, LDB, IPU1, IPU2 */
+>  	writel(0xffffffff, ccm_base + CCGR4);
+>  	writel(0xffffffff, ccm_base + CCGR5);
+> -	writel(0xffffffff, ccm_base + CCGR6);
+> +	writel(0xffff3fff, ccm_base + CCGR6); /* gate VPU */
+>  	writel(0xffffffff, ccm_base + CCGR7);
+>  
+>  	clk_enable(clks[pll6_enet]);
+> -- 
+> 1.9.0.rc3
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
