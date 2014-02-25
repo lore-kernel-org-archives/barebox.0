@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIIq4-0003C3-PK
- for barebox@lists.infradead.org; Tue, 25 Feb 2014 14:18:32 +0000
+ id 1WIIq4-0003C0-PI
+ for barebox@lists.infradead.org; Tue, 25 Feb 2014 14:18:31 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WIIpg-00020V-Sf
+ for barebox@lists.infradead.org; Tue, 25 Feb 2014 15:18:04 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1WIIpg-0005fr-Rg
+ for barebox@lists.infradead.org; Tue, 25 Feb 2014 15:18:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 25 Feb 2014 15:18:03 +0100
-Message-Id: <1393337884-17282-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1393337884-17282-1-git-send-email-s.hauer@pengutronix.de>
-References: <1393337884-17282-1-git-send-email-s.hauer@pengutronix.de>
+Date: Tue, 25 Feb 2014 15:18:00 +0100
+Message-Id: <1393337884-17282-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,34 +26,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] move defaultenv-2 to defaultenv/defaultenv-2-*
+Subject: Add bbenv-y support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/Makefile                                                       | 4 ++--
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/bootargs-ip   | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/ifup          | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/init          | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/mtdparts-add  | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/boot/net          | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/config            | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/data/ansi-colors  | 0
- .../base => defaultenv/defaultenv-2-base}/data/boot-template          | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/init/automount    | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/init/ps1          | 0
- {defaultenv-2/base => defaultenv/defaultenv-2-base}/network/eth0      | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/boot-entries-collect   | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/boot-entries-edit      | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/boot-entries-remove    | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/boot-menu-add-entry    | 0
- .../defaultenv-2-menu}/menu/boot-menu-new-boot-entry                  | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/init-entries-collect   | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/init-entries-edit      | 0
- .../menu => defaultenv/defaultenv-2-menu}/menu/init-menu-add-entry    | 0
- {defaultenv-2/menu => defaultenv/defaultenv-2-menu}/menu/mainmenu     | 0
- {defaultenv-2/menu => defaultenv/defaultenv-2-menu}/menu/settings     | 0
- 22 files changed, 2 insertions(+), 2 deletions(-)
+Currently we can build images for multiple boards at once, but
+all share the same default environment. As a last step to real
+multi image support this patchset changes this.
+
+bbenv-y is a Makefile target which can be used to generate default
+environment snippets. Boards can use it as:
+
+bbenv-$(CONFIG_SOMETHING) += my-environment
+
+The directory containing the files to compile into the binary
+should be named my-environment.
+
+This can be accessed in C code later as:
+
+extern unsigned char __bbenv_my_environment_start[];
+extern unsigned char __bbenv_my_environment_end[];
+
+The defaultenv snippet can then be registered using defaultenv_append().
+
+With this each board will find the environment it expects during runtime.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (13):
+      common/Makefile: reorder targets
+      defaultenv: simplify env dependencies
+      make: Add wildcard rules for compressed files
+      defaultenv: use wildcard compression rules
+      Kconfig: Select default compression type
+      filetype: Add detection for barebox environment
+      environment: constify arguments
+      environment: Add function to load envfs from buffer
+      defaultenv: Align defaultenv array
+      make: Add bbenv-y target to generate default environment files
+      move defaultenv-1 to defaultenv/defaultenv-1
+      move defaultenv-2 to defaultenv/defaultenv-2-*
+      defaultenv: Allow multiple defaultenvironment overlays
+
+ Makefile                                           |  20 ++-
+ commands/loadenv.c                                 |  34 +++-
+ common/Kconfig                                     |  45 +++--
+ common/Makefile                                    | 153 +++++------------
+ common/environment.c                               | 183 +++++++++++++--------
+ common/filetype.c                                  |   4 +
+ common/startup.c                                   |  44 +----
+ defaultenv/Makefile                                |  23 +++
+ defaultenv/{ => defaultenv-1}/bin/_boot_help       |   0
+ defaultenv/{ => defaultenv-1}/bin/_update          |   0
+ defaultenv/{ => defaultenv-1}/bin/_update_help     |   0
+ defaultenv/{ => defaultenv-1}/bin/boot             |   0
+ defaultenv/{ => defaultenv-1}/bin/init             |   0
+ defaultenv/{ => defaultenv-1}/bin/update           |   0
+ defaultenv/{ => defaultenv-1}/config               |   0
+ .../defaultenv-2-base}/bin/bootargs-ip             |   0
+ .../base => defaultenv/defaultenv-2-base}/bin/ifup |   0
+ .../base => defaultenv/defaultenv-2-base}/bin/init |   0
+ .../defaultenv-2-base}/bin/mtdparts-add            |   0
+ .../base => defaultenv/defaultenv-2-base}/boot/net |   0
+ .../base => defaultenv/defaultenv-2-base}/config   |   0
+ .../defaultenv-2-base}/data/ansi-colors            |   0
+ .../defaultenv-2-base}/data/boot-template          |   0
+ .../defaultenv-2-base}/init/automount              |   0
+ .../base => defaultenv/defaultenv-2-base}/init/ps1 |   0
+ .../defaultenv-2-base}/network/eth0                |   0
+ .../defaultenv-2-menu}/menu/boot-entries-collect   |   0
+ .../defaultenv-2-menu}/menu/boot-entries-edit      |   0
+ .../defaultenv-2-menu}/menu/boot-entries-remove    |   0
+ .../defaultenv-2-menu}/menu/boot-menu-add-entry    |   0
+ .../menu/boot-menu-new-boot-entry                  |   0
+ .../defaultenv-2-menu}/menu/init-entries-collect   |   0
+ .../defaultenv-2-menu}/menu/init-entries-edit      |   0
+ .../defaultenv-2-menu}/menu/init-menu-add-entry    |   0
+ .../defaultenv-2-menu}/menu/mainmenu               |   0
+ .../defaultenv-2-menu}/menu/settings               |   0
+ defaultenv/defaultenv.c                            | 150 +++++++++++++++++
+ include/envfs.h                                    |  36 +++-
+ include/filetype.h                                 |   1 +
+ scripts/Makefile.lib                               |  47 ++++++
+ scripts/genenv                                     |  12 +-
+ 41 files changed, 503 insertions(+), 249 deletions(-)
+ create mode 100644 defaultenv/Makefile
+ rename defaultenv/{ => defaultenv-1}/bin/_boot_help (100%)
+ rename defaultenv/{ => defaultenv-1}/bin/_update (100%)
+ rename defaultenv/{ => defaultenv-1}/bin/_update_help (100%)
+ rename defaultenv/{ => defaultenv-1}/bin/boot (100%)
+ rename defaultenv/{ => defaultenv-1}/bin/init (100%)
+ rename defaultenv/{ => defaultenv-1}/bin/update (100%)
+ rename defaultenv/{ => defaultenv-1}/config (100%)
  rename {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/bootargs-ip (100%)
  rename {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/ifup (100%)
  rename {defaultenv-2/base => defaultenv/defaultenv-2-base}/bin/init (100%)
@@ -70,110 +139,7 @@ Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
  rename {defaultenv-2/menu => defaultenv/defaultenv-2-menu}/menu/init-menu-add-entry (100%)
  rename {defaultenv-2/menu => defaultenv/defaultenv-2-menu}/menu/mainmenu (100%)
  rename {defaultenv-2/menu => defaultenv/defaultenv-2-menu}/menu/settings (100%)
-
-diff --git a/common/Makefile b/common/Makefile
-index c88d1c6..9c68f7b 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -51,9 +51,9 @@ $(obj)/startup.o: $(obj)/barebox_default_env.h
- $(obj)/env.o: $(obj)/barebox_default_env.h
- 
- ifeq ($(CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW),y)
--DEFAULT_ENVIRONMENT_PATH = "defaultenv-2/base"
-+DEFAULT_ENVIRONMENT_PATH = "defaultenv/defaultenv-2-base"
- ifeq ($(CONFIG_CMD_MENU_MANAGEMENT),y)
--DEFAULT_ENVIRONMENT_PATH += "defaultenv-2/menu"
-+DEFAULT_ENVIRONMENT_PATH += "defaultenv/defaultenv-2-menu"
- endif
- endif
- 
-diff --git a/defaultenv-2/base/bin/bootargs-ip b/defaultenv/defaultenv-2-base/bin/bootargs-ip
-similarity index 100%
-rename from defaultenv-2/base/bin/bootargs-ip
-rename to defaultenv/defaultenv-2-base/bin/bootargs-ip
-diff --git a/defaultenv-2/base/bin/ifup b/defaultenv/defaultenv-2-base/bin/ifup
-similarity index 100%
-rename from defaultenv-2/base/bin/ifup
-rename to defaultenv/defaultenv-2-base/bin/ifup
-diff --git a/defaultenv-2/base/bin/init b/defaultenv/defaultenv-2-base/bin/init
-similarity index 100%
-rename from defaultenv-2/base/bin/init
-rename to defaultenv/defaultenv-2-base/bin/init
-diff --git a/defaultenv-2/base/bin/mtdparts-add b/defaultenv/defaultenv-2-base/bin/mtdparts-add
-similarity index 100%
-rename from defaultenv-2/base/bin/mtdparts-add
-rename to defaultenv/defaultenv-2-base/bin/mtdparts-add
-diff --git a/defaultenv-2/base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-similarity index 100%
-rename from defaultenv-2/base/boot/net
-rename to defaultenv/defaultenv-2-base/boot/net
-diff --git a/defaultenv-2/base/config b/defaultenv/defaultenv-2-base/config
-similarity index 100%
-rename from defaultenv-2/base/config
-rename to defaultenv/defaultenv-2-base/config
-diff --git a/defaultenv-2/base/data/ansi-colors b/defaultenv/defaultenv-2-base/data/ansi-colors
-similarity index 100%
-rename from defaultenv-2/base/data/ansi-colors
-rename to defaultenv/defaultenv-2-base/data/ansi-colors
-diff --git a/defaultenv-2/base/data/boot-template b/defaultenv/defaultenv-2-base/data/boot-template
-similarity index 100%
-rename from defaultenv-2/base/data/boot-template
-rename to defaultenv/defaultenv-2-base/data/boot-template
-diff --git a/defaultenv-2/base/init/automount b/defaultenv/defaultenv-2-base/init/automount
-similarity index 100%
-rename from defaultenv-2/base/init/automount
-rename to defaultenv/defaultenv-2-base/init/automount
-diff --git a/defaultenv-2/base/init/ps1 b/defaultenv/defaultenv-2-base/init/ps1
-similarity index 100%
-rename from defaultenv-2/base/init/ps1
-rename to defaultenv/defaultenv-2-base/init/ps1
-diff --git a/defaultenv-2/base/network/eth0 b/defaultenv/defaultenv-2-base/network/eth0
-similarity index 100%
-rename from defaultenv-2/base/network/eth0
-rename to defaultenv/defaultenv-2-base/network/eth0
-diff --git a/defaultenv-2/menu/menu/boot-entries-collect b/defaultenv/defaultenv-2-menu/menu/boot-entries-collect
-similarity index 100%
-rename from defaultenv-2/menu/menu/boot-entries-collect
-rename to defaultenv/defaultenv-2-menu/menu/boot-entries-collect
-diff --git a/defaultenv-2/menu/menu/boot-entries-edit b/defaultenv/defaultenv-2-menu/menu/boot-entries-edit
-similarity index 100%
-rename from defaultenv-2/menu/menu/boot-entries-edit
-rename to defaultenv/defaultenv-2-menu/menu/boot-entries-edit
-diff --git a/defaultenv-2/menu/menu/boot-entries-remove b/defaultenv/defaultenv-2-menu/menu/boot-entries-remove
-similarity index 100%
-rename from defaultenv-2/menu/menu/boot-entries-remove
-rename to defaultenv/defaultenv-2-menu/menu/boot-entries-remove
-diff --git a/defaultenv-2/menu/menu/boot-menu-add-entry b/defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry
-similarity index 100%
-rename from defaultenv-2/menu/menu/boot-menu-add-entry
-rename to defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry
-diff --git a/defaultenv-2/menu/menu/boot-menu-new-boot-entry b/defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry
-similarity index 100%
-rename from defaultenv-2/menu/menu/boot-menu-new-boot-entry
-rename to defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry
-diff --git a/defaultenv-2/menu/menu/init-entries-collect b/defaultenv/defaultenv-2-menu/menu/init-entries-collect
-similarity index 100%
-rename from defaultenv-2/menu/menu/init-entries-collect
-rename to defaultenv/defaultenv-2-menu/menu/init-entries-collect
-diff --git a/defaultenv-2/menu/menu/init-entries-edit b/defaultenv/defaultenv-2-menu/menu/init-entries-edit
-similarity index 100%
-rename from defaultenv-2/menu/menu/init-entries-edit
-rename to defaultenv/defaultenv-2-menu/menu/init-entries-edit
-diff --git a/defaultenv-2/menu/menu/init-menu-add-entry b/defaultenv/defaultenv-2-menu/menu/init-menu-add-entry
-similarity index 100%
-rename from defaultenv-2/menu/menu/init-menu-add-entry
-rename to defaultenv/defaultenv-2-menu/menu/init-menu-add-entry
-diff --git a/defaultenv-2/menu/menu/mainmenu b/defaultenv/defaultenv-2-menu/menu/mainmenu
-similarity index 100%
-rename from defaultenv-2/menu/menu/mainmenu
-rename to defaultenv/defaultenv-2-menu/menu/mainmenu
-diff --git a/defaultenv-2/menu/menu/settings b/defaultenv/defaultenv-2-menu/menu/settings
-similarity index 100%
-rename from defaultenv-2/menu/menu/settings
-rename to defaultenv/defaultenv-2-menu/menu/settings
--- 
-1.8.5.3
-
+ create mode 100644 defaultenv/defaultenv.c
 
 _______________________________________________
 barebox mailing list
