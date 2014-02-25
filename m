@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 141.red-212-170-165.staticip.rima-tde.net ([212.170.165.141]
- helo=www.admotion.es)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIFx0-00068Z-RE
- for barebox@lists.infradead.org; Tue, 25 Feb 2014 11:13:27 +0000
-Received: from [192.168.2.24] ([192.168.2.24])
- by www.admotion.es (8.14.5/8.14.5) with ESMTP id s1PBCpBv027545
- for <barebox@lists.infradead.org>; Tue, 25 Feb 2014 12:12:56 +0100
-Message-ID: <1393326771.2376.6.camel@linuxp1.sistema-mpd.com>
-From: Carlos =?ISO-8859-1?Q?Fern=E1ndez?= <carlos@admotion.es>
-Date: Tue, 25 Feb 2014 12:12:51 +0100
-In-Reply-To: <1385484367-15366-18-git-send-email-s.hauer@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WIIq4-0003C1-PN
+ for barebox@lists.infradead.org; Tue, 25 Feb 2014 14:18:30 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 25 Feb 2014 15:18:01 +0100
+Message-Id: <1393337884-17282-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1393337884-17282-1-git-send-email-s.hauer@pengutronix.de>
+References: <1393337884-17282-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,64 +16,98 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH 17/17] ARM: OMAP: consolidate am335x mlo defconfigs
+Subject: [PATCH 1/4] make: Add bbenv-y target to generate default environment
+ files
 To: barebox@lists.infradead.org
 
-Hello Sascha,
+This adds a target to generate environment files from directories.
+These are compiled into the barebox binary.
 
-I need some help about the booting from NAND flash. I have created the
-MLO file with the pcm051_mlo_defconfig but I cant boot from NAND. I dont
-know if i need more configuration.
+use it as:
 
-This is the content of pcm051_mlo_defconfig:
+bbenv-$(CONFIG_SOMETHING) += my-environment
 
-CONFIG_ARCH_OMAP=y
-CONFIG_ARCH_AM33XX=y
-CONFIG_OMAP_BUILD_IFT=y
-CONFIG_MACH_PCM051=y
-CONFIG_OMAP_UART1=y
-CONFIG_THUMB2_BAREBOX=y
-# CONFIG_CMD_ARM_CPUINFO is not set
-# CONFIG_MEMINFO is not set
-CONFIG_ENVIRONMENT_VARIABLES=y
-CONFIG_MMU=y
-CONFIG_TEXT_BASE=0x402F0400
-CONFIG_STACK_SIZE=0x1600
-CONFIG_MALLOC_SIZE=0x1000000
-CONFIG_PROMPT="MLO>"
-CONFIG_SHELL_NONE=y
-# CONFIG_ERRNO_MESSAGES is not set
-# CONFIG_TIMESTAMP is not set
-CONFIG_CONSOLE_SIMPLE=y
-# CONFIG_DEFAULT_ENVIRONMENT is not set
-CONFIG_DRIVER_SERIAL_NS16550=y
-CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-CONFIG_DRIVER_SPI_OMAP3=y
-CONFIG_MTD=y
-CONFIG_MTD_M25P80=y
-CONFIG_NAND=y
-CONFIG_NAND_OMAP_GPMC=y
-CONFIG_MCI=y
-CONFIG_MCI_STARTUP=y
-CONFIG_MCI_OMAP_HSMMC=y
-# CONFIG_FS_RAMFS is not set
-# CONFIG_FS_DEVFS is not set
-CONFIG_FS_FAT=y
-CONFIG_FS_FAT_LFN=y
+The directory containing the files to compile into the binary
+should be named my-environment.
 
-Do you have any idea??
+This can be accessed in C code later as:
 
+extern unsigned char __bbenv_my_environment_start[];
+extern unsigned char __bbenv_my_environment_end[];
 
-Thank you in advance.
-Best Regards.
-Carlos
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ Makefile             |  2 +-
+ scripts/Makefile.lib | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
-
-
+diff --git a/Makefile b/Makefile
+index b48240a..779ad74 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1022,7 +1022,7 @@ clean: archclean $(clean-dirs)
+ 	@find . $(RCS_FIND_IGNORE) \
+ 		\( -name '*.[oas]' -o -name '*.ko' -o -name '.*.cmd' \
+ 		-o -name '.*.d' -o -name '.*.tmp' -o -name '*.mod.c' \
+-		-o -name '*.symtypes' \) \
++		-o -name '*.symtypes' -o -name '*.bbenv.S' -o -name "*.bbenv" \) \
+ 		-type f -print | xargs rm -f
+ 
+ # mrproper - Delete all generated files, including .config
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index e87e401..f71c3b7 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -98,6 +98,7 @@ multi-objs-y	:= $(addprefix $(obj)/,$(multi-objs-y))
+ multi-objs-m	:= $(addprefix $(obj)/,$(multi-objs-m))
+ subdir-ym	:= $(addprefix $(obj)/,$(subdir-ym))
+ obj-dirs	:= $(addprefix $(obj)/,$(obj-dirs))
++bbenv-y		:= $(addprefix $(obj)/,$(bbenv-y))
+ 
+ # These flags are needed for modversions and compiling, so we define them here
+ # already
+@@ -229,6 +230,34 @@ $(obj)/%.dtb: $(src)/%.dts FORCE
+ 
+ dtc-tmp = $(subst $(comma),_,$(dot-target).dts)
+ 
++obj-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).o,$(bbenv-y))
++extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX),$(bbenv-y))
++extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).S,$(bbenv-y))
++extra-y += $(patsubst %,%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).o,$(bbenv-y))
++
++quiet_cmd_env_S = ENV.S   $@
++cmd_env_S =							\
++(								\
++	echo '\#include <asm-generic/barebox.lds.h>';		\
++	echo '.section .bbenv.rodata.$(subst -,_,$(*F)),"a"';	\
++	echo '.balign STRUCT_ALIGNMENT';			\
++	echo '.global __bbenv_$(subst -,_,$(*F))_start';	\
++	echo '__bbenv_$(subst -,_,$(*F))_start:';		\
++	echo '.incbin "$<" ';					\
++	echo '__bbenv_$(subst -,_,$(*F))_end:';			\
++	echo '.global __bbenv_$(subst -,_,$(*F))_end';		\
++	echo '.balign STRUCT_ALIGNMENT';			\
++) > $@
++
++$(obj)/%.bbenv$(DEFAULT_COMPRESSION_SUFFIX).S: $(src)/%.bbenv$(DEFAULT_COMPRESSION_SUFFIX) FORCE
++	$(call if_changed,env_S)
++
++quiet_cmd_env = ENV     $@
++cmd_env=$(srctree)/scripts/genenv $(srctree) $(objtree) $@ $<
++
++%.bbenv$(DEFAULT_COMPRESSION_SUFFIX): % FORCE
++	$(call cmd,env)
++
+ # Bzip2
+ # ---------------------------------------------------------------------------
+ 
+-- 
+1.8.5.3
 
 
 _______________________________________________
