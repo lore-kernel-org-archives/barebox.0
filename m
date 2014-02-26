@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ea0-x22d.google.com ([2a00:1450:4013:c01::22d])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIRNh-0002mM-PS
- for barebox@lists.infradead.org; Tue, 25 Feb 2014 23:25:46 +0000
-Received: by mail-ea0-f173.google.com with SMTP id n15so441045ead.4
- for <barebox@lists.infradead.org>; Tue, 25 Feb 2014 15:25:23 -0800 (PST)
-Message-ID: <530D2660.6080104@gmail.com>
-Date: Wed, 26 Feb 2014 00:25:20 +0100
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1393368681-1190-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1393368681-1190-7-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1393368681-1190-7-git-send-email-u.kleine-koenig@pengutronix.de>
+Received: from mail.rafi.de ([178.15.151.14])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WIY1Z-0002n9-KK
+ for barebox@lists.infradead.org; Wed, 26 Feb 2014 06:31:22 +0000
+MIME-Version: 1.0
+In-Reply-To: 
+References: 
+From: andreas.willig@rafi.de
+Message-ID: <OF4A88C9BC.8447C457-ONC1257C8B.0023CBB0-C1257C8B.0023CBB5@o0802.rafi.inhouse>
+Date: Wed, 26 Feb 2014 07:30:59 +0100
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,47 +17,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/10] ARM: a9m2410: convert to devfs_create_partitions
-To: =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: i.MX6Q Boot from NAND
+To: barebox@lists.infradead.org
 
-T24gMDIvMjUvMjAxNCAxMTo1MSBQTSwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gU2lnbmVk
-LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
-ZT4KPiAtLS0KPiAgIGFyY2gvYXJtL2JvYXJkcy9hOW0yNDEwL2E5bTI0MTAuYyB8IDIzICsrKysr
-KysrKysrKysrKysrLS0tLS0tCj4gICAxIGZpbGUgY2hhbmdlZCwgMTcgaW5zZXJ0aW9ucygrKSwg
-NiBkZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS9hcmNoL2FybS9ib2FyZHMvYTltMjQxMC9h
-OW0yNDEwLmMgYi9hcmNoL2FybS9ib2FyZHMvYTltMjQxMC9hOW0yNDEwLmMKPiBpbmRleCBiMmI2
-Yzg3MTE3YTMuLjhkNTI4Y2Y2MDM3OCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9ib2FyZHMvYTlt
-MjQxMC9hOW0yNDEwLmMKPiArKysgYi9hcmNoL2FybS9ib2FyZHMvYTltMjQxMC9hOW0yNDEwLmMK
-PiBAQCAtMTE3LDEzICsxMTcsMjQgQEAgc3RhdGljIGludCBhOW0yNDEwX2RldmljZXNfaW5pdCh2
-b2lkKQo+ICAgCQkJMTYsIElPUkVTT1VSQ0VfTUVNLCBOVUxMKTsKPgo+ICAgI2lmZGVmIENPTkZJ
-R19OQU5ECj4gLQkvKiAtLS0tLS0tLS0tLSBhZGQgc29tZSB2aXRhbCBwYXJ0aXRpb25zIC0tLS0t
-LS0tICovCj4gLQlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIsIDB4MDAwMDAsIDB4NDAwMDAs
-IERFVkZTX1BBUlRJVElPTl9GSVhFRCwgInNlbGZfcmF3Iik7Cj4gLQlkZXZfYWRkX2JiX2Rldigi
-c2VsZl9yYXciLCAic2VsZjAiKTsKPiAtCj4gLQlkZXZmc19hZGRfcGFydGl0aW9uKCJuYW5kMCIs
-IDB4NDAwMDAsIDB4MjAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhFRCwgImVudl9yYXciKTsKPiAt
-CWRldl9hZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKPiArCWRldmZzX2NyZWF0ZV9wYXJ0
-aXRpb25zKCJuYW5kMCIsIChzdHJ1Y3QgZGV2ZnNfcGFydGl0aW9uW10pewoKbml0OiBJdCB3b3Vs
-ZCBiZSBldmVuIG1vcmUgcmVhZGFibGUsIGlmIHlvdSBtb3ZlIHRoZSBzdHJ1Y3QKZGV2ZnNfcGFy
-dGl0aW9uW10gb3V0IG9mIGE5bTI0MTBfZGV2aWNlX2luaXQoKSBhbmQgcmVmZXJlbmNlCml0IGhl
-cmUgaW5zdGVhZCwgaS5lLgoKc3RhdGljIHN0cnVjdCBkZXZmc19wYXJ0aXRpb24gYTltMjQxMF9u
-YW5kX3BhcnRpdGlvbnNbXSA9IHsKCS4uLgoJeyB9Cn07CgouLi4KCnN0YXRpYyBpbnQgYTltMjQx
-MF9kZXZpY2VzX2luaXQodm9pZCkKewouLi4KCSNpZmRlZiBDT05GSUdfTkFORAoJZGV2ZnNfY3Jl
-YXRlX3BhcnRpdGlvbnMoIm5hbmQwIiwgYTltMjQxMF9uYW5kX3BhcnRpdGlvbnMpOwoJI2VuZGlm
-Ci4uLgoKaW4gaGVyZSBhbmQgdGhlIGZvbGxvd2luZyBwYXRjaGVzLgoKU2ViYXN0aWFuCgo+ICsJ
-CQl7Cj4gKwkJCQkub2Zmc2V0ID0gMCwKPiArCQkJCS5zaXplID0gMHg0MDAwMCwKPiArCQkJCS5m
-bGFncyA9IERFVkZTX1BBUlRJVElPTl9GSVhFRCwKPiArCQkJCS5uYW1lID0gInNlbGZfcmF3IiwK
-PiArCQkJCS5iYm5hbWUgPSAic2VsZjAiLAo+ICsJCQl9LCB7Cj4gKwkJCQkub2Zmc2V0ID0gREVW
-RlNfUEFSVElUSU9OX0FQUEVORCwKPiArCQkJCS5zaXplID0gMHgyMDAwMCwKPiArCQkJCS5mbGFn
-cyA9IERFVkZTX1BBUlRJVElPTl9GSVhFRCwKPiArCQkJCS5uYW1lID0gImVudl9yYXciLAo+ICsJ
-CQkJLmJibmFtZSA9ICJlbnYwIiwKPiArCQkJfSwgewo+ICsJCQkJLyogc2VudGluZWwgKGRldGVj
-dGVkIGJ5IC5uYW1lID0gTlVMTCkgKi8KPiArCQkJfX0pOwo+ICAgI2VuZGlmCj4gKwo+ICAgCWFy
-bWxpbnV4X3NldF9hcmNoaXRlY3R1cmUoTUFDSF9UWVBFX0E5TTI0MTApOwo+Cj4gICAJcmV0dXJu
-IDA7Cj4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpi
-YXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xp
-c3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi,
+
+has anyone in the community successfully managed to get Barebox running out=
+ of NAND on i.MX6Q/DL? I cannot find any support for BCB / FCB in the BB so=
+urces and am hitting problems while migrating from i.mx28 (MXS?) sources of=
+ BCB. U-Boot seems to run from NAND on i.MX6Q but is not an option for our =
+project.
+
+
+
+Mit freundlichen Gr=FC=DFen aus Berg/ With kind regards
+
+i.A. Andreas Willig
+Dipl.-Ing. (FH)
+Entwicklung Elektronik
+
+RAFI GmbH & Co. KG
+Postfach 2060
+88276 Ravensburg
+Tel.: +49 (0) 751 89-6142
+
+mailto:andreas.willig@rafi.de, http://www.rafi.de
+
+Kommanditgesellschaft: Sitz Berg, Amtsgericht Ulm, HRA 550059
+Komplement=E4r: RAFI Beteiligungs-GmbH, Sitz Berg, Amtsgericht Ulm HRB 5500=
+74
+Gesch=E4ftsf=FChrer: Albert Wasmeier, Dipl.-Kfm. Gerhard Schenk
+USt-Ident.-Nr.: DE 146 392 319, Steuer-Nr.: 77079/00291
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
