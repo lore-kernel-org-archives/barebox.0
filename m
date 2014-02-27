@@ -1,12 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJ7k1-0002cv-G2
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:39:38 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 27 Feb 2014 21:39:00 +0100
-Message-Id: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ id 1WJ7pS-0002wi-D5
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:45:15 +0000
+Received: by mail-ee0-f45.google.com with SMTP id d17so1709629eek.4
+ for <barebox@lists.infradead.org>; Thu, 27 Feb 2014 12:44:51 -0800 (PST)
+Date: Thu, 27 Feb 2014 21:44:43 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140227204441.GA28168@omega>
+References: <1393508819-3693-1-git-send-email-renaud.barbier@ge.com>
+ <1393508819-3693-4-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1393508819-3693-4-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,60 +21,22 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/10] new partitioning helper
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 3/4] memtest: exclude page starting at address 0.
+To: Renaud Barbier <renaud.barbier@ge.com>
+Cc: barebox@lists.infradead.org
 
-SGVsbG8sCgp0aGlzIGlzIHYyIG9mIHRoZSBzZXJpZXMgaW50cm9kdWNpbmcgZGV2ZnNfY3JlYXRl
-X3BhcnRpdGlvbnMuIFdpdGggdGhlCm5ldyBzeW50YXggY3JlYXRpbmcgcGFydGl0aW9ucyBpcyBl
-YXNpZXIgdG8gcGFyc2UgZm9yIGh1bWFucywgaXQgaGFzCnN1cHBvcnQgdG8gY3JlYXRlIHBhcnRp
-dGlvbnMgd2l0aG91dCBob2xlcyBpbmJldHdlZW4gd2l0aG91dCB0aGUgbmVlZCB0bwpleHBsaWNp
-dGx5IGNhbGN1bGF0ZSB0aGUgb2Zmc2V0cyBhbmQgdGhlIGNvZGUgZ2VuZXJhdGVkIGZvciB0aGUg
-Y2FsbGVycwppcyBzbWFsbGVyLgoKSSBjb21wYXJlZCB0aGUgc2l6ZSBvZiBhcmNoL2FybS9ib2Fy
-ZHMvYTltMjQxMC9hOW0yNDEwLm8gd2l0aCBhbmQKd2l0aG91dCB0aGUgc2VyaWVzIHdpdGggdGhl
-IGtlcm5lbCdzIGJsb2F0LW8tbWV0ZXIsIHdpdGggdGhlIGZvbGxvd2luZwpyZXN1bHQ6CgphZGQv
-cmVtb3ZlOiAxLzAgZ3Jvdy9zaHJpbms6IDAvMSB1cC9kb3duOiA4NC8tMTA0ICgtMjApCmZ1bmN0
-aW9uICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG9sZCAgICAgbmV3ICAgZGVs
-dGEKYTltMjQxMF9uYW5kMF9wYXJ0aXRpb25zICAgICAgICAgICAgICAgICAgICAgICAtICAgICAg
-ODQgICAgICs4NAphOW0yNDEwX2RldmljZXNfaW5pdCAgICAgICAgICAgICAgICAgICAgICAgICAy
-OTYgICAgIDE5MiAgICAtMTA0CgooV2VsbCwgdGhlIHNpemUgYWR2YW50YWdlIGlzIGEgKmJpdCog
-cmVsYXRpdml6ZWQgYnkgdGhlIGdyb3d0aCBvZiBmcy9kZXZmcy1jb3JlLm86CgphZGQvcmVtb3Zl
-OiAzLzAgZ3Jvdy9zaHJpbms6IDAvMSB1cC9kb3duOiA1MDgvLTEyNCAoMzg0KQpmdW5jdGlvbiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvbGQgICAgIG5ldyAgIGRlbHRhCl9f
-ZGV2ZnNfYWRkX3BhcnRpdGlvbi5wYXJ0ICAgICAgICAgICAgICAgICAgICAgLSAgICAgMzc2ICAg
-ICszNzYKZGV2ZnNfY3JlYXRlX3BhcnRpdGlvbnMgICAgICAgICAgICAgICAgICAgICAgICAtICAg
-ICAxMjggICAgKzEyOApuZXcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIC0gICAgICAgNCAgICAgICs0CmRldmZzX2FkZF9wYXJ0aXRpb24gICAgICAgICAgICAgICAg
-ICAgICAgICAgIDI5NiAgICAgMTcyICAgIC0xMjQKCkRvbid0IGtub3cgd2hhdCAibmV3IiBpcyBh
-Ym92ZS4pCgpDb21wYXJlZCB0byAoaW1wbGljaXQpIHYxIG9mIHRoaXMgc2VyaWVzIEkgZHJvcHBl
-ZCB0aGUgY29tcG91bmQKbGl0ZXJhbHMgYW5kIHVzZWQgbmFtZWQgc3RhdGljIGFycmF5cyBpbnN0
-ZWFkIGFzIHdpc2hlZCBieSBTZWJhc3RpYW4KSGVzc2VsYmFydGggYW5kIFNhc2NoYSBIYXVlci4K
-CkJlc3QgcmVnYXJkcwpVd2UKClV3ZSBLbGVpbmUtS8O2bmlnICgxMCk6CiAgZGV2ZnM6IHBhcnRp
-dGlvbmluZzogYWRkIG1pc3NpbmcgZnJlZSBpbiBlcnJvciBwYXRoCiAgZGV2ZnNfYWRkX3BhcnRp
-dGlvbjogbWFrZSBmbGFncyBwYXJhbWV0ZXIgdW5zaWduZWQKICBEb2N1bWVudGF0aW9uOiBmaXgg
-ZXhhbXBsZSBjYWxsIHRvIGRldmZzX2FkZF9wYXJ0aXRpb24KICBtdGQvbmFuZDogY29uc3RpZnkg
-ZmlsZW5hbWUgcGFyYW1ldGVyCiAgZGV2ZnM6IHBhcnRpdGlvbmluZzogYWRkIG5ldyBoZWxwZXIg
-ZGV2ZnNfY3JlYXRlX3BhcnRpdGlvbnMKICBBUk06IGE5bTI0MTA6IGNvbnZlcnQgdG8gZGV2ZnNf
-Y3JlYXRlX3BhcnRpdGlvbnMKICBBUk06IGZyZWVzY2FsZS1teDM1LTMtc3RhY2s6IGNvbnZlcnQg
-dG8gZGV2ZnNfY3JlYXRlX3BhcnRpdGlvbnMKICBBUk06IHBjYTEwMDogY29udmVydCB0byBkZXZm
-c19jcmVhdGVfcGFydGl0aW9ucwogIEFSTTogcGNtMDM4OiBjb252ZXJ0IHRvIGRldmZzX2NyZWF0
-ZV9wYXJ0aXRpb25zCiAgQVJNOiBzYW1hNWQzeGVrOiBjb252ZXJ0IHRvIGRldmZzX2NyZWF0ZV9w
-YXJ0aXRpb25zCgogRG9jdW1lbnRhdGlvbi9wb3J0aW5nLnR4dCAgICAgICAgICAgICAgICAgICAg
-ICAgfCAgMiArLQogYXJjaC9hcm0vYm9hcmRzL2E5bTI0MTAvYTltMjQxMC5jICAgICAgICAgICAg
-ICAgfCAyNyArKysrKy0tCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MzUtMy1zdGFjay8z
-c3RhY2suYyB8IDQyICsrKysrKysrKy0tCiBhcmNoL2FybS9ib2FyZHMvcGNtMDM4L3BjbTAzOC5j
-ICAgICAgICAgICAgICAgICB8IDQ3ICsrKysrKysrKy0tLQogYXJjaC9hcm0vYm9hcmRzL3BoeWNh
-cmQtaS5NWDI3L3BjYTEwMC5jICAgICAgICAgfCAyNiArKysrKy0tCiBhcmNoL2FybS9ib2FyZHMv
-c2FtYTVkM3hlay9pbml0LmMgICAgICAgICAgICAgICB8IDQxICsrKysrKysrKy0tCiBkcml2ZXJz
-L210ZC9uYW5kL25hbmQtYmIuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyICstCiBmcy9kZXZm
-cy1jb3JlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDk3ICsrKysrKysrKysr
-KysrKysrKysrKy0tLS0KIGluY2x1ZGUvZHJpdmVyLmggICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIHwgNDEgKysrKysrKysrKy0KIGluY2x1ZGUvbmFuZC5oICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgIDQgKy0KIDEwIGZpbGVzIGNoYW5nZWQsIDI2NyBpbnNlcnRpb25z
-KCspLCA2MiBkZWxldGlvbnMoLSkKCi0tIAoxLjguNS4zCgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+Hi Renaud,
+
+thanks for finding this issue... I introduce it so sorry for that!
+
+- Alex
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
