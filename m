@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJ7hj-0002Zy-HM
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:37:16 +0000
-Date: Thu, 27 Feb 2014 21:36:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140227203652.GS17250@pengutronix.de>
-References: <1393509826-19549-1-git-send-email-philippe.retornaz@epfl.ch>
- <1393509826-19549-2-git-send-email-philippe.retornaz@epfl.ch>
+ id 1WJ7k1-0002cx-G0
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:39:38 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 27 Feb 2014 21:39:02 +0100
+Message-Id: <1393533550-1865-3-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
+References: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1393509826-19549-2-git-send-email-philippe.retornaz@epfl.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,132 +17,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] ARM: i.MX31: Add support for mx31moboard board
-To: Philippe =?iso-8859-15?Q?R=E9tornaz?= <philippe.retornaz@epfl.ch>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 02/10] devfs_add_partition: make flags parameter unsigned
+To: barebox@lists.infradead.org
 
-Looks mostly good, some remarks inline.
-
-On Thu, Feb 27, 2014 at 03:03:45PM +0100, Philippe R=E9tornaz wrote:
-> +lwl-y +=3D lowlevel.o
-> +obj-y +=3D mx31moboard.o
-> diff --git a/arch/arm/boards/mx31moboard/env/boot/net b/arch/arm/boards/m=
-x31moboard/env/boot/net
-> new file mode 100644
-> index 0000000..e81f2cd
-> --- /dev/null
-> +++ b/arch/arm/boards/mx31moboard/env/boot/net
-> @@ -0,0 +1,3 @@
-> +#!/bin/sh
-> +
-> +# No network card support on this board
-
-Are you sure you want to drop this? You could attach a USB ethernet
-dongle.
-
-> diff --git a/arch/arm/boards/mx31moboard/env/boot/sd b/arch/arm/boards/mx=
-31moboard/env/boot/sd
-> new file mode 100644
-> index 0000000..f96633f
-> --- /dev/null
-> +++ b/arch/arm/boards/mx31moboard/env/boot/sd
-> @@ -0,0 +1,18 @@
-> +#!/bin/sh
-> +
-> +if [ "$1" =3D menu ]; then
-> +        boot-menu-add-entry "$0" "SD Boot"
-> +        exit
-> +fi
-> +
-> +global.bootm.image=3D/mnt/sd/boot/zImage
-> +
-> +if [ -e /mnt/sd/boot/oftree ]; then
-> +	global.bootm.oftree=3D/mnt/sd/boot/oftree
-> +fi
-> +
-> +if [ -e /mnt/sd/boot/initrd.img ]; then
-> +	global.bootm.initrd=3D/mnt/sd/boot/initrd.img
-> +fi
-> +
-> +global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p1 rootwait"
-
-Consider using bootloader spec entries, see
-http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-Basically you put a config file under /loader/entries/ in your rootfs.
-The config file describes where your kernel/initrd/oftree is. Under
-barebox you just have to 'boot mci0' without further configuration.
-
-> +void __bare_init __naked barebox_arm_reset_vector(void)
-> +{
-> +	uint32_t r;
-> +
-> +	arm_cpu_lowlevel_init();
-> +
-> +	/* Enable IPU Display interface */
-> +	writel(1 << 6, MX31_IPU_CTRL_BASE_ADDR);
-> +
-> +	writel(0x074B0BF5, MX31_CCM_BASE_ADDR + MX31_CCM_CCMR);
-> +
-> +	asm volatile("1:\n\t"
-> +			"SUBS %0, %0, #1	\n\t"
-> +			"BNE  1b		\n\t"
-> +			: : "r" (0x4000) : "cc");
-
-You can write a delay loop in c with:
-
-	volatile int c;
-
-	for (c =3D 0; c < 0x4000; c++)
-
-(the volatile prevents the compiler from optimizing the loop away)
-
-> +#include <asm/mmu.h>
-> +#include <partition.h>
-> +#include <generated/mach-types.h>
-> +#include <asm/barebox-arm.h>
-> +#include <mach/devices-imx31.h>
-> +
-> +#ifdef CONFIG_USB
-> +#define USBH2_EN_B	IOMUX_TO_GPIO(MX31_PIN_SCK6)
-> +#define USB_RESET_B	IOMUX_TO_GPIO(MX31_PIN_GPIO1_0)
-> +
-> +static void mx31moboard_usb_init(void)
-> +{
-> +	u32 tmp;
-> +
-
-Instead of ifdeffing the code you can write:
-
-	if (!IS_ENABLED(CONFIG_USB))
-		return;
-
-The compiler is clever enough to optimize the unused code away, still
-you get better compile coverage.
-
-> +static void mx31moboard_add_leds(void)
-> +{
-> +	int i;
-> +
-
-Same here:
-
-	if (!IS_ENABLED(CONFIG_LED_GPIO))
-		return;
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+VGhlIHZhbHVlIGlzIG9ubHkgdXNlZCB0byBhc3NpZ24gdG8gYSAoKnN0cnVjdCBjZGV2KS0+Zmxh
+Z3Mgd2hpY2ggaXMgYW4KdW5zaWduZWQgaW50IGFuZCBpdCBpcyBwYXNzZWQgYXMgZm91cnRoIHBh
+cmFtZXRlciBvZiBtdGRfYWRkX3BhcnRpdGlvbiB3aGljaAppcyBhbiB1bnNpZ25lZCBsb25nLgoK
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBmcy9kZXZmcy1jb3JlLmMgIHwgMiArLQogaW5jbHVkZS9kcml2ZXIuaCB8
+IDggKysrKy0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9u
+cygtKQoKZGlmZiAtLWdpdCBhL2ZzL2RldmZzLWNvcmUuYyBiL2ZzL2RldmZzLWNvcmUuYwppbmRl
+eCA1YTEyMGM2NDg3OWEuLmY5MmEwN2M0M2QzZSAxMDA2NDQKLS0tIGEvZnMvZGV2ZnMtY29yZS5j
+CisrKyBiL2ZzL2RldmZzLWNvcmUuYwpAQCAtMjYxLDcgKzI2MSw3IEBAIGludCBkZXZmc19yZW1v
+dmUoc3RydWN0IGNkZXYgKmNkZXYpCiB9CiAKIHN0cnVjdCBjZGV2ICpkZXZmc19hZGRfcGFydGl0
+aW9uKGNvbnN0IGNoYXIgKmRldm5hbWUsIGxvZmZfdCBvZmZzZXQsIGxvZmZfdCBzaXplLAotCQlp
+bnQgZmxhZ3MsIGNvbnN0IGNoYXIgKm5hbWUpCisJCXVuc2lnbmVkIGludCBmbGFncywgY29uc3Qg
+Y2hhciAqbmFtZSkKIHsKIAlzdHJ1Y3QgY2RldiAqY2RldiwgKm5ldzsKIApkaWZmIC0tZ2l0IGEv
+aW5jbHVkZS9kcml2ZXIuaCBiL2luY2x1ZGUvZHJpdmVyLmgKaW5kZXggYmJlNzg5YjUxZWFkLi4z
+M2I4MmMzZTk2OWIgMTAwNjQ0Ci0tLSBhL2luY2x1ZGUvZHJpdmVyLmgKKysrIGIvaW5jbHVkZS9k
+cml2ZXIuaApAQCAtNDgyLDEzICs0ODIsMTMgQEAgc3NpemVfdCBjZGV2X3dyaXRlKHN0cnVjdCBj
+ZGV2ICpjZGV2LCBjb25zdCB2b2lkICpidWYsIHNpemVfdCBjb3VudCwgbG9mZl90IG9mZnMKIGlu
+dCBjZGV2X2lvY3RsKHN0cnVjdCBjZGV2ICpjZGV2LCBpbnQgY21kLCB2b2lkICpidWYpOwogaW50
+IGNkZXZfZXJhc2Uoc3RydWN0IGNkZXYgKmNkZXYsIHNpemVfdCBjb3VudCwgbG9mZl90IG9mZnNl
+dCk7CiAKLSNkZWZpbmUgREVWRlNfUEFSVElUSU9OX0ZJWEVECQkoMSA8PCAwKQotI2RlZmluZSBE
+RVZGU19QQVJUSVRJT05fUkVBRE9OTFkJKDEgPDwgMSkKKyNkZWZpbmUgREVWRlNfUEFSVElUSU9O
+X0ZJWEVECQkoMVUgPDwgMCkKKyNkZWZpbmUgREVWRlNfUEFSVElUSU9OX1JFQURPTkxZCSgxVSA8
+PCAxKQogI2RlZmluZSBERVZGU19JU19QQVJUSVRJT04JCSgxIDw8IDIpCiAjZGVmaW5lIERFVkZT
+X0lTX0NIQVJBQ1RFUl9ERVYJCSgxIDw8IDMpCiAKLXN0cnVjdCBjZGV2ICpkZXZmc19hZGRfcGFy
+dGl0aW9uKGNvbnN0IGNoYXIgKmRldm5hbWUsIGxvZmZfdCBvZmZzZXQsIGxvZmZfdCBzaXplLAot
+CQlpbnQgZmxhZ3MsIGNvbnN0IGNoYXIgKm5hbWUpOworc3RydWN0IGNkZXYgKmRldmZzX2FkZF9w
+YXJ0aXRpb24oY29uc3QgY2hhciAqZGV2bmFtZSwgbG9mZl90IG9mZnNldCwKKwkJbG9mZl90IHNp
+emUsIHVuc2lnbmVkIGludCBmbGFncywgY29uc3QgY2hhciAqbmFtZSk7CiBpbnQgZGV2ZnNfZGVs
+X3BhcnRpdGlvbihjb25zdCBjaGFyICpuYW1lKTsKIAogI2RlZmluZSBEUlZfT0ZfQ09NUEFUKGNv
+bXBhdCkgXAotLSAKMS44LjUuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFk
+Lm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
