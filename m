@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJHpi-000177-R0
- for barebox@lists.infradead.org; Fri, 28 Feb 2014 07:26:11 +0000
-Date: Fri, 28 Feb 2014 08:25:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140228072548.GT17250@pengutronix.de>
+ id 1WJ7kf-0002j5-G3
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:40:18 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Date: Thu, 27 Feb 2014 21:39:10 +0100
+Message-Id: <1393533550-1865-11-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
 References: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +17,49 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 00/10] new partitioning helper
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 10/10] ARM: sama5d3xek: convert to devfs_create_partitions
+To: barebox@lists.infradead.org
 
-On Thu, Feb 27, 2014 at 09:39:00PM +0100, Uwe Kleine-K=F6nig wrote:
-> Hello,
-> =
-
-> this is v2 of the series introducing devfs_create_partitions. With the
-> new syntax creating partitions is easier to parse for humans, it has
-> support to create partitions without holes inbetween without the need to
-> explicitly calculate the offsets and the code generated for the callers
-> is smaller.
-> =
-
-> I compared the size of arch/arm/boards/a9m2410/a9m2410.o with and
-> without the series with the kernel's bloat-o-meter, with the following
-> result:
-> =
-
-> add/remove: 1/0 grow/shrink: 0/1 up/down: 84/-104 (-20)
-> function                                     old     new   delta
-> a9m2410_nand0_partitions                       -      84     +84
-> a9m2410_devices_init                         296     192    -104
-> =
-
-> (Well, the size advantage is a *bit* relativized by the growth of fs/devf=
-s-core.o:
-> =
-
-> add/remove: 3/0 grow/shrink: 0/1 up/down: 508/-124 (384)
-> function                                     old     new   delta
-> __devfs_add_partition.part                     -     376    +376
-> devfs_create_partitions                        -     128    +128
-> new                                            -       4      +4
-> devfs_add_partition                          296     172    -124
-> =
-
-> Don't know what "new" is above.)
-> =
-
-> Compared to (implicit) v1 of this series I dropped the compound
-> literals and used named static arrays instead as wished by Sebastian
-> Hesselbarth and Sascha Hauer.
-
-Applied this series. I skipped the pca100 patch as this one has the
-partition layout in the devicetree now.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
+b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvc2FtYTVkM3hlay9pbml0LmMgfCA0MSArKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAzMyBp
+bnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJk
+cy9zYW1hNWQzeGVrL2luaXQuYyBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2luaXQuYwpp
+bmRleCA0Zjg2NmFhNmY4NWQuLmUwNzg2NDIyNDI1ZCAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vYm9h
+cmRzL3NhbWE1ZDN4ZWsvaW5pdC5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9zYW1hNWQzeGVrL2lu
+aXQuYwpAQCAtNDAwLDYgKzQwMCwzOCBAQCBzdGF0aWMgdm9pZCBla19hZGRfZGV2aWNlX2hkbWko
+dm9pZCkKIH0KICNlbmRpZgogCitzdGF0aWMgY29uc3Qgc3RydWN0IGRldmZzX3BhcnRpdGlvbiBh
+dDkxc2FtYTVkM3hla19uYW5kMF9wYXJ0aXRpb25zW10gPSB7CisJeworCQkub2Zmc2V0ID0gMHgw
+MDAwMCwKKwkJLnNpemUgPSBTWl8yNTZLLAorCQkuZmxhZ3MgPSBERVZGU19QQVJUSVRJT05fRklY
+RUQsCisJCS5uYW1lID0gImF0OTFib290c3RyYXBfcmF3IiwKKwkJLmJibmFtZSA9ICJhdDkxYm9v
+dHN0cmFwIiwKKwl9LCB7CisJCS5vZmZzZXQgPSBERVZGU19QQVJUSVRJT05fQVBQRU5ELCAvKiAy
+NTYgS2lCICovCisJCS5zaXplID0gU1pfMjU2SyArIFNaXzEyOEssCisJCS5mbGFncyA9IERFVkZT
+X1BBUlRJVElPTl9GSVhFRCwKKwkJLm5hbWUgPSAic2VsZl9yYXciLAorCQkuYmJuYW1lID0gInNl
+bGYwIiwKKwl9LAorCS8qIGhvbGUgb2YgMTI4IEtpQiAqLworCXsKKwkJLm9mZnNldCA9IFNaXzUx
+MksgKyBTWl8yNTZLLAorCQkuc2l6ZSA9IFNaXzI1NkssCisJCS5mbGFncyA9IERFVkZTX1BBUlRJ
+VElPTl9GSVhFRCwKKwkJLm5hbWUgPSAiZW52X3JhdyIsCisJCS5iYm5hbWUgPSAiZW52MCIsCisJ
+fSwgeworCQkub2Zmc2V0ID0gREVWRlNfUEFSVElUSU9OX0FQUEVORCwgLyogMSBNaUIgKi8KKwkJ
+LnNpemUgPSBTWl8yNTZLLAorCQkuZmxhZ3MgPSBERVZGU19QQVJUSVRJT05fRklYRUQsCisJCS5u
+YW1lID0gImVudl9yYXcxIiwKKwkJLmJibmFtZSA9ICJlbnYxIiwKKwl9LCB7CisJCS8qIHNlbnRp
+bmVsICovCisJfQorfTsKKwogc3RhdGljIGludCBhdDkxc2FtYTVkM3hla19kZXZpY2VzX2luaXQo
+dm9pZCkKIHsKIAlla19hZGRfZGV2aWNlX3cxKCk7CkBAIC00MTEsMTQgKzQ0Myw3IEBAIHN0YXRp
+YyBpbnQgYXQ5MXNhbWE1ZDN4ZWtfZGV2aWNlc19pbml0KHZvaWQpCiAJZWtfYWRkX2RldmljZV9t
+Y2koKTsKIAlla19hZGRfZGV2aWNlX2xjZGMoKTsKIAotCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5h
+bmQwIiwgMHgwMDAwMCwgU1pfMjU2SywgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAiYXQ5MWJvb3Rz
+dHJhcF9yYXciKTsKLQlkZXZfYWRkX2JiX2RldigiYXQ5MWJvb3RzdHJhcF9yYXciLCAiYXQ5MWJv
+b3RzdHJhcCIpOwotCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgU1pfMjU2SywgU1pfMjU2
+SyArIFNaXzEyOEssIERFVkZTX1BBUlRJVElPTl9GSVhFRCwgInNlbGZfcmF3Iik7Ci0JZGV2X2Fk
+ZF9iYl9kZXYoInNlbGZfcmF3IiwgInNlbGYwIik7Ci0JZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFu
+ZDAiLCBTWl81MTJLICsgU1pfMjU2SywgU1pfMjU2SywgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAi
+ZW52X3JhdyIpOwotCWRldl9hZGRfYmJfZGV2KCJlbnZfcmF3IiwgImVudjAiKTsKLQlkZXZmc19h
+ZGRfcGFydGl0aW9uKCJuYW5kMCIsIFNaXzFNLCBTWl8yNTZLLCBERVZGU19QQVJUSVRJT05fRklY
+RUQsICJlbnZfcmF3MSIpOwotCWRldl9hZGRfYmJfZGV2KCJlbnZfcmF3MSIsICJlbnYxIik7CisJ
+ZGV2ZnNfY3JlYXRlX3BhcnRpdGlvbnMoIm5hbmQwIiwgYXQ5MXNhbWE1ZDN4ZWtfbmFuZDBfcGFy
+dGl0aW9ucyk7CiAKIAlyZXR1cm4gMDsKIH0KLS0gCjEuOC41LjMKCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
