@@ -1,14 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pb0-x22d.google.com ([2607:f8b0:400e:c01::22d])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIlQa-0007o0-Ra
- for barebox@lists.infradead.org; Wed, 26 Feb 2014 20:50:06 +0000
-Received: by mail-pb0-f45.google.com with SMTP id un15so1509743pbc.32
- for <barebox@lists.infradead.org>; Wed, 26 Feb 2014 12:49:38 -0800 (PST)
+Received: from m15-112.126.com ([220.181.15.112])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WIuGf-0001en-5E
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 06:16:28 +0000
+Date: Thu, 27 Feb 2014 14:15:44 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20140227061544.GA20720@greatfirst.com>
 MIME-Version: 1.0
-Date: Wed, 26 Feb 2014 15:49:37 -0500
-Message-ID: <CAO6XYUt7KaraGNUkTuEkQXKbh0f6MH4Ywn8dDJQpo1RkT2CaSw@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+Content-Disposition: inline
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,59 +20,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: i.MX6Q Boot from NAND
-To: barebox@lists.infradead.org
+Subject: bug in arm_cpu_lowlevel_init ??
+To: barebox <barebox@lists.infradead.org>
 
->Hi ANdreas,
->
->On Wed, Feb 26, 2014 at 07:30:59AM +0100, andreas.willig at rafi.de wrote:
->> Hi,
->>
->> has anyone in the community successfully managed to get Barebox
->> running out of NAND on i.MX6Q/DL? I cannot find any support for BCB /
->> FCB in the BB sources and am hitting problems while migrating from
->> i.mx28 (MXS?) sources of BCB. U-Boot seems to run from NAND on i.MX6Q
->> but is not an option for our project.
->
->So far I used kobs-ng for doing this, I didn't have luck with migrating
->the i.MX28 BCB code so far. Somebody asked the same question a while
->ago, but I can't remember who it was. He didn't report success so far
->either.
->
->Sascha
+My cpu is at91rm9200
 
-Andreas,
+When start barebox at reset time by burn it in Nor flash, all things Ok.
 
-The person Sascha remembers asking about this was probably me.
+But when start it by my first stage boot program, It's crash.  And
+Execption process code which install by my boot program, report Undef
+instruction detected.
 
-I've started working on porting the bcb generation code from kobs-ng
-over to barebox but haven't gotten it working either (and haven't had
-time to work on it in several weeks).
+The only diff is my boot program change the cpu to svc mode already.
 
-That said, barebox itself works and boots fine from NAND as long as
-you use kobs-ng to put it there. The other partitions can be written
-to without issue from barebox directly (i.e. kernel, environment,
-root, etc).
+I try the flowwing patch:
 
-What I do:
-Boot all the way to Linux command line on the target, making sure that
-my barebox-*.img file is available either on USB flash or SD.
+------------------------------------------------
+--- a/arch/arm/cpu/lowlevel.S
++++ b/arch/arm/cpu/lowlevel.S
+@@ -4,6 +4,7 @@
 
-Then from the Linux command line:
+ .section ".text_bare_init_","ax"
+ ENTRY(arm_cpu_lowlevel_init)
++       mov     r2, lr
+        /* set the cpu to SVC32 mode */
+        mrs     r12, cpsr
+        bic     r12, r12, #0x1f
+@@ -35,5 +36,5 @@ ENTRY(arm_cpu_lowlevel_init)
 
-kobs-ng init barebox-(whatever).img --search_exponent=1
+        mcr     p15, 0, r12, c1, c0, 0
 
-After this, barebox should boot up nicely from NAND.
+-       mov     pc, lr
++       mov     pc, r2
+ ENDPROC(arm_cpu_lowlevel_init)
+------------------------------------------------
 
-Eventually, I may get back to finishing up porting the bcb code, but
-it won't be in the near future due to other schedule constraints.
+The problem dispeared, All things worked!!
 
-Michael Burkey
+I'm not very familiar with asm code,
 
-PS...
-Out of curiosity, which SOM are you using that boots from NAND?
-I'm currently working with Variscite's SOM -- and life would have been
-much simpler if someone had just put a SPI NOR on it!
+Anybody tell me is this a bug, Or my boot program has strange behavior?
+
+Thanks!!
+
+-- 
+Best Regards,
+zzs
+
+
 
 _______________________________________________
 barebox mailing list
