@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIvYY-0003i3-0h
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 07:38:59 +0000
-Date: Thu, 27 Feb 2014 08:38:35 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140227073835.GD17250@pengutronix.de>
-References: <CAO6XYUt7KaraGNUkTuEkQXKbh0f6MH4Ywn8dDJQpo1RkT2CaSw@mail.gmail.com>
+Received: from m15-113.126.com ([220.181.15.113])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WIvlW-00043R-GF
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 07:52:25 +0000
+Date: Thu, 27 Feb 2014 15:51:26 +0800
+From: zzs <zzs213@126.com>
+Message-ID: <20140227075126.GB20720@greatfirst.com>
+References: <20140227061544.GA20720@greatfirst.com>
+ <20140227072727.GB17250@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAO6XYUt7KaraGNUkTuEkQXKbh0f6MH4Ywn8dDJQpo1RkT2CaSw@mail.gmail.com>
+In-Reply-To: <20140227072727.GB17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,33 +23,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX6Q Boot from NAND
-To: "Michael D. Burkey" <mdburkey@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: bug in arm_cpu_lowlevel_init ??
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Wed, Feb 26, 2014 at 03:49:37PM -0500, Michael D. Burkey wrote:
-> >Hi ANdreas,
-> 
-> PS...
-> Out of curiosity, which SOM are you using that boots from NAND?
-> I'm currently working with Variscite's SOM -- and life would have been
-> much simpler if someone had just put a SPI NOR on it!
+>
+> The lr (r14) register has different instances, one for each mode. It
+> could be that once we switch to a different mode in arm_cpu_lowlevel_init
+> we see another instance of r14. So to me the patch looks correct, we
+> shouldn't rely on lr as return address but rather use another register
+> for storing the address.
+> The above only happens though when the CPU is not in SVC32 mode already.
+> What first stage loader are you using? Could you analyze in which mode
+> the CPU is when the loader jumps to barebox?
+>
+The first stage loader was written by myself longlong ago. So forgot the
+details.  I just look the code closer, Found the flowwing line just
+before jumps to barebox.
 
-+1
+  asm ("msr CPSR_c, %0" : :"i"(ARM_MODE_SYS|I_BIT|F_BIT));
 
-Booting from Nand is always a pain, not only on i.MX. SoC vendors are
-always very creative when it comes to bad block handling and ECC layout.
-Since it's the ROM code that reads the initial portion you are forced to
-put on Nand whatever the ROM code wants to have, even if you want to use
-a completely different ECC layout / Bad block table on your Nand.
-
-Sascha
+So it seems the cpu is in system mode when run barebox.
+Your explanation is right.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best Regards,
+zzs
+
+
 
 _______________________________________________
 barebox mailing list
