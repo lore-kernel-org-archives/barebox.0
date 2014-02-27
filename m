@@ -1,24 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIvuu-0004JI-Hd
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 08:02:05 +0000
-Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
- ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1WIvuY-00045c-PW
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 09:01:42 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
- (envelope-from <sha@pengutronix.de>) id 1WIvuY-0003hO-OB
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 09:01:42 +0100
-Date: Thu, 27 Feb 2014 09:01:42 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140227080142.GE17250@pengutronix.de>
-References: <20140227061544.GA20720@greatfirst.com>
- <20140227072727.GB17250@pengutronix.de>
- <20140227075126.GB20720@greatfirst.com>
+Received: from m15-111.126.com ([220.181.15.111])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WIw78-0004k3-Ds
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 08:14:45 +0000
+From: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>
+Date: Thu, 27 Feb 2014 16:14:08 +0800
+Message-Id: <1393488848-21278-1-git-send-email-zzs213@126.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140227075126.GB20720@greatfirst.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,46 +15,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: bug in arm_cpu_lowlevel_init ??
-To: barebox <barebox@lists.infradead.org>
+Subject: [PATCH] bugfix: don't rely on lr in arm_cpu_lowlevel_init
+To: barebox@lists.infradead.org
+Cc: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs0213@gmail.com>
 
-On Thu, Feb 27, 2014 at 03:51:26PM +0800, zzs wrote:
-> >
-> > The lr (r14) register has different instances, one for each mode. It
-> > could be that once we switch to a different mode in arm_cpu_lowlevel_init
-> > we see another instance of r14. So to me the patch looks correct, we
-> > shouldn't rely on lr as return address but rather use another register
-> > for storing the address.
-> > The above only happens though when the CPU is not in SVC32 mode already.
-> > What first stage loader are you using? Could you analyze in which mode
-> > the CPU is when the loader jumps to barebox?
-> >
-> The first stage loader was written by myself longlong ago. So forgot the
-> details.  I just look the code closer, Found the flowwing line just
-> before jumps to barebox.
-> 
->   asm ("msr CPSR_c, %0" : :"i"(ARM_MODE_SYS|I_BIT|F_BIT));
-> 
-> So it seems the cpu is in system mode when run barebox.
-> Your explanation is right.
-
-Ok, so arm_cpu_lowlevel_init currently only works if the CPU is in SVC32
-mode already. Could you send a formal patch with the change you made
-with a Signed-off-by line? Then I'll include it in barebox.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTog5byg5b+g5bGxIDx6enMwMjEzQGdtYWlsLmNvbT4KClNpZ25lZC1vZmYtYnk6IOW8oOW/
+oOWxsSA8enpzMjEzQDEyNi5jb20+Ci0tLQogYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMgfCAgICAz
+ICsrLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlm
+ZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TIGIvYXJjaC9hcm0vY3B1L2xvd2xldmVs
+LlMKaW5kZXggMzA3YjQ0Ny4uYzYxNWQ1YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L2xvd2xl
+dmVsLlMKKysrIGIvYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMKQEAgLTQsNiArNCw3IEBACiAKIC5z
+ZWN0aW9uICIudGV4dF9iYXJlX2luaXRfIiwiYXgiCiBFTlRSWShhcm1fY3B1X2xvd2xldmVsX2lu
+aXQpCisJbW92CXIyLCBscgogCS8qIHNldCB0aGUgY3B1IHRvIFNWQzMyIG1vZGUgKi8KIAltcnMJ
+cjEyLCBjcHNyCiAJYmljCXIxMiwgcjEyLCAjMHgxZgpAQCAtMzUsNSArMzYsNSBAQCBFTlRSWShh
+cm1fY3B1X2xvd2xldmVsX2luaXQpCiAKIAltY3IJcDE1LCAwLCByMTIsIGMxLCBjMCwgMAogCi0J
+bW92CXBjLCBscgorCW1vdglwYywgcjIKIEVORFBST0MoYXJtX2NwdV9sb3dsZXZlbF9pbml0KQot
+LSAKMS43LjkuNQoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
