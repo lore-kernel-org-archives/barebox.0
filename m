@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og112.obsmtp.com ([64.18.0.24])
+Received: from exprod5og107.obsmtp.com ([64.18.0.184])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJ1JH-0006A8-3r
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 13:47:36 +0000
+ id 1WJ1Jf-0006Af-8s
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 13:47:59 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 27 Feb 2014 13:46:55 +0000
-Message-Id: <1393508819-3693-1-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 27 Feb 2014 13:46:58 +0000
+Message-Id: <1393508819-3693-4-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1393508819-3693-1-git-send-email-renaud.barbier@ge.com>
+References: <1393508819-3693-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +21,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/4] ppc: memory layout and memtest
+Subject: [PATCH 3/4] memtest: exclude page starting at address 0.
 To: barebox@lists.infradead.org
 
-This patchset updates the PPC memory layout and memtest:
+memtest fails when a reserved sdram region is at the bank start at
+address 0. This patch supports the exclusion of memory region at
+the bank start.
 
- - Memory regions on PPC are redefined to prevent corruption of critical memory
-   areas while running the memtest.
+Tested on P2020RDB and DA923RC, qemuarm versatilepb.
 
- - To support the memory test framework with cache disabled, a TLB remapping
-   function is added for the memtest to enable/disable caching on a mapped
-   memory region.
+Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+---
+ commands/memtest.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
- - To prevent memtest failure, the memory test is updated to exclude memory
-   region at the bank start.
-
-Finally, the configuration files are updated for the DA923RC and P2020RDB.
-
-Renaud Barbier (4):
-  ppc: fix memory layout to prevent corruption during memtest
-  ppc: add support for memtest with cache disabled
-  memtest: exclude page starting at address 0.
-  ppc: P2020RDB and DA923RC configuration
-
- arch/ppc/configs/da923rc_defconfig       |    2 +
- arch/ppc/configs/p2020rdb_defconfig      |    2 +
- arch/ppc/cpu-85xx/Makefile               |    1 +
- arch/ppc/cpu-85xx/mmu.c                  |   54 ++++++++++++++++++++++++++++++
- arch/ppc/cpu-85xx/start.S                |    3 --
- arch/ppc/cpu-85xx/tlb.c                  |   17 +++++++++-
- arch/ppc/include/asm/mmu.h               |    6 +++
- arch/ppc/lib/board.c                     |    6 +---
- arch/ppc/mach-mpc85xx/Kconfig            |    3 ++
- arch/ppc/mach-mpc85xx/barebox.lds.S      |    8 +++--
- arch/ppc/mach-mpc85xx/include/mach/mmu.h |    5 +++
- commands/memtest.c                       |   10 +++---
- include/asm-generic/memory_layout.h      |    4 ++
- 13 files changed, 104 insertions(+), 17 deletions(-)
- create mode 100644 arch/ppc/cpu-85xx/mmu.c
+diff --git a/commands/memtest.c b/commands/memtest.c
+index c82badc..a71576e 100644
+--- a/commands/memtest.c
++++ b/commands/memtest.c
+@@ -88,11 +88,11 @@ static int request_memtest_regions(struct list_head *list)
+ 				 * remember last used element
+ 				 */
+ 				start = PAGE_ALIGN(bank->res->start);
+-				end = PAGE_ALIGN_DOWN(r->start) - 1;
+-				size = end - start + 1;
++				end = PAGE_ALIGN_DOWN(r->start);
+ 				r_prev = r;
+-				if (start >= end)
++				if (start == end)
+ 					continue;
++				size = end - start;
+ 
+ 				ret = alloc_memtest_region(list, start, size);
+ 				if (ret < 0)
+@@ -103,12 +103,12 @@ static int request_memtest_regions(struct list_head *list)
+ 			 * Between used regions
+ 			 */
+ 			start = PAGE_ALIGN(r_prev->end);
+-			end = PAGE_ALIGN_DOWN(r->start) - 1;
+-			size = end - start + 1;
++			end = PAGE_ALIGN_DOWN(r->start);
+ 			r_prev = r;
+ 			if (start >= end)
+ 				continue;
+ 
++			size = end - start;
+ 			ret = alloc_memtest_region(list, start, size);
+ 			if (ret < 0)
+ 				return ret;
+-- 
+1.7.1
 
 
 _______________________________________________
