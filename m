@@ -1,17 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJ0qW-0004w7-1U
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 13:17:52 +0000
-Date: Thu, 27 Feb 2014 14:17:30 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140227131729.GM17250@pengutronix.de>
-References: <1393368681-1190-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1393368681-1190-7-git-send-email-u.kleine-koenig@pengutronix.de>
- <530D2660.6080104@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <530D2660.6080104@gmail.com>
+Received: from exprod5og112.obsmtp.com ([64.18.0.24])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WJ1JH-0006A8-3r
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 13:47:36 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
+Date: Thu, 27 Feb 2014 13:46:55 +0000
+Message-Id: <1393508819-3693-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,82 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 06/10] ARM: a9m2410: convert to devfs_create_partitions
-To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-Cc: barebox@lists.infradead.org, Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 0/4] ppc: memory layout and memtest
+To: barebox@lists.infradead.org
 
-On Wed, Feb 26, 2014 at 12:25:20AM +0100, Sebastian Hesselbarth wrote:
-> On 02/25/2014 11:51 PM, Uwe Kleine-K=F6nig wrote:
-> >Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >---
-> >  arch/arm/boards/a9m2410/a9m2410.c | 23 +++++++++++++++++------
-> >  1 file changed, 17 insertions(+), 6 deletions(-)
-> >
-> >diff --git a/arch/arm/boards/a9m2410/a9m2410.c b/arch/arm/boards/a9m2410=
-/a9m2410.c
-> >index b2b6c87117a3..8d528cf60378 100644
-> >--- a/arch/arm/boards/a9m2410/a9m2410.c
-> >+++ b/arch/arm/boards/a9m2410/a9m2410.c
-> >@@ -117,13 +117,24 @@ static int a9m2410_devices_init(void)
-> >  			16, IORESOURCE_MEM, NULL);
-> >
-> >  #ifdef CONFIG_NAND
-> >-	/* ----------- add some vital partitions -------- */
-> >-	devfs_add_partition("nand0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, =
-"self_raw");
-> >-	dev_add_bb_dev("self_raw", "self0");
-> >-
-> >-	devfs_add_partition("nand0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, =
-"env_raw");
-> >-	dev_add_bb_dev("env_raw", "env0");
-> >+	devfs_create_partitions("nand0", (struct devfs_partition[]){
-> =
+This patchset updates the PPC memory layout and memtest:
 
-> nit: It would be even more readable, if you move the struct
-> devfs_partition[] out of a9m2410_device_init() and reference
-> it here instead, i.e.
-> =
+ - Memory regions on PPC are redefined to prevent corruption of critical memory
+   areas while running the memtest.
 
-> static struct devfs_partition a9m2410_nand_partitions[] =3D {
-> 	...
-> 	{ }
-> };
-> =
+ - To support the memory test framework with cache disabled, a TLB remapping
+   function is added for the memtest to enable/disable caching on a mapped
+   memory region.
 
-> ...
-> =
+ - To prevent memtest failure, the memory test is updated to exclude memory
+   region at the bank start.
 
-> static int a9m2410_devices_init(void)
-> {
-> ...
-> 	#ifdef CONFIG_NAND
-> 	devfs_create_partitions("nand0", a9m2410_nand_partitions);
-> 	#endif
-> ...
-> =
+Finally, the configuration files are updated for the DA923RC and P2020RDB.
 
-> in here and the following patches.
+Renaud Barbier (4):
+  ppc: fix memory layout to prevent corruption during memtest
+  ppc: add support for memtest with cache disabled
+  memtest: exclude page starting at address 0.
+  ppc: P2020RDB and DA923RC configuration
 
-+1
+ arch/ppc/configs/da923rc_defconfig       |    2 +
+ arch/ppc/configs/p2020rdb_defconfig      |    2 +
+ arch/ppc/cpu-85xx/Makefile               |    1 +
+ arch/ppc/cpu-85xx/mmu.c                  |   54 ++++++++++++++++++++++++++++++
+ arch/ppc/cpu-85xx/start.S                |    3 --
+ arch/ppc/cpu-85xx/tlb.c                  |   17 +++++++++-
+ arch/ppc/include/asm/mmu.h               |    6 +++
+ arch/ppc/lib/board.c                     |    6 +---
+ arch/ppc/mach-mpc85xx/Kconfig            |    3 ++
+ arch/ppc/mach-mpc85xx/barebox.lds.S      |    8 +++--
+ arch/ppc/mach-mpc85xx/include/mach/mmu.h |    5 +++
+ commands/memtest.c                       |   10 +++---
+ include/asm-generic/memory_layout.h      |    4 ++
+ 13 files changed, 104 insertions(+), 17 deletions(-)
+ create mode 100644 arch/ppc/cpu-85xx/mmu.c
 
-In this particular case the __maybe_unused can also be avoided with
-
-	if(IS_ENABLED(CONFIG_NAND))
-		devfs_create_partitions("nand0", a9m2410_nand_partitions);
-
-Sascha
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
