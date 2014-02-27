@@ -1,12 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from m15-111.126.com ([220.181.15.111])
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIw78-0004k3-Ds
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 08:14:45 +0000
-From: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs213@126.com>
-Date: Thu, 27 Feb 2014 16:14:08 +0800
-Message-Id: <1393488848-21278-1-git-send-email-zzs213@126.com>
-MIME-Version: 1.0
+ id 1WIwg3-00060n-Dv
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 08:50:48 +0000
+From: Lucas Stach <dev@lynxeye.de>
+Date: Thu, 27 Feb 2014 09:49:46 +0100
+Message-Id: <1393490986-3866-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -15,25 +14,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] bugfix: don't rely on lr in arm_cpu_lowlevel_init
+Subject: [PATCH] fixup! tegra: add Tegra3 to relevant lowlevel functions
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?=E5=BC=A0=E5=BF=A0=E5=B1=B1?= <zzs0213@gmail.com>
 
-RnJvbTog5byg5b+g5bGxIDx6enMwMjEzQGdtYWlsLmNvbT4KClNpZ25lZC1vZmYtYnk6IOW8oOW/
-oOWxsSA8enpzMjEzQDEyNi5jb20+Ci0tLQogYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMgfCAgICAz
-ICsrLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL2NwdS9sb3dsZXZlbC5TIGIvYXJjaC9hcm0vY3B1L2xvd2xldmVs
-LlMKaW5kZXggMzA3YjQ0Ny4uYzYxNWQ1YiAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vY3B1L2xvd2xl
-dmVsLlMKKysrIGIvYXJjaC9hcm0vY3B1L2xvd2xldmVsLlMKQEAgLTQsNiArNCw3IEBACiAKIC5z
-ZWN0aW9uICIudGV4dF9iYXJlX2luaXRfIiwiYXgiCiBFTlRSWShhcm1fY3B1X2xvd2xldmVsX2lu
-aXQpCisJbW92CXIyLCBscgogCS8qIHNldCB0aGUgY3B1IHRvIFNWQzMyIG1vZGUgKi8KIAltcnMJ
-cjEyLCBjcHNyCiAJYmljCXIxMiwgcjEyLCAjMHgxZgpAQCAtMzUsNSArMzYsNSBAQCBFTlRSWShh
-cm1fY3B1X2xvd2xldmVsX2luaXQpCiAKIAltY3IJcDE1LCAwLCByMTIsIGMxLCBjMCwgMAogCi0J
-bW92CXBjLCBscgorCW1vdglwYywgcjIKIEVORFBST0MoYXJtX2NwdV9sb3dsZXZlbF9pbml0KQot
-LSAKMS43LjkuNQoKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
-cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+This got messed up while applying. You may want to
+squash this in while the original patch still sits
+in -next.
+---
+ arch/arm/mach-tegra/include/mach/lowlevel.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index 11d930b..cc346a0 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -78,6 +78,8 @@ enum tegra_chiptype tegra_get_chiptype(void)
+ 	switch ((hidrev & HIDREV_CHIPID_MASK) >> HIDREV_CHIPID_SHIFT) {
+ 	case 0x20:
+ 		return TEGRA20;
++	case 0x30:
++		return TEGRA30;
+ 	default:
+ 		return TEGRA_UNK_REV;
+ 	}
+@@ -89,8 +91,6 @@ int tegra_get_num_cores(void)
+ 	switch (tegra_get_chiptype()) {
+ 	case TEGRA20:
+ 		return 2;
+-	case 0x30:
+-		return TEGRA30;
+ 	case TEGRA30:
+ 		return 4;
+ 	default:
+-- 
+1.8.5.3
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
