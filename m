@@ -1,14 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJ7kG-0002dA-Hl
- for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:39:54 +0000
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Thu, 27 Feb 2014 21:39:07 +0100
-Message-Id: <1393533550-1865-8-git-send-email-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
+ id 1WJ84J-0003TR-Bo
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 21:00:37 +0000
+Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:21e:67ff:fe11:9c5c])
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WJ83x-0003oI-Hw
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 22:00:13 +0100
+Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
+ (envelope-from <sha@pengutronix.de>) id 1WJ83x-0000q0-Gk
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 22:00:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 27 Feb 2014 22:00:07 +0100
+Message-Id: <1393534812-30995-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,51 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 07/10] ARM: freescale-mx35-3-stack: convert to
- devfs_create_partitions
+Subject: Add NFS Bootloader Spec support
 To: barebox@lists.infradead.org
 
-U2lnbmVkLW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRy
-b25peC5kZT4KLS0tCiBhcmNoL2FybS9ib2FyZHMvZnJlZXNjYWxlLW14MzUtMy1zdGFjay8zc3Rh
-Y2suYyB8IDQyICsrKysrKysrKysrKysrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAzNiBp
-bnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2JvYXJk
-cy9mcmVlc2NhbGUtbXgzNS0zLXN0YWNrLzNzdGFjay5jIGIvYXJjaC9hcm0vYm9hcmRzL2ZyZWVz
-Y2FsZS1teDM1LTMtc3RhY2svM3N0YWNrLmMKaW5kZXggZGJkMWM3YWRjYjEwLi4yYmUxNTU0YjY4
-OGUgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgzNS0zLXN0YWNrLzNz
-dGFjay5jCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9mcmVlc2NhbGUtbXgzNS0zLXN0YWNrLzNzdGFj
-ay5jCkBAIC0xMjksNiArMTI5LDQwIEBAIHN0YXRpYyB2b2lkIHNldF9ib2FyZF9yZXYoaW50IHJl
-dikKIAlpbXgzNV8zZHNfc3lzdGVtX3JldiA9ICAoaW14MzVfM2RzX3N5c3RlbV9yZXYgJiB+KDB4
-RiA8PCA4KSkgfCAocmV2ICYgMHhGKSA8PCA4OwogfQogCitzdGF0aWMgY29uc3Qgc3RydWN0IGRl
-dmZzX3BhcnRpdGlvbiBmM3NfbmFuZDBfcGFydGl0aW9uc1tdID0geworCXsKKwkJLm9mZnNldCA9
-IDAsCisJCS5zaXplID0gMHg0MDAwMCwKKwkJLmZsYWdzID0gREVWRlNfUEFSVElUSU9OX0ZJWEVE
-LAorCQkubmFtZSA9ICJzZWxmX3JhdyIsCisJCS5iYm5hbWUgPSAic2VsZjAiLAorCX0sIHsKKwkJ
-Lm9mZnNldCA9IERFVkZTX1BBUlRJVElPTl9BUFBFTkQsIC8qIDB4NDAwMDAgKi8KKwkJLnNpemUg
-PSAweDgwMDAwLAorCQkuZmxhZ3MgPSBERVZGU19QQVJUSVRJT05fRklYRUQsCisJCS5uYW1lID0g
-ImVudl9yYXciLAorCQkuYmJuYW1lID0gImVudjAiLAorCX0sIHsKKwkJLyogc2VudGluZWwgKi8K
-Kwl9Cit9OworCitzdGF0aWMgY29uc3Qgc3RydWN0IGRldmZzX3BhcnRpdGlvbiBmM3Nfbm9yMF9w
-YXJ0aXRpb25zW10gPSB7CisJeworCQkub2Zmc2V0ID0gMCwKKwkJLnNpemUgPSAweDQwMDAwLAor
-CQkuZmxhZ3MgPSBERVZGU19QQVJUSVRJT05fRklYRUQsCisJCS5uYW1lID0gInNlbGYwIiwKKwl9
-LCB7CisJCS5vZmZzZXQgPSBERVZGU19QQVJUSVRJT05fQVBQRU5ELCAvKiAweDQwMDAwICovCisJ
-CS5zaXplID0gMHg4MDAwMCwKKwkJLmZsYWdzID0gREVWRlNfUEFSVElUSU9OX0ZJWEVELAorCQku
-bmFtZSA9ICJlbnYwIiwKKwl9LCB7CisJCS8qIHNlbnRpbmVsICovCisJfQorfTsKKwogc3RhdGlj
-IGludCBmM3NfZGV2aWNlc19pbml0KHZvaWQpCiB7CiAJdWludDMyX3QgcmVnOwpAQCAtMTUxLDE1
-ICsxODUsMTEgQEAgc3RhdGljIGludCBmM3NfZGV2aWNlc19pbml0KHZvaWQpCiAKIAlzd2l0Y2gg
-KChyZWcgPj4gMjUpICYgMHgzKSB7CiAJY2FzZSAweDAxOgkJLyogTkFORCBpcyB0aGUgc291cmNl
-ICovCi0JCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHgwMDAwMCwgMHg0MDAwMCwgREVW
-RlNfUEFSVElUSU9OX0ZJWEVELCAic2VsZl9yYXciKTsKLQkJZGV2X2FkZF9iYl9kZXYoInNlbGZf
-cmF3IiwgInNlbGYwIik7Ci0JCWRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHg0MDAwMCwg
-MHg4MDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAiZW52X3JhdyIpOwotCQlkZXZfYWRkX2Ji
-X2RldigiZW52X3JhdyIsICJlbnYwIik7CisJCWRldmZzX2NyZWF0ZV9wYXJ0aXRpb25zKCJuYW5k
-MCIsIGYzc19uYW5kMF9wYXJ0aXRpb25zKTsKIAkJYnJlYWs7CiAKIAljYXNlIDB4MDA6CQkvKiBO
-T1IgaXMgdGhlIHNvdXJjZSAqLwotCQlkZXZmc19hZGRfcGFydGl0aW9uKCJub3IwIiwgMHgwMDAw
-MCwgMHg0MDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAic2VsZjAiKTsKLQkJZGV2ZnNfYWRk
-X3BhcnRpdGlvbigibm9yMCIsIDB4NDAwMDAsIDB4ODAwMDAsIERFVkZTX1BBUlRJVElPTl9GSVhF
-RCwgImVudjAiKTsKKwkJZGV2ZnNfY3JlYXRlX3BhcnRpdGlvbnMoIm5vcjAiLCBmM3Nfbm9yMF9w
-YXJ0aXRpb25zKTsKIAkJcHJvdGVjdF9maWxlKCIvZGV2L2VudjAiLCAxKTsKIAkJYnJlYWs7CiAJ
-fQotLSAKMS44LjUuMwoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
-dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+This series adds support for booting bootloader Spec entries
+via NFS. NFS URLs are specified according to rfc2224:
+
+nfs://<host>[:<port>]<url-path>
+
+The port argument is optional.
+
+So 'boot nfs://192.168.2.2//home/sha/nfsroot/generic-v5'
+
+Would look for a bootloader spec entry in the given directory
+on the host and start it.
+
+Sascha
+
+----------------------------------------------------------------
+Sascha Hauer (5):
+      run_command: remove unused flag parameter
+      net: constify eth_get_byname argument
+      net: remove old nfs support
+      net: Add ifup support
+      blspec: Add NFS support
+
+ commands/boot.c                       |   2 +-
+ commands/exec.c                       |   2 +-
+ commands/login.c                      |   2 +-
+ commands/time.c                       |   2 +-
+ common/Kconfig                        |   1 +
+ common/blspec.c                       | 114 +++++-
+ common/hush.c                         |   2 +-
+ common/menu.c                         |   2 +-
+ common/parser.c                       |   2 +-
+ common/startup.c                      |   4 +-
+ defaultenv/defaultenv-2-base/bin/ifup |  67 ----
+ fs/fs.c                               |   2 +-
+ include/common.h                      |   3 +-
+ include/net.h                         |   7 +-
+ net/Kconfig                           |  15 +-
+ net/Makefile                          |   2 +-
+ net/eth.c                             |   2 +-
+ net/ifup.c                            | 179 +++++++++
+ net/nfs.c                             | 737 ----------------------------------
+ 19 files changed, 322 insertions(+), 825 deletions(-)
+ delete mode 100644 defaultenv/defaultenv-2-base/bin/ifup
+ create mode 100644 net/ifup.c
+ delete mode 100644 net/nfs.c
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
