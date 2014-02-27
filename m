@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ea0-x232.google.com ([2a00:1450:4013:c01::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WIfaj-00018K-IE
- for barebox@lists.infradead.org; Wed, 26 Feb 2014 14:36:10 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 26 Feb 2014 15:35:43 +0100
-Message-Id: <1393425344-10373-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1393425344-10373-1-git-send-email-s.hauer@pengutronix.de>
-References: <1393425344-10373-1-git-send-email-s.hauer@pengutronix.de>
+ id 1WJ7mk-0002rV-Vl
+ for barebox@lists.infradead.org; Thu, 27 Feb 2014 20:42:27 +0000
+Received: by mail-ea0-f178.google.com with SMTP id a15so2108905eae.23
+ for <barebox@lists.infradead.org>; Thu, 27 Feb 2014 12:42:04 -0800 (PST)
+Message-ID: <530FA317.5060604@gmail.com>
+Date: Thu, 27 Feb 2014 21:41:59 +0100
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1393533550-1865-7-git-send-email-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <1393533550-1865-7-git-send-email-u.kleine-koenig@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,105 +20,45 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] usb: dfu: Add create flag
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 06/10] ARM: a9m2410: convert to devfs_create_partitions
+To: =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= <u.kleine-koenig@pengutronix.de>, barebox@lists.infradead.org
 
-With the create flag DFU can upload to regular, previously non existing
-files.
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/dfu.c           |  8 ++++++--
- drivers/usb/gadget/dfu.c | 18 ++++++++++++++----
- include/usb/dfu.h        |  1 +
- 3 files changed, 21 insertions(+), 6 deletions(-)
-
-diff --git a/commands/dfu.c b/commands/dfu.c
-index b310585..3c00e7e 100644
---- a/commands/dfu.c
-+++ b/commands/dfu.c
-@@ -65,6 +65,9 @@ static int dfu_do_parse_one(char *partstr, char **endstr, struct usb_dfu_dev *df
- 			case 'r':
- 				dfu->flags |= DFU_FLAG_READBACK;
- 				break;
-+			case 'c':
-+				dfu->flags |= DFU_FLAG_CREATE;
-+				break;
- 			default:
- 				return -EINVAL;
- 			}
-@@ -167,9 +170,10 @@ BAREBOX_CMD_HELP_OPT  ("-p <str>",  "product string\n")
- BAREBOX_CMD_HELP_OPT  ("-V <id>",   "vendor id\n")
- BAREBOX_CMD_HELP_OPT  ("-P <id>",   "product id\n")
- BAREBOX_CMD_HELP_OPT  ("<description>",
--	"device1(name1)[sr],device2(name2)[sr]\n"
-+	"device1(name1)[sr],device2(name2)[src]\n"
- 	"'s' means 'safe mode' (download the complete image before flashing) and\n"
--	"'r' that readback of the firmware is allowed.\n")
-+	"'r' that readback of the firmware is allowed.\n"
-+	"'c' if given, the file will be created (for use with regular files)\n")
- BAREBOX_CMD_HELP_END
- 
- /**
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index 6002ff0..c3a4e61 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -246,8 +246,12 @@ static int handle_dnload(struct usb_function *f, const struct usb_ctrlrequest *c
- 		dfu->dfu_state = DFU_STATE_dfuIDLE;
- 		if (dfu_devs[dfualt].flags & DFU_FLAG_SAFE) {
- 			int fd;
-+			unsigned flags = O_WRONLY;
- 
--			fd = open(dfu_devs[dfualt].dev, O_WRONLY);
-+			if (dfu_devs[dfualt].flags & DFU_FLAG_CREATE)
-+				flags |= O_CREAT | O_TRUNC;
-+
-+			fd = open(dfu_devs[dfualt].dev, flags);
- 			if (fd < 0) {
- 				perror("open");
- 				ret = -EINVAL;
-@@ -376,10 +380,16 @@ static int dfu_setup(struct usb_function *f, const struct usb_ctrlrequest *ctrl)
- 				goto out;
- 			}
- 			debug("dfu: starting download to %s\n", dfu_devs[dfualt].dev);
--			if (dfu_devs[dfualt].flags & DFU_FLAG_SAFE)
-+			if (dfu_devs[dfualt].flags & DFU_FLAG_SAFE) {
- 				dfufd = open(DFU_TEMPFILE, O_WRONLY | O_CREAT);
--			else
--				dfufd = open(dfu_devs[dfualt].dev, O_WRONLY);
-+			} else {
-+				unsigned flags = O_WRONLY;
-+
-+				if (dfu_devs[dfualt].flags & DFU_FLAG_CREATE)
-+					flags |= O_CREAT | O_TRUNC;
-+
-+				dfufd = open(dfu_devs[dfualt].dev, flags);
-+			}
- 
- 			if (dfufd < 0) {
- 				dfu->dfu_state = DFU_STATE_dfuERROR;
-diff --git a/include/usb/dfu.h b/include/usb/dfu.h
-index 00031e7..df4f2fd 100644
---- a/include/usb/dfu.h
-+++ b/include/usb/dfu.h
-@@ -24,6 +24,7 @@
- 
- #define DFU_FLAG_SAFE		(1 << 0)
- #define DFU_FLAG_READBACK	(1 << 1)
-+#define DFU_FLAG_CREATE		(1 << 2)
- 
- struct usb_dfu_dev {
- 	char *name;
--- 
-1.8.5.3
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gMDIvMjcvMjAxNCAwOTozOSBQTSwgVXdlIEtsZWluZS1Lw7ZuaWcgd3JvdGU6Cj4gU2lnbmVk
+LW9mZi1ieTogVXdlIEtsZWluZS1Lw7ZuaWcgPHUua2xlaW5lLWtvZW5pZ0BwZW5ndXRyb25peC5k
+ZT4KPiAtLS0KPiAgIGFyY2gvYXJtL2JvYXJkcy9hOW0yNDEwL2E5bTI0MTAuYyB8IDI3ICsrKysr
+KysrKysrKysrKysrKysrLS0tLS0tLQo+ICAgMSBmaWxlIGNoYW5nZWQsIDIwIGluc2VydGlvbnMo
+KyksIDcgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL2E5bTI0
+MTAvYTltMjQxMC5jIGIvYXJjaC9hcm0vYm9hcmRzL2E5bTI0MTAvYTltMjQxMC5jCj4gaW5kZXgg
+YjJiNmM4NzExN2EzLi45NDNiNzcwOWJmMmUgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm0vYm9hcmRz
+L2E5bTI0MTAvYTltMjQxMC5jCj4gKysrIGIvYXJjaC9hcm0vYm9hcmRzL2E5bTI0MTAvYTltMjQx
+MC5jCj4gQEAgLTgyLDYgKzgyLDI0IEBAIHN0YXRpYyBpbnQgYTltMjQxMF9tZW1faW5pdCh2b2lk
+KQo+ICAgfQo+ICAgbWVtX2luaXRjYWxsKGE5bTI0MTBfbWVtX2luaXQpOwo+Cj4gK3N0YXRpYyBj
+b25zdCBzdHJ1Y3QgZGV2ZnNfcGFydGl0aW9uIGE5bTI0MTBfbmFuZDBfcGFydGl0aW9uc1tdID0g
+ewo+ICsJewo+ICsJCS5vZmZzZXQgPSAwLAo+ICsJCS5zaXplID0gMHg0MDAwMCwKPiArCQkuZmxh
+Z3MgPSBERVZGU19QQVJUSVRJT05fRklYRUQsCj4gKwkJLm5hbWUgPSAic2VsZl9yYXciLAo+ICsJ
+CS5iYm5hbWUgPSAic2VsZjAiLAo+ICsJfSwgewo+ICsJCS5vZmZzZXQgPSBERVZGU19QQVJUSVRJ
+T05fQVBQRU5ELAo+ICsJCS5zaXplID0gMHgyMDAwMCwKPiArCQkuZmxhZ3MgPSBERVZGU19QQVJU
+SVRJT05fRklYRUQsCj4gKwkJLm5hbWUgPSAiZW52X3JhdyIsCj4gKwkJLmJibmFtZSA9ICJlbnYw
+IiwKPiArCX0sIHsKPiArCQkvKiBzZW50aW5lbCAqLwo+ICsJfQo+ICt9Owo+ICsKPiAgIHN0YXRp
+YyBpbnQgYTltMjQxMF9kZXZpY2VzX2luaXQodm9pZCkKPiAgIHsKPiAgIAl1aW50MzJfdCByZWc7
+Cj4gQEAgLTExNiwxNCArMTM0LDkgQEAgc3RhdGljIGludCBhOW0yNDEwX2RldmljZXNfaW5pdCh2
+b2lkKQo+ICAgCWFkZF9nZW5lcmljX2RldmljZSgic21jOTFjMTExIiwgREVWSUNFX0lEX0RZTkFN
+SUMsIE5VTEwsIFMzQ19DUzFfQkFTRSArIDB4MzAwLAo+ICAgCQkJMTYsIElPUkVTT1VSQ0VfTUVN
+LCBOVUxMKTsKPgo+IC0jaWZkZWYgQ09ORklHX05BTkQKPiAtCS8qIC0tLS0tLS0tLS0tIGFkZCBz
+b21lIHZpdGFsIHBhcnRpdGlvbnMgLS0tLS0tLS0gKi8KPiAtCWRldmZzX2FkZF9wYXJ0aXRpb24o
+Im5hbmQwIiwgMHgwMDAwMCwgMHg0MDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJWEVELCAic2VsZl9y
+YXciKTsKPiAtCWRldl9hZGRfYmJfZGV2KCJzZWxmX3JhdyIsICJzZWxmMCIpOwo+ICsJaWYgKElT
+X0VOQUJMRUQoQ09ORklHX05BTkQpKQo+ICsJCWRldmZzX2NyZWF0ZV9wYXJ0aXRpb25zKCJuYW5k
+MCIsIGE5bTI0MTBfbmFuZDBfcGFydGl0aW9ucyk7CgpBIGxvdCBtb3JlICJyZWFkYWJsZSIsIHRo
+YW5rcyBmb3IgY29uc2lkZXJpbmcgdGhlIHJldmlldyEKClNlYmFzdGlhbgoKPiAtCWRldmZzX2Fk
+ZF9wYXJ0aXRpb24oIm5hbmQwIiwgMHg0MDAwMCwgMHgyMDAwMCwgREVWRlNfUEFSVElUSU9OX0ZJ
+WEVELCAiZW52X3JhdyIpOwo+IC0JZGV2X2FkZF9iYl9kZXYoImVudl9yYXciLCAiZW52MCIpOwo+
+IC0jZW5kaWYKPiAgIAlhcm1saW51eF9zZXRfYXJjaGl0ZWN0dXJlKE1BQ0hfVFlQRV9BOU0yNDEw
+KTsKPgo+ICAgCXJldHVybiAwOwo+CgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJv
+eAo=
