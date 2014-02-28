@@ -1,7 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Message-ID: <5310B108.8040800@celad.com>
-Date: Fri, 28 Feb 2014 16:53:44 +0100
-From: Herve Codina <herve.codina@celad.com>
+Received: from slb-mail5.epfl.ch ([2001:620:618:1e0:1:80b2:e034:1]
+ helo=smtp5.epfl.ch)
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WJQIi-0002ve-J0
+ for barebox@lists.infradead.org; Fri, 28 Feb 2014 16:28:42 +0000
+From: =?UTF-8?q?Philippe=20R=C3=A9tornaz?= <philippe.retornaz@epfl.ch>
+Date: Fri, 28 Feb 2014 17:27:58 +0100
+Message-Id: <1393604879-29317-1-git-send-email-philippe.retornaz@epfl.ch>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -11,105 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: nand pmecc crash detected
-To: josh.wu@atmel.com
-Cc: barebox@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 0/1 v2] Add support for mx31moboard
+To: s.hauer@pengutronix.de
+Cc: barebox@lists.infradead.org, =?UTF-8?q?Philippe=20R=C3=A9tornaz?= <philippe.retornaz@epfl.ch>
 
-Hi,
-
-I am using an sam5d35 and its pmecc nand ecc controller.
-
-In barebox, using similar atmel_nand.c the system crashes.
-
-The problem was a call to chip->ecc.hwctl from nand_write_subpage_hwecc
-(nand_base.c) when we write a sub page.
-
-chip->ecc.hwctl function is not set when we are using PMECC controller.
-
-As a workaround, i set NAND_NO_SUBPAGE_WRITE for PMECC controller in
-order to disable sub page access in nand_write_page.
-
-I think we can have the same problem in Linux. I do not performed
-subpage nand writes from Linux but i made the following patch according
-to my Barebox defect.
-
-Here after are my patches (same modification) for 1st my local Barebox
-and 2nd my local Linux :
-
----8<-------------------
-From 757e8dbf141619a55b7a5b1ca11780b2589eacc1 Mon Sep 17 00:00:00 2001
-From: Herve Codina <Herve.CODINA@celad.com>
-Date: Fri, 28 Feb 2014 08:39:08 +0100
-Subject: [PATCH 5/5] Disable Subpage nand write when using Atmel PMECC.
-
-
-Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
----
- drivers/mtd/nand/atmel_nand.c |    1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index 2ff7427..cdbe685 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -837,6 +837,7 @@ static int __init
-atmel_pmecc_nand_init_params(struct device_d *dev,
- 		return err_no;
- 	}
-
-+	nand_chip->options |=3D NAND_NO_SUBPAGE_WRITE;
- 	nand_chip->ecc.read_page =3D atmel_nand_pmecc_read_page;
- 	nand_chip->ecc.write_page =3D atmel_nand_pmecc_write_page;
-
--- =
-
-1.7.9.5
-
----8<-------------------
-
-
----8<-------------------
-From bd6a9645841d74611a5be44a60c9c41b2bca9c19 Mon Sep 17 00:00:00 2001
-From: Herve Codina <Herve.CODINA@celad.com>
-Date: Fri, 28 Feb 2014 08:28:07 +0100
-Subject: [PATCH 4/4] Disable Subpage nand write when using Atmel PMECC.
-
-
-Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
----
- drivers/mtd/nand/atmel_nand.c |    1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-index 5a36a7d..1340a7b 100644
---- a/drivers/mtd/nand/atmel_nand.c
-+++ b/drivers/mtd/nand/atmel_nand.c
-@@ -1249,6 +1249,7 @@ static int __init
-atmel_pmecc_nand_init_params(struct platform_device *pdev,
- 		goto err;
- 	}
-
-+	nand_chip->options |=3D NAND_NO_SUBPAGE_WRITE;
- 	nand_chip->ecc.read_page =3D atmel_nand_pmecc_read_page;
- 	nand_chip->ecc.write_page =3D atmel_nand_pmecc_write_page;
-
--- =
-
-1.7.9.5
-
----8<-------------------
-
-Can you review/integrate these patches in Barebox / Linux ?
-
-
-Best regards,
-Herv=E9 Codina
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8KClRoaXMgcGF0Y2ggYWRkcyBzdXBwb3J0IGZvciB0aGUgbXgzMW1vYm9hcmQgYm9hcmQg
+dG8gYmFyZWJvb3QuCkkndmUgYmFzZWQgdGhpcyBvbiB0aGUgcGNtMDM3IGJvYXJkIHdpdGggc29t
+ZSBtaW5vciBtb2RpZmljYXRpb25zCmluIHRoZSBjbG9jayBhbmQgU0RSQU0gaW5pdGlhbGlzYXRp
+b24uCgpDaGFuZ2Ugc2luY2UgdjE6CgotIHJlYmFzZWQgb24gdGhlIC1uZXh0IGJyYW5jaAotIHVz
+ZSBkZXZmc19jcmVhdGVfcGFydGl0aW9ucygpCi0gSW1wbGVtZW50IFNhc2NoYSdzIGNvbW1lbnRz
+CgpUaGFua3MgISAKClBoaWxpcHBlCgoKClBoaWxpcHBlIFLDqXRvcm5heiAoMSk6CiAgQVJNOiBp
+Lk1YMzE6IEFkZCBzdXBwb3J0IGZvciBteDMxbW9ib2FyZCBib2FyZAoKIGFyY2gvYXJtL2JvYXJk
+cy9NYWtlZmlsZSAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAxICsKIGFyY2gvYXJtL2Jv
+YXJkcy9teDMxbW9ib2FyZC9NYWtlZmlsZSAgICAgICAgICAgICAgfCAgIDIwICsrCiBhcmNoL2Fy
+bS9ib2FyZHMvbXgzMW1vYm9hcmQvZW52L2Jvb3Qvbm9yICAgICAgICAgIHwgICAgOSArCiBhcmNo
+L2FybS9ib2FyZHMvbXgzMW1vYm9hcmQvZW52L2Jvb3Qvc2QgICAgICAgICAgIHwgICAgOCArCiBh
+cmNoL2FybS9ib2FyZHMvbXgzMW1vYm9hcmQvZW52L2Jvb3QvdXNibXNkICAgICAgIHwgICAgOCAr
+CiBhcmNoL2FybS9ib2FyZHMvbXgzMW1vYm9hcmQvZW52L2NvbmZpZy1ib2FyZCAgICAgIHwgICAg
+NyArCiBhcmNoL2FybS9ib2FyZHMvbXgzMW1vYm9hcmQvZW52L2luaXQvbXRkcGFydHMtbm9yIHwg
+ICAxMSArCiBhcmNoL2FybS9ib2FyZHMvbXgzMW1vYm9hcmQvbG93bGV2ZWwuYyAgICAgICAgICAg
+IHwgIDExNCArKysrKysrKysKIGFyY2gvYXJtL2JvYXJkcy9teDMxbW9ib2FyZC9teDMxbW9ib2Fy
+ZC5jICAgICAgICAgfCAgMjU5ICsrKysrKysrKysrKysrKysrKysrKwogYXJjaC9hcm0vYm9hcmRz
+L214MzFtb2JvYXJkL214MzFtb2JvYXJkLmRveCAgICAgICB8ICAgMTAgKwogYXJjaC9hcm0vbWFj
+aC1pbXgvS2NvbmZpZyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMTEgKwogMTEgZmlsZXMg
+Y2hhbmdlZCwgNDU4IGluc2VydGlvbnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9i
+b2FyZHMvbXgzMW1vYm9hcmQvTWFrZWZpbGUKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9i
+b2FyZHMvbXgzMW1vYm9hcmQvZW52L2Jvb3Qvbm9yCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9h
+cm0vYm9hcmRzL214MzFtb2JvYXJkL2Vudi9ib290L3NkCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
+aC9hcm0vYm9hcmRzL214MzFtb2JvYXJkL2Vudi9ib290L3VzYm1zZAogY3JlYXRlIG1vZGUgMTAw
+NjQ0IGFyY2gvYXJtL2JvYXJkcy9teDMxbW9ib2FyZC9lbnYvY29uZmlnLWJvYXJkCiBjcmVhdGUg
+bW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL214MzFtb2JvYXJkL2Vudi9pbml0L210ZHBhcnRz
+LW5vcgogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2JvYXJkcy9teDMxbW9ib2FyZC9sb3ds
+ZXZlbC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL214MzFtb2JvYXJkL214
+MzFtb2JvYXJkLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9ib2FyZHMvbXgzMW1vYm9h
+cmQvbXgzMW1vYm9hcmQuZG94CgotLSAKMS43LjkuNQoKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlz
+dHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2JhcmVib3gK
