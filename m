@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJIxX-0002VN-0b
- for barebox@lists.infradead.org; Fri, 28 Feb 2014 08:38:20 +0000
-Date: Fri, 28 Feb 2014 09:37:55 +0100
+ id 1WJKcW-00069M-0v
+ for barebox@lists.infradead.org; Fri, 28 Feb 2014 10:24:44 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140228083755.GZ17250@pengutronix.de>
-References: <1393509826-19549-1-git-send-email-philippe.retornaz@epfl.ch>
- <1393509826-19549-2-git-send-email-philippe.retornaz@epfl.ch>
- <20140227203652.GS17250@pengutronix.de> <53104714.6090909@epfl.ch>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <53104714.6090909@epfl.ch>
+Date: Fri, 28 Feb 2014 11:24:19 +0100
+Message-Id: <1393583061-796-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1393583061-796-1-git-send-email-s.hauer@pengutronix.de>
+References: <1393583061-796-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,152 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] ARM: i.MX31: Add support for mx31moboard board
-To: Philippe =?iso-8859-15?Q?R=E9tornaz?= <philippe.retornaz@epfl.ch>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/4] fs: ubifs: Fix unused function warning
+To: barebox@lists.infradead.org
 
-On Fri, Feb 28, 2014 at 09:21:40AM +0100, Philippe R=E9tornaz wrote:
-> Le 27/02/2014 21:36, Sascha Hauer a =E9crit :
-> >On Thu, Feb 27, 2014 at 03:03:45PM +0100, Philippe R=E9tornaz wrote:
-> >>+lwl-y +=3D lowlevel.o
-> >>+obj-y +=3D mx31moboard.o
-> >>diff --git a/arch/arm/boards/mx31moboard/env/boot/net b/arch/arm/boards=
-/mx31moboard/env/boot/net
-> >>new file mode 100644
-> >>index 0000000..e81f2cd
-> >>--- /dev/null
-> >>+++ b/arch/arm/boards/mx31moboard/env/boot/net
-> >>@@ -0,0 +1,3 @@
-> >>+#!/bin/sh
-> >>+
-> >>+# No network card support on this board
-> >
-> >Are you sure you want to drop this? You could attach a USB ethernet
-> >dongle.
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/ubifs/ubifs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Ok, I will remove this file.
-> =
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index e2f9593..44a9e97 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -49,11 +49,13 @@ struct z_stream_s ubifs_zlib_stream;
+ 
+ /* compress.c */
+ 
++#ifdef CONFIG_ZLIB
+ static int ubifs_deflate_decompress(const u8 *src, unsigned int slen, u8 *dst,
+ 		unsigned int *dlen)
+ {
+ 	return deflate_decompress(&ubifs_zlib_stream, src, slen, dst, dlen);
+ }
++#endif
+ 
+ /* All UBIFS compressors */
+ struct ubifs_compressor ubifs_compressors[UBIFS_COMPR_TYPES_CNT] = {
+-- 
+1.8.5.3
 
-> >>diff --git a/arch/arm/boards/mx31moboard/env/boot/sd b/arch/arm/boards/=
-mx31moboard/env/boot/sd
-> >>new file mode 100644
-> >>index 0000000..f96633f
-> >>--- /dev/null
-> >>+++ b/arch/arm/boards/mx31moboard/env/boot/sd
-> >>@@ -0,0 +1,18 @@
-> >>+#!/bin/sh
-> >>+
-> >>+if [ "$1" =3D menu ]; then
-> >>+        boot-menu-add-entry "$0" "SD Boot"
-> >>+        exit
-> >>+fi
-> >>+
-> >>+global.bootm.image=3D/mnt/sd/boot/zImage
-> >>+
-> >>+if [ -e /mnt/sd/boot/oftree ]; then
-> >>+	global.bootm.oftree=3D/mnt/sd/boot/oftree
-> >>+fi
-> >>+
-> >>+if [ -e /mnt/sd/boot/initrd.img ]; then
-> >>+	global.bootm.initrd=3D/mnt/sd/boot/initrd.img
-> >>+fi
-> >>+
-> >>+global.linux.bootargs.dyn.root=3D"root=3D/dev/mmcblk0p1 rootwait"
-> >
-> >Consider using bootloader spec entries, see
-> >http://www.freedesktop.org/wiki/Specifications/BootLoaderSpec/
-> >Basically you put a config file under /loader/entries/ in your rootfs.
-> >The config file describes where your kernel/initrd/oftree is. Under
-> >barebox you just have to 'boot mci0' without further configuration.
-> =
-
-> Seems nice, I'll have a look at it.
-> =
-
-> >>+void __bare_init __naked barebox_arm_reset_vector(void)
-> >>+{
-> >>+	uint32_t r;
-> >>+
-> >>+	arm_cpu_lowlevel_init();
-> >>+
-> >>+	/* Enable IPU Display interface */
-> >>+	writel(1 << 6, MX31_IPU_CTRL_BASE_ADDR);
-> >>+
-> >>+	writel(0x074B0BF5, MX31_CCM_BASE_ADDR + MX31_CCM_CCMR);
-> >>+
-> >>+	asm volatile("1:\n\t"
-> >>+			"SUBS %0, %0, #1	\n\t"
-> >>+			"BNE  1b		\n\t"
-> >>+			: : "r" (0x4000) : "cc");
-> >
-> >You can write a delay loop in c with:
-> >
-> >	volatile int c;
-> >
-> >	for (c =3D 0; c < 0x4000; c++)
-> =
-
-> Well, no, at least not on my toolchain. Because the volatile ask gcc to
-> not optimize the variable, it then put it on the stack. But the stack
-> pointer is not yet initialized, so it crashes. I've tried with a
-> barrier() instead of the volatile, but it leads to the same assembly
-> (which is not surprising). Here is the compiled code with your suggestion:
-> =
-
->         ldr     r2, .L9+8
->         b       .L2
-> .L3:
->         ldr     r3, [sp, #4]
->         add     r3, r3, #1
->         str     r3, [sp, #4]
-> .L2:
->         ldr     r3, [sp, #4]
->         cmp     r3, r2
->         ble     .L3
-> =
-
-> With L9+8:
->         .word   16383
-> =
-
-> But the stack pointer is initialised only in barebox_arm_entry() which
-> is called later. So I decided that a two instructions assembly loop was
-> the simplest solution.
-
-This may happen because the function gets too complex and gcc starts
-using the stack in this case.
-
-Try rewriting the lowlevel stuff as:
-
-static void __noinline mx31_moboard_startup(void)
-{
-	/* Put setup here */
-}
-
-void __bare_init __naked barebox_arm_reset_vector(void)
-{
-	 arm_cpu_lowlevel_init();
-
-	 arm_setup_stack(MX31_IRAM_BASE_ADDR + MX31_IRAM_SIZE - 12);
-
-	 mx31_moboard_startup();
-}
-
-With this you can use the stack and should be on the safe side.
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
