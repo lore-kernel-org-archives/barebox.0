@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x235.google.com ([2a00:1450:4013:c00::235])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJI8K-0001Xn-BL
- for barebox@lists.infradead.org; Fri, 28 Feb 2014 07:45:26 +0000
-Received: by mail-ee0-f53.google.com with SMTP id e51so903713eek.40
- for <barebox@lists.infradead.org>; Thu, 27 Feb 2014 23:45:02 -0800 (PST)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Fri, 28 Feb 2014 08:44:26 +0100
-Message-Id: <1393573468-31105-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1393573468-31105-1-git-send-email-alex.aring@gmail.com>
-References: <1393573468-31105-1-git-send-email-alex.aring@gmail.com>
+ id 1WJI8m-0001aA-Lk
+ for barebox@lists.infradead.org; Fri, 28 Feb 2014 07:45:53 +0000
+Date: Fri, 28 Feb 2014 08:45:30 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140228074530.GU17250@pengutronix.de>
+References: <1393533550-1865-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <20140228072548.GT17250@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140228072548.GT17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,111 +19,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 1/3] ramfs: add foofs for testing
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 00/10] new partitioning helper
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- fs/ramfs.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+On Fri, Feb 28, 2014 at 08:25:48AM +0100, Sascha Hauer wrote:
+> On Thu, Feb 27, 2014 at 09:39:00PM +0100, Uwe Kleine-K=F6nig wrote:
+> > Hello,
+> > =
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index f45a454..4b93c2e 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -608,6 +608,48 @@ static int ramfs_probe(struct device_d *dev)
- 	return 0;
- }
- 
-+static int foofs_read(struct device_d *_dev, FILE *f, void *buf, size_t insize)
-+{
-+	if (f->pos == strlen("Hello World!\n"))
-+		return 0;
-+
-+	return sprintf(buf, "%s", "Hello World!\n");
-+}
-+
-+static int foofs_probe(struct device_d *dev)
-+{
-+	struct ramfs_inode *n;
-+	struct ramfs_priv *priv = xzalloc(sizeof(struct ramfs_priv));
-+
-+	dev->priv = priv;
-+
-+	priv->root.name = "/";
-+	priv->root.mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
-+	priv->root.parent = &priv->root;
-+	n = ramfs_get_inode();
-+	n->name = strdup(".");
-+	n->mode = S_IFDIR;
-+	n->parent = &priv->root;
-+	n->child = n;
-+	priv->root.child = n;
-+	n = ramfs_get_inode();
-+	n->name = strdup("..");
-+	n->mode = S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO;
-+	n->parent = &priv->root;
-+	n->child = priv->root.child;
-+	priv->root.child->next = n;
-+
-+	/* just for test zero file read */
-+	n = ramfs_get_inode();
-+	n->name = strdup("foobar");
-+	n->mode = S_IFREG | S_IRWXU | S_IRWXG | S_IRWXO;
-+	n->parent = &priv->root;
-+	n->child = priv->root.child;
-+	priv->root.child->next = n;
-+
-+	return 0;
-+}
-+
- static void ramfs_remove(struct device_d *dev)
- {
- 	free(dev->priv);
-@@ -638,8 +680,35 @@ static struct fs_driver_d ramfs_driver = {
- 	}
- };
- 
-+static struct fs_driver_d foofs_driver = {
-+	.create    = ramfs_create,
-+	.unlink    = ramfs_unlink,
-+	.open      = ramfs_open,
-+	.close     = ramfs_close,
-+	.truncate  = ramfs_truncate,
-+	.read      = foofs_read,
-+	.write     = ramfs_write,
-+	.lseek     = ramfs_lseek,
-+	.mkdir     = ramfs_mkdir,
-+	.rmdir     = ramfs_rmdir,
-+	.opendir   = ramfs_opendir,
-+	.readdir   = ramfs_readdir,
-+	.closedir  = ramfs_closedir,
-+	.stat      = ramfs_stat,
-+	.symlink   = ramfs_symlink,
-+	.readlink  = ramfs_readlink,
-+	.flags     = FS_DRIVER_NO_DEV,
-+	.drv = {
-+		.probe  = foofs_probe,
-+		.remove = ramfs_remove,
-+		.name = "foofs",
-+	}
-+};
-+
-+
- static int ramfs_init(void)
- {
-+	register_fs_driver(&foofs_driver);
- 	return register_fs_driver(&ramfs_driver);
- }
- 
--- 
-1.9.0
+> > this is v2 of the series introducing devfs_create_partitions. With the
+> > new syntax creating partitions is easier to parse for humans, it has
+> > support to create partitions without holes inbetween without the need to
+> > explicitly calculate the offsets and the code generated for the callers
+> > is smaller.
+> > =
 
+> > I compared the size of arch/arm/boards/a9m2410/a9m2410.o with and
+> > without the series with the kernel's bloat-o-meter, with the following
+> > result:
+> > =
+
+> > add/remove: 1/0 grow/shrink: 0/1 up/down: 84/-104 (-20)
+> > function                                     old     new   delta
+> > a9m2410_nand0_partitions                       -      84     +84
+> > a9m2410_devices_init                         296     192    -104
+> > =
+
+> > (Well, the size advantage is a *bit* relativized by the growth of fs/de=
+vfs-core.o:
+> > =
+
+> > add/remove: 3/0 grow/shrink: 0/1 up/down: 508/-124 (384)
+> > function                                     old     new   delta
+> > __devfs_add_partition.part                     -     376    +376
+> > devfs_create_partitions                        -     128    +128
+> > new                                            -       4      +4
+> > devfs_add_partition                          296     172    -124
+> > =
+
+> > Don't know what "new" is above.)
+> > =
+
+> > Compared to (implicit) v1 of this series I dropped the compound
+> > literals and used named static arrays instead as wished by Sebastian
+> > Hesselbarth and Sascha Hauer.
+> =
+
+> Applied this series. I skipped the pca100 patch as this one has the
+> partition layout in the devicetree now.
+
+And I had a merge conflict in fs/devfs-core.c with:
+
+commit 0c76b7e3779d1d38b8b70596b122bab076d9f26e
+Author: Sascha Hauer <s.hauer@pengutronix.de>
+Date:   Tue Jan 14 11:51:35 2014 +0100
+
+    mtd: register mtd partitions as real mtd devices
+    =
+
+    So far mtd partitions were mtd devices, but these were not registered.
+    This patch changes this. mtd partitions are now registered like real
+    mtd devices. This makes them part of the device hierarchy.
+    =
+
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+I'm confident I did it right, but maybe you better have a look at the
+result in -next.
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
