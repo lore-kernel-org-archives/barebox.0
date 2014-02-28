@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WJONM-0006Tf-Mh
+ id 1WJONM-0006Te-Mk
  for barebox@lists.infradead.org; Fri, 28 Feb 2014 14:25:22 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Feb 2014 15:24:54 +0100
-Message-Id: <1393597495-13896-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Feb 2014 15:24:53 +0100
+Message-Id: <1393597495-13896-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1393597495-13896-1-git-send-email-s.hauer@pengutronix.de>
 References: <1393597495-13896-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,140 +21,120 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] led: Add pwm-led driver
+Subject: [PATCH 3/5] led: move led_of_parse_trigger to core
 To: barebox@lists.infradead.org
+
+So that other LED drivers can use it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/led/Kconfig   |  4 +++
- drivers/led/Makefile  |  1 +
- drivers/led/led-pwm.c | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
- create mode 100644 drivers/led/led-pwm.c
+ drivers/led/core.c     | 35 +++++++++++++++++++++++++++++++++++
+ drivers/led/led-gpio.c | 35 -----------------------------------
+ include/led.h          |  2 ++
+ 3 files changed, 37 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/led/Kconfig b/drivers/led/Kconfig
-index 3ead82e..155a78a 100644
---- a/drivers/led/Kconfig
-+++ b/drivers/led/Kconfig
-@@ -7,6 +7,10 @@ config LED_GPIO
- 	bool "gpio LED support"
- 	depends on GENERIC_GPIO
- 
-+config LED_PWM
-+	bool "PWM LED support"
-+	depends on PWM
+diff --git a/drivers/led/core.c b/drivers/led/core.c
+index 8537aa1..30b016b 100644
+--- a/drivers/led/core.c
++++ b/drivers/led/core.c
+@@ -153,3 +153,38 @@ void led_unregister(struct led *led)
+ {
+ 	list_del(&led->list);
+ }
 +
- config LED_GPIO_OF
- 	bool "support parsing gpio LEDs from device tree"
- 	depends on LED_GPIO && OFTREE
-diff --git a/drivers/led/Makefile b/drivers/led/Makefile
-index 6aafa6d..619bbcf 100644
---- a/drivers/led/Makefile
-+++ b/drivers/led/Makefile
-@@ -1,3 +1,4 @@
- obj-$(CONFIG_LED) += core.o
- obj-$(CONFIG_LED_GPIO) += led-gpio.o
-+obj-$(CONFIG_LED_PWM) += led-pwm.o
- obj-$(CONFIG_LED_TRIGGERS) += led-triggers.o
-diff --git a/drivers/led/led-pwm.c b/drivers/led/led-pwm.c
-new file mode 100644
-index 0000000..16d22b5
---- /dev/null
-+++ b/drivers/led/led-pwm.c
-@@ -0,0 +1,93 @@
-+/*
-+ * pwm LED support for barebox
-+ *
-+ * (C) Copyright 2010 Sascha Hauer, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+#include <common.h>
-+#include <malloc.h>
-+#include <init.h>
-+#include <led.h>
-+#include <pwm.h>
-+#include <of.h>
-+#include <asm-generic/div64.h>
-+
-+struct pwmled {
-+	bool active_low;
-+	struct led led;
-+	struct pwm_device *pwm;
-+	uint32_t period;
++struct led_trg {
++	const char *str;
++	enum led_trigger trg;
 +};
 +
-+static void led_pwm_set(struct led *led, unsigned int brightness)
++static struct led_trg triggers[] = {
++	{ .str = "heartbeat", LED_TRIGGER_HEARTBEAT, },
++	{ .str = "panic", LED_TRIGGER_PANIC, },
++	{ .str = "net", LED_TRIGGER_NET_TXRX, },
++	{ .str = "default-on", LED_TRIGGER_DEFAULT_ON, },
++};
++
++void led_of_parse_trigger(struct led *led, struct device_node *np)
 +{
-+	struct pwmled *pwmled = container_of(led, struct pwmled, led);
-+	unsigned long long duty =  pwmled->period;
-+	unsigned int max = pwmled->led.max_value;
++	const char *trigger;
++	int i;
 +
-+        duty *= brightness;
-+        do_div(duty, max);
++	trigger = of_get_property(np, "linux,default-trigger", NULL);
++	if (!trigger)
++		trigger = of_get_property(np, "barebox,default-trigger", NULL);
 +
-+	pwm_config(pwmled->pwm, duty, pwmled->period);
-+}
++	if (!trigger)
++		return;
 +
-+static int led_pwm_of_probe(struct device_d *dev)
-+{
-+	struct device_node *child;
-+	int ret;
-+
-+	for_each_child_of_node(dev->device_node, child) {
-+		struct pwmled *pwmled;
-+		struct pwm_device *pwm;
-+
-+		pwm = of_pwm_request(child, NULL);
-+		if (pwm < 0)
-+			continue;
-+
-+		pwmled = xzalloc(sizeof(*pwmled));
-+		pwmled->led.name = xstrdup(child->name);
-+		pwmled->pwm = pwm;
-+
-+		of_property_read_u32(child, "max-brightness", &pwmled->led.max_value);
-+
-+		pwmled->period = pwm_get_period(pwmled->pwm);
-+
-+		pwmled->led.set = led_pwm_set;
-+
-+		pwm_config(pwmled->pwm, 0, pwmled->period);
-+		pwm_enable(pwmled->pwm);
-+
-+		ret = led_register(&pwmled->led);
-+		if (ret)
-+			return ret;
-+
-+		led_of_parse_trigger(&pwmled->led, child);
++	for (i = 0; i < ARRAY_SIZE(triggers); i++) {
++		struct led_trg *trg = &triggers[i];
++		if (!strcmp(trg->str, trigger)) {
++			/* disable LED before installing trigger */
++			led_set(led, 0);
++			led_set_trigger(trg->trg, led);
++			return;
++		}
 +	}
-+
-+	return 0;
 +}
+diff --git a/drivers/led/led-gpio.c b/drivers/led/led-gpio.c
+index 7a5ef47..7bb3b49 100644
+--- a/drivers/led/led-gpio.c
++++ b/drivers/led/led-gpio.c
+@@ -198,41 +198,6 @@ void led_gpio_rgb_unregister(struct gpio_led *led)
+ #endif /* CONFIG_LED_GPIO_RGB */
+ 
+ #ifdef CONFIG_LED_GPIO_OF
+-
+-struct led_trg {
+-	const char *str;
+-	enum led_trigger trg;
+-};
+-
+-static struct led_trg triggers[] = {
+-	{ .str = "heartbeat", LED_TRIGGER_HEARTBEAT, },
+-	{ .str = "panic", LED_TRIGGER_PANIC, },
+-	{ .str = "net", LED_TRIGGER_NET_TXRX, },
+-};
+-
+-static void led_of_parse_trigger(struct led *led, struct device_node *np)
+-{
+-	const char *trigger;
+-	int i;
+-
+-	trigger = of_get_property(np, "linux,default-trigger", NULL);
+-	if (!trigger)
+-		trigger = of_get_property(np, "barebox,default-trigger", NULL);
+-
+-	if (!trigger)
+-		return;
+-
+-	for (i = 0; i < ARRAY_SIZE(triggers); i++) {
+-		struct led_trg *trg = &triggers[i];
+-		if (!strcmp(trg->str, trigger)) {
+-			/* disable LED before installing trigger */
+-			led_set(led, 0);
+-			led_set_trigger(trg->trg, led);
+-			return;
+-		}
+-	}
+-}
+-
+ static int led_gpio_of_probe(struct device_d *dev)
+ {
+ 	struct device_node *child;
+diff --git a/include/led.h b/include/led.h
+index dd551fe..0217f4b 100644
+--- a/include/led.h
++++ b/include/led.h
+@@ -58,6 +58,8 @@ static inline void led_trigger(enum led_trigger trigger, enum trigger_type type)
+ 
+ int led_get_trigger(enum led_trigger trigger);
+ 
++void led_of_parse_trigger(struct led *led, struct device_node *np);
 +
-+static struct of_device_id led_pwm_of_ids[] = {
-+	{ .compatible = "pwm-leds", },
-+	{ }
-+};
-+
-+static struct driver_d led_pwm_of_driver = {
-+	.name  = "pwm-leds",
-+	.probe = led_pwm_of_probe,
-+	.of_compatible = DRV_OF_COMPAT(led_pwm_of_ids),
-+};
-+device_platform_driver(led_pwm_of_driver);
+ /* gpio LED support */
+ struct gpio_led {
+ 	int gpio;
 -- 
 1.8.5.3
 
