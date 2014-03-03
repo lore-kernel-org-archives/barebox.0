@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WKNvG-0006Mq-Hj
- for barebox@lists.infradead.org; Mon, 03 Mar 2014 08:08:27 +0000
-Date: Mon, 3 Mar 2014 09:08:03 +0100
+ id 1WKOHJ-0006o3-PR
+ for barebox@lists.infradead.org; Mon, 03 Mar 2014 08:31:14 +0000
+Date: Mon, 3 Mar 2014 09:30:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140303080803.GK17250@pengutronix.de>
-References: <1393592335-9871-1-git-send-email-renaud.barbier@ge.com>
+Message-ID: <20140303083050.GM17250@pengutronix.de>
+References: <1393573468-31105-1-git-send-email-alex.aring@gmail.com>
+ <1393573468-31105-4-git-send-email-alex.aring@gmail.com>
+ <20140228080333.GA31407@omega>
+ <20140228142118.GF17250@pengutronix.de>
+ <20140228171207.GA615@omega>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1393592335-9871-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <20140228171207.GA615@omega>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,65 +26,77 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 0/4] ppc: memory layout and memtest
-To: Renaud Barbier <renaud.barbier@ge.com>
+Subject: Re: [RFC 3/3] libbb: read_full: use read return instead size
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Feb 28, 2014 at 12:58:51PM +0000, Renaud Barbier wrote:
-> Like version 1, this patchset updates the PPC memory layout and memtest with
-> the addition of the first item below:
+On Fri, Feb 28, 2014 at 06:12:09PM +0100, Alexander Aring wrote:
+> Hi Sascha,
 > 
->  - Move configurable memory layout selection from PPC to MPC5xxx and disable
->    CONFIGURABLE_MEMORY_LAYOUT on MPC85xx platforms.
+> On Fri, Feb 28, 2014 at 03:21:18PM +0100, Sascha Hauer wrote:
+> > On Fri, Feb 28, 2014 at 09:03:34AM +0100, Alexander Aring wrote:
+> > > On Fri, Feb 28, 2014 at 08:44:28AM +0100, Alexander Aring wrote:
+> > > > Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+> > > > ---
+> > > >  lib/libbb.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/lib/libbb.c b/lib/libbb.c
+> > > > index 189a170..c8d0835 100644
+> > > > --- a/lib/libbb.c
+> > > > +++ b/lib/libbb.c
+> > > > @@ -162,7 +162,7 @@ int read_full(int fd, void *buf, size_t size)
+> > > >  	int now;
+> > > >  	int total = 0;
+> > > >  
+> > > > -	while (size) {
+> > > > +	while (now) {
+> > > >  		now = read(fd, buf, size);
+> > > >  		if (now == 0)
+> > > >  			return total;
+> > > and this should be a:
+> > > 
+> > > do {
+> > > ...
+> > > } while (now);
+> > > 
+> > > sry, it's only to demonstrate the issue.
+> > 
+> > 'now' will never be 0 at the end of the loop, so you could equally well
+> > write while(1). With this change we try to read as long as we read
+> yes, I did it quickly to make something that command "edit" works in
+> some way. The whole patches is only to demonstrate the issue. Also the
+> foofs demo works if we read the whole thing at once, but that's okay for
+> the test.
 > 
->  - Memory regions on PPC are redefined to prevent corruption of critical memory
->    areas while running the memtest.
 > 
->  - To support the memory test framework with cache disabled, a TLB remapping
->    function is added for the memtest to enable/disable caching on a mapped
->    memory region.
+> > something last time, even if there's nothing left to read (size is 0).
+> > What issue do you see with this function?
 > 
->  - To prevent memtest failure, the memory test is updated to exclude memory
->    region at the bank start.
-> 
-> Finally, the configuration files are updated for the DA923RC and P2020RDB.
-> 
-> 
-> Renaud Barbier (4):
->   MPC85xx: fix memory layout to prevent corruption during memtest
->   ppc: add support for memtest with cache disabled
->   memtest: exclude page starting at address 0.
->   ppc: P2020RDB and DA923RC configuration
+> The function read_full makes similar things like:
 
-Applied, thanks
+s/read_full/read_file/
+
+> 
+> stat(fd, &statbuf);
+> ...
+> read(fd, buf, statbuf.st_size);
+> 
+> this is wrong because a filesize can be zero and read can read something
+> from this file.
+> 
+> For example procfs in linux, if you run this under linux for /proc/version
+> it will do nothing.
+
+So our read_file implementation doesn't work procfs like filesystems where
+all sizes are 0. Your patch doesn't change this though. In 2/3 you
+remove the if (!size) check and call the fs drivers read function with
+size 0. In this case the read function may return values, but never
+actually read something because the buffer size is 0.
 
 Sascha
 
-> 
->  arch/ppc/Kconfig                         |    1 -
->  arch/ppc/configs/da923rc_defconfig       |    2 +
->  arch/ppc/configs/p2020rdb_defconfig      |    2 +
->  arch/ppc/cpu-85xx/Makefile               |    1 +
->  arch/ppc/cpu-85xx/mmu.c                  |   54 ++++++++++++++++++++++++++++++
->  arch/ppc/cpu-85xx/start.S                |    3 --
->  arch/ppc/cpu-85xx/tlb.c                  |   17 +++++++++-
->  arch/ppc/include/asm/mmu.h               |    6 +++
->  arch/ppc/lib/board.c                     |    6 +---
->  arch/ppc/mach-mpc5xxx/Kconfig            |    1 +
->  arch/ppc/mach-mpc85xx/Kconfig            |    3 ++
->  arch/ppc/mach-mpc85xx/barebox.lds.S      |    8 +++--
->  arch/ppc/mach-mpc85xx/cpu.c              |   11 ++++++
->  arch/ppc/mach-mpc85xx/include/mach/mmu.h |    5 +++
->  commands/memtest.c                       |   10 +++---
->  15 files changed, 112 insertions(+), 18 deletions(-)
->  create mode 100644 arch/ppc/cpu-85xx/mmu.c
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
