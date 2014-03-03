@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WKNe4-0005q0-Hh
- for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:50:41 +0000
+ id 1WKNlb-00060P-Iz
+ for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:58:27 +0000
+Date: Mon, 3 Mar 2014 08:58:01 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon,  3 Mar 2014 08:50:13 +0100
-Message-Id: <1393833013-7783-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140303075801.GJ17250@pengutronix.de>
+References: <5310B108.8040800@celad.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5310B108.8040800@celad.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,55 +18,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] mtd: nand: disable subpage reads
-To: barebox@lists.infradead.org
-Cc: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
+Subject: Re: nand pmecc crash detected
+To: Herve Codina <herve.codina@celad.com>
+Cc: josh.wu@atmel.com, linux-arm-kernel@lists.infradead.org, barebox@lists.infradead.org
 
-The default nand_read_subpage implementation returns -ENOSUPP, so we have
-to make sure that barebox never uses this implementation. By setting the
-NAND_SUBPAGE_READ flag to 0x0 we ensure NAND_HAS_SUBPAGE_READ() never returns
-true and also give the compiler a chance to optimize away some unused code.
+On Fri, Feb 28, 2014 at 04:53:44PM +0100, Herve Codina wrote:
+> Hi,
+> 
+> I am using an sam5d35 and its pmecc nand ecc controller.
+> 
+> In barebox, using similar atmel_nand.c the system crashes.
+> 
+> The problem was a call to chip->ecc.hwctl from nand_write_subpage_hwecc
+> (nand_base.c) when we write a sub page.
+> 
+> chip->ecc.hwctl function is not set when we are using PMECC controller.
+> 
+> As a workaround, i set NAND_NO_SUBPAGE_WRITE for PMECC controller in
+> order to disable sub page access in nand_write_page.
+> 
+> I think we can have the same problem in Linux. I do not performed
+> subpage nand writes from Linux but i made the following patch according
+> to my Barebox defect.
+> 
+> Here after are my patches (same modification) for 1st my local Barebox
+> and 2nd my local Linux :
 
-subpage reads are a rather exotic feature even in Linux. It is only used on
-largepage NANDs with soft ecc. Even if we have this case it needs non page
-aligned reads to actually profit from this feature.
+Applied (for barebox ;), thanks
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Hattink, Tjalling [FINT] <T.Hattink@fugro.nl>
----
+Sascha
 
-Hi Tjalling,
-I had a closer look at the subpage read stuff and saw that this
-is really an exotic feature that even if we could support it doesn't
-help very much. So I decided to go back to a variant of your first
-patch: Fix subpage reads by disabling them completely.
-
-
- include/linux/mtd/nand.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 74ea0b4..3c7509f 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -162,7 +162,8 @@ typedef enum {
- #define NAND_ROM		0x00000800
- 
- /* Device supports subpage reads */
--#define NAND_SUBPAGE_READ	0x00001000
-+/* Disabled in barebox for smaller binary sizes */
-+#define NAND_SUBPAGE_READ	(__BAREBOX__ ? 0x0 : 0x00001000)
- 
- /* Options valid for Samsung large page devices */
- #define NAND_SAMSUNG_LP_OPTIONS NAND_CACHEPRG
 -- 
-1.8.5.3
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
