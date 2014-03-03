@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WKMtZ-0004jQ-Cw
- for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:02:38 +0000
-Date: Mon, 3 Mar 2014 08:02:07 +0100
+ id 1WKN4o-0004wT-An
+ for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:14:15 +0000
+Date: Mon, 3 Mar 2014 08:13:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140303070207.GH17250@pengutronix.de>
-References: <1393604879-29317-1-git-send-email-philippe.retornaz@epfl.ch>
- <1393604879-29317-2-git-send-email-philippe.retornaz@epfl.ch>
- <1393605311.755068563@f12.i.mail.ru>
+Message-ID: <20140303071352.GI17250@pengutronix.de>
+References: <1393599567-20329-1-git-send-email-philippe.retornaz@epfl.ch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1393605311.755068563@f12.i.mail.ru>
+In-Reply-To: <1393599567-20329-1-git-send-email-philippe.retornaz@epfl.ch>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,40 +18,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1 v2] ARM: i.MX31: Add support for mx31moboard board
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: Philippe =?iso-8859-15?Q?R=E9tornaz?= <philippe.retornaz@epfl.ch>, barebox@lists.infradead.org
+Subject: Re: [PATCH 1/1] blspec: Fix when NFS is not enabled
+To: Philippe =?iso-8859-15?Q?R=E9tornaz?= <philippe.retornaz@epfl.ch>
+Cc: barebox@lists.infradead.org
 
-T24gRnJpLCBGZWIgMjgsIDIwMTQgYXQgMDg6MzU6MTFQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiDQn9GP0YLQvdC40YbQsCwgMjgg0YTQtdCy0YDQsNC70Y8gMjAxNCwgMTc6Mjcg
-KzAxOjAwINC+0YIgUGhpbGlwcGUgUsOpdG9ybmF6IDxwaGlsaXBwZS5yZXRvcm5hekBlcGZsLmNo
-PjoKPiA+IFRoZSBteDMxbW9ib2FyZCBpcyB1c2VkIG9uIHRoZSBtYXJYYm90LCBFeWVib3QgYW5k
-IEZvb3Rib3Qgcm9ib3QuCj4gLi4uCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vbWFjaC1pbXgv
-S2NvbmZpZyBiL2FyY2gvYXJtL21hY2gtaW14L0tjb25maWcKPiA+IGluZGV4IDc5ZWE2OTQuLmI3
-ZTc1MzMgMTAwNjQ0Cj4gPiAtLS0gYS9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCj4gPiArKysg
-Yi9hcmNoL2FybS9tYWNoLWlteC9LY29uZmlnCj4gPiBAQCAtMTQsNiArMTQsNyBAQCBjb25maWcg
-QVJDSF9URVhUX0JBU0UKPiA+ICAJZGVmYXVsdCAweGE3ZjAwMDAwIGlmIE1BQ0hfUENBMTAwCj4g
-PiAgCWRlZmF1bHQgMHhhMDAwMDAwMCBpZiBNQUNIX1BDTTAzOAo+ID4gIAlkZWZhdWx0IDB4ODdm
-MDAwMDAgaWYgTUFDSF9QQ00wMzcKPiA+ICsJZGVmYXVsdCAweDg3ZjAwMDAwIGlmIE1BQ0hfTVgz
-MU1PQk9BUkQKPiA+ICAJZGVmYXVsdCAweDg3ZjAwMDAwIGlmIE1BQ0hfUENNMDQzCj4gPiAgCWRl
-ZmF1bHQgMHgwOGY4MDAwMCBpZiBNQUNIX1NDQjkzMjgKPiA+ICAJZGVmYXVsdCAweGE3ZTAwMDAw
-IGlmIE1BQ0hfTkVTTwo+ID4gQEAgLTM2Myw2ICszNjQsMTYgQEAgY29uZmlnIE1BQ0hfUENNMDM3
-Cj4gPiAgCSAgU2F5IFkgaGVyZSBpZiB5b3UgYXJlIHVzaW5nIFBoeXRlYydzIHBoeUNPUkUtaS5N
-WDMxIChwY20wMzcpIGVxdWlwcGVkCj4gPiAgCSAgd2l0aCBhIEZyZWVzY2FsZSBpLk1YMzEgUHJv
-Y2Vzc29yCj4gCj4gSnVzdCBhIGhpbnQgZm9yIFNhc2NoYS4gQ2FuIHdlIHJlcGxhY2UgYWxsIG9m
-IHRoZXNlIHdpdGgKPiBkZWZhdWx0IDB4WFggaWYgQVJDSF9JTVh4eD8KCk5vLCBiZWNhdXNlIHRo
-ZSBsb2NhdGlvbiBpcyBhdCB0aGUgZW5kIG9mIFNEUkFNLiBXaXRoIHRoZSBTb0Mgd2Ugb25seQpr
-bm93IHRoZSBzdGFydCBvZiBTRFJBTSwgYnV0IG5vdCB0aGUgc2l6ZSB3aGljaCBpcyBib2FyZCBz
-cGVjaWZpYy4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXgg
-U29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8
-ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDkt
-NTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAg
-ICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94
-QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9iYXJlYm94Cg==
+Hi Philippe,
+
+On Fri, Feb 28, 2014 at 03:59:27PM +0100, Philippe R=E9tornaz wrote:
+> Commit 0b10801bb (blspec: Add NFS support) broke blspec when NFS is
+> disabled as parse_nfs_url() will return NULL.
+> =
+
+> So use IS_ERR_OR_NULL() instead of IS_ERR().
+> =
+
+> Signed-off-by: Philippe R=E9tornaz <philippe.retornaz@epfl.ch>
+> ---
+>  common/blspec.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/common/blspec.c b/common/blspec.c
+> index fcdcc77..8c2b6ca 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -252,7 +252,7 @@ int blspec_scan_directory(struct blspec *blspec, cons=
+t char *root)
+>  	char *entry_default =3D NULL, *entry_once =3D NULL, *name, *nfspath =3D=
+ NULL;
+>  =
+
+>  	nfspath =3D parse_nfs_url(root);
+> -	if (!IS_ERR(nfspath))
+> +	if (!IS_ERR_OR_NULL(nfspath))
+>  		root =3D nfspath;
+
+Thanks for catching this. The usage of IS_ERR_OR_NULL is frowned upon in
+the Kernel, we shouldn't use it in barebox either. A function should
+either return a valid error pointer or NULL for failure, but not both. I
+fixed this with changing parse_nfs_url() to:
+
+	if (!IS_ENABLED(CONFIG_FS_NFS))
+		return ERR_PTR(-ENOSYS);
+
+Sascha
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
