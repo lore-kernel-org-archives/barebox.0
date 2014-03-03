@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WKN4o-0004wT-An
- for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:14:15 +0000
-Date: Mon, 3 Mar 2014 08:13:52 +0100
+ id 1WKNe4-0005q0-Hh
+ for barebox@lists.infradead.org; Mon, 03 Mar 2014 07:50:41 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140303071352.GI17250@pengutronix.de>
-References: <1393599567-20329-1-git-send-email-philippe.retornaz@epfl.ch>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1393599567-20329-1-git-send-email-philippe.retornaz@epfl.ch>
+Date: Mon,  3 Mar 2014 08:50:13 +0100
+Message-Id: <1393833013-7783-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,61 +14,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] blspec: Fix when NFS is not enabled
-To: Philippe =?iso-8859-15?Q?R=E9tornaz?= <philippe.retornaz@epfl.ch>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand: disable subpage reads
+To: barebox@lists.infradead.org
+Cc: "Hattink, Tjalling [FINT]" <T.Hattink@fugro.nl>
 
-Hi Philippe,
+The default nand_read_subpage implementation returns -ENOSUPP, so we have
+to make sure that barebox never uses this implementation. By setting the
+NAND_SUBPAGE_READ flag to 0x0 we ensure NAND_HAS_SUBPAGE_READ() never returns
+true and also give the compiler a chance to optimize away some unused code.
 
-On Fri, Feb 28, 2014 at 03:59:27PM +0100, Philippe R=E9tornaz wrote:
-> Commit 0b10801bb (blspec: Add NFS support) broke blspec when NFS is
-> disabled as parse_nfs_url() will return NULL.
-> =
+subpage reads are a rather exotic feature even in Linux. It is only used on
+largepage NANDs with soft ecc. Even if we have this case it needs non page
+aligned reads to actually profit from this feature.
 
-> So use IS_ERR_OR_NULL() instead of IS_ERR().
-> =
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Hattink, Tjalling [FINT] <T.Hattink@fugro.nl>
+---
 
-> Signed-off-by: Philippe R=E9tornaz <philippe.retornaz@epfl.ch>
-> ---
->  common/blspec.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> =
+Hi Tjalling,
+I had a closer look at the subpage read stuff and saw that this
+is really an exotic feature that even if we could support it doesn't
+help very much. So I decided to go back to a variant of your first
+patch: Fix subpage reads by disabling them completely.
 
-> diff --git a/common/blspec.c b/common/blspec.c
-> index fcdcc77..8c2b6ca 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -252,7 +252,7 @@ int blspec_scan_directory(struct blspec *blspec, cons=
-t char *root)
->  	char *entry_default =3D NULL, *entry_once =3D NULL, *name, *nfspath =3D=
- NULL;
->  =
 
->  	nfspath =3D parse_nfs_url(root);
-> -	if (!IS_ERR(nfspath))
-> +	if (!IS_ERR_OR_NULL(nfspath))
->  		root =3D nfspath;
+ include/linux/mtd/nand.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Thanks for catching this. The usage of IS_ERR_OR_NULL is frowned upon in
-the Kernel, we shouldn't use it in barebox either. A function should
-either return a valid error pointer or NULL for failure, but not both. I
-fixed this with changing parse_nfs_url() to:
+diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
+index 74ea0b4..3c7509f 100644
+--- a/include/linux/mtd/nand.h
++++ b/include/linux/mtd/nand.h
+@@ -162,7 +162,8 @@ typedef enum {
+ #define NAND_ROM		0x00000800
+ 
+ /* Device supports subpage reads */
+-#define NAND_SUBPAGE_READ	0x00001000
++/* Disabled in barebox for smaller binary sizes */
++#define NAND_SUBPAGE_READ	(__BAREBOX__ ? 0x0 : 0x00001000)
+ 
+ /* Options valid for Samsung large page devices */
+ #define NAND_SAMSUNG_LP_OPTIONS NAND_CACHEPRG
+-- 
+1.8.5.3
 
-	if (!IS_ENABLED(CONFIG_FS_NFS))
-		return ERR_PTR(-ENOSYS);
-
-Sascha
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
