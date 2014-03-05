@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from ip2.televic.com ([81.82.194.222])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WLAWq-0007Az-Vo
- for barebox@lists.infradead.org; Wed, 05 Mar 2014 12:02:29 +0000
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed,  5 Mar 2014 13:02:09 +0100
-Message-Id: <1394020929-7603-1-git-send-email-s.trumtrar@pengutronix.de>
+ id 1WLDFF-0004Mq-8l
+ for barebox@lists.infradead.org; Wed, 05 Mar 2014 14:56:29 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Wed, 5 Mar 2014 15:56:00 +0100
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338F93D8D578@SRV-VS06.TELEVIC.COM>
+References: <E78BBE677EB9144B8F0A0A29674CD5338F93D8D2DF@SRV-VS06.TELEVIC.COM>
+In-Reply-To: <E78BBE677EB9144B8F0A0A29674CD5338F93D8D2DF@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,85 +18,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2] Makefile: add target for gtags
-To: barebox@lists.infradead.org
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: RE: at91sam9260-ek ...
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-The scripts/tags.sh file already supports the generation of gtags with
-GNU GLOBAL. The only thing missing is the makefile target to use it.
+> -----Original Message----
+> From: barebox [mailto:barebox-bounces@lists.infradead.org] On Behalf Of
+> Vanhauwaert Wouter
+> Sent: woensdag 5 maart 2014 10:55
+> To: barebox@lists.infradead.org
+> Subject: at91sam9260-ek ...
+> 
+> Hello,
+> 
+> Is the setup for a at91sam9260-ek still functioning?
+> I have troubles with my nand flash. At first it boots and writes BBT-tables.
+> However, next boot, it won't read the BBT, and has errors with the magic on the
+> environment variables.
+> Erase /dev/env0 and saveenv do not make a difference.
+> Nandtest does not give me errors...
+> 
+> I'm just using the latest barebox 2014.2 and loading it on a at91sam9260-ek
+> through usb (sam-ba). I'm just using the plain at91sam9260ek_defconfig
+> 
 
-Copy the setup from the Linux Kernel to allow usage of gtags with barebox.
-
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- .gitignore |    6 ++++++
- Makefile   |    7 ++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/.gitignore b/.gitignore
-index 1dec248..710bce0 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -70,6 +70,12 @@ series
- # cscope files
- cscope.*
- 
-+# gnu global files
-+GPATH
-+GRTAGS
-+GSYMS
-+GTAGS
-+
- # patches
- *.patch
- scripts/gen_netx_image
-diff --git a/Makefile b/Makefile
-index 640e589..502e009 100644
---- a/Makefile
-+++ b/Makefile
-@@ -353,7 +353,7 @@ endif
- # of make so .config is not included in this case either (for *config).
- 
- no-dot-config-targets := clean mrproper distclean \
--			 cscope TAGS tags help %docs check% \
-+			 cscope gtags TAGS tags help %docs check% \
- 			 include/generated/version.h headers_% \
- 			 kernelrelease kernelversion
- 
-@@ -986,7 +986,7 @@ MRPROPER_DIRS  += include/config include2 usr/include
- MRPROPER_FILES += .config .config.old include/asm .version .old_version \
-                   include/generated/autoconf.h include/generated/version.h      \
-                   include/generated/utsrelease.h include/config.h           \
--		  Module.symvers tags TAGS cscope*
-+		  Module.symvers tags TAGS cscope* GPATH GTAGS GRTAGS GSYMS
- 
- # clean - Delete most, but leave enough to build external modules
- #
-@@ -1072,6 +1072,7 @@ help:
- 	@echo  '  dir/file.ko     - Build module including final link'
- 	@echo  '  tags/TAGS	  - Generate tags file for editors'
- 	@echo  '  cscope	  - Generate cscope index'
-+	@echo  '  gtags	  	  - Generate GNU GLOBAL index'
- 	@echo  '                    (default: $(INSTALL_HDR_PATH))'
- 	@echo  ''
- 	@echo  'Static analysers'
-@@ -1114,7 +1115,7 @@ htmldocs: Doxyfile.version
- quiet_cmd_tags = GEN     $@
-       cmd_tags = $(CONFIG_SHELL) $(srctree)/scripts/tags.sh $@
- 
--tags TAGS cscope: FORCE
-+tags TAGS cscope gtags: FORCE
- 	$(call cmd,tags)
- 
- 
--- 
-1.7.10.4
-
+loadenv /dev/env0 
+Gives me: 
+Envfs: wrong magic on /dev/env0
+Loadenv: I/O error
 
 _______________________________________________
 barebox mailing list
