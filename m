@@ -1,20 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 2.mo6.mail-out.ovh.net ([46.105.76.65]
- helo=mo6.mail-out.ovh.net)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WKgee-0006iY-Qs
- for barebox@lists.infradead.org; Tue, 04 Mar 2014 04:08:33 +0000
-Received: from mail95.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo6.mail-out.ovh.net (Postfix) with SMTP id 57F18FF9604
- for <barebox@lists.infradead.org>; Tue,  4 Mar 2014 05:01:05 +0100 (CET)
-Date: Tue, 4 Mar 2014 05:02:06 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140304040206.GO9671@ns203013.ovh.net>
-References: <5310B108.8040800@celad.com>
- <5313FACC.8030202@atmel.com>
+Received: from ip2.televic.com ([81.82.194.222])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WL8YD-000270-Na
+ for barebox@lists.infradead.org; Wed, 05 Mar 2014 09:55:46 +0000
+From: Vanhauwaert Wouter <W.Vanhauwaert@TELEVIC.com>
+Date: Wed, 5 Mar 2014 10:55:16 +0100
+Message-ID: <E78BBE677EB9144B8F0A0A29674CD5338F93D8D2DF@SRV-VS06.TELEVIC.COM>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5313FACC.8030202@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,86 +20,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: nand pmecc crash detected
-To: Josh Wu <josh.wu@atmel.com>
-Cc: Herve Codina <herve.codina@celad.com>, barebox@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+Subject: at91sam9260-ek ...
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On 11:45 Mon 03 Mar     , Josh Wu wrote:
-> Dear Herve
-> 
-> On 2/28/2014 11:53 PM, Herve Codina wrote:
-> >Hi,
-> >
-> >I am using an sam5d35 and its pmecc nand ecc controller.
-> >
-> >In barebox, using similar atmel_nand.c the system crashes.
-> >
-> >The problem was a call to chip->ecc.hwctl from nand_write_subpage_hwecc
-> >(nand_base.c) when we write a sub page.
-> >
-> >chip->ecc.hwctl function is not set when we are using PMECC controller.
-> >
-> >As a workaround, i set NAND_NO_SUBPAGE_WRITE for PMECC controller in
-> >order to disable sub page access in nand_write_page.
-> >
-> >I think we can have the same problem in Linux. I do not performed
-> >subpage nand writes from Linux but i made the following patch according
-> >to my Barebox defect.
-> 
-> Thank you for catching this crash bug. The fix is fine for me. But I
-> think it's better to send out the Linux kernel patch alone.
-> 
-> You can rebase your patch on the top of Linux-mtd git
-> repo(git://git.infradead.org/l2-mtd.git) instead of your local
-> Linux.
-> Then use 'git send-email' send to linux-mtd@lists.infradead.org and
-> linux-arm-kernel@lists.infradead.org. I will ack your patch.
-> 
-> If the patch is merged in Linux-mtd, it should be easier port to
-> barebox then.
+Hello,
 
-no need for that notion of priority send it to both
+Is the setup for a at91sam9260-ek still functioning?
+I have troubles with my nand flash. At first it boots and writes BBT-tables.
+However, next boot, it won't read the BBT, and has errors with the magic on the environment variables.
+Erase /dev/env0 and saveenv do not make a difference.
+Nandtest does not give me errors...
 
-Best Regards,
-J.
-> 
-> >
-> >Here after are my patches (same modification) for 1st my local Barebox
-> >and 2nd my local Linux :
-> >
-> >---8<-------------------
-> > From 757e8dbf141619a55b7a5b1ca11780b2589eacc1 Mon Sep 17 00:00:00 2001
-> >From: Herve Codina <Herve.CODINA@celad.com>
-> >Date: Fri, 28 Feb 2014 08:39:08 +0100
-> >Subject: [PATCH 5/5] Disable Subpage nand write when using Atmel PMECC.
-> >
-> >
-> >Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
-> >---
-> >  drivers/mtd/nand/atmel_nand.c |    1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> >diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand.c
-> >index 2ff7427..cdbe685 100644
-> >--- a/drivers/mtd/nand/atmel_nand.c
-> >+++ b/drivers/mtd/nand/atmel_nand.c
-> >@@ -837,6 +837,7 @@ static int __init
-> >atmel_pmecc_nand_init_params(struct device_d *dev,
-> >  		return err_no;
-> >  	}
-> >
-> >+	nand_chip->options |= NAND_NO_SUBPAGE_WRITE;
-> >  	nand_chip->ecc.read_page = atmel_nand_pmecc_read_page;
-> >  	nand_chip->ecc.write_page = atmel_nand_pmecc_write_page;
-> >
-> 
-> Best Regards,
-> Josh Wu
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+I'm just using the latest barebox 2014.2 and loading it on a at91sam9260-ek through usb (sam-ba). I'm just using the plain at91sam9260ek_defconfig
+
+My output:
+
+First boot:
+barebox 2014.02.0 #4 Wed Mar 5 10:39:35 CET 2014
+
+Board: Atmel at91sam9260-ek
+AT91: Detected soc type: at91sam9260
+AT91: Detected soc subtype: Unknown
+Clocks: CPU 198 MHz, master 99 MHz, main 18.432 MHz
+netconsole: registered as cs1
+atmel_nand: Use On Flash BBT
+nand: NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB 3,3                                                      V 8-bit), 256MiB, page size: 2048, OOB size: 64
+Bad block table not found for chip 0
+Bad block table not found for chip 0
+Scanning device for bad blocks
+Bad block table written to 0x00000ffe0000, version 0x01
+Bad block table written to 0x00000ffc0000, version 0x01
+mdio_bus: miibus0: probed
+macb macb0: Cadence MACB at 0xfffc4000
+at91_udc at91_udc0: at91_udc version 3 May 2006
+atmel_mci atmel_mci0: version: 0x210
+atmel_mci atmel_mci0: registered as atmel_mci0
+atmel_mci atmel_mci0: command/data timeout
+atmel_mci atmel_mci0: command/data timeout
+atmel_mci atmel_mci0: command/data timeout
+malloc space: 0x23b00000 -> 0x23efffff (size 4 MiB)
+envfs: wrong magic on /dev/env0
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
+enable tty over USB Device, increase the boot delay to 16s
+
+Hit any key to stop autoboot
+
+Second boot:
+barebox 2014.02.0 #4 Wed Mar 5 10:39:35 CET 2014
+
+Board: Atmel at91sam9260-ek
+AT91: Detected soc type: at91sam9260
+AT91: Detected soc subtype: Unknown
+Clocks: CPU 198 MHz, master 99 MHz, main 18.432 MHz
+netconsole: registered as cs1
+atmel_nand: Use On Flash BBT
+nand: NAND device: Manufacturer ID: 0xec, Chip ID: 0xda (Samsung NAND 256MiB 3,3                                                      V 8-bit), 256MiB, page size: 2048, OOB size: 64
+Bad block table found at page 131008, version 0x01
+Bad block table found at page 130944, version 0x01
+nand_bbt: error reading BBT
+mdio_bus: miibus0: probed
+macb macb0: Cadence MACB at 0xfffc4000
+at91_udc at91_udc0: at91_udc version 3 May 2006
+atmel_mci atmel_mci0: version: 0x210
+atmel_mci atmel_mci0: registered as atmel_mci0
+atmel_mci atmel_mci0: command/data timeout
+atmel_mci atmel_mci0: command/data timeout
+atmel_mci atmel_mci0: command/data timeout
+malloc space: 0x23b00000 -> 0x23efffff (size 4 MiB)
+envfs: wrong magic on /dev/env0
+no valid environment found on /dev/env0. Using default environment
+running /env/bin/init...
+enable tty over USB Device, increase the boot delay to 16s
+
+Hit any key to stop autoboot
 
 _______________________________________________
 barebox mailing list
