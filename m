@@ -1,17 +1,10 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WLb2w-00058L-TB
- for barebox@lists.infradead.org; Thu, 06 Mar 2014 16:21:23 +0000
-Date: Thu, 6 Mar 2014 17:21:00 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140306162100.GC17250@pengutronix.de>
-References: <1393534812-30995-1-git-send-email-s.hauer@pengutronix.de>
- <1393534812-30995-4-git-send-email-s.hauer@pengutronix.de>
- <20140304040345.GP9671@ns203013.ovh.net>
+Message-ID: <5318B36D.4020700@celad.com>
+Date: Thu, 6 Mar 2014 18:42:05 +0100
+From: Herve Codina <herve.codina@celad.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140304040345.GP9671@ns203013.ovh.net>
+References: <5310B108.8040800@celad.com> <5313FACC.8030202@atmel.com>
+In-Reply-To: <5313FACC.8030202@atmel.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,33 +13,105 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] net: remove old nfs support
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: nand pmecc crash detected
+To: Josh Wu <josh.wu@atmel.com>
+Cc: barebox@lists.infradead.org, linux-arm-kernel@lists.infradead.org
 
-On Tue, Mar 04, 2014 at 05:03:45AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 22:00 Thu 27 Feb     , Sascha Hauer wrote:
-> > Now that we have the NFS as filesystem support for several releases
-> > remove the old command based NFS support.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> as the bootp is not fully supported on default env2 do not drop it
+Dear Josh
 
-Ok for now, but I really want to get rid of it. Would a nfs wrapper
-command be ok?
+As suggested, i made a patch and sent it this week to
+linux-mtd@lists.infradead.org and linux-arm-kernel@lists.infradead.org.
+Hope you have seen it. Is subject is : "[PATCH] Disable Subpage nand
+write when using Atmel PMECC".
 
-Sascha
+Best regards,
+Herve
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
+
+Le 03/03/2014 04:45, Josh Wu a =E9crit :
+> Dear Herve
+> =
+
+> On 2/28/2014 11:53 PM, Herve Codina wrote:
+>> Hi,
+>>
+>> I am using an sam5d35 and its pmecc nand ecc controller.
+>>
+>> In barebox, using similar atmel_nand.c the system crashes.
+>>
+>> The problem was a call to chip->ecc.hwctl from nand_write_subpage_hwecc
+>> (nand_base.c) when we write a sub page.
+>>
+>> chip->ecc.hwctl function is not set when we are using PMECC controller.
+>>
+>> As a workaround, i set NAND_NO_SUBPAGE_WRITE for PMECC controller in
+>> order to disable sub page access in nand_write_page.
+>>
+>> I think we can have the same problem in Linux. I do not performed
+>> subpage nand writes from Linux but i made the following patch according
+>> to my Barebox defect.
+> =
+
+> Thank you for catching this crash bug. The fix is fine for me. But I =
+
+> think it's better to send out the Linux kernel patch alone.
+> =
+
+> You can rebase your patch on the top of Linux-mtd git =
+
+> repo(git://git.infradead.org/l2-mtd.git) instead of your local Linux.
+> Then use 'git send-email' send to linux-mtd@lists.infradead.org and =
+
+> linux-arm-kernel@lists.infradead.org. I will ack your patch.
+> =
+
+> If the patch is merged in Linux-mtd, it should be easier port to barebox =
+
+> then.
+> =
+
+>>
+>> Here after are my patches (same modification) for 1st my local Barebox
+>> and 2nd my local Linux :
+>>
+>> ---8<-------------------
+>>  From 757e8dbf141619a55b7a5b1ca11780b2589eacc1 Mon Sep 17 00:00:00 2001
+>> From: Herve Codina <Herve.CODINA@celad.com>
+>> Date: Fri, 28 Feb 2014 08:39:08 +0100
+>> Subject: [PATCH 5/5] Disable Subpage nand write when using Atmel PMECC.
+>>
+>>
+>> Signed-off-by: Herve Codina <Herve.CODINA@celad.com>
+>> ---
+>>   drivers/mtd/nand/atmel_nand.c |    1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/mtd/nand/atmel_nand.c b/drivers/mtd/nand/atmel_nand=
+.c
+>> index 2ff7427..cdbe685 100644
+>> --- a/drivers/mtd/nand/atmel_nand.c
+>> +++ b/drivers/mtd/nand/atmel_nand.c
+>> @@ -837,6 +837,7 @@ static int __init
+>> atmel_pmecc_nand_init_params(struct device_d *dev,
+>>   		return err_no;
+>>   	}
+>>
+>> +	nand_chip->options |=3D NAND_NO_SUBPAGE_WRITE;
+>>   	nand_chip->ecc.read_page =3D atmel_nand_pmecc_read_page;
+>>   	nand_chip->ecc.write_page =3D atmel_nand_pmecc_write_page;
+>>
+> =
+
+> Best Regards,
+> Josh Wu
+> =
+
 
 _______________________________________________
 barebox mailing list
