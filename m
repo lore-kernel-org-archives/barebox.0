@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WLsuJ-0005oC-Ld
- for barebox@lists.infradead.org; Fri, 07 Mar 2014 11:25:40 +0000
+ id 1WLsu4-0005n5-Lk
+ for barebox@lists.infradead.org; Fri, 07 Mar 2014 11:25:30 +0000
 Received: from s246.sam-solutions.net ([217.21.35.55])
  by s250.sam-solutions.net with esmtps (TLSv1:RC4-MD5:128) (Exim 4.77)
- (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WLsu3-0004VL-Fv
- for barebox@lists.infradead.org; Fri, 07 Mar 2014 14:25:23 +0300
-Message-ID: <5319AA4A.2020704@sam-solutions.net>
-Date: Fri, 7 Mar 2014 14:15:22 +0300
+ (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WLstl-0004VF-VJ
+ for barebox@lists.infradead.org; Fri, 07 Mar 2014 14:25:05 +0300
+Message-ID: <5319AA38.20409@sam-solutions.net>
+Date: Fri, 7 Mar 2014 14:15:04 +0300
 From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.net>
 MIME-Version: 1.0
 References: <1394190783-12978-1-git-send-email-d.lavnikevich@sam-solutions.com>
@@ -25,64 +25,51 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] nand: mxs: Fix for calculating ecc strength on some types
- of NAND flash
+Subject: [PATCH 3/5] ubi: Fix for creating ubi volumes with 64bit size
 To: barebox@lists.infradead.org
 Cc: Grigory Milev <G.Milev@sam-solutions.com>, Dmitry Lavnikevich <D.Lavnikevich@sam-solutions.com>
 
-Was tested on NAND with {writesize=4096, oobsize=224} and
-{writesize=2048, oobsize=64}.
-
-This patch will not break any NAND that was working
-before. Implemented calculation way may be used for other NAND chips
-with writesize == 2048 but oobsize != 64.
+Since MTD is already supports >= 4GB device sizes it is better to
+allow ubi valumes also be created of larger sizes.
 
 Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 Signed-off-by: Grigory Milev <g.milev@sam-solutions.com>
 ---
-  drivers/mtd/nand/nand_mxs.c | 21 +++++++++++++++++----
-  1 file changed, 17 insertions(+), 4 deletions(-)
+  commands/ubi.c         | 4 ++--
+  drivers/mtd/ubi/cdev.c | 2 +-
+  2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
-index 237a423..b06b558 100644
---- a/drivers/mtd/nand/nand_mxs.c
-+++ b/drivers/mtd/nand/nand_mxs.c
-@@ -234,18 +234,31 @@ static uint32_t mxs_nand_aux_status_offset(void)
-  static inline uint32_t mxs_nand_get_ecc_strength(uint32_t page_data_size,
-  						uint32_t page_oob_size)
+diff --git a/commands/ubi.c b/commands/ubi.c
+index 57ae790..8a409c2 100644
+--- a/commands/ubi.c
++++ b/commands/ubi.c
+@@ -15,12 +15,12 @@ static int do_ubimkvol(int argc, char *argv[])
   {
-+	int ecc_chunk_count = mxs_nand_ecc_chunk_cnt(page_data_size);
-+	int ecc_strength = 0;
-+	int gf_len = 13;  /* length of Galois Field for non-DDR nand */
-+
-+	/*
-+	 * Possibly this if-else calculation may be removed since
-+	 * ecc_strength calculated after it is taken from kernel driver
-+	 * and therefore should work for all cases. But it was tested only
-+	 * on devices with {data_size = 2046, oob_size = 64} and
-+	 * {data_size = 4096, oob_size = 224} configuration.
-+	 */
-  	if (page_data_size == 2048)
-  		return 8;
--
--	if (page_data_size == 4096) {
-+	else if (page_data_size == 4096) {
-  		if (page_oob_size == 128)
-  			return 8;
--
-  		if (page_oob_size == 218)
-  			return 16;
-  	}
-  -	return 0;
-+	ecc_strength = ((page_oob_size - MXS_NAND_METADATA_SIZE) * 8)
-+		/ (gf_len * ecc_chunk_count);
-+
-+	/* We need the minor even number. */
-+	return rounddown(ecc_strength, 2);
-  }
-   static inline uint32_t mxs_nand_get_mark_offset(uint32_t page_data_size,
--- 
-1.8.5.1
+  	struct ubi_mkvol_req req;
+  	int fd, ret;
+-	size_t size;
++	uint64_t size;
+   	if (argc != 4)
+  		return COMMAND_ERROR_USAGE;
+  -	size = strtoul_suffix(argv[3], NULL, 0);
++	size = strtoull_suffix(argv[3], NULL, 0);
+  	req.name_len = min_t(int, strlen(argv[2]), UBI_VOL_NAME_MAX);
+  	strncpy(req.name, argv[2], req.name_len);
+  	req.name[req.name_len] = 0;
+diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
+index 129f2e2..b97739a 100644
+--- a/drivers/mtd/ubi/cdev.c
++++ b/drivers/mtd/ubi/cdev.c
+@@ -220,7 +220,7 @@ static int ubi_cdev_ioctl(struct cdev *cdev, int 
+cmd, void *buf)
+  		break;
+  	case UBI_IOCMKVOL:
+  		if (!req->bytes)
+-			req->bytes = ubi->avail_pebs * ubi->leb_size;
++			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
+  		return ubi_create_volume(ubi, req);
+  	};
+  -- 1.8.5.1
 
 
 _______________________________________________
