@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WLsu4-0005n5-Lk
+ id 1WLsu9-0005n8-Lc
  for barebox@lists.infradead.org; Fri, 07 Mar 2014 11:25:30 +0000
 Received: from s246.sam-solutions.net ([217.21.35.55])
  by s250.sam-solutions.net with esmtps (TLSv1:RC4-MD5:128) (Exim 4.77)
- (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WLstl-0004VF-VJ
- for barebox@lists.infradead.org; Fri, 07 Mar 2014 14:25:05 +0300
-Message-ID: <5319AA38.20409@sam-solutions.net>
-Date: Fri, 7 Mar 2014 14:15:04 +0300
+ (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WLstt-0004VI-Fa
+ for barebox@lists.infradead.org; Fri, 07 Mar 2014 14:25:13 +0300
+Message-ID: <5319AA40.5060507@sam-solutions.net>
+Date: Fri, 7 Mar 2014 14:15:12 +0300
 From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.net>
 MIME-Version: 1.0
 References: <1394190783-12978-1-git-send-email-d.lavnikevich@sam-solutions.com>
@@ -25,50 +25,52 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ubi: Fix for creating ubi volumes with 64bit size
+Subject: [PATCH 4/5] nand: mxs: Check for up to 4 NAND chips
 To: barebox@lists.infradead.org
 Cc: Grigory Milev <G.Milev@sam-solutions.com>, Dmitry Lavnikevich <D.Lavnikevich@sam-solutions.com>
 
-Since MTD is already supports >= 4GB device sizes it is better to
-allow ubi valumes also be created of larger sizes.
+Since i.MX6 has only one R/B actual pin, if there are several R/B
+signals (from different NAND chips) they must be connected to this
+pin.
 
 Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 Signed-off-by: Grigory Milev <g.milev@sam-solutions.com>
 ---
-  commands/ubi.c         | 4 ++--
-  drivers/mtd/ubi/cdev.c | 2 +-
-  2 files changed, 3 insertions(+), 3 deletions(-)
+  drivers/mtd/nand/nand_mxs.c | 11 +++++++++--
+  1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/commands/ubi.c b/commands/ubi.c
-index 57ae790..8a409c2 100644
---- a/commands/ubi.c
-+++ b/commands/ubi.c
-@@ -15,12 +15,12 @@ static int do_ubimkvol(int argc, char *argv[])
-  {
-  	struct ubi_mkvol_req req;
-  	int fd, ret;
--	size_t size;
-+	uint64_t size;
-   	if (argc != 4)
-  		return COMMAND_ERROR_USAGE;
-  -	size = strtoul_suffix(argv[3], NULL, 0);
-+	size = strtoull_suffix(argv[3], NULL, 0);
-  	req.name_len = min_t(int, strlen(argv[2]), UBI_VOL_NAME_MAX);
-  	strncpy(req.name, argv[2], req.name_len);
-  	req.name[req.name_len] = 0;
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index 129f2e2..b97739a 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -220,7 +220,7 @@ static int ubi_cdev_ioctl(struct cdev *cdev, int 
-cmd, void *buf)
-  		break;
-  	case UBI_IOCMKVOL:
-  		if (!req->bytes)
--			req->bytes = ubi->avail_pebs * ubi->leb_size;
-+			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
-  		return ubi_create_volume(ubi, req);
-  	};
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index d1e4b57..237a423 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -33,6 +33,7 @@
+  #include <dma/apbh-dma.h>
+  #include <stmp-device.h>
+  #include <asm/mmu.h>
++#include <mach/generic.h>
+   #define	MX28_BLOCK_SFTRST				(1 << 31)
+  #define	MX28_BLOCK_CLKGATE				(1 << 30)
+@@ -427,7 +428,13 @@ static int mxs_nand_device_ready(struct mtd_info *mtd)
+   	if (nand_info->version > GPMI_VERSION_TYPE_MX23) {
+  		tmp = readl(gpmi_regs + GPMI_STAT);
+-		tmp >>= (GPMI_STAT_READY_BUSY_OFFSET + nand_info->cur_chip);
++		/* i.MX6 has only one R/B actual pin, so if there are several
++		   R/B signals they must be all connected to this pin */
++		if (cpu_is_mx6())
++			tmp >>= GPMI_STAT_READY_BUSY_OFFSET;
++		else
++			tmp >>= (GPMI_STAT_READY_BUSY_OFFSET +
++					 nand_info->cur_chip);
+  	} else {
+  		tmp = readl(gpmi_regs + GPMI_DEBUG);
+  		tmp >>= (GPMI_DEBUG_READY0_OFFSET + nand_info->cur_chip);
+@@ -1304,7 +1311,7 @@ static int mxs_nand_probe(struct device_d *dev)
+  	nand->ecc.strength	= 8;
+   	/* first scan to find the device and get the page size */
+-	err = nand_scan_ident(mtd, 1, NULL);
++	err = nand_scan_ident(mtd, 4, NULL);
+  	if (err)
+  		goto err2;
   -- 1.8.5.1
 
 
