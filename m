@@ -1,21 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mo69.mail-out.ovh.net ([178.32.228.69])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WMKUK-0004vR-28
- for barebox@lists.infradead.org; Sat, 08 Mar 2014 16:52:41 +0000
-Received: from mail425.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo69.mail-out.ovh.net (Postfix) with SMTP id 30E84FFC7AD
- for <barebox@lists.infradead.org>; Sat,  8 Mar 2014 17:52:15 +0100 (CET)
-Date: Sat, 8 Mar 2014 17:54:01 +0100
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140308165401.GA6478@ns203013.ovh.net>
-References: <1393534812-30995-1-git-send-email-s.hauer@pengutronix.de>
- <1393534812-30995-4-git-send-email-s.hauer@pengutronix.de>
- <20140304040345.GP9671@ns203013.ovh.net>
- <20140306162100.GC17250@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140306162100.GC17250@pengutronix.de>
+Received: from smtp44.i.mail.ru ([94.100.177.104])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WMXDc-0004lr-Cn
+ for barebox@lists.infradead.org; Sun, 09 Mar 2014 06:28:18 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  9 Mar 2014 10:27:46 +0400
+Message-Id: <1394346466-31156-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,45 +14,143 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/5] net: remove old nfs support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] treewide: Kill empty remove() implementations
+To: barebox@lists.infradead.org
 
-On 17:21 Thu 06 Mar     , Sascha Hauer wrote:
-> On Tue, Mar 04, 2014 at 05:03:45AM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> > On 22:00 Thu 27 Feb     , Sascha Hauer wrote:
-> > > Now that we have the NFS as filesystem support for several releases
-> > > remove the old command based NFS support.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > 
-> > as the bootp is not fully supported on default env2 do not drop it
-> 
-> Ok for now, but I really want to get rid of it. Would a nfs wrapper
-> command be ok?
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/net/ar231x.c       | 6 ------
+ drivers/net/at91_ether.c   | 5 -----
+ drivers/net/designware.c   | 5 -----
+ drivers/video/imx-ipu-fb.c | 5 -----
+ drivers/video/imx.c        | 5 -----
+ drivers/video/pxa.c        | 5 -----
+ 6 files changed, 31 deletions(-)
 
-no as the issue is the symlink as you need to change the mount path
+diff --git a/drivers/net/ar231x.c b/drivers/net/ar231x.c
+index 5c09114..515de17 100644
+--- a/drivers/net/ar231x.c
++++ b/drivers/net/ar231x.c
+@@ -419,15 +419,9 @@ static int ar231x_eth_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void ar231x_eth_remove(struct device_d *dev)
+-{
+-
+-}
+-
+ static struct driver_d ar231x_eth_driver = {
+ 	.name = "ar231x_eth",
+ 	.probe = ar231x_eth_probe,
+-	.remove = ar231x_eth_remove,
+ };
+ 
+ static int ar231x_eth_driver_init(void)
+diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
+index 25924cf..bf2f957 100644
+--- a/drivers/net/at91_ether.c
++++ b/drivers/net/at91_ether.c
+@@ -357,13 +357,8 @@ static int at91_ether_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void at91_ether_remove(struct device_d *dev)
+-{
+-}
+-
+ static struct driver_d at91_ether_driver = {
+ 	.name = "at91_ether",
+ 	.probe = at91_ether_probe,
+-	.remove = at91_ether_remove,
+ };
+ device_platform_driver(at91_ether_driver);
+diff --git a/drivers/net/designware.c b/drivers/net/designware.c
+index ecb4656..e706f54 100644
+--- a/drivers/net/designware.c
++++ b/drivers/net/designware.c
+@@ -477,10 +477,6 @@ static int dwc_ether_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void dwc_ether_remove(struct device_d *dev)
+-{
+-}
+-
+ static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
+ 	{
+ 		.compatible = "snps,dwmac-3.70a",
+@@ -493,7 +489,6 @@ static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
+ static struct driver_d dwc_ether_driver = {
+ 	.name = "designware_eth",
+ 	.probe = dwc_ether_probe,
+-	.remove = dwc_ether_remove,
+ 	.of_compatible = DRV_OF_COMPAT(dwc_ether_compatible),
+ };
+ device_platform_driver(dwc_ether_driver);
+diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
+index 7276647..cd74b03 100644
+--- a/drivers/video/imx-ipu-fb.c
++++ b/drivers/video/imx-ipu-fb.c
+@@ -1047,14 +1047,9 @@ static int imxfb_probe(struct device_d *dev)
+ 	return ret;
+ }
+ 
+-static void imxfb_remove(struct device_d *dev)
+-{
+-}
+-
+ static struct driver_d imx3fb_driver = {
+ 	.name = "imx-ipu-fb",
+ 	.probe = imxfb_probe,
+-	.remove = imxfb_remove,
+ };
+ device_platform_driver(imx3fb_driver);
+ 
+diff --git a/drivers/video/imx.c b/drivers/video/imx.c
+index 6e2d8d6..b2eb9fc 100644
+--- a/drivers/video/imx.c
++++ b/drivers/video/imx.c
+@@ -580,13 +580,8 @@ static int imxfb_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void imxfb_remove(struct device_d *dev)
+-{
+-}
+-
+ static struct driver_d imxfb_driver = {
+ 	.name		= "imxfb",
+ 	.probe		= imxfb_probe,
+-	.remove		= imxfb_remove,
+ };
+ device_platform_driver(imxfb_driver);
+diff --git a/drivers/video/pxa.c b/drivers/video/pxa.c
+index 529190b..b4ce3a1 100644
+--- a/drivers/video/pxa.c
++++ b/drivers/video/pxa.c
+@@ -536,13 +536,8 @@ static int pxafb_probe(struct device_d *dev)
+ 	return 0;
+ }
+ 
+-static void pxafb_remove(struct device_d *dev)
+-{
+-}
+-
+ static struct driver_d pxafb_driver = {
+ 	.name	= "pxafb",
+ 	.probe	= pxafb_probe,
+-	.remove	= pxafb_remove,
+ };
+ device_platform_driver(pxafb_driver);
+-- 
+1.8.3.2
 
-so check it
-
-When I've time I'll take a look for defautlenv2 to fix the bootp support
-
-but untill we have defaultenv v1 I think we need to keep this cmd and tftp
-
-Best Regards,
-J.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
