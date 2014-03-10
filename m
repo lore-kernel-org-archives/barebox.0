@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WN7r2-00068Q-1v
- for barebox@lists.infradead.org; Mon, 10 Mar 2014 21:35:25 +0000
-Received: by mail-la0-f43.google.com with SMTP id e16so5038092lan.2
- for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:35:01 -0700 (PDT)
+ id 1WN7qw-00068F-Lz
+ for barebox@lists.infradead.org; Mon, 10 Mar 2014 21:35:19 +0000
+Received: by mail-lb0-f170.google.com with SMTP id s7so5148525lbd.29
+ for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:34:55 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 11 Mar 2014 01:34:37 +0400
-Message-Id: <1394487281-10462-5-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
-References: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 11 Mar 2014 01:34:33 +0400
+Message-Id: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,75 +21,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/8] ARM: davinci: add DEBUG_LL support
+Subject: [PATCH 0/8] ARM: initial support for TI DaVinci SoCs and virt2real
+ board
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/Kconfig                              |  1 +
- arch/arm/mach-davinci/include/mach/debug_ll.h | 42 +++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+Antony Pavlov (8):
+  clocksource: add dummy software-only clocksource
+  import _AC and UL macros from linux kernel
+  ARM: initial support for TI DaVinci SoCs
+  ARM: davinci: add DEBUG_LL support
+  ARM: davinci: add documentation
+  ARM: davinci: add virt2real board support
+  ARM: virt2real: add documentation
+  ARM: davinci: add virt2real_defconfig
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 42ff01b..407f27d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -57,6 +57,7 @@ config ARCH_CLPS711X
- config ARCH_DAVINCI
- 	bool "TI Davinci"
- 	select CPU_ARM926T
-+	select HAS_DEBUG_LL
- 
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
-diff --git a/arch/arm/mach-davinci/include/mach/debug_ll.h b/arch/arm/mach-davinci/include/mach/debug_ll.h
-new file mode 100644
-index 0000000..587f408
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/debug_ll.h
-@@ -0,0 +1,42 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
-+#define __INCLUDE_ARCH_DEBUG_LL_H__
-+
-+#include <asm/io.h>
-+#include <mach/serial.h>
-+
-+#define DEBUG_LL_UART_ADDR	DAVINCI_UART0_BASE
-+#define DEBUG_LL_UART_RSHFT	2
-+
-+#define rbr		(0 << DEBUG_LL_UART_RSHFT)
-+#define lsr		(5 << DEBUG_LL_UART_RSHFT)
-+#define LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+static inline void PUTC_LL(char ch)
-+{
-+	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
-+		;
-+
-+	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
-+}
-+
-+#endif /* __INCLUDE_ARCH_DEBUG_LL_H__ */
+ Documentation/boards.dox                      |  1 +
+ arch/arm/Kconfig                              |  6 ++
+ arch/arm/Makefile                             |  1 +
+ arch/arm/boards/Makefile                      |  1 +
+ arch/arm/boards/virt2real/Makefile            |  1 +
+ arch/arm/boards/virt2real/board.c             | 49 ++++++++++++++
+ arch/arm/boards/virt2real/lowlevel.c          | 34 ++++++++++
+ arch/arm/boards/virt2real/virt2real.dox       | 41 ++++++++++++
+ arch/arm/configs/virt2real_defconfig          | 39 +++++++++++
+ arch/arm/include/asm/memory.h                 |  7 ++
+ arch/arm/mach-arm.dox                         |  2 +
+ arch/arm/mach-davinci/Kconfig                 | 16 +++++
+ arch/arm/mach-davinci/Makefile                |  1 +
+ arch/arm/mach-davinci/include/mach/debug_ll.h | 42 ++++++++++++
+ arch/arm/mach-davinci/include/mach/hardware.h | 29 ++++++++
+ arch/arm/mach-davinci/include/mach/serial.h   | 20 ++++++
+ arch/arm/mach-davinci/include/mach/time.h     | 18 +++++
+ arch/arm/mach-davinci/mach-davinci.dox        |  7 ++
+ arch/arm/mach-davinci/time.c                  | 95 +++++++++++++++++++++++++++
+ drivers/clocksource/Kconfig                   |  9 +++
+ drivers/clocksource/Makefile                  |  1 +
+ drivers/clocksource/dummy.c                   | 56 ++++++++++++++++
+ include/linux/const.h                         | 27 ++++++++
+ 23 files changed, 503 insertions(+)
+ create mode 100644 arch/arm/boards/virt2real/Makefile
+ create mode 100644 arch/arm/boards/virt2real/board.c
+ create mode 100644 arch/arm/boards/virt2real/lowlevel.c
+ create mode 100644 arch/arm/boards/virt2real/virt2real.dox
+ create mode 100644 arch/arm/configs/virt2real_defconfig
+ create mode 100644 arch/arm/mach-davinci/Kconfig
+ create mode 100644 arch/arm/mach-davinci/Makefile
+ create mode 100644 arch/arm/mach-davinci/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-davinci/include/mach/hardware.h
+ create mode 100644 arch/arm/mach-davinci/include/mach/serial.h
+ create mode 100644 arch/arm/mach-davinci/include/mach/time.h
+ create mode 100644 arch/arm/mach-davinci/mach-davinci.dox
+ create mode 100644 arch/arm/mach-davinci/time.c
+ create mode 100644 drivers/clocksource/dummy.c
+ create mode 100644 include/linux/const.h
+
 -- 
 1.9.0
 
