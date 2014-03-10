@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WMyj3-00033e-D6
+ id 1WMyj3-00033h-D3
  for barebox@lists.infradead.org; Mon, 10 Mar 2014 11:50:34 +0000
 Received: from s246.sam-solutions.net ([217.21.35.55])
  by s250.sam-solutions.net with esmtps (TLSv1:RC4-MD5:128) (Exim 4.77)
- (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WMyii-000374-Ba
+ (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WMyii-00037A-QU
  for barebox@lists.infradead.org; Mon, 10 Mar 2014 14:50:12 +0300
 From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Date: Mon, 10 Mar 2014 14:39:50 +0300
-Message-ID: <1394451593-3090-2-git-send-email-d.lavnikevich@sam-solutions.com>
+Date: Mon, 10 Mar 2014 14:39:52 +0300
+Message-ID: <1394451593-3090-4-git-send-email-d.lavnikevich@sam-solutions.com>
 In-Reply-To: <1394451593-3090-1-git-send-email-d.lavnikevich@sam-solutions.com>
 References: <1394451593-3090-1-git-send-email-d.lavnikevich@sam-solutions.com>
 MIME-Version: 1.0
@@ -25,69 +25,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] mtd: Support for 4GB partitions
+Subject: [PATCH 4/5] nand: mxs: Check for up to 4 NAND chips
 To: barebox@lists.infradead.org
 Cc: Grigory Milev <g.milev@sam-solutions.com>, Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 
-This patch implements correct way of creating partitions on mtd
-devices with size >= 4GB.
+Since i.MX6 has only one R/B actual pin, if there are several R/B
+signals (from different NAND chips) they must be connected to this
+pin.
 
 Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 Signed-off-by: Grigory Milev <g.milev@sam-solutions.com>
 ---
- commands/partition.c    | 4 ++--
- drivers/mtd/partition.c | 4 ++--
- include/linux/mtd/mtd.h | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/nand_mxs.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/commands/partition.c b/commands/partition.c
-index f825722..44b91d1 100644
---- a/commands/partition.c
-+++ b/commands/partition.c
-@@ -59,11 +59,11 @@ static int mtd_part_do_parse_one(char *devname, const char *partstr,
- 		size = SIZE_REMAINING;
- 		end = (char *)partstr + 1;
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/nand_mxs.c
+index d1e4b57..237a423 100644
+--- a/drivers/mtd/nand/nand_mxs.c
++++ b/drivers/mtd/nand/nand_mxs.c
+@@ -33,6 +33,7 @@
+ #include <dma/apbh-dma.h>
+ #include <stmp-device.h>
+ #include <asm/mmu.h>
++#include <mach/generic.h>
+ 
+ #define	MX28_BLOCK_SFTRST				(1 << 31)
+ #define	MX28_BLOCK_CLKGATE				(1 << 30)
+@@ -427,7 +428,13 @@ static int mxs_nand_device_ready(struct mtd_info *mtd)
+ 
+ 	if (nand_info->version > GPMI_VERSION_TYPE_MX23) {
+ 		tmp = readl(gpmi_regs + GPMI_STAT);
+-		tmp >>= (GPMI_STAT_READY_BUSY_OFFSET + nand_info->cur_chip);
++		/* i.MX6 has only one R/B actual pin, so if there are several
++		   R/B signals they must be all connected to this pin */
++		if (cpu_is_mx6())
++			tmp >>= GPMI_STAT_READY_BUSY_OFFSET;
++		else
++			tmp >>= (GPMI_STAT_READY_BUSY_OFFSET +
++					 nand_info->cur_chip);
  	} else {
--		size = strtoul_suffix(partstr, &end, 0);
-+		size = strtoull_suffix(partstr, &end, 0);
- 	}
+ 		tmp = readl(gpmi_regs + GPMI_DEBUG);
+ 		tmp >>= (GPMI_DEBUG_READY0_OFFSET + nand_info->cur_chip);
+@@ -1304,7 +1311,7 @@ static int mxs_nand_probe(struct device_d *dev)
+ 	nand->ecc.strength	= 8;
  
- 	if (*end == '@')
--		*offset = strtoul_suffix(end+1, &end, 0);
-+		*offset = strtoull_suffix(end+1, &end, 0);
+ 	/* first scan to find the device and get the page size */
+-	err = nand_scan_ident(mtd, 1, NULL);
++	err = nand_scan_ident(mtd, 4, NULL);
+ 	if (err)
+ 		goto err2;
  
- 	if (size == SIZE_REMAINING)
- 		size = devsize - *offset;
-diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
-index 85f486d..1b8d36e 100644
---- a/drivers/mtd/partition.c
-+++ b/drivers/mtd/partition.c
-@@ -90,8 +90,8 @@ static int mtd_part_block_markbad(struct mtd_info *mtd, loff_t ofs)
- 	return res;
- }
- 
--struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset, size_t size,
--		unsigned long flags, const char *name)
-+struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
-+		uint64_t size, unsigned long flags, const char *name)
- {
- 	struct mtd_part *slave;
- 	struct mtd_info *slave_mtd;
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index d337455..165bc88 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -277,8 +277,8 @@ struct mtd_notifier {
- 	struct list_head list;
- };
- 
--struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset, size_t size,
--		unsigned long flags, const char *name);
-+struct mtd_info *mtd_add_partition(struct mtd_info *mtd, off_t offset,
-+		uint64_t size, unsigned long flags, const char *name);
- void mtd_del_partition(struct mtd_info *mtd);
- 
- extern void register_mtd_user (struct mtd_notifier *new);
 -- 
 1.9.0
 
