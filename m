@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from s250.sam-solutions.net ([217.21.49.219])
+Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WMyj3-00033f-D7
- for barebox@lists.infradead.org; Mon, 10 Mar 2014 11:50:35 +0000
-Received: from s246.sam-solutions.net ([217.21.35.55])
- by s250.sam-solutions.net with esmtps (TLSv1:RC4-MD5:128) (Exim 4.77)
- (envelope-from <D.Lavnikevich@sam-solutions.com>) id 1WMyii-000377-Jq
- for barebox@lists.infradead.org; Mon, 10 Mar 2014 14:50:12 +0300
-From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Date: Mon, 10 Mar 2014 14:39:51 +0300
-Message-ID: <1394451593-3090-3-git-send-email-d.lavnikevich@sam-solutions.com>
-In-Reply-To: <1394451593-3090-1-git-send-email-d.lavnikevich@sam-solutions.com>
-References: <1394451593-3090-1-git-send-email-d.lavnikevich@sam-solutions.com>
-MIME-Version: 1.0
+ id 1WN7qw-00068H-LW
+ for barebox@lists.infradead.org; Mon, 10 Mar 2014 21:35:19 +0000
+Received: by mail-lb0-f170.google.com with SMTP id s7so5148565lbd.29
+ for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:34:58 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 11 Mar 2014 01:34:35 +0400
+Message-Id: <1394487281-10462-3-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
+References: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,56 +18,74 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ubi: Fix for creating ubi volumes with 64bit size
+Subject: [PATCH 2/8] import _AC and UL macros from linux kernel
 To: barebox@lists.infradead.org
-Cc: Grigory Milev <g.milev@sam-solutions.com>, Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
 
-Since MTD is already supports >= 4GB device sizes it is better to
-allow ubi valumes also be created of larger sizes.
+This macros are used in exported from linux TI DaVinci code.
+Also this macros are used in MIPS cache support code.
 
-Signed-off-by: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Signed-off-by: Grigory Milev <g.milev@sam-solutions.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/ubi.c         | 4 ++--
- drivers/mtd/ubi/cdev.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/include/asm/memory.h |  7 +++++++
+ include/linux/const.h         | 27 +++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/commands/ubi.c b/commands/ubi.c
-index 57ae790..8a409c2 100644
---- a/commands/ubi.c
-+++ b/commands/ubi.c
-@@ -15,12 +15,12 @@ static int do_ubimkvol(int argc, char *argv[])
+diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
+index 28afaa3..52114d0 100644
+--- a/arch/arm/include/asm/memory.h
++++ b/arch/arm/include/asm/memory.h
+@@ -3,6 +3,13 @@
+ 
+ #include <memory.h>
+ 
++#include <linux/const.h>
++/*
++ * Allow for constants defined here to be used from assembly code
++ * by prepending the UL suffix only with actual C code compilation.
++ */
++#define UL(x) _AC(x, UL)
++
+ static inline void arm_add_mem_device(const char* name, resource_size_t start,
+ 				    resource_size_t size)
  {
- 	struct ubi_mkvol_req req;
- 	int fd, ret;
--	size_t size;
-+	uint64_t size;
- 
- 	if (argc != 4)
- 		return COMMAND_ERROR_USAGE;
- 
--	size = strtoul_suffix(argv[3], NULL, 0);
-+	size = strtoull_suffix(argv[3], NULL, 0);
- 	req.name_len = min_t(int, strlen(argv[2]), UBI_VOL_NAME_MAX);
- 	strncpy(req.name, argv[2], req.name_len);
- 	req.name[req.name_len] = 0;
-diff --git a/drivers/mtd/ubi/cdev.c b/drivers/mtd/ubi/cdev.c
-index 129f2e2..b97739a 100644
---- a/drivers/mtd/ubi/cdev.c
-+++ b/drivers/mtd/ubi/cdev.c
-@@ -220,7 +220,7 @@ static int ubi_cdev_ioctl(struct cdev *cdev, int cmd, void *buf)
- 		break;
- 	case UBI_IOCMKVOL:
- 		if (!req->bytes)
--			req->bytes = ubi->avail_pebs * ubi->leb_size;
-+			req->bytes = (__s64)ubi->avail_pebs * ubi->leb_size;
- 		return ubi_create_volume(ubi, req);
- 	};
- 
+diff --git a/include/linux/const.h b/include/linux/const.h
+new file mode 100644
+index 0000000..c872bfd
+--- /dev/null
++++ b/include/linux/const.h
+@@ -0,0 +1,27 @@
++/* const.h: Macros for dealing with constants.  */
++
++#ifndef _LINUX_CONST_H
++#define _LINUX_CONST_H
++
++/* Some constant macros are used in both assembler and
++ * C code.  Therefore we cannot annotate them always with
++ * 'UL' and other type specifiers unilaterally.  We
++ * use the following macros to deal with this.
++ *
++ * Similarly, _AT() will cast an expression with a type in C, but
++ * leave it unchanged in asm.
++ */
++
++#ifdef __ASSEMBLY__
++#define _AC(X,Y)	X
++#define _AT(T,X)	X
++#else
++#define __AC(X,Y)	(X##Y)
++#define _AC(X,Y)	__AC(X,Y)
++#define _AT(T,X)	((T)(X))
++#endif
++
++#define _BITUL(x)	(_AC(1,UL) << (x))
++#define _BITULL(x)	(_AC(1,ULL) << (x))
++
++#endif /* !(_LINUX_CONST_H) */
 -- 
 1.9.0
 
