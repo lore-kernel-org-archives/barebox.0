@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x234.google.com ([2a00:1450:4010:c04::234])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WN7r1-00068L-1c
+ id 1WN7r2-00068Q-1v
  for barebox@lists.infradead.org; Mon, 10 Mar 2014 21:35:25 +0000
-Received: by mail-lb0-f180.google.com with SMTP id 10so5103853lbg.11
- for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:35:00 -0700 (PDT)
+Received: by mail-la0-f43.google.com with SMTP id e16so5038092lan.2
+ for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:35:01 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 11 Mar 2014 01:34:36 +0400
-Message-Id: <1394487281-10462-4-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 11 Mar 2014 01:34:37 +0400
+Message-Id: <1394487281-10462-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 References: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,265 +23,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/8] ARM: initial support for TI DaVinci SoCs
+Subject: [PATCH 4/8] ARM: davinci: add DEBUG_LL support
 To: barebox@lists.infradead.org
-
-This commit adds minimal support for the DaVinci DM365 SoCs
-from Texas Instruments.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig                              |  5 ++
- arch/arm/Makefile                             |  1 +
- arch/arm/mach-davinci/Kconfig                 |  7 ++
- arch/arm/mach-davinci/Makefile                |  1 +
- arch/arm/mach-davinci/include/mach/hardware.h | 29 ++++++++
- arch/arm/mach-davinci/include/mach/serial.h   | 20 ++++++
- arch/arm/mach-davinci/include/mach/time.h     | 18 +++++
- arch/arm/mach-davinci/time.c                  | 95 +++++++++++++++++++++++++++
- 8 files changed, 176 insertions(+)
+ arch/arm/Kconfig                              |  1 +
+ arch/arm/mach-davinci/include/mach/debug_ll.h | 42 +++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 21f9012..42ff01b 100644
+index 42ff01b..407f27d 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -54,6 +54,10 @@ config ARCH_CLPS711X
- 	select GPIOLIB
- 	select MFD_SYSCON
+@@ -57,6 +57,7 @@ config ARCH_CLPS711X
+ config ARCH_DAVINCI
+ 	bool "TI Davinci"
+ 	select CPU_ARM926T
++	select HAS_DEBUG_LL
  
-+config ARCH_DAVINCI
-+	bool "TI Davinci"
-+	select CPU_ARM926T
-+
  config ARCH_EP93XX
  	bool "Cirrus Logic EP93xx"
- 	select CPU_ARM920T
-@@ -188,6 +192,7 @@ source arch/arm/cpu/Kconfig
- source arch/arm/mach-at91/Kconfig
- source arch/arm/mach-bcm2835/Kconfig
- source arch/arm/mach-clps711x/Kconfig
-+source arch/arm/mach-davinci/Kconfig
- source arch/arm/mach-ep93xx/Kconfig
- source arch/arm/mach-highbank/Kconfig
- source arch/arm/mach-imx/Kconfig
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 2bbba35..c1bd836 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -54,6 +54,7 @@ AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
- machine-$(CONFIG_ARCH_AT91)		:= at91
- machine-$(CONFIG_ARCH_BCM2835)		:= bcm2835
- machine-$(CONFIG_ARCH_CLPS711X)		:= clps711x
-+machine-$(CONFIG_ARCH_DAVINCI)		:= davinci
- machine-$(CONFIG_ARCH_EP93XX)		:= ep93xx
- machine-$(CONFIG_ARCH_HIGHBANK)		:= highbank
- machine-$(CONFIG_ARCH_IMX)		:= imx
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+diff --git a/arch/arm/mach-davinci/include/mach/debug_ll.h b/arch/arm/mach-davinci/include/mach/debug_ll.h
 new file mode 100644
-index 0000000..5677f8d
+index 0000000..587f408
 --- /dev/null
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -0,0 +1,7 @@
-+if ARCH_DAVINCI
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x82000000
-+
-+endif
-diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
-new file mode 100644
-index 0000000..b96d414
---- /dev/null
-+++ b/arch/arm/mach-davinci/Makefile
-@@ -0,0 +1 @@
-+obj-y += time.o
-diff --git a/arch/arm/mach-davinci/include/mach/hardware.h b/arch/arm/mach-davinci/include/mach/hardware.h
-new file mode 100644
-index 0000000..ea9f481
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/hardware.h
-@@ -0,0 +1,29 @@
++++ b/arch/arm/mach-davinci/include/mach/debug_ll.h
+@@ -0,0 +1,42 @@
 +/*
-+ * Hardware definitions common to all DaVinci family processors
++ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
 + *
-+ * Author: Kevin Hilman, Deep Root Systems, LLC
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
 + *
-+ * 2007 (c) Deep Root Systems, LLC. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ */
-+#ifndef __ASM_ARCH_HARDWARE_H
-+#define __ASM_ARCH_HARDWARE_H
-+
-+#include <asm/memory.h>
-+
-+/*
-+ * Before you add anything to this file:
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
 + *
-+ * This header is for defines common to ALL DaVinci family chips.
-+ * Anything that is chip specific should go in <chipname>.h,
-+ * and the chip/board init code should then explicitly include
-+ * <chipname>.h
-+ */
-+/*
-+ * I/O mapping
-+ */
-+#define IO_PHYS				UL(0x01c00000)
-+
-+#endif /* __ASM_ARCH_HARDWARE_H */
-diff --git a/arch/arm/mach-davinci/include/mach/serial.h b/arch/arm/mach-davinci/include/mach/serial.h
-new file mode 100644
-index 0000000..bc7449f
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/serial.h
-@@ -0,0 +1,20 @@
-+/*
-+ * DaVinci serial device definitions
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
 + *
-+ * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
-+ *
-+ * 2007 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ */
-+#ifndef __ASM_ARCH_SERIAL_H
-+#define __ASM_ARCH_SERIAL_H
-+
-+#include <mach/hardware.h>
-+
-+#define DAVINCI_UART0_BASE	(IO_PHYS + 0x20000)
-+#define DAVINCI_UART1_BASE	(IO_PHYS + 0x20400)
-+#define DAVINCI_UART2_BASE	(IO_PHYS + 0x20800)
-+
-+#endif /* __ASM_ARCH_SERIAL_H */
-diff --git a/arch/arm/mach-davinci/include/mach/time.h b/arch/arm/mach-davinci/include/mach/time.h
-new file mode 100644
-index 0000000..741e90c
---- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/time.h
-@@ -0,0 +1,18 @@
-+/*
-+ * Local header file for DaVinci time code.
-+ *
-+ * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
-+ *
-+ * 2007 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
-+ */
-+#ifndef __ARCH_ARM_MACH_DAVINCI_TIME_H
-+#define __ARCH_ARM_MACH_DAVINCI_TIME_H
-+
-+#include <mach/hardware.h>
-+
-+#define DAVINCI_WDOG_BASE		(IO_PHYS + 0x21C00)
-+
-+#endif /* __ARCH_ARM_MACH_DAVINCI_TIME_H */
-diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
-new file mode 100644
-index 0000000..1e00719
---- /dev/null
-+++ b/arch/arm/mach-davinci/time.c
-@@ -0,0 +1,95 @@
-+/*
-+ * DaVinci timer subsystem
-+ *
-+ * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
-+ *
-+ * 2007 (c) MontaVista Software, Inc. This file is licensed under
-+ * the terms of the GNU General Public License version 2. This program
-+ * is licensed "as is" without any warranty of any kind, whether express
-+ * or implied.
 + */
 +
-+#include <common.h>
-+#include <io.h>
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define __INCLUDE_ARCH_DEBUG_LL_H__
 +
-+#include <mach/time.h>
++#include <asm/io.h>
++#include <mach/serial.h>
 +
-+/* Timer register offsets */
-+#define PID12			0x0
-+#define TIM12			0x10
-+#define TIM34			0x14
-+#define PRD12			0x18
-+#define PRD34			0x1c
-+#define TCR			0x20
-+#define TGCR			0x24
-+#define WDTCR			0x28
++#define DEBUG_LL_UART_ADDR	DAVINCI_UART0_BASE
++#define DEBUG_LL_UART_RSHFT	2
 +
-+/* Timer register bitfields */
-+#define TCR_ENAMODE_DISABLE          0x0
-+#define TCR_ENAMODE_ONESHOT          0x1
-+#define TCR_ENAMODE_PERIODIC         0x2
-+#define TCR_ENAMODE_MASK             0x3
++#define rbr		(0 << DEBUG_LL_UART_RSHFT)
++#define lsr		(5 << DEBUG_LL_UART_RSHFT)
++#define LSR_THRE	0x20	/* Xmit holding register empty */
 +
-+#define TGCR_TIMMODE_SHIFT           2
-+#define TGCR_TIMMODE_64BIT_GP        0x0
-+#define TGCR_TIMMODE_32BIT_UNCHAINED 0x1
-+#define TGCR_TIMMODE_64BIT_WDOG      0x2
-+#define TGCR_TIMMODE_32BIT_CHAINED   0x3
-+
-+#define TGCR_TIM12RS_SHIFT           0
-+#define TGCR_TIM34RS_SHIFT           1
-+#define TGCR_RESET                   0x0
-+#define TGCR_UNRESET                 0x1
-+#define TGCR_RESET_MASK              0x3
-+
-+#define WDTCR_WDEN_SHIFT             14
-+#define WDTCR_WDEN_DISABLE           0x0
-+#define WDTCR_WDEN_ENABLE            0x1
-+#define WDTCR_WDKEY_SHIFT            16
-+#define WDTCR_WDKEY_SEQ0             0xa5c6
-+#define WDTCR_WDKEY_SEQ1             0xda7e
-+
-+/* reset board using watchdog timer */
-+void __noreturn reset_cpu(ulong addr)
++static inline void PUTC_LL(char ch)
 +{
-+	u32 tgcr, wdtcr;
-+	void __iomem *base;
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
++		;
 +
-+	base = IOMEM(DAVINCI_WDOG_BASE);
-+
-+	/* disable, internal clock source */
-+	__raw_writel(0, base + TCR);
-+
-+	/* reset timer, set mode to 64-bit watchdog, and unreset */
-+	tgcr = 0;
-+	__raw_writel(tgcr, base + TGCR);
-+	tgcr = TGCR_TIMMODE_64BIT_WDOG << TGCR_TIMMODE_SHIFT;
-+	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
-+		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
-+	__raw_writel(tgcr, base + TGCR);
-+
-+	/* clear counter and period regs */
-+	__raw_writel(0, base + TIM12);
-+	__raw_writel(0, base + TIM34);
-+	__raw_writel(0, base + PRD12);
-+	__raw_writel(0, base + PRD34);
-+
-+	/* put watchdog in pre-active state */
-+	wdtcr = __raw_readl(base + WDTCR);
-+	wdtcr = (WDTCR_WDKEY_SEQ0 << WDTCR_WDKEY_SHIFT) |
-+		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-+	__raw_writel(wdtcr, base + WDTCR);
-+
-+	/* put watchdog in active state */
-+	wdtcr = (WDTCR_WDKEY_SEQ1 << WDTCR_WDKEY_SHIFT) |
-+		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
-+	__raw_writel(wdtcr, base + WDTCR);
-+
-+	/* write an invalid value to the WDKEY field to trigger
-+	 * a watchdog reset */
-+	wdtcr = 0x00004000;
-+	__raw_writel(wdtcr, base + WDTCR);
-+
-+	unreachable();
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 +}
-+EXPORT_SYMBOL(reset_cpu);
++
++#endif /* __INCLUDE_ARCH_DEBUG_LL_H__ */
 -- 
 1.9.0
 
