@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WN7r5-00068T-It
+ id 1WN7r5-00068S-J0
  for barebox@lists.infradead.org; Mon, 10 Mar 2014 21:35:29 +0000
-Received: by mail-la0-f49.google.com with SMTP id mc6so4924889lab.8
- for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:35:07 -0700 (PDT)
+Received: by mail-la0-f49.google.com with SMTP id mc6so4980444lab.22
+ for <barebox@lists.infradead.org>; Mon, 10 Mar 2014 14:35:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 11 Mar 2014 01:34:40 +0400
-Message-Id: <1394487281-10462-8-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 11 Mar 2014 01:34:39 +0400
+Message-Id: <1394487281-10462-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 References: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,86 +23,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 7/8] ARM: virt2real: add documentation
+Subject: [PATCH 6/8] ARM: davinci: add virt2real board support
 To: barebox@lists.infradead.org
+
+The virt2real microcontroller, or virturilka,
+is a miniature board for creation of WiFi
+or internet controllable smart devices.
+
+See http://virt2real.com for details.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- Documentation/boards.dox                |  1 +
- arch/arm/boards/virt2real/virt2real.dox | 41 +++++++++++++++++++++++++++++++++
- arch/arm/mach-davinci/mach-davinci.dox  |  2 ++
- 3 files changed, 44 insertions(+)
+ arch/arm/boards/Makefile             |  1 +
+ arch/arm/boards/virt2real/Makefile   |  1 +
+ arch/arm/boards/virt2real/board.c    | 49 ++++++++++++++++++++++++++++++++++++
+ arch/arm/boards/virt2real/lowlevel.c | 34 +++++++++++++++++++++++++
+ arch/arm/mach-davinci/Kconfig        |  9 +++++++
+ 5 files changed, 94 insertions(+)
 
-diff --git a/Documentation/boards.dox b/Documentation/boards.dox
-index 6bcc14f..9a14aee 100644
---- a/Documentation/boards.dox
-+++ b/Documentation/boards.dox
-@@ -43,6 +43,7 @@ ARM type:
- @li @subpage tny-a9263
- @li @subpage usb-a9g20-lpw
- @li @subpage usb-a9263
-+@li @subpage virt2real
- 
- Blackfin type:
- 
-diff --git a/arch/arm/boards/virt2real/virt2real.dox b/arch/arm/boards/virt2real/virt2real.dox
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index ffd6bb3..fdad359 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -98,4 +98,5 @@ obj-$(CONFIG_MACH_USB_A9263)			+= usb-a926x/
+ obj-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x/
+ obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
+ obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
++obj-$(CONFIG_MACH_VIRT2REAL)			+= virt2real/
+ obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
+diff --git a/arch/arm/boards/virt2real/Makefile b/arch/arm/boards/virt2real/Makefile
 new file mode 100644
-index 0000000..fc38321
+index 0000000..b2f44bb
 --- /dev/null
-+++ b/arch/arm/boards/virt2real/virt2real.dox
-@@ -0,0 +1,41 @@
-+/** @page virt2real virt2real board
++++ b/arch/arm/boards/virt2real/Makefile
+@@ -0,0 +1 @@
++obj-y += lowlevel.o board.o
+diff --git a/arch/arm/boards/virt2real/board.c b/arch/arm/boards/virt2real/board.c
+new file mode 100644
+index 0000000..da4b2fb
+--- /dev/null
++++ b/arch/arm/boards/virt2real/board.c
+@@ -0,0 +1,49 @@
++/*
++ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+virt2real is a is a miniature board for creation of WiFi
-+or internet controllable smart devices.
++#include <common.h>
++#include <init.h>
++#include <sizes.h>
++#include <asm/memory.h>
++#include <ns16550.h>
 +
-+The board has
-+@li TI DaVinchi DM365 running at 300 MHz
-+@li 128 MiB DDR2 SDRAM;
-+@li 256 MiB NAND Flash Memory;
-+@li 2 x UART serial interfaces;
-+@li 2 x Ethernet interfaces;
-+@li 1 x USB interface;
-+@li microSD card slot.
++#include <mach/serial.h>
 +
-+The board uses U-Boot as bootloader.
++static int davinci_init(void)
++{
++	arm_add_mem_device("ram0", 0x82000000, SZ_16M);
 +
-+Barebox mini-howto:
++	return 0;
++}
++mem_initcall(davinci_init);
 +
-+1. Connect to the boards's UART0 (115200 8N1);
-+Use J2.2 (GND), J2.4 (UART0_TXD), J2.6(UART0_RXD) pins.
++static struct NS16550_plat serial_plat = {
++	.clock = 24000000,
++	.shift = 2,
++};
 +
-+2. Turn board's power on;
++static int console_init(void)
++{
++	barebox_set_model("virt2real");
++	barebox_set_hostname("virt2real");
 +
-+3. Wait 'Hit any key to stop autoboot' prompt and press the space key.
++	add_ns16550_device(DEVICE_ID_DYNAMIC, DAVINCI_UART0_BASE,
++		8 << serial_plat.shift, IORESOURCE_MEM_8BIT, &serial_plat);
 +
-+4. Upload barebox.bin via Ymodem
-+@verbatim
-+    virt2real ># loady
-+@endverbatim
++	return 0;
++}
++console_initcall(console_init);
+diff --git a/arch/arm/boards/virt2real/lowlevel.c b/arch/arm/boards/virt2real/lowlevel.c
+new file mode 100644
+index 0000000..3c90d78
+--- /dev/null
++++ b/arch/arm/boards/virt2real/lowlevel.c
+@@ -0,0 +1,34 @@
++/*
++ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
 +
-+5. Run barebox
-+@verbatim
-+    virt2real ># go 0x82000000
-+@endverbatim
++#define __LOWLEVEL_INIT__
 +
-+virt2real links:
-+@li http://virt2real.com/
-+@li http://wiki.virt2real.ru/
-+@li https://github.com/virt2real
++#include <common.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
++#include <init.h>
++#include <sizes.h>
 +
-+*/
-diff --git a/arch/arm/mach-davinci/mach-davinci.dox b/arch/arm/mach-davinci/mach-davinci.dox
-index f0f3a92..789eacc 100644
---- a/arch/arm/mach-davinci/mach-davinci.dox
-+++ b/arch/arm/mach-davinci/mach-davinci.dox
-@@ -2,4 +2,6 @@
++#define VIRT2REAL_SRAM_BASE 0x82000000
++#define VIRT2REAL_SRAM_SIZE SZ_16M
++
++void __naked __bare_init barebox_arm_reset_vector(void)
++{
++	arm_cpu_lowlevel_init();
++
++	barebox_arm_entry(VIRT2REAL_SRAM_BASE, VIRT2REAL_SRAM_SIZE, 0);
++}
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index 5677f8d..3165d50 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -4,4 +4,13 @@ config ARCH_TEXT_BASE
+ 	hex
+ 	default 0x82000000
  
- @section davinci_boards DaVinci-based boards
- 
-+@li @subpage virt2real
++choice
++	prompt "Davinci Board type"
 +
- */
++config MACH_VIRT2REAL
++	bool "Virt2Real"
++	select HAVE_DEFAULT_ENVIRONMENT_NEW
++
++endchoice
++
+ endif
 -- 
 1.9.0
 
