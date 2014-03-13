@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WNzY0-0005r7-Oe
- for barebox@lists.infradead.org; Thu, 13 Mar 2014 06:55:21 +0000
-Date: Thu, 13 Mar 2014 07:54:58 +0100
+ id 1WO0Dw-0006Wr-Ce
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 07:38:41 +0000
+Date: Thu, 13 Mar 2014 08:38:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140313065458.GQ17250@pengutronix.de>
-References: <1394610851-721-1-git-send-email-d.lavnikevich@sam-solutions.com>
+Message-ID: <20140313073817.GR17250@pengutronix.de>
+References: <53211233.5070806@kosagi.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1394610851-721-1-git-send-email-d.lavnikevich@sam-solutions.com>
+In-Reply-To: <53211233.5070806@kosagi.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,147 +22,88 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] i.MX6: bbu: Barebox update support for NAND.
-To: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.com>
-Cc: Grigory Milev <g.milev@sam-solutions.com>, barebox@lists.infradead.org
+Subject: Re: Porting barebox to Novena: misc questions
+To: Sean Cross <xobs@kosagi.com>
+Cc: barebox@lists.infradead.org
 
-Hi Dmitry,
+Hi Sean,
 
-On Wed, Mar 12, 2014 at 10:54:11AM +0300, Dmitry Lavnikevich wrote:
-> This patch implements updating barebox on i.MX6 NAND. In userspace
-> similar task is performed by freescale kobs-ng utility.
-> To use this bbu profile nand handler should be registered in board
-> code with 'imx6_bbu_internal_nand_register_handler' function.
+On Thu, Mar 13, 2014 at 10:04:35AM +0800, Sean Cross wrote:
+> Hi,
+> 
+> I've finally managed to get U-Boot's SPL to configure DDR3 and load
+> barebox off of a FAT partition on an i.MX6DL.  I also have a barebox
+> build with most features turned on, and I'm running into a number of
+> problems.  barebox is able to load a zImage off of the FAT partition,
+> set up ATAGs, and jump to it.  So I have the basics done.  But there are
+> lots of little things that aren't working.
+> 
+> When I boot without an Ethernet cable plugged in, the "timeout" command
+> takes a very long time to complete.  It generally freezes at "Hit any
+> key to stop autoboot:  3" and tends to ignore input for around ten
+> seconds.  How can I prevent this from happening, short of compiling out
+> FEC support?
 
-I have the very same patch in the queue, it seems we have duplicated
-some work. As this version has some shortcomings I'll post my version as
-an alternative implementation. Also I'll try your version on a board I
-have here on which my version doesn't work (which is the reason I
-haven't posted my patch yet)
+Are you trying to start from network without a cable plugged in? When I
+start from network without a cable I get:
 
-> +static int erase_part(struct mtd_info *mtd)
-> +{
-> +	loff_t ofs;
-> +	int ret = 0;
-> +	struct erase_info erase_opts = {
-> +		.mtd = mtd,
-> +		.addr = 0,
-> +		.len = mtd->erasesize,
-> +		.callback = NULL,
-> +	};
-> +
-> +	for (ofs = 0; ofs < mtd->size; ofs += mtd->erasesize) {
-> +		ret = mtd_block_isbad(mtd, ofs);
-> +		if (ret > 0) {
-> +			printf("Warning: bad block at 0x%08llx. Skipping\n",
-> +				   ofs);
-> +			continue;
+running /env/bin/init...
 
-This is not worth issueing a warning. Bad blocks just happen.
+Hit m for menu or any other key to stop autoboot:  1
+blspec: blspec_scan_directory: net loader/entries
+booting net
+dhcp failed: Network is down
+dhcp: Network is down
 
-> +		} else if (ret < 0) {
-> +			printf("Error: checking bad block at 0x%llx failed\n",
-> +				   ofs);
-> +			ret = 1;
-> +			goto err;
-> +		}
-> +
-> +		erase_opts.addr = ofs;
-> +		ret = mtd->erase(mtd, &erase_opts);
+It indeed takes some seconds until we are sure that the link is down.
+That timeout could be reduced, but we must give the phy some time to
+bring up the link.
 
-You should use mtd_erase and friends rather than dereferencing struct
-mtd_info.
+Or does this happen when you are not trying to boot from network at all?
+That shouldn't happen. If it does, maybe some automount command triggers
+network accesses.
 
-> +	buf = malloc(mtd->erasesize);
-> +	if (!buf) {
-> +		ret = -ENOMEM;
-> +		goto err_out;
-> +	}
-> +
-> +	image = read_imagefile(mtd, data->imagefile, &fw_size);
-> +	if (!image) {
-> +		ret = -errno;
-> +		goto err_out1;
-> +	}
+> 
+> The "usb" command just hangs the system.  It should at least detect the
+> other ASIX Ethernet port.  I have &usbh1 configured identically to
+> sabrelite.  Is there something else I need to configure?
 
-No Need to read the image, data->image contains a pointer to it.
+This usually means the phys are not configured correctly. Are you
+probing from devicetree?
 
-> +
-> +	search_area_size_in_bytes =
-> +		(1 << SEARCH_EXPONENT) * PAGES_PER_STRIDE * mtd->writesize;
-> +	max_boot_stream_in_bytes =
-> +		(mtd->size - search_area_size_in_bytes * 2) / 2;
-> +
-> +	fw1_offset = 2 * search_area_size_in_bytes;
-> +	fw2_offset = fw1_offset + max_boot_stream_in_bytes;
-> +
-> +	fcb = create_fcb(mtd, buf, fw1_offset, fw_size, fw2_offset);
-> +	if (IS_ERR(fcb)) {
-> +		printf("Failed to initialize FCB: %ld\n", PTR_ERR(fcb));
-> +		ret = PTR_ERR(fcb);
-> +		goto err_out2;
-> +	}
-> +	encode_hamming_13_8(fcb, (void *)fcb + 512, 512);
-> +
-> +	dbbt = create_dbbt(mtd, &bbtn);
-> +	if (!dbbt)
-> +		goto err_out2;
-> +
-> +	erase_part(mtd);
+> 
+> The "usbserial" command returns "usbserial: No such device".  Like usb,
+> I have &usbotg configured the same as sabrelite.  It doesn't work with
+> dr_mode set to either "host" or "otg".
 
-Error checking?
+Ok, from devicetree it seems. I can say that there shouldn't be any bugs
+in the common usb code preventing your devices from being probed. It
+normally boils down to some usbmisc register setting being wrong.
 
-> +
-> +	block = bcb_cdev->offset;
-> +	for (fcb_written = 0; fcb_written < 4; fcb_written++) {
-> +
-> +		if (nand_isbad_bbt(mtd, block, false))
-> +			continue;
-> +
-> +		ret = write_fcb(mtd, buf, block);
-> +		if (ret) {
-> +			printf("Failed to write FCB to block %u\n", block);
-> +			goto err_out2;
-> +		}
-> +		block += mtd->erasesize;
-> +	}
-> +	ret = fcb_written ? 0 : -ENOSPC;
-> +	if (ret)
-> +		goto err_out2;
-> +
-> +	stride_size_in_bytes = PAGES_PER_STRIDE * mtd->writesize;
-> +	block = SEARCH_AREA_SIZE_IN_PAGES * mtd->writesize;
-> +	i = 0;
-> +	while (i < SEARCH_AREA_SIZE_IN_STRIDES) {
-> +		ret = write_dbbt(mtd, dbbt, buf, block, sizeof(*dbbt));
-> +		if (ret)
-> +			goto err_out2;
-> +
-> +		block += stride_size_in_bytes;
-> +		i++;
-> +	}
-> +
-> +	block = SEARCH_AREA_SIZE_IN_PAGES * mtd->writesize + 4 * mtd->writesize;
-> +	i = 0;
-> +	while (i < SEARCH_AREA_SIZE_IN_STRIDES) {
-> +		ret = write_bbtn(mtd, bbtn, buf, block, sizeof(*bbtn));
-> +		if (ret)
-> +			goto err_out2;
-> +
-> +		block += stride_size_in_bytes;
-> +		i++;
-> +	}
-> +
-> +	ret = write_image(mtd, image, fw1_offset, fw_size);
-> +	if (ret)
-> +		goto err_out2;
-> +	ret = write_image(mtd, image, fw2_offset, fw_size);
-> +	if (ret)
-> +		goto err_out2;
+> 
+> How can I pass the correct ram size to Linux?  The comment on
+> barebox_arm_entry() notes that "[memsize] doesn't necessarily have to be
+> the full SDRAM", and indeed I notice that barebox hangs if I pass it the
+> full 3840 MB passed from U-Boot.  So I'm currently limiting it to 1GB in
+> my start_imx6dl_kosagi_novena_6dl routine.  Do I need to somehow add the
+> remainder as another bank somewhere?  Or modify the bank size in my
+> kosagi_novena_init() in board.c?
 
-This doesn't seem to take bad blocks into account. What happens when the
-first firmware image gets bigger due to bad blocks? It will be
-overwritten by the 2nd image.
+If you probe from devicetree the correct amount of memory is taken from
+there. If that doesn't work (dynamic amount of memory for example) you
+can set the memory in the devicetree to 0 and call arm_add_mem_device
+instead.
+
+> 
+> Finally, I was unable to get barebox to boot with MMU support.  For some
+> reason it kept trying to allocate memory just outside of allocated RAM.
+
+This is related to the wrong memory setup. That should be solved when
+you get that straight.
+
+>  Is there any benefit to running with the MMU enabled on i.MX6?
+
+Definitely, yes. barebox runs much faster with MMU enabled.
 
 Sascha
 
