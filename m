@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.g1.pair.com ([66.39.3.162])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WNv13-00024u-Au
- for barebox@lists.infradead.org; Thu, 13 Mar 2014 02:05:02 +0000
-Received: from Edmond.local (unknown [210.23.18.184])
- by mail1.g1.pair.com (Postfix) with ESMTPSA id 12BC8288EE
- for <barebox@lists.infradead.org>; Wed, 12 Mar 2014 22:04:38 -0400 (EDT)
-Message-ID: <53211233.5070806@kosagi.com>
-Date: Thu, 13 Mar 2014 10:04:35 +0800
-From: Sean Cross <xobs@kosagi.com>
-MIME-Version: 1.0
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WNxkn-0004CL-CP
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 05:00:26 +0000
+Received: by mail-lb0-f176.google.com with SMTP id 10so314365lbg.35
+ for <barebox@lists.infradead.org>; Wed, 12 Mar 2014 22:00:01 -0700 (PDT)
+Date: Thu, 13 Mar 2014 09:09:28 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140313090928.5da682507706b31ca2e38b54@gmail.com>
+In-Reply-To: <20140312205041.GN17250@pengutronix.de>
+References: <1394487281-10462-1-git-send-email-antonynpavlov@gmail.com>
+ <1394487281-10462-2-git-send-email-antonynpavlov@gmail.com>
+ <20140312205041.GN17250@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,50 +21,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Porting barebox to Novena: misc questions
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 1/8] clocksource: add dummy software-only clocksource
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Wed, 12 Mar 2014 21:50:41 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-I've finally managed to get U-Boot's SPL to configure DDR3 and load
-barebox off of a FAT partition on an i.MX6DL.  I also have a barebox
-build with most features turned on, and I'm running into a number of
-problems.  barebox is able to load a zImage off of the FAT partition,
-set up ATAGs, and jump to it.  So I have the basics done.  But there are
-lots of little things that aren't working.
+> On Tue, Mar 11, 2014 at 01:34:34AM +0400, Antony Pavlov wrote:
+> > This driver is very handy for initial barebox porting.
+> > It was used for running barebox on DiGiC2-based camera
+> > and initial porting barebox to Loongson-1 and ar9331.
+> > =
 
-When I boot without an Ethernet cable plugged in, the "timeout" command
-takes a very long time to complete.  It generally freezes at "Hit any
-key to stop autoboot:  3" and tends to ignore input for around ten
-seconds.  How can I prevent this from happening, short of compiling out
-FEC support?
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > Reported-by: Alexander Aring <alex.aring@gmail.com>
+> > Reported-by: Alexander Shiyan <shc_work@mail.ru>
+> > ---
+> >  drivers/clocksource/Kconfig  |  9 +++++++
+> >  drivers/clocksource/Makefile |  1 +
+> >  drivers/clocksource/dummy.c  | 56 ++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  3 files changed, 66 insertions(+)
+> > =
 
-The "usb" command just hangs the system.  It should at least detect the
-other ASIX Ethernet port.  I have &usbh1 configured identically to
-sabrelite.  Is there something else I need to configure?
+> > diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+> > index 4ef25ec..f9e00ff 100644
+> > --- a/drivers/clocksource/Kconfig
+> > +++ b/drivers/clocksource/Kconfig
+> > @@ -14,6 +14,15 @@ config CLOCKSOURCE_CLPS711X
+> >  	bool
+> >  	depends on ARCH_CLPS711X
+> >  =
 
-The "usbserial" command returns "usbserial: No such device".  Like usb,
-I have &usbotg configured the same as sabrelite.  It doesn't work with
-dr_mode set to either "host" or "otg".
+> > +config CLOCKSOURCE_DUMMY
+> > +	bool "Enable dummy software-only clocksource"
+> > +	default n
+> =
 
-How can I pass the correct ram size to Linux?  The comment on
-barebox_arm_entry() notes that "[memsize] doesn't necessarily have to be
-the full SDRAM", and indeed I notice that barebox hangs if I pass it the
-full 3840 MB passed from U-Boot.  So I'm currently limiting it to 1GB in
-my start_imx6dl_kosagi_novena_6dl routine.  Do I need to somehow add the
-remainder as another bank somewhere?  Or modify the bank size in my
-kosagi_novena_init() in board.c?
+> You can drop the default n, no is the default already. Could you add
+> some help text mentioning that this clocksource is for early bringup
+> only and doesn't provide correct timing?
 
-Finally, I was unable to get barebox to boot with MMU support.  For some
-reason it kept trying to allocate memory just outside of allocated RAM.
- Is there any benefit to running with the MMU enabled on i.MX6?
+Ok, I'll write a help text.
+
+Yesterday I got working davinci hardware clocksource :)
+So I have no dependency on dummy clocksource for Davinci. =
 
 
-Sean
+What is about the rest of davinci patches?
+
+> > +
+> > +config CLOCKSOURCE_DUMMY_RATE
+> > +	int "compile loglevel"
+> =
+
+> copy/paste ;) ?
+
+:)
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
