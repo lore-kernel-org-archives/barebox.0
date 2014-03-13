@@ -1,14 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp5-g21.free.fr ([2a01:e0c:1:1599::14])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOCTa-0007Qe-A9
- for barebox@lists.infradead.org; Thu, 13 Mar 2014 20:43:39 +0000
-Date: Thu, 13 Mar 2014 21:43:07 +0100
-From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
-Message-ID: <20140313214307.54dbdad8@e6520eb>
-In-Reply-To: <53211233.5070806@kosagi.com>
-References: <53211233.5070806@kosagi.com>
-MIME-Version: 1.0
+Received: from plane.gmane.org ([80.91.229.3])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WOCUz-0007So-8f
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 20:45:06 +0000
+Received: from list by plane.gmane.org with local (Exim 4.69)
+ (envelope-from <gcbb-barebox@m.gmane.org>) id 1WOCUU-0005Yc-Op
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 21:44:34 +0100
+Received: from static-82-85-234-51.clienti.tiscali.it ([82.85.234.51])
+ by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+ id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 13 Mar 2014 21:44:34 +0100
+Received: from cristiano_dealti by static-82-85-234-51.clienti.tiscali.it with
+ local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Thu, 13 Mar 2014 21:44:34 +0100
+From: Cristiano De Alti <cristiano_dealti@hotmail.com>
+Date: Thu, 13 Mar 2014 20:44:08 +0000 (UTC)
+Message-ID: <loom.20140313T212720-896@post.gmane.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,40 +25,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox to Novena: misc questions
-To: Sean Cross <xobs@kosagi.com>
-Cc: barebox@lists.infradead.org
+Subject: i.MX21 ADS NAND flash bad blocks scan. Barebox vs Linux
+To: barebox@lists.infradead.org
 
 Hi,
+  I'm probably posting to the wrong list since this is Linux issue.
+I'm still trying to revive this old board.
 
-Le Thu, 13 Mar 2014 10:04:35 +0800,
-Sean Cross <xobs@kosagi.com> a =E9crit :
-> I've finally managed to get U-Boot's SPL to configure DDR3 and load
-> barebox off of a FAT partition on an i.MX6DL.  I also have a barebox
-> build with most features turned on, and I'm running into a number of
-> problems.  barebox is able to load a zImage off of the FAT partition,
-> set up ATAGs, and jump to it.  So I have the basics done.  But there are
-> lots of little things that aren't working.
-> =
+This board has a 64MBi Samsung NAND flash that is detected both by Barebox
+(recent snapshot) and Linux 3.4.77.
 
-> When I boot without an Ethernet cable plugged in, the "timeout" command
-> takes a very long time to complete.  It generally freezes at "Hit any
-> key to stop autoboot:  3" and tends to ignore input for around ten
-> seconds.  How can I prevent this from happening, short of compiling out
-> FEC support?
-> =
+The issue is that, while the bad blocks scan takes a negligible time on
+Barebox, it takes 10 minutes to complete on Linux.
+They both detect block 0 as a bad block. This is strange since it is
+guaranteed to be good by the manufacturer but I've read the OOB data with
+barebox and it's marked ad bad. I found this board in the lab and don't know
+how it was used before.
 
-that's very similar to what I reported here :
-http://lists.infradead.org/pipermail/barebox/2014-February/018005.html
+Barebox code, nand_imx.c, and Linux code, mxc_nand.c, are similar but not
+identical of course. I also think that Linux code was contributed by
+Pengutronix so this is the reason I'm asking here.
 
-I didn't yet had time to investigate more based on Sascha's answer but
-that's on my todo list.
+I've enabled debug statements in Linux code and added my own statements.
+As said, scan completes, everything looks OK but it is very slow.
 
-Eric
+Maybe someone has an idea.
+
+Ciao
+
+
+
 
 _______________________________________________
 barebox mailing list
