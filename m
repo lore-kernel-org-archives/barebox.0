@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og119.obsmtp.com ([64.18.0.189])
+Received: from exprod5og116.obsmtp.com ([64.18.0.147])
  by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOA5n-0001bD-AQ
- for barebox@lists.infradead.org; Thu, 13 Mar 2014 18:11:01 +0000
+ id 1WOA5q-0001bJ-Rp
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 18:11:04 +0000
 From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 13 Mar 2014 18:09:59 +0000
-Message-Id: <1394734204-8181-3-git-send-email-renaud.barbier@ge.com>
+Date: Thu, 13 Mar 2014 18:09:58 +0000
+Message-Id: <1394734204-8181-2-git-send-email-renaud.barbier@ge.com>
 In-Reply-To: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
 References: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
@@ -21,197 +21,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/6] common: DDR3 SPD verification support
+Subject: [PATCH 1/6] ppc: add SoC support for Freescale P1022
 To: barebox@lists.infradead.org
 
-Add DDR3 SPD verification support for use by the PPC 8xxx DDR driver.
-
-This is based on the equivalent files from U-Boot version git-be937b5.
+CPU, DDR, and LBC definitions are added to support the Freescale P1022.
 
 Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
 ---
- common/ddr_spd.c  |  24 +++++++++++
- include/ddr_spd.h | 116 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 140 insertions(+)
+ arch/ppc/include/asm/fsl_lbc.h                     |  3 ++
+ arch/ppc/include/asm/processor.h                   |  1 +
+ arch/ppc/mach-mpc85xx/cpuid.c                      |  1 +
+ .../ppc/mach-mpc85xx/include/mach/config_mpc85xx.h |  9 ++++++
+ arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h    | 34 ++++++++++++++++++++--
+ 5 files changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/common/ddr_spd.c b/common/ddr_spd.c
-index c8b73ff..ea0b529 100644
---- a/common/ddr_spd.c
-+++ b/common/ddr_spd.c
-@@ -7,6 +7,7 @@
-  */
+diff --git a/arch/ppc/include/asm/fsl_lbc.h b/arch/ppc/include/asm/fsl_lbc.h
+index a59725c..27d194e 100644
+--- a/arch/ppc/include/asm/fsl_lbc.h
++++ b/arch/ppc/include/asm/fsl_lbc.h
+@@ -25,8 +25,10 @@
+ #define BR_PS_8				0x00000800	/* Port Size 8 bit */
+ #define BR_PS_16			0x00001000	/* Port Size 16 bit */
+ #define BR_PS_32			0x00001800	/* Port Size 32 bit */
++#define BR_DECC_SHIFT			9
+ #define BR_V				0x00000001
+ #define BR_V_SHIFT			0
++#define BR_MS_FCM			0x00000020
+ #define BR_MS_UPMA			0x00000080
  
- #include <common.h>
-+#include <crc.h>
- #include <ddr_spd.h>
+ /* Convert an address into the right format for the BR registers */
+@@ -61,6 +63,7 @@
+ #define FSL_LBC_MDR_OFFSET	0x88
+ #define FSL_LBC_LTESR_OFFSET	0xB0
+ #define FSL_LBC_LTEIR_OFFSET	0xB8
++#define FSL_LBC_LBCR_OFFSET	0xD0
  
- uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd)
-@@ -37,3 +38,26 @@ uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd)
- error:
- 	return 1;
- }
-+
-+uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd_eeprom_s *spd)
-+{
-+	char crc_lsb, crc_msb;
-+	int csum16, len;
-+
-+	/*
-+	 * SPD byte0[7] - CRC coverage
-+	 * 0 = CRC covers bytes 0~125
-+	 * 1 = CRC covers bytes 0~116
-+	 */
-+
-+	len = !(spd->info_size_crc & 0x80) ? 126 : 117;
-+	csum16 = cyg_crc16((char *)spd, len);
-+
-+	crc_lsb = (char) (csum16 & 0xff);
-+	crc_msb = (char) (csum16 >> 8);
-+
-+	if (spd->crc[0] != crc_lsb || spd->crc[1] != crc_msb)
-+		return 1;
-+
-+	return 0;
-+}
-diff --git a/include/ddr_spd.h b/include/ddr_spd.h
-index c8762a2..fc03bac 100644
---- a/include/ddr_spd.h
-+++ b/include/ddr_spd.h
-@@ -114,13 +114,126 @@ struct ddr2_spd_eeprom_s {
- 	uint8_t mdate[2];    /* 93 Manufacturing Date */
- 	uint8_t sernum[4];   /* 95 Assembly Serial Number */
- 	uint8_t mspec[27];   /* 99-127 Manufacturer Specific Data */
-+};
-+
-+struct ddr3_spd_eeprom_s {
-+	/* General Section: Bytes 0-59 */
-+	uint8_t info_size_crc;   /*  0 # bytes written into serial memory,
-+					     CRC coverage */
-+	uint8_t spd_rev;         /*  1 Total # bytes of SPD mem device */
-+	uint8_t mem_type;        /*  2 Key Byte / Fundamental mem type */
-+	uint8_t module_type;     /*  3 Key Byte / Module Type */
-+	uint8_t density_banks;   /*  4 SDRAM Density and Banks */
-+	uint8_t addressing;      /*  5 SDRAM Addressing */
-+	uint8_t module_vdd;      /*  6 Module nominal voltage, VDD */
-+	uint8_t organization;    /*  7 Module Organization */
-+	uint8_t bus_width;       /*  8 Module Memory Bus Width */
-+	uint8_t ftb_div;         /*  9 Fine Timebase (FTB)
-+					     Dividend / Divisor */
-+	uint8_t mtb_dividend;    /* 10 Medium Timebase (MTB) Dividend */
-+	uint8_t mtb_divisor;     /* 11 Medium Timebase (MTB) Divisor */
-+	uint8_t tck_min;         /* 12 SDRAM Minimum Cycle Time */
-+	uint8_t res_13;          /* 13 Reserved */
-+	uint8_t caslat_lsb;      /* 14 CAS Latencies Supported,
-+					     Least Significant Byte */
-+	uint8_t caslat_msb;      /* 15 CAS Latencies Supported,
-+					     Most Significant Byte */
-+	uint8_t taa_min;         /* 16 Min CAS Latency Time */
-+	uint8_t twr_min;         /* 17 Min Write REcovery Time */
-+	uint8_t trcd_min;        /* 18 Min RAS# to CAS# Delay Time */
-+	uint8_t trrd_min;        /* 19 Min Row Active to
-+					     Row Active Delay Time */
-+	uint8_t trp_min;         /* 20 Min Row Precharge Delay Time */
-+	uint8_t tras_trc_ext;    /* 21 Upper Nibbles for tRAS and tRC */
-+	uint8_t tras_min_lsb;    /* 22 Min Active to Precharge
-+					     Delay Time */
-+	uint8_t trc_min_lsb;     /* 23 Min Active to Active/Refresh
-+					     Delay Time, LSB */
-+	uint8_t trfc_min_lsb;    /* 24 Min Refresh Recovery Delay Time */
-+	uint8_t trfc_min_msb;    /* 25 Min Refresh Recovery Delay Time */
-+	uint8_t twtr_min;        /* 26 Min Internal Write to
-+					     Read Command Delay Time */
-+	uint8_t trtp_min;        /* 27 Min Internal Read to Precharge
-+					     Command Delay Time */
-+	uint8_t tfaw_msb;        /* 28 Upper Nibble for tFAW */
-+	uint8_t tfaw_min;        /* 29 Min Four Activate Window
-+					     Delay Time*/
-+	uint8_t opt_features;    /* 30 SDRAM Optional Features */
-+	uint8_t therm_ref_opt;   /* 31 SDRAM Thermal and Refresh Opts */
-+	uint8_t therm_sensor;    /* 32 Module Thermal Sensor */
-+	uint8_t device_type;     /* 33 SDRAM device type */
-+	int8_t fine_tck_min;     /* 34 Fine offset for tCKmin */
-+	int8_t fine_taa_min;     /* 35 Fine offset for tAAmin */
-+	int8_t fine_trcd_min;    /* 36 Fine offset for tRCDmin */
-+	int8_t fine_trp_min;     /* 37 Fine offset for tRPmin */
-+	int8_t fine_trc_min;     /* 38 Fine offset for tRCmin */
-+	uint8_t res_39_59[21];   /* 39-59 Reserved, General Section */
-+
-+	/* Module-Specific Section: Bytes 60-116 */
-+	union {
-+		struct {
-+			/* 60 (Unbuffered) Module Nominal Height */
-+			uint8_t mod_height;
-+			/* 61 (Unbuffered) Module Maximum Thickness */
-+			uint8_t mod_thickness;
-+			/* 62 (Unbuffered) Reference Raw Card Used */
-+			uint8_t ref_raw_card;
-+			/* 63 (Unbuffered) Address Mapping from
-+			      Edge Connector to DRAM */
-+			uint8_t addr_mapping;
-+			/* 64-116 (Unbuffered) Reserved */
-+			uint8_t res_64_116[53];
-+		} unbuffered;
-+		struct {
-+			/* 60 (Registered) Module Nominal Height */
-+			uint8_t mod_height;
-+			/* 61 (Registered) Module Maximum Thickness */
-+			uint8_t mod_thickness;
-+			/* 62 (Registered) Reference Raw Card Used */
-+			uint8_t ref_raw_card;
-+			/* 63 DIMM Module Attributes */
-+			uint8_t modu_attr;
-+			/* 64 RDIMM Thermal Heat Spreader Solution */
-+			uint8_t thermal;
-+			/* 65 Register Manufacturer ID Code, LSB */
-+			uint8_t reg_id_lo;
-+			/* 66 Register Manufacturer ID Code, MSB */
-+			uint8_t reg_id_hi;
-+			/* 67 Register Revision Number */
-+			uint8_t reg_rev;
-+			/* 68 Register Type */
-+			uint8_t reg_type;
-+			/* 69-76 RC1,3,5..15 (MS Nib.)/RC0,2,4..14 (LS Nib.) */
-+			uint8_t rcw[8];
-+		} registered;
-+		uint8_t uc[57]; /* 60-116 Module-Specific Section */
-+	} mod_section;
-+
-+	/* Unique Module ID: Bytes 117-125 */
-+	uint8_t mmid_lsb;        /* 117 Module MfgID Code LSB - JEP-106 */
-+	uint8_t mmid_msb;        /* 118 Module MfgID Code MSB - JEP-106 */
-+	uint8_t mloc;            /* 119 Mfg Location */
-+	uint8_t mdate[2];        /* 120-121 Mfg Date */
-+	uint8_t sernum[4];       /* 122-125 Module Serial Number */
-+
-+	/* CRC: Bytes 126-127 */
-+	uint8_t crc[2];          /* 126-127 SPD CRC */
+ #define MxMR_MAD_MSK		0x0000003f /* Machine Address Mask         */
+ #define MxMR_GPL_x4DIS		0x00040000 /* GPL_A4 Ouput Line Disable    */
+diff --git a/arch/ppc/include/asm/processor.h b/arch/ppc/include/asm/processor.h
+index 819babb..c9633fe 100644
+--- a/arch/ppc/include/asm/processor.h
++++ b/arch/ppc/include/asm/processor.h
+@@ -867,6 +867,7 @@
+ #define SVR_8641	0x8090
+ #define SVR_8544	0x803401
+ #define SVR_8544_E	0x803C01
++#define SVR_P1022	0x80E600
+ #define SVR_P2020	0x80E200
+ #define SVR_P2020_E	0x80EA00
  
-+	/* Other Manufacturer Fields and User Space: Bytes 128-255 */
-+	uint8_t mpart[18];       /* 128-145 Mfg's Module Part Number */
-+	uint8_t mrev[2];         /* 146-147 Module Revision Code */
-+	uint8_t dmid_lsb;        /* 148 DRAM MfgID Code LSB - JEP-106 */
-+	uint8_t dmid_msb;        /* 149 DRAM MfgID Code MSB - JEP-106 */
-+	uint8_t msd[26];         /* 150-175 Mfg's Specific Data */
-+	uint8_t cust[80];        /* 176-255 Open for Customer Use */
+diff --git a/arch/ppc/mach-mpc85xx/cpuid.c b/arch/ppc/mach-mpc85xx/cpuid.c
+index 8094978..21892e3 100644
+--- a/arch/ppc/mach-mpc85xx/cpuid.c
++++ b/arch/ppc/mach-mpc85xx/cpuid.c
+@@ -29,6 +29,7 @@
+ struct cpu_type cpu_type_list[] = {
+ 	CPU_TYPE_ENTRY(8544, 8544, 1),
+ 	CPU_TYPE_ENTRY(8544, 8544_E, 1),
++	CPU_TYPE_ENTRY(P1022, P1022, 2),
+ 	CPU_TYPE_ENTRY(P2020, P2020, 2),
+ 	CPU_TYPE_ENTRY(P2020, P2020_E, 2),
  };
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
+index 27358e8..f9d8299 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/config_mpc85xx.h
+@@ -39,6 +39,15 @@
+ #define FSL_ERRATUM_A005125
+ #define PPC_E500_DEBUG_TLB 0
  
-+extern uint32_t ddr3_spd_checksum_pass(const struct ddr3_spd_eeprom_s *spd);
- extern uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd);
++#elif defined(CONFIG_P1022)
++#define MAX_CPUS		2
++#define FSL_NUM_LAWS		12
++#define FSL_NUM_TSEC		2
++#define FSL_SEC_COMPAT		2
++#define PPC_E500_DEBUG_TLB	2
++#define FSL_TSECV2
++#define FSL_ERRATUM_A005125
++
+ #else
+ #error Processor type not defined for this platform
+ #endif
+diff --git a/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+index d5a9c97..87bc5c7 100644
+--- a/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
++++ b/arch/ppc/mach-mpc85xx/include/mach/immap_85xx.h
+@@ -36,7 +36,7 @@
  
- /* * Byte 2 Fundamental Memory Types. */
- #define SPD_MEMTYPE_DDR2	(0x08)
-+#define SPD_MEMTYPE_DDR3	(0x0B)
+ #define MPC85xx_GPIO_OFFSET	0xf000
+ #define MPC85xx_L2_OFFSET	0x20000
+-#ifdef CONFIG_TSECV2
++#ifdef FSL_TSECV2
+ #define TSEC1_OFFSET		0xB0000
+ #else
+ #define TSEC1_OFFSET		0x24000
+@@ -75,6 +75,11 @@
+ #define MPC85xx_DDR_CS1_CONFIG_OFFSET		0x084
+ #define MPC85xx_DDR_CS2_CONFIG_OFFSET		0x088
+ #define MPC85xx_DDR_CS3_CONFIG_OFFSET		0x08c
++/* Chip Select 0, 1, 2, 3 Configuration 2 */
++#define MPC85xx_DDR_CS0_CONFIG_2_OFFSET		0x0c0
++#define MPC85xx_DDR_CS1_CONFIG_2_OFFSET		0x0c4
++#define MPC85xx_DDR_CS2_CONFIG_2_OFFSET		0x0c8
++#define MPC85xx_DDR_CS3_CONFIG_2_OFFSET		0x0cc
+ /* SDRAM Timing Configuration 0, 1, 2, 3 */
+ #define MPC85xx_DDR_TIMING_CFG_3_OFFSET		0x100
+ #define MPC85xx_DDR_TIMING_CFG_0_OFFSET		0x104
+@@ -97,9 +102,30 @@
+ /* training init and extended addr */
+ #define MPC85xx_DDR_SDRAM_INIT_ADDR_OFFSET	0x148
+ #define MPC85xx_DDR_SDRAM_INIT_ADDR_EXT_OFFSET	0x14c
++/* SDRAM Timing Configuration 4,5 */
++#define MPC85xx_DDR_TIMING_CFG_4_OFFSET		0x160
++#define MPC85xx_DDR_TIMING_CFG_5_OFFSET		0x164
++/* DDR ZQ calibration control */
++#define MPC85xx_DDR_ZQ_CNTL_OFFSET		0x170
++/* DDR write leveling control */
++#define MPC85xx_DDR_WRLVL_CNTL_OFFSET		0x174
++/* Self Refresh Counter */
++#define MPC85xx_DDR_SR_CNTL_OFFSET		0x17c
++/* DDR SDRAM Register Control Word */
++#define MPC85xx_DDR_SDRAM_RCW_1_OFFSET		0x180
++#define MPC85xx_DDR_SDRAM_RCW_2_OFFSET		0x184
++/* DDR write leveling control */
++#define MPC85xx_DDR_WRLVL_CNTL_2_OFFSET		0x190
++#define MPC85xx_DDR_WRLVL_CNTL_3_OFFSET		0x194
++/* DDR Control Driver */
++#define MPC85xx_DDR_DDRCDR1_OFFSET		0xb28
++#define MPC85xx_DDR_DDRCDR2_OFFSET		0xb2c
+ /* DDR IP block revision */
+-#define MPC85xx_DDR_IP_REV1_OFFSET	0xbf8
+-#define MPC85xx_DDR_IP_REV2_OFFSET	0xbfc
++#define MPC85xx_DDR_IP_REV1_OFFSET		0xbf8
++#define MPC85xx_DDR_IP_REV2_OFFSET		0xbfc
++/* Memory Error Disable */
++#define MPC85xx_DDR_ERR_DISABLE_OFFSET		0xe44
++#define MPC85xx_DDR_ERR_INT_EN_OFFSET		0xe48
  
- /* DIMM Type for DDR2 SPD (according to v1.3) */
- #define DDR2_SPD_DIMMTYPE_RDIMM		(0x01)
-@@ -132,4 +245,7 @@ extern uint32_t ddr2_spd_checksum_pass(const struct ddr2_spd_eeprom_s *spd);
- #define DDR2_SPD_DIMMTYPE_MINI_RDIMM	(0x10)
- #define DDR2_SPD_DIMMTYPE_MINI_UDIMM	(0x20)
+ #define DDR_OFF(REGNAME)	(MPC85xx_DDR_##REGNAME##_OFFSET)
  
-+/* Byte 3 Key Byte / Module Type for DDR3 SPD */
-+#define DDR3_SPD_MODULETYPE_MASK	(0x0F)
-+#define DDR3_SPD_MODULETYPE_UDIMM	(0x02)
- #endif /* _DDR_SPD_H_ */
+@@ -147,6 +173,8 @@
+ #define		MPC85xx_PORPLLSR_DDR_RATIO_SHIFT	9
+ #define MPC85xx_GUTS_PORDEVSR2_OFFSET	0x14
+ #define		MPC85xx_PORDEVSR2_SEC_CFG		0x00000080
++#define MPC85xx_GUTS_PMUXCR_OFFSET	0x60
++#define MPC85xx_GUTS_PMUXCR2_OFFSET	0x64
+ #define MPC85xx_GUTS_DEVDISR_OFFSET	0x70
+ #define		MPC85xx_DEVDISR_TB0	0x00004000
+ #define		MPC85xx_DEVDISR_TB1	0x00001000
 -- 
 1.8.4.2
 
