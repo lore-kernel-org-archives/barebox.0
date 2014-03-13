@@ -1,13 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og116.obsmtp.com ([64.18.0.147])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOA6H-0001dU-Sz
- for barebox@lists.infradead.org; Thu, 13 Mar 2014 18:11:29 +0000
-From: Renaud Barbier <renaud.barbier@ge.com>
-Date: Thu, 13 Mar 2014 18:10:02 +0000
-Message-Id: <1394734204-8181-6-git-send-email-renaud.barbier@ge.com>
-In-Reply-To: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
-References: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
+Received: from mail.icid.cu ([200.55.133.90])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WOBLX-0004Uh-HT
+ for barebox@lists.infradead.org; Thu, 13 Mar 2014 19:31:15 +0000
+Received: from icid.cu ([10.10.0.3])
+ by mail.icid.cu (8.13.8/8.13.8) with ESMTP id s2DJBQMi028908
+ for <barebox@lists.infradead.org>; Thu, 13 Mar 2014 15:11:26 -0400
+Received: from [10.10.8.78] by icid.cu
+ (Cipher TLSv1:RC4-MD5:128) (MDaemon PRO v9.6.1)
+ with ESMTP id md50007095224.msg
+ for <barebox@lists.infradead.org>; Thu, 13 Mar 2014 13:45:37 -0500
+Message-ID: <532207C7.9020206@icid.cu>
+Date: Thu, 13 Mar 2014 15:32:23 -0400
+From: raespi <raespi@icid.cu>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,45 +22,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/7] ppc: mpc85xx: add stashing support
+Subject: problem booting with Micron MT29F8G08ABABAWP ...
 To: barebox@lists.infradead.org
 
-The eTSEC 2.0 devices found on the 85xx family of SoCs support stashing
-buffer descriptors in the L2 cache. This updates the device tree fixup
-for these devices to ensure that the stashing related properties used
-by Linux are initialised correctly.
+Hi ... I'm using barebox 2014.02.0 to boot with a clone of the mini2440 
+board using the MT29F8G08ABABAWP NAND.
 
-Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
----
- arch/ppc/mach-mpc85xx/fdt.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+I'm getting the following error:
 
-diff --git a/arch/ppc/mach-mpc85xx/fdt.c b/arch/ppc/mach-mpc85xx/fdt.c
-index b1da144..1a2d780 100644
---- a/arch/ppc/mach-mpc85xx/fdt.c
-+++ b/arch/ppc/mach-mpc85xx/fdt.c
-@@ -54,6 +54,14 @@ static void fdt_add_enet_stashing(void *fdt)
- 		of_property_write_u32(node, "rx-stash-idx", 0);
- 		node = of_find_compatible_node(node, NULL, "gianfar");
- 	}
-+
-+	node = of_find_compatible_node(fdt, NULL, "fsl,etsec2");
-+	while (node) {
-+		of_set_property(node, "bd-stash", NULL, 0, 1);
-+		of_property_write_u32(node, "rx-stash-len", 96);
-+		of_property_write_u32(node, "rx-stash-idx", 0);
-+		node = of_find_compatible_node(node, NULL, "fsl,etsec2");
-+	}
- }
- 
- static int fdt_stdout_setup(struct device_node *blob)
--- 
-1.8.4.2
+barebox 2014.02.0 #1 Thu Mar 13 15:28:57 CDT 2014
+
+Board: <NULL>
+nand: ONFI param page 0 valid
+nand: ONFI flash detected
+nand: NAND device: Manufacturer ID: 0x2c, Chip ID: 0x38 (Micron 
+MT29F8G08ABABAWP), 1024
+nand: No oob scheme defined for oobsize 224
+BUG: failure at drivers/mtd/nand/nand_base.c:3357/nand_scan_tail()!
+BUG!
+no stack data available
+DIVN_UPLL0
+MPLLVal [M:61h,P:1h,S:2h]
+CLKDIVN:7h
+
+After this poing the board gets resetted back to the original point.  I 
+can never get to the barebox prompt.
+
+Any ideas on how to fix this ??
+
+Thanks in advance ...
 
 
 _______________________________________________
