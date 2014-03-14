@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOTAw-00055o-FQ
- for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:37 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WOTAp-0003AU-Ds
+ for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Mar 2014 15:32:42 +0100
-Message-Id: <1394807569-23620-23-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Mar 2014 15:32:41 +0100
+Message-Id: <1394807569-23620-22-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,310 +21,205 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/29] video: Add display timing from devicetree helper
+Subject: [PATCH 21/29] video: rework mode_name parameter setting
 To: barebox@lists.infradead.org
+
+We have dev_add_param_enum() now, so use it for the mode_name
+setting. Also drop the special case for single mode framebuffers,
+just add the mode_name parameter for this case aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/Makefile            |   1 +
- drivers/video/of_display_timing.c | 238 ++++++++++++++++++++++++++++++++++++++
- include/fb.h                      |  14 ++-
- 3 files changed, 252 insertions(+), 1 deletion(-)
- create mode 100644 drivers/video/of_display_timing.c
+ drivers/video/fb.c | 107 ++++++++++++++++++++++++++++++++++++-----------------
+ include/fb.h       |   2 +
+ 2 files changed, 76 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 31edfca..d36d83d 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -1,4 +1,5 @@
- obj-$(CONFIG_VIDEO) += fb.o
-+obj-$(CONFIG_OFDEVICE) += of_display_timing.o
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index e614d77..d7a3d3c 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -49,34 +49,42 @@ static int fb_enable_set(struct param_d *param, void *priv)
+ 	return 0;
+ }
  
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
-new file mode 100644
-index 0000000..5dfd5b3
---- /dev/null
-+++ b/drivers/video/of_display_timing.c
-@@ -0,0 +1,238 @@
-+/*
-+ * OF helpers for parsing display timings
-+ *
-+ * Copyright (c) 2012 Steffen Trumtrar <s.trumtrar@pengutronix.de>, Pengutronix
-+ *
-+ * based on of_videomode.c by Sascha Hauer <s.hauer@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ */
-+#include <common.h>
-+#include <of.h>
-+#include <fb.h>
-+#include <malloc.h>
+-static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+-		const char *val)
++static struct fb_videomode *fb_num_to_mode(struct fb_info *info, int num)
+ {
+-	struct fb_info *info = dev->priv;
+-	struct display_timings *dt;
+-	int mode, ret;
++	int num_modes;
 +
-+void display_timings_release(struct display_timings *disp)
-+{
-+	free(disp->modes);
-+	free(disp);
-+}
-+EXPORT_SYMBOL_GPL(display_timings_release);
++	num_modes = info->modes.num_modes;
 +
-+/**
-+ * parse_timing_property - parse timing_entry from device_node
-+ * @np: device_node with the property
-+ * @name: name of the property
-+ * @result: will be set to the return value
-+ *
-+ * DESCRIPTION:
-+ * Every display_timing can be specified with either just the typical value or
-+ * a range consisting of min/typ/max. This function helps handling this
-+ **/
-+static int parse_timing_property(const struct device_node *np, const char *name,
-+			  u32 *res)
-+{
-+	struct property *prop;
-+	int length, cells, ret;
++	if (num >= num_modes)
++		return NULL;
 +
-+	prop = of_find_property(np, name, &length);
-+	if (!prop) {
-+		pr_err("%s: could not find property %s\n",
-+			np->full_name, name);
-+		return -EINVAL;
-+	}
-+
-+	cells = length / sizeof(u32);
-+	if (cells == 1) {
-+		ret = of_property_read_u32(np, name, res);
-+	} else {
-+		pr_err("%s: illegal timing specification in %s\n",
-+			np->full_name, name);
-+		return -EINVAL;
-+	}
-+
-+	return ret;
++	return &info->modes.modes[num];
 +}
 +
-+/**
-+ * of_parse_display_timing - parse display_timing entry from device_node
-+ * @np: device_node with the properties
-+ **/
-+static int of_parse_display_timing(const struct device_node *np,
-+		struct fb_videomode *mode)
++static int fb_setup_mode(struct fb_info *info)
 +{
-+	u32 val = 0, pixelclock = 0;
-+	int ret = 0;
-+
-+	memset(mode, 0, sizeof(*mode));
-+
-+	ret |= parse_timing_property(np, "hback-porch", &mode->left_margin);
-+	ret |= parse_timing_property(np, "hfront-porch", &mode->right_margin);
-+	ret |= parse_timing_property(np, "hactive", &mode->xres);
-+	ret |= parse_timing_property(np, "hsync-len", &mode->hsync_len);
-+	ret |= parse_timing_property(np, "vback-porch", &mode->upper_margin);
-+	ret |= parse_timing_property(np, "vfront-porch", &mode->lower_margin);
-+	ret |= parse_timing_property(np, "vactive", &mode->yres);
-+	ret |= parse_timing_property(np, "vsync-len", &mode->vsync_len);
-+	ret |= parse_timing_property(np, "clock-frequency", &pixelclock);
-+
-+	mode->pixclock = pixelclock ? KHZ2PICOS(pixelclock / 1000) : 0;
-+
-+	if (!of_property_read_u32(np, "vsync-active", &val))
-+		mode->sync |= val ? FB_SYNC_VERT_HIGH_ACT : 0;
-+	if (!of_property_read_u32(np, "hsync-active", &val))
-+		mode->sync |= val ? FB_SYNC_HOR_HIGH_ACT : 0;
-+	if (!of_property_read_u32(np, "de-active", &val))
-+		mode->display_flags |= val ? DISPLAY_FLAGS_DE_HIGH :
-+				DISPLAY_FLAGS_DE_LOW;
-+	if (!of_property_read_u32(np, "pixelclk-active", &val))
-+		mode->display_flags |= val ? DISPLAY_FLAGS_PIXDATA_POSEDGE :
-+				DISPLAY_FLAGS_PIXDATA_NEGEDGE;
-+
-+	if (ret) {
-+		pr_err("%s: error reading timing properties\n",
-+			np->full_name);
-+		return -EINVAL;
++	struct device_d *dev = &info->dev;
++	int ret;
++	struct fb_videomode *mode;
+ 
+ 	if (info->enabled != 0)
+ 		return -EPERM;
+ 
+-	if (!val)
+-		return dev_param_set_generic(dev, param, NULL);
+-
+-	dt = &info->modes;
+-	for (mode = 0; mode < dt->num_modes; mode++) {
+-		if (!strcmp(dt->modes[mode].name, val))
+-			break;
+-	}
+-	if (mode >= dt->num_modes)
++	mode = fb_num_to_mode(info, info->current_mode);
++	if (!mode)
+ 		return -EINVAL;
+ 
+-	info->mode = &dt->modes[mode];
++	info->mode = mode;
+ 
+ 	info->xres = info->mode->xres;
+ 	info->yres = info->mode->yres;
+ 	info->line_length = 0;
+ 
+-	ret = info->fbops->fb_activate_var(info);
++	if (info->fbops->fb_activate_var) {
++		ret = info->fbops->fb_activate_var(info);
++		if (ret)
++			return ret;
 +	}
+ 
+ 	if (!info->line_length)
+ 		info->line_length = info->xres * (info->bits_per_pixel >> 3);
+@@ -87,13 +95,24 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
+ 		dev->resource[0].start = (resource_size_t)info->screen_base;
+ 		info->cdev.size = info->line_length * info->yres;
+ 		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
+-		dev_param_set_generic(dev, param, val);
+ 	} else
+ 		info->cdev.size = 0;
+ 
+ 	return ret;
+ }
+ 
++static int fb_set_modename(struct param_d *param, void *priv)
++{
++	struct fb_info *info = priv;
++	int ret;
++
++	ret = fb_setup_mode(info);
++	if (ret)
++		return ret;
 +
 +	return 0;
 +}
 +
-+/**
-+ * of_get_display_timing - parse a display_timing entry
-+ * @np: device_node with the timing subnode
-+ * @name: name of the timing node
-+ * @dt: display_timing struct to fill
-+ **/
-+int of_get_display_timing(struct device_node *np, const char *name,
-+		struct fb_videomode *mode)
+ static struct file_operations fb_ops = {
+ 	.read	= mem_read,
+ 	.write	= mem_write,
+@@ -102,22 +121,27 @@ static struct file_operations fb_ops = {
+ 	.ioctl	= fb_ioctl,
+ };
+ 
+-static void fb_info(struct device_d *dev)
++static void fb_print_mode(struct fb_videomode *mode)
 +{
-+	struct device_node *timing_np;
-+
-+	if (!np) {
-+		pr_err("%s: no devicenode given\n", np->full_name);
-+		return -EINVAL;
-+	}
-+
-+	timing_np = of_get_child_by_name(np, name);
-+	if (!timing_np) {
-+		pr_err("%s: could not find node '%s'\n",
-+			np->full_name, name);
-+		return -ENOENT;
-+	}
-+
-+	return of_parse_display_timing(timing_np, mode);
++	printf("%-20s %dx%d@%d\n", mode->name,
++			mode->xres, mode->yres, mode->refresh);
 +}
-+EXPORT_SYMBOL_GPL(of_get_display_timing);
 +
-+/**
-+ * of_get_display_timings - parse all display_timing entries from a device_node
-+ * @np: device_node with the subnodes
-+ **/
-+struct display_timings *of_get_display_timings(struct device_node *np)
++static void fb_print_modes(struct display_timings *modes)
+ {
+-	struct fb_info *info = dev->priv;
+ 	int i;
+ 
+-	if (!info->modes.num_modes)
+-		return;
++	for (i = 0; i < modes->num_modes; i++)
++		fb_print_mode(&modes->modes[i]);
++}
++
++static void fb_info(struct device_d *dev)
 +{
-+	struct device_node *timings_np;
-+	struct device_node *entry;
-+	struct device_node *native_mode;
-+	struct display_timings *disp;
-+
-+	if (!np) {
-+		pr_err("%s: no device node given\n", np->full_name);
-+		return NULL;
++	struct fb_info *info = dev->priv;
+ 
+ 	printf("available modes:\n");
+ 
+-	for (i = 0; i < info->modes.num_modes; i++) {
+-		struct fb_videomode *mode = &info->modes.modes[i];
+-
+-		printf("%-10s %dx%d@%d\n", mode->name,
+-				mode->xres, mode->yres, mode->refresh);
+-	}
++	fb_print_modes(&info->modes);
+ 
+ 	printf("\n");
+ }
+@@ -126,10 +150,20 @@ int register_framebuffer(struct fb_info *info)
+ {
+ 	int id = get_free_deviceid("fb");
+ 	struct device_d *dev;
+-	int ret;
++	int ret, num_modes, i;
++	const char **names;
+ 
+ 	dev = &info->dev;
+ 
++	/*
++	 * If info->mode is set at this point it's the only mode
++	 * the fb supports. move it over to the modes list.
++	 */
++	if (info->mode) {
++		info->modes.modes = info->mode;
++		info->modes.num_modes = 1;
 +	}
 +
-+	timings_np = of_get_child_by_name(np, "display-timings");
-+	if (!timings_np) {
-+		pr_debug("%s: could not find display-timings node\n",
-+			np->full_name);
-+		return NULL;
-+	}
+ 	if (!info->line_length)
+ 		info->line_length = info->xres * (info->bits_per_pixel >> 3);
+ 
+@@ -157,11 +191,18 @@ int register_framebuffer(struct fb_info *info)
+ 	dev_add_param_bool(dev, "enable", fb_enable_set, NULL,
+ 			&info->p_enable, info);
+ 
+-	if (info->modes.num_modes &&
+-			(info->fbops->fb_activate_var != NULL)) {
+-		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
+-		dev_set_param(dev, "mode_name", info->modes.modes[0].name);
+-	}
++	num_modes = info->modes.num_modes;
 +
-+	disp = xzalloc(sizeof(*disp));
++	names = xzalloc(sizeof(char *) * num_modes);
 +
-+	entry = of_parse_phandle(timings_np, "native-mode", 0);
-+	/* assume first child as native mode if none provided */
-+	if (!entry)
-+		entry = of_get_next_available_child(np, NULL);
-+	/* if there is no child, it is useless to go on */
-+	if (!entry) {
-+		pr_err("%s: no timing specifications given\n",
-+			np->full_name);
-+		goto entryfail;
-+	}
++	for (i = 0; i < info->modes.num_modes; i++)
++		names[i] = info->modes.modes[i].name;
 +
-+	pr_debug("%s: using %s as default timing\n",
-+		np->full_name, entry->name);
++	dev_add_param_enum(dev, "mode_name", fb_set_modename, NULL, &info->current_mode, names, num_modes, info);
 +
-+	native_mode = entry;
++	info->mode = fb_num_to_mode(info, 0);
 +
-+	disp->num_modes = of_get_child_count(timings_np);
-+	if (disp->num_modes == 0) {
-+		/* should never happen, as entry was already found above */
-+		pr_err("%s: no timings specified\n", np->full_name);
-+		goto entryfail;
-+	}
-+
-+	disp->modes = xzalloc(sizeof(struct fb_videomode) * disp->num_modes);
-+
-+	disp->num_modes = 0;
-+	disp->native_mode = 0;
-+
-+	for_each_child_of_node(timings_np, entry) {
-+		struct fb_videomode *mode;
-+		int r;
-+
-+		mode = &disp->modes[disp->num_modes];
-+
-+		r = of_parse_display_timing(entry, mode);
-+		if (r) {
-+			/*
-+			 * to not encourage wrong devicetrees, fail in case of
-+			 * an error
-+			 */
-+			pr_err("%s: error in timing %d\n",
-+				np->full_name, disp->num_modes + 1);
-+			goto timingfail;
-+		}
-+
-+		mode->name = xstrdup(entry->name);
-+
-+		if (native_mode == entry)
-+			disp->native_mode = disp->num_modes;
-+
-+		disp->num_modes++;
-+	}
-+
-+	pr_debug("%s: got %d timings. Using timing #%d as default\n",
-+		np->full_name, disp->num_modes,
-+		disp->native_mode + 1);
-+
-+	return disp;
-+
-+timingfail:
-+	display_timings_release(disp);
-+entryfail:
-+	free(disp);
-+
-+	return NULL;
-+}
-+EXPORT_SYMBOL_GPL(of_get_display_timings);
-+
-+/**
-+ * of_display_timings_exist - check if a display-timings node is provided
-+ * @np: device_node with the timing
-+ **/
-+int of_display_timings_exist(struct device_node *np)
-+{
-+	struct device_node *timings_np;
-+
-+	if (!np)
-+		return -EINVAL;
-+
-+	timings_np = of_parse_phandle(np, "display-timings", 0);
-+	if (!timings_np)
-+		return -EINVAL;
-+
-+	return 1;
-+}
-+EXPORT_SYMBOL_GPL(of_display_timings_exist);
++	fb_setup_mode(info);
+ 
+ 	ret = devfs_create(&info->cdev);
+ 	if (ret)
 diff --git a/include/fb.h b/include/fb.h
-index 91d3fe4..8d255c0 100644
+index 1cc352b..91d3fe4 100644
 --- a/include/fb.h
 +++ b/include/fb.h
-@@ -32,6 +32,16 @@
- #define PICOS2KHZ(a) (1000000000UL/(a))
- #define KHZ2PICOS(a) (1000000000UL/(a))
+@@ -94,6 +94,8 @@ struct fb_info {
+ 	struct fb_videomode *mode;
+ 	struct display_timings modes;
  
-+enum display_flags {
-+	/* data enable flag */
-+	DISPLAY_FLAGS_DE_LOW		= BIT(4),
-+	DISPLAY_FLAGS_DE_HIGH		= BIT(5),
-+	/* drive data on pos. edge */
-+	DISPLAY_FLAGS_PIXDATA_POSEDGE	= BIT(6),
-+	/* drive data on neg. edge */
-+	DISPLAY_FLAGS_PIXDATA_NEGEDGE	= BIT(7),
-+};
++	int current_mode;
 +
- struct fb_videomode {
- 	const char *name;	/* optional */
- 	u32 refresh;		/* optional */
-@@ -46,7 +56,7 @@ struct fb_videomode {
- 	u32 vsync_len;
- 	u32 sync;
- 	u32 vmode;
--	u32 flag;
-+	u32 display_flags;
- };
+ 	struct fb_ops *fbops;
+ 	struct device_d dev;		/* This is this fb device */
  
- /* Interpretation of offset for color fields: All offsets are from the right,
-@@ -125,6 +135,8 @@ struct fb_info {
- 					 */
- };
- 
-+struct display_timings *of_get_display_timings(struct device_node *np);
-+
- int register_framebuffer(struct fb_info *info);
- 
- #define FBIOGET_SCREENINFO	_IOR('F', 1, loff_t)
 -- 
 1.9.0
 
