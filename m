@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOTAg-00055U-PA
- for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:15 +0000
+ id 1WOTAg-00055Y-Ty
+ for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:18 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Mar 2014 15:32:24 +0100
-Message-Id: <1394807569-23620-5-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Mar 2014 15:32:28 +0100
+Message-Id: <1394807569-23620-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,52 +21,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/29] ARM: dts: i.MX6: Add HDMI nodes
+Subject: [PATCH 08/29] clk: implement clk_round_rate
 To: barebox@lists.infradead.org
+
+Instead of returning just the current rate implement clk_round_rate
+properly.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx6q.dtsi   |  4 ++++
- arch/arm/dts/imx6qdl.dtsi | 11 +++++++++++
- 2 files changed, 15 insertions(+)
+ drivers/clk/clk.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm/dts/imx6q.dtsi b/arch/arm/dts/imx6q.dtsi
-index f9378fa..2b8ec43 100644
---- a/arch/arm/dts/imx6q.dtsi
-+++ b/arch/arm/dts/imx6q.dtsi
-@@ -158,6 +158,10 @@
- 	};
- };
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 31d73c0..c67b2f4 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -104,9 +104,19 @@ unsigned long clk_get_rate(struct clk *clk)
  
-+&hdmi {
-+	compatible = "fsl,imx6q-hdmi";
-+};
+ long clk_round_rate(struct clk *clk, unsigned long rate)
+ {
++	unsigned long parent_rate = 0;
++	struct clk *parent;
 +
- &ldb {
- 	clocks = <&clks 33>, <&clks 34>,
- 		 <&clks 39>, <&clks 40>, <&clks 41>, <&clks 42>,
-diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-index 5160db4..8dfd7de 100644
---- a/arch/arm/dts/imx6qdl.dtsi
-+++ b/arch/arm/dts/imx6qdl.dtsi
-@@ -665,6 +665,17 @@
- 				};
- 			};
+ 	if (IS_ERR(clk))
+ 		return 0;
  
-+			hdmi: hdmi@0120000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x00120000 0x9000>;
-+				interrupts = <0 115 0x04>;
-+				gpr = <&gpr>;
-+				clocks = <&clks 123>, <&clks 124>;
-+				clock-names = "iahb", "isfr";
-+				status = "disabled";
-+			};
++	parent = clk_get_parent(clk);
++	if (parent)
++		parent_rate = clk_get_rate(parent);
 +
- 			dcic1: dcic@020e4000 {
- 				reg = <0x020e4000 0x4000>;
- 				interrupts = <0 124 IRQ_TYPE_LEVEL_HIGH>;
++	if (clk->ops->round_rate)
++		return clk->ops->round_rate(clk, rate, &parent_rate);
++
+ 	return clk_get_rate(clk);
+ }
+ 
 -- 
 1.9.0
 
