@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WOTAp-0003AU-Ds
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WOTAg-00055a-UF
  for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:25 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Mar 2014 15:32:41 +0100
-Message-Id: <1394807569-23620-22-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Mar 2014 15:32:30 +0100
+Message-Id: <1394807569-23620-11-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,205 +21,142 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 21/29] video: rework mode_name parameter setting
+Subject: [PATCH 10/29] clk: clk-gate: pass flags to initializers
 To: barebox@lists.infradead.org
-
-We have dev_add_param_enum() now, so use it for the mode_name
-setting. Also drop the special case for single mode framebuffers,
-just add the mode_name parameter for this case aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/fb.c | 107 ++++++++++++++++++++++++++++++++++++-----------------
- include/fb.h       |   2 +
- 2 files changed, 76 insertions(+), 33 deletions(-)
+ arch/arm/mach-imx/clk.h        |  2 +-
+ drivers/clk/clk-gate.c         | 11 ++++++-----
+ drivers/clk/mvebu/common.c     |  2 +-
+ drivers/clk/mxs/clk.h          |  2 +-
+ drivers/clk/tegra/clk-periph.c |  2 +-
+ include/linux/clk.h            |  6 +++---
+ 6 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index e614d77..d7a3d3c 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -49,34 +49,42 @@ static int fb_enable_set(struct param_d *param, void *priv)
- 	return 0;
- }
- 
--static int fb_setup_mode(struct device_d *dev, struct param_d *param,
--		const char *val)
-+static struct fb_videomode *fb_num_to_mode(struct fb_info *info, int num)
+diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
+index 8e218fb..072af55 100644
+--- a/arch/arm/mach-imx/clk.h
++++ b/arch/arm/mach-imx/clk.h
+@@ -22,7 +22,7 @@ static inline struct clk *imx_clk_mux(const char *name, void __iomem *reg,
+ static inline struct clk *imx_clk_gate(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
  {
--	struct fb_info *info = dev->priv;
--	struct display_timings *dt;
--	int mode, ret;
-+	int num_modes;
-+
-+	num_modes = info->modes.num_modes;
-+
-+	if (num >= num_modes)
-+		return NULL;
-+
-+	return &info->modes.modes[num];
-+}
-+
-+static int fb_setup_mode(struct fb_info *info)
-+{
-+	struct device_d *dev = &info->dev;
-+	int ret;
-+	struct fb_videomode *mode;
- 
- 	if (info->enabled != 0)
- 		return -EPERM;
- 
--	if (!val)
--		return dev_param_set_generic(dev, param, NULL);
--
--	dt = &info->modes;
--	for (mode = 0; mode < dt->num_modes; mode++) {
--		if (!strcmp(dt->modes[mode].name, val))
--			break;
--	}
--	if (mode >= dt->num_modes)
-+	mode = fb_num_to_mode(info, info->current_mode);
-+	if (!mode)
- 		return -EINVAL;
- 
--	info->mode = &dt->modes[mode];
-+	info->mode = mode;
- 
- 	info->xres = info->mode->xres;
- 	info->yres = info->mode->yres;
- 	info->line_length = 0;
- 
--	ret = info->fbops->fb_activate_var(info);
-+	if (info->fbops->fb_activate_var) {
-+		ret = info->fbops->fb_activate_var(info);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (!info->line_length)
- 		info->line_length = info->xres * (info->bits_per_pixel >> 3);
-@@ -87,13 +95,24 @@ static int fb_setup_mode(struct device_d *dev, struct param_d *param,
- 		dev->resource[0].start = (resource_size_t)info->screen_base;
- 		info->cdev.size = info->line_length * info->yres;
- 		dev->resource[0].end = dev->resource[0].start + info->cdev.size - 1;
--		dev_param_set_generic(dev, param, val);
- 	} else
- 		info->cdev.size = 0;
- 
- 	return ret;
+-	return clk_gate(name, parent, reg, shift);
++	return clk_gate(name, parent, reg, shift, 0);
  }
  
-+static int fb_set_modename(struct param_d *param, void *priv)
-+{
-+	struct fb_info *info = priv;
-+	int ret;
-+
-+	ret = fb_setup_mode(info);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static struct file_operations fb_ops = {
- 	.read	= mem_read,
- 	.write	= mem_write,
-@@ -102,22 +121,27 @@ static struct file_operations fb_ops = {
- 	.ioctl	= fb_ioctl,
+ struct clk *imx_clk_pllv1(const char *name, const char *parent,
+diff --git a/drivers/clk/clk-gate.c b/drivers/clk/clk-gate.c
+index baec855..f356de7 100644
+--- a/drivers/clk/clk-gate.c
++++ b/drivers/clk/clk-gate.c
+@@ -83,7 +83,7 @@ static struct clk_ops clk_gate_ops = {
  };
  
--static void fb_info(struct device_d *dev)
-+static void fb_print_mode(struct fb_videomode *mode)
-+{
-+	printf("%-20s %dx%d@%d\n", mode->name,
-+			mode->xres, mode->yres, mode->refresh);
-+}
-+
-+static void fb_print_modes(struct display_timings *modes)
+ struct clk *clk_gate_alloc(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift)
++		void __iomem *reg, u8 shift, unsigned flags)
  {
--	struct fb_info *info = dev->priv;
- 	int i;
+ 	struct clk_gate *g = xzalloc(sizeof(*g));
  
--	if (!info->modes.num_modes)
--		return;
-+	for (i = 0; i < modes->num_modes; i++)
-+		fb_print_mode(&modes->modes[i]);
-+}
-+
-+static void fb_info(struct device_d *dev)
-+{
-+	struct fb_info *info = dev->priv;
+@@ -92,6 +92,7 @@ struct clk *clk_gate_alloc(const char *name, const char *parent,
+ 	g->shift = shift;
+ 	g->clk.ops = &clk_gate_ops;
+ 	g->clk.name = name;
++	g->clk.flags = flags;
+ 	g->clk.parent_names = &g->parent;
+ 	g->clk.num_parents = 1;
  
- 	printf("available modes:\n");
- 
--	for (i = 0; i < info->modes.num_modes; i++) {
--		struct fb_videomode *mode = &info->modes.modes[i];
--
--		printf("%-10s %dx%d@%d\n", mode->name,
--				mode->xres, mode->yres, mode->refresh);
--	}
-+	fb_print_modes(&info->modes);
- 
- 	printf("\n");
+@@ -106,12 +107,12 @@ void clk_gate_free(struct clk *clk_gate)
  }
-@@ -126,10 +150,20 @@ int register_framebuffer(struct fb_info *info)
+ 
+ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
+-		u8 shift)
++		u8 shift, unsigned flags)
  {
- 	int id = get_free_deviceid("fb");
- 	struct device_d *dev;
--	int ret;
-+	int ret, num_modes, i;
-+	const char **names;
+ 	struct clk *g;
+ 	int ret;
  
- 	dev = &info->dev;
+-	g = clk_gate_alloc(name , parent, reg, shift);
++	g = clk_gate_alloc(name , parent, reg, shift, flags);
  
-+	/*
-+	 * If info->mode is set at this point it's the only mode
-+	 * the fb supports. move it over to the modes list.
-+	 */
-+	if (info->mode) {
-+		info->modes.modes = info->mode;
-+		info->modes.num_modes = 1;
-+	}
-+
- 	if (!info->line_length)
- 		info->line_length = info->xres * (info->bits_per_pixel >> 3);
+ 	ret = clk_register(g);
+ 	if (ret) {
+@@ -123,12 +124,12 @@ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
+ }
  
-@@ -157,11 +191,18 @@ int register_framebuffer(struct fb_info *info)
- 	dev_add_param_bool(dev, "enable", fb_enable_set, NULL,
- 			&info->p_enable, info);
+ struct clk *clk_gate_inverted(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift)
++		void __iomem *reg, u8 shift, unsigned flags)
+ {
+ 	struct clk *clk;
+ 	struct clk_gate *g;
  
--	if (info->modes.num_modes &&
--			(info->fbops->fb_activate_var != NULL)) {
--		dev_add_param(dev, "mode_name", fb_setup_mode, NULL, 0);
--		dev_set_param(dev, "mode_name", info->modes.modes[0].name);
--	}
-+	num_modes = info->modes.num_modes;
-+
-+	names = xzalloc(sizeof(char *) * num_modes);
-+
-+	for (i = 0; i < info->modes.num_modes; i++)
-+		names[i] = info->modes.modes[i].name;
-+
-+	dev_add_param_enum(dev, "mode_name", fb_set_modename, NULL, &info->current_mode, names, num_modes, info);
-+
-+	info->mode = fb_num_to_mode(info, 0);
-+
-+	fb_setup_mode(info);
+-	clk = clk_gate(name, parent, reg, shift);
++	clk = clk_gate(name, parent, reg, shift, flags);
+ 	if (IS_ERR(clk))
+ 		return clk;
  
- 	ret = devfs_create(&info->cdev);
- 	if (ret)
-diff --git a/include/fb.h b/include/fb.h
-index 1cc352b..91d3fe4 100644
---- a/include/fb.h
-+++ b/include/fb.h
-@@ -94,6 +94,8 @@ struct fb_info {
- 	struct fb_videomode *mode;
- 	struct display_timings modes;
+diff --git a/drivers/clk/mvebu/common.c b/drivers/clk/mvebu/common.c
+index 37cc156..aa1e8f6 100644
+--- a/drivers/clk/mvebu/common.c
++++ b/drivers/clk/mvebu/common.c
+@@ -188,7 +188,7 @@ int mvebu_clk_gating_probe(struct device_d *dev)
+ 			(desc[n].parent) ? desc[n].parent : default_parent;
+ 		gate->bit_idx = desc[n].bit_idx;
+ 		gate->clk = clk_gate(desc[n].name, parent,
+-				base, desc[n].bit_idx);
++				base, desc[n].bit_idx, 0);
+ 		WARN_ON(IS_ERR(gate->clk));
+ 	}
  
-+	int current_mode;
-+
- 	struct fb_ops *fbops;
- 	struct device_d dev;		/* This is this fb device */
+diff --git a/drivers/clk/mxs/clk.h b/drivers/clk/mxs/clk.h
+index 3db38b4..168fa58 100644
+--- a/drivers/clk/mxs/clk.h
++++ b/drivers/clk/mxs/clk.h
+@@ -34,7 +34,7 @@ static inline struct clk *mxs_clk_fixed(const char *name, int rate)
+ static inline struct clk *mxs_clk_gate(const char *name,
+ 			const char *parent_name, void __iomem *reg, u8 shift)
+ {
+-	return clk_gate_inverted(name, parent_name, reg, shift);
++	return clk_gate_inverted(name, parent_name, reg, shift, 0);
+ }
  
+ static inline struct clk *mxs_clk_mux(const char *name, void __iomem *reg,
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index 0b9c8dc..c970f63 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -145,7 +145,7 @@ struct clk *_tegra_clk_register_periph(const char *name,
+ 		goto out_mux;
+ 
+ 	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + 0x10 +
+-				      ((id >> 3) & 0xc), id & 0x1f);
++				      ((id >> 3) & 0xc), id & 0x1f, 0);
+ 	if (!periph->gate)
+ 		goto out_gate;
+ 
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 439e88c..21edfab 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -260,12 +260,12 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
+ 		unsigned flags);
+ 
+ struct clk *clk_gate_alloc(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift);
++		void __iomem *reg, u8 shift, unsigned flags);
+ void clk_gate_free(struct clk *clk_gate);
+ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
+-		u8 shift);
++		u8 shift, unsigned flags);
+ struct clk *clk_gate_inverted(const char *name, const char *parent, void __iomem *reg,
+-		u8 shift);
++		u8 shift, unsigned flags);
+ int clk_is_enabled(struct clk *clk);
+ 
+ int clk_is_enabled_always(struct clk *clk);
 -- 
 1.9.0
 
