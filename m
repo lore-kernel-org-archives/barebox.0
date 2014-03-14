@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOTAg-00055g-UI
- for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:23 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Mar 2014 15:32:49 +0100
-Message-Id: <1394807569-23620-30-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
-References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
+ id 1WOUYu-0008LQ-Dm
+ for barebox@lists.infradead.org; Fri, 14 Mar 2014 16:02:21 +0000
+Received: by mail-ee0-f45.google.com with SMTP id d17so1553543eek.32
+ for <barebox@lists.infradead.org>; Fri, 14 Mar 2014 09:01:39 -0700 (PDT)
+Date: Fri, 14 Mar 2014 17:01:33 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140314160132.GA7755@omega>
+References: <1394803820-29277-1-git-send-email-s.hauer@pengutronix.de>
+ <1394803820-29277-7-git-send-email-s.hauer@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1394803820-29277-7-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,117 +21,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 29/29] ARM: update imx_v7_defconfig
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 6/6] ARM: pfla02: Set new ethernet phy tx timings
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-- Enable loadenv command
-- Enable mtd/NAND/UBI/UBIFS support
-- Enable IPUv3 support
-- Enable splash support
+On Fri, Mar 14, 2014 at 02:30:20PM +0100, Sascha Hauer wrote:
+> From: Christian Hemp <c.hemp@phytec.de>
+> 
+> TX_CLK line is approx. 54mm longer than other TX lines which adds
+> a delay of 0.36ns. RGMII need a delay of min. 1.0ns. This mean we have to add
+> a delay of 0.64ns. We choose 0.78 to have a little gap. This can be done by
+> setting GTX pad skew value to 11100
+>  => Set register 2.8 (RGMII Clock Pad Skew) to 0x038F.
+> 
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> ---
+>  arch/arm/boards/phytec-phyflex-imx6/board.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> index f510407..3db88da 100644
+> --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
+> +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> @@ -21,6 +21,9 @@
+>  #include <gpio.h>
+>  #include <init.h>
+>  #include <of.h>
+> +#include <fec.h>
+> +
+> +#include <linux/micrel_phy.h>
+>  
+>  #include <mach/imx6.h>
+>  
+> @@ -36,6 +39,21 @@ static int eth_phy_reset(void)
+>  	return 0;
+>  }
+>  
+> +static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
+> +{
+> +	phy_write(dev, 0x0d, device);
+> +	phy_write(dev, 0x0e, reg);
+> +	phy_write(dev, 0x0d, (1 << 14) | device);
+> +	phy_write(dev, 0x0e, val);
+> +}
+> +
+> +static int ksz9031rn_phy_fixup(struct phy_device *dev)
+> +{
+> +	mmd_write_reg(dev, 2, 8, 0x039F);
+> +
+commit msg says 0x038F and here is 0x039F. Which one is correct now?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/imx_v7_defconfig | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-index e821061..f29c968 100644
---- a/arch/arm/configs/imx_v7_defconfig
-+++ b/arch/arm/configs/imx_v7_defconfig
-@@ -12,9 +12,11 @@ CONFIG_MACH_REALQ7=y
- CONFIG_MACH_GK802=y
- CONFIG_MACH_TQMA6X=y
- CONFIG_MACH_SABRELITE=y
-+CONFIG_MACH_SABRESD=y
- CONFIG_MACH_NITROGEN6X=y
- CONFIG_MACH_SOLIDRUN_HUMMINGBOARD=y
- CONFIG_MACH_UDOO=y
-+CONFIG_MACH_VARISCITE_MX6=y
- CONFIG_IMX_IIM=y
- CONFIG_IMX_IIM_FUSE_BLOW=y
- CONFIG_IMX_OCOTP=y
-@@ -41,9 +43,11 @@ CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
- CONFIG_CMD_MSLEEP=y
- CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_PRINTENV=y
- CONFIG_CMD_READLINE=y
-+CONFIG_CMD_READF=y
- CONFIG_CMD_LET=y
- CONFIG_CMD_MENU=y
- CONFIG_CMD_MENU_MANAGEMENT=y
-@@ -72,6 +76,7 @@ CONFIG_CMD_OFTREE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OF_NODE=y
- CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_SPLASH=y
- CONFIG_CMD_BAREBOX_UPDATE=y
- CONFIG_CMD_TIMEOUT=y
- CONFIG_CMD_PARTITION=y
-@@ -94,8 +99,8 @@ CONFIG_NET_NETCONSOLE=y
- CONFIG_NET_RESOLV=y
- CONFIG_OFDEVICE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_AT803X_PHY=y
- CONFIG_DRIVER_NET_FEC_IMX=y
-+CONFIG_AT803X_PHY=y
- CONFIG_NET_USB=y
- CONFIG_NET_USB_ASIX=y
- CONFIG_NET_USB_SMSC95XX=y
-@@ -107,6 +112,13 @@ CONFIG_MTD_RAW_DEVICE=y
- CONFIG_MTD_DATAFLASH=y
- CONFIG_MTD_M25P80=y
- CONFIG_MTD_SST25L=y
-+CONFIG_NAND=y
-+CONFIG_NAND_ALLOW_ERASE_BAD=y
-+CONFIG_NAND_IMX=y
-+CONFIG_NAND_IMX_BBM=y
-+CONFIG_NAND_MXS=y
-+CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_FASTMAP=y
- CONFIG_DISK_AHCI=y
- CONFIG_DISK_AHCI_IMX=y
- CONFIG_DISK_INTF_PLATFORM_IDE=y
-@@ -118,6 +130,12 @@ CONFIG_USB_ULPI=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_GADGET=y
- CONFIG_USB_GADGET_DFU=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_IMX_IPUV3=y
-+CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS=y
-+CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI=y
-+CONFIG_DRIVER_VIDEO_SIMPLEFB=y
-+CONFIG_DRIVER_VIDEO_EDID=y
- CONFIG_MCI=y
- CONFIG_MCI_MMC_BOOT_PARTITIONS=y
- CONFIG_MCI_IMX_ESDHC=y
-@@ -133,6 +151,9 @@ CONFIG_EEPROM_AT24=y
- CONFIG_KEYBOARD_GPIO=y
- CONFIG_WATCHDOG=y
- CONFIG_WATCHDOG_IMX=y
-+CONFIG_PWM=y
-+CONFIG_PWM_IMX=y
-+CONFIG_MXS_APBH_DMA=y
- CONFIG_GPIO_STMPE=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
-@@ -140,4 +161,5 @@ CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
- CONFIG_FS_FAT_LFN=y
--CONFIG_LZO_DECOMPRESS=y
-+CONFIG_FS_UBIFS=y
-+CONFIG_FS_UBIFS_COMPRESSION_LZO=y
--- 
-1.9.0
-
+- Alex
 
 _______________________________________________
 barebox mailing list
