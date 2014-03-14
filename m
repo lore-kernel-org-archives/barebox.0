@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WOTAh-00055c-Qh
- for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:25 +0000
+ id 1WOTAo-00055k-5b
+ for barebox@lists.infradead.org; Fri, 14 Mar 2014 14:33:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 14 Mar 2014 15:32:29 +0100
-Message-Id: <1394807569-23620-10-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 14 Mar 2014 15:32:32 +0100
+Message-Id: <1394807569-23620-13-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,116 +21,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/29] clk: clk-mux: pass clk flags from initializers
+Subject: [PATCH 12/29] clk: clk-divider: pass flags to initializers
 To: barebox@lists.infradead.org
-
-struct clk has a flags field, let the clk-mux initializers set this
-field.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/clk.h        | 2 +-
- drivers/clk/clk-mux.c          | 8 +++++---
- drivers/clk/mxs/clk.h          | 2 +-
- drivers/clk/tegra/clk-periph.c | 2 +-
- include/linux/clk.h            | 6 ++++--
- 5 files changed, 12 insertions(+), 8 deletions(-)
+ arch/arm/mach-imx/clk-imx6.c    | 2 +-
+ arch/arm/mach-imx/clk.h         | 2 +-
+ drivers/clk/clk-divider-table.c | 3 ++-
+ drivers/clk/clk-divider.c       | 7 ++++---
+ include/linux/clk.h             | 6 +++---
+ 5 files changed, 11 insertions(+), 9 deletions(-)
 
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index 5560fff..8d78a18 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -214,7 +214,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clks[sata_ref_100m] = imx_clk_gate("sata_ref_100m", "sata_ref", base + 0xe0, 20);
+ 	clks[pcie_ref_125m] = imx_clk_gate("pcie_ref_125m", "pcie_ref", base + 0xe0, 19);
+ 
+-	clks[enet_ref] = clk_divider_table("enet_ref", "pll6_enet", base + 0xe0, 0, 2, clk_enet_ref_table);
++	clks[enet_ref] = clk_divider_table("enet_ref", "pll6_enet", base + 0xe0, 0, 2, clk_enet_ref_table, 0);
+ 
+ 	/*                                name               parent_name         reg          idx */
+ 	clks[pll2_pfd0_352m] = imx_clk_pfd("pll2_pfd0_352m", "pll2_bus",     base + 0x100, 0);
 diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
-index 4a7298d..8e218fb 100644
+index 54f04ed..cdafad1 100644
 --- a/arch/arm/mach-imx/clk.h
 +++ b/arch/arm/mach-imx/clk.h
-@@ -16,7 +16,7 @@ static inline struct clk *imx_clk_fixed_factor(const char *name,
- static inline struct clk *imx_clk_mux(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parents, u8 num_parents)
+@@ -4,7 +4,7 @@
+ static inline struct clk *imx_clk_divider(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift, u8 width)
  {
--	return clk_mux(name, reg, shift, width, parents, num_parents);
-+	return clk_mux(name, reg, shift, width, parents, num_parents, 0);
+-	return clk_divider(name, parent, reg, shift, width);
++	return clk_divider(name, parent, reg, shift, width, 0);
  }
  
- static inline struct clk *imx_clk_gate(const char *name, const char *parent,
-diff --git a/drivers/clk/clk-mux.c b/drivers/clk/clk-mux.c
-index b22bdd1..9dcd39c 100644
---- a/drivers/clk/clk-mux.c
-+++ b/drivers/clk/clk-mux.c
-@@ -56,7 +56,8 @@ static struct clk_ops clk_mux_ops = {
+ static inline struct clk *imx_clk_fixed_factor(const char *name,
+diff --git a/drivers/clk/clk-divider-table.c b/drivers/clk/clk-divider-table.c
+index fd2d3fc..0caf85d 100644
+--- a/drivers/clk/clk-divider-table.c
++++ b/drivers/clk/clk-divider-table.c
+@@ -85,7 +85,7 @@ static struct clk_ops clk_divider_table_ops = {
+ 
+ struct clk *clk_divider_table(const char *name,
+ 		const char *parent, void __iomem *reg, u8 shift, u8 width,
+-		const struct clk_div_table *table)
++		const struct clk_div_table *table, unsigned flags)
+ {
+ 	struct clk_divider_table *div = xzalloc(sizeof(*div));
+ 	const struct clk_div_table *clkt;
+@@ -98,6 +98,7 @@ struct clk *clk_divider_table(const char *name,
+ 	div->clk.ops = &clk_divider_table_ops;
+ 	div->clk.name = name;
+ 	div->clk.parent_names = &div->parent;
++	div->clk.flags = flags;
+ 	div->clk.num_parents = 1;
+ 	div->table = table;
+ 
+diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
+index 3bf8105..bb8bcc1 100644
+--- a/drivers/clk/clk-divider.c
++++ b/drivers/clk/clk-divider.c
+@@ -78,7 +78,7 @@ struct clk_ops clk_divider_ops = {
  };
  
- struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
--		u8 shift, u8 width, const char **parents, u8 num_parents)
-+		u8 shift, u8 width, const char **parents, u8 num_parents,
-+		unsigned flags)
+ struct clk *clk_divider(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, u8 width)
++		void __iomem *reg, u8 shift, u8 width, unsigned flags)
  {
- 	struct clk_mux *m = xzalloc(sizeof(*m));
- 
-@@ -65,6 +66,7 @@ struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
- 	m->width = width;
- 	m->clk.ops = &clk_mux_ops;
- 	m->clk.name = name;
-+	m->clk.flags = flags;
- 	m->clk.parent_names = parents;
- 	m->clk.num_parents = num_parents;
- 
-@@ -79,12 +81,12 @@ void clk_mux_free(struct clk *clk_mux)
- }
- 
- struct clk *clk_mux(const char *name, void __iomem *reg,
--		u8 shift, u8 width, const char **parents, u8 num_parents)
-+		u8 shift, u8 width, const char **parents, u8 num_parents, unsigned flags)
- {
- 	struct clk *m;
+ 	struct clk_divider *div = xzalloc(sizeof(*div));
  	int ret;
+@@ -89,6 +89,7 @@ struct clk *clk_divider(const char *name, const char *parent,
+ 	div->parent = parent;
+ 	div->clk.ops = &clk_divider_ops;
+ 	div->clk.name = name;
++	div->clk.flags = flags;
+ 	div->clk.parent_names = &div->parent;
+ 	div->clk.num_parents = 1;
  
--	m = clk_mux_alloc(name, reg, shift, width, parents, num_parents);
-+	m = clk_mux_alloc(name, reg, shift, width, parents, num_parents, flags);
- 
- 	ret = clk_register(m);
- 	if (ret) {
-diff --git a/drivers/clk/mxs/clk.h b/drivers/clk/mxs/clk.h
-index b4fcfa0..3db38b4 100644
---- a/drivers/clk/mxs/clk.h
-+++ b/drivers/clk/mxs/clk.h
-@@ -40,7 +40,7 @@ static inline struct clk *mxs_clk_gate(const char *name,
- static inline struct clk *mxs_clk_mux(const char *name, void __iomem *reg,
- 		u8 shift, u8 width, const char **parent_names, int num_parents)
- {
--	return clk_mux(name, reg, shift, width, parent_names, num_parents);
-+	return clk_mux(name, reg, shift, width, parent_names, num_parents, 0);
+@@ -102,12 +103,12 @@ struct clk *clk_divider(const char *name, const char *parent,
  }
  
- static inline struct clk *mxs_clk_fixed_factor(const char *name,
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index e969495..0b9c8dc 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -140,7 +140,7 @@ struct clk *_tegra_clk_register_periph(const char *name,
- 	}
+ struct clk *clk_divider_one_based(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, u8 width)
++		void __iomem *reg, u8 shift, u8 width, unsigned flags)
+ {
+ 	struct clk_divider *div;
+ 	struct clk *clk;
  
- 	periph->mux = clk_mux_alloc(NULL, clk_base + reg_offset, 30, 2,
--				    parent_names, num_parents);
-+				    parent_names, num_parents, 0);
- 	if (!periph->mux)
- 		goto out_mux;
+-	clk = clk_divider(name, parent, reg, shift, width);
++	clk = clk_divider(name, parent, reg, shift, width, flags);
+ 	if (IS_ERR(clk))
+ 		return clk;
  
 diff --git a/include/linux/clk.h b/include/linux/clk.h
-index af38c72..439e88c 100644
+index e65a62a..7e5010a 100644
 --- a/include/linux/clk.h
 +++ b/include/linux/clk.h
-@@ -252,10 +252,12 @@ struct clk *clk_fixed_factor(const char *name,
- 		const char *parent, unsigned int mult, unsigned int div);
+@@ -242,12 +242,12 @@ struct clk_divider {
+ extern struct clk_ops clk_divider_ops;
  
- struct clk *clk_mux_alloc(const char *name, void __iomem *reg,
--		u8 shift, u8 width, const char **parents, u8 num_parents);
-+		u8 shift, u8 width, const char **parents, u8 num_parents,
-+		unsigned flags);
- void clk_mux_free(struct clk *clk_mux);
- struct clk *clk_mux(const char *name, void __iomem *reg,
--		u8 shift, u8 width, const char **parents, u8 num_parents);
-+		u8 shift, u8 width, const char **parents, u8 num_parents,
-+		unsigned flags);
- 
- struct clk *clk_gate_alloc(const char *name, const char *parent,
- 		void __iomem *reg, u8 shift);
+ struct clk *clk_divider(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, u8 width);
++		void __iomem *reg, u8 shift, u8 width, unsigned flags);
+ struct clk *clk_divider_one_based(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, u8 width);
++		void __iomem *reg, u8 shift, u8 width, unsigned flags);
+ struct clk *clk_divider_table(const char *name,
+ 		const char *parent, void __iomem *reg, u8 shift, u8 width,
+-		const struct clk_div_table *table);
++		const struct clk_div_table *table, unsigned flags);
+ struct clk *clk_fixed_factor(const char *name,
+ 		const char *parent, unsigned int mult, unsigned int div,
+ 		unsigned flags);
 -- 
 1.9.0
 
