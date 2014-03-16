@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPBRJ-0003QY-Gd
- for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:22 +0000
-Received: by mail-la0-f50.google.com with SMTP id y1so2924306lam.23
- for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 06:48:59 -0700 (PDT)
+ id 1WPBR9-0003QU-MM
+ for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:13 +0000
+Received: by mail-lb0-f171.google.com with SMTP id w7so2983418lbi.16
+ for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 06:48:49 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 16 Mar 2014 17:48:19 +0400
-Message-Id: <1394977701-5889-9-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 16 Mar 2014 17:48:15 +0400
+Message-Id: <1394977701-5889-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
 References: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,174 +23,160 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 08/10] ARM: davinci: add virt2real board support
+Subject: [PATCH v2 04/10] ARM: davinci: add clocksource
 To: barebox@lists.infradead.org
-
-The virt2real microcontroller, or virturilka,
-is a miniature board for creation of WiFi
-or internet controllable smart devices.
-
-See http://virt2real.com for details.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/boards/Makefile             |  1 +
- arch/arm/boards/virt2real/Makefile   |  1 +
- arch/arm/boards/virt2real/board.c    | 27 +++++++++++++++++++++++++++
- arch/arm/boards/virt2real/lowlevel.c | 34 ++++++++++++++++++++++++++++++++++
- arch/arm/dts/virt2real.dts           | 35 +++++++++++++++++++++++++++++++++++
- arch/arm/mach-davinci/Kconfig        |  9 +++++++++
- 6 files changed, 107 insertions(+)
+ arch/arm/mach-davinci/include/mach/time.h |   2 +
+ arch/arm/mach-davinci/time.c              | 114 ++++++++++++++++++++++++++++++
+ 2 files changed, 116 insertions(+)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 0d8c9cf..e7af889 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -99,4 +99,5 @@ obj-$(CONFIG_MACH_USB_A9263)			+= usb-a926x/
- obj-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x/
- obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
- obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
-+obj-$(CONFIG_MACH_VIRT2REAL)			+= virt2real/
- obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
-diff --git a/arch/arm/boards/virt2real/Makefile b/arch/arm/boards/virt2real/Makefile
-new file mode 100644
-index 0000000..b2f44bb
---- /dev/null
-+++ b/arch/arm/boards/virt2real/Makefile
-@@ -0,0 +1 @@
-+obj-y += lowlevel.o board.o
-diff --git a/arch/arm/boards/virt2real/board.c b/arch/arm/boards/virt2real/board.c
-new file mode 100644
-index 0000000..b7f7217
---- /dev/null
-+++ b/arch/arm/boards/virt2real/board.c
-@@ -0,0 +1,27 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#include <common.h>
+diff --git a/arch/arm/mach-davinci/include/mach/time.h b/arch/arm/mach-davinci/include/mach/time.h
+index 741e90c..34781b6 100644
+--- a/arch/arm/mach-davinci/include/mach/time.h
++++ b/arch/arm/mach-davinci/include/mach/time.h
+@@ -13,6 +13,8 @@
+ 
+ #include <mach/hardware.h>
+ 
++#define DAVINCI_TIMER0_BASE		(IO_PHYS + 0x21400)
++#define DAVINCI_TIMER1_BASE		(IO_PHYS + 0x21800)
+ #define DAVINCI_WDOG_BASE		(IO_PHYS + 0x21C00)
+ 
+ #endif /* __ARCH_ARM_MACH_DAVINCI_TIME_H */
+diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
+index 1e00719..60f0d19 100644
+--- a/arch/arm/mach-davinci/time.c
++++ b/arch/arm/mach-davinci/time.c
+@@ -11,6 +11,8 @@
+ 
+ #include <common.h>
+ #include <io.h>
 +#include <init.h>
++#include <clock.h>
+ 
+ #include <mach/time.h>
+ 
+@@ -49,6 +51,118 @@
+ #define WDTCR_WDKEY_SEQ0             0xa5c6
+ #define WDTCR_WDKEY_SEQ1             0xda7e
+ 
++#define DAVINCI_TIMER_CLOCK 24000000
 +
-+static int hostname_init(void)
++struct timer_s {
++	void __iomem *base;
++	unsigned long tim_off;
++	unsigned long prd_off;
++	unsigned long enamode_shift;
++};
++
++static struct timer_s timers[] = {
++	{
++		.base = IOMEM(DAVINCI_TIMER0_BASE),
++		.enamode_shift = 6,
++		.tim_off = TIM12,
++		.prd_off = PRD12,
++	},
++	{
++		.base = IOMEM(DAVINCI_TIMER0_BASE),
++		.enamode_shift = 22,
++		.tim_off = TIM34,
++		.prd_off = PRD34,
++	},
++	{
++		.base = IOMEM(DAVINCI_TIMER1_BASE),
++		.enamode_shift = 6,
++		.tim_off = TIM12,
++		.prd_off = PRD12,
++	},
++	{
++		.base = IOMEM(DAVINCI_TIMER1_BASE),
++		.enamode_shift = 22,
++		.tim_off = TIM34,
++		.prd_off = PRD34,
++	},
++};
++
++static struct timer_s *t = &timers[0];
++
++static uint64_t davinci_cs_read(void)
 +{
-+	barebox_set_hostname("virt2real");
++	return (uint64_t)__raw_readl(t->base + t->tim_off);
++}
++
++static struct clocksource davinci_cs = {
++	.read	= davinci_cs_read,
++	.mask	= CLOCKSOURCE_MASK(32),
++};
++
++static int timer32_config(struct timer_s *t)
++{
++	u32 tcr;
++
++	tcr = __raw_readl(t->base + TCR);
++
++	/* disable timer */
++	tcr &= ~(TCR_ENAMODE_MASK << t->enamode_shift);
++	__raw_writel(tcr, t->base + TCR);
++
++	/* reset counter to zero, set new period */
++	__raw_writel(0, t->base + t->tim_off);
++	__raw_writel(0xffffffff, t->base + t->prd_off);
++
++	/* Set enable mode for periodic timer */
++	tcr |= TCR_ENAMODE_PERIODIC << t->enamode_shift;
++
++	__raw_writel(tcr, t->base + TCR);
 +
 +	return 0;
 +}
-+core_initcall(hostname_init);
-diff --git a/arch/arm/boards/virt2real/lowlevel.c b/arch/arm/boards/virt2real/lowlevel.c
-new file mode 100644
-index 0000000..3c90d78
---- /dev/null
-+++ b/arch/arm/boards/virt2real/lowlevel.c
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
 +
-+#define __LOWLEVEL_INIT__
-+
-+#include <common.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <init.h>
-+#include <sizes.h>
-+
-+#define VIRT2REAL_SRAM_BASE 0x82000000
-+#define VIRT2REAL_SRAM_SIZE SZ_16M
-+
-+void __naked __bare_init barebox_arm_reset_vector(void)
++/* Global init of 64-bit timer as a whole */
++static void __init timer_init(void __iomem *base)
 +{
-+	arm_cpu_lowlevel_init();
++	u32 tgcr;
 +
-+	barebox_arm_entry(VIRT2REAL_SRAM_BASE, VIRT2REAL_SRAM_SIZE, 0);
++	/* Disabled, Internal clock source */
++	__raw_writel(0, base + TCR);
++
++	/* reset both timers, no pre-scaler for timer34 */
++	tgcr = 0;
++	__raw_writel(tgcr, base + TGCR);
++
++	/* Set both timers to unchained 32-bit */
++	tgcr = TGCR_TIMMODE_32BIT_UNCHAINED << TGCR_TIMMODE_SHIFT;
++	__raw_writel(tgcr, base + TGCR);
++
++	/* Unreset timers */
++	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
++		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
++	__raw_writel(tgcr, base + TGCR);
++
++	/* Init both counters to zero */
++	__raw_writel(0, base + TIM12);
++	__raw_writel(0, base + TIM34);
 +}
-diff --git a/arch/arm/dts/virt2real.dts b/arch/arm/dts/virt2real.dts
-new file mode 100644
-index 0000000..0e2210a
---- /dev/null
-+++ b/arch/arm/dts/virt2real.dts
-@@ -0,0 +1,35 @@
-+/dts-v1/;
 +
-+#include "dm365.dtsi"
++static int clocksource_init(void)
++{
++	clocks_calc_mult_shift(&davinci_cs.mult, &davinci_cs.shift,
++		DAVINCI_TIMER_CLOCK, NSEC_PER_SEC, 10);
 +
-+/ {
-+	model = "virt2real";
++	init_clock(&davinci_cs);
 +
-+	memory {
-+		reg = <0x82000000 0x01000000>;
-+	};
++	timer_init(IOMEM(DAVINCI_TIMER0_BASE));
++	timer_init(IOMEM(DAVINCI_TIMER1_BASE));
 +
-+	soc {
-+		serial0: serial@1c20000 {
-+			status = "okay";
-+		};
++	timer32_config(t);
 +
-+		gpio: gpio@1c67000 {
-+			status = "okay";
-+		};
-+	};
++	return 0;
++}
++core_initcall(clocksource_init);
 +
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		green_led {
-+			label = "green led";
-+			gpios = <&gpio 73 0>;
-+		};
-+
-+		red_led {
-+			label = "red led";
-+			gpios = <&gpio 74 0>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index 5677f8d..3165d50 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -4,4 +4,13 @@ config ARCH_TEXT_BASE
- 	hex
- 	default 0x82000000
- 
-+choice
-+	prompt "Davinci Board type"
-+
-+config MACH_VIRT2REAL
-+	bool "Virt2Real"
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+
-+endchoice
-+
- endif
+ /* reset board using watchdog timer */
+ void __noreturn reset_cpu(ulong addr)
+ {
 -- 
 1.9.0
 
