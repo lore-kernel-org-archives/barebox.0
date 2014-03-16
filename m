@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from mail-la0-x22a.google.com ([2a00:1450:4010:c03::22a])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPBR9-0003QT-DR
- for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:12 +0000
-Received: by mail-la0-f46.google.com with SMTP id hr17so2976654lab.33
- for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 06:48:47 -0700 (PDT)
+ id 1WPBRC-0003QW-9A
+ for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:15 +0000
+Received: by mail-la0-f42.google.com with SMTP id ec20so3027253lab.29
+ for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 06:48:54 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 16 Mar 2014 17:48:14 +0400
-Message-Id: <1394977701-5889-4-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 16 Mar 2014 17:48:17 +0400
+Message-Id: <1394977701-5889-7-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
 References: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,75 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 03/10] ARM: davinci: add DEBUG_LL support
+Subject: [PATCH v2 06/10] ARM: dts: Add TI TMS320DM365 devicetree file
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig                              |  1 +
- arch/arm/mach-davinci/include/mach/debug_ll.h | 42 +++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ arch/arm/dts/dm365.dtsi | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 42ff01b..407f27d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -57,6 +57,7 @@ config ARCH_CLPS711X
- config ARCH_DAVINCI
- 	bool "TI Davinci"
- 	select CPU_ARM926T
-+	select HAS_DEBUG_LL
- 
- config ARCH_EP93XX
- 	bool "Cirrus Logic EP93xx"
-diff --git a/arch/arm/mach-davinci/include/mach/debug_ll.h b/arch/arm/mach-davinci/include/mach/debug_ll.h
+diff --git a/arch/arm/dts/dm365.dtsi b/arch/arm/dts/dm365.dtsi
 new file mode 100644
-index 0000000..587f408
+index 0000000..ea69007
 --- /dev/null
-+++ b/arch/arm/mach-davinci/include/mach/debug_ll.h
-@@ -0,0 +1,42 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
++++ b/arch/arm/dts/dm365.dtsi
+@@ -0,0 +1,28 @@
++#include "skeleton.dtsi"
 +
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
-+#define __INCLUDE_ARCH_DEBUG_LL_H__
++/ {
++	soc {
++		compatible = "simple-bus";
++		model = "TI TMS320DM365";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges = <0x0 0x01c00000 0x400000>;
 +
-+#include <asm/io.h>
-+#include <mach/serial.h>
++		serial0: serial@1c20000 {
++			compatible = "ns16550a";
++			reg = <0x20000 0x400>;
++			reg-shift = <2>;
++			clock-frequency = <24000000>;
++			status = "disabled";
++		};
 +
-+#define DEBUG_LL_UART_ADDR	DAVINCI_UART0_BASE
-+#define DEBUG_LL_UART_RSHFT	2
-+
-+#define rbr		(0 << DEBUG_LL_UART_RSHFT)
-+#define lsr		(5 << DEBUG_LL_UART_RSHFT)
-+#define LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+static inline void PUTC_LL(char ch)
-+{
-+	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
-+		;
-+
-+	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
-+}
-+
-+#endif /* __INCLUDE_ARCH_DEBUG_LL_H__ */
++		gpio: gpio@1c67000 {
++			compatible = "ti,dm6441-gpio";
++			gpio-controller;
++			reg = <0x67000 0x800>;
++			#gpio-cells = <2>;
++			ti,ngpio = <107>;
++			status = "disabled";
++		};
++	};
++};
 -- 
 1.9.0
 
