@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPBR4-0003QR-Ao
- for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:07 +0000
-Received: by mail-lb0-f178.google.com with SMTP id s7so2911196lbd.23
+ id 1WPBR3-0003QG-64
+ for barebox@lists.infradead.org; Sun, 16 Mar 2014 13:49:05 +0000
+Received: by mail-la0-f49.google.com with SMTP id mc6so2905354lab.8
  for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 06:48:42 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sun, 16 Mar 2014 17:48:11 +0400
-Message-Id: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
+Date: Sun, 16 Mar 2014 17:48:12 +0400
+Message-Id: <1394977701-5889-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
+References: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,73 +23,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 00/10] ARM: initial support for TI DaVinci SoCs and
- virt2real board
+Subject: [PATCH v2 01/10] import _AC and UL macros from linux kernel
 To: barebox@lists.infradead.org
 
-Change since v1:
+This macros are used in exported from linux TI DaVinci code.
+Also this macros are used in MIPS cache support code.
 
-- add hardware-base clocksource and move dummy software-only
-  clocksource to separate patchseries;
-- add gpio driver;
-- use devicetree for probing devices.
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/arm/include/asm/memory.h |  7 +++++++
+ include/linux/const.h         | 27 +++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+)
 
-Antony Pavlov (10):
-  import _AC and UL macros from linux kernel
-  ARM: initial support for TI DaVinci SoCs
-  ARM: davinci: add DEBUG_LL support
-  ARM: davinci: add clocksource
-  gpio: add driver for TI DaVinci SoCs
-  ARM: dts: Add TI TMS320DM365 devicetree file
-  ARM: davinci: add documentation
-  ARM: davinci: add virt2real board support
-  ARM: virt2real: add documentation
-  ARM: davinci: add virt2real_defconfig
-
- Documentation/boards.dox                      |   1 +
- arch/arm/Kconfig                              |   7 +
- arch/arm/Makefile                             |   1 +
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/virt2real/Makefile            |   1 +
- arch/arm/boards/virt2real/board.c             |  27 ++++
- arch/arm/boards/virt2real/lowlevel.c          |  34 +++++
- arch/arm/boards/virt2real/virt2real.dox       |  41 +++++
- arch/arm/configs/virt2real_defconfig          |  49 ++++++
- arch/arm/dts/dm365.dtsi                       |  28 ++++
- arch/arm/dts/virt2real.dts                    |  35 +++++
- arch/arm/include/asm/memory.h                 |   7 +
- arch/arm/mach-arm.dox                         |   2 +
- arch/arm/mach-davinci/Kconfig                 |  16 ++
- arch/arm/mach-davinci/Makefile                |   1 +
- arch/arm/mach-davinci/include/mach/debug_ll.h |  42 +++++
- arch/arm/mach-davinci/include/mach/hardware.h |  29 ++++
- arch/arm/mach-davinci/include/mach/serial.h   |  20 +++
- arch/arm/mach-davinci/include/mach/time.h     |  20 +++
- arch/arm/mach-davinci/mach-davinci.dox        |   7 +
- arch/arm/mach-davinci/time.c                  | 209 +++++++++++++++++++++++++
- drivers/gpio/Kconfig                          |   7 +
- drivers/gpio/Makefile                         |   1 +
- drivers/gpio/gpio-davinci.c                   | 211 ++++++++++++++++++++++++++
- include/linux/const.h                         |  27 ++++
- 25 files changed, 824 insertions(+)
- create mode 100644 arch/arm/boards/virt2real/Makefile
- create mode 100644 arch/arm/boards/virt2real/board.c
- create mode 100644 arch/arm/boards/virt2real/lowlevel.c
- create mode 100644 arch/arm/boards/virt2real/virt2real.dox
- create mode 100644 arch/arm/configs/virt2real_defconfig
- create mode 100644 arch/arm/dts/dm365.dtsi
- create mode 100644 arch/arm/dts/virt2real.dts
- create mode 100644 arch/arm/mach-davinci/Kconfig
- create mode 100644 arch/arm/mach-davinci/Makefile
- create mode 100644 arch/arm/mach-davinci/include/mach/debug_ll.h
- create mode 100644 arch/arm/mach-davinci/include/mach/hardware.h
- create mode 100644 arch/arm/mach-davinci/include/mach/serial.h
- create mode 100644 arch/arm/mach-davinci/include/mach/time.h
- create mode 100644 arch/arm/mach-davinci/mach-davinci.dox
- create mode 100644 arch/arm/mach-davinci/time.c
- create mode 100644 drivers/gpio/gpio-davinci.c
- create mode 100644 include/linux/const.h
-
+diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
+index 28afaa3..52114d0 100644
+--- a/arch/arm/include/asm/memory.h
++++ b/arch/arm/include/asm/memory.h
+@@ -3,6 +3,13 @@
+ 
+ #include <memory.h>
+ 
++#include <linux/const.h>
++/*
++ * Allow for constants defined here to be used from assembly code
++ * by prepending the UL suffix only with actual C code compilation.
++ */
++#define UL(x) _AC(x, UL)
++
+ static inline void arm_add_mem_device(const char* name, resource_size_t start,
+ 				    resource_size_t size)
+ {
+diff --git a/include/linux/const.h b/include/linux/const.h
+new file mode 100644
+index 0000000..c872bfd
+--- /dev/null
++++ b/include/linux/const.h
+@@ -0,0 +1,27 @@
++/* const.h: Macros for dealing with constants.  */
++
++#ifndef _LINUX_CONST_H
++#define _LINUX_CONST_H
++
++/* Some constant macros are used in both assembler and
++ * C code.  Therefore we cannot annotate them always with
++ * 'UL' and other type specifiers unilaterally.  We
++ * use the following macros to deal with this.
++ *
++ * Similarly, _AT() will cast an expression with a type in C, but
++ * leave it unchanged in asm.
++ */
++
++#ifdef __ASSEMBLY__
++#define _AC(X,Y)	X
++#define _AT(T,X)	X
++#else
++#define __AC(X,Y)	(X##Y)
++#define _AC(X,Y)	__AC(X,Y)
++#define _AT(T,X)	((T)(X))
++#endif
++
++#define _BITUL(x)	(_AC(1,UL) << (x))
++#define _BITULL(x)	(_AC(1,ULL) << (x))
++
++#endif /* !(_LINUX_CONST_H) */
 -- 
 1.9.0
 
