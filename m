@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPRHb-0000u0-9z
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:44:23 +0000
-Date: Mon, 17 Mar 2014 07:44:01 +0100
+ id 1WPRKl-0000wd-LD
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:47:40 +0000
+Date: Mon, 17 Mar 2014 07:47:17 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140317064401.GE17250@pengutronix.de>
-References: <1394947424-25936-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20140317064717.GF17250@pengutronix.de>
+References: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1394947424-25936-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1394734204-8181-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,43 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] mci: core: Typo fix in printk specifier
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH 0/6] ppc: add Freescale P1022DS board support
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 16, 2014 at 09:23:44AM +0400, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+On Thu, Mar 13, 2014 at 06:09:57PM +0000, Renaud Barbier wrote:
+> Addition of Freescale P1022DS platform and DDR3 support.
+> 
+> Patches based on import of existing U-Boot code with modifications
+> limited to code cleanup, and making DDR2 and DDR3 support co-existent.
+> 
+> Renaud Barbier (6):
+>   ppc: add SoC support for Freescale P1022
+>   common: DDR3 SPD verification support
+>   ppc: mpc8xxx: add DDR3 support
+>   ppc: add Freescale P1022DS board support
+>   ppc: mpc85xx:gianfar: add stashing support
+>   ppc: P1022DS: update Kconfig and Makefile
 
-Applied, thanks
+Applied all, thanks
 
 Sascha
-
-> ---
->  drivers/mci/mci-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index a18b555..1dca0c0 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -1813,7 +1813,7 @@ void mci_of_parse(struct mci_host *host)
->  		break;
->  	default:
->  		dev_err(host->hw_dev,
-> -			"Invalid \"bus-width\" value %ud!\n", bus_width);
-> +			"Invalid \"bus-width\" value %u!\n", bus_width);
->  	}
->  
->  	/* f_max is obtained from the optional "max-frequency" property */
-> -- 
-> 1.8.3.2
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
