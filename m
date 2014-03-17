@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPR58-0000iP-QG
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:31:31 +0000
-Date: Mon, 17 Mar 2014 07:31:07 +0100
+ id 1WPRCq-0000oI-4l
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:39:28 +0000
+Date: Mon, 17 Mar 2014 07:39:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140317063107.GB17250@pengutronix.de>
-References: <loom.20140313T212720-896@post.gmane.org>
+Message-ID: <20140317063904.GC17250@pengutronix.de>
+References: <532207C7.9020206@icid.cu> <20140313212810.4179d0c2@e6520eb>
+ <53234E31.2070300@icid.cu>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <loom.20140313T212720-896@post.gmane.org>
+In-Reply-To: <53234E31.2070300@icid.cu>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,39 +23,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX21 ADS NAND flash bad blocks scan. Barebox vs Linux
-To: Cristiano De Alti <cristiano_dealti@hotmail.com>
+Subject: Re: problem booting with Micron MT29F8G08ABABAWP ...
+To: raespi <raespi@icid.cu>
 Cc: barebox@lists.infradead.org
 
-On Thu, Mar 13, 2014 at 08:44:08PM +0000, Cristiano De Alti wrote:
-> Hi,
->   I'm probably posting to the wrong list since this is Linux issue.
-> I'm still trying to revive this old board.
+On Fri, Mar 14, 2014 at 02:45:05PM -0400, raespi wrote:
+> Hello again ... diving through the drivers/mtd/nand/nand_base.c code
+> I managed to boot with this little modification in the
+> nand_flash_detect_onfi() function just before exiting from it:
 > 
-> This board has a 64MBi Samsung NAND flash that is detected both by Barebox
-> (recent snapshot) and Linux 3.4.77.
+>     if ( mtd->oobsize > 128 )
+>       mtd->oobsize = 128;
 > 
-> The issue is that, while the bad blocks scan takes a negligible time on
-> Barebox, it takes 10 minutes to complete on Linux.
-> They both detect block 0 as a bad block. This is strange since it is
-> guaranteed to be good by the manufacturer but I've read the OOB data with
-> barebox and it's marked ad bad. I found this board in the lab and don't know
-> how it was used before.
-> 
-> Barebox code, nand_imx.c, and Linux code, mxc_nand.c, are similar but not
-> identical of course. I also think that Linux code was contributed by
-> Pengutronix so this is the reason I'm asking here.
-> 
-> I've enabled debug statements in Linux code and added my own statements.
-> As said, scan completes, everything looks OK but it is very slow.
+> Apparently the only allowed oobsizes are 8, 16, 64 and 128 according
+> to the nand_scan_ident() function.
 
-I assume this is a 512 byte page Nand, right? In this case you shouldn't
-have any issues with bad block marker swapping.
-An issue could be that one party uses a bad block table wereas the other
-scans each time. I recommend using a bad block table for barebox and the
-kernel.
-Maybe somebody has marked block 0 as bad to see whether the ROM Code
-handles this properly.
+You're probably referring to this code:
+
+	/*
+	 * If no default placement scheme is given, select an
+	 * appropriate one.
+	 */
+	if (!chip->ecc.layout && (chip->ecc.mode != NAND_ECC_SOFT_BCH)) {
+		switch (mtd->oobsize) {
+		case 8:
+			chip->ecc.layout = &nand_oob_8;
+			break;
+		case 16:
+			chip->ecc.layout = &nand_oob_16;
+			break;
+		case 64:
+			chip->ecc.layout = &nand_oob_64;
+			break;
+		case 128:
+			chip->ecc.layout = &nand_oob_128;
+			break;
+		default:
+			pr_warn("No oob scheme defined for oobsize %d\n",
+				   mtd->oobsize);
+			BUG();
+		}
+	}
+
+This check is only executed when you haven't specified an ecc layout in
+your chip driver. You probably have to set chip->ecc.layout in your
+driver.
+
+For problems like this it often helps to compare it to the kernel code
+(provided it works there). The code is quite similar.
 
 Sascha
 
