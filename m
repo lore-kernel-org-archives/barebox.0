@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x236.google.com ([2a00:1450:4013:c00::236])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPRCq-0000oI-4l
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:39:28 +0000
-Date: Mon, 17 Mar 2014 07:39:04 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140317063904.GC17250@pengutronix.de>
-References: <532207C7.9020206@icid.cu> <20140313212810.4179d0c2@e6520eb>
- <53234E31.2070300@icid.cu>
+ id 1WPREd-0000pi-6u
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:41:20 +0000
+Received: by mail-ee0-f54.google.com with SMTP id d49so3687433eek.41
+ for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 23:40:56 -0700 (PDT)
+Date: Mon, 17 Mar 2014 07:40:51 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140317064048.GA18901@omega>
+References: <1394803820-29277-1-git-send-email-s.hauer@pengutronix.de>
+ <1394803820-29277-7-git-send-email-s.hauer@pengutronix.de>
+ <20140314160132.GA7755@omega>
+ <20140317062434.GA17250@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <53234E31.2070300@icid.cu>
+In-Reply-To: <20140317062434.GA17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,62 +27,66 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: problem booting with Micron MT29F8G08ABABAWP ...
-To: raespi <raespi@icid.cu>
+Subject: Re: [PATCH 6/6] ARM: pfla02: Set new ethernet phy tx timings
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Fri, Mar 14, 2014 at 02:45:05PM -0400, raespi wrote:
-> Hello again ... diving through the drivers/mtd/nand/nand_base.c code
-> I managed to boot with this little modification in the
-> nand_flash_detect_onfi() function just before exiting from it:
+On Mon, Mar 17, 2014 at 07:24:35AM +0100, Sascha Hauer wrote:
+> On Fri, Mar 14, 2014 at 05:01:33PM +0100, Alexander Aring wrote:
+> > On Fri, Mar 14, 2014 at 02:30:20PM +0100, Sascha Hauer wrote:
+> > > From: Christian Hemp <c.hemp@phytec.de>
+> > > 
+> > > TX_CLK line is approx. 54mm longer than other TX lines which adds
+> > > a delay of 0.36ns. RGMII need a delay of min. 1.0ns. This mean we have to add
+> > > a delay of 0.64ns. We choose 0.78 to have a little gap. This can be done by
+> > > setting GTX pad skew value to 11100
+> > >  => Set register 2.8 (RGMII Clock Pad Skew) to 0x038F.
+> > > 
+> > > Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> > > ---
+> > >  arch/arm/boards/phytec-phyflex-imx6/board.c | 20 ++++++++++++++++++++
+> > >  1 file changed, 20 insertions(+)
+> > > 
+> > > diff --git a/arch/arm/boards/phytec-phyflex-imx6/board.c b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> > > index f510407..3db88da 100644
+> > > --- a/arch/arm/boards/phytec-phyflex-imx6/board.c
+> > > +++ b/arch/arm/boards/phytec-phyflex-imx6/board.c
+> > > @@ -21,6 +21,9 @@
+> > >  #include <gpio.h>
+> > >  #include <init.h>
+> > >  #include <of.h>
+> > > +#include <fec.h>
+> > > +
+> > > +#include <linux/micrel_phy.h>
+> > >  
+> > >  #include <mach/imx6.h>
+> > >  
+> > > @@ -36,6 +39,21 @@ static int eth_phy_reset(void)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static void mmd_write_reg(struct phy_device *dev, int device, int reg, int val)
+> > > +{
+> > > +	phy_write(dev, 0x0d, device);
+> > > +	phy_write(dev, 0x0e, reg);
+> > > +	phy_write(dev, 0x0d, (1 << 14) | device);
+> > > +	phy_write(dev, 0x0e, val);
+> > > +}
+> > > +
+> > > +static int ksz9031rn_phy_fixup(struct phy_device *dev)
+> > > +{
+> > > +	mmd_write_reg(dev, 2, 8, 0x039F);
+> > > +
+> > commit msg says 0x038F and here is 0x039F. Which one is correct now?
 > 
->     if ( mtd->oobsize > 128 )
->       mtd->oobsize = 128;
+> 0x39f is correct, I squashed a followup commit into this one without
+> fixing the commit message. I changed the commit message accordingly.
 > 
-> Apparently the only allowed oobsizes are 8, 16, 64 and 128 according
-> to the nand_scan_ident() function.
 
-You're probably referring to this code:
+ok, thanks Sascha. I just saw this and want to be sure that this is the
+right value.
 
-	/*
-	 * If no default placement scheme is given, select an
-	 * appropriate one.
-	 */
-	if (!chip->ecc.layout && (chip->ecc.mode != NAND_ECC_SOFT_BCH)) {
-		switch (mtd->oobsize) {
-		case 8:
-			chip->ecc.layout = &nand_oob_8;
-			break;
-		case 16:
-			chip->ecc.layout = &nand_oob_16;
-			break;
-		case 64:
-			chip->ecc.layout = &nand_oob_64;
-			break;
-		case 128:
-			chip->ecc.layout = &nand_oob_128;
-			break;
-		default:
-			pr_warn("No oob scheme defined for oobsize %d\n",
-				   mtd->oobsize);
-			BUG();
-		}
-	}
-
-This check is only executed when you haven't specified an ecc layout in
-your chip driver. You probably have to set chip->ecc.layout in your
-driver.
-
-For problems like this it often helps to compare it to the kernel code
-(provided it works there). The code is quite similar.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+- Alex
 
 _______________________________________________
 barebox mailing list
