@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x234.google.com ([2a00:1450:4013:c00::234])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPRHB-0000sj-Ah
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:43:57 +0000
-Received: by mail-ee0-f52.google.com with SMTP id e49so3727271eek.11
- for <barebox@lists.infradead.org>; Sun, 16 Mar 2014 23:43:33 -0700 (PDT)
-Date: Mon, 17 Mar 2014 07:43:30 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140317064328.GB18901@omega>
-References: <loom.20140313T212720-896@post.gmane.org>
+ id 1WPRHb-0000u0-9z
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 06:44:23 +0000
+Date: Mon, 17 Mar 2014 07:44:01 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140317064401.GE17250@pengutronix.de>
+References: <1394947424-25936-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <loom.20140313T212720-896@post.gmane.org>
+In-Reply-To: <1394947424-25936-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,19 +22,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: i.MX21 ADS NAND flash bad blocks scan. Barebox vs Linux
-To: Cristiano De Alti <cristiano_dealti@hotmail.com>
+Subject: Re: [PATCH] mci: core: Typo fix in printk specifier
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Sun, Mar 16, 2014 at 09:23:44AM +0400, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-just an idea... don't asking about why. But can you please disable
+Applied, thanks
 
-ARM_OPTIMZED_STRING_FUNCTIONS
+Sascha
 
-and test it again? I will check something there...
+> ---
+>  drivers/mci/mci-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+> index a18b555..1dca0c0 100644
+> --- a/drivers/mci/mci-core.c
+> +++ b/drivers/mci/mci-core.c
+> @@ -1813,7 +1813,7 @@ void mci_of_parse(struct mci_host *host)
+>  		break;
+>  	default:
+>  		dev_err(host->hw_dev,
+> -			"Invalid \"bus-width\" value %ud!\n", bus_width);
+> +			"Invalid \"bus-width\" value %u!\n", bus_width);
+>  	}
+>  
+>  	/* f_max is obtained from the optional "max-frequency" property */
+> -- 
+> 1.8.3.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-- Alex
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
