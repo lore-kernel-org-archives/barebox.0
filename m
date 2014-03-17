@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.rapiddevelopmentkit.de ([217.6.246.34] helo=root.phytec.de)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPVID-0006QW-Bj
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 11:01:18 +0000
-From: Christian Hemp <c.hemp@phytec.de>
-In-Reply-To: <1394803820-29277-5-git-send-email-s.hauer@pengutronix.de>
-References: <1394803820-29277-1-git-send-email-s.hauer@pengutronix.de>
- <1394803820-29277-5-git-send-email-s.hauer@pengutronix.de>
-Date: Mon, 17 Mar 2014 12:00:52 +0100
-Message-ID: <1395054052.2700.179.camel@lws-hemp>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WPWN1-0008J8-3Q
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 12:10:20 +0000
+Date: Mon, 17 Mar 2014 13:09:56 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140317120956.GV24917@pengutronix.de>
+References: <CF4C8000.DD58%ivor@veriline.co.za>
+ <CF4C8306.DD5F%ivor@veriline.co.za>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CF4C8306.DD5F%ivor@veriline.co.za>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,52 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] ARM: pfla02: Set ODT to recommended setting
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: GPIO setting
+To: Ivor Kruger <ivor@veriline.co.za>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hello Sascha,
+On Mon, Mar 17, 2014 at 10:47:06AM +0200, Ivor Kruger wrote:
+> Hi, sure this is a quick and easy question for the group=8A
+> =
 
-We removed this ODT values, because we had problems. I think before we
-use this settings we have to do some tests (climate cabinet...) with
-different modules.
+> On the OMAP4430, using the command from within barebox prompt to configure
+> a GPIO for testing hardware:
+> =
 
+> gpio_direction_output 140 0
+> =
 
-Christian
+> Should this be sufficient to set the gpio pin low, or is it required to
+> still do some pin muxing as well?
 
-Am Freitag, den 14.03.2014, 14:30 +0100 schrieb Sascha Hauer:
-> From: Christian Hemp <c.hemp@phytec.de>
-> 
-> Change the ODT values to  0x11117 (Recommended from Freescale)
-> see App note AN4579 "i.MX 6 Series Thermal Management Guidelines"
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h b/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> index 138ae36..fd09054 100644
-> --- a/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> +++ b/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> @@ -75,8 +75,8 @@ wm 32 0x021b001c 0x04008048
->  wm 32 0x021b0800 0xa1380003
->  wm 32 0x021b4800 0xa1380003
->  wm 32 0x021b0020 0x00005800
-> -wm 32 0x021b0818 0x00022227
-> -wm 32 0x021b4818 0x00022227
-> +wm 32 0x021b0818 0x00011117
-> +wm 32 0x021b4818 0x00011117
->  wm 32 0x021b083c 0x433c033f
->  wm 32 0x021b0840 0x033e033d
->  wm 32 0x021b483c 0x43490351
+The gpio functions only configure the gpio controller. If this pin is
+not gpio by default, you have to configure the pinmux controller aswell.
+There is no way to do that on the barebox commandline other than direct reg=
+ister
+writes to the pinmux controller.
 
+Sascha
 
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
