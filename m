@@ -1,21 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPRpQ-0001Yz-4n
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 07:19:20 +0000
-Date: Mon, 17 Mar 2014 08:18:58 +0100
+ id 1WPRru-0001bR-1f
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 07:21:54 +0000
+Date: Mon, 17 Mar 2014 08:21:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140317071857.GH17250@pengutronix.de>
-References: <53211233.5070806@kosagi.com>
- <20140313073817.GR17250@pengutronix.de>
- <53218604.6080702@kosagi.com>
- <20140313202719.GS17250@pengutronix.de>
- <532278F0.1040409@kosagi.com>
- <20140314082252.GW17250@pengutronix.de>
- <532679EC.4020806@kosagi.com>
+Message-ID: <20140317072132.GI17250@pengutronix.de>
+References: <1394791908-22061-1-git-send-email-s.hauer@pengutronix.de>
+ <20140314171116.GE6478@ns203013.ovh.net>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <532679EC.4020806@kosagi.com>
+In-Reply-To: <20140314171116.GE6478@ns203013.ovh.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -28,35 +23,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox to Novena: misc questions
-To: Sean Cross <xobs@kosagi.com>
+Subject: Re: [SPAM] [PATCH] splash: Print error message when no renderer is
+ found
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 17, 2014 at 12:28:28PM +0800, Sean Cross wrote:
-> Here is the resulting output and BUG from this run:
+On Fri, Mar 14, 2014 at 06:11:16PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> On 11:11 Fri 14 Mar     , Sascha Hauer wrote:
+> > the splash command silently fails when no renderer is found for
+> > an image type. Print an error message in this case.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  lib/gui/image_renderer.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/lib/gui/image_renderer.c b/lib/gui/image_renderer.c
+> > index 78e5777..9c92983 100644
+> > --- a/lib/gui/image_renderer.c
+> > +++ b/lib/gui/image_renderer.c
+> > @@ -23,6 +23,8 @@ static struct image_renderer *get_renderer(void* buf, size_t bufsize)
+> >  			return ir;
+> >  	}
+> >  
+> > +	printf("No renderer found for filetype %s\n", file_type_to_string(type));
 > 
-> barebox 2014.03.0-00628-g7fed07d-dirty #158 Mon Mar 17 12:25:45 SGT 2014
-> 
-> 
-> Board: Kosagi i.MX6DL Novena Board
-> detected i.MX6 DualLite revision 1.1
-> Trying to request region ttb (from 0x4fff4000:0x4fff7fff): ok
-> Trying to request region malloc space (from 0x4be00000:0x4fdfffff): ok
-> Trying to request region barebox (from 0x4fe00000:0x4fe4b4a7): ok
-> Trying to request region barebox data (from 0x4fe4b4a8:0x4fe5c8f7): ok
-> Trying to request region bss (from 0x4fe5c8f8:0x4fe6214f): ok
-> Trying to request region stack (from 0x4fff8000:0x4fffffff): ok
-> mmu: find_pte: TTB for address 0x4cd1e000 is not of type table
-> mmu: Memory banks:
-> mmu: #0 0x10000000 - 0xffffffff
+> 	eprintf?
 
-So you have one memory bank that starts at 0x10000000 which is the
-standard SDRAM base for i.MX6. Good. But why is the size 0? Have you
-specified this in your devicetree? It should contain the correct size.
-It could also be that we do not parse #ddress-cells / #size-cells
-correctly (in case one of these is not 1 in your devicetree).
+ok
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
