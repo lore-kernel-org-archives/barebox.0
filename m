@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from vm01-scratchy.webonline.biz ([41.86.105.82])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPWP9-0008N2-Ft
- for barebox@lists.infradead.org; Mon, 17 Mar 2014 12:12:32 +0000
-Date: Mon, 17 Mar 2014 13:12:09 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140317121209.GM17250@pengutronix.de>
-References: <1394803820-29277-1-git-send-email-s.hauer@pengutronix.de>
- <1394803820-29277-5-git-send-email-s.hauer@pengutronix.de>
- <1395054052.2700.179.camel@lws-hemp>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1395054052.2700.179.camel@lws-hemp>
+ id 1WPXtn-00034b-Hx
+ for barebox@lists.infradead.org; Mon, 17 Mar 2014 13:48:16 +0000
+Date: Mon, 17 Mar 2014 15:43:36 +0200
+From: Ivor Kruger <ivor@veriline.co.za>
+Message-ID: <CF4CC78F.DDE2%ivor@veriline.co.za>
+References: <CF4C8000.DD58%ivor@veriline.co.za>
+ <CF4C8306.DD5F%ivor@veriline.co.za>
+ <20140317120956.GV24917@pengutronix.de>
+In-Reply-To: <20140317120956.GV24917@pengutronix.de>
+Mime-version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,63 +23,101 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/6] ARM: pfla02: Set ODT to recommended setting
-To: Christian Hemp <c.hemp@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: GPIO setting
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi Christian,
+Thanks for the reply. So I take it I need to edit the mux.c file in the
+PCM049(which is the one I use) board directory. I changed the lines as
+below:
 
-On Mon, Mar 17, 2014 at 12:00:52PM +0100, Christian Hemp wrote:
-> Hello Sascha,
-> 
-> We removed this ODT values, because we had problems. I think before we
-> use this settings we have to do some tests (climate cabinet...) with
-> different modules.
+{I2C4_SDA, (PTU | IEN | M0)},					/* i2c4_sda */
+	{MCSPI1_CLK, (M3)},					/* gpio134 */
+	{MCSPI1_SOMI, (M3)},					/* gpio135 */
+	{MCSPI1_SIMO, (M3)},					/* gpio136 */
+	{MCSPI1_CS0, (M3)},					/* gpio137 */
+	{MCSPI1_CS1, (M3)},					/* gpio138 */
+	{MCSPI1_CS2, (M3)},				/* gpio139 */
+	{MCSPI1_CS3, (M3)},					/* gpio140 */
+	{UART3_CTS_RCTX, (PTU | IEN | M0)},				/* uart3_tx */
 
-Ok, I'll drop the patch then.
+This still did not allow me to change pin conditions. So in the board.c
+file for the PCM049, I also added these lines to force the config of the
+pins:
 
-Sascha
+ omap_add_display(&pcm049_fb_data);
+	gpio_direction_output(135, 1);
+	gpio_direction_output(136, 1);
+	gpio_direction_output(137, 1);
+	gpio_direction_output(138, 1);
+	gpio_direction_output(139, 1);
+	gpio_direction_output(140, 1);
 
-> 
-> 
-> Christian
-> 
-> Am Freitag, den 14.03.2014, 14:30 +0100 schrieb Sascha Hauer:
-> > From: Christian Hemp <c.hemp@phytec.de>
-> > 
-> > Change the ODT values to  0x11117 (Recommended from Freescale)
-> > see App note AN4579 "i.MX 6 Series Thermal Management Guidelines"
-> > 
-> > Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> > ---
-> >  arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h b/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> > index 138ae36..fd09054 100644
-> > --- a/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> > +++ b/arch/arm/boards/phytec-phyflex-imx6/flash-header-phytec-pfla02.h
-> > @@ -75,8 +75,8 @@ wm 32 0x021b001c 0x04008048
-> >  wm 32 0x021b0800 0xa1380003
-> >  wm 32 0x021b4800 0xa1380003
-> >  wm 32 0x021b0020 0x00005800
-> > -wm 32 0x021b0818 0x00022227
-> > -wm 32 0x021b4818 0x00022227
-> > +wm 32 0x021b0818 0x00011117
-> > +wm 32 0x021b4818 0x00011117
-> >  wm 32 0x021b083c 0x433c033f
-> >  wm 32 0x021b0840 0x033e033d
-> >  wm 32 0x021b483c 0x43490351
-> 
-> 
-> 
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+If I then do the gpiolib command inbarebox, the pins are indicated as gpio
+as below:
+
+gpio  133:     false
+gpio  134:     false
+gpio  135:      true  gpio
+gpio  136:      true  gpio
+gpio  137:      true  gpio
+gpio  138:      true  gpio
+gpio  139:      true  gpio
+gpio  140:      true  gpio
+gpio  141:     false
+gpio  142:     false
+gpio  143:     false
+
+BUT using the commands:
+
+gpio_direction_output 135 0
+
+And 
+
+gpio_direction_output 135 1
+
+Still does not change the pin condition.
+
+Is there something else I still need to do?
+
+Thanks
+Ivor
+
+
+
+
+
+
+
+On 2014/03/17, 2:09 PM, "Sascha Hauer" <s.hauer@pengutronix.de> wrote:
+
+>On Mon, Mar 17, 2014 at 10:47:06AM +0200, Ivor Kruger wrote:
+>> Hi, sure this is a quick and easy question for the group?
+>> 
+>> On the OMAP4430, using the command from within barebox prompt to
+>>configure
+>> a GPIO for testing hardware:
+>> 
+>> gpio_direction_output 140 0
+>> 
+>> Should this be sufficient to set the gpio pin low, or is it required to
+>> still do some pin muxing as well?
+>
+>The gpio functions only configure the gpio controller. If this pin is
+>not gpio by default, you have to configure the pinmux controller aswell.
+>There is no way to do that on the barebox commandline other than direct
+>register
+>writes to the pinmux controller.
+>
+>Sascha
+>
+>-- 
+>Pengutronix e.K.                           |                             |
+>Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+>Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+>Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
 
 _______________________________________________
 barebox mailing list
