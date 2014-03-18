@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPxHn-0000C2-OO
- for barebox@lists.infradead.org; Tue, 18 Mar 2014 16:54:48 +0000
-Date: Tue, 18 Mar 2014 17:54:20 +0100
+ id 1WPxJZ-0000FI-A2
+ for barebox@lists.infradead.org; Tue, 18 Mar 2014 16:56:37 +0000
+Date: Tue, 18 Mar 2014 17:56:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140318165420.GZ17250@pengutronix.de>
+Message-ID: <20140318165611.GA17250@pengutronix.de>
 References: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
- <1394977701-5889-7-git-send-email-antonynpavlov@gmail.com>
+ <1394977701-5889-9-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1394977701-5889-7-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1394977701-5889-9-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +23,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 06/10] ARM: dts: Add TI TMS320DM365 devicetree file
+Subject: Re: [PATCH v2 08/10] ARM: davinci: add virt2real board support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Sun, Mar 16, 2014 at 05:48:17PM +0400, Antony Pavlov wrote:
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  arch/arm/dts/dm365.dtsi | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
+On Sun, Mar 16, 2014 at 05:48:19PM +0400, Antony Pavlov wrote:
+> The virt2real microcontroller, or virturilka,
+> is a miniature board for creation of WiFi
+> or internet controllable smart devices.
 > 
-> diff --git a/arch/arm/dts/dm365.dtsi b/arch/arm/dts/dm365.dtsi
-> new file mode 100644
-> index 0000000..ea69007
-> --- /dev/null
-> +++ b/arch/arm/dts/dm365.dtsi
-> @@ -0,0 +1,28 @@
-> +#include "skeleton.dtsi"
-> +
+> See http://virt2real.com for details.
 > +/ {
-> +	soc {
-> +		compatible = "simple-bus";
-> +		model = "TI TMS320DM365";
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +		ranges = <0x0 0x01c00000 0x400000>;
+> +	model = "virt2real";
 > +
+> +	memory {
+> +		reg = <0x82000000 0x01000000>;
+> +	};
+> +
+> +	soc {
 > +		serial0: serial@1c20000 {
-> +			compatible = "ns16550a";
-> +			reg = <0x20000 0x400>;
-> +			reg-shift = <2>;
-> +			clock-frequency = <24000000>;
-> +			status = "disabled";
+> +			status = "okay";
 > +		};
 > +
 > +		gpio: gpio@1c67000 {
-> +			compatible = "ti,dm6441-gpio";
-> +			gpio-controller;
-> +			reg = <0x67000 0x800>;
-> +			#gpio-cells = <2>;
-> +			ti,ngpio = <107>;
-> +			status = "disabled";
+> +			status = "okay";
+> +		};
+> +	};
+> +
+> +	leds {
+> +		compatible = "gpio-leds";
+> +
+> +		green_led {
+> +			label = "green led";
+> +			gpios = <&gpio 73 0>;
+> +		};
 
-The device should be enabled in the dtsi. Virtually every board wants to
-use it.
+You should use labels without whitespaces. I'm not sure if all layers in
+barebox and the kernel handle whitespaces correctly.
 
 Sascha
 
