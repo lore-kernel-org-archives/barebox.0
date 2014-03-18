@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail1.g1.pair.com ([66.39.3.162])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPkoh-0005rj-Di
- for barebox@lists.infradead.org; Tue, 18 Mar 2014 03:35:51 +0000
-Message-ID: <5327BEFE.9020003@kosagi.com>
-Date: Tue, 18 Mar 2014 11:35:26 +0800
-From: Sean Cross <xobs@kosagi.com>
+Received: from mail-ee0-f50.google.com ([74.125.83.50])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WPnQK-0007k7-Nb
+ for barebox@lists.infradead.org; Tue, 18 Mar 2014 06:22:53 +0000
+Received: by mail-ee0-f50.google.com with SMTP id c13so4869861eek.37
+ for <barebox@lists.infradead.org>; Mon, 17 Mar 2014 23:22:27 -0700 (PDT)
+Date: Tue, 18 Mar 2014 07:22:22 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140318062220.GA17105@omega>
+References: <loom.20140313T212720-896@post.gmane.org>
+ <20140317064328.GB18901@omega>
+ <loom.20140317T232302-965@post.gmane.org>
 MIME-Version: 1.0
-References: <53211233.5070806@kosagi.com>
- <20140313073817.GR17250@pengutronix.de> <53218604.6080702@kosagi.com>
- <20140313202719.GS17250@pengutronix.de> <532278F0.1040409@kosagi.com>
- <20140314082252.GW17250@pengutronix.de> <532679EC.4020806@kosagi.com>
- <20140317071857.GH17250@pengutronix.de> <5326A7CF.7020005@kosagi.com>
- <20140317105318.GJ17250@pengutronix.de>
-In-Reply-To: <20140317105318.GJ17250@pengutronix.de>
+Content-Disposition: inline
+In-Reply-To: <loom.20140317T232302-965@post.gmane.org>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,73 +26,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Porting barebox to Novena: misc questions
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: i.MX21 ADS NAND flash bad blocks scan. Barebox vs Linux
+To: Cristiano De Alti <cristiano_dealti@hotmail.com>
 Cc: barebox@lists.infradead.org
 
-On 17/3/14 6:53 PM, Sascha Hauer wrote:
-> On Mon, Mar 17, 2014 at 03:44:15PM +0800, Sean Cross wrote:
->> On 17/3/14 3:18 PM, Sascha Hauer wrote:
->>> On Mon, Mar 17, 2014 at 12:28:28PM +0800, Sean Cross wrote:
->>>> Here is the resulting output and BUG from this run:
->>>>
->>>> barebox 2014.03.0-00628-g7fed07d-dirty #158 Mon Mar 17 12:25:45 SGT 2014
->>>>
->>>>
->>>> Board: Kosagi i.MX6DL Novena Board
->>>> detected i.MX6 DualLite revision 1.1
->>>> Trying to request region ttb (from 0x4fff4000:0x4fff7fff): ok
->>>> Trying to request region malloc space (from 0x4be00000:0x4fdfffff): ok
->>>> Trying to request region barebox (from 0x4fe00000:0x4fe4b4a7): ok
->>>> Trying to request region barebox data (from 0x4fe4b4a8:0x4fe5c8f7): ok
->>>> Trying to request region bss (from 0x4fe5c8f8:0x4fe6214f): ok
->>>> Trying to request region stack (from 0x4fff8000:0x4fffffff): ok
->>>> mmu: find_pte: TTB for address 0x4cd1e000 is not of type table
->>>> mmu: Memory banks:
->>>> mmu: #0 0x10000000 - 0xffffffff
->>>
->>> So you have one memory bank that starts at 0x10000000 which is the
->>> standard SDRAM base for i.MX6. Good. But why is the size 0? Have you
->>> specified this in your devicetree? It should contain the correct size.
->>> It could also be that we do not parse #ddress-cells / #size-cells
->>> correctly (in case one of these is not 1 in your devicetree).
->>
->> There is no "memory" node in my .dts file, so it's inheriting the
->> default "memory { device_type = "memory"; reg = <0 0>; };" from
->> skeleton.dtsi.
+On Mon, Mar 17, 2014 at 10:25:59PM +0000, Cristiano De Alti wrote:
+> Alexander Aring <alex.aring@...> writes:
 > 
-> Ok, that's fine.
+> > 
+> > Hi,
+> > 
+> > just an idea... don't asking about why. But can you please disable
+> > 
+> > ARM_OPTIMZED_STRING_FUNCTIONS
+> > 
+> > and test it again? I will check something there...
+> > 
+> > - Alex
+> > 
 > 
->> I add memory in my board.c file:
->>
->> static int kosagi_novena_mem_init(void)
->> {
->>         /* Pull out RAM capacity, which was stored here in lowlevel.c */
->>         arm_add_mem_device("ram0", 0x10000000, readl(MX6_SRC_BASE_ADDR +
->> 0x20));
+> I've disabled the above CONFIG in Barebox and I don't see any difference in
+> the duration of the bad blocks scan. Should it take longer?
+> What was the idea here?
+> Thanks for your help. I didn't imagine supporting this board was still of
+> some interest for someone ;)
 > 
-> Are you sure the readl returns the proper memory size? How about
-> replacing this with a hardcoded value for testing?
 
-That's very good thinking.  I'm guessing there's a fencepost error
-somewhere.  It works if I set it to SZ_1GB, but not when I include the
-full amount.  I've tried printing the value stored in that register, and
-it is correct.
+mhh then sorry, I experienced a slow imx nand some time ago, too. The
+config ARM_OPTIMZED_STRING_FUNCTIONS helped to improve the speedup. Was
+just a try, I never looked deeper into the issue...
 
-This works:
+The issue was a slow tftp with a 'special' host ethernet card. I never
+realize what the real problem was and I don't have this hardware anymore.
 
-        arm_add_mem_device("ram0", 0x10000000, SZ_2G + SZ_1G + SZ_512M +
-SZ_128M);
-
-This does not:
-
-        arm_add_mem_device("ram0", 0x10000000, SZ_2G + SZ_1G + SZ_512M +
-SZ_128M + 1);
-
-Is there something special about the address 0xf8000000?
-
-
-Sean
+- Alex
 
 _______________________________________________
 barebox mailing list
