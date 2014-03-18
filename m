@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from vm01-scratchy.webonline.biz ([41.86.105.82])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPqWP-00046m-9m
- for barebox@lists.infradead.org; Tue, 18 Mar 2014 09:41:22 +0000
-Date: Tue, 18 Mar 2014 11:40:52 +0200
-From: Ivor Kruger <ivor@veriline.co.za>
-Message-ID: <CF4DE0B6.DE83%ivor@veriline.co.za>
+ id 1WPwjP-0007n4-9p
+ for barebox@lists.infradead.org; Tue, 18 Mar 2014 16:19:13 +0000
+Date: Tue, 18 Mar 2014 17:18:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140318161847.GW17250@pengutronix.de>
 References: <CF4C8000.DD58%ivor@veriline.co.za>
  <CF4C8306.DD5F%ivor@veriline.co.za>
  <20140317120956.GV24917@pengutronix.de>
- <CF4DDB75.DE67%ivor@veriline.co.za>
-In-Reply-To: <CF4DDB75.DE67%ivor@veriline.co.za>
-Mime-version: 1.0
+ <CF4CC78F.DDE2%ivor@veriline.co.za>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CF4CC78F.DDE2%ivor@veriline.co.za>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,79 +21,85 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="big5"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: GPIO setting
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ivor Kruger <ivor@veriline.co.za>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-SGksIGFjdHVhbGx5LCBJIGZvdW5kIG15IHByb2JsZW0uCgpZb3Uga25vdyBob3cgdGhleSBzYXkg
-dGhhdCBhc3N1bXB0aW9ucyBhcmUgdGhlIG1vdGhlciBvZiBhbGwgc2NyZXcgdXBzoUsKCldlbGwg
-SSBhc3N1bWVkIHRoYXQgdGhlIGZ1bmN0aW9uIHNldF9tdXhjb25mX3JlZ3MoKSB3YXMgY2FsbGVk
-IGluIHRoZSBpbml0CmZ1bmN0aW9uoUt1cG9uIGNoZWNraW5nIEkgZm91bmQgdGhhdCBpdCB3YXMg
-bm90LCB0aHVzIHRoZSBtdXggd2FzIGp1c3Qgc2V0CnRvIHRoZSBkZWZhdWx0IHZhbHVlcyBhbmQg
-bm8gYW1vdW50IG9mIGVkaXRpbmcgaW4gdGhlIHNldHRpbmdzIG1hZGUgYQpkaWZmZXJlbmNlLgoK
-U28gSSBhZGRlZCBpdCB0byAgYmUgdGhlIGZpcnN0IGxpbmUgaW4gdGhlICJzdGF0aWMgaW50CnBj
-bTA0OV9kZXZpY2VzX2luaXQodm9pZCmhqCBmdW5jdGlvbi4KCk5vdyB0aGUgbXV4IGdldHMgY29u
-ZmlndXJlZCBjb3JyZWN0bHkuCgpSZWdhcmRzCkl2b3IKCgpPbiAyMDE0LzAzLzE4LCAxMToyMSBB
-TSwgIkl2b3IgS3J1Z2VyIiA8aXZvckB2ZXJpbGluZS5jby56YT4gd3JvdGU6Cgo+SGksIEkgYW0g
-c3RpbGwgaGF2aW5nIGEgcHJvYmxlbSB3aXRoIHRoZSBHUElPLgo+Cj5XaGVuIEkgY2hlY2sgdGhl
-IG11eCByZWdpc3RlcnMgZm9yIHRoZSBHUElPIHBpbnMgSSB3YW50IHRvIHVzZSwgaSBnZXQ6Cj4K
-PmJhcmVib3hAUGh5dGVjIHBoeUNPUkUgcGNtMDQ5Oi8gbWQgMHg0YTEwMDEzMAo+NGExMDAxMzA6
-IDAwMDcwMTE4IDAwMDcwMDA3IDAwMDcwMDA3IDAwMDcwMDA3Cj4uLi4uLi4uLi4uLi4uLi4uCj40
-YTEwMDE0MDogMDAwMDAxMTggMDAwMDAxMDAgMDExODAxMTggMDExODAxMTgKPi4uLi4uLi4uLi4u
-Li4uLi4KPgo+VGhpcyBpbmRpY2F0ZXMgdGhhdCB0aGUgcGlucyBhcmUgc3RpbGwgaW4gc2FmZSBt
-b2RlIGRlc3BpdGUgdGhlIHNldHRpbmdzCj5vZiBiZWxvdyBpbiB0aGUgbXV4LmMgZmlsZS4KPgo+
-e01DU1BJMV9DTEssIChNMyl9LAkJCQkJLyogZ3BpbzEzNCAqLwo+CXtNQ1NQSTFfU09NSSwgKE0z
-KX0sCQkJCQkvKiBncGlvMTM1ICovCj4Je01DU1BJMV9TSU1PLCAoTTMpfSwJCQkJCS8qIGdwaW8x
-MzYgKi8KPgl7TUNTUEkxX0NTMCwgKE0zKX0sCQkJCQkvKiBncGlvMTM3ICovCj4Je01DU1BJMV9D
-UzEsIChNMyl9LAkJCQkJLyogZ3BpbzEzOCAqLwo+CXtNQ1NQSTFfQ1MyLCAoTTMpfSwJCQkJCS8q
-IGdwaW8xMzkgKi8KPgl7TUNTUEkxX0NTMywgKE0zKX0sCQkJCQkvKiBncGlvMTQwICovCj4KPklu
-IHRoZSBib2FyZCBmaWxlIEkgaGF2ZSB0aGUgZm9sbG93aW5nIGNvZGU6Cj4KPnN0YXRpYyBpbnQg
-cGNtMDQ5X2RldmljZXNfaW5pdCh2b2lkKQo+ewo+CWkyY19yZWdpc3Rlcl9ib2FyZF9pbmZvKDAs
-IGkyY19kZXZpY2VzLCBBUlJBWV9TSVpFKGkyY19kZXZpY2VzKSk7Cj4Jb21hcDQ0eHhfYWRkX2ky
-YzEoTlVMTCk7Cj4Jb21hcDQ0eHhfYWRkX21tYzEoTlVMTCk7Cj4KPglncG1jX2dlbmVyaWNfaW5p
-dCgweDEwKTsKPgo+CXBjbTA0OV9uZXR3b3JrX2luaXQoKTsKPgo+CW9tYXBfYWRkX2dwbWNfbmFu
-ZF9kZXZpY2UoJm5hbmRfcGxhdCk7Cj4KPiNpZmRlZiBDT05GSUdfUEFSVElUSU9OCj4JZGV2ZnNf
-YWRkX3BhcnRpdGlvbigibmFuZDAiLCAweDAwMDAwLCBTWl8xMjhLLCBERVZGU19QQVJUSVRJT05f
-RklYRUQsCj4ieGxvYWRfcmF3Iik7Cj4JZGV2X2FkZF9iYl9kZXYoInhsb2FkX3JhdyIsICJ4bG9h
-ZCIpOwo+CWRldmZzX2FkZF9wYXJ0aXRpb24oIm5hbmQwIiwgU1pfMTI4SywgU1pfNTEySywgREVW
-RlNfUEFSVElUSU9OX0ZJWEVELAo+InNlbGZfcmF3Iik7Cj4JZGV2X2FkZF9iYl9kZXYoInNlbGZf
-cmF3IiwgInNlbGYwIik7Cj4JZGV2ZnNfYWRkX3BhcnRpdGlvbigibmFuZDAiLCBTWl8xMjhLICsg
-U1pfNTEySywgU1pfMTI4SywKPkRFVkZTX1BBUlRJVElPTl9GSVhFRCwgImVudl9yYXciKTsKPglk
-ZXZfYWRkX2JiX2RldigiZW52X3JhdyIsICJlbnYwIik7Cj4jZW5kaWYKPgo+CWFybWxpbnV4X3Nl
-dF9ib290cGFyYW1zKCh2b2lkICopMHg4MDAwMDEwMCk7Cj4JYXJtbGludXhfc2V0X2FyY2hpdGVj
-dHVyZShNQUNIX1RZUEVfUENNMDQ5KTsKPgo+CW9tYXBfYWRkX2Rpc3BsYXkoJnBjbTA0OV9mYl9k
-YXRhKTsKPgo+CWdwaW9fZGlyZWN0aW9uX291dHB1dCgxMzQsIDEpOwo+CWdwaW9fZGlyZWN0aW9u
-X291dHB1dCgxMzUsIDEpOwo+CWdwaW9fZGlyZWN0aW9uX291dHB1dCgxMzYsIDEpOwo+CWdwaW9f
-ZGlyZWN0aW9uX291dHB1dCgxMzcsIDEpOwo+CWdwaW9fZGlyZWN0aW9uX291dHB1dCgxMzgsIDAp
-Owo+CWdwaW9fZGlyZWN0aW9uX291dHB1dCgxMzksIDApOwo+CWdwaW9fZGlyZWN0aW9uX291dHB1
-dCgxNDAsIDApOwo+Cj4JcmV0dXJuIDA7Cj59Cj4KPklmIEkgZG8gYSBtdyAweDRhMTAwMTNjIDB4
-MDAwMzAwMDMgdGhlIHJlZ2lzdGVyIGlzIGNoYW5nZWQgYXMgZXhwZWN0ZWQuIEkKPmNhbiB0aGVu
-IHVzZSB0aGUgZ3Bpb19kaXJlY3Rpb25fb3V0cHV0IGNvbW1hbmQgdG8gdG9nZ2xlIHRoZSBwaW4u
-Cj4KPgo+U28gdGhlIHByb2JsZW0gY2xlYXJseSBsaWVzIHdpdGhpbiB0aGUgd2F5IHRoZSBtdXgg
-cmVnaXN0ZXJzIGFyZQo+Y29uZmlndXJlZC4KPgo+QW55IGlkZWFzIG9uIHdoYXQgSSBhbSBkb2lu
-ZyB3cm9uZwo+Cj5WaWVsZW4gZGFuawo+SXZvcgo+Cj4KPgo+Cj4KPk9uIDIwMTQvMDMvMTcsIDI6
-MDkgUE0sICJTYXNjaGEgSGF1ZXIiIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3cm90ZToKPgo+
-Pk9uIE1vbiwgTWFyIDE3LCAyMDE0IGF0IDEwOjQ3OjA2QU0gKzAyMDAsIEl2b3IgS3J1Z2VyIHdy
-b3RlOgo+Pj4gSGksIHN1cmUgdGhpcyBpcyBhIHF1aWNrIGFuZCBlYXN5IHF1ZXN0aW9uIGZvciB0
-aGUgZ3JvdXA/Cj4+PiAKPj4+IE9uIHRoZSBPTUFQNDQzMCwgdXNpbmcgdGhlIGNvbW1hbmQgZnJv
-bSB3aXRoaW4gYmFyZWJveCBwcm9tcHQgdG8KPj4+Y29uZmlndXJlCj4+PiBhIEdQSU8gZm9yIHRl
-c3RpbmcgaGFyZHdhcmU6Cj4+PiAKPj4+IGdwaW9fZGlyZWN0aW9uX291dHB1dCAxNDAgMAo+Pj4g
-Cj4+PiBTaG91bGQgdGhpcyBiZSBzdWZmaWNpZW50IHRvIHNldCB0aGUgZ3BpbyBwaW4gbG93LCBv
-ciBpcyBpdCByZXF1aXJlZCB0bwo+Pj4gc3RpbGwgZG8gc29tZSBwaW4gbXV4aW5nIGFzIHdlbGw/
-Cj4+Cj4+VGhlIGdwaW8gZnVuY3Rpb25zIG9ubHkgY29uZmlndXJlIHRoZSBncGlvIGNvbnRyb2xs
-ZXIuIElmIHRoaXMgcGluIGlzCj4+bm90IGdwaW8gYnkgZGVmYXVsdCwgeW91IGhhdmUgdG8gY29u
-ZmlndXJlIHRoZSBwaW5tdXggY29udHJvbGxlciBhc3dlbGwuCj4+VGhlcmUgaXMgbm8gd2F5IHRv
-IGRvIHRoYXQgb24gdGhlIGJhcmVib3ggY29tbWFuZGxpbmUgb3RoZXIgdGhhbiBkaXJlY3QKPj5y
-ZWdpc3Rlcgo+PndyaXRlcyB0byB0aGUgcGlubXV4IGNvbnRyb2xsZXIuCj4+Cj4+U2FzY2hhCj4+
-Cj4+LS0gCj4+UGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKPj58
-Cj4+SW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8KPj58Cj4+UGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
-LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wCj4+fAo+PkFtdHNnZXJpY2h0IEhp
-bGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1
-NQo+PnwKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-YmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9s
-aXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+On Mon, Mar 17, 2014 at 03:43:36PM +0200, Ivor Kruger wrote:
+> Thanks for the reply. So I take it I need to edit the mux.c file in the
+> PCM049(which is the one I use) board directory. I changed the lines as
+> below:
+> 
+> {I2C4_SDA, (PTU | IEN | M0)},					/* i2c4_sda */
+> 	{MCSPI1_CLK, (M3)},					/* gpio134 */
+> 	{MCSPI1_SOMI, (M3)},					/* gpio135 */
+> 	{MCSPI1_SIMO, (M3)},					/* gpio136 */
+> 	{MCSPI1_CS0, (M3)},					/* gpio137 */
+> 	{MCSPI1_CS1, (M3)},					/* gpio138 */
+> 	{MCSPI1_CS2, (M3)},				/* gpio139 */
+> 	{MCSPI1_CS3, (M3)},					/* gpio140 */
+> 	{UART3_CTS_RCTX, (PTU | IEN | M0)},				/* uart3_tx */
+> 
+> This still did not allow me to change pin conditions. So in the board.c
+> file for the PCM049, I also added these lines to force the config of the
+> pins:
+> 
+>  omap_add_display(&pcm049_fb_data);
+> 	gpio_direction_output(135, 1);
+> 	gpio_direction_output(136, 1);
+> 	gpio_direction_output(137, 1);
+> 	gpio_direction_output(138, 1);
+> 	gpio_direction_output(139, 1);
+> 	gpio_direction_output(140, 1);
+> 
+> 
+> If I then do the gpiolib command inbarebox, the pins are indicated as gpio
+> as below:
+> 
+> gpio  133:     false
+> gpio  134:     false
+> gpio  135:      true  gpio
+> gpio  136:      true  gpio
+> gpio  137:      true  gpio
+> gpio  138:      true  gpio
+> gpio  139:      true  gpio
+> gpio  140:      true  gpio
+> gpio  141:     false
+> gpio  142:     false
+> gpio  143:     false
+> 
+> BUT using the commands:
+> 
+> gpio_direction_output 135 0
+> 
+> And 
+> 
+> gpio_direction_output 135 1
+> 
+> Still does not change the pin condition.
+> 
+> Is there something else I still need to do?
+
+Generally that's all you have to do: Configure pinmux and use gpio
+functions. I'm not very familiar with OMAPs. How does the translation
+from MCSPI1_SOMI to gpio135 work? Are you sure the gpio number is
+correct? Is gpio generally M3 and what do the other flags lie IEN and
+PTU do? I have no idea what goes wrong here, but that would be the next
+places I would look at.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
