@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQIFK-0006bC-MW
+ id 1WQIFK-0006bB-MX
  for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:17:35 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2014 16:17:09 +0100
-Message-Id: <1395242230-6947-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 19 Mar 2014 16:17:10 +0100
+Message-Id: <1395242230-6947-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1395242230-6947-1-git-send-email-s.hauer@pengutronix.de>
+References: <1395242230-6947-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] usb: gadget: set composite to NULL when
- usb_gadget_register_driver fails
+Subject: [PATCH 2/2] usb: gadget: propagate error code from
+ usb_composite_register
 To: barebox@lists.infradead.org
-
-From: Lucas Stach <dev@lynxeye.de>
-
-So that it can be tried later again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/composite.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/dfu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 11b6c18..71d0ecf 100644
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -994,6 +994,8 @@ static struct usb_gadget_driver composite_driver = {
-  */
- int usb_composite_register(struct usb_composite_driver *driver)
- {
-+	int ret;
-+
- 	if (!driver || !driver->dev || !driver->bind || composite)
- 		return -EINVAL;
+diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
+index 76b5def..d0f2155 100644
+--- a/drivers/usb/gadget/dfu.c
++++ b/drivers/usb/gadget/dfu.c
+@@ -703,7 +703,9 @@ int usb_dfu_register(struct usb_dfu_pdata *pdata)
+ 	strings_dev[STRING_MANUFACTURER_IDX].s = pdata->manufacturer;
+ 	strings_dev[STRING_PRODUCT_IDX].s = pdata->productname;
  
-@@ -1002,7 +1004,12 @@ int usb_composite_register(struct usb_composite_driver *driver)
- 	composite_driver.function =  (char *) driver->name;
- 	composite = driver;
- 
--	return usb_gadget_register_driver(&composite_driver);
-+	ret = usb_gadget_register_driver(&composite_driver);
-+
+-	usb_composite_register(&dfu_driver);
++	ret = usb_composite_register(&dfu_driver);
 +	if (ret)
-+		composite = NULL;
-+
-+	return ret;
- }
++		return ret;
  
- /**
+ 	while (1) {
+ 		ret = usb_gadget_poll();
 -- 
 1.9.0
 
