@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQIFK-0006bB-MX
- for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:17:35 +0000
+ id 1WQIIE-0006fY-Au
+ for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:20:34 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2014 16:17:10 +0100
-Message-Id: <1395242230-6947-2-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1395242230-6947-1-git-send-email-s.hauer@pengutronix.de>
-References: <1395242230-6947-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 19 Mar 2014 16:20:11 +0100
+Message-Id: <1395242411-10247-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1395242411-10247-1-git-send-email-s.hauer@pengutronix.de>
+References: <1395242411-10247-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,30 +21,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] usb: gadget: propagate error code from
- usb_composite_register
+Subject: [PATCH 2/2] boot command: only create boot entries from scripts
 To: barebox@lists.infradead.org
+
+When given a directory ignore all files that are not shell scripts.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/gadget/dfu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ commands/boot.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/usb/gadget/dfu.c b/drivers/usb/gadget/dfu.c
-index 76b5def..d0f2155 100644
---- a/drivers/usb/gadget/dfu.c
-+++ b/drivers/usb/gadget/dfu.c
-@@ -703,7 +703,9 @@ int usb_dfu_register(struct usb_dfu_pdata *pdata)
- 	strings_dev[STRING_MANUFACTURER_IDX].s = pdata->manufacturer;
- 	strings_dev[STRING_PRODUCT_IDX].s = pdata->productname;
+diff --git a/commands/boot.c b/commands/boot.c
+index 9c7aa21..a54d0d5 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -106,6 +106,11 @@ static void bootsource_action(struct menu *m, struct menu_entry *me)
+ static int bootscript_create_entry(struct blspec *blspec, const char *name)
+ {
+ 	struct blspec_entry *be;
++	enum filetype type;
++
++	type = file_name_detect_type(name);
++	if (type != filetype_sh)
++		return -EINVAL;
  
--	usb_composite_register(&dfu_driver);
-+	ret = usb_composite_register(&dfu_driver);
-+	if (ret)
-+		return ret;
- 
- 	while (1) {
- 		ret = usb_gadget_poll();
+ 	be = blspec_entry_alloc(blspec);
+ 	be->me.type = MENU_ENTRY_NORMAL;
 -- 
 1.9.0
 
