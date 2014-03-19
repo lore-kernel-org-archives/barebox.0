@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WPxJZ-0000FI-A2
- for barebox@lists.infradead.org; Tue, 18 Mar 2014 16:56:37 +0000
-Date: Tue, 18 Mar 2014 17:56:11 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140318165611.GA17250@pengutronix.de>
-References: <1394977701-5889-1-git-send-email-antonynpavlov@gmail.com>
- <1394977701-5889-9-git-send-email-antonynpavlov@gmail.com>
+Received: from exprod5og111.obsmtp.com ([64.18.0.22])
+ by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WQEd6-0007DK-1a
+ for barebox@lists.infradead.org; Wed, 19 Mar 2014 11:25:52 +0000
+Received: from [3.26.68.149] (unknown [3.26.68.149])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id CC949E0DEB
+ for <barebox@lists.infradead.org>; Wed, 19 Mar 2014 11:25:26 +0000 (GMT)
+Message-ID: <53297EA7.7010605@ge.com>
+Date: Wed, 19 Mar 2014 11:25:27 +0000
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1394977701-5889-9-git-send-email-antonynpavlov@gmail.com>
+References: <1394556858-27282-1-git-send-email-renaud.barbier@ge.com>
+In-Reply-To: <1394556858-27282-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,51 +24,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 08/10] ARM: davinci: add virt2real board support
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] ppc: P2020RDB: add persistent configuration support
+To: barebox@lists.infradead.org
 
-On Sun, Mar 16, 2014 at 05:48:19PM +0400, Antony Pavlov wrote:
-> The virt2real microcontroller, or virturilka,
-> is a miniature board for creation of WiFi
-> or internet controllable smart devices.
+Hello,
+I noticed this single patch has not been applied yet while the large
+P1022DS patch-set sent later has been.
+
+Let me know whether there is any issue and I will fix it immediately?
+
+Cheers,
+Renaud
+
+On 11/03/2014 16:54, Renaud Barbier wrote:
+> Add an environment partition and support commands to have persistent
+> boot configuration for Linux.
 > 
-> See http://virt2real.com for details.
-> +/ {
-> +	model = "virt2real";
-> +
-> +	memory {
-> +		reg = <0x82000000 0x01000000>;
-> +	};
-> +
-> +	soc {
-> +		serial0: serial@1c20000 {
-> +			status = "okay";
-> +		};
-> +
-> +		gpio: gpio@1c67000 {
-> +			status = "okay";
-> +		};
-> +	};
-> +
-> +	leds {
-> +		compatible = "gpio-leds";
-> +
-> +		green_led {
-> +			label = "green led";
-> +			gpios = <&gpio 73 0>;
-> +		};
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  arch/ppc/boards/freescale-p2020rdb/env/bin/init |  2 ++
+>  arch/ppc/boards/freescale-p2020rdb/env/config   |  2 ++
+>  arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |  9 +++++----
+>  arch/ppc/configs/p2020rdb_defconfig             | 21 ++++++++++++++++++++-
+>  4 files changed, 29 insertions(+), 5 deletions(-)
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
+> 
 
-You should use labels without whitespaces. I'm not sure if all layers in
-barebox and the kernel handle whitespaces correctly.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
