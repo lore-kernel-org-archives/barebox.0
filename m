@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQIXt-00078U-Tb
- for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:36:46 +0000
+ id 1WQNMj-00009j-I5
+ for barebox@lists.infradead.org; Wed, 19 Mar 2014 20:45:34 +0000
+Date: Wed, 19 Mar 2014 21:45:09 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2014 16:20:45 +0100
-Message-Id: <1395242445-15939-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140319204509.GC17250@pengutronix.de>
+References: <1395228537-28677-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1395228537-28677-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,54 +18,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM i.MX6Q: Fix IOMUXC GPR1 defines for ENET_CLK_SEL and
- IPU1/2_MUX
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] [FOR SQUASH] ARM: virt2real.dts: use labels without
+ whitespaces
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+On Wed, Mar 19, 2014 at 03:28:57PM +0400, Antony Pavlov wrote:
+> see comment in the maillist
+>   http://lists.infradead.org/pipermail/barebox/2014-March/018333.html
+> 
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- include/mfd/imx6q-iomuxc-gpr.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Squashed into the commit, thanks
 
-diff --git a/include/mfd/imx6q-iomuxc-gpr.h b/include/mfd/imx6q-iomuxc-gpr.h
-index db43d59..3ccc254 100644
---- a/include/mfd/imx6q-iomuxc-gpr.h
-+++ b/include/mfd/imx6q-iomuxc-gpr.h
-@@ -103,15 +103,15 @@
- #define IMX6Q_GPR1_EXC_MON_MASK			BIT(22)
- #define IMX6Q_GPR1_EXC_MON_OKAY			0x0
- #define IMX6Q_GPR1_EXC_MON_SLVE			BIT(22)
--#define IMX6Q_GPR1_MIPI_IPU2_SEL_MASK		BIT(21)
--#define IMX6Q_GPR1_MIPI_IPU2_SEL_GASKET		0x0
--#define IMX6Q_GPR1_MIPI_IPU2_SEL_IOMUX		BIT(21)
--#define IMX6Q_GPR1_MIPI_IPU1_MUX_MASK		BIT(20)
--#define IMX6Q_GPR1_MIPI_IPU1_MUX_GASKET		0x0
--#define IMX6Q_GPR1_MIPI_IPU1_MUX_IOMUX		BIT(20)
--#define IMX6Q_GPR1_MIPI_IPU2_MUX_MASK		BIT(19)
-+#define IMX6Q_GPR1_ENET_CLK_SEL_MASK		BIT(21)
-+#define IMX6Q_GPR1_ENET_CLK_SEL_PAD		0
-+#define IMX6Q_GPR1_ENET_CLK_SEL_ANATOP		BIT(21)
-+#define IMX6Q_GPR1_MIPI_IPU2_MUX_MASK		BIT(20)
- #define IMX6Q_GPR1_MIPI_IPU2_MUX_GASKET		0x0
--#define IMX6Q_GPR1_MIPI_IPU2_MUX_IOMUX		BIT(19)
-+#define IMX6Q_GPR1_MIPI_IPU2_MUX_IOMUX		BIT(20)
-+#define IMX6Q_GPR1_MIPI_IPU1_MUX_MASK		BIT(19)
-+#define IMX6Q_GPR1_MIPI_IPU1_MUX_GASKET		0x0
-+#define IMX6Q_GPR1_MIPI_IPU1_MUX_IOMUX		BIT(19)
- #define IMX6Q_GPR1_PCIE_TEST_PD			BIT(18)
- #define IMX6Q_GPR1_IPU_VPU_MUX_MASK		BIT(17)
- #define IMX6Q_GPR1_IPU_VPU_MUX_IPU1		0x0
+Sascha
+
+> ---
+>  arch/arm/dts/virt2real.dts | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/dts/virt2real.dts b/arch/arm/dts/virt2real.dts
+> index 0e2210a..09aec1f 100644
+> --- a/arch/arm/dts/virt2real.dts
+> +++ b/arch/arm/dts/virt2real.dts
+> @@ -23,12 +23,12 @@
+>  		compatible = "gpio-leds";
+>  
+>  		green_led {
+> -			label = "green led";
+> +			label = "green-led";
+>  			gpios = <&gpio 73 0>;
+>  		};
+>  
+>  		red_led {
+> -			label = "red led";
+> +			label = "red-led";
+>  			gpios = <&gpio 74 0>;
+>  		};
+>  	};
+> -- 
+> 1.9.0
+> 
+> 
+
 -- 
-1.9.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
