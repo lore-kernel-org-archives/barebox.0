@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQEgl-0007Ll-3K
- for barebox@lists.infradead.org; Wed, 19 Mar 2014 11:29:39 +0000
-Received: by mail-la0-f49.google.com with SMTP id mc6so5683827lab.22
- for <barebox@lists.infradead.org>; Wed, 19 Mar 2014 04:29:15 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 19 Mar 2014 15:29:12 +0400
-Message-Id: <1395228552-28724-1-git-send-email-antonynpavlov@gmail.com>
+ id 1WQGUn-0002pB-WE
+ for barebox@lists.infradead.org; Wed, 19 Mar 2014 13:25:27 +0000
+From: Philipp Zabel <p.zabel@pengutronix.de>
+Date: Wed, 19 Mar 2014 14:25:02 +0100
+Message-Id: <1395235502-27629-1-git-send-email-p.zabel@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,31 +19,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] [FOR SQUASH] clocksource: dummy.c: remove Kconfig warning
+Subject: [PATCH] mtd: ubi: avoid NULL pointer dereference in ubi_get_device
 To: barebox@lists.infradead.org
 
-This patch removes this warning during 'make *config':
+If the ubidetach command is given a number that passes the range check
+in ubi_detach_mtd_dev, but at which index the ubi_devices array contains
+a NULL pointer, ubi_get_device tries to dereference this NULL pointer
+to increment the ubi device reference count.
 
-  drivers/clocksource/Kconfig:36:warning: leading whitespace ignored
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/clocksource/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/ubi/build.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-index f53c933..43974f0 100644
---- a/drivers/clocksource/Kconfig
-+++ b/drivers/clocksource/Kconfig
-@@ -32,7 +32,8 @@ config CLOCKSOURCE_DUMMY
- 	  was initialized.
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index da21f69..b908fcd 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -104,6 +104,8 @@ struct ubi_device *ubi_get_device(int ubi_num)
+ 	struct ubi_device *ubi;
  
- config CLOCKSOURCE_DUMMY_RATE
--	int "  dummy clocksource rate"
-+	int
-+	prompt "dummy clocksource rate"
- 	depends on CLOCKSOURCE_DUMMY
- 	default 1000
+ 	ubi = ubi_devices[ubi_num];
++	if (!ubi)
++		return NULL;
+ 
+ 	ubi->ref_count++;
  
 -- 
 1.9.0
