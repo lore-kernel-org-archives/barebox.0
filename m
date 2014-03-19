@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQIIE-0006fX-Aw
- for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:20:35 +0000
+ id 1WQIXt-00078U-Tb
+ for barebox@lists.infradead.org; Wed, 19 Mar 2014 15:36:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 19 Mar 2014 16:20:10 +0100
-Message-Id: <1395242411-10247-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed, 19 Mar 2014 16:20:45 +0100
+Message-Id: <1395242445-15939-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,129 +19,46 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] boot command: honour global.boot.default also for -l and
- -m
+Subject: [PATCH] ARM i.MX6Q: Fix IOMUXC GPR1 defines for ENET_CLK_SEL and
+ IPU1/2_MUX
 To: barebox@lists.infradead.org
 
-The boot command is expected to work on bootsources from the commandline
-if given, on global.boot.default otherwise. Fix this behaviour for the
--m and -l options also.
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/boot.c | 79 +++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 48 insertions(+), 31 deletions(-)
+ include/mfd/imx6q-iomuxc-gpr.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/commands/boot.c b/commands/boot.c
-index bb8d07f..9c7aa21 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -333,9 +333,11 @@ static int boot(const char *name)
- 
- static int do_boot(int argc, char *argv[])
- {
--	const char *sources = NULL;
--	char *source, *freep;
-+	char *freep = NULL;
- 	int opt, ret = 0, do_list = 0, do_menu = 0;
-+	char **sources;
-+	int num_sources;
-+	int i;
- 
- 	verbose = 0;
- 	dryrun = 0;
-@@ -361,47 +363,62 @@ static int do_boot(int argc, char *argv[])
- 		}
- 	}
- 
--	if (do_list) {
--		bootsources_list(&argv[optind], argc - optind);
--		return 0;
--	}
-+	if (optind < argc) {
-+		num_sources = argc - optind;
-+		sources = xmemdup(&argv[optind], sizeof(char *) * num_sources);
-+	} else {
-+		const char *def;
-+		char *sep;
- 
--	if (do_menu) {
--		bootsources_menu(&argv[optind], argc - optind);
--		return 0;
--	}
-+		def = getenv("global.boot.default");
-+		if (!def)
-+			return 0;
- 
--	if (optind < argc) {
--		while (optind < argc) {
--			source = argv[optind];
--			optind++;
--			ret = boot(source);
--			if (!ret)
-+		sep = freep = xstrdup(def);
-+
-+		num_sources = 0;
-+
-+		while (1) {
-+			num_sources++;
-+
-+			sep = strchr(sep, ' ');
-+			if (!sep)
- 				break;
-+			sep++;
-+		}
-+
-+		sources = xmalloc(sizeof(char *) * num_sources);
-+
-+		sep = freep;
-+
-+		for (i = 0; i < num_sources; i++) {
-+			sources[i] = sep;
-+			sep = strchr(sep, ' ');
-+			if (sep)
-+				*sep = 0;
-+			sep++;
- 		}
--		return ret;
- 	}
- 
--	sources = getenv("global.boot.default");
--	if (!sources)
--		return 0;
-+	if (do_list) {
-+		bootsources_list(sources, num_sources);
-+		goto out;
-+	}
- 
--	freep = source = xstrdup(sources);
-+	if (do_menu) {
-+		bootsources_menu(sources, num_sources);
-+		goto out;
-+	}
- 
--	while (1) {
--		char *sep = strchr(source, ' ');
--		if (sep)
--			*sep = 0;
--		ret = boot(source);
-+	for (i = 0; i < num_sources; i++) {
-+		ret = boot(sources[i]);
- 		if (!ret)
- 			break;
--
--		if (sep)
--			source = sep + 1;
--		else
--			break;
-+		goto out;
- 	}
- 
-+out:
-+	free(sources);
- 	free(freep);
- 
- 	return ret;
+diff --git a/include/mfd/imx6q-iomuxc-gpr.h b/include/mfd/imx6q-iomuxc-gpr.h
+index db43d59..3ccc254 100644
+--- a/include/mfd/imx6q-iomuxc-gpr.h
++++ b/include/mfd/imx6q-iomuxc-gpr.h
+@@ -103,15 +103,15 @@
+ #define IMX6Q_GPR1_EXC_MON_MASK			BIT(22)
+ #define IMX6Q_GPR1_EXC_MON_OKAY			0x0
+ #define IMX6Q_GPR1_EXC_MON_SLVE			BIT(22)
+-#define IMX6Q_GPR1_MIPI_IPU2_SEL_MASK		BIT(21)
+-#define IMX6Q_GPR1_MIPI_IPU2_SEL_GASKET		0x0
+-#define IMX6Q_GPR1_MIPI_IPU2_SEL_IOMUX		BIT(21)
+-#define IMX6Q_GPR1_MIPI_IPU1_MUX_MASK		BIT(20)
+-#define IMX6Q_GPR1_MIPI_IPU1_MUX_GASKET		0x0
+-#define IMX6Q_GPR1_MIPI_IPU1_MUX_IOMUX		BIT(20)
+-#define IMX6Q_GPR1_MIPI_IPU2_MUX_MASK		BIT(19)
++#define IMX6Q_GPR1_ENET_CLK_SEL_MASK		BIT(21)
++#define IMX6Q_GPR1_ENET_CLK_SEL_PAD		0
++#define IMX6Q_GPR1_ENET_CLK_SEL_ANATOP		BIT(21)
++#define IMX6Q_GPR1_MIPI_IPU2_MUX_MASK		BIT(20)
+ #define IMX6Q_GPR1_MIPI_IPU2_MUX_GASKET		0x0
+-#define IMX6Q_GPR1_MIPI_IPU2_MUX_IOMUX		BIT(19)
++#define IMX6Q_GPR1_MIPI_IPU2_MUX_IOMUX		BIT(20)
++#define IMX6Q_GPR1_MIPI_IPU1_MUX_MASK		BIT(19)
++#define IMX6Q_GPR1_MIPI_IPU1_MUX_GASKET		0x0
++#define IMX6Q_GPR1_MIPI_IPU1_MUX_IOMUX		BIT(19)
+ #define IMX6Q_GPR1_PCIE_TEST_PD			BIT(18)
+ #define IMX6Q_GPR1_IPU_VPU_MUX_MASK		BIT(17)
+ #define IMX6Q_GPR1_IPU_VPU_MUX_IPU1		0x0
 -- 
 1.9.0
 
