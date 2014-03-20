@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+Received: from s250.sam-solutions.net ([217.21.49.219])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WQXR0-0005IF-71
- for barebox@lists.infradead.org; Thu, 20 Mar 2014 07:30:38 +0000
-Received: by mail-lb0-f174.google.com with SMTP id u14so294653lbd.5
- for <barebox@lists.infradead.org>; Thu, 20 Mar 2014 00:30:14 -0700 (PDT)
-Date: Thu, 20 Mar 2014 11:39:45 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140320113945.b5d5addb8bed349118566364@gmail.com>
-In-Reply-To: <20140319204529.GD17250@pengutronix.de>
-References: <1395228552-28724-1-git-send-email-antonynpavlov@gmail.com>
- <20140319204529.GD17250@pengutronix.de>
-Mime-Version: 1.0
+ id 1WQaO5-0002gW-AH
+ for barebox@lists.infradead.org; Thu, 20 Mar 2014 10:39:50 +0000
+Message-ID: <532AC2EB.2040302@sam-solutions.net>
+Date: Thu, 20 Mar 2014 13:28:59 +0300
+From: Dmitry Lavnikevich <d.lavnikevich@sam-solutions.net>
+MIME-Version: 1.0
+References: <1394610851-721-1-git-send-email-d.lavnikevich@sam-solutions.com>
+ <20140313065458.GQ17250@pengutronix.de>
+In-Reply-To: <20140313065458.GQ17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,85 +18,166 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] [FOR SQUASH] clocksource: dummy.c: remove Kconfig warning
+Subject: Re: [PATCH] i.MX6: bbu: Barebox update support for NAND.
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Cc: Grigory Milev <G.Milev@sam-solutions.com>, "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-On Wed, 19 Mar 2014 21:45:29 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hello Sascha,
 
-> On Wed, Mar 19, 2014 at 03:29:12PM +0400, Antony Pavlov wrote:
-> > This patch removes this warning during 'make *config':
-> > =
+have you tried my patch on your board yet?
+I will correct mentioned points and resent it to mail list later.
+I'm also interested to see your implementation of this functionality.
+Particulary regarding the
 
-> >   drivers/clocksource/Kconfig:36:warning: leading whitespace ignored
-> > =
+> This doesn't seem to take bad blocks into account. What happens when the
+> first firmware image gets bigger due to bad blocks? It will be
+> overwritten by the 2nd image.
 
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> =
+part.
 
-> Also squashed into the original commit.
-
-Excuse me for my Treppenwitz!
-
-Could you please change
-
-+	int
-+	prompt "dummy clocksource rate"
-
-to more usual
-
-+	int "dummy clocksource rate"
-?
-
-I'm so sorry!
-
-]> =
-
-> > ---
-> >  drivers/clocksource/Kconfig | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > =
-
-> > diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> > index f53c933..43974f0 100644
-> > --- a/drivers/clocksource/Kconfig
-> > +++ b/drivers/clocksource/Kconfig
-> > @@ -32,7 +32,8 @@ config CLOCKSOURCE_DUMMY
-> >  	  was initialized.
-> >  =
-
-> >  config CLOCKSOURCE_DUMMY_RATE
-> > -	int "  dummy clocksource rate"
-> > +	int
-> > +	prompt "dummy clocksource rate"
-> >  	depends on CLOCKSOURCE_DUMMY
-> >  	default 1000
-> >  =
-
-> > -- =
-
-> > 1.9.0
-> > =
-
-> > =
-
-> =
-
-> -- =
-
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---=A0
 Best regards,
-=A0 Antony Pavlov
+Lavnikevich Dmitry
+
+On 03/13/14 09:54, Sascha Hauer wrote:
+> Hi Dmitry,
+>
+> On Wed, Mar 12, 2014 at 10:54:11AM +0300, Dmitry Lavnikevich wrote:
+>> This patch implements updating barebox on i.MX6 NAND. In userspace
+>> similar task is performed by freescale kobs-ng utility.
+>> To use this bbu profile nand handler should be registered in board
+>> code with 'imx6_bbu_internal_nand_register_handler' function.
+> I have the very same patch in the queue, it seems we have duplicated
+> some work. As this version has some shortcomings I'll post my version as
+> an alternative implementation. Also I'll try your version on a board I
+> have here on which my version doesn't work (which is the reason I
+> haven't posted my patch yet)
+>
+>> +static int erase_part(struct mtd_info *mtd)
+>> +{
+>> +	loff_t ofs;
+>> +	int ret = 0;
+>> +	struct erase_info erase_opts = {
+>> +		.mtd = mtd,
+>> +		.addr = 0,
+>> +		.len = mtd->erasesize,
+>> +		.callback = NULL,
+>> +	};
+>> +
+>> +	for (ofs = 0; ofs < mtd->size; ofs += mtd->erasesize) {
+>> +		ret = mtd_block_isbad(mtd, ofs);
+>> +		if (ret > 0) {
+>> +			printf("Warning: bad block at 0x%08llx. Skipping\n",
+>> +				   ofs);
+>> +			continue;
+> This is not worth issueing a warning. Bad blocks just happen.
+>
+>> +		} else if (ret < 0) {
+>> +			printf("Error: checking bad block at 0x%llx failed\n",
+>> +				   ofs);
+>> +			ret = 1;
+>> +			goto err;
+>> +		}
+>> +
+>> +		erase_opts.addr = ofs;
+>> +		ret = mtd->erase(mtd, &erase_opts);
+> You should use mtd_erase and friends rather than dereferencing struct
+> mtd_info.
+>
+>> +	buf = malloc(mtd->erasesize);
+>> +	if (!buf) {
+>> +		ret = -ENOMEM;
+>> +		goto err_out;
+>> +	}
+>> +
+>> +	image = read_imagefile(mtd, data->imagefile, &fw_size);
+>> +	if (!image) {
+>> +		ret = -errno;
+>> +		goto err_out1;
+>> +	}
+> No Need to read the image, data->image contains a pointer to it.
+>
+>> +
+>> +	search_area_size_in_bytes =
+>> +		(1 << SEARCH_EXPONENT) * PAGES_PER_STRIDE * mtd->writesize;
+>> +	max_boot_stream_in_bytes =
+>> +		(mtd->size - search_area_size_in_bytes * 2) / 2;
+>> +
+>> +	fw1_offset = 2 * search_area_size_in_bytes;
+>> +	fw2_offset = fw1_offset + max_boot_stream_in_bytes;
+>> +
+>> +	fcb = create_fcb(mtd, buf, fw1_offset, fw_size, fw2_offset);
+>> +	if (IS_ERR(fcb)) {
+>> +		printf("Failed to initialize FCB: %ld\n", PTR_ERR(fcb));
+>> +		ret = PTR_ERR(fcb);
+>> +		goto err_out2;
+>> +	}
+>> +	encode_hamming_13_8(fcb, (void *)fcb + 512, 512);
+>> +
+>> +	dbbt = create_dbbt(mtd, &bbtn);
+>> +	if (!dbbt)
+>> +		goto err_out2;
+>> +
+>> +	erase_part(mtd);
+> Error checking?
+>
+>> +
+>> +	block = bcb_cdev->offset;
+>> +	for (fcb_written = 0; fcb_written < 4; fcb_written++) {
+>> +
+>> +		if (nand_isbad_bbt(mtd, block, false))
+>> +			continue;
+>> +
+>> +		ret = write_fcb(mtd, buf, block);
+>> +		if (ret) {
+>> +			printf("Failed to write FCB to block %u\n", block);
+>> +			goto err_out2;
+>> +		}
+>> +		block += mtd->erasesize;
+>> +	}
+>> +	ret = fcb_written ? 0 : -ENOSPC;
+>> +	if (ret)
+>> +		goto err_out2;
+>> +
+>> +	stride_size_in_bytes = PAGES_PER_STRIDE * mtd->writesize;
+>> +	block = SEARCH_AREA_SIZE_IN_PAGES * mtd->writesize;
+>> +	i = 0;
+>> +	while (i < SEARCH_AREA_SIZE_IN_STRIDES) {
+>> +		ret = write_dbbt(mtd, dbbt, buf, block, sizeof(*dbbt));
+>> +		if (ret)
+>> +			goto err_out2;
+>> +
+>> +		block += stride_size_in_bytes;
+>> +		i++;
+>> +	}
+>> +
+>> +	block = SEARCH_AREA_SIZE_IN_PAGES * mtd->writesize + 4 * mtd->writesize;
+>> +	i = 0;
+>> +	while (i < SEARCH_AREA_SIZE_IN_STRIDES) {
+>> +		ret = write_bbtn(mtd, bbtn, buf, block, sizeof(*bbtn));
+>> +		if (ret)
+>> +			goto err_out2;
+>> +
+>> +		block += stride_size_in_bytes;
+>> +		i++;
+>> +	}
+>> +
+>> +	ret = write_image(mtd, image, fw1_offset, fw_size);
+>> +	if (ret)
+>> +		goto err_out2;
+>> +	ret = write_image(mtd, image, fw2_offset, fw_size);
+>> +	if (ret)
+>> +		goto err_out2;
+> This doesn't seem to take bad blocks into account. What happens when the
+> first firmware image gets bigger due to bad blocks? It will be
+> overwritten by the 2nd image.
+>
+> Sascha
+>
+
 
 _______________________________________________
 barebox mailing list
