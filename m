@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp50.i.mail.ru ([94.100.177.110])
+Received: from mail-lb0-x22c.google.com ([2a00:1450:4010:c04::22c])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WRGuW-0005FK-J9
- for barebox@lists.infradead.org; Sat, 22 Mar 2014 08:04:10 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 22 Mar 2014 12:03:38 +0400
-Message-Id: <1395475418-15885-1-git-send-email-shc_work@mail.ru>
+ id 1WRK8H-0007P7-Ns
+ for barebox@lists.infradead.org; Sat, 22 Mar 2014 11:30:34 +0000
+Received: by mail-lb0-f172.google.com with SMTP id c11so2406241lbj.31
+ for <barebox@lists.infradead.org>; Sat, 22 Mar 2014 04:30:11 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat, 22 Mar 2014 15:29:53 +0400
+Message-Id: <1395487797-16599-4-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
+References: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,137 +23,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH RESEND] drivers: treewide: Kill empty remove() implementations
+Subject: [PATCH 3/7] serial: ns16550: make it possible to get reg_write() from
+ devtype
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/net/ar231x.c       | 6 ------
- drivers/net/at91_ether.c   | 5 -----
- drivers/net/designware.c   | 5 -----
- drivers/video/imx-ipu-fb.c | 5 -----
- drivers/video/imx.c        | 5 -----
- drivers/video/pxa.c        | 5 -----
- 6 files changed, 31 deletions(-)
+ drivers/serial/serial_ns16550.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ar231x.c b/drivers/net/ar231x.c
-index 5c09114..515de17 100644
---- a/drivers/net/ar231x.c
-+++ b/drivers/net/ar231x.c
-@@ -419,15 +419,9 @@ static int ar231x_eth_probe(struct device_d *dev)
- 	return 0;
- }
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index f1da44b..aa0992f 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -57,6 +57,8 @@ static inline struct ns16550_priv *to_ns16550_priv(struct console_device *cdev)
  
--static void ar231x_eth_remove(struct device_d *dev)
--{
--
--}
--
- static struct driver_d ar231x_eth_driver = {
- 	.name = "ar231x_eth",
- 	.probe = ar231x_eth_probe,
--	.remove = ar231x_eth_remove,
+ struct ns16550_drvdata {
+ 	void (*init_port)(struct console_device *cdev);
++	void (*reg_write)(unsigned int val, unsigned long base,
++				    unsigned char reg_offset);
+ 	const char *linux_console_name;
  };
  
- static int ar231x_eth_driver_init(void)
-diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
-index 25924cf..bf2f957 100644
---- a/drivers/net/at91_ether.c
-+++ b/drivers/net/at91_ether.c
-@@ -357,13 +357,8 @@ static int at91_ether_probe(struct device_d *dev)
- 	return 0;
- }
+@@ -316,6 +318,9 @@ static int ns16550_probe(struct device_d *dev)
+ 	cdev->setbrg = ns16550_setbaudrate;
+ 	cdev->linux_console_name = devtype->linux_console_name;
  
--static void at91_ether_remove(struct device_d *dev)
--{
--}
--
- static struct driver_d at91_ether_driver = {
- 	.name = "at91_ether",
- 	.probe = at91_ether_probe,
--	.remove = at91_ether_remove,
- };
- device_platform_driver(at91_ether_driver);
-diff --git a/drivers/net/designware.c b/drivers/net/designware.c
-index ecb4656..e706f54 100644
---- a/drivers/net/designware.c
-+++ b/drivers/net/designware.c
-@@ -477,10 +477,6 @@ static int dwc_ether_probe(struct device_d *dev)
- 	return 0;
- }
++	if (devtype->reg_write)
++		priv->plat.reg_write = devtype->reg_write;
++
+ 	devtype->init_port(cdev);
  
--static void dwc_ether_remove(struct device_d *dev)
--{
--}
--
- static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
- 	{
- 		.compatible = "snps,dwmac-3.70a",
-@@ -493,7 +489,6 @@ static __maybe_unused struct of_device_id dwc_ether_compatible[] = {
- static struct driver_d dwc_ether_driver = {
- 	.name = "designware_eth",
- 	.probe = dwc_ether_probe,
--	.remove = dwc_ether_remove,
- 	.of_compatible = DRV_OF_COMPAT(dwc_ether_compatible),
- };
- device_platform_driver(dwc_ether_driver);
-diff --git a/drivers/video/imx-ipu-fb.c b/drivers/video/imx-ipu-fb.c
-index 7276647..cd74b03 100644
---- a/drivers/video/imx-ipu-fb.c
-+++ b/drivers/video/imx-ipu-fb.c
-@@ -1047,14 +1047,9 @@ static int imxfb_probe(struct device_d *dev)
- 	return ret;
- }
- 
--static void imxfb_remove(struct device_d *dev)
--{
--}
--
- static struct driver_d imx3fb_driver = {
- 	.name = "imx-ipu-fb",
- 	.probe = imxfb_probe,
--	.remove = imxfb_remove,
- };
- device_platform_driver(imx3fb_driver);
- 
-diff --git a/drivers/video/imx.c b/drivers/video/imx.c
-index 05c6105..e4dcc35 100644
---- a/drivers/video/imx.c
-+++ b/drivers/video/imx.c
-@@ -580,13 +580,8 @@ static int imxfb_probe(struct device_d *dev)
- 	return 0;
- }
- 
--static void imxfb_remove(struct device_d *dev)
--{
--}
--
- static struct driver_d imxfb_driver = {
- 	.name		= "imxfb",
- 	.probe		= imxfb_probe,
--	.remove		= imxfb_remove,
- };
- device_platform_driver(imxfb_driver);
-diff --git a/drivers/video/pxa.c b/drivers/video/pxa.c
-index 529190b..b4ce3a1 100644
---- a/drivers/video/pxa.c
-+++ b/drivers/video/pxa.c
-@@ -536,13 +536,8 @@ static int pxafb_probe(struct device_d *dev)
- 	return 0;
- }
- 
--static void pxafb_remove(struct device_d *dev)
--{
--}
--
- static struct driver_d pxafb_driver = {
- 	.name	= "pxafb",
- 	.probe	= pxafb_probe,
--	.remove	= pxafb_remove,
- };
- device_platform_driver(pxafb_driver);
+ 	return console_register(cdev);
 -- 
-1.8.3.2
+1.9.0
 
 
 _______________________________________________
