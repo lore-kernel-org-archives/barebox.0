@@ -1,15 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from plane.gmane.org ([80.91.229.3])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WRKG5-0007Vo-0w
- for barebox@lists.infradead.org; Sat, 22 Mar 2014 11:38:37 +0000
-Received: by mail-la0-f43.google.com with SMTP id e16so2391181lan.2
- for <barebox@lists.infradead.org>; Sat, 22 Mar 2014 04:38:13 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat, 22 Mar 2014 15:29:51 +0400
-Message-Id: <1395487797-16599-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
-References: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
+ id 1WROTi-000280-AL
+ for barebox@lists.infradead.org; Sat, 22 Mar 2014 16:08:59 +0000
+Received: from list by plane.gmane.org with local (Exim 4.69)
+ (envelope-from <gcbb-barebox@m.gmane.org>) id 1WROTJ-0001NH-St
+ for barebox@lists.infradead.org; Sat, 22 Mar 2014 17:08:34 +0100
+Received: from static-82-85-234-51.clienti.tiscali.it ([82.85.234.51])
+ by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+ id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Sat, 22 Mar 2014 17:08:33 +0100
+Received: from cristiano_dealti by static-82-85-234-51.clienti.tiscali.it with
+ local (Gmexim 0.1 (Debian)) id 1AlnuQ-0007hv-00
+ for <barebox@lists.infradead.org>; Sat, 22 Mar 2014 17:08:33 +0100
+From: Cristiano De Alti <cristiano_dealti@hotmail.com>
+Date: Sat, 22 Mar 2014 16:08:02 +0000 (UTC)
+Message-ID: <loom.20140322T170353-879@post.gmane.org>
+References: <loom.20140313T212720-896@post.gmane.org>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +26,25 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/7] MIPS: mach-xburst: fix DEBUG_LL=n build error
+Subject: Re: i.MX21 ADS NAND flash bad blocks scan. Barebox vs Linux
 To: barebox@lists.infradead.org
 
-Here is my error log:
+Cristiano De Alti <cristiano_dealti@...> writes:
 
-  CC      common/startup.o
-In file included from arch/mips/mach-xburst/include/mach/debug_ll.h:25,
-                 from include/debug_ll.h:31,
-                 from common/startup.c:36:
-arch/mips/include/asm/debug_ll_ns16550.h: In function 'PUTC_LL':
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: 'DEBUG_LL_UART_ADDR' undeclared (first use in this function)
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: (Each undeclared identifier is reported only once
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: for each function it appears in.)
-make[1]: *** [common/startup.o] Error 1
+> This board has a 64MBi Samsung NAND flash that is detected both by Barebox
+> (recent snapshot) and Linux 3.4.77.
+> 
+> The issue is that, while the bad blocks scan takes a negligible time on
+> Barebox, it takes 10 minutes to complete on Linux.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/include/asm/debug_ll_ns16550.h | 2 ++
- 1 file changed, 2 insertions(+)
+I believe the NAND flash is faulty. Mechanically stressing the NAND flash
+card seems to speed up BB scan on Linux or detect more bad blocks. I wont's
+spend more time on this issue
 
-diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
-index f36010c..032f0a2 100644
---- a/arch/mips/include/asm/debug_ll_ns16550.h
-+++ b/arch/mips/include/asm/debug_ll_ns16550.h
-@@ -59,9 +59,11 @@
- 
- static __inline__ void PUTC_LL(char ch)
- {
-+#ifdef CONFIG_DEBUG_LL
- 	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
- 		;
- 	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
-+#endif /* CONFIG_DEBUG_LL */
- }
- #else /* __ASSEMBLY__ */
- /*
--- 
-1.9.0
 
 
 _______________________________________________
