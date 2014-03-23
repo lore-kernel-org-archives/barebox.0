@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wg0-x233.google.com ([2a00:1450:400c:c00::233])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WRPtn-0003Or-I1
- for barebox@lists.infradead.org; Sat, 22 Mar 2014 17:40:00 +0000
-Received: by mail-wg0-f51.google.com with SMTP id k14so2441058wgh.10
- for <barebox@lists.infradead.org>; Sat, 22 Mar 2014 10:39:32 -0700 (PDT)
-From: Vicente Bergas <vicencb@gmail.com>
-Date: Sat, 22 Mar 2014 17:39:04 +0000
-Message-Id: <1395509944-1512-1-git-send-email-vicencb@gmail.com>
+ id 1WRe54-0006Tn-PI
+ for barebox@lists.infradead.org; Sun, 23 Mar 2014 08:48:35 +0000
+Date: Sun, 23 Mar 2014 09:48:13 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140323084813.GI17250@pengutronix.de>
+References: <1395160185-32125-1-git-send-email-l.stach@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1395160185-32125-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,83 +18,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] OMAP4_USBboot: Change output text formatting
-To: barebox@lists.infradead.org
-Cc: Vicente Bergas <vicencb@gmail.com>
+Subject: Re: [PATCH] arm: imx53: qsb: set hostname from board file
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The basic console used for USBboot has two different formattings,
-one for text coming from the host and another for text coming from
-the target.
-This change makes both formattings readable regardless of the
-console background color.
+On Tue, Mar 18, 2014 at 05:29:45PM +0100, Lucas Stach wrote:
+> Otherwise it won't get set in a multiimage build.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 
-Signed-off-by: Vicente Bergas <vicencb@gmail.com>
----
- scripts/omap4_usbboot/omap4_usbboot.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+Applied, thanks
 
-diff --git a/scripts/omap4_usbboot/omap4_usbboot.c b/scripts/omap4_usbboot/omap4_usbboot.c
-index e521086..0e5abcb 100644
---- a/scripts/omap4_usbboot/omap4_usbboot.c
-+++ b/scripts/omap4_usbboot/omap4_usbboot.c
-@@ -35,16 +35,17 @@
- #define WHITE   8
- #define RED     1
- #define BLACK   0
--#define FORMAT        "%c[%d;%d;%dm"
--#define TARGET_FORMAT 0x1B, BRIGHT, RED+30, BLACK+40
--#define HOST_FORMAT   0x1B, RESET, WHITE+30, BLACK+40
--#define host_print(fmt, arg...)	printf(FORMAT fmt FORMAT, \
-+#define TFORMAT       "%c[%d;%dm"
-+#define HFORMAT       "%c[%dm"
-+#define TARGET_FORMAT 0x1B, BRIGHT, RED+30
-+#define HOST_FORMAT   0x1B, RESET
-+#define host_print(fmt, arg...)	printf(HFORMAT fmt TFORMAT, \
- 					HOST_FORMAT, ##arg, TARGET_FORMAT)
- 
- void panic(struct termios *t_restore)
- {
- 	tcsetattr(STDIN_FILENO, TCSANOW, t_restore);
--	printf(FORMAT, HOST_FORMAT);
-+	printf(HFORMAT, HOST_FORMAT);
- 	exit(1);
- }
- 
-@@ -354,7 +355,7 @@ int usb_boot(
- 	tcgetattr(STDIN_FILENO, &vars.t_restore);
- 	tn = vars.t_restore;
- 	tn.c_lflag &= ~(ICANON | ECHO);
--	printf(FORMAT, TARGET_FORMAT);
-+	printf(TFORMAT, TARGET_FORMAT);
- 	tcsetattr(STDIN_FILENO, TCSANOW, &tn);
- 	if (pthread_create(&thread, NULL, listenerTask, &vars))
- 		host_print("listenerTask failed\n");
-@@ -375,7 +376,7 @@ int usb_boot(
- 	usb_close(usb);
- 	pthread_mutex_destroy(&vars.usb_mutex);
- 	tcsetattr(STDIN_FILENO, TCSANOW, &vars.t_restore);
--	printf(FORMAT, HOST_FORMAT);
-+	printf(HFORMAT, HOST_FORMAT);
- 	return 0;
- }
- 
-@@ -415,7 +416,7 @@ int main(int argc, char **argv)
- 	sz = s.st_size;
- 	close(fd);
- 	argv++;
--	printf(FORMAT, HOST_FORMAT);
-+	printf(HFORMAT, HOST_FORMAT);
- 	for (once = 1;;) {
- 		usb = usb_open(match_omap4_bootloader);
- 		if (usb)
+Sascha
+
+> ---
+>  arch/arm/boards/freescale-mx53-qsb/board.c          | 2 ++
+>  arch/arm/boards/freescale-mx53-qsb/env/config-board | 1 -
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/freescale-mx53-qsb/board.c b/arch/arm/boards/freescale-mx53-qsb/board.c
+> index 74826e4a5e43..0553f1c82895 100644
+> --- a/arch/arm/boards/freescale-mx53-qsb/board.c
+> +++ b/arch/arm/boards/freescale-mx53-qsb/board.c
+> @@ -99,6 +99,7 @@ static int loco_late_init(void)
+>  		rev = readl(MX53_IIM_BASE_ADDR + 0x878);
+>  		set_board_rev(rev);
+>  		printf("MCIMX53-START-R board 1.0 rev %c\n", (rev == 1) ? 'A' : 'B' );
+> +		barebox_set_hostname("loco-r");
+>  		armlinux_set_revision(loco_system_rev);
+>  		/* Set VDDGP to 1.25V for 1GHz on SW1 */
+>  		mc13xxx_reg_read(mc34708, MC13892_REG_SW_0, &val);
+> @@ -146,6 +147,7 @@ static int loco_late_init(void)
+>  	} else {
+>  		/* so we have a DA9053 based board */
+>  		printf("MCIMX53-START board 1.0\n");
+> +		barebox_set_hostname("loco");
+>  		armlinux_set_revision(loco_system_rev);
+>  		return 0;
+>  	}
+> diff --git a/arch/arm/boards/freescale-mx53-qsb/env/config-board b/arch/arm/boards/freescale-mx53-qsb/env/config-board
+> index a6cf69ddbc7f..e8e8378f53f5 100644
+> --- a/arch/arm/boards/freescale-mx53-qsb/env/config-board
+> +++ b/arch/arm/boards/freescale-mx53-qsb/env/config-board
+> @@ -3,5 +3,4 @@
+>  # board defaults, do not change in running system. Change /env/config
+>  # instead
+>  
+> -global.hostname=loco
+>  global.linux.bootargs.base="console=ttymxc0,115200"
+> -- 
+> 1.9.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.9.1
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
