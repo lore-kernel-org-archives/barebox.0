@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
+Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSBGN-0002Ph-LU
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:28 +0000
-Received: by mail-lb0-f175.google.com with SMTP id w7so3999313lbi.6
- for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:05 -0700 (PDT)
+ id 1WSBKr-0002cl-3W
+ for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:19:05 +0000
+Received: by mail-la0-f52.google.com with SMTP id ec20so4027444lab.39
+ for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:18:42 -0700 (PDT)
+Date: Tue, 25 Mar 2014 00:28:25 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 25 Mar 2014 00:13:48 +0400
-Message-Id: <1395692034-5821-3-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
+Message-Id: <20140325002825.5a467114657bd471de6c15ad@gmail.com>
+In-Reply-To: <1395692034-5821-5-git-send-email-antonynpavlov@gmail.com>
 References: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
+ <1395692034-5821-5-git-send-email-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,88 +20,93 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 2/8] MIPS: dts: rzx50: move jz4755 description to the
- separate file
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 4/8] serial: ns16550: make FCR setup value part of
+ struct ns16550_priv
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/dts/jz4755.dtsi | 35 +++++++++++++++++++++++++++++++++++
- arch/mips/dts/rzx50.dts   |  8 +++++++-
- 2 files changed, 42 insertions(+), 1 deletion(-)
+On Tue, 25 Mar 2014 00:13:50 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-diff --git a/arch/mips/dts/jz4755.dtsi b/arch/mips/dts/jz4755.dtsi
-new file mode 100644
-index 0000000..44ff912
---- /dev/null
-+++ b/arch/mips/dts/jz4755.dtsi
-@@ -0,0 +1,35 @@
-+#include "skeleton.dtsi"
-+
-+/ {
-+	soc {
-+		compatible = "simple-bus";
-+		model = "Ingenic JZ4755";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		serial0: serial@b0030000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0030000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		serial1: serial@b0031000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0031000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		serial2: serial@b0032000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0032000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+	};
-+};
-diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
-index 69320dd..78103e3 100644
---- a/arch/mips/dts/rzx50.dts
-+++ b/arch/mips/dts/rzx50.dts
-@@ -1,6 +1,6 @@
- /dts-v1/;
- 
--/include/ "skeleton.dtsi"
-+#include "jz4755.dtsi"
- 
- / {
- 	model = "Ritmix RZX-50";
-@@ -9,4 +9,10 @@
- 	memory {
- 		reg = <0x00000000 0x4000000>;
- 	};
-+
-+	soc {
-+		serial1: serial@b0031000 {
-+			status = "okay";
-+		};
-+	};
- };
--- 
-1.9.0
+This patch can be very handy for adding device tree FIFO-less controllers s=
+upport in the future.
 
+E.g.:  .compatible =3D "ns8250" or .compatible =3D "ns16450"
+
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  drivers/serial/serial_ns16550.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+> =
+
+> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16=
+550.c
+> index d217014..0089a04 100644
+> --- a/drivers/serial/serial_ns16550.c
+> +++ b/drivers/serial/serial_ns16550.c
+> @@ -48,6 +48,7 @@ struct ns16550_priv {
+>  	struct NS16550_plat plat;
+>  	int access_width;
+>  	struct clk *clk;
+> +	uint32_t fcrval;
+>  };
+>  =
+
+>  static inline struct ns16550_priv *to_ns16550_priv(struct console_device=
+ *cdev)
+> @@ -157,18 +158,13 @@ static int ns16550_setbaudrate(struct console_devic=
+e *cdev, int baud_rate)
+>  {
+>  	unsigned int baud_divisor =3D ns16550_calc_divisor(cdev, baud_rate);
+>  	struct ns16550_priv *priv =3D to_ns16550_priv(cdev);
+> -	struct NS16550_plat *plat =3D &priv->plat;
+>  =
+
+>  	ns16550_write(cdev, LCR_BKSE, lcr);
+>  	ns16550_write(cdev, baud_divisor & 0xff, dll);
+>  	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+>  	ns16550_write(cdev, LCRVAL, lcr);
+>  	ns16550_write(cdev, MCRVAL, mcr);
+> -
+> -	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
+> -		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
+> -	else
+> -		ns16550_write(cdev, FCRVAL, fcr);
+> +	ns16550_write(cdev, priv->fcrval, fcr);
+>  =
+
+>  	return 0;
+>  }
+> @@ -316,6 +312,11 @@ static int ns16550_probe(struct device_d *dev)
+>  	cdev->setbrg =3D ns16550_setbaudrate;
+>  	cdev->linux_console_name =3D devtype->linux_console_name;
+>  =
+
+> +	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
+> +		priv->fcrval =3D FCRVAL & ~FCR_FIFO_EN;
+> +	else
+> +		priv->fcrval =3D FCRVAL;
+> +
+>  	devtype->init_port(cdev);
+>  =
+
+>  	return console_register(cdev);
+> -- =
+
+> 1.9.0
+> =
+
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
