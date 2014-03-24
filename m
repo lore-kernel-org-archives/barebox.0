@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+Received: from mail-lb0-x22f.google.com ([2a00:1450:4010:c04::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSBGM-0002Pg-NE
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:27 +0000
-Received: by mail-lb0-f170.google.com with SMTP id s7so4111612lbd.1
- for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:03 -0700 (PDT)
+ id 1WSBGN-0002Ph-LU
+ for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:28 +0000
+Received: by mail-lb0-f175.google.com with SMTP id w7so3999313lbi.6
+ for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 25 Mar 2014 00:13:47 +0400
-Message-Id: <1395692034-5821-2-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 25 Mar 2014 00:13:48 +0400
+Message-Id: <1395692034-5821-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
 References: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,42 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 1/8] MIPS: mach-xburst: fix DEBUG_LL=n build error
+Subject: [PATCH v2 2/8] MIPS: dts: rzx50: move jz4755 description to the
+ separate file
 To: barebox@lists.infradead.org
-
-Here is my error log:
-
-  CC      common/startup.o
-In file included from arch/mips/mach-xburst/include/mach/debug_ll.h:25,
-                 from include/debug_ll.h:31,
-                 from common/startup.c:36:
-arch/mips/include/asm/debug_ll_ns16550.h: In function 'PUTC_LL':
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: 'DEBUG_LL_UART_ADDR' undeclared (first use in this function)
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: (Each undeclared identifier is reported only once
-arch/mips/include/asm/debug_ll_ns16550.h:62: error: for each function it appears in.)
-make[1]: *** [common/startup.o] Error 1
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/include/asm/debug_ll_ns16550.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/dts/jz4755.dtsi | 35 +++++++++++++++++++++++++++++++++++
+ arch/mips/dts/rzx50.dts   |  8 +++++++-
+ 2 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
-index f36010c..032f0a2 100644
---- a/arch/mips/include/asm/debug_ll_ns16550.h
-+++ b/arch/mips/include/asm/debug_ll_ns16550.h
-@@ -59,9 +59,11 @@
+diff --git a/arch/mips/dts/jz4755.dtsi b/arch/mips/dts/jz4755.dtsi
+new file mode 100644
+index 0000000..44ff912
+--- /dev/null
++++ b/arch/mips/dts/jz4755.dtsi
+@@ -0,0 +1,35 @@
++#include "skeleton.dtsi"
++
++/ {
++	soc {
++		compatible = "simple-bus";
++		model = "Ingenic JZ4755";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		ranges;
++
++		serial0: serial@b0030000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0xb0030000 0x20>;
++			reg-shift = <2>;
++			clock-frequency = <12000000>;
++			status = "disabled";
++		};
++
++		serial1: serial@b0031000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0xb0031000 0x20>;
++			reg-shift = <2>;
++			clock-frequency = <12000000>;
++			status = "disabled";
++		};
++
++		serial2: serial@b0032000 {
++			compatible = "ingenic,jz4740-uart";
++			reg = <0xb0032000 0x20>;
++			reg-shift = <2>;
++			clock-frequency = <12000000>;
++			status = "disabled";
++		};
++	};
++};
+diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
+index 69320dd..78103e3 100644
+--- a/arch/mips/dts/rzx50.dts
++++ b/arch/mips/dts/rzx50.dts
+@@ -1,6 +1,6 @@
+ /dts-v1/;
  
- static __inline__ void PUTC_LL(char ch)
- {
-+#ifdef CONFIG_DEBUG_LL
- 	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
- 		;
- 	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
-+#endif /* CONFIG_DEBUG_LL */
- }
- #else /* __ASSEMBLY__ */
- /*
+-/include/ "skeleton.dtsi"
++#include "jz4755.dtsi"
+ 
+ / {
+ 	model = "Ritmix RZX-50";
+@@ -9,4 +9,10 @@
+ 	memory {
+ 		reg = <0x00000000 0x4000000>;
+ 	};
++
++	soc {
++		serial1: serial@b0031000 {
++			status = "okay";
++		};
++	};
+ };
 -- 
 1.9.0
 
