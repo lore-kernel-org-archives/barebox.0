@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSBGV-0002Q3-Iv
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:36 +0000
-Received: by mail-la0-f46.google.com with SMTP id hr17so3994676lab.5
- for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:13 -0700 (PDT)
+ id 1WSBGR-0002Pj-Hb
+ for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:32 +0000
+Received: by mail-lb0-f179.google.com with SMTP id p9so3986638lbv.24
+ for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:09 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 25 Mar 2014 00:13:52 +0400
-Message-Id: <1395692034-5821-7-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 25 Mar 2014 00:13:50 +0400
+Message-Id: <1395692034-5821-5-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
 References: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,45 +23,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 6/8] MIPS: rzx50: drop console initialization in board code
+Subject: [PATCH v2 4/8] serial: ns16550: make FCR setup value part of struct
+ ns16550_priv
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/boards/rzx50/Makefile | 2 +-
- arch/mips/boards/rzx50/serial.c | 9 ++-------
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ drivers/serial/serial_ns16550.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/boards/rzx50/Makefile b/arch/mips/boards/rzx50/Makefile
-index ff1a655..31c0629 100644
---- a/arch/mips/boards/rzx50/Makefile
-+++ b/arch/mips/boards/rzx50/Makefile
-@@ -1 +1 @@
--obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial.o
-+obj-y += serial.o
-diff --git a/arch/mips/boards/rzx50/serial.c b/arch/mips/boards/rzx50/serial.c
-index 566356a..f1e8da0 100644
---- a/arch/mips/boards/rzx50/serial.c
-+++ b/arch/mips/boards/rzx50/serial.c
-@@ -17,16 +17,11 @@
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index d217014..0089a04 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -48,6 +48,7 @@ struct ns16550_priv {
+ 	struct NS16550_plat plat;
+ 	int access_width;
+ 	struct clk *clk;
++	uint32_t fcrval;
+ };
  
- #include <common.h>
- #include <init.h>
--#include <mach/devices.h>
--#include <mach/jz4750d_regs.h>
- 
--static int rzx50_console_init(void)
-+static int rzx50_hostname_init(void)
+ static inline struct ns16550_priv *to_ns16550_priv(struct console_device *cdev)
+@@ -157,18 +158,13 @@ static int ns16550_setbaudrate(struct console_device *cdev, int baud_rate)
  {
- 	barebox_set_hostname("rzx50");
+ 	unsigned int baud_divisor = ns16550_calc_divisor(cdev, baud_rate);
+ 	struct ns16550_priv *priv = to_ns16550_priv(cdev);
+-	struct NS16550_plat *plat = &priv->plat;
  
--	/* Register the serial port */
--	jz_add_uart(DEVICE_ID_DYNAMIC, UART1_BASE, 12000000);
+ 	ns16550_write(cdev, LCR_BKSE, lcr);
+ 	ns16550_write(cdev, baud_divisor & 0xff, dll);
+ 	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
+ 	ns16550_write(cdev, LCRVAL, lcr);
+ 	ns16550_write(cdev, MCRVAL, mcr);
 -
+-	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
+-		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
+-	else
+-		ns16550_write(cdev, FCRVAL, fcr);
++	ns16550_write(cdev, priv->fcrval, fcr);
+ 
  	return 0;
  }
--console_initcall(rzx50_console_init);
-+console_initcall(rzx50_hostname_init);
+@@ -316,6 +312,11 @@ static int ns16550_probe(struct device_d *dev)
+ 	cdev->setbrg = ns16550_setbaudrate;
+ 	cdev->linux_console_name = devtype->linux_console_name;
+ 
++	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
++		priv->fcrval = FCRVAL & ~FCR_FIFO_EN;
++	else
++		priv->fcrval = FCRVAL;
++
+ 	devtype->init_port(cdev);
+ 
+ 	return console_register(cdev);
 -- 
 1.9.0
 
