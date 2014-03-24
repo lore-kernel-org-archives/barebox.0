@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp.eu2.fugro.com ([46.34.88.152])
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WS1T0-0000wj-LU
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 09:46:51 +0000
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Date: Mon, 24 Mar 2014 10:37:48 +0100
-Message-ID: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
-From: "Stam, Michel [FINT]" <M.Stam@fugro.nl>
+ id 1WSBG7-0002Pc-K0
+ for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:13 +0000
+Received: by mail-lb0-f176.google.com with SMTP id 10so4011176lbg.21
+ for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:13:47 -0700 (PDT)
+Date: Tue, 25 Mar 2014 00:23:30 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140325002330.48d4fac7fcb327f0c0a418cb@gmail.com>
+In-Reply-To: <20140324064531.GJ17250@pengutronix.de>
+References: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
+ <1395487797-16599-5-git-send-email-antonynpavlov@gmail.com>
+ <20140324064531.GJ17250@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,58 +25,70 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: RE: Barebox x86 IDE support
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 4/7] serial: ns16550: add compatible entry for
+ "ingenic, jz4740-uart"
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello maintainers,
+On Mon, 24 Mar 2014 07:45:31 +0100
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-I was wondering if one of you has had time to verify these patches and appl=
-y them to trunk?
+> On Sat, Mar 22, 2014 at 03:29:54PM +0400, Antony Pavlov wrote:
+> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> > ---
+> >  drivers/serial/serial_ns16550.c | 30 ++++++++++++++++++++++++++++++
+> >  1 file changed, 30 insertions(+)
+> > =
 
-Kind regards,
+> > diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns=
+16550.c
+> > index aa0992f..7130871 100644
+> > --- a/drivers/serial/serial_ns16550.c
+> > +++ b/drivers/serial/serial_ns16550.c
+> > @@ -257,6 +257,30 @@ static __maybe_unused struct ns16550_drvdata omap_=
+drvdata =3D {
+> >  	.linux_console_name =3D "ttyO",
+> >  };
+> >  =
 
-Michel Stam
+> > +#define JZ_UART_SHIFT	2
+> > +
+> > +static void jz_serial_reg_write(unsigned int val, unsigned long base,
+> > +	unsigned char reg_offset)
+> > +{
+> > +	switch (reg_offset) {
+> > +	case (fcr << JZ_UART_SHIFT):
+> > +		val |=3D 0x10; /* Enable uart module */
+> > +		break;
+> =
 
---
+> You could also do this by overwriting .init_port.
 
-From: Stam, Michel [FINT] =
+I'll do so.
+ =
 
-Sent: Friday, March 14, 2014 17:31 PM
-To: 'barebox@lists.infradead.org'
-Subject: Barebox x86 IDE support
+> > +	case (ier << JZ_UART_SHIFT):
+> > +		val |=3D (val & 0x4) << 2;
+> =
 
-Dear list,
+> What does this bit do?
 
-While working on barebox recently, I decided to port a couple of patches =
-=A0I made to an old barebox tree a few years ago, to fix the IDE ports on t=
-he x86 platform.
+It's non-standard Ingenic-specific 'Receive Timeout Interrupt Enable' bit.
+We can simply drop it as we use 'ns16550_write(cdev, 0x00, ier);' for ier i=
+nitialization.
 
-I had to work on the resource allocation a bit, as the current GIT reposito=
-ry does not allow IORESOURCE_IO type to be passed to dev_request_region( ) =
-and friends. I tried to keep the interface the same as much as possible by =
-using macros etc.
-Please find that attached in 0001-common-driver-Allow-for-I-O-mapped-I-O-in=
--resource-r.patch. =
+> =
 
+> Putting driver logic into the register writes is not good. Where this
+> leads to can be seen in drivers/mmc/host/sdhci-esdhc-imx.c in the
+> kernel. Could we make fcrval overwritable in drvdata? Or just special
+> case the fcr register access in ns16550_setbaudrate?
 
-Next, I added support to the platform IDE interface to use I/O-mapped I/O, =
-and added the necessary allocation to the generic_pc board.
+Please see v2 patchseries.
 
-I did have to add a call to ata_port_detect( ) to ide_port_register to actu=
-ally get the drives to be probed. Without it the interface seems to be stuc=
-k in some sort of limbo. This patch is in 0002-x86-Add-support-for-IDE-on-t=
-he-legacy-I-O-ports.patch.
-
-Lastly, I added an extra serial port to the generic_pc board. Most (legacy)=
- PCs have support for 2 serial ports, it seemed useful to me.
-
-What does puzzle me is that the arch/x86/boot/Kconfig mentions X86_VESA and=
- X86_VGA support, but the files (console_vga.c and console_vesa.c) do not n=
-or have ever existed. Is this a remnant from U-boot v1?
-
+--=A0
 Best regards,
-
-Michel Stam
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
