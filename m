@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+Received: from mail-lb0-f176.google.com ([209.85.217.176])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSBG7-0002Pc-K0
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:13 +0000
-Received: by mail-lb0-f176.google.com with SMTP id 10so4011176lbg.21
- for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:13:47 -0700 (PDT)
-Date: Tue, 25 Mar 2014 00:23:30 +0400
+ id 1WSBGM-0002Pf-Ds
+ for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:14:27 +0000
+Received: by mail-lb0-f176.google.com with SMTP id 10so4056490lbg.35
+ for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:14:01 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140325002330.48d4fac7fcb327f0c0a418cb@gmail.com>
-In-Reply-To: <20140324064531.GJ17250@pengutronix.de>
-References: <1395487797-16599-1-git-send-email-antonynpavlov@gmail.com>
- <1395487797-16599-5-git-send-email-antonynpavlov@gmail.com>
- <20140324064531.GJ17250@pengutronix.de>
-Mime-Version: 1.0
+Date: Tue, 25 Mar 2014 00:13:46 +0400
+Message-Id: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,74 +16,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 4/7] serial: ns16550: add compatible entry for
- "ingenic, jz4740-uart"
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 0/8] MIPS: improve Ingenic JZ4755 device tree support
+To: barebox@lists.infradead.org
 
-On Mon, 24 Mar 2014 07:45:31 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+This patcheseries moves Ingenic JZ4755 UART initialization
+into device tree and makes JZ4755 device tree organization
+more clear.
 
-> On Sat, Mar 22, 2014 at 03:29:54PM +0400, Antony Pavlov wrote:
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  drivers/serial/serial_ns16550.c | 30 ++++++++++++++++++++++++++++++
-> >  1 file changed, 30 insertions(+)
-> > =
+This patchseries is a part of work on Ingenic chips support
+and prepares MIPS board support switch to device tree.
+Next patchseries will add device tree Ingenic gpio, clk
+and pinctls support.
 
-> > diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns=
-16550.c
-> > index aa0992f..7130871 100644
-> > --- a/drivers/serial/serial_ns16550.c
-> > +++ b/drivers/serial/serial_ns16550.c
-> > @@ -257,6 +257,30 @@ static __maybe_unused struct ns16550_drvdata omap_=
-drvdata =3D {
-> >  	.linux_console_name =3D "ttyO",
-> >  };
-> >  =
+Changes since v1:
+  * use "make FCR setup value part of struct ns16550_priv"
+    instead of "make it possible to get reg_write() from devtype";
+  * add a trivial "fix whitespaces" patch.
 
-> > +#define JZ_UART_SHIFT	2
-> > +
-> > +static void jz_serial_reg_write(unsigned int val, unsigned long base,
-> > +	unsigned char reg_offset)
-> > +{
-> > +	switch (reg_offset) {
-> > +	case (fcr << JZ_UART_SHIFT):
-> > +		val |=3D 0x10; /* Enable uart module */
-> > +		break;
-> =
 
-> You could also do this by overwriting .init_port.
+Antony Pavlov (8):
+  MIPS: mach-xburst: fix DEBUG_LL=n build error
+  MIPS: dts: rzx50: move jz4755 description to the separate file
+  serial: ns16550: fix whitespaces
+  serial: ns16550: make FCR setup value part of struct ns16550_priv
+  serial: ns16550: add compatible entry for "ingenic,jz4740-uart"
+  MIPS: rzx50: drop console initialization in board code
+  MIPS: mach-xburst: drop serial.c
+  MIPS: boards: rename rzx50 -> ritmix-rzx50
 
-I'll do so.
- =
+ Documentation/boards.dox                           |  2 +-
+ arch/mips/Makefile                                 |  2 +-
+ arch/mips/boards/ritmix-rzx50/Makefile             |  1 +
+ .../ritmix-rzx50/include/board/board_pbl_start.h   | 43 ++++++++++++++++
+ .../boards/ritmix-rzx50/include/board/debug_ll.h   | 23 +++++++++
+ arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox     | 46 +++++++++++++++++
+ arch/mips/boards/ritmix-rzx50/serial.c             | 27 ++++++++++
+ arch/mips/boards/rzx50/Makefile                    |  1 -
+ .../boards/rzx50/include/board/board_pbl_start.h   | 43 ----------------
+ arch/mips/boards/rzx50/include/board/debug_ll.h    | 23 ---------
+ arch/mips/boards/rzx50/rzx50.dox                   | 46 -----------------
+ arch/mips/boards/rzx50/serial.c                    | 32 ------------
+ arch/mips/configs/ritmix-rzx50_defconfig           | 39 ++++++++++++++
+ arch/mips/configs/rzx50_defconfig                  | 39 --------------
+ arch/mips/dts/jz4755.dtsi                          | 35 +++++++++++++
+ arch/mips/dts/rzx50.dts                            |  8 ++-
+ arch/mips/include/asm/debug_ll_ns16550.h           |  2 +
+ arch/mips/mach-xburst/Makefile                     |  1 -
+ arch/mips/mach-xburst/mach-xburst.dox              |  2 +-
+ arch/mips/mach-xburst/serial.c                     | 60 ----------------------
+ drivers/serial/serial_ns16550.c                    | 35 ++++++++++---
+ 21 files changed, 254 insertions(+), 256 deletions(-)
+ create mode 100644 arch/mips/boards/ritmix-rzx50/Makefile
+ create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/board_pbl_start.h
+ create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/debug_ll.h
+ create mode 100644 arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox
+ create mode 100644 arch/mips/boards/ritmix-rzx50/serial.c
+ delete mode 100644 arch/mips/boards/rzx50/Makefile
+ delete mode 100644 arch/mips/boards/rzx50/include/board/board_pbl_start.h
+ delete mode 100644 arch/mips/boards/rzx50/include/board/debug_ll.h
+ delete mode 100644 arch/mips/boards/rzx50/rzx50.dox
+ delete mode 100644 arch/mips/boards/rzx50/serial.c
+ create mode 100644 arch/mips/configs/ritmix-rzx50_defconfig
+ delete mode 100644 arch/mips/configs/rzx50_defconfig
+ create mode 100644 arch/mips/dts/jz4755.dtsi
+ delete mode 100644 arch/mips/mach-xburst/serial.c
 
-> > +	case (ier << JZ_UART_SHIFT):
-> > +		val |=3D (val & 0x4) << 2;
-> =
+-- 
+1.9.0
 
-> What does this bit do?
-
-It's non-standard Ingenic-specific 'Receive Timeout Interrupt Enable' bit.
-We can simply drop it as we use 'ns16550_write(cdev, 0x00, ier);' for ier i=
-nitialization.
-
-> =
-
-> Putting driver logic into the register writes is not good. Where this
-> leads to can be seen in drivers/mmc/host/sdhci-esdhc-imx.c in the
-> kernel. Could we make fcrval overwritable in drvdata? Or just special
-> case the fcr register access in ns16550_setbaudrate?
-
-Please see v2 patchseries.
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
