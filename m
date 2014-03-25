@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSMZF-0001zW-FY
- for barebox@lists.infradead.org; Tue, 25 Mar 2014 08:18:43 +0000
-Date: Tue, 25 Mar 2014 09:18:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140325081815.GM17250@pengutronix.de>
-References: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
+ id 1WSNhZ-0005Xl-LP
+ for barebox@lists.infradead.org; Tue, 25 Mar 2014 09:31:22 +0000
+Received: by mail-lb0-f179.google.com with SMTP id p9so142151lbv.38
+ for <barebox@lists.infradead.org>; Tue, 25 Mar 2014 02:30:58 -0700 (PDT)
+Date: Tue, 25 Mar 2014 13:40:40 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140325134040.c957f0ef648db46f734bfaf4@gmail.com>
+In-Reply-To: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
+References: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,68 +19,116 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox x86 IDE support
-To: "Stam, Michel [FINT]" <M.Stam@fugro.nl>
+Subject: Re: [PATCH v2 0/8] MIPS: improve Ingenic JZ4755 device tree support
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Michel,
+On Tue, 25 Mar 2014 00:13:46 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-On Mon, Mar 24, 2014 at 10:37:48AM +0100, Stam, Michel [FINT] wrote:
-> Hello maintainers,
-> 
-> I was wondering if one of you has had time to verify these patches and apply them to trunk?
+Sascha!
 
-Could you send the patches as a series so that it's easier to comment on
-the patches on the list?
+Please ignore this series!
 
-There are some things to comment on, I think the most important one is
-this:
+There is a error in =
 
-> +/*
-> + * request an io region inside the io space
-> + */
-> +struct resource *request_io_region(const char *name,
-> +		resource_size_t start, resource_size_t end,int type)
-> +{
-> +	return request_region(&iomem_resource, name, start, end, type);
-> +}
-> 
+  [PATCH v2 4/8] serial: ns16550: make FCR setup value part of struct ns165=
+50_priv
 
-You request here from the iomem resource, but ioports are a completely
-separate resource, so you have to use a new toplevel resource like
-this:
+This code does not check 'plat' value before checking plat->flags!
 
-/* The root resource for the whole io space */
-struct resource io_resource = {
-	.start = 0,
-	.end = 0xffffffff,
-	.name = "ioport",
-	.children = LIST_HEAD_INIT(io_resource.children),
-};
++	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
++		priv->fcrval =3D FCRVAL & ~FCR_FIFO_EN;
++	else
++		priv->fcrval =3D FCRVAL;
++
 
-/*
- * request an io region inside the io space
- */
-struct resource *request_io_region(const char *name,
-		resource_size_t start, resource_size_t end)
-{
-	return request_region(&io_resource, name, start, end, IORESOURCE_IO);
-}
+> This patcheseries moves Ingenic JZ4755 UART initialization
+> into device tree and makes JZ4755 device tree organization
+> more clear.
+> =
 
-The 'type' argument to request_io_region is unnecessary since the
-function name already implies it, right?
+> This patchseries is a part of work on Ingenic chips support
+> and prepares MIPS board support switch to device tree.
+> Next patchseries will add device tree Ingenic gpio, clk
+> and pinctls support.
+> =
 
-Sascha
+> Changes since v1:
+>   * use "make FCR setup value part of struct ns16550_priv"
+>     instead of "make it possible to get reg_write() from devtype";
+>   * add a trivial "fix whitespaces" patch.
+> =
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> =
+
+> Antony Pavlov (8):
+>   MIPS: mach-xburst: fix DEBUG_LL=3Dn build error
+>   MIPS: dts: rzx50: move jz4755 description to the separate file
+>   serial: ns16550: fix whitespaces
+>   serial: ns16550: make FCR setup value part of struct ns16550_priv
+>   serial: ns16550: add compatible entry for "ingenic,jz4740-uart"
+>   MIPS: rzx50: drop console initialization in board code
+>   MIPS: mach-xburst: drop serial.c
+>   MIPS: boards: rename rzx50 -> ritmix-rzx50
+> =
+
+>  Documentation/boards.dox                           |  2 +-
+>  arch/mips/Makefile                                 |  2 +-
+>  arch/mips/boards/ritmix-rzx50/Makefile             |  1 +
+>  .../ritmix-rzx50/include/board/board_pbl_start.h   | 43 ++++++++++++++++
+>  .../boards/ritmix-rzx50/include/board/debug_ll.h   | 23 +++++++++
+>  arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox     | 46 +++++++++++++++++
+>  arch/mips/boards/ritmix-rzx50/serial.c             | 27 ++++++++++
+>  arch/mips/boards/rzx50/Makefile                    |  1 -
+>  .../boards/rzx50/include/board/board_pbl_start.h   | 43 ----------------
+>  arch/mips/boards/rzx50/include/board/debug_ll.h    | 23 ---------
+>  arch/mips/boards/rzx50/rzx50.dox                   | 46 -----------------
+>  arch/mips/boards/rzx50/serial.c                    | 32 ------------
+>  arch/mips/configs/ritmix-rzx50_defconfig           | 39 ++++++++++++++
+>  arch/mips/configs/rzx50_defconfig                  | 39 --------------
+>  arch/mips/dts/jz4755.dtsi                          | 35 +++++++++++++
+>  arch/mips/dts/rzx50.dts                            |  8 ++-
+>  arch/mips/include/asm/debug_ll_ns16550.h           |  2 +
+>  arch/mips/mach-xburst/Makefile                     |  1 -
+>  arch/mips/mach-xburst/mach-xburst.dox              |  2 +-
+>  arch/mips/mach-xburst/serial.c                     | 60 ----------------=
+------
+>  drivers/serial/serial_ns16550.c                    | 35 ++++++++++---
+>  21 files changed, 254 insertions(+), 256 deletions(-)
+>  create mode 100644 arch/mips/boards/ritmix-rzx50/Makefile
+>  create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/board_pbl=
+_start.h
+>  create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/debug_ll.h
+>  create mode 100644 arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox
+>  create mode 100644 arch/mips/boards/ritmix-rzx50/serial.c
+>  delete mode 100644 arch/mips/boards/rzx50/Makefile
+>  delete mode 100644 arch/mips/boards/rzx50/include/board/board_pbl_start.h
+>  delete mode 100644 arch/mips/boards/rzx50/include/board/debug_ll.h
+>  delete mode 100644 arch/mips/boards/rzx50/rzx50.dox
+>  delete mode 100644 arch/mips/boards/rzx50/serial.c
+>  create mode 100644 arch/mips/configs/ritmix-rzx50_defconfig
+>  delete mode 100644 arch/mips/configs/rzx50_defconfig
+>  create mode 100644 arch/mips/dts/jz4755.dtsi
+>  delete mode 100644 arch/mips/mach-xburst/serial.c
+> =
+
+> -- =
+
+> 1.9.0
+> =
+
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
