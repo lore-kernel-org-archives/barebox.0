@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x229.google.com ([2a00:1450:4010:c04::229])
+Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSUZX-0001pP-Vh
- for barebox@lists.infradead.org; Tue, 25 Mar 2014 16:51:32 +0000
-Received: by mail-lb0-f169.google.com with SMTP id q8so602287lbi.0
- for <barebox@lists.infradead.org>; Tue, 25 Mar 2014 09:51:09 -0700 (PDT)
+ id 1WSUZW-0001p5-2g
+ for barebox@lists.infradead.org; Tue, 25 Mar 2014 16:51:30 +0000
+Received: by mail-la0-f45.google.com with SMTP id hr17so597421lab.32
+ for <barebox@lists.infradead.org>; Tue, 25 Mar 2014 09:51:07 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 25 Mar 2014 20:50:52 +0400
-Message-Id: <1395766259-31866-2-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1395766259-31866-1-git-send-email-antonynpavlov@gmail.com>
-References: <1395766259-31866-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 25 Mar 2014 20:50:51 +0400
+Message-Id: <1395766259-31866-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,80 +21,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 1/8] MIPS: dts: rzx50: move jz4755 description to the
- separate file
+Subject: [PATCH v3 0/8] MIPS: improve Ingenic JZ4755 device tree support
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/dts/jz4755.dtsi | 35 +++++++++++++++++++++++++++++++++++
- arch/mips/dts/rzx50.dts   |  8 +++++++-
- 2 files changed, 42 insertions(+), 1 deletion(-)
+This patcheseries moves Ingenic JZ4755 UART initialization
+into device tree and makes JZ4755 device tree organization
+more clear.
 
-diff --git a/arch/mips/dts/jz4755.dtsi b/arch/mips/dts/jz4755.dtsi
-new file mode 100644
-index 0000000..44ff912
---- /dev/null
-+++ b/arch/mips/dts/jz4755.dtsi
-@@ -0,0 +1,35 @@
-+#include "skeleton.dtsi"
-+
-+/ {
-+	soc {
-+		compatible = "simple-bus";
-+		model = "Ingenic JZ4755";
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		serial0: serial@b0030000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0030000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		serial1: serial@b0031000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0031000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+
-+		serial2: serial@b0032000 {
-+			compatible = "ingenic,jz4740-uart";
-+			reg = <0xb0032000 0x20>;
-+			reg-shift = <2>;
-+			clock-frequency = <12000000>;
-+			status = "disabled";
-+		};
-+	};
-+};
-diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
-index 69320dd..78103e3 100644
---- a/arch/mips/dts/rzx50.dts
-+++ b/arch/mips/dts/rzx50.dts
-@@ -1,6 +1,6 @@
- /dts-v1/;
- 
--/include/ "skeleton.dtsi"
-+#include "jz4755.dtsi"
- 
- / {
- 	model = "Ritmix RZX-50";
-@@ -9,4 +9,10 @@
- 	memory {
- 		reg = <0x00000000 0x4000000>;
- 	};
-+
-+	soc {
-+		serial1: serial@b0031000 {
-+			status = "okay";
-+		};
-+	};
- };
+This patchseries is a part of work on Ingenic chips support
+and prepares MIPS board support switch to device tree.
+Next patchseries will add device tree Ingenic gpio, clk
+and pinctls support.
+
+Changes since v2:
+  * add the plat pointer check into "make FCR setup value part of struct ns16550_priv"
+  * add the "serial: ns16550: add compatible entry for "ns16450"" commit
+  * rebase over updated next branch
+
+Changes since v1:
+  * use "make FCR setup value part of struct ns16550_priv"
+    instead of "make it possible to get reg_write() from devtype";
+  * add a trivial "fix whitespaces" patch.
+
+Antony Pavlov (8):
+  MIPS: dts: rzx50: move jz4755 description to the separate file
+  serial: ns16550: fix whitespaces
+  serial: ns16550: make FCR setup value part of struct ns16550_priv
+  serial: ns16550: add compatible entry for "ns16450"
+  serial: ns16550: add compatible entry for "ingenic,jz4740-uart"
+  MIPS: rzx50: drop console initialization in board code
+  MIPS: mach-xburst: drop serial.c
+  MIPS: boards: rename rzx50 -> ritmix-rzx50
+
+ Documentation/boards.dox                           |  2 +-
+ arch/mips/Makefile                                 |  2 +-
+ arch/mips/boards/ritmix-rzx50/Makefile             |  1 +
+ .../ritmix-rzx50/include/board/board_pbl_start.h   | 43 ++++++++++++++++
+ .../boards/ritmix-rzx50/include/board/debug_ll.h   | 23 +++++++++
+ arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox     | 46 +++++++++++++++++
+ arch/mips/boards/ritmix-rzx50/serial.c             | 27 ++++++++++
+ arch/mips/boards/rzx50/Makefile                    |  1 -
+ .../boards/rzx50/include/board/board_pbl_start.h   | 43 ----------------
+ arch/mips/boards/rzx50/include/board/debug_ll.h    | 23 ---------
+ arch/mips/boards/rzx50/rzx50.dox                   | 46 -----------------
+ arch/mips/boards/rzx50/serial.c                    | 32 ------------
+ arch/mips/configs/ritmix-rzx50_defconfig           | 39 ++++++++++++++
+ arch/mips/configs/rzx50_defconfig                  | 39 --------------
+ arch/mips/dts/jz4755.dtsi                          | 35 +++++++++++++
+ arch/mips/dts/rzx50.dts                            |  8 ++-
+ arch/mips/mach-xburst/Makefile                     |  1 -
+ arch/mips/mach-xburst/mach-xburst.dox              |  2 +-
+ arch/mips/mach-xburst/serial.c                     | 60 ----------------------
+ drivers/serial/serial_ns16550.c                    | 51 +++++++++++++++---
+ 20 files changed, 268 insertions(+), 256 deletions(-)
+ create mode 100644 arch/mips/boards/ritmix-rzx50/Makefile
+ create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/board_pbl_start.h
+ create mode 100644 arch/mips/boards/ritmix-rzx50/include/board/debug_ll.h
+ create mode 100644 arch/mips/boards/ritmix-rzx50/ritmix-rzx50.dox
+ create mode 100644 arch/mips/boards/ritmix-rzx50/serial.c
+ delete mode 100644 arch/mips/boards/rzx50/Makefile
+ delete mode 100644 arch/mips/boards/rzx50/include/board/board_pbl_start.h
+ delete mode 100644 arch/mips/boards/rzx50/include/board/debug_ll.h
+ delete mode 100644 arch/mips/boards/rzx50/rzx50.dox
+ delete mode 100644 arch/mips/boards/rzx50/serial.c
+ create mode 100644 arch/mips/configs/ritmix-rzx50_defconfig
+ delete mode 100644 arch/mips/configs/rzx50_defconfig
+ create mode 100644 arch/mips/dts/jz4755.dtsi
+ delete mode 100644 arch/mips/mach-xburst/serial.c
+
 -- 
 1.9.0
 
