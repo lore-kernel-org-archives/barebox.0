@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-la0-x230.google.com ([2a00:1450:4010:c03::230])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSUZk-0001qE-D4
- for barebox@lists.infradead.org; Tue, 25 Mar 2014 16:51:45 +0000
-Received: by mail-lb0-f179.google.com with SMTP id p9so598266lbv.10
- for <barebox@lists.infradead.org>; Tue, 25 Mar 2014 09:51:22 -0700 (PDT)
+ id 1WSUZg-0001pV-C7
+ for barebox@lists.infradead.org; Tue, 25 Mar 2014 16:51:41 +0000
+Received: by mail-la0-f48.google.com with SMTP id gf5so580485lab.21
+ for <barebox@lists.infradead.org>; Tue, 25 Mar 2014 09:51:18 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 25 Mar 2014 20:50:58 +0400
-Message-Id: <1395766259-31866-8-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 25 Mar 2014 20:50:56 +0400
+Message-Id: <1395766259-31866-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1395766259-31866-1-git-send-email-antonynpavlov@gmail.com>
 References: <1395766259-31866-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,91 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v3 7/8] MIPS: mach-xburst: drop serial.c
+Subject: [PATCH v3 5/8] serial: ns16550: add compatible entry for "ingenic,
+ jz4740-uart"
 To: barebox@lists.infradead.org
-
-We use dts for serial port initialization,
-so we have no need in mach-xburst/serial.c anymore.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/mach-xburst/Makefile |  1 -
- arch/mips/mach-xburst/serial.c | 60 ------------------------------------------
- 2 files changed, 61 deletions(-)
+ drivers/serial/serial_ns16550.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/mips/mach-xburst/Makefile b/arch/mips/mach-xburst/Makefile
-index 3e0cd73..e5634ba 100644
---- a/arch/mips/mach-xburst/Makefile
-+++ b/arch/mips/mach-xburst/Makefile
-@@ -1,2 +1 @@
--obj-y += serial.o
- obj-$(CONFIG_CPU_JZ4755) += csrc-jz4750.o reset-jz4750.o
-diff --git a/arch/mips/mach-xburst/serial.c b/arch/mips/mach-xburst/serial.c
-deleted file mode 100644
-index acf5648..0000000
---- a/arch/mips/mach-xburst/serial.c
-+++ /dev/null
-@@ -1,60 +0,0 @@
--/*
-- * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
-- *
-- * Based on the linux kernel JZ4740 serial support:
-- * Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
-- *
-- * This file is part of barebox.
-- * See file CREDITS for list of people who contributed to this project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- */
--
--#include <common.h>
--#include <ns16550.h>
--#include <io.h>
--#include <mach/devices.h>
--
--#define JZ_UART_SHIFT	2
--
--#define ier		(1 << JZ_UART_SHIFT)
--#define fcr		(2 << JZ_UART_SHIFT)
--
--static void jz_serial_reg_write(unsigned int val, unsigned long base,
--	unsigned char reg_offset)
--{
--	switch (reg_offset) {
--	case fcr:
--		val |= 0x10; /* Enable uart module */
--		break;
--	case ier:
--		val |= (val & 0x4) << 2;
--		break;
--	default:
--		break;
--	}
--
--	writeb(val & 0xff, (void *)(base + reg_offset));
--}
--
--struct device_d *jz_add_uart(int id, unsigned long base, unsigned int clock)
--{
--	struct NS16550_plat *serial_plat;
--
--	serial_plat = xzalloc(sizeof(*serial_plat));
--
--	serial_plat->shift = JZ_UART_SHIFT;
--	serial_plat->reg_write = &jz_serial_reg_write;
--	serial_plat->clock = clock;
--
--	return add_ns16550_device(id, base, 8 << JZ_UART_SHIFT,
--			IORESOURCE_MEM_8BIT, serial_plat);
--}
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 635c2b7..0c00eb1 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -200,6 +200,16 @@ static void ns16550_omap_init_port(struct console_device *cdev)
+ 	ns16550_write(cdev, 0x00, omap_mdr1);
+ }
+ 
++#define JZ_FCR_UME 0x10 /* Uart Module Enable */
++
++static void ns16550_jz_init_port(struct console_device *cdev)
++{
++	struct ns16550_priv *priv = to_ns16550_priv(cdev);
++
++	priv->fcrval |= JZ_FCR_UME;
++	ns16550_serial_init_port(cdev);
++}
++
+ /*********** Exposed Functions **********************************/
+ 
+ /**
+@@ -264,6 +274,10 @@ static __maybe_unused struct ns16550_drvdata omap_drvdata = {
+ 	.linux_console_name = "ttyO",
+ };
+ 
++static __maybe_unused struct ns16550_drvdata jz_drvdata = {
++	.init_port = ns16550_jz_init_port,
++};
++
+ /**
+  * @brief Probe entry point -called on the first match for device
+  *
+@@ -363,6 +377,12 @@ static struct of_device_id ns16550_serial_dt_ids[] = {
+ 		.data = (unsigned long)&omap_drvdata,
+ 	},
+ #endif
++#if IS_ENABLED(CONFIG_MACH_MIPS_XBURST)
++	{
++		.compatible = "ingenic,jz4740-uart",
++		.data = (unsigned long)&jz_drvdata,
++	},
++#endif
+ 	{
+ 		/* sentinel */
+ 	},
 -- 
 1.9.0
 
