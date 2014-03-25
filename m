@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSBKr-0002cl-3W
- for barebox@lists.infradead.org; Mon, 24 Mar 2014 20:19:05 +0000
-Received: by mail-la0-f52.google.com with SMTP id ec20so4027444lab.39
- for <barebox@lists.infradead.org>; Mon, 24 Mar 2014 13:18:42 -0700 (PDT)
-Date: Tue, 25 Mar 2014 00:28:25 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140325002825.5a467114657bd471de6c15ad@gmail.com>
-In-Reply-To: <1395692034-5821-5-git-send-email-antonynpavlov@gmail.com>
-References: <1395692034-5821-1-git-send-email-antonynpavlov@gmail.com>
- <1395692034-5821-5-git-send-email-antonynpavlov@gmail.com>
-Mime-Version: 1.0
+ id 1WSMZF-0001zW-FY
+ for barebox@lists.infradead.org; Tue, 25 Mar 2014 08:18:43 +0000
+Date: Tue, 25 Mar 2014 09:18:15 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140325081815.GM17250@pengutronix.de>
+References: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,93 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/8] serial: ns16550: make FCR setup value part of
- struct ns16550_priv
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: Barebox x86 IDE support
+To: "Stam, Michel [FINT]" <M.Stam@fugro.nl>
 Cc: barebox@lists.infradead.org
 
-On Tue, 25 Mar 2014 00:13:50 +0400
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
+Hi Michel,
 
-This patch can be very handy for adding device tree FIFO-less controllers s=
-upport in the future.
+On Mon, Mar 24, 2014 at 10:37:48AM +0100, Stam, Michel [FINT] wrote:
+> Hello maintainers,
+> 
+> I was wondering if one of you has had time to verify these patches and apply them to trunk?
 
-E.g.:  .compatible =3D "ns8250" or .compatible =3D "ns16450"
+Could you send the patches as a series so that it's easier to comment on
+the patches on the list?
 
-> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> ---
->  drivers/serial/serial_ns16550.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> =
+There are some things to comment on, I think the most important one is
+this:
 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16=
-550.c
-> index d217014..0089a04 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -48,6 +48,7 @@ struct ns16550_priv {
->  	struct NS16550_plat plat;
->  	int access_width;
->  	struct clk *clk;
-> +	uint32_t fcrval;
->  };
->  =
+> +/*
+> + * request an io region inside the io space
+> + */
+> +struct resource *request_io_region(const char *name,
+> +		resource_size_t start, resource_size_t end,int type)
+> +{
+> +	return request_region(&iomem_resource, name, start, end, type);
+> +}
+> 
 
->  static inline struct ns16550_priv *to_ns16550_priv(struct console_device=
- *cdev)
-> @@ -157,18 +158,13 @@ static int ns16550_setbaudrate(struct console_devic=
-e *cdev, int baud_rate)
->  {
->  	unsigned int baud_divisor =3D ns16550_calc_divisor(cdev, baud_rate);
->  	struct ns16550_priv *priv =3D to_ns16550_priv(cdev);
-> -	struct NS16550_plat *plat =3D &priv->plat;
->  =
+You request here from the iomem resource, but ioports are a completely
+separate resource, so you have to use a new toplevel resource like
+this:
 
->  	ns16550_write(cdev, LCR_BKSE, lcr);
->  	ns16550_write(cdev, baud_divisor & 0xff, dll);
->  	ns16550_write(cdev, (baud_divisor >> 8) & 0xff, dlm);
->  	ns16550_write(cdev, LCRVAL, lcr);
->  	ns16550_write(cdev, MCRVAL, mcr);
-> -
-> -	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
-> -		ns16550_write(cdev, FCRVAL & ~FCR_FIFO_EN, fcr);
-> -	else
-> -		ns16550_write(cdev, FCRVAL, fcr);
-> +	ns16550_write(cdev, priv->fcrval, fcr);
->  =
+/* The root resource for the whole io space */
+struct resource io_resource = {
+	.start = 0,
+	.end = 0xffffffff,
+	.name = "ioport",
+	.children = LIST_HEAD_INIT(io_resource.children),
+};
 
->  	return 0;
->  }
-> @@ -316,6 +312,11 @@ static int ns16550_probe(struct device_d *dev)
->  	cdev->setbrg =3D ns16550_setbaudrate;
->  	cdev->linux_console_name =3D devtype->linux_console_name;
->  =
+/*
+ * request an io region inside the io space
+ */
+struct resource *request_io_region(const char *name,
+		resource_size_t start, resource_size_t end)
+{
+	return request_region(&io_resource, name, start, end, IORESOURCE_IO);
+}
 
-> +	if (plat->flags & NS16650_FLAG_DISABLE_FIFO)
-> +		priv->fcrval =3D FCRVAL & ~FCR_FIFO_EN;
-> +	else
-> +		priv->fcrval =3D FCRVAL;
-> +
->  	devtype->init_port(cdev);
->  =
+The 'type' argument to request_io_region is unnecessary since the
+function name already implies it, right?
 
->  	return console_register(cdev);
-> -- =
+Sascha
 
-> 1.9.0
-> =
-
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
