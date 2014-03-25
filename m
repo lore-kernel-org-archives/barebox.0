@@ -1,15 +1,12 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSPA2-0000df-7s
- for barebox@lists.infradead.org; Tue, 25 Mar 2014 11:04:51 +0000
-Message-ID: <533162B8.8050300@reverze.net>
-Date: Tue, 25 Mar 2014 12:04:24 +0100
+ id 1WSPHW-0000rG-MT
+ for barebox@lists.infradead.org; Tue, 25 Mar 2014 11:12:35 +0000
+Message-ID: <53316480.2030103@reverze.net>
+Date: Tue, 25 Mar 2014 12:12:00 +0100
 From: Michel Stam <michel@reverze.net>
 MIME-Version: 1.0
-References: <C89EFD3CD56F64468D3D206D683A8D2203154121@ldam-msx2.fugro-nl.local>
- <20140325081815.GM17250@pengutronix.de>
-In-Reply-To: <20140325081815.GM17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,217 +15,326 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============6992243546779821904=="
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Barebox x86 IDE support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/3] x86: Add support for IDE on the legacy I/O ports
+To: barebox@lists.infradead.org
 
-This is a cryptographically signed message in MIME format.
+---
+  arch/x86/boards/x86_generic/generic_pc.c | 71 ++++++++++++++++++++++++
+  drivers/ata/ide-sff.c                    | 94 
+++++++++++++++++++++++++++------
+  drivers/ata/intf_platform_ide.c          | 14 ++++-
+  include/ata_drive.h                      |  1 +
+  4 files changed, 161 insertions(+), 19 deletions(-)
 
---===============6992243546779821904==
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha1; boundary="------------ms000406030607080707060001"
+diff --git a/arch/x86/boards/x86_generic/generic_pc.c 
+b/arch/x86/boards/x86_generic/generic_pc.c
+index 74a7224..6152afc 100644
+--- a/arch/x86/boards/x86_generic/generic_pc.c
++++ b/arch/x86/boards/x86_generic/generic_pc.c
+@@ -27,6 +27,10 @@
+  #include <ns16550.h>
+  #include <linux/err.h>
+  +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++#include <platform_ide.h>
++#endif
++
+  /*
+   * These datas are from the MBR, created by the linker and filled by the
+   * setup tool while installing barebox on the disk drive
+@@ -41,6 +45,55 @@ extern uint8_t pers_env_drive;
+   */
+  #define PATCH_AREA_PERS_SIZE_UNUSED 0x000
+  +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++
++static struct ide_port_info ide_plat = {
++	.ioport_shift = 0,
++	.dataif_be = 0,
++};
++
++static struct resource primary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x1f0,
++		.end =  0x1f8,
++		.flags = IORESOURCE_IO
++	},
++	{
++		.name = "alt",
++		.start = 0x3f6,
++		.end =  0x3f8,
++		.flags = IORESOURCE_IO
++	}
++};
++
++static struct resource secondary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x170,
++		.end =  0x177,
++		.flags = IORESOURCE_IO
++	},
++};
++
++static struct device_d primary_ide_device = {
++	.name = "ide_intf",
++	.id = 0,
++	.platform_data = &ide_plat,
++	.resource = primary_ide_resources,
++	.num_resources = ARRAY_SIZE( primary_ide_resources ),
++};
++
++static struct device_d secondary_ide_device = {
++	.name = "ide_intf",
++	.id = 1,
++	.platform_data = &ide_plat,
++	.resource = secondary_ide_resources,
++	.num_resources = ARRAY_SIZE( secondary_ide_resources ),
++};
++
++#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
++
+  static int devices_init(void)
+  {
+  	struct cdev *cdev;
+@@ -48,9 +101,26 @@ static int devices_init(void)
+  	/* extended memory only */
+  	add_mem_device("ram0", 0x0, bios_get_memsize() << 10,
+  		       IORESOURCE_MEM_WRITEABLE);
++#ifdef CONFIG_DISK_BIOS
+  	add_generic_device("biosdrive", DEVICE_ID_DYNAMIC, NULL, 0, 0, 
+IORESOURCE_MEM,
+  			NULL);
++#endif
++
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++	platform_device_register( &primary_ide_device );
++	platform_device_register( &secondary_ide_device );
++
++	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
++		cdev = devfs_add_partition("ata0",
++				pers_env_storage * 512,
++				(unsigned)pers_env_size * 512,
++				DEVFS_PARTITION_FIXED, "env0");
++		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
++	} else
++		printf("No persistent storage defined\n");
++#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
+  +#ifdef CONFIG_DISK_BIOS
+  	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
+  		cdev = devfs_add_partition("biosdisk0",
+  				pers_env_storage * 512,
+@@ -59,6 +129,7 @@ static int devices_init(void)
+  		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
+  	} else
+  		printf("No persistent storage defined\n");
++#endif
+           return 0;
+  }
+diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
+index 3d5932e..809a129 100644
+--- a/drivers/ata/ide-sff.c
++++ b/drivers/ata/ide-sff.c
+@@ -15,13 +15,71 @@
+  #define DISK_SLAVE 1
+   /**
++ * Read a byte from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline uint8_t ata_rd_byte(struct ide_port *ide, void __iomem 
+*addr )
++{
++	if (!ide->io.mmio)
++		return (uint8_t) inb((int) addr);
++	else
++		return readb(addr);
++}
++
++/**
++ * Write a byte to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_byte(struct ide_port *ide, uint8_t value, 
+void __iomem *addr )
++{
++	if (!ide->io.mmio)
++		outb(value, (int) addr);
++	else
++		writeb(value,addr);
++}
++
++/**
++ * Read a word from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline uint16_t ata_rd_word(struct ide_port *ide, void __iomem 
+*addr )
++{
++	if (!ide->io.mmio)
++		return (uint16_t) inw((int) addr);
++	else
++		return readw(addr);
++}
++
++/**
++ * Write a word to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_word(struct ide_port *ide, uint16_t value, 
+void __iomem *addr )
++{
++	if (!ide->io.mmio)
++		outw(value, (int) addr);
++	else
++		writew(value,addr);
++}
++
++/**
+   * Read the status register of the ATA drive
+   * @param io Register file
+   * @return Register's content
+   */
+  static uint8_t ata_rd_status(struct ide_port *ide)
+  {
+-	return readb(ide->io.status_addr);
++	return ata_rd_byte(ide,ide->io.status_addr);
+  }
+   /**
+@@ -83,12 +141,12 @@ static int ata_set_lba_sector(struct ide_port *ide, 
+unsigned drive, uint64_t num
+  	if (num > 0x0FFFFFFF || drive > 1)
+  		return -EINVAL;
+  -	writeb(0xA0 | LBA_FLAG | drive << 4 | num >> 24, ide->io.device_addr);
+-	writeb(0x00, ide->io.error_addr);
+-	writeb(0x01, ide->io.nsect_addr);
+-	writeb(num, ide->io.lbal_addr);	/* 0 ... 7 */
+-	writeb(num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
+-	writeb(num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
++	ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24, 
+ide->io.device_addr);
++	ata_wr_byte(ide, 0x00, ide->io.error_addr);
++	ata_wr_byte(ide, 0x01, ide->io.nsect_addr);
++	ata_wr_byte(ide, num, ide->io.lbal_addr);	/* 0 ... 7 */
++	ata_wr_byte(ide, num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
++	ata_wr_byte(ide, num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
+   	return 0;
+  }
+@@ -107,7 +165,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t cmd)
+  	if (rc != 0)
+  		return rc;
+  -	writeb(cmd, ide->io.command_addr);
++	ata_wr_byte(ide, cmd, ide->io.command_addr);
+  	return 0;
+  }
+  @@ -118,7 +176,7 @@ static int ata_wr_cmd(struct ide_port *ide, 
+uint8_t cmd)
+   */
+  static void ata_wr_dev_ctrl(struct ide_port *ide, uint8_t val)
+  {
+-	writeb(val, ide->io.ctl_addr);
++	ata_wr_byte(ide, val, ide->io.ctl_addr);
+  }
+   /**
+@@ -133,10 +191,10 @@ static void ata_rd_sector(struct ide_port *ide, 
+void *buf)
+   	if (ide->io.dataif_be) {
+  		for (; u > 0; u--)
+-			*b++ = be16_to_cpu(readw(ide->io.data_addr));
++			*b++ = be16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+  	} else {
+  		for (; u > 0; u--)
+-			*b++ = le16_to_cpu(readw(ide->io.data_addr));
++			*b++ = le16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+  	}
+  }
+  @@ -152,10 +210,10 @@ static void ata_wr_sector(struct ide_port *ide, 
+const void *buf)
+   	if (ide->io.dataif_be) {
+  		for (; u > 0; u--)
+-			writew(cpu_to_be16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_be16(*b++), ide->io.data_addr);
+  	} else {
+  		for (; u > 0; u--)
+-			writew(cpu_to_le16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_le16(*b++), ide->io.data_addr);
+  	}
+  }
+  @@ -169,10 +227,10 @@ static int ide_read_id(struct ata_port *port, 
+void *buf)
+  	struct ide_port *ide = to_ata_drive_access(port);
+  	int rc;
+  -	writeb(0xA0, ide->io.device_addr);	/* FIXME drive */
+-	writeb(0x00, ide->io.lbal_addr);
+-	writeb(0x00, ide->io.lbam_addr);
+-	writeb(0x00, ide->io.lbah_addr);
++	ata_wr_byte(ide, 0xA0, ide->io.device_addr);	/* FIXME drive */
++	ata_wr_byte(ide, 0x00, ide->io.lbal_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbam_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbah_addr);
+   	rc = ata_wr_cmd(ide, ATA_CMD_ID_ATA);
+  	if (rc != 0)
+@@ -327,6 +385,8 @@ int ide_port_register(struct ide_port *ide)
+  	ide->port.ops = &ide_ops;
+   	ret = ata_port_register(&ide->port);
++	if ( !ret )
++		ata_port_detect(&ide->port);
+   	if (ret)
+  		free(ide);
+diff --git a/drivers/ata/intf_platform_ide.c 
+b/drivers/ata/intf_platform_ide.c
+index 8ae0f05..24f78f4 100644
+--- a/drivers/ata/intf_platform_ide.c
++++ b/drivers/ata/intf_platform_ide.c
+@@ -89,8 +89,18 @@ static int platform_ide_probe(struct device_d *dev)
+  	}
+   	ide = xzalloc(sizeof(*ide));
+-	reg_base = dev_request_mem_region(dev, 0);
+-	alt_base = dev_request_mem_region(dev, 1);
++	reg_base = dev_request_region(dev, 0, IORESOURCE_MEM);
++	if (reg_base != NULL)
++	{
++		alt_base = dev_request_region(dev, 1, IORESOURCE_MEM);
++		ide->io.mmio = 1;
++	}
++	else
++	{
++		reg_base = dev_request_region(dev, 0, IORESOURCE_IO);
++		alt_base = dev_request_region(dev, 1, IORESOURCE_IO);
++	}
++
+  	platform_ide_setup_port(reg_base, alt_base, &ide->io, 
+pdata->ioport_shift);
+  	ide->io.reset = pdata->reset;
+  	ide->io.dataif_be = pdata->dataif_be;
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 6d6cca4..44073cb 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -119,6 +119,7 @@ struct ata_ioports {
+  	/* hard reset line handling */
+  	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
+  	int dataif_be;	/* true if 16 bit data register is big endian */
++	int mmio; /* true if memory-mapped io */
+  };
+   struct ata_port;
+-- 
+1.8.4
 
-This is a cryptographically signed message in MIME format.
-
---------------ms000406030607080707060001
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-
-Hello Sascha,
-
-I will repost the patches separately as you requested.
-
-With regard to your comment below, this was somewhat intentional, as I=20
-understood:
-> struct resource iomem_resource =3D {
->         .start =3D 0,
->         .end =3D 0xffffffff,
->         .name =3D "iomem",
->         .children =3D LIST_HEAD_INIT(iomem_resource.children),
-> };
-as "I/O and memory resource". This is also why I check on the resource=20
-type in request_region( ):
->         /*
->          * We keep the list of child resources ordered which helps
->          * us searching for conflicts here.
->          */
->         list_for_each_entry(r, &parent->children, sibling) {
->                 if (end < r->start)
->                         goto ok;
->                 if (start > r->end)
->                         continue;
->
->                 if (type !=3D resource_type(r->parent))
->                         continue;
-I retain one resource tree that way, also for if people decide to add=20
-DMA or IRQ's in the future. The iteration function skips the resource if =
-
-the types do not match. To me the discussion seems the difference=20
-between one linked list for every resource type (=3D=3D more work if a ne=
-w=20
-type is added), or a single linked list with a type field (new resource=20
-type =3D=3D new integer constant, no more).
-
-I would like to hear your thoughts on that.
-
-to be continued after the posting.
-
-Cheers,
-
-Michel
-On 03/25/2014 09:18 AM, Sascha Hauer wrote:
-> Hi Michel,
->
-> On Mon, Mar 24, 2014 at 10:37:48AM +0100, Stam, Michel [FINT] wrote:
->> Hello maintainers,
->>
->> I was wondering if one of you has had time to verify these patches and=
- apply them to trunk?
-> Could you send the patches as a series so that it's easier to comment o=
-n
-> the patches on the list?
->
-> There are some things to comment on, I think the most important one is
-> this:
->
->> +/*
->> + * request an io region inside the io space
->> + */
->> +struct resource *request_io_region(const char *name,
->> +		resource_size_t start, resource_size_t end,int type)
->> +{
->> +	return request_region(&iomem_resource, name, start, end, type);
->> +}
->>
-> You request here from the iomem resource, but ioports are a completely
-> separate resource, so you have to use a new toplevel resource like
-> this:
->
-> /* The root resource for the whole io space */
-> struct resource io_resource =3D {
-> 	.start =3D 0,
-> 	.end =3D 0xffffffff,
-> 	.name =3D "ioport",
-> 	.children =3D LIST_HEAD_INIT(io_resource.children),
-> };
->
-> /*
->   * request an io region inside the io space
->   */
-> struct resource *request_io_region(const char *name,
-> 		resource_size_t start, resource_size_t end)
-> {
-> 	return request_region(&io_resource, name, start, end, IORESOURCE_IO);
-> }
->
-> The 'type' argument to request_io_region is unnecessary since the
-> function name already implies it, right?
->
-> Sascha
->
-
-
-
---------------ms000406030607080707060001
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAQAAoIIMmzCC
-BjQwggQcoAMCAQICAR4wDQYJKoZIhvcNAQEFBQAwfTELMAkGA1UEBhMCSUwxFjAUBgNVBAoT
-DVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdpdGFsIENlcnRpZmljYXRlIFNp
-Z25pbmcxKTAnBgNVBAMTIFN0YXJ0Q29tIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTA3
-MTAyNDIxMDE1NVoXDTE3MTAyNDIxMDE1NVowgYwxCzAJBgNVBAYTAklMMRYwFAYDVQQKEw1T
-dGFydENvbSBMdGQuMSswKQYDVQQLEyJTZWN1cmUgRGlnaXRhbCBDZXJ0aWZpY2F0ZSBTaWdu
-aW5nMTgwNgYDVQQDEy9TdGFydENvbSBDbGFzcyAxIFByaW1hcnkgSW50ZXJtZWRpYXRlIENs
-aWVudCBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMcJg8zOLdgasSmkLhOr
-lr6KMoOMpohBllVHrdRvEg/q6r8jR+EK75xCGhR8ToREoqe7zM9/UnC6TS2y9UKTpT1v7RSM
-zR0t6ndl0TWBuUr/UXBhPk+Kmy7bI4yW4urC+y7P3/1/X7U8ocb8VpH/Clt+4iq7nirMcNh6
-qJR+xjOhV+VHzQMALuGYn5KZmc1NbJQYclsGkDxDz2UbFqE2+6vIZoL+jb9x4Pa5gNf1TwSD
-kOkikZB1xtB4ZqtXThaABSONdfmv/Z1pua3FYxnCFmdr/+N2JLKutIxMYqQOJebr/f/h5t95
-m4JgrM3Y/w7YX9d7YAL9jvN4SydHsU6n65cCAwEAAaOCAa0wggGpMA8GA1UdEwEB/wQFMAMB
-Af8wDgYDVR0PAQH/BAQDAgEGMB0GA1UdDgQWBBRTcu2SnODaywFcfH6WNU7y1LhRgjAfBgNV
-HSMEGDAWgBROC+8apEBbpRdphzDKNGhD0EGu8jBmBggrBgEFBQcBAQRaMFgwJwYIKwYBBQUH
-MAGGG2h0dHA6Ly9vY3NwLnN0YXJ0c3NsLmNvbS9jYTAtBggrBgEFBQcwAoYhaHR0cDovL3d3
-dy5zdGFydHNzbC5jb20vc2ZzY2EuY3J0MFsGA1UdHwRUMFIwJ6AloCOGIWh0dHA6Ly93d3cu
-c3RhcnRzc2wuY29tL3Nmc2NhLmNybDAnoCWgI4YhaHR0cDovL2NybC5zdGFydHNzbC5jb20v
-c2ZzY2EuY3JsMIGABgNVHSAEeTB3MHUGCysGAQQBgbU3AQIBMGYwLgYIKwYBBQUHAgEWImh0
-dHA6Ly93d3cuc3RhcnRzc2wuY29tL3BvbGljeS5wZGYwNAYIKwYBBQUHAgEWKGh0dHA6Ly93
-d3cuc3RhcnRzc2wuY29tL2ludGVybWVkaWF0ZS5wZGYwDQYJKoZIhvcNAQEFBQADggIBAAqD
-CH14qywGXLhjjF6uHLkjd02hcdh9hrw+VUsv+q1eeQWB21jWj3kJ96AUlPCoEGZ/ynJNScWy
-6QMVQjbbMXltUfO4n4bGGdKo3awPWp61tjAFgraLJgDk+DsSvUD6EowjMTNx25GQgyYJ5RPI
-zKKR9tQW8gGK+2+RHxkUCTbYFnL6kl8Ch507rUdPPipJ9CgJFws3kDS3gOS5WFMxcjO5DwKf
-KSETEPrHh7p5shuuNktvsv6hxHTLhiMKX893gxdT3XLS9OKmCv87vkINQcNEcIIoFWbP9HOR
-z9v3vQwR4e3ksLc2JZOAFK+ssS5XMEoznzpihEP0PLc4dCBYjbvSD7kxgDwZ+Aj8Q9PkbvE9
-sIPP7ON0fz095HdThKjiVJe6vofq+n6b1NBc8XdrQvBmunwxD5nvtTW4vtN6VY7mUCmxsCie
-uoBJ9OlqmsVWQvifIYf40dJPZkk9YgGTzWLpXDSfLSplbY2LL9C9U0ptvjcDjefLTvqSFc7t
-w1sEhF0n/qpA2r0GpvkLRDmcSwVyPvmjFBGqUp/pNy8ZuPGQmHwFi2/14+xeSUDG2bwnsYJQ
-G2EdJCB6luQ57GEnTA/yKZSTKI8dDQa8Sd3zfXb19mOgSF0bBdXbuKhEpuP9wirslFe6fQ1t
-5j5R0xi72MZ8ikMu1RQZKCyDbMwazlHiMIIGXzCCBUegAwIBAgIDCWkOMA0GCSqGSIb3DQEB
-BQUAMIGMMQswCQYDVQQGEwJJTDEWMBQGA1UEChMNU3RhcnRDb20gTHRkLjErMCkGA1UECxMi
-U2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUgU2lnbmluZzE4MDYGA1UEAxMvU3RhcnRDb20g
-Q2xhc3MgMSBQcmltYXJ5IEludGVybWVkaWF0ZSBDbGllbnQgQ0EwHhcNMTQwMzI0MDkzNzUx
-WhcNMTUwMzI1MDkyMDI1WjBhMRkwFwYDVQQNExBrY08xVFp2YlB1VHJwckU4MQswCQYDVQQG
-EwJOTDEUMBIGA1UEAxMLTWljaGVsIFN0YW0xITAfBgkqhkiG9w0BCQEWEm1pY2hlbEByZXZl
-cnplLm5ldDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKionYnufAXXVz55IVqM
-4hUGc32XO6pXeHy2wb85GLs5UFnLVwqt+SsZWkAzGh2yb+ig59tamcw67ugX+6i+ya9UVD9E
-lEPAYK3A5yTdM2Umg1944YiZjrV01NuHhrRPJTATZwmIqFCjqYKGaCt6xV5R/bEpSmetM66J
-shnVbeRnMRzzocNuUkTiJqZu6mZRGcORfCDMUnfP7Sevzq9mCMKQM4q0tiMOK5MHdnfXnDhj
-4VJGuOIzTqnMvivIENboKNtbJju4Yjmorm7kJ435fWlcBa0k2TyFrT+hkxooh2cwTclH6I1U
-dh614RPbAG433Me9LzZNNkXX053VGwzKyyUCAwEAAaOCAvIwggLuMAkGA1UdEwQCMAAwCwYD
-VR0PBAQDAgSwMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDAdBgNVHQ4EFgQUNr7g
-vLJAY8/w3wL6MIaqa0bw6fwwHwYDVR0jBBgwFoAUU3Ltkpzg2ssBXHx+ljVO8tS4UYIwHQYD
-VR0RBBYwFIESbWljaGVsQHJldmVyemUubmV0MIIBZgYDVR0gBIIBXTCCAVkwggFVBgsrBgEE
-AYG1NwECAzCCAUQwLgYIKwYBBQUHAgEWImh0dHA6Ly93d3cuc3RhcnRzc2wuY29tL3BvbGlj
-eS5wZGYwggEQBggrBgEFBQcCAjCCAQIwJxYgU3RhcnRDb20gQ2VydGlmaWNhdGlvbiBBdXRo
-b3JpdHkwAwIBARqB1lRoaXMgY2VydGlmaWNhdGUgd2FzIGlzc3VlZCBhY2NvcmRpbmcgdG8g
-dGhlIFN0YXJ0U1NMIFdlYi1vZi1UcnVzdCBDb21tdW5pdHkgVmFsaWRhdGlvbiByZXF1aXJl
-bWVudHMgb2YgdGhlIFN0YXJ0Q29tIENBIHBvbGljeSwgcmVsaWFuY2Ugb25seSBmb3IgdGhl
-IGludGVuZGVkIHB1cnBvc2UgaW4gY29tcGxpYW5jZSBvZiB0aGUgcmVseWluZyBwYXJ0eSBv
-YmxpZ2F0aW9ucy4wNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5zdGFydHNzbC5jb20v
-Y3J0dTEtY3JsLmNybDCBjgYIKwYBBQUHAQEEgYEwfzA5BggrBgEFBQcwAYYtaHR0cDovL29j
-c3Auc3RhcnRzc2wuY29tL3N1Yi9jbGFzczEvY2xpZW50L2NhMEIGCCsGAQUFBzAChjZodHRw
-Oi8vYWlhLnN0YXJ0c3NsLmNvbS9jZXJ0cy9zdWIuY2xhc3MxLmNsaWVudC5jYS5jcnQwIwYD
-VR0SBBwwGoYYaHR0cDovL3d3dy5zdGFydHNzbC5jb20vMA0GCSqGSIb3DQEBBQUAA4IBAQCN
-6w5arF+jboDXRlVPluqz/vHrmIY879dUxp4eLAfMCeL1efdrTcT8pOLSbJO80EQy460rDFOQ
-2pbLKXkM9PfkcO/VKGG9CYWVjAFe2uyinxrtUE3EkfwLOleiLfFdDpSSQUfS1ns3nfrTU59w
-VKUafg+j4u03gY78SI6WmPOWiQSQtHR8/ZIn1wz0bnI/2713PJgA1d9AgrZx13rib1fI7jQQ
-wsJVWFG1B6acc05BmlIxtcp5NEwiJQmsT4hsRAtQvNbM4ivGBsZ7JocUe3Gqb4TBjv7/03Rw
-fv2WhemEVSAMGgVGCLNIouhhHSMot1LEzfNZyUaIL3uPcy5z34zCMYID3TCCA9kCAQEwgZQw
-gYwxCzAJBgNVBAYTAklMMRYwFAYDVQQKEw1TdGFydENvbSBMdGQuMSswKQYDVQQLEyJTZWN1
-cmUgRGlnaXRhbCBDZXJ0aWZpY2F0ZSBTaWduaW5nMTgwNgYDVQQDEy9TdGFydENvbSBDbGFz
-cyAxIFByaW1hcnkgSW50ZXJtZWRpYXRlIENsaWVudCBDQQIDCWkOMAkGBSsOAwIaBQCgggId
-MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE0MDMyNTExMDQy
-NFowIwYJKoZIhvcNAQkEMRYEFId0DRqLYJi09fhKO7BpPjcxpLYWMGwGCSqGSIb3DQEJDzFf
-MF0wCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgIC
-AIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwgaUGCSsGAQQBgjcQ
-BDGBlzCBlDCBjDELMAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNV
-BAsTIlNlY3VyZSBEaWdpdGFsIENlcnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0
-Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUgQ2xpZW50IENBAgMJaQ4wgacGCyqG
-SIb3DQEJEAILMYGXoIGUMIGMMQswCQYDVQQGEwJJTDEWMBQGA1UEChMNU3RhcnRDb20gTHRk
-LjErMCkGA1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUgU2lnbmluZzE4MDYGA1UE
-AxMvU3RhcnRDb20gQ2xhc3MgMSBQcmltYXJ5IEludGVybWVkaWF0ZSBDbGllbnQgQ0ECAwlp
-DjANBgkqhkiG9w0BAQEFAASCAQCMkmS4keiY5iKDGw0uksPuFJVLvKycc4LYgCrWTxw3GGsF
-amD65J6Ye2fK7q4F4SwY/kP8bQLWieBbjM5VK/RpDYvv3H/8NUCl6Q9TqRNP7JyPugrampIm
-I4zVN8VhrbH8rCdndJQPl64GDnOdhiEKjx6bH5ss8pdRG/tiWty6w2xpHCpAfTplf7oV+Bms
-zVfR4nzqCyt3blhuSOMFcsj6aNndKMmjWcNQc+BwcFZhmv2J5NhqW++s6bgJ7CVeheKL5f3A
-y2Ztp9PB55Wt2W/CKwEZQm5kXvU56iAo2OSFNp+O6eXScWLLLbFFnT3YgAa3xvmbZ2z89uuE
-7w0cFhLPAAAAAAAA
---------------ms000406030607080707060001--
-
-
---===============6992243546779821904==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============6992243546779821904==--
