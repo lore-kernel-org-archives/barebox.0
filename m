@@ -1,10 +1,10 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSmOf-0003HA-Qi
- for barebox@lists.infradead.org; Wed, 26 Mar 2014 11:53:30 +0000
-Message-ID: <5332BF9F.8060308@reverze.net>
-Date: Wed, 26 Mar 2014 12:53:03 +0100
+ id 1WSmjW-00045l-OT
+ for barebox@lists.infradead.org; Wed, 26 Mar 2014 12:15:04 +0000
+Message-ID: <5332C4AF.4060009@reverze.net>
+Date: Wed, 26 Mar 2014 13:14:39 +0100
 From: Michel Stam <michel@reverze.net>
 MIME-Version: 1.0
 References: <CA+dawz0DeA4+LWqamXp-tPDyWXW1JXfov-u2xdPBrSEsdFuZ3Q@mail.gmail.com>
@@ -13,7 +13,9 @@ References: <CA+dawz0DeA4+LWqamXp-tPDyWXW1JXfov-u2xdPBrSEsdFuZ3Q@mail.gmail.com>
  <CA+dawz1a0EVA5OvDGZjpchV13R8J5+hKS8hVOtmmi2HFef5spQ@mail.gmail.com>
  <20140326113103.GA9427@omega.Speedport_W_921V_1_24_000>
  <20140326113300.GB9427@omega.Speedport_W_921V_1_24_000>
-In-Reply-To: <20140326113300.GB9427@omega.Speedport_W_921V_1_24_000>
+ <5332BF9F.8060308@reverze.net>
+ <20140326115854.GA12190@omega.Speedport_W_921V_1_24_000>
+In-Reply-To: <20140326115854.GA12190@omega.Speedport_W_921V_1_24_000>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,70 +24,70 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0758436761615055261=="
+Content-Type: multipart/mixed; boundary="===============3733604535043237299=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Can i access the barebox env from linux
-To: Alexander Aring <alex.aring@gmail.com>, Ashutosh Singh <embedded.ashu@gmail.com>
-Cc: barebox@lists.infradead.org
+To: Alexander Aring <alex.aring@gmail.com>
+Cc: barebox@lists.infradead.org, Ashutosh Singh <embedded.ashu@gmail.com>
 
 This is a cryptographically signed message in MIME format.
 
---===============0758436761615055261==
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha1; boundary="------------ms070400020903030806000701"
+--===============3733604535043237299==
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha1; boundary="------------ms000805070503090105090001"
 
 This is a cryptographically signed message in MIME format.
 
---------------ms070400020903030806000701
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+--------------ms000805070503090105090001
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-In case anyone is interested; for a barebox x86 project I wrote a=20
-library that overrides fopen/fclose/open/close/etc a while back, which=20
-allows read access to the environment sector if properly configured. I=20
-managed to get it working on arm/mips with mtdblock as well.
+Hey Alex,
 
-In the near future I'd like to write a kernel driver to read the=20
-filesystem properly, this was more of an experiment.
+The current version? That is a library, quite ugly actually.
+LD_PRELOAD=3D/lib/LIBRARY /command/to/execute
+
+The preload overrides the libc calls to open/read/write files.
+The command can then access the environment sector, read only. If the=20
+environment contains a /bin/init, then the file will be available from=20
+/bin/init if the library is preloaded. Memory footprint is around=20
+10kbyte RAM, or something like that. Its probably only usable for root,=20
+as it requires read access to the block device, something you wouldn't=20
+want to give all users.
+
+As a kernel module I would make it a proper filesystem so you can do=20
+something like mount /dev/blockdev /path -t bbfs.
+That kernel driver will probably be a long-term project, though.
 
 Cheers,
 
 Michel
-On 03/26/2014 12:33 PM, Alexander Aring wrote:
-> On Wed, Mar 26, 2014 at 12:31:03PM +0100, Alexander Aring wrote:
->> On Wed, Mar 26, 2014 at 04:44:30PM +0530, Ashutosh Singh wrote:
->>> Thanks Alex,
->>>
->>> The script is quite helpful.
->>> But since i am saving my barebox.env in nand and want to mount, modif=
-y
->>> and write it back to nand.
->>> Do you have a safer solution so that complete env data won't corrupte=
-d.
->> 1. You need to save the bareboxenv as image, the right place would be
->>     /tmp which is tmpfs and this uses ram for storing data. You need i=
-notify
->>     support in kernel and I am sure tmpfs also supports inotify. You a=
-lso need
->>     the inotify userspace utilities.
+On 03/26/2014 12:58 PM, Alexander Aring wrote:
+> On Wed, Mar 26, 2014 at 12:53:03PM +0100, Michel Stam wrote:
+>> In case anyone is interested; for a barebox x86 project I wrote a libr=
+ary
+>> that overrides fopen/fclose/open/close/etc a while back, which allows =
+read
+>> access to the environment sector if properly configured. I managed to =
+get it
+>> working on arm/mips with mtdblock as well.
 >>
->> 2. The image should write via nandwrite from mtd-utils [1]. Look for
->>     the nandwrite manpage. nandwrite should write the tmp-image from b=
-benv
->>     to your nand mtd device.
+>> In the near future I'd like to write a kernel driver to read the files=
+ystem
+>> properly, this was more of an experiment.
 >>
-> 3. To read the image from bbenv partition you should also not use
->     bareboxenv tool directly. Use nanddump for that and then use
->     bareboxenv to extract these files to /tmp/bbenv or whatever.
+> How does it work? As a kernel module, as registered filesystem under
+> /proc/filesystems ?
 >
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+> With fuse as userspace filesystem?
+>
+> Or like the inotify solution?
+>
+> - Alex
 
 
 
---------------ms070400020903030806000701
+--------------ms000805070503090105090001
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -155,8 +157,8 @@ fv2WhemEVSAMGgVGCLNIouhhHSMot1LEzfNZyUaIL3uPcy5z34zCMYID3TCCA9kCAQEwgZQw
 gYwxCzAJBgNVBAYTAklMMRYwFAYDVQQKEw1TdGFydENvbSBMdGQuMSswKQYDVQQLEyJTZWN1
 cmUgRGlnaXRhbCBDZXJ0aWZpY2F0ZSBTaWduaW5nMTgwNgYDVQQDEy9TdGFydENvbSBDbGFz
 cyAxIFByaW1hcnkgSW50ZXJtZWRpYXRlIENsaWVudCBDQQIDCWkOMAkGBSsOAwIaBQCgggId
-MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE0MDMyNjExNTMw
-M1owIwYJKoZIhvcNAQkEMRYEFPhvmf4e+HOpoi/9PYQtnxi/Xs/VMGwGCSqGSIb3DQEJDzFf
+MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTE0MDMyNjEyMTQz
+OVowIwYJKoZIhvcNAQkEMRYEFAjchh2bOTaJBszTjHPlF0Uke4tMMGwGCSqGSIb3DQEJDzFf
 MF0wCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgIC
 AIAwDQYIKoZIhvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwgaUGCSsGAQQBgjcQ
 BDGBlzCBlDCBjDELMAkGA1UEBhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNV
@@ -165,16 +167,16 @@ Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUgQ2xpZW50IENBAgMJaQ4wgacGCyqG
 SIb3DQEJEAILMYGXoIGUMIGMMQswCQYDVQQGEwJJTDEWMBQGA1UEChMNU3RhcnRDb20gTHRk
 LjErMCkGA1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUgU2lnbmluZzE4MDYGA1UE
 AxMvU3RhcnRDb20gQ2xhc3MgMSBQcmltYXJ5IEludGVybWVkaWF0ZSBDbGllbnQgQ0ECAwlp
-DjANBgkqhkiG9w0BAQEFAASCAQAlkSvkNde0uPEC4l6KS9oVKDgIXDgnXmcX0oA6gMw1bw12
-HfpvCb8X3/LIW2HaYWJbqoszT9WvNnq11EQeD9l76wcdyh2J0fKyJ0PVRrOmMtju5Lt5PMA4
-7PYrjvBjRlz6/BfCXRv/JUBNu9N8V5eeyJMxkpbq5lLvR7IpofLORxRnygWArNqQSLcnLHZ9
-rxSNY6RlztQliezV3MVrxzsRmea+18B6MT52Z1nS1rqyFh0/qP31LOW2cK4bKvwkeU9rQa+8
-iGyO060hP90oM6IxLtMlYhqF8ZEehcHIc84z0keeYrUSQMnyP89cvg4zVx29JFB5t0p25i4J
-vyaSE/kBAAAAAAAA
---------------ms070400020903030806000701--
+DjANBgkqhkiG9w0BAQEFAASCAQAUcYZSPew9azGEMqNfhKoNpW9OCtjUhinZqqXGnk7Gu5YH
+Y4t4rAAn5kzT8WbpGICpboKnv7rrWWKNN5DVE0X35aiD7RgK/0Ggywhh5slzI2JerRU+HcOO
+Zm/d8E8jhd+4kn6SL2dKNVMkBYdZdeHxcfahy6POSJxsw+ef0BhHrtAZiv/DBVGhl2koS4fI
+QHmjonZDrdsDGxv2y9GT+Dm92Yr9E6HNSajhORJkVNAm/skUrvCFg3wsGmb0hU/ZeModNMWa
+LcANDgxVT1xaUMzC85928wB5YJteS/nUPnyd4YcYCqJiwZ2iGutetyHU607fI613nyQSpAra
+6Lwv36b6AAAAAAAA
+--------------ms000805070503090105090001--
 
 
---===============0758436761615055261==
+--===============3733604535043237299==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -185,4 +187,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0758436761615055261==--
+--===============3733604535043237299==--
