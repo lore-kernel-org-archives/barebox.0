@@ -1,23 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x231.google.com ([2a00:1450:4008:c01::231])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSmUT-0003SG-Uq
- for barebox@lists.infradead.org; Wed, 26 Mar 2014 11:59:30 +0000
-Received: by mail-bk0-f49.google.com with SMTP id my13so486798bkb.8
- for <barebox@lists.infradead.org>; Wed, 26 Mar 2014 04:59:06 -0700 (PDT)
-Date: Wed, 26 Mar 2014 12:58:57 +0100
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140326115854.GA12190@omega.Speedport_W_921V_1_24_000>
-References: <CA+dawz0DeA4+LWqamXp-tPDyWXW1JXfov-u2xdPBrSEsdFuZ3Q@mail.gmail.com>
- <20140326062619.GP17250@pengutronix.de>
- <20140326065734.GA18805@omega.Speedport_W_921V_1_24_000>
- <CA+dawz1a0EVA5OvDGZjpchV13R8J5+hKS8hVOtmmi2HFef5spQ@mail.gmail.com>
- <20140326113103.GA9427@omega.Speedport_W_921V_1_24_000>
- <20140326113300.GB9427@omega.Speedport_W_921V_1_24_000>
- <5332BF9F.8060308@reverze.net>
+Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WSuM4-0002gx-Kw
+ for barebox@lists.infradead.org; Wed, 26 Mar 2014 20:23:23 +0000
+Received: from localhost.localdomain (unknown [82.233.81.124])
+ by smtp4-g21.free.fr (Postfix) with ESMTP id 08F874C80C5
+ for <barebox@lists.infradead.org>; Wed, 26 Mar 2014 21:22:55 +0100 (CET)
+From: =?UTF-8?q?Eric=20B=C3=A9nard?= <eric@eukrea.com>
+Date: Wed, 26 Mar 2014 21:22:43 +0100
+Message-Id: <1395865363-29307-3-git-send-email-eric@eukrea.com>
+In-Reply-To: <1395865363-29307-1-git-send-email-eric@eukrea.com>
+References: <1395865363-29307-1-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5332BF9F.8060308@reverze.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,33 +20,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Can i access the barebox env from linux
-To: Michel Stam <michel@reverze.net>
-Cc: barebox@lists.infradead.org, Ashutosh Singh <embedded.ashu@gmail.com>
+Subject: [PATCH 3/3] arm: add defconfig for Embest boards
+To: barebox@lists.infradead.org
 
-On Wed, Mar 26, 2014 at 12:53:03PM +0100, Michel Stam wrote:
-> In case anyone is interested; for a barebox x86 project I wrote a library
-> that overrides fopen/fclose/open/close/etc a while back, which allows read
-> access to the environment sector if properly configured. I managed to get it
-> working on arm/mips with mtdblock as well.
-> 
-> In the near future I'd like to write a kernel driver to read the filesystem
-> properly, this was more of an experiment.
-> 
-How does it work? As a kernel module, as registered filesystem under
-/proc/filesystems ?
-
-With fuse as userspace filesystem?
-
-Or like the inotify solution?
-
-- Alex
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+U2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3JlYS5jb20+Ci0tLQogYXJjaC9h
+cm0vY29uZmlncy9lbWJlc3RfZGVmY29uZmlnIHwgMTAwICsrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTAwIGluc2VydGlvbnMoKykKIGNyZWF0
+ZSBtb2RlIDEwMDY0NCBhcmNoL2FybS9jb25maWdzL2VtYmVzdF9kZWZjb25maWcKCmRpZmYgLS1n
+aXQgYS9hcmNoL2FybS9jb25maWdzL2VtYmVzdF9kZWZjb25maWcgYi9hcmNoL2FybS9jb25maWdz
+L2VtYmVzdF9kZWZjb25maWcKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uMDli
+NGQzNQotLS0gL2Rldi9udWxsCisrKyBiL2FyY2gvYXJtL2NvbmZpZ3MvZW1iZXN0X2RlZmNvbmZp
+ZwpAQCAtMCwwICsxLDEwMCBAQAorQ09ORklHX0FSQ0hfSU1YPXkKK0NPTkZJR19JTVhfTVVMVElf
+Qk9BUkRTPXkKK0NPTkZJR19NQUNIX0VNQkVTVF9NQVJTQk9BUkQ9eQorQ09ORklHX01BQ0hfRU1C
+RVNUX1JJT1RCT0FSRD15CitDT05GSUdfQVJDSF9JTVhfVVNCTE9BREVSPXkKK0NPTkZJR19JTVhf
+SUlNPXkKK0NPTkZJR19JTVhfSUlNX0ZVU0VfQkxPVz15CitDT05GSUdfVEhVTUIyX0JBUkVCT1g9
+eQorQ09ORklHX0NNRF9BUk1fTU1VSU5GTz15CitDT05GSUdfQVJNX09QVElNWkVEX1NUUklOR19G
+VU5DVElPTlM9eQorQ09ORklHX0FSTV9VTldJTkQ9eQorQ09ORklHX01NVT15CitDT05GSUdfVEVY
+VF9CQVNFPTB4MDhmODAwMDAKK0NPTkZJR19NQUxMT0NfU0laRT0weDQwMDAwMDAKK0NPTkZJR19N
+QUxMT0NfVExTRj15CitDT05GSUdfS0FMTFNZTVM9eQorQ09ORklHX1JFTE9DQVRBQkxFPXkKK0NP
+TkZJR19MT05HSEVMUD15CitDT05GSUdfSFVTSF9GQU5DWV9QUk9NUFQ9eQorQ09ORklHX0NNRExJ
+TkVfRURJVElORz15CitDT05GSUdfQVVUT19DT01QTEVURT15CitDT05GSUdfTUVOVT15CitDT05G
+SUdfQ09OU09MRV9BQ1RJVkFURV9BTEw9eQorQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfR0VO
+RVJJQ19ORVc9eQorQ09ORklHX0RFRkFVTFRfRU5WSVJPTk1FTlRfUEFUSD0iYXJjaC9hcm0vYm9h
+cmRzL2VtYmVzdC1tYXJzYm9hcmQvZW52IgorQ09ORklHX0RFRkFVTFRfTE9HTEVWRUw9NgorQ09O
+RklHX0RFQlVHX0lORk89eQorQ09ORklHX0NNRF9FRElUPXkKK0NPTkZJR19DTURfU0xFRVA9eQor
+Q09ORklHX0NNRF9NU0xFRVA9eQorQ09ORklHX0NNRF9TQVZFRU5WPXkKK0NPTkZJR19DTURfRVhQ
+T1JUPXkKK0NPTkZJR19DTURfUkVBRExJTkU9eQorQ09ORklHX0NNRF9NRU5VPXkKK0NPTkZJR19D
+TURfTUVOVV9NQU5BR0VNRU5UPXkKK0NPTkZJR19DTURfVElNRT15CitDT05GSUdfQ01EX1RGVFA9
+eQorQ09ORklHX0NNRF9FQ0hPX0U9eQorQ09ORklHX0NNRF9NRU1JTkZPPXkKK0NPTkZJR19DTURf
+SU9NRU09eQorQ09ORklHX0NNRF9DUkM9eQorQ09ORklHX0NNRF9DUkNfQ01QPXkKK0NPTkZJR19D
+TURfTUQ1U1VNPXkKK0NPTkZJR19DTURfRkxBU0g9eQorQ09ORklHX0NNRF9CT09UTV9TSE9XX1RZ
+UEU9eQorQ09ORklHX0NNRF9CT09UTV9WRVJCT1NFPXkKK0NPTkZJR19DTURfQk9PVE1fSU5JVFJE
+PXkKK0NPTkZJR19DTURfQk9PVE1fT0ZUUkVFPXkKK0NPTkZJR19DTURfQk9PVE1fT0ZUUkVFX1VJ
+TUFHRT15CitDT05GSUdfQ01EX0JPT1RNX0FJTUFHRT15CisjIENPTkZJR19DTURfQk9PVFUgaXMg
+bm90IHNldAorQ09ORklHX0NNRF9SRVNFVD15CitDT05GSUdfQ01EX0dPPXkKK0NPTkZJR19DTURf
+VElNRU9VVD15CitDT05GSUdfQ01EX1BBUlRJVElPTj15CitDT05GSUdfQ01EX01BR0lDVkFSPXkK
+K0NPTkZJR19DTURfTUFHSUNWQVJfSEVMUD15CitDT05GSUdfQ01EX0dQSU89eQorQ09ORklHX0NN
+RF9VTkNPTVBSRVNTPXkKK0NPTkZJR19DTURfSTJDPXkKK0NPTkZJR19DTURfTEVEPXkKK0NPTkZJ
+R19DTURfTEVEX1RSSUdHRVI9eQorQ09ORklHX0NNRF9NSUlUT09MPXkKK0NPTkZJR19DTURfQ0xL
+PXkKK0NPTkZJR19DTURfREVURUNUPXkKK0NPTkZJR19ORVQ9eQorQ09ORklHX05FVF9ESENQPXkK
+K0NPTkZJR19ORVRfUElORz15CitDT05GSUdfT0ZERVZJQ0U9eQorQ09ORklHX09GX0JBUkVCT1hf
+RFJJVkVSUz15CitDT05GSUdfRFJJVkVSX05FVF9GRUNfSU1YPXkKK0NPTkZJR19BVDgwM1hfUEhZ
+PXkKK0NPTkZJR19EUklWRVJfU1BJX0lNWD15CitDT05GSUdfSTJDPXkKK0NPTkZJR19JMkNfSU1Y
+PXkKK0NPTkZJR19NVEQ9eQorQ09ORklHX01URF9NMjVQODA9eQorQ09ORklHX01URF9TU1QyNUw9
+eQorQ09ORklHX1VTQj15CitDT05GSUdfVVNCX0lNWF9DSElQSURFQT15CitDT05GSUdfVVNCX0VI
+Q0k9eQorQ09ORklHX1VTQl9VTFBJPXkKK0NPTkZJR19VU0JfU1RPUkFHRT15CitDT05GSUdfVVNC
+X0dBREdFVD15CitDT05GSUdfVVNCX0dBREdFVF9ERlU9eQorQ09ORklHX01DST15CitDT05GSUdf
+TUNJX0lNWF9FU0RIQz15CitDT05GSUdfTEVEPXkKK0NPTkZJR19MRURfR1BJTz15CitDT05GSUdf
+TEVEX0dQSU9fT0Y9eQorQ09ORklHX0xFRF9HUElPX1JHQj15CitDT05GSUdfTEVEX0dQSU9fQklD
+T0xPUj15CitDT05GSUdfTEVEX1RSSUdHRVJTPXkKK0NPTkZJR19GU19FWFQ0PXkKK0NPTkZJR19G
+U19URlRQPXkKK0NPTkZJR19GU19ORlM9eQorQ09ORklHX0ZTX0ZBVD15CitDT05GSUdfRlNfRkFU
+X1dSSVRFPXkKK0NPTkZJR19GU19GQVRfTEZOPXkKK0NPTkZJR19MWk9fREVDT01QUkVTUz15Ci0t
+IAoxLjguNS4zCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6
+Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
