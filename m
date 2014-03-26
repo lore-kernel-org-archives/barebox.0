@@ -1,18 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-qg0-x22a.google.com ([2607:f8b0:400d:c04::22a])
+Received: from mail-bk0-x22f.google.com ([2a00:1450:4008:c01::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WSlnH-0002A1-AZ
- for barebox@lists.infradead.org; Wed, 26 Mar 2014 11:14:53 +0000
-Received: by mail-qg0-f42.google.com with SMTP id q107so642195qgd.1
- for <barebox@lists.infradead.org>; Wed, 26 Mar 2014 04:14:30 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140326065734.GA18805@omega.Speedport_W_921V_1_24_000>
+ id 1WSm3R-0002lu-0G
+ for barebox@lists.infradead.org; Wed, 26 Mar 2014 11:31:33 +0000
+Received: by mail-bk0-f47.google.com with SMTP id w10so481039bkz.20
+ for <barebox@lists.infradead.org>; Wed, 26 Mar 2014 04:31:10 -0700 (PDT)
+Date: Wed, 26 Mar 2014 12:31:05 +0100
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140326113103.GA9427@omega.Speedport_W_921V_1_24_000>
 References: <CA+dawz0DeA4+LWqamXp-tPDyWXW1JXfov-u2xdPBrSEsdFuZ3Q@mail.gmail.com>
  <20140326062619.GP17250@pengutronix.de>
  <20140326065734.GA18805@omega.Speedport_W_921V_1_24_000>
-Date: Wed, 26 Mar 2014 16:44:30 +0530
-Message-ID: <CA+dawz1a0EVA5OvDGZjpchV13R8J5+hKS8hVOtmmi2HFef5spQ@mail.gmail.com>
-From: Ashutosh Singh <embedded.ashu@gmail.com>
+ <CA+dawz1a0EVA5OvDGZjpchV13R8J5+hKS8hVOtmmi2HFef5spQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CA+dawz1a0EVA5OvDGZjpchV13R8J5+hKS8hVOtmmi2HFef5spQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,101 +28,51 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Can i access the barebox env from linux
-To: Alexander Aring <alex.aring@gmail.com>
+To: Ashutosh Singh <embedded.ashu@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Thanks Alex,
+On Wed, Mar 26, 2014 at 04:44:30PM +0530, Ashutosh Singh wrote:
+> Thanks Alex,
+> 
+> The script is quite helpful.
+> But since i am saving my barebox.env in nand and want to mount, modify
+> and write it back to nand.
+> Do you have a safer solution so that complete env data won't corrupted.
 
-The script is quite helpful.
-But since i am saving my barebox.env in nand and want to mount, modify
-and write it back to nand.
-Do you have a safer solution so that complete env data won't corrupted.
+1. You need to save the bareboxenv as image, the right place would be
+   /tmp which is tmpfs and this uses ram for storing data. You need inotify
+   support in kernel and I am sure tmpfs also supports inotify. You also need
+   the inotify userspace utilities.
 
-Here is my nand partition list created while booting :
+2. The image should write via nandwrite from mtd-utils [1]. Look for
+   the nandwrite manpage. nandwrite should write the tmp-image from bbenv
+   to your nand mtd device.
 
-Creating 8 MTD partitions on "omap2-nand.0":
-[    1.127990] 0x000000000000-0x000000020000 : "nand0.xload"
-[    1.135498] 0x000000020000-0x000000040000 : "nand0.xload_backup1"
-[    1.143615] 0x000000040000-0x000000060000 : "nand0.xload_backup2"
-[    1.151733] 0x000000060000-0x000000080000 : "nand0.xload_backup3"
-[    1.159942] 0x000000080000-0x000000100000 : "nand0.barebox"
-[    1.167755] 0x000000100000-0x000000120000 : "nand0.bareboxenv"
-[    1.175506] 0x000000120000-0x000000920000 : "nand0.kernel"
-[    1.189666] 0x000000920000-0x000020000000 : "nand0.root"
 
-And the list in my rfs :
 
-ls -l /dev/mtd
-mtd0       mtd2       mtd4       mtd6       mtd8       mtdblock2  mtdblock6
-mtd0ro     mtd2ro     mtd4ro     mtd6ro     mtd8ro     mtdblock3  mtdblock7
-mtd1       mtd3       mtd5       mtd7       mtdblock0  mtdblock4  mtdblock8
-mtd1ro     mtd3ro     mtd5ro     mtd7ro     mtdblock1  mtdblock5
+I know the nandwrite will make a better badblock handling... but if you
+set your bbenv size exactly the eraseblock size so it doesn't matter...
+because after badblock marking that eraseblock you don't have any bbenv
+partition anymore :/
 
-~ Ashu
+nandwrite uses the mtd api to write and I suppose they do something more
+than only badblock handling, ECC calculation.... Nevertheless you should
+ever use nandwrite to write images to your nand /dev/*.nand partition.
 
-On Wed, Mar 26, 2014 at 12:27 PM, Alexander Aring <alex.aring@gmail.com> wrote:
-> Hi Sascha and Ashutosh,
->
-> On Wed, Mar 26, 2014 at 07:26:19AM +0100, Sascha Hauer wrote:
->> On Wed, Mar 26, 2014 at 11:25:07AM +0530, Ashutosh Singh wrote:
->> > Dear All,
->> >
->> > Can i access the barebox env from linux.
->> > Once the kernel boot if i want to create a directory and store some parameter
->> > in default barebox /env folder without going to barebox from kernel.
->> > For Eg.
->> > I booted the board i get the linux promt and depending on some condition
->> > i want to update the barebox env and create a directory in /env so the
->> > next time
->> > when barebox is loading the kernel image it can check that directory
->> > and according
->> > to that it can select the kernel from any source such as mmc, nand, nor, tftp.
->> >
->> > What i observe that after the kernel boot i can see the barebox.env is
->> > mounted as mtdblock5 (case of Nand)
->> > now according to my understanding can i mount this partition modify
->> > with my custom directory
->> > and again boot so that this directory is available in barebox /env .
->>
->> There is no filesystem support for the barebox environment, but you can
->> access the barebox env under Linux using the bareboxenv tool. Enable
->>  [x] build bareboxenv tool for target
->> and you'll find the tool under scripts/
->>
->
-> I wrote fast some skript to handle a automatic write of the bareboxenv On
-> env changes. It use inotify to detect changes at the environment.
->
-> --- snip
->
-> #!/bin/sh
->
-> MNT=$1
-> ENV=$2
->
-> bareboxenv -l $MNT $ENV
->
-> while true
-> do
-> inotifywait -e modify $MNT --excludei ".*.swp"
-> bareboxenv -s $MNT $ENV
-> done
->
-> --- snap
->
-> NOTE: Don't use this on nand partitions!
->
-> This script can be run as daemon on the target and will automatic write
-> the environment back. Usage: "./script $MNTPOINT $BBENV".
->
->
-> I hacked this in 10 seconds but it depends if it a mtd device then we
-> should use nandwrite etc... but maybe we can write a proper C
-> implementation, with inotify, mtd ioctl calls (if mtd), etc...
->
-> I mean this would be very easy to implemented. :-)
->
-> - Alex
+I don't have any time now to change the script for nandwrite and extract
+to /tmp/bbenv/, etc..., sorry. We should do it right and implement a C
+solution for that. :-) I don't have time to do that also, maybe at weekend.
+
+I don't have also no nand device here, I need to use the nandsim module.
+This will take some time to setup.
+
+
+Sorry, but try to change the script yourself and then share it with us. I
+will take a look and review it.
+
+- Alex
+
+[1] http://git.infradead.org/mtd-utils.git
 
 _______________________________________________
 barebox mailing list
