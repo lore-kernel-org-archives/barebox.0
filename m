@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WT7F8-0000gC-PE
- for barebox@lists.infradead.org; Thu, 27 Mar 2014 10:09:03 +0000
-Message-ID: <1395914876.5063.2.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Thu, 27 Mar 2014 11:07:56 +0100
-In-Reply-To: <1395865363-29307-3-git-send-email-eric@eukrea.com>
-References: <1395865363-29307-1-git-send-email-eric@eukrea.com>
- <1395865363-29307-3-git-send-email-eric@eukrea.com>
-Mime-Version: 1.0
+ id 1WTHpW-00025V-B1
+ for barebox@lists.infradead.org; Thu, 27 Mar 2014 21:27:19 +0000
+Received: by mail-lb0-f177.google.com with SMTP id z11so3021426lbi.22
+ for <barebox@lists.infradead.org>; Thu, 27 Mar 2014 14:26:55 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 28 Mar 2014 01:26:36 +0400
+Message-Id: <1395955604-12826-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1395955604-12826-1-git-send-email-antonynpavlov@gmail.com>
+References: <1395955604-12826-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,29 +18,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm: add defconfig for Embest boards
-To: Eric =?ISO-8859-1?Q?B=E9nard?= <eric@eukrea.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/9] MIPS: lib: add BAREBOX_CLK_TABLE to linker script
+To: barebox@lists.infradead.org
 
-SGkgRXJpYywKCkFtIE1pdHR3b2NoLCBkZW4gMjYuMDMuMjAxNCwgMjE6MjIgKzAxMDAgc2Nocmll
-YiBFcmljIELDqW5hcmQ6Cj4gU2lnbmVkLW9mZi1ieTogRXJpYyBCw6luYXJkIDxlcmljQGV1a3Jl
-YS5jb20+Cj4gLS0tCj4gIGFyY2gvYXJtL2NvbmZpZ3MvZW1iZXN0X2RlZmNvbmZpZyB8IDEwMCAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwg
-MTAwIGluc2VydGlvbnMoKykKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJtL2NvbmZpZ3Mv
-ZW1iZXN0X2RlZmNvbmZpZwo+IApQbGVhc2UgZG9uJ3QgYWRkIG5ldyBjb25maWdzIGZvciBtdWx0
-aS1pbWFnZSBjYXBhYmxlIGJvYXJkcy4gSWYgYW55dGhpbmcKaXMgbWlzc2luZyBmcm9tIHRoZSBp
-bXhfdjdfZGVmY29uZmlnIGp1c3QgYWRkIGl0IHRoZXJlLiBUaGlzIG1lYW5zIGF0CmxlYXN0IGJv
-dGggb2YgeW91ciBib2FyZCBhZGRpdGlvbnMgc2hvdWxkIGJlIHJlZmxlY3RlZCBpbiB0aGUgaW14
-X3Y3CmRlZmNvbmZpZy4KClJlZ2FyZHMsCkx1Y2FzCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIHwgTHVjYXMgU3RhY2ggICAgICAgICAgICAgICAgIHwKSW5k
-dXN0cmlhbCBMaW51eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5n
-dXRyb25peC5kZS8gIHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55
-IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy01MDc2IHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwg
-SFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxp
-bmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVh
-ZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+This commit is based on
+    commit fa1a406f7245c5482a17014d5b97e8948352e5a5
+    Author: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+    Date:   Sat Nov 9 14:24:18 2013 +0100
+
+        ARM: lib: add BAREBOX_CLK_TABLE to linker script
+
+        This adds an .oftables section right before .dtb section with
+        BAREBOX_CLK_TABLE to ARM linker script.
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/lib/barebox.lds.S | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+index bc78d2b..4ee4252 100644
+--- a/arch/mips/lib/barebox.lds.S
++++ b/arch/mips/lib/barebox.lds.S
+@@ -69,6 +69,8 @@ SECTIONS
+ 	__usymtab : { BAREBOX_SYMS }
+ 	__usymtab_end = .;
+ 
++	.oftables : { BAREBOX_CLK_TABLE() }
++
+ 	.dtb : { BAREBOX_DTB() }
+ 
+ 	_edata = .;
+-- 
+1.9.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
