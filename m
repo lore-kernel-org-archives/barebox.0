@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-f47.google.com ([209.85.215.47])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTRVO-0003zF-0D
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:47:11 +0000
-Date: Fri, 28 Mar 2014 08:46:47 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140328074647.GA17250@pengutronix.de>
-References: <1395865363-29307-1-git-send-email-eric@eukrea.com>
- <1395865363-29307-2-git-send-email-eric@eukrea.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1395865363-29307-2-git-send-email-eric@eukrea.com>
+ id 1WTRYk-00045s-MQ
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:50:39 +0000
+Received: by mail-la0-f47.google.com with SMTP id y1so3386447lam.20
+ for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 00:50:12 -0700 (PDT)
+Date: Fri, 28 Mar 2014 12:00:00 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140328120000.7a6b0bbc99ec261bd6c88c67@gmail.com>
+In-Reply-To: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
+References: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +19,73 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] MarSBoard: add new board
-To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
+Subject: Re: [PATCH] MIPS: mach-xburst: fix DEBUG_LL=n build error
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi Eric,
+On Wed, 26 Mar 2014 12:29:25 +0400
+Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-On Wed, Mar 26, 2014 at 09:22:42PM +0100, Eric B=E9nard wrote:
-> +}
-> +postcore_initcall(marsboard_lwl_init);
-> diff --git a/arch/arm/boards/embest-marsboard/env/config-board b/arch/arm=
-/boards/embest-marsboard/env/config-board
-> new file mode 100644
-> index 0000000..e8e8378
-> --- /dev/null
-> +++ b/arch/arm/boards/embest-marsboard/env/config-board
-> @@ -0,0 +1,6 @@
-> +#!/bin/sh
-> +
-> +# board defaults, do not change in running system. Change /env/config
-> +# instead
-> +
-> +global.linux.bootargs.base=3D"console=3Dttymxc0,115200"
+ping
 
-For the board specific environment I'd like to do the following:
+> Here is my error log:
+> =
 
-move the $BOARD/env directory to a board specific name, like
-$BOARD/marsboard-env. In your board code (when you know that you're
-running on the marsboard), do: defaultenv_append_directory(marsboard_env);
+>   CC      common/startup.o
+> In file included from arch/mips/mach-xburst/include/mach/debug_ll.h:25,
+>                  from include/debug_ll.h:31,
+>                  from common/startup.c:36:
+> arch/mips/include/asm/debug_ll_ns16550.h: In function 'PUTC_LL':
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: 'DEBUG_LL_UART_ADDR' =
+undeclared (first use in this function)
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: (Each undeclared iden=
+tifier is reported only once
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: for each function it =
+appears in.)
+> make[1]: *** [common/startup.o] Error 1
+> =
 
-For the environment snippet above: You can simply drop it. barebox will
-append a correct 'console=3D' parameter automatically for you.
+> Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+> ---
+>  arch/mips/include/asm/debug_ll_ns16550.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> =
 
-> +wm 32 0x020c407c 0x0f0000c3
-> +wm 32 0x020c4080 0x000003ff
-> +/* enable AXI cache for VDOA/VPU/IPU */
-> +wm 32 0x020e0010 0xf00000cf
-> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7 */
-> +wm 32 0x020e0018 0x007f007f
-> +wm 32 0x020e001c 0x007f007f
+> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include=
+/asm/debug_ll_ns16550.h
+> index f36010c..032f0a2 100644
+> --- a/arch/mips/include/asm/debug_ll_ns16550.h
+> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
+> @@ -59,9 +59,11 @@
+>  =
 
-You can probably drop these. The -next branch has a patch in it which
-should do it:
+>  static __inline__ void PUTC_LL(char ch)
+>  {
+> +#ifdef CONFIG_DEBUG_LL
+>  	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_TH=
+RE))
+>  		;
+>  	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
+> +#endif /* CONFIG_DEBUG_LL */
+>  }
+>  #else /* __ASSEMBLY__ */
+>  /*
+> -- =
 
-3739b84 ARM i.MX6q: Mark VPU and IPU AXI transfers as cacheable, increase I=
-PU priority
+> 1.9.0
+> =
 
-Sascha
 
 
 -- =
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
