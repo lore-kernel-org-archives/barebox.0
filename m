@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22e.google.com ([2a00:1450:4010:c03::22e])
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTU3B-00008N-Sq
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 10:30:14 +0000
-Received: by mail-la0-f46.google.com with SMTP id hr17so3527737lab.19
- for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 03:29:49 -0700 (PDT)
-Date: Fri, 28 Mar 2014 14:39:38 +0400
+ id 1WTZeJ-0003ys-2R
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 16:28:55 +0000
+Received: by mail-lb0-f174.google.com with SMTP id u14so3885853lbd.33
+ for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 09:28:32 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140328143938.ad5b84aba01edb62beb60181@gmail.com>
-In-Reply-To: <20140328093844.GF17250@pengutronix.de>
-References: <1395955604-12826-1-git-send-email-antonynpavlov@gmail.com>
- <20140328132811.ee85068f4bd2ee0f623c6be2@gmail.com>
- <20140328093844.GF17250@pengutronix.de>
-Mime-Version: 1.0
+Date: Fri, 28 Mar 2014 20:28:34 +0400
+Message-Id: <1396024114-15610-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,60 +16,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/9] MIPS: add Atheros AR933x SoC & TP-LINK MR3020 board
- support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: rzx50: use short form for serial1 reference
+To: barebox@lists.infradead.org
 
-On Fri, 28 Mar 2014 10:38:44 +0100
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/dts/rzx50.dts | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-> On Fri, Mar 28, 2014 at 01:28:11PM +0400, Antony Pavlov wrote:
-> > On Fri, 28 Mar 2014 01:26:35 +0400
-> > Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> > =
+diff --git a/arch/mips/dts/rzx50.dts b/arch/mips/dts/rzx50.dts
+index 78103e3..360c1bf 100644
+--- a/arch/mips/dts/rzx50.dts
++++ b/arch/mips/dts/rzx50.dts
+@@ -9,10 +9,8 @@
+ 	memory {
+ 		reg = <0x00000000 0x4000000>;
+ 	};
++};
+ 
+-	soc {
+-		serial1: serial@b0031000 {
+-			status = "okay";
+-		};
+-	};
++&serial1 {
++	status = "okay";
+ };
+-- 
+1.9.0
 
-> > Your latest clk-related changes break build of this patchseries.
-> > =
-
-> > I'll resend this series soon.
-> =
-
-> I can fold in a fixup into the merge commit which brings together my clk
-> changes and your mips tree for you, don't worry. I assume you want to have
-> the CLK_SET_RATE_PARENT flag passed into clk_fixed_factor, right?
-> =
-
-> I get this when compiling:
-> =
-
-> drivers/clk/clk-ar933x.c: In function 'ar933x_ref_clk_init':
-> drivers/clk/clk-ar933x.c:108: warning: unused variable 'err'
-> drivers/clk/clk-ar933x.c:107: warning: unused variable 'clk'
-
-Agghhh.
-
-I had used very old mips-linux-gcc 3.4.6 compiler most of time --- it does =
-not show the warnings.
-
-I have just checked with codesourcery mips-2013.11 --- it gives me the warn=
-ings.
-
-> I have a fix for this locally now. I'll have a look over the patches.
-> Should they be fine there's nothing to do for you (except checking the
-> result when I merged it)
-
-I have just checked next branch on my MR3020 board --- all works fine!
-
-Thanks a lot for all!
-
---=A0
-Best regards,
-=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
