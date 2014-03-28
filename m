@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp4-g21.free.fr ([2a01:e0c:1:1599::13])
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTJ4B-000447-6X
- for barebox@lists.infradead.org; Thu, 27 Mar 2014 22:46:33 +0000
-Date: Thu, 27 Mar 2014 23:45:56 +0100
-From: Eric =?UTF-8?B?QsOpbmFyZA==?= <eric@eukrea.com>
-Message-ID: <20140327234556.6b638f46@e6520eb>
-In-Reply-To: <1395914876.5063.2.camel@weser.hi.pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WTRVO-0003zF-0D
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:47:11 +0000
+Date: Fri, 28 Mar 2014 08:46:47 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140328074647.GA17250@pengutronix.de>
 References: <1395865363-29307-1-git-send-email-eric@eukrea.com>
- <1395865363-29307-3-git-send-email-eric@eukrea.com>
- <1395914876.5063.2.camel@weser.hi.pengutronix.de>
+ <1395865363-29307-2-git-send-email-eric@eukrea.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1395865363-29307-2-git-send-email-eric@eukrea.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,22 +19,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] arm: add defconfig for Embest boards
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH 2/3] MarSBoard: add new board
+To: Eric =?iso-8859-15?Q?B=E9nard?= <eric@eukrea.com>
 Cc: barebox@lists.infradead.org
 
-SGkgTHVjYXMsCgpMZSBUaHUsIDI3IE1hciAyMDE0IDExOjA3OjU2ICswMTAwLApMdWNhcyBTdGFj
-aCA8bC5zdGFjaEBwZW5ndXRyb25peC5kZT4gYSDDqWNyaXQgOgo+IFBsZWFzZSBkb24ndCBhZGQg
-bmV3IGNvbmZpZ3MgZm9yIG11bHRpLWltYWdlIGNhcGFibGUgYm9hcmRzLiBJZiBhbnl0aGluZwo+
-IGlzIG1pc3NpbmcgZnJvbSB0aGUgaW14X3Y3X2RlZmNvbmZpZyBqdXN0IGFkZCBpdCB0aGVyZS4g
-VGhpcyBtZWFucyBhdAo+IGxlYXN0IGJvdGggb2YgeW91ciBib2FyZCBhZGRpdGlvbnMgc2hvdWxk
-IGJlIHJlZmxlY3RlZCBpbiB0aGUgaW14X3Y3Cj4gZGVmY29uZmlnLgo+IApPSywgSSdsbCBpbmNs
-dWRlIHRoZW0gdG8gaW14X3Y3X2RlZmNvbmZpZyBhbmQgYWxzbyB3aWxsIGZhY3Rvcml6ZSB0aGUK
-ZHRzIGFuZCBib2FyZCBzdXBwb3J0IGFzIGJvdGggYm9hcmRzIGFyZSB2ZXJ5IHNpbWlsYXIuCgpF
-cmljCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
-Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
-LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+Hi Eric,
+
+On Wed, Mar 26, 2014 at 09:22:42PM +0100, Eric B=E9nard wrote:
+> +}
+> +postcore_initcall(marsboard_lwl_init);
+> diff --git a/arch/arm/boards/embest-marsboard/env/config-board b/arch/arm=
+/boards/embest-marsboard/env/config-board
+> new file mode 100644
+> index 0000000..e8e8378
+> --- /dev/null
+> +++ b/arch/arm/boards/embest-marsboard/env/config-board
+> @@ -0,0 +1,6 @@
+> +#!/bin/sh
+> +
+> +# board defaults, do not change in running system. Change /env/config
+> +# instead
+> +
+> +global.linux.bootargs.base=3D"console=3Dttymxc0,115200"
+
+For the board specific environment I'd like to do the following:
+
+move the $BOARD/env directory to a board specific name, like
+$BOARD/marsboard-env. In your board code (when you know that you're
+running on the marsboard), do: defaultenv_append_directory(marsboard_env);
+
+For the environment snippet above: You can simply drop it. barebox will
+append a correct 'console=3D' parameter automatically for you.
+
+> +wm 32 0x020c407c 0x0f0000c3
+> +wm 32 0x020c4080 0x000003ff
+> +/* enable AXI cache for VDOA/VPU/IPU */
+> +wm 32 0x020e0010 0xf00000cf
+> +/* set IPU AXI-id0 Qos=3D0xf(bypass AXI-id1 Qos=3D0x7 */
+> +wm 32 0x020e0018 0x007f007f
+> +wm 32 0x020e001c 0x007f007f
+
+You can probably drop these. The -next branch has a patch in it which
+should do it:
+
+3739b84 ARM i.MX6q: Mark VPU and IPU AXI transfers as cacheable, increase I=
+PU priority
+
+Sascha
+
+
+-- =
+
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
