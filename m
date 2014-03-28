@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTSsa-0006KE-Bm
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 09:15:16 +0000
+ id 1WTSsa-0006KC-98
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 09:15:14 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 28 Mar 2014 10:14:43 +0100
-Message-Id: <1395998083-18979-4-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 28 Mar 2014 10:14:42 +0100
+Message-Id: <1395998083-18979-3-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1395998083-18979-1-git-send-email-s.hauer@pengutronix.de>
 References: <1395998083-18979-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,452 +21,355 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] defenv-2: replace menu with menutree
+Subject: [PATCH 2/3] add menutree command
 To: barebox@lists.infradead.org
 
-This makes the menu easier to extend and to maintain.
+Creating menus from the shell using the regular 'menu' command is rather
+complicated. This adds a 'menutree' command which creates a menu from
+a directory structure. In the directory structure each directory corresponds
+to a single menu entry. The directory contains the following files:
+
+title -  A file containing the title of the entry as shown in the menu
+box -    If present, the entry is a 'bool' entry. The file contains a variable
+         name from which the current state of the bool is taken from and saved
+         to.
+action - if present this file contains a shell script which is executed when
+         when the entry is selected.
+
+If neither 'box' or 'action' are present this entry is considered a submenu
+containing more entries.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig                                      |  2 +-
- .../defaultenv-2-menu/menu/00-boot-default/action   |  5 +++++
- .../defaultenv-2-menu/menu/00-boot-default/title    |  1 +
- .../defaultenv-2-menu/menu/10-boot-all/action       |  3 +++
- .../defaultenv-2-menu/menu/10-boot-all/net/action   |  5 +++++
- .../defaultenv-2-menu/menu/10-boot-all/net/title    |  1 +
- defaultenv/defaultenv-2-menu/menu/10-boot-all/title |  1 +
- .../menu/20-settings/config/action                  |  5 +++++
- .../defaultenv-2-menu/menu/20-settings/config/title |  1 +
- .../menu/20-settings/network/action                 |  3 +++
- .../menu/20-settings/network/title                  |  1 +
- defaultenv/defaultenv-2-menu/menu/20-settings/title |  1 +
- defaultenv/defaultenv-2-menu/menu/30-saveenv/action |  8 ++++++++
- defaultenv/defaultenv-2-menu/menu/30-saveenv/title  |  1 +
- defaultenv/defaultenv-2-menu/menu/40-shell/action   |  5 +++++
- defaultenv/defaultenv-2-menu/menu/40-shell/title    |  1 +
- defaultenv/defaultenv-2-menu/menu/50-reset/action   |  3 +++
- defaultenv/defaultenv-2-menu/menu/50-reset/title    |  1 +
- .../defaultenv-2-menu/menu/boot-entries-collect     | 13 -------------
- defaultenv/defaultenv-2-menu/menu/boot-entries-edit | 20 --------------------
- .../defaultenv-2-menu/menu/boot-entries-remove      | 18 ------------------
- .../defaultenv-2-menu/menu/boot-menu-add-entry      |  5 -----
- .../defaultenv-2-menu/menu/boot-menu-new-boot-entry | 21 ---------------------
- .../defaultenv-2-menu/menu/init-entries-collect     |  9 ---------
- defaultenv/defaultenv-2-menu/menu/init-entries-edit | 20 --------------------
- .../defaultenv-2-menu/menu/init-menu-add-entry      |  3 ---
- defaultenv/defaultenv-2-menu/menu/mainmenu          | 20 +-------------------
- defaultenv/defaultenv-2-menu/menu/settings          | 21 ---------------------
- defaultenv/defaultenv-2-menu/menu/title             |  1 +
- 29 files changed, 49 insertions(+), 150 deletions(-)
- create mode 100644 defaultenv/defaultenv-2-menu/menu/00-boot-default/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/00-boot-default/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/10-boot-all/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/10-boot-all/net/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/10-boot-all/net/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/10-boot-all/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/20-settings/config/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/20-settings/config/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/20-settings/network/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/20-settings/network/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/20-settings/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/30-saveenv/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/30-saveenv/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/40-shell/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/40-shell/title
- create mode 100644 defaultenv/defaultenv-2-menu/menu/50-reset/action
- create mode 100644 defaultenv/defaultenv-2-menu/menu/50-reset/title
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/boot-entries-collect
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/boot-entries-edit
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/boot-entries-remove
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/init-entries-collect
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/init-entries-edit
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/init-menu-add-entry
- delete mode 100644 defaultenv/defaultenv-2-menu/menu/settings
- create mode 100644 defaultenv/defaultenv-2-menu/menu/title
+ commands/Kconfig    |   8 +++
+ commands/Makefile   |   1 +
+ commands/menutree.c |  60 +++++++++++++++++
+ common/Kconfig      |   3 +
+ common/Makefile     |   1 +
+ common/menutree.c   | 181 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ include/menu.h      |   2 +
+ 7 files changed, 256 insertions(+)
+ create mode 100644 commands/menutree.c
+ create mode 100644 common/menutree.c
 
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 352e8bf..cc014f3 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -90,6 +90,14 @@ config CMD_MENU_MANAGEMENT
+ 	depends on CMD_MENU
+ 	prompt "menu scripts management"
+ 
++config CMD_MENUTREE
++	bool
++	depends on MENU
++	select MENUTREE
++	prompt "menutree"
++	help
++	  The menutree command allows to create a menu from a directory structure
++
+ config CMD_LOGIN
+ 	tristate
+ 	select PASSWORD
+diff --git a/commands/Makefile b/commands/Makefile
+index 91ec0e9..e463031 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -94,3 +94,4 @@ obj-$(CONFIG_CMD_DETECT)	+= detect.o
+ obj-$(CONFIG_CMD_BOOT)		+= boot.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
+ obj-$(CONFIG_CMD_READF)		+= readf.o
++obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
+diff --git a/commands/menutree.c b/commands/menutree.c
+new file mode 100644
+index 0000000..3b1a263
+--- /dev/null
++++ b/commands/menutree.c
+@@ -0,0 +1,60 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++#include <command.h>
++#include <common.h>
++#include <getopt.h>
++#include <menu.h>
++
++static int do_menutree(int argc, char *argv[])
++{
++	int opt, ret;
++	char *path = "/env/menu";
++
++	while ((opt = getopt(argc, argv, "m:")) > 0) {
++		switch (opt) {
++		case 'm':
++			path = optarg;
++			break;
++		}
++	}
++
++	ret = menutree(path, 1);
++
++	return ret;
++}
++
++BAREBOX_CMD_HELP_START(menutree)
++BAREBOX_CMD_HELP_USAGE("menutree [OPTIONS]\n")
++"\n"
++"Create a menu from a directory structure\n"
++"Each menu entry is described by a subdirectory. Each subdirectory\n"
++"can contain the following files which further describe the entry:\n"
++"\n"
++"title -  A file containing the title of the entry as shown in the menu\n"
++"box -    If present, the entry is a 'bool' entry. The file contains a variable\n"
++"         name from which the current state of the bool is taken from and saved\n"
++"         to.\n"
++"action - if present this file contains a shell script which is executed when\n"
++"         when the entry is selected.\n"
++"If neither 'box' or 'action' are present this entry is considered a submenu\n"
++"containing more entries.\n"
++"\n"
++"Options:\n"
++" -m <dir>     directory where the menu starts (/env/menu)\n"
++
++BAREBOX_CMD_HELP_END
++
++
++BAREBOX_CMD_START(menutree)
++	.cmd	= do_menutree,
++	.usage		= "create a menu from a directory structure",
++	BAREBOX_CMD_HELP(cmd_menutree_help)
++BAREBOX_CMD_END
 diff --git a/common/Kconfig b/common/Kconfig
-index bc54e97..0031cc8 100644
+index 84c52fc..bc54e97 100644
 --- a/common/Kconfig
 +++ b/common/Kconfig
-@@ -605,7 +605,7 @@ config DEFAULT_ENVIRONMENT_GENERIC_NEW
- config DEFAULT_ENVIRONMENT_GENERIC_NEW_MENU
+@@ -62,6 +62,9 @@ config STDDEV
+ config BAREBOX_UPDATE
  	bool
- 	depends on DEFAULT_ENVIRONMENT_GENERIC_NEW
--	depends on CMD_MENU_MANAGEMENT
-+	depends on CMD_MENUTREE
- 	default y
  
- config DEFAULT_ENVIRONMENT_GENERIC_NEW_DFU
-diff --git a/defaultenv/defaultenv-2-menu/menu/00-boot-default/action b/defaultenv/defaultenv-2-menu/menu/00-boot-default/action
-new file mode 100644
-index 0000000..3d72ff6
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/00-boot-default/action
-@@ -0,0 +1,5 @@
-+#!/bin/sh
++config MENUTREE
++	bool
 +
-+boot
-+
-+readline "Booting failed. Press any key to continue" ignore
-diff --git a/defaultenv/defaultenv-2-menu/menu/00-boot-default/title b/defaultenv/defaultenv-2-menu/menu/00-boot-default/title
-new file mode 100644
-index 0000000..ef8c3dd
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/00-boot-default/title
-@@ -0,0 +1 @@
-+Boot default
-diff --git a/defaultenv/defaultenv-2-menu/menu/10-boot-all/action b/defaultenv/defaultenv-2-menu/menu/10-boot-all/action
-new file mode 100644
-index 0000000..a890ffe
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/10-boot-all/action
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+boot -m
-diff --git a/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/action b/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/action
-new file mode 100644
-index 0000000..b31b0e4
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/action
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+echo "Boot from Network...."
-+
-+sleep 3
-diff --git a/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/title b/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/title
-new file mode 100644
-index 0000000..79a6d8f
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/10-boot-all/net/title
-@@ -0,0 +1 @@
-+Boot from network
-diff --git a/defaultenv/defaultenv-2-menu/menu/10-boot-all/title b/defaultenv/defaultenv-2-menu/menu/10-boot-all/title
-new file mode 100644
-index 0000000..0f05e98
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/10-boot-all/title
-@@ -0,0 +1 @@
-+Detect bootsources
-diff --git a/defaultenv/defaultenv-2-menu/menu/20-settings/config/action b/defaultenv/defaultenv-2-menu/menu/20-settings/config/action
-new file mode 100644
-index 0000000..9a993af
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/20-settings/config/action
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+edit /env/config
-+
-+/env/config
-diff --git a/defaultenv/defaultenv-2-menu/menu/20-settings/config/title b/defaultenv/defaultenv-2-menu/menu/20-settings/config/title
-new file mode 100644
-index 0000000..a8955a9
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/20-settings/config/title
-@@ -0,0 +1 @@
-+Config settings
-diff --git a/defaultenv/defaultenv-2-menu/menu/20-settings/network/action b/defaultenv/defaultenv-2-menu/menu/20-settings/network/action
-new file mode 100644
-index 0000000..d27a77f
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/20-settings/network/action
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+edit /env/network/eth0
-diff --git a/defaultenv/defaultenv-2-menu/menu/20-settings/network/title b/defaultenv/defaultenv-2-menu/menu/20-settings/network/title
-new file mode 100644
-index 0000000..4641d48
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/20-settings/network/title
-@@ -0,0 +1 @@
-+Network settings
-diff --git a/defaultenv/defaultenv-2-menu/menu/20-settings/title b/defaultenv/defaultenv-2-menu/menu/20-settings/title
-new file mode 100644
-index 0000000..163d304
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/20-settings/title
-@@ -0,0 +1 @@
-+Settings
-diff --git a/defaultenv/defaultenv-2-menu/menu/30-saveenv/action b/defaultenv/defaultenv-2-menu/menu/30-saveenv/action
-new file mode 100644
-index 0000000..c6aed70
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/30-saveenv/action
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+
-+saveenv
-+if [ $? != 0 ]; then
-+	echo "saving environment failed"
-+fi
-+
-+sleep 2
-diff --git a/defaultenv/defaultenv-2-menu/menu/30-saveenv/title b/defaultenv/defaultenv-2-menu/menu/30-saveenv/title
-new file mode 100644
-index 0000000..8ae292d
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/30-saveenv/title
-@@ -0,0 +1 @@
-+Save environment
-diff --git a/defaultenv/defaultenv-2-menu/menu/40-shell/action b/defaultenv/defaultenv-2-menu/menu/40-shell/action
-new file mode 100644
-index 0000000..fd5bc2b
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/40-shell/action
-@@ -0,0 +1,5 @@
-+#!/bin/sh
-+
-+echo "Enter 'exit' to get back to the menu"
-+
-+sh
-diff --git a/defaultenv/defaultenv-2-menu/menu/40-shell/title b/defaultenv/defaultenv-2-menu/menu/40-shell/title
-new file mode 100644
-index 0000000..6567bb2
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/40-shell/title
-@@ -0,0 +1 @@
-+Shell
-diff --git a/defaultenv/defaultenv-2-menu/menu/50-reset/action b/defaultenv/defaultenv-2-menu/menu/50-reset/action
-new file mode 100644
-index 0000000..61d5c9a
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/50-reset/action
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+reset
-diff --git a/defaultenv/defaultenv-2-menu/menu/50-reset/title b/defaultenv/defaultenv-2-menu/menu/50-reset/title
-new file mode 100644
-index 0000000..6d9fd4d
---- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/50-reset/title
-@@ -0,0 +1 @@
-+Reset
-diff --git a/defaultenv/defaultenv-2-menu/menu/boot-entries-collect b/defaultenv/defaultenv-2-menu/menu/boot-entries-collect
-deleted file mode 100644
-index c066c93..0000000
---- a/defaultenv/defaultenv-2-menu/menu/boot-entries-collect
-+++ /dev/null
-@@ -1,13 +0,0 @@
--#!/bin/sh
--
--cd /env/boot
--
--./$global.boot.default menu
--
--for i in *; do
--	if [ "$i" != "$global.boot.default" ]; then
--		./$i menu
--	fi
--done
--
--cd /
-diff --git a/defaultenv/defaultenv-2-menu/menu/boot-entries-edit b/defaultenv/defaultenv-2-menu/menu/boot-entries-edit
-deleted file mode 100644
-index c4e1c3d..0000000
---- a/defaultenv/defaultenv-2-menu/menu/boot-entries-edit
-+++ /dev/null
-@@ -1,20 +0,0 @@
--#!/bin/sh
--
--export menu_exit=false
--
--while true; do
--	menu -a -m boot_entries_edit -d "\e[1;36mEdit boot entries\e[0m"
--
--	boot-entries-collect
--
--	menu -e -a -m boot_entries_edit -c "boot-menu-new-boot-entry" -d "Add a new entry"
--	menu -e -a -m boot_entries_edit -c "boot-entries-remove" -d "Remove an entry"
--	menu -e -a -m boot_entries_edit -c "menu_exit=true" -d "back"
--
--	menu -s -m boot_entries_edit
--	menu -r -m boot_entries_edit
--
--	if [ $menu_exit = true ]; then
--		exit
--	fi
--done
-diff --git a/defaultenv/defaultenv-2-menu/menu/boot-entries-remove b/defaultenv/defaultenv-2-menu/menu/boot-entries-remove
-deleted file mode 100644
-index 566be9d..0000000
---- a/defaultenv/defaultenv-2-menu/menu/boot-entries-remove
-+++ /dev/null
-@@ -1,18 +0,0 @@
--#!/bin/sh
--
--export menu_exit=false
--
--while true; do
--	menu -a -m boot_entries_remove -d "\e[1;36mRemove Boot entry\e[0m"
--
--	boot-entries-collect
--
--	menu -e -a -m boot_entries_remove -c "menu_exit=true" -d "back"
--
--	menu -s -m boot_entries_remove
--	menu -r -m boot_entries_remove
--
--	if [ $menu_exit = true ]; then
--		exit
--	fi
--done
-diff --git a/defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry b/defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry
-deleted file mode 100644
-index f06c524..0000000
---- a/defaultenv/defaultenv-2-menu/menu/boot-menu-add-entry
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--menu -e -a -m boot -c "boot -v $1; echo; readline \"press enter to continue\" a " -d "Boot: ${GREEN}$2${NC}"
--menu -e -a -m boot_entries_edit -c "$global.editcmd /env/boot/$1" -d "${GREEN}$2${NC}"
--menu -e -a -m boot_entries_remove -c "rm /env/boot/$1" -d "${GREEN}$2${NC}"
-diff --git a/defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry b/defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry
-deleted file mode 100644
-index c5e982c..0000000
---- a/defaultenv/defaultenv-2-menu/menu/boot-menu-new-boot-entry
-+++ /dev/null
-@@ -1,21 +0,0 @@
--#!/bin/sh
--
--name=
--
--readline "Name of the new entry: " name
--
--if [ -z "$name" ]; then
--	exit 1
--fi
--
--if [ -e "/env/boot/$name" ]; then
--	echo "entry $name already exists"
--	readline "<enter>" unused
--	exit 1
--fi
--
--cp /env/data/boot-template /env/boot/$name
--
--edit /env/boot/$name
--
--boot-menu-show rebuild
-diff --git a/defaultenv/defaultenv-2-menu/menu/init-entries-collect b/defaultenv/defaultenv-2-menu/menu/init-entries-collect
-deleted file mode 100644
-index dbb7757..0000000
---- a/defaultenv/defaultenv-2-menu/menu/init-entries-collect
-+++ /dev/null
-@@ -1,9 +0,0 @@
--#!/bin/sh
--
--cd /env/init
--
--for i in *; do
--	./$i menu
--done
--
--cd /
-diff --git a/defaultenv/defaultenv-2-menu/menu/init-entries-edit b/defaultenv/defaultenv-2-menu/menu/init-entries-edit
-deleted file mode 100644
-index fc02b32..0000000
---- a/defaultenv/defaultenv-2-menu/menu/init-entries-edit
-+++ /dev/null
-@@ -1,20 +0,0 @@
--#!/bin/sh
--
--export menu_exit=false
--
--while true; do
--	menu -a -m init_entries_edit -d "\e[1;36mEdit init entries\e[0m"
--
--	menu -e -a -m init_entries_edit -R -c "true" -d ">> Reset board to let changes here take effect <<"
--
--	init-entries-collect
--
--	menu -e -a -m init_entries_edit -c "menu_exit=true" -d "back"
--
--	menu -s -m init_entries_edit
--	menu -r -m init_entries_edit
--
--	if [ $menu_exit = true ]; then
--		exit
--	fi
--done
-diff --git a/defaultenv/defaultenv-2-menu/menu/init-menu-add-entry b/defaultenv/defaultenv-2-menu/menu/init-menu-add-entry
-deleted file mode 100644
-index 7cb5686..0000000
---- a/defaultenv/defaultenv-2-menu/menu/init-menu-add-entry
-+++ /dev/null
-@@ -1,3 +0,0 @@
--#!/bin/sh
--
--menu -e -a -m init_entries_edit -c "$global.editcmd /env/init/$1" -d "\e[1;32m$2\e[0m"
-diff --git a/defaultenv/defaultenv-2-menu/menu/mainmenu b/defaultenv/defaultenv-2-menu/menu/mainmenu
-index f10f67a..9803947 100644
---- a/defaultenv/defaultenv-2-menu/menu/mainmenu
-+++ b/defaultenv/defaultenv-2-menu/menu/mainmenu
-@@ -1,23 +1,5 @@
- #!/bin/sh
+ menu "General Settings"
  
--savepath=$PATH
--export menupath=$PATH:/env/menu
--
- . /env/data/ansi-colors
+ config LOCALVERSION
+diff --git a/common/Makefile b/common/Makefile
+index 667c7b3..204241c 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -43,6 +43,7 @@ obj-$(CONFIG_RESET_SOURCE)	+= reset_source.o
+ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+ obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+ obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
++obj-$(CONFIG_MENUTREE) += menutree.o
  
--while true; do
--	export PATH=${menupath}
--
--	echo $PATH
--
--	menu -a -m boot -d "${CYAN}Welcome to Barebox${NC}"
--
--	boot-entries-collect
--
--	menu -e -a -m boot -c "settings" -d "Settings"
--	menu -e -a -m boot -c 'PATH=$savepath; echo "enter exit to return to menu"; sh' -d "${DARK_YELLOW}Shell${NC}"
--	menu -e -a -m boot -c reset -d "${RED}Reset${NC}"
--
--	menu -s -m boot
--	menu -r -m boot
--done
-+menutree
-diff --git a/defaultenv/defaultenv-2-menu/menu/settings b/defaultenv/defaultenv-2-menu/menu/settings
-deleted file mode 100644
-index db619af..0000000
---- a/defaultenv/defaultenv-2-menu/menu/settings
-+++ /dev/null
-@@ -1,21 +0,0 @@
--#!/bin/sh
--
--export menu_exit=false
--
--while true; do
--	menu -a -m settings -d "${CYAN}Settings${NC}"
--
--	menu -e -a -R -m settings -c "$global.editcmd /env/network/eth0" -d "Network settings"
--	menu -e -a -R -m settings -c "$global.editcmd /env/config" -d "Config settings"
--	menu -e -a -m settings -c "boot-entries-edit" -d "Edit boot entries"
--	menu -e -a -m settings -c "init-entries-edit" -d "Edit init entries"
--	menu -e -a -R -m settings -c "saveenv || echo \"failed to save environment\" && sleep 2" -d "Save settings"
--	menu -e -a -m settings -c "menu_exit=true" -d "back"
--
--	menu -s -m settings
--	menu -r -m settings
--
--	if [ $menu_exit = true ]; then
--		exit
--	fi
--done
-diff --git a/defaultenv/defaultenv-2-menu/menu/title b/defaultenv/defaultenv-2-menu/menu/title
+ quiet_cmd_pwd_h = PWDH    $@
+ ifdef CONFIG_PASSWORD
+diff --git a/common/menutree.c b/common/menutree.c
 new file mode 100644
-index 0000000..f3c47b5
+index 0000000..814512d
 --- /dev/null
-+++ b/defaultenv/defaultenv-2-menu/menu/title
-@@ -0,0 +1 @@
-+${RED}Main menu${NC}
++++ b/common/menutree.c
+@@ -0,0 +1,181 @@
++/*
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2
++ * as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <environment.h>
++#include <libbb.h>
++#include <common.h>
++#include <glob.h>
++#include <menu.h>
++#include <fs.h>
++
++#include <linux/stat.h>
++
++struct menutree {
++	char *action;
++	struct menu_entry me;
++};
++
++static void menutree_action_subdir(struct menu *m, struct menu_entry *me)
++{
++	struct menutree *mt = container_of(me, struct menutree, me);
++
++	menutree(mt->action, 0);
++}
++
++static void menutree_action(struct menu *m, struct menu_entry *me)
++{
++	struct menutree *mt = container_of(me, struct menutree, me);
++
++	run_command(mt->action);
++}
++
++static void setenv_bool(const char *var, bool val)
++{
++	const char *str;
++
++	if (val)
++		str = "1";
++	else
++		str = "0";
++
++	setenv(var, str);
++}
++
++static void menutree_box(struct menu *m, struct menu_entry *me)
++{
++	struct menutree *mt = container_of(me, struct menutree, me);
++
++	setenv_bool(mt->action, me->box_state);
++}
++
++static void menutree_entry_free(struct menu_entry *me)
++{
++	struct menutree *mt = container_of(me, struct menutree, me);
++
++	free(mt->action);
++	free(mt->me.display);
++	free(mt);
++}
++
++/*
++ * menutree - show a menu constructed from a directory structure
++ * @path: the path to the directory structure
++ *
++ * Each menu entry is described by a subdirectory. Each subdirectory
++ * can contain the following files which further describe the entry:
++ *
++ * title - A file containing the title of the entry as shown in the menu
++ * box - If present, the entry is a 'bool' entry. The file contains a variable
++ *       name from which the current state of the bool is taken from and saved
++ *       to.
++ * action - if present this file contains a shell script which is executed when
++ *          when the entry is selected.
++ *
++ * If neither 'box' or 'action' are present this entry is considered a submenu
++ * containing more entries.
++ */
++int menutree(const char *path, int toplevel)
++{
++	int ret;
++	struct menu *menu;
++	struct stat s;
++	char *box;
++	struct menutree *mt;
++	glob_t g;
++	int i;
++	char *globpath, *display;
++
++	menu = menu_alloc();
++
++	globpath = asprintf("%s/*", path);
++	ret = glob(globpath, 0, NULL, &g);
++	free(globpath);
++	if (ret == GLOB_NOMATCH) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	display = read_file_line("%s/title", path);
++	if (!display) {
++		eprintf("no title found in %s/title\n", path);
++		ret = -EINVAL;
++		goto out;
++	}
++
++	menu->display = shell_expand(display);
++	free(display);
++
++	for (i = 0; i < g.gl_pathc; i++) {
++		ret = stat(g.gl_pathv[i], &s);
++		if (ret)
++			goto out;
++
++		if (!S_ISDIR(s.st_mode))
++			continue;
++
++		mt = xzalloc(sizeof(*mt));
++
++		display = read_file_line("%s/title", g.gl_pathv[i]);
++		if (!display) {
++			eprintf("no title found in %s/title\n", g.gl_pathv[i]);
++			ret = -EINVAL;
++			goto out;
++		}
++
++		mt->me.display = shell_expand(display);
++		free(display);
++		mt->me.free = menutree_entry_free;
++
++		box = read_file_line("%s/box", g.gl_pathv[i]);
++		if (box) {
++			mt->me.type = MENU_ENTRY_BOX;
++			mt->me.action = menutree_box;
++			mt->action = box;
++			getenv_bool(box, &mt->me.box_state);
++			menu_add_entry(menu, &mt->me);
++			continue;
++		}
++
++		mt->me.type = MENU_ENTRY_NORMAL;
++
++		mt->action = asprintf("%s/action", g.gl_pathv[i]);
++
++		ret = stat(mt->action, &s);
++		if (ret) {
++			mt->me.action = menutree_action_subdir;
++			free(mt->action);
++			mt->action = xstrdup(g.gl_pathv[i]);
++		} else {
++			mt->me.action = menutree_action;
++		}
++
++		menu_add_entry(menu, &mt->me);
++	}
++
++	if (!toplevel) {
++		mt = xzalloc(sizeof(*mt));
++		mt->me.display = xstrdup("back");
++		mt->me.type = MENU_ENTRY_NORMAL;
++		mt->me.non_re_ent = 1;
++		mt->me.free = menutree_entry_free;
++		menu_add_entry(menu, &mt->me);
++	}
++
++	menu_show(menu);
++
++	ret = 0;
++out:
++	menu_free(menu);
++
++	globfree(&g);
++
++	return ret;
++}
+diff --git a/include/menu.h b/include/menu.h
+index f63a405..8b0ffb1 100644
+--- a/include/menu.h
++++ b/include/menu.h
+@@ -106,4 +106,6 @@ struct menu_entry* menu_entry_get_by_num(struct menu* m, int num);
+  */
+ void menu_action_exit(struct menu *m, struct menu_entry *me);
+ 
++int menutree(const char *path, int toplevel);
++
+ #endif /* __MENU_H__ */
 -- 
 1.9.0
 
