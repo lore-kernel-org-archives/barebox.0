@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTRaA-000488-KD
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:52:07 +0000
-Received: by mail-la0-f51.google.com with SMTP id pv20so3489542lab.10
- for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 00:51:44 -0700 (PDT)
-Date: Fri, 28 Mar 2014 12:01:32 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140328120132.60cb4a7d25fb42cda18bdadc@gmail.com>
-In-Reply-To: <1395822642-14342-1-git-send-email-antonynpavlov@gmail.com>
-References: <1395822642-14342-1-git-send-email-antonynpavlov@gmail.com>
-Mime-Version: 1.0
+ id 1WTSkB-00067G-Qy
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 09:06:36 +0000
+Date: Fri, 28 Mar 2014 10:06:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140328090600.GC17250@pengutronix.de>
+References: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,65 +18,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: lib: add BAREBOX_CLK_TABLE to linker script
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] MIPS: mach-xburst: fix DEBUG_LL=n build error
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Wed, 26 Mar 2014 12:30:42 +0400
-Antony Pavlov <antonynpavlov@gmail.com> wrote:
-
-I have included just the same patch into Atheros AR933x series.
-
-> This commit is based on
->     commit fa1a406f7245c5482a17014d5b97e8948352e5a5
->     Author: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
->     Date:   Sat Nov 9 14:24:18 2013 +0100
-> =
-
->         ARM: lib: add BAREBOX_CLK_TABLE to linker script
-> =
-
->         This adds an .oftables section right before .dtb section with
->         BAREBOX_CLK_TABLE to ARM linker script.
-> =
-
+On Wed, Mar 26, 2014 at 12:29:25PM +0400, Antony Pavlov wrote:
+> Here is my error log:
+> 
+>   CC      common/startup.o
+> In file included from arch/mips/mach-xburst/include/mach/debug_ll.h:25,
+>                  from include/debug_ll.h:31,
+>                  from common/startup.c:36:
+> arch/mips/include/asm/debug_ll_ns16550.h: In function 'PUTC_LL':
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: 'DEBUG_LL_UART_ADDR' undeclared (first use in this function)
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: (Each undeclared identifier is reported only once
+> arch/mips/include/asm/debug_ll_ns16550.h:62: error: for each function it appears in.)
+> make[1]: *** [common/startup.o] Error 1
+> 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+
+Applied, thanks
+
+Sascha
+
 > ---
->  arch/mips/lib/barebox.lds.S | 2 ++
+>  arch/mips/include/asm/debug_ll_ns16550.h | 2 ++
 >  1 file changed, 2 insertions(+)
-> =
-
-> diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-> index bc78d2b..4ee4252 100644
-> --- a/arch/mips/lib/barebox.lds.S
-> +++ b/arch/mips/lib/barebox.lds.S
-> @@ -69,6 +69,8 @@ SECTIONS
->  	__usymtab : { BAREBOX_SYMS }
->  	__usymtab_end =3D .;
->  =
-
-> +	.oftables : { BAREBOX_CLK_TABLE() }
-> +
->  	.dtb : { BAREBOX_DTB() }
->  =
-
->  	_edata =3D .;
-> -- =
-
+> 
+> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include/asm/debug_ll_ns16550.h
+> index f36010c..032f0a2 100644
+> --- a/arch/mips/include/asm/debug_ll_ns16550.h
+> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
+> @@ -59,9 +59,11 @@
+>  
+>  static __inline__ void PUTC_LL(char ch)
+>  {
+> +#ifdef CONFIG_DEBUG_LL
+>  	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_THRE))
+>  		;
+>  	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
+> +#endif /* CONFIG_DEBUG_LL */
+>  }
+>  #else /* __ASSEMBLY__ */
+>  /*
+> -- 
 > 1.9.0
-> =
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
