@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f47.google.com ([209.85.215.47])
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTRYk-00045s-MQ
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:50:39 +0000
-Received: by mail-la0-f47.google.com with SMTP id y1so3386447lam.20
- for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 00:50:12 -0700 (PDT)
-Date: Fri, 28 Mar 2014 12:00:00 +0400
+ id 1WTRaA-000488-KD
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 07:52:07 +0000
+Received: by mail-la0-f51.google.com with SMTP id pv20so3489542lab.10
+ for <barebox@lists.infradead.org>; Fri, 28 Mar 2014 00:51:44 -0700 (PDT)
+Date: Fri, 28 Mar 2014 12:01:32 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140328120000.7a6b0bbc99ec261bd6c88c67@gmail.com>
-In-Reply-To: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
-References: <1395822565-14283-1-git-send-email-antonynpavlov@gmail.com>
+Message-Id: <20140328120132.60cb4a7d25fb42cda18bdadc@gmail.com>
+In-Reply-To: <1395822642-14342-1-git-send-email-antonynpavlov@gmail.com>
+References: <1395822642-14342-1-git-send-email-antonynpavlov@gmail.com>
 Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -23,57 +23,49 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: mach-xburst: fix DEBUG_LL=n build error
+Subject: Re: [PATCH] MIPS: lib: add BAREBOX_CLK_TABLE to linker script
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, 26 Mar 2014 12:29:25 +0400
+On Wed, 26 Mar 2014 12:30:42 +0400
 Antony Pavlov <antonynpavlov@gmail.com> wrote:
 
-ping
+I have included just the same patch into Atheros AR933x series.
 
-> Here is my error log:
+> This commit is based on
+>     commit fa1a406f7245c5482a17014d5b97e8948352e5a5
+>     Author: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+>     Date:   Sat Nov 9 14:24:18 2013 +0100
 > =
 
->   CC      common/startup.o
-> In file included from arch/mips/mach-xburst/include/mach/debug_ll.h:25,
->                  from include/debug_ll.h:31,
->                  from common/startup.c:36:
-> arch/mips/include/asm/debug_ll_ns16550.h: In function 'PUTC_LL':
-> arch/mips/include/asm/debug_ll_ns16550.h:62: error: 'DEBUG_LL_UART_ADDR' =
-undeclared (first use in this function)
-> arch/mips/include/asm/debug_ll_ns16550.h:62: error: (Each undeclared iden=
-tifier is reported only once
-> arch/mips/include/asm/debug_ll_ns16550.h:62: error: for each function it =
-appears in.)
-> make[1]: *** [common/startup.o] Error 1
+>         ARM: lib: add BAREBOX_CLK_TABLE to linker script
+> =
+
+>         This adds an .oftables section right before .dtb section with
+>         BAREBOX_CLK_TABLE to ARM linker script.
 > =
 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/mips/include/asm/debug_ll_ns16550.h | 2 ++
+>  arch/mips/lib/barebox.lds.S | 2 ++
 >  1 file changed, 2 insertions(+)
 > =
 
-> diff --git a/arch/mips/include/asm/debug_ll_ns16550.h b/arch/mips/include=
-/asm/debug_ll_ns16550.h
-> index f36010c..032f0a2 100644
-> --- a/arch/mips/include/asm/debug_ll_ns16550.h
-> +++ b/arch/mips/include/asm/debug_ll_ns16550.h
-> @@ -59,9 +59,11 @@
+> diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
+> index bc78d2b..4ee4252 100644
+> --- a/arch/mips/lib/barebox.lds.S
+> +++ b/arch/mips/lib/barebox.lds.S
+> @@ -69,6 +69,8 @@ SECTIONS
+>  	__usymtab : { BAREBOX_SYMS }
+>  	__usymtab_end =3D .;
 >  =
 
->  static __inline__ void PUTC_LL(char ch)
->  {
-> +#ifdef CONFIG_DEBUG_LL
->  	while (!(__raw_readb((u8 *)DEBUG_LL_UART_ADDR + UART_LSR) & UART_LSR_TH=
-RE))
->  		;
->  	__raw_writeb(ch, (u8 *)DEBUG_LL_UART_ADDR + UART_THR);
-> +#endif /* CONFIG_DEBUG_LL */
->  }
->  #else /* __ASSEMBLY__ */
->  /*
+> +	.oftables : { BAREBOX_CLK_TABLE() }
+> +
+>  	.dtb : { BAREBOX_DTB() }
+>  =
+
+>  	_edata =3D .;
 > -- =
 
 > 1.9.0
