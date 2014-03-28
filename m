@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WTSkn-00069M-9F
- for barebox@lists.infradead.org; Fri, 28 Mar 2014 09:07:09 +0000
-Date: Fri, 28 Mar 2014 10:06:47 +0100
+ id 1WTSsa-0006KB-9A
+ for barebox@lists.infradead.org; Fri, 28 Mar 2014 09:15:13 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140328090647.GD17250@pengutronix.de>
-References: <1395822642-14342-1-git-send-email-antonynpavlov@gmail.com>
- <20140328120132.60cb4a7d25fb42cda18bdadc@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140328120132.60cb4a7d25fb42cda18bdadc@gmail.com>
+Date: Fri, 28 Mar 2014 10:14:41 +0100
+Message-Id: <1395998083-18979-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1395998083-18979-1-git-send-email-s.hauer@pengutronix.de>
+References: <1395998083-18979-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,84 +16,89 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] MIPS: lib: add BAREBOX_CLK_TABLE to linker script
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] Add shell_expand function
+To: barebox@lists.infradead.org
 
-On Fri, Mar 28, 2014 at 12:01:32PM +0400, Antony Pavlov wrote:
-> On Wed, 26 Mar 2014 12:30:42 +0400
-> Antony Pavlov <antonynpavlov@gmail.com> wrote:
-> =
+shell_expand expands shell variables in a string.
 
-> I have included just the same patch into Atheros AR933x series.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/hush.c    | 33 +++++++++++++++++++++++++++++++++
+ include/common.h |  9 +++++++++
+ 2 files changed, 42 insertions(+)
 
-Ok, I'll just ignore this one then.
+diff --git a/common/hush.c b/common/hush.c
+index bd534c1..1447fdb 100644
+--- a/common/hush.c
++++ b/common/hush.c
+@@ -1637,6 +1637,39 @@ static void update_ifs_map(void)
+ 	mapset(ifs, 2);			/* also flow through if quoted */
+ }
+ 
++/*
++ * shell_expand - Expand shell variables in a string.
++ * @str:	The input string containing shell variables like
++ *		$var or ${var}
++ * Return:	The expanded string. Must be freed with free().
++ */
++char *shell_expand(char *str)
++{
++	struct p_context ctx = {};
++	o_string o = {};
++	char *res, *parsed;
++
++	remove_quotes_in_str(str);
++
++	o.quote = 1;
++
++	initialize_context(&ctx);
++
++	parse_string(&o, &ctx, str);
++
++	parsed = xmemdup(o.data, o.length + 1);
++	parsed[o.length] = 0;
++
++	res = insert_var_value(parsed);
++	if (res != parsed)
++		free(parsed);
++
++	free_pipe_list(ctx.list_head, 0);
++	b_free(&o);
++
++	return res;
++}
++
+ /* most recursion does not come through here, the exeception is
+  * from builtin_source() */
+ static int parse_stream_outer(struct p_context *ctx, struct in_str *inp, int flag)
+diff --git a/include/common.h b/include/common.h
+index 6987b4f..bfd3ce8 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -165,6 +165,15 @@ void arch_shutdown(void);
+ 
+ int run_shell(void);
+ 
++#ifdef CONFIG_SHELL_HUSH
++char *shell_expand(char *str);
++#else
++static inline char *shell_expand(char *str)
++{
++	return strdup(str);
++}
++#endif
++
+ /* Force a compilation error if condition is true */
+ #define BUILD_BUG_ON(condition) ((void)BUILD_BUG_ON_ZERO(condition))
+ 
+-- 
+1.9.0
 
-Sascha
-
-> =
-
-> > This commit is based on
-> >     commit fa1a406f7245c5482a17014d5b97e8948352e5a5
-> >     Author: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-> >     Date:   Sat Nov 9 14:24:18 2013 +0100
-> > =
-
-> >         ARM: lib: add BAREBOX_CLK_TABLE to linker script
-> > =
-
-> >         This adds an .oftables section right before .dtb section with
-> >         BAREBOX_CLK_TABLE to ARM linker script.
-> > =
-
-> > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
-> > ---
-> >  arch/mips/lib/barebox.lds.S | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > =
-
-> > diff --git a/arch/mips/lib/barebox.lds.S b/arch/mips/lib/barebox.lds.S
-> > index bc78d2b..4ee4252 100644
-> > --- a/arch/mips/lib/barebox.lds.S
-> > +++ b/arch/mips/lib/barebox.lds.S
-> > @@ -69,6 +69,8 @@ SECTIONS
-> >  	__usymtab : { BAREBOX_SYMS }
-> >  	__usymtab_end =3D .;
-> >  =
-
-> > +	.oftables : { BAREBOX_CLK_TABLE() }
-> > +
-> >  	.dtb : { BAREBOX_DTB() }
-> >  =
-
-> >  	_edata =3D .;
-> > -- =
-
-> > 1.9.0
-> > =
-
-> =
-
-> =
-
-> -- =
-
-> --=A0
-> Best regards,
-> =A0 Antony Pavlov
-> =
-
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
