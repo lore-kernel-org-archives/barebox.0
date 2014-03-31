@@ -1,26 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from homie.mail.dreamhost.com ([208.97.132.208]
- helo=homiemail-a62.g.dreamhost.com)
- by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WUbtO-0008SE-6h
- for barebox@lists.infradead.org; Mon, 31 Mar 2014 13:04:47 +0000
-Received: from homiemail-a62.g.dreamhost.com (localhost [127.0.0.1])
- by homiemail-a62.g.dreamhost.com (Postfix) with ESMTP id B4917634087
- for <barebox@lists.infradead.org>; Mon, 31 Mar 2014 06:04:22 -0700 (PDT)
-Received: from radagast (unknown [203.106.150.150])
- (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- (Authenticated sender: hussein@unixcat.org)
- by homiemail-a62.g.dreamhost.com (Postfix) with ESMTPSA id 65512634082
- for <barebox@lists.infradead.org>; Mon, 31 Mar 2014 06:04:22 -0700 (PDT)
-Received: from hussein by radagast with local (Exim 4.80)
- (envelope-from <hussein@radagast>) id 1WUbsx-000298-00
- for barebox@lists.infradead.org; Mon, 31 Mar 2014 21:04:19 +0800
-Date: Mon, 31 Mar 2014 21:04:18 +0800
-From: Nur Hussein <hussein@unixcat.org>
-Message-ID: <20140331130418.GA3113@radagast>
-MIME-Version: 1.0
-Content-Disposition: inline
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WUdg3-0003R7-5f
+ for barebox@lists.infradead.org; Mon, 31 Mar 2014 14:59:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 31 Mar 2014 16:58:43 +0200
+Message-Id: <1396277923-25059-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -29,28 +14,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Building and booting Barebox on Pandaboard
+Subject: [PATCH] ARM: Panda: Fix board selection in panda defconfig files
 To: barebox@lists.infradead.org
 
-Dear all,
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/configs/panda_defconfig       | 4 +---
+ arch/arm/configs/panda_xload_defconfig | 2 +-
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-I am using barebox-2014.03.0 to try to boot on a Pandaboard ES. I have followed the instructions in the docs:
-
-http://wiki.barebox.org/doku.php?id=boards:omap
-
-I could not however find a barebox.bin.ift file in the output, so I guessed and went with the barebox-flash-image linked file and named it MLO.
-
-It did not work. The Pandaboard ES did not boot. 
-
-Is the documentation outdated? Is there something else I should be doing?
-
+diff --git a/arch/arm/configs/panda_defconfig b/arch/arm/configs/panda_defconfig
+index 7be86ac..c42140a 100644
+--- a/arch/arm/configs/panda_defconfig
++++ b/arch/arm/configs/panda_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_ARCH_OMAP=y
+-CONFIG_ARCH_OMAP4=y
++CONFIG_MACH_PANDA=y
+ CONFIG_THUMB2_BAREBOX=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+@@ -29,9 +29,7 @@ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_TIME=y
+-CONFIG_CMD_DIRNAME=y
+ CONFIG_CMD_LN=y
+-CONFIG_CMD_READLINK=y
+ CONFIG_CMD_TFTP=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_MEMINFO=y
+diff --git a/arch/arm/configs/panda_xload_defconfig b/arch/arm/configs/panda_xload_defconfig
+index 5cedcff..29a2afd 100644
+--- a/arch/arm/configs/panda_xload_defconfig
++++ b/arch/arm/configs/panda_xload_defconfig
+@@ -1,7 +1,7 @@
+ CONFIG_ARCH_OMAP=y
+-CONFIG_ARCH_OMAP4=y
+ # CONFIG_OMAP_GPMC is not set
+ CONFIG_OMAP_BUILD_IFT=y
++CONFIG_MACH_PANDA=y
+ CONFIG_THUMB2_BAREBOX=y
+ # CONFIG_CMD_ARM_CPUINFO is not set
+ CONFIG_MMU=y
 -- 
-Nur Hussein
-http://unixcat.org
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
