@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WUdqI-0003ox-5r
- for barebox@lists.infradead.org; Mon, 31 Mar 2014 15:09:43 +0000
-Date: Mon, 31 Mar 2014 17:09:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140331150920.GP17250@pengutronix.de>
+Received: from homie.mail.dreamhost.com ([208.97.132.208]
+ helo=homiemail-a1.g.dreamhost.com)
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WUdvt-00040O-Mb
+ for barebox@lists.infradead.org; Mon, 31 Mar 2014 15:15:30 +0000
+Date: Mon, 31 Mar 2014 23:14:59 +0800
+From: Nur Hussein <hussein@unixcat.org>
+Message-ID: <20140331151459.GA9544@radagast>
 References: <20140331130418.GA3113@radagast>
+ <20140331150920.GP17250@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20140331130418.GA3113@radagast>
+In-Reply-To: <20140331150920.GP17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,50 +25,38 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Building and booting Barebox on Pandaboard
-To: Nur Hussein <hussein@unixcat.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-Hi,
+Hello,
 
-On Mon, Mar 31, 2014 at 09:04:18PM +0800, Nur Hussein wrote:
-> Dear all,
+On Mon, Mar 31, 2014 at 05:09:20PM +0200, Sascha Hauer wrote:
+> Due to updates the panda_*defconfig configs currently do not build for
+> the panda board. Please either manually call a make menuconfig and set
+> the config back to panda:
 > 
-> I am using barebox-2014.03.0 to try to boot on a Pandaboard ES. I have followed the instructions in the docs:
+> System Type  --->
+>   OMAP Features  --->
+>     Select OMAP board (Texas Instrument's Panda Board)  --->
 > 
-> http://wiki.barebox.org/doku.php?id=boards:omap
+> Or apply the patch I just sent to the list:
+
+Thanks for the heads up. I shall try it and see if it works.
+
+> ARM: Panda: Fix board selection in panda defconfig files
 > 
-> I could not however find a barebox.bin.ift file in the output, so I guessed and went with the barebox-flash-image linked file and named it MLO.
+> I'm not 100% sure the ES variant is supported. What was the difference
+> between the ES and the regular board again? Does the ES have a omap4460
+> whereas the regular board has a omap4430? If yes then the ES should be
+> supported.
 
-Yes, right. barebox-flash-image is the correct file to use. I updated
-this in the wiki.
+Yes, this is indeed the case.
 
-> 
-> It did not work. The Pandaboard ES did not boot.
-
-Due to updates the panda_*defconfig configs currently do not build for
-the panda board. Please either manually call a make menuconfig and set
-the config back to panda:
-
-System Type  --->
-  OMAP Features  --->
-    Select OMAP board (Texas Instrument's Panda Board)  --->
-
-Or apply the patch I just sent to the list:
-
-ARM: Panda: Fix board selection in panda defconfig files
-
-I'm not 100% sure the ES variant is supported. What was the difference
-between the ES and the regular board again? Does the ES have a omap4460
-whereas the regular board has a omap4430? If yes then the ES should be
-supported.
-
-Sascha
+Thank you for the reply and the patch.
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Nur Hussein
+http://unixcat.org
 
 _______________________________________________
 barebox mailing list
