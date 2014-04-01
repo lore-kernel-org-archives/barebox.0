@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-x230.google.com ([2a00:1450:4008:c01::230])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WUv45-0002fq-Ck
- for barebox@lists.infradead.org; Tue, 01 Apr 2014 09:33:06 +0000
-Received: by mail-bk0-f48.google.com with SMTP id mx12so1257776bkb.21
- for <barebox@lists.infradead.org>; Tue, 01 Apr 2014 02:32:40 -0700 (PDT)
-Date: Tue, 1 Apr 2014 11:32:34 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140401093232.GA5777@omega.Speedport_W_921V_1_24_000>
-References: <20140401090229.GT17250@pengutronix.de>
+Received: from cpsmtpb-ews08.kpnxchange.com ([213.75.39.13])
+ by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WUv4o-0002i9-9i
+ for barebox@lists.infradead.org; Tue, 01 Apr 2014 09:33:51 +0000
+Message-ID: <533A87F5.9080400@erwinrol.com>
+Date: Tue, 01 Apr 2014 11:33:41 +0200
+From: Erwin Rol <mailinglists@erwinrol.com>
 MIME-Version: 1.0
-Content-Disposition: inline
+References: <20140401090229.GT17250@pengutronix.de>
 In-Reply-To: <20140401090229.GT17250@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -25,10 +22,15 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: Introducing barebOS
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 
-On Tue, Apr 01, 2014 at 11:02:29AM +0200, Sascha Hauer wrote:
+You could use a small Linux system with an adapted kexec to boot
+barebOS.  That way barebOS doesn't have to bother with the boot processes.
+
+- Erwin
+
+
+On 1-4-2014 11:02, Sascha Hauer wrote:
 > Hi All,
 > 
 > barebox more and more comes in the area that is has everything an
@@ -47,10 +49,9 @@ On Tue, Apr 01, 2014 at 11:02:29AM +0200, Sascha Hauer wrote:
 > remaining missing features are added, like for example a working vi
 > applet and nodejs integration. I'm looking forward to your feedback!
 > 
+> Sascha
+> 
 
-damn, I don't have a thesis for my master degree anymore.
-
-- Alex
 
 _______________________________________________
 barebox mailing list
