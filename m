@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WVEAC-0001BB-ER
- for barebox@lists.infradead.org; Wed, 02 Apr 2014 05:56:41 +0000
-Date: Wed, 2 Apr 2014 07:56:18 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140402055618.GY17250@pengutronix.de>
-References: <1395475418-15885-1-git-send-email-shc_work@mail.ru>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1395475418-15885-1-git-send-email-shc_work@mail.ru>
+ id 1WVFoC-0003Ds-Pa
+ for barebox@lists.infradead.org; Wed, 02 Apr 2014 07:42:05 +0000
+Received: by mail-la0-f50.google.com with SMTP id pv20so3673105lab.9
+ for <barebox@lists.infradead.org>; Wed, 02 Apr 2014 00:41:41 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Wed,  2 Apr 2014 11:41:31 +0400
+Message-Id: <1396424491-1651-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,37 +16,84 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH RESEND] drivers: treewide: Kill empty remove()
- implementations
-To: Alexander Shiyan <shc_work@mail.ru>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] MIPS: qemu-malta: add CBUS UART support
+To: barebox@lists.infradead.org
 
-Hi Alexander,
+This patch adds CBUS UART dts support;
+also it adds the necessary macros for DEBUG_LL.
 
-On Sat, Mar 22, 2014 at 12:03:38PM +0400, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  drivers/net/ar231x.c       | 6 ------
->  drivers/net/at91_ether.c   | 5 -----
->  drivers/net/designware.c   | 5 -----
->  drivers/video/imx-ipu-fb.c | 5 -----
->  drivers/video/imx.c        | 5 -----
->  drivers/video/pxa.c        | 5 -----
->  6 files changed, 31 deletions(-)
+qemu-malta supports three serial interfaces:
 
-Applied, thanks. Sorry, I missed that mail at first.
+  * two ports are provided by the FDC37M817
+    Super I/O; this chip is connected via LPC bus
+    to Intel 82371EB (PIIX4E) South Bridge;
 
-Sascha
+  * the third serial port is provided by
+    the discrete TI 16C550C (CBUS UART);
+    this chip is connected via CBUS directly
+    to the board's GT64120 North Bridge.
 
+See Malta User's Manual (MD00048) for details.
+
+CBUS UART Instructions for use:
+
+  1. Enable CONFIG_CONSOLE_ACTIVATE_ALL in .config
+     (or disable uart0 in dts) and compile barebox;
+
+  2. run qemu:
+
+     qemu-system-mips -nographic -nodefaults \
+        -monitor null -M malta -m 256 \
+        -serial null -serial null -serial stdio \
+        -bios barebox-flash-image
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/dts/qemu-malta.dts                 | 8 ++++++++
+ arch/mips/mach-malta/include/mach/hardware.h | 3 +++
+ 2 files changed, 11 insertions(+)
+
+diff --git a/arch/mips/dts/qemu-malta.dts b/arch/mips/dts/qemu-malta.dts
+index b6b69c4..67fe591 100644
+--- a/arch/mips/dts/qemu-malta.dts
++++ b/arch/mips/dts/qemu-malta.dts
+@@ -25,6 +25,14 @@
+ 		clock-frequency = <1843200>;
+ 	};
+ 
++	uart2: serial@bf000900 {
++		compatible = "ns16550a";
++		reg = <0xbf000900 0x40>;
++		reg-shift = <3>;
++		/* no matter for emulated port */
++		clock-frequency = <1843200>;
++	};
++
+ 	nor0: flash@be000000 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+diff --git a/arch/mips/mach-malta/include/mach/hardware.h b/arch/mips/mach-malta/include/mach/hardware.h
+index 9345a67..ba28cb8 100644
+--- a/arch/mips/mach-malta/include/mach/hardware.h
++++ b/arch/mips/mach-malta/include/mach/hardware.h
+@@ -20,6 +20,9 @@
+ 
+ #define MALTA_PIIX4_UART0	0xb80003f8
+ 
++#define MALTA_CBUS_UART	0xbf000900
++#define MALTA_CBUS_UART_SHIFT	3
++
+ /*
+  * Reset register.
+  */
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.0
+
 
 _______________________________________________
 barebox mailing list
