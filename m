@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WVDSk-0000Zk-7W
- for barebox@lists.infradead.org; Wed, 02 Apr 2014 05:11:47 +0000
-Date: Wed, 2 Apr 2014 07:11:24 +0200
+ id 1WVEAC-0001BB-ER
+ for barebox@lists.infradead.org; Wed, 02 Apr 2014 05:56:41 +0000
+Date: Wed, 2 Apr 2014 07:56:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140402051124.GU17250@pengutronix.de>
-References: <1396253931-3669-1-git-send-email-s.trumtrar@pengutronix.de>
- <1396253931-3669-2-git-send-email-s.trumtrar@pengutronix.de>
+Message-ID: <20140402055618.GY17250@pengutronix.de>
+References: <1395475418-15885-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1396253931-3669-2-git-send-email-s.trumtrar@pengutronix.de>
+In-Reply-To: <1395475418-15885-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,23 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] ARM: socfpga: socrates: add iocsr config
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Subject: Re: [PATCH RESEND] drivers: treewide: Kill empty remove()
+ implementations
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Mar 31, 2014 at 10:18:51AM +0200, Steffen Trumtrar wrote:
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> ---
->  .../boards/ebv-socrates/iocsr_config_cyclone5.c    | 649 +++++++++++++++++++++
->  1 file changed, 649 insertions(+)
->  create mode 100644 arch/arm/boards/ebv-socrates/iocsr_config_cyclone5.c
+Hi Alexander,
 
-You add a C file here without adding it to the Makefile. Also I think
-patch 1/2 and 2/2 must be together in a single patch, otherwise you
-break the build in between, right?
+On Sat, Mar 22, 2014 at 12:03:38PM +0400, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+> ---
+>  drivers/net/ar231x.c       | 6 ------
+>  drivers/net/at91_ether.c   | 5 -----
+>  drivers/net/designware.c   | 5 -----
+>  drivers/video/imx-ipu-fb.c | 5 -----
+>  drivers/video/imx.c        | 5 -----
+>  drivers/video/pxa.c        | 5 -----
+>  6 files changed, 31 deletions(-)
+
+Applied, thanks. Sorry, I missed that mail at first.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
