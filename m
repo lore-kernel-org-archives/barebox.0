@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from exprod5og118.obsmtp.com ([64.18.0.160])
- by merlin.infradead.org with smtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WVMg8-0006Yf-9c
- for barebox@lists.infradead.org; Wed, 02 Apr 2014 15:02:14 +0000
-Message-ID: <533C2657.7040500@ge.com>
-Date: Wed, 02 Apr 2014 16:01:43 +0100
-From: Renaud Barbier <renaud.barbier@ge.com>
+Received: from mail-yk0-f179.google.com ([209.85.160.179])
+ by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WVMjq-0006g1-W8
+ for barebox@lists.infradead.org; Wed, 02 Apr 2014 15:06:03 +0000
+Received: by mail-yk0-f179.google.com with SMTP id 9so300450ykp.24
+ for <barebox@lists.infradead.org>; Wed, 02 Apr 2014 08:05:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <1396448321-11342-1-git-send-email-renaud.barbier@ge.com>
- <20140402143500.GA25539@omega.Speedport_W_921V_1_24_000>
-In-Reply-To: <20140402143500.GA25539@omega.Speedport_W_921V_1_24_000>
+Date: Wed, 2 Apr 2014 17:05:38 +0200
+Message-ID: <CAOpc7mEKy0sKGdKbSqvCJjQRcz_wBQY_tVYWZ3-TH_V4XqAQ1A@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,36 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RESEND PATCH] ppc: P2020RDB: add environment partition support
-To: Alexander Aring <alex.aring@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Suggestions for new i.MX6 board
+To: barebox@lists.infradead.org
 
-On 02/04/2014 15:35, Alexander Aring wrote:
->> -
->> > +	devfs_add_partition("nor0", 0xf60000, 0x8000, DEVFS_PARTITION_FIXED,
->> > +			"env0");
->> > +	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
->> > +			"self0");
-> I think this should be:
-> 
-> 	devfs_add_partition("nor0", 0xf60000, SZ_512K, DEVFS_PARTITION_FIXED,
-> 			"self0");
-> 	devfs_add_partition("nor0", 0xf60000 + SZ_512K, SZ_32K, DEVFS_PARTITION_FIXED,
-> 			"env0");
-> 
-> or your version is still correct? Or why you placed the env before self0 with a
-> little room there?
+Hi list,
 
+I'm going to implement barebox to an i.MX6Q based board we've
+developed in the company I work for.
 
-The reset vector on this PPC architecture is at the top of the memory
-range (0xfffffffc) so the barebox area should be at the top of the flash.
+Now the very first question is: to CONFIG_IMX_MULTI_BOARDS or not to
+CONFIG_IMX_MULTI_BOARDS??
 
-The flash sectors are 128KB so I placed the environment at the start of
-previous sector. It is indeed a lots of space lost for environment.
+For example, I see in "make xconfig" that some boards are made in a
+multi-board way, e.g. they are active when CONFIG_IMX_MULTI_BOARDS is
+set (e.g. Sabrelite). However, there is one that is only visible
+without that config,. the Armadillo2. Obviously I could do it this are
+that way, so which should I use?   Personally I don't think that it
+makes sense to compile a barebox binary that runs on different boards,
+I don't even know how the boot loader would discriminate if it runs on
+board A or board B ...
 
 
-
-
+Or, I could phrase that question differently: from all the existing
+i.MX6 boards, which one is the one with the least bitrot, i.e. which
+one should I take as a template?
 
 _______________________________________________
 barebox mailing list
