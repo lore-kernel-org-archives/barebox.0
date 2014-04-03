@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WVMyA-0007Am-VK
- for barebox@lists.infradead.org; Wed, 02 Apr 2014 15:20:51 +0000
-Message-ID: <1396451980.19064.11.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Wed, 02 Apr 2014 17:19:40 +0200
-In-Reply-To: <CAOpc7mEKy0sKGdKbSqvCJjQRcz_wBQY_tVYWZ3-TH_V4XqAQ1A@mail.gmail.com>
-References: <CAOpc7mEKy0sKGdKbSqvCJjQRcz_wBQY_tVYWZ3-TH_V4XqAQ1A@mail.gmail.com>
-Mime-Version: 1.0
+ id 1WVabe-00005u-G0
+ for barebox@lists.infradead.org; Thu, 03 Apr 2014 05:54:31 +0000
+Date: Thu, 3 Apr 2014 07:54:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140403055408.GA17250@pengutronix.de>
+References: <1396448321-11342-1-git-send-email-renaud.barbier@ge.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1396448321-11342-1-git-send-email-renaud.barbier@ge.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,64 +22,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Suggestions for new i.MX6 board
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: [RESEND PATCH] ppc: P2020RDB: add environment partition support
+To: Renaud Barbier <renaud.barbier@ge.com>
 Cc: barebox@lists.infradead.org
 
-Hi Holger,
+On Wed, Apr 02, 2014 at 03:18:41PM +0100, Renaud Barbier wrote:
+> Add an environment partition and support commands so that the system
+> configuration can be permanent.
 
-Am Mittwoch, den 02.04.2014, 17:05 +0200 schrieb Holger Schurig:
-> Hi list,
-> 
-> I'm going to implement barebox to an i.MX6Q based board we've
-> developed in the company I work for.
-> 
-> Now the very first question is: to CONFIG_IMX_MULTI_BOARDS or not to
-> CONFIG_IMX_MULTI_BOARDS??
-> 
-If you are adding a new board please go for multi board support.
+Applied, thanks
 
-> For example, I see in "make xconfig" that some boards are made in a
-> multi-board way, e.g. they are active when CONFIG_IMX_MULTI_BOARDS is
-> set (e.g. Sabrelite). However, there is one that is only visible
-> without that config,. the Armadillo2. Obviously I could do it this are
-> that way, so which should I use?   Personally I don't think that it
-> makes sense to compile a barebox binary that runs on different boards,
-> I don't even know how the boot loader would discriminate if it runs on
-> board A or board B ...
-> 
-There are some boards that don't use the multi-image support as nobody
-had time to convert them them over to the new method. But we would
-definitely like to get rid of them, not add to that list...
-
-In barebox the multi board support doesn't work like a multiarch kernel.
-You don't build a single image for all boards, but rather build a basic
-barebox binary and then link it together with the board specific parts
-to form multiple board dependent images. You still have to chose which
-image is the right one for your board.
-
-The upside of this mechanism is that you can easily have a single
-barebox config and built images for different configurations of the same
-board (like different memory configurations, or in case of the MX6
-different version of the SoC).
+Sascha
 
 > 
-> Or, I could phrase that question differently: from all the existing
-> i.MX6 boards, which one is the one with the least bitrot, i.e. which
-> one should I take as a template?
+> Signed-off-by: Renaud Barbier <renaud.barbier@ge.com>
+> ---
+>  arch/ppc/boards/freescale-p2020rdb/env/bin/init |  2 ++
+>  arch/ppc/boards/freescale-p2020rdb/env/config   |  2 ++
+>  arch/ppc/boards/freescale-p2020rdb/p2020rdb.c   |  9 +++++----
+>  arch/ppc/configs/p2020rdb_defconfig             | 21 ++++++++++++++++++++-
+>  4 files changed, 29 insertions(+), 5 deletions(-)
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/bin/init
+>  create mode 100644 arch/ppc/boards/freescale-p2020rdb/env/config
 > 
-Pretty much all of the multi-image enabled boards have seen some love
-recently. A relatively simple example with different configs for the
-same board can be found within the boundarydevices nitrogen6x support.
+> diff --git a/arch/ppc/boards/freescale-p2020rdb/env/bin/init b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+> new file mode 100644
+> index 0000000..4d7b03e
+> --- /dev/null
+> +++ b/arch/ppc/boards/freescale-p2020rdb/env/bin/init
+> @@ -0,0 +1,2 @@
+> +#!/bin/sh
+> +source /env/config
+> \ No newline at end of file
+> diff --git a/arch/ppc/boards/freescale-p2020rdb/env/config b/arch/ppc/boards/freescale-p2020rdb/env/config
+> new file mode 100644
+> index 0000000..23e0ba2
+> --- /dev/null
+> +++ b/arch/ppc/boards/freescale-p2020rdb/env/config
+> @@ -0,0 +1,2 @@
+> +#!/bin/sh
+> +export bootargs="root=/dev/nfs rw ip=bootp"
+> \ No newline at end of file
+> diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+> index 4d2ff22..229ae41 100644
+> --- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+> +++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+> @@ -83,7 +83,10 @@ struct i2c_platform_data i2cplat = {
+>  static int devices_init(void)
+>  {
+>  	add_cfi_flash_device(DEVICE_ID_DYNAMIC, CFG_FLASH_BASE, 16 << 20, 0);
+> -
+> +	devfs_add_partition("nor0", 0xf60000, 0x8000, DEVFS_PARTITION_FIXED,
+> +			"env0");
+> +	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+> +			"self0");
+>  	add_generic_device("i2c-fsl", 0, NULL, I2C1_BASE_ADDR,
+>  			0x100, IORESOURCE_MEM, &i2cplat);
+>  	add_generic_device("i2c-fsl", 1, NULL, I2C2_BASE_ADDR,
+> @@ -92,8 +95,6 @@ static int devices_init(void)
+>  	fsl_eth_init(2, &gfar_info[0]);
+>  	fsl_eth_init(3, &gfar_info[1]);
+> 
+> -	devfs_add_partition("nor0", 0xf80000, 0x80000, DEVFS_PARTITION_FIXED,
+> -			    "self0");
+>  	return 0;
+>  }
+> 
+> @@ -106,7 +107,7 @@ static struct NS16550_plat serial_plat = {
+> 
+>  static int p2020_console_init(void)
+>  {
+> -	barebox_set_model("Freescale P2020 RDB");
+> +	barebox_set_model("Freescale P2020RDB");
+>  	barebox_set_hostname("p2020rdb");
+> 
+>  	serial_plat.clock = fsl_get_bus_freq(0);
+> diff --git a/arch/ppc/configs/p2020rdb_defconfig b/arch/ppc/configs/p2020rdb_defconfig
+> index 868c060..c34e48d 100644
+> --- a/arch/ppc/configs/p2020rdb_defconfig
+> +++ b/arch/ppc/configs/p2020rdb_defconfig
+> @@ -6,10 +6,25 @@ CONFIG_GLOB=y
+>  CONFIG_CMDLINE_EDITING=y
+>  CONFIG_AUTO_COMPLETE=y
+>  CONFIG_CMD_SLEEP=y
+> +CONFIG_CMD_PARTITION=y
+> +CONFIG_CMD_BOOTM_ZLIB=y
+> +CONFIG_CMD_BOOTM_BZLIB=y
+> +CONFIG_ZLIB=y
+> +CONFIG_BZLIB=y
+> +CONFIG_CMD_EDIT=y
+> +CONFIG_CMD_EXPORT=y
+>  CONFIG_CMD_FLASH=y
+>  CONFIG_CMD_RESET=y
+>  CONFIG_CMD_GO=y
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC=n
+> +CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/ppc/boards/freescale-p2020rdb/env/"
+> +CONFIG_CMD_LOADENV=y
+> +CONFIG_CMD_PRINTENV=y
+> +CONFIG_CMD_SAVEENV=y
+> +CONFIG_CMD_READLINK=y
+>  CONFIG_FSL_ELBC=y
+> +CONFIG_CMD_TIMEOUT=y
+> +CONFIG_CMD_UNCOMPRESS=y
+>  CONFIG_DRIVER_CFI=y
+>  CONFIG_DRIVER_CFI_AMD=y
+>  CONFIG_DRIVER_CFI_INTEL=n
+> @@ -17,7 +32,7 @@ CONFIG_DRIVER_CFI_BANK_WIDTH_1=n
+>  CONFIG_DRIVER_CFI_BANK_WIDTH_2=y
+>  CONFIG_DRIVER_CFI_BANK_WIDTH_4=n
+>  CONFIG_MTD=y
+> -CONFIG_MALLOC_SIZE=0x200000
+> +CONFIG_MALLOC_SIZE=0x2800000
+>  CONFIG_BAUDRATE=115200
+>  CONFIG_DRIVER_SERIAL_NS16550=y
+>  CONFIG_RELOCATABLE=y
+> @@ -34,3 +49,7 @@ CONFIG_CMD_I2C=y
+>  CONFIG_CMD_MIITOOL=y
+>  CONFIG_CMD_MEMTEST=y
+>  CONFIG_CMD_IOMEM=y
+> +CONFIG_CMD_VERSION=n
+> +CONFIG_OFTREE=y
+> +CONFIG_CMD_OFTREE_PROBE=y
+> +CONFIG_CMD_OFTREE=y
+> \ No newline at end of file
+> --
+> 1.8.4.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
-Regards,
-Lucas
 -- 
-Pengutronix e.K.                           | Lucas Stach                 |
+Pengutronix e.K.                           |                             |
 Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-5076 |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 _______________________________________________
 barebox mailing list
