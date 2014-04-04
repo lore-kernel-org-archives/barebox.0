@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WW9Ur-00055T-QV
- for barebox@lists.infradead.org; Fri, 04 Apr 2014 19:09:52 +0000
+ id 1WW9Ur-00055V-QS
+ for barebox@lists.infradead.org; Fri, 04 Apr 2014 19:09:51 +0000
 From: michel@reverze.net
-Date: Fri,  4 Apr 2014 20:09:45 +0200
-Message-Id: <1396634987-3730-1-git-send-email-michel@reverze.net>
+Date: Fri,  4 Apr 2014 20:09:46 +0200
+Message-Id: <1396634987-3730-2-git-send-email-michel@reverze.net>
+In-Reply-To: <1396634987-3730-1-git-send-email-michel@reverze.net>
+References: <1396634987-3730-1-git-send-email-michel@reverze.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,504 +21,360 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv2 1/3] common: Allow for I/O mapped I/O
+Subject: [PATCHv2 2/3] x86: Add support for IDE on the legacy I/O ports
 To: barebox@lists.infradead.org
 
 From: Michel Stam <m.stam@fugro.nl>
 
-Rework the current framework so that I/O mapped I/O resources are
-also possible.
 ---
- arch/arm/include/asm/io.h     |    2 +
- arch/mips/include/asm/io.h    |    2 +
- arch/nios2/include/asm/io.h   |    2 +
- arch/sandbox/include/asm/io.h |    1 +
- arch/x86/include/asm/io.h     |    2 +
- commands/Kconfig              |    8 ++--
- commands/Makefile             |    2 +-
- commands/iomem.c              |   52 ---------------------------------
- commands/iomemport.c          |   64 +++++++++++++++++++++++++++++++++++++++++
- common/memory.c               |    2 +-
- common/resource.c             |   30 +++++++++++++++----
- drivers/base/driver.c         |   15 +++++----
- drivers/gpio/gpio-generic.c   |    4 +-
- drivers/mfd/syscon.c          |    2 +-
- drivers/misc/sram.c           |    2 +-
- include/driver.h              |    3 +-
- include/linux/ioport.h        |    5 ++-
- 17 files changed, 121 insertions(+), 77 deletions(-)
- delete mode 100644 commands/iomem.c
- create mode 100644 commands/iomemport.c
+ arch/x86/boards/x86_generic/generic_pc.c |   73 +++++++++++++++++++++++
+ drivers/ata/ide-sff.c                    |   94 ++++++++++++++++++++++++-----
+ drivers/ata/intf_platform_ide.c          |   33 +++++++++-
+ include/ata_drive.h                      |    1 +
+ 4 files changed, 180 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index e0630eb..ccf1f59 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -3,6 +3,8 @@
+diff --git a/arch/x86/boards/x86_generic/generic_pc.c b/arch/x86/boards/x86_generic/generic_pc.c
+index 74a7224..895b88d 100644
+--- a/arch/x86/boards/x86_generic/generic_pc.c
++++ b/arch/x86/boards/x86_generic/generic_pc.c
+@@ -27,6 +27,10 @@
+ #include <ns16550.h>
+ #include <linux/err.h>
  
- #include <asm-generic/io.h>
- 
-+#define	IO_SPACE_LIMIT	0
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++#include <platform_ide.h>
++#endif
 +
  /*
-  * String version of IO memory access ops:
+  * These datas are from the MBR, created by the linker and filled by the
+  * setup tool while installing barebox on the disk drive
+@@ -41,17 +45,85 @@ extern uint8_t pers_env_drive;
   */
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 4100e1e..1cc8a51 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -14,6 +14,8 @@
- #include <asm/types.h>
- #include <asm/byteorder.h>
+ #define PATCH_AREA_PERS_SIZE_UNUSED 0x000
  
-+#define	IO_SPACE_LIMIT	0
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
 +
- /*****************************************************************************/
- /*
-  * readX/writeX() are used to access memory mapped devices. On some
-diff --git a/arch/nios2/include/asm/io.h b/arch/nios2/include/asm/io.h
-index 8ee48e0..59eea73 100644
---- a/arch/nios2/include/asm/io.h
-+++ b/arch/nios2/include/asm/io.h
-@@ -22,6 +22,8 @@
- 
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0
++static struct ide_port_info ide_plat = {
++	.ioport_shift = 0,
++	.dataif_be = 0,
++};
 +
- #define __raw_writeb(v, a)       (*(volatile unsigned char  *)(a) = (v))
- #define __raw_writew(v, a)       (*(volatile unsigned short *)(a) = (v))
- #define __raw_writel(v, a)       (*(volatile unsigned int   *)(a) = (v))
-diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-index 8ca164f..35b5784 100644
---- a/arch/sandbox/include/asm/io.h
-+++ b/arch/sandbox/include/asm/io.h
-@@ -2,5 +2,6 @@
- #define __ASM_SANDBOX_IO_H
- 
- #include <asm-generic/io.h>
-+#define	IO_SPACE_LIMIT 0
- 
- #endif /* __ASM_SANDBOX_IO_H */
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 9cb78e4..f020510 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -12,6 +12,8 @@
- 
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0xffff
++static struct resource primary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x1f0,
++		.end =  0x1f7,
++		.flags = IORESOURCE_IO
++	},
++	{
++		.name = "alt",
++		.start = 0x3f6,
++		.end =  0x3f7,
++		.flags = IORESOURCE_IO
++	}
++};
 +
- static inline void outb(unsigned char value, int port)
++static struct resource secondary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x170,
++		.end =  0x177,
++		.flags = IORESOURCE_IO
++	},
++};
++
++static struct device_d primary_ide_device = {
++	.name = "ide_intf",
++	.id = 0,
++	.platform_data = &ide_plat,
++	.resource = primary_ide_resources,
++	.num_resources = ARRAY_SIZE( primary_ide_resources ),
++};
++
++static struct device_d secondary_ide_device = {
++	.name = "ide_intf",
++	.id = 1,
++	.platform_data = &ide_plat,
++	.resource = secondary_ide_resources,
++	.num_resources = ARRAY_SIZE( secondary_ide_resources ),
++};
++
++#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
++
+ static int devices_init(void)
  {
- 	asm volatile("outb %b0, %w1" : : "a"(value), "Nd"(port));
-diff --git a/commands/Kconfig b/commands/Kconfig
-index cc014f3..33bd353 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -307,12 +307,12 @@ config CMD_MEMINFO
- 	tristate
- 	prompt "meminfo"
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
+ 	struct cdev *cdev;
++#endif
  
--config CMD_IOMEM
-+config CMD_IOMEMPORT
- 	tristate
--	prompt "iomem"
-+	prompt "iomem/ioport"
- 	help
--	  Show information about iomem usage. Pendant to 'cat /proc/iomem'
--	  under Linux.
-+	  Show information about iomem/ioport usage. Pendant to
-+	  'cat /proc/iomem' and 'cat /proc/ioports' under Linux.
+ 	/* extended memory only */
+ 	add_mem_device("ram0", 0x0, bios_get_memsize() << 10,
+ 		       IORESOURCE_MEM_WRITEABLE);
++#ifdef CONFIG_DISK_BIOS
+ 	add_generic_device("biosdrive", DEVICE_ID_DYNAMIC, NULL, 0, 0, IORESOURCE_MEM,
+ 			NULL);
++#endif
++
++#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
++	platform_device_register( &primary_ide_device );
++	platform_device_register( &secondary_ide_device );
  
- config CMD_MEMORY
- 	bool
-diff --git a/commands/Makefile b/commands/Makefile
-index e463031..0da1173 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -76,7 +76,7 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
- obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
--obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
-+obj-$(CONFIG_CMD_IOMEMPORT)	+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
- obj-$(CONFIG_CMD_AUTOMOUNT)	+= automount.o
- obj-$(CONFIG_CMD_GLOBAL)	+= global.o
-diff --git a/commands/iomem.c b/commands/iomem.c
-deleted file mode 100644
-index e117c2a..0000000
---- a/commands/iomem.c
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/*
-- * iomem.c - barebox iomem command
-- *
-- * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--#include <common.h>
--#include <command.h>
--
--static void __print_resources(struct resource *res, int indent)
--{
--	struct resource *r;
--	int i;
--
--	for (i = 0; i < indent; i++)
--		printf("  ");
--
--	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
--			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n", res->start,
--			res->end, resource_size(res), res->name);
--
--	list_for_each_entry(r, &res->children, sibling)
--		__print_resources(r, indent + 1);
--}
--
--static void print_resources(struct resource *res)
--{
--	__print_resources(res, 0);
--}
--
--static int do_iomem(int argc, char *argv[])
--{
--	print_resources(&iomem_resource);
--
--	return 0;
--}
--
--BAREBOX_CMD_START(iomem)
--	.cmd		= do_iomem,
--	.usage		= "show iomem usage",
--BAREBOX_CMD_END
-diff --git a/commands/iomemport.c b/commands/iomemport.c
-new file mode 100644
-index 0000000..5ae48ac
---- /dev/null
-+++ b/commands/iomemport.c
-@@ -0,0 +1,64 @@
-+/*
-+ * iomem.c - barebox iomem command
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
+ 	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
++		cdev = devfs_add_partition("ata0",
++				pers_env_storage * 512,
++				(unsigned)pers_env_size * 512,
++				DEVFS_PARTITION_FIXED, "env0");
++		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
++	} else
++		printf("No persistent storage defined\n");
++#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
++
++#ifdef CONFIG_DISK_BIOS
++	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
+ 		cdev = devfs_add_partition("biosdisk0",
+ 				pers_env_storage * 512,
+ 				(unsigned)pers_env_size * 512,
+@@ -59,6 +131,7 @@ static int devices_init(void)
+ 		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
+ 	} else
+ 		printf("No persistent storage defined\n");
++#endif
+ 
+         return 0;
+ }
+diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
+index 3d5932e..f3a5cbd 100644
+--- a/drivers/ata/ide-sff.c
++++ b/drivers/ata/ide-sff.c
+@@ -15,13 +15,71 @@
+ #define DISK_SLAVE 1
+ 
+ /**
++ * Read a byte from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
 + */
-+#include <common.h>
-+#include <command.h>
-+
-+static void __print_resources(struct resource *res, int indent)
++static inline uint8_t ata_rd_byte(struct ide_port *ide, void __iomem *addr )
 +{
-+	struct resource *r;
-+	int i;
-+
-+	for (i = 0; i < indent; i++)
-+		printf("  ");
-+
-+	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
-+			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n", res->start,
-+			res->end, resource_size(res), res->name);
-+
-+	list_for_each_entry(r, &res->children, sibling)
-+		__print_resources(r, indent + 1);
++	if (ide->io.mmio)
++		return readb(addr);
++	else
++		return (uint8_t) inb((int) addr);
 +}
 +
-+static void print_resources(struct resource *res)
++/**
++ * Write a byte to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_byte(struct ide_port *ide, uint8_t value, void __iomem *addr )
 +{
-+	__print_resources(res, 0);
++	if (ide->io.mmio)
++		writeb(value, addr);
++	else
++		outb(value, (int) addr);
 +}
 +
-+static int do_iomem(int argc, char *argv[])
++/**
++ * Read a word from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline uint16_t ata_rd_word(struct ide_port *ide, void __iomem *addr )
 +{
-+	print_resources(&iomem_resource);
-+
-+	return 0;
++	if (ide->io.mmio)
++		return readw(addr);
++	else
++		return (uint16_t) inw((int) addr);
 +}
 +
-+static int do_ioport(int argc, char *argv[])
++/**
++ * Write a word to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_word(struct ide_port *ide, uint16_t value, void __iomem *addr )
 +{
-+	print_resources(&ioport_resource);
-+
-+	return 0;
++	if (ide->io.mmio)
++		writew(value, addr);
++	else
++		outw(value, (int) addr);
 +}
 +
-+BAREBOX_CMD_START(iomem)
-+	.cmd		= do_iomem,
-+	.usage		= "show iomem usage",
-+BAREBOX_CMD_END
-+
-+BAREBOX_CMD_START(ioport)
-+	.cmd		= do_ioport,
-+	.usage		= "show ioport usage",
-+BAREBOX_CMD_END
-diff --git a/common/memory.c b/common/memory.c
-index c82bbaa..1ccf1eb 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -148,7 +148,7 @@ struct resource *request_sdram_region(const char *name, resource_size_t start,
- 	for_each_memory_bank(bank) {
- 		struct resource *res;
- 
--		res = request_region(bank->res, name, start, start + size - 1);
-+		res = __request_region(bank->res, name, start, start + size - 1);
- 		if (res)
- 			return res;
- 	}
-diff --git a/common/resource.c b/common/resource.c
-index 5795e79..f05e12f 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -20,6 +20,7 @@
- #include <errno.h>
- #include <init.h>
- #include <linux/ioport.h>
-+#include <asm/io.h>
- 
- static int init_resource(struct resource *res, const char *name)
- {
-@@ -36,7 +37,7 @@ static int init_resource(struct resource *res, const char *name)
-  * the parent resource and does not conflict with any of the child
-  * resources.
++/**
+  * Read the status register of the ATA drive
+  * @param io Register file
+  * @return Register's content
   */
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t start,
- 		resource_size_t end)
+ static uint8_t ata_rd_status(struct ide_port *ide)
  {
-@@ -95,7 +96,7 @@ ok:
+-	return readb(ide->io.status_addr);
++	return ata_rd_byte(ide,ide->io.status_addr);
  }
  
- /*
-- * release a region previously requested with request_region
-+ * release a region previously requested with request_*_region
-  */
- int release_region(struct resource *res)
- {
-@@ -109,7 +110,7 @@ int release_region(struct resource *res)
+ /**
+@@ -83,12 +141,12 @@ static int ata_set_lba_sector(struct ide_port *ide, unsigned drive, uint64_t num
+ 	if (num > 0x0FFFFFFF || drive > 1)
+ 		return -EINVAL;
+ 
+-	writeb(0xA0 | LBA_FLAG | drive << 4 | num >> 24, ide->io.device_addr);
+-	writeb(0x00, ide->io.error_addr);
+-	writeb(0x01, ide->io.nsect_addr);
+-	writeb(num, ide->io.lbal_addr);	/* 0 ... 7 */
+-	writeb(num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
+-	writeb(num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
++	ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24, ide->io.device_addr);
++	ata_wr_byte(ide, 0x00, ide->io.error_addr);
++	ata_wr_byte(ide, 0x01, ide->io.nsect_addr);
++	ata_wr_byte(ide, num, ide->io.lbal_addr);	/* 0 ... 7 */
++	ata_wr_byte(ide, num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
++	ata_wr_byte(ide, num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
+ 
+ 	return 0;
+ }
+@@ -107,7 +165,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t cmd)
+ 	if (rc != 0)
+ 		return rc;
+ 
+-	writeb(cmd, ide->io.command_addr);
++	ata_wr_byte(ide, cmd, ide->io.command_addr);
  	return 0;
  }
  
--/* The root resource for the whole io space */
-+/* The root resource for the whole memory-mapped io space */
- struct resource iomem_resource = {
- 	.start = 0,
- 	.end = 0xffffffff,
-@@ -118,10 +119,27 @@ struct resource iomem_resource = {
+@@ -118,7 +176,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t cmd)
+  */
+ static void ata_wr_dev_ctrl(struct ide_port *ide, uint8_t val)
+ {
+-	writeb(val, ide->io.ctl_addr);
++	ata_wr_byte(ide, val, ide->io.ctl_addr);
+ }
+ 
+ /**
+@@ -133,10 +191,10 @@ static void ata_rd_sector(struct ide_port *ide, void *buf)
+ 
+ 	if (ide->io.dataif_be) {
+ 		for (; u > 0; u--)
+-			*b++ = be16_to_cpu(readw(ide->io.data_addr));
++			*b++ = be16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+ 	} else {
+ 		for (; u > 0; u--)
+-			*b++ = le16_to_cpu(readw(ide->io.data_addr));
++			*b++ = le16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+ 	}
+ }
+ 
+@@ -152,10 +210,10 @@ static void ata_wr_sector(struct ide_port *ide, const void *buf)
+ 
+ 	if (ide->io.dataif_be) {
+ 		for (; u > 0; u--)
+-			writew(cpu_to_be16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_be16(*b++), ide->io.data_addr);
+ 	} else {
+ 		for (; u > 0; u--)
+-			writew(cpu_to_le16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_le16(*b++), ide->io.data_addr);
+ 	}
+ }
+ 
+@@ -169,10 +227,10 @@ static int ide_read_id(struct ata_port *port, void *buf)
+ 	struct ide_port *ide = to_ata_drive_access(port);
+ 	int rc;
+ 
+-	writeb(0xA0, ide->io.device_addr);	/* FIXME drive */
+-	writeb(0x00, ide->io.lbal_addr);
+-	writeb(0x00, ide->io.lbam_addr);
+-	writeb(0x00, ide->io.lbah_addr);
++	ata_wr_byte(ide, 0xA0, ide->io.device_addr);	/* FIXME drive */
++	ata_wr_byte(ide, 0x00, ide->io.lbal_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbam_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbah_addr);
+ 
+ 	rc = ata_wr_cmd(ide, ATA_CMD_ID_ATA);
+ 	if (rc != 0)
+@@ -327,6 +385,8 @@ int ide_port_register(struct ide_port *ide)
+ 	ide->port.ops = &ide_ops;
+ 
+ 	ret = ata_port_register(&ide->port);
++	if ( !ret )
++		ata_port_detect(&ide->port);
+ 
+ 	if (ret)
+ 		free(ide);
+diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+index 8ae0f05..5ad4c3d 100644
+--- a/drivers/ata/intf_platform_ide.c
++++ b/drivers/ata/intf_platform_ide.c
+@@ -81,16 +81,43 @@ static int platform_ide_probe(struct device_d *dev)
+ 	int rc;
+ 	struct ide_port_info *pdata = dev->platform_data;
+ 	struct ide_port *ide;
++	struct resource *res;
+ 	void *reg_base, *alt_base;
++	int mmio;
+ 
+ 	if (pdata == NULL) {
+ 		dev_err(dev, "No platform data. Cannot continue\n");
+ 		return -EINVAL;
+ 	}
+ 
++	reg_base = NULL;
++	alt_base = NULL;
++	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	mmio = (res != NULL);
++	if (res && (res = request_iomem_region(dev_name(dev),res->start,res->end)))
++	{
++		reg_base = (void __force __iomem*) res->start;
++		res = dev_get_resource(dev, IORESOURCE_MEM, 1);
++		if (res && (res = request_iomem_region(dev_name(dev),res->start,res->end)))
++			alt_base = (void __force __iomem*) res->start;
++	}
++	else
++	{
++		res = dev_get_resource(dev, IORESOURCE_IO, 0);
++		if (res && (res = request_ioport_region(dev_name(dev),res->start,res->end)))
++		{
++			reg_base = (void __force *) res->start;
++			res = dev_get_resource(dev, IORESOURCE_IO, 1);
++			if (res && (res = request_ioport_region(dev_name(dev),res->start,res->end)))
++				alt_base = (void __force *) res->start;
++		}
++        }
++        if (!reg_base)
++		return -ENODEV;
++
+ 	ide = xzalloc(sizeof(*ide));
+-	reg_base = dev_request_mem_region(dev, 0);
+-	alt_base = dev_request_mem_region(dev, 1);
++	ide->io.mmio = mmio;
++
+ 	platform_ide_setup_port(reg_base, alt_base, &ide->io, pdata->ioport_shift);
+ 	ide->io.reset = pdata->reset;
+ 	ide->io.dataif_be = pdata->dataif_be;
+@@ -125,6 +152,4 @@ device_platform_driver(platform_ide_driver);
+  *
+  * This driver does not change any access timings due to the fact it has no idea
+  * how to do so. So, do not expect an impressive data throughput.
+- *
+- * @todo Support also the IO port access method, the x86 architecture is using
+  */
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 6d6cca4..44073cb 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -119,6 +119,7 @@ struct ata_ioports {
+ 	/* hard reset line handling */
+ 	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
+ 	int dataif_be;	/* true if 16 bit data register is big endian */
++	int mmio; /* true if memory-mapped io */
  };
  
- /*
-- * request a region inside the io space
-+ * request a region inside the io space (memory)
-  */
--struct resource *request_iomem_region(const char *name,
-+inline struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end)
- {
--	return request_region(&iomem_resource, name, start, end);
-+	return __request_region(&iomem_resource, name, start, end);
-+}
-+
-+/* The root resource for the whole io-mapped io space */
-+struct resource ioport_resource = {
-+	.start = 0,
-+	.end = IO_SPACE_LIMIT,
-+	.name = "ioport",
-+	.children = LIST_HEAD_INIT(ioport_resource.children),
-+};
-+
-+/*
-+ * request a region inside the io space (i/o port)
-+ */
-+inline struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end)
-+{
-+	return __request_region(&ioport_resource, name, start, end);
- }
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 37560fd..1d1d04e 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -241,13 +241,13 @@ int register_driver(struct driver_d *drv)
- }
- EXPORT_SYMBOL(register_driver);
- 
--struct resource *dev_get_resource(struct device_d *dev, int num)
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type, int num)
- {
- 	int i, n = 0;
- 
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) == IORESOURCE_MEM) {
-+		if (resource_type(res) == type) {
- 			if (n == num)
- 				return res;
- 			n++;
-@@ -261,7 +261,7 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-@@ -270,13 +270,14 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- EXPORT_SYMBOL(dev_get_mem_region);
- 
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name)
- {
- 	int i;
- 
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) != IORESOURCE_MEM)
-+		if (resource_type(res) != type)
- 			continue;
- 		if (!res->name)
- 			continue;
-@@ -291,7 +292,7 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -303,7 +304,7 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -319,7 +320,7 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index a2fc400..5c46282 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -310,7 +310,7 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
- 
- 	*err = 0;
- 
--	r = dev_get_resource_by_name(dev, name);
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!r)
- 		return NULL;
- 
-@@ -342,7 +342,7 @@ static int bgpio_dev_probe(struct device_d *dev)
- 	struct bgpio_chip *bgc;
- 	struct bgpio_pdata *pdata = dev->platform_data;
- 
--	r = dev_get_resource_by_name(dev, "dat");
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, "dat");
- 	if (!r)
- 		return -EINVAL;
- 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 8fc84c3..e6722e1 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -70,7 +70,7 @@ static int syscon_probe(struct device_d *dev)
- 	if (!syscon)
- 		return -ENOMEM;
- 
--	res = dev_get_resource(dev, 0);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (!res) {
- 		free(syscon);
- 		return -ENOENT;
-diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
-index 7ea23b7..0466a15 100644
---- a/drivers/misc/sram.c
-+++ b/drivers/misc/sram.c
-@@ -47,7 +47,7 @@ static int sram_probe(struct device_d *dev)
- 	sram->cdev.name = asprintf("sram%d",
- 			cdev_find_free_index("sram"));
- 
--	res = dev_get_resource(dev, 0);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 
- 	sram->cdev.size = (unsigned long)resource_size(res);
- 	sram->cdev.ops = &memops;
-diff --git a/include/driver.h b/include/driver.h
-index 01b181d..37797c7 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -203,11 +203,12 @@ static inline const char *dev_name(const struct device_d *dev)
- /*
-  * get resource 'num' for a device
-  */
--struct resource *dev_get_resource(struct device_d *dev, int num);
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type, int num);
- /*
-  * get resource base 'name' for a device
-  */
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name);
- /*
-  * get register base 'name' for a device
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index ff0cba0..d1b2f55 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -137,14 +137,17 @@ static inline unsigned long resource_type(const struct resource *res)
- 
- struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end);
-+struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end);
- 
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t end,
- 		resource_size_t size);
- 
- int release_region(struct resource *res);
- 
- extern struct resource iomem_resource;
-+extern struct resource ioport_resource;
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
+ struct ata_port;
 -- 
 1.7.1
 
