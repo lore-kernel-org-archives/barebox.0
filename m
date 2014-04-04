@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-bk0-f49.google.com ([209.85.214.49])
+Received: from mail-bk0-f50.google.com ([209.85.214.50])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WW4K9-0001OD-1W
- for barebox@lists.infradead.org; Fri, 04 Apr 2014 13:38:26 +0000
-Received: by mail-bk0-f49.google.com with SMTP id my13so286168bkb.8
- for <barebox@lists.infradead.org>; Fri, 04 Apr 2014 06:37:57 -0700 (PDT)
+ id 1WW4M8-0001TZ-Ru
+ for barebox@lists.infradead.org; Fri, 04 Apr 2014 13:40:29 +0000
+Received: by mail-bk0-f50.google.com with SMTP id w10so304290bkz.9
+ for <barebox@lists.infradead.org>; Fri, 04 Apr 2014 06:40:07 -0700 (PDT)
 From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Date: Fri,  4 Apr 2014 15:37:39 +0200
-Message-Id: <1396618659-27627-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Date: Fri,  4 Apr 2014 15:40:00 +0200
+Message-Id: <1396618800-27692-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,7 +21,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] imx-spi: enable v0.7 spi driver for imx53-cspi
+Subject: [PATCH 3/3] imx53: add imx53_add_cspi
 To: barebox@lists.infradead.org
 
 From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
@@ -29,22 +29,25 @@ From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
 
 Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 ---
- drivers/spi/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 422693c..e429ea1 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -25,7 +25,7 @@ config DRIVER_SPI_IMX_0_0
+diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
+index d4e9a4a..88be4fd 100644
+--- a/arch/arm/mach-imx/include/mach/devices-imx53.h
++++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
+@@ -2,6 +2,11 @@
+ #include <mach/devices.h>
+ #include <mach/imx53-regs.h>
  
- config DRIVER_SPI_IMX_0_7
- 	bool
--	depends on ARCH_IMX25 || ARCH_IMX35
-+	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX53
- 	default y
- 
- config DRIVER_SPI_IMX_2_3
++static inline struct device_d *imx53_add_cspi(struct spi_imx_master *pdata)
++{
++	return imx_add_spi_imx35((void *)MX53_CSPI_BASE_ADDR, 0, pdata);
++}
++
+ static inline struct device_d *imx53_add_spi0(struct spi_imx_master *pdata)
+ {
+ 	return imx_add_spi_imx51((void *)MX53_ECSPI1_BASE_ADDR, 0, pdata);
 -- 
 1.7.9.5
 
