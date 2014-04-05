@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWTTk-0007Ck-W7
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 16:30:01 +0000
-Date: Sat, 5 Apr 2014 18:29:39 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140405162939.GD27055@pengutronix.de>
-References: <1396618800-27692-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1396618800-27692-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+ id 1WWVRm-0000Cz-M5
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 18:36:07 +0000
+Received: by mail-lb0-f174.google.com with SMTP id u14so3444003lbd.5
+ for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 11:35:42 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Sat,  5 Apr 2014 22:35:29 +0400
+Message-Id: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,62 +16,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] imx53: add imx53_add_cspi
-To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/5] add SPI controller driver for Atheros AR7XXX/AR9XXX SoCs
+To: barebox@lists.infradead.org
 
-Hi Wjatscheslaw,
+This patchseries adds the SPI controller driver for Atheros AR7XXX/AR9XXX SoCs.
+The driver uses bitbang SPI driver infrastructure from linux kernel.
 
-On Fri, Apr 04, 2014 at 03:40:00PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
-> From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
-> 
-> 
-> Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
+Antony Pavlov (5):
+  spi: import bitbang txrx utility functions from linux
+  spi: add controller driver for Atheros AR7XXX/AR9XXX SoCs
+  MIPS: ar9331.dtsi: add SPI master
+  MIPS: tplink-mr3020.dts: add S25FL032PIF SPI flash chip
+  MIPS: tplink-mr3020_defconfig: add SPI support
 
-Applied, thanks, although new boards should probe from devicetree and
-not use the platform registration code.
-
-Sascha
-
-> ---
->  arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
-> index d4e9a4a..88be4fd 100644
-> --- a/arch/arm/mach-imx/include/mach/devices-imx53.h
-> +++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
-> @@ -2,6 +2,11 @@
->  #include <mach/devices.h>
->  #include <mach/imx53-regs.h>
->  
-> +static inline struct device_d *imx53_add_cspi(struct spi_imx_master *pdata)
-> +{
-> +	return imx_add_spi_imx35((void *)MX53_CSPI_BASE_ADDR, 0, pdata);
-> +}
-> +
->  static inline struct device_d *imx53_add_spi0(struct spi_imx_master *pdata)
->  {
->  	return imx_add_spi_imx51((void *)MX53_ECSPI1_BASE_ADDR, 0, pdata);
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+ arch/mips/configs/tplink-mr3020_defconfig |   7 +-
+ arch/mips/dts/ar9331.dtsi                 |   6 +
+ arch/mips/dts/tplink-mr3020.dts           |  20 ++
+ drivers/spi/Kconfig                       |   4 +
+ drivers/spi/Makefile                      |   1 +
+ drivers/spi/ath79_spi.c                   | 299 ++++++++++++++++++++++++++++++
+ drivers/spi/spi-bitbang-txrx.h            |  95 ++++++++++
+ 7 files changed, 431 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/spi/ath79_spi.c
+ create mode 100644 drivers/spi/spi-bitbang-txrx.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.0
+
 
 _______________________________________________
 barebox mailing list
