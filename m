@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWRj2-0005TK-Hz
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 14:37:43 +0000
+ id 1WWRj2-0005TM-I1
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 14:37:45 +0000
 From: michel@reverze.net
-Date: Sat,  5 Apr 2014 15:37:36 +0200
-Message-Id: <1396705058-15047-1-git-send-email-michel@reverze.net>
+Date: Sat,  5 Apr 2014 15:37:38 +0200
+Message-Id: <1396705058-15047-3-git-send-email-michel@reverze.net>
+In-Reply-To: <1396705058-15047-1-git-send-email-michel@reverze.net>
+References: <1396705058-15047-1-git-send-email-michel@reverze.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,517 +21,513 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv3 1/3] common: Allow for I/O mapped I/O
+Subject: [PATCHv3 3/3] x86: ns16550: Rework driver to allow for x86 I/O space
 To: barebox@lists.infradead.org
 
 From: Michel Stam <m.stam@fugro.nl>
 
-Rework the current framework so that I/O mapped I/O resources are
-also possible.
+The current implementation fakes a memory-mapped I/O device
+at 0x3f8 and 0x2f8, then uses platform read/write functions
+to do the actual reading and writing. These platform functions
+only exist for the x86 platform; better to move the I/O
+routines into the driver and have the driver request I/O ports
+using request_ioport_region.
 
 Signed-off-by: Michel Stam <michel@reverze.net>
 ---
- arch/arm/include/asm/io.h     |    2 +
- arch/mips/include/asm/io.h    |    2 +
- arch/nios2/include/asm/io.h   |    2 +
- arch/sandbox/include/asm/io.h |    1 +
- arch/x86/include/asm/io.h     |    2 +
- commands/Kconfig              |    8 ++--
- commands/Makefile             |    2 +-
- commands/iomem.c              |   52 ---------------------------------
- commands/iomemport.c          |   64 +++++++++++++++++++++++++++++++++++++++++
- common/memory.c               |    3 +-
- common/resource.c             |   30 +++++++++++++++----
- drivers/base/driver.c         |   16 ++++++----
- drivers/gpio/gpio-generic.c   |    4 +-
- drivers/mfd/syscon.c          |    2 +-
- drivers/misc/sram.c           |    2 +-
- include/driver.h              |    5 ++-
- include/linux/ioport.h        |    5 ++-
- 17 files changed, 125 insertions(+), 77 deletions(-)
- delete mode 100644 commands/iomem.c
- create mode 100644 commands/iomemport.c
+ arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c |    3 +-
+ arch/arm/mach-mvebu/armada-370-xp.c               |    3 +-
+ arch/arm/mach-mvebu/kirkwood.c                    |    3 +-
+ arch/arm/mach-socfpga/xload.c                     |    4 +-
+ arch/arm/mach-tegra/tegra20.c                     |    2 +-
+ arch/mips/boards/dlink-dir-320/serial.c           |    2 +-
+ arch/mips/boards/loongson-ls1b/serial.c           |    2 +-
+ arch/mips/mach-ar231x/ar231x.c                    |    4 +-
+ arch/openrisc/boards/generic/generic.c            |    3 +-
+ arch/ppc/boards/freescale-p1022ds/p1022ds.c       |    2 +-
+ arch/ppc/boards/freescale-p2020rdb/p2020rdb.c     |    3 +-
+ arch/ppc/boards/geip-da923rc/da923rc.c            |    3 +-
+ arch/x86/boards/x86_generic/serial_ns16550.c      |    7 +-
+ arch/x86/include/asm/syslib.h                     |    3 -
+ arch/x86/mach-i386/Makefile                       |    1 -
+ arch/x86/mach-i386/generic.c                      |   34 ------
+ drivers/serial/serial_ns16550.c                   |  123 ++++++++++++++++++---
+ include/driver.h                                  |    2 +-
+ include/ns16550.h                                 |   11 +--
+ 19 files changed, 134 insertions(+), 81 deletions(-)
+ delete mode 100644 arch/x86/mach-i386/generic.c
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index e0630eb..ccf1f59 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -3,6 +3,8 @@
+diff --git a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+index e2ad1c8..31422e6 100644
+--- a/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
++++ b/arch/arm/boards/eukrea_cpuimx27/eukrea_cpuimx27.c
+@@ -223,7 +223,8 @@ static int eukrea_cpuimx27_console_init(void)
+ 	imx27_setup_weimcs(3, 0x0000D603, 0x0D1D0D01, 0x00D20000);
+ #ifdef CONFIG_DRIVER_SERIAL_NS16550
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, MX27_CS3_BASE_ADDR + QUART_OFFSET, 0xf,
+-			 IORESOURCE_MEM_16BIT, &quad_uart_serial_plat);
++			   IORESOURCE_MEM | IORESOURCE_MEM_16BIT,
++			   &quad_uart_serial_plat);
+ #endif
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/armada-370-xp.c b/arch/arm/mach-mvebu/armada-370-xp.c
+index 776b4c0..209be0b 100644
+--- a/arch/arm/mach-mvebu/armada-370-xp.c
++++ b/arch/arm/mach-mvebu/armada-370-xp.c
+@@ -60,7 +60,8 @@ static int armada_370_xp_add_uart(void)
+ 	uart_plat.clock = clk_get_rate(tclk);
+ 	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
+ 				(unsigned int)CONSOLE_UART_BASE, 32,
+-				IORESOURCE_MEM_32BIT, &uart_plat))
++				IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
++				&uart_plat))
+ 	    return -ENODEV;
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-mvebu/kirkwood.c b/arch/arm/mach-mvebu/kirkwood.c
+index 1284220..c79d130 100644
+--- a/arch/arm/mach-mvebu/kirkwood.c
++++ b/arch/arm/mach-mvebu/kirkwood.c
+@@ -58,7 +58,8 @@ static int kirkwood_add_uart(void)
+ 	uart_plat.clock = clk_get_rate(tclk);
+ 	if (!add_ns16550_device(DEVICE_ID_DYNAMIC,
+ 				(unsigned int)CONSOLE_UART_BASE, 32,
+-				IORESOURCE_MEM_32BIT, &uart_plat))
++				IORESOURCE_MEM | IORESOURCE_MEM_32BIT,
++				&uart_plat))
+ 		return -ENODEV;
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-socfpga/xload.c b/arch/arm/mach-socfpga/xload.c
+index 0b99db0..6586ada 100644
+--- a/arch/arm/mach-socfpga/xload.c
++++ b/arch/arm/mach-socfpga/xload.c
+@@ -45,8 +45,8 @@ static void socfpga_uart_init(void)
+ 	clks[uart] = clk_fixed("uart", 100000000);
+ 	clkdev_add_physbase(clks[uart], CYCLONE5_UART0_ADDRESS, NULL);
+ 	clkdev_add_physbase(clks[uart], CYCLONE5_UART1_ADDRESS, NULL);
+-	add_ns16550_device(0, 0xffc02000, 1024, IORESOURCE_MEM_8BIT,
+-			&uart_pdata);
++	add_ns16550_device(0, 0xffc02000, 1024, IORESOURCE_MEM |
++			IORESOURCE_MEM_8BIT, &uart_pdata);
+ }
  
- #include <asm-generic/io.h>
+ static void socfpga_timer_init(void)
+diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
+index cc2d748..bdd7960 100644
+--- a/arch/arm/mach-tegra/tegra20.c
++++ b/arch/arm/mach-tegra/tegra20.c
+@@ -50,7 +50,7 @@ static int tegra20_add_debug_console(void)
+ 		return -ENODEV;
  
-+#define	IO_SPACE_LIMIT	0
-+
- /*
-  * String version of IO memory access ops:
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, base, 8 << debug_uart.shift,
+-			   IORESOURCE_MEM_8BIT, &debug_uart);
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &debug_uart);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/boards/dlink-dir-320/serial.c b/arch/mips/boards/dlink-dir-320/serial.c
+index bddb683..eb87379 100644
+--- a/arch/mips/boards/dlink-dir-320/serial.c
++++ b/arch/mips/boards/dlink-dir-320/serial.c
+@@ -36,7 +36,7 @@ static int dir320_console_init(void)
+ 
+ 	/* Register the serial port */
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, DEBUG_LL_UART_ADDR, 8,
+-			IORESOURCE_MEM_8BIT, &serial_plat);
++			IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/boards/loongson-ls1b/serial.c b/arch/mips/boards/loongson-ls1b/serial.c
+index d8e0f7c..7159ab7 100644
+--- a/arch/mips/boards/loongson-ls1b/serial.c
++++ b/arch/mips/boards/loongson-ls1b/serial.c
+@@ -15,7 +15,7 @@ static int console_init(void)
+ 	barebox_set_hostname("ls1b");
+ 
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, KSEG1ADDR(LS1X_UART2_BASE),
+-		8, IORESOURCE_MEM_8BIT, &serial_plat);
++		8, IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+ 
+ 	return 0;
+ }
+diff --git a/arch/mips/mach-ar231x/ar231x.c b/arch/mips/mach-ar231x/ar231x.c
+index ca912bf..f714a11 100644
+--- a/arch/mips/mach-ar231x/ar231x.c
++++ b/arch/mips/mach-ar231x/ar231x.c
+@@ -189,7 +189,9 @@ static int ar2312_console_init(void)
+ 	/* Register the serial port */
+ 	serial_plat.clock = ar2312_sys_frequency();
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, KSEG1ADDR(AR2312_UART0),
+-		8 << AR2312_UART_SHIFT, IORESOURCE_MEM_8BIT, &serial_plat);
++			   8 << AR2312_UART_SHIFT,
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT,
++			   &serial_plat);
+ 	return 0;
+ }
+ console_initcall(ar2312_console_init);
+diff --git a/arch/openrisc/boards/generic/generic.c b/arch/openrisc/boards/generic/generic.c
+index 290e05c..9f68007 100644
+--- a/arch/openrisc/boards/generic/generic.c
++++ b/arch/openrisc/boards/generic/generic.c
+@@ -15,7 +15,8 @@ static int openrisc_console_init(void)
+ 	barebox_set_hostname("or1k");
+ 
+ 	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, OPENRISC_SOPC_UART_BASE, 1024, IORESOURCE_MEM_8BIT, &serial_plat);
++	add_ns16550_device(DEVICE_ID_DYNAMIC, OPENRISC_SOPC_UART_BASE, 1024,
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+ 
+ #ifdef CONFIG_DRIVER_NET_ETHOC
+ 	add_generic_device("ethoc", DEVICE_ID_DYNAMIC, NULL,
+diff --git a/arch/ppc/boards/freescale-p1022ds/p1022ds.c b/arch/ppc/boards/freescale-p1022ds/p1022ds.c
+index c800064..57e7953 100644
+--- a/arch/ppc/boards/freescale-p1022ds/p1022ds.c
++++ b/arch/ppc/boards/freescale-p1022ds/p1022ds.c
+@@ -130,7 +130,7 @@ static int p1022ds_console_init(void)
+ 
+ 	serial_plat.clock = fsl_get_bus_freq(0);
+ 	add_ns16550_device(DEVICE_ID_DYNAMIC, CFG_IMMR + 0x4500, 16,
+-			   IORESOURCE_MEM_8BIT, &serial_plat);
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT, &serial_plat);
+ 	return 0;
+ }
+ 
+diff --git a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+index 229ae41..385a436 100644
+--- a/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
++++ b/arch/ppc/boards/freescale-p2020rdb/p2020rdb.c
+@@ -112,7 +112,8 @@ static int p2020_console_init(void)
+ 
+ 	serial_plat.clock = fsl_get_bus_freq(0);
+ 
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, 0xffe04500, 16, IORESOURCE_MEM_8BIT,
++	add_ns16550_device(DEVICE_ID_DYNAMIC, 0xffe04500, 16,
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT,
+ 			   &serial_plat);
+ 	return 0;
+ }
+diff --git a/arch/ppc/boards/geip-da923rc/da923rc.c b/arch/ppc/boards/geip-da923rc/da923rc.c
+index 976aa8d..3d77349 100644
+--- a/arch/ppc/boards/geip-da923rc/da923rc.c
++++ b/arch/ppc/boards/geip-da923rc/da923rc.c
+@@ -115,7 +115,8 @@ static int da923rc_console_init(void)
+ 		barebox_set_model("unknown");
+ 
+ 	serial_plat.clock = fsl_get_bus_freq(0);
+-	add_ns16550_device(1, CFG_CCSRBAR + 0x4600, 16, IORESOURCE_MEM_8BIT,
++	add_ns16550_device(1, CFG_CCSRBAR + 0x4600, 16,
++			   IORESOURCE_MEM | IORESOURCE_MEM_8BIT,
+ 			   &serial_plat);
+ 	return 0;
+ }
+diff --git a/arch/x86/boards/x86_generic/serial_ns16550.c b/arch/x86/boards/x86_generic/serial_ns16550.c
+index cae61df..3b284f3 100644
+--- a/arch/x86/boards/x86_generic/serial_ns16550.c
++++ b/arch/x86/boards/x86_generic/serial_ns16550.c
+@@ -30,8 +30,6 @@
+ 
+ static struct NS16550_plat serial_plat = {
+ 	.clock = 1843200,
+-	.reg_read = x86_uart_read,
+-	.reg_write = x86_uart_write,
+ };
+ 
+ static int pc_console_init(void)
+@@ -40,7 +38,10 @@ static int pc_console_init(void)
+ 	barebox_set_hostname("x86");
+ 
+ 	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, 0x3f8, 8, 0, &serial_plat);
++	add_ns16550_device(DEVICE_ID_DYNAMIC, 0x3f8, 8, IORESOURCE_IO,
++			   &serial_plat);
++	add_ns16550_device(DEVICE_ID_DYNAMIC, 0x2f8, 8, IORESOURCE_IO,
++			   &serial_plat);
+ 
+ 	return 0;
+ }
+diff --git a/arch/x86/include/asm/syslib.h b/arch/x86/include/asm/syslib.h
+index a6c44e9..14e373a 100644
+--- a/arch/x86/include/asm/syslib.h
++++ b/arch/x86/include/asm/syslib.h
+@@ -14,9 +14,6 @@
+  *
   */
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 4100e1e..1cc8a51 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -14,6 +14,8 @@
- #include <asm/types.h>
- #include <asm/byteorder.h>
  
-+#define	IO_SPACE_LIMIT	0
-+
- /*****************************************************************************/
- /*
-  * readX/writeX() are used to access memory mapped devices. On some
-diff --git a/arch/nios2/include/asm/io.h b/arch/nios2/include/asm/io.h
-index 8ee48e0..59eea73 100644
---- a/arch/nios2/include/asm/io.h
-+++ b/arch/nios2/include/asm/io.h
-@@ -22,6 +22,8 @@
+-extern unsigned int x86_uart_read(unsigned long, unsigned char);
+-extern void x86_uart_write(unsigned int, unsigned long, unsigned char);
+-
+ #ifdef CONFIG_X86_BIOS_BRINGUP
  
- #include <asm/byteorder.h>
+ extern int bios_disk_rw_int13_extensions(int, int, void*) __attribute__((regparm(3)));
+diff --git a/arch/x86/mach-i386/Makefile b/arch/x86/mach-i386/Makefile
+index 10712e6..e46aa5b 100644
+--- a/arch/x86/mach-i386/Makefile
++++ b/arch/x86/mach-i386/Makefile
+@@ -1,4 +1,3 @@
+-obj-y += generic.o
+ obj-y += reset.o
  
-+#define	IO_SPACE_LIMIT	0
-+
- #define __raw_writeb(v, a)       (*(volatile unsigned char  *)(a) = (v))
- #define __raw_writew(v, a)       (*(volatile unsigned short *)(a) = (v))
- #define __raw_writel(v, a)       (*(volatile unsigned int   *)(a) = (v))
-diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-index 8ca164f..35b5784 100644
---- a/arch/sandbox/include/asm/io.h
-+++ b/arch/sandbox/include/asm/io.h
-@@ -2,5 +2,6 @@
- #define __ASM_SANDBOX_IO_H
- 
- #include <asm-generic/io.h>
-+#define	IO_SPACE_LIMIT 0
- 
- #endif /* __ASM_SANDBOX_IO_H */
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 9cb78e4..f020510 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -12,6 +12,8 @@
- 
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0xffff
-+
- static inline void outb(unsigned char value, int port)
- {
- 	asm volatile("outb %b0, %w1" : : "a"(value), "Nd"(port));
-diff --git a/commands/Kconfig b/commands/Kconfig
-index cc014f3..33bd353 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -307,12 +307,12 @@ config CMD_MEMINFO
- 	tristate
- 	prompt "meminfo"
- 
--config CMD_IOMEM
-+config CMD_IOMEMPORT
- 	tristate
--	prompt "iomem"
-+	prompt "iomem/ioport"
- 	help
--	  Show information about iomem usage. Pendant to 'cat /proc/iomem'
--	  under Linux.
-+	  Show information about iomem/ioport usage. Pendant to
-+	  'cat /proc/iomem' and 'cat /proc/ioports' under Linux.
- 
- config CMD_MEMORY
- 	bool
-diff --git a/commands/Makefile b/commands/Makefile
-index e463031..0da1173 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -76,7 +76,7 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
- obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
--obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
-+obj-$(CONFIG_CMD_IOMEMPORT)	+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
- obj-$(CONFIG_CMD_AUTOMOUNT)	+= automount.o
- obj-$(CONFIG_CMD_GLOBAL)	+= global.o
-diff --git a/commands/iomem.c b/commands/iomem.c
+ # reference clocksource
+diff --git a/arch/x86/mach-i386/generic.c b/arch/x86/mach-i386/generic.c
 deleted file mode 100644
-index e117c2a..0000000
---- a/commands/iomem.c
+index 69cf53c..0000000
+--- a/arch/x86/mach-i386/generic.c
 +++ /dev/null
-@@ -1,52 +0,0 @@
+@@ -1,34 +0,0 @@
 -/*
-- * iomem.c - barebox iomem command
+- * Copyright (C) 2009 Juergen Beisert, Pengutronix
 - *
-- * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
 - *
 - * This program is distributed in the hope that it will be useful,
 - * but WITHOUT ANY WARRANTY; without even the implied warranty of
 - * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 - * GNU General Public License for more details.
+- *
+- *
 - */
--#include <common.h>
--#include <command.h>
 -
--static void __print_resources(struct resource *res, int indent)
+-/**
+- * @file
+- * @brief x86 Architecture Initialization routines
+- */
+-
+-#include <io.h>
+-
+-/** to work with the 8250 UART driver implementation we need this function */
+-unsigned int x86_uart_read(unsigned long base, unsigned char reg_idx)
 -{
--	struct resource *r;
--	int i;
--
--	for (i = 0; i < indent; i++)
--		printf("  ");
--
--	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
--			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n", res->start,
--			res->end, resource_size(res), res->name);
--
--	list_for_each_entry(r, &res->children, sibling)
--		__print_resources(r, indent + 1);
+-	return inb(base + reg_idx);
 -}
 -
--static void print_resources(struct resource *res)
+-/** to work with the 8250 UART driver implementation we need this function */
+-void x86_uart_write(unsigned int val, unsigned long base, unsigned char reg_idx)
 -{
--	__print_resources(res, 0);
+-	outb(val, base + reg_idx);
 -}
--
--static int do_iomem(int argc, char *argv[])
--{
--	print_resources(&iomem_resource);
--
--	return 0;
--}
--
--BAREBOX_CMD_START(iomem)
--	.cmd		= do_iomem,
--	.usage		= "show iomem usage",
--BAREBOX_CMD_END
-diff --git a/commands/iomemport.c b/commands/iomemport.c
-new file mode 100644
-index 0000000..06bbd92
---- /dev/null
-+++ b/commands/iomemport.c
-@@ -0,0 +1,64 @@
-+/*
-+ * iomem.c - barebox iomem command
-+ *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+#include <common.h>
-+#include <command.h>
-+
-+static void __print_resources(struct resource *res, int indent)
-+{
-+	struct resource *r;
-+	int i;
-+
-+	for (i = 0; i < indent; i++)
-+		printf("  ");
-+
-+	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
-+			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n",
-+			res->start, res->end, resource_size(res), res->name);
-+
-+	list_for_each_entry(r, &res->children, sibling)
-+		__print_resources(r, indent + 1);
-+}
-+
-+static void print_resources(struct resource *res)
-+{
-+	__print_resources(res, 0);
-+}
-+
-+static int do_iomem(int argc, char *argv[])
-+{
-+	print_resources(&iomem_resource);
-+
-+	return 0;
-+}
-+
-+static int do_ioport(int argc, char *argv[])
-+{
-+	print_resources(&ioport_resource);
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_START(iomem)
-+	.cmd		= do_iomem,
-+	.usage		= "show iomem usage",
-+BAREBOX_CMD_END
-+
-+BAREBOX_CMD_START(ioport)
-+	.cmd		= do_ioport,
-+	.usage		= "show ioport usage",
-+BAREBOX_CMD_END
-diff --git a/common/memory.c b/common/memory.c
-index c82bbaa..7dbd7f4 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -148,7 +148,8 @@ struct resource *request_sdram_region(const char *name, resource_size_t start,
- 	for_each_memory_bank(bank) {
- 		struct resource *res;
- 
--		res = request_region(bank->res, name, start, start + size - 1);
-+		res = __request_region(bank->res, name, start,
-+				       start + size - 1);
- 		if (res)
- 			return res;
- 	}
-diff --git a/common/resource.c b/common/resource.c
-index 5795e79..f05e12f 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -20,6 +20,7 @@
- #include <errno.h>
- #include <init.h>
- #include <linux/ioport.h>
-+#include <asm/io.h>
- 
- static int init_resource(struct resource *res, const char *name)
- {
-@@ -36,7 +37,7 @@ static int init_resource(struct resource *res, const char *name)
-  * the parent resource and does not conflict with any of the child
-  * resources.
-  */
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t start,
- 		resource_size_t end)
- {
-@@ -95,7 +96,7 @@ ok:
- }
- 
- /*
-- * release a region previously requested with request_region
-+ * release a region previously requested with request_*_region
-  */
- int release_region(struct resource *res)
- {
-@@ -109,7 +110,7 @@ int release_region(struct resource *res)
- 	return 0;
- }
- 
--/* The root resource for the whole io space */
-+/* The root resource for the whole memory-mapped io space */
- struct resource iomem_resource = {
- 	.start = 0,
- 	.end = 0xffffffff,
-@@ -118,10 +119,27 @@ struct resource iomem_resource = {
+diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
+index 0c00eb1..7d22873 100644
+--- a/drivers/serial/serial_ns16550.c
++++ b/drivers/serial/serial_ns16550.c
+@@ -47,6 +47,7 @@ struct ns16550_priv {
+ 	struct console_device cdev;
+ 	struct NS16550_plat plat;
+ 	int access_width;
++	int mmio;
+ 	struct clk *clk;
+ 	uint32_t fcrval;
+ };
+@@ -62,6 +63,90 @@ struct ns16550_drvdata {
  };
  
- /*
-- * request a region inside the io space
-+ * request a region inside the io space (memory)
-  */
--struct resource *request_iomem_region(const char *name,
-+inline struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end)
- {
--	return request_region(&iomem_resource, name, start, end);
-+	return __request_region(&iomem_resource, name, start, end);
+ /**
++ * @brief read system i/o (byte)
++ * @param[in] addr address to read
++ * @param[in] mmio memory i/o space or i/o port space
++ */
++static inline uint8_t ns16550_sys_readb(void __iomem *addr, int mmio)
++{
++	if (mmio)
++		return readb(addr);
++	else
++		return (uint8_t) inb((int) addr);
 +}
 +
-+/* The root resource for the whole io-mapped io space */
-+struct resource ioport_resource = {
-+	.start = 0,
-+	.end = IO_SPACE_LIMIT,
-+	.name = "ioport",
-+	.children = LIST_HEAD_INIT(ioport_resource.children),
-+};
-+
-+/*
-+ * request a region inside the io space (i/o port)
++/**
++ * @brief read system i/o (word)
++ * @param[in] addr address to read
++ * @param[in] mmio memory i/o space or i/o port space
 + */
-+inline struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end)
++static inline uint16_t ns16550_sys_readw(void __iomem *addr, int mmio)
 +{
-+	return __request_region(&ioport_resource, name, start, end);
++	if (mmio)
++		return readw(addr);
++	else
++		return (uint16_t) inw((int) addr);
++}
++
++/**
++ * @brief read system i/o (dword)
++ * @param[in] addr address to read
++ * @param[in] mmio memory i/o space or i/o port space
++ */
++static inline uint32_t ns16550_sys_readl(void __iomem *addr, int mmio)
++{
++	if (mmio)
++		return readl(addr);
++	else
++		return (uint32_t) inl((int) addr);
++}
++
++/**
++ * @brief write system i/o (byte)
++ * @param[in] val data to write
++ * @param[in] addr address to write to
++ * @param[in] mmio memory i/o space or i/o port space
++ */
++static inline void ns16550_sys_writeb(uint8_t val, void __iomem *addr,
++				      int mmio)
++{
++	if (mmio)
++		writeb(val, addr);
++	else
++		outb(val, (int) addr);
++}
++
++/**
++ * @brief read system i/o (word)
++ * @param[in] val data to write
++ * @param[in] addr address to write to
++ * @param[in] mmio memory i/o space or i/o port space
++ */
++static inline void ns16550_sys_writew(uint16_t val, void __iomem *addr,
++				      int mmio)
++{
++	if (mmio)
++		writew(val, addr);
++	else
++		outw(val, (int) addr);
++}
++
++/**
++ * @brief read system i/o (dword)
++ * @param[in] val data to write
++ * @param[in] addr address to write to
++ * @param[in] mmio memory i/o space or i/o port space
++ */
++static inline void ns16550_sys_writel(uint32_t val, void __iomem *addr,
++				      int mmio)
++{
++	if (mmio)
++		writel(val, addr);
++	else
++		outl(val, (int) addr);
++}
++
++/**
+  * @brief read register
+  *
+  * @param[in] cdev pointer to console device
+@@ -78,16 +163,13 @@ static uint32_t ns16550_read(struct console_device *cdev, uint32_t off)
+ 
+ 	off <<= plat->shift;
+ 
+-	if (plat->reg_read)
+-		return plat->reg_read((unsigned long)dev->priv, off);
+-
+ 	switch (width) {
+ 	case IORESOURCE_MEM_8BIT:
+-		return readb(dev->priv + off);
++		return ns16550_sys_readb(dev->priv + off, priv->mmio);
+ 	case IORESOURCE_MEM_16BIT:
+-		return readw(dev->priv + off);
++		return ns16550_sys_readw(dev->priv + off, priv->mmio);
+ 	case IORESOURCE_MEM_32BIT:
+-		return readl(dev->priv + off);
++		return ns16550_sys_readl(dev->priv + off, priv->mmio);
+ 	}
+ 	return -1;
  }
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 37560fd..2cf3ee6 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -241,13 +241,14 @@ int register_driver(struct driver_d *drv)
+@@ -109,20 +191,15 @@ static void ns16550_write(struct console_device *cdev, uint32_t val,
+ 
+ 	off <<= plat->shift;
+ 
+-	if (plat->reg_write) {
+-		plat->reg_write(val, (unsigned long)dev->priv, off);
+-		return;
+-	}
+-
+ 	switch (width) {
+ 	case IORESOURCE_MEM_8BIT:
+-		writeb(val & 0xff, dev->priv + off);
++		ns16550_sys_writeb(val & 0xff, dev->priv + off, priv->mmio);
+ 		break;
+ 	case IORESOURCE_MEM_16BIT:
+-		writew(val & 0xffff, dev->priv + off);
++		ns16550_sys_writew(val & 0xffff, dev->priv + off, priv->mmio);
+ 		break;
+ 	case IORESOURCE_MEM_32BIT:
+-		writel(val, dev->priv + off);
++		ns16550_sys_writel(val, dev->priv + off, priv->mmio);
+ 		break;
+ 	}
  }
- EXPORT_SYMBOL(register_driver);
+@@ -293,16 +370,30 @@ static int ns16550_probe(struct device_d *dev)
+ 	struct console_device *cdev;
+ 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
+ 	struct ns16550_drvdata *devtype;
++	struct resource *res;
+ 	int ret;
  
--struct resource *dev_get_resource(struct device_d *dev, int num)
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-+				  int num)
- {
- 	int i, n = 0;
+ 	ret = dev_get_drvdata(dev, (unsigned long *)&devtype);
+ 	if (ret)
+ 		devtype = &ns16550_drvdata;
  
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) == IORESOURCE_MEM) {
-+		if (resource_type(res) == type) {
- 			if (n == num)
- 				return res;
- 			n++;
-@@ -261,7 +262,7 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
+-	dev->priv = dev_request_mem_region(dev, 0);
+-
+ 	priv = xzalloc(sizeof(*priv));
  
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-@@ -270,13 +271,14 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- EXPORT_SYMBOL(dev_get_mem_region);
- 
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name)
- {
- 	int i;
- 
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) != IORESOURCE_MEM)
-+		if (resource_type(res) != type)
- 			continue;
- 		if (!res->name)
- 			continue;
-@@ -291,7 +293,7 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -303,7 +305,7 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -319,7 +321,7 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index a2fc400..5c46282 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -310,7 +310,7 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
- 
- 	*err = 0;
- 
--	r = dev_get_resource_by_name(dev, name);
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!r)
- 		return NULL;
- 
-@@ -342,7 +342,7 @@ static int bgpio_dev_probe(struct device_d *dev)
- 	struct bgpio_chip *bgc;
- 	struct bgpio_pdata *pdata = dev->platform_data;
- 
--	r = dev_get_resource_by_name(dev, "dat");
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, "dat");
- 	if (!r)
- 		return -EINVAL;
- 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 8fc84c3..e6722e1 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -70,7 +70,7 @@ static int syscon_probe(struct device_d *dev)
- 	if (!syscon)
- 		return -ENOMEM;
- 
--	res = dev_get_resource(dev, 0);
 +	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (!res) {
- 		free(syscon);
- 		return -ENOENT;
-diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
-index 7ea23b7..0466a15 100644
---- a/drivers/misc/sram.c
-+++ b/drivers/misc/sram.c
-@@ -47,7 +47,7 @@ static int sram_probe(struct device_d *dev)
- 	sram->cdev.name = asprintf("sram%d",
- 			cdev_find_free_index("sram"));
- 
--	res = dev_get_resource(dev, 0);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 
- 	sram->cdev.size = (unsigned long)resource_size(res);
- 	sram->cdev.ops = &memops;
++	priv->mmio = (res != NULL);
++	if (res) {
++		res = request_iomem_region(dev_name(dev), res->start, res->end);
++	} else {
++		res = dev_get_resource(dev, IORESOURCE_IO, 0);
++		if (res)
++			res = request_ioport_region(dev_name(dev), res->start,
++						    res->end);
++	}
++	if (!res)
++		goto err;
++	dev->priv = (void __force __iomem *) res->start;
++
++
+ 	if (plat)
+ 		priv->plat = *plat;
+ 	else
 diff --git a/include/driver.h b/include/driver.h
-index 01b181d..7c7d38f 100644
+index 7c7d38f..ffc0cba 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -203,11 +203,13 @@ static inline const char *dev_name(const struct device_d *dev)
- /*
-  * get resource 'num' for a device
-  */
--struct resource *dev_get_resource(struct device_d *dev, int num);
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-+				  int num);
- /*
-  * get resource base 'name' for a device
-  */
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name);
- /*
-  * get register base 'name' for a device
-@@ -219,6 +221,7 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name);
-  */
- void __iomem *dev_request_mem_region_by_name(struct device_d *dev,
- 					     const char *name);
-+
- /*
-  * get register base 'num' for a device
-  */
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index ff0cba0..d1b2f55 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -137,14 +137,17 @@ static inline unsigned long resource_type(const struct resource *res)
+@@ -278,7 +278,7 @@ static inline struct device_d *add_ns16550_device(int id, resource_size_t start,
+ 		resource_size_t size, int flags, struct NS16550_plat *pdata)
+ {
+ 	return add_generic_device("ns16550_serial", id, NULL, start, size,
+-				  IORESOURCE_MEM | flags, pdata);
++				  flags, pdata);
+ }
  
- struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end);
-+struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end);
+ #ifdef CONFIG_DRIVER_NET_DM9K
+diff --git a/include/ns16550.h b/include/ns16550.h
+index 36aa5ff..876bb04 100644
+--- a/include/ns16550.h
++++ b/include/ns16550.h
+@@ -33,18 +33,9 @@
+ struct NS16550_plat {
+ 	/** Clock speed */
+ 	unsigned int clock;
+-	/**
+-	 * register read access capability
+-	 */
+-	unsigned int (*reg_read) (unsigned long base, unsigned char reg_offset);
+-	/**
+-	 * register write access capability
+-	 */
+-	void (*reg_write) (unsigned int val, unsigned long base,
+-				    unsigned char reg_offset);
+-
+ 	int shift;
+ 	unsigned int flags;
++	int mmio;
+ #define NS16650_FLAG_DISABLE_FIFO	1
+ };
  
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t end,
- 		resource_size_t size);
- 
- int release_region(struct resource *res);
- 
- extern struct resource iomem_resource;
-+extern struct resource ioport_resource;
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
 -- 
 1.7.1
 
