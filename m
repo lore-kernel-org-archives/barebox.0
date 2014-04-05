@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWKDV-0006e3-3N
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 06:36:38 +0000
+ id 1WWKGg-0006fl-24
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 06:39:54 +0000
 Mime-Version: 1.0 (1.0)
 From: Michel Stam <michel@reverze.net>
-In-Reply-To: <20140405031120.GA15426@ns203013.ovh.net>
-Date: Sat, 5 Apr 2014 08:36:13 +0200
-Message-Id: <2CD5D8A7-71BA-4045-A246-3AB560CFC8A8@reverze.net>
+In-Reply-To: <20140405050143.GA29442@omega.Speedport_W_921V_1_24_000>
+Date: Sat, 5 Apr 2014 08:39:32 +0200
+Message-Id: <CD50FFA5-8D53-4BD0-BC9A-131387267474@reverze.net>
 References: <53316480.2030103@reverze.net>
- <20140405031120.GA15426@ns203013.ovh.net>
+ <20140405050143.GA29442@omega.Speedport_W_921V_1_24_000>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,87 +18,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0062208177373503016=="
+Content-Type: multipart/mixed; boundary="===============1411936136667635345=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 2/3] x86: Add support for IDE on the legacy I/O ports
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+To: Alexander Aring <alex.aring@gmail.com>
 Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 
---===============0062208177373503016==
+--===============1411936136667635345==
 Content-Type: multipart/signed;
-	boundary=Apple-Mail-4E86DBDF-2048-46F4-96BA-BFC4F583F182;
+	boundary=Apple-Mail-EE17731A-D620-40B5-9B85-B908D1571C2D;
 	protocol="application/pkcs7-signature";
 	micalg=sha1
 Content-Transfer-Encoding: 7bit
 
 
---Apple-Mail-4E86DBDF-2048-46F4-96BA-BFC4F583F182
+--Apple-Mail-EE17731A-D620-40B5-9B85-B908D1571C2D
 Content-Type: text/plain;
 	charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
 
-Hello Jean,
+Hello Alex,
 
-Forget about the ifdefs; my patches there were meant to let the code compile=
- depending on what was selected in configuration, (this was not the case pre=
-viously), but the whole thing became an ifdef mess in the process. I've comp=
-letely rewritten this, splitting initialisation over multiple files which ar=
-e selected from the Makefile.
-
->> diff --git a/include/ata_drive.h b/include/ata_drive.h
->> index 6d6cca4..44073cb 100644
->> --- a/include/ata_drive.h
->> +++ b/include/ata_drive.h
->> @@ -119,6 +119,7 @@ struct ata_ioports {
->>    /* hard reset line handling */
->>    void (*reset)(int);    /* true: assert reset, false: de-assert reset *=
-/
->>    int dataif_be;    /* true if 16 bit data register is big endian */
->> +    int mmio; /* true if memory-mapped io */
-> so use a boolean
-look at the line immediately preceeding the mmio line: I'm following the sty=
-le of the original driver. I was not intending to do a code cleanup of the d=
-river, the goal is to get it to work on the x86.
-
->> b/arch/x86/boards/x86_generic/generic_pc.c
->> @@ -27,6 +27,10 @@
->> #include <ns16550.h>
->> #include <linux/err.h>
->> +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
-> why the ifdef?
-i discussed that in an email last night; it is a convention I use to prevent=
- badly behaving header files from breaking compiles.
-
->> secondary_ide_device =3D {
->> +    .name =3D "ide_intf",
->> +    .id =3D 1,
->> +    .platform_data =3D &ide_plat,
->> +    .resource =3D secondary_ide_resources,
->> +    .num_resources =3D ARRAY_SIZE( secondary_ide_resources ),
->> +};
-> please create the device on the fly
-
-
-Again I'm following the style of the original driver; the serial ports in th=
-e generic_pc.c behave identically.=20
-
-Seems to me that these files were due for an overhaul, given the number of c=
-omments I get by following the style of the original driver...
-
-Ive found the perl script that checks patches, next version of the patches w=
-ill have spacing etc fixed as well, i want to test that everything works fir=
-st.
+Yes, I used send-email. I did notice that my editor changed some tabs to spa=
+ces, that is already fixed in my local repository. Ill send it after I teste=
+d whether everything still works.
 
 Michel Stam
 
 
-> On 5 apr. 2014, at 05:11, Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcros=
-oft.com> wrote:
+> On 5 apr. 2014, at 07:01, Alexander Aring <alex.aring@gmail.com> wrote:
 >=20
->> On 12:12 Tue 25 Mar     , Michel Stam wrote:
->>=20
+>> On Tue, Mar 25, 2014 at 12:12:00PM +0100, Michel Stam wrote:
 >> ---
 >> arch/x86/boards/x86_generic/generic_pc.c | 71 ++++++++++++++++++++++++
 >> drivers/ata/ide-sff.c                    | 94
@@ -116,316 +68,15 @@ oft.com> wrote:
 >> #include <ns16550.h>
 >> #include <linux/err.h>
 >> +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
-> why the ifdef?
->> +#include <platform_ide.h>
->> +#endif
->> +
->> /*
->>  * These datas are from the MBR, created by the linker and filled by the
->>  * setup tool while installing barebox on the disk drive
->> @@ -41,6 +45,55 @@ extern uint8_t pers_env_drive;
->>  */
->> #define PATCH_AREA_PERS_SIZE_UNUSED 0x000
->> +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
->> +
->> +static struct ide_port_info ide_plat =3D {
->> +    .ioport_shift =3D 0,
->> +    .dataif_be =3D 0,
->> +};
->> +
->> +static struct resource primary_ide_resources[] =3D {
->> +    {
->> +        .name =3D "base",
->> +        .start =3D 0x1f0,
->> +        .end =3D  0x1f8,
->> +        .flags =3D IORESOURCE_IO
->> +    },
->> +    {
->> +        .name =3D "alt",
->> +        .start =3D 0x3f6,
->> +    w    .end =3D  0x3f8,
->> +        .flags =3D IORESOURCE_IO
->> +    }
->> +};
->> +
->> +static struct resource secondary_ide_resources[] =3D {
->> +    {
->> +        .name =3D "base",
->> +        .start =3D 0x170,
->> +        .end =3D  0x177,
->> +        .flags =3D IORESOURCE_IO
->> +    },
->> +};
->> +
->> +static struct device_d primary_ide_device =3D {
->> +    .name =3D "ide_intf",
->> +    .id =3D 0,
->> +    .platform_data =3D &ide_plat,
->> +    .resource =3D primary_ide_resources,
->> +    .num_resources =3D ARRAY_SIZE( primary_ide_resources ),
->> +};
->> +
->> +static struct device_d secondary_ide_device =3D {
->> +    .name =3D "ide_intf",
->> +    .id =3D 1,
->> +    .platform_data =3D &ide_plat,
->> +    .resource =3D secondary_ide_resources,
->> +    .num_resources =3D ARRAY_SIZE( secondary_ide_resources ),
->> +};
-> please create the device on the fly
->> +
->> +#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
->> +
->> static int devices_init(void)
->> {
->>    struct cdev *cdev;
->> @@ -48,9 +101,26 @@ static int devices_init(void)
->>    /* extended memory only */
->>    add_mem_device("ram0", 0x0, bios_get_memsize() << 10,
->>               IORESOURCE_MEM_WRITEABLE);
->> +#ifdef CONFIG_DISK_BIOS
-> if (IS_ENABLED(CONFxx))
->>    add_generic_device("biosdrive", DEVICE_ID_DYNAMIC, NULL, 0, 0,
->> IORESOURCE_MEM,
->>            NULL);
->> +#endif
->> +
->> +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
-> ditto and no space after ( and before )
->> +    platform_device_register( &primary_ide_device );
->> +    platform_device_register( &secondary_ide_device );
->> +
->> +    if (pers_env_size !=3D PATCH_AREA_PERS_SIZE_UNUSED) {
->> +        cdev =3D devfs_add_partition("ata0",
->> +                pers_env_storage * 512,
->> +                (unsigned)pers_env_size * 512,
->> +                DEVFS_PARTITION_FIXED, "env0");
->> +        printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
->> +    } else
->> +        printf("No persistent storage defined\n");
->> +#endif /* CONFIG_DISK_INTF_PLATFORM_IDE */
->> +#ifdef CONFIG_DISK_BIOS
->>    if (pers_env_size !=3D PATCH_AREA_PERS_SIZE_UNUSED) {
->>        cdev =3D devfs_add_partition("biosdisk0",
->>                pers_env_storage * 512,
->> @@ -59,6 +129,7 @@ static int devices_init(void)
->>        printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
->>    } else
->>        printf("No persistent storage defined\n");
->> +#endif
->>          return 0;
->> }
->> diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
->> index 3d5932e..809a129 100644
->> --- a/drivers/ata/ide-sff.c
->> +++ b/drivers/ata/ide-sff.c
->> @@ -15,13 +15,71 @@
->> #define DISK_SLAVE 1
->>  /**
->> + * Read a byte from the ATA controller
->> + * @param ide IDE port structure
->> + * @param addr Register adress
->> + * @return Register's content
->> + */
->> +static inline uint8_t ata_rd_byte(struct ide_port *ide, void
->> __iomem *addr )
->> +{
->> +    if (!ide->io.mmio)
->> +        return (uint8_t) inb((int) addr);
->> +    else
->> +        return readb(addr);
->> +}
->> +
->> +/**
->> + * Write a byte to the ATA controller
->> + * @param ide IDE port structure
->> + * @param value Value to write
->> + * @param addr Register adress
->> + * @return Register's content
->> + */
->> +static inline void ata_wr_byte(struct ide_port *ide, uint8_t value,
->> void __iomem *addr )
->> +{
->> +    if (!ide->io.mmio)
->> +        outb(value, (int) addr);
->> +    else
->> +        writeb(value,addr);
->> +}
->> +
->> +/**
->> + * Read a word from the ATA controller
->> + * @param ide IDE port structure
->> + * @param addr Register adress
->> + * @return Register's content
->> + */
->> +static inline uint16_t ata_rd_word(struct ide_port *ide, void
->> __iomem *addr )
->> +{
->> +    if (!ide->io.mmio)
->> +        return (uint16_t) inw((int) addr);
->> +    else
->> +        return readw(addr);
->> +}
->> +
->> +/**
->> + * Write a word to the ATA controller
->> + * @param ide IDE port structure
->> + * @param value Value to write
->> + * @param addr Register adress
->> + * @return Register's content
->> + */
->> +static inline void ata_wr_word(struct ide_port *ide, uint16_t
->> value, void __iomem *addr )
->> +{
->> +    if (!ide->io.mmio)
->> +        outw(value, (int) addr);
->> +    else
->> +        writew(value,addr);
->> +}
->> +
->> +/**
->>  * Read the status register of the ATA drive
->>  * @param io Register file
->>  * @return Register's content
->>  */
->> static uint8_t ata_rd_status(struct ide_port *ide)
->> {
->> -    return readb(ide->io.status_addr);
->> +    return ata_rd_byte(ide,ide->io.status_addr);
->> }
->>  /**
->> @@ -83,12 +141,12 @@ static int ata_set_lba_sector(struct ide_port
->> *ide, unsigned drive, uint64_t num
->>    if (num > 0x0FFFFFFF || drive > 1)
->>        return -EINVAL;
->> -    writeb(0xA0 | LBA_FLAG | drive << 4 | num >> 24, ide->io.device_addr=
-);
->> -    writeb(0x00, ide->io.error_addr);
->> -    writeb(0x01, ide->io.nsect_addr);
->> -    writeb(num, ide->io.lbal_addr);    /* 0 ... 7 */
->> -    writeb(num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
->> -    writeb(num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
->> +    ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24,
->> ide->io.device_addr);
->> +    ata_wr_byte(ide, 0x00, ide->io.error_addr);
->> +    ata_wr_byte(ide, 0x01, ide->io.nsect_addr);
->> +    ata_wr_byte(ide, num, ide->io.lbal_addr);    /* 0 ... 7 */
->> +    ata_wr_byte(ide, num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
->> +    ata_wr_byte(ide, num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
->>      return 0;
->> }
->> @@ -107,7 +165,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t c=
-md)
->>    if (rc !=3D 0)
->>        return rc;
->> -    writeb(cmd, ide->io.command_addr);
->> +    ata_wr_byte(ide, cmd, ide->io.command_addr);
->>    return 0;
->> }
->> @@ -118,7 +176,7 @@ static int ata_wr_cmd(struct ide_port *ide,
->> uint8_t cmd)
->>  */
->> static void ata_wr_dev_ctrl(struct ide_port *ide, uint8_t val)
->> {
->> -    writeb(val, ide->io.ctl_addr);
->> +    ata_wr_byte(ide, val, ide->io.ctl_addr);
->> }
->>  /**
->> @@ -133,10 +191,10 @@ static void ata_rd_sector(struct ide_port
->> *ide, void *buf)
->>      if (ide->io.dataif_be) {
->>        for (; u > 0; u--)
->> -            *b++ =3D be16_to_cpu(readw(ide->io.data_addr));
->> +            *b++ =3D be16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
->>    } else {
->>        for (; u > 0; u--)
->> -            *b++ =3D le16_to_cpu(readw(ide->io.data_addr));
->> +            *b++ =3D le16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
->>    }
->> }
->> @@ -152,10 +210,10 @@ static void ata_wr_sector(struct ide_port
->> *ide, const void *buf)
->>      if (ide->io.dataif_be) {
->>        for (; u > 0; u--)
->> -            writew(cpu_to_be16(*b++), ide->io.data_addr);
->> +            ata_wr_word(ide, cpu_to_be16(*b++), ide->io.data_addr);
->>    } else {
->>        for (; u > 0; u--)
->> -            writew(cpu_to_le16(*b++), ide->io.data_addr);
->> +            ata_wr_word(ide, cpu_to_le16(*b++), ide->io.data_addr);
->>    }
->> }
->> @@ -169,10 +227,10 @@ static int ide_read_id(struct ata_port *port,
->> void *buf)
->>    struct ide_port *ide =3D to_ata_drive_access(port);
->>    int rc;
->> -    writeb(0xA0, ide->io.device_addr);    /* FIXME drive */
->> -    writeb(0x00, ide->io.lbal_addr);
->> -    writeb(0x00, ide->io.lbam_addr);
->> -    writeb(0x00, ide->io.lbah_addr);
->> +    ata_wr_byte(ide, 0xA0, ide->io.device_addr);    /* FIXME drive */
->> +    ata_wr_byte(ide, 0x00, ide->io.lbal_addr);
->> +    ata_wr_byte(ide, 0x00, ide->io.lbam_addr);
->> +    ata_wr_byte(ide, 0x00, ide->io.lbah_addr);
->>      rc =3D ata_wr_cmd(ide, ATA_CMD_ID_ATA);
->>    if (rc !=3D 0)
->> @@ -327,6 +385,8 @@ int ide_port_register(struct ide_port *ide)
->>    ide->port.ops =3D &ide_ops;
->>      ret =3D ata_port_register(&ide->port);
->> +    if ( !ret )
->> +        ata_port_detect(&ide->port);
->>      if (ret)
->>        free(ide);
->> diff --git a/drivers/ata/intf_platform_ide.c
->> b/drivers/ata/intf_platform_ide.c
->> index 8ae0f05..24f78f4 100644
->> --- a/drivers/ata/intf_platform_ide.c
->> +++ b/drivers/ata/intf_platform_ide.c
->> @@ -89,8 +89,18 @@ static int platform_ide_probe(struct device_d *dev)
->>    }
->>      ide =3D xzalloc(sizeof(*ide));
->> -    reg_base =3D dev_request_mem_region(dev, 0);
->> -    alt_base =3D dev_request_mem_region(dev, 1);
->> +    reg_base =3D dev_request_region(dev, 0, IORESOURCE_MEM);
-> please check your coding style
->> +    if (reg_base !=3D NULL)
->> +    {
->> +        alt_base =3D dev_request_region(dev, 1, IORESOURCE_MEM);
->> +        ide->io.mmio =3D 1;
->> +    }
->> +    else
->> +    {
->> +        reg_base =3D dev_request_region(dev, 0, IORESOURCE_IO);
->> +        alt_base =3D dev_request_region(dev, 1, IORESOURCE_IO);
->> +    }
->> +
->>    platform_ide_setup_port(reg_base, alt_base, &ide->io,
->> pdata->ioport_shift);
->>    ide->io.reset =3D pdata->reset;
->>    ide->io.dataif_be =3D pdata->dataif_be;
->> diff --git a/include/ata_drive.h b/include/ata_drive.h
->> index 6d6cca4..44073cb 100644
->> --- a/include/ata_drive.h
->> +++ b/include/ata_drive.h
->> @@ -119,6 +119,7 @@ struct ata_ioports {
->>    /* hard reset line handling */
->>    void (*reset)(int);    /* true: assert reset, false: de-assert reset *=
-/
->>    int dataif_be;    /* true if 16 bit data register is big endian */
->> +    int mmio; /* true if memory-mapped io */
-> so use a boolean
->> };
->>  struct ata_port;
->> --=20
->> 1.8.4
->>=20
->>=20
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
+>=20
+> Here is also a diff inconsitent... there is a space at beginning of the
+> line?? Did you use git send-email? Check [0] for a introduction.
+>=20
+> - Alex
+>=20
+> [0] https://home.regit.org/technical-articles/git-for-the-newbie/
 
---Apple-Mail-4E86DBDF-2048-46F4-96BA-BFC4F583F182
+--Apple-Mail-EE17731A-D620-40B5-9B85-B908D1571C2D
 Content-Type: application/pkcs7-signature;
 	name=smime.p7s
 Content-Disposition: attachment;
@@ -528,23 +179,23 @@ kyShNOsF/5oirpt9P/FlUQqmMGqz9IgcgA38corog14xggNvMIIDawIBATCBlDCBjDELMAkGA1UE
 BhMCSUwxFjAUBgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdpdGFsIENl
 cnRpZmljYXRlIFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRl
 cm1lZGlhdGUgQ2xpZW50IENBAgMJaQ4wCQYFKw4DAhoFAKCCAa8wGAYJKoZIhvcNAQkDMQsGCSqG
-SIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTQwNDA1MDYzNjE0WjAjBgkqhkiG9w0BCQQxFgQUTL00
-PMfVtpMcNlBLbQbzqJJR7BUwgaUGCSsGAQQBgjcQBDGBlzCBlDCBjDELMAkGA1UEBhMCSUwxFjAU
+SIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTQwNDA1MDYzOTMyWjAjBgkqhkiG9w0BCQQxFgQUvBhA
+IdOyMOLigfKl8DGGNbSMv8wwgaUGCSsGAQQBgjcQBDGBlzCBlDCBjDELMAkGA1UEBhMCSUwxFjAU
 BgNVBAoTDVN0YXJ0Q29tIEx0ZC4xKzApBgNVBAsTIlNlY3VyZSBEaWdpdGFsIENlcnRpZmljYXRl
 IFNpZ25pbmcxODA2BgNVBAMTL1N0YXJ0Q29tIENsYXNzIDEgUHJpbWFyeSBJbnRlcm1lZGlhdGUg
 Q2xpZW50IENBAgMJaQ4wgacGCyqGSIb3DQEJEAILMYGXoIGUMIGMMQswCQYDVQQGEwJJTDEWMBQG
 A1UEChMNU3RhcnRDb20gTHRkLjErMCkGA1UECxMiU2VjdXJlIERpZ2l0YWwgQ2VydGlmaWNhdGUg
 U2lnbmluZzE4MDYGA1UEAxMvU3RhcnRDb20gQ2xhc3MgMSBQcmltYXJ5IEludGVybWVkaWF0ZSBD
-bGllbnQgQ0ECAwlpDjANBgkqhkiG9w0BAQEFAASCAQBak5Ye70wPrDK1jbDtzH+XvNPsJZjyNQK0
-LlvtIFiMX5QMWbqjajfXm4VvX0CuvOJs4nue+THxeu1hF7Kg06NwdvnGFpo4Cc+PBJ28AKNfR/UO
-pKWCzB7adHnISuhVwdrmpjRamnbtl4sH/6mWRuuoyFzmDkgM9NTwBWfoVY9lLSEGdqYUrxbsxFGk
-fp9K2+OS2LOWg2oMCyReT9Q8AxnEcLny7AymkOxL7RlUzVdOaudV99twQshKnZQD8MVWAmDXyDMt
-8jN84ZL0OjGk48l9vPCE19S/WT6nn8xrsR64+34SobuDBRixgIVDy240hvdQUN7hWoAtCQ3QJ7bE
-eQlSAAAAAAAA
---Apple-Mail-4E86DBDF-2048-46F4-96BA-BFC4F583F182--
+bGllbnQgQ0ECAwlpDjANBgkqhkiG9w0BAQEFAASCAQAh6MuijeBeGE6f0Qq6vyy98zhpLugkdKOS
+lwHqDFsards7IXg0iZ/r7MohIMVj362b+VHBiERbp+M8ILRMuf0FQa9gqGtMWrgpfNvJeaGwwlOi
+3aKlRLMfMp9/d/60V76j24aBcVcIbZQb1076VEpDKSHhmNVm7Hij82796yUzEgPKLFHrfT3d+vvI
+s+xqCudDgkkTHsZ6R/QYbn8B18tuk9KZBKZCwhSVphTdSy6kWPT5t0EfRxd03XpwAzpMwaV/cCWt
+Ln3J1bd4WHkxWAwl5pcjT0IHC3FQEDIMzA1KHr0GulfKF5lLr73oUivIKoJ+HeGiYbsLU3s96/eB
+HKGsAAAAAAAA
+--Apple-Mail-EE17731A-D620-40B5-9B85-B908D1571C2D--
 
 
---===============0062208177373503016==
+--===============1411936136667635345==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -555,4 +206,4 @@ barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
 
---===============0062208177373503016==--
+--===============1411936136667635345==--
