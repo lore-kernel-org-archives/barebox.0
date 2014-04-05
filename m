@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
+Received: from mail-bk0-x22b.google.com ([2a00:1450:4008:c01::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWVRq-0000D0-6c
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 18:36:11 +0000
-Received: by mail-la0-f49.google.com with SMTP id mc6so3412045lab.8
- for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 11:35:48 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat,  5 Apr 2014 22:35:32 +0400
-Message-Id: <1396722934-23818-4-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
-References: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
+ id 1WWWG1-0001Am-Ge
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 19:28:02 +0000
+Received: by mail-bk0-f43.google.com with SMTP id v15so429471bkz.16
+ for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 12:27:39 -0700 (PDT)
+Date: Sat, 5 Apr 2014 21:27:24 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140405192722.GA2297@omega>
+References: <20140405230029.876959920a802447aeb9720f@gmail.com>
+ <1396724565.786389175@f77.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1396724565.786389175@f77.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,40 +21,24 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] MIPS: ar9331.dtsi: add SPI master
-To: barebox@lists.infradead.org
+Subject: Re: RFC: barebox-x86 as a coreboot payload
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/mips/dts/ar9331.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-index 890fda8..9485fbf 100644
---- a/arch/mips/dts/ar9331.dtsi
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -22,5 +22,11 @@
- 			reg = <0xb8050000 0x48>;
- 			#clock-cells = <1>;
- 		};
-+
-+		spi: spi@bf000000{
-+			compatible = "qca,ath79-spi";
-+			reg = <0xbf000000 0x01000000>;
-+			status = "disabled";
-+		};
- 	};
- };
--- 
-1.9.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCBBcHIgMDUsIDIwMTQgYXQgMTE6MDI6NDVQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBTYXQsIDUgQXByIDIwMTQgMjM6MDA6MjkgKzA0MDAg0L7RgiBBbnRvbnkgUGF2
+bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNvbT46Cj4gPiBIaSEKPiA+IAo+ID4gSSBoYXZlIHNl
+ZW4geW91ciByZWNlbnQgYWN0aXZpdHkgb24gYmFyZWJveC14ODYgaW1wcm92ZW1lbnRzLgo+ID4g
+Cj4gPiBJTUhPIHVzaW5nIGJhcmVib3gteDg2IGFzIGEgY29yZWJvb3QgcGF5bG9hZCBjYW4gYmUg
+YmVuZWZpY2lhbCBmb3IgYmFyZWJveCBwcm9tb3Rpb24uCj4gPiAKPiA+IFBsZWFzZSBzZWUgaHR0
+cDovL3d3dy5jb3JlYm9vdC5vcmcvUGF5bG9hZHMKPiA+IAo+ID4gLS3CoAo+IAo+IEFtdXNlZDog
+aHR0cDovL3d3dy5jb3JlYm9vdC5vcmcvRmlsZTpDb3JlYm9vdF9saWJwYXlsb2FkX3RpbnQucG5n
+Cj4gVGhpcyBpcyBhIHJlYWxseSBtaXNzaW5nIGZlYXR1cmUgaW4gYmFyZWJveCA6KQo+IAoKV2Ug
+c2hvdWxkIHBvcnQgZG9vbSB0byBiYXJlYm94LiBUaGlzIGlzIHRoZSBtb3N0IHBvcnRlZCBnYW1l
+IGV2ZXIuCgotIEFsZXgKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpo
+dHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
