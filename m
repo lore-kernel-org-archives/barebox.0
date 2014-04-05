@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by merlin.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWP7F-00031r-QU
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 11:50:35 +0000
+ id 1WWP7D-00031g-5R
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 11:50:33 +0000
 Received: from tellur.localdomain (p57B5F61C.dip0.t-ipconnect.de
- [87.181.246.28]) by lynxeye.de (Postfix) with ESMTPA id 2C91C18B4261
- for <barebox@lists.infradead.org>; Sat,  5 Apr 2014 13:49:31 +0200 (CEST)
+ [87.181.246.28]) by lynxeye.de (Postfix) with ESMTPA id 7958218B425D
+ for <barebox@lists.infradead.org>; Sat,  5 Apr 2014 13:49:30 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sat,  5 Apr 2014 13:52:09 +0200
-Message-Id: <1396698731-22184-3-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1396698731-22184-1-git-send-email-dev@lynxeye.de>
-References: <1396698731-22184-1-git-send-email-dev@lynxeye.de>
+Date: Sat,  5 Apr 2014 13:52:07 +0200
+Message-Id: <1396698731-22184-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,593 +22,259 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] ARM: dts: update Tegra20 base dtsi to Linux 3.14
+Subject: [PATCH 1/5] clk: tegra20: convert to dt-binding defines
 To: barebox@lists.infradead.org
+
+Allows to make relationship between DT and driver
+more explicit and avoids duplication.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/tegra20.dtsi | 195 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 151 insertions(+), 44 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c | 168 +++++++++++++++++++---------------------
+ 1 file changed, 80 insertions(+), 88 deletions(-)
 
-diff --git a/arch/arm/dts/tegra20.dtsi b/arch/arm/dts/tegra20.dtsi
-index df40b54..48d2a7f 100644
---- a/arch/arm/dts/tegra20.dtsi
-+++ b/arch/arm/dts/tegra20.dtsi
-@@ -1,5 +1,6 @@
- #include <dt-bindings/clock/tegra20-car.h>
- #include <dt-bindings/gpio/tegra-gpio.h>
-+#include <dt-bindings/pinctrl/pinctrl-tegra.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index cfb719f..ea39f46 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -19,6 +19,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <io.h>
++#include <dt-bindings/clock/tegra20-car.h>
+ #include <linux/clk.h>
+ #include <linux/clkdev.h>
+ #include <linux/err.h>
+@@ -29,23 +30,7 @@
  
- #include "skeleton.dtsi"
-@@ -16,57 +17,71 @@
- 		serial4 = &uarte;
- 	};
+ static void __iomem *car_base;
  
--	host1x {
-+	host1x@50000000 {
- 		compatible = "nvidia,tegra20-host1x", "simple-bus";
- 		reg = <0x50000000 0x00024000>;
- 		interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>, /* syncpt */
- 			     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>; /* general */
- 		clocks = <&tegra_car TEGRA20_CLK_HOST1X>;
-+		resets = <&tegra_car 28>;
-+		reset-names = "host1x";
+-enum tegra20_clks {
+-	cpu, ac97 = 3, rtc, timer, uarta, uartb, gpio, sdmmc2, i2s1 = 11, i2c1,
+-	ndflash, sdmmc1, sdmmc4, twc, pwm, i2s2, epp, gr2d = 21, usbd, isp,
+-	gr3d, ide, disp2, disp1, host1x, vcp, cache2 = 31, mem, ahbdma, apbdma,
+-	kbc = 36, stat_mon, pmc, fuse, kfuse, sbc1, nor, spi, sbc2, xio, sbc3,
+-	dvc, dsi, mipi = 50, hdmi, csi, tvdac, i2c2, uartc, emc = 57, usb2,
+-	usb3, mpe, vde, bsea, bsev, speedo, uartd, uarte, i2c3, sbc4, sdmmc3,
+-	pex, owr, afi, csite, pcie_xclk, avpucq = 75, la, irama = 84, iramb,
+-	iramc, iramd, cram2, audio_2x, clk_d, csus = 92, cdev2, cdev1,
+-	vfir = 96, spdif_in, spdif_out, vi, vi_sensor, tvo, cve,
+-	osc, clk_32k, clk_m, sclk, cclk, hclk, pclk, blink, pll_a, pll_a_out0,
+-	pll_c, pll_c_out1, pll_d, pll_d_out0, pll_e, pll_m, pll_m_out1,
+-	pll_p, pll_p_out1, pll_p_out2, pll_p_out3, pll_p_out4, pll_u,
+-	pll_x, audio, pll_ref, twd, clk_max,
+-};
+-
+-static struct clk *clks[clk_max];
++static struct clk *clks[TEGRA20_CLK_CLK_MAX];
+ static struct clk_onecell_data clk_data;
  
- 		#address-cells = <1>;
- 		#size-cells = <1>;
+ static unsigned int get_pll_ref_div(void)
+@@ -58,11 +43,11 @@ static unsigned int get_pll_ref_div(void)
  
- 		ranges = <0x54000000 0x54000000 0x04000000>;
+ static void tegra20_osc_clk_init(void)
+ {
+-	clks[clk_m] = clk_fixed("clk_m", tegra_get_osc_clock());
+-	clks[clk_32k] = clk_fixed("clk_32k", 32768);
++	clks[TEGRA20_CLK_CLK_M] = clk_fixed("clk_m", tegra_get_osc_clock());
++	clks[TEGRA20_CLK_CLK_32K] = clk_fixed("clk_32k", 32768);
  
--		mpe {
-+		mpe@54040000 {
- 			compatible = "nvidia,tegra20-mpe";
- 			reg = <0x54040000 0x00040000>;
- 			interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_MPE>;
-+			resets = <&tegra_car 60>;
-+			reset-names = "mpe";
- 		};
+-	clks[pll_ref] = clk_fixed_factor("pll_ref", "clk_m", 1,
+-					 get_pll_ref_div(), 0);
++	clks[TEGRA20_CLK_PLL_REF] = clk_fixed_factor("pll_ref", "clk_m", 1,
++						     get_pll_ref_div(), 0);
+ }
  
--		vi {
-+		vi@54080000 {
- 			compatible = "nvidia,tegra20-vi";
- 			reg = <0x54080000 0x00040000>;
- 			interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_VI>;
-+			resets = <&tegra_car 20>;
-+			reset-names = "vi";
- 		};
+ /* PLL frequency tables */
+@@ -228,50 +213,52 @@ static struct tegra_clk_pll_params pll_u_params = {
+ static void tegra20_pll_init(void)
+ {
+ 	/* PLLC */
+-	clks[pll_c] = tegra_clk_register_pll("pll_c", "pll_ref", car_base,
+-			0, 0, &pll_c_params, TEGRA_PLL_HAS_CPCON,
++	clks[TEGRA20_CLK_PLL_C] = tegra_clk_register_pll("pll_c", "pll_ref",
++			car_base, 0, 0, &pll_c_params, TEGRA_PLL_HAS_CPCON,
+ 			pll_c_freq_table);
  
--		epp {
-+		epp@540c0000 {
- 			compatible = "nvidia,tegra20-epp";
- 			reg = <0x540c0000 0x00040000>;
- 			interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_EPP>;
-+			resets = <&tegra_car 19>;
-+			reset-names = "epp";
- 		};
+-	clks[pll_c_out1] = tegra_clk_register_pll_out("pll_c_out1", "pll_c",
+-			car_base + CRC_PLLC_OUT, 0, TEGRA_DIVIDER_ROUND_UP);
++	clks[TEGRA20_CLK_PLL_C_OUT1] = tegra_clk_register_pll_out("pll_c_out1",
++			"pll_c", car_base + CRC_PLLC_OUT, 0,
++			TEGRA_DIVIDER_ROUND_UP);
  
--		isp {
-+		isp@54100000 {
- 			compatible = "nvidia,tegra20-isp";
- 			reg = <0x54100000 0x00040000>;
- 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_ISP>;
-+			resets = <&tegra_car 23>;
-+			reset-names = "isp";
- 		};
+ 	/* PLLP */
+-	clks[pll_p] = tegra_clk_register_pll("pll_p", "pll_ref", car_base,
+-			0, 216000000, &pll_p_params, TEGRA_PLL_FIXED |
++	clks[TEGRA20_CLK_PLL_P] = tegra_clk_register_pll("pll_p", "pll_ref",
++			car_base, 0, 216000000, &pll_p_params, TEGRA_PLL_FIXED |
+ 			TEGRA_PLL_HAS_CPCON, pll_p_freq_table);
  
--		gr2d {
-+		gr2d@54140000 {
- 			compatible = "nvidia,tegra20-gr2d";
- 			reg = <0x54140000 0x00040000>;
- 			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_GR2D>;
-+			resets = <&tegra_car 21>;
-+			reset-names = "2d";
- 		};
+-	clks[pll_p_out1] = tegra_clk_register_pll_out("pll_p_out1", "pll_p",
+-			car_base + CRC_PLLP_OUTA, 0,
++	clks[TEGRA20_CLK_PLL_P_OUT1] = tegra_clk_register_pll_out("pll_p_out1",
++			"pll_p", car_base + CRC_PLLP_OUTA, 0,
+ 			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
  
--		gr3d {
-+		gr3d@54140000 {
- 			compatible = "nvidia,tegra20-gr3d";
--			reg = <0x54180000 0x00040000>;
-+			reg = <0x54140000 0x00040000>;
- 			clocks = <&tegra_car TEGRA20_CLK_GR3D>;
-+			resets = <&tegra_car 24>;
-+			reset-names = "3d";
- 		};
+-	clks[pll_p_out2] = tegra_clk_register_pll_out("pll_p_out2", "pll_p",
+-			car_base + CRC_PLLP_OUTA, 16,
++	clks[TEGRA20_CLK_PLL_P_OUT2] = tegra_clk_register_pll_out("pll_p_out2",
++			"pll_p", car_base + CRC_PLLP_OUTA, 16,
+ 			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
  
- 		dc@54200000 {
-@@ -75,7 +90,11 @@
- 			interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_DISP1>,
- 				 <&tegra_car TEGRA20_CLK_PLL_P>;
--			clock-names = "disp1", "parent";
-+			clock-names = "dc", "parent";
-+			resets = <&tegra_car 27>;
-+			reset-names = "dc";
-+
-+			nvidia,head = <0>;
+-	clks[pll_p_out3] = tegra_clk_register_pll_out("pll_p_out3", "pll_p",
+-			car_base + CRC_PLLP_OUTB, 0,
++	clks[TEGRA20_CLK_PLL_P_OUT3] = tegra_clk_register_pll_out("pll_p_out3",
++			"pll_p", car_base + CRC_PLLP_OUTB, 0,
+ 			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
  
- 			rgb {
- 				status = "disabled";
-@@ -88,24 +107,30 @@
- 			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_DISP2>,
- 				 <&tegra_car TEGRA20_CLK_PLL_P>;
--			clock-names = "disp2", "parent";
-+			clock-names = "dc", "parent";
-+			resets = <&tegra_car 26>;
-+			reset-names = "dc";
-+
-+			nvidia,head = <1>;
+-	clks[pll_p_out4] = tegra_clk_register_pll_out("pll_p_out4", "pll_p",
+-			car_base + CRC_PLLP_OUTB, 16,
++	clks[TEGRA20_CLK_PLL_P_OUT4] = tegra_clk_register_pll_out("pll_p_out4",
++			"pll_p", car_base + CRC_PLLP_OUTB, 16,
+ 			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
  
- 			rgb {
- 				status = "disabled";
- 			};
- 		};
+ 	/* PLLM */
+-	clks[pll_m] = tegra_clk_register_pll("pll_m", "pll_ref", car_base,
+-			0, 0, &pll_m_params, TEGRA_PLL_HAS_CPCON,
++	clks[TEGRA20_CLK_PLL_M] = tegra_clk_register_pll("pll_m", "pll_ref",
++			car_base, 0, 0, &pll_m_params, TEGRA_PLL_HAS_CPCON,
+ 			pll_m_freq_table);
  
--		hdmi {
-+		hdmi@54280000 {
- 			compatible = "nvidia,tegra20-hdmi";
- 			reg = <0x54280000 0x00040000>;
- 			interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&tegra_car TEGRA20_CLK_HDMI>,
- 				 <&tegra_car TEGRA20_CLK_PLL_D_OUT0>;
- 			clock-names = "hdmi", "parent";
-+			resets = <&tegra_car 51>;
-+			reset-names = "hdmi";
- 			status = "disabled";
- 		};
+-	clks[pll_m_out1] = tegra_clk_register_pll_out("pll_m_out1", "pll_m",
+-			car_base + CRC_PLLM_OUT, 0, TEGRA_DIVIDER_ROUND_UP);
++	clks[TEGRA20_CLK_PLL_M_OUT1] = tegra_clk_register_pll_out("pll_m_out1",
++			"pll_m", car_base + CRC_PLLM_OUT, 0,
++			TEGRA_DIVIDER_ROUND_UP);
  
--		tvo {
-+		tvo@542c0000 {
- 			compatible = "nvidia,tegra20-tvo";
- 			reg = <0x542c0000 0x00040000>;
- 			interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
-@@ -113,10 +138,12 @@
- 			status = "disabled";
- 		};
+ 	/* PLLX */
+-	clks[pll_x] = tegra_clk_register_pll("pll_x", "pll_ref", car_base,
+-			0, 0, &pll_x_params, TEGRA_PLL_HAS_CPCON,
++	clks[TEGRA20_CLK_PLL_X] = tegra_clk_register_pll("pll_x", "pll_ref",
++			car_base, 0, 0, &pll_x_params, TEGRA_PLL_HAS_CPCON,
+ 			pll_x_freq_table);
  
--		dsi {
-+		dsi@542c0000 {
- 			compatible = "nvidia,tegra20-dsi";
--			reg = <0x54300000 0x00040000>;
-+			reg = <0x542c0000 0x00040000>;
- 			clocks = <&tegra_car TEGRA20_CLK_DSI>;
-+			resets = <&tegra_car 48>;
-+			reset-names = "dsi";
- 			status = "disabled";
- 		};
- 	};
-@@ -129,7 +156,7 @@
- 		clocks = <&tegra_car TEGRA20_CLK_TWD>;
- 	};
+ 	/* PLLU */
+-	clks[pll_u] = tegra_clk_register_pll("pll_u", "pll_ref", car_base,
+-			0, 0, &pll_u_params, TEGRA_PLLU |
++	clks[TEGRA20_CLK_PLL_U] = tegra_clk_register_pll("pll_u", "pll_ref",
++			car_base, 0, 0, &pll_u_params, TEGRA_PLLU |
+ 			TEGRA_PLL_HAS_CPCON, pll_u_freq_table);
+ }
  
--	intc: interrupt-controller {
-+	intc: interrupt-controller@50041000 {
- 		compatible = "arm,cortex-a9-gic";
- 		reg = <0x50041000 0x1000
- 		       0x50040100 0x0100>;
-@@ -137,7 +164,7 @@
- 		#interrupt-cells = <3>;
- 	};
+@@ -280,55 +267,60 @@ static const char *mux_pllpcm_clkm[] = {"pll_p", "pll_c", "pll_m", "clk_m"};
+ static void tegra20_periph_init(void)
+ {
+ 	/* peripheral clocks without a divider */
+-	clks[uarta] = tegra_clk_register_periph_nodiv("uarta", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_UARTA, uarta, TEGRA_PERIPH_ON_APB);
+-	clks[uartb] = tegra_clk_register_periph_nodiv("uartb", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_UARTB, uartb, TEGRA_PERIPH_ON_APB);
+-	clks[uartc] = tegra_clk_register_periph_nodiv("uartc", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_UARTC, uartc, TEGRA_PERIPH_ON_APB);
+-	clks[uartd] = tegra_clk_register_periph_nodiv("uartd", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_UARTD, uartd, TEGRA_PERIPH_ON_APB);
+-	clks[uarte] = tegra_clk_register_periph_nodiv("uarte", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_UARTE, uarte, TEGRA_PERIPH_ON_APB);
++	clks[TEGRA20_CLK_UARTA] = tegra_clk_register_periph_nodiv("uarta",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTA, TEGRA20_CLK_UARTA,
++			TEGRA_PERIPH_ON_APB);
++	clks[TEGRA20_CLK_UARTB] = tegra_clk_register_periph_nodiv("uartb",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTB, 7,
++			TEGRA_PERIPH_ON_APB);
++	clks[TEGRA20_CLK_UARTC] = tegra_clk_register_periph_nodiv("uartc",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTC, TEGRA20_CLK_UARTC,
++			TEGRA_PERIPH_ON_APB);
++	clks[TEGRA20_CLK_UARTD] = tegra_clk_register_periph_nodiv("uartd",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTD, TEGRA20_CLK_UARTD,
++			TEGRA_PERIPH_ON_APB);
++	clks[TEGRA20_CLK_UARTE] = tegra_clk_register_periph_nodiv("uarte",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_UARTE, TEGRA20_CLK_UARTE,
++			TEGRA_PERIPH_ON_APB);
  
--	cache-controller {
-+	cache-controller@50043000 {
- 		compatible = "arm,pl310-cache";
- 		reg = <0x50043000 0x1000>;
- 		arm,data-latency = <5 5 2>;
-@@ -156,13 +183,14 @@
- 		clocks = <&tegra_car TEGRA20_CLK_TIMER>;
- 	};
+ 	/* peripheral clocks with a divider */
+-	clks[sdmmc1] = tegra_clk_register_periph("sdmmc1", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_SDMMC1, sdmmc1, 1);
+-	clks[sdmmc2] = tegra_clk_register_periph("sdmmc2", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_SDMMC2, sdmmc2, 1);
+-	clks[sdmmc3] = tegra_clk_register_periph("sdmmc3", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_SDMMC3, sdmmc3, 1);
+-	clks[sdmmc4] = tegra_clk_register_periph("sdmmc4", mux_pllpcm_clkm,
+-			ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+-			CRC_CLK_SOURCE_SDMMC4, sdmmc4, 1);
++	clks[TEGRA20_CLK_SDMMC1] = tegra_clk_register_periph("sdmmc1",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_SDMMC1, TEGRA20_CLK_SDMMC1, 1);
++	clks[TEGRA20_CLK_SDMMC2] = tegra_clk_register_periph("sdmmc2",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_SDMMC2, TEGRA20_CLK_SDMMC2, 1);
++	clks[TEGRA20_CLK_SDMMC3] = tegra_clk_register_periph("sdmmc3",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_SDMMC3, TEGRA20_CLK_SDMMC3, 1);
++	clks[TEGRA20_CLK_SDMMC4] = tegra_clk_register_periph("sdmmc4",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_SDMMC4, TEGRA20_CLK_SDMMC4, 1);
+ }
  
--	tegra_car: clock {
-+	tegra_car: clock@60006000 {
- 		compatible = "nvidia,tegra20-car";
- 		reg = <0x60006000 0x1000>;
- 		#clock-cells = <1>;
-+		#reset-cells = <1>;
- 	};
+ static struct tegra_clk_init_table init_table[] = {
+-	{pll_p,		clk_max,	216000000,	1},
+-	{pll_p_out1,	clk_max,	28800000,	1},
+-	{pll_p_out2,	clk_max,	48000000,	1},
+-	{pll_p_out3,	clk_max,	72000000,	1},
+-	{pll_p_out4,	clk_max,	24000000,	1},
+-	{pll_c,		clk_max,	600000000,	1},
+-	{pll_c_out1,	clk_max,	120000000,	1},
+-	{uarta,		pll_p,		0,		1},
+-	{uartb,		pll_p,		0,		1},
+-	{uartc,		pll_p,		0,		1},
+-	{uartd,		pll_p,		0,		1},
+-	{uarte,		pll_p,		0,		1},
+-	{sdmmc1,	pll_p,		48000000,	0},
+-	{sdmmc2,	pll_p,		48000000,	0},
+-	{sdmmc3,	pll_p,		48000000,	0},
+-	{sdmmc4,	pll_p,		48000000,	0},
+-	{clk_max,	clk_max,	0,		0}, /* sentinel */
++	{TEGRA20_CLK_PLL_P,		TEGRA20_CLK_CLK_MAX,	216000000,	1},
++	{TEGRA20_CLK_PLL_P_OUT1,	TEGRA20_CLK_CLK_MAX,	28800000,	1},
++	{TEGRA20_CLK_PLL_P_OUT2,	TEGRA20_CLK_CLK_MAX,	48000000,	1},
++	{TEGRA20_CLK_PLL_P_OUT3,	TEGRA20_CLK_CLK_MAX,	72000000,	1},
++	{TEGRA20_CLK_PLL_P_OUT4,	TEGRA20_CLK_CLK_MAX,	24000000,	1},
++	{TEGRA20_CLK_PLL_C,		TEGRA20_CLK_CLK_MAX,	600000000,	1},
++	{TEGRA20_CLK_PLL_C_OUT1,	TEGRA20_CLK_CLK_MAX,	120000000,	1},
++	{TEGRA20_CLK_UARTA,		TEGRA20_CLK_PLL_P,	0,		1},
++	{TEGRA20_CLK_UARTB,		TEGRA20_CLK_PLL_P,	0,		1},
++	{TEGRA20_CLK_UARTC,		TEGRA20_CLK_PLL_P,	0,		1},
++	{TEGRA20_CLK_UARTD,		TEGRA20_CLK_PLL_P,	0,		1},
++	{TEGRA20_CLK_UARTE,		TEGRA20_CLK_PLL_P,	0,		1},
++	{TEGRA20_CLK_SDMMC1,		TEGRA20_CLK_PLL_P,	48000000,	0},
++	{TEGRA20_CLK_SDMMC2,		TEGRA20_CLK_PLL_P,	48000000,	0},
++	{TEGRA20_CLK_SDMMC3,		TEGRA20_CLK_PLL_P,	48000000,	0},
++	{TEGRA20_CLK_SDMMC4,		TEGRA20_CLK_PLL_P,	48000000,	0},
++	{TEGRA20_CLK_CLK_MAX,		TEGRA20_CLK_CLK_MAX,	0,	0}, /* sentinel */
+ };
  
--	apbdma: dma {
-+	apbdma: dma@6000a000 {
- 		compatible = "nvidia,tegra20-apbdma";
- 		reg = <0x6000a000 0x1200>;
- 		interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
-@@ -182,14 +210,17 @@
- 			     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_APBDMA>;
-+		resets = <&tegra_car 34>;
-+		reset-names = "dma";
-+		#dma-cells = <1>;
- 	};
+ static int tegra20_car_probe(struct device_d *dev)
+@@ -341,7 +333,7 @@ static int tegra20_car_probe(struct device_d *dev)
+ 	tegra20_pll_init();
+ 	tegra20_periph_init();
  
--	ahb {
-+	ahb@6000c004 {
- 		compatible = "nvidia,tegra20-ahb";
- 		reg = <0x6000c004 0x10c>; /* AHB Arbitration + Gizmo Controller */
- 	};
+-	tegra_init_from_table(init_table, clks, clk_max);
++	tegra_init_from_table(init_table, clks, TEGRA20_CLK_CLK_MAX);
  
--	gpio: gpio {
-+	gpio: gpio@6000d000 {
- 		compatible = "nvidia,tegra20-gpio";
- 		reg = <0x6000d000 0x1000>;
- 		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>,
-@@ -205,7 +236,7 @@
- 		interrupt-controller;
- 	};
- 
--	pinmux: pinmux {
-+	pinmux: pinmux@70000014 {
- 		compatible = "nvidia,tegra20-pinmux";
- 		reg = <0x70000014 0x10   /* Tri-state registers */
- 		       0x70000080 0x20   /* Mux registers */
-@@ -213,17 +244,20 @@
- 		       0x70000868 0xa8>; /* Pad control registers */
- 	};
- 
--	das {
-+	das@70000c00 {
- 		compatible = "nvidia,tegra20-das";
- 		reg = <0x70000c00 0x80>;
- 	};
- 
--	tegra_ac97: ac97 {
-+	tegra_ac97: ac97@70002000 {
- 		compatible = "nvidia,tegra20-ac97";
- 		reg = <0x70002000 0x200>;
- 		interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 12>;
- 		clocks = <&tegra_car TEGRA20_CLK_AC97>;
-+		resets = <&tegra_car 3>;
-+		reset-names = "ac97";
-+		dmas = <&apbdma 12>, <&apbdma 12>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -231,8 +265,11 @@
- 		compatible = "nvidia,tegra20-i2s";
- 		reg = <0x70002800 0x200>;
- 		interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 2>;
- 		clocks = <&tegra_car TEGRA20_CLK_I2S1>;
-+		resets = <&tegra_car 11>;
-+		reset-names = "i2s";
-+		dmas = <&apbdma 2>, <&apbdma 2>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -240,8 +277,11 @@
- 		compatible = "nvidia,tegra20-i2s";
- 		reg = <0x70002a00 0x200>;
- 		interrupts = <GIC_SPI 3 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 1>;
- 		clocks = <&tegra_car TEGRA20_CLK_I2S2>;
-+		resets = <&tegra_car 18>;
-+		reset-names = "i2s";
-+		dmas = <&apbdma 1>, <&apbdma 1>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -257,8 +297,11 @@
- 		reg = <0x70006000 0x40>;
- 		reg-shift = <2>;
- 		interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 8>;
- 		clocks = <&tegra_car TEGRA20_CLK_UARTA>;
-+		resets = <&tegra_car 6>;
-+		reset-names = "serial";
-+		dmas = <&apbdma 8>, <&apbdma 8>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -267,8 +310,11 @@
- 		reg = <0x70006040 0x40>;
- 		reg-shift = <2>;
- 		interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 9>;
- 		clocks = <&tegra_car TEGRA20_CLK_UARTB>;
-+		resets = <&tegra_car 7>;
-+		reset-names = "serial";
-+		dmas = <&apbdma 9>, <&apbdma 9>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -277,8 +323,11 @@
- 		reg = <0x70006200 0x100>;
- 		reg-shift = <2>;
- 		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 10>;
- 		clocks = <&tegra_car TEGRA20_CLK_UARTC>;
-+		resets = <&tegra_car 55>;
-+		reset-names = "serial";
-+		dmas = <&apbdma 10>, <&apbdma 10>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -287,8 +336,11 @@
- 		reg = <0x70006300 0x100>;
- 		reg-shift = <2>;
- 		interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 19>;
- 		clocks = <&tegra_car TEGRA20_CLK_UARTD>;
-+		resets = <&tegra_car 65>;
-+		reset-names = "serial";
-+		dmas = <&apbdma 19>, <&apbdma 19>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -297,20 +349,25 @@
- 		reg = <0x70006400 0x100>;
- 		reg-shift = <2>;
- 		interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 20>;
- 		clocks = <&tegra_car TEGRA20_CLK_UARTE>;
-+		resets = <&tegra_car 66>;
-+		reset-names = "serial";
-+		dmas = <&apbdma 20>, <&apbdma 20>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
--	pwm: pwm {
-+	pwm: pwm@7000a000 {
- 		compatible = "nvidia,tegra20-pwm";
- 		reg = <0x7000a000 0x100>;
- 		#pwm-cells = <2>;
- 		clocks = <&tegra_car TEGRA20_CLK_PWM>;
-+		resets = <&tegra_car 17>;
-+		reset-names = "pwm";
- 		status = "disabled";
- 	};
- 
--	rtc {
-+	rtc@7000e000 {
- 		compatible = "nvidia,tegra20-rtc";
- 		reg = <0x7000e000 0x100>;
- 		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
-@@ -326,6 +383,10 @@
- 		clocks = <&tegra_car TEGRA20_CLK_I2C1>,
- 			 <&tegra_car TEGRA20_CLK_PLL_P_OUT3>;
- 		clock-names = "div-clk", "fast-clk";
-+		resets = <&tegra_car 12>;
-+		reset-names = "i2c";
-+		dmas = <&apbdma 21>, <&apbdma 21>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -333,10 +394,13 @@
- 		compatible = "nvidia,tegra20-sflash";
- 		reg = <0x7000c380 0x80>;
- 		interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 11>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		clocks = <&tegra_car TEGRA20_CLK_SPI>;
-+		resets = <&tegra_car 43>;
-+		reset-names = "spi";
-+		dmas = <&apbdma 11>, <&apbdma 11>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -349,6 +413,10 @@
- 		clocks = <&tegra_car TEGRA20_CLK_I2C2>,
- 			 <&tegra_car TEGRA20_CLK_PLL_P_OUT3>;
- 		clock-names = "div-clk", "fast-clk";
-+		resets = <&tegra_car 54>;
-+		reset-names = "i2c";
-+		dmas = <&apbdma 22>, <&apbdma 22>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -361,6 +429,10 @@
- 		clocks = <&tegra_car TEGRA20_CLK_I2C3>,
- 			 <&tegra_car TEGRA20_CLK_PLL_P_OUT3>;
- 		clock-names = "div-clk", "fast-clk";
-+		resets = <&tegra_car 67>;
-+		reset-names = "i2c";
-+		dmas = <&apbdma 23>, <&apbdma 23>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -373,6 +445,10 @@
- 		clocks = <&tegra_car TEGRA20_CLK_DVC>,
- 			 <&tegra_car TEGRA20_CLK_PLL_P_OUT3>;
- 		clock-names = "div-clk", "fast-clk";
-+		resets = <&tegra_car 47>;
-+		reset-names = "i2c";
-+		dmas = <&apbdma 24>, <&apbdma 24>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -380,10 +456,13 @@
- 		compatible = "nvidia,tegra20-slink";
- 		reg = <0x7000d400 0x200>;
- 		interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 15>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		clocks = <&tegra_car TEGRA20_CLK_SBC1>;
-+		resets = <&tegra_car 41>;
-+		reset-names = "spi";
-+		dmas = <&apbdma 15>, <&apbdma 15>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -391,10 +470,13 @@
- 		compatible = "nvidia,tegra20-slink";
- 		reg = <0x7000d600 0x200>;
- 		interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 16>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		clocks = <&tegra_car TEGRA20_CLK_SBC2>;
-+		resets = <&tegra_car 44>;
-+		reset-names = "spi";
-+		dmas = <&apbdma 16>, <&apbdma 16>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -402,10 +484,13 @@
- 		compatible = "nvidia,tegra20-slink";
- 		reg = <0x7000d800 0x200>;
- 		interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 17>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		clocks = <&tegra_car TEGRA20_CLK_SBC3>;
-+		resets = <&tegra_car 46>;
-+		reset-names = "spi";
-+		dmas = <&apbdma 17>, <&apbdma 17>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
-@@ -413,22 +498,27 @@
- 		compatible = "nvidia,tegra20-slink";
- 		reg = <0x7000da00 0x200>;
- 		interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
--		nvidia,dma-request-selector = <&apbdma 18>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		clocks = <&tegra_car TEGRA20_CLK_SBC4>;
-+		resets = <&tegra_car 68>;
-+		reset-names = "spi";
-+		dmas = <&apbdma 18>, <&apbdma 18>;
-+		dma-names = "rx", "tx";
- 		status = "disabled";
- 	};
- 
--	kbc {
-+	kbc@7000e200 {
- 		compatible = "nvidia,tegra20-kbc";
- 		reg = <0x7000e200 0x100>;
- 		interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_KBC>;
-+		resets = <&tegra_car 36>;
-+		reset-names = "kbc";
- 		status = "disabled";
- 	};
- 
--	pmc {
-+	pmc@7000e400 {
- 		compatible = "nvidia,tegra20-pmc";
- 		reg = <0x7000e400 0x400>;
- 		clocks = <&tegra_car TEGRA20_CLK_PCLK>, <&clk32k_in>;
-@@ -442,7 +532,7 @@
- 		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
- 	};
- 
--	iommu {
-+	iommu@7000f024 {
- 		compatible = "nvidia,tegra20-gart";
- 		reg = <0x7000f024 0x00000018	/* controller registers */
- 		       0x58000000 0x02000000>;	/* GART aperture */
-@@ -455,7 +545,7 @@
- 		#size-cells = <0>;
- 	};
- 
--	pcie-controller {
-+	pcie-controller@80003000 {
- 		compatible = "nvidia,tegra20-pcie";
- 		device_type = "pci";
- 		reg = <0x80003000 0x00000800   /* PADS registers */
-@@ -478,9 +568,12 @@
- 
- 		clocks = <&tegra_car TEGRA20_CLK_PEX>,
- 			 <&tegra_car TEGRA20_CLK_AFI>,
--			 <&tegra_car TEGRA20_CLK_PCIE_XCLK>,
- 			 <&tegra_car TEGRA20_CLK_PLL_E>;
--		clock-names = "pex", "afi", "pcie_xclk", "pll_e";
-+		clock-names = "pex", "afi", "pll_e";
-+		resets = <&tegra_car 70>,
-+		         <&tegra_car 72>,
-+		         <&tegra_car 74>;
-+		reset-names = "pex", "afi", "pcie_x";
- 		status = "disabled";
- 
- 		pci@1,0 {
-@@ -517,6 +610,8 @@
- 		phy_type = "utmi";
- 		nvidia,has-legacy-mode;
- 		clocks = <&tegra_car TEGRA20_CLK_USBD>;
-+		resets = <&tegra_car 22>;
-+		reset-names = "usb";
- 		nvidia,needs-double-reset;
- 		nvidia,phy = <&phy1>;
- 		status = "disabled";
-@@ -548,6 +643,8 @@
- 		interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
- 		phy_type = "ulpi";
- 		clocks = <&tegra_car TEGRA20_CLK_USB2>;
-+		resets = <&tegra_car 58>;
-+		reset-names = "usb";
- 		nvidia,phy = <&phy2>;
- 		status = "disabled";
- 	};
-@@ -569,6 +666,8 @@
- 		interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
- 		phy_type = "utmi";
- 		clocks = <&tegra_car TEGRA20_CLK_USB3>;
-+		resets = <&tegra_car 59>;
-+		reset-names = "usb";
- 		nvidia,phy = <&phy3>;
- 		status = "disabled";
- 	};
-@@ -597,6 +696,8 @@
- 		reg = <0xc8000000 0x200>;
- 		interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_SDMMC1>;
-+		resets = <&tegra_car 14>;
-+		reset-names = "sdhci";
- 		status = "disabled";
- 	};
- 
-@@ -605,6 +706,8 @@
- 		reg = <0xc8000200 0x200>;
- 		interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_SDMMC2>;
-+		resets = <&tegra_car 9>;
-+		reset-names = "sdhci";
- 		status = "disabled";
- 	};
- 
-@@ -613,6 +716,8 @@
- 		reg = <0xc8000400 0x200>;
- 		interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_SDMMC3>;
-+		resets = <&tegra_car 69>;
-+		reset-names = "sdhci";
- 		status = "disabled";
- 	};
- 
-@@ -621,6 +726,8 @@
- 		reg = <0xc8000600 0x200>;
- 		interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&tegra_car TEGRA20_CLK_SDMMC4>;
-+		resets = <&tegra_car 15>;
-+		reset-names = "sdhci";
- 		status = "disabled";
- 	};
- 
+ 	/* speed up system bus */
+ 	writel(CRC_SCLK_BURST_POLICY_SYS_STATE_RUN <<
 -- 
 1.9.0
 
