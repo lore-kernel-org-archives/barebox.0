@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22f.google.com ([2a00:1450:4010:c03::22f])
+Received: from mail-la0-x231.google.com ([2a00:1450:4010:c03::231])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWVRu-0000D5-EN
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 18:36:15 +0000
-Received: by mail-la0-f47.google.com with SMTP id pn19so3429138lab.6
- for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 11:35:52 -0700 (PDT)
+ id 1WWVRq-0000D0-6c
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 18:36:11 +0000
+Received: by mail-la0-f49.google.com with SMTP id mc6so3412045lab.8
+ for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 11:35:48 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Sat,  5 Apr 2014 22:35:34 +0400
-Message-Id: <1396722934-23818-6-git-send-email-antonynpavlov@gmail.com>
+Date: Sat,  5 Apr 2014 22:35:32 +0400
+Message-Id: <1396722934-23818-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
 References: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,41 +23,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] MIPS: tplink-mr3020_defconfig: add SPI support
+Subject: [PATCH 3/5] MIPS: ar9331.dtsi: add SPI master
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/configs/tplink-mr3020_defconfig | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/dts/ar9331.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/mips/configs/tplink-mr3020_defconfig b/arch/mips/configs/tplink-mr3020_defconfig
-index 2e925d9..d249919 100644
---- a/arch/mips/configs/tplink-mr3020_defconfig
-+++ b/arch/mips/configs/tplink-mr3020_defconfig
-@@ -14,16 +14,21 @@ CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_IOMEM=y
- CONFIG_CMD_MM=y
- CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_FLASH=y
- # CONFIG_CMD_BOOTM is not set
- CONFIG_CMD_RESET=y
- CONFIG_CMD_GO=y
- CONFIG_CMD_OFTREE=y
- CONFIG_CMD_OF_PROPERTY=y
- CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_SPI=y
- CONFIG_CMD_CLK=y
- CONFIG_OFDEVICE=y
- CONFIG_DRIVER_SERIAL_AR933X=y
--# CONFIG_SPI is not set
-+CONFIG_DRIVER_SPI_ATH79=y
-+CONFIG_MTD=y
-+# CONFIG_MTD_OOB_DEVICE is not set
-+CONFIG_MTD_M25P80=y
- CONFIG_MD5=y
- CONFIG_SHA224=y
- CONFIG_SHA256=y
+diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
+index 890fda8..9485fbf 100644
+--- a/arch/mips/dts/ar9331.dtsi
++++ b/arch/mips/dts/ar9331.dtsi
+@@ -22,5 +22,11 @@
+ 			reg = <0xb8050000 0x48>;
+ 			#clock-cells = <1>;
+ 		};
++
++		spi: spi@bf000000{
++			compatible = "qca,ath79-spi";
++			reg = <0xbf000000 0x01000000>;
++			status = "disabled";
++		};
+ 	};
+ };
 -- 
 1.9.0
 
