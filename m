@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
+Received: from mail-lb0-f178.google.com ([209.85.217.178])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWIkE-0005vG-1o
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 05:02:18 +0000
-Received: by mail-wi0-f172.google.com with SMTP id hi2so2340757wib.11
- for <barebox@lists.infradead.org>; Fri, 04 Apr 2014 22:01:51 -0700 (PDT)
-Date: Sat, 5 Apr 2014 07:01:46 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140405050143.GA29442@omega.Speedport_W_921V_1_24_000>
-References: <53316480.2030103@reverze.net>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <53316480.2030103@reverze.net>
+ id 1WWJKq-0006AF-Dz
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 05:40:09 +0000
+Received: by mail-lb0-f178.google.com with SMTP id s7so3098001lbd.37
+ for <barebox@lists.infradead.org>; Fri, 04 Apr 2014 22:39:41 -0700 (PDT)
+Date: Sat, 5 Apr 2014 09:49:18 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140405094918.9d22b23f8047a38144837dda@gmail.com>
+In-Reply-To: <B88CC46B-6729-42F5-ABF8-1C67BD9663D9@jcrosoft.com>
+References: <20140401090229.GT17250@pengutronix.de>
+ <B88CC46B-6729-42F5-ABF8-1C67BD9663D9@jcrosoft.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,41 +20,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/3] x86: Add support for IDE on the legacy I/O ports
-To: Michel Stam <michel@reverze.net>
+Subject: Re: Introducing barebOS
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Mar 25, 2014 at 12:12:00PM +0100, Michel Stam wrote:
-> ---
->  arch/x86/boards/x86_generic/generic_pc.c | 71 ++++++++++++++++++++++++
->  drivers/ata/ide-sff.c                    | 94
-> ++++++++++++++++++++++++++------
->  drivers/ata/intf_platform_ide.c          | 14 ++++-
->  include/ata_drive.h                      |  1 +
->  4 files changed, 161 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/x86/boards/x86_generic/generic_pc.c
-> b/arch/x86/boards/x86_generic/generic_pc.c
-> index 74a7224..6152afc 100644
-> --- a/arch/x86/boards/x86_generic/generic_pc.c
-> +++ b/arch/x86/boards/x86_generic/generic_pc.c
-> @@ -27,6 +27,10 @@
->  #include <ns16550.h>
->  #include <linux/err.h>
->  +#ifdef CONFIG_DISK_INTF_PLATFORM_IDE
-
-Here is also a diff inconsitent... there is a space at beginning of the
-line?? Did you use git send-email? Check [0] for a introduction.
-
-- Alex
-
-[0] https://home.regit.org/technical-articles/git-for-the-newbie/
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU2F0LCA1IEFwciAyMDE0IDEwOjUzOjE5ICswODAwCkplYW4tQ2hyaXN0b3BoZSBQTEFHTklP
+TC1WSUxMQVJEIDxwbGFnbmlvakBqY3Jvc29mdC5jb20+IHdyb3RlOgoKPiAKPiBPbiBBcHIgMSwg
+MjAxNCwgYXQgNTowMiBQTSwgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiB3
+cm90ZToKPiA+IAo+ID4gSGkgQWxsLAo+ID4gCj4gPiBiYXJlYm94IG1vcmUgYW5kIG1vcmUgY29t
+ZXMgaW4gdGhlIGFyZWEgdGhhdCBpcyBoYXMgZXZlcnl0aGluZyBhbgo+ID4gb3BlcmF0aW5nIHN5
+c3RlbSBuZWVkczoKPiA+IAo+ID4gLSBzdXBwb3J0IGZvciBhbGwga2luZHMgb2Ygc3RvcmFnZSBk
+ZXZpY2VzCj4gPiAtIHN1cHBvcnQgZm9yIHZhcmlvdXMgZGlmZmVyZW50IGZpbGV5c3RlbXMKPiA+
+IC0gQ29vcGVyYXRpdmUgbXVsdGl0YXNraW5nIHdpdGggdGhlIHBvbGxlciBtZWNoYW5pc20KPiA+
+IC0gbWVtb3J5IG1hbmFnZW1lbnQgaW4gZm9ybSBvZiBtYWxsb2MvZnJlZSBhbmQgaW9zcGFjZSBy
+ZXNvdXJjZXMKPiA+IC0gZHJpdmVycyBmb3IgTmV0d29ya2luZywgTU1DLCBVU0IsIFVBUlRzLCBG
+cmFtZWJ1ZmZlciBkZXZpY2VzLCAoUylBVEEsCj4gPiAgU1BJLCBJMkMsIFcxLCBLZXlib2FyZCwg
+RUVQUk9NcywgTEVEcwo+ID4gCj4gPiBJIHRoZXJlZm9yZSBkZWNpZGVkIHRoYXQgaXQncyBubyBs
+b25nZXIgbmVjZXNzYXJ5IHRvIGhhdmUgdGhlIG92ZXJoZWFkCj4gPiBvZiBMaW51eCBhdCBhbGwu
+IFRoZSBwcm9qZWN0IHdpbGwgYmUgcmVuYW1lZCB0byBiYXJlYk9TIGluIHRoZSBuZXh0IGZldwo+
+ID4gZGF5cy4gU3VwcG9ydCBmb3IgYm9vdGluZyBMaW51eCB3aWxsIGJlIGRyb3BwZWQgYXMgc29v
+biBhcyBzb21lIHRoZQo+ID4gcmVtYWluaW5nIG1pc3NpbmcgZmVhdHVyZXMgYXJlIGFkZGVkLCBs
+aWtlIGZvciBleGFtcGxlIGEgd29ya2luZyB2aQo+ID4gYXBwbGV0IGFuZCBub2RlanMgaW50ZWdy
+YXRpb24uIEknbSBsb29raW5nIGZvcndhcmQgdG8geW91ciBmZWVkYmFjayEKPiAKPiBJ4oCZbSBu
+b3QgaGFwcHkgd2l0aCB0aGUgcmVuYW1lIGhvbmVzdGx5Cj4gCj4gQW5kIHdoeSBkcm9wcGluZyBo
+ZSBsaW51eCBib290IGl04oCZcyBhIGZlYXR1cmUgbGlrZSBvdGhlcnMKPiAKCkl0J3MgMSBhcHJp
+bCBwb3N0LgoKPiA+IFNhc2NoYQo+ID4gCj4gPiAtLSAKPiA+IFBlbmd1dHJvbml4IGUuSy4gICAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4g
+PiBJbmR1c3RyaWFsIExpbnV4IFNvbHV0aW9ucyAgICAgICAgICAgICAgICAgfCBodHRwOi8vd3d3
+LnBlbmd1dHJvbml4LmRlLyAgfAo+ID4gUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWlt
+LCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwKPiA+IEFtdHNnZXJpY2h0
+IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTct
+NTU1NSB8Cj4gPiAKPiA+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCj4gPiBiYXJlYm94IG1haWxpbmcgbGlzdAo+ID4gYmFyZWJveEBsaXN0cy5pbmZyYWRl
+YWQub3JnCj4gPiBodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gKPiAKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3Jn
+Cj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94CgoK
+LS0gCi0twqAKQmVzdCByZWdhcmRzLArCoCBBbnRvbnkgUGF2bG92CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJl
+Ym94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9iYXJlYm94Cg==
