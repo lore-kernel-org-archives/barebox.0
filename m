@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWTSp-0007At-1p
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 16:29:03 +0000
-Date: Sat, 5 Apr 2014 18:28:40 +0200
+ id 1WWTTk-0007Ck-W7
+ for barebox@lists.infradead.org; Sat, 05 Apr 2014 16:30:01 +0000
+Date: Sat, 5 Apr 2014 18:29:39 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140405162840.GC27055@pengutronix.de>
-References: <1396618659-27627-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+Message-ID: <20140405162939.GD27055@pengutronix.de>
+References: <1396618800-27692-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1396618659-27627-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
+In-Reply-To: <1396618800-27692-1-git-send-email-wjatscheslaw.stoljarski@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,37 +22,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] imx-spi: enable v0.7 spi driver for imx53-cspi
+Subject: Re: [PATCH 3/3] imx53: add imx53_add_cspi
 To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
 Cc: barebox@lists.infradead.org
 
-On Fri, Apr 04, 2014 at 03:37:39PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
+Hi Wjatscheslaw,
+
+On Fri, Apr 04, 2014 at 03:40:00PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
 > From: "Wjatscheslaw Stoljarski" <wjatscheslaw.stoljarski@kiwigrid.com>
 > 
 > 
 > Signed-off-by: Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
 
-Applied, thanks
+Applied, thanks, although new boards should probe from devicetree and
+not use the platform registration code.
 
 Sascha
 
 > ---
->  drivers/spi/Kconfig |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/mach-imx/include/mach/devices-imx53.h |    5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-> index 422693c..e429ea1 100644
-> --- a/drivers/spi/Kconfig
-> +++ b/drivers/spi/Kconfig
-> @@ -25,7 +25,7 @@ config DRIVER_SPI_IMX_0_0
+> diff --git a/arch/arm/mach-imx/include/mach/devices-imx53.h b/arch/arm/mach-imx/include/mach/devices-imx53.h
+> index d4e9a4a..88be4fd 100644
+> --- a/arch/arm/mach-imx/include/mach/devices-imx53.h
+> +++ b/arch/arm/mach-imx/include/mach/devices-imx53.h
+> @@ -2,6 +2,11 @@
+>  #include <mach/devices.h>
+>  #include <mach/imx53-regs.h>
 >  
->  config DRIVER_SPI_IMX_0_7
->  	bool
-> -	depends on ARCH_IMX25 || ARCH_IMX35
-> +	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX53
->  	default y
->  
->  config DRIVER_SPI_IMX_2_3
+> +static inline struct device_d *imx53_add_cspi(struct spi_imx_master *pdata)
+> +{
+> +	return imx_add_spi_imx35((void *)MX53_CSPI_BASE_ADDR, 0, pdata);
+> +}
+> +
+>  static inline struct device_d *imx53_add_spi0(struct spi_imx_master *pdata)
+>  {
+>  	return imx_add_spi_imx51((void *)MX53_ECSPI1_BASE_ADDR, 0, pdata);
 > -- 
 > 1.7.9.5
 > 
