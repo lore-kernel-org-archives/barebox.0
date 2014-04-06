@@ -1,23 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yh0-f41.google.com ([209.85.213.41])
+Received: from smtp9.mail.ru ([94.100.176.54])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WWXCa-0001ZV-G9
- for barebox@lists.infradead.org; Sat, 05 Apr 2014 20:28:32 +0000
-Received: by mail-yh0-f41.google.com with SMTP id v1so4530314yhn.28
- for <barebox@lists.infradead.org>; Sat, 05 Apr 2014 13:28:05 -0700 (PDT)
-Received: from localhost (host130.181-14-219.telecom.net.ar. [181.14.219.130])
- by mx.google.com with ESMTPSA id
- h23sm22218666yhf.34.2014.04.05.13.28.02
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Sat, 05 Apr 2014 13:28:03 -0700 (PDT)
-Date: Sat, 5 Apr 2014 17:26:24 -0300
-From: Guido =?iso-8859-1?Q?Mart=EDnez?= <guido@vanguardiasur.com.ar>
-Message-ID: <20140405202624.GB10452@solid>
-References: <20140404190144.GA5066@solid>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140404190144.GA5066@solid>
+ id 1WWjfV-0008Im-CN
+ for barebox@lists.infradead.org; Sun, 06 Apr 2014 09:47:15 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sun,  6 Apr 2014 13:46:38 +0400
+Message-Id: <1396777600-647-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,21 +14,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [SOLVED] barebox defconfig not booting on beaglebone black
+Subject: [PATCH RFC 0/2] Switch ARM i.MX27 PCM-038/PCM-970 to devicetree probe
 To: barebox@lists.infradead.org
 
-On Fri, Apr 04, 2014 at 04:01:44PM -0300, Guido Mart=EDnez wrote:
-> $ cp barebox.bin $CARD/barebox.bin
+It is only RFC for now.
+Known issues:
+- PMIC is not detected after "reset" command.
 
-Apparently I wasn't copying the correct file, so this is not a bug.
+Alexander Shiyan (2):
+  ARM: dts: Add devicetree files for Phytec PCM-038/PCM-970
+  ARM: PCM038: Switch to devicetree probe
 
-I apologize for the false alarm.
+ arch/arm/boards/phytec-phycore-imx27/Makefile      |   5 +-
+ arch/arm/boards/phytec-phycore-imx27/env/boot/nor  |   9 +
+ .../boards/phytec-phycore-imx27/env/config-board   |   7 +-
+ .../phytec-phycore-imx27/env/init/mtdparts-nand    |  11 -
+ .../phytec-phycore-imx27/env/init/mtdparts-nor     |  11 -
+ arch/arm/boards/phytec-phycore-imx27/pcm038.c      | 358 +++------------------
+ arch/arm/boards/phytec-phycore-imx27/pcm970.c      | 201 ++++--------
+ arch/arm/configs/phytec-phycore-imx27_defconfig    |  62 ++--
+ arch/arm/dts/Makefile                              |   3 +-
+ arch/arm/dts/imx27-phytec-phycore-rdk-bb.dts       |  64 ++++
+ arch/arm/dts/imx27-phytec-phycore-rdk.dts          | 289 +++++++++++++++++
+ arch/arm/dts/imx27-phytec-phycore-som.dtsi         | 333 +++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          |  14 +-
+ 13 files changed, 849 insertions(+), 518 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-phycore-imx27/env/boot/nor
+ delete mode 100644 arch/arm/boards/phytec-phycore-imx27/env/init/mtdparts-nand
+ delete mode 100644 arch/arm/boards/phytec-phycore-imx27/env/init/mtdparts-nor
+ create mode 100644 arch/arm/dts/imx27-phytec-phycore-rdk-bb.dts
+ create mode 100644 arch/arm/dts/imx27-phytec-phycore-rdk.dts
+ create mode 100644 arch/arm/dts/imx27-phytec-phycore-som.dtsi
 
-Guido
+-- 
+1.8.3.2
+
 
 _______________________________________________
 barebox mailing list
