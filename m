@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp29.i.mail.ru ([94.100.177.89])
+Received: from smtp50.i.mail.ru ([94.100.177.110])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX8ZU-0004yJ-Do
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 12:22:41 +0000
+ id 1WXA4N-0007ez-EB
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 13:58:40 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Mon,  7 Apr 2014 16:22:15 +0400
-Message-Id: <1396873335-22946-1-git-send-email-shc_work@mail.ru>
+Date: Mon,  7 Apr 2014 17:58:14 +0400
+Message-Id: <1396879094-25026-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,39 +19,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: i.MX: Fix direction for CS GPIOs
+Subject: [PATCH] Documentation: Update binding doc for i.MX IIM
 To: barebox@lists.infradead.org
-
-Direction for CS GPIOs (for some targets) is undefined.
-This patch fixes this issue.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/spi/imx_spi.c | 4 ++--
+ Documentation/devicetree/bindings/misc/fsl,imx-iim.txt | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 6675729..45461bd 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -167,7 +167,7 @@ static void cspi_0_0_chipselect(struct spi_device *spi, int is_active)
+diff --git a/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt b/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt
+index ed3efcc..9759210 100644
+--- a/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt
++++ b/Documentation/devicetree/bindings/misc/fsl,imx-iim.txt
+@@ -2,7 +2,7 @@ Freescale i.MX IIM (Ic Identification Module)
  
- 	if (!is_active) {
- 		if (gpio >= 0)
--			gpio_set_value(gpio, !cs);
-+			gpio_direction_output(gpio, !cs);
- 		return;
- 	}
+ Required properties:
  
-@@ -253,7 +253,7 @@ static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
+-- compatible: fsl,imx-iim
++- compatible: fsl,imx27-iim
+ - reg: physical register base and size
  
- 	if (!is_active) {
- 		if (gpio >= 0)
--			gpio_set_value(gpio, !cs);
-+			gpio_direction_output(gpio, !cs);
- 		return;
- 	}
+ Optional properties:
+@@ -14,7 +14,7 @@ Optional properties:
+ Example:
  
+ iim: iim@83f98000 {
+-	compatible = "fsl,imx51-iim", "fsl,imx-iim";
++	compatible = "fsl,imx51-iim", "fsl,imx27-iim";
+ 	reg = <0x83f98000 0x4000>;
+ 	barebox,provide-mac-address = <&fec 1 9>;
+ };
 -- 
 1.8.3.2
 
