@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX49N-0006oe-UC
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:39:26 +0000
-Received: by mail-lb0-f171.google.com with SMTP id w7so4367451lbi.2
- for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 00:39:02 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Apr 2014 11:38:46 +0400
-Message-Id: <1396856329-17464-1-git-send-email-antonynpavlov@gmail.com>
+ id 1WX49G-0006oa-S6
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:39:19 +0000
+Date: Mon, 7 Apr 2014 09:38:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140407073856.GJ27055@pengutronix.de>
+References: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
+ <1396722934-23818-3-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1396722934-23818-3-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,39 +19,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 0/3] MIPS: loongson-ls1b: switch to device tree probe
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] spi: add controller driver for Atheros AR7XXX/AR9XXX
+ SoCs
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-New boards should probe from devicetree and
-not use the platform registration code.
+On Sat, Apr 05, 2014 at 10:35:31PM +0400, Antony Pavlov wrote:
+> +static int ath79_spi_setup(struct spi_device *spi)
+> +{
+> +	struct spi_master *master = spi->master;
+> +	struct device_d spi_dev = spi->dev;
+> +
+> +	if (spi->bits_per_word != 8) {
+> +		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
+> +			spi->bits_per_word, spi_dev.name);
+> +		return -1;
+> +	}
+> +
+> +	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
+> +		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
+> +			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
+> +		return -1;
+> +	}
 
-This patchseries adds device tree stuff for
-Longson LS1B SoC and Loongson Tech LS1B Demo Board.
+Better -EINVAL?
 
-Antony Pavlov (3):
-  MIPS: add Longson LS1B SoC dtsi file
-  MIPS: add Loongson Tech LS1B Demo Board dts file
-  MIPS: loongson-ls1b: switch to device tree
+Otherwise this series looks good.
 
- arch/mips/boards/loongson-ls1b/Makefile   |  1 -
- arch/mips/boards/loongson-ls1b/ram.c      | 12 ---------
- arch/mips/boards/loongson-ls1b/serial.c   | 12 ---------
- arch/mips/configs/loongson-ls1b_defconfig |  6 +++++
- arch/mips/dts/loongson-ls1b.dts           | 16 ++++++++++++
- arch/mips/dts/ls1b.dtsi                   | 43 +++++++++++++++++++++++++++++++
- 6 files changed, 65 insertions(+), 25 deletions(-)
- delete mode 100644 arch/mips/boards/loongson-ls1b/ram.c
- create mode 100644 arch/mips/dts/loongson-ls1b.dts
- create mode 100644 arch/mips/dts/ls1b.dtsi
+Sascha
 
 -- 
-1.9.0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
