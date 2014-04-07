@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp.reverze.net ([82.161.88.7] helo=fsm.reverze.net)
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX6NC-0001wv-Su
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 10:01:54 +0000
+ id 1WX6NC-0001ww-Sy
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 10:01:55 +0000
 From: michel@reverze.net
-Date: Mon,  7 Apr 2014 12:01:20 +0200
-Message-Id: <1396864882-5152-1-git-send-email-michel@reverze.net>
+Date: Mon,  7 Apr 2014 12:01:21 +0200
+Message-Id: <1396864882-5152-2-git-send-email-michel@reverze.net>
+In-Reply-To: <1396864882-5152-1-git-send-email-michel@reverze.net>
+References: <1396864882-5152-1-git-send-email-michel@reverze.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,520 +21,596 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCHv4 1/3] common: Allow for I/O mapped I/O
+Subject: [PATCHv4 2/3] x86: Add support for IDE on the legacy I/O ports
 To: barebox@lists.infradead.org
 
 From: Michel Stam <m.stam@fugro.nl>
 
-Rework the current framework so that I/O mapped I/O resources are
-also possible.
-
 Signed-off-by: Michel Stam <michel@reverze.net>
 ---
- arch/arm/include/asm/io.h     |    2 +
- arch/mips/include/asm/io.h    |    2 +
- arch/nios2/include/asm/io.h   |    2 +
- arch/sandbox/include/asm/io.h |    1 +
- arch/x86/include/asm/io.h     |    2 +
- commands/Kconfig              |    8 ++--
- commands/Makefile             |    2 +-
- commands/iomem.c              |   52 -------------------------------
- commands/iomemport.c          |   67 +++++++++++++++++++++++++++++++++++++++++
- common/memory.c               |    3 +-
- common/resource.c             |   30 ++++++++++++++----
- drivers/base/driver.c         |   16 +++++----
- drivers/gpio/gpio-generic.c   |    4 +-
- drivers/mfd/syscon.c          |    2 +-
- drivers/misc/sram.c           |    2 +-
- include/driver.h              |    5 ++-
- include/linux/ioport.h        |    5 ++-
- 17 files changed, 128 insertions(+), 77 deletions(-)
- delete mode 100644 commands/iomem.c
- create mode 100644 commands/iomemport.c
+ arch/x86/boards/x86_generic/Makefile            |    3 +
+ arch/x86/boards/x86_generic/disk_bios_drive.c   |   46 +++++++++++
+ arch/x86/boards/x86_generic/envsector.h         |   36 ++++++++
+ arch/x86/boards/x86_generic/generic_pc.c        |   53 +------------
+ arch/x86/boards/x86_generic/intf_platform_ide.c |   93 +++++++++++++++++++++
+ arch/x86/boards/x86_generic/serial_ns16550.c    |   47 +++++++++++
+ drivers/ata/ide-sff.c                           |   98 +++++++++++++++++++----
+ drivers/ata/intf_platform_ide.c                 |   37 ++++++++-
+ include/ata_drive.h                             |    1 +
+ 9 files changed, 341 insertions(+), 73 deletions(-)
+ create mode 100644 arch/x86/boards/x86_generic/disk_bios_drive.c
+ create mode 100644 arch/x86/boards/x86_generic/envsector.h
+ create mode 100644 arch/x86/boards/x86_generic/intf_platform_ide.c
+ create mode 100644 arch/x86/boards/x86_generic/serial_ns16550.c
 
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index e0630eb..ccf1f59 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -3,6 +3,8 @@
- 
- #include <asm-generic/io.h>
- 
-+#define	IO_SPACE_LIMIT	0
-+
- /*
-  * String version of IO memory access ops:
-  */
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 4100e1e..1cc8a51 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -14,6 +14,8 @@
- #include <asm/types.h>
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0
-+
- /*****************************************************************************/
- /*
-  * readX/writeX() are used to access memory mapped devices. On some
-diff --git a/arch/nios2/include/asm/io.h b/arch/nios2/include/asm/io.h
-index 8ee48e0..59eea73 100644
---- a/arch/nios2/include/asm/io.h
-+++ b/arch/nios2/include/asm/io.h
-@@ -22,6 +22,8 @@
- 
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0
-+
- #define __raw_writeb(v, a)       (*(volatile unsigned char  *)(a) = (v))
- #define __raw_writew(v, a)       (*(volatile unsigned short *)(a) = (v))
- #define __raw_writel(v, a)       (*(volatile unsigned int   *)(a) = (v))
-diff --git a/arch/sandbox/include/asm/io.h b/arch/sandbox/include/asm/io.h
-index 8ca164f..35b5784 100644
---- a/arch/sandbox/include/asm/io.h
-+++ b/arch/sandbox/include/asm/io.h
-@@ -2,5 +2,6 @@
- #define __ASM_SANDBOX_IO_H
- 
- #include <asm-generic/io.h>
-+#define	IO_SPACE_LIMIT 0
- 
- #endif /* __ASM_SANDBOX_IO_H */
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index 9cb78e4..f020510 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -12,6 +12,8 @@
- 
- #include <asm/byteorder.h>
- 
-+#define	IO_SPACE_LIMIT	0xffff
-+
- static inline void outb(unsigned char value, int port)
- {
- 	asm volatile("outb %b0, %w1" : : "a"(value), "Nd"(port));
-diff --git a/commands/Kconfig b/commands/Kconfig
-index cc014f3..33bd353 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -307,12 +307,12 @@ config CMD_MEMINFO
- 	tristate
- 	prompt "meminfo"
- 
--config CMD_IOMEM
-+config CMD_IOMEMPORT
- 	tristate
--	prompt "iomem"
-+	prompt "iomem/ioport"
- 	help
--	  Show information about iomem usage. Pendant to 'cat /proc/iomem'
--	  under Linux.
-+	  Show information about iomem/ioport usage. Pendant to
-+	  'cat /proc/iomem' and 'cat /proc/ioports' under Linux.
- 
- config CMD_MEMORY
- 	bool
-diff --git a/commands/Makefile b/commands/Makefile
-index e463031..0da1173 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -76,7 +76,7 @@ obj-$(CONFIG_CMD_OFTREE)	+= oftree.o
- obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
- obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
- obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
--obj-$(CONFIG_CMD_IOMEM)		+= iomem.o
-+obj-$(CONFIG_CMD_IOMEMPORT)	+= iomemport.o
- obj-$(CONFIG_CMD_LINUX_EXEC)	+= linux_exec.o
- obj-$(CONFIG_CMD_AUTOMOUNT)	+= automount.o
- obj-$(CONFIG_CMD_GLOBAL)	+= global.o
-diff --git a/commands/iomem.c b/commands/iomem.c
-deleted file mode 100644
-index e117c2a..0000000
---- a/commands/iomem.c
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/*
-- * iomem.c - barebox iomem command
-- *
-- * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-- *
-- * See file CREDITS for list of people who contributed to this
-- * project.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- */
--#include <common.h>
--#include <command.h>
--
--static void __print_resources(struct resource *res, int indent)
--{
--	struct resource *r;
--	int i;
--
--	for (i = 0; i < indent; i++)
--		printf("  ");
--
--	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
--			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n", res->start,
--			res->end, resource_size(res), res->name);
--
--	list_for_each_entry(r, &res->children, sibling)
--		__print_resources(r, indent + 1);
--}
--
--static void print_resources(struct resource *res)
--{
--	__print_resources(res, 0);
--}
--
--static int do_iomem(int argc, char *argv[])
--{
--	print_resources(&iomem_resource);
--
--	return 0;
--}
--
--BAREBOX_CMD_START(iomem)
--	.cmd		= do_iomem,
--	.usage		= "show iomem usage",
--BAREBOX_CMD_END
-diff --git a/commands/iomemport.c b/commands/iomemport.c
+diff --git a/arch/x86/boards/x86_generic/Makefile b/arch/x86/boards/x86_generic/Makefile
+index 248240d..fca707d 100644
+--- a/arch/x86/boards/x86_generic/Makefile
++++ b/arch/x86/boards/x86_generic/Makefile
+@@ -1 +1,4 @@
+ obj-y += generic_pc.o
++obj-$(CONFIG_DISK_INTF_PLATFORM_IDE) += intf_platform_ide.o
++obj-$(CONFIG_DISK_BIOS) += disk_bios_drive.o
++obj-$(CONFIG_DRIVER_SERIAL_NS16550) += serial_ns16550.o
+diff --git a/arch/x86/boards/x86_generic/disk_bios_drive.c b/arch/x86/boards/x86_generic/disk_bios_drive.c
 new file mode 100644
-index 0000000..250380f
+index 0000000..f33f48c
 --- /dev/null
-+++ b/commands/iomemport.c
-@@ -0,0 +1,67 @@
++++ b/arch/x86/boards/x86_generic/disk_bios_drive.c
+@@ -0,0 +1,46 @@
 +/*
-+ * iomem.c - barebox iomem command
++ * Copyright (C) 2009 Juergen Beisert, Pengutronix
 + *
-+ * Copyright (c) 2011 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+ *
-+ * See file CREDITS for list of people who contributed to this
-+ * project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
 + *
 + * This program is distributed in the hope that it will be useful,
 + * but WITHOUT ANY WARRANTY; without even the implied warranty of
 + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 + * GNU General Public License for more details.
++ *
++ *
 + */
-+#include <asm/io.h>
++
++/**
++ * @file
++ * @brief Generic PC support for the BIOS disk interface
++ */
++
 +#include <common.h>
-+#include <command.h>
++#include <driver.h>
++#include <init.h>
++#include <linux/err.h>
++#include "envsector.h"
 +
-+static void __print_resources(struct resource *res, int indent)
++static int bios_disk_init(void)
 +{
-+	struct resource *r;
-+	int i;
++	struct cdev *cdev;
 +
-+	for (i = 0; i < indent; i++)
-+		printf("  ");
++	add_generic_device("biosdrive", DEVICE_ID_DYNAMIC, NULL, 0, 0,
++			   IORESOURCE_MEM, NULL);
 +
-+	printf(PRINTF_CONVERSION_RESOURCE " - " PRINTF_CONVERSION_RESOURCE
-+			" (size " PRINTF_CONVERSION_RESOURCE ") %s\n",
-+			res->start, res->end, resource_size(res), res->name);
-+
-+	list_for_each_entry(r, &res->children, sibling)
-+		__print_resources(r, indent + 1);
-+}
-+
-+static void print_resources(struct resource *res)
-+{
-+	__print_resources(res, 0);
-+}
-+
-+static int do_iomem(int argc, char *argv[])
-+{
-+	print_resources(&iomem_resource);
++	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
++		cdev = devfs_add_partition("biosdisk0",
++				pers_env_storage * 512,
++				(unsigned)pers_env_size * 512,
++				DEVFS_PARTITION_FIXED, "env0");
++		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
++	} else
++		printf("No persistent storage defined\n");
 +
 +	return 0;
 +}
++device_initcall(bios_disk_init);
+diff --git a/arch/x86/boards/x86_generic/envsector.h b/arch/x86/boards/x86_generic/envsector.h
+new file mode 100644
+index 0000000..86511c8
+--- /dev/null
++++ b/arch/x86/boards/x86_generic/envsector.h
+@@ -0,0 +1,36 @@
++/*
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ */
 +
-+static int do_ioport(int argc, char *argv[])
-+{
-+	print_resources(&ioport_resource);
++/**
++ * @file
++ * @brief x86 Generic PC common definitions
++ */
++#ifndef __X86_ENVSECTOR_H
++#define __ENVSECTOR_H
 +
-+	return 0;
-+}
++/*
++ * These datas are from the MBR, created by the linker and filled by the
++ * setup tool while installing barebox on the disk drive
++ */
++extern uint64_t pers_env_storage;
++extern uint16_t pers_env_size;
++extern uint8_t pers_env_drive;
 +
-+BAREBOX_CMD_START(iomem)
-+	.cmd		= do_iomem,
-+	.usage		= "show iomem usage",
-+BAREBOX_CMD_END
++/**
++ * Persistent environment "not used" marker.
++ * Note: Must be in accordance to the value the tool "setup_mbr" writes.
++ */
++#define PATCH_AREA_PERS_SIZE_UNUSED 0x000
 +
-+#if IO_SPACE_LIMIT > 0
-+BAREBOX_CMD_START(ioport)
-+	.cmd		= do_ioport,
-+	.usage		= "show ioport usage",
-+BAREBOX_CMD_END
 +#endif
-diff --git a/common/memory.c b/common/memory.c
-index c82bbaa..7dbd7f4 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -148,7 +148,8 @@ struct resource *request_sdram_region(const char *name, resource_size_t start,
- 	for_each_memory_bank(bank) {
- 		struct resource *res;
- 
--		res = request_region(bank->res, name, start, start + size - 1);
-+		res = __request_region(bank->res, name, start,
-+				       start + size - 1);
- 		if (res)
- 			return res;
- 	}
-diff --git a/common/resource.c b/common/resource.c
-index 5795e79..f05e12f 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -20,6 +20,7 @@
- #include <errno.h>
+diff --git a/arch/x86/boards/x86_generic/generic_pc.c b/arch/x86/boards/x86_generic/generic_pc.c
+index 74a7224..5560efc 100644
+--- a/arch/x86/boards/x86_generic/generic_pc.c
++++ b/arch/x86/boards/x86_generic/generic_pc.c
+@@ -24,67 +24,16 @@
+ #include <driver.h>
  #include <init.h>
- #include <linux/ioport.h>
-+#include <asm/io.h>
+ #include <asm/syslib.h>
+-#include <ns16550.h>
+ #include <linux/err.h>
  
- static int init_resource(struct resource *res, const char *name)
+-/*
+- * These datas are from the MBR, created by the linker and filled by the
+- * setup tool while installing barebox on the disk drive
+- */
+-extern uint64_t pers_env_storage;
+-extern uint16_t pers_env_size;
+-extern uint8_t pers_env_drive;
+-
+-/**
+- * Persistent environment "not used" marker.
+- * Note: Must be in accordance to the value the tool "setup_mbr" writes.
+- */
+-#define PATCH_AREA_PERS_SIZE_UNUSED 0x000
+-
+ static int devices_init(void)
  {
-@@ -36,7 +37,7 @@ static int init_resource(struct resource *res, const char *name)
-  * the parent resource and does not conflict with any of the child
-  * resources.
+-	struct cdev *cdev;
+-
+ 	/* extended memory only */
+ 	add_mem_device("ram0", 0x0, bios_get_memsize() << 10,
+ 		       IORESOURCE_MEM_WRITEABLE);
+-	add_generic_device("biosdrive", DEVICE_ID_DYNAMIC, NULL, 0, 0, IORESOURCE_MEM,
+-			NULL);
+-
+-	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
+-		cdev = devfs_add_partition("biosdisk0",
+-				pers_env_storage * 512,
+-				(unsigned)pers_env_size * 512,
+-				DEVFS_PARTITION_FIXED, "env0");
+-		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
+-	} else
+-		printf("No persistent storage defined\n");
+-
+-        return 0;
+-}
+-device_initcall(devices_init);
+-
+-#ifdef CONFIG_DRIVER_SERIAL_NS16550
+-
+-static struct NS16550_plat serial_plat = {
+-       .clock = 1843200,
+-       .reg_read = x86_uart_read,
+-       .reg_write = x86_uart_write,
+-};
+-
+-static int pc_console_init(void)
+-{
+-	barebox_set_model("X86 generic barebox");
+-	barebox_set_hostname("x86");
+-
+-	/* Register the serial port */
+-	add_ns16550_device(DEVICE_ID_DYNAMIC, 0x3f8, 8, 0, &serial_plat);
+-
+ 	return 0;
+ }
+-console_initcall(pc_console_init);
+-
+-#endif
++device_initcall(devices_init);
+ 
+ /** @page generic_pc Generic PC based bootloader
+ 
+diff --git a/arch/x86/boards/x86_generic/intf_platform_ide.c b/arch/x86/boards/x86_generic/intf_platform_ide.c
+new file mode 100644
+index 0000000..18a2620
+--- /dev/null
++++ b/arch/x86/boards/x86_generic/intf_platform_ide.c
+@@ -0,0 +1,93 @@
++/*
++ * Copyright (C) 2014 Juergen Beisert, Pengutronix, Michel Stam,
++ * Fugro Intersite
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ */
++
++/**
++ * @file
++ * @brief Generic PC support for the IDE platform driver
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <linux/err.h>
++#include <platform_ide.h>
++#include "envsector.h"
++
++static struct ide_port_info ide_plat = {
++	.ioport_shift = 0,
++	.dataif_be = 0,
++};
++
++static struct resource primary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x1f0,
++		.end =  0x1f7,
++		.flags = IORESOURCE_IO
++	},
++	{
++		.name = "alt",
++		.start = 0x3f6,
++		.end =  0x3f7,
++		.flags = IORESOURCE_IO
++	}
++};
++
++static struct resource secondary_ide_resources[] = {
++	{
++		.name = "base",
++		.start = 0x170,
++		.end =  0x177,
++		.flags = IORESOURCE_IO
++	},
++};
++
++static struct device_d primary_ide_device = {
++	.name = "ide_intf",
++	.id = 0,
++	.platform_data = &ide_plat,
++	.resource = primary_ide_resources,
++	.num_resources = ARRAY_SIZE(primary_ide_resources),
++};
++
++static struct device_d secondary_ide_device = {
++	.name = "ide_intf",
++	.id = 1,
++	.platform_data = &ide_plat,
++	.resource = secondary_ide_resources,
++	.num_resources = ARRAY_SIZE(secondary_ide_resources),
++};
++
++static int platform_ide_init(void)
++{
++	struct cdev *cdev;
++
++	platform_device_register(&primary_ide_device);
++	platform_device_register(&secondary_ide_device);
++
++	if (pers_env_size != PATCH_AREA_PERS_SIZE_UNUSED) {
++		cdev = devfs_add_partition("ata0",
++				pers_env_storage * 512,
++				(unsigned)pers_env_size * 512,
++				DEVFS_PARTITION_FIXED, "env0");
++		printf("Partition: %ld\n", IS_ERR(cdev) ? PTR_ERR(cdev) : 0);
++	} else
++		printf("No persistent storage defined\n");
++
++	return 0;
++}
++device_initcall(platform_ide_init);
+diff --git a/arch/x86/boards/x86_generic/serial_ns16550.c b/arch/x86/boards/x86_generic/serial_ns16550.c
+new file mode 100644
+index 0000000..cae61df
+--- /dev/null
++++ b/arch/x86/boards/x86_generic/serial_ns16550.c
+@@ -0,0 +1,47 @@
++/*
++ * Copyright (C) 2009 Juergen Beisert, Pengutronix, Michel Stam,
++ * Fugro Intersite
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ */
++
++/**
++ * @file
++ * @brief Generic PC support to let barebox acting as a boot loader
++ */
++
++#include <common.h>
++#include <types.h>
++#include <driver.h>
++#include <init.h>
++#include <asm/syslib.h>
++#include <ns16550.h>
++#include <linux/err.h>
++
++static struct NS16550_plat serial_plat = {
++	.clock = 1843200,
++	.reg_read = x86_uart_read,
++	.reg_write = x86_uart_write,
++};
++
++static int pc_console_init(void)
++{
++	barebox_set_model("X86 generic barebox");
++	barebox_set_hostname("x86");
++
++	/* Register the serial port */
++	add_ns16550_device(DEVICE_ID_DYNAMIC, 0x3f8, 8, 0, &serial_plat);
++
++	return 0;
++}
++console_initcall(pc_console_init);
+diff --git a/drivers/ata/ide-sff.c b/drivers/ata/ide-sff.c
+index 3d5932e..a8f2b26 100644
+--- a/drivers/ata/ide-sff.c
++++ b/drivers/ata/ide-sff.c
+@@ -15,13 +15,74 @@
+ #define DISK_SLAVE 1
+ 
+ /**
++ * Read a byte from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline uint8_t ata_rd_byte(struct ide_port *ide, void __iomem *addr)
++{
++	if (ide->io.mmio)
++		return readb(addr);
++	else
++		return (uint8_t) inb((int) addr);
++}
++
++/**
++ * Write a byte to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_byte(struct ide_port *ide, uint8_t value,
++			       void __iomem *addr)
++{
++	if (ide->io.mmio)
++		writeb(value, addr);
++	else
++		outb(value, (int) addr);
++}
++
++/**
++ * Read a word from the ATA controller
++ * @param ide IDE port structure
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline uint16_t ata_rd_word(struct ide_port *ide,
++				   void __iomem *addr)
++{
++	if (ide->io.mmio)
++		return readw(addr);
++	else
++		return (uint16_t) inw((int) addr);
++}
++
++/**
++ * Write a word to the ATA controller
++ * @param ide IDE port structure
++ * @param value Value to write
++ * @param addr Register adress
++ * @return Register's content
++ */
++static inline void ata_wr_word(struct ide_port *ide, uint16_t value,
++			       void __iomem *addr)
++{
++	if (ide->io.mmio)
++		writew(value, addr);
++	else
++		outw(value, (int) addr);
++}
++
++/**
+  * Read the status register of the ATA drive
+  * @param io Register file
+  * @return Register's content
   */
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t start,
- 		resource_size_t end)
+ static uint8_t ata_rd_status(struct ide_port *ide)
  {
-@@ -95,7 +96,7 @@ ok:
+-	return readb(ide->io.status_addr);
++	return ata_rd_byte(ide, ide->io.status_addr);
  }
  
- /*
-- * release a region previously requested with request_region
-+ * release a region previously requested with request_*_region
-  */
- int release_region(struct resource *res)
- {
-@@ -109,7 +110,7 @@ int release_region(struct resource *res)
+ /**
+@@ -83,12 +144,13 @@ static int ata_set_lba_sector(struct ide_port *ide, unsigned drive, uint64_t num
+ 	if (num > 0x0FFFFFFF || drive > 1)
+ 		return -EINVAL;
+ 
+-	writeb(0xA0 | LBA_FLAG | drive << 4 | num >> 24, ide->io.device_addr);
+-	writeb(0x00, ide->io.error_addr);
+-	writeb(0x01, ide->io.nsect_addr);
+-	writeb(num, ide->io.lbal_addr);	/* 0 ... 7 */
+-	writeb(num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
+-	writeb(num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
++	ata_wr_byte(ide, 0xA0 | LBA_FLAG | drive << 4 | num >> 24,
++		    ide->io.device_addr);
++	ata_wr_byte(ide, 0x00, ide->io.error_addr);
++	ata_wr_byte(ide, 0x01, ide->io.nsect_addr);
++	ata_wr_byte(ide, num, ide->io.lbal_addr);	/* 0 ... 7 */
++	ata_wr_byte(ide, num >> 8, ide->io.lbam_addr); /* 8 ... 15 */
++	ata_wr_byte(ide, num >> 16, ide->io.lbah_addr); /* 16 ... 23 */
+ 
+ 	return 0;
+ }
+@@ -107,7 +169,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t cmd)
+ 	if (rc != 0)
+ 		return rc;
+ 
+-	writeb(cmd, ide->io.command_addr);
++	ata_wr_byte(ide, cmd, ide->io.command_addr);
  	return 0;
  }
  
--/* The root resource for the whole io space */
-+/* The root resource for the whole memory-mapped io space */
- struct resource iomem_resource = {
- 	.start = 0,
- 	.end = 0xffffffff,
-@@ -118,10 +119,27 @@ struct resource iomem_resource = {
+@@ -118,7 +180,7 @@ static int ata_wr_cmd(struct ide_port *ide, uint8_t cmd)
+  */
+ static void ata_wr_dev_ctrl(struct ide_port *ide, uint8_t val)
+ {
+-	writeb(val, ide->io.ctl_addr);
++	ata_wr_byte(ide, val, ide->io.ctl_addr);
+ }
+ 
+ /**
+@@ -133,10 +195,10 @@ static void ata_rd_sector(struct ide_port *ide, void *buf)
+ 
+ 	if (ide->io.dataif_be) {
+ 		for (; u > 0; u--)
+-			*b++ = be16_to_cpu(readw(ide->io.data_addr));
++			*b++ = be16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+ 	} else {
+ 		for (; u > 0; u--)
+-			*b++ = le16_to_cpu(readw(ide->io.data_addr));
++			*b++ = le16_to_cpu(ata_rd_word(ide, ide->io.data_addr));
+ 	}
+ }
+ 
+@@ -152,10 +214,10 @@ static void ata_wr_sector(struct ide_port *ide, const void *buf)
+ 
+ 	if (ide->io.dataif_be) {
+ 		for (; u > 0; u--)
+-			writew(cpu_to_be16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_be16(*b++), ide->io.data_addr);
+ 	} else {
+ 		for (; u > 0; u--)
+-			writew(cpu_to_le16(*b++), ide->io.data_addr);
++			ata_wr_word(ide, cpu_to_le16(*b++), ide->io.data_addr);
+ 	}
+ }
+ 
+@@ -169,10 +231,10 @@ static int ide_read_id(struct ata_port *port, void *buf)
+ 	struct ide_port *ide = to_ata_drive_access(port);
+ 	int rc;
+ 
+-	writeb(0xA0, ide->io.device_addr);	/* FIXME drive */
+-	writeb(0x00, ide->io.lbal_addr);
+-	writeb(0x00, ide->io.lbam_addr);
+-	writeb(0x00, ide->io.lbah_addr);
++	ata_wr_byte(ide, 0xA0, ide->io.device_addr);	/* FIXME drive */
++	ata_wr_byte(ide, 0x00, ide->io.lbal_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbam_addr);
++	ata_wr_byte(ide, 0x00, ide->io.lbah_addr);
+ 
+ 	rc = ata_wr_cmd(ide, ATA_CMD_ID_ATA);
+ 	if (rc != 0)
+@@ -327,6 +389,8 @@ int ide_port_register(struct ide_port *ide)
+ 	ide->port.ops = &ide_ops;
+ 
+ 	ret = ata_port_register(&ide->port);
++	if (!ret)
++		ata_port_detect(&ide->port);
+ 
+ 	if (ret)
+ 		free(ide);
+diff --git a/drivers/ata/intf_platform_ide.c b/drivers/ata/intf_platform_ide.c
+index 8ae0f05..ecc2546 100644
+--- a/drivers/ata/intf_platform_ide.c
++++ b/drivers/ata/intf_platform_ide.c
+@@ -82,15 +82,46 @@ static int platform_ide_probe(struct device_d *dev)
+ 	struct ide_port_info *pdata = dev->platform_data;
+ 	struct ide_port *ide;
+ 	void *reg_base, *alt_base;
++	struct resource *reg, *alt;
++	int mmio;
+ 
+ 	if (pdata == NULL) {
+ 		dev_err(dev, "No platform data. Cannot continue\n");
+ 		return -EINVAL;
+ 	}
+ 
++	alt = NULL;
++	reg = dev_get_resource(dev, IORESOURCE_MEM, 0);
++	mmio = (reg != NULL);
++	if (reg != NULL) {
++		reg = request_iomem_region(dev_name(dev), reg->start,
++					   reg->end);
++		alt = dev_get_resource(dev, IORESOURCE_MEM, 1);
++		if (alt != NULL)
++			alt = request_iomem_region(dev_name(dev), alt->start,
++						   alt->end);
++	} else {
++		reg = dev_get_resource(dev, IORESOURCE_IO, 0);
++		if (reg != NULL) {
++			reg = request_ioport_region(dev_name(dev), reg->start,
++						    reg->end);
++			alt = dev_get_resource(dev, IORESOURCE_IO, 1);
++			if (alt != NULL)
++				alt = request_ioport_region(dev_name(dev),
++							    alt->start,
++							    alt->end);
++		}
++	}
++
++	reg_base = (reg != NULL ? (void __force __iomem *) reg->start : NULL);
++	alt_base = (alt != NULL ? (void __force __iomem *) alt->start : NULL);
++
++	if (!reg_base)
++		return -ENODEV;
++
+ 	ide = xzalloc(sizeof(*ide));
+-	reg_base = dev_request_mem_region(dev, 0);
+-	alt_base = dev_request_mem_region(dev, 1);
++	ide->io.mmio = mmio;
++
+ 	platform_ide_setup_port(reg_base, alt_base, &ide->io, pdata->ioport_shift);
+ 	ide->io.reset = pdata->reset;
+ 	ide->io.dataif_be = pdata->dataif_be;
+@@ -125,6 +156,4 @@ device_platform_driver(platform_ide_driver);
+  *
+  * This driver does not change any access timings due to the fact it has no idea
+  * how to do so. So, do not expect an impressive data throughput.
+- *
+- * @todo Support also the IO port access method, the x86 architecture is using
+  */
+diff --git a/include/ata_drive.h b/include/ata_drive.h
+index 6d6cca4..44073cb 100644
+--- a/include/ata_drive.h
++++ b/include/ata_drive.h
+@@ -119,6 +119,7 @@ struct ata_ioports {
+ 	/* hard reset line handling */
+ 	void (*reset)(int);	/* true: assert reset, false: de-assert reset */
+ 	int dataif_be;	/* true if 16 bit data register is big endian */
++	int mmio; /* true if memory-mapped io */
  };
  
- /*
-- * request a region inside the io space
-+ * request a region inside the io space (memory)
-  */
--struct resource *request_iomem_region(const char *name,
-+inline struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end)
- {
--	return request_region(&iomem_resource, name, start, end);
-+	return __request_region(&iomem_resource, name, start, end);
-+}
-+
-+/* The root resource for the whole io-mapped io space */
-+struct resource ioport_resource = {
-+	.start = 0,
-+	.end = IO_SPACE_LIMIT,
-+	.name = "ioport",
-+	.children = LIST_HEAD_INIT(ioport_resource.children),
-+};
-+
-+/*
-+ * request a region inside the io space (i/o port)
-+ */
-+inline struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end)
-+{
-+	return __request_region(&ioport_resource, name, start, end);
- }
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 37560fd..2cf3ee6 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -241,13 +241,14 @@ int register_driver(struct driver_d *drv)
- }
- EXPORT_SYMBOL(register_driver);
- 
--struct resource *dev_get_resource(struct device_d *dev, int num)
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-+				  int num)
- {
- 	int i, n = 0;
- 
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) == IORESOURCE_MEM) {
-+		if (resource_type(res) == type) {
- 			if (n == num)
- 				return res;
- 			n++;
-@@ -261,7 +262,7 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-@@ -270,13 +271,14 @@ void *dev_get_mem_region(struct device_d *dev, int num)
- EXPORT_SYMBOL(dev_get_mem_region);
- 
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name)
- {
- 	int i;
- 
- 	for (i = 0; i < dev->num_resources; i++) {
- 		struct resource *res = &dev->resource[i];
--		if (resource_type(res) != IORESOURCE_MEM)
-+		if (resource_type(res) != type)
- 			continue;
- 		if (!res->name)
- 			continue;
-@@ -291,7 +293,7 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -303,7 +305,7 @@ void __iomem *dev_request_mem_region_by_name(struct device_d *dev, const char *n
- {
- 	struct resource *res;
- 
--	res = dev_get_resource_by_name(dev, name);
-+	res = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!res)
- 		return NULL;
- 
-@@ -319,7 +321,7 @@ void __iomem *dev_request_mem_region(struct device_d *dev, int num)
- {
- 	struct resource *res;
- 
--	res = dev_get_resource(dev, num);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, num);
- 	if (!res)
- 		return NULL;
- 
-diff --git a/drivers/gpio/gpio-generic.c b/drivers/gpio/gpio-generic.c
-index a2fc400..5c46282 100644
---- a/drivers/gpio/gpio-generic.c
-+++ b/drivers/gpio/gpio-generic.c
-@@ -310,7 +310,7 @@ static void __iomem *bgpio_map(struct device_d *dev, const char *name,
- 
- 	*err = 0;
- 
--	r = dev_get_resource_by_name(dev, name);
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, name);
- 	if (!r)
- 		return NULL;
- 
-@@ -342,7 +342,7 @@ static int bgpio_dev_probe(struct device_d *dev)
- 	struct bgpio_chip *bgc;
- 	struct bgpio_pdata *pdata = dev->platform_data;
- 
--	r = dev_get_resource_by_name(dev, "dat");
-+	r = dev_get_resource_by_name(dev, IORESOURCE_MEM, "dat");
- 	if (!r)
- 		return -EINVAL;
- 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 8fc84c3..e6722e1 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -70,7 +70,7 @@ static int syscon_probe(struct device_d *dev)
- 	if (!syscon)
- 		return -ENOMEM;
- 
--	res = dev_get_resource(dev, 0);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (!res) {
- 		free(syscon);
- 		return -ENOENT;
-diff --git a/drivers/misc/sram.c b/drivers/misc/sram.c
-index 7ea23b7..0466a15 100644
---- a/drivers/misc/sram.c
-+++ b/drivers/misc/sram.c
-@@ -47,7 +47,7 @@ static int sram_probe(struct device_d *dev)
- 	sram->cdev.name = asprintf("sram%d",
- 			cdev_find_free_index("sram"));
- 
--	res = dev_get_resource(dev, 0);
-+	res = dev_get_resource(dev, IORESOURCE_MEM, 0);
- 
- 	sram->cdev.size = (unsigned long)resource_size(res);
- 	sram->cdev.ops = &memops;
-diff --git a/include/driver.h b/include/driver.h
-index 01b181d..7c7d38f 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -203,11 +203,13 @@ static inline const char *dev_name(const struct device_d *dev)
- /*
-  * get resource 'num' for a device
-  */
--struct resource *dev_get_resource(struct device_d *dev, int num);
-+struct resource *dev_get_resource(struct device_d *dev, unsigned long type,
-+				  int num);
- /*
-  * get resource base 'name' for a device
-  */
- struct resource *dev_get_resource_by_name(struct device_d *dev,
-+					  unsigned long type,
- 					  const char *name);
- /*
-  * get register base 'name' for a device
-@@ -219,6 +221,7 @@ void *dev_get_mem_region_by_name(struct device_d *dev, const char *name);
-  */
- void __iomem *dev_request_mem_region_by_name(struct device_d *dev,
- 					     const char *name);
-+
- /*
-  * get register base 'num' for a device
-  */
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index ff0cba0..d1b2f55 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -137,14 +137,17 @@ static inline unsigned long resource_type(const struct resource *res)
- 
- struct resource *request_iomem_region(const char *name,
- 		resource_size_t start, resource_size_t end);
-+struct resource *request_ioport_region(const char *name,
-+		resource_size_t start, resource_size_t end);
- 
--struct resource *request_region(struct resource *parent,
-+struct resource *__request_region(struct resource *parent,
- 		const char *name, resource_size_t end,
- 		resource_size_t size);
- 
- int release_region(struct resource *res);
- 
- extern struct resource iomem_resource;
-+extern struct resource ioport_resource;
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
+ struct ata_port;
 -- 
 1.7.1
 
