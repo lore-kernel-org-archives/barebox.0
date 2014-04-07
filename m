@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f354.i.mail.ru ([217.69.140.250])
+Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX4N4-00075Z-MW
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:53:35 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 07 Apr 2014 11:52:20 +0400
-Message-ID: <1396857140.645309013@f354.i.mail.ru>
-In-Reply-To: <20140407074352.GK27055@pengutronix.de>
-References: <1396777600-647-1-git-send-email-shc_work@mail.ru>
- <20140407074352.GK27055@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1WX4Kl-000748-Ub
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:51:12 +0000
+Received: by mail-la0-f41.google.com with SMTP id gl10so4556347lab.28
+ for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 00:50:49 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  7 Apr 2014 11:50:39 +0400
+Message-Id: <1396857039-17837-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,22 +16,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkMgMC8yXSBTd2l0Y2ggQVJNIGkuTVgyNyBQQ00tMDM4?=
- =?UTF-8?B?L1BDTS05NzAgdG8gZGV2aWNldHJlZSBwcm9iZQ==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] spi: altera_spi: fix altera_spi_setup() return error codes
+To: barebox@lists.infradead.org
 
-TW9uLCA3IEFwciAyMDE0IDA5OjQzOjUyICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPjoKPiBPbiBTdW4sIEFwciAwNiwgMjAxNCBhdCAwMTo0NjozOFBNICsw
-NDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gSXQgaXMgb25seSBSRkMgZm9yIG5vdy4K
-PiA+IEtub3duIGlzc3VlczoKPiA+IC0gUE1JQyBpcyBub3QgZGV0ZWN0ZWQgYWZ0ZXIgInJlc2V0
-IiBjb21tYW5kLgo+IAo+IElzIHRoaXMgaXNzdXJlIGludHJvZHVjZWQgd2l0aCB0aGlzIHNlcmll
-cz8gc3RyYW5nZS4KCkkgdGhpbmsgc28uIEkgd2lsbCByZWNoZWNrIHRoaXMgaW4gdGhlIGN1cnJl
-bnQgKG5vbi1tb2RpZmllZCkgdmVyc2lvbi4KCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ drivers/spi/altera_spi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/altera_spi.c b/drivers/spi/altera_spi.c
+index 8803d9e..983b877 100644
+--- a/drivers/spi/altera_spi.c
++++ b/drivers/spi/altera_spi.c
+@@ -34,18 +34,18 @@ static int altera_spi_setup(struct spi_device *spi)
+ 	if (spi->bits_per_word != altera_spi->databits) {
+ 		dev_err(master->dev, " master doesn't support %d bits per word requested by %s\n",
+ 			spi->bits_per_word, spi_dev.name);
+-		return -1;
++		return -EINVAL;
+ 	}
+ 
+ 	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != altera_spi->mode) {
+ 		dev_err(master->dev, " master doesn't support SPI_MODE%d requested by %s\n",
+ 			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
+-		return -1;
++		return -EINVAL;
+ 	}
+ 
+ 	if (spi->max_speed_hz < altera_spi->speed) {
+ 		dev_err(master->dev, " frequency is too high for %s\n", spi_dev.name);
+-		return -1;
++		return -EINVAL;
+ 	}
+ 
+ 	altera_spi_cs_inactive(spi);
+-- 
+1.9.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
