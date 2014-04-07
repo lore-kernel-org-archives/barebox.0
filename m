@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f56.i.mail.ru ([94.100.185.15])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX4at-0007Ov-VF
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 08:07:53 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 07 Apr 2014 12:07:28 +0400
-Message-ID: <1396858048.350584243@f56.i.mail.ru>
-In-Reply-To: <20140407074352.GK27055@pengutronix.de>
-References: <1396777600-647-1-git-send-email-shc_work@mail.ru>
- <20140407074352.GK27055@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+ id 1WX5mR-0000iz-6p
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 09:23:51 +0000
+Date: Mon, 7 Apr 2014 11:23:29 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140407092329.GO27055@pengutronix.de>
+References: <1396857600-20407-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1396857600-20407-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,24 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkMgMC8yXSBTd2l0Y2ggQVJNIGkuTVgyNyBQQ00tMDM4?=
- =?UTF-8?B?L1BDTS05NzAgdG8gZGV2aWNldHJlZSBwcm9iZQ==?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v2 0/5] add SPI controller driver for Atheros
+ AR7XXX/AR9XXX SoCs
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-TW9uLCA3IEFwciAyMDE0IDA5OjQzOjUyICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPjoKPiBPbiBTdW4sIEFwciAwNiwgMjAxNCBhdCAwMTo0NjozOFBNICsw
-NDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gSXQgaXMgb25seSBSRkMgZm9yIG5vdy4K
-PiA+IEtub3duIGlzc3VlczoKPiA+IC0gUE1JQyBpcyBub3QgZGV0ZWN0ZWQgYWZ0ZXIgInJlc2V0
-IiBjb21tYW5kLgo+IAo+IElzIHRoaXMgaXNzdXJlIGludHJvZHVjZWQgd2l0aCB0aGlzIHNlcmll
-cz8gc3RyYW5nZS4KCkkgY2FuIHNlZSB0aGUgZGlmZmVyZW5jZSBpbiB0aGUgZGVmaW5pdGlvbiBv
-ZiBDU1BJMS4KTm9uLURUIHZlcnNpb24gY29udGFpbnMgZGVmaW5pdGlvbiBmb3IgQ1NQSTEgUkRZ
-IHNpZ25hbCwgYnV0IEkgZG8gbm90IHNlZQp0aGF0IGl0IGlzIHVzZWQgZm9yIFBNSUMgb24gdGhl
-IHNjaGVtYXRpYyBvZiBQQ00wMzggLi4uCgotLS0KCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMu
-aW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2JhcmVib3gK
+On Mon, Apr 07, 2014 at 11:59:55AM +0400, Antony Pavlov wrote:
+> This patchseries adds the SPI controller driver for Atheros AR7XXX/AR9XXX SoCs.
+> The driver uses bitbang SPI driver infrastructure from linux kernel.
+> 
+> Changes since v1:
+>   * spi: ath79: fix ath79_spi_setup() return error codes
+
+Applied, thanks
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
