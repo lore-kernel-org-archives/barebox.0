@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22a.google.com ([2a00:1450:4010:c04::22a])
+Received: from mail-lb0-x235.google.com ([2a00:1450:4010:c04::235])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX4Tr-0007CG-5u
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 08:00:38 +0000
-Received: by mail-lb0-f170.google.com with SMTP id s7so4420426lbd.15
- for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 01:00:12 -0700 (PDT)
+ id 1WX4To-0007C1-7k
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 08:00:33 +0000
+Received: by mail-lb0-f181.google.com with SMTP id c11so4370538lbj.40
+ for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 01:00:10 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Apr 2014 11:59:58 +0400
-Message-Id: <1396857600-20407-4-git-send-email-antonynpavlov@gmail.com>
+Date: Mon,  7 Apr 2014 11:59:57 +0400
+Message-Id: <1396857600-20407-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1396857600-20407-1-git-send-email-antonynpavlov@gmail.com>
 References: <1396857600-20407-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,30 +23,347 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/5] MIPS: ar9331.dtsi: add SPI master
+Subject: [PATCH v2 2/5] spi: add controller driver for Atheros AR7XXX/AR9XXX
+ SoCs
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/mips/dts/ar9331.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/spi/Kconfig     |   4 +
+ drivers/spi/Makefile    |   1 +
+ drivers/spi/ath79_spi.c | 299 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 304 insertions(+)
 
-diff --git a/arch/mips/dts/ar9331.dtsi b/arch/mips/dts/ar9331.dtsi
-index 890fda8..9485fbf 100644
---- a/arch/mips/dts/ar9331.dtsi
-+++ b/arch/mips/dts/ar9331.dtsi
-@@ -22,5 +22,11 @@
- 			reg = <0xb8050000 0x48>;
- 			#clock-cells = <1>;
- 		};
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 422693c..60eaaaa 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -10,6 +10,10 @@ config DRIVER_SPI_ALTERA
+ 	bool "Altera SPI Master driver"
+ 	depends on NIOS2
+ 
++config DRIVER_SPI_ATH79
++	bool "Atheros AR71XX/AR724X/AR913X/AR933X SPI controller driver"
++	depends on MACH_MIPS_ATH79
 +
-+		spi: spi@bf000000{
-+			compatible = "qca,ath79-spi";
-+			reg = <0xbf000000 0x01000000>;
-+			status = "disabled";
-+		};
- 	};
- };
+ config DRIVER_SPI_ATMEL
+ 	bool "Atmel (AT91) SPI Master driver"
+ 	depends on ARCH_AT91
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 1036f8f..7469479 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_SPI) += spi.o
++obj-$(CONFIG_DRIVER_SPI_ATH79) += ath79_spi.o
+ obj-$(CONFIG_DRIVER_SPI_IMX) += imx_spi.o
+ obj-$(CONFIG_DRIVER_SPI_MVEBU) += mvebu_spi.o
+ obj-$(CONFIG_DRIVER_SPI_MXS) += mxs_spi.o
+diff --git a/drivers/spi/ath79_spi.c b/drivers/spi/ath79_spi.c
+new file mode 100644
+index 0000000..d9ab269
+--- /dev/null
++++ b/drivers/spi/ath79_spi.c
+@@ -0,0 +1,299 @@
++/*
++ * Copyright (C) 2013, 2014 Antony Pavlov <antonynpavlov@gmail.com>
++ *
++ * This file is part of barebox.
++ * See file CREDITS for list of people who contributed to this project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <spi/spi.h>
++#include <io.h>
++#include <clock.h>
++
++struct ath79_spi {
++	struct spi_master	master;
++	void __iomem		*regs;
++	u32			val;
++	u32			reg_ctrl;
++};
++
++#define AR71XX_SPI_REG_FS	0x00	/* Function Select */
++#define AR71XX_SPI_REG_CTRL	0x04	/* SPI Control */
++#define AR71XX_SPI_REG_IOC	0x08	/* SPI I/O Control */
++#define AR71XX_SPI_REG_RDS	0x0c	/* Read Data Shift */
++
++#define AR71XX_SPI_FS_GPIO	BIT(0)	/* Enable GPIO mode */
++
++#define AR71XX_SPI_IOC_DO	BIT(0)	/* Data Out pin */
++#define AR71XX_SPI_IOC_CLK	BIT(8)	/* CLK pin */
++#define AR71XX_SPI_IOC_CS(n)	BIT(16 + (n))
++#define AR71XX_SPI_IOC_CS0	AR71XX_SPI_IOC_CS(0)
++#define AR71XX_SPI_IOC_CS1	AR71XX_SPI_IOC_CS(1)
++#define AR71XX_SPI_IOC_CS2	AR71XX_SPI_IOC_CS(2)
++#define AR71XX_SPI_IOC_CS_ALL	(AR71XX_SPI_IOC_CS0 | AR71XX_SPI_IOC_CS1 | \
++				 AR71XX_SPI_IOC_CS2)
++
++static inline u32 ath79_spi_rr(struct ath79_spi *sp, int reg)
++{
++	return cpu_readl(sp->regs + reg);
++}
++
++static inline void ath79_spi_wr(struct ath79_spi *sp, u32 val, int reg)
++{
++	cpu_writel(val, sp->regs + reg);
++}
++
++static inline void setbits(struct ath79_spi *sp, int bits, int on)
++{
++	/*
++	 * We are the only user of SCSPTR so no locking is required.
++	 * Reading bit 2 and 0 in SCSPTR gives pin state as input.
++	 * Writing the same bits sets the output value.
++	 * This makes regular read-modify-write difficult so we
++	 * use sp->val to keep track of the latest register value.
++	 */
++
++	if (on)
++		sp->val |= bits;
++	else
++		sp->val &= ~bits;
++
++	ath79_spi_wr(sp, sp->val, AR71XX_SPI_REG_IOC);
++}
++
++static inline struct ath79_spi *ath79_spidev_to_sp(struct spi_device *spi)
++{
++	return container_of(spi->master, struct ath79_spi, master);
++}
++
++static inline void setsck(struct spi_device *spi, int on)
++{
++	struct ath79_spi *sc = ath79_spidev_to_sp(spi);
++
++	setbits(sc, AR71XX_SPI_IOC_CLK, on);
++}
++
++static inline void setmosi(struct spi_device *spi, int on)
++{
++	struct ath79_spi *sc = ath79_spidev_to_sp(spi);
++
++	setbits(sc, AR71XX_SPI_IOC_DO, on);
++}
++
++static inline u32 getmiso(struct spi_device *spi)
++{
++	struct ath79_spi *sc = ath79_spidev_to_sp(spi);
++
++	return !!((ath79_spi_rr(sc, AR71XX_SPI_REG_RDS) & 1));
++}
++
++#include "spi-bitbang-txrx.h"
++
++static inline void ath79_spi_chipselect(struct ath79_spi *sp, int chipselect)
++{
++	int off_bits;
++
++	off_bits = 0xffffffff;
++
++	switch (chipselect) {
++	case 0:
++		off_bits &= ~AR71XX_SPI_IOC_CS0;
++		break;
++
++	case 1:
++		off_bits &= ~AR71XX_SPI_IOC_CS1;
++		break;
++
++	case 2:
++		off_bits &= ~AR71XX_SPI_IOC_CS2;
++		break;
++
++	case 3:
++		break;
++	}
++
++	/* by default inactivate chip selects */
++	sp->val |= AR71XX_SPI_IOC_CS_ALL;
++	sp->val &= off_bits;
++
++	ath79_spi_wr(sp, sp->val, AR71XX_SPI_REG_IOC);
++}
++
++static int ath79_spi_setup(struct spi_device *spi)
++{
++	struct spi_master *master = spi->master;
++	struct device_d spi_dev = spi->dev;
++
++	if (spi->bits_per_word != 8) {
++		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
++			spi->bits_per_word, spi_dev.name);
++		return -EINVAL;
++	}
++
++	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
++		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
++			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int ath79_spi_read(struct spi_device *spi, void *buf, size_t nbyte)
++{
++	ssize_t cnt = 0;
++	u8 *rxf_buf = buf;
++
++	while (cnt < nbyte) {
++		*rxf_buf = bitbang_txrx_be_cpha1(spi, 1000, 1, 0, 8);
++		rxf_buf++;
++		cnt++;
++	}
++
++	return cnt;
++}
++
++static int ath79_spi_write(struct spi_device *spi,
++				const void *buf, size_t nbyte)
++{
++	ssize_t cnt = 0;
++	const u8 *txf_buf = buf;
++
++	while (cnt < nbyte) {
++		bitbang_txrx_be_cpha1(spi, 1000, 1, (u32)*txf_buf, 8);
++		txf_buf++;
++		cnt++;
++	}
++
++	return 0;
++}
++
++static int ath79_spi_transfer(struct spi_device *spi, struct spi_message *mesg)
++{
++	struct ath79_spi *sc = ath79_spidev_to_sp(spi);
++	struct spi_transfer *t;
++
++	mesg->actual_length = 0;
++
++	/* activate chip select signal */
++	ath79_spi_chipselect(sc, spi->chip_select);
++
++	list_for_each_entry(t, &mesg->transfers, transfer_list) {
++
++		if (t->tx_buf)
++			ath79_spi_write(spi, t->tx_buf, t->len);
++
++		if (t->rx_buf)
++			ath79_spi_read(spi, t->rx_buf, t->len);
++
++		mesg->actual_length += t->len;
++	}
++
++	/* inactivate chip select signal */
++	ath79_spi_chipselect(sc, -1);
++
++	return 0;
++}
++
++static void ath79_spi_enable(struct ath79_spi *sp)
++{
++	/* enable GPIO mode */
++	ath79_spi_wr(sp, AR71XX_SPI_FS_GPIO, AR71XX_SPI_REG_FS);
++
++	/* save CTRL register */
++	sp->reg_ctrl = ath79_spi_rr(sp, AR71XX_SPI_REG_CTRL);
++	sp->val = ath79_spi_rr(sp, AR71XX_SPI_REG_IOC);
++
++	/* TODO: setup speed? */
++	ath79_spi_wr(sp, 0x43, AR71XX_SPI_REG_CTRL);
++}
++
++static void ath79_spi_disable(struct ath79_spi *sp)
++{
++	/* restore CTRL register */
++	ath79_spi_wr(sp, sp->reg_ctrl, AR71XX_SPI_REG_CTRL);
++	/* disable GPIO mode */
++	ath79_spi_wr(sp, 0, AR71XX_SPI_REG_FS);
++}
++
++static int ath79_spi_probe(struct device_d *dev)
++{
++	struct spi_master *master;
++	struct ath79_spi *ath79_spi;
++
++	ath79_spi = xzalloc(sizeof(*ath79_spi));
++	dev->priv = ath79_spi;
++
++	master = &ath79_spi->master;
++	master->dev = dev;
++
++	master->bus_num = dev->id;
++	master->setup = ath79_spi_setup;
++	master->transfer = ath79_spi_transfer;
++	master->num_chipselect = 3;
++
++	if (IS_ENABLED(CONFIG_OFDEVICE)) {
++		struct device_node *node = dev->device_node;
++		u32 num_cs;
++		int ret;
++
++		ret = of_property_read_u32(node, "num-chipselects", &num_cs);
++		if (ret)
++			num_cs = 3;
++
++		if (num_cs > 3) {
++			dev_err(dev, "master doesn't support num-chipselects > 3\n");
++		}
++
++		master->num_chipselect = num_cs;
++	}
++
++	ath79_spi->regs = dev_request_mem_region(dev, 0);
++
++	/* enable gpio mode */
++	ath79_spi_enable(ath79_spi);
++
++	/* inactivate chip select signal */
++	ath79_spi_chipselect(ath79_spi, -1);
++
++	spi_register_master(master);
++
++	return 0;
++}
++
++static void ath79_spi_remove(struct device_d *dev)
++{
++	struct ath79_spi *sp = dev->priv;
++
++	ath79_spi_disable(sp);
++}
++
++static __maybe_unused struct of_device_id ath79_spi_dt_ids[] = {
++	{
++		.compatible = "qca,ath79-spi",
++	},
++	{
++		/* sentinel */
++	}
++};
++
++static struct driver_d ath79_spi_driver = {
++	.name  = "ath79-spi",
++	.probe = ath79_spi_probe,
++	.remove = ath79_spi_remove,
++	.of_compatible = DRV_OF_COMPAT(ath79_spi_dt_ids),
++};
++device_platform_driver(ath79_spi_driver);
 -- 
 1.9.0
 
