@@ -1,13 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x229.google.com ([2a00:1450:4010:c03::229])
+Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX4Kl-000748-Ub
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:51:12 +0000
-Received: by mail-la0-f41.google.com with SMTP id gl10so4556347lab.28
- for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 00:50:49 -0700 (PDT)
+ id 1WX4Jm-00072i-6Y
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:50:10 +0000
+Received: by mail-lb0-f171.google.com with SMTP id w7so4515008lbi.30
+ for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 00:49:47 -0700 (PDT)
+Date: Mon, 7 Apr 2014 11:59:48 +0400
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Mon,  7 Apr 2014 11:50:39 +0400
-Message-Id: <1396857039-17837-1-git-send-email-antonynpavlov@gmail.com>
+Message-Id: <20140407115948.197594e062567fea4b495067@gmail.com>
+In-Reply-To: <20140407073856.GJ27055@pengutronix.de>
+References: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
+ <1396722934-23818-3-git-send-email-antonynpavlov@gmail.com>
+ <20140407073856.GJ27055@pengutronix.de>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,49 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] spi: altera_spi: fix altera_spi_setup() return error codes
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] spi: add controller driver for Atheros
+ AR7XXX/AR9XXX SoCs
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/spi/altera_spi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Mon, 7 Apr 2014 09:38:56 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-diff --git a/drivers/spi/altera_spi.c b/drivers/spi/altera_spi.c
-index 8803d9e..983b877 100644
---- a/drivers/spi/altera_spi.c
-+++ b/drivers/spi/altera_spi.c
-@@ -34,18 +34,18 @@ static int altera_spi_setup(struct spi_device *spi)
- 	if (spi->bits_per_word != altera_spi->databits) {
- 		dev_err(master->dev, " master doesn't support %d bits per word requested by %s\n",
- 			spi->bits_per_word, spi_dev.name);
--		return -1;
-+		return -EINVAL;
- 	}
- 
- 	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != altera_spi->mode) {
- 		dev_err(master->dev, " master doesn't support SPI_MODE%d requested by %s\n",
- 			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
--		return -1;
-+		return -EINVAL;
- 	}
- 
- 	if (spi->max_speed_hz < altera_spi->speed) {
- 		dev_err(master->dev, " frequency is too high for %s\n", spi_dev.name);
--		return -1;
-+		return -EINVAL;
- 	}
- 
- 	altera_spi_cs_inactive(spi);
--- 
-1.9.0
+> On Sat, Apr 05, 2014 at 10:35:31PM +0400, Antony Pavlov wrote:
+> > +static int ath79_spi_setup(struct spi_device *spi)
+> > +{
+> > +	struct spi_master *master =3D spi->master;
+> > +	struct device_d spi_dev =3D spi->dev;
+> > +
+> > +	if (spi->bits_per_word !=3D 8) {
+> > +		dev_err(master->dev, "master doesn't support %d bits per word reques=
+ted by %s\n",
+> > +			spi->bits_per_word, spi_dev.name);
+> > +		return -1;
+> > +	}
+> > +
+> > +	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) !=3D SPI_MODE_0) {
+> > +		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by=
+ %s\n",
+> > +			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
+> > +		return -1;
+> > +	}
+> =
 
+> Better -EINVAL?
+> =
+
+> Otherwise this series looks good.
+>
+ =
+
+Sure!
+
+I'll resend the series.
+ =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
