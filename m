@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WX49G-0006oa-S6
- for barebox@lists.infradead.org; Mon, 07 Apr 2014 07:39:19 +0000
-Date: Mon, 7 Apr 2014 09:38:56 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140407073856.GJ27055@pengutronix.de>
-References: <1396722934-23818-1-git-send-email-antonynpavlov@gmail.com>
- <1396722934-23818-3-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1396722934-23818-3-git-send-email-antonynpavlov@gmail.com>
+ id 1WX4Tk-0007Bz-B6
+ for barebox@lists.infradead.org; Mon, 07 Apr 2014 08:00:29 +0000
+Received: by mail-lb0-f179.google.com with SMTP id p9so4499819lbv.10
+ for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 01:00:05 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Mon,  7 Apr 2014 11:59:55 +0400
+Message-Id: <1396857600-20407-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,44 +16,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/5] spi: add controller driver for Atheros AR7XXX/AR9XXX
+Subject: [PATCH v2 0/5] add SPI controller driver for Atheros AR7XXX/AR9XXX
  SoCs
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 
-On Sat, Apr 05, 2014 at 10:35:31PM +0400, Antony Pavlov wrote:
-> +static int ath79_spi_setup(struct spi_device *spi)
-> +{
-> +	struct spi_master *master = spi->master;
-> +	struct device_d spi_dev = spi->dev;
-> +
-> +	if (spi->bits_per_word != 8) {
-> +		dev_err(master->dev, "master doesn't support %d bits per word requested by %s\n",
-> +			spi->bits_per_word, spi_dev.name);
-> +		return -1;
-> +	}
-> +
-> +	if ((spi->mode & (SPI_CPHA | SPI_CPOL)) != SPI_MODE_0) {
-> +		dev_err(master->dev, "master doesn't support SPI_MODE%d requested by %s\n",
-> +			spi->mode & (SPI_CPHA | SPI_CPOL), spi_dev.name);
-> +		return -1;
-> +	}
+This patchseries adds the SPI controller driver for Atheros AR7XXX/AR9XXX SoCs.
+The driver uses bitbang SPI driver infrastructure from linux kernel.
 
-Better -EINVAL?
+Changes since v1:
+  * spi: ath79: fix ath79_spi_setup() return error codes
 
-Otherwise this series looks good.
+Antony Pavlov (5):
+  spi: import bitbang txrx utility functions from linux
+  spi: add controller driver for Atheros AR7XXX/AR9XXX SoCs
+  MIPS: ar9331.dtsi: add SPI master
+  MIPS: tplink-mr3020.dts: add S25FL032PIF SPI flash chip
+  MIPS: tplink-mr3020_defconfig: add SPI support
 
-Sascha
+ arch/mips/configs/tplink-mr3020_defconfig |   7 +-
+ arch/mips/dts/ar9331.dtsi                 |   6 +
+ arch/mips/dts/tplink-mr3020.dts           |  20 ++
+ drivers/spi/Kconfig                       |   4 +
+ drivers/spi/Makefile                      |   1 +
+ drivers/spi/ath79_spi.c                   | 299 ++++++++++++++++++++++++++++++
+ drivers/spi/spi-bitbang-txrx.h            |  95 ++++++++++
+ 7 files changed, 431 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/spi/ath79_spi.c
+ create mode 100644 drivers/spi/spi-bitbang-txrx.h
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.9.0
+
 
 _______________________________________________
 barebox mailing list
