@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x234.google.com ([2a00:1450:4010:c03::234])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXQ5N-0005tG-PZ
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 07:04:46 +0000
-Received: by mail-la0-f52.google.com with SMTP id ec20so449232lab.25
- for <barebox@lists.infradead.org>; Tue, 08 Apr 2014 00:03:46 -0700 (PDT)
-Date: Tue, 8 Apr 2014 11:13:50 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140408111350.055b6103bc9bcde789d0ef27@gmail.com>
-In-Reply-To: <20140408060619.GR27055@pengutronix.de>
-References: <1396856329-17464-1-git-send-email-antonynpavlov@gmail.com>
- <20140408060619.GR27055@pengutronix.de>
-Mime-Version: 1.0
+Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
+ helo=mo3.mail-out.ovh.net)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WXPpy-0007Tc-0m
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:48:51 +0000
+Received: from mail622.ha.ovh.net (b6.ovh.net [213.186.33.56])
+ by mo3.mail-out.ovh.net (Postfix) with SMTP id 66661FFA615
+ for <barebox@lists.infradead.org>; Tue,  8 Apr 2014 08:48:02 +0200 (CEST)
+Mime-Version: 1.0 (Mac OS X Mail 7.2 \(1874\))
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+In-Reply-To: <A5DB3EAC-DA3A-4BF2-8C21-7C57B5CF9AAE@reverze.net>
+Date: Tue, 8 Apr 2014 14:47:52 +0800
+Message-Id: <7333B557-37B1-4CEF-8084-2AF713055F24@jcrosoft.com>
+References: <20140405230029.876959920a802447aeb9720f@gmail.com>
+ <A5DB3EAC-DA3A-4BF2-8C21-7C57B5CF9AAE@reverze.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,98 +22,115 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============7898396535182076875=="
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/3] MIPS: loongson-ls1b: switch to device tree probe
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-
-On Tue, 8 Apr 2014 08:06:19 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
-
-> On Mon, Apr 07, 2014 at 11:38:46AM +0400, Antony Pavlov wrote:
-> > New boards should probe from devicetree and
-> > not use the platform registration code.
-> > =
-
-> > This patchseries adds device tree stuff for
-> > Longson LS1B SoC and Loongson Tech LS1B Demo Board.
-> > =
-
-> > Antony Pavlov (3):
-> >   MIPS: add Longson LS1B SoC dtsi file
-> >   MIPS: add Loongson Tech LS1B Demo Board dts file
-> >   MIPS: loongson-ls1b: switch to device tree
-> =
-
-> Applied, thanks.
-> =
-
-> BTW what's the status of mips devicetree support in Linux Mainline? I
-> sometimes have a look at arch/mips/boot/dts there and find it empty.
-> Does the kernel start with the devicetrees you add to barebox?
-
-linux-mips world is different from linux-arm world in many ways :)
-
-$ find linux.git/arch/mips/ -iname '*dts*'
-linux.git/arch/mips/mti-sead3/sead3.dts
-linux.git/arch/mips/boot/dts
-linux.git/arch/mips/ralink/dts
-linux.git/arch/mips/ralink/dts/rt2880_eval.dts
-linux.git/arch/mips/ralink/dts/mt7620a.dtsi
-linux.git/arch/mips/ralink/dts/rt2880.dtsi
-linux.git/arch/mips/ralink/dts/rt3883.dtsi
-linux.git/arch/mips/ralink/dts/rt3883_eval.dts
-linux.git/arch/mips/ralink/dts/rt3052_eval.dts
-linux.git/arch/mips/ralink/dts/rt3050.dtsi
-linux.git/arch/mips/ralink/dts/mt7620a_eval.dts
-linux.git/arch/mips/lantiq/dts
-linux.git/arch/mips/lantiq/dts/easy50712.dts
-linux.git/arch/mips/lantiq/dts/danube.dtsi
-linux.git/arch/mips/netlogic/dts
-linux.git/arch/mips/netlogic/dts/xlp_gvp.dts
-linux.git/arch/mips/netlogic/dts/xlp_evp.dts
-linux.git/arch/mips/netlogic/dts/xlp_fvp.dts
-linux.git/arch/mips/netlogic/dts/xlp_svp.dts
-linux.git/arch/mips/cavium-octeon/octeon_3xxx.dts
-linux.git/arch/mips/cavium-octeon/octeon_68xx.dts
+Subject: Re: RFC: barebox-x86 as a coreboot payload
+To: Michel Stam <michel@reverze.net>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
 
-So there is no support in barebox for a mainline linux dts-capable machine.
+--===============7898396535182076875==
+Content-Type: multipart/signed; boundary="Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF"; protocol="application/pgp-signature"; micalg=pgp-sha512
 
-I have revived my qemu-malta linux-boot-capable barebox branch
-(it also introduces PCI support, but I have to clean it):
 
-   https://github.com/frantony/barebox/tree/next.mips-malta-elf-linux.20140=
-408
+--Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
 
-So there is a chance to organize qemu-barebox-linux dts-capable system.
 
-Also AR9331-based system has a chances to be converted to dt.
-There is some notes on AR9331 support:
+On Apr 6, 2014, at 10:32 PM, Michel Stam <michel@reverze.net> wrote:
 
-   * some of AR933x linux-mainline devices are dt-capable
-      (but mips ath79 mainline kernel code is not dt-capable);
-       may be there is some ar933x kernel branch with dt support?
-   * I have to port AR933x Ethernet driver to barebox so
-     barebox will be capable to load linux kernel quickly and comfortably;
-   * kexec code for booting linux kernel already realized for qemu-malta;
-     there are possible some cache support issues (qemu-mips does no suppor=
-t caches),
-     but draft cache support code is already stolen from u-boot.
+> Hello Antony,
+>=20
+> Interesting idea- I wonder if its difficult given that U-boot is =
+already supported?
+>=20
+> Personally I have no experience with coreboot, the systems I test on =
+are industrial x86 SBCs with their own BIOS. I suppose it is oossible, =
+maybe we can borrow code from u-boot.
+>=20
 
-Loongson developers have no plan to port OpenFirmware in the near future,
-see this
-   http://www.linux-mips.org/archives/linux-mips/2014-03/msg00164.html
-   =
+Should be fairly easy
 
---=A0
-Best regards,
-=A0 Antony Pavlov
+> Another thing along the sane lines that crossed my mind is EFI support =
+for barebox, I wonder if theres interest in that?
+
+EFI yes as ARM will use UEFI too
+
+>=20
+> Next on my list is keyboard/VGA, maybe VESA support if I have the =
+time. I would like to see a console, possibly a framebuffer driver. No =
+idea how difficult that will be.
+>=20
+
+good idea
+
+> Cheers,
+>=20
+> Michel Stam
+>=20
+>=20
+>> On 5 apr. 2014, at 21:00, Antony Pavlov <antonynpavlov@gmail.com> =
+wrote:
+>>=20
+>> Hi!
+>>=20
+>> I have seen your recent activity on barebox-x86 improvements.
+>>=20
+>> IMHO using barebox-x86 as a coreboot payload can be beneficial for =
+barebox promotion.
+>>=20
+>> Please see http://www.coreboot.org/Payloads
+>>=20
+>> --=20
+>> Best regards,
+>>  Antony Pavlov
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+--Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename=signature.asc
+Content-Type: application/pgp-signature;
+	name=signature.asc
+Content-Description: Message signed with OpenPGP using GPGMail
+
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
+
+iQIcBAEBCgAGBQJTQ5uYAAoJEOrjwV5ZMRf2CzQQAMTqwXgFxF94vtaFr90s/E6g
+nWiBDu6OPoRCRzeY9prUtQ2a8Cq/98Jw5rvsm0XxvWrI4MNADFURymZLjvxOOHLR
+hNuWoRmS27aLG4cbOPD3EaeTEdKcqBDCFag9Satio/oh0u5vb1NuNf7Vuo2H0CmB
+YefTD72kUcEv045FYZiUBBoPADH2pmyhAZS+1/T3UFPWnuSBe0PaO7kB+P8hEHHR
+fEBeMTa3k/qAJnU73L8PZZqA3TMDRVbJSfRIciNUcs3VK3jnIKEOJCqY/F9N9PXv
+3Z0cL+cdxR2rMcF82jHlEyNcug4FehdbSnJAL46Nk5S6QK4v8Pe021EVkco9tLYn
+IJk1zJ/pE9Id4yvJrlX5kbuqPduiU3hR6QF2w6wtwvg8GH5UqdKvXZfJoME18Wo4
+hemnH7Y10UpmpFeexPbndXybMyD+KctEgui7AJmxJak1bHC2feRy1Kjg7DIMFBSJ
+HaOgUeUDwfKwlqLwWx/17xBCvs565H53hH6yMSP4yVoKnHCmvnH51Dys5li2TgKH
+jVXM8OR65HFCbJFTlVpLSw249LtzSf8dvf6O7FCUMAUTY8OuY3VsAt4BR/bf8+2/
+VEOttSlzbGb5p10FxaHWHpD7H1tin34PeoZ7Uz7xlvJFOYj3abR0lpGNiwOoguEb
+RYjxZjBluTgfrSQWMUSQ
+=HjnH
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF--
+
+
+--===============7898396535182076875==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
+
+--===============7898396535182076875==--
