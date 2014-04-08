@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXPhe-0003uO-37
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:40:14 +0000
-Date: Tue, 8 Apr 2014 08:39:28 +0200
+ id 1WXPOV-0002Zs-TQ
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:20:28 +0000
+Date: Tue, 8 Apr 2014 08:20:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140408063928.GY27055@pengutronix.de>
-References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
- <1394807569-23620-22-git-send-email-s.hauer@pengutronix.de>
- <1396881955.683284818@f310.i.mail.ru>
+Message-ID: <20140408062006.GW27055@pengutronix.de>
+References: <1396866729-24201-1-git-send-email-l.stach@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1396881955.683284818@f310.i.mail.ru>
+In-Reply-To: <1396866729-24201-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,65 +18,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 21/29] video: rework mode_name parameter setting
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] ARM: dts: edmqmx6: add SPI SCLK pinmux
+To: Lucas Stach <l.stach@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-T24gTW9uLCBBcHIgMDcsIDIwMTQgYXQgMDY6NDU6NTVQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiBGcmksIDE0IE1hciAyMDE0IDE1OjMyOjQxICswMTAwINC+0YIgU2FzY2hhIEhh
-dWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+IFdlIGhhdmUgZGV2X2FkZF9wYXJhbV9l
-bnVtKCkgbm93LCBzbyB1c2UgaXQgZm9yIHRoZSBtb2RlX25hbWUKPiA+IHNldHRpbmcuIEFsc28g
-ZHJvcCB0aGUgc3BlY2lhbCBjYXNlIGZvciBzaW5nbGUgbW9kZSBmcmFtZWJ1ZmZlcnMsCj4gPiBq
-dXN0IGFkZCB0aGUgbW9kZV9uYW1lIHBhcmFtZXRlciBmb3IgdGhpcyBjYXNlIGFzd2VsbC4KPiA+
-IAo+ID4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
-Pgo+ID4gLS0tCj4gLi4uCj4gPiArc3RhdGljIGludCBmYl9zZXR1cF9tb2RlKHN0cnVjdCBmYl9p
-bmZvICppbmZvKQo+ID4gK3sKPiA+ICsJc3RydWN0IGRldmljZV9kICpkZXYgPSAmaW5mby0+ZGV2
-Owo+ID4gKwlpbnQgcmV0Owo+IC4uLgo+ID4gLQlyZXQgPSBpbmZvLT5mYm9wcy0+ZmJfYWN0aXZh
-dGVfdmFyKGluZm8pOwo+ID4gKwlpZiAoaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3Zhcikgewo+
-ID4gKwkJcmV0ID0gaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3ZhcihpbmZvKTsKPiA+ICsJCWlm
-IChyZXQpCj4gPiArCQkJcmV0dXJuIHJldDsKPiA+ICsJfQo+IAo+IFNvLCAicmV0IiBpcyB1bml0
-aWFsaXplZCB3aXRob3V0IGZiX2FjdGl2YXRlX3ZhcigpLgo+IEl0IGlzIHdyb25nIHNpbmNlIHRo
-aXMgdmFyaWFibGUgaXMgdXNlZCBpbiBjb2RlIGJlbG93LgoKRGFtbi4gSSByZW1lbWJlciB0aW1l
-cyB3aGVuIGNvbXBpbGVycyB1c2VkIHRvIHdhcm4gb24gdW5pdGlhbGl6ZWQKdmFyaWFibGVzIDoo
-CgpUaGUgZm9sbG93aW5nIHNob3VsZCBmaXggdGhpcy4KClRoYW5rcyBmb3IgcmVwb3J0aW5nLgoK
-U2FzY2hhCgotLS0tLS0tLS0tLS0tLS0tLS0tLTg8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KCkZyb20gN2I4Nzc5NTQxZjg2YmJjNmY2YjQ2MWYxZWExYzJmNDMxMGJiODMzNSBNb24g
-U2VwIDE3IDAwOjAwOjAwIDIwMDEKRnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
-bml4LmRlPgpEYXRlOiBUdWUsIDggQXByIDIwMTQgMDg6Mzc6MDkgKzAyMDAKU3ViamVjdDogW1BB
-VENIXSBmYjogRml4IHVzZSBvZiB1bml0aWFsaXplZCB2YXJpYWJsZQoKJ3JldCcgaXMgb25seSBp
-bml0aWFsaXplZCB3aGVuIGluZm8tPmZib3BzLT5mYl9hY3RpdmF0ZV92YXIgZXhpc3RzLCBzbwpv
-bmx5IHVzZSBpdCBpbiB0aGlzIGNhc2UuCgpSZXBvcnRlZC1ieTogQWxleGFuZGVyIFNoaXlhbiA8
-c2hjX3dvcmtAbWFpbC5ydT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
-bmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvdmlkZW8vZmIuYyB8IDE1ICsrKysrKystLS0tLS0t
-LQogMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkKCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiLmMgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKaW5kZXggMmM4
-YjhlYi4uZWNmNjE0MiAxMDA2NDQKLS0tIGEvZHJpdmVycy92aWRlby9mYi5jCisrKyBiL2RyaXZl
-cnMvdmlkZW8vZmIuYwpAQCAtODUsOCArODUsMTAgQEAgc3RhdGljIGludCBmYl9zZXR1cF9tb2Rl
-KHN0cnVjdCBmYl9pbmZvICppbmZvKQogCiAJaWYgKGluZm8tPmZib3BzLT5mYl9hY3RpdmF0ZV92
-YXIpIHsKIAkJcmV0ID0gaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3ZhcihpbmZvKTsKLQkJaWYg
-KHJldCkKKwkJaWYgKHJldCkgeworCQkJaW5mby0+Y2Rldi5zaXplID0gMDsKIAkJCXJldHVybiBy
-ZXQ7CisJCX0KIAl9CiAKIAlpZiAoIWluZm8tPmxpbmVfbGVuZ3RoKQpAQCAtOTQsMTQgKzk2LDEx
-IEBAIHN0YXRpYyBpbnQgZmJfc2V0dXBfbW9kZShzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKIAlpZiAo
-IWluZm8tPnNjcmVlbl9zaXplKQogCQlpbmZvLT5zY3JlZW5fc2l6ZSA9IGluZm8tPmxpbmVfbGVu
-Z3RoICogaW5mby0+eXJlczsKIAotCWlmICghcmV0KSB7Ci0JCWRldi0+cmVzb3VyY2VbMF0uc3Rh
-cnQgPSAocmVzb3VyY2Vfc2l6ZV90KWluZm8tPnNjcmVlbl9iYXNlOwotCQlpbmZvLT5jZGV2LnNp
-emUgPSBpbmZvLT5saW5lX2xlbmd0aCAqIGluZm8tPnlyZXM7Ci0JCWRldi0+cmVzb3VyY2VbMF0u
-ZW5kID0gZGV2LT5yZXNvdXJjZVswXS5zdGFydCArIGluZm8tPmNkZXYuc2l6ZSAtIDE7Ci0JfSBl
-bHNlCi0JCWluZm8tPmNkZXYuc2l6ZSA9IDA7CisJZGV2LT5yZXNvdXJjZVswXS5zdGFydCA9IChy
-ZXNvdXJjZV9zaXplX3QpaW5mby0+c2NyZWVuX2Jhc2U7CisJaW5mby0+Y2Rldi5zaXplID0gaW5m
-by0+bGluZV9sZW5ndGggKiBpbmZvLT55cmVzOworCWRldi0+cmVzb3VyY2VbMF0uZW5kID0gZGV2
-LT5yZXNvdXJjZVswXS5zdGFydCArIGluZm8tPmNkZXYuc2l6ZSAtIDE7CiAKLQlyZXR1cm4gcmV0
-OworCXJldHVybiAwOwogfQogCiBzdGF0aWMgaW50IGZiX3NldF9tb2RlbmFtZShzdHJ1Y3QgcGFy
-YW1fZCAqcGFyYW0sIHZvaWQgKnByaXYpCi0tIAoxLjkuMQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
-CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
-cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
-aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Mon, Apr 07, 2014 at 12:32:09PM +0200, Lucas Stach wrote:
+> Otherwise reading or writing to the SPI flash doesn't
+> work.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+
+Applied, thanks
+
+Sascha
+
+> ---
+> Sascha, this is a fairly simple fix, but a severe
+> restriction in functionality, as barebox isn't able to
+> write itself to the flash. Please apply to master.
+> ---
+>  arch/arm/dts/imx6q-dmo-edmqmx6.dts | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/dts/imx6q-dmo-edmqmx6.dts b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
+> index 4cd1c55ff82e..f4f0bd6c14ba 100644
+> --- a/arch/arm/dts/imx6q-dmo-edmqmx6.dts
+> +++ b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
+> @@ -329,6 +329,7 @@
+>  			fsl,pins = <
+>  				MX6QDL_PAD_SD1_DAT0__ECSPI5_MISO 0x80000000
+>  				MX6QDL_PAD_SD1_CMD__ECSPI5_MOSI 0x80000000
+> +				MX6QDL_PAD_SD1_CLK__ECSPI5_SCLK 0x80000000
+>  				MX6QDL_PAD_SD2_DAT3__GPIO1_IO12 0x80000000 /* cs0: m25p80 */
+>  			>;
+>  		};
+> -- 
+> 1.9.1
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
