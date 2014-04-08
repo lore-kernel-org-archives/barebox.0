@@ -1,19 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 11.mo3.mail-out.ovh.net ([87.98.184.158]
- helo=mo3.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXPpy-0007Tc-0m
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:48:51 +0000
-Received: from mail622.ha.ovh.net (b6.ovh.net [213.186.33.56])
- by mo3.mail-out.ovh.net (Postfix) with SMTP id 66661FFA615
- for <barebox@lists.infradead.org>; Tue,  8 Apr 2014 08:48:02 +0200 (CEST)
-Mime-Version: 1.0 (Mac OS X Mail 7.2 \(1874\))
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-In-Reply-To: <A5DB3EAC-DA3A-4BF2-8C21-7C57B5CF9AAE@reverze.net>
-Date: Tue, 8 Apr 2014 14:47:52 +0800
-Message-Id: <7333B557-37B1-4CEF-8084-2AF713055F24@jcrosoft.com>
-References: <20140405230029.876959920a802447aeb9720f@gmail.com>
- <A5DB3EAC-DA3A-4BF2-8C21-7C57B5CF9AAE@reverze.net>
+Received: from mail-yk0-x22d.google.com ([2607:f8b0:4002:c07::22d])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WXPtn-00056D-GK
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:52:48 +0000
+Received: by mail-yk0-f173.google.com with SMTP id 10so442699ykt.4
+ for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 23:51:48 -0700 (PDT)
+MIME-Version: 1.0
+Date: Tue, 8 Apr 2014 08:51:45 +0200
+Message-ID: <CAOpc7mEpS4sSB0f8uYhJZDRVyJFL8BYWccBOPsN-N82Jc6iB1w@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,115 +17,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============7898396535182076875=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: barebox-x86 as a coreboot payload
-To: Michel Stam <michel@reverze.net>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Confusion about memory layout
+To: barebox@lists.infradead.org
+
+Hi,
+
+I'm trying to get barebox running via usb-download. Unfortunately, the
+verify step failed (see log below). This made me think about my memory
+layout, but I'm a bit helpless here.
+
+If I look at arch/arm/mach-imx/Kconfig, I see that several i.MX boards
+define different CONFIG_ARCH_TEXT_BASE. Why?
+
+default 0x4fc00000 if MACH_MX6Q_ARM2
+default 0x4fc00000 if MACH_SABRELITE
+... some other also, but look at this:
+default 0x17800000 if MACH_SABRESD
+
+And why specify most x4fc0_0000 ?  Doesn't the physical memory map of
+DDR3 start at x1000_0000 or 0x8000_0000, depending on mapping ?
 
 
---===============7898396535182076875==
-Content-Type: multipart/signed; boundary="Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF"; protocol="application/pgp-signature"; micalg=pgp-sha512
+Similarly: the "loadaddr" statement in various *.imxcfg files are also
+different:
+
+loadaddr 0x00907000
+loadaddr 0x10000000
+loadaddr 0x20000000
+
+I'd have expected that all will be loaded at 0x1000_0000, the start of DDR RAM?
 
 
---Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=us-ascii
 
+That made me think about my memory map is the "00000400:" vs.
+"10000400:" prefix in the following compare:
 
-On Apr 6, 2014, at 10:32 PM, Michel Stam <michel@reverze.net> wrote:
+barebox/scripts/imx/imx-usb-loader -c -v barebox/barebox.imx
+found i.MX6q USB device [15a2:0054]
+main dcd length 308
+sub dcd length 304
+loading binary file(barebox/barebox.imx) to 10000000, skip=0x0,
+fsize=249800 type=170...
+binary file successfully loaded
+verifying file...
+!!!!mismatch
+00000400: 402000d1 10001000 00000000 00000000  00000000 10000400
+00000000 00000000
+10000400: 400000d1 10000000 00000000 00000000  00040000 10001000
+00ff0000 00000000
 
-> Hello Antony,
->=20
-> Interesting idea- I wonder if its difficult given that U-boot is =
-already supported?
->=20
-> Personally I have no experience with coreboot, the systems I test on =
-are industrial x86 SBCs with their own BIOS. I suppose it is oossible, =
-maybe we can borrow code from u-boot.
->=20
-
-Should be fairly easy
-
-> Another thing along the sane lines that crossed my mind is EFI support =
-for barebox, I wonder if theres interest in that?
-
-EFI yes as ARM will use UEFI too
-
->=20
-> Next on my list is keyboard/VGA, maybe VESA support if I have the =
-time. I would like to see a console, possibly a framebuffer driver. No =
-idea how difficult that will be.
->=20
-
-good idea
-
-> Cheers,
->=20
-> Michel Stam
->=20
->=20
->> On 5 apr. 2014, at 21:00, Antony Pavlov <antonynpavlov@gmail.com> =
-wrote:
->>=20
->> Hi!
->>=20
->> I have seen your recent activity on barebox-x86 improvements.
->>=20
->> IMHO using barebox-x86 as a coreboot payload can be beneficial for =
-barebox promotion.
->>=20
->> Please see http://www.coreboot.org/Payloads
->>=20
->> --=20
->> Best regards,
->>  Antony Pavlov
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
---Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP using GPGMail
-
------BEGIN PGP SIGNATURE-----
-Comment: GPGTools - https://gpgtools.org
-
-iQIcBAEBCgAGBQJTQ5uYAAoJEOrjwV5ZMRf2CzQQAMTqwXgFxF94vtaFr90s/E6g
-nWiBDu6OPoRCRzeY9prUtQ2a8Cq/98Jw5rvsm0XxvWrI4MNADFURymZLjvxOOHLR
-hNuWoRmS27aLG4cbOPD3EaeTEdKcqBDCFag9Satio/oh0u5vb1NuNf7Vuo2H0CmB
-YefTD72kUcEv045FYZiUBBoPADH2pmyhAZS+1/T3UFPWnuSBe0PaO7kB+P8hEHHR
-fEBeMTa3k/qAJnU73L8PZZqA3TMDRVbJSfRIciNUcs3VK3jnIKEOJCqY/F9N9PXv
-3Z0cL+cdxR2rMcF82jHlEyNcug4FehdbSnJAL46Nk5S6QK4v8Pe021EVkco9tLYn
-IJk1zJ/pE9Id4yvJrlX5kbuqPduiU3hR6QF2w6wtwvg8GH5UqdKvXZfJoME18Wo4
-hemnH7Y10UpmpFeexPbndXybMyD+KctEgui7AJmxJak1bHC2feRy1Kjg7DIMFBSJ
-HaOgUeUDwfKwlqLwWx/17xBCvs565H53hH6yMSP4yVoKnHCmvnH51Dys5li2TgKH
-jVXM8OR65HFCbJFTlVpLSw249LtzSf8dvf6O7FCUMAUTY8OuY3VsAt4BR/bf8+2/
-VEOttSlzbGb5p10FxaHWHpD7H1tin34PeoZ7Uz7xlvJFOYj3abR0lpGNiwOoguEb
-RYjxZjBluTgfrSQWMUSQ
-=HjnH
------END PGP SIGNATURE-----
-
---Apple-Mail=_D4579A71-07C9-444F-865B-0E027820A4CF--
-
-
---===============7898396535182076875==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+00000420: 10000000 0003d000 00000000 400803d2  040403cc 68400c02
+ffffffff 6c400c02
+10000420: 10200000 00030400 00000000 40080000  040003cc 6840d000
+ff00ffff 6c4003d2
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============7898396535182076875==--
