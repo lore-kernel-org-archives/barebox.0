@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXPPA-0002dP-FY
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:21:08 +0000
-Date: Tue, 8 Apr 2014 08:20:47 +0200
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WXPFr-0005zO-R1
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:11:32 +0000
+Date: Tue, 8 Apr 2014 08:11:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140408062047.GX27055@pengutronix.de>
-References: <1396873335-22946-1-git-send-email-shc_work@mail.ru>
+Message-ID: <20140408061111.GU27055@pengutronix.de>
+References: <1396880259-26502-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1396873335-22946-1-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1396880259-26502-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,14 +22,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] spi: i.MX: Fix direction for CS GPIOs
+Subject: Re: [PATCH] GPIO: i.MX: Implement get_direction()
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 07, 2014 at 04:22:15PM +0400, Alexander Shiyan wrote:
-> Direction for CS GPIOs (for some targets) is undefined.
-> This patch fixes this issue.
-> 
+On Mon, Apr 07, 2014 at 06:17:39PM +0400, Alexander Shiyan wrote:
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
 Applied, thanks
@@ -37,31 +34,35 @@ Applied, thanks
 Sascha
 
 > ---
->  drivers/spi/imx_spi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/gpio/gpio-imx.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-> index 6675729..45461bd 100644
-> --- a/drivers/spi/imx_spi.c
-> +++ b/drivers/spi/imx_spi.c
-> @@ -167,7 +167,7 @@ static void cspi_0_0_chipselect(struct spi_device *spi, int is_active)
+> diff --git a/drivers/gpio/gpio-imx.c b/drivers/gpio/gpio-imx.c
+> index a71492a..d32638c 100644
+> --- a/drivers/gpio/gpio-imx.c
+> +++ b/drivers/gpio/gpio-imx.c
+> @@ -113,11 +113,21 @@ static int imx_gpio_get_value(struct gpio_chip *chip, unsigned gpio)
+>  	return val & (1 << gpio) ? 1 : 0;
+>  }
 >  
->  	if (!is_active) {
->  		if (gpio >= 0)
-> -			gpio_set_value(gpio, !cs);
-> +			gpio_direction_output(gpio, !cs);
->  		return;
->  	}
+> +static int imx_get_direction(struct gpio_chip *chip, unsigned offset)
+> +{
+> +	struct imx_gpio_chip *imxgpio = container_of(chip, struct imx_gpio_chip, chip);
+> +	void __iomem *base = imxgpio->base;
+> +	u32 val = readl(base + imxgpio->regs->gdir);
+> +
+> +	return (val & (1 << offset)) ? GPIOF_DIR_OUT : GPIOF_DIR_IN;
+> +}
+> +
+>  static struct gpio_ops imx_gpio_ops = {
+>  	.direction_input = imx_gpio_direction_input,
+>  	.direction_output = imx_gpio_direction_output,
+>  	.get = imx_gpio_get_value,
+>  	.set = imx_gpio_set_value,
+> +	.get_direction = imx_get_direction,
+>  };
 >  
-> @@ -253,7 +253,7 @@ static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
->  
->  	if (!is_active) {
->  		if (gpio >= 0)
-> -			gpio_set_value(gpio, !cs);
-> +			gpio_direction_output(gpio, !cs);
->  		return;
->  	}
->  
+>  static int imx_gpio_probe(struct device_d *dev)
 > -- 
 > 1.8.3.2
 > 
