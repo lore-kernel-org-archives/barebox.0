@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXPOV-0002Zs-TQ
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:20:28 +0000
-Date: Tue, 8 Apr 2014 08:20:06 +0200
+ id 1WXPPA-0002dP-FY
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:21:08 +0000
+Date: Tue, 8 Apr 2014 08:20:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140408062006.GW27055@pengutronix.de>
-References: <1396866729-24201-1-git-send-email-l.stach@pengutronix.de>
+Message-ID: <20140408062047.GX27055@pengutronix.de>
+References: <1396873335-22946-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1396866729-24201-1-git-send-email-l.stach@pengutronix.de>
+In-Reply-To: <1396873335-22946-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +22,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: dts: edmqmx6: add SPI SCLK pinmux
-To: Lucas Stach <l.stach@pengutronix.de>
+Subject: Re: [PATCH] spi: i.MX: Fix direction for CS GPIOs
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 07, 2014 at 12:32:09PM +0200, Lucas Stach wrote:
-> Otherwise reading or writing to the SPI flash doesn't
-> work.
+On Mon, Apr 07, 2014 at 04:22:15PM +0400, Alexander Shiyan wrote:
+> Direction for CS GPIOs (for some targets) is undefined.
+> This patch fixes this issue.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
 Applied, thanks
 
 Sascha
 
 > ---
-> Sascha, this is a fairly simple fix, but a severe
-> restriction in functionality, as barebox isn't able to
-> write itself to the flash. Please apply to master.
-> ---
->  arch/arm/dts/imx6q-dmo-edmqmx6.dts | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/spi/imx_spi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm/dts/imx6q-dmo-edmqmx6.dts b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-> index 4cd1c55ff82e..f4f0bd6c14ba 100644
-> --- a/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-> +++ b/arch/arm/dts/imx6q-dmo-edmqmx6.dts
-> @@ -329,6 +329,7 @@
->  			fsl,pins = <
->  				MX6QDL_PAD_SD1_DAT0__ECSPI5_MISO 0x80000000
->  				MX6QDL_PAD_SD1_CMD__ECSPI5_MOSI 0x80000000
-> +				MX6QDL_PAD_SD1_CLK__ECSPI5_SCLK 0x80000000
->  				MX6QDL_PAD_SD2_DAT3__GPIO1_IO12 0x80000000 /* cs0: m25p80 */
->  			>;
->  		};
+> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+> index 6675729..45461bd 100644
+> --- a/drivers/spi/imx_spi.c
+> +++ b/drivers/spi/imx_spi.c
+> @@ -167,7 +167,7 @@ static void cspi_0_0_chipselect(struct spi_device *spi, int is_active)
+>  
+>  	if (!is_active) {
+>  		if (gpio >= 0)
+> -			gpio_set_value(gpio, !cs);
+> +			gpio_direction_output(gpio, !cs);
+>  		return;
+>  	}
+>  
+> @@ -253,7 +253,7 @@ static void cspi_0_7_chipselect(struct spi_device *spi, int is_active)
+>  
+>  	if (!is_active) {
+>  		if (gpio >= 0)
+> -			gpio_set_value(gpio, !cs);
+> +			gpio_direction_output(gpio, !cs);
+>  		return;
+>  	}
+>  
 > -- 
-> 1.9.1
+> 1.8.3.2
 > 
 > 
 > _______________________________________________
