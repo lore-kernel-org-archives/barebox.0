@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-f180.google.com ([209.85.223.180])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXQR2-0007RP-CM
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 07:27:09 +0000
-Received: by mail-ie0-f180.google.com with SMTP id as1so528307iec.11
- for <barebox@lists.infradead.org>; Tue, 08 Apr 2014 00:26:37 -0700 (PDT)
+ id 1WXPhe-0003uO-37
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:40:14 +0000
+Date: Tue, 8 Apr 2014 08:39:28 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140408063928.GY27055@pengutronix.de>
+References: <1394807569-23620-1-git-send-email-s.hauer@pengutronix.de>
+ <1394807569-23620-22-git-send-email-s.hauer@pengutronix.de>
+ <1396881955.683284818@f310.i.mail.ru>
 MIME-Version: 1.0
-In-Reply-To: <20140405162336.GB27055@pengutronix.de>
-References: <CAFLSZSQQk6qg5EB9GXTyaOTVmghap=7LSnyWkfNWuXi4RBoJAg@mail.gmail.com>
- <20140405162336.GB27055@pengutronix.de>
-Date: Tue, 8 Apr 2014 10:26:34 +0300
-Message-ID: <CAFLSZSSEdSRXG1QM=zdSxz-s_y0PLtHyR6mriPESDOBN950HhA@mail.gmail.com>
-From: Igor Bezukh <igor@rtembedded.org>
+Content-Disposition: inline
+In-Reply-To: <1396881955.683284818@f310.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,43 +20,65 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Secure Boot support on Barebox
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 21/29] video: rework mode_name parameter setting
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-Thanks Sascha,
-
-Do you know if there are intentions from Freescale side to support
-Barebox as they do with u-boot 2009?
-
-BR,
- Igor Bezukh
-
-
-On Sat, Apr 5, 2014 at 7:23 PM, Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> On Fri, Apr 04, 2014 at 02:07:42PM +0300, Igor Bezukh wrote:
->> Hi,
->>
->> I would like to know whether Barebox supports one of the following:
->>
->> 1. Freecale i.MX6 High Assurance Boot.
->> 2. Verified boot as in U-Boot.
->
-> No, barebox doesn't support this yet.
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBBcHIgMDcsIDIwMTQgYXQgMDY6NDU6NTVQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBGcmksIDE0IE1hciAyMDE0IDE1OjMyOjQxICswMTAwINC+0YIgU2FzY2hhIEhh
+dWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+IFdlIGhhdmUgZGV2X2FkZF9wYXJhbV9l
+bnVtKCkgbm93LCBzbyB1c2UgaXQgZm9yIHRoZSBtb2RlX25hbWUKPiA+IHNldHRpbmcuIEFsc28g
+ZHJvcCB0aGUgc3BlY2lhbCBjYXNlIGZvciBzaW5nbGUgbW9kZSBmcmFtZWJ1ZmZlcnMsCj4gPiBq
+dXN0IGFkZCB0aGUgbW9kZV9uYW1lIHBhcmFtZXRlciBmb3IgdGhpcyBjYXNlIGFzd2VsbC4KPiA+
+IAo+ID4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
+Pgo+ID4gLS0tCj4gLi4uCj4gPiArc3RhdGljIGludCBmYl9zZXR1cF9tb2RlKHN0cnVjdCBmYl9p
+bmZvICppbmZvKQo+ID4gK3sKPiA+ICsJc3RydWN0IGRldmljZV9kICpkZXYgPSAmaW5mby0+ZGV2
+Owo+ID4gKwlpbnQgcmV0Owo+IC4uLgo+ID4gLQlyZXQgPSBpbmZvLT5mYm9wcy0+ZmJfYWN0aXZh
+dGVfdmFyKGluZm8pOwo+ID4gKwlpZiAoaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3Zhcikgewo+
+ID4gKwkJcmV0ID0gaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3ZhcihpbmZvKTsKPiA+ICsJCWlm
+IChyZXQpCj4gPiArCQkJcmV0dXJuIHJldDsKPiA+ICsJfQo+IAo+IFNvLCAicmV0IiBpcyB1bml0
+aWFsaXplZCB3aXRob3V0IGZiX2FjdGl2YXRlX3ZhcigpLgo+IEl0IGlzIHdyb25nIHNpbmNlIHRo
+aXMgdmFyaWFibGUgaXMgdXNlZCBpbiBjb2RlIGJlbG93LgoKRGFtbi4gSSByZW1lbWJlciB0aW1l
+cyB3aGVuIGNvbXBpbGVycyB1c2VkIHRvIHdhcm4gb24gdW5pdGlhbGl6ZWQKdmFyaWFibGVzIDoo
+CgpUaGUgZm9sbG93aW5nIHNob3VsZCBmaXggdGhpcy4KClRoYW5rcyBmb3IgcmVwb3J0aW5nLgoK
+U2FzY2hhCgotLS0tLS0tLS0tLS0tLS0tLS0tLTg8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KCkZyb20gN2I4Nzc5NTQxZjg2YmJjNmY2YjQ2MWYxZWExYzJmNDMxMGJiODMzNSBNb24g
+U2VwIDE3IDAwOjAwOjAwIDIwMDEKRnJvbTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJv
+bml4LmRlPgpEYXRlOiBUdWUsIDggQXByIDIwMTQgMDg6Mzc6MDkgKzAyMDAKU3ViamVjdDogW1BB
+VENIXSBmYjogRml4IHVzZSBvZiB1bml0aWFsaXplZCB2YXJpYWJsZQoKJ3JldCcgaXMgb25seSBp
+bml0aWFsaXplZCB3aGVuIGluZm8tPmZib3BzLT5mYl9hY3RpdmF0ZV92YXIgZXhpc3RzLCBzbwpv
+bmx5IHVzZSBpdCBpbiB0aGlzIGNhc2UuCgpSZXBvcnRlZC1ieTogQWxleGFuZGVyIFNoaXlhbiA8
+c2hjX3dvcmtAbWFpbC5ydT4KU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBl
+bmd1dHJvbml4LmRlPgotLS0KIGRyaXZlcnMvdmlkZW8vZmIuYyB8IDE1ICsrKysrKystLS0tLS0t
+LQogMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgOCBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9kcml2ZXJzL3ZpZGVvL2ZiLmMgYi9kcml2ZXJzL3ZpZGVvL2ZiLmMKaW5kZXggMmM4
+YjhlYi4uZWNmNjE0MiAxMDA2NDQKLS0tIGEvZHJpdmVycy92aWRlby9mYi5jCisrKyBiL2RyaXZl
+cnMvdmlkZW8vZmIuYwpAQCAtODUsOCArODUsMTAgQEAgc3RhdGljIGludCBmYl9zZXR1cF9tb2Rl
+KHN0cnVjdCBmYl9pbmZvICppbmZvKQogCiAJaWYgKGluZm8tPmZib3BzLT5mYl9hY3RpdmF0ZV92
+YXIpIHsKIAkJcmV0ID0gaW5mby0+ZmJvcHMtPmZiX2FjdGl2YXRlX3ZhcihpbmZvKTsKLQkJaWYg
+KHJldCkKKwkJaWYgKHJldCkgeworCQkJaW5mby0+Y2Rldi5zaXplID0gMDsKIAkJCXJldHVybiBy
+ZXQ7CisJCX0KIAl9CiAKIAlpZiAoIWluZm8tPmxpbmVfbGVuZ3RoKQpAQCAtOTQsMTQgKzk2LDEx
+IEBAIHN0YXRpYyBpbnQgZmJfc2V0dXBfbW9kZShzdHJ1Y3QgZmJfaW5mbyAqaW5mbykKIAlpZiAo
+IWluZm8tPnNjcmVlbl9zaXplKQogCQlpbmZvLT5zY3JlZW5fc2l6ZSA9IGluZm8tPmxpbmVfbGVu
+Z3RoICogaW5mby0+eXJlczsKIAotCWlmICghcmV0KSB7Ci0JCWRldi0+cmVzb3VyY2VbMF0uc3Rh
+cnQgPSAocmVzb3VyY2Vfc2l6ZV90KWluZm8tPnNjcmVlbl9iYXNlOwotCQlpbmZvLT5jZGV2LnNp
+emUgPSBpbmZvLT5saW5lX2xlbmd0aCAqIGluZm8tPnlyZXM7Ci0JCWRldi0+cmVzb3VyY2VbMF0u
+ZW5kID0gZGV2LT5yZXNvdXJjZVswXS5zdGFydCArIGluZm8tPmNkZXYuc2l6ZSAtIDE7Ci0JfSBl
+bHNlCi0JCWluZm8tPmNkZXYuc2l6ZSA9IDA7CisJZGV2LT5yZXNvdXJjZVswXS5zdGFydCA9IChy
+ZXNvdXJjZV9zaXplX3QpaW5mby0+c2NyZWVuX2Jhc2U7CisJaW5mby0+Y2Rldi5zaXplID0gaW5m
+by0+bGluZV9sZW5ndGggKiBpbmZvLT55cmVzOworCWRldi0+cmVzb3VyY2VbMF0uZW5kID0gZGV2
+LT5yZXNvdXJjZVswXS5zdGFydCArIGluZm8tPmNkZXYuc2l6ZSAtIDE7CiAKLQlyZXR1cm4gcmV0
+OworCXJldHVybiAwOwogfQogCiBzdGF0aWMgaW50IGZiX3NldF9tb2RlbmFtZShzdHJ1Y3QgcGFy
+YW1fZCAqcGFyYW0sIHZvaWQgKnByaXYpCi0tIAoxLjkuMQoKLS0gClBlbmd1dHJvbml4IGUuSy4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+CkluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cu
+cGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2Vy
+bWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hl
+aW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8Cgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
+aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
+ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
