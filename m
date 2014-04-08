@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x22d.google.com ([2607:f8b0:4002:c07::22d])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXPtn-00056D-GK
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:52:48 +0000
-Received: by mail-yk0-f173.google.com with SMTP id 10so442699ykt.4
- for <barebox@lists.infradead.org>; Mon, 07 Apr 2014 23:51:48 -0700 (PDT)
+ id 1WXPBd-0001x8-30
+ for barebox@lists.infradead.org; Tue, 08 Apr 2014 06:07:09 +0000
+Date: Tue, 8 Apr 2014 08:06:19 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140408060619.GR27055@pengutronix.de>
+References: <1396856329-17464-1-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
-Date: Tue, 8 Apr 2014 08:51:45 +0200
-Message-ID: <CAOpc7mEpS4sSB0f8uYhJZDRVyJFL8BYWccBOPsN-N82Jc6iB1w@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1396856329-17464-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,59 +22,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Confusion about memory layout
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 0/3] MIPS: loongson-ls1b: switch to device tree probe
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi,
+On Mon, Apr 07, 2014 at 11:38:46AM +0400, Antony Pavlov wrote:
+> New boards should probe from devicetree and
+> not use the platform registration code.
+> 
+> This patchseries adds device tree stuff for
+> Longson LS1B SoC and Loongson Tech LS1B Demo Board.
+> 
+> Antony Pavlov (3):
+>   MIPS: add Longson LS1B SoC dtsi file
+>   MIPS: add Loongson Tech LS1B Demo Board dts file
+>   MIPS: loongson-ls1b: switch to device tree
 
-I'm trying to get barebox running via usb-download. Unfortunately, the
-verify step failed (see log below). This made me think about my memory
-layout, but I'm a bit helpless here.
+Applied, thanks.
 
-If I look at arch/arm/mach-imx/Kconfig, I see that several i.MX boards
-define different CONFIG_ARCH_TEXT_BASE. Why?
+BTW what's the status of mips devicetree support in Linux Mainline? I
+sometimes have a look at arch/mips/boot/dts there and find it empty.
+Does the kernel start with the devicetrees you add to barebox?
 
-default 0x4fc00000 if MACH_MX6Q_ARM2
-default 0x4fc00000 if MACH_SABRELITE
-... some other also, but look at this:
-default 0x17800000 if MACH_SABRESD
+Sascha
 
-And why specify most x4fc0_0000 ?  Doesn't the physical memory map of
-DDR3 start at x1000_0000 or 0x8000_0000, depending on mapping ?
-
-
-Similarly: the "loadaddr" statement in various *.imxcfg files are also
-different:
-
-loadaddr 0x00907000
-loadaddr 0x10000000
-loadaddr 0x20000000
-
-I'd have expected that all will be loaded at 0x1000_0000, the start of DDR RAM?
-
-
-
-That made me think about my memory map is the "00000400:" vs.
-"10000400:" prefix in the following compare:
-
-barebox/scripts/imx/imx-usb-loader -c -v barebox/barebox.imx
-found i.MX6q USB device [15a2:0054]
-main dcd length 308
-sub dcd length 304
-loading binary file(barebox/barebox.imx) to 10000000, skip=0x0,
-fsize=249800 type=170...
-binary file successfully loaded
-verifying file...
-!!!!mismatch
-00000400: 402000d1 10001000 00000000 00000000  00000000 10000400
-00000000 00000000
-10000400: 400000d1 10000000 00000000 00000000  00040000 10001000
-00ff0000 00000000
-
-00000420: 10000000 0003d000 00000000 400803d2  040403cc 68400c02
-ffffffff 6c400c02
-10000420: 10200000 00030400 00000000 40080000  040003cc 6840d000
-ff00ffff 6c4003d2
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
