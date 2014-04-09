@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from s250.sam-solutions.net ([217.21.49.219])
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXrnQ-0000oO-00
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 12:40:04 +0000
-Received: from s326.sam-solutions.net ([217.21.35.11])
- by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
- (Exim 4.77) (envelope-from <U.Bely@sam-solutions.com>)
- id 1WXrn3-0006dX-0K
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 15:39:41 +0300
-Message-ID: <53453F83.90901@sam-solutions.net>
-Date: Wed, 9 Apr 2014 15:39:31 +0300
-From: Uladzimir Bely <u.bely@sam-solutions.net>
-MIME-Version: 1.0
-References: <1397045518-27913-1-git-send-email-u.bely@sam-solutions.net>
-In-Reply-To: <1397045518-27913-1-git-send-email-u.bely@sam-solutions.net>
+ id 1WXwNA-0005ZO-Gd
+ for barebox@lists.infradead.org; Wed, 09 Apr 2014 17:33:17 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed,  9 Apr 2014 19:32:49 +0200
+Message-Id: <1397064769-20988-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,24 +14,139 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
+Subject: [PATCH] openrisc: Use generic io accessors
 To: barebox@lists.infradead.org
 
-SGVsbG8sIFNhc2hhLgoKSXQncyBhIG5ldyB2ZXJzaW9uIG9mIHBhdGNoLCBjb25zaWRlcmluZyBt
-b3N0IG9mIHlvdXIgcmVtYXJrcy4KQnV0IEkgc3RpbGwgaGF2ZSBzb21lIHF1ZXN0aW9ucy4KCj4g
-Kwo+ICsJLyogR2V0IGNsb2NrICovCj4gKwljbGtfcmF0ZSA9IGNsa19nZXRfcmF0ZShjbGtfbG9v
-a3VwKCJpcGciKSk7Cj4gKwlpZiAoY2xrX3JhdGUgPT0gLTEpIHsKPiArCQlwcmludGYoIkVSUk9S
-OiBpbXg2X2dldF9ncHRjbGsgZmFpbGVkXG4iKTsKPiArCQlyZXR1cm4gLTE7Cj4gKwl9Cj4gKwo+
-ICsJcmVsYXggPSBjbGtfcmF0ZSAvICgxMDAwMDAwMDAwIC8gREVGX1JFTEFYKSAtIDE7CgpJIHRy
-aWVkIHVzZSBjbGtfZ2V0KCksIGFzIHlvdSBwcm9wb3NlZCwgYnV0IGRpZG4ndCB1bmRlcnN0YW5k
-LCBob3cgdG8gZ2V0CmNsayByYXRlIHZhbHVlIGluIHRoaXMgY2FzZS4KY2xrZGV2X2FkZF9waHlz
-YmFzZSgpIGp1c3QgY3JlYXRlcyBzdHJ1Y3R1cmUgY2xrX2xvb2t1cCwgYnV0IGhvdyB0byBnZXQg
-cG9pbnRlciB0byBpdCwgdG8KYmUgYWJsZSB0byB1c2UgaXRzIC0+Y2xrPwoKLS0gCldpdGggcmVn
-YXJkcywKVWxhZHppbWlyIEJlbHkuCjA5LjA0LjIwMTQgMTU6MTEsIFVsYWR6aW1pciBCZWx5INC/
-0LjRiNC10YI6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDov
-L2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+openrisc does nothing special in the io accessors, so use the generic
+ones as the kernel.
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/openrisc/include/asm/io.h | 101 ++---------------------------------------
+ 1 file changed, 3 insertions(+), 98 deletions(-)
+
+diff --git a/arch/openrisc/include/asm/io.h b/arch/openrisc/include/asm/io.h
+index 90abb42..05580bd 100644
+--- a/arch/openrisc/include/asm/io.h
++++ b/arch/openrisc/include/asm/io.h
+@@ -16,104 +16,9 @@
+ #ifndef __ASM_OPENRISC_IO_H
+ #define __ASM_OPENRISC_IO_H
+ 
+-#include <asm/byteorder.h>
+-
+-/*
+- * Given a physical address and a length, return a virtual address
+- * that can be used to access the memory range with the caching
+- * properties specified by "flags".
+- */
+-#define MAP_NOCACHE	(0)
+-#define MAP_WRCOMBINE	(0)
+-#define MAP_WRBACK	(0)
+-#define MAP_WRTHROUGH	(0)
+-
+-static inline void *
+-map_physmem(phys_addr_t paddr, unsigned long len, unsigned long flags)
+-{
+-	return (void *)paddr;
+-}
+-
+-/*
+- * Take down a mapping set up by map_physmem().
+- */
+-static inline void unmap_physmem(void *vaddr, unsigned long flags)
+-{
+-
+-}
+-
+-/*
+- * Change virtual addresses to physical addresses
+- */
+-static inline phys_addr_t virt_to_phys(void *vaddr)
+-{
+-	return (phys_addr_t)(vaddr);
+-}
+-
+-
+-/*
+- * readX/writeX() are used to access memory mapped devices. On some
+- * architectures the memory mapped IO stuff needs to be accessed
+- * differently. On the openrisc architecture, we just read/write the
+- * memory location directly.
+- */
+-#define readb(addr) (*(volatile unsigned char *) (addr))
+-#define readw(addr) (*(volatile unsigned short *) (addr))
+-#define readl(addr) (*(volatile unsigned int *) (addr))
+-#define __raw_readb readb
+-#define __raw_readw readw
+-#define __raw_readl readl
+-
+-#define writeb(b, addr) ((*(volatile unsigned char *) (addr)) = (b))
+-#define writew(b, addr) ((*(volatile unsigned short *) (addr)) = (b))
+-#define writel(b, addr) ((*(volatile unsigned int *) (addr)) = (b))
+-#define __raw_writeb writeb
+-#define __raw_writew writew
+-#define __raw_writel writel
+-
+-#define memset_io(a, b, c)	memset((void *)(a), (b), (c))
+-#define memcpy_fromio(a, b, c)	memcpy((a), (void *)(b), (c))
+-#define memcpy_toio(a, b, c)	memcpy((void *)(a), (b), (c))
++#define IO_SPACE_LIMIT		0x0
+ 
+-#define out_be32(a, v) __raw_writel((v), (void __iomem __force *)(a))
+-#define out_be16(a, v) __raw_writew((v), (a))
+-
+-#define in_be32(a) __raw_readl((const void __iomem __force *)(a))
+-#define in_be16(a) __raw_readw(a)
+-
+-#define writel_be(v, a) out_be32((__force unsigned *)a, v)
+-#define readl_be(a)     in_be32((__force unsigned *)a)
+-
+-/*
+- * Again, OpenRISC does not require mem IO specific function.
+- */
+-
+-
+-#define IO_BASE			0x0
+-#define IO_SPACE_LIMIT		0xffffffff
+-
+-#define inb(port)		readb((port + IO_BASE))
+-#define outb(value, port)	writeb((value), (port + IO_BASE))
+-#define inb_p(port)		inb((port))
+-#define outb_p(value, port)	outb((value), (port))
+-
+-/*
+- * Convert a physical pointer to a virtual kernel pointer for /dev/mem
+- * access
+- */
+-#define xlate_dev_mem_ptr(p)	__va(p)
+-
+-/*
+- * Convert a virtual cached pointer to an uncached pointer
+- */
+-#define xlate_dev_kmem_ptr(p)	p
+-
+-#define ioread8(addr)		readb(addr)
+-#define ioread16(addr)		readw(addr)
+-#define ioread32(addr)		readl(addr)
+-
+-#define iowrite8(v, addr)	writeb((v), (addr))
+-#define iowrite16(v, addr)	writew((v), (addr))
+-#define iowrite32(v, addr)	writel((v), (addr))
++#include <asm/byteorder.h>
++#include <asm-generic/io.h>
+ 
+ #endif
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
