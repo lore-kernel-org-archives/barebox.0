@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXdqU-0000ki-U3
- for barebox@lists.infradead.org; Tue, 08 Apr 2014 21:46:20 +0000
-Message-ID: <53446E09.4080208@pengutronix.de>
-Date: Tue, 08 Apr 2014 23:45:45 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+ id 1WXiyE-0006xy-Em
+ for barebox@lists.infradead.org; Wed, 09 Apr 2014 03:14:39 +0000
+Received: by mail-ee0-f47.google.com with SMTP id b15so1321394eek.34
+ for <barebox@lists.infradead.org>; Tue, 08 Apr 2014 20:14:10 -0700 (PDT)
+Date: Wed, 9 Apr 2014 05:27:59 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140409032755.GA1317@x61s>
+References: <53446E09.4080208@pengutronix.de>
+ <1396993842-31482-1-git-send-email-mkl@pengutronix.de>
 MIME-Version: 1.0
-References: <20140405230029.876959920a802447aeb9720f@gmail.com>
- <1396724565.786389175@f77.i.mail.ru>
-In-Reply-To: <1396724565.786389175@f77.i.mail.ru>
+Content-Disposition: inline
+In-Reply-To: <1396993842-31482-1-git-send-email-mkl@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,78 +21,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2225320442096250532=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: RFC: barebox-x86 as a coreboot payload
-To: Alexander Shiyan <shc_work@mail.ru>, Antony Pavlov <antonynpavlov@gmail.com>
+Subject: Re: [PATCH] 2048: port to barebox
+To: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---===============2225320442096250532==
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="kqnOOw4IaQvlQbOTJbMHnU7QM1NP2J0oi"
+Hi Marc,
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---kqnOOw4IaQvlQbOTJbMHnU7QM1NP2J0oi
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On Tue, Apr 08, 2014 at 11:50:42PM +0200, Marc Kleine-Budde wrote:
+...
+> diff --git a/common/Makefile b/common/Makefile
+> index 204241c..b40a078 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -44,6 +44,7 @@ obj-$(CONFIG_SHELL_HUSH)	+= hush.o
+>  obj-$(CONFIG_SHELL_SIMPLE)	+= parser.o
+>  obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
+>  obj-$(CONFIG_MENUTREE) += menutree.o
+> +obj-y				+= 2048/
+>  
+srsly?
 
-On 04/05/2014 09:02 PM, Alexander Shiyan wrote:
-> Sat, 5 Apr 2014 23:00:29 +0400 =D0=BE=D1=82 Antony Pavlov <antonynpavlo=
-v@gmail.com>:
->> Hi!
->>
->> I have seen your recent activity on barebox-x86 improvements.
->>
->> IMHO using barebox-x86 as a coreboot payload can be beneficial for bar=
-ebox promotion.
->>
->> Please see http://www.coreboot.org/Payloads
->>
->> --=20
->=20
-> Amused: http://www.coreboot.org/File:Coreboot_libpayload_tint.png
-> This is a really missing feature in barebox :)
+But otherwise it makes no sense, because everybody would disable games
+in his/her barebox config.
 
-What about 2048?
-
-Marc
-
---=20
-Pengutronix e.K.                  | Marc Kleine-Budde           |
-Industrial Linux Solutions        | Phone: +49-231-2826-924     |
-Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
-Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
-
-
---kqnOOw4IaQvlQbOTJbMHnU7QM1NP2J0oi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-Comment: Using GnuPG with Icedove - http://www.enigmail.net/
-
-iEYEARECAAYFAlNEbgoACgkQjTAFq1RaXHMgawCffpb6Qo5lJLBgPb9PeLlTWAzh
-LRgAn0tKODRiw69/A6WHdQ6l/xJdyGJp
-=SjwT
------END PGP SIGNATURE-----
-
---kqnOOw4IaQvlQbOTJbMHnU7QM1NP2J0oi--
-
-
---===============2225320442096250532==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+- Alex
 
 _______________________________________________
 barebox mailing list
 barebox@lists.infradead.org
 http://lists.infradead.org/mailman/listinfo/barebox
-
---===============2225320442096250532==--
