@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXn76-0000GQ-Ki
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 07:40:05 +0000
+ id 1WXn6w-0000GP-L1
+ for barebox@lists.infradead.org; Wed, 09 Apr 2014 07:39:55 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  9 Apr 2014 09:39:24 +0200
-Message-Id: <1397029166-4412-3-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  9 Apr 2014 09:39:25 +0200
+Message-Id: <1397029166-4412-4-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1397029166-4412-1-git-send-email-s.hauer@pengutronix.de>
 References: <1397029166-4412-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,30 +21,47 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] loadenv: ignore -ENOENT when removing /env
+Subject: [PATCH 3/4] saveenv: Properly detect write errors
 To: barebox@lists.infradead.org
 
-With the -s option loadenv first removes /env. Ignore it when this
-directory does not exist.
+The return value check of the write call is completely bogus. We
+check if we have written at minimum sizeof(struct envfs_super) bytes
+instead of all bytes. Properly check for all bytes written instead
+and allow write to write less bytes than requested.
+Do not use write_full because this file is compiled for userspace
+aswell.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/loadenv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/environment.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/commands/loadenv.c b/commands/loadenv.c
-index 7b93e86..a39ca8c 100644
---- a/commands/loadenv.c
-+++ b/commands/loadenv.c
-@@ -80,7 +80,7 @@ static int do_loadenv(int argc, char *argv[])
- 		int ret;
+diff --git a/common/environment.c b/common/environment.c
+index 9f4e098..bf813b4 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -201,11 +201,16 @@ int envfs_save(const char *filename, const char *dirname)
+ 		goto out1;
+ 	}
  
- 		ret = unlink_recursive(dirname, NULL);
--		if (ret) {
-+		if (ret && ret != -ENOENT) {
- 			eprintf("cannot remove %s: %s\n", dirname,
- 					strerror(-ret));
- 			return 1;
+-	if (write(envfd, buf, size  + sizeof(struct envfs_super)) <
+-			sizeof(struct envfs_super)) {
+-		perror("write");
+-		ret = -1;	/* FIXME */
+-		goto out;
++	size += sizeof(struct envfs_super);
++
++	while (size) {
++		ssize_t now = write(envfd, buf, size);
++		if (now < 0) {
++			ret = -errno;
++			goto out;
++		}
++
++		size -= now;
+ 	}
+ 
+ 	ret = 0;
 -- 
 1.9.1
 
