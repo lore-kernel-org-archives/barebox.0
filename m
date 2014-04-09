@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WXn6r-0000GM-T9
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 07:39:50 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1WXn6V-00064R-G2
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 09:39:27 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1WXn6V-0000im-Em
- for barebox@lists.infradead.org; Wed, 09 Apr 2014 09:39:27 +0200
+ id 1WXn6r-0000GO-T8
+ for barebox@lists.infradead.org; Wed, 09 Apr 2014 07:39:51 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  9 Apr 2014 09:39:22 +0200
-Message-Id: <1397029166-4412-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  9 Apr 2014 09:39:26 +0200
+Message-Id: <1397029166-4412-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1397029166-4412-1-git-send-email-s.hauer@pengutronix.de>
+References: <1397029166-4412-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,24 +21,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Fix some longstanding environment bugs
+Subject: [PATCH 4/4] loadenv: detect truncated environment files
 To: barebox@lists.infradead.org
 
-When an environment doesn't fit into the environment partition saveenv
-still returned success. Also loading this corrupted partition resulted
-in success. Fix this.
+Properly detect when an environment file is truncated. This can happen
+when a previous saveenv failed because the environment partition is too
+small.
 
-----------------------------------------------------------------
-Sascha Hauer (4):
-      unlink_recursive: return negative error value
-      loadenv: ignore -ENOENT when removing /env
-      saveenv: Properly detect write errors
-      loadenv: detect truncated environment files
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/environment.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
- commands/loadenv.c     |  2 +-
- common/environment.c   | 38 ++++++++++++++++++++++++++++----------
- lib/unlink-recursive.c |  2 +-
- 3 files changed, 30 insertions(+), 12 deletions(-)
+diff --git a/common/environment.c b/common/environment.c
+index bf813b4..abd69c5 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -409,11 +409,24 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
+ 		goto out;
+ 
+ 	buf = xmalloc(size);
+-	ret = read(envfd, buf, size);
+-	if (ret < size) {
+-		perror("read");
+-		ret = -errno;
+-		goto out;
++
++	while (size) {
++		ssize_t now;
++
++		now = read(envfd, buf, size);
++		if (now < 0) {
++			perror("read");
++			ret = -errno;
++			goto out;
++		}
++
++		if (!now) {
++			printf("%s: premature end of file\n", filename);
++			ret = -EINVAL;
++			goto out;
++		}
++
++		size -= now;
+ 	}
+ 
+ 	ret = envfs_check_data(&super, buf, size);
+-- 
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
