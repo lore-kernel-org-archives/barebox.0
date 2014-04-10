@@ -1,15 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYJ8M-0007jE-Vh
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 17:51:31 +0000
-Received: by mail-ee0-f45.google.com with SMTP id d17so3321087eek.32
- for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 10:51:09 -0700 (PDT)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu, 10 Apr 2014 14:04:05 +0200
-Message-Id: <1397131446-4816-3-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
-References: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
+Received: from s250.sam-solutions.net ([217.21.49.219])
+ by casper.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WYFdu-0008VR-89
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 14:07:51 +0000
+Received: from s326.sam-solutions.net ([217.21.35.11])
+ by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <U.Bely@sam-solutions.com>)
+ id 1WYFdV-00006N-4X
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 17:07:25 +0300
+Message-ID: <5346A597.1010008@sam-solutions.net>
+Date: Thu, 10 Apr 2014 17:07:19 +0300
+From: Uladzimir Bely <u.bely@sam-solutions.net>
+MIME-Version: 1.0
+References: <20140410061620.GL27055@pengutronix.de>
+In-Reply-To: <20140410061620.GL27055@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,116 +22,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/3] memtest: cleanup requests of regions
+Subject: Re: Re: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
 To: barebox@lists.infradead.org
 
-This patch removes the first and last entry check inside the loop.
-There should be no functional changes there.
-
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- commands/memtest.c | 66 +++++++++++++++++++++++-------------------------------
- 1 file changed, 28 insertions(+), 38 deletions(-)
-
-diff --git a/commands/memtest.c b/commands/memtest.c
-index dc05e9e..5854375 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -74,34 +74,25 @@ static int request_memtest_regions(struct list_head *list)
- 			continue;
- 		}
- 
-+		r = list_first_entry(&bank->res->children,
-+				     struct resource, sibling);
-+		start = PAGE_ALIGN(bank->res->start);
-+		end = PAGE_ALIGN_DOWN(r->start);
-+		r_prev = r;
-+		if (start != end) {
-+			size = end - start;
-+			ret = alloc_memtest_region(list, start, size);
-+			if (ret < 0)
-+				return ret;
-+		}
- 		/*
- 		 * We assume that the regions are sorted in this list
- 		 * So the first element has start boundary on bank->res->start
--		 * and the last element hast end boundary on bank->res->end
-+		 * and the last element hast end boundary on bank->res->end.
-+		 *
-+		 * Between used regions. Start from second entry.
- 		 */
--		list_for_each_entry(r, &bank->res->children, sibling) {
--			/*
--			 * Do on head element for bank boundary
--			 */
--			if (r->sibling.prev == &bank->res->children) {
--				/*
--				 * remember last used element
--				 */
--				start = PAGE_ALIGN(bank->res->start);
--				end = PAGE_ALIGN_DOWN(r->start);
--				r_prev = r;
--				if (start == end)
--					continue;
--				size = end - start;
--
--				ret = alloc_memtest_region(list, start, size);
--				if (ret < 0)
--					return ret;
--				continue;
--			}
--			/*
--			 * Between used regions
--			 */
-+		list_for_each_entry_from(r, &bank->res->children, sibling) {
- 			start = PAGE_ALIGN(r_prev->end);
- 			end = PAGE_ALIGN_DOWN(r->start);
- 			r_prev = r;
-@@ -112,21 +103,20 @@ static int request_memtest_regions(struct list_head *list)
- 			ret = alloc_memtest_region(list, start, size);
- 			if (ret < 0)
- 				return ret;
-+		}
- 
--			if (list_is_last(&r->sibling, &bank->res->children)) {
--				/*
--				 * Do on head element for bank boundary
--				 */
--				start = PAGE_ALIGN(r->end);
--				end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
--				size = end - start + 1;
--				if (start >= end)
--					continue;
--
--				ret = alloc_memtest_region(list, start, size);
--				if (ret < 0)
--					return ret;
--			}
-+		/*
-+		 * Do on head element for bank boundary.
-+		 */
-+		r = list_last_entry(&bank->res->children,
-+				     struct resource, sibling);
-+		start = PAGE_ALIGN(r->end);
-+		end = PAGE_ALIGN_DOWN(bank->res->end) - 1;
-+		size = end - start + 1;
-+		if (start < end) {
-+			ret = alloc_memtest_region(list, start, size);
-+			if (ret < 0)
-+				return ret;
- 		}
- 	}
- 
--- 
-1.9.1
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGVsbG8sIFNhc2hhLgoKSXQgc2VlbXMgSSd2ZSBmaXhlZCBhbGwgYWNjb3JkaW5nIHlvdXIgcmVt
+YXJrcyBpbnN0ZWFkIG9mIG9uZSBxdWVzdGlvbi4KCjEwLjA0LjIwMTQgMDk6MTYsIFNhc2NoYSBI
+YXVlciDQv9C40YjQtdGCOgo+IAo+IEFzIHN1Z2dlc3RlZCBpbiBteSBsYXN0IG1haWw6Cj4gCj4g
+RG8gd2UgbmVlZCB0aGlzIHRvb2wgYXQgYWxsPyBXZSBjYW4gYWRkIGEgLm1hY2FkZHIgcGFyYW1l
+dGVyIHRvIHRoZQo+IG9jb3RwIGRldmljZSB1c2luZyBkZXZfYWRkX3BhcmFtX21hYygpIChUaGlz
+IGZ1bmN0aW9uIGlzIG5ldyBhbmQKPiBjdXJyZW50bHkgb25seSBpbiB0aGUgLW5leHQgYnJhbmNo
+KQo+IAoKSG93IGNhbiB3ZSB0byB1c2Ugc3VjaCBwYXJhbWV0ZXJzIChldmVuIG5vdCBtYWNhZGRy
+LCBqdXN0IGJvb2wpPwoKRm9yIGV4YW1wbGUsIEknbSB0cnlpbmcganVzdCB0byBhZGQgYm9vbCBw
+YXJhbWV0ZXIgaW4gaW14X29jb3RwX3Byb2JlKCksCmZvciBhZGRpdGlvbmFsIEZVU0Ugd3JpdGUg
+cHJvdGVjdGlvbjoKCj4gaWYgKElTX0VOQUJMRUQoQ09ORklHX0lNWF9PQ09UUF9XUklURSkpIHsK
+PiAJZGV2X2FkZF9wYXJhbV9ib29sKGRldiwgInBlcm1hbmVudF93cml0ZV9lbmFibGUiLAo+IAkJ
+TlVMTCwgTlVMTCwgJnByaXYtPndyaXRlX2VuYWJsZSwgTlVMTCk7Cj4gfQoKYW5kIGNoZWNrIHBy
+aXYtPndyaXRlX2VuYWJsZSBpbnN0ZWFkIG9mIENPTkZJR19JTVhfT0NPVFBfV1JJVEUgaW4gd3Jp
+dGUgZnVuY3Rpb24uCgpCdXQgaG93IHRvIHNldCBwZXJtYW5lbnRfd3JpdGVfZW5hYmxlIHRvIDEg
+aW4gYmFyZWJveCBzaGVsbD8KQXMgSSB1bmRlcnN0YW5kLCBpdCBzaG91bGQgYmUgc29tZXRoaW5n
+IGxpa2Ugb2NvdHAwLnBlcm1hbmVudF93cml0ZV9lbmFibGU9MSwKYnV0IEkgZG9uJ3Qgc2VlIGFu
+eSBzaW1pbGFyLgoKSWYgSSBhZGQKCj4gYWRkX2dlbmVyaWNfZGV2aWNlKCJvY290cCIsIDAsIE5V
+TEwsIE1YNl9PQ09UUF9CQVNFX0FERFIsIDB4MjAwMCwKPiAJCSAgIElPUkVTT1VSQ0VfTUVNLCBO
+VUxMKTsKCnRvIGJvYXJkLmMsIEkgc2VlIHNvbWV0aGluZyBsaWtlIDIxYmMwMDAub2NvdHAud3Jp
+dGVfZW5hYmxlPSBhdmFpbGFibGUsIGJ1dAoyMWJjMDAwLm9jb3RwLndyaXRlX2VuYWJsZT0xIG9y
+IDIxYmMwMDAub2NvdHAud3JpdGVfZW5hYmxlPTAgZG9lc24ndCB3b3JrLApzYXlpbmcgIk5vIHN1
+Y2ggZmlsZSBvciBkaXJlY3RvcnkiLgoKQWxzbywgYXMgSSB1bmRlcnN0YW5kLCBpdCdzIGFuIGlu
+Y29ycmVjdCBpbiBmaWVsZCBvZiB1c2luZyBkZXZpY2V0cmVlLgoKCk9uZSBtb3JlIHF1ZXN0aW9u
+OiBpcyB0aGVyZSBhbnkgd2F5IGluIGJhcmVib3ggc2hlbGwgdG8gd3JpdGUgdG8gY2hhcmFjdGVy
+IGRldmljZQp3aXRoIG9mZnNldD8gRm9yIGV4YW1wbGUsIG9jb3RwdG9vbCBqdXN0IHdyaXRlcyAo
+cmVhZHMpIDggYnl0ZXMgdG8gb2NvdHAgY2RldiB3aXRoIG9mZnNldAoweDIyKjQgKE1BQyBvZmZz
+ZXQpLiBIb3cgdG8gZG8gaXQgZnJvbSBzaGVsbD8KCi0tIApXaXRoIHJlZ2FyZHMsClVsYWR6aW1p
+ciBCZWx5LgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8v
+bGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
