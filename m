@@ -1,14 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-x232.google.com ([2607:f8b0:4001:c03::232])
+Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYLeg-0007Fv-VX
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 20:33:03 +0000
-Received: by mail-ie0-f178.google.com with SMTP id lx4so4552354iec.9
- for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 13:32:40 -0700 (PDT)
-MIME-Version: 1.0
-Date: Thu, 10 Apr 2014 16:32:38 -0400
-Message-ID: <CAO6XYUtDt5eACQ8+X+KfEW5_BgN-fuJWxTO3Sa=-vRCGiw73qg@mail.gmail.com>
-From: "Michael D. Burkey" <mdburkey@gmail.com>
+ id 1WYIo3-0002t0-4b
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 17:30:31 +0000
+Received: by mail-ee0-f50.google.com with SMTP id c13so3339653eek.9
+ for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 10:30:07 -0700 (PDT)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Thu, 10 Apr 2014 14:04:06 +0200
+Message-Id: <1397131446-4816-4-git-send-email-alex.aring@gmail.com>
+In-Reply-To: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
+References: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,30 +18,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1 - Corrected] Fix bug in export 64 bit unsigned environment
- variable.
+Subject: [PATCH 3/3] memtest: copyright to UPPER case and fix typo
 To: barebox@lists.infradead.org
 
-The first time I sent this I apparently typed a character into the
-wrong window before I sent it and didn't notice it.
+Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+---
+ common/memtest.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
--------------------------------------------------------------------------
+diff --git a/common/memtest.c b/common/memtest.c
+index 5303c92..541d008 100644
+--- a/common/memtest.c
++++ b/common/memtest.c
+@@ -1,7 +1,7 @@
+ /*
+- * memory_test.c
++ * memtest.c
+  *
+- * Copyright (c) 2013 Alexander Aring <aar@pengutronix.de>, Pengutronix
++ * Copyright (C) 2013 Alexander Aring <aar@pengutronix.de>, Pengutronix
+  *
+  * (C) Copyright 2000
+  * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+-- 
+1.9.1
 
---- a/common/env.c
-+++ b/common/env.c
-@@ -258,7 +258,7 @@
-
- void export_env_ull(const char *name, unsigned long long val)
- {
--       char *valstr = asprintf("%lld", val);
-+       char *valstr = asprintf("%llu", val);
-
-        setenv(name, valstr);
-        export(name);
 
 _______________________________________________
 barebox mailing list
