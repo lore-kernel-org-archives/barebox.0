@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp36.i.mail.ru ([94.100.177.96])
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYHly-0002dN-9T
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 16:24:19 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 10 Apr 2014 20:23:42 +0400
-Message-Id: <1397147022-20116-2-git-send-email-shc_work@mail.ru>
-In-Reply-To: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
-References: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
+ id 1WYIq7-0002xy-9W
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 17:32:40 +0000
+Received: by mail-ee0-f45.google.com with SMTP id d17so3305192eek.32
+ for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 10:32:15 -0700 (PDT)
+From: Alexander Aring <alex.aring@gmail.com>
+Date: Thu, 10 Apr 2014 14:04:03 +0200
+Message-Id: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,71 +17,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/2] spi: i.MX: Optimise driver private structure
+Subject: [PATCH 0/3] memtest: small cleanup
 To: barebox@lists.infradead.org
 
-No need to store init() function in the driver private structure
-since it called only once during startup.
-
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- drivers/spi/imx_spi.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 3c1ba61..bd8fe35 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -117,7 +117,6 @@ struct imx_spi {
- 
- 	unsigned int		(*xchg_single)(struct imx_spi *imx, u32 data);
- 	void			(*chipselect)(struct spi_device *spi, int active);
--	void			(*init)(struct imx_spi *imx);
- };
- 
- struct spi_imx_devtype_data {
-@@ -383,10 +382,6 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
- 		gpio_set_value(gpio, gpio_cs);
- }
- 
--static void cspi_2_3_init(struct imx_spi *imx)
--{
--}
--
- static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
- {
- 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
-@@ -459,7 +454,6 @@ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_0_7 = {
- static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
- 	.chipselect = cspi_2_3_chipselect,
- 	.xchg_single = cspi_2_3_xchg_single,
--	.init = cspi_2_3_init,
- };
- 
- static int imx_spi_dt_probe(struct imx_spi *imx)
-@@ -523,10 +517,10 @@ static int imx_spi_probe(struct device_d *dev)
- 
- 	imx->chipselect = devdata->chipselect;
- 	imx->xchg_single = devdata->xchg_single;
--	imx->init = devdata->init;
- 	imx->regs = dev_request_mem_region(dev, 0);
- 
--	imx->init(imx);
-+	if (devdata->init)
-+		devdata->init(imx);
- 
- 	spi_register_master(master);
- 
--- 
-1.8.3.2
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+SGksCgp0aGlzIGFyZSB0aHJlZSBwYXRjaGVzIHRvIGNsZWFudXAgdGhlIG1lbXRlc3QgY29tbWFu
+ZC4gSXQgcmVtb3ZlcyB0aGUgdGhlIGZpcnN0CmFuZCBsYXN0IGlmIGNvbmRpdGlvbiBpbiB0aGUg
+c2RyYW0gcmVnaW9ucyBsb29wLiBJdCB3YXMgc3R1cGlkIHRvIGhhbmRsZSBpdCBpbgp0aGF0IHdh
+eSBidXQgc2luY2UgdGhlbiBteSBza2lsbHMgYXJlIGltcHJvdmVkIGFuZCBpdCB3YXMgbG9uZyB0
+aW1lIG9uIG15IGxpc3QuCgpJIHdvdWxkIGJlIGhhcHB5IGlmIHNvbWVib2R5IGNhbiB0ZXN0IGl0
+IHdpdGggdHdvIGJhbmtzLCBhZ2Fpbi4uLgoKLSBBbGV4CgooUGVvcGxlIHRoYXQgSSBrbm93IHRo
+ZXkgaGF2ZSBtb3JlIHRoYW4gb25lIGJhbmtzIGJvYXJkcyk6CkNjOiBTYXNjaGEgSGF1ZXIgPHMu
+aGF1ZXJAcGVuZ3V0cm9uaXguZGU+CkNjOiBUZXJlc2EgR8OhbWV6IDx0LmdhbWV6QHBoeXRlYy5k
+ZT4KQ2M6IENocmlzdGlhbiBIZW1wIDxjLmhlbXBAcGh5dGVjLmRlPgpDYzogSmFuIFdlaXR6ZWwg
+PGoud2VpdHplbEBwaHl0ZWMuZGU+CgpBbGV4YW5kZXIgQXJpbmcgKDMpOgogIG1lbXRlc3Q6IGNs
+ZWFudXAgZXJyb3IgaGFuZGxpbmcKICBtZW10ZXN0OiBjbGVhbnVwIHJlcXVlc3RzIG9mIHJlZ2lv
+bnMKICBtZW10ZXN0OiBjb3B5cmlnaHQgdG8gVVBQRVIgY2FzZSBhbmQgZml4IHR5cG8KCiBjb21t
+YW5kcy9tZW10ZXN0LmMgfCA3NCArKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KIGNvbW1vbi9tZW10ZXN0LmMgICB8ICA0ICstLQogMiBmaWxlcyBj
+aGFuZ2VkLCAzNCBpbnNlcnRpb25zKCspLCA0NCBkZWxldGlvbnMoLSkKCi0tIAoxLjkuMQoKCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFp
+bGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFk
+ZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
