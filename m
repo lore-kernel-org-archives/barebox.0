@@ -1,15 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
+Received: from smtp36.i.mail.ru ([94.100.177.96])
  by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYHgk-0005S8-K4
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 16:18:55 +0000
-Received: by mail-ee0-f47.google.com with SMTP id b15so3229018eek.34
- for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 09:18:30 -0700 (PDT)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu, 10 Apr 2014 14:04:04 +0200
-Message-Id: <1397131446-4816-2-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
-References: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
+ id 1WYHlz-0005jw-DK
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 16:24:31 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Thu, 10 Apr 2014 20:23:41 +0400
+Message-Id: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,37 +19,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] memtest: cleanup error handling
+Subject: [PATCH 1/2] spi: i.MX: Simplify cspi_0_0_init()
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
----
- commands/memtest.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Use SPI module software reset to simplify cspi_0_0_init().
 
-diff --git a/commands/memtest.c b/commands/memtest.c
-index a71576e..dc05e9e 100644
---- a/commands/memtest.c
-+++ b/commands/memtest.c
-@@ -232,12 +232,12 @@ out:
- 		if (ret == -EINTR)
- 			printf("\n");
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ drivers/spi/imx_spi.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index 45461bd..3c1ba61 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -67,6 +67,8 @@
  
--		printf("Memtest failed.\n");
-+		printf("Memtest failed. Error: %d\n", ret);
- 		return 1;
--	} else {
--		printf("Memtest successful.\n");
--		return 0;
- 	}
+ #define CSPI_0_0_TEST_LBC		(1 << 14)
+ 
++#define CSPI_0_0_RESET_START		(1 << 0)
 +
-+	printf("Memtest successful.\n");
-+	return 0;
+ #define CSPI_0_7_RXDATA			0x00
+ #define CSPI_0_7_TXDATA			0x04
+ #define CSPI_0_7_CTRL			0x08
+@@ -197,13 +199,9 @@ static void cspi_0_0_init(struct imx_spi *imx)
+ {
+ 	void __iomem *base = imx->regs;
+ 
+-	writel(CSPI_0_0_CTRL_ENABLE | CSPI_0_0_CTRL_MASTER,
+-		     base + CSPI_0_0_CTRL);
+-	writel(CSPI_0_0_PERIOD_32KHZ,
+-		     base + CSPI_0_0_PERIOD);
+-	while (readl(base + CSPI_0_0_INT) & CSPI_0_0_STAT_RR)
+-		readl(base + CSPI_0_0_RXDATA);
+-	writel(0, base + CSPI_0_0_INT);
++	writel(CSPI_0_0_RESET_START, base + CSPI_0_0_RESET);
++	do {
++	} while (readl(base + CSPI_0_0_RESET) & CSPI_0_0_RESET_START);
  }
  
- static const __maybe_unused char cmd_memtest_help[] =
+ static unsigned int cspi_0_7_xchg_single(struct imx_spi *imx, unsigned int data)
 -- 
-1.9.1
+1.8.3.2
 
 
 _______________________________________________
