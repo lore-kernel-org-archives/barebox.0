@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp36.i.mail.ru ([94.100.177.96])
- by merlin.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYHlz-0005jw-DK
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 16:24:31 +0000
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WYHly-0002dN-9T
+ for barebox@lists.infradead.org; Thu, 10 Apr 2014 16:24:19 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Thu, 10 Apr 2014 20:23:41 +0400
-Message-Id: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
+Date: Thu, 10 Apr 2014 20:23:42 +0400
+Message-Id: <1397147022-20116-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
+References: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,46 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] spi: i.MX: Simplify cspi_0_0_init()
+Subject: [PATCH 2/2] spi: i.MX: Optimise driver private structure
 To: barebox@lists.infradead.org
 
-Use SPI module software reset to simplify cspi_0_0_init().
+No need to store init() function in the driver private structure
+since it called only once during startup.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/spi/imx_spi.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/spi/imx_spi.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index 45461bd..3c1ba61 100644
+index 3c1ba61..bd8fe35 100644
 --- a/drivers/spi/imx_spi.c
 +++ b/drivers/spi/imx_spi.c
-@@ -67,6 +67,8 @@
+@@ -117,7 +117,6 @@ struct imx_spi {
  
- #define CSPI_0_0_TEST_LBC		(1 << 14)
+ 	unsigned int		(*xchg_single)(struct imx_spi *imx, u32 data);
+ 	void			(*chipselect)(struct spi_device *spi, int active);
+-	void			(*init)(struct imx_spi *imx);
+ };
  
-+#define CSPI_0_0_RESET_START		(1 << 0)
-+
- #define CSPI_0_7_RXDATA			0x00
- #define CSPI_0_7_TXDATA			0x04
- #define CSPI_0_7_CTRL			0x08
-@@ -197,13 +199,9 @@ static void cspi_0_0_init(struct imx_spi *imx)
- {
- 	void __iomem *base = imx->regs;
- 
--	writel(CSPI_0_0_CTRL_ENABLE | CSPI_0_0_CTRL_MASTER,
--		     base + CSPI_0_0_CTRL);
--	writel(CSPI_0_0_PERIOD_32KHZ,
--		     base + CSPI_0_0_PERIOD);
--	while (readl(base + CSPI_0_0_INT) & CSPI_0_0_STAT_RR)
--		readl(base + CSPI_0_0_RXDATA);
--	writel(0, base + CSPI_0_0_INT);
-+	writel(CSPI_0_0_RESET_START, base + CSPI_0_0_RESET);
-+	do {
-+	} while (readl(base + CSPI_0_0_RESET) & CSPI_0_0_RESET_START);
+ struct spi_imx_devtype_data {
+@@ -383,10 +382,6 @@ static void cspi_2_3_chipselect(struct spi_device *spi, int is_active)
+ 		gpio_set_value(gpio, gpio_cs);
  }
  
- static unsigned int cspi_0_7_xchg_single(struct imx_spi *imx, unsigned int data)
+-static void cspi_2_3_init(struct imx_spi *imx)
+-{
+-}
+-
+ static void imx_spi_do_transfer(struct spi_device *spi, struct spi_transfer *t)
+ {
+ 	struct imx_spi *imx = container_of(spi->master, struct imx_spi, master);
+@@ -459,7 +454,6 @@ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_0_7 = {
+ static __maybe_unused struct spi_imx_devtype_data spi_imx_devtype_data_2_3 = {
+ 	.chipselect = cspi_2_3_chipselect,
+ 	.xchg_single = cspi_2_3_xchg_single,
+-	.init = cspi_2_3_init,
+ };
+ 
+ static int imx_spi_dt_probe(struct imx_spi *imx)
+@@ -523,10 +517,10 @@ static int imx_spi_probe(struct device_d *dev)
+ 
+ 	imx->chipselect = devdata->chipselect;
+ 	imx->xchg_single = devdata->xchg_single;
+-	imx->init = devdata->init;
+ 	imx->regs = dev_request_mem_region(dev, 0);
+ 
+-	imx->init(imx);
++	if (devdata->init)
++		devdata->init(imx);
+ 
+ 	spi_register_master(master);
+ 
 -- 
 1.8.3.2
 
