@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from s250.sam-solutions.net ([217.21.49.219])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYW4J-0002yW-Uy
- for barebox@lists.infradead.org; Fri, 11 Apr 2014 07:40:14 +0000
+ id 1WYaET-0005m5-EH
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 12:06:59 +0000
 Received: from s326.sam-solutions.net ([217.21.35.11])
  by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
  (Exim 4.77) (envelope-from <U.Bely@sam-solutions.com>)
- id 1WYW3r-0001D2-KZ
- for barebox@lists.infradead.org; Fri, 11 Apr 2014 10:39:43 +0300
+ id 1WYaE4-0001ZW-JT
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 15:06:32 +0300
 From: Uladzimir Bely <u.bely@sam-solutions.net>
-Date: Fri, 11 Apr 2014 10:39:35 +0300
-Message-ID: <1397201975-4068-1-git-send-email-u.bely@sam-solutions.net>
-In-Reply-To: <20140410061620.GL27055@pengutronix.de>
-References: <20140410061620.GL27055@pengutronix.de>
+Date: Fri, 11 Apr 2014 15:06:24 +0300
+Message-ID: <1397217984-16808-1-git-send-email-u.bely@sam-solutions.net>
+In-Reply-To: <20140411073906.GN27055@pengutronix.de>
+References: <20140411073906.GN27055@pengutronix.de>
 MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -30,29 +30,39 @@ Subject: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
 To: barebox@lists.infradead.org
 Cc: Uladzimir Bely <u.bely@sam-solutions.net>
 
+FUSEs (OTP registers) can be written via /dev/imx-ocotp character device.
+
 For example, writing MAC 12:34:56:78:9A:BC can be performed as
-    mw -l -d /dev/imx-ocotp 0x8c 0x00001234
-    mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
+    > mw -l -d /dev/imx-ocotp 0x8c 0x00001234
+    > mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
 and reading as
-    md -l -s /dev/imx-ocotp 0x88+8
+    > md -l -s /dev/imx-ocotp 0x88+8
     00000088: 56789ABC 00001234
 , where 0x88 (0x22*4) and 0x8C (0x23*4) are offsets of MAC OTP registers.
 
 Notice: FUSEs are PROM, so "0" (unprogrammed) bits
 can be replaced with "1" (but not vice versa) only once.
 
+Also, for MAC there are convinient parameters:
+    > ocotp0.permanent_write_enable=1
+    > ocotp0.mac_addr=12:34:56:78:9A:BC
+    imx_ocotp 21bc000.ocotp: reloading shadow registers...
+    imx_ocotp 21bc000.ocotp: reloading shadow registers...
+    > echo $ocotp0.mac_addr
+    12:34:56:78:9A:BC
+
 Signed-off-by: Uladzimir Bely <u.bely@sam-solutions.net>
 ---
  arch/arm/mach-imx/Kconfig    |  10 ++
  arch/arm/mach-imx/clk-imx6.c |   1 +
- arch/arm/mach-imx/ocotp.c    | 285 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 296 insertions(+)
+ arch/arm/mach-imx/ocotp.c    | 332 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 343 insertions(+)
 
 diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 81d16e1..556c7dc 100644
+index d40c944..c2613bf 100644
 --- a/arch/arm/mach-imx/Kconfig
 +++ b/arch/arm/mach-imx/Kconfig
-@@ -593,6 +593,16 @@ config IMX_OCOTP
+@@ -621,6 +621,16 @@ config IMX_OCOTP
  	  only supported functionality is reading the MAC address and assigning
  	  it to an ethernet device.
  
@@ -70,10 +80,10 @@ index 81d16e1..556c7dc 100644
  
  endif
 diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
-index c32b6cc..5d2d9d0 100644
+index 518fc00..4598a62 100644
 --- a/arch/arm/mach-imx/clk-imx6.c
 +++ b/arch/arm/mach-imx/clk-imx6.c
-@@ -294,6 +294,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+@@ -433,6 +433,7 @@ static int imx6_ccm_probe(struct device_d *dev)
  	clkdev_add_physbase(clks[ecspi_root], MX6_ECSPI5_BASE_ADDR, NULL);
  	clkdev_add_physbase(clks[ipg_per], MX6_GPT_BASE_ADDR, NULL);
  	clkdev_add_physbase(clks[ipg], MX6_ENET_BASE_ADDR, NULL);
@@ -82,7 +92,7 @@ index c32b6cc..5d2d9d0 100644
  	clkdev_add_physbase(clks[usdhc2_podf], MX6_USDHC2_BASE_ADDR, NULL);
  	clkdev_add_physbase(clks[usdhc3_podf], MX6_USDHC3_BASE_ADDR, NULL);
 diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
-index e36b484..ec5cca2 100644
+index e36b484..0ad5b46 100644
 --- a/arch/arm/mach-imx/ocotp.c
 +++ b/arch/arm/mach-imx/ocotp.c
 @@ -25,6 +25,8 @@
@@ -94,7 +104,7 @@ index e36b484..ec5cca2 100644
  
  /*
   * a single MAC address reference has the form
-@@ -32,6 +34,261 @@
+@@ -32,6 +34,270 @@
   */
  #define MAC_ADDRESS_PROPLEN	(2 * sizeof(__be32))
  
@@ -131,11 +141,16 @@ index e36b484..ec5cca2 100644
 +#define FUSE_REGS_COUNT			(16 * 8)
 +#define IMX6_OTP_DATA_ERROR_VAL		0xBADABADA
 +#define DEF_RELAX			20
++#define MAC_OFFSET			(0x22 * 4)
++#define MAC_BYTES			8
 +
 +struct ocotp_priv {
 +	struct cdev cdev;
 +	void __iomem *base;
 +	struct clk *clk;
++	struct device_d dev;
++	int write_enable;
++	char ethaddr[6];
 +};
 +
 +static int imx6_ocotp_set_timing(struct ocotp_priv *priv)
@@ -326,11 +341,15 @@ index e36b484..ec5cca2 100644
 +	ulong size, index, i;
 +	u32 data, pfuse;
 +
++	struct ocotp_priv *priv = cdev->priv;
++
 +	index = offset >> 2;
 +	size = count >> 2;
 +
-+	if (!IS_ENABLED(CONFIG_IMX_OCOTP_WRITE))
++	if (!priv->write_enable) {
++		dev_err(cdev->dev, "operation not permitted\n");
 +		return -EPERM;
++	}
 +
 +	if (size > (FUSE_REGS_COUNT - index))
 +		size = FUSE_REGS_COUNT - index - 1;
@@ -356,7 +375,40 @@ index e36b484..ec5cca2 100644
  static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
  {
  	char mac[6];
-@@ -74,12 +331,40 @@ static int imx_ocotp_probe(struct device_d *dev)
+@@ -70,16 +336,82 @@ static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
+ 	}
+ }
+ 
++static int imx_ocotp_get_mac(struct param_d *param, void *priv)
++{
++	struct ocotp_priv *ocotp_priv = priv;
++	char buf[8];
++	int i;
++
++	imx6_ocotp_cdev_read(&ocotp_priv->cdev, buf, MAC_BYTES, MAC_OFFSET, 0);
++
++	for (i = 0; i < 6; i++)
++		ocotp_priv->ethaddr[i] = buf[5 - i];
++
++	return 0;
++}
++
++static int imx_ocotp_set_mac(struct param_d *param, void *priv)
++{
++	struct ocotp_priv *ocotp_priv = priv;
++	char buf[8];
++	int i;
++
++	for (i = 0; i < 6; i++)
++		buf[5 - i] = ocotp_priv->ethaddr[i];
++	buf[6] = 0; buf[7] = 0;
++
++	imx6_ocotp_cdev_write(&ocotp_priv->cdev, buf, MAC_BYTES, MAC_OFFSET, 0);
++
++	return 0;
++}
++
+ static int imx_ocotp_probe(struct device_d *dev)
  {
  	void __iomem *base;
  
@@ -391,8 +443,17 @@ index e36b484..ec5cca2 100644
 +	if (ret < 0)
 +		return ret;
 +
-+	if (IS_ENABLED(CONFIG_IMX_OCOTP_WRITE))
++	strcpy(priv->dev.name, "ocotp");
++	priv->dev.parent = dev;
++	register_device(&priv->dev);
++
++	if (IS_ENABLED(CONFIG_IMX_OCOTP_WRITE)) {
 +		imx6_ocotp_ops.write = imx6_ocotp_cdev_write;
++		dev_add_param_bool(&(priv->dev), "permanent_write_enable",
++				NULL, NULL, &priv->write_enable, NULL);
++		dev_add_param_mac(&(priv->dev), "mac_addr", imx_ocotp_set_mac,
++				imx_ocotp_get_mac, priv->ethaddr, priv);
++	}
 +
  	return 0;
  }
