@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYSwm-0003Z0-Sg
- for barebox@lists.infradead.org; Fri, 11 Apr 2014 04:20:13 +0000
-Received: by mail-lb0-f179.google.com with SMTP id p9so3033944lbv.38
- for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 21:19:48 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 11 Apr 2014 08:19:42 +0400
-Message-Id: <1397189982-31677-1-git-send-email-antonynpavlov@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WYW3h-0002xn-KY
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 07:39:34 +0000
+Date: Fri, 11 Apr 2014 09:39:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140411073906.GN27055@pengutronix.de>
+References: <20140410061620.GL27055@pengutronix.de>
+ <5346A597.1010008@sam-solutions.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5346A597.1010008@sam-solutions.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,72 +19,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] net: usb: asix: fix formating
-To: barebox@lists.infradead.org
+Subject: Re: Re: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
+To: Uladzimir Bely <u.bely@sam-solutions.net>
+Cc: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- drivers/net/usb/asix.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-index 37057a7..2145d3f 100644
---- a/drivers/net/usb/asix.c
-+++ b/drivers/net/usb/asix.c
-@@ -286,7 +286,7 @@ static int asix_sw_reset(struct usbnet *dev, u8 flags)
- {
- 	int ret;
- 
--        ret = asix_write_cmd(dev, AX_CMD_SW_RESET, flags, 0, 0, NULL);
-+	ret = asix_write_cmd(dev, AX_CMD_SW_RESET, flags, 0, 0, NULL);
- 	if (ret < 0)
- 		dev_err(&dev->edev.dev, "Failed to send software reset: %02x\n", ret);
- 
-@@ -453,8 +453,8 @@ static int asix_rx_fixup(struct usbnet *dev, void *buf, int len)
- }
- 
- static int asix_tx_fixup(struct usbnet *dev,
--                                void *buf, int len,
--                                void *nbuf, int *nlen)
-+				void *buf, int len,
-+				void *nbuf, int *nlen)
- {
- 	unsigned int packet_len;
- 
-@@ -696,10 +696,10 @@ static struct driver_info ax88772b_info = {
- 	.description = "ASIX AX88772B USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = asix_unbind,
--        .flags = FLAG_ETHER | FLAG_FRAMING_AX,
--        .rx_fixup = asix_rx_fixup,
--        .tx_fixup = asix_tx_fixup,
--        .data = FLAG_EEPROM_MAC,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
-+	.rx_fixup = asix_rx_fixup,
-+	.tx_fixup = asix_tx_fixup,
-+	.data = FLAG_EEPROM_MAC,
- };
- 
- static const struct usb_device_id products [] = {
-@@ -800,7 +800,6 @@ static struct usb_driver asix_driver = {
- 
- static int __init asix_init(void)
- {
-- 	return usb_driver_register(&asix_driver);
-+	return usb_driver_register(&asix_driver);
- }
- device_initcall(asix_init);
--
--- 
-1.9.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gVGh1LCBBcHIgMTAsIDIwMTQgYXQgMDU6MDc6MTlQTSArMDMwMCwgVWxhZHppbWlyIEJlbHkg
+d3JvdGU6Cj4gSGVsbG8sIFNhc2hhLgo+IAo+IEl0IHNlZW1zIEkndmUgZml4ZWQgYWxsIGFjY29y
+ZGluZyB5b3VyIHJlbWFya3MgaW5zdGVhZCBvZiBvbmUgcXVlc3Rpb24uCj4gCj4gMTAuMDQuMjAx
+NCAwOToxNiwgU2FzY2hhIEhhdWVyINC/0LjRiNC10YI6Cj4gPiAKPiA+IEFzIHN1Z2dlc3RlZCBp
+biBteSBsYXN0IG1haWw6Cj4gPiAKPiA+IERvIHdlIG5lZWQgdGhpcyB0b29sIGF0IGFsbD8gV2Ug
+Y2FuIGFkZCBhIC5tYWNhZGRyIHBhcmFtZXRlciB0byB0aGUKPiA+IG9jb3RwIGRldmljZSB1c2lu
+ZyBkZXZfYWRkX3BhcmFtX21hYygpIChUaGlzIGZ1bmN0aW9uIGlzIG5ldyBhbmQKPiA+IGN1cnJl
+bnRseSBvbmx5IGluIHRoZSAtbmV4dCBicmFuY2gpCj4gPiAKPiAKPiBIb3cgY2FuIHdlIHRvIHVz
+ZSBzdWNoIHBhcmFtZXRlcnMgKGV2ZW4gbm90IG1hY2FkZHIsIGp1c3QgYm9vbCk/Cj4gCj4gRm9y
+IGV4YW1wbGUsIEknbSB0cnlpbmcganVzdCB0byBhZGQgYm9vbCBwYXJhbWV0ZXIgaW4gaW14X29j
+b3RwX3Byb2JlKCksCj4gZm9yIGFkZGl0aW9uYWwgRlVTRSB3cml0ZSBwcm90ZWN0aW9uOgo+IAo+
+ID4gaWYgKElTX0VOQUJMRUQoQ09ORklHX0lNWF9PQ09UUF9XUklURSkpIHsKPiA+IAlkZXZfYWRk
+X3BhcmFtX2Jvb2woZGV2LCAicGVybWFuZW50X3dyaXRlX2VuYWJsZSIsCj4gPiAJCU5VTEwsIE5V
+TEwsICZwcml2LT53cml0ZV9lbmFibGUsIE5VTEwpOwo+ID4gfQo+IAo+IGFuZCBjaGVjayBwcml2
+LT53cml0ZV9lbmFibGUgaW5zdGVhZCBvZiBDT05GSUdfSU1YX09DT1RQX1dSSVRFIGluIHdyaXRl
+IGZ1bmN0aW9uLgo+IAo+IEJ1dCBob3cgdG8gc2V0IHBlcm1hbmVudF93cml0ZV9lbmFibGUgdG8g
+MSBpbiBiYXJlYm94IHNoZWxsPwo+IEFzIEkgdW5kZXJzdGFuZCwgaXQgc2hvdWxkIGJlIHNvbWV0
+aGluZyBsaWtlIG9jb3RwMC5wZXJtYW5lbnRfd3JpdGVfZW5hYmxlPTEsCj4gYnV0IEkgZG9uJ3Qg
+c2VlIGFueSBzaW1pbGFyLgo+IAo+IElmIEkgYWRkCj4gCj4gPiBhZGRfZ2VuZXJpY19kZXZpY2Uo
+Im9jb3RwIiwgMCwgTlVMTCwgTVg2X09DT1RQX0JBU0VfQUREUiwgMHgyMDAwLAo+ID4gCQkgICBJ
+T1JFU09VUkNFX01FTSwgTlVMTCk7Cj4gCj4gdG8gYm9hcmQuYywgSSBzZWUgc29tZXRoaW5nIGxp
+a2UgMjFiYzAwMC5vY290cC53cml0ZV9lbmFibGU9IGF2YWlsYWJsZSwgYnV0Cj4gMjFiYzAwMC5v
+Y290cC53cml0ZV9lbmFibGU9MSBvciAyMWJjMDAwLm9jb3RwLndyaXRlX2VuYWJsZT0wIGRvZXNu
+J3Qgd29yaywKPiBzYXlpbmcgIk5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkiLgo+IAo+IEFsc28s
+IGFzIEkgdW5kZXJzdGFuZCwgaXQncyBhbiBpbmNvcnJlY3QgaW4gZmllbGQgb2YgdXNpbmcgZGV2
+aWNldHJlZS4KClNvcnJ5LCBJIGRpZG4ndCByZW1lbWJlciB0aGlzLiBOb3JtYWxseSB0aGlzIGlz
+IGNvcnJlY3QuIFdlIHVzZQpkZXZuYW1lLnBhcmFtZXRlcm5hbWU9dmFsdWUuIFdpdGggZGV2aWNl
+dHJlZSBwcm9iaW5nIHRoZSBkZXZpY2VuYW1lCml0c2VsZiBoYXMgYSBkb3QgaW4gaXQgYW5kIGJh
+cmVib3ggZG9lc24ndCBoYW5kbGUgdGhpcyBwcm9wZXJ0bHkuIEknbQp1bnN1cmUgaWYgd2UgY2Fu
+IGZpeCB0aGlzLiBXaGF0IHlvdSBjYW4gZG8gaXMgcmVnaXN0ZXIgYSBsb2dpY2FsIGRldmljZQpp
+biB0aGUgcHJvYmUgZnVuY3Rpb246CgpzdHJ1Y3Qgb2NvdHBfcHJpdiB7CgkuLi4KCXN0cnVjdCBk
+ZXZpY2UgZGV2OwoJLi4uCn07CgppbnQgb2NvdHBfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
+CnsKCS4uLgoJc3RyY3B5KHByaXYtPmRldi5uYW1lLCAib2NvdHAiKTsKCXByaXYtPmRldi5wYXJl
+bnQgPSBkZXY7CglyZWdpc3Rlcl9kZXZpY2UoJnByaXYtPmRldik7Cn0KClRoZW4gcmVnaXN0ZXIg
+dGhlIHBhcmFtZXRlcnMgb24gdGhlIG5ldyBkZXZpY2UgYW5kIHlvdSBjYW4gYWNjZXNzIHRoZW0K
+d2l0aCBvY290cC53cml0ZV9lbmFibGU9MS4KCj4gCj4gT25lIG1vcmUgcXVlc3Rpb246IGlzIHRo
+ZXJlIGFueSB3YXkgaW4gYmFyZWJveCBzaGVsbCB0byB3cml0ZSB0byBjaGFyYWN0ZXIgZGV2aWNl
+Cj4gd2l0aCBvZmZzZXQ/IEZvciBleGFtcGxlLCBvY290cHRvb2wganVzdCB3cml0ZXMgKHJlYWRz
+KSA4IGJ5dGVzIHRvIG9jb3RwIGNkZXYgd2l0aCBvZmZzZXQKPiAweDIyKjQgKE1BQyBvZmZzZXQp
+LiBIb3cgdG8gZG8gaXQgZnJvbSBzaGVsbD8KCllvdSBjYW4gdXNlIG1kL213IHRvIGFjY2VzcyBv
+ZmZzZXRzLiBSZWFkaW5nIGF0IGFuIG9mZnNldCBpczoKCm1kIC1zIC9kZXYvb2NvdHAgLWIgMHgx
+MCsxCgpyZWFkcyBvbmUgYnl0ZSBhdCBvZmZzZXQgMHgxMCBhbmQ6CgptdyAtZCAvZGV2L29jb3Rw
+IC1iIDB4MTAgMHhkZQoKd3JpdGVzIDB4ZGUgYXQgb2Zmc2V0IDB4MTAuIFNlZSAnaGVscCBtZCcg
+b3IgJ2hlbHAgbXcnIGZvciBtb3JlCmluZm9ybWF0aW9uLgoKV2hhdCB5b3UgY2FuJ3QgZG8gaXMg
+cmVhZGluZyBieXRlcyBpbnRvIHZhcmlhYmxlcy4KClRoYXQgc2FpZCwgb2YgY2F1c2UgaXQncyBj
+dW1iZXJzb21lIHRvIGhhbmRsZSBNQUMgYWRkcmVzc2VzIHdpdGggdGhlc2UKY29tbWFuZHMuCgpT
+YXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
+ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0
+ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
+Ny0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
+OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
+cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
+cmVib3gK
