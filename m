@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
+Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYIo3-0002t0-4b
- for barebox@lists.infradead.org; Thu, 10 Apr 2014 17:30:31 +0000
-Received: by mail-ee0-f50.google.com with SMTP id c13so3339653eek.9
- for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 10:30:07 -0700 (PDT)
-From: Alexander Aring <alex.aring@gmail.com>
-Date: Thu, 10 Apr 2014 14:04:06 +0200
-Message-Id: <1397131446-4816-4-git-send-email-alex.aring@gmail.com>
-In-Reply-To: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
-References: <1397131446-4816-1-git-send-email-alex.aring@gmail.com>
+ id 1WYSwm-0003Z0-Sg
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 04:20:13 +0000
+Received: by mail-lb0-f179.google.com with SMTP id p9so3033944lbv.38
+ for <barebox@lists.infradead.org>; Thu, 10 Apr 2014 21:19:48 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Fri, 11 Apr 2014 08:19:42 +0400
+Message-Id: <1397189982-31677-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,30 +21,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] memtest: copyright to UPPER case and fix typo
+Subject: [PATCH] net: usb: asix: fix formating
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Aring <alex.aring@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/memtest.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/asix.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/common/memtest.c b/common/memtest.c
-index 5303c92..541d008 100644
---- a/common/memtest.c
-+++ b/common/memtest.c
-@@ -1,7 +1,7 @@
- /*
-- * memory_test.c
-+ * memtest.c
-  *
-- * Copyright (c) 2013 Alexander Aring <aar@pengutronix.de>, Pengutronix
-+ * Copyright (C) 2013 Alexander Aring <aar@pengutronix.de>, Pengutronix
-  *
-  * (C) Copyright 2000
-  * Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
+index 37057a7..2145d3f 100644
+--- a/drivers/net/usb/asix.c
++++ b/drivers/net/usb/asix.c
+@@ -286,7 +286,7 @@ static int asix_sw_reset(struct usbnet *dev, u8 flags)
+ {
+ 	int ret;
+ 
+-        ret = asix_write_cmd(dev, AX_CMD_SW_RESET, flags, 0, 0, NULL);
++	ret = asix_write_cmd(dev, AX_CMD_SW_RESET, flags, 0, 0, NULL);
+ 	if (ret < 0)
+ 		dev_err(&dev->edev.dev, "Failed to send software reset: %02x\n", ret);
+ 
+@@ -453,8 +453,8 @@ static int asix_rx_fixup(struct usbnet *dev, void *buf, int len)
+ }
+ 
+ static int asix_tx_fixup(struct usbnet *dev,
+-                                void *buf, int len,
+-                                void *nbuf, int *nlen)
++				void *buf, int len,
++				void *nbuf, int *nlen)
+ {
+ 	unsigned int packet_len;
+ 
+@@ -696,10 +696,10 @@ static struct driver_info ax88772b_info = {
+ 	.description = "ASIX AX88772B USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = asix_unbind,
+-        .flags = FLAG_ETHER | FLAG_FRAMING_AX,
+-        .rx_fixup = asix_rx_fixup,
+-        .tx_fixup = asix_tx_fixup,
+-        .data = FLAG_EEPROM_MAC,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX,
++	.rx_fixup = asix_rx_fixup,
++	.tx_fixup = asix_tx_fixup,
++	.data = FLAG_EEPROM_MAC,
+ };
+ 
+ static const struct usb_device_id products [] = {
+@@ -800,7 +800,6 @@ static struct usb_driver asix_driver = {
+ 
+ static int __init asix_init(void)
+ {
+- 	return usb_driver_register(&asix_driver);
++	return usb_driver_register(&asix_driver);
+ }
+ device_initcall(asix_init);
+-
 -- 
-1.9.1
+1.9.0
 
 
 _______________________________________________
