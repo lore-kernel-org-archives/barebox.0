@@ -1,16 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WYW3h-0002xn-KY
- for barebox@lists.infradead.org; Fri, 11 Apr 2014 07:39:34 +0000
-Date: Fri, 11 Apr 2014 09:39:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140411073906.GN27055@pengutronix.de>
+Received: from s250.sam-solutions.net ([217.21.49.219])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WYW4J-0002yW-Uy
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 07:40:14 +0000
+Received: from s326.sam-solutions.net ([217.21.35.11])
+ by s250.sam-solutions.net with esmtps (TLSv1:AES256-SHA:256)
+ (Exim 4.77) (envelope-from <U.Bely@sam-solutions.com>)
+ id 1WYW3r-0001D2-KZ
+ for barebox@lists.infradead.org; Fri, 11 Apr 2014 10:39:43 +0300
+From: Uladzimir Bely <u.bely@sam-solutions.net>
+Date: Fri, 11 Apr 2014 10:39:35 +0300
+Message-ID: <1397201975-4068-1-git-send-email-u.bely@sam-solutions.net>
+In-Reply-To: <20140410061620.GL27055@pengutronix.de>
 References: <20140410061620.GL27055@pengutronix.de>
- <5346A597.1010008@sam-solutions.net>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5346A597.1010008@sam-solutions.net>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,66 +22,386 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Re: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
-To: Uladzimir Bely <u.bely@sam-solutions.net>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] imx6: ocotp: Add On-Chip OTP registers write support
+To: barebox@lists.infradead.org
+Cc: Uladzimir Bely <u.bely@sam-solutions.net>
 
-T24gVGh1LCBBcHIgMTAsIDIwMTQgYXQgMDU6MDc6MTlQTSArMDMwMCwgVWxhZHppbWlyIEJlbHkg
-d3JvdGU6Cj4gSGVsbG8sIFNhc2hhLgo+IAo+IEl0IHNlZW1zIEkndmUgZml4ZWQgYWxsIGFjY29y
-ZGluZyB5b3VyIHJlbWFya3MgaW5zdGVhZCBvZiBvbmUgcXVlc3Rpb24uCj4gCj4gMTAuMDQuMjAx
-NCAwOToxNiwgU2FzY2hhIEhhdWVyINC/0LjRiNC10YI6Cj4gPiAKPiA+IEFzIHN1Z2dlc3RlZCBp
-biBteSBsYXN0IG1haWw6Cj4gPiAKPiA+IERvIHdlIG5lZWQgdGhpcyB0b29sIGF0IGFsbD8gV2Ug
-Y2FuIGFkZCBhIC5tYWNhZGRyIHBhcmFtZXRlciB0byB0aGUKPiA+IG9jb3RwIGRldmljZSB1c2lu
-ZyBkZXZfYWRkX3BhcmFtX21hYygpIChUaGlzIGZ1bmN0aW9uIGlzIG5ldyBhbmQKPiA+IGN1cnJl
-bnRseSBvbmx5IGluIHRoZSAtbmV4dCBicmFuY2gpCj4gPiAKPiAKPiBIb3cgY2FuIHdlIHRvIHVz
-ZSBzdWNoIHBhcmFtZXRlcnMgKGV2ZW4gbm90IG1hY2FkZHIsIGp1c3QgYm9vbCk/Cj4gCj4gRm9y
-IGV4YW1wbGUsIEknbSB0cnlpbmcganVzdCB0byBhZGQgYm9vbCBwYXJhbWV0ZXIgaW4gaW14X29j
-b3RwX3Byb2JlKCksCj4gZm9yIGFkZGl0aW9uYWwgRlVTRSB3cml0ZSBwcm90ZWN0aW9uOgo+IAo+
-ID4gaWYgKElTX0VOQUJMRUQoQ09ORklHX0lNWF9PQ09UUF9XUklURSkpIHsKPiA+IAlkZXZfYWRk
-X3BhcmFtX2Jvb2woZGV2LCAicGVybWFuZW50X3dyaXRlX2VuYWJsZSIsCj4gPiAJCU5VTEwsIE5V
-TEwsICZwcml2LT53cml0ZV9lbmFibGUsIE5VTEwpOwo+ID4gfQo+IAo+IGFuZCBjaGVjayBwcml2
-LT53cml0ZV9lbmFibGUgaW5zdGVhZCBvZiBDT05GSUdfSU1YX09DT1RQX1dSSVRFIGluIHdyaXRl
-IGZ1bmN0aW9uLgo+IAo+IEJ1dCBob3cgdG8gc2V0IHBlcm1hbmVudF93cml0ZV9lbmFibGUgdG8g
-MSBpbiBiYXJlYm94IHNoZWxsPwo+IEFzIEkgdW5kZXJzdGFuZCwgaXQgc2hvdWxkIGJlIHNvbWV0
-aGluZyBsaWtlIG9jb3RwMC5wZXJtYW5lbnRfd3JpdGVfZW5hYmxlPTEsCj4gYnV0IEkgZG9uJ3Qg
-c2VlIGFueSBzaW1pbGFyLgo+IAo+IElmIEkgYWRkCj4gCj4gPiBhZGRfZ2VuZXJpY19kZXZpY2Uo
-Im9jb3RwIiwgMCwgTlVMTCwgTVg2X09DT1RQX0JBU0VfQUREUiwgMHgyMDAwLAo+ID4gCQkgICBJ
-T1JFU09VUkNFX01FTSwgTlVMTCk7Cj4gCj4gdG8gYm9hcmQuYywgSSBzZWUgc29tZXRoaW5nIGxp
-a2UgMjFiYzAwMC5vY290cC53cml0ZV9lbmFibGU9IGF2YWlsYWJsZSwgYnV0Cj4gMjFiYzAwMC5v
-Y290cC53cml0ZV9lbmFibGU9MSBvciAyMWJjMDAwLm9jb3RwLndyaXRlX2VuYWJsZT0wIGRvZXNu
-J3Qgd29yaywKPiBzYXlpbmcgIk5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnkiLgo+IAo+IEFsc28s
-IGFzIEkgdW5kZXJzdGFuZCwgaXQncyBhbiBpbmNvcnJlY3QgaW4gZmllbGQgb2YgdXNpbmcgZGV2
-aWNldHJlZS4KClNvcnJ5LCBJIGRpZG4ndCByZW1lbWJlciB0aGlzLiBOb3JtYWxseSB0aGlzIGlz
-IGNvcnJlY3QuIFdlIHVzZQpkZXZuYW1lLnBhcmFtZXRlcm5hbWU9dmFsdWUuIFdpdGggZGV2aWNl
-dHJlZSBwcm9iaW5nIHRoZSBkZXZpY2VuYW1lCml0c2VsZiBoYXMgYSBkb3QgaW4gaXQgYW5kIGJh
-cmVib3ggZG9lc24ndCBoYW5kbGUgdGhpcyBwcm9wZXJ0bHkuIEknbQp1bnN1cmUgaWYgd2UgY2Fu
-IGZpeCB0aGlzLiBXaGF0IHlvdSBjYW4gZG8gaXMgcmVnaXN0ZXIgYSBsb2dpY2FsIGRldmljZQpp
-biB0aGUgcHJvYmUgZnVuY3Rpb246CgpzdHJ1Y3Qgb2NvdHBfcHJpdiB7CgkuLi4KCXN0cnVjdCBk
-ZXZpY2UgZGV2OwoJLi4uCn07CgppbnQgb2NvdHBfcHJvYmUoc3RydWN0IGRldmljZV9kICpkZXYp
-CnsKCS4uLgoJc3RyY3B5KHByaXYtPmRldi5uYW1lLCAib2NvdHAiKTsKCXByaXYtPmRldi5wYXJl
-bnQgPSBkZXY7CglyZWdpc3Rlcl9kZXZpY2UoJnByaXYtPmRldik7Cn0KClRoZW4gcmVnaXN0ZXIg
-dGhlIHBhcmFtZXRlcnMgb24gdGhlIG5ldyBkZXZpY2UgYW5kIHlvdSBjYW4gYWNjZXNzIHRoZW0K
-d2l0aCBvY290cC53cml0ZV9lbmFibGU9MS4KCj4gCj4gT25lIG1vcmUgcXVlc3Rpb246IGlzIHRo
-ZXJlIGFueSB3YXkgaW4gYmFyZWJveCBzaGVsbCB0byB3cml0ZSB0byBjaGFyYWN0ZXIgZGV2aWNl
-Cj4gd2l0aCBvZmZzZXQ/IEZvciBleGFtcGxlLCBvY290cHRvb2wganVzdCB3cml0ZXMgKHJlYWRz
-KSA4IGJ5dGVzIHRvIG9jb3RwIGNkZXYgd2l0aCBvZmZzZXQKPiAweDIyKjQgKE1BQyBvZmZzZXQp
-LiBIb3cgdG8gZG8gaXQgZnJvbSBzaGVsbD8KCllvdSBjYW4gdXNlIG1kL213IHRvIGFjY2VzcyBv
-ZmZzZXRzLiBSZWFkaW5nIGF0IGFuIG9mZnNldCBpczoKCm1kIC1zIC9kZXYvb2NvdHAgLWIgMHgx
-MCsxCgpyZWFkcyBvbmUgYnl0ZSBhdCBvZmZzZXQgMHgxMCBhbmQ6CgptdyAtZCAvZGV2L29jb3Rw
-IC1iIDB4MTAgMHhkZQoKd3JpdGVzIDB4ZGUgYXQgb2Zmc2V0IDB4MTAuIFNlZSAnaGVscCBtZCcg
-b3IgJ2hlbHAgbXcnIGZvciBtb3JlCmluZm9ybWF0aW9uLgoKV2hhdCB5b3UgY2FuJ3QgZG8gaXMg
-cmVhZGluZyBieXRlcyBpbnRvIHZhcmlhYmxlcy4KClRoYXQgc2FpZCwgb2YgY2F1c2UgaXQncyBj
-dW1iZXJzb21lIHRvIGhhbmRsZSBNQUMgYWRkcmVzc2VzIHdpdGggdGhlc2UKY29tbWFuZHMuCgpT
-YXNjaGEKCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKUGVpbmVyIFN0
-ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0OS01MTIxLTIwNjkx
-Ny0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4
-OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5m
-cmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2Jh
-cmVib3gK
+For example, writing MAC 12:34:56:78:9A:BC can be performed as
+    mw -l -d /dev/imx-ocotp 0x8c 0x00001234
+    mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
+and reading as
+    md -l -s /dev/imx-ocotp 0x88+8
+    00000088: 56789ABC 00001234
+, where 0x88 (0x22*4) and 0x8C (0x23*4) are offsets of MAC OTP registers.
+
+Notice: FUSEs are PROM, so "0" (unprogrammed) bits
+can be replaced with "1" (but not vice versa) only once.
+
+Signed-off-by: Uladzimir Bely <u.bely@sam-solutions.net>
+---
+ arch/arm/mach-imx/Kconfig    |  10 ++
+ arch/arm/mach-imx/clk-imx6.c |   1 +
+ arch/arm/mach-imx/ocotp.c    | 285 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 296 insertions(+)
+
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 81d16e1..556c7dc 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -593,6 +593,16 @@ config IMX_OCOTP
+ 	  only supported functionality is reading the MAC address and assigning
+ 	  it to an ethernet device.
+ 
++config IMX_OCOTP_WRITE
++	bool
++	  prompt "Enable write support of i.MX6 CPUs OTP fuses"
++	  depends on IMX_OCOTP
++	help
++	  This adds write support to IMX6 On-Chip OTP registers.
++	  Example of set MAC to 12:34:56:78:9A:BC (2 words with offset 0x22 * 4):
++		mw -l -d /dev/imx-ocotp 0x8C 0x00001234
++		mw -l -d /dev/imx-ocotp 0x88 0x56789ABC
++
+ endmenu
+ 
+ endif
+diff --git a/arch/arm/mach-imx/clk-imx6.c b/arch/arm/mach-imx/clk-imx6.c
+index c32b6cc..5d2d9d0 100644
+--- a/arch/arm/mach-imx/clk-imx6.c
++++ b/arch/arm/mach-imx/clk-imx6.c
+@@ -294,6 +294,7 @@ static int imx6_ccm_probe(struct device_d *dev)
+ 	clkdev_add_physbase(clks[ecspi_root], MX6_ECSPI5_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[ipg_per], MX6_GPT_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[ipg], MX6_ENET_BASE_ADDR, NULL);
++	clkdev_add_physbase(clks[ipg], MX6_OCOTP_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[usdhc1_podf], MX6_USDHC1_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[usdhc2_podf], MX6_USDHC2_BASE_ADDR, NULL);
+ 	clkdev_add_physbase(clks[usdhc3_podf], MX6_USDHC3_BASE_ADDR, NULL);
+diff --git a/arch/arm/mach-imx/ocotp.c b/arch/arm/mach-imx/ocotp.c
+index e36b484..ec5cca2 100644
+--- a/arch/arm/mach-imx/ocotp.c
++++ b/arch/arm/mach-imx/ocotp.c
+@@ -25,6 +25,8 @@
+ #include <net.h>
+ #include <io.h>
+ #include <of.h>
++#include <clock.h>
++#include <linux/clk.h>
+ 
+ /*
+  * a single MAC address reference has the form
+@@ -32,6 +34,261 @@
+  */
+ #define MAC_ADDRESS_PROPLEN	(2 * sizeof(__be32))
+ 
++/* OCOTP Registers offsets */
++#define OCOTP_CTRL_SET			0x04
++#define OCOTP_CTRL_CLR			0x08
++#define OCOTP_TIMING			0x10
++#define OCOTP_DATA			0x20
++#define OCOTP_READ_CTRL			0x30
++#define OCOTP_READ_FUSE_DATA		0x40
++
++/* OCOTP Registers bits and masks */
++#define OCOTP_CTRL_WR_UNLOCK		16
++#define OCOTP_CTRL_WR_UNLOCK_KEY	0x3E77
++#define OCOTP_CTRL_WR_UNLOCK_MASK	0xFFFF0000
++#define OCOTP_CTRL_ADDR			0
++#define OCOTP_CTRL_ADDR_MASK		0x0000007F
++#define OCOTP_CTRL_BUSY			(1 << 8)
++#define OCOTP_CTRL_ERROR		(1 << 9)
++#define OCOTP_CTRL_RELOAD_SHADOWS	(1 << 10)
++
++#define OCOTP_TIMING_STROBE_READ	16
++#define OCOTP_TIMING_STROBE_READ_MASK	0x003F0000
++#define OCOTP_TIMING_RELAX		12
++#define OCOTP_TIMING_RELAX_MASK		0x0000F000
++#define OCOTP_TIMING_STROBE_PROG	0
++#define OCOTP_TIMING_STROBE_PROG_MASK	0x00000FFF
++
++#define OCOTP_READ_CTRL_READ_FUSE	0x00000001
++
++#define BF(value, field)		(((value) << field) & field##_MASK)
++
++/* Other definitions */
++#define FUSE_REGS_COUNT			(16 * 8)
++#define IMX6_OTP_DATA_ERROR_VAL		0xBADABADA
++#define DEF_RELAX			20
++
++struct ocotp_priv {
++	struct cdev cdev;
++	void __iomem *base;
++	struct clk *clk;
++};
++
++static int imx6_ocotp_set_timing(struct ocotp_priv *priv)
++{
++	u32 clk_rate;
++	u32 relax, strobe_read, strobe_prog;
++	u32 timing;
++
++	clk_rate = clk_get_rate(priv->clk);
++
++	relax = clk_rate / (1000000000 / DEF_RELAX) - 1;
++	strobe_prog = clk_rate / (1000000000 / 10000) + 2 * (DEF_RELAX + 1) - 1;
++	strobe_read = clk_rate / (1000000000 / 40) + 2 * (DEF_RELAX + 1) - 1;
++
++	timing = BF(relax, OCOTP_TIMING_RELAX);
++	timing |= BF(strobe_read, OCOTP_TIMING_STROBE_READ);
++	timing |= BF(strobe_prog, OCOTP_TIMING_STROBE_PROG);
++
++	writel(timing, priv->base + OCOTP_TIMING);
++
++	return 0;
++}
++
++static int imx6_ocotp_wait_busy(u32 flags, struct ocotp_priv *priv)
++{
++
++	uint64_t start = get_time_ns();
++	while ((OCOTP_CTRL_BUSY | OCOTP_CTRL_ERROR | flags) &
++			readl(priv->base)) {
++		if (is_timeout(start, MSECOND)) {
++			/* Clear ERROR bit */
++			writel(OCOTP_CTRL_ERROR, priv->base + OCOTP_CTRL_CLR);
++			return -ETIMEDOUT;
++		}
++	}
++
++	return 0;
++}
++
++static int imx6_ocotp_prepare(struct ocotp_priv *priv)
++{
++	int ret;
++
++	ret = imx6_ocotp_set_timing(priv);
++	if (ret)
++		return ret;
++
++	ret = imx6_ocotp_wait_busy(0, priv);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int fuse_read_addr(u32 addr, u32 *pdata, struct ocotp_priv *priv)
++{
++	u32 ctrl_reg;
++	int ret;
++
++	ctrl_reg = readl(priv->base);
++	ctrl_reg &= ~OCOTP_CTRL_ADDR_MASK;
++	ctrl_reg &= ~OCOTP_CTRL_WR_UNLOCK_MASK;
++	ctrl_reg |= BF(addr, OCOTP_CTRL_ADDR);
++	writel(ctrl_reg, priv->base);
++
++	writel(OCOTP_READ_CTRL_READ_FUSE, priv->base + OCOTP_READ_CTRL);
++	ret = imx6_ocotp_wait_busy(0, priv);
++	if (ret)
++		return ret;
++
++	*pdata = readl(priv->base + OCOTP_READ_FUSE_DATA);
++
++	return 0;
++}
++
++int imx6_ocotp_read_one_u32(u32 index, u32 *pdata, struct ocotp_priv *priv)
++{
++	int ret;
++
++	ret = imx6_ocotp_prepare(priv);
++	if (ret) {
++		dev_err(priv->cdev.dev, "prepare to read failed\n");
++		return ret;
++	}
++
++	ret = fuse_read_addr(index, pdata, priv);
++	if (ret) {
++		dev_err(priv->cdev.dev, "read failed\n");
++		return ret;
++	}
++
++	if (readl(priv->base) & OCOTP_CTRL_ERROR) {
++		dev_err(priv->cdev.dev, "bad read status\n");
++		return -EFAULT;
++	}
++	return 0;
++}
++
++static ssize_t imx6_ocotp_cdev_read(struct cdev *cdev, void *buf,
++		size_t count, loff_t offset, ulong flags)
++{
++	ulong i;
++	u32 index;
++	size_t read_count = 0;
++
++	index = offset >> 2;
++	count >>= 2;
++	if (count > (FUSE_REGS_COUNT - index))
++		count = FUSE_REGS_COUNT - index - 1;
++
++	for (i = index; i < (index + count); i++) {
++		imx6_ocotp_read_one_u32(i, buf, cdev->priv);
++		buf += 4;
++		read_count++;
++	}
++	read_count <<= 2;
++
++	return read_count;
++}
++
++static int fuse_blow_addr(u32 addr, u32 value, struct ocotp_priv *priv)
++{
++	u32 ctrl_reg;
++	int ret;
++
++	/* Control register */
++	ctrl_reg = readl(priv->base);
++	ctrl_reg &= ~OCOTP_CTRL_ADDR_MASK;
++	ctrl_reg |= BF(addr, OCOTP_CTRL_ADDR);
++	ctrl_reg |= BF(OCOTP_CTRL_WR_UNLOCK_KEY, OCOTP_CTRL_WR_UNLOCK);
++	writel(ctrl_reg, priv->base);
++
++	writel(value, priv->base + OCOTP_DATA);
++	ret = imx6_ocotp_wait_busy(0, priv);
++	if (ret)
++		return ret;
++
++	/* Write postamble */
++	udelay(2000);
++	return 0;
++}
++
++static int imx6_ocotp_reload_shadow(struct ocotp_priv *priv)
++{
++	dev_info(priv->cdev.dev, "reloading shadow registers...\n");
++	writel(OCOTP_CTRL_RELOAD_SHADOWS, priv->base + OCOTP_CTRL_SET);
++	udelay(1);
++
++	return imx6_ocotp_wait_busy(OCOTP_CTRL_RELOAD_SHADOWS, priv);
++}
++
++int imx6_ocotp_blow_one_u32(u32 index, u32 data, u32 *pfused_value,
++		struct ocotp_priv *priv)
++{
++	int ret;
++
++	ret = imx6_ocotp_prepare(priv);
++	if (ret) {
++		dev_err(priv->cdev.dev, "prepare to write failed\n");
++		return ret;
++	}
++
++	ret = fuse_blow_addr(index, data, priv);
++	if (ret) {
++		dev_err(priv->cdev.dev, "fuse blow failed\n");
++		return ret;
++	}
++
++	ret = imx6_ocotp_reload_shadow(priv);
++	if (ret) {
++		dev_err(priv->cdev.dev, "reload shadow registers failed\n");
++		return ret;
++	}
++
++	if (readl(priv->base) & OCOTP_CTRL_ERROR) {
++		dev_err(priv->cdev.dev, "bad write status\n");
++		return -EFAULT;
++	}
++
++	ret = imx6_ocotp_read_one_u32(index, pfused_value, priv);
++
++	return ret;
++}
++
++static ssize_t imx6_ocotp_cdev_write(struct cdev *cdev, const void *buf,
++		size_t count, loff_t offset, ulong flags)
++{
++	ulong size, index, i;
++	u32 data, pfuse;
++
++	index = offset >> 2;
++	size = count >> 2;
++
++	if (!IS_ENABLED(CONFIG_IMX_OCOTP_WRITE))
++		return -EPERM;
++
++	if (size > (FUSE_REGS_COUNT - index))
++		size = FUSE_REGS_COUNT - index - 1;
++
++	for (i = 0; i < size; i++) {
++		int ret;
++
++		memcpy(&data, buf + i * 4, 4);
++		ret = imx6_ocotp_blow_one_u32(index + i, data,
++				&pfuse, cdev->priv);
++		if (ret < 0)
++			return ret;
++	}
++
++	return count;
++}
++
++static struct file_operations imx6_ocotp_ops = {
++	.read	= imx6_ocotp_cdev_read,
++	.lseek	= dev_lseek_default,
++};
++
+ static void imx_ocotp_init_dt(struct device_d *dev, void __iomem *base)
+ {
+ 	char mac[6];
+@@ -74,12 +331,40 @@ static int imx_ocotp_probe(struct device_d *dev)
+ {
+ 	void __iomem *base;
+ 
++	struct ocotp_priv *priv;
++	struct cdev *cdev;
++	int ret = 0;
++
+ 	base = dev_request_mem_region(dev, 0);
+ 	if (!base)
+ 		return -EBUSY;
+ 
+ 	imx_ocotp_init_dt(dev, base);
+ 
++	priv = xzalloc(sizeof(*priv));
++
++	priv->base	= base;
++	priv->clk	= clk_get(dev, NULL);
++	if (IS_ERR(priv->clk))
++		return PTR_ERR(priv->clk);
++
++	cdev		= &priv->cdev;
++	cdev->dev	= dev;
++	cdev->ops	= &imx6_ocotp_ops;
++	cdev->priv	= priv;
++	cdev->size	= 192;
++	cdev->name	= "imx-ocotp";
++	if (cdev->name == NULL)
++		return -ENOMEM;
++
++	ret = devfs_create(cdev);
++
++	if (ret < 0)
++		return ret;
++
++	if (IS_ENABLED(CONFIG_IMX_OCOTP_WRITE))
++		imx6_ocotp_ops.write = imx6_ocotp_cdev_write;
++
+ 	return 0;
+ }
+ 
+-- 
+1.8.3.2
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
