@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp36.i.mail.ru ([94.100.177.96])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYt2Z-00071q-By
- for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:56 +0000
+ id 1WYt2Z-00071i-Bx
+ for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:57 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 Apr 2014 12:10:58 +0400
-Message-Id: <1397290265-21273-5-git-send-email-shc_work@mail.ru>
+Date: Sat, 12 Apr 2014 12:10:55 +0400
+Message-Id: <1397290265-21273-2-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 References: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,27 +21,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 05/12] commands/mount: Return real error code if "mount" fail
+Subject: [PATCH 02/12] gui: Fix resource leak
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- commands/mount.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/gui/picopng.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/commands/mount.c b/commands/mount.c
-index 691bc29..77efe71 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -115,7 +115,7 @@ static int do_mount(int argc, char *argv[])
- 
- 	if ((ret = mount(dev, type, mountpoint, fsoptions))) {
- 		perror("mount");
--		return 1;
-+		return ret;
+diff --git a/lib/gui/picopng.c b/lib/gui/picopng.c
+index 77cd81c..e740b1c 100644
+--- a/lib/gui/picopng.c
++++ b/lib/gui/picopng.c
+@@ -761,9 +761,12 @@ int main(int argc, char **argv)
+ 	infp = fopen(fname, "rb");
+ 	if (!infp) {
+ 		perror("fopen");
++		free(inbuf);
+ 		return 1;
+ 	} else if (fread(inbuf, 1, insize, infp) != insize) {
+ 		perror("fread");
++		free(inbuf);
++		fclose(infp);
+ 		return 1;
  	}
- 	return 0;
- }
+ 	fclose(infp);
+@@ -793,6 +796,7 @@ int main(int argc, char **argv)
+ 		return 1;
+ 	} else if (fwrite(info->image->data, 1, outsize, outfp) != outsize) {
+ 		perror("fwrite");
++		fclose(outfp);
+ 		return 1;
+ 	}
+ 	fclose(outfp);
 -- 
 1.8.3.2
 
