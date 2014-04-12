@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp36.i.mail.ru ([94.100.177.96])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYt2Z-000727-C0
- for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:56 +0000
+ id 1WYt2Z-00071o-Bz
+ for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:57 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 Apr 2014 12:11:02 +0400
-Message-Id: <1397290265-21273-9-git-send-email-shc_work@mail.ru>
+Date: Sat, 12 Apr 2014 12:10:57 +0400
+Message-Id: <1397290265-21273-4-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 References: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,28 +21,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/12] ata: pata-imx: Remove unused variable
+Subject: [PATCH 04/12] ubifs: Remove unused variable
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- drivers/ata/pata-imx.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/ubifs/ubifs.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/ata/pata-imx.c b/drivers/ata/pata-imx.c
-index 7f9e39b..6bd7524 100644
---- a/drivers/ata/pata-imx.c
-+++ b/drivers/ata/pata-imx.c
-@@ -78,9 +78,6 @@ static void pata_imx_set_bus_timing(void __iomem *base, unsigned long clkrate,
- {
- 	uint32_t T = 1000000000 / clkrate;
+diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
+index 35923a9..49d5583 100644
+--- a/fs/ubifs/ubifs.c
++++ b/fs/ubifs/ubifs.c
+@@ -240,8 +240,6 @@ static struct inode *ubifs_findfile(struct super_block *sb, const char *filename
+ 		return ubifs_iget(sb, 1);
  
--	struct mxc_ata_config_regs *ata_regs;
--	ata_regs = (struct mxc_ata_config_regs *)base;
+ 	for (;;) {
+-		struct ubifs_inode *ui;
 -
- 	if (mode >= ARRAY_SIZE(pio_t1))
- 		return;
+ 		/* Extract the actual part from the pathname.  */
+ 		next = strchr(name, '/');
+ 		if (next) {
+@@ -257,8 +255,6 @@ static struct inode *ubifs_findfile(struct super_block *sb, const char *filename
+ 		if (!inode)
+ 			break;
  
+-		ui = ubifs_inode(inode);
+-
+ 		/*
+ 		 * Check if directory with this name exists
+ 		 */
 -- 
 1.8.3.2
 
