@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp36.i.mail.ru ([94.100.177.96])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYt2Z-00071i-Bx
+ id 1WYt2Z-00072N-C1
  for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:57 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 Apr 2014 12:10:55 +0400
-Message-Id: <1397290265-21273-2-git-send-email-shc_work@mail.ru>
+Date: Sat, 12 Apr 2014 12:11:04 +0400
+Message-Id: <1397290265-21273-11-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 References: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,39 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/12] gui: Fix resource leak
+Subject: [PATCH 11/12] mtd: partition: Remove unused variable
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- lib/gui/picopng.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/partition.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/lib/gui/picopng.c b/lib/gui/picopng.c
-index 77cd81c..e740b1c 100644
---- a/lib/gui/picopng.c
-+++ b/lib/gui/picopng.c
-@@ -761,9 +761,12 @@ int main(int argc, char **argv)
- 	infp = fopen(fname, "rb");
- 	if (!infp) {
- 		perror("fopen");
-+		free(inbuf);
- 		return 1;
- 	} else if (fread(inbuf, 1, insize, infp) != insize) {
- 		perror("fread");
-+		free(inbuf);
-+		fclose(infp);
- 		return 1;
- 	}
- 	fclose(infp);
-@@ -793,6 +796,7 @@ int main(int argc, char **argv)
- 		return 1;
- 	} else if (fwrite(info->image->data, 1, outsize, outfp) != outsize) {
- 		perror("fwrite");
-+		fclose(outfp);
- 		return 1;
- 	}
- 	fclose(outfp);
+diff --git a/drivers/mtd/partition.c b/drivers/mtd/partition.c
+index 720c2ad..c2461a0 100644
+--- a/drivers/mtd/partition.c
++++ b/drivers/mtd/partition.c
+@@ -7,11 +7,8 @@
+ static int mtd_part_read(struct mtd_info *mtd, loff_t from, size_t len,
+                 size_t *retlen, u_char *buf)
+ {
+-	struct mtd_ecc_stats stats;
+ 	int res;
+ 
+-	stats = mtd->master->ecc_stats;
+-
+ 	if (from >= mtd->size)
+ 		len = 0;
+ 	else if (from + len > mtd->size)
 -- 
 1.8.3.2
 
