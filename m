@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from smtp36.i.mail.ru ([94.100.177.96])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYt2Z-00071o-Bz
+ id 1WYt2Z-00071u-Bv
  for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:57 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 Apr 2014 12:10:57 +0400
-Message-Id: <1397290265-21273-4-git-send-email-shc_work@mail.ru>
+Date: Sat, 12 Apr 2014 12:10:59 +0400
+Message-Id: <1397290265-21273-6-git-send-email-shc_work@mail.ru>
 In-Reply-To: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 References: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
@@ -21,36 +21,28 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] ubifs: Remove unused variable
+Subject: [PATCH 06/12] commands/uimage: Fix error printing
 To: barebox@lists.infradead.org
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- fs/ubifs/ubifs.c | 4 ----
- 1 file changed, 4 deletions(-)
+ commands/uimage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index 35923a9..49d5583 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -240,8 +240,6 @@ static struct inode *ubifs_findfile(struct super_block *sb, const char *filename
- 		return ubifs_iget(sb, 1);
- 
- 	for (;;) {
--		struct ubifs_inode *ui;
--
- 		/* Extract the actual part from the pathname.  */
- 		next = strchr(name, '/');
- 		if (next) {
-@@ -257,8 +255,6 @@ static struct inode *ubifs_findfile(struct super_block *sb, const char *filename
- 		if (!inode)
- 			break;
- 
--		ui = ubifs_inode(inode);
--
- 		/*
- 		 * Check if directory with this name exists
- 		 */
+diff --git a/commands/uimage.c b/commands/uimage.c
+index 345e496..4b0ed4d 100644
+--- a/commands/uimage.c
++++ b/commands/uimage.c
+@@ -63,8 +63,8 @@ static int do_uimage(int argc, char *argv[])
+ 		printf("verifying data crc... ");
+ 		ret = uimage_verify(handle);
+ 		if (ret) {
+-			goto err;
+ 			printf("Bad Data CRC\n");
++			goto err;
+ 		} else {
+ 			printf("ok\n");
+ 		}
 -- 
 1.8.3.2
 
