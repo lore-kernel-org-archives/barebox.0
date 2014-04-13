@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKTe-0001Rj-I8
- for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:44 +0000
+ id 1WZKUS-000317-Sq
+ for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:30:34 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id A6A5118B4250
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:57 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 142C318B425C
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:28:00 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:40 +0200
-Message-Id: <1397395668-9325-11-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:45 +0200
+Message-Id: <1397395668-9325-16-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,562 +25,913 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/18] pinctrl: tegra: add Tegra3 driver
+Subject: [PATCH 15/18] ARM: tegra: add basic Tegra3 DT
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/Kconfig       |   1 +
- drivers/pinctrl/Kconfig           |   6 +
- drivers/pinctrl/Makefile          |   1 +
- drivers/pinctrl/pinctrl-tegra30.c | 503 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 511 insertions(+)
- create mode 100644 drivers/pinctrl/pinctrl-tegra30.c
+ arch/arm/dts/tegra30.dtsi | 892 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 892 insertions(+)
+ create mode 100644 arch/arm/dts/tegra30.dtsi
 
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index e23ba38a6b4a..c272e8e0dcb5 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -48,6 +48,7 @@ config ARCH_TEGRA_2x_SOC
- 
- config ARCH_TEGRA_3x_SOC
- 	bool
-+	select PINCTRL_TEGRA30
- 
- menu "select Tegra boards to be built"
- 
-diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
-index 7390971ea35b..18adbf71d35c 100644
---- a/drivers/pinctrl/Kconfig
-+++ b/drivers/pinctrl/Kconfig
-@@ -33,3 +33,9 @@ config PINCTRL_TEGRA20
- 	bool
- 	help
- 	  The pinmux controller found on the Tegra 20 line of SoCs.
-+
-+config PINCTRL_TEGRA30
-+	select PINCTRL
-+	bool
-+	help
-+	  The pinmux controller found on the Tegra 30 line of SoCs.
-diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
-index b3b0fa9c58bf..af705eaa11ae 100644
---- a/drivers/pinctrl/Makefile
-+++ b/drivers/pinctrl/Makefile
-@@ -4,3 +4,4 @@ obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
- obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
- obj-$(CONFIG_PINCTRL_SINGLE) += pinctrl-single.o
- obj-$(CONFIG_PINCTRL_TEGRA20) += pinctrl-tegra20.o
-+obj-$(CONFIG_PINCTRL_TEGRA30) += pinctrl-tegra30.o
-diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
+diff --git a/arch/arm/dts/tegra30.dtsi b/arch/arm/dts/tegra30.dtsi
 new file mode 100644
-index 000000000000..032377fe8cd2
+index 000000000000..19a84e933f4e
 --- /dev/null
-+++ b/drivers/pinctrl/pinctrl-tegra30.c
-@@ -0,0 +1,503 @@
-+/*
-+ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * Partly based on code
-+ * Copyright (C) 2011-2012, NVIDIA CORPORATION.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
-+ */
++++ b/arch/arm/dts/tegra30.dtsi
+@@ -0,0 +1,892 @@
++#include <dt-bindings/clock/tegra30-car.h>
++#include <dt-bindings/gpio/tegra-gpio.h>
++#include <dt-bindings/pinctrl/pinctrl-tegra.h>
++#include <dt-bindings/interrupt-controller/arm-gic.h>
 +
-+#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <malloc.h>
-+#include <pinctrl.h>
++#include "skeleton.dtsi"
 +
-+struct pinctrl_tegra30 {
-+	struct {
-+		u32 __iomem *ctrl;
-+		u32 __iomem *mux;
-+	} regs;
-+	struct pinctrl_device pinctrl;
-+};
++/ {
++	compatible = "nvidia,tegra30";
++	interrupt-parent = <&intc>;
 +
-+struct tegra30_pingroup {
-+	const char *name;
-+	const char *funcs[4];
-+	u16 reg;
-+};
++	aliases {
++		serial0 = &uarta;
++		serial1 = &uartb;
++		serial2 = &uartc;
++		serial3 = &uartd;
++		serial4 = &uarte;
++	};
 +
-+#define PG(pg_name, f0, f1, f2, f3, offset)		\
-+	{						\
-+		.name = #pg_name,			\
-+		.funcs = { #f0, #f1, #f2, #f3, },	\
-+		.reg = offset				\
-+	}
++	pcie-controller@00003000 {
++		compatible = "nvidia,tegra30-pcie";
++		device_type = "pci";
++		reg = <0x00003000 0x00000800   /* PADS registers */
++		       0x00003800 0x00000200   /* AFI registers */
++		       0x10000000 0x10000000>; /* configuration space */
++		reg-names = "pads", "afi", "cs";
++		interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH   /* controller interrupt */
++			      GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>; /* MSI interrupt */
++		interrupt-names = "intr", "msi";
 +
-+static const struct tegra30_pingroup tegra30_groups[] = {
-+	/* name,                 f0,        f1,        f2,        f3,           reg  */
-+	PG(clk_32k_out_pa0,      blink,     rsvd2,     rsvd3,     rsvd4,        0x31c),
-+	PG(uart3_cts_n_pa1,      uartc,     rsvd2,     gmi,       rsvd4,        0x17c),
-+	PG(dap2_fs_pa2,          i2s1,      hda,       rsvd3,     gmi,          0x358),
-+	PG(dap2_sclk_pa3,        i2s1,      hda,       rsvd3,     gmi,          0x364),
-+	PG(dap2_din_pa4,         i2s1,      hda,       rsvd3,     gmi,          0x35c),
-+	PG(dap2_dout_pa5,        i2s1,      hda,       rsvd3,     gmi,          0x360),
-+	PG(sdmmc3_clk_pa6,       uarta,     pwm2,      sdmmc3,    spi3,         0x390),
-+	PG(sdmmc3_cmd_pa7,       uarta,     pwm3,      sdmmc3,    spi2,         0x394),
-+	PG(gmi_a17_pb0,          uartd,     spi4,      gmi,       dtv,          0x234),
-+	PG(gmi_a18_pb1,          uartd,     spi4,      gmi,       dtv,          0x238),
-+	PG(lcd_pwr0_pb2,         displaya,  displayb,  spi5,      hdcp,         0x090),
-+	PG(lcd_pclk_pb3,         displaya,  displayb,  rsvd3,     rsvd4,        0x094),
-+	PG(sdmmc3_dat3_pb4,      rsvd1,     pwm0,      sdmmc3,    spi3,         0x3a4),
-+	PG(sdmmc3_dat2_pb5,      rsvd1,     pwm1,      sdmmc3,    spi3,         0x3a0),
-+	PG(sdmmc3_dat1_pb6,      rsvd1,     rsvd2,     sdmmc3,    spi3,         0x39c),
-+	PG(sdmmc3_dat0_pb7,      rsvd1,     rsvd2,     sdmmc3,    spi3,         0x398),
-+	PG(uart3_rts_n_pc0,      uartc,     pwm0,      gmi,       rsvd4,        0x180),
-+	PG(lcd_pwr1_pc1,         displaya,  displayb,  rsvd3,     rsvd4,        0x070),
-+	PG(uart2_txd_pc2,        uartb,     spdif,     uarta,     spi4,         0x168),
-+	PG(uart2_rxd_pc3,        uartb,     spdif,     uarta,     spi4,         0x164),
-+	PG(gen1_i2c_scl_pc4,     i2c1,      rsvd2,     rsvd3,     rsvd4,        0x1a4),
-+	PG(gen1_i2c_sda_pc5,     i2c1,      rsvd2,     rsvd3,     rsvd4,        0x1a0),
-+	PG(lcd_pwr2_pc6,         displaya,  displayb,  spi5,      hdcp,         0x074),
-+	PG(gmi_wp_n_pc7,         rsvd1,     nand,      gmi,       gmi_alt,      0x1c0),
-+	PG(sdmmc3_dat5_pd0,      pwm0,      spi4,      sdmmc3,    spi2,         0x3ac),
-+	PG(sdmmc3_dat4_pd1,      pwm1,      spi4,      sdmmc3,    spi2,         0x3a8),
-+	PG(lcd_dc1_pd2,          displaya,  displayb,  rsvd3,     rsvd4,        0x10c),
-+	PG(sdmmc3_dat6_pd3,      spdif,     spi4,      sdmmc3,    spi2,         0x3b0),
-+	PG(sdmmc3_dat7_pd4,      spdif,     spi4,      sdmmc3,    spi2,         0x3b4),
-+	PG(vi_d1_pd5,            ddr,       sdmmc2,    vi,        rsvd4,        0x128),
-+	PG(vi_vsync_pd6,         ddr,       rsvd2,     vi,        rsvd4,        0x15c),
-+	PG(vi_hsync_pd7,         ddr,       rsvd2,     vi,        rsvd4,        0x160),
-+	PG(lcd_d0_pe0,           displaya,  displayb,  rsvd3,     rsvd4,        0x0a4),
-+	PG(lcd_d1_pe1,           displaya,  displayb,  rsvd3,     rsvd4,        0x0a8),
-+	PG(lcd_d2_pe2,           displaya,  displayb,  rsvd3,     rsvd4,        0x0ac),
-+	PG(lcd_d3_pe3,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b0),
-+	PG(lcd_d4_pe4,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b4),
-+	PG(lcd_d5_pe5,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b8),
-+	PG(lcd_d6_pe6,           displaya,  displayb,  rsvd3,     rsvd4,        0x0bc),
-+	PG(lcd_d7_pe7,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c0),
-+	PG(lcd_d8_pf0,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c4),
-+	PG(lcd_d9_pf1,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c8),
-+	PG(lcd_d10_pf2,          displaya,  displayb,  rsvd3,     rsvd4,        0x0cc),
-+	PG(lcd_d11_pf3,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d0),
-+	PG(lcd_d12_pf4,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d4),
-+	PG(lcd_d13_pf5,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d8),
-+	PG(lcd_d14_pf6,          displaya,  displayb,  rsvd3,     rsvd4,        0x0dc),
-+	PG(lcd_d15_pf7,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e0),
-+	PG(gmi_ad0_pg0,          rsvd1,     nand,      gmi,       rsvd4,        0x1f0),
-+	PG(gmi_ad1_pg1,          rsvd1,     nand,      gmi,       rsvd4,        0x1f4),
-+	PG(gmi_ad2_pg2,          rsvd1,     nand,      gmi,       rsvd4,        0x1f8),
-+	PG(gmi_ad3_pg3,          rsvd1,     nand,      gmi,       rsvd4,        0x1fc),
-+	PG(gmi_ad4_pg4,          rsvd1,     nand,      gmi,       rsvd4,        0x200),
-+	PG(gmi_ad5_pg5,          rsvd1,     nand,      gmi,       rsvd4,        0x204),
-+	PG(gmi_ad6_pg6,          rsvd1,     nand,      gmi,       rsvd4,        0x208),
-+	PG(gmi_ad7_pg7,          rsvd1,     nand,      gmi,       rsvd4,        0x20c),
-+	PG(gmi_ad8_ph0,          pwm0,      nand,      gmi,       rsvd4,        0x210),
-+	PG(gmi_ad9_ph1,          pwm1,      nand,      gmi,       rsvd4,        0x214),
-+	PG(gmi_ad10_ph2,         pwm2,      nand,      gmi,       rsvd4,        0x218),
-+	PG(gmi_ad11_ph3,         pwm3,      nand,      gmi,       rsvd4,        0x21c),
-+	PG(gmi_ad12_ph4,         rsvd1,     nand,      gmi,       rsvd4,        0x220),
-+	PG(gmi_ad13_ph5,         rsvd1,     nand,      gmi,       rsvd4,        0x224),
-+	PG(gmi_ad14_ph6,         rsvd1,     nand,      gmi,       rsvd4,        0x228),
-+	PG(gmi_ad15_ph7,         rsvd1,     nand,      gmi,       rsvd4,        0x22c),
-+	PG(gmi_wr_n_pi0,         rsvd1,     nand,      gmi,       rsvd4,        0x240),
-+	PG(gmi_oe_n_pi1,         rsvd1,     nand,      gmi,       rsvd4,        0x244),
-+	PG(gmi_dqs_pi2,          rsvd1,     nand,      gmi,       rsvd4,        0x248),
-+	PG(gmi_cs6_n_pi3,        nand,      nand_alt,  gmi,       sata,         0x1e8),
-+	PG(gmi_rst_n_pi4,        nand,      nand_alt,  gmi,       rsvd4,        0x24c),
-+	PG(gmi_iordy_pi5,        rsvd1,     nand,      gmi,       rsvd4,        0x1c4),
-+	PG(gmi_cs7_n_pi6,        nand,      nand_alt,  gmi,       gmi_alt,      0x1ec),
-+	PG(gmi_wait_pi7,         rsvd1,     nand,      gmi,       rsvd4,        0x1c8),
-+	PG(gmi_cs0_n_pj0,        rsvd1,     nand,      gmi,       dtv,          0x1d4),
-+	PG(lcd_de_pj1,           displaya,  displayb,  rsvd3,     rsvd4,        0x098),
-+	PG(gmi_cs1_n_pj2,        rsvd1,     nand,      gmi,       dtv,          0x1d8),
-+	PG(lcd_hsync_pj3,        displaya,  displayb,  rsvd3,     rsvd4,        0x09c),
-+	PG(lcd_vsync_pj4,        displaya,  displayb,  rsvd3,     rsvd4,        0x0a0),
-+	PG(uart2_cts_n_pj5,      uarta,     uartb,     gmi,       spi4,         0x170),
-+	PG(uart2_rts_n_pj6,      uarta,     uartb,     gmi,       spi4,         0x16c),
-+	PG(gmi_a16_pj7,          uartd,     spi4,      gmi,       gmi_alt,      0x230),
-+	PG(gmi_adv_n_pk0,        rsvd1,     nand,      gmi,       rsvd4,        0x1cc),
-+	PG(gmi_clk_pk1,          rsvd1,     nand,      gmi,       rsvd4,        0x1d0),
-+	PG(gmi_cs4_n_pk2,        rsvd1,     nand,      gmi,       rsvd4,        0x1e4),
-+	PG(gmi_cs2_n_pk3,        rsvd1,     nand,      gmi,       rsvd4,        0x1dc),
-+	PG(gmi_cs3_n_pk4,        rsvd1,     nand,      gmi,       gmi_alt,      0x1e0),
-+	PG(spdif_out_pk5,        spdif,     rsvd2,     i2c1,      sdmmc2,       0x354),
-+	PG(spdif_in_pk6,         spdif,     hda,       i2c1,      sdmmc2,       0x350),
-+	PG(gmi_a19_pk7,          uartd,     spi4,      gmi,       rsvd4,        0x23c),
-+	PG(vi_d2_pl0,            ddr,       sdmmc2,    vi,        rsvd4,        0x12c),
-+	PG(vi_d3_pl1,            ddr,       sdmmc2,    vi,        rsvd4,        0x130),
-+	PG(vi_d4_pl2,            ddr,       sdmmc2,    vi,        rsvd4,        0x134),
-+	PG(vi_d5_pl3,            ddr,       sdmmc2,    vi,        rsvd4,        0x138),
-+	PG(vi_d6_pl4,            ddr,       sdmmc2,    vi,        rsvd4,        0x13c),
-+	PG(vi_d7_pl5,            ddr,       sdmmc2,    vi,        rsvd4,        0x140),
-+	PG(vi_d8_pl6,            ddr,       sdmmc2,    vi,        rsvd4,        0x144),
-+	PG(vi_d9_pl7,            ddr,       sdmmc2,    vi,        rsvd4,        0x148),
-+	PG(lcd_d16_pm0,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e4),
-+	PG(lcd_d17_pm1,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e8),
-+	PG(lcd_d18_pm2,          displaya,  displayb,  rsvd3,     rsvd4,        0x0ec),
-+	PG(lcd_d19_pm3,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f0),
-+	PG(lcd_d20_pm4,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f4),
-+	PG(lcd_d21_pm5,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f8),
-+	PG(lcd_d22_pm6,          displaya,  displayb,  rsvd3,     rsvd4,        0x0fc),
-+	PG(lcd_d23_pm7,          displaya,  displayb,  rsvd3,     rsvd4,        0x100),
-+	PG(dap1_fs_pn0,          i2s0,      hda,       gmi,       sdmmc2,       0x338),
-+	PG(dap1_din_pn1,         i2s0,      hda,       gmi,       sdmmc2,       0x33c),
-+	PG(dap1_dout_pn2,        i2s0,      hda,       gmi,       sdmmc2,       0x340),
-+	PG(dap1_sclk_pn3,        i2s0,      hda,       gmi,       sdmmc2,       0x344),
-+	PG(lcd_cs0_n_pn4,        displaya,  displayb,  spi5,      rsvd4,        0x084),
-+	PG(lcd_sdout_pn5,        displaya,  displayb,  spi5,      hdcp,         0x07c),
-+	PG(lcd_dc0_pn6,          displaya,  displayb,  rsvd3,     rsvd4,        0x088),
-+	PG(hdmi_int_pn7,         hdmi,      rsvd2,     rsvd3,     rsvd4,        0x110),
-+	PG(ulpi_data7_po0,       spi2,      hsi,       uarta,     ulpi,         0x01c),
-+	PG(ulpi_data0_po1,       spi3,      hsi,       uarta,     ulpi,         0x000),
-+	PG(ulpi_data1_po2,       spi3,      hsi,       uarta,     ulpi,         0x004),
-+	PG(ulpi_data2_po3,       spi3,      hsi,       uarta,     ulpi,         0x008),
-+	PG(ulpi_data3_po4,       spi3,      hsi,       uarta,     ulpi,         0x00c),
-+	PG(ulpi_data4_po5,       spi2,      hsi,       uarta,     ulpi,         0x010),
-+	PG(ulpi_data5_po6,       spi2,      hsi,       uarta,     ulpi,         0x014),
-+	PG(ulpi_data6_po7,       spi2,      hsi,       uarta,     ulpi,         0x018),
-+	PG(dap3_fs_pp0,          i2s2,      rsvd2,     displaya,  displayb,     0x030),
-+	PG(dap3_din_pp1,         i2s2,      rsvd2,     displaya,  displayb,     0x034),
-+	PG(dap3_dout_pp2,        i2s2,      rsvd2,     displaya,  displayb,     0x038),
-+	PG(dap3_sclk_pp3,        i2s2,      rsvd2,     displaya,  displayb,     0x03c),
-+	PG(dap4_fs_pp4,          i2s3,      rsvd2,     gmi,       rsvd4,        0x1a8),
-+	PG(dap4_din_pp5,         i2s3,      rsvd2,     gmi,       rsvd4,        0x1ac),
-+	PG(dap4_dout_pp6,        i2s3,      rsvd2,     gmi,       rsvd4,        0x1b0),
-+	PG(dap4_sclk_pp7,        i2s3,      rsvd2,     gmi,       rsvd4,        0x1b4),
-+	PG(kb_col0_pq0,          kbc,       nand,      trace,     test,         0x2fc),
-+	PG(kb_col1_pq1,          kbc,       nand,      trace,     test,         0x300),
-+	PG(kb_col2_pq2,          kbc,       nand,      trace,     rsvd4,        0x304),
-+	PG(kb_col3_pq3,          kbc,       nand,      trace,     rsvd4,        0x308),
-+	PG(kb_col4_pq4,          kbc,       nand,      trace,     rsvd4,        0x30c),
-+	PG(kb_col5_pq5,          kbc,       nand,      trace,     rsvd4,        0x310),
-+	PG(kb_col6_pq6,          kbc,       nand,      trace,     mio,          0x314),
-+	PG(kb_col7_pq7,          kbc,       nand,      trace,     mio,          0x318),
-+	PG(kb_row0_pr0,          kbc,       nand,      rsvd3,     rsvd4,        0x2bc),
-+	PG(kb_row1_pr1,          kbc,       nand,      rsvd3,     rsvd4,        0x2c0),
-+	PG(kb_row2_pr2,          kbc,       nand,      rsvd3,     rsvd4,        0x2c4),
-+	PG(kb_row3_pr3,          kbc,       nand,      rsvd3,     invalid,      0x2c8),
-+	PG(kb_row4_pr4,          kbc,       nand,      trace,     rsvd4,        0x2cc),
-+	PG(kb_row5_pr5,          kbc,       nand,      trace,     owr,          0x2d0),
-+	PG(kb_row6_pr6,          kbc,       nand,      sdmmc2,    mio,          0x2d4),
-+	PG(kb_row7_pr7,          kbc,       nand,      sdmmc2,    mio,          0x2d8),
-+	PG(kb_row8_ps0,          kbc,       nand,      sdmmc2,    mio,          0x2dc),
-+	PG(kb_row9_ps1,          kbc,       nand,      sdmmc2,    mio,          0x2e0),
-+	PG(kb_row10_ps2,         kbc,       nand,      sdmmc2,    mio,          0x2e4),
-+	PG(kb_row11_ps3,         kbc,       nand,      sdmmc2,    mio,          0x2e8),
-+	PG(kb_row12_ps4,         kbc,       nand,      sdmmc2,    mio,          0x2ec),
-+	PG(kb_row13_ps5,         kbc,       nand,      sdmmc2,    mio,          0x2f0),
-+	PG(kb_row14_ps6,         kbc,       nand,      sdmmc2,    mio,          0x2f4),
-+	PG(kb_row15_ps7,         kbc,       nand,      sdmmc2,    mio,          0x2f8),
-+	PG(vi_pclk_pt0,          rsvd1,     sdmmc2,    vi,        rsvd4,        0x154),
-+	PG(vi_mclk_pt1,          vi,        vi_alt1,   vi_alt2,   vi_alt3,      0x158),
-+	PG(vi_d10_pt2,           ddr,       rsvd2,     vi,        rsvd4,        0x14c),
-+	PG(vi_d11_pt3,           ddr,       rsvd2,     vi,        rsvd4,        0x150),
-+	PG(vi_d0_pt4,            ddr,       rsvd2,     vi,        rsvd4,        0x124),
-+	PG(gen2_i2c_scl_pt5,     i2c2,      hdcp,      gmi,       rsvd4,        0x250),
-+	PG(gen2_i2c_sda_pt6,     i2c2,      hdcp,      gmi,       rsvd4,        0x254),
-+	PG(sdmmc4_cmd_pt7,       i2c3,      nand,      gmi,       sdmmc4,       0x25c),
-+	PG(pu0,                  owr,       uarta,     gmi,       rsvd4,        0x184),
-+	PG(pu1,                  rsvd1,     uarta,     gmi,       rsvd4,        0x188),
-+	PG(pu2,                  rsvd1,     uarta,     gmi,       rsvd4,        0x18c),
-+	PG(pu3,                  pwm0,      uarta,     gmi,       rsvd4,        0x190),
-+	PG(pu4,                  pwm1,      uarta,     gmi,       rsvd4,        0x194),
-+	PG(pu5,                  pwm2,      uarta,     gmi,       rsvd4,        0x198),
-+	PG(pu6,                  pwm3,      uarta,     gmi,       rsvd4,        0x19c),
-+	PG(jtag_rtck_pu7,        rtck,      rsvd2,     rsvd3,     rsvd4,        0x2b0),
-+	PG(pv0,                  rsvd1,     rsvd2,     rsvd3,     rsvd4,        0x040),
-+	PG(pv1,                  rsvd1,     rsvd2,     rsvd3,     rsvd4,        0x044),
-+	PG(pv2,                  owr,       rsvd2,     rsvd3,     rsvd4,        0x060),
-+	PG(pv3,                  clk_12m_out, rsvd2,   rsvd3,     rsvd4,        0x064),
-+	PG(ddc_scl_pv4,          i2c4,      rsvd2,     rsvd3,     rsvd4,        0x114),
-+	PG(ddc_sda_pv5,          i2c4,      rsvd2,     rsvd3,     rsvd4,        0x118),
-+	PG(crt_hsync_pv6,        crt,       rsvd2,     rsvd3,     rsvd4,        0x11c),
-+	PG(crt_vsync_pv7,        crt,       rsvd2,     rsvd3,     rsvd4,        0x120),
-+	PG(lcd_cs1_n_pw0,        displaya,  displayb,  spi5,      rsvd4,        0x104),
-+	PG(lcd_m1_pw1,           displaya,  displayb,  rsvd3,     rsvd4,        0x108),
-+	PG(spi2_cs1_n_pw2,       spi3,      spi2,      spi2_alt,  i2c1,         0x388),
-+	PG(spi2_cs2_n_pw3,       spi3,      spi2,      spi2_alt,  i2c1,         0x38c),
-+	PG(clk1_out_pw4,         extperiph1, rsvd2,    rsvd3,     rsvd4,        0x34c),
-+	PG(clk2_out_pw5,         extperiph2, rsvd2,    rsvd3,     rsvd4,        0x068),
-+	PG(uart3_txd_pw6,        uartc,     rsvd2,     gmi,       rsvd4,        0x174),
-+	PG(uart3_rxd_pw7,        uartc,     rsvd2,     gmi,       rsvd4,        0x178),
-+	PG(spi2_mosi_px0,        spi6,      spi2,      spi3,      gmi,          0x368),
-+	PG(spi2_miso_px1,        spi6,      spi2,      spi3,      gmi,          0x36c),
-+	PG(spi2_sck_px2,         spi6,      spi2,      spi3,      gmi,          0x374),
-+	PG(spi2_cs0_n_px3,       spi6,      spi2,      spi3,      gmi,          0x370),
-+	PG(spi1_mosi_px4,        spi2,      spi1,      spi2_alt,  gmi,          0x378),
-+	PG(spi1_sck_px5,         spi2,      spi1,      spi2_alt,  gmi,          0x37c),
-+	PG(spi1_cs0_n_px6,       spi2,      spi1,      spi2_alt,  gmi,          0x380),
-+	PG(spi1_miso_px7,        spi3,      spi1,      spi2_alt,  rsvd4,        0x384),
-+	PG(ulpi_clk_py0,         spi1,      rsvd2,     uartd,     ulpi,         0x020),
-+	PG(ulpi_dir_py1,         spi1,      rsvd2,     uartd,     ulpi,         0x024),
-+	PG(ulpi_nxt_py2,         spi1,      rsvd2,     uartd,     ulpi,         0x028),
-+	PG(ulpi_stp_py3,         spi1,      rsvd2,     uartd,     ulpi,         0x02c),
-+	PG(sdmmc1_dat3_py4,      sdmmc1,    rsvd2,     uarte,     uarta,        0x050),
-+	PG(sdmmc1_dat2_py5,      sdmmc1,    rsvd2,     uarte,     uarta,        0x054),
-+	PG(sdmmc1_dat1_py6,      sdmmc1,    rsvd2,     uarte,     uarta,        0x058),
-+	PG(sdmmc1_dat0_py7,      sdmmc1,    rsvd2,     uarte,     uarta,        0x05c),
-+	PG(sdmmc1_clk_pz0,       sdmmc1,    rsvd2,     rsvd3,     uarta,        0x048),
-+	PG(sdmmc1_cmd_pz1,       sdmmc1,    rsvd2,     rsvd3,     uarta,        0x04c),
-+	PG(lcd_sdin_pz2,         displaya,  displayb,  spi5,      rsvd4,        0x078),
-+	PG(lcd_wr_n_pz3,         displaya,  displayb,  spi5,      hdcp,         0x080),
-+	PG(lcd_sck_pz4,          displaya,  displayb,  spi5,      hdcp,         0x08c),
-+	PG(sys_clk_req_pz5,      sysclk,    rsvd2,     rsvd3,     rsvd4,        0x320),
-+	PG(pwr_i2c_scl_pz6,      i2cpwr,    rsvd2,     rsvd3,     rsvd4,        0x2b4),
-+	PG(pwr_i2c_sda_pz7,      i2cpwr,    rsvd2,     rsvd3,     rsvd4,        0x2b8),
-+	PG(sdmmc4_dat0_paa0,     uarte,     spi3,      gmi,       sdmmc4,       0x260),
-+	PG(sdmmc4_dat1_paa1,     uarte,     spi3,      gmi,       sdmmc4,       0x264),
-+	PG(sdmmc4_dat2_paa2,     uarte,     spi3,      gmi,       sdmmc4,       0x268),
-+	PG(sdmmc4_dat3_paa3,     uarte,     spi3,      gmi,       sdmmc4,       0x26c),
-+	PG(sdmmc4_dat4_paa4,     i2c3,      i2s4,      gmi,       sdmmc4,       0x270),
-+	PG(sdmmc4_dat5_paa5,     vgp3,      i2s4,      gmi,       sdmmc4,       0x274),
-+	PG(sdmmc4_dat6_paa6,     vgp4,      i2s4,      gmi,       sdmmc4,       0x278),
-+	PG(sdmmc4_dat7_paa7,     vgp5,      i2s4,      gmi,       sdmmc4,       0x27c),
-+	PG(pbb0,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x28c),
-+	PG(cam_i2c_scl_pbb1,     vgp1,      i2c3,      rsvd3,     sdmmc4,       0x290),
-+	PG(cam_i2c_sda_pbb2,     vgp2,      i2c3,      rsvd3,     sdmmc4,       0x294),
-+	PG(pbb3,                 vgp3,      displaya,  displayb,  sdmmc4,       0x298),
-+	PG(pbb4,                 vgp4,      displaya,  displayb,  sdmmc4,       0x29c),
-+	PG(pbb5,                 vgp5,      displaya,  displayb,  sdmmc4,       0x2a0),
-+	PG(pbb6,                 vgp6,      displaya,  displayb,  sdmmc4,       0x2a4),
-+	PG(pbb7,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x2a8),
-+	PG(cam_mclk_pcc0,        vi,        vi_alt1,   vi_alt3,   sdmmc4,       0x284),
-+	PG(pcc1,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x288),
-+	PG(pcc2,                 i2s4,      rsvd2,     rsvd3,     rsvd4,        0x2ac),
-+	PG(sdmmc4_rst_n_pcc3,    vgp6,      rsvd2,     rsvd3,     sdmmc4,       0x280),
-+	PG(sdmmc4_clk_pcc4,      invalid,   nand,      gmi,       sdmmc4,       0x258),
-+	PG(clk2_req_pcc5,        dap,       rsvd2,     rsvd3,     rsvd4,        0x06c),
-+	PG(pex_l2_rst_n_pcc6,    pcie,      hda,       rsvd3,     rsvd4,        0x3d8),
-+	PG(pex_l2_clkreq_n_pcc7, pcie,      hda,       rsvd3,     rsvd4,        0x3dc),
-+	PG(pex_l0_prsnt_n_pdd0,  pcie,      hda,       rsvd3,     rsvd4,        0x3b8),
-+	PG(pex_l0_rst_n_pdd1,    pcie,      hda,       rsvd3,     rsvd4,        0x3bc),
-+	PG(pex_l0_clkreq_n_pdd2, pcie,      hda,       rsvd3,     rsvd4,        0x3c0),
-+	PG(pex_wake_n_pdd3,      pcie,      hda,       rsvd3,     rsvd4,        0x3c4),
-+	PG(pex_l1_prsnt_n_pdd4,  pcie,      hda,       rsvd3,     rsvd4,        0x3c8),
-+	PG(pex_l1_rst_n_pdd5,    pcie,      hda,       rsvd3,     rsvd4,        0x3cc),
-+	PG(pex_l1_clkreq_n_pdd6, pcie,      hda,       rsvd3,     rsvd4,        0x3d0),
-+	PG(pex_l2_prsnt_n_pdd7,  pcie,      hda,       rsvd3,     rsvd4,        0x3d4),
-+	PG(clk3_out_pee0,        extperiph3, rsvd2,    rsvd3,     rsvd4,        0x1b8),
-+	PG(clk3_req_pee1,        dev3,      rsvd2,     rsvd3,     rsvd4,        0x1bc),
-+	PG(clk1_req_pee2,        dap,       hda,       rsvd3,     rsvd4,        0x348),
-+	PG(hdmi_cec_pee3,        cec,       rsvd2,     rsvd3,     rsvd4,        0x3e0),
-+	PG(clk_32k_in,           clk_32k_in, rsvd2,    rsvd3,     rsvd4,        0x330),
-+	PG(core_pwr_req,         core_pwr_req, rsvd2,  rsvd3,     rsvd4,        0x324),
-+	PG(cpu_pwr_req,          cpu_pwr_req,  rsvd2,  rsvd3,     rsvd4,        0x328),
-+	PG(owr,                  owr,       cec,       rsvd3,     rsvd4,        0x334),
-+	PG(pwr_int_n,            pwr_int_n, rsvd2,     rsvd3,     rsvd4,        0x32c),
-+};
++		bus-range = <0x00 0xff>;
++		#address-cells = <3>;
++		#size-cells = <2>;
 +
-+static void pinctrl_tegra30_set_func(struct pinctrl_tegra30 *ctrl,
-+				     u32 reg, int func)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++		ranges = <0x82000000 0 0x00000000 0x00000000 0 0x00001000   /* port 0 configuration space */
++			  0x82000000 0 0x00001000 0x00001000 0 0x00001000   /* port 1 configuration space */
++			  0x82000000 0 0x00004000 0x00004000 0 0x00001000   /* port 2 configuration space */
++			  0x81000000 0 0          0x02000000 0 0x00010000   /* downstream I/O */
++			  0x82000000 0 0x20000000 0x20000000 0 0x08000000   /* non-prefetchable memory */
++			  0xc2000000 0 0x28000000 0x28000000 0 0x18000000>; /* prefetchable memory */
 +
-+	val = readl(regaddr);
-+	val &= ~(0x3);
-+	val |= func;
-+	writel(val, regaddr);
-+}
++		clocks = <&tegra_car TEGRA30_CLK_PCIE>,
++			 <&tegra_car TEGRA30_CLK_AFI>,
++			 <&tegra_car TEGRA30_CLK_PLL_E>,
++			 <&tegra_car TEGRA30_CLK_CML0>;
++		clock-names = "pex", "afi", "pll_e", "cml";
++		resets = <&tegra_car 70>,
++		         <&tegra_car 72>,
++		         <&tegra_car 74>;
++		reset-names = "pex", "afi", "pcie_x";
++		status = "disabled";
 +
-+static void pinctrl_tegra30_set_pull(struct pinctrl_tegra30 *ctrl,
-+				     u32 reg, int pull)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++		pci@1,0 {
++			device_type = "pci";
++			assigned-addresses = <0x82000800 0 0x00000000 0 0x1000>;
++			reg = <0x000800 0 0 0 0>;
++			status = "disabled";
 +
-+	val = readl(regaddr);
-+	val &= ~(0x3 << 2);
-+	val |= pull << 2;
-+	writel(val, regaddr);
-+}
++			#address-cells = <3>;
++			#size-cells = <2>;
++			ranges;
 +
-+static void pinctrl_tegra30_set_input(struct pinctrl_tegra30 *ctrl,
-+				      u32 reg, int input)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++			nvidia,num-lanes = <2>;
++		};
 +
-+	val = readl(regaddr);
-+	val &= ~(1 << 5);
-+	val |= input << 5;
-+	writel(val, regaddr);
-+}
++		pci@2,0 {
++			device_type = "pci";
++			assigned-addresses = <0x82001000 0 0x00001000 0 0x1000>;
++			reg = <0x001000 0 0 0 0>;
++			status = "disabled";
 +
-+static void pinctrl_tegra30_set_tristate(struct pinctrl_tegra30 *ctrl,
-+					 u32 reg, int tristate)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++			#address-cells = <3>;
++			#size-cells = <2>;
++			ranges;
 +
-+	val = readl(regaddr);
-+	val &= ~(1 << 4);
-+	val |= tristate << 4;
-+	writel(val, regaddr);
-+}
++			nvidia,num-lanes = <2>;
++		};
 +
-+static void pinctrl_tegra30_set_opendrain(struct pinctrl_tegra30 *ctrl,
-+					  u32 reg, int opendrain)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++		pci@3,0 {
++			device_type = "pci";
++			assigned-addresses = <0x82001800 0 0x00004000 0 0x1000>;
++			reg = <0x001800 0 0 0 0>;
++			status = "disabled";
 +
-+	val = readl(regaddr);
-+	val &= ~(1 << 6);
-+	val |= opendrain << 6;
-+	writel(val, regaddr);
-+}
++			#address-cells = <3>;
++			#size-cells = <2>;
++			ranges;
 +
-+static void pinctrl_tegra30_set_ioreset(struct pinctrl_tegra30 *ctrl,
-+					u32 reg, int ioreset)
-+{
-+	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
-+	u32 val;
++			nvidia,num-lanes = <2>;
++		};
++	};
 +
-+	val = readl(regaddr);
-+	val &= ~(1 << 8);
-+	val |= ioreset << 8;
-+	writel(val, regaddr);
-+}
++	host1x@50000000 {
++		compatible = "nvidia,tegra30-host1x", "simple-bus";
++		reg = <0x50000000 0x00024000>;
++		interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>, /* syncpt */
++			     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>; /* general */
++		clocks = <&tegra_car TEGRA30_CLK_HOST1X>;
++		resets = <&tegra_car 28>;
++		reset-names = "host1x";
 +
-+static int pinctrl_tegra30_set_state(struct pinctrl_device *pdev,
-+				     struct device_node *np)
-+{
-+	struct pinctrl_tegra30 *ctrl =
-+			container_of(pdev, struct pinctrl_tegra30, pinctrl);
-+	struct device_node *childnode;
-+	int pull = -1, tri = -1, in = -1, od = -1, ior = -1, i, j, k;
-+	const char *pins, *func = NULL;
-+	const struct tegra30_pingroup *group;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		ranges = <0x54000000 0x54000000 0x04000000>;
++
++		mpe@54040000 {
++			compatible = "nvidia,tegra30-mpe";
++			reg = <0x54040000 0x00040000>;
++			interrupts = <GIC_SPI 68 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_MPE>;
++			resets = <&tegra_car 60>;
++			reset-names = "mpe";
++		};
++
++		vi@54080000 {
++			compatible = "nvidia,tegra30-vi";
++			reg = <0x54080000 0x00040000>;
++			interrupts = <GIC_SPI 69 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_VI>;
++			resets = <&tegra_car 20>;
++			reset-names = "vi";
++		};
++
++		epp@540c0000 {
++			compatible = "nvidia,tegra30-epp";
++			reg = <0x540c0000 0x00040000>;
++			interrupts = <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_EPP>;
++			resets = <&tegra_car 19>;
++			reset-names = "epp";
++		};
++
++		isp@54100000 {
++			compatible = "nvidia,tegra30-isp";
++			reg = <0x54100000 0x00040000>;
++			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_ISP>;
++			resets = <&tegra_car 23>;
++			reset-names = "isp";
++		};
++
++		gr2d@54140000 {
++			compatible = "nvidia,tegra30-gr2d";
++			reg = <0x54140000 0x00040000>;
++			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
++			resets = <&tegra_car 21>;
++			reset-names = "2d";
++			clocks = <&tegra_car TEGRA30_CLK_GR2D>;
++		};
++
++		gr3d@54180000 {
++			compatible = "nvidia,tegra30-gr3d";
++			reg = <0x54180000 0x00040000>;
++			clocks = <&tegra_car TEGRA30_CLK_GR3D
++				  &tegra_car TEGRA30_CLK_GR3D2>;
++			clock-names = "3d", "3d2";
++			resets = <&tegra_car 24>,
++			         <&tegra_car 98>;
++			reset-names = "3d", "3d2";
++		};
++
++		dc@54200000 {
++			compatible = "nvidia,tegra30-dc", "nvidia,tegra20-dc";
++			reg = <0x54200000 0x00040000>;
++			interrupts = <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_DISP1>,
++				 <&tegra_car TEGRA30_CLK_PLL_P>;
++			clock-names = "dc", "parent";
++			resets = <&tegra_car 27>;
++			reset-names = "dc";
++
++			nvidia,head = <0>;
++
++			rgb {
++				status = "disabled";
++			};
++		};
++
++		dc@54240000 {
++			compatible = "nvidia,tegra30-dc";
++			reg = <0x54240000 0x00040000>;
++			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_DISP2>,
++				 <&tegra_car TEGRA30_CLK_PLL_P>;
++			clock-names = "dc", "parent";
++			resets = <&tegra_car 26>;
++			reset-names = "dc";
++
++			nvidia,head = <1>;
++
++			rgb {
++				status = "disabled";
++			};
++		};
++
++		hdmi@54280000 {
++			compatible = "nvidia,tegra30-hdmi";
++			reg = <0x54280000 0x00040000>;
++			interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_HDMI>,
++				 <&tegra_car TEGRA30_CLK_PLL_D2_OUT0>;
++			clock-names = "hdmi", "parent";
++			resets = <&tegra_car 51>;
++			reset-names = "hdmi";
++			status = "disabled";
++		};
++
++		tvo@542c0000 {
++			compatible = "nvidia,tegra30-tvo";
++			reg = <0x542c0000 0x00040000>;
++			interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&tegra_car TEGRA30_CLK_TVO>;
++			status = "disabled";
++		};
++
++		dsi@54300000 {
++			compatible = "nvidia,tegra30-dsi";
++			reg = <0x54300000 0x00040000>;
++			clocks = <&tegra_car TEGRA30_CLK_DSIA>;
++			resets = <&tegra_car 48>;
++			reset-names = "dsi";
++			status = "disabled";
++		};
++	};
++
++	timer@50004600 {
++		compatible = "arm,cortex-a9-twd-timer";
++		reg = <0x50040600 0x20>;
++		interrupts = <GIC_PPI 13
++			(GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH)>;
++		clocks = <&tegra_car TEGRA30_CLK_TWD>;
++	};
++
++	intc: interrupt-controller@50041000 {
++		compatible = "arm,cortex-a9-gic";
++		reg = <0x50041000 0x1000
++		       0x50040100 0x0100>;
++		interrupt-controller;
++		#interrupt-cells = <3>;
++	};
++
++	cache-controller@50043000 {
++		compatible = "arm,pl310-cache";
++		reg = <0x50043000 0x1000>;
++		arm,data-latency = <6 6 2>;
++		arm,tag-latency = <5 5 2>;
++		cache-unified;
++		cache-level = <2>;
++	};
++
++	timer@60005000 {
++		compatible = "nvidia,tegra30-timer", "nvidia,tegra20-timer";
++		reg = <0x60005000 0x400>;
++		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 122 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_TIMER>;
++	};
++
++	tegra_car: clock@60006000 {
++		compatible = "nvidia,tegra30-car";
++		reg = <0x60006000 0x1000>;
++		#clock-cells = <1>;
++		#reset-cells = <1>;
++	};
++
++	apbdma: dma@6000a000 {
++		compatible = "nvidia,tegra30-apbdma", "nvidia,tegra20-apbdma";
++		reg = <0x6000a000 0x1400>;
++		interrupts = <GIC_SPI 104 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 107 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 110 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 113 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 114 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 117 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 118 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 132 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 134 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 135 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 139 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 142 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_APBDMA>;
++		resets = <&tegra_car 34>;
++		reset-names = "dma";
++		#dma-cells = <1>;
++	};
++
++	ahb: ahb@6000c004 {
++		compatible = "nvidia,tegra30-ahb";
++		reg = <0x6000c004 0x14c>; /* AHB Arbitration + Gizmo Controller */
++	};
++
++	gpio: gpio@6000d000 {
++		compatible = "nvidia,tegra30-gpio";
++		reg = <0x6000d000 0x1000>;
++		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 34 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		#interrupt-cells = <2>;
++		interrupt-controller;
++	};
++
++	pinmux: pinmux@70000868 {
++		compatible = "nvidia,tegra30-pinmux";
++		reg = <0x70000868 0xd4    /* Pad control registers */
++		       0x70003000 0x3e4>; /* Mux registers */
++	};
 +
 +	/*
-+	 * At first look if the node we are pointed at has children,
-+	 * which we may want to visit.
++	 * There are two serial driver i.e. 8250 based simple serial
++	 * driver and APB DMA based serial driver for higher baudrate
++	 * and performace. To enable the 8250 based driver, the compatible
++	 * is "nvidia,tegra30-uart", "nvidia,tegra20-uart" and to enable
++	 * the APB DMA based serial driver, the comptible is
++	 * "nvidia,tegra30-hsuart", "nvidia,tegra20-hsuart".
 +	 */
-+	list_for_each_entry(childnode, &np->children, parent_list)
-+		pinctrl_tegra30_set_state(pdev, childnode);
++	uarta: serial@70006000 {
++		compatible = "nvidia,tegra30-uart", "nvidia,tegra20-uart";
++		reg = <0x70006000 0x40>;
++		reg-shift = <2>;
++		interrupts = <GIC_SPI 36 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_UARTA>;
++		resets = <&tegra_car 6>;
++		reset-names = "serial";
++		dmas = <&apbdma 8>, <&apbdma 8>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+	/* read relevant state from devicetree */
-+	of_property_read_string(np, "nvidia,function", &func);
-+	of_property_read_u32_array(np, "nvidia,pull", &pull, 1);
-+	of_property_read_u32_array(np, "nvidia,tristate", &tri, 1);
-+	of_property_read_u32_array(np, "nvidia,enable-input", &in, 1);
-+	of_property_read_u32_array(np, "nvidia,open-drain", &od, 1);
-+	of_property_read_u32_array(np, "nvidia,io-reset", &ior, 1);
++	uartb: serial@70006040 {
++		compatible = "nvidia,tegra30-uart", "nvidia,tegra20-uart";
++		reg = <0x70006040 0x40>;
++		reg-shift = <2>;
++		interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_UARTB>;
++		resets = <&tegra_car 7>;
++		reset-names = "serial";
++		dmas = <&apbdma 9>, <&apbdma 9>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+	/* iterate over all pingroups referenced in the dt node */
-+	for (i = 0; ; i++) {
-+		if (of_property_read_string_index(np, "nvidia,pins", i, &pins))
-+			break;
++	uartc: serial@70006200 {
++		compatible = "nvidia,tegra30-uart", "nvidia,tegra20-uart";
++		reg = <0x70006200 0x100>;
++		reg-shift = <2>;
++		interrupts = <GIC_SPI 46 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_UARTC>;
++		resets = <&tegra_car 55>;
++		reset-names = "serial";
++		dmas = <&apbdma 10>, <&apbdma 10>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+		for (j = 0; j < ARRAY_SIZE(tegra30_groups); j++) {
-+			if (!strcmp(pins, tegra30_groups[j].name)) {
-+				group = &tegra30_groups[j];
-+				break;
-+			}
-+		}
-+		/* if no matching pingroup is found bail out */
-+		if (j == ARRAY_SIZE(tegra30_groups)) {
-+			dev_warn(ctrl->pinctrl.dev,
-+				 "invalid pingroup %s referenced in node %s\n",
-+				 pins, np->name);
-+			continue;
-+		}
++	uartd: serial@70006300 {
++		compatible = "nvidia,tegra30-uart", "nvidia,tegra20-uart";
++		reg = <0x70006300 0x100>;
++		reg-shift = <2>;
++		interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_UARTD>;
++		resets = <&tegra_car 65>;
++		reset-names = "serial";
++		dmas = <&apbdma 19>, <&apbdma 19>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+		if (func) {
-+			for (k = 0; k < 4; k++) {
-+				if (!strcmp(func, group->funcs[k]))
-+					break;
-+			}
-+			if (k < 4)
-+				pinctrl_tegra30_set_func(ctrl, group->reg, k);
-+			else
-+				dev_warn(ctrl->pinctrl.dev,
-+					 "invalid function %s for pingroup %s in node %s\n",
-+					 func, group->name, np->name);
-+		}
++	uarte: serial@70006400 {
++		compatible = "nvidia,tegra30-uart", "nvidia,tegra20-uart";
++		reg = <0x70006400 0x100>;
++		reg-shift = <2>;
++		interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_UARTE>;
++		resets = <&tegra_car 66>;
++		reset-names = "serial";
++		dmas = <&apbdma 20>, <&apbdma 20>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+		if (pull >= 0)
-+			pinctrl_tegra30_set_pull(ctrl, group->reg, pull);
++	pwm: pwm@7000a000 {
++		compatible = "nvidia,tegra30-pwm", "nvidia,tegra20-pwm";
++		reg = <0x7000a000 0x100>;
++		#pwm-cells = <2>;
++		clocks = <&tegra_car TEGRA30_CLK_PWM>;
++		resets = <&tegra_car 17>;
++		reset-names = "pwm";
++		status = "disabled";
++	};
 +
-+		if (in >= 0)
-+			pinctrl_tegra30_set_input(ctrl, group->reg, in);
++	rtc@7000e000 {
++		compatible = "nvidia,tegra30-rtc", "nvidia,tegra20-rtc";
++		reg = <0x7000e000 0x100>;
++		interrupts = <GIC_SPI 2 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_RTC>;
++	};
 +
-+		if (tri >= 0)
-+			pinctrl_tegra30_set_tristate(ctrl, group->reg, tri);
++	i2c@7000c000 {
++		compatible =  "nvidia,tegra30-i2c", "nvidia,tegra20-i2c";
++		reg = <0x7000c000 0x100>;
++		interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_I2C1>,
++			 <&tegra_car TEGRA30_CLK_PLL_P_OUT3>;
++		clock-names = "div-clk", "fast-clk";
++		resets = <&tegra_car 12>;
++		reset-names = "i2c";
++		dmas = <&apbdma 21>, <&apbdma 21>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+		if (od >= 0)
-+			pinctrl_tegra30_set_opendrain(ctrl, group->reg, od);
++	i2c@7000c400 {
++		compatible = "nvidia,tegra30-i2c", "nvidia,tegra20-i2c";
++		reg = <0x7000c400 0x100>;
++		interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_I2C2>,
++			 <&tegra_car TEGRA30_CLK_PLL_P_OUT3>;
++		clock-names = "div-clk", "fast-clk";
++		resets = <&tegra_car 54>;
++		reset-names = "i2c";
++		dmas = <&apbdma 22>, <&apbdma 22>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+		if (ior >= 0)
-+			pinctrl_tegra30_set_ioreset(ctrl, group->reg, ior);
-+	}
++	i2c@7000c500 {
++		compatible = "nvidia,tegra30-i2c", "nvidia,tegra20-i2c";
++		reg = <0x7000c500 0x100>;
++		interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_I2C3>,
++			 <&tegra_car TEGRA30_CLK_PLL_P_OUT3>;
++		clock-names = "div-clk", "fast-clk";
++		resets = <&tegra_car 67>;
++		reset-names = "i2c";
++		dmas = <&apbdma 23>, <&apbdma 23>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+	return 0;
-+}
++	i2c@7000c700 {
++		compatible = "nvidia,tegra30-i2c", "nvidia,tegra20-i2c";
++		reg = <0x7000c700 0x100>;
++		interrupts = <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_I2C4>,
++			 <&tegra_car TEGRA30_CLK_PLL_P_OUT3>;
++		resets = <&tegra_car 103>;
++		reset-names = "i2c";
++		clock-names = "div-clk", "fast-clk";
++		dmas = <&apbdma 26>, <&apbdma 26>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
 +
-+static struct pinctrl_ops pinctrl_tegra30_ops = {
-+	.set_state = pinctrl_tegra30_set_state,
++	i2c@7000d000 {
++		compatible = "nvidia,tegra30-i2c", "nvidia,tegra20-i2c";
++		reg = <0x7000d000 0x100>;
++		interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_I2C5>,
++			 <&tegra_car TEGRA30_CLK_PLL_P_OUT3>;
++		clock-names = "div-clk", "fast-clk";
++		resets = <&tegra_car 47>;
++		reset-names = "i2c";
++		dmas = <&apbdma 24>, <&apbdma 24>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000d400 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000d400 0x200>;
++		interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC1>;
++		resets = <&tegra_car 41>;
++		reset-names = "spi";
++		dmas = <&apbdma 15>, <&apbdma 15>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000d600 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000d600 0x200>;
++		interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC2>;
++		resets = <&tegra_car 44>;
++		reset-names = "spi";
++		dmas = <&apbdma 16>, <&apbdma 16>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000d800 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000d800 0x200>;
++		interrupts = <GIC_SPI 83 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC3>;
++		resets = <&tegra_car 46>;
++		reset-names = "spi";
++		dmas = <&apbdma 17>, <&apbdma 17>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000da00 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000da00 0x200>;
++		interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC4>;
++		resets = <&tegra_car 68>;
++		reset-names = "spi";
++		dmas = <&apbdma 18>, <&apbdma 18>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000dc00 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000dc00 0x200>;
++		interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC5>;
++		resets = <&tegra_car 104>;
++		reset-names = "spi";
++		dmas = <&apbdma 27>, <&apbdma 27>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	spi@7000de00 {
++		compatible = "nvidia,tegra30-slink", "nvidia,tegra20-slink";
++		reg = <0x7000de00 0x200>;
++		interrupts = <GIC_SPI 79 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clocks = <&tegra_car TEGRA30_CLK_SBC6>;
++		resets = <&tegra_car 106>;
++		reset-names = "spi";
++		dmas = <&apbdma 28>, <&apbdma 28>;
++		dma-names = "rx", "tx";
++		status = "disabled";
++	};
++
++	kbc@7000e200 {
++		compatible = "nvidia,tegra30-kbc", "nvidia,tegra20-kbc";
++		reg = <0x7000e200 0x100>;
++		interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_KBC>;
++		resets = <&tegra_car 36>;
++		reset-names = "kbc";
++		status = "disabled";
++	};
++
++	pmc@7000e400 {
++		compatible = "nvidia,tegra30-pmc";
++		reg = <0x7000e400 0x400>;
++		clocks = <&tegra_car TEGRA30_CLK_PCLK>, <&clk32k_in>;
++		clock-names = "pclk", "clk32k_in";
++	};
++
++	memory-controller@7000f000 {
++		compatible = "nvidia,tegra30-mc";
++		reg = <0x7000f000 0x010
++		       0x7000f03c 0x1b4
++		       0x7000f200 0x028
++		       0x7000f284 0x17c>;
++		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
++	};
++
++	iommu@7000f010 {
++		compatible = "nvidia,tegra30-smmu";
++		reg = <0x7000f010 0x02c
++		       0x7000f1f0 0x010
++		       0x7000f228 0x05c>;
++		nvidia,#asids = <4>;		/* # of ASIDs */
++		dma-window = <0 0x40000000>;	/* IOVA start & length */
++		nvidia,ahb = <&ahb>;
++	};
++
++	ahub@70080000 {
++		compatible = "nvidia,tegra30-ahub";
++		reg = <0x70080000 0x200
++		       0x70080200 0x100>;
++		interrupts = <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_D_AUDIO>,
++			 <&tegra_car TEGRA30_CLK_APBIF>;
++		clock-names = "d_audio", "apbif";
++		resets = <&tegra_car 106>, /* d_audio */
++			 <&tegra_car 107>, /* apbif */
++			 <&tegra_car 30>,  /* i2s0 */
++			 <&tegra_car 11>,  /* i2s1 */
++			 <&tegra_car 18>,  /* i2s2 */
++			 <&tegra_car 101>, /* i2s3 */
++			 <&tegra_car 102>, /* i2s4 */
++			 <&tegra_car 108>, /* dam0 */
++			 <&tegra_car 109>, /* dam1 */
++			 <&tegra_car 110>, /* dam2 */
++			 <&tegra_car 10>;  /* spdif */
++		reset-names = "d_audio", "apbif", "i2s0", "i2s1", "i2s2",
++			      "i2s3", "i2s4", "dam0", "dam1", "dam2",
++			      "spdif";
++		dmas = <&apbdma 1>, <&apbdma 1>,
++		       <&apbdma 2>, <&apbdma 2>,
++		       <&apbdma 3>, <&apbdma 3>,
++		       <&apbdma 4>, <&apbdma 4>;
++		dma-names = "rx0", "tx0", "rx1", "tx1", "rx2", "tx2",
++			    "rx3", "tx3";
++		ranges;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		tegra_i2s0: i2s@70080300 {
++			compatible = "nvidia,tegra30-i2s";
++			reg = <0x70080300 0x100>;
++			nvidia,ahub-cif-ids = <4 4>;
++			clocks = <&tegra_car TEGRA30_CLK_I2S0>;
++			resets = <&tegra_car 30>;
++			reset-names = "i2s";
++			status = "disabled";
++		};
++
++		tegra_i2s1: i2s@70080400 {
++			compatible = "nvidia,tegra30-i2s";
++			reg = <0x70080400 0x100>;
++			nvidia,ahub-cif-ids = <5 5>;
++			clocks = <&tegra_car TEGRA30_CLK_I2S1>;
++			resets = <&tegra_car 11>;
++			reset-names = "i2s";
++			status = "disabled";
++		};
++
++		tegra_i2s2: i2s@70080500 {
++			compatible = "nvidia,tegra30-i2s";
++			reg = <0x70080500 0x100>;
++			nvidia,ahub-cif-ids = <6 6>;
++			clocks = <&tegra_car TEGRA30_CLK_I2S2>;
++			resets = <&tegra_car 18>;
++			reset-names = "i2s";
++			status = "disabled";
++		};
++
++		tegra_i2s3: i2s@70080600 {
++			compatible = "nvidia,tegra30-i2s";
++			reg = <0x70080600 0x100>;
++			nvidia,ahub-cif-ids = <7 7>;
++			clocks = <&tegra_car TEGRA30_CLK_I2S3>;
++			resets = <&tegra_car 101>;
++			reset-names = "i2s";
++			status = "disabled";
++		};
++
++		tegra_i2s4: i2s@70080700 {
++			compatible = "nvidia,tegra30-i2s";
++			reg = <0x70080700 0x100>;
++			nvidia,ahub-cif-ids = <8 8>;
++			clocks = <&tegra_car TEGRA30_CLK_I2S4>;
++			resets = <&tegra_car 102>;
++			reset-names = "i2s";
++			status = "disabled";
++		};
++	};
++
++	sdhci@78000000 {
++		compatible = "nvidia,tegra30-sdhci", "nvidia,tegra20-sdhci";
++		reg = <0x78000000 0x200>;
++		interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_SDMMC1>;
++		resets = <&tegra_car 14>;
++		reset-names = "sdhci";
++		status = "disabled";
++	};
++
++	sdhci@78000200 {
++		compatible = "nvidia,tegra30-sdhci", "nvidia,tegra20-sdhci";
++		reg = <0x78000200 0x200>;
++		interrupts = <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_SDMMC2>;
++		resets = <&tegra_car 9>;
++		reset-names = "sdhci";
++		status = "disabled";
++	};
++
++	sdhci@78000400 {
++		compatible = "nvidia,tegra30-sdhci", "nvidia,tegra20-sdhci";
++		reg = <0x78000400 0x200>;
++		interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_SDMMC3>;
++		resets = <&tegra_car 69>;
++		reset-names = "sdhci";
++		status = "disabled";
++	};
++
++	sdhci@78000600 {
++		compatible = "nvidia,tegra30-sdhci", "nvidia,tegra20-sdhci";
++		reg = <0x78000600 0x200>;
++		interrupts = <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&tegra_car TEGRA30_CLK_SDMMC4>;
++		resets = <&tegra_car 15>;
++		reset-names = "sdhci";
++		status = "disabled";
++	};
++
++	usb@7d000000 {
++		compatible = "nvidia,tegra30-ehci", "usb-ehci";
++		reg = <0x7d000000 0x4000>;
++		interrupts = <GIC_SPI 20 IRQ_TYPE_LEVEL_HIGH>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USBD>;
++		resets = <&tegra_car 22>;
++		reset-names = "usb";
++		nvidia,needs-double-reset;
++		nvidia,phy = <&phy1>;
++		status = "disabled";
++	};
++
++	phy1: usb-phy@7d000000 {
++		compatible = "nvidia,tegra30-usb-phy";
++		reg = <0x7d000000 0x4000 0x7d000000 0x4000>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USBD>,
++			 <&tegra_car TEGRA30_CLK_PLL_U>,
++			 <&tegra_car TEGRA30_CLK_USBD>;
++		clock-names = "reg", "pll_u", "utmi-pads";
++		nvidia,hssync-start-delay = <9>;
++		nvidia,idle-wait-delay = <17>;
++		nvidia,elastic-limit = <16>;
++		nvidia,term-range-adj = <6>;
++		nvidia,xcvr-setup = <51>;
++		nvidia.xcvr-setup-use-fuses;
++		nvidia,xcvr-lsfslew = <1>;
++		nvidia,xcvr-lsrslew = <1>;
++		nvidia,xcvr-hsslew = <32>;
++		nvidia,hssquelch-level = <2>;
++		nvidia,hsdiscon-level = <5>;
++		status = "disabled";
++	};
++
++	usb@7d004000 {
++		compatible = "nvidia,tegra30-ehci", "usb-ehci";
++		reg = <0x7d004000 0x4000>;
++		interrupts = <GIC_SPI 21 IRQ_TYPE_LEVEL_HIGH>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USB2>;
++		resets = <&tegra_car 58>;
++		reset-names = "usb";
++		nvidia,phy = <&phy2>;
++		status = "disabled";
++	};
++
++	phy2: usb-phy@7d004000 {
++		compatible = "nvidia,tegra30-usb-phy";
++		reg = <0x7d004000 0x4000 0x7d000000 0x4000>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USB2>,
++			 <&tegra_car TEGRA30_CLK_PLL_U>,
++			 <&tegra_car TEGRA30_CLK_USBD>;
++		clock-names = "reg", "pll_u", "utmi-pads";
++		nvidia,hssync-start-delay = <9>;
++		nvidia,idle-wait-delay = <17>;
++		nvidia,elastic-limit = <16>;
++		nvidia,term-range-adj = <6>;
++		nvidia,xcvr-setup = <51>;
++		nvidia.xcvr-setup-use-fuses;
++		nvidia,xcvr-lsfslew = <2>;
++		nvidia,xcvr-lsrslew = <2>;
++		nvidia,xcvr-hsslew = <32>;
++		nvidia,hssquelch-level = <2>;
++		nvidia,hsdiscon-level = <5>;
++		status = "disabled";
++	};
++
++	usb@7d008000 {
++		compatible = "nvidia,tegra30-ehci", "usb-ehci";
++		reg = <0x7d008000 0x4000>;
++		interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USB3>;
++		resets = <&tegra_car 59>;
++		reset-names = "usb";
++		nvidia,phy = <&phy3>;
++		status = "disabled";
++	};
++
++	phy3: usb-phy@7d008000 {
++		compatible = "nvidia,tegra30-usb-phy";
++		reg = <0x7d008000 0x4000 0x7d000000 0x4000>;
++		phy_type = "utmi";
++		clocks = <&tegra_car TEGRA30_CLK_USB3>,
++			 <&tegra_car TEGRA30_CLK_PLL_U>,
++			 <&tegra_car TEGRA30_CLK_USBD>;
++		clock-names = "reg", "pll_u", "utmi-pads";
++		nvidia,hssync-start-delay = <0>;
++		nvidia,idle-wait-delay = <17>;
++		nvidia,elastic-limit = <16>;
++		nvidia,term-range-adj = <6>;
++		nvidia,xcvr-setup = <51>;
++		nvidia.xcvr-setup-use-fuses;
++		nvidia,xcvr-lsfslew = <2>;
++		nvidia,xcvr-lsrslew = <2>;
++		nvidia,xcvr-hsslew = <32>;
++		nvidia,hssquelch-level = <2>;
++		nvidia,hsdiscon-level = <5>;
++		status = "disabled";
++	};
++
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		cpu@0 {
++			device_type = "cpu";
++			compatible = "arm,cortex-a9";
++			reg = <0>;
++		};
++
++		cpu@1 {
++			device_type = "cpu";
++			compatible = "arm,cortex-a9";
++			reg = <1>;
++		};
++
++		cpu@2 {
++			device_type = "cpu";
++			compatible = "arm,cortex-a9";
++			reg = <2>;
++		};
++
++		cpu@3 {
++			device_type = "cpu";
++			compatible = "arm,cortex-a9";
++			reg = <3>;
++		};
++	};
++
++	pmu {
++		compatible = "arm,cortex-a9-pmu";
++		interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>,
++			     <GIC_SPI 147 IRQ_TYPE_LEVEL_HIGH>;
++	};
 +};
-+
-+static int pinctrl_tegra30_probe(struct device_d *dev)
-+{
-+	struct pinctrl_tegra30 *ctrl;
-+	int i, ret;
-+	u32 **regs;
-+
-+	ctrl = xzalloc(sizeof(*ctrl));
-+
-+	/*
-+	 * Tegra pincontrol is split out into four independent memory ranges:
-+	 * tristate control, function mux, pullup/down control, pad control
-+	 * (from lowest to highest hardware address).
-+	 * We are only interested in the first three for now.
-+	 */
-+	regs = (u32 **)&ctrl->regs;
-+	for (i = 0; i <= 1; i++) {
-+		regs[i] = dev_request_mem_region(dev, i);
-+		if (!regs[i]) {
-+			dev_err(dev, "Could not get iomem region %d\n", i);
-+			return -ENODEV;
-+		}
-+	}
-+
-+	ctrl->pinctrl.dev = dev;
-+	ctrl->pinctrl.ops = &pinctrl_tegra30_ops;
-+
-+	ret = pinctrl_register(&ctrl->pinctrl);
-+	if (ret)
-+		free(ctrl);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id pinctrl_tegra30_dt_ids[] = {
-+	{
-+		.compatible = "nvidia,tegra30-pinmux",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d pinctrl_tegra30_driver = {
-+	.name		= "pinctrl-tegra30",
-+	.probe		= pinctrl_tegra30_probe,
-+	.of_compatible	= DRV_OF_COMPAT(pinctrl_tegra30_dt_ids),
-+};
-+
-+static int pinctrl_tegra30_init(void)
-+{
-+	return platform_driver_register(&pinctrl_tegra30_driver);
-+}
-+postcore_initcall(pinctrl_tegra30_init);
 -- 
 1.9.0
 
