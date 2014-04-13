@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp36.i.mail.ru ([94.100.177.96])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WYt2Z-00071f-Bw
- for barebox@lists.infradead.org; Sat, 12 Apr 2014 08:11:57 +0000
-From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sat, 12 Apr 2014 12:10:54 +0400
-Message-Id: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WZFeG-0001uA-OI
+ for barebox@lists.infradead.org; Sun, 13 Apr 2014 08:20:21 +0000
+Received: from dude.hi.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1WZFds-0004eq-3U
+ for barebox@lists.infradead.org; Sun, 13 Apr 2014 10:19:56 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Sun, 13 Apr 2014 10:19:56 +0200
+Message-Id: <1397377196-31466-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,55 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/12] scripts: imx-image: Fix resource leak
+Subject: [PATCH] ARM: hummingboard: add barebox update handler
 To: barebox@lists.infradead.org
 
-Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
----
- scripts/imx/imx-image.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+It wasn't hard to find the right spot to copy the image
+to before, but this makes it a bit more explicit.
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 1d935be..f87f4d2 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -528,7 +528,7 @@ static int parse_config(const char *filename)
- 	int lineno = 0;
- 	char *line = NULL, *tmp;
- 	char *argv[MAXARGS];
--	int nargs, i, ret;
-+	int nargs, i, ret = 0;
- 
- 	f = fopen(filename, "r");
- 	if (!f) {
-@@ -559,7 +559,7 @@ static int parse_config(const char *filename)
- 				if (ret) {
- 					fprintf(stderr, "error in line %d: %s\n",
- 							lineno, strerror(-ret));
--					return ret;
-+					goto out_parse;
- 				}
- 				break;
- 			}
-@@ -567,11 +567,14 @@ static int parse_config(const char *filename)
- 
- 		if (ret == -ENOENT) {
- 			fprintf(stderr, "no such command: %s\n", argv[0]);
--			return ret;
-+			break;
- 		}
- 	}
- 
--	return 0;
-+out_parse:
-+	fclose(f);
-+
-+	return ret;
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/solidrun-hummingboard/board.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/arch/arm/boards/solidrun-hummingboard/board.c b/arch/arm/boards/solidrun-hummingboard/board.c
+index afc5c867b25c..de848467451d 100644
+--- a/arch/arm/boards/solidrun-hummingboard/board.c
++++ b/arch/arm/boards/solidrun-hummingboard/board.c
+@@ -20,6 +20,7 @@
+ #include <envfs.h>
+ #include <gpio.h>
+ #include <init.h>
++#include <mach/bbu.h>
+ #include <mach/generic.h>
+ #include <mach/imx6-regs.h>
+ #include <mach/imx6.h>
+@@ -75,6 +76,18 @@ static int hummingboard_device_init(void)
  }
+ device_initcall(hummingboard_device_init);
  
- static int xread(int fd, void *buf, int len)
++static int hummingboard_late_init(void)
++{
++	if (!of_machine_is_compatible("solidrun,hummingboard"))
++		return 0;
++
++	imx6_bbu_internal_mmc_register_handler("sdcard", "/dev/mmc1.barebox",
++		BBU_HANDLER_FLAG_DEFAULT, NULL, 0, 0x10000000);
++
++	return 0;
++}
++late_initcall(hummingboard_late_init);
++
+ static int hummingboard_lwl_init(void)
+ {
+ 	if (!of_machine_is_compatible("solidrun,hummingboard"))
 -- 
-1.8.3.2
+1.9.1
 
 
 _______________________________________________
