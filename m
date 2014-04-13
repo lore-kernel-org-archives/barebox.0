@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKTd-0001RW-O9
+ id 1WZKTd-0001Rg-OF
  for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:42 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id 1450D18B4246
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:53 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 75D3D18B425A
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:28:00 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:33 +0200
-Message-Id: <1397395668-9325-4-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:44 +0200
+Message-Id: <1397395668-9325-15-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,66 +25,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/18] tegra: disable more lowlevel unsafe switch optimizations
+Subject: [PATCH 14/18] gpio: tegra: add Tegra3 setup
 To: barebox@lists.infradead.org
-
-fno-jump-tables isn't enough to guard against
-gcc switch optimizations that are unsafe to use
-in code that runs before relocation.
-
-The switch-tree-conversion opt pass may generate
-lookup tables that are placed in the data section
-and accessed via absolute adressing, which fails
-prior to relocation.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/toradex-colibri-t20/Makefile |  4 +++-
- arch/arm/boards/toshiba-ac100/Makefile       |  4 +++-
- arch/arm/mach-tegra/Makefile                 | 12 ++++++++++--
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-tegra.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/boards/toradex-colibri-t20/Makefile b/arch/arm/boards/toradex-colibri-t20/Makefile
-index 5be3dd0e7c2e..d2d217319b34 100644
---- a/arch/arm/boards/toradex-colibri-t20/Makefile
-+++ b/arch/arm/boards/toradex-colibri-t20/Makefile
-@@ -1,2 +1,4 @@
--CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
-+CFLAGS_pbl-entry.o := \
-+	-mcpu=arm7tdmi -march=armv4t \
-+	-fno-tree-switch-conversion -fno-jump-tables
- lwl-y += entry.o
-diff --git a/arch/arm/boards/toshiba-ac100/Makefile b/arch/arm/boards/toshiba-ac100/Makefile
-index 4ef18c0ce919..2b6c09e2798e 100644
---- a/arch/arm/boards/toshiba-ac100/Makefile
-+++ b/arch/arm/boards/toshiba-ac100/Makefile
-@@ -1,3 +1,5 @@
--CFLAGS_pbl-entry.o := -mcpu=arm7tdmi -march=armv4t
-+CFLAGS_pbl-entry.o := \
-+	-mcpu=arm7tdmi -march=armv4t \
-+	-fno-tree-switch-conversion -fno-jump-tables
- lwl-y += entry.o
- obj-y += board.o
-diff --git a/arch/arm/mach-tegra/Makefile b/arch/arm/mach-tegra/Makefile
-index 791d5d45a718..e68156a772ac 100644
---- a/arch/arm/mach-tegra/Makefile
-+++ b/arch/arm/mach-tegra/Makefile
-@@ -1,5 +1,13 @@
--CFLAGS_tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t -fno-jump-tables
--CFLAGS_pbl-tegra_avp_init.o := -mcpu=arm7tdmi -march=armv4t -fno-jump-tables
-+CFLAGS_tegra_avp_init.o := \
-+	-mcpu=arm7tdmi -march=armv4t \
-+	-fno-tree-switch-conversion -fno-jump-tables
-+CFLAGS_pbl-tegra_avp_init.o := \
-+	-mcpu=arm7tdmi -march=armv4t \
-+	-fno-tree-switch-conversion -fno-jump-tables
-+CFLAGS_tegra_maincomplex_init.o := \
-+	-fno-tree-switch-conversion -fno-jump-tables
-+CFLAGS_pbl-tegra_maincomplex_init.o := \
-+	-fno-tree-switch-conversion -fno-jump-tables
- lwl-y += tegra_avp_init.o
- lwl-y += tegra_maincomplex_init.o
- obj-y += tegra20.o
+diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
+index 18a08f1e6ad0..bab32ee3285c 100644
+--- a/drivers/gpio/gpio-tegra.c
++++ b/drivers/gpio/gpio-tegra.c
+@@ -175,11 +175,20 @@ static struct tegra_gpio_soc_config tegra20_gpio_config = {
+ 	.bank_count = 7,
+ };
+ 
++static struct tegra_gpio_soc_config tegra30_gpio_config = {
++	.bank_stride = 0x100,
++	.upper_offset = 0x80,
++	.bank_count = 8,
++};
++
+ static __maybe_unused struct of_device_id tegra_gpio_dt_ids[] = {
+ 	{
+ 		.compatible = "nvidia,tegra20-gpio",
+ 		.data = (unsigned long)&tegra20_gpio_config
+ 	}, {
++		.compatible = "nvidia,tegra30-gpio",
++		.data = (unsigned long)&tegra30_gpio_config
++	}, {
+ 		/* sentinel */
+ 	},
+ };
 -- 
 1.9.0
 
