@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKSo-0001Cu-5Y
+ id 1WZKSo-0001Fv-5l
  for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:28:51 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id 2C93C18B4247
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:53 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id BF10B18B4250
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:55 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:31 +0200
-Message-Id: <1397395668-9325-2-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:36 +0200
+Message-Id: <1397395668-9325-7-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,57 +25,76 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 01/18] gpio: tegra: remove dead code
+Subject: [PATCH 06/18] tegra: add Tegra3 ramsize detection
 To: barebox@lists.infradead.org
-
-Tegra is DT only, so remove platform code.
-While at it remove unused struct.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/gpio/gpio-tegra.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ arch/arm/mach-tegra/include/mach/lowlevel.h  | 21 +++++++++++++++++++++
+ arch/arm/mach-tegra/tegra_maincomplex_init.c |  6 +++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index e84c71a23414..18a08f1e6ad0 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -38,11 +38,6 @@
- #define GPIO_MSK_OE(x)		(GPIO_REG(x) + config->upper_offset + 0x10)
- #define GPIO_MSK_OUT(x)		(GPIO_REG(x) + config->upper_offset + 0X20)
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index cc346a023d2c..d7b6f1e994fc 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -39,6 +39,7 @@
  
--struct tegra_gpio_bank {
--	int bank;
--	int irq;
--};
--
- struct tegra_gpio_soc_config {
- 	u32 bank_stride;
- 	u32 upper_offset;
-@@ -180,15 +175,6 @@ static struct tegra_gpio_soc_config tegra20_gpio_config = {
- 	.bank_count = 7,
- };
+ #define T20_ODMDATA_RAMSIZE_SHIFT	28
+ #define T20_ODMDATA_RAMSIZE_MASK	(3 << T20_ODMDATA_RAMSIZE_SHIFT)
++#define T30_ODMDATA_RAMSIZE_MASK	(0xf << T20_ODMDATA_RAMSIZE_SHIFT)
+ #define T20_ODMDATA_UARTTYPE_SHIFT	18
+ #define T20_ODMDATA_UARTTYPE_MASK	(3 << T20_ODMDATA_UARTTYPE_SHIFT)
+ #define T20_ODMDATA_UARTID_SHIFT	15
+@@ -124,6 +125,26 @@ uint32_t tegra20_get_ramsize(void)
+ 	}
+ }
  
--static struct platform_device_id tegra_gpio_ids[] = {
--	{
--		.name = "tegra20-gpio",
--		.driver_data = (unsigned long)&tegra20_gpio_config,
--	}, {
--		/* sentinel */
--	},
--};
--
- static __maybe_unused struct of_device_id tegra_gpio_dt_ids[] = {
- 	{
- 		.compatible = "nvidia,tegra20-gpio",
-@@ -200,7 +186,6 @@ static __maybe_unused struct of_device_id tegra_gpio_dt_ids[] = {
- 
- static struct driver_d tegra_gpio_driver = {
- 	.name		= "tegra-gpio",
--	.id_table	= tegra_gpio_ids,
- 	.of_compatible	= DRV_OF_COMPAT(tegra_gpio_dt_ids),
- 	.probe		= tegra_gpio_probe,
- };
++static __always_inline
++uint32_t tegra30_get_ramsize(void)
++{
++	switch ((tegra_get_odmdata() & T30_ODMDATA_RAMSIZE_MASK) >>
++			T20_ODMDATA_RAMSIZE_SHIFT) {
++	case 0:
++	case 1:
++	default:
++		return SZ_256M;
++	case 2:
++		return SZ_512M;
++	case 3:
++		return SZ_512M + SZ_256M;
++	case 4:
++		return SZ_1G;
++	case 8:
++		return SZ_2G - SZ_1M;
++	}
++}
++
+ static long uart_id_to_base[] = {
+ 	TEGRA_UARTA_BASE,
+ 	TEGRA_UARTB_BASE,
+diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+index 5aad1dd65eaa..776af64aeab9 100644
+--- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
++++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
+  *
+  * This program is free software; you can redistribute it and/or modify it
+  * under the terms and conditions of the GNU General Public License,
+@@ -41,6 +41,10 @@ void tegra_maincomplex_entry(void)
+ 		rambase = 0x0;
+ 		ramsize = tegra20_get_ramsize();
+ 		break;
++	case TEGRA30:
++		rambase = SZ_2G;
++		ramsize = tegra30_get_ramsize();
++		break;
+ 	default:
+ 		/* If we don't know the chiptype, better bail out */
+ 		unreachable();
 -- 
 1.9.0
 
