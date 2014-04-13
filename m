@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKTd-0001Ra-OD
+ id 1WZKTd-0001Re-OD
  for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:42 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id A4A0418B425E
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:56 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 2C93218B4279
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:59 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:38 +0200
-Message-Id: <1397395668-9325-9-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:42 +0200
+Message-Id: <1397395668-9325-13-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,79 +25,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/18] tegra: recognize T30 in debug UART code
+Subject: [PATCH 12/18] clk: tegra: consider new T30 clock registers
 To: barebox@lists.infradead.org
+
+Tegra3 has some new clocks and resets. The new
+registers don't form a linear range with the
+old ones.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h | 13 +++++++++++++
- arch/arm/mach-tegra/tegra20.c               | 11 ++++++++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/clk/tegra/clk-periph.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index d7b6f1e994fc..52b405d5f859 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -200,6 +200,19 @@ int tegra_get_osc_clock(void)
- 	}
- }
- 
-+static __always_inline
-+int tegra_get_pllp_rate(void)
-+{
-+	switch (tegra_get_chiptype()) {
-+	case TEGRA20:
-+		return 216000000;
-+	case TEGRA30:
-+		return 408000000;
-+	default:
-+		return 0;
-+	}
-+}
-+
- #define TIMER_CNTR_1US	0x00
- #define TIMER_USEC_CFG	0x04
- 
-diff --git a/arch/arm/mach-tegra/tegra20.c b/arch/arm/mach-tegra/tegra20.c
-index 0d76df9844dd..3ae77a120fe7 100644
---- a/arch/arm/mach-tegra/tegra20.c
-+++ b/arch/arm/mach-tegra/tegra20.c
-@@ -22,14 +22,17 @@
- #include <mach/lowlevel.h>
- 
- static struct NS16550_plat debug_uart = {
--	.clock = 216000000, /* pll_p rate */
- 	.shift = 2,
- };
- 
--static int tegra20_add_debug_console(void)
-+static int tegra_add_debug_console(void)
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index c970f63afa80..25616c83a28a 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
++ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
+  *
+  * Based on the Linux Tegra clock code
+  *
+@@ -130,7 +130,7 @@ struct clk *_tegra_clk_register_periph(const char *name,
+ 		bool has_div)
  {
- 	unsigned long base = 0;
+ 	struct tegra_clk_periph *periph;
+-	int ret;
++	int ret, gate_offs, rst_offs;
  
-+	if (!of_machine_is_compatible("nvidia,tegra20") &&
-+	    !of_machine_is_compatible("nvidia,tegra30"))
-+		return 0;
+ 	periph = kzalloc(sizeof(*periph), GFP_KERNEL);
+ 	if (!periph) {
+@@ -144,8 +144,13 @@ struct clk *_tegra_clk_register_periph(const char *name,
+ 	if (!periph->mux)
+ 		goto out_mux;
+ 
+-	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + 0x10 +
+-				      ((id >> 3) & 0xc), id & 0x1f, 0);
++	if (id >= 96)
++		gate_offs = 0x360 + (((id - 96) >> 3) & 0xc);
++	else
++		gate_offs = 0x10 + ((id >> 3) & 0xc);
 +
- 	/* figure out which UART to use */
- 	if (IS_ENABLED(CONFIG_TEGRA_UART_NONE))
- 		return 0;
-@@ -49,12 +52,14 @@ static int tegra20_add_debug_console(void)
- 	if (!base)
- 		return -ENODEV;
++	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + gate_offs,
++				      id & 0x1f, 0);
+ 	if (!periph->gate)
+ 		goto out_gate;
  
-+	debug_uart.clock = tegra_get_pllp_rate();
+@@ -162,7 +167,12 @@ struct clk *_tegra_clk_register_periph(const char *name,
+ 	periph->hw.parent_names = parent_names;
+ 	periph->hw.num_parents = num_parents;
+ 	periph->flags = flags;
+-	periph->rst_reg = clk_base + 0x4 + ((id >> 3) & 0xc);
 +
- 	add_ns16550_device(DEVICE_ID_DYNAMIC, base, 8 << debug_uart.shift,
- 			   IORESOURCE_MEM_8BIT, &debug_uart);
++	if (id >= 96)
++		rst_offs = 0x358 + (((id - 96) >> 3) & 0xc);
++	else
++		rst_offs = 0x4 + ((id >> 3) & 0xc);
++	periph->rst_reg = clk_base + rst_offs;
+ 	periph->rst_shift = id & 0x1f;
  
- 	return 0;
- }
--console_initcall(tegra20_add_debug_console);
-+console_initcall(tegra_add_debug_console);
- 
- static int tegra20_mem_init(void)
- {
+ 	ret = clk_register(&periph->hw);
 -- 
 1.9.0
 
