@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKSo-0001Fv-5l
+ id 1WZKSo-0001EM-5A
  for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:28:51 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id BF10B18B4250
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:55 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 8E3B918B4250
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:53 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:36 +0200
-Message-Id: <1397395668-9325-7-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:32 +0200
+Message-Id: <1397395668-9325-3-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,76 +25,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/18] tegra: add Tegra3 ramsize detection
+Subject: [PATCH 02/18] mmc: tegra: fix typo
 To: barebox@lists.infradead.org
+
+Missed OR, so we never enabled failure interrupt
+status bits, which prevented the eMMC detect logic
+to work properly.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/mach-tegra/include/mach/lowlevel.h  | 21 +++++++++++++++++++++
- arch/arm/mach-tegra/tegra_maincomplex_init.c |  6 +++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ drivers/mci/tegra-sdmmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
-index cc346a023d2c..d7b6f1e994fc 100644
---- a/arch/arm/mach-tegra/include/mach/lowlevel.h
-+++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
-@@ -39,6 +39,7 @@
+diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
+index 64c4550754b9..e4d82197bde7 100644
+--- a/drivers/mci/tegra-sdmmc.c
++++ b/drivers/mci/tegra-sdmmc.c
+@@ -339,7 +339,7 @@ static int tegra_sdmmc_init(struct mci_host *mci, struct device_d *dev)
  
- #define T20_ODMDATA_RAMSIZE_SHIFT	28
- #define T20_ODMDATA_RAMSIZE_MASK	(3 << T20_ODMDATA_RAMSIZE_SHIFT)
-+#define T30_ODMDATA_RAMSIZE_MASK	(0xf << T20_ODMDATA_RAMSIZE_SHIFT)
- #define T20_ODMDATA_UARTTYPE_SHIFT	18
- #define T20_ODMDATA_UARTTYPE_MASK	(3 << T20_ODMDATA_UARTTYPE_SHIFT)
- #define T20_ODMDATA_UARTID_SHIFT	15
-@@ -124,6 +125,26 @@ uint32_t tegra20_get_ramsize(void)
- 	}
- }
+ 	val = readl(regs + TEGRA_SDMMC_INT_STAT_EN);
+ 	val &= ~(0xffff);
+-	val = (TEGRA_SDMMC_INT_STAT_EN_CMD_COMPLETE |
++	val |= (TEGRA_SDMMC_INT_STAT_EN_CMD_COMPLETE |
+ 		TEGRA_SDMMC_INT_STAT_EN_XFER_COMPLETE |
+ 		TEGRA_SDMMC_INT_STAT_EN_DMA_INTERRUPT |
+ 		TEGRA_SDMMC_INT_STAT_EN_BUFFER_WRITE_READY |
+@@ -348,7 +348,7 @@ static int tegra_sdmmc_init(struct mci_host *mci, struct device_d *dev)
  
-+static __always_inline
-+uint32_t tegra30_get_ramsize(void)
-+{
-+	switch ((tegra_get_odmdata() & T30_ODMDATA_RAMSIZE_MASK) >>
-+			T20_ODMDATA_RAMSIZE_SHIFT) {
-+	case 0:
-+	case 1:
-+	default:
-+		return SZ_256M;
-+	case 2:
-+		return SZ_512M;
-+	case 3:
-+		return SZ_512M + SZ_256M;
-+	case 4:
-+		return SZ_1G;
-+	case 8:
-+		return SZ_2G - SZ_1M;
-+	}
-+}
-+
- static long uart_id_to_base[] = {
- 	TEGRA_UARTA_BASE,
- 	TEGRA_UARTB_BASE,
-diff --git a/arch/arm/mach-tegra/tegra_maincomplex_init.c b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-index 5aad1dd65eaa..776af64aeab9 100644
---- a/arch/arm/mach-tegra/tegra_maincomplex_init.c
-+++ b/arch/arm/mach-tegra/tegra_maincomplex_init.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-  * under the terms and conditions of the GNU General Public License,
-@@ -41,6 +41,10 @@ void tegra_maincomplex_entry(void)
- 		rambase = 0x0;
- 		ramsize = tegra20_get_ramsize();
- 		break;
-+	case TEGRA30:
-+		rambase = SZ_2G;
-+		ramsize = tegra30_get_ramsize();
-+		break;
- 	default:
- 		/* If we don't know the chiptype, better bail out */
- 		unreachable();
+ 	val = readl(regs + TEGRA_SDMMC_INT_SIG_EN);
+ 	val &= ~(0xffff);
+-	val = TEGRA_SDMMC_INT_SIG_EN_XFER_COMPLETE;
++	val |= TEGRA_SDMMC_INT_SIG_EN_XFER_COMPLETE;
+ 	writel(val, regs + TEGRA_SDMMC_INT_SIG_EN);
+ 
+ 	tegra_sdmmc_set_clock(host, 400000);
 -- 
 1.9.0
 
