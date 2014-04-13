@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKTd-0001Re-OD
+ id 1WZKTd-0001Rj-OC
  for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:42 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id 2C93218B4279
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:59 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id A6A4E18B4279
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:28:03 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:42 +0200
-Message-Id: <1397395668-9325-13-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:48 +0200
+Message-Id: <1397395668-9325-19-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,68 +25,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/18] clk: tegra: consider new T30 clock registers
+Subject: [PATCH 18/18] defconfig: tegra: add some useful options
 To: barebox@lists.infradead.org
-
-Tegra3 has some new clocks and resets. The new
-registers don't form a linear range with the
-old ones.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/tegra/clk-periph.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ arch/arm/configs/tegra_v7_defconfig | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index c970f63afa80..25616c83a28a 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -1,5 +1,5 @@
- /*
-- * Copyright (C) 2013 Lucas Stach <l.stach@pengutronix.de>
-+ * Copyright (C) 2013-2014 Lucas Stach <l.stach@pengutronix.de>
-  *
-  * Based on the Linux Tegra clock code
-  *
-@@ -130,7 +130,7 @@ struct clk *_tegra_clk_register_periph(const char *name,
- 		bool has_div)
- {
- 	struct tegra_clk_periph *periph;
--	int ret;
-+	int ret, gate_offs, rst_offs;
- 
- 	periph = kzalloc(sizeof(*periph), GFP_KERNEL);
- 	if (!periph) {
-@@ -144,8 +144,13 @@ struct clk *_tegra_clk_register_periph(const char *name,
- 	if (!periph->mux)
- 		goto out_mux;
- 
--	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + 0x10 +
--				      ((id >> 3) & 0xc), id & 0x1f, 0);
-+	if (id >= 96)
-+		gate_offs = 0x360 + (((id - 96) >> 3) & 0xc);
-+	else
-+		gate_offs = 0x10 + ((id >> 3) & 0xc);
-+
-+	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + gate_offs,
-+				      id & 0x1f, 0);
- 	if (!periph->gate)
- 		goto out_gate;
- 
-@@ -162,7 +167,12 @@ struct clk *_tegra_clk_register_periph(const char *name,
- 	periph->hw.parent_names = parent_names;
- 	periph->hw.num_parents = num_parents;
- 	periph->flags = flags;
--	periph->rst_reg = clk_base + 0x4 + ((id >> 3) & 0xc);
-+
-+	if (id >= 96)
-+		rst_offs = 0x358 + (((id - 96) >> 3) & 0xc);
-+	else
-+		rst_offs = 0x4 + ((id >> 3) & 0xc);
-+	periph->rst_reg = clk_base + rst_offs;
- 	periph->rst_shift = id & 0x1f;
- 
- 	ret = clk_register(&periph->hw);
+diff --git a/arch/arm/configs/tegra_v7_defconfig b/arch/arm/configs/tegra_v7_defconfig
+index 680e3bb50631..83d2851d8076 100644
+--- a/arch/arm/configs/tegra_v7_defconfig
++++ b/arch/arm/configs/tegra_v7_defconfig
+@@ -9,22 +9,30 @@ CONFIG_ARM_UNWIND=y
+ CONFIG_MMU=y
+ CONFIG_STACK_SIZE=0x10000
+ CONFIG_MALLOC_SIZE=0x4000000
++CONFIG_KALLSYMS=y
+ CONFIG_LONGHELP=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
++CONFIG_BLSPEC=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_CMD_EDIT=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_IOMEM=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
+ CONFIG_CMD_BOOTZ=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_MCI=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_TEGRA=y
 -- 
 1.9.0
 
