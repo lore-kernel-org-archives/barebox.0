@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKTd-0001Rh-OE
- for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:43 +0000
+ id 1WZKTe-0001Rd-K6
+ for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:44 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id BF12218B425E
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:59 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id EFE2D18B427D
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:28:01 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:43 +0200
-Message-Id: <1397395668-9325-14-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:46 +0200
+Message-Id: <1397395668-9325-17-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,38 +25,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/18] clk: tegra: add Tegra3 driver
+Subject: [PATCH 16/18] ARM: tegra: add NVidia Beaver board support
 To: barebox@lists.infradead.org
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/tegra/Makefile      |   3 +-
- drivers/clk/tegra/clk-tegra30.c | 365 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 367 insertions(+), 1 deletion(-)
- create mode 100644 drivers/clk/tegra/clk-tegra30.c
+ arch/arm/boards/Makefile               |   1 +
+ arch/arm/boards/nvidia-beaver/Makefile |   4 +
+ arch/arm/boards/nvidia-beaver/entry.c  |  38 +++
+ arch/arm/configs/tegra_v7_defconfig    |   1 +
+ arch/arm/dts/Makefile                  |   4 +-
+ arch/arm/dts/tegra30-beaver.dts        | 504 +++++++++++++++++++++++++++++++++
+ arch/arm/mach-tegra/Kconfig            |   4 +
+ images/Makefile.tegra                  |   5 +
+ 8 files changed, 560 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boards/nvidia-beaver/Makefile
+ create mode 100644 arch/arm/boards/nvidia-beaver/entry.c
+ create mode 100644 arch/arm/dts/tegra30-beaver.dts
 
-diff --git a/drivers/clk/tegra/Makefile b/drivers/clk/tegra/Makefile
-index e614722c2ccc..7317f225414f 100644
---- a/drivers/clk/tegra/Makefile
-+++ b/drivers/clk/tegra/Makefile
-@@ -4,4 +4,5 @@ obj-y	+= clk-periph.o
- obj-y	+= clk-pll.o
- obj-y	+= clk-pll-out.o
- 
--obj-$(CONFIG_ARCH_TEGRA_2x_SOC)		+= clk-tegra20.o
-\ No newline at end of file
-+obj-$(CONFIG_ARCH_TEGRA_2x_SOC)		+= clk-tegra20.o
-+obj-$(CONFIG_ARCH_TEGRA_3x_SOC)		+= clk-tegra30.o
-diff --git a/drivers/clk/tegra/clk-tegra30.c b/drivers/clk/tegra/clk-tegra30.c
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 16742d91389d..0c1497febdb5 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -55,6 +55,7 @@ obj-$(CONFIG_MACH_MX31MOBOARD)			+= mx31moboard/
+ obj-$(CONFIG_MACH_MX6Q_ARM2)			+= freescale-mx6-arm2/
+ obj-$(CONFIG_MACH_NESO)				+= guf-neso/
+ obj-$(CONFIG_MACH_NOMADIK_8815NHK)		+= nhk8815/
++obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+= nvidia-beaver/
+ obj-$(CONFIG_MACH_NXDB500)			+= netx/
+ obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
+ obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
+diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
 new file mode 100644
-index 000000000000..94bbeace4ae4
+index 000000000000..d2d217319b34
 --- /dev/null
-+++ b/drivers/clk/tegra/clk-tegra30.c
-@@ -0,0 +1,365 @@
++++ b/arch/arm/boards/nvidia-beaver/Makefile
+@@ -0,0 +1,4 @@
++CFLAGS_pbl-entry.o := \
++	-mcpu=arm7tdmi -march=armv4t \
++	-fno-tree-switch-conversion -fno-jump-tables
++lwl-y += entry.o
+diff --git a/arch/arm/boards/nvidia-beaver/entry.c b/arch/arm/boards/nvidia-beaver/entry.c
+new file mode 100644
+index 000000000000..25452a6a759e
+--- /dev/null
++++ b/arch/arm/boards/nvidia-beaver/entry.c
+@@ -0,0 +1,38 @@
 +/*
 + * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * Based on the Linux Tegra clock code
 + *
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms and conditions of the GNU General Public License,
@@ -68,356 +84,603 @@ index 000000000000..94bbeace4ae4
 + * more details.
 + *
 + * You should have received a copy of the GNU General Public License
-+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 + */
 +
 +#include <common.h>
-+#include <init.h>
-+#include <io.h>
-+#include <dt-bindings/clock/tegra30-car.h>
-+#include <linux/clk.h>
-+#include <linux/clkdev.h>
-+#include <linux/err.h>
++#include <sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/barebox-arm-head.h>
 +#include <mach/lowlevel.h>
-+#include <mach/tegra20-car.h>
-+#include <mach/tegra30-car.h>
++#include <mach/lowlevel-dvc.h>
 +
-+#include "clk.h"
++extern char __dtb_tegra30_beaver_start[];
 +
-+static void __iomem *car_base;
-+
-+static struct clk *clks[TEGRA30_CLK_CLK_MAX];
-+static struct clk_onecell_data clk_data;
-+
-+static unsigned int get_pll_ref_div(void)
++ENTRY_FUNCTION(start_nvidia_beaver, r0, r1, r2)
 +{
-+	u32 osc_ctrl = readl(car_base + CRC_OSC_CTRL);
++	uint32_t fdt;
 +
-+	return 1U << ((osc_ctrl & CRC_OSC_CTRL_PLL_REF_DIV_MASK) >>
-+		      CRC_OSC_CTRL_PLL_REF_DIV_SHIFT);
++	tegra_cpu_lowlevel_setup();
++
++	tegra_dvc_init();
++	tegra30_tps65911_cpu_rail_enable();
++
++	fdt = (uint32_t)__dtb_tegra30_beaver_start - get_runtime_offset();
++
++	tegra_avp_reset_vector(fdt);
 +}
+diff --git a/arch/arm/configs/tegra_v7_defconfig b/arch/arm/configs/tegra_v7_defconfig
+index f76b5017a8a2..680e3bb50631 100644
+--- a/arch/arm/configs/tegra_v7_defconfig
++++ b/arch/arm/configs/tegra_v7_defconfig
+@@ -1,6 +1,7 @@
+ CONFIG_ARCH_TEGRA=y
+ CONFIG_MACH_TORADEX_COLIBRI_T20=y
+ CONFIG_MACH_TOSHIBA_AC100=y
++CONFIG_MACH_NVIDIA_BEAVER=y
+ CONFIG_AEABI=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index b45c17458253..58dc38b87dd9 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -33,7 +33,8 @@ dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb \
+ 	socfpga_cyclone5_socrates.dtb
+ dtb-$(CONFIG_ARCH_TEGRA) += \
+ 	tegra20-colibri-iris.dtb \
+-	tegra20-paz00.dtb
++	tegra20-paz00.dtb \
++	tegra30-beaver.dtb
+ 
+ BUILTIN_DTB := $(patsubst "%",%,$(CONFIG_BUILTIN_DTB_NAME))
+ obj-$(CONFIG_BUILTIN_DTB) += $(BUILTIN_DTB).dtb.o
+@@ -44,6 +45,7 @@ pbl-$(CONFIG_MACH_FREESCALE_MX51_PDK) += imx51-babbage.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_LOCO) += imx53-qsb.dtb.o imx53-qsrb.dtb.o
+ pbl-$(CONFIG_MACH_FREESCALE_MX53_VMX53) += imx53-voipac-bsb.dtb.o
+ pbl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
++pbl-$(CONFIG_MACH_NVIDIA_BEAVER) += tegra30-beaver.dtb.o
+ pbl-$(CONFIG_MACH_PCM051) += am335x-phytec-phycore.dtb.o
+ pbl-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6s-phytec-pbab01.dtb.o imx6dl-phytec-pbab01.dtb.o imx6q-phytec-pbab01.dtb.o
+ pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
+diff --git a/arch/arm/dts/tegra30-beaver.dts b/arch/arm/dts/tegra30-beaver.dts
+new file mode 100644
+index 000000000000..e93fe45b7803
+--- /dev/null
++++ b/arch/arm/dts/tegra30-beaver.dts
+@@ -0,0 +1,504 @@
++/dts-v1/;
 +
-+static void tegra30_osc_clk_init(void)
-+{
-+	clks[TEGRA30_CLK_CLK_M] = clk_fixed("clk_m", tegra_get_osc_clock());
-+	clks[TEGRA30_CLK_CLK_32K] = clk_fixed("clk_32k", 32768);
++#include "tegra30.dtsi"
 +
-+	clks[TEGRA30_CLK_PLL_REF] = clk_fixed_factor("pll_ref", "clk_m", 1,
-+						     get_pll_ref_div(), 0);
-+}
++/ {
++	model = "NVIDIA Tegra30 Beaver evaluation board";
++	compatible = "nvidia,beaver", "nvidia,tegra30";
 +
-+/* PLL frequency tables */
-+static struct tegra_clk_pll_freq_table pll_c_freq_table[] = {
-+	{ 12000000, 1040000000, 520,  6, 0, 8},
-+	{ 26000000, 1040000000, 520, 13, 0, 8},
++	aliases {
++		rtc0 = "/i2c@7000d000/tps65911@2d";
++		rtc1 = "/rtc@7000e000";
++	};
 +
-+	{ 12000000, 832000000, 416,  6, 0, 8},
-+	{ 26000000, 832000000, 416, 13, 0, 8},
++	memory {
++		reg = <0x80000000 0x7ff00000>;
++	};
 +
-+	{ 12000000, 624000000, 624, 12, 0, 8},
-+	{ 26000000, 624000000, 624, 26, 0, 8},
++	pcie-controller@00003000 {
++		status = "okay";
++		pex-clk-supply = <&sys_3v3_pexs_reg>;
++		vdd-supply = <&ldo1_reg>;
++		avdd-supply = <&ldo2_reg>;
 +
-+	{ 12000000, 600000000, 600, 12, 0, 8},
-+	{ 26000000, 600000000, 600, 26, 0, 8},
++		pci@1,0 {
++			status = "okay";
++			nvidia,num-lanes = <2>;
++		};
 +
-+	{ 12000000, 520000000, 520, 12, 0, 8},
-+	{ 26000000, 520000000, 520, 26, 0, 8},
++		pci@2,0 {
++			nvidia,num-lanes = <2>;
++		};
 +
-+	{ 12000000, 416000000, 416, 12, 0, 8},
-+	{ 26000000, 416000000, 416, 26, 0, 8},
-+	{ 0, 0, 0, 0, 0, 0 },
++		pci@3,0 {
++			status = "okay";
++			nvidia,num-lanes = <2>;
++		};
++	};
++
++	host1x@50000000 {
++		hdmi@54280000 {
++			status = "okay";
++
++			vdd-supply = <&sys_3v3_reg>;
++			pll-supply = <&vio_reg>;
++
++			nvidia,hpd-gpio =
++				<&gpio TEGRA_GPIO(N, 7) GPIO_ACTIVE_HIGH>;
++			nvidia,ddc-i2c-bus = <&hdmiddc>;
++		};
++	};
++
++	pinmux@70000868 {
++		pinctrl-names = "default";
++		pinctrl-0 = <&state_default>;
++
++		state_default: pinmux {
++			sdmmc1_clk_pz0 {
++				nvidia,pins = "sdmmc1_clk_pz0";
++				nvidia,function = "sdmmc1";
++				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			sdmmc1_cmd_pz1 {
++				nvidia,pins =	"sdmmc1_cmd_pz1",
++						"sdmmc1_dat0_py7",
++						"sdmmc1_dat1_py6",
++						"sdmmc1_dat2_py5",
++						"sdmmc1_dat3_py4";
++				nvidia,function = "sdmmc1";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			sdmmc3_clk_pa6 {
++				nvidia,pins = "sdmmc3_clk_pa6";
++				nvidia,function = "sdmmc3";
++				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			sdmmc3_cmd_pa7 {
++				nvidia,pins =	"sdmmc3_cmd_pa7",
++						"sdmmc3_dat0_pb7",
++						"sdmmc3_dat1_pb6",
++						"sdmmc3_dat2_pb5",
++						"sdmmc3_dat3_pb4";
++				nvidia,function = "sdmmc3";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			sdmmc4_clk_pcc4 {
++				nvidia,pins =	"sdmmc4_clk_pcc4",
++						"sdmmc4_rst_n_pcc3";
++				nvidia,function = "sdmmc4";
++				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			sdmmc4_dat0_paa0 {
++				nvidia,pins =	"sdmmc4_dat0_paa0",
++						"sdmmc4_dat1_paa1",
++						"sdmmc4_dat2_paa2",
++						"sdmmc4_dat3_paa3",
++						"sdmmc4_dat4_paa4",
++						"sdmmc4_dat5_paa5",
++						"sdmmc4_dat6_paa6",
++						"sdmmc4_dat7_paa7";
++				nvidia,function = "sdmmc4";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			dap2_fs_pa2 {
++				nvidia,pins =	"dap2_fs_pa2",
++						"dap2_sclk_pa3",
++						"dap2_din_pa4",
++						"dap2_dout_pa5";
++				nvidia,function = "i2s1";
++				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
++				nvidia,tristate = <TEGRA_PIN_DISABLE>;
++			};
++			pex_l1_prsnt_n_pdd4 {
++				nvidia,pins =	"pex_l1_prsnt_n_pdd4",
++						"pex_l1_clkreq_n_pdd6";
++				nvidia,pull = <TEGRA_PIN_PULL_UP>;
++			};
++			sdio3 {
++				nvidia,pins = "drive_sdio3";
++				nvidia,high-speed-mode = <TEGRA_PIN_DISABLE>;
++				nvidia,schmitt = <TEGRA_PIN_DISABLE>;
++				nvidia,pull-down-strength = <46>;
++				nvidia,pull-up-strength = <42>;
++				nvidia,slew-rate-rising = <1>;
++				nvidia,slew-rate-falling = <1>;
++			};
++			gpv {
++				nvidia,pins = "drive_gpv";
++				nvidia,pull-up-strength = <16>;
++			};
++		};
++	};
++
++	serial@70006000 {
++		status = "okay";
++	};
++
++	i2c@7000c000 {
++		status = "okay";
++		clock-frequency = <100000>;
++	};
++
++	i2c@7000c400 {
++		status = "okay";
++		clock-frequency = <100000>;
++	};
++
++	i2c@7000c500 {
++		status = "okay";
++		clock-frequency = <100000>;
++	};
++
++	hdmiddc: i2c@7000c700 {
++		status = "okay";
++		clock-frequency = <100000>;
++	};
++
++	i2c@7000d000 {
++		status = "okay";
++		clock-frequency = <100000>;
++
++		rt5640: rt5640@1c {
++			compatible = "realtek,rt5640";
++			reg = <0x1c>;
++			interrupt-parent = <&gpio>;
++			interrupts = <TEGRA_GPIO(X, 3) GPIO_ACTIVE_HIGH>;
++			realtek,ldo1-en-gpios =
++				<&gpio TEGRA_GPIO(X, 2) GPIO_ACTIVE_HIGH>;
++		};
++
++		pmic: tps65911@2d {
++			compatible = "ti,tps65911";
++			reg = <0x2d>;
++
++			interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
++			#interrupt-cells = <2>;
++			interrupt-controller;
++
++			ti,system-power-controller;
++
++			#gpio-cells = <2>;
++			gpio-controller;
++
++			vcc1-supply = <&vdd_5v_in_reg>;
++			vcc2-supply = <&vdd_5v_in_reg>;
++			vcc3-supply = <&vio_reg>;
++			vcc4-supply = <&vdd_5v_in_reg>;
++			vcc5-supply = <&vdd_5v_in_reg>;
++			vcc6-supply = <&vdd2_reg>;
++			vcc7-supply = <&vdd_5v_in_reg>;
++			vccio-supply = <&vdd_5v_in_reg>;
++
++			regulators {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				vdd1_reg: vdd1 {
++					regulator-name = "vddio_ddr_1v2";
++					regulator-min-microvolt = <1200000>;
++					regulator-max-microvolt = <1200000>;
++					regulator-always-on;
++				};
++
++				vdd2_reg: vdd2 {
++					regulator-name = "vdd_1v5_gen";
++					regulator-min-microvolt = <1500000>;
++					regulator-max-microvolt = <1500000>;
++					regulator-always-on;
++				};
++
++				vddctrl_reg: vddctrl {
++					regulator-name = "vdd_cpu,vdd_sys";
++					regulator-min-microvolt = <1000000>;
++					regulator-max-microvolt = <1000000>;
++					regulator-always-on;
++				};
++
++				vio_reg: vio {
++					regulator-name = "vdd_1v8_gen";
++					regulator-min-microvolt = <1800000>;
++					regulator-max-microvolt = <1800000>;
++					regulator-always-on;
++				};
++
++				ldo1_reg: ldo1 {
++					regulator-name = "vdd_pexa,vdd_pexb";
++					regulator-min-microvolt = <1050000>;
++					regulator-max-microvolt = <1050000>;
++				};
++
++				ldo2_reg: ldo2 {
++					regulator-name = "vdd_sata,avdd_plle";
++					regulator-min-microvolt = <1050000>;
++					regulator-max-microvolt = <1050000>;
++				};
++
++				/* LDO3 is not connected to anything */
++
++				ldo4_reg: ldo4 {
++					regulator-name = "vdd_rtc";
++					regulator-min-microvolt = <1200000>;
++					regulator-max-microvolt = <1200000>;
++					regulator-always-on;
++				};
++
++				ldo5_reg: ldo5 {
++					regulator-name = "vddio_sdmmc,avdd_vdac";
++					regulator-min-microvolt = <3300000>;
++					regulator-max-microvolt = <3300000>;
++					regulator-always-on;
++				};
++
++				ldo6_reg: ldo6 {
++					regulator-name = "avdd_dsi_csi,pwrdet_mipi";
++					regulator-min-microvolt = <1200000>;
++					regulator-max-microvolt = <1200000>;
++				};
++
++				ldo7_reg: ldo7 {
++					regulator-name = "vdd_pllm,x,u,a_p_c_s";
++					regulator-min-microvolt = <1200000>;
++					regulator-max-microvolt = <1200000>;
++					regulator-always-on;
++				};
++
++				ldo8_reg: ldo8 {
++					regulator-name = "vdd_ddr_hs";
++					regulator-min-microvolt = <1000000>;
++					regulator-max-microvolt = <1000000>;
++					regulator-always-on;
++				};
++			};
++		};
++
++		tps62361@60 {
++			compatible = "ti,tps62361";
++			reg = <0x60>;
++
++			regulator-name = "tps62361-vout";
++			regulator-min-microvolt = <500000>;
++			regulator-max-microvolt = <1500000>;
++			regulator-boot-on;
++			regulator-always-on;
++			ti,vsel0-state-high;
++			ti,vsel1-state-high;
++		};
++	};
++
++	spi@7000da00 {
++		status = "okay";
++		spi-max-frequency = <25000000>;
++		spi-flash@1 {
++			compatible = "winbond,w25q32";
++			reg = <1>;
++			spi-max-frequency = <20000000>;
++		};
++	};
++
++	pmc@7000e400 {
++		status = "okay";
++		nvidia,invert-interrupt;
++		nvidia,suspend-mode = <1>;
++		nvidia,cpu-pwr-good-time = <2000>;
++		nvidia,cpu-pwr-off-time = <200>;
++		nvidia,core-pwr-good-time = <3845 3845>;
++		nvidia,core-pwr-off-time = <0>;
++		nvidia,core-power-req-active-high;
++		nvidia,sys-clock-req-active-high;
++	};
++
++	ahub@70080000 {
++		i2s@70080400 {
++			status = "okay";
++		};
++	};
++
++	sdhci@78000000 {
++		status = "okay";
++		cd-gpios = <&gpio TEGRA_GPIO(I, 5) GPIO_ACTIVE_LOW>;
++		wp-gpios = <&gpio TEGRA_GPIO(T, 3) GPIO_ACTIVE_HIGH>;
++		power-gpios = <&gpio TEGRA_GPIO(D, 7) GPIO_ACTIVE_HIGH>;
++		bus-width = <4>;
++	};
++
++	sdhci@78000600 {
++		status = "okay";
++		bus-width = <8>;
++		non-removable;
++	};
++
++	usb@7d004000 {
++		status = "okay";
++	};
++
++	phy2: usb-phy@7d004000 {
++		vbus-supply = <&sys_3v3_reg>;
++		status = "okay";
++	};
++
++	usb@7d008000 {
++		status = "okay";
++	};
++
++	usb-phy@7d008000 {
++		vbus-supply = <&usb3_vbus_reg>;
++		status = "okay";
++	};
++
++	clocks {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		clk32k_in: clock@0 {
++			compatible = "fixed-clock";
++			reg=<0>;
++			#clock-cells = <0>;
++			clock-frequency = <32768>;
++		};
++	};
++
++	gpio-leds {
++		compatible = "gpio-leds";
++
++		gpled1 {
++			label = "LED1"; /* CR5A1 (blue) */
++			gpios = <&gpio TEGRA_GPIO(L, 1) GPIO_ACTIVE_HIGH>;
++		};
++		gpled2 {
++			label = "LED2"; /* CR4A2 (green) */
++			gpios = <&gpio TEGRA_GPIO(L, 0) GPIO_ACTIVE_HIGH>;
++		};
++	};
++
++	regulators {
++		compatible = "simple-bus";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		vdd_5v_in_reg: regulator@0 {
++			compatible = "regulator-fixed";
++			reg = <0>;
++			regulator-name = "vdd_5v_in";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			regulator-always-on;
++		};
++
++		chargepump_5v_reg: regulator@1 {
++			compatible = "regulator-fixed";
++			reg = <1>;
++			regulator-name = "chargepump_5v";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			regulator-boot-on;
++			regulator-always-on;
++			enable-active-high;
++			gpio = <&pmic 0 GPIO_ACTIVE_HIGH>;
++		};
++
++		ddr_reg: regulator@2 {
++			compatible = "regulator-fixed";
++			reg = <2>;
++			regulator-name = "vdd_ddr";
++			regulator-min-microvolt = <1500000>;
++			regulator-max-microvolt = <1500000>;
++			regulator-always-on;
++			regulator-boot-on;
++			enable-active-high;
++			gpio = <&pmic 7 GPIO_ACTIVE_HIGH>;
++			vin-supply = <&vdd_5v_in_reg>;
++		};
++
++		vdd_5v_sata_reg: regulator@3 {
++			compatible = "regulator-fixed";
++			reg = <3>;
++			regulator-name = "vdd_5v_sata";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			regulator-always-on;
++			regulator-boot-on;
++			enable-active-high;
++			gpio = <&gpio TEGRA_GPIO(D, 6) GPIO_ACTIVE_HIGH>;
++			vin-supply = <&vdd_5v_in_reg>;
++		};
++
++		usb1_vbus_reg: regulator@4 {
++			compatible = "regulator-fixed";
++			reg = <4>;
++			regulator-name = "usb1_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			enable-active-high;
++			gpio = <&gpio TEGRA_GPIO(DD, 6) GPIO_ACTIVE_HIGH>;
++			gpio-open-drain;
++			vin-supply = <&vdd_5v_in_reg>;
++		};
++
++		usb3_vbus_reg: regulator@5 {
++			compatible = "regulator-fixed";
++			reg = <5>;
++			regulator-name = "usb3_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			enable-active-high;
++			gpio = <&gpio TEGRA_GPIO(DD, 4) GPIO_ACTIVE_HIGH>;
++			gpio-open-drain;
++			vin-supply = <&vdd_5v_in_reg>;
++		};
++
++		sys_3v3_reg: regulator@6 {
++			compatible = "regulator-fixed";
++			reg = <6>;
++			regulator-name = "sys_3v3,vdd_3v3_alw";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++			regulator-boot-on;
++			enable-active-high;
++			gpio = <&pmic 6 GPIO_ACTIVE_HIGH>;
++			vin-supply = <&vdd_5v_in_reg>;
++		};
++
++		sys_3v3_pexs_reg: regulator@7 {
++			compatible = "regulator-fixed";
++			reg = <7>;
++			regulator-name = "sys_3v3_pexs";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			regulator-always-on;
++			regulator-boot-on;
++			enable-active-high;
++			gpio = <&gpio TEGRA_GPIO(L, 7) GPIO_ACTIVE_HIGH>;
++			vin-supply = <&sys_3v3_reg>;
++		};
++	};
++
++	sound {
++		compatible = "nvidia,tegra-audio-rt5640-beaver",
++			     "nvidia,tegra-audio-rt5640";
++		nvidia,model = "NVIDIA Tegra Beaver";
++
++		nvidia,audio-routing =
++			"Headphones", "HPOR",
++			"Headphones", "HPOL",
++			"Mic Jack", "MICBIAS1",
++			"IN2P", "Mic Jack";
++
++		nvidia,i2s-controller = <&tegra_i2s1>;
++		nvidia,audio-codec = <&rt5640>;
++
++		nvidia,hp-det-gpios = <&gpio TEGRA_GPIO(W, 2) GPIO_ACTIVE_HIGH>;
++
++		clocks = <&tegra_car TEGRA30_CLK_PLL_A>,
++			 <&tegra_car TEGRA30_CLK_PLL_A_OUT0>,
++			 <&tegra_car TEGRA30_CLK_EXTERN1>;
++		clock-names = "pll_a", "pll_a_out0", "mclk";
++	};
 +};
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index c272e8e0dcb5..1bbe6ce5e1bc 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -60,6 +60,10 @@ config MACH_TOSHIBA_AC100
+ 	bool "Toshiba AC100"
+ 	select ARCH_TEGRA_2x_SOC
+ 
++config MACH_NVIDIA_BEAVER
++	bool "NVIDIA Beaver"
++	select ARCH_TEGRA_3x_SOC
 +
-+static struct tegra_clk_pll_freq_table pll_p_freq_table[] = {
-+	{ 12000000, 408000000, 408, 12, 1, 8},
-+	{ 26000000, 408000000, 408, 26, 1, 8},
-+	{ 0, 0, 0, 0, 0, 0 },
-+};
+ endmenu
+ 
+ # ---------------------------------------------------------
+diff --git a/images/Makefile.tegra b/images/Makefile.tegra
+index f03503e83878..c957599958ca 100644
+--- a/images/Makefile.tegra
++++ b/images/Makefile.tegra
+@@ -12,3 +12,8 @@ image-$(CONFIG_MACH_TOSHIBA_AC100) += barebox-tegra20-toshiba-ac100.img
+ pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_toradex_colibri_t20_iris
+ FILE_barebox-tegra20-toradex-colibri-t20-iris.img = start_toradex_colibri_t20_iris.pblx
+ image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-iris.img
 +
-+static struct tegra_clk_pll_freq_table pll_m_freq_table[] = {
-+	{ 12000000, 666000000, 666, 12, 0, 8},
-+	{ 26000000, 666000000, 666, 26, 0, 8},
-+
-+	{ 12000000, 600000000, 600, 12, 0, 8},
-+	{ 26000000, 600000000, 600, 26, 0, 8},
-+	{ 0, 0, 0, 0, 0, 0 },
-+};
-+
-+static struct tegra_clk_pll_freq_table pll_x_freq_table[] = {
-+	/* 1.7 GHz */
-+	{ 12000000, 1700000000, 850,  6,  0, 8},
-+	{ 26000000, 1700000000, 850,  13, 0, 8},
-+
-+	/* 1.6 GHz */
-+	{ 12000000, 1600000000, 800,  6,  0, 8},
-+	{ 26000000, 1600000000, 800,  13, 0, 8},
-+
-+	/* 1.5 GHz */
-+	{ 12000000, 1500000000, 750,  6,  0, 8},
-+	{ 26000000, 1500000000, 750,  13, 0, 8},
-+
-+	/* 1.4 GHz */
-+	{ 12000000, 1400000000, 700,  6,  0, 8},
-+	{ 26000000, 1400000000, 700,  13, 0, 8},
-+
-+	/* 1.3 GHz */
-+	{ 12000000, 1300000000, 975,  9,  0, 8},
-+	{ 26000000, 1300000000, 650,  13, 0, 8},
-+
-+	/* 1.2 GHz */
-+	{ 12000000, 1200000000, 1000, 10, 0, 8},
-+	{ 26000000, 1200000000, 600,  13, 0, 8},
-+
-+	/* 1.1 GHz */
-+	{ 12000000, 1100000000, 825,  9,  0, 8},
-+	{ 26000000, 1100000000, 550,  13, 0, 8},
-+
-+	/* 1 GHz */
-+	{ 12000000, 1000000000, 1000, 12, 0, 8},
-+	{ 26000000, 1000000000, 1000, 26, 0, 8},
-+
-+	{ 0, 0, 0, 0, 0, 0 },
-+};
-+
-+static struct tegra_clk_pll_freq_table pll_u_freq_table[] = {
-+	{ 12000000, 480000000, 960, 12, 0, 12},
-+	{ 26000000, 480000000, 960, 26, 0, 12},
-+	{ 0, 0, 0, 0, 0, 0 },
-+};
-+
-+/* PLL parameters */
-+static struct tegra_clk_pll_params pll_c_params = {
-+	.input_min = 2000000,
-+	.input_max = 31000000,
-+	.cf_min = 1000000,
-+	.cf_max = 6000000,
-+	.vco_min = 20000000,
-+	.vco_max = 1400000000,
-+	.base_reg = CRC_PLLC_BASE,
-+	.misc_reg = CRC_PLLC_MISC,
-+	.lock_bit_idx = CRC_PLL_BASE_LOCK,
-+	.lock_enable_bit_idx = CRC_PLL_MISC_LOCK_ENABLE,
-+	.lock_delay = 300,
-+};
-+
-+static struct tegra_clk_pll_params pll_p_params = {
-+	.input_min = 2000000,
-+	.input_max = 31000000,
-+	.cf_min = 1000000,
-+	.cf_max = 6000000,
-+	.vco_min = 20000000,
-+	.vco_max = 1400000000,
-+	.base_reg = CRC_PLLP_BASE,
-+	.misc_reg = CRC_PLLP_MISC,
-+	.lock_bit_idx = CRC_PLL_BASE_LOCK,
-+	.lock_enable_bit_idx = CRC_PLL_MISC_LOCK_ENABLE,
-+	.lock_delay = 300,
-+};
-+
-+static struct tegra_clk_pll_params pll_m_params = {
-+	.input_min = 2000000,
-+	.input_max = 31000000,
-+	.cf_min = 1000000,
-+	.cf_max = 6000000,
-+	.vco_min = 20000000,
-+	.vco_max = 1200000000,
-+	.base_reg = CRC_PLLM_BASE,
-+	.misc_reg = CRC_PLLM_MISC,
-+	.lock_bit_idx = CRC_PLL_BASE_LOCK,
-+	.lock_enable_bit_idx = CRC_PLL_MISC_LOCK_ENABLE,
-+	.lock_delay = 300,
-+};
-+
-+static struct tegra_clk_pll_params pll_x_params = {
-+	.input_min = 2000000,
-+	.input_max = 31000000,
-+	.cf_min = 1000000,
-+	.cf_max = 6000000,
-+	.vco_min = 20000000,
-+	.vco_max = 1200000000,
-+	.base_reg = CRC_PLLX_BASE,
-+	.misc_reg = CRC_PLLX_MISC,
-+	.lock_bit_idx = CRC_PLL_BASE_LOCK,
-+	.lock_enable_bit_idx = CRC_PLL_MISC_LOCK_ENABLE,
-+	.lock_delay = 300,
-+};
-+
-+static struct tegra_clk_pll_params pll_u_params = {
-+	.input_min = 2000000,
-+	.input_max = 40000000,
-+	.cf_min = 1000000,
-+	.cf_max = 6000000,
-+	.vco_min = 48000000,
-+	.vco_max = 960000000,
-+	.base_reg = CRC_PLLU_BASE,
-+	.misc_reg = CRC_PLLU_MISC,
-+	.lock_bit_idx = CRC_PLL_BASE_LOCK,
-+	.lock_enable_bit_idx = CRC_PLLDU_MISC_LOCK_ENABLE,
-+	.lock_delay = 1000,
-+};
-+
-+static void tegra30_pll_init(void)
-+{
-+	/* PLLC */
-+	clks[TEGRA30_CLK_PLL_C] = tegra_clk_register_pll("pll_c", "pll_ref",
-+			car_base, 0, 0, &pll_c_params, TEGRA_PLL_HAS_CPCON,
-+			pll_c_freq_table);
-+
-+	clks[TEGRA30_CLK_PLL_C_OUT1] = tegra_clk_register_pll_out("pll_c_out1",
-+			"pll_c", car_base + CRC_PLLC_OUT, 0,
-+			TEGRA_DIVIDER_ROUND_UP);
-+
-+	/* PLLP */
-+	clks[TEGRA30_CLK_PLL_P] = tegra_clk_register_pll("pll_p", "pll_ref",
-+			car_base, 0, 408000000, &pll_p_params, TEGRA_PLL_FIXED |
-+			TEGRA_PLL_HAS_CPCON, pll_p_freq_table);
-+
-+	clks[TEGRA30_CLK_PLL_P_OUT1] = tegra_clk_register_pll_out("pll_p_out1",
-+			"pll_p", car_base + CRC_PLLP_OUTA, 0,
-+			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
-+
-+	clks[TEGRA30_CLK_PLL_P_OUT2] = tegra_clk_register_pll_out("pll_p_out2",
-+			"pll_p", car_base + CRC_PLLP_OUTA, 16,
-+			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
-+
-+	clks[TEGRA30_CLK_PLL_P_OUT3] = tegra_clk_register_pll_out("pll_p_out3",
-+			"pll_p", car_base + CRC_PLLP_OUTB, 0,
-+			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
-+
-+	clks[TEGRA30_CLK_PLL_P_OUT4] = tegra_clk_register_pll_out("pll_p_out4",
-+			"pll_p", car_base + CRC_PLLP_OUTB, 16,
-+			TEGRA_DIVIDER_FIXED | TEGRA_DIVIDER_ROUND_UP);
-+
-+	/* PLLM */
-+	clks[TEGRA30_CLK_PLL_M] = tegra_clk_register_pll("pll_m", "pll_ref",
-+			car_base, 0, 0, &pll_m_params, TEGRA_PLL_HAS_CPCON,
-+			pll_m_freq_table);
-+
-+	clks[TEGRA30_CLK_PLL_M_OUT1] = tegra_clk_register_pll_out("pll_m_out1",
-+			"pll_m", car_base + CRC_PLLM_OUT, 0,
-+			TEGRA_DIVIDER_ROUND_UP);
-+
-+	/* PLLX */
-+	clks[TEGRA30_CLK_PLL_X] = tegra_clk_register_pll("pll_x", "pll_ref",
-+			car_base, 0, 0, &pll_x_params, TEGRA_PLL_HAS_CPCON,
-+			pll_x_freq_table);
-+
-+	/* PLLU */
-+	clks[TEGRA30_CLK_PLL_U] = tegra_clk_register_pll("pll_u", "pll_ref",
-+			car_base, 0, 0, &pll_u_params, TEGRA_PLLU |
-+			TEGRA_PLL_HAS_CPCON, pll_u_freq_table);
-+}
-+
-+static const char *mux_pllpcm_clkm[] = {"pll_p", "pll_c", "pll_m", "clk_m"};
-+
-+static void tegra30_periph_init(void)
-+{
-+	/* peripheral clocks without a divider */
-+	clks[TEGRA30_CLK_UARTA] = tegra_clk_register_periph_nodiv("uarta",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTA, TEGRA30_CLK_UARTA,
-+			TEGRA_PERIPH_ON_APB);
-+	clks[TEGRA30_CLK_UARTB] = tegra_clk_register_periph_nodiv("uartb",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTB, 7,
-+			TEGRA_PERIPH_ON_APB);
-+	clks[TEGRA30_CLK_UARTC] = tegra_clk_register_periph_nodiv("uartc",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTC, TEGRA30_CLK_UARTC,
-+			TEGRA_PERIPH_ON_APB);
-+	clks[TEGRA30_CLK_UARTD] = tegra_clk_register_periph_nodiv("uartd",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTD, TEGRA30_CLK_UARTD,
-+			TEGRA_PERIPH_ON_APB);
-+	clks[TEGRA30_CLK_UARTE] = tegra_clk_register_periph_nodiv("uarte",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_UARTE, TEGRA30_CLK_UARTE,
-+			TEGRA_PERIPH_ON_APB);
-+
-+	/* peripheral clocks with a divider */
-+	clks[TEGRA30_CLK_MSELECT] = tegra_clk_register_periph("mselect",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_MSEL, TEGRA30_CLK_MSELECT, 1);
-+
-+	clks[TEGRA30_CLK_SDMMC1] = tegra_clk_register_periph("sdmmc1",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC1, TEGRA30_CLK_SDMMC1, 1);
-+	clks[TEGRA30_CLK_SDMMC2] = tegra_clk_register_periph("sdmmc2",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC2, TEGRA30_CLK_SDMMC2, 1);
-+	clks[TEGRA30_CLK_SDMMC3] = tegra_clk_register_periph("sdmmc3",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC3, TEGRA30_CLK_SDMMC3, 1);
-+	clks[TEGRA30_CLK_SDMMC4] = tegra_clk_register_periph("sdmmc4",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_SDMMC4, TEGRA30_CLK_SDMMC4, 1);
-+}
-+
-+static struct tegra_clk_init_table init_table[] = {
-+	{TEGRA30_CLK_PLL_P,		TEGRA30_CLK_CLK_MAX,	408000000,	1},
-+	{TEGRA30_CLK_PLL_P_OUT1,	TEGRA30_CLK_CLK_MAX,	9600000,	1},
-+	{TEGRA30_CLK_PLL_P_OUT2,	TEGRA30_CLK_CLK_MAX,	48000000,	1},
-+	{TEGRA30_CLK_PLL_P_OUT3,	TEGRA30_CLK_CLK_MAX,	102000000,	1},
-+	{TEGRA30_CLK_PLL_P_OUT4,	TEGRA30_CLK_CLK_MAX,	204000000,	1},
-+	{TEGRA30_CLK_MSELECT,		TEGRA30_CLK_PLL_P,	204000000,	1},
-+	{TEGRA30_CLK_UARTA,		TEGRA30_CLK_PLL_P,	0,		1},
-+	{TEGRA30_CLK_UARTB,		TEGRA30_CLK_PLL_P,	0,		1},
-+	{TEGRA30_CLK_UARTC,		TEGRA30_CLK_PLL_P,	0,		1},
-+	{TEGRA30_CLK_UARTD,		TEGRA30_CLK_PLL_P,	0,		1},
-+	{TEGRA30_CLK_UARTE,		TEGRA30_CLK_PLL_P,	0,		1},
-+	{TEGRA30_CLK_SDMMC1,		TEGRA30_CLK_PLL_P,	48000000,	0},
-+	{TEGRA30_CLK_SDMMC2,		TEGRA30_CLK_PLL_P,	48000000,	0},
-+	{TEGRA30_CLK_SDMMC3,		TEGRA30_CLK_PLL_P,	48000000,	0},
-+	{TEGRA30_CLK_SDMMC4,		TEGRA30_CLK_PLL_P,	48000000,	0},
-+	{TEGRA30_CLK_CLK_MAX,		TEGRA30_CLK_CLK_MAX,	0,	0}, /* sentinel */
-+};
-+
-+static int tegra30_car_probe(struct device_d *dev)
-+{
-+	car_base = dev_request_mem_region(dev, 0);
-+	if (!car_base)
-+		return -EBUSY;
-+
-+	tegra30_osc_clk_init();
-+	tegra30_pll_init();
-+	tegra30_periph_init();
-+
-+	tegra_init_from_table(init_table, clks, TEGRA30_CLK_CLK_MAX);
-+
-+	/* speed up system bus */
-+	writel(CRC_SCLK_BURST_POLICY_SYS_STATE_RUN <<
-+	       CRC_SCLK_BURST_POLICY_SYS_STATE_SHIFT |
-+	       CRC_SCLK_BURST_POLICY_SRC_PLLP_OUT4 <<
-+	       CRC_SCLK_BURST_POLICY_RUN_SRC_SHIFT,
-+	       car_base + CRC_SCLK_BURST_POLICY);
-+
-+	clk_data.clks = clks;
-+	clk_data.clk_num = ARRAY_SIZE(clks);
-+	of_clk_add_provider(dev->device_node, of_clk_src_onecell_get,
-+			    &clk_data);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused struct of_device_id tegra30_car_dt_ids[] = {
-+	{
-+		.compatible = "nvidia,tegra30-car",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver_d tegra30_car_driver = {
-+	.probe	= tegra30_car_probe,
-+	.name	= "tegra30-car",
-+	.of_compatible = DRV_OF_COMPAT(tegra30_car_dt_ids),
-+};
-+
-+static int tegra30_car_init(void)
-+{
-+	return platform_driver_register(&tegra30_car_driver);
-+}
-+postcore_initcall(tegra30_car_init);
++# ----------------------- Tegra30 based boards ---------------------------
++pblx-$(CONFIG_MACH_NVIDIA_BEAVER) += start_nvidia_beaver
++FILE_barebox-tegra30-nvidia-beaver.img = start_nvidia_beaver.pblx
++image-$(CONFIG_MACH_NVIDIA_BEAVER) += barebox-tegra30-nvidia-beaver.img
 -- 
 1.9.0
 
