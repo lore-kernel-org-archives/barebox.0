@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKUS-000315-Sr
- for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:30:34 +0000
+ id 1WZKTe-0001Rj-I8
+ for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:29:44 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id BF0F318B4277
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:28:02 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id A6A5118B4250
+ for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:57 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:47 +0200
-Message-Id: <1397395668-9325-18-git-send-email-dev@lynxeye.de>
+Date: Sun, 13 Apr 2014 15:27:40 +0200
+Message-Id: <1397395668-9325-11-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,473 +25,562 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/18] ARM: dts: tegra: add full Beaver pinmux
+Subject: [PATCH 10/18] pinctrl: tegra: add Tegra3 driver
 To: barebox@lists.infradead.org
-
-Not fully validated yet, but seems to work.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/tegra30-beaver.dts | 419 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 416 insertions(+), 3 deletions(-)
+ arch/arm/mach-tegra/Kconfig       |   1 +
+ drivers/pinctrl/Kconfig           |   6 +
+ drivers/pinctrl/Makefile          |   1 +
+ drivers/pinctrl/pinctrl-tegra30.c | 503 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 511 insertions(+)
+ create mode 100644 drivers/pinctrl/pinctrl-tegra30.c
 
-diff --git a/arch/arm/dts/tegra30-beaver.dts b/arch/arm/dts/tegra30-beaver.dts
-index e93fe45b7803..1110b8974966 100644
---- a/arch/arm/dts/tegra30-beaver.dts
-+++ b/arch/arm/dts/tegra30-beaver.dts
-@@ -86,15 +86,31 @@
- 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
- 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
- 			};
-+			sdmmc3_gpio {
-+				nvidia,pins =	"sdmmc3_dat4_pd1",
-+						"sdmmc3_dat5_pd0";
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			sdmmc4_rst {
-+				nvidia,pins =	"sdmmc4_rst_n_pcc3";
-+				nvidia,function = "sdmmc4";
-+				nvidia,pull = <TEGRA_PIN_PULL_DOWN>;
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
- 			sdmmc4_clk_pcc4 {
--				nvidia,pins =	"sdmmc4_clk_pcc4",
--						"sdmmc4_rst_n_pcc3";
-+				nvidia,pins =	"sdmmc4_clk_pcc4";
- 				nvidia,function = "sdmmc4";
- 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
- 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
- 			};
- 			sdmmc4_dat0_paa0 {
--				nvidia,pins =	"sdmmc4_dat0_paa0",
-+				nvidia,pins =	"sdmmc4_cmd_pt7",
-+						"sdmmc4_dat0_paa0",
- 						"sdmmc4_dat1_paa1",
- 						"sdmmc4_dat2_paa2",
- 						"sdmmc4_dat3_paa3",
-@@ -105,6 +121,32 @@
- 				nvidia,function = "sdmmc4";
- 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
- 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			crt {
-+				nvidia,pins =	"crt_hsync_pv6",
-+						"crt_vsync_pv7";
-+				nvidia,function = "crt";
-+				nvidia,tristate = <TEGRA_PIN_ENABLE>;
-+			};
-+			dap {
-+				nvidia,pins =	"clk1_req_pee2",
-+						"clk2_req_pcc5";
-+				nvidia,function = "dap";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			dev3 {
-+				nvidia,pins =	"clk3_req_pee1";
-+				nvidia,function = "dev3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			dap1 {
-+				nvidia,pins =	"dap1_fs_pn0", "dap1_dout_pn2",
-+						"dap1_din_pn1", "dap1_sclk_pn3";
-+				nvidia,function = "i2s0";
-+				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
- 			};
- 			dap2_fs_pa2 {
- 				nvidia,pins =	"dap2_fs_pa2",
-@@ -115,6 +157,35 @@
- 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
- 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
- 			};
-+			dap3 {
-+				nvidia,pins =	"dap3_fs_pp0", "dap3_dout_pp2",
-+						"dap3_din_pp1", "dap3_sclk_pp3";
-+				nvidia,function = "i2s2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			dap4 {
-+				nvidia,pins =	"dap4_fs_pp4", "dap4_dout_pp6",
-+						"dap4_din_pp5", "dap4_sclk_pp7";
-+				nvidia,function = "i2s3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			pex_in {
-+				nvidia,pins =	"pex_l0_prsnt_n_pdd0",
-+						"pex_l0_clkreq_n_pdd2",
-+						"pex_l2_prsnt_n_pdd7",
-+						"pex_l2_clkreq_n_pcc7",
-+						"pex_wake_n_pdd3";
-+				nvidia,function = "pcie";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			pex_out {
-+				nvidia,pins =	"pex_l0_rst_n_pdd1",
-+						"pex_l1_rst_n_pdd5",
-+						"pex_l2_rst_n_pcc6";
-+				nvidia,function = "pcie";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
- 			pex_l1_prsnt_n_pdd4 {
- 				nvidia,pins =	"pex_l1_prsnt_n_pdd4",
- 						"pex_l1_clkreq_n_pdd6";
-@@ -133,6 +204,348 @@
- 				nvidia,pins = "drive_gpv";
- 				nvidia,pull-up-strength = <16>;
- 			};
-+			uarta {
-+				nvidia,pins =	"ulpi_data0_po1",
-+						"ulpi_data1_po2",
-+						"ulpi_data2_po3",
-+						"ulpi_data3_po4",
-+						"ulpi_data4_po5",
-+						"ulpi_data5_po6",
-+						"ulpi_data6_po7",
-+						"ulpi_data7_po0";
-+				nvidia,function = "uarta";
-+				nvidia,tristate = <0>;
-+			};
-+			pu {
-+				nvidia,pins =	"pu0", "pu1", "pu2", "pu3",
-+						"pu4", "pu5", "pu6";
-+				nvidia,function = "rsvd4";
-+				nvidia,tristate = <TEGRA_PIN_ENABLE>;
-+			};
-+			uartb {
-+				nvidia,pins =	"uart2_txd_pc2",
-+						"uart2_rxd_pc3",
-+						"uart2_cts_n_pj5",
-+						"uart2_rts_n_pj6";
-+				nvidia,function = "uartb";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			uartc {
-+				nvidia,pins =	"uart3_txd_pw6",
-+						"uart3_rxd_pw7",
-+						"uart3_cts_n_pa1",
-+						"uart3_rts_n_pc0";
-+				nvidia,function = "uartc";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			uartd {
-+				nvidia,pins =	"ulpi_clk_py0", "ulpi_dir_py1",
-+						"ulpi_nxt_py2", "ulpi_stp_py3";
-+				nvidia,function = "uartd";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			i2c1 {
-+				nvidia,pins =	"gen1_i2c_scl_pc4",
-+						"gen1_i2c_sda_pc5";
-+				nvidia,function = "i2c1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,open-drain = <TEGRA_PIN_ENABLE>;
-+			};
-+			i2c2 {
-+				nvidia,pins =	"gen2_i2c_scl_pt5",
-+						"gen2_i2c_sda_pt6";
-+				nvidia,function = "i2c2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,open-drain = <TEGRA_PIN_ENABLE>;
-+			};
-+			i2c3 {
-+				nvidia,pins =	"cam_i2c_scl_pbb1",
-+						"cam_i2c_sda_pbb2";
-+				nvidia,function = "i2c3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,open-drain = <TEGRA_PIN_ENABLE>;
-+			};
-+			i2c4 {
-+				nvidia,pins =	"ddc_scl_pv4",
-+						"ddc_sda_pv5";
-+				nvidia,function = "i2c4";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,open-drain = <TEGRA_PIN_ENABLE>;
-+			};
-+			i2cpwr {
-+				nvidia,pins =	"pwr_i2c_scl_pz6",
-+						"pwr_i2c_sda_pz7";
-+				nvidia,function = "i2cpwr";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+				nvidia,open-drain = <TEGRA_PIN_ENABLE>;
-+			};
-+			spi1 {
-+				nvidia,pins =	"spi1_mosi_px4",
-+						"spi1_sck_px5",
-+						"spi1_cs0_n_px6",
-+						"spi1_miso_px7";
-+				nvidia,function = "spi1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			spi2_up {
-+				nvidia,pins =	"spi2_cs1_n_pw2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+			};
-+			spi4 {
-+				nvidia,pins =	"gmi_a16_pj7", "gmi_a17_pb0",
-+						"gmi_a18_pb1", "gmi_a19_pk7";
-+				nvidia,function = "spi4";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			spdif {
-+				nvidia,pins =	"spdif_out_pk5", "spdif_in_pk6";
-+				nvidia,function = "spdif";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			hdmi_int {
-+				nvidia,pins =	"hdmi_int_pn7";
-+				nvidia,function = "hdmi";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			hdmi_cec {
-+				nvidia,pins =	"hdmi_cec_pee3";
-+				nvidia,function = "cec";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			ddr {
-+				nvidia,pins =	"vi_d10_pt2", "vi_vsync_pd6",
-+						"vi_hsync_pd7";
-+				nvidia,function = "ddr";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			ddr_up {
-+				nvidia,pins =	"vi_d11_pt3";
-+				nvidia,function = "ddr";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			vi {
-+				nvidia,pins =	"vi_d4_pl2", "vi_mclk_pt1",
-+						"vi_d6_pl4";
-+				nvidia,function = "vi";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			owr {
-+				nvidia,pins =	"pv2", "pu0", "owr";
-+				nvidia,function = "owr";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			lcd {
-+				nvidia,pins =	"lcd_pwr1_pc1", "lcd_pwr2_pc6",
-+						"lcd_sdin_pz2", "lcd_sdout_pn5",
-+						"lcd_wr_n_pz3", "lcd_cs0_n_pn4",
-+						"lcd_dc0_pn6", "lcd_sck_pz4",
-+						"lcd_pwr0_pb2", "lcd_pclk_pb3",
-+						"lcd_de_pj1", "lcd_hsync_pj3",
-+						"lcd_vsync_pj4", "lcd_d0_pe0",
-+						"lcd_d1_pe1", "lcd_d2_pe2",
-+						"lcd_d3_pe3", "lcd_d4_pe4",
-+						"lcd_d5_pe5", "lcd_d6_pe6",
-+						"lcd_d7_pe7", "lcd_d8_pf0",
-+						"lcd_d9_pf1", "lcd_d10_pf2",
-+						"lcd_d11_pf3", "lcd_d12_pf4",
-+						"lcd_d13_pf5", "lcd_d14_pf6",
-+						"lcd_d15_pf7", "lcd_d16_pm0",
-+						"lcd_d17_pm1", "lcd_d18_pm2",
-+						"lcd_d19_pm3", "lcd_d20_pm4",
-+						"lcd_d21_pm5", "lcd_d22_pm6",
-+						"lcd_d23_pm7", "lcd_cs1_n_pw0",
-+						"lcd_m1_pw1", "lcd_dc1_pd2";
-+				nvidia,function = "displaya";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			kbc {
-+				nvidia,pins =	"kb_row0_pr0", "kb_row1_pr1",
-+						"kb_row2_pr2", "kb_row3_pr3",
-+						"kb_row4_pr4", "kb_row5_pr5",
-+						"kb_row6_pr6", "kb_row7_pr7",
-+						"kb_row9_ps1", "kb_row8_ps0",
-+						"kb_row10_ps2", "kb_row11_ps3",
-+						"kb_row12_ps4", "kb_row13_ps5",
-+						"kb_row14_ps6", "kb_row15_ps7",
-+						"kb_col0_pq0", "kb_col1_pq1",
-+						"kb_col2_pq2", "kb_col3_pq3",
-+						"kb_col4_pq4", "kb_col5_pq5",
-+						"kb_col6_pq6", "kb_col7_pq7";
-+				nvidia,function = "kbc";
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_vi {
-+				nvidia,pins =	"vi_d1_pd5", "vi_d2_pl0",
-+						"vi_d3_pl1", "vi_d5_pl3",
-+						"vi_d7_pl5", "vi_d8_pl6",
-+						"vi_d9_pl7";
-+				nvidia,function = "sdmmc2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pbb0 {
-+				nvidia,pins =	"pbb0", "pbb7", "pcc1", "pcc2";
-+				nvidia,function = "i2s4";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pbb3 {
-+				nvidia,pins =	"pbb3";
-+				nvidia,function = "vgp3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pbb4 {
-+				nvidia,pins =	"pbb4";
-+				nvidia,function = "vgp4";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pbb5 {
-+				nvidia,pins =	"pbb5";
-+				nvidia,function = "vgp5";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pbb6 {
-+				nvidia,pins =	"pbb6";
-+				nvidia,function = "vgp6";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
-+			};
-+			gpio_pu1 {
-+				nvidia,pins =	"pu1", "pu2";
-+				nvidia,function = "rsvd1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			gpio_pv0 {
-+				nvidia,pins =	"pv0", "gmi_cs2_n_pk3";
-+				nvidia,function = "rsvd1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+			};
-+			gpio_pv3 {
-+				nvidia,pins =	"pv3";
-+				nvidia,function = "clk_12m_out";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			gpio_gmi {
-+				nvidia,pins =	"spi2_sck_px2", "gmi_wp_n_pc7";
-+				nvidia,function = "gmi";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			gpio_gmi_ad {
-+				nvidia,pins =	"gmi_ad10_ph2", "gmi_ad14_ph6";
-+				nvidia,function = "nand";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			gpio_gmi_ad_up {
-+				nvidia,pins =	"gmi_ad12_ph4";
-+				nvidia,function = "nand";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+			};
-+			gpio_gmi_iordy_up {
-+				nvidia,pins =	"gmi_iordy_pi5";
-+				nvidia,function = "rsvd1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+			};
-+			pwm0 {
-+				nvidia,pins =	"gmi_ad8_ph0", "pu3";
-+				nvidia,function = "pwm0";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			pwm1 {
-+				nvidia,pins =	"pu4";
-+				nvidia,function = "pwm1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			pwm2 {
-+				nvidia,pins =	"pu5";
-+				nvidia,function = "pwm2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			pwm3 {
-+				nvidia,pins =	"pu6";
-+				nvidia,function = "pwm3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			extperiph1 {
-+				nvidia,pins =	"clk1_out_pw4";
-+				nvidia,function = "extperiph1";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			extperiph2 {
-+				nvidia,pins =	"clk2_out_pw5";
-+				nvidia,function = "extperiph2";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			extperiph3 {
-+				nvidia,pins =	"clk3_out_pee0";
-+				nvidia,function = "extperiph3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			jtag {
-+				nvidia,pins =	"jtag_rtck_pu7";
-+				nvidia,function = "rtck";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			blink {
-+				nvidia,pins =	"clk_32k_out_pa0";
-+				nvidia,function = "blink";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			sysclk {
-+				nvidia,pins =	"sys_clk_req_pz5";
-+				nvidia,function = "sysclk";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+			};
-+			cam_mclk {
-+				nvidia,pins =	"cam_mclk_pcc0";
-+				nvidia,function = "vi_alt3";
-+				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+			};
-+			vi_pclk {
-+				nvidia,pins =	"vi_pclk_pt0";
-+				nvidia,function = "rsvd1";
-+				nvidia,tristate = <TEGRA_PIN_ENABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
-+			};
-+			unused {
-+				nvidia,pins =	"gmi_adv_n_pk0", "gmi_clk_pk1",
-+						"gmi_cs3_n_pk4", "gmi_ad0_pg0",
-+						"gmi_ad1_pg1", "gmi_ad2_pg2",
-+						"gmi_ad3_pg3", "gmi_ad4_pg4",
-+						"gmi_ad5_pg5", "gmi_ad6_pg6",
-+						"gmi_ad7_pg7", "gmi_ad9_ph1",
-+						"gmi_ad11_ph3", "gmi_wr_n_pi0",
-+						"gmi_oe_n_pi1", "gmi_dqs_pi2";
-+				nvidia,function = "nand";
-+				nvidia,tristate = <TEGRA_PIN_ENABLE>;
-+			};
-+			unused_pu {
-+				nvidia,pins =	"gmi_wait_pi7", "gmi_cs7_n_pi6",
-+						"gmi_ad13_ph5";
-+				nvidia,function = "nand";
-+				nvidia,pull = <TEGRA_PIN_PULL_UP>;
-+				nvidia,tristate = <TEGRA_PIN_ENABLE>;
-+			};
- 		};
- 	};
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index e23ba38a6b4a..c272e8e0dcb5 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -48,6 +48,7 @@ config ARCH_TEGRA_2x_SOC
  
+ config ARCH_TEGRA_3x_SOC
+ 	bool
++	select PINCTRL_TEGRA30
+ 
+ menu "select Tegra boards to be built"
+ 
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 7390971ea35b..18adbf71d35c 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -33,3 +33,9 @@ config PINCTRL_TEGRA20
+ 	bool
+ 	help
+ 	  The pinmux controller found on the Tegra 20 line of SoCs.
++
++config PINCTRL_TEGRA30
++	select PINCTRL
++	bool
++	help
++	  The pinmux controller found on the Tegra 30 line of SoCs.
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index b3b0fa9c58bf..af705eaa11ae 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -4,3 +4,4 @@ obj-$(CONFIG_PINCTRL_IMX_IOMUX_V2) += imx-iomux-v2.o
+ obj-$(CONFIG_PINCTRL_IMX_IOMUX_V3) += imx-iomux-v3.o
+ obj-$(CONFIG_PINCTRL_SINGLE) += pinctrl-single.o
+ obj-$(CONFIG_PINCTRL_TEGRA20) += pinctrl-tegra20.o
++obj-$(CONFIG_PINCTRL_TEGRA30) += pinctrl-tegra30.o
+diff --git a/drivers/pinctrl/pinctrl-tegra30.c b/drivers/pinctrl/pinctrl-tegra30.c
+new file mode 100644
+index 000000000000..032377fe8cd2
+--- /dev/null
++++ b/drivers/pinctrl/pinctrl-tegra30.c
+@@ -0,0 +1,503 @@
++/*
++ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * Partly based on code
++ * Copyright (C) 2011-2012, NVIDIA CORPORATION.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program. If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <io.h>
++#include <malloc.h>
++#include <pinctrl.h>
++
++struct pinctrl_tegra30 {
++	struct {
++		u32 __iomem *ctrl;
++		u32 __iomem *mux;
++	} regs;
++	struct pinctrl_device pinctrl;
++};
++
++struct tegra30_pingroup {
++	const char *name;
++	const char *funcs[4];
++	u16 reg;
++};
++
++#define PG(pg_name, f0, f1, f2, f3, offset)		\
++	{						\
++		.name = #pg_name,			\
++		.funcs = { #f0, #f1, #f2, #f3, },	\
++		.reg = offset				\
++	}
++
++static const struct tegra30_pingroup tegra30_groups[] = {
++	/* name,                 f0,        f1,        f2,        f3,           reg  */
++	PG(clk_32k_out_pa0,      blink,     rsvd2,     rsvd3,     rsvd4,        0x31c),
++	PG(uart3_cts_n_pa1,      uartc,     rsvd2,     gmi,       rsvd4,        0x17c),
++	PG(dap2_fs_pa2,          i2s1,      hda,       rsvd3,     gmi,          0x358),
++	PG(dap2_sclk_pa3,        i2s1,      hda,       rsvd3,     gmi,          0x364),
++	PG(dap2_din_pa4,         i2s1,      hda,       rsvd3,     gmi,          0x35c),
++	PG(dap2_dout_pa5,        i2s1,      hda,       rsvd3,     gmi,          0x360),
++	PG(sdmmc3_clk_pa6,       uarta,     pwm2,      sdmmc3,    spi3,         0x390),
++	PG(sdmmc3_cmd_pa7,       uarta,     pwm3,      sdmmc3,    spi2,         0x394),
++	PG(gmi_a17_pb0,          uartd,     spi4,      gmi,       dtv,          0x234),
++	PG(gmi_a18_pb1,          uartd,     spi4,      gmi,       dtv,          0x238),
++	PG(lcd_pwr0_pb2,         displaya,  displayb,  spi5,      hdcp,         0x090),
++	PG(lcd_pclk_pb3,         displaya,  displayb,  rsvd3,     rsvd4,        0x094),
++	PG(sdmmc3_dat3_pb4,      rsvd1,     pwm0,      sdmmc3,    spi3,         0x3a4),
++	PG(sdmmc3_dat2_pb5,      rsvd1,     pwm1,      sdmmc3,    spi3,         0x3a0),
++	PG(sdmmc3_dat1_pb6,      rsvd1,     rsvd2,     sdmmc3,    spi3,         0x39c),
++	PG(sdmmc3_dat0_pb7,      rsvd1,     rsvd2,     sdmmc3,    spi3,         0x398),
++	PG(uart3_rts_n_pc0,      uartc,     pwm0,      gmi,       rsvd4,        0x180),
++	PG(lcd_pwr1_pc1,         displaya,  displayb,  rsvd3,     rsvd4,        0x070),
++	PG(uart2_txd_pc2,        uartb,     spdif,     uarta,     spi4,         0x168),
++	PG(uart2_rxd_pc3,        uartb,     spdif,     uarta,     spi4,         0x164),
++	PG(gen1_i2c_scl_pc4,     i2c1,      rsvd2,     rsvd3,     rsvd4,        0x1a4),
++	PG(gen1_i2c_sda_pc5,     i2c1,      rsvd2,     rsvd3,     rsvd4,        0x1a0),
++	PG(lcd_pwr2_pc6,         displaya,  displayb,  spi5,      hdcp,         0x074),
++	PG(gmi_wp_n_pc7,         rsvd1,     nand,      gmi,       gmi_alt,      0x1c0),
++	PG(sdmmc3_dat5_pd0,      pwm0,      spi4,      sdmmc3,    spi2,         0x3ac),
++	PG(sdmmc3_dat4_pd1,      pwm1,      spi4,      sdmmc3,    spi2,         0x3a8),
++	PG(lcd_dc1_pd2,          displaya,  displayb,  rsvd3,     rsvd4,        0x10c),
++	PG(sdmmc3_dat6_pd3,      spdif,     spi4,      sdmmc3,    spi2,         0x3b0),
++	PG(sdmmc3_dat7_pd4,      spdif,     spi4,      sdmmc3,    spi2,         0x3b4),
++	PG(vi_d1_pd5,            ddr,       sdmmc2,    vi,        rsvd4,        0x128),
++	PG(vi_vsync_pd6,         ddr,       rsvd2,     vi,        rsvd4,        0x15c),
++	PG(vi_hsync_pd7,         ddr,       rsvd2,     vi,        rsvd4,        0x160),
++	PG(lcd_d0_pe0,           displaya,  displayb,  rsvd3,     rsvd4,        0x0a4),
++	PG(lcd_d1_pe1,           displaya,  displayb,  rsvd3,     rsvd4,        0x0a8),
++	PG(lcd_d2_pe2,           displaya,  displayb,  rsvd3,     rsvd4,        0x0ac),
++	PG(lcd_d3_pe3,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b0),
++	PG(lcd_d4_pe4,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b4),
++	PG(lcd_d5_pe5,           displaya,  displayb,  rsvd3,     rsvd4,        0x0b8),
++	PG(lcd_d6_pe6,           displaya,  displayb,  rsvd3,     rsvd4,        0x0bc),
++	PG(lcd_d7_pe7,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c0),
++	PG(lcd_d8_pf0,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c4),
++	PG(lcd_d9_pf1,           displaya,  displayb,  rsvd3,     rsvd4,        0x0c8),
++	PG(lcd_d10_pf2,          displaya,  displayb,  rsvd3,     rsvd4,        0x0cc),
++	PG(lcd_d11_pf3,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d0),
++	PG(lcd_d12_pf4,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d4),
++	PG(lcd_d13_pf5,          displaya,  displayb,  rsvd3,     rsvd4,        0x0d8),
++	PG(lcd_d14_pf6,          displaya,  displayb,  rsvd3,     rsvd4,        0x0dc),
++	PG(lcd_d15_pf7,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e0),
++	PG(gmi_ad0_pg0,          rsvd1,     nand,      gmi,       rsvd4,        0x1f0),
++	PG(gmi_ad1_pg1,          rsvd1,     nand,      gmi,       rsvd4,        0x1f4),
++	PG(gmi_ad2_pg2,          rsvd1,     nand,      gmi,       rsvd4,        0x1f8),
++	PG(gmi_ad3_pg3,          rsvd1,     nand,      gmi,       rsvd4,        0x1fc),
++	PG(gmi_ad4_pg4,          rsvd1,     nand,      gmi,       rsvd4,        0x200),
++	PG(gmi_ad5_pg5,          rsvd1,     nand,      gmi,       rsvd4,        0x204),
++	PG(gmi_ad6_pg6,          rsvd1,     nand,      gmi,       rsvd4,        0x208),
++	PG(gmi_ad7_pg7,          rsvd1,     nand,      gmi,       rsvd4,        0x20c),
++	PG(gmi_ad8_ph0,          pwm0,      nand,      gmi,       rsvd4,        0x210),
++	PG(gmi_ad9_ph1,          pwm1,      nand,      gmi,       rsvd4,        0x214),
++	PG(gmi_ad10_ph2,         pwm2,      nand,      gmi,       rsvd4,        0x218),
++	PG(gmi_ad11_ph3,         pwm3,      nand,      gmi,       rsvd4,        0x21c),
++	PG(gmi_ad12_ph4,         rsvd1,     nand,      gmi,       rsvd4,        0x220),
++	PG(gmi_ad13_ph5,         rsvd1,     nand,      gmi,       rsvd4,        0x224),
++	PG(gmi_ad14_ph6,         rsvd1,     nand,      gmi,       rsvd4,        0x228),
++	PG(gmi_ad15_ph7,         rsvd1,     nand,      gmi,       rsvd4,        0x22c),
++	PG(gmi_wr_n_pi0,         rsvd1,     nand,      gmi,       rsvd4,        0x240),
++	PG(gmi_oe_n_pi1,         rsvd1,     nand,      gmi,       rsvd4,        0x244),
++	PG(gmi_dqs_pi2,          rsvd1,     nand,      gmi,       rsvd4,        0x248),
++	PG(gmi_cs6_n_pi3,        nand,      nand_alt,  gmi,       sata,         0x1e8),
++	PG(gmi_rst_n_pi4,        nand,      nand_alt,  gmi,       rsvd4,        0x24c),
++	PG(gmi_iordy_pi5,        rsvd1,     nand,      gmi,       rsvd4,        0x1c4),
++	PG(gmi_cs7_n_pi6,        nand,      nand_alt,  gmi,       gmi_alt,      0x1ec),
++	PG(gmi_wait_pi7,         rsvd1,     nand,      gmi,       rsvd4,        0x1c8),
++	PG(gmi_cs0_n_pj0,        rsvd1,     nand,      gmi,       dtv,          0x1d4),
++	PG(lcd_de_pj1,           displaya,  displayb,  rsvd3,     rsvd4,        0x098),
++	PG(gmi_cs1_n_pj2,        rsvd1,     nand,      gmi,       dtv,          0x1d8),
++	PG(lcd_hsync_pj3,        displaya,  displayb,  rsvd3,     rsvd4,        0x09c),
++	PG(lcd_vsync_pj4,        displaya,  displayb,  rsvd3,     rsvd4,        0x0a0),
++	PG(uart2_cts_n_pj5,      uarta,     uartb,     gmi,       spi4,         0x170),
++	PG(uart2_rts_n_pj6,      uarta,     uartb,     gmi,       spi4,         0x16c),
++	PG(gmi_a16_pj7,          uartd,     spi4,      gmi,       gmi_alt,      0x230),
++	PG(gmi_adv_n_pk0,        rsvd1,     nand,      gmi,       rsvd4,        0x1cc),
++	PG(gmi_clk_pk1,          rsvd1,     nand,      gmi,       rsvd4,        0x1d0),
++	PG(gmi_cs4_n_pk2,        rsvd1,     nand,      gmi,       rsvd4,        0x1e4),
++	PG(gmi_cs2_n_pk3,        rsvd1,     nand,      gmi,       rsvd4,        0x1dc),
++	PG(gmi_cs3_n_pk4,        rsvd1,     nand,      gmi,       gmi_alt,      0x1e0),
++	PG(spdif_out_pk5,        spdif,     rsvd2,     i2c1,      sdmmc2,       0x354),
++	PG(spdif_in_pk6,         spdif,     hda,       i2c1,      sdmmc2,       0x350),
++	PG(gmi_a19_pk7,          uartd,     spi4,      gmi,       rsvd4,        0x23c),
++	PG(vi_d2_pl0,            ddr,       sdmmc2,    vi,        rsvd4,        0x12c),
++	PG(vi_d3_pl1,            ddr,       sdmmc2,    vi,        rsvd4,        0x130),
++	PG(vi_d4_pl2,            ddr,       sdmmc2,    vi,        rsvd4,        0x134),
++	PG(vi_d5_pl3,            ddr,       sdmmc2,    vi,        rsvd4,        0x138),
++	PG(vi_d6_pl4,            ddr,       sdmmc2,    vi,        rsvd4,        0x13c),
++	PG(vi_d7_pl5,            ddr,       sdmmc2,    vi,        rsvd4,        0x140),
++	PG(vi_d8_pl6,            ddr,       sdmmc2,    vi,        rsvd4,        0x144),
++	PG(vi_d9_pl7,            ddr,       sdmmc2,    vi,        rsvd4,        0x148),
++	PG(lcd_d16_pm0,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e4),
++	PG(lcd_d17_pm1,          displaya,  displayb,  rsvd3,     rsvd4,        0x0e8),
++	PG(lcd_d18_pm2,          displaya,  displayb,  rsvd3,     rsvd4,        0x0ec),
++	PG(lcd_d19_pm3,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f0),
++	PG(lcd_d20_pm4,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f4),
++	PG(lcd_d21_pm5,          displaya,  displayb,  rsvd3,     rsvd4,        0x0f8),
++	PG(lcd_d22_pm6,          displaya,  displayb,  rsvd3,     rsvd4,        0x0fc),
++	PG(lcd_d23_pm7,          displaya,  displayb,  rsvd3,     rsvd4,        0x100),
++	PG(dap1_fs_pn0,          i2s0,      hda,       gmi,       sdmmc2,       0x338),
++	PG(dap1_din_pn1,         i2s0,      hda,       gmi,       sdmmc2,       0x33c),
++	PG(dap1_dout_pn2,        i2s0,      hda,       gmi,       sdmmc2,       0x340),
++	PG(dap1_sclk_pn3,        i2s0,      hda,       gmi,       sdmmc2,       0x344),
++	PG(lcd_cs0_n_pn4,        displaya,  displayb,  spi5,      rsvd4,        0x084),
++	PG(lcd_sdout_pn5,        displaya,  displayb,  spi5,      hdcp,         0x07c),
++	PG(lcd_dc0_pn6,          displaya,  displayb,  rsvd3,     rsvd4,        0x088),
++	PG(hdmi_int_pn7,         hdmi,      rsvd2,     rsvd3,     rsvd4,        0x110),
++	PG(ulpi_data7_po0,       spi2,      hsi,       uarta,     ulpi,         0x01c),
++	PG(ulpi_data0_po1,       spi3,      hsi,       uarta,     ulpi,         0x000),
++	PG(ulpi_data1_po2,       spi3,      hsi,       uarta,     ulpi,         0x004),
++	PG(ulpi_data2_po3,       spi3,      hsi,       uarta,     ulpi,         0x008),
++	PG(ulpi_data3_po4,       spi3,      hsi,       uarta,     ulpi,         0x00c),
++	PG(ulpi_data4_po5,       spi2,      hsi,       uarta,     ulpi,         0x010),
++	PG(ulpi_data5_po6,       spi2,      hsi,       uarta,     ulpi,         0x014),
++	PG(ulpi_data6_po7,       spi2,      hsi,       uarta,     ulpi,         0x018),
++	PG(dap3_fs_pp0,          i2s2,      rsvd2,     displaya,  displayb,     0x030),
++	PG(dap3_din_pp1,         i2s2,      rsvd2,     displaya,  displayb,     0x034),
++	PG(dap3_dout_pp2,        i2s2,      rsvd2,     displaya,  displayb,     0x038),
++	PG(dap3_sclk_pp3,        i2s2,      rsvd2,     displaya,  displayb,     0x03c),
++	PG(dap4_fs_pp4,          i2s3,      rsvd2,     gmi,       rsvd4,        0x1a8),
++	PG(dap4_din_pp5,         i2s3,      rsvd2,     gmi,       rsvd4,        0x1ac),
++	PG(dap4_dout_pp6,        i2s3,      rsvd2,     gmi,       rsvd4,        0x1b0),
++	PG(dap4_sclk_pp7,        i2s3,      rsvd2,     gmi,       rsvd4,        0x1b4),
++	PG(kb_col0_pq0,          kbc,       nand,      trace,     test,         0x2fc),
++	PG(kb_col1_pq1,          kbc,       nand,      trace,     test,         0x300),
++	PG(kb_col2_pq2,          kbc,       nand,      trace,     rsvd4,        0x304),
++	PG(kb_col3_pq3,          kbc,       nand,      trace,     rsvd4,        0x308),
++	PG(kb_col4_pq4,          kbc,       nand,      trace,     rsvd4,        0x30c),
++	PG(kb_col5_pq5,          kbc,       nand,      trace,     rsvd4,        0x310),
++	PG(kb_col6_pq6,          kbc,       nand,      trace,     mio,          0x314),
++	PG(kb_col7_pq7,          kbc,       nand,      trace,     mio,          0x318),
++	PG(kb_row0_pr0,          kbc,       nand,      rsvd3,     rsvd4,        0x2bc),
++	PG(kb_row1_pr1,          kbc,       nand,      rsvd3,     rsvd4,        0x2c0),
++	PG(kb_row2_pr2,          kbc,       nand,      rsvd3,     rsvd4,        0x2c4),
++	PG(kb_row3_pr3,          kbc,       nand,      rsvd3,     invalid,      0x2c8),
++	PG(kb_row4_pr4,          kbc,       nand,      trace,     rsvd4,        0x2cc),
++	PG(kb_row5_pr5,          kbc,       nand,      trace,     owr,          0x2d0),
++	PG(kb_row6_pr6,          kbc,       nand,      sdmmc2,    mio,          0x2d4),
++	PG(kb_row7_pr7,          kbc,       nand,      sdmmc2,    mio,          0x2d8),
++	PG(kb_row8_ps0,          kbc,       nand,      sdmmc2,    mio,          0x2dc),
++	PG(kb_row9_ps1,          kbc,       nand,      sdmmc2,    mio,          0x2e0),
++	PG(kb_row10_ps2,         kbc,       nand,      sdmmc2,    mio,          0x2e4),
++	PG(kb_row11_ps3,         kbc,       nand,      sdmmc2,    mio,          0x2e8),
++	PG(kb_row12_ps4,         kbc,       nand,      sdmmc2,    mio,          0x2ec),
++	PG(kb_row13_ps5,         kbc,       nand,      sdmmc2,    mio,          0x2f0),
++	PG(kb_row14_ps6,         kbc,       nand,      sdmmc2,    mio,          0x2f4),
++	PG(kb_row15_ps7,         kbc,       nand,      sdmmc2,    mio,          0x2f8),
++	PG(vi_pclk_pt0,          rsvd1,     sdmmc2,    vi,        rsvd4,        0x154),
++	PG(vi_mclk_pt1,          vi,        vi_alt1,   vi_alt2,   vi_alt3,      0x158),
++	PG(vi_d10_pt2,           ddr,       rsvd2,     vi,        rsvd4,        0x14c),
++	PG(vi_d11_pt3,           ddr,       rsvd2,     vi,        rsvd4,        0x150),
++	PG(vi_d0_pt4,            ddr,       rsvd2,     vi,        rsvd4,        0x124),
++	PG(gen2_i2c_scl_pt5,     i2c2,      hdcp,      gmi,       rsvd4,        0x250),
++	PG(gen2_i2c_sda_pt6,     i2c2,      hdcp,      gmi,       rsvd4,        0x254),
++	PG(sdmmc4_cmd_pt7,       i2c3,      nand,      gmi,       sdmmc4,       0x25c),
++	PG(pu0,                  owr,       uarta,     gmi,       rsvd4,        0x184),
++	PG(pu1,                  rsvd1,     uarta,     gmi,       rsvd4,        0x188),
++	PG(pu2,                  rsvd1,     uarta,     gmi,       rsvd4,        0x18c),
++	PG(pu3,                  pwm0,      uarta,     gmi,       rsvd4,        0x190),
++	PG(pu4,                  pwm1,      uarta,     gmi,       rsvd4,        0x194),
++	PG(pu5,                  pwm2,      uarta,     gmi,       rsvd4,        0x198),
++	PG(pu6,                  pwm3,      uarta,     gmi,       rsvd4,        0x19c),
++	PG(jtag_rtck_pu7,        rtck,      rsvd2,     rsvd3,     rsvd4,        0x2b0),
++	PG(pv0,                  rsvd1,     rsvd2,     rsvd3,     rsvd4,        0x040),
++	PG(pv1,                  rsvd1,     rsvd2,     rsvd3,     rsvd4,        0x044),
++	PG(pv2,                  owr,       rsvd2,     rsvd3,     rsvd4,        0x060),
++	PG(pv3,                  clk_12m_out, rsvd2,   rsvd3,     rsvd4,        0x064),
++	PG(ddc_scl_pv4,          i2c4,      rsvd2,     rsvd3,     rsvd4,        0x114),
++	PG(ddc_sda_pv5,          i2c4,      rsvd2,     rsvd3,     rsvd4,        0x118),
++	PG(crt_hsync_pv6,        crt,       rsvd2,     rsvd3,     rsvd4,        0x11c),
++	PG(crt_vsync_pv7,        crt,       rsvd2,     rsvd3,     rsvd4,        0x120),
++	PG(lcd_cs1_n_pw0,        displaya,  displayb,  spi5,      rsvd4,        0x104),
++	PG(lcd_m1_pw1,           displaya,  displayb,  rsvd3,     rsvd4,        0x108),
++	PG(spi2_cs1_n_pw2,       spi3,      spi2,      spi2_alt,  i2c1,         0x388),
++	PG(spi2_cs2_n_pw3,       spi3,      spi2,      spi2_alt,  i2c1,         0x38c),
++	PG(clk1_out_pw4,         extperiph1, rsvd2,    rsvd3,     rsvd4,        0x34c),
++	PG(clk2_out_pw5,         extperiph2, rsvd2,    rsvd3,     rsvd4,        0x068),
++	PG(uart3_txd_pw6,        uartc,     rsvd2,     gmi,       rsvd4,        0x174),
++	PG(uart3_rxd_pw7,        uartc,     rsvd2,     gmi,       rsvd4,        0x178),
++	PG(spi2_mosi_px0,        spi6,      spi2,      spi3,      gmi,          0x368),
++	PG(spi2_miso_px1,        spi6,      spi2,      spi3,      gmi,          0x36c),
++	PG(spi2_sck_px2,         spi6,      spi2,      spi3,      gmi,          0x374),
++	PG(spi2_cs0_n_px3,       spi6,      spi2,      spi3,      gmi,          0x370),
++	PG(spi1_mosi_px4,        spi2,      spi1,      spi2_alt,  gmi,          0x378),
++	PG(spi1_sck_px5,         spi2,      spi1,      spi2_alt,  gmi,          0x37c),
++	PG(spi1_cs0_n_px6,       spi2,      spi1,      spi2_alt,  gmi,          0x380),
++	PG(spi1_miso_px7,        spi3,      spi1,      spi2_alt,  rsvd4,        0x384),
++	PG(ulpi_clk_py0,         spi1,      rsvd2,     uartd,     ulpi,         0x020),
++	PG(ulpi_dir_py1,         spi1,      rsvd2,     uartd,     ulpi,         0x024),
++	PG(ulpi_nxt_py2,         spi1,      rsvd2,     uartd,     ulpi,         0x028),
++	PG(ulpi_stp_py3,         spi1,      rsvd2,     uartd,     ulpi,         0x02c),
++	PG(sdmmc1_dat3_py4,      sdmmc1,    rsvd2,     uarte,     uarta,        0x050),
++	PG(sdmmc1_dat2_py5,      sdmmc1,    rsvd2,     uarte,     uarta,        0x054),
++	PG(sdmmc1_dat1_py6,      sdmmc1,    rsvd2,     uarte,     uarta,        0x058),
++	PG(sdmmc1_dat0_py7,      sdmmc1,    rsvd2,     uarte,     uarta,        0x05c),
++	PG(sdmmc1_clk_pz0,       sdmmc1,    rsvd2,     rsvd3,     uarta,        0x048),
++	PG(sdmmc1_cmd_pz1,       sdmmc1,    rsvd2,     rsvd3,     uarta,        0x04c),
++	PG(lcd_sdin_pz2,         displaya,  displayb,  spi5,      rsvd4,        0x078),
++	PG(lcd_wr_n_pz3,         displaya,  displayb,  spi5,      hdcp,         0x080),
++	PG(lcd_sck_pz4,          displaya,  displayb,  spi5,      hdcp,         0x08c),
++	PG(sys_clk_req_pz5,      sysclk,    rsvd2,     rsvd3,     rsvd4,        0x320),
++	PG(pwr_i2c_scl_pz6,      i2cpwr,    rsvd2,     rsvd3,     rsvd4,        0x2b4),
++	PG(pwr_i2c_sda_pz7,      i2cpwr,    rsvd2,     rsvd3,     rsvd4,        0x2b8),
++	PG(sdmmc4_dat0_paa0,     uarte,     spi3,      gmi,       sdmmc4,       0x260),
++	PG(sdmmc4_dat1_paa1,     uarte,     spi3,      gmi,       sdmmc4,       0x264),
++	PG(sdmmc4_dat2_paa2,     uarte,     spi3,      gmi,       sdmmc4,       0x268),
++	PG(sdmmc4_dat3_paa3,     uarte,     spi3,      gmi,       sdmmc4,       0x26c),
++	PG(sdmmc4_dat4_paa4,     i2c3,      i2s4,      gmi,       sdmmc4,       0x270),
++	PG(sdmmc4_dat5_paa5,     vgp3,      i2s4,      gmi,       sdmmc4,       0x274),
++	PG(sdmmc4_dat6_paa6,     vgp4,      i2s4,      gmi,       sdmmc4,       0x278),
++	PG(sdmmc4_dat7_paa7,     vgp5,      i2s4,      gmi,       sdmmc4,       0x27c),
++	PG(pbb0,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x28c),
++	PG(cam_i2c_scl_pbb1,     vgp1,      i2c3,      rsvd3,     sdmmc4,       0x290),
++	PG(cam_i2c_sda_pbb2,     vgp2,      i2c3,      rsvd3,     sdmmc4,       0x294),
++	PG(pbb3,                 vgp3,      displaya,  displayb,  sdmmc4,       0x298),
++	PG(pbb4,                 vgp4,      displaya,  displayb,  sdmmc4,       0x29c),
++	PG(pbb5,                 vgp5,      displaya,  displayb,  sdmmc4,       0x2a0),
++	PG(pbb6,                 vgp6,      displaya,  displayb,  sdmmc4,       0x2a4),
++	PG(pbb7,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x2a8),
++	PG(cam_mclk_pcc0,        vi,        vi_alt1,   vi_alt3,   sdmmc4,       0x284),
++	PG(pcc1,                 i2s4,      rsvd2,     rsvd3,     sdmmc4,       0x288),
++	PG(pcc2,                 i2s4,      rsvd2,     rsvd3,     rsvd4,        0x2ac),
++	PG(sdmmc4_rst_n_pcc3,    vgp6,      rsvd2,     rsvd3,     sdmmc4,       0x280),
++	PG(sdmmc4_clk_pcc4,      invalid,   nand,      gmi,       sdmmc4,       0x258),
++	PG(clk2_req_pcc5,        dap,       rsvd2,     rsvd3,     rsvd4,        0x06c),
++	PG(pex_l2_rst_n_pcc6,    pcie,      hda,       rsvd3,     rsvd4,        0x3d8),
++	PG(pex_l2_clkreq_n_pcc7, pcie,      hda,       rsvd3,     rsvd4,        0x3dc),
++	PG(pex_l0_prsnt_n_pdd0,  pcie,      hda,       rsvd3,     rsvd4,        0x3b8),
++	PG(pex_l0_rst_n_pdd1,    pcie,      hda,       rsvd3,     rsvd4,        0x3bc),
++	PG(pex_l0_clkreq_n_pdd2, pcie,      hda,       rsvd3,     rsvd4,        0x3c0),
++	PG(pex_wake_n_pdd3,      pcie,      hda,       rsvd3,     rsvd4,        0x3c4),
++	PG(pex_l1_prsnt_n_pdd4,  pcie,      hda,       rsvd3,     rsvd4,        0x3c8),
++	PG(pex_l1_rst_n_pdd5,    pcie,      hda,       rsvd3,     rsvd4,        0x3cc),
++	PG(pex_l1_clkreq_n_pdd6, pcie,      hda,       rsvd3,     rsvd4,        0x3d0),
++	PG(pex_l2_prsnt_n_pdd7,  pcie,      hda,       rsvd3,     rsvd4,        0x3d4),
++	PG(clk3_out_pee0,        extperiph3, rsvd2,    rsvd3,     rsvd4,        0x1b8),
++	PG(clk3_req_pee1,        dev3,      rsvd2,     rsvd3,     rsvd4,        0x1bc),
++	PG(clk1_req_pee2,        dap,       hda,       rsvd3,     rsvd4,        0x348),
++	PG(hdmi_cec_pee3,        cec,       rsvd2,     rsvd3,     rsvd4,        0x3e0),
++	PG(clk_32k_in,           clk_32k_in, rsvd2,    rsvd3,     rsvd4,        0x330),
++	PG(core_pwr_req,         core_pwr_req, rsvd2,  rsvd3,     rsvd4,        0x324),
++	PG(cpu_pwr_req,          cpu_pwr_req,  rsvd2,  rsvd3,     rsvd4,        0x328),
++	PG(owr,                  owr,       cec,       rsvd3,     rsvd4,        0x334),
++	PG(pwr_int_n,            pwr_int_n, rsvd2,     rsvd3,     rsvd4,        0x32c),
++};
++
++static void pinctrl_tegra30_set_func(struct pinctrl_tegra30 *ctrl,
++				     u32 reg, int func)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(0x3);
++	val |= func;
++	writel(val, regaddr);
++}
++
++static void pinctrl_tegra30_set_pull(struct pinctrl_tegra30 *ctrl,
++				     u32 reg, int pull)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(0x3 << 2);
++	val |= pull << 2;
++	writel(val, regaddr);
++}
++
++static void pinctrl_tegra30_set_input(struct pinctrl_tegra30 *ctrl,
++				      u32 reg, int input)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(1 << 5);
++	val |= input << 5;
++	writel(val, regaddr);
++}
++
++static void pinctrl_tegra30_set_tristate(struct pinctrl_tegra30 *ctrl,
++					 u32 reg, int tristate)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(1 << 4);
++	val |= tristate << 4;
++	writel(val, regaddr);
++}
++
++static void pinctrl_tegra30_set_opendrain(struct pinctrl_tegra30 *ctrl,
++					  u32 reg, int opendrain)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(1 << 6);
++	val |= opendrain << 6;
++	writel(val, regaddr);
++}
++
++static void pinctrl_tegra30_set_ioreset(struct pinctrl_tegra30 *ctrl,
++					u32 reg, int ioreset)
++{
++	u32 __iomem *regaddr = ctrl->regs.mux + (reg >> 2);
++	u32 val;
++
++	val = readl(regaddr);
++	val &= ~(1 << 8);
++	val |= ioreset << 8;
++	writel(val, regaddr);
++}
++
++static int pinctrl_tegra30_set_state(struct pinctrl_device *pdev,
++				     struct device_node *np)
++{
++	struct pinctrl_tegra30 *ctrl =
++			container_of(pdev, struct pinctrl_tegra30, pinctrl);
++	struct device_node *childnode;
++	int pull = -1, tri = -1, in = -1, od = -1, ior = -1, i, j, k;
++	const char *pins, *func = NULL;
++	const struct tegra30_pingroup *group;
++
++	/*
++	 * At first look if the node we are pointed at has children,
++	 * which we may want to visit.
++	 */
++	list_for_each_entry(childnode, &np->children, parent_list)
++		pinctrl_tegra30_set_state(pdev, childnode);
++
++	/* read relevant state from devicetree */
++	of_property_read_string(np, "nvidia,function", &func);
++	of_property_read_u32_array(np, "nvidia,pull", &pull, 1);
++	of_property_read_u32_array(np, "nvidia,tristate", &tri, 1);
++	of_property_read_u32_array(np, "nvidia,enable-input", &in, 1);
++	of_property_read_u32_array(np, "nvidia,open-drain", &od, 1);
++	of_property_read_u32_array(np, "nvidia,io-reset", &ior, 1);
++
++	/* iterate over all pingroups referenced in the dt node */
++	for (i = 0; ; i++) {
++		if (of_property_read_string_index(np, "nvidia,pins", i, &pins))
++			break;
++
++		for (j = 0; j < ARRAY_SIZE(tegra30_groups); j++) {
++			if (!strcmp(pins, tegra30_groups[j].name)) {
++				group = &tegra30_groups[j];
++				break;
++			}
++		}
++		/* if no matching pingroup is found bail out */
++		if (j == ARRAY_SIZE(tegra30_groups)) {
++			dev_warn(ctrl->pinctrl.dev,
++				 "invalid pingroup %s referenced in node %s\n",
++				 pins, np->name);
++			continue;
++		}
++
++		if (func) {
++			for (k = 0; k < 4; k++) {
++				if (!strcmp(func, group->funcs[k]))
++					break;
++			}
++			if (k < 4)
++				pinctrl_tegra30_set_func(ctrl, group->reg, k);
++			else
++				dev_warn(ctrl->pinctrl.dev,
++					 "invalid function %s for pingroup %s in node %s\n",
++					 func, group->name, np->name);
++		}
++
++		if (pull >= 0)
++			pinctrl_tegra30_set_pull(ctrl, group->reg, pull);
++
++		if (in >= 0)
++			pinctrl_tegra30_set_input(ctrl, group->reg, in);
++
++		if (tri >= 0)
++			pinctrl_tegra30_set_tristate(ctrl, group->reg, tri);
++
++		if (od >= 0)
++			pinctrl_tegra30_set_opendrain(ctrl, group->reg, od);
++
++		if (ior >= 0)
++			pinctrl_tegra30_set_ioreset(ctrl, group->reg, ior);
++	}
++
++	return 0;
++}
++
++static struct pinctrl_ops pinctrl_tegra30_ops = {
++	.set_state = pinctrl_tegra30_set_state,
++};
++
++static int pinctrl_tegra30_probe(struct device_d *dev)
++{
++	struct pinctrl_tegra30 *ctrl;
++	int i, ret;
++	u32 **regs;
++
++	ctrl = xzalloc(sizeof(*ctrl));
++
++	/*
++	 * Tegra pincontrol is split out into four independent memory ranges:
++	 * tristate control, function mux, pullup/down control, pad control
++	 * (from lowest to highest hardware address).
++	 * We are only interested in the first three for now.
++	 */
++	regs = (u32 **)&ctrl->regs;
++	for (i = 0; i <= 1; i++) {
++		regs[i] = dev_request_mem_region(dev, i);
++		if (!regs[i]) {
++			dev_err(dev, "Could not get iomem region %d\n", i);
++			return -ENODEV;
++		}
++	}
++
++	ctrl->pinctrl.dev = dev;
++	ctrl->pinctrl.ops = &pinctrl_tegra30_ops;
++
++	ret = pinctrl_register(&ctrl->pinctrl);
++	if (ret)
++		free(ctrl);
++
++	return ret;
++}
++
++static __maybe_unused struct of_device_id pinctrl_tegra30_dt_ids[] = {
++	{
++		.compatible = "nvidia,tegra30-pinmux",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d pinctrl_tegra30_driver = {
++	.name		= "pinctrl-tegra30",
++	.probe		= pinctrl_tegra30_probe,
++	.of_compatible	= DRV_OF_COMPAT(pinctrl_tegra30_dt_ids),
++};
++
++static int pinctrl_tegra30_init(void)
++{
++	return platform_driver_register(&pinctrl_tegra30_driver);
++}
++postcore_initcall(pinctrl_tegra30_init);
 -- 
 1.9.0
 
