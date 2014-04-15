@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZy4u-0007j0-Mo
- for barebox@lists.infradead.org; Tue, 15 Apr 2014 07:46:49 +0000
-Received: by mail-lb0-f177.google.com with SMTP id z11so6520842lbi.36
- for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 00:46:26 -0700 (PDT)
+ id 1WZy56-0007ki-HN
+ for barebox@lists.infradead.org; Tue, 15 Apr 2014 07:47:01 +0000
+Received: by mail-la0-f50.google.com with SMTP id pv20so6540148lab.37
+ for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 00:46:38 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 15 Apr 2014 11:38:29 +0400
-Message-Id: <1397547514-19925-6-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 15 Apr 2014 11:38:31 +0400
+Message-Id: <1397547514-19925-8-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
 References: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,51 +23,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 05/10] resource: add create_resource() helper function
+Subject: [RFC 07/10] filetype: add ELF type
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/resource.c      | 15 +++++++++++++++
- include/linux/ioport.h |  2 ++
- 2 files changed, 17 insertions(+)
+ common/filetype.c  | 5 +++++
+ include/filetype.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/common/resource.c b/common/resource.c
-index fe4680e..b6c7c87 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -143,3 +143,18 @@ struct resource *request_ioport_region(const char *name,
- {
- 	return __request_region(&ioport_resource, name, start, end);
+diff --git a/common/filetype.c b/common/filetype.c
+index 0b5da30..dacfa38 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -24,6 +24,7 @@
+ #include <malloc.h>
+ #include <errno.h>
+ #include <envfs.h>
++#include <elf.h>
+ 
+ struct filetype_str {
+ 	const char *name;	/* human readable filetype */
+@@ -53,6 +54,7 @@ static const struct filetype_str filetype_str[] = {
+ 	[filetype_gpt] = { "GUID Partition Table", "gpt" },
+ 	[filetype_bpk] = { "Binary PacKage", "bpk" },
+ 	[filetype_barebox_env] = { "barebox environment file", "bbenv" },
++	[filetype_elf] = { "ELF", "elf" },
+ };
+ 
+ const char *file_type_to_string(enum filetype f)
+@@ -246,6 +248,9 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
+ 		return filetype_ext;
+ 
++	if (strncmp(buf8, ELFMAG, 4) == 0)
++		return filetype_elf;
++
+ 	return filetype_unknown;
  }
-+
-+struct resource *create_resource(const char *name,
-+	resource_size_t start, resource_size_t end)
-+{
-+	struct resource *t;
-+
-+	t = xzalloc(sizeof *t);
-+	INIT_LIST_HEAD(&t->children);
-+	t->parent = NULL;
-+	t->name = xstrdup(name);
-+	t->start = start;
-+	t->end = end;
-+
-+	return t;
-+}
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index d1b2f55..bce9b62 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -145,6 +145,8 @@ struct resource *__request_region(struct resource *parent,
- 		resource_size_t size);
  
- int release_region(struct resource *res);
-+struct resource *create_resource(const char *name,
-+	resource_size_t start, resource_size_t end);
+diff --git a/include/filetype.h b/include/filetype.h
+index c20a4f9..c4f776f 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -30,6 +30,7 @@ enum filetype {
+ 	filetype_ubifs,
+ 	filetype_bpk,
+ 	filetype_barebox_env,
++	filetype_elf,
+ 	filetype_max,
+ };
  
- extern struct resource iomem_resource;
- extern struct resource ioport_resource;
 -- 
 1.9.0
 
