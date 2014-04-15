@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZKSo-0001EM-5A
- for barebox@lists.infradead.org; Sun, 13 Apr 2014 13:28:51 +0000
-Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
- (p578FE321.dip0.t-ipconnect.de [87.143.227.33])
- by lynxeye.de (Postfix) with ESMTPA id 8E3B918B4250
- for <barebox@lists.infradead.org>; Sun, 13 Apr 2014 15:27:53 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Sun, 13 Apr 2014 15:27:32 +0200
-Message-Id: <1397395668-9325-3-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
-References: <1397395668-9325-1-git-send-email-dev@lynxeye.de>
+Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WZxxn-0002tO-70
+ for barebox@lists.infradead.org; Tue, 15 Apr 2014 07:39:27 +0000
+Received: by mail-lb0-f174.google.com with SMTP id u14so6484479lbd.5
+ for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 00:39:04 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Date: Tue, 15 Apr 2014 11:38:28 +0400
+Message-Id: <1397547514-19925-5-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
+References: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,40 +23,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/18] mmc: tegra: fix typo
+Subject: [RFC 04/10] MIPS: add virt_to_phys() and phys_to_virt()
 To: barebox@lists.infradead.org
 
-Missed OR, so we never enabled failure interrupt
-status bits, which prevented the eMMC detect logic
-to work properly.
-
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/mci/tegra-sdmmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/io.h | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index 64c4550754b9..e4d82197bde7 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -339,7 +339,7 @@ static int tegra_sdmmc_init(struct mci_host *mci, struct device_d *dev)
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index ff66ea5..dcda857 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -12,6 +12,7 @@
  
- 	val = readl(regs + TEGRA_SDMMC_INT_STAT_EN);
- 	val &= ~(0xffff);
--	val = (TEGRA_SDMMC_INT_STAT_EN_CMD_COMPLETE |
-+	val |= (TEGRA_SDMMC_INT_STAT_EN_CMD_COMPLETE |
- 		TEGRA_SDMMC_INT_STAT_EN_XFER_COMPLETE |
- 		TEGRA_SDMMC_INT_STAT_EN_DMA_INTERRUPT |
- 		TEGRA_SDMMC_INT_STAT_EN_BUFFER_WRITE_READY |
-@@ -348,7 +348,7 @@ static int tegra_sdmmc_init(struct mci_host *mci, struct device_d *dev)
+ #include <linux/compiler.h>
+ #include <asm/types.h>
++#include <asm/addrspace.h>
+ #include <asm/byteorder.h>
  
- 	val = readl(regs + TEGRA_SDMMC_INT_SIG_EN);
- 	val &= ~(0xffff);
--	val = TEGRA_SDMMC_INT_SIG_EN_XFER_COMPLETE;
-+	val |= TEGRA_SDMMC_INT_SIG_EN_XFER_COMPLETE;
- 	writel(val, regs + TEGRA_SDMMC_INT_SIG_EN);
+ void *dma_alloc_coherent(size_t size);
+@@ -21,6 +22,40 @@ void dma_clean_range(unsigned long, unsigned long);
+ void dma_flush_range(unsigned long, unsigned long);
+ void dma_inv_range(unsigned long, unsigned long);
  
- 	tegra_sdmmc_set_clock(host, 400000);
++/*
++ *     virt_to_phys    -       map virtual addresses to physical
++ *     @address: address to remap
++ *
++ *     The returned physical address is the physical (CPU) mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses directly mapped or allocated via kmalloc.
++ *
++ *     This function does not give bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline unsigned long virt_to_phys(const void *address)
++{
++	return (unsigned long)address & 0x3fffffff;
++}
++
++/*
++ *     phys_to_virt    -       map physical address to virtual
++ *     @address: address to remap
++ *
++ *     The returned virtual address is a current CPU mapping for
++ *     the memory address given. It is only valid to use this function on
++ *     addresses that have a kernel mapping
++ *
++ *     This function does not handle bus mappings for DMA transfers. In
++ *     almost all conceivable cases a device driver should not be using
++ *     this function
++ */
++static inline void *phys_to_virt(unsigned long address)
++{
++	return (void *)(KSEG0 | (address & 0x3fffffff));
++}
++
+ #define	IO_SPACE_LIMIT	0
+ 
+ /*****************************************************************************/
 -- 
 1.9.0
 
