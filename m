@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mail-la0-x232.google.com ([2a00:1450:4010:c03::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WZxxg-0002qX-Sc
- for barebox@lists.infradead.org; Tue, 15 Apr 2014 07:39:21 +0000
-Received: by mail-la0-f53.google.com with SMTP id b8so6629429lan.12
- for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 00:38:57 -0700 (PDT)
+ id 1WZxxh-0002rB-NR
+ for barebox@lists.infradead.org; Tue, 15 Apr 2014 07:39:22 +0000
+Received: by mail-la0-f50.google.com with SMTP id pv20so6533419lab.37
+ for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 00:38:59 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 15 Apr 2014 11:38:24 +0400
-Message-Id: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
+Date: Tue, 15 Apr 2014 11:38:25 +0400
+Message-Id: <1397547514-19925-2-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
+References: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,97 +23,249 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [RFC 00/10] MIPS: use kexec to load ELF linux images
+Subject: [RFC 01/10] MIPS: add initial cache support for R4000-class CPUs
 To: barebox@lists.infradead.org
 
-This patchseries introduces a suitable way for loading
-ELF linux kernel images on MIPS. You can load normal vmlinux
-images or compressed self-extractable vmlinuz images.
+This commit adds very elementary U-Boot style flush/clean
+cache generic routines for R4000-class CPUs.
 
-The patchseries and additional patch with pre-compiled demo
-vmlinuz image for MIPS Malta can be obtained here:
-  https://github.com/frantony/barebox/tree/next.mips-malta-elf-linux.20140415
+This patch lacks of initial cache initialization code
+as it's may be CPU-dependent.
 
-Linux kernel ELF images use KSEG1 ("cached") addresses, so
-this series adds elementary code for MIPS cache support.
+Here is Linux-Barebox cache routines correspondance:
 
-The code for actual ELF loading and relocation is imported
-from
-  kexec-tools (git://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools)
-and
-  linux kernel (http://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git).
+  Linux                         Barebox
+    _dma_cache_wback_inv    =>    dma_flush_range
+    _dma_cache_wback        =>    dma_clean_range
+    _dma_cache_inv          =>    dma_inv_range
 
-There is no common standard on passing cmdline to the linux kernel
-on MIPS machines. We have to realize it's own cmdline passing
-routine for every MIPS machine supported by barebox.
-The 'MIPS: mach-malta: add kexec-capable reboot()' patch
-demonstrates how to do it for MIPS Malta.
-
-To separate common ELF handling routines and machine-specific
-cmdline handling the 'reboot()' call is introduced.
-The common code checks and loads ELF-file, the MIPS-specific
-code arrange ELF segments in the appropriate memory places
-and tunes relocator; next reboot() is called and machine-specific
-code works on cmdline passing.
-
-Antony Pavlov (10):
-  MIPS: add initial cache support for R4000-class CPUs
-  MIPS: introduce arch_shutdown()
-  MIPS: use arch_shutdown() for flushing caches
-  MIPS: add virt_to_phys() and phys_to_virt()
-  resource: add create_resource() helper function
-  import initial kexec stuff
-  filetype: add ELF type
-  bootm: add kexec ELF support
-  MIPS: add ELF support
-  MIPS: mach-malta: add kexec-capable reboot()
-
- arch/mips/Kconfig                |   1 +
- arch/mips/include/asm/cache.h    |   8 +
- arch/mips/include/asm/cacheops.h |  27 ++
- arch/mips/include/asm/common.h   |   2 +-
- arch/mips/include/asm/elf.h      |   8 +-
- arch/mips/include/asm/io.h       |  42 +++
- arch/mips/lib/Makefile           |   5 +
- arch/mips/lib/c-r4k.c            |  89 ++++++
- arch/mips/lib/dma.c              |  27 ++
- arch/mips/lib/kexec-mips.c       | 170 +++++++++++
- arch/mips/lib/relocate_kernel.S  |  80 +++++
- arch/mips/lib/shutdown.c         |  12 +
- arch/mips/mach-malta/Makefile    |   1 +
- arch/mips/mach-malta/reboot.c    | 104 +++++++
- commands/Kconfig                 |   7 +
- common/Kconfig                   |   3 +
- common/filetype.c                |   5 +
- common/resource.c                |  15 +
- include/filetype.h               |   1 +
- include/linux/ioport.h           |   2 +
- include/linux/reboot.h           |  14 +
- lib/Makefile                     |   1 +
- lib/kexec/Makefile               |   4 +
- lib/kexec/kexec-bootm-elf.c      |  36 +++
- lib/kexec/kexec-elf-exec.c       |  82 +++++
- lib/kexec/kexec-elf.c            | 639 +++++++++++++++++++++++++++++++++++++++
- lib/kexec/kexec-elf.h            |  86 ++++++
- lib/kexec/kexec.c                | 149 +++++++++
- lib/kexec/kexec.h                |  89 ++++++
- 29 files changed, 1707 insertions(+), 2 deletions(-)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/cache.h    |  8 ++++
+ arch/mips/include/asm/cacheops.h | 27 ++++++++++++
+ arch/mips/include/asm/io.h       |  7 ++++
+ arch/mips/lib/Makefile           |  1 +
+ arch/mips/lib/c-r4k.c            | 89 ++++++++++++++++++++++++++++++++++++++++
+ arch/mips/lib/dma.c              | 27 ++++++++++++
+ 6 files changed, 159 insertions(+)
  create mode 100644 arch/mips/include/asm/cache.h
  create mode 100644 arch/mips/include/asm/cacheops.h
  create mode 100644 arch/mips/lib/dma.c
- create mode 100644 arch/mips/lib/kexec-mips.c
- create mode 100644 arch/mips/lib/relocate_kernel.S
- create mode 100644 arch/mips/lib/shutdown.c
- create mode 100644 arch/mips/mach-malta/reboot.c
- create mode 100644 include/linux/reboot.h
- create mode 100644 lib/kexec/Makefile
- create mode 100644 lib/kexec/kexec-bootm-elf.c
- create mode 100644 lib/kexec/kexec-elf-exec.c
- create mode 100644 lib/kexec/kexec-elf.c
- create mode 100644 lib/kexec/kexec-elf.h
- create mode 100644 lib/kexec/kexec.c
- create mode 100644 lib/kexec/kexec.h
 
+diff --git a/arch/mips/include/asm/cache.h b/arch/mips/include/asm/cache.h
+new file mode 100644
+index 0000000..2f807d5
+--- /dev/null
++++ b/arch/mips/include/asm/cache.h
+@@ -0,0 +1,8 @@
++#ifndef _ASM_MIPS_CACHE_H
++#define _ASM_MIPS_CACHE_H
++
++void flush_cache_all(void);
++void flush_dcache_all(void);
++void flush_icache_all(void);
++
++#endif /* _ASM_MIPS_CACHE_H */
+diff --git a/arch/mips/include/asm/cacheops.h b/arch/mips/include/asm/cacheops.h
+new file mode 100644
+index 0000000..4844a67
+--- /dev/null
++++ b/arch/mips/include/asm/cacheops.h
+@@ -0,0 +1,27 @@
++/*
++ * Cache operations for the cache instruction.
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * (C) Copyright 1996, 97, 99, 2002, 03 Ralf Baechle
++ * (C) Copyright 1999 Silicon Graphics, Inc.
++ */
++#ifndef	__ASM_CACHEOPS_H
++#define	__ASM_CACHEOPS_H
++
++/*
++ * Cache Operations available on all MIPS processors with R4000-style caches
++ */
++#define Index_Invalidate_I      0x00
++#define Index_Writeback_Inv_D   0x01
++#define Index_Load_Tag_I	0x04
++#define Index_Load_Tag_D	0x05
++#define Index_Store_Tag_I	0x08
++#define Index_Store_Tag_D	0x09
++#define Hit_Invalidate_I	0x10
++#define Hit_Invalidate_D	0x11
++#define Hit_Writeback_Inv_D	0x15
++
++#endif	/* __ASM_CACHEOPS_H */
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 4832be6..ff66ea5 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -14,6 +14,13 @@
+ #include <asm/types.h>
+ #include <asm/byteorder.h>
+ 
++void *dma_alloc_coherent(size_t size);
++void dma_free_coherent(void *mem, size_t size);
++
++void dma_clean_range(unsigned long, unsigned long);
++void dma_flush_range(unsigned long, unsigned long);
++void dma_inv_range(unsigned long, unsigned long);
++
+ #define	IO_SPACE_LIMIT	0
+ 
+ /*****************************************************************************/
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 71c4f6b..f4aee2e 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -6,6 +6,7 @@ obj-y += ashrdi3.o
+ obj-y += cpu-probe.o
+ obj-y += traps.o
+ obj-y += genex.o
++obj-y += dma.o
+ 
+ obj-$(CONFIG_CPU_MIPS32) += c-r4k.o
+ obj-$(CONFIG_CPU_MIPS64) += c-r4k.o
+diff --git a/arch/mips/lib/c-r4k.c b/arch/mips/lib/c-r4k.c
+index 01b8665..ff81141 100644
+--- a/arch/mips/lib/c-r4k.c
++++ b/arch/mips/lib/c-r4k.c
+@@ -10,10 +10,99 @@
+ #include <common.h>
+ #include <asm/io.h>
+ #include <asm/mipsregs.h>
++#include <asm/cache.h>
++#include <asm/cacheops.h>
+ #include <asm/cpu.h>
+ #include <asm/cpu-info.h>
+ #include <asm/bitops.h>
+ 
++#define cache_op(op,addr)						\
++	__asm__ __volatile__(						\
++	"	.set	push					\n"	\
++	"	.set	noreorder				\n"	\
++	"	.set	mips3\n\t				\n"	\
++	"	cache	%0, %1					\n"	\
++	"	.set	pop					\n"	\
++	:								\
++	: "i" (op), "R" (*(unsigned char *)(addr)))
++
++void flush_cache_all(void)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	unsigned long lsize;
++	unsigned long addr;
++	unsigned long aend;
++	unsigned int icache_size, dcache_size;
++
++	dcache_size = c->dcache.waysize * c->dcache.ways;
++	lsize = c->dcache.linesz;
++	aend = (KSEG0 + dcache_size - 1) & ~(lsize - 1);
++	for (addr = KSEG0; addr <= aend; addr += lsize) {
++		cache_op(Index_Writeback_Inv_D, addr);
++	}
++
++	icache_size = c->icache.waysize * c->icache.ways;
++	lsize = c->icache.linesz;
++	aend = (KSEG0 + icache_size - 1) & ~(lsize - 1);
++	for (addr = KSEG0; addr <= aend; addr += lsize) {
++		cache_op(Index_Invalidate_I, addr);
++	}
++
++	/* secondatory cache skipped */
++}
++
++void flush_dcache_all(void)
++{
++	flush_cache_all();
++}
++
++void flush_icache_all(void)
++{
++	flush_cache_all();
++}
++
++void dma_clean_range(unsigned long start, unsigned long end)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	unsigned long lsize = c->dcache.linesz;
++	unsigned long addr = start & ~(lsize - 1);
++	unsigned long aend = (end - 1) & ~(lsize - 1);
++
++	for (; addr <= aend; addr += lsize)
++		cache_op(Hit_Invalidate_D, addr);
++
++	/* secondatory cache skipped */
++}
++
++void dma_flush_range(unsigned long start, unsigned long end)
++{
++	struct cpuinfo_mips *c = &current_cpu_data;
++	unsigned long lsize = c->dcache.linesz;
++	unsigned long addr = start & ~(lsize - 1);
++	unsigned long aend = (end - 1) & ~(lsize - 1);
++
++	for (; addr <= aend; addr += lsize) {
++		cache_op(Hit_Writeback_Inv_D, addr);
++	}
++
++	/* secondatory cache skipped */
++}
++
++/*
++ *	r4k_dma_inv_range(start,end)
++ *
++ *	Invalidate the data cache within the specified region; we will
++ *	be performing a DMA operation in this region and we want to
++ *	purge old data in the cache.
++ *
++ *	- start   - virtual start address of region
++ *	- end     - virtual end address of region
++ */
++void dma_inv_range(unsigned long start, unsigned long end)
++{
++	dma_clean_range(start, end);
++}
++
+ void r4k_cache_init(void);
+ 
+ static void probe_pcache(void)
+diff --git a/arch/mips/lib/dma.c b/arch/mips/lib/dma.c
+new file mode 100644
+index 0000000..845ffe8
+--- /dev/null
++++ b/arch/mips/lib/dma.c
+@@ -0,0 +1,27 @@
++#include <common.h>
++#include <asm/io.h>
++#include <asm/mipsregs.h>
++#include <malloc.h>
++
++static inline void __iomem *ioremap_nocache(phys_t offset, unsigned long size)
++{
++	return (void __iomem *) (unsigned long)CKSEG1ADDR(offset);
++}
++
++void *dma_alloc_coherent(size_t size)
++{
++	void *ret;
++
++	ret = xmemalign(PAGE_SIZE, size);
++
++	dma_inv_range((unsigned long)ret, (unsigned long)ret + size);
++
++	ret = ioremap_nocache((phys_t)ret, size);
++
++	return ret;
++}
++
++void dma_free_coherent(void *mem, size_t size)
++{
++	free(mem);
++}
 -- 
 1.9.0
 
