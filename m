@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from moutng.kundenserver.de ([212.227.126.187])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wa09c-0001ru-Ov
- for barebox@lists.infradead.org; Tue, 15 Apr 2014 09:59:49 +0000
-Received: by mail-lb0-f177.google.com with SMTP id z11so6562596lbi.22
- for <barebox@lists.infradead.org>; Tue, 15 Apr 2014 02:59:26 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Tue, 15 Apr 2014 13:59:18 +0400
-Message-Id: <1397555958-28666-1-git-send-email-antonynpavlov@gmail.com>
+ id 1Wa1XV-0008O3-3R
+ for barebox@lists.infradead.org; Tue, 15 Apr 2014 11:28:34 +0000
+Date: Tue, 15 Apr 2014 13:28:02 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <832723417.563292.1397561282646.open-xchange@email.1und1.de>
+MIME-Version: 1.0
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,52 +16,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] commands: loady: fix Y-Modem/G option name in help message
+Subject: Beaglebone white: Kernel doesn't start with barebox-2014.03.0
 To: barebox@lists.infradead.org
 
-Actually loady command uses '-g' option for Y-Modem/G mode
-selection; see loady() function:
-
-    while ((opt = getopt(argc, argv, "b:t:g")) > 0) {
-        switch (opt) {
-    ...
-        case 'g':
-            is_ymodemg = 1;
-            break;
-
-By mistake help message show '-y' option for Y-Modem/G mode
-selection.
-
-This patch fixes the problem.
-
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- commands/loadxy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/commands/loadxy.c b/commands/loadxy.c
-index 7a91286..93a423c 100644
---- a/commands/loadxy.c
-+++ b/commands/loadxy.c
-@@ -241,7 +241,7 @@ BAREBOX_CMD_END
- 
- static const __maybe_unused char cmd_loady_help[] =
- 	"[OPTIONS]\n"
--	"  -y        - use Y-Modem/G (only for lossless tty as USB)\n"
-+	"  -g        - use Y-Modem/G (only for lossless tty as USB)\n"
- 	"  -t name   - console device name to use - defaults to current console\n"
- 	"  -b baud   - baudrate at which to download - defaults to console baudrate\n";
- 
--- 
-1.9.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVhciBhbGwsCmFmdGVyIHVwZGF0ZSB0byBiYXJlYm94LTIwMTQuMDMuMCwgdGhlIGtlcm5lbCBv
+biBteSBiZWFnbGVib25lLXdoaXRlIGRvZXNuJ3QKc3RhcnQgYW55bW9yZS4KVGhlIGxhc3QgbGlu
+ZSwgd2hpY2ggYXBwZWFycywgaXMgImJvb3Rpbmcga2VybmVsIHdpdGggZGV2aWNldHJlZSIuCkkg
+ZGlzY292ZXJlZCB0aGF0IHRoZSBwcm9ibGVtIGlzIGNhdXNlZCBieSB0aGUgY29tbWl0IFsxXS4g
+V2hlbiBJIHJldmVydCB0aGlzCmNvbW1pdCwgZXZlcnl0aGluZyB3b3JrcyBmaW5lLgoKSGVyZSBp
+cyBzb21lIG1vcmUgaW5mbywgd2hpY2ggSSBnYXRoZXJlZCB3aXRoIGFkZGl0aW9uYWwgcHJpbnRm
+czoKV2l0aG91dCB0aGlzIGNvbW1pdCwgdGhlICdfX2RvX2Jvb3RtX2xpbnV4KCknIGZ1bmN0aW9u
+IGlzIGNhbGxlZCB3aXRoCsKgZGF0YS0+aW5pdHJkX2FkZHJlc3MgPSAweGZmZmZmZmZmCsKgZGF0
+YS0+b3NfcmVzLT5zdGFydCA9IDB4ODAwMDgwMDAKwqBkYXRhLT5vc19lbnRyeSA9IDAKwqBzd2Fw
+ID0gMApGaW5hbGx5IGl0IGludm9rZXMgdGhlICdzdGFydF9saW51eCgpJyBmdW5jdGlvbiB3aXRo
+CsKga2VybmVsID0gMHg4MDAwODAwMArCoHN3YXAgPSAwCsKgaW5pdHJkX3N0YXJ0ID0gMHg4MDgw
+ODAwMArCoGluaXRyZF9zaXplID0gMArCoGRhdGEtPm9mdHJlZSA9IDB4OGIxZTAwMDAKCldpdGgg
+dGhpcyBjb21taXQgKGkuZS4gd2hlbiB0aGUga2VybmVsIGRvZXNuJ3Qgc3RhcnQpLCB0aGUgJ19f
+ZG9fYm9vdG1fbGludXgoKScKZnVuY3Rpb24gaXMgY2FsbGVkIHdpdGggdGhlIHNhbWUgcGFyYW1l
+dGVycyBhcyBhYm92ZSBwbHVzCsKgZnJlZV9tZW0gPSAweDgwNDFmMDAwCkl0IGludm9rZXMgdGhl
+ICdzdGFydF9saW51eCgpJyBmdW5jdGlvbiB3aXRoCsKga2VybmVsID0gMHg4MDAwODAwMArCoHN3
+YXAgPSAwCsKgaW5pdHJkX3N0YXJ0ID0gMHg4MDQxZjAwMArCoGluaXRyZF9zaXplID0gMArCoGRh
+dGEtPm9mdHJlZSA9IDB4ODA0MWYwMDAKCkRvIHlvdSBoYXZlIGFueSBpZGVhLCBob3cgdG8gZml4
+IHRoaXMgcHJvYmxlbT8gRm9yIG5vdyBJIHdpbGwgY29udGludWUgdXNpbmcKYmFyZWJveC0yMDE0
+LjAzLjAgd2l0aG91dCB0aGUgcHJvYmxlbWF0aWMgY29tbWl0LgoKWzFdIGh0dHA6Ly93d3cuc3Bp
+bmljcy5uZXQvbGlzdHMvdS1ib290LXYyL21zZzE3MzQ1Lmh0bWwKwqAgwqAgIkFSTTogYm9vdG06
+IHBhc3MgZnJlZSBtZW1vcnkgdG8gX19kb19ib290bV9saW51eCIKCkJlc3QgcmVnYXJkcywKwqBS
+b2xmCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJl
+Ym94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3Rz
+LmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
