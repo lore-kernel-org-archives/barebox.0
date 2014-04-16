@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
+Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WaMbj-0005bA-Lz
- for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:20 +0000
-Received: by mail-lb0-f177.google.com with SMTP id z11so7734982lbi.8
- for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:57 -0700 (PDT)
+ id 1WaMbf-0005aG-S6
+ for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:16 +0000
+Received: by mail-lb0-f178.google.com with SMTP id s7so7872232lbd.37
+ for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:53 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Apr 2014 13:57:40 +0400
-Message-Id: <1397642260-32606-6-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 16 Apr 2014 13:57:38 +0400
+Message-Id: <1397642260-32606-4-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
 References: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,73 +19,31 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/5] ARM: uemd: add module-mb7707_defconfig
+Subject: [PATCH 3/5] =?UTF-8?q?ARM:=20dts:=20add=20minimal=20=D0=9A1879?=
+ =?UTF-8?q?=D0=A5=D0=911=D0=AF=20devicetree=20file?=
 To: barebox@lists.infradead.org
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- arch/arm/configs/module-mb7707_defconfig | 43 ++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
-
-diff --git a/arch/arm/configs/module-mb7707_defconfig b/arch/arm/configs/module-mb7707_defconfig
-new file mode 100644
-index 0000000..772c5dd
---- /dev/null
-+++ b/arch/arm/configs/module-mb7707_defconfig
-@@ -0,0 +1,43 @@
-+CONFIG_BUILTIN_DTB=y
-+CONFIG_BUILTIN_DTB_NAME="module-mb7707"
-+CONFIG_ARCH_UEMD=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_PROMPT="MB 77.07: "
-+CONFIG_BAUDRATE=38400
-+CONFIG_LONGHELP=y
-+CONFIG_GLOB=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_PASSWORD=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+# CONFIG_CMD_MOUNT is not set
-+# CONFIG_CMD_UMOUNT is not set
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MM=y
-+# CONFIG_CMD_BOOTM is not set
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+# CONFIG_SPI is not set
-+CONFIG_CLOCKSOURCE_DUMMY=y
-+CONFIG_SHA1=y
-+CONFIG_SHA256=y
--- 
-1.9.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+0JoxODc50KXQkTHQryAoQUtBIEsxODc5SEIxWUEpIGlzIGEgU29DIHRoYXQgY29tYmluZXMKYSBE
+U1AgY29yZSBiYXNlZCBvbiB0aGUgTmV1cm9NYXRyaXgocikgZmFtaWx5CndpdGggYW4gQVJNIGFy
+Y2hpdGVjdHVyZSBDUFUgQVJNMTE3NkpaRi1TIGNvcmUuCgpTZWUgaHR0cDovL3d3dy5tb2R1bGUu
+cnUvZW4vY2F0YWxvZy9taWNyby9taWtyb3NoZW1hX2Rla29kZXJhX2NpZnJvdm9nb190ZWxldml6
+aW9ubm9nb19zaWduYWxhX3NiaXNfazE4NzloYjF5YS8gZm9yIGRldGFpbHMuCgpTaWduZWQtb2Zm
+LWJ5OiBBbnRvbnkgUGF2bG92IDxhbnRvbnlucGF2bG92QGdtYWlsLmNvbT4KLS0tCiBhcmNoL2Fy
+bS9kdHMvazE4NzloYjF5YS5kdHNpIHwgMTkgKysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNo
+YW5nZWQsIDE5IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9hcmNoL2FybS9kdHMvazE4Nzlo
+YjF5YS5kdHNpIGIvYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaQpuZXcgZmlsZSBtb2RlIDEw
+MDY0NAppbmRleCAwMDAwMDAwLi43Mjk5Y2MxCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0v
+ZHRzL2sxODc5aGIxeWEuZHRzaQpAQCAtMCwwICsxLDE5IEBACisjaW5jbHVkZSAic2tlbGV0b24u
+ZHRzaSIKKworLyB7CisJc29jIHsKKwkJY29tcGF0aWJsZSA9ICJzaW1wbGUtYnVzIjsKKwkJbW9k
+ZWwgPSAiUkMgTW9kdWxlIEsxODc5SEIxWUEiOworCQkjYWRkcmVzcy1jZWxscyA9IDwxPjsKKwkJ
+I3NpemUtY2VsbHMgPSA8MT47CisJCXJhbmdlczsKKworCQlzZXJpYWwwOiBzZXJpYWxAMjAwMmIw
+MDAgeworCQkJY29tcGF0aWJsZSA9ICJuczE2NTUwYSI7CisJCQlyZWcgPSA8MHgyMDAyYjAwMCAw
+eDEwMDA+OworCQkJcmVnLXNoaWZ0ID0gPDI+OworCQkJY2xvY2stZnJlcXVlbmN5ID0gPDU0MDAw
+MDAwPjsKKwkJCXN0YXR1cyA9ICJkaXNhYmxlZCI7CisJCX07CisJfTsKK307Ci0tIAoxLjkuMAoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
