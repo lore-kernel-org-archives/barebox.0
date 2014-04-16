@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22b.google.com ([2a00:1450:4010:c04::22b])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WaMbc-0005Zb-2a
- for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:12 +0000
-Received: by mail-lb0-f171.google.com with SMTP id w7so7847581lbi.2
- for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:49 -0700 (PDT)
+ id 1WaMbd-0005Zy-Tv
+ for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:14 +0000
+Received: by mail-la0-f43.google.com with SMTP id e16so7843659lan.2
+ for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:51 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Apr 2014 13:57:36 +0400
-Message-Id: <1397642260-32606-2-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 16 Apr 2014 13:57:37 +0400
+Message-Id: <1397642260-32606-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
 References: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,82 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/5] ARM: initial support for RC Module UEMD SoCs
+Subject: [PATCH 2/5] ARM: uemd: add DEBUG_LL support
 To: barebox@lists.infradead.org
-
-This commit adds minimal support for the UEMD SoCs
-from RC Module (http://www.module.ru).
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig            |  5 +++++
- arch/arm/Makefile           |  1 +
- arch/arm/mach-uemd/Kconfig  |  7 +++++++
- arch/arm/mach-uemd/Makefile |  1 +
- arch/arm/mach-uemd/reset.c  | 24 ++++++++++++++++++++++++
- 5 files changed, 38 insertions(+)
+ arch/arm/Kconfig                           |  1 +
+ arch/arm/mach-uemd/include/mach/debug_ll.h | 41 ++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3754646..040df54 100644
+index 040df54..5dc9c64 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -184,6 +184,10 @@ config ARCH_TEGRA
- 	select OFTREE
- 	select RELOCATABLE
+@@ -187,6 +187,7 @@ config ARCH_TEGRA
+ config ARCH_UEMD
+ 	bool "RC Module UEMD Platform"
+ 	select CPU_ARM1176
++	select HAS_DEBUG_LL
  
-+config ARCH_UEMD
-+	bool "RC Module UEMD Platform"
-+	select CPU_ARM1176
-+
  config ARCH_ZYNQ
  	bool "Xilinx Zynq-based boards"
- 	select HAS_DEBUG_LL
-@@ -209,6 +213,7 @@ source arch/arm/mach-socfpga/Kconfig
- source arch/arm/mach-versatile/Kconfig
- source arch/arm/mach-vexpress/Kconfig
- source arch/arm/mach-tegra/Kconfig
-+source arch/arm/mach-uemd/Kconfig
- source arch/arm/mach-zynq/Kconfig
- 
- config ARM_ASM_UNIFIED
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index c1bd836..c2ef824 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -69,6 +69,7 @@ machine-$(CONFIG_ARCH_SOCFPGA)		:= socfpga
- machine-$(CONFIG_ARCH_VERSATILE)	:= versatile
- machine-$(CONFIG_ARCH_VEXPRESS)		:= vexpress
- machine-$(CONFIG_ARCH_TEGRA)		:= tegra
-+machine-$(CONFIG_ARCH_UEMD)		:= uemd
- machine-$(CONFIG_ARCH_ZYNQ)		:= zynq
- 
- 
-diff --git a/arch/arm/mach-uemd/Kconfig b/arch/arm/mach-uemd/Kconfig
+diff --git a/arch/arm/mach-uemd/include/mach/debug_ll.h b/arch/arm/mach-uemd/include/mach/debug_ll.h
 new file mode 100644
-index 0000000..f9cf859
+index 0000000..5b45f6a
 --- /dev/null
-+++ b/arch/arm/mach-uemd/Kconfig
-@@ -0,0 +1,7 @@
-+if ARCH_UEMD
-+
-+config ARCH_TEXT_BASE
-+	hex
-+	default 0x40800000
-+
-+endif
-diff --git a/arch/arm/mach-uemd/Makefile b/arch/arm/mach-uemd/Makefile
-new file mode 100644
-index 0000000..f3cc668
---- /dev/null
-+++ b/arch/arm/mach-uemd/Makefile
-@@ -0,0 +1 @@
-+obj-y += reset.o
-diff --git a/arch/arm/mach-uemd/reset.c b/arch/arm/mach-uemd/reset.c
-new file mode 100644
-index 0000000..df23e47
---- /dev/null
-+++ b/arch/arm/mach-uemd/reset.c
-@@ -0,0 +1,24 @@
++++ b/arch/arm/mach-uemd/include/mach/debug_ll.h
+@@ -0,0 +1,41 @@
 +/*
 + * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
 + *
@@ -116,13 +67,30 @@ index 0000000..df23e47
 + *
 + */
 +
-+#include <common.h>
++/** @file
++ *  This File contains declaration for early output support
++ */
++#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
++#define __INCLUDE_ARCH_DEBUG_LL_H__
 +
-+void __noreturn reset_cpu(ulong addr)
++#include <asm/io.h>
++
++#define DEBUG_LL_UART_ADDR	0x2002b000
++#define DEBUG_LL_UART_RSHFT	2
++
++#define rbr		(0 << DEBUG_LL_UART_RSHFT)
++#define lsr		(5 << DEBUG_LL_UART_RSHFT)
++#define LSR_THRE	0x20	/* Xmit holding register empty */
++
++static inline void PUTC_LL(char ch)
 +{
-+	unreachable();
++	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
++		;
++
++	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
 +}
-+EXPORT_SYMBOL(reset_cpu);
++
++#endif /* __INCLUDE_ARCH_DEBUG_LL_H__ */
 -- 
 1.9.0
 
