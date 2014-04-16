@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x22e.google.com ([2a00:1450:4010:c04::22e])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WaMbj-0005bC-Nr
- for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:20 +0000
-Received: by mail-lb0-f174.google.com with SMTP id u14so7931786lbd.33
- for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:55 -0700 (PDT)
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Apr 2014 13:57:39 +0400
-Message-Id: <1397642260-32606-5-git-send-email-antonynpavlov@gmail.com>
-In-Reply-To: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
-References: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
+Received: from mail.data-modul.de ([212.184.205.171]
+ helo=mailgw1.data-modul.com)
+ by bombadil.infradead.org with smtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WaQUx-0002m7-P6
+ for barebox@lists.infradead.org; Wed, 16 Apr 2014 14:07:36 +0000
+From: Silvio Fricke <silvio.fricke@gmail.com>
+Date: Wed, 16 Apr 2014 15:56:12 +0200
+Message-Id: <0180a16d5e953baca89cf12113f9122f8c8e6696.1397656442.git.silvio.fricke@gmail.com>
+In-Reply-To: <cover.1397656108.git.silvio.fricke@gmail.com>
+References: <cover.1397656108.git.silvio.fricke@gmail.com>
+In-Reply-To: <cover.1397656108.git.silvio.fricke@gmail.com>
+References: <cover.1397656108.git.silvio.fricke@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,93 +19,45 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/5] ARM: uemd: add mb7707 board support
+Subject: [PATCH] make: fix searchpath of generated autoconf.h
 To: barebox@lists.infradead.org
+Cc: Silvio Fricke <silvio.fricke@gmail.com>
 
-VGhlIE1CIDc3LjA3IGlzIGEgc21hbGwgKDgweDgwIG1tKSBzaW5nbGUtYm9hcmQgY29tcHV0ZXIK
-ZGV2ZWxvcGVkIGluIFJ1c3NpYSBieSB0aGUgUkMgTW9kdWxlLgpJdCB3YXMgZGV2ZWxvcGVkIGFz
-IGFuIGVkdWNhdGlvbmFsIGJvYXJkIGZvciDQmjE4NznQpdCRMdCvIFNvQwpjYXBhYmlsaXRpZXMg
-ZGVtb25zdHJhdGlvbi4KClNlZSBodHRwOi8vd3d3Lm1vZHVsZS5ydS9lbi9jYXRhbG9nL21pY3Jv
-L21pY3JvX3BjLyBmb3IgZGV0YWlscy4KClNpZ25lZC1vZmYtYnk6IEFudG9ueSBQYXZsb3YgPGFu
-dG9ueW5wYXZsb3ZAZ21haWwuY29tPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAg
-ICAgICAgICAgICAgfCAgMSArCiBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9NYWtlZmls
-ZSAgIHwgIDEgKwogYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvYm9hcmQuYyAgICB8IDI3
-ICsrKysrKysrKysrKysrKysrKysrKysrKysKIGFyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3
-L2xvd2xldmVsLmMgfCAzNCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogYXJjaC9h
-cm0vZHRzL21vZHVsZS1tYjc3MDcuZHRzICAgICAgICAgICB8IDE2ICsrKysrKysrKysrKysrKwog
-YXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcgICAgICAgICAgICAgICB8ICA5ICsrKysrKysrKwog
-NiBmaWxlcyBjaGFuZ2VkLCA4OCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0v
-Ym9hcmRzL01ha2VmaWxlIGIvYXJjaC9hcm0vYm9hcmRzL01ha2VmaWxlCmluZGV4IDE2NzQyZDku
-LjgwNmFiM2UgMTAwNjQ0Ci0tLSBhL2FyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZQorKysgYi9hcmNo
-L2FybS9ib2FyZHMvTWFrZWZpbGUKQEAgLTQ3LDYgKzQ3LDcgQEAgb2JqLSQoQ09ORklHX01BQ0hf
-SElHSEJBTkspCQkJKz0gaGlnaGJhbmsvCiBvYmotJChDT05GSUdfTUFDSF9JTVgyMUFEUykJCQkr
-PSBmcmVlc2NhbGUtbXgyMS1hZHMvCiBvYmotJChDT05GSUdfTUFDSF9JTVgyMzNfT0xJTlVYSU5P
-KQkJKz0gaW14MjMzLW9saW51eGluby8KIG9iai0kKENPTkZJR19NQUNIX0lNWDI3QURTKQkJCSs9
-IGZyZWVzY2FsZS1teDI3LWFkcy8KK29iai0kKENPTkZJR19NQUNIX01CNzcwNykJCQkrPSBtb2R1
-bGUtbWI3NzA3Lwogb2JqLSQoQ09ORklHX01BQ0hfTUlPQTcwMSkJCQkrPSBtaW9hNzAxLwogb2Jq
-LSQoQ09ORklHX01BQ0hfTU1DQ1BVKQkJCSs9IG1tY2NwdS8KIG9iai0kKENPTkZJR19NQUNIX01Y
-MjNFVkspCQkJKz0gZnJlZXNjYWxlLW14MjMtZXZrLwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9h
-cmRzL21vZHVsZS1tYjc3MDcvTWFrZWZpbGUgYi9hcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcw
-Ny9NYWtlZmlsZQpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi5iMmY0NGJiCi0t
-LSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvTWFrZWZpbGUK
-QEAgLTAsMCArMSBAQAorb2JqLXkgKz0gbG93bGV2ZWwubyBib2FyZC5vCmRpZmYgLS1naXQgYS9h
-cmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9ib2FyZC5jIGIvYXJjaC9hcm0vYm9hcmRzL21v
-ZHVsZS1tYjc3MDcvYm9hcmQuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAwLi45
-ZTU0NGI1Ci0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcv
-Ym9hcmQuYwpAQCAtMCwwICsxLDI3IEBACisvKgorICogQ29weXJpZ2h0IChDKSAyMDE0IEFudG9u
-eSBQYXZsb3YgPGFudG9ueW5wYXZsb3ZAZ21haWwuY29tPgorICoKKyAqIFRoaXMgZmlsZSBpcyBw
-YXJ0IG9mIGJhcmVib3guCisgKiBTZWUgZmlsZSBDUkVESVRTIGZvciBsaXN0IG9mIHBlb3BsZSB3
-aG8gY29udHJpYnV0ZWQgdG8gdGhpcyBwcm9qZWN0LgorICoKKyAqIFRoaXMgcHJvZ3JhbSBpcyBm
-cmVlIHNvZnR3YXJlOyB5b3UgY2FuIHJlZGlzdHJpYnV0ZSBpdCBhbmQvb3IgbW9kaWZ5CisgKiBp
-dCB1bmRlciB0aGUgdGVybXMgb2YgdGhlIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIHZlcnNp
-b24gMgorICogYXMgcHVibGlzaGVkIGJ5IHRoZSBGcmVlIFNvZnR3YXJlIEZvdW5kYXRpb24uCisg
-KgorICogVGhpcyBwcm9ncmFtIGlzIGRpc3RyaWJ1dGVkIGluIHRoZSBob3BlIHRoYXQgaXQgd2ls
-bCBiZSB1c2VmdWwsCisgKiBidXQgV0lUSE9VVCBBTlkgV0FSUkFOVFk7IHdpdGhvdXQgZXZlbiB0
-aGUgaW1wbGllZCB3YXJyYW50eSBvZgorICogTUVSQ0hBTlRBQklMSVRZIG9yIEZJVE5FU1MgRk9S
-IEEgUEFSVElDVUxBUiBQVVJQT1NFLiAgU2VlIHRoZQorICogR05VIEdlbmVyYWwgUHVibGljIExp
-Y2Vuc2UgZm9yIG1vcmUgZGV0YWlscy4KKyAqCisgKi8KKworI2luY2x1ZGUgPGNvbW1vbi5oPgor
-I2luY2x1ZGUgPGluaXQuaD4KKworc3RhdGljIGludCBob3N0bmFtZV9pbml0KHZvaWQpCit7CisJ
-YmFyZWJveF9zZXRfaG9zdG5hbWUoIm1iNzcwNyIpOworCisJcmV0dXJuIDA7Cit9Citjb3JlX2lu
-aXRjYWxsKGhvc3RuYW1lX2luaXQpOwpkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9hcmRzL21vZHVs
-ZS1tYjc3MDcvbG93bGV2ZWwuYyBiL2FyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L2xvd2xl
-dmVsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMC4uNWY1ZTFkNwotLS0gL2Rl
-di9udWxsCisrKyBiL2FyY2gvYXJtL2JvYXJkcy9tb2R1bGUtbWI3NzA3L2xvd2xldmVsLmMKQEAg
-LTAsMCArMSwzNCBAQAorLyoKKyAqIENvcHlyaWdodCAoQykgMjAxNCBBbnRvbnkgUGF2bG92IDxh
-bnRvbnlucGF2bG92QGdtYWlsLmNvbT4KKyAqCisgKiBUaGlzIGZpbGUgaXMgcGFydCBvZiBiYXJl
-Ym94LgorICogU2VlIGZpbGUgQ1JFRElUUyBmb3IgbGlzdCBvZiBwZW9wbGUgd2hvIGNvbnRyaWJ1
-dGVkIHRvIHRoaXMgcHJvamVjdC4KKyAqCisgKiBUaGlzIHByb2dyYW0gaXMgZnJlZSBzb2Z0d2Fy
-ZTsgeW91IGNhbiByZWRpc3RyaWJ1dGUgaXQgYW5kL29yIG1vZGlmeQorICogaXQgdW5kZXIgdGhl
-IHRlcm1zIG9mIHRoZSBHTlUgR2VuZXJhbCBQdWJsaWMgTGljZW5zZSB2ZXJzaW9uIDIKKyAqIGFz
-IHB1Ymxpc2hlZCBieSB0aGUgRnJlZSBTb2Z0d2FyZSBGb3VuZGF0aW9uLgorICoKKyAqIFRoaXMg
-cHJvZ3JhbSBpcyBkaXN0cmlidXRlZCBpbiB0aGUgaG9wZSB0aGF0IGl0IHdpbGwgYmUgdXNlZnVs
-LAorICogYnV0IFdJVEhPVVQgQU5ZIFdBUlJBTlRZOyB3aXRob3V0IGV2ZW4gdGhlIGltcGxpZWQg
-d2FycmFudHkgb2YKKyAqIE1FUkNIQU5UQUJJTElUWSBvciBGSVRORVNTIEZPUiBBIFBBUlRJQ1VM
-QVIgUFVSUE9TRS4gIFNlZSB0aGUKKyAqIEdOVSBHZW5lcmFsIFB1YmxpYyBMaWNlbnNlIGZvciBt
-b3JlIGRldGFpbHMuCisgKgorICovCisKKyNkZWZpbmUgX19MT1dMRVZFTF9JTklUX18KKworI2lu
-Y2x1ZGUgPGNvbW1vbi5oPgorI2luY2x1ZGUgPGFzbS9iYXJlYm94LWFybS5oPgorI2luY2x1ZGUg
-PGFzbS9iYXJlYm94LWFybS1oZWFkLmg+CisjaW5jbHVkZSA8aW5pdC5oPgorI2luY2x1ZGUgPHNp
-emVzLmg+CisKKyNkZWZpbmUgTUI3NzA3X1NSQU1fQkFTRSAweDQwMDAwMDAwCisjZGVmaW5lIE1C
-NzcwN19TUkFNX1NJWkUgU1pfMTI4TQorCit2b2lkIF9fbmFrZWQgX19iYXJlX2luaXQgYmFyZWJv
-eF9hcm1fcmVzZXRfdmVjdG9yKHZvaWQpCit7CisJYXJtX2NwdV9sb3dsZXZlbF9pbml0KCk7CisK
-KwliYXJlYm94X2FybV9lbnRyeShNQjc3MDdfU1JBTV9CQVNFLCBNQjc3MDdfU1JBTV9TSVpFLCAw
-KTsKK30KZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cyBiL2FyY2gv
-YXJtL2R0cy9tb2R1bGUtbWI3NzA3LmR0cwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAw
-MDAwLi4yMWJkZWIyCi0tLSAvZGV2L251bGwKKysrIGIvYXJjaC9hcm0vZHRzL21vZHVsZS1tYjc3
-MDcuZHRzCkBAIC0wLDAgKzEsMTYgQEAKKy9kdHMtdjEvOworCisjaW5jbHVkZSAiazE4NzloYjF5
-YS5kdHNpIgorCisvIHsKKwltb2RlbCA9ICJNb2R1bGUgTUIgNzcuMDciOworCWNvbXBhdGlibGUg
-PSAibW9kdWxlLG1iNzcwNyI7CisKKwltZW1vcnkgeworCQlyZWcgPSA8MHg0MDAwMDAwMCAweDgw
-MDAwMDA+OworCX07Cit9OworCismc2VyaWFsMCB7CisJc3RhdHVzID0gIm9rYXkiOworfTsKZGlm
-ZiAtLWdpdCBhL2FyY2gvYXJtL21hY2gtdWVtZC9LY29uZmlnIGIvYXJjaC9hcm0vbWFjaC11ZW1k
-L0tjb25maWcKaW5kZXggZjljZjg1OS4uYWVkZDc1NyAxMDA2NDQKLS0tIGEvYXJjaC9hcm0vbWFj
-aC11ZW1kL0tjb25maWcKKysrIGIvYXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcKQEAgLTQsNCAr
-NCwxMyBAQCBjb25maWcgQVJDSF9URVhUX0JBU0UKIAloZXgKIAlkZWZhdWx0IDB4NDA4MDAwMDAK
-IAorY2hvaWNlCisJcHJvbXB0ICJVRU1EIEJvYXJkIHR5cGUiCisKK2NvbmZpZyBNQUNIX01CNzcw
-NworCWJvb2wgIk1CNzcwNyIKKwlzZWxlY3QgSEFWRV9ERUZBVUxUX0VOVklST05NRU5UX05FVwor
-CitlbmRjaG9pY2UKKwogZW5kaWYKLS0gCjEuOS4wCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0
-cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYmFyZWJveAo=
+If barebox is builded out-of-tree we don't find the autogenerated
+autoconf.h because we search in the srctree.
+
+With this patch we don't get this error message:
+
+cc1: fatal error: /[...]/barebox/include/generated/autoconf.h: No such file or directory
+
+Signed-off-by: Silvio Fricke <silvio.fricke@gmail.com>
+---
+ scripts/Makefile.lib | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index d403037..cf7e2d5 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -376,7 +376,7 @@ cmd_imximage_S_dcd=						\
+ 
+ imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp \
+       -I $(srctree)/include -I $(MACH)/include \
+-      -include $(srctree)/include/generated/autoconf.h
++      -include include/generated/autoconf.h
+ 
+ dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
+ 
+-- 
+1.9.1
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
