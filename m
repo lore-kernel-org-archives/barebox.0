@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-lb0-x231.google.com ([2a00:1450:4010:c04::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WaMbd-0005Zy-Tv
- for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:14 +0000
-Received: by mail-la0-f43.google.com with SMTP id e16so7843659lan.2
- for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:51 -0700 (PDT)
+ id 1WaMbj-0005bA-Lz
+ for barebox@lists.infradead.org; Wed, 16 Apr 2014 09:58:20 +0000
+Received: by mail-lb0-f177.google.com with SMTP id z11so7734982lbi.8
+ for <barebox@lists.infradead.org>; Wed, 16 Apr 2014 02:57:57 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Wed, 16 Apr 2014 13:57:37 +0400
-Message-Id: <1397642260-32606-3-git-send-email-antonynpavlov@gmail.com>
+Date: Wed, 16 Apr 2014 13:57:40 +0400
+Message-Id: <1397642260-32606-6-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
 References: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,74 +23,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/5] ARM: uemd: add DEBUG_LL support
+Subject: [PATCH 5/5] ARM: uemd: add module-mb7707_defconfig
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/arm/Kconfig                           |  1 +
- arch/arm/mach-uemd/include/mach/debug_ll.h | 41 ++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+ arch/arm/configs/module-mb7707_defconfig | 43 ++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 040df54..5dc9c64 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -187,6 +187,7 @@ config ARCH_TEGRA
- config ARCH_UEMD
- 	bool "RC Module UEMD Platform"
- 	select CPU_ARM1176
-+	select HAS_DEBUG_LL
- 
- config ARCH_ZYNQ
- 	bool "Xilinx Zynq-based boards"
-diff --git a/arch/arm/mach-uemd/include/mach/debug_ll.h b/arch/arm/mach-uemd/include/mach/debug_ll.h
+diff --git a/arch/arm/configs/module-mb7707_defconfig b/arch/arm/configs/module-mb7707_defconfig
 new file mode 100644
-index 0000000..5b45f6a
+index 0000000..772c5dd
 --- /dev/null
-+++ b/arch/arm/mach-uemd/include/mach/debug_ll.h
-@@ -0,0 +1,41 @@
-+/*
-+ * Copyright (C) 2014 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ * See file CREDITS for list of people who contributed to this project.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+/** @file
-+ *  This File contains declaration for early output support
-+ */
-+#ifndef __INCLUDE_ARCH_DEBUG_LL_H__
-+#define __INCLUDE_ARCH_DEBUG_LL_H__
-+
-+#include <asm/io.h>
-+
-+#define DEBUG_LL_UART_ADDR	0x2002b000
-+#define DEBUG_LL_UART_RSHFT	2
-+
-+#define rbr		(0 << DEBUG_LL_UART_RSHFT)
-+#define lsr		(5 << DEBUG_LL_UART_RSHFT)
-+#define LSR_THRE	0x20	/* Xmit holding register empty */
-+
-+static inline void PUTC_LL(char ch)
-+{
-+	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
-+		;
-+
-+	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
-+}
-+
-+#endif /* __INCLUDE_ARCH_DEBUG_LL_H__ */
++++ b/arch/arm/configs/module-mb7707_defconfig
+@@ -0,0 +1,43 @@
++CONFIG_BUILTIN_DTB=y
++CONFIG_BUILTIN_DTB_NAME="module-mb7707"
++CONFIG_ARCH_UEMD=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_MALLOC_TLSF=y
++CONFIG_PROMPT="MB 77.07: "
++CONFIG_BAUDRATE=38400
++CONFIG_LONGHELP=y
++CONFIG_GLOB=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_PASSWORD=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++# CONFIG_CMD_MOUNT is not set
++# CONFIG_CMD_UMOUNT is not set
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADY=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MM=y
++# CONFIG_CMD_BOOTM is not set
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++# CONFIG_SPI is not set
++CONFIG_CLOCKSOURCE_DUMMY=y
++CONFIG_SHA1=y
++CONFIG_SHA256=y
 -- 
 1.9.0
 
