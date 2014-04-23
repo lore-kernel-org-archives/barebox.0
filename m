@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WcuSG-0004wD-JC
- for barebox@lists.infradead.org; Wed, 23 Apr 2014 10:31:05 +0000
-Date: Wed, 23 Apr 2014 12:30:42 +0200
+ Linux)) id 1WcuUN-0005XI-JZ
+ for barebox@lists.infradead.org; Wed, 23 Apr 2014 10:33:16 +0000
+Date: Wed, 23 Apr 2014 12:32:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140423103042.GR5858@pengutronix.de>
-References: <1398244766-5843-1-git-send-email-jbe@pengutronix.de>
- <1398244766-5843-2-git-send-email-jbe@pengutronix.de>
+Message-ID: <20140423103253.GS5858@pengutronix.de>
+References: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1398244766-5843-2-git-send-email-jbe@pengutronix.de>
+In-Reply-To: <1397147022-20116-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,36 +22,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] net/ifup.c: don't fail silently
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: [PATCH 1/2] spi: i.MX: Simplify cspi_0_0_init()
+To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 23, 2014 at 11:19:24AM +0200, Juergen Borleis wrote:
-> Since commit a162dfe50345d3461010759f8a0e79f7e388c140 the ifup command is implemented in C and runs up to two external scripts.
-> If one of these scripts return with an error code, the command terminates silently. This can confuse a user because there is
-> no hint about the reason why it fails. Add error messages to avoid this case.
+On Thu, Apr 10, 2014 at 08:23:41PM +0400, Alexander Shiyan wrote:
+> Use SPI module software reset to simplify cspi_0_0_init().
 > 
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
-> ---
->  net/ifup.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/ifup.c b/net/ifup.c
-> index 7b63136..c74120c 100644
-> --- a/net/ifup.c
-> +++ b/net/ifup.c
-> @@ -70,14 +70,18 @@ int ifup(const char *name, unsigned flags)
->  	cmd_discover = asprintf("/env/network/%s-discover", name);
->  
->  	ret = run_command(cmd);
-> -	if (ret)
-> +	if (ret) {
-> +		pr_err("Running '%s' fails\n", cmd);
+> Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 
-It failed, not it fails. Also, please print the error code along with
-the message.
+Applied, thanks
 
 Sascha
+
+> ---
+>  drivers/spi/imx_spi.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+> index 45461bd..3c1ba61 100644
+> --- a/drivers/spi/imx_spi.c
+> +++ b/drivers/spi/imx_spi.c
+> @@ -67,6 +67,8 @@
+>  
+>  #define CSPI_0_0_TEST_LBC		(1 << 14)
+>  
+> +#define CSPI_0_0_RESET_START		(1 << 0)
+> +
+>  #define CSPI_0_7_RXDATA			0x00
+>  #define CSPI_0_7_TXDATA			0x04
+>  #define CSPI_0_7_CTRL			0x08
+> @@ -197,13 +199,9 @@ static void cspi_0_0_init(struct imx_spi *imx)
+>  {
+>  	void __iomem *base = imx->regs;
+>  
+> -	writel(CSPI_0_0_CTRL_ENABLE | CSPI_0_0_CTRL_MASTER,
+> -		     base + CSPI_0_0_CTRL);
+> -	writel(CSPI_0_0_PERIOD_32KHZ,
+> -		     base + CSPI_0_0_PERIOD);
+> -	while (readl(base + CSPI_0_0_INT) & CSPI_0_0_STAT_RR)
+> -		readl(base + CSPI_0_0_RXDATA);
+> -	writel(0, base + CSPI_0_0_INT);
+> +	writel(CSPI_0_0_RESET_START, base + CSPI_0_0_RESET);
+> +	do {
+> +	} while (readl(base + CSPI_0_0_RESET) & CSPI_0_0_RESET_START);
+>  }
+>  
+>  static unsigned int cspi_0_7_xchg_single(struct imx_spi *imx, unsigned int data)
+> -- 
+> 1.8.3.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
