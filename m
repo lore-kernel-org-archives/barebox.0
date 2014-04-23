@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WcspQ-0005Fd-Al
- for barebox@lists.infradead.org; Wed, 23 Apr 2014 08:46:57 +0000
-Date: Wed, 23 Apr 2014 10:46:29 +0200
+ Linux)) id 1WctHp-0002lZ-Pg
+ for barebox@lists.infradead.org; Wed, 23 Apr 2014 09:16:14 +0000
+Date: Wed, 23 Apr 2014 11:15:51 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140423084629.GF5858@pengutronix.de>
+Message-ID: <20140423091551.GG5858@pengutronix.de>
 References: <1397547514-19925-1-git-send-email-antonynpavlov@gmail.com>
- <1397547514-19925-6-git-send-email-antonynpavlov@gmail.com>
+ <1397547514-19925-9-git-send-email-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1397547514-19925-6-git-send-email-antonynpavlov@gmail.com>
+In-Reply-To: <1397547514-19925-9-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +23,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [RFC 05/10] resource: add create_resource() helper function
+Subject: Re: [RFC 08/10] bootm: add kexec ELF support
 To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, Apr 15, 2014 at 11:38:29AM +0400, Antony Pavlov wrote:
+On Tue, Apr 15, 2014 at 11:38:32AM +0400, Antony Pavlov wrote:
+> Also introduce reboot() for starting already loaded
+> via kexec ELF segments.
+> 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  common/resource.c      | 15 +++++++++++++++
->  include/linux/ioport.h |  2 ++
->  2 files changed, 17 insertions(+)
+>  include/linux/reboot.h      | 14 ++++++++++++++
+>  lib/kexec/Makefile          |  1 +
+>  lib/kexec/kexec-bootm-elf.c | 36 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 51 insertions(+)
+>  create mode 100644 include/linux/reboot.h
+>  create mode 100644 lib/kexec/kexec-bootm-elf.c
 > 
-> diff --git a/common/resource.c b/common/resource.c
-> index fe4680e..b6c7c87 100644
-> --- a/common/resource.c
-> +++ b/common/resource.c
-> @@ -143,3 +143,18 @@ struct resource *request_ioport_region(const char *name,
->  {
->  	return __request_region(&ioport_resource, name, start, end);
->  }
+> diff --git a/include/linux/reboot.h b/include/linux/reboot.h
+> new file mode 100644
+> index 0000000..454ed33
+> --- /dev/null
+> +++ b/include/linux/reboot.h
+> @@ -0,0 +1,14 @@
+> +#ifndef _LINUX_REBOOT_H
+> +#define _LINUX_REBOOT_H
 > +
-> +struct resource *create_resource(const char *name,
-> +	resource_size_t start, resource_size_t end)
+> +/*
+> + * Commands accepted by the _reboot() system call.
+> + *
+> + * KEXEC       Restart system using a previously loaded Linux kernel
+> + */
+> +
+> +#define	LINUX_REBOOT_CMD_KEXEC		0x45584543
+> +
+> +extern int reboot(int cmd);
+> +
+> +#endif /* _LINUX_REBOOT_H */
+> diff --git a/lib/kexec/Makefile b/lib/kexec/Makefile
+> index 8febef1..2f3dc1d 100644
+> --- a/lib/kexec/Makefile
+> +++ b/lib/kexec/Makefile
+> @@ -1,3 +1,4 @@
+>  obj-y	+= kexec.o
+>  obj-y	+= kexec-elf.o
+>  obj-y	+= kexec-elf-exec.o
+> +obj-y	+= kexec-bootm-elf.o
+> diff --git a/lib/kexec/kexec-bootm-elf.c b/lib/kexec/kexec-bootm-elf.c
+> new file mode 100644
+> index 0000000..6c8071a
+> --- /dev/null
+> +++ b/lib/kexec/kexec-bootm-elf.c
+> @@ -0,0 +1,36 @@
+> +#include <boot.h>
+> +#include <init.h>
+> +#include <binfmt.h>
+> +#include <errno.h>
+> +#include <linux/reboot.h>
+> +
+> +#include "kexec.h"
+> +
+> +static int do_bootm_elf(struct image_data *data)
 > +{
-> +	struct resource *t;
+> +	kexec_load_file(data->os_file, 0);
+> +	setenv("global.bootm.image", data->os_file);
+> +	reboot(LINUX_REBOOT_CMD_KEXEC);
 > +
-> +	t = xzalloc(sizeof *t);
-> +	INIT_LIST_HEAD(&t->children);
-> +	t->parent = NULL;
-> +	t->name = xstrdup(name);
-> +	t->start = start;
-> +	t->end = end;
+> +	return -ERESTARTSYS;
+> +}
+> +
+> +static struct image_handler elf_handler = {
+> +	.name = "ELF",
+> +	.bootm = do_bootm_elf,
+> +	.filetype = filetype_elf,
+> +};
+> +
+> +static struct binfmt_hook binfmt_elf_hook = {
+> +	.type = filetype_elf,
+> +	.exec = "bootm",
+> +};
+> +
+> +static int elf_register_image_handler(void)
+> +{
+> +	register_image_handler(&elf_handler);
+> +	binfmt_register(&binfmt_elf_hook);
+> +
+> +	return 0;
+> +}
+> +late_initcall(elf_register_image_handler);
 
-How about calling init_resource() and skip the fields already initialized
-there from this function? This makes sure new fields in struct resource
-can be initialized in a single place.
+Instead of making this an initcall I suggest that you call this function
+from Malta specific code along with a pointer to a kexec_execute_file
+function. This makes sure the generic code does not have to call into
+global architecture specific functions. Also the dataflow can be done
+clearer. kexec_load_file() currently loads the image *somewhere* and
+reboot() is expected to know where it is loaded. I imagine kexec_load_file
+should return information about the loaded image which is then passed to
+reboot().
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
