@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wcttg-0002xy-JE
- for barebox@lists.infradead.org; Wed, 23 Apr 2014 09:55:21 +0000
-Date: Wed, 23 Apr 2014 11:54:58 +0200
+ Linux)) id 1Wctuh-0004k4-FM
+ for barebox@lists.infradead.org; Wed, 23 Apr 2014 09:56:24 +0000
+Date: Wed, 23 Apr 2014 11:56:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140423095458.GL5858@pengutronix.de>
+Message-ID: <20140423095600.GM5858@pengutronix.de>
 References: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
- <1397290265-21273-7-git-send-email-shc_work@mail.ru>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1397290265-21273-7-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1397290265-21273-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 07/12] commands/umount: Return real error code if
- "umount" fail
+Subject: Re: [PATCH 01/12] scripts: imx-image: Fix resource leak
 To: Alexander Shiyan <shc_work@mail.ru>
 Cc: barebox@lists.infradead.org
 
-On Sat, Apr 12, 2014 at 12:11:00PM +0400, Alexander Shiyan wrote:
+On Sat, Apr 12, 2014 at 12:10:54PM +0400, Alexander Shiyan wrote:
 > Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-> ---
->  commands/umount.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/commands/umount.c b/commands/umount.c
-> index e6de1bc..8dcf7f0 100644
-> --- a/commands/umount.c
-> +++ b/commands/umount.c
-> @@ -28,11 +28,10 @@ static int do_umount(int argc, char *argv[])
->  	if (argc != 2)
->  		return COMMAND_ERROR_USAGE;
->  
-> -	if ((ret = umount(argv[1]))) {
-> +	if ((ret = umount(argv[1])))
->  		perror("umount");
-> -		return 1;
-> -	}
 
-Here perror() also should be removed.
+Applied this series without 05/12 and 07/12 for now.
 
 Sascha
+
+> ---
+>  scripts/imx/imx-image.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+> index 1d935be..f87f4d2 100644
+> --- a/scripts/imx/imx-image.c
+> +++ b/scripts/imx/imx-image.c
+> @@ -528,7 +528,7 @@ static int parse_config(const char *filename)
+>  	int lineno = 0;
+>  	char *line = NULL, *tmp;
+>  	char *argv[MAXARGS];
+> -	int nargs, i, ret;
+> +	int nargs, i, ret = 0;
+>  
+>  	f = fopen(filename, "r");
+>  	if (!f) {
+> @@ -559,7 +559,7 @@ static int parse_config(const char *filename)
+>  				if (ret) {
+>  					fprintf(stderr, "error in line %d: %s\n",
+>  							lineno, strerror(-ret));
+> -					return ret;
+> +					goto out_parse;
+>  				}
+>  				break;
+>  			}
+> @@ -567,11 +567,14 @@ static int parse_config(const char *filename)
+>  
+>  		if (ret == -ENOENT) {
+>  			fprintf(stderr, "no such command: %s\n", argv[0]);
+> -			return ret;
+> +			break;
+>  		}
+>  	}
+>  
+> -	return 0;
+> +out_parse:
+> +	fclose(f);
+> +
+> +	return ret;
+>  }
+>  
+>  static int xread(int fd, void *buf, int len)
+> -- 
+> 1.8.3.2
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
