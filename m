@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-f41.google.com ([209.85.215.41])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WcZuz-0001f5-BD
- for barebox@lists.infradead.org; Tue, 22 Apr 2014 12:35:22 +0000
-Received: by mail-la0-f41.google.com with SMTP id gl10so4357931lab.0
- for <barebox@lists.infradead.org>; Tue, 22 Apr 2014 05:34:54 -0700 (PDT)
-Received: from gmail.com ([213.132.98.41])
- by mx.google.com with ESMTPSA id el7sm40022745lac.10.2014.04.22.05.34.50
- for <barebox@lists.infradead.org>
- (version=TLSv1.2 cipher=RC4-SHA bits=128/128);
- Tue, 22 Apr 2014 05:34:51 -0700 (PDT)
-Date: Tue, 22 Apr 2014 14:34:43 +0200
-From: Tobias Waldekranz <tobias@waldekranz.com>
-Message-ID: <20140422123443.GA16192@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WcrUP-0004Ql-6M
+ for barebox@lists.infradead.org; Wed, 23 Apr 2014 07:21:10 +0000
+Date: Wed, 23 Apr 2014 09:20:40 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140423072040.GA5858@pengutronix.de>
+References: <1398111326-21783-1-git-send-email-dev@lynxeye.de>
+ <1398111326-21783-5-git-send-email-dev@lynxeye.de>
+ <CAOMZO5Aka_=iyA=qUf+_1s9dyxpNpf6DxwWPq=62hZBxsKLkKQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
+In-Reply-To: <CAOMZO5Aka_=iyA=qUf+_1s9dyxpNpf6DxwWPq=62hZBxsKLkKQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -27,27 +24,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Freescale P1020 Startup
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 5/5] video: imx-ipu-v3: fix possible NULL ptr dereference
+To: Fabio Estevam <festevam@gmail.com>
+Cc: barebox@lists.infradead.org
 
-Hi, I'm currently trying to bring up a P1020 based board which boots
-from a NOR flash. My board config is based on the existing P2020RDB
-board.
+On Mon, Apr 21, 2014 at 05:43:46PM -0300, Fabio Estevam wrote:
+> On Mon, Apr 21, 2014 at 5:15 PM, Lucas Stach <dev@lynxeye.de> wrote:
+> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
+> > ---
+> >  drivers/video/imx-ipu-v3/ipu-dmfc.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/video/imx-ipu-v3/ipu-dmfc.c b/drivers/video/imx-ipu-v3/ipu-dmfc.c
+> > index 7b54e25001c6..61704f4a9c06 100644
+> > --- a/drivers/video/imx-ipu-v3/ipu-dmfc.c
+> > +++ b/drivers/video/imx-ipu-v3/ipu-dmfc.c
+> > @@ -146,16 +146,18 @@ EXPORT_SYMBOL_GPL(ipu_dmfc_disable_channel);
+> >  static int ipu_dmfc_setup_channel(struct dmfc_channel *dmfc, int slots,
+> >                 int segment, int burstsize)
+> >  {
+> > -       struct ipu_dmfc_priv *priv = dmfc->priv;
+> > +       struct ipu_dmfc_priv *priv;
+> >         u32 val, field;
+> >
+> > +       if (!dmfc)
+> > +               return -EINVAL;
+> 
+> Would be better to fix it in the same way we did in the kernel:
+> http://www.spinics.net/lists/linux-driver-devel/msg45096.html
 
-The code faults very early with an instruction TLB error when
-transitioning from the boot page (0xfffff000) to the flash's address
-space (0xeffff000). The TLB has the same valid entries that U-Boot has
-setup at the corresponding point in the code (at the end of
-create_init_ram_area).
+Just did that and applied this series.
 
-I have tried to compare start.S with its U-Boot cousin but alas, my
-PPC assembler fu fails me. Are there any differences between the E500
-cores in the P1020 vs. P2020 that must be taken in to consideration in
-start.S?
+Sascha
 
 -- 
-Thanks
- - wkz
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
