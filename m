@@ -1,18 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WctLQ-0003g3-4X
+ Linux)) id 1WctLQ-0003g5-4Z
  for barebox@lists.infradead.org; Wed, 23 Apr 2014 09:19:56 +0000
 Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
  by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <jbe@pengutronix.de>) id 1WctL1-00023V-Om
+ (envelope-from <jbe@pengutronix.de>) id 1WctL1-00023X-PM
  for barebox@lists.infradead.org; Wed, 23 Apr 2014 11:19:31 +0200
 Received: from jbe by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <jbe@pengutronix.de>) id 1WctL3-0001ZR-0W
+ (envelope-from <jbe@pengutronix.de>) id 1WctL3-0001ZW-10
  for barebox@lists.infradead.org; Wed, 23 Apr 2014 11:19:33 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
-Date: Wed, 23 Apr 2014 11:19:24 +0200
-Message-Id: <1398244766-5843-2-git-send-email-jbe@pengutronix.de>
+Date: Wed, 23 Apr 2014 11:19:25 +0200
+Message-Id: <1398244766-5843-3-git-send-email-jbe@pengutronix.de>
 In-Reply-To: <1398244766-5843-1-git-send-email-jbe@pengutronix.de>
 References: <1398244766-5843-1-git-send-email-jbe@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -28,43 +28,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/3] net/ifup.c: don't fail silently
+Subject: [PATCH 2/3] net/ifup.c: avoid setting the MAC twice
 To: barebox@lists.infradead.org
 
-Since commit a162dfe50345d3461010759f8a0e79f7e388c140 the ifup command is implemented in C and runs up to two external scripts.
-If one of these scripts return with an error code, the command terminates silently. This can confuse a user because there is
-no hint about the reason why it fails. Add error messages to avoid this case.
+The command always sets the MAC address of the interface in the code path.
+For the static network configuration case it sets it again, due to the
+environment variable keyword ("ethaddr") is listed again in the table.
+Remove this keyword from the table, because the MAC is already set.
 
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- net/ifup.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ifup.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/net/ifup.c b/net/ifup.c
-index 7b63136..c74120c 100644
+index c74120c..3216ce7 100644
 --- a/net/ifup.c
 +++ b/net/ifup.c
-@@ -70,14 +70,18 @@ int ifup(const char *name, unsigned flags)
- 	cmd_discover = asprintf("/env/network/%s-discover", name);
+@@ -31,7 +31,6 @@ static char *vars[] = {
+ 	"netmask",
+ 	"gateway",
+ 	"serverip",
+-	"ethaddr",
+ };
  
- 	ret = run_command(cmd);
--	if (ret)
-+	if (ret) {
-+		pr_err("Running '%s' fails\n", cmd);
- 		goto out;
-+	}
- 
- 	ret = stat(cmd_discover, &s);
- 	if (!ret) {
- 		ret = run_command(cmd_discover);
--		if (ret)
-+		if (ret) {
-+			pr_err("Running '%s' fails\n", cmd);
- 			goto out;
-+		}
- 	}
- 
- 	dev = get_device_by_name(name);
+ static int eth_set_param(struct device_d *dev, const char *param)
 -- 
 1.9.1
 
