@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WdDiC-0003WF-Vn
- for barebox@lists.infradead.org; Thu, 24 Apr 2014 07:04:49 +0000
-Date: Thu, 24 Apr 2014 09:04:27 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140424070427.GW5858@pengutronix.de>
-References: <1398244766-5843-1-git-send-email-jbe@pengutronix.de>
+Received: from moutng.kundenserver.de ([212.227.126.131])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WdFOs-0002EU-WA
+ for barebox@lists.infradead.org; Thu, 24 Apr 2014 08:53:00 +0000
+Date: Thu, 24 Apr 2014 10:52:28 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
+In-Reply-To: <20140424065848.GV5858@pengutronix.de>
+References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
+ <20140424065848.GV5858@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1398244766-5843-1-git-send-email-jbe@pengutronix.de>
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,31 +19,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Fix some ifup related network issues
-To: Juergen Borleis <jbe@pengutronix.de>
+Subject: Re: New driver crashes with "unable to handle paging request"
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 23, 2014 at 11:19:23AM +0200, Juergen Borleis wrote:
-> Patch 3 of 3 is more an RFC. Because we have a generic issue inside the hush.
-> Anybody here who is able to fix the hush?
-
-Nobody is able to fix hush, some people may be able to rewrite it ;)
-
-Applied this series.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+CkhpIFNhc2NoYSwKCj4gU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPiBoYXQg
+YW0gMjQuIEFwcmlsIDIwMTQgdW0gMDg6NTgKPiBnZXNjaHJpZWJlbjoKPgo+Cj4gSGkgUm9sZiwK
+Pgo+IE9uIFdlZCwgQXByIDIzLCAyMDE0IGF0IDA2OjA5OjQwUE0gKzAyMDAsIFJvbGYgRXZlcnMt
+RmlzY2hlciB3cm90ZToKPiA+IEknbSBqdXN0IHRyeWluZyB0byBwb3J0IHRoZSBVU0IgZHJpdmVy
+ICJtdXNiIiAoZm9yIHRoZSBBTTMzNXggcGxhdGZvcm0pIGZyb20KPiA+IGxpbnV4IGtlcm5lbCB0
+byBiYXJlYm94Lgo+ID4gQnV0IHdoZW5ldmVyIEkgd2FudCB0byByZWFkIGFueSBhZGRyZXNzIGlu
+IHRoZSByYW5nZSAweDQ3NDAxNDAwLTB4NDc0MDE3ZmYsCj4gPiB0aGUKPiA+IGJhcmVib3ggY3Jh
+c2hlcyB3aXRoICJ1bmFibGUgdG8gaGFuZGxlIHBhZ2luZyByZXF1ZXN0Ii4KPiA+IEkgaGF2ZSBh
+bHJlYWR5IHRyaWVkIHRvIGludm9rZSBhICJtYXBfaW9fc2VjdGlvbnMoMHgwLCAweDQ3NDAwMDAw
+LCAweDIwMDApIiwKPiA+IGJ1dAo+ID4gaXQgZGlkbid0IGhlbHAuCj4KPiBiYXJlYm94IGNyZWF0
+ZXMgYSBmbGF0IDE6MSBtYXBwaW5nIHdoZW4gdGhlIE1NVSBpcyBlbmFibGVkLiBZb3Ugd29uJ3QK
+PiBuZWVkIGFueSBjYWxscyB0byBtYXBfaW9fc2VjdGlvbnMgb3Igc29tZSBpb3JlbWFwIGNvcnJl
+c3BvbmRlbnQKPiBmdW5jdGlvbi4KPgoKVGhhbmsgeW91LiBUaGF0J3MgZ29vZCB0byBrbm93LgoK
+PiBJdCBtYXkgYmUgdGhhdCB5b3UgaGF2ZSB0byBlbmFibGUgc29tZSBidXMgY2xvY2tzIGluIG9y
+ZGVyIHRvIGFjY2VzcyB0aGUKPiBtdXNiLgo+CgpNYXliZS4gSSBmb3VuZCB0aGlzIGluIFRJJ3Mg
+IlRlY2huaWNhbCBSZWZlcmVuY2UgTWFudWFsIjoKIlByaW9yIHRvIGNvbmZpZ3VyaW5nIHRoZSBV
+U0IgTW9kdWxlIFJlZ2lzdGVycywgdGhlIFVTQiBTdWJTeXN0ZW0gYW5kIFBIWSBhcmUKcmVxdWly
+ZWQgdG8gYmUgcmVsZWFzZWQKZnJvbSByZXNldCwgZW5hYmxlIGludGVyY29ubmVjdHMgYW5kIGNv
+bnRyb2xsZXJzIGNsb2NrcyBhcyB3ZWxsIGFzIGNvbmZpZ3VyZSB0aGUKVVNCIFBIWSB3aXRoIGFw
+cHJvcHJpYXRlCnNldHRpbmcuIgoKUXVpdGUgYSBsb3Qgb2Ygd29yaywgYnV0IEknbGwgZGVmaW5p
+dGVseSBoYXZlIHRvIGNoZWNrIGl0LgoKPiBUbyBtYWtlIHN1cmUgeW91IGRvbid0IGhhdmUgTU1V
+IHRyb3VibGUgY291bGQgeW91IHBvc3QgdGhlIG91dHB1dCBvZgo+ICdtbXVpbmZvIDB4NDc0MDAw
+MDAnPwo+CgpQQVIgcmVzdWx0IGZvciAweDQ3NDAwMDAwOgrCoHByaXZpbGVnZWQgcmVhZDogMHg0
+NzQwMDI5MArCoCBQaHlzaWNhbCBBZGRyZXNzIFszMToxMl06IDB4NDc0MDAwMDAKwqAgUmVzZXJ2
+ZWQgWzExXTrCoCDCoCDCoCDCoCDCoCDCoCAweDAKwqAgTm90IE91dGVyIFNoYXJlYWJsZSBbMTBd
+OiAweDAKwqAgTm9uLVNlY3VyZSBbOV06wqAgwqAgwqAgwqAgwqAgwqAweDEKwqAgSW1wbC4gZGVm
+LiBbOF06wqAgwqAgwqAgwqAgwqAgwqAweDAKwqAgU2hhcmVhYmxlIFs3XTrCoCDCoCDCoCDCoCDC
+oCDCoCAweDEKwqAgSW5uZXIgbWVtLiBhdHRyLiBbNjo0XTrCoCDCoDB4MSAoMGIwMDEgU3Ryb25n
+bHktb3JkZXJlZCkKwqAgT3V0ZXIgbWVtLiBhdHRyLiBbMzoyXTrCoCDCoDB4MCAoMGIwMCBOb24t
+Y2FjaGVhYmxlKQrCoCBTdXBlclNlY3Rpb24gWzFdOsKgIMKgIMKgIMKgIMKgMHgwCsKgIEZhaWx1
+cmUgWzBdOsKgIMKgIMKgIMKgIMKgIMKgIMKgIDB4MArCoHByaXZpbGVnZWQgd3JpdGU6IDB4NDc0
+MDAyOTAKwqAgUGh5c2ljYWwgQWRkcmVzcyBbMzE6MTJdOiAweDQ3NDAwMDAwCsKgIFJlc2VydmVk
+IFsxMV06wqAgwqAgwqAgwqAgwqAgwqAgMHgwCsKgIE5vdCBPdXRlciBTaGFyZWFibGUgWzEwXTog
+MHgwCsKgIE5vbi1TZWN1cmUgWzldOsKgIMKgIMKgIMKgIMKgIMKgMHgxCsKgIEltcGwuIGRlZi4g
+WzhdOsKgIMKgIMKgIMKgIMKgIMKgMHgwCsKgIFNoYXJlYWJsZSBbN106wqAgwqAgwqAgwqAgwqAg
+wqAgMHgxCsKgIElubmVyIG1lbS4gYXR0ci4gWzY6NF06wqAgwqAweDEgKDBiMDAxIFN0cm9uZ2x5
+LW9yZGVyZWQpCsKgIE91dGVyIG1lbS4gYXR0ci4gWzM6Ml06wqAgwqAweDAgKDBiMDAgTm9uLWNh
+Y2hlYWJsZSkKwqAgU3VwZXJTZWN0aW9uIFsxXTrCoCDCoCDCoCDCoCDCoDB4MArCoCBGYWlsdXJl
+IFswXTrCoCDCoCDCoCDCoCDCoCDCoCDCoCAweDAKCgpCZXN0IHJlZ2FyZHMsCsKgUm9sZgoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
+aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
+YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
