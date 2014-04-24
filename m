@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from moutng.kundenserver.de ([212.227.17.10])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WczkN-0000vy-BI
- for barebox@lists.infradead.org; Wed, 23 Apr 2014 16:10:08 +0000
-Date: Wed, 23 Apr 2014 18:09:40 +0200 (CEST)
-From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Message-ID: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WdDcl-0006Sl-DN
+ for barebox@lists.infradead.org; Thu, 24 Apr 2014 06:59:12 +0000
+Date: Thu, 24 Apr 2014 08:58:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140424065848.GV5858@pengutronix.de>
+References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
 MIME-Version: 1.0
-Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Content-Disposition: inline
+In-Reply-To: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,25 +18,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: New driver crashes with "unable to handle paging request"
-To: barebox@lists.infradead.org
+Subject: Re: New driver crashes with "unable to handle paging request"
+To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Cc: barebox@lists.infradead.org
 
-SSdtIGp1c3QgdHJ5aW5nIHRvIHBvcnQgdGhlIFVTQiBkcml2ZXIgIm11c2IiIChmb3IgdGhlIEFN
-MzM1eCBwbGF0Zm9ybSkgZnJvbQpsaW51eCBrZXJuZWwgdG8gYmFyZWJveC4KQnV0IHdoZW5ldmVy
-IEkgd2FudCB0byByZWFkIGFueSBhZGRyZXNzIGluIHRoZSByYW5nZSAweDQ3NDAxNDAwLTB4NDc0
-MDE3ZmYsIHRoZQpiYXJlYm94IGNyYXNoZXMgd2l0aCAidW5hYmxlIHRvIGhhbmRsZSBwYWdpbmcg
-cmVxdWVzdCIuCkkgaGF2ZSBhbHJlYWR5IHRyaWVkIHRvIGludm9rZSBhICJtYXBfaW9fc2VjdGlv
-bnMoMHgwLCAweDQ3NDAwMDAwLCAweDIwMDApIiwgYnV0Cml0IGRpZG4ndCBoZWxwLgoKRm9ydHVu
-YXRlbHkgSSBjYW4gdGVzdCBpdCBvbiB0aGUgYmFyZWJveCBjb21tYW5kIGxpbmUgd2l0aCB0aGUg
-Y29tbWFuZArCoG1kIC13IDB4NDc0MDE0NmMtMHg0NzQwMTQ2ZAoKSW4gdGhlIGxpbnV4IGtlcm5l
-bCB0aGV5IGFyZSBjYWxsaW5nIHRoZSAiaW9yZW1hcCgpIiBmdW5jdGlvbiBmb3IgdGhpcyBtZW1v
-cnkKcmFuZ2UsIGJ1dCBJIGRpZG4ndCBmaW5kIGFuIGVxdWl2YWxlbnQgZnVuY3Rpb24gaW4gdGhl
-IGJhcmVib3ggc291cmNlLgoKRG8geW91IGhhdmUgYW55IGlkZWEsIGhvdyB0byBhdm9pZCB0aGUg
-InBhZ2luZyByZXF1ZXN0IiBmYWlsdXJlIGhlcmU/CgpCZXN0IHJlZ2FyZHMsCsKgUm9sZgoKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWls
-aW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRl
-YWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Hi Rolf,
+
+On Wed, Apr 23, 2014 at 06:09:40PM +0200, Rolf Evers-Fischer wrote:
+> I'm just trying to port the USB driver "musb" (for the AM335x platform) from
+> linux kernel to barebox.
+> But whenever I want to read any address in the range 0x47401400-0x474017ff, the
+> barebox crashes with "unable to handle paging request".
+> I have already tried to invoke a "map_io_sections(0x0, 0x47400000, 0x2000)", but
+> it didn't help.
+
+barebox creates a flat 1:1 mapping when the MMU is enabled. You won't
+need any calls to map_io_sections or some ioremap correspondent
+function.
+
+It may be that you have to enable some bus clocks in order to access the
+musb.
+
+To make sure you don't have MMU trouble could you post the output of
+'mmuinfo 0x47400000'?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
