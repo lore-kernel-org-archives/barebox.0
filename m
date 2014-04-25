@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x229.google.com ([2a00:1450:4013:c00::229])
+Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WdfkY-0001ux-Br
- for barebox@lists.infradead.org; Fri, 25 Apr 2014 13:01:07 +0000
-Received: by mail-ee0-f41.google.com with SMTP id t10so2825091eei.14
- for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 06:00:43 -0700 (PDT)
-Date: Fri, 25 Apr 2014 14:54:43 +0200
+ id 1Wdfth-0008Ex-1s
+ for barebox@lists.infradead.org; Fri, 25 Apr 2014 13:10:33 +0000
+Received: by mail-ee0-f47.google.com with SMTP id b15so2801536eek.20
+ for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 06:10:09 -0700 (PDT)
+Date: Fri, 25 Apr 2014 15:10:04 +0200
 From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140425125441.GA13159@omega>
+Message-ID: <20140425130834.GA29115@omega>
 References: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
+ <1398426868-30285-4-git-send-email-c.hemp@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <1398426868-30285-4-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,125 +25,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/4] imx6:mmdc: Move register defines to header file
+Subject: Re: [PATCH 4/4] imx6: Add support for phyCARD-i.MX6
 To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
 Hi,
 
-On Fri, Apr 25, 2014 at 01:54:25PM +0200, Christian Hemp wrote:
-> Move mmdc register defines to mmdc header file.
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> ---
->  arch/arm/mach-imx/imx6-mmdc.c              |   37 --------------------------
->  arch/arm/mach-imx/include/mach/imx6-mmdc.h |   39 ++++++++++++++++++++++++++++
->  2 files changed, 39 insertions(+), 37 deletions(-)
-> 
-> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
-> index d1de593..9686bee 100644
-> --- a/arch/arm/mach-imx/imx6-mmdc.c
-> +++ b/arch/arm/mach-imx/imx6-mmdc.c
-> @@ -20,43 +20,6 @@
->  #include <mach/imx6-regs.h>
->  #include <mach/imx6-mmdc.h>
->  
-> -#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
-> -#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
-> -
-> -#define MDCTL		0x000
-> -#define MDPDC		0x004
-> -#define MDSCR		0x01c
-> -#define MDMISC		0x018
-> -#define MDREF		0x020
-> -#define MAPSR		0x404
-> -#define MPZQHWCTRL	0x800
-> -#define MPWLGCR		0x808
-> -#define MPWLDECTRL0	0x80c
-> -#define MPWLDECTRL1	0x810
-> -#define MPPDCMPR1	0x88c
-> -#define MPSWDAR		0x894
-> -#define MPRDDLCTL	0x848
-> -#define MPMUR		0x8b8
-> -#define MPDGCTRL0	0x83c
-> -#define MPDGCTRL1	0x840
-> -#define MPRDDLCTL	0x848
-> -#define MPWRDLCTL	0x850
-> -#define MPRDDLHWCTL	0x860
-> -#define MPWRDLHWCTL	0x864
-> -#define MPDGHWST0	0x87c
-> -#define MPDGHWST1	0x880
-> -#define MPDGHWST2	0x884
-> -#define MPDGHWST3	0x888
-> -
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
-> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
-> -
+On Fri, Apr 25, 2014 at 01:54:28PM +0200, Christian Hemp wrote:
+> Add support for Phytec phyCARD-i.MX6.
+> 	- 1GB RAM on two banks
+> 	- 1GB RAM on one bank
+> 	- 2GB RAM on two banks
+...
+> +
+> +extern char __dtb_imx6q_phytec_pbaa03_start[];
+> +
+> +ENTRY_FUNCTION(start_phytec_pbaa03_1gib, r0, r1, r2)
+> +{
+> +	uint32_t fdt;
+> +
+> +	arm_cpu_lowlevel_init();
+> +
+> +	arm_setup_stack(0x00920000 - 8);
+> +
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> +		setup_uart();
+> +
+> +	fdt = (uint32_t)__dtb_imx6q_phytec_pbaa03_start - get_runtime_offset();
+> +
+> +	barebox_arm_entry(0x10000000, SZ_1G, fdt);
+> +}
+> +
+> +ENTRY_FUNCTION(start_phytec_pbaa03_1gib_1bank, r0, r1, r2)
+> +{
+> +	uint32_t fdt;
+> +
+> +	arm_cpu_lowlevel_init();
+> +
+> +	arm_setup_stack(0x00920000 - 8);
+> +
+> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
+> +		setup_uart();
+> +
+> +	fdt = (uint32_t)__dtb_imx6q_phytec_pbaa03_start - get_runtime_offset();
+> +
+> +	barebox_arm_entry(0x10000000, SZ_1G, fdt);
+> +}
+> +
 
-are you sure that it doesn't fix the build after applying this patch? I
-think you need to add a include of the imx6-mmdc.h header file...
+Don't see a difference between start_phytec_pbaa03_1gib_1bank and
+start_phytec_pbaa03_1gib. Maybe you can write a new function and these
+two functions can call this function...
 
->  int mmdc_do_write_level_calibration(void)
->  {
->  	u32 esdmisc_val, zq_val;
-> diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> index 4ad939e..3152e16 100644
-> --- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> +++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> @@ -1,6 +1,45 @@
->  #ifndef __MACH_MMDC_H
->  #define __MACH_MMDC_H
-> 
-
-You should also include the headers which are necessary for the
-following define like MX6_MMDC_P0_BASE_ADDR which are defined in 
-<mach/imx6-regs.h> and for all others...
-
-> +
-> +#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
-> +#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
-> +
-> +#define MDCTL		0x000
-> +#define MDPDC		0x004
-> +#define MDSCR		0x01c
-> +#define MDMISC		0x018
-> +#define MDREF		0x020
-> +#define MAPSR		0x404
-> +#define MPZQHWCTRL	0x800
-> +#define MPWLGCR		0x808
-> +#define MPWLDECTRL0	0x80c
-> +#define MPWLDECTRL1	0x810
-> +#define MPPDCMPR1	0x88c
-> +#define MPSWDAR		0x894
-> +#define MPRDDLCTL	0x848
-> +#define MPMUR		0x8b8
-> +#define MPDGCTRL0	0x83c
-> +#define MPDGCTRL1	0x840
-> +#define MPRDDLCTL	0x848
-> +#define MPWRDLCTL	0x850
-> +#define MPRDDLHWCTL	0x860
-> +#define MPWRDLHWCTL	0x864
-> +#define MPDGHWST0	0x87c
-> +#define MPDGHWST1	0x880
-> +#define MPDGHWST2	0x884
-> +#define MPDGHWST3	0x888
-> +
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
-> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
-> +
-> +
+It's a design question...
 
 - Alex
 
