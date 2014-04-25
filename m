@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+Received: from mail-la0-x236.google.com ([2a00:1450:4010:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wdb1W-0002LR-Se
+ id 1Wdb1X-0002LZ-AS
  for barebox@lists.infradead.org; Fri, 25 Apr 2014 07:58:19 +0000
-Received: by mail-lb0-f182.google.com with SMTP id l4so2840255lbv.13
- for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 00:57:55 -0700 (PDT)
+Received: by mail-la0-f54.google.com with SMTP id e16so2490095lan.41
+ for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 00:57:56 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
-Date: Fri, 25 Apr 2014 11:57:46 +0400
-Message-Id: <1398412667-18820-2-git-send-email-antonynpavlov@gmail.com>
+Date: Fri, 25 Apr 2014 11:57:47 +0400
+Message-Id: <1398412667-18820-3-git-send-email-antonynpavlov@gmail.com>
 In-Reply-To: <1398412667-18820-1-git-send-email-antonynpavlov@gmail.com>
 References: <1398412667-18820-1-git-send-email-antonynpavlov@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,89 +23,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] clk: move of_clk_get_parent_name() to common clk code
+Subject: [PATCH 2/2] clk: fixed-factor: add DT init function
 To: barebox@lists.infradead.org
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/clk/clk.c     | 20 ++++++++++++++++++++
- drivers/clk/socfpga.c | 19 -------------------
- include/linux/clk.h   |  1 +
- 3 files changed, 21 insertions(+), 19 deletions(-)
+ drivers/clk/clk-fixed-factor.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 23b1a7a..584e2f3 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -390,6 +390,26 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec)
- 	return clk;
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index cb531b1..40b63d6 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -92,3 +92,39 @@ struct clk *clk_fixed_factor(const char *name,
+ 
+ 	return &f->clk;
  }
- 
-+char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
++
++#if defined(CONFIG_OFTREE) && defined(CONFIG_COMMON_CLK_OF_PROVIDER)
++/**
++ * of_fixed_factor_clk_setup() - Setup function for simple fixed factor clock
++ */
++static int of_fixed_factor_clk_setup(struct device_node *node)
 +{
-+	struct of_phandle_args clkspec;
-+	const char *clk_name;
-+	int rc;
++	struct clk *clk;
++	const char *clk_name = node->name;
++	const char *parent_name;
++	u32 div, mult;
 +
-+	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
-+			&clkspec);
-+	if (rc)
-+		return NULL;
++	if (of_property_read_u32(node, "clock-div", &div)) {
++		pr_err("%s Fixed factor clock <%s> must have a clock-div property\n",
++			__func__, node->name);
++		return -EINVAL;
++	}
 +
-+	if (of_property_read_string_index(clkspec.np, "clock-output-names",
-+				clkspec.args_count ? clkspec.args[0] : 0,
-+				&clk_name) < 0)
-+		clk_name = clkspec.np->name;
++	if (of_property_read_u32(node, "clock-mult", &mult)) {
++		pr_err("%s Fixed factor clock <%s> must have a clock-mult property\n",
++			__func__, node->name);
++		return -EINVAL;
++	}
 +
-+	return xstrdup(clk_name);
++	of_property_read_string(node, "clock-output-names", &clk_name);
++	parent_name = of_clk_get_parent_name(node, 0);
++
++	clk = clk_fixed_factor(clk_name, parent_name, mult, div, 0);
++	if (IS_ERR(clk))
++		return IS_ERR(clk);
++
++	return of_clk_add_provider(node, of_clk_src_simple_get, clk);
 +}
-+EXPORT_SYMBOL_GPL(of_clk_get_parent_name);
-+
- /**
-  * of_clk_init() - Scan and init clock providers from the DT
-  * @root: parent of the first level to probe or NULL for the root of the tree
-diff --git a/drivers/clk/socfpga.c b/drivers/clk/socfpga.c
-index 33a55cb..f4257fd 100644
---- a/drivers/clk/socfpga.c
-+++ b/drivers/clk/socfpga.c
-@@ -49,25 +49,6 @@
- 
- static void __iomem *clk_mgr_base_addr;
- 
--char *of_clk_get_parent_name(struct device_node *np, unsigned int index)
--{
--	struct of_phandle_args clkspec;
--	const char *clk_name;
--	int rc;
--
--	rc = of_parse_phandle_with_args(np, "clocks", "#clock-cells", index,
--			&clkspec);
--	if (rc)
--		return NULL;
--
--	if (of_property_read_string_index(clkspec.np, "clock-output-names",
--				clkspec.args_count ? clkspec.args[0] : 0,
--				&clk_name) < 0)
--		clk_name = clkspec.np->name;
--
--	return xstrdup(clk_name);
--}
--
- static struct clk *socfpga_fixed_clk(struct device_node *node)
- {
- 	uint32_t f = 0;
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 07b27cf..dd9fab7 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -316,6 +316,7 @@ struct clk *of_clk_src_simple_get(struct of_phandle_args *clkspec, void *data);
- struct clk *of_clk_get(struct device_node *np, int index);
- struct clk *of_clk_get_by_name(struct device_node *np, const char *name);
- struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
-+char *of_clk_get_parent_name(struct device_node *np, unsigned int index);
- int of_clk_init(struct device_node *root, const struct of_device_id *matches);
- #else
- static inline struct clk *of_clk_get(struct device_node *np, int index)
++CLK_OF_DECLARE(fixed_factor_clk, "fixed-factor-clock",
++		of_fixed_factor_clk_setup);
++#endif
 -- 
 1.9.0
 
