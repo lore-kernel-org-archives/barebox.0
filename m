@@ -1,11 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+Received: from smtp3-g21.free.fr ([2a01:e0c:1:1599::12])
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WdQ8J-0005uV-L0
- for barebox@lists.infradead.org; Thu, 24 Apr 2014 20:20:36 +0000
-From: Lucas Stach <dev@lynxeye.de>
-Date: Thu, 24 Apr 2014 22:22:46 +0200
-Message-Id: <1398370966-30241-1-git-send-email-dev@lynxeye.de>
+ id 1WdaP1-0002Re-V6
+ for barebox@lists.infradead.org; Fri, 25 Apr 2014 07:18:33 +0000
+Date: Fri, 25 Apr 2014 09:16:03 +0200
+From: Eric =?ISO-8859-1?B?QuluYXJk?= <eric@eukrea.com>
+Message-ID: <20140425091603.3ba7af82@e6520eb>
+In-Reply-To: <1398370627-27786-1-git-send-email-dev@lynxeye.de>
+References: <1398370627-27786-1-git-send-email-dev@lynxeye.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,39 +17,47 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: nitrogen6x: remove VPU/IPU QoS from DCD
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] RiOTboard: add new board
+To: Lucas Stach <dev@lynxeye.de>
+Cc: barebox@lists.infradead.org
 
-From: Lucas Stach <l.stach@pengutronix.de>
+Hi Lucas,
 
-Not needed anymore, as barebox sets this up itself now.
+Le Thu, 24 Apr 2014 22:17:07 +0200,
+Lucas Stach <dev@lynxeye.de> a =E9crit :
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
----
- .../boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg     | 5 -----
- 1 file changed, 5 deletions(-)
+> =
 
-diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-index 60a39fe..b6c7580 100644
---- a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-+++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-@@ -99,8 +99,3 @@ wm 32 0x020c4074 0x3ff00000
- wm 32 0x020c4078 0x00fff300
- wm 32 0x020c407c 0x0f0000c3
- wm 32 0x020c4080 0x000003ff
--/* enable AXI cache for VDOA/VPU/IPU */
--wm 32 0x020e0010 0xf00000cf
--/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7 */
--wm 32 0x020e0018 0x007f007f
--wm 32 0x020e001c 0x007f007f
--- 
-1.9.0
+> From: Eric B=E9nard <eric@eukrea.com>
+> =
 
+> this board is produced by Embest/Element 14 and is based on i.MX6 Solo
+> The following features are tested :
+> - UART2 (console)
+> - eMMC
+> - SDCard
+> - uSDCard
+> - Ethernet
+> - USB Host (through 4 ports hub)
+> - I2C 1/2/3
+> - 2 LEDs
+> =
+
+> Boot on eMMC and through USB loader are tested.
+> =
+
+> For more informations on this board : http://www.riotboard.org/
+> =
+
+FWIW, we are working on a common dts for Riot & Mars boards.
+So if you apply this one, I'll submit this change in the coming
+weeks (common dtsi and 2 x dts).
+
+Eric
 
 _______________________________________________
 barebox mailing list
