@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.tricorecenter.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WdeiW-00047O-Gy
- for barebox@lists.infradead.org; Fri, 25 Apr 2014 11:54:57 +0000
+ id 1WdeiW-00048o-H0
+ for barebox@lists.infradead.org; Fri, 25 Apr 2014 11:54:59 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 5E7E4BF0EB
- for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 13:54:31 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 7A561BF0F4
+ for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 13:54:32 +0200 (CEST)
 From: Christian Hemp <c.hemp@phytec.de>
-Date: Fri, 25 Apr 2014 13:54:27 +0200
-Message-Id: <1398426868-30285-3-git-send-email-c.hemp@phytec.de>
+Date: Fri, 25 Apr 2014 13:54:28 +0200
+Message-Id: <1398426868-30285-4-git-send-email-c.hemp@phytec.de>
 In-Reply-To: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
 References: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,37 +24,757 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/4] dts: imx6qdl: add ethernet pin group for mii
+Subject: [PATCH 4/4] imx6: Add support for phyCARD-i.MX6
 To: barebox@lists.infradead.org
+
+Add support for Phytec phyCARD-i.MX6.
+	- 1GB RAM on two banks
+	- 1GB RAM on one bank
+	- 2GB RAM on two banks
 
 Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 ---
- arch/arm/dts/imx6qdl-pingrp.h |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
+ arch/arm/boards/Makefile                           |    1 +
+ arch/arm/boards/phytec-phycard-imx6/Makefile       |    2 +
+ arch/arm/boards/phytec-phycard-imx6/board.c        |   60 +++++++++
+ arch/arm/boards/phytec-phycard-imx6/env/boot/nand  |   12 ++
+ arch/arm/boards/phytec-phycard-imx6/env/boot/net   |   14 ++
+ .../boards/phytec-phycard-imx6/env/boot/sd-ext3    |   11 ++
+ .../boards/phytec-phycard-imx6/env/config-board    |    7 +
+ .../boards/phytec-phycard-imx6/env/network/eth0    |   16 +++
+ .../flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg  |    7 +
+ .../flash-header-phytec-pcaaxl3-1gib.imxcfg        |    7 +
+ .../flash-header-phytec-pcaaxl3-2gib.imxcfg        |    8 +
+ .../flash-header-phytec-pcaaxl3.h                  |   97 ++++++++++++++
+ arch/arm/boards/phytec-phycard-imx6/lowlevel.c     |  104 ++++++++++++++
+ arch/arm/configs/imx_v7_defconfig                  |    1 +
+ arch/arm/dts/Makefile                              |    4 +-
+ arch/arm/dts/imx6q-phytec-pbaa03.dts               |   34 +++++
+ arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi             |  141 ++++++++++++++++++++
+ arch/arm/mach-imx/Kconfig                          |    7 +-
+ images/Makefile.imx                                |   16 +++
+ 19 files changed, 546 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/Makefile
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/board.c
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/env/boot/nand
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/env/boot/net
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/env/boot/sd-ext3
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/env/config-board
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/env/network/eth0
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3.h
+ create mode 100644 arch/arm/boards/phytec-phycard-imx6/lowlevel.c
+ create mode 100644 arch/arm/dts/imx6q-phytec-pbaa03.dts
+ create mode 100644 arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
 
-diff --git a/arch/arm/dts/imx6qdl-pingrp.h b/arch/arm/dts/imx6qdl-pingrp.h
-index 082f0df..97d76dc 100644
---- a/arch/arm/dts/imx6qdl-pingrp.h
-+++ b/arch/arm/dts/imx6qdl-pingrp.h
-@@ -97,6 +97,18 @@
- 	MX6QDL_PAD_ENET_TXD1__ENET_TX_DATA1		0x1b0b0	\
- 	MX6QDL_PAD_ENET_CRS_DV__ENET_RX_EN		0x1b0b0
- 
-+#define MX6QDL_ENET_PINGRP5 \
-+	MX6QDL_ENET_PINGRP4 \
-+	MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK		0x1b0b0 \
-+	MX6QDL_PAD_KEY_COL0__ENET_RX_DATA3		0x1b0b0 \
-+	MX6QDL_PAD_KEY_ROW0__ENET_TX_DATA3		0x1b0b0 \
-+	MX6QDL_PAD_KEY_ROW1__ENET_COL			0x1b0b0 \
-+	MX6QDL_PAD_KEY_COL2__ENET_RX_DATA2		0x1b0b0 \
-+	MX6QDL_PAD_KEY_ROW2__ENET_TX_DATA2		0x1b0b0 \
-+	MX6QDL_PAD_KEY_COL3__ENET_CRS			0x1b0b0 \
-+	MX6QDL_PAD_GPIO_18__ENET_RX_CLK			0x1b0b0 \
-+	MX6QDL_PAD_GPIO_19__ENET_TX_ER			0x1b0b0
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 0c1497f..fe3dd8e 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -63,6 +63,7 @@ obj-$(CONFIG_MACH_PANDA)			+= panda/
+ obj-$(CONFIG_MACH_PCA100)			+= phytec-phycard-imx27/
+ obj-$(CONFIG_MACH_PCAAL1)			+= phytec-phycard-omap3/
+ obj-$(CONFIG_MACH_PCAAXL2)			+= phytec-phycard-omap4/
++obj-$(CONFIG_MACH_PCAAXL3)                      += phytec-phycard-imx6/
+ obj-$(CONFIG_MACH_PCM037)			+= phytec-phycore-imx31/
+ obj-$(CONFIG_MACH_PCM038)			+= phytec-phycore-imx27/
+ obj-$(CONFIG_MACH_PCM043)			+= phytec-phycore-imx35/
+diff --git a/arch/arm/boards/phytec-phycard-imx6/Makefile b/arch/arm/boards/phytec-phycard-imx6/Makefile
+new file mode 100644
+index 0000000..01c7a25
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/Makefile
+@@ -0,0 +1,2 @@
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/phytec-phycard-imx6/board.c b/arch/arm/boards/phytec-phycard-imx6/board.c
+new file mode 100644
+index 0000000..6ed431a
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/board.c
+@@ -0,0 +1,60 @@
++/*
++ * Copyright (C) 2014 Christian Hemp, Phytec Messtechnik GmbH
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ *
++ */
 +
- #define MX6QDL_ENET_PINGRP1_GPIO6	MX6QDL_ENET_PINGRP1 \
- 	MX6QDL_PAD_GPIO_6__ENET_IRQ	0x000b1
++#include <environment.h>
++#include <bootsource.h>
++#include <common.h>
++#include <gpio.h>
++#include <init.h>
++#include <of.h>
++
++#include <mach/bbu.h>
++#include <mach/imx6.h>
++
++static int phytec_pcaaxl3_init(void)
++{
++	if (!of_machine_is_compatible("phytec,imx6q-pcaaxl3"))
++		return 0;
++
++	switch (bootsource_get()) {
++	case BOOTSOURCE_MMC:
++		of_device_enable_path("/chosen/environment-sd");
++		break;
++	default:
++	case BOOTSOURCE_NAND:
++		of_device_enable_path("/chosen/environment-nand");
++		break;
++	}
++
++	imx6_bbu_nand_register_handler("nand", BBU_HANDLER_FLAG_DEFAULT);
++
++	return 0;
++}
++device_initcall(phytec_pcaaxl3_init);
++
++static int phytec_pcaaxl3_core_init(void)
++{
++	if (!of_machine_is_compatible("phytec,imx6q-pcaaxl3"))
++		return 0;
++
++	imx6_init_lowlevel();
++
++	return 0;
++}
++postcore_initcall(phytec_pcaaxl3_core_init);
+diff --git a/arch/arm/boards/phytec-phycard-imx6/env/boot/nand b/arch/arm/boards/phytec-phycard-imx6/env/boot/nand
+new file mode 100644
+index 0000000..a51da9e
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/env/boot/nand
+@@ -0,0 +1,12 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++        boot-menu-add-entry "$0" "Kernel:nand;rootfs:nand"
++        exit
++fi
++
++global.bootm.image="/dev/nand0.kernel.bb"
++#global.bootm.oftree="/env/oftree"
++bootargs-ip
++global.linux.bootargs.dyn.root="root=ubi0:root ubi.mtd=nand0.root rootfstype=ubifs"
++
+diff --git a/arch/arm/boards/phytec-phycard-imx6/env/boot/net b/arch/arm/boards/phytec-phycard-imx6/env/boot/net
+new file mode 100644
+index 0000000..8fe65d7
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/env/boot/net
+@@ -0,0 +1,14 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "network (Kernel:tftp;rootf:nfs)"
++	exit
++fi
++
++path="/mnt/tftp"
++
++global.bootm.image="${path}/linuximage"
++#global.bootm.oftree="${path}/${global.user}-oftree-${global.hostname}"
++nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
++bootargs-ip
++global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/env/boot/sd-ext3 b/arch/arm/boards/phytec-phycard-imx6/env/boot/sd-ext3
+new file mode 100644
+index 0000000..fa1e9d6
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/env/boot/sd-ext3
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++        boot-menu-add-entry "$0" "MMC (ext3)"
++        exit
++fi
++
++global.bootm.image="/mnt/kernel/linuximage"
++#global.bootm.oftree="/boot/oftree"
++bootargs-ip
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext3 rootwait"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/env/config-board b/arch/arm/boards/phytec-phycard-imx6/env/config-board
+new file mode 100644
+index 0000000..44008aa
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/env/config-board
+@@ -0,0 +1,7 @@
++#!/bin/sh
++
++# board defaults, do not change in running system. Change /env/config
++# instead
++
++global.hostname=phyCARD-i.MX6
++global.linux.bootargs.base="console=ttymxc2,115200"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/env/network/eth0 b/arch/arm/boards/phytec-phycard-imx6/env/network/eth0
+new file mode 100644
+index 0000000..03dcca0
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/env/network/eth0
+@@ -0,0 +1,16 @@
++#!/bin/sh
++
++# ip setting (static/dhcp)
++ip=static
++global.dhcp.vendor_id=barebox-${global.hostname}
++
++# static setup used if ip=static
++ipaddr=192.168.3.11
++netmask=255.255.255.0
++gateway=192.168.3.10
++serverip=192.168.3.10
++
++# MAC address if needed
++#ethaddr=xx:xx:xx:xx:xx:xx
++
++# put code to discover eth0 (i.e. 'usb') to /env/network/eth0-discover
+diff --git a/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+new file mode 100644
+index 0000000..481e085
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
+@@ -0,0 +1,7 @@
++#define SETUP_1GIB_2GIB			\
++	wm 32 0x021b000c 0x54597955;	\
++	wm 32 0x021b0030 0x00591023;	\
++	wm 32 0x021b0040 0x00000027;	\
++	wm 32 0x021b0000 0x831a0000
++
++#include "flash-header-phytec-pcaaxl3.h"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+new file mode 100644
+index 0000000..b21bd89
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
+@@ -0,0 +1,7 @@
++#define SETUP_1GIB_2GIB			\
++	wm 32 0x021b000c 0x3a3f7975;	\
++	wm 32 0x021b0030 0x003f1023;	\
++	wm 32 0x021b0040 0x00000017;	\
++	wm 32 0x021b0000 0xc21a0000
++
++#include "flash-header-phytec-pcaaxl3.h"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+new file mode 100644
+index 0000000..858b6d7
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
+@@ -0,0 +1,8 @@
++
++#define SETUP_1GIB_2GIB			\
++	wm 32 0x021b000c 0x54597955;	\
++	wm 32 0x021b0030 0x00591023;	\
++	wm 32 0x021b0040 0x00000027;	\
++	wm 32 0x021b0000 0xc31a0000
++
++#include "flash-header-phytec-pcaaxl3.h"
+diff --git a/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3.h b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3.h
+new file mode 100644
+index 0000000..aecaf16
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/flash-header-phytec-pcaaxl3.h
+@@ -0,0 +1,97 @@
++soc imx6
++loadaddr 0x20000000
++dcdofs 0x400
++
++wm 32 0x020e05a8 0x00000028
++wm 32 0x020e05b0 0x00000028
++wm 32 0x020e0524 0x00000028
++wm 32 0x020e051c 0x00000028
++wm 32 0x020e0518 0x00000028
++wm 32 0x020e050c 0x00000028
++wm 32 0x020e05b8 0x00000028
++wm 32 0x020e05c0 0x00000028
++wm 32 0x020e05ac 0x00000028
++wm 32 0x020e05b4 0x00000028
++wm 32 0x020e0528 0x00000028
++wm 32 0x020e0520 0x00000028
++wm 32 0x020e0514 0x00000028
++wm 32 0x020e0510 0x00000028
++wm 32 0x020e05bc 0x00000028
++wm 32 0x020e05c4 0x00000028
++wm 32 0x020e056c 0x00000028
++wm 32 0x020e0578 0x00000028
++wm 32 0x020e0588 0x00000028
++wm 32 0x020e0594 0x00000028
++wm 32 0x020e057c 0x00000028
++wm 32 0x020e0590 0x00003000
++wm 32 0x020e0598 0x00003000
++wm 32 0x020e058c 0x00000000
++wm 32 0x020e059c 0x00000028
++wm 32 0x020e05a0 0x00000028
++wm 32 0x020e0784 0x00000028
++wm 32 0x020e0788 0x00000028
++wm 32 0x020e0794 0x00000028
++wm 32 0x020e079c 0x00000028
++wm 32 0x020e07a0 0x00000028
++wm 32 0x020e07a4 0x00000028
++wm 32 0x020e07a8 0x00000028
++wm 32 0x020e0748 0x00000028
++wm 32 0x020e074c 0x00000028
++wm 32 0x020e0750 0x00020000
++wm 32 0x020e0758 0x00000000
++wm 32 0x020e0774 0x00020000
++wm 32 0x020e078c 0x00000028
++wm 32 0x020e0798 0x000c0000
++wm 32 0x021b081c 0x33333333
++wm 32 0x021b0820 0x33333333
++wm 32 0x021b0824 0x33333333
++wm 32 0x021b0828 0x33333333
++wm 32 0x021b481c 0x33333333
++wm 32 0x021b4820 0x33333333
++wm 32 0x021b4824 0x33333333
++wm 32 0x021b4828 0x33333333
++wm 32 0x021b0018 0x00091740
++wm 32 0x021b001c 0x00008000
++wm 32 0x021b0010 0xff328f64
++wm 32 0x021b0014 0x01ff00db
++wm 32 0x021b002c 0x000026d2
++wm 32 0x021b0008 0x09444040
++wm 32 0x021b0004 0x00025576
++
++SETUP_1GIB_2GIB
++
++wm 32 0x021b001c 0x04088032
++wm 32 0x021b001c 0x0408803a
++wm 32 0x021b001c 0x00008033
++wm 32 0x021b001c 0x0000803b
++wm 32 0x021b001c 0x00048031
++wm 32 0x021b001c 0x00048039
++wm 32 0x021b001c 0x09408030
++wm 32 0x021b001c 0x09408038
++wm 32 0x021b001c 0x04008040
++wm 32 0x021b001c 0x04008048
++wm 32 0x021b0800 0xa1390003
++wm 32 0x021b4800 0xa1380003
++wm 32 0x021b0020 0x00007800
++wm 32 0x021b0818 0x00011117
++wm 32 0x021b4818 0x00011117
++wm 32 0x021b083c 0x4350035e
++wm 32 0x021b0840 0x035c0358
++wm 32 0x021b483c 0x436e0376
++wm 32 0x021b4840 0x03770352
++wm 32 0x021b0848 0x3c333436
++wm 32 0x021b4848 0x35332f3b
++wm 32 0x021b0850 0x37363e39
++wm 32 0x021b4850 0x432f433d
++wm 32 0x021b080c 0x0013001b
++wm 32 0x021b0810 0x003b0034
++wm 32 0x021b480c 0x0037004b
++wm 32 0x021b4810 0x004b0055
++wm 32 0x021b08b8 0x00000800
++wm 32 0x021b48b8 0x00000800
++wm 32 0x021b001c 0x00000000
++wm 32 0x021b0404 0x00011006
++wm 32 0x020e0010 0xf00000ff
++wm 32 0x020e0018 0x007f007f
++wm 32 0x020e001c 0x007f007f
++wm 32 0x020c8000 0x80002021
+diff --git a/arch/arm/boards/phytec-phycard-imx6/lowlevel.c b/arch/arm/boards/phytec-phycard-imx6/lowlevel.c
+new file mode 100644
+index 0000000..40140cb
+--- /dev/null
++++ b/arch/arm/boards/phytec-phycard-imx6/lowlevel.c
+@@ -0,0 +1,104 @@
++/*
++ * Copyright (C) 2014 Christian Hemp <c.hemp@phytec.de>
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++#include <debug_ll.h>
++#include <common.h>
++#include <sizes.h>
++#include <io.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <asm/sections.h>
++#include <asm/cache.h>
++#include <asm/mmu.h>
++#include <mach/imx6-mmdc.h>
++#include <mach/imx6.h>
++
++static inline void setup_uart(void)
++{
++	void __iomem *ccmbase = (void *)MX6_CCM_BASE_ADDR;
++	void __iomem *uartbase = (void *)MX6_UART3_BASE_ADDR;
++	void __iomem *iomuxbase = (void *)MX6_IOMUXC_BASE_ADDR;
++
++	writel(0x4, iomuxbase + 0x01f8);
++
++	writel(0xffffffff, ccmbase + 0x68);
++	writel(0xffffffff, ccmbase + 0x6c);
++	writel(0xffffffff, ccmbase + 0x70);
++	writel(0xffffffff, ccmbase + 0x74);
++	writel(0xffffffff, ccmbase + 0x78);
++	writel(0xffffffff, ccmbase + 0x7c);
++	writel(0xffffffff, ccmbase + 0x80);
++
++	writel(0x00000000, uartbase + 0x80);
++	writel(0x00004027, uartbase + 0x84);
++	writel(0x00000704, uartbase + 0x88);
++	writel(0x00000a81, uartbase + 0x90);
++	writel(0x0000002b, uartbase + 0x9c);
++	writel(0x00013880, uartbase + 0xb0);
++	writel(0x0000047f, uartbase + 0xa4);
++	writel(0x0000c34f, uartbase + 0xa8);
++	writel(0x00000001, uartbase + 0x80);
++
++	putc_ll('>');
++}
++
++extern char __dtb_imx6q_phytec_pbaa03_start[];
++
++ENTRY_FUNCTION(start_phytec_pbaa03_1gib, r0, r1, r2)
++{
++	uint32_t fdt;
++
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00920000 - 8);
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = (uint32_t)__dtb_imx6q_phytec_pbaa03_start - get_runtime_offset();
++
++	barebox_arm_entry(0x10000000, SZ_1G, fdt);
++}
++
++ENTRY_FUNCTION(start_phytec_pbaa03_1gib_1bank, r0, r1, r2)
++{
++	uint32_t fdt;
++
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00920000 - 8);
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = (uint32_t)__dtb_imx6q_phytec_pbaa03_start - get_runtime_offset();
++
++	barebox_arm_entry(0x10000000, SZ_1G, fdt);
++}
++
++ENTRY_FUNCTION(start_phytec_pbaa03_2gib, r0, r1, r2)
++{
++	uint32_t fdt;
++
++	arm_cpu_lowlevel_init();
++
++	arm_setup_stack(0x00920000 - 8);
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL))
++		setup_uart();
++
++	fdt = (uint32_t)__dtb_imx6q_phytec_pbaa03_start - get_runtime_offset();
++
++	barebox_arm_entry(0x10000000, SZ_2G, fdt);
++}
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index f29c968..dbdc957 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -5,6 +5,7 @@ CONFIG_MACH_FREESCALE_MX51_PDK=y
+ CONFIG_MACH_FREESCALE_MX53_LOCO=y
+ CONFIG_MACH_TQMA53=y
+ CONFIG_MACH_FREESCALE_MX53_VMX53=y
++CONFIG_MACH_PCAAXL3=y
+ CONFIG_MACH_PHYTEC_PFLA02=y
+ CONFIG_MACH_DFI_FS700_M60=y
+ CONFIG_MACH_GUF_SANTARO=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 58dc38b..63fe854 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -27,7 +27,8 @@ dtb-$(CONFIG_ARCH_IMX6) += imx6q-gk802.dtb \
+ 	imx6q-nitrogen6x.dtb \
+ 	imx6dl-nitrogen6x.dtb \
+ 	imx6q-udoo.dtb \
+-	imx6q-var-custom.dtb
++	imx6q-var-custom.dtb \
++	imx6q-phytec-pbaa03.dtb
+ dtb-$(CONFIG_ARCH_MVEBU) += dove-cubox-bb.dtb
+ dtb-$(CONFIG_ARCH_SOCFPGA) += socfpga_cyclone5_sockit.dtb \
+ 	socfpga_cyclone5_socrates.dtb
+@@ -65,6 +66,7 @@ pbl-$(CONFIG_MACH_GUF_SANTARO) += imx6q-guf-santaro.dtb.o
+ pbl-$(CONFIG_MACH_NITROGEN6X) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o
+ pbl-$(CONFIG_MACH_UDOO) += imx6q-udoo.dtb.o
+ pbl-$(CONFIG_MACH_VARISCITE_MX6) += imx6q-var-custom.dtb.o
++pbl-$(CONFIG_MACH_PCAAXL3) += imx6q-phytec-pbaa03.dtb.o
  
+ .SECONDARY: $(obj)/$(BUILTIN_DTB).dtb.S
+ .SECONDARY: $(patsubst %,$(obj)/%.S,$(dtb-y))
+diff --git a/arch/arm/dts/imx6q-phytec-pbaa03.dts b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+new file mode 100644
+index 0000000..bcb3dd7
+--- /dev/null
++++ b/arch/arm/dts/imx6q-phytec-pbaa03.dts
+@@ -0,0 +1,34 @@
++/*
++ * Copyright 2014 Christian Hemp, Phytec Messtechnik GmbH
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/dts-v1/;
++#include "imx6q-phytec-pcaaxl3.dtsi"
++
++/ {
++	model = "Phytec phyCARD-i.MX6 Quad Carrier-Board";
++	compatible = "phytec,imx6q-pbaa03", "phytec,imx6q-pcaaxl3", "fsl,imx6q";
++
++	chosen {
++		linux,stdout-path = &uart3;
++	};
++};
++
++&fec {
++	status = "okay";
++};
++
++&uart3 {
++	status = "okay";
++};
++
++&usdhc3 {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+new file mode 100644
+index 0000000..ee4b009
+--- /dev/null
++++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
+@@ -0,0 +1,141 @@
++/*
++ * Copyright 2014444 Christian Hemp, Phytec Messtechnik GmbH
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++#include "imx6q.dtsi"
++
++/ {
++	model = "Phytec phyCARD-i.MX6 Quad";
++	compatible = "phytec,imx6q-pcaaxl3", "fsl,imx6q";
++
++	chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &usdhc3, "partname:barebox-environment";
++			status = "disabled";
++		};
++
++		environment-nand {
++			compatible = "barebox,environment";
++			device-path = &gpmi, "partname:barebox-environment";
++			status = "disabled";
++		};
++	};
++};
++
++&i2c1 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_i2c1>;
++
++	eeprom: m24c32@50 {
++		compatible = "st,24c32", "at24";
++		reg = <0x50>;
++	};
++};
++
++&iomuxc {
++	pinctrl-names = "default";
++
++	imx6q-phytec-pcaaxl3 {
++		pinctrl_enet: enetgrp {
++			fsl,pins = <MX6QDL_ENET_PINGRP5>;
++		};
++
++		pinctrl_gpmi_nand: gpmigrp {
++			fsl,pins = <MX6QDL_GPMI_NAND_PINGRP1>;
++		};
++
++		pinctrl_i2c1: i2c1grp {
++			fsl,pins = <MX6QDL_I2C1_PINGRP1>;
++		};
++
++		pinctrl_uart3: uart3grp {
++			fsl,pins = <MX6QDL_UART3_PINGRP3>;
++		};
++
++		pinctrl_usdhc3: usdhc3grp {
++			fsl,pins = <MX6QDL_USDHC3_PINGRP_D4>;
++		};
++
++		pinctrl_usdhc3_cd: usdhc3cd {
++			fsl,pins = <
++				MX6QDL_PAD_CSI0_DAT4__GPIO5_IO22  0x80000000
++			>;
++		};
++
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_enet>;
++	phy-mode = "mii";
++	status = "disabled";
++};
++
++&gpmi {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_gpmi_nand>;
++	nand-on-flash-bbt;
++	status = "okay";
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0x400000>;
++	};
++
++	partition@1 {
++		label = "barebox-environment";
++		reg = <0x400000 0x20000>;
++	};
++
++	partition@2 {
++		label = "kernel";
++		reg = <0x420000 0x800000>;
++	};
++
++	partition@3 {
++		label = "root";
++		reg = <0xC20000 0x0>;
++	};
++};
++
++&ocotp {
++	barebox,provide-mac-address = <&fec 0x620>;
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "disabled";
++};
++
++&usdhc3 {
++        pinctrl-names = "default";
++        pinctrl-0 = <&pinctrl_usdhc3
++		     &pinctrl_usdhc3_cd>;
++        cd-gpios = <&gpio5 22 0>;
++        status = "disabled";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	partition@0 {
++		label = "barebox";
++		reg = <0x0 0x80000>;
++	};
++	partition@1 {
++		label = "barebox-environment";
++		reg = <0x80000 0x80000>;
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index d40c944..cc2b150 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -40,6 +40,7 @@ config ARCH_TEXT_BASE
+ 	default 0x4fc00000 if MACH_DFI_FS700_M60
+ 	default 0x4fc00000 if MACH_UDOO
+ 	default 0x4fc00000 if MACH_VARISCITE_MX6
++	default 0x4fc00000 if MACH_PCAAXL3
+ 
+ config ARCH_IMX_INTERNAL_BOOT
+ 	bool "support internal boot mode"
+@@ -208,6 +209,10 @@ config MACH_FREESCALE_MX53_VMX53
+ 	  Say Y here if you are using the Voipac Technologies X53-DMM-668
+ 	  module equipped with a Freescale i.MX53 Processor
+ 
++config MACH_PCAAXL3
++        bool "Phytec phyCARD-i.MX6 Quad"
++        select ARCH_IMX6
++
+ config MACH_PHYTEC_PFLA02
+ 	bool "Phytec phyFLEX-i.MX6"
+ 	select ARCH_IMX6
+@@ -257,8 +262,6 @@ config MACH_UDOO
+ config MACH_VARISCITE_MX6
+ 	bool "Variscite i.MX6 Quad SOM"
+ 	select ARCH_IMX6
+-
+-
+ endif
+ 
+ # ----------------------------------------------------------
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 06794fd..0b24a34 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -166,3 +166,19 @@ pblx-$(CONFIG_MACH_VARISCITE_MX6) += start_variscite_custom
+ CFG_start_variscite_custom.pblx.imximg = $(board)/variscite-mx6/flash-header-variscite.imxcfg
+ FILE_barebox-variscite-custom.img = start_variscite_custom.pblx.imximg
+ image-$(CONFIG_MACH_VARISCITE_MX6) += barebox-variscite-custom.img
++
++pblx-$(CONFIG_MACH_PCAAXL3) += start_phytec_pbaa03_1gib
++CFG_start_phytec_pbaa03_1gib.pblx.imximg = $(board)/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib.imxcfg
++FILE_barebox-phytec-pbaa03-1gib.img = start_phytec_pbaa03_1gib.pblx.imximg
++image-$(CONFIG_MACH_PCAAXL3) += barebox-phytec-pbaa03-1gib.img
++
++pblx-$(CONFIG_MACH_PCAAXL3) += start_phytec_pbaa03_1gib_1bank
++CFG_start_phytec_pbaa03_1gib_1bank.pblx.imximg = $(board)/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-1gib-1bank.imxcfg
++FILE_barebox-phytec-pbaa03-1gib-1bank.img = start_phytec_pbaa03_1gib_1bank.pblx.imximg
++image-$(CONFIG_MACH_PCAAXL3) += barebox-phytec-pbaa03-1gib-1bank.img
++
++pblx-$(CONFIG_MACH_PCAAXL3) += start_phytec_pbaa03_2gib
++CFG_start_phytec_pbaa03_2gib.pblx.imximg = $(board)/phytec-phycard-imx6/flash-header-phytec-pcaaxl3-2gib.imxcfg
++FILE_barebox-phytec-pbaa03-2gib.img = start_phytec_pbaa03_2gib.pblx.imximg
++image-$(CONFIG_MACH_PCAAXL3) += barebox-phytec-pbaa03-2gib.img
++
 -- 
 1.7.0.4
 
