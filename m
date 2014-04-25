@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wdfmm-0005Yu-Fa
- for barebox@lists.infradead.org; Fri, 25 Apr 2014 13:03:25 +0000
-Message-ID: <1398430923.4657.34.camel@weser.hi.pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-Date: Fri, 25 Apr 2014 15:02:03 +0200
-In-Reply-To: <1398426868-30285-3-git-send-email-c.hemp@phytec.de>
+Received: from mail-ee0-x229.google.com ([2a00:1450:4013:c00::229])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WdfkY-0001ux-Br
+ for barebox@lists.infradead.org; Fri, 25 Apr 2014 13:01:07 +0000
+Received: by mail-ee0-f41.google.com with SMTP id t10so2825091eei.14
+ for <barebox@lists.infradead.org>; Fri, 25 Apr 2014 06:00:43 -0700 (PDT)
+Date: Fri, 25 Apr 2014 14:54:43 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140425125441.GA13159@omega>
 References: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
- <1398426868-30285-3-git-send-email-c.hemp@phytec.de>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,47 +24,127 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/4] dts: imx6qdl: add ethernet pin group for mii
+Subject: Re: [PATCH 1/4] imx6:mmdc: Move register defines to header file
 To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-Am Freitag, den 25.04.2014, 13:54 +0200 schrieb Christian Hemp:
+Hi,
+
+On Fri, Apr 25, 2014 at 01:54:25PM +0200, Christian Hemp wrote:
+> Move mmdc register defines to mmdc header file.
+> 
 > Signed-off-by: Christian Hemp <c.hemp@phytec.de>
 > ---
->  arch/arm/dts/imx6qdl-pingrp.h |   12 ++++++++++++
->  1 files changed, 12 insertions(+), 0 deletions(-)
+>  arch/arm/mach-imx/imx6-mmdc.c              |   37 --------------------------
+>  arch/arm/mach-imx/include/mach/imx6-mmdc.h |   39 ++++++++++++++++++++++++++++
+>  2 files changed, 39 insertions(+), 37 deletions(-)
 > 
-The pingrp.h file will go away soon, as it never made it's way into a
-released upstream kernel. Please rework your dts to work without this.
-
-> diff --git a/arch/arm/dts/imx6qdl-pingrp.h b/arch/arm/dts/imx6qdl-pingrp.h
-> index 082f0df..97d76dc 100644
-> --- a/arch/arm/dts/imx6qdl-pingrp.h
-> +++ b/arch/arm/dts/imx6qdl-pingrp.h
-> @@ -97,6 +97,18 @@
->  	MX6QDL_PAD_ENET_TXD1__ENET_TX_DATA1		0x1b0b0	\
->  	MX6QDL_PAD_ENET_CRS_DV__ENET_RX_EN		0x1b0b0
+> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+> index d1de593..9686bee 100644
+> --- a/arch/arm/mach-imx/imx6-mmdc.c
+> +++ b/arch/arm/mach-imx/imx6-mmdc.c
+> @@ -20,43 +20,6 @@
+>  #include <mach/imx6-regs.h>
+>  #include <mach/imx6-mmdc.h>
 >  
-> +#define MX6QDL_ENET_PINGRP5 \
-> +	MX6QDL_ENET_PINGRP4 \
-> +	MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK		0x1b0b0 \
-> +	MX6QDL_PAD_KEY_COL0__ENET_RX_DATA3		0x1b0b0 \
-> +	MX6QDL_PAD_KEY_ROW0__ENET_TX_DATA3		0x1b0b0 \
-> +	MX6QDL_PAD_KEY_ROW1__ENET_COL			0x1b0b0 \
-> +	MX6QDL_PAD_KEY_COL2__ENET_RX_DATA2		0x1b0b0 \
-> +	MX6QDL_PAD_KEY_ROW2__ENET_TX_DATA2		0x1b0b0 \
-> +	MX6QDL_PAD_KEY_COL3__ENET_CRS			0x1b0b0 \
-> +	MX6QDL_PAD_GPIO_18__ENET_RX_CLK			0x1b0b0 \
-> +	MX6QDL_PAD_GPIO_19__ENET_TX_ER			0x1b0b0
+> -#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
+> -#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
+> -
+> -#define MDCTL		0x000
+> -#define MDPDC		0x004
+> -#define MDSCR		0x01c
+> -#define MDMISC		0x018
+> -#define MDREF		0x020
+> -#define MAPSR		0x404
+> -#define MPZQHWCTRL	0x800
+> -#define MPWLGCR		0x808
+> -#define MPWLDECTRL0	0x80c
+> -#define MPWLDECTRL1	0x810
+> -#define MPPDCMPR1	0x88c
+> -#define MPSWDAR		0x894
+> -#define MPRDDLCTL	0x848
+> -#define MPMUR		0x8b8
+> -#define MPDGCTRL0	0x83c
+> -#define MPDGCTRL1	0x840
+> -#define MPRDDLCTL	0x848
+> -#define MPWRDLCTL	0x850
+> -#define MPRDDLHWCTL	0x860
+> -#define MPWRDLHWCTL	0x864
+> -#define MPDGHWST0	0x87c
+> -#define MPDGHWST1	0x880
+> -#define MPDGHWST2	0x884
+> -#define MPDGHWST3	0x888
+> -
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
+> -
+
+are you sure that it doesn't fix the build after applying this patch? I
+think you need to add a include of the imx6-mmdc.h header file...
+
+>  int mmdc_do_write_level_calibration(void)
+>  {
+>  	u32 esdmisc_val, zq_val;
+> diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> index 4ad939e..3152e16 100644
+> --- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> +++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> @@ -1,6 +1,45 @@
+>  #ifndef __MACH_MMDC_H
+>  #define __MACH_MMDC_H
+> 
+
+You should also include the headers which are necessary for the
+following define like MX6_MMDC_P0_BASE_ADDR which are defined in 
+<mach/imx6-regs.h> and for all others...
+
 > +
->  #define MX6QDL_ENET_PINGRP1_GPIO6	MX6QDL_ENET_PINGRP1 \
->  	MX6QDL_PAD_GPIO_6__ENET_IRQ	0x000b1
->  
+> +#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
+> +#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
+> +
+> +#define MDCTL		0x000
+> +#define MDPDC		0x004
+> +#define MDSCR		0x01c
+> +#define MDMISC		0x018
+> +#define MDREF		0x020
+> +#define MAPSR		0x404
+> +#define MPZQHWCTRL	0x800
+> +#define MPWLGCR		0x808
+> +#define MPWLDECTRL0	0x80c
+> +#define MPWLDECTRL1	0x810
+> +#define MPPDCMPR1	0x88c
+> +#define MPSWDAR		0x894
+> +#define MPRDDLCTL	0x848
+> +#define MPMUR		0x8b8
+> +#define MPDGCTRL0	0x83c
+> +#define MPDGCTRL1	0x840
+> +#define MPRDDLCTL	0x848
+> +#define MPWRDLCTL	0x850
+> +#define MPRDDLHWCTL	0x860
+> +#define MPWRDLHWCTL	0x864
+> +#define MPDGHWST0	0x87c
+> +#define MPDGHWST1	0x880
+> +#define MPDGHWST2	0x884
+> +#define MPDGHWST3	0x888
+> +
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
+> +
+> +
 
--- 
-Pengutronix e.K.             | Lucas Stach                 |
-Industrial Linux Solutions   | http://www.pengutronix.de/  |
-
+- Alex
 
 _______________________________________________
 barebox mailing list
