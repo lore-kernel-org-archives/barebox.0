@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wdvpn-0005Rg-G7
- for barebox@lists.infradead.org; Sat, 26 Apr 2014 06:11:36 +0000
-Date: Sat, 26 Apr 2014 08:10:47 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140426061047.GB5858@pengutronix.de>
-References: <1398412667-18820-1-git-send-email-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1398412667-18820-1-git-send-email-antonynpavlov@gmail.com>
+Received: from smtp43.i.mail.ru ([94.100.177.103])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1We02E-0008Nv-Fn
+ for barebox@lists.infradead.org; Sat, 26 Apr 2014 10:40:43 +0000
+From: Alexander Shiyan <shc_work@mail.ru>
+Date: Sat, 26 Apr 2014 14:40:10 +0400
+Message-Id: <1398508810-19974-2-git-send-email-shc_work@mail.ru>
+In-Reply-To: <1398508810-19974-1-git-send-email-shc_work@mail.ru>
+References: <1398508810-19974-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,48 +16,44 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/2] clk: fixed-factor: add DT init function
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] commands/umount: Return real error code if "umount" fail
+To: barebox@lists.infradead.org
 
-On Fri, Apr 25, 2014 at 11:57:45AM +0400, Antony Pavlov wrote:
-> This short patchseries imports DT init function for fixed-factor clocks
-> from linux kernel.
-> 
-> Antony Pavlov (2):
->   clk: move of_clk_get_parent_name() to common clk code
->   clk: fixed-factor: add DT init function
+Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
+---
+ commands/umount.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Applied, thanks
-
-Sascha
-
-> 
->  drivers/clk/clk-fixed-factor.c | 36 ++++++++++++++++++++++++++++++++++++
->  drivers/clk/clk.c              | 20 ++++++++++++++++++++
->  drivers/clk/socfpga.c          | 19 -------------------
->  include/linux/clk.h            |  1 +
->  4 files changed, 57 insertions(+), 19 deletions(-)
-> 
-> -- 
-> 1.9.0
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
+diff --git a/commands/umount.c b/commands/umount.c
+index e6de1bc..f0f9fce 100644
+--- a/commands/umount.c
++++ b/commands/umount.c
+@@ -23,16 +23,10 @@
+ 
+ static int do_umount(int argc, char *argv[])
+ {
+-	int ret = 0;
+-
+ 	if (argc != 2)
+ 		return COMMAND_ERROR_USAGE;
+ 
+-	if ((ret = umount(argv[1]))) {
+-		perror("umount");
+-		return 1;
+-	}
+-	return 0;
++	return umount(argv[1]);
+ }
+ 
+ static const __maybe_unused char cmd_umount_help[] =
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.8.3.2
+
 
 _______________________________________________
 barebox mailing list
