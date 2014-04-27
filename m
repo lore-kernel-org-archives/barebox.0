@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from smtp3.mail.ru ([94.100.176.131])
+Received: from smtp46.i.mail.ru ([94.100.177.106])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WeIPB-0003yD-UA
- for barebox@lists.infradead.org; Sun, 27 Apr 2014 06:17:38 +0000
+ id 1WeIbO-0007U0-39
+ for barebox@lists.infradead.org; Sun, 27 Apr 2014 06:30:15 +0000
 From: Alexander Shiyan <shc_work@mail.ru>
-Date: Sun, 27 Apr 2014 10:17:06 +0400
-Message-Id: <1398579427-24306-1-git-send-email-shc_work@mail.ru>
+Date: Sun, 27 Apr 2014 10:29:47 +0400
+Message-Id: <1398580187-4950-1-git-send-email-shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,35 +19,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: Remove excess "select GENERIC_GPIO"
+Subject: [PATCH] video: imx-ipu-v3: Fix ipu_ch_param_zero()
 To: barebox@lists.infradead.org
 
-GENERIC_GPIO is selected automatically by GPIOLIB
+Sizeof(*p) returns the size of the pointer, not the size of the
+struct ipu_ch_param.
 
 Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
 ---
- arch/arm/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/video/imx-ipu-v3/imx-ipu-v3.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 3754646..11b9a85 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -79,7 +79,6 @@ config ARCH_HIGHBANK
+diff --git a/drivers/video/imx-ipu-v3/imx-ipu-v3.h b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
+index 7c48a7c..39255be 100644
+--- a/drivers/video/imx-ipu-v3/imx-ipu-v3.h
++++ b/drivers/video/imx-ipu-v3/imx-ipu-v3.h
+@@ -241,7 +241,7 @@ static inline void ipu_ch_param_zero(struct ipu_ch_param __iomem *p)
+ 	int i;
+ 	void __iomem *base = p;
  
- config ARCH_IMX
- 	bool "Freescale iMX-based"
--	select GENERIC_GPIO
- 	select GPIOLIB
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
-@@ -132,7 +131,6 @@ config ARCH_SOCFPGA
- 	select CPU_V7
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
--	select GENERIC_GPIO
- 	select GPIOLIB
- 	select HAVE_PBL_MULTI_IMAGES
+-	for (i = 0; i < sizeof(*p) / sizeof(u32); i++)
++	for (i = 0; i < sizeof(struct ipu_ch_param) / sizeof(u32); i++)
+ 		ipuwritel("chp", 0, base + i * sizeof(u32));
+ }
  
 -- 
 1.8.3.2
