@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x236.google.com ([2a00:1450:4013:c00::236])
+Received: from mail-ee0-f49.google.com ([74.125.83.49])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WeLQt-0007sN-Cb
- for barebox@lists.infradead.org; Sun, 27 Apr 2014 09:31:36 +0000
-Received: by mail-ee0-f54.google.com with SMTP id d49so3969204eek.27
- for <barebox@lists.infradead.org>; Sun, 27 Apr 2014 02:31:15 -0700 (PDT)
+ id 1WeLR0-0007sQ-MC
+ for barebox@lists.infradead.org; Sun, 27 Apr 2014 09:31:43 +0000
+Received: by mail-ee0-f49.google.com with SMTP id c41so3932553eek.36
+ for <barebox@lists.infradead.org>; Sun, 27 Apr 2014 02:31:17 -0700 (PDT)
 From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Sun, 27 Apr 2014 11:30:39 +0200
-Message-Id: <1398591044-3616-7-git-send-email-b.galvani@gmail.com>
+Date: Sun, 27 Apr 2014 11:30:40 +0200
+Message-Id: <1398591044-3616-8-git-send-email-b.galvani@gmail.com>
 In-Reply-To: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
 References: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,72 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 06/11] clk: gate: unify enable and disable functions handling
+Subject: [PATCH 07/11] clk: gate: add CLK_GATE_HIWORD_MASK flag
 To: barebox@lists.infradead.org
 
-To avoid code duplication and make easier to introduce new flags.
+Clock gates having the CLK_GATE_HIWORD_MASK flag set use the upper 16
+bits of the register as a "write enable" mask for the value in the
+lower 16 bits.
 
 Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 ---
- drivers/clk/clk-gate.c |   33 +++++++++++++++------------------
- 1 file changed, 15 insertions(+), 18 deletions(-)
+ drivers/clk/clk-gate.c |   17 ++++++++++++-----
+ include/linux/clk.h    |    1 +
+ 2 files changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/clk/clk-gate.c b/drivers/clk/clk-gate.c
-index 11c749a..54489c4 100644
+index 54489c4..85eba3d 100644
 --- a/drivers/clk/clk-gate.c
 +++ b/drivers/clk/clk-gate.c
-@@ -30,36 +30,33 @@ struct clk_gate {
- 
- #define to_clk_gate(_clk) container_of(_clk, struct clk_gate, clk)
- 
--static int clk_gate_enable(struct clk *clk)
-+static void clk_gate_endisable(struct clk *clk, int enable)
- {
--	struct clk_gate *g = container_of(clk, struct clk_gate, clk);
-+	struct clk_gate *gate = container_of(clk, struct clk_gate, clk);
-+	int set = gate->flags & CLK_GATE_INVERTED ? 1 : 0;
+@@ -37,12 +37,19 @@ static void clk_gate_endisable(struct clk *clk, int enable)
  	u32 val;
  
--	val = readl(g->reg);
-+	set ^= enable;
-+	val = readl(gate->reg);
+ 	set ^= enable;
+-	val = readl(gate->reg);
  
--	if (g->flags & CLK_GATE_INVERTED)
--		val &= ~(1 << g->shift);
-+	if (set)
-+		val |= BIT(gate->shift);
- 	else
--		val |= 1 << g->shift;
-+		val &= ~BIT(gate->shift);
- 
--	writel(val, g->reg);
-+	writel(val, gate->reg);
-+}
-+
-+static int clk_gate_enable(struct clk *clk)
-+{
-+	clk_gate_endisable(clk, 1);
- 
- 	return 0;
- }
- 
- static void clk_gate_disable(struct clk *clk)
- {
--	struct clk_gate *g = container_of(clk, struct clk_gate, clk);
--	u32 val;
--
--	val = readl(g->reg);
--
--	if (g->flags & CLK_GATE_INVERTED)
--		val |= 1 << g->shift;
+-	if (set)
+-		val |= BIT(gate->shift);
 -	else
--		val &= ~(1 << g->shift);
--
--	writel(val, g->reg);
-+	clk_gate_endisable(clk, 0);
- }
+-		val &= ~BIT(gate->shift);
++	if (gate->flags & CLK_GATE_HIWORD_MASK) {
++		val = BIT(gate->shift + 16);
++		if (set)
++			val |= BIT(gate->shift);
++	} else {
++		val = readl(gate->reg);
++
++		if (set)
++			val |= BIT(gate->shift);
++		else
++			val &= ~BIT(gate->shift);
++	}
  
- static int clk_gate_is_enabled(struct clk *clk)
+ 	writel(val, gate->reg);
+ }
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index fbfdd4f..49cb5a2 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -200,6 +200,7 @@ static inline int clk_set_rate(struct clk *clk, unsigned long rate)
+ #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
+ 
+ #define CLK_GATE_INVERTED	(1 << 0)
++#define CLK_GATE_HIWORD_MASK	(1 << 1)
+ 
+ struct clk_ops {
+ 	int		(*enable)(struct clk *clk);
 -- 
 1.7.10.4
 
