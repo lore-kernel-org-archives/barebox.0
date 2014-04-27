@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
+Received: from mail-ee0-x233.google.com ([2a00:1450:4013:c00::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WeLQt-0007sD-4v
+ id 1WeLQt-0007sG-8E
  for barebox@lists.infradead.org; Sun, 27 Apr 2014 09:31:36 +0000
-Received: by mail-ee0-f50.google.com with SMTP id c13so3964016eek.9
- for <barebox@lists.infradead.org>; Sun, 27 Apr 2014 02:31:10 -0700 (PDT)
+Received: by mail-ee0-f51.google.com with SMTP id c13so3869669eek.24
+ for <barebox@lists.infradead.org>; Sun, 27 Apr 2014 02:31:14 -0700 (PDT)
 From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Sun, 27 Apr 2014 11:30:35 +0200
-Message-Id: <1398591044-3616-3-git-send-email-b.galvani@gmail.com>
+Date: Sun, 27 Apr 2014 11:30:38 +0200
+Message-Id: <1398591044-3616-6-git-send-email-b.galvani@gmail.com>
 In-Reply-To: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
 References: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,265 +23,181 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 02/11] mfd: add act8846 driver
+Subject: [PATCH 05/11] clk: gate: add flags argument to clock gate constructor
 To: barebox@lists.infradead.org
 
+This adds a clk_gate_flags argument to clock gate creation functions
+to allow the introduction of new clock gate modifiers.
 
 Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 ---
- drivers/mfd/Kconfig   |    4 ++
- drivers/mfd/Makefile  |    1 +
- drivers/mfd/act8846.c |  154 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/mfd/act8846.h |   56 ++++++++++++++++++
- 4 files changed, 215 insertions(+)
- create mode 100644 drivers/mfd/act8846.c
- create mode 100644 include/mfd/act8846.h
+ arch/arm/mach-imx/clk.h           |    2 +-
+ arch/arm/mach-zynq/clk-zynq7000.c |    8 ++++----
+ drivers/clk/clk-gate.c            |   12 +++++-------
+ drivers/clk/mvebu/common.c        |    2 +-
+ drivers/clk/mxs/clk-imx28.c       |    2 +-
+ drivers/clk/tegra/clk-periph.c    |    2 +-
+ include/linux/clk.h               |    7 +++++--
+ 7 files changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 8873764..3af904d 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1,5 +1,9 @@
- menu MFD
+diff --git a/arch/arm/mach-imx/clk.h b/arch/arm/mach-imx/clk.h
+index 32a02db..e2f4143 100644
+--- a/arch/arm/mach-imx/clk.h
++++ b/arch/arm/mach-imx/clk.h
+@@ -36,7 +36,7 @@ static inline struct clk *imx_clk_mux_p(const char *name, void __iomem *reg,
+ static inline struct clk *imx_clk_gate(const char *name, const char *parent,
+ 		void __iomem *reg, u8 shift)
+ {
+-	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT);
++	return clk_gate(name, parent, reg, shift, CLK_SET_RATE_PARENT, 0);
+ }
  
-+config MFD_ACT8846
-+	depends on I2C
-+	bool "ACT8846 driver"
+ struct clk *imx_clk_pllv1(const char *name, const char *parent,
+diff --git a/arch/arm/mach-zynq/clk-zynq7000.c b/arch/arm/mach-zynq/clk-zynq7000.c
+index ea637d7..b4513a9 100644
+--- a/arch/arm/mach-zynq/clk-zynq7000.c
++++ b/arch/arm/mach-zynq/clk-zynq7000.c
+@@ -374,11 +374,11 @@ static int zynq_clock_probe(struct device_d *dev)
+ 
+ 	clks[uart_clk] = zynq_periph_clk("uart_clk", slcr_base + 0x154);
+ 
+-	clks[uart0] = clk_gate("uart0", "uart_clk", slcr_base + 0x154, 0, 0);
+-	clks[uart1] = clk_gate("uart1", "uart_clk", slcr_base + 0x154, 1, 0);
++	clks[uart0] = clk_gate("uart0", "uart_clk", slcr_base + 0x154, 0, 0, 0);
++	clks[uart1] = clk_gate("uart1", "uart_clk", slcr_base + 0x154, 1, 0, 0);
+ 
+-	clks[gem0] = clk_gate("gem0", "io_pll", slcr_base + 0x140, 0, 0);
+-	clks[gem1] = clk_gate("gem1", "io_pll", slcr_base + 0x144, 1, 0);
++	clks[gem0] = clk_gate("gem0", "io_pll", slcr_base + 0x140, 0, 0, 0);
++	clks[gem1] = clk_gate("gem1", "io_pll", slcr_base + 0x144, 1, 0, 0);
+ 
+ 	clks[cpu_clk] = zynq_cpu_clk("cpu_clk", slcr_base + 0x120);
+ 
+diff --git a/drivers/clk/clk-gate.c b/drivers/clk/clk-gate.c
+index b298b19..11c749a 100644
+--- a/drivers/clk/clk-gate.c
++++ b/drivers/clk/clk-gate.c
+@@ -25,7 +25,6 @@ struct clk_gate {
+ 	void __iomem *reg;
+ 	int shift;
+ 	const char *parent;
+-#define CLK_GATE_INVERTED	(1 << 0)
+ 	unsigned flags;
+ };
+ 
+@@ -85,7 +84,7 @@ static struct clk_ops clk_gate_ops = {
+ };
+ 
+ struct clk *clk_gate_alloc(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, unsigned flags)
++		void __iomem *reg, u8 shift, unsigned flags, u8 clk_gate_flags)
+ {
+ 	struct clk_gate *g = xzalloc(sizeof(*g));
+ 
+@@ -97,6 +96,7 @@ struct clk *clk_gate_alloc(const char *name, const char *parent,
+ 	g->clk.flags = flags;
+ 	g->clk.parent_names = &g->parent;
+ 	g->clk.num_parents = 1;
++	g->flags = clk_gate_flags;
+ 
+ 	return &g->clk;
+ }
+@@ -109,12 +109,12 @@ void clk_gate_free(struct clk *clk_gate)
+ }
+ 
+ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
+-		u8 shift, unsigned flags)
++		u8 shift, unsigned flags, u8 clk_gate_flags)
+ {
+ 	struct clk *g;
+ 	int ret;
+ 
+-	g = clk_gate_alloc(name , parent, reg, shift, flags);
++	g = clk_gate_alloc(name , parent, reg, shift, flags, clk_gate_flags);
+ 
+ 	ret = clk_register(g);
+ 	if (ret) {
+@@ -131,13 +131,11 @@ struct clk *clk_gate_inverted(const char *name, const char *parent,
+ 	struct clk *clk;
+ 	struct clk_gate *g;
+ 
+-	clk = clk_gate(name, parent, reg, shift, flags);
++	clk = clk_gate(name, parent, reg, shift, flags, CLK_GATE_INVERTED);
+ 	if (IS_ERR(clk))
+ 		return clk;
+ 
+ 	g = container_of(clk, struct clk_gate, clk);
+ 
+-	g->flags = CLK_GATE_INVERTED;
+-
+ 	return clk;
+ }
+diff --git a/drivers/clk/mvebu/common.c b/drivers/clk/mvebu/common.c
+index 658ce3e..f3be5f2 100644
+--- a/drivers/clk/mvebu/common.c
++++ b/drivers/clk/mvebu/common.c
+@@ -188,7 +188,7 @@ int mvebu_clk_gating_probe(struct device_d *dev)
+ 			(desc[n].parent) ? desc[n].parent : default_parent;
+ 		gate->bit_idx = desc[n].bit_idx;
+ 		gate->clk = clk_gate(desc[n].name, parent,
+-				base, desc[n].bit_idx, 0);
++				base, desc[n].bit_idx, 0, 0);
+ 		WARN_ON(IS_ERR(gate->clk));
+ 	}
+ 
+diff --git a/drivers/clk/mxs/clk-imx28.c b/drivers/clk/mxs/clk-imx28.c
+index 934a194..36b71f6 100644
+--- a/drivers/clk/mxs/clk-imx28.c
++++ b/drivers/clk/mxs/clk-imx28.c
+@@ -128,7 +128,7 @@ int __init mx28_clocks_init(void __iomem *regs)
+ 	clks[fec] = mxs_clk_gate("fec", "fec_sleep", ENET, 30);
+ 	clks[usb0_phy] = mxs_clk_gate("usb0_phy", "pll0", PLL0CTRL0, 18);
+ 	clks[usb1_phy] = mxs_clk_gate("usb1_phy", "pll1", PLL1CTRL0, 18);
+-	clks[enet_out] = clk_gate("enet_out", "pll2", ENET, 18, 0);
++	clks[enet_out] = clk_gate("enet_out", "pll2", ENET, 18, 0, 0);
+ 	clks[lcdif_comp] = mxs_clk_lcdif("lcdif_comp", clks[ref_pix],
+ 			clks[lcdif_div], clks[lcdif]);
+ 
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index 25616c8..be83955 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -150,7 +150,7 @@ struct clk *_tegra_clk_register_periph(const char *name,
+ 		gate_offs = 0x10 + ((id >> 3) & 0xc);
+ 
+ 	periph->gate = clk_gate_alloc(NULL, NULL, clk_base + gate_offs,
+-				      id & 0x1f, 0);
++				      id & 0x1f, 0, 0);
+ 	if (!periph->gate)
+ 		goto out_gate;
+ 
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index dd9fab7..fbfdd4f 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -199,6 +199,8 @@ static inline int clk_set_rate(struct clk *clk, unsigned long rate)
+ 
+ #define CLK_SET_RATE_PARENT     (1 << 0) /* propagate rate change up one level */
+ 
++#define CLK_GATE_INVERTED	(1 << 0)
 +
- config MFD_LP3972
- 	depends on I2C
- 	bool "LP3972 driver"
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index 2ad766d..49b9e35 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -1,3 +1,4 @@
-+obj-$(CONFIG_MFD_ACT8846)	+= act8846.o
- obj-$(CONFIG_MFD_LP3972)	+= lp3972.o
- obj-$(CONFIG_MFD_MC13XXX)	+= mc13xxx.o
- obj-$(CONFIG_MFD_MC34704)	+= mc34704.o
-diff --git a/drivers/mfd/act8846.c b/drivers/mfd/act8846.c
-new file mode 100644
-index 0000000..60029ac
---- /dev/null
-+++ b/drivers/mfd/act8846.c
-@@ -0,0 +1,154 @@
-+/*
-+ * Copyright (C) 2007 Sascha Hauer, Pengutronix
-+ *               2009 Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * Copied from drivers/mfd/mc9sdz60.c
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License as
-+ * published by the Free Software Foundation; either version 2 of
-+ * the License, or (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ */
-+
-+#include <common.h>
-+#include <init.h>
-+#include <driver.h>
-+#include <xfuncs.h>
-+#include <errno.h>
-+
-+#include <i2c/i2c.h>
-+#include <mfd/act8846.h>
-+
-+#define DRIVERNAME		"act8846"
-+
-+#define to_act8846(a)		container_of(a, struct act8846, cdev)
-+
-+static struct act8846 *act8846_dev;
-+
-+struct act8846 *act8846_get(void)
-+{
-+	if (!act8846_dev)
-+		return NULL;
-+
-+	return act8846_dev;
-+}
-+EXPORT_SYMBOL(act8846_get);
-+
-+int act8846_reg_read(struct act8846 *act8846, enum act8846_reg reg, u8 *val)
-+{
-+	int ret;
-+
-+	ret = i2c_read_reg(act8846->client, reg, val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+EXPORT_SYMBOL(act8846_reg_read);
-+
-+int act8846_reg_write(struct act8846 *act8846, enum act8846_reg reg, u8 val)
-+{
-+	int ret;
-+
-+	ret = i2c_write_reg(act8846->client, reg, &val, 1);
-+
-+	return ret == 1 ? 0 : ret;
-+}
-+EXPORT_SYMBOL(act8846_reg_write);
-+
-+int act8846_set_bits(struct act8846 *act8846, enum act8846_reg reg,
-+		     u8 mask, u8 val)
-+{
-+	u8 tmp;
-+	int err;
-+
-+	err = act8846_reg_read(act8846, reg, &tmp);
-+	tmp = (tmp & ~mask) | val;
-+
-+	if (!err)
-+		err = act8846_reg_write(act8846, reg, tmp);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL(act8846_set_bits);
-+
-+static ssize_t act8846_read(struct cdev *cdev, void *_buf, size_t count,
-+			    loff_t offset, ulong flags)
-+{
-+	struct act8846 *act8846 = to_act8846(cdev);
-+	u8 *buf = _buf;
-+	size_t i = count;
-+	int err;
-+
-+	while (i) {
-+		err = act8846_reg_read(act8846, offset, buf);
-+		if (err)
-+			return (ssize_t)err;
-+		buf++;
-+		i--;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static ssize_t act8846_write(struct cdev *cdev, const void *_buf, size_t count,
-+			     loff_t offset, ulong flags)
-+{
-+	struct act8846 *act8846 = to_act8846(cdev);
-+	const u8 *buf = _buf;
-+	size_t i = count;
-+	int err;
-+
-+	while (i) {
-+		err = act8846_reg_write(act8846, offset, *buf);
-+		if (err)
-+			return (ssize_t)err;
-+		buf++;
-+		i--;
-+		offset++;
-+	}
-+
-+	return count;
-+}
-+
-+static struct file_operations act8846_fops = {
-+	.lseek	= dev_lseek_default,
-+	.read	= act8846_read,
-+	.write	= act8846_write,
-+};
-+
-+static int act8846_probe(struct device_d *dev)
-+{
-+	if (act8846_dev)
-+		return -EBUSY;
-+
-+	act8846_dev = xzalloc(sizeof(struct act8846));
-+	act8846_dev->cdev.name = DRIVERNAME;
-+	act8846_dev->client = to_i2c_client(dev);
-+	act8846_dev->cdev.size = 64;
-+	act8846_dev->cdev.dev = dev;
-+	act8846_dev->cdev.ops = &act8846_fops;
-+
-+	devfs_create(&act8846_dev->cdev);
-+
-+	return 0;
-+}
-+
-+static struct driver_d act8846_driver = {
-+	.name  = DRIVERNAME,
-+	.probe = act8846_probe,
-+};
-+
-+static int act8846_init(void)
-+{
-+	i2c_driver_register(&act8846_driver);
-+	return 0;
-+}
-+
-+device_initcall(act8846_init);
-diff --git a/include/mfd/act8846.h b/include/mfd/act8846.h
-new file mode 100644
-index 0000000..011fe20
---- /dev/null
-+++ b/include/mfd/act8846.h
-@@ -0,0 +1,56 @@
-+/*
-+ * Copyright (C) 2009 Marc Kleine-Budde <mkl@pengutronix.de>
-+ *
-+ * This file is released under the GPLv2
-+ *
-+ * Derived from mc9sdz60.h
-+ */
-+
-+#ifndef _ACT8846_H
-+#define _ACT8846_H
-+
-+enum act8846_reg {
-+	ACT8846_SYS_MODE	= 0x00,
-+	ACT8846_SYS_CTRL	= 0x01,
-+	ACT8846_DCDC1_VSET1	= 0x10,
-+	ACT8846_DCDC1_CTRL	= 0x12,
-+	ACT8846_DCDC2_VSET1	= 0x20,
-+	ACT8846_DCDC2_VSET2	= 0x21,
-+	ACT8846_DCDC2_CTRL	= 0x22,
-+	ACT8846_DCDC3_VSET1	= 0x30,
-+	ACT8846_DCDC3_VSET2	= 0x31,
-+	ACT8846_DCDC3_CTRL	= 0x32,
-+	ACT8846_DCDC4_VSET1	= 0x40,
-+	ACT8846_DCDC4_VSET2	= 0x41,
-+	ACT8846_DCDC4_CTRL	= 0x42,
-+	ACT8846_LDO5_VSET	= 0x50,
-+	ACT8846_LDO5_CTRL	= 0x51,
-+	ACT8846_LDO6_VSET	= 0x58,
-+	ACT8846_LDO6_CTRL	= 0x59,
-+	ACT8846_LDO7_VSET	= 0x60,
-+	ACT8846_LDO7_CTRL	= 0x61,
-+	ACT8846_LDO8_VSET	= 0x68,
-+	ACT8846_LDO8_CTRL	= 0x69,
-+	ACT8846_LDO9_VSET	= 0x70,
-+	ACT8846_LDO9_CTRL	= 0x71,
-+	ACT8846_LDO10_VSET	= 0x80,
-+	ACT8846_LDO10_CTRL	= 0x81,
-+	ACT8846_LDO11_VSET	= 0x90,
-+	ACT8846_LDO11_CTRL	= 0x91,
-+	ACT8846_LDO12_VSET	= 0xA0,
-+	ACT8846_LDO12_CTRL	= 0xA1,
-+};
-+
-+struct act8846 {
-+	struct cdev		cdev;
-+	struct i2c_client	*client;
-+};
-+
-+struct act8846 *act8846_get(void);
-+
-+int act8846_reg_read(struct act8846 *priv, enum act8846_reg reg, u8 *val);
-+int act8846_reg_write(struct act8846 *priv, enum act8846_reg reg, u8 val);
-+int act8846_set_bits(struct act8846 *priv, enum act8846_reg reg,
-+		     u8 mask, u8 val);
-+
-+#endif /* _ACT8846_H */
+ struct clk_ops {
+ 	int		(*enable)(struct clk *clk);
+ 	void		(*disable)(struct clk *clk);
+@@ -267,10 +269,11 @@ struct clk *clk_mux(const char *name, void __iomem *reg,
+ 		unsigned flags);
+ 
+ struct clk *clk_gate_alloc(const char *name, const char *parent,
+-		void __iomem *reg, u8 shift, unsigned flags);
++		void __iomem *reg, u8 shift, unsigned flags,
++		u8 clk_gate_flags);
+ void clk_gate_free(struct clk *clk_gate);
+ struct clk *clk_gate(const char *name, const char *parent, void __iomem *reg,
+-		u8 shift, unsigned flags);
++		u8 shift, unsigned flags, u8 clk_gate_flags);
+ struct clk *clk_gate_inverted(const char *name, const char *parent, void __iomem *reg,
+ 		u8 shift, unsigned flags);
+ int clk_is_enabled(struct clk *clk);
 -- 
 1.7.10.4
 
