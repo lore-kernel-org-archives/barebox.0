@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Weeke-0001kE-Hy
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 06:09:17 +0000
-Date: Mon, 28 Apr 2014 08:08:52 +0200
+ Linux)) id 1Weell-0003GH-Av
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 06:10:26 +0000
+Date: Mon, 28 Apr 2014 08:10:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140428060852.GL5858@pengutronix.de>
-References: <1398370966-30241-1-git-send-email-dev@lynxeye.de>
+Message-ID: <20140428061003.GM5858@pengutronix.de>
+References: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1398370966-30241-1-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1398426868-30285-1-git-send-email-c.hemp@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +22,125 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] ARM: nitrogen6x: remove VPU/IPU QoS from DCD
-To: Lucas Stach <dev@lynxeye.de>
+Subject: Re: [PATCH 1/4] imx6:mmdc: Move register defines to header file
+To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Thu, Apr 24, 2014 at 10:22:46PM +0200, Lucas Stach wrote:
-> From: Lucas Stach <l.stach@pengutronix.de>
-> 
-> Not needed anymore, as barebox sets this up itself now.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Hi Christian,
 
-Applied, thanks
+I applied 1/4 and 2/4 for now.
 
 Sascha
 
-> ---
->  .../boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg     | 5 -----
->  1 file changed, 5 deletions(-)
+On Fri, Apr 25, 2014 at 01:54:25PM +0200, Christian Hemp wrote:
+> Move mmdc register defines to mmdc header file.
 > 
-> diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-> index 60a39fe..b6c7580 100644
-> --- a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-> +++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
-> @@ -99,8 +99,3 @@ wm 32 0x020c4074 0x3ff00000
->  wm 32 0x020c4078 0x00fff300
->  wm 32 0x020c407c 0x0f0000c3
->  wm 32 0x020c4080 0x000003ff
-> -/* enable AXI cache for VDOA/VPU/IPU */
-> -wm 32 0x020e0010 0xf00000cf
-> -/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7 */
-> -wm 32 0x020e0018 0x007f007f
-> -wm 32 0x020e001c 0x007f007f
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> ---
+>  arch/arm/mach-imx/imx6-mmdc.c              |   37 --------------------------
+>  arch/arm/mach-imx/include/mach/imx6-mmdc.h |   39 ++++++++++++++++++++++++++++
+>  2 files changed, 39 insertions(+), 37 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+> index d1de593..9686bee 100644
+> --- a/arch/arm/mach-imx/imx6-mmdc.c
+> +++ b/arch/arm/mach-imx/imx6-mmdc.c
+> @@ -20,43 +20,6 @@
+>  #include <mach/imx6-regs.h>
+>  #include <mach/imx6-mmdc.h>
+>  
+> -#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
+> -#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
+> -
+> -#define MDCTL		0x000
+> -#define MDPDC		0x004
+> -#define MDSCR		0x01c
+> -#define MDMISC		0x018
+> -#define MDREF		0x020
+> -#define MAPSR		0x404
+> -#define MPZQHWCTRL	0x800
+> -#define MPWLGCR		0x808
+> -#define MPWLDECTRL0	0x80c
+> -#define MPWLDECTRL1	0x810
+> -#define MPPDCMPR1	0x88c
+> -#define MPSWDAR		0x894
+> -#define MPRDDLCTL	0x848
+> -#define MPMUR		0x8b8
+> -#define MPDGCTRL0	0x83c
+> -#define MPDGCTRL1	0x840
+> -#define MPRDDLCTL	0x848
+> -#define MPWRDLCTL	0x850
+> -#define MPRDDLHWCTL	0x860
+> -#define MPWRDLHWCTL	0x864
+> -#define MPDGHWST0	0x87c
+> -#define MPDGHWST1	0x880
+> -#define MPDGHWST2	0x884
+> -#define MPDGHWST3	0x888
+> -
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
+> -#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
+> -
+>  int mmdc_do_write_level_calibration(void)
+>  {
+>  	u32 esdmisc_val, zq_val;
+> diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> index 4ad939e..3152e16 100644
+> --- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> +++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> @@ -1,6 +1,45 @@
+>  #ifndef __MACH_MMDC_H
+>  #define __MACH_MMDC_H
+>  
+> +
+> +#define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
+> +#define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
+> +
+> +#define MDCTL		0x000
+> +#define MDPDC		0x004
+> +#define MDSCR		0x01c
+> +#define MDMISC		0x018
+> +#define MDREF		0x020
+> +#define MAPSR		0x404
+> +#define MPZQHWCTRL	0x800
+> +#define MPWLGCR		0x808
+> +#define MPWLDECTRL0	0x80c
+> +#define MPWLDECTRL1	0x810
+> +#define MPPDCMPR1	0x88c
+> +#define MPSWDAR		0x894
+> +#define MPRDDLCTL	0x848
+> +#define MPMUR		0x8b8
+> +#define MPDGCTRL0	0x83c
+> +#define MPDGCTRL1	0x840
+> +#define MPRDDLCTL	0x848
+> +#define MPWRDLCTL	0x850
+> +#define MPRDDLHWCTL	0x860
+> +#define MPWRDLHWCTL	0x864
+> +#define MPDGHWST0	0x87c
+> +#define MPDGHWST1	0x880
+> +#define MPDGHWST2	0x884
+> +#define MPDGHWST3	0x888
+> +
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS0	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5a8)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS1	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b0)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS2	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x524)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS3	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x51c)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS4	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x518)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS5	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x50c)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS6	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5b8)
+> +#define IOMUXC_SW_PAD_CTL_PAD_DRAM_SDQS7	((void __iomem *)MX6_IOMUXC_BASE_ADDR + 0x5c0)
+> +
+> +
+>  int mmdc_do_write_level_calibration(void);
+>  int mmdc_do_dqs_calibration(void);
+>  
 > -- 
-> 1.9.0
+> 1.7.0.4
 > 
 > 
 > _______________________________________________
