@@ -1,19 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x231.google.com ([2a00:1450:4013:c00::231])
+Received: from mail-ee0-x232.google.com ([2a00:1450:4013:c00::232])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WeodL-0001Jz-4z
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 16:42:24 +0000
-Received: by mail-ee0-f49.google.com with SMTP id c41so5095023eek.36
- for <barebox@lists.infradead.org>; Mon, 28 Apr 2014 09:42:01 -0700 (PDT)
-Date: Mon, 28 Apr 2014 18:41:54 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140428164153.GA5287@omega>
-References: <1398673121-6075-1-git-send-email-s.hauer@pengutronix.de>
- <1398673121-6075-2-git-send-email-s.hauer@pengutronix.de>
- <20140428163015.GB19883@omega>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140428163015.GB19883@omega>
+ id 1WepTu-0005s6-SD
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 17:36:43 +0000
+Received: by mail-ee0-f50.google.com with SMTP id c13so5065002eek.37
+ for <barebox@lists.infradead.org>; Mon, 28 Apr 2014 10:36:20 -0700 (PDT)
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+Date: Mon, 28 Apr 2014 19:36:13 +0200
+Message-Id: <1398706573-12979-1-git-send-email-sebastian.hesselbarth@gmail.com>
+In-Reply-To: <1398671161-29045-12-git-send-email-s.hauer@pengutronix.de>
+References: <1398671161-29045-12-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,95 +18,205 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/2] Add initial regulator support
-To: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] fixup! ARM: dove: Use upstream dtsi file
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Mon, Apr 28, 2014 at 06:30:15PM +0200, Alexander Aring wrote:
-> Hi Sascha,
-> 
-> On Mon, Apr 28, 2014 at 10:18:40AM +0200, Sascha Hauer wrote:
-> > Provide minimal regulator support. Only supported operations are enabling
-> > and disabling regulators. Association of devices with their regulators is
-> > limited to devicetree only. If regulator support is disabled the API expands
-> > to static inline stubs so consumers can still use the API.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  commands/Kconfig           |   8 ++
-> >  commands/Makefile          |   1 +
-> >  commands/regulator.c       |  33 ++++++
-> >  drivers/Kconfig            |   1 +
-> >  drivers/Makefile           |   1 +
-> >  drivers/regulator/Kconfig  |  13 +++
-> >  drivers/regulator/Makefile |   2 +
-> >  drivers/regulator/core.c   | 262 +++++++++++++++++++++++++++++++++++++++++++++
-> >  drivers/regulator/fixed.c  | 103 ++++++++++++++++++
-> >  include/regulator.h        |  47 ++++++++
-> >  10 files changed, 471 insertions(+)
-> >  create mode 100644 commands/regulator.c
-> >  create mode 100644 drivers/regulator/Kconfig
-> >  create mode 100644 drivers/regulator/Makefile
-> >  create mode 100644 drivers/regulator/core.c
-> >  create mode 100644 drivers/regulator/fixed.c
-> >  create mode 100644 include/regulator.h
-> > 
-> > diff --git a/commands/Kconfig b/commands/Kconfig
-> > index cc014f3..510cc91 100644
-> > --- a/commands/Kconfig
-> > +++ b/commands/Kconfig
-> > @@ -690,6 +690,14 @@ config CMD_GPIO
-> >  	  include gpio_set_value, gpio_get_value, gpio_direction_input and
-> >  	  gpio_direction_output commands to control gpios.
-> >  
-> > +config CMD_REGULATOR
-> > +	bool
-> > +	depends on REGULATOR
-> > +	prompt "regulator command"
-> > +	help
-> > +	  the regulator command lists the currently registered regulators and
-> > +	  their current state.
-> > +
-> >  config CMD_UNCOMPRESS
-> >  	bool
-> >  	select UNCOMPRESS
-> > diff --git a/commands/Makefile b/commands/Makefile
-> > index e463031..7836515 100644
-> > --- a/commands/Makefile
-> > +++ b/commands/Makefile
-> > @@ -95,3 +95,4 @@ obj-$(CONFIG_CMD_BOOT)		+= boot.o
-> ...
-> > +};
-> > +
-> > +static int regulator_fixed_enable(struct regulator_dev *rdev)
-> > +{
-> > +	struct regulator_fixed *fix = container_of(rdev, struct regulator_fixed, rdev);
-> > +
-> > +	if (!gpio_is_valid(fix->gpio))
-> > +		return 0;
-> > +
-> This should return a errno like the above one "-EINVAL". Or?
-> 
-Sorry I meant s/above/below/ ...
+Sascha,
 
-> > +	return gpio_direction_output(fix->gpio, !fix->active_low);
-> > +}
-> > +
-> > +static int regulator_fixed_disable(struct regulator_dev *rdev)
-> > +{
-> > +	struct regulator_fixed *fix = container_of(rdev, struct regulator_fixed, rdev);
-> > +
-> > +	if (!gpio_is_valid(fix->gpio))
-> > +		return -EINVAL;
-> > +
-> 
-> like this.
-> 
-> - Alex
+thanks _a lot_ for doing this. It saves me from importing the same
+for the other SoCs. Anyway, I'd even go further and fixup the Dove
+patch with this one here.
+
+Feel free to squash this into
+
+09015ae52c18 ("ARM: dove: Use upstream dtsi file")
+
+and add my
+
+Tested-by: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+
+---
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+---
+ arch/arm/dts/dove-cubox-bb.dts |   2 +-
+ arch/arm/dts/dove-cubox.dts    | 136 -----------------------------------------
+ arch/arm/dts/dove.dtsi         |   1 -
+ 3 files changed, 1 insertion(+), 138 deletions(-)
+ delete mode 100644 arch/arm/dts/dove-cubox.dts
+ delete mode 100644 arch/arm/dts/dove.dtsi
+
+diff --git a/arch/arm/dts/dove-cubox-bb.dts b/arch/arm/dts/dove-cubox-bb.dts
+index 3d1e5b4fa622..f7ad55c4e794 100644
+--- a/arch/arm/dts/dove-cubox-bb.dts
++++ b/arch/arm/dts/dove-cubox-bb.dts
+@@ -3,7 +3,7 @@
+  *   Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+  */
+ 
+-#include "dove-cubox.dts"
++#include "arm/dove-cubox.dts"
+ 
+ / {
+ 	chosen {
+diff --git a/arch/arm/dts/dove-cubox.dts b/arch/arm/dts/dove-cubox.dts
+deleted file mode 100644
+index 7a70f4ca502a..000000000000
+--- a/arch/arm/dts/dove-cubox.dts
++++ /dev/null
+@@ -1,136 +0,0 @@
+-/dts-v1/;
+-
+-#include "dove.dtsi"
+-
+-/ {
+-	model = "SolidRun CuBox";
+-	compatible = "solidrun,cubox", "marvell,dove";
+-
+-	memory {
+-		device_type = "memory";
+-		reg = <0x00000000 0x40000000>;
+-	};
+-
+-	chosen {
+-		bootargs = "console=ttyS0,115200n8 earlyprintk";
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-0 = <&pmx_gpio_18>;
+-		pinctrl-names = "default";
+-
+-		power {
+-			label = "Power";
+-			gpios = <&gpio0 18 1>;
+-			default-state = "keep";
+-		};
+-	};
+-
+-	regulators {
+-		compatible = "simple-bus";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		usb_power: regulator@1 {
+-			compatible = "regulator-fixed";
+-			reg = <1>;
+-			regulator-name = "USB Power";
+-			regulator-min-microvolt = <5000000>;
+-			regulator-max-microvolt = <5000000>;
+-			enable-active-high;
+-			regulator-always-on;
+-			regulator-boot-on;
+-			gpio = <&gpio0 1 0>;
+-			pinctrl-0 = <&pmx_gpio_1>;
+-			pinctrl-names = "default";
+-		};
+-	};
+-
+-	clocks {
+-		/* 25MHz reference crystal */
+-		ref25: oscillator {
+-			compatible = "fixed-clock";
+-			#clock-cells = <0>;
+-			clock-frequency = <25000000>;
+-		};
+-	};
+-
+-	ir_recv: ir-receiver {
+-		compatible = "gpio-ir-receiver";
+-		gpios = <&gpio0 19 1>;
+-		pinctrl-0 = <&pmx_gpio_19>;
+-		pinctrl-names = "default";
+-	};
+-};
+-
+-&uart0 { status = "okay"; };
+-&sata0 { status = "okay"; };
+-&mdio { status = "okay"; };
+-&eth { status = "okay"; };
+-
+-&ethphy {
+-	compatible = "marvell,88e1310";
+-	reg = <1>;
+-};
+-
+-&i2c0 {
+-	status = "okay";
+-	clock-frequency = <100000>;
+-
+-	si5351: clock-generator {
+-		compatible = "silabs,si5351a-msop";
+-		reg = <0x60>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		#clock-cells = <1>;
+-
+-		/* connect xtal input to 25MHz reference */
+-		clocks = <&ref25>;
+-
+-		/* connect xtal input as source of pll0 and pll1 */
+-		silabs,pll-source = <0 0>, <1 0>;
+-
+-		clkout0 {
+-			reg = <0>;
+-			silabs,drive-strength = <8>;
+-			silabs,multisynth-source = <0>;
+-			silabs,clock-source = <0>;
+-			silabs,pll-master;
+-		};
+-
+-		clkout2 {
+-			reg = <2>;
+-			silabs,drive-strength = <8>;
+-			silabs,multisynth-source = <1>;
+-			silabs,clock-source = <0>;
+-			silabs,pll-master;
+-		};
+-	};
+-};
+-
+-&sdio0 {
+-	status = "okay";
+-	/* sdio0 card detect is connected to wrong pin on CuBox */
+-	cd-gpios = <&gpio0 12 1>;
+-	pinctrl-0 = <&pmx_sdio0 &pmx_gpio_12>;
+-};
+-
+-&spi0 {
+-	status = "okay";
+-
+-	/* spi0.0: 4M Flash Winbond W25Q32BV */
+-	spi-flash@0 {
+-		compatible = "st,w25q32";
+-		spi-max-frequency = <20000000>;
+-		reg = <0>;
+-	};
+-};
+-
+-&audio1 {
+-	status = "okay";
+-	clocks = <&gate_clk 13>, <&si5351 2>;
+-	clock-names = "internal", "extclk";
+-	pinctrl-0 = <&pmx_audio1_i2s1_spdifo &pmx_audio1_extclk>;
+-	pinctrl-names = "default";
+-};
+diff --git a/arch/arm/dts/dove.dtsi b/arch/arm/dts/dove.dtsi
+deleted file mode 100644
+index 2074fc56a3fe..000000000000
+--- a/arch/arm/dts/dove.dtsi
++++ /dev/null
+@@ -1 +0,0 @@
+-#include <arm/dove.dtsi>
+-- 
+1.9.1
+
 
 _______________________________________________
 barebox mailing list
