@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WeiCY-0008Hb-HG
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 09:50:19 +0000
+ Linux)) id 1WeiCJ-0008FL-PK
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 09:50:04 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Apr 2014 11:49:38 +0200
-Message-Id: <1398678579-17491-5-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Apr 2014 11:49:35 +0200
+Message-Id: <1398678579-17491-2-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1398678579-17491-1-git-send-email-s.hauer@pengutronix.de>
 References: <1398678579-17491-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,240 +21,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 5/6] mtd: nand: create bb devices automatically
+Subject: [PATCH 2/6] env: erase/protect in envfs_save
 To: barebox@lists.infradead.org
 
-When a mtd device can have bad blocks we want to create a
-bb device, so do this automatically. This allows us to
-drop bb device creation from the environment.
+So that the envfs_save is more useful outside of the saveenv command
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/a9m2410/env/bin/hush_hack            | 1 -
- arch/arm/boards/a9m2410/env/bin/init                 | 4 ----
- arch/arm/boards/a9m2440/env/bin/hush_hack            | 1 -
- arch/arm/boards/a9m2440/env/bin/init                 | 4 ----
- arch/arm/boards/eukrea_cpuimx27/env/bin/hush_hack    | 1 -
- arch/arm/boards/eukrea_cpuimx27/env/bin/init         | 4 ----
- arch/arm/boards/freescale-mx25-3ds/env/bin/hush_hack | 1 -
- arch/arm/boards/freescale-mx25-3ds/env/bin/init      | 4 ----
- arch/arm/boards/mmccpu/env/bin/hush_hack             | 1 -
- arch/arm/boards/mmccpu/env/bin/init                  | 4 ----
- arch/arm/boards/pm9263/env/bin/hush_hack             | 1 -
- arch/arm/boards/pm9263/env/bin/init                  | 4 ----
- defaultenv/defaultenv-1/bin/init                     | 1 -
- defaultenv/defaultenv-2-base/bin/mtdparts-add        | 4 ----
- drivers/mtd/core.c                                   | 3 +++
- drivers/of/partition.c                               | 3 ---
- include/linux/mtd/mtd.h                              | 2 ++
- 17 files changed, 5 insertions(+), 38 deletions(-)
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/hush_hack
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/hush_hack
- delete mode 100644 arch/arm/boards/eukrea_cpuimx27/env/bin/hush_hack
- delete mode 100644 arch/arm/boards/freescale-mx25-3ds/env/bin/hush_hack
- delete mode 100644 arch/arm/boards/mmccpu/env/bin/hush_hack
- delete mode 100644 arch/arm/boards/pm9263/env/bin/hush_hack
+ commands/saveenv.c   | 46 +---------------------------------------------
+ common/environment.c | 38 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 37 insertions(+), 47 deletions(-)
 
-diff --git a/arch/arm/boards/a9m2410/env/bin/hush_hack b/arch/arm/boards/a9m2410/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/a9m2410/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/a9m2410/env/bin/init b/arch/arm/boards/a9m2410/env/bin/init
-index 5ae44dd..dd94ef6 100644
---- a/arch/arm/boards/a9m2410/env/bin/init
-+++ b/arch/arm/boards/a9m2410/env/bin/init
-@@ -7,10 +7,6 @@ export PATH
+diff --git a/commands/saveenv.c b/commands/saveenv.c
+index 8ead98d..cb2b01d 100644
+--- a/commands/saveenv.c
++++ b/commands/saveenv.c
+@@ -29,7 +29,7 @@
  
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+ static int do_saveenv(int argc, char *argv[])
+ {
+-	int ret, fd;
++	int ret;
+ 	char *filename, *dirname;
+ 
+ 	printf("saving environment\n");
+@@ -42,52 +42,8 @@ static int do_saveenv(int argc, char *argv[])
+ 	else
+ 		filename = argv[1];
+ 
+-	fd = open(filename, O_WRONLY | O_CREAT);
+-	if (fd < 0) {
+-		printf("could not open %s: %s\n", filename, errno_str());
+-		return 1;
+-	}
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack
- fi
- 
- if [ -z $eth0.ethaddr ]; then
-diff --git a/arch/arm/boards/a9m2440/env/bin/hush_hack b/arch/arm/boards/a9m2440/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/a9m2440/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/a9m2440/env/bin/init b/arch/arm/boards/a9m2440/env/bin/init
-index 5ae44dd..dd94ef6 100644
---- a/arch/arm/boards/a9m2440/env/bin/init
-+++ b/arch/arm/boards/a9m2440/env/bin/init
-@@ -7,10 +7,6 @@ export PATH
- 
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+-	ret = protect(fd, ~0, 0, 0);
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack
- fi
- 
- if [ -z $eth0.ethaddr ]; then
-diff --git a/arch/arm/boards/eukrea_cpuimx27/env/bin/hush_hack b/arch/arm/boards/eukrea_cpuimx27/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/eukrea_cpuimx27/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/eukrea_cpuimx27/env/bin/init b/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-index cd74974..e3c1091 100644
---- a/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-+++ b/arch/arm/boards/eukrea_cpuimx27/env/bin/init
-@@ -10,10 +10,6 @@ fi
- 
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
+-		printf("could not unprotect %s: %s\n", filename, errno_str());
+-		close(fd);
+-		return 1;
+-	}
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack 
- fi
- 
- if [ -f /env/logo.bmp ]; then
-diff --git a/arch/arm/boards/freescale-mx25-3ds/env/bin/hush_hack b/arch/arm/boards/freescale-mx25-3ds/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/freescale-mx25-3ds/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/freescale-mx25-3ds/env/bin/init b/arch/arm/boards/freescale-mx25-3ds/env/bin/init
-index 0600b9e..8eafa34 100644
---- a/arch/arm/boards/freescale-mx25-3ds/env/bin/init
-+++ b/arch/arm/boards/freescale-mx25-3ds/env/bin/init
-@@ -10,10 +10,6 @@ fi
- 
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+-	ret = erase(fd, ~0, 0);
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack 
- fi
- 
- echo
-diff --git a/arch/arm/boards/mmccpu/env/bin/hush_hack b/arch/arm/boards/mmccpu/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/mmccpu/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/mmccpu/env/bin/init b/arch/arm/boards/mmccpu/env/bin/init
-index ac84bd5..ad9b65a 100644
---- a/arch/arm/boards/mmccpu/env/bin/init
-+++ b/arch/arm/boards/mmccpu/env/bin/init
-@@ -10,10 +10,6 @@ fi
- 
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
+-		printf("could not erase %s: %s\n", filename, errno_str());
+-		close(fd);
+-		return 1;
+-	}
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack
- fi
- 
- if [ -z $eth0.ethaddr ]; then
-diff --git a/arch/arm/boards/pm9263/env/bin/hush_hack b/arch/arm/boards/pm9263/env/bin/hush_hack
-deleted file mode 100644
-index 5fffa92..0000000
---- a/arch/arm/boards/pm9263/env/bin/hush_hack
-+++ /dev/null
-@@ -1 +0,0 @@
--nand -a /dev/nand0.*
-diff --git a/arch/arm/boards/pm9263/env/bin/init b/arch/arm/boards/pm9263/env/bin/init
-index 02f5cd4..ad9b65a 100644
---- a/arch/arm/boards/pm9263/env/bin/init
-+++ b/arch/arm/boards/pm9263/env/bin/init
-@@ -10,10 +10,6 @@ fi
- 
- if [ -e /dev/nand0 ]; then
- 	addpart /dev/nand0 $nand_parts
+-	close(fd);
 -
--	# Uh, oh, hush first expands wildcards and then starts executing
--	# commands. What a bug!
--	source /env/bin/hush_hack 
- fi
- 
- if [ -z $eth0.ethaddr ]; then
-diff --git a/defaultenv/defaultenv-1/bin/init b/defaultenv/defaultenv-1/bin/init
-index adb3c43..4781b5a 100644
---- a/defaultenv/defaultenv-1/bin/init
-+++ b/defaultenv/defaultenv-1/bin/init
-@@ -16,7 +16,6 @@ fi
- 
- if [ -e /dev/nand0 -a -n "$nand_parts" ]; then
- 	addpart /dev/nand0 $nand_parts
--	nand -a /dev/nand0.*
- fi
- 
- if [ -f /env/bin/init_board ]; then
-diff --git a/defaultenv/defaultenv-2-base/bin/mtdparts-add b/defaultenv/defaultenv-2-base/bin/mtdparts-add
-index 58c9fa7..05ab638 100644
---- a/defaultenv/defaultenv-2-base/bin/mtdparts-add
-+++ b/defaultenv/defaultenv-2-base/bin/mtdparts-add
-@@ -39,10 +39,6 @@ fi
- addpart -n /dev/${device} "$parts" || exit
- mkdir -p /tmp/mtdparts/${device}
- 
--if [ -n "${bbdev}" ]; then
--	nand -a /dev/${device}.*
--fi
+ 	ret = envfs_save(filename, dirname);
+-	if (ret) {
+-		printf("saveenv failed\n");
+-		goto out;
+-	}
 -
- if [ -n ${kernelname} ]; then
- 	global linux.mtdparts.${device}
- 	global.linux.mtdparts.${device}="${kernelname}:${parts}"
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index c97c8c1..d954f72 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -409,6 +409,9 @@ int add_mtd_device(struct mtd_info *mtd, char *devname, int device_id)
+-	fd = open(filename, O_WRONLY | O_CREAT);
+-
+-	ret = protect(fd, ~0, 0, 1);
+-
+-	/* ENOSYS is no error here, many devices do not need it */
+-	if (ret && errno != ENOSYS) {
+-		printf("could not protect %s: %s\n", filename, errno_str());
+-		close(fd);
+-		return 1;
+-	}
  
- 	devfs_create(&mtd->cdev);
+-	ret = 0;
+-out:
+-	close(fd);
+ 	return ret;
+ }
  
-+	if (mtd_can_have_bb(mtd))
-+		mtd->cdev_bb = mtd_add_bb(mtd, NULL);
+diff --git a/common/environment.c b/common/environment.c
+index e55df40..2d1edf8 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -60,6 +60,16 @@ char *default_environment_path_get(void)
+ {
+ 	return default_environment_path;
+ }
++#else
++static inline int protect(int fd, size_t count, unsigned long offset, int prot)
++{
++	return 0;
++}
 +
- 	if (mtd->parent && !mtd->master)
- 		of_parse_partitions(&mtd->cdev, mtd->parent->device_node);
++static inline int erase(int fd, size_t count, unsigned long offset)
++{
++	return 0;
++}
+ #endif
  
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 5ed44a8..074be09 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -61,9 +61,6 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ static int file_size_action(const char *filename, struct stat *statbuf,
+@@ -196,11 +206,27 @@ int envfs_save(const char *filename, const char *dirname)
  
- 	new = devfs_add_partition(cdev->name, offset, size, flags, filename);
+ 	envfd = open(filename, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+ 	if (envfd < 0) {
+-		printf("Open %s %s\n", filename, errno_str());
+-		ret = envfd;
++		printf("could not open %s: %s\n", filename, errno_str());
++		ret = -errno;
+ 		goto out1;
+ 	}
  
--	if (cdev->mtd && cdev->mtd->type == MTD_NANDFLASH)
--		dev_add_bb_dev(filename, NULL);
--
- 	free(filename);
- 
- 	return new;
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index c63b514..5f02aee 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -211,6 +211,8 @@ struct mtd_info {
- 	struct device_d *parent;
- 	struct cdev cdev;
- 
-+	struct cdev *cdev_bb;
++	ret = protect(envfd, ~0, 0, 0);
 +
- 	struct param_d param_size;
- 	char *size_str;
++	/* ENOSYS is no error here, many devices do not need it */
++	if (ret && errno != ENOSYS) {
++		printf("could not unprotect %s: %s\n", filename, errno_str());
++		goto out;
++	}
++
++	ret = erase(envfd, ~0, 0);
++
++	/* ENOSYS is no error here, many devices do not need it */
++	if (ret && errno != ENOSYS) {
++		printf("could not erase %s: %s\n", filename, errno_str());
++		goto out;
++	}
++
+ 	size += sizeof(struct envfs_super);
  
+ 	wbuf = buf;
+@@ -216,6 +242,14 @@ int envfs_save(const char *filename, const char *dirname)
+ 		size -= now;
+ 	}
+ 
++	ret = protect(envfd, ~0, 0, 1);
++
++	/* ENOSYS is no error here, many devices do not need it */
++	if (ret && errno != ENOSYS) {
++		printf("could not protect %s: %s\n", filename, errno_str());
++		goto out;
++	}
++
+ 	ret = 0;
+ 
+ out:
 -- 
 1.9.1
 
