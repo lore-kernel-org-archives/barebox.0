@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WegGe-0003WH-R1
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 07:46:25 +0000
+ Linux)) id 1WegGe-0003WK-R2
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 07:46:26 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Apr 2014 09:45:53 +0200
-Message-Id: <1398671161-29045-4-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Apr 2014 09:45:58 +0200
+Message-Id: <1398671161-29045-9-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,212 +21,575 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/12] dts: i.MX51 efika sb: Roll back pingroup changes
+Subject: [PATCH 09/12] ARM: i.MX27: Use upstream dtsi file
 To: barebox@lists.infradead.org
-
-The pingrp defines never made it upstream, so roll back the changes
-and use the individual pin defines for the Efika sb instead.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/imx51-genesi-efika-sb.dts | 129 ++++++++++++++++++++++++++++++---
- 1 file changed, 118 insertions(+), 11 deletions(-)
+ arch/arm/dts/imx27.dtsi | 553 +-----------------------------------------------
+ 1 file changed, 1 insertion(+), 552 deletions(-)
 
-diff --git a/arch/arm/dts/imx51-genesi-efika-sb.dts b/arch/arm/dts/imx51-genesi-efika-sb.dts
-index 2b85a49..f30fc9a 100644
---- a/arch/arm/dts/imx51-genesi-efika-sb.dts
-+++ b/arch/arm/dts/imx51-genesi-efika-sb.dts
-@@ -11,6 +11,8 @@
- 
- /dts-v1/;
- #include "imx51.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
- 
- / {
- 	model = "Genesi Efika MX Smartbook";
-@@ -126,7 +128,12 @@
- 		};
- 
- 		pinctrl_audmux: audmuxgrp {
--			fsl,pins = <MX51_AUDMUX_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_AUD3_BB_TXD__AUD3_TXD 0x80000000
-+				MX51_PAD_AUD3_BB_RXD__AUD3_RXD 0x80000000
-+				MX51_PAD_AUD3_BB_CK__AUD3_TXC 0x80000000
-+				MX51_PAD_AUD3_BB_FS__AUD3_TXFS 0x80000000
-+			>;
- 		};
- 
- 		pinctrl_battery: batterygrp {
-@@ -137,7 +144,9 @@
- 
- 		pinctrl_ecspi1: ecspi1grp {
- 			fsl,pins = <
--				MX51_ECSPI1_PINGRP1
-+				MX51_PAD_CSPI1_MISO__ECSPI1_MISO 0x185
-+				MX51_PAD_CSPI1_MOSI__ECSPI1_MOSI 0x185
-+				MX51_PAD_CSPI1_SCLK__ECSPI1_SCLK 0x185
- 				MX51_PAD_CSPI1_SS0__GPIO4_24	0x85 /* CS0 */
- 				MX51_PAD_CSPI1_SS1__GPIO4_25	0x85 /* CS1 */
- 				MX51_PAD_GPIO1_6__GPIO1_6	0xe5 /* PMIC IRQ */
-@@ -146,7 +155,12 @@
- 
- 		pinctrl_esdhc1: esdhc1grp {
- 			fsl,pins = <
--				MX51_ESDHC1_PINGRP1
-+				MX51_PAD_SD1_CMD__SD1_CMD 0x400020d5
-+				MX51_PAD_SD1_CLK__SD1_CLK 0x20d5
-+				MX51_PAD_SD1_DATA0__SD1_DATA0 0x20d5
-+				MX51_PAD_SD1_DATA1__SD1_DATA1 0x20d5
-+				MX51_PAD_SD1_DATA2__SD1_DATA2 0x20d5
-+				MX51_PAD_SD1_DATA3__SD1_DATA3 0x20d5
- 				MX51_PAD_GPIO1_1__GPIO1_1	0xe5 /* WP */
- 				MX51_PAD_EIM_CS2__GPIO2_27	0xe5 /* CD */
- 			>;
-@@ -154,18 +168,53 @@
- 
- 		pinctrl_esdhc2: esdhc2grp {
- 			fsl,pins = <
--				MX51_ESDHC2_PINGRP1
-+				MX51_PAD_SD2_CMD__SD2_CMD 0x400020d5
-+				MX51_PAD_SD2_CLK__SD2_CLK 0x20d5
-+				MX51_PAD_SD2_DATA0__SD2_DATA0 0x20d5
-+				MX51_PAD_SD2_DATA1__SD2_DATA1 0x20d5
-+				MX51_PAD_SD2_DATA2__SD2_DATA2 0x20d5
-+				MX51_PAD_SD2_DATA3__SD2_DATA3 0x20d5
- 				MX51_PAD_GPIO1_7__GPIO1_7	0xe5 /* WP */
- 				MX51_PAD_GPIO1_8__GPIO1_8	0xe5 /* CD */
- 			>;
- 		};
- 
- 		pinctrl_i2c2: i2c2grp {
--			fsl,pins = <MX51_I2C2_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_KEY_COL4__I2C2_SCL 0x400001ed
-+				MX51_PAD_KEY_COL5__I2C2_SDA 0x400001ed
-+			>;
- 		};
- 
- 		pinctrl_ipu_disp1: ipudisp1grp {
--			fsl,pins = <MX51_IPU_DISP1_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_DISP1_DAT0__DISP1_DAT0	0x5
-+				MX51_PAD_DISP1_DAT1__DISP1_DAT1	0x5
-+				MX51_PAD_DISP1_DAT2__DISP1_DAT2	0x5
-+				MX51_PAD_DISP1_DAT3__DISP1_DAT3	0x5
-+				MX51_PAD_DISP1_DAT4__DISP1_DAT4	0x5
-+				MX51_PAD_DISP1_DAT5__DISP1_DAT5	0x5
-+				MX51_PAD_DISP1_DAT6__DISP1_DAT6	0x5
-+				MX51_PAD_DISP1_DAT7__DISP1_DAT7	0x5
-+				MX51_PAD_DISP1_DAT8__DISP1_DAT8	0x5
-+				MX51_PAD_DISP1_DAT9__DISP1_DAT9	0x5
-+				MX51_PAD_DISP1_DAT10__DISP1_DAT10 0x5
-+				MX51_PAD_DISP1_DAT11__DISP1_DAT11 0x5
-+				MX51_PAD_DISP1_DAT12__DISP1_DAT12 0x5
-+				MX51_PAD_DISP1_DAT13__DISP1_DAT13 0x5
-+				MX51_PAD_DISP1_DAT14__DISP1_DAT14 0x5
-+				MX51_PAD_DISP1_DAT15__DISP1_DAT15 0x5
-+				MX51_PAD_DISP1_DAT16__DISP1_DAT16 0x5
-+				MX51_PAD_DISP1_DAT17__DISP1_DAT17 0x5
-+				MX51_PAD_DISP1_DAT18__DISP1_DAT18 0x5
-+				MX51_PAD_DISP1_DAT19__DISP1_DAT19 0x5
-+				MX51_PAD_DISP1_DAT20__DISP1_DAT20 0x5
-+				MX51_PAD_DISP1_DAT21__DISP1_DAT21 0x5
-+				MX51_PAD_DISP1_DAT22__DISP1_DAT22 0x5
-+				MX51_PAD_DISP1_DAT23__DISP1_DAT23 0x5
-+				MX51_PAD_DI1_PIN2__DI1_PIN2 0x5
-+				MX51_PAD_DI1_PIN3__DI1_PIN3 0x5
-+			>;
- 		};
- 
- 		pinctrl_keys: keysgrp {
-@@ -183,22 +232,80 @@
- 		};
- 
- 		pinctrl_pata: patagrp {
--			fsl,pins = <MX51_PATA_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_NANDF_WE_B__PATA_DIOW		0x2004
-+				MX51_PAD_NANDF_RE_B__PATA_DIOR		0x2004
-+				MX51_PAD_NANDF_ALE__PATA_BUFFER_EN	0x2004
-+				MX51_PAD_NANDF_CLE__PATA_RESET_B	0x2004
-+				MX51_PAD_NANDF_WP_B__PATA_DMACK		0x2004
-+				MX51_PAD_NANDF_RB0__PATA_DMARQ		0x2004
-+				MX51_PAD_NANDF_RB1__PATA_IORDY		0x2004
-+				MX51_PAD_GPIO_NAND__PATA_INTRQ		0x2004
-+				MX51_PAD_NANDF_CS2__PATA_CS_0		0x2004
-+				MX51_PAD_NANDF_CS3__PATA_CS_1		0x2004
-+				MX51_PAD_NANDF_CS4__PATA_DA_0		0x2004
-+				MX51_PAD_NANDF_CS5__PATA_DA_1		0x2004
-+				MX51_PAD_NANDF_CS6__PATA_DA_2		0x2004
-+				MX51_PAD_NANDF_D15__PATA_DATA15		0x2004
-+				MX51_PAD_NANDF_D14__PATA_DATA14		0x2004
-+				MX51_PAD_NANDF_D13__PATA_DATA13		0x2004
-+				MX51_PAD_NANDF_D12__PATA_DATA12		0x2004
-+				MX51_PAD_NANDF_D11__PATA_DATA11		0x2004
-+				MX51_PAD_NANDF_D10__PATA_DATA10		0x2004
-+				MX51_PAD_NANDF_D9__PATA_DATA9		0x2004
-+				MX51_PAD_NANDF_D8__PATA_DATA8		0x2004
-+				MX51_PAD_NANDF_D7__PATA_DATA7		0x2004
-+				MX51_PAD_NANDF_D6__PATA_DATA6		0x2004
-+				MX51_PAD_NANDF_D5__PATA_DATA5		0x2004
-+				MX51_PAD_NANDF_D4__PATA_DATA4		0x2004
-+				MX51_PAD_NANDF_D3__PATA_DATA3		0x2004
-+				MX51_PAD_NANDF_D2__PATA_DATA2		0x2004
-+				MX51_PAD_NANDF_D1__PATA_DATA1		0x2004
-+				MX51_PAD_NANDF_D0__PATA_DATA0		0x2004
-+			>;
- 		};
- 
- 		pinctrl_uart1: uart1grp {
- 			fsl,pins = <
--				MX51_UART1_PINGRP1
--				MX51_UART1_RTSCTS_PINGRP1
-+				MX51_PAD_UART1_RXD__UART1_RXD		0x1c5
-+				MX51_PAD_UART1_TXD__UART1_TXD		0x1c5
-+				MX51_PAD_UART1_RTS__UART1_RTS		0x1c5
-+				MX51_PAD_UART1_CTS__UART1_CTS		0x1c5
- 			>;
- 		};
- 
- 		pinctrl_usbh1: usbh1grp {
--			fsl,pins = <MX51_USBH1_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_USBH1_DATA0__USBH1_DATA0	0x1e5
-+				MX51_PAD_USBH1_DATA1__USBH1_DATA1	0x1e5
-+				MX51_PAD_USBH1_DATA2__USBH1_DATA2	0x1e5
-+				MX51_PAD_USBH1_DATA3__USBH1_DATA3	0x1e5
-+				MX51_PAD_USBH1_DATA4__USBH1_DATA4	0x1e5
-+				MX51_PAD_USBH1_DATA5__USBH1_DATA5	0x1e5
-+				MX51_PAD_USBH1_DATA6__USBH1_DATA6	0x1e5
-+				MX51_PAD_USBH1_DATA7__USBH1_DATA7	0x1e5
-+				MX51_PAD_USBH1_CLK__USBH1_CLK		0x1e5
-+				MX51_PAD_USBH1_DIR__USBH1_DIR		0x1e5
-+				MX51_PAD_USBH1_NXT__USBH1_NXT		0x1e5
-+				MX51_PAD_USBH1_STP__USBH1_STP		0x1e5
-+			>;
- 		};
- 
- 		pinctrl_usbh2: usbh2grp {
--			fsl,pins = <MX51_USBH2_PINGRP1>;
-+			fsl,pins = <
-+				MX51_PAD_EIM_D16__USBH2_DATA0		0x1e5
-+				MX51_PAD_EIM_D17__USBH2_DATA1		0x1e5
-+				MX51_PAD_EIM_D18__USBH2_DATA2		0x1e5
-+				MX51_PAD_EIM_D19__USBH2_DATA3		0x1e5
-+				MX51_PAD_EIM_D20__USBH2_DATA4		0x1e5
-+				MX51_PAD_EIM_D21__USBH2_DATA5		0x1e5
-+				MX51_PAD_EIM_D22__USBH2_DATA6		0x1e5
-+				MX51_PAD_EIM_D23__USBH2_DATA7		0x1e5
-+				MX51_PAD_EIM_A24__USBH2_CLK		0x1e5
-+				MX51_PAD_EIM_A25__USBH2_DIR		0x1e5
-+				MX51_PAD_EIM_A27__USBH2_NXT		0x1e5
-+				MX51_PAD_EIM_A26__USBH2_STP		0x1e5
-+			>;
- 		};
- 	};
- };
+diff --git a/arch/arm/dts/imx27.dtsi b/arch/arm/dts/imx27.dtsi
+index 83a8247..49a0ddf 100644
+--- a/arch/arm/dts/imx27.dtsi
++++ b/arch/arm/dts/imx27.dtsi
+@@ -8,555 +8,4 @@
+  * http://www.opensource.org/licenses/gpl-license.html
+  * http://www.gnu.org/copyleft/gpl.html
+  */
+-
+-#include "skeleton.dtsi"
+-#include "imx27-pinfunc.h"
+-#include <dt-bindings/interrupt-controller/irq.h>
+-#include <dt-bindings/gpio/gpio.h>
+-
+-/ {
+-	aliases {
+-		ethernet0 = &fec;
+-		gpio0 = &gpio1;
+-		gpio1 = &gpio2;
+-		gpio2 = &gpio3;
+-		gpio3 = &gpio4;
+-		gpio4 = &gpio5;
+-		gpio5 = &gpio6;
+-		i2c0 = &i2c1;
+-		i2c1 = &i2c2;
+-		serial0 = &uart1;
+-		serial1 = &uart2;
+-		serial2 = &uart3;
+-		serial3 = &uart4;
+-		serial4 = &uart5;
+-		serial5 = &uart6;
+-		spi0 = &cspi1;
+-		spi1 = &cspi2;
+-		spi2 = &cspi3;
+-	};
+-
+-	aitc: aitc-interrupt-controller@e0000000 {
+-		compatible = "fsl,imx27-aitc", "fsl,avic";
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		reg = <0x10040000 0x1000>;
+-	};
+-
+-	clocks {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		osc26m {
+-			compatible = "fsl,imx-osc26m", "fixed-clock";
+-			clock-frequency = <26000000>;
+-		};
+-	};
+-
+-	cpus {
+-		#size-cells = <0>;
+-		#address-cells = <1>;
+-
+-		cpu: cpu@0 {
+-			device_type = "cpu";
+-			compatible = "arm,arm926ej-s";
+-			operating-points = <
+-				/* kHz uV */
+-				266000 1300000
+-				399000 1450000
+-			>;
+-			clock-latency = <62500>;
+-			clocks = <&clks 18>;
+-			voltage-tolerance = <5>;
+-		};
+-	};
+-
+-	usbphy {
+-		compatible = "simple-bus";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		usbphy0: usbphy@0 {
+-			compatible = "usb-nop-xceiv";
+-			reg = <0>;
+-			clocks = <&clks 75>;
+-			clock-names = "main_clk";
+-		};
+-
+-		usbphy2: usbphy@2 {
+-			compatible = "usb-nop-xceiv";
+-			reg = <2>;
+-			clocks = <&clks 75>;
+-			clock-names = "main_clk";
+-		};
+-	};
+-
+-	soc {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "simple-bus";
+-		interrupt-parent = <&aitc>;
+-		ranges;
+-
+-		aipi@10000000 { /* AIPI1 */
+-			compatible = "fsl,aipi-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x10000000 0x20000>;
+-			ranges;
+-
+-			dma: dma@10001000 {
+-				compatible = "fsl,imx27-dma";
+-				reg = <0x10001000 0x1000>;
+-				interrupts = <32>;
+-				clocks = <&clks 50>, <&clks 70>;
+-				clock-names = "ipg", "ahb";
+-				#dma-cells = <1>;
+-				#dma-channels = <16>;
+-			};
+-
+-			wdog: wdog@10002000 {
+-				compatible = "fsl,imx27-wdt", "fsl,imx21-wdt";
+-				reg = <0x10002000 0x1000>;
+-				interrupts = <27>;
+-				clocks = <&clks 74>;
+-			};
+-
+-			gpt1: timer@10003000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x10003000 0x1000>;
+-				interrupts = <26>;
+-				clocks = <&clks 46>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			gpt2: timer@10004000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x10004000 0x1000>;
+-				interrupts = <25>;
+-				clocks = <&clks 45>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			gpt3: timer@10005000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x10005000 0x1000>;
+-				interrupts = <24>;
+-				clocks = <&clks 44>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			pwm: pwm@10006000 {
+-				#pwm-cells = <2>;
+-				compatible = "fsl,imx27-pwm";
+-				reg = <0x10006000 0x1000>;
+-				interrupts = <23>;
+-				clocks = <&clks 34>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			kpp: kpp@10008000 {
+-				compatible = "fsl,imx27-kpp", "fsl,imx21-kpp";
+-				reg = <0x10008000 0x1000>;
+-				interrupts = <21>;
+-				clocks = <&clks 37>;
+-				status = "disabled";
+-			};
+-
+-			owire: owire@10009000 {
+-				compatible = "fsl,imx27-owire", "fsl,imx21-owire";
+-				reg = <0x10009000 0x1000>;
+-				clocks = <&clks 35>;
+-				status = "disabled";
+-			};
+-
+-			uart1: serial@1000a000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1000a000 0x1000>;
+-				interrupts = <20>;
+-				clocks = <&clks 81>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart2: serial@1000b000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1000b000 0x1000>;
+-				interrupts = <19>;
+-				clocks = <&clks 80>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart3: serial@1000c000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1000c000 0x1000>;
+-				interrupts = <18>;
+-				clocks = <&clks 79>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart4: serial@1000d000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1000d000 0x1000>;
+-				interrupts = <17>;
+-				clocks = <&clks 78>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			cspi1: cspi@1000e000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx27-cspi";
+-				reg = <0x1000e000 0x1000>;
+-				interrupts = <16>;
+-				clocks = <&clks 53>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			cspi2: cspi@1000f000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx27-cspi";
+-				reg = <0x1000f000 0x1000>;
+-				interrupts = <15>;
+-				clocks = <&clks 52>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			ssi1: ssi@10010000 {
+-				#sound-dai-cells = <0>;
+-				compatible = "fsl,imx27-ssi", "fsl,imx21-ssi";
+-				reg = <0x10010000 0x1000>;
+-				interrupts = <14>;
+-				clocks = <&clks 26>;
+-				dmas = <&dma 12>, <&dma 13>, <&dma 14>, <&dma 15>;
+-				dma-names = "rx0", "tx0", "rx1", "tx1";
+-				fsl,fifo-depth = <8>;
+-				status = "disabled";
+-			};
+-
+-			ssi2: ssi@10011000 {
+-				#sound-dai-cells = <0>;
+-				compatible = "fsl,imx27-ssi", "fsl,imx21-ssi";
+-				reg = <0x10011000 0x1000>;
+-				interrupts = <13>;
+-				clocks = <&clks 25>;
+-				dmas = <&dma 8>, <&dma 9>, <&dma 10>, <&dma 11>;
+-				dma-names = "rx0", "tx0", "rx1", "tx1";
+-				fsl,fifo-depth = <8>;
+-				status = "disabled";
+-			};
+-
+-			i2c1: i2c@10012000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx27-i2c", "fsl,imx21-i2c";
+-				reg = <0x10012000 0x1000>;
+-				interrupts = <12>;
+-				clocks = <&clks 40>;
+-				status = "disabled";
+-			};
+-
+-			sdhci1: sdhci@10013000 {
+-				compatible = "fsl,imx27-mmc", "fsl,imx21-mmc";
+-				reg = <0x10013000 0x1000>;
+-				interrupts = <11>;
+-				clocks = <&clks 30>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				dmas = <&dma 7>;
+-				dma-names = "rx-tx";
+-				status = "disabled";
+-			};
+-
+-			sdhci2: sdhci@10014000 {
+-				compatible = "fsl,imx27-mmc", "fsl,imx21-mmc";
+-				reg = <0x10014000 0x1000>;
+-				interrupts = <10>;
+-				clocks = <&clks 29>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				dmas = <&dma 6>;
+-				dma-names = "rx-tx";
+-				status = "disabled";
+-			};
+-
+-			iomuxc: iomuxc@10015000 {
+-				compatible = "fsl,imx27-iomuxc";
+-				reg = <0x10015000 0x600>;
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-				ranges;
+-
+-				gpio1: gpio@10015000 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015000 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-
+-				gpio2: gpio@10015100 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015100 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-
+-				gpio3: gpio@10015200 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015200 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-
+-				gpio4: gpio@10015300 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015300 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-
+-				gpio5: gpio@10015400 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015400 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-
+-				gpio6: gpio@10015500 {
+-					compatible = "fsl,imx27-gpio", "fsl,imx21-gpio";
+-					reg = <0x10015500 0x100>;
+-					interrupts = <8>;
+-					gpio-controller;
+-					#gpio-cells = <2>;
+-					interrupt-controller;
+-					#interrupt-cells = <2>;
+-				};
+-			};
+-
+-			audmux: audmux@10016000 {
+-				compatible = "fsl,imx27-audmux", "fsl,imx21-audmux";
+-				reg = <0x10016000 0x1000>;
+-				clocks = <&clks 0>;
+-				clock-names = "audmux";
+-				status = "disabled";
+-			};
+-
+-			cspi3: cspi@10017000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx27-cspi";
+-				reg = <0x10017000 0x1000>;
+-				interrupts = <6>;
+-				clocks = <&clks 51>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			gpt4: timer@10019000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x10019000 0x1000>;
+-				interrupts = <4>;
+-				clocks = <&clks 43>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			gpt5: timer@1001a000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x1001a000 0x1000>;
+-				interrupts = <3>;
+-				clocks = <&clks 42>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-
+-			uart5: serial@1001b000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1001b000 0x1000>;
+-				interrupts = <49>;
+-				clocks = <&clks 77>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart6: serial@1001c000 {
+-				compatible = "fsl,imx27-uart", "fsl,imx21-uart";
+-				reg = <0x1001c000 0x1000>;
+-				interrupts = <48>;
+-				clocks = <&clks 78>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			i2c2: i2c@1001d000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx27-i2c", "fsl,imx21-i2c";
+-				reg = <0x1001d000 0x1000>;
+-				interrupts = <1>;
+-				clocks = <&clks 39>;
+-				status = "disabled";
+-			};
+-
+-			sdhci3: sdhci@1001e000 {
+-				compatible = "fsl,imx27-mmc", "fsl,imx21-mmc";
+-				reg = <0x1001e000 0x1000>;
+-				interrupts = <9>;
+-				clocks = <&clks 28>, <&clks 60>;
+-				clock-names = "ipg", "per";
+-				dmas = <&dma 36>;
+-				dma-names = "rx-tx";
+-				status = "disabled";
+-			};
+-
+-			gpt6: timer@1001f000 {
+-				compatible = "fsl,imx27-gpt", "fsl,imx1-gpt";
+-				reg = <0x1001f000 0x1000>;
+-				interrupts = <2>;
+-				clocks = <&clks 41>, <&clks 61>;
+-				clock-names = "ipg", "per";
+-			};
+-		};
+-
+-		aipi@10020000 { /* AIPI2 */
+-			compatible = "fsl,aipi-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x10020000 0x20000>;
+-			ranges;
+-
+-			fb: fb@10021000 {
+-				compatible = "fsl,imx27-fb", "fsl,imx21-fb";
+-				interrupts = <61>;
+-				reg = <0x10021000 0x1000>;
+-				clocks = <&clks 36>, <&clks 65>, <&clks 59>;
+-				clock-names = "ipg", "ahb", "per";
+-				status = "disabled";
+-			};
+-
+-			coda: coda@10023000 {
+-				compatible = "fsl,imx27-vpu";
+-				reg = <0x10023000 0x0200>;
+-				interrupts = <53>;
+-				clocks = <&clks 57>, <&clks 66>;
+-				clock-names = "per", "ahb";
+-				iram = <&iram>;
+-			};
+-
+-			usbotg: usb@10024000 {
+-				compatible = "fsl,imx27-usb";
+-				reg = <0x10024000 0x200>;
+-				interrupts = <56>;
+-				clocks = <&clks 15>;
+-				fsl,usbmisc = <&usbmisc 0>;
+-				fsl,usbphy = <&usbphy0>;
+-				status = "disabled";
+-			};
+-
+-			usbh1: usb@10024200 {
+-				compatible = "fsl,imx27-usb";
+-				reg = <0x10024200 0x200>;
+-				interrupts = <54>;
+-				clocks = <&clks 15>;
+-				fsl,usbmisc = <&usbmisc 1>;
+-				status = "disabled";
+-			};
+-
+-			usbh2: usb@10024400 {
+-				compatible = "fsl,imx27-usb";
+-				reg = <0x10024400 0x200>;
+-				interrupts = <55>;
+-				clocks = <&clks 15>;
+-				fsl,usbmisc = <&usbmisc 2>;
+-				fsl,usbphy = <&usbphy2>;
+-				status = "disabled";
+-			};
+-
+-			usbmisc: usbmisc@10024600 {
+-				#index-cells = <1>;
+-				compatible = "fsl,imx27-usbmisc";
+-				reg = <0x10024600 0x200>;
+-				clocks = <&clks 62>;
+-			};
+-
+-			sahara2: sahara@10025000 {
+-				compatible = "fsl,imx27-sahara";
+-				reg = <0x10025000 0x1000>;
+-				interrupts = <59>;
+-				clocks = <&clks 32>, <&clks 64>;
+-				clock-names = "ipg", "ahb";
+-			};
+-
+-			clks: ccm@10027000{
+-				compatible = "fsl,imx27-ccm";
+-				reg = <0x10027000 0x1000>;
+-				#clock-cells = <1>;
+-			};
+-
+-			iim: iim@10028000 {
+-				compatible = "fsl,imx27-iim";
+-				reg = <0x10028000 0x1000>;
+-				interrupts = <62>;
+-				clocks = <&clks 38>;
+-			};
+-
+-			fec: ethernet@1002b000 {
+-				compatible = "fsl,imx27-fec";
+-				reg = <0x1002b000 0x4000>;
+-				interrupts = <50>;
+-				clocks = <&clks 48>, <&clks 67>;
+-				clock-names = "ipg", "ahb";
+-				status = "disabled";
+-			};
+-		};
+-
+-		nfc: nand@d8000000 {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			compatible = "fsl,imx27-nand";
+-			reg = <0xd8000000 0x1000>;
+-			interrupts = <29>;
+-			clocks = <&clks 54>;
+-			status = "disabled";
+-		};
+-
+-		weim: weim@d8002000 {
+-			#address-cells = <2>;
+-			#size-cells = <1>;
+-			compatible = "fsl,imx27-weim";
+-			reg = <0xd8002000 0x1000>;
+-			clocks = <&clks 0>;
+-			ranges = <
+-				0 0 0xc0000000 0x08000000
+-				1 0 0xc8000000 0x08000000
+-				2 0 0xd0000000 0x02000000
+-				3 0 0xd2000000 0x02000000
+-				4 0 0xd4000000 0x02000000
+-				5 0 0xd6000000 0x02000000
+-			>;
+-			status = "disabled";
+-		};
+-
+-		iram: iram@ffff4c00 {
+-			compatible = "mmio-sram";
+-			reg = <0xffff4c00 0xb400>;
+-		};
+-	};
+-};
++#include <arm/imx27.dtsi>
 -- 
 1.9.1
 
