@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f301.i.mail.ru ([128.140.169.165])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WeQKR-0000D5-ER
- for barebox@lists.infradead.org; Sun, 27 Apr 2014 14:45:16 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Sun, 27 Apr 2014 18:44:48 +0400
-Message-ID: <1398609888.468791879@f301.i.mail.ru>
-In-Reply-To: <20140427065207.GI5858@pengutronix.de>
-References: <1398580187-4950-1-git-send-email-shc_work@mail.ru>
- <20140427065207.GI5858@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Weeke-0001kE-Hy
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 06:09:17 +0000
+Date: Mon, 28 Apr 2014 08:08:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140428060852.GL5858@pengutronix.de>
+References: <1398370966-30241-1-git-send-email-dev@lynxeye.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1398370966-30241-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,22 +18,59 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gdmlkZW86IGlteC1pcHUtdjM6IEZpeCBpcHVfY2hfcGFy?=
- =?UTF-8?B?YW1femVybygp?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] ARM: nitrogen6x: remove VPU/IPU QoS from DCD
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-U3VuLCAyNyBBcHIgMjAxNCAwODo1MjowNyArMDIwMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVl
-ckBwZW5ndXRyb25peC5kZT46Cj4gT24gU3VuLCBBcHIgMjcsIDIwMTQgYXQgMTA6Mjk6NDdBTSAr
-MDQwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IFNpemVvZigqcCkgcmV0dXJucyB0aGUg
-c2l6ZSBvZiB0aGUgcG9pbnRlciwgbm90IHRoZSBzaXplIG9mIHRoZQo+ID4gc3RydWN0IGlwdV9j
-aF9wYXJhbS4KPiAKPiBwIGlzIG9mIHR5cGUgc3RydWN0IGlwdV9jaF9wYXJhbSwgc28gc2l6ZW9m
-KCpwKSBjb3JyZWN0bHkgcmV0dXJucyB0aGUKPiBzaXplIG9mIHN0cnVjdCBpcHVfY2hfcGFyYW0u
-CgpTZWVtcyB0aGlzIGlzIG15IG1pc3Rha2UuLi4KCi0tLQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBs
-aXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlz
-dGluZm8vYmFyZWJveAo=
+On Thu, Apr 24, 2014 at 10:22:46PM +0200, Lucas Stach wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+> 
+> Not needed anymore, as barebox sets this up itself now.
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+
+Applied, thanks
+
+Sascha
+
+> ---
+>  .../boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg     | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
+> index 60a39fe..b6c7580 100644
+> --- a/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
+> +++ b/arch/arm/boards/boundarydevices-nitrogen6x/flash-header-nitrogen6x-1g.imxcfg
+> @@ -99,8 +99,3 @@ wm 32 0x020c4074 0x3ff00000
+>  wm 32 0x020c4078 0x00fff300
+>  wm 32 0x020c407c 0x0f0000c3
+>  wm 32 0x020c4080 0x000003ff
+> -/* enable AXI cache for VDOA/VPU/IPU */
+> -wm 32 0x020e0010 0xf00000cf
+> -/* set IPU AXI-id0 Qos=0xf(bypass AXI-id1 Qos=0x7 */
+> -wm 32 0x020e0018 0x007f007f
+> -wm 32 0x020e001c 0x007f007f
+> -- 
+> 1.9.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
