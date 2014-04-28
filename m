@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WegGn-0003XP-2p
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 07:46:34 +0000
+ Linux)) id 1WegGj-0003XO-Jm
+ for barebox@lists.infradead.org; Mon, 28 Apr 2014 07:46:31 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 28 Apr 2014 09:46:01 +0200
-Message-Id: <1398671161-29045-12-git-send-email-s.hauer@pengutronix.de>
+Date: Mon, 28 Apr 2014 09:45:57 +0200
+Message-Id: <1398671161-29045-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,646 +21,568 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/12] ARM: dove: Use upstream dtsi file
+Subject: [PATCH 08/12] ARM: i.MX25: Use upstream dtsi file
 To: barebox@lists.infradead.org
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/dove.dtsi | 627 +------------------------------------------------
- 1 file changed, 1 insertion(+), 626 deletions(-)
+ arch/arm/dts/imx25.dtsi | 535 +-----------------------------------------------
+ 1 file changed, 4 insertions(+), 531 deletions(-)
 
-diff --git a/arch/arm/dts/dove.dtsi b/arch/arm/dts/dove.dtsi
-index 2b76524..2074fc5 100644
---- a/arch/arm/dts/dove.dtsi
-+++ b/arch/arm/dts/dove.dtsi
-@@ -1,626 +1 @@
--/include/ "skeleton.dtsi"
--
--#define MBUS_ID(target,attributes) (((target) << 24) | ((attributes) << 16))
--
--/ {
--	compatible = "marvell,dove";
--	model = "Marvell Armada 88AP510 SoC";
--	interrupt-parent = <&intc>;
--
--	aliases {
--		gpio0 = &gpio0;
--		gpio1 = &gpio1;
--		gpio2 = &gpio2;
+diff --git a/arch/arm/dts/imx25.dtsi b/arch/arm/dts/imx25.dtsi
+index 003c43c..2b93f77 100644
+--- a/arch/arm/dts/imx25.dtsi
++++ b/arch/arm/dts/imx25.dtsi
+@@ -14,545 +14,18 @@
+ 
+ / {
+ 	aliases {
+-		gpio0 = &gpio1;
+-		gpio1 = &gpio2;
+-		gpio2 = &gpio3;
+-		gpio3 = &gpio4;
+-		i2c0 = &i2c1;
+-		i2c1 = &i2c2;
+-		i2c2 = &i2c3;
+ 		mmc0 = &esdhc1;
+ 		mmc2 = &esdhc2;
+-		serial0 = &uart1;
+-		serial1 = &uart2;
+-		serial2 = &uart3;
+-		serial3 = &uart4;
+-		serial4 = &uart5;
+-		spi0 = &spi1;
+-		spi1 = &spi2;
+-		spi2 = &spi3;
+-		usb0 = &usbotg;
+-		usb1 = &usbhost1;
 -	};
 -
 -	cpus {
+-		#address-cells = <0>;
+-		#size-cells = <0>;
+-
+-		cpu {
+-			compatible = "arm,arm926ej-s";
+-			device_type = "cpu";
+-		};
+-	};
+-
+-	asic: asic-interrupt-controller@68000000 {
+-		compatible = "fsl,imx25-asic", "fsl,avic";
+-		interrupt-controller;
+-		#interrupt-cells = <1>;
+-		reg = <0x68000000 0x8000000>;
+-	};
+-
+-	clocks {
 -		#address-cells = <1>;
 -		#size-cells = <0>;
 -
--		cpu0: cpu@0 {
--			compatible = "marvell,pj4a", "marvell,sheeva-v7";
--			device_type = "cpu";
--			next-level-cache = <&l2>;
--			reg = <0>;
+-		osc {
+-			compatible = "fsl,imx-osc", "fixed-clock";
+-			clock-frequency = <24000000>;
 -		};
--	};
--
--	l2: l2-cache {
--		compatible = "marvell,tauros2-cache";
--		marvell,tauros2-cache-features = <0>;
--	};
--
--	mbus {
--		compatible = "marvell,dove-mbus", "marvell,mbus", "simple-bus";
--		#address-cells = <2>;
+ 	};
+ 
+ 	soc {
+-		#address-cells = <1>;
 -		#size-cells = <1>;
--		controller = <&mbusc>;
--		pcie-mem-aperture = <0xe0000000 0x10000000>; /* 256M MEM space */
--		pcie-io-aperture  = <0xf2000000 0x00200000>; /*   2M I/O space */
+-		compatible = "simple-bus";
+-		interrupt-parent = <&asic>;
+-		ranges;
 -
--		ranges = <MBUS_ID(0xf0, 0x01) 0 0xf1000000 0x0100000   /* MBUS regs  1M */
--			  MBUS_ID(0xf0, 0x02) 0 0xf1800000 0x1000000   /* AXI  regs 16M */
--			  MBUS_ID(0x01, 0xfd) 0 0xf8000000 0x8000000   /* BootROM  128M */
--			  MBUS_ID(0x03, 0x01) 0 0xc8000000 0x0100000   /* CESA SRAM  1M */
--			  MBUS_ID(0x0d, 0x00) 0 0xf0000000 0x0100000>; /* PMU  SRAM  1M */
--
--		pcie: pcie-controller {
--			compatible = "marvell,dove-pcie";
--			status = "disabled";
--			device_type = "pci";
--			#address-cells = <3>;
--			#size-cells = <2>;
--
--			msi-parent = <&intc>;
--			bus-range = <0x00 0xff>;
--
--			ranges = <0x82000000 0x0 0x40000 MBUS_ID(0xf0, 0x01) 0x40000 0 0x2000
--			          0x82000000 0x0 0x80000 MBUS_ID(0xf0, 0x01) 0x80000 0 0x2000
--				  0x82000000 0x1 0x0 MBUS_ID(0x04, 0xe8) 0 1 0   /* Port 0.0 Mem */
--				  0x81000000 0x1 0x0 MBUS_ID(0x04, 0xe0) 0 1 0   /* Port 0.0 I/O */
--				  0x82000000 0x2 0x0 MBUS_ID(0x08, 0xe8) 0 1 0   /* Port 1.0 Mem */
--				  0x81000000 0x2 0x0 MBUS_ID(0x08, 0xe0) 0 1 0>; /* Port 1.0 I/O */
--
--			pcie-port@0 {
--				device_type = "pci";
--				status = "disabled";
--				assigned-addresses = <0x82000800 0 0x40000 0 0x2000>;
--				reg = <0x0800 0 0 0 0>;
--				clocks = <&gate_clk 4>;
--				marvell,pcie-port = <0>;
--
--				#address-cells = <3>;
--				#size-cells = <2>;
--				ranges = <0x82000000 0 0 0x82000000 0x1 0 1 0
--				          0x81000000 0 0 0x81000000 0x1 0 1 0>;
--
--				#interrupt-cells = <1>;
--				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &intc 16>;
--			};
--
--			pcie-port@1 {
--				device_type = "pci";
--				status = "disabled";
--				assigned-addresses = <0x82002800 0 0x80000 0 0x2000>;
--				reg = <0x1000 0 0 0 0>;
--				clocks = <&gate_clk 5>;
--				marvell,pcie-port = <1>;
--
--				#address-cells = <3>;
--				#size-cells = <2>;
--				ranges = <0x82000000 0 0 0x82000000 0x2 0 1 0
--				          0x81000000 0 0 0x81000000 0x2 0 1 0>;
--
--				#interrupt-cells = <1>;
--				interrupt-map-mask = <0 0 0 0>;
--				interrupt-map = <0 0 0 0 &intc 18>;
--			};
--		};
--
--		internal-regs {
--			compatible = "simple-bus";
+-		aips@43f00000 { /* AIPS1 */
+-			compatible = "fsl,aips-bus", "simple-bus";
 -			#address-cells = <1>;
 -			#size-cells = <1>;
--			ranges = <0x00000000 MBUS_ID(0xf0, 0x01) 0 0x0100000   /* MBUS regs  1M */
--				  0x00800000 MBUS_ID(0xf0, 0x02) 0 0x1000000   /* AXI  regs 16M */
--				  0xffffe000 MBUS_ID(0x03, 0x01) 0 0x0000800   /* CESA SRAM  2k */
--				  0xfffff000 MBUS_ID(0x0d, 0x00) 0 0x0000800>; /* PMU  SRAM  2k */
+-			reg = <0x43f00000 0x100000>;
+-			ranges;
 -
--			spi0: spi-ctrl@10600 {
--				compatible = "marvell,orion-spi";
+-			i2c1: i2c@43f80000 {
 -				#address-cells = <1>;
 -				#size-cells = <0>;
--				cell-index = <0>;
--				interrupts = <6>;
--				reg = <0x10600 0x28>;
--				clocks = <&core_clk 0>;
--				pinctrl-0 = <&pmx_spi0>;
--				pinctrl-names = "default";
+-				compatible = "fsl,imx25-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f80000 0x4000>;
+-				clocks = <&clks 48>;
+-				clock-names = "";
+-				interrupts = <3>;
 -				status = "disabled";
 -			};
 -
--			i2c0: i2c-ctrl@11000 {
--				compatible = "marvell,mv64xxx-i2c";
--				reg = <0x11000 0x20>;
+-			i2c3: i2c@43f84000 {
 -				#address-cells = <1>;
 -				#size-cells = <0>;
--				interrupts = <11>;
--				clock-frequency = <400000>;
--				timeout-ms = <1000>;
--				clocks = <&core_clk 0>;
--				status = "disabled";
--			};
--
--			uart0: serial@12000 {
--				compatible = "ns16550a";
--				reg = <0x12000 0x100>;
--				reg-shift = <2>;
--				interrupts = <7>;
--				clocks = <&core_clk 0>;
--				status = "disabled";
--			};
--
--			uart1: serial@12100 {
--				compatible = "ns16550a";
--				reg = <0x12100 0x100>;
--				reg-shift = <2>;
--				interrupts = <8>;
--				clocks = <&core_clk 0>;
--				pinctrl-0 = <&pmx_uart1>;
--				pinctrl-names = "default";
--				status = "disabled";
--			};
--
--			uart2: serial@12200 {
--				compatible = "ns16550a";
--				reg = <0x12000 0x100>;
--				reg-shift = <2>;
--				interrupts = <9>;
--				clocks = <&core_clk 0>;
--				status = "disabled";
--			};
--
--			uart3: serial@12300 {
--				compatible = "ns16550a";
--				reg = <0x12100 0x100>;
--				reg-shift = <2>;
+-				compatible = "fsl,imx25-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f84000 0x4000>;
+-				clocks = <&clks 48>;
+-				clock-names = "";
 -				interrupts = <10>;
--				clocks = <&core_clk 0>;
 -				status = "disabled";
 -			};
 -
--			spi1: spi-ctrl@14600 {
--				compatible = "marvell,orion-spi";
+-			can1: can@43f88000 {
+-				compatible = "fsl,imx25-flexcan", "fsl,p1010-flexcan";
+-				reg = <0x43f88000 0x4000>;
+-				interrupts = <43>;
+-				clocks = <&clks 75>, <&clks 75>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			can2: can@43f8c000 {
+-				compatible = "fsl,imx25-flexcan", "fsl,p1010-flexcan";
+-				reg = <0x43f8c000 0x4000>;
+-				interrupts = <44>;
+-				clocks = <&clks 76>, <&clks 76>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart1: serial@43f90000 {
+-				compatible = "fsl,imx25-uart", "fsl,imx21-uart";
+-				reg = <0x43f90000 0x4000>;
+-				interrupts = <45>;
+-				clocks = <&clks 120>, <&clks 57>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart2: serial@43f94000 {
+-				compatible = "fsl,imx25-uart", "fsl,imx21-uart";
+-				reg = <0x43f94000 0x4000>;
+-				interrupts = <32>;
+-				clocks = <&clks 121>, <&clks 57>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			i2c2: i2c@43f98000 {
 -				#address-cells = <1>;
 -				#size-cells = <0>;
--				cell-index = <1>;
--				interrupts = <5>;
--				reg = <0x14600 0x28>;
--				clocks = <&core_clk 0>;
+-				compatible = "fsl,imx25-i2c", "fsl,imx21-i2c";
+-				reg = <0x43f98000 0x4000>;
+-				clocks = <&clks 48>;
+-				clock-names = "";
+-				interrupts = <4>;
 -				status = "disabled";
 -			};
 -
--			mbusc: mbus-ctrl@20000 {
--				compatible = "marvell,mbus-controller";
--				reg = <0x20000 0x80>, <0x800100 0x8>;
+-			owire@43f9c000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				reg = <0x43f9c000 0x4000>;
+-				clocks = <&clks 51>;
+-				clock-names = "";
+-				interrupts = <2>;
+-				status = "disabled";
 -			};
 -
--			bridge_intc: bridge-interrupt-ctrl@20110 {
--				compatible = "marvell,orion-bridge-intc";
--				interrupt-controller;
--				#interrupt-cells = <1>;
--				reg = <0x20110 0x8>;
--				interrupts = <0>;
--				marvell,#interrupts = <5>;
+-			spi1: cspi@43fa4000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx25-cspi", "fsl,imx35-cspi";
+-				reg = <0x43fa4000 0x4000>;
+-				clocks = <&clks 62>, <&clks 62>;
+-				clock-names = "ipg", "per";
+-				interrupts = <14>;
+-				status = "disabled";
 -			};
 -
--			intc: main-interrupt-ctrl@20200 {
--				compatible = "marvell,orion-intc";
--				interrupt-controller;
--				#interrupt-cells = <1>;
--				reg = <0x20200 0x10>, <0x20210 0x10>;
--			};
--
--			timer: timer@20300 {
--				compatible = "marvell,orion-timer";
--				reg = <0x20300 0x20>;
--				interrupt-parent = <&bridge_intc>;
--				interrupts = <1>, <2>;
--				clocks = <&core_clk 0>;
--			};
--
--			crypto: crypto-engine@30000 {
--				compatible = "marvell,orion-crypto";
--				reg = <0x30000 0x10000>,
--				      <0xffffe000 0x800>;
--				reg-names = "regs", "sram";
--				interrupts = <31>;
--				clocks = <&gate_clk 15>;
--				status = "okay";
--			};
--
--			ehci0: usb-host@50000 {
--				compatible = "marvell,orion-ehci";
--				reg = <0x50000 0x1000>;
+-			kpp@43fa8000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				reg = <0x43fa8000 0x4000>;
+-				clocks = <&clks 102>;
+-				clock-names = "";
 -				interrupts = <24>;
--				clocks = <&gate_clk 0>;
--				status = "okay";
--			};
--
--			ehci1: usb-host@51000 {
--				compatible = "marvell,orion-ehci";
--				reg = <0x51000 0x1000>;
--				interrupts = <25>;
--				clocks = <&gate_clk 1>;
--				status = "okay";
--			};
--
--			xor0: dma-engine@60800 {
--				compatible = "marvell,orion-xor";
--				reg = <0x60800 0x100
--				       0x60a00 0x100>;
--				clocks = <&gate_clk 23>;
--				status = "okay";
--
--				channel0 {
--					interrupts = <39>;
--					dmacap,memcpy;
--					dmacap,xor;
--				};
--
--				channel1 {
--					interrupts = <40>;
--					dmacap,memcpy;
--					dmacap,xor;
--				};
--			};
--
--			xor1: dma-engine@60900 {
--				compatible = "marvell,orion-xor";
--				reg = <0x60900 0x100
--				       0x60b00 0x100>;
--				clocks = <&gate_clk 24>;
--				status = "okay";
--
--				channel0 {
--					interrupts = <42>;
--					dmacap,memcpy;
--					dmacap,xor;
--				};
--
--				channel1 {
--					interrupts = <43>;
--					dmacap,memcpy;
--					dmacap,xor;
--				};
--			};
--
--			sdio1: sdio-host@90000 {
--				compatible = "marvell,dove-sdhci";
--				reg = <0x90000 0x100>;
--				interrupts = <36>, <38>;
--				clocks = <&gate_clk 9>;
--				pinctrl-0 = <&pmx_sdio1>;
--				pinctrl-names = "default";
 -				status = "disabled";
 -			};
 -
--			eth: ethernet-ctrl@72000 {
--				compatible = "marvell,orion-eth";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0x72000 0x4000>;
--				clocks = <&gate_clk 2>;
--				marvell,tx-checksum-limit = <1600>;
+-			iomuxc: iomuxc@43fac000 {
+-				compatible = "fsl,imx25-iomuxc";
+-				reg = <0x43fac000 0x4000>;
+-			};
+-
+-			audmux: audmux@43fb0000 {
+-				compatible = "fsl,imx25-audmux", "fsl,imx31-audmux";
+-				reg = <0x43fb0000 0x4000>;
 -				status = "disabled";
--
--				ethernet-port@0 {
--					compatible = "marvell,orion-eth-port";
--					reg = <0>;
--					interrupts = <29>;
--					/* overwrite MAC address in bootloader */
--					local-mac-address = [00 00 00 00 00 00];
--					phy-handle = <&ethphy>;
--				};
--			};
--
--			mdio: mdio-bus@72004 {
--				compatible = "marvell,orion-mdio";
--				#address-cells = <1>;
--				#size-cells = <0>;
--				reg = <0x72004 0x84>;
--				interrupts = <30>;
--				clocks = <&gate_clk 2>;
--				status = "disabled";
--
--				ethphy: ethernet-phy {
--					/* set phy address in board file */
--				};
--			};
--
--			sdio0: sdio-host@92000 {
--				compatible = "marvell,dove-sdhci";
--				reg = <0x92000 0x100>;
--				interrupts = <35>, <37>;
--				clocks = <&gate_clk 8>;
--				pinctrl-0 = <&pmx_sdio0>;
--				pinctrl-names = "default";
--				status = "disabled";
--			};
--
--			sata0: sata-host@a0000 {
--				compatible = "marvell,orion-sata";
--				reg = <0xa0000 0x2400>;
--				interrupts = <62>;
--				clocks = <&gate_clk 3>;
--				phys = <&sata_phy0>;
--				phy-names = "port0";
--				nr-ports = <1>;
--				status = "disabled";
--			};
--
--			sata_phy0: sata-phy@a2000 {
--				compatible = "marvell,mvebu-sata-phy";
--				reg = <0xa2000 0x0334>;
--				clocks = <&gate_clk 3>;
--				clock-names = "sata";
--				#phy-cells = <0>;
--				status = "ok";
--			};
--
--			audio0: audio-controller@b0000 {
--				compatible = "marvell,dove-audio";
--				reg = <0xb0000 0x2210>;
--				interrupts = <19>, <20>;
--				clocks = <&gate_clk 12>;
--				clock-names = "internal";
--				status = "disabled";
--			};
--
--			audio1: audio-controller@b4000 {
--				compatible = "marvell,dove-audio";
--				reg = <0xb4000 0x2210>;
--				interrupts = <21>, <22>;
--				clocks = <&gate_clk 13>;
--				clock-names = "internal";
--				status = "disabled";
--			};
--
--			thermal: thermal-diode@d001c {
--				compatible = "marvell,dove-thermal";
--				reg = <0xd001c 0x0c>, <0xd005c 0x08>;
--			};
--
--			gate_clk: clock-gating-ctrl@d0038 {
--				compatible = "marvell,dove-gating-clock";
--				reg = <0xd0038 0x4>;
--				clocks = <&core_clk 0>;
--				#clock-cells = <1>;
--			};
--
--			pmu_intc: pmu-interrupt-ctrl@d0050 {
--				compatible = "marvell,dove-pmu-intc";
--				interrupt-controller;
--				#interrupt-cells = <1>;
--				reg = <0xd0050 0x8>;
--				interrupts = <33>;
--				marvell,#interrupts = <7>;
--			};
--
--			pinctrl: pin-ctrl@d0200 {
--				compatible = "marvell,dove-pinctrl";
--				reg = <0xd0200 0x10>;
--				clocks = <&gate_clk 22>;
--
--				pmx_gpio_0: pmx-gpio-0 {
--					marvell,pins = "mpp0";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_1: pmx-gpio-1 {
--					marvell,pins = "mpp1";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_2: pmx-gpio-2 {
--					marvell,pins = "mpp2";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_3: pmx-gpio-3 {
--					marvell,pins = "mpp3";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_4: pmx-gpio-4 {
--					marvell,pins = "mpp4";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_5: pmx-gpio-5 {
--					marvell,pins = "mpp5";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_6: pmx-gpio-6 {
--					marvell,pins = "mpp6";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_7: pmx-gpio-7 {
--					marvell,pins = "mpp7";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_8: pmx-gpio-8 {
--					marvell,pins = "mpp8";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_9: pmx-gpio-9 {
--					marvell,pins = "mpp9";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_10: pmx-gpio-10 {
--					marvell,pins = "mpp10";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_11: pmx-gpio-11 {
--					marvell,pins = "mpp11";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_12: pmx-gpio-12 {
--					marvell,pins = "mpp12";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_13: pmx-gpio-13 {
--					marvell,pins = "mpp13";
--					marvell,function = "gpio";
--				};
--
--				pmx_audio1_extclk: pmx-audio1-extclk {
--					marvell,pins = "mpp13";
--					marvell,function = "audio1";
--				};
--
--				pmx_gpio_14: pmx-gpio-14 {
--					marvell,pins = "mpp14";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_15: pmx-gpio-15 {
--					marvell,pins = "mpp15";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_16: pmx-gpio-16 {
--					marvell,pins = "mpp16";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_17: pmx-gpio-17 {
--					marvell,pins = "mpp17";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_18: pmx-gpio-18 {
--					marvell,pins = "mpp18";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_19: pmx-gpio-19 {
--					marvell,pins = "mpp19";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_20: pmx-gpio-20 {
--					marvell,pins = "mpp20";
--					marvell,function = "gpio";
--				};
--
--				pmx_gpio_21: pmx-gpio-21 {
--					marvell,pins = "mpp21";
--					marvell,function = "gpio";
--				};
--
--				pmx_camera: pmx-camera {
--					marvell,pins = "mpp_camera";
--					marvell,function = "camera";
--				};
--
--				pmx_camera_gpio: pmx-camera-gpio {
--					marvell,pins = "mpp_camera";
--					marvell,function = "gpio";
--				};
--
--				pmx_sdio0: pmx-sdio0 {
--					marvell,pins = "mpp_sdio0";
--					marvell,function = "sdio0";
--				};
--
--				pmx_sdio0_gpio: pmx-sdio0-gpio {
--					marvell,pins = "mpp_sdio0";
--					marvell,function = "gpio";
--				};
--
--				pmx_sdio1: pmx-sdio1 {
--					marvell,pins = "mpp_sdio1";
--					marvell,function = "sdio1";
--				};
--
--				pmx_sdio1_gpio: pmx-sdio1-gpio {
--					marvell,pins = "mpp_sdio1";
--					marvell,function = "gpio";
--				};
--
--				pmx_audio1_gpio: pmx-audio1-gpio {
--					marvell,pins = "mpp_audio1";
--					marvell,function = "gpio";
--				};
--
--				pmx_audio1_i2s1_spdifo: pmx-audio1-i2s1-spdifo {
--					marvell,pins = "mpp_audio1";
--					marvell,function = "i2s1/spdifo";
--				};
--
--				pmx_spi0: pmx-spi0 {
--					marvell,pins = "mpp_spi0";
--					marvell,function = "spi0";
--				};
--
--				pmx_spi0_gpio: pmx-spi0-gpio {
--					marvell,pins = "mpp_spi0";
--					marvell,function = "gpio";
--				};
--
--				pmx_uart1: pmx-uart1 {
--					marvell,pins = "mpp_uart1";
--					marvell,function = "uart1";
--				};
--
--				pmx_uart1_gpio: pmx-uart1-gpio {
--					marvell,pins = "mpp_uart1";
--					marvell,function = "gpio";
--				};
--
--				pmx_nand: pmx-nand {
--					marvell,pins = "mpp_nand";
--					marvell,function = "nand";
--				};
--
--				pmx_nand_gpo: pmx-nand-gpo {
--					marvell,pins = "mpp_nand";
--					marvell,function = "gpo";
--				};
--			};
--
--			core_clk: core-clocks@d0214 {
--				compatible = "marvell,dove-core-clock";
--				reg = <0xd0214 0x4>;
--				#clock-cells = <1>;
--			};
--
--			gpio0: gpio-ctrl@d0400 {
--				compatible = "marvell,orion-gpio";
--				#gpio-cells = <2>;
--				gpio-controller;
--				reg = <0xd0400 0x20>;
--				ngpios = <32>;
--				interrupt-controller;
--				#interrupt-cells = <2>;
--				interrupts = <12>, <13>, <14>, <60>;
--			};
--
--			gpio1: gpio-ctrl@d0420 {
--				compatible = "marvell,orion-gpio";
--				#gpio-cells = <2>;
--				gpio-controller;
--				reg = <0xd0420 0x20>;
--				ngpios = <32>;
--				interrupt-controller;
--				#interrupt-cells = <2>;
--				interrupts = <61>;
--			};
--
--			rtc: real-time-clock@d8500 {
--				compatible = "marvell,orion-rtc";
--				reg = <0xd8500 0x20>;
--				interrupt-parent = <&pmu_intc>;
--				interrupts = <5>;
--			};
--
--			gpio2: gpio-ctrl@e8400 {
--				compatible = "marvell,orion-gpio";
--				#gpio-cells = <2>;
--				gpio-controller;
--				reg = <0xe8400 0x0c>;
--				ngpios = <8>;
 -			};
 -		};
--	};
--};
-+#include <arm/dove.dtsi>
+-
+-		spba@50000000 {
+-			compatible = "fsl,spba-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x50000000 0x40000>;
+-			ranges;
+-
+-			spi3: cspi@50004000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx25-cspi", "fsl,imx35-cspi";
+-				reg = <0x50004000 0x4000>;
+-				interrupts = <0>;
+-				clocks = <&clks 80>, <&clks 80>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart4: serial@50008000 {
+-				compatible = "fsl,imx25-uart", "fsl,imx21-uart";
+-				reg = <0x50008000 0x4000>;
+-				interrupts = <5>;
+-				clocks = <&clks 123>, <&clks 57>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			uart3: serial@5000c000 {
+-				compatible = "fsl,imx25-uart", "fsl,imx21-uart";
+-				reg = <0x5000c000 0x4000>;
+-				interrupts = <18>;
+-				clocks = <&clks 122>, <&clks 57>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			spi2: cspi@50010000 {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-				compatible = "fsl,imx25-cspi", "fsl,imx35-cspi";
+-				reg = <0x50010000 0x4000>;
+-				clocks = <&clks 79>, <&clks 79>;
+-				clock-names = "ipg", "per";
+-				interrupts = <13>;
+-				status = "disabled";
+-			};
+-
+-			ssi2: ssi@50014000 {
+-				compatible = "fsl,imx25-ssi", "fsl,imx21-ssi";
+-				reg = <0x50014000 0x4000>;
+-				interrupts = <11>;
+-				clocks = <&clks 118>;
+-				clock-names = "ipg";
+-				dmas = <&sdma 24 1 0>,
+-				       <&sdma 25 1 0>;
+-				dma-names = "rx", "tx";
+-				status = "disabled";
+-			};
+-
+-			esai@50018000 {
+-				reg = <0x50018000 0x4000>;
+-				interrupts = <7>;
+-			};
+-
+-			uart5: serial@5002c000 {
+-				compatible = "fsl,imx25-uart", "fsl,imx21-uart";
+-				reg = <0x5002c000 0x4000>;
+-				interrupts = <40>;
+-				clocks = <&clks 124>, <&clks 57>;
+-				clock-names = "ipg", "per";
+-				status = "disabled";
+-			};
+-
+-			tsc: tsc@50030000 {
+-				compatible = "fsl,imx25-adc", "fsl,imx21-tsc";
+-				reg = <0x50030000 0x4000>;
+-				interrupts = <46>;
+-				clocks = <&clks 119>;
+-				clock-names = "ipg";
+-				status = "disabled";
+-			};
+-
+-			ssi1: ssi@50034000 {
+-				compatible = "fsl,imx25-ssi", "fsl,imx21-ssi";
+-				reg = <0x50034000 0x4000>;
+-				interrupts = <12>;
+-				clocks = <&clks 117>;
+-				clock-names = "ipg";
+-				dmas = <&sdma 28 1 0>,
+-				       <&sdma 29 1 0>;
+-				dma-names = "rx", "tx";
+-				status = "disabled";
+-			};
+-
+-			fec: ethernet@50038000 {
+-				compatible = "fsl,imx25-fec";
+-				reg = <0x50038000 0x4000>;
+-				interrupts = <57>;
+-				clocks = <&clks 88>, <&clks 65>;
+-				clock-names = "ipg", "ahb";
+-				status = "disabled";
+-			};
+-		};
+-
+-		aips@53f00000 { /* AIPS2 */
+-			compatible = "fsl,aips-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x53f00000 0x100000>;
+-			ranges;
+-
+-			clks: ccm@53f80000 {
+-				compatible = "fsl,imx25-ccm";
+-				reg = <0x53f80000 0x4000>;
+-				interrupts = <31>;
+-				#clock-cells = <1>;
+-			};
+-
+-			gpt4: timer@53f84000 {
+-				compatible = "fsl,imx25-gpt", "fsl,imx31-gpt";
+-				reg = <0x53f84000 0x4000>;
+-				clocks = <&clks 9>, <&clks 45>;
+-				clock-names = "ipg", "per";
+-				interrupts = <1>;
+-			};
+-
+-			gpt3: timer@53f88000 {
+-				compatible = "fsl,imx25-gpt", "fsl,imx31-gpt";
+-				reg = <0x53f88000 0x4000>;
+-				clocks = <&clks 9>, <&clks 47>;
+-				clock-names = "ipg", "per";
+-				interrupts = <29>;
+-			};
+-
+-			gpt2: timer@53f8c000 {
+-				compatible = "fsl,imx25-gpt", "fsl,imx31-gpt";
+-				reg = <0x53f8c000 0x4000>;
+-				clocks = <&clks 9>, <&clks 47>;
+-				clock-names = "ipg", "per";
+-				interrupts = <53>;
+-			};
+-
+-			gpt1: timer@53f90000 {
+-				compatible = "fsl,imx25-gpt", "fsl,imx31-gpt";
+-				reg = <0x53f90000 0x4000>;
+-				clocks = <&clks 9>, <&clks 47>;
+-				clock-names = "ipg", "per";
+-				interrupts = <54>;
+-			};
+-
+-			epit1: timer@53f94000 {
+-				compatible = "fsl,imx25-epit";
+-				reg = <0x53f94000 0x4000>;
+-				interrupts = <28>;
+-			};
+-
+-			epit2: timer@53f98000 {
+-				compatible = "fsl,imx25-epit";
+-				reg = <0x53f98000 0x4000>;
+-				interrupts = <27>;
+-			};
+-
+-			gpio4: gpio@53f9c000 {
+-				compatible = "fsl,imx25-gpio", "fsl,imx35-gpio";
+-				reg = <0x53f9c000 0x4000>;
+-				interrupts = <23>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			pwm2: pwm@53fa0000 {
+-				compatible = "fsl,imx25-pwm", "fsl,imx27-pwm";
+-				#pwm-cells = <2>;
+-				reg = <0x53fa0000 0x4000>;
+-				clocks = <&clks 106>, <&clks 36>;
+-				clock-names = "ipg", "per";
+-				interrupts = <36>;
+-			};
+-
+-			gpio3: gpio@53fa4000 {
+-				compatible = "fsl,imx25-gpio", "fsl,imx35-gpio";
+-				reg = <0x53fa4000 0x4000>;
+-				interrupts = <16>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			pwm3: pwm@53fa8000 {
+-				compatible = "fsl,imx25-pwm", "fsl,imx27-pwm";
+-				#pwm-cells = <2>;
+-				reg = <0x53fa8000 0x4000>;
+-				clocks = <&clks 107>, <&clks 36>;
+-				clock-names = "ipg", "per";
+-				interrupts = <41>;
+-			};
+-
+-			esdhc1: esdhc@53fb4000 {
+-				compatible = "fsl,imx25-esdhc";
+-				reg = <0x53fb4000 0x4000>;
+-				interrupts = <9>;
+-				clocks = <&clks 86>, <&clks 63>, <&clks 45>;
+-				clock-names = "ipg", "ahb", "per";
+-				status = "disabled";
+-			};
+-
+-			esdhc2: esdhc@53fb8000 {
+-				compatible = "fsl,imx25-esdhc";
+-				reg = <0x53fb8000 0x4000>;
+-				interrupts = <8>;
+-				clocks = <&clks 87>, <&clks 64>, <&clks 46>;
+-				clock-names = "ipg", "ahb", "per";
+-				status = "disabled";
+-			};
+-
+-			lcdc: lcdc@53fbc000 {
+-				compatible = "fsl,imx25-fb", "fsl,imx21-fb";
+-				reg = <0x53fbc000 0x4000>;
+-				interrupts = <39>;
+-				clocks = <&clks 103>, <&clks 66>, <&clks 49>;
+-				clock-names = "ipg", "ahb", "per";
+-				status = "disabled";
+-			};
+-
+-			slcdc@53fc0000 {
+-				reg = <0x53fc0000 0x4000>;
+-				interrupts = <38>;
+-				status = "disabled";
+-			};
+-
+-			pwm4: pwm@53fc8000 {
+-				compatible = "fsl,imx25-pwm", "fsl,imx27-pwm";
+-				reg = <0x53fc8000 0x4000>;
+-				clocks = <&clks 108>, <&clks 36>;
+-				clock-names = "ipg", "per";
+-				interrupts = <42>;
+-			};
+-
+-			gpio1: gpio@53fcc000 {
+-				compatible = "fsl,imx25-gpio", "fsl,imx35-gpio";
+-				reg = <0x53fcc000 0x4000>;
+-				interrupts = <52>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			gpio2: gpio@53fd0000 {
+-				compatible = "fsl,imx25-gpio", "fsl,imx35-gpio";
+-				reg = <0x53fd0000 0x4000>;
+-				interrupts = <51>;
+-				gpio-controller;
+-				#gpio-cells = <2>;
+-				interrupt-controller;
+-				#interrupt-cells = <2>;
+-			};
+-
+-			sdma: sdma@53fd4000 {
+-				compatible = "fsl,imx25-sdma", "fsl,imx35-sdma";
+-				reg = <0x53fd4000 0x4000>;
+-				clocks = <&clks 112>, <&clks 68>;
+-				clock-names = "ipg", "ahb";
+-				#dma-cells = <3>;
+-				interrupts = <34>;
+-				fsl,sdma-ram-script-name = "imx/sdma/sdma-imx25.bin";
+-			};
+-
+-			wdog@53fdc000 {
+-				compatible = "fsl,imx25-wdt", "fsl,imx21-wdt";
+-				reg = <0x53fdc000 0x4000>;
+-				clocks = <&clks 126>;
+-				clock-names = "";
+-				interrupts = <55>;
+-			};
+-
+-			pwm1: pwm@53fe0000 {
+-				compatible = "fsl,imx25-pwm", "fsl,imx27-pwm";
+-				#pwm-cells = <2>;
+-				reg = <0x53fe0000 0x4000>;
+-				clocks = <&clks 105>, <&clks 36>;
+-				clock-names = "ipg", "per";
+-				interrupts = <26>;
+-			};
+-
+-			iim: iim@53ff0000 {
+-				compatible = "fsl,imx25-iim", "fsl,imx27-iim";
+-				reg = <0x53ff0000 0x4000>;
+-				interrupts = <19>;
+-				clocks = <&clks 99>;
+-			};
+-
+-			usbphy1: usbphy@1 {
+-				compatible = "nop-usbphy";
+-				status = "disabled";
+-			};
+-
+-			usbphy2: usbphy@2 {
+-				compatible = "nop-usbphy";
+-				status = "disabled";
+-			};
+-
+-			usbotg: usb@53ff4000 {
+-				compatible = "fsl,imx25-usb", "fsl,imx27-usb";
+-				reg = <0x53ff4000 0x0200>;
+-				interrupts = <37>;
+-				clocks = <&clks 9>, <&clks 70>, <&clks 8>;
+-				clock-names = "ipg", "ahb", "per";
+-				fsl,usbmisc = <&usbmisc 0>;
+-				status = "disabled";
+-			};
+-
+-			usbhost1: usb@53ff4400 {
+-				compatible = "fsl,imx25-usb", "fsl,imx27-usb";
+-				reg = <0x53ff4400 0x0200>;
+-				interrupts = <35>;
+-				clocks = <&clks 9>, <&clks 70>, <&clks 8>;
+-				clock-names = "ipg", "ahb", "per";
+-				fsl,usbmisc = <&usbmisc 1>;
+-				status = "disabled";
+-			};
+-
+-			usbmisc: usbmisc@53ff4600 {
+-				#index-cells = <1>;
+-				compatible = "fsl,imx25-usbmisc";
+-				clocks = <&clks 9>, <&clks 70>, <&clks 8>;
+-				clock-names = "ipg", "ahb", "per";
+-				reg = <0x53ff4600 0x00f>;
+-			};
+-
+-			dryice@53ffc000 {
+-				compatible = "fsl,imx25-dryice", "fsl,imx25-rtc";
+-				reg = <0x53ffc000 0x4000>;
+-				clocks = <&clks 81>;
+-				clock-names = "ipg";
+-				interrupts = <25>;
+-			};
+-		};
+-
+ 		iram: sram@78000000 {
+ 			compatible = "mmio-sram";
+ 			reg = <0x78000000 0x20000>;
+ 		};
+-
+-		emi@80000000 {
+-			compatible = "fsl,emi-bus", "simple-bus";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			reg = <0x80000000 0x3b002000>;
+-			ranges;
+-
+-			nfc: nand@bb000000 {
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-
+-				compatible = "fsl,imx25-nand";
+-				reg = <0xbb000000 0x2000>;
+-				clocks = <&clks 50>;
+-				clock-names = "";
+-				interrupts = <33>;
+-				status = "disabled";
+-			};
+-		};
+ 	};
+ };
++
++&usbmisc {
++	status = "okay";
++};
 -- 
 1.9.1
 
