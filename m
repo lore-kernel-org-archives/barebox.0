@@ -1,24 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mx0a-00176a03.pphosted.com ([67.231.149.52])
+Received: from mail-ee0-x22f.google.com ([2a00:1450:4013:c00::22f])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wf5Qt-0008LU-TR
- for barebox@lists.infradead.org; Tue, 29 Apr 2014 10:38:40 +0000
-Received: from pps.filterd (m0047963.ppops.net [127.0.0.1])
- by m0047963.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s3TATKDQ038357
- for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 06:38:18 -0400
-Received: from cinmlip14.e2k.ad.ge.com ([12.71.149.1])
- by m0047963.ppops.net-00176a03. with ESMTP id 1kjace00ek-1
- (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
- for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 06:38:17 -0400
-Received: from [3.26.68.149] (unknown [3.26.68.149])
- by selma.edi.geip.ge.com (Postfix) with ESMTP id 69173E09A1
- for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 11:38:15 +0100 (BST)
-Message-ID: <535F8117.4090207@ge.com>
-Date: Tue, 29 Apr 2014 11:38:15 +0100
-From: Renaud Barbier <renaud.barbier@ge.com>
+ id 1Wf7wg-0003es-2l
+ for barebox@lists.infradead.org; Tue, 29 Apr 2014 13:19:38 +0000
+Received: by mail-ee0-f47.google.com with SMTP id b15so323346eek.34
+ for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 06:19:13 -0700 (PDT)
+Date: Tue, 29 Apr 2014 15:19:07 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140429131905.GA18565@omega>
+References: <1398751606-10167-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-References: <20140422123443.GA16192@gmail.com>
-In-Reply-To: <20140422123443.GA16192@gmail.com>
+Content-Disposition: inline
+In-Reply-To: <1398751606-10167-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -31,42 +24,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Freescale P1020 Startup
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] mtd: nand-bb: use list_for_each_entry_safe
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hello Tobias,
-I was away for a week, hence the late answer.
+Hi,
 
-Have you made any progress since you sent this email?
+thanks Sascha.
 
-As far as I know, this early in the code there is no difference.
-
-If you have more information on your debug step, I may be able to find
-something.
-
-What tool do you use?
-
-cheers,
-REnaud
-
-
-On 22/04/2014 13:34, Tobias Waldekranz wrote:
-> Hi, I'm currently trying to bring up a P1020 based board which boots
-> from a NOR flash. My board config is based on the existing P2020RDB
-> board.
+On Tue, Apr 29, 2014 at 08:06:46AM +0200, Sascha Hauer wrote:
+> We need list_for_each_entry_safe in dev_remove_bb_dev since the
+> list entries are removed during iteration over the list.
 > 
-> The code faults very early with an instruction TLB error when
-> transitioning from the boot page (0xfffff000) to the flash's address
-> space (0xeffff000). The TLB has the same valid entries that U-Boot has
-> setup at the corresponding point in the code (at the end of
-> create_init_ram_area).
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Reported-by: Alexander Aring <alex.aring@gmail.com>
+> ---
+>  drivers/mtd/nand/nand-bb.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> I have tried to compare start.S with its U-Boot cousin but alas, my
-> PPC assembler fu fails me. Are there any differences between the E500
-> cores in the P1020 vs. P2020 that must be taken in to consideration in
-> start.S?
-> 
+> diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+> index f387ef6..89d5945 100644
+> --- a/drivers/mtd/nand/nand-bb.c
+> +++ b/drivers/mtd/nand/nand-bb.c
+> @@ -308,9 +308,9 @@ out1:
+>  
+>  int dev_remove_bb_dev(const char *name)
+>  {
+> -	struct nand_bb *bb;
+> +	struct nand_bb *bb, *tmp;
+>  
+> -	list_for_each_entry(bb, &bb_list, list) {
+> +	list_for_each_entry_safe(bb, tmp, &bb_list, list) {
+>  		if (!strcmp(bb->cdev.name, name)) {
+>  			devfs_remove(&bb->cdev);
+>  			cdev_close(bb->cdev_parent);
 
+Fixes f4af6690e41e1f1b995b5b3b56016c8a8fcd3246
+("nand-bb: Fix remove of nand-bb device.")
+
+- Alex
 
 _______________________________________________
 barebox mailing list
