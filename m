@@ -1,18 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x234.google.com ([2a00:1450:4013:c00::234])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WesaD-00007r-N8
- for barebox@lists.infradead.org; Mon, 28 Apr 2014 20:55:26 +0000
-Received: by mail-ee0-f52.google.com with SMTP id e49so5138481eek.25
- for <barebox@lists.infradead.org>; Mon, 28 Apr 2014 13:55:03 -0700 (PDT)
-Date: Mon, 28 Apr 2014 22:54:53 +0200
-From: Beniamino Galvani <b.galvani@gmail.com>
-Message-ID: <20140428205452.GA29091@gmail.com>
-References: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
- <20140428072627.GN5858@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140428072627.GN5858@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wf1CA-0005YR-5K
+ for barebox@lists.infradead.org; Tue, 29 Apr 2014 06:07:11 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 29 Apr 2014 08:06:46 +0200
+Message-Id: <1398751606-10167-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,65 +14,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/11] ARM: add initial support for Rockchip boards
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] mtd: nand-bb: use list_for_each_entry_safe
+To: barebox@lists.infradead.org
 
-On Mon, Apr 28, 2014 at 09:26:27AM +0200, Sascha Hauer wrote:
-> Hi Beniamino,
-> 
-> On Sun, Apr 27, 2014 at 11:30:33AM +0200, Beniamino Galvani wrote:
-> > This series adds an initial support for Rockchip SoCs and has been
-> > tested on a Radxa Rock board, on which I'm able to load a kernel from
-> > the network and boot it [1].
-> > 
-> > At the moment Barebox must be chainloaded from the Rockchip binary
-> > bootloader which performs low-level initializations and loads Barebox
-> > from the "boot" partition on the NAND.
-> > 
-> > Barebox should be written using the same procedure used for kernels:
-> > it must be prepared with the mkimage tool and then written with
-> > rkflashkit.
-> > 
-> > There is a u-boot code released by Rockchip [2] which probably
-> > includes all the low-level initializations but I'm not brave enough to
-> > try it.
-> > 
-> > The patchset adds ethernet and pinctrl drivers, PLL and clocks
-> > initialization, and code to power on the external PHY of the board
-> > through the PMIC.
-> 
-> Awesome! I'm happy to see barebox support for one of the more popular
-> Linux ARM architectures.
-> 
-> The patches look quite good and there's not much to be done to
-> make them ready for merging.
-> 
-> I'm just on the way to merge the Linux devicetree files into barebox
-> and use them where possible so we do not duplicate the devicetrees in
-> barebox. Could you post a followup once to base the rockchip dts files
-> on the Linux dts files once I have everything in place? I saw that you
-> already use the mainline dts files, but these do not contain the
-> ethernet nodes for example.
+We need list_for_each_entry_safe in dev_remove_bb_dev since the
+list entries are removed during iteration over the list.
 
-Ok, I will do. Just a question: my series is against -next because it
-requires commit 6720ad6f16db5839a72aa8b53e89918a4f0059bd "clk: move
-of_clk_get_parent_name() to common clk code", while your dts branch
-derives from master and doesn't have this commit. Which branch should
-I base the next version on?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Alexander Aring <alex.aring@gmail.com>
+---
+ drivers/mtd/nand/nand-bb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Also I'd like to let rockchip use the multi image mechanism. This is not
-> much work when you know what to do. You could change it yourself or I do
-> the change for you, but in this case, could you give the result a test?
+diff --git a/drivers/mtd/nand/nand-bb.c b/drivers/mtd/nand/nand-bb.c
+index f387ef6..89d5945 100644
+--- a/drivers/mtd/nand/nand-bb.c
++++ b/drivers/mtd/nand/nand-bb.c
+@@ -308,9 +308,9 @@ out1:
+ 
+ int dev_remove_bb_dev(const char *name)
+ {
+-	struct nand_bb *bb;
++	struct nand_bb *bb, *tmp;
+ 
+-	list_for_each_entry(bb, &bb_list, list) {
++	list_for_each_entry_safe(bb, tmp, &bb_list, list) {
+ 		if (!strcmp(bb->cdev.name, name)) {
+ 			devfs_remove(&bb->cdev);
+ 			cdev_close(bb->cdev_parent);
+-- 
+1.9.1
 
-I'm not familiar with multi-image support but I would be glad to try
-it if you're willing to implement it.
-
-Beniamino
 
 _______________________________________________
 barebox mailing list
