@@ -1,15 +1,24 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wf2EI-0000WN-PQ
- for barebox@lists.infradead.org; Tue, 29 Apr 2014 07:13:27 +0000
-Date: Tue, 29 Apr 2014 09:13:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140429071305.GC5858@pengutronix.de>
-References: <1398370627-27786-1-git-send-email-dev@lynxeye.de>
+Received: from mx0a-00176a03.pphosted.com ([67.231.149.52])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wf5Qt-0008LU-TR
+ for barebox@lists.infradead.org; Tue, 29 Apr 2014 10:38:40 +0000
+Received: from pps.filterd (m0047963.ppops.net [127.0.0.1])
+ by m0047963.ppops.net-00176a03. (8.14.7/8.14.7) with SMTP id s3TATKDQ038357
+ for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 06:38:18 -0400
+Received: from cinmlip14.e2k.ad.ge.com ([12.71.149.1])
+ by m0047963.ppops.net-00176a03. with ESMTP id 1kjace00ek-1
+ (version=TLSv1/SSLv3 cipher=RC4-SHA bits=128 verify=NOT)
+ for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 06:38:17 -0400
+Received: from [3.26.68.149] (unknown [3.26.68.149])
+ by selma.edi.geip.ge.com (Postfix) with ESMTP id 69173E09A1
+ for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 11:38:15 +0100 (BST)
+Message-ID: <535F8117.4090207@ge.com>
+Date: Tue, 29 Apr 2014 11:38:15 +0100
+From: Renaud Barbier <renaud.barbier@ge.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1398370627-27786-1-git-send-email-dev@lynxeye.de>
+References: <20140422123443.GA16192@gmail.com>
+In-Reply-To: <20140422123443.GA16192@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,49 +27,46 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] RiOTboard: add new board
-To: Lucas Stach <dev@lynxeye.de>
-Cc: barebox@lists.infradead.org
+Subject: Re: Freescale P1020 Startup
+To: barebox@lists.infradead.org
 
-On Thu, Apr 24, 2014 at 10:17:07PM +0200, Lucas Stach wrote:
-> From: Eric B=E9nard <eric@eukrea.com>
-> =
+Hello Tobias,
+I was away for a week, hence the late answer.
 
-> this board is produced by Embest/Element 14 and is based on i.MX6 Solo
-> The following features are tested :
-> - UART2 (console)
-> - eMMC
-> - SDCard
-> - uSDCard
-> - Ethernet
-> - USB Host (through 4 ports hub)
-> - I2C 1/2/3
-> - 2 LEDs
-> =
+Have you made any progress since you sent this email?
 
-> Boot on eMMC and through USB loader are tested.
-> =
+As far as I know, this early in the code there is no difference.
 
-> For more informations on this board : http://www.riotboard.org/
-> =
+If you have more information on your debug step, I may be able to find
+something.
 
-> Signed-off-by: Eric B=E9nard <eric@eukrea.com>
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+What tool do you use?
 
-Applied, thanks
+cheers,
+REnaud
 
-Sascha
 
--- =
+On 22/04/2014 13:34, Tobias Waldekranz wrote:
+> Hi, I'm currently trying to bring up a P1020 based board which boots
+> from a NOR flash. My board config is based on the existing P2020RDB
+> board.
+> 
+> The code faults very early with an instruction TLB error when
+> transitioning from the boot page (0xfffff000) to the flash's address
+> space (0xeffff000). The TLB has the same valid entries that U-Boot has
+> setup at the corresponding point in the code (at the end of
+> create_init_ram_area).
+> 
+> I have tried to compare start.S with its U-Boot cousin but alas, my
+> PPC assembler fu fails me. Are there any differences between the E500
+> cores in the P1020 vs. P2020 that must be taken in to consideration in
+> start.S?
+> 
 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
