@@ -1,15 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycore.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WfVIa-0006zh-SK
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 14:15:50 +0000
-From: Christian Hemp <c.hemp@phytec.de>
-In-Reply-To: <20140430125213.GJ5858@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WfYb9-00054R-Aq
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 17:47:12 +0000
+Date: Wed, 30 Apr 2014 19:46:47 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140430174647.GP5858@pengutronix.de>
 References: <1398848852-29093-1-git-send-email-c.hemp@phytec.de>
- <1398856529.154234152@f68.i.mail.ru> <20140430125213.GJ5858@pengutronix.de>
-Date: Wed, 30 Apr 2014 16:15:14 +0200
-Message-ID: <1398867314.6055.11.camel@lws-hemp>
-Mime-Version: 1.0
+ <1398856529.154234152@f68.i.mail.ru>
+ <20140430125213.GJ5858@pengutronix.de>
+ <1398867314.6055.11.camel@lws-hemp>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1398867314.6055.11.camel@lws-hemp>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,46 +21,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH v2] imx6: Add support for phyCARD-i.MX6
-To: Sascha Hauer <s.hauer@pengutronix.de>
+To: Christian Hemp <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-SGVsbG8gU2FzY2hhLAoKQW0gTWl0dHdvY2gsIGRlbiAzMC4wNC4yMDE0LCAxNDo1MiArMDIwMCBz
-Y2hyaWViIFNhc2NoYSBIYXVlcjoKPiBPbiBXZWQsIEFwciAzMCwgMjAxNCBhdCAwMzoxNToyOVBN
-ICswNDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gV2VkLCAzMCBBcHIgMjAxNCAxMTow
-NzozMiArMDIwMCDQvtGCIENocmlzdGlhbiBIZW1wIDxjLmhlbXBAcGh5dGVjLmRlPjoKPiA+ID4g
-QWRkIHN1cHBvcnQgZm9yIFBoeXRlYyBwaHlDQVJELWkuTVg2Lgo+ID4gPiAJLSAxR0IgUkFNIG9u
-IHR3byBiYW5rcwo+ID4gPiAJLSAxR0IgUkFNIG9uIG9uZSBiYW5rCj4gPiA+IAktIDJHQiBSQU0g
-b24gdHdvIGJhbmtzCj4gPiA+IAo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBDaHJpc3RpYW4gSGVtcCA8
-Yy5oZW1wQHBoeXRlYy5kZT4KPiA+IC4uLgo+ID4gPiArc3RhdGljIGludCBwaHl0ZWNfcGNhYXhs
-M19jb3JlX2luaXQodm9pZCkKPiA+ID4gK3sKPiA+ID4gKwlpZiAoIW9mX21hY2hpbmVfaXNfY29t
-cGF0aWJsZSgicGh5dGVjLGlteDZxLXBjYWF4bDMiKSkKPiA+ID4gKwkJcmV0dXJuIDA7Cj4gPiA+
-ICsKPiA+ID4gKwlpbXg2X2luaXRfbG93bGV2ZWwoKTsKPiA+ID4gKwo+ID4gPiArCXJldHVybiAw
-Owo+ID4gPiArfQo+ID4gCj4gPiBUaGlzIGNhbiBiZSBlYXN5Ogo+ID4gaWYgKG9mX21hY2hpbmVf
-aXNfY29tcGF0aWJsZSgicGh5dGVjLGlteDZxLXBjYWF4bDMiKSkKPiA+ICAgaW14Nl9pbml0X2xv
-d2xldmVsKCk7Cj4gPiByZXR1cm4gMDsKPiAKPiBJIHRoaW5rIENocmlzdGlhbnMgdmVyc2lvbiBp
-cyBmaW5lLiBUaGUgd2F5IENocmlzdGlhbiBkaWQgaXQgbW9yZQo+IGZ1bmN0aW9uYWxpdHkgY2Fu
-IGJlIGFkZGVkIHRvIHBoeXRlY19wY2FheGwzX2NvcmVfaW5pdCB3aXRob3V0Cj4gcmVzdHJ1Y3R1
-cmluZyBpdC4KPiAKPiA+IAo+ID4gLi4uCj4gPiA+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0
-ZWMtcGh5Y2FyZC1pbXg2L2xvd2xldmVsLmMKPiA+IC4uLgo+ID4gPiArc3RhdGljIGlubGluZSB2
-b2lkIHNldHVwX3VhcnQodm9pZCkKPiA+ID4gK3sKPiA+ID4gKwl2b2lkIF9faW9tZW0gKmNjbWJh
-c2UgPSAodm9pZCAqKU1YNl9DQ01fQkFTRV9BRERSOwo+ID4gCj4gPiA9IElPTUVNKE1YNl9DQ01f
-QkFTRV9BRERSKTsKPiA+IGFuZCBzbyBvbi4uLgoKU2hvdWxkIEkgbGVhdmUgaXQgYXMgaXQgaXMg
-b3IgY2hhbmdlIGl0IHRvIEFsZXhhbmRlcnMgdmVyc2lvbj8KCgpDaHJpc3RpYW4KCj4gPiAKPiA+
-IC4uLgo+ID4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlIGIvYXJjaC9hcm0v
-ZHRzL01ha2VmaWxlCj4gPiA+IGluZGV4IDU4ZGMzOGIuLjYzZmU4NTQgMTAwNjQ0Cj4gPiA+IC0t
-LSBhL2FyY2gvYXJtL2R0cy9NYWtlZmlsZQo+ID4gPiArKysgYi9hcmNoL2FybS9kdHMvTWFrZWZp
-bGUKPiA+ID4gQEAgLTI3LDcgKzI3LDggQEAgZHRiLSQoQ09ORklHX0FSQ0hfSU1YNikgKz0gaW14
-NnEtZ2s4MDIuZHRiIFwKPiA+ID4gIAlpbXg2cS1uaXRyb2dlbjZ4LmR0YiBcCj4gPiA+ICAJaW14
-NmRsLW5pdHJvZ2VuNnguZHRiIFwKPiA+ID4gIAlpbXg2cS11ZG9vLmR0YiBcCj4gPiA+IC0JaW14
-NnEtdmFyLWN1c3RvbS5kdGIKPiA+ID4gKwlpbXg2cS12YXItY3VzdG9tLmR0YiBcCj4gPiAKPiA+
-IExldCdzIHVzZSAqLWJiLmR0YiBhcyBvdGhlciBib2FyZHMuCj4gCj4gSG0sIG5vdyB0aGF0IHdl
-IGhhdmUgdGhlIHVwc3RyZWFtIGR0cyBmaWxlcyBpbiBiYXJlYm94IGFsbCBmaWxlcyBpbgo+IGFy
-Y2gvYXJtL2R0cy8gYXJlIGJhcmVib3ggc3BlY2lmaWMsIG5vPwo+IAo+IFNhc2NoYQo+IAoKCgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1h
-aWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJh
-ZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+On Wed, Apr 30, 2014 at 04:15:14PM +0200, Christian Hemp wrote:
+> Hello Sascha,
+> > > > +++ b/arch/arm/boards/phytec-phycard-imx6/lowlevel.c
+> > > ...
+> > > > +static inline void setup_uart(void)
+> > > > +{
+> > > > +	void __iomem *ccmbase = (void *)MX6_CCM_BASE_ADDR;
+> > > 
+> > > = IOMEM(MX6_CCM_BASE_ADDR);
+> > > and so on...
+> 
+> Should I leave it as it is or change it to Alexanders version?
+
+Don't worry, I changed this while applying.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
