@@ -1,15 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WfORQ-0001cO-5R
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 06:56:29 +0000
-Date: Wed, 30 Apr 2014 08:56:05 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140430065605.GF5858@pengutronix.de>
-References: <CAO6XYUsjR_GdrkFHT2wy=4Lg-yosH8hKb3d2_Euoz8uY+3kQpQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAO6XYUsjR_GdrkFHT2wy=4Lg-yosH8hKb3d2_Euoz8uY+3kQpQ@mail.gmail.com>
+Received: from mail-lb0-x236.google.com ([2a00:1450:4010:c04::236])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WfPwc-00081I-Bp
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 08:32:46 +0000
+Received: by mail-lb0-f182.google.com with SMTP id l4so999143lbv.27
+ for <barebox@lists.infradead.org>; Wed, 30 Apr 2014 01:32:23 -0700 (PDT)
+From: chf.fritz@googlemail.com
+Date: Wed, 30 Apr 2014 10:32:00 +0200
+Message-Id: <5360b516.c62a980a.05b6.526b@mx.google.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,51 +16,30 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/1] Fix bug in export 64 bit unsigned environment
- variable.
-To: "Michael D. Burkey" <mdburkey@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 0/3] arm am335x cpsw and tftp fixes
+To: barebox@lists.infradead.org
 
-On Tue, Apr 29, 2014 at 03:16:02PM -0400, Michael D. Burkey wrote:
-> This patch corrects exporting unsigned 64-bit environment variables.
-> I had left out a signed off line before.
-> 
-> Signed-off-by: Michael Burkey <mdburkey at gmail.com>
+From: Christoph Fritz <chf.fritz@googlemail.com>
 
-Applied, thanks
+This series adds fixes for cpsw network driver and tftp client.
 
-Sascha
+Christoph Fritz (3):
+  tftp: add timeframe when remote server is retransmitting
+  net cpsw: fix rx stability under heavy network load
+  net cpsw: check phy status on send and receive
 
-> ---
-> 
-> 
-> --- a/common/env.c
-> +++ b/common/env.c
-> @@ -258,7 +258,7 @@
-> 
->  void export_env_ull(const char *name, unsigned long long val)
->  {
-> -       char *valstr = asprintf("%lld", val);
-> +       char *valstr = asprintf("%llu", val);
-> 
->         setenv(name, valstr);
->         export(name);
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+ drivers/net/cpsw.c |   31 ++++++++++++++++++++++++++++++-
+ fs/tftp.c          |    8 +++++---
+ 2 files changed, 35 insertions(+), 4 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+1.7.10.4
+
 
 _______________________________________________
 barebox mailing list
