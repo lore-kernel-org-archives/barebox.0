@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22d.google.com ([2a00:1450:4010:c03::22d])
+Received: from mail-la0-x233.google.com ([2a00:1450:4010:c03::233])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WfPwh-00082O-9Q
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 08:32:51 +0000
-Received: by mail-la0-f45.google.com with SMTP id pv20so994550lab.32
- for <barebox@lists.infradead.org>; Wed, 30 Apr 2014 01:32:28 -0700 (PDT)
+ id 1WfPwd-00081b-EA
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 08:32:48 +0000
+Received: by mail-la0-f51.google.com with SMTP id gl10so962755lab.24
+ for <barebox@lists.infradead.org>; Wed, 30 Apr 2014 01:32:25 -0700 (PDT)
 From: chf.fritz@googlemail.com
-Date: Wed, 30 Apr 2014 10:32:03 +0200
-Message-Id: <5360b51b.c62a980a.05b6.526e@mx.google.com>
+Date: Wed, 30 Apr 2014 10:32:01 +0200
+Message-Id: <5360b518.c62a980a.05b6.526c@mx.google.com>
 In-Reply-To: <1398846723-10241-1-git-send-email-y>
 References: <1398846723-10241-1-git-send-email-y>
 List-Id: <barebox.lists.infradead.org>
@@ -23,90 +23,48 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] net cpsw: check phy status on send and receive
+Subject: [PATCH 1/3] tftp: add timeframe when remote server is retransmitting
 To: barebox@lists.infradead.org
 
-From: Christoph Fritz <chf.fritz@googlemail.com>
+From: Christoph Fritz <chf@fritzc.com>
 
-This patch adds phy status checks on cpsw_send() and cpsw_recv().
-This is derived from upstream.
+If there's packet loss and the remote server needs to retransmit,
+there is falsely no timeframe left because TIMEOUT (server wait time)
+and TFTP_TIMEOUT (abort timer) are the same.
+
+This patch increases TFTP_TIMEOUT.
+
+See RFC2349 for more info: http://tools.ietf.org/html/rfc2349
 
 Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 ---
- drivers/net/cpsw.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ fs/tftp.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index ec3263d..9e7b320 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -229,6 +229,9 @@ struct cpsw_priv {
- 	struct cpdma_chan		rx_chan, tx_chan;
+diff --git a/fs/tftp.c b/fs/tftp.c
+index 9cad18f..b1a213e 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -33,14 +33,16 @@
+ #include <kfifo.h>
+ #include <sizes.h>
  
- 	struct cpsw_slave		*slaves;
+-#define TFTP_PORT	69	/* Well known TFTP port #		*/
+-#define TIMEOUT		5	/* Seconds to timeout for a lost pkt	*/
++#define TFTP_PORT	69	/* Well known TFTP port number */
 +
-+	u32				mdio_link;
-+	u32				phy_mask;
- };
++/* Seconds to wait before remote server is allowed to resend a lost packet */
++#define TIMEOUT		5
  
- static int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
-@@ -608,14 +611,28 @@ static void cpsw_slave_update_link(struct cpsw_slave *slave,
- static int cpsw_update_link(struct cpsw_slave *slave, struct cpsw_priv *priv)
- {
- 	int link = 0;
-+	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
+ /* After this time without a response from the server we will resend a packet */
+ #define TFTP_RESEND_TIMEOUT	SECOND
  
- 	dev_dbg(priv->dev, "* %s\n", __func__);
+ /* After this time without progress we will bail out */
+-#define TFTP_TIMEOUT		(TIMEOUT * SECOND)
++#define TFTP_TIMEOUT		((TIMEOUT * 3) * SECOND)
  
- 	cpsw_slave_update_link(slave, priv, &link);
- 
-+	priv->mdio_link = readl(&mdio_regs->link);
- 	return link;
- }
- 
-+static int cpsw_check_link(struct cpsw_priv *priv)
-+{
-+	u32 link = 0;
-+	struct cpsw_mdio_regs *mdio_regs = priv->mdio_regs;
-+
-+	link = readl(&mdio_regs->link) & priv->phy_mask;
-+	if ((link) && (link == priv->mdio_link))
-+		return 1;
-+
-+	return cpsw_update_link(&priv->slaves[0], priv);
-+}
-+
- static void cpsw_adjust_link(struct eth_device *edev)
- {
- 	struct cpsw_slave *slave = edev->priv;
-@@ -657,6 +674,8 @@ static void cpsw_slave_init(struct cpsw_slave *slave, struct cpsw_priv *priv)
- 
- 	/* add broadcast address */
- 	cpsw_ale_add_mcast(priv, ethbdaddr, 1 << slave_port);
-+
-+	priv->phy_mask |= 1 << slave->phy_id;
- }
- 
- static struct cpdma_desc *cpdma_desc_alloc(struct cpsw_priv *priv)
-@@ -874,6 +893,9 @@ static int cpsw_send(struct eth_device *edev, void *packet, int length)
- 
- 	dev_dbg(priv->dev, "* %s\n", __func__);
- 
-+	if (!cpsw_check_link(priv))
-+		return -EIO;
-+
- 	/* first reap completed packets */
- 	while (cpdma_process(priv, &priv->tx_chan, &buffer, &len) >= 0);
- 
-@@ -893,6 +915,8 @@ static int cpsw_recv(struct eth_device *edev)
- 	void *buffer;
- 	int len;
- 
-+	cpsw_check_link(priv);
-+
- 	while (cpdma_process(priv, &priv->rx_chan, &buffer, &len) >= 0) {
- 		dma_inv_range((ulong)buffer, (ulong)buffer + len);
- 		net_receive(buffer, len);
+ /*
+  *	TFTP operations.
 -- 
 1.7.10.4
 
