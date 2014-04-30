@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WfNP3-00084J-Bp
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 05:49:57 +0000
-Received: by mail-ee0-f43.google.com with SMTP id e51so916177eek.2
- for <barebox@lists.infradead.org>; Tue, 29 Apr 2014 22:49:34 -0700 (PDT)
-From: Silvio Fricke <silvio.fricke@gmail.com>
-Date: Wed, 30 Apr 2014 07:49:34 +0200
-Message-Id: <ce25001663e5dbf1538169d24785575d2292f210.1398836737.git.silvio.fricke@gmail.com>
-In-Reply-To: <1398671161-29045-3-git-send-email-s.hauer@pengutronix.de>
-References: <1398671161-29045-3-git-send-email-s.hauer@pengutronix.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WfORQ-0001cO-5R
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 06:56:29 +0000
+Date: Wed, 30 Apr 2014 08:56:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140430065605.GF5858@pengutronix.de>
+References: <CAO6XYUsjR_GdrkFHT2wy=4Lg-yosH8hKb3d2_Euoz8uY+3kQpQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAO6XYUsjR_GdrkFHT2wy=4Lg-yosH8hKb3d2_Euoz8uY+3kQpQ@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,41 +18,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] make: dts: fix out-of-tree build
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, Silvio Fricke <silvio.fricke@gmail.com>
+Subject: Re: [PATCH 1/1] Fix bug in export 64 bit unsigned environment
+ variable.
+To: "Michael D. Burkey" <mdburkey@gmail.com>
+Cc: barebox@lists.infradead.org
 
-If barebox is builded out-of-tree we don't find the dts-include
+On Tue, Apr 29, 2014 at 03:16:02PM -0400, Michael D. Burkey wrote:
+> This patch corrects exporting unsigned 64-bit environment variables.
+> I had left out a signed off line before.
+> 
+> Signed-off-by: Michael Burkey <mdburkey at gmail.com>
 
-This patch prevent us to get this:
-/[...]/barebox/drivers/input/keymap.c:4:37: fatal error: dt-bindings/input/input.h: No such file or directory
+Applied, thanks
 
-Signed-off-by: Silvio Fricke <silvio.fricke@gmail.com>
----
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/Makefile b/Makefile
-index a54b82b..c654f4f 100644
---- a/Makefile
-+++ b/Makefile
-@@ -290,7 +290,7 @@ export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_ve
- 
- # Use LINUXINCLUDE when you must reference the include/ directory.
- # Needed to be compatible with the O= option
--LINUXINCLUDE    := -Iinclude -Idts/include \
-+LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
-                    $(if $(KBUILD_SRC),-Iinclude2 -I$(srctree)/include) \
- 		   -I$(srctree)/arch/$(ARCH)/include \
- 		   -I$(objtree)/arch/$(ARCH)/include \
+> ---
+> 
+> 
+> --- a/common/env.c
+> +++ b/common/env.c
+> @@ -258,7 +258,7 @@
+> 
+>  void export_env_ull(const char *name, unsigned long long val)
+>  {
+> -       char *valstr = asprintf("%lld", val);
+> +       char *valstr = asprintf("%llu", val);
+> 
+>         setenv(name, valstr);
+>         export(name);
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
 -- 
-1.9.2
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
