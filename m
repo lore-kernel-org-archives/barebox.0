@@ -1,18 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WfUQz-00012d-2S
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 13:20:26 +0000
-Date: Wed, 30 Apr 2014 15:20:00 +0200
+ Linux)) id 1WfUeA-00085B-Ut
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 13:34:03 +0000
+Date: Wed, 30 Apr 2014 15:33:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140430132000.GL5858@pengutronix.de>
-References: <1398848852-29093-1-git-send-email-c.hemp@phytec.de>
- <1398862542.655668653@f306.i.mail.ru>
- <20140430130317.GK5858@pengutronix.de>
- <1398863249.698723143@f316.i.mail.ru>
+Message-ID: <20140430133338.GN5858@pengutronix.de>
+References: <1398810264-3891-1-git-send-email-dev@lynxeye.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1398863249.698723143@f316.i.mail.ru>
+In-Reply-To: <1398810264-3891-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,45 +18,57 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2] imx6: Add support for phyCARD-i.MX6
-To: Alexander Shiyan <shc_work@mail.ru>
+Subject: Re: [PATCH] ARM: boards: Makefile: fix whitespace
+To: Lucas Stach <dev@lynxeye.de>
 Cc: barebox@lists.infradead.org
 
-T24gV2VkLCBBcHIgMzAsIDIwMTQgYXQgMDU6MDc6MjlQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
-biB3cm90ZToKPiBXZWQsIDMwIEFwciAyMDE0IDE1OjAzOjE3ICswMjAwINC+0YIgU2FzY2hhIEhh
-dWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+IE9uIFdlZCwgQXByIDMwLCAyMDE0IGF0
-IDA0OjU1OjQyUE0gKzA0MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiA+IFdlZCwgMzAg
-QXByIDIwMTQgMTQ6NTI6MTMgKzAyMDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0
-cm9uaXguZGU+Ogo+ID4gPiA+IE9uIFdlZCwgQXByIDMwLCAyMDE0IGF0IDAzOjE1OjI5UE0gKzA0
-MDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiA+IC4uLgo+ID4gPiA+ID4gPiBkaWZmIC0t
-Z2l0IGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlIGIvYXJjaC9hcm0vZHRzL01ha2VmaWxlCj4gPiA+
-ID4gPiA+IGluZGV4IDU4ZGMzOGIuLjYzZmU4NTQgMTAwNjQ0Cj4gPiA+ID4gPiA+IC0tLSBhL2Fy
-Y2gvYXJtL2R0cy9NYWtlZmlsZQo+ID4gPiA+ID4gPiArKysgYi9hcmNoL2FybS9kdHMvTWFrZWZp
-bGUKPiA+ID4gPiA+ID4gQEAgLTI3LDcgKzI3LDggQEAgZHRiLSQoQ09ORklHX0FSQ0hfSU1YNikg
-Kz0gaW14NnEtZ2s4MDIuZHRiIFwKPiA+ID4gPiA+ID4gIAlpbXg2cS1uaXRyb2dlbjZ4LmR0YiBc
-Cj4gPiA+ID4gPiA+ICAJaW14NmRsLW5pdHJvZ2VuNnguZHRiIFwKPiA+ID4gPiA+ID4gIAlpbXg2
-cS11ZG9vLmR0YiBcCj4gPiA+ID4gPiA+IC0JaW14NnEtdmFyLWN1c3RvbS5kdGIKPiA+ID4gPiA+
-ID4gKwlpbXg2cS12YXItY3VzdG9tLmR0YiBcCj4gPiA+ID4gPiAKPiA+ID4gPiA+IExldCdzIHVz
-ZSAqLWJiLmR0YiBhcyBvdGhlciBib2FyZHMuCj4gPiA+ID4gCj4gPiA+ID4gSG0sIG5vdyB0aGF0
-IHdlIGhhdmUgdGhlIHVwc3RyZWFtIGR0cyBmaWxlcyBpbiBiYXJlYm94IGFsbCBmaWxlcyBpbgo+
-ID4gPiA+IGFyY2gvYXJtL2R0cy8gYXJlIGJhcmVib3ggc3BlY2lmaWMsIG5vPwo+ID4gPiAKPiA+
-ID4gU28gd2hhdCBuYW1lc3BhY2UgcnVsZSBzaG91bGQgYmUgYXBwbGllZCBub3cgZm9yIHNwZWNp
-ZmljIGZpbGVzIGFuZCBjaGFuZ2VzPwo+ID4gCj4gPiBEbyB3ZSBuZWVkIGFueT8gSSBtZWFuIHVw
-c3RyZWFtIGZpbGVzIGFyZSB1bmRlciBkdHMvc3JjLyRhcmNoLyBhbmQKPiA+IGJhcmVib3ggc3Bl
-Y2lmaWMgZmlsZXMgYXJlIHVuZGVyIGFyY2gvJGFyY2gvZHRzLy4KPiAKPiBPSy4gVGhlbiB5b3Ug
-Y2FuIHJlbmFtZSB0aGUgZXhpc3Rpbmcgb3ZlcmxheXMgdG8gbWF0Y2ggdGhlIGZpbGUgbmFtZXMg
-dG8KPiB3aGljaCB0aGV5IHBvaW50PwoKTGV0J3Mgd2FpdCB1bnRpbCB0aGUgZHVzdCBmcm9tIHRo
-ZSB1cHN0cmVhbSBkdHMgY29udmVyc2lvbiBoYXMgc2V0dGxlZApiZWZvcmUgZG9pbmcgdGhpcy4K
-ClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwgTGludXggU29sdXRpb25z
-ICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8ClBlaW5lciBT
-dHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5
-MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZh
-eDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmlu
-ZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9i
-YXJlYm94Cg==
+On Wed, Apr 30, 2014 at 12:24:24AM +0200, Lucas Stach wrote:
+> From: Lucas Stach <l.stach@pengutronix.de>
+> 
+> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+
+Applied, thanks
+
+Sascha
+
+> ---
+>  arch/arm/boards/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> index 16742d91389d..bdde1a4e2d60 100644
+> --- a/arch/arm/boards/Makefile
+> +++ b/arch/arm/boards/Makefile
+> @@ -93,7 +93,7 @@ obj-$(CONFIG_MACH_TX25)				+= karo-tx25/
+>  obj-$(CONFIG_MACH_TX28)				+= karo-tx28/
+>  obj-$(CONFIG_MACH_TX51)				+= karo-tx51/
+>  obj-$(CONFIG_MACH_TX53)				+= karo-tx53/
+> -obj-$(CONFIG_MACH_UDOO)             += udoo/
+> +obj-$(CONFIG_MACH_UDOO)				+= udoo/
+>  obj-$(CONFIG_MACH_USB_A9260)			+= usb-a926x/
+>  obj-$(CONFIG_MACH_USB_A9263)			+= usb-a926x/
+>  obj-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x/
+> -- 
+> 1.9.0
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
