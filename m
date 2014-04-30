@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x234.google.com ([2a00:1450:4013:c00::234])
+Received: from f68.i.mail.ru ([94.100.185.167])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WfSL6-0007yv-FM
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 11:06:13 +0000
-Received: by mail-ee0-f52.google.com with SMTP id e53so1193521eek.25
- for <barebox@lists.infradead.org>; Wed, 30 Apr 2014 04:05:50 -0700 (PDT)
-Date: Wed, 30 Apr 2014 13:05:44 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140430110541.GA16756@omega>
-References: <1398852096-32129-1-git-send-email-c.hemp@phytec.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1398852096-32129-1-git-send-email-c.hemp@phytec.de>
+ id 1WfSUY-0004X5-E1
+ for barebox@lists.infradead.org; Wed, 30 Apr 2014 11:16:00 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Wed, 30 Apr 2014 15:15:29 +0400
+Message-ID: <1398856529.154234152@f68.i.mail.ru>
+In-Reply-To: <1398848852-29093-1-git-send-email-c.hemp@phytec.de>
+References: <1398848852-29093-1-git-send-email-c.hemp@phytec.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,50 +18,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v3] imx6: Add support for phyCARD-i.MX6
-To: Christian Hemp <c.hemp@phytec.de>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gaW14NjogQWRkIHN1cHBvcnQgZm9yIHBoeUNBUkQt?=
+ =?UTF-8?B?aS5NWDY=?=
+To: =?UTF-8?B?Q2hyaXN0aWFuIEhlbXA=?= <c.hemp@phytec.de>
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 30, 2014 at 12:01:36PM +0200, Christian Hemp wrote:
-> Add support for Phytec phyCARD-i.MX6.
-> 	- 1GB RAM on two banks
-> 	- 1GB RAM on one bank
-> 	- 2GB RAM on two banks
-> 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-> ---
-> v2: - remove IP addresses from env
->     - remove boot/net
->     - add ethernet pinmux to pcaaxl3
->     - add common function to lowlevel.c
-> v3: - remove blank line at EOF
->    - Change ENET_PINGRP to 4
-> 
-...
-> +};
-> diff --git a/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-> new file mode 100644
-> index 0000000..edbc714
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6q-phytec-pcaaxl3.dtsi
-> @@ -0,0 +1,147 @@
-> +/*
-> + * Copyright 2014444 Christian Hemp, Phytec Messtechnik GmbH
-> + *
-
-turn off your flux capacitor and come back in the 21th century!
-
-What I mean is:
-
-s/2014444/2014
-
-- Alex
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+V2VkLCAzMCBBcHIgMjAxNCAxMTowNzozMiArMDIwMCDQvtGCIENocmlzdGlhbiBIZW1wIDxjLmhl
+bXBAcGh5dGVjLmRlPjoKPiBBZGQgc3VwcG9ydCBmb3IgUGh5dGVjIHBoeUNBUkQtaS5NWDYuCj4g
+CS0gMUdCIFJBTSBvbiB0d28gYmFua3MKPiAJLSAxR0IgUkFNIG9uIG9uZSBiYW5rCj4gCS0gMkdC
+IFJBTSBvbiB0d28gYmFua3MKPiAKPiBTaWduZWQtb2ZmLWJ5OiBDaHJpc3RpYW4gSGVtcCA8Yy5o
+ZW1wQHBoeXRlYy5kZT4KLi4uCj4gK3N0YXRpYyBpbnQgcGh5dGVjX3BjYWF4bDNfY29yZV9pbml0
+KHZvaWQpCj4gK3sKPiArCWlmICghb2ZfbWFjaGluZV9pc19jb21wYXRpYmxlKCJwaHl0ZWMsaW14
+NnEtcGNhYXhsMyIpKQo+ICsJCXJldHVybiAwOwo+ICsKPiArCWlteDZfaW5pdF9sb3dsZXZlbCgp
+Owo+ICsKPiArCXJldHVybiAwOwo+ICt9CgpUaGlzIGNhbiBiZSBlYXN5OgppZiAob2ZfbWFjaGlu
+ZV9pc19jb21wYXRpYmxlKCJwaHl0ZWMsaW14NnEtcGNhYXhsMyIpKQogIGlteDZfaW5pdF9sb3ds
+ZXZlbCgpOwpyZXR1cm4gMDsKCi4uLgo+ICsrKyBiL2FyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5
+Y2FyZC1pbXg2L2xvd2xldmVsLmMKLi4uCj4gK3N0YXRpYyBpbmxpbmUgdm9pZCBzZXR1cF91YXJ0
+KHZvaWQpCj4gK3sKPiArCXZvaWQgX19pb21lbSAqY2NtYmFzZSA9ICh2b2lkICopTVg2X0NDTV9C
+QVNFX0FERFI7Cgo9IElPTUVNKE1YNl9DQ01fQkFTRV9BRERSKTsKYW5kIHNvIG9uLi4uCgouLi4K
+PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vZHRzL01ha2VmaWxlIGIvYXJjaC9hcm0vZHRzL01ha2Vm
+aWxlCj4gaW5kZXggNThkYzM4Yi4uNjNmZTg1NCAxMDA2NDQKPiAtLS0gYS9hcmNoL2FybS9kdHMv
+TWFrZWZpbGUKPiArKysgYi9hcmNoL2FybS9kdHMvTWFrZWZpbGUKPiBAQCAtMjcsNyArMjcsOCBA
+QCBkdGItJChDT05GSUdfQVJDSF9JTVg2KSArPSBpbXg2cS1nazgwMi5kdGIgXAo+ICAJaW14NnEt
+bml0cm9nZW42eC5kdGIgXAo+ICAJaW14NmRsLW5pdHJvZ2VuNnguZHRiIFwKPiAgCWlteDZxLXVk
+b28uZHRiIFwKPiAtCWlteDZxLXZhci1jdXN0b20uZHRiCj4gKwlpbXg2cS12YXItY3VzdG9tLmR0
+YiBcCgpMZXQncyB1c2UgKi1iYi5kdGIgYXMgb3RoZXIgYm9hcmRzLgoKLS0tCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlz
+dApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
