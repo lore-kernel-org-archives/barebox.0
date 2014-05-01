@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WfZv3-000477-H1
- for barebox@lists.infradead.org; Wed, 30 Apr 2014 19:11:50 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 2D323BF095
- for <barebox@lists.infradead.org>; Wed, 30 Apr 2014 21:11:12 +0200 (CEST)
-From: Christian Hemp <c.hemp@phytec.de>
-Date: Wed, 30 Apr 2014 21:11:09 +0200
-Message-Id: <1398885069-4078-1-git-send-email-c.hemp@phytec.de>
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wflk1-0006Aq-G3
+ for barebox@lists.infradead.org; Thu, 01 May 2014 07:49:15 +0000
+Received: by mail-ee0-f45.google.com with SMTP id d17so2000938eek.18
+ for <barebox@lists.infradead.org>; Thu, 01 May 2014 00:48:48 -0700 (PDT)
+Date: Thu, 1 May 2014 09:48:33 +0200
+From: Beniamino Galvani <b.galvani@gmail.com>
+Message-ID: <20140501074832.GA4548@gmail.com>
+References: <1398591044-3616-1-git-send-email-b.galvani@gmail.com>
+ <20140429070557.GB5858@pengutronix.de>
+ <20140429211313.GA15720@gmail.com> <5555245.5Qy31DLVk9@diego>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5555245.5Qy31DLVk9@diego>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,49 +22,37 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] imx:mmdc:Move imx6-reg include to imx6-mmdc header
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/11] ARM: add initial support for Rockchip boards
+To: Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+Cc: barebox@lists.infradead.org
 
-Move the imx6-reg.h include to the imx6-mmdc header.
+On Tue, Apr 29, 2014 at 11:59:22PM +0200, Heiko St=FCbner wrote:
+> > > BTW I noticed the upstream radxa rock dts file does not have a board
+> > > specific compatible. I added this in my patch, but this should be done
+> > > upstream.
+> > =
 
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
----
- arch/arm/mach-imx/imx6-mmdc.c              |    1 -
- arch/arm/mach-imx/include/mach/imx6-mmdc.h |    1 +
- 2 files changed, 1 insertions(+), 1 deletions(-)
+> > CC'ing Heiko, who is the Linux Rockchip maintainer.
+> =
 
-diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
-index 9686bee..0e706ce 100644
---- a/arch/arm/mach-imx/imx6-mmdc.c
-+++ b/arch/arm/mach-imx/imx6-mmdc.c
-@@ -17,7 +17,6 @@
-  */
- #include <common.h>
- #include <io.h>
--#include <mach/imx6-regs.h>
- #include <mach/imx6-mmdc.h>
- 
- int mmdc_do_write_level_calibration(void)
-diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-index 0017174..d07950d 100644
---- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-+++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-@@ -1,6 +1,7 @@
- #ifndef __MACH_MMDC_H
- #define __MACH_MMDC_H
- 
-+#include <mach/imx6-regs.h>
- 
- #define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
- #define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
--- 
-1.7.0.4
+> Until now I didn't give it much thought, but according to usage-model.txt=
+ the =
 
+> board-specific compatible is a required property. So we'll need to add it=
+ to =
+
+> the board dts in the kernel too.
+> =
+
+> So you could send a patch, or I'll prepare one in the next days.
+
+Ok, I will send a patch.
+
+Beniamino
 
 _______________________________________________
 barebox mailing list
