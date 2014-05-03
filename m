@@ -1,15 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
+Received: from mail-vc0-f174.google.com ([209.85.220.174])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk814-0001wJ-DX
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:51 +0000
-Received: by mail-ee0-f43.google.com with SMTP id d17so128005eek.2
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:32 -0700 (PDT)
-From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:55 +0200
-Message-Id: <1399969739-10355-16-git-send-email-holgerschurig@gmail.com>
-In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
-References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+ id 1WgXVy-00076d-Ln
+ for barebox@lists.infradead.org; Sat, 03 May 2014 10:49:56 +0000
+Received: by mail-vc0-f174.google.com with SMTP id ib6so6508753vcb.33
+ for <barebox@lists.infradead.org>; Sat, 03 May 2014 03:49:28 -0700 (PDT)
+MIME-Version: 1.0
+Date: Sat, 3 May 2014 12:42:21 +0200
+Message-ID: <CAArsGaZ6sYJrUc9LQ+g64EeKAO_iFVmy+-S_6TAT7cSKTW236g@mail.gmail.com>
+From: Tormod Volden <lists.tormod@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,64 +17,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 15/19] commands: introduce CMD_HOST
-To: barebox@lists.infradead.org
+Subject: bootloader bwPollTimeout quirk in dfu-util
 
-... because NET_RESOLV can be used alone to turn on the functionality
-of resolv().
+Hi,
 
-Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
----
- commands/Kconfig |    9 +++++++++
- net/dns.c        |    3 ++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+I am sending out this notice to those who seem to use a DFU boot
+loader and an OpenMoko USB vendor ID, listed on
+http://wiki.openmoko.org/wiki/USB_Product_IDs
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 2f24cd5..966d5fd 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1052,6 +1052,15 @@ if NET
- 
- menu "Network"
- 
-+config CMD_HOST
-+	tristate
-+	select NET_RESOLV
-+	prompt "host"
-+	help
-+	  Resolv a hostname.
-+
-+	  Usage: host DESTINATION
-+
- config CMD_MIITOOL
- 	tristate
- 	depends on PHYLIB
-diff --git a/net/dns.c b/net/dns.c
-index 4506baf..0a8ce8b 100644
---- a/net/dns.c
-+++ b/net/dns.c
-@@ -241,6 +241,7 @@ IPaddr_t resolv(char *host)
- 	return dns_ip;
- }
- 
-+#ifdef CONFIG_CMD_HOST
- static int do_host(int argc, char *argv[])
- {
- 	IPaddr_t ip;
-@@ -266,4 +267,4 @@ BAREBOX_CMD_START(host)
- 	BAREBOX_CMD_OPTS("HOSTNAME")
- 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
- BAREBOX_CMD_END
--
-+#endif
--- 
-1.7.10.4
+If your device is never used together with dfu-util, please disregard,
+sorry for the noise.
 
+The OpenMoko FreeRunner has a bug in its bootloader which makes it
+report bogus bwPollTimeout values to the DFU host computer (e.g.
+dfu-util). We therefore introduced a quirk in dfu-util for ignoring
+this value and instead using a default value of 5 ms on these devices.
+At the time, only the FreeRunner was using the OpenMoko vendor ID and
+since it was using a large range of product IDs, the quirk was
+filtered on the vendor ID only.
+
+Recently (?) OpenMoko started giving away product IDs to other
+open-source projects. The 5 ms quirk has been applied to all these
+devices. We just discovered this was causing problems for some devices
+(when 5 ms was too short, and the device actually reports correct
+values), e.g. https://community.spark.io/t/dfu-util-on-linux-fails-to-flash-solved/4080/21#
+
+So we are now correcting this to only filter on the OpenMoko
+FreeRunner devices, which cover a limited range of product IDs. This
+will be part of the upcoming dfu-util 0.8 release:
+https://gitorious.org/dfu-util/dfu-util/commit/cca127e4f53087c71253f3e3040b66165ce490af
+
+*** This means dfu-util from now on will use the bwPollTimeout values
+reported by your device. ***
+*** If these values are wrong, please report to us so that we can add
+a quirk for your device. ***
+
+We believe most devices report correct values, so the change in
+dfu-util will only lead to faster and/or more reliable programming. So
+we will take the chance of applying this change across the board and
+smoking the bad ones out (if any), instead of white-listing devices
+one by one.
+
+For testing with dfu-util, please use latest git from
+https://gitorious.org/dfu-util/dfu-util
+
+Best regards,
+Tormod
+dfu-util maintainer
+http://dfu-util.gnumonks.org/
 
 _______________________________________________
 barebox mailing list
