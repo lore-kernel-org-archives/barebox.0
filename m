@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WhCvQ-0003Wj-8C
- for barebox@lists.infradead.org; Mon, 05 May 2014 07:02:57 +0000
-Date: Mon, 5 May 2014 09:02:30 +0200
+ Linux)) id 1WhDCk-0002jW-PB
+ for barebox@lists.infradead.org; Mon, 05 May 2014 07:20:51 +0000
+Date: Mon, 5 May 2014 09:20:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140505070230.GQ5858@pengutronix.de>
-References: <1398885069-4078-1-git-send-email-c.hemp@phytec.de>
+Message-ID: <20140505072029.GR5858@pengutronix.de>
+References: <1398846723-10241-1-git-send-email-y>
+ <5360b518.c62a980a.05b6.526c@mx.google.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1398885069-4078-1-git-send-email-c.hemp@phytec.de>
+In-Reply-To: <5360b518.c62a980a.05b6.526c@mx.google.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,50 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] imx:mmdc:Move imx6-reg include to imx6-mmdc header
-To: Christian Hemp <c.hemp@phytec.de>
+Subject: Re: [PATCH 1/3] tftp: add timeframe when remote server is
+ retransmitting
+To: chf.fritz@googlemail.com
 Cc: barebox@lists.infradead.org
 
-On Wed, Apr 30, 2014 at 09:11:09PM +0200, Christian Hemp wrote:
-> Move the imx6-reg.h include to the imx6-mmdc header.
+Hi Christoph,
+
+On Wed, Apr 30, 2014 at 10:32:01AM +0200, chf.fritz@googlemail.com wrote:
+> From: Christoph Fritz <chf@fritzc.com>
 > 
-> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> If there's packet loss and the remote server needs to retransmit,
+> there is falsely no timeframe left because TIMEOUT (server wait time)
+> and TFTP_TIMEOUT (abort timer) are the same.
+> 
+> This patch increases TFTP_TIMEOUT.
+> 
+> See RFC2349 for more info: http://tools.ietf.org/html/rfc2349
+> 
+> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 
 Applied, thanks
 
 Sascha
 
 > ---
->  arch/arm/mach-imx/imx6-mmdc.c              |    1 -
->  arch/arm/mach-imx/include/mach/imx6-mmdc.h |    1 +
->  2 files changed, 1 insertions(+), 1 deletions(-)
+>  fs/tftp.c |    8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
-> index 9686bee..0e706ce 100644
-> --- a/arch/arm/mach-imx/imx6-mmdc.c
-> +++ b/arch/arm/mach-imx/imx6-mmdc.c
-> @@ -17,7 +17,6 @@
->   */
->  #include <common.h>
->  #include <io.h>
-> -#include <mach/imx6-regs.h>
->  #include <mach/imx6-mmdc.h>
+> diff --git a/fs/tftp.c b/fs/tftp.c
+> index 9cad18f..b1a213e 100644
+> --- a/fs/tftp.c
+> +++ b/fs/tftp.c
+> @@ -33,14 +33,16 @@
+>  #include <kfifo.h>
+>  #include <sizes.h>
 >  
->  int mmdc_do_write_level_calibration(void)
-> diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> index 0017174..d07950d 100644
-> --- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> +++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
-> @@ -1,6 +1,7 @@
->  #ifndef __MACH_MMDC_H
->  #define __MACH_MMDC_H
+> -#define TFTP_PORT	69	/* Well known TFTP port #		*/
+> -#define TIMEOUT		5	/* Seconds to timeout for a lost pkt	*/
+> +#define TFTP_PORT	69	/* Well known TFTP port number */
+> +
+> +/* Seconds to wait before remote server is allowed to resend a lost packet */
+> +#define TIMEOUT		5
 >  
-> +#include <mach/imx6-regs.h>
+>  /* After this time without a response from the server we will resend a packet */
+>  #define TFTP_RESEND_TIMEOUT	SECOND
 >  
->  #define P0_IPS (void __iomem *)MX6_MMDC_P0_BASE_ADDR
->  #define P1_IPS (void __iomem *)MX6_MMDC_P1_BASE_ADDR
+>  /* After this time without progress we will bail out */
+> -#define TFTP_TIMEOUT		(TIMEOUT * SECOND)
+> +#define TFTP_TIMEOUT		((TIMEOUT * 3) * SECOND)
+>  
+>  /*
+>   *	TFTP operations.
 > -- 
-> 1.7.0.4
+> 1.7.10.4
 > 
 > 
 > _______________________________________________
