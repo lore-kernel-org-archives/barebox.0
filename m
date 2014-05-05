@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-f47.google.com ([74.125.83.47])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WhLg6-0002Jh-EK
- for barebox@lists.infradead.org; Mon, 05 May 2014 16:23:43 +0000
-Received: by mail-ee0-f47.google.com with SMTP id b15so5601751eek.6
- for <barebox@lists.infradead.org>; Mon, 05 May 2014 09:23:18 -0700 (PDT)
-Received: from [192.168.120.57] (p578a7230.dip0.t-ipconnect.de.
- [87.138.114.48])
- by mx.google.com with ESMTPSA id 45sm30856668eeh.9.2014.05.05.09.23.16
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Mon, 05 May 2014 09:23:17 -0700 (PDT)
-Message-ID: <5367BAF3.50607@kiwigrid.com>
-Date: Mon, 05 May 2014 18:23:15 +0200
-From: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WhN0L-0005Da-Ki
+ for barebox@lists.infradead.org; Mon, 05 May 2014 17:48:42 +0000
+Date: Mon, 5 May 2014 19:48:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140505174816.GY5858@pengutronix.de>
+References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
+ <20140505082049.GB5918@pengutronix.de>
+ <1399305468.375736044@f93.i.mail.ru>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1399305468.375736044@f93.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,22 +20,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: boot command is broken?
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add Linux dts files and use them
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Hi,
-
-after update to v2014.05.0 'boot -l' displays only one entry, although
-in /env/boot/ exists more files. Can anyone confirm this?
-
-Best regards,
-Wjatscheslaw Stoljarski
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gTW9uLCBNYXkgMDUsIDIwMTQgYXQgMDc6NTc6NDhQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBNb24sIDUgTWF5IDIwMTQgMTA6MjA6NDkgKzAyMDAg0L7RgiBTYXNjaGEgSGF1
+ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4gU29tZSB1cGRhdGVzIGhvdyBJIGludGVu
+ZCB0byBoYW5kbGUgdXBzdHJlYW0gZHRzIGNoYW5nZXMgaW4gYmFyZWJveC4KPiA+IAo+ID4gLSBJ
+IHdpbGwgbWVyZ2UgdGhlIGxhdGVzdCB1cHN0cmVhbSBkdHMgY2hhbmdlcyB0byBiYXJlYm94IGZv
+ciBlYWNoIExpbnV4Cj4gPiAgIHJjLiBTaG91bGQgZHRzIGNoYW5nZXMgaW50cm9kdWNlIHJlZ3Jl
+c3Npb25zIHRoaXMgd2lsbCBhdCBsZWFzdCBnaXZlIHVzCj4gPiAgIHRoZSBMaW51eCByYyB3aGlj
+aCBpbnRyb2R1Y2VkIGl0Cj4gPiAtIEkgd2lsbCBhbHdheXMgbWVyZ2UgZHRzIHVwZGF0ZXMgdG8g
+YmFyZWJveCBuZXh0LCBub3QgdG8gbWFzdGVyLiBXaGlsZQo+ID4gICBkdHMgY2hhbmdlcyBtYXkg
+YmUgbmVlZGVkIGluIG1hc3RlciB0byBmaXggcmVncmVzc2lvbnMgb24gb25lIGJvYXJkLAo+ID4g
+ICB0aGV5IGNvdWxkIGFsc28gaW50cm9kdWNlIG5ldyByZWdyZXNzaW9ucyBvbiBvdGhlciBib2Fy
+ZHMuIFNob3VsZCB3ZQo+ID4gICBuZWVkIGR0cyBjaGFuZ2VzIHRvIGZpeCByZWdyZXNzaW9ucyBp
+biBiYXJlYm94IG1hc3Rlciwgd2UgaGF2ZSB0byBkbwo+ID4gICBpdCB1c2luZyBvdmVybGF5cyBp
+biBhcmNoLyovZHRzLyB1bnRpbCBhbiB1cHN0cmVhbSBmaXggYXJyaXZlcyBpbiBkdHMvCj4gPiAt
+IEkgd2lsbCBub3Qgc2VuZCB0aGUgZHRzIHVwZGF0ZXMgdG8gdGhlIGxpc3QsIEknbGwganVzdCBt
+ZXJnZSB0aGVtIHRvCj4gPiAgIGJhcmVib3ggbmV4dCBzb21lIHRpbWUgYWZ0ZXIgYSBuZXcgTGlu
+dXggcmMgYXJyaXZlZCAoQXMganVzdCBoYXBwZW5lZAo+ID4gICB3aXRoIDMuMTUtcmMzKQo+IAo+
+IEp1c3QgdG8gdW5kZXJzdGFuZCBvdXIgZnVydGhlciBjb25jZXB0Ogo+IAo+IChJIHdpbGwgdXNl
+IHRoZSBleGFtcGxlIGJhc2VkIG9uIGkuTVgyNSkuCj4gV2UgaGF2ZSAzIGZpbGVzIGluIHRoZSBh
+cmNoL2FybS9kdHMvaW14MjUqLgo+IFNob3VsZCB3ZSBub3cgcmVtb3ZlIGFsbCBvZiB0aGVtLCBj
+cmVhdGUgb3VyIG92ZXJsYXkgZm9yIGthcm8tdHgyNSBib2FyZAo+IGFuZCBpbmNsdWRlIGJhc2lj
+IGZpbGUgPGFybS9pbXgyNS1rYXJvLXR4MjUuZHRzPiBpbiB0aGUgdG9wIG9mIG5ldyBvdmVybGF5
+Cj4gZmlsZSBhcyBiYXNpYyBEVFM/CgpZZXMsIEkgdGhpbmsgdGhhdCdzIHRoZSB3YXkgdG8gZ28u
+CgpJbiB0aGUgc2ltcGxlc3QgY2FzZSB3ZSBoYXZlIGEgYXJjaC9hcm0vZHRzL2lteDI1LWthcm8t
+dHgyNS5kdHMgd2l0aCBvbmx5IGEKc2luZ2xlIGxpbmU6CgojaW5jbHVkZSA8YXJtL2lteDI1LWth
+cm8tdHgyNS5kdHM+CgpUaGVuIGV2ZXJ5dGhpbmcgd2lsbCBiZSB1c2VkIGZyb20gdGhlIHVwc3Ry
+ZWFtIGR0cyBmaWxlcy4gQWRkaXRpb25hbApiYXJlYm94IHNwZWNpZmljIHN0dWZmIGNhbiBiZSBh
+ZGRlZCB0byB0aGF0IGZpbGUsIGxpa2UgdGhlIGVudmlyb25tZW50CmRlc2NyaXB0aW9uLgpXaXRo
+IGkuTVgyNSBpdCBoYXBwZW5lZCB0aGF0IHdlIGFsc28gbmVlZCBTb0Mgc3BlY2lmaWMgdXBkYXRl
+cyBsaWtlIGZvcgpleGFtcGxlIHRoZSBpcmFtIHdoaWNoIGlzIG5vdCBtYWlubGluZS4gU28gd2Ug
+bmVlZCBhIHNlY29uZCBsaW5lIGluCmFyY2gvYXJtL2R0cy9pbXgyNS1rYXJvLXR4MjUuZHRzOgoK
+I2luY2x1ZGUgImlteDI1LmR0c2kiCgpUaGUgZ29hbCBzaG91bGQgYmUgdG8gbWFpbmxpbmUgdGhl
+IFNvQyBzcGVjaWZpYyBzdHVmZiBzbyB0aGF0IGlteDI1LmR0c2kKY2FuIGJlIGRyb3BwZWQsIGJ1
+dCBJIHRoaW5rIHdlIG5lZWQgdGhlIHBvc3NpYmlsaXR5IHRvIGhhdmUgU29DIHNwZWNpZmljCmJh
+cmVib3ggY2hhbmdlcy4KClNhc2NoYQoKLS0gClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8CkluZHVzdHJpYWwg
+TGludXggU29sdXRpb25zICAgICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXgu
+ZGUvICB8ClBlaW5lciBTdHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25l
+OiArNDktNTEyMS0yMDY5MTctMCAgICB8CkFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2
+ICAgICAgICAgICB8IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApi
+YXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9iYXJlYm94Cg==
