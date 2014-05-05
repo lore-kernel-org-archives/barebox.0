@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WhIrG-00005Z-CH
- for barebox@lists.infradead.org; Mon, 05 May 2014 13:23:04 +0000
-Date: Mon, 5 May 2014 15:22:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140505132240.GX5858@pengutronix.de>
-References: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
+Received: from f93.i.mail.ru ([94.100.185.21])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WhLHU-0005CT-OF
+ for barebox@lists.infradead.org; Mon, 05 May 2014 15:58:18 +0000
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Mime-Version: 1.0
+Date: Mon, 05 May 2014 19:57:48 +0400
+Message-ID: <1399305468.375736044@f93.i.mail.ru>
+In-Reply-To: <20140505082049.GB5918@pengutronix.de>
+References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
+ <20140505082049.GB5918@pengutronix.de>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,72 +19,35 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: TODO: Rewrite network stack.
-To: Antony Pavlov <antonynpavlov@gmail.com>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gQWRkIExpbnV4IGR0cyBmaWxlcyBhbmQgdXNlIHRoZW0=?=
+To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Mon, May 05, 2014 at 02:55:12PM +0400, Antony Pavlov wrote:
-> Hi!
-> =
-
-> I have inspected TODO file from barebox repo. Here is a quote:
-> =
-
->   [ ] Rewrite network stack. The one-loop-for-all-protocols stack is just=
- too
->       ugly and big and uses thousands of global variables. Identify common
->       functions and make a loop per network protocol
-> =
-
-> There is no much tiny TCP/IP stack candidates for porting to barebox.
-> The most notable is lwIP (http://savannah.nongnu.org/projects/lwip/).
-> =
-
-> See "project that use lwIP" list here: http://lwip.wikia.com/wiki/Project=
-s_that_use_lwIP
-> =
-
-> lwip code is BSD-licensed. Is it possible to use lwip code in barebox?
-> =
-
-> --=A0
-> Best regards,
-> =A0 Antony Pavlov
-> =
-
-> P.S. Anyway TODO file from barebox repo is outdated (last change Jul 22 2=
-010).
-
-Indeed. Maybe we should add the following item to it.
-
-Sascha
-
-diff --git a/TODO b/TODO
-index 6350799..59fdade 100644
---- a/TODO
-+++ b/TODO
-@@ -76,6 +76,7 @@ TODO
-     devices should be represented as a hierarchical tree in /dev
- [ ] Work out, how to mount driver on PCI devices. The mechanism should be
-     transparent to the driver code.
-+[ ] remove this file. It doesn't contain much useful information.
- =
-
- DONE
- ----
-
--- =
-
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+TW9uLCA1IE1heSAyMDE0IDEwOjIwOjQ5ICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
+QHBlbmd1dHJvbml4LmRlPjoKPiBTb21lIHVwZGF0ZXMgaG93IEkgaW50ZW5kIHRvIGhhbmRsZSB1
+cHN0cmVhbSBkdHMgY2hhbmdlcyBpbiBiYXJlYm94Lgo+IAo+IC0gSSB3aWxsIG1lcmdlIHRoZSBs
+YXRlc3QgdXBzdHJlYW0gZHRzIGNoYW5nZXMgdG8gYmFyZWJveCBmb3IgZWFjaCBMaW51eAo+ICAg
+cmMuIFNob3VsZCBkdHMgY2hhbmdlcyBpbnRyb2R1Y2UgcmVncmVzc2lvbnMgdGhpcyB3aWxsIGF0
+IGxlYXN0IGdpdmUgdXMKPiAgIHRoZSBMaW51eCByYyB3aGljaCBpbnRyb2R1Y2VkIGl0Cj4gLSBJ
+IHdpbGwgYWx3YXlzIG1lcmdlIGR0cyB1cGRhdGVzIHRvIGJhcmVib3ggbmV4dCwgbm90IHRvIG1h
+c3Rlci4gV2hpbGUKPiAgIGR0cyBjaGFuZ2VzIG1heSBiZSBuZWVkZWQgaW4gbWFzdGVyIHRvIGZp
+eCByZWdyZXNzaW9ucyBvbiBvbmUgYm9hcmQsCj4gICB0aGV5IGNvdWxkIGFsc28gaW50cm9kdWNl
+IG5ldyByZWdyZXNzaW9ucyBvbiBvdGhlciBib2FyZHMuIFNob3VsZCB3ZQo+ICAgbmVlZCBkdHMg
+Y2hhbmdlcyB0byBmaXggcmVncmVzc2lvbnMgaW4gYmFyZWJveCBtYXN0ZXIsIHdlIGhhdmUgdG8g
+ZG8KPiAgIGl0IHVzaW5nIG92ZXJsYXlzIGluIGFyY2gvKi9kdHMvIHVudGlsIGFuIHVwc3RyZWFt
+IGZpeCBhcnJpdmVzIGluIGR0cy8KPiAtIEkgd2lsbCBub3Qgc2VuZCB0aGUgZHRzIHVwZGF0ZXMg
+dG8gdGhlIGxpc3QsIEknbGwganVzdCBtZXJnZSB0aGVtIHRvCj4gICBiYXJlYm94IG5leHQgc29t
+ZSB0aW1lIGFmdGVyIGEgbmV3IExpbnV4IHJjIGFycml2ZWQgKEFzIGp1c3QgaGFwcGVuZWQKPiAg
+IHdpdGggMy4xNS1yYzMpCgpKdXN0IHRvIHVuZGVyc3RhbmQgb3VyIGZ1cnRoZXIgY29uY2VwdDoK
+CihJIHdpbGwgdXNlIHRoZSBleGFtcGxlIGJhc2VkIG9uIGkuTVgyNSkuCldlIGhhdmUgMyBmaWxl
+cyBpbiB0aGUgYXJjaC9hcm0vZHRzL2lteDI1Ki4KU2hvdWxkIHdlIG5vdyByZW1vdmUgYWxsIG9m
+IHRoZW0sIGNyZWF0ZSBvdXIgb3ZlcmxheSBmb3Iga2Fyby10eDI1IGJvYXJkCmFuZCBpbmNsdWRl
+IGJhc2ljIGZpbGUgPGFybS9pbXgyNS1rYXJvLXR4MjUuZHRzPiBpbiB0aGUgdG9wIG9mIG5ldyBv
+dmVybGF5CmZpbGUgYXMgYmFzaWMgRFRTPwoKLS0tCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3Rz
+LmluZnJhZGVhZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9iYXJlYm94Cg==
