@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WhDCk-0002jW-PB
- for barebox@lists.infradead.org; Mon, 05 May 2014 07:20:51 +0000
-Date: Mon, 5 May 2014 09:20:29 +0200
+ Linux)) id 1WhDDF-0002r1-CC
+ for barebox@lists.infradead.org; Mon, 05 May 2014 07:21:21 +0000
+Date: Mon, 5 May 2014 09:21:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140505072029.GR5858@pengutronix.de>
+Message-ID: <20140505072100.GS5858@pengutronix.de>
 References: <1398846723-10241-1-git-send-email-y>
- <5360b518.c62a980a.05b6.526c@mx.google.com>
+ <5360b519.c62a980a.05b6.526d@mx.google.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <5360b518.c62a980a.05b6.526c@mx.google.com>
+In-Reply-To: <5360b519.c62a980a.05b6.526d@mx.google.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,58 +23,51 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 1/3] tftp: add timeframe when remote server is
- retransmitting
+Subject: Re: [PATCH 2/3] net cpsw: fix rx stability under heavy network load
 To: chf.fritz@googlemail.com
 Cc: barebox@lists.infradead.org
 
-Hi Christoph,
-
-On Wed, Apr 30, 2014 at 10:32:01AM +0200, chf.fritz@googlemail.com wrote:
-> From: Christoph Fritz <chf@fritzc.com>
+On Wed, Apr 30, 2014 at 10:32:02AM +0200, chf.fritz@googlemail.com wrote:
+> From: Christoph Fritz <chf.fritz@googlemail.com>
 > 
-> If there's packet loss and the remote server needs to retransmit,
-> there is falsely no timeframe left because TIMEOUT (server wait time)
-> and TFTP_TIMEOUT (abort timer) are the same.
+> RX DMA Head Descriptor Pointer can get 0 when there is a lot of traffic,
+> which results in a timeout error. A good way to provoke this error is by
+> sending lots of ARP requests. This patch makes sure that the RX DMA Head
+> Descriptor Pointer is set.
 > 
-> This patch increases TFTP_TIMEOUT.
-> 
-> See RFC2349 for more info: http://tools.ietf.org/html/rfc2349
+> The origin driver, from which this is derived, already contains this fix.
 > 
 > Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
 
-Applied, thanks
+Nice fix, thanks. I also stumbled upon this.
+
+Applied
 
 Sascha
 
 > ---
->  fs/tftp.c |    8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  drivers/net/cpsw.c |    7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
-> diff --git a/fs/tftp.c b/fs/tftp.c
-> index 9cad18f..b1a213e 100644
-> --- a/fs/tftp.c
-> +++ b/fs/tftp.c
-> @@ -33,14 +33,16 @@
->  #include <kfifo.h>
->  #include <sizes.h>
+> diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+> index 52adf50..ec3263d 100644
+> --- a/drivers/net/cpsw.c
+> +++ b/drivers/net/cpsw.c
+> @@ -741,8 +741,13 @@ static int cpdma_process(struct cpsw_priv *priv, struct cpdma_chan *chan,
+>  	if (buffer)
+>  		*buffer = (void *)readl(&desc->sw_buffer);
 >  
-> -#define TFTP_PORT	69	/* Well known TFTP port #		*/
-> -#define TIMEOUT		5	/* Seconds to timeout for a lost pkt	*/
-> +#define TFTP_PORT	69	/* Well known TFTP port number */
-> +
-> +/* Seconds to wait before remote server is allowed to resend a lost packet */
-> +#define TIMEOUT		5
+> -	if (status & CPDMA_DESC_OWNER)
+> +	if (status & CPDMA_DESC_OWNER) {
+> +		if (readl(chan->hdp) == 0) {
+> +			if (readl(&desc->hw_mode) & CPDMA_DESC_OWNER)
+> +				writel((u32)desc, chan->hdp);
+> +		}
+>  		return -EBUSY;
+> +	}
 >  
->  /* After this time without a response from the server we will resend a packet */
->  #define TFTP_RESEND_TIMEOUT	SECOND
+>  	chan->head = (void *)readl(&desc->hw_next);
 >  
->  /* After this time without progress we will bail out */
-> -#define TFTP_TIMEOUT		(TIMEOUT * SECOND)
-> +#define TFTP_TIMEOUT		((TIMEOUT * 3) * SECOND)
->  
->  /*
->   *	TFTP operations.
 > -- 
 > 1.7.10.4
 > 
