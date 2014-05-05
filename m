@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x235.google.com ([2a00:1450:4010:c03::235])
+Received: from mout.kundenserver.de ([212.227.17.13])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WhGOB-00060N-Gl
- for barebox@lists.infradead.org; Mon, 05 May 2014 10:44:52 +0000
-Received: by mail-la0-f53.google.com with SMTP id b8so4575005lan.40
- for <barebox@lists.infradead.org>; Mon, 05 May 2014 03:44:28 -0700 (PDT)
-Date: Mon, 5 May 2014 14:55:12 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
-Mime-Version: 1.0
+ id 1WhHmo-0007ZC-3E
+ for barebox@lists.infradead.org; Mon, 05 May 2014 12:14:22 +0000
+Date: Mon, 5 May 2014 14:13:55 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
+In-Reply-To: <1398984618.20734.13.camel@mars>
+References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
+ <20140424065848.GV5858@pengutronix.de>
+ <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
+ <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
+ <1398984618.20734.13.camel@mars>
+MIME-Version: 1.0
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,36 +22,27 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: TODO: Rewrite network stack.
-To: barebox@lists.infradead.org
+Subject: Re: New driver crashes with "unable to handle paging request"
+To: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-Hi!
+Hi Christoph,
 
-I have inspected TODO file from barebox repo. Here is a quote:
+> Christoph Fritz <chf.fritz@googlemail.com> hat am 2. Mai 2014 um 00:50
+> geschrieben:
+>
+>
+> Hi Rolf,
+>
+> I have ported musb (host-support) from u-boot to barebox. I'll send a
+> patchset in the next days.
+>
 
-  [ ] Rewrite network stack. The one-loop-for-all-protocols stack is just t=
-oo
-      ugly and big and uses thousands of global variables. Identify common
-      functions and make a loop per network protocol
-
-There is no much tiny TCP/IP stack candidates for porting to barebox.
-The most notable is lwIP (http://savannah.nongnu.org/projects/lwip/).
-
-See "project that use lwIP" list here: http://lwip.wikia.com/wiki/Projects_=
-that_use_lwIP
-
-lwip code is BSD-licensed. Is it possible to use lwip code in barebox?
-
---=A0
-Best regards,
-=A0 Antony Pavlov
-
-P.S. Anyway TODO file from barebox repo is outdated (last change Jul 22 201=
-0).
+that sounds very good. Thank you very much in advance!
 
 _______________________________________________
 barebox mailing list
