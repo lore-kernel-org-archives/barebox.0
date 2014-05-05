@@ -1,19 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.kundenserver.de ([212.227.17.13])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WhHmo-0007ZC-3E
- for barebox@lists.infradead.org; Mon, 05 May 2014 12:14:22 +0000
-Date: Mon, 5 May 2014 14:13:55 +0200 (CEST)
-From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Message-ID: <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
-In-Reply-To: <1398984618.20734.13.camel@mars>
-References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
- <20140424065848.GV5858@pengutronix.de>
- <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
- <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
- <1398984618.20734.13.camel@mars>
+Received: from relaygw4-12.mclink.it ([213.21.178.179])
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WhI29-0007Ax-E5
+ for barebox@lists.infradead.org; Mon, 05 May 2014 12:30:14 +0000
+Received: from [195.110.128.82] (HELO smtpoutgw3.mclink.it)
+ by relaygw4-12.mclink.it (CommuniGate Pro SMTP 6.0.6)
+ with ESMTP id 18696799 for barebox@lists.infradead.org;
+ Mon, 05 May 2014 14:29:47 +0200
+Date: Mon, 5 May 2014 14:29:44 +0200
+From: Alessandro Rubini <rubini-list@gnudd.com>
+Message-ID: <20140505122944.GA1567@mail.gnudd.com>
 MIME-Version: 1.0
-Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Content-Disposition: inline
+In-Reply-To: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
+References: <20140505145512.133932fc3ee2247b660638c2@gmail.com> 
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,23 +26,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New driver crashes with "unable to handle paging request"
-To: Christoph Fritz <chf.fritz@googlemail.com>
+Subject: Re: TODO: Rewrite network stack.
+To: antonynpavlov@gmail.com
 Cc: barebox@lists.infradead.org
 
-Hi Christoph,
+> The most notable is lwIP (http://savannah.nongnu.org/projects/lwip/).
 
-> Christoph Fritz <chf.fritz@googlemail.com> hat am 2. Mai 2014 um 00:50
-> geschrieben:
->
->
-> Hi Rolf,
->
-> I have ported musb (host-support) from u-boot to barebox. I'll send a
-> patchset in the next days.
->
+I'm not happy at all about this code base, it looks quite ugly and
+old-fashioned. It's not the barebox kind of quality. I'd stay with the
+current code rather than lwip, despite the number of users.
 
-that sounds very good. Thank you very much in advance!
+If any, I'd evaluate picotcp (https://github.com/tass-belgium/picotcp).
+
+/alessandro
 
 _______________________________________________
 barebox mailing list
