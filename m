@@ -1,16 +1,22 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WhDUJ-0000iN-8U
- for barebox@lists.infradead.org; Mon, 05 May 2014 07:38:59 +0000
-Date: Mon, 5 May 2014 09:38:36 +0200
+ Linux)) id 1WhE99-0008Od-RG
+ for barebox@lists.infradead.org; Mon, 05 May 2014 08:21:12 +0000
+Received: from ptx.hi.pengutronix.de ([2001:6f8:1178:2:5054:ff:fec0:8e10]
+ ident=Debian-exim) by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <sha@pengutronix.de>) id 1WhE8j-0004RM-V4
+ for barebox@lists.infradead.org; Mon, 05 May 2014 10:20:45 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.80)
+ (envelope-from <sha@pengutronix.de>) id 1WhE8n-0006xY-Oz
+ for barebox@lists.infradead.org; Mon, 05 May 2014 10:20:49 +0200
+Date: Mon, 5 May 2014 10:20:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140505073836.GU5858@pengutronix.de>
-References: <1398671161-29045-3-git-send-email-s.hauer@pengutronix.de>
- <ce25001663e5dbf1538169d24785575d2292f210.1398836737.git.silvio.fricke@gmail.com>
+Message-ID: <20140505082049.GB5918@pengutronix.de>
+References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <ce25001663e5dbf1538169d24785575d2292f210.1398836737.git.silvio.fricke@gmail.com>
+In-Reply-To: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,47 +29,24 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] make: dts: fix out-of-tree build
-To: Silvio Fricke <silvio.fricke@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Add Linux dts files and use them
+To: barebox@lists.infradead.org
 
-Hi Silvio,
+Some updates how I intend to handle upstream dts changes in barebox.
 
-On Wed, Apr 30, 2014 at 07:49:34AM +0200, Silvio Fricke wrote:
-> If barebox is builded out-of-tree we don't find the dts-include
-> 
-> This patch prevent us to get this:
-> /[...]/barebox/drivers/input/keymap.c:4:37: fatal error: dt-bindings/input/input.h: No such file or directory
-> 
-> Signed-off-by: Silvio Fricke <silvio.fricke@gmail.com>
-
-I already realized and fixed this when someone else mentioned
-out-of-tree building doesn't work. It seems I really have to do this
-more frequently.
+- I will merge the latest upstream dts changes to barebox for each Linux
+  rc. Should dts changes introduce regressions this will at least give us
+  the Linux rc which introduced it
+- I will always merge dts updates to barebox next, not to master. While
+  dts changes may be needed in master to fix regressions on one board,
+  they could also introduce new regressions on other boards. Should we
+  need dts changes to fix regressions in barebox master, we have to do
+  it using overlays in arch/*/dts/ until an upstream fix arrives in dts/
+- I will not send the dts updates to the list, I'll just merge them to
+  barebox next some time after a new Linux rc arrived (As just happened
+  with 3.15-rc3)
 
 Sascha
-
-> ---
->  Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index a54b82b..c654f4f 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -290,7 +290,7 @@ export MODVERDIR := $(if $(KBUILD_EXTMOD),$(firstword $(KBUILD_EXTMOD))/).tmp_ve
->  
->  # Use LINUXINCLUDE when you must reference the include/ directory.
->  # Needed to be compatible with the O= option
-> -LINUXINCLUDE    := -Iinclude -Idts/include \
-> +LINUXINCLUDE    := -Iinclude -I$(srctree)/dts/include \
->                     $(if $(KBUILD_SRC),-Iinclude2 -I$(srctree)/include) \
->  		   -I$(srctree)/arch/$(ARCH)/include \
->  		   -I$(objtree)/arch/$(ARCH)/include \
-> -- 
-> 1.9.2
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
