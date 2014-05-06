@@ -1,17 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f370.i.mail.ru ([217.69.141.12])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WhND6-0001x0-Hz
- for barebox@lists.infradead.org; Mon, 05 May 2014 18:01:54 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Mon, 05 May 2014 22:01:24 +0400
-Message-ID: <1399312884.186724143@f370.i.mail.ru>
-In-Reply-To: <20140505174816.GY5858@pengutronix.de>
-References: <1398671161-29045-1-git-send-email-s.hauer@pengutronix.de>
- <1399305468.375736044@f93.i.mail.ru>
- <20140505174816.GY5858@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WhZ65-0007DH-4M
+ for barebox@lists.infradead.org; Tue, 06 May 2014 06:43:26 +0000
+Date: Tue, 6 May 2014 08:43:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140506064300.GZ5858@pengutronix.de>
+References: <5367BAF3.50607@kiwigrid.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5367BAF3.50607@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,53 +18,33 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gQWRkIExpbnV4IGR0cyBmaWxlcyBhbmQgdXNlIHRoZW0=?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
+Subject: Re: boot command is broken?
+To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
 Cc: barebox@lists.infradead.org
 
-TW9uLCA1IE1heSAyMDE0IDE5OjQ4OjE2ICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVy
-QHBlbmd1dHJvbml4LmRlPjoKPiBPbiBNb24sIE1heSAwNSwgMjAxNCBhdCAwNzo1Nzo0OFBNICsw
-NDAwLCBBbGV4YW5kZXIgU2hpeWFuIHdyb3RlOgo+ID4gTW9uLCA1IE1heSAyMDE0IDEwOjIwOjQ5
-ICswMjAwINC+0YIgU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+ID4g
-U29tZSB1cGRhdGVzIGhvdyBJIGludGVuZCB0byBoYW5kbGUgdXBzdHJlYW0gZHRzIGNoYW5nZXMg
-aW4gYmFyZWJveC4KPiA+ID4gCj4gPiA+IC0gSSB3aWxsIG1lcmdlIHRoZSBsYXRlc3QgdXBzdHJl
-YW0gZHRzIGNoYW5nZXMgdG8gYmFyZWJveCBmb3IgZWFjaCBMaW51eAo+ID4gPiAgIHJjLiBTaG91
-bGQgZHRzIGNoYW5nZXMgaW50cm9kdWNlIHJlZ3Jlc3Npb25zIHRoaXMgd2lsbCBhdCBsZWFzdCBn
-aXZlIHVzCj4gPiA+ICAgdGhlIExpbnV4IHJjIHdoaWNoIGludHJvZHVjZWQgaXQKPiA+ID4gLSBJ
-IHdpbGwgYWx3YXlzIG1lcmdlIGR0cyB1cGRhdGVzIHRvIGJhcmVib3ggbmV4dCwgbm90IHRvIG1h
-c3Rlci4gV2hpbGUKPiA+ID4gICBkdHMgY2hhbmdlcyBtYXkgYmUgbmVlZGVkIGluIG1hc3RlciB0
-byBmaXggcmVncmVzc2lvbnMgb24gb25lIGJvYXJkLAo+ID4gPiAgIHRoZXkgY291bGQgYWxzbyBp
-bnRyb2R1Y2UgbmV3IHJlZ3Jlc3Npb25zIG9uIG90aGVyIGJvYXJkcy4gU2hvdWxkIHdlCj4gPiA+
-ICAgbmVlZCBkdHMgY2hhbmdlcyB0byBmaXggcmVncmVzc2lvbnMgaW4gYmFyZWJveCBtYXN0ZXIs
-IHdlIGhhdmUgdG8gZG8KPiA+ID4gICBpdCB1c2luZyBvdmVybGF5cyBpbiBhcmNoLyovZHRzLyB1
-bnRpbCBhbiB1cHN0cmVhbSBmaXggYXJyaXZlcyBpbiBkdHMvCj4gPiA+IC0gSSB3aWxsIG5vdCBz
-ZW5kIHRoZSBkdHMgdXBkYXRlcyB0byB0aGUgbGlzdCwgSSdsbCBqdXN0IG1lcmdlIHRoZW0gdG8K
-PiA+ID4gICBiYXJlYm94IG5leHQgc29tZSB0aW1lIGFmdGVyIGEgbmV3IExpbnV4IHJjIGFycml2
-ZWQgKEFzIGp1c3QgaGFwcGVuZWQKPiA+ID4gICB3aXRoIDMuMTUtcmMzKQo+ID4gCj4gPiBKdXN0
-IHRvIHVuZGVyc3RhbmQgb3VyIGZ1cnRoZXIgY29uY2VwdDoKPiA+IAo+ID4gKEkgd2lsbCB1c2Ug
-dGhlIGV4YW1wbGUgYmFzZWQgb24gaS5NWDI1KS4KPiA+IFdlIGhhdmUgMyBmaWxlcyBpbiB0aGUg
-YXJjaC9hcm0vZHRzL2lteDI1Ki4KPiA+IFNob3VsZCB3ZSBub3cgcmVtb3ZlIGFsbCBvZiB0aGVt
-LCBjcmVhdGUgb3VyIG92ZXJsYXkgZm9yIGthcm8tdHgyNSBib2FyZAo+ID4gYW5kIGluY2x1ZGUg
-YmFzaWMgZmlsZSA8YXJtL2lteDI1LWthcm8tdHgyNS5kdHM+IGluIHRoZSB0b3Agb2YgbmV3IG92
-ZXJsYXkKPiA+IGZpbGUgYXMgYmFzaWMgRFRTPwo+IAo+IFllcywgSSB0aGluayB0aGF0J3MgdGhl
-IHdheSB0byBnby4KPiAKPiBJbiB0aGUgc2ltcGxlc3QgY2FzZSB3ZSBoYXZlIGEgYXJjaC9hcm0v
-ZHRzL2lteDI1LWthcm8tdHgyNS5kdHMgd2l0aCBvbmx5IGEKPiBzaW5nbGUgbGluZToKPiAKPiAj
-aW5jbHVkZSA8YXJtL2lteDI1LWthcm8tdHgyNS5kdHM+Cj4gCj4gVGhlbiBldmVyeXRoaW5nIHdp
-bGwgYmUgdXNlZCBmcm9tIHRoZSB1cHN0cmVhbSBkdHMgZmlsZXMuIEFkZGl0aW9uYWwKPiBiYXJl
-Ym94IHNwZWNpZmljIHN0dWZmIGNhbiBiZSBhZGRlZCB0byB0aGF0IGZpbGUsIGxpa2UgdGhlIGVu
-dmlyb25tZW50Cj4gZGVzY3JpcHRpb24uCj4gV2l0aCBpLk1YMjUgaXQgaGFwcGVuZWQgdGhhdCB3
-ZSBhbHNvIG5lZWQgU29DIHNwZWNpZmljIHVwZGF0ZXMgbGlrZSBmb3IKPiBleGFtcGxlIHRoZSBp
-cmFtIHdoaWNoIGlzIG5vdCBtYWlubGluZS4gU28gd2UgbmVlZCBhIHNlY29uZCBsaW5lIGluCj4g
-YXJjaC9hcm0vZHRzL2lteDI1LWthcm8tdHgyNS5kdHM6Cj4gCj4gI2luY2x1ZGUgImlteDI1LmR0
-c2kiCj4gCj4gVGhlIGdvYWwgc2hvdWxkIGJlIHRvIG1haW5saW5lIHRoZSBTb0Mgc3BlY2lmaWMg
-c3R1ZmYgc28gdGhhdCBpbXgyNS5kdHNpCj4gY2FuIGJlIGRyb3BwZWQsIGJ1dCBJIHRoaW5rIHdl
-IG5lZWQgdGhlIHBvc3NpYmlsaXR5IHRvIGhhdmUgU29DIHNwZWNpZmljCj4gYmFyZWJveCBjaGFu
-Z2VzLgoKT0suIFdpbGwgbW92ZSBpbiB0aGlzIGRpcmVjdGlvbi4KClBTOiBBcyBhIHN0YXJ0IEkg
-c2VlIGFsbCBhcmNoL2FybS9kdHMvKi1waW5mdW5jLmggY291bGQgYmUgcmVtb3ZlZCBub3cuCgot
-LS0KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVi
-b3ggbWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMu
-aW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+On Mon, May 05, 2014 at 06:23:15PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
+> Hi,
+> 
+> after update to v2014.05.0 'boot -l' displays only one entry, although
+> in /env/boot/ exists more files. Can anyone confirm this?
+
+Unfortunately I can confirm this :(
+
+I'll have a look.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
