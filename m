@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Whwqk-0008K9-Sp
- for barebox@lists.infradead.org; Wed, 07 May 2014 08:05:12 +0000
+ Linux)) id 1Whwqk-0008K5-Sj
+ for barebox@lists.infradead.org; Wed, 07 May 2014 08:05:11 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 May 2014 10:04:40 +0200
-Message-Id: <1399449884-19089-10-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  7 May 2014 10:04:37 +0200
+Message-Id: <1399449884-19089-7-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1399449884-19089-1-git-send-email-s.hauer@pengutronix.de>
 References: <1399449884-19089-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,38 +21,29 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/14] video: i.MX IPUv3: Print error as string
+Subject: [PATCH 07/14] ARM: i.MX53 tqma53: Set model from devicetree
 To: barebox@lists.infradead.org
 
-And add a missing newline.
+The model is correctly set from the devicetree, no need to do it
+from code.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/imx-ipu-v3/ipu-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boards/tqma53/board.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/imx-ipu-v3/ipu-common.c b/drivers/video/imx-ipu-v3/ipu-common.c
-index ffd6ec1..5f3b0bb 100644
---- a/drivers/video/imx-ipu-v3/ipu-common.c
-+++ b/drivers/video/imx-ipu-v3/ipu-common.c
-@@ -774,7 +774,7 @@ static int ipu_probe(struct device_d *dev)
- 	ipu->clk = clk_get(dev, "bus");
- 	if (IS_ERR(ipu->clk)) {
- 		ret = PTR_ERR(ipu->clk);
--		dev_err(dev, "clk_get failed with %d", ret);
-+		dev_err(dev, "clk_get failed: %s\n", strerror(-ret));
- 		return ret;
- 	}
+diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
+index 8f8a6a4..055ceeb 100644
+--- a/arch/arm/boards/tqma53/board.c
++++ b/arch/arm/boards/tqma53/board.c
+@@ -30,7 +30,6 @@ static int tqma53_devices_init(void)
+ 	if (!of_machine_is_compatible("tq,tqma53"))
+ 		return 0;
  
-@@ -788,7 +788,7 @@ static int ipu_probe(struct device_d *dev)
+-	barebox_set_model("TQ tqma53");
+ 	barebox_set_hostname("tqma53");
  
- 	ret = devtype->reset(ipu);
- 	if (ret) {
--		dev_err(dev, "failed to reset: %d\n", ret);
-+		dev_err(dev, "failed to reset: %s\n", strerror(-ret));
- 		goto out_failed_reset;
- 	}
- 
+ 	if (bootsource_get() == BOOTSOURCE_MMC &&
 -- 
 2.0.0.rc0
 
