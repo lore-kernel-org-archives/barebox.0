@@ -1,14 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wi83Y-0008Ai-MH
- for barebox@lists.infradead.org; Wed, 07 May 2014 20:03:09 +0000
-Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id CD03918B4258
- for <barebox@lists.infradead.org>; Wed,  7 May 2014 22:02:08 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Wed,  7 May 2014 22:05:29 +0200
-Message-Id: <1399493130-13670-1-git-send-email-dev@lynxeye.de>
+Received: from mail-pa0-f47.google.com ([209.85.220.47])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wi915-0002VJ-Bf
+ for barebox@lists.infradead.org; Wed, 07 May 2014 21:04:40 +0000
+Received: by mail-pa0-f47.google.com with SMTP id fa1so1655647pad.34
+ for <barebox@lists.infradead.org>; Wed, 07 May 2014 14:04:16 -0700 (PDT)
+Received: from [172.16.16.185] ([184.71.143.130])
+ by mx.google.com with ESMTPSA id hw8sm4824290pbc.62.2014.05.07.14.04.15
+ for <barebox@lists.infradead.org>
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Wed, 07 May 2014 14:04:15 -0700 (PDT)
+Message-ID: <536A9FCE.5050900@exegin.com>
+Date: Wed, 07 May 2014 14:04:14 -0700
+From: Owen Kirby <osk@exegin.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,45 +22,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: tegra30: slow down CPU to 600 MHz
+Subject: [PATCH] Catch errors when mounting invalid cramfs partitions.
 To: barebox@lists.infradead.org
 
-It's not safe to ramp up the CPU clock speed to
-1,4 GHz on all T30 SKUs, as this may result in failure
-to start the kernel properly. Start CPU at 600 MHz,
-which is safe even for the slowest SKUs.
+From be93e50aafc81d7978a100234e9b3c380e5c65da Mon Sep 17 00:00:00 2001
+From: Owen Kirby <osk@exegin.com>
+Date: Wed, 7 May 2014 12:29:39 -0700
+Subject: [PATCH]   Catch errors when mounting invalid cramfs partitions.
 
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
+When barebox is attempting to mount a cramfs partition with a bad magic, the
+device will report success, but becomes unresponsive when trying to do any
+file operations. The problem is caused by a missed error in cramfs_probe().
+
+Signed-off-by: Owen Kirby <osk@exegin.com>
 ---
- arch/arm/mach-tegra/tegra_avp_init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/cramfs/cramfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/mach-tegra/tegra_avp_init.c b/arch/arm/mach-tegra/tegra_avp_init.c
-index 1afea44..53e81d9 100644
---- a/arch/arm/mach-tegra/tegra_avp_init.c
-+++ b/arch/arm/mach-tegra/tegra_avp_init.c
-@@ -87,10 +87,10 @@ static struct pll_config pllx_config_table[][4] = {
- 		{1000, 26, 0, 12},	/* OSC 26.0 MHz */
- 	}, /* TEGRA 20 */
- 	{
--		{862, 8,  0, 8},
--		{583, 8,  0, 4},
--		{700, 6,  0, 8},
--		{700, 13, 0, 8},
-+		{600,  13, 0, 8 },
-+		{500,  16, 0, 8 },
-+		{600,  12, 0, 8 },
-+		{600,  26, 0, 8 },
- 	}, /* TEGRA 30 */
- };
+diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
+index 8218fcf..75ff797 100644
+--- a/fs/cramfs/cramfs.c
++++ b/fs/cramfs/cramfs.c
+@@ -438,6 +438,7 @@ static int cramfs_probe(struct device_d *dev)
+ 	if (cramfs_read_super(priv)) {
+ 		dev_info(dev, "no valid cramfs found\n");
+ 		ret =  -EINVAL;
++		goto err_out;
+ 	}
  
+ 	priv->curr_base = -1;
 -- 
-1.9.0
+1.7.9.5
+
 
 
 _______________________________________________
