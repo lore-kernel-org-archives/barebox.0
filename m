@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Whwqk-0008K0-Sr
- for barebox@lists.infradead.org; Wed, 07 May 2014 08:05:13 +0000
+ Linux)) id 1Whwqk-0008K7-Sv
+ for barebox@lists.infradead.org; Wed, 07 May 2014 08:05:12 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 May 2014 10:04:33 +0200
-Message-Id: <1399449884-19089-3-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  7 May 2014 10:04:42 +0200
+Message-Id: <1399449884-19089-12-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1399449884-19089-1-git-send-email-s.hauer@pengutronix.de>
 References: <1399449884-19089-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,50 +21,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 03/14] ARM: tqma53: Add barebox_update support
+Subject: [PATCH 12/14] video: i.MX IPUv3 ldb: implement i.MX53 support
 To: barebox@lists.infradead.org
+
+Configure the clock path correctly for i.MX53.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/tqma53/board.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/video/imx-ipu-v3/imx-ldb.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boards/tqma53/board.c b/arch/arm/boards/tqma53/board.c
-index 958e5ad..8f8a6a4 100644
---- a/arch/arm/boards/tqma53/board.c
-+++ b/arch/arm/boards/tqma53/board.c
-@@ -20,10 +20,12 @@
+diff --git a/drivers/video/imx-ipu-v3/imx-ldb.c b/drivers/video/imx-ipu-v3/imx-ldb.c
+index bbdbe40..70429eb 100644
+--- a/drivers/video/imx-ipu-v3/imx-ldb.c
++++ b/drivers/video/imx-ipu-v3/imx-ldb.c
+@@ -190,7 +190,36 @@ static int imx6q_ldb_prepare(struct imx_ldb_channel *imx_ldb_ch, int di)
  
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
-+#include <mach/bbu.h>
- 
- static int tqma53_devices_init(void)
+ static int imx53_ldb_prepare(struct imx_ldb_channel *imx_ldb_ch, int di)
  {
--	char *of_env_path = "/chosen/environment-emmc";
-+	char *of_env_path;
-+	unsigned bbu_flag_emmc = 0, bbu_flag_sd = 0;
- 
- 	if (!of_machine_is_compatible("tq,tqma53"))
- 		return 0;
-@@ -32,8 +34,16 @@ static int tqma53_devices_init(void)
- 	barebox_set_hostname("tqma53");
- 
- 	if (bootsource_get() == BOOTSOURCE_MMC &&
--			bootsource_get_instance() == 1)
-+			bootsource_get_instance() == 1) {
- 		of_env_path = "/chosen/environment-sd";
-+		bbu_flag_sd = BBU_HANDLER_FLAG_DEFAULT;
-+	} else {
-+		of_env_path = "/chosen/environment-emmc";
-+		bbu_flag_emmc = BBU_HANDLER_FLAG_DEFAULT;
+-	return -ENOSYS;
++	struct clk *diclk, *ldbclk;
++	struct imx_ldb *ldb = imx_ldb_ch->ldb;
++	int ret, dino;
++	char *clkname;
++
++	dino = di & 0x1;
++
++	clkname = asprintf("ipu_di%d_sel", dino);
++	diclk = clk_lookup(clkname);
++	free(clkname);
++	if (IS_ERR(diclk)) {
++		dev_err(ldb->dev, "failed to get di clk: %s\n", strerror(PTR_ERR(diclk)));
++		return PTR_ERR(diclk);
 +	}
 +
-+	imx53_bbu_internal_mmc_register_handler("sd", "/dev/mmc1", bbu_flag_sd);
-+	imx53_bbu_internal_mmc_register_handler("emmc", "/dev/mmc2", bbu_flag_emmc);
++	clkname = asprintf("ldb_di%d_div", imx_ldb_ch->chno);
++	ldbclk = clk_lookup(clkname);
++	free(clkname);
++	if (IS_ERR(ldbclk)) {
++		dev_err(ldb->dev, "failed to get ldb clk: %s\n", strerror(PTR_ERR(ldbclk)));
++		return PTR_ERR(ldbclk);
++	}
++
++	ret = clk_set_parent(diclk, ldbclk);
++	if (ret) {
++		dev_err(ldb->dev, "failed to set display clock parent: %s\n", strerror(-ret));
++		return ret;
++	}
++
++	return 0;
+ }
  
- 	of_device_enable_path(of_env_path);
- 
+ static struct imx_ldb_data imx_ldb_data_imx6q = {
 -- 
 2.0.0.rc0
 
