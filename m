@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wi0TO-0007p3-KE
+ Linux)) id 1Wi0TO-0007p4-KE
  for barebox@lists.infradead.org; Wed, 07 May 2014 11:57:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed,  7 May 2014 13:56:54 +0200
-Message-Id: <1399463815-30855-1-git-send-email-s.hauer@pengutronix.de>
+Date: Wed,  7 May 2014 13:56:55 +0200
+Message-Id: <1399463815-30855-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1399463815-30855-1-git-send-email-s.hauer@pengutronix.de>
+References: <1399463815-30855-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,165 +21,332 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] ARM: i.MX: Phytec-phyCARD-i.MX27: Switch to multi-image
- support
+Subject: [PATCH 2/2] ARM: create a imx_defconfig
 To: barebox@lists.infradead.org
+
+This creates a imx_defconfig which in future can catch all
+non thumb i.MX boards not covered by imx_v7_defconfig. Right
+now the Karo TX25 and Phytec phyCARD i.MX27 can so multi image
+support. They are enabled in the new config and the previous
+board specific config is removed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/phytec-phycard-imx27/lowlevel.c | 22 +++++++++++++++++-----
- arch/arm/configs/phytec-phycard-imx27_defconfig |  6 +-----
- arch/arm/dts/Makefile                           |  1 +
- arch/arm/mach-imx/Kconfig                       | 18 +++++++++---------
- images/Makefile.imx                             |  4 ++++
- 5 files changed, 32 insertions(+), 19 deletions(-)
+ arch/arm/configs/imx_defconfig                  | 115 ++++++++++++++++++++++++
+ arch/arm/configs/phytec-phycard-imx27_defconfig |  87 ------------------
+ arch/arm/configs/tx25stk5_defconfig             |  87 ------------------
+ 3 files changed, 115 insertions(+), 174 deletions(-)
+ create mode 100644 arch/arm/configs/imx_defconfig
+ delete mode 100644 arch/arm/configs/phytec-phycard-imx27_defconfig
+ delete mode 100644 arch/arm/configs/tx25stk5_defconfig
 
-diff --git a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c b/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
-index 75b9788..7e4a9f0 100644
---- a/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
-+++ b/arch/arm/boards/phytec-phycard-imx27/lowlevel.c
-@@ -8,6 +8,7 @@
- #include <init.h>
- #include <io.h>
- #include <config.h>
-+#include <asm/barebox-arm.h>
- #include <asm/barebox-arm-head.h>
- #include <mach/imx27-regs.h>
- #include <mach/imx-pll.h>
-@@ -57,14 +58,12 @@ static void sdram_init(void)
- 			MX27_ESDCTL_BASE_ADDR + IMX_ESDCTL0);
- }
- 
--void __bare_init __naked barebox_arm_reset_vector(void)
-+void __bare_init __naked phytec_phycard_imx27_common_init(void *fdt)
- {
- 	unsigned long r;
- 
- 	arm_cpu_lowlevel_init();
- 
--	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 12);
--
- 	/* ahb lite ip interface */
- 	writel(0x20040304, MX27_AIPI_BASE_ADDR + MX27_AIPI1_PSR0);
- 	writel(0xdffbfcfb, MX27_AIPI_BASE_ADDR + MX27_AIPI1_PSR1);
-@@ -74,7 +73,7 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 	/* Skip SDRAM initialization if we run from RAM */
-         r = get_pc();
-         if (r > 0xa0000000 && r < 0xc0000000)
--                imx27_barebox_entry(NULL);
-+                imx27_barebox_entry(fdt);
- 
- 	/* 399 MHz */
- 	writel(IMX_PLL_PD(0) |
-@@ -99,5 +98,18 @@ void __bare_init __naked barebox_arm_reset_vector(void)
- 
- 	sdram_init();
- 
--	imx27_barebox_boot_nand_external(0);
-+	imx27_barebox_boot_nand_external(fdt);
-+}
-+
-+extern char __dtb_imx27_phytec_phycard_s_rdk_bb_start[];
-+
-+ENTRY_FUNCTION(start_phytec_phycard_imx27, r0, r1, r2)
-+{
-+	void *fdt;
-+
-+	arm_setup_stack(MX27_IRAM_BASE_ADDR + MX27_IRAM_SIZE - 12);
-+
-+	fdt = __dtb_imx27_phytec_phycard_s_rdk_bb_start - get_runtime_offset();
-+
-+	phytec_phycard_imx27_common_init(fdt);
- }
-diff --git a/arch/arm/configs/phytec-phycard-imx27_defconfig b/arch/arm/configs/phytec-phycard-imx27_defconfig
-index 6e3a3ad..466a765 100644
---- a/arch/arm/configs/phytec-phycard-imx27_defconfig
-+++ b/arch/arm/configs/phytec-phycard-imx27_defconfig
-@@ -1,12 +1,9 @@
--CONFIG_BUILTIN_DTB=y
--CONFIG_BUILTIN_DTB_NAME="imx27-phytec-phycard-s-rdk"
- CONFIG_ARCH_IMX=y
--CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND=y
+diff --git a/arch/arm/configs/imx_defconfig b/arch/arm/configs/imx_defconfig
+new file mode 100644
+index 0000000..5e036e3
+--- /dev/null
++++ b/arch/arm/configs/imx_defconfig
+@@ -0,0 +1,115 @@
++CONFIG_ARCH_IMX=y
 +CONFIG_IMX_MULTI_BOARDS=y
- CONFIG_MACH_PCA100=y
- CONFIG_AEABI=y
- CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
- CONFIG_ARM_UNWIND=y
--CONFIG_PBL_IMAGE=y
- CONFIG_MMU=y
- CONFIG_MALLOC_SIZE=0x01000000
- CONFIG_MALLOC_TLSF=y
-@@ -19,7 +16,6 @@ CONFIG_MENU=y
- CONFIG_BLSPEC=y
- CONFIG_CONSOLE_ACTIVATE_NONE=y
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH=""
- CONFIG_RESET_SOURCE=y
- CONFIG_CMD_EDIT=y
- CONFIG_CMD_SLEEP=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index b8b7e7b..a0fc2f1 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -55,6 +55,7 @@ pbl-$(CONFIG_MACH_PHYTEC_PFLA02) += imx6s-phytec-pbab01.dtb.o imx6dl-phytec-pbab
- pbl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- pbl-$(CONFIG_MACH_SOLIDRUN_CUBOX) += dove-cubox-bb.dtb.o
- pbl-$(CONFIG_MACH_GK802) += imx6q-gk802.dtb.o
-+pbl-$(CONFIG_MACH_PCA100) += imx27-phytec-phycard-s-rdk-bb.dtb.o
- pbl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
- pbl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
- pbl-$(CONFIG_MACH_TQMA53) += imx53-mba53.dtb.o
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index a6aef24..3b85f45 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -184,6 +184,15 @@ config MACH_TX25
- 	help
- 	  Say Y here if you are using the Ka-Ro tx25 board
- 
-+config MACH_PCA100
-+	bool "phyCard-i.MX27"
-+	select ARCH_IMX27
-+	select HAVE_DEFAULT_ENVIRONMENT_NEW
-+	select ARCH_IMX_EXTERNAL_BOOT_NAND
-+	help
-+	  Say Y here if you are using Phytec's phyCard-i.MX27 (pca100) equipped
-+	  with a Freescale i.MX27 Processor
-+
- config MACH_EFIKA_MX_SMARTBOOK
- 	bool "Efika MX smartbook"
- 	select ARCH_IMX51
-@@ -335,15 +344,6 @@ config MACH_IMX27ADS
- 	  Say Y here if you are using the Freescale i.MX27ads board equipped
- 	  with a Freescale i.MX27 Processor
- 
--config MACH_PCA100
--	bool "phyCard-i.MX27"
--	select ARCH_IMX27
--	select HAVE_DEFAULT_ENVIRONMENT_NEW
--	select ARCH_IMX_EXTERNAL_BOOT_NAND
--	help
--	  Say Y here if you are using Phytec's phyCard-i.MX27 (pca100) equipped
--	  with a Freescale i.MX27 Processor
--
- config MACH_PCM038
- 	bool "phyCORE-i.MX27"
- 	select ARCH_IMX27
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index d00a3e5..5085a55 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -19,6 +19,10 @@ CFG_start_imx25_karo_tx25.pblx.imximg = $(board)/karo-tx25/flash-header-tx25.imx
- FILE_barebox-karo-tx25-internal.img = start_imx25_karo_tx25.pblx.imximg
- image-$(CONFIG_MACH_TX25) += barebox-karo-tx25-internal.img
- 
-+pblx-$(CONFIG_MACH_PCA100) += start_phytec_phycard_imx27
-+FILE_barebox-phytec-phycard-imx27.img = start_phytec_phycard_imx27.pblx
-+image-$(CONFIG_MACH_PCA100) += barebox-phytec-phycard-imx27.img
-+
- # ----------------------- i.MX51 based boards ---------------------------
- pblx-$(CONFIG_MACH_FREESCALE_MX51_PDK) += start_imx51_babbage
- CFG_start_imx51_babbage.pblx.imximg = $(board)/freescale-mx51-babbage/flash-header-imx51-babbage.imxcfg
++CONFIG_MACH_TX25=y
++CONFIG_MACH_PCA100=y
++CONFIG_IMX_IIM=y
++CONFIG_IMX_IIM_FUSE_BLOW=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_MMU=y
++CONFIG_TEXT_BASE=0x0
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_RELOCATABLE=y
++CONFIG_PANIC_HANG=y
++CONFIG_LONGHELP=y
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++CONFIG_BLSPEC=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_RESET_SOURCE=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_BOOTM_SHOW_TYPE=y
++CONFIG_CMD_BOOTM_VERBOSE=y
++CONFIG_CMD_BOOTM_INITRD=y
++CONFIG_CMD_BOOTM_OFTREE=y
++CONFIG_CMD_UIMAGE=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_RESET=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_NET=y
++CONFIG_NET_DHCP=y
++CONFIG_NET_PING=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_OFDEVICE=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_DRIVER_NET_FEC_IMX=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++CONFIG_DRIVER_SPI_IMX=y
++CONFIG_I2C=y
++CONFIG_I2C_IMX=y
++CONFIG_MTD=y
++CONFIG_MTD_RAW_DEVICE=y
++CONFIG_DRIVER_CFI=y
++CONFIG_CFI_BUFFER_WRITE=y
++CONFIG_NAND=y
++# CONFIG_NAND_ECC_SOFT is not set
++# CONFIG_NAND_ECC_HW_SYNDROME is not set
++CONFIG_NAND_IMX=y
++CONFIG_MTD_UBI=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_USB=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_ULPI=y
++CONFIG_MCI=y
++CONFIG_MCI_IMX=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_EEPROM_AT25=y
++CONFIG_EEPROM_AT24=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_IMX=y
++CONFIG_IMX_WEIM=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UBIFS=y
++CONFIG_FS_UBIFS_COMPRESSION_LZO=y
+diff --git a/arch/arm/configs/phytec-phycard-imx27_defconfig b/arch/arm/configs/phytec-phycard-imx27_defconfig
+deleted file mode 100644
+index 466a765..0000000
+--- a/arch/arm/configs/phytec-phycard-imx27_defconfig
++++ /dev/null
+@@ -1,87 +0,0 @@
+-CONFIG_ARCH_IMX=y
+-CONFIG_IMX_MULTI_BOARDS=y
+-CONFIG_MACH_PCA100=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x01000000
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_LONGHELP=y
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
+-CONFIG_BLSPEC=y
+-CONFIG_CONSOLE_ACTIVATE_NONE=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_RESET_SOURCE=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_BOOTM_SHOW_TYPE=y
+-CONFIG_CMD_BOOTM_VERBOSE=y
+-CONFIG_CMD_BOOTM_INITRD=y
+-CONFIG_CMD_BOOTM_OFTREE=y
+-CONFIG_CMD_UIMAGE=y
+-# CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_BAREBOX_UPDATE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_NET=y
+-CONFIG_NET_DHCP=y
+-CONFIG_NET_PING=y
+-CONFIG_NET_NETCONSOLE=y
+-CONFIG_OFDEVICE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_NET_FEC_IMX=y
+-CONFIG_NET_USB=y
+-CONFIG_NET_USB_ASIX=y
+-# CONFIG_SPI is not set
+-CONFIG_MTD=y
+-CONFIG_NAND=y
+-# CONFIG_NAND_ECC_SOFT is not set
+-# CONFIG_NAND_ECC_HW_SYNDROME is not set
+-CONFIG_NAND_IMX=y
+-CONFIG_MTD_UBI=y
+-CONFIG_MTD_UBI_FASTMAP=y
+-CONFIG_USB=y
+-CONFIG_USB_EHCI=y
+-CONFIG_USB_ULPI=y
+-CONFIG_MCI=y
+-CONFIG_MCI_IMX=y
+-CONFIG_IMX_WEIM=y
+-CONFIG_FS_EXT4=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
+-CONFIG_FS_UBIFS=y
+-CONFIG_FS_UBIFS_COMPRESSION_LZO=y
+diff --git a/arch/arm/configs/tx25stk5_defconfig b/arch/arm/configs/tx25stk5_defconfig
+deleted file mode 100644
+index b499b5d..0000000
+--- a/arch/arm/configs/tx25stk5_defconfig
++++ /dev/null
+@@ -1,87 +0,0 @@
+-CONFIG_ARCH_IMX=y
+-CONFIG_IMX_MULTI_BOARDS=y
+-CONFIG_MACH_TX25=y
+-CONFIG_IMX_IIM=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_ARM_UNWIND=y
+-CONFIG_MMU=y
+-CONFIG_TEXT_BASE=0x91d00000
+-CONFIG_MALLOC_SIZE=0x1000000
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_LONGHELP=y
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_CONSOLE_ACTIVATE_NONE=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/karo-tx25/env"
+-CONFIG_RESET_SOURCE=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_MSLEEP=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIME=y
+-CONFIG_CMD_LN=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_MEMINFO=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_MD5SUM=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_CMD_BOOTM_SHOW_TYPE=y
+-CONFIG_CMD_BOOTM_VERBOSE=y
+-CONFIG_CMD_BOOTM_INITRD=y
+-CONFIG_CMD_BOOTM_OFTREE=y
+-CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
+-CONFIG_CMD_UIMAGE=y
+-# CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_CMD_OF_PROPERTY=y
+-CONFIG_CMD_OF_NODE=y
+-CONFIG_CMD_SPLASH=y
+-CONFIG_CMD_BAREBOX_UPDATE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_MAGICVAR=y
+-CONFIG_CMD_MAGICVAR_HELP=y
+-CONFIG_CMD_GPIO=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_MIITOOL=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_WD=y
+-CONFIG_NET=y
+-CONFIG_NET_DHCP=y
+-CONFIG_NET_PING=y
+-CONFIG_NET_NETCONSOLE=y
+-CONFIG_OFDEVICE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_DRIVER_NET_FEC_IMX=y
+-# CONFIG_SPI is not set
+-CONFIG_MTD=y
+-CONFIG_NAND=y
+-CONFIG_NAND_IMX=y
+-CONFIG_VIDEO=y
+-CONFIG_DRIVER_VIDEO_IMX=y
+-CONFIG_IMXFB_DRIVER_VIDEO_IMX_OVERLAY=y
+-CONFIG_MCI=y
+-CONFIG_MCI_IMX_ESDHC=y
+-CONFIG_WATCHDOG=y
+-CONFIG_WATCHDOG_IMX=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_NFS=y
+-CONFIG_FS_FAT=y
+-CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
+-CONFIG_ZLIB=y
+-CONFIG_LZO_DECOMPRESS=y
 -- 
 2.0.0.rc0
 
