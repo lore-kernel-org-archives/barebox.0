@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WiIoE-0000kF-MZ
+ Linux)) id 1WiIoE-0000kK-MW
  for barebox@lists.infradead.org; Thu, 08 May 2014 07:32:03 +0000
-Received: from dude.hi.pengutronix.de ([2001:6f8:1178:2:a236:9fff:fe00:814])
- by metis.ext.pengutronix.de with esmtp (Exim 4.72)
- (envelope-from <sha@pengutronix.de>) id 1WiIno-00018M-11
- for barebox@lists.infradead.org; Thu, 08 May 2014 09:31:36 +0200
-Received: from sha by dude.hi.pengutronix.de with local (Exim 4.82)
- (envelope-from <sha@pengutronix.de>) id 1WiIns-0007vs-Gz
- for barebox@lists.infradead.org; Thu, 08 May 2014 09:31:40 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  8 May 2014 09:31:34 +0200
-Message-Id: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu,  8 May 2014 09:31:38 +0200
+Message-Id: <1399534299-27051-5-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
+References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,43 +21,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] fix i.MX51 babbage ethernet
+Subject: [PATCH 4/5] ARM: i.MX51 babbage: use mc13xxx_register_callback to
+ initialize PMIC
 To: barebox@lists.infradead.org
 
-This once again bends the init order to fit another board. This series
-works over a number of shortcomings in barebox and devicetree support.
-The problem here is that the Babbage ethernet phy needs vgen3 of the PMIC
-enabled.
+This makes sure the PMIC is initialized once it's available. Move the
+initcall to coredevice_initcall to make sure we initialize the PMIC
+before the FEC driver is initialized. The ethernet phy needs vgen3
+enabled in the PMIC initialization.
 
-- We currently do not have proper regulator support for the mc13xxx,
-  so we manipulate the PMIC registers directly from the board file. This
-  has to happen before the ethernet phy is initialized. Once again
-  we fiddle with the initcall order to make that sure. It can't be
-  very long until we need some dependency mechanism for devices.
-- Even if that is fixed the ethernet phy currently can't be described
-  in the devicetree so we can't properly attach a regulator to it.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/freescale-mx51-babbage/board.c | 27 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
-The following fixes ethernet support for the Babbage board which seems
-to be broken for quite some time, at least when barebox is used as a
-first stage loader.
+diff --git a/arch/arm/boards/freescale-mx51-babbage/board.c b/arch/arm/boards/freescale-mx51-babbage/board.c
+index bfe5338..11c901c 100644
+--- a/arch/arm/boards/freescale-mx51-babbage/board.c
++++ b/arch/arm/boards/freescale-mx51-babbage/board.c
+@@ -14,6 +14,8 @@
+  *
+  */
+ 
++#define pr_fmt(fmt) "babbage: " fmt
++
+ #include <common.h>
+ #include <init.h>
+ #include <environment.h>
+@@ -44,17 +46,10 @@
+ 
+ #define MX51_CCM_CACRR 0x10
+ 
+-static void babbage_power_init(void)
++static void babbage_power_init(struct mc13xxx *mc13xxx)
+ {
+-	struct mc13xxx *mc13xxx;
+ 	u32 val;
+ 
+-	mc13xxx = mc13xxx_get();
+-	if (!mc13xxx) {
+-		printf("could not get PMIC\n");
+-		return;
+-	}
+-
+ 	/* Write needed to Power Gate 2 register */
+ 	mc13xxx_reg_read(mc13xxx, MC13892_REG_POWER_MISC, &val);
+ 	val &= ~0x10000;
+@@ -149,21 +144,23 @@ static void babbage_power_init(void)
+ 	mc13xxx_reg_write(mc13xxx, MC13892_REG_MODE_1, val);
+ 
+ 	udelay(200);
++
++	pr_info("initialized PMIC\n");
++
++	console_flush();
++	imx51_init_lowlevel(800);
++	clock_notifier_call_chain();
+ }
+ 
+ extern char flash_header_imx51_babbage_start[];
+ extern char flash_header_imx51_babbage_end[];
+ 
+-static int imx51_babbage_late_init(void)
++static int imx51_babbage_init(void)
+ {
+ 	if (!of_machine_is_compatible("fsl,imx51-babbage"))
+ 		return 0;
+ 
+-	babbage_power_init();
+-
+-	console_flush();
+-	imx51_init_lowlevel(800);
+-	clock_notifier_call_chain();
++	mc13xxx_register_callback(babbage_power_init);
+ 
+ 	armlinux_set_architecture(MACH_TYPE_MX51_BABBAGE);
+ 
+@@ -173,4 +170,4 @@ static int imx51_babbage_late_init(void)
+ 
+ 	return 0;
+ }
+-late_initcall(imx51_babbage_late_init);
++coredevice_initcall(imx51_babbage_init);
+-- 
+2.0.0.rc0
 
-Sascha
-
-----------------------------------------------------------------
-Sascha Hauer (5):
-      mfd: mc13xxx: Allow to set callback for mc13xxx
-      spi: i.MX: Move to coredevice_initcall
-      mfd: mc13xxx: move to coredevice_initcall
-      ARM: i.MX51 babbage: use mc13xxx_register_callback to initialize PMIC
-      ARM: dts: i.MX51 babbage: overwrite upstream FEC iomux settings
-
- arch/arm/boards/freescale-mx51-babbage/board.c | 27 +++++++-------
- arch/arm/dts/imx51-babbage.dts                 | 36 +++++++++++++++++++
- drivers/mfd/mc13xxx.c                          | 50 ++++++++++++++++++++------
- drivers/net/fec_imx.h                          |  1 +
- drivers/spi/imx_spi.c                          |  2 +-
- include/mfd/mc13xxx.h                          |  6 ++++
- 6 files changed, 95 insertions(+), 27 deletions(-)
 
 _______________________________________________
 barebox mailing list
