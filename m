@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ie0-x229.google.com ([2607:f8b0:4001:c03::229])
+Received: from mail-ie0-x234.google.com ([2607:f8b0:4001:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WiSqk-0000t1-Um
- for barebox@lists.infradead.org; Thu, 08 May 2014 18:15:19 +0000
-Received: by mail-ie0-f169.google.com with SMTP id rl12so3014724iec.0
- for <barebox@lists.infradead.org>; Thu, 08 May 2014 11:14:57 -0700 (PDT)
+ id 1WiTGe-0002Jp-Uy
+ for barebox@lists.infradead.org; Thu, 08 May 2014 18:42:05 +0000
+Received: by mail-ie0-f180.google.com with SMTP id as1so2885171iec.25
+ for <barebox@lists.infradead.org>; Thu, 08 May 2014 11:41:41 -0700 (PDT)
 MIME-Version: 1.0
-Date: Thu, 8 May 2014 14:14:56 -0400
-Message-ID: <CAO6XYUuw3LiNg4Z6xaOUEjMhJNXo9rEzWYVuVf1kyr6ghbX77Q@mail.gmail.com>
+Date: Thu, 8 May 2014 14:41:38 -0400
+Message-ID: <CAO6XYUtCeBmMotiG6svTRobfAK-PpM-jWCBC5gw5DA78FY95QA@mail.gmail.com>
 From: "Michael D. Burkey" <mdburkey@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
@@ -21,80 +21,110 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/1] Update DCD to support newer Variscite iMX6 SOM's DDR3
- timing
+Subject: [PATCH 1/1] Add variable USB status polling delay to fix issues with
+ USB flash drives.
 To: barebox@lists.infradead.org
 
-The following patch updates the DCD table in the Variscite iMX6 SOM to
-match the current values being used in the most recent u-Boot
-distributed in the Variscite Yocto Dora V4 release. These changes are
-needed in order to use the most recent SOM's being shipped by
-Variscite (due to changes in the DDR3 timing). This set of DCD
-configuration is aimed at the quad core version of the SOM only.
+Due to numerous problems that we have experienced with some USB flash
+drives on multiple platforms (e.g. iMX35 and iMX6) a variable startup
+delay is being added prior to starting to poll the usb devices for
+status information. While current versions of the Linux kernel include
+multiple retries on the poll operation (with associated timeouts),
+adding a proper retry operation would require passing more detailed
+error information back from the USB status polling command. So, this
+patch simply adds a default delay (1100ms) in barebox equal to the
+maximum period in Linux once all retries and timeouts are exhausted.
+The length of this delay matches one that has been added to some newer
+versions of u-Boot for the iMX6 platform.
+
+This is specifically added to address two different, similar problems:
+The first is that MOSFET power distribution switches (e.g. the Micrel
+MIC2076) add an additional power-on time to the outputs of a USB hub
+that is greater than what is typically reported in the "Power On to
+Power Good" field. The second issue is that some USB flash drives
+(e.g. Corsair and Transcend) use onboard micro-controllers that have
+relatively long boot times before they begin properly responding to
+USB bus commands.
+
+Since the added delay time may be neither needed nor desirable in some
+cases, a global magic variable of USB_POLL_DELAY has been created. The
+value of this delay is in milliseconds and can be adjusted to whatever
+value is desired prior to calling the barebox "usb" command. As
+mentioned before, the current default value is set to 1100ms.
 
 Signed-off-by: Michael Burkey <mdburkey at gmail.com>
 ---
+diff -rupN a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+--- a/drivers/usb/core/usb.c	2014-05-05 04:33:13.000000000 -0400
++++ b/drivers/usb/core/usb.c	2014-05-08 14:39:09.590616304 -0400
+@@ -49,6 +49,8 @@
+ #include <xfuncs.h>
+ #include <init.h>
+ #include <dma.h>
++#include <environment.h>
++#include <magicvar.h>
 
-diff -rupN a/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg
-b/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg
---- a/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg	2014-05-05
-04:33:13.000000000 -0400
-+++ b/arch/arm/boards/variscite-mx6/flash-header-variscite.imxcfg	2014-05-08
-13:58:45.393092594 -0400
-@@ -40,18 +40,18 @@ wm 32 0x020e0510 0x00000030
- wm 32 0x020e05bc 0x00000030
- wm 32 0x020e05c4 0x00000030
- wm 32 0x021b0800 0xA1390003
--wm 32 0x021b080c 0x001F001F
--wm 32 0x021b0810 0x001F001F
--wm 32 0x021b480c 0x001F001F
--wm 32 0x021b4810 0x001F001F
--wm 32 0x021b083c 0x4333033F
--wm 32 0x021b0840 0x032C031D
--wm 32 0x021b483c 0x43200332
--wm 32 0x021b4840 0x031A026A
--wm 32 0x021b0848 0x4D464746
--wm 32 0x021b4848 0x47453F4D
--wm 32 0x021b0850 0x3E434440
--wm 32 0x021b4850 0x47384839
-+wm 32 0x021b080c 0x001C0019
-+wm 32 0x021b0810 0x00260026
-+wm 32 0x021b480c 0x001D002C
-+wm 32 0x021b4810 0x0019002E
-+wm 32 0x021b083c 0x45300544
-+wm 32 0x021b0840 0x052C0520
-+wm 32 0x021b483c 0x4528053C
-+wm 32 0x021b4840 0x052C0470
-+wm 32 0x021b0848 0x3E363A40
-+wm 32 0x021b4848 0x403C3246
-+wm 32 0x021b0850 0x3A38443C
-+wm 32 0x021b4850 0x48364A3E
- wm 32 0x021b081c 0x33333333
- wm 32 0x021b0820 0x33333333
- wm 32 0x021b0824 0x33333333
-@@ -64,18 +64,18 @@ wm 32 0x021b08b8 0x00000800
- wm 32 0x021b48b8 0x00000800
- wm 32 0x021b0004 0x00020036
- wm 32 0x021b0008 0x09444040
--wm 32 0x021b000c 0x555A7975
--wm 32 0x021b0010 0xFF538F64
-+wm 32 0x021b000c 0x555A7974
-+wm 32 0x021b0010 0xDB538F64
- wm 32 0x021b0014 0x01FF00DB
- wm 32 0x021b0018 0x00001740
--wm 32 0x021b001c 0x00008000
-+wm 32 0x021b001c 0x00000000
- wm 32 0x021b002c 0x000026D2
- wm 32 0x021b0030 0x005A1023
- wm 32 0x021b0040 0x00000027
- wm 32 0x021b0000 0x831A0000
- wm 32 0x021b001c 0x04088032
- wm 32 0x021b001c 0x00008033
--wm 32 0x021b001c 0x00048031
-+wm 32 0x021b001c 0x00428031
- wm 32 0x021b001c 0x09408030
- wm 32 0x021b001c 0x04008040
- wm 32 0x021b0020 0x00005800
+ #include <usb/usb.h>
+
+@@ -1124,6 +1126,7 @@ static int usb_hub_configure(struct usb_
+ 	struct usb_hub_status *hubsts;
+ 	int i;
+ 	struct usb_hub_device *hub;
++	unsigned polling_delay;
+
+ 	hub = xzalloc(sizeof (*hub));
+ 	dev->hub = hub;
+@@ -1235,6 +1238,24 @@ static int usb_hub_configure(struct usb_
+ 		(le16_to_cpu(hubsts->wHubStatus) & HUB_STATUS_OVERCURRENT) ? \
+ 		"" : "no ");
+ 	usb_hub_power_on(hub);
++
++    /* Delay a user defined period to allow devices to startup
+properly.              */
++    /* This is specifically added to address two different, similar
+problems:         */
++    /* The first is that MOSFET power distribution switches (e.g. the
+Micrel MIC2076) */
++    /* add an additional power-on time to the outputs of a USB hub
+that is greater    */
++    /* than what is typically reported in the "Power On to Power
+Good" field.         */
++    /* The second issue is that some USB flash drives (e.g. Corsair
+and Transcend)    */
++    /* use onboard micro-controllers that have relatively long boot
+times before they */
++    /* begin properly responding to USB bus commands.
+                */
++
++    /* The default value of 1100ms has been experimentally determined
+to work with    */
++    /* basically every mass storage device I have been able to test.
+If you are using */
++    /* devices that have shorter startup times or that are on a
+permanently powered   */
++    /* connection, this time can safely be reduced (potentially to
+zero).             */
++	if (!getenv_uint("USB_POLLING_DELAY", &polling_delay))
++	{
++		mdelay(polling_delay);
++	}
+
+ 	for (i = 0; i < dev->maxchild; i++) {
+ 		struct usb_port_status portsts;
+@@ -1463,6 +1484,12 @@ struct bus_type usb_bus_type = {
+
+ static int usb_bus_init(void)
+ {
++    /* Add Global MagicVar containing device polling delay. */
++	setenv("USB_POLLING_DELAY", "1100");
++	export("USB_POLLING_DELAY");
++
+ 	return bus_register(&usb_bus_type);
+ }
+ pure_initcall(usb_bus_init);
++
++BAREBOX_MAGICVAR(USB_POLLING_DELAY, "Delay in ms after hub power on
+before devices are polled.");
 
 _______________________________________________
 barebox mailing list
