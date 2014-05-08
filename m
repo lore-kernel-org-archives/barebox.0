@@ -1,19 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-pa0-f47.google.com ([209.85.220.47])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wi915-0002VJ-Bf
- for barebox@lists.infradead.org; Wed, 07 May 2014 21:04:40 +0000
-Received: by mail-pa0-f47.google.com with SMTP id fa1so1655647pad.34
- for <barebox@lists.infradead.org>; Wed, 07 May 2014 14:04:16 -0700 (PDT)
-Received: from [172.16.16.185] ([184.71.143.130])
- by mx.google.com with ESMTPSA id hw8sm4824290pbc.62.2014.05.07.14.04.15
- for <barebox@lists.infradead.org>
- (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
- Wed, 07 May 2014 14:04:15 -0700 (PDT)
-Message-ID: <536A9FCE.5050900@exegin.com>
-Date: Wed, 07 May 2014 14:04:14 -0700
-From: Owen Kirby <osk@exegin.com>
-MIME-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WiIoJ-0000lf-8z
+ for barebox@lists.infradead.org; Thu, 08 May 2014 07:32:07 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu,  8 May 2014 09:31:36 +0200
+Message-Id: <1399534299-27051-3-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
+References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,42 +16,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] Catch errors when mounting invalid cramfs partitions.
+Subject: [PATCH 2/5] spi: i.MX: Move to coredevice_initcall
 To: barebox@lists.infradead.org
 
-From be93e50aafc81d7978a100234e9b3c380e5c65da Mon Sep 17 00:00:00 2001
-From: Owen Kirby <osk@exegin.com>
-Date: Wed, 7 May 2014 12:29:39 -0700
-Subject: [PATCH]   Catch errors when mounting invalid cramfs partitions.
+SPI is often used by other devices, so make sure it's initialized
+early.
 
-When barebox is attempting to mount a cramfs partition with a bad magic, the
-device will report success, but becomes unresponsive when trying to do any
-file operations. The problem is caused by a missed error in cramfs_probe().
-
-Signed-off-by: Owen Kirby <osk@exegin.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/cramfs/cramfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/imx_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
-index 8218fcf..75ff797 100644
---- a/fs/cramfs/cramfs.c
-+++ b/fs/cramfs/cramfs.c
-@@ -438,6 +438,7 @@ static int cramfs_probe(struct device_d *dev)
- 	if (cramfs_read_super(priv)) {
- 		dev_info(dev, "no valid cramfs found\n");
- 		ret =  -EINVAL;
-+		goto err_out;
- 	}
- 
- 	priv->curr_base = -1;
+diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
+index e07cf1a..3146339 100644
+--- a/drivers/spi/imx_spi.c
++++ b/drivers/spi/imx_spi.c
+@@ -586,4 +586,4 @@ static struct driver_d imx_spi_driver = {
+ 	.of_compatible = DRV_OF_COMPAT(imx_spi_dt_ids),
+ 	.id_table = imx_spi_ids,
+ };
+-device_platform_driver(imx_spi_driver);
++coredevice_platform_driver(imx_spi_driver);
 -- 
-1.7.9.5
-
+2.0.0.rc0
 
 
 _______________________________________________
