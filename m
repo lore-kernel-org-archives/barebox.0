@@ -1,13 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WiIoE-0000kI-MY
- for barebox@lists.infradead.org; Thu, 08 May 2014 07:32:03 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu,  8 May 2014 09:31:37 +0200
-Message-Id: <1399534299-27051-4-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
-References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
+ Linux)) id 1WiIoj-0000s2-KD
+ for barebox@lists.infradead.org; Thu, 08 May 2014 07:32:34 +0000
+Date: Thu, 8 May 2014 09:32:11 +0200
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Message-ID: <20140508073211.GE28564@pengutronix.de>
+References: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
+ <20140505132240.GX5858@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140505132240.GX5858@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,79 +19,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/5] mfd: mc13xxx: move to coredevice_initcall
-To: barebox@lists.infradead.org
+Subject: Re: TODO: Rewrite network stack.
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-The PMIC is often a dependency for other devices, so make sure
-it's initialized early. While at it, merge the spi/i2c registration
-into a single initcall and use IS_ENABLED instead of ifdefs.
+On Mon, May 05, 2014 at 03:22:40PM +0200, Sascha Hauer wrote:
+> On Mon, May 05, 2014 at 02:55:12PM +0400, Antony Pavlov wrote:
+> > Hi!
+> > =
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mfd/mc13xxx.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+> > I have inspected TODO file from barebox repo. Here is a quote:
+> > =
 
-diff --git a/drivers/mfd/mc13xxx.c b/drivers/mfd/mc13xxx.c
-index 9842c56..9e86fc3 100644
---- a/drivers/mfd/mc13xxx.c
-+++ b/drivers/mfd/mc13xxx.c
-@@ -397,7 +397,6 @@ static __maybe_unused struct of_device_id mc13xxx_dt_ids[] = {
- 	{ }
- };
- 
--#ifdef CONFIG_I2C
- static struct driver_d mc13xxx_i2c_driver = {
- 	.name		= "mc13xxx-i2c",
- 	.probe		= mc13xxx_probe,
-@@ -405,19 +404,30 @@ static struct driver_d mc13xxx_i2c_driver = {
- 	.of_compatible	= DRV_OF_COMPAT(mc13xxx_dt_ids),
- };
- 
--static int __init mc13xxx_i2c_init(void)
--{
--	return i2c_driver_register(&mc13xxx_i2c_driver);
--}
--device_initcall(mc13xxx_i2c_init);
--#endif
--
--#ifdef CONFIG_SPI
- static struct driver_d mc13xxx_spi_driver = {
- 	.name		= "mc13xxx-spi",
- 	.probe		= mc13xxx_probe,
- 	.id_table	= mc13xxx_ids,
- 	.of_compatible	= DRV_OF_COMPAT(mc13xxx_dt_ids),
- };
--device_spi_driver(mc13xxx_spi_driver);
--#endif
-+
-+static int __init mc13xxx_init(void)
-+{
-+	int err_spi = 0, err_i2c = 0;
-+
-+	if (IS_ENABLED(CONFIG_I2C))
-+		err_spi = i2c_driver_register(&mc13xxx_i2c_driver);
-+
-+	if (IS_ENABLED(CONFIG_SPI))
-+		err_i2c = spi_driver_register(&mc13xxx_spi_driver);
-+
-+	if (err_spi)
-+		return err_spi;
-+
-+	if (err_i2c)
-+		return err_i2c;
-+
-+	return 0;
-+
-+}
-+coredevice_initcall(mc13xxx_init);
--- 
-2.0.0.rc0
+> >   [ ] Rewrite network stack. The one-loop-for-all-protocols stack is ju=
+st too
+> >       ugly and big and uses thousands of global variables. Identify com=
+mon
+> >       functions and make a loop per network protocol
+> > =
 
+> > There is no much tiny TCP/IP stack candidates for porting to barebox.
+> > The most notable is lwIP (http://savannah.nongnu.org/projects/lwip/).
+> > =
+
+> > See "project that use lwIP" list here: http://lwip.wikia.com/wiki/Proje=
+cts_that_use_lwIP
+> > =
+
+> > lwip code is BSD-licensed. Is it possible to use lwip code in barebox?
+> > =
+
+> > --=A0
+> > Best regards,
+> > =A0 Antony Pavlov
+> > =
+
+> > P.S. Anyway TODO file from barebox repo is outdated (last change Jul 22=
+ 2010).
+> =
+
+> Indeed. Maybe we should add the following item to it.
+> =
+
+> Sascha
+> =
+
+> diff --git a/TODO b/TODO
+> index 6350799..59fdade 100644
+> --- a/TODO
+> +++ b/TODO
+> @@ -76,6 +76,7 @@ TODO
+>      devices should be represented as a hierarchical tree in /dev
+>  [ ] Work out, how to mount driver on PCI devices. The mechanism should be
+>      transparent to the driver code.
+> +[ ] remove this file. It doesn't contain much useful information.
+I took this patch, removed the file and wanted to move this entry below
+DONE. This resulted in a git conflict. Please advise.
+
+Uwe
+
+>  =
+
+>  DONE
+>  ----
+> =
+
+> -- =
+
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> =
+
+
+-- =
+
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
 
 _______________________________________________
 barebox mailing list
