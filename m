@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WiQLA-0008GG-If
- for barebox@lists.infradead.org; Thu, 08 May 2014 15:34:33 +0000
-From: Michael Olbrich <m.olbrich@pengutronix.de>
-Date: Thu,  8 May 2014 17:33:59 +0200
-Message-Id: <1399563239-3960-1-git-send-email-m.olbrich@pengutronix.de>
+Received: from mail-lb0-x230.google.com ([2a00:1450:4010:c04::230])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WiRy2-0004AU-PT
+ for barebox@lists.infradead.org; Thu, 08 May 2014 17:18:48 +0000
+Received: by mail-lb0-f176.google.com with SMTP id p9so3980100lbv.21
+ for <barebox@lists.infradead.org>; Thu, 08 May 2014 10:18:24 -0700 (PDT)
+Date: Thu, 8 May 2014 21:20:57 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140508212057.6b34d32cdc0e49ed0ad287d5@gmail.com>
+In-Reply-To: <20140508124315.GC15426@ns203013.ovh.net>
+References: <20140505145512.133932fc3ee2247b660638c2@gmail.com>
+ <20140505122944.GA1567@mail.gnudd.com>
+ <20140508124315.GC15426@ns203013.ovh.net>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,48 +21,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: dts: i.MX53: tqma53: Readd barebox specifics
-To: barebox@lists.infradead.org
+Subject: Re: TODO: Rewrite network stack.
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: barebox@lists.infradead.org
 
-Some of the barebox specific changes that were added in commit
-e0316b4dd7d6169f1f6e15d97d7f605e05dc265e got lost during the switch to use
-upstream dtsi files in commit bb7cf71cff6369beb0b3010028541d5e7a69e4d2.
+On Thu, 8 May 2014 14:43:15 +0200
+Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com> wrote:
 
-Especially the memory size is important since we have two different memory
-sizes which have to be handled.
+> On 14:29 Mon 05 May     , Alessandro Rubini wrote:
+> > =
 
-Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
----
- arch/arm/dts/imx53-tqma53.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> > > The most notable is lwIP (http://savannah.nongnu.org/projects/lwip/).
+> > =
 
-diff --git a/arch/arm/dts/imx53-tqma53.dtsi b/arch/arm/dts/imx53-tqma53.dtsi
-index 1deb0ce..6880f2c 100644
---- a/arch/arm/dts/imx53-tqma53.dtsi
-+++ b/arch/arm/dts/imx53-tqma53.dtsi
-@@ -21,6 +21,14 @@
- 			status = "disabled";
- 		};
- 	};
-+
-+	memory {
-+		reg = <0x70000000 0x0>; /* Up to 1GiB */
-+	};
-+};
-+
-+&esdhc3 { /* EMMC */
-+	dsr = <0x100>;
- };
- 
- &iim {
--- 
-2.0.0.rc0
+> > I'm not happy at all about this code base, it looks quite ugly and
+> > old-fashioned. It's not the barebox kind of quality. I'd stay with the
+> > current code rather than lwip, despite the number of users.
+> > =
 
+> > If any, I'd evaluate picotcp (https://github.com/tass-belgium/picotcp).
+> =
+
+> uIP  too
+
+Hmm, uIP looks like a light version of lwip or have I missed something?
+
+> =
+
+> Best Regards,
+> J.
+> > =
+
+> > /alessandro
+> > =
+
+> > _______________________________________________
+> > barebox mailing list
+> > barebox@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
