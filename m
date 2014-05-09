@@ -1,17 +1,19 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x233.google.com ([2a00:1450:4010:c04::233])
+Received: from mail-pd0-f182.google.com ([209.85.192.182])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WifOC-0001p8-Og
- for barebox@lists.infradead.org; Fri, 09 May 2014 07:38:41 +0000
-Received: by mail-lb0-f179.google.com with SMTP id c11so5220217lbj.10
- for <barebox@lists.infradead.org>; Fri, 09 May 2014 00:38:14 -0700 (PDT)
-Date: Fri, 9 May 2014 11:49:04 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140509114904.c0ead31cdc00d98f9968cc38@gmail.com>
-In-Reply-To: <20140509062009.GR5858@pengutronix.de>
-References: <1397642260-32606-1-git-send-email-antonynpavlov@gmail.com>
- <20140509062009.GR5858@pengutronix.de>
-Mime-Version: 1.0
+ id 1WitlO-0004z6-Oj
+ for barebox@lists.infradead.org; Fri, 09 May 2014 22:59:35 +0000
+Received: by mail-pd0-f182.google.com with SMTP id v10so4171779pde.41
+ for <barebox@lists.infradead.org>; Fri, 09 May 2014 15:59:12 -0700 (PDT)
+Received: from [172.16.16.185] ([184.71.143.130])
+ by mx.google.com with ESMTPSA id tg9sm9509954pbc.29.2014.05.09.15.59.10
+ for <barebox@lists.infradead.org>
+ (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+ Fri, 09 May 2014 15:59:11 -0700 (PDT)
+Message-ID: <536D5DBF.7040708@exegin.com>
+Date: Fri, 09 May 2014 15:59:11 -0700
+From: Owen Kirby <osk@exegin.com>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,103 +22,175 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 0/5] ARM: initial support for RC Module UEMD SoCs and MB
- 77.07 board
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] Add readmem command to read values out of memory.
+To: barebox@lists.infradead.org
 
-T24gRnJpLCA5IE1heSAyMDE0IDA4OjIwOjA5ICswMjAwClNhc2NoYSBIYXVlciA8cy5oYXVlckBw
-ZW5ndXRyb25peC5kZT4gd3JvdGU6Cgo+IEFudG9ueSwKPiAKPiBUaGlzIHNlcmllcyBpcyBzdGls
-bCBpbiBteSBpbmJveCB3aXRoIG9ubHkgb25lIHNtYWxsIGlzc3VlLiBXaWxsIHlvdQo+IHVwZGF0
-ZSB0aGUgc2VyaWVzPwoKSSdsbCByZXNlbmQgdGhlIHNlcmllcyBuZXh0IHdlZWsuIEknbGwgdHJ5
-IHRvIGFkZCB1c2Igc3VwcG9ydCB0aGlzIHdlZWtlbmQuCgpJIGhhdmUgc29tZSBvdGhlciBhbG1v
-c3QgcmVhZHkgc2VyaWVzIGluIG15IHF1ZXVlOgoKKiBkaWdpYyBzZXJpZXMgKGRpZ2ljIHN1cHBv
-cnQgaXMgaW4gcWVtdS0yLjAgbm93KTsKKiBzd2l0Y2ggZGlyLTMyMCB0byBkZXZpY2UgdHJlZTsK
-KiBtaXBzIGNhY2hlICsgRUxGLWtleGVjOwoqIHBjaS4KCj4gCj4gT24gV2VkLCBBcHIgMTYsIDIw
-MTQgYXQgMDE6NTc6MzVQTSArMDQwMCwgQW50b255IFBhdmxvdiB3cm90ZToKPiA+IFJlc2VhcmNo
-IENlbnRyZSAiTW9kdWxlIiAoUkMgTW9kdWxlKSBpcwo+ID4gYSBSdXNzaWFuIGRldmVsb3BtZW50
-IGNvbXBhbnkgZGVzaWduaW5nCj4gPiBtaXhlZC1zaWduYWwgQVNJQ3MgYW5kIHJlYWwtdGltZSB2
-aWRlby1pbWFnZQo+ID4gcHJvY2Vzc2luZyBzeXN0ZW1zLgo+ID4gCj4gPiDQmjE4NznQpdCRMdCv
-IChBS0EgSzE4NzlIQjFZQSkgaXMgYSBVRU1EIGZhbWlseSBTb0MgdGhhdCBjb21iaW5lcwo+ID4g
-YSBEU1AgY29yZSBiYXNlZCBvbiB0aGUgTmV1cm9NYXRyaXgocikgZmFtaWx5Cj4gPiB3aXRoIGFu
-IEFSTSBhcmNoaXRlY3R1cmUgQ1BVIEFSTTExNzZKWkYtUyBjb3JlLgo+ID4gCj4gPiBUaGUgTUIg
-NzcuMDcgaXMgYSBzbWFsbCAoODB4ODAgbW0pIHNpbmdsZS1ib2FyZCBjb21wdXRlcgo+ID4gZGV2
-ZWxvcGVkIGluIFJ1c3NpYSBieSB0aGUgUkMgTW9kdWxlLgo+ID4gSXQgd2FzIGRldmVsb3BlZCBh
-cyBhbiBlZHVjYXRpb25hbCBib2FyZCBmb3Ig0JoxODc50KXQkTHQryBTb0MKPiA+IGNhcGFiaWxp
-dGllcyBkZW1vbnN0cmF0aW9uLgo+ID4gCj4gPiBTZWUgaHR0cDovL3d3dy5tb2R1bGUucnUvZW4v
-Y2F0YWxvZy9taWNyby9taWNyb19wYy8gZm9yIGRldGFpbHMuCj4gPiAKPiA+IE1CIDc3LjA3IGJh
-cmVib3ggSE9XVE8KPiA+ID09PT09PT09PT09PT09PT09PT09PT0KPiA+IAo+ID4gMC4gRG93bmxv
-YWQgYmFyZWJveCBzb3VyY2VzIGFuZCBidWlsZCBiYXJlYm94LmJpbiBpbWFnZQo+ID4gCj4gPiAg
-ICAgJCBnaXQgY2xvbmUgLWIgbmV4dC5tYjc3MDcuMjAxNDA0MTYgaHR0cHM6Ly9naXRodWIuY29t
-L2ZyYW50b255L2JhcmVib3ggYmFyZWJveC5tYjc3MDcKPiA+ICAgICAkIGNkIGJhcmVib3gubWI3
-NzA3Cj4gPiAgICAgJCBleHBvcnQgQVJDSD1hcm0KPiA+ICAgICAkIGV4cG9ydCBDUk9TU19DT01Q
-SUxFPTx5b3VyX0FSTV90b29sY2hhaW5fcHJlZml4Pgo+ID4gICAgICAgICAgZS5nLiBleHBvcnQg
-Q1JPU1NfQ09NUElMRT0vb3B0L2FybS0yMDEzLjExL2Jpbi9hcm0tbm9uZS1saW51eC1nbnVlYWJp
-LQo+ID4gICAgICQgbWFrZSBtb2R1bGUtbWI3NzA3X2RlZmNvbmZpZwo+ID4gICAgICQgbWFrZQo+
-ID4gCj4gPiBZb3Ugd2lsbCBnZXQgdGhlICdiYXJlYm94LmJpbicgZmlsZS4KPiA+IAo+ID4gCj4g
-PiAxLiBidXJuIE1CT09UIGJvb3Rsb2FkZXIgdG8gdGhlIGJvYXJkJ3MgUk9NOwo+ID4gCj4gPiAK
-PiA+IDIuIEJhcmVib3ggY2FuIGJlIHN0YXJ0ZWQgZnJvbSBNQk9PVCB1c2luZyB0ZnRwLgo+ID4g
-WW91IGhhdmUgdG8gc2V0dXAgdGZ0cC1zZXJ2ZXIgb24gaG9zdCAxOTIuMTY4LjAuMS4KPiA+IFB1
-dCB5b3VyIGJhcmVib3guYmluIHRvIHRmdHAtc2VydmVyIGRpcmVjdG9yeQo+ID4gKHVzdWFsIC90
-ZnRwYm9vdCBvciAvc3J2L3RmdHApLgo+ID4gCj4gPiBDb25uZWN0IHlvdXIgTUIgNzcuMDcgYm9h
-cmQgdG8geW91ciB0ZnRwLXNlcnZlciBuZXR3b3JrIHZpYQo+ID4gRXRoZXJuZXQgUko0NSBjb25u
-ZWN0b3Igb24gdGhlIGJvYXJkLgo+ID4gCj4gPiBDb25uZWN0IHRvINCaMTg3OdCl0JEx0K8ncyBV
-QVJUICh1c2UgIlNFUklBTCIgY29ubmVjdG9yIG9uIHRoZSBib29hcmQpCj4gPiB1c2luZyB5b3Vy
-IGZhdm9yaXRlIHRlcm1pbmFsIHByb2dyYW0uCj4gPiAKPiA+IAo+ID4gMy4gdHVybiBvbiB0aGUg
-Ym9hcmQsIHByZXNzIGFueSBrZXkgaW4geW91IHRlcm1pbmFsIHByb2dyYW0KPiA+IHRvIHN0b3Ag
-YXV0b2Jvb3QgYW5kIGxvYWQgYmFyZWJveC5iaW4gaW1hZ2UgdG8gdGhlIGJvYXJkJ3MgUkFNOgo+
-ID4gCj4gPiAgICAgTUJPT1QgIyBzZXQgYm9vdGZpbGUgYmFyZWJveC5iaW4KPiA+ICAgICBNQk9P
-VCAjIHRmdHBib290Cj4gPiAgICAgZ3JldGg6IGdyZXRoX2hhbHQKPiA+ICAgICBURlRQIFVzaW5n
-IEdSRVRIXzEwLzEwMCBkZXZpY2UKPiA+ICAgICBURlRQIHBhcmFtczogc2VydmVyIDE5Mi4xNjgu
-MC4xIG91cl9pcCAxOTIuMTY4LjAuNwo+ID4gICAgIFRGVFAgcGFyYW1zOiBmaWxlbmFtZSAnYmFy
-ZWJveC5iaW4nIGxvYWRfYWRkcmVzcyAweDQwMTAwMDAwCj4gPiAgICAgVEZUUCBMb2FkaW5nOiAj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIwo+ID4gICAgIFRGVFAgZG9uZQo+ID4gICAgIGdyZXRo
-OiBncmV0aF9oYWx0Cj4gPiAgICAgTUJPT1QgIwo+ID4gCj4gPiAKPiA+IDQuIHJ1biBiYXJlYm94
-Cj4gPiAKPiA+ICAgICBNQk9PVCAjIGdvIDB4NDAxMDAwMDAKPiA+IAo+ID4gCj4gPiBBbnRvbnkg
-UGF2bG92ICg1KToKPiA+ICAgQVJNOiBpbml0aWFsIHN1cHBvcnQgZm9yIFJDIE1vZHVsZSBVRU1E
-IFNvQ3MKPiA+ICAgQVJNOiB1ZW1kOiBhZGQgREVCVUdfTEwgc3VwcG9ydAo+ID4gICBBUk06IGR0
-czogYWRkIG1pbmltYWwg0JoxODc50KXQkTHQryBkZXZpY2V0cmVlIGZpbGUKPiA+ICAgQVJNOiB1
-ZW1kOiBhZGQgbWI3NzA3IGJvYXJkIHN1cHBvcnQKPiA+ICAgQVJNOiB1ZW1kOiBhZGQgbW9kdWxl
-LW1iNzcwN19kZWZjb25maWcKPiA+IAo+ID4gIGFyY2gvYXJtL0tjb25maWcgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICA2ICsrKysrCj4gPiAgYXJjaC9hcm0vTWFrZWZpbGUgICAgICAgICAg
-ICAgICAgICAgICAgICAgIHwgIDEgKwo+ID4gIGFyY2gvYXJtL2JvYXJkcy9NYWtlZmlsZSAgICAg
-ICAgICAgICAgICAgICB8ICAxICsKPiA+ICBhcmNoL2FybS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9N
-YWtlZmlsZSAgICAgfCAgMSArCj4gPiAgYXJjaC9hcm0vYm9hcmRzL21vZHVsZS1tYjc3MDcvYm9h
-cmQuYyAgICAgIHwgMjcgKysrKysrKysrKysrKysrKysrKwo+ID4gIGFyY2gvYXJtL2JvYXJkcy9t
-b2R1bGUtbWI3NzA3L2xvd2xldmVsLmMgICB8IDM0ICsrKysrKysrKysrKysrKysrKysrKysrCj4g
-PiAgYXJjaC9hcm0vY29uZmlncy9tb2R1bGUtbWI3NzA3X2RlZmNvbmZpZyAgIHwgNDMgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrCj4gPiAgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRz
-aSAgICAgICAgICAgICAgIHwgMTkgKysrKysrKysrKysrKwo+ID4gIGFyY2gvYXJtL2R0cy9tb2R1
-bGUtbWI3NzA3LmR0cyAgICAgICAgICAgICB8IDE2ICsrKysrKysrKysrCj4gPiAgYXJjaC9hcm0v
-bWFjaC11ZW1kL0tjb25maWcgICAgICAgICAgICAgICAgIHwgMTYgKysrKysrKysrKysKPiA+ICBh
-cmNoL2FybS9tYWNoLXVlbWQvTWFrZWZpbGUgICAgICAgICAgICAgICAgfCAgMSArCj4gPiAgYXJj
-aC9hcm0vbWFjaC11ZW1kL2luY2x1ZGUvbWFjaC9kZWJ1Z19sbC5oIHwgNDEgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKwo+ID4gIGFyY2gvYXJtL21hY2gtdWVtZC9yZXNldC5jICAgICAgICAg
-ICAgICAgICB8IDI0ICsrKysrKysrKysrKysrKysrCj4gPiAgMTMgZmlsZXMgY2hhbmdlZCwgMjMw
-IGluc2VydGlvbnMoKykKPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9hcmRzL21v
-ZHVsZS1tYjc3MDcvTWFrZWZpbGUKPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC9hcm0vYm9h
-cmRzL21vZHVsZS1tYjc3MDcvYm9hcmQuYwo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL2Fy
-bS9ib2FyZHMvbW9kdWxlLW1iNzcwNy9sb3dsZXZlbC5jCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0
-IGFyY2gvYXJtL2NvbmZpZ3MvbW9kdWxlLW1iNzcwN19kZWZjb25maWcKPiA+ICBjcmVhdGUgbW9k
-ZSAxMDA2NDQgYXJjaC9hcm0vZHRzL2sxODc5aGIxeWEuZHRzaQo+ID4gIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBhcmNoL2FybS9kdHMvbW9kdWxlLW1iNzcwNy5kdHMKPiA+ICBjcmVhdGUgbW9kZSAxMDA2
-NDQgYXJjaC9hcm0vbWFjaC11ZW1kL0tjb25maWcKPiA+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJj
-aC9hcm0vbWFjaC11ZW1kL01ha2VmaWxlCj4gPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvYXJt
-L21hY2gtdWVtZC9pbmNsdWRlL21hY2gvZGVidWdfbGwuaAo+ID4gIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBhcmNoL2FybS9tYWNoLXVlbWQvcmVzZXQuYwo+ID4gCj4gPiAtLSAKPiA+IDEuOS4wCj4gPiAK
-PiA+IAo+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-PiA+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gPiBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-PiA+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo+
-IAo+IC0tIAo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICB8Cj4gSW5kdXN0cmlhbCBMaW51eCBTb2x1dGlvbnMg
-ICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwKPiBQZWluZXIg
-U3RyLiA2LTgsIDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgfCBQaG9uZTogKzQ5LTUxMjEtMjA2
-OTE3LTAgICAgfAo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
-IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8CgoKLS0gCi0twqAKQmVzdCByZWdhcmRzLArC
-oCBBbnRvbnkgUGF2bG92CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcK
-aHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
+From 299ffc6a961c807b118605bdd9e736c7b096fec9 Mon Sep 17 00:00:00 2001
+From: Owen Kirby <osk@exegin.com>
+Date: Fri, 9 May 2014 15:14:30 -0700
+Subject: [PATCH] Add readmem command to read values out of memory.
+
+I was trying to do something conditionally from a shell script based on the type
+of image present in flash, and finding it rather cumbersome to do. So I added a
+command that reads values out of memory and into shell variables as hexadecimal.
+
+Signed-off-by: Owen Kirby <osk@exegin.com>
+---
+ commands/Kconfig   |    8 ++++
+ commands/Makefile  |    1 +
+ commands/readmem.c |  103 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 112 insertions(+)
+ create mode 100644 commands/readmem.c
+
+diff --git a/commands/Kconfig b/commands/Kconfig
+index cc014f3..52fa0df 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -367,6 +367,14 @@ config CMD_MEMSET
+ 	  the memset command allows to set regions of memory and files to
+ 	  a specific value.
+ 
++config CMD_READMEM
++	tristate
++	default y
++	select CMD_MEMORY
++	prompt "readmem"
++	help
++	  the readmem command reads values from memory into a shell variable.
++
+ config CMD_CRC
+ 	tristate
+ 	select CRC32
+diff --git a/commands/Makefile b/commands/Makefile
+index e463031..a01e642 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -13,6 +13,7 @@ obj-$(CONFIG_CMD_MW)		+= mw.o
+ obj-$(CONFIG_CMD_MEMCMP)	+= memcmp.o
+ obj-$(CONFIG_CMD_MEMCPY)	+= memcpy.o
+ obj-$(CONFIG_CMD_MEMSET)	+= memset.o
++obj-$(CONFIG_CMD_READMEM)	+= readmem.o
+ obj-$(CONFIG_CMD_EDIT)		+= edit.o
+ obj-$(CONFIG_CMD_EXEC)		+= exec.o
+ obj-$(CONFIG_CMD_SLEEP)		+= sleep.o
+diff --git a/commands/readmem.c b/commands/readmem.c
+new file mode 100644
+index 0000000..7070637
+--- /dev/null
++++ b/commands/readmem.c
+@@ -0,0 +1,103 @@
++/*
++ * (C) Copyright 2014
++ * Owen Kirby, Exegin Technologies Limited, osk@exegin.com
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++
++#include <common.h>
++#include <command.h>
++#include <init.h>
++#include <driver.h>
++#include <malloc.h>
++#include <errno.h>
++#include <fs.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <linux/stat.h>
++#include <xfuncs.h>
++#include <environment.h>
++
++extern char *mem_rw_buf;
++
++static int do_readmem(int argc, char *argv[])
++{
++	loff_t src;
++	int	ret = 0;
++	int fd;
++	char *filename = "/dev/mem";
++	char *varname;
++	int mode = O_RWSIZE_4;
++	int swab = 0;
++
++	if (argc < 2)
++		return COMMAND_ERROR_USAGE;
++
++	if (mem_parse_options(argc, argv, "bwls:x", &mode, &filename, NULL,
++			&swab) < 0)
++		return 1;
++
++	if (optind + 2 > argc)
++		return COMMAND_ERROR_USAGE;
++
++	src = strtoull_suffix(argv[optind], NULL, 0);
++	varname = argv[optind+1];
++	fd = open_and_lseek(filename, mode | O_RDONLY, src);
++	if (fd < 0)
++		return 1;
++
++	/* Read the magic var. */
++	if (read(fd, mem_rw_buf, mode >> O_RWSIZE_SHIFT) < 0) {
++		perror("read");
++		ret = 1;
++	}
++	/* Set the environment variable. */
++	else if (mode == O_RWSIZE_4) {
++		u32 res = *(uint *)mem_rw_buf;
++		char buf[sizeof(res)*2+1];
++		sprintf(buf, "%08x", swab ? __swab32(res) : res);
++		setenv(varname, buf);
++	} else if (mode == O_RWSIZE_2) {
++		u16 res = *(ushort *)mem_rw_buf;
++		char buf[sizeof(res)*2+1];
++		sprintf(buf, "%04x", swab ? __swab16(res) : res);
++		setenv(varname, buf);
++	} else {
++		char buf[sizeof(u_char)*2+1];
++		sprintf(buf, "%02x", *(u_char *)mem_rw_buf);
++		setenv(varname, buf);
++	}
++	close(fd);
++	return ret;
++}
++
++static const __maybe_unused char cmd_readmem_help[] =
++"Usage: readmem [OPTIONS] <src> VAR\n"
++"\n"
++"options:\n"
++"  -s <file>   source file (default /dev/mem)\n"
++"  -b          read a byte\n"
++"  -w          read a halfword (16bit)\n"
++"  -l          read a word (32bit)\n"
++"  -x          swap bytes\n"
++"\n"
++"read a magic value from <src> into variable VAR.\n";
++
++BAREBOX_CMD_START(readmem)
++	.cmd		= do_readmem,
++	.usage		= "read magic values from memory",
++	BAREBOX_CMD_HELP(cmd_readmem_help)
++BAREBOX_CMD_END
++
+-- 
+1.7.9.5
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
