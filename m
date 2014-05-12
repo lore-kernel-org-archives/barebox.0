@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WjjGu-0001Hh-6g
- for barebox@lists.infradead.org; Mon, 12 May 2014 05:59:33 +0000
-Date: Mon, 12 May 2014 07:59:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140512055910.GE5858@pengutronix.de>
-References: <536D5DBF.7040708@exegin.com>
+Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wjk3j-0002FO-Al
+ for barebox@lists.infradead.org; Mon, 12 May 2014 06:49:59 +0000
+Received: by mail-wi0-f172.google.com with SMTP id hi2so3903581wib.11
+ for <barebox@lists.infradead.org>; Sun, 11 May 2014 23:49:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <536D5DBF.7040708@exegin.com>
+In-Reply-To: <20140512043944.GW5858@pengutronix.de>
+References: <1399761388-1984-1-git-send-email-franck.jullien@gmail.com>
+ <20140512043944.GW5858@pengutronix.de>
+Date: Mon, 12 May 2014 08:49:35 +0200
+Message-ID: <CAJfOKBxz=EhaqBoumBGe41Bm1Ruur+e9hfNAvdEzkkdtQEwFmA@mail.gmail.com>
+From: Franck Jullien <franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +24,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Add readmem command to read values out of memory.
-To: Owen Kirby <osk@exegin.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH] Kconfig: Fix menuconfig build
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox <barebox@lists.infradead.org>
 
-On Fri, May 09, 2014 at 03:59:11PM -0700, Owen Kirby wrote:
-> From 299ffc6a961c807b118605bdd9e736c7b096fec9 Mon Sep 17 00:00:00 2001
-> From: Owen Kirby <osk@exegin.com>
-> Date: Fri, 9 May 2014 15:14:30 -0700
-> Subject: [PATCH] Add readmem command to read values out of memory.
-> 
-> I was trying to do something conditionally from a shell script based on the type
-> of image present in flash, and finding it rather cumbersome to do. So I added a
-> command that reads values out of memory and into shell variables as hexadecimal.
+2014-05-12 6:39 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
+> Hi Franck,
+>
+> On Sun, May 11, 2014 at 12:36:28AM +0200, Franck Jullien wrote:
+>> Using Centos 6.5 with x86_64 architecture, "make menuconfig" commands
+>> results in the following:
+>>
+>>   HOSTLD  scripts/kconfig/mconf
+>> /opt/centos/devtoolset-1.1/root/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/ld:
+>> scripts/kconfig/lxdialog/checklist.o: undefined reference to symbol
+>> 'acs_map'
+>> /opt/centos/devtoolset-1.1/root/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/ld:
+>> note: 'acs_map' is defined in DSO /lib64/libtinfo.so.5 so try adding it
+>> to the linker command line
+>> /lib64/libtinfo.so.5: could not read symbols: invalid operation
+>> collect2: error: ld returned 1 exit status
+>> make[1]: *** [scripts/kconfig/mconf] Error 1
+>> make: *** [menuconfig] Error 2
+>>
+>> When "-ltinfo" is added to the LDFLAGS symbol as suggested by the linker,
+>> it builds and runs correctly.
+>
+> This issue came up over a year ago and the patch is still not upstream
+> in Linux.
 
-Such a functionality might come in handy and indeed it seems to be hard
-to archieve with other commands.
+I know and I just stole this patch from google search ;)
 
-Have you looked into the filetype stuff? This could solve your problem
-without having to interpret hex values from shell. See common/filetype.c
-and commands/filetype.c.
+Do you have the same issue when compiling Linux aswell?
+>
+> I could apply this, but it may happen that the change gets lost with the
+> next Kconfig update. So it's good when the issue is fixed upstream.
+>
+> Sascha
+>
 
-> +config CMD_READMEM
-> +	tristate
-> +	default y
+It does work with Linux and kconfig Makefiles are identical (?!).
+So drop this patch and I'll try to do some more dig up.
 
-No default y please, just drop this line.
+Franck.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+>> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+>> ---
+>>  scripts/kconfig/Makefile |    1 +
+>>  1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+>> index 844bc9d..8bdd7bc 100644
+>> --- a/scripts/kconfig/Makefile
+>> +++ b/scripts/kconfig/Makefile
+>> @@ -218,6 +218,7 @@ HOSTCFLAGS_gconf.o        = `pkg-config --cflags gtk+-2.0 gmodule-2.0 libglade-2.0` \
+>>                            -Wno-missing-prototypes
+>>
+>>  HOSTLOADLIBES_mconf   = $(shell $(CONFIG_SHELL) $(check-lxdialog) -ldflags $(HOSTCC))
+>> +HOSTLOADLIBES_mconf += -ltinfo
+>>
+>>  HOSTLOADLIBES_nconf  = $(shell \
+>>                               pkg-config --libs menu panel ncurses 2>/dev/null \
+>> --
+>> 1.7.1
+>>
+>>
+>> _______________________________________________
+>> barebox mailing list
+>> barebox@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/barebox
+>>
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
