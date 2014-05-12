@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjpHk-0003Fo-Fu
+ id 1WjpHk-0003EH-G0
  for barebox@lists.infradead.org; Mon, 12 May 2014 12:24:49 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 46118BF0F6
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 14:24:26 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 67C88BF0F4
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 14:24:23 +0200 (CEST)
 From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 12 May 2014 14:24:19 +0200
-Message-Id: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
-MIME-Version: 1.0
+Date: Mon, 12 May 2014 14:24:22 +0200
+Message-Id: <1399897462-21433-4-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
+References: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,56 +19,42 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] PCM051: Update RAM timings
+Subject: [PATCH 4/4] phycore-am335x: Added bbu nand xloadslots handler
 To: barebox@lists.infradead.org
 
-RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpVcGRhdGVkIHRpbWluZ3Mg
-Zm9yIG5ldyBNVDQxSjI1Nk0xNkhBMTVFSVQgUkFNLgpUaW1pbmdzIGFyZSBiYWNrd2FyZCBjb21w
-YXRpYmxlIHRvIHRoZSBNVDQxSjI1Nk04SFgxNUUgUkFNcwoKU2lnbmVkLW9mZi1ieTogVGVyZXNh
-IEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+ClNpZ25lZC1vZmYtYnk6IFdhZGltIEVnb3JvdiA8
-dy5lZ29yb3ZAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1h
-bTMzNXgvbG93bGV2ZWwuYyB8ICAgMjggKysrKysrKysrKy0tLS0tLS0tLS0tCiAxIGZpbGVzIGNo
-YW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Fy
-Y2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYyBiL2FyY2gvYXJt
-L2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYwppbmRleCBmMDQ5NjFkLi4y
-YmFkY2MxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtYW0zMzV4
-L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9s
-b3dsZXZlbC5jCkBAIC0xNSw3ICsxNSw3IEBACiAjaW5jbHVkZSA8bWFjaC93ZHQuaD4KICNpbmNs
-dWRlIDxkZWJ1Z19sbC5oPgogCi1zdGF0aWMgY29uc3Qgc3RydWN0IGFtMzN4eF9jbWRfY29udHJv
-bCBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9jbWQgPSB7CitzdGF0aWMgY29uc3Qgc3RydWN0IGFt
-MzN4eF9jbWRfY29udHJvbCBNVDQxSjI1Nk0xNkhBMTVFSVRfMXg1MTJNQl9jbWQgPSB7CiAJLnNs
-YXZlX3JhdGlvMCA9IDB4NDAsCiAJLmRsbF9sb2NrX2RpZmYwID0gMHgwLAogCS5pbnZlcnRfY2xr
-b3V0MCA9IDB4MSwKQEAgLTI3LDIzICsyNywyMSBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGFtMzN4
-eF9jbWRfY29udHJvbCBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9jbWQgPSB7CiAJLmludmVydF9j
-bGtvdXQyID0gMHgxLAogfTsKIAotc3RhdGljIGNvbnN0IHN0cnVjdCBhbTMzeHhfZW1pZl9yZWdz
-IE1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X3JlZ3MgPSB7CitzdGF0aWMgY29uc3Qgc3RydWN0IGFt
-MzN4eF9lbWlmX3JlZ3MgTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfcmVncyA9IHsKIAkuZW1p
-Zl9yZWFkX2xhdGVuY3kJPSAweDYsCi0JLmVtaWZfdGltMQkJPSAweDA2NjhBMzlCLAotCS5lbWlm
-X3RpbTIJCT0gMHgyNjMzN0ZEQSwKLQkuZW1pZl90aW0zCQk9IDB4NTAxRjgzMEYsCi0JLnNkcmFt
-X2NvbmZpZwkJPSAweDYxQzA0ODMyLAorCS5lbWlmX3RpbTEJCT0gMHgwODg4QTM5QiwKKwkuZW1p
-Zl90aW0yCQk9IDB4MjY1MTdGREEsCisJLmVtaWZfdGltMwkJPSAweDUwMUY4NEVGLAorCS5zZHJh
-bV9jb25maWcJCT0gMHg2MUMwNEIzMiwKIAkuenFfY29uZmlnCQk9IDB4NTAwNzRCRTQsCiAJLnNk
-cmFtX3JlZl9jdHJsCQk9IDB4MDAwMDA5M0IsCiB9OwogCi1zdGF0aWMgY29uc3Qgc3RydWN0IGFt
-MzN4eF9kZHJfZGF0YSBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9kYXRhID0geworc3RhdGljIGNv
-bnN0IHN0cnVjdCBhbTMzeHhfZGRyX2RhdGEgTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfZGF0
-YSA9IHsKIAkucmRfc2xhdmVfcmF0aW8wCT0gMHgzQiwKLQkud3JfZHFzX3NsYXZlX3JhdGlvMAk9
-IDB4ODUsCi0JLmZpZm9fd2Vfc2xhdmVfcmF0aW8wCT0gMHgxMDAsCi0JLndyX3NsYXZlX3JhdGlv
-MAk9IDB4QzEsCi0JLnVzZV9yYW5rMF9kZWxheQk9IDB4MDEsCi0JLmRsbF9sb2NrX2RpZmYwCQk9
-IDB4MCwKKwkud3JfZHFzX3NsYXZlX3JhdGlvMAk9IDB4M0IsCisJLmZpZm9fd2Vfc2xhdmVfcmF0
-aW8wCT0gMHg5NiwKKwkud3Jfc2xhdmVfcmF0aW8wCT0gMHg3NiwKIH07CiAKIGV4dGVybiBjaGFy
-IF9fZHRiX2FtMzM1eF9waHl0ZWNfcGh5Y29yZV9zdGFydFtdOwpAQCAtNzIsOSArNzAsOSBAQCBz
-dGF0aWMgbm9pbmxpbmUgdm9pZCBwY20wNTFfYm9hcmRfaW5pdCh2b2lkKQogCiAJYW0zM3h4X3Bs
-bF9pbml0KE1QVVBMTF9NXzYwMCwgMjUsIEREUlBMTF9NXzMwMyk7CiAKLQlhbTMzNXhfc2RyYW1f
-aW5pdCgweDE4QiwgJk1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X2NtZCwKLQkJCSZNVDQxSjI1Nk04
-SFgxNUVfMngyNTZNOF9yZWdzLAotCQkJJk1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X2RhdGEpOwor
-CWFtMzM1eF9zZHJhbV9pbml0KDB4MThCLCAmTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfY21k
-LAorCQkJJk1UNDFKMjU2TTE2SEExNUVJVF8xeDUxMk1CX3JlZ3MsCisJCQkmTVQ0MUoyNTZNMTZI
-QTE1RUlUXzF4NTEyTUJfZGF0YSk7CiAKIAlhbTMzeHhfdWFydDBfc29mdF9yZXNldCgpOwogCWFt
-MzN4eF9lbmFibGVfdWFydDBfcGluX211eCgpOwotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
-cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2JhcmVib3gK
+Added bbu nand xloadslots handler to phycore-am335x.
+
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+ arch/arm/boards/phytec-phycore-am335x/board.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/boards/phytec-phycore-am335x/board.c b/arch/arm/boards/phytec-phycore-am335x/board.c
+index 59de42b..d790d97 100644
+--- a/arch/arm/boards/phytec-phycore-am335x/board.c
++++ b/arch/arm/boards/phytec-phycore-am335x/board.c
+@@ -69,6 +69,11 @@ static int pcm051_devices_init(void)
+ 	armlinux_set_architecture(MACH_TYPE_PCM051);
+ 
+ 	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
++	am33xx_bbu_nand_xloadslots_register_handler("xloadslots",
++		"/dev/nand0.xload.bb"
++		",/dev/nand0.xload_backup1.bb"
++		",/dev/nand0.xload_backup2.bb"
++		",/dev/nand0.xload_backup3.bb");
+ 
+ 	return 0;
+ }
+-- 
+1.7.0.4
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
