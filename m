@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJx-0004Ip-Jc
- for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:48 +0000
+ id 1WjkJx-0004I6-Jl
+ for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:47 +0000
 Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id A6A5518B4279
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:58 +0200 (CEST)
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 042DA18B4277
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:57 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:07:54 +0200
-Message-Id: <1399878486-16086-14-git-send-email-dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:07:52 +0200
+Message-Id: <1399878486-16086-12-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,60 +24,74 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 13/25] mci: tegra: apply pad autocalibration on T30
+Subject: [PATCH 11/25] ARM: tegra: beaver: activate sdmmc1 voltage rail
 To: barebox@lists.infradead.org
 
-Needed for SD cards connected to sdmmc1 or sdmmc3
-to work properly.
+In order to get the SD card solt working.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/tegra-sdmmc.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+One day we might move this to a regulator, but now
+isn't the time.
+---
+ arch/arm/boards/nvidia-beaver/Makefile |  1 +
+ arch/arm/boards/nvidia-beaver/board.c  | 38 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 39 insertions(+)
+ create mode 100644 arch/arm/boards/nvidia-beaver/board.c
 
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index 0ea0b5c..6345157 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -59,6 +59,14 @@
- #define TEGRA_SDMMC_INT_SIG_EN				0x038
- #define  TEGRA_SDMMC_INT_SIG_EN_XFER_COMPLETE		(1 << 1)
- 
-+#define TEGRA_SDMMC_SDMEMCOMPPADCTRL			0x1e0
-+#define  TEGRA_SDMMC_SDMEMCOMPPADCTRL_VREF_SEL_SHIFT	0
+diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
+index d2d2173..2b6c09e 100644
+--- a/arch/arm/boards/nvidia-beaver/Makefile
++++ b/arch/arm/boards/nvidia-beaver/Makefile
+@@ -2,3 +2,4 @@ CFLAGS_pbl-entry.o := \
+ 	-mcpu=arm7tdmi -march=armv4t \
+ 	-fno-tree-switch-conversion -fno-jump-tables
+ lwl-y += entry.o
++obj-y += board.o
+diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
+new file mode 100644
+index 0000000..e87594d
+--- /dev/null
++++ b/arch/arm/boards/nvidia-beaver/board.c
+@@ -0,0 +1,38 @@
++/*
++ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
 +
-+#define TEGRA_SDMMC_AUTO_CAL_CONFIG			0x1e4
-+#define  TEGRA_SDMMC_AUTO_CAL_CONFIG_PU_OFFSET_SHIFT	0
-+#define  TEGRA_SDMMC_AUTO_CAL_CONFIG_PD_OFFSET_SHIFT	8
-+#define  TEGRA_SDMMC_AUTO_CAL_CONFIG_ENABLE		(1 << 29)
++#include <common.h>
++#include <init.h>
++#include <i2c/i2c.h>
 +
- struct tegra_sdmmc_host {
- 	struct mci_host		mci;
- 	void __iomem		*regs;
-@@ -333,6 +341,23 @@ static int tegra_sdmmc_init(struct mci_host *mci, struct device_d *dev)
- 	val |= TEGRA_SDMMC_PWR_CNTL_33_V | TEGRA_SDMMC_PWR_CNTL_SD_BUS;
- 	writel(val, regs + TEGRA_SDMMC_PWR_CNTL);
- 
-+	/* sdmmc1 and sdmmc3 on T30 need a bit of padctrl init */
-+	if (of_device_is_compatible(mci->hw_dev->device_node,
-+			"nvidia,tegra30-sdhci") &&
-+			((u32)regs == 0x78000000 || (u32)regs == 78000400)) {
-+		val = readl(regs + TEGRA_SDMMC_SDMEMCOMPPADCTRL);
-+		val &= 0xfffffff0;
-+		val |= 0x7 << TEGRA_SDMMC_SDMEMCOMPPADCTRL_VREF_SEL_SHIFT;
-+		writel(val, regs + TEGRA_SDMMC_SDMEMCOMPPADCTRL);
++static int nvidia_beaver_devices_init(void)
++{
++	struct i2c_client client;
++	u8 data;
 +
-+		val = readl(regs + TEGRA_SDMMC_AUTO_CAL_CONFIG);
-+		val &= 0xffff0000;
-+		val |= (0x62 << TEGRA_SDMMC_AUTO_CAL_CONFIG_PU_OFFSET_SHIFT) |
-+		       (0x70 << TEGRA_SDMMC_AUTO_CAL_CONFIG_PD_OFFSET_SHIFT) |
-+		       TEGRA_SDMMC_AUTO_CAL_CONFIG_ENABLE;
-+		writel(val, regs + TEGRA_SDMMC_AUTO_CAL_CONFIG);
-+	}
++	if (!of_machine_is_compatible("nvidia,beaver"))
++		return 0;
 +
- 	/* setup signaling */
- 	writel(0xffffffff, regs + TEGRA_SDMMC_INT_STAT_EN);
- 	writel(0xffffffff, regs + TEGRA_SDMMC_INT_SIG_EN);
++	client.adapter = i2c_get_adapter(4);
++	client.addr = 0x2d;
++
++	/* TPS659110: LDO5_REG = 3.3v, ACTIVE to SDMMC1 */
++	data = 0x65;
++	i2c_write_reg(&client, 0x32, &data, 1);
++
++	return 0;
++}
++device_initcall(nvidia_beaver_devices_init);
 -- 
 1.9.0
 
