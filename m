@@ -1,20 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.kundenserver.de ([212.227.17.10])
+Received: from mail-yk0-x230.google.com ([2607:f8b0:4002:c07::230])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wjpno-0003ql-5X
- for barebox@lists.infradead.org; Mon, 12 May 2014 12:57:57 +0000
-Date: Mon, 12 May 2014 14:57:12 +0200 (CEST)
-From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Message-ID: <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
-In-Reply-To: <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
-References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
- <20140424065848.GV5858@pengutronix.de>
- <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
- <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
- <1398984618.20734.13.camel@mars>
- <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
+ id 1Wjqyq-0003lV-5p
+ for barebox@lists.infradead.org; Mon, 12 May 2014 14:13:24 +0000
+Received: by mail-yk0-f176.google.com with SMTP id q9so5933525ykb.7
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 07:13:02 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+In-Reply-To: <1399897462-21433-4-git-send-email-w.egorov@phytec.de>
+References: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
+ <1399897462-21433-4-git-send-email-w.egorov@phytec.de>
+Date: Mon, 12 May 2014 16:13:02 +0200
+Message-ID: <CAOpc7mFqWZ4sAimHvEL93_3BG4hR0RXwuWYnnmykVovJ4Lj2Xw@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,23 +20,21 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New driver crashes with "unable to handle paging request"
-To: Christoph Fritz <chf.fritz@googlemail.com>
+Subject: Re: [PATCH 4/4] phycore-am335x: Added bbu nand xloadslots handler
+To: Wadim Egorov <w.egorov@phytec.de>
 Cc: barebox@lists.infradead.org
 
-RGVhciBDaHJpc3RvcGgsCmp1c3QgYSBzaHkgcXVlc3Rpb246IFdlcmUgeW91IGFscmVhZHkgYWJs
-ZSB0byBwcmVwYXJlIGEgZmlyc3QgcGF0Y2hzZXQ/CgpLaW5kIHJlZ2FyZHMsCsKgUm9sZgoKCj4g
-Um9sZiBFdmVycy1GaXNjaGVyIDxlbWJlZGRlZDI0QGV2ZXJzLWZpc2NoZXIuZGU+IGhhdCBhbSA1
-LiBNYWkgMjAxNCB1bSAxNDoxMwo+IGdlc2NocmllYmVuOgo+Cj4KPiBIaSBDaHJpc3RvcGgsCj4K
-PiA+IENocmlzdG9waCBGcml0eiA8Y2hmLmZyaXR6QGdvb2dsZW1haWwuY29tPiBoYXQgYW0gMi4g
-TWFpIDIwMTQgdW0gMDA6NTAKPiA+IGdlc2NocmllYmVuOgo+ID4KPiA+Cj4gPiBIaSBSb2xmLAo+
-ID4KPiA+IEkgaGF2ZSBwb3J0ZWQgbXVzYiAoaG9zdC1zdXBwb3J0KSBmcm9tIHUtYm9vdCB0byBi
-YXJlYm94LiBJJ2xsIHNlbmQgYQo+ID4gcGF0Y2hzZXQgaW4gdGhlIG5leHQgZGF5cy4KPiA+Cj4K
-PiB0aGF0IHNvdW5kcyB2ZXJ5IGdvb2QuIFRoYW5rIHlvdSB2ZXJ5IG11Y2ggaW4gYWR2YW5jZSEK
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
-bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
+> Added bbu nand xloadslots handler to phycore-am335x.
+
+I'm currently reworking help texts, and I found that in barebox
+abbreviations like RAM, NAND, SRAM are often written in lower-case.
+That's just stylistic, I know, but still it sticks out a bit.
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
