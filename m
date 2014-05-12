@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJz-0004Io-Dq
- for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:49 +0000
+ id 1WjkJx-0004J4-Jn
+ for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:47 +0000
 Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id BF14118B4274
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:05:05 +0200 (CEST)
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 8E3A018B425E
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:55 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:08:03 +0200
-Message-Id: <1399878486-16086-23-git-send-email-dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:07:45 +0200
+Message-Id: <1399878486-16086-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,127 +24,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 22/25] images: tegra: build all Toradex Colibri images
+Subject: [PATCH 04/25] clk: tegra: reset UARTS from clock controller
 To: barebox@lists.infradead.org
 
-Six images for the the 256MB and 512MB version with
-different boot sources (MMC, NAND [different chips on
-pre-/production modules]).
+The console devices are the only ones that can't
+use the reset controller properly, as they get
+registered from platform code. Reset those devices
+from the clock controller.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/toradex-colibri-t20/entry.c | 42 ++++++++++++++++++++++++++++-
- images/Makefile.tegra                       | 40 ++++++++++++++++++++++++---
- 2 files changed, 78 insertions(+), 4 deletions(-)
+ drivers/clk/tegra/clk-tegra20.c |  1 +
+ drivers/clk/tegra/clk-tegra30.c |  1 +
+ drivers/clk/tegra/clk.c         | 11 +++++++++++
+ drivers/clk/tegra/clk.h         |  2 ++
+ 4 files changed, 15 insertions(+)
 
-diff --git a/arch/arm/boards/toradex-colibri-t20/entry.c b/arch/arm/boards/toradex-colibri-t20/entry.c
-index 886613f..695862c 100644
---- a/arch/arm/boards/toradex-colibri-t20/entry.c
-+++ b/arch/arm/boards/toradex-colibri-t20/entry.c
-@@ -22,7 +22,7 @@
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index 7c7a915..cb0a571 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -348,6 +348,7 @@ static int tegra20_car_probe(struct device_d *dev)
+ 			    &clk_data);
  
- extern char __dtb_tegra20_colibri_iris_start[];
+ 	tegra_clk_init_rst_controller(car_base, dev->device_node, 3 * 32);
++	tegra_clk_reset_uarts();
  
--ENTRY_FUNCTION(start_toradex_colibri_t20_iris, r0, r1, r2)
-+static void common_toradex_colibri_t20_iris_start(void)
- {
- 	uint32_t fdt;
+ 	return 0;
+ }
+diff --git a/drivers/clk/tegra/clk-tegra30.c b/drivers/clk/tegra/clk-tegra30.c
+index adb5824..9536288 100644
+--- a/drivers/clk/tegra/clk-tegra30.c
++++ b/drivers/clk/tegra/clk-tegra30.c
+@@ -342,6 +342,7 @@ static int tegra30_car_probe(struct device_d *dev)
+ 			    &clk_data);
  
-@@ -32,3 +32,43 @@ ENTRY_FUNCTION(start_toradex_colibri_t20_iris, r0, r1, r2)
+ 	tegra_clk_init_rst_controller(car_base, dev->device_node, 6 * 32);
++	tegra_clk_reset_uarts();
  
- 	tegra_avp_reset_vector(fdt);
+ 	return 0;
+ }
+diff --git a/drivers/clk/tegra/clk.c b/drivers/clk/tegra/clk.c
+index a6b81d0..cb4d920 100644
+--- a/drivers/clk/tegra/clk.c
++++ b/drivers/clk/tegra/clk.c
+@@ -187,3 +187,14 @@ void tegra_clk_init_rst_controller(void __iomem *base, struct device_node *np,
+ 	rst_ctlr.nr_resets = num;
+ 	reset_controller_register(&rst_ctlr);
  }
 +
-+ENTRY_FUNCTION(start_colibri_t20_256_usbload, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
++void tegra_clk_reset_uarts(void) {
++	int i;
++	int console_device_ids[] = {6, 7, 55, 65, 66};
 +
-+ENTRY_FUNCTION(start_colibri_t20_256_hsmmc, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_256_v11_nand, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_256_v12_nand, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_512_usbload, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_512_hsmmc, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_512_v11_nand, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-+
-+ENTRY_FUNCTION(start_colibri_t20_512_v12_nand, r0, r1, r2)
-+{
-+	common_toradex_colibri_t20_iris_start();
-+}
-diff --git a/images/Makefile.tegra b/images/Makefile.tegra
-index 7dc44a2..75efc68 100644
---- a/images/Makefile.tegra
-+++ b/images/Makefile.tegra
-@@ -26,9 +26,43 @@ pblx-$(CONFIG_MACH_TOSHIBA_AC100) += start_toshiba_ac100
- FILE_barebox-tegra20-toshiba-ac100.img = start_toshiba_ac100.pblx
- image-$(CONFIG_MACH_TOSHIBA_AC100) += barebox-tegra20-toshiba-ac100.img
++	for (i = 0; i < ARRAY_SIZE(console_device_ids); i++) {
++		rst_ops.assert(&rst_ctlr, console_device_ids[i]);
++		udelay(2);
++		rst_ops.deassert(&rst_ctlr, console_device_ids[i]);
++	}
++};
+diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
+index 29d5249..6ce9f7e 100644
+--- a/drivers/clk/tegra/clk.h
++++ b/drivers/clk/tegra/clk.h
+@@ -160,3 +160,5 @@ struct tegra_clk_periph_regs {
  
--pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_toradex_colibri_t20_iris
--FILE_barebox-tegra20-toradex-colibri-t20-iris.img = start_toradex_colibri_t20_iris.pblx
--image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-iris.img
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_usbload
-+FILE_barebox-tegra20-toradex-colibri-t20-256-usbloader-iris.img = start_colibri_t20_256_usbload.pblx
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-usbloader-iris.img
+ void tegra_clk_init_rst_controller(void __iomem *base, struct device_node *np,
+ 		unsigned int num);
 +
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_hsmmc
-+BCT_start_colibri_t20_256_hsmmc.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_hsmmc.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-256-hsmmc-iris.img = start_colibri_t20_256_hsmmc.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-hsmmc-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_v11_nand
-+BCT_start_colibri_t20_256_v11_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_v11_nand.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-256-v11-nand-iris.img = start_colibri_t20_256_v11_nand.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-v11-nand-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_256_v12_nand
-+BCT_start_colibri_t20_256_v12_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_256_v12_nand.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-256-v12-nand-iris.img = start_colibri_t20_256_v12_nand.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-256-v12-nand-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_usbload
-+FILE_barebox-tegra20-toradex-colibri-t20-512-usbloader-iris.img = start_colibri_t20_512_usbload.pblx
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-usbloader-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_hsmmc
-+BCT_start_colibri_t20_512_hsmmc.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_hsmmc.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-512-hsmmc-iris.img = start_colibri_t20_512_hsmmc.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-hsmmc-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_v11_nand
-+BCT_start_colibri_t20_512_v11_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_v11_nand.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-512-v11-nand-iris.img = start_colibri_t20_512_v11_nand.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-v11-nand-iris.img
-+
-+pblx-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += start_colibri_t20_512_v12_nand
-+BCT_start_colibri_t20_512_v12_nand.pblx.t20img = $(board)/toradex-colibri-t20/colibri-t20_512_v12_nand.bct
-+FILE_barebox-tegra20-toradex-colibri-t20-512-v12-nand-iris.img = start_colibri_t20_512_v12_nand.pblx.t20img
-+image-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += barebox-tegra20-toradex-colibri-t20-512-v12-nand-iris.img
- 
- # ----------------------- Tegra30 based boards ---------------------------
- pblx-$(CONFIG_MACH_NVIDIA_BEAVER) += start_nvidia_beaver
++void tegra_clk_reset_uarts(void);
 -- 
 1.9.0
 
