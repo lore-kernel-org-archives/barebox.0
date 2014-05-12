@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJx-0004Hx-Jk
+ id 1WjkJx-0004Io-Jf
  for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:46 +0000
 Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 44FCF18B4275
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:57 +0200 (CEST)
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 1432418B427A
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:59 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:07:50 +0200
-Message-Id: <1399878486-16086-10-git-send-email-dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:07:55 +0200
+Message-Id: <1399878486-16086-15-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,38 +24,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/25] clk: tegra20: register i2c clocks
+Subject: [PATCH 14/25] mci: tegra: don't set 8bit mode unconditionally
 To: barebox@lists.infradead.org
+
+Those flags should be set from the DT parsing code.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/tegra/clk-tegra20.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/mci/tegra-sdmmc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index cb0a571..5803414 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -301,6 +301,19 @@ static void tegra20_periph_init(void)
- 	clks[TEGRA20_CLK_SDMMC4] = tegra_clk_register_periph("sdmmc4",
- 			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
- 			CRC_CLK_SOURCE_SDMMC4, TEGRA20_CLK_SDMMC4, 1);
-+
-+	clks[TEGRA20_CLK_I2C1] = tegra_clk_register_periph_div16("i2c1",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_I2C1, TEGRA20_CLK_I2C1, 1);
-+	clks[TEGRA20_CLK_I2C2] = tegra_clk_register_periph_div16("i2c2",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_I2C2, TEGRA20_CLK_I2C2, 1);
-+	clks[TEGRA20_CLK_I2C3] = tegra_clk_register_periph_div16("i2c3",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_I2C3, TEGRA20_CLK_I2C3, 1);
-+	clks[TEGRA20_CLK_DVC] = tegra_clk_register_periph_div16("dvc",
-+			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
-+			CRC_CLK_SOURCE_DVC, TEGRA20_CLK_DVC, 1);
- }
+diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
+index 6345157..62cf730 100644
+--- a/drivers/mci/tegra-sdmmc.c
++++ b/drivers/mci/tegra-sdmmc.c
+@@ -470,8 +470,7 @@ static int tegra_sdmmc_probe(struct device_d *dev)
+ 	mci->set_ios = tegra_sdmmc_set_ios;
+ 	mci->send_cmd = tegra_sdmmc_send_cmd;
+ 	mci->voltages = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
+-	mci->host_caps |= MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA |
+-	                  MMC_CAP_MMC_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED_52MHZ |
++	mci->host_caps |= MMC_CAP_MMC_HIGHSPEED | MMC_CAP_MMC_HIGHSPEED_52MHZ |
+ 	                  MMC_CAP_SD_HIGHSPEED;
  
- static struct tegra_clk_init_table init_table[] = {
+ 	dev->priv = host;
 -- 
 1.9.0
 
