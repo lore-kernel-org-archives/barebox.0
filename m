@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJx-0004J4-Jn
- for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:47 +0000
+ id 1WjkJx-0004Hv-Je
+ for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:46 +0000
 Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 8E3A018B425E
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:55 +0200 (CEST)
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id DAC4A18B4274
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:56 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:07:45 +0200
-Message-Id: <1399878486-16086-5-git-send-email-dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:07:49 +0200
+Message-Id: <1399878486-16086-9-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,75 +24,55 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 04/25] clk: tegra: reset UARTS from clock controller
+Subject: [PATCH 08/25] clk: tegra30: register i2c clocks
 To: barebox@lists.infradead.org
-
-The console devices are the only ones that can't
-use the reset controller properly, as they get
-registered from platform code. Reset those devices
-from the clock controller.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/tegra/clk-tegra20.c |  1 +
- drivers/clk/tegra/clk-tegra30.c |  1 +
- drivers/clk/tegra/clk.c         | 11 +++++++++++
- drivers/clk/tegra/clk.h         |  2 ++
- 4 files changed, 15 insertions(+)
+ arch/arm/mach-tegra/include/mach/tegra30-car.h |  2 ++
+ drivers/clk/tegra/clk-tegra30.c                | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
-index 7c7a915..cb0a571 100644
---- a/drivers/clk/tegra/clk-tegra20.c
-+++ b/drivers/clk/tegra/clk-tegra20.c
-@@ -348,6 +348,7 @@ static int tegra20_car_probe(struct device_d *dev)
- 			    &clk_data);
+diff --git a/arch/arm/mach-tegra/include/mach/tegra30-car.h b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+index ce11060..286a2a6 100644
+--- a/arch/arm/mach-tegra/include/mach/tegra30-car.h
++++ b/arch/arm/mach-tegra/include/mach/tegra30-car.h
+@@ -25,6 +25,8 @@
+ #define CRC_CLK_SOURCE_MSEL_SRC_PLLM	2
+ #define CRC_CLK_SOURCE_MSEL_SRC_CLKM	3
  
- 	tegra_clk_init_rst_controller(car_base, dev->device_node, 3 * 32);
-+	tegra_clk_reset_uarts();
++#define CRC_CLK_SOURCE_I2C4		0x3c4
++
+ #define CRC_RST_DEV_V_SET		0x430
+ #define CRC_RST_DEV_V_MSELECT		(1 << 3)
  
- 	return 0;
- }
 diff --git a/drivers/clk/tegra/clk-tegra30.c b/drivers/clk/tegra/clk-tegra30.c
-index adb5824..9536288 100644
+index 9536288..3b50830 100644
 --- a/drivers/clk/tegra/clk-tegra30.c
 +++ b/drivers/clk/tegra/clk-tegra30.c
-@@ -342,6 +342,7 @@ static int tegra30_car_probe(struct device_d *dev)
- 			    &clk_data);
- 
- 	tegra_clk_init_rst_controller(car_base, dev->device_node, 6 * 32);
-+	tegra_clk_reset_uarts();
- 
- 	return 0;
+@@ -296,6 +296,22 @@ static void tegra30_periph_init(void)
+ 	clks[TEGRA30_CLK_SDMMC4] = tegra_clk_register_periph("sdmmc4",
+ 			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+ 			CRC_CLK_SOURCE_SDMMC4, TEGRA30_CLK_SDMMC4, 1);
++
++	clks[TEGRA30_CLK_I2C1] = tegra_clk_register_periph_div16("i2c1",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C1, TEGRA30_CLK_I2C1, 1);
++	clks[TEGRA30_CLK_I2C2] = tegra_clk_register_periph_div16("i2c2",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C2, TEGRA30_CLK_I2C2, 1);
++	clks[TEGRA30_CLK_I2C3] = tegra_clk_register_periph_div16("i2c3",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C3, TEGRA30_CLK_I2C3, 1);
++	clks[TEGRA30_CLK_I2C4] = tegra_clk_register_periph_div16("i2c4",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C4, TEGRA30_CLK_I2C4, 1);
++	clks[TEGRA30_CLK_I2C5] = tegra_clk_register_periph_div16("i2c5",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_DVC, TEGRA30_CLK_I2C5, 1);
  }
-diff --git a/drivers/clk/tegra/clk.c b/drivers/clk/tegra/clk.c
-index a6b81d0..cb4d920 100644
---- a/drivers/clk/tegra/clk.c
-+++ b/drivers/clk/tegra/clk.c
-@@ -187,3 +187,14 @@ void tegra_clk_init_rst_controller(void __iomem *base, struct device_node *np,
- 	rst_ctlr.nr_resets = num;
- 	reset_controller_register(&rst_ctlr);
- }
-+
-+void tegra_clk_reset_uarts(void) {
-+	int i;
-+	int console_device_ids[] = {6, 7, 55, 65, 66};
-+
-+	for (i = 0; i < ARRAY_SIZE(console_device_ids); i++) {
-+		rst_ops.assert(&rst_ctlr, console_device_ids[i]);
-+		udelay(2);
-+		rst_ops.deassert(&rst_ctlr, console_device_ids[i]);
-+	}
-+};
-diff --git a/drivers/clk/tegra/clk.h b/drivers/clk/tegra/clk.h
-index 29d5249..6ce9f7e 100644
---- a/drivers/clk/tegra/clk.h
-+++ b/drivers/clk/tegra/clk.h
-@@ -160,3 +160,5 @@ struct tegra_clk_periph_regs {
  
- void tegra_clk_init_rst_controller(void __iomem *base, struct device_node *np,
- 		unsigned int num);
-+
-+void tegra_clk_reset_uarts(void);
+ static struct tegra_clk_init_table init_table[] = {
 -- 
 1.9.0
 
