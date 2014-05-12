@@ -1,16 +1,20 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjpHk-0003EH-G0
- for barebox@lists.infradead.org; Mon, 12 May 2014 12:24:49 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 67C88BF0F4
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 14:24:23 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 12 May 2014 14:24:22 +0200
-Message-Id: <1399897462-21433-4-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
-References: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
+Received: from mout.kundenserver.de ([212.227.17.10])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wjpno-0003ql-5X
+ for barebox@lists.infradead.org; Mon, 12 May 2014 12:57:57 +0000
+Date: Mon, 12 May 2014 14:57:12 +0200 (CEST)
+From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Message-ID: <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
+In-Reply-To: <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
+References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
+ <20140424065848.GV5858@pengutronix.de>
+ <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
+ <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
+ <1398984618.20734.13.camel@mars>
+ <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
+MIME-Version: 1.0
+Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,42 +23,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 4/4] phycore-am335x: Added bbu nand xloadslots handler
-To: barebox@lists.infradead.org
+Subject: Re: New driver crashes with "unable to handle paging request"
+To: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: barebox@lists.infradead.org
 
-Added bbu nand xloadslots handler to phycore-am335x.
-
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- arch/arm/boards/phytec-phycore-am335x/board.c |    5 +++++
- 1 files changed, 5 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/boards/phytec-phycore-am335x/board.c b/arch/arm/boards/phytec-phycore-am335x/board.c
-index 59de42b..d790d97 100644
---- a/arch/arm/boards/phytec-phycore-am335x/board.c
-+++ b/arch/arm/boards/phytec-phycore-am335x/board.c
-@@ -69,6 +69,11 @@ static int pcm051_devices_init(void)
- 	armlinux_set_architecture(MACH_TYPE_PCM051);
- 
- 	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
-+	am33xx_bbu_nand_xloadslots_register_handler("xloadslots",
-+		"/dev/nand0.xload.bb"
-+		",/dev/nand0.xload_backup1.bb"
-+		",/dev/nand0.xload_backup2.bb"
-+		",/dev/nand0.xload_backup3.bb");
- 
- 	return 0;
- }
--- 
-1.7.0.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RGVhciBDaHJpc3RvcGgsCmp1c3QgYSBzaHkgcXVlc3Rpb246IFdlcmUgeW91IGFscmVhZHkgYWJs
+ZSB0byBwcmVwYXJlIGEgZmlyc3QgcGF0Y2hzZXQ/CgpLaW5kIHJlZ2FyZHMsCsKgUm9sZgoKCj4g
+Um9sZiBFdmVycy1GaXNjaGVyIDxlbWJlZGRlZDI0QGV2ZXJzLWZpc2NoZXIuZGU+IGhhdCBhbSA1
+LiBNYWkgMjAxNCB1bSAxNDoxMwo+IGdlc2NocmllYmVuOgo+Cj4KPiBIaSBDaHJpc3RvcGgsCj4K
+PiA+IENocmlzdG9waCBGcml0eiA8Y2hmLmZyaXR6QGdvb2dsZW1haWwuY29tPiBoYXQgYW0gMi4g
+TWFpIDIwMTQgdW0gMDA6NTAKPiA+IGdlc2NocmllYmVuOgo+ID4KPiA+Cj4gPiBIaSBSb2xmLAo+
+ID4KPiA+IEkgaGF2ZSBwb3J0ZWQgbXVzYiAoaG9zdC1zdXBwb3J0KSBmcm9tIHUtYm9vdCB0byBi
+YXJlYm94LiBJJ2xsIHNlbmQgYQo+ID4gcGF0Y2hzZXQgaW4gdGhlIG5leHQgZGF5cy4KPiA+Cj4K
+PiB0aGF0IHNvdW5kcyB2ZXJ5IGdvb2QuIFRoYW5rIHlvdSB2ZXJ5IG11Y2ggaW4gYWR2YW5jZSEK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3gg
+bWFpbGluZyBsaXN0CmJhcmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5m
+cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2JhcmVib3gK
