@@ -1,14 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJx-0004I7-Ja
- for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:46 +0000
+ id 1WjkJz-0004Hx-Af
+ for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:48 +0000
 Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id 5D68018B4278
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:58 +0200 (CEST)
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id D777618B4275
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:05:03 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:07:53 +0200
-Message-Id: <1399878486-16086-13-git-send-email-dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:08:00 +0200
+Message-Id: <1399878486-16086-20-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -24,42 +24,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 12/25] ARM: tegra: beaver: adjust pinmux to make sdmmc1 work
+Subject: [PATCH 19/25] images: add Tegra20 image build rules
 To: barebox@lists.infradead.org
+
+Allows to build persistent images for the Tegra20
+line of SoCs.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/dts/tegra30-beaver.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ images/.gitignore     | 2 ++
+ images/Makefile       | 2 +-
+ images/Makefile.tegra | 8 ++++++++
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/tegra30-beaver.dts b/arch/arm/dts/tegra30-beaver.dts
-index 1110b89..35b4d7e 100644
---- a/arch/arm/dts/tegra30-beaver.dts
-+++ b/arch/arm/dts/tegra30-beaver.dts
-@@ -191,6 +191,15 @@
- 						"pex_l1_clkreq_n_pdd6";
- 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
- 			};
-+			sdio1 {
-+				nvidia,pins = "drive_sdio1";
-+				nvidia,high-speed-mode = <TEGRA_PIN_DISABLE>;
-+				nvidia,schmitt = <TEGRA_PIN_DISABLE>;
-+				nvidia,pull-down-strength = <46>;
-+				nvidia,pull-up-strength = <42>;
-+				nvidia,slew-rate-rising = <1>;
-+				nvidia,slew-rate-falling = <1>;
-+			};
- 			sdio3 {
- 				nvidia,pins = "drive_sdio3";
- 				nvidia,high-speed-mode = <TEGRA_PIN_DISABLE>;
-@@ -325,6 +334,7 @@
- 						"vi_hsync_pd7";
- 				nvidia,function = "ddr";
- 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
-+				nvidia,io-reset = <TEGRA_PIN_DISABLE>;
- 			};
- 			ddr_up {
- 				nvidia,pins =	"vi_d11_pt3";
+diff --git a/images/.gitignore b/images/.gitignore
+index 1f601e7..5f6f0b2 100644
+--- a/images/.gitignore
++++ b/images/.gitignore
+@@ -8,6 +8,8 @@
+ *.kwbimg
+ *.kwbuartimg
+ *.socfpgaimg
++*.t20img
++*.t20img.cfg
+ pbl.lds
+ barebox.x
+ barebox.z
+diff --git a/images/Makefile b/images/Makefile
+index 5509a4c..1ad7dac 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -117,5 +117,5 @@ images: $(addprefix $(obj)/, $(image-y)) FORCE
+ 	@for i in $(image-y); do echo $$i; done
+ 
+ clean-files := *.pbl *.pblb *.pblx *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+-	start_*.kwbuartimg *.socfpgaimg *.mlo
++	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg
+ clean-files += pbl.lds
+diff --git a/images/Makefile.tegra b/images/Makefile.tegra
+index c957599..6c9a705 100644
+--- a/images/Makefile.tegra
++++ b/images/Makefile.tegra
+@@ -1,6 +1,14 @@
+ #
+ # barebox image generation Makefile for Tegra images
+ #
++quiet_cmd_tegra20_image = T20IMG  $@
++      cmd_tegra20_image = echo "Version = 0x00020001;Bctcopy = 1; \
++                                Bctfile = $(BCT_$(@F)); \
++                                BootLoader = $(subst .t20img,,$@),0x00108000,0x00108000,Complete;" \
++                                > $@.cfg; \
++                          $(objtree)/scripts/tegra/cbootimage -s tegra20 $@.cfg $@
++$(obj)/%.t20img: $(obj)/% FORCE
++	$(call if_changed,tegra20_image)
+ 
+ board = $(srctree)/arch/$(ARCH)/boards
+ 
 -- 
 1.9.0
 
