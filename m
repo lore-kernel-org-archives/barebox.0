@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phycard.co.uk ([217.6.246.34] helo=root.phytec.de)
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjpHk-0003EF-Gj
+ id 1WjpHk-0003Fo-Fu
  for barebox@lists.infradead.org; Mon, 12 May 2014 12:24:49 +0000
 Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 4DB3CBF095
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 14:24:23 +0200 (CEST)
+ by root.phytec.de (Postfix) with ESMTP id 46118BF0F6
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 14:24:26 +0200 (CEST)
 From: Wadim Egorov <w.egorov@phytec.de>
-Date: Mon, 12 May 2014 14:24:20 +0200
-Message-Id: <1399897462-21433-2-git-send-email-w.egorov@phytec.de>
-In-Reply-To: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
-References: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
+Date: Mon, 12 May 2014 14:24:19 +0200
+Message-Id: <1399897462-21433-1-git-send-email-w.egorov@phytec.de>
+MIME-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,79 +18,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 2/4] barebox: common: added new filetypes
+Subject: [PATCH 1/4] PCM051: Update RAM timings
 To: barebox@lists.infradead.org
 
-- Added omap CH image header recognition
-  * filetype_ch_image
-  * filetype_ch_image_be
-
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
- common/filetype.c  |   12 ++++++++++++
- include/filetype.h |    2 ++
- 2 files changed, 14 insertions(+), 0 deletions(-)
-
-diff --git a/common/filetype.c b/common/filetype.c
-index 0b5da30..7cdc0a4 100644
---- a/common/filetype.c
-+++ b/common/filetype.c
-@@ -53,6 +53,9 @@ static const struct filetype_str filetype_str[] = {
- 	[filetype_gpt] = { "GUID Partition Table", "gpt" },
- 	[filetype_bpk] = { "Binary PacKage", "bpk" },
- 	[filetype_barebox_env] = { "barebox environment file", "bbenv" },
-+	[filetype_ch_image] = { "TI OMAP CH boot image", "ch-image" },
-+	[filetype_ch_image_be] = {
-+			"TI OMAP CH boot image (big endian)", "ch-image-be" },
- };
- 
- const char *file_type_to_string(enum filetype f)
-@@ -177,6 +180,8 @@ enum filetype file_detect_partition_table(const void *_buf, size_t bufsize)
- 	return filetype_unknown;
- }
- 
-+#define CH_TOC_section_name     0x14
-+
- enum filetype file_detect_type(const void *_buf, size_t bufsize)
- {
- 	const u32 *buf = _buf;
-@@ -246,6 +251,13 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
- 	if (bufsize >= 1536 && buf16[512 + 28] == le16_to_cpu(0xef53))
- 		return filetype_ext;
- 
-+	if (strncmp(buf8 + CH_TOC_section_name, "CHSETTINGS", 10) == 0)
-+		return filetype_ch_image;
-+
-+	if (buf[5] == 0x43485345 && buf[6] == 0x5454494E &&
-+		buf[7] == 0x47530000)
-+		return filetype_ch_image_be;
-+
- 	return filetype_unknown;
- }
- 
-diff --git a/include/filetype.h b/include/filetype.h
-index c20a4f9..fc3140c 100644
---- a/include/filetype.h
-+++ b/include/filetype.h
-@@ -30,6 +30,8 @@ enum filetype {
- 	filetype_ubifs,
- 	filetype_bpk,
- 	filetype_barebox_env,
-+	filetype_ch_image,
-+	filetype_ch_image_be,
- 	filetype_max,
- };
- 
--- 
-1.7.0.4
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+RnJvbTogVGVyZXNhIEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+CgpVcGRhdGVkIHRpbWluZ3Mg
+Zm9yIG5ldyBNVDQxSjI1Nk0xNkhBMTVFSVQgUkFNLgpUaW1pbmdzIGFyZSBiYWNrd2FyZCBjb21w
+YXRpYmxlIHRvIHRoZSBNVDQxSjI1Nk04SFgxNUUgUkFNcwoKU2lnbmVkLW9mZi1ieTogVGVyZXNh
+IEfDoW1leiA8dC5nYW1lekBwaHl0ZWMuZGU+ClNpZ25lZC1vZmYtYnk6IFdhZGltIEVnb3JvdiA8
+dy5lZ29yb3ZAcGh5dGVjLmRlPgotLS0KIGFyY2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1h
+bTMzNXgvbG93bGV2ZWwuYyB8ICAgMjggKysrKysrKysrKy0tLS0tLS0tLS0tCiAxIGZpbGVzIGNo
+YW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Fy
+Y2gvYXJtL2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYyBiL2FyY2gvYXJt
+L2JvYXJkcy9waHl0ZWMtcGh5Y29yZS1hbTMzNXgvbG93bGV2ZWwuYwppbmRleCBmMDQ5NjFkLi4y
+YmFkY2MxIDEwMDY0NAotLS0gYS9hcmNoL2FybS9ib2FyZHMvcGh5dGVjLXBoeWNvcmUtYW0zMzV4
+L2xvd2xldmVsLmMKKysrIGIvYXJjaC9hcm0vYm9hcmRzL3BoeXRlYy1waHljb3JlLWFtMzM1eC9s
+b3dsZXZlbC5jCkBAIC0xNSw3ICsxNSw3IEBACiAjaW5jbHVkZSA8bWFjaC93ZHQuaD4KICNpbmNs
+dWRlIDxkZWJ1Z19sbC5oPgogCi1zdGF0aWMgY29uc3Qgc3RydWN0IGFtMzN4eF9jbWRfY29udHJv
+bCBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9jbWQgPSB7CitzdGF0aWMgY29uc3Qgc3RydWN0IGFt
+MzN4eF9jbWRfY29udHJvbCBNVDQxSjI1Nk0xNkhBMTVFSVRfMXg1MTJNQl9jbWQgPSB7CiAJLnNs
+YXZlX3JhdGlvMCA9IDB4NDAsCiAJLmRsbF9sb2NrX2RpZmYwID0gMHgwLAogCS5pbnZlcnRfY2xr
+b3V0MCA9IDB4MSwKQEAgLTI3LDIzICsyNywyMSBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGFtMzN4
+eF9jbWRfY29udHJvbCBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9jbWQgPSB7CiAJLmludmVydF9j
+bGtvdXQyID0gMHgxLAogfTsKIAotc3RhdGljIGNvbnN0IHN0cnVjdCBhbTMzeHhfZW1pZl9yZWdz
+IE1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X3JlZ3MgPSB7CitzdGF0aWMgY29uc3Qgc3RydWN0IGFt
+MzN4eF9lbWlmX3JlZ3MgTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfcmVncyA9IHsKIAkuZW1p
+Zl9yZWFkX2xhdGVuY3kJPSAweDYsCi0JLmVtaWZfdGltMQkJPSAweDA2NjhBMzlCLAotCS5lbWlm
+X3RpbTIJCT0gMHgyNjMzN0ZEQSwKLQkuZW1pZl90aW0zCQk9IDB4NTAxRjgzMEYsCi0JLnNkcmFt
+X2NvbmZpZwkJPSAweDYxQzA0ODMyLAorCS5lbWlmX3RpbTEJCT0gMHgwODg4QTM5QiwKKwkuZW1p
+Zl90aW0yCQk9IDB4MjY1MTdGREEsCisJLmVtaWZfdGltMwkJPSAweDUwMUY4NEVGLAorCS5zZHJh
+bV9jb25maWcJCT0gMHg2MUMwNEIzMiwKIAkuenFfY29uZmlnCQk9IDB4NTAwNzRCRTQsCiAJLnNk
+cmFtX3JlZl9jdHJsCQk9IDB4MDAwMDA5M0IsCiB9OwogCi1zdGF0aWMgY29uc3Qgc3RydWN0IGFt
+MzN4eF9kZHJfZGF0YSBNVDQxSjI1Nk04SFgxNUVfMngyNTZNOF9kYXRhID0geworc3RhdGljIGNv
+bnN0IHN0cnVjdCBhbTMzeHhfZGRyX2RhdGEgTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfZGF0
+YSA9IHsKIAkucmRfc2xhdmVfcmF0aW8wCT0gMHgzQiwKLQkud3JfZHFzX3NsYXZlX3JhdGlvMAk9
+IDB4ODUsCi0JLmZpZm9fd2Vfc2xhdmVfcmF0aW8wCT0gMHgxMDAsCi0JLndyX3NsYXZlX3JhdGlv
+MAk9IDB4QzEsCi0JLnVzZV9yYW5rMF9kZWxheQk9IDB4MDEsCi0JLmRsbF9sb2NrX2RpZmYwCQk9
+IDB4MCwKKwkud3JfZHFzX3NsYXZlX3JhdGlvMAk9IDB4M0IsCisJLmZpZm9fd2Vfc2xhdmVfcmF0
+aW8wCT0gMHg5NiwKKwkud3Jfc2xhdmVfcmF0aW8wCT0gMHg3NiwKIH07CiAKIGV4dGVybiBjaGFy
+IF9fZHRiX2FtMzM1eF9waHl0ZWNfcGh5Y29yZV9zdGFydFtdOwpAQCAtNzIsOSArNzAsOSBAQCBz
+dGF0aWMgbm9pbmxpbmUgdm9pZCBwY20wNTFfYm9hcmRfaW5pdCh2b2lkKQogCiAJYW0zM3h4X3Bs
+bF9pbml0KE1QVVBMTF9NXzYwMCwgMjUsIEREUlBMTF9NXzMwMyk7CiAKLQlhbTMzNXhfc2RyYW1f
+aW5pdCgweDE4QiwgJk1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X2NtZCwKLQkJCSZNVDQxSjI1Nk04
+SFgxNUVfMngyNTZNOF9yZWdzLAotCQkJJk1UNDFKMjU2TThIWDE1RV8yeDI1Nk04X2RhdGEpOwor
+CWFtMzM1eF9zZHJhbV9pbml0KDB4MThCLCAmTVQ0MUoyNTZNMTZIQTE1RUlUXzF4NTEyTUJfY21k
+LAorCQkJJk1UNDFKMjU2TTE2SEExNUVJVF8xeDUxMk1CX3JlZ3MsCisJCQkmTVQ0MUoyNTZNMTZI
+QTE1RUlUXzF4NTEyTUJfZGF0YSk7CiAKIAlhbTMzeHhfdWFydDBfc29mdF9yZXNldCgpOwogCWFt
+MzN4eF9lbmFibGVfdWFydDBfcGluX211eCgpOwotLSAKMS43LjAuNAoKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJh
+cmVib3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2JhcmVib3gK
