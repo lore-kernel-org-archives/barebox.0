@@ -1,17 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-wi0-x22c.google.com ([2a00:1450:400c:c05::22c])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wjk3j-0002FO-Al
- for barebox@lists.infradead.org; Mon, 12 May 2014 06:49:59 +0000
-Received: by mail-wi0-f172.google.com with SMTP id hi2so3903581wib.11
- for <barebox@lists.infradead.org>; Sun, 11 May 2014 23:49:35 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <20140512043944.GW5858@pengutronix.de>
-References: <1399761388-1984-1-git-send-email-franck.jullien@gmail.com>
- <20140512043944.GW5858@pengutronix.de>
-Date: Mon, 12 May 2014 08:49:35 +0200
-Message-ID: <CAJfOKBxz=EhaqBoumBGe41Bm1Ruur+e9hfNAvdEzkkdtQEwFmA@mail.gmail.com>
-From: Franck Jullien <franck.jullien@gmail.com>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WjkJ7-0003y3-Lm
+ for barebox@lists.infradead.org; Mon, 12 May 2014 07:05:54 +0000
+Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
+ [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id D778018B425C
+ for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:04:54 +0200 (CEST)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Mon, 12 May 2014 09:07:43 +0200
+Message-Id: <1399878486-16086-3-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
+References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,87 +19,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] Kconfig: Fix menuconfig build
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox <barebox@lists.infradead.org>
+Subject: [PATCH 02/25] tegra: lowlevel: add function to fetch chipid
+To: barebox@lists.infradead.org
 
-2014-05-12 6:39 GMT+02:00 Sascha Hauer <s.hauer@pengutronix.de>:
-> Hi Franck,
->
-> On Sun, May 11, 2014 at 12:36:28AM +0200, Franck Jullien wrote:
->> Using Centos 6.5 with x86_64 architecture, "make menuconfig" commands
->> results in the following:
->>
->>   HOSTLD  scripts/kconfig/mconf
->> /opt/centos/devtoolset-1.1/root/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/ld:
->> scripts/kconfig/lxdialog/checklist.o: undefined reference to symbol
->> 'acs_map'
->> /opt/centos/devtoolset-1.1/root/usr/libexec/gcc/x86_64-redhat-linux/4.7.2/ld:
->> note: 'acs_map' is defined in DSO /lib64/libtinfo.so.5 so try adding it
->> to the linker command line
->> /lib64/libtinfo.so.5: could not read symbols: invalid operation
->> collect2: error: ld returned 1 exit status
->> make[1]: *** [scripts/kconfig/mconf] Error 1
->> make: *** [menuconfig] Error 2
->>
->> When "-ltinfo" is added to the LDFLAGS symbol as suggested by the linker,
->> it builds and runs correctly.
->
-> This issue came up over a year ago and the patch is still not upstream
-> in Linux.
+This is needed as a safe way to flush the ABP bus.
 
-I know and I just stole this patch from google search ;)
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ arch/arm/mach-tegra/include/mach/lowlevel.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Do you have the same issue when compiling Linux aswell?
->
-> I could apply this, but it may happen that the change gets lost with the
-> next Kconfig update. So it's good when the issue is fixed upstream.
->
-> Sascha
->
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index 52b405d..1026518 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -70,6 +70,12 @@ enum tegra_chiptype {
+ };
+ 
+ static __always_inline
++u32 tegra_read_chipid(void)
++{
++	return readl(TEGRA_APB_MISC_BASE + APB_MISC_HIDREV);
++}
++
++static __always_inline
+ enum tegra_chiptype tegra_get_chiptype(void)
+ {
+ 	u32 hidrev;
+-- 
+1.9.0
 
-It does work with Linux and kconfig Makefiles are identical (?!).
-So drop this patch and I'll try to do some more dig up.
-
-Franck.
-
->>
->> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
->> ---
->>  scripts/kconfig/Makefile |    1 +
->>  1 files changed, 1 insertions(+), 0 deletions(-)
->>
->> diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
->> index 844bc9d..8bdd7bc 100644
->> --- a/scripts/kconfig/Makefile
->> +++ b/scripts/kconfig/Makefile
->> @@ -218,6 +218,7 @@ HOSTCFLAGS_gconf.o        = `pkg-config --cflags gtk+-2.0 gmodule-2.0 libglade-2.0` \
->>                            -Wno-missing-prototypes
->>
->>  HOSTLOADLIBES_mconf   = $(shell $(CONFIG_SHELL) $(check-lxdialog) -ldflags $(HOSTCC))
->> +HOSTLOADLIBES_mconf += -ltinfo
->>
->>  HOSTLOADLIBES_nconf  = $(shell \
->>                               pkg-config --libs menu panel ncurses 2>/dev/null \
->> --
->> 1.7.1
->>
->>
->> _______________________________________________
->> barebox mailing list
->> barebox@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/barebox
->>
->
-> --
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
