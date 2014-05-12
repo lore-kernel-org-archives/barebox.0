@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjkJx-0004J3-Jn
- for barebox@lists.infradead.org; Mon, 12 May 2014 07:06:47 +0000
-Received: from tellur.localdomain (p4FE65757.dip0.t-ipconnect.de
- [79.230.87.87]) by lynxeye.de (Postfix) with ESMTPA id EFE6118B425C
- for <barebox@lists.infradead.org>; Mon, 12 May 2014 09:05:02 +0200 (CEST)
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 09:07:58 +0200
-Message-Id: <1399878486-16086-18-git-send-email-dev@lynxeye.de>
-In-Reply-To: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
-References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WjndY-00075R-8I
+ for barebox@lists.infradead.org; Mon, 12 May 2014 10:39:13 +0000
+Date: Mon, 12 May 2014 12:38:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140512103850.GF5858@pengutronix.de>
+References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
+ <1399534299-27051-3-git-send-email-s.hauer@pengutronix.de>
+ <1399834166.925793804@f410.i.mail.ru>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1399834166.925793804@f410.i.mail.ru>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,50 +20,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 17/25] tegra: cbootimage: remove noisy output
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH 2/5] spi: i.MX: Move to coredevice_initcall
+To: Alexander Shiyan <shc_work@mail.ru>
+Cc: barebox@lists.infradead.org
 
-Our build is quiet by default, so don't allow cbootimage
-to spam our logs.
-
-Signed-off-by: Lucas Stach <dev@lynxeye.de>
----
- scripts/tegra/cbootimage.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/scripts/tegra/cbootimage.c b/scripts/tegra/cbootimage.c
-index 1332c5f..51422d1 100644
---- a/scripts/tegra/cbootimage.c
-+++ b/scripts/tegra/cbootimage.c
-@@ -217,8 +217,6 @@ main(int argc, char *argv[])
- 
- 		fwrite(context.bct, 1, context.bct_size,
- 			context.raw_file);
--		printf("New BCT file %s has been successfully generated!\n",
--			context.image_filename);
- 		goto fail;
- 	}
- 
-@@ -232,9 +230,6 @@ main(int argc, char *argv[])
- 	/* The image hasn't been written yet. */
- 	if (write_image_file(&context) != 0)
- 		printf("Error writing image file.\n");
--	else
--		printf("Image file %s has been successfully generated!\n",
--				context.image_filename);
- 
-  fail:
- 	/* Close the file(s). */
--- 
-1.9.0
-
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+T24gU3VuLCBNYXkgMTEsIDIwMTQgYXQgMTA6NDk6MjZQTSArMDQwMCwgQWxleGFuZGVyIFNoaXlh
+biB3cm90ZToKPiBUaHUsICA4IE1heSAyMDE0IDA5OjMxOjM2ICswMjAwINC+0YIgU2FzY2hhIEhh
+dWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRlPjoKPiA+IFNQSSBpcyBvZnRlbiB1c2VkIGJ5IG90
+aGVyIGRldmljZXMsIHNvIG1ha2Ugc3VyZSBpdCdzIGluaXRpYWxpemVkCj4gPiBlYXJseS4KPiA+
+IAo+ID4gU2lnbmVkLW9mZi1ieTogU2FzY2hhIEhhdWVyIDxzLmhhdWVyQHBlbmd1dHJvbml4LmRl
+Pgo+ID4gLS0tCj4gPiAgZHJpdmVycy9zcGkvaW14X3NwaS5jIHwgMiArLQo+ID4gIDEgZmlsZSBj
+aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9zcGkvaW14X3NwaS5jIGIvZHJpdmVycy9zcGkvaW14X3NwaS5jCj4gPiBpbmRl
+eCBlMDdjZjFhLi4zMTQ2MzM5IDEwMDY0NAo+ID4gLS0tIGEvZHJpdmVycy9zcGkvaW14X3NwaS5j
+Cj4gPiArKysgYi9kcml2ZXJzL3NwaS9pbXhfc3BpLmMKPiA+IEBAIC01ODYsNCArNTg2LDQgQEAg
+c3RhdGljIHN0cnVjdCBkcml2ZXJfZCBpbXhfc3BpX2RyaXZlciA9IHsKPiA+ICAJLm9mX2NvbXBh
+dGlibGUgPSBEUlZfT0ZfQ09NUEFUKGlteF9zcGlfZHRfaWRzKSwKPiA+ICAJLmlkX3RhYmxlID0g
+aW14X3NwaV9pZHMsCj4gPiAgfTsKPiA+IC1kZXZpY2VfcGxhdGZvcm1fZHJpdmVyKGlteF9zcGlf
+ZHJpdmVyKTsKPiA+ICtjb3JlZGV2aWNlX3BsYXRmb3JtX2RyaXZlcihpbXhfc3BpX2RyaXZlcik7
+Cj4gPiAtLSAKPiAKPiBNYXliZSB3ZSBzaG91bGQgcHV0IGFsbCBkcml2ZXJzIGluIGEgc2luZ2xl
+IHJ1bmxldmVsIGFuZCBpbXBsZW1lbnQKPiBoYW5kbGUgb2YgRVBST0JFX0RFRkVSPwoKSSB0aGlu
+ayBhYm91dCBFUFJPQkVfREVGRVIgZm9yIGxvbmdlciBub3cuIFdoYXQgaGFzIGhvbGQgbWUgYmFj
+ayB3YXMKdGhhdCB3ZSB3b3VsZCBoYXZlIHRvIHJlbGVhc2UgYWxsIHJlc291cmNlcyBiZWZvcmUg
+cmV0dXJuaW5nCkVQUk9CRV9ERUZFUi4gTW9zdCBkcml2ZXJzIGRvbid0IGhhdmUgcHJvcGVyIGVy
+cm9yIHBhdGhlcyBpbXBsZW1lbnRlZAphbmQgSSBkb24ndCBzZWUgbXVjaCBnYWluIGluIGZpeGlu
+ZyB0aGlzLiBGb3IgYSBib290bG9hZGVyIHRoZSBlcnJvcgpyZWxlYXNlIHBhdGhlcyBhcmUgdW5u
+ZWNlc3Nhcnkgb3ZlcmhlYWQsIGJlY2F1c2Ugbm9ib2R5IHdpbGwgZXZlcgp1c2UgdGhlIHNhbWUg
+cmVzb3VyY2VzIGFnYWluIChhdCBsZWFzdCB3aXRob3V0IEVQUk9CRV9ERUZFUikuCk15IHJlY2Vu
+dCBpZGVhIHRvIHdvcmsgYXJvdW5kIHRoYXQgaXNzdWUgaXMgdGhpczoKCi0gcHV0IHRoZSBkcml2
+ZXJzIHByaXZhdGUgZGF0YSBpbnRvIGRldi0+cHJpdgotIHdoZW4gcmV0dXJuaW5nIGFuIGVycm9y
+IGZyb20gcHJvYmUsIGluc3RlYWQgb2YgZnJlZWluZyB0aGUgZGF0YQogIGtlZXAgaXQuCi0gd2hl
+biBwcm9iaW5nIGFnYWluIHJlLXVzZSB0aGUgZGF0YS4KCldpdGggdGhpcyBkcml2ZXJzIGNvdWxk
+IGJlIHdyaXR0ZW4gbGlrZToKCglwcml2ID0gZGV2LT5wcml2OwoJaWYgKCFwcml2KSB7CgkJcHJp
+diA9IHh6YWxsb2Moc2l6ZW9mKHByaXYpKTsKCQlkZXYtPnByaXYgPSBwcml2OwoJfQoKCWlmICgh
+cHJpdi0+Y2xrKSB7CgkJY2xrID0gY2xrX2dldChkZXYsIE5VTEwpOwoJCWlmIChJU19FUlIoY2xr
+KSkKCQkJcmV0dXJuIFBUUl9FUlIoY2xrKTsKCQlwcml2LT5jbGsgPSBjbGs7CgkJY2xrX2VuYWJs
+ZShwcml2LT5jbGspOwoJfQoKCWlmICghcHJpdi0+cmVndWxhdG9yKSB7CgkJcmVndWxhdG9yID0g
+cmVndWxhdG9yX2dldChkZXYsICJ2bW1jIik7CgkJaWYgKElTX0VSUihyZWd1bGF0b3IpKQoJCQly
+ZXR1cm4gUFRSX0VSUihyZWd1bGF0b3IpOwoJCXByaXYtPnJlZ3VsYXRvciA9IHJlZ3VsYXRvcjsK
+CX0KClRoaXMgd2F5IGRyaXZlcnMgY291bGQgYWxsb2NhdGUgdGhlIG1pc3NpbmcgcmVzb3VyY2Vz
+IGFzIG5lZWRlZCB3aXRob3V0CmZyZWVpbmcgdGhlbSBiZXR3ZWVuIGRpZmZlcmVudCBjYWxscyB0
+byBwcm9iZSgpLgoKU2FzY2hhCgotLSAKUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwKSW5kdXN0cmlhbCBMaW51
+eCBTb2x1dGlvbnMgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8g
+IHwKUGVpbmVyIFN0ci4gNi04LCAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55IHwgUGhvbmU6ICs0
+OS01MTIxLTIwNjkxNy0wICAgIHwKQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAg
+ICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01NTU1IHwKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
+b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2JhcmVib3gK
