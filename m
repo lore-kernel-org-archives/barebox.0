@@ -1,16 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkDXm-0000vL-IV
- for barebox@lists.infradead.org; Tue, 13 May 2014 14:18:59 +0000
-Date: Tue, 13 May 2014 16:18:35 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140513141835.GT5858@pengutronix.de>
+Received: from mail-yk0-x232.google.com ([2607:f8b0:4002:c07::232])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WkDlG-0001VO-Cd
+ for barebox@lists.infradead.org; Tue, 13 May 2014 14:32:55 +0000
+Received: by mail-yk0-f178.google.com with SMTP id 20so341293yks.23
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 07:32:32 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20140513141835.GT5858@pengutronix.de>
 References: <20140513134228.GQ5858@pengutronix.de>
  <CAOpc7mG5j_r8fOUcDeY2qcKZG=6LKTWr3fmWDadQfcJDquFtwg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOpc7mG5j_r8fOUcDeY2qcKZG=6LKTWr3fmWDadQfcJDquFtwg@mail.gmail.com>
+ <20140513141835.GT5858@pengutronix.de>
+Date: Tue, 13 May 2014 16:32:32 +0200
+Message-ID: <CAOpc7mG+XpLSzLofwf-H-LZsthQToc_rpHG1k=Wfo=uTUkxNFw@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,39 +26,18 @@ Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox Documentation
-To: Holger Schurig <holgerschurig@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 13, 2014 at 04:01:07PM +0200, Holger Schurig wrote:
-> If wiki and doxygen are not updated, than this is a sign that they
-> should probably be outphased.
-> 
-> Instead, I'd prefer to have text files in the Documentation/ tree. So
-> changes to them pass the normal review process.
+Many, many projects on github uses *.rst, e.g.
+https://github.com/walac/pyusb, thougth usually only one-page.
 
-+1
+The flask project (a web framework for python) however has a nice
+website http://flask.pocoo.org/ that is generated from many text file,
+e.g. https://github.com/mitsuhiko/flask/tree/master/docs/tutorial
 
-> 
-> > Plain text files
-> > - no links
-> > - no pictures
-> 
-> If we use some special format for them, e.g. Markdown or *.rst, then
-> the files can still converted to HTML, and links and images could
-> still be possible. That would mean that wiki.barebox.org probably goes
-> away, but that (part) of www.barebox.org is generated from the
-> *.rst/Markdown files.
-
-This sounds like the best of two worlds. Do you know an example of a
-project with markdown/rst documentation?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+And I did myself once converted a bunch of markdown files into HTML
+and used "sitecopy" to send them over to a sub-part of a website.
 
 _______________________________________________
 barebox mailing list
