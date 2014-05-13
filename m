@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk81A-00020S-1U
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:56 +0000
-Received: by mail-ee0-f42.google.com with SMTP id d49so128058eek.1
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:37 -0700 (PDT)
+ id 1Wk80y-0001mS-41
+ for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:48 +0000
+Received: by mail-ee0-f45.google.com with SMTP id d49so121725eek.18
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:22 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:58 +0200
-Message-Id: <1399969739-10355-19-git-send-email-holgerschurig@gmail.com>
+Date: Tue, 13 May 2014 10:28:47 +0200
+Message-Id: <1399969739-10355-8-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,63 +23,83 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 18/19] commands: move CMD_IFUP to commands/Kconfig
+Subject: [PATCH 07/19] commands: move CMD_ARM_MMUINFO to commands/Kconfig
 To: barebox@lists.infradead.org
 
-* this places the command into the "Network commands"
+* this places the command into the "Information commands"
   section of Kconfig
-* while at it, improve Kconfig documention
+* while at it, imprive Kconfig documention
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- commands/Kconfig |   17 +++++++++++++++++
- net/Kconfig      |    7 -------
- 2 files changed, 17 insertions(+), 7 deletions(-)
+ arch/arm/Kconfig |    8 --------
+ commands/Kconfig |   34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 8 deletions(-)
 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index f8f3da0..73c7382 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -256,14 +256,6 @@ endmenu
+ 
+ menu "Arm specific settings"
+ 
+-config CMD_ARM_MMUINFO
+-	bool "mmuinfo command"
+-	depends on CPU_V7
+-	default n
+-	help
+-	  Say yes here to get a mmuinfo command to show some
+-	  MMU and cache information using the cp15 registers
+-
+ config CPU_V7_DCACHE_SKIP
+ 	bool "Skip DCache Invalidate"
+ 	depends on CPU_V7
 diff --git a/commands/Kconfig b/commands/Kconfig
-index fa2e37a..e105b84 100644
+index 8b5110c..9789af4 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -1077,6 +1077,23 @@ config CMD_HOST
+@@ -91,6 +91,40 @@ config CMD_MEMINFO
+ 	  system bytes     =     282616
+ 	  in use bytes     =     274752
  
- 	  Usage: host DESTINATION
- 
-+config NET_CMD_IFUP
-+	bool
-+	prompt "ifup"
++config CMD_ARM_MMUINFO
++	bool "mmuinfo command"
++	depends on CPU_V7
++	default n
 +	help
-+	  Bring up network interfaces based on config files.
++	  Say yes here to get a mmuinfo command to show some
++	  MMU and cache information using the cp15 registers.
 +
-+	  Usage: ifup [-af] [INTF]
++	  Example:
 +
-+	  Each INTF must have a script /env/network/INTF that set the variables
-+	  ip (to 'static' or 'dynamic'), ipaddr, netmask, gateway, serverip
-+	  and/or ethaddr. A script /env/network/INTF-discover can contains for
-+	  discovering the ethernet device, e.g. 'usb'.
++	  PAR result for 0x00110000:
++ 	  privileged read: 0x00110090
++  	  Physical Address [31:12]: 0x00110000
++  	  Reserved [11]:            0x0
++  	  Not Outer Shareable [10]: 0x0
++  	  Non-Secure [9]:           0x0
++  	  Impl. def. [8]:           0x0
++  	  Shareable [7]:            0x1
++  	  Inner mem. attr. [6:4]:   0x1 (0b001 Strongly-ordered)
++  	  Outer mem. attr. [3:2]:   0x0 (0b00 Non-cacheable)
++  	  SuperSection [1]:         0x0
++  	  Failure [0]:              0x0
++ 	  privileged write: 0x00110090
++  	  Physical Address [31:12]: 0x00110000
++  	  Reserved [11]:            0x0
++  	  Not Outer Shareable [10]: 0x0
++  	  Non-Secure [9]:           0x0
++  	  Impl. def. [8]:           0x0
++  	  Shareable [7]:            0x1
++  	  Inner mem. attr. [6:4]:   0x1 (0b001 Strongly-ordered)
++  	  Outer mem. attr. [3:2]:   0x0 (0b00 Non-cacheable)
++  	  SuperSection [1]:         0x0
++  	  Failure [0]:              0x0
 +
-+	  Options:
-+	          -a      bring up all interfaces
-+	          -f      Force. Configure even if ip already set
-+
- config CMD_MIITOOL
- 	tristate
- 	depends on PHYLIB
-diff --git a/net/Kconfig b/net/Kconfig
-index d09ddee..918d776 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -22,11 +22,4 @@ config NET_IFUP
- 	default y
- 	bool
- 
--config NET_CMD_IFUP
--	bool
--	prompt "ifup support"
--	help
--	  This enables the 'ifup' command which is used to bring up network
--	  interfaces based on config files under /env/network/<ethname>
--
- endif
+ config CMD_REGINFO
+ 	depends on HAS_REGINFO
+ 	select REGINFO
 -- 
 1.7.10.4
 
