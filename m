@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22d.google.com ([2a00:1450:4013:c00::22d])
+Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk812-0001rC-Tf
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:49 +0000
-Received: by mail-ee0-f45.google.com with SMTP id d49so121823eek.18
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:27 -0700 (PDT)
+ id 1Wk815-0001sv-1n
+ for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:52 +0000
+Received: by mail-ee0-f42.google.com with SMTP id d49so127883eek.1
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:29 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:51 +0200
-Message-Id: <1399969739-10355-12-git-send-email-holgerschurig@gmail.com>
+Date: Tue, 13 May 2014 10:28:52 +0200
+Message-Id: <1399969739-10355-13-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,7 +23,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 11/19] commands: move CMD_AT91MUX to commands/Kconfig
+Subject: [PATCH 12/19] commands: move CMD_AT91MIX to commands/Kconfig
 To: barebox@lists.infradead.org
 
 * this places the command into the "Information commands"
@@ -32,39 +32,52 @@ To: barebox@lists.infradead.org
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- arch/arm/mach-at91/Kconfig |    4 ----
- commands/Kconfig           |    7 +++++++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ arch/arm/mach-at91/Kconfig |    8 --------
+ commands/Kconfig           |   16 ++++++++++++++++
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 6222653..a3f4f3f 100644
+index a3f4f3f..298ee3f 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
-@@ -530,10 +530,6 @@ config CMD_AT91MUX
- 	bool "at91mux dump command"
- 	default y
+@@ -524,14 +524,6 @@ config CALAO_MB_QIL_A9260
+ 	bool "MB-QIL A9260 Motherboard Board support"
+ 	depends on MACH_QIL_A9260 || MACH_QIL_A9G20
  
--config CMD_AT91CLK
--	bool "at91clk dump command"
+-if COMMAND_SUPPORT
+-
+-config CMD_AT91MUX
+-	bool "at91mux dump command"
 -	default y
 -
- endif
- 
+-endif
+-
  config AT91_BOOTSTRAP
+ 	bool "at91 bootstrap"
+ 	depends on HAVE_AT91_LOWLEVEL_INIT
 diff --git a/commands/Kconfig b/commands/Kconfig
-index e48b2d1..166693d 100644
+index 166693d..47ac352 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -30,6 +30,13 @@ menu "Commands"
+@@ -37,6 +37,22 @@ config CMD_AT91CLK
+ 	help
+ 	  List clock configuration.
  
- menu "Information"
- 
-+config CMD_AT91CLK
-+	bool "at91clk"
++config CMD_AT91MUX
++	bool "at91mux"
 +	default y
 +	depends on ARCH_AT91
 +	help
-+	  List clock configuration.
++	  List MUX configuration
++
++	  Usage: at91mux [-pn]
++
++	  Dump current MUX configuration. If a BANK or PIN has been
++	  specified dump pin details.
++
++	  Options:
++	  -p PIN   pin number
++	  -b BANK  bank number
 +
  config CMD_ARM_CPUINFO
  	bool "cpuinfo command"
