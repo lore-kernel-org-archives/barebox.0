@@ -1,15 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wk8VH-0004o6-GQ
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:56:05 +0000
-Date: Tue, 13 May 2014 10:28:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140513082846.GL5858@pengutronix.de>
-References: <1399910252.4918.8.camel@mars>
+Received: from mail-yk0-x236.google.com ([2607:f8b0:4002:c07::236])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wk8Zv-0006ob-HT
+ for barebox@lists.infradead.org; Tue, 13 May 2014 09:00:51 +0000
+Received: by mail-yk0-f182.google.com with SMTP id 9so26842ykp.13
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 02:00:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1399910252.4918.8.camel@mars>
+In-Reply-To: <CAOpc7mGA3ESAZJbFvEW6s0FFwK16FmE2Pz1A6TYMnarJBXET9A@mail.gmail.com>
+References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+ <CAOpc7mGA3ESAZJbFvEW6s0FFwK16FmE2Pz1A6TYMnarJBXET9A@mail.gmail.com>
+Date: Tue, 13 May 2014 11:00:25 +0200
+Message-ID: <CAOpc7mE0dmRj8i4O3M8-XdkV96nHaM=WOhENuLK7kD6ek6aemg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,55 +24,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] common: fix macro WARN
-To: Christoph Fritz <chf@fritzc.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/19] commands rework patch series
+To: barebox@lists.infradead.org
 
-On Mon, May 12, 2014 at 05:57:32PM +0200, Christoph Fritz wrote:
-> 
-> Signed-off-by: Christoph Fritz <chf.fritz@googlemail.com>
+... anyway, I noticed to compile simple errors in clk.c and gpio.c
+when compiled for ARM in Patch 0002, v2 of this patch is now at
+https://drive.google.com/file/d/0B-OEhM3f0eCtNXNUN01ETThZLWs/edit?usp=sharing
 
-Applied, thanks
-
-Sascha
-
-> ---
->  include/common.h |    3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/common.h b/include/common.h
-> index bfd3ce8..e7ab5fe 100644
-> --- a/include/common.h
-> +++ b/include/common.h
-> @@ -72,10 +72,11 @@
->  #ifndef WARN
->  #define WARN(condition, format...) ({					\
->  	int __ret_warn_on = !!(condition);				\
-> -	if (unlikely(__ret_warn_on))					\
-> +	if (unlikely(__ret_warn_on)) {					\
->  		__WARN();						\
->  		puts("WARNING: ");					\
->  		printf(format);						\
-> +	}								\
->  	unlikely(__ret_warn_on);					\
->  })
->  #endif
-> -- 
-> 1.7.10.4
-> 
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+(I should have compiled this not just in the sandbox mode, but also
+for my target. Grmpf.)
 
 _______________________________________________
 barebox mailing list
