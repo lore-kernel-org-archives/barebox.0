@@ -1,17 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
+Received: from mail-yk0-x22e.google.com ([2607:f8b0:4002:c07::22e])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkAgR-0001fa-W2
- for barebox@lists.infradead.org; Tue, 13 May 2014 11:15:44 +0000
-Received: by mail-la0-f43.google.com with SMTP id mc6so141864lab.16
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 04:15:20 -0700 (PDT)
-Date: Tue, 13 May 2014 15:26:16 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140513152616.037f99e1138c9028878f61f6@gmail.com>
-In-Reply-To: <1399969739-10355-9-git-send-email-holgerschurig@gmail.com>
+ id 1WkAsx-00076P-Ad
+ for barebox@lists.infradead.org; Tue, 13 May 2014 11:28:39 +0000
+Received: by mail-yk0-f174.google.com with SMTP id 9so133332ykp.5
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 04:28:17 -0700 (PDT)
+MIME-Version: 1.0
+In-Reply-To: <20140513152616.037f99e1138c9028878f61f6@gmail.com>
 References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
  <1399969739-10355-9-git-send-email-holgerschurig@gmail.com>
-Mime-Version: 1.0
+ <20140513152616.037f99e1138c9028878f61f6@gmail.com>
+Date: Tue, 13 May 2014 13:28:17 +0200
+Message-ID: <CAOpc7mHLsLJehMFkcFeJBGodKEJejiDxgwgWZE2V3-=37BbRHQ@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,94 +21,28 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: [PATCH 08/19] commands: move CMD_MIPS_CPUINFO to commands/Kconfig
-To: Holger Schurig <holgerschurig@gmail.com>
+To: Antony Pavlov <antonynpavlov@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, 13 May 2014 10:28:48 +0200
-Holger Schurig <holgerschurig@gmail.com> wrote:
+Hi,
 
-Can we use
+i thought about having exactly one CONFIG_CMD_CPUINFO. No need for
+your steps 2. and 3., because both arch/arm/Makefile and
+arch/arm/Makefile could do "obj-$(CONFIG_CMD_CPUINFO) += cpuinfo.o",
+you cannot compile for ARM and MIPS at the same time anyway.
 
-  1. consolidated CMD_CPUINFO option which is selectable on MIPS || ARM;
-  2. CMD_ARM_CPUINFO option which depends on ARM & CMD_CPUINFO;
-  3. CMD_MIPS_CPUINFO option which depends on MIPS & CMD_CPUINFO.
+However, I decided against it. Because then I'd have to remove the
+example "cpuinfo" output from them the Kconfig help.
 
-
-> * this places the command into the "Information commands"
->   section of Kconfig
-> =
-
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
-> ---
->  arch/mips/Kconfig |    7 -------
->  commands/Kconfig  |    8 ++++++++
->  2 files changed, 8 insertions(+), 7 deletions(-)
-> =
-
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 9a240b7..6ce7fff 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -274,13 +274,6 @@ endchoice
->  =
-
->  menu "MIPS specific settings"
->  =
-
-> -config CMD_MIPS_CPUINFO
-> -	bool "cpuinfo command"
-> -	default y
-> -	help
-> -	  Say yes here to get a cpuinfo command to show some
-> -	  information about the cpu model.
-> -
->  config HAS_NMON
->  	bool
->  =
-
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 9789af4..db091c4 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -46,6 +46,14 @@ config CMD_ARM_CPUINFO
->  	  D-cache: 8192 bytes (linelen =3D 8)
->  	  Control register: M C W P D L I V RR DT IT U XP
->  =
-
-> +config CMD_MIPS_CPUINFO
-> +	bool "cpuinfo command"
-> +	default y
-> +	depends on MIPS
-> +	help
-> +	  Say yes here to get a cpuinfo command to show some
-> +	  information about the cpu model.
-> +
->  config CMD_DEVINFO
->  	tristate
->  	default y
-> -- =
-
-> 1.7.10.4
-> =
-
-> =
-
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-
-
--- =
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+Just that generally I'd like to have output example in the Kconfig, so
+that people see at "make xconfig" time if they want this command or
+not. I, for example, don't want "cpuinfo", I know which CPU is
+soldered into the board :-)
 
 _______________________________________________
 barebox mailing list
