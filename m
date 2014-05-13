@@ -1,16 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkD4n-0005vs-LR
- for barebox@lists.infradead.org; Tue, 13 May 2014 13:49:02 +0000
-Date: Tue, 13 May 2014 15:48:40 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140513134840.GS5858@pengutronix.de>
-References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
- <1399969739-10355-2-git-send-email-holgerschurig@gmail.com>
+Received: from astoria.ccjclearline.com ([64.235.106.9])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WkD8P-0002Vg-7J
+ for barebox@lists.infradead.org; Tue, 13 May 2014 13:52:46 +0000
+Date: Tue, 13 May 2014 09:50:03 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+In-Reply-To: <20140513134228.GQ5858@pengutronix.de>
+Message-ID: <alpine.LFD.2.11.1405130948350.7299@localhost>
+References: <20140513134228.GQ5858@pengutronix.de>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1399969739-10355-2-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,44 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 01/19] commands: group 'help' output
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: barebox Documentation
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 13, 2014 at 10:28:41AM +0200, Holger Schurig wrote:
-> The old output of "help" was just producing a long list, that usually
-> scrolled of the screen (even on a X11 terminal). This list is more
-> compact, and also sorted by groups.
-> 
-> The old output format (plus grouping) is now available with 'help -v'.
-> 
+On Tue, 13 May 2014, Sascha Hauer wrote:
 
-[...]
+> Hi,
+>
+> As we all know the barebox documentation sucks. We @Pengutronix will
+> have our internal techweek next month. One of the goals will be to
+> improve the documentation situation for barebox.
+>
+> What are your opinions in which form the documentation should be?
+>
+> We currently have plain text files under Documentation/, a wiki on
+> http://wiki.barebox.org/doku.php and doxygen. None of the documentation
+> sets is complete and all are outdated.
 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index c440a69..cdeebc0 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -1713,8 +1713,10 @@ int of_add_memory(struct device_node *node, bool dump)
->  			continue;
->  		}
->  
-> +#if 0
->  		of_add_memory_bank(node, dump, n,
->  				res.start, resource_size(&res));
-> +#endif
->  		n++;
->  	}
+  as i want to introduce barebox into future embedded linux classes of
+mine, i have a vested interest in making sure the documentation is
+good. so while others argue about the proper format, i'll be happy to
+put my editing talents to work and do a lot of proofreading.
 
-This got in here accidently.
-
-Sascha
+rday
 
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                        http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
 
 _______________________________________________
 barebox mailing list
