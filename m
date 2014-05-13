@@ -1,13 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22a.google.com ([2a00:1450:4013:c00::22a])
+Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk80l-0001c1-60
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:32 +0000
-Received: by mail-ee0-f42.google.com with SMTP id d49so127565eek.1
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:09 -0700 (PDT)
+ id 1Wk80u-0001jS-Mw
+ for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:48 +0000
+Received: by mail-ee0-f43.google.com with SMTP id d17so124590eek.16
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:18 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:40 +0200
-Message-Id: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+Date: Tue, 13 May 2014 10:28:44 +0200
+Message-Id: <1399969739-10355-5-git-send-email-holgerschurig@gmail.com>
+In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,308 +23,192 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 00/19] commands rework patch series
+Subject: [PATCH 04/19] commands: CMD_MEMORY -> COMPILE_MEMORY
 To: barebox@lists.infradead.org
 
-Hi,
+* CMD_MEMORY was defined both in common/Kconfig and commands/Kconfig
+* that symbol turned not a command on, but just the compilation of
+  commands/mem.c, so rename it accordingly
 
-this is my current patch series that should improve barebox'
-documentation about it's commands.
-
-* when I started barebox and typed "help", the list of commands
-  was scrolling up quickly. Almost always did I had to use the
-  mouse and scroll my x-terminal backwards to see what I
-  actually wanted to see. So I reduced the output of the "help"
-  command to just spit out the command names, however grouped
-  by functions. This is now much smaller and fits in one
-  screen. The old list is available with "help -l".
-* Usage (synopsis) documention (e.g. "ls [-lCR]") was only in
-  the CONFIG_LONGHELP, but it's often usable if one forget the
-  exact command option letter. It's now part of the help even
-  without CONFIG_LONGHELP.
-* I reworked the long help texts to make them better understandable
-  (hopefully), and also tried to recuce their size if possible.
-* when I was new to barebox, I was wandering if I need some
-  of the commands in "make xconfig". I didn't have further
-  information, because almost no command had a help text.
-  This has now changed, the help texts in Kconfig are almost the
-  same as the help texts of "help FOOBAR" (with CONFIG_LONGHELP) on.
-* now that "help" has the commands grouped nicely, it was time
-  to group them in "make xconfig", too
-* many Kconfig entries turned on commands, but they were located
-  at various places (a.g. common, net, arch-depended). Moved them
-  all into commands/Kconfig
-* some CONFIG_CMD_foobar things didn't turn on commands. I renamed
-  them (and their occurences in the _defconfig)s.
-
-What I deliberately did not: I ignored the Doxygen. That beast lacks
-around 70% of all commands anyway. It builds quite slow. Still I would
-not remove it, becausee occassinally it contains additional
-information that isn't suitable (too long) for CONFIG_LONGHELP.
-
-Holger Schurig (19):
-  commands: group 'help' output
-  commands: harmonize in-barebox documentation
-  commands: harmonize in-barebox docs with Kconfig docs
-  commands: CMD_MEMORY -> COMPILE_MEMORY
-  commands: CMD_DIGEST -> COMPILE_DIGEST
-  commands: move CMD_ARM_CPUINFO to commands/Kconfig
-  commands: move CMD_ARM_MMUINFO to commands/Kconfig
-  commands: move CMD_MIPS_CPUINFO to commands/Kconfig
-  commands: move CMD_BOOT_ORDER to commands/Kconfig
-  commands: move CMD_AT91_BOOT_TEST to commands/Kconfig
-  commands: move CMD_AT91MUX to commands/Kconfig
-  commands: move CMD_AT91MIX to commands/Kconfig
-  commands: HUSH_GETOPT -> CMD_GETOPT
-  commands: let all network commands depend on NET
-  commands: introduce CMD_HOST
-  commands: NET_PING -> CMD_PING
-  commands: NET_DHCP -> CMD_DHCP
-  commands: move CMD_IFUP to commands/Kconfig
-  commands: move CONFIG_LONGHELP to commands/Kconfig
-
- arch/arm/Kconfig                                   |   15 -
- arch/arm/boards/eukrea_cpuimx35/eukrea_cpuimx35.c  |    9 +-
- arch/arm/boards/guf-cupid/board.c                  |   10 +-
- arch/arm/boards/phytec-phycore-imx35/pcm043.c      |   10 +-
- arch/arm/configs/a9m2410_defconfig                 |    4 +-
- arch/arm/configs/a9m2440_defconfig                 |    4 +-
- arch/arm/configs/am335x_beaglebone_defconfig       |    4 +-
- arch/arm/configs/animeo_ip_defconfig               |    4 +-
- arch/arm/configs/archosg9_defconfig                |    4 +-
- arch/arm/configs/at91rm9200ek_defconfig            |    4 +-
- arch/arm/configs/at91sam9260ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9261ek_defconfig           |    4 +-
- .../configs/at91sam9261ek_first_stage_defconfig    |    4 +-
- arch/arm/configs/at91sam9263ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9g10ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9g20ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9m10g45ek_defconfig        |    4 +-
- arch/arm/configs/at91sam9m10ihd_defconfig          |    4 +-
- arch/arm/configs/at91sam9n12ek_defconfig           |    4 +-
- arch/arm/configs/at91sam9x5ek_defconfig            |    4 +-
- arch/arm/configs/ccmx51_defconfig                  |    4 +-
- arch/arm/configs/chumbyone_defconfig               |    6 +-
- arch/arm/configs/cupid_defconfig                   |    4 +-
- arch/arm/configs/datamodul-edm-qmx6_defconfig      |    4 +-
- arch/arm/configs/dss11_defconfig                   |    4 +-
- arch/arm/configs/edb93xx_defconfig                 |    4 +-
- arch/arm/configs/efika-mx-smartbook_defconfig      |    4 +-
- arch/arm/configs/eukrea_cpuimx25_defconfig         |    4 +-
- arch/arm/configs/eukrea_cpuimx27_defconfig         |    4 +-
- arch/arm/configs/eukrea_cpuimx35_defconfig         |    4 +-
- arch/arm/configs/eukrea_cpuimx51_defconfig         |    4 +-
- arch/arm/configs/freescale-mx21-ads_defconfig      |    4 +-
- arch/arm/configs/freescale-mx25-3ds_defconfig      |    4 +-
- arch/arm/configs/freescale-mx27-ads_defconfig      |    4 +-
- arch/arm/configs/freescale-mx28-evk_defconfig      |    4 +-
- arch/arm/configs/freescale-mx35-3ds_defconfig      |    4 +-
- arch/arm/configs/freescale-mx51-babbage_defconfig  |    4 +-
- arch/arm/configs/freescale-mx53-qsb_defconfig      |    4 +-
- arch/arm/configs/freescale-mx53-smd_defconfig      |    4 +-
- arch/arm/configs/freescale-mx6-arm2_defconfig      |    4 +-
- arch/arm/configs/freescale-mx6-sabrelite_defconfig |    4 +-
- arch/arm/configs/freescale-mx6-sabresd_defconfig   |    4 +-
- arch/arm/configs/friendlyarm_mini2440_defconfig    |    4 +-
- arch/arm/configs/friendlyarm_mini6410_defconfig    |    4 +-
- arch/arm/configs/friendlyarm_tiny6410_defconfig    |    4 +-
- arch/arm/configs/highbank_defconfig                |    4 +-
- arch/arm/configs/imx233-olinuxino_defconfig        |    4 +-
- arch/arm/configs/imx_v7_defconfig                  |    4 +-
- arch/arm/configs/mioa701_defconfig                 |    2 +-
- arch/arm/configs/mmccpu_defconfig                  |    4 +-
- arch/arm/configs/neso_defconfig                    |    4 +-
- arch/arm/configs/netx_nxdb500_defconfig            |    4 +-
- arch/arm/configs/nhk8815_defconfig                 |    4 +-
+Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+---
  .../configs/omap3430_sdp3430_per_uart_defconfig    |    2 +-
- arch/arm/configs/omap3530_beagle_defconfig         |    4 +-
  arch/arm/configs/omap3_evm_defconfig               |    2 +-
- arch/arm/configs/panda_defconfig                   |    4 +-
- arch/arm/configs/phytec-phycard-imx27_defconfig    |    4 +-
- arch/arm/configs/phytec-phycard-omap3_defconfig    |   10 +-
- arch/arm/configs/phytec-phycard-omap4_defconfig    |    6 +-
- arch/arm/configs/phytec-phycore-am335x_defconfig   |    4 +-
- arch/arm/configs/phytec-phycore-imx27_defconfig    |    4 +-
- arch/arm/configs/phytec-phycore-imx31_defconfig    |    4 +-
- arch/arm/configs/phytec-phycore-imx35_defconfig    |    4 +-
- arch/arm/configs/phytec-phycore-omap4460_defconfig |    4 +-
- arch/arm/configs/phytec-phycore-pxa270_defconfig   |    4 +-
- arch/arm/configs/pm9261_defconfig                  |    4 +-
- arch/arm/configs/pm9263_defconfig                  |    4 +-
- arch/arm/configs/pm9g45_defconfig                  |    4 +-
- arch/arm/configs/qil_a9260_128mib_defconfig        |    4 +-
- arch/arm/configs/qil_a9260_defconfig               |    4 +-
- arch/arm/configs/qil_a9g20_128mib_defconfig        |    4 +-
- arch/arm/configs/qil_a9g20_defconfig               |    4 +-
- arch/arm/configs/rockchip_defconfig                |    4 +-
- arch/arm/configs/sama5d3xek_defconfig              |    4 +-
- arch/arm/configs/scb9328_defconfig                 |    4 +-
- arch/arm/configs/socfpga_defconfig                 |    4 +-
- arch/arm/configs/solidrun_cubox_defconfig          |    2 +-
- arch/arm/configs/telit_evk_pro3_defconfig          |    4 +-
- arch/arm/configs/tny_a9260_defconfig               |    4 +-
- arch/arm/configs/tny_a9263_defconfig               |    4 +-
- arch/arm/configs/tny_a9g20_defconfig               |    4 +-
- arch/arm/configs/tqma53_defconfig                  |    4 +-
- arch/arm/configs/tx25stk5_defconfig                |    4 +-
- arch/arm/configs/tx28stk5_defconfig                |    2 +-
- arch/arm/configs/tx51stk5_defconfig                |    8 +-
- arch/arm/configs/tx53stk5_defconfig                |    4 +-
- arch/arm/configs/usb_a9260_defconfig               |    4 +-
- arch/arm/configs/usb_a9263_128mib_defconfig        |    4 +-
- arch/arm/configs/usb_a9263_defconfig               |    4 +-
- arch/arm/configs/usb_a9g20_128mib_defconfig        |    4 +-
- arch/arm/configs/usb_a9g20_defconfig               |    4 +-
- arch/arm/configs/versatilepb_defconfig             |    4 +-
- arch/arm/configs/vexpress_ca9_defconfig            |    4 +-
- arch/arm/configs/vexpress_defconfig                |    4 +-
- arch/arm/configs/vincell_defconfig                 |    4 +-
- arch/arm/configs/zedboard_defconfig                |    2 +-
- arch/arm/cpu/cpuinfo.c                             |    3 +-
- arch/arm/cpu/mmuinfo.c                             |   10 +-
- arch/arm/lib/bootu.c                               |    4 +-
- arch/arm/lib/bootz.c                               |    9 +-
- arch/arm/mach-at91/Kconfig                         |   18 -
- arch/arm/mach-at91/boot_test_cmd.c                 |    9 +-
- arch/arm/mach-at91/clock.c                         |    9 +-
- arch/arm/mach-at91/gpio.c                          |   12 +-
- arch/arm/mach-mxs/bcb.c                            |    9 +-
- arch/arm/mach-netx/generic.c                       |    4 +-
- arch/arm/mach-omap/Kconfig                         |    7 -
- arch/arm/mach-omap/boot_order.c                    |   13 +-
- arch/blackfin/boards/ipe337/cmd_alternate.c        |   10 +-
- arch/blackfin/configs/ipe337_defconfig             |    4 +-
- arch/mips/Kconfig                                  |    7 -
- arch/mips/configs/dlink-dir-320_defconfig          |    6 +-
- arch/mips/configs/loongson-ls1b_defconfig          |    2 +-
- arch/mips/configs/qemu-malta_defconfig             |    6 +-
- arch/mips/configs/ritmix-rzx50_defconfig           |    2 +-
- arch/mips/lib/cpuinfo.c                            |    3 +-
- arch/nios2/configs/generic_defconfig               |    2 +-
- arch/openrisc/configs/generic_defconfig            |    4 +-
- arch/openrisc/lib/cpuinfo.c                        |    3 +-
- arch/ppc/configs/da923rc_defconfig                 |    4 +-
- arch/ppc/configs/p1022ds_defconfig                 |    2 +-
- arch/ppc/configs/p2020rdb_defconfig                |    2 +-
- arch/ppc/configs/pcm030_defconfig                  |    4 +-
- arch/sandbox/configs/sandbox_defconfig             |    4 +-
- commands/2048.c                                    |    7 +-
- commands/Kconfig                                   | 2250 +++++++++++++++-----
- commands/Makefile                                  |    4 +-
- commands/automount.c                               |   13 +-
- commands/barebox-update.c                          |   18 +-
- commands/basename.c                                |    7 +-
- commands/boot.c                                    |   45 +-
- commands/bootm.c                                   |   34 +-
- commands/cat.c                                     |    9 +-
- commands/cd.c                                      |    8 +-
- commands/clear.c                                   |    7 +-
- commands/clk.c                                     |   43 +-
- commands/cp.c                                      |   10 +-
- commands/crc.c                                     |   21 +-
- commands/detect.c                                  |   12 +-
- commands/devinfo.c                                 |   17 +-
- commands/dfu.c                                     |   28 +-
- commands/digest.c                                  |   28 +-
- commands/dirname.c                                 |   11 +-
- commands/echo.c                                    |   17 +-
- commands/edit.c                                    |    7 +-
- commands/exec.c                                    |    3 +-
- commands/export.c                                  |    7 +-
- commands/false.c                                   |    3 +-
- commands/filetype.c                                |   15 +-
- commands/flash.c                                   |   43 +-
- commands/global.c                                  |   11 +-
- commands/go.c                                      |   15 +-
- commands/gpio.c                                    |   39 +-
- commands/help.c                                    |  112 +-
- commands/i2c.c                                     |   51 +-
- commands/insmod.c                                  |    8 +-
- commands/iomemport.c                               |    6 +-
- commands/led.c                                     |   12 +-
- commands/let.c                                     |   44 +-
- commands/linux16.c                                 |   17 +-
- commands/linux_exec.c                              |   10 +-
- commands/ln.c                                      |   10 +-
- commands/loadb.c                                   |   20 +-
- commands/loadenv.c                                 |   16 +-
- commands/loads.c                                   |   21 +-
- commands/loadxy.c                                  |   53 +-
- commands/login.c                                   |   17 +-
- commands/ls.c                                      |   13 +-
- commands/lsmod.c                                   |    3 +-
- commands/magicvar.c                                |    3 +-
- commands/md.c                                      |   38 +-
- commands/memcmp.c                                  |   29 +-
- commands/memcpy.c                                  |   23 +-
- commands/meminfo.c                                 |    3 +-
- commands/memset.c                                  |   21 +-
- commands/memtest.c                                 |   15 +-
- commands/menu.c                                    |   55 +-
- commands/menutree.c                                |   37 +-
- commands/miitool.c                                 |   12 +-
- commands/mkdir.c                                   |   13 +-
- commands/mm.c                                      |   20 +-
- commands/mount.c                                   |   27 +-
- commands/msleep.c                                  |    4 +-
- commands/mw.c                                      |   19 +-
- commands/nand.c                                    |   16 +-
- commands/nandtest.c                                |   22 +-
- commands/net.c                                     |    8 +-
- commands/of_node.c                                 |   10 +-
- commands/of_property.c                             |   21 +-
- commands/oftree.c                                  |   16 +-
- commands/partition.c                               |   27 +-
- commands/passwd.c                                  |   14 +-
- commands/poweroff.c                                |    3 +-
- commands/printenv.c                                |    9 +-
- commands/pwd.c                                     |    3 +-
- commands/readf.c                                   |   11 +-
- commands/readline.c                                |   11 +-
- commands/readlink.c                                |   11 +-
- commands/reginfo.c                                 |    3 +-
- commands/regulator.c                               |    3 +-
- commands/reset.c                                   |    9 +-
- commands/rm.c                                      |   12 +-
- commands/rmdir.c                                   |   11 +-
- commands/saveenv.c                                 |   13 +-
- commands/setenv.c                                  |   10 +-
- commands/sleep.c                                   |    4 +-
- commands/spi.c                                     |   25 +-
- commands/splash.c                                  |   20 +-
- commands/test.c                                    |   15 +-
- commands/tftp.c                                    |   10 +-
- commands/time.c                                    |    9 +-
- commands/timeout.c                                 |   21 +-
- commands/trigger.c                                 |   13 +-
- commands/true.c                                    |    3 +-
- commands/ubi.c                                     |   43 +-
- commands/ubiformat.c                               |   48 +-
- commands/uimage.c                                  |   16 +-
- commands/umount.c                                  |   11 +-
- commands/uncompress.c                              |   11 +-
- commands/usb.c                                     |   11 +-
- commands/usbserial.c                               |   29 +-
- commands/version.c                                 |    3 +-
- commands/wd.c                                      |   11 +-
- common/Kconfig                                     |   19 +-
- common/command.c                                   |   34 +-
- common/hush.c                                      |   67 +-
- drivers/gpio/gpiolib.c                             |    9 +-
- drivers/mtd/nand/nand_imx_bbm.c                    |    6 +-
- drivers/mtd/nand/nand_s3c24xx.c                    |    8 +-
- drivers/of/base.c                                  |    2 +
- drivers/usb/gadget/u_serial.c                      |    1 +
- include/command.h                                  |   29 +-
- net/Kconfig                                        |   15 -
- net/Makefile                                       |    4 +-
- net/dhcp.c                                         |   32 +-
- net/dns.c                                          |   11 +-
- net/ifup.c                                         |   15 +-
- net/nfs.c                                          |    9 +-
- net/ping.c                                         |    4 +-
- 240 files changed, 3119 insertions(+), 1746 deletions(-)
+ arch/arm/configs/phytec-phycard-omap3_defconfig    |    2 +-
+ arch/arm/configs/tx51stk5_defconfig                |    2 +-
+ commands/Kconfig                                   |   24 +++++++++-----------
+ commands/Makefile                                  |    2 +-
+ common/Kconfig                                     |    3 ---
+ 7 files changed, 16 insertions(+), 21 deletions(-)
 
+diff --git a/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig b/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+index 013d000..445866f 100644
+--- a/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
++++ b/arch/arm/configs/omap3430_sdp3430_per_uart_defconfig
+@@ -1,7 +1,7 @@
+ CONFIG_ARCH_OMAP=y
+ # CONFIG_OMAP3_COPY_CLOCK_SRAM is not set
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-# CONFIG_CMD_MEMORY is not set
++# CONFIG_COMPILE_MEMORY is not set
+ CONFIG_TEXT_BASE=0x40200000
+ CONFIG_MEMORY_LAYOUT_FIXED=y
+ CONFIG_STACK_BASE=0x87BF7F10
+diff --git a/arch/arm/configs/omap3_evm_defconfig b/arch/arm/configs/omap3_evm_defconfig
+index 3fe2647..90ace31 100644
+--- a/arch/arm/configs/omap3_evm_defconfig
++++ b/arch/arm/configs/omap3_evm_defconfig
+@@ -2,7 +2,7 @@ CONFIG_ARCH_OMAP=y
+ # CONFIG_OMAP3_COPY_CLOCK_SRAM is not set
+ CONFIG_MACH_OMAP3EVM=y
+ CONFIG_AEABI=y
+-# CONFIG_CMD_MEMORY is not set
++# CONFIG_COMPILE_MEMORY is not set
+ CONFIG_TEXT_BASE=0x40200000
+ CONFIG_MEMORY_LAYOUT_FIXED=y
+ CONFIG_STACK_BASE=0x87BF7F10
+diff --git a/arch/arm/configs/phytec-phycard-omap3_defconfig b/arch/arm/configs/phytec-phycard-omap3_defconfig
+index b901658..d242c19 100644
+--- a/arch/arm/configs/phytec-phycard-omap3_defconfig
++++ b/arch/arm/configs/phytec-phycard-omap3_defconfig
+@@ -18,7 +18,7 @@ CONFIG_DEFCONFIG_LIST="$ARCH_DEFCONFIG"
+ CONFIG_GREGORIAN_CALENDER=y
+ CONFIG_HAS_KALLSYMS=y
+ CONFIG_HAS_MODULES=y
+-CONFIG_CMD_MEMORY=y
++CONFIG_COMPILE_MEMORY=y
+ CONFIG_ENV_HANDLING=y
+ CONFIG_GENERIC_GPIO=y
+ CONFIG_BLOCK=y
+diff --git a/arch/arm/configs/tx51stk5_defconfig b/arch/arm/configs/tx51stk5_defconfig
+index 354e809..b05c01d 100644
+--- a/arch/arm/configs/tx51stk5_defconfig
++++ b/arch/arm/configs/tx51stk5_defconfig
+@@ -18,7 +18,7 @@ CONFIG_ARM_UNWIND=y
+ CONFIG_GREGORIAN_CALENDER=y
+ CONFIG_HAS_KALLSYMS=y
+ CONFIG_HAS_MODULES=y
+-CONFIG_CMD_MEMORY=y
++CONFIG_COMPILE_MEMORY=y
+ CONFIG_ENV_HANDLING=y
+ CONFIG_GENERIC_GPIO=y
+ CONFIG_BLOCK=y
+diff --git a/commands/Kconfig b/commands/Kconfig
+index fb9a036..d987688 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -12,6 +12,11 @@ config HAS_POWEROFF
+ 
+ if COMMAND_SUPPORT
+ 
++config COMPILE_MEMORY
++	bool
++	help
++	  Turns on compilation of mem.c
++
+ menu "Commands"
+ 
+ 
+@@ -1196,13 +1201,6 @@ endmenu
+ 
+ menu "Memory"
+ 
+-config CMD_MEMORY
+-	bool
+-	default y
+-	help
+-	  TODO This is actually not a command, but turns in the /dev/mem device
+-	  and common memory options (e.g. range parsing).
+-
+ config CMD_CRC
+ 	tristate
+ 	select CRC32
+@@ -1228,7 +1226,7 @@ config CMD_CRC_CMP
+ config CMD_MD
+ 	tristate
+ 	default y
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "md"
+ 	help
+ 	  Memory display
+@@ -1252,7 +1250,7 @@ config CMD_MD
+ config CMD_MEMCMP
+ 	tristate
+ 	default y
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "memcmp"
+ 	help
+ 	  Memory compare
+@@ -1274,7 +1272,7 @@ config CMD_MEMCMP
+ config CMD_MEMCPY
+ 	tristate
+ 	default y
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "memcpy"
+ 	help
+ 	  Memory copy
+@@ -1293,7 +1291,7 @@ config CMD_MEMCPY
+ config CMD_MEMSET
+ 	tristate
+ 	default y
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "memset"
+ 	help
+ 	  Memory fill
+@@ -1326,7 +1324,7 @@ config CMD_MEMTEST
+ 
+ config CMD_MM
+ 	tristate
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "memory modify (mm)"
+ 	help
+ 	  Memory modify with mask
+@@ -1344,7 +1342,7 @@ config CMD_MM
+ config CMD_MW
+ 	tristate
+ 	default y
+-	select CMD_MEMORY
++	select COMPILE_MEMORY
+ 	prompt "mw"
+ 	help
+ 	  Memory write
+diff --git a/commands/Makefile b/commands/Makefile
+index f927d21..f5aaf1c 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_STDDEV)		+= stddev.o
++obj-$(CONFIG_COMPILE_MEMORY)	+= mem.o
+ obj-$(CONFIG_CMD_BOOTM)		+= bootm.o
+ obj-$(CONFIG_CMD_UIMAGE)	+= uimage.o
+ obj-$(CONFIG_CMD_LINUX16)	+= linux16.o
+@@ -6,7 +7,6 @@ obj-$(CONFIG_CMD_LOADB)		+= loadb.o
+ obj-$(CONFIG_CMD_LOADY)		+= loadxy.o
+ obj-$(CONFIG_CMD_LOADS)		+= loads.o
+ obj-$(CONFIG_CMD_ECHO)		+= echo.o
+-obj-$(CONFIG_CMD_MEMORY)	+= mem.o
+ obj-$(CONFIG_CMD_MD)		+= md.o
+ obj-$(CONFIG_CMD_MM)		+= mm.o
+ obj-$(CONFIG_CMD_MW)		+= mw.o
+diff --git a/common/Kconfig b/common/Kconfig
+index 0031cc8..20ce60c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -21,9 +21,6 @@ config HAS_KALLSYMS
+ config HAS_MODULES
+ 	bool
+ 
+-config CMD_MEMORY
+-	bool
+-
+ config ENV_HANDLING
+ 	select CRC32
+ 	bool
 -- 
 1.7.10.4
 
