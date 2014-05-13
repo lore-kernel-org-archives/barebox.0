@@ -1,23 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x233.google.com ([2a00:1450:4013:c00::233])
+Received: from mail-la0-x22b.google.com ([2a00:1450:4010:c03::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkAV4-0000PU-4w
- for barebox@lists.infradead.org; Tue, 13 May 2014 11:03:58 +0000
-Received: by mail-ee0-f51.google.com with SMTP id e51so283963eek.24
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 04:03:35 -0700 (PDT)
-Date: Tue, 13 May 2014 13:03:29 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140513110326.GA29062@omega>
-References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
- <20140424065848.GV5858@pengutronix.de>
- <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
- <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
- <1398984618.20734.13.camel@mars>
- <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
- <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
+ id 1WkAgR-0001fa-W2
+ for barebox@lists.infradead.org; Tue, 13 May 2014 11:15:44 +0000
+Received: by mail-la0-f43.google.com with SMTP id mc6so141864lab.16
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 04:15:20 -0700 (PDT)
+Date: Tue, 13 May 2014 15:26:16 +0400
+From: Antony Pavlov <antonynpavlov@gmail.com>
+Message-Id: <20140513152616.037f99e1138c9028878f61f6@gmail.com>
+In-Reply-To: <1399969739-10355-9-git-send-email-holgerschurig@gmail.com>
+References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+ <1399969739-10355-9-git-send-email-holgerschurig@gmail.com>
+Mime-Version: 1.0
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -26,45 +20,94 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New driver crashes with "unable to handle paging request"
-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Subject: Re: [PATCH 08/19] commands: move CMD_MIPS_CPUINFO to commands/Kconfig
+To: Holger Schurig <holgerschurig@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi,
+On Tue, 13 May 2014 10:28:48 +0200
+Holger Schurig <holgerschurig@gmail.com> wrote:
 
-i am not Christoph but I want to told you my opinion about this.
+Can we use
 
-One year ago there was some guy at #barebox in irc.freenode.net with the
-nickname "honshu" (or it was a girl).
-
-"honshu" asked if somebody worked at the musb support. Nobody known
-worked on this support... So he begun to hack this into barebox. I
-think he wanted to use the u-boot code as well.
-
-This was one year ago...
+  1. consolidated CMD_CPUINFO option which is selectable on MIPS || ARM;
+  2. CMD_ARM_CPUINFO option which depends on ARM & CMD_CPUINFO;
+  3. CMD_MIPS_CPUINFO option which depends on MIPS & CMD_CPUINFO.
 
 
-Now, I will quoute the irc log:
+> * this places the command into the "Information commands"
+>   section of Kconfig
+> =
 
-"10:11 < ch_f> I need the spec for musb (it's on a am335x), but it's not
-in the trm. Any ideas how to get it?"
+> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+> ---
+>  arch/mips/Kconfig |    7 -------
+>  commands/Kconfig  |    8 ++++++++
+>  2 files changed, 8 insertions(+), 7 deletions(-)
+> =
 
-This was today May 13. 2014.
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 9a240b7..6ce7fff 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -274,13 +274,6 @@ endchoice
+>  =
 
-Here is my answer to the very mysteric guy with the nickname "ch_f", I
-think you don't get it without good connections. :-)
+>  menu "MIPS specific settings"
+>  =
 
-But this doesn't sounds to me that the driver is almost finished.
+> -config CMD_MIPS_CPUINFO
+> -	bool "cpuinfo command"
+> -	default y
+> -	help
+> -	  Say yes here to get a cpuinfo command to show some
+> -	  information about the cpu model.
+> -
+>  config HAS_NMON
+>  	bool
+>  =
 
-Sorry if I told that on the mailinglist, but I think everyone should
-know the really state of this port now.
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 9789af4..db091c4 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -46,6 +46,14 @@ config CMD_ARM_CPUINFO
+>  	  D-cache: 8192 bytes (linelen =3D 8)
+>  	  Control register: M C W P D L I V RR DT IT U XP
+>  =
 
-- Alex
+> +config CMD_MIPS_CPUINFO
+> +	bool "cpuinfo command"
+> +	default y
+> +	depends on MIPS
+> +	help
+> +	  Say yes here to get a cpuinfo command to show some
+> +	  information about the cpu model.
+> +
+>  config CMD_DEVINFO
+>  	tristate
+>  	default y
+> -- =
 
+> 1.7.10.4
+> =
+
+> =
+
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+
+
+-- =
+
+--=A0
+Best regards,
+=A0 Antony Pavlov
 
 _______________________________________________
 barebox mailing list
