@@ -1,16 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-lb0-x232.google.com ([2a00:1450:4010:c04::232])
+Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkEi5-0004EA-MC
- for barebox@lists.infradead.org; Tue, 13 May 2014 15:33:42 +0000
-Received: by mail-lb0-f178.google.com with SMTP id w7so411725lbi.23
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 08:33:18 -0700 (PDT)
-Date: Tue, 13 May 2014 19:44:12 +0400
-From: Antony Pavlov <antonynpavlov@gmail.com>
-Message-Id: <20140513194412.511dcdb932138aa0dcb14d46@gmail.com>
-In-Reply-To: <20140513134228.GQ5858@pengutronix.de>
+ id 1WkGld-0006Uj-9s
+ for barebox@lists.infradead.org; Tue, 13 May 2014 17:45:31 +0000
+Date: Tue, 13 May 2014 20:45:02 +0300
+From: Baruch Siach <baruch@tkos.co.il>
+Message-ID: <20140513174502.GF4096@tarshish>
 References: <20140513134228.GQ5858@pengutronix.de>
-Mime-Version: 1.0
+ <CAOpc7mG5j_r8fOUcDeY2qcKZG=6LKTWr3fmWDadQfcJDquFtwg@mail.gmail.com>
+ <20140513141835.GT5858@pengutronix.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20140513141835.GT5858@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,64 +20,51 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
 Subject: Re: barebox Documentation
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, 13 May 2014 15:42:28 +0200
-Sascha Hauer <s.hauer@pengutronix.de> wrote:
+Hi Sascha,
 
-> Hi,
-> =
+On Tue, May 13, 2014 at 04:18:35PM +0200, Sascha Hauer wrote:
+> On Tue, May 13, 2014 at 04:01:07PM +0200, Holger Schurig wrote:
+> > If wiki and doxygen are not updated, than this is a sign that they
+> > should probably be outphased.
+> > 
+> > Instead, I'd prefer to have text files in the Documentation/ tree. So
+> > changes to them pass the normal review process.
+> 
+> +1
+> 
+> > > Plain text files
+> > > - no links
+> > > - no pictures
+> > 
+> > If we use some special format for them, e.g. Markdown or *.rst, then
+> > the files can still converted to HTML, and links and images could
+> > still be possible. That would mean that wiki.barebox.org probably goes
+> > away, but that (part) of www.barebox.org is generated from the
+> > *.rst/Markdown files.
+> 
+> This sounds like the best of two worlds. Do you know an example of a
+> project with markdown/rst documentation?
 
-> As we all know the barebox documentation sucks. We @Pengutronix will
-> have our internal techweek next month. One of the goals will be to
-> improve the documentation situation for barebox.
-> =
+Buildroot generates its manual from in-tree AsciiDoc formatted files under 
+docs/manual/. PDF, HTML, epub, and text output formats are supported. See 
+http://buildroot.net/docs.html for the generated result. See 
+docs/manual/manual.mk (included from the top level Makefile) for the build 
+recipes.
 
-> What are your opinions in which form the documentation should be?
-> =
+baruch
 
-> We currently have plain text files under Documentation/, a wiki on
-> http://wiki.barebox.org/doku.php and doxygen. None of the documentation
-> sets is complete and all are outdated.
-> =
-
-> Some pros and cons of the existing approaches are:
-> =
-
-> Plain text files
-> + Easy to write
-> + no extra step to generate docs, wysiwyg ;)
-> - no links
-> - no pictures
-> =
-
-> Wiki
-> - not contained in the repository, so may be out of sync
-
-http://en.wikipedia.org/wiki/Gitit_%28software%29 ?
-
-> + links
-> + nice markup language
->
-> doxygen
-> + contained in the repository
-> + easy html doc generation
-> + links
-> - extra step to generate the docs
-
-- not trivail board documentation adding (e.g. there is Documentation/board=
-s.dox, and
-there is arch/arm/mach-omap/arch-omap.dox too)
-
---=A0
-Best regards,
-=A0 Antony Pavlov
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
 
 _______________________________________________
 barebox mailing list
