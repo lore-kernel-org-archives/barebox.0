@@ -1,16 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WjvL2-0006xV-A4
- for barebox@lists.infradead.org; Mon, 12 May 2014 18:52:37 +0000
-Message-ID: <1399920915.2292.4.camel@tellur>
-From: Lucas Stach <dev@lynxeye.de>
-Date: Mon, 12 May 2014 20:55:15 +0200
-In-Reply-To: <20140512114936.GG5858@pengutronix.de>
-References: <1399878486-16086-1-git-send-email-dev@lynxeye.de>
- <1399878486-16086-11-git-send-email-dev@lynxeye.de>
- <20140512114936.GG5858@pengutronix.de>
-Mime-Version: 1.0
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wk68E-0006xV-6A
+ for barebox@lists.infradead.org; Tue, 13 May 2014 06:24:08 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 13 May 2014 08:23:40 +0200
+Message-Id: <1399962220-27617-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1399962220-27617-1-git-send-email-s.hauer@pengutronix.de>
+References: <1399962220-27617-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,91 +16,86 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 10/25] i2c: add Tegra driver
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 2/2] boot: iterate over directories in alphabetical order
+To: barebox@lists.infradead.org
 
-Am Montag, den 12.05.2014, 13:49 +0200 schrieb Sascha Hauer:
-> On Mon, May 12, 2014 at 09:07:51AM +0200, Lucas Stach wrote:
-> > Signed-off-by: Lucas Stach <dev@lynxeye.de>
-> > ---
-> >  drivers/i2c/busses/Kconfig     |   4 +
-> >  drivers/i2c/busses/Makefile    |   1 +
-> >  drivers/i2c/busses/i2c-tegra.c | 708 +++++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 713 insertions(+)
-> >  create mode 100644 drivers/i2c/busses/i2c-tegra.c
-> > 
-[...]
+When iterating over directories in order to find boot scripts do
+this alphabetically to get a predictable order. This can be done
+with glob() rather than readdir().
 
-> > +
-> > +static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
-> > +	int num)
-> > +{
-> > +	struct tegra_i2c_dev *i2c_dev = to_tegra_i2c_dev(adap);
-> > +	int i;
-> > +	int ret = 0;
-> > +
-> > +	ret = tegra_i2c_clock_enable(i2c_dev);
-> > +	if (ret < 0) {
-> > +		dev_err(i2c_dev->dev, "Clock enable failed %d\n", ret);
-> > +		return ret;
-> > +	}
-> > +
-> > +	for (i = 0; i < num; i++) {
-> > +		enum msg_end_type end_type = MSG_END_STOP;
-> > +		if (i < (num - 1))
-> > +			end_type = MSG_END_REPEAT_START;
-> > +		ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], end_type);
-> > +		if (ret)
-> > +			break;
-> > +	}
-> > +	tegra_i2c_clock_disable(i2c_dev);
-> > +	return ret ?: i;
-> 
-> What does this return when ret is true? ret? I've never seen this.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ commands/boot.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-This is present in the Linux source this is based on. I've just had to
-look it up and apparently it's a GNU extension which uses the first
-operand implicitly as the second. So yep, this is returning ret if true.
-Will change this as it's really confusing.
-
-> 
-> > +	i2c_dev = xzalloc(sizeof(*i2c_dev));
-> > +	if (!i2c_dev) {
-> > +		dev_err(dev, "Could not allocate struct tegra_i2c_dev");
-> > +		return -ENOMEM;
-> > +	}
-> 
-> No need to check the result of xzalloc.
-> 
-Ok, will remove.
-
-> > +	ret = tegra_i2c_clock_enable(i2c_dev);
-> > +		if (ret < 0) {
-> > +			dev_err(i2c_dev->dev, "Clock enable failed %d\n", ret);
-> > +			return ret;
-> > +		}
-> 
-> Indentation broken here. tegra_i2c_init below also calls
-> tegra_i2c_clock_enable, so this should be unnecessary here, right?
-
-Right, this is a leftover from debugging. Thanks for spotting.
-
-> 
-> > +	ret = tegra_i2c_init(i2c_dev);
-> > +	if (ret) {
-> > +		dev_err(dev, "Failed to initialize i2c controller");
-> > +		return ret;
-> > +	}
-> > +
-> 
-> Sascha
-> 
-
+diff --git a/commands/boot.c b/commands/boot.c
+index 468d473..a23ffb1 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -23,6 +23,7 @@
+ #include <malloc.h>
+ #include <clock.h>
+ #include <boot.h>
++#include <glob.h>
+ #include <menu.h>
+ #include <fs.h>
+ #include <complete.h>
+@@ -129,10 +130,10 @@ static int bootscript_create_entry(struct blspec *blspec, const char *name)
+ static int bootscript_scan_path(struct blspec *blspec, const char *path)
+ {
+ 	struct stat s;
+-	DIR *dir;
+-	struct dirent *d;
+-	int ret;
++	char *files;
++	int ret, i;
+ 	int found = 0;
++	glob_t globb;
+ 
+ 	ret = stat(path, &s);
+ 	if (ret)
+@@ -145,25 +146,24 @@ static int bootscript_scan_path(struct blspec *blspec, const char *path)
+ 		return 1;
+ 	}
+ 
+-	dir = opendir(path);
+-	if (!dir)
+-		return -errno;
++	files = asprintf("%s/*", path);
++
++	glob(files, 0, NULL, &globb);
+ 
+-	while ((d = readdir(dir))) {
+-		char *bootscript_path;
++	for (i = 0; i < globb.gl_pathc; i++) {
++		char *bootscript_path = globb.gl_pathv[i];;
+ 
+-		if (*d->d_name == '.')
++		if (*basename(bootscript_path) == '.')
+ 			continue;
+ 
+-		bootscript_path = asprintf("%s/%s", path, d->d_name);
+ 		bootscript_create_entry(blspec, bootscript_path);
+ 		found++;
+-		free(bootscript_path);
+ 	}
+ 
+-	ret = found;
++	globfree(&globb);
++	free(files);
+ 
+-	closedir(dir);
++	ret = found;
+ 
+ 	return ret;
+ }
+-- 
+2.0.0.rc0
 
 
 _______________________________________________
