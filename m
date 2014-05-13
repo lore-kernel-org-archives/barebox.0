@@ -1,11 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wk68E-0006xU-6A
- for barebox@lists.infradead.org; Tue, 13 May 2014 06:24:08 +0000
+ Linux)) id 1Wk6F2-00045X-9d
+ for barebox@lists.infradead.org; Tue, 13 May 2014 06:31:08 +0000
+Date: Tue, 13 May 2014 08:30:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 13 May 2014 08:23:39 +0200
-Message-Id: <1399962220-27617-1-git-send-email-s.hauer@pengutronix.de>
+Message-ID: <20140513063044.GJ5858@pengutronix.de>
+References: <5367BAF3.50607@kiwigrid.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <5367BAF3.50607@kiwigrid.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,38 +18,34 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/2] boot: fix multiple boot sources
-To: barebox@lists.infradead.org
+Subject: Re: boot command is broken?
+To: "Wjatscheslaw Stoljarski (Slawa)" <wjatscheslaw.stoljarski@kiwigrid.com>
+Cc: barebox@lists.infradead.org
 
-When there are multiple bootsources barebox should try booting them
-until one succeeds. This is broken because we bail out of the iteration
-loop with a goto. Remove the goto to fix this.
+On Mon, May 05, 2014 at 06:23:15PM +0200, Wjatscheslaw Stoljarski (Slawa) wrote:
+> Hi,
+> 
+> after update to v2014.05.0 'boot -l' displays only one entry, although
+> in /env/boot/ exists more files. Can anyone confirm this?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/boot.c | 1 -
- 1 file changed, 1 deletion(-)
+This is because you have entries in global.boot.default. Try setting
+this variable empty, then you'll see all entries from /env/boot/. Or try
+boot -l /env/boot which will show all entries in /env/boot regardless of
+global.boot.default.
 
-diff --git a/commands/boot.c b/commands/boot.c
-index 4a83979..468d473 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -446,7 +446,6 @@ static int do_boot(int argc, char *argv[])
- 		ret = boot(sources[i]);
- 		if (!ret)
- 			break;
--		goto out;
- 	}
- 
- out:
+I wish I could say RTFM, but I must first write or at least update TFM :(
+
+Sascha
+
 -- 
-2.0.0.rc0
-
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
