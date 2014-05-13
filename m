@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from guitar.tcltek.co.il ([192.115.133.116] helo=mx.tkos.co.il)
+Received: from mail-we0-x236.google.com ([2a00:1450:400c:c03::236])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkGld-0006Uj-9s
- for barebox@lists.infradead.org; Tue, 13 May 2014 17:45:31 +0000
-Date: Tue, 13 May 2014 20:45:02 +0300
-From: Baruch Siach <baruch@tkos.co.il>
-Message-ID: <20140513174502.GF4096@tarshish>
-References: <20140513134228.GQ5858@pengutronix.de>
- <CAOpc7mG5j_r8fOUcDeY2qcKZG=6LKTWr3fmWDadQfcJDquFtwg@mail.gmail.com>
- <20140513141835.GT5858@pengutronix.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140513141835.GT5858@pengutronix.de>
+ id 1WkHbK-000784-EX
+ for barebox@lists.infradead.org; Tue, 13 May 2014 18:38:54 +0000
+Received: by mail-we0-f182.google.com with SMTP id t60so821259wes.13
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 11:38:31 -0700 (PDT)
+From: Franck Jullien <franck.jullien@gmail.com>
+Date: Tue, 13 May 2014 20:38:24 +0200
+Message-Id: <1400006306-5540-1-git-send-email-franck.jullien@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,51 +16,43 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox Documentation
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH 1/3] asm-generic: add IO memory accessors
+To: barebox@lists.infradead.org
 
-Hi Sascha,
+Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
+---
+ include/asm-generic/io.h |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
-On Tue, May 13, 2014 at 04:18:35PM +0200, Sascha Hauer wrote:
-> On Tue, May 13, 2014 at 04:01:07PM +0200, Holger Schurig wrote:
-> > If wiki and doxygen are not updated, than this is a sign that they
-> > should probably be outphased.
-> > 
-> > Instead, I'd prefer to have text files in the Documentation/ tree. So
-> > changes to them pass the normal review process.
-> 
-> +1
-> 
-> > > Plain text files
-> > > - no links
-> > > - no pictures
-> > 
-> > If we use some special format for them, e.g. Markdown or *.rst, then
-> > the files can still converted to HTML, and links and images could
-> > still be possible. That would mean that wiki.barebox.org probably goes
-> > away, but that (part) of www.barebox.org is generated from the
-> > *.rst/Markdown files.
-> 
-> This sounds like the best of two worlds. Do you know an example of a
-> project with markdown/rst documentation?
-
-Buildroot generates its manual from in-tree AsciiDoc formatted files under 
-docs/manual/. PDF, HTML, epub, and text output formats are supported. See 
-http://buildroot.net/docs.html for the generated result. See 
-docs/manual/manual.mk (included from the top level Makefile) for the build 
-recipes.
-
-baruch
-
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index 3f0f5a2..8d83d68 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -219,4 +219,16 @@ static inline void writesb(const void __iomem *addr, const void *buf, int len)
+ 	outsb(addr - PCI_IOBASE, buf, len);
+ }
+ 
++#define ioread8(addr)		readb(addr)
++#define ioread16(addr)		readw(addr)
++#define ioread16be(addr)	__be16_to_cpu(__raw_readw(addr))
++#define ioread32(addr)		readl(addr)
++#define ioread32be(addr)	__be32_to_cpu(__raw_readl(addr))
++
++#define iowrite8(v, addr)	writeb((v), (addr))
++#define iowrite16(v, addr)	writew((v), (addr))
++#define iowrite16be(v, addr)	__raw_writew(__cpu_to_be16(v), addr)
++#define iowrite32(v, addr)	writel((v), (addr))
++#define iowrite32be(v, addr)	__raw_writel(__cpu_to_be32(v), addr)
++
+ #endif /* __ASM_GENERIC_IO_H */
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch@tkos.co.il - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.7.1
+
 
 _______________________________________________
 barebox mailing list
