@@ -1,17 +1,23 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wk9sq-0008C7-17
- for barebox@lists.infradead.org; Tue, 13 May 2014 10:24:28 +0000
-Date: Tue, 13 May 2014 12:24:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140513102406.GP5858@pengutronix.de>
-References: <CAOpc7mEUPrZtvd6uVApfcs4Wap42EhxLzGiD=8GaJWW8an8wkQ@mail.gmail.com>
- <20140513100044.GO5858@pengutronix.de>
- <CAOpc7mFPDrfWRW3+kP5=EcPvzGtPdx++ac1NrvNz=qaLR2xN7w@mail.gmail.com>
+Received: from mail-ee0-x233.google.com ([2a00:1450:4013:c00::233])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WkAV4-0000PU-4w
+ for barebox@lists.infradead.org; Tue, 13 May 2014 11:03:58 +0000
+Received: by mail-ee0-f51.google.com with SMTP id e51so283963eek.24
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 04:03:35 -0700 (PDT)
+Date: Tue, 13 May 2014 13:03:29 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140513110326.GA29062@omega>
+References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
+ <20140424065848.GV5858@pengutronix.de>
+ <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
+ <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
+ <1398984618.20734.13.camel@mars>
+ <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
+ <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAOpc7mFPDrfWRW3+kP5=EcPvzGtPdx++ac1NrvNz=qaLR2xN7w@mail.gmail.com>
+In-Reply-To: <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -24,48 +30,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: Question about SPI NOR flash
-To: Holger Schurig <holgerschurig@gmail.com>
+Subject: Re: New driver crashes with "unable to handle paging request"
+To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 13, 2014 at 12:22:13PM +0200, Holger Schurig wrote:
-> > Your device is detected as a 32KB mr25h256 instead
-> > of the n25q512 you really have.
-> 
-> Oh, something here is flaky. Because sometimes it get's detected
-> correctly. Sigh. This here with dev_dbg() turned into dev_info() and
-> the partition things removed from the DTS:
+Hi,
 
-You could limit the maximum frequency of the spi bus.
+i am not Christoph but I want to told you my opinion about this.
 
-> 
-> detected i.MX6 Quad revision 1.2
-> mdio_bus: miibus0: probed
-> m25p80 spiflash@00: n25q512 (65536 Kbytes)
-> m25p80 spiflash@00: mtd .name = <NULL>, .size = 0x4000000 (64MiB)
-> .erasesize = 0x00001000 (4KiB) .numeraseregions = 0
-> imx-esdhc 2194000.usdhc: registered as 2194000.usdhc
-> imx-esdhc 219c000.usdhc: registered as 219c000.usdhc
-> environment load /dev/env0: No such file or directory
-> Maybe you have to create the partition.
-> no valid environment found on /dev/env0. Using default environment
-> running /env/bin/init...
-> 
-> 
-> > http://lists.infradead.org/pipermail/linux-mtd/2014-January/051382.html?#
-> 
-> Hmm, this isn't in origin/master. I'm a bit confused.
+One year ago there was some guy at #barebox in irc.freenode.net with the
+nickname "honshu" (or it was a girl).
 
-This is a Linux patch. What I meant is that the same could be missing in
-barebox.
+"honshu" asked if somebody worked at the musb support. Nobody known
+worked on this support... So he begun to hack this into barebox. I
+think he wanted to use the u-boot code as well.
 
-Sascha
+This was one year ago...
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Now, I will quoute the irc log:
+
+"10:11 < ch_f> I need the spec for musb (it's on a am335x), but it's not
+in the trm. Any ideas how to get it?"
+
+This was today May 13. 2014.
+
+Here is my answer to the very mysteric guy with the nickname "ch_f", I
+think you don't get it without good connections. :-)
+
+But this doesn't sounds to me that the driver is almost finished.
+
+Sorry if I told that on the mailinglist, but I think everyone should
+know the really state of this port now.
+
+- Alex
+
 
 _______________________________________________
 barebox mailing list
