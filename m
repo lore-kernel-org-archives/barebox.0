@@ -1,19 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from 16.mo5.mail-out.ovh.net ([87.98.174.144]
- helo=mo5.mail-out.ovh.net)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkD93-0002qn-Fj
- for barebox@lists.infradead.org; Tue, 13 May 2014 13:53:29 +0000
-Received: from mail422.ha.ovh.net (gw6.ovh.net [213.251.189.206])
- by mo5.mail-out.ovh.net (Postfix) with SMTP id E8A88FFA6F7
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 15:52:59 +0200 (CEST)
-Date: Tue, 13 May 2014 15:55:56 +0200
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20140513135556.GD15426@ns203013.ovh.net>
-References: <20140513134228.GQ5858@pengutronix.de>
+Received: from mail-yh0-x232.google.com ([2607:f8b0:4002:c01::232])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WkDGr-0007O0-QY
+ for barebox@lists.infradead.org; Tue, 13 May 2014 14:01:30 +0000
+Received: by mail-yh0-f50.google.com with SMTP id 29so321566yhl.9
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 07:01:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20140513134228.GQ5858@pengutronix.de>
+References: <20140513134228.GQ5858@pengutronix.de>
+Date: Tue, 13 May 2014 16:01:07 +0200
+Message-ID: <CAOpc7mG5j_r8fOUcDeY2qcKZG=6LKTWr3fmWDadQfcJDquFtwg@mail.gmail.com>
+From: Holger Schurig <holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -30,59 +27,25 @@ Subject: Re: barebox Documentation
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 
-On 15:42 Tue 13 May     , Sascha Hauer wrote:
-> 
-> Hi,
-> 
-> As we all know the barebox documentation sucks. We @Pengutronix will
-> have our internal techweek next month. One of the goals will be to
-> improve the documentation situation for barebox.
-> 
-> What are your opinions in which form the documentation should be?
-> 
-> We currently have plain text files under Documentation/, a wiki on
-> http://wiki.barebox.org/doku.php and doxygen. None of the documentation
-> sets is complete and all are outdated.
-> 
-> Some pros and cons of the existing approaches are:
-> 
+If wiki and doxygen are not updated, than this is a sign that they
+should probably be outphased.
+
+Instead, I'd prefer to have text files in the Documentation/ tree. So
+changes to them pass the normal review process.
+
 > Plain text files
-> + Easy to write
-> + no extra step to generate docs, wysiwyg ;)
 > - no links
 > - no pictures
-soso
-> 
-> Wiki
-> - not contained in the repository, so may be out of sync
-> + links
-> + nice markup language
-useless if no internet
-> 
-> doxygen
-> + contained in the repository
-> + easy html doc generation
-> + links
-> - extra step to generate the docs
-why not use the same as the kernel simply
 
-> 
-> So what are your opinions, what should be updated and what should be
-> dropped? Kconfig has an extra role here. It cannot provide a full
-> documentation, but should be updated and maintained.
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-> Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
+If we use some special format for them, e.g. Markdown or *.rst, then
+the files can still converted to HTML, and links and images could
+still be possible. That would mean that wiki.barebox.org probably goes
+away, but that (part) of www.barebox.org is generated from the
+*.rst/Markdown files.
+
+I personally would rather change local text files than online some
+wiki. Locally, I can use grep, Emacs, python-scripts and so on. On the
+wiki, I can just use keyboard and mouse ...
 
 _______________________________________________
 barebox mailing list
