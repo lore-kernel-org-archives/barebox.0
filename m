@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
+Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk80z-0001qN-SN
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:49 +0000
-Received: by mail-ee0-f46.google.com with SMTP id t10so121697eei.5
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:26 -0700 (PDT)
+ id 1Wk814-0001wJ-DX
+ for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:51 +0000
+Received: by mail-ee0-f43.google.com with SMTP id d17so128005eek.2
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:32 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:50 +0200
-Message-Id: <1399969739-10355-11-git-send-email-holgerschurig@gmail.com>
+Date: Tue, 13 May 2014 10:28:55 +0200
+Message-Id: <1399969739-10355-16-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,60 +23,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 10/19] commands: move CMD_AT91_BOOT_TEST to commands/Kconfig
+Subject: [PATCH 15/19] commands: introduce CMD_HOST
 To: barebox@lists.infradead.org
 
-* this places the command into the "Boot commands"
-  section of Kconfig
-* while at it, improve Kconfig documention
+... because NET_RESOLV can be used alone to turn on the functionality
+of resolv().
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- arch/arm/mach-at91/Kconfig |    6 ------
- commands/Kconfig           |   13 +++++++++++++
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ commands/Kconfig |    9 +++++++++
+ net/dns.c        |    3 ++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index e3eeb2c..6222653 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -534,12 +534,6 @@ config CMD_AT91CLK
- 	bool "at91clk dump command"
- 	default y
- 
--config CMD_AT91_BOOT_TEST
--	bool "at91_boot_test"
--	help
--	  allow to upload a boot binary to sram and execute it
--	  useful to test bootstrap or barebox lowlevel init
--
- endif
- 
- config AT91_BOOTSTRAP
 diff --git a/commands/Kconfig b/commands/Kconfig
-index 0145f00..e48b2d1 100644
+index 2f24cd5..966d5fd 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -180,6 +180,19 @@ config FLEXIBLE_BOOTARGS
- 	  to replace parts of the bootargs string without reconstructing it
- 	  completely.
+@@ -1052,6 +1052,15 @@ if NET
  
-+config CMD_AT91_BOOT_TEST
-+	bool "at91_boot_test"
-+	depends on ARCH_AT91
+ menu "Network"
+ 
++config CMD_HOST
++	tristate
++	select NET_RESOLV
++	prompt "host"
 +	help
-+	  allow to upload a boot binary to SRAM and execute it.
-+	  Useful to test bootstrap or barebox lowlevel init.
++	  Resolv a hostname.
 +
-+	  Usage: at91_boot_test [-js] FILE
++	  Usage: host DESTINATION
 +
-+	  Options:
-+	  -j ADDR  jump address
-+	  -s SRAM  SRAM device (default /dev/sram0)
-+
- config CMD_BOOT_ORDER
+ config CMD_MIITOOL
  	tristate
- 	depends on ARCH_OMAP4
+ 	depends on PHYLIB
+diff --git a/net/dns.c b/net/dns.c
+index 4506baf..0a8ce8b 100644
+--- a/net/dns.c
++++ b/net/dns.c
+@@ -241,6 +241,7 @@ IPaddr_t resolv(char *host)
+ 	return dns_ip;
+ }
+ 
++#ifdef CONFIG_CMD_HOST
+ static int do_host(int argc, char *argv[])
+ {
+ 	IPaddr_t ip;
+@@ -266,4 +267,4 @@ BAREBOX_CMD_START(host)
+ 	BAREBOX_CMD_OPTS("HOSTNAME")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
+ BAREBOX_CMD_END
+-
++#endif
 -- 
 1.7.10.4
 
