@@ -1,13 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22e.google.com ([2a00:1450:4013:c00::22e])
+Received: from mail-ee0-x231.google.com ([2a00:1450:4013:c00::231])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wk80z-0001ns-Rs
- for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:48 +0000
-Received: by mail-ee0-f46.google.com with SMTP id t10so123842eei.33
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:23 -0700 (PDT)
+ id 1Wk80x-0001pK-2e
+ for barebox@lists.infradead.org; Tue, 13 May 2014 08:24:49 +0000
+Received: by mail-ee0-f49.google.com with SMTP id e53so123870eek.8
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 01:24:25 -0700 (PDT)
 From: Holger Schurig <holgerschurig@gmail.com>
-Date: Tue, 13 May 2014 10:28:48 +0200
-Message-Id: <1399969739-10355-9-git-send-email-holgerschurig@gmail.com>
+Date: Tue, 13 May 2014 10:28:49 +0200
+Message-Id: <1399969739-10355-10-git-send-email-holgerschurig@gmail.com>
 In-Reply-To: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
 List-Id: <barebox.lists.infradead.org>
@@ -23,55 +23,60 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 08/19] commands: move CMD_MIPS_CPUINFO to commands/Kconfig
+Subject: [PATCH 09/19] commands: move CMD_BOOT_ORDER to commands/Kconfig
 To: barebox@lists.infradead.org
 
-* this places the command into the "Information commands"
+* this places the command into the "Boot commands"
   section of Kconfig
+* while at it, improve Kconfig documention
 
 Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 ---
- arch/mips/Kconfig |    7 -------
- commands/Kconfig  |    8 ++++++++
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ arch/arm/mach-omap/Kconfig |    7 -------
+ commands/Kconfig           |   12 ++++++++++++
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 9a240b7..6ce7fff 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -274,13 +274,6 @@ endchoice
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 12b9c1f..201944c 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -107,13 +107,6 @@ config OMAP4_USBBOOT
+ 	  You need the utility program omap4_usbboot to boot from USB.
+ 	  Please read omap4_usb_booting.txt for more information.
  
- menu "MIPS specific settings"
- 
--config CMD_MIPS_CPUINFO
--	bool "cpuinfo command"
--	default y
+-config CMD_BOOT_ORDER
+-	tristate
+-	depends on ARCH_OMAP4
+-	prompt "boot_order"
 -	help
--	  Say yes here to get a cpuinfo command to show some
--	  information about the cpu model.
+-	  A command to choose the next boot device on a warm reset.
 -
- config HAS_NMON
- 	bool
- 
+ config OMAP_MULTI_BOARDS
+ 	bool "Allow multiple boards to be selected"
+ 	select HAVE_DEFAULT_ENVIRONMENT_NEW
 diff --git a/commands/Kconfig b/commands/Kconfig
-index 9789af4..db091c4 100644
+index db091c4..0145f00 100644
 --- a/commands/Kconfig
 +++ b/commands/Kconfig
-@@ -46,6 +46,14 @@ config CMD_ARM_CPUINFO
- 	  D-cache: 8192 bytes (linelen = 8)
- 	  Control register: M C W P D L I V RR DT IT U XP
+@@ -180,6 +180,18 @@ config FLEXIBLE_BOOTARGS
+ 	  to replace parts of the bootargs string without reconstructing it
+ 	  completely.
  
-+config CMD_MIPS_CPUINFO
-+	bool "cpuinfo command"
-+	default y
-+	depends on MIPS
++config CMD_BOOT_ORDER
++	tristate
++	depends on ARCH_OMAP4
++	prompt "boot_order"
 +	help
-+	  Say yes here to get a cpuinfo command to show some
-+	  information about the cpu model.
++	  Set warm boot order (the next boot device on a warm reset).
 +
- config CMD_DEVINFO
++	  Usage: boot_order DEVICE...
++
++	  Each device can be one of:
++	  xip xipwait nand onenand mmc1 mmc2_1 mmc2_2 uart usb_1 usb_ulpi usb_2
++
+ config CMD_BOOT
  	tristate
- 	default y
+ 	select BOOTM
 -- 
 1.7.10.4
 
