@@ -1,13 +1,14 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
+Received: from mail-vc0-x234.google.com ([2607:f8b0:400c:c03::234])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkKLB-0007tR-GI
- for barebox@lists.infradead.org; Tue, 13 May 2014 21:34:25 +0000
-Received: by mail-ee0-f43.google.com with SMTP id d17so788394eek.16
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 14:34:02 -0700 (PDT)
-From: Beniamino Galvani <b.galvani@gmail.com>
-Date: Tue, 13 May 2014 23:33:31 +0200
-Message-Id: <1400016811-9725-1-git-send-email-b.galvani@gmail.com>
+ id 1WkPy3-0006kb-Um
+ for barebox@lists.infradead.org; Wed, 14 May 2014 03:34:56 +0000
+Received: by mail-vc0-f180.google.com with SMTP id hy4so1649352vcb.25
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 20:34:33 -0700 (PDT)
+MIME-Version: 1.0
+Date: Wed, 14 May 2014 00:34:33 -0300
+Message-ID: <CAOMZO5CMuVwZGB4DoZchuE7DCJU4=fMHZQugBzm3mPsQsqEamw@mail.gmail.com>
+From: Fabio Estevam <festevam@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -16,36 +17,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: radxa-rock: set hostname after devicetree initialization
+Subject: Changing the baudrate via barebox prompt
 To: barebox@lists.infradead.org
 
-hostname_init() must be called after the devicetree root node has been
-initialized, otherwise the check on board compatible always returns
-false.
+Hi,
 
-Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
----
- arch/arm/boards/radxa-rock/board.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I am running barebox on a mx6qsabresd board and would like to know if
+there is a way to change the serial baudrate via barebox prompt.
 
-diff --git a/arch/arm/boards/radxa-rock/board.c b/arch/arm/boards/radxa-rock/board.c
-index 691f243..3d9b5be 100644
---- a/arch/arm/boards/radxa-rock/board.c
-+++ b/arch/arm/boards/radxa-rock/board.c
-@@ -84,4 +84,4 @@ static int hostname_init(void)
- 
- 	return 0;
- }
--core_initcall(hostname_init);
-+postcore_initcall(hostname_init);
--- 
-1.7.10.4
+Any suggestion?
 
+Thanks,
+
+Fabio Estevam
 
 _______________________________________________
 barebox mailing list
