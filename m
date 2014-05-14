@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wkg5e-0000PI-GL
- for barebox@lists.infradead.org; Wed, 14 May 2014 20:47:52 +0000
+ id 1Wkg5e-0000PD-GD
+ for barebox@lists.infradead.org; Wed, 14 May 2014 20:47:51 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p548307D2.dip0.t-ipconnect.de [84.131.7.210])
- by lynxeye.de (Postfix) with ESMTPA id 96A5418B425D
- for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:04 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 75D1C18B425A
+ for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:02 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 14 May 2014 22:45:38 +0200
-Message-Id: <1400100352-13002-11-git-send-email-dev@lynxeye.de>
+Date: Wed, 14 May 2014 22:45:36 +0200
+Message-Id: <1400100352-13002-9-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 References: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,88 +25,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 11/25] ARM: tegra: beaver: activate sdmmc1 voltage rail
+Subject: [PATCH v2 09/25] clk: tegra20: register i2c clocks
 To: barebox@lists.infradead.org
-
-In order to get the SD card solt working.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
-One day we might move this to a regulator, but now
-isn't the time.
----
- arch/arm/boards/nvidia-beaver/Makefile |  1 +
- arch/arm/boards/nvidia-beaver/board.c  | 38 ++++++++++++++++++++++++++++++++++
- arch/arm/mach-tegra/Kconfig            |  2 ++
- 3 files changed, 41 insertions(+)
- create mode 100644 arch/arm/boards/nvidia-beaver/board.c
+ drivers/clk/tegra/clk-tegra20.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
-index d2d217319b34..2b6c09e2798e 100644
---- a/arch/arm/boards/nvidia-beaver/Makefile
-+++ b/arch/arm/boards/nvidia-beaver/Makefile
-@@ -2,3 +2,4 @@ CFLAGS_pbl-entry.o := \
- 	-mcpu=arm7tdmi -march=armv4t \
- 	-fno-tree-switch-conversion -fno-jump-tables
- lwl-y += entry.o
-+obj-y += board.o
-diff --git a/arch/arm/boards/nvidia-beaver/board.c b/arch/arm/boards/nvidia-beaver/board.c
-new file mode 100644
-index 000000000000..e87594d5b700
---- /dev/null
-+++ b/arch/arm/boards/nvidia-beaver/board.c
-@@ -0,0 +1,38 @@
-+/*
-+ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+ */
+diff --git a/drivers/clk/tegra/clk-tegra20.c b/drivers/clk/tegra/clk-tegra20.c
+index cb0a57181de4..5803414b9338 100644
+--- a/drivers/clk/tegra/clk-tegra20.c
++++ b/drivers/clk/tegra/clk-tegra20.c
+@@ -301,6 +301,19 @@ static void tegra20_periph_init(void)
+ 	clks[TEGRA20_CLK_SDMMC4] = tegra_clk_register_periph("sdmmc4",
+ 			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
+ 			CRC_CLK_SOURCE_SDMMC4, TEGRA20_CLK_SDMMC4, 1);
 +
-+#include <common.h>
-+#include <init.h>
-+#include <i2c/i2c.h>
-+
-+static int nvidia_beaver_devices_init(void)
-+{
-+	struct i2c_client client;
-+	u8 data;
-+
-+	if (!of_machine_is_compatible("nvidia,beaver"))
-+		return 0;
-+
-+	client.adapter = i2c_get_adapter(4);
-+	client.addr = 0x2d;
-+
-+	/* TPS659110: LDO5_REG = 3.3v, ACTIVE to SDMMC1 */
-+	data = 0x65;
-+	i2c_write_reg(&client, 0x32, &data, 1);
-+
-+	return 0;
-+}
-+device_initcall(nvidia_beaver_devices_init);
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index 1bbe6ce5e1bc..5e2b4cb16dcf 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -63,6 +63,8 @@ config MACH_TOSHIBA_AC100
- config MACH_NVIDIA_BEAVER
- 	bool "NVIDIA Beaver"
- 	select ARCH_TEGRA_3x_SOC
-+	select I2C
-+	select I2C_TEGRA
++	clks[TEGRA20_CLK_I2C1] = tegra_clk_register_periph_div16("i2c1",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C1, TEGRA20_CLK_I2C1, 1);
++	clks[TEGRA20_CLK_I2C2] = tegra_clk_register_periph_div16("i2c2",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C2, TEGRA20_CLK_I2C2, 1);
++	clks[TEGRA20_CLK_I2C3] = tegra_clk_register_periph_div16("i2c3",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_I2C3, TEGRA20_CLK_I2C3, 1);
++	clks[TEGRA20_CLK_DVC] = tegra_clk_register_periph_div16("dvc",
++			mux_pllpcm_clkm, ARRAY_SIZE(mux_pllpcm_clkm), car_base,
++			CRC_CLK_SOURCE_DVC, TEGRA20_CLK_DVC, 1);
+ }
  
- endmenu
- 
+ static struct tegra_clk_init_table init_table[] = {
 -- 
 1.9.0
 
