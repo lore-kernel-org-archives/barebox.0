@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wkg4o-0000Et-PN
+ id 1Wkg4o-0000Ep-LX
  for barebox@lists.infradead.org; Wed, 14 May 2014 20:46:59 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p548307D2.dip0.t-ipconnect.de [84.131.7.210])
- by lynxeye.de (Postfix) with ESMTPA id 2C93C18B425D
- for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:00 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id 2C94918B425A
+ for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:45:58 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 14 May 2014 22:45:32 +0200
-Message-Id: <1400100352-13002-5-git-send-email-dev@lynxeye.de>
+Date: Wed, 14 May 2014 22:45:29 +0200
+Message-Id: <1400100352-13002-2-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 References: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,57 +25,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 05/25] mci: tegra: add reset control
+Subject: [PATCH v2 02/25] tegra: lowlevel: add function to fetch chipid
 To: barebox@lists.infradead.org
 
-Enable the driver to reset the device itself.
+This is needed as a safe way to flush the ABP bus.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/mci/tegra-sdmmc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm/mach-tegra/include/mach/lowlevel.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
-index e4d82197bde7..0ea0b5ca4a92 100644
---- a/drivers/mci/tegra-sdmmc.c
-+++ b/drivers/mci/tegra-sdmmc.c
-@@ -28,6 +28,7 @@
- #include <mci.h>
- #include <of_gpio.h>
- #include <linux/clk.h>
-+#include <linux/reset.h>
- 
- #include "sdhci.h"
- 
-@@ -62,6 +63,7 @@ struct tegra_sdmmc_host {
- 	struct mci_host		mci;
- 	void __iomem		*regs;
- 	struct clk		*clk;
-+	struct reset_control	*reset;
- 	int			gpio_cd, gpio_pwr;
+diff --git a/arch/arm/mach-tegra/include/mach/lowlevel.h b/arch/arm/mach-tegra/include/mach/lowlevel.h
+index 52b405d5f859..10265183c10c 100644
+--- a/arch/arm/mach-tegra/include/mach/lowlevel.h
++++ b/arch/arm/mach-tegra/include/mach/lowlevel.h
+@@ -70,6 +70,12 @@ enum tegra_chiptype {
  };
- #define to_tegra_sdmmc_host(mci) container_of(mci, struct tegra_sdmmc_host, mci)
-@@ -400,6 +402,10 @@ static int tegra_sdmmc_probe(struct device_d *dev)
- 	if (IS_ERR(host->clk))
- 		return PTR_ERR(host->clk);
  
-+	host->reset = reset_control_get(dev, NULL);
-+	if (IS_ERR(host->reset))
-+		return PTR_ERR(host->reset);
+ static __always_inline
++u32 tegra_read_chipid(void)
++{
++	return readl(TEGRA_APB_MISC_BASE + APB_MISC_HIDREV);
++}
 +
- 	host->regs = dev_request_mem_region(dev, 0);
- 	if (!host->regs) {
- 		dev_err(dev, "could not get iomem region\n");
-@@ -430,6 +436,9 @@ static int tegra_sdmmc_probe(struct device_d *dev)
- 	}
- 
- 	clk_enable(host->clk);
-+	reset_control_assert(host->reset);
-+	udelay(2);
-+	reset_control_deassert(host->reset);
- 
- 	mci->init = tegra_sdmmc_init;
- 	mci->card_present = tegra_sdmmc_card_present;
++static __always_inline
+ enum tegra_chiptype tegra_get_chiptype(void)
+ {
+ 	u32 hidrev;
 -- 
 1.9.0
 
