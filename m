@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wkg6T-0000rB-Nd
- for barebox@lists.infradead.org; Wed, 14 May 2014 20:48:44 +0000
+ id 1Wkg5e-0000Pe-GO
+ for barebox@lists.infradead.org; Wed, 14 May 2014 20:47:55 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p548307D2.dip0.t-ipconnect.de [84.131.7.210])
- by lynxeye.de (Postfix) with ESMTPA id 75D2B18B4274
- for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:40 +0200 (CEST)
+ by lynxeye.de (Postfix) with ESMTPA id EFE4618B4274
+ for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:02 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 14 May 2014 22:45:50 +0200
-Message-Id: <1400100352-13002-23-git-send-email-dev@lynxeye.de>
+Date: Wed, 14 May 2014 22:45:37 +0200
+Message-Id: <1400100352-13002-10-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 References: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,855 +25,752 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 23/25] ARM: boards: beaver: import BCT cfg
+Subject: [PATCH v2 10/25] i2c: add Tegra driver
 To: barebox@lists.infradead.org
-
-From https://github.com/NVIDIA/cbootimage-configs.git
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- arch/arm/boards/nvidia-beaver/Makefile             |   2 +
- .../boards/nvidia-beaver/beaver-2gb-emmc.bct.cfg   | 819 +++++++++++++++++++++
- 2 files changed, 821 insertions(+)
- create mode 100644 arch/arm/boards/nvidia-beaver/beaver-2gb-emmc.bct.cfg
+v2:
+- remove debug clk_enable
+- remove xzalloc check
+- remove confusing if statement
+---
+ drivers/i2c/busses/Kconfig     |   4 +
+ drivers/i2c/busses/Makefile    |   1 +
+ drivers/i2c/busses/i2c-tegra.c | 699 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 704 insertions(+)
+ create mode 100644 drivers/i2c/busses/i2c-tegra.c
 
-diff --git a/arch/arm/boards/nvidia-beaver/Makefile b/arch/arm/boards/nvidia-beaver/Makefile
-index 2b6c09e2798e..7ade54e8546d 100644
---- a/arch/arm/boards/nvidia-beaver/Makefile
-+++ b/arch/arm/boards/nvidia-beaver/Makefile
-@@ -1,5 +1,7 @@
- CFLAGS_pbl-entry.o := \
- 	-mcpu=arm7tdmi -march=armv4t \
- 	-fno-tree-switch-conversion -fno-jump-tables
-+soc := tegra30
- lwl-y += entry.o
- obj-y += board.o
-+extra-y += beaver-2gb-emmc.bct
-diff --git a/arch/arm/boards/nvidia-beaver/beaver-2gb-emmc.bct.cfg b/arch/arm/boards/nvidia-beaver/beaver-2gb-emmc.bct.cfg
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 68d9b469e86f..370abb0c2eb1 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -20,6 +20,10 @@ config I2C_OMAP
+ 	bool "OMAP I2C Master driver"
+ 	depends on ARCH_OMAP
+ 
++config I2C_TEGRA
++	bool "Tegra I2C master driver"
++	depends on ARCH_TEGRA
++
+ config I2C_VERSATILE
+ 	tristate "ARM Versatile/Realview I2C bus support"
+ 	depends on ARCH_VERSATILE
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index a30f9b87e3ba..9823d1bd3600 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -1,4 +1,5 @@
+ obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
+ obj-$(CONFIG_I2C_IMX) += i2c-imx.o
+ obj-$(CONFIG_I2C_OMAP) += i2c-omap.o
++obj-$(CONFIG_I2C_TEGRA)		+= i2c-tegra.o
+ obj-$(CONFIG_I2C_VERSATILE)	+= i2c-versatile.o
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
 new file mode 100644
-index 000000000000..49f302fc451b
+index 000000000000..c52da18b5792
 --- /dev/null
-+++ b/arch/arm/boards/nvidia-beaver/beaver-2gb-emmc.bct.cfg
-@@ -0,0 +1,819 @@
-+# Copyright (c) 2012, NVIDIA CORPORATION.  All rights reserved.
-+#
-+# This software is provided 'as-is', without any express or implied
-+# warranty. In no event will the authors be held liable for any damages
-+# arising from the use of this software.
-+#
-+# Permission is granted to anyone to use this software for any purpose,
-+# including commercial applications, and to alter it and redistribute it
-+# freely, subject to the following restrictions:
-+#
-+# 1. The origin of this software must not be misrepresented; you must not
-+#    claim that you wrote the original software. If you use this software
-+#    in a product, an acknowledgment in the product documentation would be
-+#    appreciated but is not required.
-+# 2. Altered source versions must be plainly marked as such, and must not be
-+#    misrepresented as being the original software.
-+# 3. This notice may not be removed or altered from any source distribution.
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -0,0 +1,699 @@
++/*
++ * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
++ *
++ * Partly based on code Copyright (C) 2010 Google, Inc.
++ *
++ * This software is licensed under the terms of the GNU General Public
++ * License version 2, as published by the Free Software Foundation, and
++ * may be copied, distributed, and modified under those terms.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ */
++#include <common.h>
++#include <clock.h>
++#include <init.h>
++#include <io.h>
++#include <malloc.h>
++#include <i2c/i2c.h>
++#include <linux/kernel.h>
++#include <linux/clk.h>
++#include <linux/err.h>
++#include <linux/reset.h>
 +
-+Version       = 0x00030001;
-+BlockSize     = 0x00004000;
-+PageSize      = 0x00000200;
-+PartitionSize = 0x02000000;
-+OdmData       = 0x800c0000;
++#include <asm/unaligned.h>
 +
-+DevType[0] = NvBootDevType_Sdmmc;
-+DeviceParam[0].SdmmcParams.ClockDivider           = 0x00000009;
-+DeviceParam[0].SdmmcParams.DataWidth              = NvBootSdmmcDataWidth_8Bit;
-+DeviceParam[0].SdmmcParams.MaxPowerClassSupported = 0x00000000;
-+DeviceParam[0].SdmmcParams.SdController           = 0x00000000;
++#define TEGRA_I2C_TIMEOUT (msecs_to_jiffies(1000))
++#define BYTES_PER_FIFO_WORD 4
 +
-+DevType[1] = NvBootDevType_Sdmmc;
-+DeviceParam[1].SdmmcParams.ClockDivider           = 0x00000009;
-+DeviceParam[1].SdmmcParams.DataWidth              = NvBootSdmmcDataWidth_8Bit;
-+DeviceParam[1].SdmmcParams.MaxPowerClassSupported = 0x00000000;
-+DeviceParam[1].SdmmcParams.SdController           = 0x00000000;
++#define I2C_CNFG				0x000
++#define I2C_CNFG_DEBOUNCE_CNT_SHIFT		12
++#define I2C_CNFG_PACKET_MODE_EN			(1<<10)
++#define I2C_CNFG_NEW_MASTER_FSM			(1<<11)
++#define I2C_STATUS				0x01C
++#define I2C_SL_CNFG				0x020
++#define I2C_SL_CNFG_NACK			(1<<1)
++#define I2C_SL_CNFG_NEWSL			(1<<2)
++#define I2C_SL_ADDR1				0x02c
++#define I2C_SL_ADDR2				0x030
++#define I2C_TX_FIFO				0x050
++#define I2C_RX_FIFO				0x054
++#define I2C_PACKET_TRANSFER_STATUS		0x058
++#define I2C_FIFO_CONTROL			0x05c
++#define I2C_FIFO_CONTROL_TX_FLUSH		(1<<1)
++#define I2C_FIFO_CONTROL_RX_FLUSH		(1<<0)
++#define I2C_FIFO_CONTROL_TX_TRIG_SHIFT		5
++#define I2C_FIFO_CONTROL_RX_TRIG_SHIFT		2
++#define I2C_FIFO_STATUS				0x060
++#define I2C_FIFO_STATUS_TX_MASK			0xF0
++#define I2C_FIFO_STATUS_TX_SHIFT		4
++#define I2C_FIFO_STATUS_RX_MASK			0x0F
++#define I2C_FIFO_STATUS_RX_SHIFT		0
++#define I2C_INT_MASK				0x064
++#define I2C_INT_STATUS				0x068
++#define I2C_INT_PACKET_XFER_COMPLETE		(1<<7)
++#define I2C_INT_ALL_PACKETS_XFER_COMPLETE	(1<<6)
++#define I2C_INT_TX_FIFO_OVERFLOW		(1<<5)
++#define I2C_INT_RX_FIFO_UNDERFLOW		(1<<4)
++#define I2C_INT_NO_ACK				(1<<3)
++#define I2C_INT_ARBITRATION_LOST		(1<<2)
++#define I2C_INT_TX_FIFO_DATA_REQ		(1<<1)
++#define I2C_INT_RX_FIFO_DATA_REQ		(1<<0)
++#define I2C_CLK_DIVISOR				0x06c
++#define I2C_CLK_DIVISOR_STD_FAST_MODE_SHIFT	16
++#define I2C_CLK_MULTIPLIER_STD_FAST_MODE	8
 +
-+DevType[2] = NvBootDevType_Sdmmc;
-+DeviceParam[2].SdmmcParams.ClockDivider           = 0x00000009;
-+DeviceParam[2].SdmmcParams.DataWidth              = NvBootSdmmcDataWidth_8Bit;
-+DeviceParam[2].SdmmcParams.MaxPowerClassSupported = 0x00000000;
-+DeviceParam[2].SdmmcParams.SdController           = 0x00000000;
++#define DVC_CTRL_REG1				0x000
++#define DVC_CTRL_REG1_INTR_EN			(1<<10)
++#define DVC_CTRL_REG2				0x004
++#define DVC_CTRL_REG3				0x008
++#define DVC_CTRL_REG3_SW_PROG			(1<<26)
++#define DVC_CTRL_REG3_I2C_DONE_INTR_EN		(1<<30)
++#define DVC_STATUS				0x00c
++#define DVC_STATUS_I2C_DONE_INTR		(1<<30)
 +
-+DevType[3] = NvBootDevType_Sdmmc;
-+DeviceParam[3].SdmmcParams.ClockDivider           = 0x00000009;
-+DeviceParam[3].SdmmcParams.DataWidth              = NvBootSdmmcDataWidth_8Bit;
-+DeviceParam[3].SdmmcParams.MaxPowerClassSupported = 0x00000000;
-+DeviceParam[3].SdmmcParams.SdController           = 0x00000000;
++#define I2C_ERR_NONE				0x00
++#define I2C_ERR_NO_ACK				0x01
++#define I2C_ERR_ARBITRATION_LOST		0x02
++#define I2C_ERR_UNKNOWN_INTERRUPT		0x04
 +
-+SDRAM[0].MemoryType                         = NvBootMemoryType_Ddr3;
-+SDRAM[0].PllMChargePumpSetupControl         = 0x00000008;
-+SDRAM[0].PllMLoopFilterSetupControl         = 0x00000000;
-+SDRAM[0].PllMInputDivider                   = 0x0000000c;
-+SDRAM[0].PllMFeedbackDivider                = 0x00000320;
-+SDRAM[0].PllMPostDivider                    = 0x00000000;
-+SDRAM[0].PllMStableTime                     = 0x0000012c;
-+SDRAM[0].EmcClockDivider                    = 0x00000002;
-+SDRAM[0].EmcAutoCalInterval                 = 0x001fffff;
-+SDRAM[0].EmcAutoCalConfig                   = 0xa0f10000;
-+SDRAM[0].EmcAutoCalWait                     = 0x00000064;
-+SDRAM[0].EmcPinProgramWait                  = 0x00000001;
-+SDRAM[0].EmcRc                              = 0x00000012;
-+SDRAM[0].EmcRfc                             = 0x00000066;
-+SDRAM[0].EmcRas                             = 0x0000000c;
-+SDRAM[0].EmcRp                              = 0x00000004;
-+SDRAM[0].EmcR2w                             = 0x00000003;
-+SDRAM[0].EmcW2r                             = 0x00000008;
-+SDRAM[0].EmcR2p                             = 0x00000002;
-+SDRAM[0].EmcW2p                             = 0x0000000a;
-+SDRAM[0].EmcRrd                             = 0x00000002;
-+SDRAM[0].EmcRdRcd                           = 0x00000004;
-+SDRAM[0].EmcWrRcd                           = 0x00000004;
-+SDRAM[0].EmcRext                            = 0x00000001;
-+SDRAM[0].EmcWdv                             = 0x00000004;
-+SDRAM[0].EmcQUseExtra                       = 0x00000000;
-+SDRAM[0].EmcQUse                            = 0x00000006;
-+SDRAM[0].EmcQRst                            = 0x00000004;
-+SDRAM[0].EmcQSafe                           = 0x0000000a;
-+SDRAM[0].EmcRdv                             = 0x0000000d;
-+SDRAM[0].EmcRefresh                         = 0x00000bf0;
-+SDRAM[0].EmcBurstRefreshNum                 = 0x00000000;
-+SDRAM[0].EmcPdEx2Wr                         = 0x00000001;
-+SDRAM[0].EmcPdEx2Rd                         = 0x00000008;
-+SDRAM[0].EmcPChg2Pden                       = 0x00000001;
-+SDRAM[0].EmcAct2Pden                        = 0x00000000;
-+SDRAM[0].EmcAr2Pden                         = 0x00000008;
-+SDRAM[0].EmcRw2Pden                         = 0x0000000f;
-+SDRAM[0].EmcTxsr                            = 0x0000006c;
-+SDRAM[0].EmcTcke                            = 0x00000004;
-+SDRAM[0].EmcTfaw                            = 0x0000000c;
-+SDRAM[0].EmcTrpab                           = 0x00000000;
-+SDRAM[0].EmcTClkStable                      = 0x00000004;
-+SDRAM[0].EmcTClkStop                        = 0x00000005;
-+SDRAM[0].EmcTRefBw                          = 0x00000c30;
-+SDRAM[0].EmcFbioCfg5                        = 0x00007088;
-+SDRAM[0].EmcFbioCfg6                        = 0x00000006;
-+SDRAM[0].EmcFbioSpare                       = 0xe8000000;
-+SDRAM[0].EmcMrsResetDllWait                 = 0x00000000;
-+SDRAM[0].EmcMrsResetDll                     = 0x00000000;
-+SDRAM[0].EmcMrsDdr2DllReset                 = 0x00000000;
-+SDRAM[0].EmcMrs                             = 0x80000521;
-+SDRAM[0].EmcEmrsEmr2                        = 0x80200000;
-+SDRAM[0].EmcEmrsEmr3                        = 0x80300000;
-+SDRAM[0].EmcEmrsDdr2DllEnable               = 0x00000000;
-+SDRAM[0].EmcEmrsDdr2OcdCalib                = 0x00000000;
-+SDRAM[0].EmcEmrs                            = 0x80100002;
-+SDRAM[0].EmcMrw1                            = 0x00000000;
-+SDRAM[0].EmcMrw2                            = 0x00000000;
-+SDRAM[0].EmcMrw3                            = 0x00000000;
-+SDRAM[0].EmcMrwResetCommand                 = 0x00000000;
-+SDRAM[0].EmcMrwResetNInitWait               = 0x00000000;
-+SDRAM[0].EmcAdrCfg                          = 0x00000080;
-+SDRAM[0].McEmemCfg                          = 0x00000800;
-+SDRAM[0].EmcCfg2                            = 0x000c0099;
-+SDRAM[0].EmcCfgDigDll                       = 0x001d0084;
-+SDRAM[0].EmcCfgDigDllPeriod                 = 0x00008000;
-+SDRAM[0].EmcCfg                             = 0x23c00000;
-+SDRAM[0].EmcDbg                             = 0x01000400;
-+SDRAM[0].WarmBootWait                       = 0x00000002;
-+SDRAM[0].EmcCttTermCtrl                     = 0x00000802;
-+SDRAM[0].EmcOdtWrite                        = 0x00000000;
-+SDRAM[0].EmcOdtRead                         = 0x00000000;
-+SDRAM[0].EmcZcalWaitCnt                     = 0x00000040;
-+SDRAM[0].EmcZcalMrwCmd                      = 0x80000000;
-+SDRAM[0].EmcDdr2Wait                        = 0x00000000;
-+SDRAM[0].PmcDdrPwr                          = 0x00000003;
-+SDRAM[0].EmcClockSource                     = 0x00000000;
-+SDRAM[0].EmcClockUsePllMUD                  = 0x00000000;
-+SDRAM[0].EmcPinExtraWait                    = 0x00000000;
-+SDRAM[0].EmcTimingControlWait               = 0x00000000;
-+SDRAM[0].EmcWext                            = 0x00000000;
-+SDRAM[0].EmcCtt                             = 0x00000000;
-+SDRAM[0].EmcCttDuration                     = 0x00000000;
-+SDRAM[0].EmcPreRefreshReqCnt                = 0x000002fc;
-+SDRAM[0].EmcTxsrDll                         = 0x00000200;
-+SDRAM[0].EmcCfgRsv                          = 0xff00ff89;
-+SDRAM[0].EmcMrwExtra                        = 0x00000000;
-+SDRAM[0].EmcWarmBootMrw1                    = 0x00000000;
-+SDRAM[0].EmcWarmBootMrw2                    = 0x00000000;
-+SDRAM[0].EmcWarmBootMrw3                    = 0x00000000;
-+SDRAM[0].EmcWarmBootMrwExtra                = 0x00000000;
-+SDRAM[0].EmcWarmBootExtraModeRegWriteEnable = 0x00000000;
-+SDRAM[0].EmcExtraModeRegWriteEnable         = 0x00000000;
-+SDRAM[0].EmcMrsWaitCnt                      = 0x0158000c;
-+SDRAM[0].EmcCmdQ                            = 0x10004408;
-+SDRAM[0].EmcMc2EmcQ                         = 0x06000404;
-+SDRAM[0].EmcDynSelfRefControl               = 0x800018c8;
-+SDRAM[0].AhbArbitrationXbarCtrlMemInitDone  = 0x00000001;
-+SDRAM[0].EmcDevSelect                       = 0x00000002;
-+SDRAM[0].EmcSelDpdCtrl                      = 0x0004032c;
-+SDRAM[0].EmcDllXformDqs0                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs1                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs2                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs3                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs4                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs5                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs6                    = 0x00038000;
-+SDRAM[0].EmcDllXformDqs7                    = 0x00038000;
-+SDRAM[0].EmcDllXformQUse0                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse1                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse2                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse3                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse4                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse5                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse6                   = 0x00000000;
-+SDRAM[0].EmcDllXformQUse7                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs0                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs1                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs2                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs3                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs4                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs5                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs6                   = 0x00000000;
-+SDRAM[0].EmcDliTrimTxDqs7                   = 0x00000000;
-+SDRAM[0].EmcDllXformDq0                     = 0x00030000;
-+SDRAM[0].EmcDllXformDq1                     = 0x00030000;
-+SDRAM[0].EmcDllXformDq2                     = 0x00030000;
-+SDRAM[0].EmcDllXformDq3                     = 0x00030000;
-+SDRAM[0].EmcZcalInterval                    = 0x00020000;
-+SDRAM[0].EmcZcalInitDev0                    = 0x80000011;
-+SDRAM[0].EmcZcalInitDev1                    = 0x00000000;
-+SDRAM[0].EmcZcalInitWait                    = 0x00000002;
-+SDRAM[0].EmcZcalColdBootEnable              = 0x00000001;
-+SDRAM[0].EmcZcalWarmBootEnable              = 0x00000001;
-+SDRAM[0].EmcMrwLpddr2ZcalWarmBoot           = 0x000a00ab;
-+SDRAM[0].EmcZqCalDdr3WarmBoot               = 0x00000011;
-+SDRAM[0].EmcZcalWarmBootWait                = 0x00000001;
-+SDRAM[0].EmcMrsWarmBootEnable               = 0x00000001;
-+SDRAM[0].EmcMrsExtra                        = 0x80000521;
-+SDRAM[0].EmcWarmBootMrs                     = 0x80100002;
-+SDRAM[0].EmcWarmBootEmrs                    = 0x80000521;
-+SDRAM[0].EmcWarmBootEmr2                    = 0x80200000;
-+SDRAM[0].EmcWarmBootEmr3                    = 0x80300000;
-+SDRAM[0].EmcWarmBootMrsExtra                = 0x80100002;
-+SDRAM[0].EmcClkenOverride                   = 0x00000000;
-+SDRAM[0].EmcExtraRefreshNum                 = 0x00000002;
-+SDRAM[0].EmcClkenOverrideAllWarmBoot        = 0x00000000;
-+SDRAM[0].McClkenOverrideAllWarmBoot         = 0x00000000;
-+SDRAM[0].EmcCfgDigDllPeriodWarmBoot         = 0x00000003;
-+SDRAM[0].PmcVddpSel                         = 0x00000002;
-+SDRAM[0].PmcDdrCfg                          = 0x00000002;
-+SDRAM[0].PmcIoDpdReq                        = 0x80800000;
-+SDRAM[0].PmcENoVttGen                       = 0x00000000;
-+SDRAM[0].PmcNoIoPower                       = 0x00000000;
-+SDRAM[0].EmcXm2CmdPadCtrl                   = 0x000002a0;
-+SDRAM[0].EmcXm2CmdPadCtrl2                  = 0x770c0000;
-+SDRAM[0].EmcXm2DqsPadCtrl                   = 0x770c1414;
-+SDRAM[0].EmcXm2DqsPadCtrl2                  = 0x0800013d;
-+SDRAM[0].EmcXm2DqsPadCtrl3                  = 0x08000021;
-+SDRAM[0].EmcXm2DqPadCtrl                    = 0x770c2990;
-+SDRAM[0].EmcXm2DqPadCtrl2                   = 0x00000000;
-+SDRAM[0].EmcXm2ClkPadCtrl                   = 0x77fff884;
-+SDRAM[0].EmcXm2CompPadCtrl                  = 0x01f1f508;
-+SDRAM[0].EmcXm2VttGenPadCtrl                = 0x05057404;
-+SDRAM[0].EmcXm2VttGenPadCtrl2               = 0x54000007;
-+SDRAM[0].EmcXm2QUsePadCtrl                  = 0x080001e8;
-+SDRAM[0].McEmemAdrCfg                       = 0x00000000;
-+SDRAM[0].McEmemAdrCfgDev0                   = 0x00090303;
-+SDRAM[0].McEmemAdrCfgDev1                   = 0x00090303;
-+SDRAM[0].McEmemArbCfg                       = 0x00000006;
-+SDRAM[0].McEmemArbOutstandingReq            = 0x80000048;
-+SDRAM[0].McEmemArbTimingRcd                 = 0x00000001;
-+SDRAM[0].McEmemArbTimingRp                  = 0x00000002;
-+SDRAM[0].McEmemArbTimingRc                  = 0x00000009;
-+SDRAM[0].McEmemArbTimingRas                 = 0x00000005;
-+SDRAM[0].McEmemArbTimingFaw                 = 0x00000005;
-+SDRAM[0].McEmemArbTimingRrd                 = 0x00000001;
-+SDRAM[0].McEmemArbTimingRap2Pre             = 0x00000002;
-+SDRAM[0].McEmemArbTimingWap2Pre             = 0x00000008;
-+SDRAM[0].McEmemArbTimingR2R                 = 0x00000002;
-+SDRAM[0].McEmemArbTimingW2W                 = 0x00000002;
-+SDRAM[0].McEmemArbTimingR2W                 = 0x00000003;
-+SDRAM[0].McEmemArbTimingW2R                 = 0x00000006;
-+SDRAM[0].McEmemArbDaTurns                   = 0x06030202;
-+SDRAM[0].McEmemArbDaCovers                  = 0x000d0709;
-+SDRAM[0].McEmemArbMisc0                     = 0x7086120a;
-+SDRAM[0].McEmemArbMisc1                     = 0x78000000;
-+SDRAM[0].McEmemArbRing1Throttle             = 0x001f0000;
-+SDRAM[0].McEmemArbOverride                  = 0x00000080;
-+SDRAM[0].McEmemArbRsv                       = 0xff00ff00;
-+SDRAM[0].McClkenOverride                    = 0x00000000;
++#define PACKET_HEADER0_HEADER_SIZE_SHIFT	28
++#define PACKET_HEADER0_PACKET_ID_SHIFT		16
++#define PACKET_HEADER0_CONT_ID_SHIFT		12
++#define PACKET_HEADER0_PROTOCOL_I2C		(1<<4)
 +
-+SDRAM[1].MemoryType                         = NvBootMemoryType_Ddr3;
-+SDRAM[1].PllMChargePumpSetupControl         = 0x00000008;
-+SDRAM[1].PllMLoopFilterSetupControl         = 0x00000000;
-+SDRAM[1].PllMInputDivider                   = 0x0000000c;
-+SDRAM[1].PllMFeedbackDivider                = 0x00000320;
-+SDRAM[1].PllMPostDivider                    = 0x00000000;
-+SDRAM[1].PllMStableTime                     = 0x0000012c;
-+SDRAM[1].EmcClockDivider                    = 0x00000002;
-+SDRAM[1].EmcAutoCalInterval                 = 0x001fffff;
-+SDRAM[1].EmcAutoCalConfig                   = 0xa0f10000;
-+SDRAM[1].EmcAutoCalWait                     = 0x00000064;
-+SDRAM[1].EmcPinProgramWait                  = 0x00000001;
-+SDRAM[1].EmcRc                              = 0x00000012;
-+SDRAM[1].EmcRfc                             = 0x00000066;
-+SDRAM[1].EmcRas                             = 0x0000000c;
-+SDRAM[1].EmcRp                              = 0x00000004;
-+SDRAM[1].EmcR2w                             = 0x00000003;
-+SDRAM[1].EmcW2r                             = 0x00000008;
-+SDRAM[1].EmcR2p                             = 0x00000002;
-+SDRAM[1].EmcW2p                             = 0x0000000a;
-+SDRAM[1].EmcRrd                             = 0x00000002;
-+SDRAM[1].EmcRdRcd                           = 0x00000004;
-+SDRAM[1].EmcWrRcd                           = 0x00000004;
-+SDRAM[1].EmcRext                            = 0x00000001;
-+SDRAM[1].EmcWdv                             = 0x00000004;
-+SDRAM[1].EmcQUseExtra                       = 0x00000000;
-+SDRAM[1].EmcQUse                            = 0x00000006;
-+SDRAM[1].EmcQRst                            = 0x00000004;
-+SDRAM[1].EmcQSafe                           = 0x0000000a;
-+SDRAM[1].EmcRdv                             = 0x0000000d;
-+SDRAM[1].EmcRefresh                         = 0x00000bf0;
-+SDRAM[1].EmcBurstRefreshNum                 = 0x00000000;
-+SDRAM[1].EmcPdEx2Wr                         = 0x00000001;
-+SDRAM[1].EmcPdEx2Rd                         = 0x00000008;
-+SDRAM[1].EmcPChg2Pden                       = 0x00000001;
-+SDRAM[1].EmcAct2Pden                        = 0x00000000;
-+SDRAM[1].EmcAr2Pden                         = 0x00000008;
-+SDRAM[1].EmcRw2Pden                         = 0x0000000f;
-+SDRAM[1].EmcTxsr                            = 0x0000006c;
-+SDRAM[1].EmcTcke                            = 0x00000004;
-+SDRAM[1].EmcTfaw                            = 0x0000000c;
-+SDRAM[1].EmcTrpab                           = 0x00000000;
-+SDRAM[1].EmcTClkStable                      = 0x00000004;
-+SDRAM[1].EmcTClkStop                        = 0x00000005;
-+SDRAM[1].EmcTRefBw                          = 0x00000c30;
-+SDRAM[1].EmcFbioCfg5                        = 0x00007088;
-+SDRAM[1].EmcFbioCfg6                        = 0x00000006;
-+SDRAM[1].EmcFbioSpare                       = 0xe8000000;
-+SDRAM[1].EmcMrsResetDllWait                 = 0x00000000;
-+SDRAM[1].EmcMrsResetDll                     = 0x00000000;
-+SDRAM[1].EmcMrsDdr2DllReset                 = 0x00000000;
-+SDRAM[1].EmcMrs                             = 0x80000521;
-+SDRAM[1].EmcEmrsEmr2                        = 0x80200000;
-+SDRAM[1].EmcEmrsEmr3                        = 0x80300000;
-+SDRAM[1].EmcEmrsDdr2DllEnable               = 0x00000000;
-+SDRAM[1].EmcEmrsDdr2OcdCalib                = 0x00000000;
-+SDRAM[1].EmcEmrs                            = 0x80100002;
-+SDRAM[1].EmcMrw1                            = 0x00000000;
-+SDRAM[1].EmcMrw2                            = 0x00000000;
-+SDRAM[1].EmcMrw3                            = 0x00000000;
-+SDRAM[1].EmcMrwResetCommand                 = 0x00000000;
-+SDRAM[1].EmcMrwResetNInitWait               = 0x00000000;
-+SDRAM[1].EmcAdrCfg                          = 0x00000080;
-+SDRAM[1].McEmemCfg                          = 0x00000800;
-+SDRAM[1].EmcCfg2                            = 0x000c0099;
-+SDRAM[1].EmcCfgDigDll                       = 0x001d0084;
-+SDRAM[1].EmcCfgDigDllPeriod                 = 0x00008000;
-+SDRAM[1].EmcCfg                             = 0x23c00000;
-+SDRAM[1].EmcDbg                             = 0x01000400;
-+SDRAM[1].WarmBootWait                       = 0x00000002;
-+SDRAM[1].EmcCttTermCtrl                     = 0x00000802;
-+SDRAM[1].EmcOdtWrite                        = 0x00000000;
-+SDRAM[1].EmcOdtRead                         = 0x00000000;
-+SDRAM[1].EmcZcalWaitCnt                     = 0x00000040;
-+SDRAM[1].EmcZcalMrwCmd                      = 0x80000000;
-+SDRAM[1].EmcDdr2Wait                        = 0x00000000;
-+SDRAM[1].PmcDdrPwr                          = 0x00000003;
-+SDRAM[1].EmcClockSource                     = 0x00000000;
-+SDRAM[1].EmcClockUsePllMUD                  = 0x00000000;
-+SDRAM[1].EmcPinExtraWait                    = 0x00000000;
-+SDRAM[1].EmcTimingControlWait               = 0x00000000;
-+SDRAM[1].EmcWext                            = 0x00000000;
-+SDRAM[1].EmcCtt                             = 0x00000000;
-+SDRAM[1].EmcCttDuration                     = 0x00000000;
-+SDRAM[1].EmcPreRefreshReqCnt                = 0x000002fc;
-+SDRAM[1].EmcTxsrDll                         = 0x00000200;
-+SDRAM[1].EmcCfgRsv                          = 0xff00ff89;
-+SDRAM[1].EmcMrwExtra                        = 0x00000000;
-+SDRAM[1].EmcWarmBootMrw1                    = 0x00000000;
-+SDRAM[1].EmcWarmBootMrw2                    = 0x00000000;
-+SDRAM[1].EmcWarmBootMrw3                    = 0x00000000;
-+SDRAM[1].EmcWarmBootMrwExtra                = 0x00000000;
-+SDRAM[1].EmcWarmBootExtraModeRegWriteEnable = 0x00000000;
-+SDRAM[1].EmcExtraModeRegWriteEnable         = 0x00000000;
-+SDRAM[1].EmcMrsWaitCnt                      = 0x0158000c;
-+SDRAM[1].EmcCmdQ                            = 0x10004408;
-+SDRAM[1].EmcMc2EmcQ                         = 0x06000404;
-+SDRAM[1].EmcDynSelfRefControl               = 0x800018c8;
-+SDRAM[1].AhbArbitrationXbarCtrlMemInitDone  = 0x00000001;
-+SDRAM[1].EmcDevSelect                       = 0x00000002;
-+SDRAM[1].EmcSelDpdCtrl                      = 0x0004032c;
-+SDRAM[1].EmcDllXformDqs0                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs1                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs2                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs3                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs4                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs5                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs6                    = 0x00038000;
-+SDRAM[1].EmcDllXformDqs7                    = 0x00038000;
-+SDRAM[1].EmcDllXformQUse0                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse1                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse2                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse3                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse4                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse5                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse6                   = 0x00000000;
-+SDRAM[1].EmcDllXformQUse7                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs0                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs1                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs2                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs3                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs4                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs5                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs6                   = 0x00000000;
-+SDRAM[1].EmcDliTrimTxDqs7                   = 0x00000000;
-+SDRAM[1].EmcDllXformDq0                     = 0x00030000;
-+SDRAM[1].EmcDllXformDq1                     = 0x00030000;
-+SDRAM[1].EmcDllXformDq2                     = 0x00030000;
-+SDRAM[1].EmcDllXformDq3                     = 0x00030000;
-+SDRAM[1].EmcZcalInterval                    = 0x00020000;
-+SDRAM[1].EmcZcalInitDev0                    = 0x80000011;
-+SDRAM[1].EmcZcalInitDev1                    = 0x00000000;
-+SDRAM[1].EmcZcalInitWait                    = 0x00000002;
-+SDRAM[1].EmcZcalColdBootEnable              = 0x00000001;
-+SDRAM[1].EmcZcalWarmBootEnable              = 0x00000001;
-+SDRAM[1].EmcMrwLpddr2ZcalWarmBoot           = 0x000a00ab;
-+SDRAM[1].EmcZqCalDdr3WarmBoot               = 0x00000011;
-+SDRAM[1].EmcZcalWarmBootWait                = 0x00000001;
-+SDRAM[1].EmcMrsWarmBootEnable               = 0x00000001;
-+SDRAM[1].EmcMrsExtra                        = 0x80000521;
-+SDRAM[1].EmcWarmBootMrs                     = 0x80100002;
-+SDRAM[1].EmcWarmBootEmrs                    = 0x80000521;
-+SDRAM[1].EmcWarmBootEmr2                    = 0x80200000;
-+SDRAM[1].EmcWarmBootEmr3                    = 0x80300000;
-+SDRAM[1].EmcWarmBootMrsExtra                = 0x80100002;
-+SDRAM[1].EmcClkenOverride                   = 0x00000000;
-+SDRAM[1].EmcExtraRefreshNum                 = 0x00000002;
-+SDRAM[1].EmcClkenOverrideAllWarmBoot        = 0x00000000;
-+SDRAM[1].McClkenOverrideAllWarmBoot         = 0x00000000;
-+SDRAM[1].EmcCfgDigDllPeriodWarmBoot         = 0x00000003;
-+SDRAM[1].PmcVddpSel                         = 0x00000002;
-+SDRAM[1].PmcDdrCfg                          = 0x00000002;
-+SDRAM[1].PmcIoDpdReq                        = 0x80800000;
-+SDRAM[1].PmcENoVttGen                       = 0x00000000;
-+SDRAM[1].PmcNoIoPower                       = 0x00000000;
-+SDRAM[1].EmcXm2CmdPadCtrl                   = 0x000002a0;
-+SDRAM[1].EmcXm2CmdPadCtrl2                  = 0x770c0000;
-+SDRAM[1].EmcXm2DqsPadCtrl                   = 0x770c1414;
-+SDRAM[1].EmcXm2DqsPadCtrl2                  = 0x0800013d;
-+SDRAM[1].EmcXm2DqsPadCtrl3                  = 0x08000021;
-+SDRAM[1].EmcXm2DqPadCtrl                    = 0x770c2990;
-+SDRAM[1].EmcXm2DqPadCtrl2                   = 0x00000000;
-+SDRAM[1].EmcXm2ClkPadCtrl                   = 0x77fff884;
-+SDRAM[1].EmcXm2CompPadCtrl                  = 0x01f1f508;
-+SDRAM[1].EmcXm2VttGenPadCtrl                = 0x05057404;
-+SDRAM[1].EmcXm2VttGenPadCtrl2               = 0x54000007;
-+SDRAM[1].EmcXm2QUsePadCtrl                  = 0x080001e8;
-+SDRAM[1].McEmemAdrCfg                       = 0x00000000;
-+SDRAM[1].McEmemAdrCfgDev0                   = 0x00090303;
-+SDRAM[1].McEmemAdrCfgDev1                   = 0x00090303;
-+SDRAM[1].McEmemArbCfg                       = 0x00000006;
-+SDRAM[1].McEmemArbOutstandingReq            = 0x80000048;
-+SDRAM[1].McEmemArbTimingRcd                 = 0x00000001;
-+SDRAM[1].McEmemArbTimingRp                  = 0x00000002;
-+SDRAM[1].McEmemArbTimingRc                  = 0x00000009;
-+SDRAM[1].McEmemArbTimingRas                 = 0x00000005;
-+SDRAM[1].McEmemArbTimingFaw                 = 0x00000005;
-+SDRAM[1].McEmemArbTimingRrd                 = 0x00000001;
-+SDRAM[1].McEmemArbTimingRap2Pre             = 0x00000002;
-+SDRAM[1].McEmemArbTimingWap2Pre             = 0x00000008;
-+SDRAM[1].McEmemArbTimingR2R                 = 0x00000002;
-+SDRAM[1].McEmemArbTimingW2W                 = 0x00000002;
-+SDRAM[1].McEmemArbTimingR2W                 = 0x00000003;
-+SDRAM[1].McEmemArbTimingW2R                 = 0x00000006;
-+SDRAM[1].McEmemArbDaTurns                   = 0x06030202;
-+SDRAM[1].McEmemArbDaCovers                  = 0x000d0709;
-+SDRAM[1].McEmemArbMisc0                     = 0x7086120a;
-+SDRAM[1].McEmemArbMisc1                     = 0x78000000;
-+SDRAM[1].McEmemArbRing1Throttle             = 0x001f0000;
-+SDRAM[1].McEmemArbOverride                  = 0x00000080;
-+SDRAM[1].McEmemArbRsv                       = 0xff00ff00;
-+SDRAM[1].McClkenOverride                    = 0x00000000;
++#define I2C_HEADER_HIGHSPEED_MODE		(1<<22)
++#define I2C_HEADER_CONT_ON_NAK			(1<<21)
++#define I2C_HEADER_SEND_START_BYTE		(1<<20)
++#define I2C_HEADER_READ				(1<<19)
++#define I2C_HEADER_10BIT_ADDR			(1<<18)
++#define I2C_HEADER_IE_ENABLE			(1<<17)
++#define I2C_HEADER_REPEAT_START			(1<<16)
++#define I2C_HEADER_CONTINUE_XFER		(1<<15)
++#define I2C_HEADER_MASTER_ADDR_SHIFT		12
++#define I2C_HEADER_SLAVE_ADDR_SHIFT		1
++/*
++ * msg_end_type: The bus control which need to be send at end of transfer.
++ * @MSG_END_STOP: Send stop pulse at end of transfer.
++ * @MSG_END_REPEAT_START: Send repeat start at end of transfer.
++ * @MSG_END_CONTINUE: The following on message is coming and so do not send
++ *		stop or repeat start.
++ */
++enum msg_end_type {
++	MSG_END_STOP,
++	MSG_END_REPEAT_START,
++	MSG_END_CONTINUE,
++};
 +
-+SDRAM[2].MemoryType                         = NvBootMemoryType_Ddr3;
-+SDRAM[2].PllMChargePumpSetupControl         = 0x00000008;
-+SDRAM[2].PllMLoopFilterSetupControl         = 0x00000000;
-+SDRAM[2].PllMInputDivider                   = 0x0000000c;
-+SDRAM[2].PllMFeedbackDivider                = 0x00000320;
-+SDRAM[2].PllMPostDivider                    = 0x00000000;
-+SDRAM[2].PllMStableTime                     = 0x0000012c;
-+SDRAM[2].EmcClockDivider                    = 0x00000002;
-+SDRAM[2].EmcAutoCalInterval                 = 0x001fffff;
-+SDRAM[2].EmcAutoCalConfig                   = 0xa0f10000;
-+SDRAM[2].EmcAutoCalWait                     = 0x00000064;
-+SDRAM[2].EmcPinProgramWait                  = 0x00000001;
-+SDRAM[2].EmcRc                              = 0x00000012;
-+SDRAM[2].EmcRfc                             = 0x00000066;
-+SDRAM[2].EmcRas                             = 0x0000000c;
-+SDRAM[2].EmcRp                              = 0x00000004;
-+SDRAM[2].EmcR2w                             = 0x00000003;
-+SDRAM[2].EmcW2r                             = 0x00000008;
-+SDRAM[2].EmcR2p                             = 0x00000002;
-+SDRAM[2].EmcW2p                             = 0x0000000a;
-+SDRAM[2].EmcRrd                             = 0x00000002;
-+SDRAM[2].EmcRdRcd                           = 0x00000004;
-+SDRAM[2].EmcWrRcd                           = 0x00000004;
-+SDRAM[2].EmcRext                            = 0x00000001;
-+SDRAM[2].EmcWdv                             = 0x00000004;
-+SDRAM[2].EmcQUseExtra                       = 0x00000000;
-+SDRAM[2].EmcQUse                            = 0x00000006;
-+SDRAM[2].EmcQRst                            = 0x00000004;
-+SDRAM[2].EmcQSafe                           = 0x0000000a;
-+SDRAM[2].EmcRdv                             = 0x0000000d;
-+SDRAM[2].EmcRefresh                         = 0x00000bf0;
-+SDRAM[2].EmcBurstRefreshNum                 = 0x00000000;
-+SDRAM[2].EmcPdEx2Wr                         = 0x00000001;
-+SDRAM[2].EmcPdEx2Rd                         = 0x00000008;
-+SDRAM[2].EmcPChg2Pden                       = 0x00000001;
-+SDRAM[2].EmcAct2Pden                        = 0x00000000;
-+SDRAM[2].EmcAr2Pden                         = 0x00000008;
-+SDRAM[2].EmcRw2Pden                         = 0x0000000f;
-+SDRAM[2].EmcTxsr                            = 0x0000006c;
-+SDRAM[2].EmcTcke                            = 0x00000004;
-+SDRAM[2].EmcTfaw                            = 0x0000000c;
-+SDRAM[2].EmcTrpab                           = 0x00000000;
-+SDRAM[2].EmcTClkStable                      = 0x00000004;
-+SDRAM[2].EmcTClkStop                        = 0x00000005;
-+SDRAM[2].EmcTRefBw                          = 0x00000c30;
-+SDRAM[2].EmcFbioCfg5                        = 0x00007088;
-+SDRAM[2].EmcFbioCfg6                        = 0x00000006;
-+SDRAM[2].EmcFbioSpare                       = 0xe8000000;
-+SDRAM[2].EmcMrsResetDllWait                 = 0x00000000;
-+SDRAM[2].EmcMrsResetDll                     = 0x00000000;
-+SDRAM[2].EmcMrsDdr2DllReset                 = 0x00000000;
-+SDRAM[2].EmcMrs                             = 0x80000521;
-+SDRAM[2].EmcEmrsEmr2                        = 0x80200000;
-+SDRAM[2].EmcEmrsEmr3                        = 0x80300000;
-+SDRAM[2].EmcEmrsDdr2DllEnable               = 0x00000000;
-+SDRAM[2].EmcEmrsDdr2OcdCalib                = 0x00000000;
-+SDRAM[2].EmcEmrs                            = 0x80100002;
-+SDRAM[2].EmcMrw1                            = 0x00000000;
-+SDRAM[2].EmcMrw2                            = 0x00000000;
-+SDRAM[2].EmcMrw3                            = 0x00000000;
-+SDRAM[2].EmcMrwResetCommand                 = 0x00000000;
-+SDRAM[2].EmcMrwResetNInitWait               = 0x00000000;
-+SDRAM[2].EmcAdrCfg                          = 0x00000080;
-+SDRAM[2].McEmemCfg                          = 0x00000800;
-+SDRAM[2].EmcCfg2                            = 0x000c0099;
-+SDRAM[2].EmcCfgDigDll                       = 0x001d0084;
-+SDRAM[2].EmcCfgDigDllPeriod                 = 0x00008000;
-+SDRAM[2].EmcCfg                             = 0x23c00000;
-+SDRAM[2].EmcDbg                             = 0x01000400;
-+SDRAM[2].WarmBootWait                       = 0x00000002;
-+SDRAM[2].EmcCttTermCtrl                     = 0x00000802;
-+SDRAM[2].EmcOdtWrite                        = 0x00000000;
-+SDRAM[2].EmcOdtRead                         = 0x00000000;
-+SDRAM[2].EmcZcalWaitCnt                     = 0x00000040;
-+SDRAM[2].EmcZcalMrwCmd                      = 0x80000000;
-+SDRAM[2].EmcDdr2Wait                        = 0x00000000;
-+SDRAM[2].PmcDdrPwr                          = 0x00000003;
-+SDRAM[2].EmcClockSource                     = 0x00000000;
-+SDRAM[2].EmcClockUsePllMUD                  = 0x00000000;
-+SDRAM[2].EmcPinExtraWait                    = 0x00000000;
-+SDRAM[2].EmcTimingControlWait               = 0x00000000;
-+SDRAM[2].EmcWext                            = 0x00000000;
-+SDRAM[2].EmcCtt                             = 0x00000000;
-+SDRAM[2].EmcCttDuration                     = 0x00000000;
-+SDRAM[2].EmcPreRefreshReqCnt                = 0x000002fc;
-+SDRAM[2].EmcTxsrDll                         = 0x00000200;
-+SDRAM[2].EmcCfgRsv                          = 0xff00ff89;
-+SDRAM[2].EmcMrwExtra                        = 0x00000000;
-+SDRAM[2].EmcWarmBootMrw1                    = 0x00000000;
-+SDRAM[2].EmcWarmBootMrw2                    = 0x00000000;
-+SDRAM[2].EmcWarmBootMrw3                    = 0x00000000;
-+SDRAM[2].EmcWarmBootMrwExtra                = 0x00000000;
-+SDRAM[2].EmcWarmBootExtraModeRegWriteEnable = 0x00000000;
-+SDRAM[2].EmcExtraModeRegWriteEnable         = 0x00000000;
-+SDRAM[2].EmcMrsWaitCnt                      = 0x0158000c;
-+SDRAM[2].EmcCmdQ                            = 0x10004408;
-+SDRAM[2].EmcMc2EmcQ                         = 0x06000404;
-+SDRAM[2].EmcDynSelfRefControl               = 0x800018c8;
-+SDRAM[2].AhbArbitrationXbarCtrlMemInitDone  = 0x00000001;
-+SDRAM[2].EmcDevSelect                       = 0x00000002;
-+SDRAM[2].EmcSelDpdCtrl                      = 0x0004032c;
-+SDRAM[2].EmcDllXformDqs0                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs1                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs2                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs3                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs4                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs5                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs6                    = 0x00038000;
-+SDRAM[2].EmcDllXformDqs7                    = 0x00038000;
-+SDRAM[2].EmcDllXformQUse0                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse1                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse2                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse3                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse4                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse5                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse6                   = 0x00000000;
-+SDRAM[2].EmcDllXformQUse7                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs0                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs1                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs2                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs3                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs4                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs5                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs6                   = 0x00000000;
-+SDRAM[2].EmcDliTrimTxDqs7                   = 0x00000000;
-+SDRAM[2].EmcDllXformDq0                     = 0x00030000;
-+SDRAM[2].EmcDllXformDq1                     = 0x00030000;
-+SDRAM[2].EmcDllXformDq2                     = 0x00030000;
-+SDRAM[2].EmcDllXformDq3                     = 0x00030000;
-+SDRAM[2].EmcZcalInterval                    = 0x00020000;
-+SDRAM[2].EmcZcalInitDev0                    = 0x80000011;
-+SDRAM[2].EmcZcalInitDev1                    = 0x00000000;
-+SDRAM[2].EmcZcalInitWait                    = 0x00000002;
-+SDRAM[2].EmcZcalColdBootEnable              = 0x00000001;
-+SDRAM[2].EmcZcalWarmBootEnable              = 0x00000001;
-+SDRAM[2].EmcMrwLpddr2ZcalWarmBoot           = 0x000a00ab;
-+SDRAM[2].EmcZqCalDdr3WarmBoot               = 0x00000011;
-+SDRAM[2].EmcZcalWarmBootWait                = 0x00000001;
-+SDRAM[2].EmcMrsWarmBootEnable               = 0x00000001;
-+SDRAM[2].EmcMrsExtra                        = 0x80000521;
-+SDRAM[2].EmcWarmBootMrs                     = 0x80100002;
-+SDRAM[2].EmcWarmBootEmrs                    = 0x80000521;
-+SDRAM[2].EmcWarmBootEmr2                    = 0x80200000;
-+SDRAM[2].EmcWarmBootEmr3                    = 0x80300000;
-+SDRAM[2].EmcWarmBootMrsExtra                = 0x80100002;
-+SDRAM[2].EmcClkenOverride                   = 0x00000000;
-+SDRAM[2].EmcExtraRefreshNum                 = 0x00000002;
-+SDRAM[2].EmcClkenOverrideAllWarmBoot        = 0x00000000;
-+SDRAM[2].McClkenOverrideAllWarmBoot         = 0x00000000;
-+SDRAM[2].EmcCfgDigDllPeriodWarmBoot         = 0x00000003;
-+SDRAM[2].PmcVddpSel                         = 0x00000002;
-+SDRAM[2].PmcDdrCfg                          = 0x00000002;
-+SDRAM[2].PmcIoDpdReq                        = 0x80800000;
-+SDRAM[2].PmcENoVttGen                       = 0x00000000;
-+SDRAM[2].PmcNoIoPower                       = 0x00000000;
-+SDRAM[2].EmcXm2CmdPadCtrl                   = 0x000002a0;
-+SDRAM[2].EmcXm2CmdPadCtrl2                  = 0x770c0000;
-+SDRAM[2].EmcXm2DqsPadCtrl                   = 0x770c1414;
-+SDRAM[2].EmcXm2DqsPadCtrl2                  = 0x0800013d;
-+SDRAM[2].EmcXm2DqsPadCtrl3                  = 0x08000021;
-+SDRAM[2].EmcXm2DqPadCtrl                    = 0x770c2990;
-+SDRAM[2].EmcXm2DqPadCtrl2                   = 0x00000000;
-+SDRAM[2].EmcXm2ClkPadCtrl                   = 0x77fff884;
-+SDRAM[2].EmcXm2CompPadCtrl                  = 0x01f1f508;
-+SDRAM[2].EmcXm2VttGenPadCtrl                = 0x05057404;
-+SDRAM[2].EmcXm2VttGenPadCtrl2               = 0x54000007;
-+SDRAM[2].EmcXm2QUsePadCtrl                  = 0x080001e8;
-+SDRAM[2].McEmemAdrCfg                       = 0x00000000;
-+SDRAM[2].McEmemAdrCfgDev0                   = 0x00090303;
-+SDRAM[2].McEmemAdrCfgDev1                   = 0x00090303;
-+SDRAM[2].McEmemArbCfg                       = 0x00000006;
-+SDRAM[2].McEmemArbOutstandingReq            = 0x80000048;
-+SDRAM[2].McEmemArbTimingRcd                 = 0x00000001;
-+SDRAM[2].McEmemArbTimingRp                  = 0x00000002;
-+SDRAM[2].McEmemArbTimingRc                  = 0x00000009;
-+SDRAM[2].McEmemArbTimingRas                 = 0x00000005;
-+SDRAM[2].McEmemArbTimingFaw                 = 0x00000005;
-+SDRAM[2].McEmemArbTimingRrd                 = 0x00000001;
-+SDRAM[2].McEmemArbTimingRap2Pre             = 0x00000002;
-+SDRAM[2].McEmemArbTimingWap2Pre             = 0x00000008;
-+SDRAM[2].McEmemArbTimingR2R                 = 0x00000002;
-+SDRAM[2].McEmemArbTimingW2W                 = 0x00000002;
-+SDRAM[2].McEmemArbTimingR2W                 = 0x00000003;
-+SDRAM[2].McEmemArbTimingW2R                 = 0x00000006;
-+SDRAM[2].McEmemArbDaTurns                   = 0x06030202;
-+SDRAM[2].McEmemArbDaCovers                  = 0x000d0709;
-+SDRAM[2].McEmemArbMisc0                     = 0x7086120a;
-+SDRAM[2].McEmemArbMisc1                     = 0x78000000;
-+SDRAM[2].McEmemArbRing1Throttle             = 0x001f0000;
-+SDRAM[2].McEmemArbOverride                  = 0x00000080;
-+SDRAM[2].McEmemArbRsv                       = 0xff00ff00;
-+SDRAM[2].McClkenOverride                    = 0x00000000;
++/**
++ * struct tegra_i2c_hw_feature : Different HW support on Tegra
++ * @has_continue_xfer_support: Continue transfer supports.
++ * @has_per_pkt_xfer_complete_irq: Has enable/disable capability for transfer
++ *		complete interrupt per packet basis.
++ * @has_single_clk_source: The i2c controller has single clock source. Tegra30
++ *		and earlier Socs has two clock sources i.e. div-clk and
++ *		fast-clk.
++ * @clk_divisor_hs_mode: Clock divisor in HS mode.
++ * @clk_divisor_std_fast_mode: Clock divisor in standard/fast mode. It is
++ *		applicable if there is no fast clock source i.e. single clock
++ *		source.
++ */
 +
-+SDRAM[3].MemoryType                         = NvBootMemoryType_Ddr3;
-+SDRAM[3].PllMChargePumpSetupControl         = 0x00000008;
-+SDRAM[3].PllMLoopFilterSetupControl         = 0x00000000;
-+SDRAM[3].PllMInputDivider                   = 0x0000000c;
-+SDRAM[3].PllMFeedbackDivider                = 0x00000320;
-+SDRAM[3].PllMPostDivider                    = 0x00000000;
-+SDRAM[3].PllMStableTime                     = 0x0000012c;
-+SDRAM[3].EmcClockDivider                    = 0x00000002;
-+SDRAM[3].EmcAutoCalInterval                 = 0x001fffff;
-+SDRAM[3].EmcAutoCalConfig                   = 0xa0f10000;
-+SDRAM[3].EmcAutoCalWait                     = 0x00000064;
-+SDRAM[3].EmcPinProgramWait                  = 0x00000001;
-+SDRAM[3].EmcRc                              = 0x00000012;
-+SDRAM[3].EmcRfc                             = 0x00000066;
-+SDRAM[3].EmcRas                             = 0x0000000c;
-+SDRAM[3].EmcRp                              = 0x00000004;
-+SDRAM[3].EmcR2w                             = 0x00000003;
-+SDRAM[3].EmcW2r                             = 0x00000008;
-+SDRAM[3].EmcR2p                             = 0x00000002;
-+SDRAM[3].EmcW2p                             = 0x0000000a;
-+SDRAM[3].EmcRrd                             = 0x00000002;
-+SDRAM[3].EmcRdRcd                           = 0x00000004;
-+SDRAM[3].EmcWrRcd                           = 0x00000004;
-+SDRAM[3].EmcRext                            = 0x00000001;
-+SDRAM[3].EmcWdv                             = 0x00000004;
-+SDRAM[3].EmcQUseExtra                       = 0x00000000;
-+SDRAM[3].EmcQUse                            = 0x00000006;
-+SDRAM[3].EmcQRst                            = 0x00000004;
-+SDRAM[3].EmcQSafe                           = 0x0000000a;
-+SDRAM[3].EmcRdv                             = 0x0000000d;
-+SDRAM[3].EmcRefresh                         = 0x00000bf0;
-+SDRAM[3].EmcBurstRefreshNum                 = 0x00000000;
-+SDRAM[3].EmcPdEx2Wr                         = 0x00000001;
-+SDRAM[3].EmcPdEx2Rd                         = 0x00000008;
-+SDRAM[3].EmcPChg2Pden                       = 0x00000001;
-+SDRAM[3].EmcAct2Pden                        = 0x00000000;
-+SDRAM[3].EmcAr2Pden                         = 0x00000008;
-+SDRAM[3].EmcRw2Pden                         = 0x0000000f;
-+SDRAM[3].EmcTxsr                            = 0x0000006c;
-+SDRAM[3].EmcTcke                            = 0x00000004;
-+SDRAM[3].EmcTfaw                            = 0x0000000c;
-+SDRAM[3].EmcTrpab                           = 0x00000000;
-+SDRAM[3].EmcTClkStable                      = 0x00000004;
-+SDRAM[3].EmcTClkStop                        = 0x00000005;
-+SDRAM[3].EmcTRefBw                          = 0x00000c30;
-+SDRAM[3].EmcFbioCfg5                        = 0x00007088;
-+SDRAM[3].EmcFbioCfg6                        = 0x00000006;
-+SDRAM[3].EmcFbioSpare                       = 0xe8000000;
-+SDRAM[3].EmcMrsResetDllWait                 = 0x00000000;
-+SDRAM[3].EmcMrsResetDll                     = 0x00000000;
-+SDRAM[3].EmcMrsDdr2DllReset                 = 0x00000000;
-+SDRAM[3].EmcMrs                             = 0x80000521;
-+SDRAM[3].EmcEmrsEmr2                        = 0x80200000;
-+SDRAM[3].EmcEmrsEmr3                        = 0x80300000;
-+SDRAM[3].EmcEmrsDdr2DllEnable               = 0x00000000;
-+SDRAM[3].EmcEmrsDdr2OcdCalib                = 0x00000000;
-+SDRAM[3].EmcEmrs                            = 0x80100002;
-+SDRAM[3].EmcMrw1                            = 0x00000000;
-+SDRAM[3].EmcMrw2                            = 0x00000000;
-+SDRAM[3].EmcMrw3                            = 0x00000000;
-+SDRAM[3].EmcMrwResetCommand                 = 0x00000000;
-+SDRAM[3].EmcMrwResetNInitWait               = 0x00000000;
-+SDRAM[3].EmcAdrCfg                          = 0x00000080;
-+SDRAM[3].McEmemCfg                          = 0x00000800;
-+SDRAM[3].EmcCfg2                            = 0x000c0099;
-+SDRAM[3].EmcCfgDigDll                       = 0x001d0084;
-+SDRAM[3].EmcCfgDigDllPeriod                 = 0x00008000;
-+SDRAM[3].EmcCfg                             = 0x23c00000;
-+SDRAM[3].EmcDbg                             = 0x01000400;
-+SDRAM[3].WarmBootWait                       = 0x00000002;
-+SDRAM[3].EmcCttTermCtrl                     = 0x00000802;
-+SDRAM[3].EmcOdtWrite                        = 0x00000000;
-+SDRAM[3].EmcOdtRead                         = 0x00000000;
-+SDRAM[3].EmcZcalWaitCnt                     = 0x00000040;
-+SDRAM[3].EmcZcalMrwCmd                      = 0x80000000;
-+SDRAM[3].EmcDdr2Wait                        = 0x00000000;
-+SDRAM[3].PmcDdrPwr                          = 0x00000003;
-+SDRAM[3].EmcClockSource                     = 0x00000000;
-+SDRAM[3].EmcClockUsePllMUD                  = 0x00000000;
-+SDRAM[3].EmcPinExtraWait                    = 0x00000000;
-+SDRAM[3].EmcTimingControlWait               = 0x00000000;
-+SDRAM[3].EmcWext                            = 0x00000000;
-+SDRAM[3].EmcCtt                             = 0x00000000;
-+SDRAM[3].EmcCttDuration                     = 0x00000000;
-+SDRAM[3].EmcPreRefreshReqCnt                = 0x000002fc;
-+SDRAM[3].EmcTxsrDll                         = 0x00000200;
-+SDRAM[3].EmcCfgRsv                          = 0xff00ff89;
-+SDRAM[3].EmcMrwExtra                        = 0x00000000;
-+SDRAM[3].EmcWarmBootMrw1                    = 0x00000000;
-+SDRAM[3].EmcWarmBootMrw2                    = 0x00000000;
-+SDRAM[3].EmcWarmBootMrw3                    = 0x00000000;
-+SDRAM[3].EmcWarmBootMrwExtra                = 0x00000000;
-+SDRAM[3].EmcWarmBootExtraModeRegWriteEnable = 0x00000000;
-+SDRAM[3].EmcExtraModeRegWriteEnable         = 0x00000000;
-+SDRAM[3].EmcMrsWaitCnt                      = 0x0158000c;
-+SDRAM[3].EmcCmdQ                            = 0x10004408;
-+SDRAM[3].EmcMc2EmcQ                         = 0x06000404;
-+SDRAM[3].EmcDynSelfRefControl               = 0x800018c8;
-+SDRAM[3].AhbArbitrationXbarCtrlMemInitDone  = 0x00000001;
-+SDRAM[3].EmcDevSelect                       = 0x00000002;
-+SDRAM[3].EmcSelDpdCtrl                      = 0x0004032c;
-+SDRAM[3].EmcDllXformDqs0                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs1                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs2                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs3                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs4                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs5                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs6                    = 0x00038000;
-+SDRAM[3].EmcDllXformDqs7                    = 0x00038000;
-+SDRAM[3].EmcDllXformQUse0                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse1                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse2                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse3                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse4                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse5                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse6                   = 0x00000000;
-+SDRAM[3].EmcDllXformQUse7                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs0                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs1                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs2                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs3                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs4                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs5                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs6                   = 0x00000000;
-+SDRAM[3].EmcDliTrimTxDqs7                   = 0x00000000;
-+SDRAM[3].EmcDllXformDq0                     = 0x00030000;
-+SDRAM[3].EmcDllXformDq1                     = 0x00030000;
-+SDRAM[3].EmcDllXformDq2                     = 0x00030000;
-+SDRAM[3].EmcDllXformDq3                     = 0x00030000;
-+SDRAM[3].EmcZcalInterval                    = 0x00020000;
-+SDRAM[3].EmcZcalInitDev0                    = 0x80000011;
-+SDRAM[3].EmcZcalInitDev1                    = 0x00000000;
-+SDRAM[3].EmcZcalInitWait                    = 0x00000002;
-+SDRAM[3].EmcZcalColdBootEnable              = 0x00000001;
-+SDRAM[3].EmcZcalWarmBootEnable              = 0x00000001;
-+SDRAM[3].EmcMrwLpddr2ZcalWarmBoot           = 0x000a00ab;
-+SDRAM[3].EmcZqCalDdr3WarmBoot               = 0x00000011;
-+SDRAM[3].EmcZcalWarmBootWait                = 0x00000001;
-+SDRAM[3].EmcMrsWarmBootEnable               = 0x00000001;
-+SDRAM[3].EmcMrsExtra                        = 0x80000521;
-+SDRAM[3].EmcWarmBootMrs                     = 0x80100002;
-+SDRAM[3].EmcWarmBootEmrs                    = 0x80000521;
-+SDRAM[3].EmcWarmBootEmr2                    = 0x80200000;
-+SDRAM[3].EmcWarmBootEmr3                    = 0x80300000;
-+SDRAM[3].EmcWarmBootMrsExtra                = 0x80100002;
-+SDRAM[3].EmcClkenOverride                   = 0x00000000;
-+SDRAM[3].EmcExtraRefreshNum                 = 0x00000002;
-+SDRAM[3].EmcClkenOverrideAllWarmBoot        = 0x00000000;
-+SDRAM[3].McClkenOverrideAllWarmBoot         = 0x00000000;
-+SDRAM[3].EmcCfgDigDllPeriodWarmBoot         = 0x00000003;
-+SDRAM[3].PmcVddpSel                         = 0x00000002;
-+SDRAM[3].PmcDdrCfg                          = 0x00000002;
-+SDRAM[3].PmcIoDpdReq                        = 0x80800000;
-+SDRAM[3].PmcENoVttGen                       = 0x00000000;
-+SDRAM[3].PmcNoIoPower                       = 0x00000000;
-+SDRAM[3].EmcXm2CmdPadCtrl                   = 0x000002a0;
-+SDRAM[3].EmcXm2CmdPadCtrl2                  = 0x770c0000;
-+SDRAM[3].EmcXm2DqsPadCtrl                   = 0x770c1414;
-+SDRAM[3].EmcXm2DqsPadCtrl2                  = 0x0800013d;
-+SDRAM[3].EmcXm2DqsPadCtrl3                  = 0x08000021;
-+SDRAM[3].EmcXm2DqPadCtrl                    = 0x770c2990;
-+SDRAM[3].EmcXm2DqPadCtrl2                   = 0x00000000;
-+SDRAM[3].EmcXm2ClkPadCtrl                   = 0x77fff884;
-+SDRAM[3].EmcXm2CompPadCtrl                  = 0x01f1f508;
-+SDRAM[3].EmcXm2VttGenPadCtrl                = 0x05057404;
-+SDRAM[3].EmcXm2VttGenPadCtrl2               = 0x54000007;
-+SDRAM[3].EmcXm2QUsePadCtrl                  = 0x080001e8;
-+SDRAM[3].McEmemAdrCfg                       = 0x00000000;
-+SDRAM[3].McEmemAdrCfgDev0                   = 0x00090303;
-+SDRAM[3].McEmemAdrCfgDev1                   = 0x00090303;
-+SDRAM[3].McEmemArbCfg                       = 0x00000006;
-+SDRAM[3].McEmemArbOutstandingReq            = 0x80000048;
-+SDRAM[3].McEmemArbTimingRcd                 = 0x00000001;
-+SDRAM[3].McEmemArbTimingRp                  = 0x00000002;
-+SDRAM[3].McEmemArbTimingRc                  = 0x00000009;
-+SDRAM[3].McEmemArbTimingRas                 = 0x00000005;
-+SDRAM[3].McEmemArbTimingFaw                 = 0x00000005;
-+SDRAM[3].McEmemArbTimingRrd                 = 0x00000001;
-+SDRAM[3].McEmemArbTimingRap2Pre             = 0x00000002;
-+SDRAM[3].McEmemArbTimingWap2Pre             = 0x00000008;
-+SDRAM[3].McEmemArbTimingR2R                 = 0x00000002;
-+SDRAM[3].McEmemArbTimingW2W                 = 0x00000002;
-+SDRAM[3].McEmemArbTimingR2W                 = 0x00000003;
-+SDRAM[3].McEmemArbTimingW2R                 = 0x00000006;
-+SDRAM[3].McEmemArbDaTurns                   = 0x06030202;
-+SDRAM[3].McEmemArbDaCovers                  = 0x000d0709;
-+SDRAM[3].McEmemArbMisc0                     = 0x7086120a;
-+SDRAM[3].McEmemArbMisc1                     = 0x78000000;
-+SDRAM[3].McEmemArbRing1Throttle             = 0x001f0000;
-+SDRAM[3].McEmemArbOverride                  = 0x00000080;
-+SDRAM[3].McEmemArbRsv                       = 0xff00ff00;
-+SDRAM[3].McClkenOverride                    = 0x00000000;
++struct tegra_i2c_hw_feature {
++	bool has_continue_xfer_support;
++	bool has_per_pkt_xfer_complete_irq;
++	bool has_single_clk_source;
++	int clk_divisor_hs_mode;
++	int clk_divisor_std_fast_mode;
++};
++
++/**
++ * struct tegra_i2c_dev	- per device i2c context
++ * @dev: device reference for power management
++ * @hw: Tegra i2c hw feature.
++ * @adapter: core i2c layer adapter information
++ * @div_clk: clock reference for div clock of i2c controller.
++ * @fast_clk: clock reference for fast clock of i2c controller.
++ * @base: ioremapped registers cookie
++ * @is_dvc: identifies the DVC i2c controller, has a different register layout
++ * @msg_err: error code for completed message
++ * @msg_buf: pointer to current message data
++ * @msg_buf_remaining: size of unsent data in the message buffer
++ * @msg_read: identifies read transfers
++ * @bus_clk_rate: current i2c bus clock rate
++ */
++struct tegra_i2c_dev {
++	struct device_d *dev;
++	const struct tegra_i2c_hw_feature *hw;
++	struct i2c_adapter adapter;
++	struct clk *div_clk;
++	struct clk *fast_clk;
++	struct reset_control *rst;
++	void __iomem *base;
++	int is_dvc;
++	int msg_err;
++	u8 *msg_buf;
++	size_t msg_buf_remaining;
++	int msg_read;
++	u32 bus_clk_rate;
++};
++#define to_tegra_i2c_dev(a)	container_of(a, struct tegra_i2c_dev, adapter)
++
++static void dvc_writel(struct tegra_i2c_dev *i2c_dev, u32 val, unsigned long reg)
++{
++	writel(val, i2c_dev->base + reg);
++}
++
++static u32 dvc_readl(struct tegra_i2c_dev *i2c_dev, unsigned long reg)
++{
++	return readl(i2c_dev->base + reg);
++}
++
++/*
++ * i2c_writel and i2c_readl will offset the register if necessary to talk
++ * to the I2C block inside the DVC block
++ */
++static unsigned long tegra_i2c_reg_addr(struct tegra_i2c_dev *i2c_dev,
++	unsigned long reg)
++{
++	if (i2c_dev->is_dvc)
++		reg += (reg >= I2C_TX_FIFO) ? 0x10 : 0x40;
++	return reg;
++}
++
++static void i2c_writel(struct tegra_i2c_dev *i2c_dev, u32 val,
++	unsigned long reg)
++{
++	writel(val, i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg));
++
++	/* Read back register to make sure that register writes completed */
++	if (reg != I2C_TX_FIFO)
++		readl(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg));
++}
++
++static u32 i2c_readl(struct tegra_i2c_dev *i2c_dev, unsigned long reg)
++{
++	return readl(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg));
++}
++
++static void i2c_writesl(struct tegra_i2c_dev *i2c_dev, void *data,
++	unsigned long reg, int len)
++{
++	writesl(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg), data, len);
++}
++
++static void i2c_readsl(struct tegra_i2c_dev *i2c_dev, void *data,
++	unsigned long reg, int len)
++{
++	readsl(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg), data, len);
++}
++
++static int tegra_i2c_flush_fifos(struct tegra_i2c_dev *i2c_dev)
++{
++	uint64_t start = get_time_ns();
++	u32 val = i2c_readl(i2c_dev, I2C_FIFO_CONTROL);
++	val |= I2C_FIFO_CONTROL_TX_FLUSH | I2C_FIFO_CONTROL_RX_FLUSH;
++	i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);
++
++	while (i2c_readl(i2c_dev, I2C_FIFO_CONTROL) &
++		(I2C_FIFO_CONTROL_TX_FLUSH | I2C_FIFO_CONTROL_RX_FLUSH)) {
++		if (is_timeout(start, SECOND)) {
++			dev_warn(i2c_dev->dev, "timeout waiting for fifo flush\n");
++			return -ETIMEDOUT;
++		}
++		mdelay(1);
++	}
++	return 0;
++}
++
++static int tegra_i2c_empty_rx_fifo(struct tegra_i2c_dev *i2c_dev)
++{
++	u32 val;
++	int rx_fifo_avail;
++	u8 *buf = i2c_dev->msg_buf;
++	size_t buf_remaining = i2c_dev->msg_buf_remaining;
++	int words_to_transfer;
++
++	val = i2c_readl(i2c_dev, I2C_FIFO_STATUS);
++	rx_fifo_avail = (val & I2C_FIFO_STATUS_RX_MASK) >>
++		I2C_FIFO_STATUS_RX_SHIFT;
++
++	/* Rounds down to not include partial word at the end of buf */
++	words_to_transfer = buf_remaining / BYTES_PER_FIFO_WORD;
++	if (words_to_transfer > rx_fifo_avail)
++		words_to_transfer = rx_fifo_avail;
++
++	i2c_readsl(i2c_dev, buf, I2C_RX_FIFO, words_to_transfer);
++
++	buf += words_to_transfer * BYTES_PER_FIFO_WORD;
++	buf_remaining -= words_to_transfer * BYTES_PER_FIFO_WORD;
++	rx_fifo_avail -= words_to_transfer;
++
++	/*
++	 * If there is a partial word at the end of buf, handle it manually to
++	 * prevent overwriting past the end of buf
++	 */
++	if (rx_fifo_avail > 0 && buf_remaining > 0) {
++		BUG_ON(buf_remaining > 3);
++		val = i2c_readl(i2c_dev, I2C_RX_FIFO);
++		memcpy(buf, &val, buf_remaining);
++		buf_remaining = 0;
++		rx_fifo_avail--;
++	}
++
++	BUG_ON(rx_fifo_avail > 0 && buf_remaining > 0);
++	i2c_dev->msg_buf_remaining = buf_remaining;
++	i2c_dev->msg_buf = buf;
++	return 0;
++}
++
++static int tegra_i2c_fill_tx_fifo(struct tegra_i2c_dev *i2c_dev)
++{
++	u32 val;
++	int tx_fifo_avail;
++	u8 *buf = i2c_dev->msg_buf;
++	size_t buf_remaining = i2c_dev->msg_buf_remaining;
++	int words_to_transfer;
++
++	val = i2c_readl(i2c_dev, I2C_FIFO_STATUS);
++	tx_fifo_avail = (val & I2C_FIFO_STATUS_TX_MASK) >>
++		I2C_FIFO_STATUS_TX_SHIFT;
++
++	/* Rounds down to not include partial word at the end of buf */
++	words_to_transfer = buf_remaining / BYTES_PER_FIFO_WORD;
++
++	/* It's very common to have < 4 bytes, so optimize that case. */
++	if (words_to_transfer) {
++		if (words_to_transfer > tx_fifo_avail)
++			words_to_transfer = tx_fifo_avail;
++
++		/*
++		 * Update state before writing to FIFO.  If this casues us
++		 * to finish writing all bytes (AKA buf_remaining goes to 0) we
++		 * have a potential for an interrupt (PACKET_XFER_COMPLETE is
++		 * not maskable).  We need to make sure that the isr sees
++		 * buf_remaining as 0 and doesn't call us back re-entrantly.
++		 */
++		buf_remaining -= words_to_transfer * BYTES_PER_FIFO_WORD;
++		tx_fifo_avail -= words_to_transfer;
++		i2c_dev->msg_buf_remaining = buf_remaining;
++		i2c_dev->msg_buf = buf +
++			words_to_transfer * BYTES_PER_FIFO_WORD;
++		barrier();
++
++		i2c_writesl(i2c_dev, buf, I2C_TX_FIFO, words_to_transfer);
++
++		buf += words_to_transfer * BYTES_PER_FIFO_WORD;
++	}
++
++	/*
++	 * If there is a partial word at the end of buf, handle it manually to
++	 * prevent reading past the end of buf, which could cross a page
++	 * boundary and fault.
++	 */
++	if (tx_fifo_avail > 0 && buf_remaining > 0) {
++		BUG_ON(buf_remaining > 3);
++		memcpy(&val, buf, buf_remaining);
++
++		/* Again update before writing to FIFO to make sure isr sees. */
++		i2c_dev->msg_buf_remaining = 0;
++		i2c_dev->msg_buf = NULL;
++		barrier();
++
++		i2c_writel(i2c_dev, val, I2C_TX_FIFO);
++	}
++
++	return 0;
++}
++
++/*
++ * One of the Tegra I2C blocks is inside the DVC (Digital Voltage Controller)
++ * block.  This block is identical to the rest of the I2C blocks, except that
++ * it only supports master mode, it has registers moved around, and it needs
++ * some extra init to get it into I2C mode.  The register moves are handled
++ * by i2c_readl and i2c_writel
++ */
++static void tegra_dvc_init(struct tegra_i2c_dev *i2c_dev)
++{
++	u32 val = 0;
++	val = dvc_readl(i2c_dev, DVC_CTRL_REG3);
++	val |= DVC_CTRL_REG3_SW_PROG;
++	val |= DVC_CTRL_REG3_I2C_DONE_INTR_EN;
++	dvc_writel(i2c_dev, val, DVC_CTRL_REG3);
++
++	val = dvc_readl(i2c_dev, DVC_CTRL_REG1);
++	val |= DVC_CTRL_REG1_INTR_EN;
++	dvc_writel(i2c_dev, val, DVC_CTRL_REG1);
++}
++
++static inline int tegra_i2c_clock_enable(struct tegra_i2c_dev *i2c_dev)
++{
++	int ret;
++	if (!i2c_dev->hw->has_single_clk_source) {
++		ret = clk_enable(i2c_dev->fast_clk);
++		if (ret < 0) {
++			dev_err(i2c_dev->dev,
++				"Enabling fast clk failed, err %d\n", ret);
++			return ret;
++		}
++	}
++	ret = clk_enable(i2c_dev->div_clk);
++	if (ret < 0) {
++		dev_err(i2c_dev->dev,
++			"Enabling div clk failed, err %d\n", ret);
++		clk_disable(i2c_dev->fast_clk);
++	}
++	return ret;
++}
++
++static inline void tegra_i2c_clock_disable(struct tegra_i2c_dev *i2c_dev)
++{
++	clk_disable(i2c_dev->div_clk);
++	if (!i2c_dev->hw->has_single_clk_source)
++		clk_disable(i2c_dev->fast_clk);
++}
++
++static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
++{
++	u32 val;
++	int err = 0;
++	int clk_multiplier = I2C_CLK_MULTIPLIER_STD_FAST_MODE;
++	u32 clk_divisor;
++
++	err = tegra_i2c_clock_enable(i2c_dev);
++	if (err < 0) {
++		dev_err(i2c_dev->dev, "Clock enable failed %d\n", err);
++		return err;
++	}
++
++	reset_control_assert(i2c_dev->rst);
++	udelay(2);
++	reset_control_deassert(i2c_dev->rst);
++
++	if (i2c_dev->is_dvc)
++		tegra_dvc_init(i2c_dev);
++
++	val = I2C_CNFG_NEW_MASTER_FSM | I2C_CNFG_PACKET_MODE_EN |
++		(0x2 << I2C_CNFG_DEBOUNCE_CNT_SHIFT);
++	i2c_writel(i2c_dev, val, I2C_CNFG);
++	i2c_writel(i2c_dev, 0, I2C_INT_MASK);
++
++	clk_multiplier *= (i2c_dev->hw->clk_divisor_std_fast_mode + 1);
++	clk_set_rate(i2c_dev->div_clk, i2c_dev->bus_clk_rate * clk_multiplier);
++
++	/* Make sure clock divisor programmed correctly */
++	clk_divisor = i2c_dev->hw->clk_divisor_hs_mode;
++	clk_divisor |= i2c_dev->hw->clk_divisor_std_fast_mode <<
++					I2C_CLK_DIVISOR_STD_FAST_MODE_SHIFT;
++	i2c_writel(i2c_dev, clk_divisor, I2C_CLK_DIVISOR);
++
++	if (!i2c_dev->is_dvc) {
++		u32 sl_cfg = i2c_readl(i2c_dev, I2C_SL_CNFG);
++		sl_cfg |= I2C_SL_CNFG_NACK | I2C_SL_CNFG_NEWSL;
++		i2c_writel(i2c_dev, sl_cfg, I2C_SL_CNFG);
++		i2c_writel(i2c_dev, 0xfc, I2C_SL_ADDR1);
++		i2c_writel(i2c_dev, 0x00, I2C_SL_ADDR2);
++	}
++
++	val = 7 << I2C_FIFO_CONTROL_TX_TRIG_SHIFT |
++		0 << I2C_FIFO_CONTROL_RX_TRIG_SHIFT;
++	i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);
++
++	if (tegra_i2c_flush_fifos(i2c_dev))
++		err = -ETIMEDOUT;
++
++	tegra_i2c_clock_disable(i2c_dev);
++
++	return err;
++}
++
++static int tegra_i2c_wait_completion(struct tegra_i2c_dev *i2c_dev)
++{
++	u32 status;
++	const u32 status_err = I2C_INT_NO_ACK | I2C_INT_ARBITRATION_LOST;
++	uint64_t start = get_time_ns();
++
++	while (!is_timeout(start, SECOND)) {
++
++		status = i2c_readl(i2c_dev, I2C_INT_STATUS);
++
++		if (unlikely(status & status_err)) {
++			if (status & I2C_INT_NO_ACK)
++				i2c_dev->msg_err |= I2C_ERR_NO_ACK;
++			if (status & I2C_INT_ARBITRATION_LOST)
++				i2c_dev->msg_err |= I2C_ERR_ARBITRATION_LOST;
++			goto err;
++		}
++
++		if (i2c_dev->msg_read && (status & I2C_INT_RX_FIFO_DATA_REQ)) {
++			if (i2c_dev->msg_buf_remaining)
++				tegra_i2c_empty_rx_fifo(i2c_dev);
++			else
++				BUG();
++		}
++
++		if (!i2c_dev->msg_read && (status & I2C_INT_TX_FIFO_DATA_REQ)) {
++			if (i2c_dev->msg_buf_remaining)
++				tegra_i2c_fill_tx_fifo(i2c_dev);
++		}
++
++		i2c_writel(i2c_dev, status, I2C_INT_STATUS);
++		if (i2c_dev->is_dvc)
++			dvc_writel(i2c_dev, DVC_STATUS_I2C_DONE_INTR,
++			           DVC_STATUS);
++
++		if (status & I2C_INT_PACKET_XFER_COMPLETE) {
++			BUG_ON(i2c_dev->msg_buf_remaining);
++			return 0;
++		}
++	}
++	return -ETIMEDOUT;
++
++err:
++	i2c_writel(i2c_dev, status, I2C_INT_STATUS);
++	if (i2c_dev->is_dvc)
++		dvc_writel(i2c_dev, DVC_STATUS_I2C_DONE_INTR, DVC_STATUS);
++
++	return 0;
++}
++
++static int tegra_i2c_xfer_msg(struct tegra_i2c_dev *i2c_dev,
++	struct i2c_msg *msg, enum msg_end_type end_state)
++{
++	u32 packet_header;
++	int ret;
++
++	tegra_i2c_flush_fifos(i2c_dev);
++
++	if (msg->len == 0)
++		return -EINVAL;
++
++	i2c_dev->msg_buf = msg->buf;
++	i2c_dev->msg_buf_remaining = msg->len;
++	i2c_dev->msg_err = I2C_ERR_NONE;
++	i2c_dev->msg_read = (msg->flags & I2C_M_RD);
++
++	packet_header = (0 << PACKET_HEADER0_HEADER_SIZE_SHIFT) |
++			PACKET_HEADER0_PROTOCOL_I2C |
++			(i2c_dev->adapter.nr << PACKET_HEADER0_CONT_ID_SHIFT) |
++			(1 << PACKET_HEADER0_PACKET_ID_SHIFT);
++	i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
++
++	packet_header = msg->len - 1;
++	i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
++
++	packet_header = I2C_HEADER_IE_ENABLE;
++	if (end_state == MSG_END_CONTINUE)
++		packet_header |= I2C_HEADER_CONTINUE_XFER;
++	else if (end_state == MSG_END_REPEAT_START)
++		packet_header |= I2C_HEADER_REPEAT_START;
++	if (msg->flags & I2C_M_TEN) {
++		packet_header |= msg->addr;
++		packet_header |= I2C_HEADER_10BIT_ADDR;
++	} else {
++		packet_header |= msg->addr << I2C_HEADER_SLAVE_ADDR_SHIFT;
++	}
++	if (msg->flags & I2C_M_IGNORE_NAK)
++		packet_header |= I2C_HEADER_CONT_ON_NAK;
++	if (msg->flags & I2C_M_RD)
++		packet_header |= I2C_HEADER_READ;
++	i2c_writel(i2c_dev, packet_header, I2C_TX_FIFO);
++
++	if (!(msg->flags & I2C_M_RD))
++		tegra_i2c_fill_tx_fifo(i2c_dev);
++
++	ret = tegra_i2c_wait_completion(i2c_dev);
++	if (ret) {
++		dev_err(i2c_dev->dev, "i2c transfer timed out\n");
++
++		tegra_i2c_init(i2c_dev);
++		return -ETIMEDOUT;
++	}
++
++	if (likely(i2c_dev->msg_err == I2C_ERR_NONE))
++		return 0;
++
++	/*
++	 * NACK interrupt is generated before the I2C controller generates the
++	 * STOP condition on the bus. So wait for 2 clock periods before resetting
++	 * the controller so that STOP condition has been delivered properly.
++	 */
++	if (i2c_dev->msg_err == I2C_ERR_NO_ACK)
++		udelay(DIV_ROUND_UP(2 * 1000000, i2c_dev->bus_clk_rate));
++
++	tegra_i2c_init(i2c_dev);
++	if (i2c_dev->msg_err == I2C_ERR_NO_ACK) {
++		if (msg->flags & I2C_M_IGNORE_NAK)
++			return 0;
++		return -EREMOTEIO;
++	}
++
++	return -EIO;
++}
++
++static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
++	int num)
++{
++	struct tegra_i2c_dev *i2c_dev = to_tegra_i2c_dev(adap);
++	int i;
++	int ret = 0;
++
++	ret = tegra_i2c_clock_enable(i2c_dev);
++	if (ret < 0) {
++		dev_err(i2c_dev->dev, "Clock enable failed %d\n", ret);
++		return ret;
++	}
++
++	for (i = 0; i < num; i++) {
++		enum msg_end_type end_type = MSG_END_STOP;
++		if (i < (num - 1))
++			end_type = MSG_END_REPEAT_START;
++		ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], end_type);
++		if (ret)
++			break;
++	}
++	tegra_i2c_clock_disable(i2c_dev);
++	return ret ? ret : i;
++}
++
++static const struct tegra_i2c_hw_feature tegra20_i2c_hw = {
++	.has_continue_xfer_support = false,
++	.has_per_pkt_xfer_complete_irq = false,
++	.has_single_clk_source = false,
++	.clk_divisor_hs_mode = 3,
++	.clk_divisor_std_fast_mode = 0,
++};
++
++static const struct tegra_i2c_hw_feature tegra30_i2c_hw = {
++	.has_continue_xfer_support = true,
++	.has_per_pkt_xfer_complete_irq = false,
++	.has_single_clk_source = false,
++	.clk_divisor_hs_mode = 3,
++	.clk_divisor_std_fast_mode = 0,
++};
++
++static const struct tegra_i2c_hw_feature tegra114_i2c_hw = {
++	.has_continue_xfer_support = true,
++	.has_per_pkt_xfer_complete_irq = true,
++	.has_single_clk_source = true,
++	.clk_divisor_hs_mode = 1,
++	.clk_divisor_std_fast_mode = 0x19,
++};
++
++static int tegra_i2c_probe(struct device_d *dev)
++{
++	struct tegra_i2c_dev *i2c_dev;
++	struct clk *div_clk, *fast_clk;
++	void __iomem *base;
++	int ret = 0;
++
++	base = dev_request_mem_region(dev, 0);
++	if (!base) {
++		dev_err(dev, "could not get iomem region\n");
++		return -ENODEV;
++	}
++
++	div_clk = clk_get(dev, "div-clk");
++	if (IS_ERR(div_clk)) {
++		dev_err(dev, "missing controller clock");
++		return PTR_ERR(div_clk);
++	}
++
++	i2c_dev = xzalloc(sizeof(*i2c_dev));
++
++	i2c_dev->base = base;
++	i2c_dev->div_clk = div_clk;
++	i2c_dev->dev = dev;
++
++	i2c_dev->rst = reset_control_get(dev, "i2c");
++	if (IS_ERR(i2c_dev->rst)) {
++		dev_err(dev, "missing controller reset");
++		return PTR_ERR(i2c_dev->rst);
++	}
++
++	ret = of_property_read_u32(dev->device_node, "clock-frequency",
++	                           &i2c_dev->bus_clk_rate);
++	if (ret)
++		i2c_dev->bus_clk_rate = 100000; /* default clock rate */
++
++	i2c_dev->hw = &tegra20_i2c_hw;
++	dev_get_drvdata(dev, (unsigned long *)&i2c_dev->hw);
++	i2c_dev->is_dvc = of_device_is_compatible(dev->device_node,
++	                                          "nvidia,tegra20-i2c-dvc");
++
++	if (!i2c_dev->hw->has_single_clk_source) {
++		fast_clk = clk_get(dev, "fast-clk");
++		if (IS_ERR(fast_clk)) {
++			dev_err(dev, "missing fast clock");
++			return PTR_ERR(fast_clk);
++		}
++		i2c_dev->fast_clk = fast_clk;
++	}
++
++	ret = tegra_i2c_init(i2c_dev);
++	if (ret) {
++		dev_err(dev, "Failed to initialize i2c controller");
++		return ret;
++	}
++
++	i2c_dev->adapter.master_xfer = tegra_i2c_xfer;
++	i2c_dev->adapter.dev.parent = dev;
++	i2c_dev->adapter.nr = dev->id;
++	i2c_dev->adapter.dev.device_node = dev->device_node;
++
++	ret = i2c_add_numbered_adapter(&i2c_dev->adapter);
++	if (ret) {
++		dev_err(dev, "Failed to add I2C adapter\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static __maybe_unused struct of_device_id tegra_i2c_compatible[] = {
++	{
++		.compatible = "nvidia,tegra114-i2c",
++		.data = (unsigned long)&tegra114_i2c_hw,
++	}, {
++		.compatible = "nvidia,tegra30-i2c",
++		.data = (unsigned long)&tegra30_i2c_hw,
++	}, {
++		.compatible = "nvidia,tegra20-i2c",
++		.data = (unsigned long)&tegra20_i2c_hw,
++	}, {
++		.compatible = "nvidia,tegra20-i2c-dvc",
++		.data = (unsigned long)&tegra20_i2c_hw,
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver_d tegra_i2c_driver = {
++	.name  = "tegra-i2c",
++	.probe   = tegra_i2c_probe,
++	.of_compatible = DRV_OF_COMPAT(tegra_i2c_compatible),
++};
++device_platform_driver(tegra_i2c_driver);
 -- 
 1.9.0
 
