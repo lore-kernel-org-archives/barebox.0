@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
  by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1Wkg4o-0000Ev-Oj
+ id 1Wkg4o-0000Et-PN
  for barebox@lists.infradead.org; Wed, 14 May 2014 20:46:59 +0000
 Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
  (p548307D2.dip0.t-ipconnect.de [84.131.7.210])
- by lynxeye.de (Postfix) with ESMTPA id A6A5218B425F
+ by lynxeye.de (Postfix) with ESMTPA id 2C93C18B425D
  for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:00 +0200 (CEST)
 From: Lucas Stach <dev@lynxeye.de>
-Date: Wed, 14 May 2014 22:45:33 +0200
-Message-Id: <1400100352-13002-6-git-send-email-dev@lynxeye.de>
+Date: Wed, 14 May 2014 22:45:32 +0200
+Message-Id: <1400100352-13002-5-git-send-email-dev@lynxeye.de>
 In-Reply-To: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 References: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
@@ -25,56 +25,57 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 06/25] clk: tegra: remove device reset hack
+Subject: [PATCH v2 05/25] mci: tegra: add reset control
 To: barebox@lists.infradead.org
 
-Now that we have a proper reset controller, it
-isn't necessary anymore to keep the device reset
-hack coupled to the clock.
+Enable the driver to reset the device itself.
 
 Signed-off-by: Lucas Stach <dev@lynxeye.de>
 ---
- drivers/clk/tegra/clk-periph.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/mci/tegra-sdmmc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
-index be83955db1a5..c05e563aae55 100644
---- a/drivers/clk/tegra/clk-periph.c
-+++ b/drivers/clk/tegra/clk-periph.c
-@@ -74,33 +74,15 @@ static int clk_periph_is_enabled(struct clk *hw)
- static int clk_periph_enable(struct clk *hw)
- {
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
--	u32 reg;
--
--	reg = readl(periph->rst_reg);
--	reg |= (1 << periph->rst_shift);
--	writel(reg, periph->rst_reg);
+diff --git a/drivers/mci/tegra-sdmmc.c b/drivers/mci/tegra-sdmmc.c
+index e4d82197bde7..0ea0b5ca4a92 100644
+--- a/drivers/mci/tegra-sdmmc.c
++++ b/drivers/mci/tegra-sdmmc.c
+@@ -28,6 +28,7 @@
+ #include <mci.h>
+ #include <of_gpio.h>
+ #include <linux/clk.h>
++#include <linux/reset.h>
  
- 	periph->gate->ops->enable(periph->gate);
+ #include "sdhci.h"
  
--	udelay(2);
--
--	reg = readl(periph->rst_reg);
--	reg &= ~(1 << periph->rst_shift);
--	writel(reg, periph->rst_reg);
--
- 	return 0;
- }
+@@ -62,6 +63,7 @@ struct tegra_sdmmc_host {
+ 	struct mci_host		mci;
+ 	void __iomem		*regs;
+ 	struct clk		*clk;
++	struct reset_control	*reset;
+ 	int			gpio_cd, gpio_pwr;
+ };
+ #define to_tegra_sdmmc_host(mci) container_of(mci, struct tegra_sdmmc_host, mci)
+@@ -400,6 +402,10 @@ static int tegra_sdmmc_probe(struct device_d *dev)
+ 	if (IS_ERR(host->clk))
+ 		return PTR_ERR(host->clk);
  
- static void clk_periph_disable(struct clk *hw)
- {
- 	struct tegra_clk_periph *periph = to_clk_periph(hw);
--	u32 reg;
--
--	reg = readl(periph->rst_reg);
--	reg |= (1 << periph->rst_shift);
--	writel(reg, periph->rst_reg);
--
--	udelay(2);
++	host->reset = reset_control_get(dev, NULL);
++	if (IS_ERR(host->reset))
++		return PTR_ERR(host->reset);
++
+ 	host->regs = dev_request_mem_region(dev, 0);
+ 	if (!host->regs) {
+ 		dev_err(dev, "could not get iomem region\n");
+@@ -430,6 +436,9 @@ static int tegra_sdmmc_probe(struct device_d *dev)
+ 	}
  
- 	periph->gate->ops->disable(periph->gate);
- }
+ 	clk_enable(host->clk);
++	reset_control_assert(host->reset);
++	udelay(2);
++	reset_control_deassert(host->reset);
+ 
+ 	mci->init = tegra_sdmmc_init;
+ 	mci->card_present = tegra_sdmmc_card_present;
 -- 
 1.9.0
 
