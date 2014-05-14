@@ -1,14 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-vc0-x234.google.com ([2607:f8b0:400c:c03::234])
+Received: from mail-pb0-x229.google.com ([2607:f8b0:400e:c01::229])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkPy3-0006kb-Um
- for barebox@lists.infradead.org; Wed, 14 May 2014 03:34:56 +0000
-Received: by mail-vc0-f180.google.com with SMTP id hy4so1649352vcb.25
- for <barebox@lists.infradead.org>; Tue, 13 May 2014 20:34:33 -0700 (PDT)
-MIME-Version: 1.0
-Date: Wed, 14 May 2014 00:34:33 -0300
-Message-ID: <CAOMZO5CMuVwZGB4DoZchuE7DCJU4=fMHZQugBzm3mPsQsqEamw@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
+ id 1WkRIw-0006vM-As
+ for barebox@lists.infradead.org; Wed, 14 May 2014 05:00:34 +0000
+Received: by mail-pb0-f41.google.com with SMTP id uo5so819495pbc.28
+ for <barebox@lists.infradead.org>; Tue, 13 May 2014 22:00:09 -0700 (PDT)
+References: <CAOMZO5CMuVwZGB4DoZchuE7DCJU4=fMHZQugBzm3mPsQsqEamw@mail.gmail.com>
+In-Reply-To: <CAOMZO5CMuVwZGB4DoZchuE7DCJU4=fMHZQugBzm3mPsQsqEamw@mail.gmail.com>
+Mime-Version: 1.0 (1.0)
+Message-Id: <56785357-39FF-4F83-B1B3-F20C1D921A25@gmail.com>
+From: Kevin Du Huanpeng <u74147@gmail.com>
+Date: Wed, 14 May 2014 12:59:53 +0800
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -17,25 +19,23 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Changing the baudrate via barebox prompt
-To: barebox@lists.infradead.org
+Subject: Re: Changing the baudrate via barebox prompt
+To: Fabio Estevam <festevam@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-Hi,
-
-I am running barebox on a mx6qsabresd board and would like to know if
-there is a way to change the serial baudrate via barebox prompt.
-
-Any suggestion?
-
-Thanks,
-
-Fabio Estevam
-
-_______________________________________________
-barebox mailing list
-barebox@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/barebox
+eWVzLHRyeQpjb25zb2xlLmJhdW5kcmF0ZT05NjAwCmJ1dCB5b3UgbWF5IGhhdmUgdG8gY2hlY2sg
+aWYgeW91ciBzZXJpYWwgZHJpdmVyIGhhcyBzdXBwb3J0IHRoaXMKCtTaIDIwMTQtNS0xNKOsyc/O
+5zExOjM0o6xGYWJpbyBFc3RldmFtIDxmZXN0ZXZhbUBnbWFpbC5jb20+INC0tcCjugoKPiBIaSwK
+PiAKPiBJIGFtIHJ1bm5pbmcgYmFyZWJveCBvbiBhIG14NnFzYWJyZXNkIGJvYXJkIGFuZCB3b3Vs
+ZCBsaWtlIHRvIGtub3cgaWYKPiB0aGVyZSBpcyBhIHdheSB0byBjaGFuZ2UgdGhlIHNlcmlhbCBi
+YXVkcmF0ZSB2aWEgYmFyZWJveCBwcm9tcHQuCj4gCj4gQW55IHN1Z2dlc3Rpb24/Cj4gCj4gVGhh
+bmtzLAo+IAo+IEZhYmlvIEVzdGV2YW0KPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwo+IGJhcmVib3ggbWFpbGluZyBsaXN0Cj4gYmFyZWJveEBsaXN0
+cy5pbmZyYWRlYWQub3JnCj4gaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9iYXJlYm94CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpiYXJlYm94IG1haWxpbmcgbGlzdApiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmcKaHR0
+cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9iYXJlYm94Cg==
