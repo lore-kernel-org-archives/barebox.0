@@ -1,16 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkTKd-0007Yl-69
- for barebox@lists.infradead.org; Wed, 14 May 2014 07:10:28 +0000
-Date: Wed, 14 May 2014 09:10:05 +0200
+ Linux)) id 1WkTLZ-00080u-Ab
+ for barebox@lists.infradead.org; Wed, 14 May 2014 07:11:25 +0000
+Date: Wed, 14 May 2014 09:11:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140514071005.GX5858@pengutronix.de>
-References: <1400006306-5540-1-git-send-email-franck.jullien@gmail.com>
- <1400006306-5540-3-git-send-email-franck.jullien@gmail.com>
+Message-ID: <20140514071103.GY5858@pengutronix.de>
+References: <1400016811-9725-1-git-send-email-b.galvani@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1400006306-5540-3-git-send-email-franck.jullien@gmail.com>
+In-Reply-To: <1400016811-9725-1-git-send-email-b.galvani@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,92 +22,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 3/3] drivers/net/ethoc: add mdio bus support
-To: Franck Jullien <franck.jullien@gmail.com>
+Subject: Re: [PATCH] ARM: radxa-rock: set hostname after devicetree
+ initialization
+To: Beniamino Galvani <b.galvani@gmail.com>
 Cc: barebox@lists.infradead.org
 
-On Tue, May 13, 2014 at 08:38:26PM +0200, Franck Jullien wrote:
-> Signed-off-by: Franck Jullien <franck.jullien@gmail.com>
-> ---
->  drivers/net/Kconfig |    1 +
->  drivers/net/ethoc.c |   57 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 58 insertions(+), 0 deletions(-)
+On Tue, May 13, 2014 at 11:33:31PM +0200, Beniamino Galvani wrote:
+> hostname_init() must be called after the devicetree root node has been
+> initialized, otherwise the check on board compatible always returns
+> false.
 > 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 057abd2..7a0d5e1 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -80,6 +80,7 @@ config DRIVER_NET_EP93XX
->  
->  config DRIVER_NET_ETHOC
->  	bool "OpenCores ethernet MAC driver"
-> +	select PHYLIB
->  	help
->  	  This option enables support for the OpenCores 10/100 Mbps
->  	  Ethernet MAC core.
-> diff --git a/drivers/net/ethoc.c b/drivers/net/ethoc.c
-> index b000875..42780be 100644
-> --- a/drivers/net/ethoc.c
-> +++ b/drivers/net/ethoc.c
-> @@ -178,6 +178,8 @@ struct ethoc {
->  
->  	u32 num_rx;
->  	u32 cur_rx;
-> +
-> +	struct mii_bus *miibus;
->  };
->  
->  /**
-> @@ -481,18 +483,71 @@ static int ethoc_send_packet(struct eth_device *edev, void *packet, int length)
->  	return 0;
->  }
->  
-> +static int ethoc_mdio_read(struct mii_bus *bus, int phy, int reg)
-> +{
-> +	struct ethoc *priv = bus->priv;
-> +	int i;
-> +
-> +	ethoc_write(priv, MIIADDRESS, MIIADDRESS_ADDR(phy, reg));
-> +	ethoc_write(priv, MIICOMMAND, MIICOMMAND_READ);
-> +
-> +	for (i = 0; i < 5; i++) {
-> +		u32 status = ethoc_read(priv, MIISTATUS);
-> +		if (!(status & MIISTATUS_BUSY)) {
-> +			u32 data = ethoc_read(priv, MIIRX_DATA);
-> +			/* reset MII command register */
-> +			ethoc_write(priv, MIICOMMAND, 0);
-> +			return data;
-> +		}
-> +		mdelay(1);
-> +	}
+> Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
 
-We are polling in barebox anyway. Doing it like above means you have a
-1ms window in which you do not return even if your hardware is ready.
-Please use a timeout loop:
-
-	uint64_t start = get_time_ns();
-
-	while (!is_timeout(start, 5 * MSECOND)) {
-		u32 status = ethoc_read(priv, MIISTATUS);
-		if (!(status & MIISTATUS_BUSY)) {
-			u32 data = ethoc_read(priv, MIIRX_DATA);
-			/* reset MII command register */
-			ethoc_write(priv, MIICOMMAND, 0);
-			return data;
-		}
-	}
-
-	return -EBUSY;
-
->  
->  	edev = xzalloc(sizeof(struct eth_device) +
->  		       sizeof(struct ethoc));
->  	edev->priv = (struct ethoc *)(edev + 1);
-> +	miibus = xzalloc(sizeof(struct mii_bus));
-
-No need for a separate allocation. Just embed this into struct ethoc.
+Applied, thanks
 
 Sascha
+
+> ---
+>  arch/arm/boards/radxa-rock/board.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/boards/radxa-rock/board.c b/arch/arm/boards/radxa-rock/board.c
+> index 691f243..3d9b5be 100644
+> --- a/arch/arm/boards/radxa-rock/board.c
+> +++ b/arch/arm/boards/radxa-rock/board.c
+> @@ -84,4 +84,4 @@ static int hostname_init(void)
+>  
+>  	return 0;
+>  }
+> -core_initcall(hostname_init);
+> +postcore_initcall(hostname_init);
+> -- 
+> 1.7.10.4
+> 
+> 
+> _______________________________________________
+> barebox mailing list
+> barebox@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/barebox
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
