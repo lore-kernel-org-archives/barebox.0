@@ -1,17 +1,17 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from f387.i.mail.ru ([185.5.136.58])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkdRf-0007BA-Ev
- for barebox@lists.infradead.org; Wed, 14 May 2014 17:58:24 +0000
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
-Mime-Version: 1.0
-Date: Wed, 14 May 2014 21:57:57 +0400
-Message-ID: <1400090277.899030332@f387.i.mail.ru>
-In-Reply-To: <20140512103850.GF5858@pengutronix.de>
-References: <1399534299-27051-1-git-send-email-s.hauer@pengutronix.de>
- <1399834166.925793804@f410.i.mail.ru>
- <20140512103850.GF5858@pengutronix.de>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work@mail.ru>
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wkg4o-0000Ev-Oj
+ for barebox@lists.infradead.org; Wed, 14 May 2014 20:46:59 +0000
+Received: from antimon.intern.lynxeye.de.intern.lynxeye.de
+ (p548307D2.dip0.t-ipconnect.de [84.131.7.210])
+ by lynxeye.de (Postfix) with ESMTPA id A6A5218B425F
+ for <barebox@lists.infradead.org>; Wed, 14 May 2014 22:46:00 +0200 (CEST)
+From: Lucas Stach <dev@lynxeye.de>
+Date: Wed, 14 May 2014 22:45:33 +0200
+Message-Id: <1400100352-13002-6-git-send-email-dev@lynxeye.de>
+In-Reply-To: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
+References: <1400100352-13002-1-git-send-email-dev@lynxeye.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,57 +20,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAyLzVdIHNwaTogaS5NWDogTW92ZSB0byBjb3JlZGV2aWNl?=
- =?UTF-8?B?X2luaXRjYWxs?=
-To: =?UTF-8?B?U2FzY2hhIEhhdWVy?= <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH v2 06/25] clk: tegra: remove device reset hack
+To: barebox@lists.infradead.org
 
-TW9uLCAxMiBNYXkgMjAxNCAxMjozODo1MCArMDIwMCDQvtGCIFNhc2NoYSBIYXVlciA8cy5oYXVl
-ckBwZW5ndXRyb25peC5kZT46Cj4gT24gU3VuLCBNYXkgMTEsIDIwMTQgYXQgMTA6NDk6MjZQTSAr
-MDQwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IFRodSwgIDggTWF5IDIwMTQgMDk6MzE6
-MzYgKzAyMDAg0L7RgiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ogo+ID4g
-PiBTUEkgaXMgb2Z0ZW4gdXNlZCBieSBvdGhlciBkZXZpY2VzLCBzbyBtYWtlIHN1cmUgaXQncyBp
-bml0aWFsaXplZAo+ID4gPiBlYXJseS4KPiA+ID4gCj4gPiA+IFNpZ25lZC1vZmYtYnk6IFNhc2No
-YSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4KPiA+ID4gLS0tCj4gPiA+ICBkcml2ZXJz
-L3NwaS9pbXhfc3BpLmMgfCAyICstCj4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24o
-KyksIDEgZGVsZXRpb24oLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9p
-bXhfc3BpLmMgYi9kcml2ZXJzL3NwaS9pbXhfc3BpLmMKPiA+ID4gaW5kZXggZTA3Y2YxYS4uMzE0
-NjMzOSAxMDA2NDQKPiA+ID4gLS0tIGEvZHJpdmVycy9zcGkvaW14X3NwaS5jCj4gPiA+ICsrKyBi
-L2RyaXZlcnMvc3BpL2lteF9zcGkuYwo+ID4gPiBAQCAtNTg2LDQgKzU4Niw0IEBAIHN0YXRpYyBz
-dHJ1Y3QgZHJpdmVyX2QgaW14X3NwaV9kcml2ZXIgPSB7Cj4gPiA+ICAJLm9mX2NvbXBhdGlibGUg
-PSBEUlZfT0ZfQ09NUEFUKGlteF9zcGlfZHRfaWRzKSwKPiA+ID4gIAkuaWRfdGFibGUgPSBpbXhf
-c3BpX2lkcywKPiA+ID4gIH07Cj4gPiA+IC1kZXZpY2VfcGxhdGZvcm1fZHJpdmVyKGlteF9zcGlf
-ZHJpdmVyKTsKPiA+ID4gK2NvcmVkZXZpY2VfcGxhdGZvcm1fZHJpdmVyKGlteF9zcGlfZHJpdmVy
-KTsKPiA+ID4gLS0gCj4gPiAKPiA+IE1heWJlIHdlIHNob3VsZCBwdXQgYWxsIGRyaXZlcnMgaW4g
-YSBzaW5nbGUgcnVubGV2ZWwgYW5kIGltcGxlbWVudAo+ID4gaGFuZGxlIG9mIEVQUk9CRV9ERUZF
-Uj8KPiAKPiBJIHRoaW5rIGFib3V0IEVQUk9CRV9ERUZFUiBmb3IgbG9uZ2VyIG5vdy4gV2hhdCBo
-YXMgaG9sZCBtZSBiYWNrIHdhcwo+IHRoYXQgd2Ugd291bGQgaGF2ZSB0byByZWxlYXNlIGFsbCBy
-ZXNvdXJjZXMgYmVmb3JlIHJldHVybmluZwo+IEVQUk9CRV9ERUZFUi4gTW9zdCBkcml2ZXJzIGRv
-bid0IGhhdmUgcHJvcGVyIGVycm9yIHBhdGhlcyBpbXBsZW1lbnRlZAo+IGFuZCBJIGRvbid0IHNl
-ZSBtdWNoIGdhaW4gaW4gZml4aW5nIHRoaXMuIEZvciBhIGJvb3Rsb2FkZXIgdGhlIGVycm9yCj4g
-cmVsZWFzZSBwYXRoZXMgYXJlIHVubmVjZXNzYXJ5IG92ZXJoZWFkLCBiZWNhdXNlIG5vYm9keSB3
-aWxsIGV2ZXIKPiB1c2UgdGhlIHNhbWUgcmVzb3VyY2VzIGFnYWluIChhdCBsZWFzdCB3aXRob3V0
-IEVQUk9CRV9ERUZFUikuCj4gTXkgcmVjZW50IGlkZWEgdG8gd29yayBhcm91bmQgdGhhdCBpc3N1
-ZSBpcyB0aGlzOgo+IAo+IC0gcHV0IHRoZSBkcml2ZXJzIHByaXZhdGUgZGF0YSBpbnRvIGRldi0+
-cHJpdgo+IC0gd2hlbiByZXR1cm5pbmcgYW4gZXJyb3IgZnJvbSBwcm9iZSwgaW5zdGVhZCBvZiBm
-cmVlaW5nIHRoZSBkYXRhCj4gICBrZWVwIGl0Lgo+IC0gd2hlbiBwcm9iaW5nIGFnYWluIHJlLXVz
-ZSB0aGUgZGF0YS4KPiAKPiBXaXRoIHRoaXMgZHJpdmVycyBjb3VsZCBiZSB3cml0dGVuIGxpa2U6
-Cj4gCj4gCXByaXYgPSBkZXYtPnByaXY7Cj4gCWlmICghcHJpdikgewo+IAkJcHJpdiA9IHh6YWxs
-b2Moc2l6ZW9mKHByaXYpKTsKPiAJCWRldi0+cHJpdiA9IHByaXY7Cj4gCX0KPiAKPiAJaWYgKCFw
-cml2LT5jbGspIHsKPiAJCWNsayA9IGNsa19nZXQoZGV2LCBOVUxMKTsKPiAJCWlmIChJU19FUlIo
-Y2xrKSkKPiAJCQlyZXR1cm4gUFRSX0VSUihjbGspOwo+IAkJcHJpdi0+Y2xrID0gY2xrOwo+IAkJ
-Y2xrX2VuYWJsZShwcml2LT5jbGspOwo+IAl9Cj4gCj4gCWlmICghcHJpdi0+cmVndWxhdG9yKSB7
-Cj4gCQlyZWd1bGF0b3IgPSByZWd1bGF0b3JfZ2V0KGRldiwgInZtbWMiKTsKPiAJCWlmIChJU19F
-UlIocmVndWxhdG9yKSkKPiAJCQlyZXR1cm4gUFRSX0VSUihyZWd1bGF0b3IpOwo+IAkJcHJpdi0+
-cmVndWxhdG9yID0gcmVndWxhdG9yOwo+IAl9Cj4gCj4gVGhpcyB3YXkgZHJpdmVycyBjb3VsZCBh
-bGxvY2F0ZSB0aGUgbWlzc2luZyByZXNvdXJjZXMgYXMgbmVlZGVkIHdpdGhvdXQKPiBmcmVlaW5n
-IHRoZW0gYmV0d2VlbiBkaWZmZXJlbnQgY2FsbHMgdG8gcHJvYmUoKS4KClRoZSBpZGVhIGlzIGdv
-b2QsIGJ1dCBJIHRoaW5rIHRoYXQgaXQgd2lsbCBub3QgYmUgc28gZWFzeSB0byBkby4KSW4gYWRk
-aXRpb24sIHdlIG9idGFpbiBhZGRpdGlvbmFsIGluY29tcGF0aWJpbGl0eSB3aXRoIHRoZSBrZXJu
-ZWwgY29kZS4KCi0tLQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KYmFyZWJveCBtYWlsaW5nIGxpc3QKYmFyZWJveEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0
-dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vYmFyZWJveAo=
+Now that we have a proper reset controller, it
+isn't necessary anymore to keep the device reset
+hack coupled to the clock.
+
+Signed-off-by: Lucas Stach <dev@lynxeye.de>
+---
+ drivers/clk/tegra/clk-periph.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
+
+diff --git a/drivers/clk/tegra/clk-periph.c b/drivers/clk/tegra/clk-periph.c
+index be83955db1a5..c05e563aae55 100644
+--- a/drivers/clk/tegra/clk-periph.c
++++ b/drivers/clk/tegra/clk-periph.c
+@@ -74,33 +74,15 @@ static int clk_periph_is_enabled(struct clk *hw)
+ static int clk_periph_enable(struct clk *hw)
+ {
+ 	struct tegra_clk_periph *periph = to_clk_periph(hw);
+-	u32 reg;
+-
+-	reg = readl(periph->rst_reg);
+-	reg |= (1 << periph->rst_shift);
+-	writel(reg, periph->rst_reg);
+ 
+ 	periph->gate->ops->enable(periph->gate);
+ 
+-	udelay(2);
+-
+-	reg = readl(periph->rst_reg);
+-	reg &= ~(1 << periph->rst_shift);
+-	writel(reg, periph->rst_reg);
+-
+ 	return 0;
+ }
+ 
+ static void clk_periph_disable(struct clk *hw)
+ {
+ 	struct tegra_clk_periph *periph = to_clk_periph(hw);
+-	u32 reg;
+-
+-	reg = readl(periph->rst_reg);
+-	reg |= (1 << periph->rst_shift);
+-	writel(reg, periph->rst_reg);
+-
+-	udelay(2);
+ 
+ 	periph->gate->ops->disable(periph->gate);
+ }
+-- 
+1.9.0
+
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
