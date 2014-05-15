@@ -1,13 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkuID-00049Q-KJ
- for barebox@lists.infradead.org; Thu, 15 May 2014 11:57:46 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 May 2014 13:57:22 +0200
-Message-Id: <1400155042-30101-3-git-send-email-s.hauer@pengutronix.de>
-In-Reply-To: <1400155042-30101-1-git-send-email-s.hauer@pengutronix.de>
-References: <1400155042-30101-1-git-send-email-s.hauer@pengutronix.de>
+Received: from smtprelay01.ispgateway.de ([80.67.31.39])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WkuaG-0005em-1u
+ for barebox@lists.infradead.org; Thu, 15 May 2014 12:16:25 +0000
+From: Markus Niebel <list-09_barebox@tqsc.de>
+Date: Thu, 15 May 2014 14:26:44 +0200
+Message-Id: <1400156804-10073-1-git-send-email-list-09_barebox@tqsc.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,335 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 3/3] ARM: AM335x: merge am335x config in a single config file
+Subject: [PATCH] barebox: select host-lzop
 To: barebox@lists.infradead.org
+Cc: Markus Niebel <Markus.Niebel@tq-group.com>
 
-The current am335x boards can be built together. Merge the
-configs to a single am335x_defconfig.
+From: Markus Niebel <Markus.Niebel@tq-group.com>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+    creation of barebox.z requires lzop. As this may be not installed,
+    let's handle this inside of our build logic.
+
+Signed-off-by: Markus Niebel <Markus.Niebel@tq-group.com>
 ---
- arch/arm/configs/am335x_beaglebone_defconfig     |  83 -----------------
- arch/arm/configs/am335x_defconfig                | 114 +++++++++++++++++++++++
- arch/arm/configs/phytec-phycore-am335x_defconfig |  96 -------------------
- 3 files changed, 114 insertions(+), 179 deletions(-)
- delete mode 100644 arch/arm/configs/am335x_beaglebone_defconfig
- create mode 100644 arch/arm/configs/am335x_defconfig
- delete mode 100644 arch/arm/configs/phytec-phycore-am335x_defconfig
+ platforms/barebox.in |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/configs/am335x_beaglebone_defconfig b/arch/arm/configs/am335x_beaglebone_defconfig
-deleted file mode 100644
-index d9b9e39..0000000
---- a/arch/arm/configs/am335x_beaglebone_defconfig
-+++ /dev/null
-@@ -1,83 +0,0 @@
--CONFIG_ARCH_OMAP=y
--CONFIG_OMAP_MULTI_BOARDS=y
--CONFIG_MACH_BEAGLEBONE=y
--CONFIG_THUMB2_BAREBOX=y
--CONFIG_CMD_ARM_MMUINFO=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x8f000000
--CONFIG_MALLOC_SIZE=0x0
--CONFIG_MALLOC_TLSF=y
--CONFIG_KALLSYMS=y
--CONFIG_PROMPT="barebox> "
--CONFIG_LONGHELP=y
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--# CONFIG_TIMESTAMP is not set
--CONFIG_CONSOLE_ACTIVATE_NONE=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_TIME=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MD5SUM=y
--CONFIG_CMD_BOOTM_SHOW_TYPE=y
--CONFIG_CMD_BOOTM_VERBOSE=y
--CONFIG_CMD_BOOTM_INITRD=y
--CONFIG_CMD_BOOTM_OFTREE=y
--CONFIG_CMD_BOOTM_OFTREE_UIMAGE=y
--CONFIG_CMD_UIMAGE=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_MAGICVAR=y
--CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_I2C=y
--CONFIG_CMD_MIITOOL=y
--CONFIG_CMD_DETECT=y
--CONFIG_NET=y
--CONFIG_NET_DHCP=y
--CONFIG_NET_PING=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_NET_RESOLV=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_NS16550=y
--CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
--CONFIG_DRIVER_NET_CPSW=y
--# CONFIG_SPI is not set
--CONFIG_I2C=y
--CONFIG_I2C_OMAP=y
--CONFIG_MCI=y
--CONFIG_MCI_OMAP_HSMMC=y
--CONFIG_PINCTRL=y
--CONFIG_PINCTRL_SINGLE=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_NFS=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
-diff --git a/arch/arm/configs/am335x_defconfig b/arch/arm/configs/am335x_defconfig
-new file mode 100644
-index 0000000..3fb6706
---- /dev/null
-+++ b/arch/arm/configs/am335x_defconfig
-@@ -0,0 +1,114 @@
-+CONFIG_ARCH_OMAP=y
-+CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
-+CONFIG_OMAP_MULTI_BOARDS=y
-+CONFIG_MACH_BEAGLEBONE=y
-+CONFIG_MACH_PCM051=y
-+CONFIG_THUMB2_BAREBOX=y
-+CONFIG_ARM_BOARD_APPEND_ATAG=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_UNWIND=y
-+CONFIG_MMU=y
-+CONFIG_TEXT_BASE=0x0
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_MALLOC_TLSF=y
-+CONFIG_KALLSYMS=y
-+CONFIG_RELOCATABLE=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_LONGHELP=y
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_BLSPEC=y
-+CONFIG_CONSOLE_ACTIVATE_NONE=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEBUG_INFO=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_UBIFORMAT=y
-+CONFIG_CMD_BOOTM_SHOW_TYPE=y
-+CONFIG_CMD_BOOTM_VERBOSE=y
-+CONFIG_CMD_BOOTM_INITRD=y
-+CONFIG_CMD_BOOTM_OFTREE=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_BOOTZ=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_NET=y
-+CONFIG_NET_DHCP=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_PING=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_RESOLV=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
-+CONFIG_DRIVER_NET_CPSW=y
-+CONFIG_DRIVER_SPI_OMAP3=y
-+CONFIG_I2C=y
-+CONFIG_I2C_OMAP=y
-+CONFIG_MTD=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_NAND=y
-+CONFIG_NAND_OMAP_GPMC=y
-+CONFIG_MTD_UBI=y
-+CONFIG_USB=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_OMAP_HSMMC=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT24=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+CONFIG_PINCTRL_SINGLE=y
-+CONFIG_BUS_OMAP_GPMC=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
-diff --git a/arch/arm/configs/phytec-phycore-am335x_defconfig b/arch/arm/configs/phytec-phycore-am335x_defconfig
-deleted file mode 100644
-index cb06183..0000000
---- a/arch/arm/configs/phytec-phycore-am335x_defconfig
-+++ /dev/null
-@@ -1,96 +0,0 @@
--CONFIG_ARCH_OMAP=y
--CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
--CONFIG_OMAP_MULTI_BOARDS=y
--CONFIG_MACH_PCM051=y
--CONFIG_THUMB2_BAREBOX=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_CMD_ARM_MMUINFO=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--CONFIG_MMU=y
--CONFIG_TEXT_BASE=0x0
--CONFIG_MALLOC_SIZE=0x0
--CONFIG_MALLOC_TLSF=y
--CONFIG_KALLSYMS=y
--CONFIG_RELOCATABLE=y
--CONFIG_PROMPT="barebox@pcm051>"
--CONFIG_LONGHELP=y
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--# CONFIG_TIMESTAMP is not set
--CONFIG_BLSPEC=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEBUG_INFO=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_TIME=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MD5SUM=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_UBIFORMAT=y
--CONFIG_CMD_BOOTM_SHOW_TYPE=y
--CONFIG_CMD_UIMAGE=y
--CONFIG_CMD_BOOTZ=y
--# CONFIG_CMD_BOOTU is not set
--CONFIG_CMD_RESET=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_BAREBOX_UPDATE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_I2C=y
--CONFIG_CMD_SPI=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_LED_TRIGGER=y
--CONFIG_CMD_MIITOOL=y
--CONFIG_CMD_DETECT=y
--CONFIG_NET=y
--CONFIG_NET_DHCP=y
--CONFIG_NET_NFS=y
--CONFIG_NET_PING=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_NS16550=y
--CONFIG_DRIVER_SERIAL_NS16550_OMAP_EXTENSIONS=y
--CONFIG_DRIVER_NET_CPSW=y
--CONFIG_DRIVER_SPI_OMAP3=y
--CONFIG_I2C=y
--CONFIG_I2C_OMAP=y
--CONFIG_MTD=y
--CONFIG_MTD_M25P80=y
--CONFIG_NAND=y
--CONFIG_NAND_OMAP_GPMC=y
--CONFIG_MTD_UBI=y
--CONFIG_USB=y
--CONFIG_MCI=y
--CONFIG_MCI_STARTUP=y
--CONFIG_MCI_OMAP_HSMMC=y
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_LED_GPIO_OF=y
--CONFIG_LED_TRIGGERS=y
--CONFIG_EEPROM_AT24=y
--CONFIG_GPIO_GENERIC_PLATFORM=y
--CONFIG_PINCTRL=y
--CONFIG_PINCTRL_SINGLE=y
--CONFIG_BUS_OMAP_GPMC=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_NFS=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
+diff --git a/platforms/barebox.in b/platforms/barebox.in
+index 6e65f83..6f66d1f 100644
+--- a/platforms/barebox.in
++++ b/platforms/barebox.in
+@@ -10,6 +10,7 @@ config BAREBOX_ARCH_STRING
+ menuconfig BAREBOX
+ 	select BOOTLOADER
+ 	select HOST_LIBUSB if BAREBOX_NEEDS_HOST_LIBUSB
++	select HOST_LZOP
+ 	prompt "barebox                       "
+ 	bool
+ 	help
 -- 
-2.0.0.rc0
+1.7.9.5
 
 
 _______________________________________________
