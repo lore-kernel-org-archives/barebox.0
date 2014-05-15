@@ -1,17 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-yk0-x236.google.com ([2607:f8b0:4002:c07::236])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkqtJ-0002w2-42
- for barebox@lists.infradead.org; Thu, 15 May 2014 08:19:49 +0000
-Received: by mail-yk0-f182.google.com with SMTP id 9so579286ykp.41
- for <barebox@lists.infradead.org>; Thu, 15 May 2014 01:19:27 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <1400135990-5391-2-git-send-email-s.hauer@pengutronix.de>
-References: <1400135990-5391-1-git-send-email-s.hauer@pengutronix.de>
- <1400135990-5391-2-git-send-email-s.hauer@pengutronix.de>
-Date: Thu, 15 May 2014 10:19:27 +0200
-Message-ID: <CAOpc7mH1pNu6YOoYQZRSGNVa=0utOedBAaUT+zqBO7dq=Nevng@mail.gmail.com>
-From: Holger Schurig <holgerschurig@gmail.com>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WkrQt-0001W6-Mb
+ for barebox@lists.infradead.org; Thu, 15 May 2014 08:54:32 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 15 May 2014 10:54:08 +0200
+Message-Id: <1400144048-7933-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1400144048-7933-1-git-send-email-s.hauer@pengutronix.de>
+References: <1400144048-7933-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -20,21 +16,36 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 2/2] mtd: m25p80: update Micron IDs
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/2] ARM: am33xx: Add missing include
+To: barebox@lists.infradead.org
 
-> +       { "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
+am33xx-generic.h needs memcpy, so include string.h
 
-Are you sure that this one works?  In u-boot's
-drivers/mtd/spi/sf_params.c this one is marked with  WR_QPP | E_FSR |
-SECT_4K, and barebox doesn't support E_FSR right now. I have a WIP
-patch for it, but haven't published that patch because even with it my
-JEDEC 20ba20 N25Q512 doesn't get erased.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-omap/include/mach/am33xx-generic.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/mach-omap/include/mach/am33xx-generic.h b/arch/arm/mach-omap/include/mach/am33xx-generic.h
+index 8472d07..75ac00a 100644
+--- a/arch/arm/mach-omap/include/mach/am33xx-generic.h
++++ b/arch/arm/mach-omap/include/mach/am33xx-generic.h
+@@ -1,6 +1,7 @@
+ #ifndef __MACH_AM33XX_GENERIC_H
+ #define __MACH_AM33XX_GENERIC_H
+ 
++#include <string.h>
+ #include <mach/generic.h>
+ #include <mach/am33xx-silicon.h>
+ 
+-- 
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
