@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wkv4Z-00036L-SF
- for barebox@lists.infradead.org; Thu, 15 May 2014 12:47:44 +0000
-Date: Thu, 15 May 2014 14:47:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140515124722.GK5858@pengutronix.de>
-References: <1400156804-10073-1-git-send-email-list-09_barebox@tqsc.de>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1400156804-10073-1-git-send-email-list-09_barebox@tqsc.de>
+Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1Wkv9N-0005Uu-3s
+ for barebox@lists.infradead.org; Thu, 15 May 2014 12:52:41 +0000
+Received: by mail-ee0-f43.google.com with SMTP id d17so639215eek.30
+ for <barebox@lists.infradead.org>; Thu, 15 May 2014 05:52:17 -0700 (PDT)
+Message-ID: <5374B87D.3000501@gmail.com>
+Date: Thu, 15 May 2014 14:52:13 +0200
+From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
+References: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
+ <537486DB.9010302@gmail.com> <20140515124006.GJ5858@pengutronix.de>
+In-Reply-To: <20140515124006.GJ5858@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,59 +19,39 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] barebox: select host-lzop
-To: Markus Niebel <list-09_barebox@tqsc.de>
-Cc: barebox@lists.infradead.org, Markus Niebel <Markus.Niebel@tq-group.com>
+Subject: Re: [PATCH] commands: rename "gpiolib" -> "gpioinfo"
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
 
-Hi Markus,
+On 05/15/2014 02:40 PM, Sascha Hauer wrote:
+> On Thu, May 15, 2014 at 11:20:27AM +0200, Sebastian Hesselbarth wrote:
+>> On 05/15/2014 11:08 AM, Holger Schurig wrote:
+>>> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+>>
+>> Subject: rename "gpiolib" -> "gpioinfo"
+>>
+>> How about joining the gpio related commands to "gpio"
+>> and use e.g. -l for list?
+>
+> Which commands do you mean? gpio_direction_output / gpio_set_value
+> and friends? I wouldn't change these as we would end up with four
+> single letter options (for direction_output, set_value, direction_input,
+> get_value) which are hard to memorize.
 
-On Thu, May 15, 2014 at 02:26:44PM +0200, Markus Niebel wrote:
-> From: Markus Niebel <Markus.Niebel@tq-group.com>
-> 
->     creation of barebox.z requires lzop. As this may be not installed,
->     let's handle this inside of our build logic.
-> 
-> Signed-off-by: Markus Niebel <Markus.Niebel@tq-group.com>
+Maybe I was just irritated by the simple rename of gpiolib to
+gpioinfo - which could also be gpiolist or gpio_info to match
+the other gpio friends.
 
-Please send this to the ptxdist list, the patch applies better there ;)
+Just the first idea that came into my mind when I saw a patch
+for the rename - no show-stopper of course.
 
-Sascha
+Sebastian
 
-> ---
->  platforms/barebox.in |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/platforms/barebox.in b/platforms/barebox.in
-> index 6e65f83..6f66d1f 100644
-> --- a/platforms/barebox.in
-> +++ b/platforms/barebox.in
-> @@ -10,6 +10,7 @@ config BAREBOX_ARCH_STRING
->  menuconfig BAREBOX
->  	select BOOTLOADER
->  	select HOST_LIBUSB if BAREBOX_NEEDS_HOST_LIBUSB
-> +	select HOST_LZOP
->  	prompt "barebox                       "
->  	bool
->  	help
-> -- 
-> 1.7.9.5
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 _______________________________________________
 barebox mailing list
