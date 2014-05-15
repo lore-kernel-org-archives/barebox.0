@@ -1,22 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mout.kundenserver.de ([212.227.126.131])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WktzK-00019f-2H
- for barebox@lists.infradead.org; Thu, 15 May 2014 11:38:16 +0000
-Date: Thu, 15 May 2014 13:37:41 +0200 (CEST)
-From: Rolf Evers-Fischer <embedded24@evers-fischer.de>
-Message-ID: <1417581131.90627.1400153862033.open-xchange@email.1und1.de>
-In-Reply-To: <1399985396.17608.95.camel@mars>
-References: <1566538733.276756.1398269380974.open-xchange@email.1und1.de>
- <20140424065848.GV5858@pengutronix.de>
- <1748480871.292241.1398329548811.open-xchange@email.1und1.de>
- <1987921723.106566.1398866884871.open-xchange@email.1und1.de>
- <1398984618.20734.13.camel@mars>
- <1601166290.269079.1399292035560.open-xchange@email.1und1.de>
- <2127881536.642328.1399899433007.open-xchange@email.1und1.de>
- <20140513110326.GA29062@omega> <1399985396.17608.95.camel@mars>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WkuDs-0002sg-Mo
+ for barebox@lists.infradead.org; Thu, 15 May 2014 11:53:17 +0000
+Date: Thu, 15 May 2014 13:52:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Message-ID: <20140515115251.GE5858@pengutronix.de>
+References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
+ <20140514070250.GV5858@pengutronix.de>
+ <20140514175540.56dbdf584330f67779392264@gmail.com>
+ <CAOpc7mFnHEUngOJ0Sny99DAsNvQyjynOeBzkE6_LmgCX0E5MBg@mail.gmail.com>
 MIME-Version: 1.0
-Reply-To: Rolf Evers-Fischer <embedded24@evers-fischer.de>
+Content-Disposition: inline
+In-Reply-To: <CAOpc7mFnHEUngOJ0Sny99DAsNvQyjynOeBzkE6_LmgCX0E5MBg@mail.gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -25,31 +21,40 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: New driver crashes with "unable to handle paging request"
-To: Alexander Aring <alex.aring@gmail.com>, Christoph Fritz <chf.fritz@googlemail.com>
-Cc: barebox@lists.infradead.org
+Subject: Re: [PATCH 00/19] commands rework patch series
+To: Holger Schurig <holgerschurig@gmail.com>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 
-RGVhciBDaHJpc3RvcGggYW5kIEFsZXgsCgo+IENocmlzdG9waCBGcml0eiA8Y2hmLmZyaXR6QGdv
-b2dsZW1haWwuY29tPiBoYXQgYW0gMTMuIE1haSAyMDE0IHVtIDE0OjQ5Cj4gZ2VzY2hyaWViZW46
-Cj4KPgo+IEhleSBBbGV4Cj4KPiBPbiBUdWUsIDIwMTQtMDUtMTMgYXQgMTM6MDMgKzAyMDAsIEFs
-ZXhhbmRlciBBcmluZyB3cm90ZToKPiA+IFRoaXMgd2FzIG9uZSB5ZWFyIGFnby4uLgo+Cj4gVGhl
-IHBvcnQgKHdpdGggb25seSBob3N0IHN1cHBvcnQpIGlzIHRoYXQgb2xkLCBidXQgc2ltcGx5IGR1
-ZSB0byBsYWNrIG9mCj4gdGltZSBJIGhhdmVuJ3QgZml4ZWQgdGhlIGhhY2tzIGluIHRoZXJlLiBG
-b3IgZXhhbXBsZSBzb21lIGRlbGF5cyBuZWVkCj4gcHJvcGVyIHdhaXRfb25fdGltZW91dCgpLCB0
-aGVyZWZvcmUgYSByZWZlcmVuY2UgbWFudWFsIHdvdWxkIGJlIG5pY2UuCj4KPiBJIGhvcGUgdG8g
-ZmluZCBzb21lIHRpbWUgbmV4dCB3ZWVrZW5kIHB1c2hpbmcgdGhlIHN0dWZmIHRvIGdpdGh1YiBv
-ciBhcwo+IGEgUkZDLVBhdGNoc2V0Lgo+Cj4gS2VlcCBjYWxtCj4KCnRoYW5rIHlvdSBmb3IgeW91
-ciBpbmZvcm1hdGlvbi4KCkluIHRoZSBtZWFudGltZSBJIHdpbGwgY2Fycnkgb24gd2l0aCAibXki
-IG11c2ItcG9ydCAoZGlyZWN0bHkgZnJvbSBsaW51eCBrZXJuZWwKMy4xMywgYmVjYXVzZSB3aGVu
-IEkgc3RhcnRlZCB3aXRoIHRoaXMgdGFzaywgSSB3YXMgbm90IGF3YXJlIHRoYXQgaXQgaGFkIGFs
-cmVhZHkKYmVlbiBwb3J0ZWQgdG8gdGhlIGN1cnJlbnQgVS1Cb290IHNvdXJjZSkuCgpCdXQgb2Yg
-Y291cnNlIGl0IHdvdWxkIGJlIG5pY2UgdG8gZ2V0IGFub3RoZXIgc29sdXRpb24sIHdoaWNoIGFs
-cmVhZHkgd29ya3MgLQpyZWdhcmRsZXNzIGlmIGl0J3MgYmFzZWQgb24gYW4gb2xkZXIga2VybmVs
-IHZlcnNpb24gb3Igbm90LgoKQmVzdCByZWdhcmRzLArCoFJvbGYKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmJhcmVib3ggbWFpbGluZyBsaXN0CmJhcmVi
-b3hAbGlzdHMuaW5mcmFkZWFkLm9yZwpodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2JhcmVib3gK
+On Thu, May 15, 2014 at 10:09:34AM +0200, Holger Schurig wrote:
+> Yep, that "gpiolib" command is also on my list.
+> 
+> I personally also like to rename the device tree commands away from
+> of_ (Open Firmware), to dt_ (Device Tree). Today anyone uses the term
+> "Device Tree", the of_XXX is just a programmers view, e.g. a prefix
+> for C structures.
+> 
+> Still, I'm unsure about it.
+> 
+> The thing is: if I rename "gpiolib" to "gpioinfo", no init script will
+> be harmed. But maybe some init scripts add device tree nodes
+> on-the-fly?  If that is in the git tree, I can find it. But should I
+> care for things that aren't in the git tree?
+
+No, what's not in the tree is not there.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+_______________________________________________
+barebox mailing list
+barebox@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/barebox
