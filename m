@@ -1,11 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkpbS-0007hy-J2
+ Linux)) id 1WkpbS-0007i1-J4
  for barebox@lists.infradead.org; Thu, 15 May 2014 06:57:19 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 May 2014 08:56:53 +0200
-Message-Id: <1400137016-15688-1-git-send-email-s.hauer@pengutronix.de>
+Date: Thu, 15 May 2014 08:56:56 +0200
+Message-Id: <1400137016-15688-4-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1400137016-15688-1-git-send-email-s.hauer@pengutronix.de>
+References: <1400137016-15688-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,32 +21,65 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 1/4] net: cpsw: Pass correct slave
+Subject: [PATCH 4/4] net: cpsw: Allow multiple slaves
 To: barebox@lists.infradead.org
 
-Pass the current slave to cpsw_slave_init/cpsw_update_link,
-not the first one.
+The driver is ready now for handling both slaved, so add support
+for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/cpsw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/cpsw.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index ec3263d..f11b2d9 100644
+index d31cbb6..d55f62a 100644
 --- a/drivers/net/cpsw.c
 +++ b/drivers/net/cpsw.c
-@@ -801,8 +801,8 @@ static int cpsw_open(struct eth_device *edev)
- 			   ALE_SECURE);
- 	cpsw_ale_add_mcast(priv, ethbdaddr, 1 << priv->host_port);
+@@ -572,9 +572,6 @@ static void cpsw_slave_update_link(struct cpsw_slave *slave,
+ 	if (!phydev)
+ 		return;
  
--	cpsw_slave_init(&priv->slaves[0], priv);
--	cpsw_update_link(&priv->slaves[0], priv);
-+	cpsw_slave_init(slave, priv);
-+	cpsw_update_link(slave, priv);
+-	if (slave->slave_num)
+-		return;
+-
+ 	if (phydev->link) {
+ 		*link = 1;
+ 		mac_control = BIT(5); /* MIIEN */
+@@ -1086,9 +1083,6 @@ static int cpsw_probe_dt(struct cpsw_priv *priv)
+ 		cpsw_gmii_sel_am335x(slave);
+ 	}
  
- 	/* init descriptor pool */
- 	for (i = 0; i < NUM_DESCS; i++) {
+-	/* Only one slave supported by this driver */
+-	priv->num_slaves = 1;
+-
+ 	return 0;
+ }
+ 
+@@ -1100,7 +1094,7 @@ int cpsw_probe(struct device_d *dev)
+ 	uint64_t start;
+ 	uint32_t phy_mask;
+ 	struct cpsw_data *cpsw_data;
+-	int ret;
++	int i, ret;
+ 
+ 	dev_dbg(dev, "* %s\n", __func__);
+ 
+@@ -1192,9 +1186,11 @@ int cpsw_probe(struct device_d *dev)
+ 
+ 	mdiobus_register(&priv->miibus);
+ 
+-	ret = cpsw_slave_setup(&priv->slaves[0], 0, priv);
+-	if (ret)
+-		goto out;
++	for (i = 0; i < priv->num_slaves; i++) {
++		ret = cpsw_slave_setup(&priv->slaves[i], i, priv);
++		if (ret)
++			goto out;
++	}
+ 
+ 	return 0;
+ out:
 -- 
 2.0.0.rc0
 
