@@ -1,15 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x229.google.com ([2a00:1450:4013:c00::229])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WkrqP-0006v0-55
- for barebox@lists.infradead.org; Thu, 15 May 2014 09:20:53 +0000
-Received: by mail-ee0-f41.google.com with SMTP id t10so444139eei.28
- for <barebox@lists.infradead.org>; Thu, 15 May 2014 02:20:30 -0700 (PDT)
-Message-ID: <537486DB.9010302@gmail.com>
-Date: Thu, 15 May 2014 11:20:27 +0200
-From: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
-References: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
-In-Reply-To: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
+Received: from mail.phycard.de ([217.6.246.34] helo=root.phytec.de)
+ by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WksAP-0005Z3-T9
+ for barebox@lists.infradead.org; Thu, 15 May 2014 09:41:35 +0000
+Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
+ by root.phytec.de (Postfix) with ESMTP id 8B8E5BF0F5
+ for <barebox@lists.infradead.org>; Thu, 15 May 2014 11:41:08 +0200 (CEST)
+From: Wadim Egorov <w.egorov@phytec.de>
+Date: Thu, 15 May 2014 11:41:08 +0200
+Message-Id: <1400146868-17820-2-git-send-email-w.egorov@phytec.de>
+In-Reply-To: <1400146868-17820-1-git-send-email-w.egorov@phytec.de>
+References: <1400146868-17820-1-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -19,68 +20,52 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: rename "gpiolib" -> "gpioinfo"
-To: Holger Schurig <holgerschurig@gmail.com>, barebox@lists.infradead.org
+Subject: [PATCH v2 4/4] phycore-am335x: Added bbu nand xloadslots handler
+To: barebox@lists.infradead.org
 
-On 05/15/2014 11:08 AM, Holger Schurig wrote:
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+Added bbu nand xloadslots handler to phycore-am335x.
 
-Subject: rename "gpiolib" -> "gpioinfo"
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+---
+v2:
+  - changed method to pass device files
+---
+ arch/arm/boards/phytec-phycore-am335x/board.c |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
 
-How about joining the gpio related commands to "gpio"
-and use e.g. -l for list?
-
-Sebastian
-
-> ---
->   drivers/gpio/gpiolib.c |    8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 54ec5a6..611e41e 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -305,8 +305,6 @@ static int do_gpiolib(int argc, char *argv[])
->   {
->   	int i;
->
-> -	printf("gpiolib: gpio lists\n");
-> -
->   	for (i = 0; i < ARCH_NR_GPIOS; i++) {
->   		struct gpio_info *gi = &gpio_desc[i];
->   		int val = -1, dir = -1;
-> @@ -316,7 +314,7 @@ static int do_gpiolib(int argc, char *argv[])
->
->   		/* print chip information and header on first gpio */
->   		if (gi->chip->base == i) {
-> -			printf("\ngpios %u-%u, chip %s:\n",
-> +			printf("\nGPIOs %u-%u, chip %s:\n",
->   				gi->chip->base,
->   				gi->chip->base + gi->chip->ngpio - 1,
->   				gi->chip->dev->name);
-> @@ -330,7 +328,7 @@ static int do_gpiolib(int argc, char *argv[])
->   			val = gi->chip->ops->get(gi->chip,
->   						i - gi->chip->base);
->
-> -		printf("  gpio %*d: %*s %*s %*s  %s\n", 4, i,
-> +		printf("  GPIO %*d: %*s %*s %*s  %s\n", 4, i,
->   			3, (dir < 0) ? "unk" : ((dir == GPIOF_DIR_IN) ? "in" : "out"),
->   			3, (val < 0) ? "unk" : ((val == 0) ? "lo" : "hi"),
->   			9, gi->requested ? "true" : "false",
-> @@ -340,7 +338,7 @@ static int do_gpiolib(int argc, char *argv[])
->   	return 0;
->   }
->
-> -BAREBOX_CMD_START(gpiolib)
-> +BAREBOX_CMD_START(gpioinfo)
->   	.cmd		= do_gpiolib,
->   	BAREBOX_CMD_DESC("list registered GPIOs")
->   	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
->
+diff --git a/arch/arm/boards/phytec-phycore-am335x/board.c b/arch/arm/boards/phytec-phycore-am335x/board.c
+index 59de42b..76782d4 100644
+--- a/arch/arm/boards/phytec-phycore-am335x/board.c
++++ b/arch/arm/boards/phytec-phycore-am335x/board.c
+@@ -48,6 +48,13 @@ static struct omap_barebox_part pcm051_barebox_part = {
+ 	.nor_size = SZ_512K,
+ };
+ 
++char *xloadslots[] = {
++	"/dev/nand0.xload.bb",
++	"/dev/nand0.xload_backup1.bb",
++	"/dev/nand0.xload_backup2.bb",
++	"/dev/nand0.xload_backup3.bb"
++};
++
+ static int pcm051_devices_init(void)
+ {
+ 	if (!of_machine_is_compatible("phytec,pcm051"))
+@@ -69,6 +76,8 @@ static int pcm051_devices_init(void)
+ 	armlinux_set_architecture(MACH_TYPE_PCM051);
+ 
+ 	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
++	am33xx_bbu_nand_xloadslots_register_handler("xloadslots",
++		xloadslots, ARRAY_SIZE(xloadslots));
+ 
+ 	return 0;
+ }
+-- 
+1.7.0.4
 
 
 _______________________________________________
