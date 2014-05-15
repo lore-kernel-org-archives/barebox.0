@@ -1,18 +1,13 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkuDs-0002sg-Mo
- for barebox@lists.infradead.org; Thu, 15 May 2014 11:53:17 +0000
-Date: Thu, 15 May 2014 13:52:51 +0200
+ Linux)) id 1WkuID-00049P-KK
+ for barebox@lists.infradead.org; Thu, 15 May 2014 11:57:46 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140515115251.GE5858@pengutronix.de>
-References: <1399969739-10355-1-git-send-email-holgerschurig@gmail.com>
- <20140514070250.GV5858@pengutronix.de>
- <20140514175540.56dbdf584330f67779392264@gmail.com>
- <CAOpc7mFnHEUngOJ0Sny99DAsNvQyjynOeBzkE6_LmgCX0E5MBg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAOpc7mFnHEUngOJ0Sny99DAsNvQyjynOeBzkE6_LmgCX0E5MBg@mail.gmail.com>
+Date: Thu, 15 May 2014 13:57:21 +0200
+Message-Id: <1400155042-30101-2-git-send-email-s.hauer@pengutronix.de>
+In-Reply-To: <1400155042-30101-1-git-send-email-s.hauer@pengutronix.de>
+References: <1400155042-30101-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -21,38 +16,158 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH 00/19] commands rework patch series
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: [PATCH 2/3] ARM: AM335x: beaglebone: change to
+ defaultenv_append_directory
+To: barebox@lists.infradead.org
 
-On Thu, May 15, 2014 at 10:09:34AM +0200, Holger Schurig wrote:
-> Yep, that "gpiolib" command is also on my list.
-> 
-> I personally also like to rename the device tree commands away from
-> of_ (Open Firmware), to dt_ (Device Tree). Today anyone uses the term
-> "Device Tree", the of_XXX is just a programmers view, e.g. a prefix
-> for C structures.
-> 
-> Still, I'm unsure about it.
-> 
-> The thing is: if I rename "gpiolib" to "gpioinfo", no init script will
-> be harmed. But maybe some init scripts add device tree nodes
-> on-the-fly?  If that is in the git tree, I can find it. But should I
-> care for things that aren't in the git tree?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/beaglebone/Makefile                   |  1 +
+ arch/arm/boards/beaglebone/board.c                    |  3 +++
+ .../boards/beaglebone/defaultenv-beaglebone/boot/sd   | 11 +++++++++++
+ .../boards/beaglebone/defaultenv-beaglebone/config    | 19 +++++++++++++++++++
+ arch/arm/boards/beaglebone/env/boot/sd                | 11 -----------
+ arch/arm/boards/beaglebone/env/config                 | 19 -------------------
+ arch/arm/configs/am335x_beaglebone_defconfig          |  1 -
+ 7 files changed, 34 insertions(+), 31 deletions(-)
+ create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+ create mode 100644 arch/arm/boards/beaglebone/defaultenv-beaglebone/config
+ delete mode 100644 arch/arm/boards/beaglebone/env/boot/sd
+ delete mode 100644 arch/arm/boards/beaglebone/env/config
 
-No, what's not in the tree is not there.
-
-Sascha
-
+diff --git a/arch/arm/boards/beaglebone/Makefile b/arch/arm/boards/beaglebone/Makefile
+index 092c31d..21a1a29 100644
+--- a/arch/arm/boards/beaglebone/Makefile
++++ b/arch/arm/boards/beaglebone/Makefile
+@@ -1,2 +1,3 @@
+ lwl-y += lowlevel.o
+ obj-y += board.o
++bbenv-y += defaultenv-beaglebone
+diff --git a/arch/arm/boards/beaglebone/board.c b/arch/arm/boards/beaglebone/board.c
+index ad0d3b3..993d05b 100644
+--- a/arch/arm/boards/beaglebone/board.c
++++ b/arch/arm/boards/beaglebone/board.c
+@@ -29,6 +29,7 @@
+ #include <globalvar.h>
+ #include <sizes.h>
+ #include <net.h>
++#include <envfs.h>
+ #include <bootsource.h>
+ #include <asm/armlinux.h>
+ #include <generated/mach-types.h>
+@@ -66,6 +67,8 @@ static int beaglebone_devices_init(void)
+ 
+ 	black = is_beaglebone_black();
+ 
++	defaultenv_append_directory(defaultenv_beaglebone);
++
+ 	globalvar_add_simple("board.variant", black ? "boneblack" : "bone");
+ 
+ 	printf("detected 'BeagleBone %s'\n", black ? "Black" : "White");
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+new file mode 100644
+index 0000000..dce0605
+--- /dev/null
++++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/boot/sd
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++if [ "$1" = menu ]; then
++	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
++	exit
++fi
++
++global.bootm.image=/boot/uImage
++global.bootm.oftree=/boot/oftree
++#global.bootm.initrd=<path to initrd>
++global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+diff --git a/arch/arm/boards/beaglebone/defaultenv-beaglebone/config b/arch/arm/boards/beaglebone/defaultenv-beaglebone/config
+new file mode 100644
+index 0000000..fbfa7d5
+--- /dev/null
++++ b/arch/arm/boards/beaglebone/defaultenv-beaglebone/config
+@@ -0,0 +1,19 @@
++#!/bin/sh
++
++# change network settings in /env/network/eth0
++# change mtd partition settings and automountpoints in /env/init/*
++
++# set to false if you do not want to have colors
++global.allow_color=true
++
++# user (used for network filenames)
++global.user=none
++
++# timeout in seconds before the default boot entry is started
++global.autoboot_timeout=3
++
++# default boot entry (one of /env/boot/*)
++global.boot.default=sd
++
++# base bootargs
++global.linux.bootargs.base="console=ttyO0,115200n8"
+diff --git a/arch/arm/boards/beaglebone/env/boot/sd b/arch/arm/boards/beaglebone/env/boot/sd
+deleted file mode 100644
+index dce0605..0000000
+--- a/arch/arm/boards/beaglebone/env/boot/sd
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#!/bin/sh
+-
+-if [ "$1" = menu ]; then
+-	boot-menu-add-entry "$0" "kernel & rootfs on SD card"
+-	exit
+-fi
+-
+-global.bootm.image=/boot/uImage
+-global.bootm.oftree=/boot/oftree
+-#global.bootm.initrd=<path to initrd>
+-global.linux.bootargs.dyn.root="root=/dev/mmcblk0p2 rootfstype=ext4 rootwait"
+diff --git a/arch/arm/boards/beaglebone/env/config b/arch/arm/boards/beaglebone/env/config
+deleted file mode 100644
+index fbfa7d5..0000000
+--- a/arch/arm/boards/beaglebone/env/config
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#!/bin/sh
+-
+-# change network settings in /env/network/eth0
+-# change mtd partition settings and automountpoints in /env/init/*
+-
+-# set to false if you do not want to have colors
+-global.allow_color=true
+-
+-# user (used for network filenames)
+-global.user=none
+-
+-# timeout in seconds before the default boot entry is started
+-global.autoboot_timeout=3
+-
+-# default boot entry (one of /env/boot/*)
+-global.boot.default=sd
+-
+-# base bootargs
+-global.linux.bootargs.base="console=ttyO0,115200n8"
+diff --git a/arch/arm/configs/am335x_beaglebone_defconfig b/arch/arm/configs/am335x_beaglebone_defconfig
+index 857b89c..d9b9e39 100644
+--- a/arch/arm/configs/am335x_beaglebone_defconfig
++++ b/arch/arm/configs/am335x_beaglebone_defconfig
+@@ -19,7 +19,6 @@ CONFIG_MENU=y
+ # CONFIG_TIMESTAMP is not set
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/beaglebone/env"
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_MSLEEP=y
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
