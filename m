@@ -1,15 +1,15 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WkvHs-00047p-4R
- for barebox@lists.infradead.org; Thu, 15 May 2014 13:01:28 +0000
-Date: Thu, 15 May 2014 15:01:06 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140515130106.GN5858@pengutronix.de>
-References: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
+ Linux)) id 1Wkx9X-0002Hn-61
+ for barebox@lists.infradead.org; Thu, 15 May 2014 15:01:00 +0000
+Received: from dude.hi.pengutronix.de ([10.1.0.7] helo=dude.pengutronix.de)
+ by metis.ext.pengutronix.de with esmtp (Exim 4.72)
+ (envelope-from <l.stach@pengutronix.de>) id 1Wkx94-0007UK-HJ
+ for barebox@lists.infradead.org; Thu, 15 May 2014 17:00:30 +0200
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Thu, 15 May 2014 17:00:36 +0200
+Message-Id: <1400166036-31135-1-git-send-email-l.stach@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -18,80 +18,50 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH] commands: rename "gpiolib" -> "gpioinfo"
-To: Holger Schurig <holgerschurig@gmail.com>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] syscon: fix prototype compile error
+To: barebox@lists.infradead.org
 
-On Thu, May 15, 2014 at 11:08:55AM +0200, Holger Schurig wrote:
-> Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Applied, thanks
+gcc 4.8.3 throws the following error
 
-Sascha
+include/mfd/syscon.h: In function 'syscon_base_lookup_by_pdevname':
+include/mfd/syscon.h:22:1: error: parameter name omitted
+ static inline void __iomem *syscon_base_lookup_by_pdevname(const char *)
 
-> ---
->  drivers/gpio/gpiolib.c |    8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 54ec5a6..611e41e 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -305,8 +305,6 @@ static int do_gpiolib(int argc, char *argv[])
->  {
->  	int i;
->  
-> -	printf("gpiolib: gpio lists\n");
-> -
->  	for (i = 0; i < ARCH_NR_GPIOS; i++) {
->  		struct gpio_info *gi = &gpio_desc[i];
->  		int val = -1, dir = -1;
-> @@ -316,7 +314,7 @@ static int do_gpiolib(int argc, char *argv[])
->  
->  		/* print chip information and header on first gpio */
->  		if (gi->chip->base == i) {
-> -			printf("\ngpios %u-%u, chip %s:\n",
-> +			printf("\nGPIOs %u-%u, chip %s:\n",
->  				gi->chip->base,
->  				gi->chip->base + gi->chip->ngpio - 1,
->  				gi->chip->dev->name);
-> @@ -330,7 +328,7 @@ static int do_gpiolib(int argc, char *argv[])
->  			val = gi->chip->ops->get(gi->chip,
->  						i - gi->chip->base);
->  
-> -		printf("  gpio %*d: %*s %*s %*s  %s\n", 4, i,
-> +		printf("  GPIO %*d: %*s %*s %*s  %s\n", 4, i,
->  			3, (dir < 0) ? "unk" : ((dir == GPIOF_DIR_IN) ? "in" : "out"),
->  			3, (val < 0) ? "unk" : ((val == 0) ? "lo" : "hi"),
->  			9, gi->requested ? "true" : "false",
-> @@ -340,7 +338,7 @@ static int do_gpiolib(int argc, char *argv[])
->  	return 0;
->  }
->  
-> -BAREBOX_CMD_START(gpiolib)
-> +BAREBOX_CMD_START(gpioinfo)
->  	.cmd		= do_gpiolib,
->  	BAREBOX_CMD_DESC("list registered GPIOs")
->  	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
-> -- 
-> 1.7.10.4
-> 
-> 
-> _______________________________________________
-> barebox mailing list
-> barebox@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/barebox
-> 
+Fix it by adding the name to the function prototype.
 
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ include/mfd/syscon.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/include/mfd/syscon.h b/include/mfd/syscon.h
+index 0eccd5cb5d84..20445202b252 100644
+--- a/include/mfd/syscon.h
++++ b/include/mfd/syscon.h
+@@ -15,11 +15,11 @@
+ #define __MFD_SYSCON_H__
+ 
+ #ifdef CONFIG_MFD_SYSCON
+-void __iomem *syscon_base_lookup_by_pdevname(const char *);
++void __iomem *syscon_base_lookup_by_pdevname(const char *s);
+ void __iomem *syscon_base_lookup_by_phandle
+ 	(struct device_node *np, const char *property);
+ #else
+-static inline void __iomem *syscon_base_lookup_by_pdevname(const char *)
++static inline void __iomem *syscon_base_lookup_by_pdevname(const char *s)
+ {
+ 	return NULL;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
