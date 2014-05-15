@@ -1,14 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail.phytec.co.uk ([217.6.246.34] helo=root.phytec.de)
- by bombadil.infradead.org with esmtp (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WksAP-0005Yz-Up
- for barebox@lists.infradead.org; Thu, 15 May 2014 09:41:35 +0000
-Received: from idefix.phytec.de (idefix.phytec.de [172.16.0.10])
- by root.phytec.de (Postfix) with ESMTP id 7774FBF0F4
- for <barebox@lists.infradead.org>; Thu, 15 May 2014 11:41:08 +0200 (CEST)
-From: Wadim Egorov <w.egorov@phytec.de>
-Date: Thu, 15 May 2014 11:41:07 +0200
-Message-Id: <1400146868-17820-1-git-send-email-w.egorov@phytec.de>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1WksCy-0007fK-H1
+ for barebox@lists.infradead.org; Thu, 15 May 2014 09:44:13 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 15 May 2014 11:43:50 +0200
+Message-Id: <1400147030-16936-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,209 +19,157 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH v2 3/4] ARM: omap: barebox update nand xloadslots handler
+Subject: [PATCH] ARM: AM3xxx: Add support for building AM33xx spi images
 To: barebox@lists.infradead.org
 
-- Added barebox nand xloadslots update handler
-- This handler updates all given xload slots in nand
+From: Jan Luebbe <jlu@pengutronix.de>
 
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
----
-v2:
-  - fixed xloadslots updater description in mach-omap/Kconfig
-  - changed method to pass device files
-  - added nand_bbu_handler struct
-  - added write_image()
----
- arch/arm/mach-omap/Kconfig                      |   10 ++
- arch/arm/mach-omap/Makefile                     |    1 +
- arch/arm/mach-omap/am33xx_bbu_nand_xloadslots.c |  122 +++++++++++++++++++++++
- arch/arm/mach-omap/include/mach/bbu.h           |   13 +++
- 4 files changed, 146 insertions(+), 0 deletions(-)
- create mode 100644 arch/arm/mach-omap/am33xx_bbu_nand_xloadslots.c
+mk-am35xx-spi-image can only build AM35xx images. Rename
+the tool to mk-am3xxx-spi-image and add support for the AM33xx.
 
-diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 12b9c1f..ee6d548 100644
---- a/arch/arm/mach-omap/Kconfig
-+++ b/arch/arm/mach-omap/Kconfig
-@@ -93,6 +93,16 @@ config BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO
- 	  Say Y for barebox update SPI NOR MLO handler.
- 	  AM35xx, AM33xx chips use big endian MLO for SPI NOR flash.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/Makefile                                  |  7 ++-
+ scripts/Makefile                                   |  2 +-
+ ...mk-am35xx-spi-image.c => mk-am3xxx-spi-image.c} | 52 ++++++++++++++++++----
+ 3 files changed, 50 insertions(+), 11 deletions(-)
+ rename scripts/{mk-am35xx-spi-image.c => mk-am3xxx-spi-image.c} (77%)
+
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 3312a49..c576999 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -167,13 +167,16 @@ KBUILD_IMAGE := barebox.ubl
+ endif
  
-+config BAREBOX_UPDATE_AM33XX_NAND_XLOADSLOTS
-+	prompt "barebox update nand xload slots handler"
-+	bool
-+	depends on BAREBOX_UPDATE
-+	help
-+	  Say Y for barebox update nand xload slots handler.
-+	  This update handler updates 4 default nand xload slots
-+	  with a single command.
-+	  The Handler also checks if the given image has a valid CH header.
+ quiet_cmd_am35xx_spi_image = SPI-IMG $@
+-      cmd_am35xx_spi_image = scripts/mk-am35xx-spi-image -a $(TEXT_BASE) $< > $@
++      cmd_am35xx_spi_image = scripts/mk-am3xxx-spi-image -s am35xx -a $(TEXT_BASE) $< > $@
+ 
+ barebox.spi: $(KBUILD_BINARY) FORCE
+ 	$(call if_changed,am35xx_spi_image)
+ 
++MLO.spi: MLO FORCE
++	$(call if_changed,am35xx_spi_image)
 +
- config ARCH_TEXT_BASE
- 	hex
- 	default 0x80e80000 if MACH_OMAP343xSDP
-diff --git a/arch/arm/mach-omap/Makefile b/arch/arm/mach-omap/Makefile
-index 81a771e..c9b6f4b 100644
---- a/arch/arm/mach-omap/Makefile
-+++ b/arch/arm/mach-omap/Makefile
-@@ -32,3 +32,4 @@ obj-$(CONFIG_MFD_TWL6030) += omap4_twl6030_mmc.o
- obj-$(CONFIG_OMAP4_USBBOOT) += omap4_rom_usb.o
- obj-$(CONFIG_CMD_BOOT_ORDER) += boot_order.o
- obj-$(CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO) += am33xx_bbu_spi_mlo.o
-+obj-$(CONFIG_BAREBOX_UPDATE_AM33XX_NAND_XLOADSLOTS) += am33xx_bbu_nand_xloadslots.o
-diff --git a/arch/arm/mach-omap/am33xx_bbu_nand_xloadslots.c b/arch/arm/mach-omap/am33xx_bbu_nand_xloadslots.c
-new file mode 100644
-index 0000000..0b4f1cc
---- /dev/null
-+++ b/arch/arm/mach-omap/am33xx_bbu_nand_xloadslots.c
-@@ -0,0 +1,122 @@
-+/*
-+ * am33xx_bbu_nand_xloadslots.c - barebox update handler for
-+ * the nand xload slots.
-+ *
-+ * Copyright (c) 2014 Wadim Egorov <w.egorov@phytec.de>, Phytec
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ */
-+
-+#include <common.h>
-+#include <malloc.h>
-+#include <errno.h>
-+#include <bbu.h>
-+#include <fs.h>
-+#include <fcntl.h>
-+#include <filetype.h>
-+
-+struct nand_bbu_handler {
-+	struct bbu_handler bbu_handler;
-+	char **devicefile;
-+	int num_devicefiles;
+ ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
+-KBUILD_IMAGE := barebox.spi
++KBUILD_IMAGE := MLO.spi
+ endif
+ 
+ quiet_cmd_zynq_image = ZYNQ-IMG $@
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 3908c1d..d8925da 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -13,7 +13,7 @@ hostprogs-y                      += kernel-install
+ hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
+ hostprogs-$(CONFIG_ARCH_MVEBU)   += kwbimage kwboot
+ hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
+-hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
++hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am3xxx-spi-image
+ hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
+ hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
+ hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
+diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am3xxx-spi-image.c
+similarity index 77%
+rename from scripts/mk-am35xx-spi-image.c
+rename to scripts/mk-am3xxx-spi-image.c
+index 74e79db..dcb7060 100644
+--- a/scripts/mk-am35xx-spi-image.c
++++ b/scripts/mk-am3xxx-spi-image.c
+@@ -48,32 +48,66 @@
+ #include <getopt.h>
+ #include <endian.h>
+ 
++enum soc {
++	SOC_AM33XX,
++	SOC_AM35XX,
++	SOC_UNKNOWN,
 +};
 +
-+static int write_image(const char *devfile, const void *image, size_t size)
-+{
-+	int fd = 0;
-+	int ret = 0;
++static char *soc_names[] = {
++	[SOC_AM33XX] = "am33xx",
++	[SOC_AM35XX] = "am35xx",
++};
 +
-+	fd = open(devfile, O_WRONLY);
-+	if (fd < 0) {
-+		pr_err("could not open %s: %s\n", devfile,
-+			errno_str());
-+		return fd;
-+	}
-+
-+	ret = erase(fd, ~0, 0);
-+	if (ret < 0) {
-+		pr_err("could not erase %s: %s\n", devfile,
-+			errno_str());
-+		close(fd);
-+		return ret;
-+	}
-+
-+	ret = write(fd, image, size);
-+	if (ret < 0) {
-+		pr_err("could not write to fd %s: %s\n", devfile,
-+			errno_str());
-+		close(fd);
-+		return ret;
-+	}
-+
-+	close(fd);
-+
-+	return 0;
-+}
-+
-+/*
-+ * This handler updates all given xload slots in nand with an image.
-+ */
-+static int nand_xloadslots_update_handler(struct bbu_handler *handler,
-+					struct bbu_data *data)
-+{
-+	int ret = 0;
-+	const void *image = data->image;
-+	size_t size = data->len;
-+	struct nand_bbu_handler *nh;
-+	int i = 0;
-+
-+	if (file_detect_type(image, size) != filetype_ch_image) {
-+		pr_err("%s is not a valid ch-image\n", data->imagefile);
-+		return -EINVAL;
-+	}
-+
-+	nh = container_of(handler, struct nand_bbu_handler, bbu_handler);
-+
-+	/* check if the devicefile has been overwritten */
-+	if (strcmp(data->devicefile, nh->devicefile[0]) != 0) {
-+		ret = bbu_confirm(data);
-+		if (ret != 0)
-+			return ret;
-+
-+		ret = write_image(data->devicefile, image, size);
-+		if (ret != 0)
-+			return ret;
-+	} else {
-+		for (i = 0; i < nh->num_devicefiles; i++) {
-+			ret =  write_image(nh->devicefile[i], image, size);
-+			if (ret != 0)
-+				return ret;
+ void usage(char *prgname)
+ {
+ 	printf("usage: %s [OPTION] FILE > IMAGE\n"
+ 	       "\n"
+ 	       "options:\n"
+-	       "  -a <address> memory address for the loaded image in SRAM\n",
++	       "  -a <address> memory address for the loaded image in SRAM\n"
++	       "  -s <soc>     SoC to use (am33xx, am35xx)\n",
+ 	       prgname);
+ }
+ 
+ int main(int argc, char *argv[])
+ {
+ 	FILE *input;
+-	int opt;
++	int opt, i;
+ 	off_t pos;
+ 	size_t size;
+ 	uint32_t addr = 0x40200000;
+ 	uint32_t temp;
++	enum soc soc = SOC_UNKNOWN;
++	char *socname = NULL;
+ 
+-	while((opt = getopt(argc, argv, "a:")) != -1) {
++	while((opt = getopt(argc, argv, "a:s:")) != -1) {
+ 		switch (opt) {
+ 		case 'a':
+ 			addr = strtoul(optarg, NULL, 0);
+ 			break;
++		case 's':
++			socname = optarg;
++			break;
 +		}
 +	}
 +
-+	return 0;
-+}
++	if (!socname) {
++		fprintf(stderr, "SoC not specified. Use -s <soc>\n");
++		exit(EXIT_FAILURE);
++	}
 +
-+int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
-+						char **devicefile,
-+						int num_devicefiles)
-+{
-+	struct nand_bbu_handler *handler;
-+	int ret;
-+
-+	handler = xzalloc(sizeof(*handler));
-+	handler->devicefile = devicefile;
-+	handler->num_devicefiles = num_devicefiles;
-+	handler->bbu_handler.devicefile = devicefile[0];
-+	handler->bbu_handler.handler = nand_xloadslots_update_handler;
-+	handler->bbu_handler.name = name;
-+
-+	ret = bbu_register_handler(&handler->bbu_handler);
-+	if (ret)
-+		free(handler);
-+
-+	return ret;
-+}
-diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
-index 6d4b70f..74eae15 100644
---- a/arch/arm/mach-omap/include/mach/bbu.h
-+++ b/arch/arm/mach-omap/include/mach/bbu.h
-@@ -12,4 +12,17 @@ int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
- }
- #endif
++	for (i = 0; i < 2; i++) {
++		if (!strcmp(socname, soc_names[i])) {
++			soc = i;
++			break;
+ 		}
+ 	}
  
-+#ifdef CONFIG_BAREBOX_UPDATE_AM33XX_NAND_XLOADSLOTS
-+int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
-+						char **devicefile,
-+						int num_devicefiles);
-+#else
-+int am33xx_bbu_nand_xloadslots_register_handler(const char *name,
-+						char **devicefile,
-+						int num_devicefiles)
-+{
-+	return 0;
-+}
-+#endif
++	if (soc == SOC_UNKNOWN) {
++		fprintf(stderr, "SoC %s unknown\n", socname);
++		exit(EXIT_FAILURE);
++	}
 +
- #endif
+ 	if (optind >= argc) {
+ 		usage(argv[0]);
+ 		exit(1);
+@@ -108,12 +142,14 @@ int main(int argc, char *argv[])
+ 	pos = (pos + 3) & ~3;
+ 
+ 	/* image size */
+-	temp = htobe32((uint32_t)pos);
+-	fwrite(&temp, sizeof(uint32_t), 1, stdout);
++	if (soc == SOC_AM35XX) {
++		temp = htobe32((uint32_t)pos);
++		fwrite(&temp, sizeof(uint32_t), 1, stdout);
+ 
+-	/* memory address */
+-	temp = htobe32(addr);
+-	fwrite(&temp, sizeof(uint32_t), 1, stdout);
++		/* memory address */
++		temp = htobe32(addr);
++		fwrite(&temp, sizeof(uint32_t), 1, stdout);
++	}
+ 
+ 	for (;;) {
+ 		size = fread(&temp, 1, sizeof(uint32_t), input);
 -- 
-1.7.0.4
+2.0.0.rc0
 
 
 _______________________________________________
