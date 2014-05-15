@@ -1,11 +1,18 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WksCy-0007fK-H1
- for barebox@lists.infradead.org; Thu, 15 May 2014 09:44:13 +0000
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 15 May 2014 11:43:50 +0200
-Message-Id: <1400147030-16936-1-git-send-email-s.hauer@pengutronix.de>
+Received: from mail-ee0-x236.google.com ([2a00:1450:4013:c00::236])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
+ id 1WksHL-0003kU-7k
+ for barebox@lists.infradead.org; Thu, 15 May 2014 09:48:43 +0000
+Received: by mail-ee0-f54.google.com with SMTP id b57so467117eek.13
+ for <barebox@lists.infradead.org>; Thu, 15 May 2014 02:48:19 -0700 (PDT)
+Date: Thu, 15 May 2014 11:48:14 +0200
+From: Alexander Aring <alex.aring@gmail.com>
+Message-ID: <20140515094811.GA18289@omega>
+References: <1400146868-17820-1-git-send-email-w.egorov@phytec.de>
+ <1400146868-17820-2-git-send-email-w.egorov@phytec.de>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1400146868-17820-2-git-send-email-w.egorov@phytec.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -14,163 +21,54 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH] ARM: AM3xxx: Add support for building AM33xx spi images
-To: barebox@lists.infradead.org
+Subject: Re: [PATCH v2 4/4] phycore-am335x: Added bbu nand xloadslots handler
+To: Wadim Egorov <w.egorov@phytec.de>
+Cc: barebox@lists.infradead.org
 
-From: Jan Luebbe <jlu@pengutronix.de>
+On Thu, May 15, 2014 at 11:41:08AM +0200, Wadim Egorov wrote:
+> Added bbu nand xloadslots handler to phycore-am335x.
+> 
+> Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+> ---
+> v2:
+>   - changed method to pass device files
+> ---
+>  arch/arm/boards/phytec-phycore-am335x/board.c |    9 +++++++++
+>  1 files changed, 9 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/boards/phytec-phycore-am335x/board.c b/arch/arm/boards/phytec-phycore-am335x/board.c
+> index 59de42b..76782d4 100644
+> --- a/arch/arm/boards/phytec-phycore-am335x/board.c
+> +++ b/arch/arm/boards/phytec-phycore-am335x/board.c
+> @@ -48,6 +48,13 @@ static struct omap_barebox_part pcm051_barebox_part = {
+>  	.nor_size = SZ_512K,
+>  };
+>  
+> +char *xloadslots[] = {
+maybe change this to const?
 
-mk-am35xx-spi-image can only build AM35xx images. Rename
-the tool to mk-am3xxx-spi-image and add support for the AM33xx.
+> +	"/dev/nand0.xload.bb",
+> +	"/dev/nand0.xload_backup1.bb",
+> +	"/dev/nand0.xload_backup2.bb",
+> +	"/dev/nand0.xload_backup3.bb"
+> +};
+> +
+>  static int pcm051_devices_init(void)
+>  {
+>  	if (!of_machine_is_compatible("phytec,pcm051"))
+> @@ -69,6 +76,8 @@ static int pcm051_devices_init(void)
+>  	armlinux_set_architecture(MACH_TYPE_PCM051);
+>  
+>  	am33xx_bbu_spi_nor_mlo_register_handler("MLO.spi", "/dev/m25p0.xload");
+> +	am33xx_bbu_nand_xloadslots_register_handler("xloadslots",
+> +		xloadslots, ARRAY_SIZE(xloadslots));
+>  
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/Makefile                                  |  7 ++-
- scripts/Makefile                                   |  2 +-
- ...mk-am35xx-spi-image.c => mk-am3xxx-spi-image.c} | 52 ++++++++++++++++++----
- 3 files changed, 50 insertions(+), 11 deletions(-)
- rename scripts/{mk-am35xx-spi-image.c => mk-am3xxx-spi-image.c} (77%)
-
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 3312a49..c576999 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -167,13 +167,16 @@ KBUILD_IMAGE := barebox.ubl
- endif
- 
- quiet_cmd_am35xx_spi_image = SPI-IMG $@
--      cmd_am35xx_spi_image = scripts/mk-am35xx-spi-image -a $(TEXT_BASE) $< > $@
-+      cmd_am35xx_spi_image = scripts/mk-am3xxx-spi-image -s am35xx -a $(TEXT_BASE) $< > $@
- 
- barebox.spi: $(KBUILD_BINARY) FORCE
- 	$(call if_changed,am35xx_spi_image)
- 
-+MLO.spi: MLO FORCE
-+	$(call if_changed,am35xx_spi_image)
-+
- ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
--KBUILD_IMAGE := barebox.spi
-+KBUILD_IMAGE := MLO.spi
- endif
- 
- quiet_cmd_zynq_image = ZYNQ-IMG $@
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 3908c1d..d8925da 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -13,7 +13,7 @@ hostprogs-y                      += kernel-install
- hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
- hostprogs-$(CONFIG_ARCH_MVEBU)   += kwbimage kwboot
- hostprogs-$(CONFIG_ARCH_NETX)    += gen_netx_image
--hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am35xx-spi-image
-+hostprogs-$(CONFIG_ARCH_OMAP)    += omap_signGP mk-am3xxx-spi-image
- hostprogs-$(CONFIG_ARCH_S5PCxx)  += s5p_cksum
- hostprogs-$(CONFIG_ARCH_DAVINCI) += mkublheader
- hostprogs-$(CONFIG_ARCH_ZYNQ)	 += zynq_mkimage
-diff --git a/scripts/mk-am35xx-spi-image.c b/scripts/mk-am3xxx-spi-image.c
-similarity index 77%
-rename from scripts/mk-am35xx-spi-image.c
-rename to scripts/mk-am3xxx-spi-image.c
-index 74e79db..dcb7060 100644
---- a/scripts/mk-am35xx-spi-image.c
-+++ b/scripts/mk-am3xxx-spi-image.c
-@@ -48,32 +48,66 @@
- #include <getopt.h>
- #include <endian.h>
- 
-+enum soc {
-+	SOC_AM33XX,
-+	SOC_AM35XX,
-+	SOC_UNKNOWN,
-+};
-+
-+static char *soc_names[] = {
-+	[SOC_AM33XX] = "am33xx",
-+	[SOC_AM35XX] = "am35xx",
-+};
-+
- void usage(char *prgname)
- {
- 	printf("usage: %s [OPTION] FILE > IMAGE\n"
- 	       "\n"
- 	       "options:\n"
--	       "  -a <address> memory address for the loaded image in SRAM\n",
-+	       "  -a <address> memory address for the loaded image in SRAM\n"
-+	       "  -s <soc>     SoC to use (am33xx, am35xx)\n",
- 	       prgname);
- }
- 
- int main(int argc, char *argv[])
- {
- 	FILE *input;
--	int opt;
-+	int opt, i;
- 	off_t pos;
- 	size_t size;
- 	uint32_t addr = 0x40200000;
- 	uint32_t temp;
-+	enum soc soc = SOC_UNKNOWN;
-+	char *socname = NULL;
- 
--	while((opt = getopt(argc, argv, "a:")) != -1) {
-+	while((opt = getopt(argc, argv, "a:s:")) != -1) {
- 		switch (opt) {
- 		case 'a':
- 			addr = strtoul(optarg, NULL, 0);
- 			break;
-+		case 's':
-+			socname = optarg;
-+			break;
-+		}
-+	}
-+
-+	if (!socname) {
-+		fprintf(stderr, "SoC not specified. Use -s <soc>\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	for (i = 0; i < 2; i++) {
-+		if (!strcmp(socname, soc_names[i])) {
-+			soc = i;
-+			break;
- 		}
- 	}
- 
-+	if (soc == SOC_UNKNOWN) {
-+		fprintf(stderr, "SoC %s unknown\n", socname);
-+		exit(EXIT_FAILURE);
-+	}
-+
- 	if (optind >= argc) {
- 		usage(argv[0]);
- 		exit(1);
-@@ -108,12 +142,14 @@ int main(int argc, char *argv[])
- 	pos = (pos + 3) & ~3;
- 
- 	/* image size */
--	temp = htobe32((uint32_t)pos);
--	fwrite(&temp, sizeof(uint32_t), 1, stdout);
-+	if (soc == SOC_AM35XX) {
-+		temp = htobe32((uint32_t)pos);
-+		fwrite(&temp, sizeof(uint32_t), 1, stdout);
- 
--	/* memory address */
--	temp = htobe32(addr);
--	fwrite(&temp, sizeof(uint32_t), 1, stdout);
-+		/* memory address */
-+		temp = htobe32(addr);
-+		fwrite(&temp, sizeof(uint32_t), 1, stdout);
-+	}
- 
- 	for (;;) {
- 		size = fread(&temp, 1, sizeof(uint32_t), input);
--- 
-2.0.0.rc0
-
+- Alex
 
 _______________________________________________
 barebox mailing list
