@@ -1,16 +1,16 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1Wkumx-0007ga-BX
- for barebox@lists.infradead.org; Thu, 15 May 2014 12:29:32 +0000
-Date: Thu, 15 May 2014 14:29:08 +0200
+ Linux)) id 1WkuxZ-0006yJ-Gr
+ for barebox@lists.infradead.org; Thu, 15 May 2014 12:40:30 +0000
+Date: Thu, 15 May 2014 14:40:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Message-ID: <20140515122908.GH5858@pengutronix.de>
-References: <20140513134228.GQ5858@pengutronix.de>
- <alpine.LFD.2.11.1405130948350.7299@localhost>
+Message-ID: <20140515124006.GJ5858@pengutronix.de>
+References: <1400144937-6006-1-git-send-email-holgerschurig@gmail.com>
+ <537486DB.9010302@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.11.1405130948350.7299@localhost>
+In-Reply-To: <537486DB.9010302@gmail.com>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -23,34 +23,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: barebox Documentation
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Subject: Re: [PATCH] commands: rename "gpiolib" -> "gpioinfo"
+To: Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>
 Cc: barebox@lists.infradead.org
 
-Hi Robert,
-
-On Tue, May 13, 2014 at 09:50:03AM -0400, Robert P. J. Day wrote:
-> On Tue, 13 May 2014, Sascha Hauer wrote:
+On Thu, May 15, 2014 at 11:20:27AM +0200, Sebastian Hesselbarth wrote:
+> On 05/15/2014 11:08 AM, Holger Schurig wrote:
+> >Signed-off-by: Holger Schurig <holgerschurig@gmail.com>
 > 
-> > Hi,
-> >
-> > As we all know the barebox documentation sucks. We @Pengutronix will
-> > have our internal techweek next month. One of the goals will be to
-> > improve the documentation situation for barebox.
-> >
-> > What are your opinions in which form the documentation should be?
-> >
-> > We currently have plain text files under Documentation/, a wiki on
-> > http://wiki.barebox.org/doku.php and doxygen. None of the documentation
-> > sets is complete and all are outdated.
+> Subject: rename "gpiolib" -> "gpioinfo"
 > 
->   as i want to introduce barebox into future embedded linux classes of
-> mine, i have a vested interest in making sure the documentation is
-> good. so while others argue about the proper format, i'll be happy to
-> put my editing talents to work and do a lot of proofreading.
+> How about joining the gpio related commands to "gpio"
+> and use e.g. -l for list?
 
-Thanks for the offer. I'll let you know when there's something to
-proofread.
+Which commands do you mean? gpio_direction_output / gpio_set_value
+and friends? I wouldn't change these as we would end up with four
+single letter options (for direction_output, set_value, direction_input,
+get_value) which are hard to memorize.
 
 Sascha
 
