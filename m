@@ -1,19 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
-Received: from mail-ee0-x22b.google.com ([2a00:1450:4013:c00::22b])
- by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat Linux))
- id 1WksNv-0002Vm-B6
- for barebox@lists.infradead.org; Thu, 15 May 2014 09:55:31 +0000
-Received: by mail-ee0-f43.google.com with SMTP id d17so463853eek.16
- for <barebox@lists.infradead.org>; Thu, 15 May 2014 02:55:09 -0700 (PDT)
-Date: Thu, 15 May 2014 11:55:06 +0200
-From: Alexander Aring <alex.aring@gmail.com>
-Message-ID: <20140515095505.GB18289@omega>
-References: <1400146868-17820-1-git-send-email-w.egorov@phytec.de>
- <1400146868-17820-2-git-send-email-w.egorov@phytec.de>
- <20140515094811.GA18289@omega>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20140515094811.GA18289@omega>
+Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
+ by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
+ Linux)) id 1Wkt9z-0006U5-Ai
+ for barebox@lists.infradead.org; Thu, 15 May 2014 10:45:12 +0000
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 15 May 2014 12:44:49 +0200
+Message-Id: <1400150689-19385-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=unsubscribe>
@@ -22,40 +14,38 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: Re: [PATCH v2 4/4] phycore-am335x: Added bbu nand xloadslots handler
-To: Wadim Egorov <w.egorov@phytec.de>
-Cc: barebox@lists.infradead.org
+Subject: [PATCH] ARM: AM33xx: make bbu handler static inline
+To: barebox@lists.infradead.org
 
-On Thu, May 15, 2014 at 11:48:11AM +0200, Alexander Aring wrote:
-> On Thu, May 15, 2014 at 11:41:08AM +0200, Wadim Egorov wrote:
-> > Added bbu nand xloadslots handler to phycore-am335x.
-> > 
-> > Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-> > ---
-> > v2:
-> >   - changed method to pass device files
-> > ---
-> >  arch/arm/boards/phytec-phycore-am335x/board.c |    9 +++++++++
-> >  1 files changed, 9 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/arch/arm/boards/phytec-phycore-am335x/board.c b/arch/arm/boards/phytec-phycore-am335x/board.c
-> > index 59de42b..76782d4 100644
-> > --- a/arch/arm/boards/phytec-phycore-am335x/board.c
-> > +++ b/arch/arm/boards/phytec-phycore-am335x/board.c
-> > @@ -48,6 +48,13 @@ static struct omap_barebox_part pcm051_barebox_part = {
-> >  	.nor_size = SZ_512K,
-> >  };
-> >  
-> > +char *xloadslots[] = {
-> maybe change this to const?
-> 
-meant static here. :-)
+The static inline wrapper for am33xx_bbu_spi_nor_mlo_register_handler
+lacked the 'static inline'. add it.
 
-- Alex
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/mach-omap/include/mach/bbu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-omap/include/mach/bbu.h b/arch/arm/mach-omap/include/mach/bbu.h
+index 6d4b70f..9556ad6 100644
+--- a/arch/arm/mach-omap/include/mach/bbu.h
++++ b/arch/arm/mach-omap/include/mach/bbu.h
+@@ -6,7 +6,7 @@
+ #ifdef CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO
+ int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile);
+ #else
+-int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
++static inline int am33xx_bbu_spi_nor_mlo_register_handler(const char *name, char *devicefile)
+ {
+ 	return 0;
+ }
+-- 
+2.0.0.rc0
+
 
 _______________________________________________
 barebox mailing list
