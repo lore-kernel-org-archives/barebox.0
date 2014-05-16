@@ -1,11 +1,11 @@
 Return-path: <barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org>
 Received: from metis.ext.pengutronix.de ([2001:6f8:1178:4:290:27ff:fe1d:cc33])
  by bombadil.infradead.org with esmtps (Exim 4.80.1 #2 (Red Hat
- Linux)) id 1WlFQD-0007uK-KY
- for barebox@lists.infradead.org; Fri, 16 May 2014 10:31:26 +0000
+ Linux)) id 1WlFQ8-0007t5-Rm
+ for barebox@lists.infradead.org; Fri, 16 May 2014 10:31:21 +0000
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 May 2014 12:30:56 +0200
-Message-Id: <1400236258-17924-9-git-send-email-s.hauer@pengutronix.de>
+Date: Fri, 16 May 2014 12:30:55 +0200
+Message-Id: <1400236258-17924-8-git-send-email-s.hauer@pengutronix.de>
 In-Reply-To: <1400236258-17924-1-git-send-email-s.hauer@pengutronix.de>
 References: <1400236258-17924-1-git-send-email-s.hauer@pengutronix.de>
 List-Id: <barebox.lists.infradead.org>
@@ -21,89 +21,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 Errors-To: barebox-bounces+u.kleine-koenig=pengutronix.de@lists.infradead.org
-Subject: [PATCH 09/11] ARM: i.MX: iim: don't make detour over cdev API
+Subject: [PATCH 08/11] ARM: i.MX: iim: move static variables into driver struct
 To: barebox@lists.infradead.org
-
-imx_iim_read is a iim internal function, so access the
-internal functions rather than using the cdev API.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/iim.c | 41 +++++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ arch/arm/mach-imx/iim.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/arch/arm/mach-imx/iim.c b/arch/arm/mach-imx/iim.c
-index decf735..dba416a 100644
+index 4a94a68..decf735 100644
 --- a/arch/arm/mach-imx/iim.c
 +++ b/arch/arm/mach-imx/iim.c
-@@ -51,6 +51,8 @@ struct iim_priv {
- 	int sense_enable;
+@@ -32,9 +32,6 @@
+ #define DRIVERNAME	"imx_iim"
+ #define IIM_NUM_BANKS	8
+ 
+-static int iim_write_enable;
+-static int iim_sense_enable;
+-
+ struct iim_priv;
+ 
+ struct iim_bank {
+@@ -50,6 +47,8 @@ struct iim_priv {
+ 	void __iomem *base;
+ 	void __iomem *bankbase;
+ 	struct iim_bank *bank[IIM_NUM_BANKS];
++	int write_enable;
++	int sense_enable;
  };
  
-+static struct iim_priv *imx_iim;
-+
  static int imx_iim_fuse_sense(struct iim_bank *bank, unsigned int row)
- {
- 	struct iim_priv *iim = bank->iim;
-@@ -113,6 +115,22 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
- 	return size;
- }
+@@ -97,7 +96,7 @@ static ssize_t imx_iim_cdev_read(struct cdev *cdev, void *buf, size_t count,
+ 	struct iim_bank *bank = container_of(cdev, struct iim_bank, cdev);
  
-+int imx_iim_read(unsigned int banknum, int offset, void *buf, int count)
-+{
-+	struct iim_priv *iim = imx_iim;
-+	struct iim_bank *bank;
-+
-+	if (!imx_iim)
-+		return -ENODEV;
-+
-+	if (banknum > IIM_NUM_BANKS)
-+		return -EINVAL;
-+
-+	bank = iim->bank[banknum];
-+
-+	return imx_iim_cdev_read(&bank->cdev, buf, count, offset, 0);
-+}
-+
- static int imx_iim_fuse_blow(struct iim_bank *bank, unsigned int row, u8 value)
- {
- 	struct iim_priv *iim = bank->iim;
-@@ -274,8 +292,13 @@ static int imx_iim_probe(struct device_d *dev)
- 	struct iim_priv *iim;
- 	int i, ret;
+ 	size = min((loff_t)count, 32 - offset);
+-	if (iim_sense_enable) {
++	if (bank->iim->sense_enable) {
+ 		for (i = 0; i < size; i++) {
+ 			int row_val;
  
-+	if (imx_iim)
-+		return -EBUSY;
-+
- 	iim = xzalloc(sizeof(*iim));
+@@ -178,7 +177,7 @@ static ssize_t imx_iim_cdev_write(struct cdev *cdev, const void *buf, size_t cou
  
-+	imx_iim = iim;
-+
- 	strcpy(iim->dev.name, "iim");
- 	iim->dev.parent = dev;
- 	iim->dev.id = DEVICE_ID_SINGLE;
-@@ -326,21 +349,3 @@ static int imx_iim_init(void)
+ 	size = min((loff_t)count, 32 - offset);
+ 
+-	if (IS_ENABLED(CONFIG_IMX_IIM_FUSE_BLOW) && iim_write_enable) {
++	if (IS_ENABLED(CONFIG_IMX_IIM_FUSE_BLOW) && bank->iim->write_enable) {
+ 		for (i = 0; i < size; i++) {
+ 			int ret;
+ 
+@@ -298,10 +297,10 @@ static int imx_iim_probe(struct device_d *dev)
+ 
+ 	if (IS_ENABLED(CONFIG_IMX_IIM_FUSE_BLOW))
+ 		dev_add_param_bool(&iim->dev, "permanent_write_enable",
+-			NULL, NULL, &iim_write_enable, NULL);
++			NULL, NULL, &iim->write_enable, NULL);
+ 
+ 	dev_add_param_bool(&iim->dev, "explicit_sense_enable",
+-			NULL, NULL, &iim_sense_enable, NULL);
++			NULL, NULL, &iim->sense_enable, NULL);
+ 
  	return 0;
  }
- coredevice_initcall(imx_iim_init);
--
--int imx_iim_read(unsigned int bank, int offset, void *buf, int count)
--{
--	struct cdev *cdev;
--	char *name = asprintf(DRIVERNAME "_bank%d", bank);
--	int ret;
--
--	cdev = cdev_open(name, O_RDONLY);
--	if (!cdev)
--		return -ENODEV;
--
--	ret = cdev_read(cdev, buf, count, offset, 0);
--
--	cdev_close(cdev);
--	free(name);
--
--	return ret;
--}
 -- 
 2.0.0.rc0
 
